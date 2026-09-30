@@ -4,103 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A22BCA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:02:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A4F5CA5FBE
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:03:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F8266B0092; Wed, 30 Sep 2026 06:02:52 -0400 (EDT)
+	id 5B6626B008A; Wed, 30 Sep 2026 06:03:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A97E6B0093; Wed, 30 Sep 2026 06:02:52 -0400 (EDT)
+	id 566016B008C; Wed, 30 Sep 2026 06:03:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F01726B0095; Wed, 30 Sep 2026 06:02:51 -0400 (EDT)
+	id 45A9F6B0095; Wed, 30 Sep 2026 06:03:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D2ADF6B0092
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:02:51 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4D238C06E3
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:02:51 +0000 (UTC)
-X-FDA: 85269989742.25.9A74B18
-Received: from mta0.migadu.com (out-19.mta0.migadu.com [91.218.175.19])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0668040009
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:02:48 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MfkHMdka;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.19 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1936B6B008A
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:03:44 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC8131406FF
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:03:43 +0000 (UTC)
+X-FDA: 85269991926.03.98C5030
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F23B780008
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:03:41 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c39Xhitk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790762569;
+	s=arc-20220608; t=1790762622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6qRsSUfuBnTMx2Y9L6KCbkAYKGnB+pDv2tFE4p6k81k=;
-	b=pZvVkvWnz0orwTcOnW6CyE8iUwngMPCTDQCToYlwxlBED+MC1G21TH2NVkVPfsRIdkzG8e
-	db5qEn069+spaU11/PLKrNmcjHF2YuGgWElbzTqbkIwO7iHRYSeGid8bx88CLFw4WfZzRP
-	tbIEfpQ42uiNAb8CI9qOusHUL0b6MWE=
+	bh=Ml0DuYlmFa9hQaDKnLTS0bQy6dNO9ILQKsOk1hfaR/Q=;
+	b=KPBeOcvtgA2SPNnyuv+QOp1Ws4O9DjKVr9XdKCNtaRYCKGi5bR6ZO7LOwE2a3qjCccTu46
+	OvkmSwlwCvcTGio9IXVbfXENM9M3tpHguDnQUpsc0Pwg2j1qvdr9qczRcLWRZ+CxCsZ4sT
+	3K0u8qFPTBm0qu4h5DZhb6gADr4t+yg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MfkHMdka;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.19 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c39Xhitk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790762569;
-	b=4RE4akQ69CyRaGx/5bNaDYpZ/0Ff9Z5vXqGonKycJ0Aaa+DS+CRmHXdc/2tcKeRYJVki7T
-	XGPaT8SOr0Hd77bi7emgLxpUWsYoRMw2JkUUHY0V0D1Cuc5Tu+AFsTmBiSchCg55Cp4Ckw
-	viIc2ufal65PWsrvst2SWAgwPoPGCgw=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=6qRsSUfuBnTMx2Y9L6KCbkAYKGnB+pDv2tFE4p6k81k=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790762567; v=1; x=1791367367;
- b=MfkHMdkaZFeZ63PXyuvaJ9E6glbryTwVflyII1EBXG9UvkZF5eI7Oq52rSTfVLjfFsC1DQGh
- 2Z1dsZlDdoMPiQZ9UtihJSHd7yfDlfskF94GF2nKN7Ei2AWEmZaRkPTSU+XDaaTgGUvluLXgcky
- ZbwRYYmSbBhwEZmdmKbQRIbw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 702ad52dc12a4244;
-	Wed, 30 Sep 2026 10:02:36 +0000
-X-Mizu-Trace-ID: 702ad52dc12a4244
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: songmuchun@bytedance.com
-Cc: maddy@linux.ibm.com,
-	rppt@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	ritesh.list@gmail.com,
-	sshegde@linux.ibm.com,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	qi.zheng@linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	muchun.song@linux.dev,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v3 2/6] mm/sparse-vmemmap: support device DAX in common vmemmap path
-Date: Wed, 30 Sep 2026 18:02:26 +0800
-Message-ID: <20260930100226.23688-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260929053231.66085-3-songmuchun@bytedance.com>
-References: <20260929053231.66085-3-songmuchun@bytedance.com>
+	t=1790762622;
+	b=s0GzW4RrzKo62KdbEKVjJC2eF7YUB3v4BLZAgGiWkW6I7LVwGrsj2CmTETi0sTuHNctys5
+	ZKpuIpcr9tno62VJfBv5xe+cHmqS94j6tOzyD1NAxaplziQINfuWyZFKXeEnduRRgDVOCk
+	H7cPX0n48ENL4OoPpuemw6JSKF/Su5k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 661A660239;
+	Wed, 30 Sep 2026 10:03:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E321F00893;
+	Wed, 30 Sep 2026 10:03:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790762621;
+	bh=Ml0DuYlmFa9hQaDKnLTS0bQy6dNO9ILQKsOk1hfaR/Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=c39XhitkGKdQ/yXBH5DDEEOWKDiqpWzdQvRaLfGE0PbANlGxw3t6EWIwyiiGPY6/a
+	 5iONMk1hgoZFGooMXpm2iSxvYrW0gbGPkpbdkYU5fqNalHrPKmOoWDIZtqT2KEUvm6
+	 98c61JZfXQ9uNRxkzSIwvdIuqK/HkIE77N6mNBd7f92BX1xqAneUSTjBz+FDf0wj6Q
+	 RhCqBYOIinjgtNh8N7msgGmQse1xAwbAG+hKZng0Iz6lUaSRLIIwhQ7Krg4q1roAH2
+	 OOuL/d6430Qpme+7Mrcvis+5vRvFxhm4MwV+lY/wRDF9JcEB7ZEcEoExcOe4aMl3sz
+	 kZqp+4Vb1nOiQ==
+Message-ID: <8f509b48-db3e-44ff-8423-1e43a35daa01@kernel.org>
+Date: Wed, 30 Sep 2026 12:03:36 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/hugetlb: avoid recursive i_mmap_rwsem in PMD sharing
+To: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
+ muchun.song@linux.dev, osalvador@suse.de
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>, "Lorenzo Stoakes (Arm)" <ljs@kernel.org>
+References: <20260930064308.58159-1-lizhe.67@bytedance.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260930064308.58159-1-lizhe.67@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0668040009
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: a4okrz9x8k4wyu93w6sm8owhtdoqcp8i
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: frmdqmnsabaznkb9ncadf4wy1kujocm1
-X-HE-Tag: 1790762568-440736
-X-HE-Meta: U2FsdGVkX1+izVNB3fwHC2YrcP/GY7B0SaMEfXaGAqLuU5m+aSJujGdgd423PkKu56p25mZMUNOzQxAC/d1i4+nQ57oIP9EIURrUaW3j7I/jEBdHRXS/ihpvU+eu2rLPvF8ZChBW+ipahmnA/i57BQPvNiySkzvmE0pmZ6WSgQqcKQG2DRO27ENQSxoVDVTxW02M80qN/FTETeXrJCMYE6Kz30UiVPfzseWAq8H3Pix+2G9JL9KYWF4tCyztd/4Ig2nYvYEO8DCxR6chpF8p0jVDFRTLzv10FekanWXcly9hZANLihyQ50fq62v9kCQpCCkDa15D2q1IBbJhhg8zICqERM6dWDhVthtN603RO546XwiyE8jV3ILeTo3iorVIqmJBl0ta2uMxNCe64B7JaU6I9fvsdFSAECofyv6+gG5XaV6MltWJQBp6R+yzaC8MANgpglDXi4MFUeZG1usQI0x6uYzIZwu64mXrH6539pj7ZxOARl+D+N8i/6tEoQ8IFQcvYxq20QznnIZ4EQVEgHELOvrGfqxIMRt9Cr77/v8YbpZldYRQCx54m06u14Jor7Z1jPbb72uQRry0i/ILMKsphSkJXNKa5anWB6N7nuVgsuAncdYUM9sGWk6CkDPC/TZVuzuo+jWu4+HL4iekrrnxfHAwiH19FzuSXSYP1Whgs7Zl7uf7GN7NKDVvSKI+EVdojn5hyr9JdMXlX+s9VskKDGSYTTOjt0YDfyEkv4z32JDwL7V2da8f1zNN8E+BsATy6RFEq3ByCusD9KPeq5uYso8lXCjlXiRGfC7QYzw9vyCL9HKgXiD/4V6mFFHKJV3E+4vr8PNOghFWeYzjlBxU1/DYq9H3GXm4ejLY3ktR3MuCRukp9jVPNFQ6eJ7jKF+B7MVRmq2xzvnG3SSHv8fTWcIujxXekmomFHlZc8cLQ1vUWESI3jVq2iKi48pPJ3kmW86CnlcH1Tb1sOe
- T7RUvH/r
- ts0PSlbVm96PagKY2LCD+5Mio8i/u0g/tNxWdEegWdYRT07JFOzesKZ8lzSRQopHlVAhhqD/GYFHscD8NeJl1z+9OajxftUZcrvFwsisavX1mCiBL7kTiJ5X9Pt9pYRczS0Chm6w/TpHmBctfSDhA7s/CrRT8zzu/BNA7ffP/EmBfuC+yDXcZ87jPkEnletzfZzWns4zrbYscXAxbgRKA2s8Qn4fCVkXNYVFSXj63+l2BStFZQe50RCDIAPROdcRe+k4ewPGxLziW26WTMQipq7LZrvPk6Z8N+gWAYoh9iUaj3MdDsFDgP6Gfwfe5qq+nJi9qNv9sdW53Thc=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: F23B780008
+X-HE-Tag: 1790762621-811196
+X-HE-Meta: U2FsdGVkX18d9iZ7jf8NNS7PmQ2mSAXV8xKH0t4abvnAGJebhYYjxI3EJe9TpoBqCFNEogd9ze+9NexFTgx8NzTFmyzkON2jWKcraNpcE/cjBM7UIZH/CQDWHc+2R78LJI8wq+OgpnW0IVTSrtnl6ucOog6Wp+NRTp9MjNMJQGXQ6sMEGt1mInuk8wbK+cFLigrgfe6QUDrlTTKGOQ31QFu79RDWg3K//xh0RMIaTyZEWD8u154uh2ai9us8SxSfyluz27ngMGFuqfedf5AmTIm6ScvYjE5ZNbSBtnH7vq2uq4Ztqm1VX3HuItZbOtGe2XvMhsyTgQNr8Cn8z0uIDNDR5TPiqoVALt0CuqtZu/TldzKR8D+xr2ikB3Ub1BjMCu6OHWqrKCM2fcmBrTx7eGzebacDOdEtPSXVMrLaHj5fslsp5BQUEqP3VGEJsvUPrpMnoeqk4zAbQxedMDiJhSMyKdnhXmOy7HIhk4jUYqazwouJKj0Zm+nQPbYZo0I0HG3dwQOp2ezo28VUL1igSp22tTW/1/Ci5spwkUY4JHOTav8YOuM/ThjbuYRUhQIb3qcPFQ4yyWDYGm932AVcJ8lCowvue6wFYAIgDCRHjGPbBja+wIwklmOY7zjn4VejdQDqJ2/3bFc9WOYEt2TO1ppJd3pqDvRcLLilr6mwLOx6Dg/BFpVCwmc51yUTJEghTByMSZN8Tg4KbcHLmZ/HchnnHOG3+pV5De4D+WcFhj6wyrbMbWTkspP8rTtrze1Jd237NwOTDHIMWMzzNfQBmZeBlNC+6Jwv8a6Xj+/Trbbr0EjB/hdS8zHQvZIa5uiHG6MsrK7qmIH6obV/rsDVoKPDV9ByAvh/jRIKM0wYRf2lsimRdvPMbnhW4WCZx8SxcgcadDubfDVtYAa9aSIh9mfeWJv2ADzLycNmpUzjibA4VpTjKj+xxx2DtkNx/cV0xDbY3gZA23aCAku7uHD
+ aFQqG99t
+ V2ktXVRjEJu/8YnZ9NvY73rrckUzukicdJbaSvhGTBa41GouWYQTdedK/CF8YaBMrnGZGX2nvIx9+iJxjhmm/6Dzj6TKQVwjeuYzyymQWtQUeSzgbVkOyqogRWasd4udMGG9jVeJuWxWKXcLmR6FuCfEXSaEajtooss+RxyTTv6JAfxeVZy7fQWPsMTyf6YOHmFKrVFGI/RIj9be0K6NCH3grMmlDnOVMHFiu4pGiIc92RMMOHu0FzxwrnGa4hG8g1EGODJmtOlwDkG5fJPm+gOLtwX0glk1TR7nOrd7cjiNBTXRtdKXaftjpVlsRdCIhxIYz9Vg+xoi2+mA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,26 +138,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 9/30/26 08:43, Li Zhe wrote:
+> huge_pmd_share() always takes i_mmap_rwsem for read before looking for a
+> shareable PMD page table.
+> 
+> That is unsafe for callers that already hold the same mapping lock for
+> write.  In particular, move_hugetlb_page_tables() takes i_mmap_rwsem for
+> write to prevent truncation races, then calls huge_pte_alloc() for the
+> destination address.  If the destination PUD is empty and PMD sharing is
+> possible, huge_pte_alloc() can call huge_pmd_share(), which then tries to
+> take the same rwsem for read and can deadlock on itself.
+> 
+> PMD sharing is only an optimization.  If the read side of i_mmap_rwsem
+> cannot be acquired immediately, fall back to allocating a private PMD
+> table instead of blocking in the sharing path.
+> 
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> ---
+>  mm/hugetlb.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index cea25773a6c95..75631101a6807 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -6995,7 +6995,15 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
+>  	pte_t *spte = NULL;
+>  	pte_t *pte;
+>  
+> -	i_mmap_lock_read(mapping);
+> +	/*
+> +	 * Some callers already hold i_mmap_rwsem for write, for example
+> +	 * move_hugetlb_page_tables(). PMD sharing is only an optimization, so
+> +	 * fall back to a private PMD table instead of blocking on the same
+> +	 * rwsem in read mode.
+> +	 */
 
-On Tue, Sep 29, 2026 at 01:32:27PM +0800, Muchun Song wrote:
->The common vmemmap population path cannot yet handle optimized Device DAX
->mappings on its own. It uses pfn_to_zone() to find the shared tail page,
->but Device DAX populates its vmemmap at runtime before the ZONE_DEVICE span
->is initialized.
->
->Teach the common path to use device_zone() for runtime optimized vmemmap
->population while retaining pfn_to_zone() for early boot. This allows the
->same path to support both early boot mappings and Device DAX.
->
->The backing PFN supplied by the Device DAX-specific population path is no
->longer used, allowing the redundant lookup and population code to be
->removed later.
->
->Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->Acked-by: Qi Zheng <qi.zheng@linux.dev>
->---
+"just an optimization" is not entirely true. There are workloads that depend on
+huge pmd sharing to work. So I don't think this is acceptable.
 
-Nothing jumped out at me, feel free to add:
+There was a private discussion on this issue recently (for some weird reason the
+deadlock was reported as a security issue), 2 months ago I think.
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Oscar, I recall that you wanted to send a proper patch?
+
+-- 
+Cheers,
+
+David
 
