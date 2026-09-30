@@ -4,140 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22217CA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 11:43:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52858CA5FB1
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 11:51:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B1626B0088; Wed, 30 Sep 2026 07:43:15 -0400 (EDT)
+	id 541DE6B008C; Wed, 30 Sep 2026 07:51:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1888D6B008A; Wed, 30 Sep 2026 07:43:15 -0400 (EDT)
+	id 4A3AD6B0092; Wed, 30 Sep 2026 07:51:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09E676B0093; Wed, 30 Sep 2026 07:43:15 -0400 (EDT)
+	id 31DAD6B0093; Wed, 30 Sep 2026 07:51:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D59726B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:43:14 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6E45CA72DD
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:43:14 +0000 (UTC)
-X-FDA: 85270242708.22.468997A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B575540008
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:43:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UEqFEIN1;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 050D56B008C
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:51:30 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 86EA380784
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:51:30 +0000 (UTC)
+X-FDA: 85270263540.07.E75B1F3
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D977A1A0004
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:51:28 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf19.hostedemail.com: domain of 3v_e8agkbAP4y45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3v_e8agkbAP4y45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790768592;
+	s=arc-20220608; t=1790769088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9uMVOqMiTX1K2XJQJxXE/LwrK8qNT7KXfojMzsVrx8U=;
-	b=GUWlKD5IjaAg4SkVEsAKFa62Kj5IlKyrzXWp51UQQNWoBbimZuTfRO2LFtFFRGWnAtOnai
-	xvzRdxnOCKyaCKRy5ISPnXZCGCO1qQMj/ZBbadafNSrzYmOhm6+X0mhP86ov1oUkwCLpjT
-	4MT9rwUGEQgrXjSesRiHNBa1QKoR+es=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=ALSU5E4U7fg/eXilG2fEf5fAMQDTtLIfrMfFlIKzAps=;
+	b=gfnQrRAYjcd3Y9DUUzfrkmJ/GcYPZ5Xje0Vi+FU3/a7O7Kw88+OqksPhllGmWB0Vexqxsv
+	IhFMdn3QpbAzN8T/7RsqCkIwDdzjXJureNpntBFbh8AsuGkrYQSnPefdgEHLlOB1RJuLez
+	FHmVpox6jCiMYmwS0Sp597sO8f4PLHo=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UEqFEIN1;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf19.hostedemail.com: domain of 3v_e8agkbAP4y45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3v_e8agkbAP4y45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790768592;
-	b=WDpdHoZkdeMUWUfz7norz8+9D/8+JGHYY738DvfVmfBO/CGOuPbcZXUMpe5Nk3FDaFyKVg
-	th6BklX3NGlLYqc9edPAt1LtFsvhI5SlQb7zH3mH9/lxD5hwrzhuobiszVKOPm86hoFb6u
-	fkUowyOK7djTF4DVOwQZ41GA5ytcuGw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8E18760008;
-	Wed, 30 Sep 2026 11:43:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F051F000FF;
-	Wed, 30 Sep 2026 11:43:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790768591;
-	bh=9uMVOqMiTX1K2XJQJxXE/LwrK8qNT7KXfojMzsVrx8U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UEqFEIN12S69RdNlJmEU6fp0nKhSRNYo2596rxvjxQjmx2chUXZZo9T5Kr7lEEHGq
-	 d53074fabPnHx0Ed7wzeOZvSrzDEhKFOeMprzqQxseYpQ8SM7G8hq5VL9Eqc3Q5NEz
-	 ZUuZGVoVk1oYCpHTte4evrGtrM6DvnkAiuTfQWIfuyHETHInxUkKBPYAfYsbQHrJg3
-	 WZqR2SBTQTSK+VdsJaAThusyW1cmH2rKwTuvE49eqDpsoviY9EFUc1e1GJnZCOb9l9
-	 cXXviEcuLrkC6xBcgysrrfRB8GhwEtKQFh6CKxR8Ft2+934XQpBCsTmMG9PsH8dQGG
-	 iQnFD6ZxPIHgA==
-Message-ID: <7d120555-0c31-474f-893b-e5ee3466ead4@kernel.org>
-Date: Wed, 30 Sep 2026 13:43:05 +0200
+	t=1790769088;
+	b=4PSb9H5LOgj9ux0sFryFojuf+xJpmNf+MtTHw6cViaN9FThVwM5I0gCc5v/8y71TmBXWQB
+	slY/h/dvZL2pxblcfIk85tvJPl0plj1UNg0zAZ7ap7G4R80KQuV7OHSmxPEZBRPyUfsp+4
+	b/r+1tHumrhUWGGzgiZrrof49/DcopU=
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4b28dbf4197so9300478b6e.2
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:51:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790769088; x=1791373888;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ALSU5E4U7fg/eXilG2fEf5fAMQDTtLIfrMfFlIKzAps=;
+        b=WEp6olqqifsqGxfsci45q2XjvyghtZBYzs3sHijNu1982ii57mAKptwXw9ubxeGF7u
+         ijrlSGUSBCtlLBZl3uC8z15yZzjSCTCUIpL/6x7fDB+KckBsheObJKZDOC0IsbJzNsSK
+         QezzLn16Pn4u7XDdPamUaWI+JXiY9ztTIrcp7vHrUo9ECZKdAXRspyHwKLxg6Yx6hl/h
+         Qz2VxH/eAvt9LRCysDqjBy2wUixSnMaqUzDZr23zL/KuwTvvg6sABaNNmLLSngsYS+Nr
+         O/sJ8/Lpb+ixCHzq9gxElYIWSoWAZGEBZTSpTKPsray2yZniBqnu+a4uEJRECG8tStR5
+         pHxA==
+X-Forwarded-Encrypted: i=1; AKwUvBwAbtwMZ4FazWYuzgKiyN2WdoMXrVO2jhto0UuKCbG1W7o30vp9pGV0iBjGrcZGT7fTBjUJuGW+WQ==@kvack.org
+X-Gm-Message-State: AFuF++mEi2T8Sj6G6717ymIIRhcM+IQuN+cdXyqBrXFXrnR8FK2O3B6S
+	EmuRM+Cgu+JNOlyQOYhoD6UIs8NOD9Soz7fuBXRkJRQmJ4VanqwHCRaEuaskLzIZUqhw0Ni67RJ
+	SOAKnDrpTV6/L3E9KzR8mBQYyQJ/41wRBBxKU7SlP/wWtmx2kyEa9c50XquQ=
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mlock: fix zero-length request normalization and
- integer overflows
-To: =?UTF-8?B?67CV7YOc7ISgL+y7tO2TqO2EsMK3QUntlZnrtoA=?= <ts930@dgu.ac.kr>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <179066531783.50175.13377521828379196177@dgu.ac.kr>
- <3a95d0e5-7969-4b0d-988a-ead62b06b6f5@kernel.org> <art6x0XpWcT2aUyy@gremlin>
- <CAFPGN2jPGhcWVqa3k16RWMaMR3TwKyhFbYYF4D3L6L85T8E96g@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAFPGN2jPGhcWVqa3k16RWMaMR3TwKyhFbYYF4D3L6L85T8E96g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zn9cgunqgatea93zwc8xumm1jixfkfon
-X-Rspamd-Queue-Id: B575540008
+X-Received: by 2002:a05:6808:11c9:b0:4d6:90d3:e183 with SMTP id
+ 5614622812f47-4f1b9a42d14mr936012b6e.44.1790769087935; Wed, 30 Sep 2026
+ 04:51:27 -0700 (PDT)
+Date: Wed, 30 Sep 2026 04:51:27 -0700
+In-Reply-To: <69e1f975.050a0220.1de265.0009.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6abcf7bf.fac9d4e5.17396.0000.GAE@google.com>
+Subject: Re: [syzbot] [mm?] KCSAN: data-race in mas_wr_store_entry /
+ mtree_range_walk (2)
+From: syzbot <syzbot+38a879f4a73497f2dfef@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, elver@google.com, jannh@google.com, 
+	jkrshnmenon@gmail.com, liam.howlett@oracle.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, ljs@kernel.org, pfalcato@suse.de, 
+	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 48dmw33g7io4qh6nxaytqr3ipbp43dw6
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790768592-641558
-X-HE-Meta: U2FsdGVkX1/MZnG2CQcMNBV/D2dv6Yn9UC8TjgpKEr4hcLkFnTjKtAUAaQDhB/gF7BatdnPUbCs6BPPs76QZMLENojGxFacGpPqESZe7BXeG1auawowetqf0sn0s6Ofy8lkXTUTqqWVvazZhL3NzYOG7qEmqb8Nr7HTAAVLjDSJDeg5nfhKiqGQvr+qfh2RtlDrL57r2u3CbBA4BsCibvFF7Ym2ZPpvX9hO2WuQbwIe0Nt2GacsuaqquLF7CV2tLNoY48nbdilhweaVMQhfyqbpmT9Uhl/NVufyRTjJzeIhvJdD97wGZ71S6synTFLShrEeNR05Q9uet7rBNhKr8Zt4SDs0RvvD4/GLdS4zLJO5DwgfiS6FbrDDgSmeuESqGujQhwJPplQj5Fo4M4KOOFWTCGbT4qZQbz1m0vrYcPULvF9wgYKovQ/iHkJVD39bpLpwuUo189ShNYBrmIlcsgOoheNK9xodSl30OUf5bTDyJKBIy9DEWUH3H/JMep1arnm/tLhvjcRYtZe2qhMphxlXk6NtXBTpdG4cun8FqiTklw6zi2dEPX2wJg+IJwqVD6cqatJVtJ0wQu/IbOLBji+OvFaCr36JuOF8Rpc8iP2YuflK2FVT+JdzJ9sX63FSmuk46poRsaPrHNs5kkVWCMEopmPfoXsIFp5GQkywy7M5aCblgkUIWv+3Ky2xpegnIFLi6lKSppQ6MpcGaEwXE8Il/b19XAmvfEBD2PjT8eLw8jDcp11LgQJtCfRqQZZ4yo4gIpC9aDlC2SU1RSVjt27mGZCvOKbVWLWDTKMR84WBErPagjiMNuR6SCuhnuvvTlmGP2yL80lkEdJZ5yqp+gMVi1lraLD9bFBkTO0DRBWCraLLjsDtqHPi9v8Sh2qsQwQSYC1qSckbPdbQRjokizLkY8JPgTaurCh4OxdtC23zpbsIePXzl5NIOAlp4DrgcfQ1HGKNDCzHE01NDCrD
- xzaloVp1
- P7eoMLygv6ANUu4jUzWGdSuEo7Fj7uwcl+BGg09V9K6sQmccQ7ytS2zP6rdXi9Q1nbj0Z248E/E/sZiwC+N/6HN6SXCX6TXLfWlMdNW5oi6LOZci8PHVoumOsb1zw4xLl6ad5wyHnwwojkID20+l07zASeVnV+q6nDd6octq8befD92kvBtxXDcLq1bEGFuOdKXKdSPYduMxC2Pwgm26ygUauyYIWcBwho8sl6De4IhHEsf2rswkvcKDjLZuDvKYGv2LOqAuCU2ae+qjuOVIoNuKfwjdZYfL5MeSd
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D977A1A0004
+X-HE-Tag: 1790769088-913563
+X-HE-Meta: U2FsdGVkX18GN9fq+Vm6Pcn/MlP0U4KlIGPAd/K+zYx3nMpQ+PwTcBC+SQ8y3Ybt3KawgI3b/QG/6fYTNNgXzKWSafmSxAfAVH0Ytt1KCG9Pd3fotRhyak6AWmOgUHzkhkuoT/y1ko552hGzEj65md8Qmbv0bfOp6M5UOuBmJtxmR1lL/jKu3Ruv5mua9YC1qzHF3qSTRSzkohwynN07Q/uJiqBOwdMOl/Yrt6mZ3CydBtY87Ffez3DYPpuLwZqD9d0sNJObwJMY0N3nz6eomr3iKLfWQBEp8uJgNQTOj5ttcTJ05WeyoYB40BsXlNWtm+M3EdO3hXBc9H0FhVeY3I8oZVHuPs0WBBhNg1PKD+XSZ0YcVXrtDyc2kP4r5nZM9EaKSu3RfAN5pi/Ulhg75t/W0dk+LJhZ1FfucuRXGw/rDZACGGCHBB7JQxgNkgDPcAIYEuIkufPW/fRJ0y4Lqm277TdDXrNpLpbdKAJL1kUOYZswzkMqnZpX88mP0kUMYBlutVP0DDM5bEcsyqJ4KhzfdhF8/ykTIuw5pn0nv8a4AmUt21cR/YwCug4NMPUY0chlkNyFFZg8glXJZ5upZVEzydpJMQte7CyCnowJYFYiXBEaSEnCVQwPcvAXewo0LzaxhW6JqeyY5FewDNw65MgG3pVOc9/5t6SENFi4vANsL6Zd+8CuCyX2mkWmC45ulg4qzxjM7m1Vyd9UBpx87ImcSGp9HDYuUKfCQCqQ4Fb/YSW9qJMIwbrs1k0ZTFHOLZbydf3ksPmJV6Xa34PlBw3u1EqAm+p246iIMQv3XWNMiyj+vZTYLKlt9TGuh5UNgjhVouGA48VaMDr9GBlhD15JK8N8yX3e5PzujpVh+vizvg+dXxE9Upd7cYSVEl77YRWwM0BwU98VFsszKdkViSLLMNb5TjAqkK66rOADQ4wEyW0gKDjJ+hX3XblEWgvVntnl4eoL16+/LW+fggo
+ c2Zlpxqi
+ Zx1/N0uy8JfROd8fjgoFGOBHTXK1j5/PFmyrz4OoOuAVnnd/MKeeXE7m/x9AtWidCPs6N4gpwhcF8wAt1n2z8RoR8MG8rOKFUG5WZyNQpUJ3bb4np+jqT+fwS3Zmtm3ZWfPkgOxurXFfLV0Z03WIQQNdhB+TI9/+XAtofe3dkV2E5YeYTNLJQCjDG2Pd+frgpFpxGg2rkT8DqO+7zVe9cbfY10OLdqufFh8Iuy7TqBy+CPcmUI3E/bwM4Thc1k7KfXs7qlScqNGvYUR/vfUCnDFCNvqU5kbPowXsWpfOdX0ZqPZ8nbfpZb9O2vBcX344DMvKbbj0pJEnTj2nE2RCkfY6xyMaoEr8lA5Q7HO1cEi479JoroObWTVt4OjrNU7e7I1+pgWNOVti2hOj29frcqyeZ4F33w+mHGNSLYXUYdLGHDKFWMJegBzrpx2xLZITJKNnV1KJNl8LTwfiOrqS/j+JkpbMCc+juJqqLH2SvM7MkPR6k8g2aYS2OUgrNmjAed5v50QZ6SqQ1Gq9dh0ELnjcPxzKqg/v30Bi8B8SuzHAne6Wbe7O8swefoELQr4zFx/aMQk0kWV3MnLoAeshz6jFYLJ9+de41QJQ18jazKlWRV6UX6BcJmSPBvZpV0RwRH/PhpU8V/hvdyczZDpC0Nm7qmRQyeOWx2vyRJmAoRoCf21Y126ioMWGnVCQqygIbwJLJegud7Qiyem4EMWu+zY6cFZRoDP2GmUnFlkxTXtGqZU97uG57hZg2FhnQ3ZpP0CQflXEbmPG5iWV5foPhW2ZZJugOjjE2odhmrRU0606Bq09iL470DYXPWnXW10BcnW9N3dPvZy9yliPIzRscBWErAp1iRNIfT/Kl4YAD3U8D4Wb3H4LebPAyi5vU1Z8ABTNRhgzD/BZZM5LkELGvQwPDBxhDl8JbIyT7dObESRSqKogDxKcGeURj2W8ZZVko9YFrijlI0NmkZbmNCyNw9OlHf9ZA
+ zB7tXTgx
+ D3iC5O3M70LzAOGWljS0ZzjOjDV3JyNSwnG3erViJRQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,56 +100,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/29/26 11:39, 박태선/컴퓨터·AI학부 wrote:
-> Understood, and thank you for the feedback.
-> 
-> I sincerely apologize for the poor code quality and flawed helper
-> design. I will be much more careful with commenting and ensure future
-> contributions strictly adhere to kernel guidelines.
-> 
-> I will drop this patch.
-> 
-> For David's question regarding reproducers and user-visible issues, in
-> case it is helpful if the core team addresses this later,
-> here is what is observed from a small test program wrote checking
-> /proc/self/smaps on an unpatched kernel:
-> 
-> $ ./test_mlock
-> mlock(p, -1UL)    : ret=0, locked=0  (silent success without actually locking)
-> mlock(p + 5, 0)   : ret=0, locked=1  (0-length request falsely locks 4KB page)
-> munlock(p + 5, 0) : ret=0, locked=0  (0-length request falsely unlocks 4KB page)
-> 
-> Thank you all for your time and the review.
+syzbot has found a reproducer for the following issue on:
 
-The CI seems to complain about test failures:
+HEAD commit:    551c722f4080 Merge tag 'rtc-7.3-fixes' of git://git.kernel..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=1426a3f5580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=ea1e6d8de13bab08
+dashboard link: https://syzkaller.appspot.com/bug?extid=38a879f4a73497f2dfef
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=179a2b15580000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+38a879f4a73497f2dfef@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KCSAN: data-race in mas_wr_store_entry / mtree_range_walk
+
+write to 0xffff8881105bc000 of 8 bytes by task 3634 on cpu 1:
+ mte_set_node_dead lib/maple_tree.c:305 [inline]
+ mas_put_in_tree lib/maple_tree.c:1652 [inline]
+ mas_replace_node lib/maple_tree.c:1667 [inline]
+ mas_wr_node_store lib/maple_tree.c:3276 [inline]
+ mas_wr_store_entry+0x3c1f/0x5ac0 lib/maple_tree.c:3606
+ mas_store_prealloc+0x421/0x670 lib/maple_tree.c:5031
+ vma_iter_store_overwrite mm/vma.h:704 [inline]
+ commit_merge+0x7b4/0x840 mm/vma.c:847
+ vma_merge_existing_range mm/vma.c:1070 [inline]
+ vma_modify+0x9eb/0xd50 mm/vma.c:1756
+ vma_modify_flags+0x1be/0x250 mm/vma.c:1799
+ mprotect_fixup+0x382/0x660 mm/mprotect.c:824
+ do_mprotect_pkey+0x69f/0x950 mm/mprotect.c:1002
+ __do_sys_mprotect mm/mprotect.c:1023 [inline]
+ __se_sys_mprotect mm/mprotect.c:1020 [inline]
+ __x64_sys_mprotect+0x48/0x60 mm/mprotect.c:1020
+ x64_sys_call+0xd54/0x2550 arch/x86/include/generated/asm/syscalls_64.h:11
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x112/0x360 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff8881105bc000 of 8 bytes by task 3640 on cpu 0:
+ ma_dead_node lib/maple_tree.c:505 [inline]
+ mtree_range_walk+0x35a/0x480 lib/maple_tree.c:2119
+ mas_state_walk lib/maple_tree.c:3013 [inline]
+ mas_walk+0x1ac/0x340 lib/maple_tree.c:4458
+ lock_vma_under_rcu+0xc9/0x210 mm/mmap_lock.c:304
+ do_user_addr_fault+0x239/0x1060 arch/x86/mm/fault.c:1334
+ handle_page_fault arch/x86/mm/fault.c:1483 [inline]
+ exc_page_fault+0x62/0xa0 arch/x86/mm/fault.c:1536
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
+
+value changed: 0xffff8881058c0526 -> 0xffff8881105bc000
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 UID: 0 PID: 3640 Comm: syz-executor108 Not tainted syzkaller #0 PREEMPT(lazy) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/16/2026
+==================================================================
 
 
-# ---------------------------------------------
-# running sudo -u nobody sh -c ./on-fault-limit
-# ---------------------------------------------
-# TAP version 13
-# 1..1
-# ok 1 The map failed respecting mlock limits
-# # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-# [PASS]
-ok 1 sudo -u nobody sh -c ./on-fault-limit
-# ---------------------------
-# running ./mlock-random-test
-# ---------------------------
-# TAP version 13
-# 1..2
-# ok 1 test_mlock_within_limit
-# Bail out! mlock2() succeeds? on 0x7ffff7d2a010(393216) mlock0x7ffff7d44a72(278478)
-# # Planned tests != run tests (2 != 1)
-# # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-# [FAIL]
-not ok 2 mlock-random-test # exit=1
-
-
-So is this patch doing more harm than good?
-
--- 
-Cheers,
-
-David
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
