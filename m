@@ -4,98 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8C71CA5FAB
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 03:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E33FC9830E
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 03:36:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EEBC6B0088; Tue, 29 Sep 2026 23:25:58 -0400 (EDT)
+	id 1244F6B0088; Tue, 29 Sep 2026 23:36:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79F046B008A; Tue, 29 Sep 2026 23:25:58 -0400 (EDT)
+	id 0D5A56B008A; Tue, 29 Sep 2026 23:36:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68E1C6B008C; Tue, 29 Sep 2026 23:25:58 -0400 (EDT)
+	id F2E4F6B008C; Tue, 29 Sep 2026 23:36:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E2B56B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 23:25:58 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A81811A0690
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 03:25:57 +0000 (UTC)
-X-FDA: 85268989554.14.9B038DF
-Received: from mta0.migadu.com (out-198.mta0.migadu.com [91.218.175.198])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 556B8C0005
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 03:25:55 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SLzA18dw;
-	spf=pass (imf10.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.198 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C3ACC6B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 23:36:45 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A74A1606B1
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 03:36:43 +0000 (UTC)
+X-FDA: 85269016686.07.170DF65
+Received: from mta1.migadu.com (out-211.mta1.migadu.com [95.215.58.211])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6BD701C0005
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 03:36:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="VvU+1/Vn";
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.211 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790738755;
+	s=arc-20220608; t=1790739401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jer7Hh/yc1HXvxrGzZU0nMO90/zfo7AP6lqU+z1uVbU=;
-	b=AVaSB2nnePOdGDmIo5XoDhtnCkb09yLj01KBA/35gtN2/tdMFyNmP7SLdNEMDStn309B/7
-	GhM2YGGUcjs+iN+KawqBmCEMSLgkyX8Vl+eX//UEFaCBkCA3Rmyw5hCqPQhAo19akbN5xI
-	yH+MyZPIGGobGJlK1gztmx93mkI/vQE=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SLzA18dw;
-	spf=pass (imf10.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.198 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=GaukmM70bz4gv8YLyrONjoJJu3qhnIAvGdHMKYlbNUE=;
+	b=LcFW+WAGwgp+7x/kSNQTHHrbuDYDn8SGD4jHBIiZcDrrMfDh8BJBxZvTJQksMh5zPfykWZ
+	1uYaLPb0p/Jda2t44+Lv8L97Fi5SAkblK5sbBY/xun2ZFGI31YzJDBRa7fRpESk+NZXm0E
+	uIgNh6lREfUFwdKdB3AFz4epInWzoC4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790738755;
-	b=OgqC3NSr83MmezINrkD0hQ10sBnlF0Yr8YhMyaTIeKj+rb4H18rEoqoK+qFPkHVT5e0PD4
-	l4f7ir0NdGZrvIsa28GwF2nIHGEDjRahlcGdyplKiuIwfEzU8NQInufEip8+j/szToaQ7Y
-	aB5uPX+zwx6D3oHILxhLadoA7rnvd/E=
+	t=1790739401;
+	b=GOf/3iTc21fVsZ5p9ALx8NPvdZSVcZm2wWUE0gRl8i1hnvsJ45bpdB31dnyebjJ8Y4ALBh
+	vKcX2s312ArO1oceMNMcI01ADZm95O9N5BLLuIHf+mTNCZNY3YgJ+RG4Hc9jHzAkGiEQrb
+	PrnS+5ctVKchlbFXhHQ7/XZTfq7GW9E=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="VvU+1/Vn";
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.211 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=tmx3X4PgFtMsV+xxZ1IMDVsyAWoakSL8TqQSX2VjB/Q=;
+DKIM-Signature: a=rsa-sha256; bh=UGu6hnp7zOzIji6/SbzCysLcwMM7yV0BdKnkgtzfNIQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790738751; v=1; x=1791343551;
- b=SLzA18dwU+mCXqj02LPTrThA3PD587eWehE2DOUGWvWMKJ8mgYvOEWdkz8S7ljxvzBXE5/Ie
- QtIcEKxpZPbnbDz6UUZeZf7ttLfTnqMIWQyHlHpDyFsI1nhOZfMf7aqFr+GCOGGqq7dBH7Iw/YR
- iPY0vF3+OdIfN0ykC5jyCUec=
+ t=1790739398; v=1; x=1791344198;
+ b=VvU+1/VnbPIh/soOlHQ3yAjfFdjnE05G4a6JM3kzNVkS3xXrPEIeaBD61771dm0Zmp234NjV
+ 9qdtKPRd8uIc3Xu+mbZMgaDYyVXOWS3g0DEZ8f4ZnI50BKpzZ1EhAqxgbGEL5e7pMroJuex7rH/
+ nnA9j4+F/DeUPIBYsHmqYrBM=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0e3241359faa91a0;
-	Wed, 30 Sep 2026 03:25:51 +0000
-X-Mizu-Trace-ID: 0e3241359faa91a0
+Received: by mta10.migadu.com with ESMTPS id 9bc00279546608ff;
+	Wed, 30 Sep 2026 03:36:37 +0000
+X-Mizu-Trace-ID: 9bc00279546608ff
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <fc4f3d08-393f-43ed-934b-e7e1ba6d0137@linux.dev>
-Date: Wed, 30 Sep 2026 11:26:41 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 0/7] alloc_tag and module codetag section fixes
-To: Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>, Alexander Potapenko <glider@google.com>,
- Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
- kasan-dev@googlegroups.com
-References: <20260929082014.160587-1-hao.ge@linux.dev>
- <20260929134401.a1a385ff4369661f879b5d2f@linux-foundation.org>
- <CAJuCfpFRW3uNUW_VrjpOfLwS1LBHqGEpqK3yBTPSpGOORY5jiQ@mail.gmail.com>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpFRW3uNUW_VrjpOfLwS1LBHqGEpqK3yBTPSpGOORY5jiQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <aruyFPzEe3pS_Qzx@XiangdeMacBook-Pro.local>
+Date: Wed, 30 Sep 2026 11:36:23 +0800
+Cc: Jialiang Huang <huang-jl@deepseek.com>,
+ lance.yang@linux.dev,
+ baohua@kernel.org,
+ damon@lists.linux.dev,
+ david@kernel.org,
+ kunwu.chan@gmail.com,
+ lianux.mm@gmail.com,
+ linux-mm@kvack.org,
+ mst@redhat.com,
+ ryncsn@gmail.com,
+ sj@kernel.org,
+ virtualization@lists.linux.dev,
+ xueyuan.chen21@gmail.com
+Content-Transfer-Encoding: 7bit
+Message-Id: <AA71E56E-F29A-44B2-B5A0-7806CD684B21@linux.dev>
+References: <20260925054408.10431-1-lance.yang@linux.dev>
+ <20260929123241.1408414-1-huang-jl@deepseek.com>
+ <aruyFPzEe3pS_Qzx@XiangdeMacBook-Pro.local>
+To: Gao Xiang <xiang@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 556B8C0005
-X-Stat-Signature: wgra95rrqnmkndb7duc6ymbihbcs7jd6
-X-HE-Tag: 1790738755-531283
-X-HE-Meta: U2FsdGVkX18SlMslJJHkepY5PadbiWQGC6a2gkfZKbOV4gWs4qYivX32NEn0r+boSXfygQJMMIPC4+HRCd6gNrJfn7K1REjarXqZDSRVl5amCCLwiVi91z40QhxyyC/svJ/bML6NRFZ+Djz389IKZAvqRqSAN2bjI7vNFlhdr3+M39an4pZx7r+BKiq2uAEZwOEpR2kEYYFak58OwJzGCF+01CrabsY7Qbz9JR3r7C+mUgW0Y/MggZjahhX2QVUuaa0u+1fckzO8cHuXJBYXSPfL+5/v4fvxhgDavnSDuwbcqPvwgbyYGG4ADqt8Ip6N3P9gSSxgS/f2cuQI3I2QXpQtc56rQ2YPJsB0w9qnJEPLS5AeYtUexsPG/1Ww0u+DjymGStNdzWJAWTdoldHp1UM3VCSAS/IPCsWSCbIEeH4VOJ5taZzMFDNneHJCqAAaxGzxspPG8DXgHRFsO1QudlmoBH+K3GCRUZxerryKfO32BO801hCvzxTUn1B68KbRry6gHyQ7qT4hbq7jpPMu6l537zT8fuJ7GtDXFsZ8B2sNOTtJaQ1vNGwlN0sRv4TH2vL2mBrP4ZLRXACaI4XL9byY63zGAfdvnbqU95e3tDRHPszgEx/2jJOe/yTgw+vldqj4iex7Bcn/awAmBz0VNiqRZyGOdCzanzlAc4UeoSuKG0vwd0//1OcdorM8Abe/yV0U/oQA109xxrJlh7rBzLDHJbBV3CFgxlaGjtEVc5Ikh0+xtfXH5AOMV+bCdDJ3JJPYhpeGwXF9inOUw9jgc/nm4ksGFoFFk2TIlC5vzDE8kSCswKGgpY1fW1VCm9mDAoaIhUGy+FDgNlb77bW6pUgIRsXnryQnSvKsdSHMknjMURCuw21fAXs4ccuTH6suhLZLYrJOVg0n12IGUW2s4Nkp4fl6pMmkR7ikUAwOIFoBw1I4lAdcVe325Vs7ZTobRR2OOqup3R6OeNU+DuE
- 1qs0ffqB
- p6lrkamYAGrPCKvoL3NLHCwmu3F4yuIuH0+lfJ/tncAQWFx1Bv9KPuFVny/CLUFeWYrIyDuvFKAUJSiX8VPU2Eipb3VrEp6Osd1544fRtg7B0Btzg9ujio8jM9mzgDEM7Pb0xRS34KCcxeUWulbh4VNP8zR5inQs50y8KCdbPUNf/V14nWFCP3DA0DXvzWBVwd7OKA4L7QfNko+hxKMEXcE5e/lo7Z7UVhQ2N3/SV8u2W0vUed0pEAfpRPfYiqA7K2hn7sA+QfQQakP75pQZvMJMfPjGcQF9k48ST84PO5DMuYZjq/a9doKTNHq6ZgpoWMwfWNGIxyJqLL4gu+RrGKlnFIEOL8XQuhfUcdp+BP4Fa5o0+xdx6OdxZJS49JGHjCqoI0+jXNEXoGt1Hdzw+J/jR/vpEtHPipvS1vTSZv9JMi6GJc/O2XvUapjncbYlzi+bXaZ7sA8aH5JzQiYviA8LmD2QC5Gif5hgt9cTvdgfzgiQ=
+X-Stat-Signature: t1b6mq8bzbbe87jnpury1a679aafojqh
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6BD701C0005
+X-HE-Tag: 1790739401-178043
+X-HE-Meta: U2FsdGVkX19bKwSsCn7LsLw6xEf9svcUMdSNj3JJws/baa6CoHiNGrAb11PCG0RmDpvTnqeRSu1CeuZfNUff2SXCkbBjYn3Z5L8Tfj1UetpbQLOHlzk52MTFQHw7zwy5KsDJ6VZ+Xoknaq06OcQ3um1vun1Wd92cSQKGu9/49/egnncWVykXKAoRxyED46OECOJfIKr0RPEsJPjch6fBUQVjYs3j+wexL9quwSjn5pWsTpOfhlIL9YCSqRKovHqLrnTjikbMrXMw3eEowTX4ZXwZIJIrFDKx4u9Pp8t5uP2DXD6QK1+AeDarEAUI5xkBbj9LzQylJFoHlG/mgmNaOFgLBdiEykjVIytqs9tybS3xOek77oaOrOr8NhIPiqCq3FuzvqTDSvifaoGVxSdhjJAgRzmlSWOkVp6KaBrW4ZV9ntAnCDWtYAo4Uy4cgfArGxRms4QeUvLMZzRpIZ+pY07GiLGFKaO07HxGYjT6cnBjuKF0LTFGvjJDmYBjo8ik3y2eEJ6m64BEtzHPjLXSWpzQFJ30yRtEjdgQOZ5lwVhUNx+Bp3IhoV5HUZ00ikSCWGnLm1SiET3gTTSkL62Ow2HSqVCcVzM6XTaa5uEFz2ZoUB5WnEl/4M0cK5m4QgITuyDeKCG3k94lNGQKvjBw52qxYIjR2S3mCaELk22wPl3GHizJ36nRie54grHik5EJnwSvyedqJALil73sb17mrGL4gcn58X82Kwdi3n7Mb9DCoxakIrkVbInpJpuY1LvoxfVDDgufE0jDlwniQba45OWNGlPIZD4im/XngNL68WdDKJt1Fv4KCHi3BKBvLe/rPRd9o0tUKOwLRQXjdpOftrQWYzsFp2hWj91mHitBUYR6kkvXi91MNDrHfh4tkxTSzliAWOC3nAuYu8ooJkIk/v06RNqoOD20c492NrSRUwQh6BByqVgbp9l/ogBFw9oY0+nmMY40haQeAs4kSJr
+ XWBWyv3m
+ kLjLSwmwMsDdfMjI6nzM4jzM2g/xF3Ew9N5W/B+a986mbZ/WTirSzIH01e+Y/bFV4cNoo2pQEoYPMOfu7O1gccfSo78/exW07c/sPbPbGiGx8bXUcoUyJ88wBpG80ibu7/PwT82/teNCNuiHmaErdOIKy2PP3C8qFLyIdgd6YERi0VQqhFxKP5SsN7zpyE3jIfGV8KyVy3T5/dvpQxA1gSakH7kLxp8bKz01YWELZxvJ4BMip9ZSO3S4R4eENN3qkt4ycCQA0hWGeZvUx+hAGkkO5kwlKNj6lp06vmFxFNybvAofJp8QnpY2vWoLVgV1yDldUDurYgk336P7cNQUT5yuG+Ai0I5cIoCfsnAIasuYKgyU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,78 +104,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren and Andrew
 
 
-On 2026/9/30 10:39, Suren Baghdasaryan wrote:
-> On Tue, Sep 29, 2026 at 8:44 PM Andrew Morton <akpm@linux-foundation.org> wrote:
->>
->> On Tue, 29 Sep 2026 16:20:07 +0800 Hao Ge <hao.ge@linux.dev> wrote:
->>
->>> With profiling toggled off, the overflow check in
->>> reserve_module_tags() did not run, a module could load with more
->>> tags than the page flags can address, and re-enabling profiling
->>> then silently corrupted /proc/allocinfo. On overflow the fix shuts
->>> profiling down, releases the reservation and returns -EAGAIN, and
->>> the codetag section lands as regular module data in the same load,
->>> so the module loads without profiling.
->>>
->>> Review of the earlier series by Sashiko turned up more problems.
->>>
->>> One is a race. layout_sections() and move_module() both asked
->>> codetag_needs_module_section() where a codetag section goes, and
->>> mem_profiling_support can change between the two calls, for instance
->>> when another module load overflows the tag index and shuts profiling
->>> down. move_module() then copied the codetag section to offset 0 of
->>> its regular destination and clobbered the first section placed in
->>> that region.
->>>
->>> v7 reworks where codetag sections are allocated, on a prototype by
->>> Petr Pavlu [1]. The allocation runs before layout_sections() and the
->>> placement is decided in one step, so nothing re-asks the question
->>> and the race is gone. The retry is gone too, on -EAGAIN the section
->>> is laid out as regular module data right in the same load.
->>
->> Thanks.
->>
->> Seven patches, all cc:stable.  Why is a backport proposed?
->> Documentation/process/stable-kernel-rules.rst gives guidelines - does
->> this series meet them?  Does Suren have thoughts?
+> On Sep 29, 2026, at 20:41, Gao Xiang <xiang@kernel.org> wrote:
+> 
+> On Tue, Sep 29, 2026 at 08:32:41PM +0800, Jialiang Huang wrote:
+>> Hi all,
+>> 
+>> I'm an engineer at DeepSeek. Thanks for the discussion, and thanks
+>> to everyone working on DAMON and virtio-balloon free-page reporting.
+>> They have been very useful for our workloads.
+>> 
+>> Gao Xiang wrote:
+>>> It can cause sync 4K faults on the host in the worst case
+>> 
+>> This is one of our concerns with virtio-pmem as well: moving I/O onto
+>> the page-fault path can introduce performance trade-offs. The other
+>> concern is the substantial struct page overhead for large images.
+>> 
+>> For now, we enable virtio-pmem only for moderately sized, frequently
+>> used read-only images, where there is more opportunity to share the
+>> same host page cache across sandboxes, as Gao pointed out.
+>> 
+>> Muchun's vmemmap work is also interesting to us. My understanding is
+>> that it allocates private backing for struct page metadata on demand,
+>> which could help reduce the upfront memory overhead for large images.
+> 
+> Although I haven't had a chance and time to look into that, the main
+> concern from me is that mmap() access will call
+> "dax_fault_iter->vmemmap_materialize_page()", and malicious sandbox
+> workloads (or not malicious, just valid mmap workloads) can cause guest
+> memory OOMs due to "struct page balloon" for large rootfs in the worst
+> cases and cause the follow-up mmap access failure, because the guest
+> memory size may not even fulfill "struct page" for large rootfs.
 
-Thanks, I've just gone through this carefully.
+I agree that this is a real issue with v1.
+
+One detail is that merely establishing the mapping does not materialize
+the metadata. Materialization happens when a fault resolves to an
+allocated DAX extent, before its PFN is inserted into a userspace
+mapping. However, that distinction does not remove the problem.
+
+In the worst case, a workload can fault enough of the pmem range to
+restore the full vmemmap cost, about 1.56% of the pmem size. Since v1
+does not dematerialize private vmemmap pages, even a one-time scan can
+retain that cost until the device is removed.
+
+The follow-up mentioned in the cover letter is intended to make the
+optimization reversible. One possible direction would be to invalidate
+clean DAX entries under memory pressure and zap their userspace
+mappings. Once a DAX entry has been removed and the corresponding PFNs
+have no remaining mappings, references, or pins that require private
+metadata, the associated vmemmap backing could be remapped to the
+shared read-only page. A later access would fault and materialize it
+again.
+
+This would address the persistent ballooning caused by a one-time scan,
+but it would not help while a large DAX working set remains actively
+used or pinned.
+
+As a separate policy mechanism for that case, one possible direction
+would be to account the faulted pmem range to the faulting mm's memory
+cgroup: PAGE_SIZE for a PTE mapping and PMD_SIZE for a PMD mapping.
+This would intentionally account the mapped DAX capacity.
+
+Such accounting could be explicitly enabled through a cgroup v2 mount
+option, following the opt-in model of memory_hugetlb_accounting, so the
+existing FS-DAX accounting semantics would remain unchanged by default.
+
+With such accounting, an active or pinned DAX working set could still
+reach its cgroup limit, but it could not grow private vmemmap without
+corresponding cgroup usage. This is only a possible direction for
+bounding the peak working set, though, and I have not worked through
+all of its implementation details yet.
+
+Thanks,
+Muchun
 
 > 
-> I think vmalloc fix in patch#2 should be posted separately and clearly
-> quialifies for backporting as if fixes issues Hao found at [1].
-
-Agreed. Patch #2 was added to this patch series because vm_module_tags_populate
-suffers from the same issue. If we want to be more conservative, I'd prefer to keep
-vm_module_tags_populate as it was in V10:
-https://lore.kernel.org/all/20260915070001.113559-3-hao.ge@linux.dev/
-
-Then we can submit a fix for __GFP_NOFAIL retry loop in __vmalloc_area_node() as a hotfix together
-with our new patch #2. While at it, we can also check if there are any unnecessary calls to
-vunmap_range family functions that can be cleaned up now that patch #2 is applied.
-
-
+> Thanks,
+> Gao Xiang
 > 
-> The rest are also bug fixes but their size is concerning. I'll review
-> them first before advising on which ones should be backported. Some
-> fixes address issues that happen very rarely and if a fix is too
-> complex it might make sense to leave it be or fix it some other way
-> with less churn. Please give me a couple of days to review them. With
-> the upcoming LPC I'm trying to multiplex between several projects.
-
-Thanks, sorry for all the hassle on you folks.
-
-Thanks
-Best Regards
-Hao
-
+>> 
+>> For disks without virtio-pmem, DAMON with virtio-balloon free-page
+>> reporting lets us reclaim cold guest page-cache pages and return
+>> the memory to the host, without those virtio-pmem-specific issues.
+>> The two approaches complement each other in our setup.
+>> 
+>> We have not yet fully explored how best to tune the DAMON and free-page
+>> reporting parameters for our workloads. For example, the kernel's default
+>> free-page reporting granularity is 2 MiB, which is fairly coarse:
+>> reclaiming cold pages does not necessarily produce free blocks of that
+>> size. We still need to evaluate how finer reporting granularity and
+>> different DAMON settings affect memory savings and workload performance.
+>> 
+>> Best,
+>> Jialiang Huang
 > 
-> [1] https://lore.kernel.org/all/b8005c24-ecac-45c4-840a-fd282f9693b5@linux.dev/
 > 
->>
->> Also, Sashiko has been busy again:
->>         https://sashiko.dev/#/patchset/20260929082014.160587-1-hao.ge@linux.dev
+
 
