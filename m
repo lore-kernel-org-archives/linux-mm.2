@@ -4,253 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 154A6CA5FC4
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 17:47:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FBCACA5FC1
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 17:53:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90DAF6B008C; Wed, 30 Sep 2026 13:47:02 -0400 (EDT)
+	id DAE676B0088; Wed, 30 Sep 2026 13:53:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8710A6B0092; Wed, 30 Sep 2026 13:47:02 -0400 (EDT)
+	id D5F906B008A; Wed, 30 Sep 2026 13:53:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C2706B0093; Wed, 30 Sep 2026 13:47:02 -0400 (EDT)
+	id C4DF06B008C; Wed, 30 Sep 2026 13:53:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CC5C6B008C
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 13:47:02 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 00ADD12019E
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 17:46:59 +0000 (UTC)
-X-FDA: 85271159400.15.2BE792B
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011009.outbound.protection.outlook.com [40.107.130.9])
-	by imf25.hostedemail.com (Postfix) with ESMTP id F0C17A0004
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 17:46:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=e5YpwPeH;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=e5YpwPeH;
-	spf=pass (imf25.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.130.9 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790790416;
+	by kanga.kvack.org (Postfix) with ESMTP id 963026B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 13:53:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1636012011C
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 17:53:53 +0000 (UTC)
+X-FDA: 85271176746.10.2430CE6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6B39B40007
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 17:53:51 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wi3QbhlE;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790790831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9aEn4ubSlfZC8d5zvTQtfBiiaBLSDPSceR3sArTbNzQ=;
-	b=bEuhbJBpp4ZuDs1mIfeWcod4i4X420+SJs70w9/5ra4K4f0sHL0ofUhqkHbDNqwkD7fvaX
-	0CQ1XD9heVrOJbUkYzKQqljuW1fBAl+6d8Cmu29OfasoS8SHtkrOdixuenrbslvz5u4pdu
-	mogmJAdxZq0GP2ELMeZD/U0gC10x0U4=
-ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790790416;
-	b=3TW01wQ/l9sE6bIgcVyCrmY4pSYxzbWzGM2GvUoCt6Vq903Odngelp5Ay6/Yyfa6addupF
-	cgwzH0DuEdo8M/3vjw/c2qqXlEGIHVPWF7MZsazy5gv62qb9Ocr6N62ShSjczDrzCSeTgM
-	iIGOxgE5MwaS7ST+YXoYKfMtS+mhPqA=
-ARC-Authentication-Results: i=3;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=e5YpwPeH;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=e5YpwPeH;
-	spf=pass (imf25.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.130.9 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=JwiS2CIGnOkUV+AZMoeIIiArw3Q+f+CWoy77vL+I6EUZy9uApE3RLTRNfPjt8Vw+6Gfeo45mBBHTdkI3HyLRa8kUdCZIokvaCCc7/RhY5G6Wl7ZpY7VZgLR6yo9E0rM7v3RjCQi6Oyqg6FdRTPal2MrVqAgl2U32tsLC0UinugBKo8GROCRr3Ou14xjlH4184F3rPxkCpCduiOHjHThHUUPUjpuOcdLcUNmbeq6+dHyfg6wTzbgy8+20r4FmhwIpeNLTMejkF16CZCcHJDw4+ncB19PvNIs4P+2QjW41HvnVZtWACPxnkqRvyFpMSmEmlNxo1SBiHnwvPWogSaPaMA==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9aEn4ubSlfZC8d5zvTQtfBiiaBLSDPSceR3sArTbNzQ=;
- b=HfbfXNDEQN4ttV2I5UHEqYbL201TEUR6a50q5exuAo52Ht83TOj+Za8wv9kzDcMCIERs/NQr6EwI99BoTETuglQ520LwSHXkS5t8oNsNP1XqPIkvyd/WNCW4j8UTey9Z85bSSlysSkek+0aUIx5MnPpEzzk1Ntj/41EHXmovkHmmsejeipEmhedZw4lQTI5mn3X8cV97kUSf/vVApGGT+UCgC0b7C57/JLHDT6va4L9oS3Pkf/oxc5GVleF/fYlJgnLOdBsv6JX2XnwD9Pv65JEkMFQ2URS1jCSDY2H/Mp00FVAysO7QFdi8hPeC0Q6jxz01GptsfuMAhw2TZDJ0zg==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9aEn4ubSlfZC8d5zvTQtfBiiaBLSDPSceR3sArTbNzQ=;
- b=e5YpwPeHK7pAtQ/qb0k69OTcEWf/KbpXCCJPLXQkuM8RXGXpBhD/XPcWItkbKTshWp5HIMPueTjwLWHAXHn4t9PsGA361buN5J/XU1M89pp9C/PNyWjkcNsKAMkkyZGxuuGzBHmaWDRIw9Bj2+WXSKzelCztognoPierPFf1d6w=
-Received: from DU2PR04CA0358.eurprd04.prod.outlook.com (2603:10a6:10:2b4::31)
- by PAWPR08MB9053.eurprd08.prod.outlook.com (2603:10a6:102:341::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.14; Wed, 30 Sep
- 2026 17:46:46 +0000
-Received: from DB1PEPF000509EE.eurprd03.prod.outlook.com
- (2603:10a6:10:2b4:cafe::66) by DU2PR04CA0358.outlook.office365.com
- (2603:10a6:10:2b4::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.16 via Frontend Transport; Wed,
- 30 Sep 2026 17:46:46 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 4.158.2.129) smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DB1PEPF000509EE.mail.protection.outlook.com (10.167.242.72) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.14
- via Frontend Transport; Wed, 30 Sep 2026 17:46:46 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kfkl2k50yIYjdGeMbUiIF0rrLLmt5/RkXdUnQVABHxYJT7Eh5OTIl9ZObXkohhFG/096DXxPKea0hK+UdBVNlB+rbDP7uCbeg8t2jb/PojZQarJ1Pq7hFRj0NDZ/5dm1E/3ESQk9QjWSDqa9mIaODPbhxpXkrbMBZ0+WsboP9vwclEhC1h2qhT4yqozVlGZgxkbrd54IDCGcrwprbr42T7K9hqSI3+VoDRa6hY9eBZf2laSJhfFIzeUiEs48q9IcvMZL21RmgNbsMoEa3eXqYx0EqNIMxVO/US3fFjvorKO4EOKTZ1R3TnjECWby5jX2YlQw3vwCGKR0YzXImFfEBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9aEn4ubSlfZC8d5zvTQtfBiiaBLSDPSceR3sArTbNzQ=;
- b=ZsggRuyxLjcd8+2f4JXPpiWJb7z/RdwMlc/1OsaKp3QfGH+7efVgUS7TRQ08hawPnxT9HZf0Io06NQwMx7j+vsSWq5URWBJVw9sLsLR2GraphdNuJscW6zflIaCHH/VRlwWOAb1g57Q3XS51Vg4QO4Ae8jm2ddAN89NCXmxeHIIrXnrbqSmZpUAe8CqLiabrAa9ZMZduVNzTwW8sqCtOIDiRW3qj1eNCtci7hVWc9hoDkgcKRT8lpEKnTS4wtgDGyRHQpTnF3mH5aMVZT0kPlClhF0tYKmwGQyNzhYcm+Bgezg9a0RlXWmcc2WOVk9GbmrodsgUUfb4Bt15Ani7PBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9aEn4ubSlfZC8d5zvTQtfBiiaBLSDPSceR3sArTbNzQ=;
- b=e5YpwPeHK7pAtQ/qb0k69OTcEWf/KbpXCCJPLXQkuM8RXGXpBhD/XPcWItkbKTshWp5HIMPueTjwLWHAXHn4t9PsGA361buN5J/XU1M89pp9C/PNyWjkcNsKAMkkyZGxuuGzBHmaWDRIw9Bj2+WXSKzelCztognoPierPFf1d6w=
-Authentication-Results-Original: mx.microsoft.com 1; dkim=none (message not
- signed) header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
- by GVXPR08MB11787.eurprd08.prod.outlook.com (2603:10a6:150:316::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.14; Wed, 30 Sep
- 2026 17:46:10 +0000
-Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
- ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
- ([fe80::e079:6bd:fbe0:89b4%3]) with mapi id 15.21.0472.012; Wed, 30 Sep 2026
- 17:46:09 +0000
-Message-ID: <872cb298-8187-41b9-9553-b0db8ce0557d@arm.com>
-Date: Wed, 30 Sep 2026 18:46:04 +0100
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@arm.com, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Xu Xin <xu.xin16@zte.com.cn>,
- Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Pedro Falcato <pfalcato@suse.de>, Arnd Bergmann <arnd@arndb.de>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Youngjun Park <youngjun.park@lge.com>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
- James Clark <james.clark@linaro.org>, SJ Park <sj@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-perf-users@vger.kernel.org, damon@lists.linux.dev,
- kasan-dev@googlegroups.com, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v3 4/9] mm: convert PTE table entries in ptep_get()
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-References: <20260922-pte0-v3-0-5670b8cb9059@arm.com>
- <20260922-pte0-v3-4-5670b8cb9059@arm.com>
- <dhokijjou3rh3poqnqqpyoyac7wrqeprl4vlhzqokvh4lgjyya@g5hwn7sve3uw>
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
-Content-Language: en-US
-In-Reply-To: <dhokijjou3rh3poqnqqpyoyac7wrqeprl4vlhzqokvh4lgjyya@g5hwn7sve3uw>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PA7P264CA0519.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:3db::14) To VI1PR08MB3421.eurprd08.prod.outlook.com
- (2603:10a6:803:80::16)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=H5f6mYX7zUuljbbM5ONB5c1sCOASZNSuLoqxUSnKaRg=;
+	b=iPOWmJsjrppCQiHiDFmHi/NEe1spDjMcP1X6/NeB5bNPaRjFUZ46lVyqfslhDL0TZGD65x
+	0Lhot8KZr6/c+DcicpuIHYmV/jbNrRO64ueO2zGFneIZyCGwxCzxZI8cvI0Qn46Bjx9KcN
+	uQ2+/kQxdW+qeOzulN5CSbyHfloNk7c=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790790831;
+	b=WWzMfV8b+cxjnzTSLv6ol9+sluLwmpqVZwOhMijHLNt6rHDIhLsrIlKRSoCVoirDMfarUx
+	LV6quvq6i0+Cjgv7LmFezi2jg4H7NntE91UBdQB38Eouxi8dsn4RZhPlQzrkSnR/ffF2Ue
+	bY1xJsdgztGMw7a2vOICsmumDXxo7TU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wi3QbhlE;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 436A5602A8;
+	Wed, 30 Sep 2026 17:53:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F711F000FF;
+	Wed, 30 Sep 2026 17:53:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790790830;
+	bh=H5f6mYX7zUuljbbM5ONB5c1sCOASZNSuLoqxUSnKaRg=;
+	h=From:Date:Subject:To:Cc;
+	b=Wi3QbhlEoSR4I60NqHejXvoGMpBnPpP34GsGzASRn0RUonsJouN4btDCSSW7RH0/I
+	 wpPZ2zLtPTteoi7Ay4NajoD8B+vgDZl+K8efvNE6wltkkQVPWnw4oMKLMRlv+13TvH
+	 zsPmd2CHk9Rnz23V/TCW1Vnw5mNKoghhi/kxDn0n8+nWubGwiYAFQWcsGw1mf+WABC
+	 L/8WSe7227y8BpByehY5OvuAdEAiPg7xdY4K3F/YrnVBfmqGPnzcikByv9UsMev+0S
+	 kzvyWaiMiQiDFjFJ6CQr6TnKE+Mpbwj7sJbRS5HcrXeUGJgZCj3QtJ6Rt2/OhN3JD+
+	 q0uHHIuRv9fhA==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Wed, 30 Sep 2026 18:53:36 +0100
+Subject: [PATCH v2] mm/vma: don't remove VMA from rmap if pgoff unchanged
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	VI1PR08MB3421:EE_|GVXPR08MB11787:EE_|DB1PEPF000509EE:EE_|PAWPR08MB9053:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a19c08c-6695-4268-362e-08df1f1acc0c
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|4143699003|11063799006|56012099006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info-Original:
- l9hI3Oabjw6gk2JG4lKodRzavQcorcEJkMoiVGYQoSx+pVgXjpBAlCH28YVA/H2bcu8jFMcs8yxnXb7xuyR2ZeeuN3A+u+X5jWuxffvkJQbZsvGB8tb2uBFZcMGLiivoy9dPd61bi2sHr35UxZvCyrTIrPQ76+Sh2sG/3DyjHP+QMizypilAoFcP8nV/cWA80tumvBfHgDXt8s0K5GgeCvYY30O1n0DPnxNUBEBPK+clJf86c/ecxBanrf0WDwK5w1+ohTRBoty/hYdwebuCRhj3cWPqashM4L0j6hDkKLqyQwS4J0YSQA/fplSLcEQGX1nPD6kXh+XgqZ6u1kmMaCT0thxOi//qNQRgYxJwV7Tww3rnybN+1/5+/OZFh3zTQRTc37nGRDbROuSbe44gV3OlKhLbhjydQHt9rXpzeKHFAxCsX4ymZEQn5KfvB9SPdu1nsJM5tQjBQIyHn+Ax5Lmxko0RWGD8vb4+F3SUxwt4u0CysC7ovuOkCU81v7Rv7a3BNzVKZn6M3zRo4+hWZaMuHrUz1Fk81k6aU40s+kApEGWtVaan+h7nng4xRstkSkwPCfXrCT6XRLfHKHjpddNUzRQL84YDM4N29vH/K1BYa1Hyqiiw1Z6rGf4ABzjRiNlIyrEPDqwbJOjoy3McCnuETTq+P+jtnn0aqiqe/oE=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(4143699003)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- eoqglAgi1nBFmowgDYlmh5NsECyYCBBi4iKTD9HbyKVulUPH7OOZZLsafvPdLMO0oGoyPr7qaWHY2xesx2OQgVrH8JjZWtRk+t2XFLls+miJxEpk/QNUHsdCTIVRZIEYchd2GxPo17AQbM8nOhpZGYr16kOEfKUAasNgX6hcSVq8VsP38DSl9e0Y2dXy4RuwwYxY7Q7tBFLpU23WrT+9OyoCvb2Zu+xtx9O6NODp48Vj6lwcxGV6VqlXLdLC+Am5PnyTIMZsyGsZpqGmVHqTEhQOsvasmM9HQmSiTCySlMCmtES5hRd3FveryCz/uei0/g82wRy4F+uBe1UTxz5Qiw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR08MB11787
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DB1PEPF000509EE.eurprd03.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	99ea4608-baf6-473c-408a-08df1f1ab5ff
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|36860700016|23010399003|376014|14060799003|1800799024|35042699022|82310400026|22082099003|18002099003|10067099003|56012099006|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	M9psLUbm67Gle7zWN7Mv5g2T1S2+5/Aj31RAA8Wb249+xK8m37LW7a2HOJ873nKuNl964dlF050bXvIC4ICTsVyMS/cNmuacIDoNpTlY2Pc01MxboOlLbQNwDqM2bzpx/GIO14R3b+f/qoudBKlg7S8LL34FwdbnH7vx4/TFtMpzpS5MU9VrxVq0bdywmLxLlfpyK3wwTj3vNkeM6Rs0q1OccW0SkH07VeQsyoveU3aOaPN9DtjzWDvHk/6YNrTdBiexQ4QuJFeocM5Pgmn5nWXxnSHlTyfF00ZSVnoJuHwTQojt6BRn14Fq0Slzyq/Zq1aRtICORrSM8phBVvcQzs27x9iK/LfZRKxDRm4toeWD4OWmhRUFjo0FqHIdRN2B+I6Y8J6skPmKk0PTzsld8WGw3QyF8XOcwEfiLt+TLIvZnGIyA3B3WF/MC/Ai+yTHRsGIFgD4z7UgNa0Rd1ZhMP7YdvXMzMu6tYUSe4+W3zSMnaH3qfr7lxQbI/5BI0owLcH9NmR3obF4WFErn38CmqELIG35z0ghMJyHZxMtyRkJnAAgp735rbWVW15ULzVhVgXLGmdnX4QySA85XyyiEGA6W7UVKkDrSYtCn4agfMknhzXc4tnv+XvkhMI5xbWvz9Cw3cu2vUr3M942ognYwysfWeHh6Sdl7j0XyS2+DhkLhYDdqihJ7QPvwLR4P2mOUjenqG+dG2GU41pKJ6a5nQ==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(36860700016)(23010399003)(376014)(14060799003)(1800799024)(35042699022)(82310400026)(22082099003)(18002099003)(10067099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ltLhjch6TQqHa86+LyWu/PDTVk90j5rUxriYipjlz9Qj6BIveih3d1jHl+ZgpT9pJfc9gTZNA7DnzrIw10lDIV55MVEQKu+vsWplj0iH96OAxoduQRF1CJvYPZ3JJsPaFzBYFEfg41fqE1bN0lj4C2hgdvuo3/k91DeBcoSq5hsr1wCaoMFn8f+JFh/aekN8xAOCp/X51CUz6CilUwgKqk3sA5n4vCSCYVY92zYGFQu0Zhlig+u4G0vJaEcmGqN978RpoBOhDhr8jhhBF8WPV5S6NOjQrgYjsTlULvc+ROAan+ifWfmRHIdxLydYJfrDdXd/JR4AfbyG4Qem5huAWDeLqwi3DCLSMe49TH/GlTB58ZlZd3bVK4J29mciIasOpDai/flrQzW9A2ObsGSsAyT6JYBb3eMp+BBDzXjOdaXbp1B8KTUAbJIoDan2fOBF
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 17:46:46.2135
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a19c08c-6695-4268-362e-08df1f1acc0c
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF000509EE.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB9053
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: F0C17A0004
-X-Stat-Signature: iy1c97wqjc9am5tpjtkgs191i36tf7qr
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260930-speed-up-inplace-rmap-v2-1-ac1aa19708aa@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQ6CMBBFr0Jm7RgooJWV9zAs2jLARCzNVImGc
+ HcrF3D5XvLfXyGSMEVoshWEFo48+wTqkIEbjR8IuUsMKlen/KJqjIGow1dA9mEyjlAeJqDOdW9
+ tqSvd15C2Qajn9969tYlHjs9ZPvvNUvzsv+JSYIHWWFdpR2eny+udxNN0nGWAdtu2LyRtCb67A
+ AAA
+X-Change-ID: 20260925-speed-up-inplace-rmap-808fbb3848f5
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
+ Lance Yang <lance.yang@linux.dev>, Pedro Falcato <pfalcato@suse.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
+ Pan Deng <pan.deng@intel.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15717; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=/u9v33iWlwBpydsQ/YBjmpqjj1cY7t5FLqRteGGl3iY=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLL2+qy0MJ4q8JyDf6vLP6U3cTlG0+5+Wv4jw8oiIsPwt
+ NHXIJE7HaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZjIs0JGhmty7/bvKLpqrsC0
+ SNfYUmjDmYePDy1zY81Knpd86cRitY2MDJ/15W/39ssUL7htsbCrXHxe5Tzt9GXN6d217B2sigd
+ CuAE=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-HE-Tag: 1790790415-970835
-X-HE-Meta: U2FsdGVkX1+otxDp203QTeRTWDQduOpYOOHdTz5z8t1BsOoVx7AjVlj2CCIZf3oXhNMRUZ3qgT9h+fvkIpyopwht/r+qXchEB7Ga9mpohf1wlmB1PmIiqqPoPCzWoi5+Cs8nNJgcygpf5DGwe+AmegYE01NkzZNxU6rojzy4UEpGXJxkbyrmZUU+QTC8fPBgTHD8gseKrpSc9FD/opKxfwO/HmQV7VhQ2qWzi2+ZTjU74D1+TkT95Pt4gnN6V6fTnl9CXlUc112648nGxHIUUffL0qpNRT2MlSACBexPp84/b1K3lVF4powBkgHirNSPAA7h8SLs1E9FalzCjWtpTw9XZ5suzfq3kWbn6g4xfLbpDY1azAX0XFRggK18hid7iZT3Z8qfKtK1IuZZLdtcaR2g3wqXJXZ2Vb5wCk3vA/qEVYGapDrTcaQvq1YUgHOH8yDDKVSnLLrkaVngckmMJz+EHB5pqWpk4eZfN4iWcpgmsDcyCunX5H1dp59aPXa8LVJrQASUAkiPbB8TKM9amYKXJ+5/upbqYwSu62i8Y+URadH8GnTS4AbvyT1DX/d5CtK0xABKKNdYbODjEr8Zhp0vvsFDmOstei2sNPIj1hFa4oIHTnkCf+Z77acwtRj/a7uyo1NDCINvDhuFQQpwzog/PyudbXzgxlLKLK3d6sy5enIm/7cDgLrJSzTKZjmTmBhuDf6YWaqKw6TXV49KDnOJUdKSWQ9wztKEY2PES3zr5izmqTP0M4vGxxAJcUvr32/b09kDJv2fUOWlH7puYXkB31IBo+PBUMLo2dkKiaN0A1St1ku8zqiXdZ6MPeZoE3Gkt+ebfhbDUi5DEFVQSv+HamuT8eVvPZrh058dY46sLTvv5hlfG48e7Sd5zHds0lmJh6e0XjS0C3H6AQo0ygzgqki0O5fhE0RNlIDHcj3S32fAA3l9We8YBFoBFzBbX49g5Gk+aW0Sfh6xQUV
- SWR+tOet
- DVL6lJ+khad8GRxVNyYE8xIbA/EXQtabwwWpnaV7bXO0GartmnXTtWneYin9Obn9pVBIxjk0+9LltvhwemzxHA1QhwKOFsxOYD31cM7TKKGmTavAqa21nHSqRQCNCZw0m0P5oGdhw36SwgqanSUR/m8Kac9tGZyAwm2EOJYqpckkQ6IPirAWtVvcIWiKQvQkNjEjTIgCjsA5K6ohp5zH0U70wdB885GNcS4v/lhZAC1ZHqYZP/JY3L111zp4KjnSeV9t8u/jrZeuwLvr5wH07HCk8HEHQgOcLHujCgwBknufCLXKteFFN0tD+UYaHktnDRyLW8chWRRMtUumglh3gMm3Cxo3SXHigxwykV5nsdUT0SpE0J+IHqI2mAUaxaVSwM4DLXtGMqnW90YFKpgLQcvpZVV2DraRx8HY+NnuzC++DRug2QiAcHjRtjaPB14oyMkKrzAdwNu1VQLf+sP7/l45VTMkez/ulNpWdhLfKaxtXZIiZBjklV7vX5ykW8D3fjodSSyiejuwpnHOnuvQrr3DimTODi0NbNsohopL8EHADYdaVjppYQEMNp1LaAFhJyJ8t/hcDALVo7ENOFVgywfxHWYvajnNvE9q6CAjdO/y4tCpyqB0hjlW11jZ6N/f/THkvtHly40e0Qs+SE8ZDsCPQQnDCLf8yuA4zzDzQI0U+Vk6nq6iJs8SaheWU46HjNcIjbFXv82bvcfTpNVIYT0Ew5XZWBVub5UNrYyURMD83Y9eVzbzeihE2ob+0xrHlZ1Ddr5Cn7eK3qlvMEdM33iQC79N0FuU/4HS0Ur5btJlofUyc9Mejk4ihoDw/Dm2/40QwLE6CvOHzR0a0rtO+6tnYs+KNxpp2/04jinGWIXJH1ZrCU4PSSGGWWMbtKJOaFUV3y61jLzFet4F6XO6eO/dlE3mBbg81jF1eImBHlaDcDtBsJxd1QZeZk4Lr7Ct7PLkgewjUFJMVfRujKxlGsbqmPy1f
- bN2djs7d
- SKWMXgHYB8JMoHRBYKJX7pUnw4WI/2zlvvJO5hLyNxF6YauPb0xrEQ7MN2hiTTiW/vBfrQBQfQZ4fU0t2WSmSEqDXpoxUPQ6YGbVPaZMRbv+RPkHXgMBvOqmAk34qh64M5/zkTDQndnbjjY3FgG+39T/xB8XalgE9Q64OCptOThxl+93s+Bmx/PXpMYXcWy2jABagy60PJu/jqG6Aqr9hyTy8KWgxXAGvSTeyrAYMUyWYWxN1gf4dvhlriAtAvVsYdnjMNPLKPhqw8NjWb4mFBw2GeGjR2Pl1E0HecfHhZwIyjl/Sfbi3qzJ1mbxyVEhQdDtAAIP8DeMVTc+Wu7qrToqDw2fZpJ0cHuFP+L0nANnwl/R+XzzpDKKc12+UNNuBXtSzb7A6DZwG5AvEQD3qfTyR4r1irg73jPP9NNu344sljyV2fmdD8KOK5CsplwDC/cPyxZBE4aUMvE/u6oFQr0V65/qgyOCP/6KP1mRtAxsOr9PwKUQZYLSOYdAfzSQFSASxIUA9XJ6XkfH7LEWZM5z4US853Sxuy52RBQCq6qjrRz/sG4zdzqz23z6BVHCvIb5KMQug2U0qwuRvDiWYpOXZrNkUzZiwDr/tfzNFKpidyZQTxFc3rzHlKInb1LcWm1TerR/56O2XUBCZdx7qqNb2aYGymPIIB2IJAvjjb+nBkP7NjMATv++bCSUuYGh7C5T8qsjKhtctpQWYXU09RlKFJcD+xuydqFwR2UCbp0x1HVKj9zSRfxLGZTTHN+E7c+/0wvS/t5rvYpVrO3Eu+xyokta5tPRjh+KYe9bO68T+xqKlvuttvmo4lZpUbeyjLqH7P5y6BPVEU6Dvc6A1GcU2GWUtnuZcBYut2GYQoo3FtM9a/LIUEc0a/i8sKAe05ltZqPMRUf1IdryFX5wguBky2MGa5SXoSWM3/0cG7IxTSFC2vU0AW2kV8y5KcM8fgXcD7C4B9zZfv7ZztC43DEOdDo4w
- 1AhwLpgd
- VH6IQ+b5FkDSUz1mRJcGbtWV+L+15VgLEgQE4YPxOIkGUUQZNdXuy67Zcqc/MnQaxWbAuiUsiznmVPm5vgK6dq0JXVWL5NtBTUT2YfjrCsrEpaGwWc31U9Ozq6Be1ZFJnZplsOFPdOB29gVGZk349krwErmPN4kCTsHDV1si48F45gMGwFt299ES40anJpqvPCLgxcBT0Hm/UxMRZTWGhYqgP0OB5pPYra9LM3p+slyOfIzzSgqmpTp3pefIvM+y1wStiITW+SgJbXFibX/ILoSOdakLI38QN3caMlpZLOp1LwGon+iqx4v60C38RrI12xyDGQbbT8QvvqUgY9OtstQq0/Cxj8YKKY88DGFDTOJ0ipEsWjI1NNDuWLF+cG+Zpsme3AlslaLGz9W/hLZnD6jD8HItw3O5dDdx+yuRvEOhTUWwu6cu8dnCXRRgb4wjhu4EZNhAv83/6c2PAPlc3hHitEs+lJkEJIF+eCXX4z8csWNSEO4iEhZq0x8HqDVQNcKXLugoyV71x/zfYMdDrEfS+nZdMCONyu8yuDf1Dl84Q3ZzU7TAQo21CcrtY6V7+zTDicHKnmkYzNlpD1SlNb5Nro+VSn4ImuVyZeqeiPdcAc9LjvHngoA4l15Zy0Zwm8TfphvwSPLivR/07Ht1WWjxAnGhlP6saeV6XLM+boSLrDHUxgErlHKqXsFM45VeN2NSecooGtygykeQ6iDuc87o+sR+oKUAnaqgRdN1yN7b8V3Vn1auYR13iA9UZG3bEII0/mrq/MFccAncje1TrSXDgzI6Kql2Ts7HwBWeFsXFu9WWHRYUaWck1HtGQaWFYxoLw6FYfWER5l7uU8dSWYFOsfqNvXgTZd6VKgnL1rhchwFCHvDM/fcIMUBz2ada+ijawKqSuYJl/onvHd3Xm+sNXQdTbMkJG7qprNxIt1HtwUA5knuMjEnrqibEhLbEGWQXmXanGpTnGczdgKOFqlwIbj6gN
- 7KrP0Vjc
- BJnFWjMDHretD6kKFgNeG8M7s/3H2xwZ1ch9f/xS3luV7dcfwG3Wn3a+49xVDmFsYD+CWbNbualjbSxjO8E+E1LBz5mqEo4lmHTulgb52mAbuxHGoi0ixJgXdzpw2iv+LmiqsB3YCwSAHFeJ1HYwN9BSWBf7xZ+jUy0PL+Q55MmHYaW26LAhXpZchYzGk2HHkYSiz5zwzV2flI+FdvAy0HDDRs9xXlO8EWtkHtPBM6ip0ah1CM0h4KN1oGsg3tFDzv/SJogYusA8TpX2Ju73APZxSkrUsbWrL0MH5/TWc4QGHz5PT0LVZAVWBFpTkfWUNiaLIXoezYaZ7Gy8RpjUH3b7Y6GtzjZ6eAt9X/lboQ+G8UQeoAJFfXyn9u6uN/bzt4WV1K/m8mYp5RqAbcHFG/g6czsLsI0t6+XUy7G5adPffPhINgjch9vb56iO57I0RzZWjbe/DAZAsRh4rFiikTzwnPJ7W5H4poDLXrh2HWKU8L9+0PlB7saziuC30iMh6STBf87Dg+wfWQMu8D/WBkZKaU6JdHebWfwUNvSODMlFhXgYILbwfOpEMlLgH5DaJNysbX0Gkfras0C7yZJK2ySyr8bPPypXA/3fzInZWKbw==
+X-Stat-Signature: b4yuh5dabfb8hyfis9tep6znojnjfud8
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6B39B40007
+X-HE-Tag: 1790790831-769275
+X-HE-Meta: U2FsdGVkX1/QdMJYHE9trCV9/PJ2GpEL2YGRLze2mH6Qzb08fNyAg5klvJT9e6h4A2Z0mXeDu41ZO/DR5G8NWD4OVkWu6UCod6YM7O9D5xKcU9vvJv1P0NQX/ctytVmhTNJXycaSoLzUFfAhscf7OqqSq48IV7N0oAcsoxdKII9KmjCRMFDKkusZ6og7a2pG4yJOJEQ2AaAOQn+wvXc2fL12D3AqhCa3EzicRkBg3f6e4IKzo1ATT7mSvCx5MX/Ec7ubCx2lHZxQxg0O/3+JKU0Mydtx2QDUtKxO2sDBqfV10pwGIc+AinUJRhzVpIIMyL59Zv0sdyLmGHSHJuUsqo2IWNEMZj9Y/9jfHsXjHcVL3VRVHaMCOBtRnZGNMzxoHhFZndVxkEoqDLvfEGeiiMKO2XLomnryc7OS8WISiXmQQwlNYEOE/jhT9DL3X6eJlbeFPTphskQxxWCFrkT96hKfbQkyBxk2747sEAn1hHoZP+9LpNj+8YHHKzvIk3RoBXgsV08LpgsE88crjdAS8WKk8fqrehomXFiIsRraoOkAPsobmXyRhxdXsLbovzG5oa+kU9E21Gvq0whKWhi0loK+plJhKT/sQ8YzMPyA0ef6Mqws8ADm3LLIBkxfjSCXqgeRx15mdRBWMWbLsc6lYHKy/Hf0dVZulkIMncXzcOPtonO1K95X5LwtqcDFDQUWk6pIwruiasB8b+CFF+VIoX25mIORrJsiGM8dnezH23FM8q/xsNMD7En0aVE1ASYeuI9TPdZ5p602IXtt+aFZvvOxxuXd2C3QKFyzTvhmiPH0a8jMwGeQ/+7bCssSv8YnZVxxJjtgNnuqoBJSXGbGb4y+Obknf9c4BgC4ddp92bCl1xQcPlogYsI0FTIgnremwDq4S7mv6TOXXn6VrTwi96JQxN/1wC9FTPwadI3IuowZRYnbJ7C7uft3huUrjP5EfbYcFXO8X7TwDLhCvbn
+ xBALtYAX
+ spFGz83gfCJXOnjkE9BXsCxJp8EWWdT5MQbRVZLNK2ODOB4Y3Piw6njjUleoGr+jGTplWcVSd4vLV/6EWWgBk6b1NDABsqLMW4vulo3zR1CukEb8/C/jXxIUYd/UlCSBkgaYE0bk153SH9O927kTAezgBsj2T4FekHGpUki/cpDp0IEKX1yG+mZw2w3bDarjKJm772oJ0SUT46LegFfHFXXV/F3c7fxjtrFmyZ1erUT6AgBdO4mJD8PMUhOnF5a9BYWDhgp3cIw9hiVFodgpNqz/3ZusPmn9y5p92oGm2CrLJEH70op7dXJd5eJ1HMJ+7DvscLKzX6Cvjdpc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -258,49 +108,452 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30/09/2026 6:10 am, Anshuman Khandual wrote:
-> On Tue, Sep 22, 2026 at 06:12:32PM +0100, Muhammad Usama Anjum wrote:
->> ptep_get() now accepts a pointer to hw_pte_t storage but must continue to
->> return a software PTE value. Add __pte_from_hw for both generic hw_pte_t
->> definitions. Read the hw_pte_t table element atomically before converting
->> it to pte_t.
->>
->> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->> ---
->> Changes since v1:
->> - Use software PTE value terminology.
->>
->> Changes since RFC v1:
->> - Define __pte_from_hw for the opted-in generic wrapper.
->> - Apply READ_ONCE() to hw_pte_t before converting it to pte_t.
->> ---
->>  include/linux/pgtable.h       | 2 +-
->>  include/linux/pgtable_types.h | 2 ++
->>  2 files changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->> index 19098e302b75a..41337da0d65aa 100644
->> --- a/include/linux/pgtable.h
->> +++ b/include/linux/pgtable.h
->> @@ -493,7 +493,7 @@ static inline int pudp_set_access_flags(struct vm_area_struct *vma,
->>  #ifndef ptep_get
->>  static inline pte_t ptep_get(hw_pte_t *ptep)
->>  {
->> -	return READ_ONCE(*ptep);
->> +	return __pte_from_hw(READ_ONCE(*ptep));
->>  }
-> 
-> Just curious - when would other pgtable levels (PMD, PUD, P4D and PGD) be converted
-> in this format as well ?
+When updating a VMA, vma_prepare() unconditionally removes it from its rmap
+interval trees under the rmap lock, and vma_complete() reinserts it before
+releasing the lock.
 
-I've patches for conversion of all levels offline. But it would have been
-so much difficult and complex (to review and rebase) if I would have posted
-all of them. That's why this split was done. I'll be sending other conversion
-after acceptance of these current series. PMD conversions has some patches
-which require discussion. Other remaining levels are going to be straight
-forward. Maybe I'll send those together.
+This is wholly unnecessary if its page offset (file rmap) or anonymous page
+offset (anon rmap) is unchanged.
 
+So, track whether they will change in the newly introduced
+vp->file_pgoff_unchanged and vp->anon_pgoff_unchanged fields, and use them
+to determine whether to remove the VMA or not.
+
+The rmap lock keeps things safe as no rmap walks can concurrently occur
+during the operation.
+
+Additionally, some architectures (arm, parisc, nios2, csky) have dcache
+flush rmap walkers which take only flush_dcache_mmap_lock(), which is
+likewise held across the operation.
+
+If the VMA remains in the tree, it's necessary to keep the augmented
+rb_subtree_last field updated to reflect its changed range.
+
+Provide mapping_rmap_tree_[pre, post]_update() and
+anon_rmap_tree_[pre, post]_update_vma() (replacing the existing logic in
+the anonymous case) to handle both the changed and unchanged cases.
+
+For the anon rmap case, with CONFIG_DEBUG_VM_RB set, avc->cached_vma_last
+is also updated when propagating in place.
+
+When performing a VMA shrink or a split where the VMA is the lower one, the
+page offset cannot change, so set the flags unconditionally in these cases.
+
+When merging VMAs the page offset is unchanged only in some cases, so
+update init_multi_vma_prep() to set the flags only if the page offsets
+remain the same.
+
+Finally, while we're here, also update expand_upwards() similarly.
+
+These changes ultimately result in less rmap lock contention.
+
+Pan Deng reported results using the UnixBench/excel benchmark on a 2-socket
+192 core, 384 thread x86-64 system for v7.3-rc4 with/without the patch
+applied:
+
+Execl Throughput, index score:
+
+                    avg    %stdev      min        max
+  v7.3-rc4        3511.5     0.44%    3494.5    3543.4
+  + patch         4069.0     0.48%    4047.4    4109.5 (+15.9%)
+
+Average wait on file rmap lock in ms, 5 runs per kernel:
+
+               avg      %stdev     min       max
+  v7.3-rc4    9.470     2.91%     9.070     9.820
+  + patch     8.420     3.34%     8.100     8.770 (-11.1%)
+
+Profiling data obtained during the operation highlighted the file rmap lock
+as the primary source of contention.
+
+Suggested-by: Pan Deng <pan.deng@intel.com>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+v2:
+* Added Suggested-by, as per Pan.
+* Added tags (Thanks Rik!)
+* Updated commit message to provide perf data from Pan (thanks! :).
+* Renamed pgoff_unchanged to file_pgoff_unchanged as per Pedro.
+* Implemented mapping_rmap_tree_[pre, post]_update() and
+  anon_rmap_tree_[pre, post]_update_vma() to separate out logic into the
+  rmap/interval tree code as per Pedro.
+* Since this change touched other code, and expand_upwards() is one such
+  case, correctly mark it as pgoff unchanged.
+
+v1:
+https://lore.kernel.org/r/20260925-speed-up-inplace-rmap-v1-1-babc48ce7c83@kernel.org
+---
+ include/linux/mm.h                |  10 ++++
+ mm/interval_tree.c                | 101 ++++++++++++++++++++++++++++++++++++++
+ mm/vma.c                          |  74 +++++++++++-----------------
+ mm/vma.h                          |   2 +
+ tools/testing/vma/include/stubs.h |  22 +++++++++
+ 5 files changed, 164 insertions(+), 45 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 6e71eaa4af3f..6da674fe3a93 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4357,6 +4357,12 @@ void mapping_rmap_tree_insert_after(struct vm_area_struct *vma,
+ 				    struct address_space *mapping);
+ void mapping_rmap_tree_remove(struct vm_area_struct *vma,
+ 			      struct address_space *mapping);
++void mapping_rmap_tree_pre_update(struct vm_area_struct *vma,
++				  struct address_space *mapping,
++				  bool pgoff_unchanged);
++void mapping_rmap_tree_post_update(struct vm_area_struct *vma,
++				   struct address_space *mapping,
++				   bool pgoff_unchanged);
+ struct vm_area_struct *
+ mapping_rmap_tree_iter_first(struct address_space *mapping,
+ 			     pgoff_t pgoff_start, pgoff_t pgoff_last);
+@@ -4374,6 +4380,10 @@ void anon_rmap_tree_insert(struct anon_vma_chain *avc,
+ 			   struct anon_vma *anon_vma);
+ void anon_rmap_tree_remove(struct anon_vma_chain *avc,
+ 			   struct anon_vma *anon_vma);
++void anon_rmap_tree_pre_update_vma(struct vm_area_struct *vma,
++				   bool anon_pgoff_unchanged);
++void anon_rmap_tree_post_update_vma(struct vm_area_struct *vma,
++				    bool anon_pgoff_unchanged);
+ struct anon_vma_chain *
+ anon_rmap_tree_iter_first(struct anon_vma *anon_vma,
+ 			  pgoff_t pgoff_start, pgoff_t pgoff_last);
+diff --git a/mm/interval_tree.c b/mm/interval_tree.c
+index 7bbbf15cfbf0..9e24bb99fd80 100644
+--- a/mm/interval_tree.c
++++ b/mm/interval_tree.c
+@@ -64,6 +64,51 @@ void mapping_rmap_tree_remove(struct vm_area_struct *vma,
+ 	__mapping_rmap_tree_remove(vma, &mapping->i_mmap);
+ }
+ 
++static void mapping_rmap_tree_update_inplace(struct vm_area_struct *vma)
++{
++	/* Propagate all the way up the tree. */
++	__mapping_rmap_tree_augment.propagate(&vma->shared.rb, NULL);
++}
++
++/**
++ * mapping_rmap_tree_pre_update() - Prepare the file rmap tree for a change to
++ * be made to @vma.
++ * @vma: The VMA about to be updated.
++ * @mapping: The file rmap to which @vma belongs.
++ * @pgoff_unchanged: Whether @vma's page offset will remain unchanged.
++ *
++ * The file rmap lock must be held across the entire update.
++ */
++void mapping_rmap_tree_pre_update(struct vm_area_struct *vma,
++				  struct address_space *mapping,
++				  bool pgoff_unchanged)
++{
++	/* If the pgoff has changed, then remove and reinsert afterwards. */
++	if (!pgoff_unchanged)
++		mapping_rmap_tree_remove(vma, mapping);
++}
++
++/**
++ * mapping_rmap_tree_post_update() - Update the file rmap tree to reflect a
++ * change that has been made to @vma.
++ * @vma: The VMA that has been updated.
++ * @mapping: The file rmap to which @vma belongs.
++ * @pgoff_unchanged: Whether @vma's page offset remained unchanged.
++ *
++ * mapping_rmap_tree_pre_update() must have been called prior to this.
++ *
++ * The file rmap lock must be held across the entire update.
++ */
++void mapping_rmap_tree_post_update(struct vm_area_struct *vma,
++				   struct address_space *mapping,
++				   bool pgoff_unchanged)
++{
++	if (pgoff_unchanged)
++		mapping_rmap_tree_update_inplace(vma);
++	else
++		mapping_rmap_tree_insert(vma, mapping);
++}
++
+ struct vm_area_struct *
+ mapping_rmap_tree_iter_first(struct address_space *mapping,
+ 			     pgoff_t pgoff_start, pgoff_t pgoff_last)
+@@ -111,6 +156,62 @@ void anon_rmap_tree_remove(struct anon_vma_chain *avc,
+ 	__anon_rmap_tree_remove(avc, &anon_vma->rb_root);
+ }
+ 
++static void anon_rmap_tree_update_inplace(struct anon_vma_chain *avc)
++{
++#ifdef CONFIG_DEBUG_VM_RB
++	avc->cached_vma_last = avc_last_pgoff(avc);
++#endif
++	/* Propagate all the way up the tree. */
++	__anon_rmap_tree_augment.propagate(&avc->rb, NULL);
++}
++
++/**
++ * anon_rmap_tree_pre_update_vma() - Prepare the anon rmap trees for a change
++ * to be made to @vma.
++ * @vma: The VMA about to be updated, which has an anon rmap assigned and is
++ *       already inserted on its interval trees.
++ * @anon_pgoff_unchanged: Whether @vma's anonymous page offset will remain
++ *                        unchanged.
++ *
++ * The anon rmap lock must be held across the entire update.
++ */
++void anon_rmap_tree_pre_update_vma(struct vm_area_struct *vma,
++				   bool anon_pgoff_unchanged)
++{
++	struct anon_vma_chain *avc;
++
++	if (anon_pgoff_unchanged)
++		return;
++
++	/* If the pgoff has changed, then remove and reinsert afterwards. */
++	list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
++		anon_rmap_tree_remove(avc, avc->anon_vma);
++}
++
++/**
++ * anon_rmap_tree_post_update_vma() - Update the anon rmap trees to reflect a
++ * change that has been made to @vma.
++ * @vma: The VMA that has been updated.
++ * @anon_pgoff_unchanged: Whether @vma's anonymous page offset remained
++ *                        unchanged.
++ *
++ * anon_rmap_tree_pre_update_vma() must have been called prior to this.
++ *
++ * The anon rmap lock must be held across the entire update.
++ */
++void anon_rmap_tree_post_update_vma(struct vm_area_struct *vma,
++				    bool anon_pgoff_unchanged)
++{
++	struct anon_vma_chain *avc;
++
++	list_for_each_entry(avc, &vma->anon_vma_chain, same_vma) {
++		if (anon_pgoff_unchanged)
++			anon_rmap_tree_update_inplace(avc);
++		else
++			anon_rmap_tree_insert(avc, avc->anon_vma);
++	}
++}
++
+ struct anon_vma_chain *
+ anon_rmap_tree_iter_first(struct anon_vma *anon_vma,
+ 			  pgoff_t pgoff_start, pgoff_t pgoff_last)
+diff --git a/mm/vma.c b/mm/vma.c
+index 077e23694143..ad6be42cc65a 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -201,8 +201,15 @@ static void init_multi_vma_prep(struct vma_prepare *vp,
+ 	if (vp->file)
+ 		vp->mapping = vma->vm_file->f_mapping;
+ 
+-	if (vmg && vmg->skip_vma_uprobe)
++	if (!vmg)
++		return;
++
++	if (vmg->skip_vma_uprobe)
+ 		vp->skip_vma_uprobe = true;
++	if (vma_start_pgoff(vma) == vmg_start_pgoff(vmg))
++		vp->file_pgoff_unchanged = true;
++	if (vma_start_anon_pgoff(vma) == vmg_start_anon_pgoff(vmg))
++		vp->anon_pgoff_unchanged = true;
+ }
+ 
+ /*
+@@ -299,38 +306,6 @@ static void __remove_shared_vm_struct(struct vm_area_struct *vma,
+ 	flush_dcache_mmap_unlock(mapping);
+ }
+ 
+-/*
+- * vma has an anon rmap assigned, and is already inserted on its interval
+- * trees.
+- *
+- * Before updating the vma's vm_start / vm_end / vm_pgoff fields, the
+- * vma must be removed from the anon rmap's interval trees using
+- * anon_rmap_tree_pre_update_vma().
+- *
+- * After the update, the vma will be reinserted using
+- * anon_rmap_tree_post_update_vma().
+- *
+- * The entire update must be protected by exclusive mmap_lock and by
+- * the anon rmap root lock.
+- */
+-static void
+-anon_rmap_tree_pre_update_vma(struct vm_area_struct *vma)
+-{
+-	struct anon_vma_chain *avc;
+-
+-	list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
+-		anon_rmap_tree_remove(avc, avc->anon_vma);
+-}
+-
+-static void
+-anon_rmap_tree_post_update_vma(struct vm_area_struct *vma)
+-{
+-	struct anon_vma_chain *avc;
+-
+-	list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
+-		anon_rmap_tree_insert(avc, avc->anon_vma);
+-}
+-
+ /*
+  * vma_prepare() - Helper function for handling locking VMAs prior to altering
+  * @vp: The initialized vma_prepare struct
+@@ -359,16 +334,19 @@ static void vma_prepare(struct vma_prepare *vp)
+ 
+ 	if (vp->anon_vma) {
+ 		anon_vma_lock_write(vp->anon_vma);
+-		anon_rmap_tree_pre_update_vma(vp->vma);
++		anon_rmap_tree_pre_update_vma(vp->vma, vp->anon_pgoff_unchanged);
++		/* The adjacent VMA's start is moved, so its page offset changes. */
+ 		if (vp->adj_next)
+-			anon_rmap_tree_pre_update_vma(vp->adj_next);
++			anon_rmap_tree_pre_update_vma(vp->adj_next, false);
+ 	}
+ 
+ 	if (vp->file) {
+ 		flush_dcache_mmap_lock(vp->mapping);
+-		mapping_rmap_tree_remove(vp->vma, vp->mapping);
++		mapping_rmap_tree_pre_update(vp->vma, vp->mapping,
++					     vp->file_pgoff_unchanged);
+ 		if (vp->adj_next)
+-			mapping_rmap_tree_remove(vp->adj_next, vp->mapping);
++			mapping_rmap_tree_pre_update(vp->adj_next, vp->mapping,
++						     false);
+ 	}
+ 
+ }
+@@ -386,8 +364,10 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
+ {
+ 	if (vp->file) {
+ 		if (vp->adj_next)
+-			mapping_rmap_tree_insert(vp->adj_next, vp->mapping);
+-		mapping_rmap_tree_insert(vp->vma, vp->mapping);
++			mapping_rmap_tree_post_update(vp->adj_next, vp->mapping,
++						      false);
++		mapping_rmap_tree_post_update(vp->vma, vp->mapping,
++					      vp->file_pgoff_unchanged);
+ 		flush_dcache_mmap_unlock(vp->mapping);
+ 	}
+ 
+@@ -406,9 +386,9 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
+ 	}
+ 
+ 	if (vp->anon_vma) {
+-		anon_rmap_tree_post_update_vma(vp->vma);
++		anon_rmap_tree_post_update_vma(vp->vma, vp->anon_pgoff_unchanged);
+ 		if (vp->adj_next)
+-			anon_rmap_tree_post_update_vma(vp->adj_next);
++			anon_rmap_tree_post_update_vma(vp->adj_next, false);
+ 		anon_vma_unlock_write(vp->anon_vma);
+ 	}
+ 
+@@ -593,6 +573,8 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 
+ 	init_vma_prep(&vp, vma);
+ 	vp.insert = new;
++	vp.file_pgoff_unchanged = !new_below;
++	vp.anon_pgoff_unchanged = !new_below;
+ 	vma_prepare(&vp);
+ 
+ 	/*
+@@ -1346,6 +1328,8 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	vma_start_write(vma);
+ 
+ 	init_vma_prep(&vp, vma);
++	vp.file_pgoff_unchanged = true;
++	vp.anon_pgoff_unchanged = true;
+ 	vma_prepare(&vp);
+ 	vma_adjust_trans_huge(vma, vma->vm_start, end, NULL);
+ 
+@@ -3453,11 +3437,11 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
+ 				if (vma_test(vma, VMA_LOCKED_BIT))
+ 					mm->locked_vm += grow;
+ 				vm_stat_account(mm, vma->vm_flags, grow);
+-				anon_rmap_tree_pre_update_vma(vma);
++				anon_rmap_tree_pre_update_vma(vma, true);
+ 				vma->vm_end = address;
+ 				/* Overwrite old entry in mtree. */
+ 				vma_iter_store_overwrite(&vmi, vma);
+-				anon_rmap_tree_post_update_vma(vma);
++				anon_rmap_tree_post_update_vma(vma, true);
+ 
+ 				perf_event_mmap(vma);
+ 			}
+@@ -3530,12 +3514,12 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
+ 				if (vma_test(vma, VMA_LOCKED_BIT))
+ 					mm->locked_vm += grow;
+ 				vm_stat_account(mm, vma->vm_flags, grow);
+-				anon_rmap_tree_pre_update_vma(vma);
++				anon_rmap_tree_pre_update_vma(vma, false);
+ 				vma->vm_start = address;
+ 				vma_sub_pgoff(vma, grow);
+ 				/* Overwrite old entry in mtree. */
+ 				vma_iter_store_overwrite(&vmi, vma);
+-				anon_rmap_tree_post_update_vma(vma);
++				anon_rmap_tree_post_update_vma(vma, false);
+ 
+ 				perf_event_mmap(vma);
+ 			}
+diff --git a/mm/vma.h b/mm/vma.h
+index 7a683272c0a8..074419f2c102 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -28,6 +28,8 @@ struct vma_prepare {
+ 	struct vm_area_struct *remove2;
+ 
+ 	bool skip_vma_uprobe :1;
++	bool file_pgoff_unchanged :1;
++	bool anon_pgoff_unchanged :1;
+ };
+ 
+ struct unlink_vma_file_batch {
+diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+index e4acc6f1fe7b..5d4944581b8d 100644
+--- a/tools/testing/vma/include/stubs.h
++++ b/tools/testing/vma/include/stubs.h
+@@ -267,6 +267,18 @@ static inline void mapping_rmap_tree_remove(struct vm_area_struct *vma,
+ {
+ }
+ 
++static inline void mapping_rmap_tree_pre_update(struct vm_area_struct *vma,
++						struct address_space *mapping,
++						bool pgoff_unchanged)
++{
++}
++
++static inline void mapping_rmap_tree_post_update(struct vm_area_struct *vma,
++						 struct address_space *mapping,
++						 bool pgoff_unchanged)
++{
++}
++
+ static inline void flush_dcache_mmap_unlock(struct address_space *mapping)
+ {
+ }
+@@ -281,6 +293,16 @@ static inline void anon_rmap_tree_remove(struct anon_vma_chain *avc,
+ {
+ }
+ 
++static inline void anon_rmap_tree_pre_update_vma(struct vm_area_struct *vma,
++						 bool anon_pgoff_unchanged)
++{
++}
++
++static inline void anon_rmap_tree_post_update_vma(struct vm_area_struct *vma,
++						  bool anon_pgoff_unchanged)
++{
++}
++
+ static inline void uprobe_mmap(struct vm_area_struct *vma)
+ {
+ }
+
+---
+base-commit: e8d0f6a1b2a447d02845984fa6288787543cb03c
+change-id: 20260925-speed-up-inplace-rmap-808fbb3848f5
+
+Cheers,
 -- 
-Thanks,
-Usama
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
