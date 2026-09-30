@@ -4,120 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDA30CA5FC5
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 14:50:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16E72CA5FC5
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 15:05:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FCA66B0092; Wed, 30 Sep 2026 10:50:34 -0400 (EDT)
+	id 150706B0088; Wed, 30 Sep 2026 11:05:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8ADB06B0093; Wed, 30 Sep 2026 10:50:34 -0400 (EDT)
+	id 101766B008A; Wed, 30 Sep 2026 11:05:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79BF66B0095; Wed, 30 Sep 2026 10:50:34 -0400 (EDT)
+	id F31B26B008C; Wed, 30 Sep 2026 11:05:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 51FC96B0092
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:50:34 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C18401207C4
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 14:50:33 +0000 (UTC)
-X-FDA: 85270714746.11.BA7AE26
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E33DEC0005
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 14:50:31 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=QKpxLYqv;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.141 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BABE36B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:05:29 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 55E7C1C394C
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:05:29 +0000 (UTC)
+X-FDA: 85270752378.26.FF56A79
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 600D340012
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:05:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CQHe4kO+;
+	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790779831;
+	s=arc-20220608; t=1790780727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H3qtNVwOX7r6mYzIQEIi64injBAtcVX6qzz09d86hu8=;
-	b=75TwxkW/dACPbMFIe6JEIdxvo6YTRWTzUalYPQtG4uc/NDM3zC/ifyvd1xtypAdGkTRbqC
-	X8ITfLPFgQLERqE3MUeQJuP7oyAjsH5wJxez3JanOU97wutd6SyO/SgMjDImI6pFITnY9y
-	N9Q5pDYR30pqh3RFaPr5Ti8PLEyvmJI=
+	bh=jfRtojeauzUhQb4SePcX378h8gySuQTk235TQqLiiHA=;
+	b=27uIZQCqOWCzPz0oa4+/+nvKF14+w8SMOw20i2GF1TCdHQrSAOkICbgE+0r2C8XRVi5llx
+	sQjGX2J7N/6lNdWt5F83Ty03iETEjwMQ1gTTmmZ8l4GOIctMI4O5TLqkcxWQYsqLUm9G4l
+	VzFxdG+p91KO7tySkihO7fG3677dzAM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790779831;
-	b=eWy74SRsbRudVCD3ULjb+vKuFEhgvUf0Qlh5OaIifMonc5jLs21m62le7e4JGCw6bAxeTK
-	XMcpxYLJonbVmECfA2EYGGQa4g2xWv5H8/2SgDkFAOEARQiI1yg3ZRnEYctVCRZCrijus7
-	eKJhmzhpWhrcBkfEDbWilWEkG+5qAvI=
+	t=1790780727;
+	b=OurpN0sFyTtiB6ToOYuIHnM620tHcsaGKN7HWChph+Nv66d+VMIGR6adLz9g7jkDyYDO1e
+	0cShMqx8hLQcm4Ucf1Q0i+yexTrsVrJ/mMLLXY7vKx9Y0o/LdyPBagEKrHr0G0ctMWmu5C
+	DLnTaDgHVEQYO/hJlzneA4vQycBOgCE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=QKpxLYqv;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.141 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49fe8bf173aso29151465e9.3
-        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:50:31 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CQHe4kO+;
+	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2e17363b97so155278766b.0
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:05:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790779830; x=1791384630; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1790780726; x=1791385526; darn=kvack.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=H3qtNVwOX7r6mYzIQEIi64injBAtcVX6qzz09d86hu8=;
-        b=QKpxLYqvMxlRvwOz9ykhqeZNyAzkbCwvSJyy1D3Rq6sJJSEQqmCOX8C3CoS53z2Wlx
-         U6M1hBRHt/pbCyD0pOnFukTkcKRYUfJOUHHFKI6HtjcdgvZSHEir9BH98n9MzyI/siBE
-         PFfCMurbnaMjGRRTzig8xzk9lU279X00DcEwBuh1wiVHHAmLJ2NtSbn1xnWdV4HEWLAQ
-         CpISIEIOGMEw0BYvnEVpqZbjjKPzywbxcGxwMfaFqF9iSdFT7mwP6mH58+dG41brJZC7
-         n6EIyV0ZIdOMdGh5bMowy9rMVtQ+zt5HsRYU4Qyr1R9M79Q3Z8e6xa5Z1mdYV+nNCHgh
-         VRZQ==
+         :content-type:mime-version:references:message-id:subject:cc:to:date
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jfRtojeauzUhQb4SePcX378h8gySuQTk235TQqLiiHA=;
+        b=CQHe4kO+duwOYbAR80r7PS/oKvV22f4c0P9eYt21anpRKs73V2TmUgQASKVC8CeWuL
+         gcvsTkJssHJAWfHxyjEd7jWSy+n1ELpWBUBSPY+vQfvpgy7eLYTdGsKctU++4EqOCTYX
+         m4ia5aSMu3gDDrqjJQrbJoCVUbmNyU8xTY33V2kD1saUzeufj8Z6L31wg2B2XAgMZPw1
+         gaZFgjOEAXcV0e58YN6rk4GUzU6JV0qJR+dDGOes9ZveoTVYRZ6BD+64PK0PshpHbfEP
+         g/B3evRr1a3Erv3d/JNrIUvGwNEm2TFKomY8uROZ9W7ltCF7wWaP8F5NEwVYVLo9IbeW
+         UsFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790779830; x=1791384630;
+        d=1e100.net; s=20260707; t=1790780726; x=1791385526;
         h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :content-type:mime-version:references:message-id:subject:cc:to:date
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=H3qtNVwOX7r6mYzIQEIi64injBAtcVX6qzz09d86hu8=;
-        b=yvyW5q4tGkuWgJzqyBOvZxnUgapOcJAmy/FzX16mbyAlwRjgAjRZzyuV13N8IUjgKh
-         JBz5lxUrceLnaCrVE86n8VObF80koiA42I/9MDepJ5tkSLvpW6d9IMd+DBPtKFC8uH/J
-         5z/GSs0FtS7tvbZSm2BB20Upg3f+Ywgp8Am/e0NhXwb9hcVgqv/MzPH3fQO/HsYt4Us0
-         3H1frE2hxjRkklwx8PQO+qce1gqUEyLq8LrBpgF+Jks0NKH6VRNOWd7/2h5M03P2QMJW
-         DGXRjuRvrgAawGnhyqK3PFdlL0Z2DTN3Yt3b64t2BMYbntDZ8HXfg/dBQ/4EwuJWGJcJ
-         TtnA==
-X-Forwarded-Encrypted: i=1; AKwUvBwSMb01U5ZSE1B1GrNBry+mnZUAvut1S1+/X/KgnM45mf+51Y6Nca/P9qBkk/+UCxUXcKQzpiX17A==@kvack.org
-X-Gm-Message-State: AFuF++mcNnYfgt6byS1QwX/f4DYLhYF0aWd3Z/FT7cpMiYBzQ3id2GJl
-	7F1l+mmz7ukfPjDE6yB7jh+2wNnTXYV7obhRz/+CaCEDxyKL061pGMOYb5JFjD4d0YU=
-X-Gm-Gg: AYBFou0G71j8zfibEotL3weV6U5bIIV3C/oeDT7AI/Ti1juWOMzeDtrM4oGyKp0OCBm
-	EgVjgLDNemYF6a++2WGn4RG60E1TFAl4CikRzEZ7XWgdSCTRNLlxISBd8eHnEWNDours5zLpXIL
-	yN0+UQNDunIu1Xi1yBFdezkcWB27fl60ionAsESVBmsbtzfoya8MN5Ogu+dkgGi+odQK+ncTJy9
-	pBlWYQ4c3R+FulYlf3F+ZY7ljcqgxQhG4uIDr2n1XQcmZCu5LoYFjhKaabkkuX0LUxI4D6DGUsj
-	GBL1pziEQMM/tdKwjShoRLaBrhAiVI7SW6k6zjZY/AhAgv8uk0Ik3nQnI0ZxjjIXzkiVjyiqq6a
-	sGZf8pI9TlR2gGv4av9I+QPicxVbrOnMVvpBxGGjdBFGfC3xSts8QqMCEvT4KLh6JASkkEiwHr7
-	C9c7ZNylywKgQ1aQ49B7OuG/SapgKYr7aqFiKL8PbtS5mzIxhuhxGboI8UzY5Vo7J3AeA=
-X-Received: by 2002:a05:600c:45d3:b0:4a0:c2a:485e with SMTP id 5b1f17b1804b1-4a01b130b8bmr25639735e9.33.1790779830473;
-        Wed, 30 Sep 2026 07:50:30 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c092:500::7:e977])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b029edea4sm4382698f8f.22.2026.09.30.07.50.29
+        bh=jfRtojeauzUhQb4SePcX378h8gySuQTk235TQqLiiHA=;
+        b=WwaqzrAGyG/rdOixCa1KhFVbjIMul1UldBWU735ZC75tCIzXnpSr5+gmouVoLiAMrZ
+         g29LwBTsIBW2rAX7VwpoO42DtgN7IM5q38o69kfT4I3NR3U3LXCDC5zluDbu0PadsPkB
+         PpSahf6uZwFCMUq5K7ZvmVDp+K46/yjnLdasQOg2+pSuXULAqvLUcEXN7vfmei2O3gMh
+         9R9DIkS5CQUQ2AK0okfGXUw30mr1JpDy/Pk9PJAIjoJeskX8yOsQ/SyXTevg7787FFsv
+         JX172SjRrd+cc9OhLKWLLGJAnLk0Ig4uvp6VIFmhUxfthz7w0SJItKdxTugRztAxK+1m
+         VJKw==
+X-Forwarded-Encrypted: i=1; AKwUvBwzPGEj22SMARluPaF+w8P68+vYmZo2F1pDv9SaXmv565le3Cs2pBec+MSZdfN3PL26FHFBDwcUFg==@kvack.org
+X-Gm-Message-State: AFq9FYLIrLaOpkNWcyqXP0+f6M0Sr4hMx1krartOlcc5WLAKbyA/NMoq
+	xQxIlfE3ESooiXup29o9Y80uFimpbgO6/PG77iElkeH7pT3m9ClPbSLfiSoq34pSBzU=
+X-Gm-Gg: AYBFou1mnweioDbp+AeDPFbqiDLd1zcTY7dbEH8VTG+e1zCz9+xzTxkjbpWQfDbdh+k
+	UwVaauwtuRrGJe9gV0GsDH3SFAMEgamWRsWtlOsCVZrIvsL7Sh78qbvwZ5TlddQEbIly5MI1qhv
+	3AtSyYBiUMUN52mHWzlyC2zXJ9YkqORTcSA7ZiZuEGFY3HEo4avbzbbA8EH4/MO0CROZI0vxN9V
+	Ar8wwW73AF8HOZixYspjNJi6V0nPN3Ssm74ZrMMWCSZcxD3hdIidxwCLoZiWmmo/JuJVrc8+DEQ
+	jkZE6T9wefkCy/GbzS1q9QZXMyIWWpme7hfX7z/NoS8JF6OB1RKQ18fVPtvh/kK70HFOdjB7/Jq
+	tflbX2akGNAGR2cD4YMyrahzqKK04nFL4WIVM13hc0khk7gFHPcSorfZWrrbnWIjy/Gi/e4vTGx
+	uCufRCaIqyMteg0nG3Tj7h
+X-Received: by 2002:a17:906:ba89:b0:c2d:a4ef:64ca with SMTP id a640c23a62f3a-c2e23e39566mr171362866b.42.1790780725514;
+        Wed, 30 Sep 2026 08:05:25 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31a3cc87sm20827866b.6.2026.09.30.08.05.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 07:50:29 -0700 (PDT)
-Date: Wed, 30 Sep 2026 10:50:27 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org, 
-	rppt@kernel.org, mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	ziy@nvidia.com, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/numa_balancing: allow migrate on protnone reference
- with MPOL_WEIGHTED_INTERLEAVE policy
-Message-ID: <ar0fURbLDPrphYMY@gourry-fedora-PF4VCD3F>
-References: <20260930121154.687586-1-joshua.hahnjy@gmail.com>
- <2e3f12b7-0dac-428c-b70b-07e1f63de028@bytedance.com>
+        Wed, 30 Sep 2026 08:05:24 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Wed, 30 Sep 2026 17:05:22 +0200
+To: Wen Jiang <jiangwenxiaomi@gmail.com>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org,
+	urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com,
+	ajd@linux.ibm.com, anshuman.khandual@arm.com, baohua@kernel.org,
+	chleroy@kernel.org, david@kernel.org, dev.jain@arm.com,
+	jiangwen6@xiaomi.com, leo.yan@arm.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, rppt@kernel.org,
+	ryan.roberts@arm.com
+Subject: Re: [PATCH v9 09/10] mm/vmalloc: map contiguous pages in batches for
+ vmap() if possible
+Message-ID: <ar0lMkKxugZV7xyw@milan>
+References: <20260923062832.479455-1-jiangwen6@xiaomi.com>
+ <20260923062832.479455-10-jiangwen6@xiaomi.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2e3f12b7-0dac-428c-b70b-07e1f63de028@bytedance.com>
+In-Reply-To: <20260923062832.479455-10-jiangwen6@xiaomi.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E33DEC0005
-X-Stat-Signature: 6muo6q3td48wwoicq8rxsmgfqefeyjxk
-X-HE-Tag: 1790779831-126715
-X-HE-Meta: U2FsdGVkX19HnKyfddPs8HnXJmyW0kXm1C/XLLXkfJ9AAouShbO2Dtw7oc9dvE+S8NCv3UPswwzu9ST5+1/+iW18DeOmLtbi1zhGhHKnwpwdJMgT6+NN8K98nriibXzE9qMkYkObhgZetljGAiHywftBeVoyw62I2dNgpwzsPQvPGI+yDzrqFtOuL/t3GkASsTqK794HqziheGc0QmPO25/VKdZBWrgBHSuPdwfIFzJhw93IbeNVTZFeAKS1xoTbya9C0uwS9xqTPPxAnklZOopFKJkuHpPrL9eagHi/ONpPOtYRbi8GRp19I0oPYG0LYOHnTTvyAjKu0QzcHCmODMhIx5vGqUM8PrHrSHPftmIxfv2H1iKRqKJct0MQ3aB+Cf5usPeQk1Z++un6/+e5bVNcoNK4I5LdRzQ6Ur5tLtt8xg4hyaeRAi8prq2W+NK8SKn2xpJAbiJ0ywEL5R/RRRZm0a2E1Sm3Ynn7bdHEpx850LPOmKgFQmZrZrEdcTlLp7VgiKVLAVo0UK68rbWOP8W9YH/T+r9617dLmsl1+4y/Gk2uNnIxPdT2s1phN5Fi0pj+9FLsQ7+lnhPbn13p8OAzveTI3RDGEFNzhZv9Lvqro2JbW1ZaRtvZ2qt8+YL/9a+K09lVCTCvippDNftiuqa+RPnh04VnqkgDXX83iuPS+F74oi6QsJ0nbyKR5quujc2rgXQOLAY54gJUy2z5LSDE9h/lEsVDOPPnXbPs+9hRa4UIMjW9XElvcbOMgE1e8MoOLftsJk95infuWhWgAZw8XSELEDInxnKBRIhZmmMpmX1nC5Tpp8l+2Dg4C4tEgD+3rYkO5DFSo9GITcGOFrA++ipNyEgQrgN35n1unEO9Ifxh8QbB/NmJee7/MX2nyMvqk8R2jZgy3B2imOpcmP5p8Bt2ixi/vZAJWaRqKX9NYNwfLufPE32n1NiZWnp+isCdLFT7OTEwUky2AoD
- A6sN9A7O
- yksbPn8nW3uFcXrDpIBi95CAztUneLpSWTyE+FodAdy/1AxlVlFPz1qN2OpVgFqaaWKrkwFkEb1mSC7clNQnIwDKjLRO6aP0Eb+zHnqjvzJju5DhqHgR6Q8P4xVoxlbaGdMR1aVZC58pDw3BgeszmpM3KVmSBr0gFTlK08CL6JaQcG30MeBF4TDyHHplzwoMWTCptdqGYpUb1ZQjLFnW8HAtdPFj1lobJYLdHA+q2AZJuCP976dEUmaZxoXnUnGwywyV8RoqM32BxkepzMWZZ0id5h3d97FFTNsYPoT3Ec0S8tg9B3hQtNy9KNTwvzMsOM4wi20b4Gs39dPRhvmGORLSOYfXHsumyk3FDAeDlW92FC82HmketIn8e26TvqEIrGEuXsdenP2X++ctliNLm810mm79/Jcbaxfi0cgR0C3l0cKMCl/EKkiSVBWw+TTtBg8OY5USJaupJUWqYKmUhandX0EVkmsNd58OW1j8+oNRuyXr3MPK4o238v+Y/pIHD2M+e1m7OvK921j0=
+X-Rspamd-Queue-Id: 600D340012
+X-Stat-Signature: dy79zispfnttpe4u8g8zqxao6sppdxna
+X-HE-Tag: 1790780727-814678
+X-HE-Meta: U2FsdGVkX1+7bTdDBnlHSQYtN7bIRGxVXNkmuAxxmA2A7zJw4HsgDf7h6SNGW0ol1KThUJrUQQOlnH0frocqnLIsZyFjCgwXhAGraCE8GysRgXED9kLrP3CV8sRHMSjCmYDATpqntDFcodQ19NycZYlCUj6/fFlz6mwz4oOsZnHtdSVsStZTUrFuWxYVlcrPIMNnGqxTR85gzIn2U7bMHlxYCAB7f2ohawBkp9xgWD/517skOGi9mWLZzYQq14h5CZIJP4jycKIves+HdPl4Y2R/d5HZ0kaIVBoGOonQKzwvh5/f8jIyW2xzGFqS5IppX7rlQZuBwjZY9rUD7GwkQ/2QjZrSq8pSIOBvXEaIdqdHNlVgHIaR/wJPubylyt3+ZlDZ+dK/1De1u0Bc1W37oG5P01+BnYZx6ymn3XoptfW2P8DvgHjQgVyY7KxDbVAKcncOz3uNGURpHRlc6MH4vDMIdvwIcZ9NkwGwdbcoeGMYd2qJvYLYlySbtKzhcAS4cQuXVdFo5kMppOcZClX1Ls1euJYdsgIvn0juEY6gEMX+kmoeNxvmgCFEBkdlT7ooBf0RQkOIpbUoFiIxSzcXTYSUHK8u7IL/BbKDqWNJkscaMtjj/KG4dGWGybQNRu78yU1On3dpPVu87kfHP9Sut1VQzPK8EVFNXknFoYKdFMweJ/HQjuIFlcCtQMxCZNkcq6KIMad1fI9fkhP//TAHpboKNIAeAlVlXi+qthpLQirmQ7sy0lJzJOu86EHLCH/xIRhWYmHiH2/bIaAg92NOb3RPBRIjuRC6FZyHsR/tv6mwC1spqyi4ighWklV6mN0TrzUwRaGSXzs6cFhwWZhCJUkFN797LPIs5HMW85+Oy/j/8na58kERyAwrMdDW/mqwrOVY+sXYU2nwHGpDaNVAbG8N4RX1M4iXmogeAl/ZJt1+jEXXNs/lE7yM47lGq6DfSDO4qasBlETAJ45CSlM
+ tupQRvZq
+ TZHBxlS3G6O/dlc1wJLRBrZb9Fwf0gsDIsT7AHN8wtN+Ib1qFTHvgDIFqBNcGLZOgWYfh3B8pJqoBmHXymcn2BArMhss16E/pQgGmZeeHX8AGCVN3Z6VKZ1kZg0eXfr7lcgpc22RNG3EPyeZtQyyGgGkdrIqUpApiyCdU0NqMW+wss9wNslmaSQALyv3MA2QGW8vTdrH2vkzGTBowwkERxXIzhEJigl5zCBEWk5a3Qpw5lq9EYPjvcMJMF2BOQp1kVVON8VGNoZsta+3efIFi3C9oadH9+0QlkGQaMF1GdMMaWYpPTiGNGuUCjOEbhBwYxVY+di9nUfvM2uyOOctWJnK1AJX3EVHLLpNNFb4vhvVSXgmjk1hCMXkcCDESOvvWRk6JOhgMa68fF5gvTD6mt3A6ok4p5I0LWBWT11/ndfK2SebrXjh4ZDPe1DB+2TiJ+q8htQ7q8e9GTNeG+SwzaGcYMrTWzVSFwDnD5sXvTe/5R2Z2oV1mc0MB4EDHZBUOO/YbrXAvao/LFqH/VVFu64t+yIXlq/dWC1zc46hv4B2YUshTq5eVeBYuDZ90ncaH6oyVEWD4R7jOiMcb0adf+TV3WLU9yw0vQwrfdhH4kssR+h9lPAiSlzs1sq8HSD2LH3uo3RJNWbMC2btPy44Q3L9WtxCMpHFoZDxy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,58 +130,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 30, 2026 at 10:02:23PM +0800, Li Zhe wrote:
-> The use case is closer to the second one, but the main motivation is not
-> only startup-time performance.� The more important point is that each
-> workload has its own DDR/CXL budget assigned by the workload manager.
+On Wed, Sep 23, 2026 at 02:28:31PM +0800, Wen Jiang wrote:
+> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 > 
-
-mempolicy is the wrong interface to do budget policy, you'd be better
-off looking at Joshua's memcg tiered node solutions for that.
-
-> MPOL_WEIGHTED_INTERLEAVE is useful because it lets new allocations
-> follow that per-workload budget from the beginning, instead of placing
-> everything on one tier first and correcting the placement later. This is
-> important for workload orchestration because the workload starts from a
-> placement close to its assigned DDR/CXL ratio.
+> In many cases, the pages passed to vmap() may include high-order
+> pages. For example, the systemheap often allocates pages in descending
+> order: order 8, then 4, then 0. Currently, vmap() iterates over every
+> page individually—even pages inside a high-order block are handled
+> one by one.
 > 
+> This patch detects physically contiguous pages (regardless of whether
+> they are compound or non-compound) by scanning with
+> num_pages_contiguous(), and maps them as a single contiguous block
+> whenever possible. The mapping order is determined by taking the
+> minimum of the contiguous page count and the pfn alignment, allowing
+> graceful degradation when pfn alignment is less than the contiguous
+> range.
+> 
+> Pages with the same page_shift are coalesced and mapped via
+> vmap_pages_range_noflush_walk() to avoid page table rewalk.
+> 
+> As users typically allocate memory in descending orders (e.g.
+> 8 → 4 → 0), once an order-0 page is encountered, we stop scanning
+> for contiguous pages since subsequent pages are likely order-0 as well.
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Co-developed-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> Tested-by: Leo Yan <leo.yan@arm.com>
+> ---
+>  mm/vmalloc.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 80 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index a43965016eb4d..37cddb7f45a4f 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3576,6 +3576,85 @@ static inline unsigned int vm_shift(pgprot_t prot, unsigned long size)
+>  	return arch_vmap_pte_supported_shift(size);
+>  }
+>  
+> +static inline int get_vmap_batch_order(struct page **pages,
+> +		pgprot_t prot, unsigned int nr_pages)
+>
+get_vmap_mapping_order()?
 
-This however is reasonable to me - you'd prefer to spread out the cost
-of initial faulting placement explicitly, rather than simply take
-fallbacks when the top-tier budget becomes pressured.
+> +{
+> +	unsigned long pfn;
+> +	unsigned int nr_contig;
+> +	int order;
+> +
+> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+> +		return 0;
+> +
+> +	/* Limit nr_pages by pfn alignment */
+> +	pfn = page_to_pfn(*pages);
+> +	if (pfn > 0)
+> +		nr_pages = min_t(size_t, nr_pages, 1UL << __ffs(pfn));
+> +
+> +	nr_contig = num_pages_contiguous(pages, nr_pages);
+> +	if (nr_contig < 2)
+> +		return 0;
+> +
+> +	order = ilog2(nr_contig);
+> +
+> +	if (vm_shift(prot, PAGE_SIZE << order) == PAGE_SHIFT)
+> +		return 0;
+> +
+> +	return order;
+> +}
+> +
+> +static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
+> +		pgprot_t prot, struct page **pages)
+> +{
+> +	const unsigned int nr_pages = (end - addr) >> PAGE_SHIFT;
+> +	unsigned int prev_shift = 0, batch_idx = 0;
+> +	unsigned long batch_start = addr, batch_end = addr;
+> +	int err;
+> +
+> +	err = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
+> +					     PAGE_SHIFT, GFP_KERNEL);
+> +
+> +	if (err)
+> +		goto out;
+> +
+> +	for (unsigned int i = 0; i < nr_pages; ) {
+> +		unsigned int shift = PAGE_SHIFT +
+> +			get_vmap_batch_order(pages + i, prot, nr_pages - i);
+> +
+> +		if (!i)
+> +			prev_shift = shift;
+> +
+> +		if (shift != prev_shift) {
+> +			err = vmap_pages_range_noflush_walk(batch_start, batch_end,
+> +					prot, pages + batch_idx, prev_shift);
+> +			if (err)
+> +				goto out;
+> +			prev_shift = shift;
+> +			batch_start = batch_end;
+> +			batch_idx = i;
+> +		}
+> +
+> +		/*
+> +		 * Once we fail to batch pages, we expect to fail batching
+> +		 * for all remaining pages, so just give up.
+> +		 */
+> +		if (shift == PAGE_SHIFT)
+> +			break;
+> +
+> +		batch_end += 1UL << shift;
+> +		i += 1U << (shift - PAGE_SHIFT);
+> +	}
+> +
+> +	/* Remaining */
+> +	if (batch_start < end)
+> +		err = vmap_pages_range_noflush_walk(batch_start, end, prot,
+> +				pages + batch_idx, prev_shift);
+> +
+> +out:
+> +	flush_cache_vmap(addr, end);
+> +	return err;
+>
+On error, if kmsan_vmap_pages_range_noflush() succeed you do not do a
+proper cleanup?
 
-i.e. w/o interleave:
+i.e. to cleanup KMSAN metadata: kmsan_vunmap_range_noflush(addr, end);
 
-[node 0       ]
-^^^^^^^^^^^^^^ alloc until full
-                vvvvvvvvv fallback
-                [node 1          ]
-
-in this scenario you end up with considerable hot memory
-on the remote node consolidated in time-space (everything
-allocated after node0 becomes full skews heavily toward
-node1)
-
-Tiering then likely takes many faults to rebalance after
-you've already reached node0 limits.
-
-w/ interleave
-
-[node 0                                      ]
- ^^^vv^^^vv^^^vv^^^vv^^^vv^^^vv....
-[node 1                                      ]
-
-In this scenario you do an initial fill distributed by weight
-and then let tiering figure it out without consolidating all
-of the pressure to the point where node0 has no space left.
-
-That said - this seems like mostly an initial-fill problem, after
-you initially fill your memory, a new allocation largely implies
-the memory is hot - and you probably prefer that to be local.
-
-So while it's possible to enable this, I'm struggling to understand
-the justification.  I think I would like to see numbers that demonstrate
-that this is actually beneficial over the life of a workload.
-
-~Gregory
+> +}
+> +
+>  /**
+>   * vmap - map an array of pages into virtually contiguous space
+>   * @pages: array of page pointers
+> @@ -3619,8 +3698,7 @@ void *vmap(struct page **pages, unsigned int count,
+>  		return NULL;
+>  
+>  	addr = (unsigned long)area->addr;
+> -	if (vmap_pages_range(addr, addr + size, pgprot_nx(prot),
+> -				pages, PAGE_SHIFT) < 0) {
+> +	if (vmap_pages_range_batched(addr, addr + size, pgprot_nx(prot), pages) < 0) {
+>  		vunmap(area->addr);
+>  		return NULL;
+>  	}
+> -- 
+> 2.34.1
+> 
 
