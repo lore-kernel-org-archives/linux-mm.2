@@ -4,102 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D54B0CA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:22:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F14BCCA5FBA
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:27:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1E756B0088; Wed, 30 Sep 2026 06:22:13 -0400 (EDT)
+	id DA9C36B008A; Wed, 30 Sep 2026 06:27:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F5B66B0092; Wed, 30 Sep 2026 06:22:13 -0400 (EDT)
+	id D5AFD6B008C; Wed, 30 Sep 2026 06:27:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90BC06B0093; Wed, 30 Sep 2026 06:22:13 -0400 (EDT)
+	id C22716B0093; Wed, 30 Sep 2026 06:27:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BCC36B0092
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:22:13 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E6837C06E8
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:22:12 +0000 (UTC)
-X-FDA: 85270038504.26.2113C1C
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 33D48180006
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:22:11 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of 30uK8agkbAOcbhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.198 as permitted sender) smtp.mailfrom=30uK8agkbAOcbhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790763731;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 877756B008A
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:27:28 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0269F1C3782
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:27:27 +0000 (UTC)
+X-FDA: 85270051776.12.46D5C0D
+Received: from mail-qk2-f40.google.com (mail-qk2-f40.google.com [74.125.230.232])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0A60F16000A
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:27:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=q3VvY0h8;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of rockeet@gmail.com designates 74.125.230.232 as permitted sender) smtp.mailfrom=rockeet@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790764046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=5ciPoU9g0L9TxJi7K6B543D4kgHHCBTjDma4BORePb8=;
-	b=VwdaT4YEtH4CHIuIL0gCeJ/x3Ehtq2e518fmIBugIHvFcW/HKH60vh2qLENNwE3Sa9YmQp
-	rqXHG0GGJM3Qra2eIheQ557MAyHccS8LnJ2xBh2r0/UI5hV/3d3Kh4GZvXrvjD4YVYsObo
-	rGfJOBi+bJ+ea7ioERZawrWgMLL4Ij4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of 30uK8agkbAOcbhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.198 as permitted sender) smtp.mailfrom=30uK8agkbAOcbhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790763731;
-	b=CMFGZT80DnysFw6dSBoQ0wZp55aPeBcOYwOafjVtjsM2Q9bn4Do06DT1dHI6Tz7hKd7ljw
-	LE7i/7IaBZCItJ44qtuio0h7tmaUZXUynROVixODHqproJOqbX6cvgzQOmOopdhocXQErO
-	UAhd7SLyGIhKUzRBb5eLu1EQiZXp5eQ=
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4ea4c979030so5098447b6e.0
-        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 03:22:10 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1bhyfk1ADE8+nR+UpUvKzTDyETELacsIgwqRNvLeG9o=;
+	b=duCRRt14k9VOpVP+uaaWUgbRltY2rz7WErXdimZl+BgzsdnI4CNwAG6fCmvApMwLKSbj09
+	UdgEP9OTWpxu6nOGDsXUPVD0pbLhkYRCqvWDmWOsa/rvhB7XSXKY9in0oDdhkONYH8wYzY
+	JTz8tcbYEQgz7g5fkL0E55OTj4JPOcM=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=q3VvY0h8;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of rockeet@gmail.com designates 74.125.230.232 as permitted sender) smtp.mailfrom=rockeet@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790764046;
+	b=MgFFOVEHVZxU/QKOzMyxyp2Opca5EsMXQAsThXzDQ9P7IQIPnfDb5x8u4M+bTCn52p9qUV
+	8sGYNS0YFmkk4qXQGfo45i4aTPW4ZRlGahOcqg2OQrEmTkirK6cWqJuVxyLgsEAsuNQIBo
+	nc+y4hxEbmoALTe6o+1tnlNp4epX0qM=
+Received: by mail-qk2-f40.google.com with SMTP id d75a77b69052e-5332b967eb4so38130971cf.3
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 03:27:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790764045; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qw++GmGQWWQOllH+1e2kS2QyrCw0dQcqiHzHkwtKZE1BtEKt4SPaw12yhcU9Tzurdm
+         yUWkH6u+4LZCoVEmnZtUP+KMNM6V4RTH38YKm50M074lOm+sOqLvdQwNeUMr7j6t5DP8
+         tKmbYrGxELq2lA6aXS4HSVYy2M4je1mEVyaS5JU/bM0cUAXrHhxfWXjuSA+itxqpn1fZ
+         pmgx5S5mLvqKTZNenDwuaT2CPYXplxM7KQwtLUNrVSJBVzsXhkRT7XnOCy/aCpl5hKFD
+         bcOh7v5DcEf5EOfsSIBhZfUrFXFrtV7nqkRPBUYG6ioskovk1qP1iHW5Y/23lL8JS3XS
+         Tybg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1bhyfk1ADE8+nR+UpUvKzTDyETELacsIgwqRNvLeG9o=;
+        fh=eU+7J5zG8KhObk4oF9LN/8Qmen8uqEbod2Z/REFoRCM=;
+        b=LLJVNy/InhRXP4C6M1C/UesvPxDO6FKKPTcd7Ypqv4ljnlj3vwVUHTotbPvBL1jxdP
+         4epvFXpxRixo2KxkK0EswDcCmAUx3GHM1D7gmyokTLAXV42NsqZPmU/c5cjyc23XKj7g
+         TBuPE6l6BgpPH7V+W/dYGcUA+Jt7aAbLOwypNJi2Jf74KiJiKh/2VAhBvRA3UxNcTzHh
+         mH49b+r8yNKTc55ilX8d+GsCoXl0MRxMdJBrJgxGFdb14mzQeiH2gKXc4jzc5cHe9pHJ
+         OJn/sAU8DsW4Bh0VMMhwnngx9BK7vmQF1C3IJJ/NhmXSwTkcgMIuM80LWSkbH3xp102/
+         Uq6w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790764045; x=1791368845; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1bhyfk1ADE8+nR+UpUvKzTDyETELacsIgwqRNvLeG9o=;
+        b=q3VvY0h8CQ6N7f655q5c69eBpME6vHbFvRozGH+n/0s7s531iMYZrlQIfbg96VkOKo
+         qnflzsuapDAs1nvSOmqugMemw6D/Zow4RgNVIoOD2gf045laOARuFTpYKmCaX/JaAutD
+         DNAzxnFRj8Lsj5UKEPXRbKdGIi6xoHImLA0W9wg0VGSIl1yktOYUDM+ouy3Yjm2iS5dD
+         wsaZtv6OOQyPFQpCniM7GJ1yxPwUH3ClcVBP6hcM3gcNxWa5QgfeG+lKx1EKdoOCdXhN
+         YDesBtWIGlR+iiVydwAwlqpbvfJnOH+Woh3HxreHqaZjQy+lc1qyR9Fu3yaw+rn58XW7
+         8E9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790763730; x=1791368530;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=5ciPoU9g0L9TxJi7K6B543D4kgHHCBTjDma4BORePb8=;
-        b=KDnroSTAkWXmmHqXHoE6lVLaxd+Vs2SKvUvQnRcjXRw8f2tGpTyL7vNrl8XAAqWj2w
-         rQ6NeiwzbXtx4pEuIr4hWnDeRxL8sH9/wZnRfeTvkTCP4mRsqeqYuadsxYddaTzuJaAD
-         3RQMbcz4ucdv8qTPD2o1PAyBf/AbqLcbGTTFen4ExOCz0of1CGL9389JlCnBdzp3uAml
-         UiRCMPh/D0JhxjGvCH9FNlrlPxxNNhcV1tpzHWeOi0rdDIrPsQLw4WN77UuX4m3fjzXo
-         xAvwcVieW2VKqW7RqoP4zbs053U8CDmG6mld1ku0cdvrHnwvjP2YZZojl6ApEwBaX7Lz
-         6sMw==
-X-Forwarded-Encrypted: i=1; AKwUvBx4zfEIZ+snsPp9lxAMtm2+vdO7kHv0rnV44uE5s480jii0DyIbuP4dHKw8pL5GFZyKLUKN2+ERSQ==@kvack.org
-X-Gm-Message-State: AFuF++mJPYrLejZ5Uql7bcMwBvCNaqcQ5cBzqB45/wnYW8kL7sIHTyRq
-	8LS5L6/xHt35cTZIKEheGBAfL8LSA4BK12GPcmh/MDomcpxtoakJD9vSEhYo/KUFKUvJzZYDmVU
-	PxhjcbD2cDCfnlwNRUQRPWWcF/wMovzyGtuqxAbrhIuKXI4ZqMdhWqylInHc=
+        d=1e100.net; s=20260707; t=1790764045; x=1791368845;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1bhyfk1ADE8+nR+UpUvKzTDyETELacsIgwqRNvLeG9o=;
+        b=hjMGvDI1YZObdmxfrWZWF1tP9Gn553ze8oRQ92Z+8zNtDFwvf018dWEv5EZsemYZ/K
+         V6p+CWE6sSFMC5Qx9TsqeC50Z1QfJtYZJtuQJpVtm+imzVYLv4eHMqa8+ouiLyshbCMf
+         CXKD+Lr+eXm+1lgo82+MQnmEwuMk5rIIW5mMDJHYzrQHdurI1Bf+teWbhXr6oBaXFQvU
+         Z3YxwYUv+59d7FpZ/UG8EiE1Pr3gdmCDxhwIIgsHeZ7vvj6ygRRqTnev8HM0OPaNxtPA
+         McZ5uIzwjDX+9Hqi9MEF5y/yxd0zqPddGgfJyaIAasvNnq24yuQIpEVGuCUQuBjDMTfB
+         HbXA==
+X-Forwarded-Encrypted: i=1; AKwUvBwogcvIc9qqKy+nvweKQYq/uX780FGpt+FPhXiS0rzbHBOixjic8xAvVY2QcBquXSIyh65eYaQuWg==@kvack.org
+X-Gm-Message-State: AFuF++mSEKt047Hrd9eyU2Wnc2p7wA8ODS4cMGJui0GZYqj5g7aqvkLS
+	22opT9rqlSZqb/OQI0V2wnyn+LgYRZUpUYnaWErY7JISAm9c7aR8u9X/oOS3ktIkHACUV//AM8t
+	Xby3QHZ92j6QpbANGHC6xIj12z91UWsk=
+X-Gm-Gg: AYBFou3HgNhfs12ul7/nJ1Nc7v24oFTgnMZQsJrqSzW2wXv/kY6+684GlTSQNSfxqsf
+	5qxVfUX1okoBJvpd+jYbJ/eOjAXVTNrA73KwJqTSmECMKG/Ldopf2LVXRxbgKw+hJ87Zve/uplB
+	XSegHjH3kpbdxR53D/J5rvnLSV8R4VzkAm1NDwOqRxJhVrdIMiiTyOxGVK2GVaL0ntzV3r7pCox
+	BpYrmdTM4V6XHUEAsVVql17LT/bh93aXLHXR87/H+taexNTIitAN+S8Syqx7gCVpB8g/IbKfU/g
+	XQeSYqrhjVsqZqUlDDY0Ssy/kJWrxeKY58HvDKFuPyNXZtjSuAjprTg7Y0GznJ1h8/JKk+O3ukQ
+	czKMMDF1emcxzmAD03dNavAO/0paXf/T+rjUcTw==
+X-Received: by 2002:a05:622a:2593:b0:533:2ed5:3191 with SMTP id
+ d75a77b69052e-53374d2ed19mr14887221cf.34.1790764045045; Wed, 30 Sep 2026
+ 03:27:25 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c3d7:b0:4cb:f21c:a794 with SMTP id
- 5614622812f47-4f1b5dd6029mr744708b6e.28.1790763730224; Wed, 30 Sep 2026
- 03:22:10 -0700 (PDT)
-Date: Wed, 30 Sep 2026 03:22:10 -0700
-In-Reply-To: <20260929034158.1455429-1-neilb@ownmail.net>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6abce2d2.64639fcc.9812d.000c.GAE@google.com>
-Subject: [syzbot ci] Re: multiple-filesystems: prepare for changes to VFS locking
-From: syzbot ci <syzbot+cifa06034fce36fce1@syzkaller.appspotmail.com>
-To: a.hindborg@kernel.org, amir73il@gmail.com, anton.ivanov@cambridgegreys.com, 
-	baolin.wang@linux.alibaba.com, brauner@kernel.org, cem@kernel.org, 
-	coda@cs.cmu.edu, codalist@coda.cs.cmu.edu, fuse-devel@lists.linux.dev, 
-	hughd@google.com, hyc.lee@gmail.com, jack@suse.cz, jaharkes@cs.cmu.edu, 
-	jlayton@kernel.org, joel.granados@kernel.org, johannes@sipsolutions.net, 
-	kees@kernel.org, leitao@debian.org, linkinjeon@kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-um@lists.infradead.org, 
-	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, miklos@szeredi.hu, 
-	neilb@ownmail.net, ntfs@lists.linux.dev, richard@nod.at, 
-	viro@zeniv.linux.org.uk
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
+ <7ebe4591-2306-4b5c-b83e-6a2e34b52bd8@kernel.org> <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
+ <85aff663-2131-47da-ac04-8f0799a49b91@kernel.org> <CAAE3jtcRQ407P9LTbg=JOwhABQRViSaq2XBefnDdNWiD7PxvUg@mail.gmail.com>
+ <1ce9cf3a-15dc-4815-ba29-2e22b05206fb@kernel.org> <art8EKRKMdwSDCkr@gremlin>
+In-Reply-To: <art8EKRKMdwSDCkr@gremlin>
+From: =?UTF-8?B?5aSp54u8?= <rockeet@gmail.com>
+Date: Wed, 30 Sep 2026 18:27:14 +0800
+X-Gm-Features: AclHuK-4Kbsa_X5iz4H6jHTRUMy1VIoQyPoWQlC8GcQsmw033rYSNdAy64prik0
+Message-ID: <CAAE3jtftxMkCfWJ77W-xvV2x7jdAN8C8kyofYC3fEivM-Cq6UQ@mail.gmail.com>
+Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file mappings
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 33D48180006
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: u1jtnfy1azg7fz6id3z7qzd989p539wj
-X-HE-Tag: 1790763731-75257
-X-HE-Meta: U2FsdGVkX1/IYlJFy9iuKO4ghGW9ixDYzFI/8Or7d7e/oAMGTbmvB+ZCWXUO9h7glygl76PM2FOApmjmhKAhXxxDuayTBq9QoZNwQny6wF+sSqjnavSm+ASIrrmxrAJG/ihzZ8XowbVmXwD/J1bgDPGMBCQRVVWf4MnQvRPLTsiEFK3Fo/Bt+0n3gQg4AhzD6AcefUeHc/KfGAJfKxy6sdynrEkVaeZgsK+MVGi3x3E5viaOs+bbeq2zA0tyuCG5vGWpDsbo6Cv2UCBkiwLYXMDulhoCS0MkNiBITkSAa+bz6m1slNSKHPgl+/RXvohD4OgR3wPW47QkjV59XJsI1atZld+FQbqpLjXSNVFX7fOODaWdV6pgUCAQRv7NI8NA2zoS6o5058SYtYpVFRw9dMPOT0x5HjZRpyS/pmNOsYlA71pkZeNPIimH9cxCygoGZkX3OQJh8D4+sUH7zzwvX19o60EyEABkZ2V4gIoU323+Cb1QyTnE9ZRdDjePerPzd8mhTkFQ3BcrcvM5P3P2qVuSjuLofrtjW4q+DAjXsukBNMo2Gx3Ue0wgrllKmLC3M2kskMuSVq5D39APzjUI0a+rnve9nNCWM3KfObKpWXVftQugwKHDA70g9AgzafMjrYDZxXH0OlOKba0k+RuI1E3pSrDVhddNQmRw16tc4oPAY/FyQy16LC+9X+4BQIDXiWHdUjr4pkiRYBWaTZl0KsRd1xckR9b9E/duiUhOe4gOwUb+rpOGXF3HLY21B28ii451UPJ7rOn0W+BFWVObS0u7/mrc8w6S2Wx7s3+B8C0sJX/w233PDRgb4qG2LQ1S3v2yCPV/lo7aqKm5G2P3WrM3VrUd5pv4lL5N7hLi1b+X/TXMLzGjKga+YhLeVY958ING+UTQqr0+Td0v7TL0/+tCWynnRzqK5RjdIaQBOrRDgsqQt2syzcFKE1sRL9UhtdrASDbm9UdhITSQkQn
- OjxE2cvI
- J22h+lnkz2q5usDXv11R0f8/atdfTezoHTTYM5AxNflzkyDtNn3qZLhBspsgYk14osa483YK/rAwrO02XmctdVqDSVU5tCb52PPRsn8pKe1fBRbjPielnU6wsO6zhM9ORQCxY0hVINh8lm3eevC/ofarfInFAZ1quhoSJa/FF8EF6q7YVgqz3mgb/ndZ+wRWpU6TdROVZBnilsRJ1F1Qw+6+ZuEv+ZqFu7plQTEYIHEiSg2BZ8YcyWWaghgmvIaqKA68/FUIbcObrQglE9FmAyc/8/i3rkV73sa05Sc/pn8PSyJZzIUw4VMBxuOpF3AY4xdA+VYxI27k+GWRpx78X7R1FCjBnQGLG0uSMx2hPOsm/hEb6DEpO7flUEJFUA3Lzw3/T/w/l1ssN+6SPankKS4u32/Vetz7mKhg7MHgQEDiNqReenAz0QyUxY7GUyjE14Il4ivuQzCa/YtgehtcWv2DkvAQF8cpUxFUNSqbdbW3fhba6nieUi8pk49/9qcr2l1UBMK7drE3EK/eN1ocBpPfV6XLmhgNufwiv9e18FP41OVI1/Rd+wHt/tVvrvHByo+cLiEQjxDS1buawMBG62ZSpkzTds6E7OYYr4XrWnT08IX4k7hFi4GVjwd12v8oXNe0vr1tLHIp3BmNkKOcAaqO8LyUo2COdUzaozT35H1hJVB7vPlSCQCwfgkbCTtwnnApSWegmiw/Nl1B+uZT2ry6R7TvFCX5JyNR3ayXa8xBnweKzf8Fmb0JxSCnPv3CGbrM6f9OYxAHxbD6ufv/NzJQdL2xUJrYO/cgHr1pOQfssj2ISJ9cDpL/i7oBWoNQhpVdHO9p7c48mcCt/NgNm6OmKDaDeMfjU/zJmf7PBvLI3jnyn6bBlK6OayNz7OF2bYk2JGkwe2EKDKMdkuhux4kszGCvgu0JiQnkpvgSscfftu7NYmUM4BS0NyLgHWmDXhZEkvXPbJfDy/kO2op+SsLw55vmS
- W6RbjSn2
- WY6DumRvuInedQxQXhW9NQqBcc54qWOXEbaV4yIVA0wzv23BizLpag==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0A60F16000A
+X-Stat-Signature: htikxxzzf1wc1muto9c4w8wkiu6k4i4j
+X-HE-Tag: 1790764045-932435
+X-HE-Meta: U2FsdGVkX1/2bnv65vx10ceYxdugdT+bGzINYawZSXvrpodGco6mcqK73GGU2BiSsgWaRPx5/h0Sa3t30Z6KA+fzKvVp9apFdcKk7pU1fZlXTbLnPKJh4ONbo/FYhZTHYinPmHxw2ZP4IBmU8+3xOSfcCyyzimKGmjozBFAn5cNaSFKbVNd9dIko8YWtpsxUM22CoChHP29EAJbVJKYFWdKqDrafT6GkwnuH+zbK8G788oIeUaFAyO+rVQ9PO99HBJ0/F3Ti3hT3AFXIui9ig1V/XKYwb5/OGkZeOZpVExLXzFu/3MnZxjbd+ASxc40j8/GxqyabHKS50+hsB7mTp9Ay9QsXgTDzEUdlVoDtLFyNT91l2vJt2AMtUy2UNFICR7pL77Mm3pik21mi4tFjDu77NLbv9yMrgwbaVeIJhV05OfvAgEQV2643AACrLFGhBrzqdIJMxvEIEjZmZIPiYM2RWTmWN7h6l/h9tWeCRkWQwp3E7WUsquLwHOqgTw/47iu7dYazLZxzCHN2PBpU4HML1D06blD2dv+WtNzRpFv+tHr+qlqnuelPLyJib4Hh+MSegf0t12Mai6kud+7SbU5MxTotQnnwYGVVJjgTTlIyyCXwdOR1ql3WdxnEU1TgKuU4SGH0FMj/jWCPR54EJY+W6X+J3UF6Rr/R5Sv9JLC21UZ3bl99ZNxSS3uCIm06+tVT6RObjiNR9MAKFiKLDiw0dvJo+9m1d/5YRI/tpdzLqBM+brsgBBRItJZ1KPb8AZ94iuS7aD2aeJif5IfFUqgKJ6UWnJIkwUPxi2Au0jqEm1e1SC1OTolS7iVlB2u8wMSvH1xxbKETyUMqWtLymz0do3LAHcDoZo9BHqVEQCULseURjr9+KDER9hOzSX7um/8AIce+j5xkd7rtb68kwiXZkhqtBNbEDzFuaCUIEDzDuvJnvUo8vvIX9Cya/Co9+6OcRajOegIN/lAmbvx
+ VVkHbsTB
+ uOYREBoeQYA307RXMl9s1s8AuwX+gD41V0lV3XAahS2fhdAcKQXkuqXNxls0+MXYePo/o9h1rPwGP4jPnnBBCvI/qDSau1xB8gccnW1JbwXRrn8JsONmeexVCrrL+KiBMbFm3WoZpPktTIHm+5fWL4TSYtU+waHmZgu24x2qU68+suaQMded5g0/p5d8ycyfL0arD/OLE+muT/P9xap6mg5ZYeQjoMXqsxjKGEyoMIyR/XdC02+WXTX4Uuzq3ZQwPGlJyaAlpnfuc1EgkreG46pBf4UoXAmcuohI6ltzDB66/dYprpQeLUN+hiiiJoU4snfBZtwPA9nj8D1rb04tqViVPfM+uygFGYnWArERTlAuM4vBCD+CZ3+jMtwr5ht9o/mqBwOTc67C+4A8wwmPYrtdVSGCtP8X98+fNjIxwFb7oQQLMssIZwOkZNlGh2ISpglka
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,106 +144,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the following series
+Hi David, Lorenzo,
 
-[v1] multiple-filesystems: prepare for changes to VFS locking
-https://lore.kernel.org/all/20260929034158.1455429-1-neilb@ownmail.net
-* [PATCH 1/7] VFS/xfs/ntfs: drop parent lock across d_alloc_parallel() in d_add_ci()
-* [PATCH 2/7] shmem: use d_duplicate()
-* [PATCH 3/7] coda: don't d_drop() early.
-* [PATCH 4/7] configfs: remove d_add() calls before configfs_attach_group()
-* [PATCH 5/7] hostfs: don't d_drop() before d_splice_alias() in hostfs_mkdir()
-* [PATCH 6/7] procfs: drop parent lock for d_alloc_parallel() in iterate_shared()
-* [PATCH 7/7] ovl: stop using lookup_one() in ovl_iterate().
+> You really need an actual file on disk. Shared memory / shmem / memfd is
+> not sufficient?
 
-and found the following issue:
-WARNING in __d_instantiate
+Yes, an ordinary disk-backed file is the intended output, and subsequent
+consumers access it through mmap.
 
-Full report is available here:
-https://ci.syzbot.org/series/b87296ff-c49f-416e-834c-a886ea8bd6c3
+Shared memory can preserve state across a process crash if the shared
+object remains alive. However, using shmem/memfd would introduce a separate
+staging and transfer step to put the data into the final file. Building
+directly in a file-backed MAP_SHARED mapping lets us preserve the latest
+userspace writes across process crashes and retain the same file-cache
+pages for subsequent consumers.
 
-***
+> I also assume MAP_PRIVATE mapping the file so it's anon CoW'd is not
+> sufficient either?
 
-WARNING in __d_instantiate
+Correct. With MAP_PRIVATE, modifications remain private and are not carried
+through to the underlying file. If the constructing process crashes before
+transferring those modifications to the file, another process reopening the
+file cannot access them. That would lose the process-crash survival
+property we obtain from MAP_SHARED.
 
-tree:      linux-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
-base:      3879f51857325da9bf3cfb073280257cd16ae067
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/dd8fcfa5-13f0-458f-bd3b-9c06d4d67a78/config
-syz repro: https://ci.syzbot.org/findings/fdffe42d-ac1a-40d9-b05c-014808f5b0ec/syz_repro
+> It'd be problematic to effectively corrupt the page cache by saying "hey
+> this is dirty but just clear dirty state and pretend this is what the
+> disk has".
 
-------------[ cut here ]------------
-d_in_lookup(dentry)
-WARNING: fs/dcache.c:2197 at __d_instantiate+0x3f4/0x700 fs/dcache.c:2197, CPU#1: syz.0.17/5823
-Modules linked in:
-CPU: 1 UID: 0 PID: 5823 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:__d_instantiate+0x3f4/0x700 fs/dcache.c:2197
-Code: 03 41 80 f6 01 41 0f b6 ce c1 e1 0d 09 c1 89 0b 48 83 c4 10 5b 41 5c 41 5d 41 5e 41 5f 5d e9 03 26 96 09 cc e8 0d 84 75 ff 90 <0f> 0b 90 e9 7f fd ff ff e8 ff 83 75 ff 41 81 cc 00 00 01 00 e9 34
-RSP: 0018:ffffc900038d73a0 EFLAGS: 00010293
-RAX: ffffffff825242a3 RBX: ffff8881b4eef380 RCX: ffff888169801e00
-RDX: 0000000000000000 RSI: 0000000001000000 RDI: 0000000000000000
-RBP: 0000000001000000 R08: 0000000000000003 R09: 0000000000000004
-R10: dffffc0000000000 R11: fffff5200071ae6c R12: 0000000000280000
-R13: dffffc0000000000 R14: ffff8881bc29f3e0 R15: ffff8881bc29f3e4
-FS:  00007f15d1af96c0(0000) GS:ffff8882a8cc9000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000001000 CR3: 00000001bd5c4000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- d_make_persistent+0x8e/0x180 fs/dcache.c:3139
- shmem_mknod+0x2d4/0x340 mm/shmem.c:3851
- shmem_whiteout mm/shmem.c:3982 [inline]
- shmem_rename2+0x267/0x430 mm/shmem.c:4022
- vfs_rename+0xbd9/0xef0 fs/namei.c:6219
- ovl_do_rename_rd fs/overlayfs/overlayfs.h:371 [inline]
- ovl_check_rename_whiteout fs/overlayfs/super.c:593 [inline]
- ovl_make_workdir fs/overlayfs/super.c:713 [inline]
- ovl_get_workdir+0x93d/0x1980 fs/overlayfs/super.c:836
- ovl_fill_super_creds fs/overlayfs/super.c:1449 [inline]
- ovl_fill_super+0x1702/0x4360 fs/overlayfs/super.c:1561
- vfs_get_super fs/super.c:1405 [inline]
- get_tree_nodev+0xbb/0x150 fs/super.c:1424
- vfs_get_tree+0x92/0x2a0 fs/super.c:1947
- fc_mount fs/namespace.c:1198 [inline]
- do_new_mount_fc fs/namespace.c:3772 [inline]
- do_new_mount+0x319/0xdc0 fs/namespace.c:3848
- do_mount fs/namespace.c:4181 [inline]
- __do_sys_mount fs/namespace.c:4397 [inline]
- __se_sys_mount+0x31d/0x420 fs/namespace.c:4374
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f15d0b9e159
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f15d1af9028 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 00007f15d0e25fa0 RCX: 00007f15d0b9e159
-RDX: 0000200000000440 RSI: 0000200000000100 RDI: 0000000000000000
-RBP: 00007f15d0c3506b R08: 0000200000000080 R09: 0000000000000000
-R10: 0000000000000008 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f15d0e26038 R14: 00007f15d0e25fa0 R15: 00007ffe9e1b3308
- </TASK>
+To clarify, the proposal does not involve clearing dirty state or
+pretending that memory and disk contents match. The pages would remain
+dirty and continue to count toward the existing dirty-page limits.
 
+The requested hint only expresses that the application expects to modify
+the data again soon and would prefer background writeback to happen later.
 
-***
+> Delaying writeback could interfere with the writeback balancing logic.
 
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
+I understand that concern. The hint should not exempt the application from
+dirty-page limits or throttling. If writeback is needed for balancing,
+memory pressure, or explicit synchronization, the kernel should override
+the hint.
 
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+The intended benefit is to avoid writing intermediate versions when the
+kernel has room to defer that work. There is no requirement to prevent
+writeback until construction finishes.
 
-To test a fix for this bug, please reply with `#syz test`
-(on a separate line) and attach the patch to the email.
+madvise is not the only option, deferring writeback for the entire file
+would also be acceptable.
 
-Notes:
-- The patch will be applied on top of the tested series (as an
-  incremental fix).
-- To test a new version of the whole series, please send it directly
-  to syzbot@lists.linux.dev.
-- Arguments like custom git repos and branches are not supported.
+Could such an advisory preference be accommodated within the existing
+writeback balancing policy while retaining its limits and fairness?
+
+Thanks,
+Peng
+
+Lorenzo Stoakes (ARM) <ljs@kernel.org> =E4=BA=8E2026=E5=B9=B49=E6=9C=8829=
+=E6=97=A5=E5=91=A8=E4=BA=8C 16:59=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Tue, Sep 29, 2026 at 08:59:57AM +0200, David Hildenbrand (Arm) wrote:
+> > On 9/29/26 06:06, =E5=A4=A9=E7=8B=BC wrote:
+> > > Hi David,
+> > >
+> >
+> > Hi,
+> >
+> > >> What is supposed to happen if the process crashes when updating the
+> > >> MAP_SHARED region halfway through?
+> > >
+> > > The data structure survives an interrupted update through its
+> > > application-level copy-on-write and lock-free concurrency design. A
+> > > file-backed MAP_SHARED mapping preserves the latest userspace writes =
+after
+> > > the process dies, even if they have not yet reached disk, provided th=
+e
+> > > kernel remains running.
+> > >
+> > > This does not depend on preventing writeback. Deferring writeback is =
+purely
+> > > a performance optimization, not a correctness requirement.
+> > >
+> > >> It would be helpful if the use case + data structure would be explai=
+ned
+> > >> in a bit more detail.
+> > >
+> > > The data structure originally used uint32_t offsets instead of pointe=
+rs to
+> > > reduce pointer overhead. On that basis, we implemented lock-free conc=
+urrent
+> > > reads and writes, obtaining crash safety for free at the same time. W=
+e use
+> > > a file-backed MAP_SHARED mapping to turn that capability into an actu=
+al
+> > > feature that survives process crashes.
+> >
+> > Ok, thanks. Just be sure: you really need an actual file on disk. Share=
+d memory
+> > / shmem / memfd is not sufficient?
+> >
+>
+> I also assume MAP_PRIVATE mapping the file so it's anon CoW'd is not suff=
+icient
+> either?
+>
+> > >> What exactly is the problem with writeback here? Unnecessary I/O? Is
+> > >> writeback the problem or actual reclaim after writeback?
+> > >
+> > > Unnecessary I/O. Reclaim after writeback is not the problem I am tryi=
+ng to
+> > > address.
+> >
+> > Ok.
+>
+> I mean if you're mmap'ing it you're literally mapping the page cache foli=
+o and
+> dirtying that folio.
+>
+> So the kernel really does have to do writeback and it might be quite prob=
+lematic
+> trying to prevent the writeback algorithm from doing its work on a specif=
+ic
+> range.
+>
+> I think the shape of a viable solution really is either MAP_PRIVATE-mappi=
+ng it
+> or using some anon shmem/memfd as David suggests.
+>
+> I think it'd be problematic to effectively corrupt the page cache by sayi=
+ng 'hey
+> this is dirty but just clear dirty state and pretend this is what the dis=
+k has'
+> or something.
+>
+>
+> >
+> > >
+> > > During construction, background writeback can write intermediate cont=
+ents
+> > > that the application will soon overwrite. Those repeated writes waste=
+ disk
+> > > bandwidth. Delaying writeback would avoid that waste where possible; =
+it is
+> > > not required for correctness.
+> >
+> > Understood.
+>
+> Yeah again delaying writeback could interfere with the writeback balancin=
+g logic
+> which tries to keep dirty page levels sane and is fair and balanced so pr=
+ocesses
+> that writeback a lot get delayed in doing so under heavy dirtying.
+>
+> I think anything like this would interfere with that.
+>
+> >
+> > >
+> > >> In a fuse server you can in theory delay the writeback request.
+> > >
+> > > Thanks for the suggestion. That sounds like a possible way to experim=
+ent
+> > > with delayed writeback. The feature I am requesting would make this
+> > > advisory behavior available to applications using ordinary file-backe=
+d
+> > > shared mappings.
+> > >
+> > >> So fadvise would be an option. However, this "defer mode" is really =
+odd.
+> > >> It sounds more like you would want to have a custom policy there [..=
+.]
+> > >
+> > > madvise is not the only option, deferring writeback for the entire fi=
+le
+> > > would also be acceptable.
+> > >
+> > > The application only wants to indicate that it is still modifying the=
+ data
+> > > and would prefer background writeback to happen later. The kernel wou=
+ld
+> > > retain control over the actual timing. Memory pressure could override=
+ the
+> > > hint, and explicit synchronization would keep its normal semantics.
+> > >
+> > > The hint should also expire automatically when the owning mapping or =
+handle
+> > > is released, including on process exit.
+> >
+> > Ok, so while you are updating the large mmap'ed file concurrently, you =
+don't
+> > want writeback to go crazy, because you know that you will modify the m=
+emory
+> > immediately anyway.
+>
+> Yeah see above, I really think the only sensible solution is a MAP_PRIVAT=
+E CoW'd
+> mapping or memfd etc.
+>
+> >
+> > Let me CC some more people.
+>
+> Christian and probably Willy also? But I'm not so sure there's anything s=
+ensible
+> to do here other than something-anon.
+>
+> >
+> >
+> > --
+> > Cheers,
+> >
+> > David
+>
+> --
+> Cheers, Lorenzo
 
