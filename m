@@ -4,130 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 456C9CA5FCB
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 15:28:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EDE6CA5FC7
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 15:29:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D65E6B008C; Wed, 30 Sep 2026 11:28:48 -0400 (EDT)
+	id 748AF6B0092; Wed, 30 Sep 2026 11:29:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 487576B0092; Wed, 30 Sep 2026 11:28:48 -0400 (EDT)
+	id 6F9886B0093; Wed, 30 Sep 2026 11:29:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 376CB6B0093; Wed, 30 Sep 2026 11:28:48 -0400 (EDT)
+	id 610316B0095; Wed, 30 Sep 2026 11:29:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 088386B008C
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:28:48 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7BD3B140113
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:28:47 +0000 (UTC)
-X-FDA: 85270811094.05.34F8441
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 32C05C0003
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:28:45 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="eY/N3vFm";
-	spf=pass (imf22.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.229.41 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790782125;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 37BDE6B0092
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:29:25 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B4A46C0128
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:29:24 +0000 (UTC)
+X-FDA: 85270812648.22.205E4F7
+Received: from mail-qk2-f40.google.com (mail-qk2-f40.google.com [74.125.230.232])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A89BF1C0004
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:29:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=intwyHC9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of rockeet@gmail.com designates 74.125.230.232 as permitted sender) smtp.mailfrom=rockeet@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790782162;
+	b=s+Xd1fjEzzJJ9Q+1t+m/Y+DthH3oVg1vz338XNFEKW8XtsmH8JF9PQ8SmaErERDjayt/Dg
+	B27jZlwg6I0BdMQHDyaa+uomtH5H/EicTXLPFyLK/HjvZP2JZ8dwYwl+b5ssSCsj6k4G9C
+	ECi+c1QrjWsQElx+khNv0YNsTHunj70=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=intwyHC9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of rockeet@gmail.com designates 74.125.230.232 as permitted sender) smtp.mailfrom=rockeet@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790782162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cc+9rKSOSGawoxpJ2ipg52Wvw6p1Y1gNn8hY21fAsGA=;
-	b=4AR9bsRbg1Jfqu7KUz3RYUv2dfHjSjfIMyGqFTa7FPoVyUAQsjw7IdWey7jZx/nB4gZ1Qa
-	/UHm203HrJuG52kT4DC4p107c+FDn2OVkH44RWMTsHmTa1nhLADpd1ZBnKnOSY152Wnlrb
-	JpkmMoD06Ex1wbVKK25opiEeiEIIcb0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="eY/N3vFm";
-	spf=pass (imf22.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.229.41 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790782125;
-	b=opfwGsGnZOsgtC7bgaTVc5K9U3P8PORMpzUdYeP3dQcZlKRl97Hft229gBFu1QeBvNXYAy
-	15JgMznQJhcuLHguCr4tjdL1NQjThPfCu7sYuRvp9b3in1r5YMxjo4uEH/q5liMVGfYocP
-	YSfk1q1E532UEI09pwUfzbMHz533o88=
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34c0b552ccfso888369eec.3
-        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:28:44 -0700 (PDT)
+	bh=+s4UUy/dbmXVrn6D88sSbqjQQFVAT3AI4v3oDb3NPoo=;
+	b=J5g4QIoOLoilTC82yTY93tha525jFL5GKnhZEWvnU0zoDrVLWgDAkq0Kdzcbq1e7rdAOTn
+	q4PW0tR1J4Bo7RkjNpoHJrb8MFsCOs061PIihicE9oAmYDmb8ZmkGElqiQeh3ngzqyBmij
+	oOOWBLVcKeRPZGkr9An6qWHWJ0b+9/A=
+Received: by mail-qk2-f40.google.com with SMTP id d75a77b69052e-53324cfe178so39690551cf.3
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:29:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790782162; cv=none;
+        d=google.com; s=arc-20260327;
+        b=e78t93l2wDNrzEoRc5WGKQojHY0P0rFOAEbA24hZOtsVd+tNAhMjAH5nRiZrnLPNiU
+         FhJRW49I4ZE9eTkyTowxBmCLYO1dgtHYWm5oVudCJ0F9wXV6vzBU+u9y1Un3uCxjeqyK
+         9lPOOD/M2npg8xPaVKsZW+i+1Ye/C5Rj6ewxznzMzL3oJNK6BsjK5wegXk+ktJajqsru
+         NW0PmdpU6xkUILj/K5HAhR7+ltV9cYoZO0Ir1d5cHfQeUfEz2RbrpkrO9uiPbDt47oe5
+         d0SVSQ06ZU5oSJfeCSrjkCh+J30npAVc6yf/gW7dTrOm01t7gnRBSkv5gbxctRlt+KEu
+         13zQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+s4UUy/dbmXVrn6D88sSbqjQQFVAT3AI4v3oDb3NPoo=;
+        fh=+6kTuEQ2kUZkVpNqUtrDsUyrw1oUSwvJfz0AzgI6gZ0=;
+        b=pcSJ4zIkSHD8xw1CLitimJvZ6xFOSC6GNjsifl64T7q6Fwzg9hC2wLf4V/otT/JQ92
+         ItbdfeV+jKeUJfNLD8UUrOlshW+Ctq5ndPR520kf3hhCgqI4yVUGDRexkaEcuSIA18Wz
+         8wS1jTrmIBEnPMy8iKvhs5Fm9dOJfGV/CXOHQgvkcUCa0oeZMnX8SGL3qQcPrcBpZ7UC
+         KBrW1gzBxQxJeXQguAoJGkk7EuufBTcy8ruLWFIh1X/GDyWMyz/ZN3trT8x7CSzUM4q/
+         J1V6yfwWtjT0j4qNH1OCmEFfuIfGs9anS+uEvZFnOituOWpZ71qYVRuYF5KyWmOYaTHO
+         HVLQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1790782124; x=1791386924; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cc+9rKSOSGawoxpJ2ipg52Wvw6p1Y1gNn8hY21fAsGA=;
-        b=eY/N3vFmqFmhpHogZhppbftxBBlxICIdzVCFX1Gycld2DV4qqDloLrvhAWv2TDoT6S
-         3LRbLsbU5EV1D/2yd/hvpGXmRzDgRhFqsGMNvwRWBPAaDs2uxZVcrEVod+2wCLhMlWJX
-         GJCaBl+VWvMThr+DMH0uupaMdV4SdFpj4z09N2UsCDieUS0ty4Xwwq6+oRkUZpS74ulR
-         HUCNBIJL1+0igLt6GazWPQMT82jrErYMuSZ1uuWMQEeYzRZH8+9xamGyrqreu5vN0arx
-         iGBJOMxd9rsVJRpD1iwGIgUmZai6QX1JVHDxLC++l7Y1chddHnWlQCeo87i/GwqnABhG
-         O6aA==
+        d=gmail.com; s=20251104; t=1790782162; x=1791386962; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+s4UUy/dbmXVrn6D88sSbqjQQFVAT3AI4v3oDb3NPoo=;
+        b=intwyHC9xQWerf+vjCGLp9YJ5GMizrcQrVylf8Lhf99GawCK2N7Uh7jh3aKPhoe1Nm
+         V1rZC4owwvcsetaZd2BknmQ64f35iaLP952Dy0bUsLPdwhTCwJ25/AFBe6I2pni9FECy
+         SsaVTiI8VzOqYzK1S2kta8U14XmT2iSar2QMITKarMiOuRKy+Y4CS0JyVRgV2KQvlc5G
+         30XKvYPLApApJRNgenBe1wVHx6RQuiuW0z24vQg1Ect58joIeKnq4IN9td7Ar9u2w9Oz
+         D8S5GGNEEEdZb4Ueo5AYqtYt/YTbM95Gl7jJ87IVkNny0/lzdKKqUVcxmUh4zKBmGAjI
+         Q34Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790782124; x=1791386924;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cc+9rKSOSGawoxpJ2ipg52Wvw6p1Y1gNn8hY21fAsGA=;
-        b=MXmAQ8CoMWPDGwGxv6SzH9cFM9FWvKZU9rmEeL/KWWkRkz5cMpJqwoXfuPNgf8HEh8
-         k30OwFgmD1AtHi3rQy3zE750BvJpcz3bTFhuAVlDg6fywmv8m3J5bFnT7buK0G59Sy+m
-         NjRueyCWN73ROl7UH9GUjgMdztwJtO0GFnfXrlo7h9wNha0usDE8qe2t2YO76qaVz2xk
-         75fK6lRPTIxQl3UN2aK71ryVg1RUaO7tSJHoPRxaJMYnfkmsfzkUD6kY1/3FOsYUGAfD
-         xBVE5hllSDkeN8vSkLzvVsfMyQelD/0WItplnDKHnbZNhrUjpnyyI2rc3IgWFcgJ4tv7
-         9YvA==
-X-Gm-Message-State: AFq9FYJtpUwRZyUQqQD/tfgww8J0jM1S7Ry4bCpw7j0kj1ju1UITVFoF
-	k8Cb37EGwEJcYOF9rhzHZVim+tE4Ox13ps3BNKrNnSsyvGyWP6UcuqMIp7Fo0WzSHlA=
-X-Gm-Gg: AYBFou0No6/y102U2hvb6rdXV2l/MPLDdoxweLuqenQpdalDugw1txD1uVUAWrDP21f
-	5wqjZl+51V4U052Gew2WVKUfehUdrebUSqal/VxKfuOxknvZnxUUjarK92bHU2BZc0QZ24mzDvV
-	VceNFyOnvbifvOUwnhuAI21wNoSFL+gwb/HT5sLB8KpUt2B41QWggIVL87MVf+J6lPERa6zns7B
-	8vvvMYsWhw3bvaJTu0EY05tUybBmALkw8cWLOCQeaYDSBJ7db7bvucH+HA9jfZk3kiuUdEY9Kfv
-	EhWSvel+E2fd0rfAvy2C0sNdHPUWN374UZ7ij5lOSCnbH4Lt/21h6g5GeSagfahB3bU756mVGsH
-	l98ZdPIR1BOjSGAqpR8m5tkyl6BMw2mmB3C3YU9v4pc15xUIQWCoHaHhHZ1dBqd1kMuE/aVYMMU
-	UBZO78aSjk1rp9cIlozqnkByKlJkqRw1QAAoPqMgqxrIT4NJ7IXgYHnWHya+fb3jZS5l8IJ+4n6
-	R32RLYpaxWmwYtA3sE=
-X-Received: by 2002:a05:7301:fc04:b0:339:85bf:dd89 with SMTP id 5a478bee46e88-34cdd2a42a2mr2004450eec.35.1790782123219;
-        Wed, 30 Sep 2026 08:28:43 -0700 (PDT)
-Received: from G6L4RL2QG9 ([139.177.225.238])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34cf5b3ea3csm5750493eec.23.2026.09.30.08.28.35
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 30 Sep 2026 08:28:42 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-doc@vger.kernel.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH] fixup! powerpc/mm: switch device DAX to shared tail vmemmap pages
-Date: Wed, 30 Sep 2026 23:28:26 +0800
-Message-ID: <20260930152826.76084-1-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260930140627.57431-10-songmuchun@bytedance.com>
-References: <20260930140627.57431-10-songmuchun@bytedance.com>
+        d=1e100.net; s=20260707; t=1790782162; x=1791386962;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+s4UUy/dbmXVrn6D88sSbqjQQFVAT3AI4v3oDb3NPoo=;
+        b=oTpOGuJt2eEl8S89AJE/Oj/MUgOfpcmL1cIsgj3e6COsMmt8Ssds3IQuMrDI6qEdSz
+         ghTY6V32m2enHCc5OTODAnAUinecWyNI2Rf0/q4C0myU2KMSnJeuRZLp5j9btaFnaXM0
+         Wggg57E9+0sDsHpW+ieRQnV1EcySIBSiz+Be3/U5/mXOzUgg7sz8IG7Dw63nkpEPAuRG
+         ie7i2qGMgVX+/GBTkVso156tf0LK/v3cnj2Lom6hskBBmj22NduGyhF0j+Zcgu99G4Mn
+         4B594ea7oCHO/WuyQ9uAbQSn41LrrJkIc5MFOO6w+Py+COpuO8V/m6IuC9fCRdq3GiyX
+         Pmdg==
+X-Forwarded-Encrypted: i=1; AKwUvBzEEJYcAfGt0e7prn6AYyh3DLVoGbB/K0Me9SHIEXGjwQcO/tasdrb3dfIm2n1zG1IAhoOdjwoakw==@kvack.org
+X-Gm-Message-State: AFuF++nAJfj5jtvgz3n9xoqdB3AHNVGFWpyRGOwXggFf2RDopnAuV8y6
+	XyuAE//e0ewwDwiACg7EEqahWuUQ4ipPHcwx+6wCbDgyBoFeARHujn7Q/I2MzibSIWU0vkm4CZ5
+	oIj/y87+0dmFHLba6gu7maRtJqqFIX/0=
+X-Gm-Gg: AYBFou2bC39Gk2w1Yy7bpYIIyf1BjHW0h9dFiwW4bMADm+9oV9SxNQwrCCzz+1I1gZ0
+	aUm5/cyVRrHFFFIvFMUQgkAIT5CNjDbQWzM5v3jQ8CFo99fdQP9P5xs9r1HWdQygDbskvPsDHFm
+	uEJ7BXVA4/qcSaFZYq1LWMS9s6GFzbHgNe6zUAYxUGJ7ZhXHyb+ozK/0U0rQYH8Pqy29ZoEvq3A
+	eCvWmP+FWVG4tH/nDKdvn3CumKNDBb95U4liT3xz2gsPjE/zMaeNduQZ3+1GNjqE8bhV+/8g4bJ
+	ujy69oXToGNG4flLbbb0QvUDOw+1lDPWCIuM5weB/uMcwSAnsWl87JSadUNSOmEGulAglg9zFvU
+	a/mWBXEVTLz6ZHDB7V7ikvhIpBlu4+kM6dERId/Kufnb4OMbJ
+X-Received: by 2002:a05:622a:1102:b0:530:f37b:cabc with SMTP id
+ d75a77b69052e-5337485e6b1mr35467951cf.12.1790782161399; Wed, 30 Sep 2026
+ 08:29:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
+ <7ebe4591-2306-4b5c-b83e-6a2e34b52bd8@kernel.org> <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
+ <85aff663-2131-47da-ac04-8f0799a49b91@kernel.org> <CAAE3jtcRQ407P9LTbg=JOwhABQRViSaq2XBefnDdNWiD7PxvUg@mail.gmail.com>
+ <1ce9cf3a-15dc-4815-ba29-2e22b05206fb@kernel.org> <art8EKRKMdwSDCkr@gremlin>
+ <CAAE3jtftxMkCfWJ77W-xvV2x7jdAN8C8kyofYC3fEivM-Cq6UQ@mail.gmail.com>
+ <arz0auULA33fqoWu@gremlin> <arz8Plu6J4YOTi0a@gremlin> <CAAE3jtcanTUrV3xfofwrvYGCFe5o=Vn7gS66bDzuxzeGg6c5=Q@mail.gmail.com>
+In-Reply-To: <CAAE3jtcanTUrV3xfofwrvYGCFe5o=Vn7gS66bDzuxzeGg6c5=Q@mail.gmail.com>
+From: =?UTF-8?B?5aSp54u8?= <rockeet@gmail.com>
+Date: Wed, 30 Sep 2026 23:29:09 +0800
+X-Gm-Features: AclHuK83LCCP0gaa6JO7mCWIhwWocLHHA6V6Kq9BAXxYIFSYAN5NC5AE5EEmus8
+Message-ID: <CAAE3jtdHi7aSsJ62TpEjkxvwA-3TBLvr5i1ohCNg2aupND+_XQ@mail.gmail.com>
+Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file mappings
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Stat-Signature: u66i7x13gu3c5eiwg88uknqwghcs6f6d
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 32C05C0003
-X-Stat-Signature: gr5qq68reft3xduxi6bgo4zk63wfrrwd
-X-HE-Tag: 1790782125-622547
-X-HE-Meta: U2FsdGVkX18BXuZcCfgNMJ7N9mWBLvGv0WLO9lrR92VnNBGfXgY+SK7zLlZNugFYJXEBujzJxVeYn9/2Qpzqw5VZ9bszK4MW2Celx2dw0fwzUUSWhJnt3FaWGdUTx2/vHI095WH/ja2sbAYc+8mUzFhMxt6yey/GFSZMvT+/B8X37bXAS2SmWhZagAcxu+RyG77ID41MY970CpwXipcIQygJ9iHVLTtHpPwZwx8nIAMeYaHybc6hYVgOZIHbt0061zzgBz7Aesl+ZdlrVbP1KJqawSchPk7WIenQRoXwgdrTS1y/FT5wuAjuD6hJmPOazY43/Nb6NpTAjQAC5etAbw6p/g9cCVAUymDdwfobO6iyU5mC/R8BPqL2F6cnD9rjIbPbrQLHumNPBUW3BVyfv74bycF9F1ToSKfUZbHWLEQjqznzKrLluW/Cjn0/tLiMckslRB+GHwsMlzUdfBEYUa6+Y6zNolJRs/bWmj1EJfblFCp9ugj5XMF5lWaGUjWI9oqXddk6P/Sc/aPrjGZKz4ST9AWNKE61a+de3KCBoCc1yf5Xj4+ma93pGCpjAtN1g+c1t30t47irTbY0V+DEr9hFzwpWVtfNvuOA2XekLMHEQXoTMZTM9nVdQbykVgbFaiXCundDtfPmErW59wev6z5kn6rJHWtNNsDCzngUFEd6Da/bE073FfpVLd+4DX71S3biI4/yppYiGM0CxD/3U/xPfGsgvIW9AO6nn0HxDCP1HSwWWj70wJvTzK7irUmZb6tvaiNL3UkVB1v5k5hWCYdourNGlFOBeTd94HaeUGDQAt7VXnmML/8qW+8QgZg1p6gGovv9zHCASldpzwM9A5SxVmTohumnMPCiK90j/bqTHSTYjjqlVJnCKWSY/m5yIym+ljMlIxYL/3i0PtZ7q5SatxjUrox4lp4Rayae9GjU/CR6sUPTUGJO8lnfvBcBmgtFM9uZiiDTnV3f4eF
- sn2zpvhD
- jg13EDtFtXh1qGwjCD3lynYQDY1i/bE35k1CZbO7UZcb8wwlHfh3tsDcufTPdx0Ur1QEVkvIdzqraxSZe9sERgBqw/ZfrRWsdcr45nIdYNCc/QYQhNAljh+KL2jivgNNbyMVT1ECTaFKmOxFy2B7zudzhNFauPYVTKZcyXFRCKWPmu/UHlpuDZB/g9NrBLcGgq+JH6XjLWEzWD//+rzXsSSWoiS2pg0EtkjPPKuZBHYwO7GfvDibhKeriYdEPpFlG+GAB/IZ3AmBx5MdV3x75cr4hu5Sv8/bzM0KmChfkNyjLw7z5pt2rnz7HPp90aHfjrhBzj9wgY6xeyFYynFukraneF1hlqsailyTPeyoeMc7wgEDxdKT/1V4PSOvYm9ECXtvUTh80Wo90wvIBXm+Uf/AewWlvJ5J+sFlpFsvMEpIu4ag=
+X-Rspamd-Queue-Id: A89BF1C0004
+X-HE-Tag: 1790782162-697266
+X-HE-Meta: U2FsdGVkX18X0k8P7r0UOoTMeMMJ25dmCUYE7kUu45b2IBClCj/uA6zPy/Hegngmywpdk89gNgfd7gNhrsoN9lwbLFYpDdxCnitPXIcHyTjmHWm3JF3Qe9vHwORp9OqUgzylUhrb58pwSjZP1AABBYj1JvTBbY9a7pJL8H1683Mfb/rYvI4IWzFJN2hsi66bHtogY0XgvjT4AB168OGBtBrpg5isu1YJjgaFn2EMHSWM9Oe12z3gr8LUcKJRirLA13zwxm6dDdZRbm663xBR14zL6tqCAbCcsGwv/laPas8A+lT/3048uvp0Qr8K+6LjxyLnDiGCxvIF5d7uedpjUaXYbwZZZfGs+OERZ+b70OoXo+dXTUfVaKkM9chmP7LdNAGe93OKT1EpZcsOtgxhD5GQeC1jPLzFOXN/vvSdQ8M5VPtX+zt+FINcBDDBdwtD27fASh1lOwnzCphkHe8tlHKZGKbmNrH6hdvE8OYbwkY2mzumsDHb/NOl2xy7FRynElx0BvfskrHD6u8vu7J4/mluQRdZ1wboxHO+y/JUVAZdrIhHuUpgG3CZEkm+Rh9tkrz2VtqCAgsUpRAS8B8Miq3J6MlQWwibxo61mCoBnccReWwmf/lPjSd6qBVi3N09KXlcBQaHVv91Vn/6MZUmQ0iOs+XQuIIU14pBWrI4Bcdlup4P/dcmbVMQSmPYcKcRU6bs71HNS0Twff1FaHXvDCbr1BGX0A57sT8F4lYDfzcWEf9SD09QsSh9bLDsYVk8OKOOqTAZTpRQ8f+MfjPvLlSHh1lcGB7CP4OyetQWvO1OzgEe9t1BJIujy/6PIubwwGxMoqIQ7zHCcjXQwvTXzM9r0G1/FMwZM4KHY2DLqpt/5ly9xL3SZji+P+Ia5lMBqkWPxl0yWadmTN44yjEj0UB/R/pPzUythAdCNcNiyoRF0IS8DuKLaPsrKZapB8KXH59c3GpfxheXZncoEMh
+ /DVpzdOR
+ 9H7NVdNkAda9oVdhi/EYfio+JAo7qz2nkKLsLg2dEgCZ38pE5uflYy9aa9TSyGJ7pleZ0mv5wTknAOtIDRO5Djc5vVDXJEwQ358RTu31z9lhJAwJ5E0T5OcNeYGhdRMpZxPyiyNrk9Xx0Ynu31pskNUMDeaRa78rwSsxonw4bYkJ2HGwYD8ioY1DWHWmQ3bfUsIrgt/uaPgNdY47BAMDuK+fFV/6pTUKMOaDFD8dTB+2XWLrp/HzdgBDxViiDicRhtu6xyplRDSAXtVDWLs1CJaEBlZZhbkOvYEIafx+jU1Gg6E7mu4fLUoOBz/47PFrmifjaJW0bZyEgEvbB4qQejUqvKeNQ7vb2miUrLzOtwBVhuX4sIl/XnLNbUNbHv3WB7r2F5xOAqN+SZoFBj1l7pJ35ZBq2/QvGh8bIUCec/r/9zd01oiH3Lw6JSfBTNxBBWOxbtVkGV+BjVBJ2w2jSVL28sQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,43 +146,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The PowerPC radix path takes one reference for every PTE that maps the
-shared tail page. Unlike the generic path, get_page() lets the counter
-continue after it becomes non-positive and eventually cycle to zero.
+Hi David, Lorenzo,
 
-Use try_get_page() so vmemmap population fails before the shared page
-reference count can cycle, matching the generic implementation.
+The distinction behind this request is between surviving a process crash
+and surviving a power failure. After a process crash, the kernel and page
+cache remain alive. A shared file mapping therefore retains the writes
+already made by the process, even if they have not been written to disk.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- arch/powerpc/mm/book3s64/radix_pgtable.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ToplingDB has file-mmap MemTables whose data structures survive a process
+crash. Its crash-safe recovery reuses those MemTables instead of rebuilding
+them by replaying the entire WAL. A published sequence number aligns the
+MemTable's per-KV crash-safe boundary with the database's WriteBatch
+atomicity, so recovery can reuse the published data and replay only the
+remaining WAL tail.
 
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 9ca28e4a610a..a3332f32ffb2 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1042,13 +1042,17 @@ static pte_t * __meminit radix__vmemmap_pte_populate(pmd_t *pmdp, unsigned long
- 			/*
- 			 * When a PTE/PMD entry is freed from the init_mm
- 			 * there's a free_pages() call to this page allocated
--			 * above. Thus this get_page() is paired with the
-+			 * above. Thus this try_get_page() is paired with the
- 			 * put_page_testzero() on the freeing path.
- 			 * This can only called by certain ZONE_DEVICE path,
- 			 * and through vmemmap_populate_compound_pages() when
- 			 * slab is available.
-+			 *
-+			 * Use try_get_page() to prevent the shared page refcount
-+			 * from overflowing.
- 			 */
--			get_page(reuse);
-+			if (!try_get_page(reuse))
-+				return NULL;
- 			p = page_to_virt(reuse);
- 			pr_debug("Tail page reuse vmemmap mapping\n");
- 		}
--- 
-2.54.0
+These MemTables also support cheap, millisecond-level ConvertToSST
+(wrap-up and sync, i.e. LSM flush). The file-mmap path renames the existing
+file and appends metadata, preserving the data structure already built in
+it. This avoids copying the contents into a separately constructed SST.
+Moving construction into shmem would add a transfer to the regular file
+that this path currently avoids.
 
+Avoiding full WAL replay makes much larger MemTables practical. While a
+large MemTable is being populated, random updates can repeatedly dirty
+pages that background writeback has already written out. Those writes of
+intermediate states consume disk bandwidth without being necessary for
+process-crash recovery. Deferring them is a performance optimization;
+correctness does not depend on the kernel honoring the hint.
+
+This is a general problem, not something specific to ToplingDB. ToplingDB
+explicitly distinguishes process crashes from power failures and has
+invested heavily in optimizing recovery from process crashes. By contrast,
+LMDB faces the same problem but does not explicitly distinguish process
+crashes from power failures. If sync is skipped when using LMDB, the
+remaining writeback problem is the same as in ToplingDB.
+
+The global setting and kernel module described in my previous email let us
+work around this locally. The remaining problem is making the optimization
+available to users of a database library. We cannot reasonably require
+every deployment to change a system-wide setting or install and maintain
+an out-of-tree kernel module. The module gets us from no solution to a
+local solution, but it does not provide a broadly deployable interface.
+
+That is why I am asking for kernel support: a supported, best-effort hint
+that applications can use directly, while leaving the kernel free to write
+back when necessary. madvise is not the only option, deferring writeback
+for the entire file would also be acceptable.
+Per-file deferred writeback would require minimal kernel changes and pose
+a very low risk, while offering enormous benefits.
+
+Thanks,
+Peng
+
+=E5=A4=A9=E7=8B=BC <rockeet@gmail.com> =E4=BA=8E2026=E5=B9=B49=E6=9C=8830=
+=E6=97=A5=E5=91=A8=E4=B8=89 22:14=E5=86=99=E9=81=93=EF=BC=9A
+>
+> Hi David, Lorenzo,
+>
+> We currently work around this issue by setting the global
+> vm.dirty_expire_centisecs to 60000.
+>
+> We have also developed a kernel module as another option. It exposes an
+> ioctl that takes a file descriptor. For an already-dirty inode, it update=
+s
+> dirtied_when to the current jiffies and moves the inode to the newest end
+> of the writeback dirty list, postponing its selection by periodic
+> writeback. It leaves the dirty state intact and does not remove an inode
+> from an already-queued flush.
+>
+> To keep postponing periodic writeback, the application must call this
+> ioctl continuously at intervals shorter than vm.dirty_expire_centisecs,
+> expressed in centiseconds. Once the calls stop, the normal expiration
+> interval applies from the last call.
+>
+> The key code, with checks and locking omitted, is:
+>
+>     inode->dirtied_when =3D jiffies;
+>     if (!(inode->i_state & I_SYNC_QUEUED))
+>         list_move(&inode->i_io_list, &wb->b_dirty);
+>
+> However, neither changing a global setting nor maintaining a separate
+> kernel module is as elegant as having this supported directly in the
+> kernel.
+>
+> Thanks,
+> Peng
+>
+> Lorenzo Stoakes (ARM) <ljs@kernel.org> =E4=BA=8E2026=E5=B9=B49=E6=9C=8830=
+=E6=97=A5=E5=91=A8=E4=B8=89 20:11=E5=86=99=E9=81=93=EF=BC=9A
+> >
+> > On Wed, Sep 30, 2026 at 01:08:33PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > > I'd say in general the shape of the solution would be something
+> > > cgroups-ish, but since all of this is global stuff and the knobs are =
+all
+> > > global I think you need to think about your design a little more.
+> >
+> > (Sorry to be clear, this is - if we accepted that this was a kernel iss=
+ue that
+> > truly needed something like this - which I do not. The solution here is=
+ to use
+> > shared memory as per below.)
+> >
+> > > And in general we've seen a pattern of 'writes to MAP_SHARED, experie=
+nces
+> > > problems' before.
+> > >
+> > > And the solution is generally - use something like memfd, have a proc=
+ess
+> > > that does writebacks manually for you as you need.
+> > >
+> > > So I strongly suggest you do that! :)
+> > >
+> > > --
+> > > Cheers, Lorenzo
+> >
+> > --
+> > Cheers, Lorenzo
 
