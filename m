@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A407CA5FC4
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 18:47:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27E59CA5FC5
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 18:47:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DB846B008C; Wed, 30 Sep 2026 14:47:33 -0400 (EDT)
+	id 1DD366B0092; Wed, 30 Sep 2026 14:47:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18CEA6B0092; Wed, 30 Sep 2026 14:47:33 -0400 (EDT)
+	id 0F1066B0093; Wed, 30 Sep 2026 14:47:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A2BA6B0093; Wed, 30 Sep 2026 14:47:33 -0400 (EDT)
+	id F22116B0095; Wed, 30 Sep 2026 14:47:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D8F526B008C
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 14:47:32 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E8171A01B6
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 18:47:32 +0000 (UTC)
-X-FDA: 85271311944.08.EB40473
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A36D01C0006
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 18:47:30 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ADxd7IJg;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CE7496B0092
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 14:47:35 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 548E6C01CA
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 18:47:35 +0000 (UTC)
+X-FDA: 85271312070.16.0D7B6C3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6FC84180007
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 18:47:33 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZTSMkUSv;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790794050;
+	s=arc-20220608; t=1790794053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=yD+kiY0HoTfxu66erBXAF33xLs4HT8xVVKYchh0t2N0=;
-	b=o4lrfUYQ90x60ymqRGsQdjrfflMpCHAgsWdmLoWPiRoC7OreC4PCLtKP4xYNsyGZfZQlpt
-	sfqnNeIle6GQWoPhQoqWgrj86G1QI/oup4kLnfA09ryte2i5yksIugx8w5esL+ZullGhSS
-	83qawtqvRF79vJtG/NeJjhoRnySOpdw=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=e7f6U/kumMHx8CpSqywF0bFzraSlKuPIZ0c2Muo0YBY=;
+	b=O5OJCNiOkJx9n5tlf30vB/vJt+YGasyhiFJMX4ghIrbjrVTAoBQMgpwxtqRxnBMehHCkfr
+	OC6gd3vftpsNbbIQgkcAz69gHVKGo4axfwUS0ob3ZAeVPgQ/fvtNTi6EO+jzUChIcDSOOI
+	AlCPA8s/SaQpUIJ/X8IPIIo8/TmWPrY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ADxd7IJg;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZTSMkUSv;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790794050;
-	b=M36w9wQtnd0qcVpn7+Os36i46M577yRcUbQqphDrC6uH+Q7te59YATsvj/KyxI/LNrHT9G
-	RIsPCo6cOl9uWlDN0OPZeYbvY3HFF0TzDv4Hkb2AAcGZxvReR4bX46z3ThNpjz6fAOe38g
-	TQWiLd6cX0Xp78MRlCdoGqCFT81TQK0=
+	t=1790794053;
+	b=NpH8FZUWBZyh/nROeZwAx3oGevAvq8/xvnlRg1BiZSqpGjBDzY4ZxjYciRqtWVRZ9XeMCf
+	whKH5TaYSkl7AV5ubWedvYb03mx+a3PCKHsc55zeUOD7lxaGMIbpeO8GeZxCq5LanV6UYd
+	tZX0eIWXtowqgtqF/wqi86YmW+14aRQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 73CEB601EF;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C3A843BEC;
+	Wed, 30 Sep 2026 18:47:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4E51F00899;
 	Wed, 30 Sep 2026 18:47:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451E61F00898;
-	Wed, 30 Sep 2026 18:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790794049;
-	bh=yD+kiY0HoTfxu66erBXAF33xLs4HT8xVVKYchh0t2N0=;
-	h=From:Subject:Date:To:Cc;
-	b=ADxd7IJgoc5YI2gZqwnPdRQnBd2GhhLLKqu6VNKYetbeqpEDWnafR09CiVwl391ok
-	 2LeVaPvqivS45qptH6cB0DzCJJ1a7T1RBohe3a+1cWt3ibs9edPEFRi9N/ENoJiGUY
-	 0937Bi5vVgx6udRaN2VRTvP5SjL2CG/9SRQIM+fiikTi9xDNVKiEA9ip4rnc9u3Dob
-	 Ut8eZ+texE13OAr/+PpznWs2ms1IBz7M7DcYcjOL75fknGaybDkDx90nnaCvDi/EdI
-	 TOuY377A23mWLOeE/tvXlRyVLvS2cyUaOIY0ewOMo5wLg9iaRsHOhDVXxETFpnm4Jv
-	 bA0s5K0ofMMbw==
+	s=k20260515; t=1790794052;
+	bh=e7f6U/kumMHx8CpSqywF0bFzraSlKuPIZ0c2Muo0YBY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=ZTSMkUSvrQgHEkkTTrdzjJ6bf5469pNBOJI3AwWW+IvHYWA2Cgd0yTx6GqAZsRXzZ
+	 ppw5odIVivpHMGPQexVPUx+6vrMPQCMwcra9g5fVMkcoynkIsfBfIAFQTDNFC282hU
+	 NkX98S8k+Nk4XSftU+W1FtRGHmv3IkJfdPbBl6Ww8GPoCapigpBQL6T7MR0gwUDA5I
+	 GrN2NRC76mWDsUtsn8qMyZXqUdd/+ViwZBYagyX5Sp98c+bB6sIWOeRZgUpWEehkiR
+	 yB733+Yl6iEOdXQqW63WkQBIXIL8+eJ37uOA7PwbLOJBk/y7XrUC70chE9gadYLLor
+	 52SKSORhO5wsQ==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Subject: [PATCH v2 0/2] mm/mremap: fix two issues with MREMAP_DONTUNMAP
-Date: Wed, 30 Sep 2026 19:47:08 +0100
-Message-Id: <20260930-fix-dontunmap-partial-self-merge-v2-0-f388985a0f0a@kernel.org>
+Date: Wed, 30 Sep 2026 19:47:09 +0100
+Subject: [PATCH v2 1/2] mm/mremap: fix locked_vm leak from MREMAP_DONTUNMAP
+ self-merge
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5WNQQ6CMBBFr0Jm7ZjS2AquvIdhUWQKE7ElUyQaw
- t2t3MDl+/n//RUSCVOCS7GC0MKJY8igDwXcBxd6Qu4yg1baqlor9PzGLob5FZ5uwsnJzG7ERKP
- HJ0nun0+urtqyM84ayJpJKG/2i1uTeeA0R/nsj0v5S/+QLyUqtN63xlhf+aq9PkgCjccoPTTbt
- n0BbkGHcdEAAAA=
-X-Change-ID: 20260920-fix-dontunmap-partial-self-merge-74a98b1d5a65
+Message-Id: <20260930-fix-dontunmap-partial-self-merge-v2-1-f388985a0f0a@kernel.org>
+References: <20260930-fix-dontunmap-partial-self-merge-v2-0-f388985a0f0a@kernel.org>
+In-Reply-To: <20260930-fix-dontunmap-partial-self-merge-v2-0-f388985a0f0a@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
  Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
@@ -85,22 +84,22 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, stable@vger.kernel.org, 
  "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2742; i=ljs@kernel.org;
- h=from:subject:message-id; bh=5wUqWsURO4rs1oMkv+4uI03AHJwb7y6msO+KHQvbPDo=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLL2RtqK7lFwSchj92X9fXVG8fZ7pv8ltG7Mmi5RsUwih
- dGmt42ro5SFQYyLQVZMkeX5F/H9QSJh8zov+LvBzGFlAhnCwMUpABNhf87wV/z9xNtfvWfpcBy4
- viP38oq84i3y9x2iPWK9tUwfuJbrTmH4p2Vtfq3eeUL1iW8s/EXfSx7Je4vqZX71Srp0/dL7x5x
- V/AA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7539; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=tUFoyVFkU6ZHa5zI5wSdlRR1b78wdN+xDqu5gYMiGFU=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLL2RtoWc1wquvm5Nb6e4UbbFU4Ty/uzEjxlFsoWx58+t
+ +XpszcBHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZiI8BxGhpfcNxaFuhcdr7zh
+ 1Xnpapvz0xuB/1XiFs1LWqsX+XJzwDVGhneWs2+E5DyTZTjFkDG5fVHmkvtT037umZA8S9rLm5d
+ vBw8A
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A36D01C0006
+X-Stat-Signature: cdzn4z6ngus8djo5c6k61kqfnji16rqz
+X-Rspamd-Queue-Id: 6FC84180007
 X-Rspam-User: 
-X-Stat-Signature: pgs8wpszdmdxzuwioqsnb6ha55x815fz
-X-HE-Tag: 1790794050-533755
-X-HE-Meta: U2FsdGVkX19fo5t0Nc2qmCHDygYqcglu45WyGtH6b1CEM4AxNoZWrJhEWH68oVXEDvfB1qgAxdCddHmCSdFFgPcVefDJ6MJNXeVM+rz4aNN0UUj7pJ8di4X7hxjSLFfBAFnsBWQ1aObUCS+G4sbRO1YSqwhje/Xk6541o1lJbeGs+yDRYvm0DMT+BZFS+Z+hwD8JvaVx7J1nEfqAc4lWba2TTPuW8VPFCBNp+n2wXyv77YU4j6aYUHIWd0KQVpYAx41g6qa9qmnM2av2lRJ/NMFltfGCnAyosDzcgt2Ffs9PRzZanm1CmQwv60zmjZFXCglMi6Oo1FzzB/hAkg4BnkXgRxfXH2dIBTUBLYByMSPUSK4WW7JN+BmM0mhm4uQ3qXKIU0nMTfm08QygFUMz42+Jo8pGrbIZEfaTPPXukl0B8i5lzqcBRlDAXNzAzjCroGbhorf9NwwFprGthSkiJgfMTnNbq/h3fXbodxjVu2k9gFOej85/ZbgNg9f9JSLes4ILbW7vpGWGPsJ/zEJVWrYlIRVWPJWrSWTPyF8fILw1Ge+WpC4Ut2aggO1e1gCcfzGE26InSsF0My8oQvaQHkat0pOmOyYHf1tNP4Ls0R6GANwJH2yiaT1xGFxUM5t8NCy9i6v07ynL3/xIwt3nVsUrUPtsj1bd4ke5vRGZ8T9IPwIkGMgDCdV0iU8oh4zKWY+ugWjewowaEgbXIzvSsXjrJij5eHqdwjCcbJRNglLfCBVnwgkwnnJNQNvE7HyfCNCEQrGc6I4Whq0hCjCAb21K/sVElb2xaoEl1YOd9SlrG80jVLwLwE2WGuolZNpHn3gWQEkczcnTEVSeOY9HVWb7GiiqILOrmu4RBHVC0ncvm5Uja4ytxoOtGsBSgchhrPACbkXFVaoQi5B9tFq40wF6TohbISU/SV7FaZMqkmekwNzcvx9PC3t9VwRyoXu1gKpuv2uF0sKuLWdiWa+
- Zlt34ikR
- mSsrCjnXvdzu6LMSsWshgZPuhIB5m/aBwQVKxoqUsR9j66ppnuaBRg2YEHC4fRflXzWMRUWytCZeDhvU+lcTQGIML6nGa3E/+GI3hliB1THDnQp+LGsORuqqUGkGGW7VR2+Xn4MQ35ypHvChpmWqbm1nIj8S363w0LulEz7VlWPL0o2ZYQaHHeWg+klYrBv0e2IFiGsXs9GyJsFUhfkDwbx2muz9Rtz7mI4SFtLgk4F1f87Hg1/26RJHv4k4BP8pGvv2Xx4duTTlcfiMmnREUqBS8PGkcaGmRKlbY
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790794053-145382
+X-HE-Meta: U2FsdGVkX1/YBXEL6//txRn4x+a7ocmV3A/ihjPuGhfFnnqk7RTLEckO3PNlGB6zLUC2M1d5FWyH4He6oUYlQ1tyFL9C6ZGpFt3Iw1szvL0iPcOQLkkeQXTbaUQ+ca3cQYmUEzO/b9Pk93qMsHc2hrcoM/TB/tv+0dZ+K3nZk1qQjUqU0eqyl9C7+tSx4v7lw04qk5ogXYuz4bqxy1/XEKIR5vVUHX7UFjaeaKWiWvvJn2IaOZ928IK6HRBky4SF99So4FQ/UOVJqm/e4vVc7y9vicmxuxROeHjiWPJQviwmdT8hZ6r5zhDG0FiRRDILwBkYgnIJwqTPfYRKYym+qSUrdeTstOcaPB2a+TEV0LLeIjOcy9JXThGf6OEMCeX7bDcf85H2q5mKbMiKOXr5TMWqA9w8CLPk4LerJlQY9K87fNqB89wOqlM/lBbixB9E2LwnaQK0+mwqNQiFmnTfdqsf+Mq7URTnXtAmkw95tGC2ckdTWf584gK/VNd1RvAlTwokV7D/OA7ox7ilJaJvFD1WrVXcIrsR0BIToSa7JBGPN3v/sA3vlqod9m2pj2HWVG+FMCOwrGfwQ4BohG1rves5GtQyUuKpVuY5xZlSBa+gRRlT/FmI3+3FdknNsC6r63tdkhCaDFlWubuH3RbpMXYfPCEpSgTSe1WdYaCpvdEok8qks9eldUgJVQ5dkyY4VzEDpt4PDlTz5JcKyGwMrAaT7dDJ/azQ2I6XxKFcxzW1QSIbeONnRZx0LmaMlEM/PJmuAj2rC3ay5ABpFwlCZ4AeX6GNYpdhCdexEmCwvruN+nFIuJ8ZFebkqhFCG7+WGuYOCeHuEIs8Vh0WeHfZ12aJt+WvH5PDaS0RVbUtOJ6O1Fj1OlSaW8L7xgKqEXRyiQqVxWOMy/DO6P1DlNCFi/92IjGclh/kyuGGrzYw3+wIPTuppBAh+pObUxSUYr0Kg0rGJVxk3bwIGY0vLll
+ uU7irj08
+ RBkIx1gYkvrU2hxB8x/W2Wq5G1wr3szigEUjpqnxtQ5xfN7lpJbNXmB0um2wQFuzFTVBvTntiq87MiRxcepYiJoySa+840HBp2G4LpiLAMZff1bVH9lbN7KjowuWKOgLDjOZl9lg1ZV+Uk3BsprBIavhACthSWbdzozFX3qtPR3kTrPIiwwUBpR9Zq0giZa/jPoqPuH809BG/owQehuaWYghLQYjs+WbD0o5WoHUFhFxn5WW6hkwxU8bBXxuDQDROA9Ip4D//Xe0X0vXe0DWtVoq+cRr07MwSqLtzBJVoLgPFbSumna+LWuRehZZrT9TBv4oq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,69 +113,192 @@ operations that keep the original VMA in place.
 Historically this has led to a lot of bugs where non-obvious interactions
 occur between existing mremap() operations and the original VMA.
 
-Commit 397432cab17b ("mm/mremap: account mm->locked_vm correctly for
-MREMAP_DONTUNMAP") fixed an accidentally introduced bug around
-mm->locked_vm accounting, but this wasn't the only issue.
+Fix another of these - self-merge.
 
-And thus history repeats itself, as it turns out that mm->locked_vm
-accounting is broken by MREMAP_DONTUNMAP yet again by two further cases,
-and has been broken ever since the feature was introduced.
+Self-merge occurs when a VMA is moved in front of or behind itself and the
+attributes of the VMA permit such a merge.
 
-Both relate to the fact that VMA_LOCKED_BIT is cleared on the source
-VMA (it has to be as all page tables are moved):
+Practically this can only happen for unfaulted anonymous VMAs due to the
+page offset equality requirement for merge:
 
-1. If an unfaulted VMA_LOCKONFAULT_BIT anonymous VMA self-merges it
-   clears the VMA_LOCKED_BIT flag and permanently leaks mm->locked_vm
-   pages.
+                           |------------|
+                           |            |
+                           |            v
+        |...........||-----------||...........|
+        |           || unfaulted ||           |
+        |...........||-----------||...........|
+              ^            |
+              |            |
+              |------------|
 
-2. If a partial mremap() is performed on a locked VMA there is a leak equal
-   to the number of pages not copied.
+This becomes problematic if the VMA is configured by the user to
+mlock-on-fault, i.e. the VMA_LOCKED_BIT, VMA_LOCKONFAULT_BIT VMA flags are
+set.
 
-(Both for MREMAP_DONTUNMAP operations only)
+MREMAP_DONTUNMAP clears mlock flags for the source VMA and maintains them
+for the destination VMA.
 
-Both issues can be fixed by treating the source range as distinct from the
-destination range, which is the definition of what MREMAP_DONTUNMAP does so
-is appropriate.
+Self-merge makes this impossible (there is only one VMA) and incorrectly
+clears the destination VMA's mlock flags.
 
-In case 1, simply disallow the self-merge, keeping adjacent source and
-destination VMAs distinct.
+This causes a leak in mm->locked_vm as clearing this flag does not
+decrement the counter and the VMA no longer has VMA_LOCKED_BIT set so it
+is not decremented on unmap.
 
-In case 2, split the source range ahead of time if the VMA is mlock()'d, so
-accounting is always correct.
+Resolve this by simply disallowing a self-merge in this case - the source
+and destination VMAs are kept distinct and then are able to have distinct
+mlock() flags.
 
-Both changes were tested locally and confirmed to fix the issues.
+Update dontunmap_complete() to make the now-redundant self-merge check a
+VM_WARN_ON_ONCE() instead to guard against future regressions.
 
-For the purposes of a backport, the fixes are kept distinct, a follow-up
-series can add self-tests.
+Also update the VMA userland tests to reflect the change.
 
+Fixes: e346b3813067 ("mm/mremap: add MREMAP_DONTUNMAP to mremap()")
+Cc: stable@vger.kernel.org
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
-v2:
-* Added tags (thanks everybody!)
-* Updated 2/2 to avoid splitting the VMA if the VMA was not mlock()'d. It
-  is only meaningful and necessary to perform the split in this case. This
-  also fixes the proc_maps_race selftests that broke, as reported by
-  Anirudh.
+ mm/mremap.c                   |  8 ++++++--
+ mm/vma.c                      | 17 ++++++++++++++++-
+ mm/vma.h                      |  2 +-
+ tools/testing/vma/tests/vma.c | 10 +++++-----
+ 4 files changed, 28 insertions(+), 9 deletions(-)
 
-v1:
-https://lore.kernel.org/r/20260920-fix-dontunmap-partial-self-merge-v1-0-6ffb556f8f8b@kernel.org
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 1122282a1d6a..73f52c45705c 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -1275,7 +1275,8 @@ static int copy_vma_and_data(struct vma_remap_struct *vrm,
+ 	PAGETABLE_MOVE(pmc, NULL, NULL, vrm->addr, vrm->new_addr, vrm->old_len);
+ 
+ 	new_vma = copy_vma(&vma, vrm->new_addr, vrm->new_len, new_pgoff,
+-			   new_anon_pgoff, &pmc.need_rmap_locks);
++			   new_anon_pgoff, &pmc.need_rmap_locks,
++			   vrm->flags & MREMAP_DONTUNMAP);
+ 	if (!new_vma) {
+ 		vrm_uncharge(vrm);
+ 		*new_vma_ptr = NULL;
+@@ -1335,6 +1336,9 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
+ 	unsigned long old_start = vma->vm_start;
+ 	unsigned long old_end = vma->vm_end;
+ 
++	/* Self-merge is disallowed. */
++	VM_WARN_ON_ONCE(new_vma == vma);
++
+ 	/* We always clear VMA_LOCKED[ONFAULT]_BIT on the old VMA. */
+ 	vma_clear_flags_mask(vma, VMA_LOCKED_MASK);
+ 
+@@ -1342,7 +1346,7 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
+ 	 * anon_vma links of the old vma is no longer needed after its page
+ 	 * table has been moved.
+ 	 */
+-	if (new_vma != vma && start == old_start && end == old_end) {
++	if (start == old_start && end == old_end) {
+ 		const pgoff_t pgoff_unfaulted = vma->vm_start >> PAGE_SHIFT;
+ 
+ 		unlink_anon_vmas(vma);
+diff --git a/mm/vma.c b/mm/vma.c
+index 0db3f1222cad..55d4d0939129 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -1946,7 +1946,7 @@ static int vma_link(struct mm_struct *mm, struct vm_area_struct *vma)
+  */
+ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+ 	unsigned long addr, unsigned long len, pgoff_t pgoff,
+-	pgoff_t anon_pgoff, bool *need_rmap_locks)
++	pgoff_t anon_pgoff, bool *need_rmap_locks, bool keep_source)
+ {
+ 	struct vm_area_struct *vma = *vmap;
+ 	unsigned long old_vma_start = vma->vm_start;
+@@ -1984,6 +1984,21 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+ 	vmg.pgoff = pgoff;
+ 	vmg.anon_pgoff = anon_pgoff;
+ 	vmg.next = vma_iter_next_rewind(&vmi, NULL);
++
++	/*
++	 * If the original VMA is kept (MREMAP_DONTUNMAP), the source and
++	 * destination VMA must be treated distinctly.
++	 *
++	 * A merge violates this, so in this case disallow a self-merge.
++	 */
++	if (can_self_merge && keep_source) {
++		if (vmg.prev == vma)
++			vmg.prev = NULL;
++		if (vmg.next == vma)
++			vmg.next = NULL;
++		can_self_merge = false;
++	}
++
+ 	new_vma = vma_merge_copied_range(&vmg);
+ 
+ 	if (new_vma) {
+diff --git a/mm/vma.h b/mm/vma.h
+index b2c3bc832a48..03ed8afd0c1f 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -534,7 +534,7 @@ void unlink_file_vma_batch_add(struct unlink_vma_file_batch *vb,
+ 
+ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+ 	unsigned long addr, unsigned long len, pgoff_t pgoff,
+-	pgoff_t anon_pgoff, bool *need_rmap_locks);
++	pgoff_t anon_pgoff, bool *need_rmap_locks, bool keep_source);
+ 
+ struct anon_vma *find_mergeable_anon_vma(struct vm_area_struct *vma);
+ 
+diff --git a/tools/testing/vma/tests/vma.c b/tools/testing/vma/tests/vma.c
+index c8ef7b8cd46b..e973e0a6d1a8 100644
+--- a/tools/testing/vma/tests/vma.c
++++ b/tools/testing/vma/tests/vma.c
+@@ -40,7 +40,7 @@ static bool test_copy_vma(void)
+ 	vma = alloc_and_link_vma(&mm, 0x1000, 0x2000, 1, vma_flags);
+ 	vma_set_anonymous(vma);
+ 	vma_orig = vma;
+-	vma_new = copy_vma(&vma, 0x2000, 0x1000, 1, 1, &need_locks);
++	vma_new = copy_vma(&vma, 0x2000, 0x1000, 1, 1, &need_locks, false);
+ 	ASSERT_EQ(vma_new, vma_orig);
+ 	ASSERT_EQ(vma, vma_orig);
+ 	ASSERT_EQ(vma_new->vm_start, 0x1000);
+@@ -53,7 +53,7 @@ static bool test_copy_vma(void)
+ 	vma = alloc_and_link_vma(&mm, 0x2000, 0x3000, 2, vma_flags);
+ 	vma_set_anonymous(vma);
+ 	vma_orig = vma;
+-	vma_new = copy_vma(&vma, 0x1000, 0x1000, 2, 2, &need_locks);
++	vma_new = copy_vma(&vma, 0x1000, 0x1000, 2, 2, &need_locks, false);
+ 	ASSERT_EQ(vma_new, vma_orig);
+ 	ASSERT_EQ(vma, vma_orig);
+ 	ASSERT_EQ(vma_new->vm_start, 0x1000);
+@@ -71,7 +71,7 @@ static bool test_copy_vma(void)
+ 	vma = alloc_and_link_vma(&mm, 0x3000, 0x4000, 3, vma_flags);
+ 	vma_set_anonymous(vma);
+ 	vma_orig = vma;
+-	vma_new = copy_vma(&vma, 0x2000, 0x1000, 3, 3, &need_locks);
++	vma_new = copy_vma(&vma, 0x2000, 0x1000, 3, 3, &need_locks, false);
+ 	ASSERT_NE(vma_new, vma_orig);
+ 	ASSERT_EQ(vma_new, vma);
+ 	ASSERT_EQ(vma_new->vm_start, 0x1000);
+@@ -82,7 +82,7 @@ static bool test_copy_vma(void)
+ 	/* Move backwards and do not merge. */
+ 
+ 	vma = alloc_and_link_vma(&mm, 0x3000, 0x5000, 3, vma_flags);
+-	vma_new = copy_vma(&vma, 0, 0x2000, 0, 3, &need_locks);
++	vma_new = copy_vma(&vma, 0, 0x2000, 0, 3, &need_locks, false);
+ 	ASSERT_NE(vma_new, vma);
+ 	ASSERT_EQ(vma_new->vm_start, 0);
+ 	ASSERT_EQ(vma_new->vm_end, 0x2000);
+@@ -95,7 +95,7 @@ static bool test_copy_vma(void)
+ 
+ 	vma = alloc_and_link_vma(&mm, 0, 0x2000, 0, vma_flags);
+ 	vma_next = alloc_and_link_vma(&mm, 0x6000, 0x8000, 6, vma_flags);
+-	vma_new = copy_vma(&vma, 0x4000, 0x2000, 4, 4, &need_locks);
++	vma_new = copy_vma(&vma, 0x4000, 0x2000, 4, 4, &need_locks, false);
+ 	vma_assert_attached(vma_new);
+ 
+ 	ASSERT_EQ(vma_new, vma_next);
 
----
-Lorenzo Stoakes (ARM) (2):
-      mm/mremap: fix locked_vm leak from MREMAP_DONTUNMAP self-merge
-      mm/mremap: fix locked_vm leak by splitting VMA for MREMAP_DONTUNMAP
-
- mm/mremap.c                   | 70 ++++++++++++++++++++++++++++++++-----------
- mm/vma.c                      | 21 +++++++++++--
- mm/vma.h                      |  7 ++++-
- tools/testing/vma/tests/vma.c | 10 +++----
- 4 files changed, 81 insertions(+), 27 deletions(-)
----
-base-commit: a3d0117e02bfa1c3bb6c50e7afe42bbecdbb3459
-change-id: 20260920-fix-dontunmap-partial-self-merge-74a98b1d5a65
-
-Cheers,
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
+2.55.0
 
 
