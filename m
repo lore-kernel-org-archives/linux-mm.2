@@ -4,85 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 981ADCA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 07:27:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E973ACA5FB1
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 08:08:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 744CF6B008A; Wed, 30 Sep 2026 03:27:14 -0400 (EDT)
+	id 9B9F56B0088; Wed, 30 Sep 2026 04:08:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F67F6B008C; Wed, 30 Sep 2026 03:27:14 -0400 (EDT)
+	id 96AB16B008A; Wed, 30 Sep 2026 04:08:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60C5F6B0092; Wed, 30 Sep 2026 03:27:14 -0400 (EDT)
+	id 880286B008C; Wed, 30 Sep 2026 04:08:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A60F6B008A
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 03:27:14 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A0088120708
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:27:13 +0000 (UTC)
-X-FDA: 85269597546.27.35DA180
-Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B2BAD120007
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:27:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=VGS+3SNd;
-	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 52CED6B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:08:50 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 315C9140600
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:08:48 +0000 (UTC)
+X-FDA: 85269702336.07.50B189F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 88CF5C0007
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:08:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XggV0HEx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790755726;
+	b=ajhe7W7o2OTX1aOeektOu3VPdz4HQoN0rtdPWOZXURrVEjKWq9mwc8jtu4Qht5RMovngeq
+	EdjUjRXWzr/N2lgHChUF0NP28T9rBsfXNgtuWLUbSELYXNf+KQUirwHFkfBteiR3lU8/NE
+	lfihrsEIa0Ew6xK95CaPw30pQKM7nG0=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XggV0HEx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790753232;
+	s=arc-20220608; t=1790755726;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=diIEvF2TasT4UOWkGa58uWQ9wl1dmZNC1jWBY2aBQCU=;
-	b=64M/RWKUbWTJQpCtT07HGM4HlV6fkUsVb/2vFgmwuquEEFi2TmVb6arhcWurO7t7BMChdK
-	kdqKXkfoU0DH9VjkXbpsiT+uXrjnJ5IdOVPKKpW55xR4a5J/HGQCPXnpnlSw6+8TXaSSl3
-	S1HBABQHXoD0VsYcXqJNkp0yxKupsdg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790753232;
-	b=n99pfZ1siqbQgatebmmOnCc+CPnL8RsM5Ceu+zatcM4sLFsAvBVyTpwEEbmByYADYvxerY
-	DncvIbeWThaG9WBMoQ3wwBi8Iurv30YDuVnmj3ytRD7Brwy0dj1K8K+g9mMUcILG9J7ZI5
-	Yk5PkEhviMmb3yEMFBLg93wAoPkfkUk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=VGS+3SNd;
-	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1790753226; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=diIEvF2TasT4UOWkGa58uWQ9wl1dmZNC1jWBY2aBQCU=;
- b=VGS+3SNda8+sgaPeOpxyEtKZRV8WsptusvmjuYmCux0V6BJHVy9ROoKFRCm5vdox84g2GA
- tmQ9jgeIvqvg26/CCElQtyXPp2wAw0SaRHQV7LCZ7rEfjTllODqVtgeK0Q+TeIp3+Qzt1k
- COGttf88pkYPp6AmnO6SNY8vSfvv2UEjLGXQRdq0Fi5FQLI6xKPcWw8Mh04KeQnCVxOGr5
- NvJcp8GmlHcDUU8LwqkCzhn39HhwNze5cOGCtd7eJabFYiBn+gQ5noHx8V09NTPgVNIam8
- mvk2qFgs9YBVAilwWqD8GzS3LXEUFrgrsHwNkopJE3Cum+UhvXurtNS6zktGBA==
-Subject: [PATCH] mm/numa_balancing: allow migrate on protnone reference with MPOL_WEIGHTED_INTERLEAVE policy
-Message-Id: <20260930072617.64665-1-lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-Content-Type: text/plain; charset=UTF-8
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Content-Transfer-Encoding: 7bit
-Date: Wed, 30 Sep 2026 15:26:17 +0800
-Mime-Version: 1.0
-Cc: <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <lizhe.67@bytedance.com>
-X-Lms-Return-Path: <lba+26abcb9c8+13dace+kvack.org+lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>, 
-	<liam@infradead.org>, <rppt@kernel.org>, <mhocko@suse.com>, 
-	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <ziy@nvidia.com>, 
-	<joshua.hahnjy@gmail.com>, <gourry@gourry.net>, 
-	<ying.huang@linux.alibaba.com>, <apopple@nvidia.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B2BAD120007
-X-Stat-Signature: aomey41qdfckd53xawg1hq3okwzj5amk
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EgiI2zzwe8TB/ZW7XItAedr7ZYnB5/cnPC/QFupZv60=;
+	b=yLXYPf/59tT+DrCGtdqckCeAMKyvdUlvSEL31A2MvVKTy+nhCym/oYrqCwtUbutalDOiJ5
+	C13Xyn40LpORIWSF63nKppoKqKKEQOMi0BxaGxy/cmqYQgIDlfbu+/bhDcDOpbpM3lbLiZ
+	1M3nmwRPNkvuHocMcvg5rIEXNvHGhJ8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BC9DE436E6;
+	Wed, 30 Sep 2026 08:08:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652C11F000FF;
+	Wed, 30 Sep 2026 08:08:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790755725;
+	bh=EgiI2zzwe8TB/ZW7XItAedr7ZYnB5/cnPC/QFupZv60=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=XggV0HEx4iFhJNOcs0B7+qgnbnzi6NXR5MD9WbJ7i65myhUAHSTmNy6Ac7ZhgF93d
+	 2vR5/dLU6+PjoDXGP0wPigAZTRWnD4cYe93FRgqToAC/9KtR1TRCOPpUfK1jTaFzcg
+	 3QSk8SN+ocw23C9X3rs/lQqj5dU9+xFAZcjAq0qKugUCSA5GX3Lg/OQCQNttM5ycih
+	 yIRoFMzfv495BHVUK4a4Mbe5MWHkXqbu779h24yeOclupcxVOTD6VmFgL9EsiFqOtM
+	 VrzmxBcdP4ebr6Sk9sQI/LUDhMnozE4r0E2FYr9xxMez6HkxaAA5nDEzc8expHpxR2
+	 P8GOR9B/XDPtA==
+From: SJ Park <sj@kernel.org>
+To: Lian Wang <lianux.mm@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Jialiang Huang <huang-jl@deepseek.com>,
+	lance.yang@linux.dev,
+	KunWu Chan <kunwu.chan@gmail.com>,
+	baohua@kernel.org,
+	damon@lists.linux.dev,
+	david@kernel.org,
+	linux-mm@kvack.org,
+	mst@redhat.com,
+	ryncsn@gmail.com,
+	virtualization@lists.linux.dev,
+	xueyuan.chen21@gmail.com,
+	xiang@kernel.org
+Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
+Date: Wed, 30 Sep 2026 01:08:38 -0700
+Message-ID: <20260930080838.10887-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260930030747.47294-1-lianux.mm@gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: rh9a5z46tumieffbgwxpdzzpummi9znh
 X-Rspam-User: 
-X-HE-Tag: 1790753230-483955
-X-HE-Meta: U2FsdGVkX18zAxEbdS+sSBvcpGxHeEoasiA4c8boAmPKL4EESTu9b/YGO9M7XD3QgmASxHp37xGF1R+sZtEHQteP410adAgcAmamVWDfSRkE248cfBqrgx9x1vjUO/P/Nnv43enlXWNfkOJbbGJeClJztv8KBdipm/5QZQY3khRXwUmOoVlD9m/CLYaIjBybImdGXBxn7Z+jag7k76obp1Cxx1RiYiSrdwGVi8H68f88Lt0qf0DRvTpElCI1o0e/p1PB5WmmSQu0WspOD/mVmRnnuz5brUWSCQWH5+f4PZHZ5Fpp5fL2ZbcQqsVYwD1bjF8TLO/Xa216/EI0LBlchwCbqe6lOQgsmoscz+E+35tYN0xg3jNwTvhGb514LysiSBuJVqkeSUfqVvTS6H+IX45btocMb1ctvpbdqSeZl8PfDUxQoXtmqk29jxwWFOgM9rfOtYPdyOohZJX8a2Dbz9sRBDd/8xHnjZaTMrFcaeRn70q79b7se3IX8SnAgELUmcIYap6fFLOxB0H3nRO25RdT9qaT9T5mOPtzs93YAdzIJBHx84zpbQ5PJk4dtDxE9j38n+82RvpRIaIHEjZCwsAKtaZnlmzbyNE3vx8AnmdUOSKrHmnxWTfWEsTePupDJYttldJZwhSkndJdydNA3LW99GNedtZU9hm3rF1xTg1CTTdYm4/W5BCXo79RGaLzxhV54xjX24AffcEiMsdnTS+CWisoOmYZJaxHkJMpAZgtojR9gv0ncdR3DnpF2yx/mgRjVcTqJ1GXtjLRg+ndBFbNIySweSi+ZDsNJXlYgMg0JES+Cig5/EimfjFYS1iJuhlcBmSI0Tw8HHCB6k9nDrQI9CX8UHBe8J05+TyHVq66qbtmX4osSgLB2a1pIGfDyM+pil2qwcVWpreVs6H6o0kYE+gIq/TKRxuDciZ3r1GwB2D5o+eJCKjYEOAErdvQOE4kF673saR7oVWJlsC
- 41B4I+nv
- HC/ynCSHJAOKgIg4muG9X+WrTeLtH8rLL8nPT99bZKiYzHdiiA9goaUj4eJCmuEhwV1Lhi6+qZK6XkBWJoLHFUjHirIFdK5U6EpTayxTylo1j14E4KnPRRLbW0KP5zYQ5i52BhtjdMRrW0qK4uHys5QufOwWNldu9XBhuy4797bftFhjGekKUZC4wucQfnIm4NRbePG6ureEq3kSwC7CGO6iFwWUs15uOOJVaSMGA0xDUkKLHBvmMSqanINXTVaqil2Nh7H0bWKCZyHTybpInZA/qKsDBu92mFPRhjzOZN1t64LO4oxTVs37zHrl4sYfVXEa5m9YbWq7+Wijp6CrtnaZR+HfhCGJ5wBqDy2fKPDUe/3OoXz5hMlRg4sZ64Smv3S1W
+X-Rspamd-Queue-Id: 88CF5C0007
+X-HE-Tag: 1790755726-969041
+X-HE-Meta: U2FsdGVkX1/liABhBKFs13jSYItXnC02pbbR77sSkilwo8czoxTnRcid/GwVClKOJh7F+SydqxT20YVYoGEb2Xj2pChz3gxnX4woYyuImrCYCrQj3Qrar4LT3q0pU5HTw/aV6SYfA1TmwLX+g1+VF9YeeoQKwcu3rfLm1kFc5wdLqLd14yteLul0QYPp8PMzudlUmcSxZjrKBzC3hwzCh+DFtY9U0JRVg+JjstASCbyVC7rV1pOTGywdWHv5HjMbAwXI7EMsGlNzuDMiQ4mPZAz4Fl3j6SM6nbRX29z2FB4/PSmqUq9zEbK7NtXnvpT+9PR04imkmHqf9a/DvL+coIJzegIfjS/dCuzXbyd+vFeLyUNF+O/ohFol0ee9eKygsN1qBWY/m3vtwQwJyvjZxAqqiDi5msMB55WUiAnB828K7l/wCXXOBGm5jb3FBvTsM/co7GWrmd6rVvvLGY7VByE1Y3c+8VZs6Sw+GMPuSpsVPMrhy0fYb7pYUUIlhCwCcygvVcz2Ylmq7jwdrx2dEKNz0+wMdRWf53LedM4npKeuI7I2QZfkiZaQEwcYMeqqSDirc0tk3ukFuzI2rlsHKobMMrDSd3ge4FaJw9ttHS0bt9HhhS1F183WtkGOuotGhKoIrM+VKysMelpWy7klWCsFSMenL0vP7sinDlpr9MKwXPpgC/G1IkAPyD4JAjgk1BjFD0QdOIHMQxRGjgSzVOmcmS9dXhOlkq/e+XGtSte0+GbrHeAOQscG4yARcUNEH9J+ePVli3PBXgyxsjAwJHE2iMNyl9rmjEl6o/85VjjrDLK36+0CTlt5QKe0GmBjQk/7lQ091ueKziFQeJSd+bbWu7rret52qsKYZkhvcspGIbxFOJEeciOegSXuZvSClILThE/Vucc/G7GQsCVDZluWv8wtMs7pWm+DExM+Ydsa/OGYGZx04VzZ/LhbKcZOgxJkrPRXNslvYEgquwl
+ nrBMdRL9
+ hUeqT4JyDBW8/wO24nrXVc/rYGU+3fDDMf+Tp73mo9kv/uxuoag033Z0H9r6EDYPbs/Lr7o1mP5Izyt8kcF05hCL/kd74ctOai6sTA4grV/6Ngsmr1T2SJA69olOkxMmgR/vlnFNBGta8L+rE7/aYig47d0JTmleSa77VYmlFOQ7rQ+sg7m3sdOIwr+huLCY1/zOQ4zI3MtssSCWpGah8x7BhOr29vx6Ytx5QTytmKAkIb7880U7dSmYSpp01wjQSse+PdSmQAcg5kzlRrc3bJwqgYOdIDaPQCaQaYYiaRrFFKzPMxnudn/OocG90wr+t9Enz6tugl3plTsY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,95 +101,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-MPOL_WEIGHTED_INTERLEAVE is useful on tiered-memory systems because it
-can seed a workload's new allocations across fast memory and slower
-capacity memory according to a configured ratio.
+Hi Lian,
 
-That initial placement is useful for workload managers and orchestration
-systems.  They can take the amount of fast memory and slower capacity
-memory on a machine into account before starting a workload, and choose a
-weighted policy that seeds the workload across the tiers at allocation
-time.  This avoids starting from an all-fast or all-slow placement and
-then relying on promotion or demotion to reshape a large working set.
+On Wed, 30 Sep 2026 11:07:29 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
 
-After those pages have been placed, however, the policy cannot currently
-opt in to migrate-on-fault placement.  set_mempolicy() and mbind()
-reject MPOL_WEIGHTED_INTERLEAVE when MPOL_F_NUMA_BALANCING is specified,
-so memory tiering cannot promote hot pages that were initially placed on
-the slower nodes by the weighted policy.
+> Hi SJ,
+> 
+> On Tue, 29 Sep 2026 09:56:03 -0700 SJ Park <sj@kernel.org> wrote:
+> 
+> > I agree the reclaim-reporting granularity mismatch could be a room to improve.
+> 
+> Thanks for pointing us back to the Access/Contiguity-aware Memory
+> Autoscaling proposal. Jialiang's description gives us a useful deployment
+> context and a concrete problem to investigate.
+> 
+> The guest reclaim/reporting case and our host-side THP/tiering case are
+> different, but both raise questions about how workload behaviour and
+> monitoring granularity should guide kernel actions.
+> 
+> KunWu and I would like to help move this work forward together, alongside
+> the existing DAMON roadmap. For now, I would like to share a few possible
+> areas for discussion:
+> 
+> 1. Workloads, DAMON policies, and tiering. My current work includes
+>    improving masim-based experiments and studying TPP-inspired memory
+>    tiering. We would like to make the workloads more representative and
+>    better understand how DAMON's observations and policy settings affect
+>    placement decisions. The aim is to understand where configuration
+>    changes are sufficient and where code changes, if any, would help.
+> 
+> 2. Testing and contributing to the existing PMU work. Our initial focus
+>    would be on helping with the Arm SPE integration and testing the IBS
+>    and PEBS work on x86, in coordination with the people already working
+>    on these. The experiments could evaluate whether finer-grained
+>    sampling provides useful additional information, and at what CPU
+>    cost. We could leave huge-page-specific mechanisms for a later
+>    discussion, guided by the results.
+> 
+> 3. Following up on the DeepSeek workload. If the team is interested, we
+>    could learn more about the workloads and tuning questions they can
+>    share, and study the path from workload behaviour and monitoring
+>    parameters through reclaim and free-page reporting. Pratyush's
+>    reporting-delay suggestion adds another useful dimension. This may
+>    provide a practical starting point for revisiting parts of the
+>    access/contiguity-aware autoscaling work and evaluating their
+>    relevance to the reported workload.
+> 
+> Could we discuss whether some of these could become follow-up milestones
+> in the DAMON discussions at LPC, or here on the mailing list?
 
-Initial placement is only a starting point.  Pages initially allocated on
-fast memory are not necessarily the long-term hot pages, and pages
-initially allocated on slower memory may become hot as the workload's hot
-set changes.  The policy therefore needs to be able to combine weighted
-initial placement with memory tiering's NUMA fault based hot-page
-promotion.
+Thank you for adding topics to discuss.
 
-Allow MPOL_F_NUMA_BALANCING for MPOL_WEIGHTED_INTERLEAVE.  As with
-MPOL_BIND and MPOL_PREFERRED_MANY, keep migration constrained by the
-policy nodemask: if the CPU's node is outside the nodemask, do not
-migrate the folio there.
+Of course we could disucss anywhere anytime.  I think Access/Contituity-aware
+Memory Autoscaling (ACMA) could be just a parallel project.  It doens't need to
+be an extension of, or blocked by "beyond-page table access bit" project, in my
+humble opinion.
 
-This is an opt-in behavior.  MPOL_WEIGHTED_INTERLEAVE without
-MPOL_F_NUMA_BALANCING keeps its existing behavior and does not
-participate in NUMA balancing.
+ACMA is still on my TODO list.  It is mainly a matter of prioritization.  As it
+becomes clear it requires more attention, I could allocate more time for the
+project.  There was a user showing interest recently.  I'm planning to
+prioritize it more.  If DeepSeek could confirm their interest, it could help me
+prioritizing it further.
 
-The weighted interleave weights continue to control new allocations only.
-They are not a target residency ratio after migrate-on-fault placement.
+As always, coding may not be that difficult and take that long time.  Testing
+might be the biggest challenge.  I don't have good test infrastructure now.
+Actually the lack of good test infrastructure is one of my biggest DAMON
+maintenance concerns nowadays.  Others' help on testing or test infra would be
+super helpful.
 
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
----
- Documentation/admin-guide/mm/numa_memory_policy.rst | 10 ++++++++++
- mm/mempolicy.c                                      |  8 +++++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+If someone wants to implement and contribute it based on the proposed idea, it
+would also be nice.
 
-diff --git a/Documentation/admin-guide/mm/numa_memory_policy.rst b/Documentation/admin-guide/mm/numa_memory_policy.rst
-index 90ab26e805a9a..f10a8297fb178 100644
---- a/Documentation/admin-guide/mm/numa_memory_policy.rst
-+++ b/Documentation/admin-guide/mm/numa_memory_policy.rst
-@@ -259,6 +259,16 @@ MPOL_WEIGHTED_INTERLEAVE
- 	weight.  For example if nodes [0,1] are weighted [5,2], 5 pages
- 	will be allocated on node0 for every 2 pages allocated on node1.
- 
-+	When MPOL_F_NUMA_BALANCING is specified, migrate-on-fault
-+	placement is allowed within the policy nodemask.  This is an
-+	opt-in behavior; without MPOL_F_NUMA_BALANCING,
-+	MPOL_WEIGHTED_INTERLEAVE keeps its existing behavior and does
-+	not participate in NUMA balancing.  The flag can be used by
-+	memory tiering to promote hot pages that were initially
-+	allocated on slower nodes.  The weights still affect new
-+	allocations only and do not define a target resident ratio after
-+	page migration.
-+
- NUMA memory policy supports the following optional mode flags:
- 
- MPOL_F_STATIC_NODES
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 79053ece02cd4..f71cdb488bbdc 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1731,7 +1731,8 @@ static inline int sanitize_mpol_flags(int *mode, unsigned short *flags)
- 	if ((*flags & MPOL_F_STATIC_NODES) && (*flags & MPOL_F_RELATIVE_NODES))
- 		return -EINVAL;
- 	if (*flags & MPOL_F_NUMA_BALANCING) {
--		if (*mode == MPOL_BIND || *mode == MPOL_PREFERRED_MANY)
-+		if (*mode == MPOL_BIND || *mode == MPOL_PREFERRED_MANY ||
-+		    *mode == MPOL_WEIGHTED_INTERLEAVE)
- 			*flags |= (MPOL_F_MOF | MPOL_F_MORON);
- 		else
- 			return -EINVAL;
-@@ -3005,6 +3006,11 @@ int mpol_misplaced(struct folio *folio, struct vm_fault *vmf,
- 		break;
- 
- 	case MPOL_WEIGHTED_INTERLEAVE:
-+		if (pol->flags & MPOL_F_MORON) {
-+			if (node_isset(thisnid, pol->nodes))
-+				break;
-+			goto out;
-+		}
- 		polnid = weighted_interleave_nid(pol, ilx);
- 		break;
- 
--- 
-2.20.1
+> We would be
+> happy to help organise the discussion and take on agreed pieces of
+> testing or development. We would also welcome closer collaboration with
+> DeepSeek and other interested MM developers, including Muchun, where our
+> work overlaps.
+
+Sounds great.  That would be super productive collaborations.
+
+> 
+> This is only a brief outline for now. I plan to bring the experimental
+> results and remaining questions to LPC. After discussing and aligning on
+> the details there, we plan to share a more detailed proposal with the
+> community and write up the planned work and experimental findings in
+> blog posts.
+
+We could keep discussing in mailing list, but of course in person discussions
+are always helpful.  I'm eagerly looking forward to the next week :)
+
+> 
+> I appreciate how much is already on your schedule. We hope to support
+> the existing plans and help with agreed tasks as the scope becomes
+> clearer. There is no urgency to reply; we can discuss these ideas
+> whenever it fits your schedule.
+
+Appreciate your continued and grateful contributions, Lian.
+
+
+Thanks,
+SJ
+
+[...]
 
