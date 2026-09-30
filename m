@@ -4,108 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EADEDCA5FC4
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 18:40:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A407CA5FC4
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 18:47:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA9396B0088; Wed, 30 Sep 2026 14:40:40 -0400 (EDT)
+	id 1DB846B008C; Wed, 30 Sep 2026 14:47:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5A176B008A; Wed, 30 Sep 2026 14:40:40 -0400 (EDT)
+	id 18CEA6B0092; Wed, 30 Sep 2026 14:47:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96E886B008C; Wed, 30 Sep 2026 14:40:40 -0400 (EDT)
+	id 0A2BA6B0093; Wed, 30 Sep 2026 14:47:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 76F456B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 14:40:40 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F41AFC01DF
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 18:40:39 +0000 (UTC)
-X-FDA: 85271294640.17.85FAF55
-Received: from gwu.lbox.cz (gwu.lbox.cz [62.245.111.132])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 283A5180003
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 18:40:36 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linuxbox.cz header.s=default header.b="HyAdT/rm";
-	dmarc=pass (policy=none) header.from=linuxbox.cz;
-	spf=pass (imf16.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D8F526B008C
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 14:47:32 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E8171A01B6
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 18:47:32 +0000 (UTC)
+X-FDA: 85271311944.08.EB40473
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A36D01C0006
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 18:47:30 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ADxd7IJg;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790793637;
+	s=arc-20220608; t=1790794050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UQWLRh3cX6MfBpqZVLbNMuRtWRQ1VYNiu2fQhkvtL34=;
-	b=kw5WX1LZIp6Zm9Lb/q9EZHkHvFF4cCjBF57CHnAoe6dVDyCks5b7/ZILoN6NtNUs3aFF+J
-	SnZd1Ochjyny5SFPsDOVqzRkHYVOkkN+Jw/LrL/PlUPc338quVs1DqjJmxKJva8iqkGfQI
-	iJf5E7X/LqP+QfV5hrCFmCUMGfePa7k=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=yD+kiY0HoTfxu66erBXAF33xLs4HT8xVVKYchh0t2N0=;
+	b=o4lrfUYQ90x60ymqRGsQdjrfflMpCHAgsWdmLoWPiRoC7OreC4PCLtKP4xYNsyGZfZQlpt
+	sfqnNeIle6GQWoPhQoqWgrj86G1QI/oup4kLnfA09ryte2i5yksIugx8w5esL+ZullGhSS
+	83qawtqvRF79vJtG/NeJjhoRnySOpdw=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linuxbox.cz header.s=default header.b="HyAdT/rm";
-	dmarc=pass (policy=none) header.from=linuxbox.cz;
-	spf=pass (imf16.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ADxd7IJg;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790793637;
-	b=sdQKTlFaoJms3ObTgmQUToP7IN7MEVV+POcgGTcMrxAqBzFZjamUm+1Yc/7jV7JKsoto55
-	98LJ3OijoDXjtk77kkLhoyQ+KuLqQu5Ju5BcVom1OV4wDdC+i4EN/PEzSx//lnROznBhpj
-	pgqbETsIq0KFlwWdZ6GnZvXQXSuVRuo=
-Received: from linuxbox.linuxbox.cz (linuxbox.linuxbox.cz [10.76.66.10])
-	by gwu.lbox.cz (Sendmail) with ESMTPS id 68UIeRrL3595274
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 30 Sep 2026 20:40:27 +0200
-DKIM-Filter: OpenDKIM Filter v2.11.0 gwu.lbox.cz 68UIeRrL3595274
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxbox.cz;
-	s=default; t=1790793628;
-	bh=UQWLRh3cX6MfBpqZVLbNMuRtWRQ1VYNiu2fQhkvtL34=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HyAdT/rmOxoXRyWcabqH9NuxGQOg1f3d3+pRv+UfT0eNMm5SUrw36bNlFLQgKPrP7
-	 kJWTBeKnbKn+9izN0S80adjyt1kNPtLbMHrT8XWU76mQZsE1W9MMd9Im7utlYmP9hD
-	 x+SCeYCM/vlCdWX03EsostEOH5kGxR/r1PbuKm00=
-Received: from pcnci.linuxbox.cz (pcnci.linuxbox.cz [10.76.3.14])
-	by linuxbox.linuxbox.cz (Sendmail) with ESMTPS id 68UIeQTt020450
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 30 Sep 2026 20:40:26 +0200
-Received: from pcnci.linuxbox.cz (localhost [127.0.0.1])
-	by pcnci.linuxbox.cz (8.18.1/8.15.2) with ESMTPS id 68UIeNha2112989
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 30 Sep 2026 20:40:25 +0200
-Date: Wed, 30 Sep 2026 20:40:23 +0200
-From: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        akpm@linux-foundation.org, david@kernel.org,
-        Mike Rapoport <rppt@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
-        luizcap@redhat.com, pbonzini@redhat.com,
-        Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-Subject: Re: hunting memory corruption bug in 6.18.x
-Message-ID: <ar1Xl7PE2rcoT9h3@pcnci.linuxbox.cz>
-References: <arY1Wq6R9OY20ans@pcnci.linuxbox.cz>
- <arZHp8hjYFXE8Rkt@gremlin>
- <arde/t0zQNEkWqi5@pcnci.linuxbox.cz>
- <areOeRwZOez0eHm7@gremlin>
- <arotyz5g6LozSjb1@pcnci.linuxbox.cz>
- <arwNebjYXyGqrp32@pcnci.linuxbox.cz>
- <arzRBv9ceJsxJppI@gremlin>
+	t=1790794050;
+	b=M36w9wQtnd0qcVpn7+Os36i46M577yRcUbQqphDrC6uH+Q7te59YATsvj/KyxI/LNrHT9G
+	RIsPCo6cOl9uWlDN0OPZeYbvY3HFF0TzDv4Hkb2AAcGZxvReR4bX46z3ThNpjz6fAOe38g
+	TQWiLd6cX0Xp78MRlCdoGqCFT81TQK0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 73CEB601EF;
+	Wed, 30 Sep 2026 18:47:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451E61F00898;
+	Wed, 30 Sep 2026 18:47:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790794049;
+	bh=yD+kiY0HoTfxu66erBXAF33xLs4HT8xVVKYchh0t2N0=;
+	h=From:Subject:Date:To:Cc;
+	b=ADxd7IJgoc5YI2gZqwnPdRQnBd2GhhLLKqu6VNKYetbeqpEDWnafR09CiVwl391ok
+	 2LeVaPvqivS45qptH6cB0DzCJJ1a7T1RBohe3a+1cWt3ibs9edPEFRi9N/ENoJiGUY
+	 0937Bi5vVgx6udRaN2VRTvP5SjL2CG/9SRQIM+fiikTi9xDNVKiEA9ip4rnc9u3Dob
+	 Ut8eZ+texE13OAr/+PpznWs2ms1IBz7M7DcYcjOL75fknGaybDkDx90nnaCvDi/EdI
+	 TOuY377A23mWLOeE/tvXlRyVLvS2cyUaOIY0ewOMo5wLg9iaRsHOhDVXxETFpnm4Jv
+	 bA0s5K0ofMMbw==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH v2 0/2] mm/mremap: fix two issues with MREMAP_DONTUNMAP
+Date: Wed, 30 Sep 2026 19:47:08 +0100
+Message-Id: <20260930-fix-dontunmap-partial-self-merge-v2-0-f388985a0f0a@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <arzRBv9ceJsxJppI@gremlin>
-X-Scanned-By: MIMEDefang 3.7.1 on 10.76.66.3
-X-Scanned-By: MIMEDefang v3.7.1/SpamAssassin v4.000002 on lbxovapx9 (nik)
-X-Scanned-By: MIMEDefang 2.86 on 10.76.66.10
-X-Antivirus: on lbxovapx9 by Antivirus 
-X-Milter-Copy-Status: O
-X-Stat-Signature: z93rhjy9n1sezup95nu9mb98846ohw5q
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5WNQQ6CMBBFr0Jm7ZjS2AquvIdhUWQKE7ElUyQaw
+ t2t3MDl+/n//RUSCVOCS7GC0MKJY8igDwXcBxd6Qu4yg1baqlor9PzGLob5FZ5uwsnJzG7ERKP
+ HJ0nun0+urtqyM84ayJpJKG/2i1uTeeA0R/nsj0v5S/+QLyUqtN63xlhf+aq9PkgCjccoPTTbt
+ n0BbkGHcdEAAAA=
+X-Change-ID: 20260920-fix-dontunmap-partial-self-merge-74a98b1d5a65
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+ Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
+ Kiryl Shutsemau <kas@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, stable@vger.kernel.org, 
+ "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2742; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=5wUqWsURO4rs1oMkv+4uI03AHJwb7y6msO+KHQvbPDo=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLL2RtqK7lFwSchj92X9fXVG8fZ7pv8ltG7Mmi5RsUwih
+ dGmt42ro5SFQYyLQVZMkeX5F/H9QSJh8zov+LvBzGFlAhnCwMUpABNhf87wV/z9xNtfvWfpcBy4
+ viP38oq84i3y9x2iPWK9tUwfuJbrTmH4p2Vtfq3eeUL1iW8s/EXfSx7Je4vqZX71Srp0/dL7x5x
+ V/AA=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A36D01C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 283A5180003
-X-HE-Tag: 1790793636-623875
-X-HE-Meta: U2FsdGVkX19YXw56zcf8IzvoyUoHnbPBWGr1PmJijaIOQtaf+B/ZFi0NSdnp9d+SwRHhChQDe+WgAN0V35pewaFqY3Y5nrwge3YyLPuSve2i0oueV2OQUsCbQYc3DtjSViuZ4/S270+cW2PflXFhYMXt8V/uepMTPvZVJ/q/tHJdYlnUJykgbIUSRxmNp279dR+NGtLYag4L9a/j+44HJOrBT4/LlxSUGGCEwMBi+HHhsPd9EkiBamxXpqbCxkymKxWYeD0dtbqiLnqb30nHSS5CQ7kki/UuWDFrE1xkyrndRwqJtLISbhrRZ+gAZz4gIw50u2n3SqXzyg4d2bx1q57i4xWr7IfRcPsmXpjbI7s9ixSMT6AVPbRkt10yPDfNPBV9HckXiXd/4akAZWSQqHjp4uZNExl7TYLQlf8S+9Li2bne1kh4bXfbGAALx34fBymkjBYkHT9Jt2rkcNeS6VG4cnkiid1AaiaUWqTn5vWlY15pizTGWEUD/rVw90MxfVMaSGvNJwFRxlbf/cKbywsviG0w5408fGC9s5GM37J222JNCwmCxmCufH5ABYUr4OBTQ4yLCu0QINrn6Z6BL7kPK6Z6TQ04P1ATIpniZ9X68hPUAlqL4FTxsi7QwfiNufg6vdn0XZGe1JaHdFw6D8F+T9kZ9vSuOiOeRJx/FtbeZ8XuHiMdw+FSKAPmClOgRDQQmO2o3De049zTMnx20irZKsmKQrncApb2mSRZykCWc7Gf0h6++ACUrd9PtmUw51y0j1uIPg+57KgBSFC5y9SLpHzSxncZDl16kujwXKYgaW7JYGrBKTAws5hSyVSkTn1JIxQ2dAiesTViVlDv5Lds0cT/nNDdCdTBqiMZ3PHikAjS+ZzNfoD9BoJDRwHelLCmJvOk3HMmZquIAgU2WuSUJC19jP37Np0VwW3kE/kKZT7ENmSTQgPb0AG6gHU9pTzP0ibXuU6FPMo0e2Q
- BfF7zxHb
- g8rP4Lw2cFt9TF/L7z0Zl7VNg6rOQb+aKdgHubLuCie6kioxx1cH91V/nn2qKXBnSh8Y0DuE1AInnLtfm6GP0/z93aIvI8kyJNEAh/l121597CaszkYNb/WIkOyg4UWqjckWWQpmNef+9Qzl0LYcPn9b13rd6TAr/4gaaGTRzShiMFNIsJCYSc8G0NpLOjwwSebuhAbVefAcLN+0hhIAFvrWX49q/4uPJO+FsCYdSlX21pI0PfLy2kZ075Ya7zEljdSJ6f+LpxlCgUz/PxL8lscu3/+Fkr5MAKTX8w/iCn6jo7N1EXKqBiVZwZ31hAoj7w/lWkH+CetcSykg=
+X-Stat-Signature: pgs8wpszdmdxzuwioqsnb6ha55x815fz
+X-HE-Tag: 1790794050-533755
+X-HE-Meta: U2FsdGVkX19fo5t0Nc2qmCHDygYqcglu45WyGtH6b1CEM4AxNoZWrJhEWH68oVXEDvfB1qgAxdCddHmCSdFFgPcVefDJ6MJNXeVM+rz4aNN0UUj7pJ8di4X7hxjSLFfBAFnsBWQ1aObUCS+G4sbRO1YSqwhje/Xk6541o1lJbeGs+yDRYvm0DMT+BZFS+Z+hwD8JvaVx7J1nEfqAc4lWba2TTPuW8VPFCBNp+n2wXyv77YU4j6aYUHIWd0KQVpYAx41g6qa9qmnM2av2lRJ/NMFltfGCnAyosDzcgt2Ffs9PRzZanm1CmQwv60zmjZFXCglMi6Oo1FzzB/hAkg4BnkXgRxfXH2dIBTUBLYByMSPUSK4WW7JN+BmM0mhm4uQ3qXKIU0nMTfm08QygFUMz42+Jo8pGrbIZEfaTPPXukl0B8i5lzqcBRlDAXNzAzjCroGbhorf9NwwFprGthSkiJgfMTnNbq/h3fXbodxjVu2k9gFOej85/ZbgNg9f9JSLes4ILbW7vpGWGPsJ/zEJVWrYlIRVWPJWrSWTPyF8fILw1Ge+WpC4Ut2aggO1e1gCcfzGE26InSsF0My8oQvaQHkat0pOmOyYHf1tNP4Ls0R6GANwJH2yiaT1xGFxUM5t8NCy9i6v07ynL3/xIwt3nVsUrUPtsj1bd4ke5vRGZ8T9IPwIkGMgDCdV0iU8oh4zKWY+ugWjewowaEgbXIzvSsXjrJij5eHqdwjCcbJRNglLfCBVnwgkwnnJNQNvE7HyfCNCEQrGc6I4Whq0hCjCAb21K/sVElb2xaoEl1YOd9SlrG80jVLwLwE2WGuolZNpHn3gWQEkczcnTEVSeOY9HVWb7GiiqILOrmu4RBHVC0ncvm5Uja4ytxoOtGsBSgchhrPACbkXFVaoQi5B9tFq40wF6TohbISU/SV7FaZMqkmekwNzcvx9PC3t9VwRyoXu1gKpuv2uF0sKuLWdiWa+
+ Zlt34ikR
+ mSsrCjnXvdzu6LMSsWshgZPuhIB5m/aBwQVKxoqUsR9j66ppnuaBRg2YEHC4fRflXzWMRUWytCZeDhvU+lcTQGIML6nGa3E/+GI3hliB1THDnQp+LGsORuqqUGkGGW7VR2+Xn4MQ35ypHvChpmWqbm1nIj8S363w0LulEz7VlWPL0o2ZYQaHHeWg+klYrBv0e2IFiGsXs9GyJsFUhfkDwbx2muz9Rtz7mI4SFtLgk4F1f87Hg1/26RJHv4k4BP8pGvv2Xx4duTTlcfiMmnREUqBS8PGkcaGmRKlbY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,43 +108,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(CC Paolo Bonzini)
+The MREMAP_DONTUNMAP feature is highly unusual in that it permits mremap()
+operations that keep the original VMA in place.
 
-Hello Lorenzo,
+Historically this has led to a lot of bugs where non-obvious interactions
+occur between existing mremap() operations and the original VMA.
 
-> 
-> Yeah 6.18.15 is expected, I'd not say reverting is really worthwhile honestly,
-> given what you've observed previously.
-yes, I wasn't available at the time he was dealing with that..
+Commit 397432cab17b ("mm/mremap: account mm->locked_vm correctly for
+MREMAP_DONTUNMAP") fixed an accidentally introduced bug around
+mm->locked_vm accounting, but this wasn't the only issue.
 
+And thus history repeats itself, as it turns out that mm->locked_vm
+accounting is broken by MREMAP_DONTUNMAP yet again by two further cases,
+and has been broken ever since the feature was introduced.
 
-> 
-> Maybe worth checking if commit 26505e1b5b54 ("KVM: SVM: make svm_flush_tlb_gva
-> do a full asid flush if NPT enabled") helps in that case?
-sure, I'll do that.. however, the patch doesn't apply cleanly on top of 6.18.54 at
-all.. what do you guys recommend, is it OK to adjust the patch to this kernel
-(I have to admit I'm able to do that, but without any deep knowledge of the subsystem)
-or do you recommend to apply some of the previous patches?
+Both relate to the fact that VMA_LOCKED_BIT is cleared on the source
+VMA (it has to be as all page tables are moved):
 
-tried going through them, but its ~134 commits affecting svm.c between
-v6.18 and 26505e1b5b54
+1. If an unfaulted VMA_LOCKONFAULT_BIT anonymous VMA self-merges it
+   clears the VMA_LOCKED_BIT flag and permanently leaks mm->locked_vm
+   pages.
 
-cheers
+2. If a partial mremap() is performed on a locked VMA there is a leak equal
+   to the number of pages not copied.
 
-nik
+(Both for MREMAP_DONTUNMAP operations only)
 
-> 
-> --
-> Cheers, Lorenzo
-> 
+Both issues can be fixed by treating the source range as distinct from the
+destination range, which is the definition of what MREMAP_DONTUNMAP does so
+is appropriate.
 
+In case 1, simply disallow the self-merge, keeping adjacent source and
+destination VMAs distinct.
+
+In case 2, split the source range ahead of time if the VMA is mlock()'d, so
+accounting is always correct.
+
+Both changes were tested locally and confirmed to fix the issues.
+
+For the purposes of a backport, the fixes are kept distinct, a follow-up
+series can add self-tests.
+
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+v2:
+* Added tags (thanks everybody!)
+* Updated 2/2 to avoid splitting the VMA if the VMA was not mlock()'d. It
+  is only meaningful and necessary to perform the split in this case. This
+  also fixes the proc_maps_race selftests that broke, as reported by
+  Anirudh.
+
+v1:
+https://lore.kernel.org/r/20260920-fix-dontunmap-partial-self-merge-v1-0-6ffb556f8f8b@kernel.org
+
+---
+Lorenzo Stoakes (ARM) (2):
+      mm/mremap: fix locked_vm leak from MREMAP_DONTUNMAP self-merge
+      mm/mremap: fix locked_vm leak by splitting VMA for MREMAP_DONTUNMAP
+
+ mm/mremap.c                   | 70 ++++++++++++++++++++++++++++++++-----------
+ mm/vma.c                      | 21 +++++++++++--
+ mm/vma.h                      |  7 ++++-
+ tools/testing/vma/tests/vma.c | 10 +++----
+ 4 files changed, 81 insertions(+), 27 deletions(-)
+---
+base-commit: a3d0117e02bfa1c3bb6c50e7afe42bbecdbb3459
+change-id: 20260920-fix-dontunmap-partial-self-merge-74a98b1d5a65
+
+Cheers,
 -- 
-Ing. Nikola CIPRICH
-technický ředitel
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-+420 591 166 214
-+420 777 093 799
-nikola.ciprich@linuxbox.cz
-
-www.linuxbox.cz
 
