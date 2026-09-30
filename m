@@ -4,100 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03164CA5FBA
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 11:05:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C77CA5FB1
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 11:12:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F019E6B008A; Wed, 30 Sep 2026 07:05:49 -0400 (EDT)
+	id 486416B0088; Wed, 30 Sep 2026 07:12:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB2966B008C; Wed, 30 Sep 2026 07:05:49 -0400 (EDT)
+	id 436FB6B0092; Wed, 30 Sep 2026 07:12:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC7F06B0092; Wed, 30 Sep 2026 07:05:49 -0400 (EDT)
+	id 326B16B0093; Wed, 30 Sep 2026 07:12:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A92096B008A
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:05:49 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 33CCC14064D
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:05:49 +0000 (UTC)
-X-FDA: 85270148418.14.F106EEC
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B2278140006
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:05:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mPlYje33;
-	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F24E06B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:12:02 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7DF4F160772
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:12:02 +0000 (UTC)
+X-FDA: 85270164084.26.F8EF943
+Received: from mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 434A7180003
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:11:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XNkyp1M5;
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790766347;
+	s=arc-20220608; t=1790766720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=S40y1xWu0xX3iT4AGczGo5PSJOGNJLHzIE7u9otIvXQ=;
-	b=pVzCecY6+PTxYzsix7lPSYdRkuvDIAdnVNPeMoMtE9nZeXEFKcEnTjk1ClHkkqqAuHwjYu
-	IPHixCSOXHAiyMbykdgJR1BOdq0RMFTc17HSM+PWytqHPxYFwERZ7IF+b/fEUVDEwrACwS
-	RoKiiv5ff2+rjfAQVPQ9u6mXkftCfYI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790766347;
-	b=ZSNVTP7AcIvYuVJL3pQThqaGgdaQWPjf2ZJVY5L6jqu1u219Hzz+pXHi6uXOCoyQL5wWAl
-	tQAauQBbUHOYc65FaCzp7dQTzxiekH7FhZIFQa+3dCt4usoFo7oLOR4cvHzHM8WoOHSWGp
-	eub/7oDPX279luHOSCpshbSQr8EXXYI=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=w8TdMHuVObPqzYZTfk2DxdvouGjhEk2R8v52SYa0+5A=;
+	b=lu55FpNJ4NwxhiXA4kOOQmwq8Y9ATBDxnnY+uPui2YUPtZCxJeyPu4DOVEemIoflBIR69T
+	qCw9WAwBv7kFTF1xflXGlpbFwSEHaP+bkHWTaFztqxsp80TE1/6aY7CD0pokVi28SNVS65
+	CQ57STnQ1HMRGgOrraxRL8wSFlg/P1U=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mPlYje33;
-	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790766347; x=1822302347;
-  h=date:from:to:cc:subject:message-id;
-  bh=xb2F7yY761Px570aTEq8Hu9qlrKvIEJumXMxe/XEzVU=;
-  b=mPlYje33B+vRcaCPFZ1lfnv9LhHrNwWe19iRaQ6ojPwcnJEdbFnAUMtn
-   kjrgvnM1OrOmB85m5nZ7+Qyxy8iofbyEAuUztRzO4Ld9U44hhpV7TckwW
-   y7ubjKHURBc1K4aNhaGGWz6NvDC4sApnIKj/zF23GBj1dqA7F4I19/ziw
-   iNJOZNqR/LzDnwkt5BDD0xmmIj9mPj6LQp5cArfeUKJUYJftu4YWRPK5d
-   2tbme6GtbGhV5VawguuahRcdZxIOeUokMXexZxP1qx+OdwaPrwVR3HRcV
-   0jpq0vH1ifOrLfrkoaIj1u5sHIqOm6uaeRQJy9iHbsNXIXldgA5UYgYVH
-   g==;
-X-CSE-ConnectionGUID: orV3JnWrQJ2EOLI2syzrCw==
-X-CSE-MsgGUID: rSA3bVXQTRGNGrHz2eb+Jg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="90542145"
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="90542145"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 04:05:45 -0700
-X-CSE-ConnectionGUID: pN/9bqPISt2dNIqNy9TQtA==
-X-CSE-MsgGUID: Y/l/7UGaTP258CGwh9vqxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="274271720"
-Received: from igk-lkp-server01.igk.intel.com (HELO 04362d00df5a) ([10.211.93.152])
-  by fmviesa006.fm.intel.com with ESMTP; 30 Sep 2026 04:05:43 -0700
-Received: from kbuild by 04362d00df5a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xBs85-000000001q3-0Qlh;
-	Wed, 30 Sep 2026 11:05:41 +0000
-Date: Wed, 30 Sep 2026 13:05:34 +0200
-From: kernel test robot <lkp@intel.com>
-To: Finn Thain <fthain@linux-m68k.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Arnd Bergmann <arnd@arndb.de>
-Subject: include/linux/compiler_types.h:631:38: error: call to
- '__compiletime_assert_424' declared with attribute error: BUILD_BUG_ON
- failed: offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) !=
- sizeof(*u)
-Message-ID: <202609301230.CauIUXCF-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XNkyp1M5;
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790766720;
+	b=nG3ep5PtoFMs8laxW4KjCpaiVcVgxX0dNcMeRIez5bVeeqUiAptBxz3cUckl5ZvLnAM/M6
+	rmQsnCpx1pyLRpgJGq4EeLYBwhC1gba0aVFyZzXi2krMRrUkpEBEdKUE9NIqnO8SySk5Hz
+	NQy1aTJ0p2I5NH65xX0NaAauVsX/Gao=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=sQXlo+ttkX3rsFF/+duoz9qqV2dVYCVBWBpWC91yIf8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790766718; v=1; x=1791371518;
+ b=XNkyp1M5k18XTsctUQAfN1VTrqKrnLIO4zb+bTWVxNSiLkr3rEid5M42A57KenHF4HMknEMH
+ ToE9G7G7q/4jAV/ihpHF06aKsjh54cHlPkW77c8f4v3rDk1wTK6qDrBFFrvguKYZlRaApeMXn6H
+ ttuBmGUyq8gX0tocN9OOavzE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 7bc8601425e44f03;
+	Wed, 30 Sep 2026 11:11:58 +0000
+X-Mizu-Trace-ID: 7bc8601425e44f03
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [PATCH v3 2/6] mm/sparse-vmemmap: support device DAX in common
+ vmemmap path
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260930085329.17337-1-lance.yang@linux.dev>
+Date: Wed, 30 Sep 2026 19:11:45 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ maddy@linux.ibm.com,
+ rppt@kernel.org,
+ akpm@linux-foundation.org,
+ david@kernel.org,
+ mpe@ellerman.id.au,
+ npiggin@gmail.com,
+ chleroy@kernel.org,
+ ritesh.list@gmail.com,
+ sshegde@linux.ibm.com,
+ ljs@kernel.org,
+ liam@infradead.org,
+ vbabka@kernel.org,
+ surenb@google.com,
+ mhocko@suse.com,
+ qi.zheng@linux.dev,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <62E3517E-517D-4C23-A04A-F5BEB0A84C60@linux.dev>
+References: <20260929053231.66085-3-songmuchun@bytedance.com>
+ <20260930085329.17337-1-lance.yang@linux.dev>
+To: Lance Yang <lance.yang@linux.dev>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-Stat-Signature: 67rtgej1hfao6we3n4jfybamhrd73ecw
+X-Rspamd-Queue-Id: 434A7180003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B2278140006
-X-Stat-Signature: 9j16u13qxy8s93nqmfteyj3jstjwdyyj
-X-HE-Tag: 1790766346-847776
-X-HE-Meta: U2FsdGVkX1/0OOLuiRzX+npwavD62lfiACEKRmokCEX7Q0DOmI0+uqYXPuP1YJjgpiv/+JVUHLlAi9Ax+dH4vd+36vI0L1XywqX0Yi/H3sw9TlD0igxy9Qw60ZKwLxUXChmyyDo9RMXSd3ZXXSBKL6f521QdbS0ZCiHrmLR/p9KEXA7FZnu+jX4giG61M677bN+PCv1XcRejzkuptbRnSJJjDtfizTtOTDsF9UY9afvrR+ux5UX4nLjOdNtF9HqjRmAr2U8s/jvO87Qb4YSE81eEnaeLn038btlOaPX0cIsZbA+jYO2Zwa9p4KDJDN59HV/3giNjwIJ671cCain8paR/17tB2uhlgng2wL4Uz5nEPiCtlkuPLueIN/kFc1r2KSrUHDCfTekZ6ZhECMBmLJzILlE3NaZ8Wz/OfEfI08HRGoEC/+eN3D8aqAbpoZHp02cwl+lyQKcdp6aIfk8igpTrc97pVysAGeGfweL4+k3NNqEK8dHlXEGtgOzPSxJXMwZIAAknvz+MrQSH83vsCt2nNSMq6Ec7Fs374X9SClqvsn2MS2zw/DuSHxQqV2U04PoaHzQYTdPCAHwpYBy/cpjK5OAMrTo3CrLiI4QSzaGKs9rNcw09tS6Av1DLKGBmnEby/m6bMY9Uo7Lo1NYuKRS5PXLgkv+Z3OeVlRfDTZzvDLEJxwla8SjwniobPNcrQmMX71/0e/YEjs4RRd/rfOZSSCHwlWxBEdRh8IW5usc3ORIjOP3XferkBcPw67oM+zdx2CvrvfMjWAt1BbwWhiZDcEGDfp6Fot5XIcnpWJc7NKS9wb0ZVaUtcJmZO5GHK1BAth9lxK4s5BSmsvEDSJcJqi15/aT+/yfYYWwfbBsA9XGm5cNvneT41b/gEAD0rcdTCMp6Qy4aeA2SBc1+eue5bTIUuy6KdmYxtcJRw6yHKBVHx2wv0zuxdBrPNFWdlL8grA2THBTwD+vxC0p
- BGwujhiI
- Xmw45WQnFsKm0VcjwzG/uDhkyELf7aNbzGMtLNUuNUTC46bFelKGRHtAoT8rAG/QnjcU5ocfpKZcNWhGOEyTqlJXFB+SMFD9MvDG+z7DjCkXE7qBZ6j0j6Pwxqd/KFTRFhpHSXoOorNaqRM4mIukEZlKy5inO9wURdFRBFOyJSyaVTzimg3J0xrnruMB/8NLblT8UA4a7MHst2cJzIFI1nxeZ/AFj3IGkWtB7r6IpWOna2KFjnhw+tV3nfU0w/Jdfv2t8h+IbPb177pN6rY2apToA0RGp39gebQ15hyT49u9Qgk5qrj+VOYdWVLcDI90l7LMvzsxj359WZMcvW4t+t/IEOZAQRI/Vu+U/sK7hjSU0Lr2ZHd4jaEToPACWaRz2ZEQ9bcTIjDEpz9Si+6RPxUAMpr+oxGtbGDFM515cXik01DY=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790766719-248425
+X-HE-Meta: U2FsdGVkX1+FENQEgRGN28PDK87SYnB5REn8FuHB61QxUZCggfIDQVHYc6+CK+P1lUN9ioC43WmFmXpkQ35O0ZlXbnOtPJuF0IpCoSHYydRuZWR/0ZNLMNgk6YKx2+eBms4pEpLEvMONExhy0GCRE5fFtZaZ/0nQKcfbz18/mANxdKmrF0WDjTbgFVm6JGhhqkBQoEQYmjWQd69L4jSwfwRWJ/7307qSt5CAMiEo1uEx0qnoHTYU1Z7kOveqLkMhuiMc+FcVu8ApKeQizcPjB/UejRHKUCx/xDlaXQpM2hj3mgydDvXKBd5L88vBDuQ97rPtOHV25g99JpqesQv3knEntSwmFK7cGErNhgAGh89DieRR98mpKkjhDOsxldIxgmqiNDVOkfd3oWjkNQhQbXSTOXbfu2q4WW8hB3KhCgYhHYZs09A/fda6u5n4n0DlWJRuWzihDuYt4P3O+RfNDY6fQ+tp0MnXqr4jLW6wv3abNsQ7CZo2BgW0FohYwv3CrpSgU11Jd54ngmQQSoCsEr+NkBASKMPHZbJYBicK0P9qvBcGs8zk/fNq4FF7NEVt1FX1wGNhl2CqhnZMebXogaQS9gJfIvGRuZT81R66S/7U1gfAYSgjqCGixA+PzTTTC9oJ0dipVAHVTjz742wdhu9c8Sv6L0PXiWoPNXur1sJ1wlZyfBHcdOHup6a8CBmH6Azv+u1R+CPjDet7Vs6/VV0CMv5MFHAm3PFizMDN8BJVwLvqJpuL8BXnCVtQJan8inPliPaUx31z6eGeFE5HfyxQtiOtc7lOOI2zQqvEHq5i2m01QTBIaZG4SwRT4D88ZGC4bZDHvS2JSyQDgHeyWxpfunYEVrhLH0DijHR1D7HNDLoMI2AaOA6zWXyQaFp8RUJhWJYMcJOYODXwB1qk5H3jUF2Tn6mWYURbGq4hp2CMxxkw82ktSSiGMcFIXQpHn+zK3mSNlQgqMGzrjUi
+ Dt11t1E+
+ TyGYYu0ehT0RNn/Cr4ygmKzdz+GOph72eQunIq+OmQT2N5sqAoKOWrH6JYMx9Ao1gG8xL4xn4UY/8oHEDOwSQMtONhC5J+43yX0aQOhOZjFLA0cjOBf5il7o+7zT0L0lecSXITuMJj21dLmHtBseb+/+dBWQoCwXqLFmKhg6Pcyhi3lGj66bsQZ9Cux7/cD5iR0X0CB1gxSj5OcGWA6tVHY4HBginOP4ww/7BCIXFx6afbJXQ2/llz0S1L8myJ0y0eGV3t8gW9ANLvXCK39sDmpZAo8lgPqgwWIHwLTdTXjYDBUZeHyE4xbTzfcsxMO7zCfHzN4Z3MW4YzjmdZd86qibXzpTRO7fF+nWdTWs2zxQhvN9cMRyMTSRDdnoeX96eSsizbsPTlMOxfX9HW7u3mS5ZLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,99 +110,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Finn,
-
-FYI, the error/warning still remains.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   551c722f40809618230001baccf219193e22fc5a
-commit: e428b013d9dff30f7a65509e33047ba975cce8ba atomic: specify alignment for atomic_t and atomic64_t
-date:   8 months ago
-config: m68k-randconfig-r2102-20260930 (https://download.01.org/0day-ci/archive/20260930/202609301230.CauIUXCF-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260930/202609301230.CauIUXCF-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Fixes: e428b013d9df ("atomic: specify alignment for atomic_t and atomic64_t")
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202609301230.CauIUXCF-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from <command-line>:
-   In function 'qlt_queue_unknown_atio',
-       inlined from 'qlt_24xx_atio_pkt_all_vps' at drivers/scsi/qla2xxx/qla_target.c:331:4,
-       inlined from 'qlt_24xx_process_atio_queue' at drivers/scsi/qla2xxx/qla_target.c:7903:4:
->> include/linux/compiler_types.h:631:38: error: call to '__compiletime_assert_424' declared with attribute error: BUILD_BUG_ON failed: offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) != sizeof(*u)
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-                                         ^
-   include/linux/compiler_types.h:612:4: note: in definition of macro '__compiletime_assert'
-       prefix ## suffix();    \
-       ^~~~~~
-   include/linux/compiler_types.h:631:2: note: in expansion of macro '_compiletime_assert'
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-     ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-    #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-                                        ^~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:50:2: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-     BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-     ^~~~~~~~~~~~~~~~
-   drivers/scsi/qla2xxx/qla_target.c:216:2: note: in expansion of macro 'BUILD_BUG_ON'
-     BUILD_BUG_ON(offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) != sizeof(*u));
-     ^~~~~~~~~~~~
---
-   In file included from <command-line>:
-   In function 'qlt_queue_unknown_atio',
-       inlined from 'qlt_24xx_atio_pkt_all_vps' at qla_target.c:331:4,
-       inlined from 'qlt_24xx_process_atio_queue' at qla_target.c:7903:4:
->> include/linux/compiler_types.h:631:38: error: call to '__compiletime_assert_424' declared with attribute error: BUILD_BUG_ON failed: offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) != sizeof(*u)
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-                                         ^
-   include/linux/compiler_types.h:612:4: note: in definition of macro '__compiletime_assert'
-       prefix ## suffix();    \
-       ^~~~~~
-   include/linux/compiler_types.h:631:2: note: in expansion of macro '_compiletime_assert'
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-     ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-    #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-                                        ^~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:50:2: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-     BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-     ^~~~~~~~~~~~~~~~
-   qla_target.c:216:2: note: in expansion of macro 'BUILD_BUG_ON'
-     BUILD_BUG_ON(offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) != sizeof(*u));
-     ^~~~~~~~~~~~
 
 
-vim +/__compiletime_assert_424 +631 include/linux/compiler_types.h
+> On Sep 30, 2026, at 16:53, Lance Yang <lance.yang@linux.dev> wrote:
+>=20
+>=20
+> On Tue, Sep 29, 2026 at 01:32:27PM +0800, Muchun Song wrote:
+>> The common vmemmap population path cannot yet handle optimized Device =
+DAX
+>> mappings on its own. It uses pfn_to_zone() to find the shared tail =
+page,
+>> but Device DAX populates its vmemmap at runtime before the =
+ZONE_DEVICE span
+>> is initialized.
+>>=20
+>> Teach the common path to use device_zone() for runtime optimized =
+vmemmap
+>> population while retaining pfn_to_zone() for early boot. This allows =
+the
+>> same path to support both early boot mappings and Device DAX.
+>>=20
+>> The backing PFN supplied by the Device DAX-specific population path =
+is no
+>> longer used, allowing the redundant lookup and population code to be
+>> removed later.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>> ---
+>> v3:
+>> - Collect Acked-by from Qi Zheng
+>>=20
+>> v2:
+>> - Expand comments around slab initialization to explain zone lookup =
+and
+>> page refcounting (suggested by Qi Zheng)
+>> ---
+>> mm/sparse-vmemmap.c | 64 =
++++++++++++++++++++++++++--------------------
+>> 1 file changed, 35 insertions(+), 29 deletions(-)
+>>=20
+>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>> index 8219abc6c3e5..ee4c113ca938 100644
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -237,18 +237,43 @@ static __meminit void =
+*vmemmap_alloc_pte(unsigned long pfn, int node,
+>> struct page *page;
+>> const unsigned int order =3D pfn_to_section_compound_order(pfn);
+>>=20
+>> - /*
+>> -  * Device DAX still relies on vmemmap_populate_compound_pages() for
+>> -  * head/first-tail allocation and tail-page reuse.
+>> -  */
+>> if (!vmemmap_optimizable_pfn(pfn))
+>> return vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
+>>=20
+>> - zone =3D pfn_to_zone(pfn, node);
+>> + /*
+>> +  * Before slab is available, vmemmap optimization is used for early
+>> +  * system RAM, whose zone can be determined from the PFN.
+>> +  *
+>> +  * Once slab is available, only ZONE_DEVICE memory reaches this
+>> +  * optimized population path. Its zone span has not been =
+initialized
+>> +  * while its vmemmap is being populated, so pfn_to_zone() cannot be
+>> +  * used. Obtain ZONE_DEVICE directly from the node instead.
+>> +  */
+>> + zone =3D slab_is_available() ? device_zone(node) : pfn_to_zone(pfn, =
+node);
+>> page =3D vmemmap_shared_tail_page(order, zone);
+>> if (!page)
+>> return NULL;
+>>=20
+>> + /*
+>> +  * During early vmemmap population, the shared tail vmemmap backing
+>> +  * page is allocated from memblock before its struct page can =
+safely
+>> +  * participate in page refcounting. Therefore, no reference can be
+>> +  * held for each shared PTE mapping, and the mappings must be =
+unshared
+>> +  * before the vmemmap is depopulated.
+>> +  *
+>> +  * Once slab is available, the shared backing page is allocated =
+from
+>> +  * the buddy allocator and can be refcounted. Hold one reference =
+for
+>> +  * each shared PTE mapping. The architecture vmemmap teardown drops
+>> +  * the reference through __free_pages() when removing the mapping,
+>> +  * preventing the backing page from being freed while it is shared.
+>> +  *
+>> +  * The backing page may be shared by enough PTE mappings to exhaust
+>> +  * the positive range of its reference count. Stop populating the
+>> +  * vmemmap if another reference cannot be acquired.
+>> +  */
+>> + if (slab_is_available() && !try_get_page(page))
+>> + return NULL;
+>=20
+> BTW, shouldn't __add_pages() undo the earlier sections on a population
+> failure? Say the first section is added successfully, but populating =
+the
+> next one fails, e.g. due to an allocation failure:
+>=20
+> void *memremap_pages(struct dev_pagemap *pgmap, int nid)
+> {
+> 	...
+> 	const int nr_range =3D pgmap->nr_range;
+> 	int error, i;
+> 	...
+> 	pgmap->nr_range =3D 0;
+> 	error =3D 0;
+> 	for (i =3D 0; i < nr_range; i++) {
+> 		error =3D pagemap_range(pgmap, &params, i, nid);
+> 		if (error)
+> 			break;
+> 		pgmap->nr_range++;
+> 	}
+>=20
+> 	if (i < nr_range) {
+> 		memunmap_pages(pgmap);
+> 		pgmap->nr_range =3D nr_range;
+> 		return ERR_PTR(error);
+> 	}
+> ...
+> }
+>=20
+> We still need to undo the sections already added in the failed range,
+> though ... memunmap_pages() won't touch those, since it only removes
+> completed ranges.
+>=20
+> If the range starts at a section boundary, we'd hit -EEXIST in
+> fill_subsection_map() on retry while those subsection bits are still =
+set.
+>=20
+> The old DAX path had this issue too. Could we roll back [start_pfn, =
+pfn)
+> in __add_pages() as a separate fix? Something like this:
+>=20
+> ---8<---
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 796af1028ee2..16a0a2c885bc 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -380,6 +380,7 @@ EXPORT_SYMBOL_GPL(pfn_to_online_page);
+> int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+> struct mhp_params *params)
+> {
+> + 	const unsigned long start_pfn =3D pfn;
+> 	const unsigned long end_pfn =3D pfn + nr_pages;
+> 	unsigned long cur_nr_pages;
+> 	int err;
+> @@ -417,6 +418,10 @@ int __add_pages(int nid, unsigned long pfn, =
+unsigned long nr_pages,
+> 			break;
+> 		cond_resched();
+> }
+> +
+> + 	/* Roll back the sections added before the failure. */
+> + 	if (err && pfn !=3D start_pfn)
+> + 		__remove_pages(start_pfn, pfn - start_pfn, altmap, =
+params->pgmap);
+> 	vmemmap_populate_print_last();
+> 	return err;
+> }
+> --
+>=20
+> Hope I haven't missed anything :)
 
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  617  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  618  #define _compiletime_assert(condition, msg, prefix, suffix) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  619  	__compiletime_assert(condition, msg, prefix, suffix)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  620  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  621  /**
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  622   * compiletime_assert - break build and emit msg if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  623   * @condition: a compile-time constant condition to check
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  624   * @msg:       a message to emit if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  625   *
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  626   * In tradition of POSIX assert, this macro will break the build if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  627   * supplied condition is *false*, emitting the supplied error message if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  628   * compiler has support to do so.
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  629   */
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  630  #define compiletime_assert(condition, msg) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21 @631  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  632  
+Good catch. This is indeed a pre-existing issue, and the old DAX path =
+was
+affected as well.
 
-:::::: The code at line 631 was first introduced by commit
-:::::: eb5c2d4b45e3d2d5d052ea6b8f1463976b1020d5 compiler.h: Move compiletime_assert() macros into compiler_types.h
+Your proposed fix looks correct to me. I would slightly prefer keeping =
+the
+rollback close to the failure:
 
-:::::: TO: Will Deacon <will@kernel.org>
-:::::: CC: Will Deacon <will@kernel.org>
+           err =3D sparse_add_section(nid, pfn, cur_nr_pages, altmap,
+                                    params->pgmap);
+           if (err) {
+                   __remove_pages(start_pfn, pfn - start_pfn, altmap,
+                                  params->pgmap);
+                   break;
+           }
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+If the first section fails, this simply calls __remove_pages() with an
+empty range, which is a harmless no-op.
+
+Would you mind sending this as a separate bug fix? I will ACK it.
+
+Thanks,
+Muchun
+
 
