@@ -4,113 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 389F2CA5FC1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 09:31:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 508FFCA5FC3
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 09:32:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1078A6B0088; Wed, 30 Sep 2026 05:31:12 -0400 (EDT)
+	id 37CA96B008C; Wed, 30 Sep 2026 05:32:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B9546B008A; Wed, 30 Sep 2026 05:31:12 -0400 (EDT)
+	id 353DA6B0092; Wed, 30 Sep 2026 05:32:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE95E6B008C; Wed, 30 Sep 2026 05:31:11 -0400 (EDT)
+	id 26A996B0093; Wed, 30 Sep 2026 05:32:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CA18C6B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 05:31:11 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 35C3F16058D
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 09:31:11 +0000 (UTC)
-X-FDA: 85269909942.10.6DF1E74
-Received: from mail-wr2-f34.google.com (mail-wr2-f34.google.com [74.125.225.98])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6435B40007
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 09:31:09 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Z673PXni;
-	spf=pass (imf07.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.98 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id F15926B008C
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 05:32:43 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6FC7D1C3769
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 09:32:43 +0000 (UTC)
+X-FDA: 85269913806.28.7514695
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B48F818000B
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 09:32:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A/WFPBAH";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790760669;
+	s=arc-20220608; t=1790760761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xgtcnl4WXcrgn3Aln9NYMl8B1C4EpatLEtDCvkQ8/Kg=;
-	b=zdEGWzJTiPIx7Y1/3GpAm7q7Eczn+WVssDlRvYzBFEtshhuxY4Cbyb1M0wHlwr2Rpwt5ze
-	xLhsrTl1ocewkaGhGOdy3A4775i63/ZoGdZU5sXEoEP1V5S/LZ9+AK9/Pzy1JChSNaV0Ez
-	agaDprK9c6lhJX8Kj4hpXtMS/Sb8OMQ=
+	bh=GUhUebTYwdNTDsFDAgKX2XUga1p/xniYtUmuBOcAkD0=;
+	b=KqVEuvBsucAb7fgcWwFVQjsEdyFIS/Ulqww+y5Q6NE8m58gRRlKUVXd46i3D2l7q1EIEX6
+	FMbxsabSA83m6YtHbWGGucg7RG1FH0bJ9daLn1nulP+2q4CWqEQPBeCfLLZado3GR7OW+m
+	TEyfnBYD9Tp1ezz83fes6Jw5vzr8oHc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Z673PXni;
-	spf=pass (imf07.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.98 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A/WFPBAH";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790760669;
-	b=CCxvNBzWdD+sdqgmXDje+bhD3rVC64aG8niye15ES7fToDFkaRESlyBGLnUhjHxURJULGE
-	n0aXvetFw2CEF9qWoSaeRis/RVWQoOjlUVy1MFIy4zdv9g00f8c4tpG3/BDVAuNfrWHsj+
-	I4g2Hmrhd88M4Dqrv6mN2fonBLOyk5I=
-Received: by mail-wr2-f34.google.com with SMTP id ffacd0b85a97d-48b01c4f4daso261930f8f.1
-        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 02:31:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790760668; x=1791365468; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Xgtcnl4WXcrgn3Aln9NYMl8B1C4EpatLEtDCvkQ8/Kg=;
-        b=Z673PXniYCmkJb1Y6+lYDL+hSG7gsJmNLBDbbR6sAJBffDiHnEOfN728mkSjO/pOJ6
-         ktUkjUFODjCvW5ZCBZKMO35L+uLxFeB5WpkvMGht/XY7OScrZpwBEHbjm3YP/0/9qnWy
-         El9+RBhxB/MOfC7J+qjp8vxFxc+YrdgIbTZF8YGcjLHPQZUR/Pj7hlmuG+YGQT95cZZg
-         LG2agM/thRId7XpBxgMCLw52ONtW95oTrCvZjWDz/C8f0C8a+StRtcE5q3UOzw6U/5Di
-         th+5TfpMOsqFQcIIRg9ue7i7ctSao40H9pzLKwy6kAzaz8JawWfg1ZjpkifZnhaO+PKr
-         5MIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790760668; x=1791365468;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Xgtcnl4WXcrgn3Aln9NYMl8B1C4EpatLEtDCvkQ8/Kg=;
-        b=PtCVt9ZgNeH8WkXfm1nmuQ7EKaZAqboooZ/jUibdnpeR8ECGY0Xn/Okzn9aFsIR+lU
-         jJLj55WTLGJ07q+RuXhLzEdp7rc8ZdxgtdsjY0E88fS+HbJ2No7mS2kgclnPJEEWT5ng
-         Ktz1pFBU9qCp1m7sUoeAsjyGC9lODW3w1Hieg4swaw5HB2y1COC/ZMGtzN2SIkKvOU5x
-         7qPITW5lGpFsa/2liC2xtoTOSJdNJq4mDpGRJ/YY1ykqANsIefOFoe5hGt+I9BCmiB7d
-         zqRBOhPX1Iabu4PVjxKz5TOujPycpGOWlLtVEki9w0TKHt+osVaFUXzYCR+WEcBhR67m
-         FWuQ==
-X-Forwarded-Encrypted: i=1; AKwUvByGzzzaqmcHyH2q3s7bQqQd2dLSF9cD9X69doK0wNdqTJr442j6mqd2dpDs2Kfzd5Ua/S9Sxc3erQ==@kvack.org
-X-Gm-Message-State: AFq9FYIsufRhRpNOn+cwUkPsVxEAW7iAQ6CZtbKa/cXyBwIxHVR1Q8qJ
-	UsToIM+8ReFzU30tYtkkS/BpgDT21HJXcwkDjgLNPbtmydze6XXx5E8/
-X-Gm-Gg: AYBFou3yFUiuCxxR1xiFSgq5g7geyl6QRVvgTS8pXiwveIpzcTMoA25NcgSKNZzH/w2
-	GTPqjwMosCvK+iqY/33/fOFd48xg0MVcVjuwD4ntEp8h3iDZ1PzUQdxZcILxASiYkq4pOPuIawG
-	rrRlI9bhB0jNIVMrYwVW8djoX4xiJ1RUELvlH65+iWNCmbQdNXo/wkLRco9qWTVXsJ6DMis6ZYE
-	DDKua0i2/KRr7hIXq1ekLZLl1MsvR3HNFvZfiF8nyB8iIW0Dg5IiU6TzTtRSmp/JI66RufNO0jJ
-	ECzSQD0GsKCxes0L5NZAM6Vk2ga56Ytmda3l1Jjzx9Uniy1xYtH3SnHLOHL1+VjaKjfQnyrjU3J
-	sfmsw31OrwTsOuYhWQd6onFTp8XaiZmIYTQAS/YiIl/x9phtwcxc6e5RiyogNmKxwLPhFlW4BdG
-	+Ek115AXjmL9ERHpvQYvthxYT+vi29I3u03uNemhZ9qBgCwaUja+1yoUD7JXk=
-X-Received: by 2002:a05:6000:1788:b0:488:8ad2:e169 with SMTP id ffacd0b85a97d-48b0255cce1mr1561308f8f.56.1790760667532;
-        Wed, 30 Sep 2026 02:31:07 -0700 (PDT)
-Received: from gmail.com ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b029edea4sm2197049f8f.22.2026.09.30.02.31.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 02:31:07 -0700 (PDT)
-Date: Wed, 30 Sep 2026 11:31:04 +0200
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: akpm@linux-foundation.org, muchun.song@linux.dev, osalvador@suse.de, 
-	david@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/hugetlb: avoid recursive i_mmap_rwsem in PMD sharing
-Message-ID: <arzVaC2IYkqSb0_U@gmail.com>
-References: <20260930064308.58159-1-lizhe.67@bytedance.com>
+	t=1790760761;
+	b=7nmnHzXfnTCDrZ39K7/s2NQgl28RpMI4RV4wKhF67Y3oXBim7fifaXELYO22aPV7zm7x4R
+	/9bL5KkGpdxO7Ohqm67DqafCCjo5hhCErplK6WIccJlhhFkkGXOZbqwFLP308Vbpyau/qv
+	PXlEdZx/HbCIylrxJFQh46aoFkJ1bZM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3D8F8413FE;
+	Wed, 30 Sep 2026 09:32:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD21A1F000FF;
+	Wed, 30 Sep 2026 09:32:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790760760;
+	bh=GUhUebTYwdNTDsFDAgKX2XUga1p/xniYtUmuBOcAkD0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=A/WFPBAH7Qma+9hcX287RuSKWlORpntiWFjFLaPigU8Y75ISxg3KEjLTfteawEyBe
+	 2g/cYh4OEqr71nkWwJpVQnorMprUQRkz1eix+QLOCr/CPst8lLD0ChCfFd8YGM4jfy
+	 Fksx04sLagSxxR88vp09QnJZCikrL8s15UEcYtyj8cHuNrsfav7blbRqRE5dyxX7SB
+	 IKNdTpYGGoAU9JjY6jjqMsEYQfRaLoK1HI3j102H2WUj2d2AjX7kJd1tm0yEuZtXim
+	 rxv3PmM3a58m4CHKDbt2tmNwqyH0M2+G0zuIAT/AqLpxmsAoL5566Xt1IaKFXihiLq
+	 k8Bhh/EDc3Mrg==
+Date: Wed, 30 Sep 2026 10:32:09 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Doug Gilbert <dgilbert@interlog.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, 
+	Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
+Subject: Re: [PATCH v3 34/40] mm: eliminate VMA_SPECIAL_FLAGS usage when
+ hugetlb explicitly tested
+Message-ID: <arzXDWOaouPMGtxL@gremlin>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-34-4583d8a23bca@kernel.org>
+ <DLSAZ4ZQY8Q3.3OKOCCOQAFVCC@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260930064308.58159-1-lizhe.67@bytedance.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6435B40007
+In-Reply-To: <DLSAZ4ZQY8Q3.3OKOCCOQAFVCC@nvidia.com>
+X-Stat-Signature: 63d4r3tq5mmxr5hokeaxxtu7eqbnqgb1
 X-Rspam-User: 
-X-Stat-Signature: 9an7r1dgt4a8un8y9hzrrfbksweyxtoc
-X-HE-Tag: 1790760669-953008
-X-HE-Meta: U2FsdGVkX19o++1RC1Bge0m4AEY1OpP1oPeDvcTfVxbHT7Q3nNeCOMecwuiIRY8s/Gd6680Ixi0vpVbK+2Rfw/qXW/IRBwl+ISuP2JS6qDWZUeija5MtFOb18vLYFilmYc3cUC+oicDAI30fuJUDWr+LZtioJObEEXphhuRI/Lhq/9pqkcqtFBAGK16zTvRrS6GGaScEMQofSs4B11/9PNQvbg7ct4ooW20jNZ0XYXbMujDePf3pfSf1V4e+Uc28Q99jIGYdt8PWWgTm7wIYyYVsLlQfEECvksaicizwvnGomJfd6pYBpAJqoOkNapmZhY02S/ksCcFZrcT6z8DXCiIyqFuYRZNWPWEYppJlZrdHOJtwJmD33UeWc9kUXm1cFfUEUQTOFeN0fW7Cpxw3bcm7AWTTZ5HqNasUvj6xViyG+Ju0fKNJs9lRZSxhj6esLWv97t+27IX4LBIigwqb9RuZIrOrnS9h4FOI0k2f9qOVgpBmJNNZVcvZoY1zHw/GSxiwSPPNMaSHe4b82bvvJkG4oMxoUhbh5g1eXtQtPF8iUno8Tt4ZRPf7+VkYUc2ZiINkuK2M7cfaTup6xp4Q4LzF6LsBS8uNsOEwIHelr4JmV/ydTmTyxPGa8jMqQPMDJyPwO0I5+zJa1l0HmaGt2J8/EQ1Lk2mEaAHCN7mVqo0P2xybtVZX1YwHQaXs/7vCsRbVgNdoW7Chs1Z5aDhjSqfq0oak3PpfmFYb/4it8hs/3QBPGr6rOCNYb/CWN/QtPtErtoG1Lm6TjqomQC6aWq0dxX1tQaZzP4SsVc5SPJXBo56YHPfM2MohCcbISdWII6rHGB7Uhz0g7HssomRLFaUCpZfGOZM1ILgjwtTNA8IUzGa3hl6wcMPRHEK6FQPOqqh7zWkiQorskoEzbJIaNAntC8RxFtjOkXA8B1rqYzR2iO6nMfz2GWUs3gtEvBYkvhO+9yFdpfgQ+n6vI/9
- 78rEan7r
- z0bFFOJcTSFCxlmS/yTZCkJ/+Mu/VH8i7CoP2JrOgSsxuXCM92ub0ZbG8KNjoDgrIEPWNvwR2o1qOlTRAdj1gwrg0j2HcytsBOQyDQhb3uKinla+XOW9Onm7php+Ufv/QTgQwE69UXevjjrhDzXC5U0Ir+vle2p28yx26PGmANjdhEB1ka541h1/G8CRV6h1Io5fote1SEgptqpyyjnJg+ZsrsF4h53qHX3KctZNoHVZvOWRPvrXr7+8bsASv9z4Llhv0FF6fPcmU/nIgVdFRQl4oqp1/TF19W+vmIXSSVOqEXYP9lRN7xnvWuf/JcV3+pcv2oXVbFfKpEixocVlSmiQ/JUMWSRYkf+ibO9hdIBmX5eYqqc7wClxJYMEO+k9aMYt9h3EgZJ8GOUoHvMxzcoKEK5oR0Bcai52bYDDHQWpbmWPOecfgdW/Z0sxkpB+Gqos1jm3YAPz5MRg=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B48F818000B
+X-HE-Tag: 1790760761-931120
+X-HE-Meta: U2FsdGVkX18ItsmoNV12K6R5I7Si/9Hpu0R8bxMPhZT1KGQH9dBS5MeUSDHSy4iKPgnHNiR+xjcmXWHlfi+/5yDpYkCOWnr4hN5H3hhAkUHpbfxZ1VUjHbFl0Ey5bWDAIHT5Dgj5biNrdXqWqEpkn+tGc9a2rnZwC/on+xH+MMOgtucrwKkdz/IaLc4sv46iFr0BCJJvkz3tYEE+nobTXsXbFPmaHWaGIVLNKNiJF36dcBrRefPWNeclsUm7GJt1VurkkFNevhUKdGZsGfNnI8HLjUpcYnLL+x7LoXXJUAQ99WxacuENcvnlr2vvet7jvJpswOk8qtoU2oa3I23hSZpqyzDPqbHOndAdtK8QzoLHNUlPgpRp2O4s4x5wslZICZmsWoSLci5v0S0/8FAEbjD33OUGIcZJTdBdUcpwd+uV7DjTr1s4o1W/6N0NhxgcrwZeTzB70t4Ce9aGjT/pN+Ws4hdki6P7sDz0Iy7CDdJiDQZoP6c2l5YSReUyU1IWdnnrGc6Oh/zIJeecZZacCFzCWjcVVgIKM7VUeXxZSZs6tcFGkKu1X5ag1HSn2LIlSVWgWtYobGGbYkvDpquoD0wrnSaQn5L1Lt6nsmn3Rfw92d4T0fVDGpGvaRI1yOjMvcUflEjBCYS2BAzTLH3nZAMGizfwI5BTP3eimPzhStPHknOijLYKBnaVeE04QFBrrw1bcWQ6t7h3BgzUNNa7m7e5ZYoB5+sNJVCkm2Ic6BWIxja5clD9tXV+2cahsdraiAB6xnUqgAYZGK31cnjfU8p5NJJ++R96kzcksu53jik2gRY6iguWORC1PGCbhRfauHMtyk/AyEqHMKMBoSvVZdXX0uJbNrIE9Eeptj44JbJG66Hqk0G04PkdpQPgI/zlubObhbYwWIOPrpywZ/sLolglEvKD7gOWN013XhjUTHtgyWGAJ0fYrokf8EzuEMFCVJec/Cycyc3tK7TEZXt
+ NrZDFWse
+ Qpxdsfdj4E4AjuUX2hfEEjbTFPlXcqQ0n6VwARWl9Olvl6rRVAq5Vc5lKESwo7nekgoJTRclwcLaldxs5HcFOKFhYoecCF8a7+1jfojeAxf91nqAKSAQELnXb8U7EikpBUbhil1Ezx7a7Ees8bzUM8G7ZFhISJrlLTsDmK7GaveIaqJ2sbI4ClPNkqhZfDTZQRF5yXLl2RIRvGnI+llyrqkEMhrqfPGQ5plwdg7hc5LeuRswd/GwTojc+3t8PXqR80NOGeySsxP86IOllBv6MQp7Sor1BcvgCzTu1S81ZnOn07QP85lZv/tgl8sVHolArPdD/bsrZfSG8eXDQV7gc8kuc82Z4jQZ3rJbZKYqWGyewcT3TDhXKcK9geKtd8scL7s3FY/N/l2gPr+EqDJ2+Hb96Ux0143D0BRDUiYPL/vWlPSUynsDkZE6ndgILBfQj+dTjPoZE5MZODCJ3dnrpcbrjh/N4C798OnenLhlS1qy0boRF2kAPiJZ0WZpQLFJoMzfIqEQoclu6/mzAnL1rbj/MHfP7Rcz3LL1LMBrh2JPAzaOk/2GDcGHVgGa8DT9GqxsyvLX9w5nIKuscRaP3B5iqIIkIznsr4K/PH6f8q3ilFKkgVXZnUlsZLLbZwVuoW5BZFhn5MP2Dwd8P7eYGDR3LVK0X1CE2Ijj1uxp1t3O7oXHfpgPQ+pju9VF3pwB5nSvew9mUCd/xDZbxL7Y9r7o2LXHM4Lkg44FdL6FojLnVYVTshS4h8yeOq218uBgvZbABB1BIuqpLlwWzl2/iaeWvR1SbOGKC1d355iIkcx+hsMJmVgKTX8XUzsDzgsLY0Ugl7B/WOEwhhgogCz5CGfDoPtT5LZfnteTcSDpL9dgoVo/PNoIfaCS6fxKrJWawfY4hYGvMeJ35M9G2vWmGoerYz8R+3+QngsXBnhQvZJA0zyoltxe78ijpAv7LPlVQsVqbzQsOBtRXooj7MrjtPVrhU7V0
+ TJs9iGZ4
+ 71WShg1uB1VS5TkvXwJIGla6Tnmt7rWQJP+Rut4d+OJXLMBOeBBSWElJve2fre4OXV02wVJdOYnMdTtRzLjbJCA2wQLIUaj2dwVpsou6oHptaoI6d0ry2BTuBXnt+wjJ8+3UywZp4mOOcaN72qsUK2uoSPBuTviUxKNq/zuHjpn6bA7Ha8TYRPGtcBwMk1PR+h7a/kyAiW+kq0u7EewoH/7vZuwELAskuxOt4VbRJ+JgHYa/odOvMt1aHRKPFCU2nitH0xF3WmLkAY1E4emKJqWmfMtQ+99p8TN0teI15bgEILDUqYkg8TvJxgxyJ9yB4B82o/zsqOs8pzFjATCXarJvVx11udgN9jzRzQO+DW/CWkr2kxmBfMb1KACqCdk0PCC+/jQs6Lj44jlbVypp792yBlMhFNHXyi7aVFkMPPnAIA+wDMVRUUi3MnRSAhnvhZdqRYbc7BilGJUi8XpRgPHleh3Wi77fL29VOCITD1byh53SCw29ej44v/2wdRNJBepHMpOaNxkjooZXVyw3kDJ/a4//ZsaZW2RhSQyMvfuf9O7JXExvnC1Lwg4WiihqeU7+ovPFpnxpv0tVhniNRpSY+9pHvp1ZxkUznSWb1rfbNXpESIADW8s1fsyEbrxXygjg1EpyxVN6O9A2rvZ9QA5MTas/adBdofbP1uSzM3i3Pt9bAurxHYinJpIiisshCs3nJK3866GgRhCX6xsszUiHvYyZtnuRrj8qYB6PWvJ6FpO/IuGNbdC6dyUOlQaayZVIsX7TMzogega6DNcabwGhX8XnjvsteqSBZ6u2ocudAb5IXhPJtV97ciAXeQIDwBxUFtqMO/VYSPSHkfP7Q9o8/ADk24fGw0mfZqHQ7lLEEdKL/CKaj0Vieuyk5mPI+D/Xr22TraMMmOrhGwWIa1RZ+2hrJK30NnQiT1cjN0TIPagdSM7Gr9Uv6BY/cPNxMvuhmPXGRaQO8K7qem5Sz6UESNx34
+ wi2KQCZw
+ qewIkqeT+2x+LkuIVR/tM7/2WytbIs9t0GkKuo0m/n0NM7YbJF6egbAEFDQSdzC4xBgAbc9mW7wOrKdzCjgH8hAKf+XD4obF2J/bdYgwFkcd8jI/QnFuSaofAAcYWVPjHm4sEFppguaPNRi2d9Nbhf9ssWQE7L8av0luqGiKWnjc1CYNqHPV13w7+WtP9V0JRmmcg9KB2BZLmM+3utmSeuEPErDsPjsQAXIhJubd2BUDJsoLz2wMKJJNCcyr6izpswsZB2UaxVDB7wDWGGlLS8kzP3KmuZpZGsLYH0dK4HHWrhA84chAhZoHgER1J+blCn4G768/Jcc4IEmrRWWKuAm2vNq5iEO74sSZODtj2PQLzDv8kgMmwJvCM8V3LP2aD1vF9yxyV/ovIQGn+Zjh4Al7K8qV1IfvsR3iZRMDKi6jybvfcw5WBchyvLT99ZfofMD3cSy4qIHtNOxNDI6nji5D25A/EzQid+S982Flv47NQh696nARZ+lvPLcdO9kDG+/YEHdqOYBMDb6NJuHBi+22ZvFdDLbcZk4rSTumQ/xnfLSnc4o9SdHnr9aA0ntH4ppTtce0eEE2nlKAUH905dsBCES/WYtHD6hYnt4QsHlIE1GiYQspEontcXXxCbDvo88O3S7Bs6lJU76sp+vsGyBJ7OsJ+9mJoyLFWWtSl3NYKNOJWjkxoK/EOW6np4nChr20dnXXY4lRSi4dMGx1mL4HdEQ6yAkYCly0+IU1AaItmDH8eue8ak7ke3GVBTXAfia4M5Yewi64d5axIfBj3jaGOzfdah+Xhbosvgk+Fd5Irulj2KJLctNXxk+mVltQmLB3Ve+RVxJgJsjgcfka2QV5ALz1zoUKenOhq2CTC88WUIkaRFKKMFGu9XOESpblBS+HbkDS9p12ZenoLbnf269pj8ej2kyxZGEtNIMn0DxgnP76C/e6a1qzH8QFTFwmLuhyaAAsKpLaqAVt1Rs4p2wpIYoo+
+ nQSwVzEf
+ fcj/zssVqDGQkPUliwwphsM9NpHJcJtm0Up0+5n2pyALB1OTy13Dvhd/unOyjtIShKuKxSPKuqzW0lpqM9F1XR17qLPF8UGvzaEJR3GLmWdpUkv3hxcaJ7ejq7VxxrrRdK3fX32Gxq1MITRBsFzx9+1Z523ZYXKaJTAHieLOSWPlwG2r+9j9FxYa2bj0futOwN82hpUqe0u61fwGsmsedrOIPsWvnoFhxkLBGv+FCZ46n4+vVsDDEvGr/pyar4eTpr/gxDqLRBxyXlYmUD9aL6F36sGkpWiepl53nGyQydBc4NtXD57kAvERQrRQuX8fZF0mJUndlLQNQypvdAgKkiWTW6a0DczoHTRB90RC0xxU9ZHX7CU5WbdcH43OqWRDO8FngO/1/hZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,73 +154,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 30, 2026 at 02:43:08PM +0800, Li Zhe wrote:
-> huge_pmd_share() always takes i_mmap_rwsem for read before looking for a
-> shareable PMD page table.
+On Tue, Sep 29, 2026 at 10:42:00PM -0400, Zi Yan wrote:
+> On Thu Sep 17, 2026 at 12:22 PM EDT, Lorenzo Stoakes (ARM) wrote:
+> > It is now an invariant that VMA_IO_BIT is not set except by kernel-owned
+> > mappings, so each existing VMA_SPECIAL_FLAGS test need only test for
+> > VMA_DONTEXPAND_BIT, VMA_PFNMAP_BIT and VMA_MIXEDMAP_BIT.
+> >
+> > This is precisely a test for a kernel-owned or fixed mapping.
+> >
+> > Update a number of callsites which already explicitly handle hugetlb
+> > mappings.
+> >
+> > vma_supports_mlock() and ksm_compatible() also explicitly bail on droppable
+> > mappings - detecting kernel-owned, fixed or droppable mappings is handled
+> > by vma_is_persistent(), so in these cases use this predicate.
+> >
+> > should_skip_vma() tests for locked, kernel-owned or fixed memory (having
+> > already excluded hugetlb mappings) so simply test for those there.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  mm/internal.h | 4 +---
+> >  mm/ksm.c      | 4 +---
+> >  mm/vmscan.c   | 3 ++-
+> >  3 files changed, 4 insertions(+), 7 deletions(-)
+> >
 >
-> That is unsafe for callers that already hold the same mapping lock for
-> write.  In particular, move_hugetlb_page_tables() takes i_mmap_rwsem for
-> write to prevent truncation races, then calls huge_pte_alloc() for the
-> destination address.  If the destination PUD is empty and PMD sharing is
-> possible, huge_pte_alloc() can call huge_pmd_share(), which then tries to
-> take the same rwsem for read and can deadlock on itself.
+> <snip>
 >
-> PMD sharing is only an optimization.  If the read side of i_mmap_rwsem
-> cannot be acquired immediately, fall back to allocating a private PMD
-> table instead of blocking in the sharing path.
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 12ed3388ee41..09ff20c3df5b 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -3477,7 +3477,8 @@ static int should_skip_vma(unsigned long start, unsigned long end, struct mm_wal
+> >  	if (!vma_has_recency(vma))
+> >  		return true;
+> >
+> > -	if (vma->vm_flags & (VM_LOCKED | VM_SPECIAL))
+> > +	if (vma_test(vma, VMA_LOCKED_BIT) || vma_is_kernel_owned(vma) ||
 >
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> ---
->  mm/hugetlb.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index cea25773a6c95..75631101a6807 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6995,7 +6995,15 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
->  	pte_t *spte = NULL;
->  	pte_t *pte;
->
-> -	i_mmap_lock_read(mapping);
-> +	/*
-> +	 * Some callers already hold i_mmap_rwsem for write, for example
-> +	 * move_hugetlb_page_tables(). PMD sharing is only an optimization, so
-> +	 * fall back to a private PMD table instead of blocking on the same
-> +	 * rwsem in read mode.
-> +	 */
-> +	if (!i_mmap_trylock_read(mapping))
-> +		goto alloc;
+> At this point, mmap_lock is held, there is no mlock WIP, so
+> VMA_LOCKED_BIT is enough.
 
-try deadlock is not a fallback here. both callers already hold the write
-lock, and that is enough for the walk, so sharing is never attempted on
-these paths.
+Yes indeed :)
 
-hugetlb_change_protection() does thr same thing on the uffd-wp path and
-is not in the changelog.
+>
+> > +	    vma_is_fixed_mapping(vma))
+> >  		return true;
+> >
+> >  	if (vma == get_gate_vma(vma->vm_mm))
+>
+> LGTM.
+>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-and no Fixes tag either. does this want Cc: stable?
+Thanks!
 
->  	mapping_rmap_tree_foreach(svma, mapping, idx, idx) {
->  		if (svma == vma)
->  			continue;
-> @@ -7024,8 +7032,10 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
->  	}
->  	spin_unlock(&mm->page_table_lock);
->  out:
-> -	pte = (pte_t *)pmd_alloc(mm, pud, addr);
->  	i_mmap_unlock_read(mapping);
-> +
-> +alloc:
-> +	pte = (pte_t *)pmd_alloc(mm, pud, addr);
->  	return pte;
->  }
+>
 >
 > --
-> 2.20.1
+> Best Regards,
+> Yan, Zi
 >
 
 --
-cheers,
-jose a. p-a
+Cheers, Lorenzo
 
