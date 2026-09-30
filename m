@@ -4,136 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0F37C9830E
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 05:10:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68BAAC9830E
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 06:03:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52E8F6B0088; Wed, 30 Sep 2026 01:10:41 -0400 (EDT)
+	id D0E916B0088; Wed, 30 Sep 2026 02:03:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B8596B008A; Wed, 30 Sep 2026 01:10:41 -0400 (EDT)
+	id CBDF16B008A; Wed, 30 Sep 2026 02:03:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 380336B008C; Wed, 30 Sep 2026 01:10:41 -0400 (EDT)
+	id BD3536B008C; Wed, 30 Sep 2026 02:03:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BE6E6B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 01:10:41 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 688241C35D9
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 05:10:40 +0000 (UTC)
-X-FDA: 85269253440.11.825ACF4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5CA74100002
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 05:10:38 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=XyyFJBwu;
-	spf=pass (imf05.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DA6E6B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 02:03:27 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 02113A70EF
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:03:26 +0000 (UTC)
+X-FDA: 85269386454.02.A64168E
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5030440004
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:03:25 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jj96RuRt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of ren.tamura.oss@gmail.com designates 74.125.228.42 as permitted sender) smtp.mailfrom=ren.tamura.oss@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790745038;
+	s=arc-20220608; t=1790748205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1oW3AvlDdNTKHgXBHsjwYnhwhpxTAsRjPnzJ/d+6YUE=;
-	b=0xsoTvcUpcLAIJ7CVZDyiFsLmnruPdRmYuL5qC7NuprTkHNzczFTlC7uQUXvnab1XO8v+8
-	ViePqSCC9/K2eirOoAPcMEyGYLoGGa1/eR1hvTmzQjdSdBG7e1XMi/kmAr8957X2v1t9Dz
-	okayRdv52XqbYuzckkN8Mikl61riSco=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=fONtH76wllyKfu5q3H9rL3giEdo9qYDjcdxgrZ3+2dA=;
+	b=KZrpkrIr/4jeDzAc1xh0lRTZNe3JEhon8HJ9TaNzXBAIAJlRagc+8b14Zv62AGHpkm3fwj
+	IEbb7XQIwEGdPWUUnkKTCENEF09iKeB4s/SAymsXmLDtDFUyJgZzNpAWC3XxA7dBjCsO27
+	hTqf2M3OvO5Rp4WqEI5vz/bXhoQbLGg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=XyyFJBwu;
-	spf=pass (imf05.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jj96RuRt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of ren.tamura.oss@gmail.com designates 74.125.228.42 as permitted sender) smtp.mailfrom=ren.tamura.oss@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790745038;
-	b=Re5Vs8fXaqPuMSfB8d+yFVWI3tOxy7w3511yTlvenJbV9cjvqulPLPbn9UVUhkj0YsBy2t
-	cp3gkC2/3l4Z3DWy6/RdqlBOeqD4ZYMNWBDWxEP5IFkz1GjQB1EekC2KHy/M8TAJ9c4z0M
-	2iS060R36ysC+k3mX5cIDMwSt4p3JK8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD6551477;
-	Tue, 29 Sep 2026 22:10:33 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CBBB73F763;
-	Tue, 29 Sep 2026 22:10:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790745037; bh=HBnOiO4lKi56PuSH4xu/j4eJs0RVLoWx4P6ztp2ydZk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XyyFJBwudHElfeviZ00ITo1a6Xr9Q3NyTSeWfTWp8zjFH4KJEZuFNbQ9z9esgxx36
-	 t4IFgPHmQLaWxfB8mibALu5LHDRYKETtddlKsa/mrM3VuXEUZdR5WzTLOHscsAE3WY
-	 77cVlx5yRsj+dQ5Rtn3DsHPDmyL7aOM2T6haf/KA=
-Date: Wed, 30 Sep 2026 10:40:33 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Pedro Falcato <pfalcato@suse.de>, Arnd Bergmann <arnd@arndb.de>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
-	Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Ihor Solodrai <ihor.solodrai@linux.dev>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, SJ Park <sj@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, damon@lists.linux.dev, kasan-dev@googlegroups.com, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v3 4/9] mm: convert PTE table entries in ptep_get()
-Message-ID: <dhokijjou3rh3poqnqqpyoyac7wrqeprl4vlhzqokvh4lgjyya@g5hwn7sve3uw>
-References: <20260922-pte0-v3-0-5670b8cb9059@arm.com>
- <20260922-pte0-v3-4-5670b8cb9059@arm.com>
+	t=1790748205;
+	b=unrWUAwF4meLhMkj8FBaqVfQiiwLxgIMS12N4G61klpG8+aR++jcdf8cktV6venSv5O41n
+	cadNCvGHKbENrlui6v6pDX0KHtdlhLEMfsFGJxv6li3aMaoMZg8vv9HKAcVTQ2RnVrd5LG
+	RE28hvqs/+ywGyt7QjlmH4wbhLSkkCc=
+Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc4c08393b0so2172323a12.0
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 23:03:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790748204; x=1791353004; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fONtH76wllyKfu5q3H9rL3giEdo9qYDjcdxgrZ3+2dA=;
+        b=jj96RuRtiNlqc+AMZcX9zoBd6QXWe6ZzNSSZEWsU3SEbPNyzE10VJqwkLdWSsjyNbT
+         PRviWiVgnxEttftF9ZZkvbob7f7uMMIDKPz+e1lVUDtCkxrlp8AXKrdLmbOixeqxAHo7
+         mjLXVTwpV7HcE/jD9ksUSq4LLU5hKFLSq9/yG43bnhevLAvD07K+ix2Xj/mUXFjIKCam
+         wwh4hdEVB7FZ3wybS7gtI34uYSYettlJzC8oxt+x56WEa9iH6eepYOutZsd+lDfN87Xn
+         2uYE1rCvfCgIVEqcgYVdK8+paag1gcSc6Ytf1fsJSlXd775IgFszupIMVij9iKQM+3xI
+         DBqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790748204; x=1791353004;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fONtH76wllyKfu5q3H9rL3giEdo9qYDjcdxgrZ3+2dA=;
+        b=FlQhoN8aHvpXMuwb9UQmQTPSHrvz8TW3Y2WqEU/QK17C+ev1MOQw3lAGnF0qiuqo2Y
+         avO9iEb/aDu8gnjXlZL+VDDUAs8gOSN+HU/+20mbEDLx2JWNNzEsOx47l0isV4weUK+K
+         Mu0vfXocikKPPw8KHhakQ4lq7vr1dzHeSX7JM9wpjaSG3OMO4V1VO1sxWaCU8Z92w+lz
+         SE/aiseSiuF4WUJQ8DmHK+NhenL6uizWSDnprD+S9YLSomyIPPFQNKS5IMce2BnTG9yY
+         oQwNqgcAMULL5eY7M+OM8kAudT77KXN5lXEtRQTK9QFjuagZveXj9mFsqiz/JpEgXxPn
+         ysCg==
+X-Forwarded-Encrypted: i=1; AKwUvBxpgOLs+zsKoYjgbMAWwZS/umhyiZNtjuRGrf3iYNZPZmHNqT/hci066NQ177IZpLThRAwPwLjLiQ==@kvack.org
+X-Gm-Message-State: AFuF++lEvmr+9rSvC92eBsTpcvK3s4CVfdttlsuMWmpOvUiRzjL0E5Yl
+	KhjIJZeQyNlCxZkDJUel/8tQal52tibsn8YnY2cVhlGRSgiWBx8O6riJ
+X-Gm-Gg: AYBFou2Il0aJoUwVdxkAbCD3IOZWwj+Nhn6TGL/jLH7NxItUTWjZXwiYeenAt5TH+Ga
+	mGNb2La8ZGllBEkPogbFIHSzOiodYAiKxrNLoQ0rezYXTC0OH88xVjOCyv1kyOzt6GOhn71q9nh
+	fSMbnFaHbjCEpBrABywifoRBhslRxC5t06OiRAMNi6Fy9BNyuE5a9c0PFiEgmpPDFSCE1aOUtoj
+	7yY6mIrw1OiHZ2S1c1XpQURjGySpyOboGOoTyXlugM9nssda8GtOHz+NHqBCbeQvdK3Bw685jvp
+	71fIfEqErwMLZZg+dCMbAy+Vpa5fidFUhtyNUWc0OmlOdBbKFGVbqM4p7iNtVWCpBMo7eNjnILb
+	rLi/uSrW+rWZh5YJBDW51G+Nzi3XCeuH1BVkg9Luz70hkvQPAPWxEYlunKhtGAZ9f/ztaCBLm4B
+	i7D/KyUXwZUizDxzNLM/B6RSCyOGUbViIEHzCGHiGoqRkxahESOra6kcRLk/17aXs1F9XRTs5Er
+	rMCR3OrF+jGGQ==
+X-Received: by 2002:a05:6a21:62c3:b0:3de:46cc:b641 with SMTP id adf61e73a8af0-3de9e008c0fmr434688637.8.1790748203756;
+        Tue, 29 Sep 2026 23:03:23 -0700 (PDT)
+Received: from omarchy ([2404:7a81:bb40:2400:e077:4928:9847:63b3])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc7dab46db6sm205183a12.31.2026.09.29.23.03.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 23:03:23 -0700 (PDT)
+From: Ren Tamura <ren.tamura.oss@gmail.com>
+To: akpm@linux-foundation.org
+Cc: roman.gushchin@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] tools/cgroup: sum shrinker object counts across NUMA nodes
+Date: Wed, 30 Sep 2026 15:03:17 +0900
+Message-ID: <179074810112.139422.9274126921568167859@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260922-pte0-v3-4-5670b8cb9059@arm.com>
-X-Stat-Signature: fszcosgb9zrjcz8smphxj3dwqco9bgyg
-X-Rspamd-Queue-Id: 5CA74100002
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: i6uci38j9n5cn4xhwyxn6d64ipn96wrk
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790745038-17205
-X-HE-Meta: U2FsdGVkX191bcPnPCVpCMfYlB8d2Qe/pgAy7IFKaeryYVxJQB5TVjZ0FvfrgvT4/uCv0+qjcMAViHQiIlFVXrRCf2Q8DJPNMLulWtX1hndPxELV1IStFQA3IyAO6UL7hRatfnZUDXr77sJdKG/BUNI/OEBvngab5/4pH082ZpmVzgu7Bq/mHuyg0H4FLY6PC7fEQlDW7HlaYuNUc0deDGRLAfoW4EN1q9nkH2TMOBnP+hC0AQ+TNnDTwG4VUqhyfadlMbtJmT3avH3xP+aKbzf0q4Zk4VKyoW+Ou09CnAUtT46ozKHsl5niAY0xpPEgn1N+lK4eygmKcr6gUVfjuALZmTYJKfnn4dCczDcafDJdm7y8PxknUznX4QCZdEAYjiyTWrxnaksAAcIrjd/jJ4LM7If/EfsgspmXwIEvC0U554XupzxpC55Km7seacpJnanxm+u09wqylprDG4n001eSgEoTNTEPcb7bbmDUqJ+X7Dj1x+LFEA+cG7w3eQ00u/LPiYtFS3pWYKH05Kp4C1DsNiTDvJ3rg2GwZP2jgylJewaCqgim6kkg6IyiNNHyuybypNu8xcqahSDU96sjF0yCUMOxaB43oTp9mCKN5/Fwy7jnWsllPKJg4wGT0nymYagGIqX9OTgKl48wGT7x6Wa1z3jqLNzDk9ZYjtdCkd4ahTaNxB8gdb59RItOnJMBa8cWkUrier3yYM+jjhxbR45RfKcXgGuyKIVpXrjIdY0NeBxur8n9MVTYRHVapNC5CkSf6AD9wdZFtRHgm33d2qx/Pz0cL9Hgs/daSBKk3Hr9yGZz4HP0gzjk7G5YtblsrMJgsmmvzdDhAkwYDJG38/r7PbDy78kAnDeJmvky1c4CTcoP8WLP3DpyQK8pdSQi9ERro72xfYmyZfwwHIUTBADKR/z+wHXNsi128FiEnln+MEHzGERhk2hlncoyTdof93Fh2XfktHp6cWPcefz
- K4M7qzoJ
- mLtoHB0+S7EnQ+s5cVwG+RCEgsNK5uQ22Kqn/zxjXFHKU7y/5MORG/Zln8tI9Us1JsefzvvtNG6Af+0O8vXUupgtAZ4HDuvBJwahAxOWg58p1mvvhNvXYpYA//zwiZJ3LAU1qKzC9nsOaJtiqM1j32dtgidUnt6tu4dLwrNv2SJg3PwcwBfB0sq8TWJF08P59MDKkYXOVa1S/zisQVAITE6TCEWA8EvVEUpRuSMMtDfy7e7SGcG2rSquKYLj4aJfFTDHTOtGPynmKVMwbXB9OdMN/RvWT8bSoJsHeDEjx+HVDwlQY+DFzcCSzHqdaL4zyTK335KGnsqmKaQolC2dOd6g96blcfv4AKEvhKJNMG2LqKu9/JNWNWWVPeXhzTeV4GnuUQOTFMAguxumKOhdFHPWXHry/31Kwu10rY7FCJUhVbNZcJpbosQB+7lUsFk7PiTxgqKqRpVqYcFFWtgTqUlR4Op3oWC0pxk6l+pkN7VhidiqoW1snPMEBHPR1nrKc+7rglQa00t5ULIdQo0LbjmduqWYdDtf4ggbMYOKxmlYampHeq1NsIaP+JqkPFUg1vo6UsUZo/PG3Wk6f/DwTLJEZBqR2kX+xH2QNn/YxFJshMmwLc6Toj4y3jYtfCy2h4fqQWpbAjRRmK7iZmsfOP0MUHey0Houva6Xust4On4gBeejvXkcQvOl47EzZCebJF2YviL/tLm4XUEQOa3TuPkt+Iine7v7Gc3IcdGQAEwAIEgMSxpf3makgGmpsLDIfoWS/yx/zkMYBTXZsdx8+3zroaEWZI+3kUdCyXp5pjT8MdclPE9/U9TvxyCHD2DANsqTSxfDMpBRTKCa93n/iGMUHJq0ymyfuU0Dld3Vbh+d6YltjRLq4pnZ9n1WtMf5QAV/X8J4d3y3ovqg94A3H9eBct6T4RIg2SaNRarfImeFKN/S7nxDPmY5vh0LdBjkw4btclUzp68caEIu+p6+3srdydeSr
- WSJdlDuD
- H7bpFqTOphdcF7ihetjoK/woADsmI5vpNJoHH///T+Rld1pzoScxRu31Bax8D5am3aaTBTrAUJmd1MHF/8SsjD+on9HXxBBZurjF2kXHrpV1hFgURfQSjHsGdUbT771NUVIKr7SoRvAkio1n6aU0GvA9o7YQPoavCaCmGR9Ass7PRr8pnRfiiuY8fzlry6GxN0P3iuydKaLJNxyFm/zIIgsQY+YnP1YYd8TRWGDdLRkdspQ1d31V2HjbZzglEE7FzfKmBZLM8XD2XgMMj5T/kIQqnwSPj0KBhSkC8HWpOJfDg7NJdlhf2JC7UEygAqfhV6DoLo0wkjNoIRgFJ0mxZ45JRCgbKU7cbjLt59xL2DH+fqNYi1VENY5mDhfH8js7Nse9cXOvOBpo/BH2HLoKrxJ4CoePBek77m/shuGYSvYhGmklFCj3svve3KfNYhsEy2o4cMQ03oeugD8H9hvI7/khSve3ptNDvH9DY75oUrOBpcIunlvEjzO9uZKLcoyn9hPqM5NgRYEZ/7+llt4z87c0giukgRfVlHGv98eqyCY/raOiJ8s3RxsxIc7ZJsxORhLywgb54rj7gbG0zXmwKzXzOX9vJXtvcQ40kECkCzLBVzSsFnbmSV/R9WEw1YG1wdO+wVWowoW3z25um/RMFOEy8/gFFSLxhVUaIs3eynhuX0Rj1uz63roPTYlZQelJrROKMHszIhZ6JnkL5ITLgfUGA4p1IPMk4dwDbhqk+u0DuWEMDskRZ574bS/qRJuErHCcltm3qnQKEWS1Rfoesx1ki7w6/0qGhq0nvXeEQCFciNMLzhBEp4HdpGndCUUQCn2USm8r0DmDumBkL35wS7uDAZKggc/NtB6yMqVrII2IcbmrFma3HPS5yw3gUeZeoi8xk4K1WQbijwhVN1A1sedNFj0OimfFmSGaE8M1c69izhlXWBAdvu7J3lV0b4lGCHL7mpZqXw9TYVE7OdxH46mjCJs7t
- dHW9KKKM
- lWojKBJLJOQXxrSzkrW36GYCsRTFETYxSotFxafmY4ApGsBiVg8ebKqsHS9VuRT0jIBJiPzSunhYsZvl8KLDGEIPoH4hLTbaV6JSZMACIOhYZWmoh+Hzfm4FBjcENVNWz30X0MJLREHgO0RVUhu7CQ8vPs3E4SmyDVtjYs4LonLugMjFgU5a6jqMHPrLkADImJv1ZSAwSsZKkAxCl8Lr9oRP8ptbw9P1tdaT+kizm+cl+4+h46ubArm4zC3A434Q3uJuEz5o4ZaD4AZIGui34WYiQ0c0XYZZvVveOgnhMG+fUneZP7JBC+47Sds601ocxpH+o0uhl0JGR++79v+TfFHnWDDEJKaV3LC496QHLGIUdfgSviKN2/lAwlGlM7bnIwTLeFuSCAaWY9G/S/W3i+J+BGGQ4niK2v9kcvQ7ywXUqrb9+C9cLYgD1gOQlK6u5A6V+LPjzjxUNTwQ8dY186KcTGYcER8DoikiuzOkkvNUeAJGDWGC9hNJlUovFypBkqRJaFhD7ytlVXa38lPTb1d2iaSc82uBq/fTwjGbTCvD1lM4AjpIKdmjzUcx/MZpwXYmvb1v0IIbtAJdgaQjkQaF5I2qnH1GGvFeReeGcdOkhdbffYTot3eaDmx014Hu5byjhAlmCJBgA11xiJzy/5UQH6E9FjoWussoknorm1cSay88N6cHJSEXeT2C6VRiJXw2mk4mwznc6/2G1PsvEDSvDbixEfLfl/YNJ7o0jzcfOgea8VHqVCQVHj1ZwXeIuzAmvZSMf5iz7YURAp2sDOEUdHrQWA4hH3R9oK4TWjgkzLDmUWTRztzL4qlxcfFunqERuhns21pqutPoHeGyU8D/Vn+S/X4Qycc09UeO6jhIBeJSCMA07nyPJ/2als10wyUXDKOgMLbt+DAHJgYsMJPQu06RanIDhG2hF2HOVl04ZUwuC/3CneChjj2/fonovAlBwf3uwSbq+u3YGyBT9yK78SvgA
- k/MTCLfk
- 7yEpIDx4ZXDCmNkmHYbta9gapu02slaNZdGjLZROpQwkSrD9JqTu5eJwbOL8K9OwJDE/PpBgib2q+5YqrucnZPat3V3OCALLmbOaYcklvZeJJWu3IAZT4EglPqsQlppEqTHLdANaKL8wt2U/7pYSAQUYKQyxh92m6sCE2GWKOzLfwSpEV0y9dB/JWGBu+iyF3vuONDxEFlO96rz3cl7hvfTPRUjZQTDdKjixKAjXnlZteev9daKlJuhWT0c5J6T7NltVcwhhtkL5MBa2VkonyvIDxiZY4UgJUmGATMClrYeP+FdNDPwKqaU/RW9FAxw+ZJB/K5id+1InqvBjtkaRk3KVaeUGlkOZAnjDp7NUygv/sGIvGUYjssxVG4hS4KNHmgPl5Fp5F6Cn0pTy1NnDU4bLHc/jlkMXq42VHU43KTfNjITcPPgQ4H
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5030440004
+X-HE-Tag: 1790748205-539892
+X-HE-Meta: U2FsdGVkX1/3oj6GSKp2BU/6lgM1HTDC0HAk+mT5hPITxohcWMvLpObhWIdSyV/d1F6FtiIsO0VAcjzbEFaardO8XELKpriQs1S8wkkPm/1LowiBa5d1MYrnMvgulyGd+0PsSKisHYRyDBbreiqVXFvuZfc7+P8c8SOsAyTy5zR/n6A+ey8tOdl7skMfHItHV7uoL/XY8b4/3uNAo3nVsiTrx5xg9D9LCgmgBLKmfw4I9wHzFYcSl73mhcaAx33xDk26VUj+c768pgfw3Sy9us3QM5AwZFsN906eQxnpuygj1SHThVCgTu1ebLymlSZDzAZ+VaYMC/Or6LFnc7IqIsAxQUdKMH3afzCpcbTqQaQPyhMWTAVubxTaXeHkivMVzrC5wqdkC4UsGx+UHY2Hyvy1dI1z/QF8HikAC9+MiNGy2iwBd201qqEVo9hubhves1p9f30h0fLe8ztMDart61mEZJmJ/Ls10jhuHIFUdkFtglA7i0vE61UBIdeaX3GS+nb9mff1BEEfq42byoTxuGTyjqin77RfV4esfYXmB+UCLG//hgSRTiU83AVlSx6un8DRt9Z00sMglLTUT6krIGxCdIDYBXtuC/aDBzeEu4kEGkVD2WJiRsuQvdEwNnujowNuNKnPbjFrdPGVQXDAxKcl3qbSp4XInI+jjD+WehUqxhQ/GQR96Mf+zXcnpH2Ph/wJsEJ4FTaqXyH7FbtP7bf3nbZkJyE3GUi4tx9FJU80dtPPQPnzazwMyt4Jl3+/25YZFWCCmAuLj0Vxv06lU9zhnAsxsbtvdlxyo3cPFa2GuKsh3proYYKMiUDJm7qx/VQELZw7d31wuvShGrIy10+yFwSkr9t87+d9+jH47X1oXS/JSpSKppKnz4DDm52eQawCPMwcv/xpo40wFLILMsP0lNKPEcO42Ocn1NLQHMbEYw0Sbcd1HuZUeviNrQtJkv1C5L8a1AxTNJ29KQX
+ dU6nlwK+
+ Rv2XDMhqXUeS8No7VHeBHeq92FOzs9afCAB69HKa77c0buFTXIgEeDJMLivjuouWKgUksK8IzrXOUop8EOfePCGQVCRB0RzYF3JtV/Kgap7SYIWlrcp7ljRhQe5vRQTA51BaUGnu0NwlLt6fDS93yuw4B0/tnylvFmyMSS41Fe6i2blZyUnjDeqMbQAeE/RkZbWHvE5Pb9ZyZZ9k4vo8i+B0te/pgkSoQPKIPQn6adI+IGBtTC/zXSnZOjMWjl23tjpTokhyVC//b2PCmp1qgSxZgrtbmtKsdxdcHD+8wlUkAth4djxhZnRemlTDWTWCfrkLvnWqw9lpg2H4o26hpYrTKAOmuE+jDgTiKb5MbI93snIDqnBrPXFzlv2o7s4K06+cs1m1eGYYh48byPYOEq/hzwS/AiZVJMdNDGRzALms+8cqkxtSbcuOrFGhIsL1FbrVJQFT5xcK2kOeEsT71x4xPJ4EDy3/xaSvWTN1PSb5qnt8kLDpBvxEqVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,59 +117,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 06:12:32PM +0100, Muhammad Usama Anjum wrote:
-> ptep_get() now accepts a pointer to hw_pte_t storage but must continue to
-> return a software PTE value. Add __pte_from_hw for both generic hw_pte_t
-> definitions. Read the hw_pte_t table element atomically before converting
-> it to pte_t.
-> 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> ---
-> Changes since v1:
-> - Use software PTE value terminology.
-> 
-> Changes since RFC v1:
-> - Define __pte_from_hw for the opted-in generic wrapper.
-> - Apply READ_ONCE() to hw_pte_t before converting it to pte_t.
-> ---
->  include/linux/pgtable.h       | 2 +-
->  include/linux/pgtable_types.h | 2 ++
->  2 files changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 19098e302b75a..41337da0d65aa 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -493,7 +493,7 @@ static inline int pudp_set_access_flags(struct vm_area_struct *vma,
->  #ifndef ptep_get
->  static inline pte_t ptep_get(hw_pte_t *ptep)
->  {
-> -	return READ_ONCE(*ptep);
-> +	return __pte_from_hw(READ_ONCE(*ptep));
->  }
+Each row of a memcg-aware shrinker's debugfs count file contains the
+cgroup ID followed by one object count per NUMA node. memcg_shrinker.py
+uses only the first count when sorting and displaying entries.
 
-Just curious - when would other pgtable levels (PMD, PUD, P4D and PGD) be converted
-in this format as well ?
+This undercounts objects on NUMA systems. An entry with counts of 0 and
+23 is treated as zero and omitted from the output, even though its total
+is 23.
 
->  #endif
->  
-> diff --git a/include/linux/pgtable_types.h b/include/linux/pgtable_types.h
-> index 07da05d375c2c..d6c5a7548550b 100644
-> --- a/include/linux/pgtable_types.h
-> +++ b/include/linux/pgtable_types.h
-> @@ -8,8 +8,10 @@
->  
->  #ifdef CONFIG_ARCH_HAS_HW_PTE_T
->  typedef struct __hw_pte_t { pte_t __pte; } hw_pte_t;
-> +#define __pte_from_hw(pte)	((pte).__pte)
->  #else
->  #define hw_pte_t pte_t
-> +#define __pte_from_hw(pte)	(pte)
->  #endif
->  
->  #endif /* !__ASSEMBLY__ */
-> 
-> -- 
-> 2.47.3
-> 
+Sum all count fields after the cgroup ID so that the displayed totals
+and sort order account for every node. Single-node input retains the
+same result.
+
+Fixes: d261ea23533b ("tools: add memcg_shrinker.py")
+Assisted-by: LLM
+Signed-off-by: Ren Tamura <ren.tamura.oss@gmail.com>
+---
+Validation (2026-09-24, mainline 62f4c998b297): ran the original and
+modified scanner and display code on Linux against count-file fixtures.
+Multi-node counts changed from 0/7/4 to 23/18/4, while a single-node
+count of 9 stayed unchanged. This validation uses fixtures, not a live
+NUMA shrinker workload.
+
+LLM assistance: finding small cgroup fixes, drafting code and commit
+messages, and preparing validation.
+
+ tools/cgroup/memcg_shrinker.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/cgroup/memcg_shrinker.py b/tools/cgroup/memcg_shrinker.py
+index e81c3017ada9643de72d9fcb5e8fb6808382a31b..714772449c6ba9142215e88cf9e4526bdbcb9ee6 100644
+--- a/tools/cgroup/memcg_shrinker.py
++++ b/tools/cgroup/memcg_shrinker.py
+@@ -31,7 +31,7 @@ def scan_shrinkers(shrinker_debugfs):
+                     items = line.split(' ')
+                     ino = int(items[0])
+                     # (count, shrinker, memcg ino)
+-                    shrinkers.append((int(items[1]), shrinker, ino))
++                    shrinkers.append((sum(map(int, items[1:])), shrinker, ino))
+     return shrinkers
+ 
+ 
+
+base-commit: 551c722f40809618230001baccf219193e22fc5a
 
