@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE8AECA5FAB
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 04:35:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0F37C9830E
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 05:10:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C19416B0088; Wed, 30 Sep 2026 00:35:21 -0400 (EDT)
+	id 52E8F6B0088; Wed, 30 Sep 2026 01:10:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC9F96B008A; Wed, 30 Sep 2026 00:35:21 -0400 (EDT)
+	id 4B8596B008A; Wed, 30 Sep 2026 01:10:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB8366B008C; Wed, 30 Sep 2026 00:35:21 -0400 (EDT)
+	id 380336B008C; Wed, 30 Sep 2026 01:10:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CEEA6B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 00:35:21 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 137F7A70E3
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:35:21 +0000 (UTC)
-X-FDA: 85269164442.14.BDF3667
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BE6E6B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 01:10:41 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 688241C35D9
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 05:10:40 +0000 (UTC)
+X-FDA: 85269253440.11.825ACF4
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4CBD920002
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:35:19 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="lgC6/g+m";
-	spf=pass (imf03.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5CA74100002
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 05:10:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=XyyFJBwu;
+	spf=pass (imf05.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790742919;
+	s=arc-20220608; t=1790745038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WJv7QFSawTRf+7Qaypvc1je5cVwExR1KbukcnwAizUQ=;
-	b=OGldz2SW1NqfCDAWcnRcOfk6go7HyGSGCofEz/H4qfZu3MY8IIzTBBqaMi8IU8654VqvDG
-	1hSCNeL3JDqgAuL6sjOnDlYLtoDI1SPeJfDjP7mpN3opYrIqfrDVeCk8Flq+TncGP9bdIw
-	Q9CKT3R2OK62l6O3y0yLhs1ZTtEEnIw=
+	bh=1oW3AvlDdNTKHgXBHsjwYnhwhpxTAsRjPnzJ/d+6YUE=;
+	b=0xsoTvcUpcLAIJ7CVZDyiFsLmnruPdRmYuL5qC7NuprTkHNzczFTlC7uQUXvnab1XO8v+8
+	ViePqSCC9/K2eirOoAPcMEyGYLoGGa1/eR1hvTmzQjdSdBG7e1XMi/kmAr8957X2v1t9Dz
+	okayRdv52XqbYuzckkN8Mikl61riSco=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="lgC6/g+m";
-	spf=pass (imf03.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=XyyFJBwu;
+	spf=pass (imf05.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790742919;
-	b=KvPaQGCIfnlMUqynnLa1mlzSL0hzjWX5UIHdSXXw8/c73GtFxnNShNsHoSIIaDHFlcOM+v
-	Ir0zEcANcUQXL30F98UwD963g3X11jXaSnlL13KcXJ0UTdsyab03g53retofnffOwFwLPd
-	86aIRPn2STAIzu/zq4WxKv7vnb4u+/c=
+	t=1790745038;
+	b=Re5Vs8fXaqPuMSfB8d+yFVWI3tOxy7w3511yTlvenJbV9cjvqulPLPbn9UVUhkj0YsBy2t
+	cp3gkC2/3l4Z3DWy6/RdqlBOeqD4ZYMNWBDWxEP5IFkz1GjQB1EekC2KHy/M8TAJ9c4z0M
+	2iS060R36ysC+k3mX5cIDMwSt4p3JK8=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 990121477;
-	Tue, 29 Sep 2026 21:35:14 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD6551477;
+	Tue, 29 Sep 2026 22:10:33 -0700 (PDT)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 957183F85F;
-	Tue, 29 Sep 2026 21:35:16 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CBBB73F763;
+	Tue, 29 Sep 2026 22:10:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790742918; bh=JkHtlPokOn2BvzhlFVjlfx9DCaqfOaYocdfBH7PqihI=;
+	t=1790745037; bh=HBnOiO4lKi56PuSH4xu/j4eJs0RVLoWx4P6ztp2ydZk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lgC6/g+mujq1Di8KZWt65mHC5uA/Qzc5xT80jreFuxXslxLv02NzQrV6JYjehoAuH
-	 2P1nYefRlxZyTLzAxT6VXMQKFBlCuTP7bT5bKmsIoL0fufhFfULbvB17Y8MsgFrD5W
-	 iGRIG26gVobM8X7tH+/OJ4uUJIzt6YNGzZ9HwqE0=
-Date: Wed, 30 Sep 2026 10:05:14 +0530
+	b=XyyFJBwudHElfeviZ00ITo1a6Xr9Q3NyTSeWfTWp8zjFH4KJEZuFNbQ9z9esgxx36
+	 t4IFgPHmQLaWxfB8mibALu5LHDRYKETtddlKsa/mrM3VuXEUZdR5WzTLOHscsAE3WY
+	 77cVlx5yRsj+dQ5Rtn3DsHPDmyL7aOM2T6haf/KA=
+Date: Wed, 30 Sep 2026 10:40:33 +0530
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: Muhammad Usama Anjum <usama.anjum@arm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -112,28 +112,28 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org, 
 	linux-perf-users@vger.kernel.org, damon@lists.linux.dev, kasan-dev@googlegroups.com, 
 	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v3 3/9] mm: use hw_pte_t for generic PTE table storage
-Message-ID: <xzlxdkrjilskjcagnl33eed7ijxrgfhoalmmmq5ks3wgjmkkhi@zchtxpr2amff>
+Subject: Re: [PATCH v3 4/9] mm: convert PTE table entries in ptep_get()
+Message-ID: <dhokijjou3rh3poqnqqpyoyac7wrqeprl4vlhzqokvh4lgjyya@g5hwn7sve3uw>
 References: <20260922-pte0-v3-0-5670b8cb9059@arm.com>
- <20260922-pte0-v3-3-5670b8cb9059@arm.com>
+ <20260922-pte0-v3-4-5670b8cb9059@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260922-pte0-v3-3-5670b8cb9059@arm.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4CBD920002
-X-Stat-Signature: 31eajtwhft5p4fuacfoo497e3k75gx7m
+In-Reply-To: <20260922-pte0-v3-4-5670b8cb9059@arm.com>
+X-Stat-Signature: fszcosgb9zrjcz8smphxj3dwqco9bgyg
+X-Rspamd-Queue-Id: 5CA74100002
 X-Rspam-User: 
-X-HE-Tag: 1790742919-320093
-X-HE-Meta: U2FsdGVkX18vmurD50bAgg7zbaW5BLZvZUWOh4utdKXc1kmpcLvzsQoMLXM3uio8mvl0TEG+ve4d0k+AqxEnYFAcwRAwKgNHS6HezhdbikoVPEfdfJxj0YznrHlJoXfmH3K6ZhXu9ltQug7HO3CKS9QyyPfUoizE+EiCgr/Cquj3asLwkos/rY4ZhUewvVr1Tlb8J5XKy2w5NG19bLmHvdR/NAkenBykLt/6kfYUjKRPuXZdccu1Au+sg7+raaEZzxo1eO7h0kf/uA/FkmPApmn8/f9QKEIvFRdNoztC570bbJn0B7PnRl8QSiFkofJa/oX3O110Sbw+44JuHt+B0hKZ5cE6UZ5+7MTEBy2cCC4bLJmEkjwHafW+cqgEpn1qhTHrFSEs7AlO6NPlMbq47QlHWLUXnYbE8SHhXjyaUOFfpnQ0xwGgZlAIghmhOlFBbPuECRlPFjdqWyKKEugqqf11JIB6LFlljUAqZbQw4e7TY26jCt4KbUfOFvLS+gMLMyKIRDiTounARFDSFVuwZPKRebm/v3GFNLzzZfpReLbaqicCHCecQk/vslyS0EtGTWGSDmM/AE5Gj1AVKiKBxgdaJkW+PuBKY1IA2fWTF6gcrpb0NxaUzEZmTYNFTSLUFHm79lRsh6ysR0BieeYkD/NOURnKIv7+k++rRSXJt3bqwhEMbCDB9cVeGIT3X22xjvVUGCYUlOIJyF+Q7WYtfmZPWsKCbRMj6plFU5fh+mFg0cg9wI9Sh3X6xJgF5nZR47GYkuewe0sh/EpRPJPxCm3w7ZXWig2WzmxGlieC+H+/5d80tQk0OW3pbWvxYVXZ9pUW3Au9q6I/jAOEYj6f7Jke5tKuc+tN4rRbJPF3wMDVxx/KQ7ZRwbO+gPubO0/1dyb7kARN+mIGSkYbjeJocdx2DmTy9MWBqoe5R0XGJv6E/t15IVgJIoMnearef/VmOc63BzOQ/dQV8Ht0BuQ
- 3Rp60Zcq
- pVl05cvLGz7Oi83Yd31BP/vSVdvgDwLkwaCV/A7lYJLihmHSlUmIzxLVyrdXzyWkQNSQeuFh2rYIiRYCcIH2OKxJIzVNumKj6dfhdVLJFAGz6vg6kIoPxudCvcJNhzHHMX2uOwCSgA1NmYJJ+fbJRYSDnRBuWccbNpY2FpFqf5PaRiWyiUsiCGbpzYYIq3k3BdSpEcUvLDhScZZkPP5iJUhaUH7lCkpw2fxjgtzNFGnqnMHB1BUK6ZzxaXZwvE+aVW2QpXebjWVavpmA23ikVQ1hsPGg6MHQuBQQCtIEgrdtzuXw7Ey4OpUdwCmBLcedhjdCue6rnCnImY7jNBGa5cG84NFKu4h6fHmwdHSvRuN9du3gKErTMa4AlUdzGgCRkF3m5B3xdWeJJNtL88/KnlvquhVXy50YRhq9M4m58V1erPCzVe08BaEBW142C6z/Ejyi5uP0neDYb6tSzDWi7FgmtLSyoT4iLq6/BqVdNS9MGy9r6fjsVF0CPLLUb+M7M2372ntT1MoIQZHVKOWrvjKAW0qMT2oa03pE3o7636bEVCDukPdW9MeEFIuy7Us3Q59D6OxuEwtpCdBJ91TXPjAfELzuk0WKLYDhJVjzelsItiRO6bwTKUUSlODm6OyvsiKlcxJ4z3hI7kCSX3hPqOrGMfwpGfLzZloI1hOazcSnGfGVEV+kUrgHlDvejn2bjLvx9tma46a1fLDVZaDbYal6zzANk6VEfUX3nTRryJCD4r7+J32vpDB/qwiIifAkTJeqjKcq51kwsaLUYRb7qe+qcOcIPWlOskRfUGxj+ZkTYB/5YqpoDkw7BlpjgLUMbq/Ccg/OXpBU6Mlqmd0HHuJZ05CdRSyCDVSrR20TE+gC6gkctbTUstA28LHQBsQWiB3w3WIF0xbeypTAUCjtTdQUu3eWbkG5dxGEP6BrIom6T4HpcrZrGRD1iue9Qke6VLYTHPZgNkayGZ98ytYRa46euqDLq
- 8zMllitZ
- Zuy3zOL4dFrfHZGixPfp0ohPf7IJxkmQ9B7cGJzEuYijd65K3C3EezQzK/ewbDyt3tm1FcDc2992rx2/6wL0qi/Msh0xmLRhRRN0EOLrWwarpT/2fYeHamCyJFpPZ3Lcc/J2QgSAQjAcdKvd73ctHUuIHNj+lhWp1nwNjWxtzNUJArzHWS8R9CYWHum0sg8zFTtSDl9jvuh4lAgGQJQvRrFR9JufxU5toujJIWgKONBZmIMfns0CnHEJxn8ZX98NVJWk6u3Q0fJNCRxFP1ePe8ztmaaIdeex+bccW99ExUNjR/lnRSzWWM6/7m0C9oMBKRaL2LPvWsL+3YPP6G4Wi//PsceHUmVaSa5FcTcc2K0cdv01/IX9zHPsyYrX4rk1DP+EmB/I+VCEN7R66fPoMxFamc8Fk+S90tC2v9B7Ugzeead/FTO6epQI4bmmUgflRM26eoYlNpnDiJfVaCwjhQVXkpaNoCluMqK4P51fO5Hy++z7L/WtZBEJS3plYVjVyf79loWFQsNS0k7/Fkyr0tnQSXrhuQVF43bzUM27z7rt26uDl2Mi+GxC/njXGgk8ryGMMBeeNW32v7IjnkykqCq1kWl+bhyDuVu9lI9spyErYVR2W7uOAE6feyGq1fKPyO0HPw2C3MYcoXtTSz2yD6X4CJOkZCm9/Jae7r90yITm2qtxuP85TjcT24jC3RjqqIrbXPRRDRVn4wtedx2ahis2+4uuG3GObV6YLJx6e1JZ6pZfyszAmLL+IB+BUnvYqoVQwTLwcinLAHZrJFQRWM/MvyI//rd4d70D0SvQdqyYkIM1hGAc1+nnAJTxbHEl8KUjMnI2lA/CeK9NNiYqQ0vG3sVLRikcFSGXXrCyZxSABYlqgPFfku97xzlU+PAYiYFfX+tNMRhIZ8MtY1npBZlWDa1x8KxFZSBBDJSoAviWj2db+ewGi+TCauiyK9cUOjouvuTOfKoTn0dEiv6QxLo3uVhjD
- 1ews2Rum
- yIv4Dy1mDafzCLY5dQAKUami5GCVW43uUZkg8G5D6b3+fqWN4g3ASZ3+BNugwW0mOSFadDQdv1IyEx00xrbx3kcBF7CZ5WPPsLueRCqEsWo/BUnyOaIbgzNE0+imi1dfnDX9dJgR7/IseU3z694hIfwyXgNT5kkdsJQWRLl+jgzNttbaobP3nwaQyvbVLe0qVX85eJRr01w5/XvnoSPYklDYFMS4zs4//fZZ3aMXGRI+JVoHVvPYasVZjgewbaWTykErMLgFUmFOn+/GMDQnPRoIZW7a+/49GpMeiFYrgPAQg6d9v7XXLsJ1mYM7beWPusS8Ap12fF0mbfgYee7LpnmxEmmRumvpoHdo4nHL9XxGcEQJJVJ4MMaIhQ9okAVPyc2kKxLNTeezEgKvdmsWb5RLBNyn5x4T8neuXhzE28YqZGqeEduTGeO5fUm5rNT6D19iLkAoWBOxDob6k1UnJn5LqGLsI/xlCCmDowGCvb8DLwb40N3nzwYEwS2PYwIYYv9eEN5uz1PWW8f84P+evUOr00eIXcigJv9cGmoaNHnO9mIuE2iHedKDBp7Jtls7HqsBlrgab3fY7YbQ1g/k6BxsEZ3kst1w9gxmMo+8jfq8hx4Rnmjyl5KHzp0a77jBX7TraPW9BM/iKajTrAN5jbKazHuTxENuzw1yZqVb1JZijafTTzjE4e8F5f2Y/0/QCay3hZfW/KiV5hDhyIupQEx30XvM8jgZpC+1CGvNff6PW75BEm8slG/kJkqMuO40Ysc30CA6j5GGmD6PNkB2ZsXU8bDgd8NmI2Jv60c82x0/AObGuqDgZtFdUqLrOc5XNArJv4Czs7mYgbOJg+XNcPakxlP5Z0H1YHxTkETGBlX2TcmiKldAf8a6VO7LB48WtmyCs2bOSeQGuUVOYm96hvwJnqGUp5kBYZ0eiH0J3Bi6vEbJoqbRD8TouvH0p3enhL+/UvawzJODxU8AwEuk5PR3gCRLF
- DhaEDhdh
- iNeZzGzNJ0V+Aa+Ld40JfghpRz6j+ZIrS5jev0u24DxHq/00xiICK/QFrRP7zA8NAq8bOilgT2h++nCuPW920vyARskEm+dkh85x9wVtL39eo1MDs+5jMqNZnAEuTuzlOtq853+4lQfbvWywDHsayJtTqQb4cK7nESZwoZh98YhZ5ydnFed2WyCTsB+5bf/GJT0v1okM/PzgIO60gd6NzXWgKjSQIr88OiEW5W+wjOK0BDP4UP0h/QxuYppqnArtZOdV0oxXgmT1T9/sCoQULZ7aOohukbXmKB7MGoHyoVBZ0wGG5+dya9pSkxRsdUtDABqP3ERF1HIlXDvLfsa512VAUaBjHpfNGHojGkpCywDFkmWCcwVP1f
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790745038-17205
+X-HE-Meta: U2FsdGVkX191bcPnPCVpCMfYlB8d2Qe/pgAy7IFKaeryYVxJQB5TVjZ0FvfrgvT4/uCv0+qjcMAViHQiIlFVXrRCf2Q8DJPNMLulWtX1hndPxELV1IStFQA3IyAO6UL7hRatfnZUDXr77sJdKG/BUNI/OEBvngab5/4pH082ZpmVzgu7Bq/mHuyg0H4FLY6PC7fEQlDW7HlaYuNUc0deDGRLAfoW4EN1q9nkH2TMOBnP+hC0AQ+TNnDTwG4VUqhyfadlMbtJmT3avH3xP+aKbzf0q4Zk4VKyoW+Ou09CnAUtT46ozKHsl5niAY0xpPEgn1N+lK4eygmKcr6gUVfjuALZmTYJKfnn4dCczDcafDJdm7y8PxknUznX4QCZdEAYjiyTWrxnaksAAcIrjd/jJ4LM7If/EfsgspmXwIEvC0U554XupzxpC55Km7seacpJnanxm+u09wqylprDG4n001eSgEoTNTEPcb7bbmDUqJ+X7Dj1x+LFEA+cG7w3eQ00u/LPiYtFS3pWYKH05Kp4C1DsNiTDvJ3rg2GwZP2jgylJewaCqgim6kkg6IyiNNHyuybypNu8xcqahSDU96sjF0yCUMOxaB43oTp9mCKN5/Fwy7jnWsllPKJg4wGT0nymYagGIqX9OTgKl48wGT7x6Wa1z3jqLNzDk9ZYjtdCkd4ahTaNxB8gdb59RItOnJMBa8cWkUrier3yYM+jjhxbR45RfKcXgGuyKIVpXrjIdY0NeBxur8n9MVTYRHVapNC5CkSf6AD9wdZFtRHgm33d2qx/Pz0cL9Hgs/daSBKk3Hr9yGZz4HP0gzjk7G5YtblsrMJgsmmvzdDhAkwYDJG38/r7PbDy78kAnDeJmvky1c4CTcoP8WLP3DpyQK8pdSQi9ERro72xfYmyZfwwHIUTBADKR/z+wHXNsi128FiEnln+MEHzGERhk2hlncoyTdof93Fh2XfktHp6cWPcefz
+ K4M7qzoJ
+ mLtoHB0+S7EnQ+s5cVwG+RCEgsNK5uQ22Kqn/zxjXFHKU7y/5MORG/Zln8tI9Us1JsefzvvtNG6Af+0O8vXUupgtAZ4HDuvBJwahAxOWg58p1mvvhNvXYpYA//zwiZJ3LAU1qKzC9nsOaJtiqM1j32dtgidUnt6tu4dLwrNv2SJg3PwcwBfB0sq8TWJF08P59MDKkYXOVa1S/zisQVAITE6TCEWA8EvVEUpRuSMMtDfy7e7SGcG2rSquKYLj4aJfFTDHTOtGPynmKVMwbXB9OdMN/RvWT8bSoJsHeDEjx+HVDwlQY+DFzcCSzHqdaL4zyTK335KGnsqmKaQolC2dOd6g96blcfv4AKEvhKJNMG2LqKu9/JNWNWWVPeXhzTeV4GnuUQOTFMAguxumKOhdFHPWXHry/31Kwu10rY7FCJUhVbNZcJpbosQB+7lUsFk7PiTxgqKqRpVqYcFFWtgTqUlR4Op3oWC0pxk6l+pkN7VhidiqoW1snPMEBHPR1nrKc+7rglQa00t5ULIdQo0LbjmduqWYdDtf4ggbMYOKxmlYampHeq1NsIaP+JqkPFUg1vo6UsUZo/PG3Wk6f/DwTLJEZBqR2kX+xH2QNn/YxFJshMmwLc6Toj4y3jYtfCy2h4fqQWpbAjRRmK7iZmsfOP0MUHey0Houva6Xust4On4gBeejvXkcQvOl47EzZCebJF2YviL/tLm4XUEQOa3TuPkt+Iine7v7Gc3IcdGQAEwAIEgMSxpf3makgGmpsLDIfoWS/yx/zkMYBTXZsdx8+3zroaEWZI+3kUdCyXp5pjT8MdclPE9/U9TvxyCHD2DANsqTSxfDMpBRTKCa93n/iGMUHJq0ymyfuU0Dld3Vbh+d6YltjRLq4pnZ9n1WtMf5QAV/X8J4d3y3ovqg94A3H9eBct6T4RIg2SaNRarfImeFKN/S7nxDPmY5vh0LdBjkw4btclUzp68caEIu+p6+3srdydeSr
+ WSJdlDuD
+ H7bpFqTOphdcF7ihetjoK/woADsmI5vpNJoHH///T+Rld1pzoScxRu31Bax8D5am3aaTBTrAUJmd1MHF/8SsjD+on9HXxBBZurjF2kXHrpV1hFgURfQSjHsGdUbT771NUVIKr7SoRvAkio1n6aU0GvA9o7YQPoavCaCmGR9Ass7PRr8pnRfiiuY8fzlry6GxN0P3iuydKaLJNxyFm/zIIgsQY+YnP1YYd8TRWGDdLRkdspQ1d31V2HjbZzglEE7FzfKmBZLM8XD2XgMMj5T/kIQqnwSPj0KBhSkC8HWpOJfDg7NJdlhf2JC7UEygAqfhV6DoLo0wkjNoIRgFJ0mxZ45JRCgbKU7cbjLt59xL2DH+fqNYi1VENY5mDhfH8js7Nse9cXOvOBpo/BH2HLoKrxJ4CoePBek77m/shuGYSvYhGmklFCj3svve3KfNYhsEy2o4cMQ03oeugD8H9hvI7/khSve3ptNDvH9DY75oUrOBpcIunlvEjzO9uZKLcoyn9hPqM5NgRYEZ/7+llt4z87c0giukgRfVlHGv98eqyCY/raOiJ8s3RxsxIc7ZJsxORhLywgb54rj7gbG0zXmwKzXzOX9vJXtvcQ40kECkCzLBVzSsFnbmSV/R9WEw1YG1wdO+wVWowoW3z25um/RMFOEy8/gFFSLxhVUaIs3eynhuX0Rj1uz63roPTYlZQelJrROKMHszIhZ6JnkL5ITLgfUGA4p1IPMk4dwDbhqk+u0DuWEMDskRZ574bS/qRJuErHCcltm3qnQKEWS1Rfoesx1ki7w6/0qGhq0nvXeEQCFciNMLzhBEp4HdpGndCUUQCn2USm8r0DmDumBkL35wS7uDAZKggc/NtB6yMqVrII2IcbmrFma3HPS5yw3gUeZeoi8xk4K1WQbijwhVN1A1sedNFj0OimfFmSGaE8M1c69izhlXWBAdvu7J3lV0b4lGCHL7mpZqXw9TYVE7OdxH46mjCJs7t
+ dHW9KKKM
+ lWojKBJLJOQXxrSzkrW36GYCsRTFETYxSotFxafmY4ApGsBiVg8ebKqsHS9VuRT0jIBJiPzSunhYsZvl8KLDGEIPoH4hLTbaV6JSZMACIOhYZWmoh+Hzfm4FBjcENVNWz30X0MJLREHgO0RVUhu7CQ8vPs3E4SmyDVtjYs4LonLugMjFgU5a6jqMHPrLkADImJv1ZSAwSsZKkAxCl8Lr9oRP8ptbw9P1tdaT+kizm+cl+4+h46ubArm4zC3A434Q3uJuEz5o4ZaD4AZIGui34WYiQ0c0XYZZvVveOgnhMG+fUneZP7JBC+47Sds601ocxpH+o0uhl0JGR++79v+TfFHnWDDEJKaV3LC496QHLGIUdfgSviKN2/lAwlGlM7bnIwTLeFuSCAaWY9G/S/W3i+J+BGGQ4niK2v9kcvQ7ywXUqrb9+C9cLYgD1gOQlK6u5A6V+LPjzjxUNTwQ8dY186KcTGYcER8DoikiuzOkkvNUeAJGDWGC9hNJlUovFypBkqRJaFhD7ytlVXa38lPTb1d2iaSc82uBq/fTwjGbTCvD1lM4AjpIKdmjzUcx/MZpwXYmvb1v0IIbtAJdgaQjkQaF5I2qnH1GGvFeReeGcdOkhdbffYTot3eaDmx014Hu5byjhAlmCJBgA11xiJzy/5UQH6E9FjoWussoknorm1cSay88N6cHJSEXeT2C6VRiJXw2mk4mwznc6/2G1PsvEDSvDbixEfLfl/YNJ7o0jzcfOgea8VHqVCQVHj1ZwXeIuzAmvZSMf5iz7YURAp2sDOEUdHrQWA4hH3R9oK4TWjgkzLDmUWTRztzL4qlxcfFunqERuhns21pqutPoHeGyU8D/Vn+S/X4Qycc09UeO6jhIBeJSCMA07nyPJ/2als10wyUXDKOgMLbt+DAHJgYsMJPQu06RanIDhG2hF2HOVl04ZUwuC/3CneChjj2/fonovAlBwf3uwSbq+u3YGyBT9yK78SvgA
+ k/MTCLfk
+ 7yEpIDx4ZXDCmNkmHYbta9gapu02slaNZdGjLZROpQwkSrD9JqTu5eJwbOL8K9OwJDE/PpBgib2q+5YqrucnZPat3V3OCALLmbOaYcklvZeJJWu3IAZT4EglPqsQlppEqTHLdANaKL8wt2U/7pYSAQUYKQyxh92m6sCE2GWKOzLfwSpEV0y9dB/JWGBu+iyF3vuONDxEFlO96rz3cl7hvfTPRUjZQTDdKjixKAjXnlZteev9daKlJuhWT0c5J6T7NltVcwhhtkL5MBa2VkonyvIDxiZY4UgJUmGATMClrYeP+FdNDPwKqaU/RW9FAxw+ZJB/K5id+1InqvBjtkaRk3KVaeUGlkOZAnjDp7NUygv/sGIvGUYjssxVG4hS4KNHmgPl5Fp5F6Cn0pTy1NnDU4bLHc/jlkMXq42VHU43KTfNjITcPPgQ4H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,26 +141,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 06:12:31PM +0100, Muhammad Usama Anjum wrote:
-> Generic page-table interfaces use pte_t * for both pointers to PTE table
-> storage and pointers to software PTE values. Convert the generic
-> declarations and their MM, fs, and kernel users together so parameters,
-> return types, callbacks, and local pointers that designate table storage
-> use hw_pte_t *.
+On Tue, Sep 22, 2026 at 06:12:32PM +0100, Muhammad Usama Anjum wrote:
+> ptep_get() now accepts a pointer to hw_pte_t storage but must continue to
+> return a software PTE value. Add __pte_from_hw for both generic hw_pte_t
+> definitions. Read the hw_pte_t table element atomically before converting
+> it to pte_t.
 > 
-> Include linux/pgtable_types.h from headers that expose the converted
-> interfaces. It continues to provide pgprot_t to vmalloc.h through
-> asm/page.h.
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> ---
+> Changes since v1:
+> - Use software PTE value terminology.
 > 
-> Keep software PTE values as pte_t and retain pte_t * for value interfaces.
+> Changes since RFC v1:
+> - Define __pte_from_hw for the opted-in generic wrapper.
+> - Apply READ_ONCE() to hw_pte_t before converting it to pte_t.
+> ---
+>  include/linux/pgtable.h       | 2 +-
+>  include/linux/pgtable_types.h | 2 ++
+>  2 files changed, 3 insertions(+), 1 deletion(-)
 > 
-> No architecture selects ARCH_HAS_HW_PTE_T at this point, so hw_pte_t
-> remains an alias of pte_t and this changes the interface vocabulary without
-> changing representation or behavior.
-> 
-> Most of this mechanical conversion was generated with the Coccinelle script
-> included in the cover letter. The script deliberately ignores pte_t *
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 19098e302b75a..41337da0d65aa 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -493,7 +493,7 @@ static inline int pudp_set_access_flags(struct vm_area_struct *vma,
+>  #ifndef ptep_get
+>  static inline pte_t ptep_get(hw_pte_t *ptep)
+>  {
+> -	return READ_ONCE(*ptep);
+> +	return __pte_from_hw(READ_ONCE(*ptep));
+>  }
 
-Just wondering - should this Coccinelle script that converted all these
-instances be saved inside ./scripts/coccinelle/ for future referene.
+Just curious - when would other pgtable levels (PMD, PUD, P4D and PGD) be converted
+in this format as well ?
+
+>  #endif
+>  
+> diff --git a/include/linux/pgtable_types.h b/include/linux/pgtable_types.h
+> index 07da05d375c2c..d6c5a7548550b 100644
+> --- a/include/linux/pgtable_types.h
+> +++ b/include/linux/pgtable_types.h
+> @@ -8,8 +8,10 @@
+>  
+>  #ifdef CONFIG_ARCH_HAS_HW_PTE_T
+>  typedef struct __hw_pte_t { pte_t __pte; } hw_pte_t;
+> +#define __pte_from_hw(pte)	((pte).__pte)
+>  #else
+>  #define hw_pte_t pte_t
+> +#define __pte_from_hw(pte)	(pte)
+>  #endif
+>  
+>  #endif /* !__ASSEMBLY__ */
+> 
+> -- 
+> 2.47.3
+> 
 
