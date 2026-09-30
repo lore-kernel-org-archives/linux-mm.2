@@ -4,131 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3EB3CA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:12:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69F89CA5FBA
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:17:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80FBC6B0093; Wed, 30 Sep 2026 06:12:56 -0400 (EDT)
+	id 4BE456B008A; Wed, 30 Sep 2026 06:17:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C0F66B0095; Wed, 30 Sep 2026 06:12:56 -0400 (EDT)
+	id 471796B0092; Wed, 30 Sep 2026 06:17:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B05F6B0096; Wed, 30 Sep 2026 06:12:56 -0400 (EDT)
+	id 361A16B0096; Wed, 30 Sep 2026 06:17:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 32E546B0093
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:12:56 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 91DA9A7267
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:12:55 +0000 (UTC)
-X-FDA: 85270015110.21.78DA951
-Received: from mail-ed2-f32.google.com (mail-ed2-f32.google.com [74.125.228.96])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BAD7420004
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:12:53 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JAsBKsW9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.96 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0347B6B008A
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:17:50 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5176C140712
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:17:50 +0000 (UTC)
+X-FDA: 85270027500.11.604A1CC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 946FE180008
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:17:48 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DMeCpVFj;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790763173;
+	s=arc-20220608; t=1790763468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VNZxYOPgHhHVtE3mtugzmk7TyFgX/vhP/aUVA52RJRU=;
-	b=NGxP4HmncxJN/z57D+SijhKp/ul8v076u9HjEtHUfB6YrsD5fc3W6xox/xU7F17e/LhWeQ
-	61HFkeNO2aI4dpqWz85BX6VblSErEhArCJqWkfoeYhn1zJGAtsRmrF9p9rn4F1BBgIJX1a
-	ma0X8en/Ty8XjW9s85NhD/0Hl+A1fEY=
+	bh=W3cgkYtIbNvYvCR/75csc07cJMiX3SGtqX5E3pPjB2I=;
+	b=FpfntXASScpt5Om4qFYrpn4BtI6pvkwGrVNtVkZm3VdQ60zxZ2MpCwvmVRCnRuvSrg9/gf
+	6KmYXRLi248Rb0W4A8xo7mhGqtAGENF5mvOfBdRO6wp332OK4+qysjVqXoJHD5j0hqYxoI
+	mEM+oCy2LMdR+U1BWrm5MeNkWwUzrN0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JAsBKsW9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.96 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DMeCpVFj;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790763173;
-	b=6p5pdmOyjnEEge/5ucOw/y67YN3flGuM/NsLymx1bPp9Z9vL6AbefYyiDTkasZljtp5iQs
-	EHNbec48OnMgZ2dUxZI1rh3tlNKxRiuvhotvX7DsBBGA2yPjBBJU9YYR67K2Laa62C67U7
-	t9A3yFMCoyxcUFhKjv0cprAtdMbmVd4=
-Received: by mail-ed2-f32.google.com with SMTP id 4fb4d7f45d1cf-6acae8342d2so2942533a12.3
-        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 03:12:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790763172; x=1791367972; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VNZxYOPgHhHVtE3mtugzmk7TyFgX/vhP/aUVA52RJRU=;
-        b=JAsBKsW9xoCvZPdcFtiRTDvWI9YSghfFujEfKH1iApZPs8IxTDEZLfffHNoq5aOk5B
-         OmktfZ/Igym1xDf1XGlouGf7IA9p6syYt46LRwh+8udvFlKmGf3bZpGsR+Ix/GtW+zlM
-         CRr4UH0j331ZF+HVZi5RSeGGZi05ru13Ip14RH/2M/SWpka9OF//sABab6rF+lnO3d+n
-         TTDdLRO8p74W01c23biNXyverWglNREEs6plkFnnZLheerL43BcvQZ00ofCJXD+DXMGt
-         r3t/M1QuPI4xF3Pa7At/hWREd2E83p5HYU5yVxJptCgY9lLTywSdiiAlsAm3fLEErnmz
-         N77w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790763172; x=1791367972;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VNZxYOPgHhHVtE3mtugzmk7TyFgX/vhP/aUVA52RJRU=;
-        b=jnkD9ZA4qzksl1YNri6SJSt2oTi3L7mKqJblMZ/zAtvy0IoZXliYGGfnwARk83b9D5
-         UT6Hvx01RY5PUbQ2gOErQlyulPDsZ6yuekKP/YBcKzyRyZ9SFIOC/6ECgJoZUJTHWP2Z
-         X/ejliIGCIv2WDOEYi7gUWEIXm6hUiIqOY0gDCUl4ibRtq61kkK9h4YoBUrUt4IAnKJx
-         a6NVLw8q1mbgmjZ4n8n5QFYrOAlqGiCWTI0fjSM4Dn+XCfn8PoOPqI3WCnEdZVo/gVQU
-         LxrgASTimIiRlC2H88i+GmApbon2pq94N/JCfm3OKYXVU27s37fIAh4EbjJq2Xb6d3jJ
-         BO7Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxN41Vnbvc7kMawl87Awe6n5GOfr0t99hpofhlZIL41KIZ26MbBbR+cyVsgn+moO4dIE6ZU5L8bkg==@kvack.org
-X-Gm-Message-State: AFq9FYITFIuTiM3qQ0/ZI718eZRz4EJXJz18sXSceWQdbIMvgFOZ3doo
-	/tEk60OUk94ZsWhbzhlaxqa9gSafPcnFIo2z7F5XAVx7/OPUdnWCJMjO
-X-Gm-Gg: AYBFou2GK7Uo1D0c/OYV0koZanZc7ZmKCkS3Rxg8QAzQgHTbTko1GGEghU9BWdPdU8c
-	OzKVgEo2v3iGjmgR5DM81V7U52z9Xg+EDtYTLzrTJ3hrMKbYMQv6tQK8cuY7R9hQSTZ4WrsNtMr
-	GzKNOqWCd8xllSkLTSiGubbBPpi9QLWXzUtEyC+1FeZWDErjDtfFgzarWjxAFGHCNU3fRTdApTp
-	VwSJED2YG/VUjtSvpvfqWeNvxYjTvlYxuSqB5iEjv+KStJ8z/AIEPWwbOovuxc970IBlrN7Ba2L
-	3W3WfxP94bdneKm7Gc8+idymRSizXrIIBUsBmc3DXM9ZIh5VXQIJ+lvz2q2TYHldN0qowKQaRlf
-	ulolTRK42ynJwV+a/8NPCbGJ0YSlqaW16O7gD5Xu1myWnRQZ15w0xmTsuWLV20n4hJfoV4tf0Zb
-	ALWICAFUB03dRRuMgmrbZ7KpcjQ7PHk/qHcl0=
-X-Received: by 2002:a05:6402:324e:b0:6a9:dc6a:689c with SMTP id 4fb4d7f45d1cf-6ae199462e8mr462834a12.22.1790763172073;
-        Wed, 30 Sep 2026 03:12:52 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6ae15898cf4sm532500a12.36.2026.09.30.03.12.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 03:12:51 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Wed, 30 Sep 2026 12:12:49 +0200
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>,
-	=Kent Overstreet <kent.overstreet@linux.dev>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
-	kasan-dev@googlegroups.com, Sashiko <sashiko-bot@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v11 2/7] mm/vmalloc: undo partial mappings inside the
- mapping functions
-Message-ID: <arzgoe-bXAz1poAt@milan>
-References: <20260929082014.160587-1-hao.ge@linux.dev>
- <20260929082014.160587-3-hao.ge@linux.dev>
+	t=1790763468;
+	b=oPt0HJTOmFoma8c2HQAtZEyYZLSx7pd6mkhixV842/vnP5Ixpm3U1Y6mBHngknlVpw0SI9
+	/qcCviXXx9gVtLudqdQRnehcqLfieaHyFgAv6E7pgWdrkFO2M8kMtatV+uZNmbUPC31TOv
+	DjwDIxtoKk1jhz/Gc+jdXznYa6aPhQc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E71F60252;
+	Wed, 30 Sep 2026 10:17:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE54B1F00893;
+	Wed, 30 Sep 2026 10:17:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790763467;
+	bh=W3cgkYtIbNvYvCR/75csc07cJMiX3SGtqX5E3pPjB2I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=DMeCpVFj6xuNgEpmQg1zia+EB1nBbXPjHKzpR/UVERO+nuN4wz1pK6tE6NrS4O8Ih
+	 JfifjGq3V22BCCMwlaKeT5qR8qcjcPTOBwAnG5gJd5pFFTo/PMNfDaAfHYakuPuik4
+	 cvBCW8mWhdMYvczzkeV0FwJun2IT4KRtP/XVOmUiFPeyFOljLR9fgpZ3+VQHI2ERGd
+	 Cmpfax8Osj15CK1XcutgwE3EyDcv8gYKbDh3g9e9bHJke6UY8A2G9s3yC8oN9r1UW8
+	 2X3HGF6OkTpp6cpnM7iCyHu/jn8z1cy/cgOVy8KeZkW+VRrAe9kQyUT/f0K6fszUXE
+	 nEYJfpVzXjxww==
+Message-ID: <e14a2c04-66c2-49ef-b438-ccd3762686c0@kernel.org>
+Date: Wed, 30 Sep 2026 12:17:43 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260929082014.160587-3-hao.ge@linux.dev>
-X-Stat-Signature: cfykbb6ukfezmg7bi4p9mqbofssqtgs3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/15] mm: eliminate &folio->page references in mm/
+To: Nilay Vaish <nilayvaish@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Greg Thelen <gthelen@google.com>,
+ Roman Gushchin <kfree@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260929215206.516490-1-nilayvaish@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260929215206.516490-1-nilayvaish@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zyjt88f433dmmaj1oz68icgd76eh6mk1
+X-Rspamd-Queue-Id: 946FE180008
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BAD7420004
-X-HE-Tag: 1790763173-167032
-X-HE-Meta: U2FsdGVkX1+mQoCuHxvXMmwlphqCwzFFy/UL/mEAP4wl4F/VmgT3hiF4t+T7oJKPKE2kkR9ItAl6boNXwHT5wKbcPCprKmQkn8lKMo/R3WR/t0EBrc9SVDIRpJcrR5qV6gNFYeu0ij9T3xDWZBiikdzsUxP9lfGtVl23NNMi0nwNv/BFuaAAdGXsGVNATHDQw/FGLqttZ/+rrf/AJb9CQ2yGdv4saYz6WeoEHPGk/twjjLaWPC4wgB5536xFvVvflZlh58X+fuyqCY7Me8IdHnv0jUapRtNiqzdF5B4/KYeW++c9ikxk1Cpjjke2utuoW0nfhs8QyH0IR9derJi1f903gN8qMss+GMs5kVm3pTj0/h4V1Ltsa4CdoQhGhMZCYJcW6kNr0REzZ3BzGpdoElEV0BDFVeSVQ2vnZZFUjh2YXIUfZ+M8JYtSPOvVIu6JzUH8L8CI8DnuxO7/w3P77dsp64CE2XbS2pTirc6DMCGIFEcE3scM4x5CSQukWyqki5jywFM02sSYOpiUGHnB6hWlRRGXbH/0Q83gG7iNVD/O1yFnr26N70Rn4sqY1EeR3pMmrMWJoZKFS9Ys9ElBASV4ErKU7arOh8q1wi62Aq0h1kXF4c5EdKmUvjs+HU+d0qBl78qa5AZ8mXsdZkJSd0y8Nq4xB+pPtepTotC+jFsfTaFJkMiuel09FpWpy6j1EavJirqJWIsmDvLcdZF6k0JbRdvYxPzEFt3GXBmS0anINQr4KNOXFQSeE3gQpZoAG+nKeHvefhQxWV7rmoPuIYjtnuP+DkNhvrxI8IwPbKxC59h6j8r6SIB7hjt/PAhzLebPnIqd6yCQllGtX8X0kZObZphcb+QWeQSGAjdtXN+BNlze7Vzo4h7oFpq0WznUJxQxp8OUhcnmnbEKpDx++FypaTF8WoGwItxN2G6e+uc3lrOALCuayB3alG7vbnppA5FtP8OPCjUdhjfR+AS
- k27b1XWt
- ITX7Ov7lnHSHjbsBlbW5f5b68YyD/XNdT/baH4Y5dOagkto9cFRQkUwxwv86sPDR+wBe37GRiOSx7ksl+lBlqcLkRiDTrTp1H+BKuPy/WKM78mGVSSB/F/QDoVB9Bith3CoKbSEz52oROYYhJ6XbjltuS622d2yifa13frJdpNjWkv+xqmsXzVo8CMpR8AVuCyZGMg02M4Td4PfOWYok2shlrY3mh7Qb0b6rxewt+D6i1lzFqBF9AkX9V14PMV5B+RIekh624QnM/K0v/mqh/luw/5x2AvxHTqp0dIqg+q/Wh749E9XQICWcjly/RLCqGsYucniYHfv6nnzwUAl7XxeITz1Cflk0kbiygB76iLbYlg3y8E7kvPF4e2nMHLZpVwOsHt4IS9CrKH/z797MNVoXAFbuQdgrZakgL47M53nFBp8r67GXsDqoKSLGXynmITfuMcSKXezNJbVlUtawclB2dWgOZnEp10U0qPbnow7PGo7mpZaXPej3lYA==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790763468-544763
+X-HE-Meta: U2FsdGVkX1/F7D15O2KrQgmqtKDjmz1oIDcce7xk9pXfDQZ03sEQAFvaqHI+fuEHgoaOMMz4qZuec2WLEDcphy2uPy9cCwnhA1dXqTVBv/R96zOhIYQaTlyuCH+qZ9zSbfeQXXylxxYb5VvBRq19tuW/lnI9Iuq1Nw2hr4jW5lSMU2JE2b2SDtBNdZjqtLF1q3d0CoIYSuN62Kx6ZBi4wsGtkNao+0KxfHkIYjK/nXb3naZ3d/ARtprMrej7y33KZwmHdUiyTWv6fz67pq3SLBnu7S3HKasaNwttpaJGlsTjE2DqmQqW04pu/f37J1awIlEzmVEdL6eBh8+P/yLip2E+GoHVET6RRN/ArGRcLgIlyQqb1l33nbSwssbfuQ++w82Vqx/3oW4LUejDQ6R2aCfW2xYO2PnAx9ZGkl32fMkVMTT9ddcGZChIregK0k2ja9s4K6KG6YrpJI5u2vEEyBlRekGTnXY0W8e371HJe2zSKDB6Y8d6XFDR1gyg5mjErFAyWAe1WSmOYwKMzvkn0RJQcjMQxhSGpmvQhlwNPbsx+pR1gZ+v5sY2BRm77qopGf5FZADZbdPp5GAet+oBdM1YlDngqKTM/LzBP7EAuavl03VjEAZFtLlgwCmTs3xPQh4n8q2Qx0CruQ4BsiFhm2zED5UgCm+md9KjIBDGil1fj5jNfBa0f2K06U02mk2XYpTOF/ZsULfyvPUIsQsnVVHjAB4/1XMOZB79BLJTcDG+zE6ZuCS/GsLatrjpcjTD5yD5jsSO5bgKM3/VbKeBcxJQuENc/7LtM2OpUhsbvzHrDmNRoywrSeqr2BvEdBfrk5OF7ctbiLR1L2FHXcZf2EOY1Gi1Ta7+H+gTfpg4GgpoEyDh+0zYRPk1QsUXu3BF3SaTp3d/ymRUEfhy3YR1zMi+2LQjNT5/nkvpNEJAgRG/88RuQVb2sZe/z3Hp31v+bpvEMIvd5R9+xTz8neT
+ ln5gw5kU
+ 4m4aKDtNCcBPZwr3DNGmA0nPLWXcsG2nP8noE+L/PkLJ88Rqhuhv7TxoQbpjgmAbUiAAydNEoSYo4tGxqaTO8UuZt+f0NGJxG15BxnjzpsXz9wxPbQTbUBNSzsHdU1q9MLqqNbh2N5o8viJfp3z81kYzbRSyPnN0WMwhKigTHYalzHEgBALyORjrhC9TpGrXDhKRM45OOo6wAKXMy12n8iSnUOfgU6k4E8m7srIsVAmQxCAfzqy+x+34QzaNAmpZ7bK4e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,198 +139,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 04:20:09PM +0800, Hao Ge wrote:
-> __vmap_pages_range_noflush() and friends can install some PTEs before
-> failing and leave them mapped, and the kernel callers do not agree on
-> who cleans them up. For example, pcpu_map_pages() and
-> kmsan_ioremap_page_range() unmap the leftovers themselves, while
-> vm_module_tags_populate() and the __GFP_NOFAIL retry loop in
-> __vmalloc_area_node() relied on the mapping functions cleaning up and
-> did not call anything like vunmap_range() themselves. When the same
-> range is mapped again, the attempt hits the leftovers and fails, with
-> BUG() in vmap_pte_range() for huge mappings.
+On 9/29/26 23:51, Nilay Vaish wrote:
+> As part of the memdescs effort to separate struct folio from struct page
+> and allocate struct folio dynamically [1], struct folio will no longer
+> embed a struct page member (folio->page), and the address of a struct
+> folio will no longer equal the address of its head struct page in
+> vmemmap.
 > 
-> After discussing with Suren and Ulad, we decided the cleanup belongs
-> to __vmap_pages_range_noflush() and friends, so the callers no longer
-> need to unmap the partial mappings themselves. Each function now
-> undoes the PTEs it installed itself.
-> 
-> The rollback calls the low-level __vunmap_range_noflush(), it just
-> clears the PTEs of the range it is given, which is all a rollback
-> needs. It cannot use vunmap_range_noflush() because these mapping
-> functions also map the KMSAN shadow and origin, and for a metadata
-> range its hook would look up the metadata of the metadata, get 0
-> and BUG() on addr >= end. The failed mappings were never accessed,
-> no TLB flush needed.
-> 
-> Fixes: 9376130c390a ("mm/vmalloc: add support for __GFP_NOFAIL")
-> Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> ---
->  mm/kmsan/shadow.c |  4 ++++
->  mm/vmalloc.c      | 31 +++++++++++++++++++++++++++++--
->  2 files changed, 33 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
-> index 0c88d89bf0d6..2166086d3dc3 100644
-> --- a/mm/kmsan/shadow.c
-> +++ b/mm/kmsan/shadow.c
-> @@ -258,6 +258,10 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
->  					    o_pages, page_shift);
->  	kmsan_leave_runtime();
->  	if (mapped) {
-> +		/* Undo the shadow mapping set up above. */
-> +		kmsan_enter_runtime();
-> +		__vunmap_range_noflush(shadow_start, shadow_end);
-> +		kmsan_leave_runtime();
->  		err = mapped;
->  		goto ret;
->  	}
->
-Can we just do that inside the vmalloc? For example in the
-__vmap_pages_range_noflush() as entry function for all(?) helpers?
-So we do not need do it manually?
+> This series eliminates all but one of the remaining &folio->page
+> references across mm/*.c (25 files) by converting them to:
 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 859e6d2d57a3..9bbf75706627 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -349,6 +349,10 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
->  	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
->  		arch_sync_kernel_mappings(start, end);
->  
-> +	/* Undo the PTEs installed before the failure. */
-> +	if (err)
-> +		__vunmap_range_noflush(start, end);
-> +
->  	return err;
->  }
->  
-> @@ -363,6 +367,9 @@ int vmap_page_range(unsigned long addr, unsigned long end,
->  	if (!err)
->  		err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
->  					       ioremap_max_page_shift);
-> +	if (err)
-> +		__vunmap_range_noflush(addr, end);
-> +
->  	return err;
->  }
->  
-> @@ -667,6 +674,10 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
->  	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
->  		arch_sync_kernel_mappings(start, end);
->  
-> +	/* Undo the PTEs installed before the failure. */
-> +	if (err)
-> +		__vunmap_range_noflush(start, end);
-> +
->  	return err;
->  }
->  
-The only one user of that function is __vmap_pages_range_noflush()
-so we can cover both cases there small and huge path.
+I recall that Willy mentioned at some point that when changing this we
+actually have to think about what the right thing to do is. As &folio->page
+can serve as a reminder that something needs a proper solution instead of a
+mechanical change.
 
-Is that enough just to do unroll in the below:
+So while folio_page(folio, 0) is the mechanical change, a much more
+often we'll have to ask us what the actual future-proof thing is.
 
-__vmap_pages_range_noflush()
-vmap_page_range()
 
-functions? It will also fix NOFAIL case:
+For example:
 
-<snip>
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 89c327a6ce7d..fa1f357ecf3f 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -359,10 +359,19 @@ int vmap_page_range(unsigned long addr, unsigned long end,
- 
- 	err = vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
- 				 ioremap_max_page_shift);
-+	if (err)
-+		goto error_cleanup_range;
-+
- 	flush_cache_vmap(addr, end);
--	if (!err)
--		err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
-+	err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
- 					       ioremap_max_page_shift);
-+	if (err)
-+		goto error_cleanup_range;
-+
-+	return 0;
-+
-+error_cleanup_range:
-+	__vunmap_range_noflush(addr, end);
- 	return err;
- }
- 
-@@ -683,26 +692,35 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
- 		pgprot_t prot, struct page **pages, unsigned int page_shift)
- {
- 	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
-+	unsigned long start = addr;
-+	int err;
- 
--	WARN_ON(page_shift < PAGE_SHIFT);
--
--	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
--			page_shift == PAGE_SHIFT)
--		return vmap_small_pages_range_noflush(addr, end, prot, pages);
-+	if (WARN_ON(addr >= end))
-+		return -EINVAL;
- 
--	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
--		int err;
-+	if (WARN_ON(page_shift < PAGE_SHIFT))
-+		return -EINVAL;
- 
--		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
-+	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
-+		page_shift == PAGE_SHIFT) {
-+		err = vmap_small_pages_range_noflush(addr, end, prot, pages);
-+	} else {
-+		for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
-+			err = vmap_range_noflush(addr, addr + (1UL << page_shift),
- 					page_to_phys(pages[i]), prot,
- 					page_shift);
--		if (err)
--			return err;
-+			if (err)
-+				break;
- 
--		addr += 1UL << page_shift;
-+			addr += 1UL << page_shift;
-+		}
- 	}
- 
--	return 0;
-+	if (err)
-+		__vunmap_range_noflush(start, end);
-+
-+	/* 0 on success. */
-+	return err;
- }
- 
- int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
-@@ -714,7 +732,13 @@ int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
- 
- 	if (ret)
- 		return ret;
--	return __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
-+
-+	ret = __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
-+	if (ret)
-+		/* Cleanup KMSAN metadata. */
-+		kmsan_vunmap_range_noflush(addr, end);
-+
-+	return ret;
- }
- 
- static int __vmap_pages_range(unsigned long addr, unsigned long end,
-<snip>
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 7bdcdb57652f..b027c938d830 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -266,8 +266,8 @@ void putback_movable_pages(struct list_head *l)
+ 			continue;
+ 		}
+ 		list_del(&folio->lru);
+-		if (unlikely(page_has_movable_ops(&folio->page))) {
+-			putback_movable_ops_page(&folio->page);
++		if (unlikely(page_has_movable_ops(folio_page(folio, 0)))) {
++			putback_movable_ops_page(folio_page(folio, 0));
+ 		} else {
+ 			node_stat_mod_folio(folio, NR_ISOLATED_ANON +
+ 					folio_is_file_lru(folio), -folio_nr_pages(folio));
 
---
-Uladzislau Rezki
+Is stupid. These things won't be folios in the future, so we actually *want to keep* using
+&folio->page here as a reminder that this really must be reworked entirely differently.
+
+Which makes this rather hard to review and makes me wonder whether core maintainers should
+actually drive such a cleanup.
+
+Unless Willy explicitly asked you to do that work, of course.
+
+-- 
+Cheers,
+
+David
 
