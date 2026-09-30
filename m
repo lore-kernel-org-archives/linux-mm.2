@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71EBACA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 11:22:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DC7ACA5FB1
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 11:22:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F5666B0098; Wed, 30 Sep 2026 07:22:25 -0400 (EDT)
+	id E84B86B0099; Wed, 30 Sep 2026 07:22:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CC706B0099; Wed, 30 Sep 2026 07:22:25 -0400 (EDT)
+	id E34FE6B009B; Wed, 30 Sep 2026 07:22:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66D8A6B009B; Wed, 30 Sep 2026 07:22:25 -0400 (EDT)
+	id D4B6A6B009D; Wed, 30 Sep 2026 07:22:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 38D976B0098
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:22:25 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A7D884077B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AF6726B0099
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:22:27 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9A3816077B
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:22:26 +0000 (UTC)
+X-FDA: 85270190292.02.3699511
+Received: from mail-wr2-f34.google.com (mail-wr2-f34.google.com [74.125.225.98])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E65DDC000A
 	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:22:24 +0000 (UTC)
-X-FDA: 85270190208.19.F3151BD
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DD2B7C0003
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:22:22 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=j5UhW9XJ;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="KOm81DK/";
 	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.141 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.98 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790767342;
+	s=arc-20220608; t=1790767344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PDIeJ2sMTLX9NIM+Zd+dtevwaUNh5Mn6tm+wOwUi9Q8=;
-	b=HBSL5QA9hIZkaMiSlCVA4+RfnaojPxUfZQGg9Ejv8921QtHTvmEwREw/KlaxTQfWa1zb02
-	ztuUgbhE7yfd5jY6vdRo6KaCUXvynXtgjK9GQ88siWVqIaGmkCBx2oYUPs4VmCBAH4ylE8
-	iXLvpQLHh4agcZZZznSy4rbMOX79X0E=
+	bh=s3xLO9oHZX09j4z5ReQz7uxeTdbhZL5eq6oXo0UxzOY=;
+	b=vcY9UpNF8ou+Apqc8wVOXFy7QkTMLOP5HfJ+p5Vhp4nrDr0tovBiHGFj63KxS7Vu73zY49
+	ArseXUoquhwkkJU1xy9yYg8w3/xa5+yzDDAdPFfEY0vn9c23VWoJkWHKdzXx9ZQ18g4Q3Y
+	T1FxkTSqrAmFWObXL5ZzaVK8Vb8x7HA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=j5UhW9XJ;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="KOm81DK/";
 	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.141 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.98 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790767342;
-	b=Iq09HM0H4kAMDrrey2tVLoVVol+AlYaR18N+LxtUbnMmAdIHqTW7FqxTsrbQzS0weoLpdv
-	hZ5ijD/DAoh73Ju5enfcm+daFs0BmwKC8lU85aYroWgY8BxEwTMC798zsUUFCwsvRHZRaj
-	w85DVqTdcLY+LL3tH1ZmyZzLasi3Kbg=
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912d3920so39114175e9.1
-        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:22:22 -0700 (PDT)
+	t=1790767344;
+	b=lR+n0aLPddNa1bvymbTCWzGwA3MmSwkiv9BLeNyH5gk1aKNSpImGPSU5b5MYazZdF0Q3vV
+	Y9UQQsssRCzGJnFwTkGKRU4AjjYPgdHNHPNSq5QkSBteUi6jTijfc1DL02ehMeWYi5tsNy
+	YewwaU5ofWylyL11ykNAmCcEqLwnJ8c=
+Received: by mail-wr2-f34.google.com with SMTP id ffacd0b85a97d-48aef5d66c1so1174958f8f.3
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:22:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790767341; x=1791372141; darn=kvack.org;
+        d=gourry.net; s=google; t=1790767344; x=1791372144; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=PDIeJ2sMTLX9NIM+Zd+dtevwaUNh5Mn6tm+wOwUi9Q8=;
-        b=j5UhW9XJPX6I7MXLX8IfZ+Vm2Y3FxNvzExfUWUhPOhbFfBXMgOH6Y7md9/bjeKSh3J
-         LWREh8DekUX8i0XnDbExUzCed+R7oHfsu940q782KzduoPgRHVibLIs0gUIz0pagpbND
-         xzl/RL/Uy7yqgLb2vPbv0DZpl2p5KoEyK4Mnn8AAtxGRBUUn1EjKQGYW4NhrmVTW0Hj8
-         FoiaKsbaJomv01j6tJmpFdsmZWhVALrwssS4swe+L3FPgBSYAsMhzzM4DAmZL1wUEJVx
-         BtlQq4uKL1X23n05PKctjmt94+1TOE2rABuyG1XQd5zLK9tP7FbeyV707OVhRaWJ4reU
-         UJmw==
+        bh=s3xLO9oHZX09j4z5ReQz7uxeTdbhZL5eq6oXo0UxzOY=;
+        b=KOm81DK/KulU6iLYvHoayNRkMPA+UXPsYVNJNWCx1giL5A6RV7mLK/S7w1uLevOSER
+         amzJFc5PdRYBY1G6y/k1vrS5jZJzEJF2544R5e2bdDK+5HJWw63K2Vlyd8x8qDiDznEY
+         +5pffPkoqjQtnH6VYYnXcllhHuEtHHwL2KEbwxj55UwkPW5uG9sn2f0YPRU70sU+V+xz
+         ukZ5XD28pV6axsgRx91FUO0JdsexkEQzRo4+2ySWdb1rTbhOMBqmTSM2qrTEn5FwQpKk
+         8SAHaMvKYmLF5UyJZZKN4azP79eK9GbT9MdgsAaqtaGapvaQ23SPdNVaG9Uim6ysUga6
+         Jweg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790767342; x=1791372142;
+        d=1e100.net; s=20260707; t=1790767344; x=1791372144;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PDIeJ2sMTLX9NIM+Zd+dtevwaUNh5Mn6tm+wOwUi9Q8=;
-        b=JgL4+ARoUntVpoY92eJkRmlSaEMHnLjZpKCSFCmkiE9FQOf8fmDSUavf6LWRxw19op
-         q/vlCcvkBvhPvFKtA+VpgpWr6lMZ5v6LDZ/tL+xan36iLAcEqEBBDFqkEmcibV0c+xrT
-         W/gAXLCqJ2Od9zBg8XRwxT4D3dHvFr/WKnNVmmudyQl4Q1Wgl3IO/J5dYL5Lkh2qCzBg
-         M7mCLmwQnqH2ljX76V4IQwIqE+/q5zXV/H8CG1iFohCWNrXNUaEn9X1UZ1cXWlruKGVZ
-         t5y4im6sr/ZpNFwWLZhAWCQFwfGltqe7zJCYpQoF2RVVJ5OQCDuHufdXfkq0STCWFo8O
-         K9Ug==
-X-Gm-Message-State: AFuF++kO1TTUh7AZn54Wmr3sOqqQ7NsZuLtJmFmZ6mzDwCkOR0wQ3Yju
-	oWojH6+LmZrrzI1ndlZT2uZSl9OoxHx3yyL2dv2bH0D9a4SttVQtYpB0IPJgfvAQljddjjN8N5/
-	6xZcpRDUIFA==
-X-Gm-Gg: AYBFou15jpj+kWunpHyDeIQWLm3ssASMdi37qH83KGyWY9omQo0QDYijzM8vZojl0Se
-	pvA6AV/eJX+//Eoj5xi6iGMScnBdy60O+/SXde73FaxiI9nUw02T4YyPyQ76JvrwZTYlObPXcri
-	YwuZ1yy91sYBcCD56rdZZYSFdIvkfI0m2cZdMEGd7jmYXBvNszx+fBQ7+ljOgTFIT04UJA8Frtf
-	GcWexDXSdKLJNbhSPHrt5/JspVNKgaLGcgC3Bb9O9l1aWikUPgRjg3sXkeFye0nzYDJpMsc55kY
-	mUipJ4XUE6CxGKbbu6MxGfKGjyW7bi0ucLyXKPSgAU2IyvXFSkpGCKZk30sLudV3QwRFxAEPDLp
-	xPVkeMzzHxk+2LOp9AEP2vJri3rItIg9mVN5I3WdcQk3IwxBU0ZjalvSk3RhqvIPV3KqPWruiT0
-	g5za2rxjogxuVsoN6lj5w+qjwjJrZvyBMx2juwihbgbUg0mFkn6IVRkILokkxspoFNLIIYbIpe6
-	f6xkmxDlc0SILXB
-X-Received: by 2002:a05:600c:4714:b0:49f:fe88:e7d1 with SMTP id 5b1f17b1804b1-4a01affe8bdmr20455645e9.15.1790767341528;
-        Wed, 30 Sep 2026 04:22:21 -0700 (PDT)
+        bh=s3xLO9oHZX09j4z5ReQz7uxeTdbhZL5eq6oXo0UxzOY=;
+        b=qoQbPhlzB6AGu/aC6qqcJTttGrBsU+DGIUNVxTIa/HoC1J6JU6xbW1TcMMbpJbzgkq
+         99x2N6J5iZ2OygpZeRWOqVTxv6KobN3FycOOYpdDP2hUKPkEpkJf4bxvAdHHvSEwBLgD
+         uFP5+wAZjTvdErKepMZE/Huz5Xnz6W+JM9SdM1W7j1TRbgamfMziL3JsZEOhwPid8Cxe
+         sPrgX0Sx8M/T3JS99FJLEy+FIEHcCiQvJt/xAKNQc7zmty2e9upngwDeXfqjwInrd/qI
+         YiKjQHMkVlhgg+pTRkrZrsciUY1fynNzeSfja5/KYu1GBw3uF93wecU8wKLWKVylqf84
+         wtVQ==
+X-Gm-Message-State: AFuF++npfCpAhXbvz4czGzaD5LfWE1lwN6jH3lZfYFQdNdWv3uGqNfCE
+	z89VqFBaef4eJdM5BX8DGtfTtZ5RNQsUr2DZz/2t6O+90jcn7YaF1cO9Be8mWlaJL7tEeDutTqX
+	zL3kA3k46MQ==
+X-Gm-Gg: AYBFou391lnvHvbR4K7avePKXhInFCQzt73ULT4wBcN7Onqab6X/RVvBFx58yVF8X0O
+	zG/Vjn5iX4iU1bNpqgwKSsBitHLVY8aK+w3HQgykt8l/4TfBRn9YB6QqPI3hfI3eSaDTwvIiUbk
+	9pE6MM4Fadd9x02fh5wMaThU4OdCuAPC5Scb2PxG/2GYDb7GdVg9z725NeDsBnVVPKLGfSKmZyP
+	jU/2SKtvPBjn6etJk9Xd+VXbf5JQ2nm63HxpegZnk5XwNZ4FC/Pc/HpRWNnd1bl4Jm8mtkSGy8v
+	p7YpGVpdNU7P7GB7ROfsW//nSr1G2mCUafc6N0w3KTpKevhQb1oIdoHK9u+NByUXG9OSLAidcA9
+	prOq1M3Z/EhQce+e8YN8dwZpGpLm3MqgzoxIptq38toncij+8qcmKullZxG+Du04aOIr0xoNfXx
+	DlnR9WYrFQllJ5SZvKZDBZtUU8KtXOertG39EcgiZJOyflRl4rgdQQDYQdX2Og3g5V66Utjg3vb
+	WS4sYG6Q6bCap6w
+X-Received: by 2002:a05:600c:46cf:b0:49f:e4ca:e1d with SMTP id 5b1f17b1804b1-4a01b115536mr19041855e9.27.1790767343529;
+        Wed, 30 Sep 2026 04:22:23 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.thefacebook.com ([2620:10d:c092:500::6:13b8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a019740c34sm34097095e9.9.2026.09.30.04.22.20
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a019740c34sm34097095e9.9.2026.09.30.04.22.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 04:22:20 -0700 (PDT)
+        Wed, 30 Sep 2026 04:22:23 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -135,22 +135,22 @@ Cc: linux-kernel@vger.kernel.org,
 	shy828301@gmail.com,
 	osalvador@suse.de,
 	raghavendra.kt@amd.com
-Subject: [PATCH v4 6/7] mm: use BIT() for change_protection() flags
-Date: Wed, 30 Sep 2026 07:22:05 -0400
-Message-ID: <20260930112206.205083-7-gourry@gourry.net>
+Subject: [PATCH v4 7/7] mm: use VMA flag helpers in NUMA balancing
+Date: Wed, 30 Sep 2026 07:22:06 -0400
+Message-ID: <20260930112206.205083-8-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260930112206.205083-1-gourry@gourry.net>
 References: <20260930112206.205083-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E65DDC000A
 X-Rspam-User: 
-X-Stat-Signature: msxrb6na4yatcqq6cu6jr6cy6zbtdb9c
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DD2B7C0003
-X-HE-Tag: 1790767342-301189
-X-HE-Meta: U2FsdGVkX1+L6crLq2RyoMkS/MMsGKYUAq01kw9lgAb/EG6o8HRtslc4ec4lF2dJ7IrzrhffU5BGnM2PErdWQ8hI9WKk2AlOeg3GjUcRrNzjPjm1EMwQh5U17Tfz1/IZNy0YExUpJTvw5R0wxPrZNNiQWaqFO44ux7uBkwesCgbH1Oxf0W0ay4Mlx9OrZCuj6/9/c3oOsLGIqH3U+AUJjOP3YN2XbMtDgu5T8cAoxRKrQ/vyElBuZUuB/T7VWuum9659ZDEdX5YncwsZD5KP+nD0VY1Tu8x9nHRuSFgve7LhSx0xlz2q7FEhJ9hY3/YyvyaK2ANZ0j0tTPHV73YBfO0Fp84EmjruhMxIR64LEunhmI/ui0NqUffSjI8lUm1rUhvwlxjq3kEgmHzfiQXgd+qknDmvZn7SjXJRIDYFxrKw5pqzcoIoESAa+zZjSGJGsaxVwZtkj41mUeSoJqn2jBZ5eCWW8wLrqyA8PGNouGDq/9BAO6tbC55ntP5LUZ0lj0rJADYJ2BkscyGwAxc1I820hmHa7nHXHMzrcKfFIQOq+HOpe5waIjf71GgYcjdxNVsC25D313coRTgqoIQDMohVZbhfS0l0WUmgr0rqaplTTAeRugJ5ecPOO7U1ySp5736ch30wKQuedj0BRuj/TLsY8GaltmGHHD1aDtz3nrVws6EaTlf6IcmShoeR0NFjwz5S+ok7CUwp3yZcg8j8zFrQ4y1RqMXBs+RCzGp+3tHiYSgeT2O+eDdbpf0qut1gMtUVCPnM/i0x9hwoSluFULW3nYvaRNVO1gt0lYeCW5f8JfAkgh51vKI0/aIJL7s5pDMLxyWOPIeO3sfKWC+x5uuf9Jl0eNh24I4gE83Ag2RDdpx9aUbtQRObsbuhv31fr8Gu88po8NJmBRuN7CLKsw0gLpvomb35gp6PW6m0/g0aUYcLELG9Lx6mEcDjYNUAqma7RbW0nJjh993/o1l
- PHC02fhQ
- 9DZinLw+/mgvNICT8HS3mvutJUhmXWCUTe9yr6RUiFwaZ54tzie+nRKvXdjb8efprf5xbpN7HRgSG2juwoU8W9bh4FUc8a2JdbmFXSIugydlxLC5KEmM/Ly2cBTENszkWqnQy1GzUXPPGoXsaVxRD5viUfsdxG4nh/nMGjCrzeP0M0tiMNlE3kZjzmbw/fpyzSK5Ucr70HYzrgr4Yy/eU0iUaxjjJyEO2m+5O3nRu/EBw/2ZrQ0vP/+46TiWfBfXr5QvX+ewIntd0W03qld10k3Nq8kgJ2JEESTc2lz1R/2gDZHGoC2kBEG/T+y22XMVRM0RKNJpQ73vB69EQB0xJi2C0BWH8kc43HkL1kVLGZwTaVJkOItC2zjXWgguPVES0+gZ4Zz8dMsmBSWYzbAG0lnOKfnhz7PFWaZUsIn2oQWAMYL1SZFwEXFmn+dSqivnZ85rqqlAMJPyz5Z0=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: gedgh6wpccd8dx776n5ofnz39o8j8xos
+X-HE-Tag: 1790767344-705844
+X-HE-Meta: U2FsdGVkX1+G8zEVhjcSX39cKtU+Kz13m2QSHeyVjyX36a6HYGQY7EX6+psQ40uXP0S17rsfn6RC5nb18Yzj98gMjOKi92S15MLCI41sdL4GNuY+kCyXSibKCG582FRhwtdRrkyCFBYdGtGCC8pMIHXl49R2sSqrUqrHt2wIlwogl/0SjYWFFB/ZpaHhjFMvoKXSIE5+U6/bgbi4xwuXQc/xxShmwZ4DF3L7skOO5/cQzjTJb8/BdEQH9/7kOuX2HKVamflku3lOmpuTU9OtauQBsGalpI9OfIoD6z6BbZRIaGHQzMgpLXyqRLsZ2jgwaEipThYoMaVGiAu9LzBaxPp/AxW60WcO+2rhb3hxbQwbzIZ63dV1PLLDa9e/JbBglNyE+1sB6bzcJrwFv72GrfF9z+4ngTns1Kwg6/h40OszU87D9lflAftlgPVpY43LwlFGMmcE7u/uULRW164iZWBqMRQxyoZMtyqBx0IOFS7hLp6GOj1tkQ/yF8FQcTOT6zDayFUE0UkXkZsbSPMxoFbPd2jfHW+tVKoLfQTFsdTIBT6eGNFp9QLkRxwEDOUrRfYSiWqW4Ylh00YArOrtmOoqTvylqStewe3j3LxqL5mH3QQ0cIIh2Nq26QUdX7tZbVQupwNMp7egrzf3Y29OYGMy6ZwInRwAm2jCYWrrhIeN4Jxt0GcvrseRmwWRwsHMxjT9alYMUWomtxJlVn/kFjRwiLixdrJbIo4h6gZn9T+HpIWMlu7TY2R7Wpa7Av8cBCux6lWKjAZjuUUkupZoZz1xEXbXrQlBFlnkWH6p9Gi2ef9PR1uQPkYlp1bLshS/yEFgp+9gyz4h8NRQ8ip01iDKNtaij2CeyWoIUhwXEelSJPSsq8S/LaZyiTMQrB3TX8pHkVn54AMUffy9eFZBVYkg+Th4cd2YQC0bl18in+p+ikLaqPQvZNwTRGaNNxg9we+pBbLdKsqFtiw0RNv
+ XkPvgc/T
+ S96UUS4gdZ+xkMgVOu8/zrKC3Sj1hFeFYpU04xGayl42rTarXDjgXoYOHE5v74WSjZQkNyK5wcGmu0kdjyNmoY68cxRoRd/YP7VH0ShZz8jSxTXAJ40cas8x4M0rTfSYfezeYk4GqkAf1AwVjlY9sfUGUsmOuHdbvmkpEp85Ok+p95+Tag6oMgmWamqdJ8OvmEt/lfzNJHm40qWMQZWRZEWKrQ9nhfuvIhtJ/zHivKxyEqOTsbzON7rmK14anake3FxUg3+4PyFCpQgCb65gVkDS8JBBybtWKrv+SK4MyUS77M2gHNqO7dLke0OkDaI7WOLZ6EACkWH8UVGLTnEN8js14hph3jd3m8W9hGW2peh/NqqTUzJkbPbrDxrTokZjQr6vY9jLK/v/rq+Zym7JVZl6u3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,53 +160,61 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-The MM_CP_* flags are individual bits expressed as open-coded shifts.
-Use BIT() consistently for the complete block.
+Use vma_test() instead of accessing vm_flags directly in the NUMA
+balancing code touched by the preceding fixes. Keep the existing flag
+predicates unchanged.
 
 No functional change intended.
 
-Suggested-by: David Hildenbrand <david@kernel.org>
-Link: https://lore.kernel.org/r/9b5e1573-6fd8-48a5-a274-a6e7ff83d2fe@kernel.org
+Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
+Link: https://lore.kernel.org/r/aq1FDhy00epXXtgd@gremlin
 Assisted-by: LLM
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/mm.h | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ kernel/sched/fair.c | 2 +-
+ mm/internal.h       | 2 +-
+ mm/migrate.c        | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 69107e877fd1..b68fb9041777 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3597,21 +3597,21 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
-  * because something (e.g., COW, uffd-wp) blocks that from happening for all
-  * PTEs automatically in a writable mapping.
-  */
--#define  MM_CP_TRY_CHANGE_WRITABLE	   (1UL << 0)
-+#define  MM_CP_TRY_CHANGE_WRITABLE	   BIT(0)
- /* Whether this protection change is for NUMA hints */
--#define  MM_CP_PROT_NUMA                   (1UL << 1)
-+#define  MM_CP_PROT_NUMA                   BIT(1)
- /* Whether this change is for write protecting */
--#define  MM_CP_UFFD_WP                     (1UL << 2) /* do wp */
--#define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
-+#define  MM_CP_UFFD_WP                     BIT(2) /* do wp */
-+#define  MM_CP_UFFD_WP_RESOLVE             BIT(3) /* Resolve wp */
- #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
- 					    MM_CP_UFFD_WP_RESOLVE)
- /* Whether this change is for uffd RWP */
--#define  MM_CP_UFFD_RWP                    (1UL << 4) /* do rwp */
--#define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* resolve rwp */
-+#define  MM_CP_UFFD_RWP                    BIT(4) /* do rwp */
-+#define  MM_CP_UFFD_RWP_RESOLVE            BIT(5) /* resolve rwp */
- #define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
- 					    MM_CP_UFFD_RWP_RESOLVE)
- /* Whether a MM_CP_PROT_NUMA change is for promotion only */
--#define  MM_CP_PROT_NUMA_PROMO_ONLY        (1UL << 6)
-+#define  MM_CP_PROT_NUMA_PROMO_ONLY        BIT(6)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 6002882b9d30..448c36791d33 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4234,7 +4234,7 @@ static void task_numa_work(struct callback_head *work)
+ 		 */
+ 		placement_scan = balancing;
+ 		if (placement_scan && vma->vm_file) {
+-			if ((vma->vm_flags & (VM_READ | VM_WRITE)) == VM_READ)
++			if (vma_test(vma, VMA_READ_BIT) && !vma_test(vma, VMA_WRITE_BIT))
+ 				placement_scan = false;
+ 		}
  
- bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
- 			     pte_t pte);
+diff --git a/mm/internal.h b/mm/internal.h
+index cbeaf1fc38cf..560406c36a75 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1240,7 +1240,7 @@ size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
+ 
+ static inline bool vma_is_single_threaded_private(struct vm_area_struct *vma)
+ {
+-	if (vma->vm_flags & VM_SHARED)
++	if (vma_test(vma, VMA_SHARED_BIT))
+ 		return false;
+ 
+ 	return atomic_read(&vma->vm_mm->mm_users) == 1;
+diff --git a/mm/migrate.c b/mm/migrate.c
+index c0f5f3ac71fc..fb4099f245a0 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2705,7 +2705,7 @@ int migrate_misplaced_folio_prepare(struct folio *folio,
+ 		 * See folio_maybe_mapped_shared() on possible imprecision
+ 		 * when we cannot easily detect if a folio is shared.
+ 		 */
+-		if ((vma->vm_flags & VM_EXEC) && folio_maybe_mapped_shared(folio) &&
++		if (vma_test(vma, VMA_EXEC_BIT) && folio_maybe_mapped_shared(folio) &&
+ 		    (!folio_numab_promotable(folio) || !node_is_toptier(node)))
+ 			return -EACCES;
+ 
 -- 
 2.55.0
 
