@@ -4,112 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA6DECA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:28:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 809C3CA5FBA
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 919CF6B0093; Wed, 30 Sep 2026 06:28:42 -0400 (EDT)
+	id 774586B0088; Wed, 30 Sep 2026 06:33:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C9956B0095; Wed, 30 Sep 2026 06:28:42 -0400 (EDT)
+	id 725476B0092; Wed, 30 Sep 2026 06:33:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B94A6B0096; Wed, 30 Sep 2026 06:28:42 -0400 (EDT)
+	id 63B926B0096; Wed, 30 Sep 2026 06:33:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 439476B0093
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:28:42 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A20E240733
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:28:41 +0000 (UTC)
-X-FDA: 85270054842.11.0313351
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 025DC8000A
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:28:39 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gb7zXE9I;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of naveen@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=naveen@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790764120;
-	b=18Z2J4SmAeIv6sR4tKtw+yr7DbsQSQ6k9gxxrN1mZYICdS8vJFatNy8nEY5Fdi8Ki8KvJG
-	jGD2yPxCLnvy3LyK8dkZYRYgBIDzVoVMUT3L/qEsat4AsxlqHNQayJSm03NLLUapdTJj9g
-	o1ZbYPZk24xog+VHdwAt3DJ/orXpJcs=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gb7zXE9I;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of naveen@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=naveen@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 40AA96B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:33:43 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CA2E5A7290
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:33:42 +0000 (UTC)
+X-FDA: 85270067484.02.E2CFA38
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3F483A0005
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:33:41 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mFYtGKpD;
+	spf=pass (imf25.hostedemail.com: domain of xiang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=xiang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790764120;
+	s=arc-20220608; t=1790764421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3AlfBCTmpruVCLkNFQRzrD/em+eWOpqKpyOiivU3oII=;
-	b=JyEqtFfxQPJxnPnauTICCnAwsCDJcRzIt+mFiAtV2qc3QpWpov8qQmFTJBrvCuOm/l8K/X
-	EojK4a2vh5N2dHb7xa+TIUQASXWXRABii4QhKH9Alo8BSPeoIsCPErPlb1U6OND9QMpPn1
-	A13mw79+pIlV+tIEcd+JpaNfN/p0gqM=
+	bh=+DHevYFtTq9LXip3P6yx2LmGPrDIe2gZf1mJcG2SySg=;
+	b=kgyxG6vp+beZf4kc/RBR708WcG46IlMH7oQhpqXwwIYjD100sFLelXi2YiDI4d3KhhIb3l
+	roZ/6D+e3aUku1z20TlDNO23+cFH0OVaKUez5AZk2VXeB54BH/5HMMplc9oS/f3p1zfN31
+	a9/HQeaZOn3NflNH5jGgRcen8CQ9Vi0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790764421;
+	b=C8GD8RqyGaQUQxG0j9quJit0LjgWi6nT75S4hIKaPwBVDOZEMqNqlkLTlu0fBYU3gGTm0F
+	qt49fGNOXfHw7TLx/n1eaFSXwvBgkGfzyOyimrneC3j1FYo8YkiECGudhJg+zKi21X0FOR
+	oS553CkrDPzZWiT+tstAHycpi3J4EQY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mFYtGKpD;
+	spf=pass (imf25.hostedemail.com: domain of xiang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=xiang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 695C0419D2;
-	Wed, 30 Sep 2026 10:28:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6EE1F000FF;
-	Wed, 30 Sep 2026 10:28:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BAA5A60236;
+	Wed, 30 Sep 2026 10:33:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7321F000FF;
+	Wed, 30 Sep 2026 10:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790764118;
-	bh=3AlfBCTmpruVCLkNFQRzrD/em+eWOpqKpyOiivU3oII=;
+	s=k20260515; t=1790764420;
+	bh=+DHevYFtTq9LXip3P6yx2LmGPrDIe2gZf1mJcG2SySg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Gb7zXE9IoZs6cbj6Ja6aHJwZtGMS/ICAce6EWUxPoyYZD+wWn4JQB36ydNcIHy81P
-	 Ix6KhornLVyu7QjQImjuYJQ6q3ut/Fpfea/s1Pxc6E9B/gYaAfai4tv658RbGEJV5w
-	 c2FUbn7dDgVRndYi4OQH6cCcxSIYm4BWxmElD3MZlIFl78mR1DXuYpzw7KolJxBXXf
-	 DG/sXJIz9HZBpHeGv5t+Hbz1DPI/xqH0NEWgu8GtDXVqzAS+LWJi2HH6uipj3+6Kyb
-	 ynwz5InOjqSt/H9stD7inw5OssG4dusyaNgA1GOGAjyR7JwM8ARquCvuPpAC+nmpew
-	 Jb/Z6N0cSvjjg==
-Date: Wed, 30 Sep 2026 15:55:34 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Sean Christopherson <seanjc@google.com>, 
-	Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
- callback for to-shared conversion
-Message-ID: <arzjFT1Fqzcuw9QM@blrnaveerao1>
-References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
- <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
- <ao9CKMXAX-hScRSa@google.com>
- <art6ARechyK0iytK@blrnaveerao1>
- <gqybhgtzeufmbohckesirsbu3ftn4s4i3uhjhaestphuppvth5@zx7lqsldosbc>
+	b=mFYtGKpDX0b9KjPmZS692yinOoPah6ZGGq0I1FramSDyXTiA7QYBhBVI/JblfVCfr
+	 N57pJP5APLX6fXbpxyr4r/3q72ud866zC8eDGWyH95Sy2BrvvNZpGW4WAW356UJ/JG
+	 2laHbLBfqLu/EvUNG2afTr6QYgcVIXFJbCDhQPubqAf4Xr9zPpZTfwQE0QkvsuIxxp
+	 ssMKDyL6dwhgqaxlnvnJncyNWYTqjTfBsEJt9lkDJG/HxtXSOhga4P2W0xTW9w7BHZ
+	 w8N1xYJZYAKmabHd63kHkYjxZWrJ6NxdQ2MMo6qBPV5Q2IRZSkmtg9EhMo8PyVPQcV
+	 e0e4IPAjn50vA==
+Date: Wed, 30 Sep 2026 12:33:33 +0200
+From: Gao Xiang <xiang@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Gao Xiang <xiang@kernel.org>, Jialiang Huang <huang-jl@deepseek.com>,
+	lance.yang@linux.dev, baohua@kernel.org, damon@lists.linux.dev,
+	david@kernel.org, kunwu.chan@gmail.com, lianux.mm@gmail.com,
+	linux-mm@kvack.org, mst@redhat.com, ryncsn@gmail.com, sj@kernel.org,
+	virtualization@lists.linux.dev, xueyuan.chen21@gmail.com,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
+Message-ID: <arzlfSOgtC-CLoZt@MacBookPro>
+References: <20260925054408.10431-1-lance.yang@linux.dev>
+ <20260929123241.1408414-1-huang-jl@deepseek.com>
+ <aruyFPzEe3pS_Qzx@XiangdeMacBook-Pro.local>
+ <AA71E56E-F29A-44B2-B5A0-7806CD684B21@linux.dev>
+ <ary5Nn9le4xG7_-N@MacBookPro>
+ <CEE47F27-874B-486A-995F-E223249659FE@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <gqybhgtzeufmbohckesirsbu3ftn4s4i3uhjhaestphuppvth5@zx7lqsldosbc>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: x3mtadg6rcu7hjut5u17bmkqitz1s7u8
+In-Reply-To: <CEE47F27-874B-486A-995F-E223249659FE@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 025DC8000A
-X-HE-Tag: 1790764119-193454
-X-HE-Meta: U2FsdGVkX1+3/juqknFB8iAp4uLG4Zh/0s6VYLtGSwSE3QY0bxT1ihAtZS8zrk61LBbtS+u062j2/gcn+sqN09QLarbmxE4IqGh7YAhXAQqvKEZGRaXlQDpXiI0nY7EXSHpsW4LgQ2bO8NSvZBmViAcp481MM97pUo+/tHrNWEgFh7e5Y4lbB0Kna1M35mHEHQSrix4Zqc6eBYavYC93/R6sHn8B1Apl0MA9JiUp7K0N/fCFIBMvRHTRunFP9VGCf4Wc6ioICjNlChk497ImZcH6MvwRFCx7n8v4O9XCEMpvJVzWyhtLEQ5JD38US2YtHsvdykYObRYuk6wCiU8/qeC8VKxaw4Rb2N1lsgM2a8z5/e++CoWdFSMJH4t7Aj3ny/KY8UEhK37UfDJrvj75TiPc8QIFXCm5P6rLRnJQQMO1ppEPF19uALdq8xi/YLSHA0JmpvR7W9xyIe/bJ1QUXHq9xEprmncrbT3xXiEgmh3xRPkyqA5WHLPlrJY6GNtfi1i25nuJO3uTRJ0E1ucPnFXWTJEkLUt/QhFKeHty7vPvdaRZ8/jYzW+9qCUCDCTgX8d+dvgATFQDg0EkD/clXyx5yqlaNYhb3OJ9ncMePHReCNa2YS4kv7ei+hDPZnxucPyrIfePBWzfo6YXg3TC9ngnFAgu9mrUX66b8XqnJd1Z020xWtrJ5UaQrG8z+hO9fjG4la2TAP+fFGiVNruVLscegg1jecBlsiQEFH8tunBxJzS6dRJocF4OrRCttPq5qaOCvC0486tuTMENz0UphwpYX5r1wJ4bAWHKym/Wu7kfdiZ8SEf/wZyhuSse6Cw2jTrwGkDqnN0xdLMbyDjsFHxazVcnh+MFymP1DKaoKmv9g7UoW/Tp5F0wOoEwrFa3eJqG7lXU9Z4/X2TCWlMCmH2fLga5trRvPprs5ZmHI+Ozn/Y/YVf5tU4Vc4LSAHu7ve0yiOrPEsiZzFhM42Q
- jN3OfAOt
- fpbJW6GaojFE7qgA+q6HQ1ROOQYy/MvvneXr8+OXvbGwXBZYsiTZom/1vCTLh5psWBlPVZk/Bx71FImnEvq3tKhRr4Z7tTiQ5DS6ToF+GvC2o2Uif/fBUYw9IWnuqD1iBbXNyL2m5ub7uGOcET9xrB7QVX7AQdUvgNLNqhxWOe9bLJFi4yi3PvxGu+CgxgIxDLeNyL4pgCqyH3NYVY7Ifn6AatgQouztXYKafquc0mSILSvoj2kDQUYjRzn2QSFLwHURWZrZb+rVw94SM9GWTRm/U/sAS3fkmsI5aKuGHD/g5B3U=
+X-Stat-Signature: jatszfcje9j6557hqxrqqcgh4xhknhxx
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3F483A0005
+X-HE-Tag: 1790764421-512836
+X-HE-Meta: U2FsdGVkX1+zbtj5hg74Wg/EyazgAaZm7eNZp1ox72WdG/Jr2ME/JiRds0Z4sj2YYW6pY2slJ/hSkOLUwytLPDtbMz/CR0eXNgnCaec49bkp2Z/UWL2c/WjXoAiD/9qrblYKhfZ+/pd+0fVebwNztDtMvaMttZW0BQynEWrCIdj12GhgZop2+JAotB1cQ8+6xTiSTEGdS6EkKP7QEODwgr0t99EuHU3AP7ma42ZV75zU73niKmcLX5eJIm8OjgMPWMPh3Ccps/Z9+P/sLypVwW59gBioab9uI0FqFxv8l02khftANYmfOuZx8FQlt9Wh/Zon10ZomDmYqxuBdlwseQCluYg+/U5KN8IYTXlSrVYO+GAW7glsn8D2mrKqjv99BzIb0m6QkbVTUIeGDNQFmTjIFWT1tGGM2sWufOyUTGkDsYdbMukXu8kd+P2mFYiL9XyfulKHcDMi2a08vLTuSa7EhFcN1/1N9Jc+NIAPvehq2Bf8AsHsop04ZzLNeR5CqZ3dChThT8b/jCHQ1nHX9D9B0VK791rSyGO2NQsnJ5U0wVY4ndNnuh1pJH2DE5z3zH/uw27eAq7ptkC7kBnsDlCawx8vCA6zQSbylGBiRCM2lo/vkziyjgcbebTRn6zOupCXcDc6MaAVicyklIinPP2bNC1jziN5IJu75VI1+gu3VlGr2braABXWStewLzKuyJ7F8jc90G/23u1qkX8biNYE0QSZb0mRiJPStG/terEv0aj8AMakehgaAord+YZM+gQ3wmbqnmq92ngMwh8eHqEyWhlM3EN+WcNzDqmKyoumgKMyAZk4sgixzkNh3HABEPdgPRB+jG0ElnDraSQx5HNFH8i2mwcCGSiUydc+wiOhtM1a7/OxeVLlbZ3wkgaozExFs0FxP6zWHZCsSGuszfN1xzhjqpYepFwMFON/RIo0r3DMJEP3ID+TVfHnz29NN7xqT5Werl6DGUorh4O
+ 04hfGRFp
+ A0ltF0HHHVJSEC6VEWxQq3av+c56Pi7peSuHZrIZkN28FMUr28nTEWEwCRPs6OT5/ui7X1LS5nFG72wzwtmcx/iVh5ZVJYHWY3SH/R+3wcWajRi8dpu5AF3yoLFyWZMWt0HpD0UkJY+wE6lLwk+xq/qJ1J+tjA3F98gITQVCjCb2AgEsKt0apM789UvrkBCm72i2sYYJ50NrooXDKez2vktkzwkohSBk+G1s03oCGITC5Xs9Q8ujWkwTt3nnuugqX0085y390x+V1zsk4z758zEvLCCS883QkOC4QJ+AqkII2treFeHyhdZKVZnGvupGM6uKIy52xSJ6M7WRfXtotmfeuMmEX4Fxv0mS3hQ3fkqrfC6jVUnMUiiTNrQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,42 +99,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 08:01:45AM -0500, Michael Roth wrote:
-> On Tue, Sep 29, 2026 at 03:10:41PM +0530, Naveen N Rao wrote:
-> > On Wed, Aug 26, 2026 at 12:44:40PM -0700, Sean Christopherson wrote:
-> > > On Wed, Aug 26, 2026, Ackerley Tng wrote:
-> > 
-> > Can this be a problem with gmem hugepages? Not sure how that is going to 
-> > look like, so this may be covered in other ways.
-> > 
-> > But, as it exists today, if the guest converts part of a 2M page to 
-> > shared, then this skips zapping the SPTEs from the call in 
-> > kvm_gmem_invalidate_start(). sev_gmem_make_shared() then issues PSMASH 
-> > to convert RMP entry to 4k entries and we end up with 2M NPT+4K RMP. If 
-> > the guest then writes to any private page in that range, 
-> > page_fault_can_be_fast() returns true, fast_page_fault() only checks 
-> > permissions with spte_permission_fault() and does not do anything.  
-> > sev_handle_rmp_fault() also does not issue a zap since it finds that the 
-> > RMP entry is already 4k, and we end up in a loop.
+On Wed, Sep 30, 2026 at 05:37:11PM +0800, Muchun Song wrote:
 > 
-> In Ackerley's hugetlb series, gmem will split the underlying folio to 4K in
-> that case. I assume, if we end up adopting Sean's proposed optimization, we'd
-> update the attr_filter to force a zap if there's a demotion, similarly to how
-> kvm_gmem_punch_hole() handles it in this series.
 
-Ah, nice - that would be better.
+...
 
 > 
-> I think as a general rule of thumb though we'd decided that guessing
-> too hard at what hugepages will need is best left to hugepage series
-> itself (TDX prep work aside), because it always ends up different than
-> expected :)
+> > 
+> > Anyway, it'd be better to get some numbers with RL or agent workloads
+> > (especially the host memory is under reasonable pressure) before
+> > landing all these new infras upstream if proceeding in this way.
+> 
+> At least for now, as far as I'm concerned, I don't intend to land all the
+> features mentioned here. The first thing I want to address is on-demand
+> allocation of struct page.
 
-Got it, that makes sense. Will consider adding WARN_ON_ONCE() so the 
-dependency is clear.
+From my point of view, on-demend allocation of `struct page` for FSDAX
+is indeed useful and can be landed upstream, mainly because `struct page`
+initialization takes much long time for large FSDAX devices even a small
+range is used, that impacts the guest startup time a lot.
 
+But in order to make it safe for production, I suggest reserve the
+guest memory in advance for the worst cases of `struct page` at the first
+stage, otherwise it could cause unexpected issues for many guest workloads:
+it's hard to perdict if the guest memory is still enough, it's unfriendly
+to system designers as well (that would completely based on their
+experience and hard to ensure the service quality beforehand.)
+
+Since the guest memory for `struct page` is touched on-demand, the memory
+over-committing on the host is still workable, the memory reservation
+can be removed after the reclaim path is done.
 
 Thanks,
-Naveen
+Gao Xiang
 
+
+> 
+> Thanks,
+> Muchun
+> 
+> > 
+> > Thanks,
+> > Gao Xiang
+> 
+> 
 
