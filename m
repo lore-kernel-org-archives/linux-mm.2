@@ -4,105 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C77CA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 11:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30E2ACA5FBA
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 11:22:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 486416B0088; Wed, 30 Sep 2026 07:12:03 -0400 (EDT)
+	id 0F0B26B0088; Wed, 30 Sep 2026 07:22:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 436FB6B0092; Wed, 30 Sep 2026 07:12:03 -0400 (EDT)
+	id 0C72D6B008A; Wed, 30 Sep 2026 07:22:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 326B16B0093; Wed, 30 Sep 2026 07:12:03 -0400 (EDT)
+	id F1EA76B008C; Wed, 30 Sep 2026 07:22:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F24E06B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:12:02 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7DF4F160772
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:12:02 +0000 (UTC)
-X-FDA: 85270164084.26.F8EF943
-Received: from mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 434A7180003
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:11:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XNkyp1M5;
-	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id C065D6B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:22:13 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 31DA016077E
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:22:13 +0000 (UTC)
+X-FDA: 85270189746.18.6E6D347
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 63932C000B
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:22:11 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=bgpo9RKP;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.140 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790767331;
+	b=QmkLAf14mIvOKyekR2NmYRGTe/c/JkUUxxQyb9+oy2t1kqspuZBGhULYFM+R7at9xJYtym
+	eOIJKRV8Y82mknabpg8ZCZuHYx7aJ0LvGEJTnKHhbQytwusNV1YiLAvM36vJbpBIwzlhP+
+	oNY4P+pRMl5vlRrU08zR9VOZxSiv8Ro=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=bgpo9RKP;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.140 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790766720;
+	s=arc-20220608; t=1790767331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w8TdMHuVObPqzYZTfk2DxdvouGjhEk2R8v52SYa0+5A=;
-	b=lu55FpNJ4NwxhiXA4kOOQmwq8Y9ATBDxnnY+uPui2YUPtZCxJeyPu4DOVEemIoflBIR69T
-	qCw9WAwBv7kFTF1xflXGlpbFwSEHaP+bkHWTaFztqxsp80TE1/6aY7CD0pokVi28SNVS65
-	CQ57STnQ1HMRGgOrraxRL8wSFlg/P1U=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XNkyp1M5;
-	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790766720;
-	b=nG3ep5PtoFMs8laxW4KjCpaiVcVgxX0dNcMeRIez5bVeeqUiAptBxz3cUckl5ZvLnAM/M6
-	rmQsnCpx1pyLRpgJGq4EeLYBwhC1gba0aVFyZzXi2krMRrUkpEBEdKUE9NIqnO8SySk5Hz
-	NQy1aTJ0p2I5NH65xX0NaAauVsX/Gao=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=sQXlo+ttkX3rsFF/+duoz9qqV2dVYCVBWBpWC91yIf8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790766718; v=1; x=1791371518;
- b=XNkyp1M5k18XTsctUQAfN1VTrqKrnLIO4zb+bTWVxNSiLkr3rEid5M42A57KenHF4HMknEMH
- ToE9G7G7q/4jAV/ihpHF06aKsjh54cHlPkW77c8f4v3rDk1wTK6qDrBFFrvguKYZlRaApeMXn6H
- ttuBmGUyq8gX0tocN9OOavzE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 7bc8601425e44f03;
-	Wed, 30 Sep 2026 11:11:58 +0000
-X-Mizu-Trace-ID: 7bc8601425e44f03
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: Re: [PATCH v3 2/6] mm/sparse-vmemmap: support device DAX in common
- vmemmap path
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260930085329.17337-1-lance.yang@linux.dev>
-Date: Wed, 30 Sep 2026 19:11:45 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- maddy@linux.ibm.com,
- rppt@kernel.org,
- akpm@linux-foundation.org,
- david@kernel.org,
- mpe@ellerman.id.au,
- npiggin@gmail.com,
- chleroy@kernel.org,
- ritesh.list@gmail.com,
- sshegde@linux.ibm.com,
- ljs@kernel.org,
- liam@infradead.org,
- vbabka@kernel.org,
- surenb@google.com,
- mhocko@suse.com,
- qi.zheng@linux.dev,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <62E3517E-517D-4C23-A04A-F5BEB0A84C60@linux.dev>
-References: <20260929053231.66085-3-songmuchun@bytedance.com>
- <20260930085329.17337-1-lance.yang@linux.dev>
-To: Lance Yang <lance.yang@linux.dev>
-X-Mailer: Apple Mail (2.3901.100.1.1.11)
-X-Stat-Signature: 67rtgej1hfao6we3n4jfybamhrd73ecw
-X-Rspamd-Queue-Id: 434A7180003
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=2zLOBQ3G5BdHBovG0b3C1voW7d9ugxt/+vc04TfSY6A=;
+	b=hdA6fTa139KGTVQ2azvd0qD05cGk0VfJdG+R7XQmAn0byyJwlqPenF2UwY+k7AuZ2e4FeC
+	TVfxCvvuEznMG7enjMpRME9kx+tCMGpEfR8HmIs1CRaW4DbD1sL2Psw07fPp4iVtw71Km0
+	EmIql7UOVF720T+2mHPbLKFNHP5q/cc=
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49fff72474fso22136965e9.3
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:22:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1790767330; x=1791372130; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2zLOBQ3G5BdHBovG0b3C1voW7d9ugxt/+vc04TfSY6A=;
+        b=bgpo9RKPUBZyphfk+t8is9P0sX8ez/KpwfOk19BJGJf66kcECUdzdW3JDd39txNCaf
+         cxamopfvcZzBX9bs3D71HoKD5f62+HLe+vHQlxE0lRu6KXu0dWoA62R0X+wEi45oepap
+         xpYWcQrXC0b8ANgBWl2xT1RtKRthYDi34Gq0sPYfgBUsgI8SE8zZdLUCbQ6axWHZcWlj
+         1O7Is7/sGkV2vSL1yOFUMvkw7RBKotVB302RzcNGL4cDQgSSOFuIIATeNvLEEovvS0Vi
+         v/Mtbf7WoO62NpxrMWwfg8akiYkD3FE1U+F0AC4gkULEd8+gnunlyaWR9RketuhCBzsR
+         5/DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790767330; x=1791372130;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2zLOBQ3G5BdHBovG0b3C1voW7d9ugxt/+vc04TfSY6A=;
+        b=aJrgzXNfKXvD0Ed5HKpIqSRFSLvb99jbTAABqTn5zscQ66ZcaRbREV/ezgJorZTOWC
+         +W0a4d3CMNggq2z3yFqyTxuh2pmuG407m6Fp4nY+CmsDi+lDpkqsT/L7vxRlqYUDNCQv
+         4zbjDk7S5b4rlRwSro7vRb1t9FJ0ihqfb/topnrMTAq5ClSktkOuSvSoBBp9gSP2Pvod
+         QpfpGP6Oe1wqHyokIxSMdAUOKd8Y8MEOs2bQW1HM2Rp3B1QnvairJSqiltvkNnBzk45j
+         pACc1uHz+D9GQwU+EJyyB2womsnxPz7b+mWnDoKA/F4terB+g4lmf9P/Fgcq+4iWfNR2
+         ny3g==
+X-Gm-Message-State: AFuF++mq1qpO2s4MpEU/WXgWV2QU0Q/4BAlLr/ola48Rm/HZ/C36QsE/
+	Hny4hLpT/JjtXKnrQMipf+5ctVpLDDyumrgoEAi2midHWc+SbyBBJjE83w7kizrKJVtYn/3PRcv
+	nMoLKM+LxLQ==
+X-Gm-Gg: AYBFou2TiBk8xtZmrFSElIk0k+K0mpIasiRA8Dh6WlG16Q9uGXOeAGgTpV3ovYDhoAZ
+	JIcUy9eTLSlkac18LgboySN8b9X2eSXjBGXnm1APnSzUtYaXsMIdAjkG6l3sNrfK1jiLHjWhvJF
+	TXcM6yA7B5V1S9CkIKLr+p884YNx+u3mi2yIFz7tENNsa7nJ51RLe01ocLVtAZH98io/2ZB41jw
+	qqp96FW8g+bI/MbS3mg9Gng3SvgopgwGPj0t3t3MVn0izzbPbKA+wp+II2b/HQTJepNwcwi4TQd
+	2q3qWIW+H3AW5dRN97GTl3YvSWyWxoJG/hvE1Vvku1n4o+UsoDK7ZVlY4wsPxrfwUkhZ31jAZ3j
+	jHt3fT0PW4L/ix9kRZhfXHQY7IQHlZxYIir1CyQMfFLNgUOcPLxWYp/mZ4RX28x5XG9VChTzrUi
+	v4UgvJ5p4Oob5iXxE3Bc7/bmFMVJTaAuj52Hdm1dqjZD/lpdMRhoa6eTLUnwsRLUzJvqfyiWHQk
+	Kq5A9JQCjeLQO0G
+X-Received: by 2002:a05:600d:82e1:b0:4a0:313:3a12 with SMTP id 5b1f17b1804b1-4a01b1162d3mr20334555e9.20.1790767329415;
+        Wed, 30 Sep 2026 04:22:09 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.thefacebook.com ([2620:10d:c092:500::6:13b8])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a019740c34sm34097095e9.9.2026.09.30.04.22.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 04:22:08 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	kprateek.nayak@amd.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	gourry@gourry.net,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	matthew.brost@intel.com,
+	byungchul@sk.com,
+	apopple@nvidia.com,
+	jannh@google.com,
+	pfalcato@suse.de,
+	hannes@cmpxchg.org,
+	shy828301@gmail.com,
+	osalvador@suse.de,
+	raghavendra.kt@amd.com
+Subject: [PATCH v4 0/7] sched/numa: stop VMA scan filters from gating promotion
+Date: Wed, 30 Sep 2026 07:21:59 -0400
+Message-ID: <20260930112206.205083-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.55.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: fxtt1p45wwsnad69rgpzg179bt3swiip
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790766719-248425
-X-HE-Meta: U2FsdGVkX1+FENQEgRGN28PDK87SYnB5REn8FuHB61QxUZCggfIDQVHYc6+CK+P1lUN9ioC43WmFmXpkQ35O0ZlXbnOtPJuF0IpCoSHYydRuZWR/0ZNLMNgk6YKx2+eBms4pEpLEvMONExhy0GCRE5fFtZaZ/0nQKcfbz18/mANxdKmrF0WDjTbgFVm6JGhhqkBQoEQYmjWQd69L4jSwfwRWJ/7307qSt5CAMiEo1uEx0qnoHTYU1Z7kOveqLkMhuiMc+FcVu8ApKeQizcPjB/UejRHKUCx/xDlaXQpM2hj3mgydDvXKBd5L88vBDuQ97rPtOHV25g99JpqesQv3knEntSwmFK7cGErNhgAGh89DieRR98mpKkjhDOsxldIxgmqiNDVOkfd3oWjkNQhQbXSTOXbfu2q4WW8hB3KhCgYhHYZs09A/fda6u5n4n0DlWJRuWzihDuYt4P3O+RfNDY6fQ+tp0MnXqr4jLW6wv3abNsQ7CZo2BgW0FohYwv3CrpSgU11Jd54ngmQQSoCsEr+NkBASKMPHZbJYBicK0P9qvBcGs8zk/fNq4FF7NEVt1FX1wGNhl2CqhnZMebXogaQS9gJfIvGRuZT81R66S/7U1gfAYSgjqCGixA+PzTTTC9oJ0dipVAHVTjz742wdhu9c8Sv6L0PXiWoPNXur1sJ1wlZyfBHcdOHup6a8CBmH6Azv+u1R+CPjDet7Vs6/VV0CMv5MFHAm3PFizMDN8BJVwLvqJpuL8BXnCVtQJan8inPliPaUx31z6eGeFE5HfyxQtiOtc7lOOI2zQqvEHq5i2m01QTBIaZG4SwRT4D88ZGC4bZDHvS2JSyQDgHeyWxpfunYEVrhLH0DijHR1D7HNDLoMI2AaOA6zWXyQaFp8RUJhWJYMcJOYODXwB1qk5H3jUF2Tn6mWYURbGq4hp2CMxxkw82ktSSiGMcFIXQpHn+zK3mSNlQgqMGzrjUi
- Dt11t1E+
- TyGYYu0ehT0RNn/Cr4ygmKzdz+GOph72eQunIq+OmQT2N5sqAoKOWrH6JYMx9Ao1gG8xL4xn4UY/8oHEDOwSQMtONhC5J+43yX0aQOhOZjFLA0cjOBf5il7o+7zT0L0lecSXITuMJj21dLmHtBseb+/+dBWQoCwXqLFmKhg6Pcyhi3lGj66bsQZ9Cux7/cD5iR0X0CB1gxSj5OcGWA6tVHY4HBginOP4ww/7BCIXFx6afbJXQ2/llz0S1L8myJ0y0eGV3t8gW9ANLvXCK39sDmpZAo8lgPqgwWIHwLTdTXjYDBUZeHyE4xbTzfcsxMO7zCfHzN4Z3MW4YzjmdZd86qibXzpTRO7fF+nWdTWs2zxQhvN9cMRyMTSRDdnoeX96eSsizbsPTlMOxfX9HW7u3mS5ZLw==
+X-Rspamd-Queue-Id: 63932C000B
+X-HE-Tag: 1790767331-242687
+X-HE-Meta: U2FsdGVkX1+gjjEfNcF03rcGpATwE1lCcypCCjPNtbH1o24eetDXePFvlQ2Q/35nffHLQMWjH1gwT1T5eTR1oY6D3NKocjqtId02l7a15fVcl+JxsomIoxcooA82DaTWJ7NocKX3Au6qJoWvpAEIbhbGv178Uv8OUP+DFEh5aUyl9Razuv1Jkowqmz8SGDGoise6JnoLTaOGWDQfjtdcRWxJ2SDUkMLky0jCdPCTOM+7B/plXn6kXM0b2qRxBzONWhtlmwOVFOvPk2JMcOAYbh/gGHBnbyWC22eJrTTuq5gZ7EypBwnNLkV4/r6/o6CHuJGOieK9/WzEv6n4iY730RyGD/5xT/pNGACne+8yn6IZbK6ZWBYT/2yh/HWhnbFVo3Ygc4a4PhEE/k8eugYQFwfgfXZYDlc7BsXxDKi24tZ3c+9QC11QGiKtaLx+DFDx4KOWDw+5os6TBsN4l1ZJ5CDQ54JhYHypkxsgml3orKXZU9cDgwFit5Uk5pzlqDYftIZCeqBvCX7hfGOQmH/rKGZL6D1VV3tLXGDGw5inkax8ktz31uMbEIzIn+Km1GhUFJTLZdokx7Vr1dyioyRO0xG0OidGlBx9PbT3pZ+PF31O64aOpegRgpmE0R1BaWu/Iu5wer9cwdhm7kj5DHGIQe9nD3MGgwHNKwNSLlbS0vZffQA5RF6cB8ZRBW18CJvwYwo6rnZicCR7eGN1zBuxCCbtCLR/zP2WD10WDMZb1MU8jIp8PGk4gWbcy1ZPwjiSMVu0FNiJ4rjmSRA8PJC92N+huNvmt/nOgyha2rngYyTwHcLFJ4zYSbvqq4/PqUOwDD5ObCrK5I6EzsMBfEcAXZy8raTeSxHNro7T9FtGB8YMu8w8iJJqKPGauOd0V5rG/2GuXoYoYYMC9Tzveop50pjE7Kr7du+Ugw2Uc0gZeErKAI/+zdP8anpxF+QlDoPxBCvVM9T2P2qyG17/efd
+ eIPWEV6t
+ e87mH6MaIDRiHrm5Fnm+j6Z9c5BK+KJxersJL5aWoSFO86LVfLslGGNIvKrfpRfSX9Xbvy3reK9KNHtUhcNV5wWC0zKdG4r0WTMJj2lx/tpf325OEQBp2BP6i1lKP//4JI0KRbhQyf2gYyoQ0WiudM2kdypsjSpzmb9QbkiPHOj9IZQbpthevnBHEnVLg+ZO6J8UBfIMhS9WJGUWLffQgnRiwB36N2ANIRg6zn6a8NbeRZyab2iEpx/53cE0RmoMSRhaaZL1+l/lGChCA7zuGQzNpsupLz1pq+2GftE/ljukjrKwhFiRI5wiBy8zYXuGBOzsHrrIDACCsZhzhpKraIL2I3njfGTPvWB12Ofocsc0vM1Ygai3snY9K7SW09eh4d8pugOI03xPNGHKDjKnb4+h5Ag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,195 +155,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+NUMA balancing uses hinting faults for both task placement and
+memory-tier promotion. Several filters designed to avoid unproductive
+socket-placement faults also prevent promotion.
 
+In a production deployment using kernel.numa_balancing=2 on a host
+with 768 GB of DRAM and 256 GB of CXL memory running two ~430 GB
+database workloads with large shmem VMAs - we discovered poor NUMA
+balancing behavior:
 
-> On Sep 30, 2026, at 16:53, Lance Yang <lance.yang@linux.dev> wrote:
->=20
->=20
-> On Tue, Sep 29, 2026 at 01:32:27PM +0800, Muchun Song wrote:
->> The common vmemmap population path cannot yet handle optimized Device =
-DAX
->> mappings on its own. It uses pfn_to_zone() to find the shared tail =
-page,
->> but Device DAX populates its vmemmap at runtime before the =
-ZONE_DEVICE span
->> is initialized.
->>=20
->> Teach the common path to use device_zone() for runtime optimized =
-vmemmap
->> population while retaining pfn_to_zone() for early boot. This allows =
-the
->> same path to support both early boot mappings and Device DAX.
->>=20
->> The backing PFN supplied by the Device DAX-specific population path =
-is no
->> longer used, allowing the redundant lookup and population code to be
->> removed later.
->>=20
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Qi Zheng <qi.zheng@linux.dev>
->> ---
->> v3:
->> - Collect Acked-by from Qi Zheng
->>=20
->> v2:
->> - Expand comments around slab initialization to explain zone lookup =
-and
->> page refcounting (suggested by Qi Zheng)
->> ---
->> mm/sparse-vmemmap.c | 64 =
-+++++++++++++++++++++++++--------------------
->> 1 file changed, 35 insertions(+), 29 deletions(-)
->>=20
->> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
->> index 8219abc6c3e5..ee4c113ca938 100644
->> --- a/mm/sparse-vmemmap.c
->> +++ b/mm/sparse-vmemmap.c
->> @@ -237,18 +237,43 @@ static __meminit void =
-*vmemmap_alloc_pte(unsigned long pfn, int node,
->> struct page *page;
->> const unsigned int order =3D pfn_to_section_compound_order(pfn);
->>=20
->> - /*
->> -  * Device DAX still relies on vmemmap_populate_compound_pages() for
->> -  * head/first-tail allocation and tail-page reuse.
->> -  */
->> if (!vmemmap_optimizable_pfn(pfn))
->> return vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
->>=20
->> - zone =3D pfn_to_zone(pfn, node);
->> + /*
->> +  * Before slab is available, vmemmap optimization is used for early
->> +  * system RAM, whose zone can be determined from the PFN.
->> +  *
->> +  * Once slab is available, only ZONE_DEVICE memory reaches this
->> +  * optimized population path. Its zone span has not been =
-initialized
->> +  * while its vmemmap is being populated, so pfn_to_zone() cannot be
->> +  * used. Obtain ZONE_DEVICE directly from the node instead.
->> +  */
->> + zone =3D slab_is_available() ? device_zone(node) : pfn_to_zone(pfn, =
-node);
->> page =3D vmemmap_shared_tail_page(order, zone);
->> if (!page)
->> return NULL;
->>=20
->> + /*
->> +  * During early vmemmap population, the shared tail vmemmap backing
->> +  * page is allocated from memblock before its struct page can =
-safely
->> +  * participate in page refcounting. Therefore, no reference can be
->> +  * held for each shared PTE mapping, and the mappings must be =
-unshared
->> +  * before the vmemmap is depopulated.
->> +  *
->> +  * Once slab is available, the shared backing page is allocated =
-from
->> +  * the buddy allocator and can be refcounted. Hold one reference =
-for
->> +  * each shared PTE mapping. The architecture vmemmap teardown drops
->> +  * the reference through __free_pages() when removing the mapping,
->> +  * preventing the backing page from being freed while it is shared.
->> +  *
->> +  * The backing page may be shared by enough PTE mappings to exhaust
->> +  * the positive range of its reference count. Stop populating the
->> +  * vmemmap if another reference cannot be acquired.
->> +  */
->> + if (slab_is_available() && !try_get_page(page))
->> + return NULL;
->=20
-> BTW, shouldn't __add_pages() undo the earlier sections on a population
-> failure? Say the first section is added successfully, but populating =
-the
-> next one fails, e.g. due to an allocation failure:
->=20
-> void *memremap_pages(struct dev_pagemap *pgmap, int nid)
-> {
-> 	...
-> 	const int nr_range =3D pgmap->nr_range;
-> 	int error, i;
-> 	...
-> 	pgmap->nr_range =3D 0;
-> 	error =3D 0;
-> 	for (i =3D 0; i < nr_range; i++) {
-> 		error =3D pagemap_range(pgmap, &params, i, nid);
-> 		if (error)
-> 			break;
-> 		pgmap->nr_range++;
-> 	}
->=20
-> 	if (i < nr_range) {
-> 		memunmap_pages(pgmap);
-> 		pgmap->nr_range =3D nr_range;
-> 		return ERR_PTR(error);
-> 	}
-> ...
-> }
->=20
-> We still need to undo the sections already added in the failed range,
-> though ... memunmap_pages() won't touch those, since it only removes
-> completed ranges.
->=20
-> If the range starts at a section boundary, we'd hit -EEXIST in
-> fill_subsection_map() on retry while those subsection bits are still =
-set.
->=20
-> The old DAX path had this issue too. Could we roll back [start_pfn, =
-pfn)
-> in __add_pages() as a separate fix? Something like this:
->=20
-> ---8<---
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 796af1028ee2..16a0a2c885bc 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -380,6 +380,7 @@ EXPORT_SYMBOL_GPL(pfn_to_online_page);
-> int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
-> struct mhp_params *params)
-> {
-> + 	const unsigned long start_pfn =3D pfn;
-> 	const unsigned long end_pfn =3D pfn + nr_pages;
-> 	unsigned long cur_nr_pages;
-> 	int err;
-> @@ -417,6 +418,10 @@ int __add_pages(int nid, unsigned long pfn, =
-unsigned long nr_pages,
-> 			break;
-> 		cond_resched();
-> }
-> +
-> + 	/* Roll back the sections added before the failure. */
-> + 	if (err && pfn !=3D start_pfn)
-> + 		__remove_pages(start_pfn, pfn - start_pfn, altmap, =
-params->pgmap);
-> 	vmemmap_populate_print_last();
-> 	return err;
-> }
-> --
->=20
-> Hope I haven't missed anything :)
+Before patch series:
+  - 150-200 GB/s DRAM bandwidth
+  - 40-45 GB/s CXL bandwidth, saturating the device
+  - request latency above 5 ms with longer tails
 
-Good catch. This is indeed a pre-existing issue, and the old DAX path =
-was
-affected as well.
+After patch series:
+  - 250+ GB/s sustained DRAM bandwidth
+  - approximately 5-10 GB/s sustained CXL bandwidth
+  - request latency between 800 us and 2 ms
 
-Your proposed fix looks correct to me. I would slightly prefer keeping =
-the
-rollback close to the failure:
+The core issue is that the global balancing mode says which mechanisms
+are enabled, but it cannot describe the intent of an individual
+VMA/PTE walk (placement vs promotion).
 
-           err =3D sparse_add_section(nid, pfn, cur_nr_pages, altmap,
-                                    params->pgmap);
-           if (err) {
-                   __remove_pages(start_pfn, pfn - start_pfn, altmap,
-                                  params->pgmap);
-                   break;
-           }
+This plumbs the scan reasoning into the prot_none injection while
+retaining the placement-scan filtering.
 
-If the first section fails, this simply calls __remove_pages() with an
-empty range, which is a harmless no-op.
+Patches 1-5 form the backportable fix set:
 
-Would you mind sending this as a separate bug fix? I will ACK it.
+  1. Add promotion-only NUMA protection walks and derive private VMA
+     state in the folio eligibility check.
+  2. Permit eligible shared folios to be promoted to a fast tier and
+     rename the promotion predicate to folio_numab_promotable().
+  3. Scan mappings covered by the legacy file placement filter using
+     promotion-only scans.
+  4. Separate VMA placement eligibility from partial-scan continuation.
+  5. Scan PID-inactive VMAs for promotion and account for placement scans
+     separately.
 
-Thanks,
-Muchun
+Patches 4 and 5 are technically part of the same fix, but are separated
+to make it easier to review - they must be backported together.
+
+Patches 6-7 are independently requested cleanups.
+
+  6. Use BIT() for the change_protection() flags.
+  7. Use the VMA flag API in the touched NUMA-balancing code.
+
+Changes in v4:
+  - 1/7: commit message fix (David).
+         Hoist balancing mode check into variables.
+  - 2/7: Rename folio_in_lowtier() to folio_numab_promotable()
+         Typo fix.
+  - 3/7: Compute placement_scan once per VMA.
+         Avoid complex boolean logic (David)
+         Fix indentation (David).
+  - 4/7: Avoid complex boolean logic (David)
+         Store the in-progress state as numab_state->promo_only.
+  - 5/7: Avoid complex boolean logic (David).
+         Fix "sticky bit" issue where resumed scans would cause
+         valid VMAs to drop out of the scanning-eligible set.
+
+v3: https://lore.kernel.org/r/20260922182928.2199090-1-gourry@gourry.net
+
+Gregory Price (Meta) (7):
+  mm: support promotion-only NUMA hinting scans
+  mm: allow shared folios to be promoted to a fast tier
+  sched/numa: scan read-only file mappings in tiering mode
+  sched/numa: separate VMA placement from scan continuation
+  sched/numa: scan PID-inactive VMAs for promotion
+  mm: use BIT() for change_protection() flags
+  mm: use VMA flag helpers in NUMA balancing
+
+ include/linux/mm.h       |  23 +++++----
+ include/linux/mm_types.h |  13 +++++
+ kernel/sched/fair.c      | 100 ++++++++++++++++++++++++++++-----------
+ mm/huge_memory.c         |   3 +-
+ mm/internal.h            |   6 +--
+ mm/memory-tiers.c        |   9 ++--
+ mm/memory.c              |   2 +-
+ mm/mempolicy.c           |  37 ++++++++-------
+ mm/migrate.c             |  13 +++--
+ mm/mprotect.c            |   7 +--
+ 10 files changed, 140 insertions(+), 73 deletions(-)
+
+-- 
+2.55.0
 
 
