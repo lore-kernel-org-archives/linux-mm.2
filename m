@@ -4,125 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16E72CA5FC5
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 15:05:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 843E2CA5FC5
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 15:08:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 150706B0088; Wed, 30 Sep 2026 11:05:30 -0400 (EDT)
+	id 6D2A36B008C; Wed, 30 Sep 2026 11:08:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 101766B008A; Wed, 30 Sep 2026 11:05:30 -0400 (EDT)
+	id 6AA6F6B0092; Wed, 30 Sep 2026 11:08:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F31B26B008C; Wed, 30 Sep 2026 11:05:29 -0400 (EDT)
+	id 599826B0093; Wed, 30 Sep 2026 11:08:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BABE36B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:05:29 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 55E7C1C394C
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:05:29 +0000 (UTC)
-X-FDA: 85270752378.26.FF56A79
-Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 600D340012
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:05:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CQHe4kO+;
-	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 35A086B008C
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:08:11 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC8D6140813
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:08:10 +0000 (UTC)
+X-FDA: 85270759140.12.DE9ABE3
+Received: from mail-pj2-f39.google.com (mail-pj2-f39.google.com [74.125.227.167])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E719680009
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:08:06 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=kw+NA6ir;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.227.167 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790780727;
+	s=arc-20220608; t=1790780889;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jfRtojeauzUhQb4SePcX378h8gySuQTk235TQqLiiHA=;
-	b=27uIZQCqOWCzPz0oa4+/+nvKF14+w8SMOw20i2GF1TCdHQrSAOkICbgE+0r2C8XRVi5llx
-	sQjGX2J7N/6lNdWt5F83Ty03iETEjwMQ1gTTmmZ8l4GOIctMI4O5TLqkcxWQYsqLUm9G4l
-	VzFxdG+p91KO7tySkihO7fG3677dzAM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790780727;
-	b=OurpN0sFyTtiB6ToOYuIHnM620tHcsaGKN7HWChph+Nv66d+VMIGR6adLz9g7jkDyYDO1e
-	0cShMqx8hLQcm4Ucf1Q0i+yexTrsVrJ/mMLLXY7vKx9Y0o/LdyPBagEKrHr0G0ctMWmu5C
-	DLnTaDgHVEQYO/hJlzneA4vQycBOgCE=
+	bh=BIHsTwyZ43cnCG3HcUOwIRG07ClCz/sTU0nge1LJvus=;
+	b=Ebkm9G+zm0fS8UOH7l/GmaZKrZHgocZ0dus/4SYYSNfRM7Q41YZ2flhkkRLHup92rnOGtH
+	UjYia66n0sONFRYS/TSAcWUu3+Oh1l7okO7bZu08gzOWHxO0LiV1BOoW6ZWUZF/Vhv4L3D
+	vXfNkWvXq8ixLBaapmW29eufdtAubxk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CQHe4kO+;
-	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2e17363b97so155278766b.0
-        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:05:27 -0700 (PDT)
+	imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=kw+NA6ir;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.227.167 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790780889;
+	b=x9RFNXN/0iXN37H08boolFxyoiTpTurfaJMprvHmeBh5OstNYPmT3gf8tR6vZSPPzMOjYP
+	+0CiZreYHbKeqhGTdeaGylDCt7qoBbcNrr4bsjzcmpLU+DEzMKQr9DuYk/as/VW+tvXl9Y
+	DKWGCt1490O69Et5eua3r0FbU95HRO0=
+Received: by mail-pj2-f39.google.com with SMTP id d9443c01a7336-2e2d42b972bso10970465ad.3
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:08:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790780726; x=1791385526; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:date
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jfRtojeauzUhQb4SePcX378h8gySuQTk235TQqLiiHA=;
-        b=CQHe4kO+duwOYbAR80r7PS/oKvV22f4c0P9eYt21anpRKs73V2TmUgQASKVC8CeWuL
-         gcvsTkJssHJAWfHxyjEd7jWSy+n1ELpWBUBSPY+vQfvpgy7eLYTdGsKctU++4EqOCTYX
-         m4ia5aSMu3gDDrqjJQrbJoCVUbmNyU8xTY33V2kD1saUzeufj8Z6L31wg2B2XAgMZPw1
-         gaZFgjOEAXcV0e58YN6rk4GUzU6JV0qJR+dDGOes9ZveoTVYRZ6BD+64PK0PshpHbfEP
-         g/B3evRr1a3Erv3d/JNrIUvGwNEm2TFKomY8uROZ9W7ltCF7wWaP8F5NEwVYVLo9IbeW
-         UsFA==
+        d=bytedance.com; s=google; t=1790780886; x=1791385686; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BIHsTwyZ43cnCG3HcUOwIRG07ClCz/sTU0nge1LJvus=;
+        b=kw+NA6ir4gowh504P24wxyVGQZIS0K6lPWPzLPLKDutOwKWRLdXStxOCYN3SIuLFqT
+         oGw8XwxzpbxTemzHEotyV2n5DkOvCwxRHQo9v6NZgKLPbPCtre8GyL8fGWdaqMtp2BSl
+         iCBmNWP8AkpMct+wnLUqGxnfqKpDEVvX3BRyNfdJKP8QmZTtDkDdYr/Og8PfwbrIogQL
+         kqou+JNIxy3uloTQXSzYgO5tFYJhl+kqwsaoRIoRtrFtAhBL1/fmU6GT+jXSonkI/kJc
+         PwHGPr+x3YgW1Sb35s2PyqFp5Lrjn+4XT9tQMn+cYcQ0p/BHpNKZyfB+X6CLsVurWCUK
+         ppJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790780726; x=1791385526;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:date
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=jfRtojeauzUhQb4SePcX378h8gySuQTk235TQqLiiHA=;
-        b=WwaqzrAGyG/rdOixCa1KhFVbjIMul1UldBWU735ZC75tCIzXnpSr5+gmouVoLiAMrZ
-         g29LwBTsIBW2rAX7VwpoO42DtgN7IM5q38o69kfT4I3NR3U3LXCDC5zluDbu0PadsPkB
-         PpSahf6uZwFCMUq5K7ZvmVDp+K46/yjnLdasQOg2+pSuXULAqvLUcEXN7vfmei2O3gMh
-         9R9DIkS5CQUQ2AK0okfGXUw30mr1JpDy/Pk9PJAIjoJeskX8yOsQ/SyXTevg7787FFsv
-         JX172SjRrd+cc9OhLKWLLGJAnLk0Ig4uvp6VIFmhUxfthz7w0SJItKdxTugRztAxK+1m
-         VJKw==
-X-Forwarded-Encrypted: i=1; AKwUvBwzPGEj22SMARluPaF+w8P68+vYmZo2F1pDv9SaXmv565le3Cs2pBec+MSZdfN3PL26FHFBDwcUFg==@kvack.org
-X-Gm-Message-State: AFq9FYLIrLaOpkNWcyqXP0+f6M0Sr4hMx1krartOlcc5WLAKbyA/NMoq
-	xQxIlfE3ESooiXup29o9Y80uFimpbgO6/PG77iElkeH7pT3m9ClPbSLfiSoq34pSBzU=
-X-Gm-Gg: AYBFou1mnweioDbp+AeDPFbqiDLd1zcTY7dbEH8VTG+e1zCz9+xzTxkjbpWQfDbdh+k
-	UwVaauwtuRrGJe9gV0GsDH3SFAMEgamWRsWtlOsCVZrIvsL7Sh78qbvwZ5TlddQEbIly5MI1qhv
-	3AtSyYBiUMUN52mHWzlyC2zXJ9YkqORTcSA7ZiZuEGFY3HEo4avbzbbA8EH4/MO0CROZI0vxN9V
-	Ar8wwW73AF8HOZixYspjNJi6V0nPN3Ssm74ZrMMWCSZcxD3hdIidxwCLoZiWmmo/JuJVrc8+DEQ
-	jkZE6T9wefkCy/GbzS1q9QZXMyIWWpme7hfX7z/NoS8JF6OB1RKQ18fVPtvh/kK70HFOdjB7/Jq
-	tflbX2akGNAGR2cD4YMyrahzqKK04nFL4WIVM13hc0khk7gFHPcSorfZWrrbnWIjy/Gi/e4vTGx
-	uCufRCaIqyMteg0nG3Tj7h
-X-Received: by 2002:a17:906:ba89:b0:c2d:a4ef:64ca with SMTP id a640c23a62f3a-c2e23e39566mr171362866b.42.1790780725514;
-        Wed, 30 Sep 2026 08:05:25 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31a3cc87sm20827866b.6.2026.09.30.08.05.23
+        d=1e100.net; s=20260707; t=1790780886; x=1791385686;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BIHsTwyZ43cnCG3HcUOwIRG07ClCz/sTU0nge1LJvus=;
+        b=pkVRQjx1gXAi2oSBX9frF8ijfyTK80w80GO39+hvGD7048m8mUdvQtJalv+xMPNTTE
+         4JBpReGr1WxWKfGZkFcIj97Rxr39I6frEeQPe4ZJD+BrGsUgvOudmdEIq2s0wLq+cYW1
+         Q2+qGwcTjGGzHDE9rGJQ0XrzfHsJ5v+w07Pox4OJWyTj7Q2EeoALenyCVrFr7Eyxi2uN
+         TKtcYnxxjI2WArEgEfe9XKmEaITvN0lV8MeQZ7dgYsf7+q/oR/T/bC3xjnRqQKfouXBI
+         br3YAEwUrG/15mEVMRMfETbo5oFbCGNWOFrSGqTEy6fDf0sbPKPYrn+P+NJeDSw9yLQT
+         +sRA==
+X-Gm-Message-State: AFq9FYIv8Gf+2OfNOhc3jT0xbOktnUfBcswt2n7fIZyiwLrvSww1yd9X
+	nNlpEjdY94Q8gNrtKojW/mf1P424rYTDIxfQ0ros57udjlxbxWahQ/FxSOEDJIm5t2s=
+X-Gm-Gg: AYBFou1o/4nIRu7B7HExd/Npdq1qnfw29wMurI/11H8smzjhOYq6pXCBANcdxPmuKYD
+	T2dAbS3g06iZK0Nt6vemqc1XmTQVrNfQWShe9W19AY1Oeq6mSh8G0sTKEloe/bR+gvRFuSUf3VL
+	tU0HhdFawLByIJrvwSacMFilxz+4uEoP1iOVgy28RA74eAdl5RPV+2DQ7LQEoowvlD0Lw1Btnh4
+	gHFlmCIZ7c8GzM4Wj0PoKMteaDGniwAjV1GJRg8HfjJ+pYUOxbHTgb/4nYkIwK/+3KoaQJbKtVu
+	b4KBm/1zMxs3kRwyKDiWuh8F1CLqcw7g+KDDN0MDtKRvKMbW1sY7FD/3OmiGMBCxoohZB7e4yw4
+	tbcALYhXMBKLBQBfK9foFow3DUeuPngBuQwX33bFN9ophIN7d067SHll5AYp/vu4Tf8fxDSbQt0
+	8UTAA/jlBKcYKJMJtcG3dqhOFOp/P1pzcvtmPHLnGLKpDTfYr6Hcql8sVoTv/C38YFPN4q4t2ad
+	ZVld2ZRJITuv6jNiHA=
+X-Received: by 2002:a17:903:8c6:b0:2d9:26b3:547 with SMTP id d9443c01a7336-2e2e49f746cmr14145765ad.20.1790780885353;
+        Wed, 30 Sep 2026 08:08:05 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.96])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e2e587f71bsm9426885ad.2.2026.09.30.08.07.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 08:05:24 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Wed, 30 Sep 2026 17:05:22 +0200
-To: Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org,
-	urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com,
-	ajd@linux.ibm.com, anshuman.khandual@arm.com, baohua@kernel.org,
-	chleroy@kernel.org, david@kernel.org, dev.jain@arm.com,
-	jiangwen6@xiaomi.com, leo.yan@arm.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, npiggin@gmail.com, rppt@kernel.org,
-	ryan.roberts@arm.com
-Subject: Re: [PATCH v9 09/10] mm/vmalloc: map contiguous pages in batches for
- vmap() if possible
-Message-ID: <ar0lMkKxugZV7xyw@milan>
-References: <20260923062832.479455-1-jiangwen6@xiaomi.com>
- <20260923062832.479455-10-jiangwen6@xiaomi.com>
+        Wed, 30 Sep 2026 08:08:03 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-doc@vger.kernel.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH] fixup! mm/sparse-vmemmap: switch device DAX to shared tail vmemmap pages
+Date: Wed, 30 Sep 2026 23:07:48 +0800
+Message-ID: <20260930150748.1134516-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260930140627.57431-8-songmuchun@bytedance.com>
+References: <20260930140627.57431-8-songmuchun@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260923062832.479455-10-jiangwen6@xiaomi.com>
+X-Stat-Signature: m3xbgz3a8px8y5qokgidb1mam6smcwon
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 600D340012
-X-Stat-Signature: dy79zispfnttpe4u8g8zqxao6sppdxna
-X-HE-Tag: 1790780727-814678
-X-HE-Meta: U2FsdGVkX1+7bTdDBnlHSQYtN7bIRGxVXNkmuAxxmA2A7zJw4HsgDf7h6SNGW0ol1KThUJrUQQOlnH0frocqnLIsZyFjCgwXhAGraCE8GysRgXED9kLrP3CV8sRHMSjCmYDATpqntDFcodQ19NycZYlCUj6/fFlz6mwz4oOsZnHtdSVsStZTUrFuWxYVlcrPIMNnGqxTR85gzIn2U7bMHlxYCAB7f2ohawBkp9xgWD/517skOGi9mWLZzYQq14h5CZIJP4jycKIves+HdPl4Y2R/d5HZ0kaIVBoGOonQKzwvh5/f8jIyW2xzGFqS5IppX7rlQZuBwjZY9rUD7GwkQ/2QjZrSq8pSIOBvXEaIdqdHNlVgHIaR/wJPubylyt3+ZlDZ+dK/1De1u0Bc1W37oG5P01+BnYZx6ymn3XoptfW2P8DvgHjQgVyY7KxDbVAKcncOz3uNGURpHRlc6MH4vDMIdvwIcZ9NkwGwdbcoeGMYd2qJvYLYlySbtKzhcAS4cQuXVdFo5kMppOcZClX1Ls1euJYdsgIvn0juEY6gEMX+kmoeNxvmgCFEBkdlT7ooBf0RQkOIpbUoFiIxSzcXTYSUHK8u7IL/BbKDqWNJkscaMtjj/KG4dGWGybQNRu78yU1On3dpPVu87kfHP9Sut1VQzPK8EVFNXknFoYKdFMweJ/HQjuIFlcCtQMxCZNkcq6KIMad1fI9fkhP//TAHpboKNIAeAlVlXi+qthpLQirmQ7sy0lJzJOu86EHLCH/xIRhWYmHiH2/bIaAg92NOb3RPBRIjuRC6FZyHsR/tv6mwC1spqyi4ighWklV6mN0TrzUwRaGSXzs6cFhwWZhCJUkFN797LPIs5HMW85+Oy/j/8na58kERyAwrMdDW/mqwrOVY+sXYU2nwHGpDaNVAbG8N4RX1M4iXmogeAl/ZJt1+jEXXNs/lE7yM47lGq6DfSDO4qasBlETAJ45CSlM
- tupQRvZq
- TZHBxlS3G6O/dlc1wJLRBrZb9Fwf0gsDIsT7AHN8wtN+Ib1qFTHvgDIFqBNcGLZOgWYfh3B8pJqoBmHXymcn2BArMhss16E/pQgGmZeeHX8AGCVN3Z6VKZ1kZg0eXfr7lcgpc22RNG3EPyeZtQyyGgGkdrIqUpApiyCdU0NqMW+wss9wNslmaSQALyv3MA2QGW8vTdrH2vkzGTBowwkERxXIzhEJigl5zCBEWk5a3Qpw5lq9EYPjvcMJMF2BOQp1kVVON8VGNoZsta+3efIFi3C9oadH9+0QlkGQaMF1GdMMaWYpPTiGNGuUCjOEbhBwYxVY+di9nUfvM2uyOOctWJnK1AJX3EVHLLpNNFb4vhvVSXgmjk1hCMXkcCDESOvvWRk6JOhgMa68fF5gvTD6mt3A6ok4p5I0LWBWT11/ndfK2SebrXjh4ZDPe1DB+2TiJ+q8htQ7q8e9GTNeG+SwzaGcYMrTWzVSFwDnD5sXvTe/5R2Z2oV1mc0MB4EDHZBUOO/YbrXAvao/LFqH/VVFu64t+yIXlq/dWC1zc46hv4B2YUshTq5eVeBYuDZ90ncaH6oyVEWD4R7jOiMcb0adf+TV3WLU9yw0vQwrfdhH4kssR+h9lPAiSlzs1sq8HSD2LH3uo3RJNWbMC2btPy44Q3L9WtxCMpHFoZDxy
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E719680009
+X-HE-Tag: 1790780886-833371
+X-HE-Meta: U2FsdGVkX18vlf0HpNi/zn4JdyiXz5KhhanMs/VItpMUdBPNqugsYJZJY2e9xNp8GjBZOAju3g9TpcVkBBb8ceT/96U2vnOS61Ic5RGbw34XvkveYP8tJTqgp1NmEE/SfWVsvZFYkb9RcE0JG5xZQfXb4mz1mK2q/3oXWA5d+Ep47gG8uwYPC+sclBR514/KeQBo59cV38qLXZRTWaxpiSTiLHg8ycml8wUmtvITcq0nQiRaoBHvJgaH+fTb3o0zDZ1puEEuhiDwZNS9tTOV1QLrSE5g73xZC/i6Am8m2Rz4ZmMYyy/4hxSPRo22dMf0QLnPvxFrT/KlALmrxW2qSvFIUunptPofpYIWQ/NI2scRrMeyIo5XU/p1NfNKfSpIJ7QnVIpJ7JbHPXCBmh5Toyz9ZpzgSJ/OEq3IK56lGyUPbYIAPtHc/veUG5ghULQj8+Pgul79fX4oqCUgra8XCxtionH1KzT4t6eL4ZKS9Hj1rD1FqrMGS+NHLZKSg8555BFu8QIoUsAH0YQqNkBymGp2q2RKeUeTkcm5F5T/uQELdO3abJmZ7+ZMM1FndFJTXP7vkYK5tvjrYSG2BzL0Fc/+80igDiBBqYzLl89iyWdIvJjCSn2TOEIo5/IhSG3JT+eCk7YC7uNjVAkILAxLozxAG9MpiOeYQn78wnnWelgOIJT89XoI0AWezd5goXYKhM82JJDRRlti8HFLh6EK1eilBQnJaWoswVLZOU1HtNnxvF11INfDRlseDZgTnyYjVuVuQ/hd6X3urAs+clap8aDPYPO0Pp+yn05XsjKqWyrJzcvFFCf8IsosmDK9UYuQ/EhMkOQzF1cM/JsAgfWredhw80FafJi/+vPmc8Zx7fZuwrRXszinepL56g40CQUgc/DDN+N04UdwywZ/35NnlDPgrims/wZpIkeKKscFiq6PiJ6F7e3h4PziPCj631Pr/sj1MPuHtm7PEqISwy5
+ R7D/fOP2
+ OK311hF73+J3z9fJO2IZ6+wVW8thRy1GCqy9y/89zqrLxg5a2x5fXrPruC+DWq59tCDk8fzV5oy6rS+l1EXA3a88t4oIlQHQ7v7rGjfqkES4h7hYdguvbgKiTeuuthc0/VB08n96L10jJYxS6/X9+Q6VjhKYriWNcZHyoyQj1GCG2HxB2tRL6HiY+/tD8Vfl5vjqic2bHHgbkk8GEVE8aPOzLDu2bEWDMRvsBtKPRADxAOwsNPcY4jZGt2C+0/dfLds0U2VAhdkQfgZcFpbzW+Xzhxhhcw0ObwI7f/IaKLcDUih+PtbIg+zxQ1i5dY5kahDpLz9M1gH8BoVwPFgkn4tTGwz9xy1FOZAWVwHuW6a/fGoa8yHeF3suyxGs2Lq+dtJKYgVRzMH4RNIue1Ck8Cv69Se+w5n7mKg+dsgVpOPDYjUE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,150 +135,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 02:28:31PM +0800, Wen Jiang wrote:
-> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-> 
-> In many cases, the pages passed to vmap() may include high-order
-> pages. For example, the systemheap often allocates pages in descending
-> order: order 8, then 4, then 0. Currently, vmap() iterates over every
-> page individually—even pages inside a high-order block are handled
-> one by one.
-> 
-> This patch detects physically contiguous pages (regardless of whether
-> they are compound or non-compound) by scanning with
-> num_pages_contiguous(), and maps them as a single contiguous block
-> whenever possible. The mapping order is determined by taking the
-> minimum of the contiguous page count and the pfn alignment, allowing
-> graceful degradation when pfn alignment is less than the contiguous
-> range.
-> 
-> Pages with the same page_shift are coalesced and mapped via
-> vmap_pages_range_noflush_walk() to avoid page table rewalk.
-> 
-> As users typically allocate memory in descending orders (e.g.
-> 8 → 4 → 0), once an order-0 page is encountered, we stop scanning
-> for contiguous pages since subsequent pages are likely order-0 as well.
-> 
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Co-developed-by: Dev Jain <dev.jain@arm.com>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> Tested-by: Leo Yan <leo.yan@arm.com>
-> ---
->  mm/vmalloc.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 80 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index a43965016eb4d..37cddb7f45a4f 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3576,6 +3576,85 @@ static inline unsigned int vm_shift(pgprot_t prot, unsigned long size)
->  	return arch_vmap_pte_supported_shift(size);
->  }
->  
-> +static inline int get_vmap_batch_order(struct page **pages,
-> +		pgprot_t prot, unsigned int nr_pages)
->
-get_vmap_mapping_order()?
+prep_compound_tail() makes PageCompound() true. Calling
+__SetPageReserved() afterwards violates the PF_NO_COMPOUND policy and
+triggers VM_BUG_ON_PGFLAGS() when CONFIG_DEBUG_VM_PGFLAGS is enabled.
 
-> +{
-> +	unsigned long pfn;
-> +	unsigned int nr_contig;
-> +	int order;
-> +
-> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-> +		return 0;
-> +
-> +	/* Limit nr_pages by pfn alignment */
-> +	pfn = page_to_pfn(*pages);
-> +	if (pfn > 0)
-> +		nr_pages = min_t(size_t, nr_pages, 1UL << __ffs(pfn));
-> +
-> +	nr_contig = num_pages_contiguous(pages, nr_pages);
-> +	if (nr_contig < 2)
-> +		return 0;
-> +
-> +	order = ilog2(nr_contig);
-> +
-> +	if (vm_shift(prot, PAGE_SIZE << order) == PAGE_SHIFT)
-> +		return 0;
-> +
-> +	return order;
-> +}
-> +
-> +static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
-> +		pgprot_t prot, struct page **pages)
-> +{
-> +	const unsigned int nr_pages = (end - addr) >> PAGE_SHIFT;
-> +	unsigned int prev_shift = 0, batch_idx = 0;
-> +	unsigned long batch_start = addr, batch_end = addr;
-> +	int err;
-> +
-> +	err = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
-> +					     PAGE_SHIFT, GFP_KERNEL);
-> +
-> +	if (err)
-> +		goto out;
-> +
-> +	for (unsigned int i = 0; i < nr_pages; ) {
-> +		unsigned int shift = PAGE_SHIFT +
-> +			get_vmap_batch_order(pages + i, prot, nr_pages - i);
-> +
-> +		if (!i)
-> +			prev_shift = shift;
-> +
-> +		if (shift != prev_shift) {
-> +			err = vmap_pages_range_noflush_walk(batch_start, batch_end,
-> +					prot, pages + batch_idx, prev_shift);
-> +			if (err)
-> +				goto out;
-> +			prev_shift = shift;
-> +			batch_start = batch_end;
-> +			batch_idx = i;
-> +		}
-> +
-> +		/*
-> +		 * Once we fail to batch pages, we expect to fail batching
-> +		 * for all remaining pages, so just give up.
-> +		 */
-> +		if (shift == PAGE_SHIFT)
-> +			break;
-> +
-> +		batch_end += 1UL << shift;
-> +		i += 1U << (shift - PAGE_SHIFT);
-> +	}
-> +
-> +	/* Remaining */
-> +	if (batch_start < end)
-> +		err = vmap_pages_range_noflush_walk(batch_start, end, prot,
-> +				pages + batch_idx, prev_shift);
-> +
-> +out:
-> +	flush_cache_vmap(addr, end);
-> +	return err;
->
-On error, if kmsan_vmap_pages_range_noflush() succeed you do not do a
-proper cleanup?
+Set PG_reserved before preparing the compound tail.
 
-i.e. to cleanup KMSAN metadata: kmsan_vunmap_range_noflush(addr, end);
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+---
+ mm/sparse-vmemmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +}
-> +
->  /**
->   * vmap - map an array of pages into virtually contiguous space
->   * @pages: array of page pointers
-> @@ -3619,8 +3698,7 @@ void *vmap(struct page **pages, unsigned int count,
->  		return NULL;
->  
->  	addr = (unsigned long)area->addr;
-> -	if (vmap_pages_range(addr, addr + size, pgprot_nx(prot),
-> -				pages, PAGE_SHIFT) < 0) {
-> +	if (vmap_pages_range_batched(addr, addr + size, pgprot_nx(prot), pages) < 0) {
->  		vunmap(area->addr);
->  		return NULL;
->  	}
-> -- 
-> 2.34.1
-> 
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index 4be85e194c78..23b31bc4bf94 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -222,9 +222,9 @@ struct page __ref *vmemmap_shared_tail_page(unsigned int order, struct zone *zon
+ 		atomic_set(&page->_mapcount, -1);
+ 		set_page_node(page, zone_to_nid(zone));
+ 		set_page_zone(page, zone_idx(zone));
+-		prep_compound_tail(page, NULL, order);
+ 		if (zone_is_zone_device(zone))
+ 			__SetPageReserved(page);
++		prep_compound_tail(page, NULL, order);
+ 	}
+ 
+ 	page = virt_to_page(addr);
+-- 
+2.54.0
+
 
