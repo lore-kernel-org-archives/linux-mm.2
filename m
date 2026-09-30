@@ -4,91 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D3DCCA5FC1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 18:24:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EADEDCA5FC4
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 18:40:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 050016B0088; Wed, 30 Sep 2026 14:24:12 -0400 (EDT)
+	id AA9396B0088; Wed, 30 Sep 2026 14:40:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 001606B008A; Wed, 30 Sep 2026 14:24:11 -0400 (EDT)
+	id A5A176B008A; Wed, 30 Sep 2026 14:40:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E597E6B008C; Wed, 30 Sep 2026 14:24:11 -0400 (EDT)
+	id 96E886B008C; Wed, 30 Sep 2026 14:40:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C82476B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 14:24:11 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 64AFB1C0FA7
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 18:24:11 +0000 (UTC)
-X-FDA: 85271253102.12.ADD279F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CA4B8C0008
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 18:24:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q3nm1bqH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 76F456B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 14:40:40 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F41AFC01DF
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 18:40:39 +0000 (UTC)
+X-FDA: 85271294640.17.85FAF55
+Received: from gwu.lbox.cz (gwu.lbox.cz [62.245.111.132])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 283A5180003
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 18:40:36 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linuxbox.cz header.s=default header.b="HyAdT/rm";
+	dmarc=pass (policy=none) header.from=linuxbox.cz;
+	spf=pass (imf16.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790792649;
+	s=arc-20220608; t=1790793637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FunQvZwAH5B4DZ2KKVAQe9PaR1db9gvR3K0YtXguIiE=;
-	b=gT3L6TxRrqNNEc9XTt95fixBw3p6lzjDES7SQJxIy8N4ue9DukqNndKI2OvrEE6y2Em+5F
-	bGtCpq8tkRDkg9/elUh1EgHKO+baJxlRxbs2zGyF/tvehevVpmDkDy25ucdnJnaLUoUHKu
-	TUgi8RqJLHVpqMej5bIOfM5QsduqX5k=
+	bh=UQWLRh3cX6MfBpqZVLbNMuRtWRQ1VYNiu2fQhkvtL34=;
+	b=kw5WX1LZIp6Zm9Lb/q9EZHkHvFF4cCjBF57CHnAoe6dVDyCks5b7/ZILoN6NtNUs3aFF+J
+	SnZd1Ochjyny5SFPsDOVqzRkHYVOkkN+Jw/LrL/PlUPc338quVs1DqjJmxKJva8iqkGfQI
+	iJf5E7X/LqP+QfV5hrCFmCUMGfePa7k=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q3nm1bqH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=linuxbox.cz header.s=default header.b="HyAdT/rm";
+	dmarc=pass (policy=none) header.from=linuxbox.cz;
+	spf=pass (imf16.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790792649;
-	b=urZKTX3LPF1IjbTgmitqHCVHHB0U/DGjwPvXCUgAlGAtf6GXUWWCGBxdLhBmOu9SmeBoxK
-	Nw/4v+qA46HSv1zsIegiNAEN1v8RwVta7ns8eVguKWM5jyKS9EXyUE+8jNhx0YfY3nSjQ0
-	gKikOoPJowOVu3WIBHydePsP6n6QS1w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D3F09410C0;
-	Wed, 30 Sep 2026 18:24:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D042B1F000FF;
-	Wed, 30 Sep 2026 18:24:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790792648;
-	bh=FunQvZwAH5B4DZ2KKVAQe9PaR1db9gvR3K0YtXguIiE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Q3nm1bqH7nevKq8YHNKNgJQTY046xcAqz7j8pKgxJCIcdNu5xd2F2b5ykJmycc5O/
-	 S4E0uPuPPAktCNmGa5JSzh2CgENEA10vJxxPdkXHO2CYbn8/N8bGwsFzxWiXeHhvsN
-	 Nk4iNlqQdWQtwRXAwHnbnm7ybo1RpyY4Pim9O/yYQAAjBsQ5+kH6ROevSTYcr7r5Hw
-	 7X3P+jQQrVPzgEvaGf3rk7cLgOH+uFawmA399Q24yZjAJsx5dKQVqJ7YjW5nDh5ZFs
-	 t3NPtngodXZtww1yXE/ZRMF3BH0FQcRZcFTYgs1OodcerpISIAb7nSMESXm2sJ/DcC
-	 sSQhCu0TlrhbA==
-Date: Wed, 30 Sep 2026 19:24:03 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 0/2] mm/mremap: fix two issues with MREMAP_DONTUNMAP
-Message-ID: <ar1TdGugvi9_RwG9@gremlin>
-References: <20260920-fix-dontunmap-partial-self-merge-v1-0-6ffb556f8f8b@kernel.org>
- <ux7od2uydetgsu3dpy6mmilhqm5phhnk2ioxn54w3nb3feohxf@2jqovoqzfs4n>
- <ar0y2odPFkCLMKk6@gremlin>
+	t=1790793637;
+	b=sdQKTlFaoJms3ObTgmQUToP7IN7MEVV+POcgGTcMrxAqBzFZjamUm+1Yc/7jV7JKsoto55
+	98LJ3OijoDXjtk77kkLhoyQ+KuLqQu5Ju5BcVom1OV4wDdC+i4EN/PEzSx//lnROznBhpj
+	pgqbETsIq0KFlwWdZ6GnZvXQXSuVRuo=
+Received: from linuxbox.linuxbox.cz (linuxbox.linuxbox.cz [10.76.66.10])
+	by gwu.lbox.cz (Sendmail) with ESMTPS id 68UIeRrL3595274
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 30 Sep 2026 20:40:27 +0200
+DKIM-Filter: OpenDKIM Filter v2.11.0 gwu.lbox.cz 68UIeRrL3595274
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxbox.cz;
+	s=default; t=1790793628;
+	bh=UQWLRh3cX6MfBpqZVLbNMuRtWRQ1VYNiu2fQhkvtL34=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HyAdT/rmOxoXRyWcabqH9NuxGQOg1f3d3+pRv+UfT0eNMm5SUrw36bNlFLQgKPrP7
+	 kJWTBeKnbKn+9izN0S80adjyt1kNPtLbMHrT8XWU76mQZsE1W9MMd9Im7utlYmP9hD
+	 x+SCeYCM/vlCdWX03EsostEOH5kGxR/r1PbuKm00=
+Received: from pcnci.linuxbox.cz (pcnci.linuxbox.cz [10.76.3.14])
+	by linuxbox.linuxbox.cz (Sendmail) with ESMTPS id 68UIeQTt020450
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 30 Sep 2026 20:40:26 +0200
+Received: from pcnci.linuxbox.cz (localhost [127.0.0.1])
+	by pcnci.linuxbox.cz (8.18.1/8.15.2) with ESMTPS id 68UIeNha2112989
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 30 Sep 2026 20:40:25 +0200
+Date: Wed, 30 Sep 2026 20:40:23 +0200
+From: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        akpm@linux-foundation.org, david@kernel.org,
+        Mike Rapoport <rppt@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
+        luizcap@redhat.com, pbonzini@redhat.com,
+        Nikola Ciprich <nikola.ciprich@linuxbox.cz>
+Subject: Re: hunting memory corruption bug in 6.18.x
+Message-ID: <ar1Xl7PE2rcoT9h3@pcnci.linuxbox.cz>
+References: <arY1Wq6R9OY20ans@pcnci.linuxbox.cz>
+ <arZHp8hjYFXE8Rkt@gremlin>
+ <arde/t0zQNEkWqi5@pcnci.linuxbox.cz>
+ <areOeRwZOez0eHm7@gremlin>
+ <arotyz5g6LozSjb1@pcnci.linuxbox.cz>
+ <arwNebjYXyGqrp32@pcnci.linuxbox.cz>
+ <arzRBv9ceJsxJppI@gremlin>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ar0y2odPFkCLMKk6@gremlin>
-X-Rspamd-Queue-Id: CA4B8C0008
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <arzRBv9ceJsxJppI@gremlin>
+X-Scanned-By: MIMEDefang 3.7.1 on 10.76.66.3
+X-Scanned-By: MIMEDefang v3.7.1/SpamAssassin v4.000002 on lbxovapx9 (nik)
+X-Scanned-By: MIMEDefang 2.86 on 10.76.66.10
+X-Antivirus: on lbxovapx9 by Antivirus 
+X-Milter-Copy-Status: O
+X-Stat-Signature: z93rhjy9n1sezup95nu9mb98846ohw5q
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: yxmhfuuqikjysct6pzri95hsmi6nu4cc
-X-HE-Tag: 1790792649-767359
-X-HE-Meta: U2FsdGVkX19ui1a9bmeWGQl0dIB/fKIGG2k/03kQ44UKRP8vC73SZB3D3SDLA9iHBXXTj9cVBwG3TkiciQ9OtWD5Z9EcsOfkK9WqCus0ZRActjoioeSAdf8vVN/Bwe4eYw0l4LohzcVSIzYaxFv93ckJoTAWEvZLzxbIGYCWZdH/2F0g0/CVZ1jGcgQtQ4YeLIr3AjrN1Ann2ntQ/26a3GrfmrZJ9ZVp700BOxbPMSFmhu1tnlOtuDQKNl5SVo4dg3/zeg47Qfr13Cx2X6zPHhy8SZAi5W51hnv3JzBWN9z7/HLyrsnl7ajFVvSADGsmuiGFXXpZQhlAWJLDzLwqv7SX0wzmHJ/kGOCx7PrP8ykf+iERCPbuEtHzMgdn7AgacsK8NvujyeISUOSFn3vWMFaCY6V+7NuPPdABUg+oXSjL2lkSlHJhoXx9I8XzM83Qv2lorqS4rp8TGGO7NZ3X3X/7J4N4cJsoVXLV9BlQzLiNPPXg5HcOqeTZ+lBsiQrLXBLvY4hCfgrR7xaho1RvdAeUnQXPuEP4EHUoyeSYVkK5fN9U3ux8TkB6rWxFTqcrotwzHRj5FPnxJYEYeRLJja65toXoCPEHhVUyT0s3WiJ+J1IKPmHC7Eo2o8R/9XeUSP6KEKAzz6+8cVdwdjIDtSbAqb2twFO5tv0ioE4W9l9+R4v7VibgJs/xBn99ytW4/SqR97KWe470fsxgo2st807Xqhkr4FOOfR7TCCPFHhgy1Xi+GPkCEDukAAQbDVWS/6+Jni9o4WFixPtA9mtlF8/8so5VGiHWA1A5GqJo0tao6EykjBe3B/6BDztjOuN4VJOAqTrNnRHqyGUgxLKVfxXzKDYWYRannFoUfn7un5sYDOTkYiQbMunKA7X/jIbSR7cP1YrNGfJVs7HE6fAmBsjp1iDOGcg8k1F6J1uHm+q6SknKFTl9+/N1urYqnRY2KCyhn5V4soVQMgSkdIJ
- +s6UnAS3
- eSFD8X1Ic/j1Oqe58REaEF2jh/Y7V4rsFWzQBnb7K+fV5P5X4Qy2sq1txqUZJH9ZKxS+vxh/8jdF1IbV1nelVDYRiG6Qb8I3MakDLVfMGja1cUrfIIqgzj5aOooD373eJtvfD0qvKqV94obM9uV7EKvRCDfOGp2rFWTwIUq8Lx7kOHWjG8BWOY8vzgnIsscRsBmph5ZyHsT3DxBvAbcyADfGpS5XNOtY+4MdN7RG7D0qBFvUnO9uIiFEHdT0Y9OwIwRpau1P6fo31UFGZd6sImB3KHMNeKn9EIlKtSa8mHBmDj/iGZHCLJ6WDp1xitek4Hu6Q
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 283A5180003
+X-HE-Tag: 1790793636-623875
+X-HE-Meta: U2FsdGVkX19YXw56zcf8IzvoyUoHnbPBWGr1PmJijaIOQtaf+B/ZFi0NSdnp9d+SwRHhChQDe+WgAN0V35pewaFqY3Y5nrwge3YyLPuSve2i0oueV2OQUsCbQYc3DtjSViuZ4/S270+cW2PflXFhYMXt8V/uepMTPvZVJ/q/tHJdYlnUJykgbIUSRxmNp279dR+NGtLYag4L9a/j+44HJOrBT4/LlxSUGGCEwMBi+HHhsPd9EkiBamxXpqbCxkymKxWYeD0dtbqiLnqb30nHSS5CQ7kki/UuWDFrE1xkyrndRwqJtLISbhrRZ+gAZz4gIw50u2n3SqXzyg4d2bx1q57i4xWr7IfRcPsmXpjbI7s9ixSMT6AVPbRkt10yPDfNPBV9HckXiXd/4akAZWSQqHjp4uZNExl7TYLQlf8S+9Li2bne1kh4bXfbGAALx34fBymkjBYkHT9Jt2rkcNeS6VG4cnkiid1AaiaUWqTn5vWlY15pizTGWEUD/rVw90MxfVMaSGvNJwFRxlbf/cKbywsviG0w5408fGC9s5GM37J222JNCwmCxmCufH5ABYUr4OBTQ4yLCu0QINrn6Z6BL7kPK6Z6TQ04P1ATIpniZ9X68hPUAlqL4FTxsi7QwfiNufg6vdn0XZGe1JaHdFw6D8F+T9kZ9vSuOiOeRJx/FtbeZ8XuHiMdw+FSKAPmClOgRDQQmO2o3De049zTMnx20irZKsmKQrncApb2mSRZykCWc7Gf0h6++ACUrd9PtmUw51y0j1uIPg+57KgBSFC5y9SLpHzSxncZDl16kujwXKYgaW7JYGrBKTAws5hSyVSkTn1JIxQ2dAiesTViVlDv5Lds0cT/nNDdCdTBqiMZ3PHikAjS+ZzNfoD9BoJDRwHelLCmJvOk3HMmZquIAgU2WuSUJC19jP37Np0VwW3kE/kKZT7ENmSTQgPb0AG6gHU9pTzP0ibXuU6FPMo0e2Q
+ BfF7zxHb
+ g8rP4Lw2cFt9TF/L7z0Zl7VNg6rOQb+aKdgHubLuCie6kioxx1cH91V/nn2qKXBnSh8Y0DuE1AInnLtfm6GP0/z93aIvI8kyJNEAh/l121597CaszkYNb/WIkOyg4UWqjckWWQpmNef+9Qzl0LYcPn9b13rd6TAr/4gaaGTRzShiMFNIsJCYSc8G0NpLOjwwSebuhAbVefAcLN+0hhIAFvrWX49q/4uPJO+FsCYdSlX21pI0PfLy2kZ075Ya7zEljdSJ6f+LpxlCgUz/PxL8lscu3/+Fkr5MAKTX8w/iCn6jo7N1EXKqBiVZwZ31hAoj7w/lWkH+CetcSykg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,42 +113,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 30, 2026 at 05:04:38PM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Sep 30, 2026 at 10:59:50AM -0500, Anirudh Srinivasan wrote:
-> > On Sun, Sep 20, 2026 at 03:13:09PM +0100, Lorenzo Stoakes (ARM) wrote:
->
-> > > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > > ---
-> > > Lorenzo Stoakes (ARM) (2):
-> > >       mm/mremap: fix locked_vm leak from MREMAP_DONTUNMAP self-merge
-> > >       mm/mremap: fix locked_vm leak by splitting VMA for MREMAP_DONTUNMAP
-> >
-> > Hello,
-> >
-> > Apologies for the double mail. I did not hit reply all first time.
-> >
-> > I am seeing some failures in the proc_maps_race kselftests after
-> > this patch was added to linux-next. The failures are in
-> > test_maps_tearing_from_remap and test_maps_tearing_from_resize. I have
-> > attached some logs below
->
-> Ack thanks for the report. I'll dig into this and get back to you!
->
-> Instinctively I suspect the tests are making assumptions they shouldn't be,
-> given this series has the MREMAP_DONTUNMAP case split in advance.
+(CC Paolo Bonzini)
 
-OK, the tests seem fairly sensitive to change, but the correct solution here
-overall I think is to only split if the VMA is mlock()'d, so I'll do that and
-send a respin + cc you on that which you can check!
+Hello Lorenzo,
 
-That should fix the tests and avoids unnecessary splits also.
+> 
+> Yeah 6.18.15 is expected, I'd not say reverting is really worthwhile honestly,
+> given what you've observed previously.
+yes, I wasn't available at the time he was dealing with that..
 
-Thanks again for the report! :)
 
->
+> 
+> Maybe worth checking if commit 26505e1b5b54 ("KVM: SVM: make svm_flush_tlb_gva
+> do a full asid flush if NPT enabled") helps in that case?
+sure, I'll do that.. however, the patch doesn't apply cleanly on top of 6.18.54 at
+all.. what do you guys recommend, is it OK to adjust the patch to this kernel
+(I have to admit I'm able to do that, but without any deep knowledge of the subsystem)
+or do you recommend to apply some of the previous patches?
+
+tried going through them, but its ~134 commits affecting svm.c between
+v6.18 and 26505e1b5b54
+
+cheers
+
+nik
+
+> 
 > --
 > Cheers, Lorenzo
+> 
 
---
-Cheers, Lorenzo
+-- 
+Ing. Nikola CIPRICH
+technický ředitel
+
++420 591 166 214
++420 777 093 799
+nikola.ciprich@linuxbox.cz
+
+www.linuxbox.cz
 
