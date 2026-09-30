@@ -4,140 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00855CA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 12:41:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20032CA5FC5
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 13:28:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F4CE6B008C; Wed, 30 Sep 2026 08:41:54 -0400 (EDT)
+	id 000986B0088; Wed, 30 Sep 2026 09:28:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CBB56B0092; Wed, 30 Sep 2026 08:41:54 -0400 (EDT)
+	id EF3BC6B008A; Wed, 30 Sep 2026 09:28:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E1516B0099; Wed, 30 Sep 2026 08:41:54 -0400 (EDT)
+	id E09106B008C; Wed, 30 Sep 2026 09:28:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CF6AD6B008C
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:41:53 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 59CF31C36B0
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 12:41:53 +0000 (UTC)
-X-FDA: 85270390506.22.1442F78
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7178B40004
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 12:41:51 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fyWQUw4n;
-	spf=pass (imf12.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.229.43 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790772111;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BA7A06B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 09:28:31 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41C62A07B4
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 13:28:31 +0000 (UTC)
+X-FDA: 85270508022.20.9660CF9
+Received: from mta1.migadu.com (out-224.mta1.migadu.com [95.215.58.224])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0462812000D
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 13:28:28 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dw9rFbZO;
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.224 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790774909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4VQhR2B4f6Hpo8/6oGqxTMWg9JuHEuKmXAqVeCtqT38=;
-	b=RRJJqZq5ynaJCpMaEPS+X7I1bQlBqfiqf03C3guhmlOaoSkkjwLZAhElUGw/h0UCF9shqy
-	EtwHpslAVvX95U5AfxBqm7R8FbcXZqT8n15OWcjwLq/qxPhTutu/jtz6sb3mLtYF226UX+
-	hG7MMLYvwyT0LfzLlBgIshr2kv9uc0w=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790772111;
-	b=OMLwGfd3a9DiY3j+MPiecrteGRR2XOa8f3wZg7YGkdv41uRzqmdLx/TKY75JaYJsWzuZ7+
-	gTf4FB7IrxCCKcx4nxsKg2QWB7P+IYYCLF/5pkHZgEE7xoDrgpzYBwp0a25XC4FtkzJWLh
-	zAM6ljUMbOk8LeLnndynshUmKwKtXw8=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fyWQUw4n;
-	spf=pass (imf12.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.229.43 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33e79c06622so570146eec.3
-        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 05:41:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790772110; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AhfcRRQj810RVlXFDhzMDrgH57X7OUcRtoyA6VCtw2FJzbnX6BiRx1V3UyEzVd0lTp
-         LEzVAbxoiBQRnwI8+SXOOSLV/HpLIMB7tufKXm1HE+BEycYVdkMtXKn/Z+FInWmSSUGW
-         U+IS+Vi9D08eflAMN4Y3LsDXXCa/0rt+WaOKGKJwjFnAh7fpZjAtz5vgxcLJVp8t5Xwf
-         6Jwg7nZj4MuZ9xBVw7OV8PVP+2neg5u1BuBgBNgFvDNLBcUn2Ohfkwc8LADIbBnEtBeD
-         29wwJ0fffTHkBvgjINwXUqS/cr7mGpc47uhqJaaUZOJtQ3JyDEHOrOzfb6J2P4UxY3HE
-         VcoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4VQhR2B4f6Hpo8/6oGqxTMWg9JuHEuKmXAqVeCtqT38=;
-        fh=7FqWMBOkOrqZIUd/4018vh6xocsubxc+V5kMzEttktQ=;
-        b=XdoRacENUuGmq11Vn1P2vXuaUcnyiBhu9NiInK3cgzCZgeqCdmPVH0ar01xjTZ6C+E
-         Fj0wXYANlpAYCn92xDXFraFfoi+bF9lDt36jvfeHn1WuFwF/GZ+s3+Srylm+rIJCRsB9
-         fja2lemxfHISN75qJOfoAMsoOmQ1ivUunoVnyMvUd3x9sEeSMSf0O/cLlgHiCGugEPKq
-         j8P1RmUM1F6sBflJquIHxgTlVVBNWRSwm/WlPtDwJRITdDQngvkQl2eRZwSHMZ52gaLb
-         Zr3GZfURC6ZzyrKeGrSEJAlKA5wpbEiYHcmUWUzy1ZOCY7WJXnh4SKjzp6i7Q2DG6GoA
-         n1qA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790772110; x=1791376910; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4VQhR2B4f6Hpo8/6oGqxTMWg9JuHEuKmXAqVeCtqT38=;
-        b=fyWQUw4nwoA/Ox4WrjeCGwtLxbMSUghFO295WXzU6CZKX/fshVepYFZtwZNK874JYW
-         GvEyJyADjzhPQ7wTaalHG85olOkZVE22XEcoDDRQGzmVXRlJG5j8YmWRoQyx7SHjh9/M
-         VSwT0MFgcI7se6sFcnjnHcYAgz002vy2ilSywrHqs5hzba3/Y9rMpD2bCC3tu2YbtvRV
-         6KahGy4OJz91EiZ5WcFBhyqE5a2VNJMpwXslgocpGb8zfQrn39QJHCuEKdaG9vIPbXok
-         t9d8eg1Wq4t2z4Ax1jh2R0rPBKqRQYY+pc0iNo/rljbUnBSZ5kF1aFV57V813E/FJ3is
-         KkKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790772110; x=1791376910;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4VQhR2B4f6Hpo8/6oGqxTMWg9JuHEuKmXAqVeCtqT38=;
-        b=qwvMuJV2RgpFtNo80NZFXsJnH0z08xzz5slMp2eHOGkPpkvJzw0qgS3Ns/MJlZmrnI
-         1UqFV7XKOC3NU0+tn9vbzwfCtvG6crR7b3xrBG39A6lAlowI7cQBPEUTD8NcYD2IC312
-         l0GrmL13m2MfpzkR4c0xzGV0OoFsLvs8/wBhjRjGj2A+57Vjt3LbkXgTHDP16Kx4EQ2V
-         O9WHKU/vV/hQZ9amNm2ypfGJZLZafifO7IPAtAm+Gu4rXQJIdG2O7rkXOkQDAj2g9++G
-         JBv63ksyh4+2cAdUU5V5IwDuHS/YZV02TLOj3p1r9VThHAP08zfPtp7P9qXIJ6aKycbs
-         g5uQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwj6ChIyk+BjphM4ixfR+3SOMY0jpU90+icKjPHxA25BJUhX9a6ggvADO1TjjCfMXXWPpi3Q8lNKA==@kvack.org
-X-Gm-Message-State: AFuF++lDx1dRbs/mby3/Ke5tqH8srp8qWLV+LUcY6di4dTyI7SSmcY3D
-	+6CXu8IX0wpKViuIgYjob1VaWB8Tzb6XrZ1JOfQ+mHHZZEa1GRyTqxTvwl5ZhtnDBTTSmuf+US9
-	tJW88oS7YXFxw3zQ7dAv888fquiHc16g=
-X-Gm-Gg: AYBFou2ukSiQjfDQSFAzBO46aH2huDNlo+gZT3SzafDYY3IKTIjhNMwVpxlnS7NgW0r
-	0Ev/cT8+UfVBueBETlIlRC7fIyaFEIUFdjxZOr1xFDzX1LpyGI+j2hs3LDpXB+fkGdbM+B1Xfjg
-	6RLFclN2RxBnHazF5jQfrEiyI7ZwgY/4QeTjK3Jt7rQcXxEfDPMFOrfbsLwxuQR1syJhsBUeVia
-	7m/pJC8ApaID0oQyc2gDF9quLD3yIZZwzifL9mCL05fZzylOFah1UpR7ArseokgaLRQlPWaS/+a
-	WQlfD6ch4xklrCby9Q9anjo9xO1jNnAFqEdfhiZPvwADXwABly/isCQcqrZ+GQWXwWrDhGmzagV
-	J1azl/0fKtMk45tKyC96reX7mlia7qP/NK24RXMbVfQnwYrsPwkZbObF+jdI3KlNCdIwwdT6gZW
-	WvEvvOwou9sgTTmtNkbWKNk2N1ekvEHYMC4neLVyhlGDfURpWGlE8=
-X-Received: by 2002:a05:7301:1503:b0:340:f698:fd56 with SMTP id
- 5a478bee46e88-34cdbecb18fmr2552081eec.2.1790772109954; Wed, 30 Sep 2026
- 05:41:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260113192949.689834-1-lorenzo.stoakes@oracle.com> <CANiq72nHOinPTuJ7NLP=X5tLN76uxzz0k5t4tTcU+pz_JOCPHw@mail.gmail.com>
-In-Reply-To: <CANiq72nHOinPTuJ7NLP=X5tLN76uxzz0k5t4tTcU+pz_JOCPHw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 30 Sep 2026 14:41:36 +0200
-X-Gm-Features: AclHuK_6PgeLG6BwdoZVcsa0OSKE70B150iJ6uNX8SMscLbiFAZtE32a1FCHYWM
-Message-ID: <CANiq72=bTO5qsQWqfpgm29eJ8vufBrBg=uU0vV+fpunNsVk7mA@mail.gmail.com>
-Subject: Re: [PATCH] rust: fix typo in bindings
-To: Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
+	bh=PM+HIaQaVukBWhY6PwwAw8oJcqlCKt9t1wHgfzzd+08=;
+	b=IaN66so8EU5RdUQpWelDC79vSi5CCD9mPxtMoPZWy+FZ4SVQaHF8QAcEv/s4kM8J37ZBqb
+	QQ7fb2k62zlV9iogungjr+9RCx4z2dTdR07pNgC/hNs9qE0IQSeV8gDiwx3yMbJToaldbS
+	dCH9u2eeKd1DKH7mCIhh7jFG5gZQ5sg=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dw9rFbZO;
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.224 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790774909;
+	b=8de5lthLC0QZWvjjrUuGc/ZNaKDcH/L8ae1XhcNtv+iKlsCF4JQeUAiAzWC8sc4OZGLOs5
+	JfxNxs9TyIr9aQJjTQUELsR0BLjDAf5IkRyGhNecoXxIOJkVd6ZGAz/erS8vNeVb/+oAkY
+	SJylw2rj+rDNOlPhXo+CQ2t/vloFsyk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Hsdm4rJdIk1UsbW5gttlY7rEJh2gpgb8d3cHbDg7CKw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790774907; v=1; x=1791379707;
+ b=dw9rFbZOf7XvxLNqrULbYFqI/7sEpm2RPYJqOonRKM+bEjnj1BKPUV76yuCHYg67mCK2+OXQ
+ wMMl/bOPbsOOp/+ZsWSRIONsey/wvGPgOpPhjHoqgxDk8pr099nRBEDh/qaFit9hTjnLM+Slu8L
+ q1JKEmWRYRONghXKspKAWN3c=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 3a312f617140e728;
+	Wed, 30 Sep 2026 13:28:26 +0000
+X-Mizu-Trace-ID: 3a312f617140e728
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 30 Sep 2026 06:28:21 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Tejun Heo <tj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	JP Kobryn <jp.kobryn@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Michal Koutny <mkoutny@suse.com>, Amery Hung <ameryhung@gmail.com>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Emil Tsalapatis <emil@etsalapatis.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
+	John Fastabend <john.fastabend@gmail.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, hui.zhu@linux.dev, 
+	Donet Tom <donettom@linux.ibm.com>, Greg Thelen <gthelen@google.com>, 
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, bpf@vger.kernel.org, cgroups@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [RFC PATCH 0/4] memcg_ext: memcg policy through cgroup-attached
+ struct_ops
+Message-ID: <arw4rjVkm2ob9ioL@linux.dev>
+References: <20260921192559.2619635-1-shakeel.butt@linux.dev>
+ <bda525506b3fb3e61da28a112f28abba@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bda525506b3fb3e61da28a112f28abba@kernel.org>
+X-Stat-Signature: tyirob6jt3xwbsd48rjxfhmt8fg6fquq
+X-Rspamd-Queue-Id: 0462812000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7178B40004
-X-Stat-Signature: 7x9gtdgtuiqe4earcdsge4tk7bkeihaw
-X-HE-Tag: 1790772111-109120
-X-HE-Meta: U2FsdGVkX19q07hGtf8/napztyAdkLo8QEhqnRe1sLXPtweko+9Z4OqgXb7Xf1I+65FhRYqZxRbdVALl8nXh4zSfrJnkki5r3lq4p6jaWv2xBN/b5B2sEbtM85kq/ntk25At73uQj6A0jGxcYkYHwD2wWMHbG3qykm45FnoZdVbRlJ7W+uKDBdg3C/sjMixB3FjL45FLsg/KdeJ2UswEW13sle2jR4hlH1yKVSU+pJIY+lkQtMWhMbcrgsI50Y3sg6BGCLZxkYXlrMie6QOB+DkjN+LqjAE8xDFwpSu/HkQNMl11bewNF/Zig9PJ1MZ8VRytVSMgvD84AUvd5pAIiBzgOrmiu4VfSLRkjwPOCENdWdwP0TzPpKm41V50iw8CLOfUd1/75hmDKfsTwt2w/r/8+GbYKLwr3vK3z13ZhrTtqKEE30Pt1/y6SxwamVM/08KX7JWCgW1PDZIqb3f+IujAhohfVG7rGbTSMvPMGezYwPLAMke4Nfq9nh6wxNF3wBxE0qY5Rn26TASuwTbvHmku7HNJ9vLTeaLM2x2dHGW5C5MgImRSXSyNAbzIUqW+txtt1/HXP/MlO1SiTXLjHtEyO22t+7T+y3shG7hIXdf/YmDXfmDQgywoNB0HX9rz+MTFEyO/COTvu2av48f4vcvdQpaLLD6HYqyh6visZbG7u9felEJilQrFHktArAfzqZcNCA1aCZNYW179tm2V5Dgm7g0XPyPWX2E5OSWNv5YNfVHdvO7R6eKbQWfEv3iGr1TTzkBsLs5TqcCTMhCHilUDg5ZsqJIznOfUsKg46BfGchce9Rv593X5hQ9F8+RRfNne9EMvthp/jcNK8zVvus38tn5eCOZ6g+sZ6zlWlS5jvZ8rWJTKMV83ke3VaeTxNZ/PJcNpU2AWdmYdJNMYyFFwlgpWJaT33eCZIVzOD7Klt2cKm5Xt2lL2uxqOoqY16JPe2LHvIMMeYhoe8aF
- B84+b9jQ
- Fkz5/7hRGvVLpeONLub1Pc8ztuINFoXaqMaVfioI7NvaX8ICiPyK8ofRTNmkgJlorAVhJfxdFgaIAK6OA6v+PHOsyd/3qZLuLG5XYje3aYf8ap3N97/mzy/C9MQWJV8l7bhkIRyLTIBMjZNFFHyRbazX8MePHxmfZ+GlGDPxmAg7HlSo/1Sc8qlWtJOI11HOV2Vc3RoOr2MCxkzwe08huyFdXkNHmuCL+85m6fY855zQ9GI+44URLCzxIJMLlUMuZM5PiKOiCGg2g3Wtm7WZDKUMoQzMcSBPi0JcIUFhtUtQ1f7HXU721V2RWQclnlXQLxRmxVYkkufIL1UBfqaWR/0SgPK6jTHsx6I77TC8UV0pbJcllDge95co0B/6VTVRQ5sjV3k3lK48VIFIHtfgL8VOFoWr+mnMgLfMoVIdVGkY7lHsfM0fqwkIK8ZBTgz9HW5VAxzAY9KnqVJrwtbu4c+Ry5f5Y4QiEmMKAUbtCiX6jI2oMiV35kZCDVfQi632wKhIMQXPWnsVelMr+PDFY9uQFolodA98lMPqxzDl5WGUEqNushOYwiC38ansSBvtqHn2x
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790774908-755518
+X-HE-Meta: U2FsdGVkX18PIrsmKUWH472QhHT4aNArBjxWa1RlxCFvbrymQehO/nfbd+krplFoXRdOoUKRUvNi1f8z/ydAbsMLqEllDJSg+rhdeMx7if167GjB5EKHNS0tN6A3n2Hk57OOxJZ2eYgIiNjY3yQkjW1hHReaUzYBwDLUJSsBIrxcDWvAzi1UAwgYdkiuixMp9OPCb0WYOnb1QVuVPl7TT6fmcHljBOEerLRdO8s2GFKtsKCeD8f4rvGWK6n0xQvmvhMxzqFwrfnPfYLI7QzlsyRshjNv3L+c2Jid6WovzX/dFWodeJGjlgH5oecyyHg6CLp88CA0erf77IWtbt9NaOIqSiS7KsW5VZJzaJiKl054L2T+DvHjFVCTJJ4mv242oGjm58C222Nwxy2JpN/6h47+MUgQkpmc5AZLRVuipNQEgrg6t/NBhm/h7+8gboJi3SIjrnVSx3ZoJLnzppdKRuXmIq2ntEbia+ndqnLEoAFYKHLP69Ulhm0SGKL94YzNFvkQw90MQ+lkvERJRE3EYC9FD1kOxeeaUjb4kaQ/TZYjmt3tr5gD6ycGXpD7oG2J7y/yhbey+MHb4CsQXgi/RLcXDC1GElEjFNFqnGn4ZIULEDxkdLQn61ZoCyTVswo5a445Xf9e0nswxtAQFLTENzC0Qm//VAppfQy07W6VNvvOQjNmSJsrXt2hSyL9QsqG6sYbts4uuiQoHFVal5Nxi8rM4fBn3Nqwm794XG6QWZsOAlGuKv+q6kzAqkkKEbEOqJ7443E+3JdVhnTedVXciupziSCN2RM0tJpQQ9ZABqMkD/4FeRVGHeu59udUtmoyISpncepirZSgHSCP83b81SC32bQW+izrx3OTjzXwYfrsjP8FTC3jufU8ghXrw1H4NqSSZwaqyJokel9jaxA8FuNMLilLfTi9YO2S5SwaZedRC1gZ9I5E0AV3FhipYKzB0buVMEgmovWSAQEVI8t
+ 8KZ7xa2C
+ kGiPtzgH2c/avPPb2siMwDsne9bjprjr1mpkcWMvY7lgISRGtZuaeAMc+MVBl2mlA1TFo6chFa5j1A4FNNCivdjNwPYwPGsxi2tOtZV5r1KkVp08nL1sMvFRLDcow5Kg6479suowsO5euOVv7uBGJiJvOCzcwfjx9nkxQuh0VE84w4oP8i/NROfReBcFQhJiY9XoazzJRhQb4lTzehui/GT5OKIrst/APIsiO6fRz11x9VYxUEX2waCJue/UamWDCB7IsbKQPtH4zhxbFA3wz2nPnhGhX9KfpYhxtctjANh3MsFImX9/kfsdsGIqjIek+h05mmB78CsaYwzbAP9ZNHOPvJNWaSzN5kTna1TYJdyZ/B16DBMkg6icbSMlHKhy0cxShaWw1/4XpL88=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,42 +102,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 30, 2026 at 2:39=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Tue, Jan 13, 2026 at 8:30=E2=80=AFPM Lorenzo Stoakes
-> <lorenzo.stoakes@oracle.com> wrote:
-> >
-> > Commit 2b6a3f061f11 ("mm: declare VMA flags by bit") added a number of
-> > overrides to the rust bindings helper as the change performed in the co=
-mmit
-> > caused the rust binder to not be able to automatically determine values=
- of
-> > VMA flags.
-> >
-> > However a typo was introduced leaving VM_MAYSHARE to be incorrectly
-> > interpreted as VM_MAYEXEC in rust code. This patch fixes the typo.
-> >
-> > Fixes: 2b6a3f061f11 ("mm: declare VMA flags by bit")
-> > Reported-by: Chris Mason <clm@meta.com>
-> > Closes: https://lore.kernel.org/all/20260113185142.254821-1-clm@meta.co=
-m/
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->
-> Applied to `rust-next` since it doesn't seem urgent, thanks.
->
->     [ Reworded to improve title and to fix typo. - Miguel ]
->
-> We also have a similar typo in the `bindgen` flags -- just sent a
-> patch to go on top of this one:
->
->   https://lore.kernel.org/rust-for-linux/20260930123645.302318-1-ojeda@ke=
-rnel.org/
+On Mon, Sep 28, 2026 at 10:40:20AM -1000, Tejun Heo wrote:
+> Hello, Shakeel.
+> 
+> On Mon, Sep 21, 2026 at 12:25:55PM -0700, Shakeel Butt wrote:
+> > try_charge_memcg() calls __mem_cgroup_handle_over_high() before it returns,
+> > which reclaims and can throttle the task.  That happens wherever the charge
+> > happens, so a task holding a kernel lock can be stuck there, and everything
+> > waiting on that lock is stuck behind it.
+> 
+> Why not just raise the lazy bound high enough that most charges never
+> enforce inline, and maybe annotate the specific paths that can allocate a
+> lot so that they do? Inline enforcement should be the exception, not the
+> rule. Flipping that and then trying to reverse it with custom BPF policies
+> doesn't make a lot of sense.
+> 
 
-Cc'ing the new (kernel.org) addresses of Chris and Lorenzo since I got a bo=
-unce.
+Please correct me if I misunderstood you. Mainly, you are saying that we
+should have a sane default behavior for memory.high. At the moment, if the
+current charging process accumulates charges totaling more than
+MEMCG_CHARGE_BATCH pages and the target memcg is over its high limit,
+memory.high is enforced synchronously. You are suggesting that we should
+increase the threshold from MEMCG_CHARGE_BATCH to some arbitrarily large
+number. In that case, synchronous enforcement of memory.high will be very
+rare.
 
-Cheers,
-Miguel
+I am fine with changing the default behavior. Actually, I have been
+contemplating whether I should propose a revert of commit c9afe31ec443e
+("memcg: synchronously enforce memory.high for large overcharges") because
+it has introduced more problems than it has solved, but that is a separate
+topic. The initial commit already mentioned that MEMCG_CHARGE_BATCH was used
+arbitrarily, so replacing it with something big might be acceptable. I want
+to keep that decision separate.
+
+I am not sure about annotating specific paths. I think it would impose a
+greater maintenance burden as the kernel evolves, since the annotations
+might become stale. Also, people might object to adding memcg-internal hooks
+in non-memcg code paths. In any case, this can be explored separately.
+
+Returning to the actual proposal, my plan was to start small with a narrow,
+specific use case. However, my long-term plan is to provide a mechanism to
+change the default behavior for custom use cases. For example, for
+memory.high, I will provide a way for users to specify what behavior they
+want, i.e., whether or not they want more synchronous throttling. Second, I
+will introduce a mechanism to trigger async reclaim workers. I also plan to
+extend this functionality to memory.max. I just wanted to convey that I will
+keep pushing this proposal, with the use cases adjusted a bit.
+
+> > One concrete scenario which can be resolved by this new feature is the
+> > kernfs notify worker. It delivers notifications with the cgroup2
+> > kernfs_rwsem held for read, and the charge for the delivery allocation goes
+> > to the cgroup that set the watch, usually one already under pressure. So
+> > the worker reclaims while holding the lock, a waiting writer blocks every
+> > later reader, and anything touching cgroupfs stalls for seconds.
+> 
+> Slowing down the kworker inline doesn't make sense. It's charging on behalf
+> of the watcher through set_active_memcg(), which already tells us whose debt
+> it is. Wouldn't it make more sense to defer the debt to that cgroup instead
+> of slowing down the kernel thread?
+> 
+
+Yes, that makes sense. When a non-task-context charge exceeds memory.high,
+the kernel already schedules high_work for the charged memcg. I plan to do
+the same for kthreads so they need not reclaim or throttle inline. This is
+best-effort reclaim rather than exact debt accounting; I still need to
+examine userspace tasks that charge another memcg through
+set_active_memcg(). I am addressing the reclaim worker's CPU accounting
+separately.
+
+Thanks for taking a look and providing feedback.
 
