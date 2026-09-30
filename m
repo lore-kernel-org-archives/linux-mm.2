@@ -4,141 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EDE6CA5FC7
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 15:29:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45385CA5FC7
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 15:33:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 748AF6B0092; Wed, 30 Sep 2026 11:29:25 -0400 (EDT)
+	id 3F5BC6B0093; Wed, 30 Sep 2026 11:33:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F9886B0093; Wed, 30 Sep 2026 11:29:25 -0400 (EDT)
+	id 3A5F96B0095; Wed, 30 Sep 2026 11:33:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 610316B0095; Wed, 30 Sep 2026 11:29:25 -0400 (EDT)
+	id 2BBEE6B0096; Wed, 30 Sep 2026 11:33:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 37BDE6B0092
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:29:25 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B4A46C0128
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:29:24 +0000 (UTC)
-X-FDA: 85270812648.22.205E4F7
-Received: from mail-qk2-f40.google.com (mail-qk2-f40.google.com [74.125.230.232])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A89BF1C0004
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:29:22 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=intwyHC9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of rockeet@gmail.com designates 74.125.230.232 as permitted sender) smtp.mailfrom=rockeet@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790782162;
-	b=s+Xd1fjEzzJJ9Q+1t+m/Y+DthH3oVg1vz338XNFEKW8XtsmH8JF9PQ8SmaErERDjayt/Dg
-	B27jZlwg6I0BdMQHDyaa+uomtH5H/EicTXLPFyLK/HjvZP2JZ8dwYwl+b5ssSCsj6k4G9C
-	ECi+c1QrjWsQElx+khNv0YNsTHunj70=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=intwyHC9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of rockeet@gmail.com designates 74.125.230.232 as permitted sender) smtp.mailfrom=rockeet@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790782162;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 055756B0093
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:33:19 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 81273160117
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:33:19 +0000 (UTC)
+X-FDA: 85270822518.01.5B1EFB9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D03221A0004
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:33:17 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VTD5D1us;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790782397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+s4UUy/dbmXVrn6D88sSbqjQQFVAT3AI4v3oDb3NPoo=;
-	b=J5g4QIoOLoilTC82yTY93tha525jFL5GKnhZEWvnU0zoDrVLWgDAkq0Kdzcbq1e7rdAOTn
-	q4PW0tR1J4Bo7RkjNpoHJrb8MFsCOs061PIihicE9oAmYDmb8ZmkGElqiQeh3ngzqyBmij
-	oOOWBLVcKeRPZGkr9An6qWHWJ0b+9/A=
-Received: by mail-qk2-f40.google.com with SMTP id d75a77b69052e-53324cfe178so39690551cf.3
-        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:29:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790782162; cv=none;
-        d=google.com; s=arc-20260327;
-        b=e78t93l2wDNrzEoRc5WGKQojHY0P0rFOAEbA24hZOtsVd+tNAhMjAH5nRiZrnLPNiU
-         FhJRW49I4ZE9eTkyTowxBmCLYO1dgtHYWm5oVudCJ0F9wXV6vzBU+u9y1Un3uCxjeqyK
-         9lPOOD/M2npg8xPaVKsZW+i+1Ye/C5Rj6ewxznzMzL3oJNK6BsjK5wegXk+ktJajqsru
-         NW0PmdpU6xkUILj/K5HAhR7+ltV9cYoZO0Ir1d5cHfQeUfEz2RbrpkrO9uiPbDt47oe5
-         d0SVSQ06ZU5oSJfeCSrjkCh+J30npAVc6yf/gW7dTrOm01t7gnRBSkv5gbxctRlt+KEu
-         13zQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+s4UUy/dbmXVrn6D88sSbqjQQFVAT3AI4v3oDb3NPoo=;
-        fh=+6kTuEQ2kUZkVpNqUtrDsUyrw1oUSwvJfz0AzgI6gZ0=;
-        b=pcSJ4zIkSHD8xw1CLitimJvZ6xFOSC6GNjsifl64T7q6Fwzg9hC2wLf4V/otT/JQ92
-         ItbdfeV+jKeUJfNLD8UUrOlshW+Ctq5ndPR520kf3hhCgqI4yVUGDRexkaEcuSIA18Wz
-         8wS1jTrmIBEnPMy8iKvhs5Fm9dOJfGV/CXOHQgvkcUCa0oeZMnX8SGL3qQcPrcBpZ7UC
-         KBrW1gzBxQxJeXQguAoJGkk7EuufBTcy8ruLWFIh1X/GDyWMyz/ZN3trT8x7CSzUM4q/
-         J1V6yfwWtjT0j4qNH1OCmEFfuIfGs9anS+uEvZFnOituOWpZ71qYVRuYF5KyWmOYaTHO
-         HVLQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790782162; x=1791386962; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+s4UUy/dbmXVrn6D88sSbqjQQFVAT3AI4v3oDb3NPoo=;
-        b=intwyHC9xQWerf+vjCGLp9YJ5GMizrcQrVylf8Lhf99GawCK2N7Uh7jh3aKPhoe1Nm
-         V1rZC4owwvcsetaZd2BknmQ64f35iaLP952Dy0bUsLPdwhTCwJ25/AFBe6I2pni9FECy
-         SsaVTiI8VzOqYzK1S2kta8U14XmT2iSar2QMITKarMiOuRKy+Y4CS0JyVRgV2KQvlc5G
-         30XKvYPLApApJRNgenBe1wVHx6RQuiuW0z24vQg1Ect58joIeKnq4IN9td7Ar9u2w9Oz
-         D8S5GGNEEEdZb4Ueo5AYqtYt/YTbM95Gl7jJ87IVkNny0/lzdKKqUVcxmUh4zKBmGAjI
-         Q34Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790782162; x=1791386962;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+s4UUy/dbmXVrn6D88sSbqjQQFVAT3AI4v3oDb3NPoo=;
-        b=oTpOGuJt2eEl8S89AJE/Oj/MUgOfpcmL1cIsgj3e6COsMmt8Ssds3IQuMrDI6qEdSz
-         ghTY6V32m2enHCc5OTODAnAUinecWyNI2Rf0/q4C0myU2KMSnJeuRZLp5j9btaFnaXM0
-         Wggg57E9+0sDsHpW+ieRQnV1EcySIBSiz+Be3/U5/mXOzUgg7sz8IG7Dw63nkpEPAuRG
-         ie7i2qGMgVX+/GBTkVso156tf0LK/v3cnj2Lom6hskBBmj22NduGyhF0j+Zcgu99G4Mn
-         4B594ea7oCHO/WuyQ9uAbQSn41LrrJkIc5MFOO6w+Py+COpuO8V/m6IuC9fCRdq3GiyX
-         Pmdg==
-X-Forwarded-Encrypted: i=1; AKwUvBzEEJYcAfGt0e7prn6AYyh3DLVoGbB/K0Me9SHIEXGjwQcO/tasdrb3dfIm2n1zG1IAhoOdjwoakw==@kvack.org
-X-Gm-Message-State: AFuF++nAJfj5jtvgz3n9xoqdB3AHNVGFWpyRGOwXggFf2RDopnAuV8y6
-	XyuAE//e0ewwDwiACg7EEqahWuUQ4ipPHcwx+6wCbDgyBoFeARHujn7Q/I2MzibSIWU0vkm4CZ5
-	oIj/y87+0dmFHLba6gu7maRtJqqFIX/0=
-X-Gm-Gg: AYBFou2bC39Gk2w1Yy7bpYIIyf1BjHW0h9dFiwW4bMADm+9oV9SxNQwrCCzz+1I1gZ0
-	aUm5/cyVRrHFFFIvFMUQgkAIT5CNjDbQWzM5v3jQ8CFo99fdQP9P5xs9r1HWdQygDbskvPsDHFm
-	uEJ7BXVA4/qcSaFZYq1LWMS9s6GFzbHgNe6zUAYxUGJ7ZhXHyb+ozK/0U0rQYH8Pqy29ZoEvq3A
-	eCvWmP+FWVG4tH/nDKdvn3CumKNDBb95U4liT3xz2gsPjE/zMaeNduQZ3+1GNjqE8bhV+/8g4bJ
-	ujy69oXToGNG4flLbbb0QvUDOw+1lDPWCIuM5weB/uMcwSAnsWl87JSadUNSOmEGulAglg9zFvU
-	a/mWBXEVTLz6ZHDB7V7ikvhIpBlu4+kM6dERId/Kufnb4OMbJ
-X-Received: by 2002:a05:622a:1102:b0:530:f37b:cabc with SMTP id
- d75a77b69052e-5337485e6b1mr35467951cf.12.1790782161399; Wed, 30 Sep 2026
- 08:29:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
- <7ebe4591-2306-4b5c-b83e-6a2e34b52bd8@kernel.org> <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
- <85aff663-2131-47da-ac04-8f0799a49b91@kernel.org> <CAAE3jtcRQ407P9LTbg=JOwhABQRViSaq2XBefnDdNWiD7PxvUg@mail.gmail.com>
- <1ce9cf3a-15dc-4815-ba29-2e22b05206fb@kernel.org> <art8EKRKMdwSDCkr@gremlin>
- <CAAE3jtftxMkCfWJ77W-xvV2x7jdAN8C8kyofYC3fEivM-Cq6UQ@mail.gmail.com>
- <arz0auULA33fqoWu@gremlin> <arz8Plu6J4YOTi0a@gremlin> <CAAE3jtcanTUrV3xfofwrvYGCFe5o=Vn7gS66bDzuxzeGg6c5=Q@mail.gmail.com>
-In-Reply-To: <CAAE3jtcanTUrV3xfofwrvYGCFe5o=Vn7gS66bDzuxzeGg6c5=Q@mail.gmail.com>
-From: =?UTF-8?B?5aSp54u8?= <rockeet@gmail.com>
-Date: Wed, 30 Sep 2026 23:29:09 +0800
-X-Gm-Features: AclHuK83LCCP0gaa6JO7mCWIhwWocLHHA6V6Kq9BAXxYIFSYAN5NC5AE5EEmus8
-Message-ID: <CAAE3jtdHi7aSsJ62TpEjkxvwA-3TBLvr5i1ohCNg2aupND+_XQ@mail.gmail.com>
-Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file mappings
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	bh=p2flYhRhbQtLQjkb4F9DovxNqyIJkhi/OOFcNtiaROM=;
+	b=eoVKeo8SgVbqQcvC5zEftjMDtwskPJZExL2dIjM6DIuywxbIiuh1z7zxkmlSqyy4CyIXGe
+	Z1ps3a7huNwWDFN7N402/nVxvLreVxlvMQIhlcByyDASKE6dPbY5+7kX070xu358/kXhp5
+	lu4eJPOH5OsJQempe58tpkCu22p5+tE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790782397;
+	b=H7tkHIL8ltWrp4ZNt0GRpnBSv/YLpT6iY6N9P5mTvu+HlmPq0pPPJna3Z0sNqt3k+mhvWf
+	dOo33KjHFKXrPv0qPfwZbtdMY5WwMfT3AziEIJhz9ty6RaOhn0zIb+LdkN72J3jKc9G4LI
+	Mi7aik1Vt6oQDHqG2vkVGvgN31gGhKY=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VTD5D1us;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5E50740B3F;
+	Wed, 30 Sep 2026 15:33:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E3A1F0089D;
+	Wed, 30 Sep 2026 15:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790782396;
+	bh=p2flYhRhbQtLQjkb4F9DovxNqyIJkhi/OOFcNtiaROM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VTD5D1usKNsB+hEJiS2kC3xYC5Pggxaus6texvtAHrKHVEm9Qy1GdmOWiNqmwlXw1
+	 thw4oVXOYj4r3gZ3PJfRJZlZcAEdq+OygbVJRcxw3zsZtE0fzxfm4IXIHomHuFcRLt
+	 M2SIj0we2XT0p64oY/gNwLn9japMMnUGrtmOBswxWvbh+FeV7XBFgGYcPcbc/tOeSM
+	 VhrDg5qZsaQiAC3pi/LGMN602vTsG7f/1uTVxwYn3jqjx/BA/olzBepyT+Tyqlhxqp
+	 qoIH+nUzb8m5uzzMp8SeLqS8gXql1IZnfqZbr2Mex/erIz9pCduosu417Qhm6zmFlt
+	 Ya9va1Jmf+ncA==
+Date: Wed, 30 Sep 2026 16:33:11 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: =?utf-8?B?5aSp54u8?= <rockeet@gmail.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
 	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Stat-Signature: u66i7x13gu3c5eiwg88uknqwghcs6f6d
+Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file
+ mappings
+Message-ID: <ar0mdJKLC0cHBoKM@gremlin>
+References: <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
+ <85aff663-2131-47da-ac04-8f0799a49b91@kernel.org>
+ <CAAE3jtcRQ407P9LTbg=JOwhABQRViSaq2XBefnDdNWiD7PxvUg@mail.gmail.com>
+ <1ce9cf3a-15dc-4815-ba29-2e22b05206fb@kernel.org>
+ <art8EKRKMdwSDCkr@gremlin>
+ <CAAE3jtftxMkCfWJ77W-xvV2x7jdAN8C8kyofYC3fEivM-Cq6UQ@mail.gmail.com>
+ <arz0auULA33fqoWu@gremlin>
+ <arz8Plu6J4YOTi0a@gremlin>
+ <CAAE3jtcanTUrV3xfofwrvYGCFe5o=Vn7gS66bDzuxzeGg6c5=Q@mail.gmail.com>
+ <ar0a9y2E0nDTIC8V@gremlin>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ar0a9y2E0nDTIC8V@gremlin>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D03221A0004
+X-Stat-Signature: xi8k1mg6zzupb93rpb3qzm3s88wrumxu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A89BF1C0004
-X-HE-Tag: 1790782162-697266
-X-HE-Meta: U2FsdGVkX18X0k8P7r0UOoTMeMMJ25dmCUYE7kUu45b2IBClCj/uA6zPy/Hegngmywpdk89gNgfd7gNhrsoN9lwbLFYpDdxCnitPXIcHyTjmHWm3JF3Qe9vHwORp9OqUgzylUhrb58pwSjZP1AABBYj1JvTBbY9a7pJL8H1683Mfb/rYvI4IWzFJN2hsi66bHtogY0XgvjT4AB168OGBtBrpg5isu1YJjgaFn2EMHSWM9Oe12z3gr8LUcKJRirLA13zwxm6dDdZRbm663xBR14zL6tqCAbCcsGwv/laPas8A+lT/3048uvp0Qr8K+6LjxyLnDiGCxvIF5d7uedpjUaXYbwZZZfGs+OERZ+b70OoXo+dXTUfVaKkM9chmP7LdNAGe93OKT1EpZcsOtgxhD5GQeC1jPLzFOXN/vvSdQ8M5VPtX+zt+FINcBDDBdwtD27fASh1lOwnzCphkHe8tlHKZGKbmNrH6hdvE8OYbwkY2mzumsDHb/NOl2xy7FRynElx0BvfskrHD6u8vu7J4/mluQRdZ1wboxHO+y/JUVAZdrIhHuUpgG3CZEkm+Rh9tkrz2VtqCAgsUpRAS8B8Miq3J6MlQWwibxo61mCoBnccReWwmf/lPjSd6qBVi3N09KXlcBQaHVv91Vn/6MZUmQ0iOs+XQuIIU14pBWrI4Bcdlup4P/dcmbVMQSmPYcKcRU6bs71HNS0Twff1FaHXvDCbr1BGX0A57sT8F4lYDfzcWEf9SD09QsSh9bLDsYVk8OKOOqTAZTpRQ8f+MfjPvLlSHh1lcGB7CP4OyetQWvO1OzgEe9t1BJIujy/6PIubwwGxMoqIQ7zHCcjXQwvTXzM9r0G1/FMwZM4KHY2DLqpt/5ly9xL3SZji+P+Ia5lMBqkWPxl0yWadmTN44yjEj0UB/R/pPzUythAdCNcNiyoRF0IS8DuKLaPsrKZapB8KXH59c3GpfxheXZncoEMh
- /DVpzdOR
- 9H7NVdNkAda9oVdhi/EYfio+JAo7qz2nkKLsLg2dEgCZ38pE5uflYy9aa9TSyGJ7pleZ0mv5wTknAOtIDRO5Djc5vVDXJEwQ358RTu31z9lhJAwJ5E0T5OcNeYGhdRMpZxPyiyNrk9Xx0Ynu31pskNUMDeaRa78rwSsxonw4bYkJ2HGwYD8ioY1DWHWmQ3bfUsIrgt/uaPgNdY47BAMDuK+fFV/6pTUKMOaDFD8dTB+2XWLrp/HzdgBDxViiDicRhtu6xyplRDSAXtVDWLs1CJaEBlZZhbkOvYEIafx+jU1Gg6E7mu4fLUoOBz/47PFrmifjaJW0bZyEgEvbB4qQejUqvKeNQ7vb2miUrLzOtwBVhuX4sIl/XnLNbUNbHv3WB7r2F5xOAqN+SZoFBj1l7pJ35ZBq2/QvGh8bIUCec/r/9zd01oiH3Lw6JSfBTNxBBWOxbtVkGV+BjVBJ2w2jSVL28sQ==
+X-HE-Tag: 1790782397-369810
+X-HE-Meta: U2FsdGVkX1/4ZkSHrXkJDzboi10p2rPzIUKIUl7Gbsat5+1xibVwQS6UV5hBbo6cOLGI+wdUZNLEQZVnTRRruyqmm9TM3qaMparAlx2Iyvsn8ZCJaU5LjBI6/pAxewE/ifp69ldIVASrmT803uQrQhCROoG6tYOBcrmA8n4VhKrsFjauIqQ5/lBvSYV0LiuhV4W2uDoKauQUiAwaMaHsgQaINR2fFL5uXvDO6YbP1WG4MfQve9PlsP9kDN8AxrNKq0UyeJ5/u71Pdt3a/okh/10Y2I5q/hSFeIEdZIUV7ocuiTKwz7p74ZrtixLO5EBx9RrnFs6LUqxLqfWvV7T7TdlVHogHwQ2sBtS6BDnN2bgA0pYpNpGTx3knthhC+pLFS2Mf9FSPbimD8xftWKi5REBcFRg1W5zIai8JGJgirf0up/IkOkyH1FvKJAk3ADWw3OwdG3vAnKyiKtU7XxJ/WT2cSlhuDOVBAtXCOkWXi3DlBAlWSV6gJGSAAvb/wQ8MBDVUFs2IsbZY0hWAFCOxLbnIqhcQUBt94q0HMwWnbb3ttUk4oGqTk/o248SAivXnIp7ddO47/geUWfIXxqhPDWWDM+0PMQcvdyUONFByez476eJM5NBaE6wsz5NvCe1nm6UHzmT/eISBcwujoIxMf3a1PKB6ITAvxXAk+z5PVlFNSaWIMAPl760AURIx72N2kfGk/UEgXW1sxKfPfOLNKPSZOH9dKVbnn50JTGj0Wgp4OkSNqxZUP+d/ph8yk4aJRY5AFfyU0+xHmg4UpiE0yaxOFaN/VMpni3BtQ6fhJyjwNyCVMkrNwFKaH4VzTxk1J9UtSMYHg+KedG5AD7cHctHpNCpFQEgAg1eeYtuvIAgESq0rl77TAVJ23huiLV6TTIVVZzRYNbnj4H8ogDdj6O42E85YyJcen/PdmD3BUK166W/2qMcYoCLdSYElRiNkBbALg17+67J4ddY0la4
+ UBKclZL3
+ g+vsAppCSg7kQtQS79ywHDPid5H5a6WwwsyOgl/Br72MK1TcyUwk3IcgBrllPLsFKWxhAi89kZw0h5bfOMzQ4pyOijq0t4hEucy2ZLFg7dllthMw8KLBlmVohFLW+PuoI/R5lIyWq/O2febW1qnO+M8EC8TFLyir1H86zguARygYlzJ/ep7aGHQp3CVjSG8MyaDgtbUSrfew6QLaTMWNYp0W2btCz/grh6GBH61ROqe3FpLvCxEZB1+5xYCxxuhI1KCYi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,120 +102,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David, Lorenzo,
+On Wed, Sep 30, 2026 at 03:24:53PM +0100, Lorenzo Stoakes (ARM) wrote:
+> I strongly recommend you look at a shmem solution.
 
-The distinction behind this request is between surviving a process crash
-and surviving a power failure. After a process crash, the kernel and page
-cache remain alive. A shared file mapping therefore retains the writes
-already made by the process, even if they have not been written to disk.
+To expand upon that:
 
-ToplingDB has file-mmap MemTables whose data structures survive a process
-crash. Its crash-safe recovery reuses those MemTables instead of rebuilding
-them by replaying the entire WAL. A published sequence number aligns the
-MemTable's per-KV crash-safe boundary with the database's WriteBatch
-atomicity, so recovery can reuse the published data and replay only the
-remaining WAL tail.
+The general structure would be something like a minimal process, with an
+oom_score_adj set such that it can't be killed (or is at least very unlikely).
 
-These MemTables also support cheap, millisecond-level ConvertToSST
-(wrap-up and sync, i.e. LSM flush). The file-mmap path renames the existing
-file and appends metadata, preserving the data structure already built in
-it. This avoids copying the contents into a separately constructed SST.
-Moving construction into shmem would add a transfer to the regular file
-that this path currently avoids.
+Have it do something like allocate a memfd.
 
-Avoiding full WAL replay makes much larger MemTables practical. While a
-large MemTable is being populated, random updates can repeatedly dirty
-pages that background writeback has already written out. Those writes of
-intermediate states consume disk bandwidth without being necessary for
-process-crash recovery. Deferring them is a performance optimization;
-correctness does not depend on the kernel honoring the hint.
+Then have that be as minimal as possible - it sets things up, it hands off
+memfds over a UNIX socket for instance, and is set up to periodically write
+back to disk.
 
-This is a general problem, not something specific to ToplingDB. ToplingDB
-explicitly distinguishes process crashes from power failures and has
-invested heavily in optimizing recovery from process crashes. By contrast,
-LMDB faces the same problem but does not explicitly distinguish process
-crashes from power failures. If sync is skipped when using LMDB, the
-remaining writeback problem is the same as in ToplingDB.
+That way you have something that should never crash/exit which gives you the
+guarantees you need.
 
-The global setting and kernel module described in my previous email let us
-work around this locally. The remaining problem is making the optimization
-available to users of a database library. We cannot reasonably require
-every deployment to change a system-wide setting or install and maintain
-an out-of-tree kernel module. The module gets us from no solution to a
-local solution, but it does not provide a broadly deployable interface.
+You can then also control how to synchronise things between processes, when to
+write back and how much, etc.
 
-That is why I am asking for kernel support: a supported, best-effort hint
-that applications can use directly, while leaving the kernel free to write
-back when necessary. madvise is not the only option, deferring writeback
-for the entire file would also be acceptable.
-Per-file deferred writeback would require minimal kernel changes and pose
-a very low risk, while offering enormous benefits.
+You can keep it in a cgroup as well to isolate it from the rest of the system
+too, potentially.
 
-Thanks,
-Peng
+Then have anything that does anything non-trivial be clients of that.
 
-=E5=A4=A9=E7=8B=BC <rockeet@gmail.com> =E4=BA=8E2026=E5=B9=B49=E6=9C=8830=
-=E6=97=A5=E5=91=A8=E4=B8=89 22:14=E5=86=99=E9=81=93=EF=BC=9A
->
-> Hi David, Lorenzo,
->
-> We currently work around this issue by setting the global
-> vm.dirty_expire_centisecs to 60000.
->
-> We have also developed a kernel module as another option. It exposes an
-> ioctl that takes a file descriptor. For an already-dirty inode, it update=
-s
-> dirtied_when to the current jiffies and moves the inode to the newest end
-> of the writeback dirty list, postponing its selection by periodic
-> writeback. It leaves the dirty state intact and does not remove an inode
-> from an already-queued flush.
->
-> To keep postponing periodic writeback, the application must call this
-> ioctl continuously at intervals shorter than vm.dirty_expire_centisecs,
-> expressed in centiseconds. Once the calls stop, the normal expiration
-> interval applies from the last call.
->
-> The key code, with checks and locking omitted, is:
->
->     inode->dirtied_when =3D jiffies;
->     if (!(inode->i_state & I_SYNC_QUEUED))
->         list_move(&inode->i_io_list, &wb->b_dirty);
->
-> However, neither changing a global setting nor maintaining a separate
-> kernel module is as elegant as having this supported directly in the
-> kernel.
->
-> Thanks,
-> Peng
->
-> Lorenzo Stoakes (ARM) <ljs@kernel.org> =E4=BA=8E2026=E5=B9=B49=E6=9C=8830=
-=E6=97=A5=E5=91=A8=E4=B8=89 20:11=E5=86=99=E9=81=93=EF=BC=9A
-> >
-> > On Wed, Sep 30, 2026 at 01:08:33PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > > I'd say in general the shape of the solution would be something
-> > > cgroups-ish, but since all of this is global stuff and the knobs are =
-all
-> > > global I think you need to think about your design a little more.
-> >
-> > (Sorry to be clear, this is - if we accepted that this was a kernel iss=
-ue that
-> > truly needed something like this - which I do not. The solution here is=
- to use
-> > shared memory as per below.)
-> >
-> > > And in general we've seen a pattern of 'writes to MAP_SHARED, experie=
-nces
-> > > problems' before.
-> > >
-> > > And the solution is generally - use something like memfd, have a proc=
-ess
-> > > that does writebacks manually for you as you need.
-> > >
-> > > So I strongly suggest you do that! :)
-> > >
-> > > --
-> > > Cheers, Lorenzo
-> >
-> > --
-> > Cheers, Lorenzo
+Everything works as before, you can ensure that intermediate state doesn't get
+written back through whatever mechanism you want to employ, and you avoid all of
+the pitfalls of writing to a MAP_SHARED file-backed mapping.
+
+If the memfd isn't enough for you, you could also have it establish a tmpfs file
+which is then shared between all of the processes. That will survive even the
+establishing process dying.
+
+The main win here is that you can choose when and how to writeback using any
+mechanism you like.
+
+For instance, you could have a dirty bitmap be part of the shared memory and
+atomically update the relevant bit when it's ready to be written back.
+
+That kind of approach gives you total control over when and how things are
+written back.
+
+And avoids the known issues with writing to a MAP_SHARED file:
+
+* Terrible error handling - random SIGBUS's, network file systems in particular
+  are very problematic, writeback errors are hard to obtain (fsync(), msync()
+  needed to even get them) - note the tmpfs compromise mentioned above has this
+  issue too.
+
+* No control over writeback - Exactly your issue. This is what you're trying to
+  work around.
+
+* Writeback stalls - as above. The dirty writeback balancing bites there.
+
+* Reclaim - dirty pages can't be reclaimed until written back.
+
+* Fault overhead - every fresh dirtying write is a page fault (that's how dirty
+  tracking works) and you have that overhead throughout. Once written back it's
+  cleaned and causes the same cost again next time.
+
+The TL;DR is you're trying to manipulate logic whose whole job it is to
+writeback to not do that.
+
+So stop doing that :) and life is much easier.
+
+--
+Cheers, Lorenzo
 
