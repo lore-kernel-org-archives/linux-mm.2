@@ -4,89 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CB82CA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 11:52:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43BE0CA5FB1
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 11:58:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE0426B0088; Wed, 30 Sep 2026 07:52:41 -0400 (EDT)
+	id 3C7246B0088; Wed, 30 Sep 2026 07:58:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E91286B008A; Wed, 30 Sep 2026 07:52:41 -0400 (EDT)
+	id 378556B008A; Wed, 30 Sep 2026 07:58:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D803D6B0093; Wed, 30 Sep 2026 07:52:41 -0400 (EDT)
+	id 2668E6B0093; Wed, 30 Sep 2026 07:58:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AFB8B6B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:52:41 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 38A841A076D
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:52:41 +0000 (UTC)
-X-FDA: 85270266522.26.FA58EEB
-Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8F116100005
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:52:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Z+55iLEp;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf14.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F0EF46B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 07:58:27 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 889621C26FA
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:58:25 +0000 (UTC)
+X-FDA: 85270280970.01.ADE3C1F
+Received: from mail-wr2-f9.google.com (mail-wr2-f9.google.com [74.125.225.73])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C5F20160008
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:58:23 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cE4NCztm;
+	spf=pass (imf08.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.73 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790769159;
+	s=arc-20220608; t=1790769503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u2He0n5DmuqJPogb7cosTA7pj5eK80oWxnlE2Q9AaOE=;
-	b=Kx8cS7UsuBsSS5NS7vtmXni6OujxYLujugnOWPOLvEIZsmDkmklUhfWta3w1IBUd0UhNqS
-	WAivjBlDr2szLH9hXWsvHZBCM3m/WtJCNkTMX6IDkW2Mzg7DhNUcDiTVfwShDFN9WSnSDk
-	rR258rQrTUu6FhYZMNXjCmV3eV8kCYU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=HhTlHttBfOfSCYbgzOBqnm1PlGqLGY0jClNl8O2m0Co=;
+	b=feRC7yAX80qcp0RLEUGIf+mvhcf5w6LtLAqOiXVrJSlEKvPoC7hExDAnajmWuAmtmINRTD
+	YDnKNpAQmy5MqgZctvc303aGTBui/EyiP/NOzfQvjJ3uZBdj8qW+nkL239XpJW2UARYIFQ
+	+31PwKl4x6nvP5bPNavhvrVBSdE40ic=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Z+55iLEp;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf14.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cE4NCztm;
+	spf=pass (imf08.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.73 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790769159;
-	b=jy6TBRqRNeohSA5d3p4WSD7dxe7S3LhyQRBIidGCITbAq8EoG7cU/D7MJh3ASgGAIn+Bty
-	/PeyIb3z52lddbZQ+TLSiH1xmjDG9U0dVFDbMx8Q8BOuL51XT7wIg7XkTloQ3uUK5kOM0X
-	ekAUwzWZ8OtzirQw0J7SKwuCet7N4I0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1790769152; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=u2He0n5DmuqJPogb7cosTA7pj5eK80oWxnlE2Q9AaOE=;
- b=Z+55iLEp3mxL2ee/IvLxCxHeLFI8RvH/ysXIPUaGd2Kd9Dcpt9fXa1wRXAyKX68Vq67HfK
- amy5RuT+qeimZTXyMAfrd1G3STZA+U/gU2aIfcp6WZZNmp/obRbU8+7lQoFir0id8J7ada
- 8wYh4EQYYFC+ANRGpUMBSQXjlpQdzmU/lqEdCn+RRLIUIBtj8d4jFjjKwIxAQ+LJF7ZeQz
- eEOk17wLG/isei33i7IiXqRRJj6SRnAmkS+/JNOo3G4QcEyNvBagwO2EojZauJqLvebaJ9
- NkInWiNE5cRo3+h4HEKfjAFwIlg0FF+2nems48xs556QjejeL+e99dz9Gtuu3w==
-Date: Wed, 30 Sep 2026 19:52:05 +0800
-Content-Transfer-Encoding: quoted-printable
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Cc: <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: Re: [PATCH] mm/numa_balancing: allow migrate on protnone reference with MPOL_WEIGHTED_INTERLEAVE policy
-X-Lms-Return-Path: <lba+26abcf7fe+539f3e+kvack.org+lizhe.67@bytedance.com>
-References: <20260930072617.64665-1-lizhe.67@bytedance.com> <cfdcaaa3-a9e7-4352-ab01-4922ebb8e0c9@kernel.org>
-In-Reply-To: <cfdcaaa3-a9e7-4352-ab01-4922ebb8e0c9@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	<akpm@linux-foundation.org>, <ljs@kernel.org>, <liam@infradead.org>, 
-	<rppt@kernel.org>, <mhocko@suse.com>, <corbet@lwn.net>, 
-	<skhan@linuxfoundation.org>, <ziy@nvidia.com>, <joshua.hahnjy@gmail.com>, 
-	<gourry@gourry.net>, <ying.huang@linux.alibaba.com>, 
-	<apopple@nvidia.com>
-Message-Id: <808292b4-841c-45bd-aacd-b487be1858ca@bytedance.com>
-Mime-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Type: text/plain; charset=UTF-8
-X-Stat-Signature: cr4hr8awzr6tdyea5tn5af4ooxwd7ns4
+	t=1790769503;
+	b=UU9+iRRi1Vck/7c1vZX8B62404V58YDDIDHy1X9PAZMFNHT+f8MOXwh+bkS0nRAyJYwxnG
+	5LZH9A6TcROcyu7awkwgScrLlocf4FXYG5kDYyEuInX+Ercmfzq+02PxCVHoe1SDWHpIpu
+	+OdJo7f70wIuGKr6o1XTbdYNKzKJA1U=
+Received: by mail-wr2-f9.google.com with SMTP id ffacd0b85a97d-48afbc2b18bso488139f8f.0
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:58:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790769502; x=1791374302; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HhTlHttBfOfSCYbgzOBqnm1PlGqLGY0jClNl8O2m0Co=;
+        b=cE4NCztm0utn26ISVDLhuTQOrpdyJo00CHhdWW+e8LpjH+DIg+eXoWVdpMybyAzy2z
+         InNr1ygKYMsq/pXzgDiE3Z/kMMczuSfep+RQympCK9i5gB4zU0+MGkvjhPV5GU0K34rl
+         h5QU8uViUssoCZKxMvnxz+q15DpuK5h98KW2MEjP5xKl3z2yvD1hnylGkYpGG2dOZezK
+         DTmEtHKmGaZYDsZa2VMFmoBcSv59XdhKPCsSYymtkhmqt51t50pSxAowt/xYw9+vMhcj
+         3UNM+iDM7LhJHblRNOYFxWtvzNQcnBL5QGXomDLFM0pRiR78QCeQOnzmwbVjuKVesu8n
+         AHuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790769502; x=1791374302;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HhTlHttBfOfSCYbgzOBqnm1PlGqLGY0jClNl8O2m0Co=;
+        b=g5kCTXnfsDxST4gz4eHaa7yOhjKzWKKwxY6mu7x4Q+rLkZvwLCXBM1N0EFnxCDGecK
+         LCT7+okGElcOs3jewW4/r5Yf1JHuqiN5RDPJIw82H8PPf3L6XhknhD+wfShLtjQVkq6c
+         Q5F5hImvyws3EqTHBsBG1lOuDQuqvJlljxGHCo6DbUTNtlOI9h3jcnaIbGTPrjA+Ourr
+         Sqtc5YuMMU0pIBmSahMaDysgG4CGdwZpuwwErxLj5J/e18Jr3SLmeW8L7jvVmdNiw5QP
+         PBGw94/mYl3W6EAu22LOcyRU5SSUpxm31byI+sR/FDX+62P10MY8/f2EXOJqH3KtTmxv
+         JiLw==
+X-Forwarded-Encrypted: i=1; AKwUvBwuLiNF8ajZL2LkeOSY1h0ttvO+MYmWmj6o+RO//WKMCUYp7hQY0zlz4IixGxQMwxpY70Xyf0vLEw==@kvack.org
+X-Gm-Message-State: AFq9FYJDldknFFuaSgzpRHWUhW/qtaPafI+06P+TxGA3B3uQKzq2OJLj
+	NwCNVnwNcs80Dwatx9cQUDW1cqWq57nGqMRezxN0m9rYnTvbGEpfaCNJ
+X-Gm-Gg: AYBFou0hFNrgvTxw3oKaQeXhjfsd8MKZcwNzaOIqo15kO7t71ECVhNxo1vMLfeAwyS6
+	hUyZ2dgJ57h9LMYmv0r6HGX719wd/jjEtz7jcCnvnPCAtPPE5Bnlg/MTHtJj5zr9tAVucV1e5ce
+	ngMM1pk5bLx3NcWzwh7vqBR0K9VmughBVLIfKL/f6k9w1kBaTn9/e7p+NavRpZQBuHw/oIqXxyc
+	KJRMdD5Yf2ARF/UCGlTR3MFZyZaJLFEbNG9uiLBlSCong8laxzZghCbAzt4r9umfbn2ryUzMXI6
+	hhOBU4/FHME33o6EYX/l6wO6RYrmSJ4x5YUpQo1PS1Zy7OCMGiATCR4YbZSCVCiYMwJP95qV+CZ
+	3IK4q9iH8aOonP+2OdMAFxv0AooN8Bx4AuF4zCpFsARZJVwOLsDf00RrUEBn9E33kQppaWRxbPu
+	mwgk0UQlO5Y+it+WQn9qMjaO6ONtHdX+4/htNYRDsPjmz8Wi/uJ2TrUw+ZeiS10I/suJq2H8dfh
+	MY7onYDLMaWbpSNadjLME1obKsgn/3TfvkE9k2PA1nHfsYcLBUSj2DsTs4zF6oOqzB42/Zz+Cwz
+	KABDh9iOWZxirZ2JjupXrIT5WnZEcWboAg==
+X-Received: by 2002:a05:6000:2888:b0:48a:f486:2f4b with SMTP id ffacd0b85a97d-48b024ea6dbmr2815254f8f.19.1790769502098;
+        Wed, 30 Sep 2026 04:58:22 -0700 (PDT)
+Received: from lima-kernel.telekom.ip (84-115-220-212.cable.dynamic.surfer.at. [84.115.220.212])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b028b237esm3334148f8f.0.2026.09.30.04.58.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 04:58:21 -0700 (PDT)
+From: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+Subject: [PATCH] mm/damon/ops-common: fix age_in_sec overflow on 32-bit
+Date: Wed, 30 Sep 2026 13:58:12 +0200
+Message-ID: <20260930115812.138864-1-jaeyeon.lee.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C5F20160008
+X-Stat-Signature: 5u9rj7sgfeugsqszpnfxyi3wyyrbxpqa
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8F116100005
-X-HE-Tag: 1790769157-187128
-X-HE-Meta: U2FsdGVkX19CDcOl8YKGteZ4gsI2N+Z07k+L9f/wZxsmuuZKU0cIzPL0BASmP8ZfUXkdWjU5EPvZHKNk95g3SG4qtiP95fFyJw+c5TY0gVPrn5weB2jS8hKbYPJDEs/NDfO49JEFfk5JcD5eC9nX0r5Dy6BrJLq/qDzM4RmFkmKxP6KyeQKnNIyVOaNMfVE65lLZMmohpk6CPPwHMvALyioOdHO6KuYF/tYLwj7uuG1IEfI6HkSNWFUJwepDXJso417n30h/1+/PPM3G/1LOFJiShZPvQ6eKtXTOkyqa3PpBPluoLfv6O2kp6lHnHFGvE6k/aj7lMRPvHRIGEjZjI9WKPO4vJHnbQo+y1ASd4EOxnjKWtacWPbMdj822d/mDzRhP2SCpYiEVHF03jNghG4ZpwWZDpHV48MCQG3RJA8dyTKsYInrsUvp+XQtD1Q6Fiw8zFyFFRtrkcPYUi1i2+qpoCqBF03fT3Z03at8hRhkCgixxKmdhWkxnpodKahnmseL5PtDlPyzdh0ttP4evYpufZXrvww+5hxTriy8X+QwmOLIlOJNaQAdgu1uFA8WqRiBUhjhhSt4JdSeh+n82Cdyv0PMWUTRb31rGusjTOkIMzw8x6/lhAqZMIdzNbCkCjbeTQabTfxgto92BH7tCzztKmphnCGLLUVdPS8iXYrf2PIdzC5nDHvtEiZejEJcm62+hiZftIqEjFtzGY84m4fQ66i6txFHlVpqnxC0H6HKz/dYdcVJX1NoxyCGQxzVBXt72TB8W+DIMU9QSO/VGERHWcnWZgY3VqO/RM9tztNzrRWKXCtX4cBedSfkFOFNmhRJHCr/pgzcALlJ8Xv93GisXUM7kZ3lZGs94/Re4mzX/99o0oApMIGvGOlrH6imWhQDYV0IB7QzPhgpazWlyHkYDPoqJTYKLEyPKnY7CEKuptcEghR7/LDN/R0pby5G4cMYyrsPmu2VBnJM1l98
- /qsql6LI
- INjui4SueeJxxz1d0VAJvAtH2ZLYPC3nPwWWPv1q2BMb3HTFpHVAuYD5N29eeYHHxeDtwUDcC15xH16PMJC4yfsh5jY4/GZWsqS5o10fDZtBTu7bc3ORJC6DH3f/5RwDVnm3sia6dYFaBil1BNqOE6hQJnfwxA5gGFBny/0OnRXbJhZ/VhC3YbBCargBcHHW+E30ootlmhzj8XCu6hYmrRbDSCDWs874IWt+vOuvy5xuCDWAiQrk2dQ3onnWv6xj1jb1sYp3OFo5J/4A/y5LKb57R5QC9+tmC1CTTTUYTWZhCbQ57bmIE/3PXlKEcqo4qCfV+1CLYrZkV8iA7eDttbJDJ0Tfzm13FrUDe3I+W10okwJzVpNet5kyUlg3epwd6xsJS6B7M0AKv0RDG+igr9uEv9g==
+X-HE-Tag: 1790769503-527914
+X-HE-Meta: U2FsdGVkX19Ya9q/7Q5GS/LUIPZEes/sk56s+fl+tPMKjN/amHyzg7SgM5nYihkF11ZUT1BXvKp1CbxRAkAIoxpmX47d7QF2q47EHFGP7MzVl7QI/ZY9Vc7hzEgRpufevAxj0iviM5PiJadaen2EER9lKjAFrpKdmpFuiQb22scJpZuxXBwBxJvS402h4M1rdgRUYYPxAddKLGKVIAMUdcCbQsWmXaHh1IgpYhuuYLg7aupCLSO5l8bZZvyUY+8DKKDK2K1B6FykYHezAaqQmfZk0vWNLyj2Mgzn+mvOk54MXQ/AVFZi5+Zw6D5ytDmDcG/resdSlhH3pif6GIPeGGuIYchNqy5P4hQQtj4uZwOy79TkGo3AulHNhuOTmtW9YxVPK0HTDPtojl4aKZnGvWtoJipd8u5OA3VA0Afjz+zzQIoQs/V/xeD/3Q5lnGcqQDKVpd7fk208zSXfcdzNoQjMQfDmPHAEC0uKgrb/8SKgZ297kWQNNtofZNi5xXZxV1waSod8z28QmVdSJAX3YbRD7Mr29Yd9W3A3z8rLdr681/LaQF9uhY1pWXYWyFC7Aa1PljPhhyuQqQ6xrg4fDIOcyUq5joVWxs+MVyWDEbkW68HMrdUu2s5i70w2TOcMxJmYR7HtPLpjUmOCbetzesv+tQOBF4jMuxz6Ia3FIg9atphZH/Zw2wKd6v0Vu4I3E1sWXYkUQbqYLD8GH5MEkhkgArL301EI4EXMaS/pLKGR6S9mv9sRsLkGJO8RfIGYjRGFi7NevA+U7hudj3ej72FNDd1LpxsqBHXgR5FGdlV5lw9xwUsn2wbb2gCkBDHbU1h5ELQY2ffhPTDx8p4IXwLyFp+9XpcTPwXYTaQgbRkl6bYGlUeKlvpNfhaEjvk0AhPBIlr3PCs9iEboKm5Cyl5muzKkoUm+oUG1TaO4bQukKP2zQpBq8fmzfb+2IKD8c2pOCf2jdZBYStyVgAd
+ H3fFEEoJ
+ O0jh7cJb8gZXj/ynzSbzMTV57K5lK6UT8eQNP1dMLrDRIPvVWIqC/JwcOgUPfpMqp5LfL+V3bqRnzbqFnRid+qSrgbqGVN/NO5/zVSHE+9MQWWbZpYUKpYJ0I4KHR/5+adt4Yesp7FvU2wu9p2D3PnwQaOsLeTM3KFfsdd/3EHSa8AWaek5m7S6uWwD4kGaBjHCRply3ZdjGMorqs8JEhoSeOK7TkjGEdVyEwfjtR7dIqHmJDRGiPId9pT+T3Lu8ANUOd/Qcg0ONhyWtFNk8X4JUtSjRc6XH1RKyt/5OUeIcXwhWTDV9wSz01c2MAXXxMFYd2Ecbf5CK8yt0i2i1L01k1R8z7xjMpfSpAzATAivxSWAh7ZZnzELhZK82di95o37BBTQR3VnnWglCGRMi6GR3GsRKenxY7raV0l43b6egOorH5RGJdrEBzYwYXIZy1V7nTJVG1s5vDU0EwB/qxtliObHZrfTZxE+aNkwu12h7lCR9Qc4shdwv9MHvL0nofQGRgHw4wHEJiQUCskC46yUdBNe5Y9XATuWuK5UAZOOG2fAM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,76 +119,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/30/26 7:26 PM, David Hildenbrand (Arm) wrote:
-> On 9/30/26 09:26, Li Zhe wrote:
->> MPOL_WEIGHTED_INTERLEAVE is useful on tiered-memory systems because it
->> can seed a workload's new allocations across fast memory and slower
->> capacity memory according to a configured ratio.
->>
->> That initial placement is useful for workload managers and orchestration
->> systems.  They can take the amount of fast memory and slower capacity
->> memory on a machine into account before starting a workload, and choose =
-a
->> weighted policy that seeds the workload across the tiers at allocation
->> time.  This avoids starting from an all-fast or all-slow placement and
->> then relying on promotion or demotion to reshape a large working set.
->>
->> After those pages have been placed, however, the policy cannot currently
->> opt in to migrate-on-fault placement.  set_mempolicy() and mbind()
->> reject MPOL_WEIGHTED_INTERLEAVE when MPOL_F_NUMA_BALANCING is specified,
->> so memory tiering cannot promote hot pages that were initially placed on
->> the slower nodes by the weighted policy.
->>
->> Initial placement is only a starting point.  Pages initially allocated o=
-n
->> fast memory are not necessarily the long-term hot pages, and pages
->> initially allocated on slower memory may become hot as the workload's ho=
-t
->> set changes.  The policy therefore needs to be able to combine weighted
->> initial placement with memory tiering's NUMA fault based hot-page
->> promotion.
-> Ok, so memory allocation will respect the weights but balancing will igno=
-re
-> them? That really sounds rather odd to me.
->
-> And I assume that was the reason why we might have disallowed the combina=
-tion:
-> it turns a weighted mechanism into an unweighted mechanism.
->
-> So are we really sure these semantics that you would essentially set in s=
-tone
-> here are the semantics we want? (ignoring weights)
-Yes, that is a fair concern. It does look odd if the weights are
-interpreted as a hard resident placement ratio.
+damon_hot_score() calculates the age of a region by multiplying r->age
+and the aggregation interval.  On 32-bit architectures, unsigned long
+is 32 bits, so the multiplication overflows once the age exceeds about
+4295 seconds.  Then old regions are scored as if they were young.
 
-My understanding of the existing MPOL_WEIGHTED_INTERLEAVE ABI is that
-the weights are allocation weights, not a long-term resident ratio. The
-sysfs ABI documentation says that these weights only affect new
-allocations, and that changing them at runtime will not migrate already
-allocated pages.=C2=A0 The implementation also has normal allocation fallba=
-ck
-if the selected weighted target cannot satisfy the allocation.
+Fix it by doing the calculation in 64-bit arithmetic using div_u64().
+Also make age_in_sec u64, so the result is not truncated back to 32
+bits.
 
-The use case here follows that interpretation.=C2=A0 The weights are used t=
-o
-seed the initial placement across memory tiers.=C2=A0 After that, with an
-explicit MPOL_F_NUMA_BALANCING opt-in, memory tiering would promote hot
-pages based on access patterns, not based on the original allocation
-ratio.=C2=A0 Users that want weighted allocation without that behavior woul=
-d
-keep using MPOL_WEIGHTED_INTERLEAVE without MPOL_F_NUMA_BALANCING.
+The issue was discovered [1] by Sashiko.
 
-That said, I agree that allowing this flag combination would set the
-semantics for it.=C2=A0 If reusing MPOL_F_NUMA_BALANCING for this is too
-ambiguous, do you think we should model this as a separate opt-in ABI
-for "weighted initial placement plus access-based balancing" instead?
-For example, a separate flag or policy mode would make it clearer that
-the weights are not intended to constrain migrate-on-fault placement.
+[1] https://lore.kernel.org/20260623011652.1354-1-sj@kernel.org
 
-If the allocation-only interpretation of the weights is acceptable, I
-can make it explicit in the commit message and documentation in v2.
-Otherwise I would appreciate your suggestion on the preferred interface.
+Fixes: 198f0f4c58b9 ("mm/damon/vaddr,paddr: support pageout prioritization")
+Assisted-by: LLM
+Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+---
+ mm/damon/ops-common.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Thanks,
-Zhe
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 77366f42b3e5..7a7429359dc8 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -164,7 +164,7 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
+ 			struct damos *s)
+ {
+ 	int freq_subscore;
+-	unsigned int age_in_sec;
++	u64 age_in_sec;
+ 	int age_in_log, age_subscore;
+ 	unsigned int freq_weight = s->quota.weight_nr_accesses;
+ 	unsigned int age_weight = s->quota.weight_age;
+@@ -174,7 +174,8 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
+ 			DAMON_MAX_SUBSCORE,
+ 			damon_nr_samples_per_aggr(&c->attrs));
+ 
+-	age_in_sec = (unsigned long)r->age * c->attrs.aggr_interval / 1000000;
++	age_in_sec = div_u64((u64)r->age * c->attrs.aggr_interval,
++			     USEC_PER_SEC);
+ 	if (age_in_sec)
+ 		age_in_log = min_t(int, ilog2(age_in_sec) + 1,
+ 				DAMON_MAX_AGE_IN_LOG);
+-- 
+2.43.0
+
 
