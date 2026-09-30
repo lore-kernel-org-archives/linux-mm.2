@@ -4,133 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A4F5CA5FBE
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:03:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA956CA5FB1
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:10:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B6626B008A; Wed, 30 Sep 2026 06:03:44 -0400 (EDT)
+	id C2A7F6B0088; Wed, 30 Sep 2026 06:10:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 566016B008C; Wed, 30 Sep 2026 06:03:44 -0400 (EDT)
+	id C027B6B008C; Wed, 30 Sep 2026 06:10:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45A9F6B0095; Wed, 30 Sep 2026 06:03:44 -0400 (EDT)
+	id B19D46B0095; Wed, 30 Sep 2026 06:10:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1936B6B008A
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:03:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC8131406FF
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:03:43 +0000 (UTC)
-X-FDA: 85269991926.03.98C5030
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F23B780008
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:03:41 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c39Xhitk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 86DEA6B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:10:11 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 07B8F40730
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:10:11 +0000 (UTC)
+X-FDA: 85270008222.13.90655F8
+Received: from mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6284BA000E
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:10:07 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=A+9Lx1hl;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790762622;
+	s=arc-20220608; t=1790763009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ml0DuYlmFa9hQaDKnLTS0bQy6dNO9ILQKsOk1hfaR/Q=;
-	b=KPBeOcvtgA2SPNnyuv+QOp1Ws4O9DjKVr9XdKCNtaRYCKGi5bR6ZO7LOwE2a3qjCccTu46
-	OvkmSwlwCvcTGio9IXVbfXENM9M3tpHguDnQUpsc0Pwg2j1qvdr9qczRcLWRZ+CxCsZ4sT
-	3K0u8qFPTBm0qu4h5DZhb6gADr4t+yg=
+	bh=w8TdMHuVObPqzYZTfk2DxdvouGjhEk2R8v52SYa0+5A=;
+	b=M/i18dX/1n8ydrRFjRajRdc3XSv3UuI5999RDarNPqXmuWje4O0ByPo3ZwpVHztTuTFpWV
+	i5KWNmQfh+M9tBePTpyJ8yoJ/fv0BU/1etA7Bi3j70/0aNlypQ+GnAhDt4ytjydBxLLU81
+	rVMBzdot/R2YaMXZBMWU76x7jGskTO0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c39Xhitk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=A+9Lx1hl;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790762622;
-	b=s0GzW4RrzKo62KdbEKVjJC2eF7YUB3v4BLZAgGiWkW6I7LVwGrsj2CmTETi0sTuHNctys5
-	ZKpuIpcr9tno62VJfBv5xe+cHmqS94j6tOzyD1NAxaplziQINfuWyZFKXeEnduRRgDVOCk
-	H7cPX0n48ENL4OoPpuemw6JSKF/Su5k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 661A660239;
-	Wed, 30 Sep 2026 10:03:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E321F00893;
-	Wed, 30 Sep 2026 10:03:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790762621;
-	bh=Ml0DuYlmFa9hQaDKnLTS0bQy6dNO9ILQKsOk1hfaR/Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=c39XhitkGKdQ/yXBH5DDEEOWKDiqpWzdQvRaLfGE0PbANlGxw3t6EWIwyiiGPY6/a
-	 5iONMk1hgoZFGooMXpm2iSxvYrW0gbGPkpbdkYU5fqNalHrPKmOoWDIZtqT2KEUvm6
-	 98c61JZfXQ9uNRxkzSIwvdIuqK/HkIE77N6mNBd7f92BX1xqAneUSTjBz+FDf0wj6Q
-	 RhCqBYOIinjgtNh8N7msgGmQse1xAwbAG+hKZng0Iz6lUaSRLIIwhQ7Krg4q1roAH2
-	 OOuL/d6430Qpme+7Mrcvis+5vRvFxhm4MwV+lY/wRDF9JcEB7ZEcEoExcOe4aMl3sz
-	 kZqp+4Vb1nOiQ==
-Message-ID: <8f509b48-db3e-44ff-8423-1e43a35daa01@kernel.org>
-Date: Wed, 30 Sep 2026 12:03:36 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: avoid recursive i_mmap_rwsem in PMD sharing
-To: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
- muchun.song@linux.dev, osalvador@suse.de
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Oscar Salvador <osalvador@suse.de>, "Lorenzo Stoakes (Arm)" <ljs@kernel.org>
-References: <20260930064308.58159-1-lizhe.67@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260930064308.58159-1-lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: a4okrz9x8k4wyu93w6sm8owhtdoqcp8i
+	t=1790763009;
+	b=WVfMYzUsKhdxs813vaR6HAbk7QqcDFR3zVvHb2OOSzkhOgQW6gScMecEPdkmQpf3rmt8RJ
+	OdkpTvQyG+t1yuCUF4nFPXim8GFEKCCYk1pc1Rqnb68cdHOc0VoqglI2B1jpOirH7YgMS8
+	e3I1S9NtfCIFrnGkuwYVH7ArAiBDA3o=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=2chB+6TPhVuRnOZXELhxZytj9BOYBqeVPMdvplCJobM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790763003; v=1; x=1791367803;
+ b=A+9Lx1hllhbzQT0VcT76xVSjE63/J/iCHuwgomiIP1JGBQNX+bpmZLL2rdN+38KNTMew03mM
+ l8n0gaq+4699FSU5oBbhM3iQEkFbfdOye5D9JJ3wb0pPTLKQEvySj56HTgFuuX85wysCVmBbazy
+ t+6HjsWq0gX/oLU7H1YGW9dQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id e1901c4a5a410c4d;
+	Wed, 30 Sep 2026 10:10:01 +0000
+X-Mizu-Trace-ID: e1901c4a5a410c4d
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [PATCH v3 2/6] mm/sparse-vmemmap: support device DAX in common
+ vmemmap path
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260930085329.17337-1-lance.yang@linux.dev>
+Date: Wed, 30 Sep 2026 18:09:41 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ maddy@linux.ibm.com,
+ rppt@kernel.org,
+ akpm@linux-foundation.org,
+ david@kernel.org,
+ mpe@ellerman.id.au,
+ npiggin@gmail.com,
+ chleroy@kernel.org,
+ ritesh.list@gmail.com,
+ sshegde@linux.ibm.com,
+ ljs@kernel.org,
+ liam@infradead.org,
+ vbabka@kernel.org,
+ surenb@google.com,
+ mhocko@suse.com,
+ qi.zheng@linux.dev,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BAD58999-1EDD-4A37-ABA0-DB1BD8AB3453@linux.dev>
+References: <20260929053231.66085-3-songmuchun@bytedance.com>
+ <20260930085329.17337-1-lance.yang@linux.dev>
+To: Lance Yang <lance.yang@linux.dev>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F23B780008
-X-HE-Tag: 1790762621-811196
-X-HE-Meta: U2FsdGVkX18d9iZ7jf8NNS7PmQ2mSAXV8xKH0t4abvnAGJebhYYjxI3EJe9TpoBqCFNEogd9ze+9NexFTgx8NzTFmyzkON2jWKcraNpcE/cjBM7UIZH/CQDWHc+2R78LJI8wq+OgpnW0IVTSrtnl6ucOog6Wp+NRTp9MjNMJQGXQ6sMEGt1mInuk8wbK+cFLigrgfe6QUDrlTTKGOQ31QFu79RDWg3K//xh0RMIaTyZEWD8u154uh2ai9us8SxSfyluz27ngMGFuqfedf5AmTIm6ScvYjE5ZNbSBtnH7vq2uq4Ztqm1VX3HuItZbOtGe2XvMhsyTgQNr8Cn8z0uIDNDR5TPiqoVALt0CuqtZu/TldzKR8D+xr2ikB3Ub1BjMCu6OHWqrKCM2fcmBrTx7eGzebacDOdEtPSXVMrLaHj5fslsp5BQUEqP3VGEJsvUPrpMnoeqk4zAbQxedMDiJhSMyKdnhXmOy7HIhk4jUYqazwouJKj0Zm+nQPbYZo0I0HG3dwQOp2ezo28VUL1igSp22tTW/1/Ci5spwkUY4JHOTav8YOuM/ThjbuYRUhQIb3qcPFQ4yyWDYGm932AVcJ8lCowvue6wFYAIgDCRHjGPbBja+wIwklmOY7zjn4VejdQDqJ2/3bFc9WOYEt2TO1ppJd3pqDvRcLLilr6mwLOx6Dg/BFpVCwmc51yUTJEghTByMSZN8Tg4KbcHLmZ/HchnnHOG3+pV5De4D+WcFhj6wyrbMbWTkspP8rTtrze1Jd237NwOTDHIMWMzzNfQBmZeBlNC+6Jwv8a6Xj+/Trbbr0EjB/hdS8zHQvZIa5uiHG6MsrK7qmIH6obV/rsDVoKPDV9ByAvh/jRIKM0wYRf2lsimRdvPMbnhW4WCZx8SxcgcadDubfDVtYAa9aSIh9mfeWJv2ADzLycNmpUzjibA4VpTjKj+xxx2DtkNx/cV0xDbY3gZA23aCAku7uHD
- aFQqG99t
- V2ktXVRjEJu/8YnZ9NvY73rrckUzukicdJbaSvhGTBa41GouWYQTdedK/CF8YaBMrnGZGX2nvIx9+iJxjhmm/6Dzj6TKQVwjeuYzyymQWtQUeSzgbVkOyqogRWasd4udMGG9jVeJuWxWKXcLmR6FuCfEXSaEajtooss+RxyTTv6JAfxeVZy7fQWPsMTyf6YOHmFKrVFGI/RIj9be0K6NCH3grMmlDnOVMHFiu4pGiIc92RMMOHu0FzxwrnGa4hG8g1EGODJmtOlwDkG5fJPm+gOLtwX0glk1TR7nOrd7cjiNBTXRtdKXaftjpVlsRdCIhxIYz9Vg+xoi2+mA=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6284BA000E
+X-Stat-Signature: fg4gcibyx659qypsg3pzcfwds1jya9qh
+X-HE-Tag: 1790763007-5787
+X-HE-Meta: U2FsdGVkX18ZiWe3Vwc7vJkByTzf9kcgiORF2VrrEzjGSn+YPgfVN0Xj5qZcnZjCfMCglWmOTiG8YzZp+Kj35KyBv3V6+HGXfD2RRs3+N5y0HQoxnwBJcqGo+zQTzCkMAT4BPUabDx2cMaTJfL/r9CgqptWg21IUymlQXztGmoyBfJXxihqLXvHf2xdQiNhRirN9Nnch69wvEhZMpL9mNUfi/HPa4NSbLunzdCXimNn8JOPJnPizdzie+pylYanG3toSYK53zQpXyubaVJMcFrJV0gvfZ+VABX6SC5gwMihj1nTmsXcV6I0svnSKgsHaRnxGvBKQh19juGy079A3SN4+iv0opobEs6TjBcEEsUzuuP2NDqPvUWy/6eE3/h4a18U8ZxXRBof57OTR8HfV7/RplZdt1tI8OcjIyZNDAIKiFujDpvxA7gT/1YeVeoHSuHEDIURhoe/uBSWorsc7a31bQcHzOWazhF7M8SrURfabt4NI6BDaq1+NZeO1mDkiQKv1Pke0IfkSZVav5v4qNCNQnHCzURi0c50aBKqYZ3WQGRM9+sts09oGtIwuo7xiGrc5sB6VPq3E4Zel714NPQ+FI6DQJIevfYnLW2dJ5wCEGwdn1pGFm4g5/Bh0DCpre/4MhGwtTw+Nlx++MQY5RQ2ULCL2yTI9oE/68MHYr7zrPBqQz8dqzZk9tgCqcWXINbmcBwSMCDei1QUOkTEaVFwYKhgr+v2FFXbCxsHY3RfwHh29QNFlueeztMbkWkRVRQdEeDGx1B7Lvv6qoEhJ3XqkalNsv6ckZbH/Vy+X7kv7vU2PdM05i5v1UGkpit3I9dU35JehOi5fQl/umUZMsE7xCFLkpIOU4fEcz0RkaJ8TJREdZy1LAI6f6+dlrjZ6hlIGPdgK0CXEB9akV4tvmRTQBK4xApqXeD9tuucngjRocarrr7EdJADauLJAjV+C88XoawdQCat+RPNCdLf
+ wLJjWbzk
+ wOdwCMoeA1+oOFuYIM3HYkgfAJ47t7N1zjXxGzU9refUtsaLwWD7IbRXxelLbmx937ycM2jMr2OLTpKzAJhES12ad4Eah3IxMmPA4+XWgtegrZHBnVzn6PepbdHjEukB4OaKGPzIdNxxLj9NNQRccTeynML7M408pFqWZtcZYxeM/Ukj+8DQsnsJCZZBqICRJcwJFOyniwe2Td0mY/MkOfgkPVWyaCCzEE0Qw08vtbzwbYfoi68Cc2iX9TWkFJhgpMiItP81i+KAMG2SfU1efgkFj5SbhZl6QU0lgrp/3WuiJsRhZ3G1otJeeM1IjjH3wIJm15C1BwPR0T97YMpJ1NglKkUUm6D7V+X9Sjz6pli5eD+dFnnUj1yQBtQp5bOqxtlvP7LKwSbUDilKw9eihwPSSPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,52 +110,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/30/26 08:43, Li Zhe wrote:
-> huge_pmd_share() always takes i_mmap_rwsem for read before looking for a
-> shareable PMD page table.
-> 
-> That is unsafe for callers that already hold the same mapping lock for
-> write.  In particular, move_hugetlb_page_tables() takes i_mmap_rwsem for
-> write to prevent truncation races, then calls huge_pte_alloc() for the
-> destination address.  If the destination PUD is empty and PMD sharing is
-> possible, huge_pte_alloc() can call huge_pmd_share(), which then tries to
-> take the same rwsem for read and can deadlock on itself.
-> 
-> PMD sharing is only an optimization.  If the read side of i_mmap_rwsem
-> cannot be acquired immediately, fall back to allocating a private PMD
-> table instead of blocking in the sharing path.
-> 
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> ---
->  mm/hugetlb.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index cea25773a6c95..75631101a6807 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6995,7 +6995,15 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
->  	pte_t *spte = NULL;
->  	pte_t *pte;
->  
-> -	i_mmap_lock_read(mapping);
-> +	/*
-> +	 * Some callers already hold i_mmap_rwsem for write, for example
-> +	 * move_hugetlb_page_tables(). PMD sharing is only an optimization, so
-> +	 * fall back to a private PMD table instead of blocking on the same
-> +	 * rwsem in read mode.
-> +	 */
 
-"just an optimization" is not entirely true. There are workloads that depend on
-huge pmd sharing to work. So I don't think this is acceptable.
 
-There was a private discussion on this issue recently (for some weird reason the
-deadlock was reported as a security issue), 2 months ago I think.
+> On Sep 30, 2026, at 16:53, Lance Yang <lance.yang@linux.dev> wrote:
+>=20
+>=20
+> On Tue, Sep 29, 2026 at 01:32:27PM +0800, Muchun Song wrote:
+>> The common vmemmap population path cannot yet handle optimized Device =
+DAX
+>> mappings on its own. It uses pfn_to_zone() to find the shared tail =
+page,
+>> but Device DAX populates its vmemmap at runtime before the =
+ZONE_DEVICE span
+>> is initialized.
+>>=20
+>> Teach the common path to use device_zone() for runtime optimized =
+vmemmap
+>> population while retaining pfn_to_zone() for early boot. This allows =
+the
+>> same path to support both early boot mappings and Device DAX.
+>>=20
+>> The backing PFN supplied by the Device DAX-specific population path =
+is no
+>> longer used, allowing the redundant lookup and population code to be
+>> removed later.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>> ---
+>> v3:
+>> - Collect Acked-by from Qi Zheng
+>>=20
+>> v2:
+>> - Expand comments around slab initialization to explain zone lookup =
+and
+>> page refcounting (suggested by Qi Zheng)
+>> ---
+>> mm/sparse-vmemmap.c | 64 =
++++++++++++++++++++++++++--------------------
+>> 1 file changed, 35 insertions(+), 29 deletions(-)
+>>=20
+>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>> index 8219abc6c3e5..ee4c113ca938 100644
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -237,18 +237,43 @@ static __meminit void =
+*vmemmap_alloc_pte(unsigned long pfn, int node,
+>> struct page *page;
+>> const unsigned int order =3D pfn_to_section_compound_order(pfn);
+>>=20
+>> - /*
+>> -  * Device DAX still relies on vmemmap_populate_compound_pages() for
+>> -  * head/first-tail allocation and tail-page reuse.
+>> -  */
+>> if (!vmemmap_optimizable_pfn(pfn))
+>> return vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
+>>=20
+>> - zone =3D pfn_to_zone(pfn, node);
+>> + /*
+>> +  * Before slab is available, vmemmap optimization is used for early
+>> +  * system RAM, whose zone can be determined from the PFN.
+>> +  *
+>> +  * Once slab is available, only ZONE_DEVICE memory reaches this
+>> +  * optimized population path. Its zone span has not been =
+initialized
+>> +  * while its vmemmap is being populated, so pfn_to_zone() cannot be
+>> +  * used. Obtain ZONE_DEVICE directly from the node instead.
+>> +  */
+>> + zone =3D slab_is_available() ? device_zone(node) : pfn_to_zone(pfn, =
+node);
+>> page =3D vmemmap_shared_tail_page(order, zone);
+>> if (!page)
+>> return NULL;
+>>=20
+>> + /*
+>> +  * During early vmemmap population, the shared tail vmemmap backing
+>> +  * page is allocated from memblock before its struct page can =
+safely
+>> +  * participate in page refcounting. Therefore, no reference can be
+>> +  * held for each shared PTE mapping, and the mappings must be =
+unshared
+>> +  * before the vmemmap is depopulated.
+>> +  *
+>> +  * Once slab is available, the shared backing page is allocated =
+from
+>> +  * the buddy allocator and can be refcounted. Hold one reference =
+for
+>> +  * each shared PTE mapping. The architecture vmemmap teardown drops
+>> +  * the reference through __free_pages() when removing the mapping,
+>> +  * preventing the backing page from being freed while it is shared.
+>> +  *
+>> +  * The backing page may be shared by enough PTE mappings to exhaust
+>> +  * the positive range of its reference count. Stop populating the
+>> +  * vmemmap if another reference cannot be acquired.
+>> +  */
+>> + if (slab_is_available() && !try_get_page(page))
+>> + return NULL;
+>=20
+> BTW, shouldn't __add_pages() undo the earlier sections on a population
+> failure? Say the first section is added successfully, but populating =
+the
+> next one fails, e.g. due to an allocation failure:
+>=20
+> void *memremap_pages(struct dev_pagemap *pgmap, int nid)
+> {
+> 	...
+> 	const int nr_range =3D pgmap->nr_range;
+> 	int error, i;
+> 	...
+> 	pgmap->nr_range =3D 0;
+> 	error =3D 0;
+> 	for (i =3D 0; i < nr_range; i++) {
+> 		error =3D pagemap_range(pgmap, &params, i, nid);
+> 		if (error)
+> 			break;
+> 		pgmap->nr_range++;
+> 	}
+>=20
+> 	if (i < nr_range) {
+> 		memunmap_pages(pgmap);
+> 		pgmap->nr_range =3D nr_range;
+> 		return ERR_PTR(error);
+> 	}
+> ...
+> }
+>=20
+> We still need to undo the sections already added in the failed range,
+> though ... memunmap_pages() won't touch those, since it only removes
+> completed ranges.
+>=20
+> If the range starts at a section boundary, we'd hit -EEXIST in
+> fill_subsection_map() on retry while those subsection bits are still =
+set.
+>=20
+> The old DAX path had this issue too. Could we roll back [start_pfn, =
+pfn)
+> in __add_pages() as a separate fix? Something like this:
+>=20
+> ---8<---
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 796af1028ee2..16a0a2c885bc 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -380,6 +380,7 @@ EXPORT_SYMBOL_GPL(pfn_to_online_page);
+> int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+> struct mhp_params *params)
+> {
+> + 	const unsigned long start_pfn =3D pfn;
+> 	const unsigned long end_pfn =3D pfn + nr_pages;
+> 	unsigned long cur_nr_pages;
+> 	int err;
+> @@ -417,6 +418,10 @@ int __add_pages(int nid, unsigned long pfn, =
+unsigned long nr_pages,
+> 			break;
+> 		cond_resched();
+> }
+> +
+> + 	/* Roll back the sections added before the failure. */
+> + 	if (err && pfn !=3D start_pfn)
+> + 		__remove_pages(start_pfn, pfn - start_pfn, altmap, =
+params->pgmap);
+> 	vmemmap_populate_print_last();
+> 	return err;
+> }
+> --
+>=20
+> Hope I haven't missed anything :)
 
-Oscar, I recall that you wanted to send a proper patch?
+Good catch. This is indeed a pre-existing issue, and the old DAX path =
+was
+affected as well.
 
--- 
-Cheers,
+Your proposed fix looks correct to me. I would slightly prefer keeping =
+the
+rollback close to the failure:
 
-David
+            err =3D sparse_add_section(nid, pfn, cur_nr_pages, altmap,
+                                     params->pgmap);
+            if (err) {
+                    __remove_pages(start_pfn, pfn - start_pfn, altmap,
+                                   params->pgmap);
+                    break;
+            }
+
+If the first section fails, this simply calls __remove_pages() with an
+empty range, which is a harmless no-op.
+
+Would you mind sending this as a separate bug fix? I will ACK it.
+
+Thanks,
+Muchun
+
 
