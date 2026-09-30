@@ -4,90 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A70DCA5FC5
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 23:07:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 555A8CA5FC5
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 23:17:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 065BD6B0088; Wed, 30 Sep 2026 19:07:45 -0400 (EDT)
+	id 005986B008C; Wed, 30 Sep 2026 19:17:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 015936B008A; Wed, 30 Sep 2026 19:07:44 -0400 (EDT)
+	id EF7A86B0092; Wed, 30 Sep 2026 19:17:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E47816B008C; Wed, 30 Sep 2026 19:07:44 -0400 (EDT)
+	id E0D526B0093; Wed, 30 Sep 2026 19:17:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AD5986B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 19:07:44 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 87C42C0265
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 23:07:42 +0000 (UTC)
-X-FDA: 85271967564.11.7FF5078
-Received: from mta0.migadu.com (out-204.mta0.migadu.com [91.218.175.204])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3795CC000A
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 23:07:39 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vOEddTjI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of atish.patra@linux.dev designates 91.218.175.204 as permitted sender) smtp.mailfrom=atish.patra@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id AD5296B008C
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 19:17:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1BC19C0265
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 23:17:46 +0000 (UTC)
+X-FDA: 85271992932.04.DB93CC3
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 328F0140004
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 23:17:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=Av9Dc2Cy;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf23.hostedemail.com: domain of chris@chrisdown.name designates 74.125.225.76 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790810264;
+	b=GQd7sJ5qd+7grXqcycU65GK+iNksjH8t6JUY6zNQ03LeqJa//dyZAcU5SCUgSM43p/L53g
+	O5VtblQ89mD1ruAjzWG260sXo9nx7rIgVeiMMyKK32WQVBafCtqbcViyoTsDxKUYsPmcNe
+	WAFKNXs4bCbIfKhd53OLLGg9/QTghPQ=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=Av9Dc2Cy;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf23.hostedemail.com: domain of chris@chrisdown.name designates 74.125.225.76 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790809660;
+	s=arc-20220608; t=1790810264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=A8pI+gWvdzJTFdCcM705+gHwITEs2Iw/Qqa2jW0Ho30=;
-	b=q+I0XASpM5hc+PfnK8A3euO0ExAy6Z6KnlXmMJPC30QB0utBFnxvgu28h/pMhwus+u04RG
-	pFbJcofT76mWumXl0WZ3fwdsv+br3hsgMKY76kgJB/qhf1ZAgo6WBjEwqvUxcUcW4odcR9
-	QnsVT/OT7UMK3IJcfsoG+o0TTbxVPc0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vOEddTjI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of atish.patra@linux.dev designates 91.218.175.204 as permitted sender) smtp.mailfrom=atish.patra@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790809660;
-	b=0whatUQC05GaFXCj6uxZ3P/44BC8VOY4QM0Rq0+ayECh/1hCp+k2lrjyzSaVD0dcVy1seQ
-	XVU9/q+KwNwPoGS2VerbDfeqSo/iZEzoCu7PAp0VXCY27Zfc2Jm9MyvO2ym8Ia666/E+Rt
-	RRjGIcym5vcfvZIs1hm+YrX2CNDil/k=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=04ieIlc6aU4Ve4Y+NdGSZT+Urd6ATWlIU5xxlRqKmY0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790809658; v=1; x=1791414458;
- b=vOEddTjIRAERxbVyzBLH+HN1cWKmKSf0/AizpuweP1iO4W4ZkdWQsfTbusJYIvyTOAqxqVtJ
- DK+9u4r7Phxrc5DD7KSG2pJelEEHI75HhCViLOLaKK3gYneVvatD6C65x5MbxKz78dmeaf9CSbZ
- 6szyX/lL/22yhFL6mbepg2hw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id cd417db66a4fe8dc;
-	Wed, 30 Sep 2026 23:07:38 +0000
-X-Mizu-Trace-ID: cd417db66a4fe8dc
-X-Migadu-Flow: FLOW_OUT
-From: Atish Patra <atish.patra@linux.dev>
-Date: Wed, 30 Sep 2026 16:07:31 -0700
-Subject: [PATCH 6.18.y] mm/execmem: make the populate and alloc atomic
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Qqmx+w7wWMgcq8gW6PkHYUS1zHw7Tje/ih/ffys9GY0=;
+	b=3IPLsoW5iOApSQQRyyx50J1+GAUfYm9Mcl1rxdwNXLmq0+OAT1LvBRIshe4aa0G87/zYHT
+	SwjuSxLFz6XPtDwFLHk2MX4WJ6kL6Ubo2xJHdOVXWJK17LNlkQ7yCGZJTrgaY1ZhSKNfEH
+	Qu+HscB5yC9FNZ9SSaauNOS1rGlAhIQ=
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f63546c3so4600364f8f.1
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 16:17:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1790810262; x=1791415062; darn=kvack.org;
+        h=user-agent:content-disposition:content-type:mime-version:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Qqmx+w7wWMgcq8gW6PkHYUS1zHw7Tje/ih/ffys9GY0=;
+        b=Av9Dc2CyfaMhs6s8V+TAEiI14qdETaVMkap45Utw3swsEH5+3a2pE2bxo2JyBK8sKa
+         El4hNURUo/mexCpkORYBt1Y/KOBtsaOiNkVmYfeOiUykrvWnEtNEcgRoACyniJSMtW48
+         jCNPRdukv2nN6K/zCrLplganT133wtv9buFfs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790810262; x=1791415062;
+        h=user-agent:content-disposition:content-type:mime-version:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Qqmx+w7wWMgcq8gW6PkHYUS1zHw7Tje/ih/ffys9GY0=;
+        b=cOFuK3CaHmkZ8TK0Au6z7PG7dQobge8znNAOQYcxzCRW8uegC1D7f9NwM7lvQS59pq
+         XN4SUzIImWzLdPL73z5itcfBS05zB5VLmUi+3GTkyPp7+I7F0m+yUW5m8LtGI9hqIlPd
+         E/MNHicDn4HtpDbbxTP5cFpt7+DZ00vQqD2LvOACbho/GQ6UxILViLaF45pLo5ljZuJ7
+         iepL9yzQa6s6QJrbqQB3lQt98TcTfHNNt+Zn1DCggmvXrlH4kA8dYJE8sfQZktCBulkO
+         uWAdYTgcw57FxO7/Z74m+aOPiQoKQIOQeXWh2xc7/VYsVgJOhGds9EmLPp+99JtmscuC
+         VXuA==
+X-Forwarded-Encrypted: i=1; AKwUvBySo8rVdvZflDr/8dmisdxsaIkRSbhJhv3H9P/+rXfCRfX6fzbNFHESE8I7b9tVmHKCsPgATyHwdQ==@kvack.org
+X-Gm-Message-State: AFq9FYJcbljyZWlQNXLufKjepvgmcjNkR/Gzzc108I/36mEwU9JaiaIM
+	01jlJD8zL02MQnMlx0EJspQCSZP8WL3SVZZ5KBpuwD2cgeek4gs8pJu9tG2dvwIfm8E=
+X-Gm-Gg: AYBFou17q6ogDcc7qol3XulSYIAxW6RjNNU8Ss31+FMjrxgf02NIQDp/mNfpZ9nHlTp
+	5DKXStPSVe0CYQW4ZWwCAX0hyWMjhmeONetSAbDJGscB46IopGoL0XiEk8vo5/3rNwjC3OAAWvs
+	PGemrrl88GdfuIzgpf3W5aFsES9nnz4nIG2LTrBOCauaoncmrD5Gdl8L+ee0yJ2O7THV8g6IOHT
+	SwRk7rdjQB5nMTjv0gIsIsERBSGnGq1Qv5t+ytkUw67GDTUsQKnUbw6jLV6/U+E9tkRRCgH9E5l
+	Enxdvz8xK0KO+M2GpqoaC/5XmXHex/r8ilqvNQBnigLKVNr//Dp2Ba7QGsjL7YfIPNwa4u1i+XT
+	lPqPzekQJGwGAHNWsh1jkEbIECKQa8IGqEEznUbwH3vRlz4PxET5f3iIlHPwCmo7LuUyEr/jNIN
+	g44PUJpUupzCXSGA5gFMP6P2o7rWqVaO1p8s/IH9cee2kpZQ4mrcrlFPP2JIQGlcCj12DrDjZi0
+	x+YLVmN+i7P6MxsEiSUIb5sq60=
+X-Received: by 2002:a05:6000:4811:b0:488:8546:d0b2 with SMTP id ffacd0b85a97d-48b0253956cmr6174897f8f.51.1790810262482;
+        Wed, 30 Sep 2026 16:17:42 -0700 (PDT)
+Received: from localhost ([213.61.32.212])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b0690e060sm2332276f8f.19.2026.09.30.16.17.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 16:17:41 -0700 (PDT)
+Date: Thu, 1 Oct 2026 01:17:40 +0200
+From: Chris Down <chris@chrisdown.name>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Ying Huang <huang.ying.caritas@gmail.com>,
+	Kelley Nielsen <kelleynnn@gmail.com>,
+	Vineeth Pillai <vineeth@bitbyteword.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: [PATCH] mm: Make swapoff interruptible when unusing mms/shmem
+Message-ID: <ar2YlFYjYUZ49ZA5@chrisdown.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260930-execmem-atomic-6-18-y-v1-1-bd35d4523aab@meta.com>
-X-B4-Tracking: v=1; b=H4sIADKWvWoC/x3MQQ6DIBBG4auYWXcMqEHpVZouCPy2s0ANmEZiv
- HuJy2/x3kkZSZDp2ZyU8JMs61KhHw35r1s+YAnV1KnOKNsrxgEfEdntaxTPhvXEhYPV3g4OARi
- ptlvCLMf9fZFp9dQWel/XH6pK1+RvAAAA
-To: stable@vger.kernel.org
-Cc: Hubert Mazur <hmazur@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Stanislaw Kardach <skardach@google.com>, 
- Michal Krawczyk <mikrawczyk@google.com>, Slawomir Rosek <srosek@google.com>, 
- Atish Patra <atishp@meta.com>
-X-Mailer: b4 0.13.0
-X-Stat-Signature: wxbg5ink94ynm4aopcd7jf7ype6xxf1b
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
+X-Rspamd-Server: rspam06
+X-Stat-Signature: rc9shs9utoxrnisubidt94zaa3e7ayrk
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3795CC000A
-X-HE-Tag: 1790809659-184090
-X-HE-Meta: U2FsdGVkX1+SjO7r4CmuRDaus5n+vk2gYDbCMmWyEh6+qZUqnLI7BclcLmOIDKLEl4qNu3HHKUo3Bj8oMs3C6ZX55VR0ntZqmIjsAZ3Cwp7NUgAB+/ZSu+z+hXl1ortPRljVxeFuwTDfemwKpE5ZuvIuHpuuoTYSeYc/zo9Td2u+aRA9WEMZ5b00q2wRqmC3p1lXmQUuinLscbS4qg1ZrMvSHHBfNxeLN1MU+2YKVzH09xPwN6jUFRTM9EQ3cX0Hz/bI/HLk5FsqXg4x3KZuhbn7kobPG8zFOrs6ZySNYQmscdkw/tc6cTaiXRXNsrMqJM/T1cuy1VdZYXVBj+hanzCC0P+LPvb6B12Sypo7v8C83HVE+ZlJg9svayOYXR+SNLGmMApkuo1ewm6g9d7OLtTDnMtc14Fkld9+47mTtzoGGRASCKl1hFE3zhmS/P+dgErLjVV72XEfYtufDcLy6mZOP4Pt4609hztpO/DhS4LpGT46DwsZ0X9eZaSD4RW3S0/PtIMbfAiz2dMtnb1e+/sLhqoeDj7J8nPJEOEXIsZUlVuUbHTrAAS+Eih4gzRrxGfuXek1J3sXjus8U7CyyWOWSMHOXWzkcHGStisdlG3akFM/woN48d6dnMQYp2Yj3lGRWGAYu+X/HNTAHjuiYQmApZoS1Fu5m5cYFc1n6jwE+UW10DQfVaU2gG5MJzAEwc6CrxDE1pCNGqeITXcsPSGo4YsppfGtX+WTeF9M8ILPFNSfLYHdWRIRiLk/RadH/pZSfR6xiOixmbwtqcNI9IKphdEhDBe85a1dDS+xBxdM3TrK4HWHkvUiepnOsHNpErglS5c5KfUCNBKmTw8Xb5LM1IB3MDJPE/PtDPdtQP6XCFGb1DLBJQT+aa8GIX8Csqb6wnmEGKK4n24C3zCKTH1ZEK+0vI4pOYDGTK3/bldxRxm5RIq9mYEuELpwVahX7J2xw8wSpr1PTlPUPtK
- m74y0+22
- LrqvDEJBonhjLJiIKXaI6Siyzz2iUPhB+/VQcskKMqinLX8QKjzUnA3DevAyb8UqaM7dSzX8FoYulXKvXbJWxWFgxibRs45GCbd9l4CXcPWf8+IEsdcn5GgYuJsmSwGVtHj4n3UCfQ9mSqdMyg0LmOlkwRpfq3NgQph8TCF/RG6/n93fQ64MkEn1selNNKoncJAgIvHYkJtMUUtoruuzAs4qLweWiLP9pPt1F2Tw2ljO1KEQck0c0CXAWs8GQZxGwSD3Yn6EPqIHDGFIlciNyezXfl74JvirKj6/s+HfravXoN7dzlhKJ2VfhgkWbkuY/Q0iK/il3MIDtn9nkYs5AHDJcKDLdsfSrk7QTM2JFH4qMM6mDIJ4/7c1pIAwWnjU+NkYjIyC/kqanH3n9osZRmToP5Ievl23NXAtalvk7Kqnt6uU=
+X-Rspamd-Queue-Id: 328F0140004
+X-HE-Tag: 1790810264-669632
+X-HE-Meta: U2FsdGVkX19zzWnrs/FFi3eOBqlUkFv1KBYbmdycauCvUiaD6kih8ZKXq/cIGII2NihrX9PSaf1eMkqAqq2ymSgHW1geHdvP7r+4JhiFdr125irA0qz7xkHlweLD2GcrLiXYmJYSNFBxcmR7uxoe6iy791H5eQkWnQh/UoCK6/k3E06MFm8lE8bcasgQz6hLg/XNGSMsbZJzG9/MiOzFpLJIOEDxLp9KamqLIvZxwrHmYfCoU4qwsiNm38S4qREiO4rScNRntj8fozGL6lyy3shkAL7mC0kSVKPDp2sZV97Qhxfc59PYtOibYpIMONmGyLpCvdAd1wJRLJFWto5U3s+DjxfUg11WDbhzWtwtXa7irNjPLgSh5XYha3eQo9yPQCnJs7TvLUj3YNecDtd/2/1aRe9GWJpOKiX9/DgczPuEmJuxraqjz/sJ5nOhdSvOaPURkXYYBEEWkGqnDLV98EzDNOOvFlVvJGeT26KQf3gI7vSyK7ZS6fIJdOKBeCcnPR+//R3Z6flg+UOYUWCLsnTi4850R57F3KWg2/RpkFsnuQVt9HMDeskA2XJN1eVK9/eHRMmcrXdDoXfva1wgBeol/uWpyudBnG5b/MAMduW9SI9CFBpC2LJYief2WCW2OUHaQ5UDt4KtW7fT0ClPwmwEuLKmVULPYk1jm3oi5S3VAGkyBpFgb6101i9LGO2ctz1oWyvKeMYiqV6PRPlUATfFXufRp+2DMBmc9mD3bjXDYAg4XEoJN4xtRwnI0dNOc5/4KehqI1qPRbdlgZ7O6WdLeseeKfUFXHiO6nPi12yu1x8D59dbmFBeJW9LBw9mmQpkf8AYD6cDBpb+BBkj1YKjcSZsdNJ/3mMpzOMDdNBo06mAZAEFLhAhmt78cFeAkytaVhE3/1PtUMxlW3w1qqmjhQGQqlSzDvBAi1jSMEzM+HjtdJrVezePkdcHK59CwbX5Styl10aWTDA4iQP
+ W/x9UvnM
+ 5xaKsJmcx9WHpp0gNeuKkDZ8TvAhoymDMvFjFa25IPF227nA5UnGUdgISbB7c0GEUSQYsfJ4M9x4Q3DLX3warrkF0wN5J/oRQHRXUbaEqz8QIkyBpIeiv6ot4Rmqq2lVoPBs2VbRXBdUmB9WvW4dOmTzTBL4d9YOx/utfynhFXZAdWD0ePpXBVSpB7O3BGoLPxJUT4wHIi3ULnnXLxCJCBXQTQj9MbddfJEWU8rdW6U+6hrGl7/LkK5lTzVl8gFSQXywamm2pNSNzXn9yGLI4JB5WFDrZ2b6hCXQzqBGgJ+lUOUSh6T2LG8IjwQvhkWnNc1t8UWOX7ixtp2yIe7TfugbWUY35qeikO1jYGgm2eqakknD8t8CZHY95KZBoB4RP1vB3i0QXNNREGdOcEVK6FIdfe8R7DASEOJF7+X37wKcv+/+8V+tkJFeQKQTJWZ7E6Zzvr5n5HSeBoX/rKhBVU+6k632A/kJWi31JJgFTxZqT+wK7DdgqPUSJFAzhGtr+t5eHsjL/7F1N6LJJU6i4tCK8zvS5wxc3P90J
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,209 +122,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hubert Mazur <hmazur@google.com>
+try_to_unuse() only checks for a pending signal between mms, and
+shmem_unuse() doesn't check at all. That means that once swapoff gets to
+a process or a shmem file with a lot swapped out, nothing can interrupt
+it until every last page of it has been read back in.
 
-[ Upstream commit 1871d548fc4feb007644efb6d669c93a4e191254 ]
+Just as one example of where this can concretely show up, freezing tasks
+for suspend or hibernation has to wait for swapoff to notice the
+freezer's fake signal, and gives up after freeze_timeout_msecs (20
+seconds by default).
 
-When a block of memory is requested from the execmem manager it tries to
-find a suitable fragment by traversing the free_areas.  In case there is
-no such block, a new memory area is added to the free_areas and then
-allocated to the caller by traversing the free_area tree again.
+Here's a facetious example where one swaps out 2GiB of one process to a
+swap file on ext4, starts swapoff, and half a second later tries to
+freeze with pm_test=freezer. Writing to /sys/power/state then fails with
+EBUSY and this in dmesg:
 
-The above operations of allocation and tree traversal are not atomic hence
-another request may consume this newly allocated memory block which
-results in the allocation failure for the original request.  Such
-occurrence can be spotted on devices running the 6.18 kernel during the
-parallel modules loading.
+    Freezing user space processes failed after 20.003 seconds (1 tasks refusing to freeze, wq_busy=0):
+    task:swapoff         state:D stack:0     pid:3175  tgid:3175  ppid:2955   task_flags:0x400100 flags:0x00000419
+    Call trace:
+     [...]
+     io_schedule+0x44/0x70
+     folio_wait_bit_common+0x1ec/0x3d0
+     __folio_lock+0x24/0x40
+     unuse_pte_range+0x2d0/0x348
+     unuse_vma+0x158/0x248
+     unuse_mm+0xfc/0x150
+     try_to_unuse+0x104/0x3f8
+     __do_sys_swapoff+0x220/0x5d8
+     [...]
 
-To mitigate such resource races execute the cache population and
-allocation operations under one mutex lock.
+The same goes for anything else that wants swapoff to stop, like an
+admin hitting ^C in a panic, of course.
 
-Link: https://lkml.kernel.org/r/20260320075723.779985-1-hmazur@google.com
-Signed-off-by: Hubert Mazur <hmazur@google.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Stanislaw Kardach <skardach@google.com>
-Cc: Michal Krawczyk <mikrawczyk@google.com>
-Cc: Slawomir Rosek <srosek@google.com>
-Cc: Hubert Mazur <hmazur@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Atish Patra <atishp@meta.com>
+Prior to commit b56a2d8af914 ("mm: rid swapoff of quadratic complexity")
+try_to_unuse() was driven by find_next_to_unuse() which checks for a
+signal before every entry, so let's restore that behaviour.
+
+Just as an example of the improvements, here's how long freezing takes
+in the same test while swapoff is happening on my computer:
+
+                      before                  after
+    400MiB anon       8.925s                  0.028s
+    400MiB shmem      1.639s                  0.003s
+    2GiB anon         failed after 20.003s    0.011s
+
+Fixes: b56a2d8af914 ("mm: rid swapoff of quadratic complexity")
+Signed-off-by: Chris Down <chris@chrisdown.name>
 ---
-Please apply this fix to the 6.18.y stable tree.
+ mm/shmem.c    | 4 ++++
+ mm/swapfile.c | 2 ++
+ 2 files changed, 6 insertions(+)
 
-We noticed that kvm module loading failures on intel cooperlake/AMD
-Milan hosts recently. This race condition might have contributed to
-that. The issue was reproduced with a test module that widened the
-window beteen populate-to-allocate interval and queued the
-normal execmem cache-clean worker.
+diff --git a/mm/shmem.c b/mm/shmem.c
+index ae08cff4500c..72c8a61db76f 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1742,6 +1742,10 @@ static int shmem_unuse_inode(struct inode *inode, unsigned int type)
+ 		if (ret < 0)
+ 			break;
+ 
++		if (signal_pending(current)) {
++			ret = -EINTR;
++			break;
++		}
+ 		start = indices[folio_batch_count(&fbatch) - 1];
+ 	} while (true);
+ 
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 254ce86fa923..c3288910b3e3 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2689,6 +2689,8 @@ static inline int unuse_pmd_range(struct vm_area_struct *vma, pud_t *pud,
+ 	pmd = pmd_offset(pud, addr);
+ 	do {
+ 		cond_resched();
++		if (signal_pending(current))
++			return -EINTR;
+ 		next = pmd_addr_end(addr, end);
+ 		ret = unuse_pte_range(vma, pmd, addr, next, type);
+ 		if (ret)
 
-On an unpatched 6.18.53 kernel, the forced race reproduced the missing
-/dev/kvm failure in 2 of 2 kexec boots.  A parallel module-load test
-running five modules for ten rounds produced 15 ENOMEM failures from 50
-loads.
-
-With the upstream fix applied, 10 of 10 kexec boots verified successuflly
-with no issues with kvm module loading. The same parallel module loading
-test completed with 50 iterations.
-
-The patch applies cleanly to v6.18.54 with no changes from upstream.
-Please let me know if anybody needs other information.
----
- mm/execmem.c | 55 +++++++++++++++++++++++++++++--------------------------
- 1 file changed, 29 insertions(+), 26 deletions(-)
-
-diff --git a/mm/execmem.c b/mm/execmem.c
-index 810a4ba9c9243..084a207e4278b 100644
---- a/mm/execmem.c
-+++ b/mm/execmem.c
-@@ -203,13 +203,6 @@ static int execmem_cache_add_locked(void *ptr, size_t size, gfp_t gfp_mask)
- 	return mas_store_gfp(&mas, (void *)lower, gfp_mask);
- }
- 
--static int execmem_cache_add(void *ptr, size_t size, gfp_t gfp_mask)
--{
--	guard(mutex)(&execmem_cache.mutex);
--
--	return execmem_cache_add_locked(ptr, size, gfp_mask);
--}
--
- static bool within_range(struct execmem_range *range, struct ma_state *mas,
- 			 size_t size)
- {
-@@ -225,18 +218,16 @@ static bool within_range(struct execmem_range *range, struct ma_state *mas,
- 	return false;
- }
- 
--static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
-+static void *execmem_cache_alloc_locked(struct execmem_range *range, size_t size)
- {
- 	struct maple_tree *free_areas = &execmem_cache.free_areas;
- 	struct maple_tree *busy_areas = &execmem_cache.busy_areas;
- 	MA_STATE(mas_free, free_areas, 0, ULONG_MAX);
- 	MA_STATE(mas_busy, busy_areas, 0, ULONG_MAX);
--	struct mutex *mutex = &execmem_cache.mutex;
- 	unsigned long addr, last, area_size = 0;
- 	void *area, *ptr = NULL;
- 	int err;
- 
--	mutex_lock(mutex);
- 	mas_for_each(&mas_free, area, ULONG_MAX) {
- 		area_size = mas_range_len(&mas_free);
- 
-@@ -245,7 +236,7 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
- 	}
- 
- 	if (area_size < size)
--		goto out_unlock;
-+		return NULL;
- 
- 	addr = mas_free.index;
- 	last = mas_free.last;
-@@ -254,7 +245,7 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
- 	mas_set_range(&mas_busy, addr, addr + size - 1);
- 	err = mas_store_gfp(&mas_busy, (void *)addr, GFP_KERNEL);
- 	if (err)
--		goto out_unlock;
-+		return NULL;
- 
- 	mas_store_gfp(&mas_free, NULL, GFP_KERNEL);
- 	if (area_size > size) {
-@@ -268,19 +259,25 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
- 		err = mas_store_gfp(&mas_free, ptr, GFP_KERNEL);
- 		if (err) {
- 			mas_store_gfp(&mas_busy, NULL, GFP_KERNEL);
--			goto out_unlock;
-+			return NULL;
- 		}
- 	}
- 	ptr = (void *)addr;
- 
--out_unlock:
--	mutex_unlock(mutex);
- 	return ptr;
- }
- 
--static int execmem_cache_populate(struct execmem_range *range, size_t size)
-+static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
-+{
-+	guard(mutex)(&execmem_cache.mutex);
-+
-+	return execmem_cache_alloc_locked(range, size);
-+}
-+
-+static void *execmem_cache_populate_alloc(struct execmem_range *range, size_t size)
- {
- 	unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
-+	struct mutex *mutex = &execmem_cache.mutex;
- 	struct vm_struct *vm;
- 	size_t alloc_size;
- 	int err = -ENOMEM;
-@@ -294,7 +291,7 @@ static int execmem_cache_populate(struct execmem_range *range, size_t size)
- 	}
- 
- 	if (!p)
--		return err;
-+		return NULL;
- 
- 	vm = find_vm_area(p);
- 	if (!vm)
-@@ -307,33 +304,39 @@ static int execmem_cache_populate(struct execmem_range *range, size_t size)
- 	if (err)
- 		goto err_free_mem;
- 
--	err = execmem_cache_add(p, alloc_size, GFP_KERNEL);
-+	/*
-+	 * New memory blocks must be allocated and added to the cache
-+	 * as an atomic operation, otherwise they may be consumed
-+	 * by a parallel call to the execmem_cache_alloc function.
-+	 */
-+	mutex_lock(mutex);
-+	err = execmem_cache_add_locked(p, alloc_size, GFP_KERNEL);
- 	if (err)
- 		goto err_reset_direct_map;
- 
--	return 0;
-+	p = execmem_cache_alloc_locked(range, size);
-+
-+	mutex_unlock(mutex);
-+
-+	return p;
- 
- err_reset_direct_map:
-+	mutex_unlock(mutex);
- 	execmem_set_direct_map_valid(vm, true);
- err_free_mem:
- 	vfree(p);
--	return err;
-+	return NULL;
- }
- 
- static void *execmem_cache_alloc(struct execmem_range *range, size_t size)
- {
- 	void *p;
--	int err;
- 
- 	p = __execmem_cache_alloc(range, size);
- 	if (p)
- 		return p;
- 
--	err = execmem_cache_populate(range, size);
--	if (err)
--		return NULL;
--
--	return __execmem_cache_alloc(range, size);
-+	return execmem_cache_populate_alloc(range, size);
- }
- 
- static inline bool is_pending_free(void *ptr)
-
----
-base-commit: 1b357ecb321392158d507b04672ffee57bfa071d
-change-id: 20260930-execmem-atomic-6-18-y-d91c94aedee7
-
-Best regards,
+base-commit: 2ddb90ee544ae97215afc4698dc223293997cc43
 -- 
-Atish Patra <atishp@meta.com>
+2.50.1
 
 
