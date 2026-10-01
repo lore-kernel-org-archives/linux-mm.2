@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38B29CA5FCE
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 18:43:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FC5ECA5FCE
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 18:43:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C8006B008C; Thu,  1 Oct 2026 14:43:45 -0400 (EDT)
+	id 4784A6B0092; Thu,  1 Oct 2026 14:43:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0793D6B0092; Thu,  1 Oct 2026 14:43:45 -0400 (EDT)
+	id 4224D6B0093; Thu,  1 Oct 2026 14:43:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED0C36B0093; Thu,  1 Oct 2026 14:43:44 -0400 (EDT)
+	id 2C3846B0095; Thu,  1 Oct 2026 14:43:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CBD6C6B008C
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:43:44 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5E03EC01BA
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:43:44 +0000 (UTC)
-X-FDA: 85274931168.15.7DF0A3A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 124EE6B0092
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:43:46 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2F045401F2
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:43:45 +0000 (UTC)
+X-FDA: 85274931210.24.DD774FA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 891C5C0002
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:43:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZXHKEJiH;
-	spf=pass (imf22.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9A21B1C0007
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:43:43 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ei+G6BQ+;
+	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790880222;
+	s=arc-20220608; t=1790880223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nf7k3kUZJ8lq1fxACTFvD6heNgFRBaaOnt6+P+Ou9hM=;
-	b=VTPJCbWyPbQSmAmNLx/nac9SfLGuol7D5l6F8S4NuHsSKSGCXnS0HDaUIHqKpfo3apUIzW
-	XoS1zAbuWgDXx9CUeGLcEnB+pRul9IHXCSkwwccwfEtnzkyd3npDSLD9LxsMDNfPMvzD2C
-	mCAZqQWv5fURPMqdt7xsv08+myGOthM=
+	bh=8IhyPraaZ+0Y4y5yNF3T0TZ5caa5fwXRSAMFytUHil0=;
+	b=2wU9LoiCQuPWEIysOyurmH/pz6cyBCIKzgTP64ylaJhrQLbqJjphOeBlUzhd06azTAC4wx
+	au7nbGiDmnK0dS/3SkwuwlDoqQYCpDCKCAVVWF/Aoql9y9GyQwkbYtxdFBQZbPRXm9i1cr
+	kQOtAS6YC4yvphtUxn0ORqTX3STqzM0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZXHKEJiH;
-	spf=pass (imf22.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ei+G6BQ+;
+	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790880222;
-	b=PhP/IKMLizCTdo0BRhWR02uXjiCG0jJvTpvMOZcGVJkDWosoDAUp8YFFukPKQGAIMTBsI9
-	1xWAe35xsg0OQsWL5oFSwsdgYsinnJGV5lCnkNBHg8Ax4TpXKTiBmwpEJBM7L5mdVrvZYf
-	W51CJ95StOZV84NsoKFgYJ/T4V4OGiY=
+	t=1790880223;
+	b=AXpLxR4+ycv2fMpNSsdld29Dm5keNkyiVBKvt3wPbpe2yYPSrNgEjk/Qy+s62VElmLPByI
+	/fyJBtUV+bs6wDM2bbd1ahE4EWhq1x+zlOvIbihDryNLFNuLJnA6BMRIVXon5zTRlvW8rp
+	GKd4ApzyH9sfBfJxhojRk5qgC1r3iQ8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 29897602BA;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2648460218;
+	Thu,  1 Oct 2026 18:43:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A981F00898;
 	Thu,  1 Oct 2026 18:43:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06981F000FF;
-	Thu,  1 Oct 2026 18:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790880221;
-	bh=Nf7k3kUZJ8lq1fxACTFvD6heNgFRBaaOnt6+P+Ou9hM=;
+	s=k20260515; t=1790880222;
+	bh=8IhyPraaZ+0Y4y5yNF3T0TZ5caa5fwXRSAMFytUHil0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ZXHKEJiHam3Z2xUpQMDGRKdXcZRxWTOI/dwRFHVYOszxIyjzXh/2KukXPW5tcl6+v
-	 5qXOQIL9wrwUJHtf5jzaTWLy2Z83KOGJeqqy6Buv03l9TZqulFqoiLscBARN4GZGzX
-	 Fr3btU8qMBKAe5LomhIa2cKvT2m8V8Cka5j4wJgcTBrUwd/lWbXW73ScaIkA1yLcn3
-	 a0u65q04EujCObMXKy8nWmY1Jz/aCW7m+k+LDlbgTOkkFX2Cs/H3xlwLiBZ2cAejsf
-	 tY3qJke5nvl+aDB0xe9MuWUD5j1YJvx470DP3iuL4299Zxj3vJSTktKdKzQ/pNadu+
-	 oq8pn8LPrT5FA==
-Date: Thu, 01 Oct 2026 08:43:41 -1000
-Message-ID: <f5e9ef4614d5f9ca4b7fe6420dbf8454@kernel.org>
+	b=ei+G6BQ+kQusBfSuAr9wTOsaqN5ckM7JLvO7hIUYeDcCqP43VlOvoItk5A4Mru+0z
+	 TPGzdx7kMbtZcAzGelAhophnMIcY7WlH0Gh7kS/kGOy+hyokmWH6COBlDWGgXqD8Zq
+	 jdkcItAqxwlM5WWGriLvIiLGGMm/Qdc5h7mh4hPUKxQwDn4F+panOEuPfGx1zYqqhp
+	 HrUgRFiIZ8dijReXRACFrTPLlbuX/9xHzDxUfTUx2XiUUfZ8dmASp1p1+NvV1mFc86
+	 ih7ApInwzZXkJa23LlvYks6M+jUJY0tT8Ae44TF261aLpujb/g/VDpdVRkzjZSTL0l
+	 W2LMvjPwwmHpg==
+Date: Thu, 01 Oct 2026 08:43:42 -1000
+Message-ID: <ef728276c74f15e11f42301b4e6f011f@kernel.org>
 From: Tejun Heo <tj@kernel.org>
 To: Liz Fong-Jones <lizf@honeycomb.io>
 Cc: Christian Brauner <brauner@kernel.org>,
@@ -82,21 +82,22 @@ Cc: Christian Brauner <brauner@kernel.org>,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	ian@honeycomb.io
-Subject: Re: [PATCH v4 1/2] writeback: let foreign flushes reach dying cgwbs
-In-Reply-To: <20260930-wb-dying-cgwb-flush-v4-1-bde637803a96@honeycomb.io>
+Subject: Re: [PATCH v4 2/2] writeback: switch a replaced cgwb's inodes to its
+ successor
+In-Reply-To: <20260930-wb-dying-cgwb-flush-v4-2-bde637803a96@honeycomb.io>
 References: <20260930-wb-dying-cgwb-flush-v4-0-bde637803a96@honeycomb.io>
- <20260930-wb-dying-cgwb-flush-v4-1-bde637803a96@honeycomb.io>
+ <20260930-wb-dying-cgwb-flush-v4-2-bde637803a96@honeycomb.io>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 891C5C0002
-X-Stat-Signature: smapbqbziwkgcnkgk67mhwzfrbodp91q
+X-Rspamd-Queue-Id: 9A21B1C0007
+X-Stat-Signature: g6keok6u51ukj7b7d93c6douan8gej46
 X-Rspam-User: 
-X-HE-Tag: 1790880222-651612
-X-HE-Meta: U2FsdGVkX1+dUnZdCLNRqlnE/mFEYfpea0/58nM2ygmdvWUyPnnReQdAljBW7VV0f8yzUA/MC3yyF/5Zi10djK6b1XTDN1EnJ4p1pMzZog+VrImSOPMcEdYUog7OPxQlMIRceCS/hZr0Y3mmCjeivXz/etbDJdzKd4v09w5rZ/T2NazRk2MgQzJJ3RfhvKUPN3FkTGlEj4pFeHLCwaLiHg+/ydeKRxfc+gwv0DIq+2elFii+PP/NYt9OufEB92ToVSK2N8rWmh0oXaZRAFM0LSQsZHPVI/J1l3r2F4+REgp5iZW8xGLtv18elJIEOZXIKTG7r5Xcj8y5Gd6cE5MXLfgrd1BT6aOIJVT1F2s6km1UDePLhcm5/iUe+gja2uCbETCvwG0d3g9JNBvwy6o0JOA2if9IFo7H22ZjbUAvc9hSvTOr9yrfDC4yMvmNRPPrNK9hDG096RMC54Ao8xglnJWVivG+RTYvIBDpWXOzL1LswsOcqb0SWelicJh3ZZWyEBWG3fUi/WmPDHqQQIgfX5sRkYlbBKRYhYPf/zUiHrEycn7JAOEIWTk6ggdCQzRckzL84iZWhIdGcmj24iwE+sQfT424ORea5NAgQ6MUqEvQmZr/vvWp4+QRdPYK7kj4evM0iKYp/g8ZtAUvl2cHNUTnl2vUr8PqkoHHGkbhNOrxkYTQr4/8dooDtxAvWMuv75K7Q+Qni5l1+lt3tZOs6RMxOGB2Mlz2mXbekoi6kaRJGZBrb15SjW1qZSQADGTnSkQ13vLHI8rUemXTxSgNKwMnJbZNNlpa01yMUxI8GvCe7W6Ci/X4qpu9+Kg9SbRkdxc38vqFoJD+GCdJobBEraaDf7agEokfo7Skcwyi62iSvZvy+uV3X3ZHeIbykGkfYcucrAA/1dy6kREhB78oC5t0UNoqDRKjThu6EkbOYeKnGAatdxRds84VG8d+Ic6p9klIMBTOrtxlHxyCI1Z
- iJPp8f3L
- eP09FsjfyOxEKYErvjlExpkqqV5Go/yoWifX7Gv0SgPnnXPAnbSO8KlHavHf6RbicgSNBlrquFn4ajzeMzW9wr2SI5PmtD5uR/v8OqblmBdNpHEkvJqmQLOdBIzNy07vOPva9yU895i3hLG6SQiGIyAsicqW/pcHqDBbJ5gMh89VGE8U2ef+nf3UJGONB8tgJ0n9zuxCEQ1ZiGR0qD78fM6jsk5eFYa5ucRd22KkejjU/NleEhkgr8RS4zcyPDPUWQ5Kp
+X-HE-Tag: 1790880223-293673
+X-HE-Meta: U2FsdGVkX189GVN60PQaPcXdnY/u249BMt0NjDbxGdejJVX4YOuS4tJ72s2hLTScYhzBkBJBnQ390tSrkGjvU81wpQzSm8PI/k+CeMp5LnbMpSX8gKzccGjocFS0+IR6PGuHArXMEEx6TXVov2p40m2O+cCzh+13CbxUCLCuuNUb/PdXEVAoSu+wkJWDu0PNaJmE5N/jtGhJyh9m+kzHALFwACZjo44XJbk21l+f7U804sbl4rIKtNIGMnUNff1hpXY3qtz8yz8Lj1CDE7w8G2V9BCdt/RfEEfuH1gamTPukWXupG5SUVN4FNu5BjCFWIlLXnuXgaaOCbFEz9aIRsaUiA89vHVtlpIBRx/KnUjQ4GPcSRq78bRk+scBCRMpYIPI9Q2qr6c4+2k6azqyPqxzyzamcv0kKNWiyfg1JWb0C9YRBqQNWfaM9jRQJeEPrapYJUyhtFBr89ON9+20ezqVyv1MsNi+CC3uQEv5n6OuT1tB/3J1IpetOY5QvtHNIiIyJm51YPHVDfNlzuPeGPGIavlPwLf4gf6aRH5gEx1Fc957ESLdfcurYoARwzuTu+PkzX7gudz/4kMrvOqJbqUL6JxVqZOiFUYx2I/0gjcb7KSIlbyxeqFTEJ9gJv0FWbFK/s8PN6ndgi2dT3Jugr3RzSyR2b5fU1y0I5FQxSXCAS2Y8nRWrTfzrGZ0Z5c6Gy5XKibBpvFp6VAkzPCvHyr05ko6sTIW5xfYEBIb1ktut390llVq18bbbSfYe/ilBl5LeUNSKgPQutbR3GerpGtodptaoglxXHUC3CwoCyOKVzzC6P7NjtU0NpC2hs9a+u7ons2uQVMgGGZTA99ETpXTiKFoYkh/f2n1RMJd3+7zh22F23JDT2N/auggyIq68XRK+gW1NukL7J2gpokGsInLChg9vd+kBRP1F8yE2yf81xpaFPf1nQ8jsklMAYFn7S8np3i74aGgp/MU69sX
+ gu7G6zDg
+ sRPUHihrppxMjof3RosqMHXpc6BaZtAx/jYZx3xi27pPPXlM0R4dx1NB7wIm8u8wyopWW/RL4ca53yFY8ag/vBhAeq0SGO36ylhZelOU4WDeqKA1DAbgonK1/6gvUI+/fpUsonROSbpX9bGXIEIR9sSv/SUStKuBM0Qv4baeHVRSmKbUWkoeYf/28nf5x6CLN0AiMNLYK1V3F6pq/8oJyqCwjJ3yqq/TuLIIPR+JlzWMtpcWvIkSLQ4o0t4KIgHj2LErY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,17 +108,40 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 Hello, Liz.
 
 On Wed, Sep 30, 2026 at 07:35:37PM +0000, Liz Fong-Jones wrote:
->  	if (test_bit(WB_registered, &bdi->wb.state) &&
-> -	    blkcg_cgwb_list->next && memcg_cgwb_list->next) {
-> +	    blkcg_cgwb_list->next && memcg_cgwb_list->next &&
-> +	    !css_is_dying(memcg_css)) {
+> +	new_wb = wb_get_lookup(wb->bdi, wb->memcg_css);
+> +	if (!new_wb)
+> +		return false;
 
-With patch 2 switching a replaced wb's inodes to its successor instead of
-flushing them in place, this doesn't matter anymore. If a removed memcg's
-wb gets replaced, the successor takes over the inodes and stays in the
-tree until released, so foreign flushes still reach them. I asked for it
-against v3, where patch 2 only kicked writeback on the old wb. Can you
-drop it and the description sentence about it?
+If the successor was already released, the slot is empty and the inodes
+stay on a wb that foreign flushes can't find. Maybe fall back to
+&wb->bdi->wb like cleanup_offline_cgwb() does?
+
+> +	spin_lock(&wb->list_lock);
+> +	restart = isw_prepare_wbs_switch(new_wb, isw, &wb->b_attached, &nr) ||
+> +		  isw_prepare_wbs_switch(new_wb, isw, &wb->b_dirty, &nr) ||
+> +		  isw_prepare_wbs_switch(new_wb, isw, &wb->b_io, &nr) ||
+> +		  isw_prepare_wbs_switch(new_wb, isw, &wb->b_more_io, &nr) ||
+> +		  isw_prepare_wbs_switch(new_wb, isw, &wb->b_dirty_time, &nr);
+> +	spin_unlock(&wb->list_lock);
+
+Switching a dirty inode away leaves WB_has_dirty_io set on the old wb.
+inode_do_switch_wbs() moves it onto new_wb->b_dirty through
+inode_io_list_move_locked(), which only updates new_wb, and nothing calls
+wb_io_lists_depopulated() on old_wb. A live wb clears it on its next dirty
+to clean transition, but a replaced wb never gets another inode, so it's
+freed with its avg_write_bandwidth still in bdi->tot_write_bandwidth,
+which wb_split_bdi_pages() and wb_min_max_ratio() divide by. Can you add a
+prep patch which calls wb_io_lists_depopulated(old_wb) after the switch
+loop in process_inode_switch_wbs(), while old_wb->list_lock is still held?
+
+> +	while (switch_replaced_cgwb(wb))
+> +		cond_resched();
+
+cond_resched() is a no-op on PREEMPTION kernels, so a wb with a lot of
+inodes keeps this worker from reporting a Tasks-RCU quiescent state. See
+407a5d205179 ("writeback: report a Tasks-RCU quiescent state per cgwb
+drain pass"). Can you use the same do { } while () shape with
+cond_resched_tasks_rcu_qs() as cleanup_offline_cgwbs_workfn()?
 
 Thanks.
 
