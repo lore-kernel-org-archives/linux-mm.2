@@ -4,71 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 889F3CA5FCE
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 21:18:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85A03CA5FCE
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 21:18:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFAC46B0092; Thu,  1 Oct 2026 17:18:16 -0400 (EDT)
+	id 1ED7F6B0095; Thu,  1 Oct 2026 17:18:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD4D26B0093; Thu,  1 Oct 2026 17:18:16 -0400 (EDT)
+	id 19DA46B0096; Thu,  1 Oct 2026 17:18:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C97A66B0095; Thu,  1 Oct 2026 17:18:16 -0400 (EDT)
+	id 08CCE6B0098; Thu,  1 Oct 2026 17:18:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 982B56B0092
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 17:18:16 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1173E40557
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 21:18:16 +0000 (UTC)
-X-FDA: 85275320592.05.A3A1B9C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BBFF06B0095
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 17:18:19 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2FA718054D
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 21:18:19 +0000 (UTC)
+X-FDA: 85275320718.10.C4EDAFA
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 36D89140003
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 21:18:14 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Auk2Sz0w;
-	spf=pass (imf09.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2FA3112000D
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 21:18:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Jyc8ZHCL;
+	spf=pass (imf29.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790889494;
+	s=arc-20220608; t=1790889497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+TzoD8LpRLpQwd9Mk9OBiE8g0UyKf6NY/hHboB5VlnI=;
-	b=vd1Y1PDQOkS/U315UqsaXJTfqY53aGH38uVFHLtjjLhJZIg58nfpgBARuN+BPGisSoy1Cm
-	X38tnoqiWhY82ECQqYk5zJW3Oidm9ICSZ+A12S5vewjK0GZ9e+ZBkvWyGgqyaLYlFZWqjK
-	LjKf9sUWTe4Y2Mo4U6Y4jMIKgPIkPYA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790889494;
-	b=cugy99yUbWHm1Teh+zsPWDmzZdEjgVpZ02C9OYY3e4Pd54PyF9ZR2dQOTR97qOs133GgqJ
-	vO37/ZQS/XLy+mLK6xJmXiA9RjeAWIpuq4xYdkbQ5lXsz3azMtVAx2+YFzDDz4MX6hQtIk
-	XnpTKb+YktT5xZj/H+61JEUNY/UQPb4=
+	bh=sl6i3rrMXHMwq64OcowBKU4ydvJxEXr8IWC9j05j+cM=;
+	b=76z1p7J0iHN36OSSC1MkcpJNYJqlPqUdyKA/NiRkDPUZrCCe1QZWjqbLp5iHASSzX7lL1Y
+	+SfI61r3hu3aUm7D1vGLlaU6cL5OBuqYFodsV6C+5aehGwU8jD2nuL4j2NPDxuQunIjFU/
+	DgPpWEKYOGbik8BAzz7eXn+dbR1cKms=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Auk2Sz0w;
-	spf=pass (imf09.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Jyc8ZHCL;
+	spf=pass (imf29.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790889497;
+	b=ByntGppalFBRgL3s8qPppoPs7BPnY8XDe9iIg4AXZM65Qlg26D6CGwdWzzHpS1IqsW3HIG
+	2Tok0+NZ0Nf+bcjPzAkL0zJ+jbr0+0f+pOhwDFveerx0GPOplZvwDyhIGlDQXIE8/H4g5J
+	GnHFHt1xFYSUFMf8sF/9v5vQ+wNvefs=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BA94816F8;
-	Thu,  1 Oct 2026 14:18:09 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E28FC175A;
+	Thu,  1 Oct 2026 14:18:12 -0700 (PDT)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 32B523F86F;
-	Thu,  1 Oct 2026 14:18:10 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 760703F86F;
+	Thu,  1 Oct 2026 14:18:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790889493; bh=0FkiYTXFXeX4ri5wwdo8r1zDswEVykTKGJ/AokRyxDI=;
+	t=1790889496; bh=2X2FQ5S7yrfALnr5wL0BPfM4xpUXDIjXutG9mQQGSqY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Auk2Sz0wlnW2YUzEY0seFkGbJtuNi1gVERWfk1nWrvIGwydkd0ze+4yC7No5n9Hrs
-	 YcfmL9hJPAycP3USSkPccQsJgnPppfjoZm9ogF5zCfZgS8GluLWQW+1KG795zQxUf/
-	 W++hd50w9IDH1vTSsjde/uqUjF+jVWV3s7aVCm18=
+	b=Jyc8ZHCLLwHG7ZAjNektnsZz+9/XDYtttWyz6ywgnTwFBdgk0KDILlPvQJCT3DS0v
+	 pZCjTNEgpZPtI86+8WsM91u0rdSQnJJmQSoEw4qwZYx7f2P7/SfK2pgbMxw7eT9Ssi
+	 VCHpcdrkBuiWBq9B6kC/UNGfNwJaAJHaYaTfsz7I=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Thu, 01 Oct 2026 22:17:52 +0100
-Subject: [PATCH v9 2/4] kselftest: mm: replace usage of /proc/self/smaps
- for __check_pmd_huge()
+Date: Thu, 01 Oct 2026 22:17:53 +0100
+Subject: [PATCH v9 3/4] kselftest: mm: integrate huge page checks
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261001-fix_split-v9-2-0f4ba8bbdbdf@arm.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261001-fix_split-v9-3-0f4ba8bbdbdf@arm.com>
 References: <20261001-fix_split-v9-0-0f4ba8bbdbdf@arm.com>
 In-Reply-To: <20261001-fix_split-v9-0-0f4ba8bbdbdf@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -82,30 +81,29 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
  Kevin Brodsky <kevin.brodsky@arm.com>
 Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Sarthak Sharma <sarthak.sharma@arm.com>, 
- Yeoreum Yun <yeoreum.yun@arm.com>
+ linux-kernel@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5409; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=0FkiYTXFXeX4ri5wwdo8r1zDswEVykTKGJ/AokRyxDI=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqvs4KSeP0+3vmIoY7ipzOig2DXg9K5T69uM/ce
- ct6vjHjeXmJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCar7OCgAKCRBt1cPRWsUx
- M+JSDACCs32nf3pXyJRxfH9fUKZQ/1LzPeB55JxBVFBp76w2DM2vT/dT+1ThPa11jqosHEDplOQ
- MCS73R5MY6W3PS4MlSJgGigd5WeOH2+JP9+Irq8E5lh4jwBicNIb8qMtSfvsxMKRIM/KVZfXDIW
- hCnpPtMfwt1CFySYkVsXZ6SNvun9hbpBJuEtreAAK+TQVMKUZveZMXtSyTC6542Rm8lls5EidLx
- F03Zh+sRXnnk8rJ+xCZh594Zm7WrXgzZnrRFKBpi5JARwnQQQxJvsSU1kk/eLh578xF0aWuNCp6
- 4fGtlWE9YPBFEHBM+hNk1bZH4iBimqCKy7+PCxpNBKp8U91/QY1yE3noAkn2x+AwDTml08z4wcs
- ok1MWeX5zlnM+s4+fJh/xkLtBcLdEiCie/rpPCEdRW91dgmbQ5/gfE2Sf+jr42oNhz0+9BtYOwh
- ou2LXpKXyeW283K8m6aQ1FZU4rNLRossrMztqx2+XTQGz22DdrOwHaGAf0Kiopoda4APM=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4868; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=2X2FQ5S7yrfALnr5wL0BPfM4xpUXDIjXutG9mQQGSqY=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqvs4KL+VYw6FuAkln8r6pGcnUOji7ghXv/E3by
+ IiMsp4UQWqJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCar7OCgAKCRBt1cPRWsUx
+ M0jIC/9Oy3YDlqMQOhtpXmcTDqbmS5SkuMsJsSQegOcTd3+vfXfZqnpayi20cf+I5ubDV4o26nt
+ zR1Nhof1I4hMA2nEwK31tHk/BoP/2RsUCE1RYnn3R89XHG3+XiPf9LsnADGoNmNu24a0P4VokFf
+ wZmO8/OJOvcmjaaQTNEuEx6zXtjwixBF02wAajUwx+Qrgy6qGxeLvABPIMLfX90lYg6ZXlYedgD
+ OluxL6Tuquk3RF3i4jE2i7DdPnf6XAvpumDRVCoTrfwpH0JXq2iP3OWtcxpn4CeJkJXerkinXqu
+ Hms/moyVKy+DM5tj95L7n3YgBBvRJz84O+grm3hrcEhk89cZdbMkVAApzZAsdOrUAOXkapDUB9C
+ ezyJvUABMz5LbRWu0avPrt+Gz86J5UsnYhXGQYFwtiKSVoeRdSVH7ulYohSYocg6a33DCNyUZol
+ o1QyLj9+m/C/Q3N2zbyknCrTAjbVZEnDiFZrEFBGrkF4bl5sIBQjHWduISVQ9Nw+K1M10=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2FA3112000D
 X-Rspam-User: 
-X-Stat-Signature: 5cx75o44w4m1yzikibyropw5r8edb8zx
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 36D89140003
-X-HE-Tag: 1790889494-689025
-X-HE-Meta: U2FsdGVkX1+L6LtmndmYqaslfpjB12OcFKxzVskw/jDzZz6sDvxS9QMO5oqijFi6L7IWfwHBtxM+McpwfqHDvlBFwF+EpZBDmxyIhhODQ1n7qVGIQIkxdm0cieRdHRLMTDi2FMnIVidSmLPyx7+fis7Lhx4eIpU/Y92VaXFpnkaHIwp0rRwBFK6Dvm4e5uXTUTnfHCOZO09nxFDkuh/xO6Moma1WLOEJxfMqBqGzjS/uiDnfC/CW25mDI1cTqX1Afgr6VnsbyMCegBNMq6dXZGG+wcioBZyGbno056tKljLIjopBszHjZKf1ucr7aAdmvKnQTVbkCamCAOlEuytYm2BZQiTViMojKuYGgw8L9lIs844LF1Jr1Odw9+lcs7zlYEEc38EQTMUKasRL7bb+PUukCSqjnXhDmeHi4OnrS6jRQDD33en5tzghcPcgB8Z/RPbiuTdcYbAakn62w0ilTUeS5zWZTOLfmvakUOM52lGBiqZZTPtnqBRaJhqci5iP9AGq9HgT7G5ab9Lxzl8tcbBMoXaHhsLnMuul8Rlzz809rQpKJiEIM1Eq4169f4hjKLiZ4sFq8wJ+NLpUA0p3Am6OpjlEWxBweklXPVTEXJxB/14Fsq8vFaK/om8CyN1E5nueHUACutppCyhwkmyW0cqu1ca8m9144OM7tuJ6xCDElUWFiEcy6CvmqmBn1dEkY2IED3gMlExq8gvy6F8D468UwU5UzsAZHLkD510JZfXjcJKnER1JuzDb6XOegoB8xbIS6aZt2VbshtfkBYDYNCdUTSjo5tqUOa9MSZjVT/TthM3XDanQ29KAb1yIaHvFGdCU4yBe3tfiWh5i7ReVZBAEMpWRc8Xj+7GYZ1eCMr2s6C+qIq6FIPSqBmbrfaloVrjgCaiAvlJVUuBxmLxMUwLU1pYQ9TdeggTpjQNSw8s2rWu7+kbidYOKL5jb9usXijU8/SOpfFgV0r07vNv
- VMQQ4W/r
- oG8Qbc6/d8xY3RzFW2AET4nWku6J5YET7RudKbiMnp/X542ljRPyqvERtG6e3jqpf1AEdukBfCb+/AMXoC6YbPZowHGnVqPRUaSUjHuIG7//GPl5ky6uDL9bcSIpYcZeXbRdlazDhq1Rm9//hnnF2diVDFbodA7dz0ea7cKFW9ffWwSuhEU+deU2S1cG3hVPPCRZsaqwMUzNApSkDq777p3MdToA1+7OPiNLp2jiUulFheV+dWGT1rGWR8IJOWcZGlIruW2lKzl8wkXSJ7pEXiogQzq3Og3HIKDUltbWSvWzTyKZnHHUU5Dq+8PMchxJRxGuZ6AgnY2iAnlHSK816Oe8CmNQ38PD7gbr6LEVb6B2XaAKkQnWmtMTgIA==
+X-Stat-Signature: ix4ts41bru69mmpz6mu5pgxh8fd8npyu
+X-HE-Tag: 1790889496-908505
+X-HE-Meta: U2FsdGVkX18lA9ubx1YQH5hmiZ23KlSjQf5lJA3fG9XUfS09SF+syc7MQ9l+L7c6LMIKA5OFJ5UF20enDzi/Axp83LwmFJ9UUCpM/FejwskQQfUnWs+nqphNcLoVq4/XkShADixKlakSvvVSZEhCS/JIQ6IxEpQzZoCKHqgveoC9Fgk6IhSGygCIokprNI2mVpsrd0sCIny6vYHpV26d7ZgNYwy6NNU8EBdoB3W3mlHk8U0vrMsg3xvAUScjlP5h5umf8FUNiaZ/shA+i/g8FSyH6QdyX3qiI5A+CuHwqoXj5/WWB10McDNYumobA67/2u7gdn26YjQdkZBhobp6xakQDBRsEw/PZxWvxXodtY31x6fqBzVEJXckCcKsCEzOLLAN9F70jwGWOKnCr5X7Qt9utyMeI8+Ue9ksVfIEDHEU2ns3kkbBoa/tOjmrSPzjvOQYU2nhvpMDyRa8ovjBu40/NIN3u4cIuMQoX9cgSedloIQzQnuKPShwYq9WHv6HxSxT0ydcfvLssRvl56pFIGev+YmTBq7KVNa9SI0hJEx14/96NjD/5jxshpVPSKM/6f+b8LWK9rz4Ghg1f/Eeo/4KwNb+8Mo27WDmEx4Jk21JsHLGNfkU32NUyBtNR/whiJAYA1P/oMkToHnusjp8HbsXFl1hbwj+rAeczm0ZqQksaTc71HXGju3+bgz0n5+NGapV8e5Z+lzAG0rQQgC4pJVi0gDaZGN60BFifa7I1RQBWabhh1sl0FaJjDpK4df8z6eXWfv64qeQiDzj6Edc4mpyejQj3STaR9Fkcitzfe+alo1YFUKdTdp6DkxDelqC6Uy6m7hIduVad0R02+nRZNY1IOOQVUeKi8CNX/HoB57zme0s3guCE1rsDFIXdlMoZtgw90T+coF4XeQegFAriCXCzQ69ebMTeEDglISZXcNSfXJgB35JqqR9goMVux2Uf5LbQCG/9K0XboL6xVi
+ 8NvWc244
+ R1jgB+9hGJ86qFQ8UN27/oDuWEzRojTrqfwjBZOBOXkWwJxSzC4a4/ntTay0qLe/XOh2rVE7585EOZVNdsBwTBotFxd5fve24U6Z3me/sbMq2sfzhfj4CRr35oOpYFEkl1MmBKAJuUqJ7d7dAdSl5VJWPXfYFUwulpNX9JVELa8LOnBbDAiHnclGiiSHUjxwOOqMRa8TQr+psDcT8m4NCzlpvEaBbFP5vCqHo7zDmpeEFwlO3S0QIJKkY2XqHNfws8OZZQ2rRte9DQ4064KM7SWupKkBkkXIVTdmUbij0KX5eGzmebf9/mAisBw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,161 +111,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
-glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
-made by memalign().
+check_large_folios() only checks for large folios without distinguishing
+between anonymous and file-backed huge pages.
 
-The underlying VMA may start at a different address from the aligned
-address returned by memalign(). Furthermore, a subsequent
-madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
-already set.
+To add huge page type checking, integrate the huge page checks into
+__check_huge() and __check_type():
 
-This causes split_huge_page_test to fail because the check_pmd_huge()
-helpers incorrectly require the address returned by memalign() to
-match the VMA start address reported in /proc/self/smaps.
+  1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of using
+     check_large_folios(), since only the mapping type matters. This
+     identifies PMD-mapped huge pages.
 
-Instead of relying on /proc/self/smaps, use /proc/self/pagemap and
-/proc/kpageflags to detect huge-page mappings checking PAGE_IS_HUGE
-and PAGE_IS_FILE according to type of huge page.
+  2. Otherwise, use check_large_folios() to detect large folios. This
+     covers mTHP cases.
 
-Since shmem pages are also file-backed, simply check whether the page
-is file-backed.
+  3. Check the folio flags according to the huge page type via
+     __check_type()
 
-Fixes: 642bc52aed9c ("selftests: vm: bring common functions to a new file")
 Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Suggested-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- tools/testing/selftests/mm/vm_util.c | 78 ++++++++++++++++++++++--------------
- 1 file changed, 49 insertions(+), 29 deletions(-)
+ tools/testing/selftests/mm/vm_util.c | 90 ++++++++++++++++++++++--------------
+ 1 file changed, 56 insertions(+), 34 deletions(-)
 
 diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index a0ab78ceedb1..a3c3a2706c22 100644
+index a3c3a2706c22..65c06e17c326 100644
 --- a/tools/testing/selftests/mm/vm_util.c
 +++ b/tools/testing/selftests/mm/vm_util.c
-@@ -351,24 +351,6 @@ char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
- 	return entry;
- }
- 
--static bool __check_pmd_huge(void *addr, char *pattern, int nr_hpages,
--		  uint64_t hpage_size)
--{
--	char buffer[MAX_LINE_LENGTH];
--	uint64_t thp = -1;
--	char *entry;
--
--	entry = __get_smap_entry(addr, pattern, buffer, sizeof(buffer));
--	if (!entry)
--		goto err_out;
--
--	if (sscanf(entry, "%9" SCNu64 " kB", &thp) != 1)
--		ksft_exit_fail_msg("Reading smap error\n");
--
--err_out:
--	return thp == (nr_hpages * (hpage_size >> 10));
--}
--
- static bool check_large_folios(void *addr, size_t len, int nr_hpages,
- 		uint64_t hpage_size)
- {
-@@ -410,20 +392,51 @@ static bool check_large_folios(void *addr, size_t len, int nr_hpages,
+@@ -392,76 +392,98 @@ static bool check_large_folios(void *addr, size_t len, int nr_hpages,
  	return ret;
  }
  
--bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-+enum check_huge_type {
-+	CHECK_HUGE_ANON,
-+	CHECK_HUGE_FILE,
-+};
-+
-+static bool check_huge_type(uint64_t categories, enum check_huge_type type)
+-enum check_huge_type {
+-	CHECK_HUGE_ANON,
+-	CHECK_HUGE_FILE,
++enum check_type {
++	CHECK_TYPE_ANON,
++	CHECK_TYPE_FILE,
+ };
+ 
+-static bool check_huge_type(uint64_t categories, enum check_huge_type type)
++static bool __check_type(void *addr, size_t len, uint64_t page_size,
++		enum check_type type)
  {
--	uint64_t pmd_pagesize = read_pmd_pagesize();
-+	const bool file = categories & PAGE_IS_FILE;
- 
--	if (!pmd_pagesize)
--		ksft_exit_fail_msg("reading PMD pagesize failed\n");
-+	switch (type) {
-+	case CHECK_HUGE_ANON:
-+		return !file;
-+	case CHECK_HUGE_FILE:
-+		return file;
-+	}
- 
--	if (hpage_size == pmd_pagesize)
--		return __check_pmd_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
-+	return false;
-+}
- 
--	return check_large_folios(addr, len, nr_hpages, hpage_size);
-+static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
-+		  uint64_t hpage_size, enum check_huge_type type)
-+{
+-	const bool file = categories & PAGE_IS_FILE;
++	bool ret = false;
 +	int pagemap_fd;
-+	int nr_pmd_mappings = 0;
-+	uint64_t categories;
 +	char *start = addr;
 +	char *end = start + len;
-+
++	uint64_t categories;
+ 
+-	switch (type) {
+-	case CHECK_HUGE_ANON:
+-		return !file;
+-	case CHECK_HUGE_FILE:
+-		return file;
 +	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
 +	if (pagemap_fd < 0)
 +		ksft_exit_fail_perror("open pagemap");
 +
-+	for (; start < end; start += hpage_size) {
++	for (; start < end; start += page_size) {
 +		categories = pagemap_scan_get_categories(pagemap_fd, start);
-+		if (!(categories & PAGE_IS_HUGE))
++		if ((categories & PAGE_IS_PRESENT) != PAGE_IS_PRESENT)
 +			continue;
-+		if (check_huge_type(categories, type))
-+			nr_pmd_mappings++;
-+	}
++
++		if ((type == CHECK_TYPE_FILE) != !!(categories & PAGE_IS_FILE))
++			goto out;
+ 	}
+ 
+-	return false;
++	ret = true;
++
++out:
 +	close(pagemap_fd);
++	return ret;
+ }
+ 
+-static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
+-		  uint64_t hpage_size, enum check_huge_type type)
++static bool __check_huge(void *addr, size_t len, int nr_hpages,
++		uint64_t hpage_size)
+ {
++	bool ret = false;
+ 	int pagemap_fd;
+ 	int nr_pmd_mappings = 0;
++	uint64_t pmd_pagesize;
+ 	uint64_t categories;
+ 	char *start = addr;
+ 	char *end = start + len;
+ 
++	pmd_pagesize = read_pmd_pagesize();
++	if (!pmd_pagesize)
++		ksft_exit_fail_msg("reading PMD pagesize failed\n");
 +
-+	return nr_hpages == nr_pmd_mappings;
- }
+ 	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
+ 	if (pagemap_fd < 0)
+ 		ksft_exit_fail_perror("open pagemap");
  
--bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-+bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
- {
- 	uint64_t pmd_pagesize = read_pmd_pagesize();
- 
-@@ -431,12 +444,13 @@ bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
- 		ksft_exit_fail_msg("reading PMD pagesize failed\n");
- 
- 	if (hpage_size == pmd_pagesize)
--		return __check_pmd_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
-+		return __check_pmd_huge(addr, len, nr_hpages, hpage_size,
-+					CHECK_HUGE_ANON);
- 
- 	return check_large_folios(addr, len, nr_hpages, hpage_size);
- }
- 
--bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-+bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
- {
- 	uint64_t pmd_pagesize = read_pmd_pagesize();
- 
-@@ -444,11 +458,17 @@ bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size
- 		ksft_exit_fail_msg("reading PMD pagesize failed\n");
- 
- 	if (hpage_size == pmd_pagesize)
--		return __check_pmd_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
-+		return __check_pmd_huge(addr, len, nr_hpages, hpage_size,
-+					CHECK_HUGE_FILE);
- 
- 	return check_large_folios(addr, len, nr_hpages, hpage_size);
- }
- 
-+bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-+{
-+	return check_huge_file(addr, len, nr_hpages, hpage_size);
-+}
++	if (hpage_size != pmd_pagesize) {
++		ret = check_large_folios(addr, len, nr_hpages, hpage_size);
++		goto out;
++	}
 +
- int64_t allocate_transhuge(void *ptr, int pagemap_fd)
+ 	for (; start < end; start += hpage_size) {
+ 		categories = pagemap_scan_get_categories(pagemap_fd, start);
+-		if (!(categories & PAGE_IS_HUGE))
+-			continue;
+-		if (check_huge_type(categories, type))
++		if (categories & PAGE_IS_HUGE)
+ 			nr_pmd_mappings++;
+ 	}
+-	close(pagemap_fd);
+ 
+-	return nr_hpages == nr_pmd_mappings;
++	if (nr_pmd_mappings != nr_hpages)
++		goto out;
++
++	ret = true;
++
++out:
++	close(pagemap_fd);
++	return ret;
+ }
+ 
+ bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
  {
- 	uint64_t ent[2];
+-	uint64_t pmd_pagesize = read_pmd_pagesize();
+-
+-	if (!pmd_pagesize)
+-		ksft_exit_fail_msg("reading PMD pagesize failed\n");
++	const uint64_t scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
+ 
+-	if (hpage_size == pmd_pagesize)
+-		return __check_pmd_huge(addr, len, nr_hpages, hpage_size,
+-					CHECK_HUGE_ANON);
++	if (!__check_huge(addr, len, nr_hpages, hpage_size))
++		return false;
+ 
+-	return check_large_folios(addr, len, nr_hpages, hpage_size);
++	return __check_type(addr, len, scan_mapping_size, CHECK_TYPE_ANON);
+ }
+ 
+ bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+ {
+-	uint64_t pmd_pagesize = read_pmd_pagesize();
++	const uint64_t scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
+ 
+-	if (!pmd_pagesize)
+-		ksft_exit_fail_msg("reading PMD pagesize failed\n");
+-
+-	if (hpage_size == pmd_pagesize)
+-		return __check_pmd_huge(addr, len, nr_hpages, hpage_size,
+-					CHECK_HUGE_FILE);
++	if (!__check_huge(addr, len, nr_hpages, hpage_size))
++		return false;
+ 
+-	return check_large_folios(addr, len, nr_hpages, hpage_size);
++	return __check_type(addr, len, scan_mapping_size, CHECK_TYPE_FILE);
+ }
+ 
+ bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
 
 -- 
 2.43.0
