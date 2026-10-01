@@ -4,99 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19DF4CA5FC4
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 01:00:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD7B2CA5FC4
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 01:32:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ECF16B009F; Wed, 30 Sep 2026 21:00:53 -0400 (EDT)
+	id 2D8BC6B0088; Wed, 30 Sep 2026 21:32:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29EB56B00A0; Wed, 30 Sep 2026 21:00:53 -0400 (EDT)
+	id 261C16B008A; Wed, 30 Sep 2026 21:32:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B38A6B00A1; Wed, 30 Sep 2026 21:00:53 -0400 (EDT)
+	id 103D16B008C; Wed, 30 Sep 2026 21:32:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC6096B009F
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 21:00:52 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7A2D71A0275
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 01:00:52 +0000 (UTC)
-X-FDA: 85272252744.02.FB378B7
-Received: from mta0.migadu.com (out-62.mta0.migadu.com [91.218.175.62])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1B4B3140007
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 01:00:49 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xShgBlgK;
-	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CF7396B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 21:32:18 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A02A140291
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 01:32:18 +0000 (UTC)
+X-FDA: 85272331956.07.882BE55
+Received: from flow-a1-smtp.messagingengine.com (flow-a1-smtp.messagingengine.com [103.168.172.136])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4A48620006
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 01:32:16 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=dU+0WpT9;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="n ykSWi/";
+	spf=pass (imf13.hostedemail.com: domain of neilb@ownmail.net designates 103.168.172.136 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790816450;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1790818336;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E9cu6gaPd6B1QEw8XTg0R4sQ58YLLIvtvCs4yMKNz34=;
-	b=OqSRcAia/3DsUaPaZVIDqr7F1y/PFn27Zv3FsWMIZ8XQ6MTN4CCBSuINzB3Nk+wKpeF6bd
-	i56KvVCvJpBUggAKmj1w/DhbGmwhmMm51HQm2pdinR1g1sBk3odVWyY9YYSsJbHzqx1K1G
-	xiWlMRl54hagyYyrGdJ6fpeAB9e4f5M=
+	bh=v6sl/0R+rB68lGY0FGguwPrnWxhGA/6NlVevSXWfXMc=;
+	b=NXu43eFAMFXKCKyoUYkJ15LqWdkEXkXKA/BzuwIHncDyUJ4lA5YpSTrmIwvQqB+cMZctdJ
+	fk6xrz1dFnhQA/UfEqqjgAcPffSZefU6uQEP46XLLQHT7ZKkVNgwJ7bkScyu4a17YAvz7g
+	OH8/1N0PTbuY0Cb4u770gZDzbVf5K8M=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xShgBlgK;
-	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=dU+0WpT9;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="n ykSWi/";
+	spf=pass (imf13.hostedemail.com: domain of neilb@ownmail.net designates 103.168.172.136 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790816450;
-	b=ATxehMOJl+Kd1Sd+Z5hSNBI0ani74de+7PUDgVk8rr2p+WmQh9yuWZf0I9P7A21osM6RoW
-	raLIb/zeGXwtzP29UEQrplZeWRSKj4b3fOw7pZZAlCC8d+BCLa5mtV49rwYQYj/PGouOi+
-	EillA5ijZWFnKrj9PS8TeNriZSY2qb0=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=HaQPNgehEuldW2UhCdxSN+8tT39bgGHcvLRMMFKomVs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790816448; v=1; x=1791421248;
- b=xShgBlgKu6+XLjyZu3n6X1OOEztZFWuRNKQvyZnrkQrQuVf523VESG6Y0ZmhL7b+U/UHGC09
- /vkcndQ/mWan2KqAGYQepSqZF9slE0h9A7W/y3XoFfdT7mNPbRZrKiu9SDvtEviqZJhibdHCnlp
- Rn6DPhQrny1gA/ouQF0fbcO0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9f96ffee7864c01d;
-	Thu, 01 Oct 2026 01:00:47 +0000
-X-Mizu-Trace-ID: 9f96ffee7864c01d
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 30 Sep 2026 18:00:41 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Tejun Heo <tj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	JP Kobryn <jp.kobryn@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Michal Koutny <mkoutny@suse.com>, Amery Hung <ameryhung@gmail.com>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	John Fastabend <john.fastabend@gmail.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, hui.zhu@linux.dev, 
-	Donet Tom <donettom@linux.ibm.com>, Greg Thelen <gthelen@google.com>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, bpf@vger.kernel.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/4] memcg_ext: memcg policy through cgroup-attached
- struct_ops
-Message-ID: <ar2kvmCPR9q31V8M@linux.dev>
-References: <20260921192559.2619635-1-shakeel.butt@linux.dev>
- <bda525506b3fb3e61da28a112f28abba@kernel.org>
- <arw4rjVkm2ob9ioL@linux.dev>
- <bc6815954b8d08e75deadd43e1a2192c@kernel.org>
+	t=1790818336;
+	b=jswPF00cQgCo09aVApanIzZqNyOR2koqb8+3WDedDoIuIMx6zoexJyBxnxJQlxuWxvQn4V
+	yTg3T1Mx8yEy/F9aERaE5LxGqucRCjqRO3mqm6Hmfds+7OLuuMv6+WxQqazJxq04l9vB6m
+	TgRCJBm7wJ6m+8glXSl+vKiaMvkV+28=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id B6867138013B;
+	Wed, 30 Sep 2026 21:32:15 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 30 Sep 2026 21:32:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
+	1790818335; x=1790825535; bh=v6sl/0R+rB68lGY0FGguwPrnWxhGA/6NlVe
+	vSXWfXMc=; b=dU+0WpT9ayrHlXGiw2fE7NtD4nUKlPkDDP3/RGUUox8ZXvJoUQo
+	oINwTLuzSo0Zg9v+dfBIplaHyARav2Mu8lCTqCAOo96G8RZvfBJi0GOymeRhi/dI
+	f7XplgGDzIDMI1NiNvfl0Zh7g8pAGXhSyOM2ZuxW5gpn9bMfnBKntlbG0GmOil2a
+	B91sBRg0ZDavly5kGWDikF89yurM2VpKV4qhOtg+jwnmZhRe5eEarAe582USAxvq
+	3TpRvW/dssTdCeqkSWOs6STZvipHkq3bwiSYuWKRV8gjPh+rQa+uxuUeDyyZW7OI
+	yaHU7NrMF786oNViHGBZb+A/zmB/ZU28Rkg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790818335; x=
+	1790825535; bh=v6sl/0R+rB68lGY0FGguwPrnWxhGA/6NlVevSXWfXMc=; b=n
+	ykSWi/sGd5gvCHPUtRxJkK9qcoysaAZwvGnmOCwOtaQRRj1psP/USs+V1s3CCE8U
+	bGXX2E4xnMQU2eypDh/nQ4BVxOh/jB80ebnekbDY1oAa3240VyEwbSN+2nHiBQg7
+	kQTEDfjMQuCTtO/5lEEZqtGJvdfezRH80tHfoLaAYyvbV1vxa0wXlsMv0CSzAF1W
+	IzJYOjwhvjlayK2Cce3kxXooukECSCZ8CEO+QC2UTlLIWfL00oyTSCyqiKtquJWR
+	WNVkaXGTVvKYZyu/rAoJrUdPgNYilg28OA2T/F7ZfmMU+EBPOcfIPiXJIyMb+g3q
+	Wd07JiigVXT8DStdGxSBA==
+X-ME-Sender: <xms:Hbi9amRCw_kioWSBEhgnA4y0lG82UU2w07EeZKMs03XSK3bOCXF6nA>
+    <xme:Hbi9aus6-sF1IYxOKWGWnSJ7esBELFJJ4RjqP7pbXWzuyw9SfNidEdevmUe2qrpPT
+    6dBXtg9wpG_1KbOWHqWu7HcbCJn4x4SjDV-rfvmQFhNcSZy2pY>
+X-ME-Received: <xmr:Hbi9asCM5t-3GQu68lUW4pPb12EVK7ZfxE5JiCn0jxXqtLlyltpHLJofGBy1_PCWUyE0cOmDB2n7mv8cveU-5a6ZpaCEunk>
+X-ME-Proxy-Cause: dmFkZTG3KGb7tHgt4XbEdgaBbvRJJoXDWpMAFSGKnPa+FGRadeoOBQt63/9dFXh0uDdMHQ
+    4iJ2cIgUNrLNuACkoRhTc5qxpMylSF3jV7QyvProt74YjF+kiQqUTZdmWNsWacBqmWB84K
+    veH6OTbRcmsBVg1Wf2i8FMyZzc1eVaa+pkZCjnSlhdl4PlH1TysaXJbsGByCtBTH+n50BB
+    bcLzTEbkv5u2szZE2cmghDoJokPu68Cm+X2VRhSm6wIj0B+fmNAmOyZWU4zuUgOTHOSYnY
+    8OFG6vhsXQdCgKC6M6ZLdbcYz18tGTjcRhbAFMqiExh5vytioSAFh0IWdadZHBY/Q+YJsA
+    ln/MlFLYMsinjIw+1kmsqp3DVjRD4Hn+KNat7h1gnG7JekPoGkqrnYyrqPZvn6fiBKUpEn
+    0MDVBje7PRDGze3i9HFtvY9bUZlsY71046ZeN38zQq5h9E7XluoSZIuDT7WpQG37GNp+rF
+    E1CpBcw0zc0B9qZwbqQWwlUygDW1onMVM0VOnhrcnxwCQ59RFCVQsv7t2U3/QMSCzEuWaX
+    d8tEmDr4x0aozLp1DyF/IIcp6jGB2ETbZsjzbcpG3jEdtniaAruC9emGU9rvRatKlLHGfb
+    RQr8YBl253XGkX0sH1oOBGWWEx8zXBUrG+J7MHy/si5zIydG76lUiyz2+k1w
+X-ME-Proxy: <xmx:Hbi9ag0SmFUKJA6pqZNzQM73oSQuOS6JxCjWZ0qnhOnwy_oETfCYIA>
+    <xmx:Hbi9auS6xhgyi0kKzqyjeQGXMDAuEAIZaJqH5HhIKYcDW6E6NgAWjg>
+    <xmx:Hbi9avuA45NcxPmR8CruuVNHR7uHKgcEa3khA2ZaZ-H-_VBIq3pJvg>
+    <xmx:Hbi9au6JtIyHmLZ0gH6zRoBQAOTZdhLvdp4YIL2YSwaLGMgSKC6big>
+    <xmx:H7i9aqETvhFQVYysvlbm8o1zdHJwYsBkfqktEGeP4RoZ9q8OaxtXJYbM>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 30 Sep 2026 21:32:05 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bc6815954b8d08e75deadd43e1a2192c@kernel.org>
+From: NeilBrown <neilb@ownmail.net>
+To: "Al Viro" <viro@zeniv.linux.org.uk>
+Cc: "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Amir Goldstein" <amir73il@gmail.com>, "Kees Cook" <kees@kernel.org>,
+ "Joel Granados" <joel.granados@kernel.org>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
+ "Johannes Berg" <johannes@sipsolutions.net>,
+ "Breno Leitao" <leitao@debian.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Jan Harkes" <jaharkes@cs.cmu.edu>, "Hugh Dickins" <hughd@google.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Namjae Jeon" <linkinjeon@kernel.org>, "Hyunchul Lee" <hyc.lee@gmail.com>,
+ "Carlos Maiolino" <cem@kernel.org>, "Christian Brauner" <brauner@kernel.org>,
+ "Jeff Layton" <jlayton@kernel.org>, "Jan Kara" <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org,
+ linux-um@lists.infradead.org, codalist@coda.cs.cmu.edu, coda@cs.cmu.edu,
+ linux-mm@kvack.org, ntfs@lists.linux.dev, linux-xfs@vger.kernel.org
+Subject:
+ Re: [PATCH 4/7] configfs: remove d_add() calls before configfs_attach_group()
+In-reply-to: <20260929050739.GB3909609@ZenIV>
+References: <20260929034158.1455429-1-neilb@ownmail.net>
+  <20260929034158.1455429-5-neilb@ownmail.net>
+  <20260929050739.GB3909609@ZenIV>
+Date: Thu, 01 Oct 2026 11:32:02 +1000
+Message-id: <179081832202.37859.12981680448323688912@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1B4B3140007
+X-Rspamd-Queue-Id: 4A48620006
 X-Rspam-User: 
-X-Stat-Signature: w7mnha7cqybz4j4xs6hwenz3bsxdco97
-X-HE-Tag: 1790816449-373395
-X-HE-Meta: U2FsdGVkX18e74ZWkW1QSDPYNcGNwtFabwOX8yO2hGj9P9ThB3dSm+d8RwvgxS737MQTtVrjbwTgh8BcdzVGnbu+KVGHWfyhpFu7OxQFft+IWTN8N/iay9VEI9INgFBjwmZv+A16Qheo5Q/BCV1dN23jzVVxcVaJ2iSJozadI8E4rAnTj4VB6FOWT8oVnRLPxCBRBflVquv7pHCoRxOacau5zHYK0br6tpvTG/tcx5C56I7KgmUQlIn8VOxqjJv2h/z5YJtc1tAqG0V9qCwsjMO0XbZlOSyFcfktRNRofq9YSN7AuYhviPjugbYsZu6wpygHo0RnPOz8Z7xp8uFB5VYeAMjjUsOS0r8AJoonaO5n2PwWh2DyuRUrOGv6mBH68pmT+0srWH+eW8KlHYLgotSaZpD0Z6XoFFzngzrr85RYmKMYIbDa6YRyhvZFWTC7dgyLMYIwIcNzoTvs3GG+FaYFxq8Zg2YJGOXw/N3pPkO+LNtkxsXvdJLaukrLvv9Fnv4dpQAh1QGG4CiarFFMaxcnfwPjO9s2FLeYfHpEvSZVSQ3sRii1B3O9keDeGdqb9MzH6baj1h+uw2KmbCJ6qa4BwfDTmOpimYsp6Y0XZSWRcUwNCzYyyX/49O2InTFUq/aj4VnHh3AID83h1m7v/96ADtQwPbx0v3Smll9wz5uo6kYnrVu74+ZxQnqW/+8gK1VDK/zvaTYffjKo2w6PfXBHcecJhXa9SxLhW/2NiAjchksHp7BNaU+ND/CaviGeOQLxXo3kny8H49nMVE+aMTK3CMHVBm0lIbys3ralsJd6H0ksjXGNca2x+jy38xvlZG7Ymqn9SJZ2D4NPsmxlNaNx7Go7CSwlqNRR1qyKtjmrnqXNU3TVcIAJwrB6qmmbxXQy0xTaO/pMI12RjP317aGVaOQD5mK/SafYXyYo1iB2kyOwBTq8dAJ3mLLti69ZF0gqAeeqx/H1RDyvx74
- I7aW3XXd
- 4sSbzswaYRsRso/tJ6dlNsIkxPGfIGDBk0AL2ooud5c1MdeGxuCCH0KfuJk70iuTw5IAUx1mMnP6gpQlquYc+WBGcZLTSX0XLXgNh26TqELQTt/IhcmZe/7Hfs2BTGmcOx5MOfitcSvJvJecMJcqRdJIol3AtsJky2tUIq8rljVGAmVJYIs7yWwZ4JiXXkUQozxygwN7G8nVyrGZQPwaHbsEigt/Jc1B6gupD5chPB1+qyeNm7A6G0ltzAW15CVFIuO7RjIusAZnHDge+kCcsFth9krGbSrGTplwdcxfSWBTV97cHaHlYJuDKKtPB2Do9ULjs4ShF/Ylw8Kwya4wyvr4p4KxV/b8+c293M6WLjxBgwBP8v3Ud9nejECYOzwQ0XIqkjNe1k+Sv/Q8=
+X-Stat-Signature: qhhjtd8ht4da9wisk9jn5dg1m9851o7b
+X-HE-Tag: 1790818336-758261
+X-HE-Meta: U2FsdGVkX18a/gJbcVLW5VSIzvOycrraFGOPGTmJckCYHCfPQk7v2GwmCJH456Y/tWG8Zd8gnnUoyPwS3uQ0mV3FH6laxaSUJrvJgroZgY4lju70UWAMTpA0FjPWprjj2aAOcGLeCuu4o5ZdZ0n7oI3Kv8T4jFPCIB2aucNqqsZWN2Pa3tsNy8Enu0iYfOf8hFoz5XIBop7SB1U5QYZiZrCf0GKrmKWmH/EVTANyVcBD3DNYo3LMr8tHWemyQapvK4ek1aTA4Z2Pi6mSczr9dk9PF0AXI5Ox1PVmP33uFQFM+CM9qkM/Q1aJGXm4mxejJalhT+a14PKrNUkY0xVc7Xinbfnx9a/6vhMKVhXHmk+Qr4eHrAKpd4Tb3KBu6nxToQ2z3m2X4k+7L3P/wTkrV9vwV/62dkmanUi6jpO1KCNcciRitOIhOAB7O8ORPLZUNqYX6ETqMrP5PnwGHG8Ttu7ifk6xZh6Z1F1CyA4bVJ07soWoLH2uUFUNrHky37DoKs7gqWdFVGp7U8X131/N+1lcMdqWH+bstBiad0KNPc4WdWssdbQviCDklnXsciqh/RAWdldiOB+0kqpDDdyHU8YUfx4nlV2vbnhYXAmMvQsMezl6fBLMcwb0xMPZ+RrF3K1gNS72OTn4DNB0l00kyf0Lzv8kqGyxaVhL+w6SYW5uh6j0bt1X9ofeOHPZbO4cB9EHIuo/l4KiB95lcEGGR8wzr3pQ9e2lmvz8lrjpD0gHvjABAP9y+QzJvdLR4Qe6x80szzUh2Qp5+kc40dwLpAKqG+zQ9+QCoFBF+Ei7z0VWsCBnqp5PD2rRBM/jvEIVpaa1aSVOfN2ZnBo33CYdmSweR9enNNNf9TNUEKiWQMj/lGT8pkMrwswkCUjwXvZz1VzMwD2VIhGmOD3s+5zx0SPHh67bCZbdCLebaWgEOaVBxA/p4w+wobZ+n7ievKlIxD28AL6sicQLp37XTHB
+ hdURPB+C
+ CyunM/cr7IMCFnk+Zfm6z0Bk7iEpXt3qxuKQ/LafIkLnO4eoE1ieeruQskscfTw6DCHRNFNJTKvha42SYJtl3ofqBGWHhXx41Fj77GfpJ4+9bkoXvXm7XLfAwD453T13QGVyWJ2EeAt0WNYd7jaUFHUEZ+6Z26TuUGhWkL5iQV+1ZO0y/1jL9wX0UC4iHYSAQ3iHd+yQClMN0Z7AGGAKPIPuXFREtLffCKzY/BeUz35yTPR/dLKbNBiM6E79sbnG20YfKyam3tT0WnTn/Q1b1G7AjhKbMd5x/qLR7naMuVAgb59awLDrR0yva9sQMA4qx5m53asfsIDXs6DOBrX+6mkLENL7edD1wPDbQbHk6wKnuVnEuPnwMsW0O1t/3yorjRdussppmovWaVZFGvjc3QMvlY/w6fzLDesehb2pYu2u4MVj3TolTDGUq6VJLYapXg4czDiXGAh2w4mBoe8YPwk/fPYL1wfSfZqRkKsoMrrJ5xFrGvMmWeQ1ZWXJreoQuGgMi+0iutG7GJ0ZD4Hc5PSV5esEQdbMqept2PffG/AGLwmH1ycHXR4h2BY0aS1ujBXghL3PH93RL0KZGYowaIWRjMRDxUXqsj2DGXJYof/0PW/6q+XXxzysuQlB8lRXGTmQI4nuDBk25fNPW7P9YotGPklmVZmDzTF1Ef+UxKQQudFgwg9rijl++jpJ82n1VwOlC72fmrlvSHmQprnMHwP/SLfjZDYWbYJwotwZRNtdWNR+gbUur4Z7c1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,54 +148,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 30, 2026 at 01:35:33PM -1000, Tejun Heo wrote:
-> Hello, Shakeel.
+On Tue, 29 Sep 2026, Al Viro wrote:
+> On Tue, Sep 29, 2026 at 01:36:04PM +1000, NeilBrown wrote:
+> > From: NeilBrown <neil@brown.name>
+> > 
+> > These d_add() calls cannot be necessary.  The inode given is NULL so all
+> > they do is attach the dentry to the hash table.
+> > 
+> > If configfs_attach_group() fails, then d_drop() is called so the dentry
+> > will be detached.
+> > If configfs_attach_group() succeeds, then
+> >  configfs_attach_group -> configfs_attach_item ->configfs_create_dir
+> > must have succeeded, so d_instantiate() will have been called and the
+> > dentry hashed there.
 > 
-> On Wed, Sep 30, 2026 at 06:28:21AM -0700, Shakeel Butt wrote:
-> > I am fine with changing the default behavior. Actually, I have been
-> > contemplating whether I should propose a revert of commit c9afe31ec443e
-> > ("memcg: synchronously enforce memory.high for large overcharges") because
-> > it has introduced more problems than it has solved, but that is a separate
-> > topic. The initial commit already mentioned that MEMCG_CHARGE_BATCH was used
-> > arbitrarily, so replacing it with something big might be acceptable. I want
-> > to keep that decision separate.
-> 
-> Which kernel paths allocate enough for this to matter? Can you give specific
-> examples where the in-kernel synchronous enforcement helps?
+> Neither in mainline, nor in -next...
 
-mlock(), madvise(POPULATE), fadvise(WILLNEED) are the obvious ones where large
-amount of memory can be allocated before returning to userspace. Now regarding
-the in-kernel sync high enforcement for these cases helps or not, I think it
-depends on what the user is trying to achieve with memory.high. One scenario I
-can think of is an overcommitted system where admin dynamically adjusts
-memory.high limits of colocated workloads based on their working set size. The
-memory spikes will be smoothen by memory.high otherwise colocated workload can
-be negatively impact. In this example, ineffective memory.high will not be able
-to avoid global pressure which can impact colocated workloads.
-
-BTW the above scenario is just an example and not something I am proposing.
-Actually I think memory overcommit in the presense sync throttling can
-potentially cause more isolation issues.
+I guess you are refering to d_instantiate() not being called here in
+mainline or -next, because it has been replaced with
+d_make_persistent()??  Sorry - old commit message.
 
 > 
-> > Returning to the actual proposal, my plan was to start small with a narrow,
-> > specific use case. However, my long-term plan is to provide a mechanism to
-> > change the default behavior for custom use cases. For example, for
-> > memory.high, I will provide a way for users to specify what behavior they
-> > want, i.e., whether or not they want more synchronous throttling.
+> d_add() _is_ wrong there, but this is not the right solution.  What
+> we really ought to do is build the subtree first, then either dissolve
+> it (without any pathname resolution having ever seen it) or move it
+> in place once we are sure that everything worked.
 > 
-> This doesn't seem like a policy problem.
 
-What is "This" in the above statement?
+I'll just drop this patch for now.  I only want it as part of
+deprecating d_add(), and that can wait.
 
-> It feels like a problem that should
-> be and can reasonably be solved for everybody, so I'm not sure whether BPF is
-> the right call for this specific purpose.
-
-Here if you meant that default behavior of memory.high should work for most (if
-not all) users then we are on same page. If some user want memory.high reclaim
-to happen in a separate thread instead of return-to-userspace or synchronously,
-this proposal provides mechanism through BPF to such users to achieve their
-goals.
-
+Thanks,
+NeilBrown
 
