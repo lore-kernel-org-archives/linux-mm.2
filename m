@@ -4,147 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A241CA5FCF
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 18:10:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E890CA5FCE
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 18:14:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A76476B0088; Thu,  1 Oct 2026 14:10:10 -0400 (EDT)
+	id 1A4516B008C; Thu,  1 Oct 2026 14:13:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A27716B008A; Thu,  1 Oct 2026 14:10:10 -0400 (EDT)
+	id 155B46B0092; Thu,  1 Oct 2026 14:13:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 916266B008C; Thu,  1 Oct 2026 14:10:10 -0400 (EDT)
+	id 06C396B0093; Thu,  1 Oct 2026 14:13:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CB3A6B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:10:10 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE5301C32E0
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:10:09 +0000 (UTC)
-X-FDA: 85274846538.30.D62680D
-Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DA1861C0003
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:10:07 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=itlKdb7C;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790878207;
+	by kanga.kvack.org (Postfix) with ESMTP id D84116B008C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:13:58 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7E9241C3203
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:13:54 +0000 (UTC)
+X-FDA: 85274855988.25.80F3BCC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 658C610000B
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:13:52 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FT22BYDW;
+	spf=pass (imf05.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790878432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4I2Vz+ergA4RSskvAHqukolmbBD3+Bn9X7EL+PvL96M=;
-	b=sfCPrEvnyiB8oT7GIIPgz2lOCyi71Zl0KOcyoWi71YOmWgU1u1Eq4I5ytVHmf/+khBF6+/
-	3QG5qKX6ksqPc1qtMLf4q+QGjmwcFvnFG82nhKI/fajJ52kJbKBrr57oU3SsrlOrwAtX4g
-	DPOGfdbniQOvkngLbtBBo1RRO+wdc7Y=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=itlKdb7C;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790878207;
-	b=xKUS+znjwFHwJDB7jopdsgencsS4vvYfCuCI2+mfGqO3y8iGdXHdzWE8J2n1xRCvlG637R
-	uGMuJlazhvSrXIiSvUKONQufhnPZDRLygQC1++zY1ldOFpMVoVlIB7WEueWS10K4jt066R
-	j16YrQ8nH3imDf1b+Kx90YOpO2F7bOY=
-Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2a8b9acbc6so1060925966b.0
-        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 11:10:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790878206; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LHgxLdRkG7nrjaAT/OHFKCxjsbhtgj7sjgcHqxz2OTMGbAHqylhrulSAjJUBoCfMxu
-         gHB94FgDoLfaoHbu5EBEBRAhE0IYlpFymJzqeYkMDWBzNSzKZuQMsZbDZy0W7N62y88z
-         6SX2vmP4xF2p5/JJ8BXApP3TWUd+/pPkOBAp3pqCtNHqmHc6S1PdsUjPfQkJbkSEoYlC
-         ztYbOlfPbxxCOyrv2UcU/4vppKIbfhIjvqk/uWzOeTKr5cYocbOCZHWQ+4xVV+b4eETE
-         xC7o63BMZq9RM/EBAKcnDq98Yfhd7rA7Jkf3J+D190U0hzs4zI2YVQP5Hu7gmuhh6BDp
-         Ruug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4I2Vz+ergA4RSskvAHqukolmbBD3+Bn9X7EL+PvL96M=;
-        fh=GfE21J4UFF2rDvsFkdcXULoy5G1tsa7U3doe2O3W3SI=;
-        b=kcbpHUgHMid2K1Olrdqed5ZHGKI1FnTn/dP9THyoJGE0qa4UL2Xhetcc83SZI7ksJW
-         ryQUykhGFeef43dkDvFO2Nt8PgGaxlAobLebYwy12g2mlEBAlnJfGlNFOe8C+qJo1EyT
-         RTEo7JPKhhYfJ8JfywqoexAw+Z7sEtHmC+1A4w3k+se3nkfTXvAopzDSH+ZmIql6LuO9
-         S7X6a1c5nS/wVCj32ux2aq7eMZ1G7MUeZnWp3zg0D+RBYjUcoOuWIzOpxaXhIQ02I4Au
-         ofRqVnmJf/oco68zlBxAbdziRa/otpQ1+Wx9FLEg2D2kPquoYl03iEB+2fjb2mgSKxKz
-         hMpA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790878206; x=1791483006; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4I2Vz+ergA4RSskvAHqukolmbBD3+Bn9X7EL+PvL96M=;
-        b=itlKdb7CqYaZzSHNatExmRBsvHhTelY3dK8Xndr6TjnLCceEHN9jxDkdvOYi4JtwE0
-         4U3RUVwmGMGn4r2MFgvahXOCW3I3A82QCCzQ5nvWp/uergTDhu0EuWfpHyatQwyDitqK
-         iDn7STcVQsHY62mb31VlKkETTCYQr5iJ1+wQL9AytfciPhY1mWtw3TEX6zoFKNqJ1LcU
-         bTKfxS2em2rkYmpWrv470xhg/QRK+AiaqKEA1YG1fei6M4/aDxkG3B5oSomXlasSl7V2
-         heIavX5dmOiLB74VcWNiuG/kGXcBsTyxn0pLpsJUBTmDI45vpshzkf4rNIXjcxccj6GX
-         2xYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790878206; x=1791483006;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4I2Vz+ergA4RSskvAHqukolmbBD3+Bn9X7EL+PvL96M=;
-        b=TQ1DREMZmncK7pVavXLcXeelJzTAJAwVLFox0DcVU1CyIARhEqG1TXI9sB7jIPaF1a
-         ioABAEjyDHZNWx/EAVsYuIUImjcnF5AAVLnTS0U8wnn8tWSaxN+L43odQ7EqFWt1+OnC
-         6VX0fPv2EnCdG+H4qE+ujzeN2+wCXfuxPkL01qZicIIgNtfXGH0Ntm5VcTqu1Q3ZSMpW
-         5z7e0DZO1bl5aKTsB0zttNNH+5M0+tp31Jpxs4i/9vHG5BwaSO8w7k8jidJ3YAwC/8rP
-         JnYb+KXU7jTSC74XmAZ31pEOAQRUfGYijRUUUEI2wK3KrHrE41HV8XOcX9M0Iv6uwrQg
-         VIEg==
-X-Forwarded-Encrypted: i=1; AKwUvBy3L2vpWc3JG0IWET7zNdr/18qX7O1shfZmokxvccg6G9fb8rce0LOHFyXP0tst+oOximfzk7C5Tg==@kvack.org
-X-Gm-Message-State: AFuF++lZvXDJWAEB0zf/rZoOkV4H/S/prP/Y1X6CHWRWsDQGQSJ8C3a2
-	ztnIPHL/9DAMy70ccqh7ayFYbDYWRKiWnS4S2W/Ps8jVfjss69Y3/iOhPq3xrTs4I8UtujeeKEi
-	jcebtujxB9XTY8+NmLoSkE0FXs+clma0=
-X-Gm-Gg: AYBFou2OrVwct8FjlnWdEYS7/+9cF9pcYafnTF1enf56fY2bIcoIlXc63V+17oqpPPR
-	fXCRRXnlZSFUeRHt+BJNgK4zyv3q7VM1LLhPsGBKY85cvYLKi6E4RGlj2ir6xhhjeAOyv9B2RUq
-	sDxgWxjWLbHFKxcpl9+Y5UCFymmGGWR7AbwKvU3/iwBbpdyRV7lagQ89W+30Gc4bdntk1RXXDGf
-	aNmddgKUKN7h8XvYzMmJFfLSm7tOm3T7ld/YqzZkYMdeFpm7U5Z+HhRRUyEXfGo1cWMP+LfFThb
-	mUzawVq6679gx8S5ULgvRmrr4ooetjmTqfHRl9f5xgzAYGiI2nry7URSEE6tmpFbz4QHrAIWJAZ
-	6OAvp/HJZZLpE
-X-Received: by 2002:a17:907:3e93:b0:c2e:40d6:25e2 with SMTP id
- a640c23a62f3a-c2e4ade8986mr33476066b.12.1790878206125; Thu, 01 Oct 2026
- 11:10:06 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=2K6+AjrHHCLY+3zXw5HOJ91vX9fbZQsVpcAGubvt7/o=;
+	b=6sSYHSpFKeGJ4+I3MN5qwi16Z3rIrw+8uq+CaJJvY6hO0G1lzwQdKb+cMb00+TONCes4aJ
+	ir7r994eKz7MzO2oDEpo9MKefXx/itkKG2TE1R0a5EDL8E3QrDCMhLeZwkck4KIQVea85G
+	fCSJ8k2GFYlAl6Vb15G/r5RkzoqQQdc=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FT22BYDW;
+	spf=pass (imf05.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790878432;
+	b=lRhs/ZXb+IknHegU0KVwjxPU632qmrqM4POQgTHmVZKnar03TflBu6obyaq3RPyOK8xa5U
+	CCxnJBlVrfTr+FcRcu1RI7jwx1bnDkgBsjiK1og8WM579HgZZG9n3TvCck5PzR7wGAI6m7
+	w4+D9x3xZAzSdr8FwM0NOzym7qotp18=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790878431;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2K6+AjrHHCLY+3zXw5HOJ91vX9fbZQsVpcAGubvt7/o=;
+	b=FT22BYDWFvDn/eNjJ2dXXe3Bs6B/WQdk7Ujl/ixp4AOqYzGrtDzh2Jxm2n0Egb+KDeadvK
+	p31oALltnfbp9yV0uYXAlgv/7xR5g0ze/b27ebX4JYibarJCOjOVJDjh7uZam+u161nabs
+	2YS4SpLOJrM2LBaMmIQd8dtPfMvf9jM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-l93d_TTfNca1FqR8r5n-pA-1; Thu,
+ 01 Oct 2026 14:13:50 -0400
+X-MC-Unique: l93d_TTfNca1FqR8r5n-pA-1
+X-Mimecast-MFC-AGG-ID: l93d_TTfNca1FqR8r5n-pA_1790878429
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B36B218009D3;
+	Thu,  1 Oct 2026 18:13:48 +0000 (UTC)
+Received: from lcapitul-thinkpadt14gen3.rmtcaqc.csb (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A4CED180059F;
+	Thu,  1 Oct 2026 18:13:44 +0000 (UTC)
+From: Luiz Capitulino <luizcap@redhat.com>
+To: stable@vger.kernel.org,
+	sashal@kernel.org
+Cc: rppt@kernel.org,
+	sayalip@linux.ibm.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6.18.y v3] selftests/mm: hugetlb-mremap: add setup of HugeTLB pages
+Date: Thu,  1 Oct 2026 14:13:30 -0400
+Message-ID: <20261001181330.684841-1-luizcap@redhat.com>
 MIME-Version: 1.0
-References: <apcVhWzEwkwHYjB1@KASONG-MC4> <20260901220430.79810-1-baohua@kernel.org>
- <SJ1PR11MB61051CC2791B67C97BEB2D4B8CB72@SJ1PR11MB6105.namprd11.prod.outlook.com>
- <CAGsJ_4yRJnr4xXdokVHu85b7XPe0p6rZ+Lzv4sE_gCWdOF4YAw@mail.gmail.com>
- <SJ1PR11MB6105505CAF620B23978FBEF18CB72@SJ1PR11MB6105.namprd11.prod.outlook.com>
- <SJ1PR11MB61057EF65B62E06E2C2049008C812@SJ1PR11MB6105.namprd11.prod.outlook.com>
- <CAGsJ_4yHZ5ck1hk+Lo-7aQudApm0Nx=4yssUDrRTz681PuW=tw@mail.gmail.com>
- <SJ1PR11MB610584E71CD980C9F85952F38C812@SJ1PR11MB6105.namprd11.prod.outlook.com>
- <CAMgjq7CMd7v=kYwWGSyt2LmMep6tQcFFsdyBpwc_X+s_Km=rZQ@mail.gmail.com> <SJ1PR11MB6105221B1EC807109A380C6A8C8A2@SJ1PR11MB6105.namprd11.prod.outlook.com>
-In-Reply-To: <SJ1PR11MB6105221B1EC807109A380C6A8C8A2@SJ1PR11MB6105.namprd11.prod.outlook.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 2 Oct 2026 02:09:29 +0800
-X-Gm-Features: AclHuK-a-3wgazn7n0gz_axw0P3SCaylrim0PItrMHLbW1XzCPxBGTrFy0VtYgs
-Message-ID: <CAMgjq7AsLfzgkCodhjD=rSoeOSmNqG3E_7qt0egvy_nnDNNYfw@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm/mglru: dynamically protect readahead fault folios
- under refault pressure
-To: "Ababneh, Ehab" <ehab.ababneh@intel.com>
-Cc: Barry Song <baohua@kernel.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Lance Yang <lance.yang@linux.dev>, LKML <linux-kernel@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Wei Xu <weixugc@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Yu Zhao <yuzhao@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 9tstnhjdf76wi3p74mumqg7sq8kxz7wp
-X-Rspamd-Queue-Id: DA1861C0003
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: KnymzyDoxVerwxeNqLndR8CtoOdSqWe5TpZWX-0ttzY_1790878429
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 658C610000B
+X-Stat-Signature: 8afqrqpuhx5j8mo5bq1eyw49eomby4u1
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790878207-11745
-X-HE-Meta: U2FsdGVkX1/xdBwg7tMRj1AOGBUo4mGlcFj9Yc7IOqcvLhk2GifcnH3wP2rMKkrVN5KDz2R9XEOV7AjdmmyNh6RW9rAqXawqhNN0CEAoSQq+C+TUcQqGNwIsDEzlbKTinB9LUBJV3wnSricbMrV0zmN3ovVYbHvk2G76xe8910QZ77wT2NloYOgM5TfiJ7ei8b/D0odtHsUaNsWYkfj7oBM0GeOsyUnX+rrjMtNJDiC1UVqeIjiDxoCkDD2Ut9bdIRuoLEiAhsRTGy32gzO3+TaMyF5MnhKflamTBzP1qN3zKCfyXwCUHjrRYH5QVthVWdPrhRbeTzvVcoQzVYFG+DzokZia8DxsuXE6DCc38iSmqCTd3xua4+EebFGRZvZg/oOMa4PFVAWW/MWG4wp5JIzBhILShmnmSyKDGLYylREnpH06UvvIUp6vP+PtscCaLjDO/n3WBDMQzI5KS9dLoxh/kUfVGxRAmn5ANhyHBGMZa1vHbl0h7gnm4n8yblrh9mhHB2Up9x2NO6LWZRHAlAF5Ahgec0M8dOg/nA+sIKImnECaix+yTncsVWFL/VtWqpREGSCK4SENurBlOLr8uv+Sk5a2GXPCelQjkhH4dEXQ/UM/Qfj8crPcL5l+b/en8WSfEdJ58WKyROOZOR8BKe0+33geQENopowKbN5smupz1OWAgKP+R119V4+kt3PxqsBFc3KBON3ejbhtjW6AYFxh9fcPxYxpcJ2yb1z/Yhfe4uztHHDuAX0mqw1lW4SkZoGsluqsu3q/0hEbilFEfi5495W8iysulCXTzkwl0sZyhJcsgAyjkJIXWAXBEYqHzqODW4HiMH3/GiJ+fNOSSeGYgKi8TCJRRgWgXIygez+vi9T+gA2MsreMr5MW268S/AZL9V6VmY2E/v8de0Z+gB/LhUJUdtYlRSFCAtor3+is2+SHhycJr6BAW5e6X72QlDjE9BeT3x1aIXLLOiJ
- xHcf5Ts7
- pJ80Rfugz49Vn6AWz+iBZvhq0ZWg5QeIg4vwbkYSoUrd8Lcc2Vune4n4zU846uRxSyg2CCyjB18oxYFBClpTt079dcibT1Eg2Q5g9hsEMZnZh+HW6lvwlLipHGLgdJk0QSl1HxyBoaOEHMW9cqNYOzw0xqDsM1rjWIBHTmKoLTXhHrl6T20mVBKsrjgTfkNo1Dnbn8XPny5aFkOjnk5RhQ8crqhI3/K4YG41prZI0qS5in1QzpH151lTfjKrDORQbR9dAS4ymotKwEXEU1H9MJ7uv7dpjI79fyvKz9yhNjH30lp9XnPJ4G7bNU5tDJbW1JOhZKAZ8iRcgiASy6UhMHfxvBk7CwwyvfTqN7VVExbdEnKRe0RhqSY23xWs/0ckq6cforQ75mBQembOJDbiHJ+MpvaXT7oxGtI9lE7KC8KfW/YysWTsmBw08gXxQIWEPYVvuUZF9TwWMp8LAFvOAHPnNW6w9X3x2SoAyfZjkB4ZCJZYFw/F638TMGA==
+X-HE-Tag: 1790878432-960078
+X-HE-Meta: U2FsdGVkX1+a6ILRRXvjXXI48T21KYMqZl7MCW4IuggPxh53N5FOZXpl5h8yz/frV4++AY+Bdeg2zPb9lU4qoMrUcBm4zAT10LJ9h/iFS3i4UOkb/UKYBBQMxnUAepfRDpo0Ll9/z9Tna1z2N76C5F6s1pAi07H51lJkzb3tVjLx/QnhNb6cyUiCUgEv0DQ83xUV7Sihu04hRqlQMD7yuZ4D4Ky3LVBRWBz1rSRc7sIna3Wp7bAhOrNk5OGbL6h/X/1LQhoM/FoVukHL6zOXMi22nHA+rUoNsr7ZuXjy0PSB5ranZgCCh/ebyuRgyVDPZPPs4xWvtkA6r0rYLd7szn56bTjOpuf8ElewQvJp9V/ejYraNs2AW3jLSL2wIDb8YUiUuagL2SAZ7ug4tau/ZYYmiQQiavpHgLEs37vpN2cs0w+CmKfIjSilv8E2C9sjQdPezVwf/sj++gBLdGnwNfTvQx6ePilvjB+nFWEcrSBPuAB613dWryry29rplgRLaNrdz/JcGFuCk675mBXEIQEHdMKsB1bEXMsuilvL/oQL6e9EtcnZMsWQWDt9O9tYyvbJaJRSXn7M9cC9eNkDjZX7xSOoQvF8qF70xd2NbRjVxjq74ultdofv5KqEJjwHz2AG6SWcrXP6fCHjNP1eQEMLqqq/TrBZd91MieEkv3gyAPRQ1JYjbz1ouFzTTO6dJdEk9Igx/J+B4zgUkVYZ9AE3TXrYU/zayP/PK30PBVbbJZfkuUu/IWZo9ZV3i1G81mTkL5gISpIlf4t4+pwaf0NrIE+cJZou8ip79SuKTjA73IJe1xYE4QcQ0jjOpLmWCHYX9jjfQC6gIeCu9WPDDSFm7vu78q/s+5exwW9Ei0GSD2Kw2bMDCOR/y0aJaFjUPx+DIqvCjRqVDzo1Nrtf0nJuujSMa1JJLuF5ASy/fji7kXu97tNbE+32fu3ltBrq5sVsZEzfiqwbI0Tr+7G
+ HYsgeVr1
+ ScsZr+KIDMmy5Z+Nxw6cPmOpC+5Bv3FU38hfeqWEGTvHg7S6yvgUhaT91c2GLFWoKkCcxqwvZkDLKvQ/ILY2uKkV2n9YC5P9Wu2HmO1T8MMWnWKhQLN24r3amFs+5SAasYCYlI1pyd5iiSpArOnztWE2vuXYmYKRwEyrREXsKqa82BQtBx4YGRI28KE7KJhADL31ttJIzI1OG3a0qSQD+6T2NBi+NsL0FRwPOsgD/ePUFrptguLKeQe5dQK9FJN2UseMZpkF/eJYPsnsJrgg9avn9TCewHFcLx/3cPqr0FImG+fAhS1Hjg7iD6QhQltxNgkrRrTTQRoqmdQ9BAyJabZM7H2sGwQH4a3RPsgkXjsoSmI4CclyChhTgAW6U9SsnVG9XKqz5JVBN1Mnod4vz0B7c4S/2gQf2nKnO/dR10xQ1iZYEgPwv3+UojzBxjeM8slYybYTGPZ53NfymKoJhAR7coAg9Z5s/DnoNoh8GhCSY9X4Kr6FROa77ADtOfFlKNtZv2WaHBE1wG9JZjpwyyc707AevSqRY0OwA+JrzpzwQah8bcVd3SHcii3M6GX3L2QxxplVUH5W3z+BE/XtZhpUWl19OPIJ09H1+ny5YvXkMx6B/T7wAmqUH0CY8dFV8L4SedVSF8d7PCNDQzi0sximQxJpYX6IWTqTGMKMhJEs4tLgGBAqxmt6HWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,77 +104,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 2, 2026 at 1:21=E2=80=AFAM Ababneh, Ehab <ehab.ababneh@intel.co=
-m> wrote:
->
-> Hi Kairui,
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-...
+commit a914785f6349da754e1226420bf4e51961956769 upstream.
 
-> > > > > Results with MGLRU-FG:
-> > > > >   Op rate:                  55.0k - 56.5k op/s
+hugetlb-mremap test fails if there are no free huge pages prepared by a
+wrapper script.
 
-...
+Add setup of HugeTLB pages to the test and make sure that the original
+settings are restored on the test exit.
 
-> > > > >   Latency 99th percentile:  6.8 - 6.9 ms
-> > > > >
-> > > > > For reference, here's where the other variants landed on the same=
- setup:
-> > > > >
-> > > > >   Regression (6cbdd9726fb5, "mm/mglru: use folio_mark_accessed to
-> > > > >   replace folio_set_active"):
-> > > > >       p99 ~9.2-9.5 ms, throughput ~41.8k-43.6k op/s
-> > > > >
-> > > > >   Revert of 6cbdd9726fb5:
-> > > > >       p99 ~5.5-5.6 ms, throughput ~51.9k-53.1k op/s
-> > > > >
-> > > > >   My dynamic readahead-credit fix:
-> > > > >       p99 ~5.8 ms, throughput ~51.9k-52.7k op/s
-> > > > >
-> > > > > So MGLRU-FG recovers most of the latency regression, but the
-> > > > > revert and my fix still recover more of it: p99 with MGLRU-FG is
-> > > > > noticeably higher than with the revert and my fix (6.8-6.9 ms vs
-> > > > > ~5.5-5.8 ms), though it's still a big improvement over the
-> > > > > regression's 9.2-9.5 ms
-> >
-> > Did you test the V2 or V1 of MGLRU-FG? V2 includes Barry's aging
-> > optimization; I'm not sure if this latency is caused by aging or maybe =
-some
-> > other change.
-> >
-> > And is there any swap device you used, or is the test using the same ba=
-se
-> > commit? MM also changes significantly between different baselines.
->
-> My setup runs Cassandra 4.1.5 on Java 11. The host has two Intel Xeon
-> Platinum 8468 sockets, 96 physical CPU cores (192 logical CPUs), two
-> NUMA nodes, and 440 GiB of system-visible RAM. Cassandra instances
-> use CPU affinity, with memory interleaved across NUMA nodes.
->
-> I run four Cassandra instances, each backed by a dedicated 3.5 TB
-> NVMe drive. Each drive has a separate mount, and holds its instance=E2=80=
-=99s
-> data files, commit log, and saved caches.
->
-> The stress workload uses a pre-populated table. Its schema, partitioning,
-> replication, compaction, and compression settings, along with the stress
-> profile and concurrency, are recorded because they can affect performance=
-.
->
-> I used more than one kernel version across my test runs. The most recent
-> was Linux 7.3.0-rc5. Within each set of setups being compared, I kept the
-> kernel version consistent.
->
-> For the MGLRU-FG tests, I used the ryncsn/b4/mglru-fg-v1.8 branch. The
-> MGLRU-FG implementation is commit 6bcf4ae70b5e; the branch tip
-> is a619ab0105d9.
+Link: https://lore.kernel.org/20260511162840.375890-42-rppt@kernel.org
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Tested-by: Luiz Capitulino <luizcap@redhat.com>
+Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Liam Howlett <liam@infradead.org>
+Cc: Li Wang <li.wang@linux.dev>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Thanks for the info! That v1.8 is missing recent upstream changes
-indeed, so aging could be a bit slower, causing the jitter. I also
-found a few other minor improvements doable, I'll also try to run some
-Cassandra benchmarks too. Higher throughput and worse P99 is an
-interesting effect, I think it means the LRU is doing better at
-protecting the working set and maybe spending a bit more effort on
-reclaim / aging, which could be optimized away. I will try to
-reproduce and optimize for that as well while keep the series updated.
+[ Backport-notes: this is a partial backport containing only the aligning
+of 'length' to the hugepage size. The hugepage_settings.h include line and
+the hugetlb_setup_default() call are omitted. Without this fix, the
+uffd_register() call always fails on arm64 with 64K base pages and 512 MiB
+default HugeTLB page size causing the test to fail with the error below as
+'length' is 10 MiB and not aligned to the HugeTLB page size.
+
+  # -------------------------
+  # running ./hugepage-mremap
+  # -------------------------
+  # TAP version 13
+  # 1..1
+  # # Map haddr: Returned address is 0x7eaa40000000
+  # # Map daddr: Returned address is 0x7daa40000000
+  # # Map vaddr: Returned address is 0x7faa40000000
+  # Bail out! ioctl-UFFDIO_REGISTER: Invalid argument
+  # # Planned tests != run tests (1 != 0)
+  # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+  # [FAIL]
+  not ok 1 hugepage-mremap # exit=1
+  # NOTE: These hugetlb tests provide minimal coverage.  Use
+  #       https://github.com/libhugetlbfs/libhugetlbfs.git for
+  #       hugetlb regression testing.
+  # SKIP ./uffd-wp-mremap
+]
+Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+---
+ tools/testing/selftests/mm/hugepage-mremap.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+v3
+- Preserved original changelog & subject
+- Small code style difference from v2 due to git cherry-pick usage which
+  preserved the original commit style
+
+v2
+- Added "commit <sha1> upstream" line to changelog
+
+diff --git a/tools/testing/selftests/mm/hugepage-mremap.c b/tools/testing/selftests/mm/hugepage-mremap.c
+index 928c1045e295..d6caa075a86a 100644
+--- a/tools/testing/selftests/mm/hugepage-mremap.c
++++ b/tools/testing/selftests/mm/hugepage-mremap.c
+@@ -97,6 +97,7 @@ static void register_region_with_uffd(char *addr, size_t len)
+ 
+ int main(int argc, char *argv[])
+ {
++	unsigned long hugepage_size;
+ 	size_t length = 0;
+ 	int ret = 0, fd;
+ 
+@@ -114,7 +115,11 @@ int main(int argc, char *argv[])
+ 	else
+ 		length = DEFAULT_LENGTH_MB;
+ 
++	hugepage_size = default_huge_page_size();
++	if (!hugepage_size)
++		ksft_exit_skip("Could not detect default hugetlb page size\n");
+ 	length = MB_TO_BYTES(length);
++	length = (length + hugepage_size - 1) & ~(hugepage_size - 1);
+ 	fd = memfd_create(argv[0], MFD_HUGETLB);
+ 	if (fd < 0)
+ 		ksft_exit_fail_msg("Open failed: %s\n", strerror(errno));
+-- 
+2.55.0
+
 
