@@ -4,87 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88883CA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 10:46:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 588DFCA5FCB
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 10:54:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6D0A6B0093; Thu,  1 Oct 2026 06:46:12 -0400 (EDT)
+	id 4FF036B0095; Thu,  1 Oct 2026 06:54:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1D876B0095; Thu,  1 Oct 2026 06:46:12 -0400 (EDT)
+	id 4D6096B0096; Thu,  1 Oct 2026 06:54:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E60D6B0096; Thu,  1 Oct 2026 06:46:12 -0400 (EDT)
+	id 3EC656B0098; Thu,  1 Oct 2026 06:54:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 640F86B0093
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 06:46:12 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4B4D3140370
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:46:09 +0000 (UTC)
-X-FDA: 85273727658.23.FF6FAA1
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 18CF16B0095
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 06:54:33 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9E1C416039C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:54:32 +0000 (UTC)
+X-FDA: 85273748784.29.B4EB747
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 96F12C0002
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:46:07 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VqH35c14;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id CE8991C0003
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:54:30 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A+oM44gq;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790851567;
+	s=arc-20220608; t=1790852070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2BR3qjzOL/B8brr80lOm9esyzvVoYxCmAhj9OkzWhEQ=;
-	b=Z4kzCNHqf8JQWlkOc5qmMD1vmNW4nOI/1a67vuRdnhQNPHBL3LZGUU6i/0Sp0UbnnG6wgX
-	24fGqGIIJ+B8cW923iYz9dnRjGegLQntNkjjXcPLG+Bvc32rI0qTQNbiqler3chN5Pifkm
-	SwgPPIrkuZbd0Lk6QXoPblJgydXAlJU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790851567;
-	b=l9DrDuHM6EFBvdvQ9MsjAoPPCWH0xuhJFYhi2sXhnhIsZsU+OCl0FtlieX14RisOI4cvW7
-	ld1wdF6y3gJcQMV4R6XCb4WKPLdLu7uJW8AIW3byhKWG2yCdoomCOmfe/FVZetRqm0g+wu
-	f8RCnXe4R/MjIT62d7KANakHEwYtHSk=
+	bh=aA5+KUvXhlWCHJtSM04hRod0BwqPg5dVCGPChHmxQ64=;
+	b=dGIBN5pVV9V7rjt7DuJ6VimVB4lD5m5FihOs9qlwlIbzr5fhBn8FkowFW7mMUZVfUD1D1y
+	4qcGgnES4CF2Kbdnma+99fIF4331zh+ddZ+Gk+sjBFf5AvBnWsOlSuFhnBrpooQFY+jwRh
+	L/k5tW+tjnOsSNQ4tmYCPLsTzjJmX2M=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VqH35c14;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A+oM44gq;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790852070;
+	b=D4QP9tcOhRj9kr1ZLWfOUWTpTucrtH0H/wfIUF/z/hWi7OGAOQygCOuwpdMoafG+s6bSLx
+	VA+7T0fgF7lMRzxOBsaTqAde2szAOe5mrPrepjVZ5YODoM5ES82HYsPfNbhHV3mMun8Ou/
+	0iJaqnfdOV5dbY/2SDdxePW1FtbRNTc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1DD6960A58;
-	Thu,  1 Oct 2026 10:46:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85B41F000FF;
-	Thu,  1 Oct 2026 10:45:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5196060A55;
+	Thu,  1 Oct 2026 10:54:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F131F000FF;
+	Thu,  1 Oct 2026 10:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790851566;
-	bh=2BR3qjzOL/B8brr80lOm9esyzvVoYxCmAhj9OkzWhEQ=;
+	s=k20260515; t=1790852070;
+	bh=aA5+KUvXhlWCHJtSM04hRod0BwqPg5dVCGPChHmxQ64=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VqH35c14ovL8IJGd5/WwWVjA7l4NKoUsItEhIHqB0YXU4ep8K/XOKm5wXVO8NM2fs
-	 +4WHMc5yy3+3/4o/Yz98MDbud32Pq1hEBkpUQEu7NXzGQjTHUkgbYd58hWSEpxGt8E
-	 QawgvkJ1doULaIOGg5hq45wwWHsR+9HsY5yQJb9da93xEuRsmMbWp4BNa3XBP9W5t3
-	 RdwZipRLsHWAi2OC+KDUTefq/gN9SpCvKYD48eWL+fnLQfjj19VlFn42FAk6GMqNLr
-	 aICqGdrbGi69k1GKcZgr/npbR07PgnxsvKhief4wBPFqYN0N/ErKNJdpVZk65A+MnB
-	 icTal2n9XS47Q==
-Message-ID: <2d57ce00-1791-45f2-86f5-dff29bac3d03@kernel.org>
-Date: Thu, 1 Oct 2026 12:45:54 +0200
+	b=A+oM44gqAYtQIxMXkPx3vuoESBuPYWQv90ZRpAAmF/k2fw72YwnvZU9sAwYzrF5ol
+	 rkZeB2mLMSbAIHg0MmKlEMev7WicLbHN2AXJ6HnRVnWJRG5s9copv4G1it0PkygtXR
+	 sqdevmRv6fDk8KcOXg1ckPYQhxld0P7g85MtBWlb76ldKs6pG7jlrb7SrdQnTl4I2Z
+	 EjFWA5oxsTwuJ5bsIBsJR+jQlLup3RVP7CGfqgwF4ieRFcf9zAFPJCMF5RgiO7JBeJ
+	 naCFF4fS4WBY4K+8rGVdxnw9btIGppzKqrDIK8rCBFdCSuTMpQj0ssddunds7v1PRj
+	 vnqKMlJhVjF+w==
+Message-ID: <280965b2-c6eb-4f01-a0ac-c4fb7e518f97@kernel.org>
+Date: Thu, 1 Oct 2026 12:54:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 7/7] mm: use VMA flag helpers in NUMA balancing
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- kprateek.nayak@amd.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
- kas@kernel.org, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- ying.huang@linux.alibaba.com, matthew.brost@intel.com, byungchul@sk.com,
- apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, hannes@cmpxchg.org,
- shy828301@gmail.com, osalvador@suse.de, raghavendra.kt@amd.com
-References: <20260930112206.205083-1-gourry@gourry.net>
- <20260930112206.205083-8-gourry@gourry.net>
+Subject: Re: [PATCH] mm/numa_balancing: allow migrate on protnone reference
+ with MPOL_WEIGHTED_INTERLEAVE policy
+To: Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>,
+ Li Zhe <lizhe.67@bytedance.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ rppt@kernel.org, mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260930121154.687586-1-joshua.hahnjy@gmail.com>
+ <2e3f12b7-0dac-428c-b70b-07e1f63de028@bytedance.com>
+ <ar0fURbLDPrphYMY@gourry-fedora-PF4VCD3F>
+ <A005B05D-A85C-4153-A65D-0BDF9D8500DF@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260930112206.205083-8-gourry@gourry.net>
+In-Reply-To: <A005B05D-A85C-4153-A65D-0BDF9D8500DF@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CE8991C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 96F12C0002
-X-Stat-Signature: d8adb33qp3rphjnh99kcegzeqyrw51zk
-X-HE-Tag: 1790851567-781929
-X-HE-Meta: U2FsdGVkX1/FbwFeAaLRqIE4C1dn/7E2DIYrwqEPeJwxICvjOh/U0W78gZ3b4L78J3aLqevY31CrSA2qcre/xVP4Z0d0+N9x9twrKDP4rEK8yZQuFUMBItTDOlBkslH1z+GK5bUvgHgZSbsWsBamAuur/lwC/cATcLFxw4i8UPxIzSK/h6hdr1LWE2mzSofuE7wZHCwptzv6Y0SPxgFd7fY8Ym8E7SXpf3sJkI9uJHqcLAKn2NVSo33Wn6RrTL4Vx9+IJSUiFpnq2u976CaHB8y0kDVtjEW4yNjls+QyZIZiW3zMi5BfUMWdwzm0xhCr1mQDBnIQevlqzbnudmNtRn8wPLUzF52NtxAI1jc1TIXWQZf0ZJrxv6QwFu8rq/5RSEOKH1sOF/mA346IjABe/YzSCzUsoKpAHKvxQuGUsPl/fwyQOkzv0hmv5VBLNU3RMn6bRzxP6f3e6TlMu25qSQcNQWUQqpjTcvFrqSSc3owOxJiRg/L3+WlW/8WfMpJdUMfQ32f/PCbhbc1FOTchhlO4XPft407hYmZVjBDSbINAeVF2e7kn1K8lXOaqyzl+XQyKIEldrybtb/YBcFHMnyTG8La/hHAQhRKTyKK8JF5x5rgMQ1BIjoMbQ7AvY7AF/Zcm9YTbJtzGEXrEPDL6/fNzC+15Zfswpum78Zk8e4hKBOJrnzICTOfX3IWcGQ6HvPLDvisodmdNFBH+cvoq7amudHsAbD9NIZvX5ZmClIpFwIUEFEZmfwEfwif9cCPZFsjx4HGgQSzWaxzp38mlQP97lqT4c/SqnRoVPYcNbaa6RFvWdhwNab66D0Sn1VS0pCl9GrWlozSy2jibESzynMfAmRgc+ir9ZNRu0y26aWfQIcNorSEjEHN/889CHXd8mkQDFJKjp8J6K5uw6ZaCKwH3LC4OYFcBuEgLcVmOvukq84sqvIADN0R/Ika7dBq+DOJt+EiuVW1HGUlptyT
- 3b3xFogm
- Cpi8CwvR7J/0MeWOdhsCokQqxaxTAXfS+aUwd3JeFY5fMWqXIsw0k22BEi8u7ohExwqMJP7p5pZNEg+oDW2+JGExQrbtMKdWUTUrMSogEoY7PI7QucZDONWm/M7bt67zBacYkHpNLO7fStYfBUy8GhtaHUVd9VO0ux8P0fiKwPLaWpQ5NRJ1K2X84OLzLaPALlbYHS25DW4XQYFENQ8YLLL7GxCVge+FdWeKIUsQCsnI+AFvvuuOGLrJ4bRdPVJGqAK1hBhfvLyoznrSIIHQ8sZkMvRCfXbPb8C0M5CDi1ckcWebtrEwtctdiXYR8AJdzH1096ba17kktkHrWQ2xpO3yiESBvGOKG95If/MVBcIl39lTxbR6/vf9j/aK1LBuhG2eyicjbyeMbWQfQmGwftEck+vpmdL9yc6WZ
+X-Stat-Signature: jw8fgkwwwojkmre6ieq97jk8a97hfihu
+X-HE-Tag: 1790852070-751562
+X-HE-Meta: U2FsdGVkX18DPO8RMOTJNk5Vbz+vrbm5tBPCdjZYmi88AZu8leHMeWYSGGjuYsr+tTRzdZ/yx44UVDTBxzqTo9+8oSQsH9ck0ZM5nSXlrrVZ2YefGur+9lWNVRnl1eKPLIw3qu4RjTvtbpzec4Dzfq6l7EPCYwXdsYaTnH3dTpCsfxZrDuJqsGr/9H3g5wFEhplnP7tcFCb66lW30TfrBelSjtgoj/hCu6agLEncq4pzv8Jz/w5zte6boVLYqtl0h+FBnPCW9D0SLoyot2c70E2UocYMePP/G8PqbAa6z6apSG1Z1DgGvj9e5CRtVTN4II4iXEnL5tO2MXAfVeB2ermZEqXOvDlrlCIxL/F8f1WexQTvRzcYu2Db5KQXs/oIiS3r1Cb1QOvlcvdXyK3NoXQJP7swTXAqEb0vjGQt4aX5PAS5jzxM13qezs4yjIihdvc3rBMx4KjHabGUEkWuzODx2a0Fllkr8mToEoc8Wm4Qb8y3mYmayB73IuVUnV4wD36Bg25XGK41j2KDTkvl6nx3vKSC/FsgQ+AaLmqL2IXQfNpxSMorDQS0QywVOSSsC4GQdXYqkx62CpIB30mAH9Hrc8aZDo+3B9EPm4NCef6zEiULO8CusNndHAtAxe7rnEsmxhnv1y9TVEi0Pb4eA3FIk37dJ+eoekKpG9CJA4d0Pp2FVjD+nBpO8G2Ok2V7d4/OqNa186HNvhYtlIrH8pE3LU9cRK49SZb9j2mb7Xz8AtPADeyk/Dto4WY104m/19CSaPigEDf+WrbH7b98hIjWR24zvoFHJt4gFLF+s18HbBwtWF+gtPf2O4MQxMAAqN3rxwJlRYXjp4SJXwICG2fOBOEr8SWKEmVQ8kUxyGyTcxC7QP9xXv++OIFkTsa6vTB1iCzZwN7us5HwenXd2B+RvrcambIf2Ic6t4ycNBzazmf5kquzmgeMspFCOKBI7VX9sGy6W8rHpLKvQo/
+ CgE11e6K
+ 2X8G3RCvPP4slHDEZfPiOpVBYaVhcBzSbhWga+j8b9fdA/cI+nGYnLTz70U23dUiV9Oiei4+qwrjSCYLKfBSB7FeqMKgnxoh7M+Q1PelVBts7WspRFb1stWwOjakfK1gW6esYl3p6DTzWbWqXTGxqqxoKTx/sgVkfaTzOTTJdvHkxlx1wpNmiXKHaaVn0QqV/2Htz0Iu/pWUspFMXLBNap30SvryixgoFuHErd5f//Xy9dvORAgBMneUSrO0NI1quQ/qXmsHJuqg/jqkD3QKVyRt0zvVgtFyrjmx0JUx68fThEtfhJUQgtJExfkxJDaCKkZcTm/rnHjBdr+AV/wBV0MwODB91MNh9Anzj8o8LtUIKTUcCTyfxfj9C5CD+ksxNXu0jIbdpkSsP8vrON/BBdJRkBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,22 +144,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/30/26 13:22, Gregory Price wrote:
-> From: "Gregory Price (Meta)" <gourry@gourry.net>
+On 9/30/26 17:10, Zi Yan wrote:
+> On 30 Sep 2026, at 10:50, Gregory Price wrote:
 > 
-> Use vma_test() instead of accessing vm_flags directly in the NUMA
-> balancing code touched by the preceding fixes. Keep the existing flag
-> predicates unchanged.
+>> On Wed, Sep 30, 2026 at 10:02:23PM +0800, Li Zhe wrote:
+>>> The use case is closer to the second one, but the main motivation is not
+>>> only startup-time performance.  The more important point is that each
+>>> workload has its own DDR/CXL budget assigned by the workload manager.
+>>>
+>>
+>> mempolicy is the wrong interface to do budget policy, you'd be better
+>> off looking at Joshua's memcg tiered node solutions for that.
+>>
+>>> MPOL_WEIGHTED_INTERLEAVE is useful because it lets new allocations
+>>> follow that per-workload budget from the beginning, instead of placing
+>>> everything on one tier first and correcting the placement later. This is
+>>> important for workload orchestration because the workload starts from a
+>>> placement close to its assigned DDR/CXL ratio.
+>>>
+>>
+>> This however is reasonable to me - you'd prefer to spread out the cost
+>> of initial faulting placement explicitly, rather than simply take
+>> fallbacks when the top-tier budget becomes pressured.
+>>
+>> i.e. w/o interleave:
+>>
+>> [node 0       ]
+>> ^^^^^^^^^^^^^^ alloc until full
+>>                 vvvvvvvvv fallback
+>>                 [node 1          ]
+>>
+>> in this scenario you end up with considerable hot memory
+>> on the remote node consolidated in time-space (everything
+>> allocated after node0 becomes full skews heavily toward
+>> node1)
+>>
+>> Tiering then likely takes many faults to rebalance after
+>> you've already reached node0 limits.
+>>
+>> w/ interleave
+>>
+>> [node 0                                      ]
+>>  ^^^vv^^^vv^^^vv^^^vv^^^vv^^^vv....
+>> [node 1                                      ]
+>>
+>> In this scenario you do an initial fill distributed by weight
+>> and then let tiering figure it out without consolidating all
+>> of the pressure to the point where node0 has no space left.
+>>
+>> That said - this seems like mostly an initial-fill problem, after
+>> you initially fill your memory, a new allocation largely implies
+>> the memory is hot - and you probably prefer that to be local.
 > 
-> No functional change intended.
-> 
-> Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
-> Link: https://lore.kernel.org/r/aq1FDhy00epXXtgd@gremlin
-> Assisted-by: LLM
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---
+> If this is a initial-fill problem, can userspace set weighted interleave
+> initially? The program or harness can observe memory usage of the program
+> or related NUMA nodes and switch the policy to numa balancing via
+> set_mempolicy() or mbind() without MPOL_MF_MOVE after certain threshold
+> is met?
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+You mean: use the weighted policy initially and then switch to a NUMA-balancing
+one which doesn't involve the weights anymore?
+
+That makes more sense to me. Although I struggle to see why an effectively
+"let's put random memory on slow and others at hot" is a good starting point to
+later let if be fixed up by actual balancing/tiering.
+
+It all sounds a bit hackish. :)
 
 -- 
 Cheers,
