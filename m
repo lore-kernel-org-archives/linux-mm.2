@@ -4,122 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7476BCA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 13:26:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 735C3CA5FD2
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 13:29:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B5656B009D; Thu,  1 Oct 2026 09:26:10 -0400 (EDT)
+	id 6E6336B008C; Thu,  1 Oct 2026 09:29:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88C586B009E; Thu,  1 Oct 2026 09:26:10 -0400 (EDT)
+	id 66FFE6B0096; Thu,  1 Oct 2026 09:29:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C9156B009F; Thu,  1 Oct 2026 09:26:10 -0400 (EDT)
+	id 510996B0099; Thu,  1 Oct 2026 09:29:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BE2D6B009D
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:26:10 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D81DE40400
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:26:09 +0000 (UTC)
-X-FDA: 85274130858.30.F517546
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E9EE040005
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:26:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=SmDpcrus;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.140 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 272C96B008C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:29:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B46621C21A0
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:29:24 +0000 (UTC)
+X-FDA: 85274139048.12.B9CB8F8
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E2EBE14000B
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:29:22 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=of6YJuEo;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.141 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790861168;
+	s=arc-20220608; t=1790861363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1U7rCP2J1UR7XvChQyXqCJWaXLGRfuecEUSlZ8WyOlk=;
-	b=qcetf7kINz09kqP7cWTx2RsXvQSCxbQuhWDZPBhFtvwe3IZyh/ADirQiUBs+kXeNKtT9rx
-	VOgPaR9VzpJygTeEuE4gTQSQQ5dyUf4St4coAf73qR4xP4C5f5zgqgs4FpRUixqZC5KUXJ
-	yIWBH1hjodI8/ETSvsnGOuwpPGIWVAM=
+	bh=djo86y34WOc5FBXQPseI8JTPk4toU7ySXcp+GeD54N4=;
+	b=KkBPsWIlAeNc0wi1Cszrf2Q4xw1Wmb4cEiNiuLLF1NQIJKCavM0kmFBUWs30sFWdvPnFOO
+	K2tO8W06juEenqUN/LJNfXBpSvHuQUOpTGDEAAtPtA6qtkh80cleNWEtUFoZgEcSzRQqHQ
+	32fjQ7vwkIYmtN41xlQUKZd1LoOQmNA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=SmDpcrus;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.140 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=of6YJuEo;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.141 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790861168;
-	b=c/fRDlOtpcaLFikyzyt5ahaHtj70pbeO0Ke3sB8naY3LM6kD3o/EDQxP79LnsUrDxNP8OL
-	ZhdxofV5d7uCi6MRaO9Mi8S4atvc1+zTR+PLkiayZglunlRKUNFsY/+9fW+IMvhwKHv7TK
-	PB+U5gKDx7vrDuozn6Xf1M+UAaAdO28=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ce364488dso10718615e9.0
-        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 06:26:07 -0700 (PDT)
+	t=1790861363;
+	b=O+SC8dEQgKVQwpkfOYYMhnEmUzZpkb1tAuzicT5VnPNSbfs1HFXFs2cx0/7qOLRc5NWLh6
+	/vgT5dIMZFpnPrwEcd91rMn2jhtE8hLyXM2JuW0zEGKkIVeiTYO9az7asiPvwYAeg8CIMm
+	1l1+mOR50HBKbiWJaOsbcFB725/cMHM=
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49d1fb0cf5eso59720345e9.3
+        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 06:29:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790861166; x=1791465966; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1U7rCP2J1UR7XvChQyXqCJWaXLGRfuecEUSlZ8WyOlk=;
-        b=SmDpcrusj6QtnVCfpb3Xpb57JlYtaGr9lthEEEIMk/jzVDPr8ts629s8BLuhTXREg8
-         XA4t9eziLLJJe1T/SoOguu3WjMLgCYvX2C2PgrvMpD4oM4CCMsxaaVbiUcLTkOs46E3b
-         32+DTCIU+pQvguqXtd8IiCkqTH/jlbXtGmWSDrsuARMnHvU559a6EMPkWKocdRXnpdWo
-         ciiwvThFlz35JF3nQeKPfOAvu/yWr/vELohoJDmz0N2DcQ6Pik2sDQxfc7tY4W1EPiXu
-         GyKKE1y5zaNzRg4wu/bpYhMBhJmylPXNbfC0jm0U9H9hqqTBS8TZjXEzVVk5wxYwkzrw
-         bVMA==
+        d=gourry.net; s=google; t=1790861362; x=1791466162; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=djo86y34WOc5FBXQPseI8JTPk4toU7ySXcp+GeD54N4=;
+        b=of6YJuEoJ+V0aE1QctMhZ4VGxm/wj3h420lRium4u4s9BFcdxXGajctebRX9xg393m
+         XKIIu3+8T0U5dUFk1kkGQNoq7jtTk8M42NayM22GMFAL3qZcH4HV+i66pgQTUCCapaSy
+         NPtfx1u05pBacc9T4SwhV20S6Bdc5GqUzF7d7Optvi6GkgvEBZT4jmncZ/KzvVj8r/wB
+         gy+ascHI+wxnovryRRhOS43F8HBlclSgtAyXfIKi+BDXrTD9+QfyKgw4ybCHSDtPeXtr
+         vvFqS8c+cBhW3Ggty21tygFfGkPbtbRMQQf2hjtnHS5dwNkI4Xbbtu/v2YSbxrG7BV1+
+         O+yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790861166; x=1791465966;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1U7rCP2J1UR7XvChQyXqCJWaXLGRfuecEUSlZ8WyOlk=;
-        b=Ij1EIrnAtxvim3qohqGKMgzb/Bom+Y29jFnhMBdnvSXwPO306dFJ6PjcBk5CCVPiqm
-         hmkaKe6gLfPeloGRl+ByUl+Iq9LaNagmV7PSqkKaHazRcNX90XkPbsylmfCNes21zNTV
-         EdTvjaTtesLFNzEiFDTMmSmM5oi//vKirICNtTS330JnIhMbrv/xk4674K7Eh4MJdY0q
-         2R3YknCes3R3HzmA/Nh7sZ0TyIPSwR7Dr6El8DO6ELVYbXUBI0K4Yx2nAN/aFZSrQS67
-         YfYpO6sArVqfIG64k0MSHPNtMc/IXllD6Ak0Vrf8brEVh8Oj4XB92jZl2SXv4G/53av/
-         ndLg==
-X-Forwarded-Encrypted: i=1; AKwUvByJRem4R943j6fY7t4gPwaN5EPSyK4j51VGM7na3keLa3QD2ixHG77YxAW/LsV82YNH5+qqx/z3Wg==@kvack.org
-X-Gm-Message-State: AFuF++l1Jb6fdoFCqrzVujJocJPuTDyWdjDRtwGYnGE3V4DaUkGtBcxp
-	yDKydDGCx7ySLG6i86m0jB8H7zrPVG8qludTkkMfOymcOHkcWOItdmLuGsuSGvHfRYM=
-X-Gm-Gg: AYBFou0TXM7mnghANqP9sVmdVG+KRnDVvenSKWHqggFXN2fl/c0zHiYNKIutk+1DaF9
-	0/M2GWCmhO/Dns2aML2eMXlkGHil9DX+PMKFwl6RkVQmgmL81+qI5TbPHUAz53Y7JvT4cmd0sHe
-	KkEIMboMzw7WXkkRAnGwpCSZVd12SYEATZwkVmayQ4XuixysbEMabih14RO6uj3WyDtxqWj66Mx
-	pnq0ZmjE1CH5FYeQOK3iN9KaU3NEVrPKuFi/E+cL3d/AeehFpBBNXJmsGA1GJ5GQBz8sDRXFV7l
-	0W4nTw2ELrcMrXVILSW488+tlrkEZob8rVqVsHgbyIAMVDcWFxiWvbQs2HNaB431KDgU/x3Sa2M
-	acsztEyJOv9AO312Hn0Q7baVZ4eJUNXzfLIuhHpEkLOIj+7QhsBTj/SjxJGfmTRp6Duu4rO+x4A
-	Oi/Hq1n3GZloGJlx3HkNxroQN1hdSutR7kw+1FTsiI/klPV9Qabi4EUWI2glAAq8ORsNDAa5cT5
-	pt77Q==
-X-Received: by 2002:a05:600c:a107:b0:4a0:1ef1:b62b with SMTP id 5b1f17b1804b1-4a01ef1b7ebmr36180515e9.10.1790861166322;
-        Thu, 01 Oct 2026 06:26:06 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c092:500::6:7dd1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f93ad0bsm47435175e9.4.2026.10.01.06.26.05
+        d=1e100.net; s=20260707; t=1790861362; x=1791466162;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=djo86y34WOc5FBXQPseI8JTPk4toU7ySXcp+GeD54N4=;
+        b=YznH7oymugm0aqLfNtAQuopfDpKViza+Uwsf8wpQsZh/5+fJAQNJbg0mRG7yF64sY1
+         OOh5GFpIfHY0S8nYgfu91ZcbAMHW61bYJon09b1X9EtwNlxs83B3PqoupXR5v4lj/7R/
+         pZ42ZzMjbaInCxhQRh8aEOj9DX9F6X9ylYWf2Oe2M9wZu8ApupGazpYFJlomsgO9XNeE
+         0K0UtPrBc7vnj2y0RnYiYU2dOnq5bAM1w3Cr6GKNbIA34bBcTvcn3pN/WAMeGffuPptz
+         s78thVA4Has/rsZwP2r/CsD1Vc0Li2HncgNZ3nIo/0WUysBIOJyiEJq4ZZuaqeXer3Tc
+         jE2g==
+X-Forwarded-Encrypted: i=1; AKwUvBx55wp938G2X+pzLVN088XELdhp5I5fm8C0RG/5YQ9onYaUjBC8+Zn+bgU29UU2R48m1RTYpxd9Sg==@kvack.org
+X-Gm-Message-State: AFuF++nIoI9012FjtERhp7wtAilX49ciIdGieAwoVDVwpaGTNy+g5G4I
+	cbIgl3Gj3yNezUidZx6G3z23EYEyHHGTq4CadmO8EZ3icLTxasvMoq4YIIkKxS8UZP0=
+X-Gm-Gg: AYBFou2u6OIRegfYPa9PjFNX9VkAUHMefIJAm6r+qe9ZmL2sBh3I0GnL+QWu9T0vk15
+	vWG6S8DjIDtbCXj+fm+oKYghFEoI/jQSZoY5sI2KKELkFq1V1x0rd744Coy13A8jIRH+hMDMjsc
+	rzz4uXePWf46PnWIqEdwBuWrbQrpL768xelyonvIDVeftppx6pGwW9wF/Vtbd7kQCYjM4FPUyYN
+	CzM44z2mDaOYdyxxhOpbyvlpnnXxAKIJXlGvhBBhRkhTNPrIsOH1ii5W0YJvDv0mb4vyBk2mjAi
+	MrWiu4FSKli6OZMJVmXSH492LrLPbNlI7QIOl2wvWx/d3RKeWLZY48/uv6eZw5Lpqd4qBEDMFb7
+	nGCBlrxQyshql8C/LkKoZ4svXcjl7jYJDpJeK5TBQX1uWSDtF91E1ewl3m2z1pRnAUfgOuxZnKd
+	Spyk+1B0N59EkeTIRUiIQYMCPOCXkAqffpUWsUV+rwtRGm9ogU48UQ0D79r97HxXao+kCnEpxt/
+	Sbf4alU0vlAZbX8VyjIl2gv01YS
+X-Received: by 2002:a05:600c:3486:b0:49d:17d4:aff2 with SMTP id 5b1f17b1804b1-4a01ad9847amr74558815e9.1.1790861361167;
+        Thu, 01 Oct 2026 06:29:21 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.thefacebook.com ([2620:10d:c092:500::6:7dd1])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a024a85409sm25779795e9.15.2026.10.01.06.29.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 06:26:05 -0700 (PDT)
-Date: Thu, 1 Oct 2026 09:26:03 -0400
+        Thu, 01 Oct 2026 06:29:20 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Li Zhe <lizhe.67@bytedance.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org, 
-	rppt@kernel.org, mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/numa_balancing: allow migrate on protnone reference
- with MPOL_WEIGHTED_INTERLEAVE policy
-Message-ID: <ar5eC22VfSFlMw3W@gourry-fedora-PF4VCD3F>
-References: <20260930121154.687586-1-joshua.hahnjy@gmail.com>
- <2e3f12b7-0dac-428c-b70b-07e1f63de028@bytedance.com>
- <ar0fURbLDPrphYMY@gourry-fedora-PF4VCD3F>
- <A005B05D-A85C-4153-A65D-0BDF9D8500DF@nvidia.com>
- <280965b2-c6eb-4f01-a0ac-c4fb7e518f97@kernel.org>
+To: david@kernel.org,
+	linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	kprateek.nayak@amd.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	matthew.brost@intel.com,
+	byungchul@sk.com,
+	apopple@nvidia.com,
+	jannh@google.com,
+	pfalcato@suse.de,
+	hannes@cmpxchg.org,
+	shy828301@gmail.com,
+	osalvador@suse.de,
+	raghavendra.kt@amd.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 4/7] sched/numa: separate VMA placement from scan continuation
+Date: Thu,  1 Oct 2026 09:29:13 -0400
+Message-ID: <20261001132913.486570-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <e1728faa-5d50-48af-8ba0-5098be9124eb@kernel.org>
+References: <20260930112206.205083-5-gourry@gourry.net> <e1728faa-5d50-48af-8ba0-5098be9124eb@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <280965b2-c6eb-4f01-a0ac-c4fb7e518f97@kernel.org>
-X-Stat-Signature: 4iyo6j5nqqi5td1b379kkou1fknj485x
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E2EBE14000B
+X-Stat-Signature: 1uqgsmipphjjqjaqxogzwhkgb7maez53
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E9EE040005
-X-HE-Tag: 1790861167-659603
-X-HE-Meta: U2FsdGVkX1+k0tp2Dda+2YkdlsiBfEPzXYogZIgVLvF1YQGrQva9T6t0FIqFxyYlt2ge1H4HInLpfpCKkJfgdKPK8S2KJeinvIXw5d2qcPcaZciUHrpDVkbwd8DmHF2KlL0OrBlBQzsFdQj+cmhsFerVkadCg4s3ozm0dcdeyscHn9qrUCd8ks8mE3CrSajDAebvY9pFB+vMHncnLSR2MrDU0xX5wDXTov+5naOA9caERs0zBvRtoE3HmEG0hT/1Bw7gDAIRjHIc8SKNJy2fqbwcY9CDL1U+b/0ttlHFr1c1f0mbwZp7ziKQSNw8SXJ+t5PliCejUAfJh0sdjvXU4F2GNiNGT7DdL+jpCRUEZEC4neIN/rVs5T+zTatDdVXKEFRLOyWdEW6BwXP1mE37+oafgt4OCVDIDjNQS/1KZdWV2m8lzEXHlioohSR0Nk3Hej95+N0wCyZ0RGOHLcMvF8X543kU2LYMkUBUU44s2xO3bMegfEGodv1yKhzfiwjaITndNAfYUpViRdTvCIp+Igb/QPPFtDKgOKecXwwxM8gZV7sHiCvsyVnMuukiKnWYXuNROrXsNbNafZ6GLTR8e9jD8jTcdZGcXBYHC/Cj0FrFj5BM9zf6J0R0yGM4DoatFaycKGmW9mL7PYG1lergAAI+Q+m5BvqNeq/WoSPdOjdQS9p6gCE194YZ2KLcCC/7e4LAPAu9M4xewstY6B7qThVvBA1+bjWtwJdSpXH6koUnBWqSzLa7v3tJM4V4l9Dh36XBu9TOjDrDxqb5Zyc9XQHlZl+/13f/3bA9bQqQ4phPViFX0ck7yyrz5lJFK0JTrzv4CV4Xnznj/BcnLt+Yzw3+Nl6xSTUk41Qw914gh5End83P0SUZwB7e5y+wcJMZhMqMeNsR37QGeV4LGmuUVFuLJYnFUWSrjpgvFp2ckWNDnWe5G5tOMfkV+WVnAm7u+dFgoAGUDBdnXR9xk/u
- jdHVMOQz
- WxGnNASb71itxsH103jNUPMAdkKP2fefpyTtU2Q+OI0xjkGp4ywRfEIJ/Ie1s2r7b3NDjJtBXEUqhuxr0Zq4rfPgSnLY69/GRX+7TnKlD0mtvU90TjnmNhnZBIHKKr9B8SJA4ymXhW37iOzXJCTojpNCQ6+b1qm+WhRgI4e12BqlbLN0vZ43g+Va5rfhHCnYwOyJgWzhO0AnA8dVd4OlTZOMZ5Ac8QUq+VItn+nC/6R1/9mI64ZoFu80Wf972g+Zv+KfNbXqno+ION7muuVY7yMpOLy44MWgDoqaTrybJa2OyI9M2f39KHa61tJDh0mdmgVRyAOI73TxD0OyoGq5fP/M04EptRUkSBSSZ0isoerT6iS6w2ayYM+PtxtXCKufShiE00K5bv+lU0FZgNznzv/3owkjvmkkPnP92Sl9OcR799zckdR/kJ9UzHLjJwDTDZLD495yWo6pbPY+WuVu9d0JUUHi8WjMj/v17ExJhji2I5/k=
+X-HE-Tag: 1790861362-268829
+X-HE-Meta: U2FsdGVkX1+d2G4VV6ZwISC006MlHVdHW+FhhHp9MwK3xMyfSselP0zR5U9Kmx8pcgmtuTbnBg00nII9cjSW6PlMqjLPdyVjWiBD6d4WdgCMs/WPsfcFq0EMAuJWEkfytCiSZrIl4AgYadUryzVu/lLcgoBR5PUCJPAb94PcJCMNUYVtjAmIkPQs/kLX5klS0jlNAj42hF+Nr/dAMrGbYt/E9Z8hE2ZQHvJqFfJ7bfCT34T7SjrgENKvrykAP7GTd3EWnGTYPyIcJzwoYe1mUx/PD+P7UAn0DgpVJYMkUx6u3eiEAZ6pLPIwDxvivI+aTbDHOEBx8QdXRRigTOzgDR/PAIjxPgd9ZczareEahqN8yt8nFigTJ6ak8D2v7UL1KrAD9zYvqMakjDcsitfrPiw9wkicV7NyMhDwW/ViwqRTbeHyBvh8GM5+3ewneN0OQDCrbsC+FJFrGl+4eZclZv8baVJ0qg86cCj9NkLx8E/IvZg4xPpJL3eJAv2438IWnT6EkyzC87m3KxKN3+ZAHR8Pq06FxG8ZY8UMnssKbdCP5XKm2rOStvBRJFhsI+iZ78dwU19JS99R03FLJ+HsRDBEdU4T3VfEII3dpN5xlM+Gy0Ix2mc9zcTA5wpHXCUTADV+BTjs/Lx8Rlk6sTKOGylYNpfXjLx6QxhUhoMrWcY1Q+5bb4zEh0jaYYvL35CIEzzj5mG6F47ueBpll3fo1KQB1DddSlpBzyyleWIkxjNAfCrRtIQD2nN/EPTH1c2Om/LZXzcRL2RxuubUfDHg+kdSmvouz9A/DXawqHHAS/hZZOKw62B+6RyJdZj7hGtVs/7Cdt/9HemD1kiwY9Vy0Gdi1gqQgzBOldGSS7cjg2VL1ai/uyoNO8lY91vCZ1QAEesBxW+12570iMtXUMgIWo3fwkJJ3q6BMToXPKCv4PcBctsh8DcyQSL5ECwdWZfDvP4rONmxuGrpRSw3WS3
+ HgRbFLQl
+ AuUSvpbkqG8HoylrrICMYvHuS0f3pMmTeKlZ/acjpkrT/dwo0aGEbAV9I0Og2531+4aczUZfTqiK07pXnRL6lpOcIaUn8Dh1w2+t5HbD5JoX4QW2Zdeuvmh+iI5BddFLxcYztZHE0RzSAylrpq/cd8KruWWkGIScGYCVgB1Xya1ZFY0T3+bz/lNMCuxoqE7u3MwRu3QEFHvaD7E4FWz9AMGBPbVq0v+g7ElNqpkg9P88ZJv5RnZNdTyPHMl6jtD2vMVm6eW2wYWTgf0u3Qpk/Gs8LJfek2/okp2MasmxF33/rtGQXsciPnM9+uFyqdUUQvOEPISdDouO8rWSy9tYtZv2ShWrG1BQg3iRrkddd0loTU7M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,31 +158,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 01, 2026 at 12:54:22PM +0200, David Hildenbrand (Arm) wrote:
-> > If this is a initial-fill problem, can userspace set weighted interleave
-> > initially? The program or harness can observe memory usage of the program
-> > or related NUMA nodes and switch the policy to numa balancing via
-> > set_mempolicy() or mbind() without MPOL_MF_MOVE after certain threshold
-> > is met?
-> 
-> You mean: use the weighted policy initially and then switch to a NUMA-balancing
-> one which doesn't involve the weights anymore?
-> 
-> That makes more sense to me. Although I struggle to see why an effectively
-> "let's put random memory on slow and others at hot" is a good starting point to
-> later let if be fixed up by actual balancing/tiering.
-> 
-> It all sounds a bit hackish. :)
->
-
-It is a bit of a non-combo (Nonbo).  You're using weighted interleave
-with the intent of spreading out the bandwidth utilization (and maybe to
-offset some reclaim behavior? *shrug*) but then undo all the placement
-with tiering.
-
-But, in defense of the hackery - I have seen strategies like this work
-to optimize startup times and then let tiering optimize runtime.  Phased
-execution gets funky like that.
-
-~Gregory
+On Thu, Oct 01, 2026 at 12:44:50PM +0200, David Hildenbrand (Arm) wrote:=0D
+> On 9/30/26 13:22, Gregory Price wrote:=0D
+> > -static bool vma_is_accessed(struct mm_struct *mm, struct vm_area_struc=
+t *vma)=0D
+> > +static bool vma_needs_placement_scan(struct mm_struct *mm,=0D
+> > +             struct vm_area_struct *vma)=0D
+> =0D
+> mm can be had from vma->vm_mm, so likely sufficient to only pass the vma?=
+=0D
+> =0D
+> Apart from that this looks much clearer to me=0D
+> =0D
+=0D
+ack. agreed.=0D
+=0D
+If nothing else comes up on v4, could you please fold the fixlet below?=0D
+Otherwise i can spin a v4.=0D
+=0D
+should be conflict-free with a git am -3=0D
+=0D
+~Gregory=0D
+=0D
+--- >8 ---=0D
+=0D
+Subject: sched/numa: drop mm argument from vma_needs_placement_scan()=0D
+=0D
+The mm can be had from vma->vm_mm.=0D
+---=0D
+ kernel/sched/fair.c | 6 +++---=0D
+ 1 file changed, 3 insertions(+), 3 deletions(-)=0D
+=0D
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c=0D
+index 3b30786ded3b..095289d3da3c 100644=0D
+--- a/kernel/sched/fair.c=0D
++++ b/kernel/sched/fair.c=0D
+@@ -4082,9 +4082,9 @@ static void reset_ptenuma_scan(struct task_struct *p)=
+=0D
+ 	p->mm->numa_scan_offset =3D 0;=0D
+ }=0D
+ =0D
+-static bool vma_needs_placement_scan(struct mm_struct *mm,=0D
+-		struct vm_area_struct *vma)=0D
++static bool vma_needs_placement_scan(struct vm_area_struct *vma)=0D
+ {=0D
++	struct mm_struct *mm =3D vma->vm_mm;=0D
+ 	unsigned long pids;=0D
+ 	/*=0D
+ 	 * Allow unconditional access first two times, so that all the (pages)=0D
+@@ -4313,7 +4313,7 @@ static void task_numa_work(struct callback_head *work=
+)=0D
+ 		 * VMA candidate exists. If a scan is already in-progress, finish it,=0D
+ 		 * but track continuation separately from starting a new one.=0D
+ 		 */=0D
+-		placement_due =3D vma_needs_placement_scan(mm, vma);=0D
++		placement_due =3D vma_needs_placement_scan(vma);=0D
+ 		scan_started =3D mm->numa_scan_offset > vma->vm_start;=0D
+ 		pid_scan_allowed =3D vma_pids_forced || placement_due;=0D
+ =0D
 
