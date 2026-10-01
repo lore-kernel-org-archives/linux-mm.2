@@ -4,100 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAF4DCA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 14:43:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69F91CA5FD2
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 14:52:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A7B46B0088; Thu,  1 Oct 2026 10:43:04 -0400 (EDT)
+	id 646746B0088; Thu,  1 Oct 2026 10:52:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8559E6B008A; Thu,  1 Oct 2026 10:43:04 -0400 (EDT)
+	id 61E3C6B008A; Thu,  1 Oct 2026 10:52:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76E076B008C; Thu,  1 Oct 2026 10:43:04 -0400 (EDT)
+	id 534006B008C; Thu,  1 Oct 2026 10:52:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 563486B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:43:04 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6B0A160443
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:43:03 +0000 (UTC)
-X-FDA: 85274324646.23.697D142
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2A8E716000A
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:43:02 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ATQ8I74B;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 393426B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:52:28 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CC387120470
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:52:27 +0000 (UTC)
+X-FDA: 85274348334.22.04E2F54
+Received: from mta0.migadu.com (out-101.mta0.migadu.com [91.218.175.101])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 937BB14000B
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:52:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=acz08jLC;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.101 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790865782;
+	s=arc-20220608; t=1790866346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mE8ugBn4aBPJ3MiNkA50lNnSRYdI1uITSgWQ30TMfOk=;
-	b=u6w86xrbvhhLeHnYj56BtxL3HZYyn5If9QIons6VM8KCHDZcKaMYnOUo23vriUr/lHjneo
-	9OS+DUhCBEInRpvXuHNBsd/Tf4yhKIr2Sxd7dCpIzmrVlwRqV/ouSGZjXXl+ZpGXpc0eIS
-	iVt59a28K8rRwmXpN9f7Fw1/kNlu2HY=
+	bh=YxNjso9KjpjP2pDGx7oGaiU+zaJJp4PBvs5wT3NhcQQ=;
+	b=awkR5Ymlbe/2v9ozZNdJdxOKblHLv5S9a+ODhL8PQZH7SNvUlSgxVU4y8ZMRuXo4uodgHS
+	XUewbmDzcCinEBp/PEkmaJRg8hCH5tqUmoyEmIwOu7RQLFD/f4V+QqgiKEQQRiHmtG+Ivx
+	6O3OGABRSKxqvAUeJ5r5ienk/0O44QA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ATQ8I74B;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=acz08jLC;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.101 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790865782;
-	b=NKdJF2DaPQiA7uBrbPh71UiDSBma1XXjd97y59JCkHQdHSa1caFLV17jig+WfME+PXBuWt
-	SPGj6ZieNsAM9w7rd14Xy7xCrS30dyYTI1JVlSZ5Zm5jILZ4k/7CUKC0mz1Ck17u8fHPzh
-	hmt+VS3sDvRAuycnrxnAGtJnLWI9n9U=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9DB916022E;
-	Thu,  1 Oct 2026 14:43:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6AFF1F000FF;
-	Thu,  1 Oct 2026 14:42:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790865781;
-	bh=mE8ugBn4aBPJ3MiNkA50lNnSRYdI1uITSgWQ30TMfOk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ATQ8I74BR/BF6dUU++SXaq7I6Ck1VUK8xU6ciYD+3Yq9OVtY7acRBm1+vz/B65lHl
-	 DF1YRe85C4R5RAMbAtbtHRrR80IEigqMuLFCyhcR+AaFk1VSlQYZZu5BQrNbBURuMG
-	 syBdLUPqfXrl80oACFAlymuTJazq0Cmj7BieKQYbiPoqoedYOIm/PDYpnFoe8B0WJn
-	 z84v0wjUNNjYIsznTbXcj79Q1zEf3omB7I/CvLt4BkMPUk1Kv0LziIJUwOuu5NevHH
-	 aHlJHZZutXIab/4oxymEt5BTLNWAW1l1MJHo/BdxL+viezsQ9ccvB921pMRlzrwjff
-	 MLpY18Z/6cO9w==
-Date: Thu, 1 Oct 2026 16:42:53 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, muchun.song@linux.dev
-Subject: Re: [PATCH v3 6/6] mm/mm_init: add zone mismatch warning during page
- init
-Message-ID: <ar5xbQsUpSQZg0wO@kernel.org>
-References: <20260929053231.66085-1-songmuchun@bytedance.com>
- <20260929053231.66085-7-songmuchun@bytedance.com>
+	t=1790866346;
+	b=fzRfsA05IWfe1KO830AMCz6Z7NdayEXhwDA+VJrLNhWwC14lM/gTFhJ/4u72w3G/5gIsuQ
+	7DQV3ZEp0j6f6uxvoLgvw3MK24QmZsJf5SEZzWy+GIkYPAguFvIu166KvaOw7sVYivYTbQ
+	1Z1soZIw1Ay09bUofU2UxeDPlyPtW9M=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=YxNjso9KjpjP2pDGx7oGaiU+zaJJp4PBvs5wT3NhcQQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790866344; v=1; x=1791471144;
+ b=acz08jLCHokKKFFoktu7aVdnwKze8YfmCpzWps0Qfs6x7Iz04dgN2si88PqT+WHvE7diE2qF
+ lhQiu9vG1t3YQgRzPX/RXUAmicoMsNLdvj/Jy5A3eM//nUT+E8t2xd9WIGnAjdDUyluNIX6LLvy
+ fhKT/MmqGbdnTsDGkfTlcjVM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 476754a991a89109;
+	Thu, 01 Oct 2026 14:52:23 +0000
+X-Mizu-Trace-ID: 476754a991a89109
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: songmuchun@bytedance.com
+Cc: maddy@linux.ibm.com,
+	rppt@kernel.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	chleroy@kernel.org,
+	ritesh.list@gmail.com,
+	sshegde@linux.ibm.com,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	qi.zheng@linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	muchun.song@linux.dev,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v3 4/6] mm/sparse-vmemmap: remove the unused ptpfn argument
+Date: Thu,  1 Oct 2026 22:52:17 +0800
+Message-ID: <20261001145217.19370-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260929053231.66085-5-songmuchun@bytedance.com>
+References: <20260929053231.66085-5-songmuchun@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260929053231.66085-7-songmuchun@bytedance.com>
-X-Stat-Signature: znwzitstmjr5wjju5tnz6cwa89n6m6sk
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 937BB14000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2A8E716000A
-X-HE-Tag: 1790865782-963840
-X-HE-Meta: U2FsdGVkX18U52aLCmA2LOQlrklhD7Ek+R59/mItagGMYQ8nlXZ3xHeJwo5Pw+pIkiwOwJ7Zbv6mi8JGVh6Z1rOFw+MONTfy8cMuJ0ocgZmLKnC0dQq4ngn8U/szY3c4MwB46yHsX4U+M6drPq9IupUMX+GnuCQwg29KVWHkHwlHmgeTu3cM2SIXU9lkmpHyINTgMzklO6SzvXqHk4tiyjsvRiIqT8fFDMX4jUOV2nMIbJ9017zZcO8lwr4Vk9TtMKZY0URsVvOP8r6vOSQ2whYFGHIPrw8x8+o6YQBZ+Rjgl3dpZwtFhBLWkQT0zHXgGe24WFmGUsKK3rGE/9Hzj5QLxAox+YbWd3uOLfY7WW66cXWGwDIZFwRPDmxxr81xKXROBDSj1RAGRrjPaC8ta2ygZUjWg59jf2rLuFzSXqILRiegEK2yB3wnpt7H6vvVSzLdnX12CNSDD0mFBWnxZ03As5aN3753NUm6SQy8eWTjsYNyG5akYCeRE7bn0Q27xZda01SEvzGTo5gwdEh/NzsXWCKOlNv6ACSqb/NmBg0RKAzxUwgeBgYkci6j1X78kMvN0Liq6hYh+sDVzcP1YtBtuGfvD6EU9QKfk4Ss4vWQvZwifJlnY6NOP2wa06RuWeXLqs4t+NgT5aVv2dZspU59CR1ObKDnK+20qWcrU5leWpN5ru+l3/5cHxLhPDQHgIFh3pGAOPRemEMCldwEh95XZ4a3G0QiV1wCSuSPAy3L1kR1OyJXt6qxrIdw0QdvOTdmP/EVIUB4VbkyjPur+uCycuR6F/dIbtqcfBch6RZ0lZipw6BmbFhjl8X/LBf1P7AJv3QBcBBaBjJOyE/dvk6mNaWTlAgsughQlAXOkuYBGxxC241SFWJZOzVkcHt19OkooWL2heKJMISvrV0nwxoxuubO3HrcW5VVnzJkqqKme/F5eWwgNz6Mtq5n26wCoicBUblJYy4UqQ2VBq1
- HdbTvunB
- lSeBUe+o4yvhfUne3m/ZOOe+fQ57ifEX7nSNTjM0xXBPcbGc66ujlL6YIirkeqYDiamYiyuHk+BADwwAmJ8GNcVun/Eh2Ukuvp12Odp9Y5PaViQZXzLvyGRm+OZVq2vKvJDbv7wugvhU/P515yWbHo4ky5qzgj72+XaHRzd0rVR+ird+Rov6Kf/czru2j4adOZVHI6aHzykRc/BHZx2HvA0l9kFbu14gh6+B7aM7Ns/APVoUtWFzWNl3AwyKou/F2HUs+5nQ6zm0eO3hhQO9BvVBqR6GEqst3wD6NXizZhdicIflF5FNNpLbEB5Y5+k8+sGWitESqUWOWsfm9cD/j3l/s9p6+UeIiR2VC56gjlB6nJ9Ly1GOc5Cqmq2u19TdRwHlYlzOLjXZ/1bIrAOAUl/0SiA==
+X-Stat-Signature: 713og55ubd56cr7opoxhuxajxxgo5yy4
+X-HE-Tag: 1790866345-177651
+X-HE-Meta: U2FsdGVkX18QvCEi6HVLr9KuVOl1KyglqQFXDqJJN8AYzGoAy4CPks5VWWjjyaf8e3w6xaqMURB3DKv8srPUXpSoFjZlMKvfU26kfMXeHZdVgrQ9a543tdVb5MTXzNw1rfJOWhJ2vDHdetwdR5YsHY9GcjyrJjK8HOLit7uj5PKUz6AlXAAtDbVVGKfJLt8Bv9jtRrMjgPj0RqwGDMs/tmQoEOABmyK1hMxt4OpMK911IizW2Q9+K+1DeKBtArT6iktciipnIVVps5r+HjSnleOcqE9Ds5RiBGWqoCN88yQxvwLsurf7n5fkzAiWAfuEBqETXwCEtbkbPcFLi103oi08k0iohOpfMskRhsSIs89cHny0EfA2QWb20TquRhdiZo9OCPwyuBWrLdLKJB4LF3YqoRDHHhdXR6WXqra2ZB740Bf0ZPzV4fiD81ujFyMId8h9RvaQftR1JM5snwzKB0tm8QVxPKiYCvb8z1+y/2bHSNQkFsybslI/cgFB+sqHTEz7ie5hnoU4d+sjgDsmgj1EX0PqfVQvoMRHSU1UknfXtlcLZkHUdH72kIY6kuw0EglhjA8LU4+IxvTgRJy4eDFEOQcoRRlabiUBeLVF/T8YCk8EMmV90JTCeyfgtT6SZHnsqlzbpZsogXYxRuCqM6Po20TJjqGamc1DFHyme5H93T5kqubkz3d+mYh8lGCtBrOyreMM3kFo4yy3wANIWwNuAgvtkSnezn51OFGA1llywRKZ7TrY4JOaVdumdIONlwZleVV1afu8pbAVZB0ttfX7jWN+RWMzfWXMJLbH9gOkuKfMU4O9BE8UQhFTJw3CBKyQXFiQufM0fafD0brFgiaGh64peUIU37j9etiKxvzLnMxPBlx/J4q8quEjOqeyXEIZCOgsZyphPhhJqUSVX3GkVKD7R8y5/YAv3/EFTl9Zgpq8sw4PFaMkptrd3DZVYhhTCcUk/RIlmq66Ifq
+ SaNFBIYS
+ uwqIv84hNJzZse08PRTxb3gXRmXXE+/Yt7Qqq0HXnQbOwUt2mPs2+/Mp4T5Mr4KE68XPSOxcn/72W8jDg26YP7u1Sfr+E5iYfwLtzvwFSSr+u9tIXga3XkG1ytxqeNGT66Rpjlyi2utcGDktLpBSYuDubn9Z8EtQ+yJArQ6OeL/LfjTx2YrZV6SL5hnrKviV8nsxfGzdmKUC2rMdbJrqT+2P3WPmTYln6kjdmiHEhetSDIl4sQJTcDFkNQwdZ6XLjtk3z35BrkSmErFivWOvHq4VqQ/34N8y3UrUWmiEzz0R7VfArnnYSckr9QzUxVsYnk3AhemOjHEb1OZA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,51 +108,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Muchun,
 
-On Tue, Sep 29, 2026 at 01:32:31PM +0800, Muchun Song wrote:
-> For vmemmap-optimized sections, tail struct pages may be backed by
-> shared vmemmap pages. Those shared pages must carry the same page zone
-> ID as the struct pages initialized for the section.
-> 
-> Warn in __init_single_page() if the shared tail page has a different
-> page_zone_id(), which would indicate inconsistent initialization.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Qi Zheng <qi.zheng@linux.dev>
-> ---
-> v3:
-> - Collect Acked-by from Qi Zheng
-> 
-> v2:
-> - New patch.
-> ---
->  mm/mm_init.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 1650d6bc1211..bd02e8d06965 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -609,6 +609,9 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
->  	if (!is_highmem_idx(zone))
->  		set_page_address(page, __va(pfn << PAGE_SHIFT));
->  #endif
-> +	VM_WARN_ON_ONCE(vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)) &&
-> +			page_zone_id(page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) !=
-> +			page_zone_id(page));
+On Tue, Sep 29, 2026 at 01:32:29PM +0800, Muchun Song wrote:
+>vmemmap_pte_populate() no longer uses ptpfn as an input. Drop the
+>argument to simplify the code.
+>
+>Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>---
 
-Hmm, page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES is initialized a tad later
-than page so it'll have stale data in the page->flags, won't it?
+Nice cleaup! Feel free to add:
 
->  }
->  
->  #ifdef CONFIG_NUMA
-> -- 
-> 2.54.0
-> 
-
--- 
-Sincerely yours,
-Mike.
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
