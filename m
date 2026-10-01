@@ -4,76 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A456CA5FB3
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 09:43:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22C28CA5FB3
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 09:47:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16F596B008A; Thu,  1 Oct 2026 05:43:42 -0400 (EDT)
+	id 1C4396B0093; Thu,  1 Oct 2026 05:47:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 120906B0092; Thu,  1 Oct 2026 05:43:42 -0400 (EDT)
+	id 1757B6B0095; Thu,  1 Oct 2026 05:47:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 036276B0093; Thu,  1 Oct 2026 05:43:41 -0400 (EDT)
+	id 0633A6B0096; Thu,  1 Oct 2026 05:47:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EB476B008A
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 05:43:41 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id D209A6B0093
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 05:47:10 -0400 (EDT)
 Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D1841A0343
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:43:40 +0000 (UTC)
-X-FDA: 85273570200.04.19766D8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 98CB9C0008
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:43:38 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixg4HOJX;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 677054035F
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:47:10 +0000 (UTC)
+X-FDA: 85273579020.04.A93CBC4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A8B171A0003
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:47:08 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aJWxzyDP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790847818;
+	s=arc-20220608; t=1790848028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jbYqqO6L0tC70vJ8T9tWUJrt2qX9PBMqSKLMk58G13g=;
-	b=yjU8pW2ZM9c7EM8y8g4SR6XQD/7Lv6ihz/ztftX7G4Le6hf5/1hJpLxwXIt4W9a8/dGUkJ
-	8ByADZD+tJaal777vGRod8vuYGe4StaDqRUv0diPcslMFW3i4mXlY5B13sSXZWhwFPwkjM
-	WeUsC8OVL9+NxoMy/Ay3cLzNER/jijE=
+	bh=v4GqKargadOKFOeTVuHEXINDOBqQTvwvPfjl+C4vh8U=;
+	b=5MZMuz0hEd1spYovSGEqFHoErGnq/rKzzsz2ILPrDT2DASKziqZFcpqb0ovtfjKZSuQebw
+	xAD9q8Reg/uVMSbD3TXRx0BoNwrg2Z5dm9d4PLQDO2pNZyqwJAjdiEF1h2b55m3kbOILrE
+	6suLwUfpbIksQ3PExZQBnN1PlgJaC7Y=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixg4HOJX;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aJWxzyDP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790847818;
-	b=4+gD44QjzhCF7yuDxWl6PD4sTXz1RWXa5DAz/AIL+ErQpbxHtgVIqolImh8EizCuREvUDV
-	JdAU0sX0iV2b1Lr3gKhnGzDD0/4L5w/6gMhLlCHNHQeEsQTtjNBMfb4YeDy0qPY+cmBrql
-	FtAjKwgjoKA6Sz5JWsFvbiD4GL2VZpE=
+	t=1790848028;
+	b=ENEVK6kgwLOdfSSHEb04TABZDeHvfYpmY1AbcMwrsToQudIHFKMrfx6+XrW6IXGdlcrzZf
+	MQ1uhyrcy2tJYFxjjWG9myePTsxDaDkNdRMG14PWgcxm+7Me7vv0FBpCzNKEas1vlCZuPk
+	HV9cJUzjpGfsuZYyLdVU4MN+nonPrMo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E06D041FC6;
-	Thu,  1 Oct 2026 09:43:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717191F0089C;
-	Thu,  1 Oct 2026 09:43:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3E362601FE;
+	Thu,  1 Oct 2026 09:47:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8015F1F000FF;
+	Thu,  1 Oct 2026 09:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790847816;
-	bh=jbYqqO6L0tC70vJ8T9tWUJrt2qX9PBMqSKLMk58G13g=;
+	s=k20260515; t=1790848028;
+	bh=v4GqKargadOKFOeTVuHEXINDOBqQTvwvPfjl+C4vh8U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ixg4HOJXKpOk67/l+woDAoatIvgqwqw4jHhUSOCfP8bXvsHeWWkWJa+nrsIygzALC
-	 zCQfQmhIwAhOwP56V+MEVGhmCIL2g2gJHC0NRGrL2Mf7ZA1NRq0c5lJBre3zw4aeIN
-	 2HYblJ3iMwRLXkcrCEjpqjqEdEP0qQCR4VfIRNuXea1DMLYP/dLMX25htQ35Exsgu4
-	 OrbqSBh3Wt5MdhHlnQe4Ie82xyjEXvqIhknAvs/1dvP53+PE8XVOjon4WZqqEQnH2O
-	 lraYETzxVhXelnY4SbgcgwwUXqJsgyIUT4qqaUGtLGegAQLFwvgO+pemykz1nidfAE
-	 MAd4wEXD4PYpw==
-Message-ID: <c2988799-ef21-4e06-b3c7-3efa88aca99f@kernel.org>
-Date: Thu, 1 Oct 2026 11:43:23 +0200
+	b=aJWxzyDPdnJdNi2TjUCTK0yhJBzt46zkMU32arEIItoVyd6OsLs9rdL2/KHw/bKVk
+	 NhoB18799FLYONifrXyeku4nuFSlMDusVkEvECBPW3Ghaxy36jJSOeBhKvgHTFMqpP
+	 CdBlRMKIYu0qMGk/zs2DkGlMoSteG4LWfotigkhQq2zpPiOeGUpHqkXSHxnPQKQbMA
+	 KoI3m2rRWuT8iQMvrYfW5j2NswsLTkD+wbEiAHHwYTsJYKp8limOtk9mXMwE6TsqeZ
+	 Lc+UvKef3mi3q16kqYD7xBUqb7E7syPsnOveSYYWRDGTOW/Fbi53NgTzW/KwkLqqRx
+	 WqUQoI1gjEdwQ==
+Message-ID: <9a6a1c15-89aa-4504-8585-0f7861c3377b@kernel.org>
+Date: Thu, 1 Oct 2026 11:47:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] x86/mm: fix spurious warning on __add_pages() failure
-To: Lance Yang <lance.yang@linux.dev>, dave.hansen@linux.intel.com
-Cc: luto@kernel.org, peterz@infradead.org, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, x86@kernel.org, hpa@zytor.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, muchun.song@linux.dev
-References: <20261001081555.35485-1-lance.yang@linux.dev>
+Subject: Re: [PATCH] selftests/mm: mrelease_test: fix retry limit
+To: Aveline Noir <jm5905938@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Christian Brauner <brauner@kernel.org>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <CANOyQmFzsssM_BXHUDrV+UuVD5SZMBmSkg3UQnmw9Ns1PV7GCQ@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261001081555.35485-1-lance.yang@linux.dev>
+In-Reply-To: <CANOyQmFzsssM_BXHUDrV+UuVD5SZMBmSkg3UQnmw9Ns1PV7GCQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 98CB9C0008
-X-Stat-Signature: t449e8nachiaogz9st4yoqdq5uijcyhr
+X-Rspamd-Queue-Id: A8B171A0003
 X-Rspam-User: 
-X-HE-Tag: 1790847818-715243
-X-HE-Meta: U2FsdGVkX19lrC0dhi5b/vYNdq4e7XruxGqFYGsXGCuS+1UZ3ZXMx9tDpa70icvLha6vt/LdvfdmRFR8Fqes20M+D4+Pa03PWhfpyfWbDb9viMRcvoHdxpoZW2g/kIoBzRnrKQa8fZpyb2Tqec0c/4WyzD9oh7DeKWvejs9jPieMrFd1myXUk9PbZ1moMPdsDhiVbOGj2uUGBQcHETT+hnwggZeOj0IU9hdUVQFef21hSMj+GNgOeFF94TKWBBLdJz4a71+fIHSw/G1+Hh6/4hT4iiNMkVRzKJQPaeWJWmL4vs9LTqv4HjU9ItKRrapWUDXQw+19K0ldfHJnJY3yZbvw6DTPwc20kopGljqfM3W33gVQBxIMahFzOHhSZE3+iCf0RL4oRu9AscCLCIE65Y8UHv9JCli01cZ+VmPGM1HRJMXBJi+xN0PUa4Js/mhNKPL+v290sULD/kj/PSsZXsfRrXsazsUFvwncmrK6f/ZzRZlvNJgtUiu9UG7QDsbIYpLAa+sC1DLIQJf8cx8IGQ4sCGI5LnbcX31k9Imek6DSjNJFzEzEQ8rO7BOuIz78pvl07/hK49k9p5msBhUIeeQhJ+//kczVV5Ns+xb+2QNfnafgL/dBdBGKSZVid1CZxQHVCTOvxbUERpevIDwlhgFpd6ZdPaPz3BgJVwvdBWqzmDo0Dj3YAMV6TOiXJ2clirtPCJA9tUBFfzHX6JCNybpJ1pAPZ+HElAM1jxTALKA9AGtVq97BBQo8v2myCv81ok4c54J+U0Z7sMKpg4q1LgLmGaNAUFeAq4jSVxTdJvlrJpDzUBgdZ8i8ZRIJ9wI+Ly+4aTnozIdTnMtsygBzEWDI1LpH3sYcrCjE6iQEY3tCAOURvk7h88iljkkK/tg1ky+qEPhUvcKtElCLzNX6LZAb8zkDaJHiKRr2wlZL7TpDhATGcfgXlHS8K20bxjkcZQaaToQZysX8tPOD1QI
- gBbV3w2q
- EY5ToG1jVPxgAwU0/YZmvMyQWZTppap+Lxeu3U+PW/jLfERSLlsgvAWPERYCwKBver+7wJCjlJHdsrZDRx9Da89gJnAfT1QdNA8QRQ6X0J7rjk+fOchLqc6pkBKHLfXG2ZGaxJCFaycghOMwKLSyi4UWHBYR2+RmRYUFHcQOliuMgTIhyB20/zEkpILD+uugXVmBA3o4E38wRADIRqes3VyAm4s6QC5yPa5E7Mdnqncc71LUDCUxPmhLr4Qty8weROv7UlmWjv05xoVLWsT+dPDLxeE0TEs9cedsCPPhqnr5N89VSQr3EImK2mHiczI9RYCf9Q1q0eQ5uQIGnqE76ZXSoFDGrr++BEDWKWkU0tmAqMiM=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 4m8e3s6538tzjdb88oekh1t1f1d763ke
+X-HE-Tag: 1790848028-27785
+X-HE-Meta: U2FsdGVkX19Vt8VME1qaWBvlf9KhDkppk++jLbZzAZ1/TLnr4F2kq6tirtMpyO83ogJudhBncYWxYVX8vJYyREjtBSlarm038dFSlZUsmeZ9WxiMCKrpmBUCI8/D1f+7+9unv0sHaANT+NsLMDpQxGsZIC3zYLOCBfzpEGZT1UHGY2JdwSpDHpl5ZnaLCZtaeMWdqgRBuTNG6U9Ro9VhOJDkX+H0/wDjHapFGbBmCWeez0uNsrXD6uxoakbOWhhw5YQkRbqlz/ArpKOsK3Fn8hChJCqDtKhmJ+3fio8LQ/lFViqqN2mwpXMq+and94K1jSyUku/qwH4rB+zaChDtEo7HZ/08J8tuO1aINz1dHr/vpvqH3Fb4w4ER8nUPoA3gsbrCw3+Ab8C7S/RAhWwpr/37rbViP9v6zrJe11bOtUaj+vwd6PUC6MKGWvipTvz1w5/52b4rm1Bl8gP93ZIFkYPqiR3IP1a7htaEX1Gz+ljBDG2l6SQuV5ot0/OO4dQgguEbM4DFtcgmLJtQ3g+wAFRodvtnU909f7FQEbGx6Z6R0h5sWeyPByPkk275C655X+x6j+r0aa/gVTtZNWbbwqRIdwPQBMNNaJb9TvLzlgVYsNBlln0tp9RzVI5HFXN5tcWdnYKz5ic/cYqQneOQsIqWf1NRVF8BFg6FJUBRY7MQ6gACk1j9VrtE/kfE6MhBLZ17k6GbdjlJIO62Y7SvNT+rqBVIInAIUya8zylvB7hQkNH/KyedIGf1L2rqJWgOZuCEJBN44JM6mv+QrzkdGqVL83FaCrzQ9zwOptQEdOVRsg9TjrsU8CqejBR4YE9A87VTjIKtshdnprJoeSG1lG/o8Npw1N26TCFRaOBAQGBie1QPG9a0j1xaoZXLzaUqd18zOgN20VPgj7CxtzeHyO3g+iFPGk5IKMh8bMZTZ5XYYPOHI1gvCykf9cWd419RTKKBbgEz2BbqmoXmWEm
+ TA0FJHOQ
+ NuAq3oKW+OIMcc8hDYg1O5WnhbrfGQxXUigcyEwXQ5H3xKImUaw6qe3eAFnJJsljzlN/KcE0n+6bYDxO90/n640Tx+e/aIsttG2ORhj9pW5tI17sNoW7stghmA9n3Jrt1DqFu7Me8JfhCrKw5P5wwH+GRZaiL3SQWstiTxKJm70X65pNZq1cDvBDO3nhtGa4oOdK/U+CC1wh/7UIG2fgMM+uekcKd0IRgkX4LwuEF0BNrLyscwhZ05twlTUTAAmpZYH60W/qh6JznUkc5pUHu6a5Utsod3oP9/NYEc1HgWelD18iZ3TCZoc2Zj4RbQOzbf3SQW77gvty8Eu8m3ge8Dcs/dtCu7I8+vDnr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,40 +142,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/1/26 10:15, Lance Yang wrote:
-> __add_pages() can fail if we run out of memory. The caller already
-> handles that, so we shouldn't WARN_ON_ONCE() just because an allocation
-> failed.
+On 10/1/26 08:00, Aveline Noir wrote:
+> mrelease_test doubles the child allocation when process_mrelease()
+> returns ESRCH.
 > 
-> Let's return the error instead, and only update the end-of-memory
-> variables after __add_pages() succeeds.
+> When size is already MAX_SIZE_MB, the current <= check still allows
+> another retry, causing the allocation to grow from 1024 MB to 2048 MB.
 > 
-> Fixes: 10f22dde556d ("x86: arch/x86/mm/init_64.c printk fixes")
-> Reported-by: David Hildenbrand <david@kernel.org>
-> Link: https://lore.kernel.org/all/d4fac8af-fd71-47a2-bfe9-3c6559b92209@kernel.org/
-> Suggested-by: Muchun Song <muchun.song@linux.dev>
-> Link: https://lore.kernel.org/all/203892F4-B04A-4F69-A1B3-DC1619176C67@linux.dev/
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> Use < instead of <= so the largest allocation attempted remains
+> MAX_SIZE_MB.
+> 
+> LLM used in discovering bug. Changes were made and reviewed manually.
+> 
+> Fixes: 33776141b812 ("selftests: vm: add process_mrelease tests")
+> Assisted-by: LLM
+> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
 > ---
->  arch/x86/mm/init_64.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  tools/testing/selftests/mm/mrelease_test.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> index 70e682180291a..8b6d86fb5a42e 100644
-> --- a/arch/x86/mm/init_64.c
-> +++ b/arch/x86/mm/init_64.c
-> @@ -970,7 +970,8 @@ int add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
->  		return -ERANGE;
->  
->  	ret = __add_pages(nid, start_pfn, nr_pages, params);
-> -	WARN_ON_ONCE(ret);
-> +	if (ret)
-> +		return ret;
->  
->  	/*
->  	 * Special case: add_pages() is called by memremap_pages() for adding device
+> diff --git a/tools/testing/selftests/mm/mrelease_test.c
+> b/tools/testing/selftests/mm/mrelease_test.c
+> index 64e8d00ae944..a5124c9e9f43 100644
+> --- a/tools/testing/selftests/mm/mrelease_test.c
+> +++ b/tools/testing/selftests/mm/mrelease_test.c
+> @@ -157,7 +157,7 @@ int main(void)
+>  		 * Retry until we succeed or reach MAX_SIZE_MB.
+>  		 */
+>  		if (errno == ESRCH) {
+> -			retry = (size <= MAX_SIZE_MB);
+> +			retry = (size < MAX_SIZE_MB);
+>  		} else {
+>  			waitpid(pid, NULL, 0);
+>  			ksft_exit_fail_msg("process_mrelease: %s\n", strerror(errno));
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Makes sense
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
