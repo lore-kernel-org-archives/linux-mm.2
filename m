@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9D36CA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:55:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31D0ACA5FCB
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:56:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F2AE6B008C; Thu,  1 Oct 2026 07:55:07 -0400 (EDT)
+	id 3781B6B0093; Thu,  1 Oct 2026 07:56:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CABA6B0092; Thu,  1 Oct 2026 07:55:07 -0400 (EDT)
+	id 3299B6B0095; Thu,  1 Oct 2026 07:56:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B9EF6B0093; Thu,  1 Oct 2026 07:55:07 -0400 (EDT)
+	id 218E76B0096; Thu,  1 Oct 2026 07:56:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5668A6B008C
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:55:07 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C251380385
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:55:06 +0000 (UTC)
-X-FDA: 85273901412.17.7810E5D
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F040D6B0093
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:56:49 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8B6D0A03B6
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:56:49 +0000 (UTC)
+X-FDA: 85273905738.01.345DE6B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1EBE740007
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:55:04 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZVCBDOK3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id E06F11C0006
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:56:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hQAftGTL;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790855705;
+	s=arc-20220608; t=1790855807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rUAi0n/sFGjsoDFX+Uxvih/avWET3Jejf0xqGsJw/4Q=;
-	b=j8vKABHvuwBmXxpVodH/qPtnLGi26qUSn5El0b7oh4VxgzTleWRn3PzoIFat+w0NA93ota
-	SaAkKcXTZMFg68W7CoGx/M6mXyoe5fZE/s2VduyNt97W83ZH+anuiIByKBjr9ANuqC7V1V
-	RMIBLB/lT7nPtJbdycNmWzljpQny5uA=
+	bh=jwXy9Brx1hUXrdP0tPQxlxrwWDU3cUickTJZN9A11GI=;
+	b=qPgjO/BgPzvpMJw9n/B/CFHl6wFNSniONq3t/Wa8OQYCWIRkMyNVHdxTzKDOC2Q8PesKln
+	uXVPSV/StkzIzad9daMbnvepx6DyP0SYTfJPg3oHZXRAQiOfjZAkjWmhE0dSJWT0KHp7CN
+	FrTeZIdpJEAxZCBxKYc5uAsK58y/WL0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZVCBDOK3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hQAftGTL;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790855705;
-	b=2k2AwqKXNoNd353rp2BElV67ZS72Y0lqfpF4WiG4GG2Nz2Iq5B1VoJvdhvHIfdRaWncJpK
-	z0fcyyV/IctfNEZc2wYo3pmWuYNrgBqsgoVCE/6nb/YJz6860WMo3OKNwkpKM4dlHn51+i
-	9CCtk+6Er30t57x9zZH2CYbt5U+Op9M=
+	t=1790855807;
+	b=5C7uifMzJhZU9R3cjOVhlv28CoRmYHjYtxpwOgy8tjP9DN3FDIJeuIlf2JVSqPw1xnSOko
+	IADdNPZ7c7+mBLNnfKcSY4YzhICyHM2bZ/b+yt2lzC6zCTh82TSUIwD0S/nUAZxCtq3gsa
+	4Fi4SI7nH9rsLwiMBKgeTQza3vRYJp8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AA101601E4;
-	Thu,  1 Oct 2026 11:55:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A8F1F000FF;
-	Thu,  1 Oct 2026 11:54:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 61A3C60A5E;
+	Thu,  1 Oct 2026 11:56:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809761F000FF;
+	Thu,  1 Oct 2026 11:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790855704;
-	bh=rUAi0n/sFGjsoDFX+Uxvih/avWET3Jejf0xqGsJw/4Q=;
+	s=k20260515; t=1790855807;
+	bh=jwXy9Brx1hUXrdP0tPQxlxrwWDU3cUickTJZN9A11GI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZVCBDOK31CqNfjz8WrdjvxSo7vEkXTFpiZNcf6y2UpSuuhsETtZ6iSyUnN0Gx66lr
-	 x3T9K4HC3f4TiqTrL6O/LZb5j7aZlgSTaHsP32QDSqLQOyKqnknKrFPKuDxBwkVpzv
-	 x6GTQIMKL92VV2q90LTf2vCbBycVTzflHONMLZ0BjXCm6ZoxRNvqvpNkkW6g8/HtFk
-	 6J/P6DqYgUfZ2gZi4BaajiuFKIn6Bh4nzHfw7qDnA4SyqsR8FJUFioNY2PuTopauaD
-	 dfq7h5EZXgL8fjYirKGwheX3F2MF11zeIfcepTgLYif0WNhGE1MWNVIoduUU7z5t6G
-	 gse+9UCLeKQOw==
-Message-ID: <66643a71-efcd-4bfb-98e9-2e71766e0357@kernel.org>
-Date: Thu, 1 Oct 2026 13:54:57 +0200
+	b=hQAftGTLbbZEnlvN6gOGfsufrGBy/6rO7VByoEAaOs1HKczt8hsuH8jRk2kU5SHrE
+	 DzvsL1qqOl76GHK1bTG1v4A9JfoZhpWcAA2ZfdfWZOmLGUeD8wcRdC2Y8QK/RV/mcW
+	 BNAkXcmRWw1+Tfi/V1QQ4G/xB+PDZ9OrfUuMwVRM2WoTMbrUfYr+brkveboCmYUiBt
+	 g7bp4KdvSZxFyToaAEBTCE7hYR6S9s8Ec+ekHwL7X/eBPql9rogb1x4OpT13otBFc6
+	 Yi6JvwKVWHqqjTJZXI8FvSVzVdmp4UTUAwadkuq8AfmJiOqy22WNBff8HUgbU/gSqI
+	 3T2m/UNctXmTA==
+Message-ID: <7ee37eb7-49d0-4c29-93c5-552c908e2077@kernel.org>
+Date: Thu, 1 Oct 2026 13:56:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 5/9] selftests/mm: mremap_test: fail on data
- corruption
+Subject: Re: [PATCH RESEND 7/9] selftests/mm: mremap_test: remove perf tests
+ and timing
 To: Sarthak Sharma <sarthak.sharma@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
@@ -81,7 +81,7 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
  <ts930@dgu.ac.kr>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260924050009.19974-1-sarthak.sharma@arm.com>
- <20260924050009.19974-6-sarthak.sharma@arm.com>
+ <20260924050009.19974-8-sarthak.sharma@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260924050009.19974-6-sarthak.sharma@arm.com>
+In-Reply-To: <20260924050009.19974-8-sarthak.sharma@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1EBE740007
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E06F11C0006
+X-Stat-Signature: 3rjenzp94stx9oxb71iwj7gpomzykijp
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 7xw4kwc56cfqb7x34m8td8z53khuxyww
-X-HE-Tag: 1790855704-785714
-X-HE-Meta: U2FsdGVkX1+unIUA5w69O4LY4ThUPti6p325x1cP0zkvn7vfQlPSvgT++TCb6eb8KH7ezRQbTSChbPhKX1jiH+bx+gb61kCsgQtjNJjmxDc4Q7Bm5R/NzbTLXw0NtTLan61y4pmpzVuirOzcXlgXbZRSm0lDv5MaIr/pS2bDGLhje37zMmFYWpbJ87kJZ30HUR9pqxUw0NMBr/d8QjgnaP5q6gzbxS7crpfgX+QN6vzw7IJfs2o2mUWQDR5ZznbwvKtwqRmac8CDoTphpmBfRVisOhwDgt+AkVDPjVB7co+EgiHRVPJI4QTGaaej/Kugq5KjSwqDTkHP7rVorHfCIRnTK7emj/4pu2R6O+B25KrJ2Ot+sf8Lo7n89QFO6aNQ+w7xQhRc7jVTTUag+HXGqG6hRb1qQPxy48Ibzr2EHDllM5gnGWtEleoNL1AgLxhPvcXxEH1XmQlaosgVW97skslISn3OGwKAXaFP4xHXxJD6c5/FVLEMXv+Ej1Snf2Q2aYZyemC90yTzAmRsRsS5Ub3JpqnjLeJml4cZpP+CNYyjcKD6u5h21IP9uEhIHGYIaQ+K8gQ6GVX+bDd28dU8STTsuiovf9oyp+O0/tMWgyPsGc461T/g9vIkG9R1dPaIQcBOBkFJoynZor9w4MXs5Dh5uHSls4yvLA1NvLKEiMHjA/USaGAqfGJAh6hAVQVNqVen/QRkXMu1SnNyzw0EXhHfF/maeO0/LTcyYQ7uDoye6Cmn243yKUHrpPbyVxpU+HZUiT35UTGrmUT3Exrk6tVsFN8p3c1Mj+DNjSoKil3x+Qy+JiLC1ONJGAF1uzXuA6AlncOfN4RASUTU99LtxBbNtpvwbA/HcbHO56QiYJJ9miT8wxOp6zWu0xnutCkKY7oivlLq/rcC7EqOWdfPWEQAimqHHZqatY+i30wRukylxq89uXhc6u7Dksd6hodlGALPv7E8BOIyM2x5O+Z
- HrmKtPEj
- onMAagU/gHhbcgGsCGAY64pY/En/YRgWfnYwzD6i0grUxQfaJoZfIyR+GPx6NUnXzSlAJEPOz0vnYra8DU7OxRqQ3njT4UGAX6BUN/WvppVWnw/jK3mAjSAK7E1OU0EeLxTUFqhXDp/kDD0lAZmx+5tZRJvzTFO+GsqcBY8TEgsfspXxFGrRtuZA/7geVH/8tPkgZTyA1F3JRr5vTi8wqbnBgAAswLRfWWh8fTMnYjP/uJ40bd7dyWyUkfJ3TJg0gvBfXgQt2hgkiSnjbTt4HYwEBdt5xilzTDZYp7qSda5Z7KFFdsCGAY0muh5dZnnVd38I0MpcQQI7Q3vTrPZEYYqKX45GXhHLKfFuhU0d77Ptaoub5mqoJHOg6+raGoLPvUpaNEfqZPTox5xw=
+X-HE-Tag: 1790855807-319733
+X-HE-Meta: U2FsdGVkX19Bn5JoJlTAYj93Fs9ls6zsHAG2o2TW72LwjFH54n0jiYS2w/EHD021rPun0GMu2ebyeBlh5OWc7AONRtyPjJl2v85TLp44AQd00lA2Q4p/52o0wNFjwn+PWcD3Y/YWYgz3B3Mg/f22+rKshG5ZWBwHo99zcUYOt26oS018xrIWa33mj9Y8BzLSWhIkwN7XUzxvItZdiYXi/YQW2HBEw+LMyOZVmCKQM6bVu+XatEZFdSL0XUBJ393Bub2PKlfoxUBv2XgXc+gKsjKXbbKEP2+ZNvtwWpUnSpj7vhCE0v4avWgeMbQt8BG7cXg0B1duxJCDL36jCyB/cZzvnT3eIZiaPNXS3giP7fuZyn41nK3y04cweCtlcyQKbzRPj/BEI7AXWw9WakgO87FKYepsliqneC1abpr1WD8gPAHeQR/UaZQC2Sj7/tw3DZczhn0XB0xjXkTbxVwK0MCOP5+/eMBS17xEbMkk+wVA0oaPq7TZ67oA1m3C7lm7zBn/knH5NQS6wfb7GpFwFKC07EztFsfH7C8psMc6tlmlyrrwXe03hJmYHdxV1vB0Qu27RgBJFwvvaSAYr1VQYOroJHtUNuL3nwEKAf33QTxROVKIs5nQf/9EaT8oN+C2keX6DB7h9FxDoJaorkI5RQ6DXfybSmtAH2qOIBj0Cuebvq6AlX8a2SO9JDZE+nQAdKnWnEKjCIFMJgGvkyXkyQh1FnhRU5lSh6ap4xPRdgpXSta+1eaNXE6oF4o2LZHQlRBzZr/05y816Tdi2z25NLJ8HyIJiLJ/Xb92HRCXqcFpsV54D6/PcVXa6DT7qt+8qb7zGmxTyYKVp/sZfVr0FMv7WKA52sXgxPVQ/BEPKu2AYyNqrlHnszFM6JSd8DQExQdcslt+D9tvDPjgqUlhMmxUkfVSVs2WjDR0nIAGRC0dCFU2K4/u1OF16IeEFShZ/0U3gugRsyNeWdPCHZt
+ 5PJ5cECx
+ aRN6c3IXHt9aqqHXlbPGlYHCiM1n6jiiI9act++XiQ1RmKBYNZroE2ZO8XVb4Pi9BRIdQvE69WUClo+R7iN6slFn4J7QqsHXKzcQapoKZcUZvWgDv5U3nm1rASlIJBai3GoF3GC5C+Z01Un78kfnr+G9d9ufDOVgcIR+K5z1eqbYu9EJFiZOF+oRcYgvsZJfpNhQZEDbMwVM12TCOqGLM6GL61+z81nvhFWSVPdoYBAPZA68x3gpsG3f2DDDq2BVjsqEmB+7T7BL0QApPRHNKjnf5nGVOo7zBYlqcwSPDYnI57t2gtjOZxXZld+Z3zMnrFdd2FiR4YMTE3aOrhlLb18wpqm4u+o00nA6xDHr9KIzo2ptdiKelXVTsGx7+4G/flW6mkoqwpZVYjFY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,15 +147,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/24/26 07:00, Sarthak Sharma wrote:
-> In mremap_move_multiple_vmas_split(), if data is corrupted
-> after mremap, the control jumps to cleanup without marking
-> the test as failed.
+> mremap_test contains three perf tests that report the time
+> taken to move 1GB mappings with different page table level
+> alignments. Although they validate the remapped data,
+> their main purpose it to report timing information. The
+> recorded time also does not affect the test result. Also,
+> they are skipped with the default validation threshold.
 > 
-> Set success to false before moving to cleanup.
+> Remove these tests and the timing infrastructure from
+> mremap_test.c. The regular tests continue to cover PUD
+> and PMD aligned remaps.
 > 
-> Fixes: 7d6597dfef11 ("tools/testing/selftests: explicitly test split multi VMA mremap move")
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 > ---
+
+Thanks!
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
