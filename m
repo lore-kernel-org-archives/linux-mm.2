@@ -4,107 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F309BCA5FD9
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 23:02:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10F86CA5FD4
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 23:50:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 857016B0099; Thu,  1 Oct 2026 19:02:39 -0400 (EDT)
+	id AA2986B0088; Thu,  1 Oct 2026 19:50:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FFAC6B009B; Thu,  1 Oct 2026 19:02:39 -0400 (EDT)
+	id A53846B008A; Thu,  1 Oct 2026 19:50:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67B756B009D; Thu,  1 Oct 2026 19:02:39 -0400 (EDT)
+	id 91AEF6B0093; Thu,  1 Oct 2026 19:50:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F1266B0099
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 19:02:39 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9D992A7326
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:02:38 +0000 (UTC)
-X-FDA: 85275583596.15.07D6470
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BBA8E2000E
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:02:36 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dW904x+Y;
-	spf=pass (imf03.hostedemail.com: domain of 3i-a-agUKCLAfhQQdWeeWbU.SecbYdkn-ccalQSa.ehW@flex--praan.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3i-a-agUKCLAfhQQdWeeWbU.SecbYdkn-ccalQSa.ehW@flex--praan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 66AD16B008A
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 19:50:25 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BCC5FC05BD
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:50:24 +0000 (UTC)
+X-FDA: 85275703968.10.8F6B180
+Received: from o1.ptr9745.em.honeycomb.io (o1.ptr9745.em.honeycomb.io [149.72.141.136])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 82E4E1C0007
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:50:22 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=honeycomb.io header.s=s1 header.b=JmlYPD4U;
+	spf=pass (imf18.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
+	dmarc=pass (policy=quarantine) header.from=honeycomb.io
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790895756;
+	s=arc-20220608; t=1790898622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a8Tzv848Pm5Gww4Q9gyMfGArUUtsY1KzJi65qPBcWZI=;
-	b=VQ4B6CXAwGHMRIJ3FbfZK2XzzCR/ctG+iG7g/jmTIpkZWqxXEfI8iUFfetlrkK9+HBMErd
-	eIN4yb4g/FPleuM1DOLgDSBQdGB2R8gsYL4kCI5oKE5qBoeKm0qKtGcyMdgI8W6CIKpnAl
-	E2UUTfJUx7/Z9TaX9kfNLesiDDCdJOs=
+	bh=whCQ9fl0eQjp5iKExakuvCYoQnjcdvda7l5h7qSqS90=;
+	b=JmmWve7+QhdWmDBv4fFXx6+5qzudVtXo44t0V+k+79IRZ5NK8V9TPT3ohJbgXwc+3pp9Zz
+	w8L3fqWHZWV/97xL2hWagwCjL9HeLKARqB4qlY3UNNRkRzO69LO1r34J5UM0ALdqtFk7Gk
+	zmjjGtTh6Nk5n+w+mHsvo+3GeV9b9fk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790895756;
-	b=XtD/9a2bb9RRa7n5Uy5pfrUKd8CCkfSMClUFKcdt3k0/NuUx0HeHcY7wq3isdIA8I2t3WT
-	hcFzYLyQ32HYUYPoWM0EYAQmb/geuCkknmSe+w64qEcSxaY41TMa4DiaAEdjAXlKNyKkpX
-	nUPnMyqpi7/qiS4Fld5/wR/yyl21LmE=
+	t=1790898622;
+	b=k5uSYYMmwlgPbn3lsKJwdNnw2ckIpW/GssyPXG1JUx/OAQ4OBMLSaManTDTCE28jclIRZH
+	JRwuxYiiDkoUL9wO+ntzxGoskH1b8wbDMDCtSWXvWDGJsQtIWssmSEw0hbZ9cYPIhTntt1
+	Ujl6bniQwVoUNZS/fVqKWU5lo/db6C0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dW904x+Y;
-	spf=pass (imf03.hostedemail.com: domain of 3i-a-agUKCLAfhQQdWeeWbU.SecbYdkn-ccalQSa.ehW@flex--praan.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3i-a-agUKCLAfhQQdWeeWbU.SecbYdkn-ccalQSa.ehW@flex--praan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39aee9b4cf2so11333175a91.0
-        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 16:02:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790895755; x=1791500555; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=a8Tzv848Pm5Gww4Q9gyMfGArUUtsY1KzJi65qPBcWZI=;
-        b=dW904x+YCdkEnfMRNf0WcKe9CaKViCdrahg82Jp0j0EbazXzokPnNMVE7gsWAJnYGh
-         dm+wQVkPrJmufZfBkedxCtkY3xc8pJeLZ8xXL4+EyCRkJsTjRTeavSpeqEcta/2CinV+
-         Ov6H+z250gCqZUacZW09OT9hArh1+uF3l0ep4dL2rvKqpAiiQ6g6cBC9EO6bRlTVSEwK
-         cEY/N/CNNGzpr4n3yN3ISYYB/TqxDmUiuvJMWOJJbjI5wZ9aZjSPf6qV0LIpIHLk7Pmy
-         m53AmAtr9lyWcbeISDSCv395YoffOQTbf446RHUZXZXOMw+9ZyhpnNILP6HXGw5UQWz1
-         ILLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790895755; x=1791500555;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=a8Tzv848Pm5Gww4Q9gyMfGArUUtsY1KzJi65qPBcWZI=;
-        b=LpuFPpAn5pnNSzfd0nlVIjmRvjRbiDmTod8K6/45TchwtCzImSgPnT9vxc3fem9GA7
-         8QLW4OU1NhhYQUjnOCQIF6FJ/c3waPRPoRZsVkDAzNX2ewidOws0oElIGjBidLUGcvMz
-         57W/ADQAc17z4eKo5WFOACG6Kv3sYb388nGS+bt1Av7vtIZTH+LR5U4TjyI3/voRXIKG
-         smDODSv/GOjyGqidjjuS3WRcor1gzSKDwlFgyMPwHT8YjEgG29RePfNdDX5kLfZj2y1t
-         pBaydaWwbBpwjioDne1ib43tbXC75RRKxopAM/1gDIFA5pNoXG/80CTHtbtOYCEekmo+
-         jUNA==
-X-Forwarded-Encrypted: i=1; AKwUvBxsTkCihmEYEMvrz5WHpsiH8JgeQoiVARp95ZSkVFT/gihsoVjjVsSJeQIjP9EQ82tZnaurGTsfpg==@kvack.org
-X-Gm-Message-State: AFq9FYJHHrm5C2v6HnD9qFBEp647yOo56OyTWrOBrmyd/oR/yPqCgc1t
-	k6cCNTUetq/dF3+o9CJ3R+05R1M0ivVhjHxUaqHI+5AxnMBg42mZ7f+lMz8HqGncLtLkNEboiKI
-	NeA==
-X-Received: from pgav22.prod.google.com ([2002:a05:6a02:2dd6:b0:cc9:f7f0:57ca])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:33cc:b0:3a0:f2c8:9ad6
- with SMTP id 98e67ed59e1d1-3a6ce9a677fmr808338a91.64.1790895755297; Thu, 01
- Oct 2026 16:02:35 -0700 (PDT)
-Date: Thu,  1 Oct 2026 23:02:19 +0000
-In-Reply-To: <20261001230219.818128-1-praan@google.com>
-Mime-Version: 1.0
-References: <20261001230219.818128-1-praan@google.com>
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261001230219.818128-6-praan@google.com>
-Subject: [RFC PATCH 5/5] iommupt: Return real page count to the shrinker core
-From: Pranjal Shrivastava <praan@google.com>
-To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>
-Cc: Mostafa Saleh <smostafa@google.com>, Daniel Mentz <danielmentz@google.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Logan Odell <loganodell@google.com>, iommu@lists.linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Pranjal Shrivastava <praan@google.com>
-Content-Type: text/plain; charset="UTF-8"
+	imf18.hostedemail.com;
+	dkim=pass header.d=honeycomb.io header.s=s1 header.b=JmlYPD4U;
+	spf=pass (imf18.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
+	dmarc=pass (policy=quarantine) header.from=honeycomb.io
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=honeycomb.io;
+	h=from:date:subject:mime-version:content-type:content-transfer-encoding:
+	references:in-reply-to:to:cc:cc:content-type:date:from:subject:to;
+	s=s1; t=1790898620;
+	bh=whCQ9fl0eQjp5iKExakuvCYoQnjcdvda7l5h7qSqS90=;
+	b=JmlYPD4UJDhVjwwrx+4YPLIWm5Hx+wk+YBuo3BgInqrx8XaLZL1QB/fD51DvjfyxStlD
+	tCvGzU/QAAxrR4VfK9NWntogjRxWEr1v42OLjsTf74LRGWAgf1HIlr4mff79dS4wa1oX3B
+	dsCb1nChD+C2cUtOCh8/5vvsN9dY6+h/Ihu9AX92M6ZWlJ9Dg47RFx5Bxjaez6T5v7IXSX
+	BBPvcjFJHAgBBqd9nOIFDmSfmKVRluAVrXkpzPx7E6xoLIRIFUEolHs6jIICTfjx6sWY4G
+	fwdVYOkZ36dDnkik2Sa0rs6kWmJxeEx6mvxRmr3gfyBlAVwhZJtEPFx67KKxIsRA==
+Received: by recvd-79d8dd9bd4-m8x27 with SMTP id recvd-79d8dd9bd4-m8x27-1-6ABEF1BC-56
+	2026-10-01 23:50:20.465335371 +0000 UTC m=+197336.687606404
+Received: from [127.0.1.1] (unknown)
+	by geopod-ismtpd-1 (SG) with ESMTP
+	id XGCZYlfaSNC2o_ADWl529g
+	Thu, 01 Oct 2026 23:50:20.446 +0000 (UTC)
+From: Liz Fong-Jones <lizf@honeycomb.io>
+Date: Thu, 01 Oct 2026 23:50:20 +0000 (UTC)
+Subject: [PATCH v5 1/3] writeback: clear the old wb's dirty IO state after
+ switching inodes
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261001-wb-dying-cgwb-flush-v5-1-8361eb8c65c6@honeycomb.io>
+References: <20261001-wb-dying-cgwb-flush-v5-0-8361eb8c65c6@honeycomb.io>
+In-Reply-To: <20261001-wb-dying-cgwb-flush-v5-0-8361eb8c65c6@honeycomb.io>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1880; i=lizf@honeycomb.io;
+ s=gpg; h=from:subject:message-id;
+ bh=LuvshFqNCoD4IL13j3PQO4E118Ca1NJNCJKV7xSioM0=;
+ b=owEBbQGS/pANAwAKAaXO1OOXra/CAcsmYgBqvvG7bhgoyaa8gq6TobhGVwXGsBxQxd6r7uySt
+ U8QKMK/yyCJATMEAAEKAB0WIQSfW1LPQ0gyJmoTHwelztTjl62vwgUCar7xuwAKCRClztTjl62v
+ wuQbB/9eVvqjaA/Nd4q3vxsxJVJDSKOSahHvcApfmb6hEw9Ps1RxId05mi18a8qDa0JFSrxAnQq
+ VR6Kf4d+6Ze0VcFHmM1VIB8JYdU6JcsxPibabo3KSBlOlYFkYl8y1CDo3hKS6ikFrxPuQ+90iSF
+ te2yVLH39PdXepnY1oi0W9wwguw0GOqYdU1KN6LxloeVX+vB3aHGupiNQyPXZCJ3D8NVn4Z3iEq
+ TQLUdf75Vxr9QTj47MH+c/foW3MG1dkYIdK9g80gP9SvL8Ao2IT1te9sRyFWg9Oyob4Jnp9tnss
+ sNs4aW+DvXFVPdlWCmBCJP0FXWpVuViLb9gExBLAQ4JuF/Oj
+X-Developer-Key: i=lizf@honeycomb.io; a=openpgp;
+ fpr=1F7714D7EC3441D2CECC24606A3F8B00FBDDD2A4
+X-SG-EID: 
+ =?us-ascii?Q?u001=2ECuH7N2XAoeMR1zrzr=2F6NZrhli2vbKPOHff5fJuZuba6ZIE8QPyIf9mn4Y?=
+ =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmedxDdO+wTo2o?=
+ =?us-ascii?Q?TPIqqmrvsGRDpWxoBtidiwVgA1SmB5ddBYcEXo2?=
+ =?us-ascii?Q?Bhs1rcumCUKhl62VPgzmo3cT98d0VLvzaBb0=2FEd?=
+ =?us-ascii?Q?D+mUpz=2FKvLoySWhQZDh4hlnHE+nTWz4XwSTDyOm?=
+ =?us-ascii?Q?hY+wFRXaDjpSizDEmLxjwjAJO04KTGT5GnuxeAE?= =?us-ascii?Q?wAP0?=
+To: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Tejun Heo
+	<tj@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner
+	<hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+	<shakeel.butt@linux.dev>, Xin Yin <yinxin.x@bytedance.com>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ian@honeycomb.io, Liz Fong-Jones
+	<lizf@honeycomb.io>
+X-Entity-ID: u001.GRlkmHQ+Ka/CKxmoC/CxTw==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 82E4E1C0007
+X-Stat-Signature: h7xprssuqhc6xr7qrjr1sempq3rrz7wy
 X-Rspam-User: 
-X-Stat-Signature: yi8o9qh3a7nhx16hywnhjxoys67psyie
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BBA8E2000E
-X-HE-Tag: 1790895756-856713
-X-HE-Meta: U2FsdGVkX1/wepD7K+hinjJpB+hLLKyzdH+gwHqiwV8rtSmBwlkSlhMVbGogROAxFId1mXsvxJL4qJ/7MQg1ROijznQ2671PVMW84UjFDC5ZQGZxnKRXWra3+K/v8PU3gj/DZygekBF+HY3QhHy50WtZv8rE40tPoQCv/Z6ABBmgZ54YY134En/bbk5GkUUxY3GAb9XwYEUoqJu0UFsYsus0P/0MMpgBDCDy2L4KeXV1ZITfb9u3hJ9l0/JVji/A4xr04B1IKpmeOlesXr0jwfyb3fSblHrpVV99TnpDhJdw9QQjU4KDJ9GX/RZepEouPNIRrT6MY0LJPy4dqI63//p1rOYi1oZmRpxT6oPDlSuKy6u2jy+HRkxpHpzAls/xh2IPGXy2IYdTTUJ2CW5z2swM4XaNStriOpQPCFNWC8n0V/VwW/AVSN5YcC1S/BFhXcdXqahgGPtG71zkhYRn1o9ZNXNnpQ/yt3nj8R72IgBbiozCsEGqAJssEZfrrt8yKz28kan1LbSqhXdIGq9vMKIUwG/hFZL4ulhfOiNV1rdmADY0GLl513xiyBqb+l8qkf3HFHi64+AVucWwarwUeBzIRz2LUhE2Vzkv54+LM1gQ6aXiBItFS77qJ/GtQsGNMyodEtY1NaBNTQ8qc4iqY6Y2jb5OYdw16/XsFCrg48U1+Nv+BQ5uynkBS+XEpIkCa1K4bv39Aw9aU3dlr7eXJNc5VhQJZ5rXjJ+RAror6p/87FIfwP6Z//4FSlqmxO1g6f31d9m6vFdoTfpaNqq+w6mfk72tljikcb3/gJRyKcWCjKX98YcsMaCv9pt1SKTZcTKP8EuFm1q83lLtxhkVT+8FLfdyfJEAddb6B7kFmqnQXA7vzekr2HG/Wsl4kPZXak+05RtnhTcnejjpedNTsQmu9eRInkWedBchzqk46MPw2FmcBBFBEiCJVN/Wl9CB+tbELyTbw+7WzDHhqEa
- PKWlkQQL
- aABjm2ywKIZpiAF3ITGBAmm5eUzw2uXOtFDhvlGuqiy4Xkh5a9p6/larVyX1Y79wpHGRUHN6GaR4WnizG3QNFm/y5Q/DyBGqVg6iqDrpcIu2FE3IN2kzrgezXBrEePenks9XpF4WvrPk4mh2Lo7rzNVtJrTPLYv7OUFk6pyREjIkhZlIRcnZWImcchBq+fsaypHxDU2OyF7fitxRXKGGrgoLdAMzSzuZWhzKs6tAPRLkQrJYQeAxsx4avMn29PJ9a9m9OqvgEZ4r74MzLepATjJ0+i2qUlANIhUNqdd4/lpUxM7vvTBuaVFpSIv/lgT28eOMAs5BpVcS4gfiKW8981EL9UgxyrXXDtINiFyVL6J+ZI/o0rFZRmcuw9V6VF/VkWRFkd7B8nvkk6Fm8a1lEyi6WXGcFJ3bTF5A9PJ6jheuvOhJ+YqdUPSkVkqwv4D/gJA+BofavNHR2hVS/jw/9YMYklew8BxfoYf8iisBpWRuXglUMHXechtITwHgLOows44TnM23gKVHedgSsC8vYbVu9leiNmhx0+7DevTOwBVvtX6eJ7bGlNfcqKEe2Cye+1GKB
+X-HE-Tag: 1790898622-90494
+X-HE-Meta: U2FsdGVkX18RcWc8QKXjq2jWegzGTiULKSsmgizX2gA0DcChzll0Chvrk8VoWw0x2dyfLhxDw4SI7+W8dRaaC2s2xTPIWcfDdMLLDISTcZbsYavbqhmIUfNBAKv+EjCN1aLvcTZyv6VnTsRj2yU28OoWFZVIQRXZJXnyx0CLbGP4pOHOlsghL2uCHjHjaudBp9rr9CL9h7ARwwZ56Vv58zva4qM1BoOwWE2eEaUM8EVX3QZlv9+7LmUVMgURmn4ee2CzvXsnoDluq7kmvGCoSqeSWKfIGDluX6Dac5D6Nxrk8I3DDmUHyh1X3E4dMjvikB4BGlToV6NHItvzbf7Nv+i/m4+Eoslqazb4MmB6fiQzO/jUm4yBaBnVLyg0Zk2xaBz0KjCIy4iLhVYbX5x2qJs0hC4GPiU6h+gyyghf8xVcQ/PG+i6e8mkhx04Mnm0ggmzS0chowhsaqiZjFMy/ErGK/C7rOnZY4CqUbiJeP8hJXLacFIPBS5XFvDcU71Od72NYUTS7JaQZcXUudzPMhO1ldXiyTyKiqEa+qdMG/cWkJ6m6QVZ302Dwam4bcRj6xFFBhLYYCQilcIOLqws45dhXjer1E0iB38XagBg195AyN/I5UI0tJg5GhbkX7358fsh4dap/jFcHcOgrgDYuGcOlPmJn6DnbjTgKOsNfBzhcm2Bjo7K1ECBnS1cYbC40McTh/M5McRqKXzsemEWt5y1kY0tDTHKCKQD2hk5fMaEEXfvE6D/JYieopsBNhLYVywW9eAX1RIb5PIrmpfW78pBOiesCLlMM8s/LnOyHngXVIGDNZ5R5rAxahmUsRRHWV01M0rj9NSdDP+kZZ/cEcArwgpt2/xUXYGk3xO3txnXPBUcN4zjJz8iZnuAp4PkQtQGpPzGPn1YgmhDgzudjD/EKe1wisuug2+Nluv24lqTNrUZcbuigGwtuEdxrltyCqmFKAGhlXqMs+S4ytLx
+ qnZoMUCC
+ Xz6Op5l0o8xah3briDWeJ99IAeqJxVlzolMVmRxcAOdoeDApvCVDSy0S6DKtHZuErjVv+Nvwl6Tp0cuomHh5cpnOxMwyWV0DhP4XpJ7cM76xqW59OuSbRze3yGSAtz6PxDEUT23UKfG6gpBOeEocjLU/PslT4FOOsZjfowasHkvEkS3ZYZnjoTYcFWYvsLMIacXIJDweUSHJVjkjz54HABKrKrn/W4UR3sLd4HUOa4vUncUJnAFLYkzwfefIOx6xoXRVr1q+mIpWzsJ1/Wq0OHs37JnUF1UMgDcI0+iuICyvM/EJyWWMWsdIY4Ek88bHhG6JjNYGwmg2JKgPLu0Au00OS1pCD802jp1HNJB0d5p3riLHC1727XLjr3cFxmG+Xk7xwGM2Ru7GMNcxeueEGjyWsCLvNhdBWAO5n1vrJLmaJMeaX9BcYv/8wTPz/SjvcTEfRxuPjpegoh1kABtp41cDOHshfpn7YT5pazVEDUL56CXgJNKKo5fe6RTOoQWUeTl8rmnZu2HI4LcL0lfUbLHYd0tgcRCHozwxF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,80 +120,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update the count op to return real nr_pages that can be reclaimed.
+Switching a dirty inode to another wb can leave WB_has_dirty_io set on
+the old one. inode_do_switch_wbs() moves the inode onto new_wb->b_dirty
+through inode_io_list_move_locked(), which only updates new_wb, and
+nothing calls wb_io_lists_depopulated() on old_wb. A live wb clears the
+bit on its next dirty to clean transition, but a wb that gets no more
+inodes, such as a dying one, is freed with its avg_write_bandwidth still
+in bdi->tot_write_bandwidth, which wb_split_bdi_pages() and
+wb_min_max_ratio() divide by.
 
-Signed-off-by: Pranjal Shrivastava <praan@google.com>
+Call wb_io_lists_depopulated(old_wb) after the switch loop in
+process_inode_switch_wbs(), while old_wb->list_lock is still held.
+
+Test: a later patch in this series switches all of a replaced cgwb's
+inodes, dirty ones included, to its successor. After that, with every
+writer stopped and the filesystem synced, BdiWriteBandwidth in
+/sys/kernel/debug/bdi/*/stats stayed at 411700 and 407820 kBps with
+b_dirty, b_io and b_more_io all empty, and the replaced wb was released
+with WB_has_dirty_io set. With this patch it read 0 kBps and the wb was
+released clean, in 3 of 3 runs.
+
+Suggested-by: Tejun Heo <tj@kernel.org>
+Assisted-by: Claude:claude-opus-5-5 checkpatch sparse
+Assisted-by: Claude:claude-fable-5-1
+Signed-off-by: Liz Fong-Jones <lizf@honeycomb.io>
 ---
- drivers/iommu/generic_pt/iommu_pt.h | 1 +
- drivers/iommu/generic_pt/shrinker.c | 9 ++++-----
- include/linux/generic_pt/iommu.h    | 5 +++++
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ fs/fs-writeback.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
-index e5ee419f2f0b..4386caf3f713 100644
---- a/drivers/iommu/generic_pt/iommu_pt.h
-+++ b/drivers/iommu/generic_pt/iommu_pt.h
-@@ -1115,6 +1115,7 @@ static __maybe_unused int __unmap_range(struct pt_range *range, void *arg,
- 
- 				xa_store(&iommu->domain.reclaim_list, range->va,
- 					 virt_to_ioptdesc(pts.table), GFP_ATOMIC);
-+				atomic_long_inc(&iommu->nr_reclaimable);
- 			}
- 
- 			gather_add_leaf(&unmap->pending, &pts);
-diff --git a/drivers/iommu/generic_pt/shrinker.c b/drivers/iommu/generic_pt/shrinker.c
-index 66169fb5db71..a27e171b5e80 100644
---- a/drivers/iommu/generic_pt/shrinker.c
-+++ b/drivers/iommu/generic_pt/shrinker.c
-@@ -43,11 +43,7 @@ static unsigned long generic_pt_shrinker_count(struct shrinker *shrink,
- 
- 	mutex_lock(&generic_pt_domains_list_lock);
- 	list_for_each_entry(iommu, &generic_pt_domains_list, shrinker_list) {
--		struct iommu_domain *domain = &iommu->domain;
--
--		/* TODO: Return real nr_pages here! */
--		if (!xa_empty(&domain->reclaim_list))
--			count += 1;
-+		count += atomic_long_read(&iommu->nr_reclaimable);
- 	}
- 	mutex_unlock(&generic_pt_domains_list_lock);
- 
-@@ -78,15 +74,18 @@ static unsigned long generic_pt_shrinker_scan(struct shrinker *shrink,
- 				if (iommu->ops->sever_branch(iommu, iova, virt_to_phys(virt))) {
- 					/* Successfully severed, queue for freeing */
- 					xa_erase(&domain->reclaim_list, iova);
-+					atomic_long_dec(&iommu->nr_reclaimable);
- 					iommu_pages_list_add(&free_list, virt);
- 					freed_count++;
- 				} else {
- 					/* We raced with map, abort pruning */
- 					xa_erase(&domain->reclaim_list, iova);
-+					atomic_long_dec(&iommu->nr_reclaimable);
- 				}
- 			} else {
- 				/* Not empty anymore, remove from list */
- 				xa_erase(&domain->reclaim_list, iova);
-+				atomic_long_dec(&iommu->nr_reclaimable);
- 			}
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index d26b2cf05283..050d507aa554 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -566,6 +566,12 @@ static void process_inode_switch_wbs(struct bdi_writeback *new_wb,
  		}
+ 	}
  
-diff --git a/include/linux/generic_pt/iommu.h b/include/linux/generic_pt/iommu.h
-index 95bf9d4f0b6e..3c94745bded0 100644
---- a/include/linux/generic_pt/iommu.h
-+++ b/include/linux/generic_pt/iommu.h
-@@ -69,6 +69,11 @@ struct pt_iommu {
- 	 * @shrinker_list: Node for the generic_pt global shrinker list
- 	 */
- 	struct list_head shrinker_list;
-+
-+	/**
-+	 * @nr_reclaimable: Count of empty directories waiting in reclaim_list
++	/*
++	 * inode_do_switch_wbs() only updates @new_wb's dirty IO state.  Clear
++	 * @old_wb's if its IO lists are now empty.
 +	 */
-+	atomic_long_t nr_reclaimable;
- };
++	wb_io_lists_depopulated(old_wb);
++
+ 	spin_unlock(&new_wb->list_lock);
+ 	spin_unlock(&old_wb->list_lock);
  
- extern struct srcu_struct generic_pt_srcu;
+
 -- 
-2.56.0.rc1.315.gc6ed9934b7-goog
+2.53.0
 
 
