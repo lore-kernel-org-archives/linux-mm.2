@@ -4,142 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54D37CA5FB3
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 08:01:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7860DCA5FB3
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 08:02:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67B7A6B0092; Thu,  1 Oct 2026 04:01:07 -0400 (EDT)
+	id 9B3446B0096; Thu,  1 Oct 2026 04:02:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62CEC6B0093; Thu,  1 Oct 2026 04:01:07 -0400 (EDT)
+	id 98B8D6B0098; Thu,  1 Oct 2026 04:02:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51CCE6B0095; Thu,  1 Oct 2026 04:01:07 -0400 (EDT)
+	id 879976B0099; Thu,  1 Oct 2026 04:02:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 26D566B0092
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 04:01:07 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A25591C27CE
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:01:06 +0000 (UTC)
-X-FDA: 85273311732.08.F4F40D0
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3AC0FC0005
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:01:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=WvUyfFJK;
-	spf=pass (imf10.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790841664;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 62A596B0096
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 04:02:34 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C7FA40328
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:02:32 +0000 (UTC)
+X-FDA: 85273315344.18.82BE2C5
+Received: from mail-wr2-f33.google.com (mail-wr2-f33.google.com [74.125.225.97])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5D229A0006
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:02:30 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=aM+n4TRd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.225.97 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790841750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+MTva56L4+MD5F+jwR8XlVy8f0pKRk7aCi8mRoUiY0w=;
-	b=JC8YwGg9vISre7QYRheCu6SRR2vj2iilm5Rj2aC2x99EWP/fK1lTBV9ruykvyPD+q2FAKT
-	KEEUTqHl8GEOqETuE4MUxBamOdBX0z/AiUH/n/CC+FyIAhC+C58tAT5jRQ9CEGU/oHkIAJ
-	R5dBCWduGHQUhZpDbyc9ES67C+s8n38=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790841664;
-	b=UwDm1CE3y8+g+m4dFzFdKblxLsZi6YQ1yUb8/QPTD/WzATpKU7tLqGbok8jKFQX8gA3zQL
-	TzI15bub1LUrYkhU/wWEufshp5TZfGci2RxveObvfx6ue0X7CcQApCTdymAkgBxnnxENhx
-	qQCfXz8g0zbW+vzF169a9lyahtKU0qw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=WvUyfFJK;
-	spf=pass (imf10.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69175Xug3446209;
-	Thu, 1 Oct 2026 08:01:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=+MTva56L4+MD5F+jwR8XlVy8f0pKRk
-	7aCi8mRoUiY0w=; b=WvUyfFJKFW0VDbmrHYWDGwwFB5wCgoN9X0fs973me+S9S/
-	qthidMoseVBJmpR0BdS1VeLZVJ6mLBBhJwl/if+/uPekWefVnZrw5Q0SYNjIC6TD
-	DN7UJKAPEb6k3e3SaGJ0pn5SOXJ4IvIZ76riKCaY1N/bBoWvSXAsqB5/Qp7sK3ui
-	l59XkNk4tagBBnhULN4Py4TXgiQf7MAnzZ4aogTM//GfSPhBRkyQBK4uobAjGSoe
-	5VrqKa7Xv16W6OQtDtIF+waFmr6mINPX9WDA5wbr5sDCSTEPoZ4Zdw+DsReQkoR2
-	oDHz6YDwpRoFF3lscoNgGtD2fChqbtyizG3x8QZA==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5qrhxbc-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 01 Oct 2026 08:01:01 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69172VwZ520704;
-	Thu, 1 Oct 2026 08:01:00 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h0hfpfrvb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 01 Oct 2026 08:01:00 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69180uNQ38797662
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 1 Oct 2026 08:00:57 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E072120043;
-	Thu,  1 Oct 2026 08:00:56 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7D6D520040;
-	Thu,  1 Oct 2026 08:00:56 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.54.207])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  1 Oct 2026 08:00:56 +0000 (GMT)
-Date: Thu, 1 Oct 2026 10:00:55 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com
-Subject: Re: [PATCH v7 2/4] s390/mm: Batch PTE updates in lazy MMU mode
-Message-ID: <b66a61a4-a532-44ba-a1c6-26f02193fb05-agordeev@linux.ibm.com>
-References: <cover.1786956464.git.agordeev@linux.ibm.com>
- <d7fd78377a7278108ef501cf76571e80caef5968.1786956464.git.agordeev@linux.ibm.com>
- <20260824104048.11040Cdc-hca@linux.ibm.com>
+	bh=8wFYgQFxyClJH+0q2sU9iXyjK0XmqVNpkJ48os8SONM=;
+	b=7DP1zNNY7JZn4R+C4tJFRjdyTiYiimepEzGGu6wHqcKQufSXengIZuGC9crwBSr/Kzgjum
+	E2KAHxRUbgoaKzkwGpXzjUIJgTdY/W2t+pCClgOyI9SG0jwUEAWFchPljqJEt9ggz2AnFb
+	u04iONtdv4kgrFGTG4zJhEMRPXZpa8c=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=aM+n4TRd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.225.97 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790841750;
+	b=3dBQHOsOuWJKE2X8HqQUJRDoH7CNOaFf1tf5871Bi66ZSJcjWhJNnvL5YNDWlFxA7plf5q
+	w3mLSbWDWzxkDJkn1vEwVoBEqORxf/fbsOyXdJh/JNty1bFQtx0+pGxB0cXubo3dbwQpet
+	DyQRYkBxS0qeEegc9+IPhu5Ga0oOt+E=
+Received: by mail-wr2-f33.google.com with SMTP id ffacd0b85a97d-48b024549a2so1151841f8f.3
+        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 01:02:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790841749; cv=none;
+        d=google.com; s=arc-20260327;
+        b=npRN0U5pH+ZEzf3hruOiluub48uPN9s3VH93MH8JaKTrQWQg4SWTvmNqEfaDsPILbE
+         Wagh9NuQg1NikzCYKmT7CeP+hY8XAY7OyNdOumfM1mkm5SHo8cuaEZF5Bt7RiMxif7jM
+         xRnANQxRgRqdrEwpRGDzEoAvN18owGwnsUY0DK/SMP3wb1O1VFVHqbQ0qWBdP2vZecC+
+         TCIE6VHOBHhiXcTAXWoI3qwq4fIf+FtiYe+hpyYZR80D9AR/ynyoJIUk4IseqbGNjJJP
+         ciq86vWSTFAXkTj6SvHgQ/pN4u3uTPTKIvb5Bo5tufbcO+r+0Dhcsn8znXS33hCy3363
+         H8bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=8wFYgQFxyClJH+0q2sU9iXyjK0XmqVNpkJ48os8SONM=;
+        fh=/jZaevutFyFBV+CktKSqeRtyc0TzLJyoTBxXNNAzt68=;
+        b=VFo8c0+O+piXGYUR2FRFw5aQTItmpzZkcbnWLVRHZf4b7W8+mJOhHpL3ZTZGA54fJK
+         lkvcOpq0hggJdozEz6705TrSIiEcP1jJ9Pgt/S0FORoXzy0cNQnMfRyG0L4Jco4DaMd+
+         oslwUNGYZ9Kvw690PA5jdXqPKbqFGQJZd9pQQCoODj4tgRb2a5EPxt0SvzyWQN8x4QZW
+         mHtSrFcWbPmjfWFQBU8CabfZsaah9LTIUoeb7G/3RUyP54ROC0X5sUgCUZPadXx8u9TR
+         TA1zTs3ejPBpucrDwQvoTo+YqxgwIW2QR5UEfdh3KIlxKn+Y178eh30jCDNR/m0V9MTW
+         9e+Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790841749; x=1791446549; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8wFYgQFxyClJH+0q2sU9iXyjK0XmqVNpkJ48os8SONM=;
+        b=aM+n4TRdFVMz+/9SgbXI/kQJfdMx8Lwdt/o30vkllZqBrpnkimedYGUZAmk5qPUMK0
+         zUAjpUoDzuTTFYN84bEC4HQzsp9ehBWNfPOgXpL1UW1XKpwlW/Dh0LiGawQ7GYEQpNee
+         0mmH8f12ElE+qqsko0qMxccuBn/Nuqvw5ojR6uXksNzkFMjGiY5XlV9DN1HQ2hmUDtb7
+         uMYseo03JDiURaw5TLazzw0Ti1hKoNAnmWRwK7EXdNP4htV+BRq2KM/K6TJwFMiv/wuE
+         /hGUYdhcaRSlGwS32T2oMMXj4rvlM75lLJaALrI2i1L7CtWWtVJ2/8b8M70Qt4eJPIRQ
+         fT2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790841749; x=1791446549;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=8wFYgQFxyClJH+0q2sU9iXyjK0XmqVNpkJ48os8SONM=;
+        b=PSK93dyylem29OKNmnMeNqrjtPjBBjonsRk2zI7qTDWB4ichNnAO1iUIRZB9uj5xrO
+         jtYKZ+akUthbjXBz9KR6oUrTsFllmIj67VKER2KxSc8vLfWecTxenljxCFomZOg+yGsM
+         GBjN7qbnlr5M/bSABjhshF5bBoyrs28otqb3Xs+Rkd/55BDkAx08yBCjeGGN7pNB2Vdm
+         ndApgq010/ppXgjnQDQIv2gbxAKRh96Y9kuoSEOXdZqXzzklfF0sggqFkG6o/5vOJak6
+         nqDoP1davNbGeRLTGoakzFsAdDpe7C+Xl3WwbSM07fOxujtaD+Za7Xbrl+R4oPAZZ8LA
+         Fkgw==
+X-Forwarded-Encrypted: i=1; AKwUvBzD0nu4CGbmc0lnrdlAhPEll9m/vIfsByk6RTpj3ivDktqVq9MTSmZ7MWu5OC+64RRNUnX3KbsZOw==@kvack.org
+X-Gm-Message-State: AFuF++mk/eHSuK6ONY6MPqD0jpGXTW2oVWZi9F7sq4E9eJRfvOsY9SI8
+	OQiRcnG5Nk9msd06A8yTd+k+Xyu9sIoeLDxBwOaPP0Dik6ir5aZ0RXTOFOedu3Gz7r+IJZYIC0R
+	paCDxOG5A71L6W4E+nYXkeQGz6iFkF3A=
+X-Gm-Gg: AYBFou0CtW6r1UOeQ9NEDHiKsjHncZgr7iT5LOlSMBc6CJE3cWSs3TD13LhKVrmowbo
+	dollNdzc0PKjyiz5SvJn172eyHQCBJNFDjKyOSADTJKxE17huGieN5mT/mcrodyA2mkG8xfMANm
+	9qjgJEcDL3Yf/PSfNEdZnfGz1JFuYejndVmZd2Bljul/Jcu11xCvg6oU4JrVsAy3+QViJCta2Am
+	P+M/WMagWRYfhS2ewsnkgTu4JpVjeWpZEWLMOf9ZMai+G9Tnkqeaqm3IUMxp+Jp1wPHn7brhxDJ
+	PUbVhQhUO9qJ3UD7IkXNiEDP1XFMM3ng0ujqbLAm6OvwAS1UdaWl1o6Z
+X-Received: by 2002:a05:600c:3152:b0:49c:fc6e:8cbb with SMTP id
+ 5b1f17b1804b1-4a01b131631mr63017475e9.31.1790841748605; Thu, 01 Oct 2026
+ 01:02:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824104048.11040Cdc-hca@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAxMDAzMCBTYWx0ZWRfX6YkfKWEpBcwQ
- N2xtb1Zed75UiX/0yLNPdPQE96ozCdqKrFZHX/6ymzjryvv/daZNPMdeaQnxgFwHnckyHhm3NOa
- Qv9LHLuGwBZ238IfOmW9PKzH7M4ZVNn0MnBYRrMckVVE8mL/aYMKH4LXagsu5wi5Q6izOYdBQnd
- P1AuYkstpiJGwkTpkfHfF+F2TeXPrfjupHcu0t1ch9SLsw81nFLMmNPkq9BlsILeuoG51t/y6S2
- j1hEBQo4HLq9NAWedmxUKmzWctC8gJzsf/Dam3pjWBRmBrKPwnBFyf+1yY73IInOAFsetjMG0hn
- MUiEr6JISkKZuUZA1uTdpDKMnK1Zcf9Vx7BexLsIjgN8pKlIJlBqQXosKSVQ4aPyszalJYMO/aF
- 8wzcOHl+ce6RRq+wqykxuNdoIokl6NjqXhVRs+HrVJr0iaBGjrNAQbGNlcS+kDkY+dGbuY/oGPS
- +YiLDdFYJORXuPr2o+w==
-X-Authority-Analysis: v=2.4 cv=SPbXx+vH c=1 sm=1 tr=0 ts=6abe133e cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=m8Li7VA48kL__Rn2agMA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: TK7xsE2_XFdNWioSpWUiuMdbLcLFSrY1
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAxMDAzMCBTYWx0ZWRfXxyXQgnjU9D0X
- tHuY+PHhFc0+n146WPgAoCn5CXGMkEz1Xcon9MFTMa/vr85rvUu+TYqhuXHR0vgHIurZX6X4FGL
- H+EpDwZzW7oLW3wfVHrtJk35nIoyOqo=
-X-Proofpoint-GUID: snOW1WwzWZreqGa1tdD562TZ2vVp2wdG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-01_03,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2610010030
+References: <20260923062832.479455-1-jiangwen6@xiaomi.com> <20260923062832.479455-8-jiangwen6@xiaomi.com>
+ <ar0nuJ7ocTMgbiMu@milan>
+In-Reply-To: <ar0nuJ7ocTMgbiMu@milan>
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+Date: Thu, 1 Oct 2026 16:02:17 +0800
+X-Gm-Features: AclHuK9TMMGS3_KK3AGC469G5gqBizlXQV9uB6i_baT8npA09Tvz5gZK4c--_ZU
+Message-ID: <CAHKocdH-NeWYJBrCVfGctuDyh=D4a2YrzUf1VxB3cG7Di-EAMw@mail.gmail.com>
+Subject: Re: [PATCH v9 07/10] mm/vmalloc: extend page table walk to support
+ larger page_shift sizes and eliminate page table rewalk
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org, 
+	will@kernel.org, Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, 
+	anshuman.khandual@arm.com, baohua@kernel.org, chleroy@kernel.org, 
+	david@kernel.org, dev.jain@arm.com, jiangwen6@xiaomi.com, leo.yan@arm.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au, 
+	npiggin@gmail.com, rppt@kernel.org, ryan.roberts@arm.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 5D229A0006
 X-Rspam-User: 
-X-Stat-Signature: kfweqkup7fmzxt3dchqsso5hbq9eetpm
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3AC0FC0005
-X-HE-Tag: 1790841664-301727
-X-HE-Meta: U2FsdGVkX1+TcfLKiYoKCJSw8TPCjpTYNXfbkK79fvqfNr16BGdDe4H2KFthq0uISfurcpOhE2J0XeFyjgLewyu35BtCR3oKSPdpsR5ANMd8XNSEVpA4dYG42B0m1/WAl17DQwujALf6BuVTv6QNKQMzjruNcFOoBK7F61Ov1OnLvVNX4XKlj7fXAkkDuKnH415/VpCzT10d5ekxKgyKpz6i9xnbjcsp7cs/aeTmqHUwqqytRjNBr400N+Op49esANm/xmalAQKCBHJ6GrEU2RG03UU5EjIFjPl9E6DnqqcMpLZDCW8Dp7SEbG1Lan03PEfV0VRv6Givqarn2hFHfl8q+g9nWun407dy/hN6/EgQfqi1KEh1C8763WbOP/LnbTvrttn6UF10hiZeyf++3/z+NJltzsOOTaBdxuIfVqCZT5cJfGmBZj85eI2z+BV6ba57EG3+SN92Rv6aIvIjUoUVXDzoqH1cEIcuIoGOwn2UWrI3cKSgQjxrH8jpvu2eBuoznkyY5MiJbTsNJnx5fvGJFY+3yN2bmyONa4cHhLsrUsyoYeCBq1vH4OnAJM9gvun6aBf4m53ZfN3lnwvCeN8JRbJIo5P/Y5via+Pv+iaGtuFnUiUIURyR1tmFI97Bw91QU0ogjv3lNZL6V4TE/1YfPWH0iHxcS8akgZw85uq1TtNY4dLhXuhlm9ScBM48SK2nOalXDKRmWynPpH94+2sbiyX7UjLMEsLdboAIKAllVf9HH+uafo9bSpBuRxEqjKTsh6cp0H0mNcTQkABzQlOR0Mfxb8IpsPFnZwFFux0bWgas5yhr51G66VI2WDvOwrE14RldbB5g2CKzdz13a9YuqZgB2fP8UXKJWZICiceVsAHdnwa/HLIA44/Qy3o3vf23guVTUERPMEKVoCNxm4wFZ/zzc1ufSusXh/0OGuzWpFxZMQW3BqHOQTtLP3A98TeikzZNSzXTVBHushI
- l4T6a+R4
- sWiPloWkMqUQjHxOFo8amSxjh8dCb6lEviXdN+sDw0ooSWMU8//Arfs8JUB0yIioB8e938wd760ghaP7rZYYUhhpYnm/gvgVcMfGajHQviN41vhXJd2oqqao20IHSIyIRa3DOodo51VVgVBIsTbHfQ2Qc69RktA9pgAYhDdUpw9r5Z+86OgRsP8Vtg4c+2R2C+zBi3MK7GgpwSb9sP+0uUjaKlfkHiSY6BxO1k8arRc9tytP2Xm8szHIf2JqqQciDZ2AKeUTgLVWorlvsODFk6ISure3yPQp0p3OZtkNuBnqTpyc=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: kfbfobmkteexacrwwwy8e4k3a4hh9qx1
+X-HE-Tag: 1790841750-318882
+X-HE-Meta: U2FsdGVkX18uN0aQTe3T+ycQh8BGiNXOhSEs8bBRyCTSUUzyb3sPW4kYz1KfOygeduXN6wQdLHGgFMpNXLQMZyPsqe4ZF9ZTypFa+NhB0XxgGVD9KHlF0wgWHLBVtxW5keKot+XsE+GXeyv9lI2y8j37cKoonHjDbDDXt6SAI4HU0UjmwL+HwmdAvyo0JyHIMhPtxopx0zV8XVYNdWKrB+GVbTSrEx/Hgb7fHbWGw4CGNMm2Catc9BYJexp6fDeTFXbhAPW5Bea0tn/QKBl8UdAg2ovsOK4BLCV4SGRvejecDKcj+szQINKj+uuXtkd8E6q8Wyqsi/twdE2pED57mn4BWZdwcmsk1sVFFcQyGi1F11lokyG6MRkgFDhF8ycMIC+J8+4DzNZepES4IGKCrT8x6v/PQ4pG6hAZOdKzkLVatPNdg1pIFRcMVRiOiXJJbt0WD1OfMI4d5pLWtfwqifiBJg+hEpZUWAhL8o6rEpmKs6N1G4ZjS8f1UKoOEptElk1+1zWW18GZ9cHkWYRhada9KNebGC6f8r+dUp6C8yhi+B4B78s8a4jnuGnOg0kzQry13fmsPI9FI99pNlNRNhbjzbDs0fI8zQ6y0j3Zce+Fp6V5bcfj4lNp7hmCDWlINrcz1Tl+YgKPr0ORBE/hrzCfdospgACDTpIfmzW5Bt2rn9Yc2DdVtgSS3cC/Xg4oJy8oQvNK1rssSedHfnxSIv0B/7ZUbajhzp2QryA9VFmP+bEcgtuTZiIzmYj/kSF8gjxFfcJddlr8PiuJkFjPy+CHCDG+Wz/uv38UmEMJwMCUpbOU4OnyMIhIEHCucL5ekYYb2ooTC+N5aWp2szdQSv+QMqU0t1mhYRkvMozC3vj6v+W5pWwM/tEkNJJ98ZRkBqIl5hT7/5HQmO5HXv6pnD2rTmPtrYj23iA+x8C7cfJeg7+S9Nh4TFwjzQJT4Jd5u9zonmUAqxsz1apHrlh
+ ryRfKips
+ 5bL6EiVwtBgdtguux+K3vZigTP8emzH6IdVq9V3gqB1Pbfk9WR0X4YPGnu5Up1HWIrAVqoCXrj4iNJZOW10yIyJby+gkb27R21F3SU8yvogQ4+8SfqFqrbSRBxvaxDOIwR+P0VGGRGiOINgiqjVDUsm1VJGpIJntu0+xKg+nXFlHXaZcVzden+Y1eIDuOxnpzMPrd/PHYAprhACfqDA10YRAuylbg6tMNrEpvvlFDvwlwP737O8tK5gjmt+Ucbf1UlQeQNw8ngkLAOEvZaIAD73oTDXeqq7HU9GMhVHGR8K6pc6DS3vXlrp6r3TKuoQV60YSqhr/xhj+9Kblstn6FcI/dO0TkH6DXFqFskjtA5HxC5tJB66kBlBqyx6GWZ/mTTo4/pZb0e/C0VAAZAmUuGixOB1zKc4YBHpWf/JTAOc1A6ssvyjM8UGXE57hddGjvdL6OPwgcal695Sxstt41VLx77vt2W+vr0jlA7v3mr3kUyx/gNhg1zspLFxH85Su9c5yETwxnoA/svN6/Oi65FwfefB4Aj6Kf65mFq5mO5H3OBpu8qyTIGNk+xhbzymYmFquQEi7SiVS8LZPX3qDgUQnnJX22OK/8xN+d5rp4px3d6JlJvLu701ZJAyNG4WlS3Qox3+QZQoOIKa4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,56 +143,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 12:40:48PM +0200, Heiko Carstens wrote:
-> > +static __always_inline bool is_lazy_mmu_active(void)
-> > +{
-> > +	if (__is_defined(__DECOMPRESSOR))
-> > +		return false;
-> > +	if (!get_lowcore()->lazy_mmu_count)
-> > +		return false;
-> 
-> I guess there is opportunity to generate better code here using an
-> alternative and using a flag output constraint too.
+On Wed, 30 Sept 2026 at 23:16, Uladzislau Rezki <urezki@gmail.com> wrote:
+>
+> On Wed, Sep 23, 2026 at 02:28:29PM +0800, Wen Jiang wrote:
+> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+> >
+> > vmap_pages_range_noflush_walk() (formerly vmap_small_pages_range_noflush())
+> > provides a clean interface by taking struct page **pages and mapping them
+> > via direct PTE iteration. This avoids the page table rewalk seen when
+> > using vmap_range_noflush() for page_shift values other than PAGE_SHIFT.
+> >
+> > Extend it to support larger page_shift values, and add PMD- and
+> > contiguous-PTE mappings as well.
+> >
+> > Rename it to vmap_pages_range_noflush_walk() since it now handles
+> > more than just small pages.
+> >
+> > For vmalloc() allocations with VM_ALLOW_HUGE_VMAP, we no longer need to
+> > iterate over pages one by one via vmap_range_noflush(), which would
+> > otherwise lead to page table rewalk. The code is now unified with the
+> > PAGE_SHIFT case by simply calling vmap_pages_range_noflush_walk().
+> >
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> > Tested-by: Leo Yan <leo.yan@arm.com>
+> > Reviewed-by: Dev Jain <dev.jain@arm.com>
+> > ---
+> >  mm/vmalloc.c | 84 +++++++++++++++++++++++++++++++---------------------
+> >  1 file changed, 50 insertions(+), 34 deletions(-)
+> >
+> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > index d475e52110e4a..6e0dec73107a7 100644
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -558,8 +558,10 @@ void vunmap_range(unsigned long addr, unsigned long end)
+> >
+> >  static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+> >               unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> > -             pgtbl_mod_mask *mask)
+> > +             pgtbl_mod_mask *mask, unsigned int shift)
+> >  {
+> > +     unsigned long pfn, size;
+> > +     unsigned int steps;
+> >       int err = 0;
+> >       pte_t *pte;
+> >
+> > @@ -590,9 +592,10 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+> >                       break;
+> >               }
+> >
+> > -             set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
+> > -             (*nr)++;
+> > -     } while (pte++, addr += PAGE_SIZE, addr != end);
+> > +             pfn = page_to_pfn(page);
+> > +             size = vmap_set_ptes(pte, addr, end, pfn, prot, shift);
+> > +             steps = PFN_DOWN(size);
+> > +     } while (pte += steps, *nr += steps, addr += size, addr != end);
+> >
+> nr_mapped_pages?
+>
 
-It is only CY and LT instructions that make sense for me.
-Here is what I came up with:
+As noted in the patch 6 reply, I'll rename steps to nr_pages here as well.
 
- static __always_inline bool is_lazy_mmu_active(void)
- {
-	unsigned long lc_lazy_mmu_count;
-	int cc;
+> >
+> >       lazy_mmu_mode_disable();
+> >       *mask |= PGTBL_PTE_MODIFIED;
+> > @@ -602,60 +605,88 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+> >
+> >  static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
+> >               unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> > -             pgtbl_mod_mask *mask)
+> > +             pgtbl_mod_mask *mask, unsigned int shift)
+> >  {
+> >       pmd_t *pmd;
+> >       unsigned long next;
+> > +     int err;
+> >
+> >       pmd = pmd_alloc_track(&init_mm, pud, addr, mask);
+> >       if (!pmd)
+> >               return -ENOMEM;
+> >       do {
+> >               next = pmd_addr_end(addr, end);
+> > -             if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask))
+> > -                     return -ENOMEM;
+> > +
+> > +             if (shift >= PMD_SHIFT) {
+> > +                     struct page *page = pages[*nr];
+> > +                     phys_addr_t phys_addr;
+> > +
+> > +                     if (WARN_ON(!page))
+> > +                             return -ENOMEM;
+> > +                     if (WARN_ON(!pfn_valid(page_to_pfn(page))))
+> > +                             return -EINVAL;
+> > +
+> > +                     phys_addr = page_to_phys(page);
+> > +
+> > +                     if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot, shift)) {
+> > +                             *mask |= PGTBL_PMD_MODIFIED;
+> > +                             *nr += 1 << (PMD_SHIFT - PAGE_SHIFT);
+> >
+> *nr += 1 << (PMD_SHIFT - PAGE_SHIFT); --->  *nr += 1U << (PMD_SHIFT - PAGE_SHIFT);
+> as it used to be?
+>
 
- 	if (__is_defined(__DECOMPRESSOR))
- 		return false;
-	lc_lazy_mmu_count = offsetof(struct lowcore, lazy_mmu_count);
-	asm_inline(
-		ALTERNATIVE("	cy	%[zero],%[offzero](%%r0)\n",
-			    "	cy	%[zero],%[offalt](%%r0)\n",
-			    ALT_FEATURE(MFEATURE_LOWCORE))
-		CC_IPM(cc)
-		: CC_OUT(cc, cc)
-		: [offzero] "i" (lc_lazy_mmu_count),
-		  [offalt] "i" (lc_lazy_mmu_count + LOWCORE_ALT_ADDRESS),
-		  [zero] "d" (0), "m" (((struct lowcore *)0)->lazy_mmu_count)
-		: CC_CLOBBER);
-	return CC_TRANSFORM(cc);
- }
+Agreed, I'll use 1U.
 
-As result instead of gcc code:
+> > +                             continue;
+> > +                     }
+> > +             }
+> > +             err = vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask, shift);
+> > +             if (err)
+> > +                     return err;
+> >       } while (pmd++, addr = next, addr != end);
+> >       return 0;
+> >  }
+> >
+> >  static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
+> >               unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> > -             pgtbl_mod_mask *mask)
+> > +             pgtbl_mod_mask *mask, unsigned int shift)
+> >  {
+> >       pud_t *pud;
+> >       unsigned long next;
+> > +     int err;
+> >
+> >       pud = pud_alloc_track(&init_mm, p4d, addr, mask);
+> >       if (!pud)
+> >               return -ENOMEM;
+> >       do {
+> >               next = pud_addr_end(addr, end);
+> > -             if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask))
+> > -                     return -ENOMEM;
+> > +             err = vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask, shift);
+> > +             if (err)
+> > +                     return err;
+> >       } while (pud++, addr = next, addr != end);
+> >       return 0;
+> >  }
+> >
+> >  static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
+> >               unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> > -             pgtbl_mod_mask *mask)
+> > +             pgtbl_mod_mask *mask, unsigned int shift)
+> >  {
+> >       p4d_t *p4d;
+> >       unsigned long next;
+> > +     int err;
+> >
+> >       p4d = p4d_alloc_track(&init_mm, pgd, addr, mask);
+> >       if (!p4d)
+> >               return -ENOMEM;
+> >       do {
+> >               next = p4d_addr_end(addr, end);
+> > -             if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask))
+> > -                     return -ENOMEM;
+> > +             err = vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask, shift);
+> > +             if (err)
+> > +                     return err;
+> >       } while (p4d++, addr = next, addr != end);
+> >       return 0;
+> >  }
+> >
+> > -static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+> > -             pgprot_t prot, struct page **pages)
+> > +/*
+> > + * It can take an array of pages which are not all contiguous, but it
+> > + * may have contiguous chunks, as hinted by @shift.
+> > + */
+> > +static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
+> > +             pgprot_t prot, struct page **pages, unsigned int shift)
+> >  {
+> >       unsigned long start = addr;
+> >       pgd_t *pgd;
+> > @@ -670,7 +701,7 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+> >               next = pgd_addr_end(addr, end);
+> >               if (pgd_bad(*pgd))
+> >                       mask |= PGTBL_PGD_MODIFIED;
+> > -             err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
+> > +             err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask, shift);
+> >               if (err)
+> >                       break;
+> >       } while (pgd++, addr = next, addr != end);
+> > @@ -693,27 +724,12 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+> >  int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+> >               pgprot_t prot, struct page **pages, unsigned int page_shift)
+> >  {
+> > -     unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
+> > -
+> >       WARN_ON(page_shift < PAGE_SHIFT);
+> >
+> This is not about this patch but probably on that WARN_ON we should bail out
+> early.
+>
 
-	lghi	%r8,0
-	lt	%r1,1032(%r8)
-	je	...
+I'll send a separate cleanup patch changing it to:
 
-We get more or less the same:
+        if (WARN_ON_ONCE(page_shift < PAGE_SHIFT))
+                return -EINVAL;
 
-	lhi	%r1,0
-	cy	%r1,1032
-	jne	...
-
-The only benefit is [zero] "d" (0) could sometimes avoid LHI if a
-zeroed register is already around. But also the KASAN coverage is
-not generated.
-
-Does it make sense to go ahead whith the alternative?
+Thanks,
+Wen
+> --
+> Uladzislau Rezki
 
