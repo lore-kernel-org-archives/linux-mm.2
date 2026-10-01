@@ -4,126 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EBF6CA5FD2
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 13:43:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9818CA5FD2
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 13:52:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32F236B0088; Thu,  1 Oct 2026 09:43:49 -0400 (EDT)
+	id D2A1D6B008A; Thu,  1 Oct 2026 09:52:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E0856B008A; Thu,  1 Oct 2026 09:43:49 -0400 (EDT)
+	id CDBA16B008C; Thu,  1 Oct 2026 09:52:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D01C6B008C; Thu,  1 Oct 2026 09:43:49 -0400 (EDT)
+	id BCA716B0092; Thu,  1 Oct 2026 09:52:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EB5D46B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:43:48 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 64C0AA03E8
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:43:48 +0000 (UTC)
-X-FDA: 85274175336.10.E6A5E36
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 820684000A
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:43:46 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GvcKgqDS;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.141 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 921D26B008C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:52:14 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2CFD71A03D1
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:52:14 +0000 (UTC)
+X-FDA: 85274196588.22.CA54A4D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3F7EF1C0003
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:52:12 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=avLvr1eT;
+	spf=pass (imf20.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790862226;
+	s=arc-20220608; t=1790862732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9GzyFhoA2S7uios3Q3nexzUQFEC9iru05+QnoGlj3hE=;
-	b=6UAuAe0KR+uHvnagTF/G0tukI9gEvVAjOFNCGD1GGlvRp54mfH8qy5gwB2h2aCaVmmjSv1
-	TIfyqSloA4ONEGHZV6bGyn4HtFx8l1+8AwFhgBrvDm1kGYCpdH0rzwtm+4U9NWWKnOpDmn
-	q1+vs4IxdzMbLjqPNUTsl3DhB8wQB6o=
+	bh=vi4iHS/XzApfrPJ1Qi6sByTaQytDHSrkS++QDrCidnI=;
+	b=EsEaxmNl0S78TkX3L7TFxKkY1wtAhNM7JZxlU0MApcl9Wtd/YCn7S1vPOH6NOm1ruAjFka
+	kke/x0/+//JMZuRf8cgTKCUuhMSo8Rb47XzbTgYgoMrelKpwDDESZk3FBsResN6WmxNipc
+	4tdqppwLnHGRTUe8ZUaDvwtb5/N9iCU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GvcKgqDS;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.141 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=avLvr1eT;
+	spf=pass (imf20.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790862226;
-	b=vpNGN3LuMZX6DOAjMrvGiesokJwDb68GyF1xUr7R9XfEXDwjy+t4TOAbC52o0bqjZ9C3d5
-	OFJHEtnpq1mIN4ivHYNj07KejWNkuusNYzusvNY89MPYf4oBvDntI9BPbJv+brO9VO1FEu
-	wiSvRHHyK9jBei3clkBlJ2Nptz/3dWo=
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49ce364488dso10794405e9.0
-        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 06:43:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790862225; x=1791467025; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9GzyFhoA2S7uios3Q3nexzUQFEC9iru05+QnoGlj3hE=;
-        b=GvcKgqDSu/I+aaFkVJZB4VQToC8BMSO9UoL4WEVmb6HYYJ4L0/IilPbVxP9YPhR0LF
-         gZjKdktNah+lgMDK4xayBLZSXaAVmtL7z2NJU6ZEcksRcc4ivoPfy4ZJhNDcO76tX78x
-         sKhCWKPJV/4ian/XaFawtuCbe4WRLeyCMXuemy7WmKJmVXDfP7OQNvtnj7tqGMafjpzj
-         r6GyAXEl4vsq6i1gLLky4oHTt73p4Z+Wx0J5Dey6EferkjuSxbl9fiEVMohEXycJCJqr
-         h25ILaByNWANSYNhwKABmLc+UK4b7w9PzRnAIHRidEbl2b4wCRNUil3THeKbby/Tme6z
-         iAxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790862225; x=1791467025;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9GzyFhoA2S7uios3Q3nexzUQFEC9iru05+QnoGlj3hE=;
-        b=sn9hDp7MQSAaPbwC83v5rRxnFFDejve1A6pRZP3+s1s7TCZ5szZxt4jtz2+Ub4gWXQ
-         8oF9Y9H7vzb2uf4PyeAO/qqRgoEDtlSqvY+OE0BlM01qJvDGYxIU0MGbc1G+miQ1Yb+q
-         AGRZdRYpXeH4F1cvv4JNDq3togV32xoWcgeUDOzxUskHoFx1mu9pz4hUoe8ZmSghiZCZ
-         AbxnK280bvrIj2i7YsGmD1K0Y8AylNGowAtXBaMvAagqCu2P/rF/n4aKu+zI2TbmlrCP
-         4f5QipYRFPyJlsvJN0SuMhwVnefM7mgaByvSrtRO79kcicyYQffSbTvoTv+hYcTq5eIe
-         yGcA==
-X-Forwarded-Encrypted: i=1; AKwUvBylFmbNNyheUZ7K4H1Y37CQlbqVJUnuXpgGOgEDmYBE400AyOz6/heVtd3ZVo+GfvFPGbTbW2U2AQ==@kvack.org
-X-Gm-Message-State: AFuF++npxLYItKnwFlERT3Z0fAdpO8PGrKak2WRJI//C/+qk8EIdoqGq
-	LK+e7leqwnEZD7jdqT1kcF29rhilG4OFv0Va+knz+LD3O6oUqyz6+QsE925/jXfaDXg=
-X-Gm-Gg: AYBFou1D5zXuDJj6aRom4juA8tqgeJyZJp6/kr+Fdp3drTWdUOKH+3UNwxZcAkRWzE9
-	vpafrlJdtO5bxFzHrquyxYcnnUAGPFYPn02qiKmkXfD5ekVDFYOmIumGmnq0RHEzhHcNvHpQkMZ
-	+RpSuJgcCR7EJUd7xa+0odrSm01n1HWCXYEV0+cNl2fP8R+xxPrcH41XVwloNL5e2woL++KPyOx
-	5Mb9wYIJYpzfyuppb/AxP70K6XAsK4N7lIZFg7B66MEMpQrzQglbSVUw2e6p9LJlPjL5YbYYtQF
-	zy4RTeoLGUMWKH/GfLc5rDI82EDuI6KneFRGQn+q7df9Sww55//5ttp4Pssy43BPuv9h8R3os2/
-	9UK9DrmqcPz15JezLmU3uugLndX2DqTfdGd8fcGQKBXzmQE9sGTzqRzfrZDZNWA8chLV4FpY2OQ
-	OLBybi05kYCt9DwIPhWwHy/0EQQV6eyLSnxGVl52wayE4DuCi3hBq2VOI29LUkQA/0V6s=
-X-Received: by 2002:a05:600c:4f52:b0:4a0:22d5:21af with SMTP id 5b1f17b1804b1-4a022d52255mr32632575e9.15.1790862225048;
-        Thu, 01 Oct 2026 06:43:45 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c092:500::6:7dd1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a023ecef86sm33062845e9.3.2026.10.01.06.43.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 06:43:44 -0700 (PDT)
-Date: Thu, 1 Oct 2026 09:43:42 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Shuah Khan <shuah@kernel.org>, vannapurve@google.com, erdemaktas@google.com, jxgao@google.com, 
-	rientjes@google.com, fvdl@google.com, jthoughton@google.com, tarunsahu@google.com, 
-	pratyush@kernel.org, fuad.tabba@linux.dev, David Woodhouse <dwmw2@infradead.org>, 
-	yan.y.zhao@intel.com, michael.roth@amd.com, suzuki.poulose@arm.com, 
-	Christian Brauner <brauner@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Nicolin Chen <nicolinc@nvidia.com>, Xu Yilun <yilun.xu@linux.intel.com>, aik@amd.com, 
-	aneesh.kumar@kernel.org, Vlastimil Babka <vbabka@kernel.org>, kernel-team@android.com, 
-	kernel-team@meta.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 00/17] Allow guest_memfd to be created using a
- resource (pool) fd
-Message-ID: <ar5iaaLcyz9dCXQI@gourry-fedora-PF4VCD3F>
-References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
+	t=1790862732;
+	b=jtaECGkLjq951Q/pSCsEsjkeMsEzluKw5szRrfUsATk/LHZaJqYfX0gTghfYMKIcvNGc4v
+	Sy+o4ySmsS2AVNDMAE9ky8sK4QyAPBeirDld9KfwkkWJsBnVA+F/n7JlnIFJm6EESShXiC
+	LxaeQtPgDUJfGkSVQxTW0X9ba3evmDQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 97F87497;
+	Thu,  1 Oct 2026 06:52:07 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 572643F86F;
+	Thu,  1 Oct 2026 06:52:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790862731; bh=BFYsSQEEDW9ivKme2GW+ybv9NgRrwNxqnlj2UvnfFOY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=avLvr1eTGOHRMC4ainKq32M1Rv9qJhzcdp8ui1a6bT05iOwUQqOjMwV6ahWU8ss3M
+	 jdv6uqw6vGM52rUj4rOlVEcanprQmJ311rJcSCmQcbBoyOGAeEvbbSnKj2j+zpn10K
+	 uKUcHHRSK8QicsnORjwxzMBcM3eo2FWE3bVkDB3I=
+Date: Thu, 1 Oct 2026 14:52:06 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 3/4] kselftest: mm: integrate huge page checks
+Message-ID: <ar5lhhdKlK6NwX19@e129823.arm.com>
+References: <20260924-fix_split-v8-0-cba7359d882a@arm.com>
+ <20260924-fix_split-v8-3-cba7359d882a@arm.com>
+ <16f16e77-05ab-418e-ad06-8f48fb29375a@kernel.org>
+ <aruMgm8UZ_t2V_wh@e129823.arm.com>
+ <3e03425b-7962-4c69-93aa-96168fd7168e@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
+In-Reply-To: <3e03425b-7962-4c69-93aa-96168fd7168e@kernel.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 820684000A
-X-Stat-Signature: sobykeq4hm5g3qktaoepm13sdm7p6cy5
-X-HE-Tag: 1790862226-564553
-X-HE-Meta: U2FsdGVkX18Q0oY3eifhMoAYsfw2/u2aEaU3F4IGpL0/WWWPSQviA775u+ipW9aLf6RuMjdFa/sImed05DWiy+dBw25FtSaASx7iu4grxCo/TLbEu/pxsNUH9Z//WvS0oyRGbLllaJhdq/56WX1VaE3daqKZqYN/leJRG2s2Go3ieySvYji3SProd5nS3/wcARwGdtofPY49b0hD8DZFz6rRpMHxcCDTSvYFTdhKMRaPix3SiFUo5fi+Zh+Rk6S70wczWTE+lRKv/t5mBHvJ2FzVFJaPWMcdf5uoMfM+WyLqBksozpfBGz4CMpjZGqRE/78pfXB6m9kyTxvVI3AkNsxZ2r7+3JNzZQTb9asz7kVvu1JfjXVrPdYlaQ21lK/fFqv2BI6OPJenxJaJ+7AEAqtvKzaTEHFGT8CUkIMXWWD/SgUTSfXVnnNZaNZOUWeK4js5nIuf2ZuneK8VdXOF5Kwdn/jz1oBTIm+whed7fsR8foEhSSVbjTtbhu7WZqW9XOruSSqH9TO0DRPQQLP+2UuFcYC9ekG6b2QCXtI6EYrNNU/7v8dHhYFjBSe2IG4pFF33tWjeJCvWrulpz/nRKBSEwW9C16WmX4bPDh6ODW1iWi5R5sbHWz5Xka5Ga+Ueq+J1H8LBWj2LM4gFJhSv7K0nrAnafzsoqW92Y0crkjNHZgpht0HFul8/nZ4XJvEOpLkXJblcJo6aCr9oZhPcWuzgDNui35Q0XrlHT6YhPzHOcREit8AAbPch2bPKlInaQxQxayTKCi4pib9thts325rgkmT5Ff4PhySRBE6XeSgjk4LYvITFgL9Tlz0Z6wSLRyjLeAtSk3TJTC/PHcpw/s+siiF75M4OuN93pihS6+LTWFGN0QgOqiA/L68hHwuwjTnrNs1cgf8SFpgVDqwWFDzuooMAioiHFsZ40MGdpFcuDmk/NrEhUwCZ4NMH5+2QInrfjH5qkLQc7bYi9l1
- GnhECXcr
- /woUNDl0L466mqap+Sk6On/8u9s+x5uwq1pGZENbujvXhv4lpm5UX7l6t7LrQPSELsLwbbitfSVHpojToYBoL6p3smfna/pXX7Vnm4w1AAwEIaeV1RaB3/q8cSAhoxrZHn/csgTIFCgVNeCv1aRucOTZomCLMthXvyXMEISKFo4m7i70GGflH7C0CiCs7wLbcOiQ7ng0hAg+XDr49lgULD94mvwJMRIrkwVzc4tGaDBPFeSK1iayJBkuQ5fVAv/+sMbBcSCOB8j2LoY11Hz56IH6+tS0uZlNf9v0U9OmzSJSCbJ+MQrElkBliPbLtiOU+06XfyyPwZMOg2uuActU+L6AdFkxhUAsGLW4jHRfg5YExthocE5lglIaauL0Hu7G15RoLrmpEptyDAKPaQWllgzWkjQ8kjREiPmh+
+X-Rspamd-Queue-Id: 3F7EF1C0003
+X-Stat-Signature: 4hjooiijtokepq5w9mhgn869cubhaetp
+X-HE-Tag: 1790862732-729852
+X-HE-Meta: U2FsdGVkX1+ywex8L2zt8ZipP5WVLmntQzgImM3a20Oj7Z5ImBm0HnnnzgZDS4mcGx/wTAXLrRJPPCNl9KJTcIM3ycLqBWA7PzoEuIWVCns6zuKFNFoBIBDeIafErJm8OavpR9HNlEvtjmCxobIGCxBjiVqOLWdG0sGI8B+qFMprjNCfYFUip3flME0eiXHdvJiUuoNsoDeh53NkooAl/M/0DaHdg80mmWdP+MGkF3tyrXeu99e1QMbxgS/cQtd1tE3Dby90Oxz8I1XNzTdlJzHBIUfNQUqDYR48qMYots4I8lzlKORMrCvo3vPcktnxGnikK9mELphYHdLGxqcxJqsAEfEknYEXQLwNMHaRykDIk2VwOBkqSjtAr9qH4h+ennssUPuhoWVmlb33SK2pzDsXzI6r8KRx9iqU69dkJJjBHEtlxNK928K8JDX/dzHp3fk5PAv89GjOLnkqIvFM+/kMO7iFOB05+HYRnfdRHKBVocebRKrmRRjvTxtsOyv4spcUMLxs3tL8xXr9j9K2REvjd7pvNxx3zv+0k//kvu3W9JmaYPPaPtybrq5TVJAT0stqLHas5K2Hio/3ca/wBHF9PGIdH5Iq1Ys2Ad+p4+KsHa/V5e+Gji0bhWmqXPPuMMN1O6955fNrZfy83yHZ+YOMl+lGbPv6eKHd+6GTJa7UZof7qaBWpz2ZZHQabmJu/tZZtmiZ9JhK80gndk/YxAROfCePrxba3ZBA2Jn9jJAXuUcT16Q+aaW9RGHlXAhrVM26158EFabQjrj20Yu76YhYQnPTs90/2CHgqWKUzfU0rle3p3nXvP9KNgudfHERkyaa5CYMh+bijqC01NwNaAmcOckJklp3sSt/a4RDxrSgFJOsrEurDA9lZYZtzQL7ZgrKt3tvQORGflSY42qaR4Gs0gprKtmAKtXrqKPlJ1jW2dxEP5roxVAr28biIcs6xwgMORVkq77C70l+gBV
+ /rNahnt8
+ KRDjIuzJ9T2yN7+vEajlmMKbmRFBRfTMnFu/T7quFPW8ykMYwZKmDSDvYh85JnN6njShVBzMFUH6AfATc5a/M0gGWpQpqOpTDulZe5Z0zuOKxyb9F9mjsppOvGafyL1HYcs+S4Lr3IcqOcw1nufl7cKU1DrkYUiKKe/LL1M3eTsxBPo8Ib4GbXIjg6wKgstB7OtH+Sg+l8hx1f3+BUYSURF3SuyTdTHsoQAZwGlcZnDY0DY2QUnF/UCqRSU1FHTLRdZogQPuRNiU7CfG0ZmFD+Y5M3q6IK3wPcPVzG6HgmMs9Q20hsWLZ8EEIvJzdNoE/o6pJJzy1XDPsXiam561HI0Ndmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,29 +104,272 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 05:50:47PM -0700, Ackerley Tng wrote:
-> + e.g. for tmpfs,
->     + Use mount page size.
->     + Respect mount size limits.
->     + Use guest_memfd mpol and fall back to mount mpol.
->         + Gregory, now you can set mpol upfront on a mount! [3])
+> On 9/29/26 12:01, Yeoreum Yun wrote:
+> > On Tue, Sep 29, 2026 at 10:07:37AM +0200, David Hildenbrand (Arm) wrote:
+> >> On 9/24/26 21:11, Yeoreum Yun wrote:
+> >>> check_large_folios() only checks for large folios without distinguishing
+> >>> between anonymous and file-backed huge pages.
+> >>>
+> >>> To add huge page type checking, integrate the huge page checks into
+> >>> __check_huge():
+> >>>
+> >>>   1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of using
+> >>>      check_large_folios(), since only the mapping type matters. This
+> >>>      identifies PMD-mapped huge pages.
+> >>>
+> >>>   2. Otherwise, use check_large_folios() to detect large folios. This
+> >>>      covers mTHP cases.
+> >>>
+> >>>   3. Check the folio flags according to the huge page type.
+> >>>
+> >>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> >>> Suggested-by: Zi Yan <ziy@nvidia.com>
+> >>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> >>> ---
+> >>
+> >> Instead of merging both things (detecting mapping vs. detecting anon vs. file),
+> >> could we simply perform the anon vs. file change separately?
+> >>
+> >> Doing another pagemap walk that focuses on that should end up with something
+> >> that is easier to read.
+> > 
+> > Okay. I'll change like below in next-spin:
+> > 
+> > -------&<-------
+> > 
+> > @@ -411,57 +400,78 @@ static bool check_huge_type(uint64_t categories, enum check_huge_type type)
+> >         return false;
+> >  }
+> > 
+> > -static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
+> > -                 uint64_t hpage_size, enum check_huge_type type)
+> > +static bool __check_huge(void *addr, size_t len, int nr_hpages,
+> > +               uint64_t hpage_size, enum check_huge_type type)
+> >  {
+> >  {
+> > -       int pagemap_fd;
+> > +       bool ret = false;
+> > +       int pagemap_fd, kpageflags_fd;
+> >         int nr_pmd_mappings = 0;
+> > +       uint64_t pmd_pagesize, scan_mapping_size;
+> >         uint64_t categories;
+> > +       unsigned long pfn;
+> > +       bool check_pmd_mapping, allow_nonpresent;
+> >         char *start = addr;
+> >         char *end = start + len;
+> > 
+> > +       pmd_pagesize = read_pmd_pagesize();
+> > +       if (!pmd_pagesize)
+> > +               ksft_exit_fail_msg("reading PMD pagesize failed\n");
+> > +
+> > +       check_pmd_mapping = hpage_size == pmd_pagesize;
+> > +       scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
+> > +       /* Some mTHP tests check a partially populated PMD-sized range. */
+> > +       allow_nonpresent = (uint64_t)nr_hpages * hpage_size < len;
+> > +
+> >         pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
+> >         if (pagemap_fd < 0)
+> >                 ksft_exit_fail_perror("open pagemap");
+> > 
+> > -       for (; start < end; start += hpage_size) {
+> > +       kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
+> > +       if (kpageflags_fd < 0)
+> > +               ksft_exit_fail_perror("open kpageflags");
+> > +
+> > +       for (; start < end; start += scan_mapping_size) {
+> >                 categories = pagemap_scan_get_categories(pagemap_fd, start);
+> > -               if (!(categories & PAGE_IS_HUGE))
+> > +               pfn = pagemap_get_pfn(pagemap_fd, start);
+> > +               if (pfn == -1UL) {
+> > +                       if (!allow_nonpresent)
+> > +                               goto out;
+> >                         continue;
+> > -               if (check_huge_type(categories, type))
+> > +               }
+> > +               if (!check_huge_type(categories, type))
+> > +                       goto out;
+> > +       }
+> > +
+> > +       if (!check_pmd_mapping) {
+> > +               ret = check_large_folios(pagemap_fd, kpageflags_fd,
+> > +                               addr, len, nr_hpages, hpage_size);
+> > +               goto out;
+> > +       }
+> > +
+> > +       for (start = addr; start < end; start += scan_mapping_size) {
+> > +               categories = pagemap_scan_get_categories(pagemap_fd, start);
+> > +               if (categories & PAGE_IS_HUGE)
+> >                         nr_pmd_mappings++;
+> >         }
+> > -       close(pagemap_fd);
+> > 
+> > -       return nr_hpages == nr_pmd_mappings;
+> > +       if (nr_pmd_mappings != nr_hpages)
+> > +               goto out;
+> > +       ret = true;
+> > +
+> > +out:
+> > +       close(pagemap_fd);
+> > +       close(kpageflags_fd);
+> > +       return ret;
+> >  }
+> > 
+> 
+> I'd leave existing __check_huge() mostly alone, and instead have an additional
+> function that checks the type.
+> 
+> Essentially a __check_type() or sth that we run after the large folio / pmd check.
 
-I haven't had time to quite give this the read it deserves yet (have
-been traveling this past week), but I think this mpol/mount issue can
-be solved with a new dax driver (which maybe provides this provider
-interface) without needing to involve numa policy at all.
+So, You mean like this?
 
-Essentially
+-------&<-------
 
-fd = open("/dev/cxl_dev", ...); /* backed by anondax driver */
+-enum check_huge_type {
+-       CHECK_HUGE_ANON,
+-       CHECK_HUGE_FILE,
++enum check_type {
++       CHECK_TYPE_ANON,
++       CHECK_TYPE_FILE,
+ };
 
-then later when a fault on that fd happens, the driver provides an
-anon-memory allocation that explicitly requests the node associated
-with that device - as opposed to trying to jam this into mempolicy.
+-static bool check_huge_type(uint64_t categories, enum check_huge_type type)
++static bool __check_type(void *addr, size_t len, uint64_t page_size,
++               bool allow_nonpresent, enum check_type type)
+ {
+-       const bool file = categories & PAGE_IS_FILE;
++       bool ret = false;
++       int pagemap_fd, kpageflags_fd;
++       char *start = addr;
++       char *end = start + len;
++       uint64_t categories;
++       unsigned long pfn;
++
++       pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
++       if (pagemap_fd < 0)
++               ksft_exit_fail_perror("open pagemap");
++
++       kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
++       if (kpageflags_fd < 0)
++               ksft_exit_fail_perror("open kpageflags");
 
-If you're planning to be at LPC, happy to discuss this in person, but I
-think this provider pattern is likely much cleaner without mempolicy at
-all if you can just make the provider do that allocation path for you.
+-       switch (type) {
+-       case CHECK_HUGE_ANON:
+-               return !file;
+-       case CHECK_HUGE_FILE:
+-               return file;
++       for (; start < end; start += page_size) {
++               categories = pagemap_scan_get_categories(pagemap_fd, start);
++               pfn = pagemap_get_pfn(pagemap_fd, start);
++               if (pfn == -1UL) {
++                       if (!allow_nonpresent)
++                               goto out;
++                       continue;
++               }
++
++               if ((type == CHECK_TYPE_FILE) != !!(categories & PAGE_IS_FILE))
++                       goto out;
+        }
 
-~Gregory
+-       return false;
++       ret = true;
++
++out:
++       close(kpageflags_fd);
++       close(pagemap_fd);
++       return ret;
+ }
+
+-static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
+-                 uint64_t hpage_size, enum check_huge_type type)
++static bool __check_huge(void *addr, size_t len, int nr_hpages,
++               uint64_t hpage_size)
+ {
++       bool ret = false;
+        int pagemap_fd;
+        int nr_pmd_mappings = 0;
++       uint64_t pmd_pagesize;
+        uint64_t categories;
+        char *start = addr;
+        char *end = start + len;
+
++       pmd_pagesize = read_pmd_pagesize();
++       if (!pmd_pagesize)
++               ksft_exit_fail_msg("reading PMD pagesize failed\n");
++
+        pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
+        if (pagemap_fd < 0)
+                ksft_exit_fail_perror("open pagemap");
+
+-       for (; start < end; start += hpage_size) {
++       if (hpage_size != pmd_pagesize) {
++               ret = check_large_folios(addr, len, nr_hpages, hpage_size);
++               goto out;
++       }
++
++       for (start = addr; start < end; start += hpage_size) {
+                categories = pagemap_scan_get_categories(pagemap_fd, start);
+-               if (!(categories & PAGE_IS_HUGE))
+-                       continue;
+-               if (check_huge_type(categories, type))
++               if (categories & PAGE_IS_HUGE)
+                        nr_pmd_mappings++;
+        }
+-       close(pagemap_fd);
+
+-       return nr_hpages == nr_pmd_mappings;
++       if (nr_pmd_mappings != nr_hpages)
++               goto out;
++
++       ret = true;
++
++out:
++       close(pagemap_fd);
++       return ret;
+ }
+
+ bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+ {
+-       uint64_t pmd_pagesize = read_pmd_pagesize();
+-
+-       if (!pmd_pagesize)
+-               ksft_exit_fail_msg("reading PMD pagesize failed\n");
++       /* Some mTHP tests check a partially populated PMD-sized range. */
++       const bool allow_nonpresent = (uint64_t)nr_hpages * hpage_size < len;
++       const uint64_t scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
+
+-       if (hpage_size == pmd_pagesize)
+-               return __check_pmd_huge(addr, len, nr_hpages, hpage_size,
+-                                       CHECK_HUGE_ANON);
++       if (! __check_huge(addr, len, nr_hpages, hpage_size))
++               return false;
+
+-       return check_large_folios(addr, len, nr_hpages, hpage_size);
++       return __check_type(addr, len, scan_mapping_size, allow_nonpresent,
++                       CHECK_TYPE_ANON);
+ }
+
+ bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+ {
+-       uint64_t pmd_pagesize = read_pmd_pagesize();
++       /* Some mTHP tests check a partially populated PMD-sized range. */
++       const bool allow_nonpresent = (uint64_t)nr_hpages * hpage_size < len;
++       const uint64_t scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
+
+-       if (!pmd_pagesize)
+-               ksft_exit_fail_msg("reading PMD pagesize failed\n");
+-
+-       if (hpage_size == pmd_pagesize)
+-               return __check_pmd_huge(addr, len, nr_hpages, hpage_size,
+-                                       CHECK_HUGE_FILE);
++       if (! __check_huge(addr, len, nr_hpages, hpage_size))
++               return false;
+
+-       return check_large_folios(addr, len, nr_hpages, hpage_size);
++       return __check_type(addr, len, scan_mapping_size, allow_nonpresent,
++                       CHECK_TYPE_FILE);
+ }
+
+-- 
+Sincerely,
+Yeoreum Yun
 
