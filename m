@@ -4,91 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6279CA5FB3
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 08:16:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB349CA5FA5
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 08:21:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B05B16B0088; Thu,  1 Oct 2026 04:16:20 -0400 (EDT)
+	id DD0706B008C; Thu,  1 Oct 2026 04:21:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB6D36B008A; Thu,  1 Oct 2026 04:16:20 -0400 (EDT)
+	id DA8A66B0095; Thu,  1 Oct 2026 04:21:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 980DA6B0099; Thu,  1 Oct 2026 04:16:20 -0400 (EDT)
+	id CBCD26B0096; Thu,  1 Oct 2026 04:21:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 76ADF6B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 04:16:20 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E89A916033A
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:16:19 +0000 (UTC)
-X-FDA: 85273350078.08.F190F5C
-Received: from mta1.migadu.com (out-241.mta1.migadu.com [95.215.58.241])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 782F7180002
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:16:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=etmsx21B;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.241 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A09C76B008C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 04:21:55 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 19F8E80354
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:21:55 +0000 (UTC)
+X-FDA: 85273364190.07.509532B
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 99E2A40008
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:21:52 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Sg429Kis;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf17.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790842578;
+	s=arc-20220608; t=1790842912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=NVNH6PsV6AOle0z5p76anynNzDjhC7/VHU1ggyQ2WV0=;
-	b=pf8O7xSk4jYA0lonbGVLYxG19r+up46K6z4/EFeHdF4mZYEBSmUB2Q3OjxR4lkuM3qjwoA
-	B9idT3wZQVmWb8RgsHHZ+MAtM77Bbo9zGwFHri7/yAwApuHa2hy+zZU45CSV6xwXJxKiQk
-	kjlk8wC0oCZCtSLapBRAnMdAGxqFZ1c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790842578;
-	b=nUoUTpB6bnkcA5xDJqQsRwU9c2SwICvlowuxdHr18DeU3pqbdFcB6jyxRn0fQ2Xv3MwqDa
-	b9SwK2BxnYtITTLtoFI/7R723E1q4qzIcWmGa4jm+q/hbnDc/BefNvMXu/jAn6QUAo5ZMd
-	r45hRNMieEReJrnsKDqL8THnVQGbS5A=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ra21bCnm37PIfxPIVfOfDlU9+VHD7+UVFquqYg8I9II=;
+	b=FGxRJqY6oZM7WkA2SPFVcE2Ik5sGjYoctcuBAt07AA5hiGfWyDRxGmqludS/1vTfJWCWOu
+	hDZx7Dpl3iLIxNxxrCehkIopzCyTjZ/bZjITKzslSlGe9DU0gtwtQebtiEsYCRhyYosRtm
+	hwkKs+SiRDF/1MOmieGhsa1ZnToH34c=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=etmsx21B;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.241 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=c+DPVphSAp7/zj1M/w64+ydC3uV12W1BTIYcaSRdGYA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790842570; v=1; x=1791447370;
- b=etmsx21B3p9TDxz9Zs7sS1mQ0e8Q9g/SOC6YsJrQvtJpHECx2QiB4FjodfhWMjjyInSi+bzj
- XnoG1DQaE9RLslbz84HCTMxUJSVb1mItgSnaS1kRLOOKx8Hvm7c5sqJBRJDKMy/uZuv2ccWccmq
- LYmMnemxq/S7igFuXnFC1/f4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id de19fbd9b491b7ab;
-	Thu, 01 Oct 2026 08:16:10 +0000
-X-Mizu-Trace-ID: de19fbd9b491b7ab
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: dave.hansen@linux.intel.com
-Cc: luto@kernel.org,
-	peterz@infradead.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	david@kernel.org,
-	muchun.song@linux.dev,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 1/1] x86/mm: fix spurious warning on __add_pages() failure
-Date: Thu,  1 Oct 2026 16:15:55 +0800
-Message-ID: <20261001081555.35485-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
+	imf17.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Sg429Kis;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf17.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790842912;
+	b=BsPhtIfziCaGvwtBYOZVZ9JjHI9MSxvTygCuCRitwKlxzUdeom1pZPIOfaLCHpSRJdJBv0
+	lYzHifaLwrNSnwcEVbxyBkgCeaPy4OCQ37diRDGfWEPqkSRP4XQ3vjJBY3f2HghVihnkhy
+	OyrtwnLIE3oKn2FiCr/wlrPo0bNwuzs=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69175cCV3446282;
+	Thu, 1 Oct 2026 08:21:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=Ra21bCnm37PIfxPIVfOfDlU9+VHD7+
+	UVFquqYg8I9II=; b=Sg429KisClpP2FIAkW1SeEW17LWTZrbV914wW+Ml7aBzlF
+	jCrnGyioF8AmhORd3CPMqsR3EpSrP+QfI599ab/dW6TAOAITIRqFAELoU0nmYTZK
+	RCmANT3qZ2LKQO/QTaAgCPT3fL3SDkDVgsmVgpAM0/mFnI+9jwcLo8YEdS6VBoMC
+	z+dM3EwIat3/RDjxXh9JB5BigmLYnnJI6Td96Bmydb6Xb81HHABF5Nd87NKv7ksH
+	HTptiEVJBRD6Y63PiFqoSl3RWQ5vu9TURW9p4h4DmUdDxgtfB/JObLeY9Hh7/iAg
+	qQuF9Wt2WDDoiBbtM1qlace1S0ySBcriEEx58XaQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5qrj1s8-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 01 Oct 2026 08:21:50 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69172sZh3460477;
+	Thu, 1 Oct 2026 08:21:49 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h0q4peg24-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Oct 2026 08:21:49 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6918Ljki48234964
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 1 Oct 2026 08:21:45 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A081A2004D;
+	Thu,  1 Oct 2026 08:21:45 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 447D82004B;
+	Thu,  1 Oct 2026 08:21:45 +0000 (GMT)
+Received: from osiris (unknown [9.111.57.16])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  1 Oct 2026 08:21:45 +0000 (GMT)
+Date: Thu, 1 Oct 2026 10:21:43 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>, linux-s390@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        kasan-dev@googlegroups.com
+Subject: Re: [PATCH v7 2/4] s390/mm: Batch PTE updates in lazy MMU mode
+Message-ID: <20261001082143.23106A21-hca@linux.ibm.com>
+References: <cover.1786956464.git.agordeev@linux.ibm.com>
+ <d7fd78377a7278108ef501cf76571e80caef5968.1786956464.git.agordeev@linux.ibm.com>
+ <20260824104048.11040Cdc-hca@linux.ibm.com>
+ <b66a61a4-a532-44ba-a1c6-26f02193fb05-agordeev@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b66a61a4-a532-44ba-a1c6-26f02193fb05-agordeev@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAxMDAzMiBTYWx0ZWRfXzqdwM24uMq2d
+ JFtOpooszbMFxsw8JIiv/lb88Q8ZUMkXZN4Vd/76af98XN4QSgjvBDoSBU/EQtkJWj8kWXbh3UF
+ HWSaRHHsAgtVnfC5Ryx3p6xOyg1XRz8r7yN4cLSESP0aZPLKh9N0Psyvp38PrFOhiCW0tJmsuKK
+ 4lIlozRlo3tJFavbWuQ4x6cU6ucKjhrHYUp38sWOX+5f02jC6akQLqumjkSvZqBELU4xwO6hl+6
+ 9I+2Fx7QKhL/HZU7L+090RpmJzQG7zqs0MNMwJ3A/kjsqkw7NzC+v9FXPog9HQvoRA16BVfLQ20
+ Lx0xgSQSL1Ro8fqXSnFc+KGwSjiefWQfQu95sTMPwWDN6nOR0HTpdhk3MxlHtX1tzpO7fArbwAU
+ VIzfnayZVydUo9cyXXlxBHseT0drn9JUtq6p3MiB31Ni5MS5o+4v6JfBZuyDh0P9lFo78/ydqve
+ qv4R8Hhx7p7DZ6h+MfA==
+X-Authority-Analysis: v=2.4 cv=SPbXx+vH c=1 sm=1 tr=0 ts=6abe181e cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=zTqDmhcANAg0LMT_mQAA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: A2oZF3D5kEhAE0y9bRNvcasuaL_wKoHn
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAxMDAzMiBTYWx0ZWRfX6n5FtlHwUqqn
+ n9L2GMagK4riLG6QdXDHuZZIakMcw14hVARbLVq9IRwVf5VdjqUFgvZkKki2DZ2IZxDrrcuqLEH
+ 19QgJWzAekawIDSf81LNJIEUbjCFADs=
+X-Proofpoint-GUID: WsWF8puhUxSntuyNQ3eIKEBsgGvSOCre
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-01_03,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2610010032
+X-Stat-Signature: cw8c7xcqbmrkhmbnubdfh9den7fw7gfo
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 782F7180002
-X-Stat-Signature: jnk38ph11edxci1qhb3nptbye7gmnbmc
-X-HE-Tag: 1790842575-302235
-X-HE-Meta: U2FsdGVkX18qB3TWo8lmLKukc4s/qJs4z/hV5u9hm/O8BrHul565ftAsAGmmC6mk0C8SHc6zw5XiP9Oo9F4fVTStMtWFXcFLUow5APtV/cUeeFJ86yIe03Ku6O11d5GVxfVPJQjBNfpO5XpHI00GjgiwbjFfseYqFtsCGuE5Plb2mLQSsrAZMrYaaPYW+LYhSYorqEenHdkueaE7A3bMN1fjB27Q8DY5rDKJw5eHGV+X1MD7xK6jE91LBC36BkDx6LIaDbilsmsA9ChUjyBSyvdXvzAvr3JNateXHYwwIZjdiz1zjkYSJCNj7f9cXdCrnQNYQ60CS4H4WKth/5E2EdDezePpWCD+z13lNFFqX8tph9XYsImpHj9iqac9Tw9xMLPMPKeU7H8eoyZVhmdFFcJ6UuzBTlr9/7XN3zgojPnYtzeu/YZ3rYGD1DVKWfjwEGD8drtTBJaCX2UtPiWeGWMeFLwmznDwTkenxig8ztuQfigb3fwifOg2HKDNm3grkMjt+cTiwx+8eg3c8GDHrATZgtLvcrMikAl+F8U/BI5kv4wR5W/lBqs8AiNfUEQBGP8jGnYPFZrgCrk8ehV47kXdnPbi6QW2IE3yD52yX2OUgko5wn+1VSmcVmraZFhbs1rd4iCW/umATEI8TyEWa8VG86KbEhomadYVGRqBKYwaO1F5Y+hBRAJjB8m0RpiTQsVnSZzhqdPvx7DL1YotYCKOuyjg32NYFg/jJnp37edrcMrBYXgpDl3qol4VVIHdwTuLx2OPFFhbCyq8gnlqa/rfo43Qh09My7cpRseDLM2OZSS0oFd6rTwshSaZBnUU9V2nEjfjdVAIRTZzAy4kDuHSlltv3H5MGkmmvEkj3B4aA5q6vnvn6hDL+ye4Aal/vdG4Et1wjDzp0MNAhOglzLG2QsiWPmt/g0i7XVa/BDB7SbbY8l2JaDBw+2PvJMlNAQT3E//q6vblf0Muov8
- k5ffPUKP
- mwDFlAJjHULXhrs5LPlqsWsZxKtIczR4BQ22v8ZbGOU4JEtVGR7oAsTA42C0C2uRhrXV1b/3V4QZaZbtoB0irAjn7Dc5r9Ezbku5pgXqOSo7L/P/eV9tBIYi/MJoMi6JFzV2wqVyMG4AVTwBGWWDwakJQkcZjKieXPSUKR/U3PdsFj+KAH+42VdwJzAfpNf9B5GIRoKD80WGnpgBmg7XBcFaVWoM9atNKneuyzT/Mcv7OtFHLqCW6SHrDjIcV7t/mTnZREVv2xt0xqXgl6yqqm2LjczC1pHj5Cw3ZOrt83fpuf1c=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 99E2A40008
+X-HE-Tag: 1790842912-805995
+X-HE-Meta: U2FsdGVkX19tLxQSROba/3LYQ2hyDMNItATb0lM7dk1EHFao33TV0XfOoWvm049SUugO93bv1ZHFim0btVY81su11QEbguuBmB4I479SvfiFbn7q384ImqrDchUFIz6136HpVIr55ScqAS/9gxix4799do8eDJS737alYVvaxEs5Wn15txVYQDy5YdbnRoPNETbtzSSU26aeRMXhM8J7XBm4E8DqeibK670gvwbsilDF/YXChgwOlvFIrVgGRAEZgFUAeip9S6mCxVN1HoYi56j3wLortG+U8UuUDQKp1dKalBXN9BzYLUbqZk9FJdvJlw50m/ogzSbdtqrozDtzS3xngZpvH+cZ1i12I18P8E8WW823tQ6OrtJtVmVMFsPO/DYy0YW2IGbxAxHKl0WtT2DWvP9pdVbkRMAaIcIMP5V+OaC9/3hMwRNa23FG5X2l3RGdv22H9YTuASaWwjt4XQWbO4fC6kFLs2/vLHvAas0hqftgCzLaQ5Ic7XOAGwdIu8AaOy9F4xglZ0a/X8RDNQRzrUgJglSTXGqlPWylFTPhcJpFRdxAsHWI6ejUAyUtWOdFNYNetq+4kCRgTJwvzB0xdrT6vsSPdu0XELWALZaIEOIB03GqFboVqf6HcHpHwR8JRbRMcP9cw8oj9O50zcXHYmCscdvEHONEiDFlHNtIvEzIL9rhFA4EyfG/+YAcqZ2oPfC96lMLKoExxjbD33nQV3ou2sOGIX1EZZQ8r4uVx+nKpP0s3t9zTOSP37KOZWPppLHJkgjIjcJWLwC5SZ6pO/ZVIlOXW9uB5CQ7/0nHIOnVZEuuLSPrbsZM/7C+agId+UkxS3rrp9a8q9vmPxw7gPIWFxs576zDyUGeTAIYLmtgz96DTzMI/ECtUMljiO1lKhBn7k2C4GicmVZmbxfZSFNhguBG+kDMZw24W3kM6ZV+iPKQjJUJADSJxQtWByYnL580Z+hUKwS7H21
+ Ins/GfOm
+ PfVzF1G7L8qAZZa083q/eXd2pGhTK6IDoOJILHQmsvWd131wf8NbKRHa7bIRHl0PhmEkT3u1lwUL6HTsVhHl64vHl5trsbuHVSnlOxvErDgf9HIZMW89j+wzNvCgPUlZnegCVxDpY7v9qs5vlp0lvXMge7RyL73ZGAZLu6ys1WTdc7T5qcqz4Y5WIsD4oIIUJ/aB4W6gLZ89ju8f8NivxoMxvCZGQaeQNo6Xe343ZBG8zPmQPhPp9/sTW1kgA90baIW9gX7G+OwxQadg9V+sU1PO2WC7s78eH6pMH25ShgnLGIrbBHc+NY4tLhuaSm3ruLhHUnwHIFLg1jtQJTCcTI+6LMAhn33fXvTlALhzYogFByIjPmk6ZGSz9MmHd4KFDsOk6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,38 +148,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__add_pages() can fail if we run out of memory. The caller already
-handles that, so we shouldn't WARN_ON_ONCE() just because an allocation
-failed.
+On Thu, Oct 01, 2026 at 10:00:55AM +0200, Alexander Gordeev wrote:
+> On Mon, Aug 24, 2026 at 12:40:48PM +0200, Heiko Carstens wrote:
+> > > +static __always_inline bool is_lazy_mmu_active(void)
+> > > +{
+> > > +	if (__is_defined(__DECOMPRESSOR))
+> > > +		return false;
+> > > +	if (!get_lowcore()->lazy_mmu_count)
+> > > +		return false;
+> > 
+> > I guess there is opportunity to generate better code here using an
+> > alternative and using a flag output constraint too.
+> 
+> It is only CY and LT instructions that make sense for me.
+> Here is what I came up with:
 
-Let's return the error instead, and only update the end-of-memory
-variables after __add_pages() succeeds.
+...
 
-Fixes: 10f22dde556d ("x86: arch/x86/mm/init_64.c printk fixes")
-Reported-by: David Hildenbrand <david@kernel.org>
-Link: https://lore.kernel.org/all/d4fac8af-fd71-47a2-bfe9-3c6559b92209@kernel.org/
-Suggested-by: Muchun Song <muchun.song@linux.dev>
-Link: https://lore.kernel.org/all/203892F4-B04A-4F69-A1B3-DC1619176C67@linux.dev/
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
- arch/x86/mm/init_64.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> As result instead of gcc code:
+> 
+> 	lghi	%r8,0
+> 	lt	%r1,1032(%r8)
+> 	je	...
+> 
+> We get more or less the same:
+> 
+> 	lhi	%r1,0
+> 	cy	%r1,1032
+> 	jne	...
+> 
+> The only benefit is [zero] "d" (0) could sometimes avoid LHI if a
+> zeroed register is already around. But also the KASAN coverage is
+> not generated.
+> 
+> Does it make sense to go ahead whith the alternative?
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 70e682180291a..8b6d86fb5a42e 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -970,7 +970,8 @@ int add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
- 		return -ERANGE;
- 
- 	ret = __add_pages(nid, start_pfn, nr_pages, params);
--	WARN_ON_ONCE(ret);
-+	if (ret)
-+		return ret;
- 
- 	/*
- 	 * Special case: add_pages() is called by memremap_pages() for adding device
--- 
-2.49.0
-
+Not really. But why is lazy_mmu_count 32 bit? Do you expect a nesting
+level of 2^32? :) If you would reduce that to one byte you could use
+tmy or cliy.
 
