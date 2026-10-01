@@ -4,125 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A123CA5FD2
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 15:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC14CA5FD4
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 16:00:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A7616B008C; Thu,  1 Oct 2026 11:56:17 -0400 (EDT)
+	id 234456B0088; Thu,  1 Oct 2026 12:00:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 930136B0095; Thu,  1 Oct 2026 11:56:17 -0400 (EDT)
+	id 1E5146B0093; Thu,  1 Oct 2026 12:00:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 822056B0096; Thu,  1 Oct 2026 11:56:17 -0400 (EDT)
+	id 0D38E6B0096; Thu,  1 Oct 2026 12:00:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 552426B008C
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:56:17 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E3DE580428
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:56:16 +0000 (UTC)
-X-FDA: 85274509152.16.2CA5EE0
-Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F01A340004
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:56:14 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=s++k3vf8;
-	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.169 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id DCA526B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 12:00:12 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6C76514045F
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 16:00:12 +0000 (UTC)
+X-FDA: 85274519064.24.056D336
+Received: from mta1.migadu.com (out-71.mta1.migadu.com [95.215.58.71])
+	by imf13.hostedemail.com (Postfix) with ESMTP id EC08220005
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 16:00:08 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Exk80jZv;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.71 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790870174;
+	s=arc-20220608; t=1790870410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mZXyBZOxPP9aVP1iLcONa2ADo5uyWcMjFEkbOU3Yh9w=;
-	b=ORTKfBw9/SZEGyrV9lPWcMBxeqj55zaYNRSCY7tqOv8LsKj5gajoowv8+5KOI8wZC1dJtW
-	91TthdTITXxFJNrsx7YFdj2IMeIJP6ByvcjxlxFUn/mEOnqMSrZRfdLO1aUiftEmD3eLsh
-	kk/uHT8W4GKCT9Oeie60BadQHV62lho=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=s++k3vf8;
-	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.169 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=t/UmLJEY0a3iLYujZH4c7hJLto4+PkpocQpwMHfxzk4=;
+	b=x0XRBH6KJ6GDCjsrgxVDW8ficaZKgncr2J4xjLGt2lQZwi2SjcxIPGJU8DFEANAtnfCGlN
+	z65y1a4Dgc/mS3xNO+txprfV0PeAB2j7nI53WEn5CgIAtC74nfwTusTVB8Wm1JkhUC1ulj
+	H5AASk57GmV7X6N2bj4lqcF4FKuUeCM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790870174;
-	b=4ea3CuSKd0f4JXrgCV5y/PC73xdHzEz8kAbFAMJ5njTmnFFUj48jhG4aXQSWjUMYGDFidG
-	iGuwq4z3VLDkF1emB91Vz28as6eGZTyh5m5AEFw1RqGd5/VDUN8n7vo/ZlQ8WQQ5zFrevc
-	eFt9ABEJLXtI6LY6YlFGzqx4y/gC9vs=
-Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2e1195040aso385399066b.2
-        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 08:56:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790870174; x=1791474974; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mZXyBZOxPP9aVP1iLcONa2ADo5uyWcMjFEkbOU3Yh9w=;
-        b=s++k3vf8gIum0M49TG+V9E69tXwunlz34DbjrdfATOH8j/wW+JRhG26ZGqkf2xJwMo
-         /mmLtuIPpYPn2+OJ/QxCH9mJuHSyszfCxpv9pi6k/wrB545yDLg2m95MggjkjvHqKg2z
-         /339YPrCD8hyb1PN6iqeuJjgvLgftqG9EKb4cZ2o5ZkVfgsLQW1gbYqQ7Dy72zAAY7mr
-         ISA5ietTmfC7uqbVj7Lhr7tUP7Las+83ZS3r0XC5O3SsNmytgqgwpibrkYvDcGeU66is
-         95faBSOM8pjgnDKybU8V9KPLklxcFU/DgaifprsDUCfzk+Dgo3Q81KSlo7Grv0ArzejJ
-         ZuQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790870174; x=1791474974;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mZXyBZOxPP9aVP1iLcONa2ADo5uyWcMjFEkbOU3Yh9w=;
-        b=etgAnCLMGFUdX40VFs3IuTDn6v1T5nfvcQzIj7m7o5KbEBmbomAq9SeV4etNNBZ4aP
-         OGMCXSONmZLmH5eoSYy1bcyF8ExnHqCGiOZIs6bbkIFWkM/EMCeFZKt6pLle+Gw2GamJ
-         vHbYW0qWDTSVPJR9EnRkaRifCAVw8kh4E00G35iECe2FkJ8fFFTtV159lvOCfgAJxTc6
-         6CxQfj6vIQVvpBbhl216O6YIPlFKfTvsTFzU7UDbq94PYKpyJC/cQnY3JY2d4U9Nysdy
-         yfcR0FqySVxkc707YhVOBU85Zf9PaVkLDyx6EGqAzUvcBtSS2Gdo2DK+yaLAKNLaDFVJ
-         0LQA==
-X-Forwarded-Encrypted: i=1; AKwUvByKP7lXRD4/bM/ULZ3DD9g56OcnJGi0W00ZUw5TZm6fu4jd4Q63jhkn5C704vn3BVaIVnnpmxj/eg==@kvack.org
-X-Gm-Message-State: AFuF++mo9kziYSvBH4n/EXG0QszUp9hdZgA52ikYCWmUxRChsVQgH0K9
-	M6P/S9eGPmyjalkyBVzbVj9BduiH8CNFiSZt4Ai+Z95f7rZfH+nmPnwN
-X-Gm-Gg: AYBFou0q9gn7l8oNrqrrvc3Q2IMJlFaC8a07+oLCBvrUVXCiV3T+dO5TW+6i33uUtv4
-	0MdRqCIGo4SHA7l2j6SYPwYJ3ET1jW3pMIHkz+ics+3+HeQvy94BbfEjqSMmONYlhN6EsImC3Ca
-	rmOZDAW/NLGvEHApk0/ZTQJbvT6hMklnLCgBhLAa81T92EkPCixTiicEdtNxcF1nIO63ZimERan
-	N+arDKWCz8qPX9Zxdxjhto5+GSYBISXwjUJMzvuVJgbzOZNCClbFKUfPq4wWCJoUFzSagqcG/rp
-	f9wEFfr36Y+GCuDvYIktIZpH9VHuEMfxj14blJVkttNKuo2kjhfxlW77wNTg1tytrWYjXb1+tWX
-	q9Bmu6CbvZIHwCiH+/k8JZbTF4+WX7aB6X33XURhZRKAiTNiOJKOh8SISzbtkRFmEtNPczu9H0S
-	OKy5wQt/bH18/aIUekLH5Pz1Vg4F2Vtz8DqWw=
-X-Received: by 2002:a17:907:96a0:b0:c26:3566:5b47 with SMTP id a640c23a62f3a-c2e4ad55c07mr1700466b.12.1790870173588;
-        Thu, 01 Oct 2026 08:56:13 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31d96628sm181851866b.62.2026.10.01.08.56.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 08:56:13 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Thu, 1 Oct 2026 17:56:10 +0200
-To: Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, akpm@linux-foundation.org,
-	catalin.marinas@arm.com, linux-mm@kvack.org, will@kernel.org,
-	Xueyuan.chen21@gmail.com, ajd@linux.ibm.com,
-	anshuman.khandual@arm.com, baohua@kernel.org, chleroy@kernel.org,
-	david@kernel.org, dev.jain@arm.com, jiangwen6@xiaomi.com,
-	leo.yan@arm.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	rppt@kernel.org, ryan.roberts@arm.com
-Subject: Re: [PATCH v9 05/10] arm64/vmalloc: allow
- arch_vmap_pte_range_map_size() to batch multiple CONT_PTE
-Message-ID: <ar6CmpPkwu1VgZ22@milan>
-References: <20260923062832.479455-1-jiangwen6@xiaomi.com>
- <20260923062832.479455-6-jiangwen6@xiaomi.com>
- <ar0s14p8KPgmDKmR@milan>
- <CAHKocdEF3RE5FA+LPRf_E0ns02a5akvUDKvSDvERoyTryV1X6Q@mail.gmail.com>
+	t=1790870410;
+	b=m0hvTa5Qxyz8TKb7HsAyL3z81/1481y7M2OCvykfep4NSubkp7CrtV3LVU1yAAgZsvlU8j
+	zplfs4mxNJC0ieN+SvR+s9ROefe7w4v5GGmirRUfokscwRy4aVtOs+XwrXeLPocKgNRUpG
+	i9+jFbkEFs6N34w4uUvYSpoS9/oh8MU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Exk80jZv;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.71 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=nQNXL5q4knr5P0PR//t77Jz5pY4phClaMKAM51WfU40=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790870407; v=1; x=1791475207;
+ b=Exk80jZvoe5ccJQCgQeZt8Ca6D1jqS14CyBvgIo8nXhXYOpazRoGADCeZNiU1vDWygPqgumL
+ Qqkw9dADHpmazD7czY0QvqUfwUvQxiyF8ZLlzfdDx7k+tQYuGCllI6bFEsAhlBOfeVIK49XSAR/
+ 8biMU8JiRvMotPQBZ1EzOE14=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 4267819c097ea3ea;
+	Thu, 01 Oct 2026 16:00:02 +0000
+X-Mizu-Trace-ID: 4267819c097ea3ea
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 1 Oct 2026 09:00:00 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	David Dai <david.dai@linux.dev>, JP Kobryn <jp.kobryn@linux.dev>, 
+	Frederic Weisbecker <frederic@kernel.org>, Aaron Lu <ziqianlu@bytedance.com>, 
+	Daniel Jordan <daniel.m.jordan@oracle.com>, Hao Lee <haolee.swjtu@gmail.com>, kernel-team@meta.com, 
+	cgroups@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/7] cgroup: charge kernel work to the cgroup it is
+ done for
+Message-ID: <ar5eUZ7hibU0Bp5o@linux.dev>
+References: <20260924184714.912181-1-shakeel.butt@linux.dev>
+ <befc0a9b9998db0292c9998c639a3a9f@kernel.org>
+ <20261001105909.GL4121339@noisy.programming.kicks-ass.net>
+ <20261001121842.GJ4121620@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHKocdEF3RE5FA+LPRf_E0ns02a5akvUDKvSDvERoyTryV1X6Q@mail.gmail.com>
-X-Stat-Signature: 3by4on1ao5se8543pmuj8qfxyxcxeskj
-X-Rspamd-Queue-Id: F01A340004
+In-Reply-To: <20261001121842.GJ4121620@noisy.programming.kicks-ass.net>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790870174-733601
-X-HE-Meta: U2FsdGVkX1967AiGdqVAmy3Brka/nfleSvOpWpbh0M6l9abISJUrG/CtgMSALPNMqlMCTAiLuJeEw/8JhLFX7rEJ6CPjX48ndZjRuN4Oklahcu/NioitvLGme5zeTagCUhWU/70bP7VX+VQqN5f1bR+YlTPukGo1/aEd7wvVvCLTD/5Xkbtdi1eBemssXrddAqlzdTlFy5pwwyvV2SsCQaGCD13rWHN4jfamK+RnhOlR6kAYLXI3ckz+QAOYqGQB1i322mvoeArN+9mdH4KpMnL75eznzhRTF6cuRyd/STYqbRtzhZ7cwWTncNfPDNLRtz4/AGcQypmSe2XlVFC9bSsOrzhYl3Sy2VWWKWlSVievcOZVXv4+QZ7RmhU7/CZY3OBDlyrSaOsI0JVGdksR2SDuEO21qMc1dwVFTyVIdBk8YFhuTb0tTEDCdfOva2XXO+XzzphTRuLYe5UvnlRCwVNIPFpgTqaIFnAein8PIc0VhelRenHDd8+7A/I+VT/LBHky7cuT3Dsx7OKcYv3qKPtqxV6xVb/oY0B3fHtxuFhN5Pf7H4/x002z8waP2VYpiUzRSuiSyNbAIZDPTcC+VEZGXc/8IegG0xF8e7pp5XolHpzRgnYjPpeMg5bNJVzzNNupj6XXM4slSsoBDUmz4kKjSv/yeXfcnA/4QDe+WqgHW1dP3PF92F6pTjoXnApNZXZ1fzTw5XenwBrGrRwOZzFb6srSJlNTvmFkazFu7DutfM9h+I4XvsDzubnABszdAObu9rDZyGj5iO4l4moPm8ZSXcbQM8Pr2MtZ5j09VEFyiWR5LC8BlzymkjW/KBI75eZx6o2njfyKnuHMvOI71g9Pag2z3R+74nFpY09it2pVKz5HHHQn88TvwVMVjTf4oztm/fG114kWR8Mjrfis5lGXkqjC5aLcsz4FguWVUb3AZYTe3NWP7qw/hpDqJ5U8Hmsw66eElGAmPZCjPrO
- l3XGPxpk
- AwhREt8JKLenWDls78l5L9hlAKxQW13GTwhSnupkESRjcD1lhuD6DzaQVS/LxE215d51/2So306ui7lI7JBmJfoTul3pmJugBYRViEkhdj+JyF7fFhYH92WENcIk6dEEegc1DGGYA39v8wNf341u3hSUV4mirqaG3Z2YYty/wcT9rt/hkQIv8AIWfiWpITIle6CeltumOyjlNWlvxD4T6DEJvzUwPWYv1+dPowlJzgyNCQBTyFExevCra1bOf2LmNZQklTpMySZ7NZueEcZufgDwmINaJAQYs4Za84y0q0HL6NazvUYmZvzmgBgbV3iLXAOun/x0DPfheHt2KJDCRYvdxePQWGZNvQzRUmCRh6ehEiZPe1oMTyAzEKYJ7+2be+Zh1E70+XaGjnYpjTJSeeRAl2qw9KFDmBCPD2wSyVNRaQMSeCS+H/vzZ/mzQLeDviFfrpNSp4PCY5/n8GlFwvUvsFSVZSf7o5bjMkANvBSUKXJl7Skk2iX4cxmHnW4fQS/eNwR8OgsUx2/fb1Mng3oPttnd0oMfIzhW0kvHJRoMJm2Nqxr8TjJ0WL7O87VHldDO9SV9GGmi6+At5VhkYF/iYH/9raJil2su43z8f49kJT8o2B8SH/mjS8prJ7O/eFU/tgC/WIg7qdhFMxGVQB61lhY80yX2vFPgXL+K6rsbTWpU9ZuQwQIoe3w==
+X-Stat-Signature: 9r1j5cyud3xzaa8egmq1y934tbsr7tbd
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: EC08220005
+X-HE-Tag: 1790870408-336630
+X-HE-Meta: U2FsdGVkX18p1OODckdi9LGFUPAEvOEa4SMxqt6/YdlZyHPO127bfdewlMOh2owaIa8e3P6g8coJ4eA33pv2l25bQuw+RZBnP80AGZYvNII4YNIhpbyC5nApErTnXW5sG+YOUuiQS6j07TFsOkirLh8NiQ3CONZCL9I8fxkkfppO6rVC4lkTHxA03Ix4rh8lCXILJGVSNP1xOYyWYf6uk0hTPmt4z/5N5gz7vKs1jKYrY1dy2kN9VJH+iXS1AcCO+JzX2ejquuovHQ1hACd1a6LC3ETlt8Aa2HacSf90442//jIp71ip5g9lu16h2UChPYKgrzSgYfxMg8Rw5eF7Kaak8zXLnrIA4/xJBIBBiYt+cWcOE1pEioZ5E/g1O7QravHMRpLL8opvxITbCmnoA0tOQ7zCdgAMFQHkegG78kVVjyiP9t17MK+H9wGmz2mMOkTC61RGzzcucRlXfwZg/iu83Cm3QnbPpPtZyZBA4Erl0gBknsYo2YYzU3IkHdEcjXRtKsW6zzgfiI2zrd2R5Gr0uGM2UfaV/FKxTdOoXDvglyWtafhXgor6cjdBCjp27lQeO+SltYN33m/KVPeO5mLVAmK1bVbwrQ8AVO5HZJhFiGZ84eH6sG/vMmn/cd+O3L3SAoedGIeCeDCzBQYD/Bqv6+VouBbTWBJpHuiwv/LA6guzQXVIYoSRX5zKQHAc1CwXHHykZy6HLRPWpRvCfaKs4IHUtzaAkvoME2G6B1UM5cfy42PBaneQ1G4B8ySAQR89HaLnAVLnPGxDwsjSoBPuC1GYT6MjWYRN1nhqdceHbbV6X/GOGVbhHushvpaHItfLXo5rct28aWO7dSsDgTOqoz/hp19Gy3nWC8QlolOVCc3SKkyMG7TzGaxpmLUaCgf5SS1CG23LgPlwC7cOuKg5Ai66wSxYlsAKi+/c25zzevvq6aeRGKnAT8G+fw20QoblZ98VmR5DSzyfqlm
+ +rF/kU8T
+ OEwg9q9vJ9k4vT+In6AADcsb7+Gom9I0D897lsIk5gTiFFjB0imrAZkSSFibmeNof/DG9Pw/7UdTOy7SRl46GhOr/gN1bnYi2epDWR9YpIODNw0mDJTcN6dT8z267/akYvYxijK3zNNHzXHsAOl5eWL9Qlw4cJAqNStei8rzJfPQIuGJqQ21vVDPsTYWUhScGYA1rD/Z6CoIz/ovvRIlq3JtofVPp/8xmHCl/AJArp5h7YB//PinYxKSt2ersxiVmJ86VPQQmLhmg2R6lKWkDDQZ/solPr+I8WVaqUpvCYsWsH6hTHL8ib37/kGDAOzSkJ3KkB+6BXUGwHkip7hlX9xzWhOpM8HZ1bNWFoPXobeCPxrT2bGgs/fH5rA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,78 +104,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 01, 2026 at 03:55:44PM +0800, Wen Jiang wrote:
-> On Wed, 30 Sept 2026 at 23:38, Uladzislau Rezki <urezki@gmail.com> wrote:
-> >
-> > On Wed, Sep 23, 2026 at 02:28:27PM +0800, Wen Jiang wrote:
-> > > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-> > >
-> > > Allow arch_vmap_pte_range_map_size to batch across multiple CONT_PTE
-> > > blocks, reducing both PTE setup and TLB flush iterations.
-> > >
-> > > For CONT_PTE_SIZE-aligned ranges, return a mapping size that may cover
-> > > multiple CONT_PTE blocks, capped below PMD_SIZE. These sizes are vmalloc
-> > > mapping spans, not HugeTLB hstate sizes.
-> > >
-> > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> > > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> > > Tested-by: Leo Yan <leo.yan@arm.com>
-> > > ---
-> > >  arch/arm64/include/asm/vmalloc.h | 8 +++++++-
-> > >  1 file changed, 7 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmalloc.h
-> > > index 4ec1acd3c1b34..4053b1ec1902e 100644
-> > > --- a/arch/arm64/include/asm/vmalloc.h
-> > > +++ b/arch/arm64/include/asm/vmalloc.h
-> > > @@ -23,10 +23,14 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
-> > >                                               unsigned long end, u64 pfn,
-> > >                                               unsigned int max_page_shift)
-> > >  {
-> > > +     unsigned long size;
-> > > +
-> > >       /*
-> > >        * If the block is at least CONT_PTE_SIZE in size, and is naturally
-> > >        * aligned in both virtual and physical space, then we can pte-map the
-> > >        * block using the PTE_CONT bit for more efficient use of the TLB.
-> > > +      * The returned mapping size may cover multiple CONT_PTE_SIZE blocks,
-> > > +      * capped below PMD_SIZE.
-> > >        */
-> > >       if (max_page_shift < CONT_PTE_SHIFT)
-> > >               return PAGE_SIZE;
-> > > @@ -40,7 +44,9 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
-> > >       if (!IS_ALIGNED(PFN_PHYS(pfn), CONT_PTE_SIZE))
-> > >               return PAGE_SIZE;
-> > >
-> > > -     return CONT_PTE_SIZE;
-> > > +     size = min3(end - addr, 1UL << max_page_shift, PMD_SIZE >> 1);
-> > >
-> > Capped below PMD_SIZE? It is half of PMD_SIZE. Where is that limitation
-> > comes from? I think the commit message should be improved in that sense.
-> >
+On Thu, Oct 01, 2026 at 02:18:42PM +0200, Peter Zijlstra wrote:
+> On Thu, Oct 01, 2026 at 12:59:09PM +0200, Peter Zijlstra wrote:
+> > On Thu, Sep 24, 2026 at 10:28:10AM -1000, Tejun Heo wrote:
+> > > Hello, Shakeel.
+> > > 
+> > > On Thu, Sep 24, 2026 at 11:47:04AM -0700, Shakeel Butt wrote:
+> > > > This series lets a kernel thread say which cgroup it is working for.
+> > > > That cgroup then sees the CPU time in its cpu.stat and the stalls in
+> > > > its memory.pressure, and the CPU time comes out of its cpu.max quota.
+> > > > The first user is the memcg reclaim that runs from high_work.
+> > > 
+> > > This doesn't translate to net rx, which is another major source of
+> > > displaced CPU usage. Switching membership on each packet isn't going to
+> > > work there. Attribution can't happen that way. We'd much rather count
+> > > per-cgroup received packets and prorate the CPU consumption. If at all
+> > > possible, I think it'd be better to adopt an approach which can cover
+> > > both use cases.
+> > 
+> > Ideally RX would be split for each network queue, rather than lumped
+> > into the one giant softirq that nobody owns.
+> > 
+> > I know PREEMPT_RT has been wanting something like that for ages. Not all
+> > queues are created equal. Some might want RT priority while others
+> > should definitely not.
+> > 
+> > Furthermore, without ingress throttling, your RX back charge could
+> > completely deplete the actual cgroup time quota.
+> > 
+> > Anyway, if you get per queue RX processing threads, then you can move
+> > them into cgroups where so desired.
 > 
-> Hi Uladzislau,
-> 
-> You're right, and the "half" is a leftover that can be dropped entirely.
-> 
-> Before this series decoupled vmalloc from the HugeTLB, the value
-> returned here was fed into ilog2, which reconstructs pagesize as
-> 1UL << shift. That forced the size to be a power of two, and PMD_SIZE >> 1
-> was then the largest power of two strictly below PMD_SIZE,
-> 
-> How that pte_set_huge() takes the size directly, the size only needs
-> CONT_PTE_SIZE alignment. And this function is only ever called for
-> a range that the caller has already confined to a single PMD via
-> pmd_addr_end(), so no explicit PMD cap is needed at all. I'll
-> simplify it to:
-> 
->         size = min2(end -addr, 1UL << max_page_shift);
-> 
-> and update the commit message accordingly.
-> 
-Thank you!
+> Gemini is trying to tell me this exists and is called Threaded NAPI.
 
---
-Uladzislau Rezki
+For the accurate cpu accounting of net rx, threaded NAPI or softirq is not
+that important. I think it is steering packets of the workload/cgroup to their
+dedicated queues and only newer NICs have support for hardware rx steering.
+
+For old NICs, we will still be getting packets for different cgroups on the
+same NIC queue and I think Tejun is asking for cgroup cpu accounting for this
+scenario to work.
+
 
