@@ -4,88 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6023CA5FA5
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 05:58:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74B95CA5FB3
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 06:00:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A02276B0088; Thu,  1 Oct 2026 01:58:03 -0400 (EDT)
+	id 60F5E6B008A; Thu,  1 Oct 2026 02:00:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B32D6B008A; Thu,  1 Oct 2026 01:58:03 -0400 (EDT)
+	id 5C08F6B008C; Thu,  1 Oct 2026 02:00:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C9786B008C; Thu,  1 Oct 2026 01:58:03 -0400 (EDT)
+	id 4B0126B0092; Thu,  1 Oct 2026 02:00:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B0B46B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 01:58:03 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E1FB4A02FC
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 05:58:02 +0000 (UTC)
-X-FDA: 85273001604.19.71A3CE7
-Received: from mta1.migadu.com (out-49.mta1.migadu.com [95.215.58.49])
-	by imf19.hostedemail.com (Postfix) with ESMTP id AF70A1A0002
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 05:58:00 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hY8nET0W;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.49 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790834281;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2647C6B008A
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 02:00:32 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C9E2A6880
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 06:00:31 +0000 (UTC)
+X-FDA: 85273007862.29.57F9007
+Received: from mail-oo2-f10.google.com (mail-oo2-f10.google.com [74.125.231.138])
+	by imf29.hostedemail.com (Postfix) with ESMTP id AC8F2120004
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 06:00:29 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ghz3FrEs;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.138 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790834429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=giVtiDELSgAkXNs7XlYfwu7HaDHpb0q96ZHNarUH7ok=;
-	b=hrsc4qTcuIQe0LkjzL/TtB0tGSfQ+yRAp4MIo+CACzna5qLbIbGS06E5B6LLk0FhI2bMOc
-	ZffKJC+d8TwuRRY+Hl60mHs2xVjq9Xjbv7G8up1FEJjo02vO1Gl8jErxCT4XXvMUWJQJYK
-	QwmWIrPevVzKG4K0H3gX9ePWrtuFJac=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790834281;
-	b=uJZ519y9HXYv6lCTK7AgEQ+BzgQu3zXwk1Vs1aThQIUGbVToEZAjP8URf6NL2hLDDS4Vis
-	lh5knsZHgFquErNK0pNtBi5TTgjfsbtgqh+3pek+lLY48eAu14B0Oo9zc9n+TzrGQggvUm
-	kp6k6PY8VqPVwkPnHWMV55dEfXdsiyA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hY8nET0W;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.49 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=k+5EwW1tfy7CuX+mU/60zb86Q3x+eOGt8f79gc1ysI4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790834279; v=1; x=1791439079;
- b=hY8nET0WZa50lHGk55aBYF2RB3IiYqeZPzLLTqGxXNPqz3y+tuaIpplNc2lETAL4P7iBcbaU
- K07bdUdow2NPb3++6Pm4XPCbhqcDWSQG7CXjUVMaxil/hlb3gPUCSwDvNB3qhiRrk7fvKG3Va3R
- DNwhWgVQSImoNoqmDmtIs834=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 2c64a44a8353d810;
-	Thu, 01 Oct 2026 05:57:58 +0000
-X-Mizu-Trace-ID: 2c64a44a8353d810
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <aee7af40-3da6-479e-8e0b-881497df9c49@linux.dev>
-Date: Thu, 1 Oct 2026 13:57:49 +0800
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=86MBDdoN8+nPFAYYb3eyEgckb6tHnNUv3pn1Zb+pPE8=;
+	b=m06tNCxxmZxK7zvkHxMmfAZnQ9wTEI4Vf5v/uzJEmnWVbGjwtQg2Erw64miMhUA9zmx0zP
+	JBLHmTPNjznX9YOQ/R1DpZdhTD2QdyL9XQ5jkPn078BchuNAlrfneRtSzH9ju5rx/C/6BV
+	g7CXbuPDExgG3E2tCi4tkZoHRnilmus=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ghz3FrEs;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.138 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790834429;
+	b=vuMIujo265DVZ9Na4GtvVRFOkIyR4teGeUWbgZNvoX2cVqEx5SD20C6e/wpD5SF1Ssa/Kc
+	NNbvlNRaHrTBGt6gNklbDfLVjZ4THypIAZUtnDG9CTDruBgbAJrhbw4SIBAQZ2cWZd8AgG
+	vYW58Otu1UyVV0oyZeEU3EotryPUSB8=
+Received: by mail-oo2-f10.google.com with SMTP id 46e09a7af769-820ff812cd8so236655a34.1
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 23:00:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790834428; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SYoSEVOS6/5/0wF8eIbSQx1JEHA5/XI8LhANVF5MNq33IA250ki3nDHhWhZTlOzHus
+         WEvTtUaJYoY6xtj1pLtr/VL5vNY1iel4gbuEBnClGhWFCnAIHYLW11FmydvPViBsDWSv
+         cPpDvU0dSP1oDBP9tMpEfUdXCE4WoxwXEJYvjKgKlYuZdC6h9ldwBYGjbKILglp6O9Wm
+         tQko9nP7r4xfsP2QrMny9Cx9xaLjGu2ESkcQyL0m1v+Zsfe+HnSj8eDmnWUwXilRzI9p
+         BAf+VIYPdM+vHiTuyLrgdkMyXAWa9On3HELcONIF3gZARS5zslSVBwhmZ2mWgfIqNxgo
+         HpUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
+        bh=86MBDdoN8+nPFAYYb3eyEgckb6tHnNUv3pn1Zb+pPE8=;
+        fh=eXrd+9ThZ58smNuLJIwwbBfEy0ulMuXWzyDnY5sXsg4=;
+        b=fzRxVc9hMel5ocDXkVtRttoKF+Nbory48VGXB4Gc4MezByXqVZqSsmVk7uZRJnYvKh
+         PGDDL/S4gvZA1vwombDzHFnXZfiSQAcZgwenChwcQikHOIzseaQoe3OFytg9+asoPG80
+         Ae9ztn+XYbug/PkbZSto0qOuBxZZjk3qG4j2I8IdhP6Pfl4m7URiVxQJzlgmKzbi8Cyl
+         37natjVrSuECPnrSv+dCF5DEZbO8AeBhYsgeyPkPa++CO33YYkHtov/bNw5ZiGUj0e5P
+         PVwaFksThjba8CmMgSoXcNMOuS2nqSX9Bh4G5xPqAcSLrQQ73zGIBnEhPqHB7OMICymC
+         u6TA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790834428; x=1791439228; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:from:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=86MBDdoN8+nPFAYYb3eyEgckb6tHnNUv3pn1Zb+pPE8=;
+        b=Ghz3FrEsfx/Km0hPK9yi1oAaM5Es1CHj33weI9GkCiLYnsQjoLkZiNGXxQXr+qPVUl
+         h3R51GCZ0Iqebv9mh7L67+H6ViB8zTX/YsDow59jfNsy+8yI1DMleNbVjtbsL0FoeLZO
+         xBKnkuP8qPORbpQ2LkwYwg7z0PWPVIUMMPl15lQ/OSVOyk2yUSZOlTAhHFPbGiQUdc2t
+         d2HpQEczN7xTrkjXatXtsDw74ILqMW8U5JVu+gZMBtjg44lV9V/E3ilIFefIlT8+O4tS
+         Y1/LWrQ3Rpmjltdf/JAe0e7t/88YnpC5Q+TXBsXcuSpqlEcCSo8pzxDPJik4Jn3c9kPN
+         Lo2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790834428; x=1791439228;
+        h=content-type:cc:to:subject:message-id:date:mime-version:from
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=86MBDdoN8+nPFAYYb3eyEgckb6tHnNUv3pn1Zb+pPE8=;
+        b=fLVZzmAhjAR19EVs+QpufD/n0yhCUoCWOcHrM1ySurITRIvRVIKxZhqFC2+iAJbmBk
+         zjMFyEz4bAa3wssrLfH80eMWxBboukgB5lcidCSP/gw9VrkBpdOB2kcWMtU/pc0e68Po
+         gZCf3L0GqtT1+42Q9/dhwCptperUFIW50yrGVU2syZEmbVdx49CfuBI/XrV/oJIsGox8
+         SrGkhX+fSO2BV6EGX97JoUgaYXQ6Jo6bVELBjbYVhghfme9Natv3KQ0R/qeXxMb7Cz7Q
+         kNKfTWnQw0tOwW+t8zkriP/H/o2ZZ+A46vWXdw2qlcv/Rf3OOtn2h4JvSAyDuULS3H9y
+         MF5Q==
+X-Forwarded-Encrypted: i=1; AKwUvByHGA++dmg7+e4BRHKqMp5ztFVNiyOMnFD1CaFYlSNpeuQG/P87pYUUiLxCjpSGbOj27KqmjzkwgQ==@kvack.org
+X-Gm-Message-State: AFuF++m3mFgGQdAc5SFCcp3iCi44lpcOqiXdTXwHO/vWV2eP8oMKdXf/
+	GfY7aleWR1NXSPfszKaXsXtsLvs6u8XzTgEogGt41GOo6Kxhxh/rzhPWAYnDuS8EP604XkvR+KW
+	asM9cI/rx1Bu3CbSyhnyEeNF0Ql2Hy2A=
+X-Gm-Gg: AYBFou3mPTohg9NE9xQhnQ8KmzGo9lOeY1rnWVBZ4HN9H1QRxoR+2prWlN9bW6059VE
+	fm4HoA2rAfnzNLbVByWrUV9TF9RKnkMiyBbK0mYEviNLxxztPHKqiJ+M0NnfSAfvN8yUi83H93u
+	PynjHf2D+pXqTmi47Q+eGY76KN+fpwi9g6voj3NfxSp1SLqXtH3aW5fcTt1nrLhaFiIFYBjXX2z
+	/5gogjyCDOSywST0MrIYo10I5AohnD7I8hxGK89A3f3oTCj3DL13WgKQs+Q6yt+QJq6B6BMvk56
+	/iGqn2WTbpwfSloc3wU5Fgr1okU5mwK2RNAaAMlNISnxc0VczV1ubUWHx5qGHtsYufQkOaqQkbC
+	xDElWE6mbmQ==
+X-Received: by 2002:a05:6808:c2d2:b0:4d6:93e2:5bc7 with SMTP id
+ 5614622812f47-4f1b937789bmr4169206b6e.67.1790834428301; Wed, 30 Sep 2026
+ 23:00:28 -0700 (PDT)
+Received: from 578479312649 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 30 Sep 2026 23:00:27 -0700
+Received: from 578479312649 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 30 Sep 2026 23:00:27 -0700
+From: Aveline Noir <jm5905938@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/memory_hotplug: fix missing rollback in
- __add_pages()
-To: "David Hildenbrand (Arm)" <david@kernel.org>, muchun.song@linux.dev
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, osalvador@suse.de,
- linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260930160432.5564-1-lance.yang@linux.dev>
- <d4fac8af-fd71-47a2-bfe9-3c6559b92209@kernel.org>
-Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <d4fac8af-fd71-47a2-bfe9-3c6559b92209@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Wed, 30 Sep 2026 23:00:27 -0700
+X-Gm-Features: AclHuK-fk3VgJqHBfeBrKPt-2j6Rf7JJ_J_9SFI-Q-5BndDxw9L61bmuFQdGI00
+Message-ID: <CANOyQmFzsssM_BXHUDrV+UuVD5SZMBmSkg3UQnmw9Ns1PV7GCQ@mail.gmail.com>
+Subject: [PATCH] selftests/mm: mrelease_test: fix retry limit
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, Christian Brauner <brauner@kernel.org>, 
+	Muhammad Usama Anjum <usama.anjum@arm.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: tbdj5q7qtycigybik5xnus7x33ws6pxa
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AF70A1A0002
-X-Stat-Signature: gaxdehuw8irniezyuxk1etkab6mgjxeu
-X-HE-Tag: 1790834280-696493
-X-HE-Meta: U2FsdGVkX18EufcqnMzJAoZ0oo8tlmWTfJ7h2s8sCPio01Sk+3jChZEKsqoafhEbWcoGlTOEsJI3M5BXwKftw5TbzC3u1OKmZuuWoO4bzepWoTsB7c0DoQBP/yQEhwmJiJS7Saol4KpRi2HdhyF6vb06WXxoFb1SYmDUXE5rwbXCOK3ozeNOWBj6Qc1BZoPHTTCc5erJnReBSzpDk/OAD1DxHCaG1jCPiriRryl3lMeAhX5bVxTXZuHQ0u0/EImteJEmwpUZsmN4FXGJiSltqEw2lUjS3Dgc0nqud9k9KqQKknaY2/DoxIb+h32P/wT8EGgMLuP8v/7E+dyQykqArSBxnFpAoFwZJBknopYuuy+yiSbWZgkXo5kxTJKLnWhmpCPID8QXLWq+dsXYTc/wbcQypZDAiQZeJPYVEttasySTl8b2BE2lV9CO7ILnzkuydJz08vCslunEQGR74GhDhwVXN91vHvVWUZHDnuD1uczTkq7svWiC3wgyOYqsfIHCvgURejXSrEjX+csa51J+KjzuGMci4QJhhXqKR2SDnAH7N+Kq5y6kjSlPbHzb7dgL47oLLBJ8c3tYq8hOXSZ9YS5Ly2sqd4zx+gpIxymEVU0wE+ZZtA9BFGKGHOlPv9TQHoby3TV2ottW//IRrgkvgoGWnldOeFtYP8A4fP9ffreL2DsEukkEtZBFY3h6ZnwftTaGFnz3BaFj6Dder2EkhcpOirmAeTx5leJIVXsWRatdGiXFRg9boQVLto/afD5cG8n9l5le9BfIcd3bgOndNymsgPRqiS+gq1pqKa7lR4id3falpAI6xeLzSd3PH3Ek3A14p8StcDi4lyUVNsGCfECYe/WRxk4mRhMbNtY2MNTYgCqu0KU3xHgo8h7aZv9hbQPtwGF+Z2IxabtiguwNubItZsGAxLUJwOphjJnDXFEGtQG0PLmrkEKJDHKeJSc0LnVF9tYfPJF5uz4xR1J
- /IRKxR7K
- l8WbajbZt+2/5bwsAb6bncbkZpH9IAu65hSAc1GaLFOJjo73Ly7MrMwfgeNFR7CrhK0IJair8qO8TIoNI6c5U2RQy4b6TpX6lUl+cJ6XxHEE435X6i4JyuFmi5eax69S6lJYfFY2gcrg9OITymGsCa1mMouqzZpuJ1fXvOwsDigEyapPbfj38Y1VM5lkIxFYoVSyb3HqvQP46HYxsN059QOaivQFgnkKCySf6j0XSnQCJUxP8hVsxztm6+v9PlS9Zo/VOrT+naYrkcpqN5VBbrQ8Xn6cHOt9/3YtRxED0VUWGHq04dbB2Yp9g1st+t0l6VFLy3lHM3nqN0fRWErY5I2qEtg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AC8F2120004
+X-HE-Tag: 1790834429-150537
+X-HE-Meta: U2FsdGVkX18HeVJ5AjcKZhn1T8FK6cLlL+C6CB+1NsCuMLKtq2Ulj0jP3BXVGyZOZNV3L2fOyVCImOF0RWTRWM4h0vA1znukTi0zkrG3n/1Uju04qv9R64qocK9edNgkWKLEVGQqT3TNtV9M/qQaBS3Nb/9PNr9zVxqaWfFUzax7QZBs79uMtFpFTbZjvbaagBL1vu4bfhH7Lat9f6GVFOmrDGCQZl0uqy1XOFkYGenF9IFjjxmzr69kM3UKoSTMEfUceBVna53a+tkKKOmzURY6vU7wDwSLv/ilKUAYDX7suKtWb2DGZx63hk7V0Z+Vjj9m9STChkMHoBkU7iZnM51flQ8eHnUepzALLbj4uwpFMrIUBwskSURDLFcZo8KndXGirwACQm0FWFQsdwE2sUwnvPAA0HeujLvxqbCaAwGiB2qs66I/BFWKa0NsKlmoIT9wy5uCDAZMAYYxIk7L+tZVDJQ0mvFFvREpI6XUwsficeO+dqL0jJ8wuyYSSutgm+lLGKiyRCSV6IzQe4Su+BwhhGD2K4gcrD4kQPXVfxhLJksLDvP8ICToYIBnAYPwhcLHh3jlfvTGb3zeXn6D1JA1CSNZYj2vcYtoS9y9ALq2puBwTYl3uE9T3Lw/vn6ClRvqapqGLuru1ZVSCu4cH9R1lHHYDB1BHuEFtPrvg1MqHEdwRqrs4GAmtRQiiseaYqEVE+tdOnyeGYz8P4/NO3b9v7wnM8tOQlNhQdn8Wu+PwZ4lmgkdeUFPaEUMvrIQZo1Yvy8Mf0+pZDKD6tHgM0pKCDovjDfIhv+FZe+mNPCwZIBbhSfZyu+gZ3pF8Dx719oBS4XE33Zf+Uyo3kN0G9c+jQBIGRgzFyslNt0923moGeRuZ8zHM1+OTILgwvOemTg0sxLotmUUXpD4cw/zh1/eKyJmH+oUgnpzxhEcSkTmVgdpG1jbnnzYvh/7w9jADOKOxRINZPN+s39VlR+
+ KKmyy+NT
+ IDxPM2fhk3nTZorW+f982pA8VCRggCLZX0Cii1fVCt4DzwLRVdLYWFAO2+xasVkVHDw4Obq/BhiSsTPKv8kXw1HZTQPa6gPsHp6js8yxQrmy84ac5RZjsmC7U2s40ns9MeULOC8l8oGHtmB/gLC6+AyzP2RG9tW2c/TRNjK+hgqwx+5C1j5EtoYtujISlirOBPMVYL+sZOAgLvPuIrbrFb7HYL/WHXYmHqoA8HA90dbwrPdOhPdcv+dfwpvtLSi+qVip72dJYXhJ5qzwW4Id/9NjQFuNCtf6v9atYiX87iWKC4Z53KbiQyPin9LMzr6H37M+Q4wks3DYyn+kHN43Z02p5XMrF0kRQEoQhkXTK5fjnqdTbKyjMQCNBAIfscyrE8YvN4r/ECrUjGBigBDY/PttCa7ujCPz8quCzSqByVK5B9B0EtRl2iD8aOzScQL3vb865hQNpXZdMZRtKdNybtNTQ2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,87 +141,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+mrelease_test doubles the child allocation when process_mrelease()
+returns ESRCH.
 
+When size is already MAX_SIZE_MB, the current <= check still allows
+another retry, causing the allocation to grow from 1024 MB to 2048 MB.
 
-On 2026/10/1 00:46, David Hildenbrand (Arm) wrote:
-> On 9/30/26 18:04, Lance Yang wrote:
->> __add_pages() returns on a sparse_add_section() failure without removing
->> the sections already added in the same request.
->>
->> For memremap_pages(), the failed range is not counted in pgmap->nr_range,
->> so memunmap_pages() skips it. The sections already added in that range
->> retain their vmemmap mappings and subsection bits. Retrying a
->> section-aligned range can then fail with -EEXIST.
->>
->> Save the initial PFN and remove [start_pfn, pfn) on failure. For a vmemmap
->> population failure, section_activate() already cleans up the current
->> section, so the rollback excludes it. If the first section fails,
->> __remove_pages() receives an empty range and does nothing.
->>
->> Link: https://lore.kernel.org/all/BAD58999-1EDD-4A37-ABA0-DB1BD8AB3453@linux.dev/
->> Suggested-by: Muchun Song <muchun.song@linux.dev>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->> No Fixes tag, as I couldn't identify the commit that introduced this issue.
->>
->>   mm/memory_hotplug.c | 6 +++++-
->>   1 file changed, 5 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->> index 796af1028ee2..ca4656698148 100644
->> --- a/mm/memory_hotplug.c
->> +++ b/mm/memory_hotplug.c
->> @@ -380,6 +380,7 @@ EXPORT_SYMBOL_GPL(pfn_to_online_page);
->>   int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
->>   		struct mhp_params *params)
->>   {
->> +	const unsigned long start_pfn = pfn;
->>   	const unsigned long end_pfn = pfn + nr_pages;
->>   	unsigned long cur_nr_pages;
->>   	int err;
->> @@ -413,8 +414,11 @@ int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
->>   				   SECTION_ALIGN_UP(pfn + 1) - pfn);
->>   		err = sparse_add_section(nid, pfn, cur_nr_pages, altmap,
->>   					 params->pgmap);
->> -		if (err)
->> +		if (err) {
->> +			__remove_pages(start_pfn, pfn - start_pfn, altmap,
->> +				       params->pgmap);
->>   			break;
->> +		}
->>   		cond_resched();
->>   	}
->>   	vmemmap_populate_print_last();
-> 
-> Makes sense and LGTM.
-> 
-> Do we have a Fixes: tag? It probably dates back quite a while ... not sure about
-> stable, we never saw this in practice. But if it's easy, we should just do it?
-> (not sure if we ever had __remove_pages be limited to hotunplug support)
+Use < instead of <= so the largest allocation attempted remains
+MAX_SIZE_MB.
 
-Hmm ... I'd leave stable out for now. David, could you add the Fixes tag 
-Muchun
-suggested?
+LLM used in discovering bug. Changes were made and reviewed manually.
 
-Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+Fixes: 33776141b812 ("selftests: vm: add process_mrelease tests")
+Assisted-by: LLM
+Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+---
+ tools/testing/selftests/mm/mrelease_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> I'm planning on picking this up and sending it for the next merge window (so not
-> as a hotfix).
-
-Thank you ;)
-
-> Looking at this ...
-> 
-> x86 does not really expect add_pages to fail:
-> 
-> 	ret = __add_pages(nid, start_pfn, nr_pages, params);
-> 	WARN_ON_ONCE(ret);
-> 
-> That's probably something to clean up as well?
-
-That would be a separate fix, I guess :) I'll have a look at the other
-architectures while I'm at it :)
-
-Cheers, Lance
-
+diff --git a/tools/testing/selftests/mm/mrelease_test.c
+b/tools/testing/selftests/mm/mrelease_test.c
+index 64e8d00ae944..a5124c9e9f43 100644
+--- a/tools/testing/selftests/mm/mrelease_test.c
++++ b/tools/testing/selftests/mm/mrelease_test.c
+@@ -157,7 +157,7 @@ int main(void)
+ 		 * Retry until we succeed or reach MAX_SIZE_MB.
+ 		 */
+ 		if (errno == ESRCH) {
+-			retry = (size <= MAX_SIZE_MB);
++			retry = (size < MAX_SIZE_MB);
+ 		} else {
+ 			waitpid(pid, NULL, 0);
+ 			ksft_exit_fail_msg("process_mrelease: %s\n", strerror(errno));
+-- 
+2.55.0
 
