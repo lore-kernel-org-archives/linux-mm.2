@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E19BCA5FB3
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 10:34:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8700BCA5FCB
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 10:45:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 464776B0092; Thu,  1 Oct 2026 06:34:56 -0400 (EDT)
+	id 821C76B0088; Thu,  1 Oct 2026 06:45:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43FBC6B0093; Thu,  1 Oct 2026 06:34:56 -0400 (EDT)
+	id 7D1B46B008A; Thu,  1 Oct 2026 06:45:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32B956B0095; Thu,  1 Oct 2026 06:34:56 -0400 (EDT)
+	id 6C0EA6B008C; Thu,  1 Oct 2026 06:45:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DFD46B0092
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 06:34:56 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F25F2A037B
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:34:53 +0000 (UTC)
-X-FDA: 85273699266.28.29F2C3F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 35CFCC000A
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:34:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cl+T3eCi;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3463E6B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 06:45:08 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CC7431A0360
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:45:07 +0000 (UTC)
+X-FDA: 85273725054.01.F043142
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 00BD94000B
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:45:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AXyYcsq9;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790850892;
+	s=arc-20220608; t=1790851506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cpnAERfwWcpJPCQJOiMYKzskczfBLAmXZOfaiGrPW9s=;
-	b=CGRAz7wb8bEfBDZh0DUkW92fcFg/WdZXiJU7/Rl7GJsWIU81u5djdGEjdXo0Ufc4hUxwNK
-	D+Cl2PaBP748bcCRdBvFJxVyV/VIEOJS/aRpylSou2zRlsjq4QRcgQ3eGD4k+iyDtw4nnh
-	zEpMxQECSRHNLTHb1YQEg7OYIun2u/Q=
+	bh=xS811ek91+cRnLcRHo+xdG9TRcDiTFjS6kYimGRgBZA=;
+	b=q/dwhPkfmoxgUyA9MKM1LDlwQvbRF0C27kJ5aL7bbaRY4OmrKp2YHB0Ih6Cug83AE0z5S9
+	E0sE7HPNlBuiJ/l7j95xBtLoivTQu5Ze8p5/uI3Nqu2Hg2FNF1zjZ+28CJdCgRgY3FTQwX
+	UHMAzNDevHXm3rGkWOqjZucwH5hn/sQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cl+T3eCi;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AXyYcsq9;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790850892;
-	b=VPM3dzv7ni98HXZCbowlrXK9NbeceVvond4IXUdgOjS8layZQ3R8onXJ8ZInaOIKpFVfp2
-	oq/VIqcXU6CiE1jfpRoF4Zp+jYta0aIUVLldb32rXBhOTRcBJGEmZbzdW/eCyvN4FTIz4P
-	AgfFF7O3Puwvx4CUU7aH7p+5T7qDOyE=
+	t=1790851506;
+	b=e15wJ9SPUha55I0kIvT4Nr4QLyB5SQZ9bhv7H7VW2tk+ckuIzNJDyDUfMFT0jz79EnNRgY
+	k5TFenDrLJMq0M+bsuk0kdAp1ZrlNbf11ZiFpuXmdahFhw3kxiVhsdXrF8ezYXp17Uxv8L
+	naph6OB7mDbDIlO1CZfamg1Mw9jPJF8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7BA4241A5A;
-	Thu,  1 Oct 2026 10:34:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5504D1F000FF;
-	Thu,  1 Oct 2026 10:34:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B6FD8601E4;
+	Thu,  1 Oct 2026 10:45:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC961F00898;
+	Thu,  1 Oct 2026 10:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790850891;
-	bh=cpnAERfwWcpJPCQJOiMYKzskczfBLAmXZOfaiGrPW9s=;
+	s=k20260515; t=1790851504;
+	bh=xS811ek91+cRnLcRHo+xdG9TRcDiTFjS6kYimGRgBZA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cl+T3eCizG7WiIcmVcH8Ez5A4rlX6y7uy2BLgB7lq20a7ulfYXUm64BsNtPmRr2N0
-	 s7bjBo1ykwKVoa9BSdZDoo2u9ZLi9Fvaa07bk4xm6dPjwvMPSD0rIvkA1TIBMp27F5
-	 +iIyy+4G+tcskX6T38MAAkG49ESye8v7pq/44dmtKP1rvHXDkTucSE+AqAwnXEbaJR
-	 oXkNbB92rXh4v+4m/kxJLN6zOrnEoNo7gSIey1ZgVh/GGbNq0LGvlY5brF3GLA+7Y2
-	 8atinXm/CykmIiPli6VB37IBghZQBo2QIDfWdgSVCmHNlFV1YhodM0lQdLmnWVMRLL
-	 zOKG92U7/DmNA==
-Message-ID: <742ced29-d490-4b33-8fff-d6d503c0ee95@kernel.org>
-Date: Thu, 1 Oct 2026 12:34:37 +0200
+	b=AXyYcsq9/FFTDLVDfuaLhYscCqLUFDph4zsoXj5QTlmOADNMX51iD0SkOytpuf5MO
+	 On7NZDhoFLjM6CWVW2gzFEcvlQfJlOxXWG7tWYqM47OAMu7KAyTJd7YFvQOmfAC17f
+	 pUVold2MOFnaPPOqct7QNwYVg+o854Z573vOoPA2MqB1mA056rQO7/yQCAetpOVFcR
+	 DU96bxWqJMrGQzyE+IpFrPq0TBmt2WYo1ugFcGZcDcEtbALPfyGcbim8nxi0gLfM37
+	 GlcYsri4WfmEBwTtjSQrTwwgvb8pzlnlZMraSyWbadX19Qf1ifbAwyTUxBkutck3ZK
+	 jzOuD2flcr5bw==
+Message-ID: <e1728faa-5d50-48af-8ba0-5098be9124eb@kernel.org>
+Date: Thu, 1 Oct 2026 12:44:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/7] sched/numa: scan read-only file mappings in
- tiering mode
+Subject: Re: [PATCH v4 4/7] sched/numa: separate VMA placement from scan
+ continuation
 To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
  akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
@@ -86,7 +86,7 @@ Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
  shy828301@gmail.com, osalvador@suse.de, raghavendra.kt@amd.com,
  stable@vger.kernel.org
 References: <20260930112206.205083-1-gourry@gourry.net>
- <20260930112206.205083-4-gourry@gourry.net>
+ <20260930112206.205083-5-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260930112206.205083-4-gourry@gourry.net>
+In-Reply-To: <20260930112206.205083-5-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zrdu7njuzpfxyyo8icqt16xtb1tfkj8b
+X-Stat-Signature: a85bgycf3xit5ccbeyi3wh5ujpfdtaij
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 35CFCC000A
-X-HE-Tag: 1790850892-697344
-X-HE-Meta: U2FsdGVkX19yekTT8WJlrkhI8qRP1+nSAo0XUutVYERsAoLOvg5mLfkvK+FdeCD1spjRNDFz+RhJnVG3x8Dpa+sDdGE1EgOKP++I0pEduAHCN55oo/2CksUBkx4igwyAc0Wo3e4TvYB0ln1ZwLzG6kQSxPqeW9g1o1SQTTnYHLvzXjXKfOMJvQbOop0r1bCjBJuVCJijsI40ybZXQhKcpElx/VgIpNAhhJsdBvUuhBspJgSwIndtgwDa5KNiuvnHCmVA46F5+nZ+TLsEP4m04AQGWUf9oD2fylVLYGlee37nXphKTCmi1zHUMpzYgu598/VpZ5q2VjZk+s0HwSnodoxTNdK2XvhOtVrvWFwcJGNfmdO1MgI7+i27/3/gRQl+lFrlj2zGiqc89v1EFAEyrGxDDo2sPznMxdiKbUhaPkoJz10y6mgwO1z4Ab5YXLWh/6AioenB+Qorj3m0IjNHnHBDiz8lRWgtQEaFwihiqzaNHTANOhfYXMzWSmqWGm7VvupjCWH5CacPeVhnmMsVoJG8dPXy0n32QlkbTPMt6rY2ZVYJy1ZO68ytuHjcqtuRSeZ9ftV+yjdiAcHeAVV8FJhzY3ugEFitcI6gj35CnEfusW+FjQUkVu2q5ZGVmYTKXKC3RnUlghRF2tRoPPPNQlf317ZttjJyRfnEybstMGthjVvRF3HYV3Ci0ZxHKvexhew9zzEn2qX00v8SHW8/7Dio4JMC5HSC4H0qmEU8EJ1MV7TgMuOuTJfjjmd0eeFOeGL63KGJYbCbq4VNM8Nkqu96P9v0xE6uVjrxtusD5LJupuO13stpBB3EloVj0BOBeofWaH41Weva9JxJhHvp6dWNCykOauEtvye2nz8ajG8CyvzGmnpeVafrewg9DPZLCh8jaOAsJdSPjf4/y43LP4yjdBNLxbG5pqvH4FJqIF1M+IZ7uDBsanOJbQR8oCNjgaZ/hy9Ll82v0CGWObY
- VPstoU/I
- eOgxpACZZhud7/ZF/jHVYsbOxHDYNuUnhNcl3tGllEBr385C2+TDfqYDEjxI58EWIPGJUnYy2NFMckzoeqLNVu9Z34MgCxGUsaTcaB8IqatHGhpwAX9oqIPULWoDGOEBoFYfJqEztTAsSAy2W2/gkM/txiPZSs6ybJ38lCAWoSsUGWoWnPgWUyWl2yxtG8dMR+CBveULKwnYRLLoBIVQFa5xWtJjSoEn2eUlpp1nlpQN/RAaq06bh18owsGFupPOC6zOSoEFWAjR4pM97C+FRe1C6vKlf6nt1EHCXnPpLdfFUt46aZ+uM1IA2rD23kXuV1vNufPJVlFZEMDxSLbRx3VqBFK/0d9EBz7u54K2Gkk24Fse7JetY4n4QmWCgEa8w0oZl1oMNr8jWaEIJPsV+uSjMrlt5VxXaOKXR
+X-Rspamd-Queue-Id: 00BD94000B
+X-HE-Tag: 1790851505-509227
+X-HE-Meta: U2FsdGVkX19Y05fDTDXgd1c8cmzJ1qOYneVk58U/eaUkZ5blin5raNh6blDyuV7Bi3qeacFhEGfkgpUuYBwgLRdHeSLlLr0gCXgf53CjVdWZCG24tNEhzCcdXSeKcjQeauKNLT3XsZLFGc2UB6H+Q5eW7UikfPDrD8x1rGCGZj4UY9XM2+esdCokIlkFmOSUdOFjyA4nXahjjUW22HzkkUQvbT2H3gz/yxE49dY06Gk9PPcosWSC0QM+58evjTcGyjFivDxTj4fBeHLENkIpeYYLo2QT5TrTR2Kj+C9mvwc561HQZixfuekqP7SXA5ik4IM7y0NLtV3dI9N8B1ba7SbPuz+m6ccsxB68MRAcOkKySkyD2NEhr0jFHddm3jmj1dG2L7PAbCxbJvmRuJIXzKB91EU0uHIqmmDVmKwIwR2xn4IdbwgwXipWJtua5++7+rQZDRevo1XxOsxkYnbS7ewekeEP6GyeXheVuKjWmrxs7o42sUtu8AspBFC3DfTmOhtQF4fUI7QgcahtLS9WAQ5FLFCt1/w+mineE9SEUZUN7c1OimxjQjpu+LZ2+2zWaqNa3f+Xc7XlbPyCMfMLwZe39MnDNmvgUrcJxskuuABsACvEv3F0o/9CJmZnyLGSJmrDa/qD1WrxYh9zi4N/5rCfFefwnfpWWzOdLIKSnMCOxYiMnoXwWvRXKGKi9A3VdZ4QHrgvkkmO6VLCpZ2HrS8HgezasbS9WmKkkX8SrQZ9yvgHRzX6zfLa6u1i0Tr+53775Zb8qHRAJAiJH1VSo4jzT9E/iIwQRn5dgHL+zHuF+y9desoAGBZ8OLOrCdvDekf/zc4aFGGlcCnFfdsfhWusHyY7BMO99TNZK2RJSA5j3dva7ZdnSkh/GPZ1gl3IDb5PNu2qFLdwkFwSnfftqBawpUPna6oQ896D3QZLLFpUyDLXwmNDfGtBTNqMgayrP9HYKLDrqJStTqDvZKk
+ LLWWokEU
+ jM5WtZzDpEFYImVOAkzFU/uD8k8QyRnqNtJDOTBuakw5EfLVEg8dUrBc6xi6g9kIsp6NJ7lP6SccnxzUTC8gyGIv+hIADQLM74j8te4VnZJKzWqAK6QbBCMfTf8wCtziBDAGh97rjXivf7oaYDjrODydFuMm6IuFjjDks148FKpB70oPpxJ/2kGAdPGJdkNViC1sAj1YEPDO4OhAYSHqQ/SzoCEoPs1Tg3x3pU1k20ur0IcFsVBVVUWtSBONhf6Pax1YCjYn60Io2YYoDprFnH20gqkZqQzYPOHxTHxIF3QSzomN9XcngiClfY2Rrspw5L+tVhN6OprhNGKTaFMMifCudC2QWKMgSTk8ci0U9RkM7GfTStSYkfOvB+iN6iBd0ZtDyiJUV3itxEzZ7GLVv6+iPqLfyUqrq2T+I
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,33 +154,65 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 9/30/26 13:22, Gregory Price wrote:
 > From: "Gregory Price (Meta)" <gourry@gourry.net>
 > 
-> Commit 4591ce4f2d22 ("sched/numa: Do not trap hinting faults for
-> shared libraries") excludes file-backed read-only VMAs from NUMA
-> hint faulting to prevent east-west placement bouncing.
+> vma_is_accessed() returns true both when a VMA needs placement
+> (east-west) sampling and when a VMA is already mid-scan across
+> multiple scan windows.
 > 
-> This filter hides hot file folios on slow memory from promotion.
+> Callers cannot distinguish placement eligibility from scan progress.
 > 
-> Scan those VMAs when tiering is enabled, but make their scans promotion
-> only to retain the existing restriction. Keep the historical VMA
-> predicate unchanged for backport-ability.
+> Rename the helper to vma_needs_placement_scan() and handle continuation
+> state in task_numa_work(). Record whether an in-progress VMA scan is
+> promotion-only so a scan resumed in a later scan window finishes with
+> the policy it started with. The zeroed initial state places no
+> restriction, so a resumed scan that finds freshly allocated NUMAB state
+> falls back to the default policy.
 > 
-> Decide the walk type for each VMA from the balancing-mode snapshot
-> taken in task_numa_work(). A VMA gets a placement scan only when normal
-> balancing is enabled and it is not a read-only file mapping. Otherwise
-> the walk is promotion-only, and without tiering the VMA is skipped as
-> before.
+> This separation allows PID-inactive VMAs to be scanned for promotion
+> without treating scan continuation as evidence of placement eligibility.
+> It is a prerequisite for the following fix and must accompany it when
+> backported.
 > 
-> On a host with 768 GB of DRAM and 256 GB of CXL memory running two
-> database services using ~430GB each, 169 MB of their shared 185 MB
-> main binary accumulated on CXL and was permanently stuck there.
-> 
-> With the change, the binary tier residency tracks its runtime hotness.
-> 
-> Fixes: c574bbe91703 ("NUMA balancing: optimize page placement for memory tiering system")
+> Fixes: fc137c0ddab2 ("sched/numa: enhance vma scanning logic")
 > Cc: stable@vger.kernel.org
 > Assisted-by: LLM
 > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
+>  include/linux/mm_types.h |  6 ++++++
+>  kernel/sched/fair.c      | 40 ++++++++++++++++++++++++----------------
+>  2 files changed, 30 insertions(+), 16 deletions(-)
+> 
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 1bd3ca7bfff2..d0ac21d02c47 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -803,6 +803,12 @@ struct vma_numab_state {
+>  	 * A VMA is not eligible for scanning if prev_scan_seq == numa_scan_seq
+>  	 */
+>  	int prev_scan_seq;
+> +
+> +	/*
+> +	 * The in-progress scan of this VMA is promotion-only.
+> +	 * Resumed scans finish with the policy they started with.
+> +	 */
+> +	bool promo_only;
+>  };
+>  
+>  #ifdef __HAVE_PFNMAP_TRACKING
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index ab9afd3ad49b..3b30786ded3b 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -4082,7 +4082,8 @@ static void reset_ptenuma_scan(struct task_struct *p)
+>  	p->mm->numa_scan_offset = 0;
+>  }
+>  
+> -static bool vma_is_accessed(struct mm_struct *mm, struct vm_area_struct *vma)
+> +static bool vma_needs_placement_scan(struct mm_struct *mm,
+> +		struct vm_area_struct *vma)
+
+mm can be had from vma->vm_mm, so likely sufficient to only pass the vma?
+
+Apart from that this looks much clearer to me
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
