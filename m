@@ -4,115 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07D41CA5FCE
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 23:50:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A30F4CA5FCE
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 00:00:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1D6F6B008C; Thu,  1 Oct 2026 19:50:25 -0400 (EDT)
+	id 7F7976B0088; Thu,  1 Oct 2026 20:00:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE7196B0096; Thu,  1 Oct 2026 19:50:25 -0400 (EDT)
+	id 7A80B6B008A; Thu,  1 Oct 2026 20:00:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D88096B0092; Thu,  1 Oct 2026 19:50:25 -0400 (EDT)
+	id 6BEA86B008C; Thu,  1 Oct 2026 20:00:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A64A96B0093
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 19:50:25 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23577C05B0
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:50:25 +0000 (UTC)
-X-FDA: 85275704010.29.A48507E
-Received: from o1.ptr9745.em.honeycomb.io (o1.ptr9745.em.honeycomb.io [149.72.141.136])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 24C9040009
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:50:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b=xQb7Cbo+;
-	spf=pass (imf11.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io
+	by kanga.kvack.org (Postfix) with ESMTP id 438106B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 20:00:50 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96CCDC05C2
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 00:00:49 +0000 (UTC)
+X-FDA: 85275730218.25.7A6A638
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6F1E01C000D
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 00:00:47 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=fsZrsXbw;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf18.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790898623;
+	s=arc-20220608; t=1790899247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tg4ppXXVVjnMQ6UEGhpcHjjpr3r+46JLWKe/8p6U5W8=;
-	b=ZAnfvDHvPDm7g8F70ctj3VsN71w/sVgeymeCYwCOEqPdfN8Wfa9qcfb2frs929vwM0wfJU
-	J0qp+sBAo7s8q8w+70F4kJEntyjzukUPCDObsUYFc/oBvx5rLNYWRLVqZl/8S7OdxlFLGX
-	e0d3E+gLDwBnNj0/pKCBHzcbRR8JW18=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790898623;
-	b=A5PvIGxf+LOt/icKcNBCMBOaqqoYJCdfK6HDAV/9IM/Km76bVZy0SdtwANs9yggssWpSD3
-	MVyeWBa+eUyM5jUpLUeLnMM/lxxoq0vTy7wQUT9/rE9pKn7kdHXzARLsyUipNvIFFnBYaJ
-	px4xJjwvj+F/ZncJLe7WEesF0Bum78s=
+	bh=cG+cJ7mT22tNPHsFBNtxnr+VztjGQBeRNYYjS2dgVhM=;
+	b=eUBZnH3Rkac4w+wJwbYqWlIIOpGFLRk8GtkGvX04kbz04CmAfnt+icbIXTd0K/nvWhIAkM
+	BjFFWWwiil3yLQ9jLkm2OdKX9jkocngHdWjPfa9N3FTL6Em32i+2DxgtnsZsxzIxVrlW1C
+	g907cSXLvZQg6+5plMHMnxPclIi8ZHg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b=xQb7Cbo+;
-	spf=pass (imf11.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=honeycomb.io;
-	h=from:date:subject:mime-version:content-type:content-transfer-encoding:
-	references:in-reply-to:to:cc:cc:content-type:date:from:subject:to;
-	s=s1; t=1790898621;
-	bh=Tg4ppXXVVjnMQ6UEGhpcHjjpr3r+46JLWKe/8p6U5W8=;
-	b=xQb7Cbo+Xc/9iB6UHK5LcV6ZNhzEfm2aj7BqB4bScq8R0FnEuOx9c5dmpKHu6R8NcswY
-	beJD9nLweoLksfoCl06obDppiQEaUZ5wHAG+ApfGnusrkbFYrzMha5Z9/lmAxQFOM1zhWc
-	ePyUBzDN/Dw36Gp2mxVsR66clNf/p/UgnmpKekSuq+sB27Quuh+yG0WGwhPwkshFo/CtKI
-	x5kUdoTkN7SPLQ9m66E5WK9gn+7n+ViumNQPQ93Dp8vN3xMlWXdLcOLyS+50pisJvssOoH
-	4ZrHCUsD3zhsMEVG9rB4kuL7xwo+qDYSx9KTG8kJ2A3vl/T2Jtm6+ItMFDZQyH5Q==
-Received: by recvd-5dd7ccd7b6-bvrdz with SMTP id recvd-5dd7ccd7b6-bvrdz-1-6ABEF1BC-AB
-	2026-10-01 23:50:20.883098402 +0000 UTC m=+197355.990267287
-Received: from [127.0.1.1] (unknown)
-	by geopod-ismtpd-1 (SG) with ESMTP
-	id 16rqit50Ql2Ye7l-pyoTLQ
-	Thu, 01 Oct 2026 23:50:20.859 +0000 (UTC)
-From: Liz Fong-Jones <lizf@honeycomb.io>
-Date: Thu, 01 Oct 2026 23:50:21 +0000 (UTC)
-Subject: [PATCH v5 3/3] writeback: switch a replaced cgwb's inodes to its
- successor
+	imf18.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=fsZrsXbw;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf18.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790899247;
+	b=0z0S8/D9eNtENUtSECPBUKoh2Uxp4H4PkOWqISQgWhPQ3l+HXqK2wOd0HsUxdYGxFqaV5H
+	it3sjFCXrMJwHQryj62lirBfSVnumrGCZDKzJuSuyRI/z//jQpXUUyUouJV1S/PSPwzigQ
+	TiVb+mYjbnuKmOidWVvpJ/MxZh0PqLA=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CC72640E03BE;
+	Fri,  2 Oct 2026 00:00:43 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id NaJ-HpYXBw58; Fri,  2 Oct 2026 00:00:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1790899233; bh=cG+cJ7mT22tNPHsFBNtxnr+VztjGQBeRNYYjS2dgVhM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fsZrsXbwppxgBw+JMcEWeOik0QpmlmhwCehRdAUflP9fffOHurGmKV/miQIYLo7dl
+	 0rmH8plvSRduAlM1Cd30fXlLUrWE36VjiP69+bX8ezPP9y0QbxAOVhaCEx0jzOH/jB
+	 rbq7WEuRlaVjUgZjaf2IHhqfeNccFCrHykU19EBEhHgRybuf7w8mZIwFMlxAaVoZhO
+	 d2TAISGT5AW67hpOT2+/jKGEpfJKcUp197bqs0RU90atPixEZBAiKw5T0H5SO+reOd
+	 EKhLFW70iqospUTw4Dyczm2h7FZeU4EqpowkR1A0eD3A1FRbdrLcG+6aJe/+D9IRdV
+	 tQJEHyKX6/eVtDIEm/SyhgtBr+oDFW9stciSfKxFq8xv/2n4EL/3GPpQ9ysJWhWKGv
+	 EJe1QQMc1ogmeLVzWVENseeV0l5d75Gy1Xa55R0LUR5e33g7YK/bQKQ1dP0RKEw9+a
+	 Jsor6wKUbW+b/UYo8/4cNn/8j4dlu8Kj2n4pvaDvI/gnBKgFoBt5Ze9+Qnk9MvfLwP
+	 TI0lh7wmOTllPBTjS6DrcAv7FlotWP4MVY2v90qApdWiwDmhehK4G374oOCXyj+Abu
+	 tpvNncuvRIoCcb75sb/7GJWT8Aq2ohUS2oAwudDUNDQHqhjulshygMHoLW/6AOLKFB
+	 NJfQuVGfFyE0nXitzxJWJCqU=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D09C640E02A8;
+	Thu,  1 Oct 2026 23:59:53 +0000 (UTC)
+Date: Thu, 1 Oct 2026 16:59:50 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, x86@kernel.org,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev,
+	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org,
+	Christoph Lameter <cl@gentwo.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org,
+	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Long Li <longli@microsoft.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>, linux-doc@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <kees@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v2 0/6] x86/percpu: Share decrypted storage before guest
+ setup
+Message-ID: <20261001235950.GHar7z9v3zfk8odoTh@fat_crate.local>
+References: <20260929040256.543767-1-zack.rusin@broadcom.com>
+ <20260929053930.GEartPEjbZMpBVSvSk@fat_crate.local>
+ <CABQX2QNmza+=i1FXgDtFS3e3O5oXxPZppRbRrL54P1LmrB2gBw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261001-wb-dying-cgwb-flush-v5-3-8361eb8c65c6@honeycomb.io>
-References: <20261001-wb-dying-cgwb-flush-v5-0-8361eb8c65c6@honeycomb.io>
-In-Reply-To: <20261001-wb-dying-cgwb-flush-v5-0-8361eb8c65c6@honeycomb.io>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8030; i=lizf@honeycomb.io;
- s=gpg; h=from:subject:message-id;
- bh=YRbhWrPvT5vwC7RVdqWrGq4zYuwCvAVvR/CEAsOnKZ8=;
- b=owEBbQGS/pANAwAKAaXO1OOXra/CAcsmYgBqvvG7qknTCVvAZ6ZniFRS77iwT+EnsNN8/NjIZ
- NvbNv1PZHKJATMEAAEKAB0WIQSfW1LPQ0gyJmoTHwelztTjl62vwgUCar7xuwAKCRClztTjl62v
- wr7HCACiXqmnKq6I/MiWA8gd2MeOwgnuXBbHasIlmE3+Vtybu1osyZeENISZc6kUY5OsG0KNT3b
- t/ouxqq9JnJq2z2aUXra3mjSUdwtbzkz1SztMRFHLr+oiQB4F8VeiC55BDqNggHBloTPgjzIxzv
- Yb/bTgCiY80RELiREN36duR2Fc7W4c7tlnKtOjHw4SKxKB3KQbD1Kp4n15SLyfMeI7aU8m/ivNy
- hnnIuFY4j0yHXz0y6eXyq/JpD8ElLN8J/0CqCOgzNjvu8cIvq3/goQtJGL5CdILSGioc+QkbpYn
- BGRXK7oL+z6x4dXmkIrC68j+lbPGvPO74/VfOn0IRLtrCTTk
-X-Developer-Key: i=lizf@honeycomb.io; a=openpgp;
- fpr=1F7714D7EC3441D2CECC24606A3F8B00FBDDD2A4
-X-SG-EID: 
- =?us-ascii?Q?u001=2ECuH7N2XAoeMR1zrzr=2F6NZrhli2vbKPOHff5fJuZuba6ZIE8QPyIf9mn4Y?=
- =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmefOlJgNFT2+h?=
- =?us-ascii?Q?IUz2LtsBtTcgXfyA1sLVs9COF=2FimB1AyAg9YqCv?=
- =?us-ascii?Q?X5DdUu1qG=2F5Yq3HIiQ4f9emqTXTfhT9Dxo0=2Fb9K?=
- =?us-ascii?Q?+26oV3ycUWsgyLYgPxs0HHZZjlm8t3bdS9teNrg?=
- =?us-ascii?Q?i5ibO18ctKDrNRU8Vrh1pciWW8TkYc2RhQiLqKD?= =?us-ascii?Q?ZBJ4?=
-To: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Tejun Heo
-	<tj@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jens Axboe <axboe@kernel.dk>,
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner
-	<hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
-	<shakeel.butt@linux.dev>, Xin Yin <yinxin.x@bytedance.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ian@honeycomb.io, Liz Fong-Jones
-	<lizf@honeycomb.io>
-X-Entity-ID: u001.GRlkmHQ+Ka/CKxmoC/CxTw==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CABQX2QNmza+=i1FXgDtFS3e3O5oXxPZppRbRrL54P1LmrB2gBw@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: 7mawekm1nr4b11qsrcyk3pkfidhqkpf4
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 24C9040009
-X-HE-Tag: 1790898622-499955
-X-HE-Meta: U2FsdGVkX19C/xziZG7/ro9zMFfWJHxNlQ8RWDJ9Zrp/TOrnX9S383hb+4+lYd9b86//EOmOMU2z8SSLThf9jLd3qM/lvWZnm1QvK0u5SKHL9/6b22zjAEuaICx5Nrcf+U6ZU4gCgApXjkCK7s3z28GA6pdQ0yIYijV46Vu/jTNPHDx7tdMsTSH4eGMwqW/CEIl5Nt9vcrkSvsOHAxQr99EhcChe93Elkgy7P6gZJAv11eELWIb+B5zAaYiiWkiNI3qehMw4yx/NDsCKgGiMEW1zMkQn35GkZ3Fia4wNg0jmhuWcAVmTTQ43z0FFl4hXFNw0nWHieEjmVhb078Kupg/7A4nagsbTaGsTdyWMANSjM8Izyyw2so4jwyDLnGnB81ngEX8E1cBOnoXMYpCVTFOANod/o+HfoCZealaa6XgjwT1coH1pC2CBUSkU3CABIuFMu6unJASaElDG1GPhkQXOrMVtrkHkKcq199aJ2CHBHw0YEukqfRDWXekIajtN+6GasUu08ul4PU/H9G7RcWJ3adtFkmoNGTInT1ptQhhsYNqbWa5/VJVP/ht0wunKJ7NDzdkqnaYIGyJHUBMxZPF5DaxYXqYWiTDtECZiJ34zs1rKvcCpmcd8CSOm+YC/HogP9AM7RUAwO74xXj8YnNL2jo0bRZha3SggEJ8S/HbC4FWJoccQND2ZQcIadDMhaz9Iqvs98LQ5Y12y7YElIR/mUUT3kBwxYremG6hj5l9n/fsa/+prenmzi+SHyFM3t5aq0eSh6h49Xg2r251rBeBPxCHkCWBG6JsSY7Lp4eRFuhp1ZP1WV/+C5LdxP/IKjdoTc5JlNpy1jcBMjhNa8nDL+C8yzfu0v5N/Up3ENnyVKH3BG9iVUbfV2BnfxLib7DSW0KTl/TpYG0HSEcVh09j5UAjyFZLmlggh35AjSqChtfK1ZsYCKbdWaOiiPumLuvzjLQFSzLwZDD8tZU9
- 8nJ+C0lJ
- 8z1lovQQ9f/Z80SmoJ0zzrqWVBPVKHE4lAhx+bskh4QTSgUUqJgr72lL+cHtKZ6XTUGz0SNOynnW1D0C6GTA7f6aSRKmEUi9bnafcH8qoOPS6Yrm/Y5cyvmxGqUOYOrGA1Uts18r8OMmFHhxKh+BrHJGQN2tmk298kUoSD0ey903LN6g28bqdOIR6QQkg3YPP0VrZomCIdu0c1z4R4N8XjUjdyZVKuAZQbFOq/eG1YgstPo07pDBnaMKW6R4qx7GgvOxKdql5PqgJRxCVPsIMA/s7ni0dJDITMD9hc5KcZPHignkwPtS8xNSPT6SAfmrAq9x3/DCKWsZnT0oKYwyo/WFBAlmnVc2QoWwMXp3ayc5VucvJaQW22M69MaSV98cByEheA6AcXeTknlsuC1+OFGQisNbkUq2XFJg+5SO8zit2TNiyEWBTK/0ZVtE/XFDO7SZ+ON/HeKfPzyRCIL9Ndwvco2/OG8WLK62TPvGENR7+VpNxoDhdXNX/Pgq9E87OfdSy3NhsocRbqXSivt77ZWnp/G73aUfgCrVA
+X-Stat-Signature: ihn1qwjrkrk6whg1nndtxauwch5x8cc8
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6F1E01C000D
+X-HE-Tag: 1790899247-569401
+X-HE-Meta: U2FsdGVkX1+Fu4MUVd84RiI5Zps1lx7RCbFu2tJSgKdUCeoIcvitNVaaWxVar481TppG/G3ePcaUg4ZYPrFACsQMsDrdB2L9QABiVehzme/OLJniHcj2X08grQVj140fzJUrdv1pW/Bg+WSrmiDRSsA+gkcr4VFqaTDZ9gVK9x8FHc7rGUYCX9i+CfmZ7d6xkHnJja8e4lolTP8LxdcHLmj6nUEghKbgNzfs+pg3WZeraaeABt3+N+B2r3eLYIXGgBWH2ICI/AIx++HvgAV5AR8O+Xg63lKZ9Ci1e/uJGys1XnwbGNoqIZ66+2f/um9iVLLll52wlKRq+TjpwYez1uurg1BgZ8l2moW466s/sk7VCKy0lVa106C8L6ubxLYsS1jndNmc1w2Csc+tp55yFxxIdUu0t2o7Cfi62hOAuMotijl6l2xf5TWj1jBi84IJCd+TR0O+jtiF5FJW2hH/mtXzOUItnAa3Los+iESaz22w913OIiPIjGQgAPFfVEb5MvbXGyP3EaAX2ZYHhCtNMnTZhelnyz6hpWGhEiqToP/yUQdLmpN0CYx1d8BzPllJupUzHxe0fhcEFXbYRA/hFlURIoEn1YiP1No7jD8IflphChH0nHztXaWvyf6WGrEDNYK8BUh8lEQiDOIhociCoFOQ7ZYi1398vI3/IbA4uzBgmF2QZj7lrldKa3Gyrag5OiTxKnlSFMD+iULGPXbVNi87WAu0mShuhxQGQGaUVXo3mB7MYkDaKtrnT2sDWbxzrvmxUHgEtDnxemYUJQS9aY53NVKdj3dsmCXhd1fxtn0qSyOKuIRwLC0ZK6OCEObzpmmUZq2265JovB+U3VSIOL75SnPWjhl1d7mEGoN628WzmZztZyz4hDCGjQ9jDF2crFtIgHYjPJTJXw2+/gB/UQTgCc0C07y/254XoPzrjAVCMh3fzPRGZzf3Tb3LYWp/StU8JESO+2UtoJWfj3G
+ G4hVXMOp
+ vMgLVr5pz+XTsadob2V8y9/Jf2JifCTvIYFJRITF9zDXZdzlgWokJ9Z9kSdw8HG0p/Yz6alTrCCAYanyK0hrHRs7Bf/C1854rJV4p15WhzTeg2Fr/cY3ld1xcZisxLpSDc23X0nedZrtItlXWh3eICrqJtOfYC4hV1ZrCFNmTgKfrwpFFqzdViIe6zfLzSUzprt72gg6pI6qTKhI23GgbLlJPYkY8GMXjjHLeIo5EjDayiakTQBMSZePQ/pPiuFDod8SkB9eCINFNAZKxb+Us6pvv4FhvRSPg5++jVy1CNoAXMkBQUMx3NHAnXp7sqbHMw0+xrwgJAeIffvsTk26Hxsp4kuBdvHZ2eRe+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,214 +128,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a live memcg's blkcg association changes, cgwb_create() replaces
-its killed wb in bdi->cgwb_tree. Foreign flushes for the memcg then
-find the new wb, but the inodes, dirty or not, are still attached to the
-old one, and they only move over as they are written back (see
-wbc_attach_and_unlock_inode()). Until then, other memcgs appending to
-those inodes stall in balance_dirty_pages().
+On Tue, Sep 29, 2026 at 01:25:09PM -0400, Zack Rusin wrote:
+> Partly. So steal time tells Linux how much time a virtual CPU spent
+> ready to run but waiting for the hypervisor to schedule it.
+> 
+> For example, during a 100 ms interval, the vCPU might execute for 70
+> ms and wait for a physical CPU for 30 ms. Reporting those 30 ms helps
+> kernel:
+> - account for CPU usage accurately: avoid charging applications for
+> time when the hypervisor wasn't running their vCPU.
+> - make fairer scheduling decisions: base task execution accounting on
+> the CPU time tasks actually received.
+> - expose host contention: the st field in top and counters in
+> /proc/stat help explain why a VM is slow even though its applications
+> don't appear to consume all available CPU time.
 
-After the takeover, queue a work item that switches all of the old wb's
-inodes to the wb foreign flushes now find, like cleanup_offline_cgwb()
-does for b_attached and b_dirty_time, but including b_dirty, b_io and
-b_more_io. The switch carries the dirty and writeback page counts, so
-nothing needs to be written back first. cgwb_create() can run with
-interrupts disabled (folio_account_dirtied() -> inode_attach_wb()), so
-it only queues the work, after dropping cgwb_lock. Inodes already being
-switched when the work runs are left to the existing per-inode
-switching, so this is best effort. If the successor is already gone,
-fall back like cleanup_offline_cgwb() does, to the nearest live
-ancestor's wb or the root wb.
+Aaaha, IOW, that's the "st" column here:
 
-Test: a live cgroup appends to 5000 files on XFS at 250MiB/s, io is
-disabled on its parent so its wb is killed, it creates a file (the
-takeover), and a sibling keeps appending to its files under a 4G parent
-limit. Worst lag of the sibling behind schedule over 30s, in three runs:
+$ vmstat
+procs -----------memory---------- ---swap-- -----io---- -system-- -------cpu-------
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st gu
+ 1  0      0 1714852   9748  85300    0    0  3793    51 1445    0  0  1 99  0  0  0
 
-  without this patch    9.1s   4.0s   1.0s
-  with this patch       1.2s   1.0s   1.0s
+In any case, you could keep that helpful explanation in yout 0th message. :)
 
-Without this patch, moving the old wb's inodes over took up to 11s,
-first switch to last; with it, all 5001 were switched in a 30-60ms
-window, with up to 553MiB of the old cgroup's pages dirty.
+> If options are binary then "no" :) It's not for monitoring tools, it's
+> for the kernel's own steal-time accounting above, which currently
+> doesn't work in confidential VMware guests. So the issue is that in a
+> confidential guest (AMD SEV SNP, Intel TDX) memory is private by
+> default, so the hypervisor can't read or write it. Any page the
+> hypervisor has to write must first be converted to shared by the
+> guest. Linux gives us the address of the steal-time buffer without
+> converting it. The hypervisor then tries to write into a private page,
+> which doesn't work. Currently ESXi deliberately powers off the VM when
+> that happens. That only affects VMs with the steal clock enabled,
+> which ESXi leaves off by default except for Photon guests. I'll
+> probably change ESXi to just disable steal time when a guest gives us
+> a private page, but that only avoids the power-off; steal time still
+> won't work in these guests without this series.
+> 
+> KVM has the same need for three of its per-CPU buffers (steal time,
+> async page faults and PV EOI). It already converts them, but only on
+> AMD and in its own loop. Kiryl asked on v1 for one common place that
+> converts all such per CPU buffers early, on both AMD and Intel,
 
-Suggested-by: Tejun Heo <tj@kernel.org>
-Assisted-by: Claude:claude-opus-5-5 checkpatch sparse
-Assisted-by: Claude:claude-fable-5-1
-Signed-off-by: Liz Fong-Jones <lizf@honeycomb.io>
----
- fs/fs-writeback.c                | 59 ++++++++++++++++++++++++++++++++++++++++
- include/linux/backing-dev-defs.h |  1 +
- include/linux/writeback.h        |  1 +
- mm/backing-dev.c                 | 28 ++++++++++++++++++-
- 4 files changed, 88 insertions(+), 1 deletion(-)
+Right, why early?
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 050d507aa554..9be641800934 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -809,6 +809,65 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
- 	return restart;
- }
- 
-+/**
-+ * switch_replaced_cgwb - switch a replaced wb's inodes to its successor
-+ * @wb: target wb, replaced in bdi->cgwb_tree by another wb of its memcg
-+ *
-+ * Switch all inodes attached to @wb, dirty or not, to the wb that foreign
-+ * flushes now find for @wb's memcg.  If that one is already gone, fall back
-+ * like cleanup_offline_cgwb() does, to the nearest live ancestor's wb or the
-+ * root wb.  The switch carries the dirty and writeback page counts, so
-+ * nothing needs to be written back first.  Returns %true if not all inodes
-+ * were switched and the function has to be restarted.
-+ */
-+bool switch_replaced_cgwb(struct bdi_writeback *wb)
-+{
-+	struct cgroup_subsys_state *memcg_css;
-+	struct inode_switch_wbs_context *isw;
-+	struct bdi_writeback *new_wb;
-+	bool restart;
-+	int nr = 0;
-+
-+	new_wb = wb_get_lookup(wb->bdi, wb->memcg_css);
-+	for (memcg_css = wb->memcg_css->parent; !new_wb && memcg_css;
-+	     memcg_css = memcg_css->parent)
-+		new_wb = wb_get_create(wb->bdi, memcg_css, GFP_KERNEL);
-+	if (!new_wb)
-+		new_wb = &wb->bdi->wb; /* wb_get() is noop for bdi's wb */
-+	if (WARN_ON_ONCE(new_wb == wb)) {
-+		wb_put(new_wb);
-+		return false;
-+	}
-+
-+	isw = kzalloc_flex(*isw, inodes, WB_MAX_INODES_PER_ISW);
-+	if (!isw) {
-+		wb_put(new_wb);
-+		return false;
-+	}
-+
-+	atomic_inc(&isw_nr_in_flight);
-+
-+	spin_lock(&wb->list_lock);
-+	restart = isw_prepare_wbs_switch(new_wb, isw, &wb->b_attached, &nr) ||
-+		  isw_prepare_wbs_switch(new_wb, isw, &wb->b_dirty, &nr) ||
-+		  isw_prepare_wbs_switch(new_wb, isw, &wb->b_io, &nr) ||
-+		  isw_prepare_wbs_switch(new_wb, isw, &wb->b_more_io, &nr) ||
-+		  isw_prepare_wbs_switch(new_wb, isw, &wb->b_dirty_time, &nr);
-+	spin_unlock(&wb->list_lock);
-+
-+	if (nr == 0) {
-+		atomic_dec(&isw_nr_in_flight);
-+		wb_put(new_wb);
-+		kfree(isw);
-+		return restart;
-+	}
-+
-+	trace_inode_switch_wbs_queue(wb, new_wb, nr);
-+	wb_queue_isw(new_wb, isw);
-+
-+	return restart;
-+}
-+
- /**
-  * wbc_attach_and_unlock_inode - associate wbc with target inode and unlock it
-  * @wbc: writeback_control of interest
-diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
-index 035d25f5b81b..0d9a113f6fd6 100644
---- a/include/linux/backing-dev-defs.h
-+++ b/include/linux/backing-dev-defs.h
-@@ -160,6 +160,7 @@ struct bdi_writeback {
- 					 * to this wb */
- 	struct llist_head switch_wbs_ctxs;	/* queued contexts for
- 						 * writeback switching */
-+	struct work_struct replaced_work;	/* see switch_replaced_cgwb() */
- 
- 	union {
- 		struct work_struct release_work;
-diff --git a/include/linux/writeback.h b/include/linux/writeback.h
-index b749a9a5a5ee..88e4b5049698 100644
---- a/include/linux/writeback.h
-+++ b/include/linux/writeback.h
-@@ -209,6 +209,7 @@ int cgroup_writeback_by_id(u64 bdi_id, int memcg_id,
- 			   enum wb_reason reason, struct wb_completion *done);
- void cgroup_writeback_umount(struct super_block *sb);
- bool cleanup_offline_cgwb(struct bdi_writeback *wb);
-+bool switch_replaced_cgwb(struct bdi_writeback *wb);
- 
- /**
-  * inode_attach_wb - associate an inode with its wb
-diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-index 839a3c476c5b..49b7b86a7221 100644
---- a/mm/backing-dev.c
-+++ b/mm/backing-dev.c
-@@ -637,9 +637,21 @@ static void cgwb_release_workfn(struct work_struct *work)
- 	bdi_put(bdi);
- 	WARN_ON_ONCE(!list_empty(&wb->b_attached));
- 	WARN_ON_ONCE(work_pending(&wb->switch_work));
-+	WARN_ON_ONCE(work_pending(&wb->replaced_work));
- 	call_rcu(&wb->rcu, cgwb_free_rcu);
- }
- 
-+static void cgwb_replaced_workfn(struct work_struct *work)
-+{
-+	struct bdi_writeback *wb = container_of(work, struct bdi_writeback,
-+						replaced_work);
-+
-+	do {
-+		cond_resched_tasks_rcu_qs();
-+	} while (switch_replaced_cgwb(wb));
-+	wb_put(wb);
-+}
-+
- static void cgwb_release(struct percpu_ref *refcnt)
- {
- 	struct bdi_writeback *wb = container_of(refcnt, struct bdi_writeback,
-@@ -676,7 +688,7 @@ static int cgwb_create(struct backing_dev_info *bdi,
- 	struct mem_cgroup *memcg;
- 	struct cgroup_subsys_state *blkcg_css;
- 	struct list_head *memcg_cgwb_list, *blkcg_cgwb_list;
--	struct bdi_writeback *wb, *old_wb;
-+	struct bdi_writeback *wb, *old_wb, *replaced_wb = NULL;
- 	void __rcu **slot;
- 	unsigned long flags;
- 	int ret = 0;
-@@ -724,6 +736,7 @@ static int cgwb_create(struct backing_dev_info *bdi,
- 	INIT_WORK(&wb->switch_work, inode_switch_wbs_work_fn);
- 	init_llist_head(&wb->switch_wbs_ctxs);
- 	INIT_WORK(&wb->release_work, cgwb_release_workfn);
-+	INIT_WORK(&wb->replaced_work, cgwb_replaced_workfn);
- 	set_bit(WB_registered, &wb->state);
- 	bdi_get(bdi);
- 
-@@ -748,6 +761,8 @@ static int cgwb_create(struct backing_dev_info *bdi,
- 			old_wb = radix_tree_deref_slot_protected(slot, &cgwb_lock);
- 			if (wb_dying(old_wb)) {
- 				radix_tree_replace_slot(&bdi->cgwb_tree, slot, wb);
-+				if (wb_tryget(old_wb))
-+					replaced_wb = old_wb;
- 				ret = 0;
- 			} else {
- 				ret = -EEXIST;
-@@ -763,6 +778,17 @@ static int cgwb_create(struct backing_dev_info *bdi,
- 		}
- 	}
- 	spin_unlock_irqrestore(&cgwb_lock, flags);
-+
-+	/*
-+	 * The replaced wb is out of foreign flushes' reach but may still have
-+	 * inodes attached, dirty or not.  Switch them over to @wb.  We may be
-+	 * running with interrupts disabled, so use a work item.  A replaced wb
-+	 * never returns to the tree, so its work can't already be pending.
-+	 */
-+	if (replaced_wb &&
-+	    !queue_work(system_dfl_wq, &replaced_wb->replaced_work))
-+		wb_put(replaced_wb);
-+
- 	if (ret) {
- 		if (ret == -EEXIST)
- 			ret = 0;
+I mean, I am still trying to see the justification for this diffstat
+
+ 14 files changed, 247 insertions(+), 51 deletions(-)
+
+and whether it is really worth it.
+
+> instead of each hypervisor driver doing it. That's patches 2-6.
+> 
+> Patch 1 fixes an old layout bug in uniprocessor kernels, where these
+> buffers can share a page with unrelated data. The series also fixes
+> SEV and SEV-SNP guests on KVM running kernels built with CONFIG_SMP=n,
+> which currently hang at boot (we reproduced the hang).
+
+That should tell you how much we care about UP. We would even love to make SMP
+the default.
+
+> Fair enough. I'll rework the cover letter and the commit messages so
+> each one starts with the problem. The series originally wasn't really
+> touching x86 core parts and I haven't updated it for a larger crowd.
+> Would you like an explanation of steal time, like the above, in the
+> cover as well?
+
+Yes please.
+
+Also, we have some blurb about how to write those:
+
+https://docs.kernel.org/process/maintainer-tip.html#patch-subject
+
+and
+
+https://docs.kernel.org/process/submitting-patches.html
+
+In talking to Peter about it, we were wondering whether this can be made
+simpler. Like do not touch perCPU but do a normal page for each CPU's steal
+time gunk and thus do not split the large page and then that early
+enc/decrypting of memory I don't like either.
+
+Perhaps we should start with the simplest approach first.
+
+Thx.
 
 -- 
-2.53.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
