@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D942CA5FB3
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:23:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99569CA5FB3
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:24:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70A9C6B0095; Thu,  1 Oct 2026 07:23:53 -0400 (EDT)
+	id ADBD16B0096; Thu,  1 Oct 2026 07:24:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BB2C6B0096; Thu,  1 Oct 2026 07:23:53 -0400 (EDT)
+	id A8D446B0098; Thu,  1 Oct 2026 07:24:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55C296B0098; Thu,  1 Oct 2026 07:23:53 -0400 (EDT)
+	id 92D8B6B0099; Thu,  1 Oct 2026 07:24:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 27F7F6B0095
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:23:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 931191403A6
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:23:52 +0000 (UTC)
-X-FDA: 85273822704.14.8933F07
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BB20340011
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:23:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h4CPFslt;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6C42D6B0096
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:24:25 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4DED1403A5
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:24:24 +0000 (UTC)
+X-FDA: 85273824048.20.C67706E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2F74040002
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:24:23 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iSG5PXXs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790853830;
+	s=arc-20220608; t=1790853863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kf6DGNVTAfNJlmV6n1mnXsg4ktNEvr3LbpOB3nxPaDE=;
-	b=vprpzuOOYWiCLnka13ogmPdJj1naxbeEgmXTg9AKEgISe/BAu81TfyiPe4VVWxMyd6MeiW
-	SFiYdMXB1HmATdGfL19noQAY9XpE7YtAm+wTr/UwQC83N0XTqMB85xlH/8znFBgQCW8R5c
-	2vJMOGtkK44ZK3T6puwlH8RBBa9kR4Q=
+	bh=E2dd2FaoT8IGI/PmgsNFfX51uTun/lYmybhUFgOLuQg=;
+	b=xlirAI/EvHv0cVnxM9LCMChkeq0dLzmHno/nTuvz47g1iQShGJ+O7k3bKwbQJYnNsxpmwn
+	TrFXvNH5rRpXXByYjAzJNqBW0g07To3lONS2wao1hi/gEbiZgIhw4vgz+s72MckNjwRoHO
+	JPLTFDL2XZNmGpPd+BXDGRoe/nPWfOI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h4CPFslt;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iSG5PXXs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790853830;
-	b=EOj1tv1gTVSy5HKlQiURk/GNh+ZuPLNMb6PGqT0Xv5cpjwhOGQk1BRFq1ndlLpl2Oo6b9t
-	bs2WC9hLgpA5oKSPMmBax4x3dQLgKFcT25DlJ8kWZ4/e4drSKHjqFBqaTlUn36pRaJHzTU
-	cfY9Z5ZcCFn+dWRb7v3YCy9uZqlADzI=
+	t=1790853863;
+	b=EIbEVPhR5l/CxNFVmoKvsMtMHR06m3whBVdGeC4+R/JiLWec6c0df7l9KQeR2Auv7q8Xy9
+	EJw7Usg8FgoswW91p91qOM9bs6LWIwdWIzHYRwtYE26B6YGOK0ZEwbT4I5GDzveaC5+639
+	B462jozCUYlKa9gwx24P2kDgBe7gDYE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0FAAF4062D;
-	Thu,  1 Oct 2026 11:23:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA3E1F000FF;
-	Thu,  1 Oct 2026 11:23:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 97518601E4;
+	Thu,  1 Oct 2026 11:24:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9C91F000FF;
+	Thu,  1 Oct 2026 11:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790853829;
-	bh=kf6DGNVTAfNJlmV6n1mnXsg4ktNEvr3LbpOB3nxPaDE=;
+	s=k20260515; t=1790853862;
+	bh=E2dd2FaoT8IGI/PmgsNFfX51uTun/lYmybhUFgOLuQg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=h4CPFsltJBUoB1HezA4bvarNWaCYFqBa9hBNxc+xCNO9nmfmhUT/wWKO5h1TlPXIc
-	 GDcAHYvPrvXUUAdbanMCx0eH+gZVlMuBMNeu1sx6Mkedl4IpqYJoXRAvrhcsyv+r6m
-	 RMOwLgwZt2tR6GpLFOAQOaF+G9JYEPfVrthsR+29KjdXDX9BD0jIpGaVMsh4wshd8/
-	 1V9HgLQZNdCr5wRgqJ8ZKr2TgosbMOG52qE9tjBdGDKvkUBI6BT95ilyElZCxT2gq2
-	 sTZn6z41rW5NtndnGGja5mbMNd0FQbRt4rsUAYkIglECZ5nHiJQcrjE0Gm51PZvf3T
-	 wzXZdyJs8fI4A==
-Message-ID: <f61c0ee3-0eb4-47c4-ac52-66b72764e242@kernel.org>
-Date: Thu, 1 Oct 2026 13:20:13 +0200
+	b=iSG5PXXsSQzGXjfn20lgjsoWKzQYmPp7ZZXFI6SGrx91yr02VUHV298N5BBJlMHaP
+	 M9ZYf/JJLZ9V8qfBwvqO39KJ8+pNUBetBcscChkH+0df5TkZ2sUcFBudzEgRioe8yb
+	 SSkRXj8/C/QKoSKPE6PW6Q2KDh9nZ+k4kuF1lqoDkQ0AIPD3Wb5f0fv4N/DCMAQq4z
+	 R7kwBsOJxrzykRLowKMFHGd4yy52IjUUPzYvPJjS5LMo0p5dAUpW9qrXPHDQCcdIJT
+	 g69Nx3deHliOYXzfa8TMAC4jPCvHeac6QoZcwkh6WGoSh+fwx0mvq3d2tEJx9NgDLq
+	 bPMwFw16qyx8Q==
+Message-ID: <28b5590b-e2e2-4eee-ac7b-c5c402822a24@kernel.org>
+Date: Thu, 1 Oct 2026 13:21:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/9] mm/kasan: use hw_pte_t for the early shadow PTE
- table
+Subject: Re: [PATCH v3 8/9] drm/i915: use hw_pte_t for PTE range callbacks
 To: Muhammad Usama Anjum <usama.anjum@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -134,7 +133,7 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  kasan-dev@googlegroups.com, intel-gfx@lists.freedesktop.org,
  dri-devel@lists.freedesktop.org, xen-devel@lists.xenproject.org
 References: <20260922-pte0-v3-0-5670b8cb9059@arm.com>
- <20260922-pte0-v3-7-5670b8cb9059@arm.com>
+ <20260922-pte0-v3-8-5670b8cb9059@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -181,23 +180,23 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260922-pte0-v3-7-5670b8cb9059@arm.com>
+In-Reply-To: <20260922-pte0-v3-8-5670b8cb9059@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: q5c57x88r5zm9d4cjk6cdo5jet3xr4ua
-X-Rspamd-Queue-Id: BB20340011
+X-Stat-Signature: 5twwxed33nt55zo5rm6dx6m8ntrsn7jb
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790853830-157227
-X-HE-Meta: U2FsdGVkX1+s2KtrwXOOtDKSjnYa59sUsIdlRZHWvPhNjLf+rDlZUdV3uZvSXSdJiDQhEioN+LhRwog+TEM/x8YfpxEiiWRMEnkzEm95jmIPgKdKIQSoyr+DaAEgP3pQQ0EhRlAib51j1wWUi/tVD7m1hZOkTCE3RKu+x8rO+IWPGEtH4rjRaX8r4EainXScGnnPK0u7helUAWnjoVgwlRisJMfB1BGskadJfVEBgwKeWlqIH38tomBZfP7W0tu4l2ipnqTPphQTPSvHYuYOPJpw+/tWPyUNaBCVqXt7Yz9LiAE9C4kAPQGQS6wFZh57n3jM+ucHbh7rmOsty55ryytfQM8hmZKqbGR8r0pwGeRRV+XQQIdljz4bMFx+tYIOk0svsjRUbUoncWI6crFb+TBiX+pYVPM5lf53pFTQzXVKrOz3Fxih+2dWrabEh1XlSYYKy1naix2k0fG92Fae+Z8++pbBc772zBYcr0fbQSDYt6LP7suAtjMxn6m93cQb0/9Stj41r5jv7YRjrWlBAgv7pkQpMZmbiElgRYHNfhLU4c1AMig3IkCG3MgBjyNJHE5rQrmyBIbbglw/7wS3pUU7nwpr33M3A6ychpyRi+9LKCoPMxG/ss6GMRsLQ31mOGlKP0S5x+lY12ZYsWJCzSi1H48wewvUEHmMt0WHaxq3Dg8lvFfp7zq8xfdwLgfccnUmUTJ7pXXFyfHpXvKrfudckfz6Et8Zq03+cVVvm0N5DJve1+OI1Fol4TksValhf9pcLkAp0bDx72Ab4C12yx21dF1+A2j9XYuNlRWWhgp999TNdfR0IaPdnGZRdq3UAU5tBsVuh1g/XgrdAFlS3KqhUFkqz/J+rguzkFtpFi+NFo5vD8fhgGU7DokDhVsY/6LZCWbnUwybBYDvThnLWJWf2l3fTOg69AK23zh1RUkmvKW+WZz96WTu6vbw/RW4dCqimxn2bOHqasx2L6+
- 4cdnZyH3
- RoWoa705dtKYB3LPGBkaJqZwJfbn88CUk5FA61xBmEkUKoyLJV8b3axrFRd9Kao71cXi4FPEs0ZaDp1Nu9xFGYhusV8mnLH24xUqLu3uEvGmz2UEB3x8ZZDfuYmpQ3Vs41AI4Xui1PNg5AAzVa/rORnoStxVHEG3/zxFwYJNLvKK+Os/cLyHlvTQoPd67BdnwJydUcxr4sCbGx1ZYd8rZnEZ9lPULQhqbj6EUIGZQJihi+tj7JtvrDj/FzkQiGC7UoqP7e2vzCHQFcxdpP/sdAHBieItNMnhHMxPAN8BpVbDlMh2Jp7XxP7wYnudAdZFI/I8h7f0JIBRUdqeHHGnuTqOaSnmY/jFqhLSH+BZpnWF14cL+GK4Pse8xgtG+ZuFnJTAgAL3mtyJD+ljMA/X8EnKBXrDvRtr/Z/efZG0LwXbZJnjBlgCsEpRfdPJuJizEl2SITJ2PtgIGdPQszr/DdUIZMsyXPMxgtm1xNA5wOXyTN+h7L94YCwkyGtopZ2RW4+wW83yTDhkoxYR70KqdnCV+gvtDsTnqaZ6oEWG1dk+wwhmU84gpNY9Uq8wNvPC3KwATH+iWf6d132gv4bWSU788wSMkPmwRdJLxfif8IJ5EmbNc3uYBte/yoWj03ZvcUGkTbaedt1QBcOycnf80031qE2lK3ilj5kJamLo+7OD+DjXwMvwZ3L0RyHQQ0NMNqHedIxJiowYFaFtPjKuJXScE4Pq13LWkC5PcJqHolrzs7CVkejgzAB14OTEVCWlZEJ2BLQr10M3B9VO5slZ4xYXIu+OQ+AEGEVU7Xqj8RY7Fbbvo6j4uXJphNzJQW45aFoCMnZZXtsbYfIKhfPYtVevzgx/kT8TvJxUI5c2NsIkHJ4A/qp8R5+CjhNj21PRMfkTvyNNsCkfOnSE3TK8EbnwmEprAvXJWOhhaed2h9hM0Bp5ofwtShyCvpByfXlmgwo4lIN0AuCmlcmvUnTPzJfxtmpe2
- oZFiOIgD
- mmIjB+Lc7QR2ituKe4wNcCYP4cYTX7a+zxfKssUM9idPqZTLvwUJ/hcyJC81lLyQi1SS2/UnXD6eIlFGrSzYmdrlvI4EvzrMI9WjZHY7AQick3QCdANXD1V92Ox+YzzeHM40DhHasZBUZ55naZmQSzvi/NCZnYPV1zfkniPiiUac5t4dtGJJ/NSGuwA8OIOHcPXZdd9bBQogMAs2Jq27DrXXnHVwAN8mJL4ZulgKCStMsZnQtf6RofdXneD9IFK6HNSlV7nq+0mnkBIya3uD/cFYXCVR3xUJ/nwF+7DhmSLQ9VybYanSeRBJjfiZGTzkMm7C81TayV7Z7W32b3IkJXyOBPsLyshJVm5tYvxy3A7henDjHcou+vIbN0TBJeT7QOupkx8U8N4jMogd+ZH5do3n/x7WpL9fn1cxZJg/0kKbwTaBxhH6MSF0HRYqEyTFgrrygpzU3RU12xeYilm0B20D+t2sgbMuwwsg4NRcdGY3sN3IXGrVOF2tMMlJXO1QpudiQoj3shPMOKUutjMaWm994nE6c5rue9WPWbhbcEJMNUOCupB3kkVx5MJZrKzLVD4INSGBJXp3vNgRobtsGQkhe/jipHDPiF7tutzpFc+hHm53N3/cZrlwixjowcpLtzzrHnfSfEoxdnh6ya5aY8GcBuWkT6sY8MteRcEILwNQfHyhx5YQ4iluW/8bAPkrHsd1jz9L3t+/lCip5Abv29JUARWQuqWBp75wFnBL4YTVhNM/waSVYlyrIo4CLaENFYOdHm5or3Dvcbw/x836h16PnCs69VzG/A/rCMpDzkNI1ICGmWUUNkrOekYeDiz0fLYYMLXlpe3/h3i4KNfLMNLiiLWmAMnCXCy0PteeagpZqRpty56CC/XVSU7WwHx79WyeFS823fiUW62KsQ07THJlHJMRk+EcGaC3rbdPVx9DMQQDn5oV99ywFdSWZ5BdCgBW7WVvm6kVC/iVvQpPmIEg5oncH
- UeC+OXfB
- 45kFyEQqccJNaJ6T43ffx/3N3og7NndX3iV9M2AKNV9yt3P4tnZbZSd1hvu01+/Ul90zZQD+OcVLEf4JhgQ/g/itOtfAFjT8JRLBg1O1kJVeq7/Dj8FDIttWFHy5tINnm6sxRhh9iIugg7AK1e9NQOGJzHqzxEAtSrHKUtAEN+7J5jqa934QVxR3XiWxDyXc0lVkAem81pPpLkORg08DTdwOzPtJQ46V0bXQX6a/yglf+IlsL2ngnOGz2Cp/RMzwxC1nRrtFkTLGHLLfu+locNyK6a9QtzP4/TQYLkfvshIV+4IhcTB0RT4EsAsr7Xiuoj4czAoH675abggYSPiyvS+TWJ15fn1I7K6/rl2a4zIPKiViUpX2XjKF27Z8OcJ+gtA9cltcaYt2KgwwmXevQfCSBKnhGeeRTtOa4OOXG2ftN6k7ergbwUpxVJ/3tDZYrYxjmqI3kb1ORhi7Cnj8dWPNkrFYb/qvTy2ko2JB4VjJjOZ9rldwTee8aVS2e6cuIhZu+h1FMT44vg5w8jRLXFGzqdLO/JvHnvYJLnnhBOaHZ4hBOJyhNvhrN18T7bZytXKt0GvXrMsy23sU+eaiWlSt7RkTxDWGd5OncMz56XfDaILYUP2ZOaSPT8lS4kSoJP6uKDRWsVyZkuzwRX2Zpf0u6CKBoMUUPmDr9VhYeEOYbLphpb19tm05sMDyIi8X/D2xwftXEWd7FQ855IXYqH+oVDge4swpqprlsSMfC/p/yqYXLmHwyA3rcKiDi57BODm5MZ5vbD0LQQ4baCO3eDpbnIZ6ci3hWe737WGTMndHF+zMp99xivC7u9ApdUc6sZSKT+sw/OwaDQLUrEra8Q95iNDjrcOT23JqlP6jYE4azkmsSXhxTYuYGUWiIPHVi+KOeMGtny3bYHB+Hz5c0R2t4vy25JiWr5kmlGYnjXUtjdrenPCOAHp3grRwmrryAqhvvV0ioEhu9wcIUlTx2CI5hqZu6
- 9rWawu9b
- ETFHTDJDF6U5PsAA0shumcLC6F6DP+VWCDOwshXyOVPbL1Eh52dgEDS6gxk5IsuSsD0QpMLH/RF6Tb2LL3GfJVqaF3IvRpAvfdwONcgeSVX7TcViouUFm7oKy+l5YLVFdDzor8nwmBpKjQ9upVuZ4ZD1zAnXO6T6ITJB9vnjPSg4f1h8EoxX6a2Xkl6Xc0xloxhJCObQMaHy/h9EaML3/CbnNOD/hLVo4jtT0gY/jx/kRmbGBEDppIo1rLA2FnXjAe2hE6oFsi2GQuG0hGiKP1Szg/gQUWgTwJSHdYMwQCvOINRl0MMHXUzGIUxhhZHr3XO2Sn1uXebAAqeh1+iVCkEnT6KGQ4iP8IW+iaUCHkk9f3se8wWQ1hBGWbs/V0BQ750XLjoIZOXBJMoYKJZAaAplHOSUHVECRRUphjazL9p5tH52eaoh4UUgaAaFxTBEBA2FfTrAagOQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2F74040002
+X-HE-Tag: 1790853862-851458
+X-HE-Meta: U2FsdGVkX1+Lpv0AMwdNVqqrxNM+2Mr8Ddm9JMaw+yMtVXNuDa3qN/qfuioINTWNikx+0UQqC16Eu3Lf/66UbeQ2SORCxcZNuUAjQEajRYYUcdvU1X+9mOB1I9AUBmSNxtOlzlOuO87vt1JeBM/qwgvY2NHWEP+iJHrHqF6MDlk952Yk736wTSroKBj2A9BAlXJR1mRtUwzYQ10Mo6Tmof+SdkDaWW7zdpDFmd9Mw+zM+Gci/CTSAq3fYEAoUqzn7vmnGAZe5ZozA8PzdmAEzgQr/yu1zuqykN1wRJRNNXTYk1Arif6yAPn5tyCwmDdaSE/BOS3aqvK/5bCSJBMidQWaTwu9utg5JZGMIPbnAyRA1Y9/0ZrQFpmDWBc0RaIXl7qU1b4QzLvmKJ/wIc118OeWAcUC+s0f6oEdkpcKJkol1JSaSssMoC0z58JhvBmw9ZlB9iHuGm6RwhHh/oWATYjIjQ+4GGrBtvS+P/d4tHY/M6nMDmB9yxR42bWSoq/cD1FquyJkvSH5HdfgBt2oZp35W7ObrTMXgJcWruUI9vOfWHAiy14nt3bFKrsRHql5aAUTj6FYg5fMGYuFFhGv34FkMzyCHm7WGOhhCcP/HFHblR5J2ACNNAXJiUxmVW5BZoDDH82lbGfx2OYX8n7kg7KPGlW3Wc3LU+Vk0aiMAKW6bh0nCF2XPZID6NrrK41oBODSWT3ebo2ancAbJpBxdrS8S7Lig1byixjxNsJroJp+xq6tJVeOZJv4K32R3R7YCWE4DIglbxPk9I4kqv8PX+vGDH7iyazadGRNkK7KBJyTakk7uRgYsHfu5LovyzJ6A+E3cvzliiJwiMabEvdQu/R8oQp28Js1FS7nLjVYemmDLy94q7CsufHmwpYmyon1qeRi8OWHq4c54yia4qs3NYZlPM/VURraseyEzvkxNToeM+blpQn3NSUEsRJzkEHMolq6ErAcQgTxFE1PKfb
+ QZbdbysz
+ goiKTRTuUmfPwZYI+amz4q8k66KJwQN9Ui+2bKNGrlcCXhwIIIrC61Sq8ZWS/01KU/S2/wfarbHm6LWmD3E4NSv5HnK+u4BqOomuGyUBTjXd+sm2WUadjefaP+x3nW2g1fmCcdSufnyFO13+O0WdyXDWUtYWU0WaMT+1To24PlttceQRSAgnIn/am5pMah/BCK+TAGQHVjXAoSxh1Anm9tVL2NOvyVRPivtPUTS12bIe3AiG126gdCTOJpne1riobpYGmKupq33HIWReLbP3nYl6nt2+YndtXd3fTW0wTwPsOfn7bwC4d1/qQ3Zyt2SiJESoofJO6d550/6PCAvX/7qK3Ah7ABHCD63lsl7sTDKiWc1TjE016Kq0GYVU/ltctQYHB+pzy08yCVZKGZkw3M8CFnCTW1FTWnfOlJT1PmvLPivLGTCtnPtaPbGhJPDGOm/25TKu4A5xdzQYfOtRqJRNisNKb8Ou3bT7QjDV5mPiBKkLqHBxNwu2rKlRFj37zr8lGPADMNDa+hQpkZdtvzz578PchXvSe2Hzwn6Fr8snGZamu9YEtqnDHlBJIWhL4dLw1w3EHYrqaEj5OGU6YYXfOQNg/N3qYEUTEhOhUVVLgFhYgFw3mWM5rWulFnFFwMq6Iy7SNRN3L+A8l6k4rAqyzv1OwrTJd4ZXNL+MPtNqpHp5QOhIN5eqb2sHlHDozklHIzmZbqjI+g4emkjPL3+FmX/DVNM0NWA2HgaqdfAVpG8usfeqpErSQ4IESK5N2ujjOWviq3lw/qVEiKSq3xTe1Vib+NxsUXAhee6eZgfGMDS4T1HYaQkQSuC6O8Kf4zNoHfn3IksJy37w8HrbxIYteNePnRMShWb5ULL1LCXZ5erhp2JwFDvucRElBFwNaBT6rbYbGojrXXa0O7IUEWtrhRUYmmI9ZNwxynMTsCM2Iq36On9OHjVgCLSKX/++fKnIwaLCU/q1HIY+n60UxWOCCM2FE
+ q2RA/BQ4
+ Lm0r/XSvwVDmnHO/60YVKFO8WSmftoKkU6m73mnhnAUWcn1M6G+oAoWAQHRuEBv76ujaYdoe2XUU2AegDwgvv7FTYpVKJk2WvIPGcNgdl/dQInnSSFkSVvVlhj3s3+ZFpbUkUolkWbM/oj5TUSD3QRAMJxGsEVwNjDw7jdt70zxbZNej4PKagDVyvMd8hDuEfgUM9u9CBnQ2AFCAIf83Ci+CFUCQMktNG9ZLgLZ54lVqN0bme4v0YUNGPBZPIOU0TxBXo7JPxmHANjLN8aFZEih7CyJz55hrCWEs2NEmCEwl0onZnbxAK5cLAaT5XQzZu1byvAPS1fBZIp9atFefl3GNjHLF0oYjFF/mqhtZKDdopj8bnDf8qlrjYJXJ1Vtsa9yfeDfNL7R+EpK3sZfNaV5ykLqMTMvb/uHhnH+AnRkWJYBz+n2UEgKVs2XRJOuernjtneG6D4iMihahwkKg6VjtPhmwB5PsjI4wCPoGM3N3hgc3P5fTiHCZFTbp4Ok9nsNYSxACSRS0P/3q/njErq4WBMA3pwTrBfBXoPdpdqHjdKX/tGI7bghpocxigI9yLvjmyfa8/WCA/f3hH7gz9eZJ16YWcwkVy9q7fVGVpnBnRee6Zeu5TDvKu6JnUvRsbjwPvfbjXJlC8D9+u1a/xc+hEXj4opygUO3QRTA1SZzlHZyih9qgKalCo/ZZGy+PMVIIXMCmJ18COH/YtAFTLGhBYCt+mFypxZME3pfijS7jm7UzRDiOBqf2Jc7fq9pKIKNtwdk0B3NSviRHuE2ucIG0Pi25PISp1HOy3u4Z/5hpT6FmqWq4kpYcZiWX/MGjQRw2FEktJfQAOjf2DbLNtM4aqA6hvkVjNpcvSca9uwCJP2vmlLfLr98AOoWWE+xTvnQN4u7UrPNTMm7bvJwAsRBmzxeBFXdlukHHEPfe2t2xgRXG8sSg9tyPRsBx2DA8RBT/MHoQfT23daDXbY876zOsJ+AKV
+ FRSHo6HQ
+ Fw0xp9bfq9ui6AMGpJlN9ZrwCzIlSqX1t0UJyB6SQyGmQq4A8a2It2qfXA5Mte0eBGzl6idsEz44aY5p1VnqBEHXttCaQ7zP1ZEmRfscG60bZXwEGnzWiuRafd1ZxBCGy+6JJoP8E258mS3I1jghJLThmH06AlWxvxP0edAa43+mYUweO2AP5TIz5Ul970iD0+txZ/c+XgtwXUXIXsyzuwHjVgLEO0OfMRk0MFQiqwfke/4S0gPs1nDF3w8I+hiRNHFnjjhCJ3fnF5vWIVE2lum9ipxEyM6m5yFmIfwAwmaTHxlqnLEvUz+i9x/VKcPHkRQxnQLtyX9NLbxepZFHfPXbHlDKGAyDtWSG9H58KqkwajE+2LAmsAk4ZpX/BE6mUkdn+eycQMZoJg4kqddMfTiCHWLjblUkIyM3uZdvCedUomEAJ6GILk2Osqxrkyd9JeX2x7xUBZqccmBK1FRgdSWHCH3Q3Ytt4SwZwzbZTZ8JSu+MS/xSre17o9XNDdb5YfmaVIgbtsNNEPzzNeSBQVpbXUShD0WM4mi02pAnvh2zY96L7kKQjFXBH+uPqG8YrnQr1maLDMN/fBe60PtXCJ88pdoIeRtH5ta60Z5y3NlbQJQBN1k7dn1+SN16GkbFnwwHd5h3bXCDIiv2BcYKXdM9cloVqw79w2NLWXA35EMNYc1WsI7Ezn829alhBQYSnqxwiR+QaekgN371W2U7PqFw+nKPfdRAOfvC0CAfUm6JYS8jBHIjvPlG2F5xMjHj7lSpvy/VuvN7ptfJ1020YXmFUiXCIk8dUtaEjIk5bYc9N2cM2waqYKqD0oSDX0s1wajqAUNwlmlOH50E19OEO/cv2Ublo+cUAd3L95C7JFYQQex86wW9ZlwaaEWSLW3MZhC7us/SwbAQ8h2ZOavge9R6nyTzcR7OI4ALfVJX1M0gyZmuxs9GOpfUOZm/hC6lXjV/X1CeMatO/bB41GK9dqIkFF84w
+ rp2TkwJu
+ ZwBpqxA2iv82YdTW3DG41f4NAWU8yCL+Zw+y3s4kxERG3GEsdBdXV1mEeA1HlXcEynH2oqSJcVjIyIVLDxWCk8YQjV/fbbwGsSOWIwS4QOhr+stTIB4DP/cIypKf/HoJgV2XjMvYWqADpeLz/E0SO1oK3H7EXV9J5ZcW2q0Nobc/rwMw4UGO7dlPiu/BfEo2KqoP8Hx8sZ9qL6oMKNhYdIPOWBoz9dzBdv3B+jChOiaDwGYplncw3gZ6elycHlAVe93f1V6YOtMUou1fr4tm6+0i9mpzDXYQWO0Tz7OTnPk/3aL6RT3oFMmx4TVbjte3mHI3Bhy7sJV5z0Q3BJAS3PGTsJqpBjDzekLXMytB0Q/pYMPyBH9jMfVNy31ROtUADplqGufWpIasdkwbdt+8SE3tpfn6XViS6MZtwCFjH2cQ2tvaF1FOtRmfU58/bUk7ZIql+Q7SSDGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -206,18 +205,76 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/22/26 19:12, Muhammad Usama Anjum wrote:
-> kasan_early_shadow_pte is a complete PTE table rather than a software
-> PTE value. Declare and define its elements as hw_pte_t so the object uses
-> the PTE table storage type.
+> apply_to_page_range() now passes PTE table storage to its callback as
+> hw_pte_t *. Update the i915 remap and selftest callbacks to match the new
+> type.
 > 
-> Read the first element through ptep_get(), which returns the software PTE
-> value expected by note_page_pte(), instead of accessing hw_pte_t storage
-> directly. This also uses the accessor selected by the architecture.
-> 
-> No architecture selects ARCH_HAS_HW_PTE_T at this point, so the storage
-> representation remains unchanged.
+> Continue to use ptep_get() for software PTE values and set_pte_at() for
+> updates.
+> The type remains an alias of pte_t on x86 until that architecture opts in.
 > 
 > Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> ---
+> Changes since v1:
+> - Use software PTE value terminology.
+> 
+> Changes since RFC v1:
+> - Clarify the effect on architectures that have not opted in.
+> ---
+>  drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c | 4 ++--
+>  drivers/gpu/drm/i915/i915_mm.c                     | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
+> index d01acfb7d93d0..056faf4a3618b 100644
+> --- a/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
+> +++ b/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
+> @@ -1690,7 +1690,7 @@ static int igt_mmap_gpu(void *arg)
+>  	return 0;
+>  }
+>  
+> -static int check_present_pte(pte_t *pte, unsigned long addr, void *data)
+> +static int check_present_pte(hw_pte_t *pte, unsigned long addr, void *data)
+>  {
+>  	pte_t ptent = ptep_get(pte);
+>  
+> @@ -1703,7 +1703,7 @@ static int check_present_pte(pte_t *pte, unsigned long addr, void *data)
+>  	return 0;
+>  }
+>  
+> -static int check_absent_pte(pte_t *pte, unsigned long addr, void *data)
+> +static int check_absent_pte(hw_pte_t *pte, unsigned long addr, void *data)
+>  {
+>  	pte_t ptent = ptep_get(pte);
+>  
+> diff --git a/drivers/gpu/drm/i915/i915_mm.c b/drivers/gpu/drm/i915/i915_mm.c
+> index fd89e7c7d8d6f..aab88e8edf946 100644
+> --- a/drivers/gpu/drm/i915/i915_mm.c
+> +++ b/drivers/gpu/drm/i915/i915_mm.c
+> @@ -48,7 +48,7 @@ static inline unsigned long sgt_pfn(const struct remap_pfn *r)
+>  		return r->sgt.pfn + (r->sgt.curr >> PAGE_SHIFT);
+>  }
+>  
+> -static int remap_sg(pte_t *pte, unsigned long addr, void *data)
+> +static int remap_sg(hw_pte_t *pte, unsigned long addr, void *data)
+>  {
+>  	struct remap_pfn *r = data;
+>  
+> @@ -70,7 +70,7 @@ static int remap_sg(pte_t *pte, unsigned long addr, void *data)
+>  #define EXPECTED_FLAGS (VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP)
+>  
+>  #if IS_ENABLED(CONFIG_X86)
+> -static int remap_pfn(pte_t *pte, unsigned long addr, void *data)
+> +static int remap_pfn(hw_pte_t *pte, unsigned long addr, void *data)
+>  {
+>  	struct remap_pfn *r = data;
+>  
+> 
+
+We really have to get rid of apply_to_page_range(). A horrible interface for
+drivers to hack around stuff.
+
+For the time being
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
