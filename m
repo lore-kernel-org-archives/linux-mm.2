@@ -4,154 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21F89CA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 13:18:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BE7BCA5FDD
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 13:18:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DE466B008C; Thu,  1 Oct 2026 09:18:43 -0400 (EDT)
+	id 23DC16B0092; Thu,  1 Oct 2026 09:18:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08F9E6B0092; Thu,  1 Oct 2026 09:18:43 -0400 (EDT)
+	id 1F4FC6B0093; Thu,  1 Oct 2026 09:18:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E72326B0093; Thu,  1 Oct 2026 09:18:42 -0400 (EDT)
+	id F0E496B0095; Thu,  1 Oct 2026 09:18:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BED1E6B008C
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:18:42 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44DF8A6DC4
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:18:42 +0000 (UTC)
-X-FDA: 85274112084.21.5A030B5
+	by kanga.kvack.org (Postfix) with ESMTP id CD9266B0092
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:18:44 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4EC051403E0
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:18:44 +0000 (UTC)
+X-FDA: 85274112168.18.9C36F47
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7A20940005
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:18:40 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=agBhyH+b;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 884011C0009
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:18:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cME/sF3Y";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790860720;
+	s=arc-20220608; t=1790860722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UxjpaonxC/3VDFbLXavStYHgpCVIO4MBlBHvzTk6YXI=;
-	b=W9SJJx61UxpoQoTrKI1FSpU9Nus8i0Dm6wQNbfF1/tIWz1W/vsfC+/OjUGN4kgDl8REhUP
-	y/pl6MCies27JRZkgJ3tU8kZkwMiEDm09Yp96Z9mxoNTCDIcRSwimzvw3Hl936Ekw3fVja
-	mW7vKKqFP2JyxySutZxifm5lfUnGgjA=
+	bh=4npuvMNR6UKbZDO4+dj4mKqktlQ5nKE7OUUQfyh8Zxo=;
+	b=1HBVUCiGI7BaC/3mDeeG2kkG7WVemN7O9ZXmK1+GVxNF8uOBjZA0S+K7ZcUNAInje4tOKN
+	Iga8DuSHNqipaEldijkfrEBxRT9jvO9s4z5AM8BC/BgmZf8nE4zlpBiGDiIXuxyVqx0/4Z
+	9VyD92i52U2k1cuUh5+FIpVaN5YbWOk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=agBhyH+b;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cME/sF3Y";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790860720;
-	b=fGZZD8nKVkn+sQIOKhDqiKzLFIV20eDnkjhxuBUU5gh9dB1gcPxcxykTEAKODcnAPsj+Oj
-	Eo3oUN4kD6W1zR9F2nmupeoIT4HWafUOmohV77BJs72RN21hwnhL5FnNnrA8MShhf86bF5
-	f0ESSh4NYwb9v0HX97BLrzEwNkdq63g=
+	t=1790860722;
+	b=zybbk28H3wSDdDcKNtss1B7t+0SOSFxGABecuRZf9BK+fMCGxS1MuM1GGFziGCkGK7InFz
+	NEP7hkxOvzTF19eGnlDBNwGsSUuOUfX7+XYibeR5yF2Jj5kmRm9LtjInUXWvnHKjQ3pMwa
+	/pALRVHKrr35gAEDmJmsJZVGW/tEKX8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E268B6021D;
-	Thu,  1 Oct 2026 13:18:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628371F000FF;
-	Thu,  1 Oct 2026 13:18:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2E25F60A55;
+	Thu,  1 Oct 2026 13:18:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7964A1F0089C;
+	Thu,  1 Oct 2026 13:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790860718;
-	bh=UxjpaonxC/3VDFbLXavStYHgpCVIO4MBlBHvzTk6YXI=;
+	s=k20260515; t=1790860721;
+	bh=4npuvMNR6UKbZDO4+dj4mKqktlQ5nKE7OUUQfyh8Zxo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=agBhyH+bFmKD1JiAnoEtz/5qMdv8Ap+ND3x/3N77sLFcXCZ3bcDlajbZP+2ap44sx
-	 KPIQ+CdPX8Cd2RQc2lWaQ+6tuTQVHD2pYQlPNxdOxQthGqM2hpE/FWfeBE+JBoOiSg
-	 aTHw3Pfaa+usXhHmYbPmjg6Em6hcDF+IY/Dz4XEOgO3LkcfaH27mJOMvaKWNKyUSaV
-	 dIgxHpJeU+ZOW+vHFYouo/WQFX/mh6XCActsubBMgSttDFWHcozj2biVdd0OlH5rHg
-	 SjqdUVy0SHAv0dkWibepFp4IukMLRAR7jxSvh/uVcF78zQKMLBluxXYPcqcH563yw/
-	 oK2yZa6XGh3Fg==
-Message-ID: <0623ee06-00e5-421e-a24a-ed605abb559b@kernel.org>
-Date: Thu, 1 Oct 2026 14:36:40 +0200
+	b=cME/sF3YDW7p5j3553ehhYXraApc+J3HZgdS/Or9hdcMRZlG19K+b+RXjysMR41Iq
+	 OfCSporTa5zb0u48pa797TBjDgd2YC4SafJ53elaJBZZGo7rlf1AbIFiA4QE13lMh2
+	 49RIE9mVVKv+zf7EXBVXY5rb0sDVoQDQnjg57Q5Y5Kd2MBK1CTDbjDwzuBzy/UF5yp
+	 6EtfnmouCMD3o7JtB7E+i0eSZZHVaZEp/VwyPrjGAq3ZIHmC0AMuyCV2efrmv09dZX
+	 wF9vYA9IB8F1cwGpJ1HzVUBUKIjTQ4+5Dq4wTN7WS6EeuE7jQJ0UQZjXItjjSBK5UJ
+	 SpeYa5iYIftaQ==
+Message-ID: <ad501ca8-f5a7-4a7e-af6e-44a38208ff84@kernel.org>
+Date: Thu, 1 Oct 2026 15:18:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 15/40] mm/vma: add vma[_flags]_is_kernel_owned()
- predicates
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Paul Moore <paul@paul-moore.com>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>,
- Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>,
- Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Chengming Zhou <chengming.zhou@linux.dev>,
- Michal Hocko <mhocko@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>,
- Xu Xin <xu.xin@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-rdma@vger.kernel.org, selinux@vger.kernel.org,
- linux-sound@vger.kernel.org, bpf@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
- fuse-devel@lists.linux.dev
-References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
- <20260917-b4-mmap-prepare-vma-flag-sanify-v3-15-4583d8a23bca@kernel.org>
+Subject: Re: [PATCH 1/2] MAINTAINERS: add include/linux/hugetlb_cgroup.h to
+ HUGETLB SUBSYSTEM
+To: Enze Li <lienze@kylinos.cn>, muchun.song@linux.dev, osalvador@suse.de
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261001123747.634845-1-lienze@kylinos.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -198,23 +119,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-15-4583d8a23bca@kernel.org>
+In-Reply-To: <20261001123747.634845-1-lienze@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: kfqp43n3o1wgw9w74p9ch6utm5hqpuz7
+X-Stat-Signature: zdnuhu9sj1aq65cm7xsjnh1cqcsroi79
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7A20940005
-X-HE-Tag: 1790860720-773803
-X-HE-Meta: U2FsdGVkX1+f1XmP0MZWrYiseoA0sgaYMuRvz75yHww+y0vimCcUIOb0Y0cmZxpmefFc3776wr/IUD2FORyjCt4OuO6IkE3p7olMRriUmrrVpY0vCANqqJgV80r+zpsXIJ4Qaeb2/fmLnrjFY7v+gaF3/q9tcQDNCf+8JEU+UjzEZbsS3I9eJp6SN9qlsjF2bsZsYhyGxN/BHTA4NzTKoaJE1biSlDOtAnjpAp6fnTlFIaDD+SW7q686jfaSTXBPBMnCrAp2JLJf+UHLSJ6Wm1i4j/DBSfAk/eBrwNWiryK/MbA1Oc4baR7ZKTV7WQ8wrtIHfYLwj9mfBwOFhNXzgF/H5pk0WLebu7r+BAiVm2f0SXDY/wTSBjPdTMECVtXdwP28Z2Wy7A3D7F5LXUedmvn0s42j7jRlSP4eOqS4t5dw6kPYzDUHqcLKVXAaB/KqCbfoPVrLPW2B1LveswNwsi1Ca2ueAA7ydjeZlct3AoolYdd/PMmrV74HCGEVyOo/dQCqJfruuxJvJNNLJ7ABXk+A3DXybqSVWT3qw9pshrgxOwr+3srTjQ6uBEoq0Fk2wbK47wglrEklnpaUK/hZmshf4f2JOD2QFEvx9kSVTj/b+4tvV8Oc/542IYPabD/4IE2lHFT78QQbB6rgiE2KNPO7UtmI//sUsz1LvR5CN1mxuiJzviNuKQutiqLvjC4DjzHjQzCIYhQuZ8KPP/pP+IS18eErtjIcO2AYJtSaJqN+t6FHS+MG5UUEwhf9eWzpLZrLrDLiovcAY0GlMH6+GZBdHPfmfPkbUxcTczXBh4aVbI94Z9lIbKlVNJWpstPL6ytVAKbCJfQEzRRiuV3T74R4SyPv/tveCdTG2+Rk+eZOYuo+5VruKgq4fOPahzA1dpDigHySPsMzYgk8ELSwb1O50+9q1k4KCx/OrxGMDkq9GN3QCwz08LuOlhCpqlFBupnWCYkc36q51LKF4OH
- i2KuAGA7
- DainXQ6cEZO8eMqgbugEx4JOa1X8bFKIZdp5wP2fmR3qRB2br4mavRHdwgMtddFexsu+GYxw9o9MLtrODsV99Xr06+pRg1lpB3vaRmZ4fNnQjtN6IfBBdXnYDo6ItFl0bnRkqjvDWNrBSbVBKn3RPmrgCExHoPeCZ+ZmM6GutrVxI+gJvn6BOtNHZ0pTt6UI5IzqHbDcqsduaEBMtqlGZmI3SkzUVyvtGGbhKHU73kklAuAr6hdJs4l3QoIqEcztTOaeK2IesRjcAxU4+FCOHUh15IX0e182AB7i5v2QCBxtKcPUdj/eoxRPcHi3MjqwKfJjPUeBT5jNF1NO+vSO42FK5hH0NPs5B4wJIR84Wzj1nzfmSF6NsV3fk97O6TO1R3FmXCPugGmcu270pLGvSZfqMBRQfxUwFBRVJGGa7uFs+Nkn7jNykKgtTn7UT2z8hMkBagesbSn/ysMIsxTq53vebePQsYGoxWd/2NGYYDpz5aogkz49B7zoqVcy9309IDMLsfYLU2slE0wKJVxqa5hA9E3mGeRzfIQ3XasjGMkcMxz4ZLgqE7lM2U7sZSpkZpJCGEAxzFcsnjyiomveb1ummnF6i5zb2E0DK5GAgREumpjX64rbS/dd0uW4YJF/6+sGdV+cn5IxLbuuPGzDJVqNFGmxnj+qHtQ5HnAk7H9U4h99sEtCZ0ILB46GKSAmDhzaUs68KLvQZAO6kCeIqzdAh6KBeXdbu6KbN6BaexZ9Byd/ZQtciAd2npdk1rpNmUwoTn465o4mCm9Z48qH8oZMsjoM5UxBrZBqSv+K72N9RaNno46iEGBCJD9tlGx+iLKZK/NwaxppVjHav2Oo2pYUk3Uwh5I6XzmeYDdroVyxjOh1UdsmKbbJbKPx+AXeoLsQIy6c7C0dm67nvjxZuJFL0Q69P0kvQnfKFaJ06U3XGZCZ4eU0pVQkHqgmuy3QmUJ5UOezC3H7R/qMGX6ZlasnRa2p7
- kxTfgsui
- gNBroLhdLEMozGyRYNtVUKfQK6EdxT+bUDdUSlSvR/Muwn+tAPY76djeZmf4Cp4iRgTQoDbG6VDKpJJRel3rqu//oIT3/mcyayuyWGo85wancWDSqa3HWETkxdub5H513FeJlMSuuWj+GSNSgLKnmPp3gxHd9/6M6/+D6Np/8cafTRdGiXgsiFUUpulzI7hTZ+Vt9J4AIb+J9ZhXUujOsYlKNUILXzstJ0P4ha64v1P/VVB9Gh52REdywk4wMq385iza16bmJWSpjwRmbSwpEGNeENl/0hddoxSNFH16kQyOMoBNx8I3OuNkEd6qVO2Rxym4BwBS4P8Uxs67aSrfcGFfDFFJMrs7i1hWjfTyzR102X/KK1ZbDU7qV0u7/GLrzd0eV24mpCMdoUOVACJwyHUJEJ0Z7dAWtM4R0Ail8iz7ylTNxpUEpJ6sVOjegUWkkwoh16I1nU3MpG7uckkXpxIdQyVVQok3/U3yL/i8nNCogPiUamgvp8IfUp1qOFPeVoxlvezg00Rnc1PkarH7xrM3skWu/ayt6PoIDQZ2xRvnhRu1TocyaUeJnWK+I8yqkKFj86Gl6weqsXNDV+y67OWj0TKgibgsrK+Aic9h0Z7ptjRl1RYHiEXB0twu76VWwFLoEF3s4vKFpj2LHjBl28NbC0a5PpTSZT/yJTJLP/ts2a0z0bosBEawlXGnXbpR28ZD6L44PCNgOX2ZjVfpRbcXIFzctESGFsz3ePo5L4qu5YaAM2tsXiNzSyRLwRHpx8fja8JWVQ+hD3/pIO6DsUwTMGmTqHqGDetaekKUQHbP2SvEbK2py5T/QdgQUQihqsYVh1JelwPFlmtCC+o3MnCIKOd5pwgsyXKgc759H+40K2LEp+HEjG9g/uRsjdTujWWYUyBO5Wf9p1SK0jfyfGzzLxQSw9vPk2nrNdim7rJd/1+cyG/pFYe5DSsmQVz4DqJ5TtvYR8m5KOPph7fPy5xIhnsMW
- Xg4jzKEg
- Sgc5t77wX3GWRhn/GaXJwNvDHWsBGOOl58sbnHEIh5ndvBUKo1/kDAc0xh3gfQupRysvEhu9MWlmenxj90HcJpZHR2coidkiJP54gEJVXWj/mV/Z9y2hyq8GzkwTtMWDufDoLWdIe7lFLvXFgRTusAeDrbmkr3qzwS/oMx3qnVywMDIO/5XtNGjEpz7fmRIfm8cV/F14TnXWMbFsae8kGHMu73B+cFEym2AtW/j2QnKmqghegP+QRFFYDu9cc9iAEcI6ZjPPolLYWtLQnDpTRBp/IM+qpKhOk8mjfTssAludKtp0Im+zQ9QWL6Q8oEzFDEtnnluuZsk+tP5S0BY3ct/+IBMpkX+3BmyTca6berDGyrPbsMqhn3RA6HWejJqZF7p3uW6Te+PNgceZBI2w6ihgQCo4gdRB/WN3xPg2Rr+6KBGQr4KOdE5pRH1ckNVFY9gkMts5viD78L2C5cELSw7b97WrH/1nBb/2Kp68BGruA9FE1Q0VdRNeDPN3Xyil4IFPF20xuvKO2DPWZQP2x4dfVRo/DkEF10WjRmSrA3Zyb+cd9vdx+pfilcSSvn7yMYwiGGfC2R2qODnZ0u6gQ7Z2BxSJqzaK4XQiACUr1aBCVAtlyh/UivL9KsBxZdLp/UDCnJwatPqi0XnM8xNO4RM831HFnkpk11REpYUdbT/wOAQTEND+4MoGqB0fVwqdEiWYV8gZQRjZ+Ths1yFtmf80ba/tfZTDJqK+YEBCsFdic9P64y1D8X5FjWoqSZN6BgJTctNZ4oNtBnbBG7S7O61SxHwn7dsrudimTECxa8YhH03iU1EldjPcrzYLN75doJyOpvPR6/2BO9MdW9Sr1v8ZZSpBeZml3d7iABuvkG3g6t3xCzFN657ify6fW1INdw7OoJDltxt1W9yWqbtZ+37Dkmum5g93sVN9+m4vpPwPo4/aV+JlNOycyj99An0MRfECWFCSZMfnX4gnjqDgyzPvXpUP2
- 65jpwGC0
- O4QzccbzqLYo7M+N3YLT+vWDmd6S5CjHrhfuyBhcxQwghm2BNrusOwdg32donAsYUTkZG0+yqtt+ZL32E0r/WZpxvqWyTVcDdeZYsCED2Qm1riIIoRVUlsqXC3LXyh5pJbDCRk3MbmiKeXSWl5jPD30VCcpXJlCmcC889G0aY7l7lBKDYx7wXckpLWkTFQuBQtRgHvWCYSSBdlGyQH1LOmKOUWWN/7U5CGTGc+L5DCbjd+KLxssMyPEFwLrKaR4bZxtipJTCPPyNaASDlrYExuWSjTdp+yRYKpKjUNw7MJDIo3V4WGXxUGMsXzrXd7qNDYpQyHqrkortnTj2Rq92YyAOsu+xOVm5Phjk2HjzxSVeQRFjQl7Dhk
+X-Rspamd-Queue-Id: 884011C0009
+X-HE-Tag: 1790860722-861746
+X-HE-Meta: U2FsdGVkX18B581KVGS51UgPzjDGFyyzei2f60yxAW8MFdUuBOQzjHxeDgOr65TcKw6iVnksvlFZerPFICm7+9t/Qr7hCuJv2hnLJEGiwXVAz4T1AEOa8DpGaY0OwjndF/KfyPbdFlya0D8TzZMC1qLuGCffXts6e2ZCgRcdOJP+TRFrZFP7+2Yikysyh3hhAFnFsDSh7uQ+x0d6kdfcoFagF1C8NuuN8SsUgYgZ+3GoFa/bq2Z47PyBSh5IkvHvXUEFqcNMCCnA8eSY5KXCmjHc5UaXrj2Fs7XLIpuYcuVa71EXAqlptSmeIpp0ESEOQ6G/mwSevUTShs0qbxGp5o79noLmNVNey+/N/myHaIXyh4x8uIwghTNS0w2DAMsoPoBuFz2DnNBhbwsGLkP81qQtaq466rf4StAb9eidx9yAocbsdHbkD5qaplOTgPpjvRYg4tnme9FoKJi31F1Gt+OFSm5hu8PRgn0VFkwDdfJmYbp10B5TQaJcdFZDglzdyZmqz/MZuTf1Kxq7Le/ZJrTry02Z5DxFTf/jhE/rs8d3SJqsveHCgTl+3V5x2sYvYcuioVXI+9g12rzwrv20vPHKT9p1KdRSG86BgXi2PXU4d1LHJ8QJbZ/rXAcfLTKy8gERH65hVdQTx/3K/yjOpwL8mrERyi+YAbfhm/FckU1BDHNX4PfJeGsmdNYn4PHcoqoxoMObuVlj1zu2aTDCYDkysTJUbl3xYPQqcQfG8S5vjiA2wG03EihtydhcsRePto45DC9iVipSg/K+rpxALAXkfT3pfCKTnORgoMTDEXlRkYVP8BUjlwnFlCpL9MiCcs+JgLFein3ZD7cY1KkriGpa8KYfLv1UFVm8AxWXOoRfkGvCkbhsH7Jm8n2v5OryzkNRCB5NpL6xyc0WYOYXLFyq56oTZpf/+CZ3kXfFwb75QZDXM85y8RX5CeroiKV0ZNYHpN/qVwHF4F+criz
+ eWrhvjln
+ Bwuxa5HEgZZZe0cd0WRtWjUivdFCF6E7TI//Wtr4Q/IIlV0AE4vfh39Kkg2Q+6fZsCAqxjPSi/Q6I/e+tBkNLRXHt3nONrvCC8GVZGsaCTxQs57YKByqrYNag//bK/N5Vgxi/N4dtQAiLBoANqwl7PLcrEyBiQ3QD64+f6bXXNMlE403sCpQHycp6VKZgPTyCG0qSl44GbjTMyfpKT54sOAI2z1JZ3ileVvVgQawiAyO5rrt4UyiFnGE+inaM3NtqMDM5sXujR1xi1D7ZuUfNELGUjuoXU3L9S3VeUS2k6QyUxo7xEwvKeY5ci+EkQ0E21tQD0c8KdhxYllk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -222,95 +137,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/17/26 18:22, Lorenzo Stoakes (ARM) wrote:
-> Rather than referring to VMA flags with uncertain meaning, add a new
-> predicate that explicitly describes what possession of the VMA_PFNMAP_BIT
-> or VMA_MIXEDMAP_BIT flags mean, and then refer to that function for
-> determining VMA mergeability.
+On 10/1/26 14:37, Enze Li wrote:
+> include/linux/hugetlb_cgroup.h is the header file paired with
+> mm/hugetlb_cgroup.c, but it is not listed among the HUGETLB SUBSYSTEM
+> F: entries.  As a result get_maintainer.pl does not attribute the header
+> to the hugetlb maintainers explicitly.  Add the F: entry so the file is
+> covered.
 > 
-> Either flag means the contents of the mapping are owned by the kernel,
-> usually a driver, rather than by the core mm: the memory may be MMIO,
-> kernel-allocated pages or even ordinary pages the driver maps itself, but
-> the core must not populate, reclaim, migrate, copy-on-write or merge the
-> range on its own initiative.
-> 
-> We initially also include VMA_IO_BIT here, as by implication, these must be
-> kernel-owned. (mlock() also sets VMA_IO_BIT transiently on ordinary VMAs
-> while locking them, which is addressed later in this series.)
-> 
-> However the intent is to in future remove this, as no mapping should be
-> marked as an I/O mapping without also being marked with VMA_PFNMAP_BIT.
-> 
-> This forms the basis of further work intended to improve how we express VMA
-> properties such as this.
-> 
-> Also update the VMA userland tests to reflect the change.
-> 
-> No functional change intended.
-
-Of course I have to bitch about the naming :)
-
-Intuitively: kernel owned vs ... user owned?
-
-No, it's kernel owned vs core-mm owned.
-
-Which implies core-mm is not part of the kernel?
-
-Yes, this is confusing. ;)
-
-I assume you're coming from "map_kernel_pages*", but that's rather "kernel
-memory" and not "kernel owned".
-
-Usually we say "driver owned" when not talking about pagecache/anon. Or user vs.
-kernel memory.
-
-So is it really all about "is this (excluding CoW) no ordinary user memory that
-we would track through the rmap" ?
-
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
 > ---
->  include/linux/mm.h              | 56 ++++++++++++++++++++++++++++++++++++++++-
->  tools/testing/vma/include/dup.h | 29 ++++++++++++++++++++-
->  2 files changed, 83 insertions(+), 2 deletions(-)
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 2a92193ac6a5..cab29d6e15c1 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -1612,6 +1612,44 @@ static inline bool vma_is_shared_maywrite(const struct vm_area_struct *vma)
->  	return is_shared_maywrite(&vma->flags);
->  }
->  
-> +/**
-> + * vma_flags_is_kernel_owned() - Do the specified VMA flags indicate that the
-> + * contents of the VMA are owned by the kernel rather than the core mm?
-> + * @flags: The VMA flags to test.
-> + *
-> + * A kernel-owned mapping is one whose contents are established and controlled
-> + * by the kernel, typically a driver, rather than by the core mm's fault and
-> + * rmap machinery.
-> + *
-> + * The mapping may be memory-mapped I/O, kernel-allocated pages or ordinary
-> + * pages the owner has chosen to map itself (shmem via a PFN map, for instance).
-> + *
-> + * In all cases the core mm must not populate, reclaim, migrate, copy-on-write
-> + * or merge it of its own accord.
-> + *
-> + * Pages mapped this way are not necessarily reference counted or map counted.
-> + *
-> + * Returns: true if the flags indicate a kernel-owned mapping.
-> + */
-> +static inline bool vma_flags_is_kernel_owned(const vma_flags_t *flags)
-> +{
-> +	return vma_flags_test_any(flags, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT,
-> +				  VMA_IO_BIT);
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 596efa354ea2..6c210e90722f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -12097,6 +12097,7 @@ F:	Documentation/mm/hugetlbfs_reserv.rst
+>  F:	Documentation/mm/vmemmap_dedup.rst
+>  F:	fs/hugetlbfs/
+>  F:	include/linux/hugetlb.h
+> +F:	include/linux/hugetlb_cgroup.h
+>  F:	include/linux/vmemmap-optimization.h
+>  F:	include/trace/events/hugetlbfs.h
+>  F:	mm/hugetlb.c
 
-I thought we have cases where we drivers insert pages and neither set
-VMA_PFNMAP_BIT nor VMA_MIXEDMAP_BIT.
+Great, thanks!
 
-I assume vmf_insert_page_mkwrite() is fine because it is DAX doing it (should we
-limit this interface to DAX?).
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
