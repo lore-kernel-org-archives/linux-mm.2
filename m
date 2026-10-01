@@ -4,119 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26F67CA5FCE
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 22:04:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50B7ECA5FCE
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 22:21:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D2216B0088; Thu,  1 Oct 2026 18:04:13 -0400 (EDT)
+	id C6FE06B0088; Thu,  1 Oct 2026 18:21:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 684226B008A; Thu,  1 Oct 2026 18:04:13 -0400 (EDT)
+	id C218D6B008A; Thu,  1 Oct 2026 18:21:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5725B6B008C; Thu,  1 Oct 2026 18:04:13 -0400 (EDT)
+	id B0FAC6B008C; Thu,  1 Oct 2026 18:21:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B90C6B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:04:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 99BA51C3114
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 22:04:12 +0000 (UTC)
-X-FDA: 85275436344.22.C67A3E3
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7A0072000F
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 22:04:09 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=EZK4cyqe;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf03.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 79F316B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:21:27 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C8C0240574
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 22:21:26 +0000 (UTC)
+X-FDA: 85275479772.30.A1C6A74
+Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F211880009
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 22:21:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DArKaRU4;
+	spf=pass (imf30.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.99 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790892250;
+	s=arc-20220608; t=1790893284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RkjuLl6glvMcjMk52uXWjEDEbkWwvEy2GVu/heu8MsQ=;
-	b=aDyxgMOMwkJb+ZbnyXUTlMEuT//IAZOy0G068uz0uyiNZEItlt1jG3V9eAAFOL4Ji5iEqn
-	jQksNT0yW8+uDyqGjeAAgd7qc5aCTcrLCNF+syUgVMfauvsYd6af5Y5szHt4KPt5tn87yJ
-	16NF30D+TZ1XQsMRkdKbdW4NmPGixUE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=EZK4cyqe;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf03.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
+	bh=mALVOgiCxDIxJdJ6U8iXiJsvHp+DzhgFCGAE0EkhNn0=;
+	b=OUTkPcyel39A+EUZbik8WALIak4MmvZY/N1QgcAzvYC/ZJTt1iFJ2ZdKcTWRbMkMw/uitJ
+	C3iPVDlxmtCleuXCmWLATIcbhdqIcdsR7SrvkijbI0oNgbkl1Y9QEANcCGlyWcaorO6+xJ
+	Jj6FoFl4Qf+mlbLojPBmORkfvOH6BMs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790892250;
-	b=OfvEXNFAJNqOm68WmMbjhQ/bow1k674fnDey0xaGfSJ+QJaJUIERrxY6XGzHF+eyI+7L+e
-	AC7ePEloYN9wYij9704ja/cXJoeYzddQoWrp8RqdY4LhWa3Oj1mX5hty5gAngim9y8GAbA
-	SONvNkgoXTXzVQAVnii+fhKWTFDYh5E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790892250; x=1822428250;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=+QvXiGyo+x42cCw7RBt1plcNMLWUrP1Y177UVng5cbs=;
-  b=EZK4cyqedGqTe7ecKXa43tkXd7Nq90yzIweUSUSF8wKjMpsgPi/YVRv7
-   /Ddy68u7dbZbvE1NIetnentXRjzTZ2C7+QRzXXVvclwWo+xJZwUb/OHrq
-   V+jVvlO2z8wRgm9hiA4InKh0vi5Kb0NnGmaI0XzPeHwKLTRPfpHkA57bb
-   nNBXgCbKvBAIP6NrU9vssE5lvk73Whkr0BYjWoo1KR8fq6UiXq4lbV07X
-   C3Rd+j30ziW4plJ8E55SrXgwiOv6C4G5tNAVUBXINq8g18dnhJjUXYse6
-   gyBe2l0i4AQsQQUmkizAh7uUElHpsV9uHeJk+P8eGjvkSWXJeOKyIAFC8
-   g==;
-X-CSE-ConnectionGUID: 4Fq6zgtgT963KEBtm41OQg==
-X-CSE-MsgGUID: DsVddVUAQ5eoT3mWj98HYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11922"; a="91684146"
-X-IronPort-AV: E=Sophos;i="6.27,135,1787036400"; 
-   d="scan'208";a="91684146"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 15:04:08 -0700
-X-CSE-ConnectionGUID: pySp5X+8Ss+SzNAHXCkSNg==
-X-CSE-MsgGUID: jJiaaVqORH66Q0KvXHo5TA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,135,1787036400"; 
-   d="scan'208";a="276206270"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.108.6]) ([10.125.108.6])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 15:04:06 -0700
-Message-ID: <2a120db1b0c052eb88dcbc2ed1de6027a16542b4.camel@linux.intel.com>
-Subject: Re: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
- matrix with unique distance values
-From: Tim Chen <tim.c.chen@linux.intel.com>
-To: Jianyong Wu <wujianyong@hygon.cn>, Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu
- <yu.c.chen@intel.com>, Dietmar Eggemann	 <dietmar.eggemann@arm.com>, Steven
- Rostedt <rostedt@goodmis.org>, Ben Segall	 <bsegall@google.com>, Mel Gorman
- <mgorman@suse.de>, Valentin Schneider	 <vschneid@redhat.com>, K Prateek
- Nayak <kprateek.nayak@amd.com>, Shrikanth Hegde <sshegde@linux.ibm.com>,
- Phil Auld <pauld@redhat.com>, Andrew Morton	 <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,  "linux-kernel@vger.kernel.org"	
- <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
- "jianyong.wu@outlook.com"	 <jianyong.wu@outlook.com>, Yuan Zhong
- <zhongyuan@hygon.cn>, Huangsj	 <huangsj@hygon.cn>, Fengyu Wang
- <wangfengyu@hygon.cn>, Zhiwei Ying	 <yingzhiwei@hygon.cn>,
- "justin.he@arm.com" <justin.he@arm.com>
-Date: Thu, 01 Oct 2026 15:04:05 -0700
-In-Reply-To: <8a0c239b5bdf40c99b645087dec8fd18@hygon.cn>
-References: <20260827122816.756234-1-wujianyong@hygon.cn>
-				 <20260827122816.756234-3-wujianyong@hygon.cn>
-				 <20260831115004.GF776954@noisy.programming.kicks-ass.net>
-			 <da32ba66d95fd88869ba052f97698b9a4d6c3dc6.camel@linux.intel.com>
-			 <09261c8222994a41a04ace5f342475df@hygon.cn>
-		 <ce95ec57af9dfaf4d9ed604ad7337441a543f538.camel@linux.intel.com>
-		 <f6ebab3d0e44412dad17ac64a3b93339@hygon.cn>
-	 <112e526b4013e23c70adf5b8883db8e75358b473.camel@linux.intel.com>
-	 <8a0c239b5bdf40c99b645087dec8fd18@hygon.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+	t=1790893285;
+	b=X3zaZg6x7C7AZ8KQ4Ij614+gvLdcxYME1pZBrgQxNpNLQ6azxADs00oHROd1LEd+PXXa5N
+	HhZvRJhbP3O2eEX+6yuEECLE6ya4yOCEOawCaar2cfhtJwTZEqx5SOOdShyDnOjeuMvVex
+	LhWyFtIxRqDQ0GbrDjcsJEhp56aZVRw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DArKaRU4;
+	spf=pass (imf30.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.99 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48b0f4efe31so649678f8f.2
+        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 15:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790893283; x=1791498083; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mALVOgiCxDIxJdJ6U8iXiJsvHp+DzhgFCGAE0EkhNn0=;
+        b=DArKaRU4zg6sxU3vfp6D5YEilDt5YXO69D9OiKvwHHbpK0Cj8XyqQtI8bUsUJtytmy
+         luwa0kO8FBcfcB0u+sJ5kICGa4CmJGXvFWRTb8r9kqVRmmUXC1k3Ky5V+AUdgOPid6ht
+         MLpvVWQlyvvKyPEWHQGPxhf+8qa2l6YZvXpWk0m805x4xKLaXNdh/V7RaFutHIKD2ljb
+         d+fI3JTh8Fd2CgavVg/DarM/EQlNVWvlXXlNc4Y0o4rxeuUnbW6lSn4YsPtS91qJsoOY
+         ACLcwPZpg4cKL/maWj56A4ZRue0XG5o2ljW8UzCpPbZaZWI2cqnZGDSQCYRzU0nVB/mV
+         VzOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790893283; x=1791498083;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mALVOgiCxDIxJdJ6U8iXiJsvHp+DzhgFCGAE0EkhNn0=;
+        b=CVEKRznSWbAoUfGGfEN7Brm5aO/4OpRUrJbFXxRhFZfw6kBL/3eAB1dhLpM0FTgLBD
+         Y8hvESIfSHgOeNz0y4AeDr2He6bQBIX27Y7GsI54RBkVq6GM5tB6lOxN/rARsezih/VF
+         aqrxZFIKETM6MWw/+HihBF0y/sC/IWQS7K8w1In13OGnHEeYwZjOxxnNmLZg3/d+8Duk
+         bCGANx0Uo1FGaazItHKTef8FwGGkG5p5es9RLDcMjayU8y4rjiWZ1KV9TElNEtCW4LnQ
+         oE6y5OR0p19r4nddxTaD5JzKrfQCe99yVXZtA91b59NiKKM2DtwfXtIJWvE9Epmd4rVA
+         0geA==
+X-Forwarded-Encrypted: i=1; AKwUvBxSh8HB1Crpu0Qa1qGYbP/94lEIKXqxjuoq95tu8QkzJ5Df2wSurHvDVA19Yn4GYY59kuV5LuqbQw==@kvack.org
+X-Gm-Message-State: AFq9FYIXmYLfM21N3cqQSe9N6Wz1Y5kwlf20pyfWB/CdU+dEmOEt0jCa
+	Tsp+Jw/5m59YvqqQCuFJdlka0cqB8jxXurVu3EXsfNKj/gmd/WSIxpk3
+X-Gm-Gg: AYBFou1aNSFGqYamE83FQb3wTaOkgnIxFRtWbdD4Rt/9XK1w5JwMVsBYSikvRijwllF
+	sJi6jzNybF4QHwj3E4hj5wn0h7qj6FFvmNTaz5U8/oMrfzSg/Hls2EmvM4B+GBaz7+9AyqLlqn1
+	PZishsvHu8hef8Iqs+MxGidJTXNWwz791Ts3tQTPo6jfUIWHMQhzOUEnU7J98sHhxWqVll8frXZ
+	MBEJ4udd1goORQiJjhEWj1o4qbVXM7oqUM1GGWYkYQ20DVAvs1ZvHESiVtwHPG+4HUMUvp+Vsex
+	U6LMkJ1fULakPXzS3gBB/k/NutFK4u9ueSEc9IrNYXz0xN+hZoDvDhrR0gcjeXef9YNASr5EeAC
+	ZZ4ig84rxn7h7yr2VdSqKgh8avI+6GlxFwYXkx37ysclobzyk3VZnvZ0VTOPWhZi93JI6c1zQ//
+	BzI+BmGRr9rDZL9ToO9m8bl/ry2kQkQPlPexXexu2L494J14GEFAjYuDOfd0yFmFNRPkdab+YKG
+	EQrz4MB1Hju8UCnQG04+zSGcqOCWoDlkIY=
+X-Received: by 2002:a05:6000:4b06:b0:48a:f318:ac02 with SMTP id ffacd0b85a97d-48b1270e876mr1613511f8f.19.1790893283205;
+        Thu, 01 Oct 2026 15:21:23 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b382fe9cesm1315755f8f.42.2026.10.01.15.21.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 15:21:22 -0700 (PDT)
+Date: Thu, 1 Oct 2026 23:21:21 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org,
+ Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
+ luizcap@redhat.com, pbonzini@redhat.com
+Subject: Re: hunting memory corruption bug in 6.18.x
+Message-ID: <20261001232121.65c54816@pumpkin>
+In-Reply-To: <ar63St2LBfCdyhwj@pcnci.linuxbox.cz>
+References: <arY1Wq6R9OY20ans@pcnci.linuxbox.cz>
+	<arZHp8hjYFXE8Rkt@gremlin>
+	<arde/t0zQNEkWqi5@pcnci.linuxbox.cz>
+	<areOeRwZOez0eHm7@gremlin>
+	<arotyz5g6LozSjb1@pcnci.linuxbox.cz>
+	<arwNebjYXyGqrp32@pcnci.linuxbox.cz>
+	<arzRBv9ceJsxJppI@gremlin>
+	<ar1Xl7PE2rcoT9h3@pcnci.linuxbox.cz>
+	<ar63St2LBfCdyhwj@pcnci.linuxbox.cz>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F211880009
+X-Stat-Signature: 97buojasrawymm5auxts81fcj5wpmurw
 X-Rspam-User: 
-X-Stat-Signature: sx4mogsb69b8g75eec7uz973xpabayp3
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7A0072000F
-X-HE-Tag: 1790892249-324877
-X-HE-Meta: U2FsdGVkX19DNuQkwQaqFdQVrX6G7iZpY/1yCRFb+C70PlfVPjGO1dumyAnC3SMYbLcfmRs/Qos39LYCY0BqxTR6B+bITXrS0fq0dkU9PiwSfRziW2Nh/P6ZaLHVpjkwnFgmr+/F6miENdkT9HTXPmQEUlkP+9tUoV56UJiveaEkYEzQ7cMYFycaj4H+jQzdctxlnkxl2oGen1dpak/iN8ATPdU+dWrMe863x4WpYOB79yzD56oFzPw4VhrgmX2+00o46wPKE1HmET7CZtyLSKe1SQpWbZQ5Xp0lohtuLAH6dMjWCwZTAcRLiX0F35mR0/CSlRnQDWAbd6JfBBplSkufxT2IJyIca+jM0VDM5vGswgx7GOrE5QpaHHstDhzi8FVPxwD1viQlZ+09rpMBJdwBF9ssy2ocBazyAVzD13N1V82XlzkyKfd5Ol6VyKtlgFbhcHmRPapjgkjskzn0O9zTWFCMWjV4Ojg0IgBOvAaseBiRrWRbWVf1PEBOuB2W3mT5Uk1ciOByoSe+JPPvYIjwme+5WC3DdgmWolMGCkn60EJAYkBQY/puNC4KGDSoKFj+utprOqE/ZjAD0wKOeOfFuo+Zvedgc899DCRT48RmaSZxVdE3guE/+bJnYq/kICp74+NpAIEyfwloyWUAgs4ie+E7gx1EBvuiQKqQ9CF/psSs10tzHUzHPll3W8WyTJ6w9kk7Xj0/aPq2bPSuYei6wLTQOm7pSJyvb1CZLzUSKys64fBLNf66RX7QM+rpfn1nZAHv9tS1ppTGynLGHgPs6cKLBzRbU0RHNbiSP7VOSe5S/Txa8OH6Suh4bDOzqQ0ZZs9zP7k64ORN6r+BlO9W+VO+xrVbHD+sbHG67yah7P1lNAy3oqn9yVymWEj0aBX8KoSWMbJP8jyv9IbOXzl+otOnDBB75j9fhegPo+Rp8VgN7WCvcN2BYzW3FK9YGVx8A59aRDDyfXySkdt
- oPwvaNKX
- tdD6bhQQBAfOyu8/YvdyNanMWlnz8A/L2cA4/LMrSX8b7lFRMPYz1956IAPK3DR3CcELk2fhQjR8Z5YrCTerWZYKA8YTQMti6eYfUJh5ILaqU8htUrif/DZO5fY6Q07RfzNiXvD4NIfIwnHuJbs/hmz7iWyfCTgp7Ci9c1cUFXjI0kT5q+MAjvNtiMxhFB7aQgDgIjG8WS+Ej5IaqYSeoTN9hzLARbLvybe/szllJCFuJGYr+ACHkkoPE8oAdtvQlHmeLDF9vs0JfH+y5atu9aDmsEF7BviRJVE5hfpC9g0UxMNVuuLC1Q6efGc2vQTQv8ki7zoBTzvwljZKmH7YcxTvFbHiLM0xOJOyvNs85ujgz+aKv0tHiSPplDtLZKg9XCNgRrUsw5febUMK7I3QykNUAh4NBU49txU8nbJPPV5sl5hVFJp6Iuluiy4WIrThRC80HSLvVb1lJX3k1h6rCldzIYmFPLCnGiadEcyOhtwL4ag+toRoLfC4+wBi7GM52PGP00iC5GRHo2XtL0tzoEG0xqlShD1n4NQRzNeZ8kRyDoNWfiS1pw6j1Kp10gsVP+5/+8ePBZw9z5LNT7lIBo3S5UCeExa13F4QStbkJfqlYJeWhfdq3ax8iPwSHI+qBC/5RP24zv0iOFGiGVQGrfbttAANoHA2NiihbiTrqg6kCEg7kyF+79yQuOsvKfOj1nzeYS8cEHPTmA1oG/yy73ELvMIOkt3JqPDtp
+X-HE-Tag: 1790893284-152261
+X-HE-Meta: U2FsdGVkX1/poPSKU4PMt/ZQuPpUJKRignaDf90hm5cOzgGBi95anPqZfa8K+3oOFSk8WdFTPuwV8CHpW7pp2/9K7sYSoyURFSNR5qd2v31dP20UHti3SrdIGw5XXJXsVJxwKBPnZNMs5xjaZiSjIMcDicFJHnW4YkDqtr+ZtUAG9TOTOnuARMxvLyeCIjIwjAUoD3STc8+YvZqGfMyod+0kJmREUdsRqugAXdkytU96m9fMuR8gOSqSvk/iuQb/Yvo/+NgEjDixnDE27YqI4ud1G2YzzjEqlhb9oR5+/yWRDBkbBCWJeDXekEMqf0fmk64fZvknkd6p3JFlcNobynnuuJ6o7Vq1Mv1a6VpDd/xrDnY/+bWUQrFHsOqgNEcslScqw6a5jvwMKpig4m9EW4NlHoS0mjLhIYXu7tmxeSmIcyYOcuNgGxC50ZSRrgWUDN0AMJxveJq3zWIsT3iQdAxJ/OnuhqCKLQK/B17sfZh6iv0Qyaxk7t1qrWXUJHSJ8M+NuPyw4goSn2yI2gqA9iW1ZFA0l5CJ4F8S/U7MUgHnpDXBWNaPfH2q40qEFXVnDAlVt+id76zOy7dlaD6wdie/Z4GeK+ocMbZPWsbW0STbHnHXFu098pBoRFkuTkvU8dlONDHd1aQzCbUt5ivXal7oDKOb8ZMCpBm4C2QZc6YHGxnPt4FfhTKliXYcHjh7iG7NpvDIAhGc3MVBMwkb70wi3jBJQiaSN3bsEH45LYZGUEYZbQew3b04Rv7xrR5+HROxAEBgRB7bM749Enrk+S3xN7Gnube7StGys6AjfntMwtu8AbS8X+aOCeo4zQIKOKihQCzqpzbhofXpP4pdv+MYaSM65dbT/9KYfgFt2IX4FdB7BqLgjD0pG/hfL7s2C68fVFdZ0X58MBWebZ2labdk9CROOWDKhlhUz3VaDSA/1CwP2Z7Xs7tmomxQlbKDSwlKZU6NbyI5T6LDxvQ
+ fkqcC3iY
+ oR1n51zHwtgG4unlkaEpYSuv3vOjjKvsVu1k7Qs1BGFbZznXly7MxGzBovwLx+8WgMqRxou9A96YqxehE3aqfsinLBC5HFegWiTZF6lPO/ySKI6vD/k923/u653/uo4B6Rszc4Eac6vTU3PSm72uySZmbdCek4sM1HCARWj0Y8+n/lQtW/VhHB7G0kzRWtaR5muac+mePCFmbTAGhkQ8hcnV/TMQu0QKC9999pwaqd35i3CFfIWNgxyvbRjqyIs2CDMpHkqQwlPPqwooc0AnJCvjcenehoHlCRlqYi/USgR5mr120o3XTfZN8Mlu4U5tiX4z05bDgv2iB2QFgxoqQP5SzMJ5ADtE30xQZplrwG9klgpSjWPvO+0XgEcHhnrtGvjht1EFM1BX9keHdi8vNAV+FfDxLz8swebfYyLaQaP6NI8L87bYyuPv/ttuh4UE2IGlIp4o+BlN24kCmNDCLN1bGa0saPXm/5+raTnECtDEvRCk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,342 +132,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-09-28 at 09:39 +0000, Jianyong Wu wrote:
-> Hi Tim,
->=20
-> > -----Original Message-----
-> > From: Tim Chen <tim.c.chen@linux.intel.com>
-> > Sent: Thursday, September 24, 2026 11:46 PM
-> > To: Jianyong Wu <wujianyong@hygon.cn>; Peter Zijlstra
-> > <peterz@infradead.org>
-> > Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
-> > Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
-> > <yu.c.chen@intel.com>; Dietmar Eggemann
-> > <dietmar.eggemann@arm.com>; Steven Rostedt <rostedt@goodmis.org>;
-> > Ben Segall <bsegall@google.com>; Mel Gorman <mgorman@suse.de>;
-> > Valentin Schneider <vschneid@redhat.com>; K Prateek Nayak
-> > <kprateek.nayak@amd.com>; Shrikanth Hegde <sshegde@linux.ibm.com>;
-> > Phil Auld <pauld@redhat.com>; Andrew Morton
-> > <akpm@linux-foundation.org>; David Hildenbrand <david@kernel.org>;
-> > linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> > jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
-> > <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
-> > <yingzhiwei@hygon.cn>; justin.he@arm.com
-> > Subject: Re: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA
-> > distance matrix with unique distance values
-> >=20
-> > On Thu, 2026-09-24 at 05:41 +0000, Jianyong Wu wrote:
-> > > >=20
-> > > > On Wed, 2026-09-23 at 03:14 +0000, Jianyong Wu wrote:
-> > > >=20
-> > > > [snip]
-> > > >=20
-> > > > > > >=20
-> > > > > >=20
-> > > > > How should the next closest NUMA node be selected when multiple
-> > > > nodes
-> > > > > have the same distance from the current node?
-> > > >=20
-> > > > You could use some other means like node id or load in the node
-> > > > if there's a tie in distance.
-> > > >=20
-> > > > >=20
-> > > > > That is the ambiguity this patch is intended to resolve. For each
-> > > > > source node, it disambiguates equal NUMA distances and produces a
-> > > > > unique node-level affinity ordering. An llc_next array can descri=
-be
-> > > > > the traversal of LLCs within a node, but it does not determine wh=
-ich
-> > > > > equidistant NUMA node should be visited next.
-> > > > >=20
-> > > >=20
-> > > > Agreed that llc_next only covers intra-node traversal and that you =
-still
-> > > > need an inter-node order for the equidistant case. But I think
-> > > > sorting each source node's row by (distance, node_id)
-> > > > already gives a stable total order; the node id breaks the tie. You=
- can
-> > > > also break it by node load if you'd rather balance than pin. Either=
- way
-> > > > no new distance value has to be invented.
-> > > >=20
-> > >=20
-> > > Yes, using (distance, node_id) pairs is a straightforward way to orde=
-r
-> > nodes,
-> > > similar to the memory zonelist fallback node sequence. I once
-> > considered
-> > > adopting this approach, but dropped the idea after realizing it lacks
-> > > symmetry.
-> > >=20
-> >=20
-> > Ordering symmetry can be resolved by looking at (distance, abs(node_id_=
-i -
-> > node_id_j)).
-> >=20
->=20
-> > > For instance, node_affinity_distance(A, B) is not guaranteed to equal
-> > > node_affinity_distance(B, A).
-> >=20
-> > node distance is symmetric if you don't modify it.
-> >=20
->=20
-> OK, So, What about using a triple (distance, abs(node_id_i - node_id_j), =
-min(i, j))
-> to rank node-affinity sequences? The third component is what makes it a t=
-otal
-> order - given the distance, the gap and the smaller node id, the pair is
-> determined - so it guarantees deduplication and symmetry without inventin=
-g any
-> new distance value.
->=20
-> > >=20
-> > > The dedup algorithm can enforce this symmetry property for the
-> > resulting
-> > > node=E2=80=91distance matrix.
-> > >=20
-> > > > > > This will be storage efficient and more straight forward
-> > > > > > to use than maintaining an artificial cache distance matrix.
-> > > > > >=20
-> > > > > > I dislike the artificial distance matrix also for the
-> > > > > > reason that there is no guarantee that there are enough
-> > > > > > available distance slots between two nodes.  Say if I
-> > > > > > start with
-> > > > > >=20
-> > > > > >         NODE0  NODE1  NODE2  NODE3
-> > > > > > NODE0   10     20     20     30
-> > > > > > NODE1   20     10     20     25
-> > > > > > NODE2   20     20     10     20
-> > > > > > NODE3   30     25     20     10
-> > > > > >=20
-> > > > > > and there are 16 LLCs in NODE 1, I will run
-> > > > > > out of slots when I try to deduplicate as
-> > > > > > only 10 slots are available to fit 16 LLCs.
-> > > > > >=20
-> > > > >=20
-> > > > > There is no system-wide LLC distance matrix in this series. The
-> > > > > de-duplication is applied only to the NUMA-node distance matrix.
-> > > > > Consequently, the number of LLCs in NODE1 does not affect the
-> > number
-> > > > > of distance values required by this patch.
-> > > > >=20
-> > > > > The algorithm also takes the available distance space into accoun=
-t
-> > > > > when assigning the refined node distances. It does not simply ins=
-ert
-> > > > > one value for each duplicate into the existing gap between two
-> > > > > original distance levels. The distance values are adjusted as
-> > > > > necessary to reserve enough space before the duplicates are
-> > assigned.
-> > > > > Therefore, the algorithm cannot run out of available distance val=
-ues,
-> > > > > regardless of the number of nodes sharing the same original
-> > distance.
-> > > > >=20
-> > > >=20
-> > > > Fair - you're right that the dedup is node-granularity, so my 16-LL=
-C
-> > > > example doesn't apply as I stated it, and I'll drop that objection.=
- It's
-> > > > moot anyway under the argument below: if the ordering uses raw
-> > distance
-> > > > plus a tie-break, and the score uses raw distance, then there's no
-> > matrix
-> > > > to pack in the first place and the "enough slots" question disappea=
-rs.
-> > > >=20
-> > > > > In addition to providing the node-level component of the LLC affi=
-nity
-> > > > > ordering, the refined node distances are used to calculate the
-> > > > > affinity improvement score when selecting a source scheduling gro=
-up
-> > > > > or runqueue during load balancing. Please see patch 12 for that
-> > usage.
-> > > >=20
-> > > > This affinity computation is where I think the dedup actually hurts
-> > rather
-> > > > than
-> > > > helps. The score in patch 12 is
-> > > >=20
-> > > >     Di =3D dist(src_node, i) - dist(dst_node, i)   (kept only if Di=
- > 0)
-> > > >     p  =3D sum_i  numa_counts[i] * clamp(Di, 4, 1024)
-> > > >=20
-> > > > so it reads the distance *magnitude*, not just the order. Feeding i=
-t the
-> > > > refined values manufactures gains on exactly the node pairs the ded=
-up
-> > > > perturbed - the equidistant ones. Using your node matrices:
-> > > >=20
-> > > >     raw:                          refined:
-> > > >           N0  N1  N2  N3                 N0  N1  N2  N3
-> > > >     N0    10  20  20  30           N0    10  15  20  30
-> > > >     N1    20  10  20  25           N1    15  10  12  25
-> > > >     N2    20  20  10  20           N2    20  12  10  15
-> > > >     N3    30  25  20  10           N3    30  25  15  10
-> > > >=20
-> > > > Scenario A - a locality-neutral pull gets a fabricated gain.
-> > > > Dest CPU on N1, source rq on N0, 5 tasks preferring N2:
-> > > >=20
-> > > >                   dist(N0,N2)  dist(N1,N2)  Di   contribution
-> > > >     raw           20           20            0   5 * 0 =3D  0
-> > > >     refined       20           12            8   5 * 8 =3D 40
-> > > >=20
-> > > > N0 and N1 are physically equidistant from N2 (both 20), so pulling
-> > those
-> > > > tasks to N1 buys zero locality - raw correctly gives 0. Refined sco=
-res it
-> > > > 40 and the balancer may drag all 5 over chasing a gain that isn't t=
-here.
-> > > >=20
-> > > > Scenario B - two physically identical options get fake-ranked. Dest=
- on
-> > > > N1; candidate sources N0 and N3, each holding only N2-preferring
-> > tasks:
-> > > >=20
-> > > >                   raw Di   refined Di   after clamp(.,4,1024)
-> > > >     X (N0)        20-20=3D0  20-12=3D8      8
-> > > >     Y (N3)        20-20=3D0  15-12=3D3      4
-> > > >=20
-> > > > Raw Di says both are 0, i.e. locality-equivalent, and load should d=
-ecide.
-> > > > Refined ranks X over Y purely from invented deltas - and the clamp
-> > floor
-> > > > even promotes Y's fabricated 3 up to 4.
-> > > >=20
-> > > > Note the dedup only ever perturbs ties, so the skew is confined to
-> > > > equidistant pairs - which is exactly the case where there is no rea=
-l
-> > > > locality difference and load should have been the tiebreaker.
-> > > >=20
-> > >=20
-> > > My intention is to distinguish equal node distances and give a defini=
-tely
-> > > task move direction.
-> > > What we want to do is aggregate task to as small area as possible. If=
- N2
-> > is
-> > > Preferred node, and N2 is saturate, N1 is the next node of N2 in the
-> > > affinity node order, it's natural that prefer N1 than N0 for task
-> > aggregation,
-> > > right? Thus, we should give weight for task in N0. So N0 is more like=
-ly to
-> > be
-> > > chosen and migrate task to N1. Consequently, the task can more likely
-> > > aggregate to N1 and not evenly spread in the two nodes.
-> >=20
-> > I think you should get true affinity metric based on real distance. Bia=
-s
-> > based on node
-> > property can be applied separately and a easily controlled manner. =C2=
-=A0That
-> > has the advantage
-> > of setting the bias based on factors like load or others.
-> >=20
->=20
-> > It is a bad design to have to tune a hacked up
-> > distance to change the bias.  It is hard to control
-> > the magnitude of the bias and use a similar and consistent
-> > bias with the current approach. The distance you inject to
-> > disambiguate is not the same from node to node.
-> >=20
->=20
-> Makes sense. So, what about the following solution?=20
-> Given a node affinity sequence, a move from src to dst improves the
-> affinity of every task whose preferred node i ranks dst better than src. =
-The score
-> is then
->=20
-> Di =3D raw_dist(src, i) - raw_dist(dst, i)
-> affinity_bias_i =3D position of src minus position of dst in node i's aff=
-inity
->              sequence, counted among the nodes at the same distance from
->              i (zero when Di is not zero)
+On Thu, 1 Oct 2026 21:40:58 +0200
+Nikola Ciprich <nikola.ciprich@linuxbox.cz> wrote:
 
-Do we really need an affinity bias?  I think your intention is to use it fo=
-r breaking a tie.
-If there is a tie in affinity score (without injecting bias),=C2=A0
-just use the position diff to break the tie.  Having a bias distorts
-the affinity score.
+> Hello again,
+>=20
+> the good (?) news is, in the meantime we got another crash on different m=
+achine
+> and I have a kdump including complete vmcore. This one was 6.18.53
+>=20
+> here are some details:
+>=20
+> Hardware: Supermicro AS-2024US-TRT / H12DSU-iN, BIOS 3.5 (2025-09-22). Du=
+al-socket AMD EPYC 7343 16-Core, 32 CPUs, 1024 GB RAM.
+>=20
+> analyzed with crash + matching vmlinux debuginfo:
+>=20
+> Oops:
+> general protection fault, probably for non-canonical address 0xfffffff0c9=
+30038
+> RIP: __d_lookup+0x4a/0xc0
+> Comm: systemd PID: 1274600 CPU: 23
+> Call trace:
+> __d_lookup
+> lookup_fast
+> walk_component
+> link_path_walk
+> path_openat
+> do_filp_open
+> do_sys_openat2
+> __x64_sys_openat
+> do_syscall_64
+>=20
+> Exception frame registers:
+> RAX: 0fffffff0c930020 RBX: 0fffffff0c930020 RCX: 000000000000000b
+> RDX: ffff985ffd223600 RSI: ffffb18962823d70 RDI: ffff989ddf09b5c0
+> RBP: 000000005560450b R8: 000000007fffffff R9: fefefefefefefeff
+> R10: 0000000000000000 R11: 93c3d2eb02a31dda R12: ffff989ddf09b5c0
+> R13: ffff989ddf09b5c0 R14: ffffb18962823d70 R15: 0000000000000000
+>=20
+> Faulting instruction (cmp %ebp,0x18(%rbx)) dereferences RBX+0x18. RBX held
+> the non-canonical value 0x0fffffff0c930020, giving fault address
+> 0x0fffffff0c930038. __d_lookup was walking the d_hash (hlist_bl) bucket;
+> RBX was the node pointer being dereferenced.
+
+Surprisingly it looks like your compile matches the one I built from head.
+The crash seems to be from the 'if (dentry->d_name.hash !=3D hash) read.
+Annoyingly the list is followed with 'mov (%rbx),%rbx' so you don't get the
+address of the previous item.
+However the same bad address is in %rax.
+That would rather imply that it is the first time around the loop and
+the 'bad address' came from the hash table itself.
+(Unless the exception code manages to corrupt %rax.)
+
+The list being corrupt would have to be memory reuse (for something else)
+and the rcu protection not working.
+
+I've just noticed that the RAX and RBX values (and the code RPC offset)
+exactly match those in your original report from 25-sep.
+That can't be a coincidence.
+Has to be some kind of 'smoking gun'.
+Possibly scanning the entire dump for 0x0c930020 might show it being
+used somewhere?
+
+David
 
 
-> p =3D sum_i {numa_counts[i] * (Di + affinity_bias_i)}, kept only if (Di +=
- affinity_bias_i) > 0
->=20
-> When raw_dist(src, i) equals raw_dist(dst, i), Di is zero and the candida=
-te is
-> selected purely by the affinity bias.
->=20
-> I would rather keep it fixed than let load decide. Load changes between p=
-asses,
-> so the choice can flip and the same tasks can be pulled back - not every =
-time, but
-> it is the direction the aggregation is fighting against. At the node leve=
-l,
-> equidistant nodes are indistinguishable to the metric, so the order betwe=
-en them is
-> a convention in any case; I would just rather it be a fixed one.
-
-That's fine.
-
-Tim
 
 >=20
-> > >=20
-> > > Also, give a preference between N0 and N1 can limit the task migratio=
-n
-> > from
-> > > N1 to N0. By this way, we can achieve the goal that keep tasks inside=
- N1.
-> > >=20
-> > > > Stepping back, the matrix is being asked to do two jobs at once:
-> > > >=20
-> > > >     - ordering: only needs a deterministic total order, which
-> > > >       raw distance + node-id tie-break already provides;
-> > > >     - scoring: wants true magnitudes, which raw distance also
-> > provides
-> > > >       (equidistant =3D> Di =3D 0).
-> > > >=20
-> > > > The dedup is only necessary if one matrix has to serve both - and t=
-hat
-> > > > coupling is precisely what injects the fake Di. So if you need a no=
-de
-> > > > ordering, I'd use the unaltered distance and break ties by some oth=
-er
-> > > > means (node id, or load), and feed the score the raw distance too.
-> > > >=20
-> > >=20
-> > > Yes, the refined node distance serves both purposes mentioned above.
-> > Hence,
-> > > dedup is necessary for this patch series.
-> > >=20
-> > > Both affinity=E2=80=91score calculation and migration control rely on=
- a consistent
-> > > refined node distance matrix. To keep this consistent, we should avoi=
-d
-> > using
-> > > the default node distance for one objective while adopting a differen=
-t
-> > > variant for another purpose.
-> > >=20
-> > > The only open design question is whether symmetric node distances are
-> > > strictly required. Symmetry is preferable but adds implementation
-> > > complexity, so this represents a trade=E2=80=91off. If symmetry is un=
-necessary,
-> > > I can construct the node order following your approach using the
-> > > (node_distance, node_id) pair, which is significantly simpler than my
-> > > current implementation.
-> > >=20
-> > > Your question touches on the trickiest part of this patch series.
-> > >=20
+> Observations from the vmcore:
+>=20
+> The faulting value 0x0fffffff0c930020 is non-canonical and is not a mapped
+> kernel address:
+> crash> kmem 0x0fffffff0c930020 =20
+> kmem: cannot determine page for fffffff0c930020
+> fffffff0c930020: physical address not found in mem map
+>=20
+> The dentry being looked up (RDI/R12/R13 =3D 0xffff989ddf09b5c0) is intact=
+ and
+> well-formed:
+>  name "app.slice", len 9, d_name.hash 0xCE973022 (consistent)
+>  d_op =3D kernfs_dops; valid d_parent, d_inode, d_sb
+>  d_hash.next =3D 0x0 (this node is the end of its bucket chain)
+>=20
+>  The target dentry and its hash chain in the dump show no corruption; the
+>  chain terminates cleanly.
+>=20
+> No page migration, compaction, or THP activity was in progress on any CPU
+> at panic. "bt -a" filtered for migrate*/compact*/khugepaged/kcompactd/
+> kswapd/split_huge*/folio*/d_move/rename returned nothing.
+>=20
+> Automatic NUMA balancing was disabled at crash time (read from kernel mem=
+ory):
+>  crash> p sysctl_numa_balancing_mode =20
+>  $ =3D 0
+>=20
+> Top-level (PMD) transparent hugepage policy was "never" at crash time:
+> crash> p/x transparent_hugepage_flags =20
+> $ =3D 0x1c0
+> Bits set: 6 (DEFRAG_REQ_MADV), 7 (DEFRAG_KHUGEPAGED), 8 (USE_ZERO_PAGE).
+> Bits 0 (TRANSPARENT_HUGEPAGE_FLAG) and 1 (REQ_MADV_FLAG) are clear, i.e.
+> sysfs enabled =3D never. Per-order mTHP controls (huge_anon_orders_*) wer=
+e not
+> inspected for this dump, so mTHP state is not asserted here.
+>=20
+> No MCE/EDAC/hardware-error records are present in the kernel log for this=
+ host.
+>=20
+> I can provide the full vmcore and the matching vmlinux/debuginfo on reque=
+st, and
+> run further crash queries against it.
+>=20
+> not sure if this is of any help?
+>=20
+> with regards
+>=20
+> nik
+>=20
+>=20
+>=20
+> On Wed, Sep 30, 2026 at 08:40:23PM +0200, Nikola Ciprich wrote:
+> > (CC Paolo Bonzini)
 > >=20
-> > I think the design can be much simplified if you don't have to invent a=
- new
-> > distance matrix.
+> > Hello Lorenzo,
+> >  =20
+> > >=20
+> > > Yeah 6.18.15 is expected, I'd not say reverting is really worthwhile =
+honestly,
+> > > given what you've observed previously. =20
+> > yes, I wasn't available at the time he was dealing with that..
 > >=20
+> >  =20
+> > >=20
+> > > Maybe worth checking if commit 26505e1b5b54 ("KVM: SVM: make svm_flus=
+h_tlb_gva
+> > > do a full asid flush if NPT enabled") helps in that case? =20
+> > sure, I'll do that.. however, the patch doesn't apply cleanly on top of=
+ 6.18.54 at
+> > all.. what do you guys recommend, is it OK to adjust the patch to this =
+kernel
+> > (I have to admit I'm able to do that, but without any deep knowledge of=
+ the subsystem)
+> > or do you recommend to apply some of the previous patches?
+> >=20
+> > tried going through them, but its ~134 commits affecting svm.c between
+> > v6.18 and 26505e1b5b54
+> >=20
+> > cheers
+> >=20
+> > nik
+> >  =20
+> > >=20
+> > > --
+> > > Cheers, Lorenzo
+> > >  =20
+> >=20
+> > --=20
+> > Ing. Nikola CIPRICH
+> > technick=C3=BD =C5=99editel
+> >=20
+> > +420 591 166 214
+> > +420 777 093 799
+> > nikola.ciprich@linuxbox.cz
+> >=20
+> > www.linuxbox.cz
+> >  =20
 >=20
-> OK, let me try to remove this artificial node distance.
->=20
-> Thanks
-> Jianyong
+
 
