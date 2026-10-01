@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E890CA5FCE
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 18:14:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B758CA5FD2
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 18:15:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A4516B008C; Thu,  1 Oct 2026 14:13:59 -0400 (EDT)
+	id 21B8A6B0093; Thu,  1 Oct 2026 14:15:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 155B46B0092; Thu,  1 Oct 2026 14:13:59 -0400 (EDT)
+	id 1CD626B0095; Thu,  1 Oct 2026 14:15:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06C396B0093; Thu,  1 Oct 2026 14:13:59 -0400 (EDT)
+	id 0E36D6B0096; Thu,  1 Oct 2026 14:15:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D84116B008C
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:13:58 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7E9241C3203
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:13:54 +0000 (UTC)
-X-FDA: 85274855988.25.80F3BCC
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D7A256B0093
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:15:34 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6DC361404D9
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:15:32 +0000 (UTC)
+X-FDA: 85274860104.23.A427A74
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 658C610000B
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:13:52 +0000 (UTC)
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4C12E100003
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 18:15:30 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FT22BYDW;
-	spf=pass (imf05.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=g3KwxhRY;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790878432;
+	s=arc-20220608; t=1790878530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=2K6+AjrHHCLY+3zXw5HOJ91vX9fbZQsVpcAGubvt7/o=;
-	b=6sSYHSpFKeGJ4+I3MN5qwi16Z3rIrw+8uq+CaJJvY6hO0G1lzwQdKb+cMb00+TONCes4aJ
-	ir7r994eKz7MzO2oDEpo9MKefXx/itkKG2TE1R0a5EDL8E3QrDCMhLeZwkck4KIQVea85G
-	fCSJ8k2GFYlAl6Vb15G/r5RkzoqQQdc=
+	 references:dkim-signature; bh=A0IEnKIIoe14yk04bwWgYY6XA9TxUuiuYvjrXGnIi6w=;
+	b=GtQQWGCoA8ljNLHVpCMNqgyz88cfvq2P8AnNHeu+t+6U+Xsvnde2Qy7m/5ahiyA7SX+PiQ
+	63ubV6d8YPtQNgL6du5pDK2HMiTRWhBiWTzPClsZnBlOrVKZtxrtypnLnf6sgJZJPWDYRI
+	98vCg1UL0D8mbmaN/T3elc5gfj4T5RE=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FT22BYDW;
-	spf=pass (imf05.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=g3KwxhRY;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790878432;
-	b=lRhs/ZXb+IknHegU0KVwjxPU632qmrqM4POQgTHmVZKnar03TflBu6obyaq3RPyOK8xa5U
-	CCxnJBlVrfTr+FcRcu1RI7jwx1bnDkgBsjiK1og8WM579HgZZG9n3TvCck5PzR7wGAI6m7
-	w4+D9x3xZAzSdr8FwM0NOzym7qotp18=
+	t=1790878530;
+	b=1zaaB2rOCdgj12q4x20FA7U3cwW6ERqjsfDMb2biKKedqIOU8BhRMDPkPLaxbcSldQbPWE
+	U/hA7vP4WzkEvfSLARIIAU76DUb9A0eIrWDq3OUIN1p+bb8B9tYr3dYmBfft7CNqPbpe3o
+	Yq/G558hacbzZohmQ+yMDntcu+1j/lE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790878431;
+	s=mimecast20190719; t=1790878529;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=2K6+AjrHHCLY+3zXw5HOJ91vX9fbZQsVpcAGubvt7/o=;
-	b=FT22BYDWFvDn/eNjJ2dXXe3Bs6B/WQdk7Ujl/ixp4AOqYzGrtDzh2Jxm2n0Egb+KDeadvK
-	p31oALltnfbp9yV0uYXAlgv/7xR5g0ze/b27ebX4JYibarJCOjOVJDjh7uZam+u161nabs
-	2YS4SpLOJrM2LBaMmIQd8dtPfMvf9jM=
+	bh=A0IEnKIIoe14yk04bwWgYY6XA9TxUuiuYvjrXGnIi6w=;
+	b=g3KwxhRYwVFgXSfGjp2IyjouCCToHtAbT4upAh7FBz2Y3zgc+oTQvY9QoXdcM/eQBbczth
+	URe05bAxGUF3wfgNaXg0t6PCgyVJczEBIUjFwOlbLfOVA5RnbFgJ7S4Ek7yFmPrjyvu5qw
+	JJUm1wcCZXAekvKiKQK/tqCPdXLUc2k=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-l93d_TTfNca1FqR8r5n-pA-1; Thu,
- 01 Oct 2026 14:13:50 -0400
-X-MC-Unique: l93d_TTfNca1FqR8r5n-pA-1
-X-Mimecast-MFC-AGG-ID: l93d_TTfNca1FqR8r5n-pA_1790878429
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-211-3j7Aynp0Me-5pNw8J8K6SQ-1; Thu,
+ 01 Oct 2026 14:15:26 -0400
+X-MC-Unique: 3j7Aynp0Me-5pNw8J8K6SQ-1
+X-Mimecast-MFC-AGG-ID: 3j7Aynp0Me-5pNw8J8K6SQ_1790878525
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B36B218009D3;
-	Thu,  1 Oct 2026 18:13:48 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B1EDD180049F;
+	Thu,  1 Oct 2026 18:15:24 +0000 (UTC)
 Received: from lcapitul-thinkpadt14gen3.rmtcaqc.csb (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A4CED180059F;
-	Thu,  1 Oct 2026 18:13:44 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7CA3430000E4;
+	Thu,  1 Oct 2026 18:15:23 +0000 (UTC)
 From: Luiz Capitulino <luizcap@redhat.com>
-To: stable@vger.kernel.org,
-	sashal@kernel.org
+To: sashal@kernel.org,
+	stable@vger.kernel.org
 Cc: rppt@kernel.org,
 	sayalip@linux.ibm.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6.18.y v3] selftests/mm: hugetlb-mremap: add setup of HugeTLB pages
-Date: Thu,  1 Oct 2026 14:13:30 -0400
-Message-ID: <20261001181330.684841-1-luizcap@redhat.com>
+Subject: [PATCH v6.12.y v2] selftests/mm: hugetlb-mremap: add setup of HugeTLB pages
+Date: Thu,  1 Oct 2026 14:15:18 -0400
+Message-ID: <20261001181518.685129-1-luizcap@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: KnymzyDoxVerwxeNqLndR8CtoOdSqWe5TpZWX-0ttzY_1790878429
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: TWer7w1-GvVEKeJLrkebqqPBYWbo2J4uOUrtgi-nqIw_1790878525
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 658C610000B
-X-Stat-Signature: 8afqrqpuhx5j8mo5bq1eyw49eomby4u1
 X-Rspam-User: 
-X-HE-Tag: 1790878432-960078
-X-HE-Meta: U2FsdGVkX1+a6ILRRXvjXXI48T21KYMqZl7MCW4IuggPxh53N5FOZXpl5h8yz/frV4++AY+Bdeg2zPb9lU4qoMrUcBm4zAT10LJ9h/iFS3i4UOkb/UKYBBQMxnUAepfRDpo0Ll9/z9Tna1z2N76C5F6s1pAi07H51lJkzb3tVjLx/QnhNb6cyUiCUgEv0DQ83xUV7Sihu04hRqlQMD7yuZ4D4Ky3LVBRWBz1rSRc7sIna3Wp7bAhOrNk5OGbL6h/X/1LQhoM/FoVukHL6zOXMi22nHA+rUoNsr7ZuXjy0PSB5ranZgCCh/ebyuRgyVDPZPPs4xWvtkA6r0rYLd7szn56bTjOpuf8ElewQvJp9V/ejYraNs2AW3jLSL2wIDb8YUiUuagL2SAZ7ug4tau/ZYYmiQQiavpHgLEs37vpN2cs0w+CmKfIjSilv8E2C9sjQdPezVwf/sj++gBLdGnwNfTvQx6ePilvjB+nFWEcrSBPuAB613dWryry29rplgRLaNrdz/JcGFuCk675mBXEIQEHdMKsB1bEXMsuilvL/oQL6e9EtcnZMsWQWDt9O9tYyvbJaJRSXn7M9cC9eNkDjZX7xSOoQvF8qF70xd2NbRjVxjq74ultdofv5KqEJjwHz2AG6SWcrXP6fCHjNP1eQEMLqqq/TrBZd91MieEkv3gyAPRQ1JYjbz1ouFzTTO6dJdEk9Igx/J+B4zgUkVYZ9AE3TXrYU/zayP/PK30PBVbbJZfkuUu/IWZo9ZV3i1G81mTkL5gISpIlf4t4+pwaf0NrIE+cJZou8ip79SuKTjA73IJe1xYE4QcQ0jjOpLmWCHYX9jjfQC6gIeCu9WPDDSFm7vu78q/s+5exwW9Ei0GSD2Kw2bMDCOR/y0aJaFjUPx+DIqvCjRqVDzo1Nrtf0nJuujSMa1JJLuF5ASy/fji7kXu97tNbE+32fu3ltBrq5sVsZEzfiqwbI0Tr+7G
- HYsgeVr1
- ScsZr+KIDMmy5Z+Nxw6cPmOpC+5Bv3FU38hfeqWEGTvHg7S6yvgUhaT91c2GLFWoKkCcxqwvZkDLKvQ/ILY2uKkV2n9YC5P9Wu2HmO1T8MMWnWKhQLN24r3amFs+5SAasYCYlI1pyd5iiSpArOnztWE2vuXYmYKRwEyrREXsKqa82BQtBx4YGRI28KE7KJhADL31ttJIzI1OG3a0qSQD+6T2NBi+NsL0FRwPOsgD/ePUFrptguLKeQe5dQK9FJN2UseMZpkF/eJYPsnsJrgg9avn9TCewHFcLx/3cPqr0FImG+fAhS1Hjg7iD6QhQltxNgkrRrTTQRoqmdQ9BAyJabZM7H2sGwQH4a3RPsgkXjsoSmI4CclyChhTgAW6U9SsnVG9XKqz5JVBN1Mnod4vz0B7c4S/2gQf2nKnO/dR10xQ1iZYEgPwv3+UojzBxjeM8slYybYTGPZ53NfymKoJhAR7coAg9Z5s/DnoNoh8GhCSY9X4Kr6FROa77ADtOfFlKNtZv2WaHBE1wG9JZjpwyyc707AevSqRY0OwA+JrzpzwQah8bcVd3SHcii3M6GX3L2QxxplVUH5W3z+BE/XtZhpUWl19OPIJ09H1+ny5YvXkMx6B/T7wAmqUH0CY8dFV8L4SedVSF8d7PCNDQzi0sximQxJpYX6IWTqTGMKMhJEs4tLgGBAqxmt6HWg==
+X-Stat-Signature: 9nhfco7nhcnmme5cukau439oam8froy3
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4C12E100003
+X-HE-Tag: 1790878530-921338
+X-HE-Meta: U2FsdGVkX18oYh9KN866ZWgjB6oDPOlHWa/lackFlEshHRpVcv+i5mWs569Cj2kuEQxU+kJrsOJMDoFnA4Fj1ez7qF3tzwc8T29ulAtfgrkRliU28JyzKifwmuPHtBBKGDM8rwzCitwmSajcnGsAm0OQ1LtxN88Q9IBNVQl5lAWgGsJSk9WwdlWidXoav8L/UowzJEHV39Knub55kdupKvciT2QotOnIZQDCQZTQ68Qux4QEpnPWVfd/tA6m3RB9sbXJt9jKVbFYBlbuUTFm/ME1ZeOpGYfeWdr3MJz9CjH89CBXqC2jqIaj7oxnV3HnjOU+y0h5305O5/u3cobVVRuJRn2iC0oJogOIfV58pmGtxZWJc0ncKp8nwvlcLKukmMtilTdx3YsB84BI/7CbaJqTTZlrDy+L/QqlWq1WD9Aw8o/PQOVyLmlWAawiMCI6pCoRAqI3enM73p4kLGsaxccAmdmeMNPghL8xx/yvu0EIcKm0FOrYeMkXwGO7ww/7bF9PQhlcAh1Gt9FqKiKBx9K2tvYuVWLP//PcXc4+4jadSy9+FdL6rLnWJ7ACHRhczr0IeiIqB3wy183Ez4wihXI1dPhx3AlAdzDPIdHG4Hwq++h08qwGDmvcpH5rcgsJQQtsNFw0tErOw+C9Am5Xo8YP/tDKLmSe16HSpbj2qKYI046oEH2Z04WqQhhDlk29ny6ochqFY/GxJjSAaENdJctBU81tPLQAEb+oBQDnGyJsWMRMrtSKWVxqzNPQYneEUhi+iCKPd3dfJsbRJNFr0L4D0bRT0llU0PbLY5AXusJoyBYkOvtXdYL9O9kCAFe3l2HiyZDo11OkuF1sJoAMhrM7EUixxXMOikXfkMV8t2NwkUli2trvDleAn9aFQ6NZIYO+GLxWOXg1C05b0tI1/5HqWUeGnqCtNi7ElEF7K8esLvqYNZQ64e63Hzci2/EaAtxZJFDuENBj8ZnXqbG
+ S2OcAF7T
+ CnI0swRa9yTErB/Jv6bPT1HBpPJScsDK92NTMYZDaBd2uMwDqb1kjmAV9BbHgkOYgIcO16Cr1zpcX48tSozCbCsfrq6HaBJAgzEJ/SgPsueusyDZhiW41n8BXjD7t+5e3O/9EJkVHUSqat4+BFPdFvXHXA/sfeRou9ruqRGY1wOn7vGBNtbIfG9MfN/DpetD/g6pjSvKdKvK43x4tvbVpeaZonhriuFEbPTR5eSaBq71lS/whaNkRnwk2V3c/pn/4Mjm2sQ+pJW/FE6C2v0ZAGfiprDmFc67vs/Nrif0HBt6mAEqBfJd9nH3JoqzAR1SUmxliMEM4NZMlPyv+MC6Y3iOnHrcbpNkq4cyJC7hG7N2Wb7ZH1hmZ9mRbk+JfqU6VUyIZZOO7Jog3nm94hA4qJBXrEhQ7utYAh/s4GloQKG6XMsCqXy7N3kUDVDe44g24XEPpw4eHtiiPitabtQXlqyxkXb9I1TO277SSqmkTAzhPXidN77ww9dQCa4hUq9EjoIbkgmAZmP3yHVGrT8tHtoquStlpyPVexUAz4m7bmT+qnEWgzrvd+ejg6qHkYgMtuCaZiZV7Lp14hW6ds2ie8kyiqIqR90eBP//6YaC+pize/fy+ObNO2iUSmnkw6y8IXxVSkslVVBgML9eqt/YzobbrTEPFZMSoyVoVrSb4k3SFeo7cficowgngecBE0Qxq+9zVJ700m6SrZBLLyCSOIT1TlxjsI2kq0xu6c141NOML0CpFnTRyQIRpoKxYBINYiXiCja9g+xi2cdQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,19 +171,16 @@ Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
  tools/testing/selftests/mm/hugepage-mremap.c | 5 +++++
  1 file changed, 5 insertions(+)
 
-v3
+v2
 - Preserved original changelog & subject
-- Small code style difference from v2 due to git cherry-pick usage which
+- Small code style difference from v1 due to git cherry-pick usage which
   preserved the original commit style
 
-v2
-- Added "commit <sha1> upstream" line to changelog
-
 diff --git a/tools/testing/selftests/mm/hugepage-mremap.c b/tools/testing/selftests/mm/hugepage-mremap.c
-index 928c1045e295..d6caa075a86a 100644
+index 3070484f9ed0..164bbda8128f 100644
 --- a/tools/testing/selftests/mm/hugepage-mremap.c
 +++ b/tools/testing/selftests/mm/hugepage-mremap.c
-@@ -97,6 +97,7 @@ static void register_region_with_uffd(char *addr, size_t len)
+@@ -87,6 +87,7 @@ static void register_region_with_uffd(char *addr, size_t len)
  
  int main(int argc, char *argv[])
  {
@@ -191,7 +188,7 @@ index 928c1045e295..d6caa075a86a 100644
  	size_t length = 0;
  	int ret = 0, fd;
  
-@@ -114,7 +115,11 @@ int main(int argc, char *argv[])
+@@ -104,7 +105,11 @@ int main(int argc, char *argv[])
  	else
  		length = DEFAULT_LENGTH_MB;
  
