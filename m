@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 620F6CA5FC4
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 00:58:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C11FFCA5FC4
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 00:58:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 112D66B0095; Wed, 30 Sep 2026 20:57:49 -0400 (EDT)
+	id BE7206B0096; Wed, 30 Sep 2026 20:57:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04DA86B0096; Wed, 30 Sep 2026 20:57:48 -0400 (EDT)
+	id BBEF76B0098; Wed, 30 Sep 2026 20:57:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA5096B0098; Wed, 30 Sep 2026 20:57:48 -0400 (EDT)
+	id AD4956B0099; Wed, 30 Sep 2026 20:57:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B1C096B0095
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 20:57:48 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2131C14029F
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 00:57:48 +0000 (UTC)
-X-FDA: 85272245016.27.D59F0CB
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7520280007
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 00:57:46 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nu0SDABf;
-	spf=pass (imf02.hostedemail.com: domain of 3CLC9aggKCLstlibxbkbhpphmf.dpnmjovy-nnlwbdl.psh@flex--skhawaja.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3CLC9aggKCLstlibxbkbhpphmf.dpnmjovy-nnlwbdl.psh@flex--skhawaja.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DFC46B0096
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 20:57:49 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D34A4028A
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 00:57:49 +0000 (UTC)
+X-FDA: 85272245058.08.89FFFE6
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4C3A61C0004
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 00:57:47 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uQBZsBIC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of 3CbC9aggKCLwumjcyclciqqing.eqonkpwz-oomxcem.qti@flex--skhawaja.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3CbC9aggKCLwumjcyclciqqing.eqonkpwz-oomxcem.qti@flex--skhawaja.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790816266;
+	s=arc-20220608; t=1790816267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yIoi1CTTQE+H6lBdui6vFwHZt26KiAg5p1JL2AMiq80=;
-	b=2NUJKxhFpgJOdY3MobHSwlzz07Kq0UpQwgy8jZk/SYyHd8NAPH+YxCR4jdRPcW9DYDD45s
-	a7rVz2VsM0eOwxS1fJMBhUgCY4HOD70x5rBmgE6p9Fb2MTM56CjG9SnI1QOClXFPfHYncc
-	N9xVE/p5vmygEwA8QJhrebifpFwEK8s=
+	bh=rMPGmzqrPtOSz+orjSMVvFs/mFFB+41nKh4Vba0ZvzM=;
+	b=ppFNrb3TgFQcAwLPxG6fU1qPwwaIscuT3Fq9q1nSTTM1TgCTG4b8H16JhFgmBl++Y3UjVE
+	BnMYI/c7H1jdbpHKsKZPMYIaODP17P1rOcVQdtjFCrVXkeptFDsJx8yKyJnS/61x9QcqUc
+	E13CbiWiqb4uB+nx17K5QdNO9W3X6rs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nu0SDABf;
-	spf=pass (imf02.hostedemail.com: domain of 3CLC9aggKCLstlibxbkbhpphmf.dpnmjovy-nnlwbdl.psh@flex--skhawaja.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3CLC9aggKCLstlibxbkbhpphmf.dpnmjovy-nnlwbdl.psh@flex--skhawaja.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uQBZsBIC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of 3CbC9aggKCLwumjcyclciqqing.eqonkpwz-oomxcem.qti@flex--skhawaja.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3CbC9aggKCLwumjcyclciqqing.eqonkpwz-oomxcem.qti@flex--skhawaja.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790816266;
-	b=DCzl64oQp5sLg0RXPPDEC+ERR90scmu63XX9YqybgAx0exvidn9mAahDrfkETq+mSIDHGK
-	+irPC0esXRB6Zccqxj3gZxtMToSeXKnKAP9bH0xYfaCGJGc5AQ7Pslnu+yXu/PdD18UaL3
-	LluXr4mE833e5tc3pxAzWhoaONZRtz4=
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cfa4e4684bso99750605ad.2
-        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 17:57:46 -0700 (PDT)
+	t=1790816267;
+	b=0dch5Imfk63ZPU6OSkasbJ4XgHzanz8Pj+jEiWneJ7JkIaegZBjN/OOuSVmRA2arGTMdwC
+	1KRJ0d3QbHPqR3w44A3eehac05XJbVfzCFnFyx0SIHVAwFOu5/h8DJHMrEPolLLGMq6aMA
+	uwWNQj7zKA8DmbwwNkMvExHpCBG0TXQ=
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38f97b3f853so7044535a91.3
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 17:57:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790816265; x=1791421065; darn=kvack.org;
+        d=google.com; s=20251104; t=1790816266; x=1791421066; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=yIoi1CTTQE+H6lBdui6vFwHZt26KiAg5p1JL2AMiq80=;
-        b=nu0SDABf2/BWjBCPMoPjK3v40aczJdfhePeM7MrkT2/3djpsvPK6EMes9gKx2GoEO6
-         tVdG99zgQhPzSQNs2qFb4BWh4bH9GRUn+JrjCBzJizqFAbI5sozyXdRxec8aDoyaW+SL
-         3txLnUX+QgrYxJP1DocYIqH8NVoaXJ2Ed2lXWXWkv/vhM3CDZlNDpbkYBYG8u88YX0l5
-         d2A76aJsxgCFxhVWZ0mZg1pIlBZxSMhlAPy5l/EKzPSVH3/k1cZz11nToK+4ydWnwiix
-         LOnu0q6bSdcmILbiFxIGAhgBLusK/HmH/OQU+8L+jd0Pctdb0ptniQNj3aXkzjyTg3ij
-         b/ng==
+        bh=rMPGmzqrPtOSz+orjSMVvFs/mFFB+41nKh4Vba0ZvzM=;
+        b=uQBZsBICfUtHiA/pEh4vm+L0sxjNwU80douQ2Y0zllTh3XVanT2u0BavD3kfiAqX5F
+         Siz69Fd4xqm0MhNMhUdYhE3QIRzUS0ZKy02fCZ6AgEA7jQ+NOCxcl7C6xGeCqeihQjYh
+         0+CExcz8rYXRY7743cxTUkAKElr41MTbYqEIskMlG41X1GfY9bonsWQfltIgImldt6ik
+         Yb7gXgjXUUPeSi5G14ZsoVUG47A8vZaavolKmlGNpN9Guam8IZkroYmMCRrM4YNiB+y3
+         fLwg9IMy+bcyaetcMiUb0462hg+QOifh6XzFJ04YgxL/EDrLMx5n7onNwDJbFQO+Ckzq
+         k5zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790816265; x=1791421065;
+        d=1e100.net; s=20260707; t=1790816266; x=1791421066;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=yIoi1CTTQE+H6lBdui6vFwHZt26KiAg5p1JL2AMiq80=;
-        b=pmzjq+5/Oq+TNZlpkpNN3mGqfCLwGXGnL7Dv6do9SUb/2FXyTFVlmNBjdd5r6g0JGY
-         yTEj7uBFpMw+B0vaWiWRZiBPlYXuOfqbc8SbvtWYosXrtgO2b8aWz7TPAGmqueUsjlRo
-         BEQUSSbki0XLx80EBljlBPS1lQmeKev0H25bLI8ynWsifKhil74aC+7cfsRGi6FHyzsN
-         hA9j7xtk+Fd4B0Ah2kI5i0aJQNlBtPi6zPDKR/M36a80ktAjYl/7HBAvsTzE02rjA4Za
-         zDM4NsOF32GdISZiTYzQAEEVVizJQlVjb3cMUXVg4+vG9z8KjpI/JvbVw7BKgt40KVJ1
-         PfLA==
-X-Forwarded-Encrypted: i=1; AKwUvBxXFQpOSiTP2gNIihimzqcGaLpRsHygPqh3/IxDUCmNRpNQ7UQItLcPFgNn8mu2PoKWRY1pR8RE2w==@kvack.org
-X-Gm-Message-State: AFq9FYIW1fB18lZ1U8HQQ3h6vj5lPlYkpz8EHvWieVdKZaknrT36CI6E
-	fjLrP0PcZAnqjYBln5xqg7O5UUz3poj0WoXxgya/IG+gqbxnvVQZz6Dh0dklUHWGaY041DKg5ZP
-	LJ8VIWouUG9q0qg==
-X-Received: from plan4.prod.google.com ([2002:a17:903:4044:b0:2df:8ab5:8354])
+        bh=rMPGmzqrPtOSz+orjSMVvFs/mFFB+41nKh4Vba0ZvzM=;
+        b=0Yv3gPUHicoYZXNrc6lat/Ln6C9qgqF/q7gygzd1ZPpfqh1L83axxwj21BfG5M33t8
+         5m3IzXmkXVk5MJFqT6Y0P5cR+VuHkGgKFCoS09svrkZzMASAI7oKxXD6/GqxNaG3AlBq
+         d/5n5IazaW34YKpfTP6IuvYEs75a4XXPDC0ck3PwaPE94mL4sN8hB4pxniuUcBRNyWT5
+         bU9ClpSn74LYRDOoVCeFuJTEo7j0cMxi8D+j+ueK+S1J/UtVqkx59eukmQMIMYNvicDb
+         jcghxgp72Fu7x1BPILUfUDP04qhjcRXwL0QARv+Tp8uoJPKRoqwkzCmbGyLKTkB8kg4i
+         wH6w==
+X-Forwarded-Encrypted: i=1; AKwUvBwwNmtjzz9cvDuqerZhDI7Vpjrg372xEimAnc5h51CTQDyimBMf6+KWwWUBdxDJLDZ/fsCYWhNgPg==@kvack.org
+X-Gm-Message-State: AFq9FYIZTTqGRJdL1X9GZAVb8O5dtPeMS3fXG+FuCHY6EfhXnwSUcmWg
+	m2GzBaVEQe81vWio/tRsoPZ+YUz/moIP+woKDBZgjLijxpTBd7neu/43ZzK+3hbwrzHcI6KjlYh
+	sG+jaxcxWjyQDew==
+X-Received: from plei13.prod.google.com ([2002:a17:902:e48d:b0:2e2:dc3d:e914])
  (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2983:b0:2e2:dc0c:1615 with SMTP id d9443c01a7336-2e2e4b3399fmr25155855ad.31.1790816264954;
- Wed, 30 Sep 2026 17:57:44 -0700 (PDT)
-Date: Thu,  1 Oct 2026 00:57:33 +0000
+ 2002:a17:90b:4b8b:b0:3a2:b490:c459 with SMTP id 98e67ed59e1d1-3a4d1787222mr2759686a91.25.1790816265844;
+ Wed, 30 Sep 2026 17:57:45 -0700 (PDT)
+Date: Thu,  1 Oct 2026 00:57:34 +0000
 In-Reply-To: <20261001005734.1033516-1-skhawaja@google.com>
 Mime-Version: 1.0
 References: <20261001005734.1033516-1-skhawaja@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261001005734.1033516-6-skhawaja@google.com>
-Subject: [RFC PATCH 5/6] selftests/liveupdate: Add API to preserve a batch of FDs
+Message-ID: <20261001005734.1033516-7-skhawaja@google.com>
+Subject: [RFC PATCH 6/6] iommufd/selftests: Preserve all the FDs in a batch
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
 	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>
@@ -97,14 +97,14 @@ Cc: Samiullah Khawaja <skhawaja@google.com>, David Matlack <dmatlack@google.com>
 	"open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>, 
 	"open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: a3tryzbg7obr8yy6184ppicsnge7cpom
-X-Rspamd-Queue-Id: 7520280007
+X-Stat-Signature: etrudz5pgbeegqbucqwfyyatjxeheomz
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790816266-168396
-X-HE-Meta: U2FsdGVkX19IYlHT3fewrWpOL+X4ZSfGFgW+tt7PzZ1phh21AR9i1l+f/oU7/Sx08aF6b5tnB1PvrxuuUkdSpogPlpwC8c5ZwoHLKYBSMqn8PvbSEvs5XRF7VvS4VxkxekiTC/9NV/qHi2dvYI4lhGX/36P/iYUnpl6eqQNGNZm6nPZ9ISmW0wsyZ83H5rOPu4+UwVmYgrTLbLAuissdct8tcVnbqzLOQE+ot9qadxxAv3zS4UI69NpmzZZoJ+ZcYqq2dYgqtlh+oZJ3MOlCYYr3pGlddr35lrXUjKUOhb3njSiXQLspuzIxAwzJ/Nqa+y7yWiEyD7flUzQ5C4DgnWcc0YhEH6PbS7KopQUgEeGQmYecvcm6aOkmw2F/JQgCViz20/tatu9wRkjU4XzZOsv7Tq5ASr3k2ReXYyhW8HbM3njindvK/3e3tY3qnSUzDwS3fUUFhJLZOViAEMDY2siYQrlkJOtOtI3IqDf16TbeNnb5PdlIoTYd9R4suzkItXRnamObNQ8k6paRmbwZdFkqERmhtnQdR1f3HQhN5IRGokgkpt15dYD9zG4Xn+AovM/k8+2U8B5rSUjdzUFXi1XX8neeucTJyk92VmFiXATBI83CD3bK8DRGlKBwo9z/yVCoU4tr8eU1Fh6ebo+PxTpbryaHn0X29IewxxafmH+Z9MIOulJanFiGhRaz6g9Wjd6bir4MnxgR4LlgMndkgcHfxWxHxcL0jeRxPRXSA4pzDXU4Mqdl/roM4xGArKZWkvjAGCASWoSyZaeA7F0cpURowq1xQSNzmCNkpD/lpy7GUkv6KeBom9VSkD2cwja2hWUlgZwZv0DJz7+8jf+ysGOBu4VBRAzzKNeO321rDpo90VVuET+1hYFiyt/qOS/4wzVRXRn2C+IXQ+I8jlYvoYWPuNONULnKM2VClYG3uEKkGP6My8reg9fk9zsr53HiBOArJBnfUSaJxFK3PDo
- OU1wL+C2
- +l5GMUOY4SVCf4L620d6NcHHW1qntAI34/ALadRJuleZz6r2xjJv2BvvBLybj1DdIMNtpDm1q5y+8vocebVH9NUWTpvyGOv+JcgmsEZ8cw0sCZG3uRIV5bc6UFT8Xa5tpM8xrrLdvpCLz69ot25EppG8RojUpI2SH9Teeta9j20x0QVJnZ71NDcUAlYfSxcQ0ZEulySLhH6HFhuiiRqdCsaeb3bT0sm6U2vAZN3jH9Owds4tjLtgoSydbKmuwCGsWx7UE6QIqzDe54vGG0ck5InwFH5NRRRs/M4yHPoM/0yEUcJsWwdHucXYaa2CZkKxb1QzLK3dLgC6lXX/UeRP8fvadcocd9tC8FDrEli9c1iP3SgSW61uGl2MH9exNlzC2dqjO2M1FneB35XFjTK1mU+Ap0rYipeMu7mH1Vptzy5+FL1xZEPZiME+6MePtENJn0Hfj/tT1+gXAi4+jGXhGTedX8QdgTY7xTO/AXi39YI+P+o5PAHoOH1OKtBLQzxNy0SW1caGc+rRYKi7MDHCWWSaUF4fToQijTl1bbZQMbMA1ra3LxsD39QwFkB4SK6+CkulSxiRsIAbhZiN6NBIakIVLJc8+EkWQJ977
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4C3A61C0004
+X-HE-Tag: 1790816267-658359
+X-HE-Meta: U2FsdGVkX187O0Fjn74mwdXBMNoeFT+wkqqCzIdwTXoEP1MN/1T8eoeQs7Si4u1gBT41NoMmbLy3GLXTgZ0lLReTmCT0qXo6iPWdIcb17Fg5k9B3h2MEEWIc/amlYs1g60+SETKAStITpaBJtjE/36k+3IyVNnNl40TgPeZel/BDGyKFeKP0NgdzlB9ve2wZFtvbSXmc2uKYisCC16ihkSVBpC88TLTahN++o7MCP0ugBiE0Sr+HOeNc+3kr3AvsFzLPDAIEHdMm3mlTP9R6eNIEb4wFqYAXrrmcgDSe0MYvv8iUiFI7FgfxZtndSK7gGOMFAY+QSPq1ZdfPiY50wEwW4bUgPjegQumfwg3awlGp/h3vcFsawg7YENY6k2aAzNbxsUQZ/6uWVY8rsa48rjDDUbbhGeNqy+yyfW0p6go36C1EtaQT+4+LIBoYfGxzrtQCIc+QrZ2uH1qlK7lWq5kQ+fQCQCcwAqMfbYdwd4TpL2DRq633zc4EUsAJIinYeF4LI29jaGm6mkI8ozlz5bgejpM4lQhCThInW+1Iyew15a0jEkoP1GVdhaZtErXGqCTHEfIW8es0rPiPXEeUKqeZvypI/Ed2IoclxKUI9MYRLyfrZWdlbPseYtVmBp/AHPYWtLIdohwwhdePwFGLaAjKIGb9GFczYz6woRxbgo9eF6VTWm4m8JPi0Cpo01Socw+KHsFJSL7p8lU1NnWkGSSjv/blFv6FQgcA6aAZR/24JYtGAm58pGobpFyiJSuczJXM20mX4g4NIFjd6ZhDI8cgmeW8oRL7WiVPCeOtUbKCnV+PSNwp0S/vdp76wXyTX7VvhWoOuyC19ep9gVkLDUrsu60uLF7Nihyex8c32frh9LqHVcpgtyXhwgnfbzhik/XOXhXVzifnW4xiz3BeEvEzhAd1x76m5/qOxi4VdXSj4WCn+gyniD4kmefRy0zVjuK/3SbOgf4LEtRUps5
+ ySqb61Vd
+ vf0uwsRHajCmSvqWViPxszJdVzNolndT7x5bf2USN6xehIwjGcyGX5fVJGWg8arKxqf3FkJxRWDC+d3lYcRBPf4qK97/Ce1ctMsZqJe7pFW+qclrKaidsCpOE1FShHm7CxyLc7xwr8yrm3od8afjJXMaqA3sD46cxi6qdVbgtLBQPorp4SS5NckkWC58ZIgc+aWHl9Fksx23FBpq9zlt1o4pkTE1Jf9wWWZoCDt24iPcmX9iT2I7dMuZciQZwmpTR2O/X2b3TC7/+RRAtartLhl0Fhg8ii/8Rrhw9x9nIMuBMUPKur3hlG1BFMX00jFtNRWklZeArlCp9BoseqnM0wmeXa97RiesZt7m/8ralvZn5u7407/6w70/a4Jf0q7YVJ2sDzmK1u07Div/zEMLihS1JaPkEpl4bsX2sVXHlduKqxTmNCYRF47bokKkeZ3v3y/z6r4NtM6n1QQhW5lTfO0VCdHayNnY2ASimQ4Bbpk1UHgqJXCNbjADVDO41z7+TB9V5ddY7bZGmOiF58EAj+PGu3VAaxAxw48vkBTKlw6bkerCZzUkXYUYCiUtEkC0nuEAf+qrhbk9t+DqfoFV98Q6iOQz6VwMPoaMEfqXKyzZ6p/Zz4xAvTNT3oQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,59 +112,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add luo_session_preserve_fds() that can be used to preserve a batch of
-FDs using the LIVEUPDATE_SESSION_PRESERVE_FDS ioctl.
+Use the luo_session_preserve_fds() to preserve vfio cdev, iommufd and
+memfd together in a batch.
 
 Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 ---
- .../liveupdate/lib/include/libliveupdate.h    |  2 ++
- .../selftests/liveupdate/lib/lu_utils.c       | 20 +++++++++++++++++++
- 2 files changed, 22 insertions(+)
+ .../iommu/iommufd_liveupdate_kexec_test.c     | 27 ++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/liveupdate/lib/include/libliveupdate.h b/tools/testing/selftests/liveupdate/lib/include/libliveupdate.h
-index fa07fed08364..9aaf6f28ef56 100644
---- a/tools/testing/selftests/liveupdate/lib/include/libliveupdate.h
-+++ b/tools/testing/selftests/liveupdate/lib/include/libliveupdate.h
-@@ -29,6 +29,8 @@ int luo_get_session_name(int session_fd, char *name, size_t name_len);
- 
- int luo_ensure_nofile_limit(long min_limit);
- int luo_session_preserve_fd(int session_fd, int fd, __u64 token);
-+int luo_session_preserve_fds(int session_fd, const int *fds,
-+			     const __u64 *tokens, __u32 nr, __u32 *failed_idx);
- int luo_session_retrieve_fd(int session_fd, __u64 token);
- 
- int create_and_preserve_memfd(int session_fd, int token, const char *data);
-diff --git a/tools/testing/selftests/liveupdate/lib/lu_utils.c b/tools/testing/selftests/liveupdate/lib/lu_utils.c
-index 74d41115c281..1290f27ff004 100644
---- a/tools/testing/selftests/liveupdate/lib/lu_utils.c
-+++ b/tools/testing/selftests/liveupdate/lib/lu_utils.c
-@@ -93,6 +93,26 @@ int luo_session_preserve_fd(int session_fd, int fd, __u64 token)
- 	return 0;
- }
- 
-+int luo_session_preserve_fds(int session_fd, const int *fds,
-+			     const __u64 *tokens, __u32 nr, __u32 *failed_idx)
-+{
-+	struct liveupdate_session_preserve_fds arg = {
-+		.size = sizeof(arg),
-+		.nr = nr,
-+		.fds = (__u64)(uintptr_t)fds,
-+		.tokens = (__u64)(uintptr_t)tokens,
-+	};
-+	int ret = 0;
-+
-+	if (ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FDS, &arg))
-+		ret = -errno;
-+
-+	if (failed_idx)
-+		*failed_idx = arg.out_failed_index;
-+
-+	return ret;
-+}
-+
- int luo_session_retrieve_fd(int session_fd, __u64 token)
+diff --git a/tools/testing/selftests/iommu/iommufd_liveupdate_kexec_test.c b/tools/testing/selftests/iommu/iommufd_liveupdate_kexec_test.c
+index 26c7e15b6187..3ce282fc1a33 100644
+--- a/tools/testing/selftests/iommu/iommufd_liveupdate_kexec_test.c
++++ b/tools/testing/selftests/iommu/iommufd_liveupdate_kexec_test.c
+@@ -153,6 +153,9 @@ static void setup_iommufd(int iommufd, int memfd, int cdev_fd)
+ static void before_kexec(int luo_fd)
  {
- 	struct liveupdate_session_retrieve_fd arg = {
+ 	int iommufd, cdev_fd, memfd, session;
++	__u64 tokens[3];
++	__u32 failed;
++	int fds[3];
+ 
+ 	create_state_file(luo_fd, state_session, STATE_TOKEN, /*next_stage=*/2);
+ 
+@@ -174,9 +177,27 @@ static void before_kexec(int luo_fd)
+ 	if (!luo_session_preserve_fd(session, iommufd, IOMMUFD_TOKEN))
+ 		fail_exit("Preserving iommufd without memfd should fail");
+ 
+-	test_luo_session_preserve_fd(session, memfd, MEMFD_TOKEN);
+-	test_luo_session_preserve_fd(session, iommufd, IOMMUFD_TOKEN);
+-	test_luo_session_preserve_fd(session, cdev_fd, CDEV_TOKEN);
++	/*
++	 * Batch without iommufd: memfd is preserved first, then cdev fails.
++	 * The whole batch must be rolled back, including the memfd.
++	 */
++	fds[0] = cdev_fd;
++	tokens[0] = CDEV_TOKEN;
++	fds[1] = memfd;
++	tokens[1] = MEMFD_TOKEN;
++	if (!luo_session_preserve_fds(session, fds, tokens, 2, &failed))
++		fail_exit("Batch preserve without iommufd should fail");
++	ksft_assert(failed == 0);
++
++	/* Full batch, passed in reverse dependency order. */
++	fds[0] = cdev_fd;
++	tokens[0] = CDEV_TOKEN;
++	fds[1] = iommufd;
++	tokens[1] = IOMMUFD_TOKEN;
++	fds[2] = memfd;
++	tokens[2] = MEMFD_TOKEN;
++	if (luo_session_preserve_fds(session, fds, tokens, 3, &failed))
++		fail_exit("Batch preserve failed at index %u", failed);
+ 
+ 	close(session);
+ 	session = luo_create_session(luo_fd, iommufd_session);
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
