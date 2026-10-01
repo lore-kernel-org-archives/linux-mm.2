@@ -4,87 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BC84CA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:41:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24CE0CA5FCC
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:54:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A47E6B0096; Thu,  1 Oct 2026 07:41:15 -0400 (EDT)
+	id 12AB76B0088; Thu,  1 Oct 2026 07:54:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57C7B6B0098; Thu,  1 Oct 2026 07:41:15 -0400 (EDT)
+	id 102096B008A; Thu,  1 Oct 2026 07:54:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 492836B0099; Thu,  1 Oct 2026 07:41:15 -0400 (EDT)
+	id F34986B008C; Thu,  1 Oct 2026 07:54:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 331196B0096
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:41:15 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A728D403BD
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:41:14 +0000 (UTC)
-X-FDA: 85273866468.02.F9EC06B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D05806B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:54:50 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 59E631603CD
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:54:50 +0000 (UTC)
+X-FDA: 85273900740.18.A27166D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E9AB3180007
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:41:12 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LTwFk0ZU;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id A36381A0007
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:54:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kuS+Aa6R;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790854872;
+	s=arc-20220608; t=1790855688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OTQjaHyFzgR+M9iAe8/wiUOMwWAu1rzKJDK8Ma1143k=;
-	b=rCO2N62y3vgwKz0JxYZub29PBgVvWuFEVjOqDASEXHLw6gZ7UMxDTjL7U6ds2ZlJbISPk+
-	8q/+yIyDYtYYBD4qxozZJ5TE/VQ+e79sojmWr0jpuAiEP8t165gEgx6Y/pAxWzt3XoiTPq
-	W0ZE3UZttb9v7Jwe1wOzDoVcVRXJ+5Y=
+	bh=4XiWQIb0DJcd5roPqLH2iaW6jTBbzH4eyhLmxNAjUkA=;
+	b=z0sCqHdLGOi0ISOWsMAf6gEsADYrOLIbgcC1DmehG+elJ1GddwM2aV2kmKj+2omRJrgJZw
+	zxxZ5+A+SFtJzPhowlm+jGf+rwEHoUrg2ARLTjri9EC7wluUuJIftykjbz4ZJ1E2MzNE/m
+	FsSe40xLM+xy2QgPZFY5EEcpj4PiK14=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LTwFk0ZU;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kuS+Aa6R;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790854872;
-	b=uCMB7bCDfWFC3fj2vS11+GKWICpHwZkPO/tMjx7muvLdUylkTmtgjtTB4XtjDVECYjMfh5
-	8OkZP7Nhu3NZYjgBQvpSYEtkKdIfAUXtp9SykEvkItKORQvTmSQ1SqdK5Yld64iw8ZlvEW
-	Zdtpsxmu0bAVt7B/58bn1L2NV4VYm7w=
+	t=1790855688;
+	b=lPoKAalQZM5+w/8flD0cfh7gm064fIMVo0jNGknf5QUolKR7D3fqTl0J35qS/QPpxk1RVI
+	NQDM+sS90pPaUO9GyVxY1Mp2zC0/3NmThmWlStZct0Kigg3PIwvgq2UxA7BrbwvGWA4RhI
+	8pLh4Kn82+lIOrzyVKLqdpBMu4TW3SQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8D869601E4;
-	Thu,  1 Oct 2026 11:41:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C591F000FF;
-	Thu,  1 Oct 2026 11:41:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F200B601E4;
+	Thu,  1 Oct 2026 11:54:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B7B1F000FF;
+	Thu,  1 Oct 2026 11:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790854872;
-	bh=OTQjaHyFzgR+M9iAe8/wiUOMwWAu1rzKJDK8Ma1143k=;
+	s=k20260515; t=1790855687;
+	bh=4XiWQIb0DJcd5roPqLH2iaW6jTBbzH4eyhLmxNAjUkA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LTwFk0ZUeiqGzU59Wwjcl9Gq40g4HavoEq9B1yqQgL7vhd4Grw+hfiEa7Bj7X+q/f
-	 cfPlP+P21MXKYPL2otF3w/m8hCl5l+O9eK5Eg5vZlaoiYrb5o1ZSs3QTwG7XLwvjOG
-	 qr2ZJ+5YGPKFJ5CoObtvSyFnDO7zUbqPOgQuNK5YtDhZqyOysOsSuCiZu1RXzW6e98
-	 N/C+3I+SfMy39sUykDQd5F5AURf2FskNYG8lOkGnFmvOBCRp71fK15GTc6HICJl25A
-	 AQwCcJ9VGR/XZW+zZ5rqk9hC1+VrtcJDiL5sVgZyGrX5hxLpulsNEvqJuHgQzSPhfp
-	 LMG5ulrygL63Q==
-Message-ID: <afbebeed-42cf-465d-89ce-3000fe361f11@kernel.org>
-Date: Thu, 1 Oct 2026 13:41:03 +0200
+	b=kuS+Aa6RvZp9uiMlrv4r9B/FLkKGL0P7bmQMyLkYG/msM5BqyPmhZqtLD2F7gMPvA
+	 4SXTiGXT/Bf13GqiT8uM9eghr1Zf7JMbuxRqNNxmDOqdVeQe32OD9NE2Fcpo8yLnId
+	 hU1UVFbOIuWtvR0lddZcwAVHXjI6vF2aKQ1Cef0QaoKmGsT63dOL5ZYgv+l5gGyHqQ
+	 WK2U4KXKwGkJWCL9F9EsSepaXx3lvlTa0oat2yYhnMKtUjyV8+pj3+Gzneu7j1vA7v
+	 z9+gW+ERfcLzNWv7ZohmqhvC6vw9ar/ZgMa/K5857+kRqo+eAAbPMSSKYrVtcynSdv
+	 RB8snvC3lA0Pw==
+Message-ID: <3d13be9d-a4c9-4123-a047-67371fa4586e@kernel.org>
+Date: Thu, 1 Oct 2026 13:54:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] selftests/mm: open pagemap and kpageflags once for
- check_huge()
-To: Zi Yan <ziy@nvidia.com>, Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>,
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
- "Liam R . Howlett" <liam@infradead.org>, Michal Hocko <mhocko@suse.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260929131521.153079-1-kirill@shutemov.name>
- <20260929131521.153079-2-kirill@shutemov.name>
- <C1FB2DE7-D93D-4CE0-A6D1-624CC0B9C8F8@nvidia.com>
+Subject: Re: [PATCH RESEND 4/9] selftests/mm: mremap_test: correct multiple
+ VMA range size
+To: Sarthak Sharma <sarthak.sharma@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ John Hubbard <jhubbard@nvidia.com>, Kalesh Singh <kaleshsingh@google.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, Park Tae-sun
+ <ts930@dgu.ac.kr>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260924050009.19974-1-sarthak.sharma@arm.com>
+ <20260924050009.19974-5-sarthak.sharma@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <C1FB2DE7-D93D-4CE0-A6D1-624CC0B9C8F8@nvidia.com>
+In-Reply-To: <20260924050009.19974-5-sarthak.sharma@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E9AB3180007
-X-Stat-Signature: 4o6c7rbgaed3fct3n5ywroisgarce6cz
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1790854872-495101
-X-HE-Meta: U2FsdGVkX1/eT46R+YhkzISA0JFShwJdyWVPr+jM3bqepyS5N/but3K44cP6Qz0iavWZjnKy9w81sgc2ek8M0GGfgSi19xUquDuM3SRxgvYBdqIZPfEJQtYhCvw4b8ko/DVIbnj5gzHvkSBCsmv8/LX/Fmk8cjV3726kxVEEuAPwI/TuOgSLPz7s4CX1bLBZ+NWocZwJi2s5hELRrjSW9JdXv9Af8jupKQbrWJY7/F5C8NkSSjINm46Lltbfh8TJa6g+BeYOrzZY652cc/riPz7/kqzwuxAY47nJypicViq2z2b8b3BOSuYyvJXvkB4Y8ZvzyOPyXh8gs2T5FTNMXbJ6p4NZvNqoXalgmgOg7XoRMQ41T8Hlp0O8CZhNIUmAruThD2kxceNbd5gDaqNMdce9NHTp0uRODOVyBNnFhsz/vcqHSJ79yAWT3UfVl53sYYRc9XjcrUBdgLcDD0zCPE0Bs5P8LNWUmakbZhlVschYhrOBJLglWcAMxSdoUlYDtpnsLm/gtfSqvsmEKraFZL8TKmGf8+B0oOO7bx7BkK/0cXrB54l9MobMZD6doXmkhcL0o+3xN1vPtY8zRE4EFhu5cUdblUQLNFrNJJDSXuX0TPzST9SRpMfLRc/MFTngHjR00St4BANaPfWbH1l/HrFdXUYQLqKE+XW1Gw85ELpxtHpGZaRPRIClerbW2xFFv5BIETlGjneJvhXcg+Uw9cesMPWsF480Bl1hfDke3pYxhuDEq6PPEwQi4IUrWCZKqLDBlc55etjTlCtiUW49XEb6860a4nonhlw5yYX/z76P4L4sTop0W+FIa/DICx6x48BGE59KGy0PdJf0tqN6oRROIevrTpou/iCS22JBre2acUvq4DFDbn8QlL99c297IgsHAz3JzlqHGO7fNAbe1McwursMTOILpZt7kgKh6SvBTt6g9+y9bgXIPHrf6/flAyE45KgLZUPxXU6yRXb
- Ki8ZgsEb
- Xl6GVSZd9D29bzK85JNJpWqQkVlgxnKfxexZADpyg6qHQYLXN4XVCcvvTbmyn6zbogR+YSP+OuDC8SdLPTy19R1dLl4lB4vxapGTjLY0bbuN31ZV+KfHAdg6zn+ouI614cEA56Vd0UYk8E/HN158r5YDJoqG3vnYAnv0jiTdIsdvQihkhh+93UYoF9efu70jUBhzCa3s1o/UBsfTTwO6LA07fh5ylYRa8LZfdAwzeWnbSYaxtHbjHHssufzcMvBBTXMuHC4+175aJE0wqTJkKSrzhsR9tndZgJ2LHWmC1ifBrdCRW8AIbH7qa1aguLAxdd0n5KQKEZNj/zD7F2OHyAsuHP2KtwrmDp+bnJRuSYDey0Y0O4B9K7mutBiZ8uBgnqihGJUH955hwFPmk2DGkr6u53cRASPCp2f2k
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A36381A0007
+X-Stat-Signature: dchjngmpk5fmmgurzgyuairs6w9u9aak
+X-HE-Tag: 1790855688-783875
+X-HE-Meta: U2FsdGVkX1+QHx1AOhUPJLzdLW74GQsqDKnp7IqaGIJcNXp/sJb2MeeBFpQ9x1xKCEmGQcTr9DAl7JcACfq8sackci6pRgx72crqrjYNrT/7LtOBQKvwiFg0+q0M/80OH8tR836PKiaFrVkLOs7t1sdoi3v/4i86cu4Ql4LlVo/8b9RrmicpprO7SxJ9TrYev/VBgDr742c7nhrF7rPF2OG0cs4jDkSkvLm8Hz9etNDSMYFrLZ1VZx5tPhDj8VJkjWyMzqgCS7t0mzuvXPR35Hii9mu0bS2MQvU8fbPrvajUoLy6kkIQsY1vcY/nyh2Rr4Sz52nfVUof0wTJXyrDgNmh0XCSXWnhbWDaltNQzsqmgcFg8YCcshfl+g9UXdzUE90t6N116fkwFgbT/SU3xyXM98hiqd/asqNFROkeahG+xXe1WbKjktwGY7Vwz8kgPuSkl/4Iske+dtK02+xWTAkBbfCTkoXWmVqi+oE8sjzMq+x1eAJeW0JOlD69+hWikA+qnonVxE+w6rziC0GAx/ETGPZeKJQrZqoO2Po+/Qhuc7RXO64xXynVHBz4i9WR/utEGlHzpJHkj6+mbm0Tu3K96AoR6e01juoDib4jxSA8kqeLaniMhYxk4sLmrq2i2cQ820/OrdQ+mJSqp40o1/uYYB+kUvhWsV4Tiy7ex9a2Ss9WCnqO1sSzFdxcPXEdWGLnCamPoqGKUKWQSF3xOzbUK8B674ye66WQ9iFZ4Ohw+K838u1zT8zBW6XjzNvAA+tn40PgojWho240XR/DdJ6xmcmsddXGm9ujuEj0A2VQY8z1QivWBc6AI2wh5e2LLpdooNzdppeF6QuxqhNhLZ4lEXK46G4E+llBvXzk16Up6guetqOZPz/hLpXsW1Kd8fwnCHPvk/I0DhxROkZzpkx0+rKiKjUngeXsQcWgS6yrRu/evmYPZ6Rpgszeq2+R4KwP5eysiPVkQI1Jm9j
+ 0gG7v1Xj
+ jKprnlD30ySJjKna8BO1jxMGMJVGb/v6LqeIYWz9BHoBREr+Wjd+Bc3UGAqfP5EVukFa/6DlmNdzMfnT5gYLcUT4FcbMDVvsJ+5FQrfS+VxRsXloToV7DUpMNWbRv4o/JRtWu8Dz4BbJevSWwgQeC0463c/wb5E61qsLw3ibHPPrhg+HM4NgT/AG2aHLLaYK/p+kpFtGDwrY+3H+xFr1x/1ZJEQW9NaM6VbMLm/5FYIxpAPgWvCE3X+8WfaNvVE0RQjsDMnb56b6MaLF6Wh8kao6YYX2CLY6MMRr2V70YbyQksWfm1y+sjHzYQmRnDvfM4STTJTwyhw2W9LtR3Xb+26ThpZAszxYUDsuH6ZMl89uiByg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,26 +146,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/29/26 17:28, Zi Yan wrote:
-> On 29 Sep 2026, at 9:15, Kiryl Shutsemau wrote:
+On 9/24/26 07:00, Sarthak Sharma wrote:
+> In the test mremap_move_multiple_vmas(), pages 4
+> to 6 form a single VMA. But the helper function
+> is_multiple_vma_range_ok() checks pages 4 and 5 as
+> one range and treats page 6 separately.
 > 
->> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
->>
->> check_huge_anon() and check_huge_file() open /proc/self/pagemap and
->> /proc/kpageflags on every call and read the PMD size from sysfs on top.
->> The khugepaged test calls them hundreds of times.
->>
->> Open both once and keep the descriptors.  A pagemap descriptor is tied
->> to the mm of the process that opened it, and the khugepaged fork() cases
->> call check_huge() from the child, so reopen it when getpid() changes.
->>
->> Cache the PMD size in read_pmd_pagesize() as well.
+> Check all three pages as a single range and skip
+> the page 6 iteration to match the actual VMA layout.
 > 
-> This part might be overlapping with Yeoreum’s another series[1].
+> Fixes: d53f248258e1 ("tools/testing/selftests: extend mremap_test to test multi-VMA mremap")
+> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> ---
+>  tools/testing/selftests/mm/mremap_test.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> [1] https://lore.kernel.org/all/20260921-fix_hpage_macro-v4-2-cdea4fc6ce3f@arm.com/
+> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+> index ba9b7f7566d0..869df22d46db 100644
+> --- a/tools/testing/selftests/mm/mremap_test.c
+> +++ b/tools/testing/selftests/mm/mremap_test.c
+> @@ -373,7 +373,10 @@ static bool is_multiple_vma_range_ok(unsigned int pattern_seed,
+>  	for (i = 0; i <= 10; i += 2) {
+>  		int j;
+>  		char *buf = &ptr[i * page_size];
+> -		size_t size = i == 4 ? 2 * page_size : page_size;
+> +		size_t size = i == 4 ? 3 * page_size : page_size;
+> +
+> +		if (i == 6)
+> +			continue;
+>  
+>  		for (j = 0; j < size; j++) {
+>  			char chr = rand();
 
-Yes, let's provide feedback there instead.
+What is the impact of this that it warrants a Fixes? Will the test fail?
 
 -- 
 Cheers,
