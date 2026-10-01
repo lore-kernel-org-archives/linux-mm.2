@@ -4,115 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38626CA5FB3
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 12:40:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3B35CA5FD4
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 12:43:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48E6F6B008A; Thu,  1 Oct 2026 08:40:21 -0400 (EDT)
+	id BBEE66B0093; Thu,  1 Oct 2026 08:43:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43EA36B0093; Thu,  1 Oct 2026 08:40:21 -0400 (EDT)
+	id B70426B0095; Thu,  1 Oct 2026 08:43:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 354AE6B0095; Thu,  1 Oct 2026 08:40:21 -0400 (EDT)
+	id A5E8C6B0096; Thu,  1 Oct 2026 08:43:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 13E8E6B008A
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:40:21 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 98BDD403D9
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 12:40:20 +0000 (UTC)
-X-FDA: 85274015400.28.327ADF1
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CA9404000F
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 12:40:18 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=vNaTELMc;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=pAZafPjW;
-	spf=pass (imf17.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 860E26B0093
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:43:05 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13159C0267
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 12:43:05 +0000 (UTC)
+X-FDA: 85274022330.15.90373B7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E75E140003
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 12:43:02 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=qjY3z5xS;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf12.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790858583;
+	b=ZAqme9HozF4IluSuO4jhrsN3Gwrfd/mkU1nbWcjizB0FxejD9lJECUuEX0Fo/MPpKEKOLj
+	56+MaDvdI7nQb8n6DBzSZr/k9HbdHfNGTP0zhXeyMbRJJFNVa/qOqDzhkITY+/bSRl+Sdi
+	e2MfkTsIm8Wuw7253uWag/fITxNBeHw=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=qjY3z5xS;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf12.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790858419;
+	s=arc-20220608; t=1790858583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1IYPn7YfrvPH70i6iIWikqwHZmBwJ1LMaRivmCTeR70=;
-	b=GKUiEoxV0Wg84MEl25gLPXfUJO10EbalR4bk988yZ+PTrFkx1UzooxKKYB3i8NTJlRrMZU
-	pSLZ9xmFtnBiEjahze6Ga4ErCQvGPZIy2/3fRiVkfTlA004c1e8v2ciG03jEpSkbLn/YSG
-	XYhhsTaKrcx/6muIULaaSD3vGnf5WFo=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=vNaTELMc;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=pAZafPjW;
-	spf=pass (imf17.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790858419;
-	b=278YvLOiG0Id3nKa8VAWjcBPqA6MMVkdCBbu0K3TKPwFePvdw+L4g0I9QjJodCSN/zd6LZ
-	YvGYfXedWXWixIAQgyAgmuNBIuJH2UbDS2F+XTDFg9VwprDKGnm7HDk+V5d6O1A8iohj5h
-	ErTLaY/5LUNwqCpMTHzu1N+Tz16fvn4=
-Date: Thu, 1 Oct 2026 14:40:13 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1790858415;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1IYPn7YfrvPH70i6iIWikqwHZmBwJ1LMaRivmCTeR70=;
-	b=vNaTELMcGtZilr3kGDKfaocYqzlhPhhj4xUL8tc8l010QOAzqE1gfbhxJxRwY/CJQP2iNN
-	dHH9FpmfCdOtt3+N3ScPLclEH64H0HxXM0XyxMXuAR4+tua64mSsXSPvBxry0xTcvdbkgm
-	KPRAZxR5XGVY81qLZ13LeTCgnXQJ8G/pcZnnyr1fQKL3ADxyj2/P+q44R5p5vwJEURPdve
-	lDaLdKElLZTBjIqC6N6SL4+K/9BV7zd5iVpAb4rYcJyYrsh5EVPwtridKE5DW3m8G1VJLC
-	Umo9drwa6UmjTEY4g0S+6CJYedQIHJzFOepjcyObBpIb6WpgFvmNXH1pzeKY4g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1790858415;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1IYPn7YfrvPH70i6iIWikqwHZmBwJ1LMaRivmCTeR70=;
-	b=pAZafPjW5uf+ns5DVLvxgNdHgjcPnL7GKMJPYR3Qva+5gI6njuOLuPRYsAYBNuVlPHuNQB
-	PI483XSZ/izTLNCg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Tejun Heo <tj@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	David Dai <david.dai@linux.dev>, JP Kobryn <jp.kobryn@linux.dev>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Aaron Lu <ziqianlu@bytedance.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Hao Lee <haolee.swjtu@gmail.com>, kernel-team@meta.com,
-	cgroups@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/7] cgroup: charge kernel work to the cgroup it is
- done for
-Message-ID: <20261001124013.UZsWvi4g@linutronix.de>
-References: <20260924184714.912181-1-shakeel.butt@linux.dev>
- <befc0a9b9998db0292c9998c639a3a9f@kernel.org>
- <20261001105909.GL4121339@noisy.programming.kicks-ass.net>
+	bh=meMXLwXbzyJUyptSUM1vgIc7OYDmmePWyviPVaNaans=;
+	b=GGwABYOJ2GxDuiAHN+vduxgDBX+8iVlrzOZuEJ2umo2cy58RUJH2tmZ46A5hJhQW6mGGDM
+	4vX09zFiSqdPHI8ZfNw5mNSQTswjHwT6NV1qv4IiDLvLn8/KjcECDoMBa8M+rfk56DgR3R
+	PXZx9XhDG7IRqS9L2dmmAjhEL/W5emo=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 67165497;
+	Thu,  1 Oct 2026 05:42:58 -0700 (PDT)
+Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C09393F85F;
+	Thu,  1 Oct 2026 05:42:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790858581; bh=qvewlw/Btz4CWYKXaWo7kc/e0lrDVpSgqkNIen4sfq4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qjY3z5xSIVBzLjhjRFSAaxKTdMPP9C3kr+4Wkak6jqEWyQRyjgcztYf3mpofcS3Ru
+	 R1clqJGcAJxIcFoQj8TB6EEfEPlDJy3h4j7P70y0kHvoQdyaKq87Vi5Er6Fwxyl4HI
+	 Adiung6RyI60Ndt0Ujgzld7AZQBrqwEQOK7NnZSs=
+Message-ID: <59c330ba-211f-46d9-902f-59ca5f0f8120@arm.com>
+Date: Thu, 1 Oct 2026 18:12:55 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261001105909.GL4121339@noisy.programming.kicks-ass.net>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CA9404000F
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND 4/9] selftests/mm: mremap_test: correct multiple
+ VMA range size
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ John Hubbard <jhubbard@nvidia.com>, Kalesh Singh <kaleshsingh@google.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, Park Tae-sun
+ <ts930@dgu.ac.kr>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260924050009.19974-1-sarthak.sharma@arm.com>
+ <20260924050009.19974-5-sarthak.sharma@arm.com>
+ <3d13be9d-a4c9-4123-a047-67371fa4586e@kernel.org>
+Content-Language: en-US
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+In-Reply-To: <3d13be9d-a4c9-4123-a047-67371fa4586e@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: znax75a5s7o6fb1k1wj9cg86d6owqhud
 X-Rspam-User: 
-X-Stat-Signature: xkpawoohincijcdhf3xnf63qwwjtr544
-X-HE-Tag: 1790858418-669001
-X-HE-Meta: U2FsdGVkX181/rlPdc+MAp7n5H8WHLOgUtYIv1KNulyEmgUeu4Ok3q/ynJxq9K/xDMmnUTs4a/5lCxtVWssKnzCx0ndYMk1kujQiUPHwdP3ulqQ6rFSd4I4wWGdkar9oCewoaVkjTLIOivEFatC10fZR9W7upLr7FGmNY/Dt+NGsNksiJeKkFAlr5nBGxxg+FM9KaohmA4zasS6m2r5GrR0ubNwtfFahple/PDg1uCSetQL4VpxRdaKkgqxgamk6sfuqM4erHBloC/zhbGH49e3EavINPtCAQxHjsLGwuD5kB5+r0RV6yqaD2kWfOAcgeaLyLaRj4rb956znCRizVaaT75U3G+znrayVeNDKBa5atnarToI0XCTP+bfgu0FoO64QA5CUL9cCkNWJG7i+QmxkKOvQK9CwaIOEn9EWbPyYi4mHjkxZyE0m/K53l/21J3A0u0jFpiXWMpC1D8INhTwQHLgDFCKNkJQWxZVGmlheWxlCqrDrZBQyo2V6BLfMjbVTD4mG7dcWwTV16ANNxxMU99vZ+DV1zqYbzMwI7nWctahFyj1FRcrLFNC3wxKyE6ZXbQt3wqCgD/U9CUVkKEQSOtCn4WIp4wg7HmfUEJU5FwY+fKEKrcxAiaOGD9/3njcItJceiIiv1EpuU414n8NKnI9xXqStqn3gabvs3+p5amtnDliI6XNVk2BaC9HaP2XOunVm/7SQFgrHx9Q5+6+tzdQgK8ekWOsM17qCTufMyEDP6hvHxKPWmdpZBcburFvhZ0u2LbKIkxNV99uWfFj2WvTZknM1IkJAEs8gJyrK4vjbsBPbDjZCv9R4ufHdRDQpp5//+ehdka/zsFW+/0QhJj0i1YAb7dxQdCRSiRWNGVxdV2RRHCSs+K9dak2lemXq3k+o1IKoLu9DWw09N/CHz+KW+7mwg//n/8CC6pb0//OC9377EAKb8tRJB/T/Dn/eAcUrs5VyedC/+y3
- fakrKczW
- F3sPWkdWgwWnWEnntJY+ZxK0dZkKWLQHq0v4MR+HEbKVVV4DKlrk2nEj1oe9ypQER4VAckJEDZonl77A28sDErrbXZePd980ZYV0iIBO62DiZBDrg4+6UiU+m2ttSh5HZy2GDjhr0j+Y2MDak54IZ1U8zHaMcBfocah5dokzl1abC64LnObbdkv24P5xcM6L/Bmix09Q3Wz0C7FdFKTQdxt7LDlyooZiWDcP7SFFE2/fCfqdoCT8wRpu4w14Ht8NIel+jc/m4sAU/Ji54vQnrJYBwb+1+HNk5sZpUoS5a5Eas68Y=
+X-Rspamd-Queue-Id: E75E140003
+X-HE-Tag: 1790858582-352950
+X-HE-Meta: U2FsdGVkX1/DzEkseWE3pAGLhqlseYnYqE59fcmHx6qvW9bygs1suHyYqrNokl4dhWCnKOM5SUsBbJlQKKhLYfz6yLKM8L9CnNyersl/ZOtp79G7Qqw+WPbeIA7fA+WJ/2IhwsccGkyGyPnXIW2s88iheG18htOMb2RwshVcVhhiVI+vW/J/xZyXJ9qizquFQcQAvmB1q7wLho95GQYxbhvG1BlIS7SxYCG+4yuYUE4DUscodAzWwuoV33J6eH11w5FUAF4SdZM+lN5LV8ZmrygvZVOWXiqUBP3E2t4u8FQz2tslOI5j/tnO3ytx3JUMawFxLm4TGs1xq6OQ0Kaev0gHGVtcT4+S60UXbl9SQJfXizUivTutJcFxrFi9PVb93dB9y17X/0Y9aiPCTLiIrKFzE8Wwasfh6AEXLUDJUfkgh5YbuGWJHtbF6Uo+jisgVa9wZPxq7fstgTNn60V3vd3hDP4I6LkpbfFOsrostwuj/4aWWYowjuif92qcQG9/iDzjFOmvrDfjf/pRyBnECsRgZqgcqcA+qXFnW82TjHEWLdcRFWyDC4OcydisVhp6FIAWzvOv2Ha6d1HRY+tSHakhH2EmqLv4mrDEusc4OaibOtFb9p5Vt/Zl+4NeHCZSa1Op01U7E2PbI7gSNvJhzzuRDc5omVBFBHeObsONBAEGVWLf6uZ1jFNsiLILXU5IfwhBZX1iQRhak7Y+5IGUjY77lfkkaVVTw6RTlKljpmBKFii4JE+qwtsM0Jg8ZX+r28Ux8/XtqMos4hwGGZXS40AeZ5QzGEdTvIv9C1jjRYG0jRGjHurwjQSqm2MM7QRcYrT2yv8QHvF5H9LRL6lDV+qFqG7rzOMiR2yNYi7s0asJKTam38DWrzrbBrQZxWQyuUdkb+l09ocWFqoZkcTEKmurnf0rk9ZIAGRgTGAs+M8OWmYoJgHuDcRu+5cytfZduTY8h+gp8k/p/bEcI82
+ JcgLWbGb
+ UwnD4x/6TPU+L0gUG38QDmrSWN35L96SfKgL+YSK4r9cVgSTW3gkL7aCBo1uonqNAX39Ak3/zr6uq2DSGQi/nX1h4iPm2U42d2HdLqZCqVYw1gVQPDxW2cGoSFErV5LWXrwJeUIYD2LezDCtGDpN7Ptvi7d4Z2FdbHDkYu57b1HruoWtf2z67/ghij/S77qEVEODpM4KozR0ASL4IN3lFsnc0Bc0mf/KYPHcs/6tEVVmC0igfV1fqYYKm67pIW1me1+A2eZLKW6RPksMekUnxw3FsIKb/amKOXjS8ZmYOmM4zZ2iK4PMl1iwILOpZGXDGdjoLZTRbyRPVEm6w8M73R2+RNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,45 +100,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-10-01 12:59:09 [+0200], Peter Zijlstra wrote:
-> On Thu, Sep 24, 2026 at 10:28:10AM -1000, Tejun Heo wrote:
-> > Hello, Shakeel.
-> > 
-> > On Thu, Sep 24, 2026 at 11:47:04AM -0700, Shakeel Butt wrote:
-> > > This series lets a kernel thread say which cgroup it is working for.
-> > > That cgroup then sees the CPU time in its cpu.stat and the stalls in
-> > > its memory.pressure, and the CPU time comes out of its cpu.max quota.
-> > > The first user is the memcg reclaim that runs from high_work.
-> > 
-> > This doesn't translate to net rx, which is another major source of
-> > displaced CPU usage. Switching membership on each packet isn't going to
-> > work there. Attribution can't happen that way. We'd much rather count
-> > per-cgroup received packets and prorate the CPU consumption. If at all
-> > possible, I think it'd be better to adopt an approach which can cover
-> > both use cases.
+Hi David!
+
+On 10/1/26 5:24 PM, David Hildenbrand (Arm) wrote:
+> On 9/24/26 07:00, Sarthak Sharma wrote:
+>> In the test mremap_move_multiple_vmas(), pages 4
+>> to 6 form a single VMA. But the helper function
+>> is_multiple_vma_range_ok() checks pages 4 and 5 as
+>> one range and treats page 6 separately.
+>>
+>> Check all three pages as a single range and skip
+>> the page 6 iteration to match the actual VMA layout.
+>>
+>> Fixes: d53f248258e1 ("tools/testing/selftests: extend mremap_test to test multi-VMA mremap")
+>> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+>> ---
+>>  tools/testing/selftests/mm/mremap_test.c | 5 ++++-
+>>  1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+>> index ba9b7f7566d0..869df22d46db 100644
+>> --- a/tools/testing/selftests/mm/mremap_test.c
+>> +++ b/tools/testing/selftests/mm/mremap_test.c
+>> @@ -373,7 +373,10 @@ static bool is_multiple_vma_range_ok(unsigned int pattern_seed,
+>>  	for (i = 0; i <= 10; i += 2) {
+>>  		int j;
+>>  		char *buf = &ptr[i * page_size];
+>> -		size_t size = i == 4 ? 2 * page_size : page_size;
+>> +		size_t size = i == 4 ? 3 * page_size : page_size;
+>> +
+>> +		if (i == 6)
+>> +			continue;
+>>  
+>>  		for (j = 0; j < size; j++) {
+>>  			char chr = rand();
 > 
-> Ideally RX would be split for each network queue, rather than lumped
-> into the one giant softirq that nobody owns.
-> 
-> I know PREEMPT_RT has been wanting something like that for ages. Not all
-> queues are created equal. Some might want RT priority while others
-> should definitely not.
+> What is the impact of this that it warrants a Fixes? Will the test fail?
 
-What currently kind of works is threaded NAPI. The interrupt wakes the
-NAPI thread rather than adding NET_RX to the global flag softirq flags.
+I read through this again, and realized it is just populating and
+validating parts of one VMA in two iterations, which is not wrong, just
+a bit odd since others VMAs were being validated in one go. I think I'd
+gotten confused with the layout and pictured something else :).
 
-I was thinking about making the softirq flags per-thread rather than
-per-CPU. This avoid the "catch up" of other raised but unrelated
-softirqs.
+So you're right, this doesn't require a Fixes tag. Infact I think I'll
+drop this patch altogether since it is validating stuff correctly.
 
-For now a painless setup is to have "bulk queues" and "real-time" queues
-and what gets where is configured via hardware filters.
-
-> Furthermore, without ingress throttling, your RX back charge could
-> completely deplete the actual cgroup time quota.
-> 
-> Anyway, if you get per queue RX processing threads, then you can move
-> them into cgroups where so desired.
-
-Sebastian
 
