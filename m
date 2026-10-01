@@ -4,75 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A11A4CA5FA5
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 07:45:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88A94CA5FC5
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 07:48:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85AEA6B0088; Thu,  1 Oct 2026 03:45:09 -0400 (EDT)
+	id 63E986B008A; Thu,  1 Oct 2026 03:48:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80B956B008A; Thu,  1 Oct 2026 03:45:09 -0400 (EDT)
+	id 5F0056B008C; Thu,  1 Oct 2026 03:48:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D3706B008C; Thu,  1 Oct 2026 03:45:09 -0400 (EDT)
+	id 4DDD96B0092; Thu,  1 Oct 2026 03:48:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 433EF6B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 03:45:09 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A4C3E8034E
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:45:08 +0000 (UTC)
-X-FDA: 85273271496.19.40C491C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DC73D40005
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:45:06 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Fc/RrrcG";
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 26DCE6B008A
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 03:48:54 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8522E1A0305
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:48:53 +0000 (UTC)
+X-FDA: 85273280946.02.A5055C4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C1A6A40002
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:48:51 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qygm2R6W;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790840707;
+	s=arc-20220608; t=1790840931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rouwnkeWKXgqLu3nIuP1Q7H1nwY+WP7FAWkxJsoS/qg=;
-	b=v4C8C6jolFfcb1L1XiiKPBKoaGC+cBNQINM6+dAAu8jevPIa4UHezIoQlY6zfGFjeZNrUR
-	CIkcMlFsgiWNgNDIqs1I2V5pfqNMLbH/ehjUU+hgjJDuyudl1xmDY+qPGQHzoliRrn7syW
-	a3nMVtQ6ddJgvnfHSnsjMEVW6JX5GEI=
+	bh=mNjIuXpUThvFyotQd9GSbJFtJ0698ZsWlEkeLqDq+J0=;
+	b=DWf1Ku2aqS92pM9QziShKSdPKc9udRhBrDth2Ef2kqUMFc5HfPorP8ownjeDKY+4xks7jI
+	rHF+S82WMm9INb7rFKii2MwEuqT3j+VXSW+iARJp209tpwyX7Kh+BwLAaWswTh4I5e3YLx
+	oDB5FuyfnvstsjwPNr0ODT9+7pzjvgY=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Fc/RrrcG";
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qygm2R6W;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790840707;
-	b=w+fA+BxNj04X3Q2wOeKKvOmERG6fJz4u/38waAAbD+8uo3tEc8oJ4Rah4XrxxmY5s1Gn1k
-	PqKAwZUHSlHTWc0v3e8PdIPVK/iEWfd9DsGBMTlly5EJHk0vxnkak+ZruhSk5VuI/1OEef
-	BBk73bCiFVlpTo9RNTnpYo4N0jzsUTE=
+	t=1790840931;
+	b=QxKKhvehZix9/U893M4XnYnUFI+eLpQXSHEvKoeJBQsEwIB2G8eYNZhpD+VwJn6QG3GiDB
+	bJyB9PA4M3TtCU1vGLqOobnEJwMJFIgTLEnRRIv9XXyLIRXAk+V54TtZkb6sc3pRmNOX7g
+	Q1HjwS0WdvcchvCrUVk9nd7l9iWS6xs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0C22D40770;
-	Thu,  1 Oct 2026 07:45:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825DF1F000FF;
-	Thu,  1 Oct 2026 07:45:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4A720601FE;
+	Thu,  1 Oct 2026 07:48:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579AE1F000FF;
+	Thu,  1 Oct 2026 07:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790840705;
-	bh=rouwnkeWKXgqLu3nIuP1Q7H1nwY+WP7FAWkxJsoS/qg=;
+	s=k20260515; t=1790840931;
+	bh=mNjIuXpUThvFyotQd9GSbJFtJ0698ZsWlEkeLqDq+J0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Fc/RrrcGDCUxYlfeihZzaqYQwrGJNeYiTfH/n7zDP/k7lfTYXQvLvLgLBtuzianPj
-	 S5Jop75QzJ0tKyT/43Iz2gxV3m6OCCGAzisSYTAiAJRI70aVq/kkIB48moj723X/EZ
-	 5gibgbmcLLqEMQkYdKOhKb9SAqCrv4T5DGFePJhCnQKXDYJUcfPOgc6DJAu/hGQ4fW
-	 euAbzkkRsyUKDpAj/AZj2W8lDJdSXr2Lzn/zyZeXgzqAGg3uoJWpowBu1Ojye3wYnP
-	 pM3n+6Z8YPn23nW7qZXDl+XLfS94oV8Lll0PWTf4ITnFLCyDRPRhwec7vTZeY/0BbI
-	 GyVZqxDDf4Zng==
-Message-ID: <2f7a38e0-1e85-4983-9bc5-adea49f44cbc@kernel.org>
-Date: Thu, 1 Oct 2026 09:45:01 +0200
+	b=Qygm2R6WcC4oKwDn9p3fd5ZxtzzH5bVE56ZCY4ydjNT+BVGfjf1B1VfA/6LcKKxnD
+	 fgLc2Ii0Qk1vYBGKiMS96qmJDfepfm6PRk1ZHAR4tc4j3LGDTnbxZaiq+YJwFjnIfr
+	 n/a2pBckpty8tFctrBoQ/Wnzfguno5IwnqdBOVPBx3SAgqgtUnlpSpuzYvsB7o6jDn
+	 Ntw53BUZ5DWbC9EVG9R+a6qMFrI01y74S36eh+kibIoXFmN+T/24B694H2MQVfF2Z3
+	 MOHLkbN/ggiH6IuMJqfIYSI7Q9jpQk5kCHodR/m/MUMeXjbsLR+4k9bgqAu8r5KZ55
+	 fxTrgkQDj6igw==
+Message-ID: <964df3e4-b9a4-4741-b8dc-cb8ef02adeec@kernel.org>
+Date: Thu, 1 Oct 2026 09:48:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] mm: Add KUNIT test for ptval_bytes_to_hex_str()
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+Subject: Re: [RFC PATCH 0/6] mm: swap support for hugetlb folios
+To: Zongkun Lei <leizongkun@qq.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+ Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Zi Yan <ziy@nvidia.com>,
  Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org
-References: <20260929120530.3394073-1-anshuman.khandual@arm.com>
+References: <tencent_501F9D3CED07B66BAA97D5352FB63EE1A709@qq.com>
+ <d8646877-4975-4b2d-9255-9285414d65cb@kernel.org>
+ <tencent_FC17069F1AD34F4E65F6C8DB7AD5ACEA4408@qq.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260929120530.3394073-1-anshuman.khandual@arm.com>
+In-Reply-To: <tencent_FC17069F1AD34F4E65F6C8DB7AD5ACEA4408@qq.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7n5yhrzjbh6fwrhx6qn7zqtdfzh5nqkp
-X-Rspamd-Queue-Id: DC73D40005
+X-Stat-Signature: dn148crny5h3af7kdpbxcc5ay9mpbej3
+X-Rspamd-Queue-Id: C1A6A40002
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1790840706-730458
-X-HE-Meta: U2FsdGVkX1+/rWrzJ94OEfgpYRlWdmkkpeXCwOgkVZBoE9hCwGRwi6GJRoZuFpu/6wmW3mg4GP/1A+StKiIj15DPG1YI0tw4pmlYgyga6+r7tgsVqglVDk3ZTFjyQJ6i2JpFGP/VsOAwc65/N5GcpgaINd8O501GYXMkrr6XfegVoaEb8xLajrRCk3GejXgnRbThRwJtrL1GcdxfwZDaraHMvnxoghgoFYe7aMX3bZwHn9X5USHNKDiSkSuzcPupUEsabNWLPeXvi4wHXje7BfVhpzbSSIU2+L8BwT36DvsjJ/+BjZfH1zxSnS+I/haz8/WvJq+1hlipsNFxHbAdv/+NwA8n4MA6PKaDDdVyt383r89IleU3jOwWwdiMrxJ1glhpnHd1joGYDRcWY06RAymuk+9usxWzHc6DLNBefPM3ZqA+ZIDA6zzP6F6vJR7YshtJv40S2mABoeH3ujBpRP6/FLsg0dbe3vdm46vXJT/51aqxbvtQxhA0N36AEjFraKw8aVKRsKeVwxfMpfe5emEhhOnEnEIfHWCfw+lyFAyMNxPkGmvqsOuaUaEAKCEM7WNv8CCDI2lnxhx7UnEjWZfKaqZcfRSdJVbhUxdSTopq7kVlw7q9Mo6iaVomvkTfkbScj6IWazsaICReJHrSAlq177qXjAQa4J7PXob2bMC2Wr+nf2u+imB6Af+y4Ptp5D/T+efkifx4PXzpDEBhCSL/b71QcrbJO/CUocbCYbJ3xQL7jBTVOWdNO32fsgidPjVpLKfULHBZWhkuA/yoQiZ0REfbgvcTuS8gR9Q7v1M6iCLiU0DMaPBXJ7B0dvshy4xXmDnwVb4ban6PvNhtWbFP1HV98Z3OWNEcXYxo6FysP9oL6HuGraCX7/AKSv3GSzUMaIH1yZTGE40jUFd1QylffUavl6uNxjVxtkBm/eIqatHF6WYRFkflLkr8p3H8siw0XJR5eH16HaZcSEj
- dkPYSbwD
- qdMviQeuf/3RSfLivlsSYhuV5vqBPiMPAVOGQrOIh8/xxVSw17VpYGkJFEV2B/iPQFhC81aXzBvonrilUaTmIHUTkQ3D9mhJ9KUX4iz0prt8JVc5cQvmpTwi2g7KNiG43V6LpvMkJ56bhK6ibQkw0dfHGlwWsRlPWKLNPhJKA3gvZO9j2mx23SN3CAROsWSww9nRf79QNfM2CazalA78AjbV2gdE4yMnGLx7a8iIk677UXolRh6yhDUabElreUw0uRCra15vgBnDKobzEwVtFbO8e69MAFOJCyVu8oEDvqIJRi3xI+o7mY6spAo3J+pYNEZXov0dIuD2WPA95wgx6our9r5ee+UC7W4mpSIURnzRWu3XLTBzj7mbOymY7ZEKU7OVQsQGIO4BG5YRgX+JUH3Gt7w06O5yPDyDaMZvHGvzxE7O2u/c8xMIrTD4OS/wt2+K5/uVDwnb71ULtCfSEmDftcRUZWzEBNSmUVamK9hGp5bncsfzOpNZuBi4aUYZK8QuO
+X-HE-Tag: 1790840931-521820
+X-HE-Meta: U2FsdGVkX18FxkAqDOoBTkg9nLD0WLBA72AOUr8Cce98fOq46D0SAJatYUl0sPWgJuyyaX6tmPGBtqTsZ7A10SGLJ716yM51TXlXh5Wrian1axYcAzuSWrWEiClolCwysnQWS8C4XwYGL485o3xQ+7EwhQmjKTb13Fu4H7/XzFPnV941nOObp06iI5SYh3ZXVzWjhZdMR0UrMrGkZNBqxa5d0stDAOA6x+6BzimKSR4cqP0xKyUS4lbtQRN/4jfpQJv3TMold1LhyZZL7H2uKsWRZG6QDoD63Tj/jZDWwPgKXSb8Ss29j3x9nUwuxBlL81mb101emKnQ7fiGQaFK5yHlR9jVWIxa1BqgMGoR7oIv3dqt7bZgty+itctVnM+fKHojCX8fduGwq2540V4uREIPgzOaRhwFB0Ivye/guhDHpeFht/EqZVgsaBlXW+KHG0ZZF/N6gHX1XnoOBukjV1fao7B9gnskcAIiHe+L/qRoABs5pXVw+yBxjPMmu8NUdMlp1lCZ70Mx50FU+F0afImwdr4oStLyza79m/Nv6QQZvZDBxR1mXxF4e2706ZQT9vg/DR4c1Ip79354Fi75G9YHusCECuwVm8TF48XSxgfhwqTUD9TN1GZjYfmV6B7zUL5uxywlg5npa4Y3sjxa6v8J3i3lI+ptmmR/QhKWK25ZDN63YQzg3Esa4yl9qOUOmDA9LAMOB0QH5m7LNB3Z6WQxkSxNZ45e7qtVXP6LGVLV+w2rRkWe8xB7am2ZrXzB5sjBJXryMq54OWS9XAmjVSJNLWS+UgatOP2xkP9ezXgtOZcQLMpm+TlA70K4rykZOA3nG4TCpV+KxhKokpQupgX7E5Bh4enmBQ+yGdunvINUQ53eYOSYQA0Ml077O7aF0yJ9wRpIo+nOyvPsTvjFfU2gwa6kSX4ddYRmJVLJ7o2c/vVPR1+ATncUNj+BZjRhJnSr4GYajscJa0ZAl3w
+ BJSNODlM
+ X4JeH5r3zdANq1dPHWdw5PaAIrbts57chSRv3O6rfok9Ip81bjScYdBdOqdZSwOjd4UFsMDZPRlkP/YancVSZkdKPrlNsiJWaw5aSZDMGXDNYxyPnWWaOKLq1xBuo2BSgNQuq2N8f/HziAZtOdawpTTnI6LWqKlWFRaz1LZ59q2pOkSyb3y6jT5k2LD+idqTK+1Pe7Zy/SUxEFDnVh6psJynUEhZQw6KAIb/lvIntcP9TctivFlHlvCBZSEwQW5nj+sbtTEjFa4R36qFTMTeajY1smGsrKaMgySbYQxJsYg6oWIgO1Rl/jIedYITCPfb/3YsBffd4MyWQgV8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,94 +144,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/29/26 14:05, Anshuman Khandual wrote:
-> Add KUnit tests for ptval_bytes_to_hex_str() to verify conversion of 32-bit
-> 64-bit, and 128-bit (when supported) page table entry values into printable
-> hexadecimal strings.
+On 9/29/26 11:26, Zongkun Lei wrote:
+> On Tue, 29 Sep 2026 10:02:11 +0200, David Hildenbrand wrote:
+>> Hugetlb is effectively in a feature freeze. There is no interest in
+>> maintaining even more of the special hugetlb sauce, sorry. :/
 > 
-> Add a new PTVAL_HEX_STR_KUNIT_TEST option to enable the tests.
+> Understood -- thank you for the direct answer.
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
-> This patch applies on v7.3-rc5 after the following series
+> My mistake was misreading the subsystem's direction.  I had read the
+> earlier list discussions and concluded that the red line was touching
+> hugetlb's reservation semantics, so I designed the whole series to
+> keep them intact -- user-driven only, no LRU, no reclaim hooks.  I
+> see now that the actual position is a feature freeze: not "new
+> features are welcome if reservations stay sacred", but no new
+> features at all.
 > 
-> https://lore.kernel.org/linux-mm/20260831054331.625505-1-anshuman.khandual@arm.com/
-> 
->  mm/Kconfig                        |  11 +++
->  mm/Makefile                       |   1 +
->  mm/tests/ptval_hex_string_kunit.c | 111 ++++++++++++++++++++++++++++++
->  3 files changed, 123 insertions(+)
->  create mode 100644 mm/tests/ptval_hex_string_kunit.c
-> 
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 604c58199acbf..f68bf26b98c83 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -1511,6 +1511,17 @@ config LAZY_MMU_MODE_KUNIT_TEST
->  
->  	  If unsure, say N.
->  
-> +config PTVAL_HEX_STR_KUNIT_TEST
-> +	bool "KUnit tests for pgtable entry string conversion" if !KUNIT_ALL_TESTS
-> +	depends on KUNIT
-> +	default KUNIT_ALL_TESTS
-> +	help
-> +	  Enable this option to check that ptval_bytes_to_hex_str() is able
-> +	  convert given pgtable entry value in bytes into hex strings which
-> +	  could be printed.
-> +
-> +	  If unsure, say N.
+> Going forward I will stick to work that reduces hugetlb's divergence
+> from generic code rather than adding to it, and I will float ideas
+> on the list before putting serious effort into anything big.
 
-That's a bit fine grained :)
+Yes, that's usually the best approach: if you intend to do a rather invasive
+and/or likely controversial work, better reach out to the community+maintainers
+early.
 
-Could we somehow pack this under another existing / more generic test? We don't
-want one new test for every new function :)
-
-An alternative would be to use mm/debug_vm_pgtable.c to just run 3 tests at
-runtime as well.
-
-> +
->  source "mm/damon/Kconfig"
->  
->  endmenu
-> diff --git a/mm/Makefile b/mm/Makefile
-> index e7245cb88c665..d08b8bd01917b 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -147,4 +147,5 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
->  obj-$(CONFIG_EXECMEM) += execmem.o
->  obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
->  obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
-> +obj-$(CONFIG_PTVAL_HEX_STR_KUNIT_TEST) += tests/ptval_hex_string_kunit.o
->  obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
-> diff --git a/mm/tests/ptval_hex_string_kunit.c b/mm/tests/ptval_hex_string_kunit.c
-> new file mode 100644
-> index 0000000000000..45c203cfb49ae
-> --- /dev/null
-> +++ b/mm/tests/ptval_hex_string_kunit.c
-> @@ -0,0 +1,111 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <kunit/test.h>
-> +#include <linux/pgtable.h>
-> +
-> +struct ptval_str {
-> +	u64 val;
-> +	const char *str;
-> +};
-> +
-> +static struct ptval_str ptval_u32_tests[] = {
-> +	{ .val = 0x1234abcd,	.str = "1234abcd"},
-
-Isn't a single test like this enough. Why would we need the other ones?
-
-So I think this could all get condensed quite a bit (including the test
-functions, a single one should be sufficient if we really only end up with 3 tests).
+Most of us prefer a well written problem statement + high-level design idea, as
+it rather focuses on requirements + exploring solution space vs. a concrete
+solution.
 
 -- 
 Cheers,
