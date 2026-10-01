@@ -4,114 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72FBCCA5FD5
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 08:22:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B2C8CA5FB3
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 08:26:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 433D96B0096; Thu,  1 Oct 2026 04:22:32 -0400 (EDT)
+	id C2B676B0088; Thu,  1 Oct 2026 04:26:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40BC46B0098; Thu,  1 Oct 2026 04:22:32 -0400 (EDT)
+	id C03C86B008A; Thu,  1 Oct 2026 04:26:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 321D16B0099; Thu,  1 Oct 2026 04:22:32 -0400 (EDT)
+	id AF1936B0092; Thu,  1 Oct 2026 04:26:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 02F096B0096
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 04:22:31 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 70D65A0241
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:22:31 +0000 (UTC)
-X-FDA: 85273365702.03.025C6F5
-Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 36B5F14000E
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:22:28 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=fj1KEwNn;
-	dmarc=pass (policy=quarantine) header.from=amazon.it;
-	spf=pass (imf09.hostedemail.com: domain of "prvs=72778446d=dipiets@amazon.it" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=72778446d=dipiets@amazon.it"
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790842949;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E8366B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 04:26:27 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D038E120359
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:26:26 +0000 (UTC)
+X-FDA: 85273375572.15.15B3CA7
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010059.outbound.protection.outlook.com [40.93.198.59])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C8DC4160007
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:26:23 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=OjW4EoFV;
+	spf=pass (imf08.hostedemail.com: domain of noren@nvidia.com designates 40.93.198.59 as permitted sender) smtp.mailfrom=noren@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790843184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=pMNM3ezMCf72JOW7w9gZHwjUf5zgBeoBXpZHv9GCuqo=;
-	b=vyjE5r/NXtaRDtopfVV+GM4gMnXJvKxPDoDCeyrJ0xjd+wrj+yWFr7ucawmg8uOZksEyLL
-	0YtMJcTuBJVerUQol4xZ0dbD0DcHzgqPkOiCXDp0D8sNsZBIK2UWCA6/nHUsxv6NnHedIc
-	Vd+JpAdG5eAFpWmatVsyVSZB8ttvlF0=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=fj1KEwNn;
-	dmarc=pass (policy=quarantine) header.from=amazon.it;
-	spf=pass (imf09.hostedemail.com: domain of "prvs=72778446d=dipiets@amazon.it" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=72778446d=dipiets@amazon.it"
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790842949;
-	b=u0Sc3W3soMTWy/KihAmi6VLQ8D93Sor7x5E+1m/6bCa6ODZ3+yZBAj40MXZweVYSrcpPRA
-	hSa03HbjvMdLTfWR9IkwKZ7RBBEo/E2NeF+kwnOviO+AJFURQv4caFp1xrwuC0k4yiBkkI
-	/iXSdp45jW9tle6cgSBP9ZZKTqle8iA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
-  t=1790842949; x=1822378949;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=pMNM3ezMCf72JOW7w9gZHwjUf5zgBeoBXpZHv9GCuqo=;
-  b=fj1KEwNnTJdDPLKkvXMB2AiDOCM/Su+i5MYK4jbrIS0W03VE6a0CkBgp
-   whIfEbe/Zl0QAkYeonHv2f+XGmafmE6BsqGDyhTgR6OqBB3wxUcnd3pWs
-   Xjd3L3HYlVfGrBEoHfcQCRD5RrV59nEPoqDm4Kwx/lNcNhfGubr+qe111
-   xjiSQqkwkdP0rNjgjA1BzIHhbt2xZ8ocW9OMor9uQLZU9vbKqvJxv1+jm
-   y8Z1vggDdWg4Ki/LVcPlRJ2/yiGBPqwD5d+BOy/m0F2X1rSDqc9RBaGkJ
-   y0mJcMXJR8FnECOaB4cnny37px6oP9NOcSoI9xdk2Mk/3V4cY0Mka7PuW
-   w==;
-X-CSE-ConnectionGUID: tST3wUViQXKbYg0FlT4gLg==
-X-CSE-MsgGUID: CeFmmwQxQA+xgUJufVb77Q==
-X-IronPort-AV: E=Sophos;i="6.27,134,1787011200"; 
-   d="scan'208";a="30088223"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 08:22:24 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:9288]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.21.22:2525] with esmtp (Farcaster)
- id d7332f4c-b57b-4f23-8dac-76fc3c82d408; Thu, 1 Oct 2026 08:22:24 +0000 (UTC)
-X-Farcaster-Flow-ID: d7332f4c-b57b-4f23-8dac-76fc3c82d408
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Thu, 1 Oct 2026 08:22:23 +0000
-Received: from dev-dsk-dipiets-1b-77b833da.eu-west-1.amazon.com
- (10.253.66.177) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=akkaRvJ2jW/plqQDTQAJCrLfiAyvXfLPi+dBpXmWEBg=;
+	b=ErSWVFjoNgDaRo8RzImXeDBTauar+ektB4xo/B4KlD2wbdzVBpTyF+8kJ/3O/JD8A0s+dF
+	wCmPYEgXL4A9uikTNkNC4RUBZnzTzIi4ZW6ygA2xiCsiOpTqVFMOZffPXRMH+7POHoNUg8
+	zGVhYSop+g0Q7wmoWYuzZ9QSW5CSIwc=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=OjW4EoFV;
+	spf=pass (imf08.hostedemail.com: domain of noren@nvidia.com designates 40.93.198.59 as permitted sender) smtp.mailfrom=noren@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790843184;
+	b=yiFhiIXq0A3QieIoLKYfyxwKPh51lBgoHfG5N2kNxo5E7bXiqW4/9wTYCecfm9wgFZZamD
+	TbGhoqQXPw4dRHm7TZTOZKeO/pJolU30LP/VZW4sZFjx7nRPfOjSWayaf+wxdbDw+oOgCN
+	X/dE5Lgn9kYFQCqR7jUhJOz6ALJCINc=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TKbqAcrdLUh/HyvA3LUJPubxFztI87Oup6p8fan28fB3ch4QC2TzBzPUNCWjU8hDOYqjZcA2iodtG8/Ab1uw1W9C7qLleJN10hCuGXAlbbx0hGXrLoJtp9abM1XHyCMqzD/SQlGHr3EGAAmcmA5mRUYR5auUT/n8Pm8BWLETbEJF9aqEEXCOe7fs9DJISdhEuqaaZtr8O1eTKaUeNaMnOEwlUBPDC/DFOh1hqvHry3m/gm6a/MghJo8nLlKffSvjedphQO4gKDq2KAqHjXbTnfDakRWsguesm8VHe/0mZY51+wRupiXXJaOKoRuFIpMBb+zTZBO0riY/hn959/M9GQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=akkaRvJ2jW/plqQDTQAJCrLfiAyvXfLPi+dBpXmWEBg=;
+ b=P4svgCXDLeVO3sVRru0Ge+Aj7hik0IYo1lUGjGXFQCWikcffIc2LEbiTVNhfIeAhuzWC8DWqLVJiN8WoG7kJm1UpWsrunZA/MgZCT6R4hERabXAK9IWMIJAi6IwDy2md3PsypZ1TsJ83N+HUDVYrS6T7zY0WxAgpn9gVfEmMSP9y7XBKs/rMIrYteltn1F++v7oGS0Qw4wbQpdGYr2VssvcN6X3I2R2LWUfvMZunOULMJXf2lLKjQxuxMG1gL2hQ7KHlrt8QUTTrVh1vouwz1bo55vrznKqoED4IHL6DXwq32lPQUzuq8R4J3Yu5iu1fSOwrZppkFvFTEbf292bc5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=akkaRvJ2jW/plqQDTQAJCrLfiAyvXfLPi+dBpXmWEBg=;
+ b=OjW4EoFVOVa94O4A85SfCA8tsD/PBbDxEV/9MrbyX2ZLBWU+vPGQ4IIDNT2Gei8GxNv0ly82yS8mOqfl6uv+qJlftlDtwiZNp7do40HAkhxcWf2w1ZN8UPA9QYf0bnA/atwt5ssrLO/EH9ZvZ9+VHvOhbdriMF2UceTeG4q9EaNe3RipeKL4/xR8Wurw7hOpcdlWj2fnQZw/pQR28lo29n9SMuZf+EajYobaSBfQKC3b6UbLRMqXNe4umlegIWe4Di7aDkB0kM0/LZVRRcgu7VoIT+nk56AH3/zDewQL3HLD7BOCKZ7ibiEEa0j8UYtV3taUIX3fb5i1Kcs6cc0D4w==
+Received: from MW4PR12MB6802.namprd12.prod.outlook.com (2603:10b6:303:20f::19)
+ by MW4PR12MB7310.namprd12.prod.outlook.com (2603:10b6:303:22c::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49; Thu, 1 Oct 2026
- 08:22:20 +0000
-From: Salvatore Dipietro <dipiets@amazon.it>
-To: <linux-kernel@vger.kernel.org>
-CC: <hch@infradead.org>, <abuehaze@amazon.com>, <akpm@linux-foundation.org>,
-	<alisaidi@amazon.com>, <blakgeof@amazon.com>, <brauner@kernel.org>,
-	<dgc@kernel.org>, <dipietro.salvatore@gmail.com>, <dipiets@amazon.it>,
-	<djwong@kernel.org>, <hannes@cmpxchg.org>, <jackmanb@google.com>,
-	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-xfs@vger.kernel.org>, <mhocko@suse.com>, <ritesh.list@gmail.com>,
-	<rvvandan@amazon.com>, <stable@vger.kernel.org>, <surenb@google.com>,
-	<vbabka@kernel.org>, <willy@infradead.org>, <ziy@nvidia.com>, "David
- Hildenbrand" <david@redhat.com>, Christoph Hellwig <hch@lst.de>, "Dmitry
- Ilvokhin" <d@ilvokhin.com>, Brendan Jackman <brendan.jackman@linux.dev>
-Subject: [PATCH v6] mm/page_alloc: avoid direct reclaim and compaction for costly __GFP_NORETRY allocations
-Date: Thu, 1 Oct 2026 08:21:51 +0000
-Message-ID: <20261001082152.2879289-1-dipiets@amazon.it>
-X-Mailer: git-send-email 2.50.1
-MIME-Version: 1.0
-X-Originating-IP: [10.253.66.177]
-X-ClientProxiedBy: EX19D035UWA003.ant.amazon.com (10.13.139.86) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.16; Thu, 1 Oct
+ 2026 08:26:18 +0000
+Received: from MW4PR12MB6802.namprd12.prod.outlook.com
+ ([fe80::51f4:a3d9:b44e:9587]) by MW4PR12MB6802.namprd12.prod.outlook.com
+ ([fe80::51f4:a3d9:b44e:9587%4]) with mapi id 15.21.0451.022; Thu, 1 Oct 2026
+ 08:26:17 +0000
+Message-ID: <bc7a6aed-2bbc-428a-91df-a98683fdc4b5@nvidia.com>
+Date: Thu, 1 Oct 2026 11:26:02 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
+From: Nimrod Oren <noren@nvidia.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Hugh Dickins
+ <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>,
+ Dragos Tatulea <dtatulea@nvidia.com>, "linux-mm@kvack.org"
+ <linux-mm@kvack.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260901190123.3511535-1-noren@nvidia.com>
+ <20260902162323.GO3004@cmpxchg.org> <aphS2TancJAZLND7@gremlin>
+ <20260902183752.GP3004@cmpxchg.org>
+ <a1f19a59-7dd5-4fb1-b5db-3efee8d249e7@nvidia.com>
+ <20260917134949.GB1344@cmpxchg.org>
+ <1e29995c-4877-4d83-98fe-88da780b6d40@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <1e29995c-4877-4d83-98fe-88da780b6d40@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zfztrpa44nhmgqetqty5jqwgmkiiqwyx
+X-ClientProxiedBy: PN4P287CA0079.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:26b::6) To MW4PR12MB6802.namprd12.prod.outlook.com
+ (2603:10b6:303:20f::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6802:EE_|MW4PR12MB7310:EE_
+X-MS-Office365-Filtering-Correlation-Id: abfedd93-1616-4b86-8112-08df1f95aa31
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|10067099003|56012099006|11063799006|4143699003|3023799007|6133799003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Re3OZ+4bGRyuP41b44QUwNUGroxAVf5uCSZAPQZ6viiGKy3AIFEeowDtDa8ZtRs8MEokHYy4T6PPEBzQx+Bnf3SZD6PAX4n56Qm4gGqOdaEJX2hZVSGvZt0pkxcBmJG9XAJm74La5GE04eIhy0CZQUWaAd99yGKBrx0asYGT6WkujCyWjwRPcF4qhmTEDy29HN/BvO6QhuKObKqJs53ngZod9nAc1a91elYfEolTnQabML38sbn1w9Q3O8U8ra9TukuU0QAOJC5D9DKRsvXjbi3hTf8ZSQD/Zvbn2B+UPOPyXWeAmYJSgkCvXzHGsMjBBx+ENG3GiGRVvmzCB3rgDcNNMZGXzly7aiLoQG+XTPYqQgWe1QjSAfWh6CpbLJP2oIyVN7/EdYmks8WhyOXNNqZ9mM+lR6rxOZO+UE+rF9DW04dNlpDhpWM2ovu+AKVPYd4mtXmASWSugJd+qrEnO/Es0wWWy47LpkMPVzEVdo6oMFtyVHxane2vj+6w1rwbQBWTs1g2sQYc6qtQf2TdvvVo9UwWf3gUASZq0EXj5Hn0OkLXmNJi1qVYlGJSLBKrrKiH1QJPwbHFqSJVqhVzRzOo5o14slL8b117tzcAgDJsPzWAbw8lXFnaYQ2NR3/9gS0AB3+ZWa76G06tfEN5H/8U9EIMtjpuaC4yUGwKmlg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6802.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(10067099003)(56012099006)(11063799006)(4143699003)(3023799007)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cnQ5Tzc0Z3k0QzF3RjlabEdqVU1KWXE2cFpHazRpaWU4YlZEYjJucG1wVlhm?=
+ =?utf-8?B?dVNxQ1dVYjJES29rQjF3THZ1bFMvOFgyQm9sVUlnMG9mZGpPUmVjYWhGemZ2?=
+ =?utf-8?B?SGlpSm9uWHkrdksxQjZzQlI3VDR4VjlneFROTFZYRFZxSHhMVXVZNDRPS3l1?=
+ =?utf-8?B?U2NXMEk5czBPczZZVEkrUzlMZ25NOXhPTWZyY0dRUXZlcTBJWm1GcXl0YmRE?=
+ =?utf-8?B?aEV2SWFidUxWMlBHMThzZExGS2lZMURVZStvbkZHUDJtZVN1MmxVZGxGeGdN?=
+ =?utf-8?B?UkM0ODlKbWdMNkNhVHdYR2I2djNaTDVYSmF0d3NUZ1RWN0hHRlFrd002eHlI?=
+ =?utf-8?B?Q2ZHSTBlY1hxMG5pN0M2eGFTdDlRd3VTekdnRTE1YXRYak4xL2dnWXRNRUNI?=
+ =?utf-8?B?dEt4UXJsM2RCUE1lQTRick9BSXZsM2RiakhEaGlCUUxmWjZuWUNQNFZaVHo5?=
+ =?utf-8?B?OHptNHNYOUtRdUJ3MWp2WkJYMmp6eFdsSmJHbnM3MFJCamQ2SHRmRkNSWGov?=
+ =?utf-8?B?OGZ2R0wvREJCNWtrd2tCR0FKbjVGcS93SG9SR2FZM2d1ZitFNkdxQnBTVWZU?=
+ =?utf-8?B?VjBNcHlaaCswTytwcGo4S3B1L2Q2LzluWCt0U3ZvSFF3ZXpuSFlJdFE1YXdm?=
+ =?utf-8?B?b05jck9zYk1LbndkVndob2orT1ZUR3Nrc29sVTlkTm9BcnkxRUlZQ1BFTFd1?=
+ =?utf-8?B?NkFJV1plOHhKcTVpNDRLbDRtM0RhRUhuUVAwclJVbnRKSjM1K29oakZWWk1S?=
+ =?utf-8?B?ZlY2VklLelJOV0pZMW9UaFV5UWgwMHBIL2QzVk9jUms4bUxwT0l4NzN4Z3h5?=
+ =?utf-8?B?dldXTi9aS0pBVGNtcEdrRWF1cy9GakZZRVlBUlJFTHBXSXZXZ0ZzQVFoTkFt?=
+ =?utf-8?B?Mm5MSUFOUkZzeXZKcXU3MTNPdUdVYVd6YXdGRFczQU1qZWRtMGp1Z0FxSVBT?=
+ =?utf-8?B?ZTl2L2drU3VINkRQUUtCZ3FPN2xZM3gzOUdqTlJiRTA0RTVmZ0U3T1J1eC8y?=
+ =?utf-8?B?UXpjdGJaeVhOZHpyS0JBRllYWDluTk9GVHJHSW9iZDA0bHNhYktjQnhoTE5U?=
+ =?utf-8?B?K2xCcFVEaE9jcGE4a0JsSS81VHpOQWZHcmRlMUE1Y3VObFQ0dGExSlcxRHZB?=
+ =?utf-8?B?YmllbHFjcVpUbGViVXMwZzNhbm9KVk5XM01oRnBiK2VrZUNRRVRTMnBjQkhk?=
+ =?utf-8?B?TWdkbDZvaUVZRVN2T2xNcXNzSGpVbnd5TEdzajF2V0dWVkV1ZXU1NG0vM3BF?=
+ =?utf-8?B?djNOVk9zeDkrV3pQUjh6Smc2RHVEekNIajhHckM1SW9iKzFDVU1XbXdZUTJF?=
+ =?utf-8?B?YUcyU3QvK2Vha1o2QW1Ycm42MmJtcjhqMTNYeDR2V0N1M0ZER3hYRnJWTndJ?=
+ =?utf-8?B?WUI2RG9TM0ZIREJESE5LTDAvb2FhVnRRekppRE5tVUZKbzc4bHMvS0tUeGFZ?=
+ =?utf-8?B?enNtSjEvOVdKV0w0djg3MldBM0syMHpBZG5SdlNveXlON2Q1cHRDS3lmU2lz?=
+ =?utf-8?B?bmIya3JUUjA0Zk40ZkNYOE94WHRJcFZUQnNtZzU3TjN6MG90aXYvQkp1cUM3?=
+ =?utf-8?B?MHJFZXhzTXZHckVQbTFhNmxrd2dpNFQ2MFBVVHh4SW5iZVBYTG5SQytMSFV1?=
+ =?utf-8?B?TkIxYkliMmRxNnV2QlRYb0ZIdmlkQ3I0cVRRWFhXQUxwdDZZZXFNdE5zWkJN?=
+ =?utf-8?B?UFZIRnhmRS9TL3NiSnh3QnUwVlBYM05obUpmR01IODNPNG40WTBvblE3N2g1?=
+ =?utf-8?B?Y0VqVHZKcTBXOW96VjR5V0gwMkhwaENtbUNDTFZNNUh2MTNadkpvV0VXMG5J?=
+ =?utf-8?B?bDZDY0VlT3NXQjJPSFp2NjhOQ2dSS1YxS3dEVThiL0F5NUIrOGFOUnlHV2Jj?=
+ =?utf-8?B?UGNVZUkwQ0k4Tm5INk5sdjF6dXJidlpjYnNmSVVIRmxHaVkzc09mREJVS2Iy?=
+ =?utf-8?B?MEx2WTUxTU43Q0JhSUdWR0ZvS21DcTRoVnZTWXh2cXVCc1RINnFOdE9tZElC?=
+ =?utf-8?B?Q2V4eU8wTWkwZTZNRUxVS2ZQc0ROZCtlRXcxZ1NNbWk3clhWRGU4NGV2LzhP?=
+ =?utf-8?B?T0pvQ0JxSm1CQisvdGtBVUpDUm1IdFNveVZIckQ4SlFKc1JOajlkd2RLNGg2?=
+ =?utf-8?B?Y09IUUd2bTE1enFOL1cwVG16Nzh5NzQ3OW5uNXNRSmtBTzVBNkd0Qll4YmU4?=
+ =?utf-8?B?ZHVJc0JpQWt4Y051bjJtOGMydVJQU2w2WDMxeHhoRlRSTmZHeTRoQVBFWlFE?=
+ =?utf-8?B?cXo3ZzRMR2FuNHJiUDllc0pvamE5UVhWS21KcHErcGVQclNrZ01GRWI1YlU1?=
+ =?utf-8?Q?vYzMIj+rQaUi5s6veE?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: abfedd93-1616-4b86-8112-08df1f95aa31
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6802.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 08:26:17.7331
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JxXhPx5ws/YlDzJLru93gWOY2E/WDKBrfsdhlrdwjjs3NoYWYeqeLPSWZEHKiJpgCGP8djZZWIDiRLiV1ed0fQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7310
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C8DC4160007
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 36B5F14000E
-X-HE-Tag: 1790842948-889587
-X-HE-Meta: U2FsdGVkX199XwecI22b5BikZ633tDlzuaQ2liqE3sX59h/0T6I3RE+A97GdvBCVZOOnoIYOa1wA63MdQYSNY0/JRKtPKagX/otDTCkRMaom7AOuj7YBA1xmQDt+KltWgkWpW3k3L2g7x1QwjZUfjmudNliSpNCO40romBMAzG4V2hYSZ1/BYY/JHbbPWwBkwrWysJDz9X8IOJing64VbIZr3K5kVdir0sBh5N0OpPXq/7LTZ6OW4wqdVnAjQ7lRwimMPVzFm7rUVBedMuxDBHSrpGx+9DMG1fb865Qvmtc7Qf53/6oeeV+i88DOwu1//nj/u1EpoOeVGlL5BVIxDyWwH8UGO5tSfQtI9CDRbkTy9g+wjAi+c2OqEBikjHeTDki5BmUPtEQJ/KcdU8g89bAq8D5EEkIFfRhPVTBRTP13OVofGM6IQkXvqfiWLaHU4OABJAnDSS/ABRCBTI07tqZSaeOwgb6Twit8p5RxmI0HyDNhn73z9taSmBqO7h4Ub5Qrpvojgbo1g7aBxZVM1BHQImY1gxuPLS0I9ZSOMpx9RuF9AcnwVQ+6aiF8f0vYacgioObnY8ptOXVKAr1/2TXGtZ3qqAgMoJA5VnZFR1ZTT3Cinblc8UAeZ/ymsan5/jvPMcq4DJbmEunHaMVQNMMVTxppwKslY0DlCU2vZLOa/wjRFmpWHLt45wmV4VhW5vL3dc7sTmWzzBEKPMj5nMV9wwY86cXJ8XDm4zB43QyM4qTzQ0ZhmoETSHvoLgkTXsBLFbvBRoXG218WAyC0awcXWmLgIi3ZE+VEGUyynOXxVAJ8bYGSBBhIQpeHMjg9AjK6yWKAALoy1EoRxsQq75aQvN1PN6h+ISuOs+XLAI5was+4JKNOnkMs4QBsneRl7QFlgiO1reaEg0ufEN3Ll2uZaIlRY3hi0lak7Nx19qxdWXkI5Jcfet+7uGZ+YwJu/AkRGYRCZectmcn4UbQ
- oCZgDosM
- 4Lw/X0wtRsswh6Px65PvmWm4RiaKpsHzoSfoTjvEWH9v8RPKzZj70MOAMUmWZFJX+x/wg40psZKkEAvdxaPzqcZ3it4BoFy4crzjkAIT3O8E/87iwU+tmIQK2lwlOC9G6aRxiBkpaBgJbdDbE7WvoGfzpjsU04Kmvyv5b6tuVHpz3jZSMkJ1iFyhI3FU+s9F38afmb78VVXtQjjI1G2TuBHvT5gTG0BIpggGsOUdA1XrBJD5K6sPH8Fnyc8FQP8aQlaXuhFrUpnQLh90woxu9V773JKwIGt8SgBihIj7Fso4yyeciwsVal1NB+Szma53bxy6N1uuXjr2hEVc6RGidONuLgcpL3Vo31KqJDzAZKJsrchkHqN95DO2XAJbURvcWOOiFWBCDyp5VKFa7u5XQxUmwOEfb0t3FxVma5fBTBq2jOEoXOwtW97bD53vgecx1JV6VgTg2f4u5LZnmufMGT39Flx9ItwzrWtTzsWmKGFm7T81sGhuqEtNh0w0PPX5buazMsJOiPYSicIR1Hm4fMIcGdzsXBzbO3VNKduk7IXMHrAKmIbw7WlfqUdKigzPZ4/ll9K/P8527yB/1dOP7UaOSue8EZqWmApDRshl9Ncy+p++20BFCdqjJALRpxdckvfZv8XAkq9Q4jUbjB0wRmuMtid6qEt3YfPOPt0BtbuHlpaiCcVuOtiAxaZBwt1XBmdlD4ZZAs05Aq2cfH41CE5sLiwVnNQcGq9CUd6Adn2TjMXk0We1QxXEoBIMC7IKIPZ5emsqwuJ1o+JnJ9q29PuRlfUbwg1BHB9hvVdNsFibMpqsIZ+BH9qn7jVzwn2ZMy4kGS6MM4kkVQnWxTtwEEUJ+sYlzxbU6GPNfePIM1BkNOqgR/SGmC84c5NgpD7Bom6dM5xzcXUZC9zZs/uGYgSG08c87/8Jgze845FAWlPi6yLkUexQjAzGJlwKLOSVN1AcnScV3hAlpgXJtke6O+ICjOhF/
- 5Fr3KZzN
- 7nLDUAPXQ2iSoAhTgAWOIGH+Q2ujRmpar4zoeP6ZqgbaFq5R1XlCCYfHb1PnupXPffMtj0Sq4d0DS2ABmTLFLciR54Hi1kcK7K94le871hc=
+X-Stat-Signature: 86zox617665xqwastntyjewatmop6c4n
+X-HE-Tag: 1790843183-102587
+X-HE-Meta: U2FsdGVkX1/sQWY+LgtTM/u5fgnQnMiohB23eQFL1/WSNTngrp0xh095y2I2wJHbWN3EmQy72Hs/eWnw6Pmk4102Of5W8QgtFcFXlJsZ9QxyA32GV7IAT2CqQmz4kNLMokl3g0DALEP8JeeweegeC9vCeBdLbwm0nTbPvkr79XNIfRhCc1U2udmB3ywxjNP1XkpKxgKcULKQeFI1NkPx/nF66wez8NiXT9qAVUVMuCl6srXZDmDZLh+Eha9VBaENkY4ZzdiVnjyeAZAAoxBiFGMbCPozQN2bIo+YrKk9so4NESF1GFLMKs1HUfg+HDzfWuCAuPtNYA6UU82DETlS8QdfnVDMb6dIxq4ppzgXwrx5yzSwSJJMSdNTxsjOSfc0QFdbKpKDxOqleXDhR9aL+KJmbV+WloLTu5iWYBHXrMaYT/88z13sa6Z8rNs+6hbK61a615JEMhkWNhh+p2gk8P5J8/RAF4HQDk4rfURug8A2SBEa+358VQ5yqKKf03fjXA5FEJt0SOxxsOdlShsMlCp9FXX0P7fzMYuL8KyGbj8f60E9lfYVe53e3uMv+tI/RsCd6qdOrTl87wy7u9mKJkd/hfbXeGD/t3WU2DcSVOe7ZdxWGUCB9Y4VrAi4Oo04Hd8QLbjQR87MquUS0A1pHzUCZNNQWsNu+MuegWI0EVPmbSI9QndjcSrbJcrD8cXl2gvVtbZV7zESpwv9MY5Lc7IDC6vMTkhKsD58ovn7FF5ZW4jtWvPVKPo8qMvHn+7WY2YovD/hSlAERkAQow5M007ArM+4LWspMguKF+ysjB0XvpedbcdXwhxWtXcnnX95fBxPcblIevh84PM3aK90QYJc4vzfm7N3Mfg8wX4sHSThbbB+Pa/hsC9g0JWRdihj48uN3asidLk2lZPx2eUBsIsrl3WhubHBSxNmRf442ugrCMz6XKi9AWuj227lPEk+X9eWLBSXJVIb/0Kj6m1
+ AZz5zlL2
+ Zrjpz2AAO3NPkDiBpNr71eMfEQ3EJXG4/oS9s6KZTJKSQpNo0QqHT+OZd9xb0OAPPDsWDkC8v8Cbi5cxbop1HaLowT/x61IYYUU19idP2YzLMKIqMUcsPd8zGq/XbSM1MOOerso2ugGxvCL7ADkZ06fQCNOL9gHuPcVlaLkQa03jdpNYBatTP0YZIlXwvsfuxJnx5+zUlI5dyy6MmQddF7JejSBOZH07NC+mgNZN+/XUOpLCMTK1jCeLzG9jdTy5cSl8ER3ntZiMZHdn6Azy4xxUSmuu9P1rKU0lUBtSjEcFm6eI37cdN/e7MXINDpUuyNO7qyQ8IQ7MS0CqGHUXPqGT04HtIcMheCBIYtTMLfcCRHa4/74drBG8N73jFWJm3H5v9LAiA8qCKlagFryIUfAl2zWJpMJt0JxuYw1tcIn1zwB4RrIUlhXKnMaXgFX68ewqLL4XyD6oAbqAZEMf40N4HqQW9jeYWT+O2mNVVBU1ey0EmSpCZIQanhqxg/vvJA9rdUpLmxJv3n6va32amzV1o6mdzf6v0PXQBHUCHnIZR6VDJuVDRDEIH8Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,156 +188,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-introduced high-order folio allocations in the iomap buffered write
-path.  When memory is fragmented, each failed costly-order allocation
-enters __alloc_pages_slowpath() which runs direct reclaim, direct
-compaction and drain_all_pages(), causing a 0.38x throughput drop on
-PostgreSQL pgbench (simple-update) with 1024 clients on a 96-vCPU arm64
-system.
+On 20/09/2026 16:17, Nimrod Oren wrote:
+> On 17/09/2026 16:49, Johannes Weiner wrote:
+>> On Thu, Sep 17, 2026 at 01:19:12PM +0300, Nimrod Oren wrote:
+>>> On 02/09/2026 21:37, Johannes Weiner wrote:
+>>>> On Wed, Sep 02, 2026 at 06:00:55PM +0100, Lorenzo Stoakes (ARM) wrote:
+>>>>> On Wed, Sep 02, 2026 at 12:23:23PM -0400, Johannes Weiner wrote:
+>>>>>> I'm not against carefully evaluating and testing out today's need for
+>>>>>> set_recommended_min_free_kbytes() in real world examples. But this is
+>>>>>> not that.
+>>>>>>
+>>>>>> Nacked-by: Johannes Weiner <hannes@cmpxchg.org>
+>>>>>
+>>>>> Isn't every possible change to address this kind of issue subject to
+>>>>> exactly the same kind of constraint?
+>>>>>
+>>>>> I'd like to know what not rolling that dice looks like :) or what
+>>>>> constitutes 'careful evaluation'.
+>>>>
+>>>> Usama gave some great examples in his other email. I'm not really
+>>>> arguing to keep things out of tradition. But I think it's fair to say
+>>>> let's at least test the common 4k/2M THP setups under memory pressure
+>>>> before and after the change.
+>>>
+>>> Hi,
+>>>
+>>> I tested this on an x86-64 (4K/2M) virtual machine with one NUMA node
+>>> and 16 GiB online memory, using mmtests config-workload-thpchallenge-fio
+>>> with THPCHALLENGE_MADV_HUGEPAGE=yes.
+>>> min_free_kbytes was 16 MiB patched and 66 MiB unpatched.
+>>>
+>>> I ran each kernel 30 times, rebooting before each run. The results did
+>>> not show a regression in THP fault success rate or latency:
+>>>
+>>> Average THP fault success (Percentage Faults Huge) increased from
+>>> 13.07% unpatched to 13.34% patched, and average fault latency
+>>> (Fault Latencies) decreased by 6.5%.
+>>>
+>>> In contrast, compaction metrics were higher on average with the patch:
+>>>
+>>>   Compaction stalls:          1,635 -> 1,713        (+4.7%)
+>>>   Compaction failures:        1,350 -> 1,416        (+4.9%)
+>>>   Compaction migrate scanned: 4,812,254 -> 5,587,587 (+16.1%)
+>>
+>> A 2% increase in THP success bought with a 16.1% increase in
+>> compaction work looks like a sizable efficiency regression.
+>>
+>> A scan efficiency drop is in line with expectations of what happens
+>> when non-frag placement reserves are taken from the allocator. A
+>> comparison of trace_mm_page_alloc_extfrag rates could be instructive.
+>>
+>> Why the 2% success boost isn't quite clear to me. Allocation latency
+>> improving suggests the extra work is primarily picked up by background
+>> compaction. Reduced reserves could be making proactive compaction more
+>> aggressive. But the improvement is unlikely to hold once you run out
+>> of idle CPUs and the additional compaction work actually eats into the
+>> workload. It could be useful to look closer at who is doing the extra
+>> work and based on what triggers.
+> 
+> Thanks.
+> 
+> I ran another 30 pairs with the same setup and workload, this time
+> adding identical CPU load to both conditions. CPU utilization during
+> the measured workload averaged approximately 99.7% in both the baseline
+> and the patched runs. The aggregate mpstat %sys value averaged 2.25% in
+> the baseline runs and 2.22% in the patched runs.
+> 
+> THP results:
+> 
+>                               baseline avg  patched avg   change
+>   Percentage Faults Huge          9.92%        9.12%      -0.80 pp
+>   Fault Latencies               4923 us      4856 us      -1.36%
+> 
+> The average difference in Percentage Faults Huge changed from +0.26
+> percentage points in the earlier runs to -0.80 points under CPU load.
+> It's worth clarifying, though, that both differences were small relative
+> to the observed run-to-run variability: the baseline/patched standard
+> deviations were 4.52/4.59 percentage points earlier and 2.64/2.95
+> points under CPU load.
+> 
+> The same applies to Fault Latencies, whose baseline/patched SDs were
+> 432/368 us earlier and 181/132 us under CPU load.
+> 
+> Compaction and reclaim results:
+> 
+>                               baseline avg  patched avg   change
+>   Compaction migrate scanned    3,983,598    4,563,788    +14.6%
+>   Kcompactd migrate scanned     1,242,728    1,944,022    +56.4%
+>   Compaction free scanned      17,689,565   20,461,694    +15.7%
+>   Kcompactd free scanned        2,608,710    4,426,810    +69.7%
+>   Compaction stalls                 1,476        1,514     +2.6%
+>   Compaction failures               1,265        1,319     +4.3%
+>   Direct pages scanned          1,339,044    1,344,907     +0.4%
+>   Kswapd pages scanned          2,011,323    2,141,355     +6.5%
+> 
+> End-to-end workload results:
+> 
+>                               baseline avg  patched avg   change
+>   Duration Elapsed                98.82 s      98.33 s      -0.50%
+>   Aggregate fio read bandwidth  0.2142 GiB/s  0.2152 GiB/s  +0.48%
+> 
+> Aggregate fio read bandwidth is the sum of the per-job read bandwidth
+> values in the fio output.
 
-The root issue is that direct reclaim and direct compaction are too
-expensive for hot allocation paths that have fallbacks to smaller
-allocations.  __filemap_get_folio_mpol() already marks higher-order
-allocations with __GFP_NORETRY | __GFP_NOWARN, signalling that the
-caller can handle failure.  However, the page allocator still enters the
-full blocking slowpath for costly orders with __GFP_NORETRY, which is
-unnecessarily aggressive when the caller will simply retry at a lower
-order.
+Following up with tracing data.
 
-For costly-order allocations with __GFP_NORETRY, clear
-__GFP_DIRECT_RECLAIM at the very start of the slowpath, before
-can_direct_reclaim, can_compact and the nofail checks are evaluated.
-This makes the entire slowpath treat the request as non-blocking: no
-direct reclaim, no direct compaction and no drain_all_pages() IPI
-across every CPU.  Reclaim and compaction move to the background
-instead: kswapd is still woken for reclaim, and it wakes kcompactd for
-defragmentation.  The system keeps its long-term health while the
-latency-critical direct allocation path no longer stalls.
+I ran another eight baseline/patched pairs with the same
+thpchallenge-fio workload, without additional CPU load.
 
-Allocations that also request __GFP_THISNODE are exempted.  That flag
-pairing identifies the local-node-first THP attempt issued by
-alloc_pages_mpol() (mempolicy.c), which relies on direct compaction to
-form transparent huge pages.
+For mm_page_alloc_extfrag, the mean was 3,334 events/second baseline
+and 3,586 patched. The patched rate was higher in six pairs and lower
+in two. The pairwise changes ranged from -1,281 to +1,943 events/second.
 
-Clearing __GFP_DIRECT_RECLAIM makes these allocations reach the
-!can_direct_reclaim bailout, which since commit 4c0ed883e051
-("mm/page_alloc: fix defrag_mode for non-reclaimable allocations") drops
-ALLOC_NOFRAGMENT and retries instead of failing when defrag_mode is on.
-With vm.defrag_mode=1 a __GFP_NORETRY allocation could therefore succeed
-by fragmenting another migratetype's pageblock.  That is the wrong trade
-for a caller that has already communicated it can handle failure and has
-a cheap lower-order fallback, so exclude __GFP_NORETRY from the
-relaxation.  The exclusion is not restricted to costly orders: any
-__GFP_NORETRY caller has said it can cope with failure, so failing is
-preferable to fragmenting for all of them.
+I extended mm_compaction_end identically in both kernels to record
+total_migrate_scanned and the direct_compaction and
+proactive_compaction flags.
 
-Test environment:
-  Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
-             12x 1TB IO2 32000 IOPS RAID0 XFS
-  OS:        AL2023
-  Kernel:    v7.3-rc1
-  Database:  PostgreSQL 18.4
-  Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
+Summing total_migrate_scanned per run gave these averages:
 
-Results (average of 3 runs, TPS):
+                              baseline avg  patched avg
+  proactive kcompactd           2,826,839     3,145,912
+  non-proactive kcompactd         235,081       275,834
+  direct compaction             2,518,875     2,295,135
 
-  Config                                       Avg TPS   % vs baseline
-  v7.3-rc1 baseline (vm.defrag_mode=0)          58,602               -
-  v7.3-rc1 + this patch (vm.defrag_mode=0)     157,246         +168.3%
-  v7.3-rc1 baseline (vm.defrag_mode=1)         109,012               -
-  v7.3-rc1 + this patch (vm.defrag_mode=1)     157,778          +44.7%
-
-Link: https://lore.kernel.org/all/20260403193535.9970-1-dipiets@amazon.it/T/#t [v1]
-Link: https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amazon.it/T/#u [v2]
-Link: https://lore.kernel.org/all/20260710143437.12379-1-dipiets@amazon.it/T/#u [v3]
-Link: https://lore.kernel.org/all/20260904115629.3993331-1-dipiets@amazon.it/T/#u [v4]
-Link: https://lore.kernel.org/all/20260911142102.2294202-1-dipiets@amazon.it/T/#u [v5]
-Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-Cc: stable@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Dave Chinner <dgc@kernel.org>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-xfs@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
----
- mm/page_alloc.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 12fac9084c48..64d09964ca77 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4784,10 +4784,10 @@ static inline struct page *
- __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 						struct alloc_context *ac)
- {
--	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
--	bool can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
--	bool nofail = gfp_mask & __GFP_NOFAIL;
- 	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
-+	bool can_direct_reclaim;
-+	bool can_compact;
-+	bool nofail;
- 	struct page *page = NULL;
- 	unsigned int alloc_flags;
- 	unsigned long did_some_progress;
-@@ -4802,6 +4802,18 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	bool can_retry_reserves = true;
- 	unsigned long alloc_start_time = jiffies;
- 
-+	/*
-+	 * Costly __GFP_NORETRY callers have a cheap fallback, so don't stall
-+	 * them in reclaim or compaction. __GFP_THISNODE callers are exempt.
-+	 */
-+	if (costly_order && (gfp_mask & __GFP_NORETRY) &&
-+	    !(gfp_mask & __GFP_THISNODE))
-+		gfp_mask &= ~__GFP_DIRECT_RECLAIM;
-+
-+	can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
-+	can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
-+	nofail = gfp_mask & __GFP_NOFAIL;
-+
- 	if (unlikely(nofail)) {
- 		/*
- 		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
-@@ -4918,8 +4930,11 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 		 * Reclaim/compaction cannot run, so defrag_mode's strategy
- 		 * of enforcing ALLOC_NOFRAGMENT cannot be fulfilled. Allow
- 		 * fallbacks rather than failing the allocation outright.
-+		 * Not for __GFP_NORETRY: those have a cheap lower order
-+		 * fallback, so failing beats fragmenting.
- 		 */
- 		if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT) &&
-+		    !(gfp_mask & __GFP_NORETRY) &&
- 		    (gfp_mask & __GFP_KSWAPD_RECLAIM)) {
- 			alloc_flags &= ~ALLOC_NOFRAGMENT;
- 			goto retry;
-
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
--- 
-2.50.1
-
-
-
-
-AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
-
-
+Proactive and non-proactive kcompactd scanning were higher with the
+patched kernel in five of eight pairs each, while direct scanning was
+lower in six of eight.
 
 
