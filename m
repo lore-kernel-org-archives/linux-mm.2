@@ -4,109 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0215DCA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 10:59:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB579CA5FB3
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:07:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09A7B6B0088; Thu,  1 Oct 2026 06:59:23 -0400 (EDT)
+	id 9D0976B008C; Thu,  1 Oct 2026 07:06:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 073016B008A; Thu,  1 Oct 2026 06:59:23 -0400 (EDT)
+	id 980B16B0092; Thu,  1 Oct 2026 07:06:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECA326B009B; Thu,  1 Oct 2026 06:59:22 -0400 (EDT)
+	id 897856B0095; Thu,  1 Oct 2026 07:06:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CF4546B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 06:59:22 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 429421203B3
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:59:22 +0000 (UTC)
-X-FDA: 85273760964.03.F2378C2
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DF375100003
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:59:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=LCl1OI8l;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf14.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 694F56B008C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:06:59 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3504E80344
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:06:58 +0000 (UTC)
+X-FDA: 85273780116.12.9681915
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 839D7180002
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:06:56 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TqZk2SZ/";
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790852360;
+	s=arc-20220608; t=1790852816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MXA2KDE32vmEL8dBfumYlL+dA+/j3dJ1ohxuDqggpGk=;
-	b=oxfw9j8ckt6Dqdhxx0V4CgI2FUUDlj3zuX/e1PlttrF4HHTjTb8801huuZyMib82loTrJV
-	evSqIwyXjn+doqYrseIUbkNOEK5XoWa7zA2Ye6fhWbsLenZrfh752N6WGQoVLvAbhFmfa9
-	+OHN9xGEBScnGAcwX0Fa+bceoNKbTVg=
+	bh=CkXuyHSbtVf4eYHlPuWTnVc0hAJ85ieRSImmWIYe7/4=;
+	b=AR464+6//exqWEOTPoHJui2vF5wnhyyOVDOJsIqmsKfKtgwr3DPWcl8zb7DLhyl+E/JEIK
+	UeWEwUW8BdI4XXBXP9o7+z8lZ71v//DumwIG6Jjh839fKHK86G4fn4Si9CnjNajCd9E+qC
+	FbT0Yq1XM/4nVIBUo9cjQcdgc6pw/6I=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=LCl1OI8l;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf14.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TqZk2SZ/";
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790852360;
-	b=skke9zTDrXkZcAZr/Ob0QEE/km4ODgOSopPzviFg94hlzZ5PCvYqkBeJfv76X6oIO6XFZI
-	h7emHUyXgeIsStM8TyE5UrP0xwSdnql8idFdtTcFDeCGynr1vX8jN9lMncGTTQtnaSoZkF
-	gmcoHnL2BoQwXhV5wtW+4huNC1oEtJ8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=MXA2KDE32vmEL8dBfumYlL+dA+/j3dJ1ohxuDqggpGk=; b=LCl1OI8lRvcv+outLHBWL9A2bo
-	DG5ITJUiFjfuw/CEH5vbNjtI/P+BGLUvwXGLDA3jC0T340gY/Wk7k1gpkQvW1Z70RfVbhOYmCo3xw
-	AQrPBZuoPECelcO87vpNBk1zQqZk4sUCEzOkgiymVqQuPddoPjUy5oK3h0Qme/AB7rJNngceuc7hq
-	SpH7CHPQ+yTaxLRhMOeVVPTVIV3l0euLPDh5NhuMo38PzhWMuEE+tFR7wdSAxCvYvgzjUDCfjyRZJ
-	2Vfd5RXX1oJ8sfOXd6TivgxG21zO1fScJ0vlE+bpH4aP4s6m55zck+Q/N8LB/P1cBonRI090dOtPd
-	BxfbrTrw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xCEVK-00000006r8z-1WSi;
-	Thu, 01 Oct 2026 10:59:10 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id E81DA3001FD; Thu, 01 Oct 2026 12:59:09 +0200 (CEST)
-Date: Thu, 1 Oct 2026 12:59:09 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Tejun Heo <tj@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	David Dai <david.dai@linux.dev>, JP Kobryn <jp.kobryn@linux.dev>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Aaron Lu <ziqianlu@bytedance.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Hao Lee <haolee.swjtu@gmail.com>, kernel-team@meta.com,
-	cgroups@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
+	t=1790852816;
+	b=uWYWD0oVWajn8LbRj2RQVAf2jE+B17wGHmJAv6+Bx76Jb1+RUYA6dKoXI5v+TH524ooDw4
+	Ex0KygGA1RKdARXwIvE4lYPKIhW851M5mfjN49H3UZvdHMZfBqdEwc44RwMpxuDpBVdUoY
+	hsrpBgmDORQJGaLy9dXgnV6gK1Ytgq0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A2B7743C16;
+	Thu,  1 Oct 2026 11:06:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116C31F000FF;
+	Thu,  1 Oct 2026 11:06:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790852815;
+	bh=CkXuyHSbtVf4eYHlPuWTnVc0hAJ85ieRSImmWIYe7/4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TqZk2SZ/8pigdRKHqYx0leDaHTQMicntgZgVWLIj/8lyUDWVcCxo2ayEdd+gg0geh
+	 lU92zvlhLMZNr3NNjlFOp/Oekg9VzaUVc3T0L6z3VNWI0xNRwTgcA1XHJdYf/4FP+j
+	 7ZDv8Fzf3ygiXZ9aGAbEFkeX5PJuDdWLg5lYgOXH1+wx8UafefVWrpEOz5hACzdv8E
+	 flzBLVvshzqJrHgxgKEIraQdDlNSHpSoOjt2A11kbg9N9AHbZqeczL+5T5R63LW/F9
+	 wB5J7nZOK0RILQNXUNmgE9wq89o/fLLdXB2MrB1Fgw/Fk+5CaPXSlE7ZVoS49ySMVc
+	 LJh7EGRfSfvcw==
+Date: Thu, 1 Oct 2026 12:06:49 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Aveline Noir <jm5905938@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Christian Brauner <brauner@kernel.org>, Muhammad Usama Anjum <usama.anjum@arm.com>, linux-mm@kvack.org, 
 	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/7] cgroup: charge kernel work to the cgroup it is
- done for
-Message-ID: <20261001105909.GL4121339@noisy.programming.kicks-ass.net>
-References: <20260924184714.912181-1-shakeel.butt@linux.dev>
- <befc0a9b9998db0292c9998c639a3a9f@kernel.org>
+Subject: Re: [PATCH] selftests/mm: mrelease_test: fix retry limit
+Message-ID: <ar4-wT278zc2Fmh8@gremlin>
+References: <CANOyQmFzsssM_BXHUDrV+UuVD5SZMBmSkg3UQnmw9Ns1PV7GCQ@mail.gmail.com>
+ <9a6a1c15-89aa-4504-8585-0f7861c3377b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <befc0a9b9998db0292c9998c639a3a9f@kernel.org>
-X-Stat-Signature: jkis713txunu9nwdkurcpy4xwq9pqq5g
+In-Reply-To: <9a6a1c15-89aa-4504-8585-0f7861c3377b@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 839D7180002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DF375100003
-X-HE-Tag: 1790852359-964430
-X-HE-Meta: U2FsdGVkX18jPsecaSp2HN7Yhoe/9giBP8pourLdXX9IpvvrDcisAmiDlDolnqk+/FEiLmPkQFvn6ttgbFBqTqw0XiPAnmbahti+8NqJqWhXFPHOpOjAGeSxuVgncSwwB1700AZLW81jgzCFwt5sIljeuQ+RKQM9B1xmTMDPnEgqKzRgpJEi+gufT70YcGYGsCIO38F115uUKb+ym0L11kkjmi0grmjBHGKpVCmiW+DueGgV+qOVA0EydJVqlxGvKhNWUXoLnYwertmPz9WMYwhwDvptF1f4zSYKfiQtuy38ye3tJMJKSpOJqB7WojyfNncJmMVl/fBcWHoQXmINYi+2CHADBSaUTxNmicArbSmpoF3VunGnLKdU8hsP8M1mEWOOFDkoiu+caIRRZii+9KWN1VWeetEoeItfapGCSC5IFd6IpT39ymO03nR6cwni4eA5PyPLqzNG6ZeaRWj9wKpi2GxC5Q9sflrsb7qwTSwr9iWKyMHv0y4ibTnP8GTRXUBREMNq1WmQ6hAD9A6e1MXVj+Wv9cm6e+snDhV13VOyMw7WIKY6NSsFusXG9pAeixpFaVwyR+ls+5MR4Qdf6kgIhqZW29u9b9RZKMq8vOEEZuLerxAgFRynag7DPaBFiWTSv4TCtwavllAyzgtBEqsx5Fy/Gnfc3GnnPVcSku+ALSQRu5azo77RHuNq1z5OAswPT/na9OcwSftmkqFVh+YvixR87Y6TF6cbWWrTlrCD6SQsNQofifbwbYqUukXH2PdQ+vuswTqtRxFtzz+Xk/FBWDjIFOGCbhECfKXPZWuRizKYt01s28KPPNWb4+OCNReUYa2AU7NFp0rwjCCOplen9WQZTEs6K7z6CnVlB0xIOWyVy285Xi80tPiMwB6wk5V+Jt5fwTTpYc7QZjCD9hyYFlGoTApmcOVQPBlk+GFdNYHfk0P7wbuwzcicSaQIpz0g54ZAMImFsE5MiW9
- 6bRJsH6C
- QLtc3c1QemxSn5Tl5YTR/BK3UKfPsZNDdcOPnA5YLO1loy85blRDz45jfDge/LtNLnfyMbuLmHMFrD3pOeCFQ1/+BVkOxO84uadnqcncjB3J6TVY7b7byeFeP1CELHfkNeEfAHDy/lcoLhOE2HvSUdb++mNBKnvb/UAStP7DutTPXgz9/cnRRBrPkcr8W863+Y74jVjpE8FDbLjZDoSBct+B3e1G5vYzWetv3xVCU7+87XyIWrClUoPlsxYMPHeUbgi5QdAOujSheVWD077XvIP7uaS3tc0JInB+5DBCe562oP46ge+L5X4eSYw==
+X-Stat-Signature: 3d5u9pgxwnoj9bte3ow6ckjfbpkim5fb
+X-HE-Tag: 1790852816-261637
+X-HE-Meta: U2FsdGVkX1/fG3xGRmkt9z6qtjBSinIh8qLdM79a2maNKhfq0xGR8a0NAusUj2qT75Pv+4qTIArYtxj/WMigk8O2VMZ5Gn6fv76+CVWwSsAjl8zviJrwZLB1xWFEbT1zQMGd11c3/p4NJxy9qZWuQHjC/j11OkWtqSpZ0APhABHQVx29t8h6n95IjA+MW+kWWIqYfUJlVbHZAbzAKTTi5z2V1HSpq7rCL2Njzg/AEJ3O9UjovjdqdVk4pqg6SjWCJIx3YdqLBvbb1TSuxIhPUUrHPIxkhH73cv/lENk8y4C3Ah8MhJSU5h0tbIy5ZARR4IIczwlOGcNQwzrKZwnpwO4tg8Tc6PR4H2gRJc9w4UvQDIJper67MBwfSHYte+qY4zz7g7ktmoH35DlamGVS62eKypIB3xxlFkir6LFL+tAYnvng5MGYsca07iDf/MuVUzWVsRcK0ZvH5sZMzlnaHj10h1GpPmhc41bT8rkkv8EgKUT9VeYYH+Vj8dBKTCOGjF+yTVZErPms4QdUz6Vf/3LYb8AyN9x+TDdZTHknJmGqeAd0zj9tPOXHbB3NPikkuU8TPgCyEp3aU5fvz4cKtfYNDSAny1SfLQsZqIfuoribRK/8zy+XYfMRW6XrAFmdlP7+1V/bwSEtaF7hTijZ0xPHSLiQINMIZqpapF8E3tx+g2w4VHJQ3DgRYayXKhqOoQGM1LG82P5qLkT5yLAH6Wesko+Ftjwzn75usGWGMneLCpwesPMniJRrRDye33xMLRJKNYdUZNa7t09IViQ5h40zSpR/mmCz88jpBDMl+lwCXLwuGu8dRHDaEU/rIwLFfXWeYReaFUJ/mQTxTuEj4DVIN/SU3jAyyfgWWKLHgPbaWSdhscAL3srawXqGCHp8XWJkJ6bb1B8lV3QBhEuNPcIp2rh7ctg8HloVWGdoMXvsTeJLHH8jm63AotiD+BaYv7M9WhglIIxvuTstep7
+ aKyNkLrf
+ LpKbtJyaNEchrx1CWyjPmiPRbVSanN9lUP8Yn+tPb3Pbk6BmdjSEL/nEjQ/CVAPgYx53BvzLfow781GRsLkIsK8kVpFQWnMMS05M/vyH+QWTvH3MhdoK4p2xreFkf4OxL2cUoJvq61ahOHQdVtoDADD8uxYUsZxN9WOHkrOW9LyrcC1V16vUTeqx6YcVF3YbG79iehmH05CGH8PkDZpkdsdaWnD7dwGGwk3E2XvfVUk/C/iQBQ/jJGNde/IAYYyx2wWl8/T7oxUZ7u92Y+jfbTO0TxQmlQmm9r1XZwmMiFQbQcRHucVWyhNSeK9AmlGGscPt4VPmCNuPHGihIIPVyQJTVb3am93/jMRC6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,32 +95,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 10:28:10AM -1000, Tejun Heo wrote:
-> Hello, Shakeel.
-> 
-> On Thu, Sep 24, 2026 at 11:47:04AM -0700, Shakeel Butt wrote:
-> > This series lets a kernel thread say which cgroup it is working for.
-> > That cgroup then sees the CPU time in its cpu.stat and the stalls in
-> > its memory.pressure, and the CPU time comes out of its cpu.max quota.
-> > The first user is the memcg reclaim that runs from high_work.
-> 
-> This doesn't translate to net rx, which is another major source of
-> displaced CPU usage. Switching membership on each packet isn't going to
-> work there. Attribution can't happen that way. We'd much rather count
-> per-cgroup received packets and prorate the CPU consumption. If at all
-> possible, I think it'd be better to adopt an approach which can cover
-> both use cases.
+On Thu, Oct 01, 2026 at 11:47:01AM +0200, David Hildenbrand (Arm) wrote:
+> On 10/1/26 08:00, Aveline Noir wrote:
+> > mrelease_test doubles the child allocation when process_mrelease()
+> > returns ESRCH.
+> >
+> > When size is already MAX_SIZE_MB, the current <= check still allows
+> > another retry, causing the allocation to grow from 1024 MB to 2048 MB.
+> >
+> > Use < instead of <= so the largest allocation attempted remains
+> > MAX_SIZE_MB.
+> >
+> > LLM used in discovering bug. Changes were made and reviewed manually.
+> >
+> > Fixes: 33776141b812 ("selftests: vm: add process_mrelease tests")
+> > Assisted-by: LLM
+> > Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+> > ---
+> >  tools/testing/selftests/mm/mrelease_test.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/tools/testing/selftests/mm/mrelease_test.c
+> > b/tools/testing/selftests/mm/mrelease_test.c
+> > index 64e8d00ae944..a5124c9e9f43 100644
+> > --- a/tools/testing/selftests/mm/mrelease_test.c
+> > +++ b/tools/testing/selftests/mm/mrelease_test.c
+> > @@ -157,7 +157,7 @@ int main(void)
+> >  		 * Retry until we succeed or reach MAX_SIZE_MB.
+> >  		 */
+> >  		if (errno == ESRCH) {
+> > -			retry = (size <= MAX_SIZE_MB);
+> > +			retry = (size < MAX_SIZE_MB);
+> >  		} else {
+> >  			waitpid(pid, NULL, 0);
+> >  			ksft_exit_fail_msg("process_mrelease: %s\n", strerror(errno));
+>
+> Makes sense
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Ideally RX would be split for each network queue, rather than lumped
-into the one giant softirq that nobody owns.
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-I know PREEMPT_RT has been wanting something like that for ages. Not all
-queues are created equal. Some might want RT priority while others
-should definitely not.
+>
+> --
+> Cheers,
+>
+> David
 
-Furthermore, without ingress throttling, your RX back charge could
-completely deplete the actual cgroup time quota.
-
-Anyway, if you get per queue RX processing threads, then you can move
-them into cgroups where so desired.
+--
+Cheers, Lorenzo
 
