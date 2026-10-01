@@ -4,124 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C445CA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 15:25:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CE64CA5FCB
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 15:34:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12DCD6B008A; Thu,  1 Oct 2026 11:25:34 -0400 (EDT)
+	id 3D5046B0088; Thu,  1 Oct 2026 11:34:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DE436B0093; Thu,  1 Oct 2026 11:25:34 -0400 (EDT)
+	id 3ACB56B008A; Thu,  1 Oct 2026 11:34:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0F9B6B0095; Thu,  1 Oct 2026 11:25:33 -0400 (EDT)
+	id 2C3036B008C; Thu,  1 Oct 2026 11:34:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C8E976B008A
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:25:33 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 64AB3A6DEE
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:25:33 +0000 (UTC)
-X-FDA: 85274431746.06.E6ECE2D
-Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 91143140010
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:25:31 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LKvzgNHI;
-	spf=pass (imf26.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 74.125.228.41 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 02AC76B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:34:01 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 905BC140466
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:34:01 +0000 (UTC)
+X-FDA: 85274453082.16.31585A4
+Received: from mail-dl2-f12.google.com (mail-dl2-f12.google.com [74.125.229.140])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C00E8C0002
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:33:59 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lHkgwCW7;
+	spf=pass (imf10.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.229.140 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790868331;
+	s=arc-20220608; t=1790868839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8ow6P9ENaq/P6weMozIYjsY54hMuiHWrHxdkamgEMjQ=;
-	b=BRGnwe+ic/7aubaLUmLH/3WegBaqphV9MCDLkzNIloIlTBAd0FL3VU/ZBYt/El+j5kGXRl
-	S7L6iRlfkIJui8o3pLTXPzkMEkndsS8Y/5UOnhWB+HKg0TpbXHniVCbwDC0k1u0RqQHBqy
-	JkgoOC8rtJA5/KYZDKj+Y1qeXDA2zUY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=7R/8/9AITUujGUpkgkK/lwuX+Zqo9Tj1z8OfLHWk1D8=;
+	b=Pgl/BiGQ3zfwsONXkBCs80TKWl/wYpYQ3ntpd4DdVM0oRa2XoCyFyvN3rribOXXbGujbvA
+	eh23XQ3dfgMXTtLvBjhE09Gc0kRphR7eEKM9xZeuPB384865mWHTIgIsDAmeJ0sHVtgyVe
+	/tGcq17xWaR3i/Z2YO2ASHA9WNcAI68=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790868331;
-	b=sBDQDarKj97HJ4AY5mwEjy9SiWdWzZGES7FXhSTo+jXVoPbWUfxDVLdyWzOaybc5crsc1x
-	bvT4z+RLK+dB94wamgyQ2snfXrGHIwWL67ZT3zfxmsRX5vH8Wa+Xlpr/zjy2ObZlYuE8ct
-	j2O0zIx9Luhu8N05jfjKwc1sKd8llgs=
+	t=1790868839;
+	b=vK93uvQSzPmVo7NYhB2DfZ/Lcz5Pf2vzqQu7EhVa8Plyekwz+2lgPhutI0ka356IBlo/Zl
+	uAx3xGdXb8f/qXibCTF9aWpwoAd8U0/LlMO8WiRpY2KNlqFYV2vZmL/jra7ngG/Y9571Sw
+	sBTdvAVp1kV3yBWEGa38wbpoFYIdTxQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LKvzgNHI;
-	spf=pass (imf26.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 74.125.228.41 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lHkgwCW7;
+	spf=pass (imf10.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.229.140 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-8631d0023daso3341195b3a.2
-        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 08:25:31 -0700 (PDT)
+Received: by mail-dl2-f12.google.com with SMTP id a92af1059eb24-142dd025d06so4901212c88.1
+        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 08:33:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790868330; x=1791473130; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8ow6P9ENaq/P6weMozIYjsY54hMuiHWrHxdkamgEMjQ=;
-        b=LKvzgNHI4fCdcMlXZ7hFmoVKa729IB7PfNmiWDxeN+Ii8CSUkMxnPQSaxptEXa76W1
-         8ME6fWnFRtPCSKcbH17wOBCJ12nalb7HOhNwsk9axI/zrciFaqB4u1csIrQOJ7YuUiEf
-         ha6cPKohQ9ODiRYLBU+T0mLNUd2xm9rkV19xuEya0R/QUSTq0Ko9AaF+asrkUyO7cT30
-         J7fq3w3REqztXI+BQg+izeR4w4W/mOnGjxIKCDlph7SUf6PErDhSAoAh4HvSVlHAutlQ
-         WB8pHldQNgf2037SuzD6JNA8uf31RzmQAo7dEH/2OI0Fij2rcAsiQX66L56EAuc1rXf7
-         8Uew==
+        d=gmail.com; s=20251104; t=1790868838; x=1791473638; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=7R/8/9AITUujGUpkgkK/lwuX+Zqo9Tj1z8OfLHWk1D8=;
+        b=lHkgwCW7BnAxyAdQKNMsxmBka38M674BZC/htR4Ac4GxvCupCx3OPMrmc6+i/ht5kg
+         5SCrV8oOVyDMDzQoTGI8HPnZUA4PcaAmbynZIlrDNDQh1m1h9KddR4cJogLc0NsPLH/g
+         nqYnWXi3gn8rrMP20jVTn7uo7IDT93JRgf8pVumvKWGfL3+SRGr+SXCu3rTunTWe9cZa
+         Pl0Y0xIDB4CRkSSTnrp7secf5viq6V+i44MoluMqVmSYtgBRYf7XyND8XzFnFPlFplF2
+         Vgenkj3H6C/FY3Stdwvtj6x1tHwpB2PjHWrgKqIRBNKCmeYO/mobN/A+0wxtXfYY9tE0
+         tb/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790868330; x=1791473130;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8ow6P9ENaq/P6weMozIYjsY54hMuiHWrHxdkamgEMjQ=;
-        b=QgJfeHPfwBmt3DOWi0AA0JTsTm3cHs0F1Da9Bkxdx75hDkDvxjgaPUCbI8UqFjJBzs
-         wHcQe4VBDP8l3sWOt+UemHCm3R+GhuOQ3652KOp3vGq/e+SjXaDNoAKNC84h+YX8OYLv
-         53oRZpTUxpPg5nJ11drPLMUrUk0GLRZpoOAXgevslI/C8apYxKgIKLzKnXAL+8AVNE0f
-         KLUsMLIlRc+8Wg51IzHYQSd4HG5lp1r8vu2i8ujxiEk/NC3t3nv2bgebCaEJgR1fOkrI
-         g/WKHAqtFdB3vZGM0s2mMd2xXySSZGLGwsOZhAoF9y4ffY2+ur+vxkm46nhc4CHSSMkP
-         MxIA==
-X-Forwarded-Encrypted: i=1; AKwUvByQczf1OAnARsYQZqBOZoF/T2Zz/FbP3BYqlGca0GOtilbs3ChYumIDQQ405hTkhTxV2qviSuj8jQ==@kvack.org
-X-Gm-Message-State: AFuF++nLy/0jc1yMVOsGCv34kOeQz+RwnrTX1qGQo57HpmCfSemhc+C7
-	rFEySNFHZ2SpDJ6Z8OuWdYxo9XLaqSVYNVorZRwAzQP/+8ZeVaAUghZl
-X-Gm-Gg: AYBFou1B/AgCdX+zoFA8/5xJzxJ/ZatY5cOQps4n+HpfmDuuJeSuLswhPM5fsrvDDuM
-	ZHC8IWjx/6Y/Sq+NAuqg/3cX9TqnC18/+4eduwuMKnYVcMtbYBdSittuNFfToYH+bXYomf8vapW
-	3i8Kdt94X+gyPsJ5UGBaK3l8drtTmaLhxNkMcUmWHGbUdi+vAeKUjOA6z/kd5TXh3S9zcOVO5qn
-	f4dy4iLr8st7M8DP5jlVPH3v/Zr3nSIjKnhIK8nsJo1JNpxpaJGPTY+CbsWGmIqEy9oyWXqEbBQ
-	ekfRYptdME0bthD28gSXvCXlaxtHVSskdvj35SeGScpW1eN/WAIqv9wR0la28Y3x05XLmzeDdp2
-	I98oiHIXXhiHZJ6UDICUf1mtjI9nWvLvYUZR2uO493sQbQxnrPsdiCfhDP4j1UJQCQlE5r1FegW
-	gWBBuS/cliBCz4Rfcy4k6L6WgTCMAa/MyQ2Z3PfOhPHSgSUt1RuVRYUItCKwaZfHPea9JUT0GyG
-	+b1XZvxlvNt
-X-Received: by 2002:a05:6a00:21cb:b0:886:458a:42e9 with SMTP id d2e1a72fcca58-8874c9d1ce6mr4160705b3a.49.1790868328827;
-        Thu, 01 Oct 2026 08:25:28 -0700 (PDT)
-Received: from thangnn-ASUS.. ([2a09:bac5:d457:2e1e::498:2b])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-88815996973sm1320468b3a.6.2026.10.01.08.25.25
+        d=1e100.net; s=20260707; t=1790868838; x=1791473638;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=7R/8/9AITUujGUpkgkK/lwuX+Zqo9Tj1z8OfLHWk1D8=;
+        b=MnGh9J1WrvMd9EniOX4t1BV9e3Lh1+OYPivFMhC1HzEIUcKnFzFuOzcTL5tAOM5IMP
+         fymCIp0ck28ZCZgVv6D3iWUjw4XKEkzJBxYq9Pa+3p8TrUqpelnUpIC1VwdZsmsZEJD2
+         mxHFRA18uIBnxWXivyeArWFYfcfiqBUVGMYuUr8YTPekF2+oPvjxigJD+7iyrufuGa3i
+         4BnO+X9+0fGvM4+l9jr6YeAPzyWEbCSwrs5VpCj8YtaTUo07LNz6no2PuXedMNnzzrKg
+         r/ZsMMM0tXYmXcvFiqRs5urjqDMqh1AK1qPiZiaI1f5rkM5ioUeUW1lVARsEGQm9Q8cb
+         caVw==
+X-Gm-Message-State: AFuF++lplLHWc60fJBWvKyfjTVRj+mFwmkLqOL2SuLlQX2WYAA8YkGgI
+	CAI02ABbYWgJFzotyzR+d45my3t5NUyGHHQr1ti8T9PFN3whPlcDz3er
+X-Gm-Gg: AYBFou1v2hTwsOPfjWWgBnwVRDc8ThKA0MAKfxQFZ15JpKPm2bffuZicBKA53No1Lyh
+	j/WZF9EFxGKfu33jq0PxPDCN1Cf2o1bXFexdwCg4UABvQ8M1Pgd/T1JFcKATyK9XcpmlKqaYx3m
+	y9zLAyXzUIAwj7kuDKXaY8PMl/T1JQvGrrmXDKoYuPnIaEslUS4F50DhV4Vk1lqN1lFphTERYUn
+	4DEa3fjrnBfJI2HQm8BlkQ8BTtG7ab+vA1QGsAirURGZi+uzw/CaG/D33SO1UjdG1gKVvGU5+r5
+	ZIEbTKn2/JtMwNS1YgLJ//dOFKC13tITVwWesUQiZJHymAPuxcZ7jPEDj4VwOTwfNMGJu063EuK
+	L49V5r7Mdk/mJqE4MHMIWXe9Mh8vpTQB5wF3UQyrvmKCoIOf+9Sfxm/L0bMt+WyPBugAWkehVMe
+	98KHlKjPmh6oBQzJsU335QhSK8rl71rzAiPf225mfiuWDrypaigNd9+R1vqN1OtJKkXQ==
+X-Received: by 2002:a05:7022:eb57:10b0:143:50a0:56be with SMTP id a92af1059eb24-14d31c6d41fmr5203438c88.14.1790868838309;
+        Thu, 01 Oct 2026 08:33:58 -0700 (PDT)
+Received: from [127.0.1.1] ([23.254.208.9])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14f266d1156sm146683c88.6.2026.10.01.08.33.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 08:25:28 -0700 (PDT)
-From: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	peterx@redhat.com,
-	dave.hansen@linux.intel.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+49b1021becba70c1f3f6@syzkaller.appspotmail.com
-Subject: [PATCH] mm: don't ioremap COWed anon pages in generic_access_phys()
-Date: Thu,  1 Oct 2026 22:25:24 +0700
-Message-ID: <20261001152524.171115-1-ngocthang2710.1999@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <699ae98c.050a0220.340abe.0d31.GAE@google.com>
-References: <699ae98c.050a0220.340abe.0d31.GAE@google.com>
+        Thu, 01 Oct 2026 08:33:57 -0700 (PDT)
+From: Qiliang Yuan <odys.yuan@gmail.com>
+Subject: [PATCH 0/2] mm/compaction: stop repeating failed async compaction
+ on every THP fault
+Date: Thu, 01 Oct 2026 23:33:47 +0800
+Message-Id: <20261001-bug-mm-thp-async-compact-defer-v1-0-0174c7923430@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFt9vmoC/x3NSQqEMBBA0atIrS3IgNL0VcRFhorWIjEkKjbi3
+ Tu4fJv/b6hUmCp8uxsKnVx5Sw2y78CtJi2E7JtBCTVKISTaY8EYcV8zmvpLDt0Ws3E7egpU0H6
+ 0HqQNVg0eWiQXCny9g2l+nj92WGescAAAAA==
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
+X-Mailer: b4 0.13.0
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 91143140010
-X-Stat-Signature: dsaycsgu81pzhedjymxaor1r7akbesbk
-X-HE-Tag: 1790868331-112404
-X-HE-Meta: U2FsdGVkX18M13ffnUtbg6Cv7T8TZYeamNVyhOK4/ZF7e1heAdLRj1CpmebxPVi/MS2H2goL7f2TGdnB/uXBgJjZNsJIy5RUBA5euPSDt1huu2yxfjYETBdFkKGXZZvTcx1Tm+gZzCN4zQIMJ26lrttJW/fb9l6OTV2fc5x0f7dRTje8fAGTSpFni3ZwJ60RNROkKraBtT/YgnkJYph3ftsy9rwcJo7kOOXGbLrgrae1CXPHC1U3YwRVckkrnRMYLV4bnaPI+iwWWhTG5VQRHQIzJhRP1iTuBrKBBwJ5q/31RG01B69qhkEZgALdWlvuKWzTUr9vdh0Y0Qkzk6yptsjo0UmCXZubglsVwwcdorSF3MTFvwSXuNfpe6l+DOXaXzn4LUjVdQ05rM7r9ZMhWrmOpBv3edBJvSgBoW2DFEYug7x74pejy7bM46CsFrMDOwlJgt7QuiBdo+VVd7vkHgmhVMVb2CF8qWv6/BgUK7csMdI3wdkbvDUiuFwTheRMxSx/ueqnIZ+bPTppi3AOjXfxHHEQ4NAeffJK1hzVr2kM7AKZhd6hBM9rEQ4ak5yq/6wWL2EKfNlK4BX7cyRy6Aw+0+BZi/uPuLfz7G0oASi6gBIiBwv2gUt32/4l982bWbTvAd/K9PBm9RzyU3SMt7kZKD182Jmy80hbLXTItVDAPyZWkwRLp3COU0Z3lOai/pujX2lQGFPqFuUHpCkfwEyd/ndlhcYLrXzh9xzlNVyOyIEuu+4F7V+10J/vXethTzCNh3zi0DaU47hn9JzXy25OXhX+45utmXEbwmHYufMCU1S/80dZINmPSV91us/19P0165t6/cxA0xTXVJE6pvKgrAnyqn3+FAHxuAGfgORuqMiKqdBr5v7tYdQ3GcQiwNiVWlG7GVOoSIWgYAQRFeZr9hwtvRfEqs4cNiuClZTPPPxZvD2NR9U3iAYWmtQ7V+aSqyNIPow4EWEY7sb
- SH3nS57R
- RuCyVXpkOrjVsttQ0d79lvOnFQ3CtwNemtn+1tfP2LwFh6S4i4z2f4lxJ2WcWMYHqHfRp0oNt95fBpk3RU5PNGzUiEtmmVQ5XFzg8/lXSaSPeT3icAFlEEAdG2zky16ASfdil6neUMwm78bfPiOyHWxVcodQ16SlM7woGKd3AiwvzbPoRif+xxbXWyAD+SvD4YOdqcmzkzDmePiPVhYmYpvcVbv1iszUUlpH4BM4BiNp7lBEC1+90O0bovr8yCoN3lYBXrHFS8LwOxURhalOjmzDuZZP0SekAoHwoOnzEiDeNpE6Pi+vLcJWjMNi/e69b5BweTkSKkzyTScvNRlmNfVZRutGIEohEJ7HsN2GAzzcqiv7xxshf3kfB3tviDtJJjgaqjTjGfx9uzumt2yhmddY+luEjRenGyFm4RtrZPWM80RlrFti4CJZJBpS1hHVnPY1lrZ5a6+n4z55zr5xhdsQM0F169471VGNqMKfsT/2RuCOE9/QChxtUC8PjKbxxu3NovIbtxzN8SzN7V+y6mn5JW3ktzpyNDWMY20aVQMrM0YpdB5ToVJSkcLut2yfE8WmsC3WsENNGHo2HqsdrMwR6QZJw5KNzYrHBn6xjTJV/a3PJAlvtfuGo5sLvSwrW5JkJYzs9wWZYLD8nAkjiVNTrxsQ1yBqyzZ8eNLk850+GSFEg4pONpoAdhYI4y2s9uakLLFv4ffr+08G4zYawhQdbAw==
+X-Rspamd-Queue-Id: C00E8C0002
+X-Stat-Signature: hezteckgw8xndwm4qep88sq95pc16ke5
+X-HE-Tag: 1790868839-44740
+X-HE-Meta: U2FsdGVkX1/PdsZ8md/1eX/2/QH+ZVlseV4r+Jnt9uT9DYyCc7XKf/O4KitVB96RuyEX070n0T2gXlvPyhTPnUu9KQQoDeyQd8ZUISBH4GAF039CIu9AKcxORJz/0rp82vWFXhIlVekm/SiBKouEGfG5gKT2TQVIVYEc9Y69RhQIRdr849A9AcPZmRxCoI2P0hVdotqLdYymESANlbB1DRQoOiTntOtvdmgp7w5mcoceEBDw2nt+7mSewiU6IexnlXsMrdViHM5g6TrOZOdbGzSwVI92ftE9/MtvPyiCed+AIV1HZ0GjyVEwT0AX21z0wI7VQXHjpOlABA5t7Nzxx+IyykoY9oDpVKK9daM+dFYAvbI6uQNJPU0dAOS0a7LdoC2EASXarpB00NDI2qQczdRN8ZeCPTd5dJ0apk1GjD9BR1plswE6tM9MNKaxWxAC2cSqq2wfu/eqSsF9nyjCzmpEoIuVwzBcC6QvOdhvHHEe9Vmf1N9vK67YDDsZhwvJa6DXSgoxlwATmo4JQ0VHQh+jPgJfFrQT8h4skW8H3EfVyihaFFAXtwS5fmjtkbYIqk75aDO0Y/RZ0RhuO62H4DULOQmjJjm99gW76+JF6d+N4VjH6SaJEDoxdGZW743pJiT8MkTRJCcJzXYp8e1Rr1C9TD6asH7VPBv1+enL6/MdYPqgfa60ljahbxIKPtnm43PIyXw7Tbaeg9W8K/NDjXMDvKLXwtFnisnRR5aKm6nqb7OeCQimWooKPeBGmCD96dUHefcM8bTRt0kKL8XoDw9kC+Ba7PBHwFXzigCuhNlIlY95XSV+fSCi7oGEBd2kK4lfhTC8DSn6HPjv7CVyYIrD7Lm4dPgrKu2+k0EfeJ9JDcneHodxo6+HDtfCZpFieHi690HgbgJu6cXBMQum/j5XjkvIB9d5cBCngDX2P1O2q6+eT3wGEI+5Jrx1o+TZj6oxLqszn+vtHOzRZbG
+ aVV3Qmxe
+ y3kbyqAMtIeXYI512TwrLMBaijNE5eGR3HZxcXzwq2CdvC1LZOn2cOmYkoTlhkU2oAPX/a348scAFKtyeAEdEQWJX/1ysg7N/AOLWyJdqzalFv2l/zsx0GTeFYBHnZGu/b++U+d4xbQQexLGGgqAJA0dtIUJoShgZQuPo++G4aN7i8JuyOWqGHj2q+h7X60KJBMoyxfzV/JGcIhlro/1AfVQcbY6RrlY9dmx7RDWZjQB1ag+B49SbwKBLanRhcKX3ulFujVUpN+ikCfLGf9ynzPoxg4GC4gOQhcHcylsW+gNUFt9O+BfkiIPjs9tB9pNcl6VAasiMg0mfeZQTOtx1uXOh0brIXxFqa9arqK1kO3GmvBziMs9FAjpFeX0HHJHumBQkfcNxcXyJzkNOpdnz7W7Q+8/n0S0SHfevDdioUHa6CamsnTbBTCTBiq3ITgf4LuyWmrmM3UjBHYbF62x7TgWSpdt0cg3llDoHKy9LJ6iy/3vuZ1PwiPfb0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,94 +132,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A MAP_PRIVATE mapping of iomem (e.g. a PCI sysfs resourceN file) is a
-COW pfnmap: a write fault replaces the pfn with an anonymous page, which
-remap_pfn_range() allows by keeping vm_pgoff equal to the base pfn.
+A THP fault on a MADV_HUGEPAGE VMA tries the local node first with a
+single round of async direct compaction. A failed async run is never
+deferred, so when the local node is fragmented by memory that can't be
+migrated, such as long-term RDMA pins, every 2M fault scans the zone
+again before falling back to another node.
 
-generic_access_phys() does not tell those COWed pages apart from the
-original pfns and ioremaps whatever the PTE points to. Reading such an
-address via /proc/pid/mem or ptrace then ioremaps RAM:
+Patch 1 splits the deferral state by migration mode. Patch 2 defers
+async compaction on its own state after it fails, leaving sync
+compaction as it is.
 
-  ioremap on RAM at 0x0000000045623000 - 0x0000000045623fff
-  WARNING: arch/x86/mm/ioremap.c:216 at __ioremap_caller.isra.0+0x4c2/0x5f0
-  Call Trace:
-   generic_access_phys+0x130/0x4d0 mm/memory.c:7178
-   kernfs_vma_access+0x1ce/0x280 fs/kernfs/file.c:437
-   __access_remote_vm+0x58f/0x890 mm/memory.c:7256
-   mem_rw+0x2a1/0x670 fs/proc/base.c:912
+Populating a 4 GiB MADV_HUGEPAGE buffer on a node fragmented by pinned
+memory, direct compactions drop from 735 to 15 and the time spent in
+compaction from 122.7 ms to 3.6 ms. Fewer of the THPs are allocated on
+the local node, 1126 instead of 1313; the rest come from the other
+node. Details and the movable-memory case are in patch 2.
 
-Reject COWed pages using the same linearity rule vm_normal_page() uses.
-All generic_access_phys() users set up the mapping with a full-vma
-(io_)remap_pfn_range(), so the rule holds for them. The access already
-fails on x86 and arm64, whose ioremap refuses RAM; elsewhere it no longer
-reads the anon page through a device-memory alias.
-
-Fixes: 28b2ee20c7cb ("access_process_vm device memory infrastructure")
-Reported-by: syzbot+49b1021becba70c1f3f6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=49b1021becba70c1f3f6
-Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
 ---
-This answers Dave's question on the syzbot thread of how a PCI BAR can
-point at RAM: it doesn't. The repro mmap()s resource1 MAP_PRIVATE with
-PROT_WRITE at address 0, then (via syz_ublk_add_dev() with NULL args)
-writes to address 0. That write COWs the BAR page into an anonymous
-page, and the later /proc/self/mem read hands its pfn to ioremap.
+Qiliang Yuan (2):
+      mm/compaction: keep compaction deferral state per migration mode
+      mm/compaction: defer failed async direct compaction
 
-Forbidding MAP_PRIVATE on BARs would not cover /dev/mem, uio, cdx or
-dfl-afu, which share this ->access hook, and private pfnmap COW is
-deliberately supported (see get_remap_pgoff()).
+ include/linux/mmzone.h            |  7 ++--
+ include/trace/events/compaction.h | 27 ++++++++------
+ mm/compaction.c                   | 77 ++++++++++++++++++++++-----------------
+ 3 files changed, 63 insertions(+), 48 deletions(-)
+---
+base-commit: 551c722f40809618230001baccf219193e22fc5a
+change-id: 20261001-bug-mm-thp-async-compact-defer-b83351bfb25d
 
-Tested in QEMU (q35, virtio-net at 00:03.0) with a small program that
-maps resource1 shared and private, COWs the private page and reads both
-via pread(/proc/self/mem):
-
-                  before              after
-  shared          4, 0xfee01000       4, 0xfee01000
-  private         4, 0xfee01000       4, 0xfee01000
-  private-cowed   -1 EIO + WARN       -1 EIO, no WARN
-
-(pread() sees EIO either way; internally generic_access_phys() went from
-ioremap WARN + -ENOMEM to -EINVAL.)
-
-plus 4 x 500 parallel runs on the patched kernel, no warnings.
-
-Note: the syzbot report also groups an unrelated signature under the
-same title (pcibios_device_add() -> memremap() of setup_data on PCI
-rescan); this patch does not address that one.
-
- mm/memory.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index 8b0c2c735d3d..8551b144028d 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -7141,6 +7141,14 @@ void follow_pfnmap_end(struct follow_pfnmap_args *args)
- EXPORT_SYMBOL_GPL(follow_pfnmap_end);
- 
- #ifdef CONFIG_HAVE_IOREMAP_PROT
-+/* A write fault on a private pfnmap replaces the pfn with an anon page. */
-+static bool pfnmap_pfn_is_cowed(struct vm_area_struct *vma, unsigned long addr,
-+				unsigned long pfn)
-+{
-+	return (vma->vm_flags & VM_PFNMAP) && vma_is_cow_mapping(vma) &&
-+	       pfn != linear_page_index(vma, addr);
-+}
-+
- /**
-  * generic_access_phys - generic implementation for iomem mmap access
-  * @vma: the vma to access
-@@ -7175,6 +7183,9 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
- 	if ((write & FOLL_WRITE) && !writable)
- 		return -EINVAL;
- 
-+	if (pfnmap_pfn_is_cowed(vma, addr, phys_addr >> PAGE_SHIFT))
-+		return -EINVAL;
-+
- 	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), prot);
- 	if (!maddr)
- 		return -ENOMEM;
+Best regards,
 -- 
-2.43.0
+Qiliang Yuan <odys.yuan@gmail.com>
 
 
