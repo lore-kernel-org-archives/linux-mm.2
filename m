@@ -4,76 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDFF9CA5FD4
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 13:18:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CBE6CA5FCB
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 13:19:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17ABB6B0093; Thu,  1 Oct 2026 09:18:48 -0400 (EDT)
+	id 4D8AC6B0099; Thu,  1 Oct 2026 09:19:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12C126B0095; Thu,  1 Oct 2026 09:18:48 -0400 (EDT)
+	id 4AF726B009B; Thu,  1 Oct 2026 09:19:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0EE36B0096; Thu,  1 Oct 2026 09:18:47 -0400 (EDT)
+	id 3C7EE6B009D; Thu,  1 Oct 2026 09:19:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C9C016B0093
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:18:47 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 542FE1C281F
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:18:47 +0000 (UTC)
-X-FDA: 85274112294.13.19D3C5B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AD8424000D
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:18:45 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NYZ5V1Ya;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 151966B0099
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:19:48 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9E4BB80284
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:19:47 +0000 (UTC)
+X-FDA: 85274114814.08.7730E6A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B6A9F40007
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:19:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/iq83bw";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790860725;
+	s=arc-20220608; t=1790860785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y5FsYadTtnevApWrGozFMTCLK+XsLP/b9oyt3tDNxBs=;
-	b=enqFepUf8I+5B/0SZPhUsb/Zm0Co7teHpQndqz3A2J40Vq1fBIiRKtVs78+irD85g+wLd7
-	304LSlrqr1oPDRXKj73vmQy2UscXqo5l/HVtolfQf5R5P8cygNgwvzKGPty20hwmlXW7E5
-	3f3CQXipmbjFfool1BUCNaX92mKoGpU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790860725;
-	b=5OHBG+VxzqmZipnmG3lsPWz0vg9ADf1PuYZ7of/iOyfYS8+7dHfH9Ya9NlCnjwEFcdd8So
-	gR6jwXOo+dEooETdDrDnngTO6mkYjNoAisa95j0HO76KD1HMyKP/udfC3HqPPR++waEa0g
-	lK7u2t1w6v1TflanHeY2xg9nplUR0lQ=
+	bh=WnWeqdfJvPaLO0zxZ1rgF6uSlPv8HCyAEObGRlF1V7g=;
+	b=2+eJkgGilHv2xEgf/E26li6XRxfYolH8KQzMc4F1Bh5y+Oq+bK6hAyZt8h0iSvIieP/rRt
+	AR1ht72aeYpif+K1ZoJKHsB+rFTP+MoOSinIyDwZhwOFAWw+iJrsvgS5a1uD4iViMWw8tb
+	9qsMxwtM0j3+bRgQa4dSmBcoJdA1OyE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NYZ5V1Ya;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/iq83bw";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790860785;
+	b=k1e1rIkqtVJoyDcFJ3s86o5ljwr/ffiZow1cVtrHfCd1cGeIh+u7ob450BITyftn7xdFUQ
+	VMkYxOWPMxUwzwX2SClvFDyo4Vyrxlqk/KrUYtZH7whlo/7XF/CEW+rOErv8naRaCguked
+	grKt/NZdDdFrda98T1jUJuodKu3rXp0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3F0F260A5F;
-	Thu,  1 Oct 2026 13:18:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 711FC1F00899;
-	Thu,  1 Oct 2026 13:18:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BCA3D43A7C;
+	Thu,  1 Oct 2026 13:19:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3AE1F000FF;
+	Thu,  1 Oct 2026 13:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790860725;
-	bh=y5FsYadTtnevApWrGozFMTCLK+XsLP/b9oyt3tDNxBs=;
+	s=k20260515; t=1790860784;
+	bh=WnWeqdfJvPaLO0zxZ1rgF6uSlPv8HCyAEObGRlF1V7g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NYZ5V1YapvkYfNNJp4VxDViXGOkXhBFNt8QYzzRT1T5mqGlsusa6OgFa8yKSE8Ekz
-	 3pTypRgwhn57ayHVfRoRP3LRNYDJKio0rATAiAaoCUM8qDRCw7ykuW381/ZH3JrZ09
-	 zgWdlkJaCedGI3xW/klWef7r1dI2LurUhyjZJRUm0P4hFkVvNYfvZcqMp1BE4RNPaa
-	 YKiKkwHj2cfy0IRz2JxeB/WvZBJtUtgA1DhhwDmWEc0Jjwu59X5sFYfloyCSKG4d0N
-	 NO65C2HuYKIl+zzE4Av0unlFf/buMEnJ5rnSNZ3O/pBaG3O8afWYJGa7eeKC0gv6Qd
-	 B2AyeNUlAyBEA==
-Message-ID: <3ff84555-4000-4fd6-afe9-533e128064ed@kernel.org>
-Date: Thu, 1 Oct 2026 15:18:12 +0200
+	b=H/iq83bwefWg6YEAvBt3p5OoC8YuQlDellwlZVxRxocA19xDtjYbDftQq2+9afzpU
+	 2dSmkLHYtQEL6BxMmml2z7htQ6WXLMvuY3q9G7vHRnS0bxGs+LNr1DruQaiEGWKdQO
+	 3iJx0A/h1lnwTr+963Bm6se+E233H5pmut38TKIZ+cbCKIlBZCpJRe+DwpiccYJ1/g
+	 4lwpQsj4c3QQ8MtafACUqrRtwSZpSgehqu68vWU1U4JmGT0G3AkHJrrEHJSxxuPZgU
+	 RQsYMoxstF5ODCSgQs6lEbB5QFfB0S/h6t2ZDZD1U6JKsERLxDe/a8/YQW0rZKxpOd
+	 RKYk0kP56XC+w==
+Message-ID: <32ce43e7-ca22-4275-ac2d-b0fdd942c7a9@kernel.org>
+Date: Thu, 1 Oct 2026 15:19:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/hugetlb_cgroup: add trailing #endif comment for
- include guard
-To: Enze Li <lienze@kylinos.cn>, muchun.song@linux.dev, osalvador@suse.de
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261001123747.634845-1-lienze@kylinos.cn>
- <20261001123747.634845-2-lienze@kylinos.cn>
+Subject: Re: [PATCH RESEND 6/9] selftests/mm: mremap_test: replace random data
+ with deterministic pattern
+To: Sarthak Sharma <sarthak.sharma@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ John Hubbard <jhubbard@nvidia.com>, Kalesh Singh <kaleshsingh@google.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, Park Tae-sun
+ <ts930@dgu.ac.kr>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260924050009.19974-1-sarthak.sharma@arm.com>
+ <20260924050009.19974-7-sarthak.sharma@arm.com>
+ <b45813af-df08-4270-93ac-d99ee42830ec@kernel.org>
+ <54f1d9b8-948a-482d-8fa5-694fd937c9e8@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261001123747.634845-2-lienze@kylinos.cn>
+In-Reply-To: <54f1d9b8-948a-482d-8fa5-694fd937c9e8@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B6A9F40007
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AD8424000D
-X-Stat-Signature: jr7bidkpijbdnxd7qkddw131s9or66ed
-X-HE-Tag: 1790860725-51455
-X-HE-Meta: U2FsdGVkX1+Iol9A07SvGdEPKMiri6Z3exPeG21ITiQQmh5Jn/dd1nF2dgJvZdSLcd4YlSXndT9FU/8JYS4lqGiHp55Wfj97Sn5VW4WcfN5fp6xRb/dPgcSsmY/6D/N70O5my+l/LHhUAxq4KUDrwyDt9eYLi5cvX4q80morCun90kzMMmY4WgYHB1tCmS0R1/qHFQQOc1ZafmClP+mDNnSyG7cfPvqIC0wczoGfdbgx4DSCDvKXe9PspzNj7jvWWW2vJkUb2EGiDAgsOfw9//7BH4cDS5RFyGjr3p8b3EpIxIZA9oXCmMZ3nw2NMjbFXWWJrc0YWm5sAJgk8no+OAq2bcqmwpnbZ2m8mSnxdOULexXApZqfVbvB4woNYXo4doVIaJ1QH8OfGL08AClzP5dLd/tH23kg5a0VepPHWIvLSx2tZBqa8Rs6MfzOhy+BYP+GRdciU192WVtyRIJ34Fso08l+owbTtD9yBpPfJzpIsnVBQS8uBDvG0SjYEkh+atRSPQJ8V1vrbZh5ussbcBcS6SjTYoDxLZ/QYpyVaXakkmDmHKV8U/JilnkL9JRN1ke07FSXLrt5VMQVgilmN9xekaoXGAEDmVw/oPXovc5ojtf7Y6jU88dMvZwyR/ZZR+NPblpZ4BJ8uk4ktyuwtsqigwu+eFnYAFTAbUae+J7BS+/gGDEXTn6fGvvaUABx8oKIctfVwqI6WJvdW9iGmIBNxggBV0KNPk7NLLAg4g9nBoamub+MMTGzWaCjFtgxuKzKD2/Gsxpc65Y2ClVK0W849JGwN/XltSgfqXxu14Ih3JF9QvM3m5+o8Zo2WceJJy8ksauSLJqmisCixvGXqEm9rVVUcmlXlytINoOK2bl6bWAWQClwbs3QHhFvh7WkupMYPDE3jL1JLUU+ry/fbuXsyc4vWCDBGlxcX/nx0NBveZQG/rRlahUVCFD2SPfJqEkPy4ROQXOVner+52v
- y6jZNI+v
- NRlfG/+d0bmtoTnOP3gxaUy/zkraEHpRqd6E/nK2cp784kYs+Zrix79AALGE+xsEb8f+rp53UAB+HelUhinDVo3i4kREIEDlUrn82pwn+uNO+Rm0/1JBtoSEjn/l7HzV2KBqt40ezGcAJOsWqKOzCV7VWXeTtKFAtgk9JtSl2R8PoaVWwFVUs7cP2Iuxaj4cGj3PpVYxnYmbUCdM1qR07x9SiTRHzZY0WQOmPb3STVswm8eiKa5GsC4PYOyEiiSUc29Nvo9om/ldoRkFQBDjSXd1Ja8Eg9uif2UKVyQTBFooW3M6ZwghN/WMI1tsz+jlXKct8u6NDH4cQWVo=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8e3m5q9ueac6og5w5rz7n9nynt1k3w58
+X-HE-Tag: 1790860785-287116
+X-HE-Meta: U2FsdGVkX1+xcaTRIaZ034/mSs/Z3yEC64/Lw26xPNzx25i9OhQX0stGh4cstPOL3CodAfyjUVEZbHlMY0Hh2vuoJALLzCQHLPMXwxHTkkUGmkTQeNtTyOGUhRRN3X4QwsPHkCh5l+RMN9LPfEz+YkCJXyJ56xn7l0qxN26m3ilWRiFCyfS4aoAFSXyUkpDliNNzTzdyzoRLs8KdGAxtlSTwkmeWcfL8VO1M40zZYqgFMnvckvIKE3dRaqMGco3u+CEA8z+qcoJ3OEqkk2KsvMfHHi3uVIsPGCyiPs2Y86mZ1JktmV0xDTg8TJ3DJF+0HIerGeEpN9EpHU0WhTicDgyOSCsMZqfeqz8kTmAuu1noEn28owO8ATYm9pKppuoRhQRi6ClGlTCtggK4VbSm6hkc7lZaGc/0oddB9sCxdT0VJwCx2kvGmBhO4mS7/5Se3E2bt2g+ZFjU8c4r1Lyo5e3Hl3GV7GDjz86B1h6qBrkFQyz2r8LBnnyOqutZFLQrNrkfAqMLm7suY01Pj3xY9X8WMhIJqLHEnhuJHbinNoNWx6nX2JOoOgy3NjH8Q4SYqFBTZAgndBmy6lmIv4pAs5d0TtioPeDmOmbf5HJ9kFNPQH8sORTCQgpTdEuQ0OfKH5alumWxj1XaU/Dbt32MkP1z/uZ4f22ieIgc1pgEzeYQbGE+ET2Vl6DecMlOr9z3cOV9d/AnpzltPK4Kn5kQiK94z2w1QrwV67dP4bjlsrlQCK0Huy7WWfetrBBSosoki0EGSHrvJkyuXngAvdlUeGNvrBCvt+xqO0yrlS+ekeZglskDm4qoNObDu75+jZ+B/C++sM0EdVxFhsWf+98I66lVgXTdIBIUYj71fIkBejr6y7+lN6ZcnAG2Or0gDYBiMV7H4NZ0jv8f7ASnAAfDLjAnRPR1N3LVQakHDUrZDybUsl/XbnHDrc2nvxnatyOvDdfzWPCv0sN6VIoLLO4
+ 1yaD+aW+
+ CQ5KluFxJsm8o1awqAwFUKyT19NpGXFWTKnMsUB+/BXu3Ruhc5V4544SrjEu+6vutcnjtDlxAZ8fBQh74FlzKnYX3vvlPJx39YwI/TF8NwEuHe4CSBx6Nb+MzEYqM6yMvCcWcdPFvP0o0pEhhJeS6qrkMrHYheifJd8HWuj72ls0NH5QMjnWXYR2DipW3wWO9qSxtcMeGY1/DCBunyFbM5F6TP/SIenJSIt8j4kDNdd3QZlPtbIZ8p6Wo52baIF2BDgxmbJWYfPK68zy/JJZYn7ElUNSHtjfEX8mZWLqC92LvK4AAe22wCRhvJCVGeguIMJM8RqGdypDAXfK8PjTd5aW74WBbGYeQQ7mfdVKQeogWNAnwsGfcavVmhK0LXENqQnDh0sH28LbX9NM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,28 +148,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/1/26 14:37, Enze Li wrote:
-> The final #endif that closes the _LINUX_HUGETLB_CGROUP_H include guard
-> is left without a comment.  Add the macro name to the comment for
-> consistency and easier navigation.
+On 10/1/26 15:16, Sarthak Sharma wrote:
 > 
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
-> ---
->  include/linux/hugetlb_cgroup.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/include/linux/hugetlb_cgroup.h b/include/linux/hugetlb_cgroup.h
-> index 16d72c8c71f6..b4e0958eabf3 100644
-> --- a/include/linux/hugetlb_cgroup.h
-> +++ b/include/linux/hugetlb_cgroup.h
-> @@ -268,4 +268,4 @@ static inline void hugetlb_cgroup_migrate(struct folio *old_folio,
->  }
->  
->  #endif  /* CONFIG_CGROUP_HUGETLB */
-> -#endif
-> +#endif /* _LINUX_HUGETLB_CGROUP_H */
+> On 10/1/26 5:30 PM, David Hildenbrand (Arm) wrote:
+>> On 9/24/26 07:00, Sarthak Sharma wrote:
+>>> mremap_test uses a random data stream to detect corruption after remap
+>>> operations. This requires seed handling and byte by byte validation,
+>>> which is inefficient.
+>>>
+>>> Replace it with a deterministic pattern where every word in a page
+>>> contains its one-based page index. Use memcpy() and memcmp() to
+>>> initialize and validate the mappings. Remove the pattern seed and
+>>> its command line option. Also update the comment diagrams to
+>>> reflect the new deterministic pattern.
+>>>
+>>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+>>> ---
+>>
+>> How will this patch change with the change in threshold handling? Does it make
+>> sense to reshuffle the patches?
+> 
+> From an intermediate patch POV, both ways of doing should be identical:
+> 
+> a) Remove threshold first, then remove randomization:
+> 	i) Adjust random buffer size according to what the test requires
+> 	   and implement the start, mid end pages checking
+> 	ii) Replace rand approach with fixed pattern
+> 
+> b) Remove randomization first, then remove threshold:
+> 	i) Adjust fixed pattern size according to threshold
+> 	ii) Implement the new logic of start, mid and end pages checking
+> 	    and adjust pattern size
+> 
+> But if we plan to remove perf and timing infrastructure before (which I
+> plan to do in v2), yes removing threshold first would be neater, since
+> it will keep both the removal patches together. Please let me know if I
+> am missing something.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+No, looks good. I'll take a look at the patches again in a v2.
 
 -- 
 Cheers,
