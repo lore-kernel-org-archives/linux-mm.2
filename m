@@ -4,138 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C71A7CA5FB3
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 07:08:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5C0FCA5FA5
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 07:34:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B73036B0088; Thu,  1 Oct 2026 03:08:46 -0400 (EDT)
+	id 782326B0088; Thu,  1 Oct 2026 03:34:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFCCF6B008A; Thu,  1 Oct 2026 03:08:46 -0400 (EDT)
+	id 733996B008A; Thu,  1 Oct 2026 03:34:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A12BB6B0093; Thu,  1 Oct 2026 03:08:46 -0400 (EDT)
+	id 5D4406B008C; Thu,  1 Oct 2026 03:34:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 76B776B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 03:08:46 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D8C3780331
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:08:45 +0000 (UTC)
-X-FDA: 85273179810.27.6DE9CAE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0AC3D140004
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:08:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wuzhray8;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790838524;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 25B4A6B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 03:34:01 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8CA67A0322
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:34:00 +0000 (UTC)
+X-FDA: 85273243440.10.A3EA5F7
+Received: from mail-ed2-f31.google.com (mail-ed2-f31.google.com [74.125.228.95])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A19ED80005
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:33:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bOv7L9pl;
+	spf=pass (imf02.hostedemail.com: domain of amir73il@gmail.com designates 74.125.228.95 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790840038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FvSYXYalm63CDGUp0iUMo4KFN4PdB/yvny+LMXqSogI=;
-	b=WoOul7MH20qOc1nN8otSZ/CxPVSD8Cm3xqXB89J50QttglGC4B2WYvIYBX5S4e41wHYxuo
-	gGA6b3Nd0oUgoDoj/YY5XQItMADhQRS7vrFGjddarJwNSWkp0TKZ6SKmX7JtVpPDSzEned
-	T6MiUSBg+PDRRZSuC36f8d78CFHRJDY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790838524;
-	b=Ynb4b1AeVGgpp31i+xeo40zDH/pwaTRMI9BHCI+9QdJI6TZC5JdKYFcbxZW6iMo1Manpb2
-	nwKVvqAswh/GKb2qj1QvlbyeusVJI82XLumWaaj7FYqsD/+VnrEbMI6vUhDzTQTqCi8KpN
-	pmEocD1eBvf33JJXvHM+5ID8CTFa7Ds=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wuzhray8;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2AB8C400A2;
-	Thu,  1 Oct 2026 07:08:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299501F000FF;
-	Thu,  1 Oct 2026 07:08:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790838523;
-	bh=FvSYXYalm63CDGUp0iUMo4KFN4PdB/yvny+LMXqSogI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Wuzhray8wlCI4wK6CdYNATgeXQk1B1+6oDPjXFB6wgag6e8Zyayeenn0GpvbleIN6
-	 B9WaFzIZYilGEIPzM/fGe96QLu3nOblllzyhAslnrLWKR1kKbm9zArBR+ZI9Uq7evp
-	 f3grQzKvpQOqytiQ1J1wxObVg0HL4fxsheS86h8oZHU74sJLvOqgA1czZSBjeryb0K
-	 wYDPXcy+jDX9rjw0WDm7FOYEyxhOUdfAVX+aNDl5+PCNmL+eUzqR7LLvaO4FDlxcR7
-	 0fGkKvwEi7wQyYZb83GPZcRmYJ8aSa2TA0A3PU1BBnjQfUk2tibb4v1VNn+c2A4ER+
-	 os8O7YULYHA/w==
-Message-ID: <bda5eeaa-7868-4d4a-9026-9e99347afd7c@kernel.org>
-Date: Thu, 1 Oct 2026 09:08:33 +0200
+	bh=WTf1zoaT0Wsrc4m5L9oFar53LMEzHBHomKhDhLKQLu0=;
+	b=4IcxBPNhBYXaPGloPxqbpjyInSv8bLjFKY6Y79pbfv41mvENsftdlEvpaf6SEKa8JGnXbC
+	LWwRwVcUxRqeaDTAYDPz85taRV+5Lt6fCGNw3bh1iA6TSbeY55ONLe2XvxYNu8WnwHyGng
+	xxxs8M/zJWvyKXRHMGRcxCXfLZJeSTs=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bOv7L9pl;
+	spf=pass (imf02.hostedemail.com: domain of amir73il@gmail.com designates 74.125.228.95 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790840038;
+	b=ot/lYLXdNmShW7u/oVqaCHLloCVabcbUU/mT5RrZdgFkRKXHQEGhL/v9m3dE9gdRMJZbZ6
+	sDflk7OhRR8rWnjoZVakxZwV4K2JNp6MgJFdT9e6b5ctscPpsBvM2sq7uCTVpGdt4TlVvM
+	g1I3HcB84f8iWozqd+dLlYRISfrXqIo=
+Received: by mail-ed2-f31.google.com with SMTP id 4fb4d7f45d1cf-6ae3a72e02eso885000a12.3
+        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 00:33:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790840037; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jcTRQUk2pPq9bcHh8HR63eMk1BzwaDczZlQZA3bxRYm0IEBjyG6SlPsepv6uyq2JN/
+         pfNBzYN0nTnfnut9KXnk745tzH2W4DRSyUXs6vqEEsn2fnFsU0ZOVjVbqc6TiTfgkOZ/
+         zDnSkDW+KGz/2TYQ1yxU/CGQJpBQz0YFoRHr36/EmV0TqQjWNAPXs1sjlIl+NaAvY4SC
+         sheEraa7Qxh2nk+o8voubl0pfk15MzQCvXyeX4RjXgBMz7axaNNGtQLLFHi6UyvTk6pJ
+         z5bqlQxPy/cg1wZjVNMO9GiktIkejrEt7H9q5ClzsujFJAf4b8mzzdlJpacVufS1Cr/D
+         gsvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WTf1zoaT0Wsrc4m5L9oFar53LMEzHBHomKhDhLKQLu0=;
+        fh=uG2dfcDtYGSFbN7YxizNR3IgVeOZNkCn7W9m4R2mrmE=;
+        b=fLwvhw0dds7Z+K7vnjqHC68hYD1nXkS/NLe9hgq3SPX3aKJTfMljHYUkFocDe/CG00
+         4pVLdvAS/ibGh7PwGhZyj6So64pDcPmenU0VMr27BL8VNhoKu6k8benl2PfRV6dUoF7j
+         hUXInkhxa/YUATU5gvleGLFoTchWWnXLyhFmUhsP+QiphBTgkHglTy3u7S4P82cflYeY
+         DL+p2g7LDOjfQun7u0HCXSTXLfPJkXpEUjwewKPdDBNM/C0bRF4Uk0Is/BiiHJurWmsG
+         svclUvoh3dDVMH3npEHjTnLbgfXo1vTmqSXEnmrcAn3k1KMUsSENVyoykNOpo5+ad59D
+         UPDA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790840037; x=1791444837; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=WTf1zoaT0Wsrc4m5L9oFar53LMEzHBHomKhDhLKQLu0=;
+        b=bOv7L9plmN98mO64Fik1iTRbXgfvcxSYgeP7vAupkprtJErEFbSwLtGPG+gv3fdMzC
+         NBlzU9cGdOcbUGTiukNeWrRFGM03iXAZL7y3o0QWIOUcfBDbxQBvwZN5ZlVbmcZ0ohs3
+         +Xi0dNLS4NISniKAXQshtF/xOUl0xmqUrZ6avWxAqaoxqLqVuFNonvsHGfy7YCv0qXtI
+         36uxSnqC6QmNHxjIkpJ4QmbVevxTns/MpGCTLoaVDlwTNeaJpnyRjq0Ll6SKJ+fZcCJ5
+         tTNWeAjneeM08K/rGcRQEDLb/sverV1Aw4XBdyROlMQMAegf2ZM505So7/kA33RMDS7M
+         n2Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790840037; x=1791444837;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WTf1zoaT0Wsrc4m5L9oFar53LMEzHBHomKhDhLKQLu0=;
+        b=rsxe8xqdkMvYZwLNlrBwaxe81pe2QQwZMqqF97WfTUqhwEMjoCLeyzXuHPZthbkBPM
+         OCdzR6yt+tcqLaASeAWNkymx+H4lvqoCEFk2IDYhVWt9S/1wuTtJhlG7kWCsu/DRQ++G
+         mjybgoogK17IKPumJHe/ADKe5/ThA5Osj1ohjkQ0hKphdC+AfR3C5ZvyY5LRW8FWeDYZ
+         anym7RqZu/7wHW5tydUEzYnn/vfR12cCyeV9pkUajaZoBLPmPpm9KjF8VSGh3MI2vrC9
+         PSH+kVUDEyfOCuvP+CJ/3iQQAHDgCj8SKvL3ZtdVzx76bW7CLxreNB5Lt7OXIBTB1SoF
+         39Yw==
+X-Forwarded-Encrypted: i=1; AKwUvBymMaOkOUI+kbjBlquqPCYF1xasaFXM8wVHC5UhrYr91HQR30/wgwKtO1eSAk9flepk603rRKI/kg==@kvack.org
+X-Gm-Message-State: AFq9FYLzvMWsIXD9I3CrujaT3Vi2sKkF7uUTbYE73zBdk++li4FG8/Ud
+	O0vqTuP9NivLefozDdJ57l29KE4mVjFTxntDvAAmKNdxYEfloCAicPNtC1s23zTG8m+5S9I8mCk
+	TcYlhLpZIbpLqcEszQbOFpCO6ApEbiVU=
+X-Gm-Gg: AYBFou0c9mWF5hRkES6u7YP0BHTejJj4xVcFl+G6qNop9uYLRhZy2zMLzDWSkoDsE5l
+	JmaRsSU8tJqql08tnJM5RJl+GrICNEwZlssYKiaBd41eGYsf0+80uBCV0znBZjGutJTFYKIEbuR
+	GLebQZqhtjSPFUG/+eBnwtYMKYek/VH8wE2jeuqYuBKe6PkYRpgBT2lj28+tmi5YQ3AUqVbaUJS
+	9n92tIoY1PS4DhHx1sYKnjx8omFlfv7ImHY8mcYqOoRfNbwV5TiJ9LTv91FYdYJxeyHqJNmDKI+
+	ZY+OokyOQJRfxjKTEr481NRPymsRK8pRhGazGOILuH+pbkgKcBro3oTx
+X-Received: by 2002:a05:6402:3227:b0:6ac:9a44:d3ed with SMTP id
+ 4fb4d7f45d1cf-6ae1986075bmr3067340a12.5.1790840036710; Thu, 01 Oct 2026
+ 00:33:56 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] selftests: run tests on nommu architecture
-To: Hajime Tazaki <thehajime@gmail.com>, linux-mm@kvack.org,
- liam@infradead.org, rbm@suse.com, akpm@linux-foundation.org,
- luto@amacapital.net, brendan.jackman@linux.dev, liuhangbin@gmail.com,
- corbet@lwn.net, kees@kernel.org, ljs@kernel.org, broonie@kernel.org,
- mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, surenb@google.com,
- vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org
-Cc: geert@linux-m68k.org, daniel@thingy.jp
-References: <20260929235711.2287931-1-thehajime@gmail.com>
- <20260929235711.2287931-2-thehajime@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260929235711.2287931-2-thehajime@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0AC3D140004
-X-Stat-Signature: pugez61ojmjr77epuqjzhu95n9urg9ad
+References: <20260929034158.1455429-1-neilb@ownmail.net> <20260929034158.1455429-8-neilb@ownmail.net>
+ <CAOQ4uxjv3Ziqy+CjbCO7noAPse+a0066UO7pkFhStnnW9FFSPg@mail.gmail.com> <179080463287.37859.4262341831478331513@noble.neil.brown.name>
+In-Reply-To: <179080463287.37859.4262341831478331513@noble.neil.brown.name>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Thu, 1 Oct 2026 09:33:44 +0200
+X-Gm-Features: AclHuK9MIhHprf4aDgaMwd_4tZZMvI-V-gvxwkigtEk9UN12WMcOwDyiP913px0
+Message-ID: <CAOQ4uxgEG6Wt1z7JO+v2sjs=Aoav0u7eLz+Ge3UqhVG4msBkwA@mail.gmail.com>
+Subject: Re: [PATCH 7/7] ovl: stop using lookup_one() in ovl_iterate().
+To: NeilBrown <neil@brown.name>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, Kees Cook <kees@kernel.org>, 
+	Joel Granados <joel.granados@kernel.org>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Breno Leitao <leitao@debian.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Jan Harkes <jaharkes@cs.cmu.edu>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Hyunchul Lee <hyc.lee@gmail.com>, Carlos Maiolino <cem@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	fuse-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-unionfs@vger.kernel.org, linux-um@lists.infradead.org, 
+	codalist@coda.cs.cmu.edu, coda@cs.cmu.edu, linux-mm@kvack.org, 
+	ntfs@lists.linux.dev, linux-xfs@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A19ED80005
 X-Rspam-User: 
-X-HE-Tag: 1790838523-640570
-X-HE-Meta: U2FsdGVkX1+WYbmSIpPp8swciGdrnCOksd9ztHV4c9P/R2pu+q14HmeZXNlxkn2Zu2draj8UtMP/A6wk5ahznt+/DA+BIDrZtfnAO8ltaCFa+6jdzeNgp7pU7ygymq1Le7bIaOdPBvu8H//yTIdSv4ZeHdr1QpvV/EJS9hXNreOfH5jdrqtDV3OouHyEgiD+R0QQZZIkDGClmodG5P+JSiUJaaYaABktG+Oz4QRWpI2j2QuF1sEergr6V4Fq4Dj1oPtkYK6NLxB4DwlLKK4oGCTM7o4q3V2N5LdZJ9CEkCLIB7O2n7eTL3iFJScHgGSa/dICd//mQ46MVTyWp7Dy3VBJsFfhhqMDIfsP/+Yk6cdUjCNcJGM+olMclzmr0D3OHum/CgkrCbvJdymdtFgemgz04NG+JLKN6DrT/zoQa4TG05Q9RSNJ3sav7xXHDar4Zvap2NA8a9oNndmt4xCEBIc/ZfA8LUA3z9cHYsgFS49SVYqV+0I/bUg3b81Ks74iy20bMSVxqbDKlm18AH7KFgvKQCTS74VeYYGhcWPvkrKlD9zxF+QghBTudkG0QqwoZnqP59+3vRlB1SwbWohQY6vBfKOO8Nqgr0fURUMA3ocieMsPEwMILsPD490dvaxjLPBZp2daN2XDMZJt9Duc9PyHaLhPVK2aAy3VRfAobzLXnYzfJv62Fl+JEQfC3wPe5wda4ctQuf6pm4xq6AuGlIcydSh3v0F0N3WxKITAezbDBamfwlZEGJAZXbFTZPIo8xCwsQwN2biKzejTHv0txY1n7lpImUcbj9vrucC79D2VIOhlPOFe/zZ96KWQx8ZzxCBcmZz3gFl8idYZ7m4LSmqBaRLcXDWmLw3owQR0vUrkSoSJ36zNH7G3kd2Y1hoQuYqNzm+eqkk45EfLBBIxr8nc314ZrQ7jnhFrOJ2MzWG3dt3vjWXQiVJ/lU2NWjlmpMKeWE7zLCymtX+JCz/
- yklTVwpu
- ewKNad3uK0HJCZdzyygdQlwWdjpSzQ3ci8MqZWtDmZKntDb7XLjZWsBTDgA9E1K30/PnEri2hf34l1MgCLGRGKyrJ4uxm0719NHp9Sf5VaQRVJXCSdlojO4BYDieqNgTvKaeWcS2M5xVtuTdxXhrz3pF1CKmUAatLn1MW5+70thmWrqumTyi7nB8PCYKc4ii3/9Aoia9ebAmu2GnnMt6HH8ol41ClAZwwdsalCL/zi7VUenuuxsCNFkSl1LHOBRfi3kwB
+X-Stat-Signature: q91xjxps59ffuw14azstfazrhw7jeqzi
+X-HE-Tag: 1790840038-751018
+X-HE-Meta: U2FsdGVkX19Xq3xP/z/Kj/AjIrzSas3Ut/ZsTlMWcs2njyZKZI6GzeSF4hJpv+7Pl3x3SYMMuqh43PMM8OEn7a4vGg/jzZEHh6Xlbb76bjHc9KSgTXPQY02OWvQImrmjdj3aWoCqyljNnDNl3kZJsoFh3QUogRjIGwFJdjF5ktzuQ+roNHFmDJ+kDGh8mKSotPyLkc+N91UQzAPKnRJ2Mj2vN7SBqw8i8OT+88NhrAgJw0j5EKlZ387Ae6zkWJKS1eELhCNVZhkpGBxJ99kbGZ3o6S7O05jn7Ivph/+6egTvPAXJuHmjNGO9a3Cyg4iI3zjI5rFSRJrPcEJvHu3N5hqGiFBYvZl9gqpawdgH09tj5uJQRUwmYQF4jHo49Ar4Oqhy1Q8F1M7vaB21Krzhj/AeucgidSlzCWrXFi5VNr0a9dZMj9mTUBFfq4mssZBu8z3BveuJ+dLsQPudWmkRKoWZcVTUymYAIjHM6UPHpGB5VrECfXDtwsuQXAgUhBJvh/8I41/drIuuyjmQMTTiZPn3C1YfCC1XKyZCBWC29cbgry85Kk3iqAvbd/aD6yZiHurLxkHDsFbVc3BGaslzDRiMWinZxjSKDeKUpY07MdNjndCZwcORT9s1NkPHFPppUQCUmehFsDfewnM48zrmf4enIkdXucuv9tUGfier3BcMH7DSudGwzkt/J4kr3vo4d0aaD0eLo6bxiPotcptPc+qvZszKpZvQGvtlCZ59kAwhHGHz9Lu9N//RxBK+fHua2wHEJjTIS/rc6JoELc1nu218h2gbdu4d8Ov9SPNCaxFOwocFQvNrc+u6BrNQsxacq19lx8pTTOB78KHMgkTenscDzWYkeT4NM958WjWVg8UagQsCIBI7jpEcc9mCdbK2blryMAEQxyaSj5XHWHz6ViTmT+W66nw2G6f91GFSYS7wsq1i4OooGzkMXjquPNC2pfwpI0LG7TqN91Ex4zu
+ ZXW8Uzd3
+ nLpLgXteZJJTKrCfkwFT3/a6/VozX7AKYoBa/DwaM4iXVaCjwdCISbMfWHcLSxCdxZJfD74OqFdKQbNkvZ9M3uBLQz4DhyRyz3x6W9Wi2r/++8fKy0EgU56v4FW3JNXzKLMZnzbgA3KWstmFpTqTJTR6CHtWN78vkZKZJy25M/LSv8FrBPAKANjKfu08Hwh6eslFk5KNCrC7kSoK1x2AmD6ZJW318H6JDioBmfYVEvpIO4P3awoeguHAbURjOYjihZWg3X/Q7PreGUCLB9TBQRCMltlb+refTv+iUpLg9GQFiqgusrfIl19/AX0wQjm4NXZ16i30sdVO2iadLOB2pQJ9Pd0YDe7/CyPaX2qA4oWtYqfHmYX0SK+TNhP44wL8fKQrmG4tdCa8h71Kv8VG3wpzARFe505fqlC5CiPVTf2iWtxMsWUQa6kB3nrMkPTUxz7nUXZq0qtMmlZigPZ0Wlz7e3tlyvNwkU4+1duJIAeBQf6P35ZgfCbBwgkp7zkvL5xz+1BIjDL+etM5Q/C4tOOMDXMfRaM6lzziMikvUASZm14COsI9dAck1V2Iz7rxTCgXVGbjs66iQ8nw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,32 +151,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/30/26 01:57, Hajime Tazaki wrote:
-> Architectures lacking MMU don't support fork(2) syscall and only
-> vfork(2) is available with limitations.  Thus, we cannot run kselftest
-> on nommu architecture as is.
-> 
-> This commit addresses this issue with the following changes:
-> 
-> - on test run stage, avoid calling timeout command when NOMMU=1 variable
->   added to environmental variable, since timeout command uses fork
->   syscall which nommu platform doesn't support.
-> - describe the difference of nommu tests in the document.
-> 
-> So command line to build/execute tests for nommu should be like below:
-> 
->  $ make ARCH=um NOMMU=1 O=build kselftest-all TARGETS=nommu
->  $ make ARCH=um NOMMU=1 O=build kselftest-install TARGETS=nommu
->  $ NOMMU=1 ./build/kselftest/kselftest_install/run_kselftest.sh -p \
->    -c nommu
+On Wed, Sep 30, 2026 at 11:44=E2=80=AFPM NeilBrown <neilb@ownmail.net> wrot=
+e:
+>
+> On Wed, 30 Sep 2026, Amir Goldstein wrote:
+> > On Tue, Sep 29, 2026 at 5:43=E2=80=AFAM NeilBrown <neilb@ownmail.net> w=
+rote:
+> > >
+> > > From: NeilBrown <neil@brown.name>
+> > >
+> > > lookup_one() is expected to be removed as it does not fit well with
+> > > proposed changes to directory locking.
+> > > Specifically d_alloc_parallel() will be ordered outside of i_rwsem
+> > > and as iterate_shared() is called with i_rwsem held it is not safe
+> > > to call d_alloc_parallel().
+> > >
+> > > We can instead call d_alloc_trylock() and then call the ->lookup, but
+> > > that can fail if there is a lookup attempt concurrent with the
+> > > readdir().
+> > >
+> > > ovl cannot afford for the lookup to fail as that could produce incorr=
+ect
+> > > results, and it cannot safely drop i_rwsem temporarily as that could
+> > > introduce races with handling of the directory cache.
+> > >
+> > > Instead we rely on the fact that ovl_iterate() has an exclusive lock =
+on
+> > > the directory, so any concurrent lookup will wait for the ovl_iterate=
+()
+> > > call to complete.  We allocate a separate dentry and if the lookup is
+> > > successful, it is hashed with the result.
+> >
+> > Please document this assumption with:
+> >
+> > rwsem_assert_held_write(&dir->d_inode->i_rwsem);
+> >
+> > and comment in the code. Having it in the git commit message is not
+> > enough for future code reviewers.
+>
+> Yes, I can do that.
+>
+> >
+> > Other than that, I have no further comments, but I would like
+> > to have a review from Miklos before this patch lands, because
+> > I don't remember him reviewing any of the revisions and this is subtle.
+> > I am a bit concerned that we have no test coverage for this subtle code=
+.
+> >
+> > >
+> > > When the concurrent lookup gets i_rwsem it mustn't do its own lookup =
+-
+> > > it must use the existing dentry.  This is found, if it exists, using
+> > > try_lookup_noperm().
+> > >
+> > > Signed-off-by: NeilBrown <neil@brown.name>
+> > > ---
+> > >  fs/overlayfs/namei.c   | 12 ++++++++++++
+> > >  fs/overlayfs/readdir.c | 26 ++++++++++++++++++++++++--
+> > >  2 files changed, 36 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
+> > > index ca899fdfaafd..f56e33fd4d6b 100644
+> > > --- a/fs/overlayfs/namei.c
+> > > +++ b/fs/overlayfs/namei.c
+> > > @@ -1385,6 +1385,7 @@ struct dentry *ovl_lookup(struct inode *dir, st=
+ruct dentry *dentry,
+> > >         struct ovl_fs *ofs =3D OVL_FS(dentry->d_sb);
+> > >         struct ovl_entry *poe =3D OVL_E(dentry->d_parent);
+> > >         bool check_redirect =3D (ovl_redirect_follow(ofs) || ofs->num=
+datalayer);
+> > > +       struct dentry *alias;
+> > >         int err;
+> > >         struct ovl_lookup_ctx ctx =3D {
+> > >                 .dentry =3D dentry,
+> > > @@ -1399,6 +1400,17 @@ struct dentry *ovl_lookup(struct inode *dir, s=
+truct dentry *dentry,
+> > >         if (dentry->d_name.len > ofs->namelen)
+> > >                 return ERR_PTR(-ENAMETOOLONG);
+> > >
+> > > +       /*
+> > > +        * The existence of this in-lookup dentry might have forced
+> > > +        * readdir to do the lookup with a new dentry.  If so we must
+> > > +        * return that one.
+> > > +        */
+> > > +       alias =3D try_lookup_noperm(&QSTR_LEN(dentry->d_name.name,
+> > > +                                           dentry->d_name.len),
+> > > +                                 dentry->d_parent);
+> > > +       if (alias && !IS_ERR(alias))
+> > > +               return alias;
+> > > +
+> > >         with_ovl_creds(dentry->d_sb)
+> > >                 err =3D ovl_lookup_layers(&ctx, &d);
+> > >
+> > > diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
+> > > index e7fe29cb6028..bc41da4bace8 100644
+> > > --- a/fs/overlayfs/readdir.c
+> > > +++ b/fs/overlayfs/readdir.c
+> > > @@ -574,8 +574,30 @@ static int ovl_cache_update(const struct path *p=
+ath, struct ovl_cache_entry *p,
+> > >                 }
+> > >         }
+> > >         /* This checks also for xwhiteouts */
+> > > -       this =3D lookup_one(mnt_idmap(path->mnt), &QSTR_LEN(p->name, =
+p->len), dir);
+> > > -       if (IS_ERR_OR_NULL(this) || !this->d_inode) {
+> > > +       this =3D d_alloc_trylock(dir, &QSTR_LEN(p->name, p->len));
+> > > +       if (this =3D=3D ERR_PTR(-EWOULDBLOCK)) {
+> > > +               /*
+> > > +                * Some other thread is looking up this name and will
+> > > +                * block on i_rwsem before it can complete the lookup=
+.
+> > > +                * We will do the lookup in a new dentry and when tha=
+t
+> > > +                * lookup gets a turn it will find and return this
+> > > +                * dentry.
+> > > +                */
+> > > +               this =3D d_alloc_name(dir, p->name);
+> > > +               if (!this)
+> > > +                       this =3D ERR_PTR(-ENOMEM);
+> > > +       }
+> > > +       if (!IS_ERR(this) && d_unhashed(this)) {
+> > > +               /* Either we got an in-lookup or we made our own unha=
+shed */
+> > > +               struct dentry *alias =3D ovl_lookup(dir->d_inode, thi=
+s, 0);
+> > > +
+> > > +               d_lookup_done(this);
+> > > +               if (alias) {
+> > > +                       dput(this);
+> > > +                       this =3D alias;
+> > > +               }
+> > > +       }
+> > > +       if (IS_ERR(this) || !this->d_inode) {
+> > >                 /* Mark a stale entry */
+> > >                 p->is_whiteout =3D true;
+> > >                 if (IS_ERR(this)) {
+> >
+> > How do you test your patch set? Do you have tests that exercise
+> > parallel create/lookup/readdir?
+> >
+> > It would be irresponsible to merge code without showing that the `alias=
+`
+> > branches have been exercised. Do you have an idea how to do that?
+>
+> I think that to trigger the 'alias' code we would need to instrument the
+> code to block and wait.
+> e.g.  when readdir sees a particular name it could signal the test
+> harness somehow and then wait.  The test harness would trigger a lookup
+> of the name which would block on the parent i_rwsem.
+> The readdir then continues somehow and gets -EWOULDBLOCK and installs
+> the alias dentry.  When it completes the lookup continues and picks up
+> the alias.
+>
+> Is there some way to set a tracepoint to block?
+>
+> Maybe it would be enough to have something like:
+>    if (strcmp(name, "MAGIC_NAME") =3D=3D 0) {
+>         printk("waiting for MAGIC_NAME\n");
+>         ssleep(15);
+>    }
+>
+> and have the test harness watch dmesg for MAGIC_NAME then trigger the
+> lookup.   Then adds some tracing to ovl_lookup() to ensure it picks up
+> the right thing...
 
-Is there a way we could derive that from the environment in one of these cases?
+For this patch I am not asking for instrumentation with CI regression tests=
+.
+A word from you that you tested all the unexercised alias branches manually
+and how (e.g. include printk and sleep test report) is the minimum
+that I require
+to avoid merging subtle test-compiled-only code.
 
-I'd assume once could compile and run the nommu um variant, and within there
-simply build the selftests and run them?
+For your parallel dirops odyssey as a whole, I think that proper
+fstests coverage is
+a must before the last step of relaxing the dir lock and the sooner you sta=
+rt
+with this the better the test coverage for all the perp series along the wa=
+y.
 
--- 
-Cheers,
-
-David
+Thanks,
+Amir.
 
