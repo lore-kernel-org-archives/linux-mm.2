@@ -4,75 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BE7BCA5FDD
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 13:18:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDFF9CA5FD4
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 13:18:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23DC16B0092; Thu,  1 Oct 2026 09:18:45 -0400 (EDT)
+	id 17ABB6B0093; Thu,  1 Oct 2026 09:18:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F4FC6B0093; Thu,  1 Oct 2026 09:18:45 -0400 (EDT)
+	id 12C126B0095; Thu,  1 Oct 2026 09:18:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0E496B0095; Thu,  1 Oct 2026 09:18:44 -0400 (EDT)
+	id F0EE36B0096; Thu,  1 Oct 2026 09:18:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD9266B0092
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:18:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4EC051403E0
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:18:44 +0000 (UTC)
-X-FDA: 85274112168.18.9C36F47
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C9C016B0093
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 09:18:47 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 542FE1C281F
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:18:47 +0000 (UTC)
+X-FDA: 85274112294.13.19D3C5B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 884011C0009
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:18:42 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cME/sF3Y";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id AD8424000D
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 13:18:45 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NYZ5V1Ya;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790860722;
+	s=arc-20220608; t=1790860725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4npuvMNR6UKbZDO4+dj4mKqktlQ5nKE7OUUQfyh8Zxo=;
-	b=1HBVUCiGI7BaC/3mDeeG2kkG7WVemN7O9ZXmK1+GVxNF8uOBjZA0S+K7ZcUNAInje4tOKN
-	Iga8DuSHNqipaEldijkfrEBxRT9jvO9s4z5AM8BC/BgmZf8nE4zlpBiGDiIXuxyVqx0/4Z
-	9VyD92i52U2k1cuUh5+FIpVaN5YbWOk=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cME/sF3Y";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=y5FsYadTtnevApWrGozFMTCLK+XsLP/b9oyt3tDNxBs=;
+	b=enqFepUf8I+5B/0SZPhUsb/Zm0Co7teHpQndqz3A2J40Vq1fBIiRKtVs78+irD85g+wLd7
+	304LSlrqr1oPDRXKj73vmQy2UscXqo5l/HVtolfQf5R5P8cygNgwvzKGPty20hwmlXW7E5
+	3f3CQXipmbjFfool1BUCNaX92mKoGpU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790860722;
-	b=zybbk28H3wSDdDcKNtss1B7t+0SOSFxGABecuRZf9BK+fMCGxS1MuM1GGFziGCkGK7InFz
-	NEP7hkxOvzTF19eGnlDBNwGsSUuOUfX7+XYibeR5yF2Jj5kmRm9LtjInUXWvnHKjQ3pMwa
-	/pALRVHKrr35gAEDmJmsJZVGW/tEKX8=
+	t=1790860725;
+	b=5OHBG+VxzqmZipnmG3lsPWz0vg9ADf1PuYZ7of/iOyfYS8+7dHfH9Ya9NlCnjwEFcdd8So
+	gR6jwXOo+dEooETdDrDnngTO6mkYjNoAisa95j0HO76KD1HMyKP/udfC3HqPPR++waEa0g
+	lK7u2t1w6v1TflanHeY2xg9nplUR0lQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NYZ5V1Ya;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2E25F60A55;
-	Thu,  1 Oct 2026 13:18:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7964A1F0089C;
-	Thu,  1 Oct 2026 13:18:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3F0F260A5F;
+	Thu,  1 Oct 2026 13:18:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 711FC1F00899;
+	Thu,  1 Oct 2026 13:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790860721;
-	bh=4npuvMNR6UKbZDO4+dj4mKqktlQ5nKE7OUUQfyh8Zxo=;
+	s=k20260515; t=1790860725;
+	bh=y5FsYadTtnevApWrGozFMTCLK+XsLP/b9oyt3tDNxBs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cME/sF3YDW7p5j3553ehhYXraApc+J3HZgdS/Or9hdcMRZlG19K+b+RXjysMR41Iq
-	 OfCSporTa5zb0u48pa797TBjDgd2YC4SafJ53elaJBZZGo7rlf1AbIFiA4QE13lMh2
-	 49RIE9mVVKv+zf7EXBVXY5rb0sDVoQDQnjg57Q5Y5Kd2MBK1CTDbjDwzuBzy/UF5yp
-	 6EtfnmouCMD3o7JtB7E+i0eSZZHVaZEp/VwyPrjGAq3ZIHmC0AMuyCV2efrmv09dZX
-	 wF9vYA9IB8F1cwGpJ1HzVUBUKIjTQ4+5Dq4wTN7WS6EeuE7jQJ0UQZjXItjjSBK5UJ
-	 SpeYa5iYIftaQ==
-Message-ID: <ad501ca8-f5a7-4a7e-af6e-44a38208ff84@kernel.org>
-Date: Thu, 1 Oct 2026 15:18:03 +0200
+	b=NYZ5V1YapvkYfNNJp4VxDViXGOkXhBFNt8QYzzRT1T5mqGlsusa6OgFa8yKSE8Ekz
+	 3pTypRgwhn57ayHVfRoRP3LRNYDJKio0rATAiAaoCUM8qDRCw7ykuW381/ZH3JrZ09
+	 zgWdlkJaCedGI3xW/klWef7r1dI2LurUhyjZJRUm0P4hFkVvNYfvZcqMp1BE4RNPaa
+	 YKiKkwHj2cfy0IRz2JxeB/WvZBJtUtgA1DhhwDmWEc0Jjwu59X5sFYfloyCSKG4d0N
+	 NO65C2HuYKIl+zzE4Av0unlFf/buMEnJ5rnSNZ3O/pBaG3O8afWYJGa7eeKC0gv6Qd
+	 B2AyeNUlAyBEA==
+Message-ID: <3ff84555-4000-4fd6-afe9-533e128064ed@kernel.org>
+Date: Thu, 1 Oct 2026 15:18:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] MAINTAINERS: add include/linux/hugetlb_cgroup.h to
- HUGETLB SUBSYSTEM
+Subject: Re: [PATCH 2/2] mm/hugetlb_cgroup: add trailing #endif comment for
+ include guard
 To: Enze Li <lienze@kylinos.cn>, muchun.song@linux.dev, osalvador@suse.de
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20261001123747.634845-1-lienze@kylinos.cn>
+ <20261001123747.634845-2-lienze@kylinos.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261001123747.634845-1-lienze@kylinos.cn>
+In-Reply-To: <20261001123747.634845-2-lienze@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: zdnuhu9sj1aq65cm7xsjnh1cqcsroi79
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 884011C0009
-X-HE-Tag: 1790860722-861746
-X-HE-Meta: U2FsdGVkX18B581KVGS51UgPzjDGFyyzei2f60yxAW8MFdUuBOQzjHxeDgOr65TcKw6iVnksvlFZerPFICm7+9t/Qr7hCuJv2hnLJEGiwXVAz4T1AEOa8DpGaY0OwjndF/KfyPbdFlya0D8TzZMC1qLuGCffXts6e2ZCgRcdOJP+TRFrZFP7+2Yikysyh3hhAFnFsDSh7uQ+x0d6kdfcoFagF1C8NuuN8SsUgYgZ+3GoFa/bq2Z47PyBSh5IkvHvXUEFqcNMCCnA8eSY5KXCmjHc5UaXrj2Fs7XLIpuYcuVa71EXAqlptSmeIpp0ESEOQ6G/mwSevUTShs0qbxGp5o79noLmNVNey+/N/myHaIXyh4x8uIwghTNS0w2DAMsoPoBuFz2DnNBhbwsGLkP81qQtaq466rf4StAb9eidx9yAocbsdHbkD5qaplOTgPpjvRYg4tnme9FoKJi31F1Gt+OFSm5hu8PRgn0VFkwDdfJmYbp10B5TQaJcdFZDglzdyZmqz/MZuTf1Kxq7Le/ZJrTry02Z5DxFTf/jhE/rs8d3SJqsveHCgTl+3V5x2sYvYcuioVXI+9g12rzwrv20vPHKT9p1KdRSG86BgXi2PXU4d1LHJ8QJbZ/rXAcfLTKy8gERH65hVdQTx/3K/yjOpwL8mrERyi+YAbfhm/FckU1BDHNX4PfJeGsmdNYn4PHcoqoxoMObuVlj1zu2aTDCYDkysTJUbl3xYPQqcQfG8S5vjiA2wG03EihtydhcsRePto45DC9iVipSg/K+rpxALAXkfT3pfCKTnORgoMTDEXlRkYVP8BUjlwnFlCpL9MiCcs+JgLFein3ZD7cY1KkriGpa8KYfLv1UFVm8AxWXOoRfkGvCkbhsH7Jm8n2v5OryzkNRCB5NpL6xyc0WYOYXLFyq56oTZpf/+CZ3kXfFwb75QZDXM85y8RX5CeroiKV0ZNYHpN/qVwHF4F+criz
- eWrhvjln
- Bwuxa5HEgZZZe0cd0WRtWjUivdFCF6E7TI//Wtr4Q/IIlV0AE4vfh39Kkg2Q+6fZsCAqxjPSi/Q6I/e+tBkNLRXHt3nONrvCC8GVZGsaCTxQs57YKByqrYNag//bK/N5Vgxi/N4dtQAiLBoANqwl7PLcrEyBiQ3QD64+f6bXXNMlE403sCpQHycp6VKZgPTyCG0qSl44GbjTMyfpKT54sOAI2z1JZ3ileVvVgQawiAyO5rrt4UyiFnGE+inaM3NtqMDM5sXujR1xi1D7ZuUfNELGUjuoXU3L9S3VeUS2k6QyUxo7xEwvKeY5ci+EkQ0E21tQD0c8KdhxYllk=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AD8424000D
+X-Stat-Signature: jr7bidkpijbdnxd7qkddw131s9or66ed
+X-HE-Tag: 1790860725-51455
+X-HE-Meta: U2FsdGVkX1+Iol9A07SvGdEPKMiri6Z3exPeG21ITiQQmh5Jn/dd1nF2dgJvZdSLcd4YlSXndT9FU/8JYS4lqGiHp55Wfj97Sn5VW4WcfN5fp6xRb/dPgcSsmY/6D/N70O5my+l/LHhUAxq4KUDrwyDt9eYLi5cvX4q80morCun90kzMMmY4WgYHB1tCmS0R1/qHFQQOc1ZafmClP+mDNnSyG7cfPvqIC0wczoGfdbgx4DSCDvKXe9PspzNj7jvWWW2vJkUb2EGiDAgsOfw9//7BH4cDS5RFyGjr3p8b3EpIxIZA9oXCmMZ3nw2NMjbFXWWJrc0YWm5sAJgk8no+OAq2bcqmwpnbZ2m8mSnxdOULexXApZqfVbvB4woNYXo4doVIaJ1QH8OfGL08AClzP5dLd/tH23kg5a0VepPHWIvLSx2tZBqa8Rs6MfzOhy+BYP+GRdciU192WVtyRIJ34Fso08l+owbTtD9yBpPfJzpIsnVBQS8uBDvG0SjYEkh+atRSPQJ8V1vrbZh5ussbcBcS6SjTYoDxLZ/QYpyVaXakkmDmHKV8U/JilnkL9JRN1ke07FSXLrt5VMQVgilmN9xekaoXGAEDmVw/oPXovc5ojtf7Y6jU88dMvZwyR/ZZR+NPblpZ4BJ8uk4ktyuwtsqigwu+eFnYAFTAbUae+J7BS+/gGDEXTn6fGvvaUABx8oKIctfVwqI6WJvdW9iGmIBNxggBV0KNPk7NLLAg4g9nBoamub+MMTGzWaCjFtgxuKzKD2/Gsxpc65Y2ClVK0W849JGwN/XltSgfqXxu14Ih3JF9QvM3m5+o8Zo2WceJJy8ksauSLJqmisCixvGXqEm9rVVUcmlXlytINoOK2bl6bWAWQClwbs3QHhFvh7WkupMYPDE3jL1JLUU+ry/fbuXsyc4vWCDBGlxcX/nx0NBveZQG/rRlahUVCFD2SPfJqEkPy4ROQXOVner+52v
+ y6jZNI+v
+ NRlfG/+d0bmtoTnOP3gxaUy/zkraEHpRqd6E/nK2cp784kYs+Zrix79AALGE+xsEb8f+rp53UAB+HelUhinDVo3i4kREIEDlUrn82pwn+uNO+Rm0/1JBtoSEjn/l7HzV2KBqt40ezGcAJOsWqKOzCV7VWXeTtKFAtgk9JtSl2R8PoaVWwFVUs7cP2Iuxaj4cGj3PpVYxnYmbUCdM1qR07x9SiTRHzZY0WQOmPb3STVswm8eiKa5GsC4PYOyEiiSUc29Nvo9om/ldoRkFQBDjSXd1Ja8Eg9uif2UKVyQTBFooW3M6ZwghN/WMI1tsz+jlXKct8u6NDH4cQWVo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,31 +139,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 10/1/26 14:37, Enze Li wrote:
-> include/linux/hugetlb_cgroup.h is the header file paired with
-> mm/hugetlb_cgroup.c, but it is not listed among the HUGETLB SUBSYSTEM
-> F: entries.  As a result get_maintainer.pl does not attribute the header
-> to the hugetlb maintainers explicitly.  Add the F: entry so the file is
-> covered.
+> The final #endif that closes the _LINUX_HUGETLB_CGROUP_H include guard
+> is left without a comment.  Add the macro name to the comment for
+> consistency and easier navigation.
 > 
 > Signed-off-by: Enze Li <lienze@kylinos.cn>
 > ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
+>  include/linux/hugetlb_cgroup.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 596efa354ea2..6c210e90722f 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -12097,6 +12097,7 @@ F:	Documentation/mm/hugetlbfs_reserv.rst
->  F:	Documentation/mm/vmemmap_dedup.rst
->  F:	fs/hugetlbfs/
->  F:	include/linux/hugetlb.h
-> +F:	include/linux/hugetlb_cgroup.h
->  F:	include/linux/vmemmap-optimization.h
->  F:	include/trace/events/hugetlbfs.h
->  F:	mm/hugetlb.c
-
-Great, thanks!
+> diff --git a/include/linux/hugetlb_cgroup.h b/include/linux/hugetlb_cgroup.h
+> index 16d72c8c71f6..b4e0958eabf3 100644
+> --- a/include/linux/hugetlb_cgroup.h
+> +++ b/include/linux/hugetlb_cgroup.h
+> @@ -268,4 +268,4 @@ static inline void hugetlb_cgroup_migrate(struct folio *old_folio,
+>  }
+>  
+>  #endif  /* CONFIG_CGROUP_HUGETLB */
+> -#endif
+> +#endif /* _LINUX_HUGETLB_CGROUP_H */
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
