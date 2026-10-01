@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31D0ACA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C14E8CA5FB3
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 12:00:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3781B6B0093; Thu,  1 Oct 2026 07:56:50 -0400 (EDT)
+	id C7FAC6B0095; Thu,  1 Oct 2026 08:00:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3299B6B0095; Thu,  1 Oct 2026 07:56:50 -0400 (EDT)
+	id C30C96B0096; Thu,  1 Oct 2026 08:00:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 218E76B0096; Thu,  1 Oct 2026 07:56:50 -0400 (EDT)
+	id AF86B6B0098; Thu,  1 Oct 2026 08:00:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F040D6B0093
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:56:49 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8B6D0A03B6
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:56:49 +0000 (UTC)
-X-FDA: 85273905738.01.345DE6B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E06F11C0006
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:56:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hQAftGTL;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 88CF16B0095
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:00:33 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 10C70403CD
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 12:00:33 +0000 (UTC)
+X-FDA: 85273915146.07.46AE816
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4027B140010
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 12:00:31 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dEq1H6O6;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790855807;
+	s=arc-20220608; t=1790856031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jwXy9Brx1hUXrdP0tPQxlxrwWDU3cUickTJZN9A11GI=;
-	b=qPgjO/BgPzvpMJw9n/B/CFHl6wFNSniONq3t/Wa8OQYCWIRkMyNVHdxTzKDOC2Q8PesKln
-	uXVPSV/StkzIzad9daMbnvepx6DyP0SYTfJPg3oHZXRAQiOfjZAkjWmhE0dSJWT0KHp7CN
-	FrTeZIdpJEAxZCBxKYc5uAsK58y/WL0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hQAftGTL;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=QlLXNEoEhaxlpUOmNEGk0GST558WV4z35ATUA2llJZg=;
+	b=yIe/iVtcPgtwEbczbLZHDQupv5AqTUMoAFcX5eWxp5ltz7kp0RufIMr+VsMQ+u/Lu7dl7t
+	j9xTRB2LuAKOrTtsYQ3A71RpuPq+qRWUFrF7EtqcMI1Kg/dLkcdlM090K8OvLOad97USSM
+	aX9z2V/P0WX1jjsHsclmG53COk+sRiY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790855807;
-	b=5C7uifMzJhZU9R3cjOVhlv28CoRmYHjYtxpwOgy8tjP9DN3FDIJeuIlf2JVSqPw1xnSOko
-	IADdNPZ7c7+mBLNnfKcSY4YzhICyHM2bZ/b+yt2lzC6zCTh82TSUIwD0S/nUAZxCtq3gsa
-	4Fi4SI7nH9rsLwiMBKgeTQza3vRYJp8=
+	t=1790856031;
+	b=1OG09Wd/1VX9L32XnHIX/LJgPPqYU8oX71FJMk4oOavsXCqq/bsYnemkPa633/AwmkYBR+
+	/g4jMKlKtbGmv58T7pAYmTB0yWc8vbXHwAAjX8UWi1+d3qqesT9grObDVi3pmQJJThmuee
+	EHaBR073I7XSAACgoteRZJdzLB/nl0I=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dEq1H6O6;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 61A3C60A5E;
-	Thu,  1 Oct 2026 11:56:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809761F000FF;
-	Thu,  1 Oct 2026 11:56:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 27D3942B23;
+	Thu,  1 Oct 2026 12:00:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC171F000FF;
+	Thu,  1 Oct 2026 12:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790855807;
-	bh=jwXy9Brx1hUXrdP0tPQxlxrwWDU3cUickTJZN9A11GI=;
+	s=k20260515; t=1790856030;
+	bh=QlLXNEoEhaxlpUOmNEGk0GST558WV4z35ATUA2llJZg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hQAftGTLbbZEnlvN6gOGfsufrGBy/6rO7VByoEAaOs1HKczt8hsuH8jRk2kU5SHrE
-	 DzvsL1qqOl76GHK1bTG1v4A9JfoZhpWcAA2ZfdfWZOmLGUeD8wcRdC2Y8QK/RV/mcW
-	 BNAkXcmRWw1+Tfi/V1QQ4G/xB+PDZ9OrfUuMwVRM2WoTMbrUfYr+brkveboCmYUiBt
-	 g7bp4KdvSZxFyToaAEBTCE7hYR6S9s8Ec+ekHwL7X/eBPql9rogb1x4OpT13otBFc6
-	 Yi6JvwKVWHqqjTJZXI8FvSVzVdmp4UTUAwadkuq8AfmJiOqy22WNBff8HUgbU/gSqI
-	 3T2m/UNctXmTA==
-Message-ID: <7ee37eb7-49d0-4c29-93c5-552c908e2077@kernel.org>
-Date: Thu, 1 Oct 2026 13:56:39 +0200
+	b=dEq1H6O6x3KoA9AnzZqRIvzijzq08b3P6Io3AIK1goEzHYRIc0N6U91nJl/pQZihv
+	 HZ6h51UkqSm1/09N3J8KJSVRfK4ajDFr7KzFjbAB71sqnmSuo5WI0tjBjg5Rm7Mgl1
+	 Ba8aSeVPI1xFIimIPu/bRyHt4jv6OCI8zKvXbrDLZ/nr+Tkqklp3NZGp6c8K1/ZigB
+	 v+deWysGRSfyy5iWRA18rxKu++H6yZTacu+w9w8ra7LAvi9SioyT3nh/9UcLnvxx0+
+	 Kt+vEfg42NFy0I7XZwC6/lo6gnzD3rw8Pmi51L7QWPVmmoIsjy9vDez8SSnkzrf44Y
+	 19/gVHtZZVDsQ==
+Message-ID: <b45813af-df08-4270-93ac-d99ee42830ec@kernel.org>
+Date: Thu, 1 Oct 2026 14:00:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 7/9] selftests/mm: mremap_test: remove perf tests
- and timing
+Subject: Re: [PATCH RESEND 6/9] selftests/mm: mremap_test: replace random data
+ with deterministic pattern
 To: Sarthak Sharma <sarthak.sharma@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
@@ -81,7 +81,7 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
  <ts930@dgu.ac.kr>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260924050009.19974-1-sarthak.sharma@arm.com>
- <20260924050009.19974-8-sarthak.sharma@arm.com>
+ <20260924050009.19974-7-sarthak.sharma@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260924050009.19974-8-sarthak.sharma@arm.com>
+In-Reply-To: <20260924050009.19974-7-sarthak.sharma@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E06F11C0006
-X-Stat-Signature: 3rjenzp94stx9oxb71iwj7gpomzykijp
 X-Rspam-User: 
-X-HE-Tag: 1790855807-319733
-X-HE-Meta: U2FsdGVkX19Bn5JoJlTAYj93Fs9ls6zsHAG2o2TW72LwjFH54n0jiYS2w/EHD021rPun0GMu2ebyeBlh5OWc7AONRtyPjJl2v85TLp44AQd00lA2Q4p/52o0wNFjwn+PWcD3Y/YWYgz3B3Mg/f22+rKshG5ZWBwHo99zcUYOt26oS018xrIWa33mj9Y8BzLSWhIkwN7XUzxvItZdiYXi/YQW2HBEw+LMyOZVmCKQM6bVu+XatEZFdSL0XUBJ393Bub2PKlfoxUBv2XgXc+gKsjKXbbKEP2+ZNvtwWpUnSpj7vhCE0v4avWgeMbQt8BG7cXg0B1duxJCDL36jCyB/cZzvnT3eIZiaPNXS3giP7fuZyn41nK3y04cweCtlcyQKbzRPj/BEI7AXWw9WakgO87FKYepsliqneC1abpr1WD8gPAHeQR/UaZQC2Sj7/tw3DZczhn0XB0xjXkTbxVwK0MCOP5+/eMBS17xEbMkk+wVA0oaPq7TZ67oA1m3C7lm7zBn/knH5NQS6wfb7GpFwFKC07EztFsfH7C8psMc6tlmlyrrwXe03hJmYHdxV1vB0Qu27RgBJFwvvaSAYr1VQYOroJHtUNuL3nwEKAf33QTxROVKIs5nQf/9EaT8oN+C2keX6DB7h9FxDoJaorkI5RQ6DXfybSmtAH2qOIBj0Cuebvq6AlX8a2SO9JDZE+nQAdKnWnEKjCIFMJgGvkyXkyQh1FnhRU5lSh6ap4xPRdgpXSta+1eaNXE6oF4o2LZHQlRBzZr/05y816Tdi2z25NLJ8HyIJiLJ/Xb92HRCXqcFpsV54D6/PcVXa6DT7qt+8qb7zGmxTyYKVp/sZfVr0FMv7WKA52sXgxPVQ/BEPKu2AYyNqrlHnszFM6JSd8DQExQdcslt+D9tvDPjgqUlhMmxUkfVSVs2WjDR0nIAGRC0dCFU2K4/u1OF16IeEFShZ/0U3gugRsyNeWdPCHZt
- 5PJ5cECx
- aRN6c3IXHt9aqqHXlbPGlYHCiM1n6jiiI9act++XiQ1RmKBYNZroE2ZO8XVb4Pi9BRIdQvE69WUClo+R7iN6slFn4J7QqsHXKzcQapoKZcUZvWgDv5U3nm1rASlIJBai3GoF3GC5C+Z01Un78kfnr+G9d9ufDOVgcIR+K5z1eqbYu9EJFiZOF+oRcYgvsZJfpNhQZEDbMwVM12TCOqGLM6GL61+z81nvhFWSVPdoYBAPZA68x3gpsG3f2DDDq2BVjsqEmB+7T7BL0QApPRHNKjnf5nGVOo7zBYlqcwSPDYnI57t2gtjOZxXZld+Z3zMnrFdd2FiR4YMTE3aOrhlLb18wpqm4u+o00nA6xDHr9KIzo2ptdiKelXVTsGx7+4G/flW6mkoqwpZVYjFY=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4027B140010
+X-Stat-Signature: 9whwxay9pnw6t6zxuhdtdqaigr9p56jc
+X-HE-Tag: 1790856031-757275
+X-HE-Meta: U2FsdGVkX19/nDEs1C5OPuEgGKGIWkdxvwZDgiyC4c6+I66TU05Cy71ihgK9RtP+35ak946ijdWdz1M+0VlwSHRUiZSFKIy1YvdaFCbT9C4vOjaRhoL/WYbu9zavEhPVXP+U+RR1vgIZNzYXxOs+z5KQ72eyc0aHwK+DvTrbPfTGeUSDZFRncupLurkDPmV/rc20cGI/TvDnsvW8gFuJCXKj3Hb/ypA2CckAb9NvnZfVp6J9hWzfYBcK///TR2rBWM22J8hY2hqJGft2H1Km3K3lnYxM9M3EZs70UqVKZ/Z5wKj8jw2mMlqk3ucsaTm7X1P4D6v8B64kgc2jn0vVdSWZa6WtFq5l1eAkDFCMuZECnJ4DZz4G3AsojU6LNLxnmQ4WcENkupOXC3sx9SH9vnJZlc4WXqrHBQF9gH7PymSicv2TGyCLAMTDEDgCswfR6iZ8fEpVjZpP0e0m518+XFoHdpOg0Kx4AQd9LqzUxUr1q8+P71XyRUsGqq+5k3tbktHKhCcUY9D8YSmhGhDIYtzN2E7CpsUGF3Zwa9t96ZX1NOE58klgZ+L8+l48viUwgZTR/yNwCWbVySEXiLY9M/OgaUX4PMqkQk/jP4Wzk4cTFA2CxSxoQ2lKjHf2ZUBmw9xNBj7tWBGxTvUTiDpFHUZywoGLlS0FhiP5DLJ7BMQaAgqTOsa/LUBhbapL5TPl47lPGene4B8aFb4y/H8bQlel4a/70p0dbbjweQ6xEzeWBMIC7U2XqUBA1RFz6y4qxU/GkbPZpTtEMxwQ6BxsgdP+CvXfuhAJ/EBoNX7qTZlZ36S7Kw4x3+/c9DC3T+YwMDO5+1ig5Z117N0BeNMT8bQOh3b9q6wsSat/BI3go99gx8HRpNGpuSxcC8H+w5ebwE0cNA8u6sM0Ci5Fizm2ajvCxSNppH1OQeqzwH8IhiDYDrIc61HrAhr5mae0Kt96IooF2myi/Fe3CKbLLt8
+ xixoVidS
+ neMt2/tbLgWskQarYCgMOsujvhN0JygNwkq4j58i5Jb3oe5yn3X+QTyUL9iXOGGCvwQKl7/H0ELGhlnKqOp3R3Wd4rSSuoww7iGs7O2Z0Gt6Fw6tpz+fgQ9+TfYyVg10c+b0Fw0vYUVPojpgR65FX/cv6FJwvKtB8Ca4OvJO7HVWtq7iDj6tpth8E/x47+Rx2jbjv1Uwhdnz/mBW4JgeaO6XsTmb7tEcihWMDCtvHhzPpAZjeEEpxroHqDLtqLJsj3svXrH9YBq5Ib9LR1+HX7NWWfXCK3jXfj+YJTrdOrW9/KK2edA9JYCGIz/+jAfW1ejSnAw9NT8SNLELSwJL7ciHxgv39jbUqw0bKrcY+P0JTG3Gs++luRPXTmS+CmZ9kFN2gwmrtkUT/4yA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,24 +147,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/24/26 07:00, Sarthak Sharma wrote:
-> mremap_test contains three perf tests that report the time
-> taken to move 1GB mappings with different page table level
-> alignments. Although they validate the remapped data,
-> their main purpose it to report timing information. The
-> recorded time also does not affect the test result. Also,
-> they are skipped with the default validation threshold.
+> mremap_test uses a random data stream to detect corruption after remap
+> operations. This requires seed handling and byte by byte validation,
+> which is inefficient.
 > 
-> Remove these tests and the timing infrastructure from
-> mremap_test.c. The regular tests continue to cover PUD
-> and PMD aligned remaps.
+> Replace it with a deterministic pattern where every word in a page
+> contains its one-based page index. Use memcpy() and memcmp() to
+> initialize and validate the mappings. Remove the pattern seed and
+> its command line option. Also update the comment diagrams to
+> reflect the new deterministic pattern.
 > 
 > Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 > ---
 
-Thanks!
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+How will this patch change with the change in threshold handling? Does it make
+sense to reshuffle the patches?
 
 -- 
 Cheers,
