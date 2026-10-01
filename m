@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 110DECA5FE1
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 23:02:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B905CA5FCE
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 23:02:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDE536B008C; Thu,  1 Oct 2026 19:02:27 -0400 (EDT)
+	id 8C40F6B0092; Thu,  1 Oct 2026 19:02:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8FCB6B0092; Thu,  1 Oct 2026 19:02:27 -0400 (EDT)
+	id 874F96B0093; Thu,  1 Oct 2026 19:02:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7DBD6B0093; Thu,  1 Oct 2026 19:02:27 -0400 (EDT)
+	id 73C456B0095; Thu,  1 Oct 2026 19:02:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AA5EA6B008C
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 19:02:27 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9E67F1C3492
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:02:25 +0000 (UTC)
-X-FDA: 85275583050.07.1903D50
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F4C46B0092
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 19:02:29 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B1C5DA05B0
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:02:28 +0000 (UTC)
+X-FDA: 85275583176.11.1EA31B4
 Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 08BAB20004
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:02:23 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=T5EbZN2K;
-	spf=pass (imf31.hostedemail.com: domain of 3fua-agUKCKMSUDDQJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--praan.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3fua-agUKCKMSUDDQJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--praan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by imf28.hostedemail.com (Postfix) with ESMTP id EB61AC0009
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:02:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GRnb20Jj;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of 3gea-agUKCKYVXGGTMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--praan.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3gea-agUKCKYVXGGTMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--praan.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790895744;
+	s=arc-20220608; t=1790895746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7bxlv5ntBdZO0LQcKQEFlA8jL1mkcFGaYA5LZP7KTXI=;
-	b=D0kMKs9kw5E66Hx4H2ehsuOajZI0xcyrJdXHWfCGw4bPvwjigrnTbJhfBgx6rgMM4xGyn3
-	mMxObkGPclk3x5pxaXeqfBFUc4h9SJIFxxIjjFgzgOVSRXc1VtAGlSUFiGXEH5dGeg+jdv
-	XB35fmxNK1gW69L3bjPygHJWlObmyZw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790895744;
-	b=ZHXsPaa4buCUNdmpZDDCIYwf4wy5viC65GSnmt4Y7APRSjioLj9oSpOlvTbphm+75NaxpA
-	0Bj0+Wf97vo9QnkqnXWCrbjLe8ZE5knzY38Gal/cPudnonz7bGSED5wVA/Xl2rxikIORZ/
-	jxlz7FUX3H1zCG1llDb39v+AxgqhTwI=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EbwONChgIm9toIIBcyyDgkpchsmR3qTw1sfEfErlET8=;
+	b=j0JT6pUwRI29ApJYinNTYFX3CP45MrWfd1R2m2p7KbAbbai51Xx4bwakWNbC9k3lWah268
+	rb1EKmtAyrGvEttK2u7bxkflFphcKSb9cxfRPCISVFFfqP9RUCZx+8zIlZ5kTopdsy/X2p
+	7LBgfJxnF9RlEmdV/WlZdcLOzCLB1W4=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=T5EbZN2K;
-	spf=pass (imf31.hostedemail.com: domain of 3fua-agUKCKMSUDDQJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--praan.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3fua-agUKCKMSUDDQJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--praan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1ca15334cso7894634a12.1
-        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 16:02:23 -0700 (PDT)
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GRnb20Jj;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of 3gea-agUKCKYVXGGTMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--praan.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3gea-agUKCKYVXGGTMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--praan.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790895746;
+	b=ovG+1GefPd48vh4Yac2i6Ka6MMjGgXI7GYBTEMo4olVJ/cl8RfJt2+OiiasULbaFfpEU+6
+	QkZpcdWNpaiN0UWr5u8UXhSwlCLxqGaaXI2kYblUztlPWLIke/rlrQmy0+vMhlgtEP6/t5
+	SHVYWUIO4lIBKRpgLH+1AhgBGrZY6+o=
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc73895c7d5so8478410a12.1
+        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 16:02:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790895743; x=1791500543; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7bxlv5ntBdZO0LQcKQEFlA8jL1mkcFGaYA5LZP7KTXI=;
-        b=T5EbZN2K1Jp4OJFOPnGfzy/pdh8oxwD8sRpkQkXxbVsnrZwgKTiNc2zSEXCanzODfN
-         KqzoeaxiExEo8Ha7wryMQb2zwBTj1HfCFsX9wi9xLdfMzX8m8Jr/9K7RaAbMCDIwMvwC
-         OCnKTZHeNK28B23gicG41WyJFMuLEt/tbuo+JmkHoRxRLHNcyuz0gB2QJviMM8ihDwNx
-         5+TFkIbbjNMVvW+QTxmu/dRqBJjKuL/F2p5+IGZj6y5CzKQ1AUD1f5zLjsT/kbPF3NKz
-         rkwsz0dZvHJJik6yr9wH2Meki6dzv0v7LadAvKSCSctqRvQgOyTgL84UOoc0L8K9KVlx
-         Bqnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790895743; x=1791500543;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790895746; x=1791500546; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7bxlv5ntBdZO0LQcKQEFlA8jL1mkcFGaYA5LZP7KTXI=;
-        b=VPgOUV5gDM1dw4dcfnSUr+BHLR2e+qk7PcVcOnu9MgsMlOwGXXV9z6FiS/Z/ffF7rH
-         qkFUXrsbeRIDab4uEtGgDFILXCeseBfC92v/M1H/F/FTRJwLzojFf4a3UTK9beVPjsSH
-         JVXRPjiyl4eNnXCGMukXRzom3J8Og9dv0PoZoaTZRBm2IxKqZM/+OKEkfprtrM8e6rNV
-         ntDphjz9IUcJmXrs9/3UM0WLAumKNbKboB+CWUD2xBPSGeR5EDv1K6NKFM06LGvvfvLt
-         lzKSFxnCugFY5eL2sfmr9rL5UlUbcqGV7RtSeFX0xb4k9ljnWY2sFuMIxXyvyMhx5NzP
-         2V6w==
-X-Forwarded-Encrypted: i=1; AKwUvBw+qQt5Re5o/sjlzETjKgjWv/6Gj+N/Rh+g4gt9drWmMQPSkKzfo44+5qNFQV1jJXXPXDw9xdSEqQ==@kvack.org
-X-Gm-Message-State: AFuF++nMJmerjhLtJtw9f6eqAa20fbchsw71icb3CQJO5QkMgXVMUBxx
-	+xNBDom/npTISyIPtxWtk6ug4RS003+dkW0820chT7kdj6VtTHxYefvnNZXZaSRk60pU9IDrODU
-	Juw==
-X-Received: from pgqs2.prod.google.com ([2002:a65:6902:0:b0:cc7:58af:e212])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:4a97:b0:3c3:a3f4:5485
- with SMTP id adf61e73a8af0-3e0bc9f8cc2mr744551637.6.1790895742383; Thu, 01
- Oct 2026 16:02:22 -0700 (PDT)
-Date: Thu,  1 Oct 2026 23:02:14 +0000
+        bh=EbwONChgIm9toIIBcyyDgkpchsmR3qTw1sfEfErlET8=;
+        b=GRnb20Jj8a3nO9OFiWCrIgyXvQBOV9Y+eelAV73sw8tB2ke9D39H51CpBpuBicEfIE
+         Uyy33tv+QBXtxhF6GacsvHhInt1IZUxpNqsBus1t4VcuBaWtyOeioiTY6HTGcXS23i5j
+         IgR/0wcL+XY+rzOJK1kK+e9cO6mst8WYD0dMJetuc2Bij1Mgw9SAFGTIlHN2T/k8Ccqc
+         y5ehcOGvPKZLyzJIodVvYMnv6OJW3P/LK2ToDzUS7NCIjdwuskMqto/PgivsUBWA0kXg
+         Jl6zJNEEhbF8dqsYAUKljDrfB/1k1Rcgb8cV5BYyK09L6fTVfYWGI9l/5ni6USs1WvU/
+         zuZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790895746; x=1791500546;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EbwONChgIm9toIIBcyyDgkpchsmR3qTw1sfEfErlET8=;
+        b=xeDwhhmRP1Le6EblFf/GeFzv1ByBrWkOq5ht8hfuXR6kJi4xv4acmvRDeA8ZDWNYq3
+         PxdaOnoJ06LUHj/ypkGDAi4XjoZ+1Efk368JR25CI45uL/jgbaNtLmZg5f07640HLqYZ
+         s4OAqfLhQ6Pg05f6HME/glYbafAcBCfbhV5oqC4AwSTbvlYhd//2aIvYxrCqSaCh5Wgv
+         gUPxhizZf3iEVgzuVmfkCZYPrdIAGGVipGa5uz7IMclZyChRmm79emEVcU96EN0di4y2
+         T71X59rOJBeGrR/Z05UZDOZpOmAJvgx5Tgl0ib+LutPSAHU0UBjgVujBVw8gweBzZ8qQ
+         ZxNw==
+X-Forwarded-Encrypted: i=1; AKwUvBzpnt8SASsuXx4ihd4suaqPakK+FwX/IxUmUGScbissRQL9cmkOtGYRMusmiDYyVJaldFtO3su/VA==@kvack.org
+X-Gm-Message-State: AFuF++lzNn9JSgVDOwgH76siK0Ghq/GqE8B1MSsDidAhJIisXOxKjFuJ
+	DlspxlKx6J1ddN8b3IkHfz7hZ7bMvDaMZXmkeIMPzow6nLlBhVcq0bLBgNxMw/V29U3SglDCR03
+	tZA==
+X-Received: from pgbcr6.prod.google.com ([2002:a05:6a02:4106:b0:cc7:b09a:fe3a])
+ (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:5491:b0:3de:140a:3e31
+ with SMTP id adf61e73a8af0-3e0bd228817mr867758637.49.1790895745421; Thu, 01
+ Oct 2026 16:02:25 -0700 (PDT)
+Date: Thu,  1 Oct 2026 23:02:15 +0000
+In-Reply-To: <20261001230219.818128-1-praan@google.com>
 Mime-Version: 1.0
+References: <20261001230219.818128-1-praan@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261001230219.818128-1-praan@google.com>
-Subject: [RFC PATCH 0/5] iommupt: Introduce IO page table shrinker
+Message-ID: <20261001230219.818128-2-praan@google.com>
+Subject: [RFC PATCH 1/5] iommu: Add reclaim_list xarray to struct iommu_domain
 From: Pranjal Shrivastava <praan@google.com>
 To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
 	Robin Murphy <robin.murphy@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>
@@ -93,14 +97,14 @@ Cc: Mostafa Saleh <smostafa@google.com>, Daniel Mentz <danielmentz@google.com>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	Pranjal Shrivastava <praan@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 08BAB20004
-X-Stat-Signature: y4csbhnk6j1871dhw7h5dozj5ecffwar
+X-Stat-Signature: md43nn834dt3ckgeab3wdajw85j1txax
 X-Rspam-User: 
-X-HE-Tag: 1790895743-563373
-X-HE-Meta: U2FsdGVkX1/Zvza+7zT3KHDq7GNj/jZS5bvrZnzmGZhbTX5veB9L9O3gcmUUyjISfgSR1K4OwzLKJ2MBBplEJYsw61O9Z75FFQ5v/J3k8S8YC0Y92QYnQTL95G3sewOLcifyxS5zpAYwXT/nUD7HeCVnyLCQ2192B5f2UnQZey6s5T8weFyb3Ko0YCk0OfDwW7QuOFhmwRE8Lr4IZ8dT/T4FJ+qkByU9AOUIPiXN0J7tmLzB6eeusdXomQmaSU86/+fmIuDRkUDXK6gLR3iU4YdfuUGqcD2+s6xSoR4nWDA8YHeDnX0se1N0rU7PNUtgg77JwvQEU6QUhiSoPGb7tsyRIJLS/gTDvst1IUEtLHrgDT26HBHWCJQYA+NMYXvQYZoxo1xKZhnPQKuSGixWycwrVOEbfhXAk/zpF/QWt72qcaYC5bWNwaE/bdfBa8/z2eR8oBMhxnU2uT1EbcZTPo9/zeddcISRdHl1XGv1y+MaVpwd6ghFBTdZliMRAg+1q5Pe1/vxy0seW5v0OXEfj0jPCanjz5zrNi7cj/4LdrvwXjOC4ybVCx92x2lEEOFMv/kidqpCN95ZdkjGJ2ReFeXkLNDX2zQHy3WSJYRZSE4GWMJ2RPmYAsrpfn+q4NUhLvdkc+COXPLRmG38NhdYJgv1bcPfNSv9gCfK6UTHVTZGyRVWiDL1sO2SztjWPj5GjrGJ3TeeZIV+aEJDz0rTzKG9LCPgv9ld/xKzYWKC5uQxiRuyI/c3uvBaN7ilbXG01rr+KY6yYKUoQjeZCzIfBxz23n+1thpY1O0OG2jYBQiemXw8h31CBFGs4BgvDwy4OT2ajYQxpEN/MAMn1j2o0/OLPP3/6ct2xtZCMCvXyyyE0jpcGc0tRgAIDueTImqUiVk7RXCbAHxSohR5m2xcT7y7wdHHG2NYxb18hE5v8yVA5RSvn5WcebOHsEPdfxtF6IUfWXT++hgy4uotRaF
- CInLHlBi
- X0WCP6uM7+6H9t1gfC64JwLmzguCwDkZog6WXQGrX6c4z6Yqdnu98Gq/lWHYav16sGjoieSTikAnoPfMpPNRhs3ySV3NZUqeg6cqwW6a0RSZeOek8OcVVUYIxMUdOE90JejEblKV+akJsL3fPv4YHQGS67mdpFIE+mH2Iqr8ovCjcEyR0+alteFMIu8Vf3FrzkmY0iDRYnW7qDzleVHY1aijnGRWa+Ao9rPB+h/sYWvw5ZJcnsXyqVBeGDRUq92GFuEzzPkhSvdJOfzasIkkSqA/+/6e85aOmrxqcVevBBBYZemLKdoWxO/EKF0Q7ZfTvAfQgXyOHq8R47axhIsUut7YU8kbhI6Zfqnfg9vFF0Wx7uOR+cSpAdw/xX/77KPSsqSnPffw9VZqOI6JCpHSJ2QcYwt0ozRuBhJALaMYl8utRmhtTEulI65qWjgSNmJO+jqrO3Csp780u3XKice4Voxse1aNt483OtHt3IrNt0cn9YQzf0Z6v3n//Q2okgg5rBB638t4t+LPubOBAafHdh5Ydrcc0hj9YguDctF4Dk5Fvff+HZXPD3a8SWZ1xeEFV9yi8iWVP82Dv1M91sNQ1qkzNjpKZ/GsQ9CUvajeM36r7QFUN3IzEOMgCj2o0uEzdLPNAW4ZEr211kv5iwExqaQFqciMkMHIvK9Hw
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EB61AC0009
+X-HE-Tag: 1790895746-688286
+X-HE-Meta: U2FsdGVkX19IziqMERfJWj5uiRsTQ2gU5TWjZmXv19bqBkzcNGmi2ZCuLj8mQ9DENLpnZngeakwLLVFFLO3yXa2lt/NQWP8ee5XI7/d8GNCp6FzGmrg/LvZDPpwt0XhHPADEez/gaQLnz49VzOzmTvoheSsDJ7DX8kncmFA5d4Eiwrx8y8TuY89TwUyDrWm3viqsZ2Q0N7d7dLsH0htQKvrBSTVMhrbXbqWe0NNihPDk9c7qPnbJvNJU5cqSqQ1/YSPO2ke/sBxZ7GCpZy3sY9+GqjzgTUc4T1jBRPfH9eq96205ZsSmAkomIIv8zaCsG1sbfjtzQziNMN9h2SUOOBidEbf2qee+WXoBqx68Ve/UvlKKyyjjxwVrCLypCz1Anwbmt0Dgvl93JeF0bWua57aqyZrPk8ag3kN4+D1kwWiRd9Sjg5+0tH8uPtfQQAQ5YXUsby2xBCrRqgzVygGBJqQlBpKrbNvvx5OLiMaPXdEt+mjZhcbxr0+C3Eh6jIdg5mPgTBJgBEF5OGC8Iku91v2E2zdCJChIteEvL+KYxIIUAWgpdQMsa9Z09xDA5IvWD4AXFeJFUrcufi5cfJ3/yjxID63o8ryq+ycKrwq2Xwl7DvfSnA1MyTUzITy4QeAufCfrMehaSB5AVdTiosmwFdOMCn+EJkgBZMcs4r/1YnUdYM5iF2ZnHXjeSZ+8aP4NLJ0jqIvlQ6Lj1ns3DjMvpZRYB2szKO3O36aD5iCga+ZO6jNBEesrV04nnhCwH06fhXE6V5A605zhJjpPgyrquH1HolDm8XX4dvFdh7sHvdySvLtYyZnBH7LBeBHgEFIl0d8/f3sPjskniq64mWwlE7mccfPVkDLu6qE0OiEJQGkdjp/zkfeu0bOMt1hWhfY2Ahyfo5pyp5UFoygK3cVJmLc5mD7NlBUTClLsrOlBV1moXGbnC5Tu1aV8xvjn1ivmDPQ3On2uDNI9AFmjeOw
+ k7K/SZde
+ wBwOEQesLX9jtZ46fZFeAiMp26Z+xO73YmrWMjmn1uIHKz77ap40TKOjoM6WV2lY0zGj7GSH92rRip/88tQ4+ra+gMlMG1kJmzGd0YA5Yjacyf56dxf4CU3rGVZnvSZuhLtdklmQnDM1DuKoxz1YjRPGN0sxJ18OOI8VTtDtxjhrvMPwtu6f8R5OmDstF8BHec4pmPOrMSaKmLAChftREEQZ4PzR8m4W0vpzjEYTIOJvqfBn03k1SgHNJ7gpm8uQPKhewaRrhhUywdzqdWH0EzPCeiXTmE2LjLFQywJWrXIjxVWs+7Gy1Wv1h2hPH83lFFTUhMkfUhtIB59JCRr33kbnHsJcAf9SvXFnPqASLwW2wDx/sIqOALxPrrxMkayUVg6geHbiqL4V0CgW09n45Sj/vyKOiWhpRPuQydWn5m03ESKOV3onndFDF45JMPOxDsZu5GMauk28/qYokWDy2/MeR5ugGhCa0/FKb7Onb8O6rsgzwOM5aNrqc2WGsYcko2EeM+H5WtYa/PNaSfXGSot16/hjsPH3S7DVzdVVC3tMhYwnyYAiq4MwPoAcruI54XgPrLBVOLvxf2toU+krOWuZft1bu9yMoqMCyXOPoGQOJJqhdO79yg1JrXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,112 +112,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a lockless, deferred reclamation framework for IOMMU page tables
-built on the generic_pt library. As VMMs and userspace drivers map and
-unmap large, sparse IOVA regions through VFIO and iommufd, page table
-directories are often left allocated but completely empty. generic_pt
-frees a table when a single unmap covers it entirely, but tables that
-empty through a series of partial unmaps stay allocated until the domain
-is destroyed. Under memory pressure, this *stranded* memory cannot be
-reclaimed and has resulted in OOMs.
+Introduce struct xarray reclaim_list to struct iommu_domain. This will
+serve as the O(1) storage where the fast path stores empty directories by
+their associated IOVA. IOVA is required by the shrinker to perform a
+top-down tree walk to safely locate and prune the parent pointer. While
+xa_store requires a localized spinlock, this path is only triggered when
+a directory reaches a completely empty state, keeping the vast majority
+of mapping operations lock-free.
 
-This series refcounts leaf directories natively in struct ioptdesc and
-registers a domain-aware MM shrinker that prunes empty directories under
-system memory pressure.
+Signed-off-by: Pranjal Shrivastava <praan@google.com>
+---
+ drivers/iommu/iommu.c | 2 ++
+ include/linux/iommu.h | 3 +++
+ 2 files changed, 5 insertions(+)
 
-This is an RFC to align on the design. It has known issues, listed below,
-and is not intended for merging as-is.
-
-Design
-======
- - Refcounting: the __page_refcount of a leaf directory's struct ioptdesc
-   counts its valid leaf entries, plus one for the table itself. Map takes
-   a reference with atomic_inc_not_zero() before installing a leaf, and
-   unmap drops it after clearing one. Leaf entries are counted only in the
-   table that holds them, so map and unmap never update refcounts on the
-   shared tables above it.
- - Queueing: when the refcount drops to 1, the directory is empty and is
-   logged with its IOVA into a per-domain xarray (reclaim_list). Only
-   non-DMA domains are queued.
- - Claim: under memory pressure, the shrinker walks the queued directories
-   and claims each with atomic_cmpxchg(refcount, 1, 0). A map that finds
-   the refcount at 0 fails atomic_inc_not_zero() and retries, so it never
-   reuses a claimed directory.
- - Sever: a format-agnostic top-down walk (sever_branch) clears the parent
-   slot with cmpxchg, severing the dead branch from the live tree.
- - Free: the domain's IOTLB is flushed so the IOMMU drops any cached
-   pointers to the severed tables. A single synchronize_srcu() then waits
-   for in-flight map walkers before the pages are freed.
-
-The cost is one atomic operation per leaf entry on map and unmap, plus an
-xarray insert when a directory becomes empty.
-
-Known issues
-============
-These are understood and will be addressed in the next version:
-
- - Map vs. shrinker retry: on a claimed directory, map returns -EAGAIN,
-   which __map_range() already uses to re-descend into the cached table
-   pointer, i.e. the dead directory. It needs a distinct error and a retry
-   from the top.
- - Unmap vs. shrinker hand-off: an unmap that fully covers a queued
-   directory, or a large-page map over an empty range, frees it directly
-   while the xarray still references it.
- - xarray keys: the key is the IOVA where the emptying unmap started, so a
-   directory can be queued under several keys and nr_reclaimable
-   over-counts. Keying by the table's PFN makes entries unique.
- - A failed sever leaves the refcount at 0 instead of restoring it to 1.
-   The top-level table, which has no parent, should never be queued.
- - iommufd allocates paging domains without iommu_domain_init(), so their
-   reclaim_list is not initialised.
- - Combined with the observability series, pages must be uncharged from
-   their domain at sever time, as they are freed after the domain may be
-   gone.
-
-Open questions
-==============
- - Leaf directories with child tables: a leaf directory above the last
-   level (e.g. one holding a 2M leaf) can gain a child table, which is not
-   counted, and could then be reclaimed while the child is live. Should
-   child tables be counted at install, or counting be restricted to
-   last-level directories?
- - SRCU in reclaim context: the shrinker can run from direct reclaim
-   inside a map's SRCU read section, where synchronize_srcu() would wait on
-   itself. Should the free be deferred (work item / call_srcu), or is a
-   different scheme preferred?
- - IOTLB flush granularity: flush_iotlb_all() is used after severing.
-   Would a range-based paging-structure flush be preferred?
- - DMA-API domains are excluded since their unmap can run in IRQ context.
-   Should the per-leaf atomics also be skipped for them?
-
-Upcoming Work / Roadmap
-=======================
-An IO page table observability series, which attributes page table memory
-to its domain and exposes it via fdinfo, is posted separately as an RFC.
-The two series are independent; this one applies on v7.3-rc5 by itself.
-
-There's an alignment session at Linux Plumbers Conference 2026 for these [1].
-
-[1] https://lpc.events/event/20/contributions/2624/
-
-Pranjal Shrivastava (5):
-  iommu: Add reclaim_list xarray to struct iommu_domain
-  iommupt: Implement refcounting logic for Leaf entries
-  iommupt: Add lockless sever_branch helper
-  iommupt: Introduce lockless page table shrinker
-  iommupt: Return real page count to the shrinker core
-
- drivers/iommu/Makefile              |   2 +-
- drivers/iommu/generic_pt/iommu_pt.h |  81 ++++++++++++++++-
- drivers/iommu/generic_pt/shrinker.c | 135 ++++++++++++++++++++++++++++
- drivers/iommu/iommu.c               |   2 +
- include/linux/generic_pt/iommu.h    |  29 ++++++
- include/linux/iommu.h               |   3 +
- 6 files changed, 249 insertions(+), 3 deletions(-)
- create mode 100644 drivers/iommu/generic_pt/shrinker.c
-
-
-base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index cd1bca7ede9a..5d814854d825 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -2074,6 +2074,7 @@ static void iommu_domain_init(struct iommu_domain *domain, unsigned int type,
+ 	domain->owner = ops;
+ 	if (!domain->ops)
+ 		domain->ops = ops->default_domain_ops;
++	xa_init(&domain->reclaim_list);
+ }
+ 
+ static struct iommu_domain *
+@@ -2126,6 +2127,7 @@ EXPORT_SYMBOL_GPL(iommu_paging_domain_alloc_flags);
+ 
+ void iommu_domain_free(struct iommu_domain *domain)
+ {
++	xa_destroy(&domain->reclaim_list);
+ 	switch (domain->cookie_type) {
+ 	case IOMMU_COOKIE_DMA_IOVA:
+ 		iommu_put_dma_cookie(domain);
+diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+index ac43b8b93f14..b9611631ea80 100644
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -14,6 +14,7 @@
+ #include <linux/err.h>
+ #include <linux/of.h>
+ #include <linux/iova_bitmap.h>
++#include <linux/xarray.h>
+ #include <uapi/linux/iommufd.h>
+ 
+ #define IOMMU_READ	(1 << 0)
+@@ -249,6 +250,8 @@ struct iommu_domain {
+ 			struct list_head next;
+ 		};
+ 	};
++
++	struct xarray reclaim_list;
+ };
+ 
+ static inline bool iommu_is_dma_domain(struct iommu_domain *domain)
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
