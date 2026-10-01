@@ -4,87 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 861E7CA5FB3
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 06:56:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0CF9CA5FB3
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 07:01:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7E496B0088; Thu,  1 Oct 2026 02:56:13 -0400 (EDT)
+	id 6D0A06B008C; Thu,  1 Oct 2026 03:01:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2F346B008A; Thu,  1 Oct 2026 02:56:13 -0400 (EDT)
+	id 682A96B0092; Thu,  1 Oct 2026 03:01:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1E2E6B008C; Thu,  1 Oct 2026 02:56:13 -0400 (EDT)
+	id 5705B6B0093; Thu,  1 Oct 2026 03:01:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EB3A6B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 02:56:13 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 30862C0323
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 06:56:11 +0000 (UTC)
-X-FDA: 85273148142.08.C742B7E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4E3668000A
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 06:56:09 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G0Jv2bUS;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 23A076B008C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 03:01:04 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6A2D012033B
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:01:03 +0000 (UTC)
+X-FDA: 85273160406.12.4061EE7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6B7C180010
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:01:01 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fZLLXGgI;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790837769;
+	s=arc-20220608; t=1790838061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6bN6HNlcFQi10O1FNblhHULj/JwszE3SaFmNdNyfDw4=;
-	b=kDyP11dBw/LaPseQim0qJbaFkGzzt4qTrYGExOq/qSuabCtG60TJ45GSAvAyl4rMsQv/X1
-	ESLAIbomHW7o9qWc9vxEmO+QfZSdViXzxpgDSc2QaSIojWARlpb0IGjUjeNV1nj/KFggpt
-	1hmw+3JCEk1lqO4IP3eHs9qfqwnMceg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790837769;
-	b=ZAkexpG02lt5LySX4jLFJxQNWoyBwJfT+KB4O/jaDL3JkgM3CVUMnA77SK2/PXjgm2w13v
-	kDqUIk5MtD+XdM4rD3YmoUszgsYRT8RF0xL37tfIwabYjC9dCWO93mRsGm5liRJ8sgfDoY
-	TmLPeDWigwclSUUdtgegZ/O/aQcC6kM=
+	bh=B/xIh6O/I0mNSdyjCfn1fJtCctSaY1kOaJ3RjSONH5k=;
+	b=rc2ReLOFRY/cdNeqKKyxxKv+mQKWg6pU9+wY4hAgz/b9zE+ImdzZtUBOtTxnALpPyV9b2v
+	xMFR+Z2Za+QTdKGRWgxccXfFFUcdyvaEiWD10YYS1fdD+4LVektWJHzG0rdK20NIvT34uQ
+	Xm1f14xpqbvVdTTWZxveZkt8wdDQPI8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G0Jv2bUS;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fZLLXGgI;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790838061;
+	b=7QhxKte/usl3YjluIh8EyNHHX8TzTFSw6UZAYPocPZNqbklmCpyLKOZimsH7Cn49sFJgb8
+	UjH+Qvx21G2fy1QDMtXhHouzjeZtbAtwRo7rFfxpD0PRzgkbm8Reh4TNAgwqs+HhPt80Xv
+	XZZT3Not/ioMPcFBufihi7d0ukT4nyI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BD6E840413;
-	Thu,  1 Oct 2026 06:56:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353011F000FF;
-	Thu,  1 Oct 2026 06:56:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 65541601FE;
+	Thu,  1 Oct 2026 07:01:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AD21F000FF;
+	Thu,  1 Oct 2026 07:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790837767;
-	bh=6bN6HNlcFQi10O1FNblhHULj/JwszE3SaFmNdNyfDw4=;
+	s=k20260515; t=1790838060;
+	bh=B/xIh6O/I0mNSdyjCfn1fJtCctSaY1kOaJ3RjSONH5k=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=G0Jv2bUSp7QTNsyHQqyGV9oSEjrpgb0hsbqrRxGrrndSRNBVoXYO2RjARgPruAkeS
-	 yGQA/8Xd8ur7KF9XEfZfu+5+YVPkFmATfJ08UdgHkuySryiVJFY3IleUnoDtFHu6p8
-	 IDw2NzHKWOHaLbU4O2N/aS+W9VxrlDR/6o9q6hC0SrtqTkkkahApqfeig6fmKQDTND
-	 0c+UP7kAWY1wwgCSEO4xHRuqdtlXrY6T8LblD+X8tz2Skh8t9MbqEWNCRbyLpvfBWy
-	 +aDFY/s9uxg4regj9M4IOxNHewLkJHeLnD6lalkdqrl2Ff7Lk/NKHUVOJYRkFXl/Et
-	 95f4IotXLAJww==
-Message-ID: <f481da3a-88aa-4cfe-96ce-d332b812525a@kernel.org>
-Date: Thu, 1 Oct 2026 08:56:00 +0200
+	b=fZLLXGgImx9TODyKrsAZATl2CLQRWhm4jFBxozmhe8EFqK/rDLFcc+rfSfHj2MD0M
+	 BWsDFoWK4TOmELcImdTcActnUZM4VT6UAFN76l76QFNpncSYha9PTldrxQw2YjAc75
+	 BHhY4gvN+krCpXwJoKxVeuZZodZo9sMBImDdGrnUHfbjuYFR8lPLilAAVACr9Var21
+	 UdOU7fIU4Zahk1J2RXAPRtprWmx4mDgbxZHF124azE39oJaPo9AbYIg9kn7stS2Od6
+	 Hmk2agEza9eZuqnHN9zDYWQU3WQYlvywYC4rJjPux76oOjW3m+lDXAfhGLGB0pkpxJ
+	 f4zwPl4C2b2Yg==
+Message-ID: <4aad3847-4240-40aa-af24-df34da4d68ad@kernel.org>
+Date: Thu, 1 Oct 2026 09:00:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mlock: fix zero-length request normalization and
- integer overflows
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: =?UTF-8?B?67CV7YOc7ISgL+y7tO2TqO2EsMK3QUntlZnrtoA=?= <ts930@dgu.ac.kr>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+Subject: Re: [PATCH 1/1] mm/memory_hotplug: fix missing rollback in
+ __add_pages()
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Lance Yang <lance.yang@linux.dev>, osalvador@suse.de,
+ akpm@linux-foundation.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
  linux-kernel@vger.kernel.org
-References: <179066531783.50175.13377521828379196177@dgu.ac.kr>
- <3a95d0e5-7969-4b0d-988a-ead62b06b6f5@kernel.org> <art6x0XpWcT2aUyy@gremlin>
- <CAFPGN2jPGhcWVqa3k16RWMaMR3TwKyhFbYYF4D3L6L85T8E96g@mail.gmail.com>
- <7d120555-0c31-474f-893b-e5ee3466ead4@kernel.org> <arz82IHw4MqGTb6l@gremlin>
- <091706d4-96cf-4dbd-8f9f-97ebd3f8d81b@kernel.org> <ar00Lx1xB5rvKOdu@gremlin>
- <ar1y9pekhVr19MDm@gmail.com>
+References: <20260930160432.5564-1-lance.yang@linux.dev>
+ <d4fac8af-fd71-47a2-bfe9-3c6559b92209@kernel.org>
+ <203892F4-B04A-4F69-A1B3-DC1619176C67@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ar1y9pekhVr19MDm@gmail.com>
+In-Reply-To: <203892F4-B04A-4F69-A1B3-DC1619176C67@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: rfcnwuasf53j7dgferfxtjhmnshzhwip
+X-Rspamd-Queue-Id: 6B7C180010
 X-Rspam-User: 
-X-Stat-Signature: kdeq559y6bc75m8ag54oem1r5seobqr6
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4E3668000A
-X-HE-Tag: 1790837769-205831
-X-HE-Meta: U2FsdGVkX1/y+4z6rZSKfqL2CqdZUSk8V8J3hWAp8Le6tIlz1GFqSk9CHNA8/67NRxAT5sPENt6mv+scqmbfj4xKLodRwq+jwcewd96IpCvUGR+OVBtxIhgufFiaqIKx4w0KqbI17Kuld9V8h9q+r3D1dJ10qxO2cvRQzWB8anY2DE4c5dDqq/+dLGl9raCJ/gyYng+4eq0qUODR3l8OgzfygmoEEykdy8hZO6LE5p4fxYq1CUWHi+dah+ZN6NJwxjRAm0CcrZrHGoAz0asyVdQSpvt9JKX9SwiXpi6dDtPu8irEOVMwm6120jUWXMSAliB8CTHwJG+NBmEGYRWU2Kw0YXTp6uO/jqJOCL9S16IM+4tCcZwJGBDsN0PMV45aLWm7LJPpQmpP1QJJVTdX1y85OaX8c5qjxZMubxhJV6bk1Y9/WiqM1e0b+QmKhPnBukvbbjBO9S/A/kmAVnf1KcemCUkvWToXdwj+VTBwPVuKZvuaDeUJkk19aIcYzDiMUxXAiH160IaTRRX+oJRptbc0fb3cxEsC7FszVpyUhPeJPb/RAwfKhkF5OX17cGLXyGZeQQb1f6qdk9u4t16IMeTTeCQzkY1HYi8XgoHkCBVy/D6YbQbr+CyG6v6YYXrVE8cbPZ9mLlO6kz0s+nywdYBdd5JEGcjR6ZBNp2AaK8SKOOmTHV1x9dnt/DdmDyshpQxcD4N3N6pqjPwfZ4BkgK2Gz0/6IsHpLvrputQnV06xgRw4RpQ+JaDPVQAP1EStszXLQe6NfkQREPMWzzo5bF0VXIrWokTEi30d21NQr+/jFTLCR1L8T2MzzSGya3TuLJg6Auf8BFPHTsqnmoUuHFQcA3ccuT6ke6puBGrgHho+LDW/0o8/zfnJT0513TxFYZQnm0jheVk6kN21Y/1z2+TqO3I1zH2ZywAlY2xkp1zUldRLd0T3tE9ohHcg7rDz4VurjPkG9GXiLrVepeA
- F2A4XXxi
- YuftXHv8jv0uk+h8vTnF1LkrlRb1jLf96II33C6ApcpZWQCXo6gL2+S9odqrUBo6d35zlAfLnCAmnzVqf/ZESjF5KCCboEUjPV/NJMUlacGIGZwFACIWFZWGEPDidmlgkNanagPq4mnA6ye8gpJ0luLpeXN4XNUuWZ578kS5GoASfrz/WBeHBpgMwYadtThzItoyV/yThLEMeB+Ayh5aOanOKSIRH6xTvr0/ChxKL1WF4hyOYEQacjDivrAHG3dSQMOCN
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790838061-86074
+X-HE-Meta: U2FsdGVkX1+p+9FMpnEBat1YQoaWWPp3VXxoKS1PE00O8qCZsURXzdG+ntiK7tu5EUJpxiGWsfp9icRFIIO7HshXuE5O6BXXEcR3pjjkkJZ0lGfB44y/0BOfdvj64e4yXd+nAhdP9CqmDtLuLwKQS4XfQ81fQHfo4o+4QAXKQA58fJBu98lBnNkjMyvDcs2b13Aaj8lCG5CTpw5ucjpr+ER79wsyqZnQo+fCEdbsA9GplMspMvLyEdhMPK86qlx5foHMxCPHzqyNkezbYkExNzz4uv3EdPTN66Dr5D+Ryr+RojHe93UKf7Kw3LNeM7f8vmAe46CL9fwl+jY9JgZG2SiLbv5SMQOI/54OfEwknGWAwDNHlGtdR94goDwjFmIdYk9vpIlP17Jklp+Wg/nIlHoEDiwORotaY5zaBwGdJYBaEOngx7FeYH/zTnHBaAq9I71CXMDDZqP5hfPRY5eAhZk0TerNWwV58zgtEnEWTnW9pf1dQkpDf/mtGpuOx54c8dMEsSl6mIWLEjHag9yKqx2fhScdJu4DWf/2dxD1EFvhb/fRPD6+FKLRp+aCERxx+5/DZNKpHUOp0sfwimryYifX4nK3+fIDqb74eOP9+IfN9kRDw+adlg4Q4xWhHY4GgfvcFHxNPNRNZRNgxpzlf2OX1x3eoYIjDfcNiRPT4llou+8nAbKh3FBISFgDqJs/vdNYUV1QaHZJ+dPaxx+z3h+1vhvu9NCCmOEPwtro0ZE8jLsGNmvhZNHZ8CPKjJgzyQzjUSKDTEIyWw5Y8Y0ZKKIEePcx4/dWF8SSHeiK9RcwIwQsYC1vbYUWPpTAls+YNefhCcGsfUfqSmNCBQrMsABohAWj7BIhS2khSuc6BlrDZ1/8enAhQxpYye9GRHLN4Ed1yCNAcrN6gxdQYt5xrguQUb7GyJQSUrB23xcALgjZntKerAm6MXSJhhiBNojfG2tfVRpiAVzGMmm8Gr9
+ OjZnjGIH
+ DHrrxC/VwIFAeUgNBvz7Rxn/uorGcOMMYf7Wdpe9xLRMpAVZ/19fcq6zL1icqaqae/i0UMw5JxBeelZtQ32vKd6+joeQJjCq7WBPR+jAOtK8xza3zVuZ0EQEa/LWWwXIa6UuQt31MOtMXCP4hM70RS2eU1gOBcI1JZxyIdMoKX21NS+xhATFPSVfRzNtpSNjj3Zx7QtdQVXuCNjlGHh+YMBKV7OmrwyuID1aT2XdiShEtNfmSTSXwiQTG/P+wZKVzZW8r5vgt2DjGj4sT2zrzwMR9tNFU1xtrRLUlZSNOVH+wwBau7Y6lJBF6jD2VQ3Crky3I8gGblqhh/iCT2tIrQwwo3k08f6w/7eGtr1E4bplUhjw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,23 +141,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/30/26 22:42, Jose A. Perez de Azpillaga wrote:
-> On Wed, Sep 30, 2026 at 05:09:26PM +0100, Lorenzo Stoakes (ARM) wrote:
->> On Wed, Sep 30, 2026 at 06:08:15PM +0200, David Hildenbrand (Arm) wrote:
->>>
->>> Sure, but I still got CI noise because the patch was apparently not even
->>> properly tested?
->>>
->>> So I really want people that send "fixes" to test stuff first.
->>
->> Entirely agreed!
+On 10/1/26 04:33, Muchun Song wrote:
 > 
-> if nobody has picked this up, could I take the wrap around part on its
-> own? I would implement it cleanly and test it before posting :)
+> 
+>> On Oct 1, 2026, at 00:46, David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> On 9/30/26 18:04, Lance Yang wrote:
+>>> __add_pages() returns on a sparse_add_section() failure without removing
+>>> the sections already added in the same request.
+>>>
+>>> For memremap_pages(), the failed range is not counted in pgmap->nr_range,
+>>> so memunmap_pages() skips it. The sections already added in that range
+>>> retain their vmemmap mappings and subsection bits. Retrying a
+>>> section-aligned range can then fail with -EEXIST.
+>>>
+>>> Save the initial PFN and remove [start_pfn, pfn) on failure. For a vmemmap
+>>> population failure, section_activate() already cleans up the current
+>>> section, so the rollback excludes it. If the first section fails,
+>>> __remove_pages() receives an empty range and does nothing.
+>>>
+>>> Link: https://lore.kernel.org/all/BAD58999-1EDD-4A37-ABA0-DB1BD8AB3453@linux.dev/
+>>> Suggested-by: Muchun Song <muchun.song@linux.dev>
+>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>> ---
+>>> No Fixes tag, as I couldn't identify the commit that introduced this issue.
+>>>
+>>> mm/memory_hotplug.c | 6 +++++-
+>>> 1 file changed, 5 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>>> index 796af1028ee2..ca4656698148 100644
+>>> --- a/mm/memory_hotplug.c
+>>> +++ b/mm/memory_hotplug.c
+>>> @@ -380,6 +380,7 @@ EXPORT_SYMBOL_GPL(pfn_to_online_page);
+>>> int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+>>> struct mhp_params *params)
+>>> {
+>>> + 	const unsigned long start_pfn = pfn;
+>>> 	const unsigned long end_pfn = pfn + nr_pages;
+>>> 	unsigned long cur_nr_pages;
+>>> 	int err;
+>>> @@ -413,8 +414,11 @@ int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+>>>    SECTION_ALIGN_UP(pfn + 1) - pfn);
+>>> 		err = sparse_add_section(nid, pfn, cur_nr_pages, altmap,
+>>>  					params->pgmap);
+>>> - 		if (err)
+>>> + 		if (err) {
+>>> + 			__remove_pages(start_pfn, pfn - start_pfn, altmap,
+>>> + 				       params->pgmap);
+>>> 			break;
+>>> + 		}
+>>> 		cond_resched();
+>>> 	}
+>>> 	vmemmap_populate_print_last();
+>>
+>> Makes sense and LGTM.
+>>
+>> Do we have a Fixes: tag? It probably dates back quite a while ... not sure about
+>> stable, we never saw this in practice. But if it's easy, we should just do it?
+>> (not sure if we ever had __remove_pages be limited to hotunplug support)
+>>
+>> I'm planning on picking this up and sending it for the next merge window (so not
+>> as a hotfix).
+>>
+>> Looking at this ...
+>>
+>> x86 does not really expect add_pages to fail:
+>>
+>> ret = __add_pages(nid, start_pfn, nr_pages, params);
+>> WARN_ON_ONCE(ret);
+>>
+>> That's probably something to clean up as well?
+> 
+> The warning is a historical leftover. The original code
+> printed an error when __add_pages() failed. Commit
+> 10f22dde556d accidentally turned that conditional printk
+> into an unconditional WARN_ON(1), and commit fe8b868eccb9
+> subsequently changed it to WARN_ON_ONCE(ret) to avoid
+> warning on successful memory hot-add.
+> 
+> There is no no-failure contract here: __add_pages() can
+> legitimately return errors such as -ENOMEM, and those
+> errors are already propagated to the caller. Since
+> WARN_ON_ONCE(ret) has no effect on control flow or error
+> handling, it can be safely removed without changing the
+> failure semantics.
 
-I assume the first step would be to identify which cases are actually
-problematic and try to see how we can easily (not AI schlopped) extend existing
-selftests to highlight any actual problems.
+We do not want to WARN_ON in any situation that can legitimately happen. So this
+should be sorted out (and Lance is on it IIUC :) )
+
+> 
+> This also reveals a potential bug introduced by commit
+> ea0854170c952: when update_end_of_memory_vars() was
+> added, it was called without checking that ret == 0, so the
+> end-of-memory variables may be updated even when
+> __add_pages() fails. Returning immediately on error fixes
+> that as well.
+
+I'd assume the end-of-memory variables are not a problem, as we usually do not
+adjust them during memory unplug either. But yeah, ideally we wouldn't update
+them (like other architectures do IIRC).
 
 -- 
 Cheers,
