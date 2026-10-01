@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D69A4CA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:23:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D942CA5FB3
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:23:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B00BC6B0092; Thu,  1 Oct 2026 07:23:20 -0400 (EDT)
+	id 70A9C6B0095; Thu,  1 Oct 2026 07:23:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8A4C6B0093; Thu,  1 Oct 2026 07:23:20 -0400 (EDT)
+	id 6BB2C6B0096; Thu,  1 Oct 2026 07:23:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 903CC6B0095; Thu,  1 Oct 2026 07:23:20 -0400 (EDT)
+	id 55C296B0098; Thu,  1 Oct 2026 07:23:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5520F6B0092
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:23:20 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8D90C03AD
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:23:19 +0000 (UTC)
-X-FDA: 85273821318.27.35513FE
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 27F7F6B0095
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:23:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 931191403A6
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:23:52 +0000 (UTC)
+X-FDA: 85273822704.14.8933F07
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E7DF3180006
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:23:17 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hq1jxQGW;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id BB20340011
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:23:50 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h4CPFslt;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790853798;
+	s=arc-20220608; t=1790853830;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e65AJN+dizDpNgTUq4a0Cxwv8xeFTHb03ml1zIvkCoQ=;
-	b=1zoSiw4squSZ5agLUIBmKPh81KaIjEavDdvb2AaLIavC5TpBhEBFmCnGWLxvgooH10q2xr
-	j100VfyX9JGHJGL1ugtubbF/meV9yLdaxL0LFnIEdu0mCRzpMZMSq3blarXcYf7y9OXn5i
-	kEhk4RdBAx8O4MFiIfN9wwOCKMXtntM=
+	bh=kf6DGNVTAfNJlmV6n1mnXsg4ktNEvr3LbpOB3nxPaDE=;
+	b=vprpzuOOYWiCLnka13ogmPdJj1naxbeEgmXTg9AKEgISe/BAu81TfyiPe4VVWxMyd6MeiW
+	SFiYdMXB1HmATdGfL19noQAY9XpE7YtAm+wTr/UwQC83N0XTqMB85xlH/8znFBgQCW8R5c
+	2vJMOGtkK44ZK3T6puwlH8RBBa9kR4Q=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hq1jxQGW;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h4CPFslt;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790853798;
-	b=u1wB5Qlx7w976yEAEqaSFQSXhL6WxmkL7T6OuLz4UNNU6pqt7ORwXVHQPpW6haPOryeUfs
-	omSWOCjLB3869kDe3bXFwLrNRLKj0AOU1swMnf6JE+5kugaBq3KyF1ZiqGhZ4c1e8kFbZs
-	UErjXsDfd4Y11t1RzSMntnWMtVzHUFk=
+	t=1790853830;
+	b=EOj1tv1gTVSy5HKlQiURk/GNh+ZuPLNMb6PGqT0Xv5cpjwhOGQk1BRFq1ndlLpl2Oo6b9t
+	bs2WC9hLgpA5oKSPMmBax4x3dQLgKFcT25DlJ8kWZ4/e4drSKHjqFBqaTlUn36pRaJHzTU
+	cfY9Z5ZcCFn+dWRb7v3YCy9uZqlADzI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C276E43CCA;
-	Thu,  1 Oct 2026 11:23:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C481F000FF;
-	Thu,  1 Oct 2026 11:22:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0FAAF4062D;
+	Thu,  1 Oct 2026 11:23:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA3E1F000FF;
+	Thu,  1 Oct 2026 11:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790853796;
-	bh=e65AJN+dizDpNgTUq4a0Cxwv8xeFTHb03ml1zIvkCoQ=;
+	s=k20260515; t=1790853829;
+	bh=kf6DGNVTAfNJlmV6n1mnXsg4ktNEvr3LbpOB3nxPaDE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hq1jxQGWzfify63ZgZEC2/fTTtnkxCsb0bizh56Uwcr6HWZKYoDtzLAFE/he9Pr/3
-	 OBvyMZtgVbRz0AtkC8gljG+lq9UL50oTsGKJDPGHK8jZJIpT5dYB8hyBjZJXNOxLRz
-	 S1g4fJkhFx4OhWbRxwbh5UP/VmxG+SgV7NC4wNLWdSvJKJsZSB2wPLKQlnN6Pd/MOU
-	 AyvCel6IqNdq6bPj/vEEPmH4T2cCnmdvEGZQUWWySwrQ1KwV4DDeKV0/oxJqkb4dkM
-	 SU0m4lXhUuDVnTU/1yFOTftTVkqDtBxeH3Z1k8kBGVDEVovf+RLA3zW5xQqJ4ct+O6
-	 UbDMDSXAUlYtA==
-Message-ID: <2dcd9dbc-99ca-4f5e-8e25-f42977763c84@kernel.org>
-Date: Thu, 1 Oct 2026 13:19:19 +0200
+	b=h4CPFsltJBUoB1HezA4bvarNWaCYFqBa9hBNxc+xCNO9nmfmhUT/wWKO5h1TlPXIc
+	 GDcAHYvPrvXUUAdbanMCx0eH+gZVlMuBMNeu1sx6Mkedl4IpqYJoXRAvrhcsyv+r6m
+	 RMOwLgwZt2tR6GpLFOAQOaF+G9JYEPfVrthsR+29KjdXDX9BD0jIpGaVMsh4wshd8/
+	 1V9HgLQZNdCr5wRgqJ8ZKr2TgosbMOG52qE9tjBdGDKvkUBI6BT95ilyElZCxT2gq2
+	 sTZn6z41rW5NtndnGGja5mbMNd0FQbRt4rsUAYkIglECZ5nHiJQcrjE0Gm51PZvf3T
+	 wzXZdyJs8fI4A==
+Message-ID: <f61c0ee3-0eb4-47c4-ac52-66b72764e242@kernel.org>
+Date: Thu, 1 Oct 2026 13:20:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/9] mm: add hw_pte_val for HW PTE storage
+Subject: Re: [PATCH v3 7/9] mm/kasan: use hw_pte_t for the early shadow PTE
+ table
 To: Muhammad Usama Anjum <usama.anjum@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -133,7 +134,7 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  kasan-dev@googlegroups.com, intel-gfx@lists.freedesktop.org,
  dri-devel@lists.freedesktop.org, xen-devel@lists.xenproject.org
 References: <20260922-pte0-v3-0-5670b8cb9059@arm.com>
- <20260922-pte0-v3-6-5670b8cb9059@arm.com>
+ <20260922-pte0-v3-7-5670b8cb9059@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -180,23 +181,23 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260922-pte0-v3-6-5670b8cb9059@arm.com>
+In-Reply-To: <20260922-pte0-v3-7-5670b8cb9059@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: gsj3ee4cqmhpp8h4thubodnq5ac7wfhf
-X-Rspamd-Queue-Id: E7DF3180006
+X-Stat-Signature: q5c57x88r5zm9d4cjk6cdo5jet3xr4ua
+X-Rspamd-Queue-Id: BB20340011
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1790853797-345092
-X-HE-Meta: U2FsdGVkX18f0RthoVWNSgO7FQRv6DsXfHDr0lVqlFV0Q9lp/R1SFl5aBZK1mbr1N+14CI3hGvfRZ2bTZPEhA4R0ZFBdwd5gZmWdv3LJpfFwUSdqpZ/UbWPKjxwUCYp3FDxZVrQowwthAG0fLxpWGUt/pIWDrgTv/fpbWEnGFxn6qbEVsezukxD/SjaODUWo2B3t7wlKDS1CNLoJj3QPwGE76H9t129DVxhx257vdD1HLR38CCJRy42uOK8iVyfrHKMrQQc8KuB+onlhKibh4AgBjeAiXFOND8pGk/mPadkQrayaCregqz75v7SATiOCsc1fu7JzZg3zcAUkgKpPPa1OGrgokVZWpIEaPo805RBV4Eb8yPsKCJ9ut7ClVWrej9ZWkQKIBzYwvKVmXLz7HAjcZl7MF/GPYD+dJsdjI8QZqExSUnidKegWdizvo+MpZ3r1fMrOGAqo2FavKqYQGBp64y1TcSKOS06O+Z3PxLBrQvtQkP17u5ncynNc6RB6n9msgcyY0WyPhmAyeogAFpPkCZSX3nE9KEFsA/5+0QfTazjLm8VUmSesWMTpxUAgnCfluZFM6kYB+lB7MnwHy8okoL+CayaJ7eMMjC2Mq55+4ELFJLg99Zb7A8OWI1j9WEbZ3p8fiTzhay0SqC0PEEBkUIBtElRnIpCtOXGEcTpjC+rRtYwv3ZG20les5rh4TU+swvBBfY9lOXvnGPuKhdmI5DznjFX6iQ3Fb8E8lWLcNlpf+ywkBuf8NrYK3BJSaPXS6BKsAo7zh8cyHL4rPkEfRi5SJHgTpcVb5n7WwuAGgJ0NgZkqEKUAhrO34jMJCaqngavST1EWMUHAGNA3NdDqa8kYPvwmjz4NpxC5bmktWTB8k2bKheTb0cg3X5L6sqh1EeD7JqzpFqJ00aeMlkbtjbzYrUbQS/HQHi1EA7TMIL3K6Olm13wnSlmYWQFm0ouH4VwkT4B5Fidbstw
- SVPQhAK1
- QA1Nmp2Js2IGpVgTB532zCYpADoAijNSxN6FWKtf4+gTMG4Hywl5vfCID45FoN9TTFFj1r2Ye48IbCslnmbw8WVbVJFDAJy2hjdO4LXJrilqSixisfkeXsPtaMSQjjbjTICWqZTSccFQUvG5A8YK9cl98q6e8FhYEBtdpGSn+/gp9XAYlxPWfFV/LysEujEOX5Gn0fxHszUMNpKnHqKnUE/cmYRt1C4V87QoPbI58qMZWxUYMk2E25Egjsg6y3moD5BzawVdLNWVdl+FrgnYCqFOdfY+5XWyxUvWhHDhBAGWDJf9eb0JIhMlSophHoXpKikxi7LBmSjBz26+0Z7YhHMoF8IKmNhG+D/8M1yjR2+6+VzowD+FLk/q1c2nut4GdUoE/NMYONbXtcFwF5TSB/IPbccOPF3y7RBKSAbUb1f1kbjNnsDOQRp6UGDAtTUlLKNxhXthrgFkoiQ7IR3oYUi/ZZEvMjo6P4pyJEufjdtSSx8BUlVNEtuQNKdBgGJrRBFS6rxTNwwcHXfkp6UKfHxX5/jNuB97neiyZpfvVn6EpfqfCZBUGE1K/9kLWKXABQAMp4W6L8BlzMlV02miGvd0q7PC2ZGWds8mUPjI25tLrVzVMehtrPEMbwcXvk4HD33CyI49iDGn9xlQlm2oPTQ5Pf1ABkT2WzzD7W3SEXvwwmfMdQzZWWQ0/cK3GxfKwz5IJcmpd6hp5u4kMWmUsULafwLH0qN0nreAIPvvzG8ByJKZor8Hqr5p2wc/AOaz9DpYIPl58VjAahZawV+os9swZLuafcvZzGm/it+XBrqzCv9GfNsYbcnoXYPzxCh0YDXCTXIZjoOULsAWFbGLuzzXOJoxWuu74aV9An0S/BLnsbtQEBFWQ0N7BcQ5adGF2psWEYGj9jkwVxedMwFX5JXb4DgPAkFt2YijYXhcDhQwTBDJdaAcf+A5dy4SPnIfJaQwCh+qiTckAYLhGHWDv0jn6Kxy/
- QIFU4QTc
- 1C+J+3dC2p8EMSLDVCGG9VEZY/SBEViUNjDsy6CL+hZCbScwrCetZs04C1qT3uMiqSphIlRz1N+ToDf1slFiWspiZxYRH1NZvHQEz5gtCFHihvrd5+K4FKPHunyB4H7Yg8JAvMsifdqstFjNxr7LOWIvLVrx+VnE5EcFN8vXIU6MqeXWaSg7XUr9J9PBrLlptRuJYsHsL0sNA4XnMwyB/MDZo/bIxzgzYHKGUymSoCQ9LGfVM7TRX66c3RldGtgg7d/qrVSZ294nRm4ivS2pZ78soy+ZELifD4VXt/2Nf9/rchDvzltOvzc7tWSxh4bABwtYghqwmhilcjmfGbOHqUvxDnz0bbrKE0cYxAUQzoyfQeO9RyrmYwHBJSNz2chfkpoWl55ihvYYdlIzT433VtJtiZFDs7lCIvn19/gpya4bgLIXMkBZYcdufAHX0igHk0sgHdNCuoXFggFjg/MGlAAPguZJdAGicRCy5VvWrAJZOqRnb7453+UT5jK0308J5FDER7NXJQEHsJ0nTgkHvyV+queLRSGCAyGyNzbHauLw+vQJHxSmfrly3XCpLnYKVtF5oyfutMLVP0FBPC4EIllE+JTVwjnAlNXZVdJCtDFRorHmLW9CZoUjDlbrur6dFjQAzXAL4iVJBNZ6WOzFI+VOALWH5BrpERUDWyjkUB19Y+8A3zRyBzPoCtSlmW8rNqlMY/toOLtBA9gDMRvM3qaMWUzAxY2BfpN86StC07Q3ZfnMbdGhr6bjVxZcrMp0phf02D9gZmeCtMWTW+xNqlC4jGQmBnQ/kk2GvarVgaMNGmBi3r9FbmDAC2XtItoFWeOA5/VHG4fGdsjhccx9jKZozyP8x5zoue/Mas0lSPb0ukChu+3L1VaR2TX7AW71zNxCA61GAMhgp7vTqicp+QTOtSGiuL5qsRJeCB6pZNmz+aLQqzmJq17XlUu+QSaWBQcuRE/zBEm1EPKdjcy9VZHom3OVm
- TLZ9yxkQ
- xlvdfitKah+NdWE3i6hsvfy8VhMn5HNCS0X3+a2//pIEQgW4/zOGtrQalkLzEBCrjT7PogX256mb2nvaGGkZ3q+7y5DPXy7BKyQO+KmOkfu4/FlPDBm80Z/GDvqwvQpSfAV9JiVvrpDZvW4eYM7XiwAsedVeKt1cRtrglq2AuI32AOoHEZLdhp6IhF7pcS/MlQktF4uICelLrZxAQREs8hd1ntxnxNskNFaDyO4WB8fTb0aad24aL5UdSgRmpZmUAD+6ZOJDSQ7ZXnSxXJs8j0y6+4pFASzZxbQ3OUaQzvYpi8PAv4HBXM5yiycqkN0iCU6UKNam6gJED0QNsWqyEkTYpBI3tLyya2ydEODaojfzmN0icsLCUXhcy6/muOGVxSFk/6NGDW8eUOZHPzRuDk54ZvHbM32rDCLp/MOWEDaj8QQvn2a7fafo0nKNtTOWGqwX68kSPBkv3DtvrhEZC+wLqIf3f1sC7yT02u+1N0pl5IwsWEyXJmyw2m9HjOZ+XpidcG05Nnh5LYAohGwdBGSm7fRxO8MRcE/QOn85IbzuakZLc6QqkO1y++Z80K3KvdMKFssNxOJd5GXxg7U+PZs82cTtEKsRnVVKsvXdrSXvOdxvJR1peH84DbgcGALzshOnP34/pAJFqA154jRyvw5VNUlBIn/NcGUHPU8i0Xo6M0rTwkyQ1a/62ntoCGL08Vq2PtLL10Aw6xILphcnInQJpURrJ7dafz39TbhHQNZ/G2iOXdj0Bo56JuT39Bpfmu7m+bIie+aao9oV7o7vCvpr/eGZTm1uMRh7rRaWErHnYx35AyD34YDFpjsSqngmBbRCaj6r8jJk998Q7IT4gc+qtY2CZtmJEve7tkb4EfY+WJKohbsLZzFSeqBvAf4vWITqNTBj6zPpHYFxQ48/+vQdzHrKLSOKeTz+tDkZozK0KptP7xNT1TOgDdN+XoM3w8bv6ic17tvFz9bJ1cm+FoJ/Suf3y
- eEpqbOQ2
- JexY8yQN1N+oRfVdfoHsZvLTnTP1x/0Fg/sq+8+yN0JsWN7Ylfr0MsZ3GU62pAfb2Ye9TTnRsbUySj9SqtO3MHvDYVwoe7XqDuSOCiqKH0+C1P+PSFx8rHOfVlZq0ky/PrFxvVl8AzeHMicDFn71wR9cDLE/af31VLLLaGFfQfg4W6L8nL7fOBbttr7ta/34MeJVgjsN4m64DwpCpyhLOxg4Vl8rmMLV5mTS6rbi9e3tz0atV+VebKyhnDc1YZ1w5ViOoD1SjVwCnWxu5NtWdtyxQj80q9jeQR2G4qLFmW3BEf40JuE7Oku9NEp3RQoqlcIWgvwIKoC0DuNVoEK3aHbi4+0onaGqR18JkMmDLjqEY++Bk3rEchk9GbiLEjDSW8r9MOnN/5NG1O8g+IO69GeI5+bQ5LTgjaUxvSRAx+hw1cT4VHor2/UWSe2HXfzWOgAe5IPNNfSQ==
+X-HE-Tag: 1790853830-157227
+X-HE-Meta: U2FsdGVkX1+s2KtrwXOOtDKSjnYa59sUsIdlRZHWvPhNjLf+rDlZUdV3uZvSXSdJiDQhEioN+LhRwog+TEM/x8YfpxEiiWRMEnkzEm95jmIPgKdKIQSoyr+DaAEgP3pQQ0EhRlAib51j1wWUi/tVD7m1hZOkTCE3RKu+x8rO+IWPGEtH4rjRaX8r4EainXScGnnPK0u7helUAWnjoVgwlRisJMfB1BGskadJfVEBgwKeWlqIH38tomBZfP7W0tu4l2ipnqTPphQTPSvHYuYOPJpw+/tWPyUNaBCVqXt7Yz9LiAE9C4kAPQGQS6wFZh57n3jM+ucHbh7rmOsty55ryytfQM8hmZKqbGR8r0pwGeRRV+XQQIdljz4bMFx+tYIOk0svsjRUbUoncWI6crFb+TBiX+pYVPM5lf53pFTQzXVKrOz3Fxih+2dWrabEh1XlSYYKy1naix2k0fG92Fae+Z8++pbBc772zBYcr0fbQSDYt6LP7suAtjMxn6m93cQb0/9Stj41r5jv7YRjrWlBAgv7pkQpMZmbiElgRYHNfhLU4c1AMig3IkCG3MgBjyNJHE5rQrmyBIbbglw/7wS3pUU7nwpr33M3A6ychpyRi+9LKCoPMxG/ss6GMRsLQ31mOGlKP0S5x+lY12ZYsWJCzSi1H48wewvUEHmMt0WHaxq3Dg8lvFfp7zq8xfdwLgfccnUmUTJ7pXXFyfHpXvKrfudckfz6Et8Zq03+cVVvm0N5DJve1+OI1Fol4TksValhf9pcLkAp0bDx72Ab4C12yx21dF1+A2j9XYuNlRWWhgp999TNdfR0IaPdnGZRdq3UAU5tBsVuh1g/XgrdAFlS3KqhUFkqz/J+rguzkFtpFi+NFo5vD8fhgGU7DokDhVsY/6LZCWbnUwybBYDvThnLWJWf2l3fTOg69AK23zh1RUkmvKW+WZz96WTu6vbw/RW4dCqimxn2bOHqasx2L6+
+ 4cdnZyH3
+ RoWoa705dtKYB3LPGBkaJqZwJfbn88CUk5FA61xBmEkUKoyLJV8b3axrFRd9Kao71cXi4FPEs0ZaDp1Nu9xFGYhusV8mnLH24xUqLu3uEvGmz2UEB3x8ZZDfuYmpQ3Vs41AI4Xui1PNg5AAzVa/rORnoStxVHEG3/zxFwYJNLvKK+Os/cLyHlvTQoPd67BdnwJydUcxr4sCbGx1ZYd8rZnEZ9lPULQhqbj6EUIGZQJihi+tj7JtvrDj/FzkQiGC7UoqP7e2vzCHQFcxdpP/sdAHBieItNMnhHMxPAN8BpVbDlMh2Jp7XxP7wYnudAdZFI/I8h7f0JIBRUdqeHHGnuTqOaSnmY/jFqhLSH+BZpnWF14cL+GK4Pse8xgtG+ZuFnJTAgAL3mtyJD+ljMA/X8EnKBXrDvRtr/Z/efZG0LwXbZJnjBlgCsEpRfdPJuJizEl2SITJ2PtgIGdPQszr/DdUIZMsyXPMxgtm1xNA5wOXyTN+h7L94YCwkyGtopZ2RW4+wW83yTDhkoxYR70KqdnCV+gvtDsTnqaZ6oEWG1dk+wwhmU84gpNY9Uq8wNvPC3KwATH+iWf6d132gv4bWSU788wSMkPmwRdJLxfif8IJ5EmbNc3uYBte/yoWj03ZvcUGkTbaedt1QBcOycnf80031qE2lK3ilj5kJamLo+7OD+DjXwMvwZ3L0RyHQQ0NMNqHedIxJiowYFaFtPjKuJXScE4Pq13LWkC5PcJqHolrzs7CVkejgzAB14OTEVCWlZEJ2BLQr10M3B9VO5slZ4xYXIu+OQ+AEGEVU7Xqj8RY7Fbbvo6j4uXJphNzJQW45aFoCMnZZXtsbYfIKhfPYtVevzgx/kT8TvJxUI5c2NsIkHJ4A/qp8R5+CjhNj21PRMfkTvyNNsCkfOnSE3TK8EbnwmEprAvXJWOhhaed2h9hM0Bp5ofwtShyCvpByfXlmgwo4lIN0AuCmlcmvUnTPzJfxtmpe2
+ oZFiOIgD
+ mmIjB+Lc7QR2ituKe4wNcCYP4cYTX7a+zxfKssUM9idPqZTLvwUJ/hcyJC81lLyQi1SS2/UnXD6eIlFGrSzYmdrlvI4EvzrMI9WjZHY7AQick3QCdANXD1V92Ox+YzzeHM40DhHasZBUZ55naZmQSzvi/NCZnYPV1zfkniPiiUac5t4dtGJJ/NSGuwA8OIOHcPXZdd9bBQogMAs2Jq27DrXXnHVwAN8mJL4ZulgKCStMsZnQtf6RofdXneD9IFK6HNSlV7nq+0mnkBIya3uD/cFYXCVR3xUJ/nwF+7DhmSLQ9VybYanSeRBJjfiZGTzkMm7C81TayV7Z7W32b3IkJXyOBPsLyshJVm5tYvxy3A7henDjHcou+vIbN0TBJeT7QOupkx8U8N4jMogd+ZH5do3n/x7WpL9fn1cxZJg/0kKbwTaBxhH6MSF0HRYqEyTFgrrygpzU3RU12xeYilm0B20D+t2sgbMuwwsg4NRcdGY3sN3IXGrVOF2tMMlJXO1QpudiQoj3shPMOKUutjMaWm994nE6c5rue9WPWbhbcEJMNUOCupB3kkVx5MJZrKzLVD4INSGBJXp3vNgRobtsGQkhe/jipHDPiF7tutzpFc+hHm53N3/cZrlwixjowcpLtzzrHnfSfEoxdnh6ya5aY8GcBuWkT6sY8MteRcEILwNQfHyhx5YQ4iluW/8bAPkrHsd1jz9L3t+/lCip5Abv29JUARWQuqWBp75wFnBL4YTVhNM/waSVYlyrIo4CLaENFYOdHm5or3Dvcbw/x836h16PnCs69VzG/A/rCMpDzkNI1ICGmWUUNkrOekYeDiz0fLYYMLXlpe3/h3i4KNfLMNLiiLWmAMnCXCy0PteeagpZqRpty56CC/XVSU7WwHx79WyeFS823fiUW62KsQ07THJlHJMRk+EcGaC3rbdPVx9DMQQDn5oV99ywFdSWZ5BdCgBW7WVvm6kVC/iVvQpPmIEg5oncH
+ UeC+OXfB
+ 45kFyEQqccJNaJ6T43ffx/3N3og7NndX3iV9M2AKNV9yt3P4tnZbZSd1hvu01+/Ul90zZQD+OcVLEf4JhgQ/g/itOtfAFjT8JRLBg1O1kJVeq7/Dj8FDIttWFHy5tINnm6sxRhh9iIugg7AK1e9NQOGJzHqzxEAtSrHKUtAEN+7J5jqa934QVxR3XiWxDyXc0lVkAem81pPpLkORg08DTdwOzPtJQ46V0bXQX6a/yglf+IlsL2ngnOGz2Cp/RMzwxC1nRrtFkTLGHLLfu+locNyK6a9QtzP4/TQYLkfvshIV+4IhcTB0RT4EsAsr7Xiuoj4czAoH675abggYSPiyvS+TWJ15fn1I7K6/rl2a4zIPKiViUpX2XjKF27Z8OcJ+gtA9cltcaYt2KgwwmXevQfCSBKnhGeeRTtOa4OOXG2ftN6k7ergbwUpxVJ/3tDZYrYxjmqI3kb1ORhi7Cnj8dWPNkrFYb/qvTy2ko2JB4VjJjOZ9rldwTee8aVS2e6cuIhZu+h1FMT44vg5w8jRLXFGzqdLO/JvHnvYJLnnhBOaHZ4hBOJyhNvhrN18T7bZytXKt0GvXrMsy23sU+eaiWlSt7RkTxDWGd5OncMz56XfDaILYUP2ZOaSPT8lS4kSoJP6uKDRWsVyZkuzwRX2Zpf0u6CKBoMUUPmDr9VhYeEOYbLphpb19tm05sMDyIi8X/D2xwftXEWd7FQ855IXYqH+oVDge4swpqprlsSMfC/p/yqYXLmHwyA3rcKiDi57BODm5MZ5vbD0LQQ4baCO3eDpbnIZ6ci3hWe737WGTMndHF+zMp99xivC7u9ApdUc6sZSKT+sw/OwaDQLUrEra8Q95iNDjrcOT23JqlP6jYE4azkmsSXhxTYuYGUWiIPHVi+KOeMGtny3bYHB+Hz5c0R2t4vy25JiWr5kmlGYnjXUtjdrenPCOAHp3grRwmrryAqhvvV0ioEhu9wcIUlTx2CI5hqZu6
+ 9rWawu9b
+ ETFHTDJDF6U5PsAA0shumcLC6F6DP+VWCDOwshXyOVPbL1Eh52dgEDS6gxk5IsuSsD0QpMLH/RF6Tb2LL3GfJVqaF3IvRpAvfdwONcgeSVX7TcViouUFm7oKy+l5YLVFdDzor8nwmBpKjQ9upVuZ4ZD1zAnXO6T6ITJB9vnjPSg4f1h8EoxX6a2Xkl6Xc0xloxhJCObQMaHy/h9EaML3/CbnNOD/hLVo4jtT0gY/jx/kRmbGBEDppIo1rLA2FnXjAe2hE6oFsi2GQuG0hGiKP1Szg/gQUWgTwJSHdYMwQCvOINRl0MMHXUzGIUxhhZHr3XO2Sn1uXebAAqeh1+iVCkEnT6KGQ4iP8IW+iaUCHkk9f3se8wWQ1hBGWbs/V0BQ750XLjoIZOXBJMoYKJZAaAplHOSUHVECRRUphjazL9p5tH52eaoh4UUgaAaFxTBEBA2FfTrAagOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -205,46 +206,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/22/26 19:12, Muhammad Usama Anjum wrote:
-> Atomic PTE updates need an lvalue for the bits stored in an HW PTE.
-> pte_val() only accepts a SW PTE value, so it cannot operate directly on
-> a distinct hw_pte_t.
+> kasan_early_shadow_pte is a complete PTE table rather than a software
+> PTE value. Declare and define its elements as hw_pte_t so the object uses
+> the PTE table storage type.
 > 
-> Add hw_pte_val() to expose the underlying pte_val() lvalue. Access the
-> wrapper's __pte member when hw_pte_t is distinct, and use pte_val()
-> directly when it remains an alias of pte_t.
+> Read the first element through ptep_get(), which returns the software PTE
+> value expected by note_page_pte(), instead of accessing hw_pte_t storage
+> directly. This also uses the accessor selected by the architecture.
+> 
+> No architecture selects ARCH_HAS_HW_PTE_T at this point, so the storage
+> representation remains unchanged.
 > 
 > Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> ---
-> Changes in v3:
-> - Moved from the arm64 series to generic series as it makes more sense
->   to add this in generic with all other changes. Usually we only add
->   code where its get used. But this whole series wouldn't get used
->   until an arch started using HW PTEs.
-> ---
->  include/linux/pgtable_types.h | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/include/linux/pgtable_types.h b/include/linux/pgtable_types.h
-> index d6c5a7548550b..ee4eace5c3e1c 100644
-> --- a/include/linux/pgtable_types.h
-> +++ b/include/linux/pgtable_types.h
-> @@ -9,9 +9,13 @@
->  #ifdef CONFIG_ARCH_HAS_HW_PTE_T
->  typedef struct __hw_pte_t { pte_t __pte; } hw_pte_t;
->  #define __pte_from_hw(pte)	((pte).__pte)
-> +
-> +#define hw_pte_val(x)  pte_val((x).__pte)
->  #else
->  #define hw_pte_t pte_t
->  #define __pte_from_hw(pte)	(pte)
-> +
-> +#define hw_pte_val(x)  pte_val(x)
->  #endif
-
-I was just about to say: this series doesn't add any users. You should add that
-detail to the patch description: "prepare for usage in arch code" or sth like that.
-
-With that
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
