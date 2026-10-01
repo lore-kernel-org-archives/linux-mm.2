@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FF67CA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:19:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D69A4CA5FCB
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:23:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 924F36B008C; Thu,  1 Oct 2026 07:19:50 -0400 (EDT)
+	id B00BC6B0092; Thu,  1 Oct 2026 07:23:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FD4C6B0092; Thu,  1 Oct 2026 07:19:50 -0400 (EDT)
+	id A8A4C6B0093; Thu,  1 Oct 2026 07:23:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EB966B0093; Thu,  1 Oct 2026 07:19:50 -0400 (EDT)
+	id 903CC6B0095; Thu,  1 Oct 2026 07:23:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 498FA6B008C
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:19:50 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE9921C290B
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:19:49 +0000 (UTC)
-X-FDA: 85273812498.05.455B25F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5520F6B0092
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:23:20 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8D90C03AD
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:23:19 +0000 (UTC)
+X-FDA: 85273821318.27.35513FE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id F333E2000D
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:19:47 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nMbvvVKz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790853588;
-	b=XxLiBp2lLEH9Xlv4o/41Ue/3Q4o3NhMYnu2v/1zVI0Q+lHOaj03H4Zc5gaRmHrJR+KMC5N
-	0+GPADuZuN9bd31ZmuuthCq8nqW2Le93IVQVn9Z4aGu63KtJV0ezBm0C5GCdjQzKy5ziIU
-	QkPomg3+5eq0zUPE/DWY5ujQS1fzCXI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nMbvvVKz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id E7DF3180006
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:23:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hq1jxQGW;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790853588;
+	s=arc-20220608; t=1790853798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QFQFkWDnC7jLqttKnpyOh/RzATFY2MNc7SamlM3r9CY=;
-	b=hTwvTwW8VjSz4OyHn1KCX1izr/spXTf6Do55fp4UfokqcTIRx/SU1eXD/4r4aDiTr4OBE1
-	PPXI5azSe7mSJYyPXdDpE1YcV2SeTbgs6bUItUmxcEGHL/kgBtleIYvgpJ3aRyKlrJV/Ll
-	0rswdX++zYT6tcUgxlRHF/IDClGHP1s=
+	bh=e65AJN+dizDpNgTUq4a0Cxwv8xeFTHb03ml1zIvkCoQ=;
+	b=1zoSiw4squSZ5agLUIBmKPh81KaIjEavDdvb2AaLIavC5TpBhEBFmCnGWLxvgooH10q2xr
+	j100VfyX9JGHJGL1ugtubbF/meV9yLdaxL0LFnIEdu0mCRzpMZMSq3blarXcYf7y9OXn5i
+	kEhk4RdBAx8O4MFiIfN9wwOCKMXtntM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hq1jxQGW;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790853798;
+	b=u1wB5Qlx7w976yEAEqaSFQSXhL6WxmkL7T6OuLz4UNNU6pqt7ORwXVHQPpW6haPOryeUfs
+	omSWOCjLB3869kDe3bXFwLrNRLKj0AOU1swMnf6JE+5kugaBq3KyF1ZiqGhZ4c1e8kFbZs
+	UErjXsDfd4Y11t1RzSMntnWMtVzHUFk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A275343C1D;
-	Thu,  1 Oct 2026 11:19:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3D31F000FF;
-	Thu,  1 Oct 2026 11:19:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C276E43CCA;
+	Thu,  1 Oct 2026 11:23:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C481F000FF;
+	Thu,  1 Oct 2026 11:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790853586;
-	bh=QFQFkWDnC7jLqttKnpyOh/RzATFY2MNc7SamlM3r9CY=;
+	s=k20260515; t=1790853796;
+	bh=e65AJN+dizDpNgTUq4a0Cxwv8xeFTHb03ml1zIvkCoQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=nMbvvVKzbLfiBDmwx5000bOF+s2wwI5IUpFYTI/iQmTRFaqEIRPkxAnIgPgtRkbJ0
-	 aqsar7aBQQWF17j7qm7re98QK2MXp/SjTXPj6Jaave3l2lYP+m0Pz8NwLOPWtJii3d
-	 +/JslHjvapBJl1QgKIGa/tDOAtKuTUTa7pAFOFLGVfS4bA6CsFZeBwjmyDK95aJdS1
-	 9ukUJ793Yc9KrIfWLnhz27LyPhzI15LRk/k7ivImSysTbIiVyAS0KMu7lJbra/Pesz
-	 pWFxc9zKJFzMFMEYqdxKzyhJGBS5wy0U/BzhIpkvR+1jEWvnD3SfLtCnn4oQTcUb0z
-	 8MuItJ69xgTaw==
-Message-ID: <e94dd0fc-3381-4545-9ede-513fcb2b8243@kernel.org>
-Date: Thu, 1 Oct 2026 13:17:18 +0200
+	b=hq1jxQGWzfify63ZgZEC2/fTTtnkxCsb0bizh56Uwcr6HWZKYoDtzLAFE/he9Pr/3
+	 OBvyMZtgVbRz0AtkC8gljG+lq9UL50oTsGKJDPGHK8jZJIpT5dYB8hyBjZJXNOxLRz
+	 S1g4fJkhFx4OhWbRxwbh5UP/VmxG+SgV7NC4wNLWdSvJKJsZSB2wPLKQlnN6Pd/MOU
+	 AyvCel6IqNdq6bPj/vEEPmH4T2cCnmdvEGZQUWWySwrQ1KwV4DDeKV0/oxJqkb4dkM
+	 SU0m4lXhUuDVnTU/1yFOTftTVkqDtBxeH3Z1k8kBGVDEVovf+RLA3zW5xQqJ4ct+O6
+	 UbDMDSXAUlYtA==
+Message-ID: <2dcd9dbc-99ca-4f5e-8e25-f42977763c84@kernel.org>
+Date: Thu, 1 Oct 2026 13:19:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/9] mm: convert PTE table entry to pte
+Subject: Re: [PATCH v3 6/9] mm: add hw_pte_val for HW PTE storage
 To: Muhammad Usama Anjum <usama.anjum@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -133,7 +133,7 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  kasan-dev@googlegroups.com, intel-gfx@lists.freedesktop.org,
  dri-devel@lists.freedesktop.org, xen-devel@lists.xenproject.org
 References: <20260922-pte0-v3-0-5670b8cb9059@arm.com>
- <20260922-pte0-v3-5-5670b8cb9059@arm.com>
+ <20260922-pte0-v3-6-5670b8cb9059@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -180,23 +180,23 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260922-pte0-v3-5-5670b8cb9059@arm.com>
+In-Reply-To: <20260922-pte0-v3-6-5670b8cb9059@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: z1to9b8dyao1xdhq5qb8fr1wb78fqpi8
+X-Stat-Signature: gsj3ee4cqmhpp8h4thubodnq5ac7wfhf
+X-Rspamd-Queue-Id: E7DF3180006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F333E2000D
-X-HE-Tag: 1790853587-328563
-X-HE-Meta: U2FsdGVkX1+K7+OYjpyq2j9RKM75879CGqrCZ9J7og5QYasLc/pXA1G5glf4y68BjU+kFjrhdUtfqA8xXvktmFF74EBOFQslhYo+Q6qlm+QxijAhwS04JhX8GWgivwHh5qhf0V0NfzvfVQt7XxAoV1kYSn4qvbfwRXLPkTz+kIlt+kcSYIy6EZ2SBoVeNlMydZ7+HEORLRGkQcKbGkYN1wpfuiLcAAussbIUdvdjbmdycD4Ksdp8OhZ9N5tV2qMnS5BekwLwfEEWzMOflUTrv1n1S4XDGIxKzoxXMGq0SXs5AL3aq8wWg5XH3ok2XzmqJD4luVSpai37uUKxj3qHgYFw+rUHhvyIEK7rjoGh0MLnCIHuC9LbK/J0KHAhpdvhvwOWHXyyfH36xR3MXwlnsgYa+NB9fPVCsRZQV93cZWPfYiPhlTr1SAp9mLhNT4imP9hgC6H51TIQkypzLUrNOgeP9W6Y4CRiictZdEoldC4Y1ji/PWMVK2Ig4rW2lwQZnwzl8nhS+0nsiHMI1o80yv8pDRTBe/wn5cA0eGmlcZS44IaWsjBYAOU8oZCJA57i5DDuhBiax42JstpgrtooW5Y/XfZcjrX+fj4riUxO5vCKinix5HN8d/iFW8Ul4lGjBoaHSBm1eLzleMvCFRqBfCexUJZThQG71/31FLVK7muJ29YkVyABQ1LA9F6ePAPOfxwX9k+Qk7gZbaG3meLk36SrjZ65B7PmOs+j/zvqRZdMfY715bQcraQOp6nLq+QmudWYnchQn0ms03cx59M97L6hBEay3GrGHB1/+BoxHApNdiIbGmCDhzHwPX0gVCagKK5e1eCtDw/oXS7VAovKwhG6PfALU/SaBwEp7qLK/pEt5rIalH0xazFKzZNZqempvorviwRlcPsiQz6U8QVagFP9YALJPRXgDA08sceRHnl/wEdvuq9hpDl6spG99TfZilsAv5uNNKAesiek2Hl
- NZFcwZEw
- 9zcUK3JICX/o5ghLlBTDYeQtsS21/pI0Ks+dObAouQ5EYJUVv6xcP60ez95NzH45szzVzq+tetgdClpSQghM337z7Jv/faIwFVWDgyGjKHVph2+UG91drFr4CHawKj11M/m2SAj85XWiiapSgkwqcaYnpkY7YvgMnmNOMeVvuui2iEN/szDo0B7qbUNvHOQTFNKHSYH45tzx23AM3Q5SgPz+Xj17jWE0oVDSngOb3mcdrngPTtnI/W12XCCYod8gdmhoWCU3zPfoNm5L7pSsGHIKNcGbXFYttM98jL2pO9s4dQTSz4ctgl3QqgdbTGCkBDnxwPliSbvPuoNtIMi0KXh3tLwtPfKtMUQ8VNFLvt06GiYZ8whj5iINjoNmJ3j0KdnsfGewo5MxMLMzeRt7Ra/AOJuYgEhVwke9lQbrcR9tHVdtzrNgmzOFQVcuZvnXCQBeavUv6kSMb9f2GnBOmU91jgjVz5ypoFM4K5Ipnludh+1UzcitGGJsF5Sr/RqIiPTbq8jWilA90fP5YDvtlVXt638zQKoZbmqn0gZM/rKW6Tu723tHt7Bff85WL/Cy+i1vafxVLS9oDgPZZMFH7BYZSuFZusejl/cL6l5X7oudQKL4PXXUzuqlVmBu8Req6alvbVGP0qLXnnFtTw9WgU+XiT2FCSklRPts9HBw2b7v75y9ov4Tx044PdY9HlF2xCZsi+5kNefGQ+0F1Ku5JUo6AcCHAzGzC563gfApQ64FtfAeswn9KKC/k+lP/uLgnbdJv3wW7/084/a2csmFvgTBaX2ei7JjqocpfmnlWun4jI+vetUCiu385xu048DByfn3u2eCPIUh1tlk7OXkCazH+9i8FOIUFwVXkOrk0YyODw/2nqcs825O5T7jsxoIGmKaSvvdK8Kbknsf+XQloixfe/HLfWvuwMkTfgZQ4vkuIc+NWnRAIie6nb9LF6l67Ya54V730XaKxCoS0AWKUF+tV4ED/
- 13W+S2xW
- r+Jx3suKXcSQc7VaNSsU83o02Iu7ntcb5wqwnY2DD4hfyoLMebLjVYBb2s6e0FqhFGX3yMnGsuSq3oSsdTlo34s6VLyZJcAuLdt7rrM1po4QFL6kPXO7N4XRpvU1VwTBJwn45u4rvX48FChgWakwc/wRGYyGfJZwxXvtsNRdK+cITxM3o+sSy10doIuwI+7WJP5GcUonBP/OlIVPuxU08t0/DL/8NW8638rHBXHu0qoCS/9kvjLOnssxcIrqj13Em1Ka8oma4XPqIWVid500QA/yjyQ/EwqdVaFIaVrVajGBYhTL0nWuwvCQA8Pl9e8Ji0Fi6kjoVWbCn4C89U785jCX2SGTeHcg2GMJRF0wjQpMVhFMds1g+xbrZcWkm/q8h0xXlK3NfJ3hc1CU/6XFqTAbJeMHBw9+4dM20YqxWgQhzFdPat8Zj1d99TZ2t0WyQWvGy9wq4254Qx8UHTIQzGLfCgyrCzSAJ0oXhXB/UvQUEOGthBZAKzJ8E4CZUV2j5zOPAERRmJxRhhbprg1IDpg6cemJUJUt8hn91oq654zV/DNkAgt/iuUTsSWJaEJ+SsHZY7MIx2GuBP4fIvaYgpviNWylEt0FBxs/Y/uQW0UkkC56sowHv1UebioOcGwn4PUbJYiaZcM1zdWgUe6iknpMqHAZzgD+lT/ebi7oDxl1EQbsN3N5rAkZxplq8QeHKXcn8U6C9su0tuSyLRnc3egjovjjPiDtIbo81styiFbDNCBvwUkJF8VkXPtAvzZUMeAgs1w8mjGQXsvr1FYfaEpgGcblL54kUMUGY7iS8oIziKIqi+s7xDAOya7lolpPk3Wt8W8Yd4bDWIwJuJqNbtcq6Msx8Qmzioi4QAcQrm/fjlq1KhTqK/4yPpzcbc11P7fpfPlp31D3iw/3hjNBKAURgPUQvpVKoJSbaDVg0FNMPofoIM0LAR8//TX12OwETSSoQTzcx9jgcxFG3P4muv1XraOsg
- B6AeG4cA
- X3A705oksW7vVzE60T3ChyaufwZRY1ssU+4aQZkJ33SXgievFDnP180A8LhMpT9B2nnuR6BFibDceFVGaPU1tQ9U2sbe+P25yKzQKqbQ+u1fYTSTzHUvki9gaiWLmpUAhJhORJ14ZcWOXjakxYvvGvQaf+SUY4GBNL1rI134gHRJouXGduIY/eNbE/jYFkNd+36tmEvbRA6kaJem2Gp9RC8Y5HpK9QMEprkLqm8nuEdwfyBl+IYuCb6XPlh0kHWYfF9w4obCT8pmgy8SA63Izf5UU6mF1OC0IS4kDjnE1j4bxRHC/Vj2/bcv3sUvoIjDDdxkl7cU7w9RJfEvxN/YO22U1RwBdinOFNB73qEvMiX9IkrC4DipRsFlSCV2kgaGfKJqreMLz7QdHutpXyigF95eU/NpRT55+BQRd07JaZKI/Tfl02H53Nly5hfmwadPZd1mZj7wrzHDIZ7NLAZpLby1tLZ4RaTi79c9nS7HrDi2H1iM1u57wyaKk/1t8N0hf6h9tn+1/UjMVsCipgjgmLqSaj2yiOOHlaVNBJVH9lVWU924QLrYlQ2eEizBy+PAE5AGNfW1EDbjHciSklVkog2wttDRhiehrP1AOZJDLSxs3/XwHqtPF3oUvx5oMCrqI/8zxPoj1ZPiM8N1en34+u6D3oLfdp7r2y7/BUThRKlefU8ROKlTtfUzBMQzFaDtbGtD8Nlh1+CbB3q6G9Qnw7YWakTx1xvjQwr8ADVRlG1fCAM62Pp3iVyk2CYHCAg6MGx4c4sS48VqNZ7s97YhC0EIXJkwvsA0De1wm1c+Uh6Kt4k+bSgsaA4HwAro/4P6A1iH2Jknwfa/QZ+1kZYzPtGO6OOCfomZuJQ6DG/URtJoNMjTn6QyHf71VKlw6qMMnFDWlJVugpuO+CsErKeJ9awgarj/0XMr8Hy6zvhzEe3quTkoYQ/PKsmrb29d4s8StaWcdH1wwqPxNvMiNXlU3HNfuAVPl
- FVApvh3A
- 699D0O/5DNe0xvPVTovRci2ls4jaZUG5jnHC9NpxT48SjePlYOpOSb6/N2zCUgITsKHXuvKrzSITbgkdVSyHFLe2vr6CrZufLosuOpY8mnQbkM5REsP3o5705DFfoLQMI8HOFyqNccvQbj5gnDUtmxR6Bq/poQDoxaCich4m4dqbUgLiBuhCJg0x9Wm15qosLpv9yzMVqI3IMvN3IjaCOBa/nMv2uHr5VPYcF1zWwQW+4YLC18EGNNurXmuYZfhQGC06XL8byonKYN532XyxSGAwWO93RNfXjd0TeXLRYgfSF/HhgGWY7fnPNSwdLN9Fd1NLwKfZI9BwoW0my4qGqE9LVrjmCPioyv587EhJr2DSMP8HNYX5yTlvEV1PZXhxRZxMAvmDpKAQ==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790853797-345092
+X-HE-Meta: U2FsdGVkX18f0RthoVWNSgO7FQRv6DsXfHDr0lVqlFV0Q9lp/R1SFl5aBZK1mbr1N+14CI3hGvfRZ2bTZPEhA4R0ZFBdwd5gZmWdv3LJpfFwUSdqpZ/UbWPKjxwUCYp3FDxZVrQowwthAG0fLxpWGUt/pIWDrgTv/fpbWEnGFxn6qbEVsezukxD/SjaODUWo2B3t7wlKDS1CNLoJj3QPwGE76H9t129DVxhx257vdD1HLR38CCJRy42uOK8iVyfrHKMrQQc8KuB+onlhKibh4AgBjeAiXFOND8pGk/mPadkQrayaCregqz75v7SATiOCsc1fu7JzZg3zcAUkgKpPPa1OGrgokVZWpIEaPo805RBV4Eb8yPsKCJ9ut7ClVWrej9ZWkQKIBzYwvKVmXLz7HAjcZl7MF/GPYD+dJsdjI8QZqExSUnidKegWdizvo+MpZ3r1fMrOGAqo2FavKqYQGBp64y1TcSKOS06O+Z3PxLBrQvtQkP17u5ncynNc6RB6n9msgcyY0WyPhmAyeogAFpPkCZSX3nE9KEFsA/5+0QfTazjLm8VUmSesWMTpxUAgnCfluZFM6kYB+lB7MnwHy8okoL+CayaJ7eMMjC2Mq55+4ELFJLg99Zb7A8OWI1j9WEbZ3p8fiTzhay0SqC0PEEBkUIBtElRnIpCtOXGEcTpjC+rRtYwv3ZG20les5rh4TU+swvBBfY9lOXvnGPuKhdmI5DznjFX6iQ3Fb8E8lWLcNlpf+ywkBuf8NrYK3BJSaPXS6BKsAo7zh8cyHL4rPkEfRi5SJHgTpcVb5n7WwuAGgJ0NgZkqEKUAhrO34jMJCaqngavST1EWMUHAGNA3NdDqa8kYPvwmjz4NpxC5bmktWTB8k2bKheTb0cg3X5L6sqh1EeD7JqzpFqJ00aeMlkbtjbzYrUbQS/HQHi1EA7TMIL3K6Olm13wnSlmYWQFm0ouH4VwkT4B5Fidbstw
+ SVPQhAK1
+ QA1Nmp2Js2IGpVgTB532zCYpADoAijNSxN6FWKtf4+gTMG4Hywl5vfCID45FoN9TTFFj1r2Ye48IbCslnmbw8WVbVJFDAJy2hjdO4LXJrilqSixisfkeXsPtaMSQjjbjTICWqZTSccFQUvG5A8YK9cl98q6e8FhYEBtdpGSn+/gp9XAYlxPWfFV/LysEujEOX5Gn0fxHszUMNpKnHqKnUE/cmYRt1C4V87QoPbI58qMZWxUYMk2E25Egjsg6y3moD5BzawVdLNWVdl+FrgnYCqFOdfY+5XWyxUvWhHDhBAGWDJf9eb0JIhMlSophHoXpKikxi7LBmSjBz26+0Z7YhHMoF8IKmNhG+D/8M1yjR2+6+VzowD+FLk/q1c2nut4GdUoE/NMYONbXtcFwF5TSB/IPbccOPF3y7RBKSAbUb1f1kbjNnsDOQRp6UGDAtTUlLKNxhXthrgFkoiQ7IR3oYUi/ZZEvMjo6P4pyJEufjdtSSx8BUlVNEtuQNKdBgGJrRBFS6rxTNwwcHXfkp6UKfHxX5/jNuB97neiyZpfvVn6EpfqfCZBUGE1K/9kLWKXABQAMp4W6L8BlzMlV02miGvd0q7PC2ZGWds8mUPjI25tLrVzVMehtrPEMbwcXvk4HD33CyI49iDGn9xlQlm2oPTQ5Pf1ABkT2WzzD7W3SEXvwwmfMdQzZWWQ0/cK3GxfKwz5IJcmpd6hp5u4kMWmUsULafwLH0qN0nreAIPvvzG8ByJKZor8Hqr5p2wc/AOaz9DpYIPl58VjAahZawV+os9swZLuafcvZzGm/it+XBrqzCv9GfNsYbcnoXYPzxCh0YDXCTXIZjoOULsAWFbGLuzzXOJoxWuu74aV9An0S/BLnsbtQEBFWQ0N7BcQ5adGF2psWEYGj9jkwVxedMwFX5JXb4DgPAkFt2YijYXhcDhQwTBDJdaAcf+A5dy4SPnIfJaQwCh+qiTckAYLhGHWDv0jn6Kxy/
+ QIFU4QTc
+ 1C+J+3dC2p8EMSLDVCGG9VEZY/SBEViUNjDsy6CL+hZCbScwrCetZs04C1qT3uMiqSphIlRz1N+ToDf1slFiWspiZxYRH1NZvHQEz5gtCFHihvrd5+K4FKPHunyB4H7Yg8JAvMsifdqstFjNxr7LOWIvLVrx+VnE5EcFN8vXIU6MqeXWaSg7XUr9J9PBrLlptRuJYsHsL0sNA4XnMwyB/MDZo/bIxzgzYHKGUymSoCQ9LGfVM7TRX66c3RldGtgg7d/qrVSZ294nRm4ivS2pZ78soy+ZELifD4VXt/2Nf9/rchDvzltOvzc7tWSxh4bABwtYghqwmhilcjmfGbOHqUvxDnz0bbrKE0cYxAUQzoyfQeO9RyrmYwHBJSNz2chfkpoWl55ihvYYdlIzT433VtJtiZFDs7lCIvn19/gpya4bgLIXMkBZYcdufAHX0igHk0sgHdNCuoXFggFjg/MGlAAPguZJdAGicRCy5VvWrAJZOqRnb7453+UT5jK0308J5FDER7NXJQEHsJ0nTgkHvyV+queLRSGCAyGyNzbHauLw+vQJHxSmfrly3XCpLnYKVtF5oyfutMLVP0FBPC4EIllE+JTVwjnAlNXZVdJCtDFRorHmLW9CZoUjDlbrur6dFjQAzXAL4iVJBNZ6WOzFI+VOALWH5BrpERUDWyjkUB19Y+8A3zRyBzPoCtSlmW8rNqlMY/toOLtBA9gDMRvM3qaMWUzAxY2BfpN86StC07Q3ZfnMbdGhr6bjVxZcrMp0phf02D9gZmeCtMWTW+xNqlC4jGQmBnQ/kk2GvarVgaMNGmBi3r9FbmDAC2XtItoFWeOA5/VHG4fGdsjhccx9jKZozyP8x5zoue/Mas0lSPb0ukChu+3L1VaR2TX7AW71zNxCA61GAMhgp7vTqicp+QTOtSGiuL5qsRJeCB6pZNmz+aLQqzmJq17XlUu+QSaWBQcuRE/zBEm1EPKdjcy9VZHom3OVm
+ TLZ9yxkQ
+ xlvdfitKah+NdWE3i6hsvfy8VhMn5HNCS0X3+a2//pIEQgW4/zOGtrQalkLzEBCrjT7PogX256mb2nvaGGkZ3q+7y5DPXy7BKyQO+KmOkfu4/FlPDBm80Z/GDvqwvQpSfAV9JiVvrpDZvW4eYM7XiwAsedVeKt1cRtrglq2AuI32AOoHEZLdhp6IhF7pcS/MlQktF4uICelLrZxAQREs8hd1ntxnxNskNFaDyO4WB8fTb0aad24aL5UdSgRmpZmUAD+6ZOJDSQ7ZXnSxXJs8j0y6+4pFASzZxbQ3OUaQzvYpi8PAv4HBXM5yiycqkN0iCU6UKNam6gJED0QNsWqyEkTYpBI3tLyya2ydEODaojfzmN0icsLCUXhcy6/muOGVxSFk/6NGDW8eUOZHPzRuDk54ZvHbM32rDCLp/MOWEDaj8QQvn2a7fafo0nKNtTOWGqwX68kSPBkv3DtvrhEZC+wLqIf3f1sC7yT02u+1N0pl5IwsWEyXJmyw2m9HjOZ+XpidcG05Nnh5LYAohGwdBGSm7fRxO8MRcE/QOn85IbzuakZLc6QqkO1y++Z80K3KvdMKFssNxOJd5GXxg7U+PZs82cTtEKsRnVVKsvXdrSXvOdxvJR1peH84DbgcGALzshOnP34/pAJFqA154jRyvw5VNUlBIn/NcGUHPU8i0Xo6M0rTwkyQ1a/62ntoCGL08Vq2PtLL10Aw6xILphcnInQJpURrJ7dafz39TbhHQNZ/G2iOXdj0Bo56JuT39Bpfmu7m+bIie+aao9oV7o7vCvpr/eGZTm1uMRh7rRaWErHnYx35AyD34YDFpjsSqngmBbRCaj6r8jJk998Q7IT4gc+qtY2CZtmJEve7tkb4EfY+WJKohbsLZzFSeqBvAf4vWITqNTBj6zPpHYFxQ48/+vQdzHrKLSOKeTz+tDkZozK0KptP7xNT1TOgDdN+XoM3w8bv6ic17tvFz9bJ1cm+FoJ/Suf3y
+ eEpqbOQ2
+ JexY8yQN1N+oRfVdfoHsZvLTnTP1x/0Fg/sq+8+yN0JsWN7Ylfr0MsZ3GU62pAfb2Ye9TTnRsbUySj9SqtO3MHvDYVwoe7XqDuSOCiqKH0+C1P+PSFx8rHOfVlZq0ky/PrFxvVl8AzeHMicDFn71wR9cDLE/af31VLLLaGFfQfg4W6L8nL7fOBbttr7ta/34MeJVgjsN4m64DwpCpyhLOxg4Vl8rmMLV5mTS6rbi9e3tz0atV+VebKyhnDc1YZ1w5ViOoD1SjVwCnWxu5NtWdtyxQj80q9jeQR2G4qLFmW3BEf40JuE7Oku9NEp3RQoqlcIWgvwIKoC0DuNVoEK3aHbi4+0onaGqR18JkMmDLjqEY++Bk3rEchk9GbiLEjDSW8r9MOnN/5NG1O8g+IO69GeI5+bQ5LTgjaUxvSRAx+hw1cT4VHor2/UWSe2HXfzWOgAe5IPNNfSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -205,71 +205,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/22/26 19:12, Muhammad Usama Anjum wrote:
-> The non-MMU stub receives hw_pte_t but returns a software PTE value. It
-> has no attached PTE that requires ptep_get(), so convert only the stored
-> entry through __pte_from_hw().
+> Atomic PTE updates need an lvalue for the bits stored in an HW PTE.
+> pte_val() only accepts a SW PTE value, so it cannot operate directly on
+> a distinct hw_pte_t.
+> 
+> Add hw_pte_val() to expose the underlying pte_val() lvalue. Access the
+> wrapper's __pte member when hw_pte_t is distinct, and use pte_val()
+> directly when it remains an alias of pte_t.
 > 
 > Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 > ---
-> Changes since v1:
-> - Explain why the NOMMU stub does not use ptep_get().
-> - Use software PTE value terminology.
+> Changes in v3:
+> - Moved from the arm64 series to generic series as it makes more sense
+>   to add this in generic with all other changes. Usually we only add
+>   code where its get used. But this whole series wouldn't get used
+>   until an arch started using HW PTEs.
 > ---
->  include/linux/hugetlb.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  include/linux/pgtable_types.h | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 0d2101facaa50..637fc863d3687 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -1278,7 +1278,8 @@ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
->  #ifdef CONFIG_MMU
->  	return ptep_get(ptep);
+> diff --git a/include/linux/pgtable_types.h b/include/linux/pgtable_types.h
+> index d6c5a7548550b..ee4eace5c3e1c 100644
+> --- a/include/linux/pgtable_types.h
+> +++ b/include/linux/pgtable_types.h
+> @@ -9,9 +9,13 @@
+>  #ifdef CONFIG_ARCH_HAS_HW_PTE_T
+>  typedef struct __hw_pte_t { pte_t __pte; } hw_pte_t;
+>  #define __pte_from_hw(pte)	((pte).__pte)
+> +
+> +#define hw_pte_val(x)  pte_val((x).__pte)
 >  #else
-> -	return *ptep;
-> +	/* No attached PTE that requires ptep_get(). */
-> +	return __pte_from_hw(*ptep);
+>  #define hw_pte_t pte_t
+>  #define __pte_from_hw(pte)	(pte)
+> +
+> +#define hw_pte_val(x)  pte_val(x)
 >  #endif
->  }
->  
-> 
 
-Okay, that looks quite odd. No NOMMU code should ever be calling this helper. I
-can understand that some NOMMU code might, for some odd reason, end up including
-hguetlb.h where we have !CONFIG_HUGETLB_PAGE.
+I was just about to say: this series doesn't add any users. You should add that
+detail to the patch description: "prepare for usage in arch code" or sth like that.
 
-But let's see who actually calls huge_ptep_clear_flush():
+With that
 
-arch/arm64/mm/hugetlbpage.c: only with CONFIG_HUGETLB_PAGE
-mm/hugetlb.c: only with CONFIG_HUGETLB_PAGE
-mm/rmap.c: only after checking folio_test_hugetlb().
-
-I suspect we can simply do:
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 80a5a03e9cee..8642c863c1b7 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -1268,15 +1268,8 @@ static inline void hugetlb_count_sub(long l, struct
-mm_struct *mm)
- pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep);
- unsigned long huge_pte_dirty(pte_t pte);
-
--static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
--                                         unsigned long addr, pte_t *ptep)
--{
--#ifdef CONFIG_MMU
--       return ptep_get(ptep);
--#else
--       return *ptep;
--#endif
--}
-+pte_t huge_ptep_clear_flush(struct vm_area_struct *vma, unsigned long addr,
-+               pte_t *ptep);
-
- static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
-                                   pte_t *ptep, pte_t pte, unsigned long sz)
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
