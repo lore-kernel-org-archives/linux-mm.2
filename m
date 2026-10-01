@@ -4,93 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E845CA5FB3
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:36:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67DB7CA5FCB
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:40:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 351F86B0095; Thu,  1 Oct 2026 07:36:41 -0400 (EDT)
+	id 7C5AB6B008C; Thu,  1 Oct 2026 07:40:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32A706B0096; Thu,  1 Oct 2026 07:36:41 -0400 (EDT)
+	id 7767B6B0096; Thu,  1 Oct 2026 07:40:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 219846B0098; Thu,  1 Oct 2026 07:36:41 -0400 (EDT)
+	id 6653C6B0098; Thu,  1 Oct 2026 07:40:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F34126B0095
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:36:40 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 71CD4A6CBA
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:36:40 +0000 (UTC)
-X-FDA: 85273854960.02.231F882
+	by kanga.kvack.org (Postfix) with ESMTP id 42ED36B008C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:40:18 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D4FE8A3FF0
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:40:17 +0000 (UTC)
+X-FDA: 85273864074.16.5FBF268
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C90AC140007
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:36:38 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mXBFgjFK;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 384CD1C0003
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:40:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PUupB5gQ;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790854598;
+	s=arc-20220608; t=1790854816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xm4wvdZWya38Tv5HPQOs01QtbugiGek4xDtMzVs3F8w=;
-	b=YA64g2acBn9Z9TudKPwW58dFMBgVjJ7naI7v3unIRQSd1KjBVMxGhWfh/WveTrT5lExJUh
-	bAgK2Fpg2T0TvZTrUvobCDO/TM7r8+YSdi+zc1cuDYslyohNxQFEyzR9OSOggf1Mxgt1Pq
-	LbVzS7b2QiwBaqCTEB2/aEdkuLWS12k=
+	bh=R8QnVRuxXx0DRHjhLodBsB0dPH0Vc9e66VDO/VON7WE=;
+	b=a5mpv1/Fj2JpOqbVnSd89viQ0W9FIPnGJEHDWNHtcEyCq1BYhJMSREWDODRBz9d5XLLRc3
+	ihUckcQyuQnncXY+5JokbZBDO/2EW3sF9u1GVcrQsVERFsKGOyqwt6HAmcQ3Jm+4jYfdFc
+	ttRfE2PnpVfCpdpjoSYWW6J4o9OIYak=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mXBFgjFK;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PUupB5gQ;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790854598;
-	b=A2Tc4bpkAKuhf/rfRlGPuaRkeRg3PEkZBYgh4SbqFu7hZrrOnRIik6MnurT1ZhY9zOqifM
-	Lwtt7jbUESGF/z3GKRv8IDqyFJojoOGUGZaS8VjtbLT+aJyBOTRVqAsf0/uJYg1uexqwpy
-	JkZk6DIgfVgT9ZjtaXPeNIV9bDqF2kg=
+	t=1790854816;
+	b=jr5GoWAOxXfL7aCq7gfnXXLo316B1abarJcPHwWhrnRIt9HpJNSMmCaZkEYvYN/L0OyIQX
+	3QtRHkVQJe+V69RBa2PfWxpMqVOPYmznSWaytuzTvb4gElcxdD4rK0oi14fUt2+QA0W3hl
+	ngONXJEmU4EcZ/mAW5ZoeF9TW6DauTk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 59DBE601E4;
-	Thu,  1 Oct 2026 11:36:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204A81F000FF;
-	Thu,  1 Oct 2026 11:36:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9E63E601E4;
+	Thu,  1 Oct 2026 11:40:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B055D1F000FF;
+	Thu,  1 Oct 2026 11:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790854598;
-	bh=Xm4wvdZWya38Tv5HPQOs01QtbugiGek4xDtMzVs3F8w=;
+	s=k20260515; t=1790854815;
+	bh=R8QnVRuxXx0DRHjhLodBsB0dPH0Vc9e66VDO/VON7WE=;
 	h=Date:Subject:To:References:From:In-Reply-To;
-	b=mXBFgjFKwBNERzVdoZjaNomeWpe3e8lQdbYE0ZfCu5nbH/GH5tEuNHS+dfHO3QrMK
-	 HaZuDubT41hg2PppQgdI3UbIcyvLh/DTUtdTvTqgVj3fvR/EZXwYiHppC+2WzbNlG9
-	 TtQcx5HbOcisqysMYBL9T5wxIMwRNr5KUruOb7hdn3Hn+DAMBpVpRjjzj4jCgcQ9/u
-	 IuJ9nzw+s61u5LY7WWsKlZbCUQHYKyMLav1uZKFJvV1QXDcYXnDHdsEV2cei8YFWv9
-	 LtJjuWuW5NFFdNYedScxnyvlri8/xtBBRdiICnaL5MMCFKblAlvJ8IoNNRRVVS/LMb
-	 WSNmnGNHDkRjg==
-Message-ID: <86dabeec-c40c-43c0-adab-b95fb7825ddc@kernel.org>
-Date: Thu, 1 Oct 2026 13:36:28 +0200
+	b=PUupB5gQlzr+bWtFrTHfgVpwkTN7x++K9kI8wfHEPTjtHMkwKqyI5WDWii0Bkkdm8
+	 zc+/P0XWsRcF7derKkF83f7dkkQc1UWQelBTuOtpZ/gyAomoRXsifxd4luvWVBD3ER
+	 TNQ2PESLWmY6by6SyG+A+EUs5kmjXWnECiwaagON8c8jwJG3jtik1eKSgLol4paxDr
+	 wYHUnf6dCWnKcvULC69CJnKHJRP34dqQqmv3TFIugxWuTWrJDeeDJJV4e6n9vxHzzD
+	 srwh8e1g+YjOwg3w4ItlCE5jLfQT8SVJ4wjtkI4PFRLphYU+I+lLPhvTLFJuGLozv2
+	 hKJP4P4l3Is7g==
+Message-ID: <3e03425b-7962-4c69-93aa-96168fd7168e@kernel.org>
+Date: Thu, 1 Oct 2026 13:40:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] maccess: Batch TCO handling in kernel nofault loops
-To: Muhammad Usama Anjum <usama.anjum@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>,
+Subject: Re: [PATCH v8 3/4] kselftest: mm: integrate huge page checks
+To: Yeoreum Yun <yeoreum.yun@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- "moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:BPF [GENERAL] (Safe Dynamic Programs and Tools)"
- <bpf@vger.kernel.org>,
- "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
-References: <20260824160523.3907021-1-usama.anjum@arm.com>
- <20260824160523.3907021-7-usama.anjum@arm.com>
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260924-fix_split-v8-0-cba7359d882a@arm.com>
+ <20260924-fix_split-v8-3-cba7359d882a@arm.com>
+ <16f16e77-05ab-418e-ad06-8f48fb29375a@kernel.org>
+ <aruMgm8UZ_t2V_wh@e129823.arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -137,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260824160523.3907021-7-usama.anjum@arm.com>
+In-Reply-To: <aruMgm8UZ_t2V_wh@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C90AC140007
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 384CD1C0003
+X-Stat-Signature: sr36mpik1tbemwoq3pe7ffxmrqowdnpd
 X-Rspam-User: 
-X-Stat-Signature: 4cg9ynrw5ap19j7ifzi85kwtzispph69
-X-HE-Tag: 1790854598-914829
-X-HE-Meta: U2FsdGVkX1/UWc1/Qt2ayQpZxcrC7m0NhRqZmh2Bg9YROq9Lu3JG5sx+RyFFUHmug+Dc60lKqkaTxzws5sNdb8r2yuPodGwRI66kxyg3+GhrDla4rgroVGbFDonn6TcFQ1eMcRl9Im+7EJpAjcTkU/SRqisYhUICGGsGGU3SN6uXFk2uZPfGNeU0ptbhANDOh72oZsJXNXhtmTUQooUfyFQ2ie2rPjb9p5cwjGUg1XHGYdZqm5jIUUHy5HaGO9KUpvsj8Nxizutrp0gTOGVfHwyX6u8j6cXxJq6yxHx4L2VKoLTF8rD8wMgAc992Kxmf6sE1fJgkEd5vxNxxI4cMQNCianBRqdQce58vDL6hcUQ/x4qK2rOyBymdc0cILqe2VywyQssF3gilUOiKysBVb5/kgWfymgOnccNSAjU1kbg3s/yuGmnc1xzbIXFZZaqrIu+TtYLBvoyZ0KpP8F5GzHXBRROQn9x4ALirnHhvoTEM5qzlXCi7bcM0Sf9QfjtKZs+yjvgXCd9Hos4T7B2RFVr34puDqyFgMLpvMSdR6dNYHREAwFXK4cJJTr46OW55mH3Yv1fdvzKA2Ii1mJ2dMCsaGBcqk80tTB3CYAKQfpc2SNKSoNj4+ppog3+VSqHN74TKKibglP91UHatutcIJzfotDyGPdwWIFXLKE/iiReYSVamqQwCp2EVvsrzLYUqiZ1bwaUblHeNh5u7sXLrGrAhdeVYpebZEgrDbjmBUNvG05cUDb0M81W4EKippUGRHTHvYLTbEvEDSrbo0nDDuY5XdFju/2WCFLYA58Nhy8+j/QGTjsPRS37h0VFnq6Q1KEL2r027hKN8XA9qS5zhyD9hhPbGJKNAUyLiqhtVrVd/iF7k+FfOuYop3sCtz8hXVzB66rOyzK7wNDFXOk2cZlEwrwfSCyiCWAR2GdNpzcFRg1tde9YHCRIDXJAYr8D/K+VYZcqEVpYn5A3k6Xf
- azZeSZzY
- xPaK+yU64Mmkr2vxqVE5vGycb/vYbzfSVk1gYHFcgoqpOiWmg6QqNkipPTMrmGG6sax+6v/MFFdYHxDMST+gccpxKb+4vjh3g4Ky6KcKxcrfTL0qM/USmLDVtz1VRKqwUSbHubHD5we7N1v1KFGjWxa6jUMvm78BCU5K3QiAOejNfQ8jadQSWgK1ADtlLvQRLZyGZ5ysSJj1uDjTtmXiBVHLCIFQnkTM3aSUIHLClS/WTw7y46S+r6/NIjAzAShilczdnSqf/aIwJ5HYQGpvTXX1UfSl83s2jGLKFeukMRcSo9M6lhyh7IzODzb2EYEUUdwtf
+X-HE-Tag: 1790854816-281149
+X-HE-Meta: U2FsdGVkX1/MdbxbAFGhW1e03T3cm3+UIwBhqLJmqUfUgxveM6RQ7DLhnYUiyS2Q0rHYFSYCTlZLcZAIFYP65fDVpMy6OQoFeJq2m9xL+H+5qXKASpDYUSFUgRLdFewAO8erpFJP8p4Gefn5azaku/dJsxWU0/apwSqUZ01LRhzeprPGV2D+CPuFqUIjiUgErleZjhhPpwdg0dISLq6E6jgH97lUcVZ+rNsGZ5YYJVGbJtrsRpaihSt6lq0jonGE7OGsJSH2T26F1q2Yv0xcPA3yKbsH4FAr+nrYdALRsKuqsc3Mihv12LFhbGPtJaSweo9Fjh/rFiyX/cpJY4lx6IfFarvCc1mktEGhkB4CNyjuLoJdXINR9lCu2fAutlRBL7iL0K68gV6ACJK2TX3kA8rTVkDPJe8SLpoOyc4UiEptbGum6WDmxmEQAP9bFm4/FQkt5sedVBILSgzmX1L2XdvwcYH6iRaCiSUxbTH0C767TDHQwABIT+qXNOJ4VOCLqK1bA3KdBQMYGTU9/lA4k3IRLh4anLkezz9URg28ABJH3qXIbwJvQWvBsu97VU5XsfagYin49HUYdrnaqiKzQ6oKYPcuQ4lVmvU8TUa/HZPC9rYGTyVLMFPJwUt4dtyHH0OYn1HGexXEK6+Yv0sBCInuc2vQDpptjjN7zFO8612jLzoV3DguyL3fYzH4SLsdSYjHkR4cDux1rRsK0sq8vQMC1jWhdojlIsgLjJusaGky7dGP7nKY0u5wTKmF17kZRFD0j9/2beg3rF0fNGHisI30lU0x9NM+8Hf4zW8sLTIumsDnUva/GWxPQM0wdScpFd2F4Xd10CAsieNk5Qeogegsi2r5jmFUvQAZFGmY5858m82s3/xMPhPNcBbN5VvQq9BiAXCowE0HhzipK1l3LchwnZkHkEDx/3YpmPNPISc3QCjt8/HGc5mxiC4OlPYKIkYHmq3nFgfcfiMY/Ea
+ zws2N0cU
+ +P49P8xjxRKm0u0Vbr4wK6hVy2X6zaPU8phda7zRviFnpYeWAbyKoNn8DDfwjNr8m/c3ZteQJlS57cmjy/RZVOZU4MrtGi7zl/ZHZM3HAa6uykz7BeVSzRBtMwMvWQfH9XcTb6lPBxTEobljbTLJbBH6y6fOKfgz3PqbHVkg31ZXopVJ3kxhxqXMAEAdrh/0KxtGZ/K56CIgXyw6gz1i1noO96SKYUHD7fFNugqvMQpvIFLCSqP0PJuQxTn5I2YBJgWWjB2zOOh6Df617kmgWSTuuaHzQNaLzxuaDijha+Nfug4GdEb27l/Jy8UhEyU4UHcqFzHCzp+6OA7jmlyK/q+1ihf1+AAGdODfs6GDLVVuvmi8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,54 +148,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/24/26 18:04, Muhammad Usama Anjum wrote:
-> With Hardware Tag-Based KASAN in asynchronous or asymmetric mode, every
-> arm64 kernel nofault access sets and clears PSTATE.TCO. Copy and string
-> loops repeat that pair even though tag checking can stay disabled for the
-> whole operation.
+On 9/29/26 12:01, Yeoreum Yun wrote:
+> On Tue, Sep 29, 2026 at 10:07:37AM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/24/26 21:11, Yeoreum Yun wrote:
+>>> check_large_folios() only checks for large folios without distinguishing
+>>> between anonymous and file-backed huge pages.
+>>>
+>>> To add huge page type checking, integrate the huge page checks into
+>>> __check_huge():
+>>>
+>>>   1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of using
+>>>      check_large_folios(), since only the mapping type matters. This
+>>>      identifies PMD-mapped huge pages.
+>>>
+>>>   2. Otherwise, use check_large_folios() to detect large folios. This
+>>>      covers mTHP cases.
+>>>
+>>>   3. Check the folio flags according to the huge page type.
+>>>
+>>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> Suggested-by: Zi Yan <ziy@nvidia.com>
+>>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+>>> ---
+>>
+>> Instead of merging both things (detecting mapping vs. detecting anon vs. file),
+>> could we simply perform the anon vs. file change separately?
+>>
+>> Doing another pagemap walk that focuses on that should end up with something
+>> that is easier to read.
 > 
-> Cover each non-empty operation with one bare nofault region and use bare
-> accessors in the loop. Leaving the region restores TCO before page faults
-> are enabled again, including after an access fault. Existing empty-work
-> checks ensure that every new region performs at least one access.
+> Okay. I'll change like below in next-spin:
 > 
-> The number of dynamic MSR TCO executions therefore changes as follows:
+> -------&<-------
 > 
->     Work                         Before    After
->     N nofault accesses          2N        2
->     4 KiB nofault copy          1,024     2
->     N-byte strncpy              2N        2
+> @@ -411,57 +400,78 @@ static bool check_huge_type(uint64_t categories, enum check_huge_type type)
+>         return false;
+>  }
 > 
-> The 4 KiB case assumes 512 64-bit accesses. These figures come from the
-> control flow rather than a runtime measurement, so the time saved depends
-> on the CPU and workload. Generic fallbacks leave other architectures
-> unchanged.
+> -static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
+> -                 uint64_t hpage_size, enum check_huge_type type)
+> +static bool __check_huge(void *addr, size_t len, int nr_hpages,
+> +               uint64_t hpage_size, enum check_huge_type type)
+>  {
+>  {
+> -       int pagemap_fd;
+> +       bool ret = false;
+> +       int pagemap_fd, kpageflags_fd;
+>         int nr_pmd_mappings = 0;
+> +       uint64_t pmd_pagesize, scan_mapping_size;
+>         uint64_t categories;
+> +       unsigned long pfn;
+> +       bool check_pmd_mapping, allow_nonpresent;
+>         char *start = addr;
+>         char *end = start + len;
 > 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> ---
+> +       pmd_pagesize = read_pmd_pagesize();
+> +       if (!pmd_pagesize)
+> +               ksft_exit_fail_msg("reading PMD pagesize failed\n");
+> +
+> +       check_pmd_mapping = hpage_size == pmd_pagesize;
+> +       scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
+> +       /* Some mTHP tests check a partially populated PMD-sized range. */
+> +       allow_nonpresent = (uint64_t)nr_hpages * hpage_size < len;
+> +
+>         pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
+>         if (pagemap_fd < 0)
+>                 ksft_exit_fail_perror("open pagemap");
+> 
+> -       for (; start < end; start += hpage_size) {
+> +       kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
+> +       if (kpageflags_fd < 0)
+> +               ksft_exit_fail_perror("open kpageflags");
+> +
+> +       for (; start < end; start += scan_mapping_size) {
+>                 categories = pagemap_scan_get_categories(pagemap_fd, start);
+> -               if (!(categories & PAGE_IS_HUGE))
+> +               pfn = pagemap_get_pfn(pagemap_fd, start);
+> +               if (pfn == -1UL) {
+> +                       if (!allow_nonpresent)
+> +                               goto out;
+>                         continue;
+> -               if (check_huge_type(categories, type))
+> +               }
+> +               if (!check_huge_type(categories, type))
+> +                       goto out;
+> +       }
+> +
+> +       if (!check_pmd_mapping) {
+> +               ret = check_large_folios(pagemap_fd, kpageflags_fd,
+> +                               addr, len, nr_hpages, hpage_size);
+> +               goto out;
+> +       }
+> +
+> +       for (start = addr; start < end; start += scan_mapping_size) {
+> +               categories = pagemap_scan_get_categories(pagemap_fd, start);
+> +               if (categories & PAGE_IS_HUGE)
+>                         nr_pmd_mappings++;
+>         }
+> -       close(pagemap_fd);
+> 
+> -       return nr_hpages == nr_pmd_mappings;
+> +       if (nr_pmd_mappings != nr_hpages)
+> +               goto out;
+> +       ret = true;
+> +
+> +out:
+> +       close(pagemap_fd);
+> +       close(kpageflags_fd);
+> +       return ret;
+>  }
+> 
 
-[...]
+I'd leave existing __check_huge() mostly alone, and instead have an additional
+function that checks the type.
 
->  Efault:
-> @@ -96,11 +100,13 @@ long strncpy_from_kernel_nofault(char *dst, const void *unsafe_addr, long count)
->  		return -ERANGE;
->  
->  	scoped_guard(pagefault) {
-> -		do {
-> -			__get_kernel_nofault(dst, src, u8, Efault);
-> -			dst++;
-> -			src++;
-> -		} while (dst[-1] && src - unsafe_addr < count);
-> +		scoped_guard(__kernel_nofault_bare) {
-> +			do {
-> +				__get_kernel_nofault_bare(dst, src, u8, Efault);
-> +				dst++;
-> +				src++;
-> +			} while (dst[-1] && src - unsafe_addr < count);
-> +		}
-
-Reading the same thing multiple times, why can't we have a new guard that wraps
-both these things?
+Essentially a __check_type() or sth that we run after the large folio / pmd check.
 
 -- 
 Cheers,
