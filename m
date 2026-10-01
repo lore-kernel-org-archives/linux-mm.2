@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B905CA5FCE
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 23:02:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4FB6CA5FD4
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 23:02:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C40F6B0092; Thu,  1 Oct 2026 19:02:29 -0400 (EDT)
+	id 170D96B0095; Thu,  1 Oct 2026 19:02:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 874F96B0093; Thu,  1 Oct 2026 19:02:29 -0400 (EDT)
+	id 121AD6B0096; Thu,  1 Oct 2026 19:02:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73C456B0095; Thu,  1 Oct 2026 19:02:29 -0400 (EDT)
+	id F05A16B0098; Thu,  1 Oct 2026 19:02:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F4C46B0092
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 19:02:29 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B1C5DA05B0
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:02:28 +0000 (UTC)
-X-FDA: 85275583176.11.1EA31B4
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EB61AC0009
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:02:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GRnb20Jj;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of 3gea-agUKCKYVXGGTMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--praan.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3gea-agUKCKYVXGGTMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--praan.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A8C806B0095
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 19:02:33 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8DB5212059C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:02:31 +0000 (UTC)
+X-FDA: 85275583302.13.3F48104
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C75A44000B
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 23:02:29 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Q0yWNIr1;
+	spf=pass (imf17.hostedemail.com: domain of 3hOa-agUKCKkYaJJWPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--praan.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3hOa-agUKCKkYaJJWPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--praan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790895746;
+	s=arc-20220608; t=1790895749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EbwONChgIm9toIIBcyyDgkpchsmR3qTw1sfEfErlET8=;
-	b=j0JT6pUwRI29ApJYinNTYFX3CP45MrWfd1R2m2p7KbAbbai51Xx4bwakWNbC9k3lWah268
-	rb1EKmtAyrGvEttK2u7bxkflFphcKSb9cxfRPCISVFFfqP9RUCZx+8zIlZ5kTopdsy/X2p
-	7LBgfJxnF9RlEmdV/WlZdcLOzCLB1W4=
+	bh=k8F9ZHqeV4+Z5fO5QHVYcnZdLetqeRUwTS9gfMM8Hnc=;
+	b=NMkTPYr9dHJcBmIjSCZMKohnceg1k1YhpgFpOgh9d/tl8ft2f4wtdmzivEcrE6EPKWHn3+
+	ErCrmucDHTSVqjLbWl/vuqwo3fe2tuyQvUCF0yZsbFYFiX000lqSve/tIaUEZ1OuTwBHER
+	c8ha0aex91a7tvpW7EvIVwYLLbru89A=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GRnb20Jj;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of 3gea-agUKCKYVXGGTMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--praan.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3gea-agUKCKYVXGGTMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--praan.bounces.google.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Q0yWNIr1;
+	spf=pass (imf17.hostedemail.com: domain of 3hOa-agUKCKkYaJJWPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--praan.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3hOa-agUKCKkYaJJWPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--praan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790895746;
-	b=ovG+1GefPd48vh4Yac2i6Ka6MMjGgXI7GYBTEMo4olVJ/cl8RfJt2+OiiasULbaFfpEU+6
-	QkZpcdWNpaiN0UWr5u8UXhSwlCLxqGaaXI2kYblUztlPWLIke/rlrQmy0+vMhlgtEP6/t5
-	SHVYWUIO4lIBKRpgLH+1AhgBGrZY6+o=
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc73895c7d5so8478410a12.1
-        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 16:02:26 -0700 (PDT)
+	t=1790895749;
+	b=taibpmHE/B4HbXgQJ3hMGA3/2lh3bUW7c5Q+6GQ2R2fpZIcqOm7ZXTZ+QsFIvLmamnQUV7
+	zX4P6bq0bNxL0ON+LiBsl1+wx34ZdnvwndcCj2k+vjhBq+599WYG4VDTz8+W8Sle8OttwS
+	4yIeW6eY+yGftNya1RqpYiJ93yJaoHs=
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc72777faa2so4235460a12.1
+        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 16:02:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790895746; x=1791500546; darn=kvack.org;
+        d=google.com; s=20251104; t=1790895748; x=1791500548; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EbwONChgIm9toIIBcyyDgkpchsmR3qTw1sfEfErlET8=;
-        b=GRnb20Jj8a3nO9OFiWCrIgyXvQBOV9Y+eelAV73sw8tB2ke9D39H51CpBpuBicEfIE
-         Uyy33tv+QBXtxhF6GacsvHhInt1IZUxpNqsBus1t4VcuBaWtyOeioiTY6HTGcXS23i5j
-         IgR/0wcL+XY+rzOJK1kK+e9cO6mst8WYD0dMJetuc2Bij1Mgw9SAFGTIlHN2T/k8Ccqc
-         y5ehcOGvPKZLyzJIodVvYMnv6OJW3P/LK2ToDzUS7NCIjdwuskMqto/PgivsUBWA0kXg
-         Jl6zJNEEhbF8dqsYAUKljDrfB/1k1Rcgb8cV5BYyK09L6fTVfYWGI9l/5ni6USs1WvU/
-         zuZg==
+        bh=k8F9ZHqeV4+Z5fO5QHVYcnZdLetqeRUwTS9gfMM8Hnc=;
+        b=Q0yWNIr1vix9eoaG//9Q+OyfvGqj2bue4Ht6jDal4mQIVpAFU+yhxsuBerwc9SIoTB
+         jtfXSEgQHa6j6KLA7at5AFEvnRfYepUVOibjq6BeyyCMyfCf36xI8tZG8bPe9OTloGpX
+         tyhsoyvv7nl3k9fqMQsloJJ3hNltpMStbE4S6t/7zN2wRLWK+Z1XZHdI0yDeJ8/JL3s7
+         H6UE0iau57nxgCkg8lkcw7s7tFT/nqhu8VzbF+6gMT6mu0ivFLsN7/NETEQF4XUKOsy1
+         ElT/qUjfmoF7V0+uqR9cxG0yok6aGbpJuYvxN/zRTxon2zQmoOs51ow31mEdyzVBt3Su
+         8kWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790895746; x=1791500546;
+        d=1e100.net; s=20260707; t=1790895748; x=1791500548;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EbwONChgIm9toIIBcyyDgkpchsmR3qTw1sfEfErlET8=;
-        b=xeDwhhmRP1Le6EblFf/GeFzv1ByBrWkOq5ht8hfuXR6kJi4xv4acmvRDeA8ZDWNYq3
-         PxdaOnoJ06LUHj/ypkGDAi4XjoZ+1Efk368JR25CI45uL/jgbaNtLmZg5f07640HLqYZ
-         s4OAqfLhQ6Pg05f6HME/glYbafAcBCfbhV5oqC4AwSTbvlYhd//2aIvYxrCqSaCh5Wgv
-         gUPxhizZf3iEVgzuVmfkCZYPrdIAGGVipGa5uz7IMclZyChRmm79emEVcU96EN0di4y2
-         T71X59rOJBeGrR/Z05UZDOZpOmAJvgx5Tgl0ib+LutPSAHU0UBjgVujBVw8gweBzZ8qQ
-         ZxNw==
-X-Forwarded-Encrypted: i=1; AKwUvBzpnt8SASsuXx4ihd4suaqPakK+FwX/IxUmUGScbissRQL9cmkOtGYRMusmiDYyVJaldFtO3su/VA==@kvack.org
-X-Gm-Message-State: AFuF++lzNn9JSgVDOwgH76siK0Ghq/GqE8B1MSsDidAhJIisXOxKjFuJ
-	DlspxlKx6J1ddN8b3IkHfz7hZ7bMvDaMZXmkeIMPzow6nLlBhVcq0bLBgNxMw/V29U3SglDCR03
-	tZA==
-X-Received: from pgbcr6.prod.google.com ([2002:a05:6a02:4106:b0:cc7:b09a:fe3a])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:5491:b0:3de:140a:3e31
- with SMTP id adf61e73a8af0-3e0bd228817mr867758637.49.1790895745421; Thu, 01
- Oct 2026 16:02:25 -0700 (PDT)
-Date: Thu,  1 Oct 2026 23:02:15 +0000
+        bh=k8F9ZHqeV4+Z5fO5QHVYcnZdLetqeRUwTS9gfMM8Hnc=;
+        b=Aa9aH2KwYzX4BaO07HmX0jhCe/6js0Pvo+/0tfezW3/HdKQA9BU8iBhNkdkYCAoMc+
+         LuiJwYqley284sU+/9VQcaT2oZsoF5yulu11tlmn3K0sHbyH56Ihu1cEtUcNSl8pBSBp
+         swzOjfVKFYUi5XGzic350uINeRo4fIOEoxQ1LdOo18bC9RV2xqKGyhsa0E+bP6EVLJr4
+         dOEiHLH7GMfyzIyQONj3iF+poQf6vWQr6jFB8vkl7/QeMC/8+MU7lHkfpMYSZhoZMssd
+         tMMcPGqkT+pjmS3hKLjifZky7uS/UtbgGf6Q+kRVjezfEMb4AyoNw5IwRbMZZ88qahHN
+         CDug==
+X-Forwarded-Encrypted: i=1; AKwUvBzClHXy3hkKyRAoJq8MSrJrZmY2KG2eKJoC+dDeWgNfLKBfWlsmSDWAJAMhaoBWrfu3cg+yp3ojDg==@kvack.org
+X-Gm-Message-State: AFuF++lmDdk5VNqMbQshtP9f6tbWoCc+YkvNim7Cb4le0kNFIHYOBN/F
+	pqy/jJnpsnOAgFXp8+Ei1i3+L/41lUAtqq5jQvXvXEgthhq82mCXg/sV46638P3w/X3sro9hY16
+	+6g==
+X-Received: from pgdf25.prod.google.com ([2002:a05:6a02:5159:b0:cc7:cc85:4188])
+ (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:734c:b0:3d3:adbf:777c
+ with SMTP id adf61e73a8af0-3e0bcf0ac46mr763907637.24.1790895748097; Thu, 01
+ Oct 2026 16:02:28 -0700 (PDT)
+Date: Thu,  1 Oct 2026 23:02:16 +0000
 In-Reply-To: <20261001230219.818128-1-praan@google.com>
 Mime-Version: 1.0
 References: <20261001230219.818128-1-praan@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261001230219.818128-2-praan@google.com>
-Subject: [RFC PATCH 1/5] iommu: Add reclaim_list xarray to struct iommu_domain
+Message-ID: <20261001230219.818128-3-praan@google.com>
+Subject: [RFC PATCH 2/5] iommupt: Implement refcounting logic for Leaf entries
 From: Pranjal Shrivastava <praan@google.com>
 To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
 	Robin Murphy <robin.murphy@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>
@@ -97,14 +97,14 @@ Cc: Mostafa Saleh <smostafa@google.com>, Daniel Mentz <danielmentz@google.com>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	Pranjal Shrivastava <praan@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: md43nn834dt3ckgeab3wdajw85j1txax
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: EB61AC0009
-X-HE-Tag: 1790895746-688286
-X-HE-Meta: U2FsdGVkX19IziqMERfJWj5uiRsTQ2gU5TWjZmXv19bqBkzcNGmi2ZCuLj8mQ9DENLpnZngeakwLLVFFLO3yXa2lt/NQWP8ee5XI7/d8GNCp6FzGmrg/LvZDPpwt0XhHPADEez/gaQLnz49VzOzmTvoheSsDJ7DX8kncmFA5d4Eiwrx8y8TuY89TwUyDrWm3viqsZ2Q0N7d7dLsH0htQKvrBSTVMhrbXbqWe0NNihPDk9c7qPnbJvNJU5cqSqQ1/YSPO2ke/sBxZ7GCpZy3sY9+GqjzgTUc4T1jBRPfH9eq96205ZsSmAkomIIv8zaCsG1sbfjtzQziNMN9h2SUOOBidEbf2qee+WXoBqx68Ve/UvlKKyyjjxwVrCLypCz1Anwbmt0Dgvl93JeF0bWua57aqyZrPk8ag3kN4+D1kwWiRd9Sjg5+0tH8uPtfQQAQ5YXUsby2xBCrRqgzVygGBJqQlBpKrbNvvx5OLiMaPXdEt+mjZhcbxr0+C3Eh6jIdg5mPgTBJgBEF5OGC8Iku91v2E2zdCJChIteEvL+KYxIIUAWgpdQMsa9Z09xDA5IvWD4AXFeJFUrcufi5cfJ3/yjxID63o8ryq+ycKrwq2Xwl7DvfSnA1MyTUzITy4QeAufCfrMehaSB5AVdTiosmwFdOMCn+EJkgBZMcs4r/1YnUdYM5iF2ZnHXjeSZ+8aP4NLJ0jqIvlQ6Lj1ns3DjMvpZRYB2szKO3O36aD5iCga+ZO6jNBEesrV04nnhCwH06fhXE6V5A605zhJjpPgyrquH1HolDm8XX4dvFdh7sHvdySvLtYyZnBH7LBeBHgEFIl0d8/f3sPjskniq64mWwlE7mccfPVkDLu6qE0OiEJQGkdjp/zkfeu0bOMt1hWhfY2Ahyfo5pyp5UFoygK3cVJmLc5mD7NlBUTClLsrOlBV1moXGbnC5Tu1aV8xvjn1ivmDPQ3On2uDNI9AFmjeOw
- k7K/SZde
- wBwOEQesLX9jtZ46fZFeAiMp26Z+xO73YmrWMjmn1uIHKz77ap40TKOjoM6WV2lY0zGj7GSH92rRip/88tQ4+ra+gMlMG1kJmzGd0YA5Yjacyf56dxf4CU3rGVZnvSZuhLtdklmQnDM1DuKoxz1YjRPGN0sxJ18OOI8VTtDtxjhrvMPwtu6f8R5OmDstF8BHec4pmPOrMSaKmLAChftREEQZ4PzR8m4W0vpzjEYTIOJvqfBn03k1SgHNJ7gpm8uQPKhewaRrhhUywdzqdWH0EzPCeiXTmE2LjLFQywJWrXIjxVWs+7Gy1Wv1h2hPH83lFFTUhMkfUhtIB59JCRr33kbnHsJcAf9SvXFnPqASLwW2wDx/sIqOALxPrrxMkayUVg6geHbiqL4V0CgW09n45Sj/vyKOiWhpRPuQydWn5m03ESKOV3onndFDF45JMPOxDsZu5GMauk28/qYokWDy2/MeR5ugGhCa0/FKb7Onb8O6rsgzwOM5aNrqc2WGsYcko2EeM+H5WtYa/PNaSfXGSot16/hjsPH3S7DVzdVVC3tMhYwnyYAiq4MwPoAcruI54XgPrLBVOLvxf2toU+krOWuZft1bu9yMoqMCyXOPoGQOJJqhdO79yg1JrXw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C75A44000B
+X-Stat-Signature: syc137h34yy4k9pfj8ehcqj1zu7ozcyq
+X-HE-Tag: 1790895749-406871
+X-HE-Meta: U2FsdGVkX1+vO7mwUlgkbLswEkfT1NitnSo7dcQ/ClRUEv1cefsk9+6BfxW/jP9/hbubqBPcbt2129zK6jmZu0DykM+MNbMi6hthydWBpiep23KrYb2+QdAfpGngCfyjOb2C/C+ykMES2AjSRNBJbJIYeMGxEkEokzbf0HdzTbsvZn6xesFIBityLGoa7LPPpZH+m8RXXJodEpB+Li4JnB0kawbRSlKSC/YM02gmxWKJ01lqDxdWWMJ+JopRvfredV8KcfRNbhp1R6MHz8Oi9CYliglr7ZcCkcRF/zDpLaF9Jk2INGqmwZWpVxqwBfiDG4PPz9WFwh6dk1J31u2yfg9BiOMOLS0nI5MOIefoah5r8YILU4qxo+is1Z+ch0E8yv2uZb8ec6WcGcExuWUgQqhipjwpIpqdl5LTGEPCKESnZ9LrKGrlOPTRyRVQA8uCxPPN2+z8gnPa6nM+lgrRUhE0Y4cJqAxdz+TqO5AoIn87yHv6w13GNK84GdcbvgeB+AL+IMrddWT1P2xYcNjE27rEv1K+aLZhU50mcA0XVpYplzOiIPVubLcc3jbe23BaOISdqJrjtUjrWFBmV/Cmb64NxMajVNYaIYPC63NE+V5zdDovdiqbGtOa7btgDqw6OS+6BDBz01X4JVpZcClc6ReH3lteSVqa2krzZU7jWVyMYM1VPM+gNt89NNBTenQCXa381jiyLlB2I8CkDAnlWsqlbQAmWVficpGR48godKmpDOdlL8pH0yGyMCwUGcBG7RsULzxZ6q1mdk8VUoV0Q2EL7X/yW6ynZzuSYQAi8d/H+bjRAQG4XRHaAE+sKlIFAEW9BDx3NhQco/u5Z2d0tU9xUXhiTo2YWaFVMWsU3BFf2sgdJrvKCGrT6us6qqYqJcVsGrH9q/yGEe/d+NdAMb4ds3ASLYqzQpcCkBZY0mtxxjZaBW0FbcKcUhU4DmhPajGD9T0h0ZGrcNoCuLE
+ ZVENs2+q
+ 7HmATNkLSW5n4vbZh8XMAOy9rV1ZRPArb2hZWUqNEggk6NAGsVzCfRe867uDEANcmvzn/TGZ+Fcjw6ZLtTRWRZX9EmvOL8yHzMKYElwSF88ZpwrLaRXuD2UKi8TPDrP/WZK1d6FIUVMxEVladLNTUTL5ChHnPmxgG4I8+1tV4Ii49hxSTZR2ij2VnBzzv9xpWzRCj3tRjw7oa8O2ti9CRJHr85YsgLD9SxFgU+22rMoSNC7BOOuxERBupA2ZbC5S9FRtj5Jyn0LNLlfP1YCWUnmBwMpJDNxdmoD5fiWsCFvmC7iWAthiAiMMyEk1unM1uIaHBv9qjt8JdnQODoiGQKs0P+kmTISWVsd2BrnASQKfRjxljSEqE/qkq3Y2uUJhd2uC+oqWx/mJHvIpzjGCbBIaaZtHNVA5by9MAluXrNJmUg/mnTvC4j6SZSanCPbJR4L0RnuEPyw4x+54pfLzjH1uDqr7F90R3aNdVLPZBpdLtvs1O2c7tUy6wmxWQLhtcM2ZnwYiL4RSGNwEvvEqqh4ttav0+4gMOWEzrhaR/RQXwoOqokMe9+2DucXZZLb0tQw4l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,61 +112,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce struct xarray reclaim_list to struct iommu_domain. This will
-serve as the O(1) storage where the fast path stores empty directories by
-their associated IOVA. IOVA is required by the shrinker to perform a
-top-down tree walk to safely locate and prune the parent pointer. While
-xa_store requires a localized spinlock, this path is only triggered when
-a directory reaches a completely empty state, keeping the vast majority
-of mapping operations lock-free.
+Implement a lockless state machine using the ioptdesc's __page_refcount
+field. During an unmap, the driver executes atomic_sub_return() when
+clearing a leaf PTE. If the refcount drops to the baseline state (1),
+the directory is completely empty and its pointer is stored to the
+domain's reclaim_list Xarray.
+
+To protect against a concurrent background Shrinker pruning a directory
+while a map thread is actively populating it, the map thread must acquire
+a reference using atomic_inc_not_zero() before installing a new leaf.
+If the acquisition fails, the page has been marked dead (0) by the
+Shrinker. The map thread cleanly returns -EAGAIN, forcing the walker to
+loop and re-allocate a fresh directory.
+
+Only non-DMA domains are queued: DMA API unmaps can run in IRQ context
+and the reclaim_list lock is not IRQ safe.
 
 Signed-off-by: Pranjal Shrivastava <praan@google.com>
 ---
- drivers/iommu/iommu.c | 2 ++
- include/linux/iommu.h | 3 +++
- 2 files changed, 5 insertions(+)
+ drivers/iommu/generic_pt/iommu_pt.h | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index cd1bca7ede9a..5d814854d825 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -2074,6 +2074,7 @@ static void iommu_domain_init(struct iommu_domain *domain, unsigned int type,
- 	domain->owner = ops;
- 	if (!domain->ops)
- 		domain->ops = ops->default_domain_ops;
-+	xa_init(&domain->reclaim_list);
- }
- 
- static struct iommu_domain *
-@@ -2126,6 +2127,7 @@ EXPORT_SYMBOL_GPL(iommu_paging_domain_alloc_flags);
- 
- void iommu_domain_free(struct iommu_domain *domain)
- {
-+	xa_destroy(&domain->reclaim_list);
- 	switch (domain->cookie_type) {
- 	case IOMMU_COOKIE_DMA_IOVA:
- 		iommu_put_dma_cookie(domain);
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index ac43b8b93f14..b9611631ea80 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -14,6 +14,7 @@
- #include <linux/err.h>
- #include <linux/of.h>
- #include <linux/iova_bitmap.h>
-+#include <linux/xarray.h>
- #include <uapi/linux/iommufd.h>
- 
- #define IOMMU_READ	(1 << 0)
-@@ -249,6 +250,8 @@ struct iommu_domain {
- 			struct list_head next;
- 		};
- 	};
+diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
+index 07ec2b3ab986..c3d09b746eec 100644
+--- a/drivers/iommu/generic_pt/iommu_pt.h
++++ b/drivers/iommu/generic_pt/iommu_pt.h
+@@ -621,6 +621,13 @@ static int __map_range_leaf(struct pt_range *range, void *arg,
+ 			PT_WARN_ON(compute_best_pgsize(&pts, oa) !=
+ 				   leaf_pgsize_lg2);
+ 		}
 +
-+	struct xarray reclaim_list;
- };
++		/* If refcount = 0, shrinker killed the page, retry map */
++		if (!atomic_inc_not_zero(&virt_to_ioptdesc(pts.table)->__page_refcount)) {
++			ret = -EAGAIN;
++			break;
++		}
++
+ 		pt_install_leaf_entry(&pts, oa, leaf_pgsize_lg2, &map->attrs);
  
- static inline bool iommu_is_dma_domain(struct iommu_domain *domain)
+ 		oa += log2_to_int(leaf_pgsize_lg2);
+@@ -754,6 +761,11 @@ static __always_inline int __do_map_single_page(struct pt_range *range,
+ 	if (pts.level == 0) {
+ 		if (pts.type != PT_ENTRY_EMPTY)
+ 			return -EADDRINUSE;
++
++		/* If refcount = 0, shrinker killed the page, retry map */
++		if (!atomic_inc_not_zero(&virt_to_ioptdesc(pts.table)->__page_refcount))
++			return -EAGAIN;
++
+ 		pt_install_leaf_entry(&pts, map->oa, PAGE_SHIFT,
+ 				      &map->attrs);
+ 		/* No flush, not used when incoherent */
+@@ -1087,6 +1099,20 @@ static __maybe_unused int __unmap_range(struct pt_range *range, void *arg,
+ 			 */
+ 			num_contig_lg2 = pt_entry_num_contig_lg2(&pts);
+ 			pt_clear_entries(&pts, num_contig_lg2);
++
++			/* Drop refcount and add to reclaim_list for the last ref */
++			/*
++			 * DMA API unmaps can run in IRQ context and the reclaim_list
++			 * lock is not IRQ safe, so only queue for non-DMA domains.
++			 */
++			if (atomic_dec_return(&virt_to_ioptdesc(pts.table)->__page_refcount) == 1 &&
++			    !iommu_is_dma_domain(&iommu_from_common(range->common)->domain)) {
++				struct pt_iommu *iommu = iommu_from_common(range->common);
++
++				xa_store(&iommu->domain.reclaim_list, range->va,
++					 virt_to_ioptdesc(pts.table), GFP_ATOMIC);
++			}
++
+ 			gather_add_leaf(&unmap->pending, &pts);
+ 			num_oas += log2_to_int(num_contig_lg2);
+ 			if (pts.index < flush_start_index)
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
