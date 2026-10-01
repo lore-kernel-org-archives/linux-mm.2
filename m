@@ -4,107 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D04C8CA5FD4
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 21:12:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 911CDCA5FCE
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 21:18:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D13F6B0088; Thu,  1 Oct 2026 17:12:27 -0400 (EDT)
+	id 40FB66B0088; Thu,  1 Oct 2026 17:18:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9820C6B008A; Thu,  1 Oct 2026 17:12:27 -0400 (EDT)
+	id 3C0D76B008A; Thu,  1 Oct 2026 17:18:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 899566B008C; Thu,  1 Oct 2026 17:12:27 -0400 (EDT)
+	id 2B0316B008C; Thu,  1 Oct 2026 17:18:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E1756B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 17:12:27 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DA99FA0550
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 21:12:26 +0000 (UTC)
-X-FDA: 85275305892.25.71B3FEF
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3A917180003
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 21:12:24 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=N3eGFqkw;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf16.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790889145;
-	b=CbFkm95TTL2v6brdgSZa2RvZo6bgpgkkWqBFjRlhgZz0+1NZ9KK+GQF+kyyAdnH9Cu3DJc
-	4RibXT76c6Od35CjXgAJ64ub+lbacaHC5EiS3xvK048nV8uXLWJoLgdTF8KWgcOY94v76N
-	MLEm9eeSabuTT7P1lOlMl8R/Qtdi5C4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=N3eGFqkw;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf16.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 01B4C6B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 17:18:09 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8AFBF1A054E
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 21:18:09 +0000 (UTC)
+X-FDA: 85275320298.09.CA20AB0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6D68C180006
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 21:18:07 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=m3xOepUI;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf24.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790889145;
+	s=arc-20220608; t=1790889487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yV3OoqhhTOyvLfdzMAWwmTNQmt2i01UTi3FCUoHNWiw=;
-	b=yLQnoLqRhJbPllIIQySD76oD4eoC79INfBLNLwEnPXRR5cDMwnALm3B6l4N0neolwRc0Q9
-	XOft6uJt6+Y3iLHL/5orqIDrl4tclMSfhOqFYsWfQs9tiFDL2Uxiyw13X+uccBNgDOaWZ8
-	cgR3cvg1BROXlhrS1oy4mxn43RVZ+to=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=yV3OoqhhTOyvLfdzMAWwmTNQmt2i01UTi3FCUoHNWiw=; b=N3eGFqkw2bH2ZVrnw5+je4uWhZ
-	J+5Vt4ELsqK0nd7/5K0Dd3phpnJ11mcwHS9Ckj3NnVfMsk3pJIqKyXmFaO6aqqA1wUOjjbfAe5arF
-	TXtggCg1hUKUMga2W9gTs9o/sg+Zks2X3RF48SVs0T94Jmo+mUUucCvXppgBF7+LGEeIqIZshggBe
-	Uj12hMsorknpIKgwpTe1E0upzf6OQpQnfPN4W6l1K6OQ73Y+dEepsFpKQcPnSMS5u6W9c74ZrdYyK
-	xX8PEkyeFYpBoW7g/MrJJK8Xb3/ePcA+lpljARA7IhJfalxxtq5SGY3d0Y5fDh4Aq7VYWlkLzvhKy
-	s/2qqAIQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xCO4e-0000000A0JS-34rA;
-	Thu, 01 Oct 2026 21:12:16 +0000
-Date: Thu, 1 Oct 2026 22:12:16 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Barry Song <baohua@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Hongru Zhang <zhanghongru06@gmail.com>, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com,
-	david@kernel.org, liam@infradead.org, mhocko@suse.com,
-	rppt@kernel.org, shakeel.butt@linux.dev, vbabka@kernel.org,
-	zhaonanzhe@xiaomi.com, linux@armlinux.org.uk,
-	catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com,
-	linux-arm-kernel@lists.infradead.org, chenhuacai@kernel.org,
-	kernel@xen0n.name, loongarch@lists.linux.dev, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
-	linuxppc-dev@lists.ozlabs.org, pjw@kernel.org, palmer@dabbelt.com,
-	aou@eecs.berkeley.edu, alex@ghiti.fr,
-	linux-riscv@lists.infradead.org, agordeev@linux.ibm.com,
-	gerald.schaefer@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-	borntraeger@linux.ibm.com, svens@linux.ibm.com,
-	linux-s390@vger.kernel.org, dave.hansen@linux.intel.com,
-	luto@kernel.org, peterz@infradead.org, tglx@kernel.org,
-	mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
-	Hongru Zhang <zhanghongru@xiaomi.com>
-Subject: Re: [PATCH v6] mm: retry page faults once under the per-VMA lock
-Message-ID: <ar7MsOb6IJLt4eLo@casper.infradead.org>
-References: <20260911025613.1220845-1-zhanghongru@xiaomi.com>
- <arFYRAa-i7CIwmHL@gremlin>
- <arF-E3Nsw9ZliH0t@casper.infradead.org>
- <arI_w2wTfA00Mgy9@gremlin>
- <armexcXDiG8ryZd6@casper.infradead.org>
- <CAGsJ_4xuFi7K+crAcFQ998SxXS0xPM6QeA34JV+6+Sy005rXLg@mail.gmail.com>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=nTnbkr6NV0s4UVnzHPcBxt55R6dxg+1VjK2dP33jSg0=;
+	b=F4rROkO1KRREoE6mZaQWr5xPW263jA8HEa5UfmZYJxEanz3cJ/7y74Nc53uJv60tqmk84R
+	8G6O5Hnqm4QdPFZbaZpznKWPpm9yr56JMoTX8RJ5RDRJyfDwoNCezfZ6/4Xj3CHBE0hK/x
+	HOH58YGGPjLEGuRrotNicyP/I7JzNRE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=m3xOepUI;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf24.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790889487;
+	b=N/BiZQS1TW+2T2Ogcmms2MlRBfDDN9YcF2f+9QbeRIBlI0fd7S8oRRn+ofPS7MP/Tg66Ij
+	//HKbyOnJfttA+vDVWGp/GNIJJdhQ6k2CbidVPz91UQuBO0AeeFXBpg7Ike8H9pxceqoBc
+	Y67Xl2aBVlTBwMFAp9aPVEX6qWN2HSo=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 35AA1497;
+	Thu,  1 Oct 2026 14:18:03 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9EBB83F86F;
+	Thu,  1 Oct 2026 14:18:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790889486; bh=elVZHf3wDmPU0tfGL4EH9o7DXhEwI7HvqsyNCh92HrY=;
+	h=From:Subject:Date:To:Cc:From;
+	b=m3xOepUIC8hdRxYywAiIF5vtRDekYWf/7c295Zg1wqeeeoAppiDD6ypWp0sWJe+df
+	 QIMr1y0GfX5MbVVohQrIm7xQL2sle2zYASnzUEvqQKa8tNSMNqLvrpGMiPOO3nyzKn
+	 YX0sgY3UT15ctZ5mpfB8OkFrpxs+NO5yzCV5SVsE=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [PATCH v9 0/4] kselftest: mm: fix some failure of
+ split_huge_page_test
+Date: Thu, 01 Oct 2026 22:17:50 +0100
+Message-Id: <20261001-fix_split-v9-0-0f4ba8bbdbdf@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4xuFi7K+crAcFQ998SxXS0xPM6QeA34JV+6+Sy005rXLg@mail.gmail.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: urproou3pgh518figi9hwkhsa6cnb8ps
+X-B4-Tracking: v=1; b=H4sIAP7NvmoC/23QQW7DIBAF0KtErOtqGAYzZNV7VFEFGDdITRxBZ
+ KWKfPfibIKjLj/w/oy4ixJzikXsd3eR45xKms412LedCEd3/o5dGmoWCNgDI3Rjun2Vy0+6diO
+ RVTYGIs+ivr/kWC8fXZ+Hmo+pXKf8+6ie5Xr6X8ssO+icJwVBczBh/HD59B6mk1g7ZtU6bp2qT
+ hkCRM29I7919HQWsHVUHesRlAU9Gi+3TrfOtE6vDtGzBNLsw9b1jZPUur462cfBSFQM8LKnaRz
+ K1pnqBtQxWCulti//wq3bzOPqgndGaTswo3u6ZVn+AFmT7f3wAQAA
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+ Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Sarthak Sharma <sarthak.sharma@arm.com>, 
+ Yeoreum Yun <yeoreum.yun@arm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4504; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=elVZHf3wDmPU0tfGL4EH9o7DXhEwI7HvqsyNCh92HrY=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqvs4J9kNPaSxDmOGK6cAuegoeJSlB/nC6jvHsp
+ 92wNFXht1OJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCar7OCQAKCRBt1cPRWsUx
+ M1JfC/sFJzOYGspJBLB/MTgJIVH2alzwBjlzkrTRTPo4Zh0NKFh/Nx66ovKfSxWpLsll9rhdbFL
+ i2e2ZA5IJbS57pbkyea0YnCXEwF4jQ1/K+CZf+jdzNZrZntfzLBdzx98s8m3+01437QXeyvYama
+ BsnN9PNwvB6e+hs+q3XaLkw5YUP9e7izGSGOBSxE+luNEXaz3bBLrYx9cuGInQ8ptiAaTJ4yHEr
+ FEE7vDFaQIJt5EJOXJ3uwmdzrM2F3Mzxx6R+rH+VOGLwu3VoJwhaViBAtbFV7KES6yvBzg7CsGb
+ 0U2hro+rZVBHL5CqEl6P059jEzIeV3kx4/0KDH6DKdpC8RvjlG59u5EjQgTZUmBeHIIU20G/kPr
+ JkrND+KuRU+OOne1rp7qs5Ns4lJ/uIvjxwwJgSwrmxLYVApNM7WG4f8Q4Uzrvsc8Vmo9Ob4RKRh
+ k/ruWgOh5dFPivdwV25w/qHVHEQXTrgGmKw+nXduP/S3VOA/JGy6Q471pC1YdiwBuuvO0=
+X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
+ fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+X-Stat-Signature: g8d11khugf4w88b7zzphmpnis3rbc7ct
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3A917180003
-X-HE-Tag: 1790889144-383648
-X-HE-Meta: U2FsdGVkX1/Cl/ntxLfiI99KI9eDjVVOIInTevRXAm1R3TAzxAQ6s3HKLQdwbWmcrqbmU5ZoScVBfUB5DLUEhgJO+InhiohB/UypZJ8GnMWfshv49DFAsblr6+x3YR6l8pRwwPqMokpR+kRef7gmC1rJOpv5BoVfvyxYfLRc/FgIi8V8H7oB8F+X4rkNfglO0XENkY5fU4tWz0Go0IWbZce5C3Blpq9SgNix3qb7CELQvu/q3ja45GgD9bWW6+qywyUfwEHsj50cgqhbFJKLp3fZX6MPhhOylmUB+XYVG6IcFsqIpW3DBNSUHabgAXoJuK5mhnM6o4zSj6mAQmrNv93yrGgJiP0txcMu94W+7bUvmwIWi8YJk3M+2s++db/s9qF4VjVF2KFjZaEbi/UbGydXkdrXCFQUKLcK3JKM3OcSZqBEcqfQCl4KeIUTIFlwCqjWSiKP/eyBp3Zs3/okiOIniB9+0v9VsQSdKit9K/DQ3aYSosSAvFoGBg+13st4Nk//o0rEE4yClFsuiOwIbkDjGtBrmlePVHMJg+mrE+TN0fvddjJ2cNisC7nwXD8hS7xsOnIHNTAzoQRoVoUUU8D1xF+UkfFinNepws4wFd3XKqGfGR7JhF6ia3gA/FEyW3S3w83fQMPr2DK+GFFDMF02qIt6v658AdW/o1/9NJGzYJi+cVrX8iOvfH7REphR+23AnY/7YPUhJswgZ3wSTsqYImcpWxxyB9MXr0PmfqMs3GlqgGw3eeGJE9l0Ro4Ol/3MfJhaa8gkrd/yiNdOM0QwJgC04ZOpq6UpsAhgpjE0ePwjbAUpPFA36dScRiSLw8xARdBaQeWdtYy9s+7INXDo8SQCQBKmgQA6FCIivUE90V2tnia/2Zv5/+sw7bV36bHgMB+q8bbAn0aiIkn8yQUCMuOH6hSw2tpt/yb0YYmnDOBmMG2rCpbXwHFp3RhM78TJhEAoppXnCES8Z5r
- Q2pgxvBZ
- C3N2dZt1mnuBYY0jKg4UOZ9eaUO7dBUCYqlN8Tu8dbI9iO7Rdf1XXT3C27Ofy2P/ms/T2mHgTXZH16NOyGKnEpQTlyKIFhHiIxW6XLzfVxYAtcEU4b9W7bhAROzH3uQMIKFaY19DJRyZHh7wCJexlQV5Z5SDVEQTf0LzsbQj+PjOCm4ykGVrykRtWjkX/YffOUXMRisXAeuXr6cccxkgsh5Cum2HLZxJ+ZjfWPQa4jJbWFN1NcLEXM98XqGToMkHwPQAcDfCcmL0y9CIf2f+klsr5rMcvZnPGqUVoTWJTzbNBMW3MWRcy1Kq1phf1U0XpQg3xihR3ckTcn64cmEVv2a6nYJkAq014ASKz1idqjwp3fbgXb6eXMAcPRkIWY5XebLgnPZhZTjaUHvlGk6D64tvFQy+Kf6oAG5cV
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6D68C180006
+X-HE-Tag: 1790889487-577190
+X-HE-Meta: U2FsdGVkX1+qujwV23mJ6dbaMu2W0FW38pVLD9WZWXCUwpOslxImb8R10UvXGs1it7qmtWeZ9e7EhkQ81oA87vEB1BL26fchsbFqRTAJ4Q6427pa5HHgRu0CJC8dz7RAGDPVDtyVVAGQ5iEmfJxiiMUxMmLRkE/LkLz4nWWUkDNE5/MVp5he2UHT3jSYVAqMvPl+GIKm5vVS3iF/8daxrxF2TrcU1hLqTrylMQbrjuI/iDz2N3DNZkTnC4Rrl0V29fdkOLv8P4fY8IK+t5L9adUmaMalWSql4LCnptjblmgUmnmCUMy6PQ/+4iPkYq0xnpbpk8MnUfiH8e+Ra+ORq+0FwJ947MR12kd45tr3RpjvaJt5rbxXkTCFaKRT2f2iZxZv8DP2TmRm6/VVMUSF49MJpRGJ5gkhFNxLUn3WO7AGNgH8F+c1/jqc5N4ongoUc8C7pTkdjxJFluccspwg9kiTosCFyQ1xkAiI2hKQJ+GqVFHqMIK96ede7cUqH5jg7YN+wcFZY0GLmGhxo+JzSXhr+N1XKUUOmt2uItfPqFWJ3+ESWpkdG2GRBhLHA9VjKk6H7aYSKUayviJk+GfLNSKPKkB/lzs+vcOUqpbHJCcBudVNBkYyEbPwJy6q0irt3e9klVCaN85B4hgABgbyjJAcWJc2PvmSldDzBNgLA2fdw9zP+KBqvG6AuFkr50au2IELgFCEnvjfFYwWcBgzg48MpvW+gLDuPLdrfImtiL1VSVSWA2Z6DkVkFXk5BEih2DTzg+jHdbe3pRQi6RGuObVjvWS6TJYFoQNcsdzmhnEM0aaKH3Q38qCl6KiTdhHECkx2CsLDyhj+OAY5rn8BX9vDg73gX5rU/DlLwcqnDlk0S9t5AEW8a7UPgWazQrgUXCSEFkGBVe1P6HqKkGxAvizfQ21UnSYc5A25+p3FGMFQjFY3KGlLYpnURQ5hefkk8TnOfSMHCnofK9qoVlS
+ Nvk5wL8W
+ mQ3UIlm0dNVoNUZFimDyseEVD26vWB8FQevtFPSxgA41ETijyCz5Dq7NHaFixOh5ozJ873V8khPvGGKsLkfF/C4hmvORPJxwPcHlCY4ocoJ/ubNKaFuIGDVlGcl07A6Tyg7brYKSHsLTGdQ/dM4Ji5FCV9Zgq0oxOZG8RPEu9bImh375WIxjysRQhW7eDUQ4pnlksfbT8gBQMIdCSnXR80LzKV/vp5uNwl52O5+I06VnZkDx91pyH74a+yb40UaA/7Zfv8UHB/OEWfW0q3WRfYz6sha+DtLWpWHImQVRINEzBJ7pbt33fFcD3WwKabPl/5lxNFY4Avf9du6vAa0jDjlFz44IKls4fIbdj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,85 +115,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 28, 2026 at 10:48:41AM +0800, Barry Song wrote:
-> On Mon, Sep 28, 2026 at 6:55 AM Matthew Wilcox <willy@infradead.org> wrote:
-> > So while doing my slides, I realised that what we need to avoid doing
-> > is (a) sleeping while holding the mmap_lock (b) returning RETRY while
-> > holding the VMA lock
-> >
-> > And that turns out to be as simple as this patch:
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index dd09c438fa23..94ed2333f8d8 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -723,6 +723,8 @@ enum {
-> >   */
-> >  static inline bool fault_flag_allow_retry_first(enum fault_flag flags)
-> >  {
-> > +       if (flags & FAULT_FLAG_VMA_LOCK)
-> > +               return false;
-> >         return (flags & FAULT_FLAG_ALLOW_RETRY) &&
-> >             (!(flags & FAULT_FLAG_TRIED));
-> >  }
-> >
-> > OK, this is a hack.  The function is spectacularly badly named, and
-> > needs to be renamed before a patch can go upstream.  But this should
-> > fix the contention on mmap_lock.
-> 
-> Thanks for your suggestion.
-> This is exactly what we did in Android Common Kernel before we had
-> Lorenzo's proposal (bypassing `fault_flag_allow_retry_first()`):
-> 
-> https://android.googlesource.com/kernel/common/+/1b9b045a586245cc1c29b2747c6586234c7f5bad%5E%21/#F2
+split_huge_page_test can fail for the following reasons:
 
-Looks like that one didn't cover __folio_lock_or_retry(), but that
-doesn't invalidate your point.
+  1. During the test, khugepaged may collapse previously split pages again,
+     causing intermittent failures.
 
-> Note that Lorenzo's proposal avoids mmap_lock contention without
-> introducing any new VMA lock contention. It also doesn't require a new
-> flag that would break KMI. So this is clearly the preferred approach.
+  2. Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
+     glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
+     made by memalign(). The underlying VMA may start at a different address
+     from the aligned address returned by memalign(). Moreover, a subsequent
+     madvise(MADV_HUGEPAGE) call does not split the VMA because it already
+     has the same advice.
 
-But it does retry multiple times in cases where we know the fault
-will always fail (eg the fault is on a device-private VMA)
+     This causes the test to fail because the check_huge_xxx() helpers
+     incorrectly require the address returned by memalign() to match the
+     VMA start address reported in /proc/self/smaps.
 
-> > Could somebody try it?  I've verified it boots and runs some userspace
-> > fine, but I don't have the workload to test the contention.
-> 
-> Both Nanzhe and Hongru tested it before and reported the fork issue.
+Address these issues by applying MADV_NOHUGEPAGE after faulting in the
+huge page, preventing khugepaged from collapsing it again, and instead of
+relying on /proc/self/smaps, use /proc/self/pagemap and
+/proc/kpageflags to detect huge-page mappings and large folios:
 
-So what I didn't realise is that fork() waits for page faults to finish.
-I don't think that's necessary, so we can just stop doing that (whitespace
-damaged):
+  1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of
+     using check_large_folios(), since only the mapping type matters.
+     This identifies PMD-mapped huge pages.
+  2. Otherwise, use check_large_folios() to detect large folios. This
+     covers mTHP cases.
+  3. Check the folio flags according to the type of huge page.
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 4bf26b0f1e6e..e79555247d3a 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1739,9 +1739,6 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
-        for_each_vma(vmi, mpnt) {
-                struct file *file;
+Since check_huge_shmem() was required to distinguish shmem huge pages
+because /proc/self/smaps reports them using a dedicated “ShmemPmdMapped”
+entry, as opposed to “FilePmdMapped” for file-backed huge pages.
 
--               retval = vma_start_write_killable(mpnt);
--               if (retval < 0)
--                       goto loop_out;
-                if (vma_test(mpnt, VMA_DONTCOPY_BIT)) {
-                        retval = vma_iter_clear_gfp(&vmi, mpnt->vm_start,
-                                                    mpnt->vm_end, GFP_KERNEL);
+Now that /proc/self/smaps is no longer used to detect huge pages and
+/proc/kpageflags is used instead, it is sufficient to distinguish
+ between file-backed and anonymous pages since the ShmemPmdMapped is also
+kind of file-backed.
 
-I think this is safe.  I've booted a kernel with this change, and
-everything seems to run fine.  Of course I don't have any multithreaded
-applications which call fork() because that's a stupid way to write an
-application, so it's not really tested.
+Therefore, remove check_huge_shmem() and use check_huge_file() instead.
 
-My argument for why it's safe is that a thread which takes a page
-fault during fork() might have taken the page fault either before or
-after fork().  The faults will definitely happen in the parent process.
-They may or may not have happened in the child process, which can't
-possibly care whether or not they've happened.
+This patch based on mm-unstable
 
-The only difference I can think of being observable is that the child
-may observe some later faults to have occurred, while some earlier faults
-to have not occurred.  I have a hard time believing any application can
-possibly depend on it.
+---
+Changes in v9:
+  - fix some typos in comment and Fixes tag.
+  - separating huge and type checking.
+  - add r-b tags.
+  - Link to v8: https://lore.kernel.org/r/20260924-fix_split-v8-0-cba7359d882a@arm.com
+
+Changes in v8:
+  - add intermediate patch for __check_pmd_huge().
+  - add r-b, a-b tags.
+  - Link to v7: https://lore.kernel.org/r/20260921-fix_split-v7-0-d25ec991159f@arm.com
+
+Changes in v7:
+  - change khugepaged's check_huge() callback.
+  - Link to v6: https://lore.kernel.org/r/20260914-fix_split-v6-0-16ed7123800b@arm.com
+
+Changes in v6:
+  - drop alloc_isolated_mem() patch.
+  - remove check_huge_shmem().
+  - Link to v5: https://lore.kernel.org/r/20260907-fix_split-v5-0-822b810458bc@arm.com
+
+Changes in v5:
+  - rename madv_nohuge() to disable_khugepaged().
+  - Link to v4: https://lore.kernel.org/r/20260902-fix_split-v4-0-85f03905f7b1@arm.com
+
+Changes in v4:
+  - reparse commit message.
+  - introduce alloc_isolated_mem().
+  - make madv_nohuge() helper according to suggestion.
+  - Link to v3: https://lore.kernel.org/r/20260828-fix_split-v3-0-374022586a4b@arm.com
+
+Changes in v3:
+  - change  message in case of failure of madvise() with MADV_NOHUGEPAGE.
+  - fix collapse_single_mthp (mthp_khugepaged:anon) test case failure.
+  - Link to v2: https://lore.kernel.org/all/20260826-fix_split-v2-0-71153c7f579a@arm.com/
+
+Changes in v2:
+  - rebase to mm-unstable.
+  - add message in case of failure of madvise() with MADV_NOHUGEPAGE.
+  - fix wrong setup expected_huge in check_huge_shmem().
+  - Link to v1: https://lore.kernel.org/r/20260820-fix_split-v1-0-ab430c58c7cf@arm.com
+
+---
+Yeoreum Yun (4):
+      kselftest: mm: prevent random failure of huge page split for khugepaged
+      kselftest: mm: replace usage of /proc/self/smaps for __check_pmd_huge()
+      kselftest: mm: integrate huge page checks
+      kselftest: mm: remove check_huge_shmem()
+
+ tools/testing/selftests/mm/folio_split_race_test.c |   2 +-
+ tools/testing/selftests/mm/khugepaged.c            |  38 ++-----
+ tools/testing/selftests/mm/split_huge_page_test.c  |  16 +++
+ tools/testing/selftests/mm/uffd-common.c           |   4 +-
+ tools/testing/selftests/mm/vm_util.c               | 113 ++++++++++++++-------
+ tools/testing/selftests/mm/vm_util.h               |   1 -
+ 6 files changed, 100 insertions(+), 74 deletions(-)
+---
+base-commit: e8d0f6a1b2a447d02845984fa6288787543cb03c
+change-id: 20260820-fix_split-f44939ec44b8
+
+Best regards,
+-- 
+Sincerely,
+Yeoreum Yun
+
 
