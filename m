@@ -4,83 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26E5BCA5FA5
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 08:57:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9314CA5FA5
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 08:57:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ED126B0088; Thu,  1 Oct 2026 04:57:05 -0400 (EDT)
+	id C65266B008A; Thu,  1 Oct 2026 04:57:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29E306B008A; Thu,  1 Oct 2026 04:57:05 -0400 (EDT)
+	id C15DF6B008C; Thu,  1 Oct 2026 04:57:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18DC56B008C; Thu,  1 Oct 2026 04:57:05 -0400 (EDT)
+	id B2C1F6B0092; Thu,  1 Oct 2026 04:57:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EC0DB6B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 04:57:04 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 69680120364
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:57:04 +0000 (UTC)
-X-FDA: 85273452768.25.ED2AFFE
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A0893180002
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:57:02 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=DAaVkpx1;
-	spf=pass (imf24.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 921896B008A
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 04:57:40 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FDC6A033C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:57:40 +0000 (UTC)
+X-FDA: 85273454280.11.E3745A3
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 602CB160004
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 08:57:38 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	spf=pass (imf08.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790845022;
+	s=arc-20220608; t=1790845058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AGFfOloDVGt81WW7cFapo78BY0WCchVz36PTh0Khmm4=;
-	b=nhTbO5L0zycuKhIbjyuoNSnXfK+9CgBWoPoDrrZ9tPredxnSHqFkvvxOLiBLOFkadnEpV3
-	PctBQnZBWbJeV7MiRtvNw6Kgtuvu9+5UGs49le1SnaosZCMfOxGEo2iloZBOSxaX5oKhi9
-	W6i0Fo0OekE6+qYMvhwE3Q9QP/ek+18=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=iM66IWU8foJ9Ijso0JahOxRJ2bZG5DAINtvf8mKAWOo=;
+	b=HbqgA1VTitCu1Y0v8Cnc3w91WHKBjNdpO6b8ngBnSVjSHOHZ/loezCrVLCG138v4yX6x19
+	/F3JGHCZAYLtGI2lUTWGj5pxQqjVx0TtmPQXkOD09N2380bZx4JOsg1DN/wI8Ly+tY/1fK
+	m3BHRdiSHo44UN4M3Ag78myopbPzHus=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=DAaVkpx1;
-	spf=pass (imf24.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790845022;
-	b=R+p7/JjH8WNbnpAEn65AzD/UZbV4YKpNcgzGkg2+vrKuGoMsOG7jWLvvyir/4O1Rb0vNqd
-	w9kgcBlJN9bKlDW0QMldNARknUtbVUOrnH35bAIY4QqoYYsOJyA1Edy06JYuOlgXFzlCpq
-	Fhqo5jyJl3g3ZNnpYJP0zXdQ0yUzB0E=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2DFA9497;
-	Thu,  1 Oct 2026 01:56:58 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D92233F85F;
-	Thu,  1 Oct 2026 01:57:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790845021; bh=3zNTBTzTbpwHYWDK0XIAY+iSCQscCOuwOgZRECRF++g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DAaVkpx1/jOgpspHxz2Bcpp3BaIEEQQGiZpOP7Ft5D9MvVRn7yixwAw5nEn4Q1kRu
-	 T5pUxEmM/GohIBxlkl+Tel3R5OJDpL1uoYfmIvOV38VA+o6xhEiVFK3Ms/MNt1mR2B
-	 VoAAdBhD0HbDOtfA3qWgdzxbkmYebz5DXCV53miU=
-Date: Thu, 1 Oct 2026 14:26:58 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [RFC] mm: Add KUNIT test for ptval_bytes_to_hex_str()
-Message-ID: <uweoxvlup5ogme5m356uw4mzlfn32a3iqyme5mpsoun6qylh56@dmjvfbey6oqo>
-References: <20260929120530.3394073-1-anshuman.khandual@arm.com>
- <2f7a38e0-1e85-4983-9bc5-adea49f44cbc@kernel.org>
+	t=1790845058;
+	b=vV7kaiS8Z8hU8032uwNHPvkQWtfM3dVDKf8++ZAh/kSzNyhMAZ8F3HeEkPlxCkCbXOmn5w
+	ZYZ/NanqELCfEoWgUYLjlxpmEhGZ8HKXG9jYjwMFaPUE4dQb1WslF2lTDFmjpH1BUfl8qj
+	os1xqc2Mu0rf1bQ/qIMwYPVgMgHemiU=
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2BD693EC12;
+	Thu,  1 Oct 2026 08:57:32 +0000 (UTC)
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Cc: Christoph Hellwig <hch@lst.de>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	linux-kernel@vger.kernel.org,
+	Alexandre Ghiti <alex@ghiti.fr>
+Subject: [PATCH] mm/swap: submit the last readahead batch before unplugging
+Date: Thu,  1 Oct 2026 10:57:12 +0200
+Message-ID: <20261001085730.2029773-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2f7a38e0-1e85-4983-9bc5-adea49f44cbc@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A0893180002
-X-Stat-Signature: uw9iq53ref59ti18rn1maojh4jdpasky
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alex@ghiti.fr
+X-GND-Score: -100
+X-GND-Cause: dmFkZTF1ZYRqrGBHftE47xIW2kWpWI6gPPZrBB0Fm2rHvUXkYYWGSu9bNQ4d4HVyhDy/NIybAnjmiF6pBYixger2QutfBbU4qbhWgGqzRtaP73q9SQvz845UU72nXpi2UucOwghImYR8IYwaxIE5XH8XU/uXkuVbcQdBHyRcTjmdcGMygMcxvXMBtUX/Cg1pSgZ/wdXfFSVnOvGAji3SOIoQ1ozVEoAUSRjGrg+FkZhEQmBDIdu86mBkTKSZMz/5l2OLju48pks3Mzo4LlIalkOe+F+/vvhT9lN7Jk6nolKAiNDPrC7oiqNr1sfRzpu1z8vMb1S3hwqE22s5+3cMlgLwn/ZgQNRdDN6XnTTIkeVd2IBSOhGN9XEwPa5zd16NTnqn/F4vQfm2E4s1hI0HbcT/OgNGCgEEu4DekqyUUC+afl/R5E5zSJ+hzpg5PZYOjYcAskn7JGUYT/ADplASg1NaL08u36yxzNaaspa6sGziiFeYiEoEVte4zhuCjbspW8zF6t8ndEc91NrxJblqFzHiHTthf8wCtraXcn4Ixws7xfMqu1OIhDUsGRdoFB7tUOLfRgB+BwXg2WZEH9D1YeTMReQNYmhFIdRQQhSquGcuL97ZKtNQQ7IgZhO3/XJEm4yGF8NSn6sTxXNPt7xHZLX+MBPbVpt4K5rxTGudeYQYRAfNdA
+X-GND-State: clean
 X-Rspam-User: 
-X-HE-Tag: 1790845022-588284
-X-HE-Meta: U2FsdGVkX18uF1ThtGNKRTDofHPZV6jZ7FqEroy52Ug4UT6/RRlzkTO/WYI8rMDKwv/s2K5Tv8/ER113MVXRGcXDjrd/wLZR3L1JtGsosTClyTtSngP/vuvBbQBflvpWkjw3qfRFhmz5fdezfqEO1UDkEzpBPs0ItouB/53xc5Pj86lV4FjmSobRMun5mWfnTba9hA5ywgGaMxJpjrWv7T7NhLMMspRgIZelAYvzSGBKJ7/c3JTQuEu+AquJJWQrRtQGJLe25jAUHptUGZMkg4JQxFjK79Mdd4kc5gFrJiDpletGvEYCqLfeFC0jwG6mlagN0tPNNyMmejfZMB+mnABwGLilLElk+b5RJhvty5ZQS3vhBjem5oTlw4MUD7zYOAOdqoGNGvW7fe8nakyhcUbyLDJ0VYOzpnpSXTc9A0Y+YhFDGbd5ui8vWSN0Vwa0upFH1EeX/7cwtzIABOVQkH7z9D6UDBPeUv1L/eaeVfMHDZMmx2tw8Fs++aHsf+m7yuqGdSpwqpSOMj4Cwi/qVlaMeKhuz80YYdOSXQeUDV/4eUBPUAGvKP38Z0JRHmk9/mOJQQJuThZRckFYA2Rh7YdQ39+7FOmZCMfZkUTaSkkBd+4pL4BSyFex0IRnMFtQcwTv7Opp2clGqzn3uQfNftYfVsW4xucsa9gbU+q+aViqfAaqIU6Qpj0fwVYUNkVjSgSDbo5Vtsxfe1iJfLbBTG9hLNVlmo1EOrWMo1jX83YI9mXTK9Nw+TkA25tTsBVTLEfRMdeP1C+Na0tdJ7uc+AUQWgHVYTbiCi9plfQoJUHbE3NDm/TD9jhzMaR1mstAz9fV9tpST0r1aOPiJVqOmuJTalZILyZAT+SZVnIL1p/rDHsgeIfkc3t+3VPbPDmlMlKiiSMm4F66WdgBTJPRN1YyMZ7z/69auX4rAn8MWB0JBj/MJOiWREyZWz495uBdpjecpp+D49XaOJjOulu
- qZ4lNLOX
- kjYIekkS8qTBA1hYELqZdVXHzK2CmmFXbEaHdbUU2KOMOPCJ54rzx1a/9wtf+83gq/nabFIgy9Wh/ylf8Pj7L/aUVjdX+ZZvrdsmnKWMcRo7lvsuIMwOWY37x6qPgRdOfra4NnPKL4g1f99GkB5Z55ip362CAVhtQZ3eCasKOFDsXb/o4oRsN3d2zSskJjwD5Yj0pHbISmrMkv319+QaBvGt7NyYnB5rffc8skcy4v2IQy5G4vySRfiWvE2SR6n0qf+fF97t7ilefgOgqX6ktBfAj3EK1KJMhXIf5dQ4lckFcK8CqM+f2lExP/a8KSDXLYESiDfwwltcRfKJ0hkG2ah/Yo+0MLOqIw6jjtm2hYqPdkcR6RQPa+PNPaTYxKDtX8//0S2ogH5ftBfNn0F73takh5EC9KhH11LzgdseXN3pI8b7Ld2XEV/AQWThfVsr2MT1Tbc4orZttVRxt/sR0s+jTUOpOPvr3bvioLW+4OXOpnqarXByP+MVH0HiO2IMH8CtrBaMNDVZkRus=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 602CB160004
+X-Stat-Signature: s8zkhzo6x4p8ctwswp3g7kgkxahhbkps
+X-HE-Tag: 1790845058-84452
+X-HE-Meta: U2FsdGVkX186bJTCCl9yu5MzlP3yZ4+8AvSIWAZ0t+wtsLcYQP1NXZZFU3VJ+seweKuFIZ1jgLCgJnZTW2MthoCloe6qFw2FY+6ZecVVr6ahOIX4MXlHfNqfZXJC7THbkqkuY2P4trNMkt7Or5+8FJyMIfZo46jE4Cgd8ukNXFHV7B8yhgO2Z258lcZql3qwrA0ls7ywgWMUpQY/Kp2UwBwUVilR5gX+0hnW1W/FAjL/9B0hKXAIus/JXeVz/j3oXTTKTVn64DAukrr34dMF2Nj5HWS4+0A2tFbS718INEhG3IDQKnVAynCuSGOvshbMxJEwCrMJg6RlDB3WGlZBZYjFx0BVR4Eaz9eiQIAx72G8QaDXYBoEKACJSIt6Y9yXQ2pJhNc/HBjxuz6zzYBxsGDN0lRtgA6e517wkvp8wXqo7q5+IY02i1tTCLBSY+4qSsBJnziU5Jm1hWhAnkJrVJeW49QMr70Tj8X36wlHLGenBQQT8EEBRS5A6vdie+ovD1AYFStjM5+NmY9ook4O8yDB087lWAZoXmXRQrFYe+IivUWmB9N0+lu6PiZR3EHCPpTh52lrWUyJIzvs5wsy1txRkdebM3iycx0Af72HP6TKWf5lf/opovgxrVxUbqlgqETNAldM0n07GmJVEAQVwrXoCRH15/k1poagXBJZ7RSj7dFjV7dV+ephmZXn6jwMViAFNNHZSL1wVlJl3s67LWaCF7/MbBlUBwqPMzk2kUQDfrrHe2dVb7mCpfe8jyMJ9Tx0xKsX0B32AO1S6N5sqom/8Bp5PxC2XRcxqRECfjyJFL4EgyriSJ5/iH96iZRlsORz5dOoMYBmXoeTXJdGgANnXtRT4aX00JdQU/mOeqgOp5aHFjfAXoO36zJtZqyk61NHK1Vg9U7d6uMy8aGU0vyx2d0o1tjyhIKRCdJO6fkmx+9qYsK4lI/SQR3804i5NZzHtP2PgCAKTHMiH9I
+ vw0f54Lm
+ z93O/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,111 +85,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 01, 2026 at 09:45:01AM +0200, David Hildenbrand (Arm) wrote:
-> On 9/29/26 14:05, Anshuman Khandual wrote:
-> > Add KUnit tests for ptval_bytes_to_hex_str() to verify conversion of 32-bit
-> > 64-bit, and 128-bit (when supported) page table entry values into printable
-> > hexadecimal strings.
-> > 
-> > Add a new PTVAL_HEX_STR_KUNIT_TEST option to enable the tests.
-> > 
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: David Hildenbrand <david@kernel.org>
-> > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > Cc: linux-kernel@vger.kernel.org
-> > Cc: linux-mm@kvack.org
-> > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> > ---
-> > This patch applies on v7.3-rc5 after the following series
-> > 
-> > https://lore.kernel.org/linux-mm/20260831054331.625505-1-anshuman.khandual@arm.com/
-> > 
-> >  mm/Kconfig                        |  11 +++
-> >  mm/Makefile                       |   1 +
-> >  mm/tests/ptval_hex_string_kunit.c | 111 ++++++++++++++++++++++++++++++
-> >  3 files changed, 123 insertions(+)
-> >  create mode 100644 mm/tests/ptval_hex_string_kunit.c
-> > 
-> > diff --git a/mm/Kconfig b/mm/Kconfig
-> > index 604c58199acbf..f68bf26b98c83 100644
-> > --- a/mm/Kconfig
-> > +++ b/mm/Kconfig
-> > @@ -1511,6 +1511,17 @@ config LAZY_MMU_MODE_KUNIT_TEST
-> >  
-> >  	  If unsure, say N.
-> >  
-> > +config PTVAL_HEX_STR_KUNIT_TEST
-> > +	bool "KUnit tests for pgtable entry string conversion" if !KUNIT_ALL_TESTS
-> > +	depends on KUNIT
-> > +	default KUNIT_ALL_TESTS
-> > +	help
-> > +	  Enable this option to check that ptval_bytes_to_hex_str() is able
-> > +	  convert given pgtable entry value in bytes into hex strings which
-> > +	  could be printed.
-> > +
-> > +	  If unsure, say N.
-> 
-> That's a bit fine grained :)
-> 
-> Could we somehow pack this under another existing / more generic test? We don't
-> want one new test for every new function :)
+Since block swap I/O is batched in struct swap_iocb, swap_add_folio()
+only appends a folio to the pending batch when its slot directly follows
+the previous one, and submits the pending batch otherwise. Batches
+submitted inside the readahead loop go through the plug, where the block
+layer can still merge them, but the final batch is submitted after
+blk_finish_plug() and always becomes a separate request.
 
-Probably right. We don't need one test for each new function.
+So submit the final batch before finishing the plug.
 
-> 
-> An alternative would be to use mm/debug_vm_pgtable.c to just run 3 tests at
-> runtime as well.
+Fixes: dda8fb68b590 ("mm/swap: also use struct swap_iocb for block I/O")
+Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+---
+ mm/swap_state.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Yes - that could work as well given its printing pgtable entries but
-those tests would not be KUNIT based any more I guess. Although just
-like the existing VM_WARN_ON() check, new tests should be sufficient.
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 2475ba29126d..ebef568cd62e 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -906,8 +906,8 @@ struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t gfp_mask,
+ 			continue;
+ 		folio_put(folio);
+ 	}
+-	blk_finish_plug(&plug);
+ 	swap_read_submit(&ctx);
++	blk_finish_plug(&plug);
+ skip:
+ 	return swap_cache_read_folio_sync(entry, gfp_mask, mpol, ilx);
+ }
+@@ -1019,8 +1019,8 @@ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
+ 	}
+ 	if (pte)
+ 		pte_unmap(pte);
+-	blk_finish_plug(&plug);
+ 	swap_read_submit(&ctx);
++	blk_finish_plug(&plug);
+ skip:
+ 	/* The folio was likely read above, so no need for plugging here */
+ 	return swap_cache_read_folio_sync(targ_entry, gfp_mask, mpol, targ_ilx);
+-- 
+2.53.0-Meta
 
-> 
-> > +
-> >  source "mm/damon/Kconfig"
-> >  
-> >  endmenu
-> > diff --git a/mm/Makefile b/mm/Makefile
-> > index e7245cb88c665..d08b8bd01917b 100644
-> > --- a/mm/Makefile
-> > +++ b/mm/Makefile
-> > @@ -147,4 +147,5 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
-> >  obj-$(CONFIG_EXECMEM) += execmem.o
-> >  obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
-> >  obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
-> > +obj-$(CONFIG_PTVAL_HEX_STR_KUNIT_TEST) += tests/ptval_hex_string_kunit.o
-> >  obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
-> > diff --git a/mm/tests/ptval_hex_string_kunit.c b/mm/tests/ptval_hex_string_kunit.c
-> > new file mode 100644
-> > index 0000000000000..45c203cfb49ae
-> > --- /dev/null
-> > +++ b/mm/tests/ptval_hex_string_kunit.c
-> > @@ -0,0 +1,111 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +#include <kunit/test.h>
-> > +#include <linux/pgtable.h>
-> > +
-> > +struct ptval_str {
-> > +	u64 val;
-> > +	const char *str;
-> > +};
-> > +
-> > +static struct ptval_str ptval_u32_tests[] = {
-> > +	{ .val = 0x1234abcd,	.str = "1234abcd"},
-> 
-> Isn't a single test like this enough. Why would we need the other ones?
-> 
-> So I think this could all get condensed quite a bit (including the test
-> functions, a single one should be sufficient if we really only end up with 3 tests).
-
-If we continue with KUNIT framework, probably all three tests are still
-required to distingish them but in mm/debug_vm_pgatble.c based approach
-a single test can combine all these tests via VM_WARN_ON().
-
-> 
-> -- 
-> Cheers,
-> 
-> David
 
