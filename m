@@ -4,91 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62521CA5FC4
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 23:46:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 378EDCA5FC5
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 00:14:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DC236B008C; Wed, 30 Sep 2026 19:46:36 -0400 (EDT)
+	id 024F16B0088; Wed, 30 Sep 2026 20:14:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25EF26B0092; Wed, 30 Sep 2026 19:46:36 -0400 (EDT)
+	id F17E16B008A; Wed, 30 Sep 2026 20:14:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12A7A6B0093; Wed, 30 Sep 2026 19:46:36 -0400 (EDT)
+	id E07766B008C; Wed, 30 Sep 2026 20:14:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E244A6B008C
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 19:46:35 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 71AB7A55F1
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 23:46:35 +0000 (UTC)
-X-FDA: 85272065550.21.245D0C6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9F8FF1C0006
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 23:46:33 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dCl3evOG;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B3F6E6B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 20:14:29 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A69C8C028E
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 00:14:27 +0000 (UTC)
+X-FDA: 85272135774.04.5447319
+Received: from mail-pz2-f38.google.com (mail-pz2-f38.google.com [74.125.228.38])
+	by imf14.hostedemail.com (Postfix) with ESMTP id DE410100008
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 00:14:25 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ny+oFgr5;
+	spf=pass (imf14.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.228.38 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790811993;
+	s=arc-20220608; t=1790813665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DhQGe+RD+fiFkRmm1C/pXVjw/6OQ02jTbbVvy16bHsU=;
-	b=moD5qAKG01z1gO/ylgOp1DsW5r7dKz5kGbY64Hi7J5eyt8EeODCCA5WqqS+56H3tmDLt6C
-	2TBmcEJ9w7xB/xNmlm7thwuP6Mouv7RzTRomVu8k40YvTPKbAPddxW5xhH1WC0YEsh+x16
-	GKNwTom1rhXp96MGx6IOoOHUKLySvec=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=NMBKydyDXomE0cjnYGxv2IYVxFWQ1Eth8vx/ghbPX5M=;
+	b=aoqOUhXmHDIDmCh9LabjboelffcDB0gthCP/70YFwYF5Yg0svz0DqL/10jDdhL3WS92Any
+	GCX5mqvsR6+xDVhz8kaTwub34c0tcHEPIukxjGNEA038InbM52LVmJZqipcxFcgT0N9AaE
+	8Q0R6neJfxG8Vjnk/RYksv8y7R4pitE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dCl3evOG;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ny+oFgr5;
+	spf=pass (imf14.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.228.38 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790811993;
-	b=wjcJVL/TegpUoG/pAMWnkraobtzkPz4iqNJNSyzc+TGrFPLrsfsLTPxnAWO4XysaFPsl/d
-	CNDKzkm3KjVvuhYR8/wEsxESBnP84yu6HDdXsihRbZ2ML2Pd8RQGlzj0oaDGYfN4R7TsiQ
-	duVwF6kdZrfXrY3oqvYp8Nh4DPCP0OM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AD1FE601FF;
-	Wed, 30 Sep 2026 23:46:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7AA1F000FF;
-	Wed, 30 Sep 2026 23:46:31 +0000 (UTC)
+	t=1790813665;
+	b=yumeYZ4oZEz4qyzBe4UTdg/aAU/1EyjENQ4rySSZhe/65hLr8ow2d53v2gJcHXMWIkdAM4
+	yR40EUTquAuD34q9jnV1+PcNb9qgWyR7STbn+woRaq42Jgcq/gHXqjih1EIv624MgxrHqJ
+	2JcPnkA8CSLTsICIrlPukqDvknBlQpQ=
+Received: by mail-pz2-f38.google.com with SMTP id d2e1a72fcca58-88582e2153eso1891835b3a.2
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 17:14:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1790811992;
-	bh=DhQGe+RD+fiFkRmm1C/pXVjw/6OQ02jTbbVvy16bHsU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dCl3evOGSEmQqqbpP8nVEYUZD57g8vXRpyjRb742VDor14VGCaX3XxbgTizPHqgeU
-	 9S4l6sLZSg6Rqqf7bz867wLT9RqO6NUwsgwIBbrxSm7ve0Gex1suI4GVzThhE1wUD+
-	 fnrAhjq9ziMf6pPpkWADQ0xTF3JfRCjS7wvJwoQU=
-Date: Wed, 30 Sep 2026 16:46:31 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Chris Down <chris@chrisdown.name>
-Cc: Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Kairui Song
- <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
- <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song
- <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, Ying Huang
- <huang.ying.caritas@gmail.com>, Kelley Nielsen <kelleynnn@gmail.com>,
- Vineeth Pillai <vineeth@bitbyteword.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, "Rafael J. Wysocki"
- <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH] mm: Make swapoff interruptible when unusing mms/shmem
-Message-Id: <20260930164631.0468fb0caa7e47f60c9a1a9d@linux-foundation.org>
-In-Reply-To: <ar2YlFYjYUZ49ZA5@chrisdown.name>
-References: <ar2YlFYjYUZ49ZA5@chrisdown.name>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        d=gmail.com; s=20251104; t=1790813664; x=1791418464; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NMBKydyDXomE0cjnYGxv2IYVxFWQ1Eth8vx/ghbPX5M=;
+        b=ny+oFgr5hNTc6p9DtiD83njusH6rG4iywfswRorB3W2Eaa6EoGJfDqoKIpF1ibXzVR
+         6K35167JVFgYjffkrUNcIfstfRI767qTh2QFPELYuZuj31SYBDv5b4idXdI0O0MO8y++
+         gKVNxbYQ1k5wPW+W5KKXJ4yd2Ere1VW7IMyqj5oWjHtEf1M3l9Y+mmqJwSIKJypqIy8/
+         Ekzhv08brWiPmu7qXrg5hqhIF0EVXhar5BYi14rMToAxxMsioU9OJluILdnYJNRH7jRf
+         TrXCfGahX07VAQRYQDS7JWkSJeDBXu6BTH1leReo+0v2aiHXDnXqBhMk8OLXlJg23X7H
+         SctQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790813664; x=1791418464;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NMBKydyDXomE0cjnYGxv2IYVxFWQ1Eth8vx/ghbPX5M=;
+        b=TaPfaEhJbiqv5PrZrZqrNGe+neIOjbWuHunWFwz9HNdH4j9tAzTLYYeIUqdl3Y6M4p
+         tufJbcHPxQhuwgfjg3MeE681voQAnCQ6WO+qDC7cg4SaF38AGmfeRRaBfcYS4B+bIIVt
+         JOk5xkdEcG8mRD8Pun4r87ts9HyQkVe68VoSji3JpdZAQ7VpJMtsMdLyCM6CuxNXjpHh
+         u7Kf86Uck6saHgKzBykQC2i4ReqMSPXy13RDCg7u6CWuHpFm3rd3/Fpf3uSz7YN85jl1
+         0dNkWU9Fx4KG8HFyy1EVKsVQG5J3cj0qffsdzHWZkdV8YsPmFqAv+Jp5k921T/Ju0uGc
+         ab1A==
+X-Forwarded-Encrypted: i=1; AKwUvBwoC2NEoSnXsQeX+G3f3df5vdx50lQ/b0w5jtYKoqeh+WLo7OT48jHEw+3Y+XAICyPFRZaCXCDDrA==@kvack.org
+X-Gm-Message-State: AFuF++mDBVnC/t5ugcg1taYre7F8lSdSmmIMMobxMg9RkcFqDDRklJVQ
+	gwfXA9iIB4+PGsL4wZqbPAlzDiqgBDtyCSoxi4qGZgLaxf3zXfMCesUw
+X-Gm-Gg: AYBFou3ovuUNTGr1xiKscTny8eP4XUrMj3PRqMI6DnuxOnoVuYK7PeVsUycp8jTZ8U6
+	p0vzfRf/XFoh4dCvxqCTUj9aAUO9vH4w/kKiqEOCnCBdULMeizUYa5OddZsFjUBmC4LZ2WZBnLv
+	klcaB4vdMGBEOc1UaJTOVzN1aLBVjaGEcDX92briCyVeX/z/lzbaAVym5As98JO7PtmO5R5nYHC
+	JmJErUVUhJIsekT64G0qBXSRhulaK5L+4En3Lr3SzqrG1tzLj9e1txB9KKDmu1yCS8OkQtqfzbh
+	2aUSLz8MhM/ezZh5FU2S72Jmbg2rSbsAIc8cFflP31ke3E6hd71e4Md6OytxCQtmRv+i5bhnY7p
+	csNKD1HgqogwhYQ8018ogQ8/RqpaCVDi32xKIQg8/Bae5lF267qL7i88+PyinhRoGavO2arqkCg
+	QqpDBB5r7VqI6L6dZiZHyVEgcQp8kjxA2TEqfyCz3VZo4jirXIe74bUVMM784LrF/5SQRl2ao4Z
+	kXqTLMBPTR5zyKk
+X-Received: by 2002:a05:6a00:10d5:b0:881:750f:b142 with SMTP id d2e1a72fcca58-8874c8d3331mr2523937b3a.55.1790813664458;
+        Wed, 30 Sep 2026 17:14:24 -0700 (PDT)
+Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-88818814b2bsm253287b3a.19.2026.09.30.17.14.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 17:14:24 -0700 (PDT)
+From: Bo Zhang <zhangbo0325@gmail.com>
+X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	david@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	ljs@kernel.org,
+	liam@infradead.org,
+	rppt@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	zhaonanzhe@xiaomi.com,
+	lipengfei28@xiaomi.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Bo Zhang <zhangbo56@xiaomi.com>
+Subject: [RFC PATCH v2 0/4] mm: compaction: mTHP-friendly memory compaction
+Date: Thu,  1 Oct 2026 08:14:08 +0800
+Message-Id: <20261001001412.3837085-1-zhangbo56@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DE410100008
 X-Rspam-User: 
-X-Stat-Signature: tbmob3pkzh73yxx3w5p1ffsccnapgsk8
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9F8FF1C0006
-X-HE-Tag: 1790811993-859734
-X-HE-Meta: U2FsdGVkX1+UEdqM+s61+2e/wbhAY9P5Nx6+FYR1qKjafJ/RskYT33eUImXSHFKgDL9s8/RV7qxxMOHGJP+bcKwqmX2wYoQM5VNm2GC6+lMj1fDklDXN8/M6oum5FL+TLTX2D0KKoKthTtDDZfC7EBy1YGw13RdIGdukG57hx1r1oETEXdmJZ0z2/bbYPOH1mykqK5nQZmNavWzmI1hk2QULKhyT4Z5Qqw02yTasMNahuKdYBgy4NgQFrkL+x65yg7yP1504sAA/Cgbi90PFoPPXI9RAV5zWn4hgaJ6fSGQIZnIXNSvTHvnhDqPfhObGf2Of8tLpuOj+QwwiwJiaf9BeoZi9S3CavhFUDqnkD33OZXeZhCDGbqmg5yT2l5NxfXxL5NcWCqjVNQP4undcmjQrMaVpmarafR6PT6nMAqlvdkZBwpZIPyf1ZwPzO9y4bdALF+LC5yKNgtneZyOCrGukbSfatCeHKp5enxvfahSWVhP2A77QBedshg3Lp1uGNoiTCFiv68ElbQYsqmFNk1tc1fgNILiSrCEmY62wJ/+boaiaCSiMX6bJZL4/apHJPs5WqTJkvPe2Y3vHtois8vEgpGfJZfkdPsRrkscc7DMf66QQyL96adwcGZoTtxY3vZ4ABHmg5f3ewiR1PmLK9ko4We4AfkeDMA3DJ38SZ5hM/lM8uXEDve3Va28jQh2ezHkM7odWjTURmwKX2MzLQEqcEWzT6RtAeKiesFd2OYnvNpLahN/g0YnEzPpeqSek823EZm3j7jG1SXY02xs/2eNvOnVfF/DKowEOsy2Kfrqlr26+QxxGJmlcfSomwwyLhTXzIk05n0Hdmlzkc/uSUdSeEHVc4KjhmdGpzFF4QGT9rdmZ5bgpxA8hLHUPJ/cOMGBgXyQHeMat/bSA5lWZHmITQuMJ8pcFE5ZIWn9f7kHDOvgpKp16uxBgwM6Yt/mqcsgCUT+ycojrbaXXTVL
- poIAmlIy
- SE+1qHHV0vLV1qv5F2uhGEErHqhridMRRYuJIlvS4k+3GZ1B3yBGmFWPyNM11jX4GzUB4rGVnP4LRRcLBgkL10OMbkXpI2e9rmP/zl6JIhQAKCM8bDDCkTbnulCRbUqJ6X2ePkWtZUNyOZBrsD3G9ieveaP/McEVLjONPQAcamCOHado6Ao3kKkewRo7k/ldEWJJTcWjpnIVNkYPEeoy+BfBb5cYaAzPryERW+erODnJV3tQUBXdUCPxlscXrXLuZxkeSu3ttbG9kgYCXa8+l36W0jQ2GOFoKNJMZXOJWjSn7YR6ehTh8gziHZfmH3+w9fMd+0WLZ7pOU+P0=
+X-Stat-Signature: cyje3qqyft4agr1715o9m9yoi1ybcbad
+X-HE-Tag: 1790813665-635777
+X-HE-Meta: U2FsdGVkX182G3BjzageEq1o/1KmdZPEROFuArNcRa2hJ4AyUTOrrNwfduyTo9UXZ0KnsOEVxYzNqmTqRP62DztdKznFeKOCDhxSuL38nBCi39xy1eZOxu8/6SlKJJc+3ga7FYID43/f8uttf/RFmEQGPynoIf7c4N6FEs2b2mp8RSpKTKDqPyUXKHPtvFj6exqwMFMT26R7ARzSmIHs0xJZMXPekbwpJ+ebzMk9ijjJubn2BSYMdMneGxQxpL+kJXXhWRCpJEZdcgK+bIXebIMeZqtQcrK+n+hVN4mb9AYNHQeY/6Z6ydg/qJRpikw1iz5qxyD3lh9zbKNiNW7Zmvg9EmvUT8zFcb3ysETFGaDKCU4LZ+8KSTiRluWDzWVyQxftTDwxyFjGzJHwt8dSEQ8b2P7QAiiACZooX5sCmWETYfyQC1XgaA+FeTgABM2pyhOcRji/o6RnDAGPOYJ2qurIryW0Q1pCWnZktEJHVclNkj2WHO4cONqYrOeIbLTC7lFc2CIOF2poqU217K7EcQ/ddofX6DNyOnv/zfS+7omXmSqtm7fwLV4yzIMcYIsY5HGnBpYreEJjRoZV7uWf+hYEDuYpQmGG3ynXEdF5dIY8TOH/wU1SvTvT4OXJpb2lVPS3oGkFaiCbHsYcR7olcpOvmWCb7CJpnQlvl1LJfghPQ6ZATYDUDzGm98WksZJaVm1Q+uwDlaOZP5/O1eVVox/y0T5+bzLaED3VcVtG3lWMmxYFbwdjja9CEEzPt5adZ4tOlgclcQPm/r/P0klhKZBvCfP57QKNT3FiPldX0FBaiTRlALRaakxunCegHu2HlaeBmvTDu5x3yVnoK4izr0ELiMC8ItMiBE/jLBE48hAbxHIVyyEQPmOHUV7zCxIm08wCJcyUNcnZ0vOxKPhneMSuIXni4b+WW2Y9ICukW7XMzEv1zO4xjMzJ2ywRSeMlEyF94dTvb79XTN/oyfa
+ Xn3/xktc
+ 0qaEJERPHBIablz+wIywD9iZr9m+8TVxJ1evzbXY27nixaPoxsVR8MNFoAU9KrMdmKvHMZKNrlxBAerjVBFsKPL7yBwc6SVj4OIFp9DMRsjP1dVC0T1iohhRKXawJTmeZw2BIIL29VbB/JhkyiKSROBCHA5P3lupiVL2+sVvX/BZjsA5ZO37oQxMZEC65K0ts/sXbJM8PvTNpypLzwgJ7bHCJCZs5oMCOWxPVHy5BJbOggCBE3K1UbCNgMkclVo9VG46UHtmLUnkP+J8cg5/73cIXTG4TGqmsUpVZpZI08MNqUbJ24qBrk0uPOdlLJuNaNYIc3HYsCQybvvkIezuAzQTAn6qoQOT/1yLr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,63 +136,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 1 Oct 2026 01:17:40 +0200 Chris Down <chris@chrisdown.name> wrote:
+Hi all,
 
-> try_to_unuse() only checks for a pending signal between mms, and
-> shmem_unuse() doesn't check at all. That means that once swapoff gets to
-> a process or a shmem file with a lot swapped out, nothing can interrupt
-> it until every last page of it has been read back in.
-> 
-> Just as one example of where this can concretely show up, freezing tasks
-> for suspend or hibernation has to wait for swapoff to notice the
-> freezer's fake signal, and gives up after freeze_timeout_msecs (20
-> seconds by default).
+This series improves memory compaction to better serve mTHP (multi-size
+THP) allocations, particularly for small orders like order-2 (16KB).
+The changes focus on the proactive (kcompactd) compaction path.
 
-(cc Rafael)
+Problem:
 
-> Here's a facetious example where one swaps out 2GiB of one process to a
-> swap file on ext4, starts swapoff, and half a second later tries to
-> freeze with pm_test=freezer. Writing to /sys/power/state then fails with
-> EBUSY and this in dmesg:
-> 
->     Freezing user space processes failed after 20.003 seconds (1 tasks refusing to freeze, wq_busy=0):
->     task:swapoff         state:D stack:0     pid:3175  tgid:3175  ppid:2955   task_flags:0x400100 flags:0x00000419
->     Call trace:
->      [...]
->      io_schedule+0x44/0x70
->      folio_wait_bit_common+0x1ec/0x3d0
->      __folio_lock+0x24/0x40
->      unuse_pte_range+0x2d0/0x348
->      unuse_vma+0x158/0x248
->      unuse_mm+0xfc/0x150
->      try_to_unuse+0x104/0x3f8
->      __do_sys_swapoff+0x220/0x5d8
->      [...]
+The current proactive compaction targets COMPACTION_HPAGE_ORDER (order-9,
+2MB), which is unfriendly to mTHP in two ways:
 
-ugh.
+1. It migrates folios that already satisfy mTHP allocation needs. For
+   example, an order-2 folio is a valid mTHP page, yet compaction still
+   moves it around trying to form order-9 blocks. This is unnecessary
+   work and wastes energy.
 
-> The same goes for anything else that wants swapoff to stop, like an
-> admin hitting ^C in a panic, of course.
-> 
-> Prior to commit b56a2d8af914 ("mm: rid swapoff of quadratic complexity")
-> try_to_unuse() was driven by find_next_to_unuse() which checks for a
-> signal before every entry, so let's restore that behaviour.
+2. Compaction designed for 2MB huge pages is too heavyweight for mTHP.
+   mTHP allocations are frequent and only require small contiguous blocks
+   (e.g., 4 pages for order-2). A lighter-weight, mTHP-aware compaction
+   strategy is needed to reduce overhead and power consumption.
 
-So things were all good before that change?
+Approach:
 
-> Just as an example of the improvements, here's how long freezing takes
-> in the same test while swapoff is happening on my computer:
-> 
->                       before                  after
->     400MiB anon       8.925s                  0.028s
->     400MiB shmem      1.639s                  0.003s
->     2GiB anon         failed after 20.003s    0.011s
-> 
-> Fixes: b56a2d8af914 ("mm: rid swapoff of quadratic complexity")
-> Signed-off-by: Chris Down <chris@chrisdown.name>
+This series makes four changes:
 
-This sounds like a significant usability regression.  Should we
-backport this?
+1. Generalize the fragmentation score functions to accept an order
+   parameter. This is a pure refactor with no functional change; all
+   callers still pass COMPACTION_HPAGE_ORDER.
 
-otoh, it's been this way since 2019, so presumably nobody cares much?
+2. Use the highest always-enabled mTHP order as the proactive compaction
+   target. Because a fragmentation score for a small order is naturally
+   much lower than for order-9 under the same fragmentation state, the
+   proactive watermark is scaled down in proportion to the target order;
+   otherwise a small order would almost never reach the trigger threshold.
+
+3. During proactive compaction (compact_memory), skip isolating folios
+   that already satisfy mTHP requirements, avoiding unnecessary migration
+   overhead.
+
+4. For non-costly mTHP orders, restrict proactive compaction to movable
+   (and CMA) pageblocks. Unmovable/reclaimable blocks are dominated by
+   non-migratable kernel allocations. scanning them wastes cycles because
+   a small order can be satisfied from movable blocks alone. Costly orders
+   keep scanning all blocks, since they are harder to form and benefit
+   from any migratable page available.
+
+Test setup:
+
+x86 host, arm64 cross-build (defconfig + CONFIG_DEBUG_INFO=y,
+CONFIG_DEBUG_INFO_DWARF5=y), booted with mem=4G. order-3 (32KB) mTHP is
+set to "always"; ext4 root mounted data=journal. The kernel build
+naturally fragments order-3 free memory during the run.
+
+Runtime (two defrag modes were tested, see Results):
+  echo always > .../hugepages-32kB/enabled
+  echo madvise > .../transparent_hugepage/defrag   # or: always
+  echo 20 > /proc/sys/vm/compaction_proactiveness
+
+A background loop keeps proactiveness poked every 100ms so kcompactd
+re-evaluates promptly (its default 500ms interval is too coarse to catch
+the transient order-3 fragmentation peaks under this workload):
+
+  while true; do
+      echo 20 > /proc/sys/vm/compaction_proactiveness
+      sleep 0.1
+  done
+
+Workload: make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- vmlinux -j28
+5 rounds per configuration; each round: make clean + drop_caches, then
+counter deltas around the build. The baseline is the unmodified kernel.
+
+Results (5-round means). anon_fault_alloc is within 1% between kernels,
+so the fallback numbers are directly comparable.
+
+defrag=madvise:
+                              w/o patch     w/ patch    change
+  --------------------------  -----------  -----------  --------
+  anon_fault_alloc             14,307,597   14,401,699    +1%
+  anon_fault_fallback              97,701       40,975   -58%
+  fallback ratio                    0.68%        0.28%
+  compact_isolated              8,479,773    1,458,949   -83%
+  compact_migrate_scanned      78,198,828   22,900,359   -71%
+  kcompactd cpu (s)                    43            7   -84%
+  sys (kernel build)                6m34s        6m34s    ~0%
+
+defrag=always:
+                              w/o patch     w/ patch    change
+  --------------------------  -----------  -----------  --------
+  anon_fault_alloc             14,370,984   14,404,234    ~0%
+  anon_fault_fallback                 619          823
+  compact_stall                       979          585   -40%
+  compact_isolated              6,390,940    2,431,800   -62%
+  compact_migrate_scanned      86,171,095   46,339,911   -46%
+  kcompactd cpu (s)                    36           13   -62%
+  sys (kernel build)                6m34s        6m27s   -1.8%
+
+1. With defrag=madvise, the patch cuts mTHP fallback by 58% (ratio
+   0.68% -> 0.28%).
+
+2. With defrag=always, direct compaction already keeps fallback near
+   zero, and the patch instead cuts direct compaction stalls by 40%.
+
+In both cases the compaction is done far more cheaply (kcompactd CPU
+-62..84%, compact_isolated/scanned -46..83%).
+
+Open questions:
+
+1. In skip_isolation_on_order() and elsewhere, the target order is read
+   from huge_anon_orders_always directly, since during proactive
+   compaction cc->order is -1 (via compact_memory) and there is no clean
+   way to plumb the mTHP order down. This variable can change under
+   userspace at any time, making the semantics fragile. Ideas on how to
+   pass the target order through the proactive path cleanly are welcome.
+
+2. The proactive watermark is scaled linearly by the target order
+   (wmark * order / COMPACTION_HPAGE_ORDER). This is empirical; a more
+   principled cross-order normalization of the fragmentation score would
+   be welcome.
+
+Changes since v1
+================
+
+The series is now scoped to the proactive compaction path only. Two
+patches from v1 were dropped, and two new mechanisms were added:
+
+- Dropped v1 patch 3 ("don't skip proactive compaction for non-costly
+  mTHP", i.e. running proactive compaction concurrently with kswapd).
+  Follow-up testing showed it lowered fallback mainly by driving extra
+  anonymous reclaim/swap rather than by better compaction; keeping the
+  original kswapd back-off avoids trading workingset for mTHP fallback.
+
+- Dropped v1 patch 4 (mTHP-aware zone_effective_free_pages() watermark):
+  it added reclaim pressure without a clear net benefit in this scope.
+
+- Split the former patch 1 into a pure refactor (parameterize the
+  fragmentation score by order) plus the mTHP-targeting change, so the
+  mechanical and behavioural parts can be reviewed independently.
+
+- Added the proactive watermark scaling by target order, so a small mTHP
+  order can actually reach the trigger threshold.
+
+- Added patch 4 (skip unmovable blocks for non-costly proactive mTHP
+  compaction). Without it, proactive compaction wastes most of its
+  scanning on unmovable blocks full of kernel allocations; with it,
+  kcompactd's CPU and the scanned/isolated counters drop by an order of
+  magnitude while fallback still improves.
+
+- compact_hpage_order() uses __fls() (highest always-enabled mTHP order)
+  guarded by #ifdef CONFIG_TRANSPARENT_HUGEPAGE (m68k allmodconfig build
+  fix from the kernel test robot).
+
+- Refreshed test data on an mem=4G, order-3, data=journal kernel-build
+  workload; see Results above.
+
+Bo Zhang (4):
+  mm: compaction: parameterize fragmentation score by order
+  mm: compaction: target mTHP order for proactive compaction
+  mm: compaction: skip isolating large folios that already satisfy mTHP
+  mm: compaction: skip unmovable blocks for non-costly proactive mTHP
+    compaction
+
+ mm/compaction.c | 85 +++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 68 insertions(+), 17 deletions(-)
+
+-- 
+2.34.1
+
 
