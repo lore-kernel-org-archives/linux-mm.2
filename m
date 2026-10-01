@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DAF1CA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:35:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E845CA5FB3
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:36:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E3C56B0092; Thu,  1 Oct 2026 07:35:20 -0400 (EDT)
+	id 351F86B0095; Thu,  1 Oct 2026 07:36:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BB436B0093; Thu,  1 Oct 2026 07:35:20 -0400 (EDT)
+	id 32A706B0096; Thu,  1 Oct 2026 07:36:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D1BD6B0095; Thu,  1 Oct 2026 07:35:20 -0400 (EDT)
+	id 219846B0098; Thu,  1 Oct 2026 07:36:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 261746B0092
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:35:20 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D37D9C03AA
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:35:17 +0000 (UTC)
-X-FDA: 85273851474.20.7E91ADA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F34126B0095
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:36:40 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 71CD4A6CBA
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:36:40 +0000 (UTC)
+X-FDA: 85273854960.02.231F882
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3112D140003
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:35:16 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=exBCzXDy;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id C90AC140007
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:36:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mXBFgjFK;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790854516;
+	s=arc-20220608; t=1790854598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IR+/nwhsFwuNmBp3vUC3gN77geHokdiIHhVMCgtINUc=;
-	b=67rQ3b8McxAvr2qLtS1sBaOC1UjDVPBTm8Lc/jivVnmhREpnOKKZWOJlrXW+SBEfi9DqpE
-	YUkI59exJ4uOdxM7PupKHAoO6iQUy/BX3y82kb0Dyc87PS+FwFRzrVDvNSqe5zPCyY/Csl
-	0BCkFk8QGKExR/N2o7f3CmOI9RsIZMg=
+	bh=Xm4wvdZWya38Tv5HPQOs01QtbugiGek4xDtMzVs3F8w=;
+	b=YA64g2acBn9Z9TudKPwW58dFMBgVjJ7naI7v3unIRQSd1KjBVMxGhWfh/WveTrT5lExJUh
+	bAgK2Fpg2T0TvZTrUvobCDO/TM7r8+YSdi+zc1cuDYslyohNxQFEyzR9OSOggf1Mxgt1Pq
+	LbVzS7b2QiwBaqCTEB2/aEdkuLWS12k=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=exBCzXDy;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mXBFgjFK;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790854516;
-	b=ZkItAAi4GvaiEHnU8PY8cUCC1a3/afCpEkoXltBJZabUh3Ne/jvpDIaSmg2270HAE0gKIB
-	LHv3AGwxwNPKrgjMWwlV5/SBJOtqF7BD5OFQcH2c7v5V9/SSK/YcnSkDxB/lpom6M7C9QM
-	0K8KE/qTtrjcJ+rm0vJlhoO87Pg3Ris=
+	t=1790854598;
+	b=A2Tc4bpkAKuhf/rfRlGPuaRkeRg3PEkZBYgh4SbqFu7hZrrOnRIik6MnurT1ZhY9zOqifM
+	Lwtt7jbUESGF/z3GKRv8IDqyFJojoOGUGZaS8VjtbLT+aJyBOTRVqAsf0/uJYg1uexqwpy
+	JkZk6DIgfVgT9ZjtaXPeNIV9bDqF2kg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AB8E260A58;
-	Thu,  1 Oct 2026 11:35:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AF01F000FF;
-	Thu,  1 Oct 2026 11:35:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 59DBE601E4;
+	Thu,  1 Oct 2026 11:36:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204A81F000FF;
+	Thu,  1 Oct 2026 11:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790854515;
-	bh=IR+/nwhsFwuNmBp3vUC3gN77geHokdiIHhVMCgtINUc=;
+	s=k20260515; t=1790854598;
+	bh=Xm4wvdZWya38Tv5HPQOs01QtbugiGek4xDtMzVs3F8w=;
 	h=Date:Subject:To:References:From:In-Reply-To;
-	b=exBCzXDy4UfhbBpIf5ElPtsGdou5G37JN1w6zO7SBcy+SQbM6GyJXwNHkbHPDnbpX
-	 IiL40C+o59OcASc4wrLOZbNwO4nID9qatgAYSxpMwSl4u+eS+DnMWbLJ5jPdhKguBz
-	 8DBRKcQwqHEVHiKYWYVCAkwFeR6Jg1rqW3UD/xHeiC7vbIPaflaLY2qYQb7tUo0sGe
-	 NmZkPEy0IidKDzc1gEE3dajCaIi9wfaS96HPGSWyAU25kIVWUG+OdoesMdrtY2EGRc
-	 t1Jpoo3+ZwnDxJMNa57kL89/A8Sb2vVsmQHZNPRrjThEc6Ig3JrTgP9deNmUZWKIqT
-	 M/Trwd49yf+nw==
-Message-ID: <819802b5-e8b0-41dc-a1d3-8ed843d9a769@kernel.org>
-Date: Thu, 1 Oct 2026 13:35:05 +0200
+	b=mXBFgjFKwBNERzVdoZjaNomeWpe3e8lQdbYE0ZfCu5nbH/GH5tEuNHS+dfHO3QrMK
+	 HaZuDubT41hg2PppQgdI3UbIcyvLh/DTUtdTvTqgVj3fvR/EZXwYiHppC+2WzbNlG9
+	 TtQcx5HbOcisqysMYBL9T5wxIMwRNr5KUruOb7hdn3Hn+DAMBpVpRjjzj4jCgcQ9/u
+	 IuJ9nzw+s61u5LY7WWsKlZbCUQHYKyMLav1uZKFJvV1QXDcYXnDHdsEV2cei8YFWv9
+	 LtJjuWuW5NFFdNYedScxnyvlri8/xtBBRdiICnaL5MMCFKblAlvJ8IoNNRRVVS/LMb
+	 WSNmnGNHDkRjg==
+Message-ID: <86dabeec-c40c-43c0-adab-b95fb7825ddc@kernel.org>
+Date: Thu, 1 Oct 2026 13:36:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] maccess: Use a scoped guard to re-enable page faults
+Subject: Re: [PATCH 5/7] maccess: Batch TCO handling in kernel nofault loops
 To: Muhammad Usama Anjum <usama.anjum@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Mark Rutland <mark.rutland@arm.com>, Alexei Starovoitov <ast@kernel.org>,
@@ -90,7 +90,7 @@ To: Muhammad Usama Anjum <usama.anjum@arm.com>,
  <bpf@vger.kernel.org>,
  "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
 References: <20260824160523.3907021-1-usama.anjum@arm.com>
- <20260824160523.3907021-6-usama.anjum@arm.com>
+ <20260824160523.3907021-7-usama.anjum@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -137,17 +137,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260824160523.3907021-6-usama.anjum@arm.com>
+In-Reply-To: <20260824160523.3907021-7-usama.anjum@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: aqxbsg48sumqo3sb53uz4zu6nntcgh7o
-X-Rspamd-Queue-Id: 3112D140003
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C90AC140007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790854516-356733
-X-HE-Meta: U2FsdGVkX1/VsLCJNOogVBJ+bHD6m/3Ky2sazyiKoBSgubXKT+ygQyYvZnegbMRks0gTO8o4Wb+3JUbqsvnjyvnIiCENRdks/wGXlTeBo2hYp8fhD5uhWEGEf1naI/aqf/MRu7+r8eb10stwsbIirfZyJue1u49QgaRq/a4XPl1Y6XAf/KaTHTRUMUHzXfJF0YhBJkl2DcU3HbjpJXVYkEABWfaMmjEkccbSFDsGhF86OMUFb+InYTh3AWcTcrqp+1KF5JSvuZ61P+RsuZQ76qQRf4oe0T+ZcNYwnmHfmGKRlmrWr24GfafKaAdevlW3efCv+kz7ng+gbod8xk03XvbRstfl3sBHx3R1Ip4ZPJF6nycuFZfGcjZ9p3XrD1uQ8Bsl2nDAopqbVNClo7/CHtZwc3pRwVFmLBSDJFZXOHk3CSZoZGci10pgN024297nbry5bMNrAJY1a+AsYtiMqiIEvFyhPB1n+u6Uo7Ca2NfPJ3dl9pHvmBsmzNyuJlil5Y15FxxpK+Ze/yJaVaHqx4/v/8bQzkPVOAXFd5FFZoz9TINAbTpm4h+AxpXGvSDDqUL+BKGPA6Nwezni1JiL+zXf4SRcLw92wDvDWTFvPlZ3YTPS2kcQgMtjR+mQZdVLTu9GDNyoBt6pvk952j8/cNxV5OPnIZMJm6mUoMrYj6GYQZZotp2pEdFwih0T/Y2DkFk0flrJoFVbu4tENYNzEcbDJOLjmfX+peceNZuYzDW6is9qwWSv8IDAawit4IGMP3L8yu9wjAseSr7REXans2jQg26dtUQ/+A1PJS6dopgj2PlgQp7PP+T4fVwS5WHx90mqZ0zj5jTu8plEoWysH2uaqA5fjoUiXhOyvD9XLBmu5fqIMSEZHke0jrFxcVRg7GLmrvYNJJ0J8oD+ndbmtlrP9uU5wGcz3azPE/MvBrLTtSCj5alpns7yUCz0Rt3f32f2MR6Wh31cQA7ViqD
- 5AXgWXGH
- Q9rgtldyhv7oN32YsgyMbs6d5Ti7gSWAk2caUdFKbEjen1clGBMncfQZ5J0yncKzqIuAKZvu3oG5NwqrsxrpZNsoXhsLf9nI3veESlNtQIV23kon4oabf5iy9rn+MO3Zju6CvnUKTZQ8rb1JwvPGl4p4YXZV2Z4mNdhUiJZ4RVcFhSop4qkBE5/d7RrU3VT7upJqrstucgGqU0FXMN48PAw23kekNmOBVbLP5qAj1Pzc+fFsyEV1ZFdjblVWUGe5aale57q+zUbQaReQVvHnt0mdEGRXBg++y09JVF1glgKhOBUfpG5u8mhz8IliuH7oD5/mQQr4izMNKThBlvXz4zNtcCg==
+X-Stat-Signature: 4cg9ynrw5ap19j7ifzi85kwtzispph69
+X-HE-Tag: 1790854598-914829
+X-HE-Meta: U2FsdGVkX1/UWc1/Qt2ayQpZxcrC7m0NhRqZmh2Bg9YROq9Lu3JG5sx+RyFFUHmug+Dc60lKqkaTxzws5sNdb8r2yuPodGwRI66kxyg3+GhrDla4rgroVGbFDonn6TcFQ1eMcRl9Im+7EJpAjcTkU/SRqisYhUICGGsGGU3SN6uXFk2uZPfGNeU0ptbhANDOh72oZsJXNXhtmTUQooUfyFQ2ie2rPjb9p5cwjGUg1XHGYdZqm5jIUUHy5HaGO9KUpvsj8Nxizutrp0gTOGVfHwyX6u8j6cXxJq6yxHx4L2VKoLTF8rD8wMgAc992Kxmf6sE1fJgkEd5vxNxxI4cMQNCianBRqdQce58vDL6hcUQ/x4qK2rOyBymdc0cILqe2VywyQssF3gilUOiKysBVb5/kgWfymgOnccNSAjU1kbg3s/yuGmnc1xzbIXFZZaqrIu+TtYLBvoyZ0KpP8F5GzHXBRROQn9x4ALirnHhvoTEM5qzlXCi7bcM0Sf9QfjtKZs+yjvgXCd9Hos4T7B2RFVr34puDqyFgMLpvMSdR6dNYHREAwFXK4cJJTr46OW55mH3Yv1fdvzKA2Ii1mJ2dMCsaGBcqk80tTB3CYAKQfpc2SNKSoNj4+ppog3+VSqHN74TKKibglP91UHatutcIJzfotDyGPdwWIFXLKE/iiReYSVamqQwCp2EVvsrzLYUqiZ1bwaUblHeNh5u7sXLrGrAhdeVYpebZEgrDbjmBUNvG05cUDb0M81W4EKippUGRHTHvYLTbEvEDSrbo0nDDuY5XdFju/2WCFLYA58Nhy8+j/QGTjsPRS37h0VFnq6Q1KEL2r027hKN8XA9qS5zhyD9hhPbGJKNAUyLiqhtVrVd/iF7k+FfOuYop3sCtz8hXVzB66rOyzK7wNDFXOk2cZlEwrwfSCyiCWAR2GdNpzcFRg1tde9YHCRIDXJAYr8D/K+VYZcqEVpYn5A3k6Xf
+ azZeSZzY
+ xPaK+yU64Mmkr2vxqVE5vGycb/vYbzfSVk1gYHFcgoqpOiWmg6QqNkipPTMrmGG6sax+6v/MFFdYHxDMST+gccpxKb+4vjh3g4Ky6KcKxcrfTL0qM/USmLDVtz1VRKqwUSbHubHD5we7N1v1KFGjWxa6jUMvm78BCU5K3QiAOejNfQ8jadQSWgK1ADtlLvQRLZyGZ5ysSJj1uDjTtmXiBVHLCIFQnkTM3aSUIHLClS/WTw7y46S+r6/NIjAzAShilczdnSqf/aIwJ5HYQGpvTXX1UfSl83s2jGLKFeukMRcSo9M6lhyh7IzODzb2EYEUUdwtf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,21 +156,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/24/26 18:04, Muhammad Usama Anjum wrote:
-> Kernel nofault copy and string paths open-code page-fault disable and
-> enable around label-based loops, duplicating cleanup on success and
-> failure.
+> With Hardware Tag-Based KASAN in asynchronous or asymmetric mode, every
+> arm64 kernel nofault access sets and clears PSTATE.TCO. Copy and string
+> loops repeat that pair even though tag checking can stay disabled for the
+> whole operation.
 > 
-> Use a page-fault scope guard instead. Leaving the scope now re-enables
-> page faults on both paths without separate cleanup at the fault label.
+> Cover each non-empty operation with one bare nofault region and use bare
+> accessors in the loop. Leaving the region restores TCO before page faults
+> are enabled again, including after an access fault. Existing empty-work
+> checks ensure that every new region performs at least one access.
 > 
-> No functional change.
+> The number of dynamic MSR TCO executions therefore changes as follows:
+> 
+>     Work                         Before    After
+>     N nofault accesses          2N        2
+>     4 KiB nofault copy          1,024     2
+>     N-byte strncpy              2N        2
+> 
+> The 4 KiB case assumes 512 64-bit accesses. These figures come from the
+> control flow rather than a runtime measurement, so the time saved depends
+> on the CPU and workload. Generic fallbacks leave other architectures
+> unchanged.
 > 
 > Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 > ---
 
-Patch itself is fine, but the guard name is completely misleading.
+[...]
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>  Efault:
+> @@ -96,11 +100,13 @@ long strncpy_from_kernel_nofault(char *dst, const void *unsafe_addr, long count)
+>  		return -ERANGE;
+>  
+>  	scoped_guard(pagefault) {
+> -		do {
+> -			__get_kernel_nofault(dst, src, u8, Efault);
+> -			dst++;
+> -			src++;
+> -		} while (dst[-1] && src - unsafe_addr < count);
+> +		scoped_guard(__kernel_nofault_bare) {
+> +			do {
+> +				__get_kernel_nofault_bare(dst, src, u8, Efault);
+> +				dst++;
+> +				src++;
+> +			} while (dst[-1] && src - unsafe_addr < count);
+> +		}
+
+Reading the same thing multiple times, why can't we have a new guard that wraps
+both these things?
 
 -- 
 Cheers,
