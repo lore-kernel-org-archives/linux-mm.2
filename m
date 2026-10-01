@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05BA3CA5FD2
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 15:54:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A123CA5FD2
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 15:56:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D73496B008A; Thu,  1 Oct 2026 11:54:25 -0400 (EDT)
+	id 9A7616B008C; Thu,  1 Oct 2026 11:56:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D23EE6B0092; Thu,  1 Oct 2026 11:54:25 -0400 (EDT)
+	id 930136B0095; Thu,  1 Oct 2026 11:56:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C61836B0095; Thu,  1 Oct 2026 11:54:25 -0400 (EDT)
+	id 822056B0096; Thu,  1 Oct 2026 11:56:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 953C16B008A
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:54:25 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0774BA6F8B
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:54:25 +0000 (UTC)
-X-FDA: 85274504490.29.F27B042
-Received: from mail-ej2-f23.google.com (mail-ej2-f23.google.com [74.125.228.151])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 299982000A
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:54:23 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=N8W6U0mN;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.151 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 552426B008C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:56:17 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E3DE580428
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:56:16 +0000 (UTC)
+X-FDA: 85274509152.16.2CA5EE0
+Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
+	by imf07.hostedemail.com (Postfix) with ESMTP id F01A340004
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:56:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=s++k3vf8;
+	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.169 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790870063;
+	s=arc-20220608; t=1790870174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t/FSvKdD0Rw1UPKEmYKGjjwHZIO5Pn+E96++Oh5YfMs=;
-	b=CeOJ+4TFW0imS5iRDJSoW5Y1ciBKgn98G1ROOVkY/7lnIN8wdD4hOYhq/b96o6zmjw7Pyz
-	hG1op00oo5Ayi3ioBicrHfgU8VOvlVS3xGoyhR2iKAPYBFYdbbVnlSvr5l43yKnYG+vURV
-	ElCDehUF8c4h1DsKJMZsqDZnDhynwY8=
+	bh=mZXyBZOxPP9aVP1iLcONa2ADo5uyWcMjFEkbOU3Yh9w=;
+	b=ORTKfBw9/SZEGyrV9lPWcMBxeqj55zaYNRSCY7tqOv8LsKj5gajoowv8+5KOI8wZC1dJtW
+	91TthdTITXxFJNrsx7YFdj2IMeIJP6ByvcjxlxFUn/mEOnqMSrZRfdLO1aUiftEmD3eLsh
+	kk/uHT8W4GKCT9Oeie60BadQHV62lho=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=N8W6U0mN;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.151 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=s++k3vf8;
+	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.169 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790870063;
-	b=LDNLUwTPFikxWOTq9PZfCJzvUy/fgSrj0f7xq4+TOruoJJlo7fm3tiX+onK2OEy3muEpzJ
-	aehegTOhm+jI9Ca3AWh16XHpCB9/chNmt/fo7QdcP9Bn88ZDpQTCZvVFWEOhQoVdQcRauj
-	g7bEoMrxzoix1NQMIwttEbrx3xypC6U=
-Received: by mail-ej2-f23.google.com with SMTP id a640c23a62f3a-c2e27d11f43so121302066b.0
-        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 08:54:22 -0700 (PDT)
+	t=1790870174;
+	b=4ea3CuSKd0f4JXrgCV5y/PC73xdHzEz8kAbFAMJ5njTmnFFUj48jhG4aXQSWjUMYGDFidG
+	iGuwq4z3VLDkF1emB91Vz28as6eGZTyh5m5AEFw1RqGd5/VDUN8n7vo/ZlQ8WQQ5zFrevc
+	eFt9ABEJLXtI6LY6YlFGzqx4y/gC9vs=
+Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2e1195040aso385399066b.2
+        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 08:56:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790870062; x=1791474862; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1790870174; x=1791474974; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:date:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=t/FSvKdD0Rw1UPKEmYKGjjwHZIO5Pn+E96++Oh5YfMs=;
-        b=N8W6U0mNamZUzJKRKNLYDC0ZKAw2pCZTRVgiJWOouYZ4VSWOP/ydrH1DAw7PGBMvy0
-         04fudgArgLS2Gvb5ahuKiRFldC4W383sjbEUB/1CRvGuz6h2IqlLNhkI6+J65mLWcWld
-         +Uf3TD24Jla4I+6uE79UtpQ1xzQIrYYmF0xd2wsjhIP8HPx7q7nHGbniAaGYbExL8tlL
-         X81sZ2RIoPEzz0DoUnRU9ErKbZoS3iI4yZRlRncs+uB7W+B8pQApvVFzVtcapJXrQYVI
-         wamIUy4scJy1vT0SKrSnVvJJ79U1J8rQoXRGJpKGeKHcqouJc+fbBxiXRVDvgpQ5MGBz
-         gBPA==
+        bh=mZXyBZOxPP9aVP1iLcONa2ADo5uyWcMjFEkbOU3Yh9w=;
+        b=s++k3vf8gIum0M49TG+V9E69tXwunlz34DbjrdfATOH8j/wW+JRhG26ZGqkf2xJwMo
+         /mmLtuIPpYPn2+OJ/QxCH9mJuHSyszfCxpv9pi6k/wrB545yDLg2m95MggjkjvHqKg2z
+         /339YPrCD8hyb1PN6iqeuJjgvLgftqG9EKb4cZ2o5ZkVfgsLQW1gbYqQ7Dy72zAAY7mr
+         ISA5ietTmfC7uqbVj7Lhr7tUP7Las+83ZS3r0XC5O3SsNmytgqgwpibrkYvDcGeU66is
+         95faBSOM8pjgnDKybU8V9KPLklxcFU/DgaifprsDUCfzk+Dgo3Q81KSlo7Grv0ArzejJ
+         ZuQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790870062; x=1791474862;
+        d=1e100.net; s=20260707; t=1790870174; x=1791474974;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=t/FSvKdD0Rw1UPKEmYKGjjwHZIO5Pn+E96++Oh5YfMs=;
-        b=FLR7oh3INQEQfgL8LKrnOiRo8CiKtfQG188FJZiYQHQ6AktSpYfe0JvL5XchOeSeQs
-         qFCkH7iIuDbRuysZNCgyXXtCgguYIGdq8mllK6jSpdXEhSOVxoKQIrYA6C//tQAq/c8p
-         5tv0VHnENLpwEsRLSBJv/adSFa6gbkUzoJvsr3pbFB6AwEjSnkuc2yHLRXuQsQ/5UXqO
-         rwOL4hiqOLZPV852DPbR8gBrdJvuS3N2I1HGPi4T3ScZP1ufvbKrvZ6BnEo7UKOZPGS+
-         m8Ze9ureBQC3HHnmPYH9BQvcED3jIH9bbDhKb1zNAjrnqK6zsygFNn9CCRXyGwsHk1Fu
-         DD/A==
-X-Forwarded-Encrypted: i=1; AKwUvBw2LOlT+3ciI/TGjyM7kbyAtbIoAULX3TMyMPrilYIt2gpxAEsB2qqbZncE2R4PCKBEGVwJqCJl8g==@kvack.org
-X-Gm-Message-State: AFuF++lfPAnZuJDFxMx1ff7DHP6rFnJTGia7p1w3+IlVELIVaE81VGi8
-	26b1O9sAK3537yMBFBmJFK3xX/nOZeOzhuPS6j8br+YYR8vZjaYKQ/6B
-X-Gm-Gg: AYBFou2C0rTaRhd78N+TzUM9bIM4UTh9Aakwix4v44tu1TAi9ydouB6SooP1B5F4qqC
-	YROcY4OFB8g24TMnAnvLlxvgovQdtR20zSSTrYhCCFLsl4gPu7MR2xm5dgTAL5bf+i1WyGnuKgr
-	npDJnD5qW9q9eQM1q01TxbllyDoRA3kbbfDnPfsobTAA20SaTJMpC7qhjhKZZINLmCJtyD8Kl3D
-	ju07yz9IxnHV64MnuY+tO78BkjgyL1mAHhCDdRmGGixB/oM7UgMrUjI7z6B2iX4ItxAkc6lDhFY
-	aVDJWvAtsyjEKkjy3PL9xpQmLlZpTKWXZ60JXwSj4V5ivy8WsMoxutL4d4Rz8anAewVnYKgxkev
-	xsjGbsU2StTF0x0IMLtLgcaKE0O1CB0Yi0VziK3KrzhJSzPeUYEC6Xo/bhwAwn6fBDmIhwLs9be
-	e0OBi07zr86OjGcuVlk91tOcnHGVzJcUiGF0s=
-X-Received: by 2002:a17:907:d87:b0:c2e:4397:7c82 with SMTP id a640c23a62f3a-c2e4aa6562dmr2262966b.6.1790870061590;
-        Thu, 01 Oct 2026 08:54:21 -0700 (PDT)
+        bh=mZXyBZOxPP9aVP1iLcONa2ADo5uyWcMjFEkbOU3Yh9w=;
+        b=etgAnCLMGFUdX40VFs3IuTDn6v1T5nfvcQzIj7m7o5KbEBmbomAq9SeV4etNNBZ4aP
+         OGMCXSONmZLmH5eoSYy1bcyF8ExnHqCGiOZIs6bbkIFWkM/EMCeFZKt6pLle+Gw2GamJ
+         vHbYW0qWDTSVPJR9EnRkaRifCAVw8kh4E00G35iECe2FkJ8fFFTtV159lvOCfgAJxTc6
+         6CxQfj6vIQVvpBbhl216O6YIPlFKfTvsTFzU7UDbq94PYKpyJC/cQnY3JY2d4U9Nysdy
+         yfcR0FqySVxkc707YhVOBU85Zf9PaVkLDyx6EGqAzUvcBtSS2Gdo2DK+yaLAKNLaDFVJ
+         0LQA==
+X-Forwarded-Encrypted: i=1; AKwUvByKP7lXRD4/bM/ULZ3DD9g56OcnJGi0W00ZUw5TZm6fu4jd4Q63jhkn5C704vn3BVaIVnnpmxj/eg==@kvack.org
+X-Gm-Message-State: AFuF++mo9kziYSvBH4n/EXG0QszUp9hdZgA52ikYCWmUxRChsVQgH0K9
+	M6P/S9eGPmyjalkyBVzbVj9BduiH8CNFiSZt4Ai+Z95f7rZfH+nmPnwN
+X-Gm-Gg: AYBFou0q9gn7l8oNrqrrvc3Q2IMJlFaC8a07+oLCBvrUVXCiV3T+dO5TW+6i33uUtv4
+	0MdRqCIGo4SHA7l2j6SYPwYJ3ET1jW3pMIHkz+ics+3+HeQvy94BbfEjqSMmONYlhN6EsImC3Ca
+	rmOZDAW/NLGvEHApk0/ZTQJbvT6hMklnLCgBhLAa81T92EkPCixTiicEdtNxcF1nIO63ZimERan
+	N+arDKWCz8qPX9Zxdxjhto5+GSYBISXwjUJMzvuVJgbzOZNCClbFKUfPq4wWCJoUFzSagqcG/rp
+	f9wEFfr36Y+GCuDvYIktIZpH9VHuEMfxj14blJVkttNKuo2kjhfxlW77wNTg1tytrWYjXb1+tWX
+	q9Bmu6CbvZIHwCiH+/k8JZbTF4+WX7aB6X33XURhZRKAiTNiOJKOh8SISzbtkRFmEtNPczu9H0S
+	OKy5wQt/bH18/aIUekLH5Pz1Vg4F2Vtz8DqWw=
+X-Received: by 2002:a17:907:96a0:b0:c26:3566:5b47 with SMTP id a640c23a62f3a-c2e4ad55c07mr1700466b.12.1790870173588;
+        Thu, 01 Oct 2026 08:56:13 -0700 (PDT)
 Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31cf0d6esm183317366b.37.2026.10.01.08.54.17
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31d96628sm181851866b.62.2026.10.01.08.56.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 08:54:18 -0700 (PDT)
+        Thu, 01 Oct 2026 08:56:13 -0700 (PDT)
 From: Uladzislau Rezki <urezki@gmail.com>
 X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Thu, 1 Oct 2026 17:54:15 +0200
+Date: Thu, 1 Oct 2026 17:56:10 +0200
 To: Wen Jiang <jiangwenxiaomi@gmail.com>
 Cc: Uladzislau Rezki <urezki@gmail.com>, akpm@linux-foundation.org,
 	catalin.marinas@arm.com, linux-mm@kvack.org, will@kernel.org,
@@ -104,25 +104,25 @@ Cc: Uladzislau Rezki <urezki@gmail.com>, akpm@linux-foundation.org,
 	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
 	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
 	rppt@kernel.org, ryan.roberts@arm.com
-Subject: Re: [PATCH v9 06/10] mm/vmalloc: extract vmap_set_ptes() to
- consolidate PTE mapping logic
-Message-ID: <ar6CJ9pWSEB8fAcC@milan>
+Subject: Re: [PATCH v9 05/10] arm64/vmalloc: allow
+ arch_vmap_pte_range_map_size() to batch multiple CONT_PTE
+Message-ID: <ar6CmpPkwu1VgZ22@milan>
 References: <20260923062832.479455-1-jiangwen6@xiaomi.com>
- <20260923062832.479455-7-jiangwen6@xiaomi.com>
- <ar0fJcjNmGGV6uFu@milan>
- <CAHKocdF43Rqnt8-v0WP-t=Dxz2sSJ9xpyjLAYc2fzzKAW1_N8A@mail.gmail.com>
+ <20260923062832.479455-6-jiangwen6@xiaomi.com>
+ <ar0s14p8KPgmDKmR@milan>
+ <CAHKocdEF3RE5FA+LPRf_E0ns02a5akvUDKvSDvERoyTryV1X6Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHKocdF43Rqnt8-v0WP-t=Dxz2sSJ9xpyjLAYc2fzzKAW1_N8A@mail.gmail.com>
+In-Reply-To: <CAHKocdEF3RE5FA+LPRf_E0ns02a5akvUDKvSDvERoyTryV1X6Q@mail.gmail.com>
+X-Stat-Signature: 3by4on1ao5se8543pmuj8qfxyxcxeskj
+X-Rspamd-Queue-Id: F01A340004
 X-Rspam-User: 
-X-Stat-Signature: jt4nn91j57izsm96c4z8qthii96fnc58
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 299982000A
-X-HE-Tag: 1790870062-482802
-X-HE-Meta: U2FsdGVkX19DqSgd+eN8THO4VBfjomBnjhlNY8t0ulJHrtiBCbnZQJwXy/MZL2OGvFIDTre4+ZFoTT0+i/fqsvSoHyQblwfemY5PAvhB6hZDqKr43r1VXOy5WLBLPR+RKa/Dymm9dKPo7r3iUD8YoouTusk0il3ouY5pBIpNhv6Xh07qVLkDiKEKnNi5hOrYWirgKUiHRvJ3OT5Pqjm9BbXHrlTG9WGY1rGzP5ofqIhrI6JK6v6ebmTl7yb6oMwqiBKRrLrNws6dr3jFF6ju7Yah52pWxC7HGNsXb2Pn320ioPbK00HDbjvcP/ni26OPKVuP71Ut/Y8mddoblvaBBMIusjjUqxGlfjtS5x1wAZeXFdwNRPQnryM1l1Bpy1zjLEKd9YHSkRKRdZT4LcFveoxANCEwAS+b0qsUyZX3kXzgYXynMqakSYsPurRQEimzAKPmL6Ib9rZtd4sMMNo5V8OSCZ7Gv6uoRdCpfLk2KbLntXSYNVwnxOBd7wVrVfNUMDlmoLA9XjM/wOMMTQMRa3impxlW4+o90KdA9SlgGBcQIum8k0lv6eO9NxtU4679bp8cwn4P9xND1Q5jsa/EOZDbCRKwE9snGenRPpdzpcsCKyN5RSEqmu1j2cBfjEbGp32IxrqJ16c0Y+jyUo9WhwnwZjZkJ363580E5FFHQj0VLvQ4wAFIxjWI9xEudrfCL/cWcXZQRoNDZkhr2o43C/pfnHzO4hof6bkIV51aC8jUx0feZOKok0HS7idOtGZ43Vb5uemzPiHwhEThFh52yzbe0mE2/0PXyi8VWurrkY1ydp+Y3+2DeSK6MGhABZB72/9eXxbhhnv3JLnaoMhNj/X039KUlTwwk7Vce1uICtpc41UQX8k7VWuZybS2mV3hBtF95qi5gyDHtDm4rgHxi/WFq8zO+ExuF8t7v9xxM30zY7qkXd+1crrRQL7FbQlvMiNP9pFWl0QNBfT6dbp
- j6s25dYt
- b22bY2pjighVY8E7/r+zUecX3U1z5n5Q6sxX5PV4O2DBH1Ks44DGtR91vAD7FRWT+Q7zx5dolUzWKbj+7DEqKLbB5YNNaiz9US5rbF2mM5mbrlbYhUVRA9ROvcCY9+9/g9pdptVfLqDNjaM7toAhphR1zow6+/ROFY1eoclemqwUfy7ZDqSjbqF+DbKmTt3RTFFLmKCw2Q8yw1DJ+sroyh4uF7TxtsClNDmwpo6kzqqV8u+9YRbK5fDg4kgjo+zBMquoef8rXi5Z8bZZcnQmDyGJGWHbXeGQ+RnRUL19rzqPfoj6cEorKHF1tz7Zo+mJkoV7dnERapILBVJ3hDJBLYYZ4DtJatdxACASCFbIG3sXdy1qvVq3QmEU9QG04bpp4xyXanhPUhAwKBJ8XAFQVATdIDXH3IrEuw9q1xh/pHO64Ckk7b0aK2q7NffuTIzWbc3Ob901LnnZ7Z3fimGIDYAgWfCOEnutvMpY5nOYpBxiRhoO3CD71aqr511XVKT8b3rXlXjZ6o/Y7Vmx5p6h/0AGJqN4aKH45rFdvIMutAJ9siwlkNVEyk2RL4HmCv8G64ehdZDTyqy5h8cEsFH6o/CUynGAXqfnMmV9AYd3zwoTOAC6ttXaXmuUwCuSLt4LyHj9CZvDAh2szglakKzklxj/dX4glnhi6G9AR
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790870174-733601
+X-HE-Meta: U2FsdGVkX1967AiGdqVAmy3Brka/nfleSvOpWpbh0M6l9abISJUrG/CtgMSALPNMqlMCTAiLuJeEw/8JhLFX7rEJ6CPjX48ndZjRuN4Oklahcu/NioitvLGme5zeTagCUhWU/70bP7VX+VQqN5f1bR+YlTPukGo1/aEd7wvVvCLTD/5Xkbtdi1eBemssXrddAqlzdTlFy5pwwyvV2SsCQaGCD13rWHN4jfamK+RnhOlR6kAYLXI3ckz+QAOYqGQB1i322mvoeArN+9mdH4KpMnL75eznzhRTF6cuRyd/STYqbRtzhZ7cwWTncNfPDNLRtz4/AGcQypmSe2XlVFC9bSsOrzhYl3Sy2VWWKWlSVievcOZVXv4+QZ7RmhU7/CZY3OBDlyrSaOsI0JVGdksR2SDuEO21qMc1dwVFTyVIdBk8YFhuTb0tTEDCdfOva2XXO+XzzphTRuLYe5UvnlRCwVNIPFpgTqaIFnAein8PIc0VhelRenHDd8+7A/I+VT/LBHky7cuT3Dsx7OKcYv3qKPtqxV6xVb/oY0B3fHtxuFhN5Pf7H4/x002z8waP2VYpiUzRSuiSyNbAIZDPTcC+VEZGXc/8IegG0xF8e7pp5XolHpzRgnYjPpeMg5bNJVzzNNupj6XXM4slSsoBDUmz4kKjSv/yeXfcnA/4QDe+WqgHW1dP3PF92F6pTjoXnApNZXZ1fzTw5XenwBrGrRwOZzFb6srSJlNTvmFkazFu7DutfM9h+I4XvsDzubnABszdAObu9rDZyGj5iO4l4moPm8ZSXcbQM8Pr2MtZ5j09VEFyiWR5LC8BlzymkjW/KBI75eZx6o2njfyKnuHMvOI71g9Pag2z3R+74nFpY09it2pVKz5HHHQn88TvwVMVjTf4oztm/fG114kWR8Mjrfis5lGXkqjC5aLcsz4FguWVUb3AZYTe3NWP7qw/hpDqJ5U8Hmsw66eElGAmPZCjPrO
+ l3XGPxpk
+ AwhREt8JKLenWDls78l5L9hlAKxQW13GTwhSnupkESRjcD1lhuD6DzaQVS/LxE215d51/2So306ui7lI7JBmJfoTul3pmJugBYRViEkhdj+JyF7fFhYH92WENcIk6dEEegc1DGGYA39v8wNf341u3hSUV4mirqaG3Z2YYty/wcT9rt/hkQIv8AIWfiWpITIle6CeltumOyjlNWlvxD4T6DEJvzUwPWYv1+dPowlJzgyNCQBTyFExevCra1bOf2LmNZQklTpMySZ7NZueEcZufgDwmINaJAQYs4Za84y0q0HL6NazvUYmZvzmgBgbV3iLXAOun/x0DPfheHt2KJDCRYvdxePQWGZNvQzRUmCRh6ehEiZPe1oMTyAzEKYJ7+2be+Zh1E70+XaGjnYpjTJSeeRAl2qw9KFDmBCPD2wSyVNRaQMSeCS+H/vzZ/mzQLeDviFfrpNSp4PCY5/n8GlFwvUvsFSVZSf7o5bjMkANvBSUKXJl7Skk2iX4cxmHnW4fQS/eNwR8OgsUx2/fb1Mng3oPttnd0oMfIzhW0kvHJRoMJm2Nqxr8TjJ0WL7O87VHldDO9SV9GGmi6+At5VhkYF/iYH/9raJil2su43z8f49kJT8o2B8SH/mjS8prJ7O/eFU/tgC/WIg7qdhFMxGVQB61lhY80yX2vFPgXL+K6rsbTWpU9ZuQwQIoe3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,91 +130,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 01, 2026 at 03:58:21PM +0800, Wen Jiang wrote:
-> On Wed, 30 Sept 2026 at 22:39, Uladzislau Rezki <urezki@gmail.com> wrote:
+On Thu, Oct 01, 2026 at 03:55:44PM +0800, Wen Jiang wrote:
+> On Wed, 30 Sept 2026 at 23:38, Uladzislau Rezki <urezki@gmail.com> wrote:
 > >
-> > On Wed, Sep 23, 2026 at 02:28:28PM +0800, Wen Jiang wrote:
-> > > Extract the common PTE mapping logic from vmap_pte_range() into a
-> > > shared helper vmap_set_ptes(). This handles both CONT_PTE and regular
-> > > PTE mappings in a single function, preparing for the next patch which
-> > > will extend vmap_pages_pte_range() to also use this helper.
+> > On Wed, Sep 23, 2026 at 02:28:27PM +0800, Wen Jiang wrote:
+> > > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 > > >
-> > > No functional change.
+> > > Allow arch_vmap_pte_range_map_size to batch across multiple CONT_PTE
+> > > blocks, reducing both PTE setup and TLB flush iterations.
 > > >
+> > > For CONT_PTE_SIZE-aligned ranges, return a mapping size that may cover
+> > > multiple CONT_PTE blocks, capped below PMD_SIZE. These sizes are vmalloc
+> > > mapping spans, not HugeTLB hstate sizes.
+> > >
+> > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > > > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
 > > > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 > > > Tested-by: Leo Yan <leo.yan@arm.com>
 > > > ---
-> > >  mm/vmalloc.c | 36 +++++++++++++++++++++++++++---------
-> > >  1 file changed, 27 insertions(+), 9 deletions(-)
+> > >  arch/arm64/include/asm/vmalloc.h | 8 +++++++-
+> > >  1 file changed, 7 insertions(+), 1 deletion(-)
 > > >
-> > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > > index fb757d95bde25..d475e52110e4a 100644
-> > > --- a/mm/vmalloc.c
-> > > +++ b/mm/vmalloc.c
-> > > @@ -92,6 +92,29 @@ struct vfree_deferred {
-> > >  static DEFINE_PER_CPU(struct vfree_deferred, vfree_deferred);
-> > >
-> > >  /*** Page table manipulation functions ***/
-> > > +
-> > > +/*
-> > > + * Try contiguous mappings at the PTE level for arches which support them, and if
-> > > + * requested by the caller. Fall back to PAGE_SIZE mappings otherwise.
-> > > + *
-> > > + * Return: mapping size.
-> > > + */
-> > > +static __always_inline unsigned long vmap_set_ptes(pte_t *ptep,
-> > > +             unsigned long addr, unsigned long end, u64 pfn,
-> > > +             pgprot_t prot, unsigned int max_page_shift)
-> > > +{
+> > > diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmalloc.h
+> > > index 4ec1acd3c1b34..4053b1ec1902e 100644
+> > > --- a/arch/arm64/include/asm/vmalloc.h
+> > > +++ b/arch/arm64/include/asm/vmalloc.h
+> > > @@ -23,10 +23,14 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
+> > >                                               unsigned long end, u64 pfn,
+> > >                                               unsigned int max_page_shift)
+> > >  {
 > > > +     unsigned long size;
 > > > +
-> > > +     size = arch_vmap_pte_range_map_size(addr, end, pfn, max_page_shift);
-> > > +     if (size != PAGE_SIZE) {
-> > > +             pte_set_huge(ptep, addr, PFN_PHYS(pfn), prot, size);
-> > > +             return size;
-> > > +     }
-> > > +
-> > > +     set_pte_at(&init_mm, addr, ptep, pfn_pte(pfn, prot));
-> > > +     return PAGE_SIZE;
-> > > +}
-> > > +
-> > >  static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
-> > >                       phys_addr_t phys_addr, pgprot_t prot,
-> > >                       unsigned int max_page_shift, pgtbl_mod_mask *mask)
-> > > @@ -100,6 +123,7 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
-> > >       u64 pfn;
-> > >       struct page *page;
-> > >       unsigned long size;
-> > > +     unsigned int steps;
+> > >       /*
+> > >        * If the block is at least CONT_PTE_SIZE in size, and is naturally
+> > >        * aligned in both virtual and physical space, then we can pte-map the
+> > >        * block using the PTE_CONT bit for more efficient use of the TLB.
+> > > +      * The returned mapping size may cover multiple CONT_PTE_SIZE blocks,
+> > > +      * capped below PMD_SIZE.
+> > >        */
+> > >       if (max_page_shift < CONT_PTE_SHIFT)
+> > >               return PAGE_SIZE;
+> > > @@ -40,7 +44,9 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
+> > >       if (!IS_ALIGNED(PFN_PHYS(pfn), CONT_PTE_SIZE))
+> > >               return PAGE_SIZE;
 > > >
-> > >       if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
-> > >               return -EINVAL;
-> > > @@ -120,15 +144,9 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
-> > >                       BUG();
-> > >               }
+> > > -     return CONT_PTE_SIZE;
+> > > +     size = min3(end - addr, 1UL << max_page_shift, PMD_SIZE >> 1);
 > > >
-> > > -             size = arch_vmap_pte_range_map_size(addr, end, pfn, max_page_shift);
-> > > -             if (size != PAGE_SIZE) {
-> > > -                     pte_set_huge(pte, addr, PFN_PHYS(pfn), prot, size);
-> > > -                     pfn += PFN_DOWN(size);
-> > > -                     continue;
-> > > -             }
-> > > -             set_pte_at(&init_mm, addr, pte, pfn_pte(pfn, prot));
-> > > -             pfn++;
-> > > -     } while (pte += PFN_DOWN(size), addr += size, addr != end);
-> > > +             size = vmap_set_ptes(pte, addr, end, pfn, prot, max_page_shift);
-> > > +             steps = PFN_DOWN(size);
-> > > +     } while (pte += steps, pfn += steps, addr += size, addr != end);
-> > >
-> > #define PFN_DOWN(x)     ((x) >> PAGE_SHIFT) - how many pages covers the size.
-> > Replace steps by nr_pages or nr_ptes?
+> > Capped below PMD_SIZE? It is half of PMD_SIZE. Where is that limitation
+> > comes from? I think the commit message should be improved in that sense.
 > >
 > 
-> Agreed, I'll use nr_pages. Since vmap_pages_pte_range() in the next patch has
-> the same "step = PFN_DOWN(size)" pattern, I'll rename it there too.
+> Hi Uladzislau,
 > 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> You're right, and the "half" is a leftover that can be dropped entirely.
+> 
+> Before this series decoupled vmalloc from the HugeTLB, the value
+> returned here was fed into ilog2, which reconstructs pagesize as
+> 1UL << shift. That forced the size to be a power of two, and PMD_SIZE >> 1
+> was then the largest power of two strictly below PMD_SIZE,
+> 
+> How that pte_set_huge() takes the size directly, the size only needs
+> CONT_PTE_SIZE alignment. And this function is only ever called for
+> a range that the caller has already confined to a single PMD via
+> pmd_addr_end(), so no explicit PMD cap is needed at all. I'll
+> simplify it to:
+> 
+>         size = min2(end -addr, 1UL << max_page_shift);
+> 
+> and update the commit message accordingly.
+> 
+Thank you!
 
 --
 Uladzislau Rezki
