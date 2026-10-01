@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2FBBCA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:33:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B6B2CA5FB3
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:34:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB0B06B0088; Thu,  1 Oct 2026 07:33:15 -0400 (EDT)
+	id A2D046B008C; Thu,  1 Oct 2026 07:34:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B61196B008A; Thu,  1 Oct 2026 07:33:15 -0400 (EDT)
+	id 9DD306B0092; Thu,  1 Oct 2026 07:34:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A767D6B008C; Thu,  1 Oct 2026 07:33:15 -0400 (EDT)
+	id 8F3116B0093; Thu,  1 Oct 2026 07:34:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 82AF16B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:33:15 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ECC09C03C1
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:33:14 +0000 (UTC)
-X-FDA: 85273846308.11.9354283
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 324461C000B
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:33:13 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iD53Oifp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 643EC6B008C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:34:41 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79C8E403BD
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:34:39 +0000 (UTC)
+X-FDA: 85273849878.30.83E5CF2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A5F15140009
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:34:37 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hU/U6Fzr";
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790854393;
+	s=arc-20220608; t=1790854477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b2hY2Lwa9e4ug6tiGWzP7cLmTEKbjt1EVVbwD8WgJqc=;
-	b=tU78WWvD2vWONlXmpwzGuIZDBhgxrJSRCvnB3Y9lnu96vkqlZFi5O8kadjktdAAe6EVcJl
-	m9lOSK5c0U+x9vxjVKNfMFKYr9deZYlIzjfVT3065d1oUvRBITA8kKQPMh/1ww37oH/Xqp
-	AtVIfXac1g1416/w2T/4yqTJtUpS+Dg=
+	bh=OFUfBJhfs43LK2uJ35trWg6Dxj/vYrf6yAbtRpo/I9Q=;
+	b=4TsbcxY6uKRUCLS4H6ev4Nh1+8AryJYKhLCakP5Z28DKc8+G0Hmal95ycqyHr0K7rloHZ9
+	mhjHiRnW+dDEr98BRxG7oNYZfdzxTNSblFb0Udv+YCrWWJoHFowj6MI4F02xd6OsF1HRIj
+	bGO6QSCkmQq8KjnP6CFbl+bMn65M0vQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iD53Oifp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hU/U6Fzr";
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790854393;
-	b=wLnR5s930a43HBwey4OSB/s165QPSeRUOHl+Uf+f1tw5thoLVOG/Y6NPgTPkkTmNTi+7fr
-	wIjIQC3gGfvwYtKWjMsyAEmBf+gvxa21NxJJHQV2sATmJDbEFCuZ2KTTzbf93hJNnWUgus
-	2iRamoryNQkH/hV7BP/3bh6jodQff8w=
+	t=1790854477;
+	b=ECYfGzqM/VW1Y/JpTUheq+DAIjUN7oNTxgOGF63yfMjZClX31fXzM6YGTaLGNo5ybfiH1K
+	4F8mVrSywFJZwtGTSPhfVmPT6oIRGoNbppuZlcddfjcsf84NyNiZBYhNI6wro+7lj7Mph+
+	utk1j1z2zazlJYTFQebFqKzl2v/McLY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B306360A55;
-	Thu,  1 Oct 2026 11:33:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3039A1F000FF;
-	Thu,  1 Oct 2026 11:33:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C98D941745;
+	Thu,  1 Oct 2026 11:34:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7079C1F000FF;
+	Thu,  1 Oct 2026 11:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790854392;
-	bh=b2hY2Lwa9e4ug6tiGWzP7cLmTEKbjt1EVVbwD8WgJqc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iD53Oifp/0W8HMOSNW9RLwVbugDqNyDtJoq4TPv4O2H+BOf7+CcJKqPB1nG0G9tg4
-	 Ou+C2O2JlfDb7vpzb7HfDkraQyJ++Upwa8X8TTgcD6F+Ze956QW97elz7kK4l/gbzY
-	 SWdxBw6KMHjiH6PnnGJhkq1Sjz751s1sMCP4N/GD1rEBqE5j4tjvdsDniB+5d5JStZ
-	 ygajxJTAvJFlo/QWoLABdpjnQ0OIGs1pIeksWHX1R8jWoMvp1fKOpKwMd24oe1/GeU
-	 MfPXizuEjQRxBTnxQy6GWVhaO3YwSTyWDkV6mriRPMOVVa1Xc9P2kVv7Wefp7PZRR7
-	 /qs2Z/i1dQ5zA==
-Message-ID: <7454d7a3-57c6-4883-a66b-26129e633c6e@kernel.org>
-Date: Thu, 1 Oct 2026 13:33:02 +0200
+	s=k20260515; t=1790854476;
+	bh=OFUfBJhfs43LK2uJ35trWg6Dxj/vYrf6yAbtRpo/I9Q=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=hU/U6FzrcmDrLuYwspEuImByZobXbfI3VhwI7ef+aDvD2f2HwXe2U0G2qGEHQJzu6
+	 fgcV7rEMPAoLLQN1Q2c2AXy58ZQUD8hIexEoci4gM6Ih/uiXQxHxNonUVR69E6Z8gX
+	 ZTd2WblSoo4EGpHGIeFX6HXyLNzS/Cdpm+hpU9rUMMXmjb05OM36DMx4SfGLcf0gsY
+	 Xd5ro+jXBJIF3mVya4X9/ghB9UFUxuxmCPjf3cWIEx2a3tmZoAqGLQznV8tA3UPEsW
+	 K4ktT/2AdvhFaj3l0TnW65UsRSRYVUOIcQe3dCdHOI6V/iROn3Thy4HYnYpDvZky5p
+	 AYOKVxe1+r+vg==
+Message-ID: <10fd28a8-04e0-4e50-860b-ae094dd1e008@kernel.org>
+Date: Thu, 1 Oct 2026 13:34:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] maccess: Use a scoped guard for page faults
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+Subject: Re: [PATCH 3/7] maccess: Skip setup for zero-sized kernel nofault
+ copies
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Mark Rutland <mark.rutland@arm.com>, Alexei Starovoitov <ast@kernel.org>,
  Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
  Eduard Zingerman <eddyz87@gmail.com>,
@@ -88,12 +89,9 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  open list <linux-kernel@vger.kernel.org>,
  "open list:BPF [GENERAL] (Safe Dynamic Programs and Tools)"
  <bpf@vger.kernel.org>,
- "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>,
- Viktor Malik <vmalik@redhat.com>
+ "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
 References: <20260824160523.3907021-1-usama.anjum@arm.com>
- <20260824160523.3907021-5-usama.anjum@arm.com>
- <79daa73b-0d34-4e84-8450-56f90bc700d4@kernel.org>
- <98e9ac67-7df3-4c0a-8814-37e196d94020@arm.com>
+ <20260824160523.3907021-4-usama.anjum@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -140,17 +138,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <98e9ac67-7df3-4c0a-8814-37e196d94020@arm.com>
+In-Reply-To: <20260824160523.3907021-4-usama.anjum@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 324461C000B
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A5F15140009
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: znqgwfic3wefdmq3d5yc1rzsq8d9t8pw
-X-HE-Tag: 1790854393-9296
-X-HE-Meta: U2FsdGVkX1/Dfu1HnA9EhYvccOBpR5iRlckVeqH0hELzHNeuLrRcjZ1/QYAF9+9mJV0ouMorCnPht4OvXLiUWsYR0RGZCMJDRv1THeD+rkAkDSZFC6su2DJv6Qtg5c5mogZshriMWtwWN9Tic1iEAJvz/++o9ttke16bJxynFE/TOh4AyHPjum8kXFh73KLsF9uQ04gNNvHwWroK3/A007dWkFtZZIKDtAeqqgdoxd1ycMTUC1iASYKnbGKCONbwOqszYc7larvVw/whjMKs3LodZ9LCdU9iWD0206Z3EKOceUfiqXmjJvRA64CjbejZGcYWr9+2BizS3w1LBvT1DiAL9wMvgqJjfA2t/6qiHG1ZE4J44Jfr/q/fPBULD/QEDJ6/jrNz4upjJ4HNpDEfNzPfZi3XnA9WyqhSJ7EV5BO6ceG3rbVFl4zSM5CWSJ5c3J+fkRlyMJbaNjT57Ht8Qip5nRuJJIhF0iozqn7kB1zR4tdiWm7AH8dOz8K+bdFmu2Kmm6q6NbSVPz93kHQ0gPoBnWWTbvj21UUYVVS9A6n+apScdskKyZUNh5E5tp2zglU2n8wyaoSovb/DjdvUYS8MjzmRDZsCKY0QntmxrdnMZB+F5JJ5agJmvtvdBTsgC7swhUWw0uniswzUKELYCYx58Sd4iZQUoxfN/jVjWue/HkKvY8rCIh3pIAHjonRaSGUiXOTQt1FGLII7XtAgPncVAEXxjkSITlDk0dENUCgyOoLOgSjqduiSbjjuoKnPQSi+Yy08b6UGEWQ6VPYr1zUwsr0eOAZsicLiYeG3WekkQBIesV30SEpn5MDPJfCaSvDJ4Ds7YAQ3dovy253lURpOWKCe++N8SVA7HgNma5IbGYS/PQJuoK0ASjlc23tCofjwaXWWdoKm2NrU3xAyrSSfNDu3LgzvAQijlfm7yQJwpAss4/sfdwr+TXWUlPCso1uVlFG/Tpt1kRV44im
- +G+vxOGT
- 7S1pRjrBxGMangbi+Iwf0XZpTQNxsrgAApMAubFW5kH74w316koyMUavqNlA6aGMBCL6RKrPttI2/6JIVcLUMjA4SSjprF7Axnc+RGCCJEcXUuCim1o8gjhTSL1DDr3/G512wpnf21FBbucSpx5LCkIPbjzZNMXbpXgTVSlzLSeOMOe5Y2Sz6G0kd1B1zju0wtfocvUA4QUdygjLhnEBI6oleksgOPLOXVTYGhedTj+gAMu509upxSYE4ATVMuJ6QA8N4hXceqj9FRnhcw0XMVGweAA0JvbklZmOCGdgA3HMDkNxt1CGOyyWfW+XSuUO68t8S
+X-Stat-Signature: gqt8m5ebj5apt5xwxsk1gho5k6qdfojc
+X-HE-Tag: 1790854477-34976
+X-HE-Meta: U2FsdGVkX1/3NmSUDKPsApjBQj5OyXk8UlCSihUvaqnaSKHV6Yib64Da46AezUSjS7ZNsvb24dROwfazC5+N+ciN8G9TicOsgvjm1UyaxnbHTFplJukUU90+Fr02yjTfekNQoiA9A/d8r6u/bAa9wb+S2E+YKb9HidNHKj9PA0td2tsPXfsvAskv50gEtUCwxScue3SY+d9NOf0xn1wTGiCfjCiBU/9/wFWtYTwGfnpikWjysbJuF5/x42Z5J8/S4jnw5mHUskZJNNB+DEwCCNdZuGE9tGctwPHaaYeRlsxZ4SLHS01abZiSmK7hE+80KCcms1BbeBWh4Q5ysfLI5nCjhG6sAh4QlaEEYJotG/5Ufca2Xtr5n0LIUSDl6WjFSOYKwYSFDR1vvTYudWxBDZDDGEECWMO6HjXYd9MBf9uz9Jashl0lbNjWVGX+Gsf2bnG2MlgbKPelhO/3I6X4x8mou6YKCAcIt7fwN9tP5IEdGAeQvxHsT39iLtyA/jBYtbLWeVUbtUGQLs+TQPEUEYjjf4o+bS4xxNX0A30ylqeHV0+X7K5huoUOITAl0jtbqhUWywA0e2Ab12lL847AWEo7uYL3eoD/gfzjr7ESJrR6LCOUmSOBkYD/pG3/I73KvVjiqUrfbtKlq37w9cCEPSAc+KsFK0chUOg9hYJjpeLcbT5Rf2y+71pH7/cVkFG3lt4S74y59Q/hbMDR7O/6oO91vEvYRlGvHebIqRv1YwDtjkhqoJqq+SRMS2yRo/+oFZh2pvquUjpo6G4H/8F4DvGfN5kqVD5fK83t5crB3L1Jhr3sAVPDfTgKV3dP5DxtJCt5vWVrcRJIXbsX0+qrMsks4bJYUz2tY6zXMmLq/UplM54ZaD46pbtsJPEeBAm2cPCfFBIxYu2krNWfyDLWEb37/+SUrHP5INFr9ZFLU7xJM2uJxyqIDe7CsIkPxX8wovGq7BVzu9t4Qls1o/U
+ TgmFzmHH
+ 7auKgoi11Zw4N1NtzQewir+VpRZwNZ7m7ZCwD70raWfYc07HIyzOTa4sToNZlecK4qnQpLdTtkfMLkHweBI/uQHD8794QQ6Tpx2kSlaame3B+9EiB79WbIwfpf37S1a4BDUSjMkpl950At6yWpK9DnW9sPexSjQNZBn/o3Bw0eyOvXpTFp14JCZm21JnpXEo1MlOKLxV4gRCZCaCzq+myqctih9Btb9juz1YiFi7NCZEZUaGWrCV9T8J4Hzc+KiTdqn21s9YRAMpqhGIIFYzvRBd5ddKB5Vg6BY8oSggdPK0i4H4KrtFpOnecdqGUjNlTfV2m
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,73 +156,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/25/26 14:07, Muhammad Usama Anjum wrote:
-> On 25/08/2026 11:36 am, David Hildenbrand (Arm) wrote:
->> On 8/24/26 18:04, Muhammad Usama Anjum wrote:
->>> Kernel nofault copy and string paths open-code page-fault disable and
->>> enable around label-based loops, duplicating cleanup on success and
->>> failure.
->>>
->>> Use a page-fault scope guard instead. Leaving the scope now re-enables
->>> page faults on both paths without separate cleanup at the fault label.
->>>
->>> No functional change.
->>>
->>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->>> ---
->>>  mm/maccess.c | 53 +++++++++++++++++++++++++---------------------------
->>>  1 file changed, 25 insertions(+), 28 deletions(-)
->>>
->>> diff --git a/mm/maccess.c b/mm/maccess.c
->>> index c59a0e092d24a..f695ceefe6fcc 100644
->>> --- a/mm/maccess.c
->>> +++ b/mm/maccess.c
->>> @@ -38,18 +38,17 @@ long copy_from_kernel_nofault(void *dst, const void *src, size_t size)
->>>  	if (!size)
->>>  		return 0;
->>>  
->>> -	pagefault_disable();
->>> -	if (!(align & 7))
->>> -		copy_from_kernel_nofault_loop(dst, src, size, u64, Efault);
->>> -	if (!(align & 3))
->>> -		copy_from_kernel_nofault_loop(dst, src, size, u32, Efault);
->>> -	if (!(align & 1))
->>> -		copy_from_kernel_nofault_loop(dst, src, size, u16, Efault);
->>> -	copy_from_kernel_nofault_loop(dst, src, size, u8, Efault);
->>> -	pagefault_enable();
->>> +	scoped_guard(pagefault) {
->>> +		if (!(align & 7))
->>> +			copy_from_kernel_nofault_loop(dst, src, size, u64, Efault);
->>> +		if (!(align & 3))
->>> +			copy_from_kernel_nofault_loop(dst, src, size, u32, Efault);
->>> +		if (!(align & 1))
->>> +			copy_from_kernel_nofault_loop(dst, src, size, u16, Efault);
->>> +		copy_from_kernel_nofault_loop(dst, src, size, u8, Efault);
->>> +	}
->>
->> While I understand what pagefault_disable+pagefault_enable does, it is
->> completely unclear what scoped_guard(pagefault) does.
->>
->> Should this be scoped_guard(disabled_pagefaults) or sth like that?
->>
+On 8/24/26 18:04, Muhammad Usama Anjum wrote:
+> A zero-sized kernel nofault copy does not enter an access loop, but it
+> still disables and re-enables page faults.
 > 
-> The `pagefault` guard is already defined in `include/linux/uaccess.h`:
+> Zero sizes are valid. BPF probe-read helpers accept them, and KGDB memory
+> packets may carry a zero length.
+> 
+> Return before changing page-fault state when there is nothing to copy.
+> For reads, keep architecture-specific address validation before the fast
+> path so its behavior is unchanged.
+> 
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> ---
+>  mm/maccess.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/mm/maccess.c b/mm/maccess.c
+> index 486559d688583..c59a0e092d24a 100644
+> --- a/mm/maccess.c
+> +++ b/mm/maccess.c
+> @@ -35,6 +35,8 @@ long copy_from_kernel_nofault(void *dst, const void *src, size_t size)
+>  
+>  	if (!copy_from_kernel_nofault_allowed(src, size))
+>  		return -ERANGE;
+> +	if (!size)
+> +		return 0;
+>  
+>  	pagefault_disable();
+>  	if (!(align & 7))
+> @@ -65,6 +67,9 @@ long copy_to_kernel_nofault(void *dst, const void *src, size_t size)
+>  {
+>  	unsigned long align = 0;
+>  
+> +	if (!size)
+> +		return 0;
+> +
 
-Ah, sorry, I thought this was added in this series.
-
-It's completely confusing.
-
-	guard(pagefault)();
-
-meaning "disable pagefault", what?! :)
-
-CCin Viktor: I see that the patch that introduced that has no acks from MM. I
-don't blame you, because the file is not actually listed under the MM section.
-
-I think this really needs to be cleaned up to clarify that we *disable* pagefaults.
-
-Usama, can you throw in a patch to clean that up? (calling it nofault,
-disable_pagefaults or whatever)
+Worth an unlikely() ? It's the corner case.
 
 -- 
 Cheers,
