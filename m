@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67DB7CA5FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:40:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BC84CA5FCB
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 11:41:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C5AB6B008C; Thu,  1 Oct 2026 07:40:18 -0400 (EDT)
+	id 5A47E6B0096; Thu,  1 Oct 2026 07:41:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7767B6B0096; Thu,  1 Oct 2026 07:40:18 -0400 (EDT)
+	id 57C7B6B0098; Thu,  1 Oct 2026 07:41:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6653C6B0098; Thu,  1 Oct 2026 07:40:18 -0400 (EDT)
+	id 492836B0099; Thu,  1 Oct 2026 07:41:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 42ED36B008C
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:40:18 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D4FE8A3FF0
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:40:17 +0000 (UTC)
-X-FDA: 85273864074.16.5FBF268
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 331196B0096
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 07:41:15 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A728D403BD
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:41:14 +0000 (UTC)
+X-FDA: 85273866468.02.F9EC06B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 384CD1C0003
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:40:16 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PUupB5gQ;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id E9AB3180007
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:41:12 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LTwFk0ZU;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790854816;
+	s=arc-20220608; t=1790854872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R8QnVRuxXx0DRHjhLodBsB0dPH0Vc9e66VDO/VON7WE=;
-	b=a5mpv1/Fj2JpOqbVnSd89viQ0W9FIPnGJEHDWNHtcEyCq1BYhJMSREWDODRBz9d5XLLRc3
-	ihUckcQyuQnncXY+5JokbZBDO/2EW3sF9u1GVcrQsVERFsKGOyqwt6HAmcQ3Jm+4jYfdFc
-	ttRfE2PnpVfCpdpjoSYWW6J4o9OIYak=
+	bh=OTQjaHyFzgR+M9iAe8/wiUOMwWAu1rzKJDK8Ma1143k=;
+	b=rCO2N62y3vgwKz0JxYZub29PBgVvWuFEVjOqDASEXHLw6gZ7UMxDTjL7U6ds2ZlJbISPk+
+	8q/+yIyDYtYYBD4qxozZJ5TE/VQ+e79sojmWr0jpuAiEP8t165gEgx6Y/pAxWzt3XoiTPq
+	W0ZE3UZttb9v7Jwe1wOzDoVcVRXJ+5Y=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PUupB5gQ;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LTwFk0ZU;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790854816;
-	b=jr5GoWAOxXfL7aCq7gfnXXLo316B1abarJcPHwWhrnRIt9HpJNSMmCaZkEYvYN/L0OyIQX
-	3QtRHkVQJe+V69RBa2PfWxpMqVOPYmznSWaytuzTvb4gElcxdD4rK0oi14fUt2+QA0W3hl
-	ngONXJEmU4EcZ/mAW5ZoeF9TW6DauTk=
+	t=1790854872;
+	b=uCMB7bCDfWFC3fj2vS11+GKWICpHwZkPO/tMjx7muvLdUylkTmtgjtTB4XtjDVECYjMfh5
+	8OkZP7Nhu3NZYjgBQvpSYEtkKdIfAUXtp9SykEvkItKORQvTmSQ1SqdK5Yld64iw8ZlvEW
+	Zdtpsxmu0bAVt7B/58bn1L2NV4VYm7w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9E63E601E4;
-	Thu,  1 Oct 2026 11:40:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B055D1F000FF;
-	Thu,  1 Oct 2026 11:40:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8D869601E4;
+	Thu,  1 Oct 2026 11:41:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C591F000FF;
+	Thu,  1 Oct 2026 11:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790854815;
-	bh=R8QnVRuxXx0DRHjhLodBsB0dPH0Vc9e66VDO/VON7WE=;
-	h=Date:Subject:To:References:From:In-Reply-To;
-	b=PUupB5gQlzr+bWtFrTHfgVpwkTN7x++K9kI8wfHEPTjtHMkwKqyI5WDWii0Bkkdm8
-	 zc+/P0XWsRcF7derKkF83f7dkkQc1UWQelBTuOtpZ/gyAomoRXsifxd4luvWVBD3ER
-	 TNQ2PESLWmY6by6SyG+A+EUs5kmjXWnECiwaagON8c8jwJG3jtik1eKSgLol4paxDr
-	 wYHUnf6dCWnKcvULC69CJnKHJRP34dqQqmv3TFIugxWuTWrJDeeDJJV4e6n9vxHzzD
-	 srwh8e1g+YjOwg3w4ItlCE5jLfQT8SVJ4wjtkI4PFRLphYU+I+lLPhvTLFJuGLozv2
-	 hKJP4P4l3Is7g==
-Message-ID: <3e03425b-7962-4c69-93aa-96168fd7168e@kernel.org>
-Date: Thu, 1 Oct 2026 13:40:06 +0200
+	s=k20260515; t=1790854872;
+	bh=OTQjaHyFzgR+M9iAe8/wiUOMwWAu1rzKJDK8Ma1143k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LTwFk0ZUeiqGzU59Wwjcl9Gq40g4HavoEq9B1yqQgL7vhd4Grw+hfiEa7Bj7X+q/f
+	 cfPlP+P21MXKYPL2otF3w/m8hCl5l+O9eK5Eg5vZlaoiYrb5o1ZSs3QTwG7XLwvjOG
+	 qr2ZJ+5YGPKFJ5CoObtvSyFnDO7zUbqPOgQuNK5YtDhZqyOysOsSuCiZu1RXzW6e98
+	 N/C+3I+SfMy39sUykDQd5F5AURf2FskNYG8lOkGnFmvOBCRp71fK15GTc6HICJl25A
+	 AQwCcJ9VGR/XZW+zZ5rqk9hC1+VrtcJDiL5sVgZyGrX5hxLpulsNEvqJuHgQzSPhfp
+	 LMG5ulrygL63Q==
+Message-ID: <afbebeed-42cf-465d-89ce-3000fe361f11@kernel.org>
+Date: Thu, 1 Oct 2026 13:41:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 3/4] kselftest: mm: integrate huge page checks
-To: Yeoreum Yun <yeoreum.yun@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260924-fix_split-v8-0-cba7359d882a@arm.com>
- <20260924-fix_split-v8-3-cba7359d882a@arm.com>
- <16f16e77-05ab-418e-ad06-8f48fb29375a@kernel.org>
- <aruMgm8UZ_t2V_wh@e129823.arm.com>
+Subject: Re: [PATCH 1/4] selftests/mm: open pagemap and kpageflags once for
+ check_huge()
+To: Zi Yan <ziy@nvidia.com>, Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>,
+ "Kiryl Shutsemau (Meta)" <kas@kernel.org>, Barry Song <baohua@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
+ "Liam R . Howlett" <liam@infradead.org>, Michal Hocko <mhocko@suse.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260929131521.153079-1-kirill@shutemov.name>
+ <20260929131521.153079-2-kirill@shutemov.name>
+ <C1FB2DE7-D93D-4CE0-A6D1-624CC0B9C8F8@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aruMgm8UZ_t2V_wh@e129823.arm.com>
+In-Reply-To: <C1FB2DE7-D93D-4CE0-A6D1-624CC0B9C8F8@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 384CD1C0003
-X-Stat-Signature: sr36mpik1tbemwoq3pe7ffxmrqowdnpd
+X-Rspamd-Queue-Id: E9AB3180007
+X-Stat-Signature: 4o6c7rbgaed3fct3n5ywroisgarce6cz
 X-Rspam-User: 
-X-HE-Tag: 1790854816-281149
-X-HE-Meta: U2FsdGVkX1/MdbxbAFGhW1e03T3cm3+UIwBhqLJmqUfUgxveM6RQ7DLhnYUiyS2Q0rHYFSYCTlZLcZAIFYP65fDVpMy6OQoFeJq2m9xL+H+5qXKASpDYUSFUgRLdFewAO8erpFJP8p4Gefn5azaku/dJsxWU0/apwSqUZ01LRhzeprPGV2D+CPuFqUIjiUgErleZjhhPpwdg0dISLq6E6jgH97lUcVZ+rNsGZ5YYJVGbJtrsRpaihSt6lq0jonGE7OGsJSH2T26F1q2Yv0xcPA3yKbsH4FAr+nrYdALRsKuqsc3Mihv12LFhbGPtJaSweo9Fjh/rFiyX/cpJY4lx6IfFarvCc1mktEGhkB4CNyjuLoJdXINR9lCu2fAutlRBL7iL0K68gV6ACJK2TX3kA8rTVkDPJe8SLpoOyc4UiEptbGum6WDmxmEQAP9bFm4/FQkt5sedVBILSgzmX1L2XdvwcYH6iRaCiSUxbTH0C767TDHQwABIT+qXNOJ4VOCLqK1bA3KdBQMYGTU9/lA4k3IRLh4anLkezz9URg28ABJH3qXIbwJvQWvBsu97VU5XsfagYin49HUYdrnaqiKzQ6oKYPcuQ4lVmvU8TUa/HZPC9rYGTyVLMFPJwUt4dtyHH0OYn1HGexXEK6+Yv0sBCInuc2vQDpptjjN7zFO8612jLzoV3DguyL3fYzH4SLsdSYjHkR4cDux1rRsK0sq8vQMC1jWhdojlIsgLjJusaGky7dGP7nKY0u5wTKmF17kZRFD0j9/2beg3rF0fNGHisI30lU0x9NM+8Hf4zW8sLTIumsDnUva/GWxPQM0wdScpFd2F4Xd10CAsieNk5Qeogegsi2r5jmFUvQAZFGmY5858m82s3/xMPhPNcBbN5VvQq9BiAXCowE0HhzipK1l3LchwnZkHkEDx/3YpmPNPISc3QCjt8/HGc5mxiC4OlPYKIkYHmq3nFgfcfiMY/Ea
- zws2N0cU
- +P49P8xjxRKm0u0Vbr4wK6hVy2X6zaPU8phda7zRviFnpYeWAbyKoNn8DDfwjNr8m/c3ZteQJlS57cmjy/RZVOZU4MrtGi7zl/ZHZM3HAa6uykz7BeVSzRBtMwMvWQfH9XcTb6lPBxTEobljbTLJbBH6y6fOKfgz3PqbHVkg31ZXopVJ3kxhxqXMAEAdrh/0KxtGZ/K56CIgXyw6gz1i1noO96SKYUHD7fFNugqvMQpvIFLCSqP0PJuQxTn5I2YBJgWWjB2zOOh6Df617kmgWSTuuaHzQNaLzxuaDijha+Nfug4GdEb27l/Jy8UhEyU4UHcqFzHCzp+6OA7jmlyK/q+1ihf1+AAGdODfs6GDLVVuvmi8=
+X-HE-Tag: 1790854872-495101
+X-HE-Meta: U2FsdGVkX1/eT46R+YhkzISA0JFShwJdyWVPr+jM3bqepyS5N/but3K44cP6Qz0iavWZjnKy9w81sgc2ek8M0GGfgSi19xUquDuM3SRxgvYBdqIZPfEJQtYhCvw4b8ko/DVIbnj5gzHvkSBCsmv8/LX/Fmk8cjV3726kxVEEuAPwI/TuOgSLPz7s4CX1bLBZ+NWocZwJi2s5hELRrjSW9JdXv9Af8jupKQbrWJY7/F5C8NkSSjINm46Lltbfh8TJa6g+BeYOrzZY652cc/riPz7/kqzwuxAY47nJypicViq2z2b8b3BOSuYyvJXvkB4Y8ZvzyOPyXh8gs2T5FTNMXbJ6p4NZvNqoXalgmgOg7XoRMQ41T8Hlp0O8CZhNIUmAruThD2kxceNbd5gDaqNMdce9NHTp0uRODOVyBNnFhsz/vcqHSJ79yAWT3UfVl53sYYRc9XjcrUBdgLcDD0zCPE0Bs5P8LNWUmakbZhlVschYhrOBJLglWcAMxSdoUlYDtpnsLm/gtfSqvsmEKraFZL8TKmGf8+B0oOO7bx7BkK/0cXrB54l9MobMZD6doXmkhcL0o+3xN1vPtY8zRE4EFhu5cUdblUQLNFrNJJDSXuX0TPzST9SRpMfLRc/MFTngHjR00St4BANaPfWbH1l/HrFdXUYQLqKE+XW1Gw85ELpxtHpGZaRPRIClerbW2xFFv5BIETlGjneJvhXcg+Uw9cesMPWsF480Bl1hfDke3pYxhuDEq6PPEwQi4IUrWCZKqLDBlc55etjTlCtiUW49XEb6860a4nonhlw5yYX/z76P4L4sTop0W+FIa/DICx6x48BGE59KGy0PdJf0tqN6oRROIevrTpou/iCS22JBre2acUvq4DFDbn8QlL99c297IgsHAz3JzlqHGO7fNAbe1McwursMTOILpZt7kgKh6SvBTt6g9+y9bgXIPHrf6/flAyE45KgLZUPxXU6yRXb
+ Ki8ZgsEb
+ Xl6GVSZd9D29bzK85JNJpWqQkVlgxnKfxexZADpyg6qHQYLXN4XVCcvvTbmyn6zbogR+YSP+OuDC8SdLPTy19R1dLl4lB4vxapGTjLY0bbuN31ZV+KfHAdg6zn+ouI614cEA56Vd0UYk8E/HN158r5YDJoqG3vnYAnv0jiTdIsdvQihkhh+93UYoF9efu70jUBhzCa3s1o/UBsfTTwO6LA07fh5ylYRa8LZfdAwzeWnbSYaxtHbjHHssufzcMvBBTXMuHC4+175aJE0wqTJkKSrzhsR9tndZgJ2LHWmC1ifBrdCRW8AIbH7qa1aguLAxdd0n5KQKEZNj/zD7F2OHyAsuHP2KtwrmDp+bnJRuSYDey0Y0O4B9K7mutBiZ8uBgnqihGJUH955hwFPmk2DGkr6u53cRASPCp2f2k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,121 +149,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/29/26 12:01, Yeoreum Yun wrote:
-> On Tue, Sep 29, 2026 at 10:07:37AM +0200, David Hildenbrand (Arm) wrote:
->> On 9/24/26 21:11, Yeoreum Yun wrote:
->>> check_large_folios() only checks for large folios without distinguishing
->>> between anonymous and file-backed huge pages.
->>>
->>> To add huge page type checking, integrate the huge page checks into
->>> __check_huge():
->>>
->>>   1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of using
->>>      check_large_folios(), since only the mapping type matters. This
->>>      identifies PMD-mapped huge pages.
->>>
->>>   2. Otherwise, use check_large_folios() to detect large folios. This
->>>      covers mTHP cases.
->>>
->>>   3. Check the folio flags according to the huge page type.
->>>
->>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->>> Suggested-by: Zi Yan <ziy@nvidia.com>
->>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
->>> ---
+On 9/29/26 17:28, Zi Yan wrote:
+> On 29 Sep 2026, at 9:15, Kiryl Shutsemau wrote:
+> 
+>> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 >>
->> Instead of merging both things (detecting mapping vs. detecting anon vs. file),
->> could we simply perform the anon vs. file change separately?
+>> check_huge_anon() and check_huge_file() open /proc/self/pagemap and
+>> /proc/kpageflags on every call and read the PMD size from sysfs on top.
+>> The khugepaged test calls them hundreds of times.
 >>
->> Doing another pagemap walk that focuses on that should end up with something
->> that is easier to read.
+>> Open both once and keep the descriptors.  A pagemap descriptor is tied
+>> to the mm of the process that opened it, and the khugepaged fork() cases
+>> call check_huge() from the child, so reopen it when getpid() changes.
+>>
+>> Cache the PMD size in read_pmd_pagesize() as well.
 > 
-> Okay. I'll change like below in next-spin:
+> This part might be overlapping with Yeoreum’s another series[1].
 > 
-> -------&<-------
-> 
-> @@ -411,57 +400,78 @@ static bool check_huge_type(uint64_t categories, enum check_huge_type type)
->         return false;
->  }
-> 
-> -static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
-> -                 uint64_t hpage_size, enum check_huge_type type)
-> +static bool __check_huge(void *addr, size_t len, int nr_hpages,
-> +               uint64_t hpage_size, enum check_huge_type type)
->  {
->  {
-> -       int pagemap_fd;
-> +       bool ret = false;
-> +       int pagemap_fd, kpageflags_fd;
->         int nr_pmd_mappings = 0;
-> +       uint64_t pmd_pagesize, scan_mapping_size;
->         uint64_t categories;
-> +       unsigned long pfn;
-> +       bool check_pmd_mapping, allow_nonpresent;
->         char *start = addr;
->         char *end = start + len;
-> 
-> +       pmd_pagesize = read_pmd_pagesize();
-> +       if (!pmd_pagesize)
-> +               ksft_exit_fail_msg("reading PMD pagesize failed\n");
-> +
-> +       check_pmd_mapping = hpage_size == pmd_pagesize;
-> +       scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
-> +       /* Some mTHP tests check a partially populated PMD-sized range. */
-> +       allow_nonpresent = (uint64_t)nr_hpages * hpage_size < len;
-> +
->         pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
->         if (pagemap_fd < 0)
->                 ksft_exit_fail_perror("open pagemap");
-> 
-> -       for (; start < end; start += hpage_size) {
-> +       kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
-> +       if (kpageflags_fd < 0)
-> +               ksft_exit_fail_perror("open kpageflags");
-> +
-> +       for (; start < end; start += scan_mapping_size) {
->                 categories = pagemap_scan_get_categories(pagemap_fd, start);
-> -               if (!(categories & PAGE_IS_HUGE))
-> +               pfn = pagemap_get_pfn(pagemap_fd, start);
-> +               if (pfn == -1UL) {
-> +                       if (!allow_nonpresent)
-> +                               goto out;
->                         continue;
-> -               if (check_huge_type(categories, type))
-> +               }
-> +               if (!check_huge_type(categories, type))
-> +                       goto out;
-> +       }
-> +
-> +       if (!check_pmd_mapping) {
-> +               ret = check_large_folios(pagemap_fd, kpageflags_fd,
-> +                               addr, len, nr_hpages, hpage_size);
-> +               goto out;
-> +       }
-> +
-> +       for (start = addr; start < end; start += scan_mapping_size) {
-> +               categories = pagemap_scan_get_categories(pagemap_fd, start);
-> +               if (categories & PAGE_IS_HUGE)
->                         nr_pmd_mappings++;
->         }
-> -       close(pagemap_fd);
-> 
-> -       return nr_hpages == nr_pmd_mappings;
-> +       if (nr_pmd_mappings != nr_hpages)
-> +               goto out;
-> +       ret = true;
-> +
-> +out:
-> +       close(pagemap_fd);
-> +       close(kpageflags_fd);
-> +       return ret;
->  }
-> 
+> [1] https://lore.kernel.org/all/20260921-fix_hpage_macro-v4-2-cdea4fc6ce3f@arm.com/
 
-I'd leave existing __check_huge() mostly alone, and instead have an additional
-function that checks the type.
-
-Essentially a __check_type() or sth that we run after the large folio / pmd check.
+Yes, let's provide feedback there instead.
 
 -- 
 Cheers,
