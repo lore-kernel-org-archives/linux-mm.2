@@ -4,141 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0584ACA5FD2
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 14:17:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C70ECA5FD2
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 14:22:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABFB76B008C; Thu,  1 Oct 2026 10:17:50 -0400 (EDT)
+	id F35B56B0088; Thu,  1 Oct 2026 10:22:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A70B26B0092; Thu,  1 Oct 2026 10:17:50 -0400 (EDT)
+	id F0D406B008A; Thu,  1 Oct 2026 10:22:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 960B56B0093; Thu,  1 Oct 2026 10:17:50 -0400 (EDT)
+	id E22DE6B0093; Thu,  1 Oct 2026 10:22:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C8316B008C
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:17:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 94C7512045F
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:17:49 +0000 (UTC)
-X-FDA: 85274261058.29.46DE27A
-Received: from mail-dl2-f33.google.com (mail-dl2-f33.google.com [74.125.229.161])
-	by imf05.hostedemail.com (Postfix) with ESMTP id AC4CC100002
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:17:47 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C08ED6B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 10:22:43 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 50C3F16042E
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:22:43 +0000 (UTC)
+X-FDA: 85274273406.22.8B2212F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A1CAA10000C
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 14:22:41 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=cvjRgWYV;
-	spf=pass (imf05.hostedemail.com: domain of jgg@ziepe.ca designates 74.125.229.161 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PF6tJ1/6";
+	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790864267;
+	s=arc-20220608; t=1790864561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xDMyZjpmBuMrFbLISKqTNyCUa2kXcFY6ppx5n8yKikE=;
-	b=S50YpS4mxzUBzw10t7O5SqYXz25MfiTwK2U7IXuphmMMr4EA+KrmvVSDhWCguvAM3wnFv8
-	mbnWYgICXQU1ci5qrcxDeA8e0xAUe0T/uMK2Sk43wMZPfPvMo4INI+qizFMNbJZm2XfUVH
-	7ClhUlWPEEgrQoxJqtzaiimptXdLjxI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790864267;
-	b=KoteFpt+bhpiSlX4zKAQQ1xwLQpgupgm+xR0cxUv51/1qSO7o0BRzyXU5Lspl2u3b129CO
-	4zIpsQGnyKqpIa+r38Q7O1UTF5p9L9XEqnUC5HT4s5VZeN8HQiZ9ef7/Vy+zUnoKigsjgF
-	zatzznI0cV8q6NhDbO9BrdDsaTpHSfE=
+	bh=XyzcN1CM+Sjmv9yngzarkO66OZbEgOAmUF41sBp7ArQ=;
+	b=ON3U3dUzLQjbzSmEZNwfhno3Rux/Cn9LZ+DyxE+j3O6T+5UfDa83s2Jyy+PgM9v6aBRNDI
+	EnZJYvhuw8NfusFss7YldVRqR27H1sFpNvk8ehbPvFvfqL8G2wNJopCR77HLd66mPuzZjU
+	MrZvC5Cl1V0/8wIzUU8icrQ/HAhV3Qc=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=cvjRgWYV;
-	spf=pass (imf05.hostedemail.com: domain of jgg@ziepe.ca designates 74.125.229.161 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-Received: by mail-dl2-f33.google.com with SMTP id a92af1059eb24-1438e88300cso6808088c88.0
-        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 07:17:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1790864266; x=1791469066; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xDMyZjpmBuMrFbLISKqTNyCUa2kXcFY6ppx5n8yKikE=;
-        b=cvjRgWYV2Z8Yo7FXv8asLpDGlu/3Tk2Bbo1vLNjl8Vb4qciWNbql7VOrD+llwB17Vb
-         bus4ZWzlODoG0K26XOfHajDTS1hZ8xGDOj9LjcVXbgQHuXmCY4sGsnB6tecxAygXnl3v
-         z5qL7B2lLItsvpKEuIjJg5Mq1pU1g5TZQcGeGqwQkB4a6wI86XElMoRidUSHhJ6fOTHr
-         7dWRVkBB32dz8yUYwH8/5oSNRpzzs3nfsKPG158SMNhw1KRt4bnZSGFOhjn6xfYIn2NE
-         yyJUF06zfwSDiXUgH/ZGR0YA1SPbaElaHUCHod+Lv0DpTWYR0U9uaKK5+hBjg5cgqivk
-         JBOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790864266; x=1791469066;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xDMyZjpmBuMrFbLISKqTNyCUa2kXcFY6ppx5n8yKikE=;
-        b=dF+CC2086F9sHAO2wb9Eu9hI1vKXx2oTP/IH4cE72hNHDYRYI/EjuQ1NP4vDrRkxu3
-         geXL3XB2Hd/oQgNR4XGAIKfrhnsVs2/HnlrIV14lFnFE/Mv7kGaaBa1jkNzUpuzMosgH
-         OQY6LKsaAb7kcU3lrFrzd+b4cgdDogQJnBXAiuNF7d1UmjxmtpRfR3SjpmEn8ei6CGbZ
-         VWdjCPL8+yA2g1xbOWt2XaU9ESNHJjbjKVmwgnsbUZM053UDxNEiO/tnwibbxkb5HxO0
-         H3ak/Uqftz3gFOX7vM8RjvCrFm/WgNyKncnNkEPivTzb/R/bvoXKXzqZWQ9YqI6i+I3O
-         GQTg==
-X-Forwarded-Encrypted: i=1; AKwUvByWi+s/+SiQuIedQsRq3mVyJ0MpUw9nHD4ze0mT9pqtPJTvRgoPGeGKn6ByTYzV8LwuKFe7OlhUhw==@kvack.org
-X-Gm-Message-State: AFuF++mYWxaruPqw6bsd/9nTgwp+1s3NMnsKiVRDj1JMTqiv7fnBODdI
-	ps9iQ21Pj6avTbbWOIw6DgBXB6ZnqoOVvgTtdixm484+C4MUDlVgB/N0HJU/LWlTn/A=
-X-Gm-Gg: AYBFou0PQ3HRpyL9tim2DZDYNN4pSzfLvd37q2bTlk3aBi6dzA4Dd3g0k2yd3wqzLZY
-	AJ2p6541jnVZHTDExqZPEw6XzpMRZAnH6xPXCpBGXALYmSKmRQmbuqaAKTbEYuzQI8rnGdzWvL0
-	W5ncCI2VNlj3DOySmyFi+sSfiim6wXC2I7StHnlWcb3c2ekzZIN/KaF1Nm/yo7IXjO3/sMh9TVP
-	yJgnEOwCRo5Xo5hybaEYsSmlxw8sGgcW/QdvQoYOH7Mkd6VbXM4VMdnjJ9f4dKqdRcS8h3g3FOX
-	7dgpP2D6Fcwjo0GPVK+Mu2jvO+KqGAeVh4ReMY3a04AX5uQGJ6ZViw/GfX0hqD3fJfLBG7yKYAk
-	pHQKq48Gp19/C+XzPD9rIkXcjIJOt6KzOp3Yw25KxLQC8BUoT5UmCe1giPHXQQJl/v0lkBSbhqa
-	Ah6gaGGV2gRYiuL3rLGF/AtP3f6OFIFcKk1DwNNCQ83hoM5BGLUhvPFYA=
-X-Received: by 2002:a05:7022:ed02:b0:147:5149:d12d with SMTP id a92af1059eb24-14d33f39e14mr4209784c88.18.1790864264892;
-        Thu, 01 Oct 2026 07:17:44 -0700 (PDT)
-Received: from ziepe.ca ([130.41.10.202])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14df3ed1adcsm6451579c88.10.2026.10.01.07.17.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 07:17:44 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xCHbT-0000000EHOj-0Nin;
-	Thu, 01 Oct 2026 11:17:43 -0300
-Date: Thu, 1 Oct 2026 11:17:43 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: ackerleytng@google.com, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>,
-	vannapurve@google.com, erdemaktas@google.com, jxgao@google.com,
-	rientjes@google.com, fvdl@google.com, jthoughton@google.com,
-	tarunsahu@google.com, pratyush@kernel.org, fuad.tabba@linux.dev,
-	Gregory Price <gourry@gourry.net>, yan.y.zhao@intel.com,
-	michael.roth@amd.com, suzuki.poulose@arm.com,
-	Christian Brauner <brauner@kernel.org>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, aik@amd.com,
-	aneesh.kumar@kernel.org, Vlastimil Babka <vbabka@kernel.org>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Connor Williamson <connordw@amazon.com>, kernel-team@android.com,
-	kernel-team@meta.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 01/17] mm: shmem: Implement guest_memfd provider
- operations for tmpfs
-Message-ID: <20261001141743.GB3019323@ziepe.ca>
-References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
- <20260925-gmem-tmpfs-backend-v1-1-d36159822d18@google.com>
- <9292b27b8f48c515bee3246cf3b3a60762302186.camel@infradead.org>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PF6tJ1/6";
+	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790864561;
+	b=4wtpVdFDBQjKrVB9TaUHROFd3tFIpHf4/K7D1PDf2B9d+ok+kLbTLYRaQxivANlnualaca
+	xl7G7LJ6zQ+2IGJtOeFmlJ/05Ha2QuQkW9X5kLOjPI1ECjRsmhdBxjcorsaNhZA9xHIzfz
+	bNgKZRthgjIhBxm+RaTs34wwdsxqulU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C54C36021D;
+	Thu,  1 Oct 2026 14:22:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097D01F000FF;
+	Thu,  1 Oct 2026 14:22:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790864560;
+	bh=XyzcN1CM+Sjmv9yngzarkO66OZbEgOAmUF41sBp7ArQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PF6tJ1/6dSILGxm3+IyWR0RN4HSaLeM8UR1tkSW5GiMJL9wSnl8UJkwfBnLtPIG/G
+	 KEyrAl9ILdbIS4kB+c94qGEEc98b4qzwETcKQw4GGF7Gui5kTXsYjzvuEOBXlcAaIj
+	 7fbVrKkEQ0QAnabLPF8Mjm3azdjKzXJifsjdx/xTVxUcYP0qSs9BhXmy909MnZMjBq
+	 ix9/T1fGhCMUFG2XhrM0DBfC03we1JTwgQrglpcnIAGa70CyFnzi+cj6ijADRCFb0x
+	 0yQ5xjmptDDcfbyLYEXK50UInFq790oUX+gfF4wGThuyfMwIIYx49ZdN+r54JEjESi
+	 RSySn/z792Q2A==
+Date: Thu, 1 Oct 2026 15:22:38 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Imre Kaloz <kaloz@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/slab: sample slab_state once in kmem_cache_destroy()
+Message-ID: <ar5pESlkEMqNsgxv@thinkstation>
+References: <20260930195110.13296-1-kaloz@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9292b27b8f48c515bee3246cf3b3a60762302186.camel@infradead.org>
+In-Reply-To: <20260930195110.13296-1-kaloz@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A1CAA10000C
+X-Stat-Signature: ij8pp7tdqook1zr1aan1yokonfq9ibo8
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AC4CC100002
-X-Stat-Signature: m7y1d53wm6itrwfqxxfpn7bckfre73yy
-X-HE-Tag: 1790864267-431228
-X-HE-Meta: U2FsdGVkX1/Aw7MBWKhSSZg9YaaL3xvBDkkjjvG2ZdRFQWNEgrGxn2bYJ7TPy78cGC9BC2uHlW9Kkn1ji4d7Rm/zy0bYKDvr5UDlMPEuML+3xMURSJnnI0CBueJKQovyHrw9zOaa9jTNluKjrdGDW5yrngTRucsuc/KDqZKUyqWkYoli3Yuk0gIhDW2pFR3PRCVGcKpluLuZkkFrliry8ccimYix33AxEJQ83eR9gh83maC0y586ODUBbIUx2pqIg5DIkRAS37BM9Qlk1PUrLCnXbfBm2R4AswGbN3PfX/YyeZvfi51kN0C013vfaJHBTOkE0XjNAiCwIgsCAlE5h0XLkic2oOf8/uoWr/WRfzNaB8noahy7mvaPadqPOFcxGRtOFrdroX0me7C9s6zMK2z3bx2zp8fUAvWXcK6m0DrreG8lk/E3P+0MSscksELYNjWWUzUBYontJHVFBRPdFWr3BuPiU9zlIgD7/bgh9CVPXiYmn/lUc2ArD9Hoi281kwayNT7Zy1bX3D/R3+kFi36G+j8wp8YrWQx2r8xg9gw+E0/Ic5QnXCOwJVNibFS9cUpvcCXqmvTzhmYxoHxmPyMy0eDuA8uG0sXh3ZnoTQbGb+K48H120JXfoREVSHIWrv6KULFLfhf3U+m2tWe2xdyAk1mxfpDEByr/EC5+9fHmfnHZY8C9+Sglp6c/rLtwV+YHBCQ5DaaNGyh4PJdvw0jd2Rdkr2cQ7ocsOgHjE58BsYT1fXwR1LXplNgrgZTzcH7GQfAI8jNaWbuuFvrMwE6k7zxUdPfGQGp1UyJoSxdNoiEaLesS+uQV7TTf1wh8gC0nhAGjtC2WllbBFXDQmlNjElK/lYdKfkDpa8tR49DI4rwjr4qj/GccjUqkLc0zVMz4c8AKFkJIgN+MlDNaBo85yytbzPXYD+CQoFznuZLy8NYQ2yUY36ppKub+ZLo1D4nnTUzxATMLsc0R0cM
- qK2zZY87
- i+WSf7LuGmYtRfxcejxl7QUYHQjW7PtC8InyTUnlx8lZgMkf8dsv59nN6Ztq8uiOM59CQXVqlv7jJWzxbwM8HoP56f92SQqxgAw/7G66hFVSrsf+t9bCTkdcjTKfkm1yLg88QuoNOgO85/drdq7sFt53izqMdYKrOwDiDTJWgAmfCqr36t2jicccFi9s2cYCWec8ETsugpnsLzvTPPJPfXXPm9RhsZYrcqrduy871TvN30+H4sGNZvl5zfKgJqpG86/WFc2KUtTwep5GO9s7SnXdDE2qiX5Y/CXuSlX8lf5jFu9hNrbOTia64XYsESfiQL/z05927Olcs1JA=
+X-HE-Tag: 1790864561-261076
+X-HE-Meta: U2FsdGVkX19aJzxSTircbd+ZCaP+xvkFIBkKU0uWQ6v+THbyPHQdF01ItWVtjKVwYKHKW1xooIQF36iTViTJLQ4ebWDvSa0Yc2cPHAnKg6SJnzxHnLwl9rpEVIbzIZQ0aHPjn8pXCg3n0XSPvFdKBh6kzjVRq7ziDLvC+UO4a6tFw4tZ1JLbnrSGromMENR5/VAcy/fdl1MaOOMZBse/5v/bVVOI4cgojWg9dWxs9n28YdJjcYAwpVleelzE2okS6LTQcA7yn0/5nHexW7Xly7SMRHYaSJzVBKEAvtcuUAPVv+MRpwMdBMUUJUQ5rU14QBLlW9NAJjA2h9wXWqF2PHcyMDj/QTysCCLnss3V54o/srUcnHvaBeorgEQ/12h9dkQgh8KJNs2toJ7XMrbjxj+WNpucQx8otF6I3p3k8ig92YOcdvV6ePWdaRiqL//EsHLOMuQznNejSFat4EvlDsxeTXuuKda+S30cgVsLS1d0QffN8GHLwDY3EztRdQ2u+0YDGdkhrkHuoVggtxSJGq0c8Ti0zbdELG2WUpM0lED7hHmIfs29QWvuEjpOfEBcyxo78mtFChTTRisTiqrB113oEpOCOi999lH2qm+e3CfWXxJGP1dBCUO9uA0B/nEqi90bInc0ROeGfqvot6NYFoXS4N3u99QXmb7k5tbJCdZpFEnGB/3qy+blXtKk6EkzJX61iG0q3br/eEB+te6ie0/JnVWl9joTHJPlNIjGH2hbfKFgOTJlmrd8DHkPPu8KSnz6X3BtvQSlEZccTEjV8rnCzlG0J8+xPugtdy0w+Ky1LmNrE3SuSiMpr+0IkAoz+DTbDQ+qTZ3+z1Oa+Pudw8Us+pFwzQSPRMGIN4uW5r6HjcBLDp6RjXQOPKzGQq/3UpLtyqV+J5R0XoXBNOiZdKA6mHYd4U3bTEEAEXzjuQYoBn1kBr0Mv7mfMCyv6drQGFUz1/GkPpXOZnGlU4A
+ 1G06nVb1
+ f2ELsjr0F+7xFhfPUhf+Tta8EnciDpzSnRlh2eSaN6F34kBgt9g2Vdcl6UWX4X2JbigzHZOUKBtoc30cWT6WHbqp3P5KL6dDqAGQXiLhA31cQRjxbJrQ2lEMmGT/Chj7iZ5hOQ0JbwxT4f3Kizyv5zTJs7xCBvv3SmTLcqs/1iJXcMRHo6o3ZcmTBVlSk/xwFE9yByOlOXlZl3ZkPyMIPyzdcGrddvnshTC5Ub7/DBWN4XDxWBHekSHTdvR9l36NVpdzzlONMb+5xq2IfO94o9NIr4R9pcZ6CDvucKfQfoNSuYK/6krCBLGEQuwHXxrmMM634
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,16 +93,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 01, 2026 at 02:07:40PM +0100, David Woodhouse wrote:
-> The *consumers* of this memory provider API will include KVM/guestmemfd
-> and IOMMUFD. The latter *might* be through masquerading as dmabuf, or
-> IOMMUFD might treat memory providers as a first class citizen and be
-> taught to consume them directly.
+Hi Imre,
+Thanks for catching and fixing this!
 
-If we are reinventing a dmabuf improved for these use cases then lets
-just use it directly.
+On Wed, Sep 30, 2026 at 09:51:09PM +0200, Imre Kaloz wrote:
+> kmem_cache_destroy() tests slab_state >= FULL for sysfs_slab_unlink()
+> and again in kmem_cache_release() for sysfs_slab_release(), with the
+> cache already off slab_caches in between. If slab_late_init() runs in
+> that gap it sets slab_state to FULL but never calls sysfs_slab_add() for
+> the unlinked cache, so kmem_cache_release() ends up in kobject_put() on
+> a kobject that was never initialized:
+> 
+>   WARNING: lib/kobject.c:734 at kobject_put+0x64/0x2c0, CPU#1: kworker/u8:3/55
+>   kobject: '(null)' ((____ptrval____)): is not initialized, yet kobject_put() is being called.
+>   refcount_t: underflow; use-after-free.
+>   kobject_put+0x64/0x2c0
+>   sysfs_slab_release+0xc/0x20
+>   kmem_cache_destroy+0x104/0x1e0
+>   bioset_exit+0x13c/0x1e0
+>   disk_release+0x54/0x140
+>   put_disk+0x18/0x40
+>   floppy_async_init+0xbec/0xd10
+> 
+> Seen on sparc64 at boot, where the asynchronous floppy init tears down
+> its bio slab while the late initcalls are running.
+> 
+> Read slab_state once, under slab_mutex which slab_late_init() holds when
+> it sets FULL, and use the result for both the unlink and the release.
+> The kobject flags (state_initialized, state_in_sysfs) were considered as
+> the key instead, but slab_state is what cache creation and
+> slab_late_init() decide on.
+> 
+> debugfs_slab_release() is not part of the race: it only looks the cache
+> up by name in the debugfs root and does nothing before that root exists.
+> 
+> Fixes: 4ec10268ed98 ("mm, slab: unlink slabinfo, sysfs and debugfs immediately")
 
-It would be nice if it could handle MMIO and "cachable MMIO" as well.
+Overall looks good to me, but could you please explain why it's
+not relevant before this commit? pre-4ec10268 still reads slab_state
+outside slab_mutex.
 
-Jason
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Imre Kaloz <kaloz@kernel.org>
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
