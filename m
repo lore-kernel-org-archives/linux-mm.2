@@ -4,88 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C24B0CA5FD4
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 15:43:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2764FCA5FD4
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Oct 2026 15:45:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A51186B0093; Thu,  1 Oct 2026 11:43:44 -0400 (EDT)
+	id EC2A36B0098; Thu,  1 Oct 2026 11:45:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A021E6B0096; Thu,  1 Oct 2026 11:43:44 -0400 (EDT)
+	id E72AD6B0099; Thu,  1 Oct 2026 11:45:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93F536B0098; Thu,  1 Oct 2026 11:43:44 -0400 (EDT)
+	id D88836B009B; Thu,  1 Oct 2026 11:45:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 70D956B0093
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:43:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E783FC0452
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:43:43 +0000 (UTC)
-X-FDA: 85274477526.06.67316BB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 50F284000A
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:43:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bl7lRu/y";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of kaloz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kaloz@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790869422;
-	b=DgtneRIarJcaTygfPOaCjGVYBb9FgEGL8NVmeMRBXUp6iNcfh6HjDlA1IlqgCTt4XR9fZK
-	vlBvUrSXimt1IWe1CdOly0qKfnNUp6YwzmlQIV86+toWBSWPOKxBBQKn4maC6FmdFasdLK
-	1DPF2jljhlcJkaGOnQMAa1X4q5gmCOA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bl7lRu/y";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of kaloz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kaloz@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B0D1F6B0098
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 11:45:46 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52E15A6F76
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:45:46 +0000 (UTC)
+X-FDA: 85274482692.11.BE77B07
+Received: from mta0.migadu.com (out-130.mta0.migadu.com [91.218.175.130])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 20BF31A0007
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 15:45:43 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YFaUIhte;
+	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.130 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790869422;
+	s=arc-20220608; t=1790869544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lIp0N9ETA3Ja1lXBntUo6INabFxn7mCNqP7rfPsOXFQ=;
-	b=bRy3eRjqyeo1jAGuRGxS0Tc2akK8ungRQxEFN0SxXnng/UgZ1Wgs3vpPGFKupAwobjsfGc
-	B4xxmHgxhSkXU6GWQpoyd8wy3jKKB/6Fyd9ipbqPDqQZzszbJjN9tOuGj/ymxf4sxkiPYB
-	NNnjhUwLwkoCsEPLV/n/BThION9yhy8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9B8C760A7A;
-	Thu,  1 Oct 2026 15:43:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2D21F008A7;
-	Thu,  1 Oct 2026 15:43:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790869421;
-	bh=lIp0N9ETA3Ja1lXBntUo6INabFxn7mCNqP7rfPsOXFQ=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References;
-	b=bl7lRu/yIaxzsQ4nzU+OP+SPRjQnX6mk5j5X7Ft7Ob3u1RwRuDJS0GiMDVn/k3+vO
-	 u0HIi3vLEMcgEdS5UrvmMZBFGaC6F34HMXVf/JnKpSXrnct6KSM0lPmmck3WbIpi+c
-	 /mYxdOy98oklfeGmVuxMIraEjH/7/eLvfZG6yvz9cIxe+V/pyVZ0aIzMvFiK1iEWG9
-	 PT7Ms/4wbxfi9kmAaFSlSJFFyQlJGYr33piDKPlitAOYh+iWv+8Og4udaKPkHsYF7z
-	 coJL01mH+7EYIfe4nS6Xv4ihfMRg9dQWTtMI2yMJ9852DrKOSu6qxHLBq36EYNoOau
-	 6hyA0ejP0z0Bg==
-Date: Thu, 1 Oct 2026 17:42:36 +0200 (CEST)
-From: Imre Kaloz <kaloz@kernel.org>
-To: Harry Yoo <harry@kernel.org>
-cc: Vlastimil Babka <vbabka@kernel.org>, 
-    Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
-    Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-    Roman Gushchin <roman.gushchin@linux.dev>, Jann Horn <jannh@google.com>, 
-    linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/slab: sample slab_state once in
- kmem_cache_destroy()
-In-Reply-To: <ar5pESlkEMqNsgxv@thinkstation>
-Message-ID: <aef97b97-0bd7-d720-7f59-8c0078747370@kernel.org>
-References: <20260930195110.13296-1-kaloz@kernel.org> <ar5pESlkEMqNsgxv@thinkstation>
+	bh=ReqqWbGMvi38gydPXELZRUBZ4FjpERF4lS/+qM3aO08=;
+	b=T84dkJ4dhvoI9WUnFl4OJMBenueLLtdrmDBLydisaCSr49/0bhT56znPM6Xs6gUHwmQlTZ
+	Y+XnRirFnq+KCi5nUS8YQdXwgmmHE/8h3CGbT7GdWuOCzMRoVcLKMurWtMnf3hNVcHT8RL
+	x1gPBwaP6Ns/wdJnm5OT7FuS1WRrCf4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YFaUIhte;
+	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.130 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790869544;
+	b=3EC7g7mA/R/gp9NrIVCo8mNWI+9/K/3IkPkfDsnHeSMYVZ8KkhkTtsjg/ggNsIOoImPYTD
+	CVbS1MbfqtyjqhFX5BcxZBgcJ76gRISNcQRog7/TGq1H3bu91l9U7nNrh8VYCIwpy6iBlD
+	2kjzD52uR2371MY4SJP5fY0h4PBJgDg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=JOy7DkelCAeiC88nHfcYGEwixQThCGsgfdS2goti7zE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790869542; v=1; x=1791474342;
+ b=YFaUIhte7dfArGHra6wbDTlhEK1SEX3zH160EA5Dvjq7HOgA14xtI4gQbUWwNaI+GGbSMJeb
+ tIso/aVRxtUVH8c5RWWZyBNB28cG4/QP43Kux66rKYSxFhhHfmEeT5We5sUvHPnk0mW9JY5ggRY
+ hRcsnlAtPqe0DKgPMTb2Ls94=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 8ca44e7eeceaf043;
+	Thu, 01 Oct 2026 15:45:25 +0000
+X-Mizu-Trace-ID: 8ca44e7eeceaf043
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	riel@surriel.com,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	pfalcato@suse.de,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	pan.deng@intel.com
+Subject: Re: [PATCH v2] mm/vma: don't remove VMA from rmap if pgoff unchanged
+Date: Thu,  1 Oct 2026 23:45:11 +0800
+Message-ID: <20261001154511.23931-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260930-speed-up-inplace-rmap-v2-1-ac1aa19708aa@kernel.org>
+References: <20260930-speed-up-inplace-rmap-v2-1-ac1aa19708aa@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ib7ikcxcytrmktmu89rcd7uk9pewcw1g
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 20BF31A0007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 50F284000A
-X-HE-Tag: 1790869422-740556
-X-HE-Meta: U2FsdGVkX18LlOywlvemfxW+taqw/lSkLWkIllidAA/vTK8T6NT7vdTaPdym6RQg6vtkbGIoKwOUVIAzGCFlWdawrzRmEjCryhsi1fPrPnxLek/pW0g4JISEqQXtHqLVaehFVhPNiSKMwbr4QYmUw/cSmIZlCBSIHS3hZE1e84sKUjG2Xaz5t+yuKExL/d6luWzh9HaQ5rMJmxjFdGTby84FWIEPy7+HLlJdwCtcot9qyKZpbuSnAr0DUKUx48Db4hzcfjkfEEsmQCBHCu+pSD9UvbYagpzwlMV9rNLtxCh3dyg4RMjKwHM3gkIIdHEYa2Tug690cufxKg54YGsU1kBeJNicEBgcYvWI/iqaLsLFRISlFwAuZNzrBEBP399VhNVjrNa9O99xIXcY8jSmGbGiWfvt+RzDhZtT0UDEPaFanfKmGgCb91W2NjqbIlqXLAEPc2fbb+st4CRp0riBJfzMjEg5JZbvzeVE8kp8VQP2s3z9Ab4I04RNWPR4I2L7EnvnEkSdwA6RCYpegybPb4ipkCXk9bgVqHCY1dkNoAPzgTtLl08jljfKzTFjywOwi+tjYqg6aRASb6iA2DRl/LEPmhAjWxO0b9cFIvBblqIXCA6W1i1wyNbkSQRa7QpI9LexrhNAUPtrulmXlso0iuVPgplF8gllOnp9jEcnD5xBr0Ygl/5v3/XJllKwnbR7myFKtCGF6sOXAVoUsQ3Qwcnsldw0qQiW2a22GBQs7fWhjk+6yZGHZdnYDOb5/eRs1vI2sxhsoy9BT7cdVkkO9IDEwJSpG59UAYo6ypF5NK3VNcrCiT6WtsUIAJz1gso/QzzhSOk6Ns4fGV0/BErcJtMyU1aMuLLyLrNiUx4SgFCoEKDFsQO0bNSaGvViVBawzeBrQQxkxRDiHUWUVSnra53PTt+u7/jeu+lY73HmnQEeal3eYjrxYxknWVqRbarZfYPSnERZLFqEFnoYue3
- gg1bIQnW
- Xep8EHTYyKwSCjD5kzCaNIJHtcGKj7AeRKHCy+IIPOPAg9uYdRGmI9vEBQoTqzj6K+9DMEWoyEVtyR2yLdC445c7ViShRwwmnxU1vSD/Hherbfspxlb3sIxI6b5RALGgZyny/2o1DJ/SD5h8Y1mJNwmV3uSyZx0fOnvgXuRhLPkerQxzCGSvlzG7YpyLkqvkT9AmXGWDhBoD81e+IgdbTY0I5z9wbQX01xOmu/KaRsrXKuCPkAibYRVsnJIgSJfM7RuoEfpNiZfLKXyqdgYlZK1Eio2g/SCyL0u6qVP7p6pJaQGs=
+X-Stat-Signature: 7hddco6wdegw3x41oi5ysujme6y5rmrj
+X-HE-Tag: 1790869543-695243
+X-HE-Meta: U2FsdGVkX1/VyfxmUZhdv22tDuzFtxvt0nUTOahsOJWdOrKfLk0wXv/81AXbDeyYjrYF06kdcESi/gvjmRuHor4P0DoG2ZOVBEGjzcPPtGf9d8eEqtDgLCR3Ojn9k2uzkX6IKGQNyJo9w332j7dpDob7RIVUtatQpzQ7HP7g5Jp605uPW1sC049LyYeP9rSUU94j0ev1z0nojKfvWgXMiQgYb2zuQwDiRN5QdD+SRhCf5Dzm4BVJE6BIaRZFTqHAxF0v1w6HOQpeVcznqwwu7mTDSKYkHmk69UK3hITlIOU2ZYdFrtas7ibUfc81DEPFNKgXPkZubfPbCc41i9YWCC2FuwsZr+Jjva4oe36DtpNZ9XAhasqjDsIX5JvNfkyTMgcUqOWFWoTWCgdW/aRA6mnIrMJY7yqeEqdEEbjmrmyG0r4pGBsfiWjJKQGmX3ehKbiqNUIB6mfzWK0J5tkNTh2ZB9ApkPNwv7BQX5ovqoUjWvE8BMluek52ch7g+6yVSGWruJ3u7yLKFoMTPf4LBGTD62i9FZ5KkO7YQ3rbbYpnEsW3hwdmAKzPUgrgJ9+EKQlrPTnNy24Ssg2nLOj6rA3fLoylggy7mvaljp4qFu30L5SWS5aY9I7jfuZD4fhlDSPz/ycigm/JDbiJ4rFAs9X24tgpcMXhF/YK0KnHxmVBd7xgKadcrp0Y2fGWN93T9/cLFBA61YilIkoybMOxBELTn81FpWb+lntjBtQKCT3xFA2fuc1UmaUwiXyUaVO2/ZSCh09G4vd8f6He038OrYXsmgilO/P+xzb5hEWjTAwhf+6FzV4KXzcf/SO75ao6D0vxbJQExhak0na+rmQkineObJP0q4WCsq3qwP7ps8Av0LZGktf8qFYfrZwYKdh9xbnaptwXzCaQQdNIqWsijNBKgrL/S7wa3iRuc1xdPhawjZ5WhXKMoYbvZeshJWiygSdfM6qpr0qp6Xwhq5r
+ onqZeB3I
+ uTfmx9aTh9TBVQMCh5HR22gAc4odwDOiY95r0rmzYx3kDRv9ZPx8pCv0R865GHcztlJZK71fqYkGHkd/CUkSCmGHCGcghjO2JOvE4r6D3aE8gfev3PCVRHPSeey158FDnlVs0hUIgcSnA0lw0vqg0WOoHuEBzE7aFLDEuNpkOHiLp+AygCRH0j6iU9gh/Kvznis2UhbXasCVXnBxBSCyMKOiQ15TR/ykZDvr8Mj1Z24gDnbviGJV63LMMiLuA63S9xOttw7tawtbIXBNy0qcDqXlYbTXmQZ1yq1JfSxwPB+qts97meMeXIMd5o8QYJ4rVePj4vnvsuB+1sxHwHrKpi1fxNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,85 +103,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Harry,
 
-On Thu, 1 Oct 2026, Harry Yoo wrote:
-
-> Hi Imre,
-> Thanks for catching and fixing this!
+On Wed, Sep 30, 2026 at 06:53:36PM +0100, Lorenzo Stoakes (ARM) wrote:
+>When updating a VMA, vma_prepare() unconditionally removes it from its rmap
+>interval trees under the rmap lock, and vma_complete() reinserts it before
+>releasing the lock.
 >
-> On Wed, Sep 30, 2026 at 09:51:09PM +0200, Imre Kaloz wrote:
->> kmem_cache_destroy() tests slab_state >= FULL for sysfs_slab_unlink()
->> and again in kmem_cache_release() for sysfs_slab_release(), with the
->> cache already off slab_caches in between. If slab_late_init() runs in
->> that gap it sets slab_state to FULL but never calls sysfs_slab_add() for
->> the unlinked cache, so kmem_cache_release() ends up in kobject_put() on
->> a kobject that was never initialized:
->>
->>   WARNING: lib/kobject.c:734 at kobject_put+0x64/0x2c0, CPU#1: kworker/u8:3/55
->>   kobject: '(null)' ((____ptrval____)): is not initialized, yet kobject_put() is being called.
->>   refcount_t: underflow; use-after-free.
->>   kobject_put+0x64/0x2c0
->>   sysfs_slab_release+0xc/0x20
->>   kmem_cache_destroy+0x104/0x1e0
->>   bioset_exit+0x13c/0x1e0
->>   disk_release+0x54/0x140
->>   put_disk+0x18/0x40
->>   floppy_async_init+0xbec/0xd10
->>
->> Seen on sparc64 at boot, where the asynchronous floppy init tears down
->> its bio slab while the late initcalls are running.
->>
->> Read slab_state once, under slab_mutex which slab_late_init() holds when
->> it sets FULL, and use the result for both the unlink and the release.
->> The kobject flags (state_initialized, state_in_sysfs) were considered as
->> the key instead, but slab_state is what cache creation and
->> slab_late_init() decide on.
->>
->> debugfs_slab_release() is not part of the race: it only looks the cache
->> up by name in the debugfs root and does nothing before that root exists.
->>
->> Fixes: 4ec10268ed98 ("mm, slab: unlink slabinfo, sysfs and debugfs immediately")
+>This is wholly unnecessary if its page offset (file rmap) or anonymous page
+>offset (anon rmap) is unchanged.
 >
-> Overall looks good to me, but could you please explain why it's
-> not relevant before this commit? pre-4ec10268 still reads slab_state
-> outside slab_mutex.
+>So, track whether they will change in the newly introduced
+>vp->file_pgoff_unchanged and vp->anon_pgoff_unchanged fields, and use them
+>to determine whether to remove the VMA or not.
 >
+>The rmap lock keeps things safe as no rmap walks can concurrently occur
+>during the operation.
+>
+>Additionally, some architectures (arm, parisc, nios2, csky) have dcache
+>flush rmap walkers which take only flush_dcache_mmap_lock(), which is
+>likewise held across the operation.
+>
+>If the VMA remains in the tree, it's necessary to keep the augmented
+>rb_subtree_last field updated to reflect its changed range.
+>
+>Provide mapping_rmap_tree_[pre, post]_update() and
+>anon_rmap_tree_[pre, post]_update_vma() (replacing the existing logic in
+>the anonymous case) to handle both the changed and unchanged cases.
+>
+>For the anon rmap case, with CONFIG_DEBUG_VM_RB set, avc->cached_vma_last
+>is also updated when propagating in place.
+>
+>When performing a VMA shrink or a split where the VMA is the lower one, the
+>page offset cannot change, so set the flags unconditionally in these cases.
+>
+>When merging VMAs the page offset is unchanged only in some cases, so
+>update init_multi_vma_prep() to set the flags only if the page offsets
+>remain the same.
+>
+>Finally, while we're here, also update expand_upwards() similarly.
+>
+>These changes ultimately result in less rmap lock contention.
+>
+>Pan Deng reported results using the UnixBench/excel benchmark on a 2-socket
+>192 core, 384 thread x86-64 system for v7.3-rc4 with/without the patch
+>applied:
+>
+>Execl Throughput, index score:
+>
+>                    avg    %stdev      min        max
+>  v7.3-rc4        3511.5     0.44%    3494.5    3543.4
+>  + patch         4069.0     0.48%    4047.4    4109.5 (+15.9%)
+>
+>Average wait on file rmap lock in ms, 5 runs per kernel:
+>
+>               avg      %stdev     min       max
+>  v7.3-rc4    9.470     2.91%     9.070     9.820
+>  + patch     8.420     3.34%     8.100     8.770 (-11.1%)
+>
+>Profiling data obtained during the operation highlighted the file rmap lock
+>as the primary source of contention.
+>
+>Suggested-by: Pan Deng <pan.deng@intel.com>
+>Reviewed-by: Rik van Riel <riel@surriel.com>
+>Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>---
 
-The outside-mutex read is older, yes. What 4ec10268ed98 changed is that
-unlink and release no longer share it.
+Wow, pretty cool stuff. That's a nice speedup!
 
-Before that commit, kmem_cache_release() did one test and used it for
-both:
+[...]
+>+static void anon_rmap_tree_update_inplace(struct anon_vma_chain *avc)
+>+{
+>+#ifdef CONFIG_DEBUG_VM_RB
+>+	avc->cached_vma_last = avc_last_pgoff(avc);
+>+#endif
+>+	/* Propagate all the way up the tree. */
 
-     if (slab_state >= FULL) {
-         sysfs_slab_unlink(s);
-         sysfs_slab_release(s);
-     } else {
-         slab_kmem_cache_release(s);
-     }
+Nit: propagate() can stop early when rb_subtree_last is unchanged ...
 
-So the two could not disagree. 4ec10268 moved sysfs_slab_unlink() into
-kmem_cache_destroy(), after list_del() and after dropping slab_mutex,
-and left a second slab_state test in kmem_cache_release() for
-sysfs_slab_release(). The cache is already off slab_caches in between.
+Maybe:
 
-That is the window in the warning: the first test sees < FULL, so the
-kobject is never linked; slab_late_init() then sets FULL under
-slab_mutex and calls sysfs_slab_add() only for caches still on the
-list; the second test sees FULL and kobject_put()s a kobject that
-kobject_init() never ran on.
+/* Update the subtree maximum and propagate any changes up the tree. */
 
-A single read cannot produce that split decision, which is why Fixes:
-points at 4ec10268ed98.
+>+	__anon_rmap_tree_augment.propagate(&avc->rb, NULL);
+>+}
+>+
+[...]
 
-There is a related older window: after list_del() and before that
-single read, slab_sysfs_init() could set FULL, skip this cache, and
-the single read would then call both unlink and release on an
-uninitialized kobject. I have not hit that, and this patch does not
-close it.
+Acked-by: Lance Yang <lance.yang@linux.dev>
 
+Hammered it with VMA churn (split/merge/mremap/madvise/fork) + concurrent
+rmap walks + hwpoison injection. Nothing complained :D
 
-Best,
-Imre
+Tested-by: Lance Yang <lance.yang@linux.dev>
+
+Cheers, Lance
 
