@@ -4,108 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABF59CA5FC4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 16:25:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 719BBCA5FD4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 17:00:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76DB46B0088; Fri,  2 Oct 2026 12:25:13 -0400 (EDT)
+	id 5FFC46B0088; Fri,  2 Oct 2026 13:00:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71E406B008A; Fri,  2 Oct 2026 12:25:13 -0400 (EDT)
+	id 5B10D6B008A; Fri,  2 Oct 2026 13:00:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60D3F6B008C; Fri,  2 Oct 2026 12:25:13 -0400 (EDT)
+	id 4C6696B008C; Fri,  2 Oct 2026 13:00:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 434A66B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 12:25:13 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 264EC6B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 13:00:46 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BF008807CA
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 16:25:12 +0000 (UTC)
-X-FDA: 85278210864.08.2465879
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1BBF9C0004
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 16:25:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a7P4HPag;
-	spf=pass (imf22.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9A4E814066D
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 17:00:45 +0000 (UTC)
+X-FDA: 85278300450.08.DDC4F42
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C3F128000B
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 17:00:42 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Bx7Jh2Ui;
+	spf=pass (imf30.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790958311;
+	s=arc-20220608; t=1790960444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k9QBgyctyjf1wUE5+IyBS6H1P6fbF3GcIg9RGUe3MH4=;
-	b=kWWZWd/Tes7mMHT45w2JeD4GXoM3mjVR8YAqdWbLlRW2/UCegaYcwnoBgpxcg4VuX5VjrU
-	x9goU2ZxFrtvEp/rR3s4lojIGrLFZ42TKcK7LV40paCx3qS1eoc5QKHOZ6xfctfc5xj0Uk
-	9fVfu5nEwCoIBC2zPwOueyDS8g7EJbo=
+	bh=yJy1Qq9QXYhDTSQZfMIIfxPYnTxZfhbwrd6oubBqbQU=;
+	b=g7d9OxWl3sqvjGwlDyRpZBzZ/BJfZnr06xAvDPZHLkxLE+3+8x+zNTK9VptPTixjkg9HUM
+	1CYqy3LrKHf/838RKGQXo10pBcSfJtVwQXZXmbbXBfTjjBz67xSTumhJkSnNC/DecAvFDu
+	oq2SAu5kGuUj2pBhXqrLrzqbdBasiPQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790958311;
-	b=z6DbwblJADoY2ohh1A2r7yIMVp2B+5UEM3VyzB/wg8c5sG7/hrKCvLDolmBkRfVEJwziub
-	/zoeQPr5/Rl16z/u99tiEisYBMZcyfTW5BvWuSujw5vGXA/v4KNA/wsfX6YC26FjJV3yAT
-	ZzE4TuvLkI/dkB7jlKUsODcakALWuP8=
+	t=1790960444;
+	b=lv+jE/7orF+fSq/x3v3qTYTGehDJBn5ze18yenebmY8iFm4jXNvCXR47tEPiwZy1Uk63wY
+	GkJ5q+/5a0QfA0pnD/ehwyNM1iYRAn4xjhG9zMpfogSP/yBRXRvLFJ/NsUWQMmayCCbyTu
+	m+seomdl9nSyO3OOHBN6jFxPbST+piM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a7P4HPag;
-	spf=pass (imf22.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9C2B442AB9;
-	Fri,  2 Oct 2026 16:25:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4FA1F00898;
-	Fri,  2 Oct 2026 16:25:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790958309;
-	bh=k9QBgyctyjf1wUE5+IyBS6H1P6fbF3GcIg9RGUe3MH4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=a7P4HPag2l40BDyWAf0RSYqJLQ/nRiZl8oKP85Fm+8ZeQciaNQMy6de5OJpy4VGYr
-	 XTKl6O7W0XS26UEspaVQI2vXQect500KbWu4Bw30HLL6+aX7HP/BiJa4G2pOOaRnPm
-	 pph0MsVHgwOjr1yhliCEDQPeyuKaDmyoDsM6jBspi12905W8LJSIBPHfXa9FachT3X
-	 3Umn16tD4BV9Rxh3R7rDxkbR8vf77K9rDbAH84SPatjsGTJH+uzzyCP6z9xq0FqyTC
-	 RpXOWeNNAJceJj/8CGMl9ACsjcGVfLuF70TFiy2NVp0Gue3Z6eeuZaueKG18GGLsh8
-	 tnIIXY55lrs4Q==
-Date: Fri, 02 Oct 2026 06:25:08 -1000
-Message-ID: <c1fdbe4f99352a102b38c7d131215d5a@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Alexei Starovoitov <ast@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- JP Kobryn <jp.kobryn@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Michal Koutny <mkoutny@suse.com>, Amery Hung <ameryhung@gmail.com>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- Emil Tsalapatis <emil@etsalapatis.com>, Jiri Olsa <jolsa@kernel.org>,
- Ihor Solodrai <ihor.solodrai@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>,
- Jiayuan Chen <jiayuan.chen@linux.dev>, hui.zhu@linux.dev,
- Donet Tom <donettom@linux.ibm.com>, Greg Thelen <gthelen@google.com>,
- Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
- bpf@vger.kernel.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/4] memcg_ext: memcg policy through cgroup-attached
- struct_ops
-In-Reply-To: <ar7H__jzvWVtqSn5@linux.dev>
-References: <20260921192559.2619635-1-shakeel.butt@linux.dev>
- <bda525506b3fb3e61da28a112f28abba@kernel.org>
- <arw4rjVkm2ob9ioL@linux.dev>
- <bc6815954b8d08e75deadd43e1a2192c@kernel.org>
- <ar2kvmCPR9q31V8M@linux.dev>
- <31a871a07fccc99e953a2d633fc51edc@kernel.org>
- <ar7H__jzvWVtqSn5@linux.dev>
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Bx7Jh2Ui;
+	spf=pass (imf30.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=yJy1Qq9QXYhDTSQZfMIIfxPYnTxZfhbwrd6oubBqbQU=; b=Bx7Jh2UiCpzk3D2s8Y1YbPxdAC
+	hI+0WBUKGE8EicUVoB/3D9bvWBdvCAhv0mHdr7tp7bA4ujyiYrIDoFMogmv6caxWTWkJHHpKPFfU0
+	K9bkZUNxSiJoWqH3aB1T0+HtVzUM5cMlBIezJ1q66RGDmEt7JEaO3tcayp02sK1pUlrYV4vinOmq4
+	m2iraajzLsueZXXYXZxY0WW3aGNW2hewOvoKmyneAbDorOQuI66/ojtgqUUaSZVOv2mXpTJxEWL+Y
+	dpvqosIMP+PWigL80lN9ZsT5BQxQR2j8TEvOMESVtOsTtGCQStLHBEiSHMVq+XO1rjEbPpiYzZC5O
+	IQPjpUlQ==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xCgcT-0000000C6BW-0a6i;
+	Fri, 02 Oct 2026 17:00:25 +0000
+Date: Fri, 2 Oct 2026 13:00:19 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Qiliang Yuan <odys.yuan@gmail.com>
+Cc: ljs@kernel.org, akpm@linux-foundation.org, axelrasmussen@google.com, 
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, 
+	brendan.jackman@linux.dev, david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+	mathieu.desnoyers@efficios.com, mhiramat@kernel.org, mhocko@suse.com, qi.zheng@linux.dev, 
+	rostedt@goodmis.org, rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com, 
+	vbabka@kernel.org, weixugc@google.com, yuanchu@google.com, ziy@nvidia.com, 
+	bpf@vger.kernel.org
+Subject: Re: [PATCH 0/2] mm/compaction: stop repeating failed async
+ compaction on every THP fault
+Message-ID: <n7lq44yl6imw454jrwcz52se7dt3qesdcnpzzlb3wf36ixa7js@oatar73m4g2s>
+References: <ar-8Vkchzn4QobA6@gremlin>
+ <20261002161744.859093-1-odys.yuan@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20261002161744.859093-1-odys.yuan@gmail.com>
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1BBF9C0004
-X-Stat-Signature: tihttbrortd5c3m7uzoqb35q33561pwi
+X-Rspamd-Queue-Id: C3F128000B
+X-Stat-Signature: zemwncdxzbht5wp5psji74cju8e5dwgg
 X-Rspam-User: 
-X-HE-Tag: 1790958310-205588
-X-HE-Meta: U2FsdGVkX1/m0m5XLb1Ox7Qe8X0B+wva9r+eary6sKDGkgOyIQCuEkQd78Dfa/d4UtoVnVuTOLCb1iIgC60Ql1n4xI4n4pBYVuDBvMeQU7gAEHIQEijcv40GffJgQbdDY5UKbLQnpybN1SaoF7W1DG24h/crYdlfEG/7XKzJK6z9ZnDR57/ZuCG1Hl7W0x4f9wX5ejp+xfxuWRuLHFtyVeTcQrrEVftQTHNkWtaR37cEvlKsVIZcxFbquM/kXccGMWCbXKvwCY8TtkhT2WK8Xngy5DWTRVUFKDsvRzOcgSNK/gUV0nkwYxBPcGPrAwSmLMO5Xbp5GpK4q2FxE4gu58JFPfU9ciSOt1ENYFeQs1xwhv05xnE0desUAlo66xgvk+iMuwtBmTueXHoJM4cDbj64Jr8lUMb8Ta/YIWsvYmBMCQuFXPBDCqlI6OEWUDmFTZ0pjpFd43fFJScCmKTMVUcz5I5R3Lu/vNuVGeXTOIWUfrDf6xwT/SM05AYrkI10oq13OJHShLJGVSjl+pWySWG4VO94XO9F4+zXiwb3HaiVQ8KQHpzfOFs5r+TJKPCErjgNdabh7WUn65YLqHQ1wXQxBfmqIHIGXCCbpc+cW1+9Q7rdDiUBH5cL2S6FyQUFuP18q7YGTClhLttApPjkdpmpk3k498Bdmy0OdqntbQnaIDiQLhU5wBpSjDB9MZOT3c8/F8cuyJ8NaxTxpxGeHqHCEWB7JAdopWZZrOrLCyEfiMGe/fS7YmkPUQOv7hgYekspJ3zt5vxACnKc9uRZEteen+Xbxj0y+/NtfMqFKLt9JY7oJJtzsQUeiL+tx+dyJt2j6uX5qv0xv6ACWnBOj5pII1niXdSQVKBmgK0LqhSiwsWzMTsyKMAnRIr1XCxt3nkbT3+QDX/t1rkxKP5bKA3kjvUzNa1/6pGGJmywoOH5UXoHrw566i7mRtlU47L9We0txXtx+ZCjqnmPaG4
- qQtNupOL
- 5M1bssJZDBLiKrRcRaT8ZRjUIsf7cUrpwSfE7D4wnn5bLKvjvacEBOgWQLkoNi3jv+849bMXcJ0aHLubQZMLB5zE11BrUd7RIlismUaUWZlWRRJtb6vIBSqUHhm+oO9Qq58z82jcUrJyidnivS4TRvUgnJEydNzst5qHBUpgULs6hW5NzW4fWHOGrM6GEqxNVJgQJISo1LIpwXDtcPAcOW8VEFc9+nymP8prhYGyVue5kPtiNDtZWTbAlJfTVDn2CtY0sla/pKJ5vsH/eJJzPTVOz2w6GM+iP1JlONOE4J9gSqN/6vKj2l3ryypi9jq7v6jYQNzxtawQzJm30xirrl7qefKx4vomg4PHun01BcqnKlIdhxVATzmWrbq2uBFnZJWg0
+X-HE-Tag: 1790960442-549687
+X-HE-Meta: U2FsdGVkX188B6t7QTjB4/DAY1odfrKbSi9kWG48mDBgMcjcozI8kPNhlygZYYuY4wxD3jUMOWXeyynvoMN07z0HDbru/JryKnYppjJM7q4Ln8eIa45pmYpeX79qhjaSzZNO8nRligogGarjMgHUC4AO/i6IK2OVDN+e+tPnTuOy8/d3JZcWxO1m/6Nz3aEUJ2CZIq15wJCY+Kjzr8aKkp2H8HLHU9YqFhvRApmJXDqVlbyoaSASXqDD8FAfIaGZE8eFNbT0uKGgdoJRDXa8o1piuoOs4VTWwKoXEnS7a811j/BM32tY7ja3WhYQrLZU871oIenTyYb4RSk3CuVmxhU397cvPImdLF/GzcWwLXkQUTkYLDWHouH8m+FdAALeHd2WvPqC4N37d+/R9I7VVqBKzE8kSZnkM6eQIGC7URVYcfsJjDsj2TqHoJp2kGhPT+JYncxZ3fNAGXiu+VH9SIdlnqYb0sbc42wktA7BIGJmMK93/0OKAxw4LwqbrDJSCuJ51o4eToVOzBnijfjbs7iEUn5PMcVlnXzZFCWJPiBxBo9geMmGBcHeJ0l4gu61t1SyoSJPilS7pSCWwcQ+U88FcHH4xoQknmiCKIxQ7YM34+BpTYsL4GmYugSmTgn2CA5uxRo8/mfFmVo8aNtTdhXm35UqEyvEmdIK0g7L1ZfxXuK0s1VH9OJQGw4yWEPK/J7NmPsmzZh9ykfDpbMGyU61jFInNNf1WmTwPFsvA+79R4oX0JNrjeyGaIOk7IrnETsrJ/GrzFk7w7ICa5bMS1tzCLH//0F69lPyLA04lztzvodpCC2ZiJgq9w2HMmGoLyaf+8L4M3V5n+UtiKZ4QgnYD2Gl2I2ZQv97WTd6RsyOQFhtLK1ibktydm2VB6m7TTBqmh4+eQGBdUjeMQVVF0ej7EOWc4EKS1RgNnJOLKOnDSd+nzBixImyeZAEYR9H++3AemO+w/E1LnGmvAi
+ 0iCkSKZQ
+ 1uz3CNzBS+URqR2c0+M0L7wc/NLYV3nMcy2X2SogdbLg+ORasMEFzcnwSTKouqiHGVAxx66MvIy2pwmNEJsSoGl5fqFRjTA6B5NpoHyrdpsiHc3WEuPw4MShSblfxig68oC9fNkLELSPW4YXf78Mrh++L2rj8c8LWaTJo/JjwiY6xKLXiG+t2qqtqSN0eUS7qklNugraALyZqjYJj3Xxzg6p+J3RE4qtZT3AlMDBUIXkiuBYt7biKpcSmZEogkrdQMld1/VuSXki9KXyIo7SmARbp9M/ZVA6sPRmNKXr0RUxM82V3HyCfJuiIrdXw22oqt2rWgj7Bcu2tJvNlMyx1RCL34rb2ZXBZSqMk2o72X8K0FC4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,30 +97,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Shakeel.
+On 26/10/03 12:17AM, Qiliang Yuan wrote:
+> Hi Lorenzo,
+> 
+> Thanks for your review. I would like to respond to your points,
+> quoting your mail below.
+> 
+> > NAK.
+> 
+> I understand your right to NAK as a maintainer. I am not asking
+> you to withdraw it automatically. I am clarifying the facts.
+> 
 
-On Thu, Oct 01, 2026 at 03:56:47PM -0700, Shakeel Butt wrote:
-> We are in agreement on (1) and (2) completely. For (3), I am fine with removing
-> the sync enforcement, but for throttling points for bulk operation sites,
-> I think we should only add them when there is an actual use case for that
-> or someone complains about overrun from those sites.
-
-On (3), if removing synchronous enforcement wouldn't regress anything,
-that's fine, but why was it added in the first place?
-
-> Now, setting aside the default behavior of memory.high, I want to provide
-> additional flexibility to users for (3) specifically. One specific case is
-> letting users opt in to async reclaim instead of the other forms of memory.high
-> enforcement. Basically, users can specify that instead of having their
-> application threads throttled, they would prefer async reclaim to bring their
-> usage back below memory.high.
-
-As for flexibility, we already have a gradient of enforcement around
-memory.high. Is the need here to make the shape of that gradient
-configurable? Can you give specific examples where this is needed?
-
-Thanks.
-
--- 
-tejun
+Nak
 
