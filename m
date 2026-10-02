@@ -4,143 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1B2FCA5FD4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 01:34:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57FE7CA5FD4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 01:50:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 656C96B008A; Thu,  1 Oct 2026 21:34:34 -0400 (EDT)
+	id 16A746B0088; Thu,  1 Oct 2026 21:50:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62EB46B0093; Thu,  1 Oct 2026 21:34:34 -0400 (EDT)
+	id 0F4A26B008A; Thu,  1 Oct 2026 21:50:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51D396B0099; Thu,  1 Oct 2026 21:34:34 -0400 (EDT)
+	id EFE606B008C; Thu,  1 Oct 2026 21:50:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 07F4B6B008A
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 21:34:33 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6B2011205FE
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 01:34:33 +0000 (UTC)
-X-FDA: 85275966426.14.811784E
-Received: from mail-wr2-f13.google.com (mail-wr2-f13.google.com [74.125.225.77])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 815EAC0002
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 01:34:31 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nP9yM0mI;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.225.77 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790904871;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BFB396B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 21:50:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 373DFA74BE
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 01:50:00 +0000 (UTC)
+X-FDA: 85276005360.16.C2F16DA
+Received: from mta0.migadu.com (out-235.mta0.migadu.com [91.218.175.235])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1D3DE4000B
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 01:49:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ohcTV+WL;
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.235 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790905798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7kzLbFV0dwlxOBcT/RyJ42nswcrqycHxeUvPWMKQHOM=;
-	b=NF/i/wEWWdqgWtpoP5IBYQiyWf0TzMVerILTnBaSM1u+FHgDVafYuWVkzK1IVL6U+U/pGj
-	7rNgshbWFLlA8XLzoH+LLOx3FZ8JTDmAjG+tg3Hs7ZoE8Sm3DTsvyO4lxD3zcANbClGeMF
-	WYWka8fa7LtZQZq50nKr9IEMfy2rXhM=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nP9yM0mI;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.225.77 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790904871;
-	b=k8yYz2LPJ6/HWSWaSttAVgwImIJiYW5JDKjsZAjFykmcYFq9KED+YWQhqbeg68rUxTeE6B
-	mp/3q9BeLfztFq2ngcEaVV6M18NretJck0gxZbWbkuZDobzhXzUCc29PRFKJgYD3ySE7T/
-	0M1NhrEWL3gZHCJBfmeYW1/bkBTHU4o=
-Received: by mail-wr2-f13.google.com with SMTP id ffacd0b85a97d-48affce98dcso316345f8f.1
-        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 18:34:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790904870; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZwX9fR6sUfOUXQQesmuwhC7wzW2oNyphHwdlIT9LtX5kPkFiqyicNQ1H6UY9MPGSJz
-         0AzEhMm+HIvng9a/lzS14ylNtpvFjreo6S0rTbanBglZqqVJRMeqjxXMqgsNJJ6gxbsg
-         zd2k6eYkWP6iNUp8BKQ3ecWzQMRzMxsdfFCqdP8wo+prpotFooBMZ/B1iSjKVZsrcliC
-         j5KQBF3JKQXwBnyay8YMc3nfvhh3uwhHHBjy+snLq80G/DzuGGT4wrMiXqq3uW+FZwYn
-         QacUai4MGxpi8mjH3nnFCld5GYs/GFK7vICbXK6gnbCHToNPEEdMFees3rwM+0rqKlSH
-         cJGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7kzLbFV0dwlxOBcT/RyJ42nswcrqycHxeUvPWMKQHOM=;
-        fh=pvKwzCJGb2d8sF7FuYOCixz4frW9yhuiBy3zkgRgD4o=;
-        b=QSSCkDgY8j84g2X0i7WyFl3lTU0CN2IwyhM5lDyAplCScSOgp1Rj+xmXM5l0xgP4+Q
-         wIevZh116qYD1iXgq7VnwCWozX76ORwPy5XSkGA3vlTIvh1vZ1TKdBLtfOEfrzvZV1WM
-         b5L+JNcMcIBNZ3FJqI54rq5c67vyuAypbfISCdChwDR2swyL/YgYeIe8EMhaOoekE1FZ
-         p9A+ycEYt1W1oQaY8A3HN4vnDv7kyEMWiwV5pTTu/zR8P+aiYqY4YLvY5Zs9SI47mJE+
-         Aehc0m3PoduzVb5zDw/+kgdlWd1F2aaOgltfGAbLCQaECX8i5zsTOPUQdhbQLbSAk8Xg
-         WmaA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790904870; x=1791509670; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7kzLbFV0dwlxOBcT/RyJ42nswcrqycHxeUvPWMKQHOM=;
-        b=nP9yM0mIAbMSvfN/XVv360LWRy4LtVEuoW0cWPN8LGAdR3GzSXUCGAJ6xPcV8+EvoV
-         oLWfaYlF7yCBNwjHt5i+lEnjpMlYAE5tgU9X2CBGD4Z2OW6eopSmx5lXE0xWaMUP2Nor
-         93KYyNIiEVWtM5ntEw5KSe4iIz5h2v+rgQyKuwGAdgqdRiHFSPBpT8kCygdH2AAcSv2n
-         qHYgZwqzYyOzFnmbqoj7ryrGdVcb7vc8U0kY29yTwphaDlb1nTx9AfvDGXIdKo2DAiv1
-         DlASkqfZSf7Qs22CgOXeLbghaIP5Zy/OXKCtBfqq5ANYkRa2tKx4/LTT1OGpnjIrpIyZ
-         QlEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790904870; x=1791509670;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7kzLbFV0dwlxOBcT/RyJ42nswcrqycHxeUvPWMKQHOM=;
-        b=I//p+1mxWjsa7sHju2onJHYGl1fv6CV6QTSeX9KcpWt4h27e9xiJD1Qxb8KMvyeV+U
-         WK3VtZ9RDRJpHuwFTjjDX1VtieYHa87O+SZ/kHVvrd6QHacidimCE8LLx0Pdv/eXXsnc
-         cqPNBlqH4rVv+Ge4wNrgUuBgZPeRhwFDLp8CKtmSJdg0thmtMFKohm6DUNiRtkJ7mETp
-         rwBIhfvImmavucNsID9CZurWJ8epbP0K27V2x5jUqyCYYOxUaRq5k7HQC6g6Xc027Bpx
-         PpuBEMpubfXe1aTFLYuKpIYQnl5VkgcSi8e5p5gHkO1kYiv3FsBlMrEQ/keosxlWPgfZ
-         Atfg==
-X-Forwarded-Encrypted: i=1; AKwUvBx31l4fjQyFCHwBeTIGoKOJh2/T1/zIvt7nvBbFh+MIx5A4zYZJ/81UU9/14fBNUKBUdec4vkL2bQ==@kvack.org
-X-Gm-Message-State: AFq9FYJnTkK34J5YNG7tX+rg1m9W/jp+++ySSgSAySqrbsRVgsLoEABN
-	SMbtdiXkdnniSCLJ/9DSFsJf1fYNEGXp7ugSE57MrufoEnh6EfzkSuqr5wAeA9qzmwukB/VTxTE
-	MeKvqHy+/EKC7Qq8CGBdFlBsL/oMtoHE=
-X-Gm-Gg: AYBFou1tIlKjaXd5l5agbCwF5b4q2or+LJemOtBxRNHmzikLneSQq6tc6+g2EEbBn9x
-	uEw/xGQ7ZKIRUIEXfg9cFa4bvkHpRtb98QZRHHqaQJmAa3vbs3RiDg2bbUSEhq8gdNQnLN8KTiI
-	afF9xrUvf82GUGhIOS7AqRppmLK+7hS8gP1/tmilouoPK48h7Z2wOkcKsBjYhWrcaAoMeRchRYw
-	Zse4E4+HkoL1N79q3mAHoDk5oo02MUH+6cxF8eU24JNt0vnGvrOgkc8Rm12+5zDkSV3qxCkTZMh
-	JP5PZpIlpwo+7sMm+WAOHhBYCl/rrs390g40qey0GBz5Q0qFu4Yz2+w0SkeWu2Xs1Fj4vbMkuaE
-	fe2OLS08P9t5hBaeOHptRzmWOJjHZfDp39HdtjPU=
-X-Received: by 2002:a05:6000:4553:b0:48a:fb21:57ff with SMTP id
- ffacd0b85a97d-48b126b18a8mr1280078f8f.1.1790904869631; Thu, 01 Oct 2026
- 18:34:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
- <20260901151818.3191443-3-xueyuan.chen21@gmail.com> <arvJbQmr9GwToA8R@willie-the-truck>
-In-Reply-To: <arvJbQmr9GwToA8R@willie-the-truck>
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Date: Fri, 2 Oct 2026 09:34:17 +0800
-X-Gm-Features: AclHuK_utlXfpNApdIg0tCcQS_k28vJDN8Yu8dMba1JX-4Q5uJzs9ebkm6k6FjA
-Message-ID: <CA+qSx6zV32EN18S+GjESz-Es+6=Zh-m8U=-UovA=rsoBnLWWww@mail.gmail.com>
-Subject: Re: [PATCH v7 2/3] arm64/mm: add set_direct_map_ro()
-To: Will Deacon <will@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	usama.arif@linux.dev, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, kas@kernel.org, 
-	rppt@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com, 
-	linux-arm-kernel@lists.infradead.org, tglx@kernel.org, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	luto@kernel.org, peterz@infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+	bh=MhZuf98Z81J4Mqd1VfwP+qbvPYzQzUUAYk4ntEuxCgA=;
+	b=1kFfnMNdi9t6pYeZbqu0E6qjc4JkLERj7WmEpwARTPVCRAS3ld+aJmbEgq9V1d6s2A7gA0
+	nxVgL2vsSHpnUsOcvTJsI0JzuGMsAIPaLp6RK5Ha+z2eSVZ6L2V77yYB2nis1sLjeozfFm
+	n8Prw0QP2bwKfIN0h2uaNGo70PEz3/Q=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790905798;
+	b=h+LgpDoIxzACw9CN9Ch3as6MJlQAmUqSWW1xZ1FB1hGZ8UN9f8D4d7uldfUgjPjyI26oP7
+	pJrE2Tyi+B/qnAY2rTj5XUCugb4p5UaAsJr0eX82kF0XHkqmhGSJ0CqdlTeSmU8ID7RI65
+	rvL57Zoo4FZgS4XDClkxSzIRLn6yJuA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ohcTV+WL;
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.235 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=O/F6AKy+1TPXxN7FZeSSixd6YDpdthmqRGsFYibhu3U=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790905794; v=1; x=1791510594;
+ b=ohcTV+WLBQIjClcA1S1hNHO1DQXU8X2joFAGsI1ThoyMAN+PVq5OqpomUoURl0QZZTMDOsg8
+ rUTsUjr8j6+/QF/c69xneTs28BVt9aj99XKSrbX2cQn4X8gxKFZI157OdULq5kABQEEY5+ijQ1g
+ unZwtNPkMlkqFp8pYbm9JY2o=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 7473f29920ffea9f;
+	Fri, 02 Oct 2026 01:49:54 +0000
+X-Mizu-Trace-ID: 7473f29920ffea9f
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH v3 6/6] mm/mm_init: add zone mismatch warning during page
+ init
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <ar5xbQsUpSQZg0wO@kernel.org>
+Date: Fri, 2 Oct 2026 09:48:42 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Ritesh Harjani <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <78D5D6AA-BE36-432C-B0F7-453F93DF18C0@linux.dev>
+References: <20260929053231.66085-1-songmuchun@bytedance.com>
+ <20260929053231.66085-7-songmuchun@bytedance.com>
+ <ar5xbQsUpSQZg0wO@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1D3DE4000B
+X-Stat-Signature: yor6h7wtiexmq6j3marst81mzuwrxeyo
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 815EAC0002
-X-Stat-Signature: hbagua9fzwngmz3fa33o4x6qy8rc8wgg
-X-HE-Tag: 1790904871-40604
-X-HE-Meta: U2FsdGVkX1+ZM5V6M3XKACf1nMqzJWQi7WSH6ZIIQK849ayVcDqHXLaBwc0uLihjF71F9/+ZmWcOJPr0uyJiQFABMlumY98+AePJpa8VSuYNJzOI87pLCQZKkSRRDVA7nrDzrfa8aZvu5DeBvXCe4tOzrk7paoccmUN4vmnz6vQHYpCbgrA2UnvLWrK4E04DFoVNbHpH8oBUXeNODYTUmrARBM9nfeX0104CC4nB66MAVDgh93BvqyqlpFVcT9PTU1RlXfxY0uMWrsOOTtnitfCNU8hGCHLYC0NGc5uL0ZzzKDCd2gQBDuDYJItLI0j6zB6u2Ez6HoTPx0EzKoIMsVoMzo8QXo0wZC6EnUmp1iEDsNbSUsYiENgjJrfbZgAlhUedFpHWD8rfaAiKdouIFvYOd8ANDM5ewWqU2XLc72/q89D0DH7CuNtD8UB+pGQR3IVYfqjeFKOyX30+12hqE9s3X1VlpztvnR1mvvLZDTSEFGwpaeIQ8HOYbXKQze0DAM9sjpLO2qL76cYoeSej1D+26mFgObg9WUtjack8MuFYGY1qw4E2LyAqnjJNNsUAR7/P/Dq5ma9vsYpWrxBl/AFlGL2wmFyZu4v0Kt3vIeX4h+HqUZe3CDQoy05qhhxjtD8JEqkms1h4057aiEYT4PdjL/EI2DlYhBrrWDyQlwkyGNjJulXCpaAWAJwyo/z7bQliQi4Z9k33W52g9iH1qBrNLPHLAaBQCq+lEwrND+VOKo/q39S5VKBiXwlQQi5Sz5+ABi6DuqLufwHnBMCcE60nYh7qXe6d3YpeL3Qsd8aP7UCwMZlXcqhO2JN24MmKDIdyECDEEUJZYTHpAWahYI3WEvdtKp9XpqW6K5uSQjt6mDQLNQF7t9EA3SrhErY0dFVidPRLcaVUQjOVjUt667ETotrWw0NeDKITA8PdHp/NIQx1n9yz3h0LoUxcpPBYCQR/JmmidjLZCiUdN4U
- sediKROP
- xeiOckz5oOuQCYC2CRzKNVGCdJGIDPNQDxVSaSmuozMgXwrwLh6jqOB81y76WOsZdLHQj4ulZAo+iffnlvUvzLfXh399Adbs0v4GEdNJR67CmpcOU9qHTjYN08t/6Q5p5xUcfhFg+6LmxqfQo0koS4ELZQgnKZ15gInKmNrAOwRAdJtv/NHj243tWO6Gu6QeJwTI8f+gNUP2nm2ch1D+weMO5dXqzaPXwwXcA5LvGKdRr4Vrcx15lJl0e4L5h92Yzxmg6vpNxqiy8NPJ3n9zKc1OOqt+p3ziojVWXm0jnc1BBdZ+AhYzc24MQxiRqWc+ieGVciLXB90N9yzzWFPMRGijdNBM+SAmCVJSI9GXWOKn4qdoH281pU7D0KZb3DYXyAjpl0Ox5TzyRSSo20fxV9sqBIPmW9KvWzvbLiBIJ/zQhxe+cetnDRN2kVWS+uEgj18Qi6CwS0JkyTZJAXPqWpsjlLK3M4NSNiNZHiK/P+YUXPwoKJzfvJyximgWljZL30jHwo57DcwKM0FIR8cnblhYetA==
+X-HE-Tag: 1790905797-89616
+X-HE-Meta: U2FsdGVkX19Vf0fdsEp3YHoksktKYhP9Q1P1j0JZnQcUwgZ2+2kkr7aMMMr9sxap1niPfRIepA6RhKW+pL/nDbcuUcRRzqkMSAaJwoFUfWh3VeQq5loW2vkC0bpHMKUFU2U2mxeGJcoTXvbogCopmKZouJ7GiGXed6U3K+o+AAy5UHjd7BTdGQe8yS4+fWTdNjoLFv9PfrhE/yIXZ2uimhaRvExkF5bC3my+gyDTIJrMk88oUvyXqXsCkaEsYq+yEyEFBT3BfHeGkEDRrBCvcXAVrLsFOyKKdQC9Gi7XRmTBLk4UMSvdpoAevWv7JXnuXvKLKUAd74rMe0UcnjZ28Ud2K+Se2V9McG+RWUCT48YhdWK7TeVX5T3VXpMJj2U+s5fagMbA3CdGre3YwcIue+j5847iWpH601zKrfOsTb3f66B+dn3KCN6xjUpYz+WFdNue/Ta4mFLaOby7aprNpQlnkgQcVoSAdC0+SKDP8LMQBwCu0M2oJZcUoIc9nhdvPOqa8HZP9ilvlQNUO3CLXbC9EDUP5mncSerZvYDT0YjSsCn8Lgse2dCjXYu0CAwGwIOGVcOd4sBsvOgoyN83KLaMlAAE7SQhJQihDiqlLZWuOATBCmjyoqYXqYEp4fRUG5pnXn3sES2Xmp3os0ze+bJKQID4ZuGVnhmrI3rSnFkEiAY/anlPXNYsRlA1v/9pPy3kwctfgZ+++4OoqdsAlBMAIcI8oQfSYW9gMXxaRUafuHZ1KpbpYjnMQ85UrQLV/JZN0EcHXp25Cce7m9aOnsBnjCqxL6PTIXzFVW7/VXmBcfHbZfBqjAIPLYfhEuzP4Kq9ByBpC/hNjcHifbiGteP3iMPO6hLLLRbzkkpWR57Oem5D3m9knWFeBHrSGkdkf85DHBSafKq9vZXjyDIGdi8viLt3HvX6pS9llSHsApSlwB1lcHgc846P9j3plU/ybrndZUUzfTL6p6UfZHY
+ COwFCGTF
+ c7w6/cVzhjF2QWVUoc+27v2Gftmo4hGya+TiG0apGBUsKaXXilVsdVq0xjApQCohG6OgCwgYyvtrAasW8/D7Kd41cMoFI4wyolYOX9URyTFQeec3+VDUfpnrce3e4VQHBeDTUNDRSHhrWs2nBULm6PMW0i4iItjqUZFnd57SjXn8FzzdFuv6VFDEDYUo3E82rCx3Y7flOUjylO5Rgq2sYiKLQQX6kuJ2BBemLeq6+oF9h16Vn7909q3GkGpwoQ/W1wVch40JnYrGCVsUeKsEw/bMQ31QrLyCw4nN4WQ0SN5cYMtm6DM/MFmNYfZ0uFDqsOH2hCcgOw764/cpueAz+AkJocRwK19kv3m4x4k6fk9zWrP3w7UMLmp04LTHPPZ70cT93IDVH5FbQ60GBCu+PDCpuqk2mjdF6bLQbz0jTBM0MgvUbq75nomaTKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,65 +110,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 10:21=E2=80=AFPM Will Deacon <will@kernel.org> wrot=
-e:
->
-> On Tue, Sep 01, 2026 at 11:18:17PM +0800, Xueyuan Chen wrote:
-> > Implement set_direct_map_ro() for arm64 and flush the TLB internally.
-> >
-> > Co-developed-by: Lance Yang <lance.yang@linux.dev>
-> > Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> > Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> > ---
-> >  arch/arm64/include/asm/set_memory.h |  2 ++
-> >  arch/arm64/mm/pageattr.c            | 12 ++++++++++++
-> >  2 files changed, 14 insertions(+)
-> >
-> > diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/a=
-sm/set_memory.h
-> > index 0091ba12200e..1be86dc11543 100644
-> > --- a/arch/arm64/include/asm/set_memory.h
-> > +++ b/arch/arm64/include/asm/set_memory.h
-> > @@ -13,6 +13,8 @@ int set_memory_valid(unsigned long addr, int numpages=
-, int enable);
-> >
-> >  int set_direct_map_invalid_noflush(struct page *page, unsigned int num=
-pages);
-> >  int set_direct_map_default_noflush(struct page *page, unsigned int num=
-pages);
-> > +int set_direct_map_ro(struct page *page, unsigned int nr);
-> > +#define set_direct_map_ro set_direct_map_ro
-> >  bool kernel_page_present(struct page *page);
-> >
-> >  int set_memory_encrypted(unsigned long addr, int numpages);
-> > diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-> > index 132938b32eb1..0e95cd904ccb 100644
-> > --- a/arch/arm64/mm/pageattr.c
-> > +++ b/arch/arm64/mm/pageattr.c
-> > @@ -355,6 +355,18 @@ int realm_register_memory_enc_ops(void)
-> >       return arm64_mem_crypt_ops_register(&realm_crypt_ops);
-> >  }
-> >
-> > +int set_direct_map_ro(struct page *page, unsigned int nr)
-> > +{
-> > +     unsigned long addr =3D (unsigned long)page_address(page);
-> > +
-> > +     if (!can_set_direct_map())
-> > +             return 0;
-> > +
-> > +     return __change_memory_common(addr, PAGE_SIZE * nr,
-> > +                                   __pgprot(PTE_RDONLY),
-> > +                                   __pgprot(PTE_WRITE));
-> > +}
->
-> I haven't quite followed whether or not you intend to send a v8
-> making set_memory_ro() handle linear addresses, but fwiw the
-> implementation you have here at least looks correct to me, so:
->
-> Acked-by: Will Deacon <will@kernel.org>
 
-Thanks for taking a look!
 
->
-> Will
+> On Oct 1, 2026, at 22:42, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> Hi Muchun,
+
+Hi,
+
+>=20
+> On Tue, Sep 29, 2026 at 01:32:31PM +0800, Muchun Song wrote:
+>> For vmemmap-optimized sections, tail struct pages may be backed by
+>> shared vmemmap pages. Those shared pages must carry the same page =
+zone
+>> ID as the struct pages initialized for the section.
+>>=20
+>> Warn in __init_single_page() if the shared tail page has a different
+>> page_zone_id(), which would indicate inconsistent initialization.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>> ---
+>> v3:
+>> - Collect Acked-by from Qi Zheng
+>>=20
+>> v2:
+>> - New patch.
+>> ---
+>> mm/mm_init.c | 3 +++
+>> 1 file changed, 3 insertions(+)
+>>=20
+>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>> index 1650d6bc1211..bd02e8d06965 100644
+>> --- a/mm/mm_init.c
+>> +++ b/mm/mm_init.c
+>> @@ -609,6 +609,9 @@ void __meminit __init_single_page(struct page =
+*page, unsigned long pfn,
+>> if (!is_highmem_idx(zone))
+>> 	set_page_address(page, __va(pfn << PAGE_SHIFT));
+>> #endif
+>> + 	=
+VM_WARN_ON_ONCE(vmemmap_optimizable_order(pfn_to_section_compound_order(pf=
+n)) &&
+>> + 			page_zone_id(page + =
+VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) !=3D
+>> + 			page_zone_id(page));
+>=20
+> Hmm, page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES is initialized a tad =
+later
+> than page so it'll have stale data in the page->flags, won't it?
+
+Lance is right. The shared tail struct pages are already initialized by
+vmemmap_shared_tail_page() during vmemmap population, so they're not =
+stale.
+The head 64 struct pages are initialized later =E2=80=94 right here, =
+after vmemmap
+population.
+
+Thanks,
+Muchun
+
+>=20
+>> }
+>>=20
+>> #ifdef CONFIG_NUMA
+>> --=20
+>> 2.54.0
+>>=20
+>=20
+> --=20
+> Sincerely yours,
+> Mike.
+
+
 
