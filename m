@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42F47CA5FDD
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:11:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9989CA5FDD
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:13:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25E916B0088; Fri,  2 Oct 2026 15:11:37 -0400 (EDT)
+	id D37086B008A; Fri,  2 Oct 2026 15:13:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20EAB6B008A; Fri,  2 Oct 2026 15:11:37 -0400 (EDT)
+	id CE81E6B008C; Fri,  2 Oct 2026 15:13:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FD1B6B008C; Fri,  2 Oct 2026 15:11:37 -0400 (EDT)
+	id BD7886B0092; Fri,  2 Oct 2026 15:13:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CE4176B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 15:11:36 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E86E7A0827
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:11:35 +0000 (UTC)
-X-FDA: 85278630150.12.986164F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9453E6B008A
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 15:13:46 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 247EA1407DA
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:13:46 +0000 (UTC)
+X-FDA: 85278635652.08.EF32418
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2652040005
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:11:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C2uZjQ51;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 40EEB18000E
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:13:44 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K9RGZLcR;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790968294;
+	s=arc-20220608; t=1790968424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xepjiv98niKg0eR0g6TZAWyusgKSgcyQj0ds3O6lxl8=;
-	b=oTL/ALzYa5ThYkpXWwEY/u2hrKCz7ndgad3HyW7JvoVuy/kYhAQ1k9Ht5ZIbRzv8iEoPTO
-	Fp7iKifqoZi6mZwtcSRe/Y4F6D4XfWWrFYAMNzA4V0NARS4AseoWL6/bqvMpLsbGGnoznA
-	CQImlFkrR7jdzUGnAtpNBDHSddQ/qts=
+	bh=N56IVrkHgW95DKN/ml8uLc48V5Z4iV1gTSdArvZ350Q=;
+	b=YhQn+7w2xblPUx+Ztd20/6Jz5AtWKX7H8W0q6hVljPQlLKIFwAb6TB8mZg+fakNbK+gMAg
+	xnJHgt5jqEi8gvm6K1CvXSzXrr4SL9uAY2ETMwmv2dJvpWPj/iZ2L8LfMbDiOu6eF1sM6X
+	Y17R13ZJUO+7gxR6qn2IbPi4gGlmXDM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C2uZjQ51;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K9RGZLcR;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790968294;
-	b=paXdHfEfCyMYv3aECjYXlmzeYpfMFuvvbaUXLIPTVnPC+FswFjcSgXOw72+psw6ReoKBWx
-	pOkoUPU4SIT9huHp3bSro1nd5m4RVtgSwN0vIEmGVciLhLmy1CUe/zESP/ZxKN3fLSp4xc
-	PV7yrskuX9EHomvHbDJzcOtPtKKx6zE=
+	t=1790968424;
+	b=d8XyRbwl3o8/vJ8CLRLY5Cvr8Y/hRO0+MaSJmHNhjiJD+wW8KmJNB5LwHbYNHauLLKbxtV
+	li3JnW94pSQXRemzNNzJJR3IWIdr/5nov9ruyPRsI4KTYj4sj0UXh7gl+Ei8o1Dj7ifKAw
+	iWagHxDvOP5NKsQZJssTEIdMj6HeEdk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 56ED041A83;
-	Fri,  2 Oct 2026 19:11:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A3C1F000FF;
-	Fri,  2 Oct 2026 19:11:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3299040BB4;
+	Fri,  2 Oct 2026 19:13:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB291F000FF;
+	Fri,  2 Oct 2026 19:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790968293;
-	bh=xepjiv98niKg0eR0g6TZAWyusgKSgcyQj0ds3O6lxl8=;
+	s=k20260515; t=1790968423;
+	bh=N56IVrkHgW95DKN/ml8uLc48V5Z4iV1gTSdArvZ350Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=C2uZjQ51Jdphz8xDCTe/fSF/32tpFJFx0vjUDSdoaiHb0qAbb0G2b1bfsryrQ/Pn/
-	 5jXtmI4fD6jGmsStgw/UIWAxCkX52RITB/QLhfy7swkp5kOgud/qG8Ve5IWaxAud8Q
-	 Ed81tCq6BrT4/7U/DbRBZ/3EWbhPvYs3jMI6wbCepIJwkDeV3y0IaYk79XGWKkLrS0
-	 e4uniPe5HIIEGt3kotlBlzO5mPWV5uc8ESf0vnV2hUAEXLPNKLD15BfpaMF+kYajC4
-	 fRVCHrxl3aQ7OW6OYUrdu11E1tdhOjhedYdvqHYS+OlV32z6DRR54aOGqKzljjItpt
-	 cby3qki4jXyiA==
-Message-ID: <7bd00f36-3f48-490e-ab4c-7ed15be931d2@kernel.org>
-Date: Fri, 2 Oct 2026 21:11:22 +0200
+	b=K9RGZLcRaXo+mqMqoQm19xpxnkGstJ/aZ5hXngDTeNDvN6RovymJE4t2itC8nPsQJ
+	 a3bfVEBCUE4emwvTPlhMe3KP5iRBVZxu0QlL9XC0JUQDen/72NX5+I3YXPvrNbx5xs
+	 haBASBqJWmjtu13BwaK0vLrug7ai0w5HFxa+bYKVx4S6CufGr3xJwjPyxrJTG8prml
+	 YQe4mT0M6EY+4vPh4iNe2kCmHkOWf1xKA7cl4IfonUaIv1VrFS6Whm5RLUFruxN5fr
+	 o/ELjG5GpCRkvalZpf+/n695zoMolhY/CEblsAjRzxXiNaNHHuVgfe2WRq/rHK9tyX
+	 nHhDQHSVeQCaQ==
+Message-ID: <62d8b799-7e06-4060-ada8-62fb4633b124@kernel.org>
+Date: Fri, 2 Oct 2026 21:13:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 02/14] mm: shmem: shmem_getattr(): set blksize to
- highest supported THP order
+Subject: Re: [PATCH v8 03/14] mm: introduce pgtable_has_pmd_leaves()
 To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
  lance.yang@linux.dev
@@ -81,7 +80,7 @@ Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
  dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
  dev.jain@arm.com, usama.arif@linux.dev
 References: <cover.1789695931.git.luizcap@redhat.com>
- <0f18a45baec44d193f8dbc760ef57c0430e04bdb.1789695931.git.luizcap@redhat.com>
+ <f0b6d8a8036ee6c2aef2a63e9a03d94292a2c599.1789695931.git.luizcap@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <0f18a45baec44d193f8dbc760ef57c0430e04bdb.1789695931.git.luizcap@redhat.com>
+In-Reply-To: <f0b6d8a8036ee6c2aef2a63e9a03d94292a2c599.1789695931.git.luizcap@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: m6rdd7ctsf7caqydctym1uwkbaphj5qm
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 40EEB18000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2652040005
-X-HE-Tag: 1790968294-291991
-X-HE-Meta: U2FsdGVkX1+5pBJ+jfkkuE6pTIbevuMWJnnp+AcS1njWGABe3XJHFi4hjhiLGZafQlxm7S1QxebKP3/THwvOFh9FQOmjQ0e+4/RsM+wA9dceLdy8Z2Z/wOIyVc1/vo97oUtyEEJ9LXkuOuumqmzBHx5p99VLPeBBzryFkA5STai/aPWae5VNUSV38eE7+9tGwW42f1lhr1b8k3nstg2f8wdyroqc9gcNbc1QiS9vUaJ5GPCan7VhxmjiK0C2AKJCZNlLLiSK7QLxLiot6e7zvT/CjwSQNgWQLHlMace2vBqB969hT7HlzszCI7HUCSRVpOVla3LbxXKOyzrPoVbzahnBDDYVCNAOUPCBRBxvTbYEBYalOu1ZY9WPIAqtfP77D29BkJbbXTWhd7dtjolh7jF0Ij+nsdB1cF4H9DIG74eEccyjrTEQs4VsmfYjVcz5BCKLaJpGujGHyVLk2nuLFsm+CXxGa5QjwqJr+3RAcbIm4RukuTAnI6uVTrJgLmYtNFlV6HlKUCMKhclRvuwFTUgzZtoal3r4y1n4JxhhRDmNwvZvAnNOJAJSZeiOHkan1xERBO90/8uyOpdXeEYgM9WrmYqkm0ViGexGYltDyUQ05HljiWu79/G3LigwqlgEMhYme8daSbPY1qAsW0BuEt8sHbE1rBslKGCdWW3iiHZzK5PwKNkxEAm3Uf4l1aG+VjnWbinh25QRTklJt75Im4qiV/YpvMKMNT9C4UzSIhY3RE8avFfYKvoP05DuwghcQiPsyA2dwTWVOC+BfESgZuY9tMLp7V/KP6S9/JrNRBU7W0en1Q1DtmPb3cDgFPYBZrViQuZd241BjA6ttTg9mt4wFw9VtZ8P5A+pj4r6d0YANgB2id/WoeOnHpgS7gg8NbrKYxDrqpbKXmozTIhJnijJnC9IYI1j6vauUyQ+K/3RD8fVZ+o6Zzzk4DanMI8HII6dO6sKwLsaUvKpKfZ
- ok0+TR+0
- BlFnOwayLq4sNsVcmHCYG8NofMnSsM+bPdkftudY3/x11pm+HeuiyvflSS31X4K9IGKkJeKUmwgZT7W8JBTzoSU6lJlohTKotO9+uQ/DUZ/7dIQO6kobNMbF3mlicVsiBOuBVH3XA9f+LgF78uHsswe2hRc1Q/jY0T/0QcIPPkSs11jwhv+14pbO0VaWDCILYRZ0HXmu4qFrpmmf3JSNzvrh30rRpc1WdavVRkihKEU8r1YoswpT5bZq/TWrnQofdPSPjEzvOo3smtBTKg196lFZGX4l504z1D1EzhJy4N2MFJovW5nm4jY/10N3c5VYenFQn3Qf/ucXvyrEJg5bMCluDjK0EmrCbfITb6jwC5hbWk9MTMt+FvuZcHLLUIDrXMRdqUb3zdvPPrwmDYi6N2mk8Cg==
+X-Stat-Signature: 6wskktm8b9a1spfmndsofdwd98x6fq4q
+X-HE-Tag: 1790968424-26472
+X-HE-Meta: U2FsdGVkX19LWiUeN4YK2VQVdjqrpfsvmpPBMf9flkbwe+RlpEfHQETSEQMhqOMAYMf/V2NYrZ0UUxyxvPd1Q69v/hDhS7Gv58Gx8/VihE+a/a9bSyr+syLDn0IvUSYWwVw6eS3hp58BdsBq4WbpgNC9NTNamH7r68qPeJlB+nRGo/DmFXuf9YScAFSJzqRivP6OQziDese3530mKEYAdNM3BheC5BpFIHQbmB9/14BGKZghdjQvrsY/qxzgBG9VDwXLw16r0voM+Inro1+c06YQVExz6CaOYcTaesHeLePnBa4Aik1MoXFHafFgf8Zyjt1WsGs5iHBeuB41+d7cHUaxhE0ckJJC33cqWQr2aiGhRy/DDdhaHfvQYia/Sq/jKhtvYaHBEWvRb+Wc95UOW5o05EFQ1kBuPXICZstw2dhKKWCGoUdL8Lrx9ihIqhPlWAg7AtAfBCVCGjd+imZt6Q8kq/efJC0UwSYCZ2pycjsEwQSeyGJ3ZCNQsogmcSHQuPYWaKbqNqSx4fYucgFDBzHbZct7oJzXznnIp1B7B7cyZ/dp0rnPriC8ZJXgP8ihma+NkmduqT7fxGIh9hWeWb/3XagSBkBpjGGiDasrUJXppMLIIqrY22O2X/1m6CdYpvxMTD7bCW/uZm8LWLOwqRn6dFW9VF9LnXqV6x+AwljCOvB139K2x5fyQRESLxALWOOzgquHv53NHiqmyQOW56/8QJ23s4JaJhPwDwpAUaTzJGo35QMdxHzNl3l4OghjQqCnLVsxZcDKOc7O6TI6ZSO2xlQnynmYYDXx8h/gAbsWxT8nn2SrItdlPbsmLS5+Bz8qB7oArXtmOI6RvQJGbiVGP52NjboOukALchqd6G3TEKWMA3t25qjOT5Rq1TCmuMAOk2xh+iMXQ5Y5k2gj1rHEawNT0zymIuGdw1mPQ+a2vazaauDYYRDwx3QMxOqNpeaJy89VWLD+GWeYykY
+ L9KCaDZ0
+ ZQQRQHuwNrEbTTI+loLhmdc9Qw0kTDm16lpF6Go1u2QJpa7erKDsrsxmkRje/YQ6OrBx/1D1udl2aS3m7P9S5OP3huELZnlqxV6ZMt8fYCRqqfbI70jyy0lIt/2PDxdk0z+OtMAiEWKUfD3c9g3nmopYgkkg5SJYNFBDoMsz+S0tmC1yIRuGr+LR3A3iFKZBXMT6MKgSshnOIeqHR9BnjlqFbKdvOIohNkBM23EUopphb4I6Mq8m3dc/Myh1xmnIAAiAkO/JDg5rLAkSzjrAlmjEcrywZnXN3CTV1hC+mkjtS8fRB1dtfgBQXfHYCxeDehs4gLjQJ8BPMvjxp9iqiWnpMmj45oAnKsKIy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,95 +146,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/18/26 03:45, Luiz Capitulino wrote:
-> Today, shmem_getattr() sets stat->blksize to PMD size whenever
-> shmem_huge_global_enabled() returns non-zero. While this works fine
-> for the normal THP-enabled case as explained by Baolin in [1], this
-> has two problems:
+> Currently, we have two helpers that check for PMD-sized pages but have
+> different names and slightly different semantics:
 > 
->  1. Theoretically, when shmem is configured for within_size, this
->     could set blksize to PMD size even though the allocation may
->     be a smaller mTHP order
+> - has_transparent_hugepage(): the name suggests it checks if THP is
+>   enabled, but when CONFIG_TRANSPARENT_HUGEPAGE=y and the architecture
+>   implements this helper, it actually checks if the CPU supports
+>   PMD-sized pages
 > 
->  2. A future commit will allow shmem THP support to be enabled
->     even when the CPU doesn't support PMD-sized pages. We should
->     not allow blksize to be set to PMD size in this case
+> - thp_disabled_by_hw(): the name suggests it checks if THP is disabled
+>   by the hardware, but it just returns a cached value acquired with
+>   has_transparent_hugepage() during boot. This helper is used in fast
+>   paths
 > 
-> In order to fix #1 and prepare for #2, this commit sets blksize
-> to the size of the highest supported order returned by
-> shmem_huge_global_enabled().
+> A better design would be to separate CONFIG_TRANSPARENT_HUGEPAGE
+> checking, which can be done with the IS_ENABLED() macro, from checking
+> if a CPU supports PMD-sized pages.
 > 
->   [1] https://lore.kernel.org/linux-mm/6591a74c-7ef9-4614-9ae9-cb2fbed86ebf@linux.alibaba.com/
+> To this end, this commit introduces a new helper called
+> pgtable_has_pmd_leaves() which offers the following advantages:
 > 
-> Suggested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
+>  1. Well defined and clear semantics: it returns true if the CPU
+>     supports PMD-sized pages and false otherwise
+>  2. It always returns a cached value, so it can be used in fast paths
+>  3. It's implemented with a static key: it's a no-op for archs not
+>     implemeting it and for archs implementing it the static key is
+>     changed only during boot
+> 
+> The new helper requires an initialization step which is performed by
+> pgtable_leaf_support_init(). We call pgtable_leaf_support_init() early
+> during boot from mm_core_init().
+> 
+> The next commits will convert users of both has_transparent_hugepage()
+> and thp_disabled_by_hw() to pgtable_has_pmd_leaves() and/or
+> IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE).
+> 
 > Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
 > ---
->  mm/shmem.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index b572c60f2af8..776dff8a848e 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1506,6 +1506,7 @@ static int shmem_getattr(struct mnt_idmap *idmap,
->  {
->  	struct inode *inode = path->dentry->d_inode;
->  	struct shmem_inode_info *info = SHMEM_I(inode);
-> +	unsigned int orders;
->  
->  	/* Fast-path hint; recalc under info->lock corrects any stale read. */
->  	if (data_race(info->alloced - info->swapped != inode->i_mapping->nrpages))
-> @@ -1522,8 +1523,9 @@ static int shmem_getattr(struct mnt_idmap *idmap,
->  			STATX_ATTR_NODUMP);
->  	generic_fillattr(idmap, request_mask, inode, stat);
->  
-> -	if (shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0))
-> -		stat->blksize = HPAGE_PMD_SIZE;
-> +	orders = shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0);
-> +	if (orders)
-> +		stat->blksize = PAGE_SIZE << highest_order(orders);
->  
->  	if (request_mask & STATX_BTIME) {
->  		stat->result_mask |= STATX_BTIME;
 
-Heh, looking into the history of this I stumble over
-
-commit 89fdcd262fd40712da65e922558872a12b203332
-Author: Yang Shi <yang.shi@linux.alibaba.com>
-Date:   Thu Jun 7 17:06:59 2018 -0700
-
-    mm: shmem: make stat.st_blksize return huge page size if THP is on
-
-    Since tmpfs THP was supported in 4.8, hugetlbfs is not the only
-    filesystem with huge page support anymore.  tmpfs can use huge page via
-    THP when mounting by "huge=" mount option.
-
-Which is a good read, especially regarding Hugh's comments:
-
-"
-    : Sorry, I have no enthusiasm for this patch; but do I feel strongly
-    : enough to override you and everyone else to NAK it?  No, I don't feel
-    : that strongly, maybe st_blksize isn't worth arguing over.
-    :
-    : We did look at struct stat when designing huge tmpfs, to see if there
-    : were any fields that should be adjusted for it; but concluded none.
-    : Yes, it would sometimes be nice to have a quickly accessible indicator
-    : for when tmpfs has been mounted huge (scanning /proc/mounts for options
-    : can be tiresome, agreed); but since tmpfs tries to supply huge (or not)
-    : pages transparently, no difference seemed right.
-"
-
-(I agree with Hugh, also I find it odd to indicate for THP something > PAGE_SIZE)
-
-Anyhow, that ship has sailed.
-
-Effectively, I think "stat->blksize" is not that relevant. But indeed, today it
-gives us the highest *possible* size we could see on that system.
-
-shmem_huge_global_enabled() does not seem to depend on any runtime toggles that
-could change, only on inode properties.
-
-So your change looks good to me.
+Clean, thanks
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
