@@ -4,77 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3AC3CA5FDD
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 18:48:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74EDECA5FE0
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 18:53:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D30B36B0092; Fri,  2 Oct 2026 14:48:21 -0400 (EDT)
+	id 486266B008C; Fri,  2 Oct 2026 14:53:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE0806B0093; Fri,  2 Oct 2026 14:48:21 -0400 (EDT)
+	id 43D2B6B0095; Fri,  2 Oct 2026 14:53:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF8D46B0095; Fri,  2 Oct 2026 14:48:21 -0400 (EDT)
+	id 326446B0096; Fri,  2 Oct 2026 14:53:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B9A86B0092
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:48:21 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2B64D120866
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:48:21 +0000 (UTC)
-X-FDA: 85278571602.09.4E796E9
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 15FF76B008C
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:53:17 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9191016080D
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:53:16 +0000 (UTC)
+X-FDA: 85278583992.27.9B49EA4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 74B90A000B
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:48:19 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SK+p5u49;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id DED5D18000D
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:53:14 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HGzUzC6f;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790966899;
+	s=arc-20220608; t=1790967194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zckByBLY8dPBxEQuZ9Xb3QDRtvUrCFEM/1ntFQ81XsY=;
-	b=0f3bGsAoM7RQ/TDwVfrZoV96CluaQKZkJvgefYoATpg25pVadbAeDuaCRRd6kU3Bu+16OQ
-	VZ2eplNt0P6iJ3c7zpGCHKpuV/5VRlfHG/8C61wuLCCtB/r47nHOdNzeqhtvwmc7yrSzLv
-	vEUW0+sVdMyNzMuunTPTWPEzkHuZv+o=
+	bh=3zheeU3EuzyWIQHVUugGMtNSaN9Adh+jr5Zkc1USMfk=;
+	b=22CEYZh+oSvOwEZZBS0R2CN26+peKb63aceeVI/jbmJrFDYXPzs109IoaAHmyt1HcUwH2+
+	KKpQCm9tbnZ5vPXsK+vyxNx74Bl2v6S2ChvbgiO/pqClWVQnQCBgrDhPLsqPGR84tuixYG
+	5dGYtT7CjilPBdKuustXt4/oqs+LsCc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SK+p5u49;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HGzUzC6f;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790966899;
-	b=EaB5b2VVDyCLxQbgxQFzD1mqIttY/CTxkTnYKzHLqsBYQAQKQ94Ec+5dCkieHmyQ8KP4/x
-	gLFXHQXPBuxIX6AOfPEqxebg03mOw2y8s2UMlj0iQSlCVcg69ir7thHW0VDrcQIkafpE2c
-	4cGBUn3nDqX0wq9OlbhvE5hgelhQ9Bs=
+	t=1790967194;
+	b=alGXGYiyx0/2nMVQ85NHSI2xOf2fjMUeETzvSw/0R/HV+3YZUDo3FCo08pE/tFV+GiHOP4
+	HvfDz87eRyHPOFxyWt0jdr1tGeiU9NK7RK7MffY+eSVlr6BV0Gb5BFdr4Rx26CLSNDFeg/
+	OrWP6j9Cjim5ch8UhY8LpehLsCKVjBk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E78C960AAF;
-	Fri,  2 Oct 2026 18:48:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B051F000FF;
-	Fri,  2 Oct 2026 18:48:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7581D60AAF;
+	Fri,  2 Oct 2026 18:53:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F061F000FF;
+	Fri,  2 Oct 2026 18:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790966898;
-	bh=zckByBLY8dPBxEQuZ9Xb3QDRtvUrCFEM/1ntFQ81XsY=;
+	s=k20260515; t=1790967194;
+	bh=3zheeU3EuzyWIQHVUugGMtNSaN9Adh+jr5Zkc1USMfk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SK+p5u496z0+bsYuZ5V1muZfkGvZN8QTzPtgzXmIpjtqXJl/CFHiNEn4MwNlBW2bY
-	 qYi3McWBjS+wcGs9G/D15e1XEiqShVLTZsE4BhyJk/n+ylsgUEzXeaMp34mH/9Fx1S
-	 wqs1NdmcN9nlFdp/xbKux4sMwG2rbY/s9cv2rYMOqmklC46Kt3AGNehJy2p+2Hd8+E
-	 rtltDjpubh9Xwercez6xIbWS4YU+dFSVHcfz5s/yi4NE2dgC7Ceub2jZMAUX9Vrcu0
-	 0yt6SP4xSN3h9bgRnF4N9d4pC3nLX36pT6kyfuQVWvZk76rlFzitZQZ9yic4Hqo6Hb
-	 ffX+5QnbhYpdw==
-Message-ID: <015735de-b9d9-49f0-87d0-78da3ee20e3f@kernel.org>
-Date: Fri, 2 Oct 2026 20:48:14 +0200
+	b=HGzUzC6f4aroci2M61+q5sGquB80q1nj1gcRlPhIu3eax9X+7c56OCAu+6wYNlABB
+	 7faeIbFwpTgogflebupr6NZIIoQ6Ed5xcHLe9KnguCADZngZw5didjCfxOfHhGTkwc
+	 A/tCJvLgMnxirehIyE8R713SJyX7TDlQi+ORzqyzmI/GaidGiPI0Vj6KVBlgp74uzO
+	 nRW0ZurqANeYHJFHSzfUUtiFbOZgWLRQhAePeMTghm9LA+XjKQwfwkMSvvbJk66cvg
+	 IeH7HBQfVbJk+a+ZYDld9E6T7GdnygpLZGGjC86A57vELVeTEYw8hqrJ9zNuFiVW8+
+	 ejLoBmkUWQlXg==
+Message-ID: <580fbfd5-2db7-4c46-9335-003ac99d1db9@kernel.org>
+Date: Fri, 2 Oct 2026 20:53:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] MAINTAINERS: add include/linux/hugetlb_cgroup.h to
- HUGETLB SUBSYSTEM
-To: Joe Perches <joe@perches.com>, Enze Li <lienze@kylinos.cn>,
- muchun.song@linux.dev, osalvador@suse.de
+Subject: Re: [PATCH v2 1/2] mm/migrate: walk runs of consecutive pages in
+ do_pages_stat_array()
+To: Qiliang Yuan <odys.yuan@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261001123747.634845-1-lienze@kylinos.cn>
- <bfefed1916a675a32ddcbebcf5a23b91fc750bcd.camel@perches.com>
+References: <20261002-bug-mm-move-pages-stat-batch-v2-0-f73b5d20519f@gmail.com>
+ <20261002-bug-mm-move-pages-stat-batch-v2-1-f73b5d20519f@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <bfefed1916a675a32ddcbebcf5a23b91fc750bcd.camel@perches.com>
+In-Reply-To: <20261002-bug-mm-move-pages-stat-batch-v2-1-f73b5d20519f@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9dw647pc9qafbugwairh6rodh8ww5y44
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DED5D18000D
+X-Stat-Signature: bnth6h14ssbonocmtaaiwix3z95yh1se
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 74B90A000B
-X-HE-Tag: 1790966899-415106
-X-HE-Meta: U2FsdGVkX18G3+PFMsBKmq54+G+Pf3Q7AgVgIEgrYxQRov2ZjM/26bCP83jqgArMi21B/9W0RaV2Z8SiLcHqjWei425TRTHmoqDidsSvKv7aJa3im7V4yHIZ+PcmEh23wSJ4zG3kyh/WJLx2yZ8rT3feX+oKqs4ILTP/eAlNfYk7O3gh6iskyQhHZ+FwLUbfq2onXiQsBJAYN0JNSNNCxQgu/Cc2OTVFHMCSjk6/qyLSIOI9jS9VgQ5Q0Nre5WE4zT3moOoVfjL1C2bzmvuNECH9QbBIZXtMa2Rv4pUW7svlx9IzqprTPL9d0aFNftptID7cvC4cbh+wUSmY9l/orK6Eklqx3SgHm289/ub3k3BqGB8/jKKD3x9aNMcfPBZOehFiT6a3hR/lzpgInIsdFPG7UiVaiDL8RZVzHyBnA6LCuSeYe0Y4VAWviL2WZ7aGPwG3Tw3Eu5vN7fhg31cfWU6JBm7AUfi6U5Mb1CtWPRnYHtAR4oAyPqeUgDssHfzJlnSgyVzO9YxBxTYfaWOfwoKre181rn+d3MI2XBvT78E/RLwzeSFGOus6D5DurLTnS9wqu82OBLUaEtOTUcIY06eBT0cKBtE0KR9lpDdAmqBIJcLdEl/DjgnbfeDg0wydVg3OR50BMUa8JsRBcTPqsWsp7XGJQgMWVAH20xXfkXqOL4ouiWdT3p+qObc64jI2rrjjCo0TmkIryH7gtI9GByLMLFxq9eVF+nAj7Jhlvb73JZ5UXbFAL84ZRsnz9QUgs91ADiKWHm1SqJ8EYgLyT/3NraC0DDKhdsSONHUp3CvOOv0AYUcI1Swl4Ng4am9+xDykHVfZclYA5sOO6lnmO90yA5uUWSfcPXymbQed0N/9pcDStGH4ENp7VC4IuCurQA/+s7y0NQuxBq8Na6JnR3hlCEgtwzEKrY1ea/W54zG7wQUB3In4iEmFAqiayIOWW+LuBt+/aXw3ZjbPIxT
- vTf2RwwO
- qiuikFpsyiejErIZdH1iqjc6bI6cyNEuKGBK7S5tVrkgyWp3F9T2vftlbdaFh4R0aNhxKG1PzBBYVm8DDN+w99ZXF5+2HiMwie897uwlzj/w/DVZPaYacZXEGx78L1D8afWzsNGsNG6zEGcHeUvRkWolIllWdovqZClRusen0NlJcKpWjVjV2kLBgM/iBjvttYg4vNNT1Antjo8c8Abw0XfnUQTsBK1V+TEpC8p/GWLTt9/CH4mgxcudAptf2Y6LOgdB3COPTRbw2uVQxf1GkVHEHTvjM0Uqp2kg6kPaWn8f14zw=
+X-HE-Tag: 1790967194-400553
+X-HE-Meta: U2FsdGVkX199ulIc7LXB1AGsRkf2ZTupmJmwhjqVZqrKfoSETU/KWRdnmbxL+zbJLTs8ROzW/i9zqzTP8qp6millcvFTmYKquZzgdvteUvxh4ZjfDZibx1yrOLfGfLLm9zUlEi7XkwIoKIleL/LLPAO7sSyQgLRsU23xN3J3qHx8W2ksMvDR6H4enSpYJXTvaP3+0c9pZmusJb15Pra7FXbpLIDZfu1SuDsZb5RpfrxKyaD0/hmkcKPvQvBZ+QnoPDKztfeXepOhjSg6ODo/gMWPvq1VRa3hEklTMa0zQE9BnSHIUkp5UZ6biTrAhmgVhlSIJ2wLuM1yDR2vt9JBwDIetNI8Rmw/uuNl/gfT/OY7K6o++ap0m8YWmW7On7NiJCVB4MqtOeCua2RaRQd6LEsd2DJY6EYi7VZCXiPWM2lKm7O1Baom0G89f3q0NsDIj8GXOnQsqZqUEDDhy752mpGA5eO3XtZ+4aq4UIwzXNcVCtTm0VOoQDAUnQfDJU6X7vsySMet2QeHhLW1MQlwZ0mdm2RPO82QvtFKya2qSGYPvtj6CbHYGHwK8AoooUfMEfutGGORVKjb9zbfAOJLcyGalqyBWAW9d7LIOT753UKsRJGE6hfSEz0ADOsJa06CVUwyYvYjzVIkXB0WwM4Z5i42anc6uuoKZ7qk7n8gNtAH1TNHj1QkJRzuPcHui9MrQ5/24AQuNdGw/nTCKh7amrMpbjlYGCCvt3RgnF0GXGP8hyGva6Z8/w3gmO+iuOPxr3qPvX07XiMjoHpa1VheGHGo8+oX06INfeZ93IP7NmXASmOX0Fuq/5VViebvAlcy/k3j5FaCCJB8UTyBqwNNDUlxSAB3GD48Mb9m5A3X8Ny4K6jbErN0hsyC//Y2sJ1wLUMq2PEkZlZ7w2F6JNmNZKXC/b1nAmmVwaNxN3Vk/WjUJ2hZ27JzXFmCrNyT8rIGQsA3NaqOhspC7HboOMO
+ /CyuH0Bk
+ sxqVBBD9Ws0lf3Bl7K8Qh4LOepMenKlfHabQmXe4Ir3KQ2VN7sg1luQ35R/lUYYPsqw41cSHotdwITJVFdy6U7hXPmz+/Kn523/WCnwM+YB5KCvNZDK6uhW672ufOULznx1k+ruBJ88Y53I4BksnRZqZhcNe3RQ2cao8RGHc8vBbX7m2gkWDuE22xvs7Jp+ILiaEczzHPib/1ra2DDl4eBuvfFMI4iVnk9CdmRcN428VXk1s9DJreOvq53r+cyzVQC9MTwEPj7mOwn294Pk09aEyJD2O8mBoADSZ2fhbeODT/k1o2B69x8Q0O8Jv79pdNwPyiptSfuuLGm2LG9Jx84R4sb4+uLkoFfQcNv+tUMGcN+jV49tbIRjDkOs9VGGCBCEIYQaVVs+QVpIQVHPWcgJAfhewLT/5X8FeWGZFflURwEGk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,18 +143,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/2/26 19:37, Joe Perches wrote:
-> On Thu, 2026-10-01 at 20:37 +0800, Enze Li wrote:
->> include/linux/hugetlb_cgroup.h is the header file paired with
->> mm/hugetlb_cgroup.c, but it is not listed among the HUGETLB SUBSYSTEM
->> F: entries.  As a result get_maintainer.pl does not attribute the header
->> to the hugetlb maintainers explicitly.  Add the F: entry so the file is
->> covered.
+On 10/2/26 03:25, Qiliang Yuan wrote:
+> move_pages() with a NULL node list reports the node of each page. RDMA
+> and KV-cache transfer engines use it to find where large registered
+> buffers live, querying every 4K page of buffers that span hundreds of
+> gigabytes.
 > 
-> This misses another file: include/linux/hugetlb_inline.h
+> do_pages_stat_array() looks up the VMA and walks the page tables from
+> the top for every address, taking and dropping the PTE lock each time.
+> That costs about 105 ns per page, so a 16 GiB buffer takes 486 ms.
+> 
+> Callers almost always pass consecutive addresses. Group them into runs
+> and walk each run with walk_page_range(), which looks up each VMA and
+> PTE table once and answers every page under it while holding the lock.
+> Report pages as folio_walk_start() with FW_ZEROPAGE found them: the node
+> of a normal folio, -EFAULT for the zero page or an address outside any
+> VMA, and -ENOENT otherwise. Handle PUD and hugetlb leaves in their own
+> callbacks so that the walk never splits them.
+> 
+> On 7.3-rc5 in a 16-vCPU VM, querying every page of a populated 4 GiB
+> buffer:
+> 
+>                 before    after
+>   4K pages      105 ns    31.9 ns
+>   THP           90 ns     23.1 ns
+> 
+> Suggested-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+> ---
+>  mm/migrate.c | 188 ++++++++++++++++++++++++++++++++++++++++++++++++++---------
+>  1 file changed, 162 insertions(+), 26 deletions(-)
 
-Note that Lorenzo is currently removing that file in his VM_SPECIAL series. So
-in mm-unstable it should already be gone.
+That's a lot of churn ... which is really a shame, because all we want to walk
+is folio ranges.
+
+Oscar was working on a better page table walker API (but I was too busy to
+provide review so far :( ), which sounds strategically like the better long-term
+solution.
+
+Is there particular need to optimize this in the ns range for 4 KiB of memory
+immediately?
 
 -- 
 Cheers,
