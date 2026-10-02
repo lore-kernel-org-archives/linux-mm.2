@@ -4,103 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F846CA5FDD
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 22:59:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24734CA5FE3
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 23:11:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31FAF6B0088; Fri,  2 Oct 2026 18:59:39 -0400 (EDT)
+	id BEB086B0088; Fri,  2 Oct 2026 19:11:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D0D36B008A; Fri,  2 Oct 2026 18:59:39 -0400 (EDT)
+	id BC0A16B0095; Fri,  2 Oct 2026 19:11:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E65E6B008C; Fri,  2 Oct 2026 18:59:39 -0400 (EDT)
+	id 9EC4E6B0088; Fri,  2 Oct 2026 19:11:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EDF6C6B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:59:38 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6DC4BA0782
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 22:59:38 +0000 (UTC)
-X-FDA: 85279204836.13.61C7F5F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B8E9140003
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 22:59:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HNfHSg1U;
-	spf=pass (imf12.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 76E246B008A
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:11:36 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0AB59807EB
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 23:11:36 +0000 (UTC)
+X-FDA: 85279234992.10.A460827
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 750B11C000A
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 23:11:34 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WX9OTQZ5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790982694;
+	b=BiCZTdpTZJ3Kyqo7++e2hamiJFtDX/T53AHyDFQ+gg+bt0h4WgphsllfQi4MLmKxCB/irk
+	jJ9CXMba2cxsEfqbZJ/nyhXLx4ZUWrvcf2aUc+lfxHkaz5ckj0MxYed7LcxRNl3fJX7GqU
+	APkCEAojmu5prqhpcJKDmZ5z10GY+/o=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WX9OTQZ5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790981976;
+	s=arc-20220608; t=1790982694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JJBZoitWEBQrTY8FcV1qjmfA5wNk/u7NZng6rYh3IJw=;
-	b=iX0c5taf/2oTJE2EEsLWF42B7et8fRaB2AL4RelO8J22tc4mlKRMbGrdPNXvTLDejS+wzI
-	zypZN/zFp8FpI6WUYo5wHFSmoqtu5hNBYGi6DWWuNVoDEg6cUR3bizvHT98Z+pDaJr0VaL
-	bclBQPSuorr5m++YW4JJLnUGb9Wa4aY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790981976;
-	b=k887qldc2y+crgBdDK6sarwt5rZWtXIQ3Rz1kpyZnRciNSAXwJ69+Pu/mW7RsmX6atvLaj
-	bgJx+2ZNRavdn+vvzXYWAfIPo8+jCB+XNaxeiNJlkgXZ7SD9IZArRpI8mmR05tM8BZHtei
-	DRhzVYyeFZcawzYbkAlbndmN3lN6cUs=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HNfHSg1U;
-	spf=pass (imf12.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=7sFn9nTy/0M8Manz3Ov3zjSMZmnOUPsuIFDC5cAOrJM=;
+	b=0B0M5eKHDJIi3vDbwQXOk7axJ6VIw0lwnD0NUb8C4hKCeYtt/w2Kn8Lkk3h5JGwnKLuOxp
+	dxjGWcue4aQQ/P1k2XnsHPOgI5qh+1ZNzjm45q6Fbx/08cupT3kiEL6vQ2AAZgrKCy4ooB
+	EtIPdpuYDzQcOY9uyjmIGWFF5csfLHI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8A0E3419C4;
-	Fri,  2 Oct 2026 22:59:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662DD1F000FF;
-	Fri,  2 Oct 2026 22:59:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8E6FA60214;
+	Fri,  2 Oct 2026 23:11:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2404D1F000FF;
+	Fri,  2 Oct 2026 23:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790981975;
-	bh=JJBZoitWEBQrTY8FcV1qjmfA5wNk/u7NZng6rYh3IJw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HNfHSg1Uf8VJletd/R2fu339SQf15SzodVIk+PgQjnibCGWW0FKaGqCJtTB9CsNHH
-	 6ZUjgPXjwhCfn0EGwOSXZnhmp45GPc+8mBA4KIzr/toF9NifDgEMbBmB4wpIm6Wuoy
-	 PGDxN8NS97pBFrWQT9d7hKP5mkCXJblmyL+hkEVaPn1KH1+pekc/czSzjfNxTn5i4w
-	 2Iq0tz+X5nmVOxpuWhDIPmemZAOT9ihSSeBT885X0ojH1LJGqvnzh7JC6JlgbypVQl
-	 HfjwRzYoVzwUGjpamhY/kQ/PSG3PTNTaVZ5goiedFc9jkBzMgkMLorUjrNGTzbdTns
-	 xrxKXyue6TwAw==
-Date: Fri, 2 Oct 2026 15:59:35 -0700
+	s=k20260515; t=1790982693;
+	bh=7sFn9nTy/0M8Manz3Ov3zjSMZmnOUPsuIFDC5cAOrJM=;
+	h=From:To:Cc:Subject:Date;
+	b=WX9OTQZ5f8MIdYmno3tB9LVcEkBK9w0haMdscxstPKJcdFV4qOehzGOmGJNwZlcwt
+	 dMFoUuAYtDw2pltFdFTdaIKCTyfF1ajGwCNP9RPaX3y7MrzsuyMR2hSoMKiEK+tb6T
+	 oMuiVqkKd2l3QX4RPkoOrEV9yi8CyffejJPJYXBpeYgSZO+i3hJze3d0VszgUBrkwk
+	 nlcBMCsndQzgKso02eemH/h1Y3dcUreRZrur82oIvV2Q/sR9OWdWTu4nOB2DZPT6P0
+	 N1Je91CKwthhBMW5rx9tB4vxCPp4R56z69aQDnYkkgIOB4yb24VDs9kmrnb7nwXT2x
+	 Uv9B0rGCD9jaA==
 From: Kees Cook <kees@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+To: Vlastimil Babka <vbabka@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"Harry Yoo (Meta)" <harry@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>, netdev@vger.kernel.org,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	linux-hardening@vger.kernel.org, Harry Yoo <harry@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
 	David Rientjes <rientjes@google.com>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v4 7/7] net: skb: isolate skb data area allocations into
- a separate bucket
-Message-ID: <202610021554.58F5CBB8@keescook>
-References: <20260921075811.too.775-kees@kernel.org>
- <20260921075820.1718334-7-kees@kernel.org>
- <8862b9ed-6f96-48c6-a134-6e8635c38987@redhat.com>
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Mina Almasry <almasrymina@google.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH net-next v5 0/7] net: skb: isolate skb data area allocations into a separate bucket
+Date: Fri,  2 Oct 2026 16:11:20 -0700
+Message-Id: <20261002231120.late.500-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2360; i=kees@kernel.org; h=from:subject:message-id; bh=QjrjRWiPlStTZ9Cuw3ASdtaVlT3rP0Cd9M68tzV6oRw=; b=owGbwMvMwCVmps19z/KJym7G02pJDFkHrGR9+dt+TX8RuXLy0ftnen5dUAvbvKa9NHnuvgfvT ypcdj9U2FHKwiDGxSArpsgSZOce5+Lxtj3cfa4izBxWJpAhDFycAjCRpcwM/wwnFZT98rzaMseu b8rJo/eubXjut/Gj8kRtPh2x/nurWJsZGXbFVO0SknljvMD45Yfpx6w3Hz+7deXGkC+T22bxZU1 fwsEJAA==
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <8862b9ed-6f96-48c6-a134-6e8635c38987@redhat.com>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: xffcn8irtabfc85khbbyezobpjhpstao
 X-Rspam-User: 
-X-Stat-Signature: natcand4sa7n1ymencnqmwdwwau9kd1y
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B8E9140003
-X-HE-Tag: 1790981976-850446
-X-HE-Meta: U2FsdGVkX18ZMO/U8eVBNYol2qGPIaWohLmbor0xiQo4YN3LafdCPE1hl2etVWSgGo6/i7qPZ3OXSqfdQ6wXy64Yle6hFbZriW9w8+5uD5ghhx8Au8yISQeFhFCIGqm1ncS/cpSMimMo9dUQwLT5ve9AIcSiEOSmzvSPAM/ptaF4/FNupn3f0tEbfImLcs5OPws6B5gXg+CLp40eg2AKCooT6ltBohQpgZROfZf4FrnIzGJ590cXBsJAHv45S+BNh3SZYRGxA/tgmnynWTY+euVni8cgccZ7Xr6dcET0TeUg/PIvJCwD4WHnB8lBiZ9/egHBW/JzPmtTLD1crrG6/EF8nurHvsVFHzo6Hnv9roU4o52OZBjrui6Q/URRq88frcG5wpRuA2u/3Da0EoKow9U7wiCT+0SxmBsPXOHMQvtfBBrdb7YxHBMCBYj7oUVVcVRESNKJMo8h0EIPC5cu3ozJ5PME9jfRuz8qTEwp1j5lKcsmrxXWr4d/yPEAXdorw3hcKQ6ZHQC+4MJO18X0kJpt0TOVL6dT3IRWB1ZG4DxOceRjFDI/0PNgXq0+5P6Jrn1UpdcA9GheUw1iWzwyhUID71wkTU8kb199UqWFwLniCJ1khRnzP/ynKm1w0hCJRVNzllDSlCvEsztuXLsjudCCJl+g1fvWLSqZ5J4xY+si8VXnETFbqxPh9DScfEQSqxXaz9WjgFCfqNX4pIj70A5G+n37wD9O0M1TeBzaSrJN4kWF69WDxNfrJWBNRUdtNkBdLf4A/dMN3HGefz9hfX/N4mL6Qu64Hm5JEyZGSWGiwJ3zps8kTwMaBKwkDMtF3cqjZd4p8KyGqHv49rVKIp7g//ZWK/wEFtdGBMygsG+skOAMsmgc5+xoUd42H3xs5NCfZpXzp/GxELPNIyyPhdii2yGTcSMdozVEtWIU2jgKKI0Yf0CPR3Wy8Px8t8SehFZlVrlh6f2IONsDRFV
- 4gmpD3Dj
- heA6yEdDbj7O6o2qUVvcFMbA8QB8xWpBmpiYmylx6DTZTWYL99KITk6bhgndSlA6d0Y0HM8S2RDqUHWiVYYbi/4ydemtoCXaedXEu0qX/S5ij7MHy6eR0GVS4PEmImzxfgh8/080INtZOXWSPcfvVqczEJn9PtFyebOPK9vWunJ3R1qlfEr5al8RVeXAaI9LynUObUaHdA2mGMe4kFZ+KsICaDe32eduhJ4Jyk6OpNCbUUppkaWMA0gMOo+tNlCdVjy6TIxI2kcqZW4z0QfTtqRZpHt/owSWvC22ym920iCx9QiNsXdvyP9mXrgK2dR+QVHfZDsG1obvqKF/dw8tjnvzZFhLcO8mFKcv5R+fYEIqQN5ToUI0KQoffJ5LcRvI38VPJ
+X-Rspamd-Queue-Id: 750B11C000A
+X-HE-Tag: 1790982694-566561
+X-HE-Meta: U2FsdGVkX1/s4Xocrw6f6f3I4wTTwU9dXKivJrm6fXprUzeUZv+EbS4/4NKizpGi7/ajmbtgZvG37gImX3LdfvVcJ4A+OL1r6bCjJYtwDR0zUTz5NXgTxSdJyzzWCFemSn+Umr/B0Wn0B85mxEPSdhGJgpR10aR4gRHLYuGF1o7pia72t9ixHkeeyQOOrcUNelyv4W+fOcDwU9kjl60qAu4CvA1e/H1XzMf3kiCerD40Y5tZ3Di8KVNw1biK9ddweDhhL2WNuGvJSVDECXLQ0LWki3hXWAJQuep+AeHMy/Qi96uncHgnZFIekoL7RqR36ogFKRITyWM+/qx0gwB4In8OBaAHbS1qIsQijVw9IX3tkCXQQBcHMW35BqjL6dFzadQbbKExuDv1ChfHyyGVAd+bjYlhUA19/KYFO0SsuNL2CK2hcL0oV98FndtgdBfx/RKGQvD0NVYgewIMbSmP5COYGDct/Gx+onoPgVkFFEpEiAoq0WBj9fRcbK2Y5q9V8DZfGcJo8ecmtdWKboWdua9+U+HHr9HQpGrOP1XJM/+Ii0SOetHrhvjAOOttdz4nl/gf6kdWbFzWue7OnUQ023rYhvvXgBhgkeboUkpQDFyWX23s0G3j78W2LRdXfVkeXhelH2ASuGn19kPv84vtmQb5LXno0Prcxdg5jWZ5CeTAUdFWgR0WpvfTLSQNf0c0SKx4G2+vp6rv9NZcVRFRSsjCwMxwsmw6c/qNpm1lX0cdey6EXM9yy2LYQ/CutkFzXlbFE7leAPnvQq37J43d9p/x5HdWMy+HEhXnGtY7kNzfxYZ5GmAGHe34x7LpXZGg4XkTGE4QuOYbqATPb4VX3r4WHl8MilxqOXw1ihhIgjJUGA5rxIvOxkfIutMZXLnL91WqYOgUlP/t2B/tp4+bzsQHFE560pdBs2rJ51q/5sCFSHuyQ4twETevwlIlpr29YV84F6CfAtVVHypzbOK
+ jgRz0DsL
+ q/2y3lfEJmyh5O5yioWW8V7C7ZhkcE4pxGj6FuBAw1tRiENQ3Ig6EyJ6bFuzeg92HHkco9w/MF7UFXbeXIf+/09g7XjsJsJQuHG9f3+bwSAtlefzgO+QAD9FuVWt3A7VWJN+SPyxP/or5tURVHVIkzZuhI/MocNnjUHYYCZoaucksmC9bMbga5jOVih5tXRT8yCQ1yCJ0ssTS4Ajs9oYVqbZM0+8RuPpE3k646/mTEC5hbfE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,53 +116,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 27, 2026 at 10:24:16AM +0200, Paolo Abeni wrote:
-> On 9/21/26 09:58, Kees Cook wrote:
-> > From: Pedro Falcato <pfalcato@suse.de>
-> > 
-> > SKB data area allocations (as done from alloc_skb()) use kmalloc().
-> > These allocations can be variably sized and their contents can be more
-> > or less controlled from userspace, which makes them useful for attackers
-> > that want to overwrite a use-after-free'd object from the same kmalloc slab
-> > (which often just requires the sizes to roughly match into the same kmalloc
-> > bucket). [0] is an easy example of an exploit that uses netlink skb
-> > allocation to target another similarly-sized accidentally freed object.
-> > 
-> > While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, these are
-> > probabilistic. Use the existing kmem buckets API to further isolate these
-> > allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=y.
-> > 
-> > Ask for the accounted kmalloc type as well as the normal one. AF_UNIX
-> > sets sk_allocation to GFP_KERNEL_ACCOUNT, so without it every AF_UNIX
-> > skb data area would fall back to the general caches, and those are the
-> > ones most worth isolating. GFP_DMA is left to fall back, being passed to
-> > an skb allocator only by rare devices.
-> > 
-> > Link: https://github.com/google/security-research/blob/master/pocs/linux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
-> > Reviewed-by: Kees Cook <kees@kernel.org>
-> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> 
-> I would be curious to learn how about the memory usage delta.
-> However I see buckets are protected by their own kconfig, small
-> systems can unselect them.
+Hi!
 
-Correct. But here's the delta for a 1 node NUMA with memcg, which is
-dominated by sysfs. 26 caches (13 normal and 13 memcg):
+This gets the buckets able to handle memcg (GFP_KERNEL_ACCOUNT) with
+isolation (since it's common due to AF_UNIX), and GFP_DMA with fall back
+(since it's rare). It gave me an excuse to build out bucket kunit tests
+too, and that (and LLM review) found a couple other issues that needed
+fixing too.
 
-  sysfs, 26 caches                                          113,152
-  struct kmem_cache, 26                                       6,656
-  kmem_cache_node, 26                                         1,664
-  node_barn, 26                                               1,664
-  names, 26                                                   1,248
-  the set itself, 2 rows × 14 pointers in kmalloc_buckets       224
-  per-CPU sheaf structs                                 CPUSx x 832
-
-> For the networking bits:
-> 
-> Acked-by: Paolo Abeni <pabeni@redhat.com>
+The bulk of this is mm/slab, but the final patch is netdev, which Paolo
+acked in v4, so I'm hoping this whole series can go via slab?
 
 Thanks!
 
+-Kees
+
+ v5:
+ - 2/7: kmem_buckets_create() and kmem_buckets_create_types() take an
+   alignment, where kmem_cache_create() has it; 0 keeps v4's behaviour,
+   the alignment of the kmalloc cache being mirrored. All callers pass 0.
+   New subject: "mm/slab: Let kmem_buckets_create() take an alignment"
+   (Harry)
+ - 4/7: test that an explicit alignment is honored.
+ - 5/7: export mem_cgroup_kmem_disabled() for KUnit only, fixing a
+   modular build of slub_kunit (Harry).
+ - 6/7: commit log shows the per-set cost of indexing rows by
+   kmalloc_cache_type; test that an explicit alignment reaches the
+   accounted row too.
+ - 7/7: pass the new alignment argument.
+ - Collected tags on 1/7 (Harry, Pedro, Hao) and 7/7 (Paolo).
+ - v4..v5 diff: https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/diff/?id=dev/v7.3-rc2/skb-buckets/v5&id2=dev/v7.3-rc2/skb-buckets/v4
+ v4: https://lore.kernel.org/all/20260921075811.too.775-kees@kernel.org/
+ v3: https://lore.kernel.org/all/20260702170728.168755-1-pfalcato@suse.de/
+
+
+Kees Cook (6):
+  mm/slab: Mark the kmem_buckets_create() context as a Context: section
+  mm/slab: Let kmem_buckets_create() take an alignment
+  mm/slab: Add kmem_buckets_destroy()
+  mm/slab: Add tests for the existing kmem_buckets behaviour
+  mm/slab: Provide kmalloc type fallback for bucket allocations
+  mm/slab: Let a bucket set handle __GFP_ACCOUNT
+
+Pedro Falcato (1):
+  net: skb: isolate skb data area allocations into a separate bucket
+
+ include/linux/slab.h   |  66 ++++++-
+ mm/slab.h              |  44 ++++-
+ ipc/msgutil.c          |   2 +-
+ lib/tests/slub_kunit.c | 397 +++++++++++++++++++++++++++++++++++++++++
+ mm/memcontrol.c        |   2 +
+ mm/slab_common.c       | 173 +++++++++++++++---
+ mm/util.c              |   2 +-
+ net/core/skbuff.c      |  11 +-
+ 8 files changed, 663 insertions(+), 34 deletions(-)
+
 -- 
-Kees Cook
+2.34.1
+
 
