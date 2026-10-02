@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86A93CA5FC4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:56:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C563BCA5FD4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:56:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D74646B00A4; Fri,  2 Oct 2026 05:56:24 -0400 (EDT)
+	id 7F6D96B00A5; Fri,  2 Oct 2026 05:56:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D25176B00A5; Fri,  2 Oct 2026 05:56:24 -0400 (EDT)
+	id 731866B00A6; Fri,  2 Oct 2026 05:56:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C142C6B00A6; Fri,  2 Oct 2026 05:56:24 -0400 (EDT)
+	id 5F9206B00A7; Fri,  2 Oct 2026 05:56:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 956126B00A4
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:56:24 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 16BDF806CB
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E31A46B00A5
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:56:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 78155C06CF
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:56:26 +0000 (UTC)
+X-FDA: 85277231172.07.665BAC5
+Received: from mta0.migadu.com (out-30.mta0.migadu.com [91.218.175.30])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8DDF7140003
 	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:56:24 +0000 (UTC)
-X-FDA: 85277231088.25.AAA3D03
-Received: from mta0.migadu.com (out-21.mta0.migadu.com [91.218.175.21])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2B804C0009
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:56:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="lW/KWW7I";
-	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.21 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=P3cgA1ar;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.30 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790934984;
+	b=FSF2OpzXyRb1kYZ8trRbkRe56d6amHZzzSTEJuTFEqQr0DvMazKUxvHtkjCBfRmJfhwLAC
+	1m8oX6p+HBZbZs9ApR0ejxY76xO3N4eAkW5CBF9nUWmSv93kCp9NeowbDZ2lgf7qDW4sZi
+	LhSVLNoDVs949Gi7iw0isSw2ORn74zI=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=P3cgA1ar;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.30 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790934982;
+	s=arc-20220608; t=1790934984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SNDQT2V7fLj2lpfuJarX2HUSCSnigHwGk9ne6VvB0ms=;
-	b=v+nOJ2FqL9rNJsdP9xxzyKCbRq9NCBHxEtS6Qh6gljVAjugd5KNc54KOS0tMfoDHmXRwq5
-	3Mb6KHx+ctxgmXYrn9h6eicgFYr9HeWRpeDs0V87wi4+HbRKUuNTV33y5KkgfCZdMe26Cy
-	JcDEGC/bkyhzsmNSE87bntV7H+QsRq4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="lW/KWW7I";
-	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.21 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790934982;
-	b=MiFgVOceF9rpFQi29pTyrjTmDMouSKyUJgYDf8quPqxfxTygYOXZAMc87YfX2hGtDALLnH
-	EJorKl7Px710QKZNt6d3DTzb692LyUShwA5394pYwMBmmh3lh16A2S2gxfxccXQEc9UkS0
-	9BVke8wwFBR2ayQ/N4JTv0A4XTd9x08=
+	bh=fVI2mNaozUsXDWMCJlkDl2YfSrrOkfxGKzzVdW8FJhs=;
+	b=dOUUZIQvYkm+O4ZwSv4QnDeirXaEcoUBXeFIvNKLo0wD5h/0RbudoHmJanZ9xw4x8TZT4K
+	hRgRuGwDBI/mkzmmdUrhIqVM+yRXc6ZKuprWXrWG6i2h7okxS6NIHEAoDbWxM62zOhwxxD
+	ZBkBNRMOIx1vaSNgv7lz5PSEBix0r7U=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=QdsRcAJ82gbKmhLcQmDxpB4bv16oNUQ+u/E+v54jmFk=;
+DKIM-Signature: a=rsa-sha256; bh=tZ9+wDL6rWNTsZNFf4VIK3WwHrcNDZjVqDRCGrUUBnU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790934980; v=1; x=1791539780;
- b=lW/KWW7ICtj+J0wVzYNLF8sRc0sWqIHJeLyQx+LXC8OhbkEn9Jem9gqpd2vKZpGuJfTKY/Sn
- PsFkNOdT8Qc0fAJjyecPATswqERDm+p3U7PKgeDVVnhWWHwW6ktKac6zAGpG1cO1tKzmHbxHzsw
- LOLNO0VMMYMrP5nQMfyNTuCQ=
+ t=1790934983; v=1; x=1791539783;
+ b=P3cgA1arufy0XFSaVdY3EeZqsSQWwCVF9/2rCfXFQMLW9SKHf3b6zbcE5lL+oqj+eEs7egAG
+ YL3vlwkznYQm61fA/eTRWV+vlX0fLp6LWomEGqoh8d3dHXPxsiB5k7ZtTMoxkmG2xrkU4N76eIC
+ jwtek618cHbMJIeoXnyNOMZc=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 2ac44650fa783d0c;
-	Fri, 02 Oct 2026 09:56:20 +0000
-X-Mizu-Trace-ID: 2ac44650fa783d0c
+Received: by mta12.migadu.com with ESMTPS id 6322d5cd786ef910;
+	Fri, 02 Oct 2026 09:56:23 +0000
+X-Mizu-Trace-ID: 6322d5cd786ef910
 X-Migadu-Flow: FLOW_OUT
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -94,22 +94,22 @@ Cc: ying.huang@linux.alibaba.com,
 	luizcap@redhat.com,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v8 08/30] mm: recognize PMD swap entries in the softleaf layer
-Date: Fri,  2 Oct 2026 02:52:22 -0700
-Message-ID: <20261002095503.3585565-9-usama.arif@linux.dev>
+Subject: [PATCH v8 09/30] mm/debug_vm_pgtable: test PMD swap-exclusive helpers
+Date: Fri,  2 Oct 2026 02:52:23 -0700
+Message-ID: <20261002095503.3585565-10-usama.arif@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261002095503.3585565-1-usama.arif@linux.dev>
 References: <20261002095503.3585565-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2B804C0009
+X-Rspamd-Server: rspam06
+X-Stat-Signature: xh643mh766unbcy3brh1daw9x4bxzzo8
 X-Rspam-User: 
-X-Stat-Signature: 5s1h87pmrwmzyn96q847un4kf6o9xqkk
-X-HE-Tag: 1790934981-543667
-X-HE-Meta: U2FsdGVkX1/csFpfVXrve3SQISHvaFkeMhRKNaGdOLjVeMwxzK2D9oGJ3f10wAWDLoJJrye86BnbpaANKqj3+iTNIJWGyM2bSJvbeKebiLGEVbrV1+LQ34SJaHfZnRIx2lPhN3VB2pPLayyHePSSgSSTr5fSyU46j1ZBUimxypz/dej2dw54rFvfwmzbR/bZyb2RT394T8XSCLHpm3FL5xTcwaXMPNYvkpsv4L+cV69FDpNmmLDAc3a5MHqAImSpWAnIo31P36V60QFI3XlCvne5wvqbUEItydu5C0SRxo0CF/1QMY1vkpUm0hwnQtRmCIXX3Exq2b5kCoiUbRikF8/Gw9foHsUc5YTwtyDLA/X/lR1vWLIQJWApHjopNBURpQB+deXZdpdbmEmxQkVOvm8EEfDoHvTByr1c2haSG7cIyOl+gQ78vWCDfz2vaHKuDyAtTt/muhYmjk3X4QQx+9gv77cLMtZjXiixUaRC+VSyDQZEFTfpURsU8420RDqJYIgqiO9sSSBGG9Na1XwxzmfgknBXykGTAR5advJB5l7Qmhs5wENBgcE+3vARxZcliYvoKU1pMIEqoVrGTxPjQ++rhcsBWjV5vzcreFd0/pNcZ3D6Io3RQY/D+/MmbQEFFsBuy4cbf6nfymQShf/sBBsQxyE0PNN/FVVAgSeHiFAZg7rQehlh+NHk9P/4i1B4pBsPASuwb2Iqj5MUppEEzMBKiL3aIzUPpCX5515gKFefcesTor/dliny0SuIMjTjSoBS4xUwPs8/3xqOugtiWut/KBqx7axUbGseF2Mw5BP0hOyq9hPPSsA4yV2kg72OEv7m9918J1DwmVYXNs9G7pNjs3Zw8V17VKTT3Na840h+GyUntLot8OcuLuBiOKsMEX2FXZdgSZcmjbcrR1eYck+sNvcBL+cr4YM45WcQFfxKKu0RP1PSz8dr1asik8DxrNt9Bwk1zD1i//56cRM
- NmPjlCnA
- yhET7CMw66osWDx28rNwUMiH9JfKnNqSc7V8cotBXvp0xZ/YqX+y9ZhTurzq/JIyiHGEPrgBXVQB7XQUlflQggo1qlAOZn2ruIj43FRZ4Prg4kvdifbZu1JBidFhbPVbGZ6uq8F3/Z54+sG2iekdkz5rUJwptIY6Z7DjjoOKuvDZzuBLmg+f1+Hpjfw9YFjB3Jhn0bMAYJB2CHGh34KExEqaS8hle/NPGnYvNXOB3j/jARMqvea7tE7Xzd2tzNgG/dIFV
+X-Rspamd-Queue-Id: 8DDF7140003
+X-HE-Tag: 1790934984-899541
+X-HE-Meta: U2FsdGVkX185Ah6MT1VuMbRlf/eHN9qH6eIoPkh+P7neM45CUQlsy8j1zpaJzmBUKrqz0ltYEQIup4YA4E5R+64UBFsVxQWdxXNF8v2KfP5NkkQesga1kW5qagl2K2xAQKWD14NW2wNW6Ei6Ic4OduxXQs2tlxJrgaFq18HFyBmtBq6LSl8HEaXipnM6iqW1CHs3jMB1LnCA7HGU9D7j57E8+gzH+c9t1AbpeXK6aFSF0vcufuSQ7pFKDq7hRhIOhn0zoPOWUWwHA9hSiWjmfqPR0B1xQi5G3hFk474I0LbNkIQm1DSm5ED3O6W4h6JoPq4Tk/h2Y9JhYDkGo1zWZg4vXj+dXa1knw036avOXGEuWX/HzUM3ArbcgspklqVESnco8KSk9ufsaIIeZnrafYOQEm5jFdnLq8NunrtKv6zEsH3xVCWnHrB6pvKUoc9ZRC0zDSFSoFyZpEU3nibWc9r1zyPruXEdfh5jJrd+hVrnUlmJWbipK3JbcPhgJh3br0qYoFnd4cLNnq5eYNleoMLm5h+NQFmLB5nC55sMpElNQjQ48BIXtGpU9AaeGG/0zBYAoEtWpsc9O+8TOcEDWVDgVolKm2/OfUGt/x4hqi6yLDF9rEZTE1rkJvzeHSFhaCNITwyowdPgHs7jdI2tKpguo+cSF1+VNhmtRjDLr207LzF64NWykDKMF2C0FYv7MLg0N76Nxrg/t2NBfEW1bNkMVgJ9DHSAeSUTimWpT1XUsPcleeVfG08cVfF5QFvIBLKBQdfHgkafXPxdGeECBA+chzH2pGar+nHLVVifcS3OpWbM+nk0zFEa+PuTDCcACxJ3cZfwVUNjO+uqOmoJqZY3r90iSIMQ5KhLSAlQQxsJa8j6hALYM1veCnnC4Ijxc52of73V8z37tVeF/pWYetdFezsEgR/qmtJm9/eUABdJ3mTyiK0P8A45AICDmMSfnycVdtK9rCF7J/VcUzq
+ CZj2iSJp
+ jDQIrEtOwjLLFsJ8s22qw9TtB5sv/3aTU6Lch2/VJrnrryOIfhcVTg93apNfXbb+lJ+TnjTMALHjonvW/P4oih5sLejvihcg/rM8Fv++GBPPOA3UNf8p05/RPeN3S3UKnyzNAd9CtNcWjzr79qGASwVCoLFmTU+x6m54Jxq7ouEyyoo9eRFuBkgHqORhjt9Ze2JE8oldGFyjnm9ReSrNrBF4QtQIdGEW5X6CbvqlIbVBaVS8QwlyIn6dJxXR5T2DO4nqxa292GsajxD9RM+apBOgtIMvKtFe1BCiZy0EY1dSaKtI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,136 +117,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Reclaim splits a PMD-mapped anonymous THP into PTE-level swap entries
-before unmapping it, so an ordinary swap entry has never had to appear in a
-PMD. Prepare for installing one there instead: the softleaf layer is where
-every consumer decodes non-present PMDs.
+An architecture that picked a PMD exclusive bit overlapping the swap type
+or offset field would otherwise only be caught by data corruption at
+runtime. Mirror pte_swap_exclusive_tests() at PMD level.
 
-Accept swap entries as valid PMD softleaves and add pmd_is_swap_entry().
-A swap entry carries no PFN, so make pmd_softleaf_to_folio() warn and
-return NULL rather than interpret a swap offset as a page frame number.
-
-Unlike migration and device-private entries, a PMD swap entry can also
-carry the swap-exclusive marker, which softleaf_from_pmd() has to strip
-before decoding. Strip all three overlays unconditionally while we are
-here: each clear is a plain bit clear, so testing first only buys a branch.
-
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- include/linux/leafops.h | 40 ++++++++++++++++++++++++++++------------
- include/linux/pgtable.h | 17 +++++++++++++++++
- 2 files changed, 45 insertions(+), 12 deletions(-)
+ mm/debug_vm_pgtable.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-index 7c13c58a5e218..ce176c78cefd4 100644
---- a/include/linux/leafops.h
-+++ b/include/linux/leafops.h
-@@ -98,10 +98,9 @@ static inline softleaf_t softleaf_from_pmd(pmd_t pmd)
- 	if (pmd_present(pmd) || pmd_none(pmd))
- 		return softleaf_mk_none();
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+index 2875fd22d7bb0..863111c6d4eb3 100644
+--- a/mm/debug_vm_pgtable.c
++++ b/mm/debug_vm_pgtable.c
+@@ -802,6 +802,45 @@ static void __init pte_swap_exclusive_tests(struct pgtable_debug_args *args)
+ 	WARN_ON(memcmp(&entry, &softleaf, sizeof(entry)));
+ }
  
--	if (pmd_swp_soft_dirty(pmd))
--		pmd = pmd_swp_clear_soft_dirty(pmd);
--	if (pmd_swp_uffd(pmd))
--		pmd = pmd_swp_clear_uffd(pmd);
-+	pmd = pmd_swp_clear_soft_dirty(pmd);
-+	pmd = pmd_swp_clear_uffd(pmd);
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
++static void __init pmd_swap_exclusive_tests(struct pgtable_debug_args *args)
++{
++	swp_entry_t entry;
++	softleaf_t softleaf;
++	pmd_t pmd;
++
++	if (!has_transparent_hugepage())
++		return;
++
++	pr_debug("Validating PMD swap exclusive\n");
++	entry = args->swp_entry;
++
++	pmd = softleaf_to_pmd(entry);
++	softleaf = softleaf_from_pmd(pmd);
++
++	WARN_ON(pmd_swp_exclusive(pmd));
++	WARN_ON(!softleaf_is_swap(softleaf));
++	WARN_ON(memcmp(&entry, &softleaf, sizeof(entry)));
++
++	pmd = pmd_swp_mkexclusive(pmd);
++	softleaf = softleaf_from_pmd(pmd);
++
++	WARN_ON(!pmd_swp_exclusive(pmd));
++	WARN_ON(!softleaf_is_swap(softleaf));
++	WARN_ON(pmd_swp_soft_dirty(pmd));
++	WARN_ON(memcmp(&entry, &softleaf, sizeof(entry)));
++
 +	pmd = pmd_swp_clear_exclusive(pmd);
- 	arch_entry = __pmd_to_swp_entry(pmd);
- 
- 	/* Temporary until swp_entry_t eliminated. */
-@@ -634,18 +633,29 @@ static inline bool pmd_is_migration_entry(pmd_t pmd)
-  */
- static inline bool softleaf_is_valid_pmd_entry(softleaf_t entry)
++	softleaf = softleaf_from_pmd(pmd);
++
++	WARN_ON(pmd_swp_exclusive(pmd));
++	WARN_ON(!softleaf_is_swap(softleaf));
++	WARN_ON(memcmp(&entry, &softleaf, sizeof(entry)));
++}
++#else  /* !CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
++static void __init pmd_swap_exclusive_tests(struct pgtable_debug_args *args) { }
++#endif /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
++
+ static void __init pte_swap_tests(struct pgtable_debug_args *args)
  {
--	/* Only device private, migration entries valid for PMD. */
- 	return softleaf_is_device_private(entry) ||
--		softleaf_is_migration(entry);
-+		softleaf_is_migration(entry) ||
-+		softleaf_is_swap(entry);
-+}
-+
-+/**
-+ * pmd_is_swap_entry() - Does this PMD entry encode an actual swap entry?
-+ * @pmd: PMD entry.
-+ *
-+ * Returns: true if the PMD encodes a swap entry, otherwise false.
-+ */
-+static inline bool pmd_is_swap_entry(pmd_t pmd)
-+{
-+	return softleaf_is_swap(softleaf_from_pmd(pmd));
- }
+ 	swp_entry_t arch_entry;
+@@ -1322,6 +1361,7 @@ static int __init debug_vm_pgtable(void)
+ 	pmd_leaf_soft_dirty_tests(&args);
  
- /**
-  * pmd_is_valid_softleaf() - Is this PMD entry a valid softleaf entry?
-  * @pmd: PMD entry.
-  *
-- * PMD leaf entries are valid only if they are device private or migration
-- * entries. This function asserts that a PMD leaf entry is valid in this
-- * respect.
-+ * PMD leaf entries are valid only if they are device private, migration,
-+ * or swap entries. This function asserts that a PMD leaf entry is valid
-+ * in this respect.
-  *
-  * Returns: true if the PMD entry is a valid leaf entry, otherwise false.
-  */
-@@ -660,10 +670,12 @@ static inline bool pmd_is_valid_softleaf(pmd_t pmd)
-  * pmd_softleaf_to_folio() - Convert the PMD softleaf entry to a folio.
-  * @pmd: PMD entry.
-  *
-- * The PMD entry is expected to be a valid PMD softleaf entry.
-+ * The PMD entry is expected to be a valid PMD softleaf entry that references a
-+ * PFN, that is a migration or device private entry. A PMD swap entry is a valid
-+ * softleaf entry but encodes swap slots rather than a PFN, so it has no folio.
-  *
-- * Returns: the folio the softleaf entry references if this is a valid softleaf
-- * entry, otherwise NULL.
-+ * Returns: the folio the softleaf entry references, or NULL if the entry is not
-+ * a valid PMD softleaf entry or does not reference a PFN.
-  */
- static inline struct folio *pmd_softleaf_to_folio(pmd_t pmd)
- {
-@@ -673,6 +685,10 @@ static inline struct folio *pmd_softleaf_to_folio(pmd_t pmd)
- 		VM_WARN_ON_ONCE(true);
- 		return NULL;
- 	}
-+	if (!softleaf_has_pfn(entry)) {
-+		VM_WARN_ON_ONCE(true);
-+		return NULL;
-+	}
- 	return softleaf_to_folio(entry);
- }
+ 	pte_swap_exclusive_tests(&args);
++	pmd_swap_exclusive_tests(&args);
  
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index e3c8ab96941c5..3f955f836abfe 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1917,6 +1917,23 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
- }
- #endif
- 
-+#ifndef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
-+static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
-+{
-+	return pmd;
-+}
-+
-+static inline bool pmd_swp_exclusive(pmd_t pmd)
-+{
-+	return false;
-+}
-+
-+static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
-+{
-+	return pmd;
-+}
-+#endif
-+
- #ifndef __HAVE_PFNMAP_TRACKING
- /*
-  * Interfaces that can be used by architecture code to keep track of
+ 	pte_swap_tests(&args);
+ 	pmd_softleaf_tests(&args);
 -- 
 2.53.0-Meta
 
