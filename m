@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9D09CA5FE0
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:18:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0D47CA5FDD
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:20:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C55EB6B0088; Fri,  2 Oct 2026 15:18:33 -0400 (EDT)
+	id 1367E6B008A; Fri,  2 Oct 2026 15:20:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C06ED6B0096; Fri,  2 Oct 2026 15:18:33 -0400 (EDT)
+	id 0E79A6B0098; Fri,  2 Oct 2026 15:20:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF6416B0098; Fri,  2 Oct 2026 15:18:33 -0400 (EDT)
+	id EF0DE6B0099; Fri,  2 Oct 2026 15:20:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A2596B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 15:18:33 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0670E1A080C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:18:33 +0000 (UTC)
-X-FDA: 85278647706.20.E218DE0
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CBE906B008A
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 15:20:09 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5370C1C39A1
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:20:09 +0000 (UTC)
+X-FDA: 85278651738.27.40630D6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 533DF40009
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:18:31 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mxVepR2y;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8AFCB14000A
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:20:07 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CII9ekSh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790968711;
-	b=SwG16By8KEPRgcwoDAj0QfdrjXcDIlemJPyDdo7SyHAj4eLGRmlJoM/gkF7hIVgoG3O24O
-	jTQ6pva9Sd+2HyaUQSqpT0zOJtSD8JKo9HUbF5Wl0g+6tVBo9KDAohlbNAhJbrjMMRS2LS
-	4ts41mGbIfLxwz4sswGlra9mfdC4AZg=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mxVepR2y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790968711;
+	s=arc-20220608; t=1790968807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RzOk2QL0OgCI5tvLznmoGIaNPt/Rd6PFhWvBqhDM8Lc=;
-	b=Z3riNnhGF7WVO9HMnSzb7dsfpPou33eWTU1lM7zjedJ1RRRHPwh2AwrPs3IhH8KehWB2sr
-	dYz9Ul8Fi4i4jt/fizsjxtP8F0Sclrm860PYMc0iuXIT0idgXwWt3LyAcTBaQM9IQivS1u
-	Njf50qMi3mcmU+Cu8FkpUFcAhRFdiMA=
+	bh=rzFmsSVkeCy97WxyINiQisvIqJaMnwHQuvksDREcAwE=;
+	b=qJodSmYFQ7X3OG8ToxOaEVz8a6OsPTT05u/OjVHb0/7YUyvDcxuRPtzAx38hFplKSWYSru
+	J8cjq9qMsPZniL0T6DQ31gPXUri+TFmbvd+6Ht9I6YuEN1/EljCoLmcWznMJbQqk2uoN8l
+	KsgiuF2aIW3bJEsfDvLCzyxlX3+RyeA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CII9ekSh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790968807;
+	b=L6pz/LDULrXkQvIyvGZnZ9k5DTZwyH01GjV4YA0wMV19LnlAhG5p272X9c7egqLyQePLRW
+	cs0TP1XthebH7hQTi0O553u4HK/xzBmB9WWr/1tAgAiXaEXn68bCduQPzGS4voT35bKFYM
+	Mx1mFY0rFV70mFa/Vf+/L6Z8Z1BBNSU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B7A7860AAF;
-	Fri,  2 Oct 2026 19:18:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC4D1F000FF;
-	Fri,  2 Oct 2026 19:18:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EB15B60AAF;
+	Fri,  2 Oct 2026 19:20:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D941F000FF;
+	Fri,  2 Oct 2026 19:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790968710;
-	bh=RzOk2QL0OgCI5tvLznmoGIaNPt/Rd6PFhWvBqhDM8Lc=;
+	s=k20260515; t=1790968806;
+	bh=rzFmsSVkeCy97WxyINiQisvIqJaMnwHQuvksDREcAwE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mxVepR2yA1QxnED8FzCtEOz582QxN9uuTNnGFji2vdtWNCN7lQHhZD7zwftelF/08
-	 VFxj6aZX2kSwfVfwajp6icBBr+xwfU7lImqptC4kx87fkfZBqXhQVvJC8YSC8wVBqk
-	 nm5CZ5aasm5cQxPz0A3RpQF2dvI0wv0L73Sh3hMSZM+X4uBIC4RE8FdyWc0RDjt5j/
-	 iA3pVQldWMef/KZvCo9AummHAQzASV0pra5O4yvV5DJhiY0HXW7QTZbW0jHoeMPLJO
-	 sci9JTfoywLYbLJDJ6vD6jnWy3io9W+UhsM9icIKgMFtBczI2p4ITQ5cKWPY412/Qz
-	 I4Ph09sc7VGnw==
-Message-ID: <f2d7be27-1000-479f-801b-7f49779ff675@kernel.org>
-Date: Fri, 2 Oct 2026 21:18:19 +0200
+	b=CII9ekSh1Hzs0DATXI7TPU8lfpCl4qGrIZIv7vv08EPDHPME0G6zTDYtXXlct2M3R
+	 f44u+Zm6zxptZs3rSqfGuFL6xJbFc0iNfYIoBMLe1+85zzdjPlezGvg/BF/Imb8qxR
+	 O3ECp/R+fr58tJ7uLTDfnNKZFlYFUW99JBvkXlnZhQVxfElvfgvzm5MwQnRPXsb0sl
+	 sc93cQ+1TJDMeGSUL0CtiiegzlK2TEYVGdQpBRbb5D1cRG+dngL4R9QrRWCXvKv1A4
+	 UALDcrHSYRygtm2rJjj9fToOsdzZwrJzGpvpdVLL7B8bLtvJXSrvI2cGAPkfndH7Rn
+	 YleleFz1Y6SsQ==
+Message-ID: <fd486bd4-c166-4b46-8047-0a777b239d01@kernel.org>
+Date: Fri, 2 Oct 2026 21:19:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 05/14] drivers: nvdimm: use pgtable_has_pmd_leaves()
+Subject: Re: [PATCH v8 06/14] mm: debug_vm_pgtable: use
+ pgtable_has_pmd_leaves()
 To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
  lance.yang@linux.dev
@@ -80,7 +81,7 @@ Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
  dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
  dev.jain@arm.com, usama.arif@linux.dev
 References: <cover.1789695931.git.luizcap@redhat.com>
- <55bb106b95979658b9f8e53d0388e84a8c8de90a.1789695931.git.luizcap@redhat.com>
+ <e7edf7e42f88d361c177e1baa7e2138c193f0805.1789695931.git.luizcap@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <55bb106b95979658b9f8e53d0388e84a8c8de90a.1789695931.git.luizcap@redhat.com>
+In-Reply-To: <e7edf7e42f88d361c177e1baa7e2138c193f0805.1789695931.git.luizcap@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ayeexcyy7y19tygknqm9r6i4ii5c9xz3
+X-Stat-Signature: khs3mheit64pudg4wj9o46fh64k3os5c
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 533DF40009
-X-HE-Tag: 1790968711-247154
-X-HE-Meta: U2FsdGVkX1/5JICWZJwi2grGKy89S77SHX/5c8OqEJPr4oF7UPgbxTxks/ViKxrWL+wiKwl8p63IKam0gSoABcXjxHVCXIxEVdHRTtzu25lgb+xW28jIuc5EGMv4ZrLTq7e9BwQ+iywvnyMOwIHB5UfpzcWw0JNzK1y9ZAk02v/6CZcCvwwsFN5di6c3XayqRKqZM/cSrsVQN2/kreI+jJiDtxjJYcCwqT6KWs2RcTYZKiQoHuT69H3MK1z7o4TFF/3R8R3FvKQaClJevzRakujDeGsve2E2/mMOr+WwTKgaF+31/VerVqpQzlt0fb6s28d9UUt6uF23gMRDGWVro79Y/336R3DD9QdfvekC1+USjeGL4sfs8taV1hiTpIdlJVg95zBX+HIveywFFydTF0054ZJZlDOWaCx8kHTSuZtIFpfcVOKufM+QzscBPvvgN4tdHWzHJS7G9Zet9ybW8xaNyTmZ6gGT49CjIDuvRF9XPQUzE2gDvDXYIThrEYnTsTpuD1emO3+FOefT4sMjQXphP+rXvHxJoFgNOjU3u6X+pgXDZQJh72eBn7WnNpRi8qTfq/EO4eY3thTGsvva+fXxlwBRFOfvYqcNiBPZ2UZiOcqZwcucEZeVl3+FzBQd1Qp5k7Vhy6khtzHsybvBdVOzWslzwce6uReAHfrze321ED+b/xyAB7LgEwcUq5bgq2mL9RO7UG7jJiaGCntJ8b5iZSuFPGLKyoI/JAIcBrB0xW68By1a1QrQqwwuEaU8CaK7XJfHMYDX7ndH7hQltAI9hMVtMLx0ZjlIQPXYP7aDDtHS16jawRVVFBYmhTwSRQMQ0JDKbpfgzarRLr8kveF8pNNbicW9WmgFR7ZANzv4FFO9LOR0xW8DlaJje6dfM2vZELnFP9K6W68dHcLcNVKKpVZhC/0JVeBHnY3FByT7yxNFJGChcDUXfRj8+RZ9c1B2R+7y1OAogYs8D5a
- wpScG4CN
- v+Ny8ZOgVdIubJ1UH34ur3Q6VBPk/jgwkrAF6iBuxGXvbM7MRMHHXSmcFpfLd3HC9pDa1fwpRZct86QLYLRGx6Ogpb8lYe9mSB1kIy6WlGNh6Ca3hvFDlS5+U6Vfx4n9IjVdWygj3m+tBPNGIz3HeQX25zBFwiKln7+cxp3eT8jhVkn8QUPf8jm9XCxULEIwJgXJIU+sa0DescLFgF/qw+uGyAbw1piO7C3grvf8GCRIFDW/w82pOwT/h9aKwUQIePAy8t01HNLBtkSulme10d4+y8o9+/choG+ccif4f1atQYWZoKiYcNW/eKxKANC3MtS0akviNtowb6HXkqCVlbkv8Nb8oawfqRgeVsaj48cylIOCB35nP76x+1vruKi6LtUZY
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8AFCB14000A
+X-HE-Tag: 1790968807-427397
+X-HE-Meta: U2FsdGVkX1/xHl2GGR1i4N/uUWFqvBP7WlAxtR0btcnmWyS/HvCZfVyGgAWvl3m/Nv4k/Ol9jETvdnUrSePJiltLc9WCHktAcYqXNp0F7K3Hirwpe3J+nDiuQWn5phstxclFrd/bySA7mWEcg+4PIdgH+IzOw9VwmSN61R1sbtec6sEsbxspwZwtcpvCTL86OAhYlZOwYuG5knLH10HltrnHp7NO0l4XXwPaznS0dFmLBvPNqtKbor/DN4Rf/T5DX0DKuMt7fblWgSTswj2AyOWguFfB4CChZm680hZRaV3lThKJiKacfYtmSiobIGsc2A7rrTea/yVs+DPv6z+YHCaB6QaTQcj12s5+znE2iz9tbsLUjlRIK+ZBe3xrbxaaMBcmI+bqu0xTFFt9hq0cl6mATxOK3rnHD1k/Kho5W8TSoJj+ajoQPGxfxDgc4lC7vVmKcFVpOmUfxatVUrrdxJ8g/8caAUARLFS+yxXQJFATTEMVIHl4FOi7CGO8IhJD3flnp1f9tJaCzczfkMqAvM/nR32mI/V5p4IjNOJwEZPtGWCja0lGMdi2q+eN+CMGL/RmFqUULwJEuLPIkHJURJf1kJJpEALGHVINCt/vV0hTc4G4nba+MV0Fqadsszh/7LVcGZWTOLLCbVh0coITgRaIPLiofuVhelpMpHK/wlDAC8ge7RJrfkQKGtr2HZPrMvHDm3FJReNeyETer6/OD9xtEen3YFzk5WVGxIPn4vAK/PjPCdfLD+rODod7dZ9GiZmuYSFKp8gfd9owHpNzbdHw167XpPG/CCDQMk1PXL8Ebc5158nVVnyxfYRyaqIFEQari0/7Lc/WF0lQceBojokd/YYwnuOWRwKgXBDnodxkFkOfs7/Hjf6/i/7Bvs4VGt0mTuVml6TAsz/8GGmdzeWfhGDzaTC3Xa3366aFrk+gfGS8YxdKljQHVf58R7GD0PlGL9sV68gQWNpe9sB
+ jSscg+p7
+ fGwG574hCQKqKBCIdF5HApbzD9g5/QlsgXSKxXz8PVeDDte5G3e1Jk6cVaYyEloIxtKR8xTcQR+uwNug/BbYCOdY+VvWQ+6mOP/Qcyx2vZ3oSbGB6viRSv59ZZEu4YmrGze1w364oRBdIMkryZlAfnCsnGxFMXFV4XfEEd8fpSk1tFte8O+t6lGtgxFvGuVrd4772vqhZQJJraJbwll6BGDxbisj9HN+XK62XzYgR9rf98V9vgvR/R8hSv8pal4LEBBeGtP/nZUJCXnIQvKmmN2VW/gv3G5Y3H/Ved13EPcUIBDl87UEXyQwCJZ9E/Yco+XSxvOqmY5KWhXWIR3SzzSG6KW0V5oFBOzRDJmS+GYITXqlGqa5WdlO9gp2+mg4DD0Ac
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,34 +147,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/18/26 03:45, Luiz Capitulino wrote:
-> nd_pfn_supported_alignments() and nd_pfn_default_alignment() use
-> has_transparent_hugepage() to check if THP is supported with PMD-sized
-> pages. Use pgtable_has_pmd_leaves() instead. Also, check for
-> IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) to preserve the current
-> implementation semantics.
+> debug_vm_pgtable calls has_transparent_hugepage() in multiple places to
+> check if PMD-sized pages are supported, use pgtable_has_pmd_leaves()
+> instead.
 > 
-> Acked-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
 > Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
 > ---
->  drivers/nvdimm/pfn_devs.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-> index 8fa9c16aba7e..457eb54e7ab6 100644
-> --- a/drivers/nvdimm/pfn_devs.c
-> +++ b/drivers/nvdimm/pfn_devs.c
-> @@ -94,7 +94,8 @@ static unsigned long *nd_pfn_supported_alignments(unsigned long *alignments)
->  
->  	alignments[0] = PAGE_SIZE;
->  
-> -	if (has_transparent_hugepage()) {
-> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-> +	    pgtable_has_pmd_leaves()) {
 
-Not sure if I mentioned it but we *could* provide a helper that checks for THP
-PMD order support. But I would only add that if really used frequently.
-
-Scanning your other patches, that doesn't seem to be the case :)
+Best to mention in the description that there is no effective change as all
+calls to has_transparent_hugepage() are predicated by CONFIG_TRANSPARENT_HUGEPAGE.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
