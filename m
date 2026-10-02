@@ -4,96 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58BC6CA5FD9
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 08:10:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 638C6CA5FD9
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 08:13:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 226096B0088; Fri,  2 Oct 2026 04:10:27 -0400 (EDT)
+	id 427A96B008C; Fri,  2 Oct 2026 04:13:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D6A26B008A; Fri,  2 Oct 2026 04:10:27 -0400 (EDT)
+	id 3D8B46B0092; Fri,  2 Oct 2026 04:13:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09F6E6B008C; Fri,  2 Oct 2026 04:10:27 -0400 (EDT)
+	id 2C77A6B0093; Fri,  2 Oct 2026 04:13:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D86916B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 04:10:26 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 61A73A0676
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:10:26 +0000 (UTC)
-X-FDA: 85276964052.16.50E79FA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DA29880007
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:10:24 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZkKfj52w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 04C896B008C
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 04:13:24 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7BD4C1C35A8
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:13:24 +0000 (UTC)
+X-FDA: 85276971528.22.5C49905
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B98A740009
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:13:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="RtnL/PuA";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of hnkz.64@gmail.com designates 74.125.228.42 as permitted sender) smtp.mailfrom=hnkz.64@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790928624;
-	b=gRHl670Yu/KofR3pX9/AqFxM1gJ4j339/hnHw/HyjAdQidmR17cp34dVKQIhAvOaBgO284
-	WPtzjpPWMjlGHHVk5OqhJdnpFp1oS7UzrxExLjeqTUWPFwlBDwCYtVkTTe71fOaBRjB6eQ
-	TM5ntEKKCtq4XeMRnCN3NWFb2QCMVNk=
+	t=1790928802;
+	b=txt1BuINTs0FqnPCPM4m0Cn0dqGEWKA+yO1VosuEjGXmCrCZMkg2/sNjTih6bvB38FAyN4
+	waWouJzOMzTR6jDUNFQpeFYDzynoeLRPWLiD5vk7EXl9bHDFqGdDNWykMgWtckVvQ8VJxO
+	guw9YLPuVvZfP4t/RQfbmqfQcAoJW9I=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZkKfj52w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="RtnL/PuA";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of hnkz.64@gmail.com designates 74.125.228.42 as permitted sender) smtp.mailfrom=hnkz.64@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790928624;
+	s=arc-20220608; t=1790928802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BIHFM4YkUGLtT//ijgD4g07c9OxY00eHXMaA/kwG2nM=;
-	b=DzkCsHTVR4bzHL4yPY5Yz5FY3SuYxY9iBjLsD+pReiWvnVSpPjjZ7P08LsZI+6VbN4Vtsk
-	J5mz98pZV6VH89wjzIeV/kgIBCB6XFLIwYw+x/WWcnm9AJl81Qh09fzM8pgNPlCJiduIFi
-	ip5/6sOR8268KSHBRQyypbCQpciE7JA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 01FF160A5E;
-	Fri,  2 Oct 2026 08:10:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD511F000FF;
-	Fri,  2 Oct 2026 08:10:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790928623;
-	bh=BIHFM4YkUGLtT//ijgD4g07c9OxY00eHXMaA/kwG2nM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZkKfj52wi+HBtm4OSS7+TGHkipMV+dWZaiDRPkTP1OUg2cSZgWi236Wj6NYUE3zhP
-	 cE/wLWLsAeog8taVdUpM5sc8E4yCibHvboHgqOHxAEG+Y5Z/wzqywqWTkRHX1PX8RJ
-	 Y6MrqkaPJzwXRfn048jxdDXzNp00NQ6UuQjAuOmLFP1bfYlCjQ7TtK0Qzpq09+/X09
-	 mUlW0HPJX0OTnzNLrxPH7PlPg13Ld0kUi9GjYTFEQg80JgThJuOQqXg7k0VabrPqqj
-	 M9I4tH9JjiDYoMcnmK8F+JM777QiRIOEKoJxCdsUEHTj9cABRLPo4injcxApsYeJGY
-	 nLF4S21X/85NQ==
-Date: Fri, 2 Oct 2026 09:10:15 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Hajime Tazaki <thehajime@gmail.com>, johannes@sipsolutions.net, 
-	linux-mm@kvack.org, liam@infradead.org, rbm@suse.com, akpm@linux-foundation.org, 
-	luto@amacapital.net, brendan.jackman@linux.dev, liuhangbin@gmail.com, corbet@lwn.net, 
-	kees@kernel.org, broonie@kernel.org, mhocko@suse.com, rppt@kernel.org, 
-	shuah@kernel.org, surenb@google.com, vbabka@kernel.org, wad@chromium.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org, 
-	geert@linux-m68k.org, daniel@thingy.jp
-Subject: Re: [PATCH v4 1/2] selftests: run tests on nommu architecture
-Message-ID: <ar9ldn036SgT-bq1@gremlin>
-References: <20260929235711.2287931-1-thehajime@gmail.com>
- <20260929235711.2287931-2-thehajime@gmail.com>
- <bda5eeaa-7868-4d4a-9026-9e99347afd7c@kernel.org>
- <ar4br2vW7yZGd3gt@gremlin>
- <94759bed23f00d2044005e36be6f72f297e092f0.camel@sipsolutions.net>
- <m2se2o3jyc.wl-thehajime@gmail.com>
- <a65f4431-d225-4535-b921-00319ceeb2a2@kernel.org>
+	bh=JRkehR6QhzTUqhAnAiS8EO3o0r2RIFdddFBrAAp0J8s=;
+	b=xWqexn6zGqNSS9e8fLC3P8feAfmL2D5pQ9vD3uLXWg6f4HhxJxkPlSq5CvhVBhwRy3zkke
+	WNl6RR0fZOSEmHsYuAUxErV3qLE3Cf8mHCgvq07+nCbPo/z+Ll1ySdZQDdyp+2E13D3NbF
+	1CA0ZpV7uxH/pW2JmdH0h+Vmlp5QdIY=
+Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc797656e36so2606557a12.3
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 01:13:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790928801; x=1791533601; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JRkehR6QhzTUqhAnAiS8EO3o0r2RIFdddFBrAAp0J8s=;
+        b=RtnL/PuAit5ZUzZkwxD71rjvZ2b5/KRaoaK+JR6fnsvbvEb6OiNpvbZMFxDmdYCgGo
+         uBdVoxZXEnfdXACDqBTWMJbpZWpboD+fU1YsMNLKQV+Yx7nTrRuAGVlL6zOau3Bti6Rc
+         ULKt66ON5lFfxRglc4vveu8xdrqeRICylJWOzDmJxzrNXNSdC01ru5nXg5C74Y9Eyozu
+         fFNPWRbG1gYemH4Nlv4VMsV5xm+ftgynSey8M7kX6OEySQXeD6TIj5090JtVyjVEXslq
+         ShJLJnOI8yuqmFKL5A/RF9UM6DHoJMTOYbID6XW4rJbNx0stGZtECXSof5eQwHyvDsJj
+         hZNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790928801; x=1791533601;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JRkehR6QhzTUqhAnAiS8EO3o0r2RIFdddFBrAAp0J8s=;
+        b=k+FVOhBTcnoKcHBja35DSRBl4mZ4OC6RsihMDouSEHEP3f+sO4oiqdvlMdEGH0GSSp
+         /PbsEXmc723puvMy/DU6LlIzxLlb3h39YHCogQDcskmhfQ0cuzmvTCTZ5sd44Huyk/cI
+         REdoMGJ9xHkQxuP0xxoz4Y6fVN9er+0wovDFCXAievw7Lv8E3bc5BeMkrxBm5jvxGkkn
+         u9ksiE1vWEIw1WhgS9vv6fUOz0nNJ3K+JptERGo+M+Q+MsnsuP41/kWK4Ck37G5ut4GP
+         yX1P1kELrfx6BKNggkiGJmm45FQD2Rmdg2A/QQnOFmoaOFrrGxbw2sTJhDPHU707utt9
+         ivUw==
+X-Forwarded-Encrypted: i=1; AKwUvBxV89yp3caZxu0fmhyXKRnAVWCuC/ZeuGZpFlMX5c4/bSEDNXbK6G5ZV0TfFbQpEg+E9DERbM8AVA==@kvack.org
+X-Gm-Message-State: AFq9FYIF8fy9NFOfo6HSMRg05hch1ypIrc2uN5CiyRRgj1+t1tzvM6Lh
+	FdYlarQ3tILYlUx6GpVZwiaox8yS+5jw44iOP23Sv6nSHTxSkEzIyRaAVUZfJQli
+X-Gm-Gg: AYBFou3btNSeVH1m+qV4FWEWRcsZibOQtkMryvn9r5D/w3LpFyl5EPmIHxP3KXeGLIl
+	eyozbGWq+s33RIF4SEicSH0ZUE5PWTXDiIVb8pa4GOLOrggkVg+A/bk1ZLrTqJF3z+Cg9d2UBdP
+	Ub1aaIztreEKLdLaHHGmvXURFDostSENLTs+pK1SqiGq1LugeQcolAJItGCXJ+wMZU+fS7vnSFW
+	t35kMPM9P9q6OKgbXEfPXZWg2YO+b3GV8/McTPjrNr1bg31rgH5u3G0EsawYYIR0ZmDyFhNyAor
+	azqFIfRo8zO34X/CH1yGQpsI+FueMZs1pcygKlgzBojAUXXW3B0MqJg1tVPQXtpO5ZtKdY4409/
+	L8DE3OibvP4hZGdWObbAyU/atc/lWAL655SRzsgyDh5Brg+VCentHkobWXnqvJQP7s58P3+PClu
+	RbGU1r4PmcFwVjBfDtWXH9jOL96UWkDANZyS1Yo30bnV5UezlR0mg25bvTGeFJ3GMyooepTmpvB
+	r+45Pg=
+X-Received: by 2002:a17:90a:d64b:b0:39d:f08e:e6e7 with SMTP id 98e67ed59e1d1-3a6ce3570eamr805756a91.9.1790928800962;
+        Fri, 02 Oct 2026 01:13:20 -0700 (PDT)
+Received: from hnkz-ubuntu-server ([2404:7a80:860:3300:f22f:74ff:feda:3295])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6f8525c0esm692758a91.4.2026.10.02.01.13.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 01:13:20 -0700 (PDT)
+From: Kazuki Hanai <hnkz.64@gmail.com>
+To: hughd@google.com
+Cc: Kazuki Hanai <hnkz.64@gmail.com>,
+	baolin.wang@linux.alibaba.com,
+	akpm@linux-foundation.org,
+	gabriel@krisman.be,
+	andrealmeid@igalia.com,
+	brauner@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] tmpfs: fix unicode_map leaks in casefold option handling
+Date: Fri,  2 Oct 2026 17:13:03 +0900
+Message-ID: <20261002081306.637148-1-hnkz.64@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260827152516.805622-1-hnkz.64@gmail.com>
+References: <20260827152516.805622-1-hnkz.64@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a65f4431-d225-4535-b921-00319ceeb2a2@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Stat-Signature: otejka8dacfhj587wu3xc8so1aupr45s
+X-Stat-Signature: zue6roi55ad19biocs1z7rawcgnsmuzc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DA29880007
-X-HE-Tag: 1790928624-203648
-X-HE-Meta: U2FsdGVkX1+nUO5tGejkpprLobNXWFub9wxLHWD/UjoLz5y5ZV75GyKsz+SVDXrKjjHv/WlBaA5GxQ5HKcTVJDY1sY36xRlTLbVRns0Htjx8f10+TRR391AewFj3OAJWjI1RBNiNI8MoYmeLHYwhDVJA79iMZYK0JwAbCV7F8bA1QyAdt29m0R2EW1kbjnCYmmipMi4pb83/3ZATOWEaHHfvKRPlUB5TOcY/uymj3SVSQzdR3k5OE7kcpB9iCaTzIcEbstI0D/oBsDWGEOTntqxPEfsMW6tt+wgd4rF1zWrtNufnWI13YSw51jjU0kkw2ODzUjTJEtGf9dI+w0X76Hfbv3vpmEfP9egPX7CR9nzg6q43rHbYUxHxIfZzxcwaUcq31vVGSw3EAqI//MuvhfLfY/LmgdDV8v2J10d+KidIjHgB9fistABbDF3tcZfh1hB8JgL+qL52rEy6+lCdWEFhJDe9waiFxKkpmoSDuyPLRZkR8pmlxnAy/W4ZY7SOrTAb+CIQU2jafPVNejO07E1b5qCBZAbr7elDsWwhWgcuKb6vg7B9XIKa+uTYbNXgBtB0f6lfziiqv2HLnCYYkdZoijNeR9KPrAvFZQCVCg8FBUNmh6cBhTbNZvfvs4pJiHv3VakaI2dm2Hp9ZrPgAx1aNK1yQbA4n6rbyiz85JlM6HkkEhIWDvYrQ4UB4QNlJVLbfxfj6MK7q6YyBBACBf+iuTcSjdmXLz5e+MKtSasTFrVuXE2CXzLTHTpEdAnw5BbF3ZPHZDlEcWSOwJIpXxoOjAbzrhkd26DH1R8A8l/x7Fri0GFd2XI8g3BFpV0qBQdPWWD/TYgRox9FqwXguc3voXwg+W/VDd7O5XTQ4Cpo0rl8ZilNJgleE2FhuqLhNjO5pkxwzgcA4FwJ+79rAN8MjsRxUJkWGY1euKORg9ZE7oECPRhKqOAxH7KqUYQD+iHMOTEDS01UsiXuodG
- sgyF8XPE
- unUL16noUx58tOJl5+HLBraoHdklgWxLD2epULj1WG5QHJn2k0XJOHrCeNajeqEXVTONYSlNNmRZ7m8pyerSwWbc6QgSO9/BeWJJl4ITLAedz5o5FBDwbpCCJbqvbFcsNt9+f/ZGbJk4yyI7dGKOEc+QMGnJ4XsdTMYNw8NWrB2Sl4fHqnexw4aFTcZnnF3QCx0nPK1G7qhh2E+jfcGgTmuIYJX/93QHWoqKwwRtqfn5ONuAYwtqiKtWx+OfaLuFWZ8Bc7duMHDBwyNhvtrm59fX9KQWfxgmrQ9l6z0cgO/rf02H+EhCACgyx4w==
+X-Rspamd-Queue-Id: B98A740009
+X-HE-Tag: 1790928802-214067
+X-HE-Meta: U2FsdGVkX1/keQQapzWPbh2mLeFBkMB7Y02sWWNLcVEpXMUVepSHjS+8ESMFQmOa6t6saVL/LLQ1vxFeFQ3fbQWrrkMdOMYfGdQhsQWfqBgE7gZWx0d0V2M2dYodkK5hrGzYqx5LmZ8k+eXyJdcAC7t+KM6F08bEW8DQP2Iu2FxGHwW0pW5Ik+uhXR2rYEOTDjn8+6YGpY3nMAH0w3Qd3rZJNlQ5baBwSJKfeccLfQsLRC889TFTw/+cy/BmOamljk8uVUtIM/Q6XWfsUgdfX5VjYO6eKAVWe9Db1h3DGWT7ld7t6CvXVKmw17iPs3oIagSMadZwum+DdztJ19roDCscRV0eB9JJ8T7M+3eWT77rThJB2YejCohx0KRJM7XQvp1rmNLhOyjCabPMIgltj2WJh4VKXzp0GRlz8A59Vc7E/uYvTzdtMe9I6ENRE9I9O++wkz4oC+BWMknqexByj/bk/AnXJ8+slGgMHgIpiBlXVRjAByYaV64/HApv/sojCQ+K5KHgWgNo0+we80Guww+eW3jcUoXRSqScaHYDyKm/ke6H6Jw6o5pGFaIeP+fXPjop7wiKOOWBhzzolVWxzREOYTEl/h/gI3zHgKN4BOosDFHBwjrrQrd3cTwhS6E09YPKniEWTOQNIaC3pYwC0OGenEkHzilqPIHIn8POHH+LYuefMLAttTF21PZodP7JaPU25GlFKt0iD5PDafvEZv6ipfdPQpGMJHMZ0pHQEc6BYvuO+l2VA+q1RHMgv+MCBQBFoITvZk3QW6YXGrXX7GaJtdVt2pHMJXpmGdtFmZC5SdYFjrA5zS4s9C/cjr77wfjEkQzBvnRFvKxQ3fhZuODuXQXvg4tBPU51pOgVoCi3jm+EsR4QLjZ+MnQce3UbLM59kPRpzjyX/7+wj9IJ1RdMSgCV20jGjNCgAHKmwF8NuX7Fwl1xuVUAZAawCZnUwYQXU0vPImaD5EVcEh+
+ avdmf/uu
+ FwtAQtWJYwTEfE1wFtCNvafFhnIlZG/AOKpAzOZMPGg3KNWwiF7iefVhJj5q2NxE46dd9KMVnKle4aNiYUTVur77GCX2j3Fi4Vqp23eE8THnRluVl5/0ySGsPoAj5m07BHOeYRsMUbBY7mGOdB8ELOyJE78ZLg2j4y9zQq1rfIU76jssLPO2lPmPNzDE3rOA6uWjupoLc3Alg/qdR0xb1Obd71flrjbS/RuZWmcZOhWeqenhgy2DTIt5zESGl1Cvd1UJmNQbhgWqIM2loT9DPErAYAKPut6o037MbKMDid6f6yTHPKqlQJnLy5uZTpf6xtUjEJqGI429au5xWF7aSYZxsYgIsyPnW9v+DaQvQpUBmu5wrLk/Mnnn884AROgK6nT7gw0UUQLbJt7XYiIpc9jVKTY63p7HqF5pSyFzFbkNJ7Agt0Xux+VWpiV6fEvDdElh+gGMkO7oeImCShDapj9GmEU7nKncZTiagWmRXPDTyv5Polr+dIywhm5yftbIqLxeoKFmXFElLL2BPWy2qQ6AmdOcj+SLS/+EaBCCDo9Y5ve5yWqQxUWwGHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,93 +125,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 02, 2026 at 08:08:44AM +0200, David Hildenbrand (Arm) wrote:
-> On 10/2/26 04:38, Hajime Tazaki wrote:
-> >
-> > David, Lorenzo, Johannes,
-> >
-> > thanks for the comments and inputs.
-> >
-> > On Thu, 01 Oct 2026 19:01:45 +0900,
-> > Johannes Berg wrote:
-> >>>
-> >>> I thought maybe uname could help but our LLM overlords tell me no.
-> >>
-> >> Hajime originally wanted uname to indicate it, but that caused
-> >> regressions elsewhere, so we dropped that commit. I guess we could put
-> >> _something_ back?
-> >
-> > systemd uses uname information and our (old) patch changing the format
-> > triggered the regression.  thus, we dropped it.
-> >
-> >>> It pointed at something though.
-> >>>
-> >>> In fs/proc/meminfo.c:
-> >>>
-> >>> #ifndef CONFIG_MMU
-> >>> 	show_val_kb(m, "MmapCopy:       ",
-> >>> 		    (unsigned long)atomic_long_read(&mmap_pages_allocated));
-> >>> #endif
-> >>>
-> >>> So MmapCopy in /proc/meminfo tells us definitively, weirdly enough.
-> >>
-> >> Hyrum's law and all that, but I guess it's not highly likely to (want
-> >> to) change :)
-> >
-> > a runtime detection is nice.
-> >
-> > scanning /proc/meminfo might be useful. although it requires to mount
-> > procfs (we can actually skip procfs mount as it is optional) so, this
-> > is not 100% portable.
-> >
-> > checking ENOSYS like syscall(SYS_mprotect) might be useful but I
-> > wasn't sure if this is always the case of NOMMU or not.
-> >
->
-> I assume there are plenty of other mechanisms. Like testing if fork isn't allowed.
+shmem_parse_opt_casefold() stores the unicode_map returned by
+utf8_load() in ctx->encoding. A filesystem context can receive the
+casefold parameter more than once, and a second successful parse
+overwrites the stored map without releasing it.
 
-Yup that's an obvious candidate!
+The map is also leaked when an unmounted filesystem context is freed.
+This includes the temporary context used for remount, because
+shmem_reconfigure() does not take ownership of ctx->encoding.
 
-You actually need to check for both -EINVAL and -ENOSYS since, of course, we are
-inconsistent with this.
+Reject a second casefold setting, clear ctx->encoding after transferring
+ownership to the superblock, and release any remaining map from
+shmem_free_fc().
 
-Some nommu arches specify __ARCH_WANT_SYS_FORK unconditionally for both
-mmu/nommu variants meaning you get -EINVAL in that case:
+An unprivileged user can repeatedly create tmpfs filesystem contexts,
+set the casefold parameter, and close them from a user namespace. This
+causes unbounded kernel memory consumption and can result in a local
+denial of service.
 
-https://elixir.bootlin.com/linux/v7.2.8/source/kernel/fork.c#L2830
+Fixes: 58e55efd6c72 ("tmpfs: Add casefold lookup support")
+Cc: stable@vger.kernel.org
+Suggested-by: Gabriel Krisman Bertazi <gabriel@krisman.be>
+Signed-off-by: Kazuki Hanai <hnkz.64@gmail.com>
+---
+Changes in v3:
+- Reject a second casefold option instead of unloading and replacing the
+  first map, as suggested by Gabriel.
+- Reword the commit message to describe the remount and close paths.
 
-Otherwise you get -ENOSYS because it's not defined.
+Changes in v2:
+- Keep Fixes, Cc, and Signed-off-by in a single trailer block.
 
-But fork() -> -EINVAL or -ENOSYS = nommu, then just have the child quit and
-etc. should do it.
+ mm/shmem.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-But then that'd need some C... ah fun :)
-
-Crazy to me that we don't expose it in uname...
-
->
-> > My original attempt was to use include/generated/autoconf.h; with that
-> > we can omit environmental variable or command argument of NOMMU=1,
-> > but gave up with handling standalone build/test case which might miss
-> > the generated file (and complicate the patch only for the NOMMU
-> > detection).
-> >
-> > So, specifying NOMMU=1 is my previous, though dirty, conclusion.
-> Let's avoid making it harder on users by doing some runtime detection.
-
-Yeah it'd be preferable.
-
-I see a bunch of usage of procfs in selftests.
-
-So can we just please require that the selftests have the user mount /proc, then
-the /proc/meminfo grep is the easiest + quickest way.
-
->
-> --
-> Cheers,
->
-> David
-
---
-Cheers, Lorenzo
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 848316eaa7f4fb..1bd004c3dde20b 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -4509,6 +4509,9 @@ static int shmem_parse_opt_casefold(struct fs_context *fc, struct fs_parameter *
+ 	struct unicode_map *encoding;
+ 	char *version_str = param->string + 5;
+ 
++	if (ctx->encoding)
++		return invalfc(fc, "casefold parameter cannot be specified twice\n");
++
+ 	if (!latest_version) {
+ 		if (strncmp(param->string, "utf8-", 5))
+ 			return invalfc(fc, "Only UTF-8 encodings are supported "
+@@ -4998,6 +5001,7 @@ static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
+ 
+ 	if (ctx->encoding) {
+ 		sb->s_encoding = ctx->encoding;
++		ctx->encoding = NULL;
+ 		set_default_d_op(sb, &shmem_ci_dentry_ops);
+ 		if (ctx->strict_encoding)
+ 			sb->s_encoding_flags = SB_ENC_STRICT_MODE_FL;
+@@ -5095,6 +5099,9 @@ static void shmem_free_fc(struct fs_context *fc)
+ 	struct shmem_options *ctx = fc->fs_private;
+ 
+ 	if (ctx) {
++#if IS_ENABLED(CONFIG_UNICODE)
++		utf8_unload(ctx->encoding);
++#endif
+ 		mpol_put(ctx->mpol);
+ 		kfree(ctx);
+ 	}
+-- 
+2.53.0
 
