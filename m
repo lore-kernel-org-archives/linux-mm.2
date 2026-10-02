@@ -4,120 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A783CA5FE5
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 20:05:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C47E6CA5FE5
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 20:22:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C61A86B008A; Fri,  2 Oct 2026 16:05:46 -0400 (EDT)
+	id A0DA86B0088; Fri,  2 Oct 2026 16:22:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C11D06B008C; Fri,  2 Oct 2026 16:05:46 -0400 (EDT)
+	id 9E5C56B008A; Fri,  2 Oct 2026 16:22:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD9BD6B0092; Fri,  2 Oct 2026 16:05:46 -0400 (EDT)
+	id 8D47E6B008C; Fri,  2 Oct 2026 16:22:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CAE46B008A
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 16:05:46 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B5935C0525
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:05:41 +0000 (UTC)
-X-FDA: 85278766482.20.64BA471
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DF42610000C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:05:39 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dnmTRCXP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of dmytrokoziuk68@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=dmytrokoziuk68@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 622F86B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 16:22:21 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9920C0525
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:22:20 +0000 (UTC)
+X-FDA: 85278808440.03.A1F9CC3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1BA584000B
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:22:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lrnDNug5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790971539;
+	s=arc-20220608; t=1790972539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NiaV9pLE/UyWnLNPpNRp8NShsPX1nhmz6PNg9bUI4ZQ=;
-	b=d3Zc9apmmi4jWdx7TmvqlcPvem6Zs2x6VHKfDruYxJzpONW3LfD7GvwVkH2FE7ljWjaVF4
-	FR0v/qAikWDyA/jZx1wG+iNR8fjMwaZat23pKV5dVviVSS/PYkeuTycNI5nv54ehjcu3sF
-	fqEgfu8Nzzoy53HG3Uo8HvuuZtiVwW8=
+	bh=Tmq0KD51zkY3WuDYM8F+lipJday2wPv7c2igNCkh6ss=;
+	b=QnTbOBzIUaoZzxwj9T3jVFek8LyWApBtKYBCRWcTf/j3B8A2Z0L96Kv9lOyFqGvts4NpBW
+	wyu6hyUmo96MN5TCVdCFlO19b53VQl1kttgIGBTqVTDYQeyPe4flD9fOMqvJMysYqDlqJ2
+	EcbwJwvdkTZmobtK9AoA1/itfqfOvuM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dnmTRCXP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of dmytrokoziuk68@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=dmytrokoziuk68@gmail.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lrnDNug5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790971539;
-	b=7yd4hjdJLskqumVyuxkMIuGCkKCausIZ99V1H+7Lorg86xdRVUjbERK3gVzM2wd4rfwH+0
-	daZ6mhLOZbVr8Irg3jGw0qEIq4PLlfesn1ztAqM9VQGMXso4vFoEcmsCTHgMsTytJRaCBB
-	fX3OxbgS8KVupe30BM77SqMhO8MyZBE=
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5ba3adf78f5so277255e87.3
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 13:05:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790971538; x=1791576338; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NiaV9pLE/UyWnLNPpNRp8NShsPX1nhmz6PNg9bUI4ZQ=;
-        b=dnmTRCXPEX/S2hpxWlETZpzCxj612jcWAofzABI132di9jMsIKtXScdog4uQOBJ9NL
-         YRdM7ijEXxIJzSZYzjbsfcFZ/85084yEUKIvMI1xok69Z1edQqPl7Pr8iKZ7VB91Hetj
-         +Q2cWGeD3+L9fpEVlbqPsDZnk3AlL0SaFScWQ0I37x2u9cv2I7sa1Qb9EH14xTuRuBIg
-         Ekj/fw0vRapVlFeNWqBBuWcFnHUEZMOrzW5gbSx87owENfi24rhqCPIrQMOj/5MI+xuo
-         xpoA2CiHGGr+S5Eo/VTVVx8mT04wwAaK/qPAr+kdwEHQt3K8qOeCGy6dQvija2FRan4C
-         lnoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790971538; x=1791576338;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NiaV9pLE/UyWnLNPpNRp8NShsPX1nhmz6PNg9bUI4ZQ=;
-        b=2YMaJG5WDRmjw9eODiF6YcprY4kB6MluwLvwqdc7NKn376PRlpNr4I0PrWVR90D1Vg
-         osQAVta5yIUzy6WQaoH3+ABRiSBW2wVFq/GDTWyzPWmp0lodSvz85FX49r1BXYaZ8xFu
-         WqwePlDojgoeXnIbCrcyADJCbK5MmfdcFJfTzhrJ8ER60O/YzjB6kQOYEbsxQ0ZuVBB/
-         f7CWwwWpGW6FPP61VHExXmP4A0gUTjDnlAeIYTdq7Z+8g2b6AE3+KS8K8Zo1MFm7Rt7T
-         ylwypz337Lf5ybteAm5raNPpYb7JL92a2sahS8W0oBoFboUmGXAjvNGCiiWZ0uOgRbs7
-         yoqw==
-X-Forwarded-Encrypted: i=1; AKwUvByKXdyj03XFj19UTEXAQmpXP/6CFV8LocBN2zcmLijGc8j9kvKqTC9rzf3uODFdfUOZjcPi0w4jmw==@kvack.org
-X-Gm-Message-State: AFq9FYKedq5xNxRZIxb30HF5xG106lgzStW+M00/2soUm5QksPTvrX5a
-	kFXDJU15Wqk+Z32/RqvC/OKAFlGLjUiDzLm9Q9AReEId9bdiWE4ljyEB
-X-Gm-Gg: AYBFou1r8/5FhHxrLtfX527vk22Cb6Hk0AUJmlIcWGCApPWbPm3Wt77w6I9/vuqCzfb
-	ilQpaB7DsEMiEGcDB8o748Ht2dffMAzg0KvAYaLiDeF/fZlcUAfeQlcsuUIoS+wmKpsSMMdmuhv
-	5zSk0Hp4kIX4irekrOJGilYyPYRFfOyjkIWeycC7GP+Gi8X8RbOMUnHupsc/K0kuCkyHvRaiRbN
-	JIqgErrOefxLt9Mk6VyuwX+qaykap6QIfZxyCPbmlsxNKJKzXsxV8ofnxGcmjBh0vS+7FrAdKiV
-	QtlqZ+07OTTeuhvoZY9IZbEyiP4MFtMaCsZmBJE4zP6VD63vGYnGkJTeVXfVVUQg2Sb1/gcO36G
-	8pDiMK+7ZWqiMEFYE2gqMKAFCaqrNsG974wcj/KHaqmOJdPfTh1TSkzNzsA4Y1yP2e/KiF7vtpL
-	osTiS9eRYrioflaPNaCRrLfMARotN3IrTBRUHjSpiWHp7dDqQtXD/9miKPC8W/19ltfVq+5fLUj
-	AHqH8qT8qoryAQj6tyUr9yMNXIzj4VlqfxcA/YukbsxZfgMiJscjrn4OPgCZOUN2G4Rr3PIcaPG
-	5Ow/nEDUs+PFvE4y5fPIqKW+jKaKqIuJSGcif4k2y9Fe+7FsMZxZblJCYEaYFbc=
-X-Received: by 2002:a05:6512:2347:b0:5b8:e87e:cafb with SMTP id 2adb3069b0e04-5bcb5472174mr218939e87.58.1790971538301;
-        Fri, 02 Oct 2026 13:05:38 -0700 (PDT)
-Received: from localhost.localdomain (2001-14ba-a052-b900-354c-f1dd-ffbd-a9f2.rev.dnainternet.fi. [2001:14ba:a052:b900:354c:f1dd:ffbd:a9f2])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bb7c78bcecsm1018388e87.15.2026.10.02.13.05.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 13:05:37 -0700 (PDT)
-From: Dima Koziuk <dmytrokoziuk68@gmail.com>
-To: glider@google.com,
-	akpm@linux-foundation.org
-Cc: dmytrokoziuk68@gmail.com,
-	elver@google.com,
-	dvyukov@google.com,
-	urezki@gmail.com,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] mm: kmsan: fix ioremap error cleanup
-Date: Fri,  2 Oct 2026 23:05:08 +0300
-Message-ID: <20261002200508.546-2-dmytrokoziuk68@gmail.com>
-X-Mailer: git-send-email 2.45.1.windows.1
-In-Reply-To: <20261002200508.546-1-dmytrokoziuk68@gmail.com>
-References: <20261002200508.546-1-dmytrokoziuk68@gmail.com>
+	t=1790972539;
+	b=c6pkbwBEt0pZ9YorFyXaszxQnWV84Ads6tL9NgVFsozNNyRNCtrBtdmUfhFhPM2TyR5MOU
+	Fvk0FUIihc1wtDi1zhpxRj/osl+uSZC8s6G0/XXLGCP4OEoa9vA5dkMJccbDiwNcJFFTIR
+	eKpZxApCwqSbXTuvgRMs8l1+Vx7ypu8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E088860AAF;
+	Fri,  2 Oct 2026 20:22:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A151F000FF;
+	Fri,  2 Oct 2026 20:22:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790972537;
+	bh=Tmq0KD51zkY3WuDYM8F+lipJday2wPv7c2igNCkh6ss=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lrnDNug5W2wmkcPEA12cNCAar5kTG+xYxqc7DzfnCpC/uU1FsQC5Oj97vOBX81Kd+
+	 oSTnfyUkUDM5nqOAs/wLkekxjv0OcKAzL0Di4FXZmS82+1fZ9CE0ixtzqLgJtSuGS4
+	 npQshm5RhOuWRURl59tBbkR5w7+R6N5KKND05LcabkkdSmtG4DKmzwdVMC7tM07DTF
+	 9hw5tHcn0Q1sM3W/FZ1n6dET70++/wST4z1PEIkTZIiUKAPRXHlwt3wGk/Xm7VMJcz
+	 X3hpDDnAL/nWs1K5LsfPw998DgRDepcUIoDa32d3AcN8mm2Zp8pF+DeMUvoCtwUhQy
+	 rmKMhfTtXOzQQ==
+Message-ID: <7bd2b824-4c91-4378-a817-d5ce475ea84d@kernel.org>
+Date: Fri, 2 Oct 2026 22:22:09 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9shjxi1qsobaoz5ygsaxxo61n43gua1h
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
+To: Johannes Weiner <hannes@cmpxchg.org>, Baoquan He <baoquan.he@linux.dev>
+Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+ nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com,
+ yosry@kernel.org, shikemeng@huaweicloud.com, chengming.zhou@linux.dev,
+ linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
+References: <20260916101929.149106-1-hebaoquan@kylinos.cn>
+ <aqrHjfHwyEtRIr5S@cmpxchg.org> <aquWKJoP5JLP8Ci7@fedora>
+ <20260917131712.GA1344@cmpxchg.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260917131712.GA1344@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: etx9niwya64sx4ngb1x3k8qn4ib3py8z
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DF42610000C
-X-HE-Tag: 1790971539-943745
-X-HE-Meta: U2FsdGVkX19TrOPPAKqLccbZxylBCKI4lMimDt0PgThvnDCi+vGmE2eos/OgZHkd+MyFZ8oqx67/i3Vkr2SmffgLJGiktgCcpGNUn4BsAye1qpB0NVjxCUXI24lNyc7wF1RoGXCBYVM7L/wJlhLaJLB1GBHtZ45duAHKF70YmYKmpFT35mh660u+BH6BOyFzUPlywt8E5f6KriePIuzxmmYL1/4Qd6J3jOfhlmIpaiKLxDxHUlssUek049+aAxJYHi1TuZVBu6yK2z9i+on5oHwM62hN1DXfPC6G6X4tSwUawYcbfLEV1tUoxDQWHA4O43HKIlE/fDBdzIpSoxF04XkQiznmE46DYqc+HBhro/+DWetbmQCDi0MRoS9YgtVVzC9VYMhlnnBZAW6SCXnmSCiKO0zORnzp3TvJgxnYOmgXItdLV7OFdI89RuCTVd9fAWboEQAPdosKgJhGI81l0AIn5k3k14khFHQetFa8M167GZKK+Vw6W9WrAT2Y9j3OX6L3zxbmtcnccjTxoQmdvbEGV958pOckz81NI+1R1ekOlJZyg1HD02LyoWHXYk0aU+dgWdxLS/WmZt41CWT9Wz+1bXCKPfNE5kn6ILHVDLL9I79F9QmJSLDUbUFqyhqw6LvTzuElDvWQLKrbhXoFwfEHbFIpVYbN3MLQ4o4CzEja5x1IwwYThiHVzegYX3U1OEYhJcOxtxZHjSHlOueksmQB0OgsKkei7GCmX6yPuk4hgeXRz1CkhbfDyRL4suVsKXjS2lh4q6ZU/d110rdLIAKyuWQ0EG4t2V7xX+Qe8eU9A9XQA/XFG0ckwegdtejUHLb5ky3VBwXu1Jvm/D4hsI3du5e9y4lSY+3O2lTPul0/TSx7Lr+Gc11wm8lJEVe45ucmy6/sx4jGdopIohB5Jdd0xy6STM3VSVVQTorzHYYaXz+3P5+UHEW9vgs5CNNiFhtd51TECqTHZ0UKtgR
- y0D+/fau
- V6C4Z6dS3OmdMBj9ZTZgXX+c3biC0+70Z9JRKpxSezFmeW2qNWjfJHfmZMHDo2TwbnPB0Q8e8fwCgVVjV4ARcnP+agRa270PNUSZZOO11bSZCv7rTqKdEvxvn0y6rKO+ecm0W3RQMb3WGCisbwguzitpceuQve3rQBEmjQ329fcStv4JqZJtW/BYUFBLfOLBFUXfNhEi/8q3hB1W/2+dyyD448tdidK/RVYDS5RPH1kO+WG4qSzuZE845Jf7pOAHuVJRDHWJ3l3WXjWBL5HJotjxP+SmTcQislC3AP0sYYKp7TA1c2q1b6ExipxCfjE9kGVDWaOtlI/sruoukyxHA2X5yLp+nQlGCqLwgIAJPDsBgmSiwatE6qPDuAe4NB37M3amtd9kAw3+KeDkR1tpUK5C+I1lXeqH9xIqorPZxrmUjA1/UYTj9hwPvY9rbLMQj5t09
+X-Rspamd-Queue-Id: 1BA584000B
+X-HE-Tag: 1790972538-178349
+X-HE-Meta: U2FsdGVkX18TDIPo8kLopTQKCdDNz5b8Uy4g2oetiBaPiOxZN7oqcI2R+imLtiOMQC+yHVaU1joraoFgcA/StsxvjTxvM82daHvKhTsK34LAwNUiHUSOLjbZkfcziheifAdRQCP/bEsWOlhXggRYgpuGCGXP5zXHkPhXwU+Yb+ZIlmXP/Tcx4VCg2Ix09QtSuDEDkAljzKJ2MiuS9HSz7x9zT+y30nOC7msMCdjtQHS/yXaNoqacJTSEU2Cu3pN2vcVwadsU//6nr2UIfQQkUFxE7H01iHjhIpoJHo2gQZYggNItjYPcyEhlBTmCgM8c79bq3lhL9H0fisyOdIIJGzsa3uFBemIPmMYgtuOvWAGjXxGyFzWXrSmn5kcNlb8BJN+UkwyUf28L94hp5rWcU4fxE1csVWwnuf7/AU64INbGajkYlrNHycMPBl6piVNFeF2BUWN0TcK3cFWdMtAXvRiAseEE4WeStMZQN5y2zKdCWd3BSLZ6uonxUEan3rwXHqlC/EoGgksxzKuG/LlbIYp5II3pwXiBOuGFR2jVrIwGqoWNgpXbS/vRD5WCm5lWdMgDGdtYy+iHTXDiPtC/b4Gs4gTXJKWE+ZCMJ4Cs9brSVzFNAwnPoNPe1ijDzLlcKa4P3JCmoIv21fKk6qcxMPToXzQuUAwpF8VnRAAEN6laHl5UDUoCdGBn4RHX5IzFa3k/tiS40zYjU5JnynJFWKoNulupSE9Gm0tbXDQ1XZkE3g1ATcEbRQFH5E3z29q+EdfA6oaehxYUEhMd6QLdBmqhriK4sJPrquMVod1EBgHowXyEmiHRwRkNexzviL/b22IdhX83yglAqamfI8Pa0+Lh2eulOjJ29ioYFRaYx+kh61Wf7KzCTiZSzOBxLpdEgi37kcNrCMFGK3QZi6J7mOZkuUPCVgtbJ/iRqK+bKI93W4DRJ6TTkFW7+hyuyVEPmryF0yiw/yCF11aAFdU
+ TB6PoJc8
+ 8cpD8kGQLYdhfP1grplsUIBfGLZi86v9cGZy4A3fpJ/6a5Y/mLeNcD/Wn5CsSUWAx0SYgg4tYox6x/1jxxLhf0YcMmmYOrm8EtaOt2Aqf1peIYYPap03Aa7rXwkviJmGc2pU4ZsNabCuByCTOLinwE2Chyb+pZc1a+xy17gy7+4/J9oTK4a3//yhigyjDeJ2JgG7i2FanpYmx8thABKA6ZzLznVB+qDjZGhrASrKzXP2rxSBfkWiDTmOMplviHLK0RucxbSVnFUmzGL3wUpM+d4tIrI71ncRBiIvccppMCDoZ6MdA6itCf37y+iofmjuPxuM9yWh/v0rYUaXEktwFtIvsFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,115 +142,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Looking further at kmsan_ioremap_page_range(), I found three cases where
-error cleanup leaks metadata blocks.
+On 9/17/26 15:17, Johannes Weiner wrote:
+> On Thu, Sep 17, 2026 at 03:31:23PM +0800, Baoquan He wrote:
+>> On 09/16/26 at 12:45pm, Johannes Weiner wrote:
+>>>
+>>> If the swap maintainers prefer the VM_SPARSE route, I'm happy to defer
+>>> to them on that.
+>>>
+>>> However, from the cgroup and zswap camp, two stipulations that I
+>>> reasoned out in the other thread[1]:
+>>
+>>>
+>>> 1. You must not charge compression space as swap space to the cgroup.
+>>
+>> Hmm, I don't have a stance on this. However, isn't this an issue
+>> zswap/zram have been doing? It feels like an independent issue which
+>> should be done separately?
+> 
+> If you have 3 containers using compression space, and two of them have
+> writeback enabled to a shared swapfile, the memory.swap.* controls
+> need to work to manage fair access to that swapfile. They do not work
+> if compression space itself is conflated in.
+> 
+> Right now zswap entries actually consume physical swapfile space, even
+> before writeback. Charging the space is correct. But the whole point
+> is to decouple compression space from physical swap space.
+> 
+> This is not something that can be done later. It would be a dramatic
+> user-visible change to how the resource is categorized and managed.
+> 
+>>> 2. You must make the compression space large enough to be outside the
+>>>    range where users can hit space limits before hitting memory limits.
+>>
+>> We may need a way to define 'large enough' at first.
+> 
+> I've tried to lay this out in the other thread, and highlighted the
+> usability issues that result from hitting compression space limits
+> prematurely. It's kind of your call whether you want to seriously
+> engage with this or not.
+> 
+> But ultimately it's your claim that a static size can be made to work,
+> so it's on you to make a convincing case.
+> 
+>>>    That also means not allowing setups where this is possible.
+>>
+>> And the limit is only an optional knob. If the admin does not set it,
+>> the device grows to the full address space, so there is no space limit
+>> to hit at all. It already behaves the way you want by default. The knob
+>> is only for admins who want a ceiling, they can use it or not. I hope
+>> this would not be a problem for your use case.                                                  
+> 
+> No, I've laid this out already as well.
+> 
+> This isn't about "my" usecase. It's about designing a coherent
+> interface that works well with a large number of usecases, and other
+> pieces of kernel infrastructure commonly used in conjunction.
 
-1. If the first iteration fails, clean is zero and cleanup is skipped,
-   leaking any allocations that succeeded in that iteration.
+Johannes, I read this as a NAK for now to the current approach from the memcg
+side, is that correct?
 
-2. If shadow mapping succeeds but origin mapping fails, the shadow
-   pointer has already been cleared. Removing its mapping loses the
-   backing block.
+I've tried to follow the discussion on the other thread, but it just exploded
+and some of the things I read there made me rather upset late on a Friday evening.
 
-3. On failures after completed iterations, cleanup removes the earlier
-   metadata mappings without freeing their backing blocks.
+-- 
+Cheers,
 
-The cleanup needed here is the same as for iounmap, so it makes sense to
-reuse kmsan_iounmap_pages(). Track the end of installed mappings with
-mapped_end and advance it after each successful shadow mapping. This
-includes the current shadow block if origin mapping subsequently fails,
-while the helper skips the missing origin mapping.
-
-Run cleanup whenever err is non-zero. Free allocations that have not been
-mapped directly, and use the shared helper to unmap and free the installed
-metadata, including blocks from completed iterations.
-
-Fixes: fdea03e12aa2 ("mm: kmsan: handle alloc failures in kmsan_ioremap_page_range()")
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Signed-off-by: Dima Koziuk <dmytrokoziuk68@gmail.com>
----
-Changes in v2:
-- No code changes. 
-- Add Reviewed-by Alexander Potapenko from v1.
-
-I tested this series on Linux 7.3-rc3 under QEMU, 
-using ioremap()/iounmap() calls on the QEMU VGA BAR0. 
-All tested mappings were torn down without metadata leaks.
-
- mm/kmsan/hooks.c | 35 ++++++++++++-----------------------
- 1 file changed, 12 insertions(+), 23 deletions(-)
-
-diff --git a/mm/kmsan/hooks.c b/mm/kmsan/hooks.c
-index 24f71bc65896..a706666db097 100644
---- a/mm/kmsan/hooks.c
-+++ b/mm/kmsan/hooks.c
-@@ -186,16 +186,17 @@ int kmsan_ioremap_page_range(unsigned long start, unsigned long end,
- 	gfp_t gfp_mask = GFP_KERNEL | __GFP_ZERO;
- 	struct page *shadow, *origin;
- 	unsigned long off = 0;
--	int nr, err = 0, clean = 0, mapped;
-+	unsigned long mapped_end = start;
-+	int nr, err = 0, mapped;
- 
- 	if (!kmsan_enabled || kmsan_in_runtime())
- 		return 0;
- 
- 	nr = (end - start) / PAGE_SIZE;
- 	kmsan_enter_runtime();
--	for (int i = 0; i < nr; i++, off += PAGE_SIZE, clean = i) {
--		shadow = alloc_pages(gfp_mask, 1);
--		origin = alloc_pages(gfp_mask, 1);
-+	for (int i = 0; i < nr; i++, off += PAGE_SIZE) {
-+		shadow = alloc_pages(gfp_mask, KMSAN_IOREMAP_META_ORDER);
-+		origin = alloc_pages(gfp_mask, KMSAN_IOREMAP_META_ORDER);
- 		if (!shadow || !origin) {
- 			err = -ENOMEM;
- 			goto ret;
-@@ -209,39 +210,27 @@ int kmsan_ioremap_page_range(unsigned long start, unsigned long end,
- 			goto ret;
- 		}
- 		shadow = NULL;
-+		mapped_end = start + off + PAGE_SIZE;
- 		mapped = __vmap_pages_range_noflush(
- 			vmalloc_origin(start + off),
- 			vmalloc_origin(start + off + PAGE_SIZE), prot, &origin,
- 			PAGE_SHIFT);
- 		if (mapped) {
--			__vunmap_range_noflush(
--				vmalloc_shadow(start + off),
--				vmalloc_shadow(start + off + PAGE_SIZE));
- 			err = mapped;
- 			goto ret;
- 		}
- 		origin = NULL;
- 	}
--	/* Page mapping loop finished normally, nothing to clean up. */
--	clean = 0;
- 
- ret:
--	if (clean > 0) {
--		/*
--		 * Something went wrong. Clean up shadow/origin pages allocated
--		 * on the last loop iteration, then delete mappings created
--		 * during the previous iterations.
--		 */
-+	if (err) {
- 		if (shadow)
--			__free_pages(shadow, 1);
-+			__free_pages(shadow, KMSAN_IOREMAP_META_ORDER);
- 		if (origin)
--			__free_pages(origin, 1);
--		__vunmap_range_noflush(
--			vmalloc_shadow(start),
--			vmalloc_shadow(start + clean * PAGE_SIZE));
--		__vunmap_range_noflush(
--			vmalloc_origin(start),
--			vmalloc_origin(start + clean * PAGE_SIZE));
-+			__free_pages(origin, KMSAN_IOREMAP_META_ORDER);
-+
-+		if (mapped_end > start)
-+			kmsan_iounmap_pages(start, mapped_end);
- 	}
- 	flush_cache_vmap(vmalloc_shadow(start), vmalloc_shadow(end));
- 	flush_cache_vmap(vmalloc_origin(start), vmalloc_origin(end));
+David
 
