@@ -4,112 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2000DCA5FE6
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 22:03:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D299CCA5FE6
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 22:19:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17C9C6B0088; Fri,  2 Oct 2026 18:03:25 -0400 (EDT)
+	id A75296B0088; Fri,  2 Oct 2026 18:19:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12EC56B008A; Fri,  2 Oct 2026 18:03:25 -0400 (EDT)
+	id A25D46B008A; Fri,  2 Oct 2026 18:19:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0461E6B008C; Fri,  2 Oct 2026 18:03:24 -0400 (EDT)
+	id 93C666B008C; Fri,  2 Oct 2026 18:19:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D1E046B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:03:24 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 494FC1208A7
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 22:03:24 +0000 (UTC)
-X-FDA: 85279063128.04.D04D74E
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E5AF3160006
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 22:03:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=EphSt2mc;
-	spf=pass (imf08.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 71B826B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:19:51 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7DD3E160844
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 22:19:49 +0000 (UTC)
+X-FDA: 85279104498.17.86AE4E4
+Received: from mta1.migadu.com (out-175.mta1.migadu.com [95.215.58.175])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 63724140006
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 22:19:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BhepoCzX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.175 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790978602;
+	s=arc-20220608; t=1790979587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hpSfJ99S6gKPsbvq++cNkKIHi297uZ8Oiyydd+zHjdk=;
-	b=PTXwz70u2V1oCtTI+w8u555ez+CcsVlTJdotAgNIriB6EImac+elo92XIE6BSkQWbN2KP8
-	TWhQM4tVcstip7BKzsoFXri0tr/n/renBMWg6crPFgQYD1R6oDD3vvAV8V+fByQ0N2bc/J
-	0zk5t/uS8JEZPYVQV4H+qY9NkqmDwe4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790978602;
-	b=hV3eKBXhoeiqaWzkLisUyp0nrLLsQFMRbTcQyJ14hJz8o7sbDqEUjh4T9N1HVhrgNrRjmr
-	Qcx8YwOCjtuVLj9cGHFQ4vWQ3OdIi+2Dj7lrwbEIO1lrd2GppeAEo2qZXsWYRCAIRi2RaP
-	BeSCAXaUlJ/hgUoh0Y9+9T7jq/9R93s=
+	bh=o3waD5f3UCzgiqLjhyqBocfHo8Y3bHeLo3DYaNWFM64=;
+	b=GwRXi8F9XW2tuzN5qN5knk30uVJ3QiQNcc39ufBZtxmcWF76CzT+lM++yiDGmkhTuXabuG
+	IpfcMkHgM7HJ2XhC+DL7eGUCOclJBAFo6dhSWsufwJhW/21727fbO/Mww8dHcCZ4wMdyii
+	d9qF85El2Vg2Wk1DIayv1G4N97Vy9SU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=EphSt2mc;
-	spf=pass (imf08.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A40B440E02A8;
-	Fri,  2 Oct 2026 22:03:17 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id B0CVUMO2Y442; Fri,  2 Oct 2026 22:03:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1790978587; bh=hpSfJ99S6gKPsbvq++cNkKIHi297uZ8Oiyydd+zHjdk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EphSt2mcqG1qrC3mM2Pat8NaXOI6O+z/vNpiFeKdBiCQHLeiwK2ZzI+7vIMBUAjWb
-	 mEkLhxV34Ui9pNSp4w4UAzme6ZRGFW/8P7dmg8G7XKM2MBYPNoJAqYkGYSv4SHYKBr
-	 Ig4IhYBzr5pHotY8HK81DW/A3VZ+z2u0gPZpF1LFyPcBlHVoiwMqJ7Z9urSqXUx4ck
-	 1lKXqZyhKfARwAcBwTmcQ4A4tvtbcZNuLwrrVuzlYynK/9LeA2worDU/QAPN0I87KJ
-	 pXDCsg/ABUDSI+aNc7ay6G5ptecZ9o1QI/Z5bA/+YOsrGBiechkCxeBrqJp8weVADd
-	 341Az8bhewh7JIn1ife2W50QBKTVgeQgOq4pOo05L+z+tbZmrrfoubDsrmL0/0Fiz7
-	 YOPYPeaR8e9gLPWVJRMrF0jdYh7dNcO7dpqbiJEXxIQCfgLaZfgDMag2pHf89i4YTt
-	 z5Xw3NdksJT/Qg3LcpMWk3sCA6O0OQP/plWCUyqhVewrcF3zZzxEmjtFGDKh4D7OAN
-	 JwDk1Wj7I8PCDf/tIDsunMFs/9mGfPPmlpq9U3aqutrlB9TEKN7T3qr+1HX35BmA5k
-	 xvRMoWl6Eb37T+QSMfyzltmWprqoh3sGUmg6AIiqpbQ/MlbPeYXHahosef5nY+jiqN
-	 K/4X69qvOhdFyTbMQvgVDAgE=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1C9E840E00B9;
-	Fri,  2 Oct 2026 22:02:51 +0000 (UTC)
-Date: Fri, 2 Oct 2026 15:02:48 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	david@kernel.org, Mike Rapoport <rppt@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
-	luizcap@redhat.com, pbonzini@redhat.com,
-	Tal Zussman <tz2294@columbia.edu>, Rik van Riel <riel@surriel.com>,
-	Matt Fleming <matt@readmodwrite.com>
-Subject: Re: hunting memory corruption bug in 6.18.x
-Message-ID: <20261002220248.GJasAqCFwxOK4l2TbS@fat_crate.local>
-References: <arZHp8hjYFXE8Rkt@gremlin>
- <arde/t0zQNEkWqi5@pcnci.linuxbox.cz>
- <areOeRwZOez0eHm7@gremlin>
- <arotyz5g6LozSjb1@pcnci.linuxbox.cz>
- <arwNebjYXyGqrp32@pcnci.linuxbox.cz>
- <arzRBv9ceJsxJppI@gremlin>
- <ar1Xl7PE2rcoT9h3@pcnci.linuxbox.cz>
- <ar63St2LBfCdyhwj@pcnci.linuxbox.cz>
- <ar9yRqq6cBxHDWKA@gremlin>
- <ar/F6+OUzj8qQ8YC@pcnci.linuxbox.cz>
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BhepoCzX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.175 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790979587;
+	b=eFX4F5UWduPjxeQ/4HhjIzjgKB90qm6R1YNgL7qZlKNtUsAOtI9vkWQsvQhKGtVuDKiFgD
+	oaC1jIltU2XQk6PUaUWjZ2qMO1IZB+TKR1L0GAi9PlwZXeJJUJp8pS7WMdDfneu/uD0Wfb
+	9GIzqiwgSKgGx3tzxwVp3I+6HuW8yqI=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=LIeypzTLxZFUaXt5ugGV2tt9HvkLhl45i2GZQQOzRtA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790979584; v=1; x=1791584384;
+ b=BhepoCzXqCV6+2aFXT/5CmOqdAoSYoHbqDxEnkF4m0Xvdqb6AWvH8+ChwpvQPvS343Ccuu3o
+ J42qH3XqO24w3NmnS8ix4Pe+F7ROpe3BO3JCMsVAwMHUneXcpT9E/0xfeCr/FHmKGgh1yIX2Baa
+ kARXwtyunWysy7L0cbgpXQKM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 2a1b46a32a9d1e0a;
+	Fri, 02 Oct 2026 22:19:43 +0000
+X-Mizu-Trace-ID: 2a1b46a32a9d1e0a
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 2 Oct 2026 15:19:38 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Tejun Heo <tj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	JP Kobryn <jp.kobryn@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Michal Koutny <mkoutny@suse.com>, Amery Hung <ameryhung@gmail.com>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Emil Tsalapatis <emil@etsalapatis.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
+	John Fastabend <john.fastabend@gmail.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, hui.zhu@linux.dev, 
+	Donet Tom <donettom@linux.ibm.com>, Greg Thelen <gthelen@google.com>, 
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, bpf@vger.kernel.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/4] memcg_ext: memcg policy through cgroup-attached
+ struct_ops
+Message-ID: <ar_fuYs_-qS46dVk@linux.dev>
+References: <20260921192559.2619635-1-shakeel.butt@linux.dev>
+ <bda525506b3fb3e61da28a112f28abba@kernel.org>
+ <arw4rjVkm2ob9ioL@linux.dev>
+ <bc6815954b8d08e75deadd43e1a2192c@kernel.org>
+ <ar2kvmCPR9q31V8M@linux.dev>
+ <31a871a07fccc99e953a2d633fc51edc@kernel.org>
+ <ar7H__jzvWVtqSn5@linux.dev>
+ <c1fdbe4f99352a102b38c7d131215d5a@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ar/F6+OUzj8qQ8YC@pcnci.linuxbox.cz>
+In-Reply-To: <c1fdbe4f99352a102b38c7d131215d5a@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: 3gz9uiqqk78yhnfurpnux3r7ghyd96mu
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E5AF3160006
-X-HE-Tag: 1790978601-703881
-X-HE-Meta: U2FsdGVkX19v63HvBUBlG0LnW20L/szEFGjh9CoI/xAExN1NGSWtT2WGMT1wXvf3FqcMYOmgVNrbailM77M847y5D3xlYSc2Oi7cRyO7hX3fKitciWNZV79NAFiSm+VF7hky3vAZWzFJDsqIhQQ0EHImbgoz4IepyO/mAhkSeChQRQpujGryIa7XSTWELt3NmxyNFYVT/F3ci2CUQH6OTMdZySDHyw9K3SC3xXdKt3v7nfcSt1anpQ4ypc4YiLWqmMCG+3R9iU/wI9yuxzMAOrZAQWospe51hpF2zk6G56611Tqs5tWAxVMP+YA1sMMhnMEtIqljRjb5/30k4ylX7J8fZ/fmveymCk+l2DLLKFJoMkEmkUkrKbR8FhrxIwbvpXNauF+G83rOA46u3sif3HTZ7eTXjpXS2tgLrveaNMWKGk35dsip9fDfHIpl455N0jt/nlqu2b58zv55kyd6pPC6OwPqmGUyfesLgGTBTT5SQJhWnDa2E5ifA45T/TpYyf9KCIaegoVqzKByGa2iGmWdictQxsNsrEWkHATRNHQLsgx6Y3rxy16uovWncVwXkWSZTRl5yzxNHIyiGBvo8zAlYhYmUuDoyGDWxiJxmBwRQdfHr8NH7nU1DVaWIkr3aE7kG1oOBJpbIvy3hWqRafVrKe3x9p3iwBCBt7xtWzVxo2phEFdEa4E3TvJ13N4AIbpZ/Fm39iWkcLlX40DN+5yCYbBJIxxgMsRwoBRVGe6fSBXVp2JI6PPrTlx93FzNcoI4WMIn9ytYG99TBWn177o51o0OajDLz5X9c3cDOHly9t37gQ1V3QSGYUyfU28TzOzvyCS5msSZwPE7J/sCtr1tYLq4e8RFGKdtX5Y8eoBmDvx4x2KXV3G1DGX5YkLr7V0LQaKC6agURAM19cGXkkykmgWcUDnCVVvWnhViaCsVltzFgM4gRGmHVpL4DBw5PJCmS/TAc4+5QLdgK/i
- ukJfo+wr
- FvQQQUPBG1VOOxXuYQ+3k4JIHbRFJKiZR3GzpIe6wPMSm2fMGnlhO9BvoTtQKkvNJOEe+bJZ+PUOw13IKeHlYEbenmDQUyYL6ZBw/vbyc3Z75TFl6CWkA79uRyWFvuGCOFIxdNKBe95czRWJa+NOlC0TiPa09Uj5x8tD5nN1EfYBOalcb1n3EJzFPwlvb034EVxLwJsaCGJGCyWC+cP4n15R2ZwEXB+fjgDO71/sBhYqWN1TUVs53EqNMKB8AabuH97u48kz0A5ktdLivmG/sYxA5udr4s+kPnrEfxKRsQ3/bP3g=
+X-Stat-Signature: pfynzwq7aw4x1qwaxwawiagbf1jozkrg
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 63724140006
+X-HE-Tag: 1790979587-467691
+X-HE-Meta: U2FsdGVkX19fQ0xpeF5E4k5z2usHyhqI99nsTKN+owQ/VBfNaomeEBeKSqUQpbdQ/B4tiZB4kAKU8kiSXDrXCRucpCoEZT3JE/fyGBd47H5FgiZbMojNN/R68H4SqWmMRcNX2E5H/8vbr8cbLcvYdS38KFQ+RVQHo4P0OlGT8t/RJXSnInXFZZyxWxfv+t4xoDieohCOn9E1CQxJ5yFi5pQlp8BGecx+eLpk2BD45fdYIDmTKp8L5kI6VTWSQWb3PGEPQhosg/3E9/hxl9TeUGkKyX0ECizto5fA0q2qlZ3g9yEqfDtRzVBJMly49HA6d8iPEcTCnkSLJG0QcycPjDpGFoNekFMPHpBZQv/JoUPwBas6f2r11zFdwKRcDgenTTyE0WOm2HE+eQGs4/IawJJJfzRQej7v9K+inJ5AhspBa3hyAEttT8IRcOj4FA799gsrwLt2RoRQMG34fj3w1INQEl1H1eo2/BW4PiHULUnkjJ9rmtmTCvY05W/ZLHYtLF3WtmvFxolPNNC8IE16SlZdgFGWBp4E0wmPUnbtxkczQkQqaDEU1HWcJFF8Dz2IKXshdpEs6qT12vMeLXVA+3oVBZ6aep1lCq9UesixpYdZE7LXZVd/34398YQ1Awr3YO2N8Xc1gh6H/vhQkoQ2Ng5G2Jvy++ySh2Ohr2HhEY+IFPlak8VaC9D6iiWm8usAxOnqPlKc473jZSUO52xqXrZ+oDIN11xpxYF+XukMnV+bHJ8Gzk12HzFZjYmzZrlOWYAqBT0oI1kTlcUT5goDG+VyXYn63Hx9jFAmEAHTvAodufux4PCAftltQU32OP82h/GvSw5MrsgKK2BbxRz00kNJExL6hYMU4KinKVppKmx6tlz3lj53ZWJTMWrJAJpT5aCT2NCZiPin4tvkKMYZV0sxTI49eQnpeOtYPkxJ/C48D45oVpAdnSqyLMGUGV6xx4cS6vn1jk+U9AXuu4U
+ kxuNnLVL
+ MYJXUI5c2pjusAu9uldsTcL6Mp/mmtYugPdYURNR+EitT62snK5KTGoDiXsozayemB6XmNR2fmxSkP8Yn2LoFajrumcd4ulAACEAgmUHucm+/bl8DZdA6vnNTy2blz3xk+oQrAl28h76my3VNauXnSlDgEza+r5EDsU8oQgiR4ryRhIzunJvERNar/50WRPPPxgP0TUHYEOWF5w9I7h9VEA/rhKIdX8KOlwnXit4QvQoYdG5Y9rhymfFxysd2jm3yBpk2I/SESSu7h5KrUm7G9Rys59vmqufGIrx3HgtLcr3Ndc52+8hy1N4o34x5/VefPiRKCxE0YIrmCGICPnw8yIpVGoCPzXtoQ1x6app3wBbJwhe6EHLpQ6SIhT+KXC6wbappEfLPRwh8Fpc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,30 +108,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 02, 2026 at 04:55:39PM +0200, Nikola Ciprich wrote:
-> I'll leave it running for few hours, and report back. If I'm able to reproduce,
-> I'll try recommended workarounds and report as well.
+On Fri, Oct 02, 2026 at 06:25:08AM -1000, Tejun Heo wrote:
+> Hello, Shakeel.
+> 
+> On Thu, Oct 01, 2026 at 03:56:47PM -0700, Shakeel Butt wrote:
+> > We are in agreement on (1) and (2) completely. For (3), I am fine with removing
+> > the sync enforcement, but for throttling points for bulk operation sites,
+> > I think we should only add them when there is an actual use case for that
+> > or someone complains about overrun from those sites.
+> 
+> On (3), if removing synchronous enforcement wouldn't regress anything,
+> that's fine, but why was it added in the first place?
+> 
 
-I'll venture a guess here and say that Matt's reproducer won't trigger on your
-machines.
+I added the sync enforcement to replace a Google internal feature which, on
+memcg OOM, allows node controller couple of seconds to either increase the max
+limit or let the memcg die. With sync enforcement, memory.high helped in simple
+benchmarks. However later testing on some realistic Google workloads, I found
+out that several thousand threads are very normal of typical Google workload and
+memory.high sync enforcement is not effective on applications with large amount
+of threads. In addition, there were workloads which on noticing blocked threads,
+keep forking more threads. At the end implementing that feature using
+memory.high didn't pan out.
 
-Just to rule out any other issues which got fixed in the meantime, can you try
-mainline Linux and see if you can reproduce your observation with it?
+> > Now, setting aside the default behavior of memory.high, I want to provide
+> > additional flexibility to users for (3) specifically. One specific case is
+> > letting users opt in to async reclaim instead of the other forms of memory.high
+> > enforcement. Basically, users can specify that instead of having their
+> > application threads throttled, they would prefer async reclaim to bring their
+> > usage back below memory.high.
+> 
+> As for flexibility, we already have a gradient of enforcement around
+> memory.high. Is the need here to make the shape of that gradient
+> configurable? Can you give specific examples where this is needed?
+> 
 
-If so, you could share your crash core along with debug kernels yadda yadda so
-that I can poke at it.
+The concrete example I have is the kswapd like async reclaimers (plural) per
+memcg. Kswapd is woken up on free pages falling below low watermark and then
+when free pages fall below min watermark, allocators get throttled (enter direct
+reclaim). I want to apply similar concept to memcg (but with right cpu
+accounting and more concurrency). 
 
-And before you do, make sure you have the latest BIOS and microcode installed on
-that machine.
-
-Also, where can I find full dmesg and /proc/cpuinfo from those machines which
-trigger this?
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
