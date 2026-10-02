@@ -4,136 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB236CA5FD4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 13:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D164CA5FD4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 14:00:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E8246B0088; Fri,  2 Oct 2026 09:58:46 -0400 (EDT)
+	id 2BECA6B008A; Fri,  2 Oct 2026 10:00:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 998EA6B008A; Fri,  2 Oct 2026 09:58:46 -0400 (EDT)
+	id 296856B008C; Fri,  2 Oct 2026 10:00:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 887856B008C; Fri,  2 Oct 2026 09:58:46 -0400 (EDT)
+	id 1853E6B0092; Fri,  2 Oct 2026 10:00:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 603D76B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:58:46 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C21F614070B
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 13:58:45 +0000 (UTC)
-X-FDA: 85277841810.23.7B83F98
-Received: from mail-yx2-f38.google.com (mail-yx2-f38.google.com [74.125.224.166])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C8877180002
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 13:58:43 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Banc+ofi;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.166 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790949523;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DFCDA6B008A
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 10:00:07 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 697A812078C
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:00:07 +0000 (UTC)
+X-FDA: 85277845254.07.E9F9715
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C0E9F80008
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:00:05 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lCWn9cDF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790949605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=65emBn6+gzyy/qLUsef1SnU8ScB/L39aQLr0XT7Souk=;
-	b=ZZIW0jK8/j70xv4I4wVaOtURYXzCIHmX05woks4r0sb5WZ+5EJ0Z7D5NL6TcOqCm28ZurY
-	/yFS1ze7c17kpPHvUNStW7de3Jcbs9zxZZUezM1k6QyOaGLZcmyQ22YRGfRlC2Lw1s8Eag
-	0LfW3LDG2YnEd38bzRSUpiYk71yqdB0=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Banc+ofi;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.166 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790949523;
-	b=gNSHwyU/wZiKyTmMb6JRrW+kTBn5gNHFH3l1ppNe+Yi9zOGt0EvQLC5ivXzrDI/kUctlOS
-	Mnp8D5HoEZKMCqI4yoMHp+aaSMu2sUJ76cuwTFDM861XI8H0WReDREm50eVTgIb3JS/LMZ
-	dcqFWi3kAuS/1m4JVwi0dY4UsNoh2F8=
-Received: by mail-yx2-f38.google.com with SMTP id 956f58d0204a3-67561cbafd0so3576319d50.2
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 06:58:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790949523; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UXtr3h0llW2ItEpP/oOh4/eRnvab4c97y9icND80BozOq20vA60HJ+fOTnHyBtymGY
-         uIHVhow+xxTSeuqm+iu/0eJVkeihapujSBszlxTALd2IyiAnzhUGuWUiPvbDXtcoaCwG
-         j24UXETk8foStj9b5YKwGjs5fefcLchKPvKbL+9Mwk9+x/CjLPNkSwPax/Z34c1Als4C
-         A9QZYo3GlFD9topb2Rk02o0mauycO/YvGc6Ycdx/5+bfJQtiMsUC+cxQOlhhd/OT4+gd
-         ESs0sdyaZQ1TmhYtSYESDUCOHHCgqsYrrcIUlilQZPWRHhMGSfKYkoTtJyKyC4oTPFZs
-         rEvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=65emBn6+gzyy/qLUsef1SnU8ScB/L39aQLr0XT7Souk=;
-        fh=8ogNNY3EXW++/tQHnWIKJJ4T5TIVcJpP3XrSxg8HA2Q=;
-        b=NZJrtdc+SBiTLJaACwU3GvlRAVjF32tAjlLby9kphI05MDPJe6xUUSNp99YZ2TvSi6
-         LKFbCoeETGIPM39Y5fsIMl5BRkqn03+JXGBVsF/2dQXuAd08hlZchJI9H+UmmyX9GhKJ
-         I5RGBgqp8qs3PTQ8wD8mJyKHBpjNaSjl08K3FyHqhkDdRrgrYWUcUB5qs+QpIsPVzhFU
-         +eSgfIaDNKqQh+mn7xcv0uFFsNm24lKDD/MkAXajAcbyxkWlu82Gxr2HQ0odG94LqYLI
-         i5T7e2zxOYTdrvC1eNjqvg4mSvbDzXMDRtqBkDZfuxbPlDT0O/xxnoOSksTFWIIF7wgR
-         ynqA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790949523; x=1791554323; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=65emBn6+gzyy/qLUsef1SnU8ScB/L39aQLr0XT7Souk=;
-        b=Banc+ofiPM2Kw+kmHYe7NVA5N7sH3aUCvUsAlKAIiJpQaNBSIEi2sCFrPLTdF3Vn11
-         wrvsSVoAveFkK+crC5QPG3Ukw3K2Zm99XzGlv3hbdcUrI8VM1Rpq/0nj6m9+A1l6o356
-         0rTLRoVNdimoBuSRGAhVLX2orjeBwg3BYwizBaCKCYEmiyq2NhC3d6Ul8DGnQKefv7sR
-         WQG8/WBB+j/HxCfPSBEICqUl7JoEShA7vsK5iqVSRqqgi+QzFzoa4wq/bZJnbnY/+XJK
-         zJ5xwZu02f3fqV9pZb1k92lTfZa2tRB2IOnqnTy8eup0S9Qw/A7GXo6kAmktR9Yj8ff7
-         QrWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790949523; x=1791554323;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=65emBn6+gzyy/qLUsef1SnU8ScB/L39aQLr0XT7Souk=;
-        b=tB2wGunZy0mUDhqLMFYr9f7czdyHjpyiZAwJUDeA7oIoNkNzxbrntK2AJ44xwTdhdu
-         306TPCbMJrE+Qz4jVZ7ojkMYefckSDKnfQXsN0x8PEjSzRtMwkw+E42lWbs8KwTO0Fvk
-         MMO3PEHz4oI36lvb1p0JdqjEOb/aJf6+uhQUdJJ4v4We1Edl78F9+1sRSBSAflN96K4D
-         NP0Cxm6trbceszxNcY60ahepNwzBnuR5CCqAkoUb3na5nI4xLWs7bd2rqYfZYcXQU5KR
-         4oa3scbcC5ijyTwfrqLWdy4jVHsFX4krZev7iixfzOAFEIZWH14kGOAzjzEgbsPuRFQ1
-         hz4A==
-X-Forwarded-Encrypted: i=1; AKwUvBzDTcJe8HQtPF00UBwxw7ZhyZg8/Gvdwu3Af6uhbthNnUjFGCf5AirBtxZKpllNnHj0NtvKNwQVcw==@kvack.org
-X-Gm-Message-State: AFq9FYIANylFKxqsLjvDL0Qh0q2jmvcjmB0G1nIdgWaFMEqHCymnIsqq
-	QfQVa3ooK2vTgvkTU1jfetXsYS2NB8O/fz6GCip50+1uvI/HMDblbrvm0TdulVYc3H9/pUFlRYb
-	XD8bAB0/3SU849vDJ33f6pDBKCfebxZM=
-X-Gm-Gg: AYBFou2clWb8xjg073s9RQzhmO38Sz4mGVr1Byb81gwxheZO4PMHVKMGfNDcoPnnnOx
-	XPOsOIanCqMr7EkjYfpIFdynp8w+WQUdlxKm2sCBJcR8aQObqXPbgCqC3vPIhwxi4DUZgPVb+z7
-	CP8AavmmKJSdWHkVJEoh3CE31stHd5+qM45cnZPIsUL8Dxuw9wHV0H323e2NQQb6FkjT/Ee5kpx
-	xXi2SNMuiD4TNtQCPog9NfzopxFdUpeQmTXfB+AQXyMiyOvbfQ9ad3WIuTYO4cqz7PBtGC6GXV8
-	wRdU9OtLvx+ausmTXjqnzKuU38YtMsXpDhtO7jXotBCUjPNri/59KG6JSS2eFrI=
-X-Received: by 2002:a05:690e:4401:b0:676:8939:3b64 with SMTP id
- 956f58d0204a3-677ac0bbea0mr799816d50.48.1790949522514; Fri, 02 Oct 2026
- 06:58:42 -0700 (PDT)
+	bh=JrJqgz6XBqr0tqvrPwuWu3EbEV7kVO9oxqBplkAGfJ8=;
+	b=FtaHUgRcLacYcIuGPxc1sOkA8pXR6GBFwM4xmv2+EtT6iANXty+AQO4aH2vii1e+tAndl6
+	kt+hFVtVvFsBnwFhp8RcvHVkGGZxMQBj4dYKTKVoHaP8Bx1tYtLgxX8QI/mBHwKiiayu3w
+	6893iq8Oe8/JjfnmjZHADsFhtsMeBi8=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lCWn9cDF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790949605;
+	b=JY0I2o959QPE2mIkpNr3noGhKIXqSHLm8wCkNDaCTZ3t8P8nc99nP3tCvVXeu1CmjNkHge
+	nOg3BDE4pGUC5lcXTdJR6Q9CnNiAk+0Ytbc597NrEvfmBPSrsO55HTIrq5M8CX/4Vqyg9o
+	kZEwmWCPFOsxU2sMv4Lnpe56fZYFKyc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 25F7460A70;
+	Fri,  2 Oct 2026 14:00:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501EB1F000FF;
+	Fri,  2 Oct 2026 13:59:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790949604;
+	bh=JrJqgz6XBqr0tqvrPwuWu3EbEV7kVO9oxqBplkAGfJ8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lCWn9cDFMJm4u1OpaqsPaifDSAYxVJq/u9IjTjW8VHaCqg4YN9JjvyLsXvAqt1QNy
+	 kXjsxEDBQVVSiIroM8JVx8jdbn5z+D3ALO2UR7Dt4oCwXbWLHzPI9wUTMqgwfU7Krj
+	 IZwSxYhHFuMLnMs6YBDMSwGCVs4RhT6DtJPo3InMpggMiPIDm38MOeNSzD7sXk23e2
+	 RWLEF3oKpPBtzGR/mrLgeY6/R3hf0OeJ04oxiHGDqrqFlOeh7T6MsnVwgAIQ5juixO
+	 EyqksyZMc+ThciZZQxHOhRow8uXbh8X8CGyWqfIqAq62o4uBFfPnhBhtXmHvotijgD
+	 QT9fd+pxtot2w==
+Date: Fri, 2 Oct 2026 14:59:35 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
+	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
+Subject: Re: [PATCH v3 31/40] mm/vma: introduce vma[_flags]_is_persistent()
+Message-ID: <ar-ux41ILjI1Px9S@gremlin>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-31-4583d8a23bca@kernel.org>
+ <9bbdf4e8-6984-4477-a183-f0b236047381@kernel.org>
+ <3557015d-23dd-41ef-9832-78b58587f3f4@kernel.org>
+ <81e1e5ae-0aab-4584-81e6-3fc9c2634d07@kernel.org>
+ <ar-b_Ug__TBzIZsb@gremlin>
+ <2e5a4e6c-8f9c-4050-8998-454b83f4823b@kernel.org>
+ <ar-luB9QVCRshtIw@gremlin>
+ <3387642b-c39f-4f19-ba0c-267bbd2fe91d@kernel.org>
 MIME-Version: 1.0
-References: <20260929143707.450805-1-ekffu200098@gmail.com> <nwwd35ikeinmyl5eug3eoon6h34eo7danw4pdq7htikzbgpmd5@4encqsdqicxd>
-In-Reply-To: <nwwd35ikeinmyl5eug3eoon6h34eo7danw4pdq7htikzbgpmd5@4encqsdqicxd>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Fri, 2 Oct 2026 22:58:31 +0900
-X-Gm-Features: AclHuK99PAjbPVOUVOnY-m9VdWF-KSfAYJ0dIQ4rDK8eHlf5zrIorPOdkVd96R0
-Message-ID: <CABFDxMGuCPNjDTKNBdtZkf8a9rh2D_tdwwNMVLqZYq43vMuK0g@mail.gmail.com>
-Subject: Re: [PATCH] mm/memory: remove unused vmf_insert_mixed_mkwrite()
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3387642b-c39f-4f19-ba0c-267bbd2fe91d@kernel.org>
+X-Rspamd-Queue-Id: C0E9F80008
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C8877180002
-X-Stat-Signature: ew7xid4cohkxgmjkxdoqeacecjdunzng
-X-HE-Tag: 1790949523-792444
-X-HE-Meta: U2FsdGVkX1/OpKhTAY6Rf/wgXzII/Vtxn+9NnHOO8Iy5kVhD6Ytl0r+lSCYwQIYw0ByC5QyMYjytdPKZWI7H9KA05r5tGhLpcT5XwZ1ALW1wKBd41kRgUwIftImycKCca+0AjWIpEWRTjBXe/88ikuCOgSqKjZvq8fcTJGWelCSGP9vZ/gS7bDwgxC+od++J2GhEel7RKTbYlvwLKuA+oSX5tbNsKbS9ErbQIyuy8eG73FmeBATc30k50O1Vsv9TswyUBwST9H5It0osicSUg2HsoTD0OPOjcyB2j2cS6k25FcBQOvIgg7Ai0O0wLU86PnfHyM+8L/PePaA1ZRqPDzYQZM8HVZY+1jtmQDYz+NGe3bwGmQnA42WUmELjuNDeqPifh0qrymUP+pskgCCnt0j4S6CTzfjFsUIZMtDKDXd3umflROBuQPLznAPItnQT8sMIp7cIBd9kCjAP+OvTb9PtcMmhzqTXrNobgHdTbUdhtKytYK4xgKC2j4rDaTiYhrPmxn07wBQKnuBVgMUrNlmGpHSo7kWh2xSRvOhy8+58XE3CLeyok1kaICYyghBRDyd376Nm79qAauE1l3V1+pJKK9LBhoEH1xrxKMKWMlHf+asDSsIDDmEYRg4ouY4CyaMqlVyA/eIOOAfa0fjaX2f24+tMoVrjzbAduk1X4CbgRL/BvV/Cxrfw28T6GOm9DmhZqDafkdd4CEQbxKvUTFnedjtWY/Rv0mD5YOeVzBTJQqrCfaow+oWTks7LKvE1KGo8mJF2tUE8bEjnIKB+MF63F0oQUtqE1eeSI/OBVRq1qdeBdyNX1AY8GzG/uo2YGACIpxXDBnl9bW8vdwQbU5eJwcsvdWb1QK3zApnBx0XdqF5XwsprPTpMV5MU40PqHLLsI9wwey8quZ/UEwSd4RpcdqUX0mI3q8+FccD3iyY8HlovAtznIZi7K4qDqMo8SsxGYdHmAEmHRpSQgje
- lFGNpH4x
- R5tVLUEIwroEJa2s4qS849bRt8e5jWhviZElOysUL0H1Q9JI0Ht9TdrXMCXIwUgshwEM9JqGwZoEwF+i/pow37T00+3AgaJVKt/cAyuX06oEn1vhhwZjUJbn8FzC+qknq8EQz7aVhAuImXyMp9SwBU7mhQuiQuornuVyVf17KfKYXVmw4C7oKuAwfoxeZJ52MN52VcksZapELMKNmN4LTfpYTuy4+GTCm5gBrAdpyQGQ/zLFdLWSDCeevF3d15WF1W1sFyWDl7SnMod4vbCsAm6w5TB7/FV6+ukgkzn8IE9VpDDQhWbcrL3c9rnWBafPYFIXGPy+hs1wgeya5MhrrfQgOE5uVBI71VgagaUUQnDNF6SZdT78pjPnBW5gU9UHEhaddIjyRZxrc+asGooLWijsq4BVPJkmnsBgRFmWzhRh26W3EIK60vJeZmJReZaDITG62hLlBkWzslAh5Y7WvN6DLDcxu7XwNLOzZB2jwYa7Rax0Koy3+5atg1Z6iQElPFbr5LhPEzwLiXB1pL7TgBDhqYg==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 4asuc3gwimpqwb4h347ipwt8ickei987
+X-HE-Tag: 1790949605-529379
+X-HE-Meta: U2FsdGVkX18Z1FGxObmIrGUkM+a6f4sdEA9H9xb397qTqau+MDteBaapFJCLbocV18HLxqs6dtFP8CQV2VAkcaWU2i/FaPF4u2MlEdKLQK4UDH/2RjFa2iUl1xwpK0ApIdm6H5e5NA/WwmvBUK/r5tDCm38U/4uP/1t+i3DEGf1A2QDOfU5yj06xg8W8wfMc1wUKJDAKvDZ/B9C1OtxRKTVjM9tth4ne3rtwIV9ivNmQGo2DK2u879QZNPwELIg4CpuCYa5svaBjDsRyO+5jaL9+5mIHN+MFNnxte6XIP/PafRCPZzmjCCPxtTpkSHq7Wo1lFaNv1+VQW5f+Ar1sgHPQzMQ4MjnQJ6vwV6Fk1GCXN1ijzUBafRA98eHCCQxEwB92YioGp3O1Uz1vYAJ3shu57krgNTqh80JvExnqRE9wZgX3naEDKC+rJJgaK0PfbTpl1v0nGHclur/zVrTkZSQr3aIH68g+i8+dNfgMN7xKEZ/7GqO7LaUxWfO8vuEv+e8bOTj3o+mnoHvxq36kJe4WNE6QsKNCgrv1XubhsNcdJxmgQhpOCOYb+Hq+R61Oim6Cz5QGwrd7vXpyU8t4QjmxCSa5WBW3aSKZow45KPIMPgJvbPf6ybCaGTreqQ1aaH9c1v/WEOYXDQtpAlmC0HF2KP8+8lxUyzCN1Fj0ga/tiujXfEfee9p3woeYH6z1is/2vFtP6Rda9XTO8chb2t7Sfpe5BIfuetQfRA26kmsmTAcrtNAhWpF5IKthunZSKfUTx7CyH4lkNuCViinzhv538DL3yKA+QRYhBbQuzsOiWAkNAHtnUzrvNA+v8aQ6myuLGjwLcXukYyuY6egNeq8c1DusiPR/Xl1PwI4qyUgxgf85PcI4sxuqEV7sPW4mEYHXLutfNj8YoA4s/dyBwGJszfvQb85TnLuvntASgjw4qjlir9uCBo+i59eWoP64FJhkuPVrYsFWm6Dhw8O
+ fNfyS/KR
+ IRcBWIaQhRaXF4wa4Tjss1yt0Il1jNYaUAaxpsSc0LdlrH1Ky70NOsqMA8s/pHaEz+mqGXrNMGDVM2zdGf2bX8YIrOJjsAcaaTUmsVjUkpRcSt5U2EPY+TCrhifZTyGnOCtQggH9p5c4BhR04XuGbXY34OGQuYFsCZg6HU4cZf9L3NS8nQlm3AJWvwCh/His+oD/oO1/LPwur/EEnF7pfnDOcdsJPZQCIg4PtBGdu30tl8oaC3tLbmCYcIJ7PP5mfjPrQxs3IaXK/H+vC9rZ/rJ2Gn0k7+TL4tBY4GXujQRX4p9hMGwjRA5t5FJx8VQmnhYIXip1DD6tye+m8MHxRtu3YzSvp3LIENKWJjqeGtRq4nKjBgRtTw317jaYZ4uSwvS2YyTwiG7zSlTc/T9Oc+HdSPXtTLV572qUwqdWGL4ttXFOr4MsrzaC3CAOw0uN0lsoVbPirz3LRvnBoj5uIa7KRpv39xlQuvzeMvw/4SNEJXVOytAlBfd82UMssMoJKEUWYfELGQ7l0w+D/Xum6Uxg2tw4TGFg29UWEC67bVHauVUK16NCsp/aiLxxbOPf1oGBgT5p3q8yuSjX3m4rMYWEhGUTaOGXrHFbx9ZbOAYUYgutCvm22DNfvPuoRHfxeo3OMJwZC7BtgPvoDW5xmc1CTFCIUkO9xEkmXSN1w7ArszH15Z7FMKO3v6jshWL9VqJ+OtizVPWg36ffiGWdwEB6n33efIzyIBL+HV7KgQNJNlhyCsdAwq/786+gUt4ZfLKD3WepqZ7IPvyKOhKmYcnvoEKKCwTDQXqKp6d1amlpTxhVosSaZSyN/s8woJ5LH0VXqkC6ymh4UzH/SnwCGoaq+w5TiSfon9Ddh4A/v9RAP8YlW25F3Yix6j8fNLx+Mfj92nyY1Oyf3n8X5JAGKTslTgHpEOmShYwMrC3DNcBKqXWANu3By5ypG4FyDGIpp2EmeJx1D1svc0wdxvDQHgdzCsx2Y
+ Bk9m38hs
+ QFZxzcEQyi84ceFU7M0+kXajy8+AiauO8+5iPpT2hLoJiuGWo/XCx5SXTqR6yjKkKtgx4qpLhM+C4xY0W9YsPNy94Ks/EsIGbDPa+utAr0TIMGekObOkfh1/bdHYwAzc6TPIqq4hZi3dHc/Ooj56ZqRv0WvZwLwhZaLb203Fd45PT/jxPkDpWsv+IC7IvDQhMGYq2cmsDQ1nURoi3dKM/mRY0X3LVe0ZdfHU3PUFoPCuPlEKLSqeS2TaI9F3XjtlLiqP8EBBHls+79JcoWkIMuzl3tzwsZ9g69TSEK9sMEnlWUo0i+DvOJTChQhAJW65gKuWWpM6l4CkkTOUiLBmmwZiJiBD06Wh2tgeerDuxxkW9IfuXKzuQ0El1siBTdxHDQBFHXTWI2QUhTBCIxhWBnu4Y0HylBjYUKGt6uiS4hgTQZnFF3wdPGbBIEiP4hWGMsnPJPkWiPSCBpAvU6DKUIs6seEIyW913TMnzgmcu3J3wI66ke1GINxIqg/YikpfJDMyWyTo9jmJK2wa+s4kHGimYMr6Nk/wTSln/VlWRN9WROU7203IqI1BsMEKlK0pknwcW4J4yCHdhVS+7ddX3Kol3aZTTOhmHEbabSak0g6P4hgFZwEkaMk3EhuJHhd1G/xzI54mCU/qd0w/EuhLzrYgPzxdFckp8KVB8M5FBNtp2b+6NsiuOp0laUTj9Y5hbdXDO+8oIfMLo093R72YSyNqEkEWHuog9QphWoHMhlNY290g5ywWCepx1PakL46X306yc4pEs3LmJKp50mHb0SxriZDWE3LsedzuMLbV6zpc7PP/22smtec+4SpLH84lOfVlyj7QHBDISnwhrdj9OchF9IPoWbAR2QZndEw5D9MBEwIpxQQBw+PqW+i0h1jopUmRNYZshg39KxRu2NAgbz72Vz01khmQSsWBQoSW++AM7MfIbBLxrPcSA1n0ZXlLVygBrw5zMP3uMQ20wsSJ2iDhc4Zea
+ 6vZWAzw9
+ 8Ny3d9vXrHHTox1t3/FSHTDvtpwaxiIFLWmGs/f6aOGpozfatjk8h/2rydA3RkJPcG0Isp5kcAYptPty1LZsr/ph3R5FYev8wg8eH6hTTJLDMSaMsAwoY7ei6c3xL8EvyNQzIAVB23iRYN7yj/8ZzL7kHFXnkmE/lJcX7hPwNBhj83srqNDln3bqPWlAs4+4eqIX4TUusZ4vz+1DvudEjOBYyj/Bal3Oa2uELuRUVqAUyBG4WUNgeL8pAn1EHiGE2VshD+5Oc7upnUL+X7pOHgXnWFsiFQ5JADDQI8QdbnWoYT36DgUxE7zyLfUtoc0nrNSfr1Q4z67U2cDHay2eGPUPMeScI7KPk0JZkQrMZ3LfnVGZj3arcjtjXeZjiyeYMiDyQ+i7dP8H9EPiZJ6pCLFaTSi32jLajNQS67Jid4h57N8ecUlTD7g4p2LvWwL1eo73f0XlgGp0uQ7YbTYtt+F8+5dD77uwNGL/zSR5S6Bk/J+BJoDLXS76GXm6uM4D4xn5E2OHaj2/A3R/CbN05w6R0IYPqInWQ1KItbpfEZEp3hz82dpigyOhaQLiYBge46WBtEN5bChse2XYT/uk7jDywH+sAAaCKp57Ti9yMAN92Js+uZl9LXPyEt0eIEH7+uFLyb12yCE7r6p9jvpfLhuexmbhH+aG6315yjWSnstbzCzjztSEiWXGldHBVNes/18TEr2yICYAT8HkIV00+9HGpX3wZl3sQm9VGeBqww1s2IugBf/9Is+Iquq/t0upbcIpnJ/ymZTZEMOMq2mhVy/PCJIvmszmyKIVqoG0k03XvT4bk0I2f4FGdCJwOCnBbykNkqwGaDm7sRMsjrYvVnZtbdJ1p1HNtH6HW2tXqTgOExCMaVl9LW4wWxfE8dvhlspcZ+igNkqINsKGdrnQGOl/rNZ7JpPC9xC6blv4Imfy17TY412arAFYhZuFvZls7oHpCjRNRlqws46wovVXlhMGneS/2
+ Jk1oYNUg
+ npgY/ypDFWQmqdWhhT20+PmXMtkR1RNwe8DaawBuSHIQrQ4RVn/M4jvTvL+p/6iBtfQnWcTQv7zxkXf0EJjNIi9tV5Yq+r5S+CvcYEEc4qvih4YjhMuGtDylYGnDFj4qx3X0I8L1LmTl29H9olpa/zv90IFcsBWuVOyzttbYwsVQJ2tYPL5Lv2MXW10P2aQs13F1aTVoGkosKjuszjrQsHyoCLIWYcmIBdtqESxXbwz7tEQVYVAoDv1rapgHxX5z8U4CLJo/LLEegaDocpTBF0LJz+nUyT5lBkvVaqxjeXXdWMH99xT4iewxEPFh7kKG9S93Hc4Zaiz/or5EVNsbSW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,257 +159,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Anshuman
+On Fri, Oct 02, 2026 at 03:11:27PM +0200, David Hildenbrand (Arm) wrote:
+> I'd be very happy if we could find a clear way to describe "this is what we call
+> user memory: anon+pagecache", if that could come handy in such a context.
 
-2026=EB=85=84 10=EC=9B=94 1=EC=9D=BC (=EB=AA=A9) =EC=98=A4=ED=9B=84 2:19, A=
-nshuman Khandual <anshuman.khandual@arm.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=
-=84=B1:
->
-> On Tue, Sep 29, 2026 at 11:37:06PM +0900, Sang-Heon Jeon wrote:
-> > Since commit 38607c62b34b ("fs/dax: properly refcount fs dax pages"),
-> > vmf_insert_mixed_mkwrite() has no callers, so the mkwrite argument of
-> > __vm_insert_mixed() and insert_pfn() is always false.
-> >
-> > So remove the function, the mkwrite argument and the unreachable
-> > mkwrite branches. Also merge __vm_insert_mixed() into vmf_insert_mixed(=
-).
-> >
-> > No functional change.
-> >
-> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
->
-> This patch is doing multiple independent changes and should be split IMHO
+Rather than arguing about it, how about shifting things to 'what backs the
+mapping' and something like:
 
-Sure, I'll address it in v2 as well.
+/* big long kdoc... */
+static inline bool vma_flags_is_mm_backed(const vma_flags_t *flags)
+{
+	/* hugetlb is a fixed mapping, but the mm owns it entirely. */
+	if (vma_flags_is_hugetlb(flags))
+		return true;
 
-> 1. mm: Drop vmf_insert_mixed_mkwrite()
->         - No users after 38607c62b34b ("fs/dax: properly refcount fs dax =
-pages")
->         - Unreachable function and should be dropped
->
-> 3. mm: Drop mkwrite argument from __vm_insert_mixed()
->         - With vmf_insert_mixed_mkwrite() dropped
->                 - mkwrite is always false in __vm_insert_mixed()
->                         - mkwrite is always false in insert_pfn()
->                         + mkwrite is always false in vm_mixed_ok()
->         - Drop mkwrite from __vm_insert_mixed(), insert_pfn() and vm_mixe=
-d_ok()
->         - Drop mkwrite based conditional handling
->         - Rename __vm_insert_mixed() as vm_insert_mixed()
->
-> The above improves the clarity/readability making it easier to review.
->
-> > ---
-> >  include/linux/mm.h |  2 --
-> >  mm/memory.c        | 76 ++++++++++++----------------------------------
-> >  2 files changed, 19 insertions(+), 59 deletions(-)
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index c038d06825c3..2ac734efd4ec 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -5008,8 +5008,6 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_str=
-uct *vma, unsigned long addr,
-> >                       unsigned long pfn, pgprot_t pgprot);
-> >  vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long =
-addr,
-> >                       unsigned long pfn);
-> > -vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
-> > -             unsigned long addr, unsigned long pfn);
-> >  int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, uns=
-igned long len);
-> >
-> >  static inline vm_fault_t vmf_insert_page(struct vm_area_struct *vma,
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 330cde31bf8b..1f83a26f8733 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -2453,7 +2453,14 @@ static int insert_page_into_pte_locked(struct vm=
-_area_struct *vma, pte_t *pte,
-> >               if (!mkwrite)
-> >                       return -EBUSY;
-> >
-> > -             /* see insert_pfn(). */
-> > +             /*
-> > +              * For read faults on private mappings the PFN passed in =
-may
-> > +              * not match the PFN we have mapped if the mapped PFN is =
-a
-> > +              * writeable COW page.  In the mkwrite case we are creati=
-ng a
-> > +              * writable PTE for a shared mapping and we expect the PF=
-Ns to
-> > +              * match. If they don't match, we are likely racing with =
-block
-> > +              * allocation and mapping invalidation.
-> > +              */
-> >               if (pte_pfn(pteval) !=3D page_to_pfn(page)) {
-> >                       WARN_ON_ONCE(!is_zero_pfn(pte_pfn(pteval)));
-> >                       return -EFAULT;
-> > @@ -2858,7 +2865,7 @@ int vm_map_pages_zero(struct vm_area_struct *vma,=
- struct page **pages,
-> >  EXPORT_SYMBOL(vm_map_pages_zero);
-> >
-> >  static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long=
- addr,
-> > -                     unsigned long pfn, pgprot_t prot, bool mkwrite)
-> > +                     unsigned long pfn, pgprot_t prot)
-> >  {
-> >       struct mm_struct *mm =3D vma->vm_mm;
-> >       pte_t *pte, entry;
-> > @@ -2868,38 +2875,12 @@ static vm_fault_t insert_pfn(struct vm_area_str=
-uct *vma, unsigned long addr,
-> >       if (!pte)
-> >               return VM_FAULT_OOM;
-> >       entry =3D ptep_get(pte);
-> > -     if (!pte_none(entry)) {
-> > -             if (mkwrite) {
-> > -                     /*
-> > -                      * For read faults on private mappings the PFN pa=
-ssed
-> > -                      * in may not match the PFN we have mapped if the
-> > -                      * mapped PFN is a writeable COW page.  In the mk=
-write
-> > -                      * case we are creating a writable PTE for a shar=
-ed
-> > -                      * mapping and we expect the PFNs to match. If th=
-ey
-> > -                      * don't match, we are likely racing with block
-> > -                      * allocation and mapping invalidation so just sk=
-ip the
-> > -                      * update.
-> > -                      */
-> > -                     if (pte_pfn(entry) !=3D pfn) {
-> > -                             WARN_ON_ONCE(!is_zero_pfn(pte_pfn(entry))=
-);
-> > -                             goto out_unlock;
-> > -                     }
-> > -                     entry =3D pte_mkyoung(entry);
-> > -                     entry =3D maybe_mkwrite(pte_mkdirty(entry), vma);
-> > -                     if (ptep_set_access_flags(vma, addr, pte, entry, =
-1))
-> > -                             update_mmu_cache(vma, addr, pte);
-> > -             }
-> > +     if (!pte_none(entry))
-> >               goto out_unlock;
-> > -     }
-> >
-> >       /* Ok, finally just insert the thing.. */
-> >       entry =3D pte_mkspecial(pfn_pte(pfn, prot));
-> >
-> > -     if (mkwrite) {
-> > -             entry =3D pte_mkyoung(entry);
-> > -             entry =3D maybe_mkwrite(pte_mkdirty(entry), vma);
-> > -     }
-> > -
-> >       set_pte_at(mm, addr, pte, entry);
-> >       update_mmu_cache(vma, addr, pte); /* XXX: why not for insert_page=
-? */
-> >
-> > @@ -2967,7 +2948,7 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_str=
-uct *vma, unsigned long addr,
-> >
-> >       pfnmap_setup_cachemode_pfn(pfn, &pgprot);
-> >
-> > -     return insert_pfn(vma, addr, pfn, pgprot, false);
-> > +     return insert_pfn(vma, addr, pfn, pgprot);
-> >  }
-> >  EXPORT_SYMBOL(vmf_insert_pfn_prot);
-> >
-> > @@ -2998,11 +2979,9 @@ vm_fault_t vmf_insert_pfn(struct vm_area_struct =
-*vma, unsigned long addr,
-> >  }
-> >  EXPORT_SYMBOL(vmf_insert_pfn);
-> >
-> > -static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
-> > -                     bool mkwrite)
-> > +static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn)
-> >  {
-> > -     if (unlikely(is_zero_pfn(pfn)) &&
-> > -         (mkwrite || !vm_mixed_zeropage_allowed(vma)))
-> > +     if (unlikely(is_zero_pfn(pfn)) && !vm_mixed_zeropage_allowed(vma)=
-)
-> >               return false;
-> >       /* these checks mirror the abort conditions in vm_normal_page */
-> >       if (vma->vm_flags & VM_MIXEDMAP)
-> > @@ -3012,13 +2991,13 @@ static bool vm_mixed_ok(struct vm_area_struct *=
-vma, unsigned long pfn,
-> >       return false;
-> >  }
-> >
-> > -static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
-> > -             unsigned long addr, unsigned long pfn, bool mkwrite)
-> > +vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long =
-addr,
-> > +             unsigned long pfn)
-> >  {
-> >       pgprot_t pgprot =3D vma->vm_page_prot;
-> >       int err;
-> >
-> > -     if (!vm_mixed_ok(vma, pfn, mkwrite))
-> > +     if (!vm_mixed_ok(vma, pfn))
-> >               return VM_FAULT_SIGBUS;
-> >
-> >       if (addr < vma->vm_start || addr >=3D vma->vm_end)
-> > @@ -3045,9 +3024,9 @@ static vm_fault_t __vm_insert_mixed(struct vm_are=
-a_struct *vma,
-> >                * result in pfn_t_has_page() =3D=3D false.
-> >                */
-> >               page =3D pfn_to_page(pfn);
-> > -             err =3D insert_page(vma, addr, page, pgprot, mkwrite);
-> > +             err =3D insert_page(vma, addr, page, pgprot, false);
-> >       } else {
-> > -             return insert_pfn(vma, addr, pfn, pgprot, mkwrite);
-> > +             return insert_pfn(vma, addr, pfn, pgprot);
-> >       }
-> >
-> >       if (err =3D=3D -ENOMEM)
-> > @@ -3057,6 +3036,7 @@ static vm_fault_t __vm_insert_mixed(struct vm_are=
-a_struct *vma,
-> >
-> >       return VM_FAULT_NOPAGE;
-> >  }
-> > +EXPORT_SYMBOL(vmf_insert_mixed);
-> >
-> >  vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *=
-page,
-> >                       bool write)
-> > @@ -3078,24 +3058,6 @@ vm_fault_t vmf_insert_page_mkwrite(struct vm_fau=
-lt *vmf, struct page *page,
-> >  }
-> >  EXPORT_SYMBOL_GPL(vmf_insert_page_mkwrite);
-> >
-> > -vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long =
-addr,
-> > -             unsigned long pfn)
-> > -{
-> > -     return __vm_insert_mixed(vma, addr, pfn, false);
-> > -}
-> > -EXPORT_SYMBOL(vmf_insert_mixed);
-> > -
-> > -/*
-> > - *  If the insertion of PTE failed because someone else already added =
-a
-> > - *  different entry in the mean time, we treat that as success as we a=
-ssume
-> > - *  the same entry was actually inserted.
-> > - */
-> > -vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
-> > -             unsigned long addr, unsigned long pfn)
-> > -{
-> > -     return __vm_insert_mixed(vma, addr, pfn, true);
-> > -}
-> > -
-> >  /*
-> >   * maps a range of physical memory into the requested pages. the old
-> >   * mappings are removed. any references to nonexistent pages results
-> >
-> > base-commit: 1c2b8d2725f84b43fabe3b3e9628c91db8ca6c65
-> > --
-> > 2.43.0
-> >
-> >
+	/*
+	 * Kernel-owned mappings are populated by their owner, and fixed mappings
+	 * have a layout the mm cannot assume ordinary fault semantics over.
+	 */
+	if (vma_flags_is_kernel_owned(flags) ||
+	    vma_flags_is_fixed_mapping(flags))
+		return false;
 
-Best regards,
-Sang-Heon Jeon
+	/* The mm has promised it may discard droppable memory at any time. */
+	return !vma_flags_test_single_mask(flags, VMA_DROPPABLE);
+}
+
+?
+
+--
+Cheers, Lorenzo
 
