@@ -4,96 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7F4DCA5FD4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 14:03:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E631CA5FDD
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 14:05:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB0C36B008C; Fri,  2 Oct 2026 10:03:39 -0400 (EDT)
+	id 4EC0B6B0088; Fri,  2 Oct 2026 10:05:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C617F6B0092; Fri,  2 Oct 2026 10:03:39 -0400 (EDT)
+	id 476196B008A; Fri,  2 Oct 2026 10:05:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B76F06B0093; Fri,  2 Oct 2026 10:03:39 -0400 (EDT)
+	id 33E4E6B0092; Fri,  2 Oct 2026 10:05:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BEB66B008C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 10:03:39 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2D474160737
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:03:39 +0000 (UTC)
-X-FDA: 85277854158.11.E6284BA
+	by kanga.kvack.org (Postfix) with ESMTP id 05D1F6B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 10:05:49 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 927251C39E3
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:05:49 +0000 (UTC)
+X-FDA: 85277859618.09.3555BDF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 85DF010000C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:03:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eKoc2jCl;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id DC401C000E
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:05:47 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BzL9+gmd;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790949817;
+	s=arc-20220608; t=1790949947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gWwfdqjbo5/JYZBSynfxpMN46VuFVrXGoHfSEvxFFA0=;
-	b=QA4apbV2Ko8CJz9z1S4d+Dzb5HPHZIF53OhzW92OxFqYp9+j+xrUN1DJjWxOh0PNcWOs/V
-	aI+SJR8jE/4bslJXAxnyCkzkWYN35sUXdwEicF+ezp2hHrF26bLcF7/5xj2IPl6SihhGZg
-	BzRZLm7kGcDs6QzCPJZO69IZ5hEJ9Po=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790949817;
-	b=bIw3tgyVZhszTTHuu8KGkGG8LNA1BCRN3Wh/EcB0eAa0x3R8S06J8cR0NSM8/TIWFFN8yp
-	Suec3isY342LIfnpRqHzONRzZGy7QZx1mkN6ZrXt/3s26DbQxAESi1xHmN23NRf+tUPD6+
-	FoAJaBGH3uVE1yKFqlJhJlFXk3jcC/Q=
+	bh=+FshdbFcRS26J+ImTe89KXGx/RtDW93OyZ3S0WO3Vcc=;
+	b=BYKDwpMj3eNlnFNkeVToNuIwxEF3KF3hUwLR3f6gPamI6V7AK6X5ktWo8r8a+5FErTp+KV
+	sAYi6sFEae+jdt932FaRi7JUd3E776D48hD4XzDp4da8C8NIZbPTSq/jy57taYQB1BRDc9
+	mjK/UUtInBNlBI4Jgc+rSsTfnODpV7U=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eKoc2jCl;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BzL9+gmd;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790949947;
+	b=orJO0EI28u6LHOrjl9H/AZzmcssuAVz1vDJrqSLTyDJq+xGNP9HKRNQTLB1+pAHEabVVrk
+	VV4lf8yYuAnx7uxVfWSLaDfPC8V1LLn/kdSpRx9UahmT5SPRJ72vJYtIrj5GYnDDEpWNv1
+	RzSu1ZErD4zUNKUBY86KgvKLOVajlf0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 111C060A70;
-	Fri,  2 Oct 2026 14:03:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF3D1F000FF;
-	Fri,  2 Oct 2026 14:03:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 657ED60A8C;
+	Fri,  2 Oct 2026 14:05:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9821F000FF;
+	Fri,  2 Oct 2026 14:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790949816;
-	bh=gWwfdqjbo5/JYZBSynfxpMN46VuFVrXGoHfSEvxFFA0=;
+	s=k20260515; t=1790949947;
+	bh=+FshdbFcRS26J+ImTe89KXGx/RtDW93OyZ3S0WO3Vcc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eKoc2jClDyYguaZFoi6WI+m4U2zVSs0I7XA5Umw1GJSBUKpkJBfkdyaGTEyorjZFX
-	 hNhl4DZ+INOhPFnqYhXqh+WoOJoer+Z89yZmf0ZxL7Lg97E9zZT3jm7Kc/CCCst9u4
-	 3vdDN37e2fvWz7cRsSuRKAWWE+71BpKefEDwbtH5p8nvU9/7SPLQ5xcdAU1Kq+t38B
-	 kYfTCTGnQTdOSuLsVAumxJEPwb0C/nKUOCc2hzySMbKg0cd+tP9TDxAuJe6kjiLtfR
-	 SpFVwzdKnr/RO2BpDaAfrCRUhoty+oZseiSp6sKMFtot99Cf3V8HQjj6lSuJRMbEZl
-	 zTHIiP77MOXiw==
-Date: Fri, 2 Oct 2026 15:03:31 +0100
+	b=BzL9+gmd9N6h8eSey50fAPxWVLPFEb/13hKgPmyMG2b2iMYVub1rGNlA8/cePHWyN
+	 oVL5TuXPNTZVMBgtPqejcdFfVtJWAg3LZGUxu9Y/VNwzFFy/Tmk4szJNhz2dUFCQci
+	 wYzuF3dOSVwmj83cuo3WaC/+hGVbOAY0qeeTw4jyXUiAw0eqYcZ9rGNPCOCKa15l57
+	 ikKCQJu5TBOoArLuRT55AtzXqSgf/JWB6BScEEVMgvpoPU0eHWPl60Jh56gKngGlWI
+	 hRx6x/swcOXYDU93xGjyOZ0N6922EFp+jQ+hQvQAvXRCdxH2jWv4glrrFwbHhGa2iS
+	 Lx4jJtPz48rcw==
+Date: Fri, 2 Oct 2026 15:05:41 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>, 
-	akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, peterx@redhat.com, dave.hansen@linux.intel.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzbot+49b1021becba70c1f3f6@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm: don't ioremap COWed anon pages in
- generic_access_phys()
-Message-ID: <ar-5iLzr-1LH09pa@gremlin>
-References: <699ae98c.050a0220.340abe.0d31.GAE@google.com>
- <20261001152524.171115-1-ngocthang2710.1999@gmail.com>
- <32fe40e2-854a-47ec-9d95-93e23f9a7af4@kernel.org>
- <ar9omYD3HcTDBpGA@gremlin>
- <c6253814-0cf6-48f3-8f81-3285466dca45@kernel.org>
- <9d43234f-93cb-4c86-a2a6-a3cdebf48f3b@kernel.org>
- <ar-Cq0YNpQ6_3fDG@gremlin>
- <494d436c-e3b3-4b65-8a6c-1059d9f468d4@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	riel@surriel.com, harry@kernel.org, jannh@google.com, pfalcato@suse.de, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, pan.deng@intel.com
+Subject: Re: [PATCH v2] mm/vma: don't remove VMA from rmap if pgoff unchanged
+Message-ID: <ar-53boTrPQijDUt@gremlin>
+References: <20260930-speed-up-inplace-rmap-v2-1-ac1aa19708aa@kernel.org>
+ <20261001154511.23931-1-lance.yang@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <494d436c-e3b3-4b65-8a6c-1059d9f468d4@kernel.org>
+In-Reply-To: <20261001154511.23931-1-lance.yang@linux.dev>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DC401C000E
+X-Stat-Signature: gtptjx1emnd6auxnc4q4y3touczzidym
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 85DF010000C
-X-Stat-Signature: 99mwr37mg3buxtozuowteoioa7cnjszs
-X-HE-Tag: 1790949817-275761
-X-HE-Meta: U2FsdGVkX18akaR/Dx/WQPAhh5eW/n0UNNJyccCSJDZIQV6oMad1Q1FK5eg8sauJUZST0uFUPUqSvCR7iJIHtafeg1buGE6Z79g55GcxHuxq7ViATYc0zARIvJwZQQKuV8v2v7zhJ/aLLM/J7jrkjN8JF9eBgE7gmnl+9F2b/fuBRhpQNTkjChmIxnh4+ALgMcHs+qHxRh4XBPyXF/zp7oPAOVVjmA/oieIwcLJ0eynB4g4vcGjx0gEbicsKEEOv/jqlF8zwoj4H+jKF0wNOvJzrPGZpDyjmR5nvSlZKvAgk2MrXr0d7VAHsSb1O5wTylniSiONNmjisjXVfSsvuyqf4jKP5qB1nOtBDRYiFHwQDmCtcFkNHXy1N1XQsurj+kXmX+/R5Rr/YKl+vjDGr11Nnlu1l55lQFGR4N7EDy79tVb5AUUYjtQhECEoH19WSNARg2X48RAGYLtKsLwyAIxh2ek+P8kYAx14EuikoxuXn3B0iL4CCaQWFj1u0cGaD98FNTHADb6TRMZegpsDCBzncW+d4GHaUiyKcnP1syfH049SaCCpVKa1Hhnxy2Lm5g2jl+YbuQEbxFxlAHa91AbeRf6o6tkA9TSpvCGJ8WHyJ8adF9tsXyqA73yYah9bh5UAD1LFKYBjgBGqvMnZeNhFxecI4kaqE/UmMzkttQ6MuezpgGZ0kJ/W7cj02Hfoa4TkmI1WOqx4i14AOYrO79oyQddnwd7lKKZeOqTA40pfSgmmYYKJVRIf3lYYec89IFEsScy2Cz6siKk0MIbzXe/mpBsg4Nx7wNaiN/F+daWYnzqj1q3VHa/9c4GJFoSUa6T2wbOyFE50F4qkLxqn7tqG61KCiBIfaFWmLwxteYENtA/IjA0u78PSfV0WxVT3CPFjcYal19h7/D3n8uQZI5SplNvZ7FcWkNoVmiO3SrM9fxPQZF+GCYdlI702GcVWQD1DvpUDiTngESW946KC
- n+c/tgBk
- eKEjbSGSY97FUF836KzBtwqFOeSeq09Sbowg15rU1wJGEDvrTtB8+ZbGYHcmqdlaVLTzRW3RTk6MfLfNKctpCq0AH+uUm8GDEFbMGPg+FwTIkZCSXASlrzqJNHls5jHIhz/ns5abrVht/FvTsoEYjTDu+i7lbNKk/uRR0oGsnwMherC2BTMYV55Mkz98WIGzyoeN1sonRpWQ9Eh/YEwRLOMwJpr/ogHejhR6W6HJz7m0jHeACEb7XmuPQKGUGNd25r0QWq46EcYQIVnNDbOm+Olw2q7w9yZs1ruhBhw1uAsWGVhgQ5mRWrsINOfbeKAzyVYBw3u7HAHtAgMqORw9sxfD5ZfXlZW0rtGnbB8iswnWyjt5vK/GpAs7PhGxwO7QC4xlJAB9VtrLL++EaiQ7JLcTvp1svOikSIC5bHw+ieYCqL8hg5L5b6zIang==
+X-HE-Tag: 1790949947-119208
+X-HE-Meta: U2FsdGVkX19txDrVPGpSnjtv9Rn+WUqith6vWYhFJOcv8SiHbHdk2YeP7MC4NGYYIyRAg2HgLmwrL8kZY1ZZ7Ak7yzb58/mVQTa0EOSkV6dYs62N4KtrqmNd2fIK1VqZR9HoUj6l2mNuiH14Mu9nWGJVXXFkwJvkFxdyc+2IYlNGGrXoJmsPJMbdkaycM8uHrjGlvDTSNoCsTAtA/CugSENE0FubXvj92rVx8LV2kM6d7WZBY8wkhjIRCAjHzOKIzO2s8P9xV2gq6vS2RRyrzbjPd7xJaIHG4q9MczW0+GXMTrFC3OIq+s2TzfJN3bsTVY1qXHD9G03+zQ3C+NJJx3CFBOfCBng45KtXeJHjUHD2rWLYYHplbwZyiLo31SLmKZigNl09OyASYIPDHAVqfNooU0v5oI3fnKVBypElSAlkY1cVCGYwvPlxd2e3TA/m5QHLEy4iGGKiBCX+7ZmIG2fn8YV6OVLRB96r9gk9ju3z7D+Prqu/iBNuJCFOF1IYKye9/VvnjSP3Wn74RQjo2WkVMAW3L4DvC+fqn4B7IKvllEGxRERddw5VD5h7z9G+TKn1fnalAFMqH7qmIi2S9L1otNhVf5hnKSjGtWnwb/eQbrHwzO/4CsfpMqd1X082kRgP0nB6MFsqDmNclAbSlP8K4DNfLJx+OtAARD4dZAboanSEnwn36HpzZ4bh7JOa4i8BVmYETV/YCfTGZKVprJwFJiW+3NiAEqeWhnkEeaTfnw6jvCDD8Pbrh6iww/kb1epxZJlLC3WIKFhEw8EhVQUcqQE2B6iSY2ipvj00c+YPWb2uEB6rJxUCuRK5VmxeqrBY4xchgRbZogEbr8B1J+sTtUtz1aMqux/UKb2VfOuFZnce+Muq8DrMvB5pes7zkOFk3kt+WD3p9VO+VAxY6y5gLkbxyw1RCa+4mJfitjWR19eFK62BgDu3X83TVPs8aSEZ/j+Quwqf1JWfH0U
+ Ip0J4t4M
+ MygvzZtb8zxpMLHUKLAKthkM3/cZwuC7kOrd/HDi6pMRsgjvhipGZQEauj22wZmt0PSGgv5fb95wwVT/MK8jZMh8SsVMHVqf/jb7Dd0xmxHnauSxn5XANsLIExZE+BOCXmR9GH5xsNTRIsGVQpue/CTRIbnO7yLvP1ssmSFYdvIdDh0jbBM9xoOa+7hc9Z1C8qTw83maqChQac639zZumfyqBMWFhfQuZCiq5Y74m/7A1WV4xTH6fcqC3rXCuZrd5a3bhSwQU9u2bNlRVSLBXNjfjibizWVcajREqCk1FAIfxp7TqAJil9LNf0w2raf6EnUPY88xStxrJOluk0t0uvxpx1P0Cdpo0dGbgoJ2OeKdxxSA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,51 +93,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 02, 2026 at 02:19:00PM +0200, David Hildenbrand (Arm) wrote:
-> On 10/2/26 12:09, Lorenzo Stoakes (ARM) wrote:
-> > On Fri, Oct 02, 2026 at 12:04:27PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 10/2/26 12:02, David Hildenbrand (Arm) wrote:
-> >>>
-> >>> Yes, I'll take care of it.
-> >>>
-> >>> [...]
-> >>>
-> >>> After sending this yesterday, I concluded that we can do this cleaner: just have
-> >>>
-> >>> bool normal_page;
-> >>>
-> >>> (naming suggestions?)
-> >>>
-> >>> that express that this is something refcounted with a struct page, like
-> >>> documented for vm_normal_page().
-> >>
-> >> Hmm, have to think about that once more, regarding VM_IO and if there are some
-> >> cases that would actually have to work in generic_access_phys().
+On Thu, Oct 01, 2026 at 11:45:11PM +0800, Lance Yang wrote:
+>
+> On Wed, Sep 30, 2026 at 06:53:36PM +0100, Lorenzo Stoakes (ARM) wrote:
+> >When updating a VMA, vma_prepare() unconditionally removes it from its rmap
+> >interval trees under the rmap lock, and vma_complete() reinserts it before
+> >releasing the lock.
 > >
-> > Well, my series at least makes it easier to reason about VMA_IO_BIT!
+> >This is wholly unnecessary if its page offset (file rmap) or anonymous page
+> >offset (anon rmap) is unchanged.
 > >
-> > Though not sure if it really touches PFN map cases specifically.
+> >So, track whether they will change in the newly introduced
+> >vp->file_pgoff_unchanged and vp->anon_pgoff_unchanged fields, and use them
+> >to determine whether to remove the VMA or not.
+> >
+> >The rmap lock keeps things safe as no rmap walks can concurrently occur
+> >during the operation.
+> >
+> >Additionally, some architectures (arm, parisc, nios2, csky) have dcache
+> >flush rmap walkers which take only flush_dcache_mmap_lock(), which is
+> >likewise held across the operation.
+> >
+> >If the VMA remains in the tree, it's necessary to keep the augmented
+> >rb_subtree_last field updated to reflect its changed range.
+> >
+> >Provide mapping_rmap_tree_[pre, post]_update() and
+> >anon_rmap_tree_[pre, post]_update_vma() (replacing the existing logic in
+> >the anonymous case) to handle both the changed and unchanged cases.
+> >
+> >For the anon rmap case, with CONFIG_DEBUG_VM_RB set, avc->cached_vma_last
+> >is also updated when propagating in place.
+> >
+> >When performing a VMA shrink or a split where the VMA is the lower one, the
+> >page offset cannot change, so set the flags unconditionally in these cases.
+> >
+> >When merging VMAs the page offset is unchanged only in some cases, so
+> >update init_multi_vma_prep() to set the flags only if the page offsets
+> >remain the same.
+> >
+> >Finally, while we're here, also update expand_upwards() similarly.
+> >
+> >These changes ultimately result in less rmap lock contention.
+> >
+> >Pan Deng reported results using the UnixBench/excel benchmark on a 2-socket
+> >192 core, 384 thread x86-64 system for v7.3-rc4 with/without the patch
+> >applied:
+> >
+> >Execl Throughput, index score:
+> >
+> >                    avg    %stdev      min        max
+> >  v7.3-rc4        3511.5     0.44%    3494.5    3543.4
+> >  + patch         4069.0     0.48%    4047.4    4109.5 (+15.9%)
+> >
+> >Average wait on file rmap lock in ms, 5 runs per kernel:
+> >
+> >               avg      %stdev     min       max
+> >  v7.3-rc4    9.470     2.91%     9.070     9.820
+> >  + patch     8.420     3.34%     8.100     8.770 (-11.1%)
+> >
+> >Profiling data obtained during the operation highlighted the file rmap lock
+> >as the primary source of contention.
+> >
+> >Suggested-by: Pan Deng <pan.deng@intel.com>
+> >Reviewed-by: Rik van Riel <riel@surriel.com>
+> >Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> >---
 >
-> I'm more concerned about someone using this function on VM_MIXEDMAP | VM_IO with
-> a memory page that has a struct page but is actually not memory. So we could get
-> something that vm_normal_page() would flag but generic_access_phys() could
-> actually read ... I'll have to explore the generic_access_phys() users once more.
+> Wow, pretty cool stuff. That's a nice speedup!
+>
+> [...]
+> >+static void anon_rmap_tree_update_inplace(struct anon_vma_chain *avc)
+> >+{
+> >+#ifdef CONFIG_DEBUG_VM_RB
+> >+	avc->cached_vma_last = avc_last_pgoff(avc);
+> >+#endif
+> >+	/* Propagate all the way up the tree. */
+>
+> Nit: propagate() can stop early when rb_subtree_last is unchanged ...
+>
+> Maybe:
+>
+> /* Update the subtree maximum and propagate any changes up the tree. */
 
-Hmm that could be a problem also for struct page's that are there but you're not
-supposed to access for other reasons to as well?
+I think in this case it's ok to be a bit blurry about it :P it deciding not to
+unnecessary work is fine but I don't want to put too much in there.
 
-Definitely need to be careful about that.
+The point is as a simple sign or pointer to help somebody wondering wtf that's
+for even if it's not quite the full story!
+
+Hopefully that's ok? :)
 
 >
-> All way to complicated (and you series improves things).
+> >+	__anon_rmap_tree_augment.propagate(&avc->rb, NULL);
+> >+}
+> >+
+> [...]
+>
+> Acked-by: Lance Yang <lance.yang@linux.dev>
 
-:) well there's still a lot of complexity in there, one battle at a time...
+Thanks :)
 
 >
-> --
-> Cheers,
+> Hammered it with VMA churn (split/merge/mremap/madvise/fork) + concurrent
+> rmap walks + hwpoison injection. Nothing complained :D
 >
-> David
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+
+Thanks, very much appreciated! :)
+
+>
+> Cheers, Lance
 
 --
 Cheers, Lorenzo
