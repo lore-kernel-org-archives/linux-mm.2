@@ -4,84 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0043DCA5FD4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 12:19:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07DDECA5FDD
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 12:22:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE9576B008A; Fri,  2 Oct 2026 08:19:10 -0400 (EDT)
+	id F23CB6B0088; Fri,  2 Oct 2026 08:22:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9B196B008C; Fri,  2 Oct 2026 08:19:10 -0400 (EDT)
+	id EAE3F6B0093; Fri,  2 Oct 2026 08:22:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A897A6B0096; Fri,  2 Oct 2026 08:19:10 -0400 (EDT)
+	id D9BDB6B0095; Fri,  2 Oct 2026 08:22:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E9656B008A
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:19:10 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1E5BAC0720
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 12:19:10 +0000 (UTC)
-X-FDA: 85277590860.10.DBA7E04
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3BC671C0009
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 12:19:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cpOf350q;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AA2846B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:22:05 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3ED611C393D
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 12:22:05 +0000 (UTC)
+X-FDA: 85277598210.11.6C828CB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 80538C0006
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 12:22:03 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T9dhGOCV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790943548;
+	s=arc-20220608; t=1790943723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RWu9e92IrDGxSiXWBdyugaL6uysiiOtkTkm6Sf0sRHs=;
-	b=LwZTlA/0MnNkfWsuVTt4tpzSIf/6vd6A9JjpcyC9yp+rNAxTsIBa/baGgp0AuSMTuqbb91
-	vPwFXJmYGaCjPle0FjKBwlU5motI7aojxx1tVPOwMdRaOyiv0FK54afKRi/zKf9ADkKOZk
-	J029xBC+t7SM49s1A35hLmXbjL2xp4o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790943548;
-	b=hfyWAjHjWN8vOCeJfz+Iu4y02cXZvKudDLR6kOG9i28rrIOBDtGLLe6iQTOPhRiof7OxQB
-	zL1rMANuB6PqkTyNE0KQ0NSEdCiaSDUq0eeaTzU9tEMN/DmFSHmYgwIjlnGWJcF7EcGdBl
-	xlRplQzZcrb5VLvy9JpgKVBtNDKskQI=
+	bh=Ce2a1myrX+E7TYohZBFJIjnt43b8Lx5Vo9Ht/zpkf40=;
+	b=ruAM4Kl4tAGkK2oUFFGVZY/YoyWUGmAJD1idr2mwG8o5TC62iEgZOeINPYlFePMd+dpuNF
+	7DgzuZYbDKJbIMHl98hJAu9zkPU/MkOgrHdMQSumdxGl3ayn04Rxxo17mQshi3/WU9uysj
+	G8vhO92uKr5Ody1nQDaTEFlXlaKVtfI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cpOf350q;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T9dhGOCV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790943723;
+	b=fIodk2TSft6IkLmNMKgA0SUuKdy+6eo8hS313x9RXT7l/yi5O8xGZ69BWgChwmwuLLyMhg
+	wSLiAgVX1EVB4k+7Cc43hNgnTkGrj9ShdTNPJCdyZP1Vbumhm8TK/+Rqlt4HrclLB76Hh7
+	+WmG7iS+nGjx+VeaA+lAiRasYjfUQkQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 60EF94025B;
-	Fri,  2 Oct 2026 12:19:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891D81F000FF;
-	Fri,  2 Oct 2026 12:19:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E512F60A96;
+	Fri,  2 Oct 2026 12:22:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8551F00893;
+	Fri,  2 Oct 2026 12:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790943547;
-	bh=RWu9e92IrDGxSiXWBdyugaL6uysiiOtkTkm6Sf0sRHs=;
+	s=k20260515; t=1790943722;
+	bh=Ce2a1myrX+E7TYohZBFJIjnt43b8Lx5Vo9Ht/zpkf40=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cpOf350q1+IqKbjq3pAaHeVGWsdV2XTQIVpzRCzS5t+71aK85iZ/VSu+PQs0YIAtq
-	 QTzbVeLMZ7h7PO+YudkRqENz+QtL8biLtdQ5ZoY94rKhWfrf/38jl+/iz7QtIMc4hK
-	 pMPLdl9EY4aYBw/uNdoe7yF2uZaLuDYv6fOBug3bRtzB7Aek5ikndYSLeSSXuq37Pp
-	 ZY3jDxwC8bCuyK1sDrwnLwYI4079YamJ3eVvgFf16V5EELUXKPFBfFUSGjybGKU3Z0
-	 2bVoTh2vNwl6q5KhVzSr0SC+P8I3XSyrK7JpWcJk7l56gtBbWlgA1kV6Oei0e9xRLz
-	 97qvr0v/yuLgA==
-Message-ID: <494d436c-e3b3-4b65-8a6c-1059d9f468d4@kernel.org>
-Date: Fri, 2 Oct 2026 14:19:00 +0200
+	b=T9dhGOCVQdUIoH7uRpzRsVGY5F49qFVHEBrLBxqHFAGDuAIXoKS1xhlo9AHRPemjl
+	 JRk6CHalHqos1q8v+ayc59QPqujmTYHK7JTUvE/BscPv4v+7psZocfv7PUyBkJA+qx
+	 9Og9uFdzJPDh3aFL/5/0E2nXCZfiP+39kMF1YHtHFb6x9sLpsiNZalCl+TLegXyBij
+	 6Ztord/uSDPf+I+yczyV9L2Jdg+/70XWz7dPoDn/FYJvGioJQ0fNoh/j3x0xS92tJe
+	 y7rGK+iQFw8TvsNJDUYORs2W3V2P+QYCF4AG0AdWtUQD2Q6qhzcr6CGA37M3DTGvrm
+	 iLTs4uxEsY/cA==
+Message-ID: <d6ee0a8f-e7a8-4fa7-88b8-62fb44bfc863@kernel.org>
+Date: Fri, 2 Oct 2026 14:21:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: don't ioremap COWed anon pages in
- generic_access_phys()
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>,
- akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, peterx@redhat.com,
- dave.hansen@linux.intel.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- syzbot+49b1021becba70c1f3f6@syzkaller.appspotmail.com
-References: <699ae98c.050a0220.340abe.0d31.GAE@google.com>
- <20261001152524.171115-1-ngocthang2710.1999@gmail.com>
- <32fe40e2-854a-47ec-9d95-93e23f9a7af4@kernel.org> <ar9omYD3HcTDBpGA@gremlin>
- <c6253814-0cf6-48f3-8f81-3285466dca45@kernel.org>
- <9d43234f-93cb-4c86-a2a6-a3cdebf48f3b@kernel.org> <ar-Cq0YNpQ6_3fDG@gremlin>
+Subject: Re: [PATCH v4 1/2] selftests: run tests on nommu architecture
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Hajime Tazaki <thehajime@gmail.com>, johannes@sipsolutions.net,
+ linux-mm@kvack.org, liam@infradead.org, rbm@suse.com,
+ akpm@linux-foundation.org, luto@amacapital.net, brendan.jackman@linux.dev,
+ liuhangbin@gmail.com, corbet@lwn.net, kees@kernel.org, broonie@kernel.org,
+ mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, surenb@google.com,
+ vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org,
+ daniel@thingy.jp
+References: <20260929235711.2287931-1-thehajime@gmail.com>
+ <20260929235711.2287931-2-thehajime@gmail.com>
+ <bda5eeaa-7868-4d4a-9026-9e99347afd7c@kernel.org> <ar4br2vW7yZGd3gt@gremlin>
+ <94759bed23f00d2044005e36be6f72f297e092f0.camel@sipsolutions.net>
+ <m2se2o3jyc.wl-thehajime@gmail.com>
+ <a65f4431-d225-4535-b921-00319ceeb2a2@kernel.org> <ar9ldn036SgT-bq1@gremlin>
+ <CAMuHMdUKcUxHZKhTEF1gwWrU1o8O6jt6N3r90V5hynrLFdwY0A@mail.gmail.com>
+ <ar-bIzYDdlOKUqla@gremlin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ar-Cq0YNpQ6_3fDG@gremlin>
+In-Reply-To: <ar-bIzYDdlOKUqla@gremlin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3BC671C0009
-X-Stat-Signature: 171jrzd758ir7o6okeyi7gkz97emhb6q
 X-Rspam-User: 
-X-HE-Tag: 1790943548-240819
-X-HE-Meta: U2FsdGVkX18zDK9KNGG9kVIYz/UJh+hiKcFb6OVMq7/JIqqC3zgWaTjbk9hTu48MuMfA/cRLTxvsNtcj4b2Dfss3ydAhPcTVWpFZmo6XXxqhD8KE3NB78FWK2T8J03jX3+RaasAr0rJFoxW5f5qNJfRRbVXwzr/R/BbIXM8G8/HUMeYF14PPPH9PUZ+4MrN+4DJXSBlqP3moKBcLYs/To9kqJnZLsa+nyJT9w9fDU0ctLCbyPS6TqZS6fjbT4WDAMPwpxKMGqeeS82gOaR9VFGDlPhJTNT+vCRXnW2tA7mf4etVwaqpotXZRn0hFeTtJ0tYvFPeG8tqKeHXBL+UFqAuV31C0gc1c5mSqR34mYkmfffVCOlorzPeNDgMV/GczHe7bVWLs1pzcVK0EXplXikgVOZDpF3SD6EB6VYtRrpymVJI5QrX1fHNGsNpcYk6NDTYQM3IABUOhLcW/Oqa97h4iS5bpl2Zbj0TJYQYeTz1EMY2AGangItSQxA9ro/G26QESmaXjA9Q7nJX2vRdttOhSzZVaF1rQnOFD8uSs+bs95/RGfGYQlkobBI5BRVuKUBAURddTO7ZkVCmlu6/+n7Bc2gFTgbgaDkzuLlRmAsn3Y99S3I8T99xDbjf+kVADYQNFixNuSZ8bRMflCiib2asHmHpPnCFitMsixG1z2pj885inSeImudzDkWnaLaDqykrRoEW2JW+sP9AUCKcoW/HnlOobGqPeNXYHbfinpfoTRgKtKChrseOCOiGD9CPnTH1Nagt40BZoyjTuXF58FuUqxTWSOm0K9+G+3QxpKk9UElpmD5jpUwWrMzH0nK7IIKqY1EleBjcFhHsqeNg+/XmtjMpEHRWS90ZIVPD7OXm4Jy9q+VMrQldbue7/p9qydYWoYQsp7Qps2U3z+rgmhhMvnQ3kY8PuWU/su7Nqheb4krUQooGHDe3el/vo1Plmxw6ZZOyhXKLY1f3ifNY
- 9rxMCjxH
- eh/KZcCIdriXhEv7xcXBTEEF40P1Z46HJ6LszyHmVoOe60Tll6ogZw78XH2uigYwQ0TO9zq/EkhPmjGNaJhWUE36Lj4Dk2jlhgykPBwnmRJ/L2HIaNRECFrV+Dq0BO4zdb97+kApuNr+v0fgfrTtFMVVnyLPkZ6Ns7ZjmDfFrLgSDrB8fYpQyzW0uXAB7+AqehXNOEmvyHLqtI8EAIchQoXXAo8+BJj2lG59zoznTgMae9LmnqrBnwML24PA1+gqgzii1vzLQu4dhCziIXtPOwOGMQ7uaW+UNvs0ldTPvyMiXUGVsCTuGCJJ6i8VTuj0bHj/Rbbt4QTEfMIN9xYEYmIkgVXz9MXzIIptsWSsfpytxTA6TjOcUMxwM6DFDeKIkBHlPP1DkHhA4gkmfCCdqyKjsK1sc+U5GNJITigEBuFUjcN3IQr8KVmKuA+QPkjnegYG1
+X-Stat-Signature: w3kqksxjzh54qcxjstasj8z83b7oksya
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 80538C0006
+X-HE-Tag: 1790943723-36021
+X-HE-Meta: U2FsdGVkX1/+0VIMtnMcwt4XUWoR5VRH9KnvkO4muKv7i8Ynn8uNrEdTZ6Sb8CfuJv9wlMGnjg4akVcYFHlpd0kxFDaoyhXk4fwPliWwXsFPLcGMGS+6qP8w6UkPc5iWmUG/kbaOEeeIgxiqyPUHQXKuZ+TD/EhmazbU8ZZSQQapLisUUoBrXy0jYdV6wbIz0sueFllsMssTeeSHzayb0kJkC2TqqPZxLB/hyLk7HuucttFy/c2Hokawn5Cw3uauUT1QCwg55I9SWlgs8iC4xK919x7at5Mgmy9vF/r2BTk4vTBAwSjG7tD1VFL6M9BKTwkqNyk00wvFHX3dqCNHn1kBvsri0fgg4KgIND21LEutFOdMCrvEmZa5+7Y+w3UZ+lNKLTBB7cK1qZ/GriM2kpkLyes7APw4bgzp4FoyXKH2iJ3GI9qaVH7qYVGwiK89nv83rLqlLenrp06EubkawFvN/PLJQcpdW2ofoK3d9Ykw/4gtSAbChD66ppeaeTn87MAcZ/tbEgTaSsM0vE9zlkYN7MZl1OrAL3uz6affovLaQkWikWSCvkefBAAmrbP8KE6fD4TLsGwLnYV87UcerFK4q34kjAWbYaGq3xX1BO97XkXMZc9SuleWN4TQzx7mTvh8HoUMrC0NRnztcV2gFPlbMZ3Xa4/NURyWpQAfw37C+Tne+z1DfUrifsx0nALe9Q/Nb6vTmlMF8ewGVkVugj+p6MrlyOCGUAd/q+Bzr6Lp+fKji5osgZkxFWCmMI1nsNA8hQBWgkf6dUkMyxcKLVhp5tcHrPcsp9iE4a5bI9fmNuqe38m3Kj3p5CZM3Xj8+bFl+Tb7BIWzRSlZEvUCxQClb8d60r4UFhq8q075FCo8YUILI2KN+2ICRvSzOXEr4Fkrn6BAWdHDWKWB0/LvI5mTuwBzp7jT+aESjc4xsusbJDQIWDtubjFZ56ycvxR/BjqOef1Vc6wfUlT1a2e
+ /jvJaRSG
+ uzUGP9/jnp42WeOJZhT/lqH118D+SAlw2KWt6qebeevrcduocnXzxdCk4Jvc2Z2l349d9EEdP0JudC9Vo1GtoKXYh4wUlvqmR24UWwdrIKxIKBQwWjltqAPT/KiTiZP3yzVuMR6T/u00Kgw/H3oSUn0zCjegEO19N2c+s/5BV00YY5ZEiZEreb0Lm8FiRvjATgH+/k6p3Czq8/cYHt3GsclY0rw31KUUrlLkIS+eVT7ufA1/QwbpaW3yT2LBErd2ZlitBZrW92SIzPWOvLfxbR9Ar9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,36 +151,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/2/26 12:09, Lorenzo Stoakes (ARM) wrote:
-> On Fri, Oct 02, 2026 at 12:04:27PM +0200, David Hildenbrand (Arm) wrote:
->> On 10/2/26 12:02, David Hildenbrand (Arm) wrote:
->>>
->>> Yes, I'll take care of it.
->>>
->>> [...]
->>>
->>> After sending this yesterday, I concluded that we can do this cleaner: just have
->>>
->>> bool normal_page;
->>>
->>> (naming suggestions?)
->>>
->>> that express that this is something refcounted with a struct page, like
->>> documented for vm_normal_page().
+On 10/2/26 13:53, Lorenzo Stoakes (ARM) wrote:
+> On Fri, Oct 02, 2026 at 01:38:31PM +0200, Geert Uytterhoeven wrote:
+> 
+>> On Fri, 2 Oct 2026 at 10:10, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> 
+>>> But fork() -> -EINVAL or -ENOSYS = nommu, then just have the child quit and
+>>> etc. should do it.
 >>
->> Hmm, have to think about that once more, regarding VM_IO and if there are some
->> cases that would actually have to work in generic_access_phys().
+>> fork() is not strictly an MMU-feature (you can implement fork on nommu
+>> if all memory accesses are done relative to a base address register),
+>> while I think mprotect() is an MMU-feature. Unless it can also be used
+>> to change the protection using the one or two BARs most MCU haves?
+>> Anything else that is a real MMU-feature? Non-identity mmap()?
 > 
-> Well, my series at least makes it easier to reason about VMA_IO_BIT!
-> 
-> Though not sure if it really touches PFN map cases specifically.
+> Does any nommu arch implement fork() in linux?
 
-I'm more concerned about someone using this function on VM_MIXEDMAP | VM_IO with
-a memory page that has a struct page but is actually not memory. So we could get
-something that vm_normal_page() would flag but generic_access_phys() could
-actually read ... I'll have to explore the generic_access_phys() users once more.
+I was about to say, that sounds a bit too theoretical for me. IIUC that is not
+implemented, and if someone would propose it we would likely just nak it.
 
-All way to complicated (and you series improves things).
+In the unlikely event that this would see the light of day, we could always
+change our detection in the selftests.
 
 -- 
 Cheers,
