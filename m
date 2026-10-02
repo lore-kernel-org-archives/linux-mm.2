@@ -4,136 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48D75CA5FD4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 11:11:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6A5BCA5FC4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 11:16:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B6B66B008C; Fri,  2 Oct 2026 07:11:04 -0400 (EDT)
+	id 4BECC6B0088; Fri,  2 Oct 2026 07:16:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4674E6B0092; Fri,  2 Oct 2026 07:11:04 -0400 (EDT)
+	id 46FD96B008A; Fri,  2 Oct 2026 07:16:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 356286B0096; Fri,  2 Oct 2026 07:11:04 -0400 (EDT)
+	id 338AB6B0092; Fri,  2 Oct 2026 07:16:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 123036B008C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 07:11:04 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A070C40660
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 11:11:03 +0000 (UTC)
-X-FDA: 85277419206.29.A96167B
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4F573140005
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 11:11:01 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sMe4+Qlm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="4h/s4NNa";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RgXx8RmF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8i2NzZnr;
-	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 049286B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 07:16:05 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8E7B91C385D
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 11:16:05 +0000 (UTC)
+X-FDA: 85277431890.02.CBFD602
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 809BD1A0010
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 11:16:03 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="F 6e8jeA";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=caGEv8CX;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790939461;
+	s=arc-20220608; t=1790939763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sfEfBWrNG2dSSShC5UWTM6bV5UZX53RFwxm/btMyTAU=;
-	b=KTRNx+OhBXofYv3k8nRhWRmZBpcOw4pskDb7Snp6U92wSaCcja+4GPydsLwqvafhwDP3cN
-	tGLLW/lOK1HVK9Jm8k5q7uKapuQhsrCqMvdXWytO+B+iLqzBRYYmxL1Z2mFouczDsViSvI
-	XiEhVF6lHl4WX58XP2DACSgPbBlzQLA=
+	bh=p6P809YcEFkgZYt3dJBX9HFU16JBGD60jWrOGj9WhIM=;
+	b=4BcpS/F2ZgX1Oq39bIQLNexB4tt3COlLcp/uguPbCzI01z6LLY+W8uvYHGT58Z7Oc+2GGj
+	BUrpatLE4qWSHNwvcQFhujeaRC/CU/QVLCJmUayjtN0HMNvxg3RdQJ3uj4oHseo3QM6xdn
+	kJBUx0brJt6HLM/XB/MIavzbpJenbpw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sMe4+Qlm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="4h/s4NNa";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RgXx8RmF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8i2NzZnr;
-	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="F 6e8jeA";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=caGEv8CX;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790939461;
-	b=P5oy93HWDxhFCmBY9p67/nqYZ8c3nyTPe324vrYh1DdKHjwI6Kdu4i0wNdd+nyrZT0i54T
-	/38+1+waiWwp3bIVgjRv0fA/UbeePnm3voJzY4x8piNsRIXMV0tii3MTP1OXs2R/vq/o9v
-	mPafJgIYD/OCOQpp8o0CsYqLubb+c8s=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5DE5F21D91;
-	Fri,  2 Oct 2026 11:10:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1790939455; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sfEfBWrNG2dSSShC5UWTM6bV5UZX53RFwxm/btMyTAU=;
-	b=sMe4+QlmuP0qwaDghsFrDHaofCGOeIjA8EswEDuJd2Lc1q/JSCzYhjp1IwTnOA9Qe0NRxH
-	0HxevK9BIEgwZpay+C4z8JP7uUhJH6bDsMU4jGXyqy4V273+MAMeY8ZLXfyPODpQ1PayLz
-	NN3H53J+luJ05+A6YlTKU3hkRSVXQTo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1790939455;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sfEfBWrNG2dSSShC5UWTM6bV5UZX53RFwxm/btMyTAU=;
-	b=4h/s4NNa+NlhLl+I2kPIewI8F+oxwK8uqVLNcVmvVVxVFIZDOeRuzZKppj6F5hrOYcZXYb
-	eeZ9wtYg8ljQXNBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1790939451; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sfEfBWrNG2dSSShC5UWTM6bV5UZX53RFwxm/btMyTAU=;
-	b=RgXx8RmF69ZqV1QwybR/NHa58iXFSAvl0YFksIro+jJ+9Sk5PkRiMT2A9U54VMv1TxhHZa
-	pSm5ZzY3GUZTP5+xTNkWzQuYAFot69mxFnYxnh/I/Y9hkydagld+ntL8Q+xLEIbeIf2ILJ
-	7pHQ2uEwlgJTITWv1seuyW/FQwdqlMw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1790939451;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sfEfBWrNG2dSSShC5UWTM6bV5UZX53RFwxm/btMyTAU=;
-	b=8i2NzZnrxC0zQCAvZVCkdaStr7qCHRiBrv/0u6jq3Z6wRIg4iQCJP9L3ymZjwVnIuK6zGI
-	0O9FA73dOsGkiKBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 30C8E13C08;
-	Fri,  2 Oct 2026 11:10:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id /7CAAzuRv2ppagAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 02 Oct 2026 11:10:51 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id B0F78A13C2; Fri, 02 Oct 2026 13:10:42 +0200 (CEST)
-Date: Fri, 2 Oct 2026 13:10:42 +0200
-From: Jan Kara <jack@suse.cz>
-To: Julian Sun <sunjunchao@bytedance.com>
-Cc: Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, 
-	linux-block@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
-	willy@infradead.org, tj@kernel.org, akpm@linux-foundation.org, 
-	Boris Burkov <boris@bur.io>
-Subject: Re: [PATCH v9 1/3] block: introduce bdev_flush_by_dev()
-Message-ID: <5my3hyw54ej2tw24dqnacsy7xppywdjovvnwvrevmczsllzq7c@berxapmobgfa>
-References: <20260925064444.3944820-1-sunjunchao@bytedance.com>
- <20260925064444.3944820-2-sunjunchao@bytedance.com>
- <arYaMbJUh6unvz_t@infradead.org>
- <3w6vfwfkojmfqy2qs5j4q2s2366ajqiwmqf624lyn3odrv42v2@va2r7a6ngfz6>
- <aroIAqoCNDBPlB2A@infradead.org>
- <9e9c02fe-e94d-4f70-a21b-47b46bab2c3b@bytedance.com>
+	t=1790939763;
+	b=rIKYRAtrX1pcz2G6KzhW23As2GC+4irtyVsNtp46wYSBKf3196bsT5LXCGwFaKMW3wxqZz
+	f44w1dLB/Iobq8LPp5eNThhhi5pGqlmJXZUx6Av20dPK1QKajmxsOaQmR6tdgrIgfaEI5A
+	OuFkbHSYrwIjjn2AHl+i4AyKp/C5wyA=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 0B0E4140014C
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 07:16:03 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 02 Oct 2026 07:16:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1790939762; x=
+	1791026162; bh=p6P809YcEFkgZYt3dJBX9HFU16JBGD60jWrOGj9WhIM=; b=F
+	6e8jeA3Sjgohv+3K5lXyiBi5JOgA+lmGMiUKerbuNQLJmrCfx9vzND1QynNHPVO2
+	Fk5lafsqpdcvaLD7FE4U472GAde2vxEkCqVXHM8AWxcL0Eyfgtt6ffuO6QUwMZVR
+	2WeRzSj13bTWmwgY/d4M0Bg71/Z0datxnjPFCUOK9DmgNOYHlybwsrX/fd0AgNgW
+	v1LoEVyQUWUMyTTtdfybiQSctv7BT6i+wDFmXdJZp50mL2u+xa+aNsyYvu789cw4
+	kqDRK4yxzdx0G7u1nqmYEnvTwFYJwGjVpopSzG+BYdgP+sLww22fF41QJ6wSFiw0
+	s8Pmicf9VfZv+4BVStX7A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1790939762; x=1791026162; bh=p6P809YcEFkgZYt3dJBX9HFU16JBGD60jWr
+	OGj9WhIM=; b=caGEv8CXFpU5L/754PZtURUwBdWoRG3+RoXodZdqeXP/P+7MKv9
+	ZCrtXzmWxso2c1hRadrPbGbSMltSuhjyga4luTSfx/Td5N8hlyt2y6iQzqm0Rf42
+	DUSXBC+alfkiMeTM2kZlJdIAsgw2Fnx2Jvx2crdYvxrV+oVBVTLWVgWgGuSvecvk
+	Trg5MeeB3MobaBmzrSzDWMN90Kqtzm3iTvrzJfw29NIxrYnFTJ29GasDKJ/RV1PQ
+	us3gKgwwHbL80eqoP++ypWe0EoaS1SYpEnLgXlbxPxyi0wWTVo4FMeiH6hP1xWr6
+	SuOpfjBbkJQUrXFlJ31VYk2Ohhlc7dR/P9g==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1790939762; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm3:rsa-sha256:CwMz6ygERAbeDPT5tdZJxuezjBmFbfCwBy1RdYbhXSPD/lF
+	r9Tk28dE1xnpqicMbZ5mW+u5UcBBU9NJuPzY+a0O7KAYxxuXuvaNq3esvz5GWOp8
+	bTPPhvHsLv1QEXD2Kn/NSr7KjmlwTJ5TUdw/7hppDBCBtyS+WgcQnHWpPDDcyX09
+	pGmHGM86Ns3mRcDga8NX/75po7iFL10Zv3GJxkNetW/zsCXqs5w5YmBHof3wGacn
+	AcsXjiAwdKCka7eWyyo+sSnwaoxRK2YVoyvbgSlmUpdJwcSDma3WfnmfQC+qdHn4
+	DeVp2mtgD8q7ZnUBFpvHbt3hW3b0TZ55uazii1g==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:bMo8HEqw+XiMNM/BAcO6Jb6FU65Q3QvxVC76RxujU7U=:rLjD7PTRxRLm6zR7cdPqYXDYyMN4xlD9erFhXKlSNn8=;
+X-ME-Sender: <xms:cZK_ag6-CP6f_gb4D9vDrUfKp-kO5w-tbenjwAuJx9mWU5VIiGin9Q>
+    <xme:cZK_assRmizyXeB7qZONd9_cj0AasuywH0VBcJ01oUWCh1xyr4tY3CiPq4YB16nXz
+    X9WIJWDhA8H5A-GQlht_sY78I8qqaAlE0GEg9z7YIRxC9vt_PISqtk>
+X-ME-Received: <xmr:cZK_atvB4az53u0LPZllRCclPWfZnepNl-2tLnc0qjPBWYF6SPHlsz2bcOw>
+X-ME-Proxy-Cause: dmFkZTF/1tmYHgENW9/vj2pjkxCWxNZLy8cBqZqyG3QR22/biSzxfwGmM0SNSCX6B8CTEE
+    sTzdhH4DefA/ogWq1+xZTNoNZrv6+eNRhC6+EKZ43s7HCM42zfU73HzR2hp18zMWUeDanj
+    nxI3Hsq2s2NNJtxrBlAYWBwbjBSzuVnIQ62G1K7EAvF8nxwpnIK8LqmG8FleX8g1/NWWpi
+    i1Eh2+rwWq/y+BB22y+2UHlhiK/LMUG1G01oG+O68qFEFivbqh0vsu2iQJcAgmsoyUHgKb
+    2X88Uhgm2hGpfWmFleq/C55jouc3ELdga+uqGFmcFxDT3Q/oEEbXjFkgRaCAjW0VAlUlRn
+    LXrejEbLijsGaWjNJTbbc/kFtaVuZERxtZs35DIxuCMbVK1PbOlz+gLxbYzN8M7tlMJrXb
+    H5uKuiaO1wu3o6GytFsZVTuVzV/AzbDF98dPu52yFu+a45CF+Kf+AVGMuCL6SpIpMisDMu
+    0wxgfWqDeTJc//eTAYYV8TXEO0GiIKxfOHTycUJfvcnE4hXUDAw7zG3CXh8cZlX1wNEc8N
+    ThB2MNbWoK5+/sdViJhb+PNKJxmKRborKpl5atJcuQKgh0aRJZQUeAOYYa1ZzfDHj3WRcx
+    Bni6Sf9xGhOISLmEPi9f40Y0UDnDSYb9DFWqjbqmIKjw56KodkXu3u3MpcCg
+X-ME-Proxy: <xmx:cZK_aksEFhpnf2XrsNIkehG_MjzhnzDXag4QhVowuDSSLodFy_hB1g>
+    <xmx:cZK_at627sWI4UwsAEjGi4nVkv1kWsFyI5fHLsy-rvBaWfLyfHYs5A>
+    <xmx:cZK_anCbdeKfxXLXEBQWC4AwHYFsC-_AY3rYHeGjX9R9_M2gwiPsaA>
+    <xmx:cZK_atvqTj6y68xOYjd3PE6Vu9ALp2gQG3B6BNdDCaZa-VlXoghpmQ>
+    <xmx:cpK_aoT9JCIbXUKFqB5glVomIPxrr6D9r_jz6HtYdW7-B16y63O03yx6>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 2 Oct 2026 07:16:01 -0400 (EDT)
+Date: Fri, 2 Oct 2026 12:16:00 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH v4 09/13] mm/collapse: separate scanning a PTE table from
+ collapsing it
+Message-ID: <ar-SFw5YYJhv7esG@thinkstation>
+References: <20260928100630.21870-1-kirill@shutemov.name>
+ <20260928100630.21870-10-kirill@shutemov.name>
+ <9bf6623e-ad1b-415c-9720-6063a1ac11ea@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9e9c02fe-e94d-4f70-a21b-47b46bab2c3b@bytedance.com>
-X-Rspamd-Action: no action
+In-Reply-To: <9bf6623e-ad1b-415c-9720-6063a1ac11ea@kernel.org>
+X-Stat-Signature: qfmsus6frt6htc4okczokmu43z9bm6bq
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4F573140005
-X-Stat-Signature: zp4dcsktwdmeaxe7udbxtfjs5cztgzxt
-X-HE-Tag: 1790939461-196157
-X-HE-Meta: U2FsdGVkX19Lo6wuNqlTRkZA0SJp9cFOHG7ujaeTszlVDnnZnpWBzIjyizmBHwqzYbm9G2HQIEjsT89hsDmSOB/XVwcQsLVFwyjPakXi+d1KGJfGZznDzu5TXfz3hfzaGxULg8ioV8ZIRbmH/ci833MbqncpirJBQlEVdKs2/gIpJArUvPclE5xXCmiJo/WbSI0WZrtF/HXNhcQZSRvDHemBVLSZrQgfTlt3okBGreYFkK5c10bsY0TpIE0RwlgJkulYk44HlevuyV/rBAohzJ7PTbrm6eQphy0QWmy1cU5skAulknurapSxbrsRWF5uI+YOyrCcjvk378b4mrlBY9hZvMOay6AtSM7u4Zkbdi3v0nLzJB9k6bJmL+r9lr5plVEJLiW/5PoMAg/aMj6oIPU1S6TY6r9zEGLrza0z/JSJ+VMdbVD68LLah3qX/Q1yK6eJeMikOaj1HY6gSQuYhSAta0YmIVbReIb+UdbfXt9/252yjEjxvdQLinTT91AGFVZ+9iqAbiw3gjI25E+DniNdRtVc/ztkQazXIi7vX38+pFm9QcSOH+vZ+Q64Wdi1ywOk24ts01KuHPbI/gVbW52tAHU364CapTa6orz+DTaDGkF7cc6AfEvan65CUpnfLGWu0RolHIj1ew1t6CZ5qh7D8Zt8OTDh/0UwvKU0m59Xs/e9UzWItSzJhy3b5ZqSWGZ3XITlHWhyFImrqJfrwc/MbK0UdhOjVG6XJhzNrlCjSW4ZuG04mGOQeENf5DLrD61FOVLFnQ4BaCHFvXiYvvjqcj2/HGQngMWjCY6REuKkIax6+pINEhgg66nP7VU1kz3Qt9HiW1sT7eo1WCXICiljm/b0afT1sHoyvMeS3+VNa7jwfYnEbzsKf2AoeIXYUapjLyRhb6P8c6OQb6ip0Nlqv7G3WoyzToznEyYy5JavoVN4a9hpN/qUkQ6Yjv0Fvjnyb5SxcjN4q/7Bf1C
- k+GGPT8/
- 4PG3dp7iZqgviP3qBnSwW3Yvo65s5jIHqm7W24F1eVqO4f1eKw8OtZLxg2pqT641yre50JtHN6brSN+sX6+Hefxru+CbHGHNLCc7QJpT0d4XMmbtjR3usIs17hvwqSGVd/tWzNeEijbVMeGCjlwge8Cuw26qvCVI74vDykwqsdbQeEYd6UXuDHEvez9uoYcY9zp2K0Bc2IXmHo3IOMumeI9dxS+1H8RiL3g4CJrSlegTAbBG+/KgHgVTB8a7I6yzx0xrkL0Nq1sfCzqPINg5w9WzKm3wu9JMoFHDKyID2q0bT53y4laJSw9i4yFDFOXExr5bzgPyzUPjMHFXqeX1a1W0lGbSCIE47riusxPJgSFEcGspRg2iSqp6yH57Mvm2zmoCE65AtIofKAi0=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 809BD1A0010
+X-HE-Tag: 1790939763-862177
+X-HE-Meta: U2FsdGVkX19adxWNNvHMO49ry1y/VphSSKA8UerhNX5LzfTtFbT2uj/LTiWMZUM51E2iPTOacwHUh9NXKP4PpWy2Aape0/rAYWq0AEFqnG4QFmHtvorSeTCSsaJVgWB9JxqoqE4ec/4SycKN3WEDgpgnyW9NIj9H7jdiI83KhdEKlvCbyJNui3uH7SKN47kohZpea7r3af1N72eKkuEDEUD9C1MibWkWaXSs044bVjAU1HRRhcPIPL9upulzhBh4JKrfEZZb7Vj1T2aSbK8A6X9UuRaW2/VHSJ5J41mwaS4MtL2u7v47iQL4PuEckzfyhoRI/aqR5hIx1RXsQxb9EBFw52MSQLHH6/qNRwweqhU2VKQCiQnQN8wOQ641qWDbDJX9wIdpJfU8JVhB0s+8dMbInyHAL7vj6SRSXotZ8Tto9213npP7KZbeeZR5WgNacGgaf/VYzt26lCWZEdpWHer+AFssWUpYcHhsQrdxNcrWnoAaGOhOSW1hogQBlhK7JWiaMgDsnsVllEPdYEb3FtNPxw/ypsJZyPA6kB9pvn2KGARLpymYg0RvzGhEozbmUG/o4WcpHLO7lqbVihINKFD9VxaGGXXw5U+1fTIHb0GMRUiGIsOXhkhJ+Rr/ReuV87IBuPTpnyO3ZhrYM4qjHTwziC1RRGh6egV2u22fvl9s7Itts4/hWPwJHxeGtnNI5Uyzwl4GGPvKMgU2AXlRhDvkYtrk51u/7LIsgkPCUw86U2umNHhW+tXt3cF/hDGbiMnUEFlW8QopmU5Wasnzpr4fSM64AjRhUT4Q0DN/JPDnMNW9S+eI4TrBD7AK9NidafK8FCRu4P61Wzn++R3t4Wg2wXwuwfKPHZ4WmmgT1ML8xokhRz8ZuTWkTKslPyTdFLPC0QsiVWFV5rAmkYo0zWW7NYEk4FNVPWNBFp8OvkU8CQji1itIbnxrUOvIP94+IsejZouFJDHuktMXI9f
+ RYIRGIT/
+ w5Aeguo2b6TbUKFjLZccUONc7ZnmGKGtwQDK4srt3m25RpnxmYUdWE/a3HTdJaYnzzWLpEF4rHQkIOD7TgGXFYrbWmD81Mt/LC32tn9PD0hMz/LFRzvaspCz62R3Rg7S+iuW3WBy5NyUmvxGBwIEeYYK7iLEfOBozpA1nIWa93lzWMtDDEa6U/p0wC5Cho6NSdWBgL3XQr+EXXaCfHlY7+U7ahtuOVsed7/d3+gkGvld6P2VIaq8dq5E8XLnxeporpI8flAsqDBh2QSmd2ZNwdG/G4/l8dqOCzZKZ5aWZkQkJKz6OULAdcr3X/YRh7/yDShBSAugnuPxKvg1DbY6tDPS7Ar7tRQ0fUmGdVWIu4t2Aczeu9peSTxl1Zqjc369Z5kRKUy1cNnSGK2N8rmrRZ1PFGcG1HUUSvuaMX81Fcrrbu9Hvm8S/hruIJIAQC8bk0SUQjRjxT+F38p5ytA1fv84xAJ7BbekfhAPaMgy0Y6CAbVedRJo/eQ7SN3PTxSoTGKr5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,53 +154,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 28-09-26 17:51:09, Julian Sun wrote:
-> On 9/28/26 2:24 PM, Christoph Hellwig wrote:
-> >> So I think tracking devices by dev_t is a good way of dealing with these
-> >> problems. But then when flushing you have to transition from dev_t to
-> >> struct block_device and blkdev_get_no_open() is the canonical way of doing
-> >> that (and note this use is just internal to block/bdev.c).
-> > 
-> > I'd really prefer not to grow more blkdev_get_no_open users.
-> > 
-> > But the more I look at this I wonder why we even bother.  Trying to
-> > attribute individual bits of dirty metadata to cgroups is pretty much
-> > insane.  Why don't we bypass memcg accounting for buffer_heads like we
-> > always did for the XFS buffer cache, and what btrfs switched to last
-> > year? See commit b55102826d7d ("btrfs: set AS_KERNEL_FILE on the
-> > btree_inode") for the btrfs side.
+On Thu, Oct 01, 2026 at 10:34:54AM +0200, David Hildenbrand (Arm) wrote:
+> So I suggest the following in the context of this patch here:
 > 
-> That sounds reasonable. However, IMHO, the main difference is that ext4
-> stores this metadata in the bdev page cache rather than a separate metadata
-> cache as btrfs and XFS do. The same bdev->bd_mapping is also used for buffered
-> reads of the raw block device from userspace. Setting AS_KERNEL_FILE on that
-> mapping would therefore also charge newly allocated page-cache folios from
-> those reads to the root memcg rather than the reader's memcg, bypassing its
-> memory limits.
+> 	collapse_scan_pmd
+> 	-> collapse_scan_file
+> 	-> collapse_scan_anon
 > 
-> If we pass a flag from ext4's metadata buffer-cache allocation sites and
-> check it in grow_buffers() to charge new folios to the root memcg, accounting
-> them as kernel-file pages would still require persistent per-folio state.
-> When a folio is removed from the page cache, the allocation context is gone,
-> so we cannot tell whether it was counted as a kernel-file folio.
-> 
-> Separating ext4's metadata cache from the bdev page cache would address this,
-> but that seems like a much larger, longer-term change.
+> 	collapse_pmd
+> 	-> collapse_anon
+> 	-> collapse_file
 
-FWIW I share Julian's concern here. It would be fine to use AS_KERNEL_FILE
-for ext4 metadata but I think just unconditionally setting AS_KERNEL_FILE
-for bdev mappings will cause issues because some users may be using bdevs
-directly for their workloads and they could still expect proper memcg
-accounting to work in that case.
 
-We could set AS_KERNEL_FILE when opening bdev for a filesystem (and remove
-it when releasing bdev) but that would have to make sure there are no
-folios in the bdev mapping when changing the flag as otherwise the
-accounting would go wrong. Looks it might be doable but getting all the
-cornercases right will be hairy and overall not very appealing to me...
+Fine with me.
 
-								Honza
+collapse_file() has been using collapse as the verb all along, so my
+namespace argument was not much of one.
+
+> You should mention that collapse_single_pmd() is only temporary.
+
+Will do.
+
+> I'd just not add that doc if you intend to remove the whole thing in the same
+> comment.
+
+Ack.
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+  Kiryl Shutsemau / Kirill A. Shutemov
 
