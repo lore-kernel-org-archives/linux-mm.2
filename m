@@ -4,105 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57FE7CA5FD4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 01:50:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DEFACA5FD4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 02:39:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16A746B0088; Thu,  1 Oct 2026 21:50:01 -0400 (EDT)
+	id 48B286B0088; Thu,  1 Oct 2026 22:39:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F4A26B008A; Thu,  1 Oct 2026 21:50:01 -0400 (EDT)
+	id 43D0E6B008A; Thu,  1 Oct 2026 22:39:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFE606B008C; Thu,  1 Oct 2026 21:50:00 -0400 (EDT)
+	id 32BCB6B008C; Thu,  1 Oct 2026 22:39:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BFB396B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 21:50:00 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 373DFA74BE
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 01:50:00 +0000 (UTC)
-X-FDA: 85276005360.16.C2F16DA
-Received: from mta0.migadu.com (out-235.mta0.migadu.com [91.218.175.235])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1D3DE4000B
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 01:49:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ohcTV+WL;
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.235 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 060CE6B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 22:39:02 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 73B7DA05E0
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 02:39:02 +0000 (UTC)
+X-FDA: 85276128924.13.C8FFF45
+Received: from mail-pj2-f41.google.com (mail-pj2-f41.google.com [74.125.227.169])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A49D81C0004
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 02:39:00 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FaKfVF4c;
+	spf=pass (imf18.hostedemail.com: domain of thehajime@gmail.com designates 74.125.227.169 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790905798;
+	s=arc-20220608; t=1790908740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MhZuf98Z81J4Mqd1VfwP+qbvPYzQzUUAYk4ntEuxCgA=;
-	b=1kFfnMNdi9t6pYeZbqu0E6qjc4JkLERj7WmEpwARTPVCRAS3ld+aJmbEgq9V1d6s2A7gA0
-	nxVgL2vsSHpnUsOcvTJsI0JzuGMsAIPaLp6RK5Ha+z2eSVZ6L2V77yYB2nis1sLjeozfFm
-	n8Prw0QP2bwKfIN0h2uaNGo70PEz3/Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790905798;
-	b=h+LgpDoIxzACw9CN9Ch3as6MJlQAmUqSWW1xZ1FB1hGZ8UN9f8D4d7uldfUgjPjyI26oP7
-	pJrE2Tyi+B/qnAY2rTj5XUCugb4p5UaAsJr0eX82kF0XHkqmhGSJ0CqdlTeSmU8ID7RI65
-	rvL57Zoo4FZgS4XDClkxSzIRLn6yJuA=
+	bh=W0JwbUYYrULzWB47hYNIr342NMFY/RUwXnmibkziqko=;
+	b=k+jUh5bbKdV9oFRBnvnRLheWH0Q4lWf1IPUTZgTvkJohSsqySmOBQcLAQ0e2BaJco1im+m
+	UFDWdzcul2lKfOQF0mlQnZ78hGZgQqQXjXXDJubZ49337U0aHyt4IfxMpRKIJ0VkY6oGiS
+	b4mzAh7PSTUPhOnQ7sZHGDjcB7Hykds=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ohcTV+WL;
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.235 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=O/F6AKy+1TPXxN7FZeSSixd6YDpdthmqRGsFYibhu3U=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790905794; v=1; x=1791510594;
- b=ohcTV+WLBQIjClcA1S1hNHO1DQXU8X2joFAGsI1ThoyMAN+PVq5OqpomUoURl0QZZTMDOsg8
- rUTsUjr8j6+/QF/c69xneTs28BVt9aj99XKSrbX2cQn4X8gxKFZI157OdULq5kABQEEY5+ijQ1g
- unZwtNPkMlkqFp8pYbm9JY2o=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 7473f29920ffea9f;
-	Fri, 02 Oct 2026 01:49:54 +0000
-X-Mizu-Trace-ID: 7473f29920ffea9f
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH v3 6/6] mm/mm_init: add zone mismatch warning during page
- init
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <ar5xbQsUpSQZg0wO@kernel.org>
-Date: Fri, 2 Oct 2026 09:48:42 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Ritesh Harjani <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Qi Zheng <qi.zheng@linux.dev>,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <78D5D6AA-BE36-432C-B0F7-453F93DF18C0@linux.dev>
-References: <20260929053231.66085-1-songmuchun@bytedance.com>
- <20260929053231.66085-7-songmuchun@bytedance.com>
- <ar5xbQsUpSQZg0wO@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1D3DE4000B
-X-Stat-Signature: yor6h7wtiexmq6j3marst81mzuwrxeyo
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FaKfVF4c;
+	spf=pass (imf18.hostedemail.com: domain of thehajime@gmail.com designates 74.125.227.169 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790908740;
+	b=CHnnI4ug+p8oLlquWKFruriM44rggC1Q3ebDgtKOSD7A/JBbRYBVJWpjlPTCqoA/5NZdQv
+	3lkP6Hbd1c+LJolsX6stKSipN4F5+LisgsoDgpK3Eo01Kj2trG80Sf9iuETskHw2KGjmmw
+	swBgEbJ1es46NZFIjBa0qS7n+cnRQN8=
+Received: by mail-pj2-f41.google.com with SMTP id 98e67ed59e1d1-3a6e665bbeeso78245a91.1
+        for <linux-mm@kvack.org>; Thu, 01 Oct 2026 19:39:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790908739; x=1791513539; darn=kvack.org;
+        h=content-type:mime-version:user-agent:references:in-reply-to:subject
+         :cc:to:from:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=W0JwbUYYrULzWB47hYNIr342NMFY/RUwXnmibkziqko=;
+        b=FaKfVF4cXwwT8EryFi73f4qpreLlu5280n76NcTI4jUuvy3AHeDPMBDnAOKCAYD3IQ
+         ZkeI2JkgULJNhpPe5QvD5PYLVdNSP22eRHPXb+0ecnm2o0ZUnGnWzKgt1nDnzI2xYr+t
+         GO+fAwN2R2fshu15bQfF7c1qrOc5ei+fG5EnBMaMiiqBZqQWNwvsPlNlizIU5l+9z8nc
+         dsYZGVQE892I44jOxfu+RYCWjFHqXNbV6PdrxYarwHAn/Kv87ab6cBJ4z5To2ezC5KFo
+         CyX+OVnWGlmCjmpj1UFBRoCXrJ7aHBDVPkVkKTpECoJh9wlFYogWqMayLD/eLxCsyUVO
+         181w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790908739; x=1791513539;
+        h=content-type:mime-version:user-agent:references:in-reply-to:subject
+         :cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=W0JwbUYYrULzWB47hYNIr342NMFY/RUwXnmibkziqko=;
+        b=1dzW2RHHF4Dh+xgiIKXP+2wlPU+mA/QJTsltuVi1TLb0oMxuM41AKyusamvGz8WEXi
+         cIJeBFvKjwaLNsPyDFMnAEkNMUNUt7DQo4NhSw7j2Ry1Abx235vVb9QLMHkIz6ku2cDT
+         y5yOKEJvl7j5fKsO25tNojDGh8Vk09TaoJJ5i4n2zeMwHn/e5kicv26DfjpokqbuW/8N
+         9oY792BmgpdoYhKKrpRJbzyrQzhYgZ+Vx8gJ6JwcjuC+1QLcuIitROBYiZUgZnkdf7e/
+         hVAmIso+TWr3bA4g6GBpU3xh7bWPW091EIIVHz7Y9jWZABdCwWW2lF1mQK5HrxTdjzXS
+         xvBQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxN3CsNI4wPpElaWOQucYK+7cHKCxZOhAIsry9OsRM5s36dm+bOFEXeSLWTTHYpeQ1iwmiDaRG0YQ==@kvack.org
+X-Gm-Message-State: AFq9FYIjmI3RgNkJXsz9mQFEYhJgxlc3V4kK5Ltd4h33QMp9BpDF7IER
+	eywbnQH+ANNNOdgiXMb0mnQ5Xjb+ZLHDFm8teYvqkNS/JnymUM2z+PrS
+X-Gm-Gg: AYBFou1Q//wtufK7QurcOFoJNDF3nq2CEUjxz1/qT+4R3/07oBQVsr6AItqheQPVn6G
+	+Fm+v4AI6QZNQfJDCW9n1Fdgm//AgAzLL9QaPYmHPOEWvOoxMmV+2sASpmI+DL8qfklTU2aweP8
+	ovKkabzIJ771NomSbK7I9vwSrdHPjBExHsDyjDbSe5u9DD80zZ6iQXBGVBRuh67SLPuZO+Je75+
+	lkKxAA8HcKmOu31AdV8bLp72eYtp9KwPSfNXt/MyQsuj4gaiAcdqJUsXdV8kp3ukzs/1bQRKXuE
+	Rj30qZV/51X4fXONgxLlHOmXb1re6jyNPqlkmij4i9pgM65YhX794o09qvRDiSh3MY9sKubgkAO
+	1fy7241gJDHvnXa065ck9irDH2jRNFIjVKk7Mp6yGLxS+I+tcMg+EPJIZrsgNoMpJXaHDMb59dM
+	Haiflt40perr7BL9EKcOw3tJvls5g9B363337nvt4uL3f/4OSXHpePU/2bX13jEFY23hOWjK+DK
+	BQHpLqe93zORw9jmAYAEwXFeWiGCqHmqCYtHlXNHNr2F57MCCEv8wWFva4M4/5qQbEbJbVVgqY8
+	ssApRMFf/pdfV9fmXNx9VwSPrUBCHAYcb5z8T5/jfoi67BfcLaYa
+X-Received: by 2002:a17:90b:4ecc:b0:3a0:ca1d:b40b with SMTP id 98e67ed59e1d1-3a6cec84dffmr1148635a91.50.1790908739319;
+        Thu, 01 Oct 2026 19:38:59 -0700 (PDT)
+Received: from mars.local.gmail.com ([240a:61:8063:c5f3:3cbb:dbfe:34ef:b37e])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4f46bc991sm6682074a91.4.2026.10.01.19.38.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 19:38:58 -0700 (PDT)
+Date: Fri, 02 Oct 2026 11:38:51 +0900
+Message-ID: <m2se2o3jyc.wl-thehajime@gmail.com>
+From: Hajime Tazaki <thehajime@gmail.com>
+To: johannes@sipsolutions.net
+Cc: ljs@kernel.org,
+	david@kernel.org,
+	linux-mm@kvack.org,
+	liam@infradead.org,
+	rbm@suse.com,
+	akpm@linux-foundation.org,
+	luto@amacapital.net,
+	brendan.jackman@linux.dev,
+	liuhangbin@gmail.com,
+	corbet@lwn.net,
+	kees@kernel.org,
+	broonie@kernel.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	shuah@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	wad@chromium.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	geert@linux-m68k.org,
+	daniel@thingy.jp
+Subject: Re: [PATCH v4 1/2] selftests: run tests on nommu architecture
+In-Reply-To: <94759bed23f00d2044005e36be6f72f297e092f0.camel@sipsolutions.net>
+References: <20260929235711.2287931-1-thehajime@gmail.com>
+	<20260929235711.2287931-2-thehajime@gmail.com>
+	<bda5eeaa-7868-4d4a-9026-9e99347afd7c@kernel.org>
+	<ar4br2vW7yZGd3gt@gremlin>
+	<94759bed23f00d2044005e36be6f72f297e092f0.camel@sipsolutions.net>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A49D81C0004
 X-Rspam-User: 
-X-HE-Tag: 1790905797-89616
-X-HE-Meta: U2FsdGVkX19Vf0fdsEp3YHoksktKYhP9Q1P1j0JZnQcUwgZ2+2kkr7aMMMr9sxap1niPfRIepA6RhKW+pL/nDbcuUcRRzqkMSAaJwoFUfWh3VeQq5loW2vkC0bpHMKUFU2U2mxeGJcoTXvbogCopmKZouJ7GiGXed6U3K+o+AAy5UHjd7BTdGQe8yS4+fWTdNjoLFv9PfrhE/yIXZ2uimhaRvExkF5bC3my+gyDTIJrMk88oUvyXqXsCkaEsYq+yEyEFBT3BfHeGkEDRrBCvcXAVrLsFOyKKdQC9Gi7XRmTBLk4UMSvdpoAevWv7JXnuXvKLKUAd74rMe0UcnjZ28Ud2K+Se2V9McG+RWUCT48YhdWK7TeVX5T3VXpMJj2U+s5fagMbA3CdGre3YwcIue+j5847iWpH601zKrfOsTb3f66B+dn3KCN6xjUpYz+WFdNue/Ta4mFLaOby7aprNpQlnkgQcVoSAdC0+SKDP8LMQBwCu0M2oJZcUoIc9nhdvPOqa8HZP9ilvlQNUO3CLXbC9EDUP5mncSerZvYDT0YjSsCn8Lgse2dCjXYu0CAwGwIOGVcOd4sBsvOgoyN83KLaMlAAE7SQhJQihDiqlLZWuOATBCmjyoqYXqYEp4fRUG5pnXn3sES2Xmp3os0ze+bJKQID4ZuGVnhmrI3rSnFkEiAY/anlPXNYsRlA1v/9pPy3kwctfgZ+++4OoqdsAlBMAIcI8oQfSYW9gMXxaRUafuHZ1KpbpYjnMQ85UrQLV/JZN0EcHXp25Cce7m9aOnsBnjCqxL6PTIXzFVW7/VXmBcfHbZfBqjAIPLYfhEuzP4Kq9ByBpC/hNjcHifbiGteP3iMPO6hLLLRbzkkpWR57Oem5D3m9knWFeBHrSGkdkf85DHBSafKq9vZXjyDIGdi8viLt3HvX6pS9llSHsApSlwB1lcHgc846P9j3plU/ybrndZUUzfTL6p6UfZHY
- COwFCGTF
- c7w6/cVzhjF2QWVUoc+27v2Gftmo4hGya+TiG0apGBUsKaXXilVsdVq0xjApQCohG6OgCwgYyvtrAasW8/D7Kd41cMoFI4wyolYOX9URyTFQeec3+VDUfpnrce3e4VQHBeDTUNDRSHhrWs2nBULm6PMW0i4iItjqUZFnd57SjXn8FzzdFuv6VFDEDYUo3E82rCx3Y7flOUjylO5Rgq2sYiKLQQX6kuJ2BBemLeq6+oF9h16Vn7909q3GkGpwoQ/W1wVch40JnYrGCVsUeKsEw/bMQ31QrLyCw4nN4WQ0SN5cYMtm6DM/MFmNYfZ0uFDqsOH2hCcgOw764/cpueAz+AkJocRwK19kv3m4x4k6fk9zWrP3w7UMLmp04LTHPPZ70cT93IDVH5FbQ60GBCu+PDCpuqk2mjdF6bLQbz0jTBM0MgvUbq75nomaTKA==
+X-Stat-Signature: 31aj9c3r9ep8ixrgzt975ukszyhneop7
+X-HE-Tag: 1790908740-527297
+X-HE-Meta: U2FsdGVkX1+8XrrGpm97c9xbbQQVSN6t0oaQiD6HZFXjxOD20ZAShEq9hx5qaIFVAkyEDK/FUqnB0roYk8HMpCbXkdOiHcQX/JL4TvRHV7mXWswrNVPX9lYTGd3dxY/dTlga6kMK9YmBnfl1WXyBZ2lF6VwvYMYJRDLkhkRHOZgk6zhgLbeZi63qz0GvleIxcilM8nLDFP5pY5gRHWeWC+s7hhnk1J/Ldu56FCIS3f0E4ItxBfqPACU65qtOWawk9adgiUraKXCzEC1fGvLQ3A9ET7wqdcMu5PWKkGpfGwuL4lNObR53KS8+mrzF6f47wBpaeooyAQ6FT78KI7tnR58Ho+pTUoiWY76pLmrYn4HRchZUq9jvvQH42K0p+lSoIAiBjIp/v1VRlyBq1p61n9UFFMcPDUosm1kka4ogHBBisdIq/PkidEpavx6ed0HKy7+Mpw4sPY6hOCJ+94RU9HaF8lGb2JWYCFXbyZpp0FRsx7qiFKwHWnMoXcZThNkvVL6SGYbwJKVaxrBvm1Xl+QyTEwaxORR5gDM24L4/S1NPqEbL2KKB8ELQ625LYfO9S/PnW/t2FocOLgTyd3LHYv/lCwhKqRFbFyrCQF8BT/NnKtIxpN2YculTeqwjX4AT2S1PZ+/4AxqJqjk54o/TWyQeco1vTeFCgsrzXXWt5ic9gD9IXA1USq0lXknQV9tsQNqZJ1GayD9lUneUeQUeqYkgLNIGMIpv2guNu4zFER+kGYtMB7/a/niDibj8JYveD9ZD1hywEkPH3tYEXApUlzGPY5WvsyMNq34wDa2FcW8HJWwLhHsgLEegqmIHfQPfUM1hybAx0LW6Z7gPzf2ifSUDc1qrcVLy1NleA1aFJRbKHGvcou0Ev5iVVZtlAop3T+7aAAZvUod561WgUqrurkDEmLHaj/YlPStzwyjQ43jZs7ZmMa28YrPlpKlWV7iXq9NOmfrG6oA1AFsUaPx
+ kdk30Hbc
+ QIHsO5C8NJBTfOmC/ja1fyTQef2YdVl8d9BEjMzSoPJVCXoPSiurnbsWTPEkk4mt35asH9YIq9ouJwyTg1A9aErqzlxpAkS5iEq3TxPKro50AYjM7/IgB69aWM0MNoRrsCC4NuCeflNyCvwCwjwqvV+TAUy9KawIjVsIqZwmyBOPue8XyASAmXBozCiB4DdZy9ha/G9hPbuZ+6v7pGmJY+Qdfx7G25qC23BWQDJHp5BnLLvJyZrvuhPqAAhTSYcbnyDVCmuzasiLzvQ8JXp66lyi4UlbWjHUGi6az8hxUt3gxxwd7/xeYYSwgCQ9amCbnGP+T5zWZC8jhPfa1wVPjSJ+Qk6u68n6ET6akSs/JsiAIWuQlEYRZ/M4KcV4WsQxTh/qMKtB3/uZrBkU5tOHkG0k9DeRF1GmpBdXpG4Ajv8Lp9z56WhXUI9Rybo1XJRgi9AaW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,76 +145,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+David, Lorenzo, Johannes,
 
-> On Oct 1, 2026, at 22:42, Mike Rapoport <rppt@kernel.org> wrote:
->=20
-> Hi Muchun,
+thanks for the comments and inputs.
 
-Hi,
+On Thu, 01 Oct 2026 19:01:45 +0900,
+Johannes Berg wrote:
+> > >  $ make ARCH=um NOMMU=1 O=build kselftest-all TARGETS=nommu
+> > > >  $ make ARCH=um NOMMU=1 O=build kselftest-install TARGETS=nommu
+> > > >  $ NOMMU=1 ./build/kselftest/kselftest_install/run_kselftest.sh -p \
+> > > >    -c nommu
+> > > 
+> > > Is there a way we could derive that from the environment in one of these cases?
+> > 
+> > I thought maybe uname could help but our LLM overlords tell me no.
+> 
+> Hajime originally wanted uname to indicate it, but that caused
+> regressions elsewhere, so we dropped that commit. I guess we could put
+> _something_ back?
 
->=20
-> On Tue, Sep 29, 2026 at 01:32:31PM +0800, Muchun Song wrote:
->> For vmemmap-optimized sections, tail struct pages may be backed by
->> shared vmemmap pages. Those shared pages must carry the same page =
-zone
->> ID as the struct pages initialized for the section.
->>=20
->> Warn in __init_single_page() if the shared tail page has a different
->> page_zone_id(), which would indicate inconsistent initialization.
->>=20
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Qi Zheng <qi.zheng@linux.dev>
->> ---
->> v3:
->> - Collect Acked-by from Qi Zheng
->>=20
->> v2:
->> - New patch.
->> ---
->> mm/mm_init.c | 3 +++
->> 1 file changed, 3 insertions(+)
->>=20
->> diff --git a/mm/mm_init.c b/mm/mm_init.c
->> index 1650d6bc1211..bd02e8d06965 100644
->> --- a/mm/mm_init.c
->> +++ b/mm/mm_init.c
->> @@ -609,6 +609,9 @@ void __meminit __init_single_page(struct page =
-*page, unsigned long pfn,
->> if (!is_highmem_idx(zone))
->> 	set_page_address(page, __va(pfn << PAGE_SHIFT));
->> #endif
->> + 	=
-VM_WARN_ON_ONCE(vmemmap_optimizable_order(pfn_to_section_compound_order(pf=
-n)) &&
->> + 			page_zone_id(page + =
-VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) !=3D
->> + 			page_zone_id(page));
->=20
-> Hmm, page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES is initialized a tad =
-later
-> than page so it'll have stale data in the page->flags, won't it?
+systemd uses uname information and our (old) patch changing the format
+triggered the regression.  thus, we dropped it.
 
-Lance is right. The shared tail struct pages are already initialized by
-vmemmap_shared_tail_page() during vmemmap population, so they're not =
-stale.
-The head 64 struct pages are initialized later =E2=80=94 right here, =
-after vmemmap
-population.
+> > It pointed at something though.
+> > 
+> > In fs/proc/meminfo.c:
+> > 
+> > #ifndef CONFIG_MMU
+> > 	show_val_kb(m, "MmapCopy:       ",
+> > 		    (unsigned long)atomic_long_read(&mmap_pages_allocated));
+> > #endif
+> > 
+> > So MmapCopy in /proc/meminfo tells us definitively, weirdly enough.
+> 
+> Hyrum's law and all that, but I guess it's not highly likely to (want
+> to) change :)
 
-Thanks,
-Muchun
+a runtime detection is nice.
 
->=20
->> }
->>=20
->> #ifdef CONFIG_NUMA
->> --=20
->> 2.54.0
->>=20
->=20
-> --=20
-> Sincerely yours,
-> Mike.
+scanning /proc/meminfo might be useful. although it requires to mount
+procfs (we can actually skip procfs mount as it is optional) so, this
+is not 100% portable.
 
+checking ENOSYS like syscall(SYS_mprotect) might be useful but I
+wasn't sure if this is always the case of NOMMU or not.
+
+My original attempt was to use include/generated/autoconf.h; with that
+we can omit environmental variable or command argument of NOMMU=1,
+but gave up with handling standalone build/test case which might miss
+the generated file (and complicate the patch only for the NOMMU
+detection).
+
+So, specifying NOMMU=1 is my previous, though dirty, conclusion.
+
+-- Hajime
 
 
