@@ -4,105 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1E17CA5FD9
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 08:23:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C30E2CA5FC4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 08:23:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B9A16B0088; Fri,  2 Oct 2026 04:23:09 -0400 (EDT)
+	id D8B646B008C; Fri,  2 Oct 2026 04:23:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9908B6B008A; Fri,  2 Oct 2026 04:23:09 -0400 (EDT)
+	id D62646B0092; Fri,  2 Oct 2026 04:23:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A75B6B008C; Fri,  2 Oct 2026 04:23:09 -0400 (EDT)
+	id C522D6B0093; Fri,  2 Oct 2026 04:23:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 675B96B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 04:23:09 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B4AEB1A065D
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:23:06 +0000 (UTC)
-X-FDA: 85276995972.13.7FEFD92
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2820940008
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:23:05 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HxfcHBD8;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DC176B008C
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 04:23:57 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 39E00A0676
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:23:57 +0000 (UTC)
+X-FDA: 85276998114.15.ECA6F9D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 60EDBA0005
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:23:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m39OTSXG;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790929385;
+	s=arc-20220608; t=1790929435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G/f9I4vHQK4JOyc+erbBtNclRJr/3Y4Kf9SezEHiCB0=;
-	b=mjyxrMWS6fSPakzOcdMBuYLpG4UGZvxd28Q7LQ6FEhQ8VRyAAdIXxVF9R4rdlfPLWLWH/A
-	Ag96cRNRYYPpgIuR1Q9rZxPmitG9q5pb/KEU4ovTfKeS01i+bmJKjtLdCGm5SJrUUpO3os
-	MvXCWtc3NufZpv1oBUndqNOJWG+Nk0M=
+	bh=EscagxTaRgsbT7pEbj1a/c/B7oDWZ/qp9i/g3XXY2T8=;
+	b=iSqMwapQvDDJu4BThsgyFY/9T1cRmyJsggFfMoRp1oygppE9+2XgNihMzYj7QHGl6PhBj8
+	WIO0VTyfLBSARrODSAlM/fOIetx8rhtdXUYEeijzDLjrszwyDNkd3beYydo2XQYqc4kXZD
+	a2qBHMxDbREYI+eNKjrPDXUg5t4aLVM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HxfcHBD8;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m39OTSXG;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790929385;
-	b=eUIb5joODBjKj+MXDLTp0tltzv8yGR3CVW4P7KtSAkHv1d/Se+Q46WHI8ktAmKUf4TGYS+
-	ILT4fwVPjWRlkwrtaavnyrlfvRhSgroDp+zRthRJinwOKrz1Ahuk0ZGG/pkShdDYl8dfaD
-	D0Xf5CBKAiEmYJTnrkiyrFr6lJ5klBI=
+	t=1790929435;
+	b=FU5PP8bZE2K5PrE5iW1O1QBUNEhYH3QFdYQqc/Nai5B+w8QW65E5slPxT9+DSRetjavL1x
+	IfDN3ElF2sYUlQUrbxdrVDp4zHrCPtejHJCXqmBZkuF7yd72KT42j2j5AFhJlnJvUQPolz
+	odO617yB8vO7dyF/S0PAzo5xTDMOhIA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A2B0160A6A;
-	Fri,  2 Oct 2026 08:23:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FB01F000FF;
-	Fri,  2 Oct 2026 08:22:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 84397407F1;
+	Fri,  2 Oct 2026 08:23:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588551F000FF;
+	Fri,  2 Oct 2026 08:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790929384;
-	bh=G/f9I4vHQK4JOyc+erbBtNclRJr/3Y4Kf9SezEHiCB0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HxfcHBD8rebzYNDmEhi6ZjEMfdZKUzhjRiJMId5JdydfC1VdWyb8c08N9eWtBVQDD
-	 s8ik9RohZH4US83JNfPsnlk8g//6XwGPAYSZSRPl31LER1mBTyZgYsOP6gsIdd0tXy
-	 nLTKGK1iGyLORSlzVOr6U7eeUq2VLTOa7+2TjgOF/DFKV0/MMF8BaQfnkxf64MzxSm
-	 QR1mL6j6ja0eAy9STNBKy+bhwdvUtLq18bDlZgnYUnd+JP+TZ/wmn++l1Th5RBZj67
-	 PnQXRbUhDXumsopPyQKJ5tmPfpqn8AdmtKB63Z0Mg+0rwMxgYTXHPogcXNKqrZLXFl
-	 B+elqnABketew==
-Date: Fri, 2 Oct 2026 10:22:55 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v3 6/6] mm/mm_init: add zone mismatch warning during page
- init
-Message-ID: <ar9p39Y9SmlxvbA_@kernel.org>
-References: <20260929053231.66085-1-songmuchun@bytedance.com>
- <20260929053231.66085-7-songmuchun@bytedance.com>
- <ar5xbQsUpSQZg0wO@kernel.org>
- <78D5D6AA-BE36-432C-B0F7-453F93DF18C0@linux.dev>
+	s=k20260515; t=1790929434;
+	bh=EscagxTaRgsbT7pEbj1a/c/B7oDWZ/qp9i/g3XXY2T8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=m39OTSXGNZNIqCEztgvYpbKdbg8exALPQw7LXuaZ+cFC4pTdZYLSKC2Zdjd81Vyer
+	 eZpFzbESNoK57ZUzT63Kbqvgt1CMyurYUx2euQpsisN/d4NC/346wAtZsoptWrU4Bx
+	 uRX4gEsirlSzXf+lc+Rns6jlQ7EWFJcNt9l7zBzO/7jjfAGfLlses1qCqZ2PnXXuYW
+	 HsohxPZh4YLf6b2zK1D0YtNlqhIZJHYa8PyNjgE2x5N+oRAcrUXbuEmqvxa4E75PVC
+	 dpN563eX06NOCoyUTkrJGWoANofJdSgpOtzf+lUCyE0JhqCyCjG6ZGZGK36cUa9/jQ
+	 Dnw4JlCRv97UQ==
+Message-ID: <42d1a163-3502-49b8-9a27-7df9d06eee64@kernel.org>
+Date: Fri, 2 Oct 2026 10:23:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <78D5D6AA-BE36-432C-B0F7-453F93DF18C0@linux.dev>
-X-Stat-Signature: hmix88xhjo5d1irjry3tp9pighsdo844
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6] mm/page_alloc: avoid direct reclaim and compaction for
+ costly __GFP_NORETRY allocations
+Content-Language: en-US
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Salvatore Dipietro <dipiets@amazon.it>
+Cc: linux-kernel@vger.kernel.org, hch@infradead.org, abuehaze@amazon.com,
+ alisaidi@amazon.com, blakgeof@amazon.com, brauner@kernel.org,
+ dgc@kernel.org, dipietro.salvatore@gmail.com, djwong@kernel.org,
+ hannes@cmpxchg.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
+ rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
+ willy@infradead.org, ziy@nvidia.com, David Hildenbrand <david@redhat.com>,
+ Christoph Hellwig <hch@lst.de>, Dmitry Ilvokhin <d@ilvokhin.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>
+References: <20261001082152.2879289-1-dipiets@amazon.it>
+ <20261001182942.ce99faa753fb9d9bd2efec1e@linux-foundation.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261001182942.ce99faa753fb9d9bd2efec1e@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: eb8y46kqixho4n9whrigduznexrxno4d
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2820940008
-X-HE-Tag: 1790929385-645466
-X-HE-Meta: U2FsdGVkX1+USsBeAYrPPNJDygUrEWpEAcxIO5lq/5FuY3pVcF4Lztmbdnv/LoZ+xlNFMCXClgoc/6rfAkkC+JfV4+oi2t/Cabg/aTTZtJ2mdlK2yZiFFcXeGnSGQigT1COYLOnnjU4U0DH/174GvcjSBEfkEcm5s1zZWtB/lOjX54pt7Dc6plJpC0Dk858DLMHXVrrYgwhydSdnjdTfWXKJcOSswqZj80cU/Q/SmyChCBxZpaNiWPz4AKy4k8kaSQeAGXT3drMiZDPiOdJmAO5RR/zB8Hr1cL9xXgeyf6Tt78G6PR13OTBZI8N46SYaRyEvV9KPifP8NRPl4VImcs8b2Q1wXunXxy2GOOHkyAnQGMaAwiK3yp9M/kLktVWkK4gEWqDwqwhFwP8YY6Ldafh3FJ/95UPa6mghrhuYX7bwZWJXE7/pZGQDUalGLOvz/jtdH1kVLx7HczRJJTajBC+rBi+UhcrW7I7eNUTgZRCG5QDc3LVSBwPC4LnzGULDqNyJigDQyXfam3F8s03Oc+2SPtqqwG75Z7lhPyifETL4VkDshEhTXkxU9iZptF3+S1CNv/8Q7zXRkEtr7912uxJNR1TFF2I3qiE54PrzeBiP+WL80PjJdaXErwuSujhSzFuxOiTsmnwx0uWa19oxZGc/2gHx2UP0xJHSQS/Ova+6jPfTOVyCOFTVEK0L7Cei27Hzy+Qln5mayMACqarID5jLTyHTJm8lef1jlnnjjhCyESy/TyULRw6fGJatIkFtIZGB8GE9xU3MNaksS3WrTNePARzc9FvmFNvRmPhX/lP0mvpbx/pznp6kEmk/RIazHukp4uy079Su+5Ds6kBCLpk8+AIQJFeBBuhWUke1+IdJaaSI2VLl/PoW/Q9nRxGRgDmkCii839zAwJ4lO7WM7zNeAm6ZX9pdMkLSpMUh9w8ex81FQezLLOAgWtXJ3BMAEOWEidRKhEVrg7gUaLK
- yxfn3Ckf
- 87olOFO7eHhMV+RtjR4apCkZvp5w/kxoGHhYultuMdy6YNDgjMsc8V00DaJ3Hfa+RTD2Eog8BGHOlIxr8FDf2fGY+001evUDlgHg0wO1bxVs8Lp7zttpf+9xZzK3KS/L88cOZOx+nvPwrs0hnvxWN22XoQmBkQ+xxTEcmxe428w/9Q9A8Wo8Rv2zHLRhuxKX5+bwcdOBMuogPM/bh0jFgr2tHs1MNS3D8n5xP9zo9Ok0XAImrefEQ8em0PPnXGD2s+/Rw2mlFA1nC1yz8odgXok5jClxk1MHr4OyU6vRYYjloEDRkKdnYy2zj9nprxYYkFYhSi/Gy+ljnIK5OIbI8ISRvYd/ElaCrQpray8Gy6wgzUtjvzBCBk3D3CyBOuzC4yTwbHQaE6kLIzYGLIuDw0UdJxkU9us4shL2bvhRxpGTg0jGrBvCJCsp8lKaGNu+wWJeT
+X-Rspamd-Queue-Id: 60EDBA0005
+X-HE-Tag: 1790929435-492227
+X-HE-Meta: U2FsdGVkX18gNWRj+qeE+wPporAwjBNbMUklRCFhDwqHDomu0LaFzv4KEyF31Zl1vzj2QA8eLmjsErHNb9/7awZ+F/fuRZ01b6dzn2EbB2PxOPK70Aow/GWU/tzGMKRrVLud1MbXtODbGaaYRcp55iRNwN32AXYfhupgo1MVqBJM0ec3bslY+1t6S8+u/gMIiowWL9s8PcVWs16vz/Wvi/yN4rQbE37WaVw7yMWDJ7Gy+SpfjjXEMJPA/kyt53eK1p9CeRP+yqGtA1wDXzFQnJQOpcaWQ4W3bStJujRvKK5E2AJnnDW3oJ/HkG3mKJLgfRWtKtZuJAWLXOHp7QxRPjEYgeAEc8It5dfSLGBRGc1r5i2yPXjdnkk3IKtuBoTpVUZdlsgu7wQMPjGjD+gu0GNfHzesiZRCGRldz86oxkbgUXM6RXAGxA0OavQZTyfChbRJJc+08leZ4FmXZPKPU7fHnsrOlGAxnjoUqo6cMS/+OMMNGp42TEM/pscmwbAgczByuAjVjgak34fSsV56huhbS3YXtr5wgj0MK/ZjREatQonbXyrtkkL/3kXZlGzoso+b/E3g2n8f9LLVlz2PufKE1jIJT8U5YyfP9+31/8Q+8OjwWilsGvKkezy1hao6rTpx9bkDEU719JfZ/Dg9juTBiGwustlaBe92WZlFtX+7PKYLd1aojkUbgGR6RnHkO6vWEeoC9u66PLqJ0Ke7zScwjFjmKRzS1VDuWoSHTjeDPel4kMWxae8lF94yAbpqWnSgNvAPMcJKEWcPezD7DzfIP4pbED+kr6etOoD6BRKD5g8XEuSosvrafpYchCGF18aLzKhy5kC7rDdTsxINPfVOJbuG8xHi7lEYtCMx6MUk7QG7o+Nk64lszWAiP+5+0JyV0s1FA9IBwgImSwSrgZzpPWPhO7oW6En3CPjymTUQybDmGDtd95rFPQAuzA2N20Jx4T3IqAOOgXzYNhv
+ Xtz1rVD5
+ IXaGJESpU2353br8JNuidTkU8qAmzUHB9TMoMyl1GY7QvoXrSCTwycLiuEDqlnEuSv5a+6/IZq+3uSQQTBqFUB0MxCw7o9gIb04ZoFWZsctCdPE+Z0HtD7PW1kjAlztYaB/i99mv+pkccMmYh2zsDiEiSw9WP71UUmewOMKzK/b2FbDVYqK5ImPxjW0zlpl9RnhUScW++Lu9WvEH0rWfWeKWy8TOcmvEC6oh/chbyqJ4CVINHKyqVcUukNTbDTbVHORbW+R27p3fBv3DPBsWy1cDv968P2nTyGjvXWqXn2V31WmxiKIQw5f0sKTimsh2h/osOrLsaNTxa0m0ifdbng/Lu+kE55zMADdfqLi9LL4r1codAaAOcaCNPkg78Tl6yss1DfflMZKcjkMuFaat4fnAaEA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,77 +142,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 02, 2026 at 09:48:42AM +0800, Muchun Song wrote:
+On 10/2/26 03:29, Andrew Morton wrote:
+> On Thu, 1 Oct 2026 08:21:51 +0000 Salvatore Dipietro <dipiets@amazon.it> wrote:
 > 
-> 
-> > On Oct 1, 2026, at 22:42, Mike Rapoport <rppt@kernel.org> wrote:
-> > 
-> > Hi Muchun,
-> 
-> Hi,
-> 
-> > 
-> > On Tue, Sep 29, 2026 at 01:32:31PM +0800, Muchun Song wrote:
-> >> For vmemmap-optimized sections, tail struct pages may be backed by
-> >> shared vmemmap pages. Those shared pages must carry the same page zone
-> >> ID as the struct pages initialized for the section.
-> >> 
-> >> Warn in __init_single_page() if the shared tail page has a different
-> >> page_zone_id(), which would indicate inconsistent initialization.
-> >> 
-> >> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> >> Acked-by: Qi Zheng <qi.zheng@linux.dev>
-> >> ---
-> >> v3:
-> >> - Collect Acked-by from Qi Zheng
-> >> 
-> >> v2:
-> >> - New patch.
-> >> ---
-> >> mm/mm_init.c | 3 +++
-> >> 1 file changed, 3 insertions(+)
-> >> 
-> >> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> >> index 1650d6bc1211..bd02e8d06965 100644
-> >> --- a/mm/mm_init.c
-> >> +++ b/mm/mm_init.c
-> >> @@ -609,6 +609,9 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
-> >> if (!is_highmem_idx(zone))
-> >> 	set_page_address(page, __va(pfn << PAGE_SHIFT));
-> >> #endif
-> >> + 	VM_WARN_ON_ONCE(vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)) &&
-> >> + 			page_zone_id(page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) !=
-> >> + 			page_zone_id(page));
-> > 
-> > Hmm, page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES is initialized a tad later
-> > than page so it'll have stale data in the page->flags, won't it?
-> 
-> Lance is right. The shared tail struct pages are already initialized by
-> vmemmap_shared_tail_page() during vmemmap population, so they're not stale.
-> The head 64 struct pages are initialized later — right here, after vmemmap
-> population.
+>> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+>> introduced high-order folio allocations in the iomap buffered write
+>> path.  When memory is fragmented, each failed costly-order allocation
+>> enters __alloc_pages_slowpath() which runs direct reclaim, direct
+>> compaction and drain_all_pages(), causing a 0.38x throughput drop on
+>> PostgreSQL pgbench (simple-update) with 1024 clients on a 96-vCPU arm64
+>> system.
+>> 
+>> The root issue is that direct reclaim and direct compaction are too
+>> expensive for hot allocation paths that have fallbacks to smaller
+>> allocations.  __filemap_get_folio_mpol() already marks higher-order
+>> allocations with __GFP_NORETRY | __GFP_NOWARN, signalling that the
+>> caller can handle failure.  However, the page allocator still enters the
+>> full blocking slowpath for costly orders with __GFP_NORETRY, which is
+>> unnecessarily aggressive when the caller will simply retry at a lower
+>> order.
+>> 
 
-Still it looks out of place here, can this check be done in sparse-vmemmap
-somehow?
- 
-> Thanks,
-> Muchun
+Since it expands the impact of a pre-existing bug of nonblocking allocation
+eating reserves [1] it shouldn't proceed to mainline without a fix for that
+(Johannes posted it there but the review discussion got stalled).
+
+> Thanks, I'll update mm-hotfixes to this version.
+
+I've also argued for not handling it as a hotfix [2]
+
+[1] https://lore.kernel.org/all/9f415dc7-adad-4161-b20d-7c3173f50ff3@kernel.org/
+
+[2] https://lore.kernel.org/all/c6e2c1e1-a285-406e-a2b6-c09e05df91d8@kernel.org/
+
+> Here's what changed:
 > 
-> > 
-> >> }
-> >> 
-> >> #ifdef CONFIG_NUMA
-> >> -- 
-> >> 2.54.0
-> >> 
-> > 
-> > -- 
-> > Sincerely yours,
-> > Mike.
-> 
+> --- a/mm/page_alloc.c~mm-page_alloc-avoid-direct-reclaim-and-compaction-for-costly-__gfp_noretry-allocations
+> +++ a/mm/page_alloc.c
+> @@ -4930,8 +4930,11 @@ retry:
+>  		 * Reclaim/compaction cannot run, so defrag_mode's strategy
+>  		 * of enforcing ALLOC_NOFRAGMENT cannot be fulfilled. Allow
+>  		 * fallbacks rather than failing the allocation outright.
+> +		 * Not for __GFP_NORETRY: those have a cheap lower order
+> +		 * fallback, so failing beats fragmenting.
+>  		 */
+>  		if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT) &&
+> +		    !(gfp_mask & __GFP_NORETRY) &&
+>  		    (gfp_mask & __GFP_KSWAPD_RECLAIM)) {
+>  			alloc_flags &= ~ALLOC_NOFRAGMENT;
+>  			goto retry;
+> _
 > 
 
--- 
-Sincerely yours,
-Mike.
 
