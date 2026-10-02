@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3449BCA5FDD
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:21:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29BD3CA5FE4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:21:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BA2E6B0099; Fri,  2 Oct 2026 15:21:14 -0400 (EDT)
+	id 1AD7E6B009B; Fri,  2 Oct 2026 15:21:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4922A6B009B; Fri,  2 Oct 2026 15:21:14 -0400 (EDT)
+	id 184696B009D; Fri,  2 Oct 2026 15:21:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D00D6B009D; Fri,  2 Oct 2026 15:21:14 -0400 (EDT)
+	id 04C796B009E; Fri,  2 Oct 2026 15:21:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F4786B0099
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D3E6E6B009B
 	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 15:21:14 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A09EB40817
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:21:13 +0000 (UTC)
-X-FDA: 85278654426.03.0AA53A1
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5AB18120862
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:21:14 +0000 (UTC)
+X-FDA: 85278654468.21.0006505
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0A87F1C0006
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:21:11 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ovNnAyh3;
-	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id B4ECE40004
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:21:12 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EBHsSDNp;
+	spf=pass (imf27.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1790968872;
@@ -35,37 +35,37 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0/eVKtwYx7bI64sChNrMU6bYG7D2qmY2Fz9of35KQJ0=;
-	b=7jLV5FDN8tGmJ1HT9sch90NgGRPjc/0pXvmhX6i2VuuDS41g5pkjbCqd2gf7c6SmxuAmpX
-	xck28UN24BusPbPpRsvvpNFMbFk3dV3kQ8dNKWqMKFs/7TWZPjsaCa9ksHGhQ/Ajj9FDYq
-	HmbNvFSyjs+R7f2dN58u434HArc05bM=
+	bh=y6ZufPODuIHzGF3QNb5bOqql0/Xf5uMartGb9nYO4gI=;
+	b=USlU5J91J3oG352zL5lB6lvoSFI55RLzJVmzvP9edBEDLG9HTGKwiMdSmzhZoWCwYEcdVq
+	yqAa1Uql4xvGzgLjEsXAE6qjxNUA54lazUIXj5Z4qZwNJFNAaXva23hlO5fk3PFA5oVdwc
+	YOSoXXP2tDFWm/A8/+o3D0MWt85B+r4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ovNnAyh3;
-	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EBHsSDNp;
+	spf=pass (imf27.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1790968872;
-	b=YLDYiqL8T9snEHRDldRmCfJlDnfTSA3CuTHFuV+sc5AKqOcGiIhCMNQsJhpEJXfX4CWvNG
-	fKkhRLJ7186jryF83/3fchTzXeoYm73hjsmZt8wP5ub8LxiqbXGHJ2jeHDhfnl+rw7ypAA
-	DiblDdlg9OeFMnSFusca9W/Q6ZPeUzM=
+	b=A/tJNI3fC3xCWvNFSgzYoRcEYU5Vs44ckStgTkFYqWVdZ987eY1U68DB8nMTegXdNPlhGi
+	Eg24kx2pVEPrVCNV5t/KUDk3WUV7zkUsOVmzshh3eq4Lh+o+TS6oByU2hgWLmw5ZCPJs1t
+	PXrmzx80TkGN7CoMDP6O+UraPKg19hA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F3B764143C;
-	Fri,  2 Oct 2026 19:21:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD1AB1F000FF;
-	Fri,  2 Oct 2026 19:21:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0628E4075F;
+	Fri,  2 Oct 2026 19:21:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D641F00893;
+	Fri,  2 Oct 2026 19:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790968870;
-	bh=0/eVKtwYx7bI64sChNrMU6bYG7D2qmY2Fz9of35KQJ0=;
+	s=k20260515; t=1790968871;
+	bh=y6ZufPODuIHzGF3QNb5bOqql0/Xf5uMartGb9nYO4gI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ovNnAyh346GWrvM/Pa4D7TmP57u88mdg15Owap9hy+bR+bDXlso3az5ZkBVUPJAmY
-	 n5Om3CMG2tUjOwCbGeOJ0uEmXSDHNdUcT9bVOy7n+HOO5HeSntzsH+z4YO7ZjHc5SD
-	 GYZixomL1Ko3ERKHrl13WDWj9+jwrf76p7RigkANmjR11oHZeN/fgPWf+9EwzAi3iq
-	 IxCEnwkhqLfqBEm5Ph8gP08PdbjpIRobw8mr0hWSwtPnLMF50I8322MKexn9mxM9Q3
-	 GV4zKxYpJ+Ck2xqV2XJyiUcqF1gziFjdxsRL0zRMmqVYP6aOfYYuCcPshShD3Gzm+B
-	 Gky+ebnhMrl/Q==
-Date: Fri, 02 Oct 2026 09:21:09 -1000
-Message-ID: <94e7126416dd6407a46a857e5eaff36b@kernel.org>
+	b=EBHsSDNp7SJRGlgzs1s4PvOgtoI+WThEUd6L3zusu14fF9Utndhrof2SlWJ0i39Pe
+	 9T26TGOv85czWPVV7eDQXIPcm+GnstsRvy7bnniBlBr06sjbs5zVXiUfbAJKt7wFUS
+	 IHKxtSWvSyFeWy8eHkFsK0IlLb0Gqvi+Q/IiYy+/gxptoTtALdupBaU0TWhdtgEtOo
+	 8jKr/9WKYjKSH3LgPyhy9N7QeycHORIo0YPIWrXdGLHd6ay0+BofOOWNVw9iIp23re
+	 X2F1VUs7t7NeY2p3NQsglPI4wW7nGfL2vE4+9mVc7+PQ1RXIjh0q2jnKhtz/utdKvB
+	 4mNxoaGwLxrLA==
+Date: Fri, 02 Oct 2026 09:21:11 -1000
+Message-ID: <ccbcb8e5f806ae1d29164b53551d61ef@kernel.org>
 From: Tejun Heo <tj@kernel.org>
 To: Liz Fong-Jones <lizf@honeycomb.io>
 Cc: Christian Brauner <brauner@kernel.org>,
@@ -82,22 +82,21 @@ Cc: Christian Brauner <brauner@kernel.org>,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	ian@honeycomb.io
-Subject: Re: [PATCH v5 1/3] writeback: clear the old wb's dirty IO state after
- switching inodes
-In-Reply-To: <20261001-wb-dying-cgwb-flush-v5-1-8361eb8c65c6@honeycomb.io>
+Subject: Re: [PATCH v5 2/3] writeback: let foreign flushes reach dying cgwbs
+In-Reply-To: <20261001-wb-dying-cgwb-flush-v5-2-8361eb8c65c6@honeycomb.io>
 References: <20261001-wb-dying-cgwb-flush-v5-0-8361eb8c65c6@honeycomb.io>
- <20261001-wb-dying-cgwb-flush-v5-1-8361eb8c65c6@honeycomb.io>
+ <20261001-wb-dying-cgwb-flush-v5-2-8361eb8c65c6@honeycomb.io>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B4ECE40004
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0A87F1C0006
-X-Stat-Signature: p5wfdgtw7uka3py1hxsgnt5h5oowhtd5
-X-HE-Tag: 1790968871-255673
-X-HE-Meta: U2FsdGVkX1+Ou4Hl8PCZcbYck6Knii4mjMnd9O+FkEW13UDgj3xAJFXeZOduelZP1MTT0onCwl8wovgCZDPvYbQVk1rywBLHDKR1XrTOMRdiNTYxwqHxNNqv026493REOgyWECJBubn3G3//2SxtogqXqvE7K5zn9Dx+zR2tsiZV+fLXgP4NEcASkz1mXvX1+Y6DrkJYg73cGDzvf2JKblVcaYdpJcK1z6biyru4qCqQwzwU2gapd6HUJtVcSvjFBdWMWcKajyAMXberJGIdlIKY0PBF5fMxFfUZ+w2nY/l1R30Fq3uJrnGTM0Td/Ekh+Byu4sB1CuVhqqrbXvsjHcUIw8n7ECTwD16+yrwwsQg6CBkMQVmsoYGpZfTOftDkD6Yns0GRnCLV/bi0/rOMIlSOjjAs3+ZxCBKFrdItuPlUx5lpvPhFYJH5cJnQ1VEuBES6U3kphASKlU+2NrlacZhAqO8a7hHIltMflnZkNegkpOOXla0L19aQ9HQDJPfMiqQghAaRXOryPr5ssM6RWKtbJZ7t5tZOW1dBgAR0swwEy1IjjZ5i3/xA7NdmzDQZPju7bh1QSc343D8BYf9NqoYJn+PObp+v6c8WyFgRr/A4mxNB/pkg0s+Sqo1nYO9acFF9Nu2qq6ieHIOTQ1wLWEN//C6nv3StisqDNwTyxj1e5r4vkwqXM21tm1R/ZoQv+z1gkUXe6I1A4NSWJdb9I71DvsLkOJgq+1Zp0eDzX3KaycP1LS+gRlKACKnuJl/r0LM7phigP0BdXeB/iIPEOcIg/4M88VImeirY8LeuOogxQd44B24V0z8WJjMGgRFWOgTr9p+N5rfUjyHL5TsqJfY00CTCTtorgJqKk4TRZ/gHZ6FhGSpg960ZheY6OFWlr0xreQyqOl3rA5uUyyZoQKU05hwldE4gNFADfJvLRFx7nbq2OrCycSvkZZJdF3Y5S2gYqSJDD5grd2I6SOU
- XOjOHMZQ
- ZGkp0lwmIoFJZOK6BmNkwsxHKt/JavXo+WSj/8ikJgbHTzVvluclCnONFrdOAP85pEE0Ip4GTvodOsA3Jcy2U5g+J8apBTD9EWcoXUC4T+UvMy+WPf2Kh5bubzCTz5Z0Mcr2YikymCb/Y6FK4FuHdzdirNF9CSKMiF/L6KISS7f1/23+KLORXTc4lfMNsQzeT7OBMEtt3KOqVVue9E3n1eVs6gR6k8PaXl3ZjDnW2wJ3pfSCOhRbwCpGLUydtlnq/w361uoouvULarRI4+3WZNf39sw==
+X-Stat-Signature: ghubshwndptqfpstixainjpgysse36kg
+X-HE-Tag: 1790968872-315693
+X-HE-Meta: U2FsdGVkX1/aXSlI6gdWmI9FeJsL+DrDF38wrjL9S0+LvT+WoWz5lBAZuQ5m0RZMJj9lU0A8KmNB88AuTDUlaN5xTiBDpwBXEe4KpIuhXRJ1GA8WV6CrHM+zRj3Qi9tmS8dh6kMvVnmhKiu0an0kOdNddcNqZYto7rZwQDn95uWpSUn7O9AuBu1mWwzSDrt2MduZvzzawr6iOxvXl/n3QhgGr/pkUTyVaMENppdJKSs2XnY/1ejQYCJ7lQoA99YuaWLginbpPfn1hhc3FQr8QQJMcAkSV3GVNmQr0BFm+3JcCWMxvC/GPp/ZeFvuGqmZW6zPM68Po9fiuZZRfR0lCVPItHjw/DXbcB4yUhHgU/JOaDffxvSQ7fx0LHBYzEmOT7yehG1gFHgg6rRp9ZmXPlZ1ZtF45QkYI8tZHYlBCYKk972cU/or2Di3T2yYEZa/gQ6pcbq+o1RNdcmynGvNvwN/sRe1gAliSA3qTfaHSs1Y/qvKtr5WnOazqo6v2ktMl9VEYEcAKiFzspW3eprtL9Pxgc58l4sHDSfgv4A5MYd8njBkZcXz42Hbnkphd1TO8/xiXHAwpCuOsMnM8AcSKoBhyHCfdHkWfyhnQmqiEAFCcnOOigS1ZIU20P3KZhtkG5K7TU6vh9SoBkX+UtoxJehTLZOWy1BmsQDcoTiqGtTfi9I8U3/B+bo+ITJniyp2hwnqe0CVj8dW1o4aLvR/lpp/yCIWuSqSy/nRBHmRm+IFqfLQc0X/F6Yi429r0WLZrDUVCpENGOv69VC+mmKp4yV8KsktdZb03764YagZhM51te/SUSMUtNzFkrPRDuYV5zI9Q20hVHHhpWp/ci5R39bOlS8Sd/gu9gcfX+MseSLh8w0MHWbgYdIJx1EaI2KF68zodtJToBv2LM11EmyusjOAUznLZxiGbVtdDozG9QaU6A06+0W/fTdnRBP6vNVarhyfnbvYZtNEfqD1wCK
+ nOuxEKiK
+ A1AZlN2K0G/WOhts3ovbmDE3KM8g9NyImQ2LvTZlpGkeCbPfc1gNavxT99KHJZa/4uvbzpyNF0DjqMym1Tr61BIi222l34LBTgN1IS6j63Wpb5lEM5RDRKe71YpiTRk+dmwJvcNgFLREEuoFz7ERlDWMKwDWF6hwHhfM5uj6r/0CwMQwPzlMH5OppnL/eNPK2quCB7ZyO7tOjNaGcsM2vgy856ATrJoTlSHeYZTbmHEPv4W4Tmyq3CdMhBePbkTiZVdPlnnqSqDgfcrRFh2+0AZxIuQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,15 +107,22 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 Hello, Liz.
 
 On Thu, Oct 01, 2026 at 11:50:20PM +0000, Liz Fong-Jones wrote:
-> Test: a later patch in this series switches all of a replaced cgwb's
-> inodes, dirty ones included, to its successor. After that, with every
-> writer stopped and the filesystem synced, BdiWriteBandwidth in
-> /sys/kernel/debug/bdi/*/stats stayed at 411700 and 407820 kBps with
-> b_dirty, b_io and b_more_io all empty, and the replaced wb was released
-> with WB_has_dirty_io set. With this patch it read 0 kBps and the wb was
-> released clean, in 3 of 3 runs.
+> + * The wb may have been killed and its blkcg association may be stale.  This
+> + * is what foreign flushes want: they target the wb that owns the dirty
+> + * inodes, which can be a killed one.  Use wb_get_create() to get a wb to
+> + * attach inodes to.
 
-Maybe trim this to a sentence?
+The next patch attaches inodes to what this returns. Maybe just say that it
+returns the wb in @memcg_css's slot, killed or not?
+
+> + * This function uses css_get() on @memcg_css and thus expects its refcnt
+> + * to be positive on invocation.  IOW, rcu_read_lock() protection on
+> + * @memcg_css isn't enough.  try_get it before calling this function.
+
+This describes cgwb_create(), so wb_get_create() is where it belongs.
+
+The struct bdi_writeback comment in backing-dev-defs.h and wb_dying()'s
+still describe the old lifetime rule. Can you update them too?
 
 Acked-by: Tejun Heo <tj@kernel.org>
 
