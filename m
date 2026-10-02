@@ -4,96 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 342ACCA5FD4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 14:21:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0511BCA5FD4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 14:24:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E33E6B0088; Fri,  2 Oct 2026 10:21:46 -0400 (EDT)
+	id 13E626B009E; Fri,  2 Oct 2026 10:24:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BA756B009D; Fri,  2 Oct 2026 10:21:46 -0400 (EDT)
+	id 0EF9D6B009F; Fri,  2 Oct 2026 10:24:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D0CD6B009E; Fri,  2 Oct 2026 10:21:46 -0400 (EDT)
+	id F21BF6B00A0; Fri,  2 Oct 2026 10:24:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E9006B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 10:21:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B2A8F1C39D0
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:21:45 +0000 (UTC)
-X-FDA: 85277899770.08.6A975F6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 110112000C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:21:43 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dSj9PA/L";
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C845E6B009E
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 10:24:22 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 69D80A76FE
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:24:22 +0000 (UTC)
+X-FDA: 85277906364.09.429196C
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6118B120003
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:24:20 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0+VEU8jS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=t9txnZW9;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZncI0ZHD;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+fQGFDT3;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790950904;
+	s=arc-20220608; t=1790951060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+f7gBbOphql33Q3z9qijzYQyChgApQkTFAi8r/69YSE=;
-	b=7dSGAKg6ADviicdynS2mdfOAvLBJVHPE0bgzI3Sv6cB9+LS49RKdl/i38FGztW4xwlbcGf
-	aEbM6KtHXhrOs0zoDyToLEfvXJ/GQA2Hg5kpVbMKqwF4j2LNUTvti0LicD1G3wEsN25bD5
-	SFmAbB7XKUMVM9JksUH4oDL7Gkkr0HE=
+	bh=Q9nWLyt2r9hby9CPMFpc04BYUPpRYn+tUbcNwqB8KBw=;
+	b=Jo5Ex5LL+LXnq6sqX5BKl3ALFLia5L5iNct/womwedCxHUkfGic6LZN0c6B0u3NXOXiQh3
+	QE3Sdg44WAqXEFzJfDpwQ2S2gdli+tlcPTwlDADDw6ixcFKIncs17XS1PNQHD37neJuo5N
+	ReFVB1pawQ7WwAhwrar4LkqgWb5jUVI=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dSj9PA/L";
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0+VEU8jS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=t9txnZW9;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZncI0ZHD;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+fQGFDT3;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790950904;
-	b=4qsnQlTgJ6yp4BYUXShHKvx2a+7VQFaIRmgPc/zSfgfvBUYCKCv6AVgT7X2JsbwygbmJT0
-	xQxmjHp1XkCqo3vapPzkvWF/VeqmNCm0myrNpoT+uOZzBqvd4FDva0Ksw8Dr7hM1LYEiCt
-	CZZpO+gpKAxHecH3OZL+JNSY0Cz0zXM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 45ACE40C38;
-	Fri,  2 Oct 2026 14:21:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF661F000FF;
-	Fri,  2 Oct 2026 14:21:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790950903;
-	bh=+f7gBbOphql33Q3z9qijzYQyChgApQkTFAi8r/69YSE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dSj9PA/L2u6jo9z1u1+xXGOd0b46RN4+ABOIYgfMTbCTH5TUJxFeD+he758vhlLJ6
-	 7eA8pJKsjgArpERYc1uj+EZ/l8FefKlH395TpTTvHFhm4qCoMF5KId3X//R9z1p/7j
-	 70wZAfczigNeHRxm6TlJupLHi5VI9V3X+NvJ8ZLZFOBOnfySKta/PRQcYQerx5OeWT
-	 uSRm+TJCaVwDL7g6Hu1zfM0afLXPL+ggJrbwWzqeM0gwze/v9npXMbBVva6stebNfw
-	 HAK3t6gLfwT9Qfm6E/2EwwMAGDbnVjqjpyaWs1rrcRcpaKSw7J/enU1qHozKIG5k1t
-	 UhXhJ/fCBg77w==
-Date: Fri, 2 Oct 2026 15:21:34 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Qiliang Yuan <odys.yuan@gmail.com>
+	t=1790951060;
+	b=FJvksfqrdJJX1nwyx+XNe52+/h2d8elkfVXbGt4bsYJdKDHBip/bvjHAPpD7bUO5gRMSQl
+	tnNCWA7Xnoa8MvPkpukuzZg+tyChC1K9bofjku184MFOFn17VKazouqV3TlnaSceRiDxQE
+	cW7NfyhHQpAM6Jv14px7VIO1Tfb+HB0=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A391721E30;
+	Fri,  2 Oct 2026 14:24:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790951054; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q9nWLyt2r9hby9CPMFpc04BYUPpRYn+tUbcNwqB8KBw=;
+	b=0+VEU8jSmyjNeYNEiuQzuUWs+Xor+pWJ7/9lIa11Y/3iA3Yeb68ijV3BrbJqJwBIVHXL/e
+	5fATdWHS3VLJh6Z82EVwuaqerNpXQtCHq9Zt6lytxulPY2F/PMzZZBfnNlnr5i5ox3vWWD
+	usy1Egflh4+3QKzSu1z8e6sqRBM0a6A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790951054;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q9nWLyt2r9hby9CPMFpc04BYUPpRYn+tUbcNwqB8KBw=;
+	b=t9txnZW97H1P+0WE3mw++Fn5Md9J3eG8aDo9pMF1UbgGD6vU9fDmPe1Wuf4tQugYXI9h3A
+	wFwmVJo4I3vsi0CQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790951050; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q9nWLyt2r9hby9CPMFpc04BYUPpRYn+tUbcNwqB8KBw=;
+	b=ZncI0ZHDiUMhRI+MvCpHAZutzKEYk4L4tWV1IrBnq2tzvGYTtxgYQ9JnKWq8no8WwSavCZ
+	+HWc5kIsj6MTY0/SxuYIP/cl9crT9hqf9fbL3HbAmS7US/F2LPx7T8f7XLK0YUrgDhcwKx
+	v1eza+sO1TN8IL3QmZ5AVDyHv6JRhWM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790951050;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q9nWLyt2r9hby9CPMFpc04BYUPpRYn+tUbcNwqB8KBw=;
+	b=+fQGFDT3l6yI58R8SW1Uh0jqxyqqrk/+0fThT58vWcwrmquhurU8wX/hRBTmYrHvPukCjK
+	FWGt/RJ6JVNu4zCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 80A52139A3;
+	Fri,  2 Oct 2026 14:24:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GKeuE4m+v2oeOwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 02 Oct 2026 14:24:09 +0000
+Date: Fri, 2 Oct 2026 15:24:07 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
 	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
 	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] mm/compaction: stop repeating failed async
- compaction on every THP fault
-Message-ID: <ar-8Vkchzn4QobA6@gremlin>
-References: <20261001-bug-mm-thp-async-compact-defer-v1-0-0174c7923430@gmail.com>
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Pan Deng <pan.deng@intel.com>
+Subject: Re: [PATCH v2] mm/vma: don't remove VMA from rmap if pgoff unchanged
+Message-ID: <ar-9z-Ls26elb5JI@pedro-suse.tail5790ac.ts.net>
+References: <20260930-speed-up-inplace-rmap-v2-1-ac1aa19708aa@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261001-bug-mm-thp-async-compact-defer-v1-0-0174c7923430@gmail.com>
-X-Stat-Signature: hzkbypoyt6jwq1ksmxwiypi9q6crwaq6
-X-Rspamd-Queue-Id: 110112000C
+In-Reply-To: <20260930-speed-up-inplace-rmap-v2-1-ac1aa19708aa@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6118B120003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790950903-850731
-X-HE-Meta: U2FsdGVkX18J42IEkRmQw/ZfnmZeROGYSmxSQQhJ+1pkInaYE7sKByV/Tuw4eImVyr+rNUSTd0wO8KdfI4daunjZpwddVXZXw3EhNjr8ll4CVVhVfka8d0vUJ6Fwyws9yAf+WaGKpTOn+czaTYIDZP9oQ4MEE+t5mvHiv0FUWJQ/4Hr9zJyQmteqfpwmsy5A7Avk2hecMbwncK70XsIG7zxTpEShwbaJo1ESkS6tWuDxLRdBzwmFXN7T4U1+K0A85SL1AGr2yeQWtxWTfxOuWcz1qwIw9eguVt9wro47TPt1M/effB4hddlNiiv+itBoqxOxpU3wqyRIr+YlkMOnGeB8OAPuAn0De3BjnLRDUwrU0mDUFKJkJ9/BA4bjaX3hZMrcqGRwocuqkSLbbZLxh6NvuF5FB0ICf6SdYw8RgZSDVAtoog6c8RgHgbSMM8daE26bySjpNqs5TohUUPztaciCr4AfIK0b3il0Dt4RfjS/v4QWkaQArD3c/fV6lTlCScUJBAS1KZjUy1HhwaPWJkE9ZTu8zCAc3a3zAaDpZd/v9muobReufTOt4YZlVXF26JxIHTJNnsYCZBIY/HlgDIGL1l2QA3JdQwjSjd3Fc97ugH5XfPkqDaZoR7IjF1Hz1XO2epHahIr7KlHoxz9cmTlZtJH2o1xJnOHnYM1pAtlbl+vazbA7nvfLZaJIGqNIHW6h6ImI4yrjj1yt/yB4UkKzETbGRPfFTLxYWGDwCod1ij82zJdbtLi9UCT74YrzMsTW05fuFo5c1FLwWqKmQM8xn9llwaD0q/W+pRgI2qGnEwLusd/qwAOjhCfF0Wo6/5IJREXXgbfy3HwRdWe5qQtI4ficluNHjzZ2fjF38GG0j25wwbLDSjB8n52wT1a2Acg7KBPlRn1iOi0LEKLOg9HLQuFTcri3MpBx0rZkk1QwShsBXc7lgI/UBXrPz40l6+8dOYToEMkTl1JGw27
- pJbRfGmf
- JosqfWjc8xJc/9+0RLSyWnjhtm9jOMJTBvPMt0CPVtpqEU3w6/u0F52m27HM89PwRdZSa7mJy5igqEFZBQaD01LlFRLoxHRVyZAzomwLHSTCPxc1HeKzqwuTixNlETfCrxsuq40S8a4IRH894jFMCcs8ibRFUNAvgPkLpx7oae/nL5HRDaw8HWXpjHzeUtmymuUOoGb/MadlParArEN2mNxZAyG56K8r3SMeFg1PbLtLI9wJQkxBz2/aLffbhfYI/7t3AecOJhi7T2+wel0WiHrRIv6EUKm3tB5TS5z6bf9giIMz7hQVDqNWe6EGY0Un06Iy3bReaG/kWgiMn6tWTRq01nIqrQPzIrWcZ4oKtE3kd8QIy3/TU2c3A1t9GPaaP/HZeUGHfO83pVUHvva0s6C9PdH20ROUfX+PHxONFLiUFfCA=
+X-Stat-Signature: ahx1h7a9mg3m4f7d4p7c8qmqxe56gbqo
+X-HE-Tag: 1790951060-713215
+X-HE-Meta: U2FsdGVkX1/JhQ+ysgdS0D8mLaDFN4Fg8si5Tao/Qx9+KLRgyrRXf+12x1kmjMmMA5XHOdXHg6uSVUb8BLeAOISSBytFDTGiXmdEKkJyJXJZ3zSxi1YDXr3d3gxIOWZAVAO8v2ILMa7OnmPmZQ7TnCzGZqhPticXb+bGgVmV6bUgje9FvK76nIavizbpNrWx3fCYbwn7Sf+8RPo8zchphA/8XkQeDBUztSIJ9d5+Yg7GDEnzV3UVfYji/6qeolivArEOaXZlgItUayH+aliH+yHwWbCJOucVqHnrpnC1svKpSUvz9lX0JK8rpfvo77PWqE8yXPag0tz8Vvqz9px1a9Az09E9rKrS2CvOAcb79xC9bABdIUwsJTuGFlup/QWijJF1+FyiXpKlPn8aGaT7YAeFWm0niBNE331BYkIMjvMIxrdTYUKstodJfGAD97TqNnQPRE86wBO12qw3pQ6hgBTYT7YZHdeIhQriIk+bpEEBMkdOeWqOWhByZsmZNjUrtWh2DQjTwJRyiY/8y2YcFMeQMTNNh3yCjj8vC8K+DvPvOVjNT3+wcs61lb+NS6BH70bRJJLyrv4fqMGdZFrLVKWvR3DYBp7DmNghv//m+8BrVn+/Z2OFzvZMM+m3d25xc0JheVXX5wSUILirVo/E1wbvHRTOdjcduHvp4d3/bxDj8Bl5yk8XfFYWJTqnrRuvySXcUN3Bx6kTnnhKy3GFSZoQNVh7IvBlFKYYbfPxnZHroI1V21jXpTpHND53SpxOL5DLZZa39AVXdYnRHwyCQoQjItzERmJ3AqsJeKVPwM02gC4F49kwEGdZKflQEI18MgDHu+oQGvsvUENRVcL5qZPh12U/vEXDwGOuNNHFcXjT0DI+NplpMmhu0rPX+ZfZ/y1EdO8uRgrx5NVwefxwdXCC+cTombq4adUD5CXtHDYaGf/wHeaFrhpbFv97+GLoxM7shN2AkSS1e5TWCwS
+ FvaKjS3C
+ M3nl7NhoYDDNhed5ng5qv2YPl/rznbnznEOi+iJFYpMHQPBSte0yquysaKC6ucVBT5hSD9k417Pkao2l0+ZV2CDHWRgezgxBVZodVSsNOYYDC2G4PNFKC36eUdezacvStDDQ2aK2Atwb0WqbBCVji7HJlpI25F8egP1f+mDNDdzibAWCJWbKWffiOq6qk153BiUqEV0zzI5gkrhIAQ9FFQpvTKqYVPA/+rLXP6XTxrg3OEceswYIz37XExSYXe3M8CgHmc20D6mV5Ye3qj90eHd7M8QSGem13s9SyZhw3rJ64zynOQNJNHdNYruJkubtoH137VqbWyrx3r67OHuqrdleGUfJ2/Fsu2nG1S+w7hVaAjTCFNrVt+8ZdPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,68 +133,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Wed, Sep 30, 2026 at 06:53:36PM +0100, Lorenzo Stoakes (ARM) wrote:
+> When updating a VMA, vma_prepare() unconditionally removes it from its rmap
+> interval trees under the rmap lock, and vma_complete() reinserts it before
+> releasing the lock.
+> 
+> This is wholly unnecessary if its page offset (file rmap) or anonymous page
+> offset (anon rmap) is unchanged.
+> 
+> So, track whether they will change in the newly introduced
+> vp->file_pgoff_unchanged and vp->anon_pgoff_unchanged fields, and use them
+> to determine whether to remove the VMA or not.
+> 
+> The rmap lock keeps things safe as no rmap walks can concurrently occur
+> during the operation.
+> 
+> Additionally, some architectures (arm, parisc, nios2, csky) have dcache
+> flush rmap walkers which take only flush_dcache_mmap_lock(), which is
+> likewise held across the operation.
+> 
+> If the VMA remains in the tree, it's necessary to keep the augmented
+> rb_subtree_last field updated to reflect its changed range.
+> 
+> Provide mapping_rmap_tree_[pre, post]_update() and
+> anon_rmap_tree_[pre, post]_update_vma() (replacing the existing logic in
+> the anonymous case) to handle both the changed and unchanged cases.
+> 
+> For the anon rmap case, with CONFIG_DEBUG_VM_RB set, avc->cached_vma_last
+> is also updated when propagating in place.
+> 
+> When performing a VMA shrink or a split where the VMA is the lower one, the
+> page offset cannot change, so set the flags unconditionally in these cases.
+> 
+> When merging VMAs the page offset is unchanged only in some cases, so
+> update init_multi_vma_prep() to set the flags only if the page offsets
+> remain the same.
+> 
+> Finally, while we're here, also update expand_upwards() similarly.
+> 
+> These changes ultimately result in less rmap lock contention.
+> 
+> Pan Deng reported results using the UnixBench/excel benchmark on a 2-socket
+> 192 core, 384 thread x86-64 system for v7.3-rc4 with/without the patch
+> applied:
+> 
+> Execl Throughput, index score:
+> 
+>                     avg    %stdev      min        max
+>   v7.3-rc4        3511.5     0.44%    3494.5    3543.4
+>   + patch         4069.0     0.48%    4047.4    4109.5 (+15.9%)
+> 
+> Average wait on file rmap lock in ms, 5 runs per kernel:
+> 
+>                avg      %stdev     min       max
+>   v7.3-rc4    9.470     2.91%     9.070     9.820
+>   + patch     8.420     3.34%     8.100     8.770 (-11.1%)
+> 
+> Profiling data obtained during the operation highlighted the file rmap lock
+> as the primary source of contention.
+> 
+> Suggested-by: Pan Deng <pan.deng@intel.com>
+> Reviewed-by: Rik van Riel <riel@surriel.com>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-NAK.
+Looks great, thanks!
 
-This series is buggy, and has triggered my AI detection script.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-It is kernel policy that you must disclose this with an
-Assisted-by tag like:
+<snip>
 
-Assisted-by: LLM
+> index 077e23694143..ad6be42cc65a 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -201,8 +201,15 @@ static void init_multi_vma_prep(struct vma_prepare *vp,
+>  	if (vp->file)
+>  		vp->mapping = vma->vm_file->f_mapping;
+>  
+> -	if (vmg && vmg->skip_vma_uprobe)
+> +	if (!vmg)
+> +		return;
+> +
+> +	if (vmg->skip_vma_uprobe)
+>  		vp->skip_vma_uprobe = true;
+> +	if (vma_start_pgoff(vma) == vmg_start_pgoff(vmg))
+> +		vp->file_pgoff_unchanged = true;
+> +	if (vma_start_anon_pgoff(vma) == vmg_start_anon_pgoff(vmg))
+> +		vp->anon_pgoff_unchanged = true;
 
-See https://docs.kernel.org/process/coding-assistants.html
+FWIW I kinda would've liked to abstract this out to rmap code, but a quick look
+shows that it is likely to become a header dependency hell if put in rmap.h. Could
+perhaps have been separated out to a function call.
 
-It is also kernel policy that you must fully understand and take
-responsibility for every patch that you send.
+Anyway, your call :) This version already hides most of the ugly to
+interval tree code.
+ 
 
-See https://docs.kernel.org/process/generated-content.html most
-notably:
-
-        If tools permit you to generate a contribution automatically, expect
-        additional scrutiny in proportion to how much of it was generated.
-
-        As with the output of any tooling, the result may be incorrect or
-        inappropriate. You are expected to understand and to be able to
-        defend everything you submit. If you are unable to do so, then do
-        not submit the resulting changes.
-
-        If you do so anyway, maintainers are entitled to reject your series
-        without detailed review.
-
-In general, if you are a newcomer to mm, we expect you to do smaller work
-before moving on to larger changes, so you build understanding of both the
-technical aspects of mm and how we do things.
-
-Given you sent your first mail on 21st September and have since been
-spamming complicated series across multiple different domains, I'm
-absolutely not confident that you have any understanding of this.
-
-https://lore.kernel.org/all/?q=f%3Aodys.yuan%40gmail.com
-
-It also noted that you had a previous email, realwujing@gmail.com, which
-you have silent switched from, which also bore the hallmarks of AI slop.
-
-The script noted:
-
-- Output rate: since 09-28 he has sent KVM SMM CR3/Hyper-V, ext4+jbd2+quota
-  "shrinker scan budget accounting" (the same fix applied to three shrinkers;
-  jbd2 went v1->v5 in 3 days and v1->v3 in 3 hours), blk-mq SRCU tag sets, a
-  blk-mq sync-run, ublk x2, a 4-patch bpf-next verifier rework, mm/migrate
-  move_pages (v2 sent 10h after v1) and this series. That is ~9 unrelated deep
-  areas in 4 days from someone with 4 commits.
-
-Among many other indicators.
-
-It also found several glaring flaws with your series, so it's clearly not
-upstreamable.
-
-I am going to have to ask you to focus on smaller changes as a newcomer,
-and to acknowledge any LLM tools you have used, please.
-
-Thanks.
-
---
-Cheers, Lorenzo
+-- 
+Pedro
 
