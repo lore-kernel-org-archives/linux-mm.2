@@ -4,89 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DB87CA5FD4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 14:15:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D96FCA5FDD
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 14:18:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F10786B008A; Fri,  2 Oct 2026 10:15:50 -0400 (EDT)
+	id 4DC946B0092; Fri,  2 Oct 2026 10:18:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFDDD6B008C; Fri,  2 Oct 2026 10:15:50 -0400 (EDT)
+	id 48CF26B0093; Fri,  2 Oct 2026 10:18:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C50866B0092; Fri,  2 Oct 2026 10:15:50 -0400 (EDT)
+	id 3A4FF6B0095; Fri,  2 Oct 2026 10:18:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AB6B6B008A
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 10:15:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BDCA9140725
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:15:49 +0000 (UTC)
-X-FDA: 85277884818.25.75A59AA
-Received: from mta1.migadu.com (out-97.mta1.migadu.com [95.215.58.97])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 62A92140008
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:15:47 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GFGvfIfy;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.97 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F8D46B0092
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 10:18:09 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 84DA71A0742
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:18:08 +0000 (UTC)
+X-FDA: 85277890656.29.F2E71F9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8F5D5A0008
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:18:06 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oappmKQy;
+	spf=pass (imf15.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790950547;
+	s=arc-20220608; t=1790950686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MmK6NEcF9WciGWjR9HjodE0tkUNqQCf+82tMTSKPOzA=;
-	b=gpanY4jYwiJNWRHdAzHUSw7top3/oa4LSZ75zWsFy1w0OCnJex5Z4Dk6tYxTwGXQzsdPiu
-	EgXo+VLPM2l7J02SUVuQfy2PvXqOURzJ1wCf/Jiq5n9MamR/x756pn0uADGxBtr3I3r1gZ
-	DiJGHtQfEunPagUXDQkTeiP3nyKnt4o=
+	bh=0uOM3jWz9hTdESdoL/7PR8IoiwAtC5PATol6n9clR1w=;
+	b=DTUhFurs7SiizKEg3tqRvprRkqKBXHUcdst6hbyEPsQPDBwgg0mlUIb2GXCDPb4GIWC+9M
+	8axV3cbvw+x0yTU+CIscXiMdT0KWUBE3FZDIlmyYMgrlFsOxgwQNob3DWPxhddfvlEvjdR
+	XQ56O51aVpwKhOpazFEnvEXMZjCelYk=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GFGvfIfy;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.97 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oappmKQy;
+	spf=pass (imf15.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790950547;
-	b=TEzddwuvwNSp84+y0RcTRql1/pnhTyA+YWVO7UujfeIaTAKn+3env4tSuCatJAJjrjlZD3
-	evYAjx8BAbg7JEf34yYkx0WfZlOGNPVAQOElGxvJFWyAx/ARBH7FLKH10+jJhKVFL9DzRx
-	cPGmvZBrEC2QKN0HIGkBAuHMvt7cv6E=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GoZ23+ZT4mQGNUcJbwzUPAqDWvOWW3sI/LyHl8Zbpp0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790950545; v=1; x=1791555345;
- b=GFGvfIfyoaTkFjVdl6USK3ZVVJqBL5o4IndYLuD0fTs8E7CoekuLUV2ieqUZ07w5j+coE3xJ
- NKG0drsro4+JvkRxivXw3L061IU7BhFypDNVQ4HeHzDy7BYc5EC9AyAZ1vEIPo8GyYS/NO1unUR
- 14fQYHHyHY644WxMUhXR5BVM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ae4e3d5f1d27fd0b;
-	Fri, 02 Oct 2026 14:15:45 +0000
-X-Mizu-Trace-ID: ae4e3d5f1d27fd0b
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <28f2c85c-d45c-46af-bd2f-e97696f42f7c@linux.dev>
-Date: Fri, 2 Oct 2026 22:15:36 +0800
+	t=1790950686;
+	b=zLiSwpAA3A2Y/YjtAU+U1CjPP92lNMwG1rVM88aHWAVDdi3tGle233UMZAr+JfZiMETtOZ
+	UvQGIvlM1wRDXPgSgsyPAWIJaEL82KyLBP6VISbFrlNmNuEjLVFXw46sXk3lZhXBzrCuFs
+	PfIcc4r090jj/L4I7sqZs5VFq0iym2U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0DA1B447F3
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:18:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C9D1F00899
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:18:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790950684;
+	bh=0uOM3jWz9hTdESdoL/7PR8IoiwAtC5PATol6n9clR1w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=oappmKQya7E9Zo7YvGbz225Wzyq9o2rw3IkqXrNEP986A+djebCRgzN1ysoUo49KR
+	 Y3zwqRU23muhQZHXWWOUht7UDXXxDd97rIh5r0+f95SHYAGKsMQOS723ZGtMNlZ+hn
+	 gPy9sQhFMULcctANzXMz394AQljzN89hPcRjnFBPJxGaKqtI7Q6qIImyjX1dP8qUdh
+	 EeYxjSsVJWcgPp98mLiL0CzXPIlhCZdWBhTfAcLHiJeWFMIO/ma69M2wW+eBMQwxuj
+	 4Rf5fU9EaLkITmAdsQNanXa9dv2jzoOIA4sq4JVVR142LtdxAZQVTbWVRYgBTJr/5z
+	 MaKGZ0aqoUZ9Q==
+Received: by mail-ed2-f32.google.com with SMTP id 4fb4d7f45d1cf-6acb6b726b5so7258324a12.0
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 07:18:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz7HeZBBdwVmx/Yhx/QwlhAuk8XJomicJOEtAgYKEypZmi2xOsUGGClE10JoHwYtGeW7kudScixQw==@kvack.org
+X-Gm-Message-State: AFq9FYJhf1i5+LAZBT4L64jQ4KY+xlRd9pUJF0YVISuhVJBebbvFrJMG
+	DipFA2pYyRYkxXFVnyQZoW+v3YDS1X3bR3ckafJ5VYbspFs9sG+m/jc7oVXn2GXnZkdqfdSkv8v
+	FRdv78Zz94gJr4W3YbndWrAsD884s0kc=
+X-Received: by 2002:a05:6402:44d5:b0:6a9:ce42:e684 with SMTP id
+ 4fb4d7f45d1cf-6af9e022740mr1653386a12.4.1790950683375; Fri, 02 Oct 2026
+ 07:18:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/vma: don't remove VMA from rmap if pgoff unchanged
-Content-Language: en-US
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- riel@surriel.com, harry@kernel.org, jannh@google.com, pfalcato@suse.de,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, pan.deng@intel.com
-References: <20260930-speed-up-inplace-rmap-v2-1-ac1aa19708aa@kernel.org>
- <20261001154511.23931-1-lance.yang@linux.dev> <ar-53boTrPQijDUt@gremlin>
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <ar-53boTrPQijDUt@gremlin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 62A92140008
+References: <20261002095503.3585565-1-usama.arif@linux.dev> <20261002095503.3585565-4-usama.arif@linux.dev>
+In-Reply-To: <20261002095503.3585565-4-usama.arif@linux.dev>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Fri, 2 Oct 2026 22:17:51 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5yr0xqAUUKftz_RL-SCp02RdFB=aK0sP+uDDwXZPUmxA@mail.gmail.com>
+X-Gm-Features: AclHuK_4yoHncqxrokiRpDq18m_ydAvkbPTMAsmKGSie1oxuSHyShV6peln57f8
+Message-ID: <CAAhV-H5yr0xqAUUKftz_RL-SCp02RdFB=aK0sP+uDDwXZPUmxA@mail.gmail.com>
+Subject: Re: [PATCH v8 03/30] loongarch: mm: add PMD swap-exclusive helpers
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, chrisl@kernel.org, 
+	kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org, 
+	ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, willy@infradead.org, 
+	youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
+	shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, 
+	dev.jain@arm.com, baolin.wang@linux.alibaba.com, 
+	Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, 
+	Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
+	nphamcs@gmail.com, shikemeng@huaweicloud.com, yosry@kernel.org, 
+	qi.zheng@linux.dev, luizcap@redhat.com, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8F5D5A0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: zw3shj3n9x3q37463pms74bnr41gxu38
-X-HE-Tag: 1790950547-176480
-X-HE-Meta: U2FsdGVkX19hgM7ehk6YfkrKaPpALomEWTrpVXCpQ551MrOSo/Y8hOygClQyesxyGS6JrkP8xqIw6cgIvJDq7TFngbYNtfhgTsncTdXho2IP4FS1vDvCvYdgkcAVUNX20MK6Kc5WmUvA5fZ6C0JEtWKcsgU9GVttbgzAcmFxzr6f20HqHdfbXFghqidVRk2zrBDFCPCrWX0G1U6jCI5AbfVTDgLL7NMtSS+lPpBp26BvJ0OmYqwlE7s2zu2cJ0suc49QlN97MX32eGQMuHMky8lPeNcs9dgsvoz9Ee9NotekrSRRnL7id1HNvjqQn0YN3StHc866c7qZoWpUcSbT5sGNcNHB/GgcsElfzdue9SpbHKLnxwQ47c6P5NcMB8W7j5RqkpMMEZlQdqerOOPopSCHkpezOokLUuHgioN5nzUtIJvGIOnr/FgaUagUoYGCKyzuSHog8QGS1VC4NIxMhQHMbCReBG/KnAL4I85wF3z/XKJKVmO9u8GPXlHfW6waklj+yPzYBUXOvqX1fkfMet2fyyVwroVoQEIoklmrMZD0eHHNFG7+WTXVaHCRDB0BOMnp1CWBRlF8OOvhzvR3tA0QTJycJrQ1rbdkQACCvObEa/xidu3gYmUuEMe9QgpUyzjScsb9Z7x3p1QAia50zcw1/SKmUBqpoSGhh8M2AnWl7mYWqpfTWJBJyfptwsUk+7WnSCnfFOTmHMivkDF4IiZ19BFtUA1G+M2t+3B5E0lZDhtFMYzgCFwhaoNn9JBMBSQiRK7XFFskEBP775wCyUinDnXvkN2eVh2h9lVaFPfbSh5jV5njSfL+8doiIBEtrnSEfUqMOVL0GB1mQxlstTmmWI3AECy9sFOS5Fezvl1aRrLgoQBReLQwMlhD6OFTwolYw6zEjAi+02/jWr65RVaOdLR1Eqcc7KxKjWnkMAZXR3zNYxYx4FbQFDZpKFzKwKy8MrjbJrWvDkZ6lxi
- 9IsJ26dM
- O8y1q191WwAYbZbg2CNASbA5v9x2R5JffNRCEodH8jDppje5c3GEuTlwoih1F9Ouq1jC6sGiO0j8uNCcDgqXOFTzKRQaJ9U08v+Us5ryB69gcNpVdW4ncVzBaRFdXh0UdaF8jJn/G2ce6FB/uzkyA1N5h6Z2jLICJw8hdgqPjLusvkagB6XY7vvTWehFYMPRuxzMPgmWeHyQ26Vd7TovIIVYHqbkD1sEDJqvCSFZJ8MszHTzkdEzw6+Q6D1rnIxr2xeipR8moeP6i1CskQl3fWVl94I41pJ23qyFj6/CTGxnizug=
+X-Stat-Signature: x5da8sau1cbk1yy1cfrgyyz4ura9ujif
+X-HE-Tag: 1790950686-328199
+X-HE-Meta: U2FsdGVkX191jj5zHjO9FWNFyL86vBOUD/sBtIjhhbduqnDWp5CA0vkuESORupkkn/WPcr0XfAYs3KyQEXxVKnWO5dEq1P6dt0VPaYghUirA5oTasf5K2fxLnueWp9sB69vObk2p+KODNJ+75GpNb8YHdIYn4uxS7rLab0tWYnMk0Zf7SnbN7frORxtYDNpxgKYqsx+KMns/4Ru5lAzBG4Cb/EOa2Gr/+ea4pD64168klwNYKgES+HWtVnl7jr2CTH3DndqsTFsRJ+8+4rF2NSWDfjkAZcXu8IzuE5nnTttyIRYotmKVlGA+rGE/AkihEKxDKeFqC0lDHERX/SXNvBhFNcQ9L2o5+EgBeT4n2b90zKdrLv9D4vAUJxNYKWfbRYjcCxTYCiHB6G6/yGgQABjnN9knEg/EK//DPpGMhvjNLxyK2ePmxJua+bMAQFsvV8TNblZLaLxCu2o/aS2OjKUL5QPW/UhLdj69RV+NEWPO03qec87WnFebB7bdqMmZEYAWaftb9q/5iRCzZvc1VivYfrDE6Pv63A/1eW/Vhx6FJrvbb1bbqK/131nEK2yHknKFmYNX6mt5usthvV9tjBNGHsddCBuJpMV2GJjHaYkKKcbSpkVcCbTsv8FWSPdVnJ2U1mqoeoBQeDcZyIw9yIwzrDT7Gdr3UVOy+oKzTwFVqiB8OMk/2BPSdvsGaXX2VS7wVKahfzRN/V23JuW7DlvVnH9zaJ7K/HBJwbTyaUywiw7koyYUenlLa4I2hSw/pXQKUN2m1eF58NaBjkqN8HZcZz4TfojLT06uEqCtn1Qg6ohTfBgNKNjiFcXnj+sp6lhIgUFPBXCmq0FVCnNJaUtNK0lxIyD6kj9U4d7xq7EwccwIzjbsH2bToh2jNuu6frMdEf5ogDxFQ4S1FZA7KjSUN9A/mFexnSPLRA220xSfIy93v4ZJuNrHQdoqDMZ8eGwcsvRJfyTm+lo/MmD
+ teoxO1X4
+ V11/LTpACOeqX6mH5Xzt9UvpY+iiGxFJquNQKoLUTs80SNO/VUkOAcBWL2Lq37/S/kniBHCMz/gr7MwaxrUb0M6Qt6kFmKscDn7jc4ehnKTwnVYSI+JIib4wS3g+9YXWNz8BZHgoFJFN+O/PrzoC8IsKU3o/V2wqjavKy+VOb79KGPlEts1CZptodubQ2XJEFkTu41LC36AwjdcjnBtu5qA4KDeVSvfKYmITLK1kribh6W95pSd5hYiKeKqfpmlRoXJX16KemW6S4Bps/51bhAXSK5mRQIM0qKBYUG+p/aQp2PoTWbhUPKuNgf/+TGoRewRzUhyXX39PouB9E/62X43qtYtwHyRnl74ckHTqf33jPHAHuJcrgkQDd9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,52 +110,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi, Usama,
+
+On Fri, Oct 2, 2026 at 5:55=E2=80=AFPM Usama Arif <usama.arif@linux.dev> wr=
+ote:
+>
+> Prepare for keeping a PMD-mapped anonymous THP mapped by a PMD across the
+> swap round-trip, which makes PG_anon_exclusive have to survive in a swap
+> PMD and not just in a swap PTE.
+>
+> A LoongArch swap PMD is the swap PTE value plus _PAGE_HUGE, and
+> _PAGE_SWP_EXCLUSIVE sits outside both the type and the offset field, so t=
+he
+> PMD helpers can use the same bit.
+>
+> Cc: Huacai Chen <chenhuacai@kernel.org>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  arch/loongarch/include/asm/pgtable.h | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+>
+> diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/includ=
+e/asm/pgtable.h
+> index cf29a4c8ac593..87fecc3a51001 100644
+> --- a/arch/loongarch/include/asm/pgtable.h
+> +++ b/arch/loongarch/include/asm/pgtable.h
+> @@ -351,6 +351,25 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pt=
+e)
+>         return pte;
+>  }
+>
+> +#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+> +static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
+> +{
+> +       pmd_val(pmd) |=3D _PAGE_SWP_EXCLUSIVE;
+> +       return pmd;
+> +}
+> +
+> +static inline bool pmd_swp_exclusive(pmd_t pmd)
+> +{
+> +       return pmd_val(pmd) & _PAGE_SWP_EXCLUSIVE;
+> +}
+> +
+> +static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
+> +{
+> +       pmd_val(pmd) &=3D ~_PAGE_SWP_EXCLUSIVE;
+> +       return pmd;
+> +}
+I think the order should be pmd_swp_exclusive, pmd_swp_mkexclusive and
+pmd_swp_clear_exclusive. That looks more natural.
+
+The riscv version is already like this, but others are not.
 
 
-On 2026/10/2 22:05, Lorenzo Stoakes (ARM) wrote:
-> On Thu, Oct 01, 2026 at 11:45:11PM +0800, Lance Yang wrote:
-[...]
->>> +static void anon_rmap_tree_update_inplace(struct anon_vma_chain *avc)
->>> +{
->>> +#ifdef CONFIG_DEBUG_VM_RB
->>> +	avc->cached_vma_last = avc_last_pgoff(avc);
->>> +#endif
->>> +	/* Propagate all the way up the tree. */
->>
->> Nit: propagate() can stop early when rb_subtree_last is unchanged ...
->>
->> Maybe:
->>
->> /* Update the subtree maximum and propagate any changes up the tree. */
-> 
-> I think in this case it's ok to be a bit blurry about it :P it deciding not to
-> unnecessary work is fine but I don't want to put too much in there.
-> 
-> The point is as a simple sign or pointer to help somebody wondering wtf that's
-> for even if it's not quite the full story!
-> 
-> Hopefully that's ok? :)
+Huacai
 
-Fair enough. Let’s leave it as-is ;)
-
-> 
->>
->>> +	__anon_rmap_tree_augment.propagate(&avc->rb, NULL);
->>> +}
->>> +
->> [...]
->>
->> Acked-by: Lance Yang <lance.yang@linux.dev>
-> 
-> Thanks :)
-> 
->>
->> Hammered it with VMA churn (split/merge/mremap/madvise/fork) + concurrent
->> rmap walks + hwpoison injection. Nothing complained :D
->>
->> Tested-by: Lance Yang <lance.yang@linux.dev>
-> 
-> Thanks, very much appreciated! :)
-
-Cheers!
+> +#endif
+> +
+>  #define pte_none(pte)          (!(pte_val(pte) & ~_PAGE_GLOBAL))
+>  #define pte_present(pte)       (pte_val(pte) & (_PAGE_PRESENT | _PAGE_PR=
+OTNONE))
+>  #define pte_no_exec(pte)       (pte_val(pte) & _PAGE_NO_EXEC)
+> --
+> 2.53.0-Meta
+>
 
