@@ -4,97 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA582CA5FE6
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 21:40:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F627CA5FE6
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 21:40:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFBD96B0092; Fri,  2 Oct 2026 17:40:50 -0400 (EDT)
+	id A2BEB6B0093; Fri,  2 Oct 2026 17:40:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DACC86B0093; Fri,  2 Oct 2026 17:40:50 -0400 (EDT)
+	id 9DC2F6B0095; Fri,  2 Oct 2026 17:40:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC3A66B0095; Fri,  2 Oct 2026 17:40:50 -0400 (EDT)
+	id 8F2DE6B0096; Fri,  2 Oct 2026 17:40:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F32B6B0092
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 17:40:50 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0EF631A084E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 59F106B0093
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 17:40:51 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7599A7841
 	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:40:50 +0000 (UTC)
-X-FDA: 85279006260.06.56326FC
+X-FDA: 85279006260.10.95C1F7E
 Received: from o1.ptr9745.em.honeycomb.io (o1.ptr9745.em.honeycomb.io [149.72.141.136])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B1727180007
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:40:47 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b=mLqABnr1;
-	spf=pass (imf24.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io
+	by imf26.hostedemail.com (Postfix) with ESMTP id A6784140007
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:40:48 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=honeycomb.io header.s=s1 header.b=UNtKwIRe;
+	dmarc=pass (policy=quarantine) header.from=honeycomb.io;
+	spf=pass (imf26.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790977248;
+	s=arc-20220608; t=1790977249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AtjuBaVBtKpkdhX//57sGHQwbbwgWOKhzo+1Wz1Aci4=;
-	b=YMYWz1CqO1+LtwaG+1Pd9E1fE+eecdZ0XBo7Ac/Lw5HhCS5MMi0zpDgdio0Xsoc22dvwp8
-	MF20f+XzQpqSCMhURFbvW7hdz6tvCZS9jlSfDDglJ2Hiw2FMcJ7Fd6O6hvDTjzIjO3akLJ
-	Q34NjWESXBd2lwJFEmxNjbDd+aIMVqs=
+	bh=XAH+XjtKxPKoA1EedYm5CA/auyzB/PxrWORuLQkDiEw=;
+	b=cUfjuspHJKz1DhWJoIHnkaBf2kuww28qpjsf/cqhGU1jD7/boYgXkje4fyruPVWYJ13t7t
+	w9OcflYbctTpxrphIkMSMyd4FProQZYhU9qTkJt8aqryQgSLKYt0Diw2ekDPFdulRIDyyf
+	7kdlfJbSCfubasTnAPaVne0+BpvVgLI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b=mLqABnr1;
-	spf=pass (imf24.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io
+	imf26.hostedemail.com;
+	dkim=pass header.d=honeycomb.io header.s=s1 header.b=UNtKwIRe;
+	dmarc=pass (policy=quarantine) header.from=honeycomb.io;
+	spf=pass (imf26.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io"
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790977248;
-	b=IT9aA7+m6saWdVh/wezw9l5VepK3xV3LRTI/YPw0FTfpDO6HPN1O0kFRoVF/xf9K4wxQpO
-	9Sj24QZClWha2lzs/1iuExMxq0dVC+51+ab6i9E08NawzW5ETy/NeEUNylGZhc/O6JyY2v
-	16K4iwMcMySjGsh4iwtVCKOyPJ4iChs=
+	t=1790977249;
+	b=XX/T6z7aRA8glC8RIoJBwyXBph57H9H93qMRKZSPBNEhem7ZIReleTdHFwMMtMnWx0znDB
+	7iBOWWB9+49ryEouJUdAcKUqDSLsF99KHuwxKYgIGk8qx7ii5NkVC1xbP3oLaYbK/vxtUI
+	XUGg5ZUjX+OG+tJI1dT5sZ8HEa8hcRE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=honeycomb.io;
 	h=from:date:subject:mime-version:content-type:content-transfer-encoding:
 	references:in-reply-to:to:cc:cc:content-type:date:from:subject:to;
-	s=s1; t=1790977246;
-	bh=AtjuBaVBtKpkdhX//57sGHQwbbwgWOKhzo+1Wz1Aci4=;
-	b=mLqABnr13OiWgyHlPw+Q6L1xwFRMf59LA4KL/GPNFu6E0UcmPMWvI/OD9Ld85nWikp59
-	rTrAC22X2fDyipD8zSJo6HPpaBZqFSvXwBqMG6938x+svJhaDOShuJcKWNH2OqerkLNYUg
-	87lZyXLvi8O/bd2LS2R0MRytxa9ci5zDHoRJ2TXIvG2Zdllt3gw8t+DF5nGg3MEEj7cCfA
-	hWzQNHLkHGSX7YyoEvfwwAYP2+olMoDwBMZgJaMLdlztccLbhgzBhD8QoRg954Xl3+spZ/
-	ersBJ8a1XT9nXlsCipX5xJmKj4Z1NP+oiEg2OtLJ6xb50U9o0ghG6nWSnTkTZoyw==
-Received: by recvd-75d778fcc7-5kxrw with SMTP id recvd-75d778fcc7-5kxrw-1-6AC024DD-89
-	2026-10-02 21:40:45.735661736 +0000 UTC m=+276011.229270050
+	s=s1; t=1790977247;
+	bh=XAH+XjtKxPKoA1EedYm5CA/auyzB/PxrWORuLQkDiEw=;
+	b=UNtKwIReUviqgTqac+HiSWeh03b2DJzyZ8mVtVgR7lRfIf33Dv/Fx4mNGmMv5ELNkd2d
+	6ysGRnxDvSgjrxjZ2hEjV2zYQpdyzU8fo5lwn0qibDpoOXAEuhmMZMPp9XPS287gidzkZa
+	1Jl7BrnBBxawpYY1ulBEMdsTBVstOZ0djdmJO9kQVpiwP9WvXYM/UBGZXGDlDeQFCm9T9H
+	VBL5fL9NJ2+bmtoQYsW2z6gcvQiTIOk2whBSR1cWW4TXis+e5l3ei1L4PuvBogUwNt7Im3
+	rZjQi4YG7TLpvlgnuJPh5TiumIWNUIXIMwk1r/puva/mEdcZGQlmdoLqxzvaUqNw==
+Received: by recvd-5d786d8c97-kvs4g with SMTP id recvd-5d786d8c97-kvs4g-1-6AC024DE-7B
+	2026-10-02 21:40:46.789883304 +0000 UTC m=+275987.837320849
 Received: from [127.0.1.1] (unknown)
 	by geopod-ismtpd-64 (SG) with ESMTP
-	id Dm-Ltn01QA6RCONnft8w1g
-	Fri, 02 Oct 2026 21:40:45.667 +0000 (UTC)
+	id 93gyYlh1QauTUn4I-BiLRA
+	Fri, 02 Oct 2026 21:40:46.718 +0000 (UTC)
 From: Liz Fong-Jones <lizf@honeycomb.io>
-Date: Fri, 02 Oct 2026 21:40:46 +0000 (UTC)
-Subject: [PATCH v6 1/3] writeback: clear the old wb's dirty IO state after
- switching inodes
+Date: Fri, 02 Oct 2026 21:40:47 +0000 (UTC)
+Subject: [PATCH v6 2/3] writeback: let foreign flushes reach dying cgwbs
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261002-wb-dying-cgwb-flush-v6-1-1991b4e2dcff@honeycomb.io>
+Message-Id: <20261002-wb-dying-cgwb-flush-v6-2-1991b4e2dcff@honeycomb.io>
 References: <20261002-wb-dying-cgwb-flush-v6-0-1991b4e2dcff@honeycomb.io>
 In-Reply-To: <20261002-wb-dying-cgwb-flush-v6-0-1991b4e2dcff@honeycomb.io>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1707; i=lizf@honeycomb.io;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12010; i=lizf@honeycomb.io;
  s=gpg; h=from:subject:message-id;
- bh=zbX4cnEABElDWqQNtrSVaBW0Ked0tvk4MWPkaGIt+6w=;
- b=owEBbQGS/pANAwAKAaXO1OOXra/CAcsmYgBqwCTbHKmybgMSFWqYOqVuQ0Q7s0V2yCJ8XziZ8
- O9DxyOHsXeJATMEAAEKAB0WIQSfW1LPQ0gyJmoTHwelztTjl62vwgUCasAk2wAKCRClztTjl62v
- wgx8B/4u0V1aMjqcyxUZ2wpnLOD6jkCcwOUPNMiqsi2tdsqyI4sUvELleVgSO7stj7CtUBhmfyP
- y5BccMCdn3YXbVUth3FLOdlBADfDF9xMyedYUi7eGyHdx654JCb39LRXXgq00ZgMPGDcFXOFp8t
- JfqU4pvOMfIoA3GLvyPYeUf5MHSU4Im8ceRA9MrjSRBdxID/FnNy1Z5m/deP81YvfJL5F/Z8IWs
- TQ6DGTnqHpiU3JZUz4qsFg+AerhKP7Jl44yeh3vZ6XpbnT1YpGL9a32vT+a4F/F9cmmWfkEGr7T
- 4Fk7vF5HVdFQ3JgduiBf+nT4+TCyTOWREbf2yCkJVo4HIokb
+ bh=vA0JPFqDvUz3BENyvc4vxD2COsb1NmrkMAB24lDRu/U=;
+ b=owEBbQGS/pANAwAKAaXO1OOXra/CAcsmYgBqwCTbTRDfADtXloFD3veYUxoJkUVnhKHP2NRua
+ ESTFImcbx6JATMEAAEKAB0WIQSfW1LPQ0gyJmoTHwelztTjl62vwgUCasAk2wAKCRClztTjl62v
+ wrlJB/wO0vWfXMgYuryOePVFh29DCjPqROHa7s1qemG4QFPkkD8ZGDEu4TxfDB8Hc0Bs9VjXmuX
+ 8VWDoEWeHQoN0pd+RV8B3JVZkLyh1N5IaVcJvSwilO8iSnikeeQplHZVQF8zqCB1bD+V3HHqAT0
+ oJQXM/acOFebQvzT+vTp7/XLu6PNSyBbEWuU92ysoFSDzroNbPoUK6vQ2b7UH7oXfRbBwsAP9NF
+ /Idu8A/1nlK+PGfnPYuyPOi+BjIV9T8WPNyganjYVMIvbVK0b79Ly6Q1Vb46RuGe6bNMEl2QJo/
+ yDnQStZjx3GmIdq0eWE+FQ9KeAUmrvjGoZR7S3oJWgw8xRxl
 X-Developer-Key: i=lizf@honeycomb.io; a=openpgp;
  fpr=1F7714D7EC3441D2CECC24606A3F8B00FBDDD2A4
 X-SG-EID: 
  =?us-ascii?Q?u001=2ECuH7N2XAoeMR1zrzr=2F6NZrhli2vbKPOHff5fJuZuba6ZIE8QPyIf9mn4Y?=
- =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmeRuMe7SjpKgd?=
- =?us-ascii?Q?7aS6gNAUxeCWSVoTlVEi+vyXOAV69PW5X0TyP=2Fa?=
- =?us-ascii?Q?GVc9EGvWcV06Em37=2Fa2Gjb+6BNEPhCoIj7cc7DQ?=
- =?us-ascii?Q?s1=2FL0pSln3TjXj6NobUNbQL=2Ftjdp217HqJ5J=2FC+?=
- =?us-ascii?Q?RUUVlTUObdpHMaQHyAQMaU=3D?=
+ =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmeZ3HDerMGIRK?=
+ =?us-ascii?Q?v5wP21FeY13trogPZBDyE=2FQ+rnsJMcWzCZV8gwd?=
+ =?us-ascii?Q?Mp8hx0PDQ1wanLXcb8YyF=2FZ7VGNtU3T5Gji0XR7?=
+ =?us-ascii?Q?pg+2U+bsR8i=2FjoL24JfEASvUkmDSl5XSeTAthCf?=
+ =?us-ascii?Q?iN+Afaes0vbIVFrJDb6ZSI=3D?=
 To: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Tejun Heo
 	<tj@kernel.org>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jens Axboe <axboe@kernel.dk>,
@@ -105,14 +104,14 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jens Axboe <axboe@kernel.dk>,
 	linux-kernel@vger.kernel.org, ian@honeycomb.io, Liz Fong-Jones
 	<lizf@honeycomb.io>
 X-Entity-ID: u001.GRlkmHQ+Ka/CKxmoC/CxTw==
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B1727180007
+X-Stat-Signature: q3ck4o55rkjygjx9zerw8p8xce9p75dc
 X-Rspam-User: 
-X-Stat-Signature: cdq1d1cie4gyqh5npcdxz1z1xmyje7ei
-X-HE-Tag: 1790977247-178879
-X-HE-Meta: U2FsdGVkX19Pm0zurlKcFc6cw/ETn49UiwDMQAQNfxO41zHzRw1iT7PI1AweNlBexLRj7QkuJ9h2UFfg6ZRjXwu7E94NfsCl3qYPW8gEQ0nDoQiRsZrSuDnFhTxQZkE724LpZXpZxXtDDVc7OPx6Jti5763N2KqgRa12IAaqTkI5/rB3/LoS0/eB4M/uX8vn5/pl7IKtC0eqpTkrY/Cu8luMvkprr57167hgkleCR4DD9A7ULDAJQWT2KLqFcc1A81Aab8FaspTV3pHevYPazg5r+s0jUyzNxzKDym07mn88SnKJX/xWhugv2i1tWF2dVkT+xUSTU+7xPG3bu8xUgruEmQymAWhnOmmKGakaTpZ8q+yItcEEy75ldiDCa6Ip5gXyvJ30ee85xfHwzycDHUHxeHJfxdzfMzZK7mQ6G/hgde581zShlyEKjKDhoyyAhYr+2aw0ABIZAtHRlkZXQ4nW/rk5pVUbvop41liSmEgE0wH5+rLx3ln0lDDhZAm6cQmx9rkrlhu2600u718EyyxluYUy8YkJ2gqg551WuM1mD4sEJ9WTWhr2hUm0N6uqysBTOR+7QDxx7kpowTCd5VcYajFFBOTnE8moaTJJr3O1DfBQwXvsvu40UyY9RO4ntDh0/oWoQwL/MHINkU2IZZ3tctRXK8HCj5qKXgRjG027TZkCkhWmQz9dpCyUCobkmuS9X7gQo0rEzHfTLEBF9JTH9MDXrf8H/Ie1Gk7teWIb2HFVu4YCbQHs7OVBxd4VrKuOTaat4XhRJcLtUhgiwkPwYGP+UiWPasZXFP5uKaDDTq3B65P54PWzIkKwCylw/vz8aLagcQVZmagTJq4Pky76q2a0bRbtzm3kMG4l1cCQQxwn7Oe7kzu37cy/ERPfGgn7f3xWMckymNKq4gWhPUQMX+AVY7uHlyauyjf4WtOCVamqy7dhH7WeegjAKU+/kZsX1gLG9Y/XQilQYR0
- kcrzVCPd
- aprG4Wh3pssnFnAbyVcvSVwmfccWs6dbtEL7Tq5Ga7sfoHNCujceKMNRrtDgRMZKoukOrpEeDFat0qQjQK2AJSNBV1EruX1M7VxhvRiaT3m0RrDBG76xY6xMogwRtKKK/gSDTgPtXg8Nh6hAw9UCplHHv6dV9j9Yb6enmf3qQTa0nd4eUit2v6y5l1lZpQZKj4EScw7G9dY74NpdRo6qtppUZGGMLOTR1pRiDD/96LP8kbZhOei3gxumuMjPTDsugHRjWz/x7FhVyVlNCXw1Rci/hscwrH5n9ucwVFEvWxCtLdrdAvV5lXk9XySMHsLA5Um31Dj5Q+bewEgEBtIQ415PiB8pGLDPywbxJ2ABdZ5W57URKa2OC1CchWnYvvGRK1Usrqvt2Br23qcy7LMJe7BJXJ5xAXPOunK3lIuoOIEP9PgJOAh9bYoNCgoNGyb5MVAGcvmjpZxHeJ7+NXx0lKMYJ2NNsWwtLzW/GDNlCh0r8eIfsVztwUqmZuJvdesnBt5x51A4bPhPla06hSZeQ9bbOWsl9Ghvr3b5m
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A6784140007
+X-HE-Tag: 1790977248-743237
+X-HE-Meta: U2FsdGVkX18LsuibxoGXD9D7oUiR0WME0fCLq+GmTJza8J1Yj6dLEJp4FJvcaOUKSO8L5ZynXQsvZlNTOH2yptkrT9PWsStxIsI5PdG+52c9gVpv0zxlLL7pVqTCMH1xdiLkYllTmDXC73dHxwc6DpkQNhLknbAfKaK6AmoT8Q1bTQE156WWwrPBTAmdbJLWwGdzP8JSLy7mHT4ZD2o9l9eLBL3vJbUowRqZwvW6IfcGwLt+rMW6Xrw1WCFKXbIanHeq7q068JTBf9M3zAzs67CMl1OKcqQmKR1qtAD2ro12jyeyvgJA3INsE2QREFKXtCZKz29SJN2ptlm4zRZXSSm/VxhBn5Q5oBr3lAy3vD1LNgwHNIhDCIeR9RkDsOo8EjpwzNurgn0iBSFKZMAYNu+d+dxIbZecO3n2CsXO/bjKBa5PELBlhwlq4tgsAVGMoSfqVQPR4b425IIViXQ9ICT07D2lz5g82DFFZ3Zf+DuQtrtRi4y5hY5ViVVxDMyeTcu90lHAsgDY/yzcJ4KbpCNHZWq4bPwnf8d+jZ+yZpl0W5f7rhgBc6FAccah34LcqqTnT+SEIspEiRIKZC1lt5Y+rHhjm49Z0Da1h1hZDZR/ULPhKSoqxd+lJ+4ahoAFXyGiIotqUv3jDZXcYQYUaqpU7WXQQ918HOiFkogWliU0kfJ8GRWfdUO8TAxqtGAD6liCuYf2CMW+e8pwSyGsku81pHrwW8p7h/jp4+ANsW1Q4gWSeV/gYPZSHhD0Wlv+r2nPV+xorkcjEveLqEKKmXhhfTmZ9t3nPS0UenFa3Zh+iUkqIQ3QgdExBRjhIIqejHka3l6ndExkE0cxfFw7zjfV38Xgbq23xILjUhHxmBA9VC40qoW3uaMk/Q4KeLT4/A0b6xVeAbm0WOdCI5AzK3rzXI1Tc3goyf8WxSuDu8bybNY3lAa0UCJ9nafDbTiAIiGFUL0/3orHPPJDEbR
+ jA3vID3r
+ vbOZFIW9tuNDLG47kDHoipZ2ulZqCTuCMgh/C/9SBohYhAP+tqzt2cjpmVVqf9euSPWlhDJbw+NAE6KGrc1QRHoa3Lfkysk30i395PT5lDBmdOAYer82owofdAKE/p4JZMckfbPZveKC/D4x4fcLD2q5PRgKZfIDEZ5WhQEwEHPXQSv7bbPKWyqhxzYPfRVDMRGSO8mZsloc9FoTltClU33POHFr5t/KW1byqPKk87GF9VtEh79Sm4ya7Okp2rNe3Tdj+yYve1vKwzzambsa40TGadP2ZnddZ0t4IFWZ8pwQDdn0/i+CuxYM+8w6/f4NCFaoL3OvuHhGN1gVoEqGc2ywaW03s7DYFEJjiI4KYjIlOZliFejlSFdIQjeeLapRVu9J1BgRUf8qR4+aF/q1q0zQ15wPWcVI7Xcey43Jx5bOAm08+dRnNGEQx6pT2TESTWscttXF6Q4ifxvSXixEFkE7Zb0sOXKcZNgw5p7sThNswgD49fyK7aGIwzZLmeXKK+sNp/N0EKqvy/WafSDlI5IZwmwLpss5YYlT1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,22 +119,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Switching a dirty inode to another wb can leave WB_has_dirty_io set on
-the old one. inode_do_switch_wbs() moves the inode onto new_wb->b_dirty
-through inode_io_list_move_locked(), which only updates new_wb, and
-nothing calls wb_io_lists_depopulated() on old_wb. A live wb clears the
-bit on its next dirty to clean transition, but a wb that gets no more
-inodes, such as a dying one, is freed with its avg_write_bandwidth still
-in bdi->tot_write_bandwidth, which wb_split_bdi_pages() and
-wb_min_max_ratio() divide by.
+When a container is replaced and the new one keeps appending to files
+the old one left dirty, the new one can stall in balance_dirty_pages()
+for seconds to minutes, with little CPU use and its write lag growing
+linearly before it recovers. This matches a 30-60s stall after each
+deploy of a container at Honeycomb that reads from Kafka and writes
+columnar files to a host volume.
 
-Call wb_io_lists_depopulated(old_wb) after the switch loop in
-process_inode_switch_wbs(), while old_wb->list_lock is still held.
+Trigger: a cgroup dirties files and is removed while they are still
+dirty, and a sibling keeps appending to the same files under a parent
+memory limit. cgwb_kill() takes the removed memcg's wbs out of
+bdi->cgwb_tree, but the inodes stay attached to them, so the sibling's
+foreign flushes fail with -ENOENT in wb_get_lookup().
 
-Test: after the last patch in this series switched a replaced wb's dirty
-inodes away, BdiWriteBandwidth stayed at 411700 and 407820 kBps with no
-writers and b_dirty, b_io and b_more_io all empty; with this patch it
-read 0, in 3 of 3 runs.
+Keep killed wbs in bdi->cgwb_tree until they are released, so that
+cgroup_writeback_by_id() finds them through the regular lookup. The
+creation paths skip dying wbs, and a new wb takes over the slot of a
+dying one when the memcg's blkcg association changes; release only
+removes a wb that still owns its slot. The blkcg association check moves
+from wb_get_lookup() to the creation side: once a memcg with io enabled
+is removed, cgroup_get_e_css() returns an ancestor's io css and its
+dying wb would not match.
+
+With commit 168a8c13159c ("writeback: size foreign flushes by target
+wb dirty pages"), the flush is then sized from the wb's own dirty
+pages and writes out what the replacement dirtied.
+
+Test, on top of that commit: a cgroup appends to 1000 files at
+250MiB/s and is removed, then a second cgroup keeps appending to the
+same files under a 4G parent limit. Worst lag of the second writer
+behind schedule over 120s, in three runs:
+
+  without this patch   85.3s  46.9s  52.1s
+  with this patch       1.0s   1.2s   1.2s
 
 Suggested-by: Tejun Heo <tj@kernel.org>
 Assisted-by: Claude:claude-opus-5-5 checkpatch sparse
@@ -143,26 +159,260 @@ Assisted-by: Claude:claude-fable-5-1
 Acked-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Liz Fong-Jones <lizf@honeycomb.io>
 ---
- fs/fs-writeback.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/backing-dev-defs.h | 22 ++++++++--
+ include/linux/backing-dev.h      |  2 +-
+ mm/backing-dev.c                 | 90 ++++++++++++++++++++++++++++++----------
+ 3 files changed, 86 insertions(+), 28 deletions(-)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index d26b2cf05283..050d507aa554 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -566,6 +566,12 @@ static void process_inode_switch_wbs(struct bdi_writeback *new_wb,
- 		}
- 	}
+diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
+index 4f1084937315..33e06b1b1e1c 100644
+--- a/include/linux/backing-dev-defs.h
++++ b/include/linux/backing-dev-defs.h
+@@ -100,8 +100,10 @@ struct wb_completion {
+  * refcounted with the number of inodes attached to it, and pins the memcg
+  * and the corresponding blkcg.  As the corresponding blkcg for a memcg may
+  * change as blkcg is disabled and enabled higher up in the hierarchy, a wb
+- * is tested for blkcg after lookup and removed from index on mismatch so
+- * that a new wb for the combination can be created.
++ * is tested for blkcg after lookup and killed on mismatch so that a new wb
++ * for the combination can be created.  A killed wb stays in the index until
++ * it is released or a new wb takes over its slot, so that foreign flushes
++ * can still reach it.
+  *
+  * Each bdi_writeback that is not embedded into the backing_dev_info must hold
+  * a reference to the parent backing_dev_info.  See cgwb_create() for details.
+@@ -196,7 +198,7 @@ struct backing_dev_info {
+ 	struct bdi_writeback wb;  /* the root writeback info for this bdi */
+ 	struct list_head wb_list; /* list of all wbs */
+ #ifdef CONFIG_CGROUP_WRITEBACK
+-	struct radix_tree_root cgwb_tree; /* radix tree of active cgroup wbs */
++	struct radix_tree_root cgwb_tree; /* radix tree of cgroup wbs, incl. killed */
+ 	struct mutex cgwb_release_mutex;  /* protect shutdown of wb structs */
+ 	struct rw_semaphore wb_switch_rwsem; /* no cgwb switch while syncing */
+ #endif
+@@ -229,6 +231,17 @@ static inline bool wb_tryget(struct bdi_writeback *wb)
+ 	return true;
+ }
  
-+	/*
-+	 * inode_do_switch_wbs() only updates @new_wb's dirty IO state.  Clear
-+	 * @old_wb's if its IO lists are now empty.
-+	 */
-+	wb_io_lists_depopulated(old_wb);
++/**
++ * wb_tryget_live - try to increment a wb's refcount if it hasn't been killed
++ * @wb: bdi_writeback to get
++ */
++static inline bool wb_tryget_live(struct bdi_writeback *wb)
++{
++	if (wb != &wb->bdi->wb)
++		return percpu_ref_tryget_live(&wb->refcnt);
++	return true;
++}
 +
- 	spin_unlock(&new_wb->list_lock);
- 	spin_unlock(&old_wb->list_lock);
+ /**
+  * wb_get - increment a wb's refcount
+  * @wb: bdi_writeback to get
+@@ -271,7 +284,8 @@ static inline void wb_put(struct bdi_writeback *wb)
+  * wb_dying - is a wb dying?
+  * @wb: bdi_writeback of interest
+  *
+- * Returns whether @wb is unlinked and being drained.
++ * Returns whether @wb has been killed and is being drained.  A dying wb may
++ * still be in bdi->cgwb_tree, see cgwb_kill().
+  */
+ static inline bool wb_dying(struct bdi_writeback *wb)
+ {
+diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
+index c2284466e7aa..f7ef5895625a 100644
+--- a/include/linux/backing-dev.h
++++ b/include/linux/backing-dev.h
+@@ -222,7 +222,7 @@ wb_get_create_current(struct backing_dev_info *bdi, gfp_t gfp)
  
+ 	rcu_read_lock();
+ 	wb = wb_find_current(bdi);
+-	if (wb && unlikely(!wb_tryget(wb)))
++	if (wb && unlikely(!wb_tryget_live(wb)))
+ 		wb = NULL;
+ 	rcu_read_unlock();
+ 
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index cecbcf9060a6..85b2c95a920c 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -614,6 +614,12 @@ static void cgwb_release_workfn(struct work_struct *work)
+ 						release_work);
+ 	struct backing_dev_info *bdi = wb->bdi;
+ 
++	scoped_guard(spinlock_irq, &cgwb_lock) {
++		/* a newer wb may have taken the slot, see cgwb_create() */
++		radix_tree_delete_item(&bdi->cgwb_tree, wb->memcg_css->id, wb);
++		list_del(&wb->offline_node);
++	}
++
+ 	mutex_lock(&wb->bdi->cgwb_release_mutex);
+ 	wb_shutdown(wb);
+ 
+@@ -627,10 +633,6 @@ static void cgwb_release_workfn(struct work_struct *work)
+ 
+ 	fprop_local_destroy_percpu(&wb->memcg_completions);
+ 
+-	spin_lock_irq(&cgwb_lock);
+-	list_del(&wb->offline_node);
+-	spin_unlock_irq(&cgwb_lock);
+-
+ 	wb_exit(wb);
+ 	bdi_put(bdi);
+ 	WARN_ON_ONCE(!list_empty(&wb->b_attached));
+@@ -645,11 +647,16 @@ static void cgwb_release(struct percpu_ref *refcnt)
+ 	queue_work(cgwb_release_wq, &wb->release_work);
+ }
+ 
++/*
++ * A killed wb stays in bdi->cgwb_tree until it is released or replaced in
++ * cgwb_create(), so that foreign flushes can still find it through
++ * wb_get_lookup().  Inodes attached to it can keep collecting dirty pages
++ * from other memcgs until they are written back and switched away.
++ */
+ static void cgwb_kill(struct bdi_writeback *wb)
+ {
+ 	lockdep_assert_held(&cgwb_lock);
+ 
+-	WARN_ON(!radix_tree_delete(&wb->bdi->cgwb_tree, wb->memcg_css->id));
+ 	list_del(&wb->memcg_node);
+ 	list_del(&wb->blkcg_node);
+ 	list_add(&wb->offline_node, &offline_cgwbs);
+@@ -669,7 +676,8 @@ static int cgwb_create(struct backing_dev_info *bdi,
+ 	struct mem_cgroup *memcg;
+ 	struct cgroup_subsys_state *blkcg_css;
+ 	struct list_head *memcg_cgwb_list, *blkcg_cgwb_list;
+-	struct bdi_writeback *wb;
++	struct bdi_writeback *wb, *old_wb;
++	void __rcu **slot;
+ 	unsigned long flags;
+ 	int ret = 0;
+ 
+@@ -681,6 +689,8 @@ static int cgwb_create(struct backing_dev_info *bdi,
+ 	/* look up again under lock and discard on blkcg mismatch */
+ 	spin_lock_irqsave(&cgwb_lock, flags);
+ 	wb = radix_tree_lookup(&bdi->cgwb_tree, memcg_css->id);
++	if (wb && wb_dying(wb))
++		wb = NULL;
+ 	if (wb && wb->blkcg_css != blkcg_css) {
+ 		cgwb_kill(wb);
+ 		wb = NULL;
+@@ -727,8 +737,22 @@ static int cgwb_create(struct backing_dev_info *bdi,
+ 	spin_lock_irqsave(&cgwb_lock, flags);
+ 	if (test_bit(WB_registered, &bdi->wb.state) &&
+ 	    blkcg_cgwb_list->next && memcg_cgwb_list->next) {
+-		/* we might have raced another instance of this function */
+-		ret = radix_tree_insert(&bdi->cgwb_tree, memcg_css->id, wb);
++		/*
++		 * We might have raced another instance of this function.  A
++		 * dying wb keeps its slot until released; take it over.
++		 */
++		slot = radix_tree_lookup_slot(&bdi->cgwb_tree, memcg_css->id);
++		if (!slot) {
++			ret = radix_tree_insert(&bdi->cgwb_tree, memcg_css->id, wb);
++		} else {
++			old_wb = radix_tree_deref_slot_protected(slot, &cgwb_lock);
++			if (wb_dying(old_wb)) {
++				radix_tree_replace_slot(&bdi->cgwb_tree, slot, wb);
++				ret = 0;
++			} else {
++				ret = -EEXIST;
++			}
++		}
+ 		if (!ret) {
+ 			list_add_tail_rcu(&wb->bdi_node, &bdi->wb_list);
+ 			list_add(&wb->memcg_node, memcg_cgwb_list);
+@@ -765,13 +789,27 @@ static int cgwb_create(struct backing_dev_info *bdi,
+  * @bdi: target bdi
+  * @memcg_css: cgroup_subsys_state of the target memcg (must have positive ref)
+  *
+- * Try to get the wb for @memcg_css on @bdi.  The returned wb has its
+- * refcount incremented.
+- *
+- * This function uses css_get() on @memcg_css and thus expects its refcnt
+- * to be positive on invocation.  IOW, rcu_read_lock() protection on
+- * @memcg_css isn't enough.  try_get it before calling this function.
+- *
++ * Try to get the wb in @memcg_css's slot on @bdi, killed or not.  The
++ * returned wb has its refcount incremented.
++ */
++struct bdi_writeback *wb_get_lookup(struct backing_dev_info *bdi,
++				    struct cgroup_subsys_state *memcg_css)
++{
++	struct bdi_writeback *wb;
++
++	if (!memcg_css->parent)
++		return &bdi->wb;
++
++	rcu_read_lock();
++	wb = radix_tree_lookup(&bdi->cgwb_tree, memcg_css->id);
++	if (wb && !wb_tryget(wb))
++		wb = NULL;
++	rcu_read_unlock();
++
++	return wb;
++}
++
++/*
+  * A wb is keyed by its associated memcg.  As blkcg implicitly enables
+  * memcg on the default hierarchy, memcg association is guaranteed to be
+  * more specific (equal or descendant to the associated blkcg) and thus can
+@@ -783,8 +821,8 @@ static int cgwb_create(struct backing_dev_info *bdi,
+  * each lookup.  On mismatch, the existing wb is discarded and a new one is
+  * created.
+  */
+-struct bdi_writeback *wb_get_lookup(struct backing_dev_info *bdi,
+-				    struct cgroup_subsys_state *memcg_css)
++static struct bdi_writeback *cgwb_get_live(struct backing_dev_info *bdi,
++					   struct cgroup_subsys_state *memcg_css)
+ {
+ 	struct bdi_writeback *wb;
+ 
+@@ -798,7 +836,7 @@ struct bdi_writeback *wb_get_lookup(struct backing_dev_info *bdi,
+ 
+ 		/* see whether the blkcg association has changed */
+ 		blkcg_css = cgroup_get_e_css(memcg_css->cgroup, &io_cgrp_subsys);
+-		if (unlikely(wb->blkcg_css != blkcg_css || !wb_tryget(wb)))
++		if (unlikely(wb->blkcg_css != blkcg_css || !wb_tryget_live(wb)))
+ 			wb = NULL;
+ 		css_put(blkcg_css);
+ 	}
+@@ -813,8 +851,12 @@ struct bdi_writeback *wb_get_lookup(struct backing_dev_info *bdi,
+  * @memcg_css: cgroup_subsys_state of the target memcg (must have positive ref)
+  * @gfp: allocation mask to use
+  *
+- * Try to get the wb for @memcg_css on @bdi.  If it doesn't exist, try to
+- * create one.  See wb_get_lookup() for more details.
++ * Try to get the live wb for @memcg_css on @bdi.  If it doesn't exist, try
++ * to create one.  See cgwb_get_live() for more details.
++ *
++ * This function uses css_get() on @memcg_css and thus expects its refcnt
++ * to be positive on invocation.  IOW, rcu_read_lock() protection on
++ * @memcg_css isn't enough.  try_get it before calling this function.
+  */
+ struct bdi_writeback *wb_get_create(struct backing_dev_info *bdi,
+ 				    struct cgroup_subsys_state *memcg_css,
+@@ -825,7 +867,7 @@ struct bdi_writeback *wb_get_create(struct backing_dev_info *bdi,
+ 	might_alloc(gfp);
+ 
+ 	do {
+-		wb = wb_get_lookup(bdi, memcg_css);
++		wb = cgwb_get_live(bdi, memcg_css);
+ 	} while (!wb && !cgwb_create(bdi, memcg_css, gfp));
+ 
+ 	return wb;
+@@ -858,8 +900,10 @@ static void cgwb_bdi_unregister(struct backing_dev_info *bdi)
+ 	WARN_ON(test_bit(WB_registered, &bdi->wb.state));
+ 
+ 	spin_lock_irq(&cgwb_lock);
+-	radix_tree_for_each_slot(slot, &bdi->cgwb_tree, &iter, 0)
+-		cgwb_kill(*slot);
++	radix_tree_for_each_slot(slot, &bdi->cgwb_tree, &iter, 0) {
++		if (!wb_dying(*slot))
++			cgwb_kill(*slot);
++	}
+ 	spin_unlock_irq(&cgwb_lock);
+ 
+ 	mutex_lock(&bdi->cgwb_release_mutex);
 
 -- 
 2.53.0
