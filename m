@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D10DACA5FC4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:55:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 326F9CA5FD4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:56:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB5386B0098; Fri,  2 Oct 2026 05:55:58 -0400 (EDT)
+	id 3AFA66B009D; Fri,  2 Oct 2026 05:56:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3EF56B009B; Fri,  2 Oct 2026 05:55:58 -0400 (EDT)
+	id 3600A6B009E; Fri,  2 Oct 2026 05:56:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 892186B009D; Fri,  2 Oct 2026 05:55:58 -0400 (EDT)
+	id 2500E6B009F; Fri,  2 Oct 2026 05:56:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E1416B0098
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:55:58 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CF1AEA754B
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:55:57 +0000 (UTC)
-X-FDA: 85277229954.27.048E1DA
-Received: from mta0.migadu.com (out-225.mta0.migadu.com [91.218.175.225])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EA4EF100008
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:55:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bU6xgKc4;
-	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.225 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F27396B009D
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:56:05 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 65E83C06CA
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:56:05 +0000 (UTC)
+X-FDA: 85277230290.04.EA2F4F7
+Received: from mta1.migadu.com (out-89.mta1.migadu.com [95.215.58.89])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8A305A0006
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:56:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="do/z2PmR";
+	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.89 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790934956;
+	s=arc-20220608; t=1790934963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z+fA0feZcQw7e1bRkyvBEF+SLeuRVPzqVCpfmbyiCoE=;
-	b=4dCiIcPlmSVaox4J3By4oE9shQQ1B/URrXzmrVCVf5/lf8JwUAyE7NgpmRfLGJcEOxzzlu
-	EbOKp2cfNF5pM2Irk3Q18LQZWZGLqLqPMRRNsOk/yRnSjGJ+UerCYYHO9n8lAUJ6pUM6JZ
-	EIGijwtdD1Rk5t4TFK/C6m658g22K5A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790934956;
-	b=gk3/et/12SteStMer//Fy6u4aut0l4xObeuNm8hw1sfwXoTsIx1RJ0Ok0+cryR7ykBTugj
-	0Frbe/f+kepFP2i6MSKNXcS7i5+rmHJoBTjomvVmdeEnBuam4iZZEZm6UxsjaJP8oxfh6v
-	DdDAQzzaa2EcdSb+0pWlx6LIzoLUBbI=
+	bh=Grj2ep1GgK3MbSL8jCTCk3Cib7ESutMoENs54KPGJPk=;
+	b=mNOk+j2Phr6jaaMIzGrdVGN54cZx7MGtKOFWLIuX8fpE4kHFZN/V+iYrpqR9lbu5Q8b3NH
+	lBOYPDfqgN/+XikEyHT/EUqNKN26zpmgAK1UST3L5EHT0IEi3vDCyLLpoaRL5gA7FDFun4
+	bUwf0bicpIPRa4rb/Yeh1UyCLBdGegU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bU6xgKc4;
-	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.225 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="do/z2PmR";
+	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.89 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790934963;
+	b=CF/2Bttb8V3GEpYJRmT+oIrQN5spIlhPkTFT+27Jf0RXfhr6A68iDpJDI7pPDept13uB58
+	gfprpDIeHYY7Px9RtnR7Shiq6gAFSa769zgyAcEPWI+fgoV2l2yZOhrY7HGDFKdidLjv6x
+	89gD4jrQsiuaTGHqYTH1PQgF2ndsh6I=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=EKokArehgD8rZsdXiQ8lLAgAY9hoxZ0T6UO2qk4aEM8=;
+DKIM-Signature: a=rsa-sha256; bh=+539FMbDWr/qpvdIvQSVHv0n+KmhLVFRnsglmFqW/I0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790934954; v=1; x=1791539754;
- b=bU6xgKc4hljxUD51YvP2A6T9VpDHaA1AzjNvzUwvG+5dr7AvTrySKMRwFoc1plLaD11lNLiA
- PhXrTn0mv2+XN26XCXQ3r3zjVulRmJ6NOnIXMz1YapvBJ7IaBX02y9oPEj6oEIopkZykPtCSAPe
- jAwZV49d2+jKEyIhDKZYFfgA=
+ t=1790934962; v=1; x=1791539762;
+ b=do/z2PmRkJ7t40I/oAiYXZRXQCdMDu0jJ/kg+x5NyNb25IjzyCqaSZUx8pUJoKPpASMbG7h8
+ OwxcZGlIK0yevjzstUNGsgYrg2FCyUJHeyBixroGbpCJCL8i5vHBWV8zIIu7R4QO8i78/5vzVC9
+ uN1Fj9Ecvom4k/FFsXNLJIzo=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 69e3887844b5b59c;
-	Fri, 02 Oct 2026 09:55:54 +0000
-X-Mizu-Trace-ID: 69e3887844b5b59c
+Received: by mta10.migadu.com with ESMTPS id 9ba74d8f9c205fbe;
+	Fri, 02 Oct 2026 09:56:01 +0000
+X-Mizu-Trace-ID: 9ba74d8f9c205fbe
 X-Migadu-Flow: FLOW_OUT
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -94,23 +94,23 @@ Cc: ying.huang@linux.alibaba.com,
 	luizcap@redhat.com,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>,
-	Huacai Chen <chenhuacai@kernel.org>
-Subject: [PATCH v8 03/30] loongarch: mm: add PMD swap-exclusive helpers
-Date: Fri,  2 Oct 2026 02:52:17 -0700
-Message-ID: <20261002095503.3585565-4-usama.arif@linux.dev>
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH v8 04/30] powerpc: mm: add PMD swap-exclusive helpers
+Date: Fri,  2 Oct 2026 02:52:18 -0700
+Message-ID: <20261002095503.3585565-5-usama.arif@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261002095503.3585565-1-usama.arif@linux.dev>
 References: <20261002095503.3585565-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EA4EF100008
-X-Stat-Signature: 11ri3mq9i68ur83crh16kxiqus3me5gj
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8A305A0006
+X-Stat-Signature: epbpxskm3175ji9bzcs8ae8xgxo5scph
 X-Rspam-User: 
-X-HE-Tag: 1790934955-337691
-X-HE-Meta: U2FsdGVkX19Plq3Y9rC4w70AR25LM8XRnSWiNgot5R6YDvazqolAzSIpjOBXp6Ia4LS609FtRxkuRr2/H7Bbf5fHtyiblflvNHOROrlF9d8IO1pd7/XafxZEWRd9wTfSm/RisdRXjIvtkk1Ug4r/sS7iNPLnRDH4xhiE8fyWq1I1Jbce7a6qWZKmjphtNvC9YhrKFI8N4DXZD3G03FHDhZE8n2xfyx1ezIZ2uJOHnH3wo2UWeDucHZNoRu/85O+80UTDHpkw69bAmzy7S2cN/jP1ChDvTKZWkyMWsQ6oQw3Aq+oi5nB7rayCQ13sxO9PXvOR8Uic0DmcvxDftctEwE0iygyZnkJo9N8/+DWVTfEy2D+Ut18CEyJljtNkWvopv+BwKR5SO3QANCZMqZrtAqa+Bel2bOgjsddD2I6XVArrmhDNjyE82p1aQpf+Pd5xYdr3adJYxSmjIVu9VwqgyPDCDGkP073vFIgoiF3nfMrR/X2Wv34g84QqTmC4PrwMijgWriYZl1ybuVPWygloVb4/bBFaOHEzEcz81U9JjxaDPUEcRyyPnTJsdDm6YDp2cdB6klnUUDnpeTPCriheDxMV/J47aZEaRR9bo1MjiKly39Q5PDNIwgCMnMIk8lKfjkq9bE6/1M45o1qKNG2IgOohl+2x0C7jFw/WqFl25by6MymiXOct5gQfwNUYsNTSxoET6b1sfYmcts5LUMOidJvfhbFW4V7Lwa4zXvge/qTt36jyLZCA28/CkopCWFiDrc7NjekVEmxjtLMtMAvPlXlEmCN6jQeAOm+pAsLPBdb4kVquYLMgUE6QcwNFK2fUIsclcFjhla11Ptz/WT9YlSRP/hliol1JD3Xb+GrNLmwa3i6FW4ywMdfBF2yjBxNCZnxBpuLytN4yLGKX4O+F1Cn3i1WtpRMRkfK3zZYmx63tTfsNyR9bjhHk0p/KYYFD5Qg24bc4UvlWavXA/mG
- S+7JPZkf
- RgFpURjU6KhgD7hW2yeK48HU0DsPb6a1JiFRTAJ4R2DR/E3LIqxcvVT5GYkSLuz2NZotP7XKzLxFAXE8ZP5FbUH4uMvN7llh2jIey/XMQzlgy9ZnfuJCI7102u9Ga9PqTb5S2EhWERms8dVT+/DS396ZxAqxx+LppFio7optsMHeavIyMrm6sT9LEAo4YyomYMSa5gOqZX3X0W40bG1XfMkCSyB2qjoF26p+EGH0+SPqJ6K9Nu85tFSyx34pg7XzANxczZx61ncCrQH2sKNYGfR8rDA==
+X-HE-Tag: 1790934963-332714
+X-HE-Meta: U2FsdGVkX19Kf+qCX0gD53IjoHJ2ixmXmFsEsSgTyJW3yFh8FINN177Fut4n/ISRw7UMJiilcbOV9lLjrb1lmY3NyFpxhJdpSIRKeHrLekQBzKpxv1gCyTJpzzMfU7BiLV9JljY7zsDbayDuYBXQ+uSGpdWfJ1Odr0hxfseZdB/Md9vLbLjt5ugqupAl+c+uySvb7XSeJI5nm+MMs5IhJMOLxrqCt6O5VJyPae+4+pKSZLFtHHT4ot03/4i37476HrCybrborv2Dthr5OCGqSSLrN1DEUYO/tbe3I9GCla+6R9l1jXV3nImmsgtnRVvHXSCaJKBYA2ynBkqSWIlEXPdM7dqtfnla4ZmdoLCQ8xVIKIZpy4hXK2S8FahITU1gLAqzU6QO50ptp4BBpS3mqoec6akIlTeY0Sbi94gw/pvXffTEpDQXR4+px+jLPwT0K4wGB9YUe/MJnem588/VfX/8y2EY3sAssG2xysREG2IgebhWyoQoSGeWMJ2OvJ29+TBWSWUNwSAqGfPuOrNqWWZSZJRkT2ndigWdejPoQ2gEWYMVchvWr69GnLJti8NVHlOaurMNlHYxZh9OO5HlKHP0Bo/Y75bBNrzQQTrs70StNIvc8Ce/9b/FWSiQCkiZQaiHKQZGk/C4YVseFC0I9ACAAEidpMEHIQSugYcI7A4VajU0QzLsZGkWmYRPuBaQSnTG0mB0C77E03VsYAnwAb+VBfcZ0grWQVN74q/nkMkw6D88klMCuVd0bW58x6iUbidaAF24JbYbeqquQPMbTnBwx31y1t7VD+x6yScYrgJHKJTBpoz+sAti2QVH4R20sxm1t7PYS0nsMAkykjh2fOpUufePZ/pkEo1btD2WWdFpJnMMYdrM2Dh4QR+Hrx4zbV+mFIX/rzFwo8w9OERAVQGeyKp81SAX+aFtCh3mE3bWkVZ+aBrTGArey6WDqh/Cbejs3qAXqX7I+sL5TMO
+ PxsE9fsw
+ rphxR/kuC7caCk/Yp1M1MhCH8qbwZMakwnWKPuygGMTXdUgMTR/SD9BgPo4jLaf7E17elJ2+MJLdjaIRtY3SNqk939ftT8POTWBEt8nmluGyQx0+nMmQ5cTKB7mQ3AsZwfKHsLMu/T9dJ9ty6j/yLJSw21OBSYRDIJshWp0iFaWevEx2lghBayzBaSF7roXfhkCnCdHf18nEjk3tMZxuBWROFM985dR0pkPymuZUrji2w1VBsqTE/PhAJEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,47 +122,34 @@ Prepare for keeping a PMD-mapped anonymous THP mapped by a PMD across the
 swap round-trip, which makes PG_anon_exclusive have to survive in a swap
 PMD and not just in a swap PTE.
 
-A LoongArch swap PMD is the swap PTE value plus _PAGE_HUGE, and
-_PAGE_SWP_EXCLUSIVE sits outside both the type and the offset field, so the
-PMD helpers can use the same bit.
+book3s64 builds a swap PMD by running the PTE encoding over pmd_pte(), so
+the PMD helpers wrap the PTE ones and reuse _PAGE_SWP_EXCLUSIVE, exactly
+as the soft-dirty PMD helpers next to them do. It is also the only powerpc
+variant that selects ARCH_HAS_PMD_SOFTLEAVES, via PPC_THP.
 
-Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- arch/loongarch/include/asm/pgtable.h | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
-index cf29a4c8ac593..87fecc3a51001 100644
---- a/arch/loongarch/include/asm/pgtable.h
-+++ b/arch/loongarch/include/asm/pgtable.h
-@@ -351,6 +351,25 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
- 	return pte;
- }
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index dff8790a047db..458c85cebfa65 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -1060,6 +1060,12 @@ static inline pte_t *pmdp_ptep(pmd_t *pmd)
+ #endif
+ #endif /* CONFIG_HAVE_ARCH_SOFT_DIRTY */
  
 +#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
-+static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
-+{
-+	pmd_val(pmd) |= _PAGE_SWP_EXCLUSIVE;
-+	return pmd;
-+}
-+
-+static inline bool pmd_swp_exclusive(pmd_t pmd)
-+{
-+	return pmd_val(pmd) & _PAGE_SWP_EXCLUSIVE;
-+}
-+
-+static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
-+{
-+	pmd_val(pmd) &= ~_PAGE_SWP_EXCLUSIVE;
-+	return pmd;
-+}
++#define pmd_swp_mkexclusive(pmd)	pte_pmd(pte_swp_mkexclusive(pmd_pte(pmd)))
++#define pmd_swp_exclusive(pmd)		pte_swp_exclusive(pmd_pte(pmd))
++#define pmd_swp_clear_exclusive(pmd)	pte_pmd(pte_swp_clear_exclusive(pmd_pte(pmd)))
 +#endif
 +
- #define pte_none(pte)		(!(pte_val(pte) & ~_PAGE_GLOBAL))
- #define pte_present(pte)	(pte_val(pte) & (_PAGE_PRESENT | _PAGE_PROTNONE))
- #define pte_no_exec(pte)	(pte_val(pte) & _PAGE_NO_EXEC)
+ #ifdef CONFIG_ARCH_HAS_PTE_PROTNONE
+ static inline int pmd_protnone(pmd_t pmd)
+ {
 -- 
 2.53.0-Meta
 
