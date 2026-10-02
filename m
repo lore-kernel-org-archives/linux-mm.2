@@ -4,124 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 175E1CA5FC4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 17:57:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E72C7CA5FC4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 18:01:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09C516B0088; Fri,  2 Oct 2026 13:57:04 -0400 (EDT)
+	id 07E446B008A; Fri,  2 Oct 2026 14:01:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04CF36B008A; Fri,  2 Oct 2026 13:57:03 -0400 (EDT)
+	id 02EE36B008C; Fri,  2 Oct 2026 14:01:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7EBC6B008C; Fri,  2 Oct 2026 13:57:03 -0400 (EDT)
+	id E60046B0092; Fri,  2 Oct 2026 14:01:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BE3416B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 13:57:03 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 37FC4C0802
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 17:57:03 +0000 (UTC)
-X-FDA: 85278442326.06.F14F544
-Received: from mail-yx2-f38.google.com (mail-yx2-f38.google.com [74.125.224.166])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 251DB180007
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 17:57:00 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=truenas.com header.s=google header.b=a5KSBSOA;
-	spf=pass (imf24.hostedemail.com: domain of ameer.hamza@truenas.com designates 74.125.224.166 as permitted sender) smtp.mailfrom=ameer.hamza@truenas.com;
-	dmarc=pass (policy=quarantine) header.from=truenas.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790963821;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BD6796B008A
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:01:42 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3E5BA14079F
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:01:42 +0000 (UTC)
+X-FDA: 85278454044.13.EC60E97
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 58D4340003
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:01:40 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ZyM+f/AL";
+	spf=pass (imf27.hostedemail.com: domain of antosha20xx@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=antosha20xx@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790964100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=xxaI2OMOwwuqBrxKvOI44CslxEdzYP5+0cKedVWBK0M=;
-	b=kZpWiLJkYs27kRqN/4JvegpU/F3Ix0e4g7PqjHt4NiuC1AKoF2tLxlrj31kC1boxD+MToE
-	eKEGwtTtPGb62MS9M6qdYPwxp5PvAdJwALXAF3zfl9Yh6FeqPh6EjHA8JCeGcR4gCdDplg
-	LtPGDaX8o3E2yIWjDz0RI0rAHQct0dA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790963821;
-	b=UUmSgDof8ixol3H4/xgUtMzOnZg+J2QW9QSnWXbfWkcqhYPdUzyigHgIui+KXaix9mQ86n
-	tJUFRkvvgMlEovNs2LlY3LwYjqtyEkkdjuIZN3+qk1oDfud6MTw0lXZjfwTyakXTZBQBJ3
-	9molxLDJFkbIbJ1jy6pNzYpNxawZIQc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=truenas.com header.s=google header.b=a5KSBSOA;
-	spf=pass (imf24.hostedemail.com: domain of ameer.hamza@truenas.com designates 74.125.224.166 as permitted sender) smtp.mailfrom=ameer.hamza@truenas.com;
-	dmarc=pass (policy=quarantine) header.from=truenas.com
-Received: by mail-yx2-f38.google.com with SMTP id 956f58d0204a3-67561cbafd0so270935d50.2
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 10:57:00 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=G+4EbiFBNnqYgSb/qkcxogR3PLMkymIv1+oGaFz8J9Q=;
+	b=cpXjfBWw6jZtyEAZGhkIU5P2X2CoFWdQAQmhFVc32PS6o6F4sGmDz/WZA1CHTxDe7ldVr6
+	fAAEWa2nhFkZSq3FqBc1lcjwhxu7pUe4y62FQjHlmXrd7X3TfQYcFVBmhbFXkR/VBTQLY8
+	7S0VYOramT5ncVRMzEGLVKw17cb4aFo=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790964100;
+	b=7NuPk7qC0q5C9/ggMgIEpNEgMr8t08GRPtZt2srMUglpfV+cYp7f2Np3D7sV2op8HmfId8
+	sUxXqZa9anYzEo3ZgOiJWY0SYvwy87IG7UYuYl5G5+SQ+YSGmcoECvPzUf8CjfMdRpqa1c
+	Rt0oQP5vbMCzhZ2ZJP4KnSwYsneYdGQ=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ZyM+f/AL";
+	spf=pass (imf27.hostedemail.com: domain of antosha20xx@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=antosha20xx@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2e20bb4583so33175666b.3
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 11:01:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790964099; cv=none;
+        d=google.com; s=arc-20260327;
+        b=q34sdGLFuzf0epAXqwlnU8Fnwm7qgNsNsTfAih+X63axuoMPSidtgyy1Bm9DuGtC4B
+         to3Gdb/LPgpoOu5Qsngs/zVLKiubNAiQzfvNBAtFwI05oDEVe8M5SxxdWWxab5KdQZmK
+         4Ay74KeD6JLRPUbGHoGL5bo2uuGcsCR9rjIQT21aUQ1ExyFWj2ZAcmVuS3Kt04c4dYTD
+         lKsj4q9QquXtzwUFK3nNA4w/jXQOSmy27LwmGKIx6CTbe5/mAan3+ybyICjd1MIY/MaV
+         mU31KoExjFl/jaHIAU3pSecV2omop029ULsZ18pwaDjer1KUSVpL0Vb45i8DyqnpmTPH
+         dLfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=G+4EbiFBNnqYgSb/qkcxogR3PLMkymIv1+oGaFz8J9Q=;
+        fh=jgWn73aSQIvhkp2mDV6ENDmNlDS3/uChiPo/WOu0Aj4=;
+        b=Q94KLysu8FQMyF29sTYl3cwt6mk+50VV15KuZZ7TJp3IZTkQkl3mwwB2PRs36HNPex
+         4zmmwuGm2C3DpD7D0Q8HW27Tjja1icPeKhGRtiMzNwWyMRUTd+ISXegkahDisGhNFS3z
+         8BmunIZoBrtHt37k2sEst04xvU7NlxGb85z0emaRMGUcsh1Ue0u7ohcKgSrTQtYnKJIf
+         B4ue2fKQnt5f7SQU2bjZuH/57+qpHnXvInaTHdvdSyM9QK+4GQEs5L9uPmJJffcTzYKy
+         V2sHBvkRMezCOGePC9sQYRkkhclGe9mIa2GBVJOGvKGqDi1D3St1mc/LuGgv/4wovAWG
+         9zRQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=truenas.com; s=google; t=1790963820; x=1791568620; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xxaI2OMOwwuqBrxKvOI44CslxEdzYP5+0cKedVWBK0M=;
-        b=a5KSBSOAX0YVQb0Bz9PVVLIq25cSI7ui3UwwpOfQjkx2H8Be4mH+8hHGf8vrbd+MgU
-         OBNG/bHgyFDd6ajZW5/VMQGsN9V5ZvD+8FFcM8B2U/lLmWH4fGJ0WZo4E5AHOXwIE12c
-         6mGu5cBo4/uZa20x73/V1cMklsOCStLfX1UxhGJAsUnj896eTPjnuve1bzqJxDnu8CzF
-         ora2RA59zo8FS7iFV6KkpG7EwBgqoduqx2lnVPQy1UvaoyMTgRcdX+LluioVHW+ysv6H
-         WGPO2AovxaWvkKpua5IODacxUhgNq43zbVJsXQCNPw3Zo2rsG8YaKWWf3hUXFh7x+n5N
-         XkGg==
+        d=gmail.com; s=20251104; t=1790964099; x=1791568899; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=G+4EbiFBNnqYgSb/qkcxogR3PLMkymIv1+oGaFz8J9Q=;
+        b=ZyM+f/ALSx5qKvzQWxs28mbhaqUVMBNbXZBLuHKUmkdeLSoNTZ/2gJo/SftIo7Ri+l
+         26wcU/cuvnlOBwQ1WHIC/fWYK93BL243i4SCosLAeEkl+wlwv6GfhdoHY6pfrGqh4BaN
+         BBc0q47Cx4ZlEZ9Xn8yFQ719nsyxEFqSWMHmuUCuPl0Qrf+I/yK6WvDvexY/GGeVGMl9
+         Yc18JOAMjt29ncLjywla0+IH8AmFCYhx6iWv1SIw/6zCYkxzMOJ5lEaQOwHXJj7ni5iJ
+         2QcfjwI2iPEkgoRnVwjrmKgI5RaYHMyAHWBoHw1XFtjlE0JMgXbqeo8FM283PXAhIKOP
+         i3Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790963820; x=1791568620;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xxaI2OMOwwuqBrxKvOI44CslxEdzYP5+0cKedVWBK0M=;
-        b=EGC07rA/Kznlaq8r3pn738P6QKxX/0O3cq2CJD0IyOMz/6o6A9fml++zjn7zGG8vi5
-         0S3+9DuI8/8laSwqgymwVGB5dZrjBb4kQAjcTSkcB6LJT9hqlr6DpvrAjur64gXk2cyt
-         MPnSONTMIVVQLlQ0VdncQLwIJvGFSnSSq4APsUIQIQeY9l9qFDEgTDVjrfzIWCR6otmt
-         eNQ8MQsNYAUV8F/lhyHqOI60tb4N7xZrnxCG7Q9qtJUbTUlu/ZbtQ6OqNvAPXB7ewAHi
-         RrZVBnR3shObdddd3QMefh81TzFx8uMxJ/d8BtXymCIbU5tC3vDQOLBeRgynScsvuiLo
-         KjhQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzehLXoTNgh1Ew5UEjTSq+bWKVNIqYHzEZ7gtaODcP3qzKgIlfc8Izpb3wjT9wrumgw7aLCTaMDjw==@kvack.org
-X-Gm-Message-State: AFq9FYIX27lQOslRtJkHIDh3OWHgnR7c8bF357rkMVEHx84GyPRaxRRk
-	93/sYekuVU19tphCfyPzDqRGer1Gw00S0wXi6VwZJWklJTsBbv3uyn0X3wqCWvsljQ==
-X-Gm-Gg: AYBFou3VENbp++06WBdGPVM/MklsfGOCIHXaD7OqVxpxX/lhZVPU9JT15EsK/PDELbM
-	dDNe4qAGAJiHoeoZjsPmQGRHRKAlHarfYCFz0oKM0S2PPdNB40KFzc5Q1iq10LxDLLW0rhMq22a
-	RQBJL5qbnr+Z1VVY0+HE6UCleAp4UBUq14NBWMSrBiPJf+pdP1YwK7SrnWuAKbx6gZ4SrFO/1VY
-	DNdRHV8ut3qS4GpLIajJaMnd9HyZJmZaWNR9J3zQttE0tUay8VYotaXhYBdofKp2y/xjMnFHPTo
-	xGFEtBk//e5VpPn3CsxD46V03CiPBxJ+aXCK6yepzqnCRadxUvTjujq1f+gwSkadKaSztp0RTTL
-	yZB1ClYNE1ms7XKSuvDcE8nK9CkMfqvMNPzhjCZ54ZOWAODRl29zF7gOtx/2HB+ITtMWbarlqWU
-	/oEvAqnBgl65HbW++SJLznEHYYzq7UWrgR3PCl3WTdxKQ4PMdx6SUgjTKhRuWc+gwwMWxSoA==
-X-Received: by 2002:a05:690e:4291:10b0:676:8641:27d2 with SMTP id 956f58d0204a3-677ac0944c5mr1330447d50.40.1790963819897;
-        Fri, 02 Oct 2026 10:56:59 -0700 (PDT)
-Received: from hamza-PC ([124.29.197.38])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-677ac63acc0sm1368439d50.20.2026.10.02.10.56.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 10:56:59 -0700 (PDT)
-From: Ameer Hamza <ameer.hamza@truenas.com>
-To: ljs@kernel.org,
-	rppt@kernel.org,
-	peterz@infradead.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	linux-mm@kvack.org,
-	linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev,
-	stable@vger.kernel.org,
-	4ncienth@gmail.com,
-	sashal@kernel.org,
-	alexander.motin@truenas.com,
-	caleb.stjohn@truenas.com,
-	ameer.hamza@truenas.com
-Subject: [REGRESSION] secretmem: SIGBUS on memfd_secret() pages while perf record runs
-Date: Fri,  2 Oct 2026 22:56:51 +0500
-Message-ID: <20261002175651.811343-1-ameer.hamza@truenas.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20260707; t=1790964099; x=1791568899;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=G+4EbiFBNnqYgSb/qkcxogR3PLMkymIv1+oGaFz8J9Q=;
+        b=KitCDMgx7x+Gs1GJ9ftkpHDdCc8hhHgTr85dzjwzDT3UeDfHfT3vw6fm/KT7AD8UqZ
+         +R1vk942Y07n+5REJ1CMXluu/7rRW7tVPsvT3ClaMEhlToosN3lx9G8ILQIpKLX9nZjK
+         YykLqXmsISXzz/pWGOCCout8yYhuUPd+PQUlcLajwqSsr9kF4+RGbfS4FF4+YSWdIJwQ
+         7dBVcOpee3m2EUi1ENyef0Es8s7W1rjGTK58fr7G+y8Galp8tL4MBb08SZfMsu48hf8S
+         BMYuKqsrr8AbZEcyVRLmOOtb3Y9gZsSOSbtppEnfPX3vlVBTPXaoC/V8GA+3jHNgQ/dX
+         pHtg==
+X-Gm-Message-State: AFq9FYIJjFGvFkGFAxoDoVMAYvEPgNPvWIqptzZLXCm9It/0VtSP1wQ9
+	eFzTLTtCpx7eKEUzHS/aYd8lYAkzVL+9XCM+hu8F/yPzgTJrnL8iGL1PCOIZhbvWOHBo7KFxe/n
+	dXw5gM7KuVu/14GH5WlyWi4JcAjiOh6c=
+X-Gm-Gg: AYBFou0jL/S84Yf01NBs4rpSJvE/jSkMNwRFVJ6sCmtri5yQHJ3YOmflWQWf6TIMGxs
+	ZRrwHqcPoeJ6eTE6Xrnbb1kp7uKoJBX2GfSo0bSxMNDCaSkm/xwIgtgProuhTC8M0DpvJn2jwhv
+	HcyVXBz4qSYmd3XQ7JGhRN7uJJhmAa5T8i4FdhdjyReIvijQ+tbSWBHfciCH4gDGXERHqxBevbR
+	SZsQ+MGfoFKKsSL1vU/3hli333sxVw4LFoVO2bJxKiMJh7Du05T6SELk8HbVwxZ8kokckKZI1MF
+	+f4JS9nA9hk6FlOZ5PdmmQnPV9odOmMG90K1H9NuzpahTRa7rZtzy7hAcowda0f3yos=
+X-Received: by 2002:a05:6402:4543:b0:6ac:765e:def2 with SMTP id
+ 4fb4d7f45d1cf-6af9e37a328mr2000619a12.41.1790964098443; Fri, 02 Oct 2026
+ 11:01:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAAiJnjqz+OB+PmUQBENS8ThnWHSAFK=p3EA7KPsy5UeabQCn-A@mail.gmail.com>
+ <ar_rPzLhXRSA0AfS@gourry-fedora-PF4VCD3F>
+In-Reply-To: <ar_rPzLhXRSA0AfS@gourry-fedora-PF4VCD3F>
+From: Anton Gavriliuk <antosha20xx@gmail.com>
+Date: Fri, 2 Oct 2026 21:01:27 +0300
+X-Gm-Features: AclHuK-vl5tAzwgoppMvS5Z9IRnATx9Ht1qOfMIeFmMbuIVN4mgOaojwbtQXzeo
+Message-ID: <CAAiJnjo86U27YwFNSkQNvqxDyGMZomoqHToH3GqWuzqD2+V0Vg@mail.gmail.com>
+Subject: Re: Poor memory bandwidth performance between NUMA nodes
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: 86r8k78g1htarzk19datgq91psbz9hsm
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 251DB180007
-X-HE-Tag: 1790963820-81910
-X-HE-Meta: U2FsdGVkX190JEW99nxoDztlKn2Re0UyqeG/7k0ECuIdvHjkkGKXUUL7JzoDFqHQmT9dyB/ZPNa6V3iEPQ4VhxnUwKLu8ccf8gCFgQtRJiNvKIIfe5OlByhVIyn+s6vbZiOT4JX3ZDHX+YqcQQRZlCXeaSEqcKPysltI0qejHcRrGv6mX5s8zHNCoJphexjQugaIJIoPu3kPcvpKLjQ7ZOcmCRKFn0CncRxG389XTw+0WO11wnsG7UCJq6U1GzUXpY6CXyxBZoX9LHUkOwH0Ty8n/JejBWRsJeYvRfFq/n+x4mZBP8T3KDgZjuWLGTxW8oWVqRvH/mvb0xId+gVhabdXEIVMaOiJ/m75Ly/EoUEKpj+wCbdq1YHPReNWZdAMAuCDt3lRyz5vMXRPsSo109rmg607mKmRhx+7rnaGTXMYsAPtEd+mNZf9RQO9NTMHkW8PFHtmcMpuMaNbaCMafuqVs9xZ9sC0eYKFejflHYL1pHaWmBJEbF9tnLh3tGk8j+H9CDR+GLmVwM0cXsAp7s6ZxHr5rP0CGSzcjESwWb+pFHDZ1p92AwMscEYQg9SptdPgLGOmzuxcM6XEq5n1G2NOZProQq0Lcvi69c2k8asdeehCtjrXdqIrqCmcJCsIEMkx8sY4eTf74fNg1FzmDdlqaS+bP4mpt97YuMorqkDvXRcOkWRxPwZgRbiMEkUKs6zER/BPc/mp5GA22vAOyh3oHS68lMgBTwZ9QGOXQ70eXYdFzIhmPDWPrrcOVBLATbvWeQXXkCubM8/ftEFMh2a2j29lv1fduObN//WxFZ11/vswPXipN2FgdIvAKmZrblqGNQIloHrL92DIgY/5npoGAyP9r4XYM/hJN3bfb1yZfRHu+0JWDncD5fjcDyXccxnRkpv1U1OIMPGRNu9SxseT6Bg5oPnHAHjjYfmZUriVXcZlxz+Z8OFklXd0hY8XQlXtH25EiWpxB1Yl7XI
- brfAquqF
- 4wg66TUQ3DFKNkKhrfoGGjToLEysxboW6i1BfaPKiRYwULox6sf8nJScBqng2ySCSnQLKS3Uqw1MdF7A6ZnrB/sd2hWkY6wYFkAtWyco9IML6uyRzGV0qTgLWJ8sphNNpkROuxyjcUdgDiaEDdEFM12traXUHAtwyQFWZbVePl0saSCHUyzwEHSOVHRGphA+BACwu8hM/Laoz4PyOswzgCuZS1LuKh8M8MDfmtBZdc/YXOuSZdBab58AFQG09MUeg8dpgsSARgzyhv6ZqzJQRWAhX/829Z7Rf2E/g5W+2gZFCMCYmRX1oKqMaN6RGSd+pkJra
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 58D4340003
+X-Stat-Signature: imyfu4uhiaey1b4k9g3ckfsfun35e1yf
+X-HE-Tag: 1790964100-988425
+X-HE-Meta: U2FsdGVkX19UztvgY6pCKnYxD27z6D4dz8c1Uwc+2zV3GjDD9uUU831PJt5ZpLqkMpV8tnZQxj7GzQHgkmpxTtSXrNR5aNc7fQDYXo6GKxpCS3lVgFjfqFyRGY5zWf3diEG3diZzBV8FxPy/lRTwQar6iBDiB9Qn9bpGeb1MSdOCEMckxujqy+TqcAsssxMfAAKU/aGRvNQl7qYFLccdfBX7IFdY2wkxg+uRgDwMmSkz1xni+6Tf2QVIyEmB+WgvTc0U2Dd5Imarb46TjnK9csb9gW/BXczwJMCJsw2sBsX3IJwKQRMOZ30i0tcEGURv77/zr+bmtq+41OeelrUZYBKCKw+BeVGDeCKb31YTg1L0WEx+RvhfIEoxp7phVFzRx0E+u3IC+tepeO7y8UfuAXoXYZHKwwoW6vJfjm4h+xsJMAiU7iYyQ4fCRusSh4Ywup+lWCFDEh3FR6ldDrb/gWYlpQJic4S2CzbVFGTB3VI97OJ701dQ4mfI5NDvsSM0C33DWgIEU2ZxGET1SQ4xH/Fga4OVcC37Cru9Od516eM3AD3HfIjh/iWoHsFisPl0o5nWGyAQcyMtqN7FQrC/6Rt45InKf3p5jlL7W+DgKPqyV5wZKNsUCeOVWs2H4j12SEUX2K9MDeX9y51tgBxYuXL/tA1b9SNNbIRxltiZbfnlUuhmT0Z1JseS7mzLsKbnmrcGpCQ3H5mkldMcBIQuMTLdb0VAc520Pos0+dnK/oSaXenztLMzYzPImemFu1D4hpWurlImkUX+UcOsU1TRANbz5KQRNZ9fufKpett8GyBYXk1ZXRWYinc5zZqA9qOwrD3tDwDT23Am4X6a1+V+vCt2/3ZpuHVGIiwEVkMaW4O0r0rGB1RrCpdpCXfOK23yybwcGolqx8PWoaauzm6KktGFa3iPwzncUnt3SymDB5FXTocNY1DnuP/uMuR1brSEb9zLNVwBMA60egR0pnB
+ MGOhZak+
+ cM6yTxs4muQIA1Htr1lNo7KiCmi000nFvGS6SRjgFPNBwBtLd8ZZ7ZA2UBkyDG7fDJF3lJ2Uup4r4oC5q/Aa8ASvW8gVfECNuTD6JZsltcQxQqRIhMvnJ2wzV9elox3XB8+Kg1E4C/juQGpa3lt8c7N8UIX+T6GGXvUEMZZwO1hC8DoJbAQKhQbVd9CPQFtXUWLHZ0Jo8u3W/ZQ8HUT5tB+iP+Ril7tuoprthgYyJhtJMdmfh7dJqOkaCUsbD9AbeubxBzqBFz+DILtZzR1CVxdcCn+7zuKKcPslDYqrBXokooT9iOXaix0UXKC7Kz6WPfYJXu4y3go9MKvkhxlHuW4D0Very8Ucn6mal3jILYfiFLR6kIFswx/jX4h5ssYefhChHEmzu8e0br/8Avv0mBDpkRhv5kRJvtQfOrWQCFZYj+3/bHaN+bsRAbVJ4fZM7jTumvJgDeV5kQcs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,48 +138,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+>  - Optane has like a 3x worse write bandwidth performance than read,
+>   so expect it to be significantly slower.
 
-Since commit 97d34aa65c29 ("mm/secretmem: properly account locked
-pages"), in v7.3-rc2 and the 6.18.52 and 7.2.5 backports, touching a
-memfd_secret() page for the first time fails with SIGBUS while the
-same user is running perf record, and read() into such a page fails
-with EFAULT. This happens for root as well as for an unprivileged
-user running its own perf record. It reproduces on v7.3-rc4 and
-6.18.52, and the same test passes without the recording or with the
-commit reverted.
+Single Optane DIMM (1st generation Apache Pass) has sequential write
+bandwidth ~2 GB/s
+But each of two namespaces is interleaved with 6 DIMMs.
+So I would expect sequential write bandwidth per namespace ~10+ GB/s,
+6 times faster vs observed 1.4 GB/s.
 
-The commit charges secretmem pages to the per-user user->locked_vm
-and checks that counter against RLIMIT_MEMLOCK, with no CAP_IPC_LOCK
-exemption because the fd can be passed to other processes. perf has
-charged its ring buffers to the same counter since 2009, up to
-perf_event_mlock_kb per online CPU, and only what exceeds that
-allowance is checked against RLIMIT_MEMLOCK. sysctl/kernel.rst
-describes the allowance as not counted against the mlock limit, yet
-it sits in the counter that secretmem now enforces. perf record sizes
-its buffers to the allowance by default, 516 KiB per CPU, so on 16 or
-more CPUs one recording uses up the default 8 MiB limit on its own,
-and on fewer CPUs it leaves correspondingly less for secretmem.
+Lastly I migrated (by migratepages command) Valkey pages between DRAM
+NUMA nodes 0 & 1, and got the same 1.5 GB/s with the same profiling.
 
-Reproducer, as root on a 16 vCPU x86_64 guest with the default
-ulimit -l 8192, while "perf record -o /tmp/p.data -- sleep 300" runs
-in another shell:
+Anton
 
-  fd = syscall(SYS_memfd_secret, 0);
-  ftruncate(fd, 4096);
-  p = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-  read(open("/dev/zero", O_RDONLY), p, 4096);   /* EFAULT */
-  p[0] = 1;                                     /* SIGBUS */
-
-The commit closes a real hole, unbounded pinning of unevictable memory
-by unprivileged users. The question is whether the perf_event_mlock_kb
-allowance is meant to count against the RLIMIT_MEMLOCK budget that
-secretmem and the other subsystems accounting to user->locked_vm
-enforce, or whether perf should keep it in a counter of its own, which
-would leave the hole closed and secretmem usable during a recording.
-
-#regzbot introduced: 97d34aa65c29
-
-Thanks,
-Ameer Hamza
+=D0=BF=D1=82, 2 =D0=BE=D0=BA=D1=82. 2026=E2=80=AF=D0=B3. =D0=B2 20:47, Greg=
+ory Price <gourry@gourry.net>:
+>
+> On Fri, Oct 02, 2026 at 07:16:12PM +0300, Anton Gavriliuk wrote:
+> > Hello
+> >
+> > There is Fedora Server 44 (up to date) on HPE DL380g10 socket server
+> > with Optane PMEM DIMMs configured as system RAM for simulating CXL
+> > type3 memory expanders,
+> >
+>
+> Couple things:
+>  - if possible trying onlining the PMEM in ZONE_MOVABLE.  This may
+>    help avoid kernel data landing in PMEM which would be very bad.
+>
+>    If page pinning is required, then this will likely not work as
+>    ZONE_MOVABLE pages cannot be pinned.
+>
+>  - Optane has like a 3x worse write bandwidth performance than read,
+>    so expect it to be significantly slower.
+>
+>  - the stack below would suggest it's likely the folio lock.  You may
+>    want to check whether the folios are being pinned and you're just
+>    hitting a wall because of the temporary pins or some other contention
+>    on the folio itself.
+>
+> >
+> > 48280162400 lost: 0/0 drop:
+> > Overhead  Shared Object                      Symbol
+> >   49.82%  [kernel]                           [k] migrate_folio_unmap
+> >
+> > migrate_folio_unmap  /proc/kcore [Percent: local period]
+> >   99.52 =E2=94=82       lock
+>
+>
 
