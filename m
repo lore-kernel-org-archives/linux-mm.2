@@ -4,137 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C30E2CA5FC4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 08:23:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FEB2CA5FC4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 08:39:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8B646B008C; Fri,  2 Oct 2026 04:23:57 -0400 (EDT)
+	id 432E06B0088; Fri,  2 Oct 2026 04:39:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D62646B0092; Fri,  2 Oct 2026 04:23:57 -0400 (EDT)
+	id 3E3B16B008A; Fri,  2 Oct 2026 04:39:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C522D6B0093; Fri,  2 Oct 2026 04:23:57 -0400 (EDT)
+	id 2D5C76B008C; Fri,  2 Oct 2026 04:39:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DC176B008C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 04:23:57 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 39E00A0676
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:23:57 +0000 (UTC)
-X-FDA: 85276998114.15.ECA6F9D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0104F6B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 04:39:06 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5EC6AA75A1
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:39:06 +0000 (UTC)
+X-FDA: 85277036292.17.35F1344
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 60EDBA0005
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:23:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m39OTSXG;
+	by imf23.hostedemail.com (Postfix) with ESMTP id B61C5140002
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:39:04 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TsRl5Del;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790929435;
+	s=arc-20220608; t=1790930344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EscagxTaRgsbT7pEbj1a/c/B7oDWZ/qp9i/g3XXY2T8=;
-	b=iSqMwapQvDDJu4BThsgyFY/9T1cRmyJsggFfMoRp1oygppE9+2XgNihMzYj7QHGl6PhBj8
-	WIO0VTyfLBSARrODSAlM/fOIetx8rhtdXUYEeijzDLjrszwyDNkd3beYydo2XQYqc4kXZD
-	a2qBHMxDbREYI+eNKjrPDXUg5t4aLVM=
+	bh=KRxNLIPM60ZIDq6ro/IGuIKeWFbCWOgKc8p6gwqctKE=;
+	b=tG42JAFlw1sZcSx4BPssMSSXW9z+pETZacrHTOUluhODkiqIWNErq8+tNhtH90bTQcms5M
+	m5TxCTkhJWp+W6unNny/eqA34xXRkr6j2z8pXSSG4O9CuBFQ7mLlT9kIzU0zaE8MoeAKhn
+	T9yWOn6xex3i/gZ2buaK6Rur++15ezQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m39OTSXG;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TsRl5Del;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790929435;
-	b=FU5PP8bZE2K5PrE5iW1O1QBUNEhYH3QFdYQqc/Nai5B+w8QW65E5slPxT9+DSRetjavL1x
-	IfDN3ElF2sYUlQUrbxdrVDp4zHrCPtejHJCXqmBZkuF7yd72KT42j2j5AFhJlnJvUQPolz
-	odO617yB8vO7dyF/S0PAzo5xTDMOhIA=
+	t=1790930344;
+	b=AFViMyb1kmWRD2PIKzYS2gwis8esHWiLfE6gTW4vHh865U1f/H2KjNU8+8oYqhbWv89bb+
+	KGeZDIpr/etIphDtJCKPfMesyAgiaJG1gbVpEypihxFsLGsJelHPY1T75/vERqmSafEQS/
+	OFKrBNt+uxvMM4mB63bXaOrMqgrAZ9I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 84397407F1;
-	Fri,  2 Oct 2026 08:23:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588551F000FF;
-	Fri,  2 Oct 2026 08:23:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0297A4168E;
+	Fri,  2 Oct 2026 08:39:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16D51F000FF;
+	Fri,  2 Oct 2026 08:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790929434;
-	bh=EscagxTaRgsbT7pEbj1a/c/B7oDWZ/qp9i/g3XXY2T8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=m39OTSXGNZNIqCEztgvYpbKdbg8exALPQw7LXuaZ+cFC4pTdZYLSKC2Zdjd81Vyer
-	 eZpFzbESNoK57ZUzT63Kbqvgt1CMyurYUx2euQpsisN/d4NC/346wAtZsoptWrU4Bx
-	 uRX4gEsirlSzXf+lc+Rns6jlQ7EWFJcNt9l7zBzO/7jjfAGfLlses1qCqZ2PnXXuYW
-	 HsohxPZh4YLf6b2zK1D0YtNlqhIZJHYa8PyNjgE2x5N+oRAcrUXbuEmqvxa4E75PVC
-	 dpN563eX06NOCoyUTkrJGWoANofJdSgpOtzf+lUCyE0JhqCyCjG6ZGZGK36cUa9/jQ
-	 Dnw4JlCRv97UQ==
-Message-ID: <42d1a163-3502-49b8-9a27-7df9d06eee64@kernel.org>
-Date: Fri, 2 Oct 2026 10:23:47 +0200
+	s=k20260515; t=1790930343;
+	bh=KRxNLIPM60ZIDq6ro/IGuIKeWFbCWOgKc8p6gwqctKE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TsRl5DelJUV+pcGbdEBRo0WIrx4BFJXhiL6Y9UoAgr/0P6nELkytR9bJei1zt4iLf
+	 CXCDESIpPn5izZW570HY5tEhSz+1cii9gLr4lXLY8y2u9Q1i+CzXfAKZQIU1ASuoPC
+	 7284EhuN/8XsjOGM5OBZ3WvPUloBxtLEuPtKzpBheseGyx3VxDvGqmNVSnlkiZZfM2
+	 NPAK48W5Q7z1fmKR0+xb3dUJuCZhAMT3aHyU+cFyNxN4iSdI/a0jQq/Z6soGxPB/Ii
+	 pS0ornjfDTv0xzZPyortR/WSq4RkNkx8v/jMgS4jqB9m5+OJ3IUkrhkz9fUiamHni2
+	 yroBAi8ajvsGw==
+Date: Fri, 2 Oct 2026 09:38:58 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>, 
+	akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, peterx@redhat.com, dave.hansen@linux.intel.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	syzbot+49b1021becba70c1f3f6@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm: don't ioremap COWed anon pages in
+ generic_access_phys()
+Message-ID: <ar9omYD3HcTDBpGA@gremlin>
+References: <699ae98c.050a0220.340abe.0d31.GAE@google.com>
+ <20261001152524.171115-1-ngocthang2710.1999@gmail.com>
+ <32fe40e2-854a-47ec-9d95-93e23f9a7af4@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6] mm/page_alloc: avoid direct reclaim and compaction for
- costly __GFP_NORETRY allocations
-Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>,
- Salvatore Dipietro <dipiets@amazon.it>
-Cc: linux-kernel@vger.kernel.org, hch@infradead.org, abuehaze@amazon.com,
- alisaidi@amazon.com, blakgeof@amazon.com, brauner@kernel.org,
- dgc@kernel.org, dipietro.salvatore@gmail.com, djwong@kernel.org,
- hannes@cmpxchg.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
- rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
- willy@infradead.org, ziy@nvidia.com, David Hildenbrand <david@redhat.com>,
- Christoph Hellwig <hch@lst.de>, Dmitry Ilvokhin <d@ilvokhin.com>,
- Brendan Jackman <brendan.jackman@linux.dev>
-References: <20261001082152.2879289-1-dipiets@amazon.it>
- <20261001182942.ce99faa753fb9d9bd2efec1e@linux-foundation.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
- gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
- CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
- UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
- XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
- 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
- FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
- QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
- 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
- icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
- uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
- SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
- cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
- La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
- FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
- bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
- +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
- jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
- CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
- HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
- SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
- 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
- 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
- 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
- wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
- NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
- OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
- jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261001182942.ce99faa753fb9d9bd2efec1e@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: eb8y46kqixho4n9whrigduznexrxno4d
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <32fe40e2-854a-47ec-9d95-93e23f9a7af4@kernel.org>
+X-Rspamd-Queue-Id: B61C5140002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 60EDBA0005
-X-HE-Tag: 1790929435-492227
-X-HE-Meta: U2FsdGVkX18gNWRj+qeE+wPporAwjBNbMUklRCFhDwqHDomu0LaFzv4KEyF31Zl1vzj2QA8eLmjsErHNb9/7awZ+F/fuRZ01b6dzn2EbB2PxOPK70Aow/GWU/tzGMKRrVLud1MbXtODbGaaYRcp55iRNwN32AXYfhupgo1MVqBJM0ec3bslY+1t6S8+u/gMIiowWL9s8PcVWs16vz/Wvi/yN4rQbE37WaVw7yMWDJ7Gy+SpfjjXEMJPA/kyt53eK1p9CeRP+yqGtA1wDXzFQnJQOpcaWQ4W3bStJujRvKK5E2AJnnDW3oJ/HkG3mKJLgfRWtKtZuJAWLXOHp7QxRPjEYgeAEc8It5dfSLGBRGc1r5i2yPXjdnkk3IKtuBoTpVUZdlsgu7wQMPjGjD+gu0GNfHzesiZRCGRldz86oxkbgUXM6RXAGxA0OavQZTyfChbRJJc+08leZ4FmXZPKPU7fHnsrOlGAxnjoUqo6cMS/+OMMNGp42TEM/pscmwbAgczByuAjVjgak34fSsV56huhbS3YXtr5wgj0MK/ZjREatQonbXyrtkkL/3kXZlGzoso+b/E3g2n8f9LLVlz2PufKE1jIJT8U5YyfP9+31/8Q+8OjwWilsGvKkezy1hao6rTpx9bkDEU719JfZ/Dg9juTBiGwustlaBe92WZlFtX+7PKYLd1aojkUbgGR6RnHkO6vWEeoC9u66PLqJ0Ke7zScwjFjmKRzS1VDuWoSHTjeDPel4kMWxae8lF94yAbpqWnSgNvAPMcJKEWcPezD7DzfIP4pbED+kr6etOoD6BRKD5g8XEuSosvrafpYchCGF18aLzKhy5kC7rDdTsxINPfVOJbuG8xHi7lEYtCMx6MUk7QG7o+Nk64lszWAiP+5+0JyV0s1FA9IBwgImSwSrgZzpPWPhO7oW6En3CPjymTUQybDmGDtd95rFPQAuzA2N20Jx4T3IqAOOgXzYNhv
- Xtz1rVD5
- IXaGJESpU2353br8JNuidTkU8qAmzUHB9TMoMyl1GY7QvoXrSCTwycLiuEDqlnEuSv5a+6/IZq+3uSQQTBqFUB0MxCw7o9gIb04ZoFWZsctCdPE+Z0HtD7PW1kjAlztYaB/i99mv+pkccMmYh2zsDiEiSw9WP71UUmewOMKzK/b2FbDVYqK5ImPxjW0zlpl9RnhUScW++Lu9WvEH0rWfWeKWy8TOcmvEC6oh/chbyqJ4CVINHKyqVcUukNTbDTbVHORbW+R27p3fBv3DPBsWy1cDv968P2nTyGjvXWqXn2V31WmxiKIQw5f0sKTimsh2h/osOrLsaNTxa0m0ifdbng/Lu+kE55zMADdfqLi9LL4r1codAaAOcaCNPkg78Tl6yss1DfflMZKcjkMuFaat4fnAaEA==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 7wprzg73ykjqa5yt8qaqam76gndant71
+X-HE-Tag: 1790930344-277576
+X-HE-Meta: U2FsdGVkX18+EvutT3PV3/S6S74ndZznppz/1qcBhAGusXxh96ZiJLsEalcoeYsuzapKGcRoOaZSbeQs7oBruxEfRlMit22+jodQX1x/Ljq2+sL7BnvGydZQgrro3hn4A6N5PT/BloUymzLJujBjibiso0Lcolp0PXX/N1L+d5kSy3itWGsdbsRoS/imbfDmkx7Ho39pU00w3h+mdzG02FwWUxwOnABlR/XhDhvVtu6zVMqL0RhTQplwbu+6bIuXw+q5+Aj1Qbvt9J7gXXKwNyI+eizTUlB5/h4M3gTjlWkQdYJGCk1o4Uvbh2/tejVXV9cUneIPm/KIpml8OsPz0wBDNuGMUir2Sudm8MCI8+G/Yfv33PWTlnfCOQJzpgc5iMsHq2Qj06aEpZt7hDJ8+MqnPPaSTvg3uuKkq6HxQ7I3SQXYG48CsNCgLAWkegbYA2yOFZXxjNsYawx59+BVqwexDtGHMaCySO2aU8eClp6Kmdm7Z2qWyBSLKODgpwMzSjvXupmIsGjlp1pySr+U5pQosBZnQ89sAmcHE2/LMFkksm+jCqIYwVhgWkwkXWXNPOj0MRofjon1Ks4NholiSP9unnXRrD0QU36Srla2iCiJ7cCkv2gfOdQ0fiuDpWF62oN1YdGIFU9fBpeOuDhMsSYCfvOsAVscwjAxz3tQnTfD63D/us4qXwF7nExgmuuW7HANoZJ6MEkKPAvHI7fgXjiS9gwPVn6N0Y9xt4vW2yCiRRuv2pcKC6Y5BOfXQYtUFtbXXYZXX0iX0hWM9e2EPmFqo8tPcY3uW+dsvCdkpLPeg7b8tAz5dn+NHb4aFERRL02Rs4wgykr691Tm6rNWj3uFI7HUKRMiHx3TDXQsGTDaVtWSydS2W/Mu9Z+SPJdEMyJkujYPEyXyqtKv2HF+Rjxd+jIBIt+svO+qjNe3OHlCg8lSRbtcS2KLg4t4p4DSw5e1LqDtHzUx/K9lqba
+ 0oSjO5L3
+ rb8A8yDJ6JSX2uzRqUTo0u9Z4MzbEHHB55HATVHwo+s2MEwElp2siQSLpNB060X3CTxXQrNlutE/8Xi/5HLPjK1CKJ82huAJUSWehRFMVjGlpxuv2XRvVyMLJpxjjtyS6Va8/kCEtMfaXZjxqIvyKAKhrJN43F9xS7RLQ0jcYD5YavMb1BzBjcYUGVHkcGRL9JKA4WAuUCn5ckq1o2gyAiR/Zxwf39mJaD15ykOhtrQ2CYcZ2oTFk68pF7OEAStPe7dHFqRiu9aGnkGALc6haTfAhOWKvKZ+usHdMOa/vYY73UgRATrqZjBWnPWDGuP0WKivk8bxlutpUvDoP7KDOMpID6H3DKdnDMG5Af4EBKFUIPUovz0XEJ4lrKsMr+qE+SQMk9kjwJd2uO24uFkJLMH+3PTsuc0U4NFj7f9Ba6xQB2gXR/pZhUs8h1XPVSRxo3mMrzMXlyo0DemWsggqWPHDoiM5aeZBqWLBu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,56 +96,252 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/2/26 03:29, Andrew Morton wrote:
-> On Thu, 1 Oct 2026 08:21:51 +0000 Salvatore Dipietro <dipiets@amazon.it> wrote:
-> 
->> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
->> introduced high-order folio allocations in the iomap buffered write
->> path.  When memory is fragmented, each failed costly-order allocation
->> enters __alloc_pages_slowpath() which runs direct reclaim, direct
->> compaction and drain_all_pages(), causing a 0.38x throughput drop on
->> PostgreSQL pgbench (simple-update) with 1024 clients on a 96-vCPU arm64
->> system.
->> 
->> The root issue is that direct reclaim and direct compaction are too
->> expensive for hot allocation paths that have fallbacks to smaller
->> allocations.  __filemap_get_folio_mpol() already marks higher-order
->> allocations with __GFP_NORETRY | __GFP_NOWARN, signalling that the
->> caller can handle failure.  However, the page allocator still enters the
->> full blocking slowpath for costly orders with __GFP_NORETRY, which is
->> unnecessarily aggressive when the caller will simply retry at a lower
->> order.
->> 
+On Thu, Oct 01, 2026 at 10:22:29PM +0200, David Hildenbrand (Arm) wrote:
+> On 10/1/26 17:25, Nguyen Ngoc Thang wrote:
+> > A MAP_PRIVATE mapping of iomem (e.g. a PCI sysfs resourceN file) is a
+> > COW pfnmap: a write fault replaces the pfn with an anonymous page, which
+> > remap_pfn_range() allows by keeping vm_pgoff equal to the base pfn.
+> >
+> > generic_access_phys() does not tell those COWed pages apart from the
+> > original pfns and ioremaps whatever the PTE points to. Reading such an
+> > address via /proc/pid/mem or ptrace then ioremaps RAM:
+> >
+> >   ioremap on RAM at 0x0000000045623000 - 0x0000000045623fff
+> >   WARNING: arch/x86/mm/ioremap.c:216 at __ioremap_caller.isra.0+0x4c2/0x5f0
+> >   Call Trace:
+> >    generic_access_phys+0x130/0x4d0 mm/memory.c:7178
+> >    kernfs_vma_access+0x1ce/0x280 fs/kernfs/file.c:437
+> >    __access_remote_vm+0x58f/0x890 mm/memory.c:7256
+> >    mem_rw+0x2a1/0x670 fs/proc/base.c:912
+> >
+>
 
-Since it expands the impact of a pre-existing bug of nonblocking allocation
-eating reserves [1] it shouldn't proceed to mainline without a fix for that
-(Johannes posted it there but the review discussion got stalled).
+Sorry to say this looks schlopped.
 
-> Thanks, I'll update mm-hotfixes to this version.
+This guy has sent 10 series across 6 subsystems over ~21 hrs:
 
-I've also argued for not handling it as a hotfix [2]
+https://lore.kernel.org/all/?q=f%3Angocthang2710.1999%40gmail.com
 
-[1] https://lore.kernel.org/all/9f415dc7-adad-4161-b20d-7c3173f50ff3@kernel.org/
+Nguyen - please do not flood the kernel with patches, and please use the
+Assisted-by tag for generated content.
 
-[2] https://lore.kernel.org/all/c6e2c1e1-a285-406e-a2b6-c09e05df91d8@kernel.org/
+The original code you submitted is really not great even if the issue may
+be valid.
 
-> Here's what changed:
-> 
-> --- a/mm/page_alloc.c~mm-page_alloc-avoid-direct-reclaim-and-compaction-for-costly-__gfp_noretry-allocations
-> +++ a/mm/page_alloc.c
-> @@ -4930,8 +4930,11 @@ retry:
->  		 * Reclaim/compaction cannot run, so defrag_mode's strategy
->  		 * of enforcing ALLOC_NOFRAGMENT cannot be fulfilled. Allow
->  		 * fallbacks rather than failing the allocation outright.
-> +		 * Not for __GFP_NORETRY: those have a cheap lower order
-> +		 * fallback, so failing beats fragmenting.
->  		 */
->  		if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT) &&
-> +		    !(gfp_mask & __GFP_NORETRY) &&
->  		    (gfp_mask & __GFP_KSWAPD_RECLAIM)) {
->  			alloc_flags &= ~ALLOC_NOFRAGMENT;
+So I'd say somebody from the core team should take over this if we want to
+come up with a patch.
+
+> Ack, apart from that, nothing bad should happen.
+>
+> > Reject COWed pages using the same linearity rule vm_normal_page() uses.
+>
+> Hm I don't enjoy that.
+>
+> What about letting follow_pfnmap_start() just perform a vm_normal_page()
+> etc and indicate that information to the caller in the
+> follow_pfnmap_args() ?
+>
+> We kind-of have that information in the form of follow_pfnmap_args.special
+> ... but it's not available on all architectures. And it shouldn't exist.
+>
+> I was thinking a while ago about disallowing follow_pfnmap_start() entirely
+> on anon folios, but the VM_IO thingy made me assume that there are some
+> odd users (kvm/vfio) that actually need CoWed folios.
+
+Ugh.
+
+>
+> Anyhow, this is what I think we should do for now:
+>
+>
+> From 0b75f30b137612f18cdee28c8c0dfa96870868c2 Mon Sep 17 00:00:00 2001
+> From: "David Hildenbrand (Arm)" <david@kernel.org>
+> Date: Thu, 1 Oct 2026 22:19:57 +0200
+> Subject: [PATCH] tmp
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+This looks reasonable but I hate that we have 'special' CoW overrides like
+this :)
+
+> ---
+>  include/linux/mm.h |  4 +++-
+>  mm/memory.c        | 48 ++++++++++++++++++++++++++++++++++++++++------
+>  2 files changed, 45 insertions(+), 7 deletions(-)
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index c49ef99b4413..b90e547797a9 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3193,6 +3193,8 @@ struct folio *vm_normal_folio_pmd(struct vm_area_struct *vma,
+>  				  unsigned long addr, pmd_t pmd);
+>  struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
+>  				pmd_t pmd);
+> +struct folio *vm_normal_folio_pud(struct vm_area_struct *vma,
+> +		unsigned long addr, pud_t pud);
+
+Hmm, if not defined before why would this need a new PUD handler? Do we
+even have PUD-leaf PFN mappings?
+
+>  struct page *vm_normal_page_pud(struct vm_area_struct *vma, unsigned long addr,
+>  		pud_t pud);
+>
+> @@ -3245,7 +3247,7 @@ struct follow_pfnmap_args {
+>  	unsigned long addr_mask;
+>  	pgprot_t pgprot;
+>  	bool writable;
+> -	bool special;
+> +	bool cow;
+>  };
+>  int follow_pfnmap_start(struct follow_pfnmap_args *args);
+>  void follow_pfnmap_end(struct follow_pfnmap_args *args);
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 926276d41920..764b79204ab7 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -843,7 +843,7 @@ struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
+>   * @addr: The address where the @pmd is mapped.
+>   * @pmd: The PMD.
+>   *
+> - * Get the "struct folio" associated with a PTE. See __vm_normal_page()
+> + * Get the "struct folio" associated with a PMD. See __vm_normal_page()
+>   * for details on "normal" and "special" mappings.
+>   *
+>   * Return: Returns the "struct folio" if this is a "normal" mapping. Returns
+> @@ -879,6 +879,28 @@ struct page *vm_normal_page_pud(struct vm_area_struct *vma,
+>  	return __vm_normal_page(vma, addr, pud_pfn(pud), pud_special(pud),
+>  				&entry, sizeof(entry), PGTABLE_LEVEL_PUD);
+>  }
+> +
+> +/**
+> + * vm_normal_folio_pud() - Get the "struct folio" associated with a PUD
+> + * @vma: The VMA mapping the @pud.
+> + * @addr: The address where the @pud is mapped.
+> + * @pud: The PUD.
+> + *
+> + * Get the "struct folio" associated with a PUD. See __vm_normal_page()
+> + * for details on "normal" and "special" mappings.
+> + *
+> + * Return: Returns the "struct folio" if this is a "normal" mapping. Returns
+> + *	   NULL if this is a "special" mapping.
+> + */
+> +struct folio *vm_normal_folio_pud(struct vm_area_struct *vma,
+> +				  unsigned long addr, pud_t pud)
+> +{
+> +	struct page *page = vm_normal_page_pud(vma, addr, pud);
+> +
+> +	if (page)
+> +		return page_folio(page);
+> +	return NULL;
+> +}
+>  #endif
+>
+>  /**
+> @@ -6947,7 +6969,7 @@ static inline void pfnmap_args_setup(struct follow_pfnmap_args *args,
+>  				     spinlock_t *lock, pte_t *ptep,
+>  				     pgprot_t pgprot, unsigned long pfn_base,
+>  				     unsigned long addr_mask, bool writable,
+> -				     bool special)
+> +				     struct folio *folio)
+>  {
+>  	args->lock = lock;
+>  	args->ptep = ptep;
+> @@ -6955,7 +6977,7 @@ static inline void pfnmap_args_setup(struct follow_pfnmap_args *args,
+>  	args->addr_mask = addr_mask;
+>  	args->pgprot = pgprot;
+>  	args->writable = writable;
+> -	args->special = special;
+> +	args->cow = folio && folio_test_anon(folio);
+
+I actually wonder if this should be changed to folio_has_anon_rmap() at
+some point :)
+
+Since a folio being 'anon' is vague, because we stupidly made 'anon' vague
+in general.
+
+Anyway I was going to ask does this suffice for CoW but having an anon rmap
+implies CoW so it does.
+
+>  }
+>
+>  static inline void pfnmap_lockdep_assert(struct vm_area_struct *vma)
+> @@ -7008,6 +7030,7 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
+>  	struct vm_area_struct *vma = args->vma;
+>  	unsigned long address = args->address;
+>  	struct mm_struct *mm = vma->vm_mm;
+> +	struct folio *folio = NULL;
+>  	spinlock_t *lock;
+>  	pgd_t *pgdp;
+>  	p4d_t *p4dp, p4d;
+> @@ -7047,9 +7070,12 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
+>  			spin_unlock(lock);
 >  			goto retry;
-> _
-> 
+>  		}
+> +
+> +		if (vma_is_cow_mapping(vma))
+> +			folio = vm_normal_folio_pud(vma, address, pud);
+>  		pfnmap_args_setup(args, lock, NULL, pud_pgprot(pud),
+>  				  pud_pfn(pud), PUD_MASK, pud_write(pud),
+> -				  pud_special(pud));
+> +				  folio);
+>  		return 0;
+>  	}
+>
+> @@ -7068,9 +7094,12 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
+>  			spin_unlock(lock);
+>  			goto retry;
+>  		}
+> +
+> +		if (vma_is_cow_mapping(vma))
+> +			folio = vm_normal_folio_pmd(vma, address, pmd);
+>  		pfnmap_args_setup(args, lock, NULL, pmd_pgprot(pmd),
+>  				  pmd_pfn(pmd), PMD_MASK, pmd_write(pmd),
+> -				  pmd_special(pmd));
+> +				  folio);
+>  		return 0;
+>  	}
+>
+> @@ -7080,9 +7109,12 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
+>  	pte = ptep_get(ptep);
+>  	if (!pte_present(pte))
+>  		goto unlock;
+> +
+> +	if (vma_is_cow_mapping(vma))
+> +		folio = vm_normal_folio(vma, address, pte);
+>  	pfnmap_args_setup(args, lock, ptep, pte_pgprot(pte),
+>  			  pte_pfn(pte), PAGE_MASK, pte_write(pte),
+> -			  pte_special(pte));
+> +			  folio);
 
+This all seems reasonable, I guess, insofar as the horrible 'special' CoW
+handling is reasonable, but this function is gross to have this degree of
+duplication across page table levels.
+
+But I guess one for the future.
+
+>  	return 0;
+>  unlock:
+>  	pte_unmap_unlock(ptep, lock);
+> @@ -7145,6 +7177,10 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+>  	writable = args.writable;
+>  	follow_pfnmap_end(&args);
+>
+> +	/* Reject CoW'ed anonymous folios. */
+> +	if (args.cow)
+> +		return -EINVAL;
+> +
+>  	if ((write & FOLL_WRITE) && !writable)
+>  		return -EINVAL;
+>
+> --
+> 2.43.0
+>
+>
+> --
+> Cheers,
+>
+> David
+
+--
+Cheers, Lorenzo
 
