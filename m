@@ -4,113 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E000CA5FE2
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 18:11:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 035F9CA5FD4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 18:12:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96AB16B008C; Fri,  2 Oct 2026 14:11:51 -0400 (EDT)
+	id F38BE6B0092; Fri,  2 Oct 2026 14:12:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F57D6B0092; Fri,  2 Oct 2026 14:11:51 -0400 (EDT)
+	id F10196B0093; Fri,  2 Oct 2026 14:12:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80A346B0093; Fri,  2 Oct 2026 14:11:51 -0400 (EDT)
+	id E4D976B0095; Fri,  2 Oct 2026 14:12:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A5A76B008C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:11:51 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AFBF4120849
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:11:50 +0000 (UTC)
-X-FDA: 85278479580.30.C833380
-Received: from mail-wr2-f42.google.com (mail-wr2-f42.google.com [74.125.225.106])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C4D3C180005
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:11:48 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tBzPjxno;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.106 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C9D076B0092
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:12:51 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 509501407B1
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:12:51 +0000 (UTC)
+X-FDA: 85278482142.28.AE5AFB0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9D9BC20002
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:12:49 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V0REfLB+;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790964708;
+	s=arc-20220608; t=1790964769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UWCAH005lKYUXfe2OCMNLFgIqFtAt9HIoWhdWHE78ZE=;
-	b=yQlB9XEzbOSGWYqrK3d1nIu6Zv+li1bBy6LSz76eAem5P8K0lu9CtZ3yEti6m3yPP2p64G
-	o7IwKebujUTMc3m9tCjXx5bXDLPDiJDZv9TaMDj8awvThOcwO2/3P2BFzS8Otn5qqY/GEp
-	3utJkqS10RCYnHv/rpSHTpaQGzNpt3E=
+	bh=g8XGruUG1q9NlQK3HfsezWI4sNwg1U3GmGD0QRbensM=;
+	b=StRcEhUJJjg+u/BN08Bw91PVNo7/iupYzTDkLhBqdlVQQ2TbeDM6T0mkGG5YLAGUaZ6AoU
+	rR1bXx07K6SMcD1Q1klsS8OqmbbdrOv+D8knNBpGPNx//LaH95x6TBC05AkDDo/bdjjQkq
+	72THDPaJHll8KaTR6vd0N0AyEikh03s=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tBzPjxno;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.106 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V0REfLB+;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790964708;
-	b=s7adwt5wCdU+sEUl3RePsyBZrwsfEayCD8PrF0oUzD6Iejk4OLkGjjwEdo4wNdE6d/FRWS
-	lsr+9fARKQymEbIQ4yr+Z/smVywn7RU8r5r8kJqzzrN6USP37BQLUVx1jH6DrYQ6ael9A7
-	jVvZOnb76BRMhjWf3aQs4NkvEO9aEsY=
-Received: by mail-wr2-f42.google.com with SMTP id ffacd0b85a97d-48b0622cc90so91181f8f.1
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 11:11:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790964707; x=1791569507; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UWCAH005lKYUXfe2OCMNLFgIqFtAt9HIoWhdWHE78ZE=;
-        b=tBzPjxno4X/M46EyxlwY388OEbryV4JtF2Hc/09kvf+haAmcCVM3s3ik8Hb+CVnRwN
-         6e0YAi3nyHkEQwBUbBdvhfxHg14Aa1xCq/cJB+zJrP1/Ug9xZrT/L670gpYZ6oIncnf4
-         3EaFa1SleHyp62V+fTsjwPHZIBav/1sKNm8mRB3GoV/Iuvmzq5Hgv8AIwPd/FUEep4Ie
-         YhpRdaBcGsJyq3xNL0L42S8Ey7wT+Zgge96jnMRzjM/AkfNJ9shSrftppjQO1Uo25bdh
-         pruz0v97a7tL2zExS/VPD1Et3UZ9BJEJ4Dhd0ofX8Eyzxthx8gblIqZGnNcr2dZdUTCW
-         HX8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790964707; x=1791569507;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UWCAH005lKYUXfe2OCMNLFgIqFtAt9HIoWhdWHE78ZE=;
-        b=zGCv38m1227j3G+KuKZZWiGSDzUhO/oCEIRAAKKQspfJb1+Q0nJEZkMUEH0wwVZOPC
-         yEpuI5vFCyLykNu3bvfXfAPoqnepL8T7Ik2pRW3qkvVkTkzMWNPieDq9DbC63F6+OpBv
-         83MIFaDW6oor6WLoD+GFhiu9P14lSLz25EHfDGdq2rdTzBP5w11dMSUrdZGdgeqHsbCv
-         5tzkKbJTzERlQ/lxwiB5mY6tm6rYXg6xp51PrWvv8ZV9E8yjKALCUcC+oFxrvSTOvF7n
-         S+rW46ghPseSYmeJypFZPdB+dwXfPvsQqo5hFeJh2zbn/3pb1aSFhd7nWGbdgP3e5b+1
-         LGcw==
-X-Gm-Message-State: AFuF++nQJyu2dYyYURWMrM/Equ//kJcp55VnI95KWNpISar212GbmuNa
-	JQAvzYVT5ujYcQ3yK72fqqKn+7oTPc1F+FNnSaZ/6xNsJ2dJBD0hvRgi37lT5WxO4Ow=
-X-Gm-Gg: AYBFou2lT69TVN8LBNSJWZIlWmGCRzLiRcRiJLanlUeNBeQ909LNekn0VAxXoWa8bpu
-	fHm/iKrgqhM7Yd/KkO/t6zCBUi58l0baOpeBfeyX34jPPkHBAatTbN6CXVYzPEpJj3E4VzQyuuG
-	QvkJXiapB4K1IPDkbXjtOEMq4o3rynd8JhatPwZaLv6KjM7OZkbc1GqndcIwNdm7il5KH1HHk7e
-	MAoJklu2+T2ckikrupH0OI0P0428svqVA+OqPTj+FXAZQwlmA9e7vIJMUtH2wG8sjFsG9PH++P1
-	yPu0mLhXWQTRL1cVe4pHeeRMGViD7oQfLuocOLp0ppRtM5EXeugx70wW6+b56KRIVNdIilE71Yn
-	Z2LAlwyz0G4OQtGF8qTHx5cPuX3eTTxMuS57zhYnMU/6tjJj6JLE0AHQ4kl7/Mji1GFDAlXksbw
-	wlauP4tRbA8Ix7F1fYLXedfkhsOrhr+280kkECHxng4eQl63fqNAp74we3LfUSftWIedU=
-X-Received: by 2002:a05:600c:1546:b0:4a0:1c43:3c04 with SMTP id 5b1f17b1804b1-4a02756e5edmr62895155e9.13.1790964707327;
-        Fri, 02 Oct 2026 11:11:47 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c092:500::7:9b19])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0280bfafasm104420865e9.8.2026.10.02.11.11.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 11:11:46 -0700 (PDT)
-Date: Fri, 2 Oct 2026 14:11:45 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Anton Gavriliuk <antosha20xx@gmail.com>
-Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org
-Subject: Re: Poor memory bandwidth performance between NUMA nodes
-Message-ID: <ar_zftIk5caN-5uV@gourry-fedora-PF4VCD3F>
-References: <CAAiJnjqz+OB+PmUQBENS8ThnWHSAFK=p3EA7KPsy5UeabQCn-A@mail.gmail.com>
- <ar_rPzLhXRSA0AfS@gourry-fedora-PF4VCD3F>
- <CAAiJnjo86U27YwFNSkQNvqxDyGMZomoqHToH3GqWuzqD2+V0Vg@mail.gmail.com>
+	t=1790964769;
+	b=J2C1STVhaoBgH1B3SHjOGPWD71WWJkI99hIKQc3ZsURnQH0yKoXgrIFL2Tw4S168lARwDd
+	lkjz0ac45ZOjsxdhvExVRRoPfAe0Mrk9ZE07lU/9uUkTNcAkaYUqfBrpHYeHZScwy866f6
+	dO/Wm3O2NsoFYS2OVPok5T4gAHRaqb0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2D5A84025C;
+	Fri,  2 Oct 2026 18:12:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C070F1F000FF;
+	Fri,  2 Oct 2026 18:12:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790964768;
+	bh=g8XGruUG1q9NlQK3HfsezWI4sNwg1U3GmGD0QRbensM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=V0REfLB+j9fthMzAGcutHRNmRjr4fXKGl1aG9r8XK0w+Vy31R2L9pIYOOWtSZBw3U
+	 7qyfwbDD83FmvTuz/gfIb24vWYjIoi/zze2L5JgCYcUWmqce1xusyI7j5+nqBM+MjO
+	 27DBo08CWDgdEvumIyd2DotOo5ve2+0IFdtN0jqI5CGjcyLBNLz/3AZRwe7WVDsF2+
+	 OldX0GA0jKKM+8yhQ8cXETn3mQMG47JK/JjJ2Y+VWgt70E9FZp7zqmkM8202/EeQot
+	 H5P/0nnTUDfDsBZfsNIws2Csfz0zHJOh9GPJm2AmOCw1tlEl4vfgYkJLZPYoZl6IZE
+	 j20D1JesWAFYQ==
+Date: Fri, 2 Oct 2026 20:12:40 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 6/6] mm/mm_init: add zone mismatch warning during page
+ init
+Message-ID: <ar_0GLYM6KsIH6tQ@kernel.org>
+References: <20260929053231.66085-1-songmuchun@bytedance.com>
+ <20260929053231.66085-7-songmuchun@bytedance.com>
+ <ar5xbQsUpSQZg0wO@kernel.org>
+ <78D5D6AA-BE36-432C-B0F7-453F93DF18C0@linux.dev>
+ <ar9p39Y9SmlxvbA_@kernel.org>
+ <85941AA4-7E50-4AAE-BC05-0F443B21BE8B@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAAiJnjo86U27YwFNSkQNvqxDyGMZomoqHToH3GqWuzqD2+V0Vg@mail.gmail.com>
-X-Stat-Signature: xzijumcyg9jixbrek5feqoox9yzy1aog
-X-Rspamd-Queue-Id: C4D3C180005
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <85941AA4-7E50-4AAE-BC05-0F443B21BE8B@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790964708-552895
-X-HE-Meta: U2FsdGVkX1+UjsQWXGGKL14zA3LhKifFvp7Swm1H/DKHuYdJyy60QGtUvHIm0T4PNHKpE4ji8AOEK+aVrLsEgWevqXJFhzJlhfAEprCKZ7C+BreKJk5f6w7/BRjWkV6kmNyln1P7rAN8orU+sRB9PTsXlCDZiRjky4J9EWds+A9xYQ7qFMmli4Hl3y6Ju99RWHM4s62x1TFDIru/+5pt+WQMza1+fx/9cn5jidqJWYwF7SONJu27NZB4QSRR1as4D927WPF1NISO70qOi1DPbOKLAuP/Pzr/vu1bC+ywsIqpWc1Q9sOAx7fC3gSxvAxf6ivb1+Uf+URCWXv/BlqDkQUEYZ9RyjYSxoiR2WfNQfEvZkcrtKMfE/b8c9VxSQpo3WQKhVgA+rXPJ0z0pTYPOi+h24a1t8yhgNEU4+9Nlary3M/f9Eyf9+54ouZ/P7uSWXdrMyXSrnexonBII2vYpRfuc/PxDfhdSMz4+AJlen5vMqnSwHhfHci3I8XJIPf4TzmiEiq8LEiEAn3IB/7+GrZcYIVwNj00X93vsLXAW668Rn9GtG2MEGUB5DawcwdLNS0DQYpwUNWLPOub3ud2C8hSerLy+58P6wvRDJDmPHST9VRA04EYv4hOAEr6gQcLgOW3P/tqU5YanY7CbCmz9tmJHYrfQhuMLa6OMMKJDGGDbHL8A6CSFEr95CrxbIzCtEk+clFW+okd/fA8RK2LFzG3ufIilpgJr3TBD6ALn6pFKaNJ0bUQdHCes1Vac/A35oCLn5x0LNdHoKWsZSxVm5EGaYuJ5aU4S70YxrHq9juE3JonFWwbyiHh2eyIXg0oK1NHUjct7Rr/1CvtMfiMZ0Uys8Kupp8SH/oEoLF2z7DONj1y+OxrW089jKhN1Kp0tvAgMs/bzMdpNmxhYSP9mVfS1Fo+yEUxsUiFMgQfD3clvC98WpMsSXzIwteJrZqevgRADQB2hxmcxLUlUZb
- rwY3q9N3
- WjtbcFW/Gydpwb4BIE10hsfUfONIHDBRoOKIOE8detdOA0oBtiIBBtKNheVzOgHjExcUajc9R8Jza0CyFesG6ZwdOaMJSshLc7OOpeU+7UCasTxREAsgBMZ8u9Mocid0MGOxXCZjOZrXSAqI0+TTIeqljeIR3jclBONjz5+BFtKpoaLHcDPn+jFCPenBx9tD62TpTdcdOk+KchqbNCYCeVs3eCZitBbE+wwk4CeXnTiIkqjBtEuM21PJOgUprYNPwufQRcFcldin/56qVawxNWfdfR/sbNCCK3r9D67oVvl/iuPAAisEFn7I5rY294jiL3ZKbJ+8deaAg/5vqve7fHDg5M9OEfNSKpVZhgw40GXnLHjpEY1go4xEVhA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9D9BC20002
+X-Stat-Signature: 6swxxk7o3yow9ugxdxuwbti7sye5ajwt
+X-HE-Tag: 1790964769-281998
+X-HE-Meta: U2FsdGVkX1/eCnwwBHo/wtmctMIjT6zUITMrx2+pnOlX7BARESqQuRpYyZYOGaN3t0l6smjQhTJWJnTPFhEBZZ0PkTFSpHXAKiT6roqbrNqSZB/xBg9pJWj2XzvxryqTktxeTwFIxYdDBcVQMfPCslqOvsdaytpYD97YTO9CXcKEIfD5FMjD4AVdEXfIlkoCPU6vUIYeNRyAGHHTWIgjn4Cphg6yFHjfd3xc3+g89ft6YsuY8R2pPPgalgTDOQWgpyp78QY9JG5K/eIoleAcausp7BZqG9rlNmHNUk9xTvVA/9lEpqi0lAcjnLiyp6JUFDS6FXbTGv32/K8NlYghvMj7FCfIYT3yI8qEUaNwH21ZUNBsLk3zUcFcrvDK8v6RPUt5FE9JP52+VYdr40mYf+XE043wWRkynwsuRUxXsAm9JrmHZc8+kNQe/IIbCvySD5P+jI2hbgkuljVY8FQc+7bYbxBY1RNqX91ltX7Jc263aIjaDzGyFxyHj1sYl79vMJS2sx4Bm72GyijrrFlQPgv7A71msvgZQHa93ZGSSqDv+CRiF/jgu/WEKX5m4dHDCXrGx+qYRIMkAfaQuzYS47qgJ0I1yy4MpXueRfvplPdkdjyxWT/v0p4Wuwjf79KJ/MHw9J27nCmgWGmF+ZmiYUFvlRBfP6B1ZXcHgAAb8X/4QIIstbYZsDLKDV2w3K5jmkLzVklfOcKzcSF092MY4b+CXeJG/dxIwCsFxvKU9lC8fsqLE7PQmn+dfria3mZvsLey37N1YDQTijD+MrJP9xQz/Dd4lTim/CjZrK+oRe6IH2uVftidQmFPevuMGau2aRATwtlUI5PKGcujLQ/SJQ/lx6PSr8AeZ9ku/Yuvt5m8egwDV5hEZuwAm8tlycXaX3sA3FxTXluJIQlpOaYIPPQSl7GPzv6/xUPBDaS7HYKRvwaF2D4FOYFCw7J9UOaUrCwOdKtEkqXoIZUKbAJ
+ fLFHfwK/
+ 2ISsvwWCCxQUrYbU9ehEH5FVzfS3OYEDw4qVyc2rbksbnKoWoOnloLRq7xiWh7FRre83S0Ti72cQEBhG14jMuhOss3qo4z5eGxL+CG9GUllXD81+lyWZaZIbk5r8dEAFLcEaU9Mte7e7PysZNyJpb7FEb7Tf3fd9HUS5x+BCRzYYpmaliIOTuzZlEMvc2IgdqlWZjfs2UQ9loGG/+e90eoPM9f3wzfAlpjgXtFOqUhauyCb47xiSIhu/9P/+kqa2qDmIvSJ1xz1fWOPpZxNJmPFe5TPXg93Ork5zcoBKLPiqysW+DhU6rGr5p9unzqr1LTVj/ru0U3zbQmfHVESA0GENVairZcZ7GBT10jbaC7ea1+E/Z9HLrx3L5p9Js5uMj8ME9jLhlNLBPNUg9AIofCNiH1xI79T+elht35Y4BLJjT9ZH7S7hHst+xPhDfDhgFpsDLySOkI7DMU/0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,25 +112,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 02, 2026 at 09:01:27PM +0300, Anton Gavriliuk wrote:
-> >  - Optane has like a 3x worse write bandwidth performance than read,
-> >   so expect it to be significantly slower.
-> 
-> Single Optane DIMM (1st generation Apache Pass) has sequential write
-> bandwidth ~2 GB/s
-> But each of two namespaces is interleaved with 6 DIMMs.
-> So I would expect sequential write bandwidth per namespace ~10+ GB/s,
-> 6 times faster vs observed 1.4 GB/s.
-> 
-> Lastly I migrated (by migratepages command) Valkey pages between DRAM
-> NUMA nodes 0 & 1, and got the same 1.5 GB/s with the same profiling.
+On Fri, Oct 02, 2026 at 05:56:40PM +0800, Muchun Song wrote:
+> > On Oct 2, 2026, at 16:22, Mike Rapoport <rppt@kernel.org> wrote:
 >
+> >>>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> >>>> index 1650d6bc1211..bd02e8d06965 100644
+> >>>> --- a/mm/mm_init.c
+> >>>> +++ b/mm/mm_init.c
+> >>>> @@ -609,6 +609,9 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
+> >>>> if (!is_highmem_idx(zone))
+> >>>> set_page_address(page, __va(pfn << PAGE_SHIFT));
+> >>>> #endif
+> >>>> + VM_WARN_ON_ONCE(vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)) &&
+> >>>> + page_zone_id(page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) !=
+> >>>> + page_zone_id(page));
+> >>> 
+> >>> Hmm, page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES is initialized a tad later
+> >>> than page so it'll have stale data in the page->flags, won't it?
+> >> 
+> >> Lance is right. The shared tail struct pages are already initialized by
+> >> vmemmap_shared_tail_page() during vmemmap population, so they're not stale.
+> >> The head 64 struct pages are initialized later — right here, after vmemmap
+> >> population.
+> > 
+> > Still it looks out of place here, can this check be done in sparse-vmemmap
+> > somehow?
+> 
+> The struct page entries of a vmemmap-optimizable compound page
+> are currently initialized in two stages. During vmemmap
+> population, the shared tail entries are initialized first. The
+> retained head area—normally 64—is initialized later through
+> __init_single_page().
+> 
+> This warning connects the two stages: while initializing the
+> retained entries in the second stage, it verifies that their zone
+> information is consistent with the shared entries initialized in
+> the first stage. Therefore, the same check cannot be performed
+> during vmemmap population.
+> 
+> I am planning to first unify the HugeTLB and Device DAX
+> compound-page initialization through a common helper [1]. Once that
+> work is complete, maybe it will be easy to move the initialization
+> of the retained head area into vmemmap population. With both the
+> retained and shared entries initialized in the same stage, there
+> will be no cross-stage inconsistency to check, and this warning
+> can be removed.
+> 
+> Would keeping the check here for now and removing it as part of
+> that follow-up sound reasonable to you?
 
-I'm unfamiliar with Valkey, but you may want to ask how contended those
-pages are if they're actually being used during migration time.
+While it feels really out of place in __init_single_page(), but having it
+memmap_init_range() close to the if that skips shared tail pages makes
+sense.
 
-Do you get this same behavior when migrating the same amount of memory
-allocated by a toy program? (i.e. known idle pages)
+What do you say?
+ 
+> [1] https://lore.kernel.org/20260513132044.41690-18-songmuchun@bytedance.com/
+> 
+> Thanks,
+> Muchun
 
-~Gregory
+-- 
+Sincerely yours,
+Mike.
 
