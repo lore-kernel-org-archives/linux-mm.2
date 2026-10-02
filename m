@@ -4,133 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C14ECA5FE0
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:10:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76BACCA5FC4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:15:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF4CA6B00A1; Fri,  2 Oct 2026 05:10:57 -0400 (EDT)
+	id 6731D6B0088; Fri,  2 Oct 2026 05:15:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7E386B00A2; Fri,  2 Oct 2026 05:10:57 -0400 (EDT)
+	id 6234C6B008A; Fri,  2 Oct 2026 05:15:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D201C6B00A4; Fri,  2 Oct 2026 05:10:57 -0400 (EDT)
+	id 53A306B00A4; Fri,  2 Oct 2026 05:15:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E3E16B00A1
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:10:57 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A52AA689D
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:10:57 +0000 (UTC)
-X-FDA: 85277116554.01.17448DC
-Received: from mail-pj2-f34.google.com (mail-pj2-f34.google.com [74.125.227.162])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6A57AC0008
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:10:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lEsFTjpy;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.162 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CA696B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:15:56 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C9D816061E
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:15:55 +0000 (UTC)
+X-FDA: 85277129070.18.4B8B818
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id DCDA2140007
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:15:53 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tn+haMvE;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790932255;
+	s=arc-20220608; t=1790932553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nr+lcidngyc0ulTQrlYku4smM8GtiOinATZrrJ6f6Ao=;
-	b=eFWc4QOL+PNdn5SrOaCpq+KCbLe7G7lc0GqxlB5VHnXIGn3SWZqblA0Rip08X5ODBTWjFy
-	laZmu1xEYf5oZLy90pWdSFzFbedDCxQR8qiSd5WebmX23jnDxtaqcNl5WNalSLt/PbEa7u
-	ZjX5nulS3061Ck+qkU31IMq5TjEukm0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Ncyk5KFdvqxpjC54udFuMVuSf0AeMOFkeg75rLIkGYg=;
+	b=w5LUgW/Apepz8jcv7dCsBmFuFcoj69YV72hW4/365JTVR24CaWx1oCd2GZ6vIyznQWXhvL
+	3WYsolTKMvow6VTQC2EisSV82UdcgRnWj7q1HOjrDhOjmvijIR4raXIl6/xvjKYJjyo6Am
+	x+g/QlJKBvCw1fzFdffkTCR4reo0wAU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lEsFTjpy;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.162 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tn+haMvE;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790932255;
-	b=fYexqbX9Sy8DWCCd+gB1nrSqwqeuUgW/8ryv0XnTSrJagPFP9rdtCMVVF0Qhps6JeCpnnL
-	J1wYgrquDIgrAYAemEMeIrNZVzpLqh/dAWa50wwcSujb95t8AR2fh9beMdfwQgdIFLJHjQ
-	ChXXj+gt44aetALa+TGy+KJbMQewbW0=
-Received: by mail-pj2-f34.google.com with SMTP id d9443c01a7336-2d747eb79f7so33798995ad.1
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 02:10:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790932254; x=1791537054; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nr+lcidngyc0ulTQrlYku4smM8GtiOinATZrrJ6f6Ao=;
-        b=lEsFTjpys8/FTku6Kl9M2kmZh49t2njeu2N7Uf98/ooX7kScig+oOWcIE70N8zxFBM
-         1wO9rct0ZD37ztiW56aS1DgsaN8XVv/jc88pZzHjFLJD5iTXkv6eVtS4NPECJYtS4pCy
-         AfjePWXoIR6dHDJlIP23POOwnzEqALd4iK2D7qxk81AKjR1ANAYIIHYxyI8I4ksrQplS
-         SWJPG18I91uW27uO9UW6VEfZh904kuI4teSJ9/ixrzM+A4E3gGB68wHregD9QIQySgK1
-         ku/Fnqi0nfcGdhqh+q6rTjXUcG/kEUUsW+m6jDcbWKMU1J4othXDadQkk8VEoXgOUQki
-         47ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790932254; x=1791537054;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nr+lcidngyc0ulTQrlYku4smM8GtiOinATZrrJ6f6Ao=;
-        b=VatO21OqlSkNAWKHlMHmA7WKuqpmvqM7eBAFYS7VN0par9LO+JqFd3rEIMGqEZkNFX
-         bB4balaNWpvkRrtYiopUGArwopc+kqeRmKKNFm+3MnRXTMK9labkwSbKMkFkmt38mnek
-         FDGjxl6eU6wKTrbGfkwawC2GBX1Fixpx4ltzrsfkQ9/vUAClqrI5y5T3JForTpN8oOgM
-         ws3iXYoNglA/onV2LnhkQK4x8EqDpNvLtv1U6HudBCb3kLqFA494P7ef6Cpa03aS67n1
-         4lISE+EUsKY8pmZKn1Ew0ZzpbAwGUzmqTap5isec+th93jhffPX6oWgY3XSJjaPM7J1i
-         ZYdQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx9oFMzmizVFcpOVEMhVePeol0ioyuGoha2y56eaG/ioB+G6fnT2Iyf6ce8iQdBL2sDiEOJs9OroA==@kvack.org
-X-Gm-Message-State: AFq9FYIa/SLWuODzTIJ5obQ1zuX3w5ZZAeoxwuQJJXiU0d5UpzhCd91P
-	jofdZN0ygG/Gv3qzZsXCZJfh0Z4jGXoPHZN+kOVz20LXhNXy4ALxIXhMCnDLVVGg
-X-Gm-Gg: AYBFou0/whp6G+aIOyRie+uFux8COrJDTiPWVbIktnN08zoM3LBCn4VSK6agqloFQqP
-	PHnPWVuYC+XoYAzGLQyRjd1n81I6SH43twp2HY6z3eQ5UdIH5NEZlO6muJoVcZNIEA4/8m1kBfI
-	klMOzv+7acsCWR49o039rsARxarsToZfA68ad/4YqieuT8IJtLOu93Fl82t+VVYrOQBdgbkDr88
-	eKxegTTwdbOpyEXgSTJttilP39sis+QN/RIm/aQrgQ85ohT8EJYRqMc8AnzQUyznHS9EYgXQTo4
-	yWBRQEPREv0ovNsASBHVApvdplQtAGzEO9Dt9Gp+0IuHqaVFGuLLsIpPy3Smsj/rF/qFkYLlpO/
-	qK++tpG9jqx6uf07Kj9G9XMyipzHdYC0hTYWOFEJg8hBRT4xbCcJn2jTl4N90jbH1PGP0oqUDmo
-	/z7SP4wzGSD1X00Ltyl//6Xc/0jIpvREwS+dF2C2TNp87khKaLgGEse34JLRF6qEx3iTLYSnQ5o
-	f2TVmEOHNnKo8InE2r7JpC5GTtVpBXE
-X-Received: by 2002:a17:902:d98c:b0:2dd:5363:3219 with SMTP id d9443c01a7336-2e49b4e303cmr20733295ad.20.1790932254082;
-        Fri, 02 Oct 2026 02:10:54 -0700 (PDT)
-Received: from mi-OptiPlex-7060.mioffice.cn ([43.224.245.234])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e49f6ab2b9sm5480555ad.36.2026.10.02.02.10.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 02:10:53 -0700 (PDT)
-From: Wen Jiang <jiangwenxiaomi@gmail.com>
-X-Google-Original-From: Wen Jiang <jiangwen6@xiaomi.com>
-To: akpm@linux-foundation.org,
-	catalin.marinas@arm.com,
-	linux-mm@kvack.org,
-	urezki@gmail.com,
-	will@kernel.org
-Cc: Xueyuan.chen21@gmail.com,
-	ajd@linux.ibm.com,
-	anshuman.khandual@arm.com,
-	baohua@kernel.org,
-	chleroy@kernel.org,
-	david@kernel.org,
-	dev.jain@arm.com,
-	jiangwen6@xiaomi.com,
-	leo.yan@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	rppt@kernel.org,
-	ryan.roberts@arm.com
-Subject: [PATCH v10 10/10] mm/vmalloc: align vm_area so vmap() can batch mappings
-Date: Fri,  2 Oct 2026 17:09:47 +0800
-Message-Id: <20261002090947.869220-11-jiangwen6@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261002090947.869220-1-jiangwen6@xiaomi.com>
-References: <20261002090947.869220-1-jiangwen6@xiaomi.com>
+	t=1790932553;
+	b=lS2Wc05nvIqzRk/eYHPifGrNmizN6pa2LAiquZhn7/Sqib5qMiRNIJoo9ktpL322ZoBxNQ
+	+SqJCKhBRxeUdlPVJ7QiZDevmDYFglKHbXFqcaINUnEu6dA5KxY8BodiXcRCwj5YqHJpKP
+	6A71Yr3Lk05EqLCkAE/yoNCT5OWn9kM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2FE1D60A8A;
+	Fri,  2 Oct 2026 09:15:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F3E1F00893;
+	Fri,  2 Oct 2026 09:15:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790932552;
+	bh=Ncyk5KFdvqxpjC54udFuMVuSf0AeMOFkeg75rLIkGYg=;
+	h=Date:From:Subject:To:Cc;
+	b=Tn+haMvEaetRbIlCmQhuyzrmqqlbZUksmdMQ2y4PTkjbrjwjWPricxTYN7c1dfSrj
+	 q7lyy6JkqTRewLSNLnlxeP20qVXKgQ7CtJsN5R6KqcLlOyLrJ9qINnLKIQoAbRxZ9Q
+	 h81xrUOMDdBJ+8F7WyEn6MgoScelWBwEUlNM8u2g5IgqRHnbaK26pVoHYlfDSziWww
+	 QQYnW0+h7Dervi9nkSCP2Ob/sTa6NAfhbzdD7jBXgFt9JX1lZc2v9Lp53/nF9qAFtd
+	 wTv4BiDjvjvGQ9JiUflC83cr0d/uiuqtZoc7POJKNaCd7B3TSRVClzPgSE6gVDfJxp
+	 8pBh/DwZIwuRw==
+Message-ID: <2283e699-01e3-4575-8bba-93d0f5b2066d@kernel.org>
+Date: Fri, 2 Oct 2026 11:15:49 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4ugowa56578asmh3xqu9bh8hmc3copht
+User-Agent: Mozilla Thunderbird
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [GIT PULL] slab fixes for 7.3-rc5
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DCDA2140007
+X-Stat-Signature: qayybnko56scamk3sjapus4rxrwsd5wu
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6A57AC0008
-X-HE-Tag: 1790932255-320740
-X-HE-Meta: U2FsdGVkX1/p+u4i7HO7AjQiMMdIip0i+BClg31ECrIgH9EExJNO/oQzQUtmSehg/1bDDuPnZgatdJ8cXcPO/xogg60mLy6eobxBi49RfoXnRfWgojH4N3LCRb3vpiDPwpJ1wmAKvkCwfYI8FEBIoxafyRbHTr3W3Nwdo5h1TBhh7FurieCg7m9quBRZIr4ESIK3SikknkF1h0NyBBmtpLVl2HtLF6IvQWnnj8gY51xnWf4QJ5rAMj2yinrU4hDk9non2ROJlfuhz0GxO7IqP2PmgDYCpxN9TwGPDmLQkSV3MSkixrKQUeg+C9/0AumsPOLvZyDPdRiUzRh8UGD1SJsRwv+CxGaWRwl1PTyo+o5gA7DkAZQseIWEAQiUEX1DM2AimFQ5jnfYT85LLlIQGCmckfwtMYXk371Js7zQZB8TLQHaed1OWaUvwyh1QEsmQo5eQl89SFbET//kYHDO8gi3FSu/JPDosVGSa6FUS5BvFCDO1PVen5KsJZYcS6fzKxC9LSI+ddaMAnptp9vVT3iau2BA/rmeyyYo1TLVYc9ahHcApdpKuo7RNwLLuKCXrxxTCjKr8zSzexQ9bscH2ipCYq5kIvlbRYiRW6MaRs6siqMiVy3muMn8g/vwHu05sRmwJZWB3vvRPlzMEWNDkkfqGn6xr6SsdGQF/3BujsuwBnnWPzm4KWtQe61Co3anJa6blJdrTrLaK0av0NbKWyQYdJp8Mb37yomuI6jYzCKuGx2TZydVuD1EQgTK2MRlgwOumYlm7qdkz88aoj8jZudtVRWxUvH+fTNcKcwJIoJ47kuzv/piVlF9WtqcaBhJCsuDpM2BEO9m4gC/Qw8iIsiig0pGFiysXastdj92mqQGzl4+AXZTNxDSyJooUEaeZNmCzCjVsouJvXdT9jJUJ1mDKgUqus/y6uAX6RtFbE9lmLjFEsUg++y7xT4utfVXvIThdsIrVrz2bf9rQVC
- oiYMshlR
- 1WLO6Sn5jCS/h7S4A5OzTeHDZvZIgvfgXx+M8mzu5NHlCGlTMvDnWZSUrtfe017CwN6uXlIK+jXEPCtZTFIjlJWpWxB0Vmd3rSQlvVMf1uDTTCUYGSmos8Mt+sYDpNdiHzPxVbcDOzHyyVdzIFG/eWANJRxNJDKAPnZylVOQjQZoZXkrxapdg7hG7cFWTQ1m4PCZ0MYR4k+RwfKm1YSh/DducPKTNFjT1NWcuL1P2Ofdnmxh/cRvpwvZhzYHHuBIbAcGZiYIbZOHFGTURSAgageipxvz3Z/riLBSC9kyKHqBBeJ4woilEG7bcg7kHBHOyiFDcOGPz64VbmGAANKIp3t8sTiV9mV4LS/YSZ2qc6JFQNSGn68+kY6PIsjv5yztr/JeBTCTnDB4frYqw+rsOV+IJ88AyqkIozfbPF0U4YhCfxZ8CBKRHs1YRAcpJWZ5GLJBDbgHazDZD+ikk10JQSMgVo5GD/zOx+9qk2QiV9gCJF2GCFThc9uY0i97Ij8J8jMk9JetVgffvk/gxtfk5eo4NUoX71xZiSlWgGJs9EKjeNL/eX1GH3fegtDlfniaLJ5FsFTmmuRuJ5EfTLEWTOvT2bWxHmvQsIZaH
+X-HE-Tag: 1790932553-561237
+X-HE-Meta: U2FsdGVkX18tghIeI31COhS/BSEGBOdEEhdmIDxK58CePC7+c8WVWXGcR/Fu5jJAgEo2KQY64S+3Wl/YnHNv7G5fk/dvf32afKxz9QOUSgyzodO+m2SX0C7+HX5sqe0mWCb9q0uYzRPjInbrsSURRDWygrw9npsciufn5p49Xyl7mcnVIy7wunzSvMqlXiXxmmfxXNHT8QayldsQBwpjjAHfmgLAkcSDrSbS52V3bAvhOleTDOmUF4uCZmy/bRRgWnwCwMeiqbtB3wY5MHeC6s/zufAbOHwn07lTuq/tc043MakDNgQqPjaD14k18uBaO7gi1BC59N9pzEPUyPAU73zHfF07YcUsA0CCCwLo2Cr09fLBggd8pzIXTqoHlTsCelwV9NNFxVbdGJFiuYgKxXo9ZH4nkVnmnEz76KvXuVYAYSwNPJKnYw/LUhAPeaaHzSRafn4pTa4hVR63uL72lU1Dgg7AaAEK7NQO+o2wDdIrexkzDiwCsTbKWv11UVPFdBqBOwKPhlPy+OTD2Y5sTl51fLP51LUQQLRJT1raAJPVVplZnO3O4y/d0sVENqVkVDT+oCxz3URw1tEIqGVimrdnfdm1Jas9Z5Lw8ZnalBwcltM5mtVV3s5LGKRJnEn8ilgjeKyf0j/TqYfkcG50WrkG8yY3d3hFt6D09bRHI7qsgBOrkDn7oH9LbCyV9zSl+kIlSN/sYF/V8j7le4OG18wLFzUxAjksY5cJXt7N2gfj5Hcxog1wcaFkgqMJwYQPtgLlB2wgpJ4oEkVkQYG8ZsXZ7S+HYjCMI0a84WK3jiK+jGPSOUa7YidOjAnn/CeFoCZ2UQiWdSklOL6A3BQUSWCSKSowf2V2YcWpdukP59EHUt5wOFgSpSXqVYkq337tYnkezRzQqw9CvjTKze/R3gtz93r3Rmh/vOCKsDf1D987bzy19bgJCzJUEPag8adUjOI7GcKwIdzGQP4nvcS
+ Am+qsC6H
+ Y4WnIVAUHB4qlziAKe/Jid1Jp5eaCgDn1vOdC1Mei5jKWXndCROSMvTnYtN6zewaJplqy46HK1Gpl1ZFPaJsTkfcAYwjNyTLBAwjDHeCqDVH83Fs2Wvjtp2sb32GWRoqqcTQhMb6GxtGXfi1zW9CUDe5JpHCk7LHp681ZjMD9+A0lm9KI2XzdDa+WzhKUi6mgXu1v+9cQIJCX9fj3klevbxTDYXh/lRUX0c0y005RxdoA+oGkYt/7Nb3clm7i4KS7wNUQj6Tlu6HFWLheXbUEDYbn6cDx79doxNF/II2lHDUGum9w28BGw4m5Jn39U/pWMntU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,89 +133,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Hi Linus,
 
-Try to align the vmap virtual address to PMD_SHIFT or a
-larger PTE mapping size hinted by the architecture, so
-contiguous pages can be batch-mapped when setting PMD or
-PTE entries. We do not expect any significant overhead for
-this.
+please pull the latest slab fixes from:
 
-Add __get_vm_area_node_aligned_caller() as a wrapper over
-__get_vm_area_node() to simplify repeated calls with fixed
-arguments.
+  git://git.kernel.org/pub/scm/linux/kernel/git/mm/slab.git tags/slab-for-7.3-rc5
 
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Tested-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
----
- mm/vmalloc.c | 35 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
+Thanks,
+Vlastimil
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 4acd1ec27604b..3555dc3794e4c 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3328,6 +3328,14 @@ struct vm_struct *get_vm_area_caller(unsigned long size, unsigned long flags,
- 				  NUMA_NO_NODE, GFP_KERNEL, caller);
- }
- 
-+static struct vm_struct *__get_vm_area_node_aligned_caller(unsigned long size,
-+		unsigned long align, unsigned long flags, const void *caller)
-+{
-+	return __get_vm_area_node(size, align, PAGE_SHIFT, flags,
-+				  VMALLOC_START, VMALLOC_END,
-+				  NUMA_NO_NODE, GFP_KERNEL, caller);
-+}
-+
- /**
-  * find_vm_area - find a continuous kernel virtual area
-  * @addr:	  base address
-@@ -3655,6 +3663,30 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
- 	return err;
- }
- 
-+static struct vm_struct *vmap_get_aligned_vm_area(unsigned long size,
-+		unsigned long flags, pgprot_t prot, const void *caller)
-+{
-+	struct vm_struct *vm_area;
-+	unsigned int shift;
-+
-+	if (arch_vmap_pmd_supported(prot) && size >= PMD_SIZE) {
-+		vm_area = __get_vm_area_node_aligned_caller(size, PMD_SIZE,
-+				flags, caller);
-+		if (vm_area)
-+			return vm_area;
-+	}
-+
-+	shift = arch_vmap_pte_supported_shift(size);
-+	if (shift > PAGE_SHIFT) {
-+		vm_area = __get_vm_area_node_aligned_caller(size, 1UL << shift,
-+				flags, caller);
-+		if (vm_area)
-+			return vm_area;
-+	}
-+
-+	return __get_vm_area_node_aligned_caller(size, PAGE_SIZE, flags, caller);
-+}
-+
- /**
-  * vmap - map an array of pages into virtually contiguous space
-  * @pages: array of page pointers
-@@ -3693,7 +3725,8 @@ void *vmap(struct page **pages, unsigned int count,
- 		return NULL;
- 
- 	size = (unsigned long)count << PAGE_SHIFT;
--	area = get_vm_area_caller(size, flags, __builtin_return_address(0));
-+	area = vmap_get_aligned_vm_area(size, flags, prot,
-+				__builtin_return_address(0));
- 	if (!area)
- 		return NULL;
- 
--- 
-2.34.1
+======================================
 
+- Stable fix for a potential deadlock in kfree_rcu() when called from
+  set_cpus_allowed_force() (Harry Yoo)
+
+- MAINTAINERS update of the slab.git URL
+
+----------------------------------------------------------------
+The following changes since commit 93f51579e7df248780214094418f205253383cc5:
+
+  Linux 7.3-rc4 (2026-09-20 13:48:15 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mm/slab.git tags/slab-for-7.3-rc5
+
+for you to fetch changes up to af2fb3ee6679b517e2fdbd3ba16ec276a8b74312:
+
+  mm/slab: do not wake up kswapd in __kfree_rcu_sheaf() (2026-09-24 10:14:02 +0200)
+
+----------------------------------------------------------------
+slab fixes for 7.3-rc5
+
+----------------------------------------------------------------
+Harry Yoo (Meta) (1):
+      mm/slab: do not wake up kswapd in __kfree_rcu_sheaf()
+
+Vlastimil Babka (SUSE) (1):
+      MAINTAINERS: update slab.git URL
+
+ MAINTAINERS | 2 +-
+ mm/slub.c   | 7 ++++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
