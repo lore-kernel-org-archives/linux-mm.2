@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EB53CA5FC4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:57:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21852CA5FC4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:57:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EADA56B00B8; Fri,  2 Oct 2026 05:57:06 -0400 (EDT)
+	id 734806B00BA; Fri,  2 Oct 2026 05:57:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5E6B6B00B9; Fri,  2 Oct 2026 05:57:06 -0400 (EDT)
+	id 697266B00BB; Fri,  2 Oct 2026 05:57:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD8566B00BA; Fri,  2 Oct 2026 05:57:06 -0400 (EDT)
+	id 55EFF6B00BC; Fri,  2 Oct 2026 05:57:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A40636B00B8
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:57:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 46B9BA7621
+	by kanga.kvack.org (Postfix) with ESMTP id 32B0A6B00BA
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:57:09 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C33CE806CD
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:57:08 +0000 (UTC)
+X-FDA: 85277232936.20.4E836EF
+Received: from mta1.migadu.com (out-127.mta1.migadu.com [95.215.58.127])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D878C120004
 	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:57:06 +0000 (UTC)
-X-FDA: 85277232852.01.D249B82
-Received: from mta0.migadu.com (out-136.mta0.migadu.com [91.218.175.136])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 68E0DC0003
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:57:04 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NeCRGXST;
-	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.136 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NyGAMC+C;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.127 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790935024;
+	s=arc-20220608; t=1790935027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=huH6oSd7gTMk6bCw3wFvetQjWaUFvstahrkAvJSP3YA=;
-	b=hkGc4srr0HWE5GBvV/MelStTwTePePPhflvzNbIEjkJFGEuuk2C0hmCUNeuiAb3bOrY6Wo
-	gVlBa8vTOp/gi62Ec7o3oK4g0+a4qeL5jK3rR9qm3gD5wY6KLoOqeUhVP1Bd6QAO7Q/Iaa
-	je1ABrLpKh3Rr4v7D1bCOd5POHyFjz0=
+	bh=6jByMVr03QXqW/+zfBLn/bRhcMEPJMASd0ZFFF1jJpc=;
+	b=qCtr3UPsGtdhccfA8pgdECwxxpRj8LXFpYfVvT6n3Na8rc+cWMJuhwn3cpPvq3yZtJm2/k
+	an5l1wRHdwPQHuzK8Lc1xNA6Vbmo7nCc1zZFhkqDSPUwmrGRxNVv6grpWm5efzkfq2QoyG
+	vk78VRMafdJwm+aPF0xbxlA5VMZ6g9U=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NeCRGXST;
-	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.136 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NyGAMC+C;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.127 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790935024;
-	b=nyA20AFIC/218P01r7l1Baxbp05p1zqmIhf18fiDCn4DwJFckYP4dx12bOCa20njsZvuAb
-	B/eQON6TUZwPP+Bu/nEFiNl0011gCMhYHIWU7CJpsco7UDUlBVCyV9nt1+bKzl9X6OL8BY
-	X0prOAy34QWR3rKeMsMmfz8Ah7rJCNs=
+	t=1790935027;
+	b=zY9C7+XDcq7vuV7t7k4PNT6UOqPFniD4PlizgwADd55X0a5hgI1U65X4WVK7ILImwSXItI
+	i7/sLmk9d6Fx8LUxVaIHLjzhbjSpl6meSAp4wnVaU2KbsQrJzg1OfIxcmGkS+/QUOEoHuP
+	LKavbzK8k2X96eoWQajH5qk0ABpZUyc=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=EsV4QmuE2zIVMKtO/SOhRrFUuEtNtiAe7xebMuMrx54=;
+DKIM-Signature: a=rsa-sha256; bh=52my7Ds1LJ1DHVTSsdRA7MBIeNU6HZuTroAZD3VRoTc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790935023; v=1; x=1791539823;
- b=NeCRGXSTGWfHGH9nTdqHnUHOoYToHUcfwajejK8iXk88Y2IhVI1ONvbD8VUmxLyOhGv8LhDZ
- WZz/2rZr+zCQsx6NahvNRERAo6khQdf77pwuvV8U4H/wrAX0gBooXejKZSb5NKfKqgS7vTtE6td
- pggSbfzxY5DEZuhRpW/yvIiM=
+ t=1790935025; v=1; x=1791539825;
+ b=NyGAMC+C0kwl0LTQZIMLdnUwpgA71T3523RECt3plnkz+GHhILGxsu21S4X2C551mnrJgmUC
+ KtqV0zImrlNewecPGGhEGr/ebcVxa0AD24dzyLzwQiVxObRPtFH9SjGKvRs63Xo4kxqhzCPtfF4
+ SDlZGSNtuZJWwD6CfIWjq6Hs=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 3b859f7e4ff92309;
-	Fri, 02 Oct 2026 09:57:03 +0000
-X-Mizu-Trace-ID: 3b859f7e4ff92309
+Received: by mta10.migadu.com with ESMTPS id 97a2097a84c32ae4;
+	Fri, 02 Oct 2026 09:57:05 +0000
+X-Mizu-Trace-ID: 97a2097a84c32ae4
 X-Migadu-Flow: FLOW_OUT
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -94,22 +94,22 @@ Cc: ying.huang@linux.alibaba.com,
 	luizcap@redhat.com,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v8 18/30] mm/hmm: fault PMD swap entries on demand
-Date: Fri,  2 Oct 2026 02:52:32 -0700
-Message-ID: <20261002095503.3585565-19-usama.arif@linux.dev>
+Subject: [PATCH v8 19/30] mm: free PMD swap entries in zap_huge_pmd()
+Date: Fri,  2 Oct 2026 02:52:33 -0700
+Message-ID: <20261002095503.3585565-20-usama.arif@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261002095503.3585565-1-usama.arif@linux.dev>
 References: <20261002095503.3585565-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 386p8mod3kzm53pd4kbiyqzsagnpajow
-X-Rspamd-Queue-Id: 68E0DC0003
+X-Rspamd-Queue-Id: D878C120004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790935024-521312
-X-HE-Meta: U2FsdGVkX1+Yb/8ky5kJhHj/3dzIOsxhW1GpE8tqDipEzwleQQMLZP+q16TNvZtVpOsV469XoqBz+Xn/YNYY0Ph37WI3CMVXJ3O5DvFCer9jHitCEIVcy/QYOOjDaFuvyvYOtDUP7SGpRvSonESqVjergiZ4uGaDoUpwOdMKQY6o1TB/ZxlXV+EGWUfsYjEnh/f03U9+7XbBLNliUoypCpikuZRQtRi3EH8iIqATMJIR1OFKgG6EYx+IcYBII93CW9bkF+QPY2ixhFkY4TwYEdAsUSMKIG2H66DTSn9nVnLuZ4Zro2nlxlshCFX1kt30p5y1yYzFbZaNTj8dm85FL0byzbS/tqlbCjGiwYt+KybpcQ94uU30SqEh7XiT7g6TU7Si1ho++EAv7GE+8jyHHVStYdAT3FIMwW/VHVgumA/seYl6AJbxP3QnZNWE+ekQ9RZFoAhvunA+nm1P5ED/qCQbyw/zP7AvNxnSKDrMwyf657PSyP6IFRqQ2Mkd86Y3AJiOy1dg0oWptUouEUjmpjKjIUdoMaJIMvA8adhQDK5jV6oiEYxe8Wq23V44SCDdLGDT9Jh00LuU4LCs5FmQxglHvi/XQZkAz/90TE9IGWYweNbgljIgrWWZMJGSGj7i8QNR7pIwL/cacQi/q0raPyKTAwl67l5e1W3lBtTBbdvPdPJy7gOIT5Kk6SI1KLF8bzB3OTW1sFCQghjdTAJw/UmFkbj0SI4sSe45f5x7hfS2jXD6Arv1U44wIsxBPTRZybxtWvDqFiSmNjv0L19RrSPtVRi0t1kLinn+ropNPpxCG9Pbpnw8IIlhFg/OosueUVtlgSaKh/+8OJr2+SFWCqpik52Qo4e/Su/cL//C+nPFp9Fl7KbyROsyeSfq4w6LYFV7UeHEv18cZSTsKb4jAP1T5n0VP6tKYZpfN+Wb2VD5/XsuChkcE3ZL4EyCuwGxJ+f9FGG7PyG0WzzyP4O
- 1B4I9vWg
- dinETKVlDg6R4ejn0P/TYMgxoEOGOqR4ZDqupDjgDasHMgJhiGBGKQet5bicj2r39IEjDq5IJQy3ONfzZwzJQfUDc64DNqMZpPDsox1UifmCt8HdqbDFDJHwY4Iz8MfcFjW1zAs/tLClGv7Qp/sQsZw2UezYeopWJJCtrdOBc26gnIyii7zrQVGeRuipHjWACq5zlQcntoImt5EnIlsOxxMmcgIg0xiHGz6C/
+X-Rspamd-Server: rspam07
+X-Stat-Signature: si7dwbnfo6a5f3m6hwubbqeaqsoebbsn
+X-HE-Tag: 1790935026-569821
+X-HE-Meta: U2FsdGVkX1944VLWH3brz1mKyslK7l7M++2Jf7y/CxVJS6ndJ8AsGhXH1la10AoF11j+8tlWG/PsEE/4JSDPIhMMUvrtSYb1uJ3ihsVZb0EjUF4sCQUaq2GJWp2QvxWzIHA4wVDZX8306+EQpJBLmuSAtbc3KsiE0LM/va7wFiNwQaPDvVcNovNCJNKIe+9IKO4R93HDPBAfEZrZ8Z09czq1rsxqgJwRr8ihwkzNu9qGm7hzrlMo7K5DE4Ffzb8PwyQ1PGpxMOqMNLHq5oLOSg1KLDrP3demnfjhB4BG9/jKLpk1HIg/vZg8Y1jA5hMMMvw5i4R6GpmL+ntBMq1Iw2DA9ujwROBotJmj+47/1mFgGhWqJyFVXE1FQYZy01IfPmjLbPtTNrBRl9NG5p5zG88VgATHL3HiLA7v43i1KZi0mV32agUuLoZOIh3VRZObvAHXBdzsdQogPXkdxr7r9OM6mc/pc4UKAf1x3D8ufOWUcYXiFqZNgjRBjFwnukNQ4OPXgpzg5AOZ2Mq589MyN78XUvvSfPTxd9ycqcIQ5RuFMd+ykJHyTpzjJznpmWz1c2dIsLGGQID2/qkvnsW3ApbD8E/9M3+l5E5b5Tli3kF+xD/N+1AQZWZbV+KUintoW6vDr4jgPy9wEe6JPkGi88S6YZgUlbEI5Qq5TSx85zPiAKDLg9Nehh8htA0Ee7sjG1E9Na1VPv1wA6umZE6Wcf9pT6vvFPlg7XbgzftuEfhYvcfQ/gu8seLR1jj2efaIGAKeMcalz77YsXropbfjZS34fbDlT/JV0QFBA+DDDbAmmY4MNP41DV6dn/RqBO7T/FKqf21n32KAPPYsj6EHGCKAWbpffiPBEmyIwa89+9UM54VO5mSoGuHCE5WI9u32ZUykeW0fqcg3ptClJFvar7g7b8Z07KKe5r67UduMconEhrRUqNKmRVSU+3P7CrJ8wkYMGaUxEru1/tTeT1Y
+ 0B50wG6P
+ rVwqWhfn9OIerr59gjI0mlNt86aaHctxS5/R9/s3XIM6Kio6OKvsGBXoVyJ5+rx770I1d+jr3ukC/plDN6Pcp/Op0/le322e822oIP9kTUFkAL+YEE00EyHP/qjfE6q/83Zvv3Dp/N79eUm8vRamkbJfktzx/KsodqZYP+ScDdPlN4H137ktv8Sl0W2XLOLOTtipgd5rSz2J4NA2w3B3oah/QUAWCVsLnf59TX2VA5FbU+Y3qHp1CIKisepgwv3Ah3rfH6bPcsb32WDEGPQBBugEwtg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,46 +117,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hmm_vma_handle_absent_pmd() reports anything non-present that is not
-device-private as HMM_PFN_ERROR, so a swapped-out THP would look like a
-permanent failure rather than memory that needs paging in.
+zap_huge_pmd() assumes any non-present PMD it clears references a folio, so
+a PMD swap entry would reach normal_or_softleaf_folio_pmd() and warn.
+Worse, nothing would release the slots it points at: unmapping a
+swapped-out THP would leak the whole PMD's worth of swap.
 
-Treat it like a PTE swap entry: record the fault when one was asked for,
-and otherwise report the range as non-resident with no flags, which is what
-hmm_vma_handle_pte() already does in snapshot mode.
+Handle it before the folio lookup, as zap_pte_range() already does for a
+PTE swap entry.
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/hmm.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ mm/huge_memory.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/mm/hmm.c b/mm/hmm.c
-index 2f1e98c6b6440..95575ac378888 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -377,12 +377,21 @@ static int hmm_vma_handle_absent_pmd(struct mm_walk *walk, unsigned long start,
- 	required_fault = hmm_range_need_fault(hmm_vma_walk, hmm_pfns,
- 					      npages, 0);
- 	if (required_fault) {
--		if (softleaf_is_device_private(entry))
-+		if (softleaf_is_device_private(entry) ||
-+		    softleaf_is_swap(entry))
- 			return hmm_record_fault(addr, end, required_fault, walk);
- 		else
- 			return -EFAULT;
- 	}
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 56eb87fa98376..9cf7c4747cac9 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2605,6 +2605,16 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	arch_check_zapped_pmd(vma, orig_pmd);
+ 	tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
  
-+	/*
-+	 * A swapped-out THP is not resident. Report it as not-valid,
-+	 * matching what hmm_vma_handle_pte() does for a PTE swap entry when
-+	 * no fault was requested.
-+	 */
-+	if (softleaf_is_swap(entry))
-+		return hmm_pfns_fill(start, end, range, 0);
++	if (pmd_is_swap_entry(orig_pmd)) {
++		softleaf_t entry = softleaf_from_pmd(orig_pmd);
 +
- 	return hmm_pfns_fill(start, end, range, HMM_PFN_ERROR);
- }
- #else
++		zap_deposited_table(mm, pmd);
++		spin_unlock(ptl);
++		swap_put_entries_direct(entry, HPAGE_PMD_NR);
++		add_mm_counter(mm, MM_SWAPENTS, -HPAGE_PMD_NR);
++		return true;
++	}
++
+ 	is_present = pmd_present(orig_pmd);
+ 	folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
+ 	has_deposit = has_deposited_pgtable(vma, orig_pmd, folio);
 -- 
 2.53.0-Meta
 
