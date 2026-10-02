@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07488CA5FDD
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 23:11:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 209B3CA5FDD
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 23:11:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09E436B008C; Fri,  2 Oct 2026 19:11:37 -0400 (EDT)
+	id 496656B0093; Fri,  2 Oct 2026 19:11:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 000586B0098; Fri,  2 Oct 2026 19:11:36 -0400 (EDT)
+	id 46D416B0098; Fri,  2 Oct 2026 19:11:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE35A6B0095; Fri,  2 Oct 2026 19:11:36 -0400 (EDT)
+	id 383B26B0096; Fri,  2 Oct 2026 19:11:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B58636B008C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E97446B0093
 	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:11:36 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 502C84059D
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 701001C3AFC
 	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 23:11:36 +0000 (UTC)
-X-FDA: 85279234992.07.14AE77B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 83607180003
+X-FDA: 85279234992.28.6F0E2CF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BAADA2000B
 	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 23:11:34 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XpAS0XK9;
-	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AKCiz74Q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1790982694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ck6iL+D5JVu4WQzD8eBQ/ax4Rj5EDM29htDBOrwkdSs=;
-	b=nPJJ6t4sOuzKCPyLDkcSzD9f15/WVVtlFYdo5DJpeuXCaFIM8AdVqh8RlbNr2la3CYdQZb
-	JONtjURNhM5L3evAbz1zCMsafDKAk+To1h1LuXEkm2XoZm5kfwKykBtIdc3igspAUBd9rA
-	Xmfh0ilBKD1kAV92HutFS4xdrD5egfk=
+	bh=XZJMHFQd9VPup6SOQJ7R6J2VWJxgyBT6HgyoAS2ZWmE=;
+	b=xEOufcM5dVBaVcKHNI1DH4ERC5+YUDtktm8mdhLLbsjeycvXA6ELbWMOhUzpZx3yAhBpzO
+	k+0WL2lk0YlUM+WkL91fzU1Zg1bmWZhBC6033Id9JcR0zTIHaMJYyM3mY0kXAMQ8YXU89k
+	VJXsMlaZfeqFRB2K7/nv2wbK7h8Gtlg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AKCiz74Q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1790982694;
-	b=OqmNB9l4mSOf2K9v95cGhBAhWr7JxecoYjsPDhoezD9s+IobTvyIESP8pXTCAl+Rv744KE
-	fj3Bi7vzlwaIFWRio3ZzkUPdQ+vVDk705njwD4oth8E6zF0UbDCg4SBuqm1vFqA7Ko0fVP
-	DpsnPtUf7DVwX1tlkqgqvwbmHSOfLjQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XpAS0XK9;
-	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=JGxC+Yh+5gpEvdlSul4pfPw/3mYtTvON41SX6MocQtyvZb5Y8IkSigsnPyOFyldfrcxDlf
+	Ppe4ubRmlkbYxSoKloo7WZ1wvnf/Ae7ERDjD0xdu1mTHnt5COk/JIlmVN57NHyEjkfSiXV
+	xwV23v8TqwUo3uMQo66wbtk3X70VIkQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9312343FBF;
-	Fri,  2 Oct 2026 23:11:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363DD1F00899;
+	by tor.source.kernel.org (Postfix) with ESMTP id 137F960AB0;
+	Fri,  2 Oct 2026 23:11:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8CD1F00A07;
 	Fri,  2 Oct 2026 23:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1790982693;
-	bh=ck6iL+D5JVu4WQzD8eBQ/ax4Rj5EDM29htDBOrwkdSs=;
+	bh=XZJMHFQd9VPup6SOQJ7R6J2VWJxgyBT6HgyoAS2ZWmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XpAS0XK9fdAVVra2THzqk4YxwBSgGi3chiGMstxoTGB9pz8nIdeSusKWnNk+umHzX
-	 lzIT+lz4iwF/U40t/BTKrKXGb+Bn5QHcUsTnbkbEDg/tuLXhx3sxaAJ1AXPKieyKOz
-	 E/tiBX/uPnrL/EfIkOS/Kyw/Wg1sSLJDSY3hk9Ed9pgdkhOYHbsmTMm0MGYyknwuQ3
-	 LQIWlLpnc9DTGL80ALGerdob7oDFUNvSTxR0E/cLtEa2mIpsZARP548p/C3MuU8JDa
-	 zHxLu63E9sRwg3fv7F8bGn+G+hsen8i7JjRzt1Qyn++v90a60a67xHjmGRLCA+dMWE
-	 eET0PH0MJ041g==
+	b=AKCiz74QrWEPSV2fEOpEsFUmQAXMsJwTg8d5FqSJkSYXcnJUhMOVEo2edysAf8QQO
+	 yiGEyVngkOHY4nOOZ5qn1wmM7PMSEE57WhHBq/UQMmvJqJ+94wp8avPlDs+FWOoWhm
+	 G70mSm/mIYmYjDB+WDr9hEBPpOY6hbFpmzbk7BJHD8YubigjJhbSDRzaZokSsaeyIe
+	 BH+Qt1QKqIACD0ayKZog5UrI2ZJ85qwCDXT8R5bgls2YbvqEA831QYyFpu3dhdbVZt
+	 8PcIw7lSoPXabWGsb5XmIk6Ox16Rr0+slbouWc9ER/cd5AVIZWHhcqNdw+ptXYSyhP
+	 6DWcwg0LRc6zA==
 From: Kees Cook <kees@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -93,24 +93,24 @@ Cc: Kees Cook <kees@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v5 3/7] mm/slab: Add kmem_buckets_destroy()
-Date: Fri,  2 Oct 2026 16:11:23 -0700
-Message-Id: <20261002231132.1646573-3-kees@kernel.org>
+Subject: [PATCH net-next v5 6/7] mm/slab: Let a bucket set handle __GFP_ACCOUNT
+Date: Fri,  2 Oct 2026 16:11:26 -0700
+Message-Id: <20261002231132.1646573-6-kees@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261002231120.late.500-kees@kernel.org>
 References: <20261002231120.late.500-kees@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4267; i=kees@kernel.org; h=from:subject; bh=IvyaYk2+Iu7NIXTrpa0hYRhQGrcYMHvNwlOs/GE8Uyw=; b=owGbwMvMwCVmps19z/KJym7G02pJDFkHrOTicsW01boNfb6oKrkouiTP+XlfzpotX/3Ghs69n Mf3Gup1lLIwiHExyIopsgTZuce5eLxtD3efqwgzh5UJZAgDF6cATKRyJcNv9sc/FSY3ZBXsXRIW /0d71cKjnSxpXBY2N3ym5ly8aivvzfBX0ubsoxqNqwuPVrpduhf1fxX/67eLnnQxrp1a55Tx4P5 GNgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=19438; i=kees@kernel.org; h=from:subject; bh=z00tVO9g3OOSah3DzLbtuc/3xhCOULMjAScqpSWaGq0=; b=owGbwMvMwCVmps19z/KJym7G02pJDFkHrOQz488GNvaqOHFJfFPnMPV2uXD5RXpW51FPnoT3Z bcn15zuKGVhEONikBVTZAmyc49z8XjbHu4+VxFmDisTyBAGLk4BmIirMMMffp22tXxfP1ZE538I mld3bMX6R4bqc08eSSg790jy+5bpZowM3dzWGp8e9qh2pIoW39yT/NC1YdK7o5Lrs4+/0Jzn6ZL LDgA=
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: e664i7k9f6w9nhoe4go3bj4suijutc3b
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 83607180003
-X-HE-Tag: 1790982694-956267
-X-HE-Meta: U2FsdGVkX1+t8qiAn7WKsBSXRKJJ3m1vFbt64VGUP7KDmdpGEVexBCcX+j78Qlcx6MjjtGYNGMNPJzFFXXIfyGXh/uCDXz5hc4zxD5+xXJnnWCcVhvayioGF/55r5epwE3ybnHsiYbEMWzNtDzQjBvRi0W/k6az+c0cuH8YBNgEmo1YeGePJ+GPI/9aaNzUCe0VrxWQdwr2nJF5x3cJ+LeffxdOkzDok4bsxWOCKqQC5Wu/L1FBps2E1kBuM0EnKnKdFpVuU8Q4FkCw7Fv0H9PE5tfYE8agebS7YHEcGdPzpfmsIh+iDu4rZQ0NDNi6j+3JDwMZQYRJsNzyxg71GQO/Ik1QGGAyrZMXsUkS5s1gORSyn2lSq9/vgALb5pLGZkxL0ssgKQbdg03l6FOvjL8eUouvfpcfFoHsELrcupSFlsv2wIujn9sav0AAFJtWa0t05zY2kkZGhJRbq37w7nEx8OpKVHqtxbo8Jgu1EzTQTher/j9XTIizYPKOYXr2Gl+2ZwQQb5Uy78lLSw/6ZJ6zTS5i463Yje/IBkp6540hpmtsPqlrmhPD3aywbcniA3rpEPdG+mTZLnc3QxjGY4qvXshkA+zcZkbm028wOhh/BT+Hk05ot/rj5z0v4/W+RVZYY2qgbl4oqP7kGitD9RvCZXOmhCyCvpi+SARDacyXhlTjVYb2/VK8jxMbqIQoZyrth+VZXG2IQQ7tMEvvJE4aWOWkCH82YvngIpQoMK58x8Nd8aYYCLCVtYjrpQnI44scJnGzp+Y66n6ik58tuyAP/t1ps08hogWKjCphfq3hLN1oaO6WAge1mccpxblhqZ2oXLrfG0povlsledcBwtBY4EzR41aLl5RS5HbZmhiK8MMBX2+tJ/auAdgfGbXUst/hW1LG6nWnqhLkT/86175Boy2EpdaroTORHgvuwQpB26ntORDaO27tJ5rAPFwVYHHnxerdg67SJ2hbHBe6
- MJuQsFWX
- QYcFEn1zkaPF7+ajwDiGWEzTPJMkEBkZ2aB9LEMS0+R2CN/O+1BXMhqNj0dgnyaq+A0W+nfmZxs+1IOKlpWgOl4UTpLJgb4uQ2/Rec/LBlYH77Xbjhv2jtK7gSkTdTjBaHAuiqQwfVLwUj7nDM56SVmk9jJdertVwMtVFVE8bN9cvdPssc/bbmiiwz29/YzU709K6uCeE3N6sgJTUPNZe5zL9kgYDD0LNKcVA9/S55+0m4Fqv//nvNm33f4OJrqvTiGj3i3n7PLWreRDovltpy4bbngJ0blz+roTe
+X-Stat-Signature: wzd3za4dqyacj45zcpbmdnabtdbj5wtk
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BAADA2000B
+X-HE-Tag: 1790982694-676420
+X-HE-Meta: U2FsdGVkX18EncB6SYNFiObG5vsHUI8N91wyg4ZdHBuD4nF1SwZhRBzZHx/YjVAjJDEHwI4pzxGtaa1bVQub1NbwkDNgj+zY+0vLC7qxH7guYoHyaMvqXPwYYQwMMNEo/PXMQzwLLDkySn6lkL5XiweWH6dhNR+uxJrVXnIiYIsRDyeBIxZAt/hXw2ZH6fZksf6PG1nLcIYiUrbbu0iQTGAYREuqpCyU7ht6gJHlI+MiPi2i8/+oJa7w1cZW+p+mRMoGDWqVZe2KIoMwkQ4uvF1ckh2WA+kNA19DOcMdYwQGJgiHBr+kSMWe5E3JcrKl2oq8044N9rRa0ZIly77LF/yKsnWNj/pLEVD9OwhijKlN3QJFIwklCesX30GWcPhuv6oNV5usbxEdBxbrLtBrlAvdP0f8QvjWy4Trv6ASpsalIH+5ZDY/4HPwvz+6qhjTbZ8fBIj6gUDIlmGoKcet/nPWQ5RXJ19wJ+SNBq5FJfh9sUki/XGNLD0c73sLWBBTgLNKPeinj/8gRP9D1Pfkog95k3FxCQehl0yHhhClMXNadkk/KwEK/vOJR9TPBv+xuya7POjKzfv3Iy31aZMPbQKSmYP/mPSxEQP9HObS8ZfROPtlBIjCL9TLYv3y75Hwtc0nCi6vWOewhO49PGbcuUcqYUB8ZhDZMcjBPr5BKjIZTNzd+Uhq8fW7+CMJLM/cb4YZYxOT1c8b/mSduMuTf9+brdEHe5xz724wC5JM1QdQP8DDmaC113QS3C93koSX2UYKAjRiTAa0CEiUM+y61z1xNI7BXOHnjrVdvFPD0SNjVSGDZL8GggEB6CDmNB0ek+L5D9nUO9VPiTSSzCHzxqZFqyD+6MPRn+5UM0UJPFu2U78qIS30gepSzfCjvKKBbeBa1pdctLAo3mymoerPrADyovrYWvXBLLUK1FNCTHrJB+sMWMgo4Xcsl8sK/Rk098SF89O8htGazFG6cW8
+ EP1MhpYY
+ VgR1Be1fvjY0d8nMrlaYLGgO9NbLdE7kLnPMfywuHmJD4pfWWGdk8cZ6TRy9yi3BVxk2luf6oKwLTxJfrRuOKKpTkRRB3OUqi9Ncmfzud8pGf+43y+NYl/E9tI4QGQMky3Knxr798Rc6cdinw2ZgNxZpbCp5eKB8xO2xme/aEQPjxuH+VkmHVu9QKscpM08E27a8HCy5RGd2PdFF2MpLaKzuRyET+eLVNF0tZclH+oK0+dMWhJfaerNPF1Uur41mr5AmIjSbs7iuOo5YA32SK7p4LykfEwcXJ1c5T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,121 +118,523 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kmem_buckets_create() intentionally had no "destroy" counterpart. Every
-caller has lived in core kernel code and creates its set once at boot,
-so nothing has needed to take one down. However, KUnit tests may be
-built module, so we need it now to support the coming tests.
+A bucket set holds one row of caches, cloned from KMALLOC_NORMAL, and an
+allocation of any other kmalloc type falls back to the general caches.
+Extend this to handle __GFP_ACCOUNT, so that a single bucket user can
+isolate either GFP_KERNEL or GFP_KERNEL_ACCOUNT allocations, as is
+needed for skb data, where AF_UNIX uses:
 
-Some caches have size aliases, so the same pointer is stored at more
-then one index, so we have to save it, clear all matching instances, and
-then free the saved cache pointer. (This is what the bitmap was tracking
-before in the "allocation failed" error path.)
+	sk->sk_allocation = GFP_KERNEL_ACCOUNT;
 
-When CONFIG_SLAB_BUCKETS=n the whole body compiles away, matching the
-ZERO_SIZE_PTR that kmem_buckets_create() hands back in that configuration.
+The coverage is selected at bucket creation time:
 
-Link: https://lore.kernel.org/all/20240809073309.2134488-1-kees@kernel.org/
+	b = kmem_buckets_create_types(name, 0, flags, 0, INT_MAX, NULL,
+				      BIT(KMEM_BUCKET_NORMAL) |
+				      BIT(KMEM_BUCKET_CGROUP));
+
+The prior kmem_buckets_create() function keeps its name and defaults
+to only KMEM_BUCKET_NORMAL, leaving existing users as-is.
+
+Only the accounted type is offered. Nothing wants a reclaimable or
+no-obj-ext row, and of the twelve places passing GFP_DMA to an skb
+allocator, all are rare hardware: b44, b43legacy, prestera, and s390 ctcm.
+
+The choice is made at creation rather than every set getting every type
+because the rows, when populated, are not free. Each holds 13 caches, and
+a cache is a 1208 byte struct plus an unconditional per-cpu allocation,
+a node struct, and an entry in /proc/slabinfo and under /sys/kernel/slab.
+
+The rows are indexed by enum kmem_bucket_type, not enum
+kmalloc_cache_type, which counts each KMALLOC_PARTITION copy as a type
+of its own. Indexed by kmalloc_cache_type, a set would carry rows it
+can never use: on x86_64 with CONFIG_KMALLOC_PARTITION_CACHES=y,
+CONFIG_MEMCG=y and CONFIG_ZONE_DMA=y, 20 rows of 112 bytes (2240 bytes)
+per set, against the 2 rows (224 bytes) used here.
+
+KMEM_BUCKET_CGROUP collapses to KMEM_BUCKET_NORMAL without CONFIG_MEMCG,
+exactly as KMALLOC_CGROUP does, so NR_KMEM_BUCKET_TYPES is 1 there and a
+bucket set is the same single row it is today. Where the type is asked for
+but the system is not creating caches of it (under "cgroup.memory=nokmem")
+the row is aliased to the normal one, as new_kmalloc_cache() does for the
+general caches, so those allocations stay isolated rather than falling
+back to the general caches.
+
+Built and tests pass (and skip as expected) on ARCH=x86_64 defconfig
+with GCC 16.2.0 in all combinations of CONFIG_SLAB_BUCKETS=y/n and
+CONFIG_MEMCG=y/n/y+"cgroup.memory=nokmem".
+
 Assisted-by: LLM
 Signed-off-by: Kees Cook <kees@kernel.org>
 ---
- include/linux/slab.h |  1 +
- mm/slab_common.c     | 49 +++++++++++++++++++++++++++++++++++++-------
- 2 files changed, 43 insertions(+), 7 deletions(-)
+ include/linux/slab.h   |  53 +++++++++++++--
+ mm/slab.h              |  23 ++++++-
+ lib/tests/slub_kunit.c | 101 ++++++++++++++++++++++++++--
+ mm/slab_common.c       | 149 ++++++++++++++++++++++++++++++++---------
+ 4 files changed, 283 insertions(+), 43 deletions(-)
 
 diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 94709e4e14f3..4e6e74b3a990 100644
+index bdd00235d4b0..ee359dc90333 100644
 --- a/include/linux/slab.h
 +++ b/include/linux/slab.h
-@@ -894,6 +894,7 @@ kmem_buckets *kmem_buckets_create(const char *name, unsigned int align,
- 				  slab_flags_t flags,
- 				  unsigned int useroffset, unsigned int usersize,
- 				  void (*ctor)(void *));
-+void kmem_buckets_destroy(kmem_buckets *bucket);
+@@ -752,6 +752,11 @@ extern kmem_buckets kmalloc_caches[NR_KMALLOC_TYPES];
+  */
+ enum kmem_bucket_type {
+ 	KMEM_BUCKET_NORMAL = 0,
++#ifdef CONFIG_MEMCG
++	KMEM_BUCKET_CGROUP,
++#else
++	KMEM_BUCKET_CGROUP = KMEM_BUCKET_NORMAL,
++#endif
+ 	NR_KMEM_BUCKET_TYPES
+ };
+ 
+@@ -903,10 +908,50 @@ void *kmem_cache_alloc_lru_noprof(struct kmem_cache *s, struct list_lru *lru,
+ bool kmem_cache_charge(void *objp, gfp_t gfpflags);
+ void kmem_cache_free(struct kmem_cache *s, void *objp);
+ 
+-kmem_buckets *kmem_buckets_create(const char *name, unsigned int align,
+-				  slab_flags_t flags,
+-				  unsigned int useroffset, unsigned int usersize,
+-				  void (*ctor)(void *));
++kmem_buckets *kmem_buckets_create_types(const char *name, unsigned int align,
++					slab_flags_t flags,
++					unsigned int useroffset, unsigned int usersize,
++					void (*ctor)(void *),
++					unsigned int type_mask);
++
++/**
++ * kmem_buckets_create - Create a set of caches that handle dynamic sized
++ *			 allocations via kmem_buckets_alloc()
++ * @name: A prefix string which is used in /proc/slabinfo to identify this
++ *	  cache. The individual caches with have their sizes as the suffix.
++ * @align: The required alignment for the objects, or 0 to give each cache
++ *	   the alignment of the kmalloc cache of the same size, as a caller
++ *	   moving from kmalloc() may depend on.
++ * @flags: SLAB flags (see kmem_cache_create() for details).
++ * @useroffset: Starting offset within an allocation that may be copied
++ *		to/from userspace.
++ * @usersize: How many bytes, starting at @useroffset, may be copied
++ *		to/from userspace.
++ * @ctor: A constructor for the objects, run when new allocations are made.
++ *
++ * Covers KMEM_BUCKET_NORMAL only. Allocations needing another kmalloc type
++ * are served by the general caches, keeping the type they asked for and
++ * losing only the isolation. Use kmem_buckets_create_types() to cover more.
++ *
++ * Context: Cannot be called within an interrupt, but can be interrupted.
++ *
++ * Return: a pointer to the cache on success, NULL on failure. When
++ * CONFIG_SLAB_BUCKETS is not enabled, ZERO_SIZE_PTR is returned, and
++ * subsequent calls to kmem_buckets_alloc() will fall back to kmalloc().
++ * (i.e. callers only need to check for NULL on failure.)
++ */
++static inline kmem_buckets *kmem_buckets_create(const char *name,
++						unsigned int align,
++						slab_flags_t flags,
++						unsigned int useroffset,
++						unsigned int usersize,
++						void (*ctor)(void *))
++{
++	return kmem_buckets_create_types(name, align, flags, useroffset,
++					 usersize, ctor,
++					 BIT(KMEM_BUCKET_NORMAL));
++}
++
+ void kmem_buckets_destroy(kmem_buckets *bucket);
  
  /*
-  * Bulk allocation and freeing operations. These are accelerated in an
+diff --git a/mm/slab.h b/mm/slab.h
+index 7f1bfee83b92..2af44e09edda 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -435,10 +435,31 @@ kmalloc_choose_bucket(kmem_buckets *bucket, enum kmalloc_cache_type type)
+ 
+ 	if (type <= KMALLOC_PARTITION_END)
+ 		btype = KMEM_BUCKET_NORMAL;
++	else if (IS_ENABLED(CONFIG_MEMCG) && type == KMALLOC_CGROUP)
++		btype = KMEM_BUCKET_CGROUP;
+ 	else
+ 		return &kmalloc_caches[type];	/* No set holds a row for it. */
+ 
+-	return &bucket[btype];
++	/*
++	 * Either this row was created, and holds a cache everywhere the
++	 * general caches hold one, or it was never created and holds nothing.
++	 * Test with the KMALLOC_SHIFT_LOW which exists in every configuration.
++	 */
++	if (likely(bucket[btype][KMALLOC_SHIFT_LOW]))
++		return &bucket[btype];
++
++	/*
++	 * A row this set _could_ have held, but was not created with: the type
++	 * mask passed to kmem_buckets_create_types() did not cover what its
++	 * callers actually tried to allocate. Report the mismatch but still
++	 * fall back to the general caches.
++	 *
++	 * At present, only __GFP_ACCOUNT can be missing.
++	 */
++	WARN_ONCE(1,
++		  "kmem_buckets: __GFP_ACCOUNT needs BIT(KMEM_BUCKET_CGROUP) in create mask\n");
++
++	return &kmalloc_caches[type];
+ }
+ 
+ /*
+diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+index 9768de01e6f9..bc5e52f20179 100644
+--- a/lib/tests/slub_kunit.c
++++ b/lib/tests/slub_kunit.c
+@@ -760,15 +760,104 @@ static void test_kmem_buckets_type_fallback(struct kunit *test)
+ 				      "expected a DMA cache, got %s", c->name);
+ 	}
+ 
+-	/* Nor can one that has to be accounted. */
++	/*
++	 * An accounted allocation would fall back too, but a bucket set can
++	 * hold that type, so reaching the fallback means the create mask was
++	 * wrong and kmalloc_slab() warns. Not exercised here for that reason;
++	 * test_kmem_buckets_type_covered() checks the type that is asked for.
++	 */
++}
++
++/*
++ * A bucket set created for a kmalloc type keeps those allocations isolated
++ * too, rather than sending them to the general caches. Where nothing creates
++ * accounted caches at all, the row aliases the normal one, so this also
++ * covers tearing down a set whose rows share their caches.
++ */
++static void test_kmem_buckets_type_covered(struct kunit *test)
++{
++	struct kmem_cache *c, *normal_cache;
++	kmem_buckets *b;
++	void *p;
++
++	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS))
++		kunit_skip(test, "needs CONFIG_SLAB_BUCKETS");
++
++	b = kmem_buckets_create_types("covered_buckets", 0, 0, 0, INT_MAX, NULL,
++				      BIT(KMEM_BUCKET_NORMAL) |
++				      BIT(KMEM_BUCKET_CGROUP));
++	KUNIT_ASSERT_BUCKETS_CREATED(test, b);
++
++	p = kmem_buckets_alloc(b, 128, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++	normal_cache = cache_of(p);
++	kfree(p);
++	KUNIT_ASSERT_NOT_NULL(test, normal_cache);
++
++	KUNIT_EXPECT_TRUE_MSG(test, strstarts(normal_cache->name, "covered_buckets-128"),
++			      "expected the normal bucket cache, got %s",
++			      normal_cache->name);
++
++	/* Accounted, and still in the bucket set rather than kmalloc-cg-*. */
++	p = kmem_buckets_alloc(b, 128, GFP_KERNEL | __GFP_ACCOUNT);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++	c = cache_of(p);
++	kfree(p);
++	KUNIT_ASSERT_NOT_NULL(test, c);
++
+ 	if (IS_ENABLED(CONFIG_MEMCG) && !mem_cgroup_kmem_disabled()) {
+-		p = kmem_buckets_alloc(b, 128, GFP_KERNEL | __GFP_ACCOUNT);
++		KUNIT_EXPECT_TRUE_MSG(test, strstarts(c->name, "covered_buckets-cg-"),
++				      "expected the accounted bucket cache, got %s",
++				      c->name);
++		KUNIT_EXPECT_TRUE(test, c->flags & SLAB_ACCOUNT);
++	} else {
++		/*
++		 * Nothing is creating accounted caches, so the row aliases
++		 * the normal one and the allocation lands there -- isolated
++		 * still, just not separately accounted.
++		 */
++		KUNIT_EXPECT_PTR_EQ(test, c, normal_cache);
++	}
++}
++
++/*
++ * The alignment a set is created with reaches every row it holds, not just
++ * the normal one. 256 is stronger than kmalloc's alignment for 128 byte
++ * objects, so a row built without it would show here.
++ */
++static void test_kmem_buckets_type_covered_alignment(struct kunit *test)
++{
++	static const gfp_t gfps[] = { GFP_KERNEL, GFP_KERNEL | __GFP_ACCOUNT };
++	const unsigned int align = 256;
++	struct kmem_cache *c;
++	kmem_buckets *b;
++	void *p;
++	int i;
++
++	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS))
++		kunit_skip(test, "needs CONFIG_SLAB_BUCKETS");
++
++	b = kmem_buckets_create_types("covered_aligned", align, 0, 0, INT_MAX,
++				      NULL, BIT(KMEM_BUCKET_NORMAL) |
++				      BIT(KMEM_BUCKET_CGROUP));
++	KUNIT_ASSERT_BUCKETS_CREATED(test, b);
++
++	for (i = 0; i < ARRAY_SIZE(gfps); i++) {
++		p = kmem_buckets_alloc(b, 128, gfps[i]);
+ 		KUNIT_ASSERT_NOT_NULL(test, p);
+-		c = virt_to_slab(p)->slab_cache;
++		c = cache_of(p);
++		KUNIT_EXPECT_TRUE_MSG(test, IS_ALIGNED((unsigned long)p, align),
++				      "gfp %pGg: object %p is not %u byte aligned",
++				      &gfps[i], p, align);
+ 		kfree(p);
+ 
+-		KUNIT_EXPECT_TRUE_MSG(test, strstarts(c->name, "kmalloc-cg-"),
+-				      "expected an accounted cache, got %s", c->name);
++		KUNIT_ASSERT_NOT_NULL(test, c);
++		KUNIT_EXPECT_TRUE_MSG(test, strstarts(c->name, "covered_aligned-"),
++				      "gfp %pGg: expected a bucket cache, got %s",
++				      &gfps[i], c->name);
++		KUNIT_EXPECT_EQ_MSG(test, c->align, align,
++				    "gfp %pGg: %s aligned to %u, not %u",
++				    &gfps[i], c->name, c->align, align);
+ 	}
+ }
+ 
+@@ -800,6 +889,8 @@ static struct kunit_case test_cases[] = {
+ 	KUNIT_CASE(test_kmem_buckets_disabled),
+ 	KUNIT_CASE(test_kmem_buckets_destroy),
+ 	KUNIT_CASE(test_kmem_buckets_type_fallback),
++	KUNIT_CASE(test_kmem_buckets_type_covered),
++	KUNIT_CASE(test_kmem_buckets_type_covered_alignment),
+ 	{}
+ };
+ 
 diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 301f3d4f4ca2..d66e5e56a0f1 100644
+index d66e5e56a0f1..c045e2d41ee5 100644
 --- a/mm/slab_common.c
 +++ b/mm/slab_common.c
-@@ -438,12 +438,9 @@ kmem_buckets *kmem_buckets_create(const char *name, unsigned int align,
- 				  unsigned int usersize,
- 				  void (*ctor)(void *))
- {
--	unsigned long mask = 0;
- 	unsigned int idx;
+@@ -410,9 +410,15 @@ EXPORT_SYMBOL(__kmem_cache_create_args);
+ 
+ static struct kmem_cache *kmem_buckets_cache __ro_after_init;
+ 
++static int kmem_buckets_create_row(kmem_buckets *b,
++				   enum kmalloc_cache_type type,
++				   const char *name, unsigned int align,
++				   slab_flags_t flags, unsigned int useroffset,
++				   unsigned int usersize, void (*ctor)(void *));
++
+ /**
+- * kmem_buckets_create - Create a set of caches that handle dynamic sized
+- *			 allocations via kmem_buckets_alloc()
++ * kmem_buckets_create_types - Create a set of caches that handle dynamic sized
++ *			       allocations via kmem_buckets_alloc()
+  * @name: A prefix string which is used in /proc/slabinfo to identify this
+  *	  cache. The individual caches with have their sizes as the suffix.
+  * @align: The required alignment for the objects, or 0 to give each cache
+@@ -424,6 +430,11 @@ static struct kmem_cache *kmem_buckets_cache __ro_after_init;
+  * @usersize: How many bytes, starting at @useroffset, may be copied
+  *		to/from userspace.
+  * @ctor: A constructor for the objects, run when new allocations are made.
++ * @type_mask: Which kmalloc types to hold caches for, as a mask of
++ *	       BIT(KMEM_BUCKET_*). KMEM_BUCKET_NORMAL is always included.
++ *	       Allocations of a type that is not covered are served by the
++ *	       general caches instead, so a caller need not know in advance
++ *	       which types its own callers will ask for.
+  *
+  * Context: Cannot be called within an interrupt, but can be interrupted.
+  *
+@@ -432,13 +443,14 @@ static struct kmem_cache *kmem_buckets_cache __ro_after_init;
+  * subsequent calls to kmem_buckets_alloc() will fall back to kmalloc().
+  * (i.e. callers only need to check for NULL on failure.)
+  */
+-kmem_buckets *kmem_buckets_create(const char *name, unsigned int align,
+-				  slab_flags_t flags,
+-				  unsigned int useroffset,
+-				  unsigned int usersize,
+-				  void (*ctor)(void *))
+-{
+-	unsigned int idx;
++kmem_buckets *kmem_buckets_create_types(const char *name, unsigned int align,
++					slab_flags_t flags,
++					unsigned int useroffset,
++					unsigned int usersize,
++					void (*ctor)(void *),
++					unsigned int type_mask)
++{
++	enum kmem_bucket_type btype;
  	kmem_buckets *b;
  
--	BUILD_BUG_ON(ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]) > BITS_PER_LONG);
--
  	/*
- 	 * When the separate buckets API is not built in, just return
- 	 * a non-NULL value for the kmem_buckets pointer, which will be
-@@ -497,7 +494,6 @@ kmem_buckets *kmem_buckets_create(const char *name, unsigned int align,
- 			kfree(cache_name);
- 			if (WARN_ON(!(*b)[aligned_idx]))
- 				goto fail;
--			set_bit(aligned_idx, &mask);
- 		}
- 		if (idx != aligned_idx)
- 			(*b)[idx] = (*b)[aligned_idx];
-@@ -506,14 +502,53 @@ kmem_buckets *kmem_buckets_create(const char *name, unsigned int align,
- 	return b;
+@@ -457,20 +469,87 @@ kmem_buckets *kmem_buckets_create(const char *name, unsigned int align,
+ 		return NULL;
  
- fail:
--	for_each_set_bit(idx, &mask, ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]))
--		kmem_cache_destroy((*b)[idx]);
--	kmem_cache_free(kmem_buckets_cache, b);
-+	kmem_buckets_destroy(b);
- 
- 	return NULL;
- }
- EXPORT_SYMBOL(kmem_buckets_create);
- 
-+/**
-+ * kmem_buckets_destroy - Destroy a set of caches made by kmem_buckets_create()
-+ * @bucket: The set to destroy, which may be NULL.
-+ *
-+ * Destroys each cache in @bucket and then frees @bucket itself. As for
-+ * kmem_cache_destroy(), every object allocated from @bucket must have been
-+ * freed beforehand, and @bucket must not be used afterwards.
-+ *
-+ * Context: Process context. May sleep, as kmem_cache_destroy() takes the
-+ *	    slab mutex and can wait on RCU callbacks for each cache.
-+ */
-+void kmem_buckets_destroy(kmem_buckets *bucket)
-+{
-+	unsigned int idx, i;
+ 	flags |= SLAB_NO_MERGE;
++	type_mask |= BIT(KMEM_BUCKET_NORMAL);
 +
-+	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS) || ZERO_OR_NULL_PTR(bucket))
-+		return;
++	for (btype = 0; btype < NR_KMEM_BUCKET_TYPES; btype++) {
++		enum kmalloc_cache_type src = KMALLOC_NORMAL;
++		slab_flags_t type_flags = 0;
 +
-+	for (idx = 0; idx < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); idx++) {
-+		struct kmem_cache *cache = (*bucket)[idx];
-+
-+		if (!cache)
++		if (!(type_mask & BIT(btype)))
 +			continue;
 +
 +		/*
-+		 * Sizes below arch_slab_minalign() share one cache, which
-+		 * kmem_buckets_create() then stores at each of their indices.
-+		 * Drop every reference to it before destroying it, so that no
-+		 * later pass reads a pointer to a cache that is already gone.
++		 * Under CONFIG_MEMCG=n the two types are the same value, so
++		 * the IS_ENABLED() is what keeps the normal row out of here.
 +		 */
-+		for (i = idx; i < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); i++)
-+			if ((*bucket)[i] == cache)
-+				(*bucket)[i] = NULL;
++		if (IS_ENABLED(CONFIG_MEMCG) && btype == KMEM_BUCKET_CGROUP) {
++			/*
++			 * Aliasing below reads the normal row, so this loop
++			 * must have built it already. That holds only while
++			 * the normal type sorts first.
++			 */
++			BUILD_BUG_ON(KMEM_BUCKET_CGROUP <= KMEM_BUCKET_NORMAL);
 +
-+		kmem_cache_destroy(cache);
++			/*
++			 * Nothing anywhere is creating accounted caches, as
++			 * with "cgroup.memory=nokmem". Point this row's
++			 * entries at the normal row's caches, the way
++			 * new_kmalloc_cache() aliases kmalloc_caches[] for
++			 * the same reason. Leaving the row empty instead
++			 * would send every accounted allocation out of the
++			 * set and into the general caches.
++			 */
++			if (mem_cgroup_kmem_disabled()) {
++				memcpy(b[btype], b[KMEM_BUCKET_NORMAL],
++				       sizeof(b[btype]));
++				continue;
++			}
++
++			type_flags = SLAB_ACCOUNT;
++			src = KMALLOC_CGROUP;
++		}
++
++		if (kmem_buckets_create_row(&b[btype], src, name, align,
++					    flags | type_flags, useroffset,
++					    usersize, ctor))
++			goto fail;
 +	}
 +
-+	kmem_cache_free(kmem_buckets_cache, bucket);
-+}
-+EXPORT_SYMBOL(kmem_buckets_destroy);
++	return b;
 +
- /*
-  * For a given kmem_cache, kmem_cache_destroy() should only be called
-  * once or there will be a use-after-free problem. The actual deletion
++fail:
++	kmem_buckets_destroy(b);
++
++	return NULL;
++}
++EXPORT_SYMBOL(kmem_buckets_create_types);
++
++/*
++ * Build one row of @b by mirroring the general caches of @type: a cache per
++ * kmalloc size, each named "@name-" followed by that cache's own suffix, so
++ * a row of KMALLOC_CGROUP ("kmalloc-cg-96") gets "@name-cg-96".
++ */
++static int kmem_buckets_create_row(kmem_buckets *b,
++				   enum kmalloc_cache_type type,
++				   const char *name, unsigned int align,
++				   slab_flags_t flags, unsigned int useroffset,
++				   unsigned int usersize, void (*ctor)(void *))
++{
++	unsigned int idx;
+ 
+ 	for (idx = 0; idx < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); idx++) {
+ 		char *short_size, *cache_name;
+ 		unsigned int cache_useroffset, cache_usersize;
+ 		unsigned int size, aligned_idx;
+ 
+-		if (!kmalloc_caches[KMALLOC_NORMAL][idx])
++		if (!kmalloc_caches[type][idx])
+ 			continue;
+ 
+-		size = kmalloc_caches[KMALLOC_NORMAL][idx]->object_size;
++		size = kmalloc_caches[type][idx]->object_size;
+ 		if (!size)
+ 			continue;
+ 
+-		short_size = strchr(kmalloc_caches[KMALLOC_NORMAL][idx]->name, '-');
++		short_size = strchr(kmalloc_caches[type][idx]->name, '-');
+ 		if (WARN_ON(!short_size))
+ 			goto fail;
+ 
+@@ -488,7 +567,7 @@ kmem_buckets *kmem_buckets_create(const char *name, unsigned int align,
+ 			if (WARN_ON(!cache_name))
+ 				goto fail;
+ 			(*b)[aligned_idx] = kmem_cache_create_usercopy(cache_name, size,
+-					align ?: kmalloc_caches[KMALLOC_NORMAL][idx]->align,
++					align ?: kmalloc_caches[type][idx]->align,
+ 					flags, cache_useroffset,
+ 					cache_usersize, ctor);
+ 			kfree(cache_name);
+@@ -499,14 +578,11 @@ kmem_buckets *kmem_buckets_create(const char *name, unsigned int align,
+ 			(*b)[idx] = (*b)[aligned_idx];
+ 	}
+ 
+-	return b;
++	return 0;
+ 
+ fail:
+-	kmem_buckets_destroy(b);
+-
+-	return NULL;
++	return -ENOMEM;
+ }
+-EXPORT_SYMBOL(kmem_buckets_create);
+ 
+ /**
+  * kmem_buckets_destroy - Destroy a set of caches made by kmem_buckets_create()
+@@ -521,28 +597,35 @@ EXPORT_SYMBOL(kmem_buckets_create);
+  */
+ void kmem_buckets_destroy(kmem_buckets *bucket)
+ {
++	enum kmem_bucket_type btype, t;
+ 	unsigned int idx, i;
+ 
+ 	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS) || ZERO_OR_NULL_PTR(bucket))
+ 		return;
+ 
+-	for (idx = 0; idx < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); idx++) {
+-		struct kmem_cache *cache = (*bucket)[idx];
++	for (btype = 0; btype < NR_KMEM_BUCKET_TYPES; btype++) {
++		for (idx = 0; idx < ARRAY_SIZE(bucket[btype]); idx++) {
++			struct kmem_cache *cache = bucket[btype][idx];
+ 
+-		if (!cache)
+-			continue;
++			if (!cache)
++				continue;
+ 
+-		/*
+-		 * Sizes below arch_slab_minalign() share one cache, which
+-		 * kmem_buckets_create() then stores at each of their indices.
+-		 * Drop every reference to it before destroying it, so that no
+-		 * later pass reads a pointer to a cache that is already gone.
+-		 */
+-		for (i = idx; i < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); i++)
+-			if ((*bucket)[i] == cache)
+-				(*bucket)[i] = NULL;
++			/*
++			 * A cache is reachable from more than one entry: sizes
++			 * below arch_slab_minalign() share one, and a row that
++			 * kmem_buckets_create_types() aliased onto the normal
++			 * one under "cgroup.memory=nokmem" holds all of them a
++			 * second time. Drop every reference before destroying
++			 * it, so that no later pass reads a pointer to a cache
++			 * that is already gone.
++			 */
++			for (t = 0; t < NR_KMEM_BUCKET_TYPES; t++)
++				for (i = 0; i < ARRAY_SIZE(bucket[t]); i++)
++					if (bucket[t][i] == cache)
++						bucket[t][i] = NULL;
+ 
+-		kmem_cache_destroy(cache);
++			kmem_cache_destroy(cache);
++		}
+ 	}
+ 
+ 	kmem_cache_free(kmem_buckets_cache, bucket);
+@@ -1092,7 +1175,7 @@ void __init create_kmalloc_caches(void)
+ 
+ 	if (IS_ENABLED(CONFIG_SLAB_BUCKETS))
+ 		kmem_buckets_cache = kmem_cache_create("kmalloc_buckets",
+-						       sizeof(kmem_buckets),
++						       sizeof(kmem_buckets) * NR_KMEM_BUCKET_TYPES,
+ 						       0, SLAB_NO_MERGE, NULL);
+ }
+ 
 -- 
 2.34.1
 
