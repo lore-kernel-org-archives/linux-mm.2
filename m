@@ -4,138 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74EDECA5FE0
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 18:53:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC0E0CA5FE0
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 18:55:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 486266B008C; Fri,  2 Oct 2026 14:53:17 -0400 (EDT)
+	id C058D6B0096; Fri,  2 Oct 2026 14:55:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43D2B6B0095; Fri,  2 Oct 2026 14:53:17 -0400 (EDT)
+	id BB5C86B0098; Fri,  2 Oct 2026 14:55:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 326446B0096; Fri,  2 Oct 2026 14:53:17 -0400 (EDT)
+	id AA43B6B0099; Fri,  2 Oct 2026 14:55:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 15FF76B008C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:53:17 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9191016080D
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:53:16 +0000 (UTC)
-X-FDA: 85278583992.27.9B49EA4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DED5D18000D
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:53:14 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 78C8F6B0096
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 14:55:47 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 19F841A07E8
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:55:47 +0000 (UTC)
+X-FDA: 85278590334.04.0B26C10
+Received: from mail-ed2-f32.google.com (mail-ed2-f32.google.com [74.125.228.96])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 35E54180006
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:55:45 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HGzUzC6f;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790967194;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=epfSMx1u;
+	spf=pass (imf24.hostedemail.com: domain of antosha20xx@gmail.com designates 74.125.228.96 as permitted sender) smtp.mailfrom=antosha20xx@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790967345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3zheeU3EuzyWIQHVUugGMtNSaN9Adh+jr5Zkc1USMfk=;
-	b=22CEYZh+oSvOwEZZBS0R2CN26+peKb63aceeVI/jbmJrFDYXPzs109IoaAHmyt1HcUwH2+
-	KKpQCm9tbnZ5vPXsK+vyxNx74Bl2v6S2ChvbgiO/pqClWVQnQCBgrDhPLsqPGR84tuixYG
-	5dGYtT7CjilPBdKuustXt4/oqs+LsCc=
-ARC-Authentication-Results: i=1;
+	bh=LNkTda6yyFagzwxVvIs1fSSzlLcgdVCdiWc/DPOusfc=;
+	b=drYRgpFySusQG7GCguING+Da8jlT1GUgN/qd+DmXNkk68fudY/3XOcHL/TXFwMoqNBBAmF
+	J/w1J4PCBnBFTlMeti4njAGFvMHEVg3Z9/CHXFcagenKwsy8L9dpAME0ar8jm/r1Tyh5jt
+	1CrwLN5rmk5p305WYSr6VpfzrvC2C/8=
+ARC-Authentication-Results: i=2;
 	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HGzUzC6f;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790967194;
-	b=alGXGYiyx0/2nMVQ85NHSI2xOf2fjMUeETzvSw/0R/HV+3YZUDo3FCo08pE/tFV+GiHOP4
-	HvfDz87eRyHPOFxyWt0jdr1tGeiU9NK7RK7MffY+eSVlr6BV0Gb5BFdr4Rx26CLSNDFeg/
-	OrWP6j9Cjim5ch8UhY8LpehLsCKVjBk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7581D60AAF;
-	Fri,  2 Oct 2026 18:53:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F061F000FF;
-	Fri,  2 Oct 2026 18:53:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790967194;
-	bh=3zheeU3EuzyWIQHVUugGMtNSaN9Adh+jr5Zkc1USMfk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HGzUzC6f4aroci2M61+q5sGquB80q1nj1gcRlPhIu3eax9X+7c56OCAu+6wYNlABB
-	 7faeIbFwpTgogflebupr6NZIIoQ6Ed5xcHLe9KnguCADZngZw5didjCfxOfHhGTkwc
-	 A/tCJvLgMnxirehIyE8R713SJyX7TDlQi+ORzqyzmI/GaidGiPI0Vj6KVBlgp74uzO
-	 nRW0ZurqANeYHJFHSzfUUtiFbOZgWLRQhAePeMTghm9LA+XjKQwfwkMSvvbJk66cvg
-	 IeH7HBQfVbJk+a+ZYDld9E6T7GdnygpLZGGjC86A57vELVeTEYw8hqrJ9zNuFiVW8+
-	 ejLoBmkUWQlXg==
-Message-ID: <580fbfd5-2db7-4c46-9335-003ac99d1db9@kernel.org>
-Date: Fri, 2 Oct 2026 20:53:07 +0200
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=epfSMx1u;
+	spf=pass (imf24.hostedemail.com: domain of antosha20xx@gmail.com designates 74.125.228.96 as permitted sender) smtp.mailfrom=antosha20xx@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790967345;
+	b=fM0Pq5bWtGyYQyaoj7D9KN04KLi3cfJiYSsNegPxx+U4p0wsnMur6ZWyFOWk4vgCAqmrWD
+	QnynbW2JFK3dyiFPQPo3NrYMJThKj9elTLXNySSyholKR2fXaHFQUFKXbSRxSE/yLjikLx
+	8ue9MTaLkGXRYp+bfm01M/397I/shYc=
+Received: by mail-ed2-f32.google.com with SMTP id 4fb4d7f45d1cf-6acbdf627ccso294832a12.2
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 11:55:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790967344; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gq3CK7EqXH6YcTGxYexik20xv+ikDmI36QyyGxYy02ph+PrkBeWMKrLrcECukZGG4M
+         CtPnN4+4Cpl9RuGXWsZy04BWWDAgxbWF/Yu7Ely3Eqgi7S5PGc9qDPhe+HbS19rmIzjm
+         Is5VZAlfPJZuwfQ1m3hegXYvXPXZHiMAEH1IvNtVFZRS/iiqxB0OqBiPoee+pmKPNNpN
+         xrQKja6GBtxFuLaqIwt51QjPvME+D7OLUQmy3EYuX4xi3qD5/4GYPH7cOK74L5d834rc
+         cDa7bHE6iUPqMLgQ9q7x1a209kIFtj8drodNCIViEr6CHBuQjYkDj2G4ypaDGkPzuc4e
+         5TjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LNkTda6yyFagzwxVvIs1fSSzlLcgdVCdiWc/DPOusfc=;
+        fh=jgWn73aSQIvhkp2mDV6ENDmNlDS3/uChiPo/WOu0Aj4=;
+        b=dAGukvaHeyhn6oAiShdFUTByxXweYtsj5P7+0pNnvqfhqxG9P5MB7XIheyhI8ab8oC
+         v8lVN172Nqmg8IvCwVIm2W4TtBhmBz/JJVGH0BHlD8v5KEJiPjIn6pW+6llumYy39I8v
+         xi5l/K+gr8wsbXfGlt4SfXJE1At3i4k2wi32LuuHMOslPpt9yxWx5bBNgV3QRPYX82L2
+         m4Mf81o/P3cGJiT1zOW9PdEUcyjuL+WRUu+16LBmnjR18S7ZJLde0iQHWbl7iOKQIOyD
+         IPvmZVO2aAT8emsbt0J/cmzrtHQBcW2Fzf0Zo9YNW1M33dsQG4lSgczYV/uyodNy0PMg
+         SaBw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790967344; x=1791572144; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LNkTda6yyFagzwxVvIs1fSSzlLcgdVCdiWc/DPOusfc=;
+        b=epfSMx1u3VcaoOFJNwHKmaC1UUd+AF1qMIi7oP+mV91Z4gx2z7yssVmWgyXw92zLLI
+         D2SaL2nt6cbwVLR+mSkGE9nIv0TdWJw1rG8unbqj9f19Gm2Pacm+HmH2GIOpefTgLVVv
+         oiuXrP6wEMemhb8DSnkZ/9WbKmZ18scwcg5GOf1yNMQLvwwMZ3a0Ykf7Gw/kJeS8fg0y
+         SZeRsXlkGY3e54iHIIo3YYxKnv1k5Yc758SK+GIosj2NWFEdxmycygCATZFGifk4u8eB
+         CzGaOp3xjvFSL+MAbbzxEiEPBpRy3IeV8mDkr9Fddqaa0CMcq298IRM265GMtlnMqpbY
+         3TQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790967344; x=1791572144;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LNkTda6yyFagzwxVvIs1fSSzlLcgdVCdiWc/DPOusfc=;
+        b=J2wO4baIs+hmUzNPHiDaID4hm/I+avRHqsC7vPEyLGVyManFTVnLbEk0M8TkCVUNk1
+         TxkoGKcx5GL4g4xH+HzTsrjuZhywEsrAQQhCn52oftiMDPPPvJvmyrAICQdP9oTmENt2
+         x8MUc/CaoIeNiXvjdWrztmnllQo2FdHPWH1xDsl7Tpskxvpjw/TmJ7zqWW9KwaUegGu+
+         /k5797ECw/xxLglSnNHOyg4guDThcahbrLop+UFE+H09PHGCwobyYELp5C6J5nW9Kt+Q
+         krFTHnQtyCjzDKrk0ouOf8aicgr/syhGWB/1PHtsmshLkf8bAKgBHcsSKgwBAwjERSQ8
+         sRhA==
+X-Gm-Message-State: AFq9FYLwOpPuQMYUwuvzlIePIzXYczeaC4ttV8jyhnu224Wv12eVBlhO
+	wO1m8+R6ITAgj8h06/uL0hg7ky+Je4LknP2uq5UHFt6M8HVOLQCzP/Yys+8Xpix2rSOnL2rZKkC
+	clK+6cqkEdQR6q82v4X3CSC1GBFgNopQ=
+X-Gm-Gg: AYBFou2WT250tUBMDxJffUA4t+XwXULGq80lPxHvAK963x1ioMu8zJJ72kZgA14UPXJ
+	8Wknb/w7pWh9tR0f2jq8eURvD65vQ9+/J+slNpY1NmOGKnL9Jn6Sj2xLPjiz+kT0d3OLzdcuctk
+	RO/ff9SdC5VRWNwq3UsmcbkmN+VqsB1fZsYib7HY+MoE+y2yMaFF3swY9Oi5Dg18+VrqT7b6A9n
+	g0/j4RwNq1htLWa7ns2qp/qHM/1DFqwCUyeE5wIgkvyeSuRqi/pJMFfMZ1iXH1BAkvhHNnZ+ES9
+	EUqyKXAJouBwt8ZClEUzotXUtc78FrA4ZBgsvubIFLvmmVey0qhBytSc
+X-Received: by 2002:a05:6402:50ce:b0:6aa:fc60:60d0 with SMTP id
+ 4fb4d7f45d1cf-6af9e3183bcmr2645064a12.33.1790967343575; Fri, 02 Oct 2026
+ 11:55:43 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm/migrate: walk runs of consecutive pages in
- do_pages_stat_array()
-To: Qiliang Yuan <odys.yuan@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261002-bug-mm-move-pages-stat-batch-v2-0-f73b5d20519f@gmail.com>
- <20261002-bug-mm-move-pages-stat-batch-v2-1-f73b5d20519f@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261002-bug-mm-move-pages-stat-batch-v2-1-f73b5d20519f@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DED5D18000D
-X-Stat-Signature: bnth6h14ssbonocmtaaiwix3z95yh1se
+References: <CAAiJnjqz+OB+PmUQBENS8ThnWHSAFK=p3EA7KPsy5UeabQCn-A@mail.gmail.com>
+ <ar_rPzLhXRSA0AfS@gourry-fedora-PF4VCD3F> <CAAiJnjo86U27YwFNSkQNvqxDyGMZomoqHToH3GqWuzqD2+V0Vg@mail.gmail.com>
+ <ar_zftIk5caN-5uV@gourry-fedora-PF4VCD3F>
+In-Reply-To: <ar_zftIk5caN-5uV@gourry-fedora-PF4VCD3F>
+From: Anton Gavriliuk <antosha20xx@gmail.com>
+Date: Fri, 2 Oct 2026 21:55:32 +0300
+X-Gm-Features: AclHuK-OPEiDUxmD9Rz4Dp_NTbAcXn7cTqOJk7bQfyeemvZ--NfgdiNOFNhU0po
+Message-ID: <CAAiJnjrjtseaUPo5vyqGZeDAt4ST6eqvaXOCWvdaTUsx2D3v5g@mail.gmail.com>
+Subject: Re: Poor memory bandwidth performance between NUMA nodes
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 35E54180006
 X-Rspam-User: 
-X-HE-Tag: 1790967194-400553
-X-HE-Meta: U2FsdGVkX199ulIc7LXB1AGsRkf2ZTupmJmwhjqVZqrKfoSETU/KWRdnmbxL+zbJLTs8ROzW/i9zqzTP8qp6millcvFTmYKquZzgdvteUvxh4ZjfDZibx1yrOLfGfLLm9zUlEi7XkwIoKIleL/LLPAO7sSyQgLRsU23xN3J3qHx8W2ksMvDR6H4enSpYJXTvaP3+0c9pZmusJb15Pra7FXbpLIDZfu1SuDsZb5RpfrxKyaD0/hmkcKPvQvBZ+QnoPDKztfeXepOhjSg6ODo/gMWPvq1VRa3hEklTMa0zQE9BnSHIUkp5UZ6biTrAhmgVhlSIJ2wLuM1yDR2vt9JBwDIetNI8Rmw/uuNl/gfT/OY7K6o++ap0m8YWmW7On7NiJCVB4MqtOeCua2RaRQd6LEsd2DJY6EYi7VZCXiPWM2lKm7O1Baom0G89f3q0NsDIj8GXOnQsqZqUEDDhy752mpGA5eO3XtZ+4aq4UIwzXNcVCtTm0VOoQDAUnQfDJU6X7vsySMet2QeHhLW1MQlwZ0mdm2RPO82QvtFKya2qSGYPvtj6CbHYGHwK8AoooUfMEfutGGORVKjb9zbfAOJLcyGalqyBWAW9d7LIOT753UKsRJGE6hfSEz0ADOsJa06CVUwyYvYjzVIkXB0WwM4Z5i42anc6uuoKZ7qk7n8gNtAH1TNHj1QkJRzuPcHui9MrQ5/24AQuNdGw/nTCKh7amrMpbjlYGCCvt3RgnF0GXGP8hyGva6Z8/w3gmO+iuOPxr3qPvX07XiMjoHpa1VheGHGo8+oX06INfeZ93IP7NmXASmOX0Fuq/5VViebvAlcy/k3j5FaCCJB8UTyBqwNNDUlxSAB3GD48Mb9m5A3X8Ny4K6jbErN0hsyC//Y2sJ1wLUMq2PEkZlZ7w2F6JNmNZKXC/b1nAmmVwaNxN3Vk/WjUJ2hZ27JzXFmCrNyT8rIGQsA3NaqOhspC7HboOMO
- /CyuH0Bk
- sxqVBBD9Ws0lf3Bl7K8Qh4LOepMenKlfHabQmXe4Ir3KQ2VN7sg1luQ35R/lUYYPsqw41cSHotdwITJVFdy6U7hXPmz+/Kn523/WCnwM+YB5KCvNZDK6uhW672ufOULznx1k+ruBJ88Y53I4BksnRZqZhcNe3RQ2cao8RGHc8vBbX7m2gkWDuE22xvs7Jp+ILiaEczzHPib/1ra2DDl4eBuvfFMI4iVnk9CdmRcN428VXk1s9DJreOvq53r+cyzVQC9MTwEPj7mOwn294Pk09aEyJD2O8mBoADSZ2fhbeODT/k1o2B69x8Q0O8Jv79pdNwPyiptSfuuLGm2LG9Jx84R4sb4+uLkoFfQcNv+tUMGcN+jV49tbIRjDkOs9VGGCBCEIYQaVVs+QVpIQVHPWcgJAfhewLT/5X8FeWGZFflURwEGk=
+X-Stat-Signature: 3mep17zej7ocawntpbyfnfoc4ow56xoq
+X-HE-Tag: 1790967345-615638
+X-HE-Meta: U2FsdGVkX19OFvJj9YlTzUqr/xzNmoSoJayBcxWLJLC9R0J8DAU+RABB/f7gXdzpMjKaOzr/SIsQ74f1JaAdijiYUQNBCRtMwpEjXsEbzvdA71piaXT02TDJpE2yf2txIBr24EQineIJhiccU1zvw05liDkzMtEAukDgseSV0qsCajzQtCa5wwjPFu4meG8G6Id6wnjVoWligA1dDenmVHi6/ZOqJisDQ3DQ8YQ+pyuCPwGOSrHEDXlV0p1U2Bnw1WJ9lZ795DlX6IVqJ70ceEQFntBnblmkCUiafhORlkUU6+NCE9VE1n1GyXnR9r9SMy086FXuPVfZTBdjy7wPUtq+wlcaPwTCpS8y6ofRzOF6NSyqxHBCrufgup0l0oRfBcExfnIU6oJgzAr4zEexL3B4wHTBwBtXwp0hWe8NTxkvqgzOpOwwZdxEEa5S8LbE+YAaz8g7ZMNa0fnuGqn+Mg9vUlYTQPNdfa0RA/ZxeCJ0eHSo2loZtopJYESxyrvUicgpHxP7rz0njrGBuJfEhK0up/ccPsNpRJKeMJgC4WhfDJOcI5NYtO357sRlBoUpHoQuNhmZexSB5eI23UNQdLRDpXzYZjWkaMreOlil4otD+8uXJZ7z/SWKcZhW2EWtQWy+hD7aquGRuDGLSd6XqXPype3XAB8FuoXS+Ds5tDDnR4mDz07kj+AB7kPPD5E478KwGHs4cC4zr3lwn6fkU7uaHXjih4DIg1v4YkJ9vRpol+1A6BDWFfhlFexos2NER11lwfwt8Sptjot4AtBPEpxeemh1MWKGJEVD75BCfOP+UBC1a2ecbNLGpM7Ml4N1kmn8/bL1LuLoe6OIuF0XuV2ho76uZUD6jLUn0Dp7rKpTVUWgs0OUOUHD1mMtEU3yG3SAgS0mfzAFegM5E4CqdgxPdlp0zXrqzWTGpY/vfJkTBbFr+hVr+RC+VMKr14LP87T5oF4z+724ozy3A2g
+ oVCC068F
+ R6x3QUzf3Cpj211gaFsu78+MdX/1jNTve60D0xX8xi/PN9DmDALca9IwEh6NlyNDo0vRshagek/8afj5ZQVDwB3P3zsV0Nnh8MgKlrrJZxQvSku4OyKwbVAY40ogjLlH6EwuxJAOhsuiSWhWpA7MBCCzVLlg8Eq98yzM3O7NNmip7tbNTfBBayO48KNtZB2jBk72N2X3K2PZU1xh2H0432P7C/yHoKaGDKTQk3cRDhAlCXm6UleDWI6Xbiir6TwdMl6/lqW39uXeod6u+GFjy8J7d0oFTek0J+FwoYVuO01Y2/imHk10t+lGNeOLiyiD1Y10ORwHjyXipg55sEwDxUW7oOl8lVDgrQTpf0miI7yhkfxtTSDdwqcSx6vgpE8wpQEYWYwaXkPo2xdc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,49 +139,226 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/2/26 03:25, Qiliang Yuan wrote:
-> move_pages() with a NULL node list reports the node of each page. RDMA
-> and KV-cache transfer engines use it to find where large registered
-> buffers live, querying every 4K page of buffers that span hundreds of
-> gigabytes.
-> 
-> do_pages_stat_array() looks up the VMA and walks the page tables from
-> the top for every address, taking and dropping the PTE lock each time.
-> That costs about 105 ns per page, so a 16 GiB buffer takes 486 ms.
-> 
-> Callers almost always pass consecutive addresses. Group them into runs
-> and walk each run with walk_page_range(), which looks up each VMA and
-> PTE table once and answers every page under it while holding the lock.
-> Report pages as folio_walk_start() with FW_ZEROPAGE found them: the node
-> of a normal folio, -EFAULT for the zero page or an address outside any
-> VMA, and -ENOENT otherwise. Handle PUD and hugetlb leaves in their own
-> callbacks so that the walk never splits them.
-> 
-> On 7.3-rc5 in a 16-vCPU VM, querying every page of a populated 4 GiB
-> buffer:
-> 
->                 before    after
->   4K pages      105 ns    31.9 ns
->   THP           90 ns     23.1 ns
-> 
-> Suggested-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
-> ---
->  mm/migrate.c | 188 ++++++++++++++++++++++++++++++++++++++++++++++++++---------
->  1 file changed, 162 insertions(+), 26 deletions(-)
+> I'm unfamiliar with Valkey, but you may want to ask how contended those
+> pages are if they're actually being used during migration time.
 
-That's a lot of churn ... which is really a shame, because all we want to walk
-is folio ranges.
+> Do you get this same behavior when migrating the same amount of memory
+> allocated by a toy program? (i.e. known idle pages)
 
-Oscar was working on a better page table walker API (but I was too busy to
-provide review so far :( ), which sounds strategically like the better long-term
-solution.
+I don't think that there is any contention.
+There is no processing, etc.
+This is a completely idle test server.
+I just populated 300GB memory by key-value data store.
 
-Is there particular need to optimize this in the ns range for 4 KiB of memory
-immediately?
+Even if I use simple stress-ng instead of Valkey,
 
--- 
-Cheers,
+[root@localhost ~]# numactl --cpunodebind=3D0 --preferred=3D0 stress-ng
+--vm 1 --vm-bytes 300G --vm-hang 0 &
+[1] 4353
+[root@localhost ~]# stress-ng: info:  [4353] defaulting to a 1 day run
+per stressor
+stress-ng: info:  [4353] dispatching hogs: 1 vm
+stress-ng: info:  [4355] vm: using 300GB per stressor instance (total
+300GB of 6.43TB available memory)
 
-David
+
+[root@localhost ~]# COLUMNS=3D500 numastat -p 4356 | cat
+
+Per-node process memory usage (in MBs) for PID 4356 (stress-ng-vm)
+                           Node 0          Node 1          Node 2
+    Node 3           Total
+                  --------------- --------------- ---------------
+--------------- ---------------
+Huge                         0.00            0.00            0.00
+      0.00            0.00
+Heap                         0.06            0.00            0.00
+      0.00            0.06
+Stack                        0.03            0.00            0.00
+      0.00            0.03
+Private                 307201.14            0.74            0.00
+      0.00       307201.88
+----------------  --------------- --------------- ---------------
+--------------- ---------------
+Total                   307201.23            0.74            0.00
+      0.00       307201.97
+[root@localhost ~]# man migratepages
+[root@localhost ~]# migratepages 4356 0 2
+
+I see even slower (System PMM Write) than 1.4 GB/s,
+
+|---------------------------------------||---------------------------------=
+------|
+|--            System DRAM Read Throughput(MB/s):        842.67
+        --|
+|--           System DRAM Write Throughput(MB/s):        851.34
+        --|
+|--             System PMM Read Throughput(MB/s):        785.27
+        --|
+|--            System PMM Write Throughput(MB/s):        804.57
+        --|
+|--                 System Read Throughput(MB/s):       1627.94
+        --|
+|--                System Write Throughput(MB/s):       1655.91
+        --|
+|--               System Memory Throughput(MB/s):       3283.85
+        --|
+|---------------------------------------||---------------------------------=
+------|
+
+
+top - 21:49:22 up  4:53,  3 users,  load average: 0.97, 0.78, 0.61
+Tasks: 774 total, 2 running, 772 sleep, 0 d-sleep, 0 stopped, 0 zombie
+%Cpu(s):  0.0 us,  1.8 sy,  0.0 ni, 98.2 id,  0.0 wa,  0.0 hi,  0.0 si,  0.=
+0 st
+MiB Mem : 6839822.+total, 6432377.+free, 422358.2 used,    790.2 buff/cache
+MiB Swap:   8192.0 total,   8192.0 free,      0.0 used. 6417463.+avail Mem
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMM=
+AND
+   4507 root      20   0    2644   1764   1644 R  99.8   0.0   2:20.63
+migratepages
+   1592 root      20   0   82184   5056   3932 S   0.3   0.0   0:07.26
+irqbalance
+   4993 root      20   0       0      0      0 I   0.3   0.0   0:00.02
+kworker/50:0-events
+   4999 root      20   0   10916   6080   3772 R   0.3   0.0   0:00.03 top
+      1 root      20   0   25528  15488  10484 S   0.0   0.0   0:02.35 syst=
+emd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.06 kthr=
+eadd
+      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00
+pool_workqueue_release
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00
+kworker/R-rcu_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00
+kworker/R-sync_wq
+
+Samples: 26K of event 'cpu/cycles/P', 4000 Hz, Event count (approx.):
+21652648047 lost: 0/0 drop: 0/0
+Overhead  Shared Object                      Symbol
+  21.77%  [kernel]                           [k] copy_mc_fragile
+  18.88%  [kernel]                           [k] clear_highpages_kasan_tagg=
+ed
+  17.81%  [kernel]                           [k] migrate_folio_unmap
+   2.67%  [kernel]                           [k] __folio_alloc_noprof
+   2.09%  [kernel]                           [k] smp_call_function_many_con=
+d
+   1.89%  [kernel]                           [k] try_to_migrate_one
+   1.74%  [kernel]                           [k] folio_migrate_flags
+   1.69%  [kernel]                           [k] page_vma_mapped_walk
+   1.14%  [kernel]                           [k] remove_migration_pte
+   1.01%  [kernel]                           [k] rmqueue_bulk
+   0.88%  [kernel]                           [k] migrate_folio_move
+   0.87%  [kernel]                           [k] __mod_memcg_lruvec_state
+
+Samples: 111K of event 'cpu/cycles/P', 4000 Hz, Event count (approx.):
+56222244297
+copy_mc_fragile  /proc/kcore [Percent: local period]
+   0.00 =E2=94=82      cmpl  $0x8,%edx
+        =E2=94=82    =E2=86=93 jb    43
+        =E2=94=82      testl $0x7,%esi
+   0.03 =E2=94=82    =E2=86=93 je    27
+        =E2=94=82      movl  %esi,%ecx
+        =E2=94=82      andl  $0x7,%ecx
+        =E2=94=82      subl  $0x8,%ecx
+        =E2=94=82      negl  %ecx
+        =E2=94=82      subl  %ecx,%edx
+        =E2=94=8219:   movb  (%rsi),%al
+        =E2=94=82      movb  %al,(%rdi)
+        =E2=94=82      incq  %rsi
+        =E2=94=82      incq  %rdi
+        =E2=94=82      decl  %ecx
+        =E2=94=82    =E2=86=91 jne   19
+        =E2=94=8227:   movl  %edx,%ecx
+        =E2=94=82      andl  $0x7,%edx
+        =E2=94=82      shrl  $0x3, %ecx
+   0.02 =E2=94=82    =E2=86=93 je    43
+  58.57 =E2=94=8231:   movq  (%rsi),%r8
+  12.21 =E2=94=82      movq  %r8,(%rdi)
+   4.22 =E2=94=82      addq  $0x8,%rsi
+   8.25 =E2=94=82      addq  $0x8,%rdi
+   0.53 =E2=94=82      decl  %ecx
+  16.06 =E2=94=82    =E2=86=91 jne   31
+        =E2=94=8243:   andl  %edx,%edx
+   0.02 =E2=94=82    =E2=86=93 je    57
+        =E2=94=82      movl  %edx,%ecx
+        =E2=94=8249:   movb  (%rsi),%al
+        =E2=94=82      movb  %al,(%rdi)
+        =E2=94=82      incq  %rsi
+        =E2=94=82      incq  %rdi
+        =E2=94=82      decl  %ecx
+        =E2=94=82    =E2=86=91 jne   49
+   0.02 =E2=94=8257:   xorl  %eax,%eax
+   0.06 =E2=94=82    =E2=86=90 retq
+        =E2=94=82      int3
+        =E2=94=82      int3
+        =E2=94=82      int3
+        =E2=94=82      int3
+
+Samples: 187K of event 'cpu/cycles/P', 4000 Hz, Event count (approx.):
+84234492777
+clear_highpages_kasan_tagged  /proc/kcore [Percent: local period]
+Percent =E2=94=82      nop
+   0.03 =E2=94=82      subq 0x1a5067c(%rip),%rdi
+   0.01 =E2=94=82      movl %esi,%ecx
+        =E2=94=82      xorl %eax,%eax
+   0.03 =E2=94=82      sarq $0x6, %rdi
+        =E2=94=82      shlq $0xc, %rcx
+   0.03 =E2=94=82      shlq $0xc, %rdi
+   0.03 =E2=94=82      addq 0x1a50675(%rip),%rdi
+  99.72 =E2=94=82      rep  stosb   %al, %es:(%rdi)
+   0.09 =E2=94=82      nop
+   0.06 =E2=94=82    =E2=86=90 retq
+        =E2=94=82      int3
+        =E2=94=82      int3
+        =E2=94=82      int3
+        =E2=94=82      int3
+        =E2=94=82      nop
+
+Samples: 223K of event 'cpu/cycles/P', 4000 Hz, Event count (approx.):
+88021056491
+migrate_folio_unmap  /proc/kcore [Percent: local period]
+   0.04 =E2=94=82       movq   %rdi,%rax
+        =E2=94=82       movq   %rcx,%rdi
+        =E2=94=82       movq   %rbx,0x8(%rsp)
+        =E2=94=82       movq   %rcx,%rbx
+   0.04 =E2=94=82       movq   %r12,0x18(%rsp)
+        =E2=94=82       movq   %rsi,%r12
+        =E2=94=82       movq   %rdx,%rsi
+        =E2=94=82       movq   %r13,0x20(%rsp)
+   0.06 =E2=94=82       movq   %rdx,%r13
+        =E2=94=82       movq   %r14,0x28(%rsp)
+        =E2=94=82       movl   %r9d,%r14d
+        =E2=94=82       movq   %r15,0x30(%rsp)
+   0.05 =E2=94=82       movq   %r8,%r15
+        =E2=94=82     =E2=86=92 callq  *%rax
+   0.05 =E2=94=82       testq  %rax,%rax
+        =E2=94=82     =E2=86=93 je     2e3
+   0.06 =E2=94=82       movq   %rbp,0x10(%rsp)
+   0.04 =E2=94=82       movq   %rax,%rbp
+   0.20 =E2=94=82       movq   %rax,(%r15)
+   0.07 =E2=94=82       movq   $0x0,0x28(%rax)
+  97.01 =E2=94=82       lock
+        =E2=94=82       btsq   $0x0,(%rbx)
+   0.04 =E2=94=82     =E2=86=93 jb     26b
+   0.70 =E2=94=82 67:   movq   (%rbx),%rdx
+   0.12 =E2=94=82       testq  $0x2,(%rbx)
+   0.04 =E2=94=82     =E2=86=93 je     e2
+        =E2=94=82       cmpl   $0x2,%r14d
+        =E2=94=82     =E2=86=93 je     d2
+        =E2=94=82       movq   0x40(%rsp),%r8
+        =E2=94=82       movq   %rbx,%rdi
+        =E2=94=82       movl   $0x1,%ecx
+        =E2=94=82       xorl   %edx,%edx
+        =E2=94=82       xorl   %esi,%esi
+        =E2=94=82       movl   $0xfffffff0,%ebx
+        =E2=94=82     =E2=86=92 callq  migrate_folio_undo_src
+        =E2=94=82       testq  %r12,%r12
+        =E2=94=82     =E2=86=93 je     1b0
+        =E2=94=82 9d:   movq   %rbp,%rdi
+        =E2=94=82       movq   %r13,%rsi
+        =E2=94=82     =E2=86=92 callq  *%r12
+
+
+Anton
 
