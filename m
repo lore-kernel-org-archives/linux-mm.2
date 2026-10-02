@@ -4,100 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C684CA5FE6
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 22:29:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F846CA5FDD
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 22:59:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DE616B0092; Fri,  2 Oct 2026 18:29:18 -0400 (EDT)
+	id 31FAF6B0088; Fri,  2 Oct 2026 18:59:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B5916B0093; Fri,  2 Oct 2026 18:29:18 -0400 (EDT)
+	id 2D0D36B008A; Fri,  2 Oct 2026 18:59:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CB576B0095; Fri,  2 Oct 2026 18:29:18 -0400 (EDT)
+	id 1E65E6B008C; Fri,  2 Oct 2026 18:59:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D5A46B0092
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:29:18 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C19F1C0643
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 22:29:17 +0000 (UTC)
-X-FDA: 85279128354.17.7818947
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EDF6C6B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:59:38 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6DC4BA0782
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 22:59:38 +0000 (UTC)
+X-FDA: 85279204836.13.61C7F5F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2DCF1180004
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 22:29:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lRCVkEFu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790980156;
-	b=ig8OaOvIWaLMZ1scrkN86k/LYUUzw7KdcOI3sjtYSWt6ayCrUzusKvcT6YOuZ+s0qWGoUk
-	xyMWQqKWNVqYYQo133QM/tPOfVt95Ceu3BjOx1X+Cb79OA7vEsCTKeLQUP5U1ooxQZLz0Q
-	5dA/X7BVfU2BqDNiChhVdl2X9ZjfRog=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lRCVkEFu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id B8E9140003
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 22:59:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HNfHSg1U;
+	spf=pass (imf12.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790980156;
+	s=arc-20220608; t=1790981976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3LDJZikpkdkKQKzaoHH23Q/qctw3NfStM2vrlGtB09E=;
-	b=OPRwQzhXhpKqlal9/6Mo+pammcOCaEigA0tmjH4fuUlU6vstPMCZdDDVMfs24U/fkLNhZz
-	WWMNDdAMrEco0hOojY7vQeBztjLrt/RsBctwQVOwAbF8vMo6MnKkOPnk2YRmAm+/VeEOYp
-	xWjc292txovZmV+JygnZpxSXh+cGl5c=
+	bh=JJBZoitWEBQrTY8FcV1qjmfA5wNk/u7NZng6rYh3IJw=;
+	b=iX0c5taf/2oTJE2EEsLWF42B7et8fRaB2AL4RelO8J22tc4mlKRMbGrdPNXvTLDejS+wzI
+	zypZN/zFp8FpI6WUYo5wHFSmoqtu5hNBYGi6DWWuNVoDEg6cUR3bizvHT98Z+pDaJr0VaL
+	bclBQPSuorr5m++YW4JJLnUGb9Wa4aY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790981976;
+	b=k887qldc2y+crgBdDK6sarwt5rZWtXIQ3Rz1kpyZnRciNSAXwJ69+Pu/mW7RsmX6atvLaj
+	bgJx+2ZNRavdn+vvzXYWAfIPo8+jCB+XNaxeiNJlkgXZ7SD9IZArRpI8mmR05tM8BZHtei
+	DRhzVYyeFZcawzYbkAlbndmN3lN6cUs=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HNfHSg1U;
+	spf=pass (imf12.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 741C943859;
-	Fri,  2 Oct 2026 22:29:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50AC71F000FF;
-	Fri,  2 Oct 2026 22:29:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A0E3419C4;
+	Fri,  2 Oct 2026 22:59:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662DD1F000FF;
+	Fri,  2 Oct 2026 22:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790980155;
-	bh=3LDJZikpkdkKQKzaoHH23Q/qctw3NfStM2vrlGtB09E=;
+	s=k20260515; t=1790981975;
+	bh=JJBZoitWEBQrTY8FcV1qjmfA5wNk/u7NZng6rYh3IJw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lRCVkEFu/g3U8/pLg2nCTSt7SYCYTyH9AN7U/6z9HXSuZ+zwDWhYtk8laPi8XuFkY
-	 pWkWEnrIdUo8Sm6Am7r5D92dCCpN+I+eugyDbt6trBHgZFmpDnCnuXRPmODz+OuEDl
-	 wX/O7GVJHH5C4klKKhOPs2PmXsSXalAFCCCcdKW+VxhvUfUgATSCDDKqKOp154xty9
-	 +mBZYh5KoXpb9fX6tm9podxVkjCQvHEeWx3gWbHPm7b5u1LrrYi2/SL0/G0F9SEyl+
-	 0ZGmRcuAqO10Pmm6BMYp6elNVXm3wpkKCcca0V/ECCq+t/hPpVBQZK2XuFkyU4H/mH
-	 lhdmDf/7k8UEA==
-Date: Fri, 2 Oct 2026 15:29:15 -0700
+	b=HNfHSg1Uf8VJletd/R2fu339SQf15SzodVIk+PgQjnibCGWW0FKaGqCJtTB9CsNHH
+	 6ZUjgPXjwhCfn0EGwOSXZnhmp45GPc+8mBA4KIzr/toF9NifDgEMbBmB4wpIm6Wuoy
+	 PGDxN8NS97pBFrWQT9d7hKP5mkCXJblmyL+hkEVaPn1KH1+pekc/czSzjfNxTn5i4w
+	 2Iq0tz+X5nmVOxpuWhDIPmemZAOT9ihSSeBT885X0ojH1LJGqvnzh7JC6JlgbypVQl
+	 HfjwRzYoVzwUGjpamhY/kQ/PSG3PTNTaVZ5goiedFc9jkBzMgkMLorUjrNGTzbdTns
+	 xrxKXyue6TwAw==
+Date: Fri, 2 Oct 2026 15:59:35 -0700
 From: Kees Cook <kees@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>, netdev@vger.kernel.org,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	linux-hardening@vger.kernel.org, Harry Yoo <harry@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
 	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	linux-hardening@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jason Xing <kerneljasonxing@gmail.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
 	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v4 6/7] mm/slab: Let a bucket set handle __GFP_ACCOUNT
-Message-ID: <202610021527.05F3D63AA@keescook>
+	Jiayuan Chen <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 7/7] net: skb: isolate skb data area allocations into
+ a separate bucket
+Message-ID: <202610021554.58F5CBB8@keescook>
 References: <20260921075811.too.775-kees@kernel.org>
- <20260921075820.1718334-6-kees@kernel.org>
- <arJVktqS-CL7zNX0@pedro-suse.tail5790ac.ts.net>
+ <20260921075820.1718334-7-kees@kernel.org>
+ <8862b9ed-6f96-48c6-a134-6e8635c38987@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <arJVktqS-CL7zNX0@pedro-suse.tail5790ac.ts.net>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: qtsnwbidm9nro4deoatoyybzsahkq4xe
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8862b9ed-6f96-48c6-a134-6e8635c38987@redhat.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2DCF1180004
-X-HE-Tag: 1790980155-901237
-X-HE-Meta: U2FsdGVkX18TRu4+orWwhjTwsWWCiFA6Epzv/Ke8mkbB0B8tVlvV8bZoRvLiwTsW/IgA1VsYBJoCojvZTTvHwv6MCQT7Xx8tkkj5oe8h43WRABMWR8tLJCq2eZieL/RSXpkhfwmtNYprcH8WO4k1CLvJCFZzO3lcJ6/ahMSg7hJD4OIS9/Jv9T7eHcNovn3uEsu2aCw6Gy16iPiRRniaKMrhMSVGMKs0Ozk97pkMtjnOBVyNNS+exi4NIC8Uj7SABSAxdGOCXuzruoJgAoEx5yii88f/+TTAW0b7H4u6qn3FXbPQcJVKJhzuuTYvDWLfqcDzptcopdLY1OqAfCz1DiGd4uxvPVZ3yxzXwco9ra7C+7JoSCVI75V7A0q5eJ3mjM3whGscWBxuyBmmMOCtUN4eOBYJCqVA1d/0aQ/DhB+UO8NBV10ZjZss7/cYXTT8+E7IYxnF/4BkKZWgaV/FpC6wVb20e6IsA66OZ6+TaLnmWfiC3bFPClsw/zuyvlhb/R94lJ/o2TVAU697/UEkvE0Hlgd6G/sAXgrd6/GuvtSg8d5pMvv2Iat9+ziyXTuH+w7BH0XNz9N6erV9jJI8SaMzS2IG+lUClzRbKSwVYXZBuopM6vteQ4GhpYGfLUfXmWgah1cKQ8peAsBEQmRc19+2XBfb+pjTr45E2jGSzGVFqCQLop0RbkI5G2XifitiAyxty48aSeI7CHfn3XbUhgcQoUoPtRfIRWKAzoefIlVHoAIy9QH8jwDMIqjl5YCElf7wK4E6oO3lQ+smCCo6zvtBFINy+3A/F8yBBXonTNuohpoO2ufJ4WNA+8JxTWFE3rhHgfzGHmuy/ojDbyozhmKXVXn8uovlhxstOAufHP8IKdYp/FtPBRupe3WPd5RLbglBW/NZfCs0ETbM8M7dDLkBn9fTKmSu52Wz+eDvmHqBccQbPghtCid5WQnFuwe0psl2ZoZSsDr1GIjrgqJ
- EwXPUHSL
- wVLXelP3u+lqVpFxz/pexa2Kb1ddvPEyFKLZZgnQqXmqR5HQAIiG4UTHVQxiXm8Xd9CXXHh87D9KQuc09Nwo/ogtOCW283wPkYUZMV92sys2u7uozvNfrRUfDxPIs3Pn5xBC2FfQ99lkjTdLRuOR3RygZaEZVfTZ0vhVhTbQfpMXpJFxq1AHUeI2IHetojKo5i6oV9X6PaF05zRhlhGzg9SB5N0UfeG44WQe1/kWnraCSAhd0zrCG6c2l9TT3HCdsSmeruGi5CYawVTwVLuDoro8epc+dTaleTP0LvjxVSiB5tPk=
+X-Stat-Signature: natcand4sa7n1ymencnqmwdwwau9kd1y
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B8E9140003
+X-HE-Tag: 1790981976-850446
+X-HE-Meta: U2FsdGVkX18ZMO/U8eVBNYol2qGPIaWohLmbor0xiQo4YN3LafdCPE1hl2etVWSgGo6/i7qPZ3OXSqfdQ6wXy64Yle6hFbZriW9w8+5uD5ghhx8Au8yISQeFhFCIGqm1ncS/cpSMimMo9dUQwLT5ve9AIcSiEOSmzvSPAM/ptaF4/FNupn3f0tEbfImLcs5OPws6B5gXg+CLp40eg2AKCooT6ltBohQpgZROfZf4FrnIzGJ590cXBsJAHv45S+BNh3SZYRGxA/tgmnynWTY+euVni8cgccZ7Xr6dcET0TeUg/PIvJCwD4WHnB8lBiZ9/egHBW/JzPmtTLD1crrG6/EF8nurHvsVFHzo6Hnv9roU4o52OZBjrui6Q/URRq88frcG5wpRuA2u/3Da0EoKow9U7wiCT+0SxmBsPXOHMQvtfBBrdb7YxHBMCBYj7oUVVcVRESNKJMo8h0EIPC5cu3ozJ5PME9jfRuz8qTEwp1j5lKcsmrxXWr4d/yPEAXdorw3hcKQ6ZHQC+4MJO18X0kJpt0TOVL6dT3IRWB1ZG4DxOceRjFDI/0PNgXq0+5P6Jrn1UpdcA9GheUw1iWzwyhUID71wkTU8kb199UqWFwLniCJ1khRnzP/ynKm1w0hCJRVNzllDSlCvEsztuXLsjudCCJl+g1fvWLSqZ5J4xY+si8VXnETFbqxPh9DScfEQSqxXaz9WjgFCfqNX4pIj70A5G+n37wD9O0M1TeBzaSrJN4kWF69WDxNfrJWBNRUdtNkBdLf4A/dMN3HGefz9hfX/N4mL6Qu64Hm5JEyZGSWGiwJ3zps8kTwMaBKwkDMtF3cqjZd4p8KyGqHv49rVKIp7g//ZWK/wEFtdGBMygsG+skOAMsmgc5+xoUd42H3xs5NCfZpXzp/GxELPNIyyPhdii2yGTcSMdozVEtWIU2jgKKI0Yf0CPR3Wy8Px8t8SehFZlVrlh6f2IONsDRFV
+ 4gmpD3Dj
+ heA6yEdDbj7O6o2qUVvcFMbA8QB8xWpBmpiYmylx6DTZTWYL99KITk6bhgndSlA6d0Y0HM8S2RDqUHWiVYYbi/4ydemtoCXaedXEu0qX/S5ij7MHy6eR0GVS4PEmImzxfgh8/080INtZOXWSPcfvVqczEJn9PtFyebOPK9vWunJ3R1qlfEr5al8RVeXAaI9LynUObUaHdA2mGMe4kFZ+KsICaDe32eduhJ4Jyk6OpNCbUUppkaWMA0gMOo+tNlCdVjy6TIxI2kcqZW4z0QfTtqRZpHt/owSWvC22ym920iCx9QiNsXdvyP9mXrgK2dR+QVHfZDsG1obvqKF/dw8tjnvzZFhLcO8mFKcv5R+fYEIqQN5ToUI0KQoffJ5LcRvI38VPJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,39 +108,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 11:20:40AM +0100, Pedro Falcato wrote:
-> On Mon, Sep 21, 2026 at 12:58:17AM -0700, Kees Cook wrote:
-> > A bucket set holds one row of caches, cloned from KMALLOC_NORMAL, and an
-> > allocation of any other kmalloc type falls back to the general caches.
-> > Extend this to handle __GFP_ACCOUNT, so that a single bucket user can
-> > isolate either GFP_KERNEL or GFP_KERNEL_ACCOUNT allocations, as is
-> > needed for skb data, where AF_UNIX uses:
+On Sun, Sep 27, 2026 at 10:24:16AM +0200, Paolo Abeni wrote:
+> On 9/21/26 09:58, Kees Cook wrote:
+> > From: Pedro Falcato <pfalcato@suse.de>
 > > 
-> > 	sk->sk_allocation = GFP_KERNEL_ACCOUNT;
+> > SKB data area allocations (as done from alloc_skb()) use kmalloc().
+> > These allocations can be variably sized and their contents can be more
+> > or less controlled from userspace, which makes them useful for attackers
+> > that want to overwrite a use-after-free'd object from the same kmalloc slab
+> > (which often just requires the sizes to roughly match into the same kmalloc
+> > bucket). [0] is an easy example of an exploit that uses netlink skb
+> > allocation to target another similarly-sized accidentally freed object.
 > > 
-> > The coverage is selected at bucket creation time:
+> > While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, these are
+> > probabilistic. Use the existing kmem buckets API to further isolate these
+> > allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=y.
 > > 
-> > 	b = kmem_buckets_create_types(name, flags, 0, INT_MAX, NULL,
-> > 				      BIT(KMEM_BUCKET_NORMAL) |
-> > 				      BIT(KMEM_BUCKET_CGROUP));
+> > Ask for the accounted kmalloc type as well as the normal one. AF_UNIX
+> > sets sk_allocation to GFP_KERNEL_ACCOUNT, so without it every AF_UNIX
+> > skb data area would fall back to the general caches, and those are the
+> > ones most worth isolating. GFP_DMA is left to fall back, being passed to
+> > an skb allocator only by rare devices.
 > > 
-> > The prior kmem_buckets_create() function keeps its name and defaults
-> > to only KMEM_BUCKET_NORMAL, leaving existing users as-is.
-> > 
-> > Only the accounted type is offered. Nothing wants a reclaimable or
-> > no-obj-ext row, and of the twelve places passing GFP_DMA to an skb
-> > allocator, all rare hardware: b44, b43legacy, prestera and s390 ctcm.
+> > Link: https://github.com/google/security-research/blob/master/pocs/linux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
+> > Reviewed-by: Kees Cook <kees@kernel.org>
+> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 > 
-> Well, yes, BUT I don't think silently falling back is a great option.
-> I would rather things be done Properly(tm) and kmem_buckets allowing
-> instantiation of most/all kmalloc cache types. Given it's security stuff,
-> I would prefer being quite explicit over silent.
+> I would be curious to learn how about the memory usage delta.
+> However I see buckets are protected by their own kconfig, small
+> systems can unselect them.
 
-The types that fall back (DMA, reclaimable) are already isolated in
-caches of their own, away from the normal ones, so the security goal
-holds for them as-is. The one fallback that would undo the isolation,
-an accounted allocation on a set made without the cgroup row, will
-warn now.
+Correct. But here's the delta for a 1 node NUMA with memcg, which is
+dominated by sysfs. 26 caches (13 normal and 13 memcg):
+
+  sysfs, 26 caches                                          113,152
+  struct kmem_cache, 26                                       6,656
+  kmem_cache_node, 26                                         1,664
+  node_barn, 26                                               1,664
+  names, 26                                                   1,248
+  the set itself, 2 rows × 14 pointers in kmalloc_buckets       224
+  per-CPU sheaf structs                                 CPUSx x 832
+
+> For the networking bits:
+> 
+> Acked-by: Paolo Abeni <pabeni@redhat.com>
+
+Thanks!
 
 -- 
 Kees Cook
