@@ -4,112 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12BB7CA5FD4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:58:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C17ACA5FD4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:59:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8944C6B00CA; Fri,  2 Oct 2026 05:57:48 -0400 (EDT)
+	id 7FC186B00CE; Fri,  2 Oct 2026 05:59:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86CBA6B00CB; Fri,  2 Oct 2026 05:57:48 -0400 (EDT)
+	id 7ACB96B00D0; Fri,  2 Oct 2026 05:59:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 735156B00CC; Fri,  2 Oct 2026 05:57:48 -0400 (EDT)
+	id 67B256B00D1; Fri,  2 Oct 2026 05:59:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 44B5C6B00CA
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:57:48 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CE1AE406C6
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:57:47 +0000 (UTC)
-X-FDA: 85277234574.27.5A437BB
-Received: from mta0.migadu.com (out-2.mta0.migadu.com [91.218.175.2])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CE3A11C0009
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:57:45 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZRRMbfQT;
-	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.2 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 308286B00CE
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:59:38 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9FB8FA71AF
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:59:37 +0000 (UTC)
+X-FDA: 85277239194.24.7323BA8
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 771AE180006
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:59:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b=p5Y3yL5I;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="U w9Q9nx";
+	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.145 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790935066;
+	s=arc-20220608; t=1790935175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5IJfFouXCxCJ5v/FHGb5sXR9PcrM4hnQYGAqEsg9Tr8=;
-	b=5RzJSqzivcCzsk1GzBZ+BazR5OCCGHk0gU/VNNOdWAp3suSM/ifF2IWnizODgBor/TbIRx
-	U4A6r+EKwOGSqTyAa7TjyuTSlB96ohAwPI0v3yuPsYoXj8sebneWeCkLmdPYJyeUUt2eZO
-	jo23AKv34WFjr5znLxg/8tUzrADGxY8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZRRMbfQT;
-	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.2 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=hWQWvSRtZpQNRbLA1L5skLRgmvwqnZxEILnwPaSwm3A=;
+	b=Wzm2nVwlPQLcOztlWe3lEeZOSqg6mHprKjjrJ5Lj58qyGuvTeKRaOe+bKmIoqxMq9cemmQ
+	aM0t2Sa8qJo7bz7DudsocF0gemqVr2pXpH/jbdz5W2WyJmSyuqAwu7URpKvc78Wl+GaetH
+	MBiUfgrPcK1Re9ffYE62kidlcMQ8cXg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790935066;
-	b=cfhkacO1Stnv0UTmIqnX4Y/lX8AHgPmqOq0P1ianP6r9qKXnGHtlJwloLdHJYEq3uT4mjf
-	RDGdqRgfABMbkUpaWhqjkxx+zHdvdbsSmq5PK5FvjI6/wjoz0LME+g5541MuQY/1/Qtj8j
-	IJViJpuVc8IwfEOgUWqwZ8dnwZAVLRA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Kq5WPEUBHPtzpUrc0VTAW4N+/tG3GLb7GwrSVhcziMg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790935064; v=1; x=1791539864;
- b=ZRRMbfQTfomoGUYWVeoffUmkpPycU3W/gSJm5F+fHaMb1DovdV895G4qlcoSFfGNDNZ5KM71
- dYZdVaRPRn12To67HSYykgT1h1w947yvFMP2TC2ODLTwFWfmIAvC9zbH0TfBYtY6FSC48+TAnli
- I+9wx0FXV8w6vIA2QbqvJNqI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id c98a2ca6589078ea;
-	Fri, 02 Oct 2026 09:57:44 +0000
-X-Mizu-Trace-ID: c98a2ca6589078ea
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	david@kernel.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com,
-	Baoquan He <baoquan.he@linux.dev>,
-	willy@infradead.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	alex@ghiti.fr,
-	kas@kernel.org,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
-	Nico Pache <nico.pache@linux.dev>,
-	Liam R. Howlett <liam@infradead.org>,
-	ryan.roberts@arm.com,
-	Vlastimil Babka <vbabka@kernel.org>,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	yosry@kernel.org,
-	qi.zheng@linux.dev,
-	luizcap@redhat.com,
-	kernel-team@meta.com,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v8 30/30] selftests/mm: add PMD swap entry tests
-Date: Fri,  2 Oct 2026 02:52:44 -0700
-Message-ID: <20261002095503.3585565-31-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261002095503.3585565-1-usama.arif@linux.dev>
-References: <20261002095503.3585565-1-usama.arif@linux.dev>
+	t=1790935175;
+	b=Hejh2Ir46B/ifEfMQJPRJzSGC1kr6rKmXRu79Tn7XctBFFpFOt7POkLJyTpSqqSNWH/yRv
+	5Braxg9E6gIy3vpAkuEe4WeY4z6n5kfVEnTDHvb5mZ4C4XR6M5d1GjJK7TrA+kGKHfYoSz
+	ZGpz1iDpKoO3qJFvPrXHm7nmy2exZRI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b=p5Y3yL5I;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="U w9Q9nx";
+	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.145 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id C2957EC02CC
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:59:34 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 02 Oct 2026 05:59:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1790935174; x=1791021574; bh=hWQWvSRtZpQNRbLA1L5skLRgmvwqnZxE
+	ILnwPaSwm3A=; b=p5Y3yL5I8TGolsq33QejSo0WGo9if7U36A2hwPehlneErwIS
+	fVzQLUifb/C/4TgqLGxGkiVuaIo6g0ueXVvchbRGEFVPG07rNmBBBsZlbc4NUgQp
+	UQVc5ukIRWP7jh9q4JzW3gQd51i6OnxyQZcwS6HKfeTHiYzf5kKBwuC+WblnQ8mz
+	WxfQCxja0lymg73eeUHqTRwJevdg/eL4mpqwpjs8fZSSJiGf9d5a4HZ5K78ysE94
+	JrWAZns0nGjf//zIxSq0YkDwSCJ042lPXc/TVfJyLFxMKuZwss2WBsC9Ja60ADUw
+	fpYmlEW10uF7+XlC0ZPzX+yt9CdbcHrTa7Xt4w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790935174; x=
+	1791021574; bh=hWQWvSRtZpQNRbLA1L5skLRgmvwqnZxEILnwPaSwm3A=; b=U
+	w9Q9nxCmS6URBEgiHaHv4Ms4+c5F/afQLiOi+aDzaqmR3WEH2AIsANNAHvfFaDsy
+	Iynn7FILh4ddTxVvvs2JxXGL8w1iVDgCh8rZ9ukMVjiVBzs6+jVMsQPJoXVQ4/Mf
+	0Sw8OcZJ523s/OzyH/U22lLluqgiILqyAIq7JntSKsY/oQQb83wS9sKpqGbcopsd
+	9cIcF7e0A4ackCd7PUVH/WmUk1eiZse3iuRI5aB+XpIgma9yVVliBg8SrhZqGpy2
+	qID/geK4wf4k7ZDH1RLd/TMxOuXJH2Ej8TE5rjAu7v6tp1COV+NqdWXIFCVOTtEy
+	Stl+zLp52wPMH7BSpNH3Q==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1790935174; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm3:rsa-sha256:U5YpwrgEzpqo5YCErG2wh9resIy2TeWgd091AArv+WatnFE
+	dQGN9owDdlVQWtHkeRsBwdi2QNQ3mQZV6cLKoY6s1zABaQkVbgthmjIyWKNzvQhE
+	V4ta8j24zbUH/tELwl3Qlhb41C7PXqhYdZ4sbeS4bY8faS7zDmUxaXr/R+x8/fD0
+	18MuJmVQOW1/aIBbSCs8TKdgRtPTKUZAMSKxmuKw0lNXOTHBV5dPrWp8UXNmlr8A
+	qsO2M2Kr4aC4iZHl9+X6MiBWR8LylDP1otQO0BtE3BGmWB1eIBRhIIn1t4MCyfVe
+	Av1QfuQ9s0d7aqJI32jE2JMdAafGPxuuvvfSMmA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=mi-m=1; hc=13;
+	hn=cc,content-disposition,content-transfer-encoding,
+	content-type,date,feedback-id,from,in-reply-to,message-id,
+	mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:0gFv900XlcZUDJ4ZI8Lx/4OVpOk/3fhbx4DEwVMO4BE=:tQ+3O1oy6NmJ8hLKB6uPkUQsSUjCMku3OhgpM3wcIAo=;
+X-ME-Sender: <xms:hYC_asvTqJuagCtgZkwiauQKagDFVr444ktAUH59nxuJ7_2YZBELwg>
+    <xme:hYC_ahOD1O3pOZ0NcbTMZqjFFxnRephQUNMcVIzrdOJDjb89ZOkP4941iDvRniOXL
+    qIY8ayoQmPthBaxbEDIKI4qA7OOM8Hcst_S7gFzKQA8kM8LrjgeN14>
+X-ME-Received: <xmr:hYC_amUHNWQ93nS649A0bXSeUotPRsNCVX6JzQuiv9JIofVhKkjlek8739Y>
+X-ME-Proxy-Cause: dmFkZTGHfOnUXXV747ZOhpmRElSxxMTfyusx4TExOoI37ujVPFXbZ/Q760i88W7nrEn55y
+    AP8xcOqTkCAbECNdU06na96ApU2vkVhYrV4PzoavX/w5mKGSof2jZoMuBdeLia0YzmmuUN
+    pTev5b8AELQPAd/HYArKqZt09gR4E3cHqSLnVqqcY5fIRZ+LyGa0sY4DD7WqLFfH2Int+A
+    1zgHpILFDp1vDOVh24AsP5Yi2fsPCISmwTB4pb2KQ1984S1CSubISh9h5d0LkQO4rSEG7N
+    jypXiuztQoPtYNh/lHVdONb5hXc8qTuVbSsT8+QRKROpb9y9PALFcvydo5i9S3iv83cFer
+    cCPGYBKmQRJbcqrYbwmIKdle+hFynhE/ulYyXBoHyIwBlqJtfKdLTB8FZrN4iw+EgJDZHa
+    7vxKA0IRUUmJ+Z179OBbDBR8vJSjARuXzjEBtHv60pHkOgP4s6hRo3fhxXVWsw2JP8CFiN
+    lI7W0aDWLxDFHjTZuyYl5rkOi1jDVoes+G83FBmOxaew4sjMBd7BmWQpFhuxDpxlRtkM++
+    HICzTth7+MdleRYH9GztZyq21sny5pXteWKW2/RPMYwscfXY8ZMexK7natHHrhN3JE4S/v
+    0SZwXwjry3KsPz2K52v60LS3EVUbP+jEpUPxJe8vRm5Db6aV93sY3GtUV+UA
+X-ME-Proxy: <xmx:hoC_apjl56_l5wvsCIEOG7vefXWCohkVPZUfTxNV5I9Bto3Em1rfMg>
+    <xmx:hoC_ag3940G799hIEiY6b8apU2cSYHfvWsRWPN4V83AbLPjIAfOMiw>
+    <xmx:hoC_ar1127IgkYLuiTYxQ3QM8n4qX1TBBqsECeoE7kwaLkPJGOHL8Q>
+    <xmx:hoC_ahwfOvHDYZFny764Gv-0d4-BesX8pEVXHq6Qm_38n2vwKHPEzA>
+    <xmx:hoC_ahZr8XjA4DMKIZ2Wyb41fphUEcQkNUDZ9JqEXxrvzQut7md5nhVN>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 2 Oct 2026 05:59:33 -0400 (EDT)
+Date: Fri, 2 Oct 2026 10:59:32 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Harry Yoo <harry@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm: page_alloc: make defrag_mode retries follow the
+ promoted order
+Message-ID: <ar5rOHWwc_iPJF6C@thinkstation>
+References: <20260929174553.175333-1-kirill@shutemov.name>
+ <arv8J7ysrdazJmfY@thinkstation>
+ <ar0NRMxps8UErXaQ@thinkstation>
+ <ar0Xbs9mEu-vUHvc@cmpxchg.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CE3A11C0009
-X-Stat-Signature: brnidb1f6dff6qay6kxsxoqs1sfnmfwt
+In-Reply-To: <ar0Xbs9mEu-vUHvc@cmpxchg.org>
 X-Rspam-User: 
-X-HE-Tag: 1790935065-477678
-X-HE-Meta: U2FsdGVkX1/+N/7TE6DmDoShECck44KmMsnzWlnc1RRoO+qy/HADDf7bApTfvH3B1Jg+sVgSJrUcFQdzd587L2KfkP2NV1Az+FKVrBqPs31zZNk6Y68gyllYHhC8eq9kD4eDLHYymXDd84ACefcYEJmCQf4f4a4SKReeUn2f4JEpIhaF3FFOXjcN0CNQzLNeL/QCO5cr8+6dL2RpasJr0dYyaY74Y4TimZTPKYW+pnF3qKbpBu0kpumHwxYnaDA9gvY87Cuj7wspGhUhSIT7ZM6rf8ToF75eTUabAEsd3eYXMO98E8HNfMRQwsdF6OCUlr1l7qZ2+aMyR5FqBnh5DU6UGpqS6iGBHiOqpRhlz3ryVl7ozooVnd+9hG9q5dXk21t2YCJu8amG/KGUKTSPWOZ4Gp+gKLZdHcXXMOpIZ0WdwDsnVZe+d94l1aQrD8kdJiyNip55NJFhVsIvPhHSTwTl/4uaHh4aksgn+OjCIRfo0X2+yJUaDAYW8GCvqK7vRA49Fb3GuvKhpaGL7UN1mVWlaiEzKEvB2gs/yBVr9RJxGcflg+r+2A6B5cAumO3Rt6qACHuvWohusg01GVwkjzZapP0+bFIbAQZlmsl9zb43j3sY6zUjKeWd+kjyOBRLSND37jAWSt9FNjXBmdtF0aCWR0lUhP8lXDi2uPpR8ufF8PnwYUYQKYk2pQNfRA9f7Q8dKA0Hym1xGB/iaoY+l6MKkRO8C0vKYr2VNoW0NJK7CyjqIPX5NmPYkat4ek37T4JpSuy7fVpfdHHj8eGAIGsQ0p928OQ1YpTsN/FmyUAHRQ8pEjJO6tbO8fYM+UV9hwKHqBSQG9qFm6r57qHg0vUG1mMkZQhSNe6y7ZJ2nF+0Pt99zLO/KiEi1go0kA9tnYHcqd5XdcgFfVDOeIx3xaa+1aLfk645hFNLyCWEv7elteeAWNhG1j3k16p1ByzGo0mb/b6oUT6lQa47sh9
- ztE3d/b+
- J0cVHOOctLP8jfrEDLZLaarjk/QhU3gJfDrOB2MaT+ozLrIQVkwT7cEuE0zp6nOmDig49o/OnIJoNaafSwhBomt9BcE18QVimespLq+AWhRXHm0FT4jXZDW6s9z+SocxbBoooUJz/B64u5jzO8pALATOdYe8Ll2FZXduXZ1AKKybjyEYsyz8NJ73/bc0Z2NDZPYRnXZaQWAIBDVb76UPzJuQT6mE+tv/Dr39T64je2NhuCi8=
+X-Stat-Signature: 38szfzjo5ssaf35zxd59pwjiaxcrcj5c
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 771AE180006
+X-HE-Tag: 1790935175-402047
+X-HE-Meta: U2FsdGVkX19g3pGvlxU0Wd5ti1VYvCz7dVRCCGXPWBfLWQN/hkh9Nri0xGedyWxLJcqGktippTJtnpTOb6+THVAr8OkCwJ3AM3SmWpPeweH2YFPgseIn9XwUmX6VKu6XZ8rdHpeQtLRhE1dvpCU4dqF0wyWen62jobyoMvktYq5NXRp2SZYU71CeaYVOLGssLGZPPuaDKVtzpr6x21HYtQyVC+CvEM3In16vfwuVa5/UZ1WQxogITGxtDf6+CVMsCR8F1Yg3+wTu9WM/QTnRjgKh8lrP5eZZky6Z5HYWjsVnTk3sadQN5U8ux22vLj/BbXroBSuQwRr7dMj/eF5tLOBmvMTtagdPkJt7Zlhf6RkdXUoy7fc3KS9hvJMm1ozpUCcXgXUnnVpljK2q+H2DZtoEE4BDsLWwIODnevQkRfBBasyw2ILd9qui5fZqbSRl9rvC0KiKy0rH9313Uz2kiIm+D65RJtskyGxod685nuzNbfOuS1NIR8d9OJWRMdf5mQFwx3mfbNlJnLNdyPgPok8IbRQk1w6UxJB6aM9A8bGJ7dxjhlgofCT69X5fLa/Q1wplQt7sXaDA/t4vVWtDL4gpSras211V72/4YyOf8arPgIywZBPEmGYLZYSr1MJOA2nKGOJTVIXGV2p3CSAR9YDXm7PxWybvyKaAHaxmQDEFfYKYeKoH9/JADrlBbRPoafP8alwyJV0H+d+kEBmXFFFJbBSR028pgK5s+T7eOg/rOCM65XP/sJoyFZQRaJHF42+PBajJMT3Fx9ML7wscEme1DJ9OlQobeNj+QC+mJIZ/YN+/LAdD/Sx0+jdpTxgeph8yJsqJ6kt9YqWOnKxSQXZkU3xdFHZbxIlUhhr/dfX55b95+wfAUiorNTwKxmYP5VFEWqLHlIAEGzxqPwAbh1JdCPv7u8EAweBqg74c5fmLFf4gCFdMvYuuB+4gmenV+ddbGznq0V9oKO6M7lV
+ KRmcyIeJ
+ O52eZRfMG7UcAx4JRxegL0m/ZU6emTaRUjmdk/3Nf0ez4Jjicc1SqedbJqHwPd4+yJTepYWEZzSwG2orwbwoPZko3GS0K4RxcJZUezY43A2gfhMh0DFbRqiXnXsTOE1VIMIxXcO6J+mocUuaUCrzonWQrXB/hLFCgeexG3GztKOkf4PgShqrkFuG52V1NvOgWHYLL1OMZqSVx3wRu0KeTGlkcBEpA2CJlFPn47MLDt/pDjFB9Q/xOTSPuY4wAknVmMzyuIkBFNi3+sH0Di7WV0cUGDFlfl1AtBI0DADqme+dlxJS7FApgpxosiiA2H2QbYKEkXAycJyMmIoe0tjj1eiOzaORFk6XCMVf4I/fLVxCZu3RnMmyXL+ff5NJ3n9n+pIHyjT5oQfx25bjHnPROGPlrME5YyS+DLYRspoefubbckAmilHTFxqqLoTY7u1pnqiMT8k+TwS18QU1XsYtSuSYgFGZSLcnBVNKZGFM5Dagfyu7EuaFPl93/nlFuXt1Xi1cF4RhFtB4eYLlX57Uh5FCDkUioFeUoK5OBu1aEVQ+zHG255+HslirtUp5BJk9/62gpE5540TQyz+c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,1144 +157,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Each test gets a fresh PMD-mapped THP from fixture setup, fills it with a
-pattern that differs between base pages so a reordered split is detectable,
-swaps it out with MADV_PAGEOUT, and verifies thp_swpout_pmd increased
-before the test body runs.
+On Wed, Sep 30, 2026 at 10:06:38AM -0400, Johannes Weiner wrote:
+> > > > @@ -4127,6 +4127,31 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
+> > > >  	return page;
+> > > >  }
+> > > >  
+> > > > +/*
+> > > > + * If fallbacks are not permitted (defrag_mode), we either need to
+> > > > + * reclaim space in a block of matching type, or clear out an entire
+> > > > + * block to allow __rmqueue_claim() to convert.
+> > > > + *
+> > > > + * Reclaim by itself is primarily freeing space in movable blocks,
+> > > > + * since that's where the LRU pages live. So this works for movable
+> > > > + * requests, but not for others.
+> > > > + *
+> > > > + * For those, promote the order of reclaim and compaction to help make
+> > > > + * blocks, instead of spinning in reclaim alone unproductively. Retry
+> > > > + * decisions based on the outcome of that work - reclaim progress and
+> > > > + * compaction results - must account for the promotion as well, see
+> > > > + * should_reclaim_retry() and should_compact_retry().
+> > > > + */
+> > > > +static inline unsigned int nofrag_promote_order(unsigned int order,
+> > > > +						unsigned int alloc_flags,
+> > > > +						const struct alloc_context *ac)
+> > > > +{
+> > > > +	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
+> > > > +		return max(order, pageblock_order);
+> > > > +
+> > > > +	return order;
+> > > > +}
+> > > 
+> > > I think we should start distinguishing order and compact/reclaim_order
+> > > in __alloc_pages_slowpath(). Silently overriding it makes it harder to
+> > > follow and easy to make a mistake.
+> > 
+> > Agreed, four callers recomputing the same thing is asking for a
+> > mismatch.
+> > 
+> > I would rather not grow this patch, it has to go to stable.
+> > 
+> > I will look into a cleanup on top: __alloc_pages_slowpath() computes the
+> > promoted order once per iteration and passes it to direct
+> > reclaim/compaction and the two retry helpers next to the request order,
+> > so the helpers stop knowing about defrag_mode.
+> 
+> +1
+> 
+> All they really need to know is the split into requested order vs
+> production order (reclaim_order, compaction_order).
 
-The tests are basic, swapin_sync, fork, fork_cow, write, rwp_swapin,
-munmap, mprotect, split_mprotect, split_munmap, uffdio_move, mremap,
-pagemap, mincore, madvise_free, madvise_willneed and swapoff.
+Will fold it into the fix itself. The cleanup changes the same places as
+the fix. It makes zero sense to keep it separate.
 
-MADV_PAGEOUT leaves the folio in the swap cache on an asynchronous device,
-so a fault would only remap it and never reach swapin_sync(). Fixture setup
-therefore asks the current cgroup to reclaim afterwards, and uses mincore()
-- which reports a PMD swap entry as resident exactly while the cache holds
-it - to tell whether that worked. Tests run either way; swapin_sync skips
-if the cache survived. The swapoff test runs only when PMD_SWAP_DEVICE is
-the sole active swap device, and restores it at its original priority.
+> > > > @@ -4299,7 +4316,7 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
+> > > >  	/*
+> > > >  	 * Compaction failed. Retry with increasing priority.
+> > > >  	 */
+> > > > -	min_priority = (order > PAGE_ALLOC_COSTLY_ORDER) ?
+> > > > +	min_priority = (compact_order > PAGE_ALLOC_COSTLY_ORDER) ?
+> > > >  			MIN_COMPACT_COSTLY_PRIORITY : MIN_COMPACT_PRIORITY;
+> > > 
+> > > This would change how hard we try to compact with defrag_mode in direct
+> > > compaction as it won't try compaction with MIN_COMPACT_PRIORITY anymore.
+> > > 
+> > > It doesn't make much sense to change that as part of this fix?
+> > 
+> > It is a choice between compacting harder and falling back, which
+> > fragments a block.
+> > 
+> > It is a judgement call on what defrag_mode means.
+> > 
+> > It would also mean that order-0 allocation request promoted to pageblock
+> > can trigger SYNC_FULL compaction. I cannot say I understand the
+> > implications. Will give it a try with the reproducer.
+> > 
+> > Johannes, Vlastimil, any comments here?
+> 
+> I would leave this one with requested order unless the reproducer
+> disagrees.
 
-Skip rather than fail where the kernel never promised anything.
-thp_swpout_pmd and thp_swpout_fallback are system-wide, so test the
-fallback counter first: if reclaim split any THP we cannot be sure it was
-not ours. That also covers a kernel without CONFIG_THP_SWAP. A kernel with
-no thp_swpout_pmd counter does not implement the feature at all.
+I built a reproducer around what we saw in production, which was oomd
+killing the workload on sustained PSI, so PSI and the number of times
+ALLOC_NOFRAGMENT gets dropped are the headline numbers. 32G VM, 8 CPUs:
 
-With zswap enabled the range may legitimately come back through the PTE
-fallback, so those runs skip the PMD-restoration assertions and say so.
+ - fill memory with 4K anon pages in a cgroup, memory.low = fill + 1G,
+   so page cache beyond that stays reclaimable;
 
-Add a /proc/vmstat field reader to vm_util.c so other tests can use it too,
-and register pmd_swap with run_vmtests.sh and the default runner.
+ - pin one page in every pageblock with io_uring registered buffers[1],
+   except one block in 50 (2%), so whole blocks can be made but only
+   from a few places. Without the pins rc5 does not storm in 180s:
+   compaction makes 130-210 blocks per run and every retry loop ends in
+   one. The storm needs blocks to be hard to produce, and the pin
+   fraction is the knob for that;
 
-Assisted-by: LLM
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
----
- tools/testing/selftests/mm/Makefile         |   2 +
- tools/testing/selftests/mm/ksft_pmd_swap.sh |   4 +
- tools/testing/selftests/mm/pmd_swap.c       | 989 ++++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh   |   4 +
- tools/testing/selftests/mm/vm_util.c        |  24 +
- tools/testing/selftests/mm/vm_util.h        |   2 +
- 6 files changed, 1025 insertions(+)
- create mode 100755 tools/testing/selftests/mm/ksft_pmd_swap.sh
- create mode 100644 tools/testing/selftests/mm/pmd_swap.c
+ - free one page in eight so ~4G sit scattered in movable blocks;
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index d3e9bd67904aa..a685988a3d569 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -104,6 +104,7 @@ TEST_GEN_FILES += guard-regions
- TEST_GEN_FILES += merge
- TEST_GEN_FILES += rmap
- TEST_GEN_FILES += folio_split_race_test
-+TEST_GEN_FILES += pmd_swap
- TEST_GEN_FILES += soft-dirty
- 
- ifeq ($(ARCH),x86_64)
-@@ -162,6 +163,7 @@ TEST_PROGS += ksft_mremap.sh
- TEST_PROGS += ksft_pagemap.sh
- TEST_PROGS += ksft_pfnmap.sh
- TEST_PROGS += ksft_pkey.sh
-+TEST_PROGS += ksft_pmd_swap.sh
- TEST_PROGS += ksft_process_madv.sh
- TEST_PROGS += ksft_process_mrelease.sh
- TEST_PROGS += ksft_rmap.sh
-diff --git a/tools/testing/selftests/mm/ksft_pmd_swap.sh b/tools/testing/selftests/mm/ksft_pmd_swap.sh
-new file mode 100755
-index 0000000000000..0f070b4729a89
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_pmd_swap.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t pmd_swap
-diff --git a/tools/testing/selftests/mm/pmd_swap.c b/tools/testing/selftests/mm/pmd_swap.c
-new file mode 100644
-index 0000000000000..91bac9ae5560e
---- /dev/null
-+++ b/tools/testing/selftests/mm/pmd_swap.c
-@@ -0,0 +1,989 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Test PMD-level swap entries and their users. */
-+#define _GNU_SOURCE
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <sys/mman.h>
-+#include <sys/wait.h>
-+#include <fcntl.h>
-+#include <errno.h>
-+#include <stdint.h>
-+#include <sys/random.h>
-+#include <sys/stat.h>
-+#include <sys/swap.h>
-+#include <sys/syscall.h>
-+#include <sys/ioctl.h>
-+#include <poll.h>
-+#include <pthread.h>
-+#include <linux/userfaultfd.h>
-+#include <time.h>
-+
-+#include "kselftest_harness.h"
-+#include "vm_util.h"
-+
-+#define ZSWAP_ENABLED_PATH "/sys/module/zswap/parameters/enabled"
-+
-+/* pagemap: bits 0-54 hold the PFN, or type|offset for a swap entry. */
-+#define PM_PFRAME_MASK		((1ULL << 55) - 1)
-+/* Must match MAX_SWAPFILES_SHIFT in include/linux/swap.h. */
-+#define MAX_SWAPFILES_SHIFT	5
-+
-+static bool check_swapped(int pagemap_fd, char *addr, unsigned long size)
-+{
-+	unsigned long off;
-+
-+	for (off = 0; off < size; off += getpagesize())
-+		if (!pagemap_is_swapped(pagemap_fd, addr + off))
-+			return false;
-+	return true;
-+}
-+
-+static bool zswap_enabled(void)
-+{
-+	char enabled = 0;
-+	FILE *f;
-+
-+	f = fopen(ZSWAP_ENABLED_PATH, "r");
-+	if (!f)
-+		return false;
-+
-+	if (fscanf(f, " %c", &enabled) != 1)
-+		enabled = 0;
-+	fclose(f);
-+
-+	return enabled == 'Y' || enabled == 'y' || enabled == '1';
-+}
-+
-+static bool swap_available(unsigned long required_bytes)
-+{
-+	unsigned long required_kb = (required_bytes + 1023) / 1024;
-+	unsigned long size_kb, used_kb;
-+	char line[256];
-+	bool ret = false;
-+	FILE *f;
-+
-+	f = fopen("/proc/swaps", "r");
-+	if (!f)
-+		return false;
-+
-+	/* Skip the header. */
-+	if (!fgets(line, sizeof(line), f))
-+		goto out;
-+
-+	while (fgets(line, sizeof(line), f)) {
-+		if (sscanf(line, "%*s %*s %lu %lu", &size_kb, &used_kb) == 2 &&
-+		    size_kb >= used_kb && size_kb - used_kb >= required_kb) {
-+			ret = true;
-+			break;
-+		}
-+	}
-+
-+out:
-+	fclose(f);
-+	return ret;
-+}
-+
-+static bool same_swap_device(const struct stat *a, const struct stat *b)
-+{
-+	if (S_ISBLK(a->st_mode) && S_ISBLK(b->st_mode))
-+		return a->st_rdev == b->st_rdev;
-+	return a->st_dev == b->st_dev && a->st_ino == b->st_ino;
-+}
-+
-+/*
-+ * Returns true if @swap_dev is the one and only active swap device, and stores
-+ * its /proc/swaps priority in *prio so the caller can put it back the way it
-+ * found it.
-+ */
-+static bool swap_device_is_only_active(const char *swap_dev, int *prio)
-+{
-+	struct stat expected, active;
-+	char path[256], line[512];
-+	unsigned int nr_active = 0;
-+	bool matches = false;
-+	FILE *f;
-+
-+	*prio = -1;
-+
-+	if (stat(swap_dev, &expected))
-+		return false;
-+
-+	f = fopen("/proc/swaps", "r");
-+	if (!f)
-+		return false;
-+	if (!fgets(line, sizeof(line), f))
-+		goto out;
-+
-+	while (fgets(line, sizeof(line), f)) {
-+		int line_prio;
-+
-+		if (sscanf(line, "%255s %*s %*s %*s %d", path, &line_prio) != 2)
-+			continue;
-+		nr_active++;
-+		if (nr_active > 1)
-+			goto out;
-+		matches = !stat(path, &active) &&
-+			  same_swap_device(&expected, &active);
-+		if (matches)
-+			*prio = line_prio;
-+	}
-+
-+out:
-+	fclose(f);
-+	return nr_active == 1 && matches;
-+}
-+
-+/* Re-enable a device swapoff()ed by this test, at its original priority. */
-+static int swapon_restore(const char *swap_dev, int prio)
-+{
-+	int flags = 0;
-+
-+	if (prio >= 0)
-+		flags = SWAP_FLAG_PREFER |
-+			((prio << SWAP_FLAG_PRIO_SHIFT) & SWAP_FLAG_PRIO_MASK);
-+	return swapon(swap_dev, flags);
-+}
-+
-+/* Locate this task's cgroup-v2 directory. An empty relative path is the root. */
-+static bool cgroup2_self_dir(char *buf, size_t len)
-+{
-+	char mnt[PATH_MAX] = "", type[64], rel[PATH_MAX] = "";
-+	char line[2 * PATH_MAX];
-+	size_t rel_len;
-+	FILE *f;
-+
-+	f = fopen("/proc/self/mounts", "r");
-+	if (!f)
-+		return false;
-+	while (fgets(line, sizeof(line), f)) {
-+		if (sscanf(line, "%*s %4095s %63s", mnt, type) == 2 &&
-+		    !strcmp(type, "cgroup2"))
-+			goto found_mnt;
-+	}
-+	mnt[0] = '\0';
-+found_mnt:
-+	fclose(f);
-+	if (!mnt[0])
-+		return false;
-+
-+	f = fopen("/proc/self/cgroup", "r");
-+	if (!f)
-+		return false;
-+	while (fgets(line, sizeof(line), f)) {
-+		if (strncmp(line, "0::", 3))
-+			continue;
-+		rel_len = strcspn(line + 3, "\n");
-+		if (rel_len && rel_len < sizeof(rel)) {
-+			memcpy(rel, line + 3, rel_len);
-+			rel[rel_len] = '\0';
-+		}
-+		break;
-+	}
-+	fclose(f);
-+	if (!rel[0])
-+		return false;
-+	if (!strcmp(rel, "/"))
-+		rel[0] = '\0';
-+	return snprintf(buf, len, "%s%s/memory.reclaim", mnt, rel) < (int)len;
-+}
-+
-+static bool cgroup_reclaim(unsigned long bytes)
-+{
-+	char path[PATH_MAX], val[32];
-+	ssize_t written;
-+	int fd, len, err;
-+
-+	if (!cgroup2_self_dir(path, sizeof(path)))
-+		return false;
-+
-+	fd = open(path, O_WRONLY);
-+	if (fd < 0)
-+		return false;
-+	len = snprintf(val, sizeof(val), "%lu", bytes);
-+	written = write(fd, val, len);
-+	err = errno;
-+	close(fd);
-+	/* -EAGAIN means it reclaimed something but fell short, which is fine. */
-+	return written == len || err == EAGAIN;
-+}
-+
-+/*
-+ * mincore() reports 1 over a PMD swap entry iff the swap cache still holds it.
-+ * This samples the first slot only: it is a hint used to decide whether the
-+ * swap cache was evicted, not an assertion about the whole range.
-+ */
-+static bool swapcache_resident(char *mem)
-+{
-+	unsigned char vec[1];
-+
-+	if (mincore(mem, getpagesize(), vec))
-+		return true;
-+	return vec[0] & 1;
-+}
-+
-+/*
-+ * MADV_PAGEOUT leaves the folio in the swap cache on asynchronous swap
-+ * devices, so faulting would just remap the cached folio and never reach
-+ * swapin_sync(). Push it out so the PMD-order swap-in path is exercised.
-+ */
-+static bool drop_swapcache(char *mem, unsigned long pmd_size)
-+{
-+	unsigned long want = pmd_size;
-+	int i;
-+
-+	for (i = 0; i < 3 && swapcache_resident(mem); i++, want *= 4)
-+		if (!cgroup_reclaim(want))
-+			break;
-+	return !swapcache_resident(mem);
-+}
-+
-+static unsigned int random_seed(void)
-+{
-+	unsigned int seed;
-+
-+	if (getrandom(&seed, sizeof(seed), 0) != sizeof(seed))
-+		seed = (unsigned int)time(NULL);
-+	return seed;
-+}
-+
-+static unsigned long test_page_size(void)
-+{
-+	static unsigned long page_size;
-+
-+	if (!page_size)
-+		page_size = getpagesize();
-+	return page_size;
-+}
-+
-+/*
-+ * Two base pages of the same PMD must never hold identical bytes, or the split
-+ * tests cannot tell that the slots came back in the wrong order. A single byte
-+ * cannot encode a page index on its own - HPAGE_PMD_NR is 8192 on arm64 with
-+ * 64K pages - so spell the index out in the first two bytes of every page.
-+ */
-+static unsigned char pattern_byte(unsigned int seed, unsigned long off)
-+{
-+	unsigned long page_size = test_page_size();
-+	unsigned long idx = off & (page_size - 1);
-+
-+	if (idx < 2)
-+		return (unsigned char)(seed + ((off / page_size) >> (idx * 8)));
-+
-+	return (unsigned char)(seed + off + (off >> 8) + (off >> 16));
-+}
-+
-+static void fill_pattern(char *buf, unsigned long size, unsigned int seed)
-+{
-+	unsigned long i;
-+
-+	for (i = 0; i < size; i++)
-+		buf[i] = (char)pattern_byte(seed, i);
-+}
-+
-+static bool verify_pattern_range(char *buf, unsigned long size,
-+				 unsigned int seed, unsigned long offset)
-+{
-+	unsigned long i;
-+
-+	for (i = 0; i < size; i++)
-+		if ((unsigned char)buf[i] != pattern_byte(seed, offset + i))
-+			return false;
-+	return true;
-+}
-+
-+static bool verify_pattern(char *buf, unsigned long size, unsigned int seed)
-+{
-+	return verify_pattern_range(buf, size, seed, 0);
-+}
-+
-+static bool verify_zero(char *buf, unsigned long size)
-+{
-+	unsigned long i;
-+
-+	for (i = 0; i < size; i++)
-+		if (buf[i])
-+			return false;
-+	return true;
-+}
-+
-+/*
-+ * mmap an anonymous PMD-aligned region of pmd_size bytes. Over-allocates
-+ * by one PMD and trims the unaligned head/tail so the returned address is
-+ * PMD-aligned (required for whole-PMD UFFDIO_MOVE).
-+ */
-+static char *mmap_pmd_aligned(unsigned long pmd_size)
-+{
-+	unsigned long pad = pmd_size;
-+	char *raw, *aligned;
-+
-+	raw = mmap(NULL, pmd_size + pad, PROT_READ | PROT_WRITE,
-+		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (raw == MAP_FAILED)
-+		return MAP_FAILED;
-+
-+	aligned = (char *)(((uintptr_t)raw + pmd_size - 1) & ~(pmd_size - 1));
-+	if (aligned != raw)
-+		munmap(raw, aligned - raw);
-+	if (aligned + pmd_size != raw + pmd_size + pad)
-+		munmap(aligned + pmd_size,
-+		       (raw + pmd_size + pad) - (aligned + pmd_size));
-+	return aligned;
-+}
-+
-+/* Per-process swapped size in bytes, from /proc/self/status VmSwap. */
-+static unsigned long read_vmswap(void)
-+{
-+	char line[256];
-+	unsigned long kb = 0;
-+	FILE *f;
-+
-+	f = fopen("/proc/self/status", "r");
-+	if (!f)
-+		return 0;
-+	while (fgets(line, sizeof(line), f)) {
-+		if (!strncmp(line, "VmSwap:", 7)) {
-+			kb = strtoul(line + 7, NULL, 10);
-+			break;
-+		}
-+	}
-+	fclose(f);
-+	return kb * 1024;
-+}
-+
-+/*
-+ * Swap the PMD range out. Returns true if a PMD swap entry was installed.
-+ * On failure *swap_failed is set unless this environment simply cannot swap
-+ * at PMD granularity, in which case the caller should skip rather than fail.
-+ */
-+static bool swap_out_pmd(char *mem, unsigned long pmd_size, int pagemap_fd,
-+			 bool *swap_failed)
-+{
-+	long pmd_before = read_vmstat("thp_swpout_pmd");
-+	long fallback_before = read_vmstat("thp_swpout_fallback");
-+	long pmd_after, fallback_after;
-+	bool swapped;
-+
-+	/*
-+	 * A kernel without PMD swap entry support has no thp_swpout_pmd at
-+	 * all. Skip rather than report a failure the kernel never promised.
-+	 */
-+	if (pmd_before < 0 || fallback_before < 0) {
-+		ksft_print_msg("no thp_swpout_pmd counter; PMD swap entries unsupported\n");
-+		return false;
-+	}
-+
-+	if (madvise(mem, pmd_size, MADV_PAGEOUT)) {
-+		ksft_print_msg("MADV_PAGEOUT failed: %s\n", strerror(errno));
-+		*swap_failed = true;
-+		return false;
-+	}
-+
-+	swapped = check_swapped(pagemap_fd, mem, pmd_size);
-+	pmd_after = read_vmstat("thp_swpout_pmd");
-+	fallback_after = read_vmstat("thp_swpout_fallback");
-+	ksft_print_msg("thp_swpout_pmd: %ld -> %ld, fallback: %ld -> %ld\n",
-+		       pmd_before, pmd_after, fallback_before, fallback_after);
-+
-+	if (!swapped) {
-+		ksft_print_msg("MADV_PAGEOUT did not swap the whole PMD range\n");
-+		*swap_failed = true;
-+		return false;
-+	}
-+	/*
-+	 * Both counters are system-wide, so another task swapping a THP during
-+	 * the window above can move either of them. Test the fallback counter
-+	 * first: if reclaim split *any* THP we cannot be sure ours was not the
-+	 * one, and skipping is the safe direction. That also covers a kernel
-+	 * built without CONFIG_THP_SWAP, where folio_alloc_swap() returns
-+	 * -E2BIG for every PMD-order folio.
-+	 */
-+	if (fallback_after > fallback_before) {
-+		ksft_print_msg("PMD swap unavailable; reclaim used PTE fallback\n");
-+		return false;
-+	}
-+	if (pmd_after > pmd_before)
-+		return true;
-+
-+	*swap_failed = true;
-+	return false;
-+}
-+
-+static char *alloc_fill_swap_thp(unsigned long pmd_size, int pagemap_fd,
-+				 unsigned int seed, bool *swap_failed)
-+{
-+	char *mem;
-+
-+	*swap_failed = false;
-+
-+	mem = mmap_pmd_aligned(pmd_size);
-+	if (mem == MAP_FAILED)
-+		return MAP_FAILED;
-+
-+	if (madvise(mem, pmd_size, MADV_HUGEPAGE)) {
-+		ksft_print_msg("MADV_HUGEPAGE failed: %s\n", strerror(errno));
-+		munmap(mem, pmd_size);
-+		return MAP_FAILED;
-+	}
-+	fill_pattern(mem, pmd_size, seed);
-+
-+	if (!check_huge_anon(mem, pmd_size, 1, pmd_size)) {
-+		munmap(mem, pmd_size);
-+		return MAP_FAILED;
-+	}
-+	if (!swap_out_pmd(mem, pmd_size, pagemap_fd, swap_failed)) {
-+		munmap(mem, pmd_size);
-+		return MAP_FAILED;
-+	}
-+
-+	return mem;
-+}
-+
-+struct rwp_access_args {
-+	unsigned char *addr;
-+	unsigned char expected;
-+	bool write;
-+	bool ok;
-+};
-+
-+static void *rwp_access_thread(void *data)
-+{
-+	struct rwp_access_args *args = data;
-+
-+	if (args->write)
-+		*args->addr = args->expected;
-+	args->ok = *args->addr == args->expected;
-+	return NULL;
-+}
-+
-+static int register_rwp(char *addr, unsigned long size, bool protect)
-+{
-+	struct uffdio_register reg = {};
-+	struct uffdio_rwprotect rwp = {};
-+	struct uffdio_api api = {};
-+	int uffd;
-+
-+	uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
-+	if (uffd < 0)
-+		return -1;
-+
-+	api.api = UFFD_API;
-+	api.features = UFFD_FEATURE_RWP;
-+	if (ioctl(uffd, UFFDIO_API, &api) ||
-+	    !(api.features & UFFD_FEATURE_RWP))
-+		goto error;
-+
-+	reg.range.start = (unsigned long)addr;
-+	reg.range.len = size;
-+	reg.mode = UFFDIO_REGISTER_MODE_RWP;
-+	if (ioctl(uffd, UFFDIO_REGISTER, &reg))
-+		goto error;
-+
-+	if (!protect)
-+		return uffd;
-+
-+	rwp.range.start = (unsigned long)addr;
-+	rwp.range.len = size;
-+	rwp.mode = UFFDIO_RWPROTECT_MODE_RWP;
-+	if (!ioctl(uffd, UFFDIO_RWPROTECT, &rwp))
-+		return uffd;
-+
-+error:
-+	close(uffd);
-+	return -1;
-+}
-+
-+static bool expect_rwp_fault(int uffd, char *addr, unsigned long size,
-+			     unsigned char expected, bool write)
-+{
-+	struct rwp_access_args args = {
-+		.addr = (unsigned char *)addr,
-+		.expected = expected,
-+		.write = write,
-+	};
-+	struct uffdio_rwprotect rwp = {
-+		.range = {
-+			.start = (unsigned long)addr,
-+			.len = size,
-+		},
-+	};
-+	struct pollfd pollfd = {
-+		.fd = uffd,
-+		.events = POLLIN,
-+	};
-+	struct uffd_msg msg = {};
-+	pthread_t thread;
-+	bool saw_rwp = false;
-+	int ret;
-+
-+	if (pthread_create(&thread, NULL, rwp_access_thread, &args))
-+		return false;
-+
-+	ret = poll(&pollfd, 1, 5000);
-+	if (ret == 1 && (pollfd.revents & POLLIN) &&
-+	    read(uffd, &msg, sizeof(msg)) == (ssize_t)sizeof(msg)) {
-+		saw_rwp = msg.event == UFFD_EVENT_PAGEFAULT &&
-+			  (msg.arg.pagefault.flags & UFFD_PAGEFAULT_FLAG_RWP);
-+	}
-+
-+	/* Resolve the access even on failure so the worker cannot remain blocked. */
-+	ioctl(uffd, UFFDIO_RWPROTECT, &rwp);
-+	if (pthread_join(thread, NULL))
-+		return false;
-+	return saw_rwp && args.ok;
-+}
-+
-+FIXTURE(pmd_swap)
-+{
-+	unsigned long pmd_size;
-+	unsigned long mem_len;
-+	int pagemap_fd;
-+	int uffd;
-+	unsigned int seed;
-+	bool zswap_enabled;
-+	bool swap_disabled;
-+	int swap_prio;
-+	bool swapcache_dropped;
-+	const char *swap_dev;
-+	char *mem;
-+	char *aux;
-+};
-+
-+FIXTURE_SETUP(pmd_swap)
-+{
-+	bool swap_failed;
-+
-+	self->pagemap_fd = -1;
-+	self->uffd = -1;
-+	self->mem = MAP_FAILED;
-+	self->aux = MAP_FAILED;
-+	self->mem_len = 0;
-+	self->swap_disabled = false;
-+	self->swap_prio = -1;
-+	self->swapcache_dropped = false;
-+	self->swap_dev = NULL;
-+
-+	self->pmd_size = read_pmd_pagesize();
-+	if (!self->pmd_size)
-+		SKIP(return, "Cannot determine PMD size\n");
-+
-+	self->pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-+	if (self->pagemap_fd < 0)
-+		SKIP(return, "Cannot open /proc/self/pagemap\n");
-+
-+	if (!swap_available(self->pmd_size))
-+		SKIP(return, "No active swap device has enough free space\n");
-+
-+	self->seed = random_seed();
-+	self->zswap_enabled = zswap_enabled();
-+	self->mem = alloc_fill_swap_thp(self->pmd_size, self->pagemap_fd,
-+					self->seed, &swap_failed);
-+	if (self->mem == MAP_FAILED) {
-+		ASSERT_FALSE(swap_failed);
-+		SKIP(return, "Could not create swapped THP\n");
-+	}
-+	self->mem_len = self->pmd_size;
-+	self->swapcache_dropped = drop_swapcache(self->mem, self->pmd_size);
-+	ksft_print_msg("swap cache %s the swapped-out THP\n",
-+		       self->swapcache_dropped ? "no longer holds"
-+					       : "still holds");
-+}
-+
-+FIXTURE_TEARDOWN(pmd_swap)
-+{
-+	int swap_err = 0;
-+	int swap_ret = 0;
-+
-+	if (self->swap_disabled) {
-+		swap_ret = swapon_restore(self->swap_dev, self->swap_prio);
-+		swap_err = errno;
-+	}
-+	if (self->uffd >= 0)
-+		close(self->uffd);
-+	if (self->aux != MAP_FAILED)
-+		munmap(self->aux, self->pmd_size);
-+	if (self->mem != MAP_FAILED)
-+		munmap(self->mem, self->mem_len);
-+	if (self->pagemap_fd >= 0)
-+		close(self->pagemap_fd);
-+
-+	EXPECT_EQ(swap_ret, 0) {
-+		TH_LOG("swapon(%s) failed: %s", self->swap_dev,
-+		       strerror(swap_err));
-+	}
-+}
-+
-+TEST_F(pmd_swap, basic)
-+{
-+	ASSERT_TRUE(verify_pattern(self->mem, self->pmd_size, self->seed));
-+}
-+
-+/*
-+ * With the swap cache evicted, the fault cannot be served by remapping a
-+ * cached folio, so this covers the PMD-order swapin_sync() read.
-+ */
-+TEST_F(pmd_swap, swapin_sync)
-+{
-+	if (!self->swapcache_dropped)
-+		SKIP(return, "Could not evict the folio from the swap cache\n");
-+
-+	ASSERT_TRUE(verify_pattern(self->mem, self->pmd_size, self->seed));
-+	if (self->zswap_enabled)
-+		ksft_print_msg("zswap enabled: PMD restoration not checked\n");
-+	else
-+		ASSERT_TRUE(check_huge_anon(self->mem, self->pmd_size, 1,
-+					    self->pmd_size));
-+}
-+
-+TEST_F(pmd_swap, fork)
-+{
-+	pid_t pid;
-+	int status;
-+
-+	pid = fork();
-+	ASSERT_GE(pid, 0);
-+
-+	if (pid == 0)
-+		_exit(verify_pattern(self->mem, self->pmd_size,
-+				     self->seed) ? 0 : 1);
-+
-+	ASSERT_TRUE(verify_pattern(self->mem, self->pmd_size, self->seed));
-+
-+	ASSERT_EQ(waitpid(pid, &status, 0), pid);
-+	ASSERT_TRUE(WIFEXITED(status));
-+	ASSERT_EQ(WEXITSTATUS(status), 0);
-+}
-+
-+TEST_F(pmd_swap, fork_cow)
-+{
-+	unsigned int parent_seed = self->seed;
-+	unsigned int child_seed = ~self->seed;
-+	unsigned int new_seed = self->seed ^ 0xa5a5a5a5;
-+	int release_child[2];
-+	bool parent_ok;
-+	char c = 0;
-+	pid_t pid;
-+	int status, ret;
-+
-+	ASSERT_EQ(pipe(release_child), 0);
-+
-+	pid = fork();
-+	ASSERT_GE(pid, 0);
-+
-+	if (pid == 0) {
-+		close(release_child[1]);
-+		if (read(release_child[0], &c, 1) != 1)
-+			_exit(1);
-+		if (!verify_pattern(self->mem, self->pmd_size, parent_seed))
-+			_exit(2);
-+		fill_pattern(self->mem, self->pmd_size, child_seed);
-+		if (!verify_pattern(self->mem, self->pmd_size, child_seed))
-+			_exit(3);
-+		_exit(0);
-+	}
-+
-+	close(release_child[0]);
-+	fill_pattern(self->mem, self->pmd_size, new_seed);
-+	parent_ok = verify_pattern(self->mem, self->pmd_size, new_seed);
-+	ret = write(release_child[1], &c, 1);
-+	close(release_child[1]);
-+	ASSERT_EQ(waitpid(pid, &status, 0), pid);
-+	ASSERT_EQ(ret, 1);
-+	ASSERT_TRUE(parent_ok);
-+	ASSERT_TRUE(WIFEXITED(status));
-+	ASSERT_EQ(WEXITSTATUS(status), 0);
-+	ASSERT_TRUE(verify_pattern(self->mem, self->pmd_size, new_seed));
-+}
-+
-+TEST_F(pmd_swap, write)
-+{
-+	self->mem[0] = 0xbb;
-+	ASSERT_EQ(self->mem[0], (char)0xbb);
-+	ASSERT_TRUE(verify_pattern_range(self->mem + 1, self->pmd_size - 1,
-+					 self->seed, 1));
-+	if (self->zswap_enabled)
-+		ksft_print_msg("zswap enabled: PMD restoration not checked\n");
-+	else
-+		ASSERT_TRUE(check_huge_anon(self->mem, self->pmd_size, 1,
-+					    self->pmd_size));
-+}
-+
-+TEST_F(pmd_swap, rwp_swapin)
-+{
-+	self->uffd = register_rwp(self->mem, self->pmd_size, true);
-+	if (self->uffd < 0)
-+		SKIP(return, "Userfaultfd RWP unsupported\n");
-+
-+	ASSERT_TRUE(expect_rwp_fault(self->uffd, self->mem, self->pmd_size,
-+				     pattern_byte(self->seed, 0), false));
-+	ASSERT_TRUE(verify_pattern(self->mem, self->pmd_size, self->seed));
-+}
-+
-+TEST_F(pmd_swap, munmap)
-+{
-+	unsigned long swap_before, swap_after;
-+	int ret;
-+
-+	swap_before = read_vmswap();
-+	ASSERT_GE(swap_before, self->pmd_size);
-+
-+	ret = munmap(self->mem, self->pmd_size);
-+	if (!ret) {
-+		self->mem = MAP_FAILED;
-+		self->mem_len = 0;
-+	}
-+	ASSERT_EQ(ret, 0);
-+
-+	swap_after = read_vmswap();
-+	ASSERT_LE(swap_after, swap_before - self->pmd_size);
-+}
-+
-+TEST_F(pmd_swap, mprotect)
-+{
-+	ASSERT_EQ(mprotect(self->mem, self->pmd_size, PROT_READ), 0);
-+	ASSERT_TRUE(check_swapped(self->pagemap_fd, self->mem,
-+				  self->pmd_size));
-+	ASSERT_EQ(mprotect(self->mem, self->pmd_size,
-+			   PROT_READ | PROT_WRITE), 0);
-+	ASSERT_TRUE(check_swapped(self->pagemap_fd, self->mem,
-+				  self->pmd_size));
-+	ASSERT_TRUE(verify_pattern(self->mem, self->pmd_size, self->seed));
-+}
-+
-+TEST_F(pmd_swap, split_mprotect)
-+{
-+	unsigned long half = self->pmd_size / 2;
-+
-+	ASSERT_EQ(mprotect(self->mem, half, PROT_READ), 0);
-+	ASSERT_TRUE(check_swapped(self->pagemap_fd, self->mem,
-+				  self->pmd_size));
-+	ASSERT_EQ(mprotect(self->mem, half, PROT_READ | PROT_WRITE), 0);
-+	ASSERT_TRUE(verify_pattern(self->mem, self->pmd_size, self->seed));
-+}
-+
-+TEST_F(pmd_swap, split_munmap)
-+{
-+	unsigned long half = self->pmd_size / 2;
-+	unsigned long swap_before = read_vmswap();
-+	unsigned long i;
-+	char *base = self->mem;
-+	int ret;
-+
-+	ASSERT_GE(swap_before, half);
-+	ret = munmap(base, half);
-+	if (!ret) {
-+		self->mem = base + half;
-+		self->mem_len = half;
-+	}
-+	ASSERT_EQ(ret, 0);
-+	ASSERT_LE(read_vmswap(), swap_before - half);
-+
-+	for (i = 0; i < half; i += getpagesize())
-+		ASSERT_TRUE(pagemap_is_swapped(self->pagemap_fd,
-+					       self->mem + i));
-+	ASSERT_TRUE(verify_pattern_range(self->mem, half, self->seed, half));
-+}
-+
-+TEST_F(pmd_swap, uffdio_move)
-+{
-+	struct uffdio_register reg = {};
-+	struct uffdio_move move = {};
-+	struct uffdio_api api = {};
-+	bool rwp;
-+
-+	self->aux = mmap_pmd_aligned(self->pmd_size);
-+	if (self->aux == MAP_FAILED)
-+		SKIP(return, "Could not mmap aligned dst\n");
-+	ASSERT_EQ(madvise(self->aux, self->pmd_size, MADV_HUGEPAGE), 0);
-+
-+	self->uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
-+	if (self->uffd < 0)
-+		SKIP(return, "userfaultfd unavailable\n");
-+
-+	api.api = UFFD_API;
-+	api.features = UFFD_FEATURE_MOVE | UFFD_FEATURE_RWP;
-+	if (ioctl(self->uffd, UFFDIO_API, &api) ||
-+	    !(api.features & UFFD_FEATURE_MOVE))
-+		SKIP(return, "UFFD_FEATURE_MOVE unsupported\n");
-+	rwp = api.features & UFFD_FEATURE_RWP;
-+
-+	reg.range.start = (unsigned long)self->aux;
-+	reg.range.len = self->pmd_size;
-+	reg.mode = UFFDIO_REGISTER_MODE_MISSING |
-+		   (rwp ? UFFDIO_REGISTER_MODE_RWP : 0);
-+	ASSERT_EQ(ioctl(self->uffd, UFFDIO_REGISTER, &reg), 0);
-+
-+	move.dst = (unsigned long)self->aux;
-+	move.src = (unsigned long)self->mem;
-+	move.len = self->pmd_size;
-+	ASSERT_EQ(ioctl(self->uffd, UFFDIO_MOVE, &move), 0);
-+	ASSERT_EQ(move.move, self->pmd_size);
-+
-+	ASSERT_TRUE(check_swapped(self->pagemap_fd, self->aux,
-+				  self->pmd_size));
-+	if (rwp)
-+		ASSERT_TRUE(expect_rwp_fault(self->uffd, self->aux,
-+					     self->pmd_size,
-+					     pattern_byte(self->seed, 0), false));
-+	ASSERT_TRUE(verify_pattern(self->aux, self->pmd_size, self->seed));
-+	if (self->zswap_enabled)
-+		ksft_print_msg("zswap enabled: PMD restoration not checked\n");
-+	else
-+		ASSERT_TRUE(check_huge_anon(self->aux, self->pmd_size, 1,
-+					    self->pmd_size));
-+}
-+
-+TEST_F(pmd_swap, mremap)
-+{
-+	char *new_mem, *dst;
-+
-+	self->aux = mmap_pmd_aligned(self->pmd_size);
-+	if (self->aux == MAP_FAILED)
-+		SKIP(return, "Could not mmap aligned dst\n");
-+	dst = self->aux;
-+
-+	new_mem = mremap(self->mem, self->pmd_size, self->pmd_size,
-+			 MREMAP_MAYMOVE | MREMAP_FIXED, dst);
-+	if (new_mem != MAP_FAILED) {
-+		self->mem = new_mem;
-+		self->aux = MAP_FAILED;
-+	}
-+	ASSERT_NE(new_mem, MAP_FAILED);
-+	ASSERT_EQ(new_mem, dst);
-+
-+	ASSERT_TRUE(check_swapped(self->pagemap_fd, new_mem, self->pmd_size));
-+	ASSERT_TRUE(verify_pattern(new_mem, self->pmd_size, self->seed));
-+}
-+
-+TEST_F(pmd_swap, pagemap)
-+{
-+	uint64_t entry, first;
-+	unsigned long off;
-+
-+	entry = pagemap_get_entry(self->pagemap_fd, self->mem);
-+	ASSERT_TRUE(entry & (1ULL << 62));
-+	ASSERT_FALSE(entry & (1ULL << 63));
-+	first = entry & PM_PFRAME_MASK;
-+
-+	/*
-+	 * The kernel zeroes the swap type/offset payload for readers without
-+	 * CAP_SYS_ADMIN, so the slot-ordering check below would silently test
-+	 * nothing. Skip instead of passing vacuously.
-+	 */
-+	if (!first)
-+		SKIP(return, "pagemap swap offsets need CAP_SYS_ADMIN\n");
-+
-+	for (off = getpagesize(); off < self->pmd_size; off += getpagesize()) {
-+		uint64_t idx = off / getpagesize();
-+
-+		entry = pagemap_get_entry(self->pagemap_fd, self->mem + off);
-+		ASSERT_TRUE(entry & (1ULL << 62));
-+		ASSERT_FALSE(entry & (1ULL << 63));
-+		ASSERT_EQ(entry & PM_PFRAME_MASK,
-+			  first + (idx << MAX_SWAPFILES_SHIFT));
-+	}
-+}
-+
-+TEST_F(pmd_swap, mincore)
-+{
-+	unsigned long pages = self->pmd_size / getpagesize();
-+	unsigned char vec[pages];
-+	unsigned long i;
-+
-+	ASSERT_EQ(mincore(self->mem, self->pmd_size, vec), 0);
-+	/*
-+	 * Nothing in this test faults the range, and the fixture already
-+	 * evicted the swap cache, so every slot must report not-resident. The
-+	 * other direction is not stable - reclaim can drop the cached folio
-+	 * between fixture setup and here, and a split cache reports per slot -
-+	 * so only check that mincore() answered.
-+	 */
-+	if (self->swapcache_dropped) {
-+		for (i = 0; i < pages; i++)
-+			ASSERT_EQ(vec[i] & 1, 0);
-+	}
-+	ASSERT_TRUE(check_swapped(self->pagemap_fd, self->mem,
-+				  self->pmd_size));
-+}
-+
-+TEST_F(pmd_swap, madvise_free)
-+{
-+	unsigned long swap_before = read_vmswap();
-+	unsigned long i;
-+
-+	ASSERT_TRUE(check_swapped(self->pagemap_fd, self->mem,
-+				  self->pmd_size));
-+	ASSERT_GE(swap_before, self->pmd_size);
-+	ASSERT_EQ(madvise(self->mem, self->pmd_size, MADV_FREE), 0);
-+	for (i = 0; i < self->pmd_size; i += getpagesize())
-+		ASSERT_FALSE(pagemap_is_swapped(self->pagemap_fd,
-+						self->mem + i));
-+	ASSERT_LE(read_vmswap(), swap_before - self->pmd_size);
-+	ASSERT_TRUE(verify_zero(self->mem, self->pmd_size));
-+}
-+
-+TEST_F(pmd_swap, madvise_willneed)
-+{
-+	ASSERT_EQ(madvise(self->mem, self->pmd_size, MADV_WILLNEED), 0);
-+	ASSERT_TRUE(check_swapped(self->pagemap_fd, self->mem,
-+				  self->pmd_size));
-+	ASSERT_TRUE(verify_pattern(self->mem, self->pmd_size, self->seed));
-+	if (self->zswap_enabled)
-+		ksft_print_msg("zswap enabled: PMD restoration not checked\n");
-+	else
-+		ASSERT_TRUE(check_huge_anon(self->mem, self->pmd_size, 1,
-+					    self->pmd_size));
-+}
-+
-+TEST_F(pmd_swap, swapoff)
-+{
-+	int ret, err;
-+
-+	self->swap_dev = getenv("PMD_SWAP_DEVICE");
-+	if (!self->swap_dev)
-+		SKIP(return, "PMD_SWAP_DEVICE env var not set\n");
-+	/*
-+	 * Otherwise a higher-priority device may have taken the PMD swap
-+	 * entry and swapoff() would operate on the wrong backend.
-+	 */
-+	if (!swap_device_is_only_active(self->swap_dev, &self->swap_prio))
-+		SKIP(return, "PMD_SWAP_DEVICE must be the only active swap device\n");
-+
-+	self->uffd = register_rwp(self->mem, self->pmd_size, true);
-+
-+	ret = swapoff(self->swap_dev);
-+	err = errno;
-+	if (!ret)
-+		self->swap_disabled = true;
-+	ASSERT_EQ(ret, 0) {
-+		TH_LOG("swapoff(%s) failed: %s", self->swap_dev, strerror(err));
-+	}
-+
-+	/*
-+	 * Check residency before touching the memory. If we read
-+	 * first, a bug that left a PMD swap entry in place after swapoff
-+	 * would silently trigger do_huge_pmd_swap_page() and reinstall a
-+	 * PMD mapping, masking the regression.
-+	 */
-+	if (self->zswap_enabled)
-+		ksft_print_msg("zswap enabled: PMD restoration not checked\n");
-+	else
-+		ASSERT_TRUE(check_huge_anon(self->mem, self->pmd_size, 1,
-+					    self->pmd_size));
-+	if (self->uffd >= 0)
-+		ASSERT_TRUE(expect_rwp_fault(self->uffd, self->mem,
-+					     self->pmd_size,
-+					     pattern_byte(self->seed, 0), false));
-+	ASSERT_TRUE(verify_pattern(self->mem, self->pmd_size, self->seed));
-+
-+	ret = swapon_restore(self->swap_dev, self->swap_prio);
-+	err = errno;
-+	if (!ret)
-+		self->swap_disabled = false;
-+	ASSERT_EQ(ret, 0) {
-+		TH_LOG("swapon(%s) failed: %s", self->swap_dev, strerror(err));
-+	}
-+}
-+
-+TEST_HARNESS_MAIN
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 19755fb4edb94..720ba5cbacd62 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -69,6 +69,8 @@ separated by spaces:
- 	test pagemap_scan IOCTL
- - pfnmap
- 	tests for VM_PFNMAP handling
-+- pmd_swap
-+	tests for PMD-level swap entries
- - process_madv
- 	test for process_madv
- - cow
-@@ -414,6 +416,8 @@ CATEGORY="pagemap" run_test ./pagemap_ioctl
- 
- CATEGORY="pfnmap" run_test ./pfnmap
- 
-+CATEGORY="pmd_swap" run_test ./pmd_swap
-+
- # COW tests
- CATEGORY="cow" run_test ./cow
- 
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 80bc9f597b521..e6133784abad2 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -180,6 +180,30 @@ uint64_t read_pmd_pagesize(void)
- 	return strtoul(buf, NULL, 10);
- }
- 
-+long read_vmstat(const char *name)
-+{
-+	char line[MAX_LINE_LENGTH];
-+	size_t name_len = strlen(name);
-+	long val = -1;
-+	FILE *f;
-+
-+	f = fopen("/proc/vmstat", "r");
-+	if (!f)
-+		return -1;
-+	/*
-+	 * Match the whole field name: "thp_swpout" is a prefix of
-+	 * "thp_swpout_fallback" and "thp_swpout_pmd".
-+	 */
-+	while (fgets(line, sizeof(line), f)) {
-+		if (!strncmp(line, name, name_len) && line[name_len] == ' ') {
-+			val = strtol(line + name_len + 1, NULL, 10);
-+			break;
-+		}
-+	}
-+	fclose(f);
-+	return val;
-+}
-+
- unsigned long rss_anon(void)
- {
- 	unsigned long rss_anon = 0;
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index 9a49af88702e4..6355d830cd4a8 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -89,6 +89,8 @@ unsigned long pagemap_get_pfn(int fd, char *start);
- void clear_softdirty(void);
- bool check_for_pattern(FILE *fp, const char *pattern, char *buf, size_t len);
- uint64_t read_pmd_pagesize(void);
-+/* Returns the counter value, or -1 if /proc/vmstat has no such field. */
-+long read_vmstat(const char *name);
- unsigned long rss_anon(void);
- bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
- bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
+ - turn on defrag_mode and run 8 build-like workers on btrfs for 180s:
+   write 1-64K files, read earlier ones back, unlink 20%, fdatasync
+   every 50 creates.
+
+Kernels: v7.3-rc5; the fix as posted; the fix with the priority floor
+and the COMPACT_SUCCESS retry limit on the requested order. Three runs
+each, mean ± stddev, 2% producible:
+
+                            rc5            posted        requested
+    ops/s                   4751 ± 684     5181 ± 18     5206 ± 84
+    PSI some, mean %        28.7 ± 11.5    22.0 ± 0      22.0 ± 0
+    PSI some, peak avg10    42.8 ± 30.7    24.9 ± 0.3    25.0 ± 0.8
+    s with some avg10 > 50  3.3 ± 5.8      0             0
+    give-ups (NOFRAG off)   0              222 ± 58      277 ± 199
+    movable blocks lost     641 ± 13       654 ± 10      652 ± 14
+    whole blocks claimed    90 ± 8         81 ± 10       76 ± 8
+
+rc5 stormed in one of its three runs: 3.85M order-9 reclaim runs in
+180s, PSI at 42% with ten seconds above 50, workers that would not die
+on SIGKILL. The other two were quiet, which matches a workload that
+OOMs regularly rather than always. The fixed kernels never stormed.
+
+Between the two floors there is no difference I can measure here: same
+PSI, same throughput, same give-ups, same movable blocks lost, same
+whole blocks produced.
+
+The promoted path is a small part of what the allocator does in this
+workload, 16-22k order-9 reclaim runs against a million order-0 ones for
+page cache, and a few hundred give-ups in 180s.
+
+> There is a risk of defrag_mode self defeating over time by raising the
+> bar for fallbacks but not high enough. Every fallback we let through
+> will make it harder down the line to compact towards that higher bar.
+
+Same movable blocks lost and same whole blocks produced in all three
+kernels, so in this workload the extra SYNC_FULL passes neither produce
+blocks nor save any.
+
+> There is also a non-zero risk of connecting order-0 request contexts
+> to SYNC compaction which they haven't done before 7e8756d7ad22. But
+> you traced the problem to retrying, not sync compaction itself.
+
+That shows up only when I take the I/O out: tmpfs, every block pinned,
+1M empty files. Then every exhausted order-0 refill does a whole-zone
+SYNC_FULL pass before it falls back, PSI some runs at 39% against 20%,
+and the churn takes 1.3-2.8x as long, five runs each.
+
+What do you prefer here? I don't have strong preference either way.
+
+[1] One thing the pins made me notice. A FOLL_LONGTERM pin migrates
+    the page first only for ZONE_MOVABLE, CMA and isolated blocks, see
+    folio_is_longterm_pinnable(); a page in a MIGRATE_MOVABLE block in
+    ZONE_NORMAL is pinned where it sits, and the block can never be
+    made whole for as long as the pin lives. The migration target in
+    gup already uses GFP_USER without __GFP_MOVABLE, so a moved page
+    lands in a non-movable block.
+
+    Should defrag_mode treat MIGRATE_MOVABLE like ZONE_MOVABLE there and
+    move the page out at pin time? Ideally we might want to move it back
+    on unpin, but it can be done by compaction too.
+
 -- 
-2.53.0-Meta
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
