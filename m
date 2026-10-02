@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C12BCA5FDD
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:24:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0B82CA5FDD
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:24:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44BB66B009D; Fri,  2 Oct 2026 15:24:08 -0400 (EDT)
+	id 0C9EE6B0099; Fri,  2 Oct 2026 15:24:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D4AA6B009F; Fri,  2 Oct 2026 15:24:08 -0400 (EDT)
+	id 07AD56B009F; Fri,  2 Oct 2026 15:24:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29D446B00A0; Fri,  2 Oct 2026 15:24:08 -0400 (EDT)
+	id E84DA6B00A0; Fri,  2 Oct 2026 15:24:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F11676B009F
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 15:24:07 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7F8DF1407ED
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:24:07 +0000 (UTC)
-X-FDA: 85278661734.25.2045426
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A0C8820008
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:24:05 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BGSX/Kbt";
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C8FC56B0099
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 15:24:30 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5824A1C3B4A
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:24:30 +0000 (UTC)
+X-FDA: 85278662700.05.0EF4802
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A12BD8000F
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:24:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=chO1Qb5t;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790969045;
+	s=arc-20220608; t=1790969068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o3DcXBfUguoi60aMXCNeicGNJ5nj03dbbSlS/dsM2Sk=;
-	b=UZyIomiTtFALW9JTpjZp/f5vOqqSeC2PKeCl70mWInljux7m2FKpsbEWe+4sDaT42j8IK1
-	xAVYVFqD91mzfQpbxZYuJidHgCqL76ULt3kiQ4GYporkKrhgiH5r/zlk1sQnVCCs0S7bcL
-	P+/g58WZs4N6iajFS1xsMrE6MPXh7GA=
+	bh=1rzfgjzP5hpWkIDbVjSr96pef66B/RZc/I1AlCje57g=;
+	b=b9IFKl5da9wiq9cj6eYbtE15HUS8ZwD6+WC5unxTAV5AEmgTjhx/wTvB2PwBLMxaJa6m6Y
+	fdRA1zfsDbDo6mYSryBz9n71+cnALkgoXPkCPZ4klKnHS4oSh7MkASyKEts3WHTRK7DYbr
+	FGt73TuLzOasx6vUWEEifbK4LPOdX3I=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BGSX/Kbt";
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=chO1Qb5t;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790969045;
-	b=i7Hf4C/Vkz1zyCL1bemmh5YEY7gkkMq7J0TIZEU9FjDqulmzrwPZExXzq9NpNno0qmC3Js
-	kItlnj8a9RsEmrOj+QYjZH9fDCBpvj00JaLPFu81VWHDKok2+vmplVFesOHXQQhBYvrXtQ
-	mbJrl2CgEnFpQ1zwqnRmg5ekp7wh0zY=
+	t=1790969068;
+	b=7igpw1vr+B+nwgB4Lp2/o68QB8WWmmU9D+MQoj4H1d8wz5suQKGobhei8GkEEaqTVB3Qtj
+	zXK7cMcUWXDsZ/wUmZ3bbk4rXpC8rx8Az7IhcW+OkNEqt9zrkb+zOPaW1rM63K70cvBvvI
+	MnCpTmB4XahWAzIYXEcwag1m0Jk0VWw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EA58641075;
-	Fri,  2 Oct 2026 19:24:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339B21F000FF;
-	Fri,  2 Oct 2026 19:23:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 17C5960AAF;
+	Fri,  2 Oct 2026 19:24:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C3D1F000FF;
+	Fri,  2 Oct 2026 19:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790969044;
-	bh=o3DcXBfUguoi60aMXCNeicGNJ5nj03dbbSlS/dsM2Sk=;
+	s=k20260515; t=1790969067;
+	bh=1rzfgjzP5hpWkIDbVjSr96pef66B/RZc/I1AlCje57g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BGSX/Kbts2HyomUYIll1ZSW1Dc6xBceYErF3oCIvBLGsnn+9W/iL8dUWzD10Xxshv
-	 ZN83CvovSLCevLrxWllAASgTHRUTKqmEDI8r3B61oraf+GBHIM9rlNJra3/KUEcZwc
-	 Gj3mYj5JVSkng+Z1vgJR2AZoiHbPmGwRvgg3WWugxxYNsWyLXNycxtqZyemtlKslJv
-	 Xr3zyVh84R34zkPGPo3zG7qHoDMJZ6WRceBLfPeQHeWmJJ2QYxjRNGKEp5Z65cWpBM
-	 UoaqMSQstAgxR6XPvPEi1TRTfgUaDiaxDCVp7Kq3iHcgWMIx1HNSyd6TRyX8eGGm+w
-	 vWH/q2umXu0wQ==
-Message-ID: <b63f546b-ee92-46c3-85bd-bc64dbaae367@kernel.org>
-Date: Fri, 2 Oct 2026 21:23:54 +0200
+	b=chO1Qb5t7ZzJSgbtGI4XzIshPjgG+GDMD8/31mCdnKdBDh7IfBgRZl6RoKm9acU+r
+	 uG9FaaPtSfnw587NCy+R4i6H6jHfljlL2nSucULJbn48Qwt96reOegxeFCyxRv8F3H
+	 vBV98RXnsWVYNEus0QuqJ5I8PoLZWt+fdM8ri3H0YBoUYChjK6ajBPFIx94OlD8FRi
+	 W9ONN7fN7FbEId9jwnw+18fftkrGnJroF/UyMQXV79Ba4TrdIeKb6XEV/DGCIYD69Z
+	 Jpo7LOA/m9z1YBkLaOkqWrpmK+4KzOLgbmlFGv3aJ/kqDRwnyL8YgsonJeJLImuc+m
+	 gcbAbyUnw1JHg==
+Message-ID: <cbb3ad03-a52c-4719-9be0-6cc7414ad870@kernel.org>
+Date: Fri, 2 Oct 2026 21:24:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 07/14] mm: shmem: allow THP support determination at
- folio allocation time
+Subject: Re: [PATCH v8 08/14] s390: move has_transparent_hugepage() out of THP
+ guard
 To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
  lance.yang@linux.dev
@@ -81,7 +81,7 @@ Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
  dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
  dev.jain@arm.com, usama.arif@linux.dev
 References: <cover.1789695931.git.luizcap@redhat.com>
- <f74ada750d1910f8ea7e55955eb0c330747b93d4.1789695931.git.luizcap@redhat.com>
+ <a2c5f62c812afa5b84ef16476efc99281930c124.1789695931.git.luizcap@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <f74ada750d1910f8ea7e55955eb0c330747b93d4.1789695931.git.luizcap@redhat.com>
+In-Reply-To: <a2c5f62c812afa5b84ef16476efc99281930c124.1789695931.git.luizcap@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: o8souub4xk1jii6wa1dec9xnqxgysrbz
+X-Stat-Signature: zhqm5o4n8rhi8drhenkpt4wio3mia8gj
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A0C8820008
-X-HE-Tag: 1790969045-647688
-X-HE-Meta: U2FsdGVkX1+MtFcf8bAZaoSmL97D4q/rigjQ8Db8fEPUT+Qyk2WTHwGUlisw5BP2QWO6RNjqDFSuGbHjk31lJUCzigw7Rn1DtayOt/W4Q7PODdEvClLbkuFgbZCxRCio88gujG86zo7ubW616kLcEXZ8P2xcpxeRFi3G27dJfDcR0NhW0YfTlk61Laj59bRPwmirQcEKOhuAIj/Yrw5Z3EYg7HIHtCNFwIQn8S3886f5Za9QnSKho5gZhIle7xOeRNhgHL/+oEVFru7XZR33qApBE4UxeLAJwc1CsEvIh8r7/w3THOTadoholxNIIzwsPO5Pqek6hHg+gE4egiR+8lNZTT+DiSWNMsukTEmAha2UBY8T76VXI7twNyGG2RdveOJNYOHcaz1NG+fOmIdhmHtYNfrb5Vh0wcFgXJXevCou2Qb8F5K7qXDHynVUWVonRMEEoUWfiuhypWSX/37cSyZP+E6caFfTlk1MRTWJE6qI/UHd/SQja3j+UwabYvUIIrNaH5a5wKPk1CSNOnMxmPYPrgsCghSnWPNsSsAsswIzXIwVN3AD+FkqnTvhICc6X9Ycy/1AxHnaRueYqzz50cP6rvzAWDbd59x+B4wtZkwY7QAyk8EbWKD9A/CzhoLxk3fNXPwIh+G6lfY716GzH44rB4uzjxcsAfaacMvjc41JGCF4GkDbvGMNBPoHIUz25yrAUNNx8f7L5GYvRlIJMk2+ktFELlvyeoqRm7cE3BeG+X7LMpY7iDGJPFEJ11DtZUCp2YHU6TnfrKMG5M5VhbtVNuJUjIYdntLoCCK7es+/3y4gP4YKGsHzDIdGhcCh8jtkjdq5gdiqGq627lYo7ImLvE5cuJJFVkd2DfxfQCrAd87oYKiVXg6JDphYJdLDXHgKfr1hcvzYGKpSGRxAR6yXurH9IJz6XwHmMiw0rHQ+Tr9bRWAYziUzEcbwmGa0749CYFt99mHorsgvEeC
- 3BabcJ9a
- AA4f6/t7l0IjS/2gesIlAFXzle0nIO5JzQEVy0oJ+QAskvqzsnc0NEQvPHM7B3EINpJKM013lt2owlAbSnKu86Bnbuwi+EY5CcQZV3DEo3E4k3/Y8nSKUUnrNwa6T1Ww9p5Wf3yAur3UaMfKdP0YyJ6IwTct//YEDQ9gzPrdwZ34QSqFNZlAAd2RK4G0y8BdeGDqykahA5ki2V3ZDnzUGSJrVz5obBRLsBvZx9j6krXaU4De1y8KLuPMyG2HN0a40QtGfYBjLO9u+oGMarARyw8wia8TQyYVW/XloSVywE7XwfCElpQI0H6uLWw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A12BD8000F
+X-HE-Tag: 1790969068-722148
+X-HE-Meta: U2FsdGVkX18FhtUuNOk/+viWOYgjmnhg/T9Rfz0phv4APZwsE+yYI/to0BvPAMoYoSd4QzGUwBrGT8DSSYfpyLNA98hvmURSZtUnVkGK6obwQ2e0FLTywLezUzMERptFQrgRUUl/FIYsBxOsU7ClNf16J+dgrIwDK8h2Z6QwrywuO4soWE+EzpVN4ZytpJiFT83XUrvjT1noSg9RLHUIaqR34MyEyxCiXCcT4D66x4VSHTK5OJfV2om/YjbmIsv+UnyTa3Ukh60775VxUu7C3Zq6Ze5zqk8U2irTNRdpCOm8qEDe5og1lS2GmbQ3xVbRAGhL2nTiY5+axEMq1Jw+XZEratgFlKCJXdkQPJvpQuPARGbz3T6Gv2abgiJHnRoAWOVPZIh3pG3Y2Ba6xcDJviKMKKWkl/6QKTTSY7crpxng4F9MjDDitzXK/hi5u1+LwRWwP5DJMDIPhE4DddK1OYBsbTtzb5/ocgvpDesVglfG1kzM5WjuA2Y30IbWyiEddko9fxy1uiRUVqHGvv0W0bs1BECZf86S/CnalolZp84/N458eufJ6TXEZV6EvAFvAG8jfmh2S1jsOsinu9KxszySyS5quHgl5eohb4dctdvIeO43lPqeAqJbr0rt3v52FJeQSG8xQlGSa0d9ruw31n6oNk1IIW3BoluwH5pG9uY+AbrrLxapAiHn4NwWsXvfr8/S18FCglxSqXsZZL5EjQcEGqu2mkBE7lCh2s8+ltEgkCVI8Qiq8SdrSgJY2cZsqfkhVSNmzhxkObZa0AzpJO3hQ3MQNJQ2CKdzd7ru1/a3LPX2hHn7gkpRfFalnNR/VMnikdscu9Y3/Y8TBjxLigSPyA7RHgZtycDgZWhjTTx0XX7SRM3+myveVk3E8o8vkR4bxHqFLvAeV9oqXA7EVeDVbuOv+Vk8SgMSdNSwHnEqNfkHwx4s0pGOStFriZ5Sl1wuk1Hn0FeiZdR6IiG
+ cmKyaH37
+ T5Z6MhPI+W7W+vR1sVajdBEQRRLYJdKC6BdwLLCJDq88aCXVNKriQIpr0pN4Ba/eftKCdOyU2e8tPyr3CqJ/lyxoPXMXIOAtuGCc9aLNcRvgRy+mwp0ZqwGrNCjOnWoJWMc5QLwo8O+5Um01Y/rlrUtaDHjo0MAcHk5OUJW8pUyhUTvjE7BOBf5ZpSn3ki/1ODLhwaWVUXkqfh/KHsageUmpxMCtkrh74XUTQpWE1xOSkS/A+Ieo3SYeagwvWwXzBSFkje//EXtZMh+ILQ4akPboZxjjVvmQKUeN4dg1tQSY+Llw1efSqWkZ2sPF/OH7pwPW4PMPL8B6nSySlf4F9EBu+bEpDiorgdMlAjogCBaT5ItqNoSeX8rw40DEc9aEyacgw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,58 +147,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/18/26 03:45, Luiz Capitulino wrote:
-> In order to enable THP support in shmem today, besides the user
-> configuration required, the CPU must support PMD-sized pages. This
-> is the case because of the following has_transparent_hugepage()
-> usage:
+> A future commit will introduce a kernel API to allow for checking if the
+> CPU supports PMD-sized pages. This API will be based on the
+> has_transparent_hugepage() implementation but will be orthogonal to THP
+> and therefore must work when CONFIG_TRANSPARENT_HUGEPAGE=n.
 > 
-> - shmem_parse_one() and shmem_parse_huge(): Check if THP is built-in and
->   if the CPU supports PMD-sized pages
+> Move its definition out of the THP guard.
 > 
-> - shmem_init(): Since the CONFIG_TRANSPARENT_HUGEPAGE guard is outside
->   the code block calling has_transparent_hugepage(), the
->   has_transparent_hugepage() call is exclusively checking if the CPU
->   supports PMD-sized pages
-> 
-> While it's necessary to check if CONFIG_TRANSPARENT_HUGEPAGE is enabled
-> in all cases, shmem can determine THP size support at folio allocation
-> time. Therefore, drop the has_transparent_hugepage() usage listed above
-> while keeping the CONFIG_TRANSPARENT_HUGEPAGE checks.
-> 
-> Additionally, we need to check if PMD size order is supported in
-> shmem_getattr(). Use pgtable_has_pmd_leaves() for that.
-> 
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
-> ---
->  mm/shmem.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 776dff8a848e..930657d05375 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -690,7 +690,7 @@ static int shmem_parse_huge(const char *str)
->  	else
->  		return -EINVAL;
->  
-> -	if (!has_transparent_hugepage() &&
-> +	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
->  	    huge != SHMEM_HUGE_NEVER && huge != SHMEM_HUGE_DENY)
->  		return -EINVAL;
->  
-> @@ -1524,6 +1524,8 @@ static int shmem_getattr(struct mnt_idmap *idmap,
->  	generic_fillattr(idmap, request_mask, inode, stat);
->  
->  	orders = shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0);
 
-I'm curious: why is that not handled inside shmem_huge_global_enabled() ? If PMD
-order is impossible (well, okay, it is possible, but we simply cannot map these
-things through PMDs), I would expect that we never list them as "enabled".
-
-(while shmem could allocate PMD folios, it would have to map them always through
-PTEs. I think this would be possible through some changes, but we can defer that
-to some future work).
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
