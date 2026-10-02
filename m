@@ -4,101 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47807CA5FE6
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 21:53:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2000DCA5FE6
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 22:03:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38CFE6B008C; Fri,  2 Oct 2026 17:53:16 -0400 (EDT)
+	id 17C9C6B0088; Fri,  2 Oct 2026 18:03:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33DA26B0092; Fri,  2 Oct 2026 17:53:16 -0400 (EDT)
+	id 12EC56B008A; Fri,  2 Oct 2026 18:03:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22D1D6B0096; Fri,  2 Oct 2026 17:53:16 -0400 (EDT)
+	id 0461E6B008C; Fri,  2 Oct 2026 18:03:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F1F546B008C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 17:53:15 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8BD571C00A8
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:53:15 +0000 (UTC)
-X-FDA: 85279037550.02.4FA49D8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 94F7318000D
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:53:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aYuKrJHa;
-	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D1E046B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 18:03:24 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 494FC1208A7
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 22:03:24 +0000 (UTC)
+X-FDA: 85279063128.04.D04D74E
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E5AF3160006
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 22:03:21 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=EphSt2mc;
+	spf=pass (imf08.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790977993;
+	s=arc-20220608; t=1790978602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tvMgeaa3mLhwDw+Sr6yMKLB4FG0e9FIsh294Gs8VTs0=;
-	b=nStPrFk0goqtOQ+HRlzuhmPWCgqU0TotD1Lj6dS4CAp90AmpSqsZOKv1JQK7r7zfhwMExg
-	imNwVY1KVK8ULvbRo+G4dwfQbuDoANtQlWB79cQkOq2iH4Q8TBVYW14fhkchmmBmMjbhVj
-	WgtZZW7KLze1cYh6MZH/kE09hF4wfH4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aYuKrJHa;
-	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=hpSfJ99S6gKPsbvq++cNkKIHi297uZ8Oiyydd+zHjdk=;
+	b=PTXwz70u2V1oCtTI+w8u555ez+CcsVlTJdotAgNIriB6EImac+elo92XIE6BSkQWbN2KP8
+	TWhQM4tVcstip7BKzsoFXri0tr/n/renBMWg6crPFgQYD1R6oDD3vvAV8V+fByQ0N2bc/J
+	0zk5t/uS8JEZPYVQV4H+qY9NkqmDwe4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790977993;
-	b=FIgXTsUXX/4+b84GCHZBhb0gFHbqM+g3SNlSnZZEPN2Aq959se0xy2ZNoj5/D551fysde9
-	OC+YQGBOcIqLzOpExqgECj9Yh65mDatNkzgYoy3NdQLAG1Tw0+mHOKWVY9XVsHh5V3Nt3P
-	qDEYfN5PiNHFie3barqesFi+0b8YLOs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1C0DC43FB5
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:53:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70441F008A0
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:53:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790977991;
-	bh=tvMgeaa3mLhwDw+Sr6yMKLB4FG0e9FIsh294Gs8VTs0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=aYuKrJHan8/ubzf2K03ZfQXmKjgjEDKn1yJ52gq42iRXsT2wS3Mfv7lgiYIDG/syC
-	 mnn1/sd4jINyrrtgedMWELNUr+7xv+fNVZww1NQY3TpV1VzvKQAifN/OKp3ziLyylZ
-	 5r2xpmywjkHnZkU5ujV5MT8cgISd+rYJPrwobEhdvQmhtIbD5MKkyrBh91K54Uwg1B
-	 ThIzJgJtvJOzD7H6QGvlG6k67btQwg3eH4FW0mLznZhySAhB5lLYEQkdJmWsk6D+8o
-	 35fOzPyb4QFoF/sCxhw38X6TIhvJZi28C/csqskWh8FW2JQantIj2u8NB/x7AF4Awf
-	 M3d85zs3u5LCg==
-Received: by mail-ed2-f32.google.com with SMTP id 4fb4d7f45d1cf-6af7d702c76so543523a12.1
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 14:53:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBw3o9W/lkHvqcUzs+gZFXW5FmJV+wrIo43mt1kblP27plujMh1DtdHT0kdKJpDFRLFi+JDuUOoRSA==@kvack.org
-X-Gm-Message-State: AFq9FYINYkGdR+UpskwiJPXzl36CROz2Qt2cu8DGA4Z+uJkqfgPXRRLc
-	+UO+8cHuL/BI5os3zeVYNQeL8nJF8RNu5RekiGNdP6bWbOSqo3kV5+ocaAGh2bTjmWRpnFrdF4U
-	IzWTIAs1IywalzqR5FhFcnYl+wU+kJFtsbY9VudCwHQ==
-X-Received: by 2002:a05:6402:321f:b0:6af:9d70:6d5c with SMTP id
- 4fb4d7f45d1cf-6af9e2ed876mr2784209a12.23.1790977990724; Fri, 02 Oct 2026
- 14:53:10 -0700 (PDT)
+	t=1790978602;
+	b=hV3eKBXhoeiqaWzkLisUyp0nrLLsQFMRbTcQyJ14hJz8o7sbDqEUjh4T9N1HVhrgNrRjmr
+	Qcx8YwOCjtuVLj9cGHFQ4vWQ3OdIi+2Dj7lrwbEIO1lrd2GppeAEo2qZXsWYRCAIRi2RaP
+	BeSCAXaUlJ/hgUoh0Y9+9T7jq/9R93s=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=EphSt2mc;
+	spf=pass (imf08.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A40B440E02A8;
+	Fri,  2 Oct 2026 22:03:17 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id B0CVUMO2Y442; Fri,  2 Oct 2026 22:03:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1790978587; bh=hpSfJ99S6gKPsbvq++cNkKIHi297uZ8Oiyydd+zHjdk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EphSt2mcqG1qrC3mM2Pat8NaXOI6O+z/vNpiFeKdBiCQHLeiwK2ZzI+7vIMBUAjWb
+	 mEkLhxV34Ui9pNSp4w4UAzme6ZRGFW/8P7dmg8G7XKM2MBYPNoJAqYkGYSv4SHYKBr
+	 Ig4IhYBzr5pHotY8HK81DW/A3VZ+z2u0gPZpF1LFyPcBlHVoiwMqJ7Z9urSqXUx4ck
+	 1lKXqZyhKfARwAcBwTmcQ4A4tvtbcZNuLwrrVuzlYynK/9LeA2worDU/QAPN0I87KJ
+	 pXDCsg/ABUDSI+aNc7ay6G5ptecZ9o1QI/Z5bA/+YOsrGBiechkCxeBrqJp8weVADd
+	 341Az8bhewh7JIn1ife2W50QBKTVgeQgOq4pOo05L+z+tbZmrrfoubDsrmL0/0Fiz7
+	 YOPYPeaR8e9gLPWVJRMrF0jdYh7dNcO7dpqbiJEXxIQCfgLaZfgDMag2pHf89i4YTt
+	 z5Xw3NdksJT/Qg3LcpMWk3sCA6O0OQP/plWCUyqhVewrcF3zZzxEmjtFGDKh4D7OAN
+	 JwDk1Wj7I8PCDf/tIDsunMFs/9mGfPPmlpq9U3aqutrlB9TEKN7T3qr+1HX35BmA5k
+	 xvRMoWl6Eb37T+QSMfyzltmWprqoh3sGUmg6AIiqpbQ/MlbPeYXHahosef5nY+jiqN
+	 K/4X69qvOhdFyTbMQvgVDAgE=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1C9E840E00B9;
+	Fri,  2 Oct 2026 22:02:51 +0000 (UTC)
+Date: Fri, 2 Oct 2026 15:02:48 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	david@kernel.org, Mike Rapoport <rppt@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
+	luizcap@redhat.com, pbonzini@redhat.com,
+	Tal Zussman <tz2294@columbia.edu>, Rik van Riel <riel@surriel.com>,
+	Matt Fleming <matt@readmodwrite.com>
+Subject: Re: hunting memory corruption bug in 6.18.x
+Message-ID: <20261002220248.GJasAqCFwxOK4l2TbS@fat_crate.local>
+References: <arZHp8hjYFXE8Rkt@gremlin>
+ <arde/t0zQNEkWqi5@pcnci.linuxbox.cz>
+ <areOeRwZOez0eHm7@gremlin>
+ <arotyz5g6LozSjb1@pcnci.linuxbox.cz>
+ <arwNebjYXyGqrp32@pcnci.linuxbox.cz>
+ <arzRBv9ceJsxJppI@gremlin>
+ <ar1Xl7PE2rcoT9h3@pcnci.linuxbox.cz>
+ <ar63St2LBfCdyhwj@pcnci.linuxbox.cz>
+ <ar9yRqq6cBxHDWKA@gremlin>
+ <ar/F6+OUzj8qQ8YC@pcnci.linuxbox.cz>
 MIME-Version: 1.0
-References: <20260916101929.149106-1-hebaoquan@kylinos.cn> <aqrHjfHwyEtRIr5S@cmpxchg.org>
- <aquWKJoP5JLP8Ci7@fedora> <20260917131712.GA1344@cmpxchg.org> <7bd2b824-4c91-4378-a817-d5ce475ea84d@kernel.org>
-In-Reply-To: <7bd2b824-4c91-4378-a817-d5ce475ea84d@kernel.org>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 2 Oct 2026 11:52:59 -1000
-X-Gmail-Original-Message-ID: <CACePvbUS3a+2GRMxF3yZniS_r_N_REp7PNNRt2_HvWH1MP42-w@mail.gmail.com>
-X-Gm-Features: AclHuK868gG9XDOLnFOp0JUyU4V8lbtIcL-DPjMKorPF04-UXDX2NmmFoAiPgCE
-Message-ID: <CACePvbUS3a+2GRMxF3yZniS_r_N_REp7PNNRt2_HvWH1MP42-w@mail.gmail.com>
-Subject: Re: [PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Baoquan He <baoquan.he@linux.dev>, 
-	Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	kasong@tencent.com, nphamcs@gmail.com, baohua@kernel.org, 
-	youngjun.park@lge.com, yosry@kernel.org, shikemeng@huaweicloud.com, 
-	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 94F7318000D
-X-Stat-Signature: 457wwux7583ibejud7r95945y8f87sgt
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ar/F6+OUzj8qQ8YC@pcnci.linuxbox.cz>
 X-Rspam-User: 
-X-HE-Tag: 1790977993-703022
-X-HE-Meta: U2FsdGVkX1+KP6F5M1h2sKpR+vIYWcKqQYdUL/RG7ZYrpfr46K8A9Y2QONezP4NwH9N61L3vCJ9xfbl8V7o1Ik7V6uN6oa8PhI/Iwdbif3DeeWSNqn28saTSQErpyUZ01alFS3SWWcXzwmr1HrNJs60Sxp0PTq3DQnKcyOl/LjgshkvOnoafKiAU8rdQNIxlKtB+irY7ZGuP8K/Y7Ut5Y6RmMGjpASZPA3r21Szab30LybpuPTxuGt3r3RzPRm0oN1M+KtX6dyVoZj5ddw6tmnybWN0cWajSg5ikhV8vVgjrkn4idSQ4Hu5hM7cjn8g+HCvxm8PjKZxWk2R2cZHMEPU1Iqw9Z0ZCLkVjKqG8kFbkcXVbf3qIs906abRbNEx8HdU4ia7EQjdkWOhGEkeySns9+MpWlGUNq1e9O9cU1kuKj592CUVKejNAJCov9NgraEUltF0ARpSdnun8ZnYSCdZBH53LnXCK5dWEwKmNEtYLEMWB/pZVIQHQfTifsRH14g7rrGtL9YuqwFLFxxcwMQ4GOQhrbd3+LsMlJflakk1nsDl4WCccUiOoI2R7LDRAusWrMg+7kS9SEa17hQmJwNd3LJsVovt6x1MsqzPrHpsEI7ne5GnkcLoooLUa329oZaSR+fqbOx3WZiOFISTORky4/vDWXDdKJ3InLC9oWS5S+pXx+Fske2onvJHYpgA9GYsvNzBpHy/mS5HKHsysVsT5k66gYwyQldmddeExzo4LLkzLIKwMZ9ueUe9h8r4pXI6hlRUHlrOloj3KLYWHNvVd6NyM0X87W5zKEBKKCWvitB372ySdHe/1b0UGCRwxIfRbEVE+QWwmNTWrsMHkHlMUzZVPhZFnsv584hZxLKLQx2l7PwGylnkd2a0Kj/qBBmHOZZL0FodlXyyUYO/jwR8ed9S+RNayKPxfM1r1sgoPDQJUDJhYvdZP3K0mcpeu0gZzIqIpbP+9T7wTIaK
- maCo3hG/
- lPKozY3iU18y7UqR9iveSMtHJH7hMxMpQ4Fl2mGIAL+A4Oqck8TxeXUUY+t2C7McBKelfxw3bVcGq9NvXOjg+kT2CWr1xlD3E7QFq3HOVkQ/37LThHgVsfUXGRUHaWLgY9KhHslnfev182tU8W3tsi7pVbPTUMZMCL0F4yXxkaAg9EhrE0EQ/jz4WJxfdsqeAXidS+NVPn5hPko1SKvBYs/zvrYI+vwWlJodBoZuLhj36tbdmXlLHMIvctnbkZ+zHxvaPfOnc9TDNT/SR3hASsOZKsDy6bPRYhWkuCNPk62CZbDOA/PyQY0wudOl/K+qAq8YDepBSydaHz0rACxF4kdCd1/WBqf8s6dwCO+KtdIg4/kfaZ3BrtMX+07sjq/9UMrBGkCdcy1RVOBr8ZYpnGAgz59kmFDcdkGDaMhNUC2Gw5INaRrl6bEOW2mI7B1OfQhiq
+X-Stat-Signature: 3gz9uiqqk78yhnfurpnux3r7ghyd96mu
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E5AF3160006
+X-HE-Tag: 1790978601-703881
+X-HE-Meta: U2FsdGVkX19v63HvBUBlG0LnW20L/szEFGjh9CoI/xAExN1NGSWtT2WGMT1wXvf3FqcMYOmgVNrbailM77M847y5D3xlYSc2Oi7cRyO7hX3fKitciWNZV79NAFiSm+VF7hky3vAZWzFJDsqIhQQ0EHImbgoz4IepyO/mAhkSeChQRQpujGryIa7XSTWELt3NmxyNFYVT/F3ci2CUQH6OTMdZySDHyw9K3SC3xXdKt3v7nfcSt1anpQ4ypc4YiLWqmMCG+3R9iU/wI9yuxzMAOrZAQWospe51hpF2zk6G56611Tqs5tWAxVMP+YA1sMMhnMEtIqljRjb5/30k4ylX7J8fZ/fmveymCk+l2DLLKFJoMkEmkUkrKbR8FhrxIwbvpXNauF+G83rOA46u3sif3HTZ7eTXjpXS2tgLrveaNMWKGk35dsip9fDfHIpl455N0jt/nlqu2b58zv55kyd6pPC6OwPqmGUyfesLgGTBTT5SQJhWnDa2E5ifA45T/TpYyf9KCIaegoVqzKByGa2iGmWdictQxsNsrEWkHATRNHQLsgx6Y3rxy16uovWncVwXkWSZTRl5yzxNHIyiGBvo8zAlYhYmUuDoyGDWxiJxmBwRQdfHr8NH7nU1DVaWIkr3aE7kG1oOBJpbIvy3hWqRafVrKe3x9p3iwBCBt7xtWzVxo2phEFdEa4E3TvJ13N4AIbpZ/Fm39iWkcLlX40DN+5yCYbBJIxxgMsRwoBRVGe6fSBXVp2JI6PPrTlx93FzNcoI4WMIn9ytYG99TBWn177o51o0OajDLz5X9c3cDOHly9t37gQ1V3QSGYUyfU28TzOzvyCS5msSZwPE7J/sCtr1tYLq4e8RFGKdtX5Y8eoBmDvx4x2KXV3G1DGX5YkLr7V0LQaKC6agURAM19cGXkkykmgWcUDnCVVvWnhViaCsVltzFgM4gRGmHVpL4DBw5PJCmS/TAc4+5QLdgK/i
+ ukJfo+wr
+ FvQQQUPBG1VOOxXuYQ+3k4JIHbRFJKiZR3GzpIe6wPMSm2fMGnlhO9BvoTtQKkvNJOEe+bJZ+PUOw13IKeHlYEbenmDQUyYL6ZBw/vbyc3Z75TFl6CWkA79uRyWFvuGCOFIxdNKBe95czRWJa+NOlC0TiPa09Uj5x8tD5nN1EfYBOalcb1n3EJzFPwlvb034EVxLwJsaCGJGCyWC+cP4n15R2ZwEXB+fjgDO71/sBhYqWN1TUVs53EqNMKB8AabuH97u48kz0A5ktdLivmG/sYxA5udr4s+kPnrEfxKRsQ3/bP3g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,63 +117,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 2, 2026 at 10:22=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 9/17/26 15:17, Johannes Weiner wrote:
-> >> And the limit is only an optional knob. If the admin does not set it,
-> >> the device grows to the full address space, so there is no space limit
-> >> to hit at all. It already behaves the way you want by default. The kno=
-b
-> >> is only for admins who want a ceiling, they can use it or not. I hope
-> >> this would not be a problem for your use case.
-> >
-> > No, I've laid this out already as well.
-> >
-> > This isn't about "my" usecase. It's about designing a coherent
-> > interface that works well with a large number of usecases, and other
-> > pieces of kernel infrastructure commonly used in conjunction.
->
-> Johannes, I read this as a NAK for now to the current approach from the m=
-emcg
-> side, is that correct?
+On Fri, Oct 02, 2026 at 04:55:39PM +0200, Nikola Ciprich wrote:
+> I'll leave it running for few hours, and report back. If I'm able to reproduce,
+> I'll try recommended workarounds and report as well.
 
-I will let Johannes comment on his take. Here is the TL;DR: from my
-point of view:
+I'll venture a guess here and say that Matt's reproducer won't trigger on your
+machines.
 
-Johannes does not want to allocate the vswap/xswap entry charge to memory.s=
-wap.
-So he made two requests for xswap to move forward:
-1) Must not charge to memory.swap
-2) Make the xswap initial size large enough
+Just to rule out any other issues which got fixed in the meantime, can you try
+mainline Linux and see if you can reproduce your observation with it?
 
-Regarding the first point (the charging problem), Johannes later wrote
-up the two different use cases very nicely here:
+If so, you could share your crash core along with debug kernels yadda yadda so
+that I can poke at it.
 
-[1] https://lore.kernel.org/all/araWKyJ5MENBwXCL@cmpxchg.org/
+And before you do, make sure you have the latest BIOS and microcode installed on
+that machine.
 
-So I am not sure he is still going to NACK on it. I wish he had
-outlined a path for usage case 1) in that email.
+Also, where can I find full dmesg and /proc/cpuinfo from those machines which
+trigger this?
 
-Zswap currently charges to memory.swap when allocating an entry for
-zswap. So I consider it a user-visible behavior change; we should not
-silently change the behavior. (Others disagree because current zswap
-shares swap entries with disk as well).
-I am hoping that we can find some way out for the charging usage case
-1) in the emali [1] e.g. have a config option to let the user select
-which charging behavior they want.
+Thx.
 
-Otherwise, we will need to find an escalation path to resolve the
-different opinion on this.
+-- 
+Regards/Gruss,
+    Boris.
 
->
-> I've tried to follow the discussion on the other thread, but it just expl=
-oded
-> and some of the things I read there made me rather upset late on a Friday=
- evening.
-
-If you want to have peace of mind, that's the wrong thread to read
-late on a Friday evening :-)
-
-Chris
+https://people.kernel.org/tglx/notes-about-netiquette
 
