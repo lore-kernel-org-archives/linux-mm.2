@@ -4,125 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CEA5CA5FD4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 11:04:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91224CA5FC4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 11:08:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 127266B0092; Fri,  2 Oct 2026 07:04:13 -0400 (EDT)
+	id 32B7A6B0088; Fri,  2 Oct 2026 07:08:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D8666B0093; Fri,  2 Oct 2026 07:04:13 -0400 (EDT)
+	id 302F96B008A; Fri,  2 Oct 2026 07:08:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F095D6B0095; Fri,  2 Oct 2026 07:04:12 -0400 (EDT)
+	id 1F1256B008C; Fri,  2 Oct 2026 07:08:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA15E6B0092
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 07:04:12 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5FED6806FD
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 11:04:12 +0000 (UTC)
-X-FDA: 85277401944.09.D797F37
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4533040008
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 11:04:10 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Q ekrnzX";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="es2mM9/h";
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id ECA766B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 07:08:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A413806FB
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 11:08:16 +0000 (UTC)
+X-FDA: 85277412192.21.A74960A
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 42DD81C000F
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 11:08:14 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="T KIqkZY";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=C2RLXdsX;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.145 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790939294;
+	b=pkoxEsAVHP2uPLbXIkcHLWSN6Y/HHF0KWCFwk3vsXLXgSNMWIczi+t2/XxOmbRFRexXYSm
+	HxnJ3vMvpqzGDle7HGwOZf83Yi5hp144OI4vTPxIzzZI6wPzhQwkgcZbOdPz1HHZ3scJr1
+	gGIrWwajkFMns5wOeUNLTaNnDi+wnZ8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="T KIqkZY";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=C2RLXdsX;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.145 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790939050;
+	s=arc-20220608; t=1790939294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V+CspCPuUrV1DZQwM4VsM3gftFdzU2algsvWjKSKcew=;
-	b=BFo3JJhQDfzYaXsHSnMxJIPAFMfTS/WA6wJa7qt679E6ympFyaV8SKqBUejWWAvLelZRiv
-	UBLqgfM2lgPMzM6ijifbx3kzQu67EqUF2GoVWx1an0goxfIcTWZvaU8RuCEF7qe20WjEOd
-	DM7dBKAAxxJ/GsvSQgfEuDAXJ1uBuRo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Q ekrnzX";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="es2mM9/h";
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790939050;
-	b=AZNZ8DhklazpTg0ipsWglM6MVGnpWGiz5oQL8aOExi1tIUwE/NfzFsXUjCEvPWIh2t6tQL
-	fq4o8EJAfi2ZApwA5maYo4Ep9BmhVA6TL9T1PTSp2tLfZlYbfOETJanURSycQmeqbr0lLq
-	Mesq3FLcnD7icgJiKwGFUIsXkVU0zcA=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id AA961140012B
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 07:04:09 -0400 (EDT)
+	bh=jrR6OUaCX5CDWnI61xSEBYpaGhAGjsqwnjVR7pcNAL8=;
+	b=oD9BDDAkLCRQYwEW7tYqjPJKt4op96xQqvoqkNNIzuq8fweq/GzHnZMH+S+D8/mS5E+RR6
+	tBZLe7RRjYDUHClhG8BsrAZ+x4enQ5tLgzgOG9QgJK34HAauNx4OfHrd3Vyuj6eTFcaz4Y
+	Gm6aRcBvYZVlbLHIYvjuqpAH0FkRNWo=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id AAAA5EC02E8
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 07:08:13 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 02 Oct 2026 07:04:09 -0400
+  by phl-compute-04.internal (MEProxy); Fri, 02 Oct 2026 07:08:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-type:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1790939049; x=
-	1791025449; bh=V+CspCPuUrV1DZQwM4VsM3gftFdzU2algsvWjKSKcew=; b=Q
-	ekrnzXigrPsPQk+k59ixw7EuVN1vJkDK77wtQ8msXjmm3lG8+09rr8TX6ouMMtA8
-	JULVwj9eAOXvr0OZ3cAYjE+4uia6z56O7hCfxB0coS3DL4oTBmt4yEHfoL7WtvZf
-	sOKas9LGw01pkIih7srvcZnfb5NNEooy6bAx7yuMBTdv9RBaMzjL9DZdYmOwqcmS
-	s0Vj3K9vYbfQJl+9FRA+MJtPppyiNVwmeiuN1qGxvxD+qbJK/n0Xr4yPsCcp/dbs
-	Vg/gWyDAWUjpF0a5g19tvgozNnHEOoXf5sVqN/G54INPq9gTFyc/ycJ0S1kCTdb5
-	jb6ujMimOx89Qb0k4Z+EA==
+	:reply-to:subject:subject:to:to; s=fm3; t=1790939293; x=
+	1791025693; bh=jrR6OUaCX5CDWnI61xSEBYpaGhAGjsqwnjVR7pcNAL8=; b=T
+	KIqkZYDAn3QoGmwq//hBAiaRmnnDyIhe5MfE8NWY/ntmCCfKZN7RCwJ5jVr8e8jc
+	q/dRSjEnuxQsYVi2NQaRFMMrpIvy2XAA2gw6OAM/9S/CO96GYyuwd7aVuvly8EAY
+	XUUMwX84Oi9S18LGg2A08w9yC22vhjSz0rClCUyeDT2jEjt1RsswmalS1Y7Kyrot
+	IeTLaXlWEHZFDks6Vwddfvz6LZC6YCpwHjoHKzPg27I2VgdI0U4+gZoLvE7mXj8C
+	z68KlAFUyymXKxrsD9Qw89G+WfmbGrma/Y8QNhN5uaZsFo3hrnmlQE0sPyrm/Zsn
+	dxQqwgQnaCIqclHhQO0vg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790939049; x=1791025449; bh=V+CspCPuUrV1DZQwM4VsM3gftFdzU2algsv
-	WjKSKcew=; b=es2mM9/hFxAg6etPPqWoGCLcfup4dLXuAGXaaye1ZDLmnZi/Zo1
-	utDYEKOdDqIuCovcHwFBV0XWvnW3g/nlCUEkDVmtydDssblFHXCK0hL7ZDfUbGxz
-	mVBFuGPLBqqeNXOiktpNrbdRkmGsAw4x8xbd+CVxg+uCaM3lPwx1QiG183R2350A
-	Nnj9yg4pqUKax6tQTeAaMLazgqScEUGku+XVG/2sNLWnUlia7KbS4xErKYfID3PI
-	Nx8M3WjFm/549RkEO7lF/N7cTXdKpaYmBuDT5RFT3iu69xZJX+Ir1dB31XTv6CPF
-	3Jd2VmruFqzfxKuVKHBqgKha9qGK99snseQ==
+	1790939293; x=1791025693; bh=jrR6OUaCX5CDWnI61xSEBYpaGhAGjsqwnjV
+	R7pcNAL8=; b=C2RLXdsXRHNKZ/hGDFofkCpT2htpUPLYe6JlEuihHUz4nerP6y8
+	kR3/tcZ0xxUP+LtV2Ev+J6EXUnzcCEdvWu4nMqwVNA9aDuIxjjwQwTEOFDDrB5FQ
+	tYimt1b2pEso+96tN7SY7CpyVMtBho3FbITph3htA9ln1w3t6lpP9Ghtj5VY0NfP
+	ut1e7J7fJVzDMkSq/w8jskbKVnuoIdx7DkFpsAjilY5egOl2n2yhFRGdawNTClcU
+	wXifHKRCybNQzlbUoxi4F4gdYSci8Z0D4jqL0ayfQsyiIIUmkbR40NNHgqJkPnwt
+	CFfjtbUjq2ZWbZDe+NdHtFEyG2Md5Pj5slQ==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
 	action=sign d=shutemov.name a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1790939049; d=shutemov.name;
+DKIM2-Signature: i=1; m=1; t=1790939293; d=shutemov.name;
 	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
 	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm3:rsa-sha256:A4+LXCxfzUtU3fNu8byJZ653YHxUnzSuBxpzWQnQRN/jFy5
-	ngip7P2k5vWCJM3fxa6o0KQ9UlTEM/uyhkSQuziFizEduCoASatJfmpH1/CCT/s1
-	rFUwsyxicTRSlgiib3IYD5pXo75Wp87OTUqhYMrh9hYchl2cJ38GZW7VJWLAkiaz
-	Y0BOBMlCaIJhLaht/qcAkjsrIn0SexJ8TA647Fgi5/gVYQFzbcHWzJ1vlP0txh7e
-	sflv0dDIRcXVptfLHWI/M0vxu9p2RLsHnDE/bD1Snso3YjT8dTecJiN28uGcFSX0
-	Mc0aCKxjBO2sxconnO0cwSx6QZFqDttWmimkocw==;
+	s=fm3:rsa-sha256:dy0OXYrH1DMkWsqME0zRuqVeDUp4Hqk0Qz7komfRDjx5p2V
+	Hu98IKa8VwjDum2DOMyzmxkbA/1GqktF9FPRQh/QLpgODa4ay9bwx4HlefVYuLVw
+	VZK+jml/nOy9DcG/FaUEbOaNx+rno+SUlDD4cumWFMT4ywU77cCfWsd+msdWzl3T
+	2UspStR3Hsv97LMPE8Vo/hNqsWcys4F1XwzTMjsrzoH4qUmYS0AAF8bFpRwl7LlP
+	VZWFSM/3kedHiA/B5qSgUoGnNaY8VAkMFCNzAtTpokJTQ6pZpPgvNBIdlCcHnpmW
+	+DUndb/hTLwLNZZ2Hnu/JwLbXqw6ERuv38N4deA==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
 	action=mi-m=1; hc=12;
 	hn=cc,content-disposition,content-type,date,feedback-id,from,
 	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:B703GFyu9om6K0t7rMkPEQo13XbBpyozKr1P++By2lU=:EiDnjZi2h0pRKoiVbnzpkW/8VgM3LAqYOqBc5Wh7GeU=;
-X-ME-Sender: <xms:qI-_al_XW29hKuV2_QY5CdbR_7-Rnky7igCnrBvkRKcNb9mmPOpDXA>
-    <xme:qI-_anXIzSgfEZihc5ZWQSzjw2cekbDaUAZfTGsNzo_a79V1YaSCX2yI9CJEYCBdb
-    Ro08lwYBYYRMtXiG0zwfipIygxjiMYNCovxgwusK7Xduj5basbGsPo>
-X-ME-Received: <xmr:qI-_aqYJzFIIKnBrwgTgfilLJZnOl8W8L3SofRVEA38IxyXxBMZ1obZ8cmg>
-X-ME-Proxy-Cause: dmFkZTELHcSiMMxlJw34NEVhTb/tP/q7rUftRVhStCDqy5afz8mIQLkM5/U6lzTbT7wY1t
-    Dubz0b8qAjMVg1fBerCV70MIYPXwjQR1Xz6+u+kNvHS5IrQdijxYHnd4qgJKDCU+uIkK3M
-    A63URQ30c7172S1e+9w+Qm3u6+POqC7A6FtqE4x2etFFOPGJrz6rJ98hbHRzwQv29fwAL9
-    IPjyzfA8vfYEFs4w8WrH6fofLmF0ER614Rx3E3d9vKsUe+oZtGkLeLSS/bnnjuQWuRXFTN
-    5ZhU3Bia6r2PTTckhuHZyDCdJwSMZDSG9+naPwBLIwHKr8medxM4MSNsZ9CZ/AEU1mm8C8
-    DpDa4BcIxtRxk31Lvhwnba/kRwh7hZqBGjukZhBOiktQRPseP5nJBqCJoQEOJh6FArRiV3
-    0TFoQSip5obzK9i2xEDlmLAS8BLEcxp58c1/w97k9xdD91B2MLNNOqYElFNy2p09CrpdE3
-    /mT2CTyZ0ll3n8FFgdNMJvxPO8OeJqHxxO73aQQCtT8ZAHxyheqVwJf/gZQz0+jShj+F/L
-    z6BbbHoffeY3ABEmB7vh5+q3bR5aI3g1DRZKI2MYrvVT1osmvjY7CQ5m4IBxOXeI7t/P9f
-    MCwzWznWWqeVTdn+agZgcubO+TD9JJZ1+gotwC6gVatu6CFB9TnliCUtvgzw
-X-ME-Proxy: <xmx:qI-_ahoMuzxjxda9e-7WWILqqvVQ6OzqIi_j6vp9kffK2nJX1wx6JA>
-    <xmx:qI-_ah47Y6ZgaFBM22xfNaCTp1eEivnjXpbLcDQu-mh2pQxmtbY5PQ>
-    <xmx:qI-_arWglGbLtLsWf3LLz-Sm9sv-rZsimrjasxCkOY_vibiLudrPJA>
-    <xmx:qI-_avtVZV38vE--ZyoG_9VSBELsTtz4DbkeCKUwlql_akeSOXO1PQ>
-    <xmx:qY-_alg1zRRH5BVUKeLJX6ccgS3g8IqsybqWkk-BMI3G2z4Vz4N9Ka2y>
+Message-Instance: m=1; h=sha256:8ol4EYGt4R+FErTp0BTFN2l3nhYMwUXredyLtkLdvIA=:Yxvsm+EpuAAh+HTcOlmthJbkprok5JE7YbbSuBmbdJk=;
+X-ME-Sender: <xms:nJC_atm-Pcsr2QON35QNbpn6xF2n9iZrJBBE3MLN32vJQK8w_9BfDA>
+    <xme:nJC_amfzbG7qnMYlpZ9Q04OPfEHdQ1Eq-wlcFc-l-5apYW4vDRh2hm5xS_v6CsVh_
+    CpV3mTLF6cAuSn5AgH9dBVjuwnqbeBEFN12lbhCVFvKNqZ5nwjvcHs>
+X-ME-Received: <xmr:nJC_arC-Pmv9tI1iHpUCnUl2EE1QGMDVgVVfaz5_LvHnxUR1GFNiZouNfok>
+X-ME-Proxy-Cause: dmFkZTEnKtj7AidfH7fVYRV/Gu16ACcgxkEKSxWSUUMyTNmc62cb9W0oVIihGd5C5eEShn
+    odF+vZX6J1yUfdePX1mU3en4NP1xdbwc7AxJREZkF14IWEdHwi3xhFCR3d59SRdN21aYf9
+    QX0zAh/3o+TfdeDAFaBDqoiyEkpDs1bcEh4mBOGwmT7PXZNVWB8A5GT1YE7+LqT9RNc8r2
+    GKsdqIDh+97RcZGZymjuD3g/wxQ4U1b7PwYZM8G3uU60G5Wa/l4/rVKcytpYpr0t//DtZw
+    EXyC5IJfLn1RdNnEza2DaXSPFXqWXHMpAAbU4OweAydjQ4Z0Nvh4aN6wSH3H+Y8aMx5tsH
+    YYqjUX2MyQZwaAQCvw+lGs6zg4ZaGRDkGlNW+2kF5+NNHZs2E1+lMdbC/9Th9NKIk8X8oM
+    Aa546ci2N4D8zXggSEzSQ94AOoX6UEBjuSW89M2/hTV5k+ubqbsJt0ApHEnIDTypFag6eJ
+    tk4lwUmEa9x3f2/1RgxrfVwFYdJgd3CBIuTpDcopyUkEI3JGSH4QfNdVueqDO9eQ1n2Tn2
+    L9sDsztXSkAbb9XVHTAcDH4ew7lQpEgLmqWbgF5aZBbITx6cySFGNbsfj/1jA/0yPWOwVq
+    hgfJZu3WBI5LOrj52fyA5Mdntdh54jcDk3D2Wmq0Yw1aVlA7aLuEr4kCYV8w
+X-ME-Proxy: <xmx:nJC_alwdcUUK6Fy0aOQmDBoq8l3_FA7tucWWPtRCqZDZGwRWC5-M6w>
+    <xmx:nJC_ajjgQRSywVEa0_NNEBgx0Ry2U5AUzL6qOlaDzvIDtdcKp059Cw>
+    <xmx:nJC_asdIrvYnGkwl4aO3urbwitc4hAN5Nlog-ukLlsurf92DBRhzHQ>
+    <xmx:nJC_aqUR6lGvQ6ITR9AyUOaZURU1Bv3j6MAg2hBdn-eBl2gexjayig>
+    <xmx:nZC_asL4jBb3nU_ezElDUXVqc3wDz4K-QqUPaieLGEqXP1iG6PdU61fS>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 2 Oct 2026 07:04:07 -0400 (EDT)
-Date: Fri, 2 Oct 2026 12:04:06 +0100
+ 2 Oct 2026 07:08:12 -0400 (EDT)
+Date: Fri, 2 Oct 2026 12:08:11 +0100
 From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
 	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	kernel-team@meta.com, "Liam R. Howlett" <liam@infradead.org>, 
 	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
@@ -131,22 +131,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Jann Horn <jannh@google.com>
 Subject: Re: [PATCH v4 08/13] mm/collapse: call collapse_file() from
  collapse_single_pmd()
-Message-ID: <ar-PTlqz0nq5Z90P@thinkstation>
+Message-ID: <ar-QK2P_3Lc_YCkd@thinkstation>
 References: <20260928100630.21870-1-kirill@shutemov.name>
  <20260928100630.21870-9-kirill@shutemov.name>
- <DLRF245BL299.14P8UWBF8SAJJ@nvidia.com>
+ <67034af3-9849-49ab-8904-6d661178222f@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DLRF245BL299.14P8UWBF8SAJJ@nvidia.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4533040008
-X-Stat-Signature: 4t8e87sjuumuiiion7ar5uoijwc45aww
+In-Reply-To: <67034af3-9849-49ab-8904-6d661178222f@kernel.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 7wppsjy4nu44kf3cph6s9hj655tou4j7
 X-Rspam-User: 
-X-HE-Tag: 1790939050-100739
-X-HE-Meta: U2FsdGVkX1+k5kVsjp6CyMn8t7++vvd6QKVMPcUNq7tRCdQIBdm/qWJKQWxOcUgasjQiU7s5pCbgIOweM6/yMi7IexEVp1hQEu9GkEO2BIUdH9rtnn9aNquIJ1IxSLTAfP3GxlSRMr2Jc0oVQV0CsYhqNIQTzcAojrSkyNiQB7m0b1brMZQmtr7bQh19P+PmVPSRj/7tTgxI0oC5Gohqo/d1fHcJhCrzCiJg+27H7JGcnuUw+AkvdiAGPHDhoFhQSHzq3c1vLnYIUwOXQtiDGd6HMG2tSjB+929BrSZqq1b5LHvLz+zc8oUo50Qu5xDzGCv+EnKtfbG/RFNMucSSLZC+4031Im33k3Kb3m9EzZBQNWm95BtxshkeI2hnjEte8spVc8HDig9IKziZfJOQbboXC22OoOiPrq+a9Xy6xVK1jt5wXcPEikQq3zol7SSVG911rwaL2S0kv0CpTyiEmm5Yqez3eSnABC+csj7bMJrTf+3lVgcht8EfjTjcCRmJvMkUO0dwqIeVuqUn/deyZ8y8gyJMnNcBbuKRnb0edcUnIXHw2IFKJufubQJAkU9drRq/0YwBcvEIRyU70HLveT2f7HH2rQlpWpQwykxqmKCpFt9hF0kBPuhZHFtiTOA00q2jkM+sCLrx2agL8Bys+ohxSZLVw3uRtgcpwkUFc3LwyRjH8vavrErnV+RP4gDkUtuHsdJA5rkGUlkWj9hkNU+qLdAgsJ+cg4lY6KDNVzjQ1A5zkIOcCGCh0fIBuY0Xi/Plm3WUOl+K3ahpOZeeBygFWJBJA5kcluI3AQYcEr5CToOIMRME8T4qdVa69pRmZ2SvQzqADYfG8cC3rr/l64G8Efji9j3Iok2aUUPiemEJ0SXFDS3/3X8Oifih3JtBFzpjcvVKGc9UakGdrd7PXCOJ8nFViDM02cIxsOg5rg1ld0qka7U6/BiS1m4L+esxZXO7/xv2uIsiUu5qbZI
- vrI4zdMx
- ul+rizwzfeREIg7TZQtr7lEOOzVyWyeakp+ld/bSejn56TjhjGyTaXFtckFsMQl9IOuAklk9VuT26qIsoBnRYbAWwBFXucnhXrHmFPEKdyCuqmt++FCQjPwyDQhgkWCTwEpY03yf7s1SqnrBnhbsFilke6menaA7B7iIJHxV7U063UfA62kpOnr5I4veEW5fyRrKloe+8OMJfwcJTp7OwLlNrIabMp7CkKGnaxmjujG/Q0qOwCBtOyIEO880zbyLJ/XWFYT/XspqS3T1XUuJysEK83e+xODdl+1N3EGTKPSGoxw3tYp64X8GRQey+6BkAOT6H6B7dVMLmXTSsw12lCVS4rMmpHQmqLsBQDpdybLTIxXFhZGTxjMPjKlHzhKxpIPvhGX8fRjwEbyxCs2R/a2tDKUGAwqg8AsSm/DK98dATCoHp7KBUd6ttcVX6hJ5RFC7D6nwECuWPzGouuKLa+guXXwjPh/oiNVMjXw+VGhk/BGduHsE+36SNYqagLpgl/KjVMzEM5jf1pjOfAJrxqO0HdnOWhKst2LxXinRqn6J9auPu3EgrGyvvZppB/V59gM04TaxS74sYYV4=
+X-Rspamd-Queue-Id: 42DD81C000F
+X-HE-Tag: 1790939294-585432
+X-HE-Meta: U2FsdGVkX18We3tU84YdxzoC911liyABdQC7BhayU+Tg7t0l+bFHYCZibZlm77/2P1seYtzmWCYNV+ebkFXnObQ1BzXfUpfVGxCv7jfmNPddQbdoOWy8GO1T3A0ugGYNoqPgB7BHH1Z3yrmcfQU75fpSa52BbEv1BoaLCbNuwhNMznpfAZydJWCYfYHweVHAIAQZlq7H6GkJXapi6G5jqggfDTd2Bn9OSf+utQ5CCw+L8k6EDhjceUfG5IO1bdTQkxVx3wjDnqXbe3kJjn2CBmiFEAw3rfnRVk90gyhvFJ6YwqMd7FnFwES/vYcqL9qJZgBA7G1HGatOEtII6oIasyB+O3CLyRbNrUPOwbEd/bD6t779hULx/t6cS8t8G/Od/j0x+kLPtvs/JB7vWMddqsY0PCI+y7Vzs/kxmnFAiwdtVSqbDXBPJghDXtBrTEHMgkcgDof4hUgKb05mAUcQThaCQSk74eX0Hz63jWH76LHYqJ7pEFFidoZivHWjx2uYmUBE42JpbxhdEY91y/WqhH24pr1pnG1u29s/HQyM/KEA0aEFYS8YtyMuLsSHU+7ztMqYbNTNS75W8dzthLaNy4i2U5/0wlkeaOiD/Y1/da8STNzBfRuz5VuwaYMNHaS8S9miALfX1djEc4rRCfCg0iUVge6Iqoa70vtvG/a1ZlKVm9eeVWN2sxGCNB8vFPZ4mxW/9UqKapSW2c5aURZSCLsFtokQSbFq5jwGdrh3TOdcUMGgPaW2W3a1ijzmDW8T38sCBdF0hzDFKCBjFCnjoJPvYHsBqRv66pdihqqvI9kdvyoHWDdGWpZBSbYOQLccPZAOylTQuXu4E6pEfJr5EtlHkoKxw9xiBI4UV8ru3I09bEvwq9VQbGWrTebR/Q6dPu3NKaGe0JkfoA4cuvKFevuN7LYtOwa7MZINppTrYgiNZ/mowroF9K3Vhoq7uefyH7tHJ5F3/Yh48Ya3Nl3
+ FoN+in9e
+ /PH7YEXzYObXpARksAMar3dGkZKrWyxoDln0iXAqXpG7wpJfK8kseId8N8XD79udCKDlMwBDu5DJKVQacnxEry+Goz7q4ykKyWmzsBzZadMorxBWzf/gC0hj9B4Dk8d9xKgN36oxezzSL2rz8XErAue7Bc1VJf6Kb6bIzPhtFEGe7IeFDq0ddhnz7k1wySvebAIzY90rM32vF2Y8gPXe6HW5r03SBZ4WqcRQhAoRliPNO0mV2+VFM8x7k+n8QjcqoNZ9DOC9iJBrTqxPxLuu93iQaUpWouR44zL+OpEIlt1CbC/XIDEMCDuOGqu+AlqrdhFgKjV8vFdoiLI9MqZTyczv7Uku/pBda64BwHUPlX7eGk43zk60A+tYIcN2EIYf0Pw4SOguw4B4ybdACXPn12CIV51ESI6Ax+KGKrrraJY6QgY5LncCNNJ1avnduIB79FWJq7mnRXDN3YUfea0DnOI2q9+8dMK6Qlqh8t2U7NFU0Mhj3E4mPHpWb8SdRNHS4t4EeX3lSrxDRgTuohPLJaiexPVQFrygNMmpXxmHJBsEws9oGyfrL9QNkJr5JljIYSYZcK0zIUVCQAk0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,35 +154,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 28, 2026 at 09:41:18PM -0400, Zi Yan wrote:
-> On Mon Sep 28, 2026 at 6:06 AM EDT, Kiryl Shutsemau wrote:
+On Thu, Oct 01, 2026 at 10:08:09AM +0200, David Hildenbrand (Arm) wrote:
+> On 9/28/26 12:06, Kiryl Shutsemau wrote:
 > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> >
+> > 
 > > collapse_scan_file() reads the page cache to decide whether a table is
 > > worth collapsing and, when it is, calls collapse_file() itself.  The
 > > caller cannot get between the decision and the collapse.
-> >
+> > 
 > > Move the collapse_file() call up into collapse_single_pmd(), so the scan
 > > stops at the decision.
-> >
-> > Two things change with it.  The writeback retry re-runs collapse_file()
-> > alone instead of rescanning first; collapse_file() repeats the scan's
-> > checks under the page cache lock anyway.  And mm_khugepaged_scan_file
+> > 
+> > Two things change with it.  The writeback retry re-runs collapse_file()> alone instead of rescanning first; collapse_file() repeats the scan's
+> > checks under the page cache lock anyway.  
 > 
-> So the new version is a little faster by saving a file scan?
+> That change wasn't actually required for "call collapse_file() from
+> collapse_single_pmd()", right? You merely decided to move the retry label in the
+> same patch.
 
-On the writeback retry, yes: one page cache walk less per retry.
+Yep.
 
-But that path is MADV_COLLAPSE only, after a dirty page sent the first
-collapse_file() back and the writeback has run, so it is rare and the
-saving is small. Not measured.
-
-The scan rate change is in the next patch, where a refused file table
-no longer costs khugepaged a relock.
-
-Not measured on the file side either, but it is the same shape as the
-anonymous scan, where the relock per refused table was most of the cost
-of a pass over memory that is already huge.
+Once collapse_file() is called from here the retry can go around the
+collapse alone or around the scan as well.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
