@@ -4,113 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44928CA5FC4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 17:47:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 175E1CA5FC4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 17:57:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FEE46B0088; Fri,  2 Oct 2026 13:47:25 -0400 (EDT)
+	id 09C516B0088; Fri,  2 Oct 2026 13:57:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B0A66B008A; Fri,  2 Oct 2026 13:47:25 -0400 (EDT)
+	id 04CF36B008A; Fri,  2 Oct 2026 13:57:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBC9E6B008C; Fri,  2 Oct 2026 13:47:24 -0400 (EDT)
+	id E7EBC6B008C; Fri,  2 Oct 2026 13:57:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C573D6B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 13:47:24 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4962FC0821
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 17:47:24 +0000 (UTC)
-X-FDA: 85278418008.24.786E0D1
-Received: from mail-wr2-f42.google.com (mail-wr2-f42.google.com [74.125.225.106])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7F8F840004
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 17:47:22 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=JMhX0hiL;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.106 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790963242;
-	b=lUyuQNxh34IWeQbaT58XxI7NTG+8T4ePRpQBz951wtcQrIoZXgXCSoNgjnuJV5yhfklyjr
-	+OJvF6I18qSc7YPgk5I0qZHiUsk7lEP8Vj0VomVkTSzC9zuudO4+xWBRt81GIlT/uwRxsf
-	JfRRgLPSf+qs5vrU2p7Fh92Z/K8TIK4=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=JMhX0hiL;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.106 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	by kanga.kvack.org (Postfix) with ESMTP id BE3416B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 13:57:03 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 37FC4C0802
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 17:57:03 +0000 (UTC)
+X-FDA: 85278442326.06.F14F544
+Received: from mail-yx2-f38.google.com (mail-yx2-f38.google.com [74.125.224.166])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 251DB180007
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 17:57:00 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=truenas.com header.s=google header.b=a5KSBSOA;
+	spf=pass (imf24.hostedemail.com: domain of ameer.hamza@truenas.com designates 74.125.224.166 as permitted sender) smtp.mailfrom=ameer.hamza@truenas.com;
+	dmarc=pass (policy=quarantine) header.from=truenas.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790963242;
+	s=arc-20220608; t=1790963821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BsRwOVo297ZhJSI5g2vm5Aad4ipR9uH8sT9viLQ8JQ8=;
-	b=Q/QJ5DLwLJeRHU22I4RgH9E8OFdWZtuBnjRqDNiJj85VtYBxLydgwv791QtMHX47GjYx+O
-	tNnPzlNffDoqexYh0ejHYs1+FDm/oTmwiTNibca7trufjaDtgC6Tbx/4MJarMVyIjQOpel
-	S8muWaCvdD71iWfywcdA8sxBsscl1Ls=
-Received: by mail-wr2-f42.google.com with SMTP id ffacd0b85a97d-48b0622cc90so81046f8f.1
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 10:47:22 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xxaI2OMOwwuqBrxKvOI44CslxEdzYP5+0cKedVWBK0M=;
+	b=kZpWiLJkYs27kRqN/4JvegpU/F3Ix0e4g7PqjHt4NiuC1AKoF2tLxlrj31kC1boxD+MToE
+	eKEGwtTtPGb62MS9M6qdYPwxp5PvAdJwALXAF3zfl9Yh6FeqPh6EjHA8JCeGcR4gCdDplg
+	LtPGDaX8o3E2yIWjDz0RI0rAHQct0dA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790963821;
+	b=UUmSgDof8ixol3H4/xgUtMzOnZg+J2QW9QSnWXbfWkcqhYPdUzyigHgIui+KXaix9mQ86n
+	tJUFRkvvgMlEovNs2LlY3LwYjqtyEkkdjuIZN3+qk1oDfud6MTw0lXZjfwTyakXTZBQBJ3
+	9molxLDJFkbIbJ1jy6pNzYpNxawZIQc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=truenas.com header.s=google header.b=a5KSBSOA;
+	spf=pass (imf24.hostedemail.com: domain of ameer.hamza@truenas.com designates 74.125.224.166 as permitted sender) smtp.mailfrom=ameer.hamza@truenas.com;
+	dmarc=pass (policy=quarantine) header.from=truenas.com
+Received: by mail-yx2-f38.google.com with SMTP id 956f58d0204a3-67561cbafd0so270935d50.2
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 10:57:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790963241; x=1791568041; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BsRwOVo297ZhJSI5g2vm5Aad4ipR9uH8sT9viLQ8JQ8=;
-        b=JMhX0hiLC2LIYNnv6W0MJj96X8jcG1QzSUNrtcCwbd8vDWGTT9YgUuSdo7oH34VpAd
-         +iHripyiFHEgazhwzqsu4dW7cOQniSxjVQHhewW0ma+Dkv1WHrcGCDeIHCmBavFZXNnF
-         43AFl+a8p84XMrxZa8D7BVnwkUT2ccg2nR8XNk3ZiLYeFqzN3AH6cbRVL3e1mNsUKDqy
-         CBrF+77BVs3GksYg6edxkqRo3UEVkowdu0AYkenFR7byj8zTYdX8BCJkh+k05DN5+AyV
-         DYBYj0CztaD+5qJ4M4JSJ96OGb6GWn0IeX0E3XSuezYJZBc17hQbc+j9IwuqeVw69/VD
-         Sbxg==
+        d=truenas.com; s=google; t=1790963820; x=1791568620; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xxaI2OMOwwuqBrxKvOI44CslxEdzYP5+0cKedVWBK0M=;
+        b=a5KSBSOAX0YVQb0Bz9PVVLIq25cSI7ui3UwwpOfQjkx2H8Be4mH+8hHGf8vrbd+MgU
+         OBNG/bHgyFDd6ajZW5/VMQGsN9V5ZvD+8FFcM8B2U/lLmWH4fGJ0WZo4E5AHOXwIE12c
+         6mGu5cBo4/uZa20x73/V1cMklsOCStLfX1UxhGJAsUnj896eTPjnuve1bzqJxDnu8CzF
+         ora2RA59zo8FS7iFV6KkpG7EwBgqoduqx2lnVPQy1UvaoyMTgRcdX+LluioVHW+ysv6H
+         WGPO2AovxaWvkKpua5IODacxUhgNq43zbVJsXQCNPw3Zo2rsG8YaKWWf3hUXFh7x+n5N
+         XkGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790963241; x=1791568041;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=BsRwOVo297ZhJSI5g2vm5Aad4ipR9uH8sT9viLQ8JQ8=;
-        b=bbHzF04b578SAdoDnIFFrKlEjc6VNbHYP0VvZG4nIkOBL8GTLFiWzm3YA50V00cEvE
-         tkJE39mpSXK/MgmjPouqrvAgdFhR/Ho8/0LxsPI1s5lqyXExoYcMHX4E8R8q5O0UIlyN
-         oWrsAV1pND2tA6GYroXukk+LNkcJ1ugk4wViFmJx7ZwH2HiMRQXtHAXHGfvTDe5Rt/eo
-         tXl1UMAa8KPm69L2P0riTqBu4CkmDznGODiuW5+4NIDb+8FI/Y+GP2IttaHc5pCHBwZf
-         zmYqjWShKcNA51IEBSfO9+cK+pQ/s9Er/ssYULjZuHmny03AEps9SsTa3N1mDGjER9m1
-         lxyQ==
-X-Gm-Message-State: AFq9FYLrPdg6GG5PFGTKHRIde5GirW0dchW3RIoD8XsH5roRBSAkNuog
-	ACrsi5AEPr+VFPc1IszAB3QwKTDe2l0g2BogwP2bVc2OhoZ35joO3ajGhINYqLsJoRk=
-X-Gm-Gg: AYBFou1T+pguMaBxXEpuTtk8pB5LMJ9x2p9RzgRpOYzFmur8fH9BAk0yifs+WhTi6Xj
-	tRysVQwoVjMdt8XGFwBgAzIfji2YUfe+ynJRbfN0sF6phiCqz6V1RjtZ5iaMP7wV8xNvExZYd0j
-	K2DQu2nCoRAkc1YeOovlVuzMAYNrY5Lzo6f3U8DkoB6ytLoA6j57fDh/8ZD761/H9uqBdy7Ksyz
-	ffwP3/XJ+agebk+yeNfZmyxbrHRh1SiNI3UkDb0PCr/5ZoUz8Tx1l+5CW4aIj8pskZfN6V6Bhkr
-	C5tIKKEpqI/K+jyUgg8U/D24aXmOiCR8Y+gJcHQp2kPFEri7Q68iRUTF8bh3uG618QOkZPSP0FW
-	FJus6lHEQQEiZy2jxA1WeBKa+PQgEST5z+XgIhh8tGTGbdum/YIRdugDbw9VDxgt8usl3xZddV2
-	6sVUNCBU6bcnjs71R+DcgkfRFJX40E6lU6s6JRjLjDJkJDnCsvF46zxT3fzJkNii32zWA=
-X-Received: by 2002:adf:f108:0:b0:48b:e50:715a with SMTP id ffacd0b85a97d-48b1273e612mr4581767f8f.34.1790963240679;
-        Fri, 02 Oct 2026 10:47:20 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c092:500::7:9b19])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b82253dc9sm6964307f8f.3.2026.10.02.10.47.19
+        d=1e100.net; s=20260707; t=1790963820; x=1791568620;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xxaI2OMOwwuqBrxKvOI44CslxEdzYP5+0cKedVWBK0M=;
+        b=EGC07rA/Kznlaq8r3pn738P6QKxX/0O3cq2CJD0IyOMz/6o6A9fml++zjn7zGG8vi5
+         0S3+9DuI8/8laSwqgymwVGB5dZrjBb4kQAjcTSkcB6LJT9hqlr6DpvrAjur64gXk2cyt
+         MPnSONTMIVVQLlQ0VdncQLwIJvGFSnSSq4APsUIQIQeY9l9qFDEgTDVjrfzIWCR6otmt
+         eNQ8MQsNYAUV8F/lhyHqOI60tb4N7xZrnxCG7Q9qtJUbTUlu/ZbtQ6OqNvAPXB7ewAHi
+         RrZVBnR3shObdddd3QMefh81TzFx8uMxJ/d8BtXymCIbU5tC3vDQOLBeRgynScsvuiLo
+         KjhQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzehLXoTNgh1Ew5UEjTSq+bWKVNIqYHzEZ7gtaODcP3qzKgIlfc8Izpb3wjT9wrumgw7aLCTaMDjw==@kvack.org
+X-Gm-Message-State: AFq9FYIX27lQOslRtJkHIDh3OWHgnR7c8bF357rkMVEHx84GyPRaxRRk
+	93/sYekuVU19tphCfyPzDqRGer1Gw00S0wXi6VwZJWklJTsBbv3uyn0X3wqCWvsljQ==
+X-Gm-Gg: AYBFou3VENbp++06WBdGPVM/MklsfGOCIHXaD7OqVxpxX/lhZVPU9JT15EsK/PDELbM
+	dDNe4qAGAJiHoeoZjsPmQGRHRKAlHarfYCFz0oKM0S2PPdNB40KFzc5Q1iq10LxDLLW0rhMq22a
+	RQBJL5qbnr+Z1VVY0+HE6UCleAp4UBUq14NBWMSrBiPJf+pdP1YwK7SrnWuAKbx6gZ4SrFO/1VY
+	DNdRHV8ut3qS4GpLIajJaMnd9HyZJmZaWNR9J3zQttE0tUay8VYotaXhYBdofKp2y/xjMnFHPTo
+	xGFEtBk//e5VpPn3CsxD46V03CiPBxJ+aXCK6yepzqnCRadxUvTjujq1f+gwSkadKaSztp0RTTL
+	yZB1ClYNE1ms7XKSuvDcE8nK9CkMfqvMNPzhjCZ54ZOWAODRl29zF7gOtx/2HB+ITtMWbarlqWU
+	/oEvAqnBgl65HbW++SJLznEHYYzq7UWrgR3PCl3WTdxKQ4PMdx6SUgjTKhRuWc+gwwMWxSoA==
+X-Received: by 2002:a05:690e:4291:10b0:676:8641:27d2 with SMTP id 956f58d0204a3-677ac0944c5mr1330447d50.40.1790963819897;
+        Fri, 02 Oct 2026 10:56:59 -0700 (PDT)
+Received: from hamza-PC ([124.29.197.38])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-677ac63acc0sm1368439d50.20.2026.10.02.10.56.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 10:47:20 -0700 (PDT)
-Date: Fri, 2 Oct 2026 13:47:18 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Anton Gavriliuk <antosha20xx@gmail.com>
-Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org
-Subject: Re: Poor memory bandwidth performance between NUMA nodes
-Message-ID: <ar_rPzLhXRSA0AfS@gourry-fedora-PF4VCD3F>
-References: <CAAiJnjqz+OB+PmUQBENS8ThnWHSAFK=p3EA7KPsy5UeabQCn-A@mail.gmail.com>
+        Fri, 02 Oct 2026 10:56:59 -0700 (PDT)
+From: Ameer Hamza <ameer.hamza@truenas.com>
+To: ljs@kernel.org,
+	rppt@kernel.org,
+	peterz@infradead.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	linux-mm@kvack.org,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	stable@vger.kernel.org,
+	4ncienth@gmail.com,
+	sashal@kernel.org,
+	alexander.motin@truenas.com,
+	caleb.stjohn@truenas.com,
+	ameer.hamza@truenas.com
+Subject: [REGRESSION] secretmem: SIGBUS on memfd_secret() pages while perf record runs
+Date: Fri,  2 Oct 2026 22:56:51 +0500
+Message-ID: <20261002175651.811343-1-ameer.hamza@truenas.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAiJnjqz+OB+PmUQBENS8ThnWHSAFK=p3EA7KPsy5UeabQCn-A@mail.gmail.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: dtuknmbjnfbgm5cijmpdib8aim4uitko
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7F8F840004
-X-HE-Tag: 1790963242-39830
-X-HE-Meta: U2FsdGVkX18zYVHf2DabiS3OhOfXJFNRjBi6GGNYMcmPy/P1NOLisGNM7uctsjCH/9+ZbY/iM8T7zBJzwz1bDTM1i8FfmEdEb1llI7a7F5L90lGlYUjg7WG2u1OKkkQgy+G8vD6wZMDkfIfZSg9zNivuWGv09INsBKTZI2P5xvXTw4taztbptDVocfRN8JOsBS9LC+4E1emY/dSH2FDlc3geGkiiqCcyQry+2CPAAVbF/9enTyiGVPd2iUm7goAVcVfHHXcsIT6z0Nv0lC3W4CusYPFPF6tX0PMwdWGSp8Wn/aS1XXvC6yFiresbYpFaEExg+r7mRCf7UoeBSLbDy7qmqDgIOLbYSOY249DS3v+yMjR1S4teK2YskOCWH7Uf0vUHlX+DYYM7cvrna+qOIEAtuay6kwf/8gxGnu6HzovZNy3OyJM/1pPR+gmUhB4daehg2RL49XuGXeTAu/TjR1zQ8XyjAeIsgbR+Nb7VoeBj4vljId01WUCeeiLEE6kX4baHB7GesFRTJJPKVSQGAZDAb/YA8ugXs0YYR+pFjWKVbEW695NGN6f3vbeSza5/pz8JvN1108IC1LMVRAgH00za/R0iuOxkovk0R11L4VDz2nBHwJlCUPReV3k+8/Vd0yVO2gpqAXYxaJEeRS7Wo0nPNm26aeSKM8jNmecl1TFGfd7XQps8GXYNRoxwrs7sGOeqB4g1Vb3DEXbEDis9nRbhg13kXiDN1GFTQYgjTDlg30gvxpOI9Ab+p6D+NabIqCJVox7CGY+LJL3c9+qGXKNNJplYhnTuK8v7E61TsY1uSqYD0Hp/gxo80SaRfOtqz4tkhKNaelw4wKDQbxbVaU146wpvrgHdp2+GxZoYS5XfYG14ash7gOFAGDJyoWUdzIrM1aldKg/o9lliCghfc4rE8OxpfxQUzxBi9U9fJLO80rEsOzVYAoarS1DMynweLX2Y4ONKxMDkdWUhN9h
- zhIime2y
- 6T+7YGMDRQTpzHr6ibyGpsACtY10rMpQH0AW4lXQnTixt05on7IK74DTNKHvwrC0qchpMlEzfSrG9u23iOmdIcV85tX0Lye8dEHZX4XYW2v1UzbodvPcK/33Dfx6D334tl9AXzF1/K4z5Ke2lpO0/xKtaxwkpTjdAOpONQ1/h5OTYC5MXVQ8q4HxiVyI27zq0J7w9onjbWcRGKUm2vPJLQumlHOB3ABLvYRpxqTsRjxdFNqbMAwibu9dMJya5jF5bJnpF2+BTh7M8Sc1elxGmvjEcR/oh3+tsPmZPY/7nvmGsAwwY9OcQ5FesSaGZZsLuCzUj5igWDLEPX7wtBX4p5uAKrlQFdUvyof3Dq0LoXZu4GDdCxbenfXJItwLfcgthTPtbf7KsoNMr5ZQ=
+X-Stat-Signature: 86r8k78g1htarzk19datgq91psbz9hsm
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 251DB180007
+X-HE-Tag: 1790963820-81910
+X-HE-Meta: U2FsdGVkX190JEW99nxoDztlKn2Re0UyqeG/7k0ECuIdvHjkkGKXUUL7JzoDFqHQmT9dyB/ZPNa6V3iEPQ4VhxnUwKLu8ccf8gCFgQtRJiNvKIIfe5OlByhVIyn+s6vbZiOT4JX3ZDHX+YqcQQRZlCXeaSEqcKPysltI0qejHcRrGv6mX5s8zHNCoJphexjQugaIJIoPu3kPcvpKLjQ7ZOcmCRKFn0CncRxG389XTw+0WO11wnsG7UCJq6U1GzUXpY6CXyxBZoX9LHUkOwH0Ty8n/JejBWRsJeYvRfFq/n+x4mZBP8T3KDgZjuWLGTxW8oWVqRvH/mvb0xId+gVhabdXEIVMaOiJ/m75Ly/EoUEKpj+wCbdq1YHPReNWZdAMAuCDt3lRyz5vMXRPsSo109rmg607mKmRhx+7rnaGTXMYsAPtEd+mNZf9RQO9NTMHkW8PFHtmcMpuMaNbaCMafuqVs9xZ9sC0eYKFejflHYL1pHaWmBJEbF9tnLh3tGk8j+H9CDR+GLmVwM0cXsAp7s6ZxHr5rP0CGSzcjESwWb+pFHDZ1p92AwMscEYQg9SptdPgLGOmzuxcM6XEq5n1G2NOZProQq0Lcvi69c2k8asdeehCtjrXdqIrqCmcJCsIEMkx8sY4eTf74fNg1FzmDdlqaS+bP4mpt97YuMorqkDvXRcOkWRxPwZgRbiMEkUKs6zER/BPc/mp5GA22vAOyh3oHS68lMgBTwZ9QGOXQ70eXYdFzIhmPDWPrrcOVBLATbvWeQXXkCubM8/ftEFMh2a2j29lv1fduObN//WxFZ11/vswPXipN2FgdIvAKmZrblqGNQIloHrL92DIgY/5npoGAyP9r4XYM/hJN3bfb1yZfRHu+0JWDncD5fjcDyXccxnRkpv1U1OIMPGRNu9SxseT6Bg5oPnHAHjjYfmZUriVXcZlxz+Z8OFklXd0hY8XQlXtH25EiWpxB1Yl7XI
+ brfAquqF
+ 4wg66TUQ3DFKNkKhrfoGGjToLEysxboW6i1BfaPKiRYwULox6sf8nJScBqng2ySCSnQLKS3Uqw1MdF7A6ZnrB/sd2hWkY6wYFkAtWyco9IML6uyRzGV0qTgLWJ8sphNNpkROuxyjcUdgDiaEDdEFM12traXUHAtwyQFWZbVePl0saSCHUyzwEHSOVHRGphA+BACwu8hM/Laoz4PyOswzgCuZS1LuKh8M8MDfmtBZdc/YXOuSZdBab58AFQG09MUeg8dpgsSARgzyhv6ZqzJQRWAhX/829Z7Rf2E/g5W+2gZFCMCYmRX1oKqMaN6RGSd+pkJra
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,36 +129,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 02, 2026 at 07:16:12PM +0300, Anton Gavriliuk wrote:
-> Hello
-> 
-> There is Fedora Server 44 (up to date) on HPE DL380g10 socket server
-> with Optane PMEM DIMMs configured as system RAM for simulating CXL
-> type3 memory expanders,
->
+Hi,
 
-Couple things:
- - if possible trying onlining the PMEM in ZONE_MOVABLE.  This may
-   help avoid kernel data landing in PMEM which would be very bad.
+Since commit 97d34aa65c29 ("mm/secretmem: properly account locked
+pages"), in v7.3-rc2 and the 6.18.52 and 7.2.5 backports, touching a
+memfd_secret() page for the first time fails with SIGBUS while the
+same user is running perf record, and read() into such a page fails
+with EFAULT. This happens for root as well as for an unprivileged
+user running its own perf record. It reproduces on v7.3-rc4 and
+6.18.52, and the same test passes without the recording or with the
+commit reverted.
 
-   If page pinning is required, then this will likely not work as
-   ZONE_MOVABLE pages cannot be pinned.
+The commit charges secretmem pages to the per-user user->locked_vm
+and checks that counter against RLIMIT_MEMLOCK, with no CAP_IPC_LOCK
+exemption because the fd can be passed to other processes. perf has
+charged its ring buffers to the same counter since 2009, up to
+perf_event_mlock_kb per online CPU, and only what exceeds that
+allowance is checked against RLIMIT_MEMLOCK. sysctl/kernel.rst
+describes the allowance as not counted against the mlock limit, yet
+it sits in the counter that secretmem now enforces. perf record sizes
+its buffers to the allowance by default, 516 KiB per CPU, so on 16 or
+more CPUs one recording uses up the default 8 MiB limit on its own,
+and on fewer CPUs it leaves correspondingly less for secretmem.
 
- - Optane has like a 3x worse write bandwidth performance than read,
-   so expect it to be significantly slower.
+Reproducer, as root on a 16 vCPU x86_64 guest with the default
+ulimit -l 8192, while "perf record -o /tmp/p.data -- sleep 300" runs
+in another shell:
 
- - the stack below would suggest it's likely the folio lock.  You may
-   want to check whether the folios are being pinned and you're just
-   hitting a wall because of the temporary pins or some other contention
-   on the folio itself.
+  fd = syscall(SYS_memfd_secret, 0);
+  ftruncate(fd, 4096);
+  p = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+  read(open("/dev/zero", O_RDONLY), p, 4096);   /* EFAULT */
+  p[0] = 1;                                     /* SIGBUS */
 
-> 
-> 48280162400 lost: 0/0 drop:
-> Overhead  Shared Object                      Symbol
->   49.82%  [kernel]                           [k] migrate_folio_unmap
-> 
-> migrate_folio_unmap  /proc/kcore [Percent: local period]
->   99.52 │       lock
+The commit closes a real hole, unbounded pinning of unevictable memory
+by unprivileged users. The question is whether the perf_event_mlock_kb
+allowance is meant to count against the RLIMIT_MEMLOCK budget that
+secretmem and the other subsystems accounting to user->locked_vm
+enforce, or whether perf should keep it in a counter of its own, which
+would leave the hole closed and secretmem usable during a recording.
 
+#regzbot introduced: 97d34aa65c29
 
+Thanks,
+Ameer Hamza
 
