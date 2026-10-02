@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 933D7CA5FE0
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:29:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33144CA5FE0
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:30:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A47F16B008A; Fri,  2 Oct 2026 15:29:05 -0400 (EDT)
+	id 36BDC6B0092; Fri,  2 Oct 2026 15:30:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F89D6B0092; Fri,  2 Oct 2026 15:29:05 -0400 (EDT)
+	id 343306B0093; Fri,  2 Oct 2026 15:30:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E7BB6B0093; Fri,  2 Oct 2026 15:29:05 -0400 (EDT)
+	id 233226B0095; Fri,  2 Oct 2026 15:30:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C4C06B008A
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 15:29:05 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1CE61607E0
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:29:04 +0000 (UTC)
-X-FDA: 85278674208.27.0870F40
+	by kanga.kvack.org (Postfix) with ESMTP id F35E56B0092
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 15:30:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 847F91607E0
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:30:05 +0000 (UTC)
+X-FDA: 85278676770.08.5C68DC0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D214E40008
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:29:02 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EJ4LUrq2;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id AA89F1C0004
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:30:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UY1eYCoq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790969342;
+	s=arc-20220608; t=1790969403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wKiXHVPNbskbxRmcfJdeYAcs9CbqQ6iFfiXid0l2arE=;
-	b=kJLzNqt/L3e6YS/GzLW6bnbWLRI+az4IBpQMJL/F2gC5vz9JMuCIAoswKytBo1gRCI72aM
-	3HeaYqOytyiRtdfqDLqSEuWIy8cPoCMUZykphh7CKlJxrSWPOHiiHU1WBDxnIIyu+60XPa
-	fM/24WOLmcXB7vrihtM6XawoWIxW2Tg=
+	bh=T5Q1vlWTZYu8dcSVsk3FgjnrVw1Vrz/A7ClrLHICgII=;
+	b=dj4nOtfyyDvCAKQYoidOciH9V7RmZRMaXTHfmvYiyIT8oXt/Rz8yXPGD8yAPy54fNsDpu5
+	RWMrmqsQpSjJIeW30naNzROJz1v4W7XX6BD47QmuAFtmOF7CtSraU9SQ5eK5swg1MMcXQP
+	WIUwxsjQY+3eTzxdJ5tsQ6qu8KXs5UU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EJ4LUrq2;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UY1eYCoq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790969342;
-	b=h6WS9s/FakEat63Q7tAdI7JK5WtQPvo2Sl6NHClD2htt+YtcWe0bPI6ZzPqtPg4X56bEVp
-	u+ZLtUGQ0UmSJLbvL2ZV1dY+xDVVhx7bFzqHgV4EnkTnUz1Qsi4gEniM6lp4++9MtqNrPf
-	olRRtQG2d8TeoSa4vREi+VzW2NuaMiU=
+	t=1790969403;
+	b=RaQeNVAMT7UkyVPxLRLc8wTHta84vZ82An3rCCdtwbYDPpiy7M3X8F35VFMvhdLazinQUw
+	W7eH64Aku4rzku+uksb72b5MyxOa7XolFobU8xPxy4yAaZJcdj0GB7c995Z9wmu1sYUF3p
+	VOe29eVPVqgpYMAsHvIadHMXYuNy7Bc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E2C360AAF;
-	Fri,  2 Oct 2026 19:29:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A2A1F000FF;
-	Fri,  2 Oct 2026 19:28:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A58C60AAF;
+	Fri,  2 Oct 2026 19:30:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951F11F00893;
+	Fri,  2 Oct 2026 19:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790969342;
-	bh=wKiXHVPNbskbxRmcfJdeYAcs9CbqQ6iFfiXid0l2arE=;
+	s=k20260515; t=1790969402;
+	bh=T5Q1vlWTZYu8dcSVsk3FgjnrVw1Vrz/A7ClrLHICgII=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EJ4LUrq2ySsTcAFWwrouLXGqbGx0gDjPBo1eFRga3iviClLlVxzME6YVWlMjFIPJf
-	 AJO0MtJRNMpMl8g5ZZvH9/J/WQVhJjgyiJgLaSOeM848tS3ga/1aRE8W/HGuWIFGOi
-	 3w8HlOEnnbAP/tgVZOaS1498d2CkaQefzqB0yL4dFNIUIGTaWCmU2Crmmnj7IP170g
-	 N3ZhdXHW7v2IEWsut9D87g+qnfcybe17e4Vqg8V42vemd8hVcHaa66LZD2LNleHRQO
-	 6Z4ub+CVvhbbSGTeeligZmbHknC4rVW1eeAqxDv9wYzmoayZuNtgQNeKqA9kUM50Eu
-	 zOhAHpX8BuI3g==
-Message-ID: <f54d5d75-5cc1-488b-b640-76163419cf4d@kernel.org>
-Date: Fri, 2 Oct 2026 21:28:51 +0200
+	b=UY1eYCoq9AABTrmQZAVFGqeKp4Nz5nt8y9WFd4bbrO5p6Ohu03Cqb0vbTK5U6LHPa
+	 9Wxw2u4L4+KxiU2R6GrGCq14HFGEce94ZFUweEqJuSZn56X/LyR36uotcLAcmHwEBb
+	 sz78xKwiGgFhoos4IXo78QeLVjhY6Ny+yNLB09ocZQy/KkDGfV3lz98RJ0yWfP4ck3
+	 nDi8XrDub9buBLz1QyFaPOxlrTUSuw1d0+5lftDnlWo7YHILx8q7pKsSex2DuHeqUV
+	 ONEUhdyFeQqVLFyXD0ZJqjFk4ue1hn6SB9x0Ftv3962crofg8/sosyJq/tpZXg31Lj
+	 w07uyg/Xs6aiQ==
+Message-ID: <cfa883b8-3df5-4bb9-990d-cb7e165e37ae@kernel.org>
+Date: Fri, 2 Oct 2026 21:29:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 09/14] powerpc: move has_transparent_hugepage() out of
- THP guard
+Subject: Re: [PATCH v8 10/14] mips: move has_transparent_hugepage() out of THP
+ guard
 To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
  lance.yang@linux.dev
@@ -81,7 +81,7 @@ Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
  dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
  dev.jain@arm.com, usama.arif@linux.dev
 References: <cover.1789695931.git.luizcap@redhat.com>
- <05a71b6011a6eab7b096f262485fcb8b4987976f.1789695931.git.luizcap@redhat.com>
+ <13b8b68cde4d6cccd6eb9b73cfe083145bd1f014.1789695931.git.luizcap@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <05a71b6011a6eab7b096f262485fcb8b4987976f.1789695931.git.luizcap@redhat.com>
+In-Reply-To: <13b8b68cde4d6cccd6eb9b73cfe083145bd1f014.1789695931.git.luizcap@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: AA89F1C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D214E40008
-X-Stat-Signature: mmpjfpenssw6ju8p5frp3aqbaqhgop53
-X-HE-Tag: 1790969342-231222
-X-HE-Meta: U2FsdGVkX1/wM5hkqyafUM5cMSU77iLuk/SFc86HfzA6DVGZguvxoqTl3TUPe+1+4EOPOIQPcHOw4w9xn2GowVd/dLf3UJPDJfVR4Tmps1E+t6wFIM8PWaNK5pdqxHD8MX1HcCye60GEn7SVbUizoplYhsYpzEgtlYdgu7wWt7b1s+lI799bsQJe9C/88RCFFjssZi9sK6zMInvPpT8fVGEQRxjNal2uI2NCJTmUoEkVqxbtwJRt4jhtYphVGeXzaPGpeVxxRi8jI4V0xl46oAmvocNnh5GzqeI9jaj0AyvSjiWqqUiPvTo+8bje+02cJ8in7H3XgJPcI0NdbS77gVL1sohy+x4TMII8kqYVu3Vm9yYppFA63OSTEKguFPTsQ3X24dAsNxfpQwEA8ADRA2LnUwDy/XKODEDzCSLxiwYI31/qvDxE7g3R/p1XwxHsyWjsmqQWv+FFxcIryOKeL53gV4ZWeLcuLua9PzEH4HtHUDn8DLoRGAYk3O8+vhGOWteDuzzObQFTlh5ok6NQvCWizYcH7Ad6oKgIEfafEy7yLVMqU3pPdpdC0MT6uPsUdlIuvhbJhBz+0+WRbm6uGDFC8bqU8SKn9VscZA+0EzIFRdccw1F5x7ahbz5mwlJRv9HazKNla9jsvCsWKiUbDqHJwg9BF5W9TQp4H0WWrvuumQchyqHxd3DkdE+UgbfMs/dkydU5fiTMBdrbo8MYaGvgejWR9iSFWLTbnmR+VT4TDgVkA5CLrTU3omlsSSB33yqZqKtiJ6eykBK8+3XekBqImDY2zsxiMHDsZs2NBMouB90OqZFpzKOunI2/HeZdqwXlB7vGN69zaOXhf2KK9aj9eVARqwRfdtj79BWitkuYfpU87njxqVN9YD3vOYlbq1UcCrHi/VAXVR9L1g0KE2AMNxaYFNWjtvdDyvqT58iDBuavatnafvoYiP3K9nSJ4DE/zDYC+ZQMZA5fnhS
- WGFBtT4P
- 7pkFFU9m8rsnPJJI869Eu2BANfhkzdukWEavE4tXxeXwwXuLw2vFzfmhIMHn3kCB1m4MTi175mhxvXvlHbfIF1r6gfkrJ/Ucnozq2B0CEHbpjDw74NOMRpz1fs+WiSbGrKSZ7e0aau1yrmtpPWQ7B6o32yabCGf14bgmJvc+Da+2+G5DKMlzLzxoIWJcF26Ohllzq3EQaJhaYkj+JVVVnd4NhvZ0Se9oj34kQjurB/w19zSY8QCfbBNr0RoYCQ1DXIkhFR/+qkwBM7j/LtoeuG6usjHm/SYZ64NY5oNV6v9Vfb7iRoG/0f1J09xx9PR7/yRGmRWe/ePvzjqWBogQJ/724AjvLYfa6QvnQ9wnOWTfGvE0=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: t8imw8sskzyqj477m1mxq9r4hufprmyg
+X-HE-Tag: 1790969403-199825
+X-HE-Meta: U2FsdGVkX1+zsxrdAohGZO1F7sX8+PycPjPmc1tuk8OF4WB7PIAzXpyKifMdPIZU+tQyVixO323oJEZdEo4rqcEznDk0VzO9FTV7paSC6HmL7yArUMHncNW4lYgyOQrMhpPj43YIgY23IqK7hIKTn8lDRRfW7jDLnellrIGfAM9eZh90o62+++JlTWiMKp+E2Kq7Bq8e4+TWOMQNp/oEhTbs8OlGqE48EiWSvG9PSAJyH4BfgCcnjdZm0y2gCd1cXLCSsEqdy3eJHU70JZVbWbHOWjD3Xsi8OKjW32HeHB+XtXUoHi75PWGvElFqBJWPSJeNBl9w/T5UJSuynXMIus36rgGD+Nps2CVeoAO6ZqwPoj89TWRcu8HPmlmXIvl3gZL9CJRsIfHtkF2uX+CSp0P7oHkQ1Ag90XwLk7YY9+h6qGdjno36eP0GwcPee3ariptElj1O499Bi56Z8XzkebJey0+HmtAJhtI7as/FrwMLbKFsJsibss/zxj3YmDEStJ37hf/gUEuhKEQV3DIQ8Bu4C8BUVWIBzamINfK7CfpOsSx412G3LNZJPfqlwsH0s0erPb0bA1iqWZzUai7l7N+0KbSO0K2ZzXsUEBCzXl8EHzNyL8fhfot1scv5dCaoSpn1kabjMGmgnH3ciOw8VwMa/Z25PVHHUt7ZSwFFfPvym4mFz2BXgVW5hxTKSCCom54GS+KjuGK1jq5j3LYYNPa6X7BCjmy32aJ5IYGa4w/kMLjPnoKh6qTHEv9RkWDzW+MDW6bXRiUFTihv4tuOeQw8G88Q/uqJEKLrtkIJ160du4hcyHUXRnU6SSDA2cSjBv11ALBbL97lWU//qivChZfIkfzCpxoHoYqWYfptDgbRYbZTCRU0C+/kztkYvQ9C9TY9r4jCk7grq6ShvGOt2jGUgDRurNVFYhpDsBEgGfmvAaxdOr8Ne+nrwzrCmlhHyhdBS2U9O9G3pW41d4P
+ h3pXuRp2
+ TTXhFJE5ITWSn5Kt6AXiypt/Rvj+xYHBwPHtSwQQQDkqgMvNpxcEB27pwG5WbSKFJNuRNUk+ILWj2Tm/XGIPywaDMejZIe43+NWnQ0Hs8uFS/Jlf7skNN/bLsJVhpTXabd6BrcJe0PVf6429l64YQ4/QdRTofRbwd6LBdmuFZHggoxP09wUq18x6doLPirLg/7BgRzg2uKj2vGM6Myam4MyYw+45vNbpVYsFDH5XVk2ljGpwdkwygyEbpmzqZ8Qf70iYiV6v/fS/SRXhmEXzjbqB2ma/R2XBzhuVlEyKy/xNWtqNGTa411VnYPQGQC5pR964FtS2yG/XOuFo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,80 +151,10 @@ On 9/18/26 03:45, Luiz Capitulino wrote:
 > CPU supports PMD-sized pages. This API will be based on the
 > has_transparent_hugepage() implementation but will be orthogonal to THP
 > and therefore must work when CONFIG_TRANSPARENT_HUGEPAGE=n.
-> 
-> Move its definition out of the THP guard.
-> 
-> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
-> ---
->  arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
->  arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
->  arch/powerpc/include/asm/book3s/64/pgtable.h  | 18 +++++++++---------
->  arch/powerpc/include/asm/book3s/64/radix.h    | 14 +++++++-------
->  arch/powerpc/mm/book3s64/hash_pgtable.c       |  4 ++--
->  5 files changed, 20 insertions(+), 20 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-> index 8e5bd9902bed..79511e6abfca 100644
-> --- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
-> +++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-> @@ -165,9 +165,9 @@ extern void hash__pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
->  extern pgtable_t hash__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
->  extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
->  				       unsigned long addr, pmd_t *pmdp);
-> -extern int hash__has_transparent_hugepage(void);
->  #endif
->  
-> +extern int hash__has_transparent_hugepage(void);
->  #endif /* !__ASSEMBLER__ */
->  
->  #endif /* _ASM_POWERPC_BOOK3S_64_HASH_4K_H */
-> diff --git a/arch/powerpc/include/asm/book3s/64/hash-64k.h b/arch/powerpc/include/asm/book3s/64/hash-64k.h
-> index 7deb3a66890b..a4a44a112ff9 100644
-> --- a/arch/powerpc/include/asm/book3s/64/hash-64k.h
-> +++ b/arch/powerpc/include/asm/book3s/64/hash-64k.h
-> @@ -278,9 +278,9 @@ extern void hash__pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
->  extern pgtable_t hash__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
->  extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
->  				       unsigned long addr, pmd_t *pmdp);
-> -extern int hash__has_transparent_hugepage(void);
 
-Without some of these helpers in place, I assume actually using PMD leafs
-without THP would require some more work. (which is not the goal of this series,
-just asking).
-
-I do wonder whether the architecture should instead simply say "not supported"
-if !CONFIG_TRANSPARENT_HUGEPAGE?
-
-That should still enable your series: using mTHP without PMD support.
-
-[...]
-
->  
-> -static inline int radix__has_transparent_hugepage(void)
-> +static inline int radix__has_transparent_pud_hugepage(void)
->  {
-> -	/* For radix 2M at PMD level means thp */
-> -	if (mmu_psize_defs[MMU_PAGE_2M].shift == PMD_SHIFT)
-> +	/* For radix 1G at PUD level means pud hugepage support */
-> +	if (mmu_psize_defs[MMU_PAGE_1G].shift == PUD_SHIFT)
->  		return 1;
->  	return 0;
->  }
-> +#endif
->  
-> -static inline int radix__has_transparent_pud_hugepage(void)
-> +static inline int radix__has_transparent_hugepage(void)
->  {
-> -	/* For radix 1G at PUD level means pud hugepage support */
-> -	if (mmu_psize_defs[MMU_PAGE_1G].shift == PUD_SHIFT)
-> +	/* For radix 2M at PMD level means thp */
-> +	if (mmu_psize_defs[MMU_PAGE_2M].shift == PMD_SHIFT)
->  		return 1;
->  	return 0;
->  }
-
-You are swapping both implementations, which might create some unnecessary churn
-I think.
+Same thought as for the previous commit: it would be fine for now for the
+architecture to simply say "not supported" without CONFIG_TRANSPARENT_HUGEPAGE,
+right?
 
 -- 
 Cheers,
