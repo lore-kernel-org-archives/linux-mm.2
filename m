@@ -4,120 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 638C6CA5FD9
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 08:13:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C6E2CA5FD9
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 08:16:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 427A96B008C; Fri,  2 Oct 2026 04:13:25 -0400 (EDT)
+	id 1E3E86B0093; Fri,  2 Oct 2026 04:16:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D8B46B0092; Fri,  2 Oct 2026 04:13:25 -0400 (EDT)
+	id 1BBA86B0095; Fri,  2 Oct 2026 04:16:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C77A6B0093; Fri,  2 Oct 2026 04:13:25 -0400 (EDT)
+	id 0D0D26B0096; Fri,  2 Oct 2026 04:16:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 04C896B008C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 04:13:24 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7BD4C1C35A8
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:13:24 +0000 (UTC)
-X-FDA: 85276971528.22.5C49905
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B98A740009
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:13:22 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="RtnL/PuA";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of hnkz.64@gmail.com designates 74.125.228.42 as permitted sender) smtp.mailfrom=hnkz.64@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790928802;
-	b=txt1BuINTs0FqnPCPM4m0Cn0dqGEWKA+yO1VosuEjGXmCrCZMkg2/sNjTih6bvB38FAyN4
-	waWouJzOMzTR6jDUNFQpeFYDzynoeLRPWLiD5vk7EXl9bHDFqGdDNWykMgWtckVvQ8VJxO
-	guw9YLPuVvZfP4t/RQfbmqfQcAoJW9I=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="RtnL/PuA";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of hnkz.64@gmail.com designates 74.125.228.42 as permitted sender) smtp.mailfrom=hnkz.64@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E01256B0093
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 04:16:20 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 742F5A0675
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:16:20 +0000 (UTC)
+X-FDA: 85276978920.30.8B06AEE
+Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E2D67A000A
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:16:16 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Gnkv5q6o;
+	spf=pass (imf15.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790928802;
+	s=arc-20220608; t=1790928978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JRkehR6QhzTUqhAnAiS8EO3o0r2RIFdddFBrAAp0J8s=;
-	b=xWqexn6zGqNSS9e8fLC3P8feAfmL2D5pQ9vD3uLXWg6f4HhxJxkPlSq5CvhVBhwRy3zkke
-	WNl6RR0fZOSEmHsYuAUxErV3qLE3Cf8mHCgvq07+nCbPo/z+Ll1ySdZQDdyp+2E13D3NbF
-	1CA0ZpV7uxH/pW2JmdH0h+Vmlp5QdIY=
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc797656e36so2606557a12.3
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 01:13:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790928801; x=1791533601; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JRkehR6QhzTUqhAnAiS8EO3o0r2RIFdddFBrAAp0J8s=;
-        b=RtnL/PuAit5ZUzZkwxD71rjvZ2b5/KRaoaK+JR6fnsvbvEb6OiNpvbZMFxDmdYCgGo
-         uBdVoxZXEnfdXACDqBTWMJbpZWpboD+fU1YsMNLKQV+Yx7nTrRuAGVlL6zOau3Bti6Rc
-         ULKt66ON5lFfxRglc4vveu8xdrqeRICylJWOzDmJxzrNXNSdC01ru5nXg5C74Y9Eyozu
-         fFNPWRbG1gYemH4Nlv4VMsV5xm+ftgynSey8M7kX6OEySQXeD6TIj5090JtVyjVEXslq
-         ShJLJnOI8yuqmFKL5A/RF9UM6DHoJMTOYbID6XW4rJbNx0stGZtECXSof5eQwHyvDsJj
-         hZNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790928801; x=1791533601;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JRkehR6QhzTUqhAnAiS8EO3o0r2RIFdddFBrAAp0J8s=;
-        b=k+FVOhBTcnoKcHBja35DSRBl4mZ4OC6RsihMDouSEHEP3f+sO4oiqdvlMdEGH0GSSp
-         /PbsEXmc723puvMy/DU6LlIzxLlb3h39YHCogQDcskmhfQ0cuzmvTCTZ5sd44Huyk/cI
-         REdoMGJ9xHkQxuP0xxoz4Y6fVN9er+0wovDFCXAievw7Lv8E3bc5BeMkrxBm5jvxGkkn
-         u9ksiE1vWEIw1WhgS9vv6fUOz0nNJ3K+JptERGo+M+Q+MsnsuP41/kWK4Ck37G5ut4GP
-         yX1P1kELrfx6BKNggkiGJmm45FQD2Rmdg2A/QQnOFmoaOFrrGxbw2sTJhDPHU707utt9
-         ivUw==
-X-Forwarded-Encrypted: i=1; AKwUvBxV89yp3caZxu0fmhyXKRnAVWCuC/ZeuGZpFlMX5c4/bSEDNXbK6G5ZV0TfFbQpEg+E9DERbM8AVA==@kvack.org
-X-Gm-Message-State: AFq9FYIF8fy9NFOfo6HSMRg05hch1ypIrc2uN5CiyRRgj1+t1tzvM6Lh
-	FdYlarQ3tILYlUx6GpVZwiaox8yS+5jw44iOP23Sv6nSHTxSkEzIyRaAVUZfJQli
-X-Gm-Gg: AYBFou3btNSeVH1m+qV4FWEWRcsZibOQtkMryvn9r5D/w3LpFyl5EPmIHxP3KXeGLIl
-	eyozbGWq+s33RIF4SEicSH0ZUE5PWTXDiIVb8pa4GOLOrggkVg+A/bk1ZLrTqJF3z+Cg9d2UBdP
-	Ub1aaIztreEKLdLaHHGmvXURFDostSENLTs+pK1SqiGq1LugeQcolAJItGCXJ+wMZU+fS7vnSFW
-	t35kMPM9P9q6OKgbXEfPXZWg2YO+b3GV8/McTPjrNr1bg31rgH5u3G0EsawYYIR0ZmDyFhNyAor
-	azqFIfRo8zO34X/CH1yGQpsI+FueMZs1pcygKlgzBojAUXXW3B0MqJg1tVPQXtpO5ZtKdY4409/
-	L8DE3OibvP4hZGdWObbAyU/atc/lWAL655SRzsgyDh5Brg+VCentHkobWXnqvJQP7s58P3+PClu
-	RbGU1r4PmcFwVjBfDtWXH9jOL96UWkDANZyS1Yo30bnV5UezlR0mg25bvTGeFJ3GMyooepTmpvB
-	r+45Pg=
-X-Received: by 2002:a17:90a:d64b:b0:39d:f08e:e6e7 with SMTP id 98e67ed59e1d1-3a6ce3570eamr805756a91.9.1790928800962;
-        Fri, 02 Oct 2026 01:13:20 -0700 (PDT)
-Received: from hnkz-ubuntu-server ([2404:7a80:860:3300:f22f:74ff:feda:3295])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6f8525c0esm692758a91.4.2026.10.02.01.13.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 01:13:20 -0700 (PDT)
-From: Kazuki Hanai <hnkz.64@gmail.com>
-To: hughd@google.com
-Cc: Kazuki Hanai <hnkz.64@gmail.com>,
-	baolin.wang@linux.alibaba.com,
-	akpm@linux-foundation.org,
-	gabriel@krisman.be,
-	andrealmeid@igalia.com,
-	brauner@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v3] tmpfs: fix unicode_map leaks in casefold option handling
-Date: Fri,  2 Oct 2026 17:13:03 +0900
-Message-ID: <20261002081306.637148-1-hnkz.64@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260827152516.805622-1-hnkz.64@gmail.com>
-References: <20260827152516.805622-1-hnkz.64@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: zue6roi55ad19biocs1z7rawcgnsmuzc
+	bh=erijjSKK0F16UjGTpa1TwWvZ6Kt00yN1jhH4DWA5qn8=;
+	b=opacOYOrdbUEMTsua5DD6VgegsyEHzFKnpSyJUw9XZS7AwW5K+2eBEhi1q/mQ3B0JoQ/M3
+	u7HMQUNf4VP7MIX0mmSTSttl1Z9KFgIC6YgNAcfb6BAdZ/hGwGXUvvEeGA0HWXBPo9Mgs9
+	ZD0A6XLNqKnLT7VvZZtmD/O93qg7T/Q=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Gnkv5q6o;
+	spf=pass (imf15.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790928978;
+	b=8JXO0ecITEonSa2eKN1CaTlsgIeuOMHt2YXDEtcEbPGjJzj25toaYDc9OY5f6IxAPOyJkX
+	RuJyLnzLRpPFdAKfqQUyl8/SCemTmGDHoGm6JCvDH5FzdGH9jjW8w3XjAEPmJ+TH7q88ll
+	3o3/ryR+kJFvpa2Fs79WgOMqYwRZg/M=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1790928972; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=erijjSKK0F16UjGTpa1TwWvZ6Kt00yN1jhH4DWA5qn8=;
+ b=Gnkv5q6oaIA7vzSUYJ/bCO3LDfFmUZrZ5DI3Yg+LJSThnLIP2A69xJkstQfmc5ucpmuFac
+ S5CSD+6enTLkEyPtyWswxmklEeEvLYIT2Vw537SYcCKZursDeBVqsaas9ZavFCao7x/XsB
+ DB6dj6u+8gOferZJ2HvTGgMgLRQ6FkJ+dFFLjY7k1qGxsEFw3zSc4KS3ilIRqYyXZ0CAvc
+ lgJm/7nyKuVHshm/L/oUaqxo+J0ttmVGp/CrJzR7hQEUqVTtqetVCniSH1IbB0MWKbMykQ
+ FkYuXpEhCXl2VHrfImAGr/zOa+9oXQMMzHaj4zUaGGk5fo2qwqcia0ZyvuwgFQ==
+Cc: "Zi Yan" <ziy@nvidia.com>, "Joshua Hahn" <joshua.hahnjy@gmail.com>, 
+	<akpm@linux-foundation.org>, <ljs@kernel.org>, <liam@infradead.org>, 
+	<rppt@kernel.org>, <mhocko@suse.com>, <corbet@lwn.net>, 
+	<skhan@linuxfoundation.org>, <ying.huang@linux.alibaba.com>, 
+	<apopple@nvidia.com>, <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm/numa_balancing: allow migrate on protnone reference with MPOL_WEIGHTED_INTERLEAVE policy
+Message-Id: <cac17315-7157-4f97-8ad4-98ef268f1b8a@bytedance.com>
+In-Reply-To: <44d15437-6aae-4d7c-bfd4-296276583826@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Date: Fri, 2 Oct 2026 16:15:45 +0800
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
+References: <20260930121154.687586-1-joshua.hahnjy@gmail.com> <2e3f12b7-0dac-428c-b70b-07e1f63de028@bytedance.com> <ar0fURbLDPrphYMY@gourry-fedora-PF4VCD3F> <A005B05D-A85C-4153-A65D-0BDF9D8500DF@nvidia.com> <280965b2-c6eb-4f01-a0ac-c4fb7e518f97@kernel.org> <ar5eC22VfSFlMw3W@gourry-fedora-PF4VCD3F> <44d15437-6aae-4d7c-bfd4-296276583826@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	"Gregory Price" <gourry@gourry.net>
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26abf684a+3af7bc+kvack.org+lizhe.67@bytedance.com>
+User-Agent: Mozilla Thunderbird
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E2D67A000A
+X-Stat-Signature: u9h33opg6m1bz3wo4fcrhyoscfqfy7x3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B98A740009
-X-HE-Tag: 1790928802-214067
-X-HE-Meta: U2FsdGVkX1/keQQapzWPbh2mLeFBkMB7Y02sWWNLcVEpXMUVepSHjS+8ESMFQmOa6t6saVL/LLQ1vxFeFQ3fbQWrrkMdOMYfGdQhsQWfqBgE7gZWx0d0V2M2dYodkK5hrGzYqx5LmZ8k+eXyJdcAC7t+KM6F08bEW8DQP2Iu2FxGHwW0pW5Ik+uhXR2rYEOTDjn8+6YGpY3nMAH0w3Qd3rZJNlQ5baBwSJKfeccLfQsLRC889TFTw/+cy/BmOamljk8uVUtIM/Q6XWfsUgdfX5VjYO6eKAVWe9Db1h3DGWT7ld7t6CvXVKmw17iPs3oIagSMadZwum+DdztJ19roDCscRV0eB9JJ8T7M+3eWT77rThJB2YejCohx0KRJM7XQvp1rmNLhOyjCabPMIgltj2WJh4VKXzp0GRlz8A59Vc7E/uYvTzdtMe9I6ENRE9I9O++wkz4oC+BWMknqexByj/bk/AnXJ8+slGgMHgIpiBlXVRjAByYaV64/HApv/sojCQ+K5KHgWgNo0+we80Guww+eW3jcUoXRSqScaHYDyKm/ke6H6Jw6o5pGFaIeP+fXPjop7wiKOOWBhzzolVWxzREOYTEl/h/gI3zHgKN4BOosDFHBwjrrQrd3cTwhS6E09YPKniEWTOQNIaC3pYwC0OGenEkHzilqPIHIn8POHH+LYuefMLAttTF21PZodP7JaPU25GlFKt0iD5PDafvEZv6ipfdPQpGMJHMZ0pHQEc6BYvuO+l2VA+q1RHMgv+MCBQBFoITvZk3QW6YXGrXX7GaJtdVt2pHMJXpmGdtFmZC5SdYFjrA5zS4s9C/cjr77wfjEkQzBvnRFvKxQ3fhZuODuXQXvg4tBPU51pOgVoCi3jm+EsR4QLjZ+MnQce3UbLM59kPRpzjyX/7+wj9IJ1RdMSgCV20jGjNCgAHKmwF8NuX7Fwl1xuVUAZAawCZnUwYQXU0vPImaD5EVcEh+
- avdmf/uu
- FwtAQtWJYwTEfE1wFtCNvafFhnIlZG/AOKpAzOZMPGg3KNWwiF7iefVhJj5q2NxE46dd9KMVnKle4aNiYUTVur77GCX2j3Fi4Vqp23eE8THnRluVl5/0ySGsPoAj5m07BHOeYRsMUbBY7mGOdB8ELOyJE78ZLg2j4y9zQq1rfIU76jssLPO2lPmPNzDE3rOA6uWjupoLc3Alg/qdR0xb1Obd71flrjbS/RuZWmcZOhWeqenhgy2DTIt5zESGl1Cvd1UJmNQbhgWqIM2loT9DPErAYAKPut6o037MbKMDid6f6yTHPKqlQJnLy5uZTpf6xtUjEJqGI429au5xWF7aSYZxsYgIsyPnW9v+DaQvQpUBmu5wrLk/Mnnn884AROgK6nT7gw0UUQLbJt7XYiIpc9jVKTY63p7HqF5pSyFzFbkNJ7Agt0Xux+VWpiV6fEvDdElh+gGMkO7oeImCShDapj9GmEU7nKncZTiagWmRXPDTyv5Polr+dIywhm5yftbIqLxeoKFmXFElLL2BPWy2qQ6AmdOcj+SLS/+EaBCCDo9Y5ve5yWqQxUWwGHw==
+X-HE-Tag: 1790928976-205116
+X-HE-Meta: U2FsdGVkX1/XK7P+Oja0ooTN/u+9OVPnRul9y5B1EnLTqhixVtGab9XvPLNw2M/1Wmu2njzuwouFOq6gFNKVPiMdhpnImJNL60cj9IfspXX2V028DdlHGeA9KwUretl/5ldU24Af5XFUzV78HPmpOJOLlFvC4LnHBw4dGj8n9p4g9UgdWKZAnlOSLmBhNQKNlH6e1KAwPhXomlbsmlWHOp+sCBy5VGSILSJRolJVpmajfDC/AXcsSkF4yyqoOgkCCxyRg9iTlZa7nLG+OFuYzAzDA0PbSkfOm8epI/p4LFm1jstVeCHNLQz1B1SJ864sBIvUV6Ll6DBMz5NBRw95N3dbCGJ74HohHUuEqbEtyWEp3C5KKW8659ASoMRP2cNhWePxrBr7jGABQlRUp5FOs0Ap9cOmPZNqpWWCRsunQZa6lUs9GKi794mblNrOuyLISNagJyileIVoeERoSnFriy6TWUXtZHD/I6p0bx3eRy9c0NlhnhL8KYl8oqRkxtLGLVIAVIYrdMfay6Z9uVB+klIHMCpwIBSTrY7pRl4nQN/BrhcaM8jvpSM7RiGZxEjQesFaAy6ZUi+XOMMEzQktPZTsK4ar7Bsw8e2ZLwG60dgp1fV6rIY4LB+hvXEVe9gAXQCSqntbu1l+DHMs5e43H/91y6zmlV2890PEkCTPsZDNEA2HhwOIXQFcjeTEu0lAmSOJZxuxxTXZtxlVec0HJc5RUiGNQbvnXxmdU5sQwiaM82EEVOatNVVFKUNaOapvbor3QdkJ18C1FX3d4bo+1T1g33Bzyyh3zEAWOJnmpGkNp78wot0hV49t3TkPnz6VFhLw5IBk+tS49F5Ha70AC559dAMlJcvbvf/bTZFQGyVxILlBgVQP1UKdqXJxDzbVzWRjHL30zO+OKNSLP9APOWMjgZwEC2LDYJe9XJZdcx//AGaBxKDmXFbuWgm8XjkOgpOLBWv38EaytYeEZfE
+ V1LfNvWH
+ HtCCPWtpvEcbUmpwrhYjupOM9GUnyfSwTDj1reBo7JzV0CIXbQFFGRrTpL9uumc6TRhIUmDIkWgWeP2/FESOFeBO83WpRODKdRzI20VF4ooZh1Z4lw/oJEJJ5azDOWABnXViP14+F3StnsxdJoGUv+7Y4sgwqIRPhbKSBGeLnnJh5/I7bj4+ODnDf2m11wAcnCiPj7XheWISmbGcm7Qp41VT9bErAEldWR3hn/B8sf3LRfhZqkmWq9eM54cM+/4zB/iiMBwiu2Cfd6u4bZLim8r7DJV4oCEfCuvbz4ErDU5cqz9xdESoA3C4iVpU8DIlTrMw8Qe0qkOeNvkaah2voCTYTlnjZST18zZjuRf6n3vNIy7tYyYs17fOplV6R0UfjkhUD2EVfwTVB/Sg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,72 +94,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-shmem_parse_opt_casefold() stores the unicode_map returned by
-utf8_load() in ctx->encoding. A filesystem context can receive the
-casefold parameter more than once, and a second successful parse
-overwrites the stored map without releasing it.
+On 10/2/26 3:56 PM, David Hildenbrand (Arm) wrote:
+> On 10/1/26 15:26, Gregory Price wrote:
+>> On Thu, Oct 01, 2026 at 12:54:22PM +0200, David Hildenbrand (Arm) wrote:
+>>>> If this is a initial-fill problem, can userspace set weighted interleave
+>>>> initially? The program or harness can observe memory usage of the program
+>>>> or related NUMA nodes and switch the policy to numa balancing via
+>>>> set_mempolicy() or mbind() without MPOL_MF_MOVE after certain threshold
+>>>> is met?
+>>> You mean: use the weighted policy initially and then switch to a NUMA-balancing
+>>> one which doesn't involve the weights anymore?
+>>>
+>>> That makes more sense to me. Although I struggle to see why an effectively
+>>> "let's put random memory on slow and others at hot" is a good starting point to
+>>> later let if be fixed up by actual balancing/tiering.
+>>>
+>>> It all sounds a bit hackish. :)
+>>>
+>> It is a bit of a non-combo (Nonbo).  You're using weighted interleave
+>> with the intent of spreading out the bandwidth utilization (and maybe to
+>> offset some reclaim behavior? *shrug*) but then undo all the placement
+>> with tiering.
+> I can understand the "random initial placement will help if you cross your
+> fingers" argument from Zi.
+>
+> But then the question really is whether the app should then change the policy
+> after the initial placement was done and the weighted stuff no longer makes a
+> lot of sense.
+Yes, that model makes sense if the application or runtime can
+cooperate with the policy switch.
 
-The map is also leaked when an unmounted filesystem context is freed.
-This includes the temporary context used for remount, because
-shmem_reconfigure() does not take ownership of ctx->encoding.
+One limitation is that this is not fully transparent for existing
+workloads. set_mempolicy() updates the calling task's policy, and
+mbind() updates VMAs in the calling mm. move_pages() and
+migrate_pages() can move pages of another process, but they do not
+change that process's future allocation policy.
 
-Reject a second casefold setting, clear ctx->encoding after transferring
-ownership to the superblock, and release any remaining map from
-shmem_free_fc().
+So I agree this staged approach is worth considering, but it also has
+some deployment cost for workloads that cannot participate in the
+policy switch.
 
-An unprivileged user can repeatedly create tmpfs filesystem contexts,
-set the casefold parameter, and close them from a user namespace. This
-causes unbounded kernel memory consumption and can result in a local
-denial of service.
+Thanks,
+Zhe
 
-Fixes: 58e55efd6c72 ("tmpfs: Add casefold lookup support")
-Cc: stable@vger.kernel.org
-Suggested-by: Gabriel Krisman Bertazi <gabriel@krisman.be>
-Signed-off-by: Kazuki Hanai <hnkz.64@gmail.com>
----
-Changes in v3:
-- Reject a second casefold option instead of unloading and replacing the
-  first map, as suggested by Gabriel.
-- Reword the commit message to describe the remount and close paths.
-
-Changes in v2:
-- Keep Fixes, Cc, and Signed-off-by in a single trailer block.
-
- mm/shmem.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 848316eaa7f4fb..1bd004c3dde20b 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -4509,6 +4509,9 @@ static int shmem_parse_opt_casefold(struct fs_context *fc, struct fs_parameter *
- 	struct unicode_map *encoding;
- 	char *version_str = param->string + 5;
- 
-+	if (ctx->encoding)
-+		return invalfc(fc, "casefold parameter cannot be specified twice\n");
-+
- 	if (!latest_version) {
- 		if (strncmp(param->string, "utf8-", 5))
- 			return invalfc(fc, "Only UTF-8 encodings are supported "
-@@ -4998,6 +5001,7 @@ static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
- 
- 	if (ctx->encoding) {
- 		sb->s_encoding = ctx->encoding;
-+		ctx->encoding = NULL;
- 		set_default_d_op(sb, &shmem_ci_dentry_ops);
- 		if (ctx->strict_encoding)
- 			sb->s_encoding_flags = SB_ENC_STRICT_MODE_FL;
-@@ -5095,6 +5099,9 @@ static void shmem_free_fc(struct fs_context *fc)
- 	struct shmem_options *ctx = fc->fs_private;
- 
- 	if (ctx) {
-+#if IS_ENABLED(CONFIG_UNICODE)
-+		utf8_unload(ctx->encoding);
-+#endif
- 		mpol_put(ctx->mpol);
- 		kfree(ctx);
- 	}
--- 
-2.53.0
+>
+>> But, in defense of the hackery - I have seen strategies like this work
+>> to optimize startup times and then let tiering optimize runtime.  Phased
+>> execution gets funky like that.
+> No doubt about that.
 
