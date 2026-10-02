@@ -4,142 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B51CA5FD9
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 07:56:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58BC6CA5FD9
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 08:10:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F2746B008C; Fri,  2 Oct 2026 03:56:48 -0400 (EDT)
+	id 226096B0088; Fri,  2 Oct 2026 04:10:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A3556B0092; Fri,  2 Oct 2026 03:56:48 -0400 (EDT)
+	id 1D6A26B008A; Fri,  2 Oct 2026 04:10:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 392A06B0093; Fri,  2 Oct 2026 03:56:48 -0400 (EDT)
+	id 09F6E6B008C; Fri,  2 Oct 2026 04:10:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 138B36B008C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 03:56:48 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 98388160633
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 07:56:47 +0000 (UTC)
-X-FDA: 85276929654.13.DBFE7BC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B7E511C000A
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 07:56:45 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EQ91VK2+;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D86916B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 04:10:26 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 61A73A0676
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:10:26 +0000 (UTC)
+X-FDA: 85276964052.16.50E79FA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DA29880007
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 08:10:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZkKfj52w;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790928624;
+	b=gRHl670Yu/KofR3pX9/AqFxM1gJ4j339/hnHw/HyjAdQidmR17cp34dVKQIhAvOaBgO284
+	WPtzjpPWMjlGHHVk5OqhJdnpFp1oS7UzrxExLjeqTUWPFwlBDwCYtVkTTe71fOaBRjB6eQ
+	TM5ntEKKCtq4XeMRnCN3NWFb2QCMVNk=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZkKfj52w;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790927805;
+	s=arc-20220608; t=1790928624;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CEkWEbF0eWef2VJO7bWrlTNl1U8dJ/sz3+7inKUMUkw=;
-	b=b9I/O5PboX/83maNdd5IOxCsOivEauaQUWk3g9oBslMMk8WQwi3LyNT3p8RY29GdBpc4Gv
-	yI3CG3/hd1X3/zmnhsnpqn+h59quit/vCt3lQV+S7TdTTJvI9QtwkHNOkwuIr5lDumSjQJ
-	km64Ld7FBjR+Xrb4MWY3J1bhozEChP0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790927805;
-	b=14EOtN1xNPHw4TT+qbBuqNjgzFm8IEdxw64fJE3g/PuTOyDIYsTZ9aOVVq3oljnUp4idau
-	DDXFhQtwGIB7SHOml/LOdCUK4yMYM/JiuDn26W3uXtaiyWv2HsYpNOlBCfkOf7UqfUtXJp
-	jObFVAxSyMIOYLfoI+6FV/vacLF5LhQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EQ91VK2+;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=BIHFM4YkUGLtT//ijgD4g07c9OxY00eHXMaA/kwG2nM=;
+	b=DzkCsHTVR4bzHL4yPY5Yz5FY3SuYxY9iBjLsD+pReiWvnVSpPjjZ7P08LsZI+6VbN4Vtsk
+	J5mz98pZV6VH89wjzIeV/kgIBCB6XFLIwYw+x/WWcnm9AJl81Qh09fzM8pgNPlCJiduIFi
+	ip5/6sOR8268KSHBRQyypbCQpciE7JA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 942EA4393E;
-	Fri,  2 Oct 2026 07:56:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FD91F000FF;
-	Fri,  2 Oct 2026 07:56:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 01FF160A5E;
+	Fri,  2 Oct 2026 08:10:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD511F000FF;
+	Fri,  2 Oct 2026 08:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790927804;
-	bh=CEkWEbF0eWef2VJO7bWrlTNl1U8dJ/sz3+7inKUMUkw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EQ91VK2+BapVfmlNmGOB3cBrGS0uYiybL6rZ+zR2N7XSMIyvRWsYaK1X6j1d0ksJJ
-	 WzFtg42cKFOm6Iz0X5D44fWVtsaCvVaBxDfnKwKRcNHhx9mhcA6UWOsEsQOeKqUpOp
-	 xiQm/EshPiBxqnjjYipQ31j+o0YJjTdAoJAc0ic+SsTk5LRCBmrqsLgJ+TM2bMgixC
-	 37Wx9BliiaJhDNUYuLoAStPxjVINOzmLHXTi0vNoPpZEC7J8Ch6W5Yf5oNaVXeWXQm
-	 aryC884o39Ko8E6iAhQBiKJZKgvPaqvf5uDewF0RqF4lA1LLcE5VMaXZlv+rI1cEeG
-	 smlxu332w9sMA==
-Message-ID: <44d15437-6aae-4d7c-bfd4-296276583826@kernel.org>
-Date: Fri, 2 Oct 2026 09:56:36 +0200
+	s=k20260515; t=1790928623;
+	bh=BIHFM4YkUGLtT//ijgD4g07c9OxY00eHXMaA/kwG2nM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZkKfj52wi+HBtm4OSS7+TGHkipMV+dWZaiDRPkTP1OUg2cSZgWi236Wj6NYUE3zhP
+	 cE/wLWLsAeog8taVdUpM5sc8E4yCibHvboHgqOHxAEG+Y5Z/wzqywqWTkRHX1PX8RJ
+	 Y6MrqkaPJzwXRfn048jxdDXzNp00NQ6UuQjAuOmLFP1bfYlCjQ7TtK0Qzpq09+/X09
+	 mUlW0HPJX0OTnzNLrxPH7PlPg13Ld0kUi9GjYTFEQg80JgThJuOQqXg7k0VabrPqqj
+	 M9I4tH9JjiDYoMcnmK8F+JM777QiRIOEKoJxCdsUEHTj9cABRLPo4injcxApsYeJGY
+	 nLF4S21X/85NQ==
+Date: Fri, 2 Oct 2026 09:10:15 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Hajime Tazaki <thehajime@gmail.com>, johannes@sipsolutions.net, 
+	linux-mm@kvack.org, liam@infradead.org, rbm@suse.com, akpm@linux-foundation.org, 
+	luto@amacapital.net, brendan.jackman@linux.dev, liuhangbin@gmail.com, corbet@lwn.net, 
+	kees@kernel.org, broonie@kernel.org, mhocko@suse.com, rppt@kernel.org, 
+	shuah@kernel.org, surenb@google.com, vbabka@kernel.org, wad@chromium.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org, 
+	geert@linux-m68k.org, daniel@thingy.jp
+Subject: Re: [PATCH v4 1/2] selftests: run tests on nommu architecture
+Message-ID: <ar9ldn036SgT-bq1@gremlin>
+References: <20260929235711.2287931-1-thehajime@gmail.com>
+ <20260929235711.2287931-2-thehajime@gmail.com>
+ <bda5eeaa-7868-4d4a-9026-9e99347afd7c@kernel.org>
+ <ar4br2vW7yZGd3gt@gremlin>
+ <94759bed23f00d2044005e36be6f72f297e092f0.camel@sipsolutions.net>
+ <m2se2o3jyc.wl-thehajime@gmail.com>
+ <a65f4431-d225-4535-b921-00319ceeb2a2@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/numa_balancing: allow migrate on protnone reference
- with MPOL_WEIGHTED_INTERLEAVE policy
-To: Gregory Price <gourry@gourry.net>
-Cc: Zi Yan <ziy@nvidia.com>, Li Zhe <lizhe.67@bytedance.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org, liam@infradead.org, rppt@kernel.org, mhocko@suse.com,
- corbet@lwn.net, skhan@linuxfoundation.org, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260930121154.687586-1-joshua.hahnjy@gmail.com>
- <2e3f12b7-0dac-428c-b70b-07e1f63de028@bytedance.com>
- <ar0fURbLDPrphYMY@gourry-fedora-PF4VCD3F>
- <A005B05D-A85C-4153-A65D-0BDF9D8500DF@nvidia.com>
- <280965b2-c6eb-4f01-a0ac-c4fb7e518f97@kernel.org>
- <ar5eC22VfSFlMw3W@gourry-fedora-PF4VCD3F>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ar5eC22VfSFlMw3W@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a65f4431-d225-4535-b921-00319ceeb2a2@kernel.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: otejka8dacfhj587wu3xc8so1aupr45s
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B7E511C000A
-X-Stat-Signature: orhyp8xrbzn8qay8g3ts55dm3ibr4uyt
-X-HE-Tag: 1790927805-835680
-X-HE-Meta: U2FsdGVkX1/dejU2vfffVKzQjFB1ckNrg40VOa+oDwcZK5rb57bF5eWbM3mL5XNjW7dKIWo+GkWHF77Bq9LxgApcx/oJitVQQA8Yhm0UNQOAyMoZ95wjVjAtJuLC82RkSVklMS8oF7NywKw9wCJmFU0kFFbkku1egnMRSSyAMD+o9rODAoqaCrVUDyKztfHa8iWrmeP87ZbhkkO6xf84bTLNOiJEDGLeU4u3rQYz8hQQgajsFASK95KcXxWkwZulK9jhr4mU8U6YtXL1tcyb/RrkyvIZtJXzH7T/T97RLoQerqGBZfxAGP3svEWE406s5i+RAE6jnnjRWQOZ+GrHP3thjwtaT877d8swfZjNcNf16RZlRjJnGfDaUUXRdVlwspePR3LTWML8ZEo8BV3ajlC2TzGT/53Z8AXxyiso0Y1ytBV/qD9yKwctjYsgEX7wJqVT/tpqm1Wlt4DMGwvCu/hpu8enRjk58ZWcDE3RvBXw81ctx5UGjOLHIc9Qa4pyegc96AG7ukJf68qRjC05KJDjET9p8f3PXC/xgqo/Mt8CbgCvy4AHgWBVf3Abr9TuXYf/OwGuoKhGmxm7AfR1i7sDUGYRI7uijTtDL53+Fma3FBxJc1++ooNhJDUxWFGrFiV0LsCDnrZw6pBYJ4WX/oBoTAh9AziSKqvIskcN/vaT3zXocX4cCyOSQ5oPbFUHeSDZJ01F18TwSSz6VclCBFUIQhReOlGTR9O4Rifq+QAf3w8DCUomhvP/Vz5MOS4UbkPtbFk/9hWxvhNanjnFRcedwOTsQGoJoV2snkLssPwOVBB0NIinXpaQsdQVjAjtZwmsTms6IBemMy8K4E4Zx76DjRxkEendHS+4EaizZ1MgpGYoEhFRMJ0ly2jK32vKYSedIsdVLcNandDyvEOJUqfMdp8sRn0NUvHmgn9k8XC2jko0iMLsHykpUpvCCpidzT/1In5NXNpKjr3jKB7
- 1LC5lboW
- Jt+/LnuOdA9KoJw8LMl2p2eG/Y0fKI4ZLipDRAzznj7bmpGppX1nGfDzc/MKiOvjurFgptuGK3ifzy88dB3EuZoD6qD2EfAdJmb/Tn80tSbP0V/hApO8BqcOJfzG/iDEkjE6GAC3QWJWNzPE3imjb/Or6jDDiX9HR6OidjvdVIkiI6HP9w9xCnc6mp6SO3pB0XTA/6j6aE/vUcamjdyuGnxiBhdifllcKKMhQ5nHYxN/J2a8G/DLUAq3agq22RANCcgU0VJgErleQmz1TYpHyOafojpbbnpNRwCNh++SGjtAJAMSBlpoTsKgW+MfNlOqZMt/BUstUuJgus71Pi8dzOxBlx4waTxAaBWbGSTE+uILVbsBzX148f15gCm3vIxJMHDpX
+X-Rspamd-Queue-Id: DA29880007
+X-HE-Tag: 1790928624-203648
+X-HE-Meta: U2FsdGVkX1+nUO5tGejkpprLobNXWFub9wxLHWD/UjoLz5y5ZV75GyKsz+SVDXrKjjHv/WlBaA5GxQ5HKcTVJDY1sY36xRlTLbVRns0Htjx8f10+TRR391AewFj3OAJWjI1RBNiNI8MoYmeLHYwhDVJA79iMZYK0JwAbCV7F8bA1QyAdt29m0R2EW1kbjnCYmmipMi4pb83/3ZATOWEaHHfvKRPlUB5TOcY/uymj3SVSQzdR3k5OE7kcpB9iCaTzIcEbstI0D/oBsDWGEOTntqxPEfsMW6tt+wgd4rF1zWrtNufnWI13YSw51jjU0kkw2ODzUjTJEtGf9dI+w0X76Hfbv3vpmEfP9egPX7CR9nzg6q43rHbYUxHxIfZzxcwaUcq31vVGSw3EAqI//MuvhfLfY/LmgdDV8v2J10d+KidIjHgB9fistABbDF3tcZfh1hB8JgL+qL52rEy6+lCdWEFhJDe9waiFxKkpmoSDuyPLRZkR8pmlxnAy/W4ZY7SOrTAb+CIQU2jafPVNejO07E1b5qCBZAbr7elDsWwhWgcuKb6vg7B9XIKa+uTYbNXgBtB0f6lfziiqv2HLnCYYkdZoijNeR9KPrAvFZQCVCg8FBUNmh6cBhTbNZvfvs4pJiHv3VakaI2dm2Hp9ZrPgAx1aNK1yQbA4n6rbyiz85JlM6HkkEhIWDvYrQ4UB4QNlJVLbfxfj6MK7q6YyBBACBf+iuTcSjdmXLz5e+MKtSasTFrVuXE2CXzLTHTpEdAnw5BbF3ZPHZDlEcWSOwJIpXxoOjAbzrhkd26DH1R8A8l/x7Fri0GFd2XI8g3BFpV0qBQdPWWD/TYgRox9FqwXguc3voXwg+W/VDd7O5XTQ4Cpo0rl8ZilNJgleE2FhuqLhNjO5pkxwzgcA4FwJ+79rAN8MjsRxUJkWGY1euKORg9ZE7oECPRhKqOAxH7KqUYQD+iHMOTEDS01UsiXuodG
+ sgyF8XPE
+ unUL16noUx58tOJl5+HLBraoHdklgWxLD2epULj1WG5QHJn2k0XJOHrCeNajeqEXVTONYSlNNmRZ7m8pyerSwWbc6QgSO9/BeWJJl4ITLAedz5o5FBDwbpCCJbqvbFcsNt9+f/ZGbJk4yyI7dGKOEc+QMGnJ4XsdTMYNw8NWrB2Sl4fHqnexw4aFTcZnnF3QCx0nPK1G7qhh2E+jfcGgTmuIYJX/93QHWoqKwwRtqfn5ONuAYwtqiKtWx+OfaLuFWZ8Bc7duMHDBwyNhvtrm59fX9KQWfxgmrQ9l6z0cgO/rf02H+EhCACgyx4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,45 +101,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/1/26 15:26, Gregory Price wrote:
-> On Thu, Oct 01, 2026 at 12:54:22PM +0200, David Hildenbrand (Arm) wrote:
->>> If this is a initial-fill problem, can userspace set weighted interleave
->>> initially? The program or harness can observe memory usage of the program
->>> or related NUMA nodes and switch the policy to numa balancing via
->>> set_mempolicy() or mbind() without MPOL_MF_MOVE after certain threshold
->>> is met?
->>
->> You mean: use the weighted policy initially and then switch to a NUMA-balancing
->> one which doesn't involve the weights anymore?
->>
->> That makes more sense to me. Although I struggle to see why an effectively
->> "let's put random memory on slow and others at hot" is a good starting point to
->> later let if be fixed up by actual balancing/tiering.
->>
->> It all sounds a bit hackish. :)
->>
-> 
-> It is a bit of a non-combo (Nonbo).  You're using weighted interleave
-> with the intent of spreading out the bandwidth utilization (and maybe to
-> offset some reclaim behavior? *shrug*) but then undo all the placement
-> with tiering.
+On Fri, Oct 02, 2026 at 08:08:44AM +0200, David Hildenbrand (Arm) wrote:
+> On 10/2/26 04:38, Hajime Tazaki wrote:
+> >
+> > David, Lorenzo, Johannes,
+> >
+> > thanks for the comments and inputs.
+> >
+> > On Thu, 01 Oct 2026 19:01:45 +0900,
+> > Johannes Berg wrote:
+> >>>
+> >>> I thought maybe uname could help but our LLM overlords tell me no.
+> >>
+> >> Hajime originally wanted uname to indicate it, but that caused
+> >> regressions elsewhere, so we dropped that commit. I guess we could put
+> >> _something_ back?
+> >
+> > systemd uses uname information and our (old) patch changing the format
+> > triggered the regression.  thus, we dropped it.
+> >
+> >>> It pointed at something though.
+> >>>
+> >>> In fs/proc/meminfo.c:
+> >>>
+> >>> #ifndef CONFIG_MMU
+> >>> 	show_val_kb(m, "MmapCopy:       ",
+> >>> 		    (unsigned long)atomic_long_read(&mmap_pages_allocated));
+> >>> #endif
+> >>>
+> >>> So MmapCopy in /proc/meminfo tells us definitively, weirdly enough.
+> >>
+> >> Hyrum's law and all that, but I guess it's not highly likely to (want
+> >> to) change :)
+> >
+> > a runtime detection is nice.
+> >
+> > scanning /proc/meminfo might be useful. although it requires to mount
+> > procfs (we can actually skip procfs mount as it is optional) so, this
+> > is not 100% portable.
+> >
+> > checking ENOSYS like syscall(SYS_mprotect) might be useful but I
+> > wasn't sure if this is always the case of NOMMU or not.
+> >
+>
+> I assume there are plenty of other mechanisms. Like testing if fork isn't allowed.
 
-I can understand the "random initial placement will help if you cross your
-fingers" argument from Zi.
+Yup that's an obvious candidate!
 
-But then the question really is whether the app should then change the policy
-after the initial placement was done and the weighted stuff no longer makes a
-lot of sense.
+You actually need to check for both -EINVAL and -ENOSYS since, of course, we are
+inconsistent with this.
 
-> 
-> But, in defense of the hackery - I have seen strategies like this work
-> to optimize startup times and then let tiering optimize runtime.  Phased
-> execution gets funky like that.
+Some nommu arches specify __ARCH_WANT_SYS_FORK unconditionally for both
+mmu/nommu variants meaning you get -EINVAL in that case:
 
-No doubt about that.
+https://elixir.bootlin.com/linux/v7.2.8/source/kernel/fork.c#L2830
 
--- 
-Cheers,
+Otherwise you get -ENOSYS because it's not defined.
 
-David
+But fork() -> -EINVAL or -ENOSYS = nommu, then just have the child quit and
+etc. should do it.
+
+But then that'd need some C... ah fun :)
+
+Crazy to me that we don't expose it in uname...
+
+>
+> > My original attempt was to use include/generated/autoconf.h; with that
+> > we can omit environmental variable or command argument of NOMMU=1,
+> > but gave up with handling standalone build/test case which might miss
+> > the generated file (and complicate the patch only for the NOMMU
+> > detection).
+> >
+> > So, specifying NOMMU=1 is my previous, though dirty, conclusion.
+> Let's avoid making it harder on users by doing some runtime detection.
+
+Yeah it'd be preferable.
+
+I see a bunch of usage of procfs in selftests.
+
+So can we just please require that the selftests have the user mount /proc, then
+the /proc/meminfo grep is the easiest + quickest way.
+
+>
+> --
+> Cheers,
+>
+> David
+
+--
+Cheers, Lorenzo
 
