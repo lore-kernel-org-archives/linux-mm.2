@@ -4,141 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33144CA5FE0
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:30:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68012CA5FE6
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:30:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36BDC6B0092; Fri,  2 Oct 2026 15:30:06 -0400 (EDT)
+	id 6A52F6B0095; Fri,  2 Oct 2026 15:30:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 343306B0093; Fri,  2 Oct 2026 15:30:06 -0400 (EDT)
+	id 67BD96B0096; Fri,  2 Oct 2026 15:30:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 233226B0095; Fri,  2 Oct 2026 15:30:06 -0400 (EDT)
+	id 569BE6B0098; Fri,  2 Oct 2026 15:30:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F35E56B0092
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 15:30:05 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 847F91607E0
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:30:05 +0000 (UTC)
-X-FDA: 85278676770.08.5C68DC0
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 22B366B0095
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 15:30:49 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADB0DA0822
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:30:48 +0000 (UTC)
+X-FDA: 85278678576.09.0856567
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AA89F1C0004
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:30:03 +0000 (UTC)
+	by imf18.hostedemail.com (Postfix) with ESMTP id F3F671C0010
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:30:46 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UY1eYCoq;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d2r2hK5k;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790969403;
+	s=arc-20220608; t=1790969447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T5Q1vlWTZYu8dcSVsk3FgjnrVw1Vrz/A7ClrLHICgII=;
-	b=dj4nOtfyyDvCAKQYoidOciH9V7RmZRMaXTHfmvYiyIT8oXt/Rz8yXPGD8yAPy54fNsDpu5
-	RWMrmqsQpSjJIeW30naNzROJz1v4W7XX6BD47QmuAFtmOF7CtSraU9SQ5eK5swg1MMcXQP
-	WIUwxsjQY+3eTzxdJ5tsQ6qu8KXs5UU=
+	bh=ekKUYOby3c2j+NEGwfq/n/16hDsQN2mSgzvQPgHiWWI=;
+	b=VQ/MPajuL5DQp6kFIvwQfrLVY+lbD2lSHW21YH5NAZCSlyfzdCkGsA6mThSY6wBU5ts2+j
+	4rIRygyBQqeEnHacdu5o7TvoQhrOA5zSLxuqbreBdCVCub9k0pG1E12hvqBfoVvJvIZLzj
+	ckS5KKCNwZUb1hWZjn8RBcNaZbfrKEI=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UY1eYCoq;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d2r2hK5k;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790969403;
-	b=RaQeNVAMT7UkyVPxLRLc8wTHta84vZ82An3rCCdtwbYDPpiy7M3X8F35VFMvhdLazinQUw
-	W7eH64Aku4rzku+uksb72b5MyxOa7XolFobU8xPxy4yAaZJcdj0GB7c995Z9wmu1sYUF3p
-	VOe29eVPVqgpYMAsHvIadHMXYuNy7Bc=
+	t=1790969447;
+	b=VMHLZbfeG/5nJzQOKNuOAExVzhVuj+mYnlodzLQzxTR2i4gSVt/xaAfUb19WZWprwxpf7V
+	b2Tk9274rBQUv2eafNuRtIPaU9/pQvuhIp3I/Azy2+ql/iTiK8LWpVePoto4gzy7b2y9/S
+	4c5I6wje9t4QdkQpvC2NluDhDkABJNk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2A58C60AAF;
-	Fri,  2 Oct 2026 19:30:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951F11F00893;
-	Fri,  2 Oct 2026 19:29:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8CF3360D77;
+	Fri,  2 Oct 2026 19:30:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748A01F000FF;
+	Fri,  2 Oct 2026 19:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790969402;
-	bh=T5Q1vlWTZYu8dcSVsk3FgjnrVw1Vrz/A7ClrLHICgII=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UY1eYCoq9AABTrmQZAVFGqeKp4Nz5nt8y9WFd4bbrO5p6Ohu03Cqb0vbTK5U6LHPa
-	 9Wxw2u4L4+KxiU2R6GrGCq14HFGEce94ZFUweEqJuSZn56X/LyR36uotcLAcmHwEBb
-	 sz78xKwiGgFhoos4IXo78QeLVjhY6Ny+yNLB09ocZQy/KkDGfV3lz98RJ0yWfP4ck3
-	 nDi8XrDub9buBLz1QyFaPOxlrTUSuw1d0+5lftDnlWo7YHILx8q7pKsSex2DuHeqUV
-	 ONEUhdyFeQqVLFyXD0ZJqjFk4ue1hn6SB9x0Ftv3962crofg8/sosyJq/tpZXg31Lj
-	 w07uyg/Xs6aiQ==
-Message-ID: <cfa883b8-3df5-4bb9-990d-cb7e165e37ae@kernel.org>
-Date: Fri, 2 Oct 2026 21:29:53 +0200
+	s=k20260515; t=1790969446;
+	bh=ekKUYOby3c2j+NEGwfq/n/16hDsQN2mSgzvQPgHiWWI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=d2r2hK5kCljTlCYwbBufk/wivX4jkvPY5GtMgJLcUIUGT4ktspgfRBivcG57guSh0
+	 hmkWr9NCuIzN8DuY1j8dpdZ4MIgpfoMkhqfwhFne9TUTm7tvkDIkyqcyp6gifsaedU
+	 mNrCV965QKAOpjo5mT0u9456Q2feFcLsrcpn4yK2t79qy6ksjZH9IjiJABakb9YbL5
+	 heJGGdWiGwwTNHAPJgbj/idVxDZSAeMzL3J8SODqqJovLo/2+7RpFWIqHOSOxNi79y
+	 Uw9DHbuSk9BoX3hzMhPL2bfOom2XjyLWZ7KwO9IQVaU87sthIFLqZfHTTSxGRCaWc8
+	 PWPWsigErZcDg==
+From: Barry Song <baohua@kernel.org>
+To: willy@infradead.org
+Cc: agordeev@linux.ibm.com,
+	akpm@linux-foundation.org,
+	alex@ghiti.fr,
+	aou@eecs.berkeley.edu,
+	baohua@kernel.org,
+	borntraeger@linux.ibm.com,
+	bp@alien8.de,
+	catalin.marinas@arm.com,
+	chenhuacai@kernel.org,
+	chleroy@kernel.org,
+	dave.hansen@linux.intel.com,
+	david@kernel.org,
+	gerald.schaefer@linux.ibm.com,
+	gor@linux.ibm.com,
+	hca@linux.ibm.com,
+	hpa@zytor.com,
+	kernel@xen0n.name,
+	liam@infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux@armlinux.org.uk,
+	linuxppc-dev@lists.ozlabs.org,
+	ljs@kernel.org,
+	loongarch@lists.linux.dev,
+	luto@kernel.org,
+	maddy@linux.ibm.com,
+	mark.rutland@arm.com,
+	mhocko@suse.com,
+	mingo@redhat.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	palmer@dabbelt.com,
+	peterz@infradead.org,
+	pjw@kernel.org,
+	rppt@kernel.org,
+	shakeel.butt@linux.dev,
+	surenb@google.com,
+	svens@linux.ibm.com,
+	tglx@kernel.org,
+	vbabka@kernel.org,
+	will@kernel.org,
+	x86@kernel.org,
+	zhanghongru06@gmail.com,
+	zhanghongru@xiaomi.com,
+	zhaonanzhe@xiaomi.com
+Subject: Re: [PATCH v6] mm: retry page faults once under the per-VMA lock
+Date: Sat,  3 Oct 2026 03:30:34 +0800
+Message-Id: <20261002193034.86218-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <ar7MsOb6IJLt4eLo@casper.infradead.org>
+References: <ar7MsOb6IJLt4eLo@casper.infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 10/14] mips: move has_transparent_hugepage() out of THP
- guard
-To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
- lance.yang@linux.dev
-Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, hughd@google.com,
- dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
- dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
- dev.jain@arm.com, usama.arif@linux.dev
-References: <cover.1789695931.git.luizcap@redhat.com>
- <13b8b68cde4d6cccd6eb9b73cfe083145bd1f014.1789695931.git.luizcap@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <13b8b68cde4d6cccd6eb9b73cfe083145bd1f014.1789695931.git.luizcap@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AA89F1C0004
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: t8imw8sskzyqj477m1mxq9r4hufprmyg
-X-HE-Tag: 1790969403-199825
-X-HE-Meta: U2FsdGVkX1+zsxrdAohGZO1F7sX8+PycPjPmc1tuk8OF4WB7PIAzXpyKifMdPIZU+tQyVixO323oJEZdEo4rqcEznDk0VzO9FTV7paSC6HmL7yArUMHncNW4lYgyOQrMhpPj43YIgY23IqK7hIKTn8lDRRfW7jDLnellrIGfAM9eZh90o62+++JlTWiMKp+E2Kq7Bq8e4+TWOMQNp/oEhTbs8OlGqE48EiWSvG9PSAJyH4BfgCcnjdZm0y2gCd1cXLCSsEqdy3eJHU70JZVbWbHOWjD3Xsi8OKjW32HeHB+XtXUoHi75PWGvElFqBJWPSJeNBl9w/T5UJSuynXMIus36rgGD+Nps2CVeoAO6ZqwPoj89TWRcu8HPmlmXIvl3gZL9CJRsIfHtkF2uX+CSp0P7oHkQ1Ag90XwLk7YY9+h6qGdjno36eP0GwcPee3ariptElj1O499Bi56Z8XzkebJey0+HmtAJhtI7as/FrwMLbKFsJsibss/zxj3YmDEStJ37hf/gUEuhKEQV3DIQ8Bu4C8BUVWIBzamINfK7CfpOsSx412G3LNZJPfqlwsH0s0erPb0bA1iqWZzUai7l7N+0KbSO0K2ZzXsUEBCzXl8EHzNyL8fhfot1scv5dCaoSpn1kabjMGmgnH3ciOw8VwMa/Z25PVHHUt7ZSwFFfPvym4mFz2BXgVW5hxTKSCCom54GS+KjuGK1jq5j3LYYNPa6X7BCjmy32aJ5IYGa4w/kMLjPnoKh6qTHEv9RkWDzW+MDW6bXRiUFTihv4tuOeQw8G88Q/uqJEKLrtkIJ160du4hcyHUXRnU6SSDA2cSjBv11ALBbL97lWU//qivChZfIkfzCpxoHoYqWYfptDgbRYbZTCRU0C+/kztkYvQ9C9TY9r4jCk7grq6ShvGOt2jGUgDRurNVFYhpDsBEgGfmvAaxdOr8Ne+nrwzrCmlhHyhdBS2U9O9G3pW41d4P
- h3pXuRp2
- TTXhFJE5ITWSn5Kt6AXiypt/Rvj+xYHBwPHtSwQQQDkqgMvNpxcEB27pwG5WbSKFJNuRNUk+ILWj2Tm/XGIPywaDMejZIe43+NWnQ0Hs8uFS/Jlf7skNN/bLsJVhpTXabd6BrcJe0PVf6429l64YQ4/QdRTofRbwd6LBdmuFZHggoxP09wUq18x6doLPirLg/7BgRzg2uKj2vGM6Myam4MyYw+45vNbpVYsFDH5XVk2ljGpwdkwygyEbpmzqZ8Qf70iYiV6v/fS/SRXhmEXzjbqB2ma/R2XBzhuVlEyKy/xNWtqNGTa411VnYPQGQC5pR964FtS2yG/XOuFo=
+X-Stat-Signature: 3dehgcho47qauigqcobbra85mjfeepue
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F3F671C0010
+X-HE-Tag: 1790969446-61307
+X-HE-Meta: U2FsdGVkX1/trGbd5pFs0ilppx1pho9qA2sJTE1DLMDHO9oAom7APzW57aWjgbNNL9uPBa2S6huvbazzckgZc6C0zEdM9yI7xvD/6e8foTqStb1L6n9popriffUYPqIw7lUrViLiBumi9IqVl3KAvfzgmp8phAus0PMD6XLW1f1tGRyL64Jkq62aofQn8u/Xbb8xrfvn5RXG59azdpKqW83lQFc0BJqjP6UuwpCaXAvGUCAI24JrCQ2ToyShKxp/d68sELq+E7IITIxb4kapfaPqNygl61fTx5JkOg3pJlG49MoDTcrD+onRWSsx9xsw4clpq28DW8/4PR5hfT2/4S/m/ORC2fMNbCybPA2TJjgMakE0RhGaIpcktifBJszI3j/NK+nGtLJbyUVtRrEGEGPv8aa8MY88MoOA4Q6tHTLr5KMVqN9IQS35+iiQ7jnfuxCD9QBCC3/0H/nAZza8EcU6S5BhCAt/iirf4G5u9INOAhUblhQHLK8VqEctFloxMxzWYLgLF3wCVef2xIlv+aHhNjRl3GLLZndulfLjkwnsYWlHgJGgrQC/WQNcBH170AoxY5V3kSybcaJk4qPpbsjfIfS4Ac3l3GM1C2UvOyTZd4hRRbQNQGdCezbAHABQODk/nEjY7dqvQcT1JioF2It366EHkxUSh1DWvqMuaGMWfr/T+yszVVegzbRPjY7HDUxxw1SqIEtMLiNB+1L6wZ8Wf8at1sPWIqnDXO48X/X9rCMI2uIj/L30lms/pcQKbwQ9BpGIrcbP31N4p6mWS5Wy70iL6BCCA1tS0gyk5z5VIrHiAbiSdSOUX1msJpFrQcOglP/Zn7KucRPD5a/PJ9NfR6Qt4ZLguwTC0R9PRwwP8Jh2jqQpV97PZiV6jSx3KTU1qcJpaEYcfdUlu+QsNiaWuULOrbBeSTE07SYALpmvlFdHdhFbvaFf2Xo3lhkOVjk55LWrr2KvPWXa5dm
+ fBoJ0U2u
+ HJom/e6sfCET0XjEIZIMLt1xCewhwq7nWIoOazfWcm0Lm6WJw/NQGeaQSyJ2LjNglyckUlotn7wx0BR1/HISfgHehK7Qeatl/GYFeEb82D5dX88BA7D4PvmlgYNKe7NS1wI2MIppAaYQGN1wYJhBShAjpYl70Ab6depmkf1mbMUrFW5JF774yWJFtGpdCeBOKGvgBONSwRXAbDhgBaZwZIgF01WlBlr45doFmVN6oRiKuoVNwx55X1cMPhEj9EobgCQjnwHEs84/NGE+r5BzcBUaFKYA4Ohm3/4Ly+j7UJEesx/JPhYu3qES3NlO38FaznhcGzdofpeZQ32YsaXnbEWdVinew/tPH6QdhiOw/grQRHZc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,18 +138,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/18/26 03:45, Luiz Capitulino wrote:
-> A future commit will introduce a kernel API to allow for checking if the
-> CPU supports PMD-sized pages. This API will be based on the
-> has_transparent_hugepage() implementation but will be orthogonal to THP
-> and therefore must work when CONFIG_TRANSPARENT_HUGEPAGE=n.
+On Fri, Oct 2, 2026 at 5:12 AM Matthew Wilcox <willy@infradead.org> wrote:
+>
+> On Mon, Sep 28, 2026 at 10:48:41AM +0800, Barry Song wrote:
+> > On Mon, Sep 28, 2026 at 6:55 AM Matthew Wilcox <willy@infradead.org> wrote:
+> > > So while doing my slides, I realised that what we need to avoid doing
+> > > is (a) sleeping while holding the mmap_lock (b) returning RETRY while
+> > > holding the VMA lock
+> > >
+> > > And that turns out to be as simple as this patch:
+> > >
+> > > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > > index dd09c438fa23..94ed2333f8d8 100644
+> > > --- a/include/linux/mm.h
+> > > +++ b/include/linux/mm.h
+> > > @@ -723,6 +723,8 @@ enum {
+> > >   */
+> > >  static inline bool fault_flag_allow_retry_first(enum fault_flag flags)
+> > >  {
+> > > +       if (flags & FAULT_FLAG_VMA_LOCK)
+> > > +               return false;
+> > >         return (flags & FAULT_FLAG_ALLOW_RETRY) &&
+> > >             (!(flags & FAULT_FLAG_TRIED));
+> > >  }
+> > >
+> > > OK, this is a hack.  The function is spectacularly badly named, and
+> > > needs to be renamed before a patch can go upstream.  But this should
+> > > fix the contention on mmap_lock.
+> >
+> > Thanks for your suggestion.
+> > This is exactly what we did in Android Common Kernel before we had
+> > Lorenzo's proposal (bypassing `fault_flag_allow_retry_first()`):
+> >
+> > https://android.googlesource.com/kernel/common/+/1b9b045a586245cc1c29b2747c6586234c7f5bad%5E%21/#F2
+>
+> Looks like that one didn't cover __folio_lock_or_retry(), but that
+> doesn't invalidate your point.
+Yep. `__folio_lock_or_retry()` will make the same thing true for anon
+VMAs, so we intentionally made the hook valid only for file VMAs.Only touching the file retry path seems to involve less VMA
+contention.
 
-Same thought as for the previous commit: it would be fine for now for the
-architecture to simply say "not supported" without CONFIG_TRANSPARENT_HUGEPAGE,
-right?
+>
+> > Note that Lorenzo's proposal avoids mmap_lock contention without
+> > introducing any new VMA lock contention. It also doesn't require a new
+> > flag that would break KMI. So this is clearly the preferred approach.
+>
+> But it does retry multiple times in cases where we know the fault
+> will always fail (eg the fault is on a device-private VMA)
+>
+Right now, these might require a single extra retry for device-private
+and `__vmf_anon_prepare()` cases. The commit log also mentions this.
 
+"Some faults may
+retry unnecessarily, for example, those in __vmf_anon_prepare() or
+device-private fault handling, which require the mmap_lock. However,
+these cases are expected to be infrequent and only add one cheap
+per-VMA lock attempt."
+
+If we do want to remove the extra VMA lock attempt, we might still
+need an additional flag such as VM_FAULT_NEED_MMAP_LOCK:
+
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 2cecf6ba6df7..2821e3bd7462 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -620,6 +620,7 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 	struct vm_area_struct *vma;
+ 	int si_code;
+ 	int pkey = -1;
++	bool vma_lock_retried = false;
+ 
+ 	if (kprobe_page_fault(regs, esr))
+ 		return 0;
+@@ -688,6 +689,7 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 	if (!(mm_flags & FAULT_FLAG_USER))
+ 		goto lock_mmap;
+ 
++lock_vma:
+ 	vma = lock_vma_under_rcu(mm, addr);
+ 	if (!vma)
+ 		goto lock_mmap;
+@@ -734,6 +736,12 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 			goto no_context;
+ 		return 0;
+ 	}
++
++	if (!vma_lock_retried && !(fault & VM_FAULT_NEED_MMAP_LOCK)) {
++		vma_lock_retried = true;
++		goto lock_vma;
++	}
++
+ lock_mmap:
+ 
+ retry:
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 6141160ec652..baadab598d98 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1734,10 +1734,11 @@ enum vm_fault_reason {
+ 	VM_FAULT_NOPAGE         = (__force vm_fault_t)0x000100,
+ 	VM_FAULT_LOCKED         = (__force vm_fault_t)0x000200,
+ 	VM_FAULT_RETRY          = (__force vm_fault_t)0x000400,
+-	VM_FAULT_FALLBACK       = (__force vm_fault_t)0x000800,
+-	VM_FAULT_DONE_COW       = (__force vm_fault_t)0x001000,
+-	VM_FAULT_NEEDDSYNC      = (__force vm_fault_t)0x002000,
+-	VM_FAULT_COMPLETED      = (__force vm_fault_t)0x004000,
++	VM_FAULT_NEED_MMAP_LOCK     = (__force vm_fault_t)0x000800,
++	VM_FAULT_FALLBACK       = (__force vm_fault_t)0x001000,
++	VM_FAULT_DONE_COW       = (__force vm_fault_t)0x002000,
++	VM_FAULT_NEEDDSYNC      = (__force vm_fault_t)0x004000,
++	VM_FAULT_COMPLETED      = (__force vm_fault_t)0x008000,
+ 	VM_FAULT_HINDEX_MASK    = (__force vm_fault_t)0x0f0000,
+ };
+ 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index ddc631a388b9..64e08c6153cf 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1480,7 +1480,7 @@ vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf)
+ 
+ 	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+ 		vma_end_read(vma);
+-		return VM_FAULT_RETRY;
++		return VM_FAULT_RETRY | VM_FAULT_NEED_MMAP_LOCK;
+ 	}
+ 
+ 	ptl = pmd_lock(vma->vm_mm, vmf->pmd);
+diff --git a/mm/memory.c b/mm/memory.c
+index 1f83a26f8733..89c8c8a52c16 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3980,7 +3980,7 @@ vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
+ 		return 0;
+ 	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+ 		if (!mmap_read_trylock(vma->vm_mm))
+-			return VM_FAULT_RETRY;
++			return VM_FAULT_RETRY | VM_FAULT_NEED_MMAP_LOCK;
+ 	}
+ 	if (__anon_vma_prepare(vma))
+ 		ret = VM_FAULT_OOM;
+@@ -4937,7 +4937,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 				 * under VMA lock.
+ 				 */
+ 				vma_end_read(vma);
+-				ret = VM_FAULT_RETRY;
++				ret = VM_FAULT_RETRY | VM_FAULT_NEED_MMAP_LOCK;
+ 				goto out;
+ 			}
+ 
 -- 
-Cheers,
+2.39.3 (Apple Git-146)
 
-David
 
