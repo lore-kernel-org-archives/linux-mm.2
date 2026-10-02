@@ -4,128 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76BACCA5FC4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:15:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB648CA5FD4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:24:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6731D6B0088; Fri,  2 Oct 2026 05:15:56 -0400 (EDT)
+	id 940276B0092; Fri,  2 Oct 2026 05:24:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6234C6B008A; Fri,  2 Oct 2026 05:15:56 -0400 (EDT)
+	id 918306B0095; Fri,  2 Oct 2026 05:24:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53A306B00A4; Fri,  2 Oct 2026 05:15:56 -0400 (EDT)
+	id 8076C6B0096; Fri,  2 Oct 2026 05:24:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CA696B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:15:56 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C9D816061E
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:15:55 +0000 (UTC)
-X-FDA: 85277129070.18.4B8B818
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DCDA2140007
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:15:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tn+haMvE;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 51E426B0092
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:24:15 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C4FCB406A2
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:24:14 +0000 (UTC)
+X-FDA: 85277150028.01.056A60C
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6ABA520008
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:24:11 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=i8IT4uY1;
+	spf=pass (imf03.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.228.42 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790932553;
+	s=arc-20220608; t=1790933053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Ncyk5KFdvqxpjC54udFuMVuSf0AeMOFkeg75rLIkGYg=;
-	b=w5LUgW/Apepz8jcv7dCsBmFuFcoj69YV72hW4/365JTVR24CaWx1oCd2GZ6vIyznQWXhvL
-	3WYsolTKMvow6VTQC2EisSV82UdcgRnWj7q1HOjrDhOjmvijIR4raXIl6/xvjKYJjyo6Am
-	x+g/QlJKBvCw1fzFdffkTCR4reo0wAU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tn+haMvE;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=e4aOyrFzh7gdGZ8/kq9sOV0yCHBHbrdKcYYOkMYs0fA=;
+	b=BxzUe4C2aXnFoPepY5XryNQr3oie86j0VVXlsshK5ryvpD2bIjmD7P17+MhYH6jJCZnToi
+	suyr1AnvxfcDzY/26NJ8rQQExBp4VPYUx/Agd/KN21g9D/A6S62VIGAaa6r1wkDofML3A/
+	KUhSdS2lAETmU1lFsVdGnzVYjn4atqo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790932553;
-	b=lS2Wc05nvIqzRk/eYHPifGrNmizN6pa2LAiquZhn7/Sqib5qMiRNIJoo9ktpL322ZoBxNQ
-	+SqJCKhBRxeUdlPVJ7QiZDevmDYFglKHbXFqcaINUnEu6dA5KxY8BodiXcRCwj5YqHJpKP
-	6A71Yr3Lk05EqLCkAE/yoNCT5OWn9kM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2FE1D60A8A;
-	Fri,  2 Oct 2026 09:15:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F3E1F00893;
-	Fri,  2 Oct 2026 09:15:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790932552;
-	bh=Ncyk5KFdvqxpjC54udFuMVuSf0AeMOFkeg75rLIkGYg=;
-	h=Date:From:Subject:To:Cc;
-	b=Tn+haMvEaetRbIlCmQhuyzrmqqlbZUksmdMQ2y4PTkjbrjwjWPricxTYN7c1dfSrj
-	 q7lyy6JkqTRewLSNLnlxeP20qVXKgQ7CtJsN5R6KqcLlOyLrJ9qINnLKIQoAbRxZ9Q
-	 h81xrUOMDdBJ+8F7WyEn6MgoScelWBwEUlNM8u2g5IgqRHnbaK26pVoHYlfDSziWww
-	 QQYnW0+h7Dervi9nkSCP2Ob/sTa6NAfhbzdD7jBXgFt9JX1lZc2v9Lp53/nF9qAFtd
-	 wTv4BiDjvjvGQ9JiUflC83cr0d/uiuqtZoc7POJKNaCd7B3TSRVClzPgSE6gVDfJxp
-	 8pBh/DwZIwuRw==
-Message-ID: <2283e699-01e3-4575-8bba-93d0f5b2066d@kernel.org>
-Date: Fri, 2 Oct 2026 11:15:49 +0200
+	t=1790933053;
+	b=FsI6Nsuq7tvj8MdwqaUgkcIElHGeUeD6ybc3HxjBLw/BDOZ2Cm+GH9+tbfWqXRTu2FXEgf
+	fqtvZx0AR/6jnexsBza751Y3d9ln1W33vPPlvhCqTfMPIzKxRewyCYp4hfNtIgnX5Wi5AK
+	m3iQh56RdhUxKk/7jQ+cNM78NGyXExA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=i8IT4uY1;
+	spf=pass (imf03.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.228.42 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pz2-f42.google.com with SMTP id d2e1a72fcca58-86e6d007703so3685811b3a.0
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 02:24:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1790933048; x=1791537848; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=e4aOyrFzh7gdGZ8/kq9sOV0yCHBHbrdKcYYOkMYs0fA=;
+        b=i8IT4uY1rwA6Yli2dyDy0EHAbECBlf052YO733MoMZbyTKaIbBdzbl3Pc2+YqbyZ2e
+         bPfWdgjvmiMQP5KU291nMSrL6qf8N+rqu/vc9z5zIjya+76fB9dNKdo37pBbe9E2dZSq
+         RDIhd/0efQLC8St+Sj9QZ0QDAzbVJcZIREw8Doje8f/KgFKPrGQShZ+7XcZiL7IBlny4
+         M+4LunhBvDFoIfbKRWO1gxXnnkG8lTOQZmTuQs9vqfJSxQpljkhwkDiqXgZei8ZQDloT
+         PaPxmmQA3r7ycbJD6EBMewawMD6XGZk6dZeAp66OllT+toeuCyNu5DJcAt1u0NrvJV6t
+         Y6zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790933048; x=1791537848;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e4aOyrFzh7gdGZ8/kq9sOV0yCHBHbrdKcYYOkMYs0fA=;
+        b=P2kqRYQZr/mx/k9SXkuqvb39DiRDbDwBL5KnEFWLhiWUc03SmPLd8+O0WSGPdaR/MX
+         KEKpt1dJ2+7F5RbDzkgfinalE9ijN8X8OJ+P8p8FOLb1DhkML7tNSQZfTIroaOkK17DX
+         0i2DfLs/xoZQBftP6iwACnEojXF3vsfqolnUKuo6xbUN34JDNuWEAJ1ytiaiBn+eAnvs
+         gYKISX7wh6QFIoyDzlmOIphj3if2jBq2P4DoHDO7u8AW20iJZSRbwkfF4oU+fYxmpPr7
+         LXDmS37AyJufB2TjarrGDbHCTOzDADtPAwJ1kaDbniYKWx7ks9GzG4qmUS8f6cTXuLIQ
+         JnCA==
+X-Forwarded-Encrypted: i=1; AKwUvBwgR0wg9sXI+MS6n1oJZHTr4ym39YYkoon2vVtwpqdFqnM/znU8lqtZroAshXX3AMYISYl8sU7nKw==@kvack.org
+X-Gm-Message-State: AFuF++m65jwufdvOfXogKMeT99ygUhC8DVEXLsqTYhIbMDpStAd0jZy3
+	UzVLJ8JBePkV8s6tUKsMbNMiqYTfep70hlPgLWgQvy+H3oxl6X92ytBq4bUKG1j6P6k=
+X-Gm-Gg: AYBFou04r7wUrh48Kl/yaPnxNgE+beQiR5deZqqRg8rcj+IJWwBmgMdADPvrMuBqqpX
+	O+vyi8nsQHf0YdZwHzpnOsYKYm8DkzjAAYNsYza7XmLyaMC3ufjvLKLWwrH6wvzYzqs9/33E8aW
+	0NYPjKMGNeVROq34zwiqha6xxt4sC/E66EP92tVbwZjskDixnlVHvAPpg1MMVe+MZitH9ybQfTC
+	nQJld/3+qZ2rB9+WeTwNW2x6PBG0GRsytTPjKzz5zdCKJaj2ojc7sB0dD1TzC7G6TiobccB+GKn
+	N8G3Vjl6T0pc6PlzEIKSCyqMBVg8TV+0/NoQMwDQuZg7dwi9OZzWrYWDaml/11ShurS+cOxr0xN
+	xk5zqCo1xmFjwcuJtS5JszNokDxglwwZZsgLBFW8doGvXryyqsRpeALcSmTtmxlFbi5gfEqn61t
+	3dMVLBTZvXD5fUDrjc78djvFyaBybpievPFYyWzG7WQCd0u9SHfC9e9fqUmSPKmIvvvhceyLR1W
+	5YvBfv0lLt3zOdLOSHB
+X-Received: by 2002:a05:6a00:428b:b0:878:3538:8f7f with SMTP id d2e1a72fcca58-88af6658113mr1963422b3a.45.1790933048460;
+        Fri, 02 Oct 2026 02:24:08 -0700 (PDT)
+Received: from [10.254.198.23] ([139.177.225.243])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-88b0c78c7bfsm659640b3a.36.2026.10.02.02.24.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Oct 2026 02:24:07 -0700 (PDT)
+Message-ID: <903dd25b-7af3-44cc-9425-9499f50d5750@bytedance.com>
+Date: Fri, 2 Oct 2026 17:23:54 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [GIT PULL] slab fixes for 7.3-rc5
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
+Subject: Re: [PATCH v9 1/3] block: introduce bdev_flush_by_dev()
+To: Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>
+Cc: linux-block@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org,
+ mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, willy@infradead.org, tj@kernel.org,
+ akpm@linux-foundation.org, Boris Burkov <boris@bur.io>
+References: <20260925064444.3944820-1-sunjunchao@bytedance.com>
+ <20260925064444.3944820-2-sunjunchao@bytedance.com>
+ <arYaMbJUh6unvz_t@infradead.org>
+ <3w6vfwfkojmfqy2qs5j4q2s2366ajqiwmqf624lyn3odrv42v2@va2r7a6ngfz6>
+ <aroIAqoCNDBPlB2A@infradead.org>
+From: Julian Sun <sunjunchao@bytedance.com>
+In-Reply-To: <aroIAqoCNDBPlB2A@infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DCDA2140007
-X-Stat-Signature: qayybnko56scamk3sjapus4rxrwsd5wu
 X-Rspam-User: 
-X-HE-Tag: 1790932553-561237
-X-HE-Meta: U2FsdGVkX18tghIeI31COhS/BSEGBOdEEhdmIDxK58CePC7+c8WVWXGcR/Fu5jJAgEo2KQY64S+3Wl/YnHNv7G5fk/dvf32afKxz9QOUSgyzodO+m2SX0C7+HX5sqe0mWCb9q0uYzRPjInbrsSURRDWygrw9npsciufn5p49Xyl7mcnVIy7wunzSvMqlXiXxmmfxXNHT8QayldsQBwpjjAHfmgLAkcSDrSbS52V3bAvhOleTDOmUF4uCZmy/bRRgWnwCwMeiqbtB3wY5MHeC6s/zufAbOHwn07lTuq/tc043MakDNgQqPjaD14k18uBaO7gi1BC59N9pzEPUyPAU73zHfF07YcUsA0CCCwLo2Cr09fLBggd8pzIXTqoHlTsCelwV9NNFxVbdGJFiuYgKxXo9ZH4nkVnmnEz76KvXuVYAYSwNPJKnYw/LUhAPeaaHzSRafn4pTa4hVR63uL72lU1Dgg7AaAEK7NQO+o2wDdIrexkzDiwCsTbKWv11UVPFdBqBOwKPhlPy+OTD2Y5sTl51fLP51LUQQLRJT1raAJPVVplZnO3O4y/d0sVENqVkVDT+oCxz3URw1tEIqGVimrdnfdm1Jas9Z5Lw8ZnalBwcltM5mtVV3s5LGKRJnEn8ilgjeKyf0j/TqYfkcG50WrkG8yY3d3hFt6D09bRHI7qsgBOrkDn7oH9LbCyV9zSl+kIlSN/sYF/V8j7le4OG18wLFzUxAjksY5cJXt7N2gfj5Hcxog1wcaFkgqMJwYQPtgLlB2wgpJ4oEkVkQYG8ZsXZ7S+HYjCMI0a84WK3jiK+jGPSOUa7YidOjAnn/CeFoCZ2UQiWdSklOL6A3BQUSWCSKSowf2V2YcWpdukP59EHUt5wOFgSpSXqVYkq337tYnkezRzQqw9CvjTKze/R3gtz93r3Rmh/vOCKsDf1D987bzy19bgJCzJUEPag8adUjOI7GcKwIdzGQP4nvcS
- Am+qsC6H
- Y4WnIVAUHB4qlziAKe/Jid1Jp5eaCgDn1vOdC1Mei5jKWXndCROSMvTnYtN6zewaJplqy46HK1Gpl1ZFPaJsTkfcAYwjNyTLBAwjDHeCqDVH83Fs2Wvjtp2sb32GWRoqqcTQhMb6GxtGXfi1zW9CUDe5JpHCk7LHp681ZjMD9+A0lm9KI2XzdDa+WzhKUi6mgXu1v+9cQIJCX9fj3klevbxTDYXh/lRUX0c0y005RxdoA+oGkYt/7Nb3clm7i4KS7wNUQj6Tlu6HFWLheXbUEDYbn6cDx79doxNF/II2lHDUGum9w28BGw4m5Jn39U/pWMntU
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6ABA520008
+X-Stat-Signature: 7uornrioc8hker13n3geczdb7dj61ea4
+X-HE-Tag: 1790933051-265584
+X-HE-Meta: U2FsdGVkX1+vJ2UdP20RTIRtHz5W+RWW8Fxz8HnVFZRPS77q1ijjzka25qxD9+plEZisuMelgEx+Zes/DqmfFZ0Iv75e3Wc7WxAvsSdCYU2ruEthy5s4o3/Qn3LZka4gRqHjjCCGvhioQY5VSlxvTpS2MzVe2U4+72KGJT6c5HufESMdRbb6hN+d5X0jY+Ir8pwbNSJCSe+KjwboGbmhbXO/JGTPQC385sTDo4LSYNWSnk470IwOD+givSRNUvWWFojDdO2RmypaM5MNGDT+msfQwgJRNKylTpQQnh2oLgrKoZgZIDUQOCkSejxWPpQ6xs6sdmKXJ8Bxu+AEf8TC2g95mFgWC/SsbgKWv3bhZRsPBmI38r386H1rKEcFaxvR4EapTTLzX3JpEPwPkM0cK+IMQJWEAiB+HoAlG//NCAjDytqRIVUdPifENpZSmod7IZmJP6a3G4WyIRiGRvAKt8V7nwuYnWk81Tao8vfqcv7Drj8TO2dtbx31F4G4hQiK0GVhkOS/ixOFgnX1N46T1vRTwjxIxgNVZgXJaz9CvxS8kaq8YLMIUfQ/hA9vF3uI7hnz6PEBpHIEWiXqWw9ixCd66Za2HwYpvZTYUt1FmoBscPzfrgj3yGW9ivEYBYhpEfzAdyOulCC97oTbDjJ+wgu8OjA8u8BVr1pR4qHaGv0EnUS+r9mW0gAlKvPARfecjsBw9Jtmhys/bw6vTYpxb++dKgzB0e0OJ+nfSAUNb2k0OBJ6m2PVk8CneFJrBiIccX/ygXgIGchYIYfQpzskF9cbkD+JeVuPDZg4Z4gtIB9HLFm5Gac5Ziz8O5pK+R+8ostvjRjKuFLjp7Y+7BMRKxuDtoSsSBh4iz44LTmprZNzuco/ZrDvQIq17jeEayndMJTNDg9N9WlRdaTNiUo2xmgEreeNtcLtDwbbmY7AID438MOS56SmHjo7Kg2e0IHjwz3uwgx3mrjSQ7QPi5t
+ o8HylDzM
+ CDI+7cgOfu7g6j/yoQHhTMas6gQbDe3YwsT66xtfhi4gl4xVZl4tnsqoOZ0gn2mo/I5Ul/5dzxnQGrZqvPgDOPNQ5N7vE4ZZsiVdBLy5XHwSN6MGldsnwU6huRgnVdjtT/a9nVYSd0SF98sAhnYJHaYT0QoyDQsvaM+gtq+3xgwuvi10hR4l5ov5DPvewnK5U0oL0nqBJT4pwzB363E4CK0F/Pd6wvYe4rimyuCCBQ8pmvcbJwbdrOh/wCP6rwXn4LMXOvhxiA+CWTwhHhbtlF4j/q49y0nFU7upNlxB821pM5jzvHmzJhXI7fnBVcO1LgqlewdgLCLoVHoDGO08nBqs9+3BZPWddgvIK8DjlavroynfcBi9CneLrhk7GtwgOR4JqqE+itCAvmuyznhN+zc3BOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,46 +128,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On 9/28/26 2:24 PM, Christoph Hellwig wrote:
+> On Fri, Sep 25, 2026 at 12:34:52PM +0200, Jan Kara wrote:
+>> On Thu 24-09-26 23:52:33, Christoph Hellwig wrote:
+>>> On Fri, Sep 25, 2026 at 02:44:42PM +0800, Julian Sun wrote:
+>>>> Add bdev_flush_by_dev() to submit page-cache writeback for a device
+>>>> identified by dev_t without requiring callers to hold a persistent
+>>>> device reference.
+>>>
+>>> This isn't really a flush is it?  This is writeback.
+>>
+>> So bdev_writeback_by_dev()? Fine by me.
+> 
+> Yes.
+> 
+>> Well, Julian is explaining that in the cover letter. We don't want memcgs
+>> to hold bdev references just for foreign flush tracking. There's no easy
+>> way to get rid of them so they could pin bdevs for a long time leading to
+>> strange artifacts.
+> 
+> I have to admit I didn't get it when flying over the cover letter.
+> But this also really belongs into the patch where it is more obvious,
+> or even better into code comments.
+> 
+>>
+>> As you write, we could just hold a reference to the bdev inode. Those get
+>> unhashed when the device dies (__del_gendisk()) so memcgs would be just
+>> wasting some memory by holding these inodes alive. But still, transitioning
+>> from inode to proper bdev reference verifying bdev is still alive will add
+>> a bit of hairy code (essentially what blkdev_get_no_open() does plus
+>> verification inode is still hashed). Plus when replacing foreign flush
+>> entries you're under irqsafe xa_lock so doing iput() from there is kind of
+>> a nogo.
+>>
+>> So I think tracking devices by dev_t is a good way of dealing with these
+>> problems. But then when flushing you have to transition from dev_t to
+>> struct block_device and blkdev_get_no_open() is the canonical way of doing
+>> that (and note this use is just internal to block/bdev.c).
+> 
+> I'd really prefer not to grow more blkdev_get_no_open users.
 
-please pull the latest slab fixes from:
+Hi Christoph,
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/mm/slab.git tags/slab-for-7.3-rc5
+Could you elaborate on your concern about adding another
+blkdev_get_no_open() user here? Is it specific to this helper, or to
+submitting writeback with a temporary bdev reference without opening
+the device?
+
+We only retain an identifier while tracking, and acquire a reference
+when performing writeback. Looking up the device through another path
+would still require handling the same lifetime constraints. Is there
+any cleanup or rework we could do first to address your concerns?
+
+> 
+> But the more I look at this I wonder why we even bother.  Trying to
+> attribute individual bits of dirty metadata to cgroups is pretty much
+> insane.  Why don't we bypass memcg accounting for buffer_heads like we
+> always did for the XFS buffer cache, and what btrfs switched to last
+> year? See commit b55102826d7d ("btrfs: set AS_KERNEL_FILE on the
+> btree_inode") for the btrfs side.
 
 Thanks,
-Vlastimil
-
-======================================
-
-- Stable fix for a potential deadlock in kfree_rcu() when called from
-  set_cpus_allowed_force() (Harry Yoo)
-
-- MAINTAINERS update of the slab.git URL
-
-----------------------------------------------------------------
-The following changes since commit 93f51579e7df248780214094418f205253383cc5:
-
-  Linux 7.3-rc4 (2026-09-20 13:48:15 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mm/slab.git tags/slab-for-7.3-rc5
-
-for you to fetch changes up to af2fb3ee6679b517e2fdbd3ba16ec276a8b74312:
-
-  mm/slab: do not wake up kswapd in __kfree_rcu_sheaf() (2026-09-24 10:14:02 +0200)
-
-----------------------------------------------------------------
-slab fixes for 7.3-rc5
-
-----------------------------------------------------------------
-Harry Yoo (Meta) (1):
-      mm/slab: do not wake up kswapd in __kfree_rcu_sheaf()
-
-Vlastimil Babka (SUSE) (1):
-      MAINTAINERS: update slab.git URL
-
- MAINTAINERS | 2 +-
- mm/slub.c   | 7 ++++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+-- 
+Julian Sun <sunjunchao@bytedance.com>
 
