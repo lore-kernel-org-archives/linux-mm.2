@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83F16CA5FC4
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:57:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7312CA5FD4
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 09:57:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E38A26B00BC; Fri,  2 Oct 2026 05:57:14 -0400 (EDT)
+	id 4C49C6B00BF; Fri,  2 Oct 2026 05:57:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEA2F6B00BD; Fri,  2 Oct 2026 05:57:14 -0400 (EDT)
+	id 44D226B00C0; Fri,  2 Oct 2026 05:57:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C64006B00BE; Fri,  2 Oct 2026 05:57:14 -0400 (EDT)
+	id 2ED856B00C1; Fri,  2 Oct 2026 05:57:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DEF66B00BC
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:57:14 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D5A81206E1
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:57:14 +0000 (UTC)
-X-FDA: 85277233188.26.0BD76C4
-Received: from mta0.migadu.com (out-165.mta0.migadu.com [91.218.175.165])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 50A9B40006
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:57:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Yt3V/HcN";
+	by kanga.kvack.org (Postfix) with ESMTP id 0647B6B00BF
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 05:57:20 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F5A61206DD
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:57:20 +0000 (UTC)
+X-FDA: 85277233440.23.3A27943
+Received: from mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 972E840002
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 09:57:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WrgzEM+W;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.165 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790935032;
+	s=arc-20220608; t=1790935038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cIyJpw1Wh9dOciT+jL3z38Hzg3YRBSVm2MwjdHgkrQg=;
-	b=o4Yze1hYYX25uFPgsm0UL5vcM2PxewzskjLMQ9E7GX2agKG1L2ekdrNviGSIr2hXodsgwm
-	mmLEXbfgX5zlKWj1it9ezkRiKhy8PNGda0TkEeBtbbEFO8bViPmCyalPtecqRm9AFRjlKj
-	EZ55+oFyHd53wl9rQ5LqsEDJRg5xVA8=
+	bh=HLTYrJYceauVb68wySayATZIcGvYhDhoDRuO/oujqfI=;
+	b=c2VBag8KpAILmqPwBj75J+TFCBxtYNlPiwguSnofOdDZKxzhvRzIBqom/zYYb5sEEbW7oU
+	FaNYWERjH/9oDThQy5XpYZg4b8Rt96jgDMFyk4stnKn2hdQHpOQydEg/MtYcCRNMhuhs5c
+	FoftSlAuZ03nY7LDlqVchOjemg1Owhc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Yt3V/HcN";
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WrgzEM+W;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.165 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790935032;
-	b=FLayzG2Gwuw6MEV5jgyQdNUn/CcJL0rJJeN3Oaby+10UanlSxuKGYX6po7l9PD/6jVsIgk
-	nzV1YnrprGaipgGxc3ocsz+3CiKKwjY1mljUthcxvtYxwXtQclxARTKsSvDE1vVTgMTy+m
-	DkVnkECTD0QY1sBLRdxTkg0rtoVQtc0=
+	t=1790935038;
+	b=gZftIfSltgJbJCBRvLSFjvGzrmyyePMj6m64XTVRx5qMMDcsmgxUWggY1rZHKiUtZpqBRL
+	r1re2HJXPfawsRtUskA067cGPwVyrVflJBXCtSyVm3SPQQNYf9mqwmaiLaBqnnBgQAigWd
+	ti5gqh19zQKJBRsWEtade4yK5/PMNwM=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=O3Mn4KnTxiYaTlhEiHGB+/12dl1tDr6TCxd6G0YbQtw=;
+DKIM-Signature: a=rsa-sha256; bh=PmpEBPMCGBePeR65tGhRvp39CU+cDN/bw2BxnAbshOU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790935031; v=1; x=1791539831;
- b=Yt3V/HcNbmcUwemCHOSvedDAbZZPykz2HBT8iGsDw6wpQkgc76n4u5oeY9f34TWwL6LIi4iy
- fTV5+hX1goo+Dp1QnOoM7lqLcccilIBDdA5zTR378xVaNZfh1qSdkVEV9XDG85Ky/IyvypGJPia
- dlZOHJ/w3+a/V50IANYe814g=
+ t=1790935037; v=1; x=1791539837;
+ b=WrgzEM+WqqX2w4ih9Nppu1PuXJh6gY3cTNdLTTt0viSvXSQRPpAig7v1uKhVJqNOHSX/Od0j
+ KhKBXStEwPvEqoDfe8NPKUSgnrp2VRopSRcF0iq9HarykFtqh4qqEhhhg7nOKuTwJwusBApcWcV
+ 9ZJGJPOoCWVvWiUrqV6hCHn8=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 32c8d113bd9f3403;
-	Fri, 02 Oct 2026 09:57:10 +0000
-X-Mizu-Trace-ID: 32c8d113bd9f3403
+Received: by mta10.migadu.com with ESMTPS id 46590f4179113d43;
+	Fri, 02 Oct 2026 09:57:17 +0000
+X-Mizu-Trace-ID: 46590f4179113d43
 X-Migadu-Flow: FLOW_OUT
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -94,22 +94,22 @@ Cc: ying.huang@linux.alibaba.com,
 	luizcap@redhat.com,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v8 21/30] mm/madvise: skip PMD swap entries for MADV_COLD and MADV_PAGEOUT
-Date: Fri,  2 Oct 2026 02:52:35 -0700
-Message-ID: <20261002095503.3585565-22-usama.arif@linux.dev>
+Subject: [PATCH v8 22/30] mm/madvise: keep PMD swap entries whole for MADV_GUARD_INSTALL/REMOVE
+Date: Fri,  2 Oct 2026 02:52:36 -0700
+Message-ID: <20261002095503.3585565-23-usama.arif@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261002095503.3585565-1-usama.arif@linux.dev>
 References: <20261002095503.3585565-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: obgmeokm88ikaoukdqro4wdoq4orgw43
+X-Stat-Signature: uspqiztfts7ayry74pitkz3tpeuypxwp
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 50A9B40006
-X-HE-Tag: 1790935032-399687
-X-HE-Meta: U2FsdGVkX19C6PWM0bbCOCm3d3dV4Ngj7TUhRzu2sNf0zCrJQjy80y6FsD7GOWE0RKVAifSYE5++PjB5yPPbKJ8HFetSUoTiTN2qa/pMI05bzxL5HLqs7feuzCeZm2dKDdQ6uqK6OGHXA7LWrBvQ94N5dI96Q3Pfq3NNRg6UzPnSLE4hnjBeZP4A+smz7IulGuCLmpwFTUWFjnQnP0JwsgpZcXQoFHW3qA3yBxKZANFuCKomg36bASgf3x/5ivmvmU7w8/lATQbP0Iws4bxPI9b2IyL59N6j1PFL/IEb/8256MEqP4JFyGjhc8nVmk8Blcw13m77JfVXTvr8s1C97QcqsBwaYBs4GLfWH5oehytEA9W+ROWOSHvpF6KPg+ab1PFAWkOjkNUFzfTN1Esgx0lWDc/Y7D+ZJ8UvtZRzH4ZaF64QuTesinYpgOEsZP8eONeDgKnyYpi5f4zdmSmme5SjYgx70cSSnxUjqJGMZRK94L07KUvQbHPYRwPkYWOnI6N+30wt8jJxfMoMdAk2zB/iHEj9xKbc0aC3gSqxJtkhg0HYWChh/FesYXSYyvHwgO848TEGAAyKXnb4OqrgD9I8P4q/EvMKYudW45Yo3Fj5LqnbaevkOq8dDC9mZAdkly0RIU5l+khVQj77DS8/jIw4qvbrNREfHH3wZO2z1uowDeZvE9wDsSJJFESUeLT93vYtglne4mDTFGF5+fVCguG5bNhZ475KG3fx/6g3dVxtc/e8bviPQNwBdJ8tNCbfagLU5x7H09cmnRKAoiIHjAqM4S7HlobfOZL0ZneP499/4rzPYIMxLJrL2XUkc4jvT8DhnMlvOp7nrazqePiEULS697NQjAAWaf6JLIuHysKMLmqq6bk994UH8z/LPo1bTMMAqsD/H2edR9E/mrAJpsnKYLl8mSOdX3a7FsW01Iufd3sE/VYAVtIZICcVxKWQub3qOHEgazxdNvsHk48
- suWfbhNF
- p+UiizqgLeAo4Z/KDuRsR7nYeyQGfuf8XfFBc7C1WGjNipONye30sGHzLnQIYpjC7B/Z4YIwM+xDhT483njNg9LC6wWhnHMd6HcJMfeaoqvapVdvIGrE50UJAmGEhE2X5yDJHRV7+lEK3Pd7S+tLSrBwDjslToLvwz27sO7vRjhRlOfjMTWofSFaOqsTqRzlxDTsa4EvwAAEYZIcIX0AXtbB3YEwwGjc/3OkZnHYSrAnqOlSfNRh6Mo8I4JS3QjicdG7Qk0zLgrLjAz/DEx7ObD5dxg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 972E840002
+X-HE-Tag: 1790935038-202820
+X-HE-Meta: U2FsdGVkX1+3ymPV9LFEhwmLCpzPx+fT29Z/De8U9snAIhSV8N0pghlUlWw7vNAKMCuDKB23/+Yg/8qHVnRT/dkiyzZXlFHIfXpyJKtewvIb9uJLCIBbhtwXR4AEWYXWTW4AcFUXn59whNyEHHLNZebYJ+59ezXibpkLaBpwCMCMjKFanU++FOhWON/fsiVRpqPfI3Qf6Alem1HhxDQx9/teCJXUHZ1upvx12Eo+toKnY2obyPo/Vglfe6t6WMw90AFD/0Q22gdWHaS5ED7BBMaVMZ0RvBEZ0NrT6wjK3aHNZHIag/0ghxomzsz/tKaefrR3mWMUISsevUPt2yelQPSGrZ07e94coMeWxEfd52OqpxTsdxkhUpQpwFfTqR/hxqzuoQs0e5A2GiLmPpVAH4dWZqCQvxyn+t07tF9tTOUvQO3wP1nqrT4a0c2INpj1dD4NB8Y8ipdBAn+qhMR/P8s3WLk3MwWfgpXFuMt3/7CoPCjZalCnDVeK7kDsjJkDqXmkrFhjHj3r+2kJ4quhsdz5vF0AuWMgMwKOFYSmOi0N39B99HcbkWmTr9xArlU5bel3RKSk1pDv9l7T6BVmo51GHi7YoLtGWGEWbNhDk6VyjwwFvmBTB2tmqNz1dhnNB4xbvfMvTRDE8osy4gKWJj60hqmGdW0tcPRiqm1Yw0vAyrszzXaSQ3qep2tCEhrHyNR+TW1SrxSPlWq6S/rivhX4Vflm3+RIEnAvn1jaXfJRCWEVcuNJPss62Ay3PPujXaTrAjtrZH58iZnmvlaaTzPHdbCRuFdxJ4CfaP6Y3lsMUWHnKbn1YuRJ+mJweRla08y7A/cSv8mnH0GAyxaZYPhty5Nn/54d3Z3fxqoGbby7tbn173oDrA8iEk+6hY7ST5XnGdY6HSMxvDMLIF2ekBeoNsk8Zz7ExXRLiiqeeWg3pansBwjDSACk3ac4tx9UD/6QckfS1TZ0YbXkQxX
+ UAyb/ghr
+ aQ1DikFs4iU0koMNfL7hndvdqSpxFKV8bG0a0ZrRR0laVBCaEm4Q2EwdWsYYa3TqD+Kdnn+XDyQbI1VIkv4raLXLtu0Vdq5v+xHrYt4EMoBqV8QC3uiLGyZ7FIEI1CwFp3EM8zY1V8RRYq1S7nLsso8S5Sfg1DVLVeqkvpYTrkh80wFPt3QIO/O1hpCbz4hObL0sF8eq0nVXHy5gLCh++zyCoJz+2lt1zoLUciKQA46sw00DjA7NPQDORo0L7l79KqATxLESUaHfiNJO5+tcYpkT6eQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,54 +117,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A swapped-out THP has no resident folio to deactivate or reclaim, which is
-also the conclusion the PTE path reaches when it walks the swap entries and
-skips every one.
+Both callbacks test bare pmd_trans_huge(), which is false for a PMD swap
+entry, so they return without consuming the PMD and walk_pmd_range() splits
+it - only for the PTE callbacks to find the range populated and abort, or
+to find no guard markers and do nothing.
 
-madvise_cold_or_pageout_pte_range() gets there the long way round:
-pmd_trans_huge() is false for a PMD swap entry, so it falls out of the huge
-branch and tries to map a PTE table that a non-present PMD does not have.
-
-The entry can also appear after that first, lockless test, so re-check
-under the PMD lock; otherwise a PMD that turned into a swap entry while
-pmd_trans_huge_lock() was being taken trips the VM_WARN_ON_ONCE() that
-expects a migration or device-private entry.
+Both already short-circuit at PMD level for a present THP. Do the same for
+a swapped-out one: it is just as populated, and just as free of guard
+markers.
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/madvise.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ mm/madvise.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/mm/madvise.c b/mm/madvise.c
-index 70acb39b8b3dd..d3b5ed7e3cffb 100644
+index d3b5ed7e3cffb..64019668d69fb 100644
 --- a/mm/madvise.c
 +++ b/mm/madvise.c
-@@ -385,6 +385,15 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
- 					!can_do_file_pageout(vma);
+@@ -1269,8 +1269,12 @@ static int guard_install_pmd_entry(pmd_t *pmd, unsigned long addr,
+ {
+ 	pmd_t pmdval = pmdp_get(pmd);
  
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	/* If huge return >0 so we abort the operation + zap. */
+-	return pmd_trans_huge(pmdval);
 +	/*
-+	 * Swapped-out THPs have no resident folio to deactivate or reclaim.
-+	 * Avoid descending into or splitting a PMD swap entry.
++	 * If huge return >0 so we abort the operation + zap. A PMD swap entry
++	 * is a swapped-out THP: also populated, and splitting it here would
++	 * only demote it before the zap.
 +	 */
-+	if (pmd_is_swap_entry(*pmd)) {
-+		walk->action = ACTION_CONTINUE;
-+		return 0;
-+	}
-+
- 	if (pmd_trans_huge(*pmd)) {
- 		pmd_t orig_pmd;
- 		unsigned long next = pmd_addr_end(addr, end);
-@@ -395,6 +404,9 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
- 			return 0;
++	return pmd_trans_huge(pmdval) || pmd_is_swap_entry(pmdval);
+ }
  
- 		orig_pmd = *pmd;
-+		if (pmd_is_swap_entry(orig_pmd))
-+			goto huge_unlock;
-+
- 		if (unlikely(!pmd_present(orig_pmd))) {
- 			VM_WARN_ON_ONCE(!pmd_is_migration_entry(orig_pmd) &&
- 					!pmd_is_device_private_entry(orig_pmd));
+ static int guard_install_pte_entry(pte_t *pte, unsigned long addr,
+@@ -1409,8 +1413,12 @@ static int guard_remove_pmd_entry(pmd_t *pmd, unsigned long addr,
+ {
+ 	pmd_t pmdval = pmdp_get(pmd);
+ 
+-	/* If huge, cannot have guard pages present, so no-op - skip. */
+-	if (pmd_trans_huge(pmdval))
++	/*
++	 * If huge, cannot have guard pages present, so no-op - skip. The same
++	 * is true of a PMD swap entry, which must not be split just to discover
++	 * there is nothing to remove.
++	 */
++	if (pmd_trans_huge(pmdval) || pmd_is_swap_entry(pmdval))
+ 		walk->action = ACTION_CONTINUE;
+ 
+ 	return 0;
 -- 
 2.53.0-Meta
 
