@@ -4,123 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A30F4CA5FCE
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 00:00:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8473CA5FCE
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 00:37:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F7976B0088; Thu,  1 Oct 2026 20:00:50 -0400 (EDT)
+	id 949676B0088; Thu,  1 Oct 2026 20:37:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A80B6B008A; Thu,  1 Oct 2026 20:00:50 -0400 (EDT)
+	id 920CE6B008A; Thu,  1 Oct 2026 20:37:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BEA86B008C; Thu,  1 Oct 2026 20:00:50 -0400 (EDT)
+	id 8374D6B008C; Thu,  1 Oct 2026 20:37:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 438106B0088
-	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 20:00:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96CCDC05C2
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 00:00:49 +0000 (UTC)
-X-FDA: 85275730218.25.7A6A638
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6F1E01C000D
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 00:00:47 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=fsZrsXbw;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf18.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 56B046B0088
+	for <linux-mm@kvack.org>; Thu,  1 Oct 2026 20:37:25 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DDB95A05AE
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 00:37:24 +0000 (UTC)
+X-FDA: 85275822408.14.8D06D99
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 239AD1A0005
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 00:37:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GVlSQ124;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790901443;
+	b=BVmV1bS8qXQfA2J6RQx0z6sFvSMxGbSPYWrTq/0+wvdqTQEx+vWllr0ph4q375vm8x6RLV
+	f3CEf0lGTus+eVi534QCeIQ3XYpELdbq9CdQjIT1Rx8CyF8iDbktQRJQCJjHqVzjmRHFnR
+	Bb0WiYr1EUo516ULUxyV+Gpn/7DI17Y=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GVlSQ124;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790899247;
+	s=arc-20220608; t=1790901443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cG+cJ7mT22tNPHsFBNtxnr+VztjGQBeRNYYjS2dgVhM=;
-	b=eUBZnH3Rkac4w+wJwbYqWlIIOpGFLRk8GtkGvX04kbz04CmAfnt+icbIXTd0K/nvWhIAkM
-	BjFFWWwiil3yLQ9jLkm2OdKX9jkocngHdWjPfa9N3FTL6Em32i+2DxgtnsZsxzIxVrlW1C
-	g907cSXLvZQg6+5plMHMnxPclIi8ZHg=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=fsZrsXbw;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf18.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790899247;
-	b=0z0S8/D9eNtENUtSECPBUKoh2Uxp4H4PkOWqISQgWhPQ3l+HXqK2wOd0HsUxdYGxFqaV5H
-	it3sjFCXrMJwHQryj62lirBfSVnumrGCZDKzJuSuyRI/z//jQpXUUyUouJV1S/PSPwzigQ
-	TiVb+mYjbnuKmOidWVvpJ/MxZh0PqLA=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CC72640E03BE;
-	Fri,  2 Oct 2026 00:00:43 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id NaJ-HpYXBw58; Fri,  2 Oct 2026 00:00:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1790899233; bh=cG+cJ7mT22tNPHsFBNtxnr+VztjGQBeRNYYjS2dgVhM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fsZrsXbwppxgBw+JMcEWeOik0QpmlmhwCehRdAUflP9fffOHurGmKV/miQIYLo7dl
-	 0rmH8plvSRduAlM1Cd30fXlLUrWE36VjiP69+bX8ezPP9y0QbxAOVhaCEx0jzOH/jB
-	 rbq7WEuRlaVjUgZjaf2IHhqfeNccFCrHykU19EBEhHgRybuf7w8mZIwFMlxAaVoZhO
-	 d2TAISGT5AW67hpOT2+/jKGEpfJKcUp197bqs0RU90atPixEZBAiKw5T0H5SO+reOd
-	 EKhLFW70iqospUTw4Dyczm2h7FZeU4EqpowkR1A0eD3A1FRbdrLcG+6aJe/+D9IRdV
-	 tQJEHyKX6/eVtDIEm/SyhgtBr+oDFW9stciSfKxFq8xv/2n4EL/3GPpQ9ysJWhWKGv
-	 EJe1QQMc1ogmeLVzWVENseeV0l5d75Gy1Xa55R0LUR5e33g7YK/bQKQ1dP0RKEw9+a
-	 Jsor6wKUbW+b/UYo8/4cNn/8j4dlu8Kj2n4pvaDvI/gnBKgFoBt5Ze9+Qnk9MvfLwP
-	 TI0lh7wmOTllPBTjS6DrcAv7FlotWP4MVY2v90qApdWiwDmhehK4G374oOCXyj+Abu
-	 tpvNncuvRIoCcb75sb/7GJWT8Aq2ohUS2oAwudDUNDQHqhjulshygMHoLW/6AOLKFB
-	 NJfQuVGfFyE0nXitzxJWJCqU=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D09C640E02A8;
-	Thu,  1 Oct 2026 23:59:53 +0000 (UTC)
-Date: Thu, 1 Oct 2026 16:59:50 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>, x86@kernel.org,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev,
-	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org,
-	Christoph Lameter <cl@gentwo.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org,
-	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Long Li <longli@microsoft.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>, linux-doc@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <kees@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>
-Subject: Re: [PATCH v2 0/6] x86/percpu: Share decrypted storage before guest
- setup
-Message-ID: <20261001235950.GHar7z9v3zfk8odoTh@fat_crate.local>
-References: <20260929040256.543767-1-zack.rusin@broadcom.com>
- <20260929053930.GEartPEjbZMpBVSvSk@fat_crate.local>
- <CABQX2QNmza+=i1FXgDtFS3e3O5oXxPZppRbRrL54P1LmrB2gBw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CABQX2QNmza+=i1FXgDtFS3e3O5oXxPZppRbRrL54P1LmrB2gBw@mail.gmail.com>
+	bh=+zMNrQy79S8jiwTixNRGevmf9I6kVLq4clIk41vBdh8=;
+	b=ClD7fmxqPmkx0zJIagdQ41guzVHLWeLymoyRuFll8RlUvjoqJm21Hk61OoRBG3lDzx+Za5
+	NdfzwUkQFXFZFrjm+heJ0DsMk4ZvxD9sstACbtKoJ8r1YvuNmqTmQvWimrwolz+1ghrPpg
+	heqTGRomaPXX0Pu64XSxU6GkSJgu1wM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3D3C6601FA;
+	Fri,  2 Oct 2026 00:37:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521EB1F000FF;
+	Fri,  2 Oct 2026 00:37:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1790901442;
+	bh=+zMNrQy79S8jiwTixNRGevmf9I6kVLq4clIk41vBdh8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GVlSQ124B9GthRDqN7KmNNSLrui9jD7Eq/JZy6V8VPtvUcv3fyAEDGKA0nGh4OSxN
+	 IJGoPfmeUQ1txCrRwh6GokYBVsi8xWsy7AM4CK4Is7fo3sKO6PNCOgshDJYhmoH9d/
+	 /y626u1VPooUrPbv5V59O46wXX0NgO2ThMOmSwtQ=
+Date: Thu, 1 Oct 2026 17:37:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry
+ Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Kevin Brodsky
+ <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, Sarthak
+ Sharma <sarthak.sharma@arm.com>
+Subject: Re: [PATCH v9 0/4] kselftest: mm: fix some failure of
+ split_huge_page_test
+Message-Id: <20261001173720.d5a48ec93c865346f16da417@linux-foundation.org>
+In-Reply-To: <20261001-fix_split-v9-0-0f4ba8bbdbdf@arm.com>
+References: <20261001-fix_split-v9-0-0f4ba8bbdbdf@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: skfa796h1eez1o74f8a6qjyy4z6ju9ak
 X-Rspam-User: 
-X-Stat-Signature: ihn1qwjrkrk6whg1nndtxauwch5x8cc8
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6F1E01C000D
-X-HE-Tag: 1790899247-569401
-X-HE-Meta: U2FsdGVkX1+Fu4MUVd84RiI5Zps1lx7RCbFu2tJSgKdUCeoIcvitNVaaWxVar481TppG/G3ePcaUg4ZYPrFACsQMsDrdB2L9QABiVehzme/OLJniHcj2X08grQVj140fzJUrdv1pW/Bg+WSrmiDRSsA+gkcr4VFqaTDZ9gVK9x8FHc7rGUYCX9i+CfmZ7d6xkHnJja8e4lolTP8LxdcHLmj6nUEghKbgNzfs+pg3WZeraaeABt3+N+B2r3eLYIXGgBWH2ICI/AIx++HvgAV5AR8O+Xg63lKZ9Ci1e/uJGys1XnwbGNoqIZ66+2f/um9iVLLll52wlKRq+TjpwYez1uurg1BgZ8l2moW466s/sk7VCKy0lVa106C8L6ubxLYsS1jndNmc1w2Csc+tp55yFxxIdUu0t2o7Cfi62hOAuMotijl6l2xf5TWj1jBi84IJCd+TR0O+jtiF5FJW2hH/mtXzOUItnAa3Los+iESaz22w913OIiPIjGQgAPFfVEb5MvbXGyP3EaAX2ZYHhCtNMnTZhelnyz6hpWGhEiqToP/yUQdLmpN0CYx1d8BzPllJupUzHxe0fhcEFXbYRA/hFlURIoEn1YiP1No7jD8IflphChH0nHztXaWvyf6WGrEDNYK8BUh8lEQiDOIhociCoFOQ7ZYi1398vI3/IbA4uzBgmF2QZj7lrldKa3Gyrag5OiTxKnlSFMD+iULGPXbVNi87WAu0mShuhxQGQGaUVXo3mB7MYkDaKtrnT2sDWbxzrvmxUHgEtDnxemYUJQS9aY53NVKdj3dsmCXhd1fxtn0qSyOKuIRwLC0ZK6OCEObzpmmUZq2265JovB+U3VSIOL75SnPWjhl1d7mEGoN628WzmZztZyz4hDCGjQ9jDF2crFtIgHYjPJTJXw2+/gB/UQTgCc0C07y/254XoPzrjAVCMh3fzPRGZzf3Tb3LYWp/StU8JESO+2UtoJWfj3G
- G4hVXMOp
- vMgLVr5pz+XTsadob2V8y9/Jf2JifCTvIYFJRITF9zDXZdzlgWokJ9Z9kSdw8HG0p/Yz6alTrCCAYanyK0hrHRs7Bf/C1854rJV4p15WhzTeg2Fr/cY3ld1xcZisxLpSDc23X0nedZrtItlXWh3eICrqJtOfYC4hV1ZrCFNmTgKfrwpFFqzdViIe6zfLzSUzprt72gg6pI6qTKhI23GgbLlJPYkY8GMXjjHLeIo5EjDayiakTQBMSZePQ/pPiuFDod8SkB9eCINFNAZKxb+Us6pvv4FhvRSPg5++jVy1CNoAXMkBQUMx3NHAnXp7sqbHMw0+xrwgJAeIffvsTk26Hxsp4kuBdvHZ2eRe+
+X-Rspamd-Queue-Id: 239AD1A0005
+X-HE-Tag: 1790901443-191160
+X-HE-Meta: U2FsdGVkX1/hDyZxOWXYIFrYCudWMK5D2w2+mauikjoPMa8Kez6oumiehvfvflUdcqGONQ2osf5tGx504Rj3SCNo3hFOUfkjl+drqBMnn6vhf171MKP4nkMMGeaNBQHOnWwcoqq8iNlroUa4BNLsZg0TD+FwNdJB7mQ2KQdH30pLzi42IOi3bQ3O2oC5YGPJTuSqB2zAf+cI0DfehKoeVNdmFBSpRSHIy8hefoT1noJel12EMpK4aUECZ7OS/g2VwzgbWZj+fjllk/q/fV2hKYJrsAYo+kC8BvuFGk3CNEUq70a6882cO/1K2KzKqo6ERPG+c404BZwHBUBt+1cDEAEXmoX70YHD1CMypFH51m+R4N48/CMAShR3Bg/x8SGBS9UWRiD++Bxn+4zoeT3kom1ULBPyCaFOc3Y1HGnrh5g2d1k9qtzOHJNX5hWv8WA/SdC6shg50DNdqgh14bR2HgD+auvYcTtE0kp3LzcVALRPuvtq72CqNv4Z7VoQZGDjjbLJiBnG1yl7ToEuimfQHDpIZktMsF70dozVaT9xpKtRco4j/IH5SbzPqQuAsnQ7GDsItZKHf0K1EILuddUj51ezsDZ56V/pk8hxRPes1zPGGk2PBWYozx+Y+nCzKBsJmJ2Np2VkBYusLNRdwG83+8enEfiIsHehfNjrX94K5Npk88ccS+AW3jLK4OLs/3OqtN4LrL9GMcFxDDPZWSsN7c1D6K9jO31p2W7XoY3LdNwZHD3pIsOEZ8ibUefVQ0p+m1XQfLUzA6+agGSubrQn1z2dBZfEqpEWCGwPD2vObP7OcRaTmliJinZc8nrSN4oDuIbZMC7t8z1ufPPhgkxvzakGRnsi8P4UkbVo2o1xnsW2Z82TrIvxEIk0dOhh60HSNcX3MWn/xEbW5RQkaTJLYC60+aBdJNIWRCjz/x3Du8bNKr5ZhLMscIABD85I/kkpEA/Xfub9RNgaERRpOjF
+ dipEVsUj
+ suWxQvWM82Uy6RF9z4QZPgjLJeISQDF6mUqgY2NXKTEcB3PUuc4xj2HZif4o4Xeez3uH/FnXlea1DGXUwpF21GQtcJzHlS0o23E1RcNgX/J63u2f3SqqZVnttEJKhZoxwytt0aa2CHliTeJz4HCXwgDsebKc6b3C3vKPUUveQzCyPVBPdMkENAaB2bzB+9sq4Nvl2RGtUx9FajMPTvcaH9LgXhPhx7KewD1QLKGuCZBIEiXL5NhvdXaPZDvHGGU8CVAQ0Gy92xJrrwH0Otca80IaMoQGbfBemQWzsvrFjHLDy8N02Q1VP2N7KdeQbc7mlDNEVmHkuSbvLqauYUhWOqQPBCOzdlROaDgeqTJkltS01KpVTeHM+ktdhMCVZ1CyUVdfe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,96 +99,244 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 01:25:09PM -0400, Zack Rusin wrote:
-> Partly. So steal time tells Linux how much time a virtual CPU spent
-> ready to run but waiting for the hypervisor to schedule it.
+On Thu, 01 Oct 2026 22:17:50 +0100 Yeoreum Yun <yeoreum.yun@arm.com> wrote:
+
+> split_huge_page_test can fail for the following reasons:
 > 
-> For example, during a 100 ms interval, the vCPU might execute for 70
-> ms and wait for a physical CPU for 30 ms. Reporting those 30 ms helps
-> kernel:
-> - account for CPU usage accurately: avoid charging applications for
-> time when the hypervisor wasn't running their vCPU.
-> - make fairer scheduling decisions: base task execution accounting on
-> the CPU time tasks actually received.
-> - expose host contention: the st field in top and counters in
-> /proc/stat help explain why a VM is slow even though its applications
-> don't appear to consume all available CPU time.
-
-Aaaha, IOW, that's the "st" column here:
-
-$ vmstat
-procs -----------memory---------- ---swap-- -----io---- -system-- -------cpu-------
- r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st gu
- 1  0      0 1714852   9748  85300    0    0  3793    51 1445    0  0  1 99  0  0  0
-
-In any case, you could keep that helpful explanation in yout 0th message. :)
-
-> If options are binary then "no" :) It's not for monitoring tools, it's
-> for the kernel's own steal-time accounting above, which currently
-> doesn't work in confidential VMware guests. So the issue is that in a
-> confidential guest (AMD SEV SNP, Intel TDX) memory is private by
-> default, so the hypervisor can't read or write it. Any page the
-> hypervisor has to write must first be converted to shared by the
-> guest. Linux gives us the address of the steal-time buffer without
-> converting it. The hypervisor then tries to write into a private page,
-> which doesn't work. Currently ESXi deliberately powers off the VM when
-> that happens. That only affects VMs with the steal clock enabled,
-> which ESXi leaves off by default except for Photon guests. I'll
-> probably change ESXi to just disable steal time when a guest gives us
-> a private page, but that only avoids the power-off; steal time still
-> won't work in these guests without this series.
+>   1. During the test, khugepaged may collapse previously split pages again,
+>      causing intermittent failures.
 > 
-> KVM has the same need for three of its per-CPU buffers (steal time,
-> async page faults and PV EOI). It already converts them, but only on
-> AMD and in its own loop. Kiryl asked on v1 for one common place that
-> converts all such per CPU buffers early, on both AMD and Intel,
-
-Right, why early?
-
-I mean, I am still trying to see the justification for this diffstat
-
- 14 files changed, 247 insertions(+), 51 deletions(-)
-
-and whether it is really worth it.
-
-> instead of each hypervisor driver doing it. That's patches 2-6.
+>   2. Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
+>      glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
+>      made by memalign(). The underlying VMA may start at a different address
+>      from the aligned address returned by memalign(). Moreover, a subsequent
+>      madvise(MADV_HUGEPAGE) call does not split the VMA because it already
+>      has the same advice.
 > 
-> Patch 1 fixes an old layout bug in uniprocessor kernels, where these
-> buffers can share a page with unrelated data. The series also fixes
-> SEV and SEV-SNP guests on KVM running kernels built with CONFIG_SMP=n,
-> which currently hang at boot (we reproduced the hang).
+>      This causes the test to fail because the check_huge_xxx() helpers
+>      incorrectly require the address returned by memalign() to match the
+>      VMA start address reported in /proc/self/smaps.
+> 
+> Address these issues by applying MADV_NOHUGEPAGE after faulting in the
+> huge page, preventing khugepaged from collapsing it again, and instead of
+> relying on /proc/self/smaps, use /proc/self/pagemap and
+> /proc/kpageflags to detect huge-page mappings and large folios:
 
-That should tell you how much we care about UP. We would even love to make SMP
-the default.
+Thanks, I've updated mm.git's mm-unstable branch to this version.
 
-> Fair enough. I'll rework the cover letter and the commit messages so
-> each one starts with the problem. The series originally wasn't really
-> touching x86 core parts and I haven't updated it for a larger crowd.
-> Would you like an explanation of steal time, like the above, in the
-> cover as well?
+> Changes in v9:
+>   - fix some typos in comment and Fixes tag.
+>   - separating huge and type checking.
+>   - add r-b tags.
 
-Yes please.
+Here's how v9 altered mm.git:
 
-Also, we have some blurb about how to write those:
 
-https://docs.kernel.org/process/maintainer-tip.html#patch-subject
+ tools/testing/selftests/mm/split_huge_page_test.c |    7 
+ tools/testing/selftests/mm/vm_util.c              |  108 ++++++------
+ 2 files changed, 64 insertions(+), 51 deletions(-)
 
-and
+--- a/tools/testing/selftests/mm/split_huge_page_test.c~b
++++ a/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -110,14 +110,11 @@ static char *allocate_zero_filled_hugepa
+ 
+ static void disable_khugepaged(void *addr, size_t len)
+ {
+-	/*
+-	 * Disables khugepaged from collapsing THPs in range, existing THP
+-	 * pages remain.
+-	 */
++	/* Disables khugepaged from collapsing pages in range into THPs */
+ 	if (!madvise(addr, len, MADV_NOHUGEPAGE))
+ 		return;
+ 
+-	ksft_exit_fail_msg("MADV_NOHUGEPAGE failed, err=%d\n", errno);
++	ksft_exit_fail_perror("MADV_NOHUGEPAGE failed");
+ }
+ 
+ static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hpages, size_t len)
+--- a/tools/testing/selftests/mm/vm_util.c~b
++++ a/tools/testing/selftests/mm/vm_util.c
+@@ -351,13 +351,13 @@ err_out:
+ 	return entry;
+ }
+ 
+-static bool check_large_folios(int pagemap_fd, int kpageflags_fd,
+-		void *addr, size_t len, int nr_hpages,
++static bool check_large_folios(void *addr, size_t len, int nr_hpages,
+ 		uint64_t hpage_size)
+ {
+ 	int order = 0, pagesize = getpagesize();
+ 	unsigned int nr_pages = hpage_size / pagesize;
+ 	int orders[MAX_NR_ORDERS], status;
++	int pagemap_fd, kpageflags_fd;
+ 	bool ret = false;
+ 
+ 	if (!nr_pages)
+@@ -368,6 +368,15 @@ static bool check_large_folios(int pagem
+ 		ksft_exit_fail_msg("invalid order\n");
+ 
+ 	memset(orders, 0, sizeof(int) * MAX_NR_ORDERS);
++	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
++	if (pagemap_fd == -1)
++		ksft_exit_fail_msg("read pagemap fail\n");
++
++	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
++	if (kpageflags_fd == -1) {
++		close(pagemap_fd);
++		ksft_exit_fail_msg("read kpageflags fail\n");
++	}
+ 
+ 	status = gather_folio_orders(addr, len, pagemap_fd,
+ 			kpageflags_fd, orders, MAX_NR_ORDERS);
+@@ -378,38 +387,53 @@ static bool check_large_folios(int pagem
+ 		ret = true;
+ 
+ out:
++	close(pagemap_fd);
++	close(kpageflags_fd);
+ 	return ret;
+ }
+ 
+-enum check_huge_type {
+-	CHECK_HUGE_ANON,
+-	CHECK_HUGE_FILE,
++enum check_type {
++	CHECK_TYPE_ANON,
++	CHECK_TYPE_FILE,
+ };
+ 
+-static bool check_huge_type(uint64_t categories, enum check_huge_type type)
++static bool __check_type(void *addr, size_t len, uint64_t page_size,
++		enum check_type type)
+ {
+-	const bool file = categories & PAGE_IS_FILE;
++	bool ret = false;
++	int pagemap_fd;
++	char *start = addr;
++	char *end = start + len;
++	uint64_t categories;
++
++	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
++	if (pagemap_fd < 0)
++		ksft_exit_fail_perror("open pagemap");
+ 
+-	switch (type) {
+-	case CHECK_HUGE_ANON:
+-		return !file;
+-	case CHECK_HUGE_FILE:
+-		return file;
++	for (; start < end; start += page_size) {
++		categories = pagemap_scan_get_categories(pagemap_fd, start);
++		if ((categories & PAGE_IS_PRESENT) != PAGE_IS_PRESENT)
++			continue;
++
++		if ((type == CHECK_TYPE_FILE) != !!(categories & PAGE_IS_FILE))
++			goto out;
+ 	}
+ 
+-	return false;
++	ret = true;
++
++out:
++	close(pagemap_fd);
++	return ret;
+ }
+ 
+ static bool __check_huge(void *addr, size_t len, int nr_hpages,
+-		uint64_t hpage_size, enum check_huge_type type)
++		uint64_t hpage_size)
+ {
+ 	bool ret = false;
+-	int pagemap_fd, kpageflags_fd;
++	int pagemap_fd;
+ 	int nr_pmd_mappings = 0;
+-	uint64_t pmd_pagesize, scan_mapping_size;
++	uint64_t pmd_pagesize;
+ 	uint64_t categories;
+-	unsigned long pfn;
+-	bool check_pmd_mapping, allow_nonpresent;
+ 	char *start = addr;
+ 	char *end = start + len;
+ 
+@@ -417,57 +441,49 @@ static bool __check_huge(void *addr, siz
+ 	if (!pmd_pagesize)
+ 		ksft_exit_fail_msg("reading PMD pagesize failed\n");
+ 
+-	check_pmd_mapping = hpage_size == pmd_pagesize;
+-	scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
+-	/* Some mTHP tests check a partially populated PMD-sized range. */
+-	allow_nonpresent = (uint64_t)nr_hpages * hpage_size < len;
+-
+ 	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
+ 	if (pagemap_fd < 0)
+-		ksft_exit_fail_msg("open pagemap fail\n");
+-
+-	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
+-	if (kpageflags_fd < 0)
+-		ksft_exit_fail_msg("open kpageflags fail\n");
++		ksft_exit_fail_perror("open pagemap");
+ 
+-	if (!check_pmd_mapping &&
+-	    !check_large_folios(pagemap_fd, kpageflags_fd,
+-				addr, len, nr_hpages, hpage_size))
++	if (hpage_size != pmd_pagesize) {
++		ret = check_large_folios(addr, len, nr_hpages, hpage_size);
+ 		goto out;
++	}
+ 
+-	for (; start < end; start += scan_mapping_size) {
++	for (; start < end; start += hpage_size) {
+ 		categories = pagemap_scan_get_categories(pagemap_fd, start);
+-		pfn = pagemap_get_pfn(pagemap_fd, start);
+-		if (pfn == -1UL) {
+-			if (!allow_nonpresent)
+-				goto out;
+-			else
+-				continue;
+-		}
+-		if (check_pmd_mapping && (categories & PAGE_IS_HUGE))
++		if (categories & PAGE_IS_HUGE)
+ 			nr_pmd_mappings++;
+-		if (!check_huge_type(categories, type))
+-			goto out;
+ 	}
+ 
+-	if (check_pmd_mapping && (nr_pmd_mappings != nr_hpages))
++	if (nr_pmd_mappings != nr_hpages)
+ 		goto out;
++
+ 	ret = true;
+ 
+ out:
+ 	close(pagemap_fd);
+-	close(kpageflags_fd);
+ 	return ret;
+ }
+ 
+ bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+ {
+-	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_ANON);
++	const uint64_t scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
++
++	if (!__check_huge(addr, len, nr_hpages, hpage_size))
++		return false;
++
++	return __check_type(addr, len, scan_mapping_size, CHECK_TYPE_ANON);
+ }
+ 
+ bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+ {
+-	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_FILE);
++	const uint64_t scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
++
++	if (!__check_huge(addr, len, nr_hpages, hpage_size))
++		return false;
++
++	return __check_type(addr, len, scan_mapping_size, CHECK_TYPE_FILE);
+ }
+ 
+ int64_t allocate_transhuge(void *ptr, int pagemap_fd)
+_
 
-https://docs.kernel.org/process/submitting-patches.html
-
-In talking to Peter about it, we were wondering whether this can be made
-simpler. Like do not touch perCPU but do a normal page for each CPU's steal
-time gunk and thus do not split the large page and then that early
-enc/decrypting of memory I don't like either.
-
-Perhaps we should start with the simplest approach first.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
