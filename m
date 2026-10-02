@@ -4,141 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92DD0CA5FE0
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 19:33:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2567CA5FE5
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Oct 2026 20:05:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87AE46B0096; Fri,  2 Oct 2026 15:33:07 -0400 (EDT)
+	id 77DF86B0088; Fri,  2 Oct 2026 16:05:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82BF86B0098; Fri,  2 Oct 2026 15:33:07 -0400 (EDT)
+	id 708316B008A; Fri,  2 Oct 2026 16:05:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 744D66B0099; Fri,  2 Oct 2026 15:33:07 -0400 (EDT)
+	id 5CFFB6B008C; Fri,  2 Oct 2026 16:05:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C01C6B0096
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 15:33:07 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC6B916082B
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:33:06 +0000 (UTC)
-X-FDA: 85278684372.27.464FEFF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0B6C420005
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 19:33:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lZgSpxke;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 29CB46B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 16:05:35 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9E5C41C3377
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:05:34 +0000 (UTC)
+X-FDA: 85278766188.06.6A3DCB0
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D66B9C000B
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:05:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eQTWHotr;
+	spf=pass (imf10.hostedemail.com: domain of dmytrokoziuk68@gmail.com designates 74.125.229.204 as permitted sender) smtp.mailfrom=dmytrokoziuk68@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790969585;
+	s=arc-20220608; t=1790971532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dVKx84NxUYGGJKXGVVdE5LF3HRwqIL74lqlE5opoXUw=;
-	b=NI0n9tMD/BpUobFxnUL2kHJFC4dGXXq+WsKa21TFsGOTHyRWWPH2GfSxNzXEPNYY1RH/jy
-	vnIiZhVbKQx60MYTjjvlw5mJjNeoB6GX+E6uLlaPo6M0Xj3X79raQERZGNMmIJC7QH8jfb
-	rUDlA88GnRAqF6x8H2hfuiMXBJzOg0c=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=IVNK4JoiucBTLzRok4UL7M6qjfOQzVIKG+cDN0ZVD+8=;
+	b=AnPaogFREOjVBu444LC2L7eT4yQwedbibLe2izMxabqv9ewSyGZDlizyeCtrdEjMopIVWs
+	0ZjBFZPZ5nFaCQBofD0yH7vtnLC1LZkERCGzVWQ1WQVkDFiOa/UwkYF9s6+zOuPhx+WJh+
+	QqAgeZpWgq4Vr3R7h864gUeWlsSiTL0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790969585;
-	b=6EXry3rGf4S6M8Fg8AgW/unIekJxqGbztclOfwRNUoU+LNET6iQE2UM3O00vj6KpFAA2zK
-	EMxFbFjjSouXOM97HzR9ZNRfnTeK/TdULodJELQ45SNf3YwP2ljv9jWzdeZ3/cO3xWQ8dX
-	ig8jxO50NJV43NPl/3XPW2Su4+zfJE0=
+	t=1790971532;
+	b=7+vt+s67bS/3iYCr6aC27O2qK4GkIRczG0MYDrJIvAtFdLEGIBmVUgifCLyOoxeUvj7APO
+	7A9MPl42evJ7giY1sxZdg2YCGOfoNZoJ5D+V+SB+ijk4zAqaCszHNoAKpGdF+4yl4Le/Ky
+	ZQbJNTbwDBeBGEGIircSyrL1K9r2xis=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lZgSpxke;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7901660AAF;
-	Fri,  2 Oct 2026 19:33:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D981F000FF;
-	Fri,  2 Oct 2026 19:32:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790969584;
-	bh=dVKx84NxUYGGJKXGVVdE5LF3HRwqIL74lqlE5opoXUw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lZgSpxke0mvUdvDGWrJuZQLWen71vjq/nK+jJUHf6APW+GhSGLI7pFx5NWfcTsjIg
-	 1FBL8w+e1gyB3dujAEbON2e0pPOscCKqRIEqJgpS1yq0S9H0XBKtxUTKjBZ6jM25qj
-	 cztLOnR1xjdyGPZL4urYtaniCO+PNgEyLyAStr0GnGuAocclhFAVmNIsI0TRSufjC3
-	 yeqjjfeXI1q43BgTcwyn9rW9FxKy2tX+PxebaFOnAZTAHL1STHXT6TG2O8gGiPcKVJ
-	 OzWy7TWHqVeUG1zoUKlqnQmO5Ww3P76sSrBmzISGCIei6CuexWBlDFkoNDzd7XjtZ1
-	 IAFPdbVDdP+PQ==
-Message-ID: <45eaf367-331d-420c-b333-58c65c185a6f@kernel.org>
-Date: Fri, 2 Oct 2026 21:32:54 +0200
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eQTWHotr;
+	spf=pass (imf10.hostedemail.com: domain of dmytrokoziuk68@gmail.com designates 74.125.229.204 as permitted sender) smtp.mailfrom=dmytrokoziuk68@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5ba3ce4795aso3937967e87.3
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 13:05:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790971531; x=1791576331; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IVNK4JoiucBTLzRok4UL7M6qjfOQzVIKG+cDN0ZVD+8=;
+        b=eQTWHotrn5SvOYuuu7HM6nV9bB+tDZ+5fIA65tx4X4fr7Nx7fbTRbxLfBiKHOeng/3
+         RDLZiMqagLlPHJ6Yhb3UDiJlZUFhuCuN248bZl2ato002fw7SLB3EtqEnOpgHe+YnQdh
+         KGNFbXUa4+vSsJyOfrqBj2kr2s4+GTkgetqxPSK30TyYjcRaBaGlvjf2z6SWspw1jRyp
+         o/9+2KFq3EJm1CFQo57vIfWF6PV87FUr0W9aDPbxAAvz3SZvr2f6roAc2K4TyShh48+1
+         rPimKvgQcPtHHfbOOu3n8+3sjdtMTcYSD/VbvZopdWNOJ+2oAbdsHv199WRYxUpCiKRW
+         yNeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790971531; x=1791576331;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IVNK4JoiucBTLzRok4UL7M6qjfOQzVIKG+cDN0ZVD+8=;
+        b=lIXuCICZX0M6yGyp1qK0BeVaom3Oo0xGPMnn8PGtMF2CNswoQ7ZUDyrJ1CPHm3j+/Q
+         UkbFw24TipQwOFch5mgSkfarPj0/upripjPaGm0QyYNFJxKMlZfDDEMY0E7P7Cob/MdY
+         tEtWE9ie7FTIohyDEDVpCXCqe0XfMRDj7RD9noKESJr5Qj7eRsjn+MEzdpTypTcqRwO6
+         ch/xY1uPmsbfeY3fCWKO231bUUTYibfdGnSXjHb6B8ohJAnz9qlFQtlqT1Gc7mbypY0T
+         K5eaSJF0wFb+nWoL+IhD4/viMO1Iui/6gJ6kwPc6zvLCPkRYmCgD/BhJwWJWIr8APNsS
+         diXA==
+X-Forwarded-Encrypted: i=1; AKwUvBxYfwPbqwR5SFKkiK6l0SzR4sMKGfMKvm1+BHRIqvAdHj3mUJj66yAxGMOYHeE10dnxpVTPpHS9dQ==@kvack.org
+X-Gm-Message-State: AFq9FYLiHvJnnhgOLPPrHWm1Fscuee3BKNt+YfrK1EUC7XYML3ZXqiw3
+	RzsI8EB0QXRbRrani5NhNAHZm3qRgOL0pcKwvgfZ1thIQUKk3KChxZ2c
+X-Gm-Gg: AYBFou01/n16ilBOZefxHKCaFTDdIJFBJNklO8noz2CMC0kXaOvF3hxTfEIqmRPEzXY
+	9wvLARd0I8nYhR/h76up9AeuBbR+lXKa5DhPdM3U+vhUolDx5R/TCkMQLrQvLVdVfv8e2aEDkZD
+	iEZ/wLhDcP6vqWloSLNLGO0f9Nn8iA8aeeAcl39TsIPcA2kI+h4pMClpaGoBNFtlTbE3BVWcIEe
+	ea+bygbivHWEyj1NmVGxGTXXO0y548AZZIDdbwzVtUG4A39nfiYUvDoUQVq2Mr4g+i9eZX+UzOK
+	5jfU/NRiMkutiUyO6lhvCTK8RY5SFkFxt9qGI2BMwM2wrJHdopbYTUWe31OCfYRIRCW+4RNaKoz
+	A40YOTBhZS9EoRKfjd/tRigEFvAKFp/Ogd1Vkk1kqGdYCWvahCq/JnRyjQQeNZIkUNjO6ewHkDN
+	kMlT7IX0jiuS9a5eLWw33A8UndpRbX2xmnpIw86eW3Fe026+xOyiPZWsA+g0n6OCuXCdv68tEIC
+	GwxRUErJ4e2PfB7h49OwrIgGrrpUkwG3bxfCiDxxhhThkSpQ98J6whjknhiMLO4jkUBJcEnw3/d
+	8JJcj+76RjBsfW/rwjWM8c34yRmtcIJEOn2/TI2wgVTflUfQsISEC4q/wNQ+1b8=
+X-Received: by 2002:a05:6512:838e:b0:5ba:3fc3:d8cf with SMTP id 2adb3069b0e04-5bb9bc24242mr1151978e87.34.1790971530812;
+        Fri, 02 Oct 2026 13:05:30 -0700 (PDT)
+Received: from localhost.localdomain (2001-14ba-a052-b900-354c-f1dd-ffbd-a9f2.rev.dnainternet.fi. [2001:14ba:a052:b900:354c:f1dd:ffbd:a9f2])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bb7c78bcecsm1018388e87.15.2026.10.02.13.05.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 13:05:30 -0700 (PDT)
+From: Dima Koziuk <dmytrokoziuk68@gmail.com>
+To: glider@google.com,
+	akpm@linux-foundation.org
+Cc: dmytrokoziuk68@gmail.com,
+	elver@google.com,
+	dvyukov@google.com,
+	urezki@gmail.com,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] mm: kmsan: fix iounmap metadata teardown
+Date: Fri,  2 Oct 2026 23:05:07 +0300
+Message-ID: <20261002200508.546-1-dmytrokoziuk68@gmail.com>
+X-Mailer: git-send-email 2.45.1.windows.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 13/14] mm: replace thp_disabled_by_hw() with
- pgtable_has_pmd_leaves()
-To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
- lance.yang@linux.dev
-Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, hughd@google.com,
- dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
- dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
- dev.jain@arm.com, usama.arif@linux.dev
-References: <cover.1789695931.git.luizcap@redhat.com>
- <59028991ef703526a8e3be4c1f3875b042f328ae.1789695931.git.luizcap@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <59028991ef703526a8e3be4c1f3875b042f328ae.1789695931.git.luizcap@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0B6C420005
-X-Stat-Signature: 91u977r8pibowncjgxrwxj194ikmqqff
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1790969584-136662
-X-HE-Meta: U2FsdGVkX1+J3PxdoAN4K4DY9+l4MMng9oIEsAU/d6eif4wwen0NphKYoaJfKVNlOZkSMjztmfZ0Y1oa7lLp/h2/dotJopl9Pcr6EXDFWynie+gJu2uRJVkryxgaPpGFsqRSmYxyiR6NOh0YQk1QHZ1qAC9Oj2m0Au44VPLCJd+Eb6KKCSyDuZism2IIsGGKvMzcf48KycJxWQNWhpFtt+RGMx8XvLPRF1BrctBV7JJxEPZq7VHxH+INzLwkw9YJJGpueJrIuKYGwL1EI6D92y2U2v83Z+D0ht/31EXd8H3Yz6HFtSWvdE22LFw1ckqKDKRNpT2X7qdDwfBclAnseYlQHI8YhL3/kymgk4iWPLBusNdmnrsG2Ba8vEqjw1fmr92wN/0Ly1vo+vQN0ABZTkkl5y9APmcmGE/EbSrQy91GcoPMUv18toDg4b7uDddMOKbc+mcQSJMxmn696Jd+UBF/dsuoDxu5kYWtnGEMIHunUTtn0Py8BMsbBpOmgOFrEclH/h7X2lxFVRXr8ns/wwcTDJ1qRldbSnefaIB3X3bH3/zhs6R0K8krRfpdxmfHjaxqtB7Vas2XfaUf6IlK+dw7qJzYQo37n2fqTCdVZiZouhu2UECbvVjKCEjhhNWqAsWLOL2t8vEIqq9t2c1nUX1aDhwG1G6nQ6iBUArsm/3Gej4bHJmW2vtPecXdaI2ZwXoFJ2nU892EmNK8WIHlZkA/lzLCYWSIWIhb6CjafPghQ0jBEPpz8Twh7qzaIvmP/Wu45FbsY3xtzaH8XdKPcCFFzwKan4GAl8nm2FyQbwsKUKqvG3F5nr7/pezUy3TwxhjiRIj4qSnS+Dc/CpwO3hKNaA/9+GGulkQtNbNKQvYD9dPiZ256c1qqtNWTCa7f1TYp/WTBxkjrjofQ3FV5ncfl1wDhFfDkEMDNGOlmjw8MWpKqjohsET1/1AcMhghd3TdHiQbLvqzDzqMKeCk
- /sUWBSiH
- zTMGA79oVCw19dour5M55b1HLQLIYXrcz8LFqmTyxCoOU4LHNisNJF2aWQyt1JhhWyvBTTsiVZ1JqOklOC/frtlIB58Ykt2T00ryKaTfXwcVnZQ0l/FZcY4DYhR2qKsT8OTlGoBbNHg85WxgDx6L6JEmw8rRuhF+YYBwsiJTkAIywdL4UVbAmNHyjX+wkFhe7tJC5Oo9AFB52gM4Pekrjz4E12F8Zk64PfRPT4LMTPqPa+auZ/hBkNL3SeB5CxPVLmvvi18KVT6uqTw6AVquHmFBquRYWv7j6FrELVTdQkh7gF7qB3nI+Zgxm0kwNaVIHrbrhaEYhSZ8Blboqw6TKN6na+fWnOLHnXgyDeQd9rW3skiclRKJ9y7FmBZaoMShQ/LV9F59vViMYv8GI5xJGsuenxg==
+X-Stat-Signature: azm89axqicxaxe51ppqq9sxzb9koqaa7
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D66B9C000B
+X-HE-Tag: 1790971532-43870
+X-HE-Meta: U2FsdGVkX18y5eRNNh4O4jASsoCEITjtv2yhziWENC5RISu5RXrqpDEcMPtzPozYCUgjC6aAPu/Y+oUbBp1MeKvreOTBuplkAzNcrndu3VuIcw8+DXgLRg0DMrtKZ6aRzpR4XU8s+c5ASGPCC/AreMyewzIea+1OL7//joa0qmELdU127fgru7X6OPCj7oJQt5i4xZKAMNc3T7Wswlouy1Iti8TcKQQi+Yktem084QcdufWrupp9ewMD8nXQbAItLbxzUfaU8/7pA2wfOywfVihTCzhkxmvkkGg5Bva2BE6ENLjpF4j8U6qICW0gxBxl8zmEXrzPwBjuIoymk9CVJTwZziIP2GH4KX/4HtA3VNI0ndPme0SEbbdKUfsDZxtR0V68++N5GahWYjwn0MFOv6lMOndP3y/0C1nROMyAKJmoLu4HlJHti/pEBe03yFOLYX5S1fCiJzMY7ErNAlwLuykuLS8FsCcdNqhIF7einCZxhtclDW6h6nVoGn9wWCl1KdVfyfz+np4kML7cq3AkwQKkbA7vRHBSc1K/rZS7wXSI3qPGvHCn8MCNXCSZfrqeiMSNCRKTP19iGLgHIe9aiAN28fOfnZuaVcJ1wWdqah/zEzKqH0TtwBnXwBZXiCzQtf0LWNMqMskMG9Vci2Pug63MvAofZILpRa+9+9XTzwITC59/EL6Py7XlMua9BwspqSJWGc483RWJRDwvW9Bx1EveumtoVnFuXu/ePU/oHVOfa0ZlGU3SFoux2Y2a4Eg4TMAgn30rKHT4/BBm+ltTS+GoL6XoSjclw93n9Vl5TwdWydhmrBz0xkgkVeUT9LNGCzkHrHGMBy9L2t/f43TfQaoW3omhtBs9vOdcdDdLjOkK5gmhPJGP0Iyu6to56il0nqvrZ0pKAWaRoS/xxTZ23aOLKPYR7/yjfym99eZNiuPtvnb0+qE/E9xEVsCaiX5eHU2iHXYpVf7ILTiF1t1
+ pHe/AKwy
+ kg7MtBulLrvFNfGE6wZ5jCxoU0PHszsATKUqFBG2PxcvCHgKB/f1FW78HFI1rULQvgtlJ+oJXTvNsx3t2Tm2jgceFyfOCeDRAnpylYeSdyUnJSez7tJ/2H8UcerBsX7Wfh4jv8sZYVTh+52O66b1VkqyVlADUB9rk8czNX29fZdv8lmQ95Ho/NIHeJ2FfdVGMPPoOmmC022xihJ2VIX3nk12Pr6Budy5J5KyElPUk3vlPNsTQOknkjSFufsMm9/vmn2acaPe0/o+FLZPsaNbbuHqVNZA4c0HIW+DTFyWDYopPwib9EUmaScAvQGuPhTABzDPdgG24uW2viI4H+/sFejh4c8fzc6AMlrIDgZB9H7/b4FC0M6Va22j5K+nN00IZ25p6gq9+OKEC/5FcGcno//NmxUFipMwCiLgfVYCCnbljG+v7T1pSLSegieL3uyGS7EVDFxjXSEC6qxO6JUvezOvCHpUPSxBp17ZX+NrtaSuU168=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,27 +122,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/18/26 03:45, Luiz Capitulino wrote:
-> Despite its name, thp_disabled_by_hw() just checks whether the
-> architecture supports PMD-sized pages. It returns true when
-> TRANSPARENT_HUGEPAGE_UNSUPPORTED is set in transparent_hugepage_flags,
-> this only occurs if the architecture implements arch_has_pmd_leaves()
-> and that function returns false.
-> 
-> Since pgtable_has_pmd_leaves() provides the same semantics, use it
-> instead.
-> 
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
-> ---
+kmsan_vmalloc_to_page_or_null() rejects addresses outside the regular
+vmalloc and module ranges, including the shadow and origin addresses
+passed by its callers. As a result, iounmap does not free the metadata
+backing pages. Also, the first iteration of the teardown loop
+unmaps the entire metadata range, preventing subsequent iterations from
+finding their pages even if the address lookup is fixed.
 
-Yes, that's a nice cleanup.
+Factor the page-table walk out of vmalloc_to_page() into
+__vmalloc_to_page(), keeping the address check in the public wrapper.
+Use the unchecked helper in kmsan_vmalloc_to_page_or_null() and check
+for NULL before converting the returned page to a PFN. Mark
+__vmalloc_to_page() as __always_inline to avoid an additional function
+call in vmalloc_to_page().
 
--- 
-Cheers,
+Move metadata teardown into kmsan_iounmap_pages(). Free the backing
+blocks while their mappings are still available, then unmap each
+metadata range once and flush its TLB entries.
 
-David
+Fixes: b073d7f8aee4 ("mm: kmsan: maintain KMSAN metadata for page operations")
+Suggested-by: Alexander Potapenko <glider@google.com>
+Link: https://lkml.iu.edu/2609.3/12748.html
+Signed-off-by: Dima Koziuk <dmytrokoziuk68@gmail.com>
+---
+Changes in v2:
+- Share the vmalloc page-table walk instead of adding a KMSAN PTE walker.
+- Keep kmsan_vmalloc_to_page_or_null() and handle absent mappings.
+
+ mm/kmsan/core.c  |  8 +++-----
+ mm/kmsan/hooks.c | 51 +++++++++++++++++++++++++++++++-----------------
+ mm/vmalloc.c     | 21 ++++++++++++--------
+ mm/vmalloc.h     |  1 +
+ 4 files changed, 50 insertions(+), 31 deletions(-)
+
+diff --git a/mm/kmsan/core.c b/mm/kmsan/core.c
+index 90f427b95a21..3ad5f31d56b6 100644
+--- a/mm/kmsan/core.c
++++ b/mm/kmsan/core.c
+@@ -27,6 +27,7 @@
+ #include <linux/vmalloc.h>
+ 
+ #include "../slab.h"
++#include "../vmalloc.h"
+ #include "kmsan.h"
+ 
+ bool kmsan_enabled __read_mostly;
+@@ -240,11 +241,8 @@ struct page *kmsan_vmalloc_to_page_or_null(void *vaddr)
+ {
+ 	struct page *page;
+ 
+-	if (!kmsan_internal_is_vmalloc_addr(vaddr) &&
+-	    !kmsan_internal_is_module_addr(vaddr))
+-		return NULL;
+-	page = vmalloc_to_page(vaddr);
+-	if (pfn_valid(page_to_pfn(page)))
++	page = __vmalloc_to_page(vaddr);
++	if (page && pfn_valid(page_to_pfn(page)))
+ 		return page;
+ 	else
+ 		return NULL;
+diff --git a/mm/kmsan/hooks.c b/mm/kmsan/hooks.c
+index 5f1b8053f9fa..24f71bc65896 100644
+--- a/mm/kmsan/hooks.c
++++ b/mm/kmsan/hooks.c
+@@ -20,6 +20,8 @@
+ #include <linux/uaccess.h>
+ #include <linux/usb.h>
+ 
++#include <asm/tlbflush.h>
++
+ #include "../internal.h"
+ #include "../vmalloc.h"
+ #include "../slab.h"
+@@ -142,6 +144,36 @@ void kmsan_vunmap_range_noflush(unsigned long start, unsigned long end)
+ 	flush_cache_vmap(vmalloc_origin(start), vmalloc_origin(end));
+ }
+ 
++#define KMSAN_IOREMAP_META_ORDER 1
++
++static void kmsan_iounmap_pages(unsigned long start, unsigned long end)
++{
++	unsigned long shadow_start = vmalloc_shadow(start),
++		      shadow_end = vmalloc_shadow(end);
++	unsigned long origin_start = vmalloc_origin(start),
++		      origin_end = vmalloc_origin(end);
++	unsigned long v_shadow, v_origin;
++	struct page *shadow, *origin;
++	int nr;
++
++	nr = (end - start) / PAGE_SIZE;
++	v_shadow = shadow_start;
++	v_origin = origin_start;
++	for (int i = 0; i < nr;
++	     i++, v_shadow += PAGE_SIZE, v_origin += PAGE_SIZE) {
++		shadow = kmsan_vmalloc_to_page_or_null((void *)v_shadow);
++		origin = kmsan_vmalloc_to_page_or_null((void *)v_origin);
++		if (shadow)
++			__free_pages(shadow, KMSAN_IOREMAP_META_ORDER);
++		if (origin)
++			__free_pages(origin, KMSAN_IOREMAP_META_ORDER);
++	}
++	__vunmap_range_noflush(shadow_start, shadow_end);
++	__vunmap_range_noflush(origin_start, origin_end);
++	flush_tlb_kernel_range(shadow_start, shadow_end);
++	flush_tlb_kernel_range(origin_start, origin_end);
++}
++
+ /*
+  * This function creates new shadow/origin pages for the physical pages mapped
+  * into the virtual memory. If those physical pages already had shadow/origin,
+@@ -219,28 +251,11 @@ int kmsan_ioremap_page_range(unsigned long start, unsigned long end,
+ 
+ void kmsan_iounmap_page_range(unsigned long start, unsigned long end)
+ {
+-	unsigned long v_shadow, v_origin;
+-	struct page *shadow, *origin;
+-	int nr;
+-
+ 	if (!kmsan_enabled || kmsan_in_runtime())
+ 		return;
+ 
+-	nr = (end - start) / PAGE_SIZE;
+ 	kmsan_enter_runtime();
+-	v_shadow = (unsigned long)vmalloc_shadow(start);
+-	v_origin = (unsigned long)vmalloc_origin(start);
+-	for (int i = 0; i < nr;
+-	     i++, v_shadow += PAGE_SIZE, v_origin += PAGE_SIZE) {
+-		shadow = kmsan_vmalloc_to_page_or_null((void *)v_shadow);
+-		origin = kmsan_vmalloc_to_page_or_null((void *)v_origin);
+-		__vunmap_range_noflush(v_shadow, vmalloc_shadow(end));
+-		__vunmap_range_noflush(v_origin, vmalloc_origin(end));
+-		if (shadow)
+-			__free_pages(shadow, 1);
+-		if (origin)
+-			__free_pages(origin, 1);
+-	}
++	kmsan_iounmap_pages(start, end);
+ 	flush_cache_vmap(vmalloc_shadow(start), vmalloc_shadow(end));
+ 	flush_cache_vmap(vmalloc_origin(start), vmalloc_origin(end));
+ 	kmsan_leave_runtime();
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index bea9f76ed7e7..5fe37ad41f38 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -817,9 +817,10 @@ EXPORT_SYMBOL_GPL(is_vmalloc_or_module_addr);
+ /*
+  * Walk a vmap address to the struct page it maps. Huge vmap mappings will
+  * return the tail page that corresponds to the base page address, which
+- * matches small vmap mappings.
++ * matches small vmap mappings. Unlike vmalloc_to_page(), this also accepts
++ * addresses outside the vmalloc and module ranges, such as KMSAN metadata.
+  */
+-struct page *vmalloc_to_page(const void *vmalloc_addr)
++__always_inline struct page *__vmalloc_to_page(const void *vmalloc_addr)
+ {
+ 	unsigned long addr = (unsigned long) vmalloc_addr;
+ 	struct page *page = NULL;
+@@ -829,12 +830,6 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+ 	pmd_t *pmd;
+ 	pte_t *ptep, pte;
+ 
+-	/*
+-	 * XXX we might need to change this if we add VIRTUAL_BUG_ON for
+-	 * architectures that do not vmalloc module space
+-	 */
+-	VIRTUAL_BUG_ON(!is_vmalloc_or_module_addr(vmalloc_addr));
+-
+ 	if (pgd_none(*pgd))
+ 		return NULL;
+ 	if (WARN_ON_ONCE(pgd_leaf(*pgd)))
+@@ -873,6 +868,16 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+ 
+ 	return page;
+ }
++
++struct page *vmalloc_to_page(const void *vmalloc_addr)
++{
++	/*
++	 * XXX we might need to change this if we add VIRTUAL_BUG_ON for
++	 * architectures that do not vmalloc module space
++	 */
++	VIRTUAL_BUG_ON(!is_vmalloc_or_module_addr(vmalloc_addr));
++	return __vmalloc_to_page(vmalloc_addr);
++}
+ EXPORT_SYMBOL(vmalloc_to_page);
+ 
+ /*
+diff --git a/mm/vmalloc.h b/mm/vmalloc.h
+index 8866ddcff668..bce4c982c88b 100644
+--- a/mm/vmalloc.h
++++ b/mm/vmalloc.h
+@@ -8,6 +8,7 @@
+ #include <linux/vmalloc.h>
+ 
+ #ifdef CONFIG_MMU
++struct page *__vmalloc_to_page(const void *vmalloc_addr);
+ void __init vmalloc_init(void);
+ int __must_check vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+ 		pgprot_t prot, struct page **pages,
+
+base-commit: 587858367581b9c55c3690f4e63382ad622719d4
 
