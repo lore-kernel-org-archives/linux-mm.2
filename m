@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59D4DCA5FE4
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 21:23:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDB71CA5FE4
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 21:23:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0534C6B00A6; Sat,  3 Oct 2026 17:23:11 -0400 (EDT)
+	id 1684E6B00A4; Sat,  3 Oct 2026 17:23:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02A826B00A9; Sat,  3 Oct 2026 17:23:10 -0400 (EDT)
+	id 13D8F6B00A7; Sat,  3 Oct 2026 17:23:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E34516B00A7; Sat,  3 Oct 2026 17:23:10 -0400 (EDT)
+	id 052116B00A5; Sat,  3 Oct 2026 17:23:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B204F6B00A4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BA1CE6B00A5
 	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:23:10 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 396DC1C3C8D
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3678F80A19
 	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 21:23:10 +0000 (UTC)
-X-FDA: 85282590540.08.794DCE6
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 51C5A20005
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 21:23:08 +0000 (UTC)
+X-FDA: 85282590540.10.9387065
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1ACC820004
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 21:23:06 +0000 (UTC)
 Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=J18eRBmx;
-	spf=pass (imf31.hostedemail.com: domain of 3OnLBagYKCIEqwn44tlttlqj.htrqnsz2-rrp0fhp.twl@flex--lrizzo.bounces.google.com designates 209.85.208.70 as permitted sender) smtp.mailfrom=3OnLBagYKCIEqwn44tlttlqj.htrqnsz2-rrp0fhp.twl@flex--lrizzo.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=google.com header.s=20251104 header.b=pCVRhQHK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of 3OXLBagYKCIApvm33sksskpi.gsqpmry1-qqozego.svk@flex--lrizzo.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3OXLBagYKCIApvm33sksskpi.gsqpmry1-qqozego.svk@flex--lrizzo.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791062588;
+	s=arc-20220608; t=1791062587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wZzR6zx1azl50By4SkClXLMvxt4zEV1vyStY0HIRy7M=;
-	b=RuLQAuS+rewzeCn8rK1BzqiB8i5ec7baIjLwgzysI/XERmIfwfB5ybVEfQkAmUH/24CvoN
-	Urc8d2Z71pZY2tgPnALJHPkiypsM1BbgsY59C5v+4YmN3uaInLzRXdWvGHweOPDq+WWRcK
-	jqNx/kOwkmWVzdmJLdXRpk7zNpQkkZ0=
+	bh=dBRuh0l2egpE1B41MMPnAEWjkJ8WwDrinCFew24ym24=;
+	b=HpBCDyjWTfi/K50gSqdM8M7zqNkxYWJL8Nno6XBKAZXLkXpa4X2tnLJnFDpsIksVhqunP5
+	hxOU2uYUkfDjiLike2cJ4Axjeb0SYrIWfBPeDqVLUfioViLXwWft0xeGz9iY5ZzhsH0Xqb
+	jP5rgRlvtJKwPHuKpgh6253ikm1JS2A=
 ARC-Authentication-Results: i=1;
 	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=J18eRBmx;
-	spf=pass (imf31.hostedemail.com: domain of 3OnLBagYKCIEqwn44tlttlqj.htrqnsz2-rrp0fhp.twl@flex--lrizzo.bounces.google.com designates 209.85.208.70 as permitted sender) smtp.mailfrom=3OnLBagYKCIEqwn44tlttlqj.htrqnsz2-rrp0fhp.twl@flex--lrizzo.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=google.com header.s=20251104 header.b=pCVRhQHK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of 3OXLBagYKCIApvm33sksskpi.gsqpmry1-qqozego.svk@flex--lrizzo.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3OXLBagYKCIApvm33sksskpi.gsqpmry1-qqozego.svk@flex--lrizzo.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791062588;
-	b=xwN8mAAOCpH6HqqnBZTQK9dM+fz7Xp7eRWTB/61gVsTC6hR5ovLTqYxwSGM4bR2E6CreWG
-	mC+Jq/jjS2JNDsne1jO+jwN3+vwktd3HKWR88Uqx0MkECEJcJfcAY57emzG0ntkKpGPirE
-	w6My6EXHpa6XpUTdWK9G/XdXC6HMHIo=
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6a125f5b317so897837a12.1
-        for <linux-mm@kvack.org>; Sat, 03 Oct 2026 14:23:08 -0700 (PDT)
+	t=1791062587;
+	b=ipzldFM58Tz53qApGOXpawSJ6nX3SymcOQU8hWNVCBymKe+zxro39tzuOFvAkGQKY12SD7
+	EGnbw6kjDvviql7hRV/yjf+u+sd9Bt/BbnpfQV2+epnPSkIYnIv7pw34A0YNFXznD3laqg
+	vlePZC4nVGNj6HQWhTQdWo0mYPw81vA=
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6abfb865707so666861a12.0
+        for <linux-mm@kvack.org>; Sat, 03 Oct 2026 14:23:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791062587; x=1791667387; darn=kvack.org;
+        d=google.com; s=20251104; t=1791062586; x=1791667386; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wZzR6zx1azl50By4SkClXLMvxt4zEV1vyStY0HIRy7M=;
-        b=J18eRBmx38sd/x78pUJgzuvH9Pg4LvjJIS0TllPpMUIK7QLseyCJWDpHNVoFcRGfUN
-         BoALrIsmhi3nNWH0DYK/488DcR3Ii9YTJqaQN4laRCJVmH80SpXuF+PllE0guv0/6EnY
-         SWKOQ4h8dYHS6MkU2WoECYsLmNxb+cvEaIuCE9uO9nqXYruLa8jvo2LCRA1P9ix3cV4o
-         pDf5jDmNkHUS/dZoHiPZTjUUIqGgoC/NIUXHat5E4WxiLe+oXykxKt9vdr+5wvTSqfPy
-         cgW4A8ggSwZlEpcac+LEH/BqvlwVhlr8EhORuyAtItw0fl1UwKsUzPCyVv0QlZu9jYQ+
-         R5vg==
+        bh=dBRuh0l2egpE1B41MMPnAEWjkJ8WwDrinCFew24ym24=;
+        b=pCVRhQHKNI/QOyr3pSUgPiKLdrVjhkwq3wtaLQDi/iA7OjN671F9VCyloDJ3p6PUbe
+         baa0WcnXTBB6rqCj7Mzx1XobsH+7HTVoM5HoEgTTzGu+6/o9iQdTfy+uKIuek5mNjJS4
+         68PC/xa/GxIEfx8JN81oDXVxVfm8iL0S6zypv1jSglifyadxjCoV73EBjTPtDm9kmk3v
+         meFFYgeX2W1K7DSr0JcuMN8/42Sxa+Fsw2S24Jw8XpjggLBAU2W3S+zY29XZ77XboGjS
+         pVY0uvPkM+Ai/hrlWp2QUALs4qgEVvCiXbHKk0FxXAcvs8oEcDw5s28uuYc61h0uiO27
+         ekQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791062587; x=1791667387;
+        d=1e100.net; s=20260707; t=1791062586; x=1791667386;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wZzR6zx1azl50By4SkClXLMvxt4zEV1vyStY0HIRy7M=;
-        b=TRqLrpzAeeCWmEsImfmfwYXnHe5rU88cVMIF1kI1hDgy4QIxubAnHQDP2/n6YLrKS8
-         9JRB33JoBDmfqkui6pqpKGDIt0pG/vipU25gz2xU5cnnEdahui2/oXoXKtIUj0KOjCCA
-         pBeG4EnaAYuSm049rt6ZI7n3xC94IrbVNN9yAfCxmWyMEDFIQHByW/nRnkBio/Cq/ys5
-         W/Pb+vF6BDcPOTiZM4+opcw8ey2+Eho26n2j2DYN9TPx5bM7eFcLjQ/hcJvjfovUPYlo
-         Jq83rnz2BoF6GyFoLzqNryLpsn47Ifa4gulrTlqS1JWDSEC4twr8xig8B7XjhGRnKvbh
-         n4jA==
-X-Forwarded-Encrypted: i=1; AKwUvBwHfoWFClCEHI4GebDPrV6L48hD3KiC4XkKWtajGsCjD2ySHj16KfpWJ0gzLEGv8siv+DoyDL1fyA==@kvack.org
-X-Gm-Message-State: AFq9FYJnNO3pP9tZsEBPNdRVj0RYbdekJZ7h9xPqmyjt1U7P3JDlxLl4
-	54AOUKExdT/usaNll3aJxtPYrJXAT209XmMcew6yGl1VaqikjGIxDlA/D5nG0Fer+2WTVlDBqVz
-	W30Xziw==
-X-Received: from edpr6.prod.google.com ([2002:aa7:c146:0:b0:6a9:d114:1911])
- (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:2788:b0:6aa:490e:5506
- with SMTP id 4fb4d7f45d1cf-6af9e31cde4mr4814545a12.39.1791062586439; Sat, 03
- Oct 2026 14:23:06 -0700 (PDT)
-Date: Sat,  3 Oct 2026 21:22:34 +0000
+        bh=dBRuh0l2egpE1B41MMPnAEWjkJ8WwDrinCFew24ym24=;
+        b=Y7ypo2UtfOH4c82IuMz74woPf3dGH4qrfSM/FY9x6AKZdNQEem3IfleTj8g4DhkFLS
+         0cIKlDbIKMdhnleYSzhbuolifdzBzjYL7aqW9WfRp9Rr7K275qr4vzg5bPILsry8od4f
+         EywS+mo4UN2t8Yk5PWOUscUuPKz2TS607oYbEURIU+R/xd/yigpW30Nvi8d/VFeUAej8
+         wgBMk5oG00v6qTptt5ZQqAE0tcYexzbY91FYZa7BL/ITG3pjTV0k0OeLOzDRhiypLK7N
+         VJV3Uji9UKaCbWh9GLnOLnTTQFHCp0DTJsviDV8ZGcosl240J6qu1XBDB/srWNQAFR+g
+         J2JQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwjaGZlZs2D1u03uhxa+DOLzrNzHbH1mqDKJIoZpveaqsvXn5UtlCRcFAd7TYkywBqIEDLWJJBtcw==@kvack.org
+X-Gm-Message-State: AFq9FYI+nL/wIjKkf4DI8Aa5aNHNSOC+z6VKX8uizATcCOWBrAGAX445
+	6JTKWeGfWR3kOxKnudApuCUo5zlnQQhmDL39iw+MH/YDcqtMR/GbKMKhPa3fG59XCsFXRaKIOL9
+	Z1xPYOQ==
+X-Received: from edqt4.prod.google.com ([2002:aa7:d704:0:b0:6ac:be07:5a0a])
+ (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:1950:b0:6af:82a0:d3b2
+ with SMTP id 4fb4d7f45d1cf-6af9e2f9281mr5230450a12.29.1791062585244; Sat, 03
+ Oct 2026 14:23:05 -0700 (PDT)
+Date: Sat,  3 Oct 2026 21:22:33 +0000
 In-Reply-To: <20261003212241.3432303-1-lrizzo@google.com>
 Mime-Version: 1.0
 References: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261003212241.3432303-16-lrizzo@google.com>
-Subject: [RFC: DMA_PMD 15/22] iommu/dma: Add background page scrubber for
- DMA_PMD pools
+Message-ID: <20261003212241.3432303-15-lrizzo@google.com>
+Subject: [RFC: DMA_PMD 14/22] iommu/dma: Support decrypted and pinned DMA_PMD pages
 From: Luigi Rizzo <lrizzo@google.com>
 To: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
 	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
@@ -109,14 +108,14 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafae
 	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, Luigi Rizzo <lrizzo@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 51C5A20005
+X-Stat-Signature: 7agqxgc48xp8f97apiqzeac65ju6hfr6
 X-Rspam-User: 
-X-Stat-Signature: ddwnpodpzh5riak66hhr86rdcp5bfr65
-X-HE-Tag: 1791062588-203785
-X-HE-Meta: U2FsdGVkX19U/nYSUqWfTRQ0q8QbUnrPU4ABUfyJCoZjQvtCFRksumj/syXYD3kYHaYGer9d28rcrKph6azKZ3G/FJRW0m0EqLp9JOypKhzYiHGN+U1lan5f31l70d2ot5ZA4tiynDc9tFGD0kNlEgn63DazTAqpzbHRjmYjdc5jgcYyUmeIFA4Wsyh4VlX7cQ71r/8MkAddkw7QKjSbK2hRKVseYEdkafMWI33uWG14JAFGvrniuxXik6CRIgPJ05W+oU2q5WF8xCUHb4IHMX7rS1cQhAuDhbcK0YvJLhoCH5BcrE1M2zHOHaMwWLfgzz1NFwPEkEmHW9QIrc9q7POHGwYVlO6LkwkOa+m41U9O3fARevi82/5KlUfSvFjO1RA7n0/zHqMhdvj1JZpGAo2hffus2pSerTjxDMbPqdTO9rxZ4g1YqJfrQWGgY/hlMPldOvgwDBFiIRQlH+oSIW6stmf5dmuAMlGz3HaU172lQuTRYozxFvCr+dERlmsOlWo8Z0I8qsGKSt2wRE418ZVLeRt1B3apI9I+Nm4cNRq/UpEXVpo9Q6YHeeOPqha5O1Mom+SC0Os72q70bMBagb1qFNt9u1WUYLPynUVaRysqlyzGI9+EEzk8HHoRHv5Ha6vWMuhlIDLfdN17QftCEb537pqXJf7q28KenxbzjQMTniOf9JOyJOqPhvsh4OHXGZ2IHrn8fuOTuK+HjzINHKn9lKnHt8zuHabDqjQU7gpH/SIsC3JzwinP4N98xhaBYpRBdpeCNbYhscBHILwXLQExrX2Jtde2P4NC57uPJGGLabKQ64ROROmtlSG/Z6Zpb8ax6jo8mcd9O6ADXdRZ9naXz7rFAYHYzXRssny4ZNQktAdrU90+9sbLhV7wXRmb3tLqsW/ynVMyBxcQbamQljIVmC519YeLYNcm0AXIyYjWImHgVwAGxaayibMnrnYdrDlavM5ogIGtdl5PGKX
- jLbnayd0
- acWunA0haqiApRXrxHOo0yotM5AV021rhWtqg8bf3LzvKs9IYvLeb53/P5tYxPKYnqHYY5UIlmvqBNZFYSIbTJOFgoGrRggFOpRkAYlfL9Y9YirC665rg/Bs/nmeHBGVQaiZ+eO8jHrktjlhvAC/3CSa8DoKnkVXmT2f8kr1mcGs2DQjtvfQpFvmdU67RrfCbF7srftTEZHNwW7xvyqdNfRwIl7HL/JxXPqQTvXLJsM2CyOk8DL7JhLFYVZPrRErRjhz4zT9/MzrvcchdDNgHkqJXdfEYoBADx8FPKfyw2nZ4wAUC+eYsCmXHPSaZJAfkt790/6oaaEgKYPY8aD/AVhGYXF8rh4V+T0N9X7e9S6cLMFYkyJX28xh4bDxppJWb5GWEDkeUi5Bm0wHJJY3M8hUo3wvHVqtces1OMDJ5bgcbjgWuKz7n1oEbgkEDXxnGAzeEN2nkD4trE9sgk4TnXfml95dcbQ2/5HvohY4sNJ0oenOqElS0EjxwngVbh1f9xcZLZSSv2eZaQAYVycoc77rwQZPq2KygutzjE2Kt+iO28GhTuLZGH2dyBT4Gwo7bn8lMoHvVfc0CvW7SUGaCG10VXATFqUT0YI/q/56bKknaTmWLr2seffS7GxbM0MwikW8Gl0a+bFeCZwtSKU6J/0ZFIisE/qCe2mBk
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1ACC820004
+X-HE-Tag: 1791062586-669862
+X-HE-Meta: U2FsdGVkX1+TT6Y7ZazgKAZd0xe8Iw8An30b2u1fJ9QTQtzeHzQb6k7CXNEShX59EMpd+SZW4QdP0ysH4Nt1mqW3nCsZa92OEaYEnYk7obVizKonhAolt/UFnEHnRQzQbJ952UaSoFYkism/Wq+8nN01B9P63wmDbFddGa4mS1jCfdiYD6ZOOQipgEYIaMK3Czi3OBXaUi51zBz9OcrVZ9cMTO5oslctbOWwJlYC/wW5C5u3oNUSWuZLWf5Trqwo+L6bj3LjbwfglRyyVCtxo3zBx2ONNyGHzVQPmrggVLvWBIoTsWTXXQc4XrFq2Z90QM3dJYvK9uldHTXMIEDMa0uQQ6q8FS6rHpVFsiT5DSALcciy/HYwYuWVNNN3aK/EU0ook/L5mfTKlz4YKb+kfVwGwdUEG3OXMKAkN9TNPyoLLZGlMYDM+YyR9KBjElaZ9PrUqL8pBlxNUHmPjP4WJmrYFCKH2t9LgS3tequdOgF/t4vLH0fcHg9cb0VhF/x76NUglZBWunIDR2LDwG1EqQ3yQu2ZS0KdyEEXsiOpFnOEioVImEcdd8ueznZL9lNjd1aVevmTxyO2fKrP8JNowQk5/GDMPdq7Axwtp+AzzuNz0o4yFJretjrF/mZLbqDU6emFUyjR0ltRDfT2wFNRygAt/OHREVfxhXAq7pNSFX3hdCPB5alj+jAIUVUDcqnNqXlWToBn6BnOi8Q6YT5hCuupe/vR/Xt+CG8ng7iq+6sU+ZoZOUU54J0vCn/J1m6w6qb4HaI/4FOA+o0g+rP/gjcg3w1FPhyQj9ubTXpbYXcZmULsxV59e6VcQ73NStC4PjfwzOrIbAjLK7p+tN4dF5Dbt1d7Sk405qj2HItsWOlUeQY8pEyFjb9jTYcGeDTZ1lCioMB1990gRalnMoSBMzBWo8EMGqny/s8s22+LtNCAZXuOLY9fZqkpTnvOquKy5zO6WXLg6zgH9JTGov2
+ RzZAt3TJ
+ yTZqpG2O/DnLNW2Z7TKXSPys11F5LjUNZt8LnIfsZ59HttYFaUlEQo96Ji5kInM8SR04UGg4EwFzCbwdfcZQ7rZ/pW2yri3nZtzZScLY7yyunv25F0svtEr7Dq6NMXXviUby2BDeO5DMrmSh42jv3HFXtSyRazbx4vw/Nx/cl2FUeGYCJcUdTR7uemfV5I67V3TayKH4IjB4oaqcWwI1uNyyjwNsiXX0rdxVCRdaaCTl87ZNbL5qnf2NCE7h3IcVUC6JGN08kV71akGdDaCf7UjM2fOX72dsBMO/d62gb+M4vDeSzTJjPhsR1kgB+k+XJ/hUxMi9O3lPloFw3dJCCT0KzpwvJtUXU5VY0YmgQSmOz5SoEQJfPMm6lRb+UiYUGtsiexvdYvL2Ar2j/Loeps1v+pBOb8cpJr6vRuJhg6EkXMgNGopHTC2Sezy+DGLo/xHq6ZSEoG61aVH8UXfORcQ3N2XgxKBt2HdrXOdS9qCTuFwI+mkR4F0e0IsARtAklOaajQ/Em7T8wCrNGmlmNuTi4J4LGY13ZWtsOb0eGML3Jhihk5mL1xsf18x9BclhOJ2IaMQMAk86WQxXZ+heDRPvsthiS+4qPsYuul4djfFkUTy9xuISRvvbbqEdaMH0SsWy+f8EeAEFWfK+y/Br3fouV6IA0W9g6OJAc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,586 +123,444 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a background scrubber worker (dma_pmd_scrub_work) that zeroes dirty
-blocks in meta->dirty_bitmap[] and moves them to meta->free_bitmap[],
-and change __GFP_ZERO (want_init_on_alloc) allocations to take blocks
-exclusively from free_bitmap[]:
+In Confidential Computing (CoCo) guests (AMD SEV-SNP, Intel TDX, ARM CCA),
+guest memory is private/encrypted by default and DMA buffers must be
+converted to shared/decrypted in the host page tables before a device
+can access them. Similarly, in preemptible VMs, IO-accessible memory may
+need to be pinned in the host on allocation and unpinned on release.
 
-- Remove the per-block memset() and out_prep: loop from
-  dma_pmd_pool_alloc_bulk_node(). When dma_pmd_add_page() allocates a
-  new PMD page for a zeroed request, zero the 2MB page once and place
-  all blocks in free_bitmap[].
-- Maintain pool->partial (nr_free > 0, with clean-only pages at head and
-  mixed pages at tail), pool->partial_dirty (nr_free == 0, nr_dirty > 0),
-  and pool->idle (clean pages at head, dirty pages at tail) so both
-  allocation and scrubbing find candidate PMD pages in O(1) time.
-- Trigger dma_pmd_scrub_work only when meta->nr_dirty transitions from 0
-  to 1 on block free (or when a non-zeroed PMD page is added).
-- Detach up to DMA_PMD_SCRUB_BATCH (64) dirty blocks under pool->lock,
-  zero them outside the lock, and re-insert them into free_bitmap[].
+Doing these conversions on a per-packet 4K basis is prohibitive. With
+DMA_PMD pools, a 2MB page is allocated once from the buddy allocator,
+handed out in sub-blocks, and only returned when completely idle.
+
+Add two module parameters (dma_pmd.decrypt and dma_pmd.pin, with
+dma_pmd.decrypt auto-enabled when CC_ATTR_GUEST_MEM_ENCRYPT is active)
+and per-PMD-page state flags in meta->flags (DMA_PMD_DECRYPTED,
+DMA_PMD_PINNED):
+
+- On 2MB page allocation (dma_pmd_add_page), call dma_pmd_page_prepare()
+  before splitting the compound page to invoke set_memory_decrypted()
+  and/or the host pin hook. Skip conversion if the caller cannot sleep
+  (!gfpflags_allow_blocking), since set_memory_decrypted() acquires
+  cpa_lock and allocates PTE pages.
+- On 2MB page release (dma_pmd_release_page / dma_pmd_release_page_rcu),
+  call dma_pmd_page_unprepare() before RCU free to restore
+  set_memory_encrypted() and/or unpin before returning the 2MB page to
+  the buddy allocator. If restoration fails, leak the 2MB page rather
+  than returning a page with inconsistent encryption/pin state to buddy.
+- In dma_pmd_shrink_scan(), defer decrypted/pinned pages to the async
+  reclaim workqueue (dma_pmd_free_list) instead of calling
+  dma_pmd_release_page() inline under fs_reclaim.
+- Add dma_is_pmd_direct(phys) and use it in dma_direct_map_phys() to
+  bypass swiotlb_map() bounce buffering for decrypted/pinned DMA_PMD
+  pages, using phys_to_dma_direct() so force_dma_unencrypted() devices
+  receive unencrypted DMA addresses.
 
 Signed-off-by: Luigi Rizzo <lrizzo@google.com>
 ---
- drivers/iommu/dma-pmd-pool.c | 336 ++++++++++++++++++++++++++++++-----
- drivers/iommu/dma-pmd-priv.h |   9 +-
- 2 files changed, 296 insertions(+), 49 deletions(-)
+ drivers/iommu/dma-pmd-kunit.c |   2 +-
+ drivers/iommu/dma-pmd-meta.c  |  15 +++-
+ drivers/iommu/dma-pmd-pool.c  | 147 ++++++++++++++++++++++++++++------
+ drivers/iommu/dma-pmd-priv.h  |  14 +++-
+ include/linux/dma-pmd.h       |  15 ++++
+ kernel/dma/direct.c           |   6 +-
+ 6 files changed, 168 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/iommu/dma-pmd-pool.c b/drivers/iommu/dma-pmd-pool.c
-index deacb6f7d3610..d774cd05347b8 100644
---- a/drivers/iommu/dma-pmd-pool.c
-+++ b/drivers/iommu/dma-pmd-pool.c
-@@ -32,6 +32,8 @@
+diff --git a/drivers/iommu/dma-pmd-kunit.c b/drivers/iommu/dma-pmd-kunit.c
+index c2363277e2ecd..7fcc2bcb315bc 100644
+--- a/drivers/iommu/dma-pmd-kunit.c
++++ b/drivers/iommu/dma-pmd-kunit.c
+@@ -53,7 +53,7 @@ static void test_meta_invalid_phys(struct kunit *test)
  
- #include "dma-pmd-priv.h"
- 
-+#define DMA_PMD_SCRUB_BATCH	64U
-+
- /*
-  * DMA_PMD pages whose last block has just been freed and which are over the
-  * pool's idle watermark are pushed here locklessly for later release.
-@@ -66,6 +68,7 @@ static DEFINE_MUTEX(dma_pmd_pools_lock);
- static LLIST_HEAD(dma_pmd_dead_pools);
- 
- static void dma_pmd_schedule_reclaim(void);
-+static void dma_pmd_schedule_scrub(void);
- 
- static void dma_pmd_pool_free_kref(struct kref *kref)
+ static void dma_pmd_meta_set_pooled(struct dma_pmd_meta *m, bool pooled)
  {
-@@ -250,6 +253,216 @@ static void dma_pmd_schedule_reclaim(void)
- 		schedule_work(&dma_pmd_reclaim_work);
+-	WRITE_ONCE(m->pooled, pooled);
++	WRITE_ONCE(m->flags, pooled ? DMA_PMD_POOLED : 0);
  }
  
-+/*
-+ * Background page scrubber
-+ * ------------------------
-+ * Freed blocks are returned to @meta->dirty_bitmap so __dma_pmd_free_page()
-+ * never pays a memset() on the free hot path. Callers that do not require
-+ * zeroed memory take dirty blocks first, while callers with __GFP_ZERO (or
-+ * init_on_alloc) take pre-zeroed blocks from @meta->free_bitmap.
-+ *
-+ * The scrubber runs on system_wq to asynchronously convert dirty blocks into
-+ * zeroed blocks in @meta->free_bitmap. To avoid holding @pool->lock across
-+ * memset(), it detaches up to DMA_PMD_SCRUB_BATCH (64) dirty bits under
-+ * @pool->lock, zeroes the pages unlocked (while their bits are clear in both
-+ * bitmaps so no allocator or double-free check can race on them), and
-+ * republishes them in @meta->free_bitmap under @pool->lock.
-+ *
-+ * Triggered lazily (without touching any list on every __dma_pmd_free_page()):
-+ * when a PMD page transitions from 0 to 1 dirty block, when a page with dirty
-+ * blocks becomes completely idle, or when a __GFP_ZERO allocation misses on
-+ * clean pages while dirty pages are present.
-+ */
-+
-+/*
-+ * Place @meta on the appropriate pool list according to its available clean
-+ * (@nr_free) and dirty (@nr_dirty) block counts. Caller must hold @pool->lock
-+ * and update @pool->num_idle_pages when moving into or out of @pool->idle.
-+ *
-+ * List invariants:
-+ * - @pool->full:          avail == 0
-+ * - @pool->partial:       0 < avail < nr, nr_free > 0
-+ *                         (nr_dirty == 0 at head, nr_dirty > 0 at tail)
-+ * - @pool->partial_dirty: 0 < avail < nr, nr_free == 0, nr_dirty > 0
-+ * - @pool->idle:          avail == nr
-+ *                         (nr_dirty == 0 at head, nr_dirty > 0 at tail)
-+ */
-+static void dma_pmd_place_meta(struct dma_pmd_pool *pool,
-+			       struct dma_pmd_meta *meta)
-+{
-+	unsigned int avail = dma_pmd_meta_avail(meta);
-+	unsigned int nr = DMA_PMD_BLOCKS(pool->order);
-+
-+	if (!avail) {
-+		list_move(&meta->list, &pool->full);
-+	} else if (avail == nr) {
-+		if (!meta->nr_dirty)
-+			list_move(&meta->list, &pool->idle);
-+		else
-+			list_move_tail(&meta->list, &pool->idle);
-+	} else if (!meta->nr_free) {
-+		list_move_tail(&meta->list, &pool->partial_dirty);
-+	} else if (!meta->nr_dirty) {
-+		list_move(&meta->list, &pool->partial);
-+	} else {
-+		list_move_tail(&meta->list, &pool->partial);
-+	}
-+}
-+
-+static struct dma_pmd_meta *dma_pmd_pick_dirty_meta(struct dma_pmd_pool *pool)
-+{
-+	struct dma_pmd_meta *meta;
-+
-+	meta = list_first_entry_or_null(&pool->partial_dirty,
-+					struct dma_pmd_meta, list);
-+	if (meta)
-+		return meta;
-+
-+	if (!list_empty(&pool->partial)) {
-+		meta = list_last_entry(&pool->partial, struct dma_pmd_meta, list);
-+		if (meta->nr_dirty)
-+			return meta;
-+	}
-+
-+	if (!list_empty(&pool->idle)) {
-+		meta = list_last_entry(&pool->idle, struct dma_pmd_meta, list);
-+		if (meta->nr_dirty) {
-+			pool->num_idle_pages--;
-+			return meta;
-+		}
-+	}
-+
-+	return NULL;
-+}
-+
-+/**
-+ * dma_pmd_scrub_pool - Scrub one batch of dirty blocks in @pool
-+ * @pool: Pool to scrub
-+ *
-+ * Cost: Zeroes up to DMA_PMD_SCRUB_BATCH blocks (e.g. up to 256 KB for
-+ *       order-0) outside @pool->lock; two brief O(batch) bitmap passes under
-+ *       @pool->lock.
-+ * Locking: Process context. Acquires @pool->lock (irqsave) to detach and
-+ *          republish block bits; drops lock during memset().
-+ * Frequency: Background worker only (on system_wq).
-+ *
-+ * Return: true if a batch was scrubbed (more dirty blocks may remain),
-+ *         false if @pool has no dirty blocks left or is destroyed.
-+ */
-+static bool dma_pmd_scrub_pool(struct dma_pmd_pool *pool)
-+{
-+	unsigned int nr, order, idx, count = 0, used = 0;
-+	u16 idxs[DMA_PMD_SCRUB_BATCH];
-+	struct dma_pmd_meta *meta;
-+	bool should_release = false;
-+	unsigned long base_pfn;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&pool->lock, flags);
-+	if (pool->destroyed) {
-+		spin_unlock_irqrestore(&pool->lock, flags);
-+		return false;
-+	}
-+
-+	meta = dma_pmd_pick_dirty_meta(pool);
-+	if (!meta) {
-+		spin_unlock_irqrestore(&pool->lock, flags);
-+		return false;
-+	}
-+
-+	order = pool->order;
-+	nr = DMA_PMD_BLOCKS(order);
-+	base_pfn = dma_pmd_meta_to_pfn(meta);
-+
-+	for_each_set_bit(idx, meta->dirty_bitmap, nr) {
-+		struct page *block = pfn_to_page(base_pfn + (idx << order));
-+
-+		__clear_bit(idx, meta->dirty_bitmap);
-+		used++;
-+		if (unlikely(folio_contain_hwpoisoned_page(page_folio(block)))) {
-+			pr_err_once("dma_pmd: poisoned block at pfn %lu, leaking it to keep pool %p intact\n",
-+				    page_to_pfn(block), pool);
-+		} else {
-+			idxs[count++] = idx;
-+		}
-+		if (used == meta->nr_dirty || count == DMA_PMD_SCRUB_BATCH)
-+			break;
-+	}
-+	meta->nr_dirty -= used;
-+	dma_pmd_place_meta(pool, meta);
-+	spin_unlock_irqrestore(&pool->lock, flags);
-+
-+	if (unlikely(!count))
-+		return used > 0;
-+
-+	for (idx = 0; idx < count; idx++) {
-+		struct page *block = pfn_to_page(base_pfn + (idxs[idx] << order));
-+
-+		memset(page_address(block), 0, PAGE_SIZE << order);
-+	}
-+
-+	spin_lock_irqsave(&pool->lock, flags);
-+	for (idx = 0; idx < count; idx++)
-+		__set_bit(idxs[idx], meta->free_bitmap);
-+	meta->nr_free += count;
-+	pool->block_scrub_cnt += count;
-+
-+	if (dma_pmd_meta_avail(meta) == nr) {
-+		if (pool->destroyed || pool->num_idle_pages >= pool->max_idle_pages) {
-+			list_del_init(&meta->list);
-+			llist_add(&meta->llnode, &dma_pmd_free_list);
-+			should_release = true;
-+		} else {
-+			pool->num_idle_pages++;
-+			dma_pmd_place_meta(pool, meta);
-+		}
-+	} else if (!pool->destroyed) {
-+		dma_pmd_place_meta(pool, meta);
-+	}
-+	spin_unlock_irqrestore(&pool->lock, flags);
-+
-+	if (should_release)
-+		dma_pmd_schedule_reclaim();
-+
-+	return true;
-+}
-+
-+/*
-+ * Walk all live pools and scrub dirty blocks until every pool is clean.
-+ *
-+ * Cost: Proportional to total dirty blocks across all pools; yields via
-+ *       cond_resched() between batches of DMA_PMD_SCRUB_BATCH blocks.
-+ * Locking: Process context (system_wq). Holds @dma_pmd_pools_lock across the
-+ *          pool walk.
-+ * Frequency: Scheduled on demand via dma_pmd_schedule_scrub(); coalesced by
-+ *            work_pending().
-+ */
-+static void dma_pmd_scrub_work_fn(struct work_struct *work)
-+{
-+	struct dma_pmd_pool *pool;
-+	bool progress;
-+
-+	do {
-+		progress = false;
-+		mutex_lock(&dma_pmd_pools_lock);
-+		list_for_each_entry(pool, &dma_pmd_pools, node) {
-+			while (dma_pmd_scrub_pool(pool)) {
-+				progress = true;
-+				cond_resched();
-+			}
-+		}
-+		mutex_unlock(&dma_pmd_pools_lock);
-+	} while (progress);
-+}
-+
-+static DECLARE_WORK(dma_pmd_scrub_work, dma_pmd_scrub_work_fn);
-+
-+static void dma_pmd_schedule_scrub(void)
-+{
-+	if (!work_pending(&dma_pmd_scrub_work))
-+		schedule_work(&dma_pmd_scrub_work);
-+}
-+
- unsigned int dma_pmd_pools_forget_domain(int idx)
+ static void test_meta_pooled_toggle(struct kunit *test)
+diff --git a/drivers/iommu/dma-pmd-meta.c b/drivers/iommu/dma-pmd-meta.c
+index 8f2bc7d77e5bd..744964d2c7974 100644
+--- a/drivers/iommu/dma-pmd-meta.c
++++ b/drivers/iommu/dma-pmd-meta.c
+@@ -8,6 +8,7 @@
+ #include <linux/bitmap.h>
+ #include <linux/cache.h>
+ #include <linux/cacheflush.h>
++#include <linux/cc_platform.h>
+ #include <linux/dma-pmd.h>
+ #include <linux/export.h>
+ #include <linux/gfp.h>
+@@ -64,10 +65,22 @@ static __always_inline struct dma_pmd_meta *__dma_pmd_meta_of_pfn(unsigned long
+ 
+ bool __dma_is_pmd_page(unsigned long pfn)
  {
- 	struct dma_pmd_pool *pool;
-@@ -262,6 +475,8 @@ unsigned int dma_pmd_pools_forget_domain(int idx)
- 		spin_lock_irqsave(&pool->lock, flags);
- 		list_for_each_entry(meta, &pool->partial, list)
- 			dropped += dma_pmd_forget_domain(meta, idx);
-+		list_for_each_entry(meta, &pool->partial_dirty, list)
-+			dropped += dma_pmd_forget_domain(meta, idx);
- 		list_for_each_entry(meta, &pool->idle, list)
- 			dropped += dma_pmd_forget_domain(meta, idx);
- 		list_for_each_entry(meta, &pool->full, list)
-@@ -311,6 +526,7 @@ struct dma_pmd_pool *dma_pmd_pool_create(unsigned int order, unsigned int max_id
- 	pool->max_idle_pages = max_idle_pages ? : 16;
- 	pool->next_alloc_attempt = jiffies;
- 	INIT_LIST_HEAD(&pool->partial);
-+	INIT_LIST_HEAD(&pool->partial_dirty);
- 	INIT_LIST_HEAD(&pool->idle);
- 	INIT_LIST_HEAD(&pool->full);
+-	return READ_ONCE(__dma_pmd_meta_of_pfn(pfn)->pooled);
++	return READ_ONCE(__dma_pmd_meta_of_pfn(pfn)->flags) & DMA_PMD_POOLED;
+ }
+ EXPORT_SYMBOL(__dma_is_pmd_page);
  
-@@ -368,6 +584,7 @@ struct dma_pmd_pool *dma_pmd_pool_destroy(struct dma_pmd_pool *pool)
- 	}
- 	srcu_read_unlock(&dma_pmd_srcu, srcu_idx);
++bool __dma_is_pmd_direct(unsigned long pfn)
++{
++	u8 flags = READ_ONCE(__dma_pmd_meta_of_pfn(pfn)->flags);
++
++	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) &&
++	    !(flags & DMA_PMD_DECRYPTED))
++		return false;
++	return (flags & DMA_PMD_POOLED) &&
++	       (flags & (DMA_PMD_DECRYPTED | DMA_PMD_PINNED));
++}
++EXPORT_SYMBOL(__dma_is_pmd_direct);
++
+ /**
+  * dma_pmd_meta_of_pfn - Metadata for a PFN known to be used by DMA_PMD.
+  * @pfn: PFN the caller already holds a struct page for
+diff --git a/drivers/iommu/dma-pmd-pool.c b/drivers/iommu/dma-pmd-pool.c
+index 1d4244ba422a3..deacb6f7d3610 100644
+--- a/drivers/iommu/dma-pmd-pool.c
++++ b/drivers/iommu/dma-pmd-pool.c
+@@ -9,6 +9,7 @@
+ #include <linux/bitmap.h>
+ #include <linux/bitops.h>
+ #include <linux/cache.h>
++#include <linux/cc_platform.h>
+ #include <linux/debugfs.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dma-pmd.h>
+@@ -22,6 +23,7 @@
+ #include <linux/mutex.h>
+ #include <linux/rcupdate.h>
+ #include <linux/seq_file.h>
++#include <linux/set_memory.h>
+ #include <linux/shrinker.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+@@ -39,6 +41,14 @@ static LLIST_HEAD(dma_pmd_free_list);
+ /* Dedicated WQ_MEM_RECLAIM workqueue, can run without allocations. */
+ static struct workqueue_struct *dma_pmd_wq __ro_after_init;
  
-+	flush_work(&dma_pmd_scrub_work);
- 	kref_put(&pool->refcount, dma_pmd_pool_free_kref);
- 	flush_work(&dma_pmd_reclaim_work);
- 	return NULL;
-@@ -379,6 +596,7 @@ EXPORT_SYMBOL(dma_pmd_pool_destroy);
-  * @pool: Owning pool
-  * @gfp: GFP allocation flags
-  * @nid: Target NUMA node (or NUMA_NO_NODE for local node)
-+ * @zero: True if caller requires zeroed blocks in @meta->free_bitmap
++/* Mark pooled PMD pages decrypted for DMA (auto-enabled on CoCo guests). */
++static bool dma_pmd_decrypt __read_mostly;
++module_param_named(decrypt, dma_pmd_decrypt, bool, 0644);
++
++/* Pin pooled PMD pages in the host hypervisor on allocation and unpin on release. */
++static bool dma_pmd_pin __read_mostly;
++module_param_named(pin, dma_pmd_pin, bool, 0644);
++
+ /*
+  * Running total and global ceiling on DMA_PMD pages pinned across all pools.
+  * If zero, it is set at boot at 1/8 of total RAM.
+@@ -65,6 +75,70 @@ static void dma_pmd_pool_free_kref(struct kref *kref)
+ 	dma_pmd_schedule_reclaim();
+ }
+ 
++static int dma_pmd_page_prepare(struct page *page, struct dma_pmd_meta *meta,
++				bool can_block)
++{
++	bool want_decrypt = READ_ONCE(dma_pmd_decrypt);
++	bool want_pin = READ_ONCE(dma_pmd_pin);
++	void *vaddr = page_address(page);
++	int ret;
++
++	if (!want_decrypt && !want_pin)
++		return 0;
++
++	/*
++	 * Decryption and host-pinning hypercalls may sleep. In atomic context,
++	 * leave DMA_PMD_DECRYPTED/PINNED unset so the page is still pooled but
++	 * uses normal swiotlb bounce buffering when required.
++	 */
++	if (!can_block) {
++		pr_warn_ratelimited("%s: cannot block but want %s %s\n", __func__,
++				    want_decrypt ? "decrypt" : "", want_pin ? "pin" : "");
++		return 0;
++	}
++
++	/*
++	 * Explicit page decryption is for CoCo guests (where force_dma_unencrypted()
++	 * is true), not bare-metal SME hosts where 64-bit devices and the IOMMU
++	 * set the encryption bit in DMA addresses and IOMMU PTEs.
++	 */
++	if (want_decrypt && !WARN_ON_ONCE(cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))) {
++		ret = set_memory_decrypted((unsigned long)vaddr, 1 << PMD_ORDER);
++		if (ret)
++			return ret;
++		/* Initialize cleartext cachelines after flipping encryption state. */
++		memset(vaddr, 0, PMD_SIZE);
++		meta->flags |= DMA_PMD_DECRYPTED;
++	}
++
++	if (want_pin) {
++		/* Hook point for hypervisor GPA range pinning. */
++		meta->flags |= DMA_PMD_PINNED;
++	}
++
++	return 0;
++}
++
++static int dma_pmd_page_unprepare(struct dma_pmd_meta *meta)
++{
++	struct page *page = pfn_to_page(dma_pmd_meta_to_pfn(meta));
++
++	if (meta->flags & DMA_PMD_PINNED) {
++		/* Hook point for hypervisor GPA range unpinning. */
++		WRITE_ONCE(meta->flags, meta->flags & ~DMA_PMD_PINNED);
++	}
++
++	if (meta->flags & DMA_PMD_DECRYPTED) {
++		if (set_memory_encrypted((unsigned long)page_address(page),
++					 1 << PMD_ORDER)) {
++			pr_warn_ratelimited("dma_pmd: leaking PMD page that could not be re-encrypted\n");
++			return -EIO;
++		}
++		WRITE_ONCE(meta->flags, meta->flags & ~DMA_PMD_DECRYPTED);
++	}
++	return 0;
++}
++
+ /*
+  * Releasing an idle PMD page proceeds in three stages:
   *
-  * Cost: Slow path (pool miss); allocates PMD page from buddy on @nid,
-  *       splits into compound blocks, and sets the PMD page's membership bit.
-@@ -390,7 +608,7 @@ EXPORT_SYMBOL(dma_pmd_pool_destroy);
-  *         on failure.
-  */
- static struct dma_pmd_meta *dma_pmd_add_page(struct dma_pmd_pool *pool,
--					     gfp_t gfp, int nid)
-+					     gfp_t gfp, int nid, bool zero)
- {
- 	/*
- 	 * Require full GFP_KERNEL (not just gfpflags_allow_blocking()):
-@@ -431,7 +649,7 @@ static struct dma_pmd_meta *dma_pmd_add_page(struct dma_pmd_pool *pool,
- 	 * is shaped into compound pieces by hand. What is left is also free
- 	 * of everything slab treats as a bug in GFP_SLAB_BUG_MASK, so the
- 	 * metadata allocation below can use it as it stands.
--	 * __GFP_ZERO is handled per-block in dma_pmd_pool_alloc_bulk_node().
-+	 * __GFP_ZERO is handled explicitly below after dma_pmd_page_prepare().
+@@ -74,7 +148,7 @@ static void dma_pmd_pool_free_kref(struct kref *kref)
+  *    pushed locklessly onto dma_pmd_free_list and dma_pmd_reclaim_work is
+  *    scheduled on dma_pmd_wq.
+  * 2. In process context, dma_pmd_release_page() unmaps all IOMMU domains
+- *    (dma_pmd_unmap_all()), clears meta->pooled so new lockless readers stop
++ *    (dma_pmd_unmap_all()), clears DMA_PMD_POOLED so new lockless readers stop
+  *    entering @meta, and queues dma_pmd_release_page_rcu() via call_rcu().
+  * 3. After an RCU grace period (once no concurrent dma_pmd_free_page() reader
+  *    can still be dereferencing @meta), dma_pmd_release_page_rcu() unfreezes
+@@ -97,22 +171,21 @@ static void dma_pmd_release_page_rcu(struct rcu_head *head)
+ 	 * block is freed, the PMD frame can be reallocated and @meta overwritten.
  	 */
- 	base_gfp = gfp & ~(__GFP_COMP | __GFP_HIGHMEM | __GFP_MOVABLE | __GFP_ZERO);
+ 	struct dma_pmd_meta *meta = container_of(head, struct dma_pmd_meta, rcu);
+-	struct page *page = pfn_to_page(dma_pmd_meta_to_pfn(meta));
++	struct page *block, *page = pfn_to_page(dma_pmd_meta_to_pfn(meta));
+ 	struct dma_pmd_pool *pool = READ_ONCE(meta->pool);
+-	unsigned int nr = DMA_PMD_BLOCKS(pool->order);
+-	unsigned int order = pool->order;
++	unsigned int order = pool->order, i, nr = DMA_PMD_BLOCKS(order);
++	bool leak = READ_ONCE(meta->flags) & DMA_PMD_DECRYPTED;
+ 	unsigned long flags;
+-	unsigned int i;
+-
+-	for (i = 0; i < nr; i++) {
+-		struct page *block = page + (i << order);
  
-@@ -487,7 +705,9 @@ static struct dma_pmd_meta *dma_pmd_add_page(struct dma_pmd_pool *pool,
+-		page_ref_unfreeze(block, 1);
+-		__free_pages(block, order);
++	if (!leak) {
++		for (i = 0; i < nr; i++) {
++			block = page + (i << order);
++			page_ref_unfreeze(block, 1);
++			__free_pages(block, order);
++		}
++		atomic_long_dec(&dma_pmd_nr_pages);
+ 	}
+ 
+-	atomic_long_dec(&dma_pmd_nr_pages);
+-
+ 	spin_lock_irqsave(&pool->lock, flags);
+ 	pool->pmd_free_cnt++;
+ 	spin_unlock_irqrestore(&pool->lock, flags);
+@@ -138,7 +211,9 @@ static void dma_pmd_release_page(struct dma_pmd_meta *meta)
+ 	 * dma_is_pmd_page() just before this may still be reading @meta, so
+ 	 * the PMD page and its metadata entry must outlive the grace period.
+ 	 */
+-	WRITE_ONCE(meta->pooled, false);
++	WRITE_ONCE(meta->flags, meta->flags & ~DMA_PMD_POOLED);
++	dma_pmd_page_unprepare(meta);
++
+ 	call_rcu(&meta->rcu, dma_pmd_release_page_rcu);
+ }
+ 
+@@ -392,20 +467,33 @@ static struct dma_pmd_meta *dma_pmd_add_page(struct dma_pmd_pool *pool,
  		return NULL;
  	}
  
--	if (meta->flags & DMA_PMD_DECRYPTED) {
-+	if (zero || (meta->flags & DMA_PMD_DECRYPTED)) {
-+		if (!(meta->flags & DMA_PMD_DECRYPTED))
-+			memset(page_address(page), 0, PMD_SIZE);
- 		bitmap_set(meta->free_bitmap, 0, nr);
- 		meta->nr_free = nr;
- 	} else {
-@@ -514,8 +734,7 @@ static struct dma_pmd_meta *dma_pmd_add_page(struct dma_pmd_pool *pool,
- static unsigned int dma_pmd_scan_bitmap(struct dma_pmd_pool *pool,
- 					unsigned long *bitmap, u16 *countp,
- 					unsigned long base_pfn, unsigned int nr,
--					unsigned long want, struct page **out,
--					bool unfreeze)
-+					unsigned long want, struct page **out)
- {
- 	unsigned int idx, got = 0, used = 0;
- 
-@@ -531,8 +750,7 @@ static unsigned int dma_pmd_scan_bitmap(struct dma_pmd_pool *pool,
- 			pr_err_once("dma_pmd: poisoned block at pfn %lu, leaking it to keep pool %p intact\n",
- 				    page_to_pfn(block), pool);
- 		} else {
--			if (unfreeze)
--				page_ref_unfreeze(block, 1);
-+			page_ref_unfreeze(block, 1);
- 			out[got++] = block;
- 		}
- 
-@@ -544,6 +762,41 @@ static unsigned int dma_pmd_scan_bitmap(struct dma_pmd_pool *pool,
- 	return got;
- }
- 
-+static struct dma_pmd_meta *dma_pmd_pick_meta(struct dma_pmd_pool *pool, bool zero)
-+{
-+	struct dma_pmd_meta *meta;
+-	/* Fails with -EBUSY if a concurrent PFN walker holds a speculative ref. */
+-	if (split_page_compound(page, PMD_ORDER, pool->order)) {
++	meta = dma_pmd_meta_of_pfn(page_to_pfn(page));
++	memset(meta, 0, sizeof(*meta));
++	meta->pool = pool;
++	spin_lock_init(&meta->map_lock);
 +
-+	if (!zero) {
-+		meta = list_first_entry_or_null(&pool->partial_dirty,
-+						struct dma_pmd_meta, list);
-+		if (meta)
-+			return meta;
-+		if (!list_empty(&pool->partial))
-+			return list_last_entry(&pool->partial,
-+					       struct dma_pmd_meta, list);
-+		if (!list_empty(&pool->idle)) {
-+			meta = list_last_entry(&pool->idle,
-+					       struct dma_pmd_meta, list);
-+			pool->num_idle_pages--;
-+			return meta;
++	if (dma_pmd_page_prepare(page, meta, can_block)) {
+ 		__free_pages(page, PMD_ORDER);
+ 		atomic_long_dec(&dma_pmd_nr_pages);
+ 		return NULL;
+ 	}
+ 
+-	meta = dma_pmd_meta_of_pfn(page_to_pfn(page));
+-	memset(meta, 0, sizeof(*meta));
+-	meta->pool = pool;
+-	spin_lock_init(&meta->map_lock);
++	/* Fails with -EBUSY if a concurrent PFN walker holds a speculative ref. */
++	if (split_page_compound(page, PMD_ORDER, pool->order)) {
++		if (!dma_pmd_page_unprepare(meta)) {
++			__free_pages(page, PMD_ORDER);
++			atomic_long_dec(&dma_pmd_nr_pages);
 +		}
 +		return NULL;
 +	}
-+
-+	meta = list_first_entry_or_null(&pool->partial, struct dma_pmd_meta, list);
-+	if (meta)
-+		return meta;
-+
-+	list_for_each_entry(meta, &pool->idle, list) {
-+		if (meta->nr_free) {
-+			pool->num_idle_pages--;
-+			return meta;
-+		}
+ 
+-	bitmap_set(meta->dirty_bitmap, 0, nr);
+-	meta->nr_dirty = nr;
++	if (meta->flags & DMA_PMD_DECRYPTED) {
++		bitmap_set(meta->free_bitmap, 0, nr);
++		meta->nr_free = nr;
++	} else {
++		bitmap_set(meta->dirty_bitmap, 0, nr);
++		meta->nr_dirty = nr;
 +	}
+ 
+ 	kref_get(&pool->refcount);
+ 
+@@ -418,7 +506,7 @@ static struct dma_pmd_meta *dma_pmd_add_page(struct dma_pmd_pool *pool,
+ 	 * function returns and the caller publishes the PMD page under
+ 	 * @pool->lock, whose release orders both stores against every consumer.
+ 	 */
+-	WRITE_ONCE(meta->pooled, true);
++	WRITE_ONCE(meta->flags, meta->flags | DMA_PMD_POOLED);
+ 
+ 	return meta;
+ }
+@@ -764,10 +852,18 @@ static unsigned long dma_pmd_shrink_scan(struct shrinker *shrink,
+ 	/*
+ 	 * Retiring is done outside both locks: dma_pmd_release_page() unmaps
+ 	 * from the IOMMU, which is far too long to hold pool->lock for.
++	 * Pages that need set_memory_encrypted() cannot be released under
++	 * fs_reclaim (CPA allocates PTE pages on x86); hand them to the
++	 * reclaim workqueue instead.
+ 	 */
+ 	list_for_each_entry_safe(meta, tmp, &release_list, list) {
+-		list_del(&meta->list);
+-		dma_pmd_release_page(meta);
++		list_del_init(&meta->list);
++		if (meta->flags & (DMA_PMD_DECRYPTED | DMA_PMD_PINNED)) {
++			llist_add(&meta->llnode, &dma_pmd_free_list);
++			dma_pmd_schedule_reclaim();
++		} else {
++			dma_pmd_release_page(meta);
++		}
+ 	}
+ 	srcu_read_unlock(&dma_pmd_srcu, srcu_idx);
+ 
+@@ -806,6 +902,9 @@ static int __init dma_pmd_init(void)
+ 	if (!dma_pmd_max_pages)
+ 		dma_pmd_max_pages = max(totalram_pages() >> (PMD_ORDER + 3), 16UL);
+ 
++	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
++		dma_pmd_decrypt = true;
 +
-+	return NULL;
-+}
-+
- /* Extract up to @want available blocks from @meta under @pool->lock. */
- static unsigned long dma_pmd_take_blocks(struct dma_pmd_pool *pool,
- 					 struct dma_pmd_meta *meta,
-@@ -555,23 +808,18 @@ static unsigned long dma_pmd_take_blocks(struct dma_pmd_pool *pool,
- 	unsigned int nr = DMA_PMD_BLOCKS(pool->order);
- 	unsigned int got = 0, used;
- 
--	if (zero) {
--		got += dma_pmd_scan_bitmap(pool, meta->free_bitmap, &meta->nr_free,
--					   base_pfn, nr, want, out, true);
-+	if (!zero)
- 		got += dma_pmd_scan_bitmap(pool, meta->dirty_bitmap, &meta->nr_dirty,
--					   base_pfn, nr, want - got, out + got, false);
--	} else {
--		got += dma_pmd_scan_bitmap(pool, meta->dirty_bitmap, &meta->nr_dirty,
--					   base_pfn, nr, want, out, false);
--		got += dma_pmd_scan_bitmap(pool, meta->free_bitmap, &meta->nr_free,
--					   base_pfn, nr, want - got, out + got, true);
--	}
-+					   base_pfn, nr, want, out);
-+	got += dma_pmd_scan_bitmap(pool, meta->free_bitmap, &meta->nr_free,
-+				   base_pfn, nr, want - got, out + got);
-+
- 	used = avail_before - dma_pmd_meta_avail(meta);
--	if (!dma_pmd_meta_avail(meta) || WARN_ON_ONCE(!used)) {
-+	if (WARN_ON_ONCE(!used)) {
- 		meta->nr_free = 0;
- 		meta->nr_dirty = 0;
--		list_move(&meta->list, &pool->full);
- 	}
-+	dma_pmd_place_meta(pool, meta);
- 
- 	return got;
- }
-@@ -588,7 +836,7 @@ static unsigned long dma_pmd_take_blocks(struct dma_pmd_pool *pool,
-  *       under a single lock acquisition. Slow path (both empty) calls
-  *       dma_pmd_add_page().
-  * Locking: Acquires @pool->lock (irqsave) for the bitmap scan. Drops lock
-- *          during slow-path PMD buddy allocation and per-block initialization.
-+ *          during slow-path PMD buddy allocation.
-  * Frequency: High (called per RX buffer refill or per SKB TX page frag refill).
-  *
-  * A pool hands out a block of a PMD page it already owns, on the node that
-@@ -605,7 +853,8 @@ unsigned long dma_pmd_pool_alloc_bulk_node(struct dma_pmd_pool *pool, gfp_t gfp,
- 					   int nid, unsigned long nr_pages,
- 					   struct page **page_array)
- {
--	unsigned long allocated = 0, flags, i;
-+	unsigned long allocated = 0, flags;
-+	bool should_scrub = false;
- 	bool zero;
- 
- 	if (unlikely(!pool || pool->destroyed || !nr_pages ||
-@@ -619,22 +868,18 @@ unsigned long dma_pmd_pool_alloc_bulk_node(struct dma_pmd_pool *pool, gfp_t gfp,
- 	while (allocated < nr_pages) {
- 		struct dma_pmd_meta *meta;
- 
--		/* Partially used pages first, idle ones next. */
--		meta = list_first_entry_or_null(&pool->partial, struct dma_pmd_meta, list);
--		if (!meta && !list_empty(&pool->idle)) {
--			meta = list_first_entry(&pool->idle, struct dma_pmd_meta, list);
--			list_move(&meta->list, &pool->partial);
--			pool->num_idle_pages--;
--		}
-+		meta = dma_pmd_pick_meta(pool, zero);
- 		if (!meta) {
- 			/* Fallback to a new allocation */
- 			spin_unlock_irqrestore(&pool->lock, flags);
--			meta = dma_pmd_add_page(pool, gfp, nid);
-+			meta = dma_pmd_add_page(pool, gfp, nid, zero);
- 			if (!meta)
--				goto out_prep;
-+				goto out;
- 			spin_lock_irqsave(&pool->lock, flags);
- 			pool->pmd_alloc_cnt++;
- 			list_add(&meta->list, &pool->partial);
-+			if (meta->nr_dirty)
-+				should_scrub = true;
- 		}
- 
- 		allocated += dma_pmd_take_blocks(pool, meta,
-@@ -643,14 +888,9 @@ unsigned long dma_pmd_pool_alloc_bulk_node(struct dma_pmd_pool *pool, gfp_t gfp,
- 	}
- 	spin_unlock_irqrestore(&pool->lock, flags);
- 
--out_prep:
--	for (i = 0; i < allocated; i++) {
--		if (!page_count(page_array[i])) {
--			page_ref_unfreeze(page_array[i], 1);
--			if (zero)
--				memset(page_address(page_array[i]), 0, PAGE_SIZE << pool->order);
--		}
--	}
-+out:
-+	if (should_scrub)
-+		dma_pmd_schedule_scrub();
- 	return allocated;
- }
- EXPORT_SYMBOL(dma_pmd_pool_alloc_bulk_node);
-@@ -674,7 +914,9 @@ EXPORT_SYMBOL(dma_pmd_pool_alloc_bulk_node);
- bool dma_pmd_pool_has_free(struct dma_pmd_pool *pool)
- {
- 	return pool && !READ_ONCE(pool->destroyed) &&
--	       (!list_empty_careful(&pool->partial) || !list_empty_careful(&pool->idle));
-+	       (!list_empty_careful(&pool->partial) ||
-+		!list_empty_careful(&pool->partial_dirty) ||
-+		!list_empty_careful(&pool->idle));
- }
- EXPORT_SYMBOL(dma_pmd_pool_has_free);
- 
-@@ -706,8 +948,8 @@ bool __dma_pmd_free_page(struct page *page)
- 	struct dma_pmd_pool *pool = meta->pool;
- 	unsigned long pfn = page_to_pfn(page);
- 	bool should_release = false;
-+	bool should_scrub = false;
- 	bool zeroed_on_free = false;
--	unsigned int avail;
- 	unsigned long flags;
- 
- 	idx = (pfn - dma_pmd_meta_to_pfn(meta)) >> pool->order;
-@@ -755,28 +997,28 @@ bool __dma_pmd_free_page(struct page *page)
- 		meta->nr_free++;
- 	} else {
- 		__set_bit(idx, meta->dirty_bitmap);
--		meta->nr_dirty++;
-+		should_scrub = !meta->nr_dirty++;
- 	}
--	avail = dma_pmd_meta_avail(meta);
- 	pool->block_free_cnt++;
- 
--	if (avail == 1 && !pool->destroyed)
--		list_move(&meta->list, &pool->partial);
--
--	if (avail == nr) {
-+	if (dma_pmd_meta_avail(meta) == nr) {
- 		if (pool->destroyed || pool->num_idle_pages >= pool->max_idle_pages) {
- 			list_del_init(&meta->list);
- 			llist_add(&meta->llnode, &dma_pmd_free_list);
- 			should_release = true;
- 		} else {
--			list_move(&meta->list, &pool->idle);
- 			pool->num_idle_pages++;
-+			dma_pmd_place_meta(pool, meta);
- 		}
-+	} else if (!pool->destroyed) {
-+		dma_pmd_place_meta(pool, meta);
- 	}
- 	spin_unlock_irqrestore(&pool->lock, flags);
- 
- 	if (should_release)
- 		dma_pmd_schedule_reclaim();
-+	else if (should_scrub)
-+		dma_pmd_schedule_scrub();
- 
- 	return true;
- }
+ 	/*
+ 	 * Reclaim frees memory, so it must not queue behind arbitrary work on
+ 	 * system_wq when the machine is already short of it. Failure is not
 diff --git a/drivers/iommu/dma-pmd-priv.h b/drivers/iommu/dma-pmd-priv.h
-index 8c7a50d5b7220..82a5c869aa216 100644
+index b411ecb1fdafc..8c7a50d5b7220 100644
 --- a/drivers/iommu/dma-pmd-priv.h
 +++ b/drivers/iommu/dma-pmd-priv.h
-@@ -181,8 +181,10 @@ static inline unsigned int dma_pmd_meta_avail(const struct dma_pmd_meta *m)
-  *		block bitmaps and the statistics counters
-  * @order:	Block order managed by this pool (<= PMD_ORDER)
-  * @destroyed:	Set when dma_pmd_pool_destroy() has been called
-- * @partial:	List of PMD pages with at least 1 free block, but not all
-- *		of them (MRU ordered). Candidates for allocation.
-+ * @partial:	List of partially used PMD pages with @nr_free > 0 (clean-only
-+ *		at head, mixed clean/dirty at tail)
-+ * @partial_dirty: List of partially used PMD pages with @nr_free == 0 and
-+ *		@nr_dirty > 0
-  * @idle:	List of PMD pages whose every usable block is free. Held
-  *		separately because they can be released under pressure.
-  * @full:	List of PMD pages with 0 free blocks
-@@ -193,6 +195,7 @@ static inline unsigned int dma_pmd_meta_avail(const struct dma_pmd_meta *m)
-  * @pmd_free_cnt: Statistics counter of PMD pages released back to buddy
-  * @block_alloc_cnt: Statistics counter of block allocations satisfied
-  * @block_free_cnt: Statistics counter of block frees recycled into pool
-+ * @block_scrub_cnt: Statistics counter of dirty blocks zeroed by scrubber
-  * @next_alloc_attempt: Do not attempt a new order-9 allocation before this time.
-  *		Damps repeated high-order GFP_ATOMIC failures under
-  *		fragmentation, which would otherwise be retried on every
-@@ -207,6 +210,7 @@ struct dma_pmd_pool {
- 	u8			order;
- 	bool			destroyed;
- 	struct list_head	partial;
-+	struct list_head	partial_dirty;
- 	struct list_head	idle;
- 	struct list_head	full;
- 	unsigned int		num_idle_pages;
-@@ -217,6 +221,7 @@ struct dma_pmd_pool {
- 	u64			pmd_free_cnt;
- 	u64			block_alloc_cnt;
- 	u64			block_free_cnt;
-+	u64			block_scrub_cnt;
+@@ -107,10 +107,16 @@ enum {
+ #define DMA_PMD_META_SHIFT		8
+ #define DMA_PMD_META_SIZE		BIT(DMA_PMD_META_SHIFT)
  
- 	/* Cold. */
- 	unsigned long		next_alloc_attempt;
++enum {
++	DMA_PMD_POOLED		= BIT(0),
++	DMA_PMD_DECRYPTED	= BIT(1),
++	DMA_PMD_PINNED		= BIT(2),
++};
++
+ /**
+  * struct dma_pmd_meta - Metadata for a single DMA_PMD page
+- * @pooled:	True while this page is owned by an dma_pmd_pool (offset 0)
+- *		read locklessly by dma_is_pmd_page().
++ * @flags:	Bitmask of DMA_PMD_POOLED, DMA_PMD_DECRYPTED, DMA_PMD_PINNED
++ *		(offset 0), read locklessly by dma_is_pmd_page() and dma_is_pmd_direct().
+  * @nr_free:	Number of zeroed available blocks in @free_bitmap
+  * @nr_dirty:	Number of dirty available blocks in @dirty_bitmap
+  * @map_lock:	Spinlock protecting slow-path updates to @domains_mapped
+@@ -138,7 +144,7 @@ enum {
+  * physical pages (128 KB per GB of RAM).
+  */
+ struct dma_pmd_meta {
+-	bool pooled;
++	u8 flags;
+ 	u16 nr_free;
+ 	u16 nr_dirty;
+ 	spinlock_t map_lock;
+@@ -160,7 +166,7 @@ struct dma_pmd_meta {
+ 	DECLARE_BITMAP(dirty_bitmap, 1U << PMD_ORDER) ____cacheline_aligned;
+ } __aligned(DMA_PMD_META_SIZE);
+ 
+-static_assert(offsetof(struct dma_pmd_meta, pooled) == 0);
++static_assert(offsetof(struct dma_pmd_meta, flags) == 0);
+ static_assert(sizeof(struct dma_pmd_meta) == DMA_PMD_META_SIZE);
+ 
+ static inline unsigned int dma_pmd_meta_avail(const struct dma_pmd_meta *m)
+diff --git a/include/linux/dma-pmd.h b/include/linux/dma-pmd.h
+index 7b7e9477d44e1..c9775e86979f9 100644
+--- a/include/linux/dma-pmd.h
++++ b/include/linux/dma-pmd.h
+@@ -16,6 +16,7 @@ struct dma_pmd_pool;
+ extern void *dma_pmd_meta_array;
+ 
+ bool __dma_is_pmd_page(unsigned long pfn);
++bool __dma_is_pmd_direct(unsigned long pfn);
+ 
+ static inline bool dma_is_pmd_page(unsigned long pfn)
+ {
+@@ -29,6 +30,15 @@ static inline bool dma_is_pmd_page(unsigned long pfn)
+ 	return __dma_is_pmd_page(pfn);
+ }
+ 
++static inline bool dma_is_pmd_direct(phys_addr_t phys)
++{
++	/* Pairs with smp_store_release() in dma_pmd_meta_init(). */
++	if (likely(!smp_load_acquire(&dma_pmd_meta_array)))
++		return false;
++
++	return __dma_is_pmd_direct(phys >> PAGE_SHIFT);
++}
++
+ bool __dma_pmd_free_page(struct page *page);
+ 
+ static inline bool dma_pmd_free_page(struct page *page)
+@@ -117,6 +127,11 @@ static inline bool dma_is_pmd_page(unsigned long pfn)
+ 	return false;
+ }
+ 
++static inline bool dma_is_pmd_direct(phys_addr_t phys)
++{
++	return false;
++}
++
+ static inline bool dma_pmd_free_page(struct page *page)
+ {
+ 	return false;
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index da665ca22d5c0..a786c2869b869 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -7,6 +7,7 @@
+ #include <linux/memblock.h> /* for max_pfn */
+ #include <linux/export.h>
+ #include <linux/mm.h>
++#include <linux/dma-pmd.h>
+ #include <linux/dma-map-ops.h>
+ #include <linux/scatterlist.h>
+ #include <linux/pfn.h>
+@@ -679,7 +680,10 @@ dma_addr_t dma_direct_map_phys(struct device *dev, phys_addr_t phys,
+ 			attrs |= DMA_ATTR_CC_SHARED;
+ 	}
+ 
+-	if (is_swiotlb_force_bounce(dev)) {
++	if (dma_is_pmd_direct(phys)) {
++		if (force_dma_unencrypted(dev))
++			attrs |= DMA_ATTR_CC_SHARED;
++	} else if (is_swiotlb_force_bounce(dev)) {
+ 		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
+ 			return DMA_MAPPING_ERROR;
+ 
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
