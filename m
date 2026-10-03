@@ -4,133 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4B61CA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 15:50:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07C5FCA5FDD
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 15:56:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F4256B0092; Sat,  3 Oct 2026 11:50:11 -0400 (EDT)
+	id DD15F6B008A; Sat,  3 Oct 2026 11:56:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A4966B0093; Sat,  3 Oct 2026 11:50:11 -0400 (EDT)
+	id D82EB6B008C; Sat,  3 Oct 2026 11:56:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 894736B0095; Sat,  3 Oct 2026 11:50:11 -0400 (EDT)
+	id C99626B0092; Sat,  3 Oct 2026 11:56:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DD126B0092
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 11:50:11 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5DAA3C0A0B
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 15:50:09 +0000 (UTC)
-X-FDA: 85281751338.08.8525A5C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B4E6B40009
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 15:50:06 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DeUOswXx;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf17.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A40D46B008A
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 11:56:41 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 19631120A51
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 15:56:41 +0000 (UTC)
+X-FDA: 85281767802.21.6C293B1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 87E9520002
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 15:56:39 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UPGAYEhX;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791042607;
+	s=arc-20220608; t=1791042999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pJNvDGX6YiI/koTtXDXCLWPYjykCeclt5Rn2DoTl0tg=;
-	b=AapPYhhluqiv97ao5OITShsN71baK1y/WzelaFv89vp50FA9RxWcyL1OdeKLPHwNVGtEWp
-	fqKTnshFPISyJ5kxCe9bd535Y9gMYegwkgdtuhbiAL75pr6yuNA80ten/TdaQvRVJdM4VB
-	SgWXuacHoH7a63FLv27eBRNGWrWGXSE=
+	bh=NzhxsV7jtoLr70i/Q5PxTj0BUfUeVGbJ6ybWMLKfAzA=;
+	b=W2wy+tZVadSYWoTqb/U0pnyIlNbG0Z0xEu8jhgJQd8grvmikipZ96mY6yR3VmpGSVkWyev
+	uTgBWB8ZgzSPXf8XOk/mdgAUfgaFdDcWJhVlgHr29z/ofsDNP6BNAIkD5N9Qbqk6SCCBfw
+	teddR/1WD4Qyrwr5O7CGIq+swK/CzB4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DeUOswXx;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf17.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UPGAYEhX;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791042607;
-	b=mew1lYXkYtLAUMLWcl9YCZaW02WtNjhLIrh/ocQ8XkNAaLC/yoQGWwlW5YZ0UJA5GfoKaO
-	1tVzKJubD/V/AdQ5fCpNVoFiH75IMUkEMRINLZZue3bZEFDz3Yt76dEjEBbAnd2MInyG2D
-	4dKGWJJm09csfTHA7BANg951AVcAvhQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791042606;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pJNvDGX6YiI/koTtXDXCLWPYjykCeclt5Rn2DoTl0tg=;
-	b=DeUOswXx+s6CfA5WlP93cu+m7pv1BL6441C2bubuX1uSpPmP9ytOETWDrICHH9c/Hea4hg
-	7ux9bsKreYkPIK05mBE+jPhi+xHFYVk0J/HkvPbPfIiAIfmTDzyH2w7WLvkvmNiBScllrP
-	6U7gaNKStYlDHx2OidiTi9os8ZA7R1g=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-332-h836ZludPzCMFJP929TCmA-1; Sat, 03 Oct 2026 11:50:04 -0400
-X-MC-Unique: h836ZludPzCMFJP929TCmA-1
-X-Mimecast-MFC-AGG-ID: h836ZludPzCMFJP929TCmA_1791042604
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-895241d7405so5012367b3.2
-        for <linux-mm@kvack.org>; Sat, 03 Oct 2026 08:50:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791042604; x=1791647404;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pJNvDGX6YiI/koTtXDXCLWPYjykCeclt5Rn2DoTl0tg=;
-        b=b03NHqNQ5yZ8i9Vpi85P5O2vUgAsgt337M6rosKIuD4Ct5ngZRN5TzO3694uiv/hg0
-         VF7Ei/5LMjl7tqsbu4GyfcLaTzKCfLLZ0mbkbA7Ce3BNB3gJmuLURmBPWnaYU7S0XZft
-         lcyWGgULeCOMiWKLekz7vi8L+oUB+6BW/hFp1NQ9h7YR70x0vQx/lfBXolwSptXxpj4E
-         oHQDgu3SenHTrRzofkLaDOhlPc+mWOopY2QTBBUI3/WtDwWIiUKf95/JcEYAh9UwH4JI
-         mns8mYmbqnMxOEdVhuhb+9815Ce3yJ/XCzmjvG+ng4gTdCZnoRhhOpy5qHI/XVCQ4/GN
-         vKRw==
-X-Forwarded-Encrypted: i=1; AKwUvByoM7gboiEfac3IN4gsXHQJNIEQGENV7IUQrvCd5GB+db7G4U5q+/zd6oY8mYK3UMfmkLq0JRN4Yw==@kvack.org
-X-Gm-Message-State: AFq9FYJrMW5ceo4KLS2uCCcmicsW00tv1C5rhZWaMuX1Klwi/gn1DP2s
-	tV7j0PsWAVM6F68KGxEc0iUvyb5LEVwoFk5jhucCrQ43RtNRRPfaUeWj/GRp1QJzG9ESYrjJ+//
-	IzCRJ25esQIxhc4v3G0X/uSVWRKyyF0cJ/eaOtNicg4zivtF4wZYG
-X-Gm-Gg: AYBFou2e3xXEUKZ+2FddoIaI4pZL8TeNeZtIWacbdLGretnXkb8PsXCuxCDuBzmPO0F
-	Ja7DEesxyk70QRa7C8eSDZw2ooz4LhF6TkqYjYE59YJnbLIeUK8RIM0bWhgpvM7BnW+ULvXJt7J
-	Uh5kUzp4KFu22DLfw1UCgLPRk3LVItVDiMHKPOrN01IVgjiO4bH7wTgrn0HVb5IXnQ3eEg+hgnk
-	wU0cKlJ4oJx3p24e/SM76odgzd+8i/altX3r7BL+40v49frad+ei9mn1//HLcG5UAP0G5ACwzrD
-	NsMZeOne+GUwd8Wf8ZFo/ph+r/khe55Mi+n38It4eP9tgGDbUg7fnKc5fWlOSjDX6TpWscFdN7T
-	2238=
-X-Received: by 2002:a05:690c:f15:b0:8a8:6a39:37e0 with SMTP id 00721157ae682-8ae39c0a963mr28209857b3.42.1791042603869;
-        Sat, 03 Oct 2026 08:50:03 -0700 (PDT)
-X-Received: by 2002:a05:690c:f15:b0:8a8:6a39:37e0 with SMTP id 00721157ae682-8ae39c0a963mr28209777b3.42.1791042603359;
-        Sat, 03 Oct 2026 08:50:03 -0700 (PDT)
-Received: from [192.168.2.110] ([142.172.30.162])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8aeaac82e1bsm5662017b3.34.2026.10.03.08.50.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 03 Oct 2026 08:50:02 -0700 (PDT)
-Message-ID: <eea53e37-c000-41f9-adb7-6a95e61adfa9@redhat.com>
-Date: Sat, 3 Oct 2026 11:50:01 -0400
+	t=1791042999;
+	b=PeAzqQAKCBaufYCpPZ4tog3XZBKlu1iX5/G+CP/J/CopQy040nSM1HZqPtWkFFQ91FI5Lt
+	QI2LkVzQUYjMhnmDDhNtYFL0am8pQvUpdwI5XEEalOLAeSkHrkqPr54CBkEDHbRMVsjGh0
+	3tKkItrKOhjgY6gASN6bWuDjaG/C5M8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id BF99560D99;
+	Sat,  3 Oct 2026 15:56:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679141F0089D;
+	Sat,  3 Oct 2026 15:56:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791042998;
+	bh=NzhxsV7jtoLr70i/Q5PxTj0BUfUeVGbJ6ybWMLKfAzA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UPGAYEhXKD563KxiLn5ax0iwVPtf7O8U/4Rrb7nteA/xQiyDEM7ymdL3mWaQ4HF4v
+	 qOfW01Y+a4iSnEmajSp0nHa77ZjyUH8XNKCKdf2dw9hYFa2HTBOg61IDwMtyTWcARE
+	 Ep54D2ZuvN89OY7aCj2sH9wCDrdnhPBt2YZOqyq1CxkozpJEX2GC0tKNR5oUrSabhV
+	 Z08QwcxH0Jzk5Yg5lBF40TagpG5a0CDp7iyXTaF7Y+5zYsaDi12VW17ywuDgGaKufs
+	 WrJTYFodEGflFSOWoLnRFCY3cLC0pAzd9dkj9XWX2KMtimdQ0RDHV1njziP5LvrXDo
+	 1xkenDJLThOTA==
+Date: Sat, 3 Oct 2026 16:56:32 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Ameer Hamza <ameer.hamza@truenas.com>
+Cc: rppt@kernel.org, peterz@infradead.org, akpm@linux-foundation.org, 
+	david@kernel.org, mingo@redhat.com, acme@kernel.org, namhyung@kernel.org, 
+	linux-mm@kvack.org, linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	regressions@lists.linux.dev, stable@vger.kernel.org, 4ncienth@gmail.com, sashal@kernel.org, 
+	alexander.motin@truenas.com, caleb.stjohn@truenas.com
+Subject: Re: [REGRESSION] secretmem: SIGBUS on memfd_secret() pages while
+ perf record runs
+Message-ID: <asEllR7if-J3wteg@gremlin>
+References: <20261002175651.811343-1-ameer.hamza@truenas.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 14/14] mm: thp: always enable mTHP support
-To: Lance Yang <lance.yang@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
- baolin.wang@linux.alibaba.com, ziy@nvidia.com, corbet@lwn.net,
- tsbogend@alpha.franken.de, maddy@linux.ibm.com, mpe@ellerman.id.au,
- agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
- gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, hughd@google.com, dave.hansen@linux.intel.com,
- djbw@kernel.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
- akpm@linux-foundation.org, yintirui@huawei.com, dev.jain@arm.com,
- usama.arif@linux.dev
-References: <752f528f0fed5cdc9de12b54260b0495d4e5a6cb.1789695931.git.luizcap@redhat.com>
- <20261003031301.48957-1-lance.yang@linux.dev>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20261003031301.48957-1-lance.yang@linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 0ou7IrbdWE7Kz9Z4Xp_Ce7SzHQ6md_QdwtPNI0VfXEQ_1791042604
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B4E6B40009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261002175651.811343-1-ameer.hamza@truenas.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 87E9520002
+X-Stat-Signature: cze19rqtrkk4qs5nu91qn46n81xez5ax
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 6fkphe3fmqxggnmm1gpoy9ztwdiog71s
-X-HE-Tag: 1791042606-201009
-X-HE-Meta: U2FsdGVkX19BNiaJN74zMtUIerMS0DDdnQDTuOzF7zCN2wim/4cVprbEz2pBhNJYq0oJq7J7N/YK/T0qHSjaqYsVNDpHLJ1SHpBcJUlqbTK5wEo2GJMp8y6ipS/DRwdtTvcC62meqougeRvIdEBTlBQR2XlLCfxakLBq/qoXU8A4NQNjSUXgqLc0gUf6+x87EjrnGvu5c+MWhAEM1otSMx8WFhHIOfbK1wEPXLYx8z0jSAZTa10z1P58wAzuMekfGBzcFfU4Rnoa0kzSfqRIqgDYBXgH6AnIHqrBZRoaiJn6h0Ogj4BukEkhFhhek0t3ZPkqFnhAN3yctA+1TAi6I5+Rzg1WkBiIu3nFyiGQ3xmqcvpMjXLuifjiSzGdQHOKrc3EEwSQ6TetsoGyXA/J8wHXjs3pZJVE4Rg2tWT6617YB3MFjvO5vdof9S+a6CzIsPQQCWE8zDu8G7enrr0e17LqiWzQConPzS4WV28GJilNdlGqWrAJefmVNwZAs6d9W04hOf5m5qarJ9w/7dOGsEEwEAhHXq7AJteJ6BraSJ+Y8fguwCTdu1+ZVgi/ru2Szjm4/yQAYP+G2xY04efkxrnIwhlGDvOwAdFzn+3J7ggY6fhetH73XxV6tKDmHU5/Ctj+n9IcHv2YGbaBSIcxqg8BxCdsGzMpmYv+2/x+7KRICQiXCi3bSYu0uwZASOj4HVQ3F32wY7IC8yNhT4eWfuW3YMVtcM3tNnmOs9MTnXT0aG1AN1u3MxEStSAHBFK7IhFsVMlB10xYAfDjcW1VD0r3466jHYGOBGCeD6+fdjvisXnEYQPsbCXNwKGy/NzjyUEOGyNo67NAibOjavOX33eUVb6ydqHs1/q2L0vx5cXau4aNQifKe6evV/YVBALypmkB0oUmzK0/aNiJapsa+3pFxiurI0lIM1PDas47Oh78ifVDnPzci6Hm4YNPZuomBA+T2598ndc4tHcv8Db
- 9iH2j2Df
- xgzcHj83qhWnlnXndF2bJWKZ6WEcqs1RubTMKVU6+S28VA0JH8joaSOUqkXV/5l/C99MRHGWyjrIHyvuiEfE4CnhrH8cG1AbUVcCyAA3OsG4/sNudoPLPWWFXbhZHKYgBmqIYd6mrqi3iYUbzAKtyVRAlXeKbGxeEUzg1740GOCdn5cHUbK/2Ac1glEAwMnPw3HDk88esqYNuQ64wVBfUCd8+paaddESjpQ3GH3z3u2AVluYxOomZIDz7a5te9eOyEc5dApKN9My62y4jNOckml7h+MJxjEDUtbXqMX23ikddsFq+ymdeYLJInLHQPOmHQOWyRygybO19wOknhvdoGwJGK6V+HS/cieUc0Qn3tV/ZrOY=
+X-HE-Tag: 1791042999-987841
+X-HE-Meta: U2FsdGVkX1+5KvwSGZ8iJ6ePqOmMBFovewuLmaL4pM0GP/DBWJgHQOa5KovI1T601O0ND5AsyoVuMFDTprt6J+tj5+UYIUeg7lIvvfUh31LGURJ4AarWKUPqrc7Oa03Ccpd6xvdv18/f1K4VjsMkyvJ1aTCTxIDOjGPhZpYqZ6bqUeiXAA9hNUFectJlN9UV1oXFMSXsIsb0RGID8lrb27oyQM63j1gQTseT/Dppse7WiM3AnSqRhDVNrJcEqKD8QHpx2wQealCkiDUj0E36Njzd7FtOv1luUtNlqxULveLMECODFa1XR1GH/xO4JbROryYRS+9Op6xnV4JXPExryTw07vZtqSLcU7qrjPX+jbILh0AIVr5eRrAdqQUQs+OkaNEW2UYB11GyYnUJMchc9cFvh6oZFRwlkOAKYaL9uOfZEcJemIlcXvg4mOWL6Qt7Idxw9mYJS8SAgmQazIDMcNcT0apuVti4OuP4E9mDEuEJNHp93/neovmGkVIrWcSCY2o2L51E0BTjJR0PrPnUMEr22mWPujxSABAj9r8MXpB+lAFnE8wE4/gpxyv5FmU/VJdXuH/zvGHRPM9yiK21+O0/ry+jUu8KJR+cbvhsZZ2Qk3NgPb/Hj932V+gcxXcyFjtFS0yzqBdILel1X+ijgdnlN7xUD4MJk3Tdl3z0V6HgS5OwKh1kR9kDg8gifWqNpKXJU0CXlKRE2sgBHSGUMuj3GZnQcHMBN/Y/Tv5pCHqzbDMRRjW+b9yuc/7v1dwBg/4jEdBSUUdsLVrvHpmQApIx8qCULItE7B3Lg+iZJOo9BYrBXg4wKbEvi/dx4TNcdSUnRyHlNTQ1UVFc0VZuU8LvfOgTxouwKECrXcI+qHGyvCn0iRkZLGRfkELj43bmiwK+k4kUMOyYfsJzO4O9yXGabOg2iuT058fZzyXdTI57rqEON6qerIuQ5HXUZc9MoyqvvorzrdIzOxmyyQC
+ LbF5IcDZ
+ S35hLc9+ozu6lf+vXNDBLBWD9zrF6UhTW8L5uIAcEJEPVTvRw3dD81BUTHuxPF0ia5/RIKE6IDIBL5/iyvKvN+osN5lfVujAm3pmkAyWDnKkFiRJLhX/rHNUMSkrAEH1nHwUXCMSJBeGvoYeQ/TTygqUuSmUOEk2WLjOX+ezissPueLPIKwctZmid1ScngB33IgiqWysQXCvthVOllk+tGkAEJXHnYnXHBPwST9URpudf30Gh6VeeL5G7djzJMHbRm9DLyu97GGVUF1lMuInqZWudfdQG8j3Yy8/Au+lnh9VpESJxOY7fRk7SMGUMR80LD0wo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,44 +94,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Oct 02, 2026 at 10:56:51PM +0500, Ameer Hamza wrote:
+> Hi,
+>
+> Since commit 97d34aa65c29 ("mm/secretmem: properly account locked
+> pages"), in v7.3-rc2 and the 6.18.52 and 7.2.5 backports, touching a
+> memfd_secret() page for the first time fails with SIGBUS while the
+> same user is running perf record, and read() into such a page fails
+> with EFAULT. This happens for root as well as for an unprivileged
+> user running its own perf record. It reproduces on v7.3-rc4 and
+> 6.18.52, and the same test passes without the recording or with the
+> commit reverted.
+>
+> The commit charges secretmem pages to the per-user user->locked_vm
+> and checks that counter against RLIMIT_MEMLOCK, with no CAP_IPC_LOCK
+> exemption because the fd can be passed to other processes. perf has
+> charged its ring buffers to the same counter since 2009, up to
+> perf_event_mlock_kb per online CPU, and only what exceeds that
+> allowance is checked against RLIMIT_MEMLOCK. sysctl/kernel.rst
+> describes the allowance as not counted against the mlock limit, yet
+> it sits in the counter that secretmem now enforces. perf record sizes
+> its buffers to the allowance by default, 516 KiB per CPU, so on 16 or
+> more CPUs one recording uses up the default 8 MiB limit on its own,
+> and on fewer CPUs it leaves correspondingly less for secretmem.
+>
+> Reproducer, as root on a 16 vCPU x86_64 guest with the default
+> ulimit -l 8192, while "perf record -o /tmp/p.data -- sleep 300" runs
+> in another shell:
+>
+>   fd = syscall(SYS_memfd_secret, 0);
+>   ftruncate(fd, 4096);
+>   p = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+>   read(open("/dev/zero", O_RDONLY), p, 4096);   /* EFAULT */
+>   p[0] = 1;                                     /* SIGBUS */
+>
+> The commit closes a real hole, unbounded pinning of unevictable memory
+> by unprivileged users. The question is whether the perf_event_mlock_kb
+> allowance is meant to count against the RLIMIT_MEMLOCK budget that
+> secretmem and the other subsystems accounting to user->locked_vm
+> enforce, or whether perf should keep it in a counter of its own, which
+> would leave the hole closed and secretmem usable during a recording.
+>
+> #regzbot introduced: 97d34aa65c29
+>
 
+Hi,
 
-On 10/2/26 11:13 PM, Lance Yang wrote:
-> 
-> On Thu, Sep 17, 2026 at 09:45:35PM -0400, Luiz Capitulino wrote:
->> If PMD-sized pages are not supported on an architecture (ie. the
->> arch implements arch_has_pmd_leaves() and it returns false) then the
->> current code disables all THP, including mTHP.
->>
->> This commit fixes this by allowing mTHP to be always enabled for all
->> archs. When PMD-sized pages are not supported, its sysfs entry won't be
->> created and their mapping will be disallowed at page-fault time.
->>
->> Similarly, this commit implements the following changes for shmem in
->> shmem_allowable_huge_orders():
->>
->> - Drop the pgtable_has_pmd_leaves() check so that mTHP sizes are
->>    considered
->> - Filter out PMD and PUD orders from allowable orders when
->>    PMD-sized pages are not supported by the CPU
-> 
-> Nit: "and PUD" can go.
-> 
-> David mentioned
-> 
-> "
-> There is no need to disable PUD-orders, as shmem does not support PUD-orders
-> (unlike DAX). So you can keep it simpler here.
-> "
-> 
-> in v4
-> 
-> https://lore.kernel.org/all/ff7bcd65-d444-4da1-890e-75504303ec3f@kernel.org/
+Thanks for the report, however this is not a regression in secretmem.
 
-Yes, I changed the code and didn't update the changelog. Fixed now,
-thanks Lance.
+The field that is being used for tracking the allowance (user->locked_vm)
+is used by everything-but-perf to track against RLIMIT_MEMLOCK, but perf is
+using it for something else (pinned_vm).
 
-> 
-> Cheers, Lance
+So this is a bug in perf, which should use its own counter for this,
+AFAICT.
 
+Actually it seems perf invented the field (user->locked_vm) to calculate
+memory that actually isn't mlock()'d, but is kernel-allocated and pinned so
+treated 'as if' it were.
+
+It tracks a per-process (rather than per-mm) RLIMIT_MEMLOCK allowance plus
+a 'gift' of extra available pages which exceeds this.
+
+Every other user since is checking against RLIMIT_MEMLOCK (and you'd hit
+the same issues with them too) - io_uring, MSG_ZEROCOPY, AF_XDP, iommufd,
+s390 KVM zCPI and now secretmem.
+
+So this is a long-standing bug it seems.
+
+Other things:
+
+The SIGBUS is unfortunately necessary - since the region is populated on
+fault, it is only then that it can be determined whether the limit is
+violated.
+
+Not being unlimited on CAP_IPC_LOCK is also, unfortunately, necessary to
+resolve the security hole - often privileged processes hand out secretmem
+to other unprivileged processes.
+
+If those processes then didn't apply the limit check, the mitigation can't
+work.
+
+The commit message goes into detail about all this.
+
+The way to address this right now, as I see you've applied yourselves as
+far as I can see (in [0]), is to change the limits to account for this.
+
+I will work on a patch for perf that fixes this specific issue.
+
+Sasha - you can re-queue the fix. I will send out another fix for perf.
+
+--
+Cheers, Lorenzo
+
+[0]:https://github.com/truenas/truenas_ros/pull/128
 
