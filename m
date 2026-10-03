@@ -4,93 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B047BCA5FEC
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 14:30:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57B85CA5FEC
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 14:55:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABC9B6B008A; Sat,  3 Oct 2026 10:30:15 -0400 (EDT)
+	id 2D38B6B008A; Sat,  3 Oct 2026 10:55:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6D3E6B008C; Sat,  3 Oct 2026 10:30:15 -0400 (EDT)
+	id 283F56B008C; Sat,  3 Oct 2026 10:55:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 982996B0092; Sat,  3 Oct 2026 10:30:15 -0400 (EDT)
+	id 174056B0092; Sat,  3 Oct 2026 10:55:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7757C6B008A
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 10:30:15 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E85A96B008A
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 10:55:12 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D8B9409C1
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 14:30:15 +0000 (UTC)
-X-FDA: 85281549990.20.8E55409
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7D7C24000E
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 14:30:13 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G5nou7g3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8787CA7934
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 14:55:12 +0000 (UTC)
+X-FDA: 85281612864.20.1A927A3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 11A2720002
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 14:55:09 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BVdfenim;
+	spf=pass (imf31.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791037813;
+	s=arc-20220608; t=1791039310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0VOKNZsXt8POVkaKJcBsptOeZCCqTjnL2Hl8Rsw8LdQ=;
-	b=7uagwzMSLBeLE+oQ/zV9DS2k4wge/RBJeIMIWVSiXtCKJ706kbWneu510qfSAOrp7eV+30
-	mUJHc+xuFICdEJFvTJ0k9vz7IqS3Fx4+Dg0Rxe9nKrKo3HtwBb31NEPaWJUv8pVgr3+4MT
-	/IGTJKUux1YON/pU6Z0/iKniHlPOU2k=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G5nou7g3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
+	bh=F7a1SctiCKt2b+Nd5jqZyQ8jpoLFtlfz4f9NN/1vqWo=;
+	b=N1Cg9Ph3Acvw627GpJeNoufVd5zS5ejvlLxZi6Xp2nAVbL34flZRiOLXmav/ZooYFntLIv
+	EHYl4vOOw6KzpeINKO43Nl6Ea+5Jn321I0o+uYb2w+UNjflppUBXlv1j9BzN0MjOdjRQdh
+	MkfM4VjBVSr13fy8lCov30A36/aPmTk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791037813;
-	b=ywS3RryuN1AvcdSyC3Miqf9mv738kDdf9RHFVfJMR0wGhlhsSibUoQ3NK00xNzj4lK4BRN
-	WECS7Grh/zmd4EKSFawbHjvnDqwjfj+XdeMnS9shx9hwi317QsucrkUMMS+B6jrgU5Xwsb
-	gRIfsYcSW5yRewHO2GeyBxrflaG9uNk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4F31A60D82;
-	Sat,  3 Oct 2026 14:30:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA99C1F0089D;
-	Sat,  3 Oct 2026 14:30:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791037812;
-	bh=0VOKNZsXt8POVkaKJcBsptOeZCCqTjnL2Hl8Rsw8LdQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=G5nou7g3BqkL8GO0V7LH3FWiz4Xoa6UoLxbdYyBRNRvGCkLhqMbp6+wA6pS2p/wVK
-	 sidohVIkYNtujZDVfUM350+FJ1wgxX60ajONcjnohTOYKxjQMkWAyWELf0CnGvr02Q
-	 gjohG0PwgaN8nLfzWqbu/L7Nia0F7RUnlNp248cYN3q92WlLgwaMyITpAQqEehfXjP
-	 sea+oh86kMUv9RdeT7EsCS9ncjSttPEBd3y2ixsVo0icKtKNxWC3oeZh/c3Q5WQ0Sk
-	 EhQsd9nLHWTRG2SBKA3cDpqFKNSGHPTNptvc7RmnmGg5bTdKrg/s5hmD3gnBUMZB7v
-	 QtpTiEniK6sSg==
-Date: Sat, 3 Oct 2026 10:30:10 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: rppt@kernel.org, peterz@infradead.org, akpm@linux-foundation.org,
-	david@kernel.org, mingo@redhat.com, acme@kernel.org,
-	namhyung@kernel.org, linux-mm@kvack.org,
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev, stable@vger.kernel.org,
-	4ncienth@gmail.com, alexander.motin@truenas.com,
-	caleb.stjohn@truenas.com, ameer.hamza@truenas.com
-Subject: Re: [REGRESSION] secretmem: SIGBUS on memfd_secret() pages while
- perf record runs
-Message-ID: <asERcvLuNJatsBL7@laps>
-References: <20261002175651.811343-1-ameer.hamza@truenas.com>
- <2026-10-02-rc-reply-0003-re-secretmem-sigbus-perf@kernel.org>
- <asDF77csaLDIuHTB@gremlin>
+	t=1791039310;
+	b=oWOl9+g6YY2VmYpkknpN0DLL4FzeWaI0VvPF2ZkLEd1OcSF3XGrujBenVq0qmjfOkcLcmf
+	QsrfOGotDL0iyRNJf620gR+WF4Z49bceLdy5uJsdgFxgwAACboV+IRGZ6BeT4PkZAdKHRs
+	RGpTnJ+8i/kQWdyPIrPLz01X8wY+s+o=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BVdfenim;
+	spf=pass (imf31.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791039309;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F7a1SctiCKt2b+Nd5jqZyQ8jpoLFtlfz4f9NN/1vqWo=;
+	b=BVdfenimWC4BsKJzavxdBhqdLo7674ObpYaJixXWzSa5VtYgrGzgNeORBP2FgaepLeQztJ
+	f7X4dcDYMg2MJKaQY/9zaomellIHw3G2BQtfT1m8PD2Kt/m2UhyJXOWgpNrSgq6BLrHf4H
+	sBOn7PdC4MqJ2aqy5d0qcGVMcTTupnw=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-360-pqH6k3aUMQiW_hzu_6Tjzg-1; Sat, 03 Oct 2026 10:55:08 -0400
+X-MC-Unique: pqH6k3aUMQiW_hzu_6Tjzg-1
+X-Mimecast-MFC-AGG-ID: pqH6k3aUMQiW_hzu_6Tjzg_1791039308
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93e49a1d3b1so77497085a.2
+        for <linux-mm@kvack.org>; Sat, 03 Oct 2026 07:55:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791039308; x=1791644108;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=F7a1SctiCKt2b+Nd5jqZyQ8jpoLFtlfz4f9NN/1vqWo=;
+        b=NB07Jo9pQT3Tz5DQ3w4DlkQO/i/d/O41QMbnIC1WvJL85mXMSTCmQ0LsQIcY2SFkC0
+         jj+aVnhH2SdO65c+bE2XtOFYHXR0LlEHU9R7qQC1EQ0wDLLPFkI99Gf7yQSi82Q37ps8
+         OIYeDnE4HDlOAKTf1nkeLe/IpEa78+ZfejADLdh0MRTFroLSS4spCxL4FOyVxLJxDd00
+         2raaJguKveLM1XIn0ThFy3TrheDMDikEkCgT+7w9rAsxY6SyhwsK6dc17o/hxTieM+qM
+         8jR8/cFq+yDVyq28vto8e5rt1lM/x4JBv8LXRxLrTNBHfwa89xHR9Ty0NrJqLEqS01WX
+         O70A==
+X-Forwarded-Encrypted: i=1; AKwUvBw8/KU5HUSviHOjEfvDyWUsiu//iz81f3lODSti2CsqySr0ei+5e1Bt/n+7GaRMo4mPNFEnTeJc3w==@kvack.org
+X-Gm-Message-State: AFuF++mC1308SuRfSOTjhNN4uNJbL1UbIBfGJ8LMwzPJULsqiMgyV5vQ
+	ypaX3xOO5wj3DxUEH6XusvLHjW2JssWl4HYQa9TEiagXKo9T295eiQf2YF4gQZ+fi7VaQJdSxuq
+	60DRXWFkEPpL1hgPU1JrCNdJ8NW2m5I459GtSJy3Er2vR56K5kR4Y
+X-Gm-Gg: AYBFou3ezLYwLYMTKUGYXAR6/2Is+ivUPOExkR5MIxSJt5PP36Eef70pbza+0cIHDO+
+	u02o0FARS4GOH2ttx4zXZgTe37y7xdlEPK45R3vjWDtHlHUdA+6+s2vtkbR/DmKh9FedpLylPGb
+	b8Lrjoz13WYoVhbOq7YoGrO3hcTK+E5RPBWxiUzgC2HbQ0XrgAz1t0Vroij8soWChKiw88ehKVE
+	Uz1QGfceKjv2y42r9oGxEwErutC4VHdBxakkxiIYzcBbKluqfWFxqi4CjtKOs6dSNKxjaayUPUg
+	6DIGGGkIT3lYoZWTUATOswKxtwOXLYyJYraN7Mm74j34AbRuIi0/T9awYDrsB1MdrydMoSAYca9
+	9wQQ=
+X-Received: by 2002:a05:620a:7119:b0:93c:6e7d:da68 with SMTP id af79cd13be357-93ce7a9d9e9mr1074796285a.3.1791039307554;
+        Sat, 03 Oct 2026 07:55:07 -0700 (PDT)
+X-Received: by 2002:a05:620a:7119:b0:93c:6e7d:da68 with SMTP id af79cd13be357-93ce7a9d9e9mr1074792885a.3.1791039307088;
+        Sat, 03 Oct 2026 07:55:07 -0700 (PDT)
+Received: from [192.168.2.110] ([142.172.30.162])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93cca1a4312sm469801385a.10.2026.10.03.07.55.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 03 Oct 2026 07:55:06 -0700 (PDT)
+Message-ID: <12f22fd4-d137-4c7d-9ca4-38b0099f14f9@redhat.com>
+Date: Sat, 3 Oct 2026 10:55:05 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <asDF77csaLDIuHTB@gremlin>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 04/14] drivers: dax: use pgtable_has_pmd_leaves()
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ baolin.wang@linux.alibaba.com, ziy@nvidia.com, lance.yang@linux.dev
+Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
+ hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, hughd@google.com,
+ dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
+ dev.jain@arm.com, usama.arif@linux.dev
+References: <cover.1789695931.git.luizcap@redhat.com>
+ <700b622814a2b294083f9066631f655cf61c3070.1789695931.git.luizcap@redhat.com>
+ <388b396c-2dca-492d-8873-c9c672ac30f2@kernel.org>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <388b396c-2dca-492d-8873-c9c672ac30f2@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: FKi3oBYNbOHWkwtLCHFWb6AWHmTkLeV5aPCoNtE7Y1M_1791039308
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: s8x1myin4kfqkgdbeyzcbp6cnyfgz9hk
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7D7C24000E
-X-HE-Tag: 1791037813-849914
-X-HE-Meta: U2FsdGVkX1+oDKNnMyQ0gZsQVNed6AUtAxLD1KVqoxEuO+bbiAsYwKi6e5ErM5maaHUT3BKYvnALWPUCfdrSkyb63ehm8EhqXyXDlQdFfQzROz6w6OoHSWSA8QvWYsg0gsRP2+hJm9k8xQBqX1bDAhQom7sobajamnr2yc5V09gBsCjGp9vXwamiHX8Lo15UcPL/SbDYwkeq+RkQMDIwWS8jrNfXu4i+JYR7JFepUUteLZvs1oXqhuqbKYT0b51rnFbrvxpGYpC+86Ri76BVxmdfqHSt3kmi2UQiSJVSDU7VQmOLXPpdV/IfINoNtRU2zfxOCHa5SnXT4zKp67a8a6qOucc9iRqzVZJ3HP+oM+8ptYM/6IjVdUZRtQuu3VFingqF4a02foajqM4GIobsow/4popOJpgp05vp5QDo6j7q8jlcOK0l19NJCZeLs/TEKUTe9bp1CXCxYJc+QKd48F6YhNiXZW35faZlOgVey38Jj0xUzRGf29Ins8/Zc7gYAtw5BhIXiMY/cRntf7PDPGaRDnIxHzUmXYUoBpuu8SLyuoHHeqiwqIoZ13zur+yYCIa/6AZWdc8OtwLHYb0Od3Yuby59de6JbM50R3FUPjOERafhtdN6ELVAl8VpuVY67fPE8vKbpp+3x+2MBIPWvDudOj0jgNE+O7yykxuVYt2N+Yr496X6T4hs70jmVRT43PyLLFOUf54aU2F1xpqdQ4Kw+jJCrAc9FGzC2GDusSo0ivoY2wnkKM2QNeLzsKZD6CWln6IiUY19FA91Fbam4MWbJ3sZ60AzpYYPaKUYy901dahUg3HSN44QAPo8c7EKEQ+C3jbrkD3ssrOH1jAg+oPwE4t04YKaNGLiUldjds7251N577taoIlGDE0pgi8i4h8NtMGqeZq0cP3msCCUzG0FwONoqOYPqDnHZQwHTkrUDdtUl/UAAYGttM+JR81x85FimqxcUYQoEBxoqIN
- 0vrBL4Gq
- DCg4UyP5X0f2HrUvlAWfmDS7/6g1kg/mH14pic7nwipBJ2MekOBo1W3cXkiDHjAOVI2C+nr+tIHqKBU745VvgLLzbqSy5elZxp9sox53vEmbM9Y33xwU0NML2G46JN2KF+JXxl/QxKlfsBbpHP3ZX4Uxlld4O3ryqmZhKQwYfnnwL2EP0xtXFw1PN+cpNkYl1sHZMBih4jNJUmGL4pzXtNgShnjsEe6gC6tCjgj4kucJVFJqjGQMoEiQqn4guzHAsEs16kKBDb8k8/Yw+M2QStnv++KhCIF2IZKuyTZW0DCMDLhQ=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 11A2720002
+X-Stat-Signature: s1yr8sokonhupqowcyndcbxthcr8nww8
+X-HE-Tag: 1791039309-11722
+X-HE-Meta: U2FsdGVkX19m5RQGpQAzOz4CqTe3HcX1xrRngnwTCqZMusJHHtU5nwLqijsu8Pwg9NykNo8xT92EYKRB4RSRhPeyKspuhSELpkUMmbvqJcrc+nIuwVNFJgfq4U2mkRu+CmLFgZimYqmwdt1mtJuYl0z/YUpFWuqUI5inC9SNZRH9y+BX6UG1bvEr27xq35Coctub59j+OxlDBOrgcuVGUr7/rgWhplUvIr3byKyyXM6X/UywlWNsB/d/eVbfFnUsZ8gsIGlwWH9wEz9KQsO2V858v5zLVx8fN+YSM8HzuVoCNHEYySckhXuHh3Ey1tL4CjVby72MrCmg6JbChV8eIn+9UBddf7wEp/hQoIl/i0M4bNUlLUg6p83mN511SYXRnc/F4hVhEW0Dj5dQ8RpWVEfDem5RwrW7hegk3y9sFDQWxDZDi4oiWVHGS0xHs3+VVhC3rfJHOut8L152XCuq2EynS8v8lQC9Cp19qwGj/2DRDjunzUVzVIrEE+kNu1Am1Yt/2WJLAr8BWyO8C7dIrj0zz2a6IleRajziXCcZmADMJHpm9hr6FCs7T2t3FDy32Zmg69veHsBbJh31Dl4YHPrLZF5Bl8qidLiwXOWvWBMweTdAKKWFT84wQboGmfukDOK1slFmNMsDajPNbUEbajhjKWXimNA+qPZnq1IrHxey7mvAyypK76MwZzMUQ3FB0jO9rD/rAeDaQgbR6Yd9Id8WDpIvt3Awdx/SasKRkWampg8Bjm25RqHfRCuA8PS2On8o5tm8U5FaLreYU7TOuYm3SBdClliulDcFBXPN5w/DppDelNGFCDpSghAJOpwslpq4LD7wEAEkewQYQRgOjhCtKhzcTtaqScR6k5RlFl8rrKhsxyhqddRrHhwvYwl0XDvBSUj8BHaBGhkES3wRmvj8MzBJzIilNjbAkTU64dLRJEJDZe/7Z7fE8Duyrbc/Lb7Tfa0vQK2KYh2cYUS
+ A0gqyPGx
+ dKXWQ+ePQfDy9+w3waZBM3Ef5T4ey50dIrFcHtbabLpKoviaMK+72VKIdR4EXY8iQzCWHDZrpbimsap05KvO0/hTPygMkNo4L68J0bD0jVqwIufbWIs8tBmgGxJ7wNOZz8hSS20V2sDzG4ecSUn5kGzvNsPj2XNYQrrpCjTplGvX238JmLrbnT39iTBByHBQQ0UVZL4lsZM1LbvWC2gZV1tohcDETZ1+zJbwOFVhzcTPBTuaBCL8sqc5OOXmL8qP6j+US9pDDN5Yd5w9mEYHRJCa11qZeQRbvzkWN7YXmPVk6ua7pGrCW+PXVO00mO844A7MsGxELIZXdJ8MM1j6dZlkSxEF5e9tBbqzVPTSz2Qb1049ZJQrcg9ApVI8VB7KOVx0jWwxOn7Ru9K4TZ/TY3OFunaRU9LbkPkxyTN4sVoHz647BQ3mtWWIdMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,51 +139,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 03, 2026 at 10:18:34AM +0100, Lorenzo Stoakes (ARM) wrote:
->On Fri, Oct 02, 2026 at 09:30:23PM -0400, Sasha Levin wrote:
->> > Since commit 97d34aa65c29 ("mm/secretmem: properly account locked
->> > pages"), in v7.3-rc2 and the 6.18.52 and 7.2.5 backports, touching a
->> > memfd_secret() page for the first time fails with SIGBUS while the
->> > same user is running perf record, and read() into such a page fails
+
+
+On 10/2/26 3:15 PM, David Hildenbrand (Arm) wrote:
+> On 9/18/26 03:45, Luiz Capitulino wrote:
+>> dax_align_valid() uses has_transparent_hugepage() to check if PMD-sized
+>> pages are supported, use pgtable_has_pmd_leaves() instead.
 >>
->> Thanks for the report. I've dropped 97d34aa65c29 from the 6.12 queue,
->> and also removed the copies that were staged for 6.6 and 6.1.
+>> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+>> ---
+>>   drivers/dax/dax-private.h | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
 >>
->> 7.2.y and 6.18.y already shipped it, so those need an upstream fix,
->> which stable will pick up once it lands.
->
->Sasha,
->
->Could we perhaps take a breath and pause?
+>> diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
+>> index 607a53a91f58..18a6295aa766 100644
+>> --- a/drivers/dax/dax-private.h
+>> +++ b/drivers/dax/dax-private.h
+>> @@ -121,7 +121,7 @@ static inline bool dax_align_valid(unsigned long align)
+>>   {
+>>   	if (align == PUD_SIZE && IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD))
+>>   		return true;
+>> -	if (align == PMD_SIZE && has_transparent_hugepage())
+>> +	if (align == PMD_SIZE && pgtable_has_pmd_leaves())
+>>   		return true;
+>>   	if (align == PAGE_SIZE)
+>>   		return true;
+> 
+> The main part why we don't see any change is that dax_align_valid() is wrapped
+> in the #ifdef CONFIG_TRANSPARENT_HUGEPAGE today.
+> 
+> Might we worth spelling that out in the patch description.
 
-I pulled this out quickly because I didn't want this issue to go into the kernels that were released this morning.
+OK, the new changelog reads:
 
-In general, our policy around this type of reports is that if the issue is in a
-released LTS kernel, we will wait for a fix upstream, and if the issue is still
-in our queues, we will simply drop the patch from the queue.
+"""
+dax_align_valid() uses has_transparent_hugepage() to check if PMD-sized
+pages are supported, use pgtable_has_pmd_leaves() instead.
 
->This patch fixes a really quite serious vulnerability that allows an
->unprivileged process to allocate arbitrary, unreclaimable (i.e. OOMK cannot
->save you) memory.
->
->Allow me to assess the validity of this report _before_ dropping things
->from queues perhaps? :)
+No functional change intended since the call happens under the
+CONFIG_TRANSPARENT_HUGEPAGE guard and when CONFIG_TRANSPARENT_HUGEPAGE=y
+both functions return the same value.
+"""
 
-No disagreement that this would have been better - in this case it was timing
-as the releases were about to happen the following day, so the safest choice
-was to drop it while we figure it out.
-
->It was sent late on Friday in a week that I was ill and it's Saturday
->pre-LPC, so that's hardly a timeframe that I could reasonably have replied.
-
-Keep in mind that our release cycles are fairly short, so this shouldn't be too
-big of a deal?
-
-We will generally go for the safe option of dropping a commit that introduces a
-regression as it's fairly easy to queue it back up very soon after a
-diagnosis/fix shows up.
-
--- 
-Thanks,
-Sasha
 
