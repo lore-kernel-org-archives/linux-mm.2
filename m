@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B3B5CA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:22:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97A6BCA5FDD
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:22:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA5696B00B0; Fri,  2 Oct 2026 20:21:52 -0400 (EDT)
+	id A49D16B00B1; Fri,  2 Oct 2026 20:21:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7C066B00B1; Fri,  2 Oct 2026 20:21:52 -0400 (EDT)
+	id A202D6B00B2; Fri,  2 Oct 2026 20:21:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C43AE6B00B2; Fri,  2 Oct 2026 20:21:52 -0400 (EDT)
+	id 911206B00B3; Fri,  2 Oct 2026 20:21:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 98C8A6B00B0
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:21:52 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 01078A084E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 661606B00B1
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:21:53 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 06FABA78C4
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:53 +0000 (UTC)
+X-FDA: 85279412106.29.9997439
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 595F740002
 	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:51 +0000 (UTC)
-X-FDA: 85279412064.20.69149D1
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4537120002
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:50 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kQvpVEp1;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf31.hostedemail.com: domain of 3nErAagoKCI82C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3nErAagoKCI82C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790986910;
-	b=310s//q70cHj2jXypwnOL4WOG3u23ijjX3XtVfLfI1oA0eeiYbUgvPe6D2l2+mBRtfam2N
-	Rn8XjkK/+mXMuiEZoYl4VSRWajG94o11YeZqttVbii4DaYRQp3QBbKUYQQeowOat2PLCk3
-	a3W0RSKVsLhYB6EnJrICPAFGea3e2Sc=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kQvpVEp1;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf31.hostedemail.com: domain of 3nErAagoKCI82C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3nErAagoKCI82C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=a4Zlh6RB;
+	spf=pass (imf07.hostedemail.com: domain of 3nUrAagoKCJA3D18E01D8708805y.w86527EH-664Fuw4.8B0@flex--jthoughton.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3nUrAagoKCJA3D18E01D8708805y.w86527EH-664Fuw4.8B0@flex--jthoughton.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790986910;
+	s=arc-20220608; t=1790986911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BMiZSMFdM56iT7i//29GA+eRMEhcqKKBOVTZB/kicf8=;
-	b=OA7FPg8b9WtZl8gU3qbBm+M4e9TtECGwLVeJFlHYoVaMktderWVP/atpiN5brv5KMIJxVT
-	Sh0s2/HYZDYWTTWEWejDO9ng9qvDhzPoTJXA3rnyPSGmuYfGChTCbut18I+A6oM0bY9jOb
-	pSZbEI4nET+A9+1U+3RBf909iqYEBYc=
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-88be38f3a0eso82395b3a.0
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:21:50 -0700 (PDT)
+	bh=tCgjHn2mz/yCHbbXpM7X3kmHNH/eC22IJjKzJWGDoHY=;
+	b=RfdkhFuCYRXRllWrItoisRl95HLr4kdV+Y2t6UfTcQ9pCyQeYPnapcqomcLqEuudZHd6v3
+	gEZpJnkZ2QFckiQOpZPKC09I70/Sx/DicAbLNShFgjzuICJ9tgdmkytvkmRhd9QZBU5xaR
+	k/svDIuf6KyYiVve92Ukd2V0a2BK8Bc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790986911;
+	b=5F3IA8GadtmQkp1yGPZ1qAUw+f5F9Vr/4QW8/0jq4m/Zd9FiocdTfiFC2MUxBTm2bA6Ulg
+	zOGbxXRDk8oMQIzQp4EJcP/g6HY4H2lBIda8eOCEY50tEbb55RW1Uswuww/ZDHg7sYvLvr
+	0BRBUivsj0o4FUUu841NCFhPCI31g0U=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=a4Zlh6RB;
+	spf=pass (imf07.hostedemail.com: domain of 3nUrAagoKCJA3D18E01D8708805y.w86527EH-664Fuw4.8B0@flex--jthoughton.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3nUrAagoKCJA3D18E01D8708805y.w86527EH-664Fuw4.8B0@flex--jthoughton.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39de4a68f7cso332739a91.1
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:21:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790986909; x=1791591709; darn=kvack.org;
+        d=google.com; s=20251104; t=1790986910; x=1791591710; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BMiZSMFdM56iT7i//29GA+eRMEhcqKKBOVTZB/kicf8=;
-        b=kQvpVEp1lvKuepjmFuvBSofKhMOhSMV39yknyvfhXBnv7/xCalIopBzHyFB664J5Gj
-         TaOWzfW7QTz/z+0kF0JGQMYSpU6rJwGs0fitnuOIwdhYneWPhKYHUaPWF8Yod6q/3xab
-         W3ELgx3Jt481hU7qPugzL+z7Lc/UfnZljegh7MBSsZpvGPbCQz53zlODa4MXZ+HZKATi
-         aIM8r/wQJmJo4gsOHUTehzgSOD0TGvX536YgQQ5Ig2QjcQG4dH7Opfh8dbU1Owl9abFE
-         WXuKx8/FVwef2lVGFbzJKWrz4j0RPCto5qfsA8lcy9QbuhGvDaPD6NYIWSkQheJE5Y1R
-         mDSQ==
+        bh=tCgjHn2mz/yCHbbXpM7X3kmHNH/eC22IJjKzJWGDoHY=;
+        b=a4Zlh6RBzcw47N72M3Udnbj2Fh0wV4Q674c/2nicowhhuwHAe7pxNYhtjEgjV1ozW9
+         thMKK+YUKaiHZjz4Rg6sV74bjQxrYXI8VM7GXHuM89VA26B2F8Sud89XfqlskfoeWs7l
+         EreWroyxoGHv+6E5YmYeW0LNXQmiFfURopgYPnlMtj97oLIGJntnpz7fRQ74XpI/jS2X
+         pSM8WRW1GUsxIAD1jt6O5o4G8dFj1Q7AoxyojolsHoHfOFoaBc1R2Wnt1gPaRzsjAywQ
+         UUmZkwoqxZlQnA39RqtQ6WgVJzJsO8hH4LfSH22ebpRDeVv0SMIuCE5lWtTBV85Nzf6P
+         Ht0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790986909; x=1791591709;
+        d=1e100.net; s=20260707; t=1790986910; x=1791591710;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=BMiZSMFdM56iT7i//29GA+eRMEhcqKKBOVTZB/kicf8=;
-        b=ZVD+mig3GeWJlQSw1lKCYzyqYht9MdulEngdqr1UDEUyIvb1DYHj1ocjf/SnXdQEj1
-         ro4bNuEyL9NaIEEQOgt/G/IjHv45sHGZ5jUN2icnHTWgPz357EVNwsjrn3tarhTPexlb
-         /T9F/fTNzaEx8dkesk4XMIgJ8e7VsqcqnnJnUb3FPBt0Bm+mhpVNX4/fUCVcO+R7zvmD
-         JlfhEjxTNuWwbZXxgZI5lRyUcAhYPYJ9vwv3eu1j92M3bCVX1hpyF8bLLIt8wYOgi3ug
-         KXnpbB7p6tWTZP/2yUdD9FXbSbYIPs+i/9pVftoEshCHVz6WO5ZjpnxgbfFXOQUXI8oS
-         VwVA==
-X-Forwarded-Encrypted: i=1; AKwUvBwg/Tr3VREDXOVU4yu1+hfH3d5bbZm+nWM7R9QODNHtNK49p3QHyMfrGa8ELDfK/eDpSpNip7wLvg==@kvack.org
-X-Gm-Message-State: AFuF++mYEZKBt26yT+hC9eAatcbT0BDMtuSnZpV2Who/mGsUdlEnQnxG
-	eY85JJs22aNlxvKeBwUF06dBs3UY1grd5G6lXQZPoqu4LErZHHXMFfvlne/U6LVCzFdU24T3F2n
-	uT/NPHX7Jz7LZWxxYrGtm7g==
-X-Received: from pgdo3-n2.prod.google.com ([2002:a05:6a02:6203:20b0:cc7:492f:3ac1])
+        bh=tCgjHn2mz/yCHbbXpM7X3kmHNH/eC22IJjKzJWGDoHY=;
+        b=TVgg2fH5rClLemBPJrPBLjSBLd160kJuWFSV89m1XGSANgcgNOTL5cSYpjwsWp21/a
+         uAnlKXIzlwEJKazmOgDoueh2jOmyi7swZ9LjttCEiioEGml2pkowD8vu6CEzVbzilzFm
+         paVxxPz/OcyIXmuIic0sUmXYKdTECzLBlTh8Oirv3uxQbFDqH6gcg0gHWwr6B9FLqHEs
+         Sx7jDIvi8Kn+2x7oTY1LW+Bc+8x6QVM2nx8kHR92zPAlHXc2skwGV7lwHLQzF8ItiZn6
+         89vjpfJj+KJkEUqWpDZ6KlRH7wq+vpsvpwtGGztlxNruWG/PFb9IoCvCIB98w52vlBlM
+         Tefg==
+X-Forwarded-Encrypted: i=1; AKwUvByFXmIwFqr17bheT90h+S9Z8f09HEp6D8G/++AlWE0MVMdDI9EY/6QjrPeFUzEiAsgmWrDo/n25zw==@kvack.org
+X-Gm-Message-State: AFq9FYIgNs9/so/vzcNU4LenC/SJe1ZgKpYjFbbw4XjENAd01i6umu/Y
+	uyZy+40OPVcu5Xhu3YdcJixU2thXnLRf2frvuMBVJ9S2exstxBS2cC4q4etNyriOjkPItFVAYyg
+	a00w1lPnwyeRUmUq+njAHSg==
+X-Received: from pjbmv17.prod.google.com ([2002:a17:90b:1991:b0:3a6:f87a:f3e4])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:4327:b0:3e0:df81:23ef with SMTP id adf61e73a8af0-3e0df815706mr74686637.74.1790986908868;
- Fri, 02 Oct 2026 17:21:48 -0700 (PDT)
-Date: Sat,  3 Oct 2026 00:21:19 +0000
+ 2002:a17:90b:33cc:b0:3a2:bb45:d37b with SMTP id 98e67ed59e1d1-3a6ceb00093mr2158482a91.25.1790986909781;
+ Fri, 02 Oct 2026 17:21:49 -0700 (PDT)
+Date: Sat,  3 Oct 2026 00:21:20 +0000
 In-Reply-To: <20261003002123.505555-1-jthoughton@google.com>
 Mime-Version: 1.0
 References: <20261003002123.505555-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261003002123.505555-17-jthoughton@google.com>
-Subject: [PATCH v2 16/20 DO-NOT-MERGE] hugetlb_vmemmap: Use
- try_populate_vmemmap_pmd for replacing in-use PMDs
+Message-ID: <20261003002123.505555-18-jthoughton@google.com>
+Subject: [PATCH v2 17/20 DO-NOT-MERGE] arm64: Implement try_populate_vmemmap_pmd
+ using AF trick
 From: James Houghton <jthoughton@google.com>
 To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -102,14 +102,14 @@ Cc: Nikos Nikoleris <nikos.nikoleris@arm.com>, Linu Cherian <linu.cherian@arm.co
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam06
-X-Stat-Signature: yn9f1mrdie7gkjzpkgaww3szbxera8cq
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 595F740002
+X-Stat-Signature: ehkpfgztxy9wybp8f961aod86ayk1a6c
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4537120002
-X-HE-Tag: 1790986910-395189
-X-HE-Meta: U2FsdGVkX19EP8Pxpq/wK0hzlP4vp+jeZgqZCBuxOOIy0bH7KFYCjE1bS44mk/WyCkE31P+ckKLeLq53zoRJnsg9EsMyrgp62/0AxKAmfiIY3NlD0amObRPjl8bRXodEimN2rYpHiJ8FTuDOYLSvaUCy3qatylylX4AoWD+44yv/eA6BqMwfoM1y/uyXROQcHL+7K+HoejaxP7Ob0Y8SfDxERH8+aSETh8JIV4/2olsxcdmQrle/B8kBw8VKxUNtH/eHTr7YeRRiOP4mAL9Jt/kDfRE0bc15riKdDha5/pFry90D6eEsvMEcnDHcoRn0DNZSQ6f2PqA1b/jj8fQ4aKYy29OE5/N5HSqakD+JZnJPexUnoetVMrz2Jjm86ti6W80P6w32lKcFxJtsHpWL/9Oi/PnlWyLMpu5RZT0m6iQ8yIxCa49ZOdw7rmsjubr/lT8PZExWtJM89bFgODaGlR9qXFnIBFKpCjfWYquzx5v0W7wQ0PBn8Q1U4iJj8VimcqaWDeTDGqs+jIRk5a/P/Nez9mGhCE4Ir53cuTnjNXjLE8+qWqlFF1UZzGTUmnwFqJ+MGvCH2um/DXLiLgXtqrkDCAfswtYBYoaKXT/bbztyAYhPmAr3te+WtUlOxwzwTwsdGXVNlZBR+a/atK/r0AoD/i//A6Z5JbTlAvZ5boxZIlFyZCHrNwu/VHIXL43T8SLjvzZ/rsSbYRKFb1bnBvLnj6woCwo2shp7R0pV/HEQ3vZAd00kuKGsUt7hgLIlulgu/ytV5Q4+iiiRDvTGYt2CxajE0Z0VHoWWhbcpMFWXM0Fr6TWc2SDRAAyz7bncRXi/o26Fudh6hChTeZ3XpTtfDAE4KYghAH8agxNkwA3Cxgfs8HztxpEi9IkWlyPhoFnT/eYYCWEM0m9+EmUXNv3eSbCOr15QmWsGhObSUzzZQJKclTrT9lEbogx8xnQPS/CQJS5xBIIn56t/Jz7
- jpOeEb/o
- ky1eIAQpnHiaH6vgqrFwb0BRMmuGbIpj38jssCYPAbndDoeDo7HzLOGKTt76y9npMKF2NlTADx35ivJ0TYbsJwJUr1AMu0YuqzecFCs57dV9mD2FSKDOaBVC2xCsCT5ZHt/OSPPxmI8po0uDdc/+fW0n6Tih+00zguxH1L43XrC5vZPmsIj11C4L/WdszU9bxRnwbHrisxGIL3/nU6RK/7jVLtUU8UrpHkJn2iERYvJcN4PVVfYXyZX96RcNNCQKstdYMRH5GaUGg1TvPqTcy1zSS7QFk1K+88r1wOa4ZghubDbuMwOVdR5i0W7/GstFRC124koFiMFk4CMtX7plVR0uY8fZhBX1zduUOf7vOOLSqnL9neP0a48FU3/nyX9fZY7VR1yi8jUf1ZiclaclTdNCQlU1vn3zZRclHM29zxUmLB7ih7AUX3MqpvX8HFTf70+yHUi80BrCXxU8dnuV8iLTA7fVIfx1XCFMmQ+8T4scXz3lDTnFK9HqTAajUCfyPozzi8LtrXG6zWdZA2yp6rp17TkgJtg+s2kES6izYtnFtREN/cCNAsK5CVkRikfWqzSFEIYOkbnNOadfaoeNtxxHxLQiUN6+Ai3tvwTkTiwqS36DtvwdOZtldK6b95qTY5qkoT8k+YRrL39Q2nGpy1oX42Ck99plZvTdM
+X-HE-Tag: 1790986911-806829
+X-HE-Meta: U2FsdGVkX18eOoRKczS+rW4vUB6sDj++UiqsyJEhJFs3a5okCDlHq908rwSuMoB556ENMIf0ZUgdYqIDobE5kmI8GLWUH/oRg+XjSrT5Si7d0LiRm4HcYH204P4nhZq9I5SoxWsBN5ooSS+17GBRTGdX0m7Gewh6mITxs6vFMs+nyyBQlQshwi8CrcdTz2uBZspYNUH/yMaBrXLYt0i0SKIM8NeCdgTbJ9d9AbbaN4KrI9DTAwZT8MXbOJAt4PohUBtoCqnhbdnflsKtE4sgFpLOEOUEg1sWWRz/qIizfPXm6/CxmZzPG+ir/rY1Q//abpAX2DPyZkJIdUApRRe7eXQuByGArTqD99qE0Zjoe0PXILjn01hiJzAdWHpK5rI0JLGeIPkhtQydy2ru2wMHEjcS981zsfRdjizZ9uzafDNeGyIlat/mkWbLwSrbaDxAKPt2gLlozEAFf2gX/o5AFt0xyF+vEyMsDhjFDYJfrz3ELjA0VxUyVt0nDKNDb3d1Uec7feFYL5FWVhK0pVuZwO4TTyo8zvDSwTTvkk4te4f9iN0eSx6U64xzkZASqkxxqKkcjaSkbv7Dg5pphVX0F0u0Q10I4DhbeS8VghSel8rWP9QLJul6y0pQc5G8t4tApWWie2WzqGXlluT4ks0Zbg2ZGZqIz4JJcJHwWdcPsOmES5CoFC6T8QEJfOKtWXKoijJ/cuADpX9dVITtgqjM0yca3S1wZBqYAsskhUpH5m4TdFZxFPDxyUuIqVk1IV+AhVXAVHR1XzinTbJNJeWFWFsTSGE5rHREQSxyMMVbLAefyh/b6Z1ndC6PM4xD9yJlvd1I+lcEgirterse3U9bQNszySdxTcLSCDEFSZX9UrEnGeECWc3t92tKOr9JZUrAv//bmvi65Ti1vMxcHXsIszdG1HOpRpSsObonWUgbfijSxgbmHP9DFBnP/j/USDefEMULGhk3kFt5iGMSSA0
+ evuFZQ5r
+ lACR2rqQoH2/5MTXKLDgzh27UcKbAxcgq8jY/l2yYsU6zSzMMJZg7XEUYEQvBk+MAnsgAVxci/IFl7GsioY5yj1NBG+Jw5VWs/rA5PsHlP7Tk22GbU2FmpCWdPl7cjedwElPAUEoMI8vKzrz50HCCVUzQ7f0xoG/D4ytl/C4RjvHtk0pyUatHbldPfmSIw0u8td3+OxFMvPiATmz49iMUv+bzArqZjf+2XrQEZxqhnEWvpFUQu5LTxOjo64SIVgUEd4C6Za1aVoFCYJM+BlwHK9G683PdADZRY5OvZY6s2CTnAM1f0LbejnyHMkOpk80DUPy1VmjLP6ElJ5tSRt12A5LQqB6sQS8MUmfU92S1mEkhgBoZnYLy5Erj83nHzzgIcBaWfXOR6ye/sEJrmy6c8ASLcowNWK75BlcUC1iiTjD3eOUjROAIBn1jWIrPZThGJqnx64xQ3a/A6Y2xbouShl5ELhoh3Ex9mP4TrHKrN0bNlFYahjiiDj4WTQso4/Hq/FcKU8JcE9oArcZ8J5IAncdzOCwPZEb1oTzaGofA0TGH/Qp606PWXDqeYWF7PCp7uaW+QaSIgLopMIvRTh3XQfpVECZixrUMfPE3duR6tRvqioJ7r0/2IcmA/5iw6+98IOhNrLgHCjMol4BwgyK+cJGV5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,172 +120,85 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 This routine is to be used for updating in-use, leaf-level PMDs in the
 vmemmap without introducing a window where vmemmap accesses might fault.
 
-Because try_populate_vmemmap_pmd() can fail, the split_page() call needs
-to be moved to after the PMD update. Because both split_page() and the
-PMD update are done under the page table lock, this rearrangement is
-safe.
+Implementing this on arm64 requires some care: use the same access flag
+trick that is used for vmemmap PTE updates. HAFT is not needed and the
+TLB flushing routine remains identical, as we are not overwriting a
+non-leaf PMD.
 
-Only leaf-level PMD to non-leaf PMD (mapping the same physical pages) is
-the only transition that needs to be supported.
-
-Collapsing a non-leaf PMD to a leaf-level PMD is not used by HVO, so
-try_populate_vmemmap_pmd() need not support it.
-
-This patch allows arm64's implementation to replaced with one that does
-not require BBML3.
+For systems that support BBML3, there is no need to use the AF
+trick.
 
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- arch/arm64/include/asm/pgalloc.h     |  8 ++++++++
- arch/loongarch/include/asm/pgalloc.h |  2 ++
- arch/riscv/include/asm/pgalloc.h     |  2 ++
- arch/x86/include/asm/pgalloc.h       |  2 ++
- include/linux/pgalloc.h              | 21 +++++++++++++++++++++
- mm/hugetlb_vmemmap.c                 | 25 ++++++++++++++-----------
- 6 files changed, 49 insertions(+), 11 deletions(-)
+This patch is the main questionable piece of this "DO-NOT-MERGE" part of
+the series. It's unclear if the Arm ARM truly requires hardware
+implementations not to cache anything about AF=0 Block translations.
+---
+ arch/arm64/include/asm/pgalloc.h | 51 ++++++++++++++++++++++++++++++--
+ 1 file changed, 48 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/pgalloc.h
-index 1b4509d3382c..0263329fb7b3 100644
+index 0263329fb7b3..7e304f01ce6d 100644
 --- a/arch/arm64/include/asm/pgalloc.h
 +++ b/arch/arm64/include/asm/pgalloc.h
-@@ -121,4 +121,12 @@ pmd_populate(struct mm_struct *mm, pmd_t *pmdp, pgtable_t ptep)
- 		       PMD_TYPE_TABLE | PMD_TABLE_AF | PMD_TABLE_PXN);
- }
- 
-+static inline int try_populate_vmemmap_pmd(unsigned long addr, pmd_t *pmdp,
-+					   pte_t *pgtable)
-+{
-+	/* BBLM3 is required. Its presence has been checked. */
-+	pmd_populate_kernel(&init_mm, pmdp, pgtable);
-+	return 0;
-+}
-+
- #endif
-diff --git a/arch/loongarch/include/asm/pgalloc.h b/arch/loongarch/include/asm/pgalloc.h
-index 248f62d0b590..0553addb0afa 100644
---- a/arch/loongarch/include/asm/pgalloc.h
-+++ b/arch/loongarch/include/asm/pgalloc.h
-@@ -24,6 +24,8 @@ static inline void pmd_populate(struct mm_struct *mm, pmd_t *pmd, pgtable_t pte)
- 	set_pmd(pmd, __pmd((unsigned long)page_address(pte)));
- }
- 
-+#define ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PMD
-+
- #ifndef __PAGETABLE_PMD_FOLDED
- 
- static inline void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
-diff --git a/arch/riscv/include/asm/pgalloc.h b/arch/riscv/include/asm/pgalloc.h
-index 770ce18a7328..b9b4b25fc6f0 100644
---- a/arch/riscv/include/asm/pgalloc.h
-+++ b/arch/riscv/include/asm/pgalloc.h
-@@ -31,6 +31,8 @@ static inline void pmd_populate(struct mm_struct *mm,
- 	set_pmd(pmd, __pmd((pfn << _PAGE_PFN_SHIFT) | _PAGE_TABLE));
- }
- 
-+#define ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PMD
-+
- #ifndef __PAGETABLE_PMD_FOLDED
- static inline void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
+@@ -124,9 +124,54 @@ pmd_populate(struct mm_struct *mm, pmd_t *pmdp, pgtable_t ptep)
+ static inline int try_populate_vmemmap_pmd(unsigned long addr, pmd_t *pmdp,
+ 					   pte_t *pgtable)
  {
-diff --git a/arch/x86/include/asm/pgalloc.h b/arch/x86/include/asm/pgalloc.h
-index c88691b15f3c..f8d24b97cbf5 100644
---- a/arch/x86/include/asm/pgalloc.h
-+++ b/arch/x86/include/asm/pgalloc.h
-@@ -82,6 +82,8 @@ static inline void pmd_populate(struct mm_struct *mm, pmd_t *pmd,
- 	set_pmd(pmd, __pmd(((pteval_t)pfn << PAGE_SHIFT) | _PAGE_TABLE));
- }
- 
-+#define ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PMD
-+
- #if CONFIG_PGTABLE_LEVELS > 2
- extern void ___pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmd);
- 
-diff --git a/include/linux/pgalloc.h b/include/linux/pgalloc.h
-index 9174fa59bbc5..1dbecb748028 100644
---- a/include/linux/pgalloc.h
-+++ b/include/linux/pgalloc.h
-@@ -26,4 +26,25 @@
- 			arch_sync_kernel_mappings(addr, addr);		\
- 	} while (0)
- 
-+#ifdef ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PMD
-+/*
-+ * try_populate_vmemmap_pmd - Populate a PMD that is in use by the vmemmap.
-+ * @addr: Base address of the remapped PMD.
-+ * @pmdp: Page table pointer to be overwritten.
-+ * @pgtable: Pointer to the page table that the new PMD will point to.
-+ *
-+ * This function is only to be used to update PMDs that map the vmemmap to
-+ * point to a page of already-populated PTEs that map the same pages.
-+ *
-+ * Implementations of this function must ensure that, while the update is taking
-+ * place, CPUs will not fault on the remapped virtual address range.
-+ */
-+static inline int try_populate_vmemmap_pmd(unsigned long addr, pmd_t *pmdp,
-+					   pte_t *pgtable)
-+{
-+	pmd_populate_kernel(&init_mm, pmdp, pgtable);
-+	return 0;
-+}
-+#endif
-+
- #endif /* _LINUX_PGALLOC_H */
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index 1eca03a3def3..9e0f52474bdb 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -88,6 +88,7 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
- 			     struct vmemmap_remap_walk *walk)
- {
- 	pmd_t __pmd;
-+	int ret;
- 	int i;
- 	unsigned long addr = start;
- 	pte_t *pgtable;
-@@ -107,8 +108,15 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
- 		set_pte_at(&init_mm, addr, pte, entry);
- 	}
- 
-+	ret = 0;
- 	spin_lock(&init_mm.page_table_lock);
- 	if (likely(pmd_leaf(*pmd))) {
-+		/* Make pte visible before pmd. See comment in pmd_install(). */
-+		smp_wmb();
-+		ret = try_populate_vmemmap_pmd(start, pmd, pgtable);
-+		if (ret)
-+			goto free;
-+
- 		/*
- 		 * Higher order allocations from buddy allocator must be able to
- 		 * be treated as independent small pages (as they can be freed
-@@ -117,21 +125,16 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
- 		if (!PageReserved(head))
- 			split_page(head, get_order(PMD_SIZE));
- 
--		/* Make pte visible before pmd. See comment in pmd_install(). */
--		smp_wmb();
--		/*
--		 * On arm64, this requires BBML3. Its support has already been
--		 * checked.
--		 */
--		pmd_populate_kernel(&init_mm, pmd, pgtable);
- 		if (!(walk->flags & VMEMMAP_SPLIT_NO_TLB_FLUSH))
- 			flush_tlb_kernel_range(start, start + PMD_SIZE);
--	} else {
--		pte_free_kernel(&init_mm, pgtable);
-+		goto out;
- 	}
--	spin_unlock(&init_mm.page_table_lock);
- 
+-	/* BBLM3 is required. Its presence has been checked. */
+-	pmd_populate_kernel(&init_mm, pmdp, pgtable);
 -	return 0;
-+free:
-+	pte_free_kernel(&init_mm, pgtable);
-+out:
-+	spin_unlock(&init_mm.page_table_lock);
-+	return ret;
++	const int max_attempts = 16;
++	int attempts = 0;
++	pmd_t old_pmd, new_pmd;
++
++	if (!system_supports_bbm_through_af())
++		return -EOPNOTSUPP;
++
++	if (system_supports_bbml3()) {
++		/*
++		 * BBML3 allows block->table transitions if the PTEs underneath
++		 * do not conflict with existing, potentially cached
++		 * translations.
++		 */
++		pmd_populate_kernel(&init_mm, pmdp, pgtable);
++		return 0;
++	}
++
++	new_pmd = __pmd(__phys_to_pmd_val(__pa(pgtable)) |
++			PMD_TYPE_TABLE | PMD_TABLE_AF | PMD_TABLE_UXN);
++
++	old_pmd = pmdp_get(pmdp);
++
++	do {
++		if (WARN_ON_ONCE(!pmd_valid(old_pmd)))
++			return -EINVAL;
++
++		if (WARN_ON_ONCE(!pmd_leaf(old_pmd)))
++			return -EINVAL;
++
++		/* We should never get a contiguous PMD here. */
++		if (WARN_ON_ONCE(pmd_cont(old_pmd)))
++			return -EINVAL;
++
++		if (pmd_young(old_pmd)) {
++			/* __ptep_clear_young() returns the overwritten PTE */
++			old_pmd = pte_pmd(pte_mkold(__ptep_clear_young((pte_t *)pmdp)));
++
++			flush_tlb_kernel_range(addr, addr + PMD_SIZE);
++		}
++	/*
++	 * Translations without AF cannot be cached, so we can replace
++	 * them without BBM.
++	 */
++	} while (!try_cmpxchg_relaxed(&pmd_val(*pmdp), &pmd_val(old_pmd),
++				      pmd_val(new_pmd)) &&
++		 ++attempts < max_attempts);
++
++	return attempts == max_attempts ? -EAGAIN : 0;
  }
  
- static int vmemmap_pmd_entry(pmd_t *pmd, unsigned long addr,
+ #endif
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
