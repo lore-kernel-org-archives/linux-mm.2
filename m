@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A25EDCA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:22:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D9C0CA5FE3
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:22:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E0A06B00AD; Fri,  2 Oct 2026 20:21:50 -0400 (EDT)
+	id 085526B00AE; Fri,  2 Oct 2026 20:21:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F5026B00AE; Fri,  2 Oct 2026 20:21:50 -0400 (EDT)
+	id 05CC56B00B0; Fri,  2 Oct 2026 20:21:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16EDC6B00AF; Fri,  2 Oct 2026 20:21:50 -0400 (EDT)
+	id E83A66B00AE; Fri,  2 Oct 2026 20:21:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E7FC96B00AD
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:21:49 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 763B61208BE
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:49 +0000 (UTC)
-X-FDA: 85279411938.23.830AAED
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C3E5440004
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:47 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=J3Zcd7rC;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A59BA6B00AE
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:21:50 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3FAFF1A088C
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:50 +0000 (UTC)
+X-FDA: 85279411980.02.3EB989E
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 77E53180003
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:48 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wDB7VVia;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf04.hostedemail.com: domain of 3mkrAagoKCI00Ay5BxyA54x55x2v.t532z4BE-331Crt1.58x@flex--jthoughton.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3mkrAagoKCI00Ay5BxyA54x55x2v.t532z4BE-331Crt1.58x@flex--jthoughton.bounces.google.com
+	spf=pass (imf06.hostedemail.com: domain of 3m0rAagoKCI41Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3m0rAagoKCI41Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790986907;
+	s=arc-20220608; t=1790986908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EVvjhrnHN0xVzOU1sGetn/TIp5Cpe7kDHcSDZkewKqc=;
-	b=eTu2oEi42/g7A0cQrIL3d0ayUgDOk0KENx2nma7dkYAztvyWeEwegjW044VZbh56UCXa7Q
-	0oltNpNHYjt1ItxfLY4CME/3222GTLvKql9xwQFPGlNXFFBIcCbK3k41L4jlFI8vGqo6Ze
-	c0IB5QjQMuWUz04EO3NpRVtcOvcw6iA=
+	bh=I4g1ObsslfRrIxGm9J1WErW3kJq6TK7lBBQX23Z9YIM=;
+	b=K5Hukghwvj+y6iyuxRaIwAcrGehjwXhGyKqLQH2qan1nnwnlS5klJ7zCDhPnFXt5WYD5YF
+	rpz2+suZP0+njMowLHuEL6QWLL7XLO2P45rHAH+PbCZvu8bfH+SEq8Bo+ji66+A0DhcxsI
+	3xqK5G3LrGsys7+XUX/FDDlrtf/5jMg=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=J3Zcd7rC;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wDB7VVia;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf04.hostedemail.com: domain of 3mkrAagoKCI00Ay5BxyA54x55x2v.t532z4BE-331Crt1.58x@flex--jthoughton.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3mkrAagoKCI00Ay5BxyA54x55x2v.t532z4BE-331Crt1.58x@flex--jthoughton.bounces.google.com
+	spf=pass (imf06.hostedemail.com: domain of 3m0rAagoKCI41Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3m0rAagoKCI41Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790986907;
-	b=pNIy4j89NMkdXjXBi4DRq+Pes3pQItn9wCeyXmSZL+P5DpN5+h7n29yq7CE93lPpVVCU8m
-	AaQZT1L2ZZxP59vmMC8rf8cbx0pBd9EMPEJtd6gGRgCsT7uTwlmDx6CocQkubeVizHSdFe
-	VRrnrwYJKxLYQW4YaDZQZBtF89W4t0U=
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-88c768885b0so76132b3a.2
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:21:47 -0700 (PDT)
+	t=1790986908;
+	b=qZtVv8IILYtZJQ80xFfQ09zTgVbmWdOVnGAY1EsQsDRqt1Gd8aFVJwhK84tY6pDqs/ioNg
+	ZXBfLq3mjmkmWkt0zJufqZeqJ+iRt33CuiWakBR29l8TF+oKuLEUHQmmIeJj3Gf8AuLuMc
+	ddJxMAvCPJCEwluqvrd5N/WYZ+U8dDA=
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39deb05ef51so61839a91.3
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:21:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1790986907; x=1791591707; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EVvjhrnHN0xVzOU1sGetn/TIp5Cpe7kDHcSDZkewKqc=;
-        b=J3Zcd7rCUPe7xmSRrSNVoqUoAJVGryTPWbsZuKo+3loG5OP/WMkkpFvA0FZUtTd3XB
-         dM+Mm8w/tB9d6nXTgf9AoMjDtMPAR9XJHPFTAU9davuXnHm1HabBNmBNyGGL4MdWdZOr
-         3DnNdGRnzz56QA7amrq2F03y3D28erybtPTxxmnIVHFUu6l4JIyV09ImEMI27FgiI9bq
-         wA3+4deGLxgPclriY6SyVkIgkKTbRsqsQf3yIQJO2ikJeg3NDLpIuh5LbS5wYfRFejg+
-         Anl2euA4wppU5g1TlGoVaqf0oIqJjW81OtyIkFNLGSyFASj1VjvYcvz+Z5ITVCbFbvW7
-         fodQ==
+        bh=I4g1ObsslfRrIxGm9J1WErW3kJq6TK7lBBQX23Z9YIM=;
+        b=wDB7VViaSeHeZ52xs1lXUrySiIBJ0PS7yaciysalBqrAdd9vFpFIboFHt1EftKc6Qu
+         FxqQR/cd9/FqbchlopoWX2FOPx1OSAuENtgG0Yp2zFZrdkXr3pCupdQM8EtJyEE7w5E9
+         lNoYZsfvJjPYiNbeB3HS2dZxLcmUnHClaRJj0wbd41+vf2kLs6HSt6u3CU2GvJjea69r
+         J56XuAEaNc/GCMNdoQX7wLx66g6RAzut2H0frLXnoQCqlsEuY8Zcjqx2RIa2bPD/6IuH
+         S+BEQkQDYMeHbpGVJoNUGO7gDDDuiiKl/agTE1gMLb/3f55a8Bxdq1xQFl14x8FJA4TF
+         VmYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1790986907; x=1791591707;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EVvjhrnHN0xVzOU1sGetn/TIp5Cpe7kDHcSDZkewKqc=;
-        b=mZNqkonYzRbrxSAlTJWtFJeE+Z7niUzLT/EvAQ+97rLOo/tiM3fPdrlfk0ebtwOKZq
-         wkWEiI538AIEWQjkXbUbhd3ACdaK9azzlk8Zpgbz5Ypg2QdlV9c8ip6D2NkkgAKuSJVD
-         x14u+xPuL/i7S27WUsMUuITrM+OXzv6jf/3MhvoniVuPA3i6GFj7RiRu5u0xN1sRgu4W
-         7eD65WLKKAL7cQiLONeFfw1P2SEbtF/BA1nPTaMuapZoJtfckTIwnrXCocRBHcA+CmF5
-         txuqH5Wx6UYy2cJW1QMAoSG8cotrPL7iugRZBtZ0U7zb44fHG9NJMUwWs22F2AKLLVyh
-         IM9Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwnuAgeMIZIH22s1EGgq3nux/VdO1ZcErU4aUuJO0XMIWEVyA0u271IzIKRuURGOdVWDJ9A+k9y3g==@kvack.org
-X-Gm-Message-State: AFuF++m23fOycoqc+JCOhWVwV1JdiTA0SysV4WBGgYpq2Iese2y9W0TJ
-	G6QwROvWXEUNhlVwLxVHy0s05rRlLuDTn81/QNPUkQbivBaNbujnjfchTukjqVfME9YIInsWSio
-	jvv3XUe07yhkgJpCnkDcxSw==
-X-Received: from pfbf1.prod.google.com ([2002:a05:6a00:ad81:b0:872:9706:205a])
+        bh=I4g1ObsslfRrIxGm9J1WErW3kJq6TK7lBBQX23Z9YIM=;
+        b=t9nWRtUspt9lHFwSBwPX4RxsbbBtiSXcBp3v7T7wKAlfdwz5f3KmpFZl0dFullOhlz
+         h1Dtn0fAP5Zcur1Z4JRwaNIXgTofKPDEKec5vSf7ruF1/YOSRm52GncZlExjEXoip7bD
+         6Ar3+RVFV6BHwDpQmWRNTj6CUIvinj+v6pEkwDd6Lg83SS/aFNtuQm+e5/8u8nF+ACRq
+         ATYBAXw+tZka9bK11ySJhWfYHMYfACibAjecckWVCp8hMpoKpRbQ7WRQfNyjerAZa2F5
+         nqpHJUI7QfsOomAUagSe9Xr2jDvgnb0AGwhbEeeyh7BkrAWsEZzyV8XEBlZCH0S0ctg5
+         lHKQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzR0xrX4EG7yr9cquy2nGaF3zcaoUcwJeNNz29pQug28bduLdtd6y95qr7/fDpKSUuFjdMee1M2cg==@kvack.org
+X-Gm-Message-State: AFq9FYLfY/r8r3OGKUmrkkYQqOyxpdtobsSks0OVG8LS6/vz9vyeh1bg
+	ysPnJbdFwh+Xr2SaHLxizmVIN7yWWFPXoQ5m74swWI0rCwUb30k+q9jqExW9HDEmRubNI+mAwzg
+	B4RoivAeTznqa8Ep/Ime4Nw==
+X-Received: from pjbmw9.prod.google.com ([2002:a17:90b:4d09:b0:3a7:239:2141])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:138f:b0:878:3783:8a4d with SMTP id d2e1a72fcca58-88af5ac19ccmr4135678b3a.53.1790986906132;
- Fri, 02 Oct 2026 17:21:46 -0700 (PDT)
-Date: Sat,  3 Oct 2026 00:21:16 +0000
+ 2002:a17:90b:4c05:b0:3a4:ba6e:65c9 with SMTP id 98e67ed59e1d1-3a6ce963ad0mr1812320a91.59.1790986907076;
+ Fri, 02 Oct 2026 17:21:47 -0700 (PDT)
+Date: Sat,  3 Oct 2026 00:21:17 +0000
 In-Reply-To: <20261003002123.505555-1-jthoughton@google.com>
 Mime-Version: 1.0
 References: <20261003002123.505555-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261003002123.505555-14-jthoughton@google.com>
-Subject: [PATCH v2 13/20] arm64: Support hugetlb vmemmap optimization
+Message-ID: <20261003002123.505555-15-jthoughton@google.com>
+Subject: [PATCH v2 14/20] hugetlb_vmemmap: Add fault injection for in-place
+ vmemmap PTE updates
 From: James Houghton <jthoughton@google.com>
 To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -101,14 +102,14 @@ Cc: Nikos Nikoleris <nikos.nikoleris@arm.com>, Linu Cherian <linu.cherian@arm.co
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: C3E5440004
+X-Stat-Signature: xuiocyn1wy7cgjr3nh9y5dk8uno315h5
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bfbcthmpy64pxgjpy4w8iepu8tgkgkp5
-X-HE-Tag: 1790986907-199340
-X-HE-Meta: U2FsdGVkX1/vJrFvMtNKmAqbqL+a2P/KP4A65k3XgjlojXJR5BT9AvaUPKLAMr8OFEEedAL0hrI8CcqsacFvucgD35cKpfkiAD2ZRZS8yqglkEYL6mhRU1VDQMMimg1SoWlJ3d0UVeerQm33G3gE+868cw5tpSlzpsBaRFM3cees6SRT5F+JviEVgEeBz4u4DEKi9RCFW/TuvQz51buWSQFSa7kazbGxBnOsbscwiCwBkp7j6i8hJQ66u/wB7QrniXo7y7TDAPggIS2Ygekhv3McKi3hULksH0FZQ2y0tcIu5M2q/+KD9zpRmSu8Ol5jqt24JdN+cj+qybmSE3qEwR8hJ1QiyrfZMWwMGsDdjDiY8WyMpWLNfen1t6lQVUQbX1M33pOKXIjbX4ndHtrDmmfjUgBWqzXeLzmdhmrfqrA7w4bspV6NH087x5oxO6aU85T4HnVE87AskBCgpFvelIfR5RaLxaCrLpnjwqhnuruCCftrw07j7L2KMcD4QpDK0cJRm7yzk6MqIx+1FpQD9rltLmv51SJIZs8vlTn8J57Zt75pQsslcPBpEDY3lIwOejkoEcNUSEQid5Kby72KZesc42MMTdf2z8sAUeNcquz/RPqhtMs8DXitfLpYQfRhMcuaSrdJRd5byAXGadRELiGiaCP8cWBeddw6pbp5YXqiYH3hZUb2TZOzDp3hMTcFDGWeTsAUxYwKWBrUCk1QoTjDlofdp6dtGci94q5xxAWx3/8wY/cXW6F2NiUs5HGcbCjXHKF3h1A6mKza+k9WrXzm3HDTNhnq5tqJf5LUbC1XL/IhCpigyc0T2oMLi2xd8XZVF4bmZZFpKGrOVPiIPSSD3CGUZ4mxttQ3lXYY/iD22Rs5EaerWg5ILojOzOhE0IEmF77ZuJzffU7Ei9CxX8XnC88qbPqtxnbWNNNZ59eX1U9u0UCS+IskSXzd6Rkf7HjdpQUr/7i3gLLLYTV
- mEpXfJlF
- rVFgmAzgnNGF6vlZZ7qwOv9Ff+camjbPJof/tiwL3tjODb4lWVZzNPVr/bNn7hHYUZsdzRwBdJHJ5eN7iVjD4gryIFa5dvjQZGIPMCqjbEHJvggyMSKHMYeIWArUeVYV9W/hiVnpqhORRd3io9okzRcCZOuE1986SjtDPrz7im+F8693i4DinRhxjSXzEBNnDvPQLLtkx+ARCPUmND0iMZGmrUt1hIM8KcwduiudREl9RG2V53KlVTfQckgs73FsqRTd7cqTSW70rjwpdVI9qWbXOuMDPf9cB/PsA6c/yQSNpcAnp+wlUGpSRdRWlwNyippDi4i4HPTrnvQ1/54rpVeEwQ1mRlxoCiD41X7ptSKtJZUgBxXWCESn8gxDlWlOIIKRtRcgwEiP8HoICOg0AvF7/6Vlk0C3+jhDfiWcBx41S2ppqLoZYtXyYZLkOmvLhOLtRj45syn3jUMM3WwSIUAi5AJSgK7nk287Bh1nf60w0js2aub/OMUYTnTdh7pP8gbW7G0C0PEWPOrZHe4qdC7yk4Upqf7XXHzBp744x1KLixhO1pdfIOXxwL13xX9GhV8w+N1D8Hr5sAflTpxfzv6zgjBWJ+dxXlXsDXlLa7efhLQfwFEhX9iHtItRa8AjzpKJLDhg8odnGLFE=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 77E53180003
+X-HE-Tag: 1790986908-701362
+X-HE-Meta: U2FsdGVkX1+iEUihllSWJGX5TZRUGQypruqrvOZNv297avVmu8Kh5zbrjiSBfV4tcbQTjiGQdihEEMA+qO1W9kZu9qtvD/fKUySoWW4QDiV5QirktkfXjcgGkWExnyD05oG4FR/oVQIiInZSMkLqUJ/IlVmkLsXm/hEb4vMAvVGskF8W2nV4L59ByMaYSQfVvvZ1LjSMtQoFi8FLi5WAC24akb/oMiegUUFgNbEWith7x7NrszlDpcwPvxjiHVM18V0fju9vsQWhP23gFjbFTD6QIUCriM9vSjy1+XCuHlQuHRBqunaGZrhj0QEC7RahMSeQ+yysoDyqz1FdOUjWH1qBX5z5ORfehiBq48CMGbonH43hAuHp/aOdVchIQTBWI9YF7OmQc35tYm8bjH2zQMQcvWtepB95y2E1ofLhrj+0FU9O3NK3kMir2m2jb+2kWzxQHjL/+ENMRQfYLBfAGVW1ESJjTwU1DChp8vQZYQQfb8pqaQrmAN7lhqK0lmpp+9FZQerKyJF7aTYn48z3Ycdn+pnU1SfYl+pYcJlX6wKT7T/XJQbb2rRTgYFvx/r38qV5qQkknQ2L8u2AEQkbhsqo6f4sSuspMmvqeKLbeObQfeXDr9xd6MmL3jqO1YVBbMALGx08GxBKuY+GOgs74va2WTcj4o5k7M80OBr3vUKTSf3qavNyN0YDD5Skn6Cjuv75OVYGAvf5ZAu3OZ+FbBxQI9YrR9g77Ys8QixImu6fVRp1S8YFg7NzWZxCYe1VMOppWxVJ/Ge3yvh8Ve9QStss1okQ/3fxHokSch8cyvL0KTVF/1VM4VDthVqY5v4Vy62YktjgQa7xxXqeLhHM4mhcI5h4R9XHuWRVho0p8EHqm1ccAiKgzcmUJTLg0NsXLCW7kENWhYnXct0AapWmNe7ONFB/hsKRoENy03LoTFiXqII7eDVnuCf3haG50falCz5NnKAFGHY6AocpGYH
+ tON0LQlo
+ Vxs76wI7BNZsBFLOGoVYbEHOiZL3Nliz/Nl0zcEmav8l4ovhc9FvQvP9lefmrIbzjoRP+2TrjjWkeiQtKMPOPKsQ0sQOe3g8O/8JD7TpIqXqivGEc3McN1D5gb5WTbRGJYQ/oq3f5or83Oz+BrVFi5eyVFarmsyh+EqtaXHkre6ClRBDmo5SuGH/vLXEtJdLM3Qxmw2bsBlVLDNnfCFy8o3PBIjJlF4cHG7vv3jaUEw4vOyx1zSY0lQaR/E6/FluTpMi+kFTZcxQ+2IwvnUUPtA+ujvfHbVD0OJI07YkW/JKCvublSWYjYJVy1D+bBKJBrMcNe4SLWvF3Knbn0Tkve66r/BhI2AAY2yF2YSK9RBm4IyBJXg5cl/HyeGoCPeArxCCp/+Rteh/2a/QOoC7J2Ti6slF8tCtSl1UIIRH9lmRxo3ulxopED/1eoq7KTqPpqZntUZMEiJt3iOG6QaT2WpGGApKOBsmkmRtPVDpi7SQEXlzTCXXJqDQ86BtbLdJhuQYwRRo0SY2VSLAdEEeNChA1j7F3K9Kqex4jGa8P7dj525YJ43fjKiMrv/1AUZcqMKkih8M91HtNUn2xqqdTiGmFsWVKiI8bbb+futYquyAeKkM8LHzpT6yrfd9f4fNFwxvvffr0oJzf8Pw/bNS8XNyfBlJXwuibCrhT6oVw2pA5zfOPWZYkJnL6KavNVxaahVXr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,75 +117,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Support HVO if HW AF and BBML3 are supported. These are the required
-features for the vmemmap to be modified in place.
+try_update_vmemmap_pte() may fail, e.g. on arm64 when the update keeps
+racing with hardware access flag updates. HVO handles such failures by
+rolling back the optimization, or by leaving folios partially optimized
+if the rollback or a later restore fails. These paths are rare to hit
+normally.
 
-On arm64 systems that do not have the required hardware features to
-support HVO, the HVO sysctl will not appear, and any attempts to enable
-HVO (either via the command line or via
-CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON=y) will have no effect.
+Add a fault-injection capability, fail_hugetlb_vmemmap_pte, under
+CONFIG_FAIL_HUGETLB_VMEMMAP. When a fault is injected, the PTE update
+fails with -EAGAIN without touching the page tables, as if the in-place
+update had given up.
 
+It can be configured through debugfs or through the
+fail_hugetlb_vmemmap_pte= boot option, the latter allowing failures to
+be injected when optimizing bootmem folios.
+
+Assisted-by: LLM
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- arch/arm64/Kconfig               | 2 ++
- arch/arm64/include/asm/hugetlb.h | 7 +++++++
- mm/hugetlb_vmemmap.c             | 4 ++++
- 3 files changed, 13 insertions(+)
+ .../fault-injection/fault-injection.rst       |  6 +++
+ lib/Kconfig.debug                             |  9 +++++
+ mm/hugetlb_vmemmap.c                          | 38 ++++++++++++++++++-
+ 3 files changed, 51 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index b51d23a62c92..e4c87487bc7f 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -92,7 +92,9 @@ config ARM64
- 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
- 	select ARCH_WANT_FRAME_POINTERS
- 	select ARCH_WANT_HUGE_PMD_SHARE if ARM64_4K_PAGES || (ARM64_16K_PAGES && !ARM64_VA_BITS_36)
-+	select ARCH_WANT_HUGETLB_VMEMMAP_RO_AFTER_INIT
- 	select ARCH_WANT_LD_ORPHAN_WARN
-+	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP if ARM64_HW_AFDBM
- 	select ARCH_WANTS_EXECMEM_LATE
- 	select ARCH_WANTS_NO_INSTR
- 	select ARCH_WANTS_THP_SWAP if ARM64_4K_PAGES
-diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hugetlb.h
-index d038ff14d16c..938d7896a31e 100644
---- a/arch/arm64/include/asm/hugetlb.h
-+++ b/arch/arm64/include/asm/hugetlb.h
-@@ -11,6 +11,7 @@
- #define __ASM_HUGETLB_H
+diff --git a/Documentation/fault-injection/fault-injection.rst b/Documentation/fault-injection/fault-injection.rst
+index c2d3996b5b40..403206645fa4 100644
+--- a/Documentation/fault-injection/fault-injection.rst
++++ b/Documentation/fault-injection/fault-injection.rst
+@@ -16,6 +16,11 @@ Available fault injection capabilities
  
- #include <asm/cacheflush.h>
-+#include <asm/cpufeature.h>
- #include <asm/mte.h>
- #include <asm/page.h>
+   injects page allocation failures. (alloc_pages(), get_free_pages(), ...)
  
-@@ -65,6 +66,12 @@ extern void huge_ptep_modify_prot_commit(struct vm_area_struct *vma,
- 					 unsigned long addr, pte_t *ptep,
- 					 pte_t old_pte, pte_t new_pte);
- 
-+#define __HAVE_ARCH_HVO_SUPPORTED
-+static inline bool arch_hugetlb_vmemmap_optimization_supported(void)
-+{
-+	return system_supports_bbm_through_af();
-+}
++- fail_hugetlb_vmemmap_pte
 +
- #include <asm-generic/hugetlb.h>
++  injects failures of the in-place vmemmap PTE remaps done by HugeTLB vmemmap
++  optimization. (try_update_vmemmap_pte())
++
+ - fail_usercopy
  
- static inline void __flush_hugetlb_tlb_range(struct vm_area_struct *vma,
+   injects failures in user memory access functions. (copy_from_user(), get_user(), ...)
+@@ -263,6 +268,7 @@ use the boot option::
+ 
+ 	failslab=
+ 	fail_page_alloc=
++	fail_hugetlb_vmemmap_pte=
+ 	fail_usercopy=
+ 	fail_make_request=
+ 	fail_futex=
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 134b15a44625..96cd1f1da94a 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -2066,6 +2066,15 @@ config FAIL_PAGE_ALLOC
+ 	help
+ 	  Provide fault-injection capability for alloc_pages().
+ 
++config FAIL_HUGETLB_VMEMMAP
++	bool "Fault-injection capability for HugeTLB vmemmap optimization"
++	depends on FAULT_INJECTION && HUGETLB_PAGE_OPTIMIZE_VMEMMAP
++	help
++	  Provide fault-injection capability for the in-place vmemmap page
++	  table updates done by HugeTLB vmemmap optimization (HVO), i.e.
++	  try_update_vmemmap_pte(). This exercises the rollback and
++	  partially-optimized folio paths.
++
+ config FAULT_INJECTION_USERCOPY
+ 	bool "Fault injection capability for usercopy functions"
+ 	depends on FAULT_INJECTION
 diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index c1c736dd08b9..fabf2b25fe59 100644
+index fabf2b25fe59..1eca03a3def3 100644
 --- a/mm/hugetlb_vmemmap.c
 +++ b/mm/hugetlb_vmemmap.c
-@@ -85,6 +85,10 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
+@@ -17,6 +17,7 @@
+ #include <linux/pgalloc.h>
+ #include <linux/vmemmap-optimization.h>
+ #include <linux/hugetlb.h>
++#include <linux/fault-inject.h>
  
- 		/* Make pte visible before pmd. See comment in pmd_install(). */
- 		smp_wmb();
-+		/*
-+		 * On arm64, this requires BBML3. Its support has already been
-+		 * checked.
-+		 */
- 		pmd_populate_kernel(&init_mm, pmd, pgtable);
- 		if (!(walk->flags & VMEMMAP_SPLIT_NO_TLB_FLUSH))
- 			flush_tlb_kernel_range(start, start + PMD_SIZE);
+ #include <asm/tlbflush.h>
+ #include "hugetlb_vmemmap.h"
+@@ -50,6 +51,39 @@ struct vmemmap_remap_walk {
+ 	unsigned long		flags;
+ };
+ 
++#ifdef CONFIG_FAIL_HUGETLB_VMEMMAP
++static DECLARE_FAULT_ATTR(fail_hugetlb_vmemmap_pte);
++
++static int __init setup_fail_hugetlb_vmemmap_pte(char *str)
++{
++	return setup_fault_attr(&fail_hugetlb_vmemmap_pte, str);
++}
++__setup("fail_hugetlb_vmemmap_pte=", setup_fail_hugetlb_vmemmap_pte);
++
++#ifdef CONFIG_FAULT_INJECTION_DEBUG_FS
++static int __init fail_hugetlb_vmemmap_debugfs(void)
++{
++	fault_create_debugfs_attr("fail_hugetlb_vmemmap_pte", NULL,
++				  &fail_hugetlb_vmemmap_pte);
++	return 0;
++}
++late_initcall(fail_hugetlb_vmemmap_debugfs);
++#endif /* CONFIG_FAULT_INJECTION_DEBUG_FS */
++
++/*
++ * Inject failures as if the in-place update lost a race too many times
++ * (see the arm64 implementations), without touching the page tables.
++ */
++static int hvo_update_vmemmap_pte(unsigned long addr, pte_t *ptep, pte_t pte)
++{
++	if (should_fail(&fail_hugetlb_vmemmap_pte, PAGE_SIZE))
++		return -EAGAIN;
++	return try_update_vmemmap_pte(addr, ptep, pte);
++}
++#else
++#define hvo_update_vmemmap_pte		try_update_vmemmap_pte
++#endif /* CONFIG_FAIL_HUGETLB_VMEMMAP */
++
+ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
+ 			     struct vmemmap_remap_walk *walk)
+ {
+@@ -235,7 +269,7 @@ static int vmemmap_remap_pte(pte_t *pte, unsigned long addr,
+ 		entry = mk_pte(walk->vmemmap_tail, PAGE_KERNEL_RO);
+ 	}
+ 
+-	ret = try_update_vmemmap_pte(addr, pte, entry);
++	ret = hvo_update_vmemmap_pte(addr, pte, entry);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -279,7 +313,7 @@ static int vmemmap_restore_pte(pte_t *pte, unsigned long addr,
+ 	 */
+ 	smp_wmb();
+ 
+-	ret = try_update_vmemmap_pte(addr, pte, mk_pte(dst, PAGE_KERNEL));
++	ret = hvo_update_vmemmap_pte(addr, pte, mk_pte(dst, PAGE_KERNEL));
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
