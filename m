@@ -4,104 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B91ECA5FEC
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 21:09:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A98ECA5FE4
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 21:09:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C4166B009F; Sat,  3 Oct 2026 17:08:45 -0400 (EDT)
+	id 73CE66B00A0; Sat,  3 Oct 2026 17:08:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89B8B6B00A0; Sat,  3 Oct 2026 17:08:45 -0400 (EDT)
+	id 6ED866B00A1; Sat,  3 Oct 2026 17:08:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7637C6B00A1; Sat,  3 Oct 2026 17:08:45 -0400 (EDT)
+	id 5DD3E6B00A2; Sat,  3 Oct 2026 17:08:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 44EBE6B009F
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:08:45 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AADB680A19
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 21:08:44 +0000 (UTC)
-X-FDA: 85282554168.15.BBBE9BC
-Received: from mail-yw1-f193.google.com (mail-yw1-f193.google.com [209.85.128.193])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D0E7680002
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 21:08:42 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qf1kTTlk;
-	spf=pass (imf30.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.193 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3076A6B00A0
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:08:48 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A611C120A0A
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 21:08:47 +0000 (UTC)
+X-FDA: 85282554294.20.207DE5C
+Received: from mail-yx2-f10.google.com (mail-yx2-f10.google.com [74.125.224.138])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C64E040003
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 21:08:45 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cAxpUuSh;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.138 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791061722;
+	s=arc-20220608; t=1791061725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7WdQn6f6AsaloNtXz63r2rYU9L2euT0e0WgByXQq7Q8=;
-	b=LoshsfhzjiiX7IMN3NRelBifT/3mvfWB8RJO2xtbsP7NcGzOiUVn131+tlbZA71IBNOTOA
-	P+LuVcVKTbAKr27dNnx5XOeBPM0K2BZuXZ9CJrFUSYBnrJNDpL3Vasp9zuixwWoZ6HAKRW
-	KXdo5202C4e2Rmy2yHDCxT2phKs+ocA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791061722;
-	b=cGzHPB6zxrwSPlmkqNw8af/fKGgNYRx7OT7LSCrEJFzvE6XkYn5Rrdtn60NyNLmYHEvoq3
-	SF8nNaBD9YyegSRPE4uVylpnhW7+F4xto+3nfa5CQhrzDE0htsDe0OxTaFzimOWfIJQzkz
-	yphQGVbju6rYBTO6Q9bVTPqlcmf2GX8=
+	bh=7T2njtLf+tsG9r8toysyAJNfleUrJXsFeeqkEldERK0=;
+	b=nQ1oScTQGVLFxN8sECX6YSVlo6YKHjlGF1hjY2TwVWCxRyfja733mNoHTW6k2ZAWicyyrL
+	HJ4hIXKHzCKa9y+a36/8eovSXABFU50plcPrGdSQIJ2DlIGVaueyzO65vWi4EIJOkaWmmW
+	rP8Uvad+bNfZySenKHVpkydSKsxObc4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qf1kTTlk;
-	spf=pass (imf30.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.193 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f193.google.com with SMTP id 00721157ae682-8ab43af5e97so3420007b3.1
-        for <linux-mm@kvack.org>; Sat, 03 Oct 2026 14:08:42 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cAxpUuSh;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.138 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791061725;
+	b=lBdHrmInOF0d7tUt0jyk6Z9q8/Yxx2MkvE8GsuKPD6XojztnVsQr0kHriGtjVk93xuaP8T
+	BxgjbhyDp1h8pw4aAXlIpvnXeIdYsB3aNgLTWAvLAS2m3DTchVimSGKHDUKQbzV1K0x9Fd
+	9GZlPAkCeCNbb9hborQ52TL7N+E2ngU=
+Received: by mail-yx2-f10.google.com with SMTP id 956f58d0204a3-66c711552cbso269242d50.1
+        for <linux-mm@kvack.org>; Sat, 03 Oct 2026 14:08:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791061722; x=1791666522; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1791061725; x=1791666525; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7WdQn6f6AsaloNtXz63r2rYU9L2euT0e0WgByXQq7Q8=;
-        b=qf1kTTlkwIKR2Or8dAvh6OFu8pavLekdLn08TnO0GFgjuMMczIJbp7jGp96XFNDPXF
-         Fk8om9DT6/oHrC6jPS3Wv1WV/Bzz4g6S9UScO63RHF9XNmewUmHN0sBrVylQ7uvTMre6
-         aOTf33w1M/nfqFwwJc9w16yP9wq7ZgompiqO2q166QynGUU4MZ+yBCCxCZKsnlZPbTUP
-         ke9qV9BCkAvPrdnTREyGSUkgPNAKqORitsNjO01dsXxYV+0f4TRNp0YUX4HV1y67wQR5
-         LuHw65NKXarWxsyVs1FjM160XspdkaKPASRi3MrcsVfiNpKr2a4ziWc4GKhh08wrExYl
-         ADvQ==
+        bh=7T2njtLf+tsG9r8toysyAJNfleUrJXsFeeqkEldERK0=;
+        b=cAxpUuShHIeGBP7DIvgpHMW1hULpQoIUj33Mp6uA3NMGSVZreAABr+9eZD32ZiidwQ
+         8RPV+UHTAXbAIx2yi/mqcLy9n1oK+xnNF3J9nULXMR03hYiBHZk1yVYbyzUN04BfFz5E
+         1lXTxisWcrvLwFqUpPPY4Us+tEJZN2Vt/Hfg8DbZdey64wxVYjmWmi7e9mGrS4Kz4Tcu
+         k6X9Kv1qKif8BCzkAeISW7jdy56I43yj2ItHHUVuRW7t7w6xJsShOP0Cy2FlYpz/CNRh
+         MtlDUAHUXR67MNuPEGxtXVd0twaW0OynPKQQ4Xas4kwhDcnuBslierQZOu5C6/hBWPkk
+         0g4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791061722; x=1791666522;
+        d=1e100.net; s=20260707; t=1791061725; x=1791666525;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7WdQn6f6AsaloNtXz63r2rYU9L2euT0e0WgByXQq7Q8=;
-        b=O4ex/qzRR6ho4c5vFjLg7C0Q341kMKS+WyRjNMSs/3feagG1klsVpjlomURUfqwXKk
-         zjucpuGAhxC4e+osP3J+fPAHwTB3cUJqvvYFpCqRUYCFMctxNyZuhxt+rbjozH2P+NCQ
-         8MXoC6KUJESjU2doC0Za/sxpfxolg5PAnWFKm8yqxy42XD3hSvj++QI82/1VQ1tmbFwt
-         ZlPYCjCu4nOoQGhqFIuHxc4KGLRRkkhHHIq+B/RS0txISqGM0LsxkYYNoJQlfoYMg65D
-         e/b7Pa5awgIgR9vpVpVHz+FSzIkY4Qv+ymQTO/bfnHM4P1X+z1IJU8Ozxc62hPD6EJnX
-         EdAw==
-X-Forwarded-Encrypted: i=1; AKwUvBzpo/gG/SvIF+DarpKd4HfVJ807X7IBgVX/BcGr8LZcGUpdzmDPVnE375+fu02csaVdQ+wbRJ9rQA==@kvack.org
-X-Gm-Message-State: AFq9FYJM8PFANetwSMspIbYF711AW/GPn+TuCHZHmtk0P2TbLAa0VM2L
-	wBwLzUDIIB9ora31pJan2Y11cyQXErQqYSrwnAhZSP/Z8DWVHy6R2369ttbA+mSOCA==
-X-Gm-Gg: AYBFou0RTbn1fMDPsMj27oX/4IMDqt3HM21gDJXptIdO9qDfBGB/Kbrl2pKE65s0Waw
-	jErRGYbN7COLVq7XnG9by0Cq0vILVwa8DQS0DjA+rm+0D6TzR+WwFLpb20C7cS8w8prR2C3YEE+
-	TlIlz/G8lrBA4iqlUWhxtk9SeLZjm0cYk3ThXlHwKJsb0T8Fwf73hyFuvBJIsidAjtIXp9C08Uq
-	GjINrD+1HFI4Argux/tRrEzGUHs7lddt9BCT9wj/YlGtchyU0XkXwzw5q0VEvfxz+eK51uKHz0G
-	xwkPsDpbm6qMSKlNOzFl2PYjL+K7IlHfGrxA5Rgy2h4DNa4GD3Ep+6rzru9x7vYYo5uO/mEgS4J
-	o6kkOMUGIX7IhDy3+sCi7cZ5IwGGeDEeoJ32LDk1HH9UevP7UVfZgyyGk+4Am8GuGFuWoQs7UWZ
-	KxQqp+Blnh3fhRQcraRGeW+JO+LJOZ9cI5YEFecupiPmILrWM1y7CxIsSwm0NSQGmluTV2vHAiV
-	3HVldXpWhV1ZRTWTLDaX+lPiq61NBR40LsgMmq4s0tjEkSdzVVk3t1mf0r0Q1301CBLznaLKGXL
-	d1Dq5gOngkmS3h3TnV/R+TLUGdT7EqycEA==
-X-Received: by 2002:a05:690c:3181:b0:8ae:98ce:5497 with SMTP id 00721157ae682-8ae98ce7efemr12330927b3.0.1791061722002;
-        Sat, 03 Oct 2026 14:08:42 -0700 (PDT)
+        bh=7T2njtLf+tsG9r8toysyAJNfleUrJXsFeeqkEldERK0=;
+        b=0X/fZl2KX/XyvL3d4+zqRO9gckoXW8CqpVVewFa4u3hXV0E5XoyrJU/w5aSGjlVrN/
+         l6tFv3qEGGfY+rTXoPxi/SYCGhvbvn/oT9xU/yPpsmqyyYgvjnFHVAhajt52lH9lhpAG
+         R22CYVAjtbyf4pluoNKxnqJVVL1fAPETKP8MVy6UbPlcMVi1/aREf40TEjZtgnP8y6Kn
+         wpTib9cob597axEXKUgFWLAisfWOQwMkcBK4wPtTX/PZxlWOX21W9ff5XvkPNq8b1WH4
+         056mYPTfIbGNaWlSYcSfR2+eMH7jfbvE4GsSIHGQo5RJpxMEfZS1cij/Rb/EiWk2DfUX
+         V7yQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy3dX6+4C/vuU/rhMZGzulA1Vj3UfqV+rQGNGWCetfelarZXZ6fGzE7qnpR1LZBr8vZX4csmiyhEw==@kvack.org
+X-Gm-Message-State: AFq9FYIBLHT6h4/BHt0E5I2uHNI6ZRVrScC2M0BTxJ7Y726rdZtjFOz+
+	Mbtm50E5WtKHNG8+GJ+sZ2xRxlzHx0yjro2SFcKYHFU+W5v2w+wrkF9/tYpGz9tzeQ==
+X-Gm-Gg: AYBFou1dGHOjHl2h3UHFxiXi9f1HJ6VDapkF9Bg8hgMkLCjN/OFmEZET2fa9NNmIYeo
+	/zQBF7QtvZX4IU/z4VDQfCEa6vvo9bO+2GGHSLg69n3J9LRzehe+pC/pp0g8nzYwQ7P43SxDhCc
+	tISy/dGBG5lYcMOG8U9AhA1RpSKmMgOp+S2myDmsjR26GGthSoseHCioQZje+Cg0MTe1iI9L7J3
+	4IE7k9MjFRv/1XUxtc4vfiDQUmfowEvLrWIL4ikmN39XWNZQjX/QCJLlt5ZLEi98CMnM5CqmmkU
+	yYCnI8RrfqRfTMlIYewdEI6IDc9VEBD6+UGUtiigvmw5VzU1bRCLD+PpRMW1lzpY91ULuDfUlJU
+	bCHphYWXaid4Eyw4V4WkL8mSQ4cycqAWclsiA27RCtBvTRG005cQwwO92kmflB6S4r51DmAErFJ
+	fsxZFen58d+jgfVWceMNjOaWFEqfCze+aU/q01RqiLqbGQyb4DyMoBu4bUBZnQbFkqYT4bmJuln
+	KUFgQJs3ujyuv8AG3nuabSsyoeL9bNkGgynOT4Bnaj1kddJRQRcrMzgRh/0EJBVTwiZkEnCfw7R
+	ydMvvEtEoS6QRNOMT/CxauXMelNlRX5ipw==
+X-Received: by 2002:a05:690c:e3ec:b0:8a4:b0dd:c849 with SMTP id 00721157ae682-8ae3a5e66b0mr30220037b3.52.1791061724836;
+        Sat, 03 Oct 2026 14:08:44 -0700 (PDT)
 Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2600:1700:4577:1050:550f:9551:5468:60f1])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8af0d179d3bsm743537b3.40.2026.10.03.14.08.39
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8af0d179d3bsm743537b3.40.2026.10.03.14.08.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 14:08:41 -0700 (PDT)
+        Sat, 03 Oct 2026 14:08:43 -0700 (PDT)
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Date: Sat, 03 Oct 2026 14:08:01 -0700
-Subject: [RFC PATCH v3 8/9] mm/damon/core: cap the region merge threshold
- per target
+Date: Sat, 03 Oct 2026 14:08:02 -0700
+Subject: [RFC PATCH v3 9/9] mm/damon/core: allow both primitives disabled
+ when a perf probe is present
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261003-damon-perf-rfc-v3-send-2026-10-03-v3-8-0f00417b41bc@gmail.com>
+Message-Id: <20261003-damon-perf-rfc-v3-send-2026-10-03-v3-9-0f00417b41bc@gmail.com>
 References: <20261003-damon-perf-rfc-v3-send-2026-10-03-v3-0-0f00417b41bc@gmail.com>
 In-Reply-To: <20261003-damon-perf-rfc-v3-send-2026-10-03-v3-0-0f00417b41bc@gmail.com>
 To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
@@ -115,14 +115,14 @@ Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Ravi Jonnalagadda <ravis.opensrc@gmail.com>, 
  Jonathan Cameron <jic23@kernel.org>
 X-Mailer: b4 0.16.0
+X-Stat-Signature: 49etdnycrj5z8oyr8mwtm1cj19q9mb4d
 X-Rspam-User: 
-X-Stat-Signature: 7pg57ghdafrokwggnqjppqj6u9yed155
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D0E7680002
-X-HE-Tag: 1791061722-964362
-X-HE-Meta: U2FsdGVkX18/8VuMcgixUkTpHm4v9wbfajV4H6FQeCkf79DxEEZT20FZoLXZIG1h7kiJWnG6y6fbUKjoTrs1RhTbS/TjOLCdE6CcIPdAvssi1Lj4BCepY0hRQ0lWMLUnQaWjyf9hKa7yaOMFskNvDgaqp74rPOBIU/nE9SCOhnEcxIYI4otYBRgUyQ6ul2EVWaYedXlFzmbvZaaKopxZjcYrKDtroz2m9KpLmtz2MNrkGXfrWT43OW3b+I9/suPIsuqDY7J57lpuaiTzdFnii48MG8ycagLc2LpjM5g900EGu7R+E/EwawH94evcxJWjAbK0a+5pf8i1ufasTkmw1IWQ5XhTtvFuo479u5hb/jO9xmzigqwX/eFnB1s2D6EftYIAiJvdgt34o6rQXtUIFBrifXQEMhqRbe0pYZ1tqVOUrh4vujTpo/b13HvppHJb8YWmnfq74qe3h5yl9vv0jaIREGF8kA7wOyOabL3DNiZRjmWEBrN3McXSqIGSnsOCqeIfop7yGMcgJ4LUP7/6LcN1qtxs3K8WLoGWBcmhHQy/oBlL1NdFcvDADjO5HeljOi9nY598NJVMp+/ovft8/E9rhGMYr+NDg4uFR6jG0lZleEhJG+Z26Z7QFqEmmlagNUMoYRP0EghZxPBBwkWg1yesfUQpDlbwxSHVWdQlH0NgRoBnYcO5sR4yjnJ6cydkM4f7OgLJxo4STkjwaUO2v3WISf3C8vPkfh9xM8a7DDVbfkaJARlHOnU/1zkVOFptno1YYiNmtChwS8dH/AVkHFom72FyvI3qHDDDkuD08BVyKlxghf5BJE5Zb8NuVZWMr/8UXEcV/5Qaa1V5QMmqAHUv83QCO5F56yiu7z2bmkNyfEtmO42L9SDiB3EtdTgZoI+nqaNo/GJ8ux6foqznqY2xlXAHIDbQ/AgAZ9tcQttpFRqxnrbnbfLBrUNIJzpxr6qpTqJ7nc7wS9LMvTy
- g4pud5JB
- qyEmJKAnS1E3NfRBOsO56hbF13RlyxCMdRK+xJ7+XVE+eGS+9W39Z7PmMXXUfVFchAMjxLa6t1FWwijRk9jVscR9F3Nzx9DpBG0XW0F37rvJsajQ+niZ7eSyUDjELrci5uu18eLLMExxh6wAQyKdt3OLfQvDLRwCcmHI+RhWv2ESmEaqqe+aOAI7/01QBYQET+lkFZN3bdeGZzrUBt1saiJ1nguWadxeMzwyXtUX6fFWKkpIh4lN/2xyZN4fxDwTYrt1p+443mJvwItMoTaaRK3DD9m8rdp5k9Txwtq7Sk42DdQSXFMs4/SdmkkM5FAALe5NvfBp7uLvew+3orntXr6oNZvj7WPiEYiNs12yHI30b4/yUMYmojdccSbn3gu6fjdswtbC45RM0c1PxrE4/PZXdNssGjqC4Knfxuz07iMgTZGQmjtEwQDDOptwk+uOfXR4X7Aj4pSGIrceU7pEAckCZRpfmQ3pmgV5SQzeSyA9krElMhTxoJVvucAnkm1qUeLlo
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C64E040003
+X-HE-Tag: 1791061725-589370
+X-HE-Meta: U2FsdGVkX18FiRW44ZqqZNIGSFBmUBWw81C53aMNio0whtuNzNqJ2ZCSC5Gk3D5IGicsUQPmVCPUbsBQSpd2BIkpB/PZhxVsi4iDtvsQDKNYsCmV4OK2x1cEQtbIDhLD50Def9Uh/ZU6nn7+HSxG6GVIOECr7qOfF86w2uHu7SFi38zRuQx+599ALFN+vMWDbbBsv5lW2JdxAdb/4+gONeFYd84eGZFmN+gCbhCvivpjOxNOX5oRIa0yiqbNwkOvi1JppD8PRTqzS4i23NJGNzsaR3EvBiACwn8sclmU/AcMADnvTpIdeBTXzZih1YumVReXyyRF5IHt+lku1Dt8ZsbXKdpZdNMgUq9bkJ6tXDDzeso/5JhA/VDTuhtqdwruhLOKZRe4CO0wy25nbbBn8pC6wQVP1JqO08AEEMMPo41jnKvLOGpToHbovsROavMQAV/davuR1evzimbgbRPangIPLMUOOXwimMvhnOU6BLQpjQltmwhV9GoW2iXaEy9kQJec1vZ4EUV9uw09OFC3X0wx8c8K+V1qIDpNP25OVQJwSXBN/iGJjrUlIGyVfgcDW6ZB17kcqvgi05X+kebdjwTN/INPaO/C167UmVzU4u0+MoJbwu1aVtHqej2F9BYOVRE86yRcszkc3kbWeMQnGAYM0ZBV9kWmc/XTKnM+BRiwAGehIwwWxia3unDkbsW6JVyeNMU9qH8+ae+ZKNg4gDXDEfFCl/XSPFH4+IeIfMZODB5VV6wtua9GoxKUKE2n1CMriE7ei6nUDXHSNDhCks67bpEjn86NwuYgKsGauV8ekTxFSu2wu02KjG38o4zZUKZAF8TmPRC4fkVO8JQcCccC7PFg0yJmEfngQeMAkyylDlS4dJS/54Ipht5uA2pTXvKzPncw887GGtdtDJ3i5IXGKCb9asEp1pdbC6LrmP7cs4+OJdU7aXbrmInVEZ0KZIpaTHb5feIYUEJ04s/
+ o1K+A2QN
+ iPq1lSCz8oVBdf2ab0LB2yjOYu0tKEkx9P2M2lZmNrNuLH53TRBJoRz0Jm/JL0e0eoXdFA1U6XLAEYjHjAwR/CegAVZ5abkVjmLzfczR9SJjSXEMvJtz/XvfHuggEDwSoFf6qo4o5hcWs0IWMPp1018QG7c2wRt4zbqf49wX9iF112fOb43a4LrEwoCRK/Vi2M01B7qGGh3o/edir4+HxNc8jIwh5QCuSz2DBOgDOtN7lvvp3uw/8FsarfPyydrI5daFRGTHubmrOBPcrnM0AJTEWvk5flKqukL8DaC2qFwl0Bb5krkyIG7OwpS98svO/OKzzE2YNGt/MSJzlJjBUDsiGpYuhKTWJxgj3K0pumhx+qnnqQOSuUU/pqWINR+INRGeqNBNogsNZEjm2sFilP49o4dGA3F2h2+u729qyMtAtiKOXtw/KYnLpsRJgQSnYuXR+deOZf4neESsGLJfJTNro9SFCc1Re6lUYprYe0jtoRedwK0nOSU5K83+tVNoIb1V1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,71 +130,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kdamond_merge_regions() applies one context-wide threshold, the highest
-merge score across all targets divided by 10, to every target.  When a
-high-traffic target and a low-traffic target share a context, the
-high-traffic target sets a threshold permissive enough to erase the
-hot/cold boundary in the low-traffic one: a region with nr_accesses=1
-next to one with nr_accesses=0 merges because 1 <= threshold, even though
-that difference is the only signal the cold scheme has to admit it.
+The sample control validation requires exactly one software access check
+primitive, page_table or page_fault, to be enabled.  A context carrying a
+perf-event probe needs neither: the probe drives the access signal
+through its report ring and the drain, so region access rates and ages
+update with both primitives off.
 
-On the regular merge pass, cap the threshold for each target by a tenth of
-that target's own maximum merge score.  The score is the one
-damon_merge_regions_of() compares, so a probe-weighted context is capped
-by its weighted hit sums rather than by nr_accesses, which stays near zero
-when access checks are off.
+That check runs in damon_commit_sample_control(), which sees only the
+sample control and cannot tell whether the context has such a probe.
+Move it to __damon_commit_ctx(), skip it for a context with event-driven
+probes, and run it with the other validation of @src before anything is
+committed to @dst, so a rejected configuration cannot leave a live commit
+with its PMU events already armed.
 
-The passes that follow the regular one exist only to bring the region
-count under max_nr_regions by escalating the threshold.  They keep using
-the escalated threshold uncapped, so that bound still holds.
+Add damon_test_both_primitives_disabled_with_probe(), which commits a
+context with both primitives off and an event-driven probe and asserts the
+commit succeeds.
 
 Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 ---
- mm/damon/core.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ mm/damon/core.c              | 11 ++++++++---
+ mm/damon/tests/drain-kunit.h | 37 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 45 insertions(+), 3 deletions(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 1d25f820e3f9..c2c74d0daf95 100644
+index c2c74d0daf95..04a1cccbc2f5 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -4175,12 +4175,36 @@ static noinline_for_stack void kdamond_merge_regions(struct damon_ctx *c,
- 	unsigned int nr_regions;
- 	unsigned int max_thres;
- 	bool count_age = true;
-+	bool use_probe_hits = damon_has_probe_weights(c);
+@@ -2357,9 +2357,6 @@ static int damon_commit_sample_control(
+ 		struct damon_sample_control *dst,
+ 		struct damon_sample_control *src)
+ {
+-	if (damon_primitives_enabled_invalid(&src->primitives_enabled))
+-		return -EINVAL;
+-
+ 	dst->primitives_enabled = src->primitives_enabled;
+ 	return damon_commit_sample_filters(dst, src);
+ }
+@@ -2390,6 +2387,14 @@ static int __damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src,
  
- 	max_thres = damon_nr_samples_per_aggr(&c->attrs);
- 	while (true) {
- 		nr_regions = 0;
- 		damon_for_each_target(t, c) {
--			damon_merge_regions_of(t, threshold, sz_limit, c,
-+			struct damon_region *r;
-+			unsigned int t_max = 0, t_thres = threshold;
+ 	if (!damon_valid_probe_params(src))
+ 		return -EINVAL;
++	/*
++	 * A probe-driven context needs no software primitive.  Validate this
++	 * before anything is committed to @dst, so a rejected configuration
++	 * cannot leave a live commit with its PMU events already armed.
++	 */
++	if (!damon_has_event_driven_probes(src) &&
++	    damon_primitives_enabled_invalid(&src->sample_control.primitives_enabled))
++		return -EINVAL;
+ 
+ 	err = damon_commit_schemes(dst, src);
+ 	if (err)
+diff --git a/mm/damon/tests/drain-kunit.h b/mm/damon/tests/drain-kunit.h
+index 8e5023ebf6df..be44311617fc 100644
+--- a/mm/damon/tests/drain-kunit.h
++++ b/mm/damon/tests/drain-kunit.h
+@@ -722,6 +722,42 @@ static void damon_test_bsearch_unsorted_regions(struct kunit *test)
+ 	damon_destroy_ctx(ctx);
+ }
+ 
++/*
++ * Test that damon_primitives_enabled_invalid() accepts the both-disabled
++ * configuration when an event-driven probe is present (this commit's
++ * relaxation).
++ *
++ * Before this commit this configuration was rejected (-EINVAL).  After it,
++ * it is valid: the probe drives access-rate updates directly via the report
++ * ring, so neither software primitive is required.
++ */
++static void damon_test_both_primitives_disabled_with_probe(struct kunit *test)
++{
++	struct damon_ctx *ctx;
++	int ret;
 +
-+			/*
-+			 * On the regular pass, cap the threshold by this
-+			 * target's own maximum merge score.  A high-traffic
-+			 * target in the same context must not set a threshold so
-+			 * permissive that a low-traffic target's hot/cold
-+			 * boundary merges away before the cold scheme can act on
-+			 * it.  The score is the one damon_merge_regions_of()
-+			 * compares, so probe-weighted contexts are capped by
-+			 * their weighted hit sums rather than by nr_accesses.
-+			 *
-+			 * The passes that follow exist only to bring the region
-+			 * count under max_nr_regions, so they use the escalated
-+			 * threshold as is.
-+			 */
-+			if (count_age) {
-+				damon_for_each_region(r, t)
-+					t_max = max(t_max, damon_merge_score(r,
-+							false, c, use_probe_hits));
-+				t_thres = min(threshold, t_max / 10);
-+			}
-+			damon_merge_regions_of(t, t_thres, sz_limit, c,
- 					count_age);
- 			nr_regions += damon_nr_regions(t);
- 		}
++	ctx = damon_new_ctx();
++	if (!ctx)
++		kunit_skip(test, "ctx alloc failed");
++
++	if (damon_test_attach_perf_probe(ctx)) {
++		damon_destroy_ctx(ctx);
++		kunit_skip(test, "perf probe alloc failed");
++	}
++
++	/*
++	 * Explicitly disable both primitives.  With an event-driven probe
++	 * present, damon_commit_ctx() must now succeed outright.
++	 */
++	ctx->sample_control.primitives_enabled.page_table = false;
++	ctx->sample_control.primitives_enabled.page_fault  = false;
++
++	ret = damon_commit_ctx(ctx, ctx);
++	KUNIT_EXPECT_EQ(test, ret, 0);
++
++	damon_destroy_ctx(ctx);
++}
++
+ static struct kunit_case damon_drain_test_cases[] = {
+ 	KUNIT_CASE(damon_test_unified_vaddr_match),
+ 	KUNIT_CASE(damon_test_unified_vaddr_tgid_mismatch),
+@@ -733,6 +769,7 @@ static struct kunit_case damon_drain_test_cases[] = {
+ 	KUNIT_CASE(damon_test_report_addr_space_keyed),
+ 	KUNIT_CASE(damon_test_ring_full_counter_increments),
+ 	KUNIT_CASE(damon_test_bsearch_unsorted_regions),
++	KUNIT_CASE(damon_test_both_primitives_disabled_with_probe),
+ 	{}
+ };
+ 
 
 -- 
 Git-157)
