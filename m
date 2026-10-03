@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D9C0CA5FE3
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:22:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B19FCA5FDD
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:22:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 085526B00AE; Fri,  2 Oct 2026 20:21:51 -0400 (EDT)
+	id DA4606B00AF; Fri,  2 Oct 2026 20:21:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05CC56B00B0; Fri,  2 Oct 2026 20:21:50 -0400 (EDT)
+	id D55BA6B00B0; Fri,  2 Oct 2026 20:21:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E83A66B00AE; Fri,  2 Oct 2026 20:21:50 -0400 (EDT)
+	id B596B6B00B1; Fri,  2 Oct 2026 20:21:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A59BA6B00AE
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:21:50 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3FAFF1A088C
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:50 +0000 (UTC)
-X-FDA: 85279411980.02.3EB989E
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 77E53180003
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:48 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=wDB7VVia;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 3m0rAagoKCI41Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3m0rAagoKCI41Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 884706B00AF
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:21:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1FA248085D
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:51 +0000 (UTC)
+X-FDA: 85279412022.09.06CC4C4
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6B2EFC0002
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:49 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="f+Bzp/3v";
+	spf=pass (imf10.hostedemail.com: domain of 3m0rAagoKCI41Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3m0rAagoKCI41Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790986908;
+	s=arc-20220608; t=1790986909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I4g1ObsslfRrIxGm9J1WErW3kJq6TK7lBBQX23Z9YIM=;
-	b=K5Hukghwvj+y6iyuxRaIwAcrGehjwXhGyKqLQH2qan1nnwnlS5klJ7zCDhPnFXt5WYD5YF
-	rpz2+suZP0+njMowLHuEL6QWLL7XLO2P45rHAH+PbCZvu8bfH+SEq8Bo+ji66+A0DhcxsI
-	3xqK5G3LrGsys7+XUX/FDDlrtf/5jMg=
+	bh=el7RdsuPQmPVCa/coAHdRCW5aUIql/HQngm8YsWnGFg=;
+	b=e25hOzfuuc53bElvRVdngUMNlo+unSFBXUQB1U90XFen8hzAylhfMP+vr+r/xen/OnuQy3
+	ecdBTo2Mubpsf2et1hAHi63wgTTLBuwU622flGXjL01n+q7TcyVpSX52Od+c8jDzo86kEP
+	TZFUmP8rmj8hZNSvLDTqDXXfko72kUA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=wDB7VVia;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 3m0rAagoKCI41Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3m0rAagoKCI41Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="f+Bzp/3v";
+	spf=pass (imf10.hostedemail.com: domain of 3m0rAagoKCI41Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3m0rAagoKCI41Bz6CyzB65y66y3w.u64305CF-442Dsu2.69y@flex--jthoughton.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790986908;
-	b=qZtVv8IILYtZJQ80xFfQ09zTgVbmWdOVnGAY1EsQsDRqt1Gd8aFVJwhK84tY6pDqs/ioNg
-	ZXBfLq3mjmkmWkt0zJufqZeqJ+iRt33CuiWakBR29l8TF+oKuLEUHQmmIeJj3Gf8AuLuMc
-	ddJxMAvCPJCEwluqvrd5N/WYZ+U8dDA=
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39deb05ef51so61839a91.3
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:21:48 -0700 (PDT)
+	t=1790986909;
+	b=cy5Dj7xJu6YvuRhOKKWP5hwtgfjtRDuTmzRV4nVR52F7PUN9Bby6a50RElCixemHeXlN01
+	NrQysdq0Lfa0mrgeQJDvIv28SxbS8Aq8Zy9ppSsBfP/qgyPVfWPWTF6RVoIgHFIufVsrDo
+	HwByuqXmrWxvXUq/vsJBQHC8fklS7hk=
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2dfb24dfedfso10035ad.2
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:21:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790986907; x=1791591707; darn=kvack.org;
+        d=google.com; s=20251104; t=1790986908; x=1791591708; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=I4g1ObsslfRrIxGm9J1WErW3kJq6TK7lBBQX23Z9YIM=;
-        b=wDB7VViaSeHeZ52xs1lXUrySiIBJ0PS7yaciysalBqrAdd9vFpFIboFHt1EftKc6Qu
-         FxqQR/cd9/FqbchlopoWX2FOPx1OSAuENtgG0Yp2zFZrdkXr3pCupdQM8EtJyEE7w5E9
-         lNoYZsfvJjPYiNbeB3HS2dZxLcmUnHClaRJj0wbd41+vf2kLs6HSt6u3CU2GvJjea69r
-         J56XuAEaNc/GCMNdoQX7wLx66g6RAzut2H0frLXnoQCqlsEuY8Zcjqx2RIa2bPD/6IuH
-         S+BEQkQDYMeHbpGVJoNUGO7gDDDuiiKl/agTE1gMLb/3f55a8Bxdq1xQFl14x8FJA4TF
-         VmYQ==
+        bh=el7RdsuPQmPVCa/coAHdRCW5aUIql/HQngm8YsWnGFg=;
+        b=f+Bzp/3vxvF5Dge0CNX5VTOE6QmCB/89EQF+wC6SMiU7j+UvYu8wO6sBa5LOcSjozs
+         9J7CBz9kd6IFIJLZ+ePle1OkrTYUBLwv5DdQZkSom1PkZMmKeI4J+27zwNg0d49elr19
+         /xe5bS9J3vnrL9Bvkt6F2LD5oqXXHpBK2RdzsB73mx37HTYJrTlo3v4xL+wQ/N5r9gk2
+         +M6oObh9N/+dPZXK3Qhg8LZbm9zkBQuaaDLoJvNTD/EmkL0yeY0f8z9Rg4dTgioBexo4
+         lryjAu4XeCGEJ/ue+3cEFZ+AWvXAg0fR7hAt0Amuu8u2ZEQMTujYRasr9a1NlSQ3A5uu
+         g0qQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790986907; x=1791591707;
+        d=1e100.net; s=20260707; t=1790986908; x=1791591708;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=I4g1ObsslfRrIxGm9J1WErW3kJq6TK7lBBQX23Z9YIM=;
-        b=t9nWRtUspt9lHFwSBwPX4RxsbbBtiSXcBp3v7T7wKAlfdwz5f3KmpFZl0dFullOhlz
-         h1Dtn0fAP5Zcur1Z4JRwaNIXgTofKPDEKec5vSf7ruF1/YOSRm52GncZlExjEXoip7bD
-         6Ar3+RVFV6BHwDpQmWRNTj6CUIvinj+v6pEkwDd6Lg83SS/aFNtuQm+e5/8u8nF+ACRq
-         ATYBAXw+tZka9bK11ySJhWfYHMYfACibAjecckWVCp8hMpoKpRbQ7WRQfNyjerAZa2F5
-         nqpHJUI7QfsOomAUagSe9Xr2jDvgnb0AGwhbEeeyh7BkrAWsEZzyV8XEBlZCH0S0ctg5
-         lHKQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzR0xrX4EG7yr9cquy2nGaF3zcaoUcwJeNNz29pQug28bduLdtd6y95qr7/fDpKSUuFjdMee1M2cg==@kvack.org
-X-Gm-Message-State: AFq9FYLfY/r8r3OGKUmrkkYQqOyxpdtobsSks0OVG8LS6/vz9vyeh1bg
-	ysPnJbdFwh+Xr2SaHLxizmVIN7yWWFPXoQ5m74swWI0rCwUb30k+q9jqExW9HDEmRubNI+mAwzg
-	B4RoivAeTznqa8Ep/Ime4Nw==
-X-Received: from pjbmw9.prod.google.com ([2002:a17:90b:4d09:b0:3a7:239:2141])
+        bh=el7RdsuPQmPVCa/coAHdRCW5aUIql/HQngm8YsWnGFg=;
+        b=QKEWr7OHqrWggx7NIfchcM0wE1u75gmtLm+oftsubXbU86QELWSQ8DvmTy2U/poVmt
+         sL9tfIPvuu93pjY/ByNZQWdp6vT8nUspnIXRHoEy4gJyjdOLUS0ldgeQVGPSnbZR3a7V
+         HtK0I3z/s0cHU2uC+JS0UqZr0ejOKn+mQWFr39a5wAC3b73D6n2S88s1gfYWJDyATUSe
+         MpQR05BjbiktOWKB5/013Q+3r7C3d0aAVH1xgFkRkOr48e04Cu1yE/TWNfdnajty7FJS
+         dAqVmGI2f7hxVErL2iEhyigcJmDcB5m1dRzxt2VjOAzLqCs/Sdkxsi860K567eDG1des
+         unMg==
+X-Forwarded-Encrypted: i=1; AKwUvByymSN4iPGEKTU/mntI1llhb+rrSvErPdAOLpVydQF7JtuK7ski2EAPmJk/3HxiEvLNUIGCt+Gelg==@kvack.org
+X-Gm-Message-State: AFq9FYKnfloJS5zWEw3PNP43xP0K0Qnfh2wJrzhwZbSmJsa5Lw8S+vsv
+	od1lTwLX+6rts4J8vrdU1wZvDx83pykh/VFgawQAr+Nurdx9SALQeURbwt605xyx2q7QTuu/OGc
+	8dqZZXLjggtIljDe5xygwdg==
+X-Received: from plhb14.prod.google.com ([2002:a17:903:228e:b0:2dd:bff7:1e38])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4c05:b0:3a4:ba6e:65c9 with SMTP id 98e67ed59e1d1-3a6ce963ad0mr1812320a91.59.1790986907076;
+ 2002:a17:903:191:b0:2dd:c053:d741 with SMTP id d9443c01a7336-2e49b684cffmr41681905ad.40.1790986907988;
  Fri, 02 Oct 2026 17:21:47 -0700 (PDT)
-Date: Sat,  3 Oct 2026 00:21:17 +0000
+Date: Sat,  3 Oct 2026 00:21:18 +0000
 In-Reply-To: <20261003002123.505555-1-jthoughton@google.com>
 Mime-Version: 1.0
 References: <20261003002123.505555-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261003002123.505555-15-jthoughton@google.com>
-Subject: [PATCH v2 14/20] hugetlb_vmemmap: Add fault injection for in-place
- vmemmap PTE updates
+Message-ID: <20261003002123.505555-16-jthoughton@google.com>
+Subject: [PATCH v2 15/20] selftests/mm: Add HugeTLB vmemmap optimization
+ stress test
 From: James Houghton <jthoughton@google.com>
 To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -102,14 +102,14 @@ Cc: Nikos Nikoleris <nikos.nikoleris@arm.com>, Linu Cherian <linu.cherian@arm.co
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: xuiocyn1wy7cgjr3nh9y5dk8uno315h5
+X-Stat-Signature: 46teewcbtmcoy5he5c3mu44sqw7fstgb
+X-Rspamd-Queue-Id: 6B2EFC0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 77E53180003
-X-HE-Tag: 1790986908-701362
-X-HE-Meta: U2FsdGVkX1+iEUihllSWJGX5TZRUGQypruqrvOZNv297avVmu8Kh5zbrjiSBfV4tcbQTjiGQdihEEMA+qO1W9kZu9qtvD/fKUySoWW4QDiV5QirktkfXjcgGkWExnyD05oG4FR/oVQIiInZSMkLqUJ/IlVmkLsXm/hEb4vMAvVGskF8W2nV4L59ByMaYSQfVvvZ1LjSMtQoFi8FLi5WAC24akb/oMiegUUFgNbEWith7x7NrszlDpcwPvxjiHVM18V0fju9vsQWhP23gFjbFTD6QIUCriM9vSjy1+XCuHlQuHRBqunaGZrhj0QEC7RahMSeQ+yysoDyqz1FdOUjWH1qBX5z5ORfehiBq48CMGbonH43hAuHp/aOdVchIQTBWI9YF7OmQc35tYm8bjH2zQMQcvWtepB95y2E1ofLhrj+0FU9O3NK3kMir2m2jb+2kWzxQHjL/+ENMRQfYLBfAGVW1ESJjTwU1DChp8vQZYQQfb8pqaQrmAN7lhqK0lmpp+9FZQerKyJF7aTYn48z3Ycdn+pnU1SfYl+pYcJlX6wKT7T/XJQbb2rRTgYFvx/r38qV5qQkknQ2L8u2AEQkbhsqo6f4sSuspMmvqeKLbeObQfeXDr9xd6MmL3jqO1YVBbMALGx08GxBKuY+GOgs74va2WTcj4o5k7M80OBr3vUKTSf3qavNyN0YDD5Skn6Cjuv75OVYGAvf5ZAu3OZ+FbBxQI9YrR9g77Ys8QixImu6fVRp1S8YFg7NzWZxCYe1VMOppWxVJ/Ge3yvh8Ve9QStss1okQ/3fxHokSch8cyvL0KTVF/1VM4VDthVqY5v4Vy62YktjgQa7xxXqeLhHM4mhcI5h4R9XHuWRVho0p8EHqm1ccAiKgzcmUJTLg0NsXLCW7kENWhYnXct0AapWmNe7ONFB/hsKRoENy03LoTFiXqII7eDVnuCf3haG50falCz5NnKAFGHY6AocpGYH
- tON0LQlo
- Vxs76wI7BNZsBFLOGoVYbEHOiZL3Nliz/Nl0zcEmav8l4ovhc9FvQvP9lefmrIbzjoRP+2TrjjWkeiQtKMPOPKsQ0sQOe3g8O/8JD7TpIqXqivGEc3McN1D5gb5WTbRGJYQ/oq3f5or83Oz+BrVFi5eyVFarmsyh+EqtaXHkre6ClRBDmo5SuGH/vLXEtJdLM3Qxmw2bsBlVLDNnfCFy8o3PBIjJlF4cHG7vv3jaUEw4vOyx1zSY0lQaR/E6/FluTpMi+kFTZcxQ+2IwvnUUPtA+ujvfHbVD0OJI07YkW/JKCvublSWYjYJVy1D+bBKJBrMcNe4SLWvF3Knbn0Tkve66r/BhI2AAY2yF2YSK9RBm4IyBJXg5cl/HyeGoCPeArxCCp/+Rteh/2a/QOoC7J2Ti6slF8tCtSl1UIIRH9lmRxo3ulxopED/1eoq7KTqPpqZntUZMEiJt3iOG6QaT2WpGGApKOBsmkmRtPVDpi7SQEXlzTCXXJqDQ86BtbLdJhuQYwRRo0SY2VSLAdEEeNChA1j7F3K9Kqex4jGa8P7dj525YJ43fjKiMrv/1AUZcqMKkih8M91HtNUn2xqqdTiGmFsWVKiI8bbb+futYquyAeKkM8LHzpT6yrfd9f4fNFwxvvffr0oJzf8Pw/bNS8XNyfBlJXwuibCrhT6oVw2pA5zfOPWZYkJnL6KavNVxaahVXr
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790986909-634252
+X-HE-Meta: U2FsdGVkX1/exBRHoGyQivj/t4bGm161kWNYJ3m+S7/wR+ET+ZqSuYG2fCO7XPfivR+lhbTjMTPyriWjbfxZWyf4kkbfZ4kiv3sHi7/YyM1T25QYd2cpae2/hlpsoysdZv1WJZjEEoqsK4fLvIFQzYbWZs+BjUJ44QmirhZRc9/OWW77nW+SNHGg2OCZFQNiCsprFLGiGZBpnlcUtCo3yoVrPn4FgVeNwYq2qB4AoeCmgRiu/2BIXaRfrtuE0qX2rTWuv48YdkDzwlgOLIr85uAQsl15lPdaET9oIl14GGH8/ZHT74KPI/eM4/omzF2+sfhzeN1HbGLmAfQi1esDGqIn1egkVA5edb09Hn0jNYhTKX1l5ZYVKt/MuY9H8zu5hZATzFeFbPjhEUJzJ/pAVggXsX27CaccI9mIgJlZVZi9OFkJYQUV1x88xa+iUA0S2K3ePU44GrBn+XBYVqHFc7J5YWybSNPRbdvR8CFqeB3v1SJCnAY7Kurduhm+nOZvd4kTQqAdgDZ1aj95r6Bl1A4NMwrj4LF2rc5YkXsnIGdtbQxXw/+QYxRNXORF3OjqBH+CboYBCqeBZ2LlBVs4EeeZ8g1tA5RmbJfPlu5vAlQyuQe7wSYiAza7NiAIVBj3c5nHyqcqWGujonPbZZt8llPw/MF8/V34C/0RCQrLgXsjrIdRtMJXy5+JRqLzEkuE7idUgDX5k5/NZCsnIybFao89e/VX2+U/ws/bl426T70oLmlCcjXYHO6xUztsjUIUhqoLW9+kUD0j2EXwpyZhgBfjQXUEB56lNtyWKxyyNTri2AxMy81KUFa6dCB6qaOyExiiKPQ9wnUD3rCkfgjELHeOrFpEa/ZtXlVNwKAcBUZVqGLQSxbQypbaHeNLeMMwJdXXAhzJmq5Mr7ldTDJo88MQv6B8zVQZM4bG9Jsh4ieGstonf55gFHhCbcCOS5MPbu/kb9Vo2szkNCrzp83
+ Lo6H5bPp
+ r8YdkaF1phhoarq7v5GVXV5jYYC80yXWTYX/leGZKhQ3y1YNPpm2YIFPDcTl0fWqCcdREQ5LVNHfoTp3P1HaGhpA5b1v17DpqrdtYV1ek7o6jjYAkJie1eaSNtYuxSNKjP2GFTANhzv5mTnZdJ+glwI6/JhYzj4iatpFGf5aqg6+tZRZmR4LeVG0yxKspsBY7Yvd6foL6T4ENbUODILDZxuz7VBphzNz9GYa/EMzsWWDKiSwIbI8BJX5VAN/4VbDfsUu4EL1cfE57gupOzhGMIlrEcRMJDw0ShtGjzCgyihT/qUdjP69C/6gzV3To/106ZCx+G4EmvoaUBVaxOYw2rcOJgNN4IuR2hsw045GsGG9l2BWHTZECwCJt2iUHpUrB42Xo9a/hA731YplK8E76CTbk9e2P157hFEK+YOQZNewaLDghyTX812QjzPgV4jjPEI8Khao8qmsLUqga8yjcwtankhnEIJLabT6f7TKeSiRncSVuqrT5XETId5BbUnk5Wdo13N4C0ynaz11xLBrrAAYDgnozA48/KgnhVf+IfCVpsXQCYAiu5RqBJK3iDbffbohKavzGD999iQyMxTwQq6hMkBfmo3keP0d8cnDO6PvKCHE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,143 +117,441 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-try_update_vmemmap_pte() may fail, e.g. on arm64 when the update keeps
-racing with hardware access flag updates. HVO handles such failures by
-rolling back the optimization, or by leaving folios partially optimized
-if the rollback or a later restore fails. These paths are rare to hit
-normally.
+Add a script that stresses HugeTLB vmemmap optimization (HVO), in
+particular on architectures that update the vmemmap in place while it
+may be concurrently accessed:
 
-Add a fault-injection capability, fail_hugetlb_vmemmap_pte, under
-CONFIG_FAIL_HUGETLB_VMEMMAP. When a fault is injected, the PTE update
-fails with -EAGAIN without touching the page tables, as if the in-place
-update had given up.
+  - Check that optimizing N folios frees exactly N * (vmemmap pages per
+    folio - 1) vmemmap pages (per nr_memmap_pages and
+    nr_memmap_boot_pages), and that restoring them gives them back.
+  - Repeatedly optimize and restore folios by resizing the hugepage pool,
+    while concurrently reading struct pages through /proc/kpageflags and
+    /proc/kpagecount, compacting memory, and optionally reading
+    page_owner and offlining/onlining memory blocks.
+  - Do the same with fail_hugetlb_vmemmap_pte fault injection enabled,
+    if available, to exercise the rollback and partially-optimized folio
+    paths.
 
-It can be configured through debugfs or through the
-fail_hugetlb_vmemmap_pte= boot option, the latter allowing failures to
-be injected when optimizing bootmem folios.
+After each phase, the pool must shrink back to its original size and the
+memmap accounting must return to its baseline. Finally, the kernel log
+must not contain warnings or oopses.
 
 Assisted-by: LLM
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- .../fault-injection/fault-injection.rst       |  6 +++
- lib/Kconfig.debug                             |  9 +++++
- mm/hugetlb_vmemmap.c                          | 38 ++++++++++++++++++-
- 3 files changed, 51 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mm/Makefile           |   2 +
+ .../selftests/mm/hugetlb_vmemmap_stress.sh    | 347 ++++++++++++++++++
+ .../selftests/mm/ksft_hugetlb_vmemmap.sh      |   4 +
+ tools/testing/selftests/mm/run_vmtests.sh     |   4 +
+ 4 files changed, 357 insertions(+)
+ create mode 100755 tools/testing/selftests/mm/hugetlb_vmemmap_stress.sh
+ create mode 100755 tools/testing/selftests/mm/ksft_hugetlb_vmemmap.sh
 
-diff --git a/Documentation/fault-injection/fault-injection.rst b/Documentation/fault-injection/fault-injection.rst
-index c2d3996b5b40..403206645fa4 100644
---- a/Documentation/fault-injection/fault-injection.rst
-+++ b/Documentation/fault-injection/fault-injection.rst
-@@ -16,6 +16,11 @@ Available fault injection capabilities
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index beacc0f87304..51d8fba80c03 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -149,6 +149,7 @@ TEST_PROGS += ksft_cow.sh
+ TEST_PROGS += ksft_gup_test.sh
+ TEST_PROGS += ksft_hmm.sh
+ TEST_PROGS += ksft_hugetlb.sh
++TEST_PROGS += ksft_hugetlb_vmemmap.sh
+ TEST_PROGS += ksft_hugevm.sh
+ TEST_PROGS += ksft_kmemleak_confirm.sh
+ TEST_PROGS += ksft_kmemleak_dedup.sh
+@@ -180,6 +181,7 @@ TEST_FILES += test_hmm.sh
+ TEST_FILES += va_high_addr_switch.sh
+ TEST_FILES += charge_reserved_hugetlb.sh
+ TEST_FILES += hugetlb_reparenting_test.sh
++TEST_FILES += hugetlb_vmemmap_stress.sh
+ TEST_FILES += test_page_frag.sh
+ TEST_FILES += run_vmtests.sh
  
-   injects page allocation failures. (alloc_pages(), get_free_pages(), ...)
- 
-+- fail_hugetlb_vmemmap_pte
+diff --git a/tools/testing/selftests/mm/hugetlb_vmemmap_stress.sh b/tools/testing/selftests/mm/hugetlb_vmemmap_stress.sh
+new file mode 100755
+index 000000000000..94357a4a45c2
+--- /dev/null
++++ b/tools/testing/selftests/mm/hugetlb_vmemmap_stress.sh
+@@ -0,0 +1,347 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++#
++# Stress test for HugeTLB vmemmap optimization (HVO).
++#
++# Phases:
++#   1. accounting: allocate N hugepages, check that nr_memmap_pages +
++#      nr_memmap_boot_pages drops by exactly N * (vmemmap pages per folio - 1),
++#      then free them and check it returns to the baseline.
++#   2. stress: churn the pool (optimize/restore) while concurrently reading
++#      struct pages (/proc/kpageflags, /proc/kpagecount), compacting memory,
++#      and optionally reading page_owner and offlining/onlining memory.
++#   3. pte-inject: like 2, with fail_hugetlb_vmemmap_pte enabled; this hits
++#      both the optimize rollback and the restore (partial HVO) paths.
++#
++# After each phase the pool is drained back to its original size, memmap
++# accounting must be back at the phase's baseline, and the kernel log must
++# not contain warnings/oopses.
++#
++# The fault-injection phases require CONFIG_FAIL_HUGETLB_VMEMMAP and
++# CONFIG_FAULT_INJECTION_DEBUG_FS, and are skipped otherwise.
 +
-+  injects failures of the in-place vmemmap PTE remaps done by HugeTLB vmemmap
-+  optimization. (try_update_vmemmap_pte())
++set -u
 +
- - fail_usercopy
- 
-   injects failures in user memory access functions. (copy_from_user(), get_user(), ...)
-@@ -263,6 +268,7 @@ use the boot option::
- 
- 	failslab=
- 	fail_page_alloc=
-+	fail_hugetlb_vmemmap_pte=
- 	fail_usercopy=
- 	fail_make_request=
- 	fail_futex=
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 134b15a44625..96cd1f1da94a 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2066,6 +2066,15 @@ config FAIL_PAGE_ALLOC
- 	help
- 	  Provide fault-injection capability for alloc_pages().
- 
-+config FAIL_HUGETLB_VMEMMAP
-+	bool "Fault-injection capability for HugeTLB vmemmap optimization"
-+	depends on FAULT_INJECTION && HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-+	help
-+	  Provide fault-injection capability for the in-place vmemmap page
-+	  table updates done by HugeTLB vmemmap optimization (HVO), i.e.
-+	  try_update_vmemmap_pte(). This exercises the rollback and
-+	  partially-optimized folio paths.
++KSFT_PASS=0
++KSFT_FAIL=1
++KSFT_SKIP=4
 +
- config FAULT_INJECTION_USERCOPY
- 	bool "Fault injection capability for usercopy functions"
- 	depends on FAULT_INJECTION
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index fabf2b25fe59..1eca03a3def3 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -17,6 +17,7 @@
- #include <linux/pgalloc.h>
- #include <linux/vmemmap-optimization.h>
- #include <linux/hugetlb.h>
-+#include <linux/fault-inject.h>
- 
- #include <asm/tlbflush.h>
- #include "hugetlb_vmemmap.h"
-@@ -50,6 +51,39 @@ struct vmemmap_remap_walk {
- 	unsigned long		flags;
- };
- 
-+#ifdef CONFIG_FAIL_HUGETLB_VMEMMAP
-+static DECLARE_FAULT_ATTR(fail_hugetlb_vmemmap_pte);
++size_kb=
++nr=16
++duration=60
++prob=20
++readers=4
++struct_page_size=64
++do_page_owner=0
++do_hotplug=0
 +
-+static int __init setup_fail_hugetlb_vmemmap_pte(char *str)
-+{
-+	return setup_fault_attr(&fail_hugetlb_vmemmap_pte, str);
++usage() {
++	cat <<EOF
++Usage: $0 [options]
++  -s KB     hugepage size in kB (default: default hugepage size)
++  -n N      number of hugepages to churn (default: $nr)
++  -t SEC    duration of each stress phase (default: $duration)
++  -p PCT    fault-injection probability in percent (default: $prob)
++  -j N      number of struct page reader processes (default: $readers)
++  -S BYTES  sizeof(struct page) (default: $struct_page_size)
++  -o        also read /sys/kernel/debug/page_owner during stress
++  -m        also offline/online memory blocks during stress (dissolves
++            free hugepages, exercising the restore path)
++
++For exact accounting checks, run on a hugepage size whose pool is
++initially empty (e.g. no boot-time reservations of that size).
++EOF
++	exit $KSFT_SKIP
 +}
-+__setup("fail_hugetlb_vmemmap_pte=", setup_fail_hugetlb_vmemmap_pte);
 +
-+#ifdef CONFIG_FAULT_INJECTION_DEBUG_FS
-+static int __init fail_hugetlb_vmemmap_debugfs(void)
-+{
-+	fault_create_debugfs_attr("fail_hugetlb_vmemmap_pte", NULL,
-+				  &fail_hugetlb_vmemmap_pte);
-+	return 0;
++while getopts "s:n:t:p:j:S:omh" opt; do
++	case $opt in
++	s) size_kb=$OPTARG ;;
++	n) nr=$OPTARG ;;
++	t) duration=$OPTARG ;;
++	p) prob=$OPTARG ;;
++	j) readers=$OPTARG ;;
++	S) struct_page_size=$OPTARG ;;
++	o) do_page_owner=1 ;;
++	m) do_hotplug=1 ;;
++	*) usage ;;
++	esac
++done
++
++log() { echo "# $*"; }
++skip() { echo "SKIP: $*"; exit $KSFT_SKIP; }
++
++failures=0
++fail() { echo "FAIL: $*"; failures=$((failures + 1)); }
++pass() { echo "PASS: $*"; }
++
++[ "$(id -u)" -eq 0 ] || skip "must be run as root"
++
++[ -r /proc/sys/vm/hugetlb_optimize_vmemmap ] ||
++	skip "HVO not supported (no vm.hugetlb_optimize_vmemmap)"
++[ "$(cat /proc/sys/vm/hugetlb_optimize_vmemmap)" = 1 ] ||
++	skip "HVO disabled (vm.hugetlb_optimize_vmemmap=0)"
++grep -q '^nr_memmap_pages ' /proc/vmstat ||
++	skip "no nr_memmap_pages in /proc/vmstat"
++
++[ -n "$size_kb" ] || size_kb=$(awk '/^Hugepagesize:/ {print $2}' /proc/meminfo)
++hp_dir=/sys/kernel/mm/hugepages/hugepages-${size_kb}kB
++[ -d "$hp_dir" ] || skip "no ${size_kb}kB hugepages"
++
++page_size=$(getconf PAGESIZE)
++vmemmap_pages=$(( size_kb * 1024 / page_size * struct_page_size / page_size ))
++freed_per_folio=$(( vmemmap_pages - 1 ))
++[ "$freed_per_folio" -gt 0 ] ||
++	skip "${size_kb}kB hugepages are not HVO-optimizable"
++
++dbgfs=/sys/kernel/debug
++mountpoint -q $dbgfs || mount -t debugfs none $dbgfs 2>/dev/null
++
++orig_nr=$(cat "$hp_dir/nr_hugepages")
++target_nr=$(( orig_nr + nr ))
++marker="hvo-stress-$$-$(date +%s)"
++tmpdir=$(mktemp -d)
++pids=()
++
++log "hugepage size ${size_kb}kB, page size $page_size"
++log "struct page size $struct_page_size"
++log "vmemmap pages/folio: $vmemmap_pages ($freed_per_folio freed by HVO)"
++log "pool: $orig_nr initially, churning between $orig_nr and $target_nr"
++[ "$orig_nr" -eq 0 ] ||
++	log "WARNING: pool not initially empty, accounting may be inexact"
++
++memmap_total() {
++	awk '/^nr_memmap_(boot_)?pages / {s += $2} END {print s + 0}' \
++		/proc/vmstat
 +}
-+late_initcall(fail_hugetlb_vmemmap_debugfs);
-+#endif /* CONFIG_FAULT_INJECTION_DEBUG_FS */
 +
-+/*
-+ * Inject failures as if the in-place update lost a race too many times
-+ * (see the arm64 implementations), without touching the page tables.
-+ */
-+static int hvo_update_vmemmap_pte(unsigned long addr, pte_t *ptep, pte_t pte)
-+{
-+	if (should_fail(&fail_hugetlb_vmemmap_pte, PAGE_SIZE))
-+		return -EAGAIN;
-+	return try_update_vmemmap_pte(addr, ptep, pte);
++set_nr() {
++	echo "$1" > "$hp_dir/nr_hugepages" 2>/dev/null
++	cat "$hp_dir/nr_hugepages"
 +}
-+#else
-+#define hvo_update_vmemmap_pte		try_update_vmemmap_pte
-+#endif /* CONFIG_FAIL_HUGETLB_VMEMMAP */
 +
- static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
- 			     struct vmemmap_remap_walk *walk)
- {
-@@ -235,7 +269,7 @@ static int vmemmap_remap_pte(pte_t *pte, unsigned long addr,
- 		entry = mk_pte(walk->vmemmap_tail, PAGE_KERNEL_RO);
- 	}
++# Shrink the pool back to orig_nr. Restore may transiently fail (e.g. with
++# fault injection active), so retry for a while.
++drain() {
++	local i cur surplus
++
++	for i in $(seq 20); do
++		# Pages whose vmemmap could not be restored are kept as free
++		# surplus pages, which shrinking nr_hugepages does not free.
++		# Writing the current size converts them back to persistent
++		# pages first.
++		set_nr "$(cat "$hp_dir/nr_hugepages")" > /dev/null
++		cur=$(set_nr "$orig_nr")
++		[ "$cur" -eq "$orig_nr" ] && return 0
++		sleep 1
++	done
++	surplus=$(cat "$hp_dir/surplus_hugepages")
++	fail "pool stuck at $cur hugepages ($surplus surplus)," \
++		"expected $orig_nr"
++	return 1
++}
++
++fa_dir() { echo "$dbgfs/$1"; }
++
++fa_enable() {
++	local d
++	d=$(fa_dir "$1")
++	echo 0 > "$d/verbose"
++	echo N > "$d/task-filter"
++	echo 1 > "$d/interval"
++	echo 1000000 > "$d/times"
++	echo "$prob" > "$d/probability"
++}
++
++# Disable and print the number of injected failures.
++fa_disable() {
++	local d left
++	d=$(fa_dir "$1")
++	echo 0 > "$d/probability"
++	left=$(cat "$d/times")
++	echo 0 > "$d/times"
++	echo $(( 1000000 - left ))
++}
++
++check_dmesg() {
++	local bad pat
++
++	pat='WARNING:|BUG[: ]|Oops|Unable to handle kernel'
++	pat+='|Internal error|KASAN:|UBSAN:'
++	pat+='|list_(add|del) corruption|page dumped because'
++	bad=$(dmesg | sed -n "/$marker/,\$p" | grep -E "$pat")
++	if [ -n "$bad" ]; then
++		fail "kernel log reports problems:"
++		echo "$bad" | head -20 | sed 's/^/#   /'
++	fi
++}
++
++## Workers
++
++churn() {
++	while :; do
++		set_nr "$target_nr" > /dev/null
++		set_nr "$orig_nr" > /dev/null
++	done
++}
++
++kpage_reader() {
++	while :; do
++		dd if=/proc/kpageflags of=/dev/null bs=4M status=none
++		dd if=/proc/kpagecount of=/dev/null bs=4M status=none
++	done
++}
++
++compactor() {
++	while :; do
++		echo 1 > /proc/sys/vm/compact_memory
++		sleep 1
++	done
++}
++
++page_owner_reader() {
++	while :; do
++		cat $dbgfs/page_owner > /dev/null
++	done
++}
++
++hotplugger() {
++	local blk state removable
++
++	while :; do
++		for blk in /sys/devices/system/memory/memory*; do
++			state=$(cat "$blk/state" 2>/dev/null)
++			removable=$(cat "$blk/removable" 2>/dev/null || echo 1)
++			[ "$state" = online ] || continue
++			[ "$removable" = 1 ] || continue
++			echo "$blk" >> "$tmpdir/hotplug"
++			# A signal aborts a pending offline_pages().
++			timeout 10 sh -c "echo offline > $blk/state" 2>/dev/null
++			echo online > "$blk/state" 2>/dev/null
++			sleep 1
++		done
++	done
++}
++
++start_workers() {
++	local i
++
++	churn & pids+=($!)
++	for i in $(seq "$readers"); do
++		kpage_reader & pids+=($!)
++	done
++	compactor & pids+=($!)
++	if [ "$do_page_owner" -eq 1 ]; then
++		if [ -r $dbgfs/page_owner ]; then
++			page_owner_reader & pids+=($!)
++		else
++			log "page_owner not available, not reading it"
++		fi
++	fi
++	[ "$do_hotplug" -eq 1 ] && { hotplugger & pids+=($!); }
++}
++
++stop_workers() {
++	[ "${#pids[@]}" -gt 0 ] || return 0
++	kill "${pids[@]}" 2>/dev/null
++	wait "${pids[@]}" 2>/dev/null
++	pids=()
++}
++
++cleanup() {
++	local blk t
++
++	stop_workers
++	for t in fail_hugetlb_vmemmap_pte; do
++		[ -d "$(fa_dir $t)" ] && fa_disable $t > /dev/null
++	done
++	if [ -f "$tmpdir/hotplug" ]; then
++		sort -u "$tmpdir/hotplug" | while read -r blk; do
++			[ "$(cat "$blk/state")" = online ] ||
++				echo online > "$blk/state" 2>/dev/null
++		done
++	fi
++	set_nr "$orig_nr" > /dev/null
++	rm -rf "$tmpdir"
++}
++trap cleanup EXIT
++trap 'exit $KSFT_FAIL' INT TERM
++
++# Run a stress phase. $1: name, $2: fault attr to enable ("" for none).
++stress_phase() {
++	local name=$1 fa=$2 base after injected
++
++	if [ -n "$fa" ] && [ ! -d "$(fa_dir "$fa")" ]; then
++		echo "SKIP: $name (no $(fa_dir "$fa"))"
++		return
++	fi
++
++	log "phase $name: ${duration}s"
++	base=$(memmap_total)
++	[ -n "$fa" ] && fa_enable "$fa"
++	start_workers
++	sleep "$duration"
++	stop_workers
++	if [ -n "$fa" ]; then
++		injected=$(fa_disable "$fa")
++		log "$name: injected $injected failures"
++		[ "$injected" -gt 0 ] ||
++			log "WARNING: $name: no failures injected"
++	fi
++
++	drain || return
++	after=$(memmap_total)
++	if [ "$after" -ne "$base" ]; then
++		fail "$name: memmap pages $after after drain, expected $base"
++	else
++		pass "$name"
++	fi
++}
++
++accounting_phase() {
++	local base got added after expect
++
++	log "phase accounting"
++	base=$(memmap_total)
++	got=$(set_nr "$target_nr")
++	added=$(( got - orig_nr ))
++	if [ "$added" -le 0 ]; then
++		fail "accounting: could not allocate any ${size_kb}kB hugepages"
++		return
++	fi
++	[ "$added" -eq "$nr" ] || log "accounting: only allocated $added of $nr"
++
++	after=$(memmap_total)
++	expect=$(( base - added * freed_per_folio ))
++	if [ "$after" -ne "$expect" ]; then
++		fail "accounting: memmap pages $after after optimizing" \
++			"$added folios, expected $expect (baseline $base)"
++	else
++		pass "accounting: optimize freed $(( base - after ))" \
++			"vmemmap pages"
++	fi
++
++	drain || return
++	after=$(memmap_total)
++	if [ "$after" -ne "$base" ]; then
++		fail "accounting: memmap pages $after after restore," \
++			"expected $base"
++	else
++		pass "accounting: restore"
++	fi
++}
++
++echo "$marker" > /dev/kmsg
++
++accounting_phase
++stress_phase stress ""
++stress_phase pte-inject fail_hugetlb_vmemmap_pte
++
++check_dmesg
++
++if [ "$failures" -ne 0 ]; then
++	echo "FAILED: $failures check(s)"
++	exit $KSFT_FAIL
++fi
++echo "OK"
++exit $KSFT_PASS
+diff --git a/tools/testing/selftests/mm/ksft_hugetlb_vmemmap.sh b/tools/testing/selftests/mm/ksft_hugetlb_vmemmap.sh
+new file mode 100755
+index 000000000000..905b75b2cfb4
+--- /dev/null
++++ b/tools/testing/selftests/mm/ksft_hugetlb_vmemmap.sh
+@@ -0,0 +1,4 @@
++#!/bin/sh -e
++# SPDX-License-Identifier: GPL-2.0
++
++./run_vmtests.sh -t hugetlb_vmemmap
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index a1b45a3dedae..8dcdee7be501 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -77,6 +77,8 @@ separated by spaces:
+ 	test transparent huge pages
+ - hugetlb
+ 	test hugetlbfs huge pages
++- hugetlb_vmemmap
++	test the hugetlb vmemmap optimization
+ - migration
+ 	invoke move_pages(2) to exercise the migration entry code
+ 	paths in the kernel
+@@ -312,6 +314,8 @@ echo "$enable_soft_offline" > /proc/sys/vm/enable_soft_offline
+ CATEGORY="hugetlb" run_test ./hugetlb-read-hwpoison
+ fi
  
--	ret = try_update_vmemmap_pte(addr, pte, entry);
-+	ret = hvo_update_vmemmap_pte(addr, pte, entry);
- 	if (ret)
- 		return ret;
- 
-@@ -279,7 +313,7 @@ static int vmemmap_restore_pte(pte_t *pte, unsigned long addr,
- 	 */
- 	smp_wmb();
- 
--	ret = try_update_vmemmap_pte(addr, pte, mk_pte(dst, PAGE_KERNEL));
-+	ret = hvo_update_vmemmap_pte(addr, pte, mk_pte(dst, PAGE_KERNEL));
- 	if (ret)
- 		return ret;
- 
++CATEGORY="hugetlb_vmemmap" run_test ./hugetlb_vmemmap_stress.sh
++
+ if [ $VADDR64 -ne 0 ]; then
+ 	# va high address boundary switch test
+ 	CATEGORY="hugevm" run_test bash ./va_high_addr_switch.sh
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
