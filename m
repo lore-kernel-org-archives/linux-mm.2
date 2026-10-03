@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F01BCA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:19:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9013BCA5FDD
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:19:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EC6E6B008A; Fri,  2 Oct 2026 20:19:05 -0400 (EDT)
+	id B06A26B008C; Fri,  2 Oct 2026 20:19:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44F0B6B008C; Fri,  2 Oct 2026 20:19:05 -0400 (EDT)
+	id A69AD6B0092; Fri,  2 Oct 2026 20:19:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33DC86B0092; Fri,  2 Oct 2026 20:19:05 -0400 (EDT)
+	id 8E3806B0093; Fri,  2 Oct 2026 20:19:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 056106B008A
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:19:04 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8A4EFA040A
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:19:04 +0000 (UTC)
-X-FDA: 85279405008.01.A51A8FA
-Received: from mail-oi2-f42.google.com (mail-oi2-f42.google.com [74.125.231.234])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CA3E040004
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:19:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dfliUdNW;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 539386B008C
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:19:08 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C1407805A1
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:19:07 +0000 (UTC)
+X-FDA: 85279405134.29.507D50F
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 147E6C0008
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:19:05 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FVVO8jw2;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.231.234 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+	spf=pass (imf28.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790986742;
+	s=arc-20220608; t=1790986746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=alzFpna7whc/qd+JNdpZ8QaO0qS27ekiyNGSU2+s5WQ=;
-	b=JWfyEVcDEd9VYjY6LKfh9sK3wsCR1zt3JgSvKMQ7t9otDqnXIhRFowRTbdjQC7y16rUMZN
-	jJPjg0khD8LpvcxTZEqFrG7iWlgQlGdfNprI5QY6ic2SrCES4zvDTHzmTX2YXX9koft3Mh
-	lTDa7pU6a9jHGIPq3eAfC3qdonDQESk=
+	bh=FS9XCl9z0DTVjd2kXBwt268wO43LTyKRy6tPTS178aI=;
+	b=fcPRW0tCOBfg+A0obMcKEP/XHwHujgTey5rKOBCnc4354JYttTVdVsacxqHmtaRUc7IXzj
+	+O4FZOcf8NLcAnjPn4W6bQnijDIRjFozG0sRjG0WabcwaNSJdo9n4rHquOHN/LKzmkaSCW
+	Cke+700ufza3Ixph8b7DuJ8oY72slpI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dfliUdNW;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FVVO8jw2;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.231.234 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+	spf=pass (imf28.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790986742;
-	b=8PZRdlXkv0+e0MtTbR3DWTMF5DShi9Nc+L+g0i/qZnSz96Yzw7LX6Am9HPfCq9pfTbtMDo
-	qBYuN/Gnk/eM8BqXLJrkkGfO3H3kDvfg8lmgq9aHwp/8BrBo7xlSCP3kRbCtBuBT1blzI4
-	N3jNT4ejtzOpQJPH6HriBZjDnA3B5/8=
-Received: by mail-oi2-f42.google.com with SMTP id 5614622812f47-4e47db1adb8so188245b6e.1
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:19:02 -0700 (PDT)
+	t=1790986746;
+	b=AlM3FW04bzJJ9HOu3HbxoNA05BWG59eAx/G7hu7oErXwT3QXgm8hOkW+jmCXjKCThAJsHi
+	Ce7scWJZyY0rKV8QcFeOw9bXkrEcB2gdfaTjY4eHsBZNsN85rEhXKs5BH91z4LJLYN+PQ1
+	6sjM93fCnixTnKerg4mWbFZwTtsPrnI=
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-821a7bee9b2so321982a34.0
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:19:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790986742; x=1791591542; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1790986745; x=1791591545; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=alzFpna7whc/qd+JNdpZ8QaO0qS27ekiyNGSU2+s5WQ=;
-        b=dfliUdNW0bBYV0zu/ZGvkl52Byi36/id0mz/dzFQSO4zskwcd23KTK6cyvqpphUk7W
-         uKZe/M0LQZSzt8Dig1zsuZXfvNhfO54EJy43jK2hgm8KhwP7VtwYcFSk2tWnTYEogmBz
-         ZtNN4mVGL4cgeGwIV2YcGDINDvZD5zwV5aOCpn0NH8RwMehyjLiQkH3pfymYbp6s27q8
-         O8iSl3bW350SOZNTv7QzA8HTo486as5gqLo4A24f8yfe+X8EP0tgsr6/ytu1q9IsVtTX
-         NG33D2bKIiDTr7rFTJ92iEEnTWPoSdGtTbJUuFIHczUFR1SlXflnvnhESi73n9TfeRF1
-         am5Q==
+        bh=FS9XCl9z0DTVjd2kXBwt268wO43LTyKRy6tPTS178aI=;
+        b=FVVO8jw2v/r9KoBjV2VU5R0mh6zyqgwi9Y378q5Bu1tWBUA7TwA8bx3JBjBfoY1EWH
+         91IZU/cjTodGHXiGVs5fm1liYabuR6+/pJ429DXHmYOaKp7vYEHB0rOOy3Oy1U30Ljed
+         pljubLdxskhorP4bsp2rdJCrf/iLKCtuR1iwZTXWHP7vSqnxIizJtVbsbLKKlbngj4jT
+         P5IyRccYAGHSLz+cG2mhP9sy0kqZL7CohgVioMIe/tVDNZFR4XwrrDdtc7dPjH7JprBA
+         lqjhGo5zzCTf0iMVUjjFMkDSi8jhvSK6pUj8gZw/wqat74Y5uaJXrPtzkd2cyWgV+Dss
+         010w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790986742; x=1791591542;
+        d=1e100.net; s=20260707; t=1790986745; x=1791591545;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=alzFpna7whc/qd+JNdpZ8QaO0qS27ekiyNGSU2+s5WQ=;
-        b=B6xDAv5mhxrrqDbIdk6UEVjPvKieTWTKE90i+Dc5odksJhoG/j9U9sYGCf0HZ3oE4e
-         wsMYs99bUX+14wFufOatopgBpygDBAQ/zYmn6V3aVQ/ePyQgfY1n+H3x2UjP+P01GVRT
-         EXTpBmXA2BIeIsP+hbSXMz/1npwYqrD5Q10jeLLQhUW0/PGPa/OfMvWUv1dEvXxIufhp
-         8BzezIphfHIAYL0hmg7ERBGmkiAyPffymE8zPdHffiX/xPjU6Mds5FOEnLfEa4W0OXNM
-         EgVarYJCa1k27sL+p+8+qtYDPaTgSoowDLuuiA9X1KJi1YdxmFt1h79UDTBkc6I17GFs
-         hVAw==
-X-Forwarded-Encrypted: i=1; AKwUvBxWhdrCza9Z1VFXwdJtvED2R18hC1qINHn5LsT/HUY8zboaNvST1lHJi67ykRHcGJrEf7IefAZHVw==@kvack.org
-X-Gm-Message-State: AFuF++kCjo+rpo/upkM3pUPjShMUQGJeCUliAqL0WHwXSnj0btDvD5ej
-	GS73w6pTuOdhr2pTwvTMNsjmSMeAj+5nynWnU9razmiuNghtr95vykvr
-X-Gm-Gg: AYBFou0a1Jx3i3uMXalgwvel6CjR6oex61em8YV3Y+Chc25d/e1TZVBSrsBAjYoL9aY
-	tPz2HtAs5sMSbPwIPzFcX9rmibFLNoYprpmbOQmVhvJRROd+tX+MNf+Q/rofQpWo2/9bibs6d7y
-	15EjDIBotEoDnpcLWeYRTvEIkNg9VL2gnm+nbuAd5A26rFKoWgRHSLz2m5KXs5+WyB3dyutgJgs
-	pXh+2dPkOezu7EOiVFqloia/EXSa9vt/TT6kH2xtbaM2vvxWWSs2JynQBn6A0tSwnh7FW/obgKo
-	4RB/QWvxUeEqUMc3ojkjFg4dvtHceV2XUHYOkON7ypGFO8fqEZxYdvLOSBIoqp7mUp2TZDdOyx+
-	Cs98m7wHR01omO38ciBIhJzBoCHrkxcFkrxwgfhxzY9k37mU/gQ2vIt5Yrmcuuz0W4FLSCdVTCl
-	B0kynITf0IVm24BPAP6MhjIpMyFuQuV/IYJz/Z86+ND8/JtduZ9FayL300sqHcn1e59c7JVq9Be
-	nkdTjNCfYEnXxYYj1ec1PAG4teu07UyI1r8Z8T+Ahb1rK4lZA==
-X-Received: by 2002:a05:6808:3084:b0:4e9:6a47:be26 with SMTP id 5614622812f47-4f5288bdacamr2628101b6e.22.1790986741784;
-        Fri, 02 Oct 2026 17:19:01 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:2::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4f5243d47absm3330156b6e.8.2026.10.02.17.18.59
+        bh=FS9XCl9z0DTVjd2kXBwt268wO43LTyKRy6tPTS178aI=;
+        b=VyWzwsD75Dq/dDeLRxr0F5J9Vm5/2TDrr3R2bRw5+QJJ+9Mh87CpbM9/1Zje/L0EgX
+         zL0zFhLx4zR3PXm1fpyWd2fDm9qRU00nQaBdGjHuLgNSqjXEqqSY0M/gm1pJNNtNGkkd
+         nvzqK87fkyDvFd3PGdu/HQ4UiexXzYW/oLVQm4j6gQasZSjtlkDnuaR71n+Q6NuM69yy
+         UWxTWLgBvLAMHnpWIuqBp2XaX1AztjfUHkLwzgnvvb6vyfqT6QOdLCs2gAlRoLTanFFF
+         W0IFp6ShRojuY/HKVzDO09FtS6mi4MBL4cawWUWJbR0V0Y5RTg2elVYa9Sc7MZD8TwYs
+         Fnvw==
+X-Forwarded-Encrypted: i=1; AKwUvBwpgRtvVqTqFaKH7QL2X1JChvjFfUYyd49SDB7O3bcr5/RRvuOnRqNl2NtRjUo0EVS5Xz+ZfLWVag==@kvack.org
+X-Gm-Message-State: AFuF++mNE54Kal75UqOjHpRb2ULTnDiYHXbsvrxcApozDngZUdiYEuVb
+	S/jif7/cWs269fgaemAVjqIx2dWjk7UR4EtVgEzFayaD6nBv2ut/a3v+
+X-Gm-Gg: AYBFou1YYS5xSwt2N3lbjqrfYBwW6HZl8FfL6goQs/BXH9PezFOFnafM2Ry8cuj+/DO
+	VZ+wC9P9rXaNq9bX58rvHMaz91dQ+pRHcpdEMldeFiOvKbGrz2DH8zM2ZJNWHkswY7ILBWHZS2o
+	Z/HQIMh71r0nZLksyhUIJJMnayW90452ooTl9PW5x1q97SzQoFH1vtyeemHwZcKV9CHD44uyKG3
+	0OGgdRavJEPp8ZykTsUs/nov6lu24kDb/6S7DR4Lvy6KBfykRuuJMj7W+gtrt0zFjS46zz40YAG
+	lkWDMOoqmMx4+SlmDTIz/mcypl+aQSvG0MJljuO+5s8ySZIOhDUIYu3ofAegzeOSb++ZAyAbv8v
+	bJG7bIJ0++xjQX5MzlYSniUISncCSzWpmPZwlN4vP917N49Ozwpv9GkAIKGwkXHf5adX+AomO8i
+	Rv78LLZsecKA58vFdWjYn4dvJRXZ8Ww2l7Y0mG8Vlh6mf72QnKuz+YePSy0VQRwO03JZtbOvJZH
+	gaELY6cPUU4xd2M8mmYj8imK/pXspUmXf+UKmHahWYYGuWvUA==
+X-Received: by 2002:a05:6830:7285:10b0:823:89b7:a57e with SMTP id 46e09a7af769-82389b7a603mr1114212a34.33.1790986745097;
+        Fri, 02 Oct 2026 17:19:05 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:9::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8227a66c6dfsm4498434a34.23.2026.10.02.17.19.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 17:19:00 -0700 (PDT)
+        Fri, 02 Oct 2026 17:19:03 -0700 (PDT)
 From: Joanne Koong <joannelkoong@gmail.com>
 To: akpm@linux-foundation.org,
 	hannes@cmpxchg.org,
@@ -110,22 +110,22 @@ Cc: mhocko@suse.com,
 	linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v1 1/3] mm: memcontrol: factor reclaim logic out of try_charge_memcg()
-Date: Fri,  2 Oct 2026 17:15:53 -0700
-Message-ID: <20261003001555.3498357-2-joannelkoong@gmail.com>
+Subject: [PATCH v1 2/3] mm: memcontrol: add mem_cgroup_reclaim_for_batch()
+Date: Fri,  2 Oct 2026 17:15:54 -0700
+Message-ID: <20261003001555.3498357-3-joannelkoong@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20261003001555.3498357-1-joannelkoong@gmail.com>
 References: <20261003001555.3498357-1-joannelkoong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CA3E040004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: jwpg9bgfx7o3wm65unwwr6qf346xihxx
-X-HE-Tag: 1790986742-68363
-X-HE-Meta: U2FsdGVkX1/iVmrQqWkoN2SL6imZ6D7ofZRc5MX1aTRXlhSAqpZNuBUV01ToD6tnrFuhY4MTvlR1NY+D7GqSlLNTcT0NYJjYmbzci8jpC8jrW1NxdCrGhiuluaPDoWlHCCw3llteQ3iWKFqG04OhMu1UZRHpg/L6f8MCuUbygXycpCJmG6SXeJPubvze1PapReKokNxc5dfTD714E8oXlM6t1CW1iIyh/214EwiHNtJ17S6y915Xp3O7As6We6Pywh0vJTVygmlwGtZ/G49O1/hdBJX/57rsF5lw/n7nt/jNjP8+mrOWX74QshVb37usW70f9yXzaJWfgJGqg0At3KGxuBp/Rf9A1mtPfOsE0+YpWtRg3Jf9xfnFWZDHQPMGZJ3v+x/Ps6UISdkOOkM54J40RaaU6FBuoH6ZXm0p1+fe0XxR7OfTLk6D1WTGkBxXeQVIIUOSaI4wGbs8w76J5Js6QRqwlTdoFv1y9s2AYjNFL7eOc1MaMENj/Dc3Gr4lcU45fiQJYH1Pz0vFwMSq0j9Hlb2MP3TbWh4SSnvpK8S/Btolaxds3EYO24e2JamnUu3aBqXCyTqBZHT+OHri3ypZIb/OWkfESIVPKSKG8DB52RL62dyhg03u/TZPRy3ayYyQYZ1bXS5K3Pv/YrtIgaXG2fATM+qHj3UqNt6KSH3RWGugaI3GBe+G3UhexRcy5vUQVjVVXFOh6DpLc7708LlIi1gwg8AS5sXYK8zdT7VIaq1DksphMc6AjQMtBBkm0O6z1DdxOYbCboOfZy7lOlXotWmZchvQHohgqL7CpzMa0QMbmNo7yKlZqnodAjM22CQLQPZq9CLoJWWSHhqFaVIOF5M2AaD7WiIWEAQD/8ZroE9RpHKSbf/olppUiAB5wHnSyPniEnMXbNK5XbOsJKn+M6G122TzGD60TxCYBY9fsR48t4bqERl+O9oaqRpOfMFbScVW8x/wJ1Il06g
- gX5ZkvyM
- wtmGUUmjqd2FXzE5OrqL97T/DmieF/58nrJVO/xRKDtArCQMW4H1du01qtxAnEvJ972AqPqk3uIGiSIgxGpdSCgsUzk756WA2NG6+YI+tvA0tKzFYLPA4xDyQsDaH5KSoJKERZQXAFfm939qUUbDXsE/WnhNptcLU5DsHhnFR5opIULYwkRIGg10Ygq7HC3AvQPoi3zzsoqI/1x9JV19ZoDvhs8hw0ShzX/Q2cR8xjWim4JkRsa6VqQHbyGpVlW0FMGJ4tZDPY3k6ABNomhrSqOSzhbIA6e3twiHo4LByjNLvBpaAI3QeAeu9r/rDfHptsxXn8sAWVqoHrtCGIuGwy7EV7B8ZU98qJwMYQ9scgpQGX49RZY8cJdRhDKgQRJaUK/DwMAu8GOWu8IEgyHVNfSSI3vdBS0fw/WZMLMs9ZzFRnaE4v5uiX1kfB6OnoYXtXcEGuA/pz3Q5fQpNqtI/8gcr5VjTrzDClP+QNDibXxqKU3hy4d4gf9Ycqrhn+1LN/Qwq
+X-Stat-Signature: tnmu1u1tpw63wxoqgsp8bnx98wsd3ej9
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 147E6C0008
+X-HE-Tag: 1790986745-780976
+X-HE-Meta: U2FsdGVkX1+W1v9893xPQ3QTmwAvTXQE8rJe40KqOtfvGyXltIw8u+ab34KSQtMhNRULVXN6GKLz7k09STnGHJ3+10CSTod3+PkQcXmxmnB86bEPor6/nTpVRVr3Sg9e9uui5u9EUNoKyjuHdbGySZXZGw1RvflDxdBQ4IkwjXLiDKwZ2yxl4KwvS989nmwuH047H0CxTZ/1hpbk+GkaihJvEZloXspRQGTTy9AbaXTmYBbvK5gALsHOF6r34gR880Gj2md4f4iwsTUz8EsLZY5bW14rjm+cY6zQ5CxUk+xwd0ve1rotMQFPDM2cZRNZYT5VWzV8MOgXetb09F/iGsLCVKRVAyXv96V7l5xnE5S+IzLtGygKIAz9qIpOX0w8xigLzPYOReb5PqG6nlVG4kemMnYHmxJH2ezuu/yZxWOSvkozIn5yJhptUwO6lLFVmOdbK6Ag9hR42cnL7fzH4MECCzbvbup9mhrHvH9hPKSmlUq+GdM4GrCP6K6HFGiGoJVcYeSx45SPgHopSAc5mdLr4FXq9/9nTPHvfyaxkwpf+snw/ZW7pfDt/mE8TeNiOkS4qDp1oBrz/ugpaolL6ZSDHlelFUsoTRFdMn83ihrItddaos4Eo1xEUwyL3s/jCvsiOt1uuOSIks7YK4a/Y3WWWYinDa90RCTrP5egz9iX0JzePZOBqTPFUhzeHVWrV4IYACTA2+iIJM8fdHg8rwbwj4yE8/AWYNqzq8R0Wm/P5aDThhxGF8mGXONuXWPPmqWbPCRXIcfYfGMc739fV0UvMjo+kJfBoSXMA9+TaSoKqjnzNDQsGoaK15SMPGGyZpzv6sQ5rCstFJDa55Pj0wI8hLaLoRAWEW/Y5PWqC4YkJQQqWiZEjJGufCt7MWiIkivKnHHo0r6mpiEqYzCI+vXxM2Vtbr7xNqU4MvoIXck63dcXQ4U2/NEyiJw/Lc0Ecw4v8sWJTWCvOkjQhnz
+ VYRIwwlN
+ NMS5KnzGmydqcVrp1v8N/L0kKs2RvJnkZPS2W+VjCLct0lHMa3Ky3sjZ+wIBUkXgMMD8Xzk/GiEp6SDKq2T/Or8QXaW4NBEX8oYwxbL1RG3ssc179LFCPqjsOky5iqrCoKjHsuzJ5VmgTyDcXPXkUhh0MnvVPPD24D40VUWTdsaKtiJMY/cnk6tzlBlhz4UFqVpMk9RJsT01EaglC6GtQL+TEzJByYiqW6kFMBtDTg03N8WURD8d2poe4koDwO4jjDrNGEfmdY8ClJCp2ZvxzyajODiq1cIaZjN9Ng1++XMohxz29L8mCSmebh2gB+JUmCP/IopABXjLx1zjFncREz8NBtP3+AxapLuHj9pJDHYIsYpg25ly/WL7RyEO/ECkNghw/IflSyvN41wdrI6MALrXxo7oVjzMgKbwcnv4dEFKn3Lxg7ym316oGQAK8zmgdC+YVlzf4MhRWMFgU+IEI/11Nkw452D9F89iAmDRzTdLU9jIAQVjZ+KY0QXezI86enOP61G+PDsegoHk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,117 +133,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move reclaim logic in try_charge_memcg() into helper functions so that
-the next patch can reuse them.
+Some callers charge a batch of folios one at a time, where each charge
+may reclaim. At the memcg limit, each one of those charges then enters
+reclaim separately. Readahead is the main example. This was observed on
+Meta's fleet, where a single fault's readahead window can trigger more
+than a dozen reclaim passes.
 
-In memcg_charge_reclaim(), we can call memcg_memory_event() directly
-instead of passing in allow_spinning. allow_spinning must always be true
-here since memcg_charge_may_reclaim() has already checked that the gfp
-mask allows blocking, which implies spinning is also allowed.
+Add mem_cgroup_reclaim_for_batch() so that such callers can reclaim for
+a whole batch at once instead of once per folio. Callers can then charge
+without reclaim and if a charge fails, call
+mem_cgroup_reclaim_for_batch() to make room for the rest of the batch.
+Unlike try_charge_memcg(), it retries reclaim only once rather than up
+to MAX_RECLAIM_RETRIES since failing is acceptable for the callers'
+charges.
 
-No functional changes.
+The next patch uses it for readahead.
 
 Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 ---
- mm/memcontrol.c | 67 +++++++++++++++++++++++++++++++------------------
- 1 file changed, 43 insertions(+), 24 deletions(-)
+ mm/internal.h   | 10 ++++++++
+ mm/memcontrol.c | 64 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 74 insertions(+)
 
+diff --git a/mm/internal.h b/mm/internal.h
+index ff28b940e0cd..6d914f6a6138 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1652,4 +1652,14 @@ static inline bool can_spin_trylock(void)
+ /* char-mem.c */
+ bool file_is_dev_zero(const struct file *file);
+ 
++#ifdef CONFIG_MEMCG
++bool mem_cgroup_reclaim_for_batch(unsigned long nr_pages, gfp_t gfp);
++#else
++static inline bool mem_cgroup_reclaim_for_batch(unsigned long nr_pages,
++						gfp_t gfp)
++{
++	return false;
++}
++#endif
++
+ #endif	/* __MM_INTERNAL_H */
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index aad0498a7bd6..1d4b603085a5 100644
+index 1d4b603085a5..9aea684ea755 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -2696,6 +2696,46 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
- 	css_put(&memcg->css);
+@@ -2736,6 +2736,70 @@ static unsigned long memcg_charge_reclaim(struct mem_cgroup *memcg,
+ 	return nr_reclaimed;
  }
  
-+static bool memcg_charge_may_reclaim(gfp_t gfp_mask)
++/**
++ * mem_cgroup_reclaim_for_batch - make room for a batch of upcoming charges
++ * @nr_pages: number of pages about to be charged
++ * @gfp: reclaim context
++ *
++ * Reclaim is needed when a memcg's margin (limit minus usage) is less than
++ * @nr_pages. Starting from the memcg that the current task's charges go to,
++ * reclaim @nr_pages from the closest ancestor whose margin is too small, with
++ * at most one retry. This lets callers that charge a batch of folios one at a
++ * time (like readahead) reclaim @nr_pages at once instead of once per folio.
++ * Callers must be ok with the charges failing.
++ *
++ * Returns true if reclaim was needed and done or false if no reclaim was
++ * needed or if the current task may not reclaim.
++ */
++bool mem_cgroup_reclaim_for_batch(unsigned long nr_pages, gfp_t gfp)
 +{
-+	if (unlikely(task_in_memcg_oom(current)))
++	unsigned int reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
++	struct mem_cgroup *orig, *memcg;
++
++	if (mem_cgroup_disabled() || !memcg_charge_may_reclaim(gfp))
 +		return false;
 +
-+	if (!gfpflags_allow_blocking(gfp_mask))
++	orig = get_mem_cgroup_from_mm(NULL);
++	for (memcg = orig; !mem_cgroup_is_root(memcg);
++	     memcg = parent_mem_cgroup(memcg))
++		if (mem_cgroup_margin(memcg) < nr_pages)
++			break;
++
++	/* No reclaim needed. No memcg up to the root lacks the margin */
++	if (mem_cgroup_is_root(memcg)) {
++		css_put(&orig->css);
 +		return false;
++	}
 +
 +	/*
-+	 * OOM victim still needs to charge memory to exit. OOM reaper should
-+	 * help but it might fail on mmap_lock contention. If the victim is a
-+	 * large thread group then all exiting threads might compete on oom_lock
-+	 * just to learn that there is nothing really killable anymore. Bail
-+	 * out early and fail the charge to expedite their exit. They are
-+	 * considered fully reclaimed by the oom reaper and they shouldn't
-+	 * contribute further charges.
++	 * cgroup v1 can limit memory+swap together (memsw). If memsw is the
++	 * limit being hit, swapping a page out doesn't help, so reclaim without
++	 * swapping.
 +	 */
-+	if (tsk_is_oom_victim(current) &&
-+	    mm_flags_test(MMF_OOM_SKIP, current->signal->oom_mm))
-+		return false;
++	if (do_memsw_account() &&
++	    page_counter_read(&memcg->memsw) + nr_pages >
++	    READ_ONCE(memcg->memsw.max))
++		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
 +
++	memcg_charge_reclaim(memcg, nr_pages, gfp, reclaim_options);
++	/*
++	 * Like try_charge_memcg(), if reclaiming didn't make enough room, drain
++	 * the per-cpu stocks and if that doesn't help enough either, try
++	 * reclaiming again. Other tasks charging the same memcg may have used
++	 * up what was just reclaimed. Unlike try_charge_memcg(), only retry
++	 * once rather than up to MAX_RECLAIM_RETRIES times, since failing is
++	 * acceptable for the caller's charges.
++	 */
++	if (mem_cgroup_margin(memcg) < nr_pages) {
++		drain_all_stock(memcg);
++		if (mem_cgroup_margin(memcg) < nr_pages)
++			memcg_charge_reclaim(memcg, nr_pages, gfp,
++					     reclaim_options);
++	}
++	css_put(&orig->css);
 +	return true;
-+}
-+
-+static unsigned long memcg_charge_reclaim(struct mem_cgroup *memcg,
-+					  unsigned long nr_pages,
-+					  gfp_t gfp_mask,
-+					  unsigned int reclaim_options)
-+{
-+	unsigned long nr_reclaimed, pflags;
-+
-+	memcg_memory_event(memcg, MEMCG_MAX);
-+	psi_memstall_enter(&pflags);
-+	nr_reclaimed = try_to_free_mem_cgroup_pages(memcg, nr_pages, gfp_mask,
-+						    reclaim_options, NULL);
-+	psi_memstall_leave(&pflags);
-+
-+	return nr_reclaimed;
 +}
 +
  static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
  			    unsigned int nr_pages)
  {
-@@ -2708,7 +2748,6 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	unsigned int reclaim_options;
- 	bool drained = false;
- 	bool raised_max_event = false;
--	unsigned long pflags;
- 	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
- 	int ret = 0;
- 
-@@ -2747,33 +2786,13 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	if (unlikely(current->flags & PF_MEMALLOC))
- 		goto force;
- 
--	if (unlikely(task_in_memcg_oom(current)))
--		goto nomem;
--
--	if (!gfpflags_allow_blocking(gfp_mask))
--		goto nomem;
--
--	/*
--	 * OOM victim still needs to charge memory to exit. OOM reaper should
--	 * help but it might fail on mmap_lock contention. If the victim is a
--	 * large thread group then all exiting threads might compete on oom_lock
--	 * just to learn that there is nothing really killable anymore. Bail
--	 * out early and fail the charge to expedite their exit. They are
--	 * considered fully reclaimed by the oom reaper and they shouldn't
--	 * contribute further charges.
--	 */
--	if (tsk_is_oom_victim(current) &&
--	    mm_flags_test(MMF_OOM_SKIP, current->signal->oom_mm))
-+	if (!memcg_charge_may_reclaim(gfp_mask))
- 		goto nomem;
- 
--	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
-+	nr_reclaimed = memcg_charge_reclaim(mem_over_limit, nr_pages, gfp_mask,
-+					    reclaim_options);
- 	raised_max_event = true;
- 
--	psi_memstall_enter(&pflags);
--	nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
--						    gfp_mask, reclaim_options, NULL);
--	psi_memstall_leave(&pflags);
--
- 	if (mem_cgroup_margin(mem_over_limit) >= nr_pages)
- 		goto retry;
- 
 -- 
 2.52.0
 
