@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A468CA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:22:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8515ECA5FE3
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:22:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B5AE6B00AA; Fri,  2 Oct 2026 20:21:47 -0400 (EDT)
+	id 05DCD6B00AB; Fri,  2 Oct 2026 20:21:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58CC26B00AC; Fri,  2 Oct 2026 20:21:47 -0400 (EDT)
+	id 035BE6B00AC; Fri,  2 Oct 2026 20:21:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45E186B00AB; Fri,  2 Oct 2026 20:21:47 -0400 (EDT)
+	id E8D626B00AD; Fri,  2 Oct 2026 20:21:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 19B056B00AB
+	by kanga.kvack.org (Postfix) with ESMTP id B62CC6B00AB
 	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:21:47 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9E684A781B
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:41 +0000 (UTC)
-X-FDA: 85279411602.11.5834661
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EFF7140005
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:39 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UXva5cvC;
-	spf=pass (imf27.hostedemail.com: domain of 3kkrAagoKCIUs2qx3pq2xwpxxpun.lxvurw36-vvt4jlt.x0p@flex--jthoughton.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3kkrAagoKCIUs2qx3pq2xwpxxpun.lxvurw36-vvt4jlt.x0p@flex--jthoughton.bounces.google.com;
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5C46FA781B
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:47 +0000 (UTC)
+X-FDA: 85279411854.13.CEBD6A6
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A34EA140003
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:45 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lIA5PFGJ;
+	spf=pass (imf23.hostedemail.com: domain of 3mErAagoKCIsy8w39vw832v33v0t.r310x29C-11zAprz.36v@flex--jthoughton.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3mErAagoKCIsy8w39vw832v33v0t.r310x29C-11zAprz.36v@flex--jthoughton.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790986899;
+	s=arc-20220608; t=1790986905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CW0PrPzO/He6EZ9NlACY98E/BL7OIKImRa0WQareyfQ=;
-	b=XF/vzVGXR91CeapHTQuQZQ33cmiaaSueC1Zcsq5739bMzkSCcDK/E7mJ4omTSAHHOmnPh8
-	qKC/XCNJS42p5r7JC43mMsHHHJwio6w1r+I10dTWxL0FTmCH8EoFR68g67EhIVkZ16nm+D
-	gyBBz4BkEOkTIwujGUSly/8etHTozI4=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UXva5cvC;
-	spf=pass (imf27.hostedemail.com: domain of 3kkrAagoKCIUs2qx3pq2xwpxxpun.lxvurw36-vvt4jlt.x0p@flex--jthoughton.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3kkrAagoKCIUs2qx3pq2xwpxxpun.lxvurw36-vvt4jlt.x0p@flex--jthoughton.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=kgJgaArgO+LTLU+v+0vmnZUyY2L/xXa/jijIgJz7koY=;
+	b=NE6nHluLrAYaNnq0+aO2PIvKgpRgflFgTQFx1MlxD7f/szviIsOwVyT9TniVKQJuYW6mTl
+	LW8riORdKqwc/LlDSrwrWkSYSQnWN5uZGJx2VVsQlN/jbPsKrEvke8+GfU49xO4UxY1kn+
+	HLBRNZuJvdc4t9BQqkpN5pztp9LUqBI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790986900;
-	b=PxWHfCK+NdFA4d9zlngiPhaLiLu23CIWjGzxEwEmxkZjRsjsBgp9mkdsEQOgy7ATL2P/ta
-	9ZfbHd3iZLW4h4KVURX4IZXTzXajnC3ZCi/727ba49vyfuFC/qtrQLTCEU2EKY9CO6t1J3
-	YyhLNaytfZgp2aCA6j2erRZEhcgKGJ8=
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39533bb224cso392301a91.3
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:21:39 -0700 (PDT)
+	t=1790986905;
+	b=EhJ3VJOIEeLTU5MGsCSk3cQz4KLsWAFwjr4TUwiXnutW++NlQZnyySuMshm9Gr7VpedGcp
+	8S+0gD57zQF2m/ZWX60la9w3DAQePHDJCPA02WIEntjNhM+S1c+6W8ZOg/d3TATdI/HE/J
+	eOwmkKuNM3sLiikm6H1+isHL0GrUFsY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lIA5PFGJ;
+	spf=pass (imf23.hostedemail.com: domain of 3mErAagoKCIsy8w39vw832v33v0t.r310x29C-11zAprz.36v@flex--jthoughton.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3mErAagoKCIsy8w39vw832v33v0t.r310x29C-11zAprz.36v@flex--jthoughton.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc73895c7d5so181240a12.1
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:21:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790986899; x=1791591699; darn=kvack.org;
+        d=google.com; s=20251104; t=1790986904; x=1791591704; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=CW0PrPzO/He6EZ9NlACY98E/BL7OIKImRa0WQareyfQ=;
-        b=UXva5cvC5/sicsFRFLNsBJGSdG2ZDPC+guEDg1smsieit3D+bOCrjVSnInj0zOml/Z
-         aw3pn1teq3LncjyP0Fk7xoM7xEauyiraNoXWM+2UQ9ksPrFjp1uhdEiJdKzYGTt9UHsr
-         /GUaa42oLAIRZIJGx52X9KpRclh7jzhF9bicQlSyc1x+haFoXRX97e+WzZCkKgHdqmWD
-         Mr9d+k0K/uOD+CvcEHUzoNyib8WmbQvLeUZcO+sL1F0G5Zo9Wbze2YWebA0+WEkhltT4
-         cJJ11AoJg+iEbUJEaJ9qkflfQVOfpZbnytJovIQMCUVmrMGiYOhteFmKbIytdicmDQYN
-         gTNQ==
+        bh=kgJgaArgO+LTLU+v+0vmnZUyY2L/xXa/jijIgJz7koY=;
+        b=lIA5PFGJVxwik8nTWMN+eQRLy+tmr+3Iq2aNxTeomfAIFrw+PnnSlTWEok1duVlkbn
+         nFwQoNAqS+JS/DQUg3YHcbOKkriWsZAHIUXms7rHvi8Me2Y8PMWVTDVlFIj4Px4EIruC
+         m23baDEI09/zh8+Hwos8M9iPwdapYEpPJEK+4ggO7Z6xHKwzXIQRUpt5YeipDXr+fUaC
+         8vr3c0x3vHnwQ5TVgQMVxJaiFdgwHafClBy34vQ3LqBN+SOkyyaUvGz+SuHGKOh8uZtC
+         MWgxhs5MCTJJgUhpL3Z4fp6MJZ8ByM5XCHLGU8OACVNzqmqq+j4YWa+1OzgY8y2S5i/T
+         eLFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790986899; x=1791591699;
+        d=1e100.net; s=20260707; t=1790986904; x=1791591704;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CW0PrPzO/He6EZ9NlACY98E/BL7OIKImRa0WQareyfQ=;
-        b=0iBLqC5aJQiUFU1fqJPlupzEbiAAeY9YnTLNDiCFVE0RFqz3RpvkCIJdiVEaEpluTS
-         p1zPI7nifFHNnl4BW+d6pPmedjWE85bIObJycdgfe0nTFY0DlfQ6Rr4PMAy8DBZ1qaWu
-         7zLrDYd5Hj8UNxtzkXX32w0vaJlGhCavwfa/QzG63k3USS3OXrLMznJuwVg2QIVT6ENG
-         iTi6t1B8LpFvrs7xSZV/PjmSlaaHYnQKQ9lLTa6+zuVSVGoRW4vjy7cZtz2ZrlLu2KFE
-         UJA6A+gCsisr99JhoZa2QWQryjBzSaJlqPQ+wjD+FEQ2+aDKDAQAH+WTXGS9q+fckjm9
-         48Sg==
-X-Forwarded-Encrypted: i=1; AKwUvBzPmNfO1d8Qwg4t7LQon665oQV/OrtzQnhFylmj0eTq5Mb9tqycwjI7xB3l5arFAsCBKFcNI44AzA==@kvack.org
-X-Gm-Message-State: AFq9FYI6RhPXQ1qfwzxcQzgSzisMPijWrOCFJ+fUodLYLgTls+k4Qt2z
-	9b2wK+tlDllmz85lN6fTQU3UFea5yQ9hYsPM96NpvSGJRIOZWZ9Gz+HiEOBms6nSpcBgdastw07
-	ZApa3HZxfcBoMTUFFeLIjKg==
-X-Received: from pgby27-n2.prod.google.com ([2002:a05:6a02:651b:20b0:cc7:d8ea:a7b5])
+        bh=kgJgaArgO+LTLU+v+0vmnZUyY2L/xXa/jijIgJz7koY=;
+        b=0pbgv81SffmmMXD+WZFryxA17SnlvpEb6uX+YNBtV7C3FYRLtCz+ja2LZzwufmYiNt
+         tRwLI763/K14zoc8QLaqUNcjdnHIysp2ojN3KzcfDjm1AXfHtJH/wXZhb8fUPmYFqcOv
+         Zni5Vx7tU+QBERx2c9/cCWYmhZ0aQA1/96uN1IIKzK4q/YIDzAi1GhNdfH+abS8+iC6j
+         SAIJF1L6Ob6kgSDVCLiPABwfNt7xXcTb88hO1SqNjXqhOWKoo62hq5pt1vEzlBKJFypo
+         19ySiRG97AhKnRULsTnsbo3REEAKrSgyVQJTDQNg8dmljSS2MIjYgj3tvXuIXLa4BISp
+         di0w==
+X-Forwarded-Encrypted: i=1; AKwUvBxEhqn0W8Ed0CKvmvo37lYSa/xofqVfduceRI35j9MnmAOqg8Hwyl66nYbPrnamFjJVZRpF9PKHGw==@kvack.org
+X-Gm-Message-State: AFuF++kqbhrjvM5yp7ztChW9QiplD252b7E0Bz5wD+pX7nDvmucNUoOc
+	3rWtSLS+LKWt6WIz6fj63rIo67Qc/CeDqReM0wZXG+5VAz/j9c2CUiIe4HxYYAKCrMtfc6yBJKZ
+	lTgQMspsihH2jLP/4ITv0KA==
+X-Received: from pghs8.prod.google.com ([2002:a63:e808:0:b0:cca:5338:9514])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:134c:b0:39e:6a7e:ee1b with SMTP id 98e67ed59e1d1-3a6ce7db233mr2804158a91.39.1790986898532;
- Fri, 02 Oct 2026 17:21:38 -0700 (PDT)
-Date: Sat,  3 Oct 2026 00:21:08 +0000
+ 2002:a05:6a20:cfa8:b0:3de:4662:16f3 with SMTP id adf61e73a8af0-3e0d6b4a29bmr858218637.50.1790986904231;
+ Fri, 02 Oct 2026 17:21:44 -0700 (PDT)
+Date: Sat,  3 Oct 2026 00:21:14 +0000
 In-Reply-To: <20261003002123.505555-1-jthoughton@google.com>
 Mime-Version: 1.0
 References: <20261003002123.505555-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261003002123.505555-6-jthoughton@google.com>
-Subject: [PATCH v2 05/20] hugetlb_vmemmap: Use try_update_vmemmap_pte to
- update in-use PTEs
+Message-ID: <20261003002123.505555-12-jthoughton@google.com>
+Subject: [PATCH v2 11/20] arm64: Add bbm_through_af capability
 From: James Houghton <jthoughton@google.com>
 To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -102,14 +101,14 @@ Cc: Nikos Nikoleris <nikos.nikoleris@arm.com>, Linu Cherian <linu.cherian@arm.co
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EFF7140005
-X-Stat-Signature: 3zzdiijrkprfu37tsdm4tiu1yy7dai77
 X-Rspam-User: 
-X-HE-Tag: 1790986899-844940
-X-HE-Meta: U2FsdGVkX1/5Gg4xo+6l+WMSWoXzSVX68qpRiF9+9jBIPkZ8t3RqpIa1QoGwcRFFhCxhpt5ru6bafSXIBN6NCj9sSurMwWmnrnUT4qtJFuSf3Y5WNfMJnLRzpq0bTYt1gtVQnq6sv15fF5vxL/4Dv5YtG+pMglpjo4R+zmRFQBEfoJ/wsh7gwzfOV3AzhM4uv/TKbr8b1iDO1GTdOTNxd6MqD5FWogzXu1VIqh7gMxgn3oHhUUC+Rw0ti+klzWcQ/0+DMKQC7P7LmRNjyRWegR6Rzb9/PnX7PTA05iv2t5gxDV6f7tyOt59q+lvqhZjWQrURpiuQKNpvxTVK+EB9YVT14w+4RxD6XKptGo/HoRg9ExCI+oRDhYMXeP/G76pXkCHK++tk31LfXDN8lJR5xHvKxLIVcBGOootofM8Fs0hU8fdIWPCHl6APWyug9dp9d25sctzv3NMiVJLQQvkxhpx4agG78p3rnw/O1gsotlMlNKaEu8hkjzSPH447vIxOasB3/gSWRg3Ar1IHXN1Q8KTvbCjRlffnYI9L80V9QMjFjMULGZaxRc0SyuzLRYgplbt9QtE73YFkwsnlFNVJkkX+FPu7Z1rSn+0SkMKgsJyj+z8MrOFXH/OZfs/We7+SWiSBqo91rWSSY4lF7Xj//BIHYCRIcj59+17k/WKCVgyiYyLyg1q03VCrzsv8alMn7OMpKeK+LiNLt7B5FHxruqNNh2HEQw5ZYJC+Ec/dG7H44Qu0a36Ih17C/txaGR+kMdC9USQBUxxUqCNnyEO9za3vmwvahYHmdqf6ayYyalhgU3k5hIuiREzO9V+pZ5WeRDGSAVp/3DZKDJziJqn1nt6ebl/bDNXu5K0piUaKUmq3qvT4kuyTHTRhSS04HUfnsvI/IBQkVB+YvrEFkTQ+09oV9Ko8S/3vvbnHpRVruVMqukr4QO1YzKsS9npCAaTs4J4kIERRMQ0J43WzrAN
- +fxBwW9I
- xh8KvIMgmJz+YxyOgcCvXejM4eRKlgiLnxZG/DpWqA/mYlQfJ0EbTOhQw6QdovjDN8jagAIDRhRqWOs3htJRKb5GHnI1rFHdTjoF+QjRJAXItVoPokIWlu1gPwX9QcatSpKJQ/+bgV/l7zvYFLdvXHkRmYSf8rSHPDEZGrvpS1aEy043x4+NK5hcEHn4zq684QA5a49oZT6hym69FagV8lfh+as+vZ+Cn5ANqJFgDUlVcskOVkr/u7+j/+atK73zTNbJsJXdd4+kHquiHm8+EgOqzquEyZpRFbSqNQFi9X/Tujx+jndGlLwRnXdcTis9u3cqRUZ8M9RDpRlzdIQWleFTB7NgFY6KieM/to5eOStfzm3WUElC3GJFhL1E1t2DqumIaBhrNyjCC0Ys7YeLp1TIDYU714O1JOh6eDjpW17NHu5HXtkm5XtNT9EDM9v5mLckKYHc6fPnJ4q5lESKDKukIJOHVr46Gn7x0EGsEp6JoBakAksz5uBlfuuhQTUnEL0up8LYmKY4qXCAONWJToLZvGEv+8WRxrSbCotZPBTSkHC0kLUeDI1uHMA8KzdRNgZkMgrhkC88QzhdZ90xX+nEINhlCwGp3mDZwwkK4MRtD74VG73d1Wv1cwWhtsqhpGDIzFLMBMm9m+1z5KKJnBSzeJJIipn23xPnB
+X-Stat-Signature: e6h5z5hwznedsu8idu6oqrd8jzq3raqh
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A34EA140003
+X-HE-Tag: 1790986905-901440
+X-HE-Meta: U2FsdGVkX1/KcPVe8m/6XUu78xKHsV77wB35d3nfUyI/IxdrsV16zMR+UK1zw9rsuEgOhFlVQ4owmH0HvDx0PbVnU6F3xleYx506pKx9EX8HGusIVgBCQa9ViYDfk7KJd5QO+QGo6gK/DkLYl6lWxJBBusfWk70L2zLdbMYfbmapipb09N/GogxWTk1hlrxcriIQ0H5666chH5Nr3Mp0nGaHc0BBUEwDmBOXOW2jqyzoQRGFalqqTU10ncc8M7IRvfTNEw8U82unf9LXZvRbWhg/uajAsnWDRTZye+OUVZQVk1YTaInkLKQyvtOyx8L3RZaZxzUCc+/r8jrYNl9rh7xXxjFvM+EH8e9BHIA/s+KFOk2DeVtNwCNM6gUkQzxwN8XUMARpF6mtjsRkeZu/1CW6BmmgERum28vkOVLtZnle6L5KmcBCD2y+OsCif+wXDH4flvfnZxUAcP3XOtwB445OAlEe5IyOWjlFjfq7AAPNMM4AT1SkfKk1GPaj9E23H/u7zifKTj5TJAN/NdPPpnZ1lxAD+DccR5JWSxAyULaZ6LXQH7hWd74Z5Vhd6+ZSMvum86EUSPuLzy8R+rj2sJ0oq+1liYY7c5OJ6YiQfozpNRv5q4kmK/tKSRVYZaIp+E7xK8fLdGKWcfXD3OmG7uwGGg96S577V5W/C/2HwZgqHzVaNz+6/rqCldgUKLIpk5mBSvUXFw9ehQLG+F/o5Fmbq97RG+aNvmxkriwIjAen7sPVYj51dqbAwgOOSQehv6lBqOHq9e7DjYTlLorTCNYC059BHH5PXAvKprPGfoMlxIesNnDmOESAF/7Cpw2WBTump6xlH5PpLaiFKcE2TOLRtSLRGZ7CiCojpnDrUhQqZvz3mVWS29TN2PdDHeMIWuPcziCZtgdn4tgiGXGydI4jzRmw7oOK21D4SCH+kQKJy2snFT7nmwLxuZmABQ/bHHAuFTIX3oGdXl82R9z
+ SReLPqvT
+ LpTyVand2YySuHPU066POQ6MwpXTmGLdGao7AgklrOEuppnJVGM4T96XWBxgY0MpFs4T2dupAGhfLYz/xnNHiXTfyr6VyQge00z2Aj5fLnH335HvxCzvCT96/furOwVW2+PMVrO6DpoDOwWCzUi8r5hnf1LxC/YWWvsP8nylun3IXr8CsYDsYHqk+6Ey3IlYe+ZPO/uCbzwdhUH7GEJGsCY/WW6zesO203ig1+jv7/zPJZX9CV05ihdieBjEr1BIn2xHhmdFRrhIY3b7285Rvz/RZQgsXu3yY9o21cOZGm9el/eyxrEbLpjf0Bl3tFqI8avNb+nv2g222hfxVTZhmpMc7SLDWTYmNmq7uZUzyG6CwQatxcOnhJC9DnAPGzD2Ux3+CTcUu1OJS7KKFWIWZMKhcyoZ9Qb0cy64bBpV/uo45Ag9xvYYhFc93kkGP+qvSHf519LjzzNCf4BFKOIGJb0s1flMQ4rdRkcm6rTmVLk5gb41uBOAswNEbQj8Jc0LX/m7H9Y29YzZOVQLGaz8DSQxWf+kVWwLBm5+4+IF8EEecAIZzp7Az+DDcgghUhSeObqBJ6+oBlj3y4oHnf66p2RfeY1y02ozOlO/kLIAmDLa4FmLfwosM3PhCcOHevi6HkUr8/cE4skMRuiDis8k7CQXE8WKj4e/2OM7z1x9E/Go5ag1j8Rho8ekLuIwoDmAw4hcl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,220 +116,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-set_pte_at() cannot be used to replace in-use vmemmap PTEs on arm64, so
-replace it with a more specific routine, try_update_vmemmap_pte().
+HVO requires BBM Level 3 for the block -> table transitions when
+optimizing the vmemmap, and it requires hardware AF management to avoid
+taking page faults on the !AF translation that is installed as part of
+the RW table -> RO + new OA table transitions.
 
-try_update_vmemmap_pte() is used for modifying page table entries such
-that there is a guarantee that no fault will be taken.
+Call this requirement "BBM through AF"; i.e., all CPUs support BBM-less,
+in-place TTD updates. Model this as a system feature, as all CPUs must
+support it for the kernel to use it.
 
-For the generic implementation, please note one difference: set_pte()
-does not invoke page_table_check_ptes_set(), but set_pte_at(), the call
-we are about to replace, does. However, this is a functional no-op
-because page_table_check_ptes_set() does nothing for init_mm PTEs, which
-vmemmap PTEs are.
+It may seem odd to check for HVO support directly in bbm_through_af().
+If this weren't done, any system with mismatched HW AF will no longer be
+able to start late CPUs that are missing HW AF if all early CPUs have HW
+AF (and BBML3).
 
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- arch/loongarch/include/asm/pgtable.h |  2 +
- arch/riscv/include/asm/pgtable.h     |  2 +
- arch/x86/include/asm/pgtable.h       |  2 +
- include/linux/pgtable.h              | 22 +++++++++++
- mm/hugetlb_vmemmap.c                 | 56 +++++++++++++++++++---------
- 5 files changed, 67 insertions(+), 17 deletions(-)
+ arch/arm64/include/asm/cpufeature.h |  5 +++++
+ arch/arm64/kernel/cpufeature.c      | 26 ++++++++++++++++++++++++++
+ arch/arm64/tools/cpucaps            |  1 +
+ 3 files changed, 32 insertions(+)
 
-diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
-index f87603135131..123eda3f6035 100644
---- a/arch/loongarch/include/asm/pgtable.h
-+++ b/arch/loongarch/include/asm/pgtable.h
-@@ -633,6 +633,8 @@ static inline long pmd_protnone(pmd_t pmd)
- #define pmd_leaf(pmd)		((pmd_val(pmd) & _PAGE_HUGE) != 0)
- #define pud_leaf(pud)		((pud_val(pud) & _PAGE_HUGE) != 0)
- 
-+#define ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PTE
-+
- /*
-  * We provide our own get_unmapped area to cope with the virtual aliasing
-  * constraints placed on us by the cache architecture.
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 4c8fc6845503..6cfae7720882 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -1165,6 +1165,8 @@ static inline pud_t pud_modify(pud_t pud, pgprot_t newprot)
- 
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
-+#define ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PTE
-+
- /*
-  * Encode/decode swap entries and swap PTEs. Swap PTEs are all PTEs that
-  * are !pte_none() && !pte_present().
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index ef0252a09c28..f60c09cdf1ec 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -1368,6 +1368,8 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+index 4f04ad82ea34..fbededd7b748 100644
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -878,6 +878,11 @@ static inline bool system_supports_bbml3(void)
+ 	return alternative_has_cap_unlikely(ARM64_HAS_BBML3);
  }
- #endif
  
-+#define ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PTE
-+
- #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
- static inline pud_t pudp_establish(struct vm_area_struct *vma,
- 		unsigned long address, pud_t *pudp, pud_t pud)
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 780fe849ff8b..59ab7ca93548 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -457,6 +457,28 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
- #endif
- #define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, addr, ptep, pte, 1)
- 
-+#ifdef ARCH_WANTS_GENERIC_POPULATE_VMEMMAP_PTE
-+/*
-+ * try_update_vmemmap_pte - Remap PTEs used by the vmemmap.
-+ * @addr: Base address of the remapped PTE.
-+ * @ptep: Page table pointer to be overwritten.
-+ * @pte: Page table entry to write.
-+ *
-+ * This function is only to be used to update PTEs that map the vmemmap. The
-+ * only valid transitions supported by this function are: leaf-level
-+ * (PAGE_SIZE), valid-to-valid. The pfn and prot bits may be changed.
-+ *
-+ * Implementations of this function must ensure that, while the update is taking
-+ * place, CPUs will not fault on the remapped virtual address.
-+ */
-+static inline int try_update_vmemmap_pte(unsigned long addr, pte_t *ptep,
-+					 pte_t pte)
++static inline bool system_supports_bbm_through_af(void)
 +{
-+	set_pte(ptep, pte);
-+	return 0;
++	return alternative_has_cap_unlikely(ARM64_HAS_BBM_THROUGH_AF);
 +}
-+#endif
 +
- #ifndef __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
- extern int ptep_set_access_flags(struct vm_area_struct *vma,
- 				 unsigned long address, pte_t *ptep,
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index 90db4d069ff6..3fdb1e4ce1a1 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -33,7 +33,7 @@
-  *			operations.
-  */
- struct vmemmap_remap_walk {
--	void			(*remap_pte)(pte_t *pte, unsigned long addr,
-+	int			(*remap_pte)(pte_t *pte, unsigned long addr,
- 					     struct vmemmap_remap_walk *walk);
+ int do_emulate_mrs(struct pt_regs *regs, u32 sys_reg, u32 rt);
+ bool try_emulate_mrs(struct pt_regs *regs, u32 isn);
  
- 	unsigned long		nr_walked;
-@@ -140,11 +140,13 @@ static int vmemmap_pte_entry(pte_t *pte, unsigned long addr,
- 			     unsigned long next, struct mm_walk *walk)
- {
- 	struct vmemmap_remap_walk *vmemmap_walk = walk->private;
-+	int ret = 0;
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 32102c3912fa..448d4ef085de 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -76,6 +76,7 @@
+ #include <linux/kasan.h>
+ #include <linux/percpu.h>
+ #include <linux/sched/isolation.h>
++#include <linux/hugetlb.h>
  
--	vmemmap_walk->remap_pte(pte, addr, vmemmap_walk);
--	vmemmap_walk->nr_walked++;
-+	ret = vmemmap_walk->remap_pte(pte, addr, vmemmap_walk);
-+	if (!ret)
-+		vmemmap_walk->nr_walked++;
- 
--	return 0;
-+	return ret;
+ #include <asm/arm_pmuv3.h>
+ #include <asm/cpu.h>
+@@ -2193,6 +2194,25 @@ static bool has_bbml3(const struct arm64_cpu_capabilities *caps, int scope)
+ 	return cpu_supports_bbml3();
  }
  
- static const struct mm_walk_ops vmemmap_remap_ops = {
-@@ -196,18 +198,20 @@ static void free_vmemmap_page_list(struct list_head *list)
- 		free_vmemmap_page(page);
- }
- 
--static void vmemmap_remap_pte(pte_t *pte, unsigned long addr,
--			      struct vmemmap_remap_walk *walk)
-+static int vmemmap_remap_pte(pte_t *pte, unsigned long addr,
-+			     struct vmemmap_remap_walk *walk)
- {
- 	struct page *page = pte_page(ptep_get(pte));
- 	pte_t entry;
-+	bool head;
-+	int ret;
-+
-+	head = walk->nr_walked == 0 && walk->vmemmap_head;
- 
- 	/* Remapping the head page requires r/w */
--	if (unlikely(walk->nr_walked == 0 && walk->vmemmap_head)) {
-+	if (unlikely(head)) {
- 		VM_WARN_ON_ONCE(!PageHead((const struct page *)addr));
- 
--		list_del(&walk->vmemmap_head->lru);
--
- 		/*
- 		 * Makes sure that preceding stores to the page contents from
- 		 * vmemmap_remap_free() become visible before the set_pte_at()
-@@ -226,17 +230,30 @@ static void vmemmap_remap_pte(pte_t *pte, unsigned long addr,
- 		entry = mk_pte(walk->vmemmap_tail, PAGE_KERNEL_RO);
- 	}
- 
-+	ret = try_update_vmemmap_pte(addr, pte, entry);
-+	if (ret)
-+		return ret;
-+
-+	/* We successfully overwrote the vmemmap PTE, so we can free
-+	 * the vmemmap page that was just unmapped, and if we mapped
-+	 * the new head page, remove it from the list so that it
-+	 * doesn't get freed later.
++static bool has_bbm_through_af(const struct arm64_cpu_capabilities *caps, int scope)
++{
++	/*
++	 * BBM-through-AF is only needed for HVO. If HVO is not in use, don't
++	 * penalize systems with mismatched support.
 +	 */
- 	list_add(&page->lru, walk->vmemmap_pages);
--	set_pte_at(&init_mm, addr, pte, entry);
-+	if (head)
-+		list_del(&walk->vmemmap_head->lru);
++	if (!hugetlb_vmemmap_optimize_enabled()) {
++		BUILD_BUG_ON(!IS_ENABLED(CONFIG_ARCH_WANT_HUGETLB_VMEMMAP_RO_AFTER_INIT));
++		return false;
++	}
 +
-+	return 0;
- }
- 
--static void vmemmap_restore_pte(pte_t *pte, unsigned long addr,
--				struct vmemmap_remap_walk *walk)
-+static int vmemmap_restore_pte(pte_t *pte, unsigned long addr,
-+			       struct vmemmap_remap_walk *walk)
++	/*
++	 * We need BBML3 to support Block -> Table transitions without taking
++	 * faults, and we need HW AF support to support changing the OA without
++	 * taking faults.
++	 */
++	return cpu_supports_bbml3() && cpu_has_hw_af();
++}
++
+ static void cpu_enable_pan(const struct arm64_cpu_capabilities *__unused)
  {
- 	struct page *src = pte_page(ptep_get(pte)), *dst;
-+	int ret;
- 
- 	if (WARN_ON_ONCE(!walk->vmemmap_tail))
--		return;
-+		return -EINVAL;
- 
  	/*
- 	 * When restoring a partially-HVOed page, keep the copied head page
-@@ -244,20 +261,25 @@ static void vmemmap_restore_pte(pte_t *pte, unsigned long addr,
- 	 * page.
- 	 */
- 	if (walk->vmemmap_tail != src)
--		return;
-+		return 0;
- 
- 	VM_WARN_ON_ONCE(PageHead((const struct page *)addr));
- 
- 	dst = list_first_entry(walk->vmemmap_pages, struct page, lru);
--	list_del(&dst->lru);
- 	copy_page(page_to_virt(dst), page_to_virt(src));
- 
- 	/*
- 	 * Makes sure that preceding stores to the page contents become visible
--	 * before the set_pte_at() write.
-+	 * before the try_update_vmemmap_pte() write.
- 	 */
- 	smp_wmb();
--	set_pte_at(&init_mm, addr, pte, mk_pte(dst, PAGE_KERNEL));
-+
-+	ret = try_update_vmemmap_pte(addr, pte, mk_pte(dst, PAGE_KERNEL));
-+	if (ret)
-+		return ret;
-+
-+	list_del(&dst->lru);
-+	return 0;
- }
- 
- /**
+@@ -3102,6 +3122,12 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+ 		.type = ARM64_CPUCAP_EARLY_LOCAL_CPU_FEATURE,
+ 		.matches = has_bbml3,
+ 	},
++	{
++		.desc = "BBM-less TTD updates via Access Flag",
++		.capability = ARM64_HAS_BBM_THROUGH_AF,
++		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
++		.matches = has_bbm_through_af,
++	},
+ 	{
+ 		.desc = "52-bit Virtual Addressing for KVM (LPA2)",
+ 		.capability = ARM64_HAS_LPA2,
+diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
+index 2775ba3359cf..25a84aa8a363 100644
+--- a/arch/arm64/tools/cpucaps
++++ b/arch/arm64/tools/cpucaps
+@@ -15,6 +15,7 @@ HAS_ADDRESS_AUTH_IMP_DEF
+ HAS_AMU_EXTN
+ HAS_ARMv8_4_TTL
+ HAS_BBML3
++HAS_BBM_THROUGH_AF
+ HAS_CACHE_DIC
+ HAS_CACHE_IDC
+ HAS_CNP
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
