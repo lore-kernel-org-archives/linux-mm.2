@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45909CA5FE3
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:32:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDD19CA5FE3
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:32:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CDF46B00B0; Fri,  2 Oct 2026 20:32:39 -0400 (EDT)
+	id B974F6B00B3; Fri,  2 Oct 2026 20:32:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37DCC6B00B1; Fri,  2 Oct 2026 20:32:39 -0400 (EDT)
+	id B6E666B00B4; Fri,  2 Oct 2026 20:32:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26D256B00BC; Fri,  2 Oct 2026 20:32:39 -0400 (EDT)
+	id A5CDC6B00BB; Fri,  2 Oct 2026 20:32:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 04AAC6B00B0
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:32:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7EF541A088A
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:32:38 +0000 (UTC)
-X-FDA: 85279439196.11.5F42BC5
-Received: from mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 92217180006
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:32:36 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 67F496B00B3
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:32:48 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DA5C516060C
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:32:47 +0000 (UTC)
+X-FDA: 85279439574.21.0DA050E
+Received: from mta1.migadu.com (out-190.mta1.migadu.com [95.215.58.190])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D712F4000B
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:32:45 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	spf=pass (imf17.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.190 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790987556;
+	s=arc-20220608; t=1790987566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dFHdCIFpR6eiBZ/6Q8EUAiqmG7qqRbnCqbo8usyasfU=;
-	b=Bud+0BEWEOaJJXNS1aMkjpZOJfblXhVG5t+zJH6zKBXcvW/gSzKEJWyFBbZQ0IEsugf8i0
-	REg9eqBrE7LmvBkkkVg+wOfPWJ+afsgfYHdBZIKMJZ9oFqTi8l3ic6vGbeD+651AOvLWu5
-	fD6mUgzAnDakOMddl0MITXtGBHId8MI=
+	bh=tPWxd43pgSFWOwQoMBzZJewbLv7LgM9iM286t4dNXco=;
+	b=aB/UL8BAHRPWZm+n2WDDBn35m5iAXd3E/xaRyY6Wx4LyrugXihEA9SgrhFVSsFfVzvQ0p3
+	XrqoxnbS/nErYKSEyN5AiSaau1zBQ2mRRo7+wK4pKvJE0cMp3kaAP7lhP+zPy1iHkm4T3G
+	8JdD63CUhd3bFRm4Vn0IIILNe0vpLRQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
+	imf17.hostedemail.com;
 	dkim=none;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	spf=pass (imf17.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.190 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790987556;
-	b=5F4jjNqtiCi3kX19KrtIDBaMVpMZOltTrXXJYNzsSlBYbmZPTZ51PbzGj2A/ZkOLUiu3W7
-	AybUvWba748C+ZfYFrfN08roEvlst+ER1hiVHyNULNsg9Kfv75/JIqNi0SGYKbDxZPBcqs
-	VgBLJzAmkaESauEMFZOfny2PVpx7HbQ=
+	t=1790987566;
+	b=wQvcp1NLOZBFpg2eLA0pQkJ4VNcwqgxBpWaOYqQGgFhg7K7MV5wKQ/IV1wJ4N8NHdj0Oyk
+	4ZB7Du8y0v9NV8TLgNw85PrTML0SYwZJRMGn74vZr/bN9C2htfvNgiXfs4PwGLoVJS9qO0
+	aqP+RLK2tX7EiI/GbA+LUqRYp1g5jJc=
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 5c89744b9029ea2d;
-	Sat, 03 Oct 2026 00:32:35 +0000
-X-Mizu-Trace-ID: 5c89744b9029ea2d
+Received: by mta11.migadu.com with ESMTPS id a6b9ee29fbbfe81c;
+	Sat, 03 Oct 2026 00:32:44 +0000
+X-Mizu-Trace-ID: a6b9ee29fbbfe81c
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -71,23 +71,23 @@ Cc: akpm@linux-foundation.org,
 	kunwu.chan@gmail.com,
 	klarasmodin@gmail.com,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH v4 07/14] mm, swap: free backing pages in xswap_unmap_clusters
-Date: Sat,  3 Oct 2026 08:31:29 +0800
-Message-ID: <20261003003136.750633-8-hebaoquan@kylinos.cn>
+Subject: [PATCH v4 08/14] mm, swap: defer xswap shrink to workqueue to avoid lock recursion
+Date: Sat,  3 Oct 2026 08:31:30 +0800
+Message-ID: <20261003003136.750633-9-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261003003136.750633-1-hebaoquan@kylinos.cn>
 References: <20261003003136.750633-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D712F4000B
 X-Rspam-User: 
-X-Stat-Signature: bhhh7xfejy67b6aw9k7hndfhtbq4xfnm
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 92217180006
-X-HE-Tag: 1790987556-20842
-X-HE-Meta: U2FsdGVkX1/Na0ZHucdGfgppjrO+sq0KmJLtJjDAccylwLrpibT7zLhNRB1eAfLxfTqv+MbsbgMPJq7tB9fljo/LKrP1nPIosOXRNrdvggZzwxJgc1rxPjjEbjx4iyAsUzw1JDtktINLxCTLVZibCMONhsABRndLy+h/UOtlwiRKDpY/8QXkDPVjG2UdG1suPmrVvde+mchDsvybGD4RX89nnUGnDUXfcToMbHsl9ZzTrM8C41+4ZlYYS+cVLEhCxsAdzQnly8/ngiZFqVzxhW5gSg/TitYZgsswUWLGjh65p7Z7W8YHx3T7wEqbpf+3FIoi/CpXxtpS+ifvZiSBKOSPPJypO3boT/t8C7ARPeZ+npQ0hganQhAlYXi9245Xnlo0qMz8oEy4C+Mx63wP39yfSpIOxY9Je5r/nBuDSyqEJByYvXorDgoCXzAbBoc5JbQo/Vl+itc0IIk3eMRvXycKLPMwmbR/qYc3fJw7mPTqeSedaqR1knRiIvdGwTzmzkvFACGcI6SCn2Nl32ynM/5sZWaeGh5GKrliyhnyGqKmYl1vo/3dffvINU/4T/yBL09DwmyVQfnyagRCbx7Ih9g5MaUBUc4gwG3vZJGPX0nSMeR5cAfndyuS+PE/RJY6jv1XBBZYLYYWrJ0zUgmImK32RTc/WBBeD9X0kkzs3jB3ZX5GgZ0xhkgNcR2z5oxFBRKeHLUPwCp1VtU7vxEOd8oWpcKywo3hPOZYV3M503uQ4OvwG/bcCuftkJORH3ePIsSCbrZZdIfzOEAhva7dtrTjiGAKA7ujlIaJx3kPmrDFc+O/EMVvOPqDe3n5qbRz1afyejSIOXZNq+fKA8ohFSbh09B4kq01Rg0phsvq91t+pEXSv12sm7mKa9qhtt1Cj9wxAw4jvoq14i8f5R5Lc8CDVrkk76hnqwDHP9mHuAFQPE+lajROCddq9Nmk3W31g1PTu4TPDqWBzRCXs2o
- QGDm17fC
- kTG8V471t+AyZdbpYYRXcPUIrEB8LLNXIZ9z6NuT8v9Af82r28iKimQMVIMqkjJqrywwqlB0tKT/w1ltHpwhjeN4hZmCSWSoyzek3c0+d9nt2Vrq+xwFLK0dgPh1Aws9VRcHyTJncqIEpRlKhH++y7rbGDJtYW8qkgdaPPvEZsQNd2Lf1vzUU5UrGt5xcBOy2XRVQb1cIpO17tcn0PcqgFSnfiDf8nHG8YYbcVqLTLfg1e4uTSdOx/Oj/Nv0YzCqEWaAFBd4el2X0Xsk3qCJEbmNU4fymy3kLyqIuG0izT+cif4iYqWKQsFWZ1Zqom7RTwW5urO0wF4HR54J2/I0IstYW+A==
+X-Stat-Signature: a11tacc6j9i81u669ohytnrkimgrc8t7
+X-HE-Tag: 1790987565-575842
+X-HE-Meta: U2FsdGVkX19HcpQG4dSkSL3ZbMAVUYsoZymSnx3gNjouoHBlO+SdT9zKteQT01QhyNd1OpUaq2QmP09w/P/nXQSAeB2st/jdONOSOTKhFwxXyuCdeKSRFeF6h19gc3IE+cAcVKdHgPhgDNqx1KeuXZK1wZX8fObbk6xXVh1IYc1GgdhxyD1BqiCabS+/WdiD5+3n7wUUX4/yD3hKeNKilIXVjvNp6wnVOcgMm1eDzA7YNQse8cfuAuh2COaRAz4NvpaDpjouCw3WZnAZi6Kj3/gKcOkfAWTSeVB8SDDUBjC/lbgALiv+kmqz0gohFHiCaKDLpJygLB6Qf6zE8mMg2K2SMzE93r4ZhxxctY9uGYPa8/x2Cl5XZwSUdGJsgY71GJhlEZLWoeMTkpmJgaVNqZeSlMoD0OKQF65HiZSJjR6tfSDUWLSDff47dSaYLCv84vFHhs9BglqPBvD4yr36atjWhgSldTdsyVNdWgMRsjY8vvOh7Klavift1hnJDhdH+ewInv8HMd52u1uAhJKXPT1dFCOwjfF543qFmFk6tDRJGlhOvV1DN5rZRuxJvaOop6TQTADRodn5/EqqsDvJTQ3nuIot37TQsfYb6xP/k0tje0ffN9f8ME78JhOrs/ubzJ5yBKIGOXbRSAtM8+6yq5FrFuQOz5xBEU4mdEiBN7G/dK+iP2pEOrwyo9BtU6BzZ6RUMfqkzBSp6htd3QbiivGbAK0ESSc0QqGTeBq0+5O6H9tmNv77lpqdnP3XD1FCAHBOLzR4q4Ovm+RRTC78dDmjYIHsLzNUuUqn9SrDn14+rH0xbsVOWM/mW+rBe5xhsPP7aXmiqhQ+UIkcqc/omAPCVpmKBd6R3eI8sBqJi1Sw3ES0uNzxqs5OvDAzWAopiGArZupqa/wfAwdGrUlpubFcN6PeypytehKs2ndw7qIaDKTzHZH3UABW63ftC+KhRCmVvofYRn85At8FEAu
+ 8+9tT+jn
+ w7/xI/wsuabUTV7EgdEPp+J6TQKnqpdBiLVTIZDeUnVVK1jriB7sj32CtkKCXjX8cZUGvkPcgNFFIIB4l3qTBVWl3A16oeoRI8oj3zJAAszMBE6imUGBO+PgytPIEi+xEVAuLHsKIQELS4a+iqxYVMf1B1rdy2SMi2vsq66fgdAGaqHS5RbOMXNR5lptnpVU/MMkS0/7tlnZ4806blpZB2cEhIC2FLq6DXBeJND9BF4oLiFJv0YhdSkS0c6BEodsxikbLHg20qRV5Lih1nYW+mBPb7TQKi+It2Uf02J7ffWTKs24=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,162 +95,259 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-vm_area_unmap_pages() does not free the backing pages that
-xswap_map_clusters() allocated, so they leaked on every unmap.
-
-Collect the backing pages from the PTEs before unmapping and free them
-after the PTEs are cleared.  The collection array is allocated with
-kvmalloc_array(GFP_KERNEL), which falls back to vmalloc() and may
-reclaim; if it still fails, unmap in bounded batches with a stack array
-instead.  The unmap therefore cannot fail and the callers do not need a
-retry loop.
+__free_cluster() called xswap_try_shrink() while holding ci->lock, but
+shrinking unmaps the backing pages and the subsequent unlock faults on
+the unmapped address. Run the shrink via schedule_work() instead, so no
+cluster lock is held. The work is only scheduled for xswap devices and
+is cancelled on swapoff.
 
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- mm/swapfile.c | 95 ++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 86 insertions(+), 9 deletions(-)
+ include/linux/swap.h |   1 +
+ mm/swapfile.c        | 129 ++++++++++++++++++++++++++++++++-----------
+ 2 files changed, 97 insertions(+), 33 deletions(-)
 
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 382a578140b5..12cdc00f78f9 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -246,6 +246,7 @@ struct swap_info_struct {
+ 	struct vm_struct	*cluster_vm;	/* VM_SPARSE area for cluster_info */
+ 	unsigned long		nr_clusters_max;/* total clusters in the xswap address space */
+ 	unsigned long		nr_clusters_mapped; /* currently mapped cluster count */
++	struct work_struct	xswap_shrink_work; /* deferred shrink trigger */
+ 	struct mutex		xswap_lock;	/* serialize map/unmap operations */
+ #endif
+ 	struct list_head free_clusters; /* free clusters list */
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index b8572f301d31..7c062e772f5b 100644
+index 7c062e772f5b..49703731ffd5 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -84,6 +84,14 @@
- 
- static bool xswap_should_grow(struct swap_info_struct *si);
- static unsigned long xswap_grow(struct swap_info_struct *si);
-+
-+/* Batch size for the fallback unmap; keeps the stack array small. */
-+#define XSWAP_UNMAP_BATCH_PAGES		16
-+#define XSWAP_UNMAP_BATCH_CLUSTERS					\
-+	max_t(unsigned long,						\
-+	      ((XSWAP_UNMAP_BATCH_PAGES * PAGE_SIZE) /		\
-+	       sizeof(struct swap_cluster_info)), 16)
-+
- static int xswap_map_clusters(struct swap_info_struct *si,
- 			      unsigned long start_idx, unsigned long nr);
- static void xswap_unmap_clusters(struct swap_info_struct *si,
-@@ -3341,9 +3349,8 @@ static void free_swap_cluster_info(struct swap_info_struct *si)
- 			}
- 			spin_unlock(&ci->lock);
- 		}
--		/* Unmap all mapped clusters and free the VM_SPARSE area */
--		if (si->nr_clusters_mapped > 0)
--			xswap_unmap_clusters(si, 0, si->nr_clusters_mapped);
-+		/* free_vm_area() drops the mapping without freeing the pages. */
-+		xswap_unmap_clusters(si, 0, si->nr_clusters_mapped);
- 		free_vm_area(si->cluster_vm);
- 		si->cluster_vm = NULL;
- 		si->cluster_info = NULL;
-@@ -4026,21 +4033,65 @@ static unsigned long xswap_grow(struct swap_info_struct *si)
- 	return nr_new;
+@@ -727,7 +727,9 @@ static void __free_cluster(struct swap_info_struct *si, struct swap_cluster_info
+ 	move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
+ 	ci->order = 0;
+ #ifdef CONFIG_XSWAP
+-	xswap_try_shrink(si);
++	/* Only xswap devices, and not while the device is being torn down. */
++	if ((si->flags & SWP_XSWAP) && (si->flags & SWP_WRITEOK))
++		schedule_work(&si->xswap_shrink_work);
+ #endif
  }
  
-+struct xswap_page_data {
-+	struct page **pages;
-+	unsigned long nr;
-+	unsigned long max;
-+};
+@@ -3334,6 +3336,7 @@ static void free_swap_cluster_info(struct swap_info_struct *si)
+ 	if (si->flags & SWP_XSWAP) {
+ 		unsigned long nr_mapped;
+ 
++		cancel_work_sync(&si->xswap_shrink_work);
+ 		/*
+ 		 * Cluster 0 keeps the bad header slot, so it never empties
+ 		 * and __free_cluster() never frees its table.
+@@ -3452,6 +3455,11 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	spin_unlock(&p->lock);
+ 	spin_unlock(&swap_lock);
+ 
++#ifdef CONFIG_XSWAP
++	if (p->flags & SWP_XSWAP)
++		cancel_work_sync(&p->xswap_shrink_work);
++#endif
 +
-+static int xswap_collect_page(pte_t *pte, unsigned long addr, void *data)
-+{
-+	struct xswap_page_data *xpd = data;
-+	pte_t pteval = ptep_get(pte);
-+
-+	if (!pte_present(pteval))
-+		return 0;
-+	if (WARN_ON_ONCE(xpd->nr >= xpd->max))
-+		return 0;
-+	xpd->pages[xpd->nr++] = pte_page(pteval);
-+	return 0;
-+}
-+
-+/*
-+ * Free the backing pages mapped in [vm_start, vm_end) and clear the PTEs.
-+ * @pages must have room for @max pointers.
-+ */
-+static void xswap_unmap_range(struct swap_info_struct *si,
-+			      unsigned long vm_start, unsigned long vm_end,
-+			      struct page **pages, unsigned long max)
-+{
-+	struct xswap_page_data xpd = {
-+		.pages	= pages,
-+		.max	= max,
-+	};
-+	unsigned long i;
-+
-+	apply_to_existing_page_range(&init_mm, vm_start, vm_end - vm_start,
-+				     xswap_collect_page, &xpd);
-+	vm_area_unmap_pages(si->cluster_vm, vm_start, vm_end);
-+
-+	for (i = 0; i < xpd.nr; i++)
-+		__free_page(pages[i]);
-+}
-+
- static void xswap_unmap_clusters(struct swap_info_struct *si,
- 				 unsigned long start_idx, unsigned long nr)
+ 	wait_for_allocation(p);
+ 
+ 	set_current_oom_origin();
+@@ -4074,8 +4082,9 @@ static void xswap_unmap_range(struct swap_info_struct *si,
+ 		__free_page(pages[i]);
+ }
+ 
+-static void xswap_unmap_clusters(struct swap_info_struct *si,
+-				 unsigned long start_idx, unsigned long nr)
++/* Caller must hold si->xswap_lock.  Cannot fail. */
++static void xswap_unmap_clusters_locked(struct swap_info_struct *si,
++					unsigned long start_idx, unsigned long nr)
  {
  	unsigned long start_addr = (unsigned long)si->cluster_info +
  				   (size_t)start_idx * sizeof(struct swap_cluster_info);
--	unsigned long end_addr = start_addr + (size_t)nr * sizeof(struct swap_cluster_info);
-+	unsigned long end_addr = start_addr +
-+				 (size_t)nr * sizeof(struct swap_cluster_info);
- 	unsigned long vm_start = PAGE_ALIGN(start_addr);
- 	unsigned long vm_end = PAGE_ALIGN(end_addr);
-+	struct page **pages;
-+	unsigned int noreclaim_flags;
-+	unsigned long npages, idx;
+@@ -4087,11 +4096,9 @@ static void xswap_unmap_clusters(struct swap_info_struct *si,
+ 	unsigned int noreclaim_flags;
+ 	unsigned long npages, idx;
  
- 	mutex_lock(&si->xswap_lock);
- 
+-	mutex_lock(&si->xswap_lock);
+-
  	if (vm_start >= vm_end) {
  		WRITE_ONCE(si->nr_clusters_mapped, start_idx);
--		mutex_unlock(&si->xswap_lock);
--		return;
-+		goto out_unlock;
+-		goto out_unlock;
++		return;
  	}
  
  	/*
-@@ -4052,11 +4103,37 @@ static void xswap_unmap_clusters(struct swap_info_struct *si,
- 	flush_percpu_swap_cluster(si);
- 	synchronize_rcu();
+@@ -4113,7 +4120,7 @@ static void xswap_unmap_clusters(struct swap_info_struct *si,
+ 		xswap_unmap_range(si, vm_start, vm_end, pages, npages);
+ 		kvfree(pages);
+ 		WRITE_ONCE(si->nr_clusters_mapped, start_idx);
+-		goto out_unlock;
++		return;
+ 	}
  
--	vm_area_unmap_pages(si->cluster_vm, vm_start, vm_end);
--	/* vm_area_unmap_pages() clears PTEs but does not free pages. */
--	/* TODO: free backing pages via page table walk or tracking bitmap */
-+	npages = (vm_end - vm_start) >> PAGE_SHIFT;
-+
-+	/* Reclaim here would re-enter xswap_map_clusters() and its lock. */
-+	noreclaim_flags = memalloc_noreclaim_save();
-+	pages = kvmalloc_array(npages, sizeof(*pages), GFP_KERNEL);
-+	memalloc_noreclaim_restore(noreclaim_flags);
-+	if (pages) {
-+		xswap_unmap_range(si, vm_start, vm_end, pages, npages);
-+		kvfree(pages);
-+		WRITE_ONCE(si->nr_clusters_mapped, start_idx);
-+		goto out_unlock;
-+	}
-+
-+	/* No memory for the array: unmap in bounded batches instead. */
-+	for (idx = start_idx; idx < start_idx + nr; idx += XSWAP_UNMAP_BATCH_CLUSTERS) {
-+		unsigned long batch = min(start_idx + nr - idx,
-+					  XSWAP_UNMAP_BATCH_CLUSTERS);
-+		unsigned long addr = (unsigned long)si->cluster_info +
-+				     (size_t)idx * sizeof(struct swap_cluster_info);
-+		unsigned long bstart = PAGE_ALIGN(addr);
-+		unsigned long bend = PAGE_ALIGN(addr + (size_t)batch *
-+					       sizeof(struct swap_cluster_info));
-+		struct page *batch_pages[XSWAP_UNMAP_BATCH_PAGES + 1];
-+
-+		if (bstart < bend)
-+			xswap_unmap_range(si, bstart, bend, batch_pages,
-+					  ARRAY_SIZE(batch_pages));
-+	}
+ 	/* No memory for the array: unmap in bounded batches instead. */
+@@ -4133,7 +4140,13 @@ static void xswap_unmap_clusters(struct swap_info_struct *si,
+ 	}
  
  	WRITE_ONCE(si->nr_clusters_mapped, start_idx);
-+out_unlock:
+-out_unlock:
++}
++
++static void xswap_unmap_clusters(struct swap_info_struct *si,
++				 unsigned long start_idx, unsigned long nr)
++{
++	mutex_lock(&si->xswap_lock);
++	xswap_unmap_clusters_locked(si, start_idx, nr);
  	mutex_unlock(&si->xswap_lock);
  }
  
+@@ -4157,6 +4170,16 @@ static int xswap_mapped_end(pte_t *pte, unsigned long addr, void *data)
+ #define XSWAP_SHRINK_SLACK	XSWAP_GROW_CLUSTERS
+ #define XSWAP_SHRINK_MIN	(XSWAP_GROW_CLUSTERS * 8)
+ 
++static void xswap_shrink_work_fn(struct work_struct *work)
++{
++	struct swap_info_struct *si = container_of(work,
++			struct swap_info_struct, xswap_shrink_work);
++
++	if (!(READ_ONCE(si->flags) & SWP_WRITEOK))
++		return;
++	xswap_try_shrink(si);
++}
++
+ /*
+  * Try to shrink the cluster_info tail: unmap contiguous free clusters
+  * at the end of the mapped range.
+@@ -4164,14 +4187,20 @@ static int xswap_mapped_end(pte_t *pte, unsigned long addr, void *data)
+ static void xswap_try_shrink(struct swap_info_struct *si)
+ {
+ 	struct swap_cluster_info *ci;
+-	unsigned long nr_mapped, last, keep, idx;
++	unsigned long nr_mapped, nr_tail, keep, nr_unmap, start_idx, i;
+ 
+ 	if (!(si->flags & SWP_XSWAP))
+ 		return;
+ 
++	mutex_lock(&si->xswap_lock);
++
++	/* A swapoff raced us and is about to walk this mapping. */
++	if (!(READ_ONCE(si->flags) & SWP_WRITEOK))
++		goto out_unlock;
++
+ 	nr_mapped = READ_ONCE(si->nr_clusters_mapped);
+-	if (nr_mapped <= 1) /* keep cluster 0 */
+-		return;
++	if (nr_mapped <= 1)	/* keep cluster 0 */
++		goto out_unlock;
+ 
+ 	/*
+ 	 * Reclaim on our own, but only once the mapped range is at most
+@@ -4181,40 +4210,73 @@ static void xswap_try_shrink(struct swap_info_struct *si)
+ 	 */
+ 	if (swap_usage_in_pages(si) * 100 >
+ 	    nr_mapped * SWAPFILE_CLUSTER * XSWAP_SHRINK_WHEN)
+-		return;
++		goto out_unlock;
+ 
+-	/* Find the last non-free cluster from the tail */
+-	last = nr_mapped;
+-	while (last > 1) {
+-		idx = last - 1;
+-		ci = &si->cluster_info[idx];
+-		if (ci->count || ci->flags != CLUSTER_FLAG_FREE)
++	/*
++	 * Count the free clusters at the tail of the mapped range.  Scanned,
++	 * not tracked: the count must be exact to size the unmap, and an
++	 * incremental count falls behind on out-of-order frees.
++	 */
++	nr_tail = 0;
++	while (nr_mapped - nr_tail > 1) {
++		ci = &si->cluster_info[nr_mapped - nr_tail - 1];
++		if (READ_ONCE(ci->count) ||
++		    READ_ONCE(ci->flags) != CLUSTER_FLAG_FREE)
+ 			break;
+-		last = idx;
++		nr_tail++;
+ 	}
+-
+-	if (last == nr_mapped)
+-		return; /* nothing to shrink */
+-
+-	/* Below `last` has to stay mapped: the free ones in between are
+-	 * not part of the tail, and unmapping them orphans what is above.
+-	 */
+-	if (nr_mapped - last < XSWAP_SHRINK_SLACK + XSWAP_SHRINK_MIN)
+-		return;
++	if (nr_tail < XSWAP_SHRINK_SLACK + XSWAP_SHRINK_MIN)
++		goto out_unlock;
+ 
+ 	/*
+ 	 * Stop at SHRINK_UNTIL rather than at the end of the tail, or the
+-	 * range comes out full enough for the grow to be woken.
++	 * range comes out full enough for the grow to be woken.  Below the
++	 * tail everything stays mapped, and one chunk of tail with it.
+ 	 */
+ 	keep = DIV_ROUND_UP(swap_usage_in_pages(si) * 100,
+ 			    XSWAP_SHRINK_UNTIL * SWAPFILE_CLUSTER);
+-	if (keep < last + XSWAP_SHRINK_SLACK)
+-		keep = last + XSWAP_SHRINK_SLACK;
++	if (keep < nr_mapped - nr_tail + XSWAP_SHRINK_SLACK)
++		keep = nr_mapped - nr_tail + XSWAP_SHRINK_SLACK;
+ 
+ 	if (nr_mapped < keep + XSWAP_SHRINK_MIN)
+-		return;
++		goto out_unlock;
++
++	nr_unmap = rounddown(nr_mapped - keep, XSWAP_GROW_CLUSTERS);
++	if (!nr_unmap)
++		goto out_unlock;
++	start_idx = nr_mapped - nr_unmap;
++
++	/*
++	 * Only shrink a run that reaches the mapped end; otherwise
++	 * truncating nr_clusters_mapped would orphan the active tail.
++	 */
++	spin_lock(&si->lock);
++	for (i = start_idx; i < nr_mapped; i++) {
++		ci = &si->cluster_info[i];
++		if (READ_ONCE(ci->flags) != CLUSTER_FLAG_FREE)
++			break;
++		if (!spin_trylock(&ci->lock)) {
++			spin_unlock(&si->lock);
++			goto out_unlock;
++		}
++		spin_unlock(&ci->lock);
++	}
++	if (i != nr_mapped) {
++		spin_unlock(&si->lock);
++		goto out_unlock;
++	}
++
++	for (i = start_idx; i < nr_mapped; i++) {
++		ci = &si->cluster_info[i];
++		list_del_init(&ci->list);
++		WRITE_ONCE(ci->flags, CLUSTER_FLAG_NONE);
++	}
++	spin_unlock(&si->lock);
+ 
+-	xswap_unmap_clusters(si, keep, nr_mapped - keep);
++	xswap_unmap_clusters_locked(si, start_idx, nr_unmap);
++
++out_unlock:
++	mutex_unlock(&si->xswap_lock);
+ }
+ #endif /* CONFIG_XSWAP */
+ 
+@@ -4278,6 +4340,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ 			}
+ 		}
+ 
++		INIT_WORK(&si->xswap_shrink_work, xswap_shrink_work_fn);
+ 		return 0;
+ 
+ err_unmap:
 -- 
 2.54.0
 
