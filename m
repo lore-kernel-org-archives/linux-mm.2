@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3002CCA5FE2
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:59:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59C0CCA5FE2
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 01:00:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B19B6B009E; Fri,  2 Oct 2026 20:59:54 -0400 (EDT)
+	id 49CC06B00A0; Fri,  2 Oct 2026 20:59:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 361E26B009F; Fri,  2 Oct 2026 20:59:54 -0400 (EDT)
+	id 44CE46B00A1; Fri,  2 Oct 2026 20:59:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 229B36B00A0; Fri,  2 Oct 2026 20:59:54 -0400 (EDT)
+	id 314E56B00A2; Fri,  2 Oct 2026 20:59:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E6B316B009E
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:59:53 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 67E1C160683
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:59:53 +0000 (UTC)
-X-FDA: 85279507866.03.C5A0D2F
-Received: from mta1.migadu.com (out-42.mta1.migadu.com [95.215.58.42])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6CB1A140004
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:59:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.42 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id EF3956B00A0
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:59:58 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 76ACC1C3C0B
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:59:58 +0000 (UTC)
+X-FDA: 85279508076.02.2CDE657
+Received: from mta0.migadu.com (out-216.mta0.migadu.com [91.218.175.216])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6C22640005
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:59:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	spf=pass (imf01.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.216 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790989196;
+	b=G3ym5yWSWPmGAM+FzHEHOo8NuwIZrYVuSuTSHZQI+kAWAXXZ2DRkiiyHqEhDyzDOvlK9zp
+	Ya4jfHDFAHxispanpsNa+LXv+AFgeFZFWl+Hgej7kuyRYmik5IXk3b09Q2ejJTgPGlSCI0
+	m06zsEDxIFFjwvp596oSDA8Bw2A5Wic=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.216 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790989191;
+	s=arc-20220608; t=1790989196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eYQyj5tGei/QrEJjqCA91Zyv2z/vswz+Ix9dUYPP/gQ=;
-	b=hfCZQ/g2tAoafX1eZ+sYXriW9ZOnX5/P9TmpuJSWp+Yt0kApoaxoOyHhi7yxxK/HqoNB5c
-	6bpJE/sfmRiHqbdbdIu2dk+RwBGE6uGft+d4YjjYFOSCS2oJI3pwTob6JeYYTiAhLaY4Ku
-	DzmhjtpeSqHDj02QDAuvXH4gv6VTVM0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.42 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790989191;
-	b=u/wnJzdkJmtq5nqUSRVKXzllKWE6r1/Xk12N36vBa5cYcTJ9sAo8j/FdpjkIwJGzBx4Or+
-	YLiMJDRnrpDP/uL51aTd8kGg4mj40zC7C/2u2Pikl4ZvCf1natl28XShBjqbYqvQNWtK34
-	LoXBVv/WJzrP4WTcbF2ecLATX9nK2Iw=
+	bh=cshInsm79iEdsrgHbfAOTrQPUHoSkeiha9zda4sR3+Y=;
+	b=nlqXXCYUiYVM0L683n/K4YxMGKLr6f5dnWWw6aF7QbwX+DnmitS5EWox6mkqxcK0qwpvGD
+	caGF/NQ5WEKB/oolhzd5D+zfg/ligQPyYg5Sci/zvA8n/sXVTIDc5yxO2TSQm2eh9UdGJ+
+	OqAuGVjaiQpsFmMBbBlgBa+oVNxT5R8=
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 74dbea7703783e5b;
-	Sat, 03 Oct 2026 00:59:50 +0000
-X-Mizu-Trace-ID: 74dbea7703783e5b
+Received: by mta11.migadu.com with ESMTPS id 3ae090c413809f34;
+	Sat, 03 Oct 2026 00:59:55 +0000
+X-Mizu-Trace-ID: 3ae090c413809f34
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -69,23 +69,23 @@ Cc: akpm@linux-foundation.org,
 	riel@surriel.com,
 	klarasmodin@gmail.com,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 05/12] mm, swap: use the xswap physical backend
-Date: Sat,  3 Oct 2026 08:58:53 +0800
-Message-ID: <20261003005900.909710-6-hebaoquan@kylinos.cn>
+Subject: [PATCH 06/12] mm, swap: fall back to disk when zswap refuses an xswap page
+Date: Sat,  3 Oct 2026 08:58:54 +0800
+Message-ID: <20261003005900.909710-7-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261003005900.909710-1-hebaoquan@kylinos.cn>
 References: <20261003005900.909710-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4zj67dfejcoy91f83e3i43ot7koafs7r
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 3fk5xdwccswynmnerm6tboe94z9o8gax
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6CB1A140004
-X-HE-Tag: 1790989191-972739
-X-HE-Meta: U2FsdGVkX18xTvgukiKGgs4ISYkWZerRGQlrzNmDRtFtBnfgcQ08HGA4WB62yMjZumYAJ6GLzSG90B3H64UWp0oEZWoH/0DZuLQT71F+wK33ofzNIjgw8HioieFYirRvr5DMws7hOiLU2BJYvWms6FOCoZdk2+9D4jMyPi6MlwiZqBJKpk6gqoPJZMw9WIsa1brAkgHcVPR+eDElOTsOpMGUKoadKFiH7roNMaeUsHaxfJHp57ayNAoZrtSojZ+gOBnw6PYvA9p2UAIFiZUG8jBouCIVE/i6EAtG1prOkjsz6IUhtXz/lQEkI8RumGfm/YkaS4aERW0nC+0BNGfPNMCugc7A8E3U8w6wTbUymyieuafCqyaffkYTbFF1jcSQu7U8qkT4oXaQit+e6Jg8wM5/TbZZu9c318kBGtbA+v3D8LB4JXg0v7wWmMANBtqOoVKtvqIgx1Hjg5KvEQoRj5AMeg0AA6nk33tBwvnxEVBUZVdSid2ia7h3ELLfPRarRPdGDaFDywyMUEAc918M4zh2yhrc2BXlZ0ZUj97b946tnLfosRlXcmw91MfWvaPmAzXG/biRBCe3XwyamYsUZbze+EFGfhdEvmp+mPglunlYDo4/WQySKluIl+80aqt7kFfjyMdsBMLJT9JTtMJfDIqYrR9B9+RRAJ7zMvFDTKHn+dMW8m21EQN4IcjRXdvvBXfB1coHNWeR5dQvDwduSsfUrQ3PwNqd7XRrOj/luYI0HQskivi9mACyWOrdL5MByl0+xcGvD74B+ydA7CP9XS+KerA+t1GLbq9I01A51mIPqGGNl/Qv9MHVdk4Rr70eEd4KD36u3kvvPtI9EseddxjB+vrE4J4BTWt8NIXYG8EDYsNcqZ3YzM6wGVIAjxKxqSh1+WTdNUwmhd1/30nfDADQ9LvdYxsHPCuVCblRWOte5yDpHJvixZE6yA1kOD/9d7szoKNkt31aeQSCjSw
- igtcSRa2
- QLS2s6A+UPhWWm91gWAmO/q23MpMDPuWVBt3VJElf+sB7zMV+uyolvc19opGs1HXx4atZ3b/coi0s1gga4VxMb2qDzQKBFhWFKtWio939+dv/IsIonIWAxP70JVWgMA3wHpV8j9yPAxLkqf2yVAyMW6ffXsJwmGti9bWcIohWEC/Ni1pzH7PFVmNQLcJOHL+6KbjWyyuNBf3GQg2y30yK6N+P2lI/aI+Bo4cxQtl6OOPYt4H6CQZvaWi5dXtxjvQCiJy9iGATypkSZP01qGK4oa8p22ZOnilh+gKa40LvFu90Ebo=
+X-Rspamd-Queue-Id: 6C22640005
+X-HE-Tag: 1790989196-231130
+X-HE-Meta: U2FsdGVkX18Yhpvbo9M6mixOBS9oIgo1dUiwhP3nf8UA4vkl6kfV/PT1xnlIUfVltvl86WFWEh/YpMai8D/V9B91jklMJoVGEu0E8OG5gO1rr7WF3B6lsoIcND0tDYlflqEg5h5sGLmu0GF04XB1S7DGwPh0fGHJru3y54gYl8S1MGbOQemKZGvop2j7Ky33xw15rDBRfOAVF5GhAGVdClkWebgT7uX3/X/pupeWNVCNgSi/qRfKNtexUlqzOiBUDtXbTas8dVVSkmUKIPttvUu4riUUgWmDoEUUu8xViOP/YsxQtjZ1rOFZ1+DS01cC4MoaEJ5wrn9EPSdrYUM0LateynAqaS9tv7BdKcPOpvPr8GCovW5eixPaIn7ZW6BLzfadsIqa7+7m9MDYZ4CemvPHk47lPPGWvztIzS8PhH4zoOqH/mewCrjKWz+ujV2Pq8jvg/pYVcjQHVTyAN+/GlWaQ6UOJS2Zv0Z6lafCX//L53OIbC6yG/yB3+SjsWS4Zbc3RvZmyMp9/gKmUlAWKcft5nQ8kZCEjxKjg33w/HoCJRPyq2zWq59hHQ9RQUnNgqiYT1DwJsdDYUq9rfTAC9oF6DxJGxQGdAGBGUmLGyrv/GxOX/EUde+Oo8jZWU9nyT9YY4p+BF1DStP5mtZT3Do0q1eZBWsX/qf0KDBU3Oh0t2Fsye+JW5d/JMpAdF6iWbmkV4x3aKdajBtBVIarlc8cuZrnou3+o16ZIWAicFEBxM3gpVyEUBOu1QxwKXG3lruoSuJRYRyOYjx7jp5z8jpXw/JNmjwg19DuX+gFqExyR0PmAmUEmZ3e8Gc4mic+H7fryvM/nURPMHVhEtYhB/QpM3YnFepdmkEWvhPP6wWI9RL0u25z2qG2dQxjyZm2ZI66F7+qqhh7JTSV0BhlrlPgrP5eWWVOj7nIRLVZIi2xS8NEqQt7aQlr2qL7fA4o0vSO8T4Rk65mAzjbLTH
+ ZuMRHc+l
+ MDkM8ofqvdw4snFpKk3D90+18EM3xAKzBIarQsm2UNijMIfMIVORjUwFiUTQs3FnXZ8Nb6+PCL4gHwR/kfNStknyposVriI8J/eC3irotKLd1J8DEUFDoqsAUqni3FfhiG1F4trW+n7vKSCA7srF/inqCWiGWLk9VjsN3WkLVSzNPPXGsBzigJP8uTYx0YNcWk6P3POvAlxEHOui5JxlVROUg8ZgCMM9d+ivrTnTpwtmT8tVgMyS56Ij67LfvvDSPq3yJ01YlXP27z7XyO0X3YX2ktOU5Bv0S30ErbQHiGK0Nm3Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,151 +93,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-An xswap entry that zswap evicts had nowhere to go, so
-zswap_writeback_entry() refused to handle it. Send it to the physical
-backend instead.  Reserve the backend before decompressing the entry,
-so a failed allocation wastes no work.
+zswap_store() can refuse a page if the pool may be at its limit, or
+the page may not compress well enough. For an xswap device there was
+no way to store it, so swap_writeout() put the page back on the LRU.
+Under memory pressure that turns into a livelock: reclaim keeps picking
+the same page and the pool keeps refusing it.
 
-Now that an xswap entry can be written back, put it on the zswap
-writeback LRU again.  The base series kept it off because there was
-nothing to write it back to.
-
-A slot that was written out no longer has a zswap copy, so
-swap_read_folio() forwards its read to the physical entry rather than
-dropping it.
+Now that xswap slots have a physical backend, write the page out
+instead. If no backend can be reserved, keep the old behaviour.
 
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- mm/page_io.c | 32 ++++++++++++++++++++++++--------
- mm/zswap.c   | 28 +++++++++++++++++++++-------
- 2 files changed, 45 insertions(+), 15 deletions(-)
+ mm/page_io.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/mm/page_io.c b/mm/page_io.c
-index 16ae84e6b785..6dc90182f761 100644
+index 6dc90182f761..7a7b7eecb2a8 100644
 --- a/mm/page_io.c
 +++ b/mm/page_io.c
-@@ -467,6 +467,7 @@ static bool swap_read_folio_zeromap(struct folio *folio)
- void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio)
- {
- 	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
-+	swp_entry_t entry = folio->swap;
- 	bool synchronous = sis->flags & SWP_SYNCHRONOUS_IO;
- 	bool workingset = folio_test_workingset(folio);
- 	unsigned long pflags;
-@@ -496,18 +497,33 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio)
- 		goto finish;
- 
- 	if (unlikely(sis->flags & SWP_XSWAP)) {
--		/*
--		 * An xswap entry only ever lives in zswap, so zswap_load()
--		 * must have found it.  Unlock and let the caller retry.
--		 */
--		WARN_ON_ONCE(1);
--		folio_unlock(folio);
--		goto finish;
-+		struct swap_cluster_info *ci;
-+		swp_entry_t phys = {};
-+		unsigned long offset = swp_offset(folio->swap);
+@@ -253,8 +253,18 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
+ 	 * yet, so look the device up from the entry.
+ 	 */
+ 	if (unlikely(__swap_entry_to_info(folio->swap)->flags & SWP_XSWAP)) {
+-		folio_mark_dirty(folio);
+-		return AOP_WRITEPAGE_ACTIVATE;
++		swp_entry_t entry = folio->swap;
++		swp_entry_t phys;
 +
-+		/* May have been written back; reuse the physical read path. */
-+		ci = __swap_offset_to_cluster(sis, offset);
-+		if (ci) {
-+			spin_lock(&ci->lock);
-+			phys = xswap_slot_backend(ci, offset % SWAPFILE_CLUSTER);
-+			spin_unlock(&ci->lock);
-+		}
++		/* The pool refused it: fall back to a real swap device. */
++		phys = xswap_backend_alloc(entry);
 +		if (!phys.val) {
-+			/*
-+			 * No folio_mark_uptodate(), so do_swap_page() sees
-+			 * this as a failed read and SIGBUSes silently.
-+			 */
-+			WARN_ON_ONCE(1);
-+			folio_unlock(folio);
-+			goto finish;
++			folio_mark_dirty(folio);
++			return AOP_WRITEPAGE_ACTIVATE;
 +		}
 +
-+		entry = phys;
++		__swap_writeout(ctx, folio, phys);
++		return 0;
  	}
  
- 	/* We have to read from slower devices. Increase zswap protection. */
- 	zswap_folio_swapin(folio);
--	swap_add_folio(ctx, folio, folio->swap, READ);
-+	swap_add_folio(ctx, folio, entry, READ);
- 
- finish:
- 	if (workingset) {
-diff --git a/mm/zswap.c b/mm/zswap.c
-index cdba35e0fb5a..e614c04697f2 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1011,6 +1011,8 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	struct mempolicy *mpol;
- 	struct swap_info_struct *si;
- 	struct swap_io_ctx ctx = {};
-+	swp_entry_t phys = {};
-+	bool is_xswap;
- 	int ret = 0;
- 
- 	/* try to allocate swap cache folio */
-@@ -1018,10 +1020,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	if (IS_ERR_OR_NULL(si))
- 		return -ENOENT;
- 
--	if (si->flags & SWP_XSWAP) {
--		put_swap_device(si);
--		return -EINVAL;
--	}
-+	is_xswap = !!(si->flags & SWP_XSWAP);
- 
- 	mpol = get_task_policy(current);
- 	folio = __swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
-@@ -1055,6 +1054,15 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 		goto err;
- 	}
- 
-+	/* Reserve the destination before dropping the zswap copy. */
-+	if (is_xswap) {
-+		phys = xswap_backend_alloc(swpentry);
-+		if (!phys.val) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
-+	}
-+
- 	if (!zswap_decompress(entry, folio)) {
- 		ret = -EIO;
- 		goto err;
-@@ -1087,12 +1095,14 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	folio_put(folio);
- 
- 	/* start writeback */
--	__swap_writeout(&ctx, folio, folio->swap);
-+	__swap_writeout(&ctx, folio, is_xswap ? phys : folio->swap);
- 	swap_write_submit(&ctx);
- 
- 	return 0;
- 
- err:
-+	if (is_xswap && phys.val)
-+		xswap_backend_free(swpentry, phys);
- 	swap_cache_del_folio(folio);
- 	folio_unlock(folio);
- 	folio_put(folio);
-@@ -1516,8 +1526,12 @@ static bool zswap_store_page(struct folio *folio, long index,
- 	entry->referenced = true;
- 	if (entry->length) {
- 		INIT_LIST_HEAD(&entry->lru);
--		/* No backing store: nothing to write these back to. */
--		if (!(__swap_entry_to_info(page_swpentry)->flags & SWP_XSWAP))
-+		/*
-+		 * An xswap entry with no real swap device cannot be written
-+		 * back, so keep it off the shrinker's LRU.
-+		 */
-+		if (!(__swap_entry_to_info(page_swpentry)->flags & SWP_XSWAP) ||
-+		    atomic_read(&nr_real_swapfiles))
- 			zswap_lru_add(entry);
- 	}
- 
+ 	__swap_writeout(ctx, folio, folio->swap);
 -- 
 2.54.0
 
