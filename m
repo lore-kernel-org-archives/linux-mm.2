@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3571DCA5FE6
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:33:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8952CA5FDD
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:33:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BE136B008C; Fri,  2 Oct 2026 20:33:19 -0400 (EDT)
+	id A86506B0098; Fri,  2 Oct 2026 20:33:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 294966B0098; Fri,  2 Oct 2026 20:33:19 -0400 (EDT)
+	id A5D8F6B0099; Fri,  2 Oct 2026 20:33:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D1F26B0099; Fri,  2 Oct 2026 20:33:19 -0400 (EDT)
+	id 99AC76B00AD; Fri,  2 Oct 2026 20:33:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E3B366B008C
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:33:18 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 77024A78DD
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:33:18 +0000 (UTC)
-X-FDA: 85279440876.24.AB7BD27
-Received: from mta0.migadu.com (out-151.mta0.migadu.com [91.218.175.151])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 80E4B40004
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:33:16 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 6BC7F6B0098
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:33:24 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E86EFA78DF
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:33:23 +0000 (UTC)
+X-FDA: 85279441086.09.6DCDBF7
+Received: from mta0.migadu.com (out-159.mta0.migadu.com [91.218.175.159])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 213FAA000A
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:33:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.159 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790987596;
+	s=arc-20220608; t=1790987602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9nZq3S+Qdzrv1aG0i9l0JM4CqOUGkZvY2pVSKKWgtbE=;
-	b=m6Coqthcg8+KUXuWVcHWeIljapZ8pRasYq8emaC8Du79t3FKhVXVfLfVjbII5Uqre14+UV
-	dnd11T870lCm9CSQfUiaQ0CllPvcCMyFXOU4tgmtA3EjVT2T0yjx/N9ws6yvoojskDvFjh
-	mVGkVnsJlCdVPnLat5z6kYHRJHEZxEE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	bh=l0a+wyRECDVxATrZy6DhSpMephCWfVS2Xqsk5D8Ec5I=;
+	b=bban04nEoBETPTYcDqR/fVMT3ZfSqb22BjB9YFmd398fNRWjLIwj7DOsfNroV9azSsx/qU
+	jjaJ2G5cAoRvCsO7Xtg0n+iTqwH4UU3dpP+GW+YRfKTFyB8A7Ztrj4+jlU508lX+Cq2LZI
+	XlJAC4Q1WyQO08/QjwiqCYAEhfn2J5c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790987596;
-	b=itcQdZW76r5+Sq2nbuyVs759KOOOEqVqjDJNg6kWrtRhXuaIfoDcxJUHl5bKpfykrj/Lp1
-	Nsji5DIIjEx4IRRwoHyV/is1Cvi5uzGFo0X3C84T8ZriofkINwAFmdj6iEbmGlLrt+7sRq
-	AJEO1Kq0TX/Ux5aSI6BAVYZvRxsjhYw=
+	t=1790987602;
+	b=cdkXhxG61OwYvyv39UeoNECquXWbwPBv965upH/0A3EnZs2IlXXpHpCylXV/3N4HXi1e7P
+	bJOBngVWuSbXtd2YO0LcwmxatQtqtEjIxI0OYohMCqfBIGZQwCw/iWtJwKnjDqpYV0hPoZ
+	7tYRBhqDOEiDGvG3EmyCxI0D8v3Jjgc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.159 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=none
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 894fef0c8ad9ae09;
-	Sat, 03 Oct 2026 00:33:15 +0000
-X-Mizu-Trace-ID: 894fef0c8ad9ae09
+Received: by mta12.migadu.com with ESMTPS id 3df834e02bca565c;
+	Sat, 03 Oct 2026 00:33:20 +0000
+X-Mizu-Trace-ID: 3df834e02bca565c
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -71,9 +71,9 @@ Cc: akpm@linux-foundation.org,
 	kunwu.chan@gmail.com,
 	klarasmodin@gmail.com,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH v4 13/14] mm, swap: add debugfs counters for xswap
-Date: Sat,  3 Oct 2026 08:31:35 +0800
-Message-ID: <20261003003136.750633-14-hebaoquan@kylinos.cn>
+Subject: [PATCH v4 14/14] mm, swap: let the command line set the xswap device size
+Date: Sat,  3 Oct 2026 08:31:36 +0800
+Message-ID: <20261003003136.750633-15-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261003003136.750633-1-hebaoquan@kylinos.cn>
 References: <20261003003136.750633-1-hebaoquan@kylinos.cn>
@@ -81,13 +81,13 @@ MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 45ysbmrnenpjqcx71be9en7wscsb7mqr
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 80E4B40004
-X-HE-Tag: 1790987596-584008
-X-HE-Meta: U2FsdGVkX19WQyWOT2fHPeh8Umg5yT+rqWk3pfgISiTQ4JyWvIvTfAZVw8P6AB0FH5RKmOzB6rDw3OuZwgwWKjoAoEieVjaxsJ4Ezj0T4kBiBxwQy2g4O615vUfGjRRMSioYYHg/9R+9CfQTHvZhg3bG4+gkzOZ1E1kuhPhEHAxq3J1TcYYKXvBRldU5AVbIhrOzqvDtOzySuNrB/h4W8iPoAt+v7L3n9xZ8K6lIcnE7JWplVhWc7XvUmUQLPjgacGg1w3KT67I1Kt1ZYjz9FqfAtuo1c6rJ/kZw60dkWY9YRdoh2TlCxpvSkLVeY7Q6qMK46PUuVSEbDNiTwd8WL8TyljtHQ83qAL8iUPnyb7+VK7vJckgGHz4u6a4us4weji5vrS0IjroLST/6MFsCdw4UkKCPg/0tnWrI/FlsquYdUm3a/2u547Ad3m5W6c+KDmXtiYqVaT2g1uZo+R/UFe7y6U2xoXh+yzWj6XGCn3WvDauz+pKpkcjpr6fs8/SFwDrRehcEvJ4xUYGSWat3GHV3yaZ2OatXFZ22ZpplkAOb7sjxr1mkiOfpKMtHkkc/TQebsnY/rEs635qie0jzvIKtfsQJ7aPQlEWv/Zk1nO4kzyiIFzyZpbI5JKZnAFOAhJMFHChn8GMDQ87FEt46Llee1Uip9u2HDU7uIhvOrMb/BvzM1HOCntgBwedXuetkTc2eYTM/1Pjr2lLk99TWsUE9CsZZ4I82RejKox/8pWmD/8v0XXikGjCfYgTZmpH22BudxvXM2belmYrdx0tEAPVesot8hohf0sbw5kFXdvMyr1QFRHWxuQPugSY4VIHvqPikfXL7V2X85Uf6o/6AaA23aTsx2yGrS7HtLd+EN7hQPTdbSxQvldQUip6PNHlsNokDAwM+/XLtJchR9Wzwmxs9LhpXxR3TZo+c+pQmAB6pmz6kRLWjrJ6gvIRZCm67TzqMeJds3k/d3f8YIZ6
- luRFnA3r
- vA3dJWdAnnPUUdl6jhnV1Xd7Jw7cMMdOjvSZqEody9QWeWuHqfIFkev5697WeG7MhWyzzgEGenBVFCbXXsyVRaSYz9MP9nr5rUME+4MDrtvRL3pS7IOkndJzIHtU+P9RcMxmssirpFdNzLjRwsR79cZOcVuMG49hFvRX3pwUEuWu9Vtv6RooQ1nAd60XZUurPjGMe21ajt/bYqm1pVpXYFRcoQDeZ02hugeEMFCn/YRASnK6kn/24aK+31YyEZDnPPAXEPVTTHUGWiyrkaQIKupil/EYSno5YQEbVThxY7o5TJkE=
+X-Stat-Signature: 9t4ezrh19dqc5ydkphpmz98en4gytzqd
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 213FAA000A
+X-HE-Tag: 1790987601-651935
+X-HE-Meta: U2FsdGVkX19REI5BEb2R1JPSA8mOgskfDRPuvOQBAORq3TMNzBoJs5aY4ezJybPizWOlUw4AXDfINx6swU3qwx+OSw/OfpP97ft0rWHYbot7iaK3cmI+kIEPzoLn5ge4ipOI9JTvGo5haFCbRrBwswnftSupWCV6pW0zgkiLfyQ1x7YdgehrYRITZB9juK3SUZwVt3jIlXaOnKIOqnysi3sPqHtml/wFZJGyKGc0/6JLUSC1RDGgy7EHBrUHDv8V3Qol3Sg7sAr/sl04hkmFhvF/ogDtSb3lfxsE2nLHhdpFDoiK/zYR4gKDbeAbyGdXzT1XZeVhgkZCuQhNk2Ho4+zLxO+MfnPA31hn4bTu8Hi5bsk605EyYdFStwfoVFH+9SXtGVC3P/ykDyGGbab8jFZ+8tZwDOgNF+d+B8G4sgCVWtI3MWwROiJUE5q6l8WJydMCmBs62ujuZtU+c28j1voJ51VuTLrTRfHEofGIHKB8RNr24b06UT03UVc7VfVNlXvWV9/iqQVp/9d0sC0xaSQZAFKMkiVzrnNcv29SPvtuDwLgsxrLlsbZ5AQGH9KE9AA1NY26g6n+yg+YMboD7nlUuaO8yujYb1uY1FyMT1AIboInDY66HLKkWeBo8znP7gjIhUQ0dQiNi9GAN6omvN44YW0AOOJCwOxAMra5xCzXjGEtq35jHaFfh1avzcxu2hcH2DRWd7QSBTrFHXjcwz/WrBjJPA7qa5iMwNJ/EiENB9aTHX+8XflMUnGuGOG2o+ofJL4AmQDmgVvjdMJf2HrIbFJYBMpfJ3Khb3RERRrkSqcHclr5Y9GPZYIbXgbpLDr0dd59C4AseFGbbZNm2y7bEkxppxc3Fw52xeaedjd9EZep6ofqwujaZic45CjrYEQyoSuec8deOcm1ep89DnmmqdWgQWRLawSbHI9o+HkKnmKM+EnU/HGxQwgRbXpI9YpKO94tN+4d9rOIizE
+ +his4aLv
+ RoXnb+HmfJK11aT76RLKUYrXDSshiZW/kZqQgLD0c8LknzDk0YF3ySFm2Q9VDeaYAp5SOq5qtkenEsC+fUG5BwXIUhJO7T+71POIm9UX8JjOqNm9u85ODw2DlhtvOUA855Uc91P2B8oH74T29vgAG/6O+KBklEim05dO/4MpGdjW+DJaHR8FGTNqhcqi9vjjSIWfekb7vZn2MuEyRWNRw6LkwqH/f3a6RkdUyTOAVSzIBW0CT4/phf0Y2pQlYDHmWBHRMTFvM6tHbp4GJGJiKkPsq1gAfCV+bK2Vwto8z56zF3B4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,175 +95,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The mapped range and the number of grow and shrink operations are not
-visible from userspace, which makes the grow and shrink thresholds hard
-to check: nothing says whether the range settles, how often it moves, or
-where it lands.
+A new xswap device is always sized at twice RAM. Add xswap.max= to pick
+the size of devices created after it:
 
-Put them in debugfs rather than sysfs. This is not an interface and does
-not want to be one, so it does not belong in the ABI:
+  xswap.max=300%      three times RAM
+  xswap.max=8G        eight GiB
 
-  # cat /sys/kernel/debug/xswap/type0
-  clusters_max 2038783
-  clusters_mapped 292
-  usage_pages 91456
-  grows 3
-  shrinks 1
+Twice RAM is right for most users, but a machine with a lot of memory and
+a small workingset gets a SwapTotal much larger than needed.
+
+The size is resolved at device creation, not at parameter parsing: a
+percentage is relative to RAM, and totalram_pages() is not ready that
+early. A size that does not fit, or is too small to hold anything, is
+refused, not clamped.
 
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- include/linux/swap.h |  3 ++
- mm/swapfile.c        | 80 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 83 insertions(+)
+ mm/swapfile.c | 86 +++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 76 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index c56adbbcfd3b..ae2e49386443 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -248,6 +248,9 @@ struct swap_info_struct {
- 	unsigned long		nr_clusters_mapped; /* currently mapped cluster count */
- 	struct work_struct	xswap_shrink_work; /* deferred shrink trigger */
- 	struct mutex		xswap_lock;	/* serialize map/unmap operations */
-+	struct dentry		*xswap_debugfs;	/* mapped range and counters */
-+	atomic_long_t		xswap_grows;	/* grow operations so far */
-+	atomic_long_t		xswap_shrinks;	/* shrink operations so far */
- #endif
- 	struct list_head free_clusters; /* free clusters list */
- 	struct list_head full_clusters; /* full clusters list */
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index f823cebb7937..ab040d24bd2f 100644
+index ab040d24bd2f..bf95663c2593 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -49,6 +49,8 @@
- #include <linux/leafops.h>
- #include "swap_table.h"
- #include "internal.h"
-+#include <linux/debugfs.h>
+@@ -164,6 +164,63 @@ static struct attribute *xswap_attrs[] = {
+ 	NULL,
+ };
+ 
++/* Size of a new device, from xswap.max=.  A percentage unless bytes is set. */
++static unsigned int xswap_size_pct = 200;
++static unsigned long xswap_size_bytes;
 +
- #include "swap.h"
- #define DEF_SWAP_PRIO  -1
- 
-@@ -84,6 +86,7 @@
- 
- static bool xswap_should_grow(struct swap_info_struct *si);
- static unsigned long xswap_grow(struct swap_info_struct *si);
-+static void xswap_debugfs_del(struct swap_info_struct *si);
- 
- /* Batch size for the fallback unmap; keeps the stack array small. */
- #define XSWAP_UNMAP_BATCH_PAGES		16
-@@ -3416,6 +3419,7 @@ static void free_swap_cluster_info(struct swap_info_struct *si)
- 		}
- 		/* free_vm_area() drops the mapping without freeing the pages. */
- 		xswap_unmap_clusters(si, 0, si->nr_clusters_mapped);
-+		xswap_debugfs_del(si);
- 		free_vm_area(si->cluster_vm);
- 		si->cluster_vm = NULL;
- 		si->cluster_info = NULL;
-@@ -4134,6 +4138,7 @@ static unsigned long xswap_grow(struct swap_info_struct *si)
- 		spin_unlock(&ci->lock);
- 	}
- 
-+	atomic_long_inc(&si->xswap_grows);
- 	return nr_new;
- }
- 
-@@ -4370,10 +4375,79 @@ static void xswap_try_shrink(struct swap_info_struct *si)
- 	spin_unlock(&si->lock);
- 
- 	xswap_unmap_clusters_locked(si, start_idx, nr_unmap);
-+	atomic_long_inc(&si->xswap_shrinks);
- 
- out_unlock:
- 	mutex_unlock(&si->xswap_lock);
- }
-+
-+/* Not an interface: how far the mapped range has moved, for testing. */
-+static ssize_t xswap_debugfs_read(struct file *file, char __user *buf,
-+				  size_t count, loff_t *ppos)
++static int __init xswap_max_setup(char *str)
 +{
-+	struct swap_info_struct *si = file->private_data;
-+	struct swap_cluster_info *ci;
-+	unsigned long mapped, tail = 0;
-+	char tmp[192];
-+	int len;
++	unsigned int pct;
++	char *end;
 +
-+	/*
-+	 * The same scan the shrink does.  xswap_lock is what keeps
-+	 * cluster_info from being unmapped under it.
-+	 */
-+	mutex_lock(&si->xswap_lock);
-+	mapped = READ_ONCE(si->nr_clusters_mapped);
-+	if (si->cluster_info) {
-+		while (mapped - tail > 1) {
-+			ci = &si->cluster_info[mapped - tail - 1];
-+			if (READ_ONCE(ci->count) ||
-+			    READ_ONCE(ci->flags) != CLUSTER_FLAG_FREE)
-+				break;
-+			tail++;
++	end = strchr(str, '%');
++	if (end) {
++		if (end[1]) {
++			pr_err("xswap: bad xswap.max=%s\n", str);
++			return 1;
 +		}
++		*end = '\0';	/* writable copy, see parse_args() */
++		if (kstrtouint(str, 0, &pct) || !pct) {
++			pr_err("xswap: bad xswap.max=%s%%\n", str);
++			return 1;
++		}
++		xswap_size_pct = pct;
++		xswap_size_bytes = 0;
++		return 1;
 +	}
-+	len = scnprintf(tmp, sizeof(tmp),
-+			"clusters_max %lu\nclusters_mapped %lu\nusage_pages %lu\ntail_free %lu\ngrows %lu\nshrinks %lu\n",
-+			READ_ONCE(si->nr_clusters_max), mapped,
-+			swap_usage_in_pages(si), tail,
-+			atomic_long_read(&si->xswap_grows),
-+			atomic_long_read(&si->xswap_shrinks));
-+	mutex_unlock(&si->xswap_lock);
 +
-+	return simple_read_from_buffer(buf, count, ppos, tmp, len);
++	xswap_size_bytes = memparse(str, &end);
++	if (*end || xswap_size_bytes < PAGE_SIZE) {
++		pr_err("xswap: bad xswap.max=%s\n", str);
++		xswap_size_bytes = 0;
++		return 1;
++	}
++	xswap_size_pct = 0;
++	return 1;
 +}
++__setup("xswap.max=", xswap_max_setup);
 +
-+static const struct file_operations xswap_debugfs_fops = {
-+	.read	= xswap_debugfs_read,
-+	.open	= simple_open,
-+	.llseek	= default_llseek,
-+};
-+
-+static struct dentry *xswap_debugfs_root;
-+
-+static void xswap_debugfs_add(struct swap_info_struct *si)
++/* The most a device can address, whatever xswap.max= asked for. */
++static unsigned long xswap_size_limit(void)
 +{
-+	char name[16];
++	unsigned long limit = swapfile_maximum_size;
 +
-+	if (!xswap_debugfs_root)
-+		xswap_debugfs_root = debugfs_create_dir("xswap", NULL);
-+	if (IS_ERR_OR_NULL(xswap_debugfs_root))
-+		return;
++	/* A cluster index is an unsigned int. */
++	if (limit / SWAPFILE_CLUSTER > UINT_MAX)
++		limit = (unsigned long)UINT_MAX * SWAPFILE_CLUSTER;
 +
-+	/* debugfs_create_file() takes the name as it is; no formatting. */
-+	snprintf(name, sizeof(name), "type%d", si->type);
-+	si->xswap_debugfs = debugfs_create_file(name, 0444,
-+						xswap_debugfs_root, si,
-+						&xswap_debugfs_fops);
-+	if (IS_ERR(si->xswap_debugfs))
-+		si->xswap_debugfs = NULL;
++	return limit;
 +}
 +
-+static void xswap_debugfs_del(struct swap_info_struct *si)
++static unsigned long xswap_size_pages(void)
 +{
-+	debugfs_remove(si->xswap_debugfs);
-+	si->xswap_debugfs = NULL;
++	if (xswap_size_bytes)
++		return xswap_size_bytes >> PAGE_SHIFT;
++
++	return div_u64((unsigned long long)totalram_pages() * xswap_size_pct,
++		       100);
 +}
- #endif /* CONFIG_XSWAP */
- 
- static int setup_swap_clusters_info(struct swap_info_struct *si,
-@@ -4568,10 +4642,16 @@ static int xswap_create(int prio)
- 	 */
- 	si->ops = &swap_bdev_ops;
- 
-+	si->xswap_debugfs = NULL;
-+	atomic_long_set(&si->xswap_grows, 0);
-+	atomic_long_set(&si->xswap_shrinks, 0);
 +
- 	error = setup_swap_clusters_info(si, NULL, maxpages);
- 	if (error)
- 		goto bad_swap;
+ static const struct attribute_group xswap_attr_group = {
+ 	.attrs = xswap_attrs,
+ };
+@@ -4601,7 +4658,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ static int xswap_create(int prio)
+ {
+ 	struct swap_info_struct *si;
+-	unsigned long ram, maxpages;
++	unsigned long maxpages;
+ 	int error;
  
-+	xswap_debugfs_add(si);
+ 	if (prio != DEF_XSWAP_PRIO &&
+@@ -4612,6 +4669,23 @@ static int xswap_create(int prio)
+ 	if (!zswap_is_enabled())
+ 		return -EOPNOTSUPP;
+ 
++	/* Refuse rather than clamp: xswap.max= should give what was asked. */
++	maxpages = xswap_size_pages();
++	if (maxpages > xswap_size_limit()) {
++		pr_err("xswap: xswap.max is larger than the device can address\n");
++		return -EINVAL;
++	}
++	/*
++	 * Below one cluster the device is not cluster-aligned, so its only
++	 * cluster would hold slots past si->max.  Nothing masks those, and a
++	 * slot allocated there is past the end of the device: it can never be
++	 * read back or given up again.
++	 */
++	if (maxpages < SWAPFILE_CLUSTER) {
++		pr_err("xswap: xswap.max is smaller than one cluster\n");
++		return -EINVAL;
++	}
 +
- 	error = zswap_swapon(si->type, si->max);
- 	if (error)
- 		goto bad_swap;
+ 	si = alloc_swap_info();
+ 	if (IS_ERR(si))
+ 		return PTR_ERR(si);
+@@ -4619,16 +4693,8 @@ static int xswap_create(int prio)
+ 	INIT_WORK(&si->discard_work, swap_discard_work);
+ 	INIT_WORK(&si->reclaim_work, swap_reclaim_work);
+ 
+-	ram = totalram_pages();
+-	maxpages = min_t(unsigned long, ram * 2, swapfile_maximum_size);
+-	/* A cluster index is an unsigned int, so cap the cluster count. */
+-	if (maxpages / SWAPFILE_CLUSTER > UINT_MAX)
+-		maxpages = (unsigned long)UINT_MAX * SWAPFILE_CLUSTER;
+ 	/* Cluster-aligned, so no cluster holds a slot past si->max. */
+-	if (maxpages > SWAPFILE_CLUSTER)
+-		maxpages = rounddown(maxpages, SWAPFILE_CLUSTER);
+-	if (maxpages < 2)
+-		maxpages = 2;
++	maxpages = rounddown(maxpages, SWAPFILE_CLUSTER);
+ 
+ 	si->bdev = NULL;
+ 	si->flags |= SWP_XSWAP | SWP_SOLIDSTATE;
 -- 
 2.54.0
 
