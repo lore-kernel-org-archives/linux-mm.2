@@ -4,89 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FD84CA5FE2
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 01:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE07BCA5FE3
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 01:30:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85D856B009F; Fri,  2 Oct 2026 21:11:58 -0400 (EDT)
+	id 91CB86B0088; Fri,  2 Oct 2026 21:30:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80E106B00A0; Fri,  2 Oct 2026 21:11:58 -0400 (EDT)
+	id 8F4936B008A; Fri,  2 Oct 2026 21:30:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 723F26B00A1; Fri,  2 Oct 2026 21:11:58 -0400 (EDT)
+	id 831D66B008C; Fri,  2 Oct 2026 21:30:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B1326B009F
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:11:58 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CBB5A140850
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:11:57 +0000 (UTC)
-X-FDA: 85279538274.23.BE97C4B
-Received: from mta0.migadu.com (out-97.mta0.migadu.com [91.218.175.97])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E9F24160005
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:11:55 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5ED8A6B0088
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:30:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E85D4160853
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:30:34 +0000 (UTC)
+X-FDA: 85279585188.20.E6030F4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 639C9160008
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:30:33 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.97 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790989916;
-	b=74el53r1kqN1j9Osd0BL+jK9KCrQMtabB4dSjCIjE+3gFwuu1yansgLqspoaGSNFjGFil/
-	KSZp/pHPWX8qTeIUiCWY61ADThnmcd80/oTfE9MhOe3NvmzN3YNBz9fzh1X7Sq8frNgVjs
-	h04dNRKE2/l9YYosnUssffRxP6r5Y+Q=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.97 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L4WpyFtA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790989916;
+	s=arc-20220608; t=1790991033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ORLbci/dbvSb8tVo3KGyUVk9J50/zfzxUEFqKNe4mus=;
-	b=8kZiU7ep7zW3AW0sRYlMYf6W7CSPrArWylarJ7odOBkYRYs0XC1kcn+ied/Pfa/JrhGzUJ
-	E9Htt8n3zH0cONTI5vcMwN7GYWTVTzrMTV8JWpTq+YUygVg2EkKRuqiSmHbo3x9G444j3C
-	iE3ElqcOoMaDsXd4Qfaps/5pl69GgTA=
-X-Envelope-To: linux-mm@kvack.org
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 7a2a3e67e205a4ec;
-	Sat, 03 Oct 2026 01:11:54 +0000
-X-Mizu-Trace-ID: 7a2a3e67e205a4ec
-X-Migadu-Flow: FLOW_OUT
-From: Baoquan He <hebaoquan@kylinos.cn>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	hannes@cmpxchg.org,
-	nphamcs@gmail.com,
-	tj@kernel.org,
-	mkoutny@suse.com,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CItS/zWgrIg5kKOatrfL9GJj+0e9m4dKbtj1MKAf+Z4=;
+	b=l/qhdZRJo69BAZzSAW37Ek6X28Jh0O1IPzOlnPRB5qzcN3Z1Wk3xBwXCvhRXjQp4rOy5c/
+	2JpecAMW4vAyjfqMBv0dJlLu6NbbsNG4ps1MI+PthhoATc307R6R/sX5lYAyY/6UOi0/nb
+	SEWCtQRj9VMWIQeKL7pdBz/zWI5iH4o=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L4WpyFtA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790991033;
+	b=YlAoFOzgFQqBULrt9RArwLifLY++RNHjjtg83/AJFNq1Jmjqwu/f+h/mFHv+zyzKuxuWiU
+	OlZgpQ4XmzjLldp4fMJlwLXL2JEv2gBc1pNY4wJqUAOCYza8/6C1oWXpV3TDedGTW+9TKt
+	WoQ0qcF6H+XGKizKO1coex6Ap3sE8cc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DE8F560AB0;
+	Sat,  3 Oct 2026 01:30:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82C91F0089B;
+	Sat,  3 Oct 2026 01:30:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790991032;
+	bh=CItS/zWgrIg5kKOatrfL9GJj+0e9m4dKbtj1MKAf+Z4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=L4WpyFtAYLjkr7KPPAFAoitkhNVm4NxF6Bc3vyTlMLNUUWTrircsQGYH2hnKBHYtQ
+	 Ain0e6HhY7nHOsKk5qJOTvv8vTu697dRpVacMB95bvPDx530QQ9/3/BIU2PuDkyNdc
+	 RL2AqubLicNeTwjKVALA85EGhcAEwSAHBwVvVb0ECxKybkNOnrqJDxW6ScLiniPPGn
+	 sDclN8NwDUco6m/mSbomG550Z3CAai20FCctU3iRmraho06oPxVeDKEl8odEPjtJft
+	 Hin72Cg7sq674CSDHkbRqU9NFpOCYQgrBzAz8JTIwiuqr+uKuSF6Fzz5NNrqIrBHk+
+	 kOq9k30144T6A==
+From: Sasha Levin <sashal@kernel.org>
+To: ljs@kernel.org,
+	rppt@kernel.org,
+	peterz@infradead.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	linux-mm@kvack.org,
+	linux-perf-users@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 5/6] mm, swap: do not retake the cluster lock when uncharging an xswap slot
-Date: Sat,  3 Oct 2026 09:11:10 +0800
-Message-ID: <20261003011111.1003090-6-hebaoquan@kylinos.cn>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261003011111.1003090-1-hebaoquan@kylinos.cn>
-References: <20261003011111.1003090-1-hebaoquan@kylinos.cn>
+	regressions@lists.linux.dev,
+	stable@vger.kernel.org,
+	4ncienth@gmail.com,
+	alexander.motin@truenas.com,
+	caleb.stjohn@truenas.com,
+	ameer.hamza@truenas.com
+Subject: Re: [REGRESSION] secretmem: SIGBUS on memfd_secret() pages while perf record runs
+Date: Fri,  2 Oct 2026 21:30:23 -0400
+Message-ID: <2026-10-02-rc-reply-0003-re-secretmem-sigbus-perf@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261002175651.811343-1-ameer.hamza@truenas.com>
+References: <20261002175651.811343-1-ameer.hamza@truenas.com>
 MIME-Version: 1.0
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ik6ufup9msijc6rccirgs3s1d9bxruni
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E9F24160005
-X-HE-Tag: 1790989915-238131
-X-HE-Meta: U2FsdGVkX193Vham7XsABlqS0UhzD6ea0vwcnanrEYpho5Qdd7ER57wwPfMqKDVsgJeR5eruB4vf+bYVlCVdNvKbME9zTDdLQEHrSasM/qd5ychZUBjoNyVk++EPihi+1snfyb4tT6tvcvrYEtiSanvsaaiwlhDblwEBPzkQdS+qmuwdQIsZRT0/taHF7LOdYbArRyDkuyBxBEUnDiyi55VD8MdLTU1x3OOrPXt9Y88m0g+SyL3/gmeg1hfGVZ5yzV+SJ6bnp7rliXKsOFMXvs0bvfmEsRuAPLdroczT3kcyQxYLJDx5f8s96lRYoXhQ7yqEtM60jyWRjon7n5dFUj3L+JMs9O+mo7JfTMICOSLjZfEYzFmd6Ds4iMFSHSb49qzsLD0AG6+A0VtGS9C5kFDcbxFLyJCPhgvV+t6+thB3y6VSGltc7xFhwF+KBoYda/aXVAHMAYY/k1pa90txuDLa0zQKZZ03Ibqh4iAMJ1UZ6xSRRTCQqHFaunOBJktWBrb3CVvcQwtCvBNRFRnfIs5gZsW/3lK45hjry/xvXVdB0y+v/X/joKP2gztnwZDCIXc3upwx4Uv4X+KaMAQ6B7L3ehYcQTr+N3cC0scM77ndCRzNrTB+NC3EFrZOvvwSZSaDTCQvNEmmi7M0F7k/dRE+4WSC2N0KMpLHeTWGRNvt5WFovWe7CpEI7AtKEx3Rr/e6cTM6Y1PLVaPHVse1jSW2zJvRP+VmDmRou2GbKGGI9oLHG5/B8khAZJtCVmJhruTr5aaHyVASDIxOydnmUbwMn8sX6bf0LuOPaHQkj3BPLhuyo0eE6+9EO0gjFDtZPwqY7HHDzMJIGZ/P3/0HONbKMUT97CAD7FDCS6SLnB6zkeymVsL7I6fO1dPytEnnZQ913lAXqfSzMAyXSUTO55gBwsz3EqUZpeNUn+qEx8TQje1yWuBKHxCwvr/LkjZezliZk4ATTjeMnb+vvr3
- DN7X/xFS
- hLZcWm5OUq+FVm1Xl0E8BWsnJOTFL2w4Dr9+a34S1zI14JWtNFYBsGEOQaRYguHFfsvdP+OxQUMfzLuWsfP9KmnbYoFjSlHmyhkKEMzZeQeBjC5nXsROOw1SRevBsbQyleJRXdbhvXxv48CjOFL8IRAxIRvqvWpAlsbQHNbwjbp6q44GM02PL8NMBXzC8bypVkA/wDO3ggZ6E6MRRiAF+pqCgJUPRQb07xkkV
+X-Stat-Signature: h9h7fefxitrahcb9itfrxmkt93hfqtdj
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 639C9160008
+X-HE-Tag: 1790991033-170125
+X-HE-Meta: U2FsdGVkX19JTZ3fGGKTWt5rJiold+MuHfy44695BKx2Oz6zvd8/nPAxmn+fJKeCsz1BvyKMHE9qhKp4izAOBadR9CPR65t1gDQcr0F2n7Im1mnzyxhTCQ4YZeLeGJjValaLZd1GKH+IXZfFlabsJPPoEqiwNRvvTYUPEMGHewgbunMkbcwVarKTAXEVs8PLTSlY+WV9d2e7kmU4qdcJCDJQsN7NgsYEuaDUrDOYcc2WfzHAJKtpyXtO4CK68RzVajVo0ID+y02mfrCPtejr6yPa7roF6gZC8mO18y37QE4CsAKpnPq0UV7Z+sFWlMs0UZVh+k8lBBoQ/t6ez1beu4QrD/xLc66xtwy5FQzPCVGKzYHBPIbZLgREYjZ9oG+PHjnD4QWtwXNjHzoqe5aInk5RePOU7ScGRJQjY3fH9kQc376xdprJyCDPlaTrVb2JSFPhkPSJThr6yZi7zQretPAa+xaU2AJJcL385Idigm8IqEiNWA6Yo5fcQzeU6C3rdDFpdY0zES1xc/joIELQ7/JVs5wmQ69pTMbk+LEGqk2FVqaBOItY7QKfruhM5njn/DMEUqUcQeXBcbRdo9WG9rSWwqhe52SP6jY3tJKu7ED1KtgtzBSwiUCwECz6hoX0QDIAB2omeSJJ/WC817AXG4Sjs/066M1lH3B89mtmL22SFxzjy0WTC8y+8mOLiZEKCSBC3C71g62rNu9L1zNRSieV2SW7gQCTpnNfcL2apqCIuG9H+CpwhxfuotqE4r3kENguN78k+t4xLoy9jhptUDc8O9BXe61pLT7V7sN62nfnzKKBrbwNrt45uoeClWg/gwrIN+8OSeMZRO/ZqHQJY9v0P/ht1EcxlqE/kv7Z1cAMB1Lxf/jxL2rK7M6WUdWYtOVt8mzlB+Tq+RJ+QGkoEBsyNYT9mbSgp4Lyj06R8bJXEckLUR9glv7kBzCIcwcqod6/Ji95fNQYjFtTlmr
+ vAOSF/Jg
+ gJ9DeekdS0gxq4Rs6H6VU8qYLF4Oep4cdSOIvz79GJ1u8sYFMtLqB4WiYTw6z3gVLW5X1aRSciiiXWzzkG/+ysict+5CFS5yUUI+Bhai4pKuqn0JnwdqlH9mLiwWBsUd/RHIga8RxAkD/xWvciKUFHQJcW0dYpCPLKjIHEqLdC+s+HInkSDUIrPiN1KpoRroaxy9Py/fS9n8ZNv1dwdOPP5IiRLBIklehK785z5npoKuSQOS5rBeu6BxG8DhJYJtz+RRty37hD+V/m+NwdaMvfdWbWpnDRdhOGh+vDD9HnbvVF/2CgSPtCKG/yQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,61 +105,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-xswap_release_slot_backend() runs with ci->lock held. Its callers free
-the slots of a cluster they have locked. It called
-xswap_backend_uncharge() to give the swap charge back, and that takes
-the same cluster lock again to read the owner out of the swap table.
+> Since commit 97d34aa65c29 ("mm/secretmem: properly account locked
+> pages"), in v7.3-rc2 and the 6.18.52 and 7.2.5 backports, touching a
+> memfd_secret() page for the first time fails with SIGBUS while the
+> same user is running perf record, and read() into such a page fails
 
-A spinlock is not recursive, so it spins forever. The swapin path hangs
-on it:
+Thanks for the report. I've dropped 97d34aa65c29 from the 6.12 queue,
+and also removed the copies that were staged for 6.6 and 6.1.
 
-  do_swap_page
-    folio_free_swap
-      swap_cache_del_folio
-        __swap_cluster_free_entries
-          xswap_release_slot_backend
-            xswap_backend_uncharge      <- spins here
+7.2.y and 6.18.y already shipped it, so those need an upstream fix,
+which stable will pick up once it lands.
 
-Read the owner from ci directly instead. The lock is already held, and
-the cgroup id is still in the swap table at this point: the loop clears
-it after this call.
-
-xswap_backend_uncharge() stays for xswap_backend_free(), which runs
-without the cluster lock.
-
-Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
----
- mm/swapfile.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index a3d4561566eb..419d19f3b98c 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -3313,6 +3313,7 @@ static void xswap_release_slot_backend(struct swap_info_struct *si,
- {
- 	swp_entry_t entry = swp_entry(si->type, cluster_offset(si, ci) + slot);
- 	struct swap_info_struct *psi;
-+	unsigned short id = xswap_entry_id(ci, slot);
- 	swp_entry_t phys = { .val = ci->xs_table[slot] };
- 
- 	WRITE_ONCE(ci->xs_table[slot], 0);
-@@ -3321,7 +3322,13 @@ static void xswap_release_slot_backend(struct swap_info_struct *si,
- 	if (psi)
- 		xswap_free_phys_slot(psi, entry, phys);
- 
--	xswap_backend_uncharge(entry, 1);
-+	/*
-+	 * ci->lock is held here, so read the owner out of the swap table
-+	 * directly. xswap_backend_uncharge() would take the same lock
-+	 * again, and a spinlock is not recursive.
-+	 */
-+	if (id)
-+		mem_cgroup_swap_uncharge(id, 1);
- }
- 
- /*
 -- 
-2.54.0
-
+Thanks,
+Sasha
 
