@@ -4,178 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32A62CA5FF0
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 16:46:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DBFDCA5FED
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 17:02:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46C296B00CD; Sat,  3 Oct 2026 12:46:37 -0400 (EDT)
+	id 4B15B6B0092; Sat,  3 Oct 2026 13:02:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4429C6B00CE; Sat,  3 Oct 2026 12:46:37 -0400 (EDT)
+	id 462E36B0093; Sat,  3 Oct 2026 13:02:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3313F6B00CF; Sat,  3 Oct 2026 12:46:37 -0400 (EDT)
+	id 377C86B0095; Sat,  3 Oct 2026 13:02:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FD956B00CD
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 12:46:37 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 92EE9120A11
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 16:46:36 +0000 (UTC)
-X-FDA: 85281893592.22.978001C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DFC771A0002
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 16:46:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ku6FBW49;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A8686B0092
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 13:02:35 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 942321C3DCE
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:02:34 +0000 (UTC)
+X-FDA: 85281933828.16.61EFECD
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6E0A81C0009
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:02:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=canonical.com header.s=20251003 header.b=oDxinKuH;
+	dmarc=pass (policy=reject) header.from=canonical.com;
+	spf=pass (imf18.hostedemail.com: domain of chris.bainbridge@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=chris.bainbridge@canonical.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791046952;
+	b=j87nvKNP0D2Zua/KcwRz4krox8lKlqpdci4hIX/T/ywvKCdVM7VaMm8PrBKA8o2Sbx3yXP
+	HWsI4azBWLLwENZju1mQyLxbGJmVuy5otJUgS2IftFPxOnX26qQUMPpdIypP6/Ah5F384+
+	3/i6NXiSw/EjaJ7wX7z9EymC4F6GtY8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=canonical.com header.s=20251003 header.b=oDxinKuH;
+	dmarc=pass (policy=reject) header.from=canonical.com;
+	spf=pass (imf18.hostedemail.com: domain of chris.bainbridge@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=chris.bainbridge@canonical.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791045994;
+	s=arc-20220608; t=1791046952;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q2aQUzTUuuuNI/ysultBnvmSy0Vxb53qrqOM+R0btIA=;
-	b=qCEVP6BGbf/eeufikn0xfAR5H37/RTUWI9xCW6Prs/YeNVOtJGUb3sRVwmXRWWveZmJdSB
-	rTOh/QDxaanEZyoDBMbN/PUX9Nbrv96Jk/E/0omBvXJQD/w5QM7GKwfpQZzu0s5n05X1cc
-	j54AnTJ1m8t9Fny3gapd1dkvryQwUZA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ku6FBW49;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791045994;
-	b=YeXd/2w/3ej6xu+hGjkLVejYnjTgI2FKNQlzq0L1WkiPzyPMuKvmlaVzzpSBMktJnilJUi
-	/1Iinm9unrfI7nLVQzXJ/D9+P/OKtmNptBgxTsjQe5x7/QqRSS6IuQiHG3aAcN9hhq7b4N
-	Xo/9TlDRmJc0ObYF4DNzdMr8h7xKEMY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 57F1B60D82;
-	Sat,  3 Oct 2026 16:46:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4771F1F0089D;
-	Sat,  3 Oct 2026 16:46:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791045994;
-	bh=Q2aQUzTUuuuNI/ysultBnvmSy0Vxb53qrqOM+R0btIA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ku6FBW49LPAkrwvQYvPuhG2A9tZpaFs5wAVnWBb1CxSYOUntmmdE1VzT+g3vHRCB/
-	 wAI8gvD2dZL3efLWLd9O8T1aBHFt76hZy4DjBEN67LI8r+TKjfTLfZ1LcfJjSoq5+D
-	 +/zObojgb5XSiK+6OwavP1gL0bJvpwBljQcr1aIibko31uj3P4WFnOTzxune1P1SGG
-	 /wBneoTIxJM0Zf2gK7F3Bw5NBWnxNSx7st9EJvqpBIDEefq704llAKSmffFlYxfLxA
-	 0Lvz4jR9pJclNhlTuW76CdWrPw9kP3j8TEfJufylQMl8ExSw15xn9ckeLY4N525Cu0
-	 //BE35soPRm+w==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Sat, 03 Oct 2026 17:33:09 +0100
-Subject: [PATCH v4 38/38] mm/huge_memory: remove vma_is_special_huge()
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=kLoV5W1FHSMCnQXJR94hBtpM1Iv97CLc5Gk+9EMFE3c=;
+	b=6k4sZ6p//vs+toTi2szWbpia5n59P7cZm/EQfvKeyh2/GBeopiijT8CQIl47mBCFoyp2oz
+	2wPAyFS5rzhA4COT29MtiGLRGtk+I3wX5Edx4xrQTR26L0Cse0lZowt6YfPjKY9PDTTAaM
+	hORWlThO+vU+Q1CSsRvZBdFAbPMd5YI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 80F493F193
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:02:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1791046950;
+	bh=kLoV5W1FHSMCnQXJR94hBtpM1Iv97CLc5Gk+9EMFE3c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type;
+	b=oDxinKuHjSwh31QA9ULq54Z0Ka3ICwf6Mm+tdVnkM2VCtxgbrTphDAaxTtj3bHKvh
+	 78EgtWchmjblnTJmdW79O/x1M9TQ3JIbaHQH0vWmn4/rs8QPf19aJqM0y9HWHeLCFG
+	 FCxDNLRmZFMyy+WcJMGl5Ex528DbAArYEXbX3TTAp3GuTRH6jQq6zlPomY8wFBKo7/
+	 m4YNaGXO93hcs2fw4DtuZLeuPeCbAsYYUjAc/ILCXgnb+kGlkBOluIna7w2H+I3rEp
+	 QVWSEhhGFiXJlsUZtU3ot3pjM0eWFL6rsAS6/vbSbqYTbXVwUhBtpBqdh+tCO8VYTM
+	 ciIqkrOECxtRbx2ylA9aQfiM24gdlrdjS9YkmVOAO7h1GwHTPEssGD1TLBCTL7OVJR
+	 YO9R1Fm08M3lNhY78i/ajFG3yAv+q7OyG1222rlbJ9XBa8I7LnSgZyWsf6KlHeAZVX
+	 MiL5VN7es0oakI1vvnA3RKdzjCjC/Q7VS96sAMqomj6RUzs+SCWUYT1gbmr3cQj/Rp
+	 OpgmeZOeIThCglW9H9qOTtacdLCct0I1HwkSFwB3e05sJ8EG0j3pq6LpKQRMGJwC5W
+	 5oRfiii9TvMy47pN5PsZqMLXpOIGnQFRJyVdMlBdVsUSKqnQ5uIL2o+kC/slooAlKF
+	 Qa/d0vr/A+83MXyjwjwRYyrM=
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a01ba12198so6656905e9.1
+        for <linux-mm@kvack.org>; Sat, 03 Oct 2026 10:02:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791046950; x=1791651750;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kLoV5W1FHSMCnQXJR94hBtpM1Iv97CLc5Gk+9EMFE3c=;
+        b=jVEAS+XSx8u3XI8hKIN0IWkh32JhuaUgzw5SeUe3q94fqre5kzzFef12/GdogpIs0y
+         +qmVfwIlnkEioSJ6D+rOgI+V3bp1S/zRf5sNq898CmdmwmKHB3bQqUCOVzilWirNXgr8
+         AXzeqZ4OWB036FTEmmYSrLSM9TjwyybD7wU8gdvpACSzJSR/XDFEOCU7m920QGVGQapW
+         IMS9he9cION8POmQvaTvWAofwFjFOqrL9uuWZZL1EfBzHN5LTXWSwzTmaHT2GBxbgHkU
+         2U9+ccHxpTRKBUHPNolzLBDFE4WW+6hGuV3Ak0zQ9xNsXjcg+AkzUkV7EMKOUpU3Y8j7
+         q2Qw==
+X-Forwarded-Encrypted: i=1; AKwUvBxBKC4xNU4bZa/+Lq0hi2ehiT6YM43vFbg3HMexdv++ElGm/JbDegjSGDnuyxpyv5gGoitgcHZkQg==@kvack.org
+X-Gm-Message-State: AFuF++ktuDwrYwyBHOvMRSrry30vOOoYQPwgKzsa5I57PMALSvcuT5Pi
+	X1KV/q86IHcHZ1POTp+B/lurDlgO3h6s8NKIvvyFEF0qFAsDgw0Gdj5rIZ+AzrAGFuOB+fC69RP
+	EXP3Gwo2g6JUfFj9BB3hYE/puXD6C1hM6KgAjg3lFWUrDl3kRaOe3ZE7AT4FysjfrD6ZF
+X-Gm-Gg: AYBFou3EXwKztdQFGF/nJiZ/6uK09DA8Xjj+iGnt+vY4ZBMa6+M6g+rLeigxikR5bsZ
+	bQ07/hEWx8sIYh4NTmLFhTdOo5JUEvMBuaV1MYovS356M/QPjdR4Ar/lRGJdp18yxIlOsXyU7iY
+	XLfcb1bn9drq3egueipsb2AoP0tXfCLrBoDNz8PS7Rl79dwptbg2EuglxRyY4IzQUtXdaeYNLPy
+	OwXS3JewqqudgHzt38RRIABCdEs1TU79wiIaQI4DlmyDmo8KHf8OdcmhnBD/EQwOmFREhrGHh1b
+	w5ceVcc/ReHEP1VLuzVMA15m2fTYyMDI2mMALjpVYKiay+4uJBq6PF9ZHreZWZppiIBO9uxvc0U
+	AVFvNWfk=
+X-Received: by 2002:a05:600c:3e19:b0:49b:8f5e:51fb with SMTP id 5b1f17b1804b1-4a027534b98mr106170585e9.3.1791046950097;
+        Sat, 03 Oct 2026 10:02:30 -0700 (PDT)
+X-Received: by 2002:a05:600c:3e19:b0:49b:8f5e:51fb with SMTP id 5b1f17b1804b1-4a027534b98mr106170055e9.3.1791046949625;
+        Sat, 03 Oct 2026 10:02:29 -0700 (PDT)
+Received: from px13 ([2a06:5902:822:4600:184c:5422:d333:cf3f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a02752aeb3sm192763715e9.0.2026.10.03.10.02.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Oct 2026 10:02:29 -0700 (PDT)
+Date: Sat, 3 Oct 2026 18:02:27 +0100
+From: Chris Bainbridge <chris.bainbridge@canonical.com>
+To: Mike Rapoport <rppt@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Jason Miu <jasonmiu@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>, Ran Xiaokai <ran.xiaokai@zte.com.cn>, 
+	regressions@lists.linux.dev, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+	linux-mm@kvack.org
+Subject: [BUG] KHO handover hangs when memmap reserves PMEM
+Message-ID: <asE0R_f2r2TL-3Sy@px13>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-38-a1f052500fd7@kernel.org>
-References: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org>
-In-Reply-To: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jonathan Corbet <corbet@lwn.net>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
- Paul Moore <paul@paul-moore.com>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
- Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
- Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- Arnaldo Carvalho de Melo <acme@kernel.org>, 
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Janosch Frank <frankja@linux.ibm.com>, 
- Claudio Imbrenda <imbrenda@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Andreas Larsson <andreas@gaisler.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
- Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Michal Hocko <mhocko@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, 
- Xu Xin <xu.xin@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-rdma@vger.kernel.org, selinux@vger.kernel.org, 
- linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
- linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
- linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
- fuse-devel@lists.linux.dev, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2917; i=ljs@kernel.org;
- h=from:subject:message-id; bh=I2iSzq1wq3BUA5ngKyuzaIh6bRjYfHM3M8Ib2DX8Eao=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIO6unadC65lrS76vCNF1OzrsrvEpqY9vDlynom6cMPX
- x7Sl2b/1lHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJzPZmZFi2XDJ0sWkRt8N8
- cbMd8lv5l/B9fVSztabELN68e1nwsqeMDFv2Fth8nu96gft8z+oDq4XeefVsFD9/dSfr+Uoj04l
- H//ABAA==
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Queue-Id: DFC771A0002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam06
+X-Stat-Signature: druo3yqgcz3hzq64dsafsi8rhjztfiia
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: nzmh3xbmno3q5u5dousqbbjox9piwa9s
-X-HE-Tag: 1791045994-295436
-X-HE-Meta: U2FsdGVkX1+QzWUq7AGtJs+6wllgLl9EkYcjijLZjfZzWAm7VOfa8kwxG8KpERivLVPoJreWaEjbtV0hyWV4w5B/JCfXrEiBNYeOWuSHE3kl8FjjOCzcOm/kjKuKLw+tib/u+RK/vhevLZSmhHjNNieZp5yIuSiIcS0aMhaCl9t4DHcjQNMyhmbMdyIrxbel8nDwwzFMRZsYrCAVj2OdJvWQfnKfFjyxTXZBuQxQRHmy7aHt1vieL4wzqdFB2w9kWGQakG8mnbvl78V5l8Z77VCGz6uqhPBxvTwTwYMt9szvvjv7YYGy1Zknu8WGdAF2UOG2d+LM5n9/lrjLO8j6/do4IIeZSaCaWM/K8yj7PoLFLMujAhECN4dpN1lrw1ZYgd3v7ae7XLtoUrpyPv8VO+uV59G3vHOz0otXOuv+inDJ/b1uEuj/NaFLxgSGzi42erYnKwz2+iOH33gRccDbUdnFeR3ZETM8khM8AMXRdw40qcPVdsPnJQGdAXZH3yEc47BeIYfPcjYdh3qsfzPTPtno6wAcgIb9SuXS3kzsp1wlYPoB/vfgSH8zq+BDdVF8aVNUqQduNmw+CUAtftTJDt5SwdR9tWb00WyfOV/40pVbncypDYAAbnGZECc/gSqeUj0AuxA2TAZWsfpq16z4XHSm6+fG+4gcb9A3qJqd9Jhgb0FZ96NNAsWbfll5wvKonUx9FPH2UjHXIRLcUSyGoULC6J5xmpLdqPB7gzcfot4JvNrI1E7IzhWvLvVImRwPy0lpWK/lc6mLGUxIiEJmxDyECl0yubLPt4Z1Gzm5m0hpoAQ14QrJ71nltXZpIoaqIVUV52U+0BIgPbfSRZuA1luHpHx3fb42A4zGU8d9OtunfJ0gSrRj+IbX6S9PcqlmF9/gRiBqSpAT4ovIZDnZMGfMASPY2cZr5YECFFfqXbwa0pyPx/ntuaZBvj5P2f/Qib8ya2j6mzq5DLfiCVb
- DVXCWwbz
- p+WxPCGZ1vA0b707jV8fAA0JCdibuBDOG1GmAMuHtIag1AnhnsnYvBSlfMEd68+ZqkcxOeB6Isw11tvRQHe0G6SdsUUrs40CUG+3DMc7/qcyDOhFZ4z216ADwDDt9ST0YLJiTVy6+wdxhCG9EdknDm4q2zORtRs2e1JEYOqckT3urxvwzfURg+Fqx3Ksa3MPvFKA6aXASzT6mWPodk467vpkLrHWVDHlHDoQfT1uDa3rhpJhUstC0M0yPgd/Piwc3+NcfCip45glOq3gnl4MlYLamr8IbWhiNfQ1Yx8LvVGJRvAIRloTsCt793M7/8H+/bDyn31n4P6kuq7mUPbfFZei5Bh47GDxr118QcAck8xwTuFGVSwNxtVtVHKsT2g1lzl/hnq1/un4rA+0OIHlmFNnazXm4leAwlaSy23tigeyuv7QSroaelno/J7K0DuXlPExwey5K9UCq9agkkA5hm5cFW6JH+939H/87nDTT/w3Cw43xZ9kcAITvWpv1jaJXvXAi+ByqcBy2clxGO6i32NNnVkR/srukXthVtXfWBKsZ68WF45uqhZPJqh8pkAZrLya132e0FDtAOHFnJUtFOMFN/MDCaehCt0kcb4wvWFP6Wi3ay5x9I1z0LPtEZFqvPimWHTu9bp0pdBas1L/1Fo/E/CkZRaVci5t8Ts2dGajGI/LNZZaLJK7Q/Yu+WosV/wzbxNJW9u2++sfOraD9/PCzgFbB7xCc4hOP36H7sceTcLKMUq9ccq09KfTGn8rKJQ5Jwo6lDSFm95btLMY153WkyNGBUb0wTy5AFiWsQPrr00qZ+uUvUAOrwwlH+P/AF6phFPTeJDUuQfQQVq8AicEYmU+FrYNs2AID0CFkI5eO9tWu0xKp6oZlDBFaqTVDpqI26BkLLXuEUU2Zfq/iNe599OLFyRjvLU4a79vAjBN3695oPjBDmK5mMvFIjSdcVvjBFmH8zAI0UMsdciNV3PeTQWJb
- rOiI/193
- JobEGGbGN9/Ubuhz0YquyZlFXi8aE4IamYhe8p41rRt8DjqcP/2j0yQ7j8GT2q1kLlSZ7Hym6gcTwCKNS0mJEwPyR6Wv+Mt89TbWYrKFQsiRY9Mkf00RJlfgEMkfIB2E81kq6LZrn2apBIR84qFoiGpBnR8x3RwkFk1GzbuwljhUDfTODidnMX068bWvAiiDdpPo50HFFMaUKt3ffFNCKdhbZBeAyBxycfw6CEzOmMsrgvl83IcMA2P/983quF1uZci2xwnPtHS4vQPn3xbmWOAz4wuuh4byvh+sLc2LbcufJ9A7WJxSwbEUPFn4nu61xujd0msa62Av078qJKx3T/qGoJqmxg/WOax7VijQOsrtjQNbUqPAGy2mKPmWiktX1zY1vl+p3oTpF9Ie5q1tiK+m9C8+SLHZaQA7QKLueEp7O/Z7fJFBHTbVZfdF/MvPq48aSRpSiVVJ25unq0SqoPyxOcU/wtCKxCRxdxmw10ZJBMd9mSeBAJYqW4Sl8o11+YNBpCedTEZVWXJ+B0nu4sdHqGLyRffKJbIbfJfSmV64NgRHePZyih3wG0ZeUWzga4HVeTiFHi5KZ0g4XGY8URONhphiWaq/wgyN8RXerkSXHnAR4ztfenax1LOyxusPplEHVKLVjRJZnB1f4P52dwd110CRiUinCS+oFJ5wfseqk5daZ7vl6shdH6HF1n5I9odgt9258smWQeRHkPjONxmkIPg9kSEvfvKJUVjH2ghC+aUqBNDo+GMhQN5iKG/6NFrTlXw7ozleq0/ZYwb0MYo2sQNfnZE4Y+PK1eEK0LbRqLpbwdGOBQEi/6k/jJM8HNG3mNT1nFCCBU9ev0eW9e0dXxh1GfrgDCczFlQ6n3Dsn3DtRiMtTrJ8v/p8EWXBPt6310TV0PIZyN0a9rHFrqJfSFZNHR5myW1mLuPTCuW5bEnab3iwAubuOuLCFt24Iqp2rTATWV4XyUiqFQH7kpcz8vCKh
- cz7KT2ks
- rOlQ76ki3jD/W3YegsFFbB6RPohNhe9KKWF9dfDjJkACCWbRc/94KDpQ3fImLlKyEVCkVwMCpd3tQqOSkqNPL3GRng8EYeHGqdks/82CpKITUVG9ctGCylVbeCB1p3YqtAmE1axsWsdoKi7hhkPJ7/umrOqg2mBKD9UQDTwayDw3GxZFDGHOm5SkmRZ1fHphaFehKawFQUq05cvs0WKD9JCCMFJplf8shtG2ttDxFZstHvo87vfenwVCdxDlLtGrdXB/f9WkBvQMV7Ae3xGtYapEMDVGjgnoHOWecML+7c/cxwpCsEqEttzk/mXseUL8eJrsD8Aa3B45aiThNpQQqUyuaHQkqpMtKw2XzxYX5PEq7xl/7dh/ngLE5AWaSsNsRNRlI1m0HGq9jP1nmuXJ8N+KvWpsnjMwE4nwOWSmrXJsrQ2VdX9aUkuf75btsmGFToVTD9ZyRH6eZ1NPMZKzbXd05MdiwUOIAw6/5ywVvCPB1XfOADPDxEQ/KPXCMKwguhI3cCEBBxC86QA8OlmL+5MzrYkVlTwFPfHNG1rOjz7jbAm/AERsc2hvCnjZEi1KXkP2PMTLDORx8dSJF1dqYHsmxMhLSVPX3Ap5td8PeOpuTUTsEoSQCofLCj3ovNkmq4igD0KsX3EmDGhWcrs0KpfzWJHNB228qqMq+QLFDHLc/bSwLjmYLCLIXUY+oCIRCyCxIGzLi3hniJ5m1WJLLFhDQT99GO/ZiVb6jR1ARbhDQu2AAwoCJWove1c35fJans6WpcT+ceAe0aQupUzOvDdRI4Hw0OT2Z0pYmghzUEMVTvvO6mZhGLEnQyt7PiEHtg9kNT/3RsorbL0UYzD67E7GMGR92XX1V9+dx5FYX19nU0x2ErVdAIgtXNrlnw0VF1XpPGXWEuOf9dXgT2P2F/ECTYwuHpPba2HWB4a1GBkwnrlretBDzX8lNkQI3X+g6eAyMg48RETUCord8fgij/GCoRH3p
- uDnn/cDm
- Uw4jmvANroc13tEYNhzqCglQRZpYVIpnlFSbr7BepAaPuI5Rs2+wvWjK4QqCN4QxeiPbl1mfFgw1wznQBo8UdybaLVr0RkbfIWyhtT08Cj6ElS6QGpKyuf02WRSioLbjo0yTC91vT8K8nnOIt2yuDhanQEwqBVqNxzCq2Kb4ZWwC/qVnc+GSRGrMj5bOgSqNVJPguK6Bu3MQ7tJMQS12HfymK9hV+GFY7RAkFk+muHKxqNLNg8YhvKQ6fQL/0SaDk9Q7V2umbTGpeoUt0877Dg2/k7jMmRMyN2N2GdwHrQ7oQm9SB5kbcskO8veTrV/CEjfActXt274+vGAKCMNXnHG+xWJspz6A8VNbyy7mmZBg==
+X-Rspamd-Queue-Id: 6E0A81C0009
+X-HE-Tag: 1791046952-811906
+X-HE-Meta: U2FsdGVkX1+rWzP9nqZRbkzeo1g1GK2csRrU06YGqLD0Zi6qdpqp6X1hdcYFTclNUVD53hUyAgEJLl2Id7fQaoies46ha4isqutIy1vKtFCVvwLY9YtkRicionlwdw9nJoDgMLNxMX6rutWGHmHUP4mitF0ya1KaLhkr3eE4emIJgt6bHM2SPtbpp9tRvrWyJv16f8jQ2Vs7QUGpitf9FioRwqL735+hMIwxYFfa1NobH32Es8o955LCWNUUIu4LZakzyNJX+w+hraGFRpUHqSwDhaE9bGkj5bUU9cS0ueUfE7Y0l2v1pcqZV75PF/hDRBziY1FXBgdK9J13K9mj/VKj93Unq18ppfOyYfkrONRUIgLJ/oO+qJNlPPKR58xsEIY7urKP+O2Y87P0CNGdbM4YtkawPKfBvULA/hHcqDLUT+2id729akkjUphJpp1zhVMg+5lMiZ/N5DibhrZmZbHh5cc2L7EOglmlrqVi4jG+/hdTWQ/PtKtKBkqNq1ZAUXjsr126sXLru8LCFNT5ecfPNYQ+dOMDOaNF23XZH/pYVms0X8rHWhgUZ1SeOoWfEm+vriKR+22l8VWTkK7ctjF9uMQjwbh18krtkQE4Dt0i0cawa2r2lT0M/d8cB7V/c31WDTaV2NPu7plTaVZYSBnOkSkOBEpC99Ue1E4QUJtQGttXmkClGptW8ZgaqhrX4W68wxZMllmKWaF4+PhR05jb3HLJExT4y9Rb25tzczX2RRVv6ISyli7Dl0XhHszI/rtUXLinBUJ7FOamXSzoYHp1vDlbYHAPa8xJz1HPavBlR60G3JRoWYxUXSgo646THkcuRgJznRjVSATtjsIhRLS5d0qG1PaCPJsvnlcehxXDpdgiN/05EGa7WPhMNfZhtDa/WQeEuQDK9HC0ag6BHSuStSMahkbHnvvWzC49LXR6rAUyotZ47lFkD/7fzx2NnFseQpI1MNvXx8xA4o0
+ tKftKgbs
+ pyGdD9fNKSSCLX3brl5VxHy5165Fm5rHCdxm9W/+t51XIxKRS4p+oQ7gy6hZ4M3tBzuM5qF1SoocVxWIqLah5QtTES1tQPZIyoQQjYZCzCr+46mDe2/PhLNEmvyqO1VqbPoJYkz5Io3Hsbx+XWUJyTb5uBaH3Semdp1ZF+RhKrDc6p/gL8SpwAKltHlzDBtejKI/72CLmIKj1eU8fFC30cDFAFlgigEGfYXvqgWGgi1dPmfThlE+a2kUkeeTs9pdUCNB77kT1HofF8Cb0sVKMBUURlD3Ln+swuFcusCVQ0vKOyLMJA3al76eQpX2qJbB9UuEhU9AI5Tbc41nMM5cqM+VbSS0tlbWzJIGf5WqQn4q8NWYSLo1tUsI/mxyLDSKQy3oKStN0nYIt2mU7MItadHAFsUoED8HSFoJX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -183,86 +128,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-vma_is_special_huge() tests whether either the VMA_PFNMAP_BIT or
-VMA_MIXEDMAP_BIT is set (i.e. whether the VMA is not mm-managed),
-but with a DAX carve-out.
+Hello,
 
-DAX however no longer sets VMA_MIXEDMAP_BIT, so this carve-out is no longer
-required.
+I am reporting a regression in KHO handover.
 
-Therefore test for !vma_is_mm_managed() instead and also drop the
-VMA_IO_BIT check, as it is now redundant since it is enforced that
-mm-managed mappings may not set VMA_IO_BIT.
+In the most recent Ubuntu 26.10 beta mini-ISO releases (2026-09-18 onwards),
+the first kernel reserves RAM for the downloaded ISO with a memmap directive
+such as memmap=<size>!4G, then kexecs a second kernel. On affected kernels, the
+first kernel reaches "kexec_core: Starting new kernel", but the second kernel
+produces no further output and QEMU spins at 100% CPU. On unaffected kernels,
+the second kernel starts and finds /dev/pmem0 with the expected "Persistent
+Memory (legacy)" range in /proc/iomem.
 
-This also eliminates another overloaded use of 'special' within mm.
+A source bisect identified 3f2ad90060f6 ("kho: adopt radix tree for preserved
+memory tracking") as the first bad commit; reverting it at the bisected
+revision restored the handover. The regression appears related to KHO metadata
+being accessed after the receiving kernel's memmap directive changes how the
+metadata's physical range is mapped.
 
-No functional change intended.
+#regzbot introduced: 3f2ad90060f6
 
-Acked-by: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- mm/huge_memory.c | 18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 83dd63b04568..000c4bb50f71 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -110,14 +110,6 @@ static inline bool file_thp_enabled(const struct vm_area_struct *vma)
- 	return S_ISREG(inode->i_mode);
- }
- 
--/* If returns true, we are unable to access the VMA's folios. */
--static bool vma_is_special_huge(const struct vm_area_struct *vma)
--{
--	if (vma_is_dax(vma))
--		return false;
--	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
--}
--
- static bool vma_file_bypass_thp_tuneables(const struct vm_area_struct *vma,
- 		enum tva_type type)
- {
-@@ -192,7 +184,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 	/* Check the intersection of requested and supported orders. */
- 	if (vma_is_anonymous(vma))
- 		supported_orders = THP_ORDERS_ALL_ANON;
--	else if (vma_is_dax(vma) || vma_is_special_huge(vma))
-+	else if (vma_is_dax(vma) || !vma_is_mm_managed(vma))
- 		supported_orders = THP_ORDERS_ALL_SPECIAL_DAX;
- 	else
- 		supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
-@@ -3066,7 +3058,7 @@ int zap_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	orig_pud = pudp_huge_get_and_clear_full(vma, addr, pud, tlb->fullmm);
- 	arch_check_zapped_pud(vma, orig_pud);
- 	tlb_remove_pud_tlb_entry(tlb, pud, addr);
--	if (vma_is_special_huge(vma)) {
-+	if (!vma_is_mm_managed(vma)) {
- 		spin_unlock(ptl);
- 		/* No zero page support yet */
- 	} else {
-@@ -3222,7 +3214,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 		 */
- 		if (arch_needs_pgtable_deposit())
- 			zap_deposited_table(mm, pmd);
--		if (vma_is_special_huge(vma))
-+		if (!vma_is_mm_managed(vma))
- 			return;
- 		if (unlikely(pmd_is_migration_entry(old_pmd))) {
- 			const softleaf_t old_entry = softleaf_from_pmd(old_pmd);
-@@ -4765,9 +4757,7 @@ static inline bool vma_not_suitable_for_thp_split(struct vm_area_struct *vma)
- {
- 	if (vma_is_dax(vma))
- 		return true;
--	if (vma_is_special_huge(vma))
--		return true;
--	if (vma_test(vma, VMA_IO_BIT))
-+	if (!vma_is_mm_managed(vma))
- 		return true;
- 	if (vma_is_hugetlb(vma))
- 		return true;
-
--- 
-2.55.0
-
+I have an AI-generated candidate fix that changes 22 files. I have not attached
+or published it: although the AI did extensive verification on both x64 and
+arm64, I cannot review or explain the complete change, so I am not submitting
+it as a fix. If one of you thinks an unreviewed candidate would be useful for
+further analysis, please let me know.
 
