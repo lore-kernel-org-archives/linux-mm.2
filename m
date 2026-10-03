@@ -4,110 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F94FCA5FE2
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 03:13:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD656CA5FE3
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 03:31:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA2686B008A; Fri,  2 Oct 2026 23:13:18 -0400 (EDT)
+	id 6F9626B008A; Fri,  2 Oct 2026 23:31:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C52E66B008C; Fri,  2 Oct 2026 23:13:18 -0400 (EDT)
+	id 6A9CD6B008C; Fri,  2 Oct 2026 23:31:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B41986B0092; Fri,  2 Oct 2026 23:13:18 -0400 (EDT)
+	id 598C16B0092; Fri,  2 Oct 2026 23:31:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F8146B008A
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 23:13:18 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E4930A790E
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 03:13:17 +0000 (UTC)
-X-FDA: 85279844034.22.C3A800B
-Received: from mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4363040007
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 03:13:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="U0QW/e+Z";
-	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 36AF56B008A
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 23:31:20 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 259811A08CA
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 03:31:18 +0000 (UTC)
+X-FDA: 85279889436.27.1BFB056
+Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3ECF4140003
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 03:31:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=modal.com header.s=google header.b=Mbb9tg7x;
+	spf=pass (imf09.hostedemail.com: domain of ayushr@modal.com designates 74.125.227.168 as permitted sender) smtp.mailfrom=ayushr@modal.com;
+	dmarc=pass (policy=reject) header.from=modal.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790997196;
+	s=arc-20220608; t=1790998276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lw3PuQ4xjxPUxFAVJLp4fgiRRTl9Tnn1Ve+gMsj5BIU=;
-	b=LZSAzo4ea+Y7RpgSwBvAAH3h+Th69U/PtWutAHTu1ea6NQJQr5tQ3TZ3urQQqi8um+A6D4
-	jxG61TdOlKQnsObquvL2YxCjQQTZrLrYpACthMEO76cmxR7PTfo51L6uZBwRvLdKOEymxp
-	enJThCDQTCX3gxEYyckuTL106NmLD2s=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790997196;
-	b=6nizMmzgX9tLAQwzgCpG2GJQy0e/h8Siuu0kK5i9tjvDt9YDsl3EbTXQiAzd6375w4qAB4
-	oDt4zMM24NbMwdIaKzltu9R5Og838OvyBd7GDQB1Qw0nDXmFLjOlMNYbMSiBTkVPIqcchq
-	fqBrMisbclDhArqobUcywPuei3yNPxE=
+	bh=97uawHidSB1rYodKjDdjsSlDXIsf2v1irs/NqM+eBxk=;
+	b=mi+Th2oYYQOYQc4c0gFdn3dWpTRqElEHsRIhJcs5CXX/TA3xDXMqhABIkK6glqDqLFK4GP
+	z/jmXzNmfi0GY1eUTWWmqIDCedeBKe6CIL7xeC/OmsV/7RoHNe3ulxQkLXH/kFXkffl7xZ
+	49+E1M7f0B3udOgmPnIhm6dDFEHPcjc=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="U0QW/e+Z";
-	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=a+kpo4RTI73sNREzPUOPFUKRo2xgeedGd8FmVAtqOtU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790997189; v=1; x=1791601989;
- b=U0QW/e+ZRJPrY5CkUuANDzNlE2UrRxjzwb++LpzB+T5crj9TqK2olKSavX7CfzKYc0s/SuG3
- JWW+ttw5Q13SuJhnBeLkvnJfeb9+FZi9hGhfSp0OTpr/0pQH/pT9tbcNZUPBqsB9lUqqQi0OPtv
- 8a2XE8hEZU0TLWHTLhgIUSTA=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 60bba976d3c550d3;
-	Sat, 03 Oct 2026 03:13:09 +0000
-X-Mizu-Trace-ID: 60bba976d3c550d3
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: luizcap@redhat.com
-Cc: linux-kernel@vger.kernel.org,
+	imf09.hostedemail.com;
+	dkim=pass header.d=modal.com header.s=google header.b=Mbb9tg7x;
+	spf=pass (imf09.hostedemail.com: domain of ayushr@modal.com designates 74.125.227.168 as permitted sender) smtp.mailfrom=ayushr@modal.com;
+	dmarc=pass (policy=reject) header.from=modal.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790998276;
+	b=twZCl81AnR3w3y0e8TOUGEW4O7wxvdlZOPQR8/H/0Rtd6VMp8apB55sbqpi42PNnPKSOM9
+	GgIkJIiUSjOSh61eajuA28YODkXF7k9YwU85mPCnDs8oSx/cEGRpgR6WCd8X8tUTHMvr/J
+	gPS6fTqCfHWX+dM2u21xyJCmrZXNbtg=
+Received: by mail-pj2-f40.google.com with SMTP id 98e67ed59e1d1-3a2adb9bc3cso16054a91.2
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 20:31:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=modal.com; s=google; t=1790998275; x=1791603075; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=97uawHidSB1rYodKjDdjsSlDXIsf2v1irs/NqM+eBxk=;
+        b=Mbb9tg7xmMWVC2P9OHbqXuwN3YmibcxXcu5yPcVjyhPHjdDguT6txJwyOlCFO0c9jp
+         bsxkEr8IPSr0CCIcvlrSv6qBzCNTl99dGt3F/96VbXnZK1lGFFZV6rJP4/4flsT5PTZx
+         wJGk1vyqTzECH7Fq8CWT7M7T4yYq3P76W+JqYYA5bpcS64v4/gmD9nwOerHFaJ3E3SdU
+         7bi/KjyQfupfSJtSO6ObF4FEKGLuh7uHU389EfdQ/IqJ79FCHfZY22JFz1p18XB/AwnQ
+         NMNGzBZk/Q3kdGdauU36UbLNriYKFxfRpVFEodkcEi5yZgR1dyjsgQfvD/yuNkw1tLFb
+         d2mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790998275; x=1791603075;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=97uawHidSB1rYodKjDdjsSlDXIsf2v1irs/NqM+eBxk=;
+        b=FRIdcEHZeNM9/xIT7LYCo8KlzlsidII1Zg1wxX5niQClbSEBGWXXIYbBZe3m+X7BzN
+         FGijFBuUCYu8/nYdjMC8b6Kg2hhOXpBl/LyC1/OHQ6KsDM4ZkgNuXkXeOxiDGlP7qPvU
+         uzP7rxdyIJ7zEVmyI3ll+4yoNn2d5EI/3uywjSJ0ES8tYS52Yxc0B9B9g4icBdVjAv5F
+         N/jjDAdLlS0kZwPS27OH/vlnRDesmVs27g/CjPslp/reftDofNWoLzFKBFNbaMczaPqH
+         Xf5zqK9Y7mz9jWwOI860UYJSZyS3G4BAdBHdB+K5NuiHlZs6cxNN6hDWPeuV5qE8uPAE
+         TkpQ==
+X-Forwarded-Encrypted: i=1; AKwUvBysoyWNabwlQQOVYApfooxcet4LvtOAOHcvCQbg7mh7f2+Kq5lrFdi01MOCwYCvxcrZ1NvnV65FcA==@kvack.org
+X-Gm-Message-State: AFq9FYKBlRIryAV6fvPQ6AJEP0aprqw2vriJDTomiXvxichQsOoHK1t9
+	H5isNJfqMEj9xa5L4Vzt3en3Qt59G+75+rmdRgjdkRdBNC+4nO694NHxivdN5TEm6jY=
+X-Gm-Gg: AYBFou1y4pihC2pstv6Rg4uZGSjQEBEPvxCtPxHdtx2sC4vbvSQfG2H5spNB1/+vj0T
+	dUXSTfIEZSojnk0aajSS28CbZnY/Xin6sZyQhJQIqNjm/bFyXNm+QDu+z3PcQkaITkfulOPXrAR
+	bMN+fvxLRNKbQLpFsmAL0Vd3GjrIJQBaPB2+LWINUdd2qkGVa59ElRZ3P7tsSW3BJcDSJnj8w2z
+	OwBjd874RtJ8ZYl0/anO/vyi5Tp7dcAIp5W3+c6LkK7Qw6mPZkFthCfcMSZJ80LYc81jYmVbWpw
+	7PDx9bTDTVH26fFomNZ6FNMuZRunoyu2j60iKdnNArjIhma7X/XNVhaAri2a3BHLC/nxUMt0ONz
+	Vpnfk2i1jVFJuLBF55LBIXrSPkow2ZHWpJsqm4ghZCV/dVTyt51NmPJlMASQyTNHiZll0P3b48N
+	4D+yxiw0r45/a5kJSIt0moLrd5whIYeKKI4CNC72YvNRX2CbdAGN/x2Sw29flC1bRS8+syzT5Jr
+	IGmwee6puRgJop3knej+5EQVvqH1znMFEb5vNYA2Di7OzlrgmvcBIhJhfARkTYObEgpH9N0tTXU
+	M7zI9MTNKQ28WB/yx/he3ut9MWXzNo4o1D/v2Q==
+X-Received: by 2002:a17:90a:fc47:b0:3a4:a3cb:9c8e with SMTP id 98e67ed59e1d1-3a6ce7f243fmr1649986a91.38.1790998274745;
+        Fri, 02 Oct 2026 20:31:14 -0700 (PDT)
+Received: from devbox-ayushr-01ed.tail5292b.ts.net (ec2-44-242-192-44.us-west-2.compute.amazonaws.com. [44.242.192.44])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78e4f3911sm1184151a91.15.2026.10.02.20.31.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 20:31:14 -0700 (PDT)
+From: Ayush Ranjan <ayushr@modal.com>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Ayush Ranjan <ayushr@modal.com>,
+	Hugh Dickins <hughd@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jan Kara <jack@suse.cz>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Gregory Price <gourry@gourry.net>,
 	linux-mm@kvack.org,
-	david@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	ziy@nvidia.com,
-	lance.yang@linux.dev,
-	corbet@lwn.net,
-	tsbogend@alpha.franken.de,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	agordeev@linux.ibm.com,
-	gerald.schaefer@linux.ibm.com,
-	hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	x86@kernel.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	hughd@google.com,
-	dave.hansen@linux.intel.com,
-	djbw@kernel.org,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	akpm@linux-foundation.org,
-	yintirui@huawei.com,
-	dev.jain@arm.com,
-	usama.arif@linux.dev
-Subject: Re: [PATCH v8 14/14] mm: thp: always enable mTHP support
-Date: Sat,  3 Oct 2026 11:13:01 +0800
-Message-ID: <20261003031301.48957-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <752f528f0fed5cdc9de12b54260b0495d4e5a6cb.1789695931.git.luizcap@redhat.com>
-References: <752f528f0fed5cdc9de12b54260b0495d4e5a6cb.1789695931.git.luizcap@redhat.com>
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [BUG] shmem: FALLOC_FL_PUNCH_HOLE vs fault-around race corrupts page cache / rss counters
+Date: Sat,  3 Oct 2026 03:31:03 +0000
+Message-ID: <20261003033107.1488699-1-ayushr@modal.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260925065013.3682431-1-ayushr@modal.com>
+References: <20260924061708.1645968-1-ayushr@modal.com> <arTdLsBENhrpOyk-@pedro-suse.tail5790ac.ts.net> <20260925053027.1998394-1-ayushr@modal.com> <20260925065013.3682431-1-ayushr@modal.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hrgojt6xiz8qx4qb834odegn44jpkumi
+X-Rspamd-Queue-Id: 3ECF4140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4363040007
-X-Stat-Signature: p5hosanhq4rkwky6gacc1d68rfj5qxdb
-X-HE-Tag: 1790997195-22478
-X-HE-Meta: U2FsdGVkX19Ap4/Ur0GtN55JXf4+SsJHpi1ys/0CSv+rtRGRYsh46aq82rxogrgkwC0jdNceT47urOFxxX91ATBDh6VDey3GOaXBbJ4+S/hynraXUq+tvgzf6HhHf+WFiUrWznYZaaM1xMq0m9l9S+2rvdbtlu/rEXXHcQVMu/jT5kXvgBND8yk0k/6kSPzmjICXSav88Em3p7hyB9ncm3um8CL31MeCPpMc4/TjKgYntvrpM4UVXmyesy84w9GSwyvaO90pDC0j7lUFUyn68i0sSuN/dORhTQ0klK+ze77QxS6UzfYR7njvkT8mfZI5NSJqLFoIYfdB6/vq7tkByoF9FHUKPu5pvU6sAgHieWW6r+vdqHgHdf916gLVpb5++DAMeZeg5W7P0KmVrzySlDYyMZoT7KfDa3Z0//+sNViQT84GBtzwV05by/6FAHTGogWV7u21oVUpQINpS5Cs5bhuiZbopPrhgqCmo4axa7OSZqzVPXtmFMMz70+m6LtZsQogq0Z7n8VdjceDbsQb+m0KDyKOdtzJJJc50r8xI5ZZUgdFmfy9xId8dnd68b3E57hrjgpE5Ei642hazb4BBWU5P3tz0soP1UYcp3f1hI4/ykV7Et0uDDphRGuOVxfU81QUpktBEQbV1JCA9LsCuGyH6xMQe5NW3zIzCQg6NziHiH1Y8mTjgwUxTghgIesl00C4Gy31fKCCB21fLrrWSpb5ZkIA9s1B4LHc5+1qH32rcMByA+ekKmrtq27QHnSjy/iyjuWJkImSLuXTflasaRsRU3FgE8r6DWlCn7uDMS+1JADduKb0paheEA1VlXs0aRYubsl/hF5z+1xbXDqtbRTrati7kRh58mRMyLTGhy+r2u9SqTuF20h2uvWjEJokxOOi3xSZmpSRS++GhS0UsUrOMfQQC0cO6694j9D3SQmEnsWbQ++Qet1vTWOwUieEuTbcqIzVZy7aAhAHkR2
- TlX0AoEN
- uobef+/U6oRYxQAtUQMN6vqffBH87FU0CNKT+62/G8qU0G6oKSlLLHhsAa7mnPWTc2pibPGy19zMcGQhYly/BZIMmY+Cn15bPXHi225U9kloJUipUZ2lejIwwNv4vVgJWsFVvQeCo19d0kb4WNRsBFHNa3HoILg3RUZWjKZNkndouTPYb+BJstKH5w4++1b64S+40507ZUmhoVT2BSdP8ppl86UQ7B8K1ibESF8wO6IM2nQ0IrtYHhz8Clh6Er0o3uEgP
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790998276-763735
+X-HE-Meta: U2FsdGVkX1+1T3UVbBpWYr1vOokjZfY/Syas9mUTCyeDpTahIw36qSA/atN/CJ+s5jvAnxUvD5/RoWQZy5c1Jl98PoSpmWIeK/qIvxe2JvcTUuN3aAjlo4wldpoOlu/TcPN46d9SObkI077kpBj3ghUDvhs/N0HiVhs4H7y4yzR+hCF2QQk6gEIDPtVjlXd2yDIqL2g/g3bCMc0ALxnLvyXLOOLQ9Np+rJEPt61Dgd7XGR9gtn0spB3gtzeV8owqzEihuDRzytD3eh95yhCqwhoSBTA8GHGtsPN4DngxAZAG8HdpEiY4c8W7skkvkmOPadeV/r2soa+G5bbi8H8YsaNT9wz0B8PbFJ0QBSzuPOBJGybgoFWfSTUUGs9+x2fpqrsxXylBNHD/FwIUtvAncmVvWl2XkzsT5s5qOarvP8Y3phMyX/F3JoMKhBW4UO3Z7NC/e0JfVomoZZXfiNytewsRjYuhsAgnFhgiiI1jwtqWzCoqTmnZiku9WZq7dA/z1flXbwyV4clOy6H4KjviBPCz/v6t/flDmUDfZpsWZygNl9NC1WD+/e3OJl0k0PLSGKLUtc5jdTeVJY67cqmzVtC7gJM819NsfX30TaW+N9mDTEJCGS/D0a8ITBMejXgacBhqWxFxpud+nActL8j4he2UQYgdGf1kcNcZDmso0JQx1/I2X9LtfUpF+uvrlcodGP+OrJgLLXZuw7AwnrsfsLzdGcipVvu73hiAglrj3hjgIHZEZAipVTxebggeegmvSZ1eQEF5P92+Lds7BQqca6EU1HLV/5OwWVC5XkbmtYwn95HzUT6YRLedN4B4M6qf4ZCMWBaMzAtCVwnZUhTiRcmQqTmx/Pq73tYBXQYVAQ4fS1svv1MtBvp4gcvNyyO+ziZQS5QU31zOuRprN6soEyQGVd0DgRiN4f4kgileOg/eXeCkwDV9SD0JSeHuf+eNXnrNfp7i2/8jfRjcEoH
+ aZ2DZL8K
+ QUrbX5yBroE53LJOOsDrkWcQ3RJDgmVlcc3MAz1WvDMDC+9hr0NsLiy6MqlxIifaPqwinnnQzW/r3UYav6OHB4GPnNiswiHElrEapPBmkwGQ6DOtcpg1e8Irw+Yf8eAjv0GXtP/RkpC1QoCVAwxBLHetfxAztCxbt7oqZryGwjKmd/4tsIJSikjav4kUL5rhjcXPzQ1HKscH4LS3wWI9bsSY6hLSZeLqUmoHrS6CKD+IZJPsUoCR0+Mrc7jRj9k/lXgkTQFWt40w7O0zni/dn9jGplDXJg/Q8m6MJa6kDHOa0t2pWIgmLMerS+e0+sRc0I80MTnaUBVCriYsZMwfjznmhcNChNbpV5h7vXoJTp/5nXoJkZPFxCsOwyEJOGaJlM4KrnAazuRjoSOj1GJEk9QzkDbCsvzt54ToP9roIhXfEYrz+Zpl56AISujIdr2n5gH9xm8A+UMxAy1tmUlYPf2V8Uk0TLkWTm0gRSVyZwMFhnxM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,36 +128,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi all,
 
-On Thu, Sep 17, 2026 at 09:45:35PM -0400, Luiz Capitulino wrote:
->If PMD-sized pages are not supported on an architecture (ie. the
->arch implements arch_has_pmd_leaves() and it returns false) then the
->current code disables all THP, including mTHP.
->
->This commit fixes this by allowing mTHP to be always enabled for all
->archs. When PMD-sized pages are not supported, its sysfs entry won't be
->created and their mapping will be disallowed at page-fault time.
->
->Similarly, this commit implements the following changes for shmem in
->shmem_allowable_huge_orders():
->
-> - Drop the pgtable_has_pmd_leaves() check so that mTHP sizes are
->   considered
-> - Filter out PMD and PUD orders from allowable orders when
->   PMD-sized pages are not supported by the CPU
+Gentle ping on this. The reproducer in my previous mail [1] triggers
+"Bad page cache ... still mapped when deleted" on 6.18.46 within a
+couple of minutes on a 128-CPU bare-metal box, with no fork() and no
+gVisor involved.
 
-Nit: "and PUD" can go. 
+We continue to hit this in production at low frequency, so I am happy
+to test patches or collect more data if that would help.
 
-David mentioned
+Thanks,
+Ayush
 
-"
-There is no need to disable PUD-orders, as shmem does not support PUD-orders
-(unlike DAX). So you can keep it simpler here.
-"
-
-in v4
-
-https://lore.kernel.org/all/ff7bcd65-d444-4da1-890e-75504303ec3f@kernel.org/
-
-Cheers, Lance
+[1] https://lore.kernel.org/all/20260925065013.3682431-1-ayushr@modal.com/
 
