@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15590CA5FE9
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:22:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FA6CCA5FE8
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:22:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 825DC6B00A6; Fri,  2 Oct 2026 20:21:45 -0400 (EDT)
+	id 603596B00A7; Fri,  2 Oct 2026 20:21:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FE186B00A7; Fri,  2 Oct 2026 20:21:45 -0400 (EDT)
+	id 58A216B00A9; Fri,  2 Oct 2026 20:21:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 713606B00A9; Fri,  2 Oct 2026 20:21:45 -0400 (EDT)
+	id 47BA16B00AA; Fri,  2 Oct 2026 20:21:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4101C6B00A6
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:21:45 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BE1901208BB
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:44 +0000 (UTC)
-X-FDA: 85279411728.22.4BCC50F
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0EDE0140004
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:42 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JkLW7soK;
-	spf=pass (imf09.hostedemail.com: domain of 3lUrAagoKCIgv5t06st50zs00sxq.o0yxuz69-yyw7mow.03s@flex--jthoughton.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3lUrAagoKCIgv5t06st50zs00sxq.o0yxuz69-yyw7mow.03s@flex--jthoughton.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 150896B00A7
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:21:46 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9D1141C3BF2
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:45 +0000 (UTC)
+X-FDA: 85279411770.30.6A30DBB
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by imf12.hostedemail.com (Postfix) with ESMTP id DC59340006
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:21:43 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OVvqKrN0;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of 3lkrAagoKCIkw6u17tu610t11tyr.p1zyv07A-zzx8npx.14t@flex--jthoughton.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3lkrAagoKCIkw6u17tu610t11tyr.p1zyv07A-zzx8npx.14t@flex--jthoughton.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1790986903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FDpWehmyXZTuwNLpOmNryZ2PSD85lfcY7+uhsZatBYE=;
-	b=CVcPmlE290rUpAtTTgvQeXvBsdQAQNu1KTO1Q8A0wqgt8RMtF+uqLsLsIduNaTHUHexCrF
-	4cTVHKb3WmFShWT+JBI+quEZpRSFLgAG35LK+IJyqoXakex46xfOs5y2lsdkcuB6lzE9mH
-	S2wlpY+aSekGeRbG+UtojKZYu8z/bBI=
+	bh=htfKz68Uuz6N9IF9mggRs6yYLkAuL8ZW2J7LXlHwfEI=;
+	b=4FMTB9OvREkxmuvI7KsuFXWR+FZ5Qdg2nUeDXoyXwIK+yxMTbbW9CXqqKrlGijH5T5j32e
+	rJ4ZFBJ0MZ2VB9vGFZE9g/Ttobqma4RGx9PY4yZgNaNancqr8uBDvx3UFMauRxyvdybT6b
+	gmeAZfNFPwlx25qIxEZe/IP4NXqZvS8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OVvqKrN0;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of 3lkrAagoKCIkw6u17tu610t11tyr.p1zyv07A-zzx8npx.14t@flex--jthoughton.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3lkrAagoKCIkw6u17tu610t11tyr.p1zyv07A-zzx8npx.14t@flex--jthoughton.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1790986903;
-	b=w0LjndBvc1tColffR9POriOro5f+gU4XCpDfM8owreUzVyjnK2eRkGurezOFwY1VbnSNdT
-	/7plKpYm6hOoL4LetusUa/VWLFQb76/Thq5LuYLWp+ycOPOWTawAH6f0+JXwsPj8Jf/t7c
-	1HagxJ/VRU8VHPv+TkDeusMJr96CcC4=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JkLW7soK;
-	spf=pass (imf09.hostedemail.com: domain of 3lUrAagoKCIgv5t06st50zs00sxq.o0yxuz69-yyw7mow.03s@flex--jthoughton.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3lUrAagoKCIgv5t06st50zs00sxq.o0yxuz69-yyw7mow.03s@flex--jthoughton.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-398dc3d8f0fso361990a91.0
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:21:42 -0700 (PDT)
+	b=GZSuvdrtxjVTXYfqGeiccwrTJFjC/mR4A0hiUuzbTVyvHHBVzeEgkAk1KcfO87AkYu8FBw
+	HgMfLmXBx9d7Zl0KusiZ4SQiIimTcVRcmvutAIZoIrF2oR0nZdC3Mvz0ojztdbdl5NRFMe
+	bJd7fxPmMifafwxiFd2WwDNkB5m5L0w=
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cbe77d6864dso142811a12.2
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:21:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790986902; x=1791591702; darn=kvack.org;
+        d=google.com; s=20251104; t=1790986903; x=1791591703; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FDpWehmyXZTuwNLpOmNryZ2PSD85lfcY7+uhsZatBYE=;
-        b=JkLW7soKNFfDVx9xWlWqC5pOfnnsgpkYM35JdW3vGrkWCNtJexm0rG+1b+6JHhtXOJ
-         mqaI7jUHa54Ig2vy+ma7RA5oM/aZOZeHQpssz5KWkRBJDvOtulnoW7I9xnfecMbodp3n
-         wlHq1w3vCgX7V/QTKS6JiXrvHnBpe5Sux3lRzraMp4ObAgswiJkdfvBfB8cD73/G0+rL
-         ZH9kF4YErj1OIpB1kgNA3+1IXwqSRQ0CQf50esKNfY5iqwQNzF8+T87FJreVcBBUIslj
-         jhq5D9KZHCwiiGtE7TfsqJ5AWE7KiM7X4EFEec3176OGMVN7Fg4xE7ozZs3NeCrYovIb
-         912g==
+        bh=htfKz68Uuz6N9IF9mggRs6yYLkAuL8ZW2J7LXlHwfEI=;
+        b=OVvqKrN0AEedA3C6rDUoxSpRPfOAionEYHSk5vX+Pft0igge+IpeI4H673PB6EDK/5
+         SpKi4oUqtoHOHdPbteP4+NybP1EHCKccq6e4UHZIfc4V/0dfeeoQJRTAqJtyfrXA8w7o
+         JyrYF2tCuhe2YcnjIGloEnTKkxVrmarN7A0zI1Dru4YVp1rEc7IUcwSFvff5S56BfldK
+         w1XoW6TwZxYfZ0dmiGBOIQ3AZCfCn+NYW0ulepCJXWZMQL6kq6BtyvQD4SzPS67aL50/
+         7oNnN8wYTcKF4N4mhklyUd+W5ZpIagAOFUPnFwzTj+1Qoa0mYW2YD0II0mVNrGRMKMc1
+         ezng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790986902; x=1791591702;
+        d=1e100.net; s=20260707; t=1790986903; x=1791591703;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FDpWehmyXZTuwNLpOmNryZ2PSD85lfcY7+uhsZatBYE=;
-        b=brDFmq35qNKoKPxDIEAstNI8KXj5+6ardA6a2iGazbsq6J4MPRMtDByJMt5+RtAR9e
-         rR0ibiwSoTIKC/ntf+jvvmatbJktNo67+K24lDYsSPtaLRF9umbUzZur9FtAXpX1pR6H
-         hjYP0zA/DmOyFeqrjKwgUc7JwvjNa5/q5cXWmeS+yrhKDOfTaWTI4j7VqcfO6x31+u3T
-         7UwQ7ZiOOnXYVA2MSzFfSBA29MyN5LSolUEZBf6DhIWO1HChmLLjaekkIfYyLm4/xTzv
-         JK2E0Yl5hijU6ha/HP9j0asMwwdNcekj0nHl2RSezpN8h4FyUeDL94FQmeJBEtI37fUL
-         /lfQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwbX2ylEP4rv5lWwkPXP9c92cdSXIZrWdvlhmQNCHEmf9tys4UYa5DUfXAt7EYDKKSUZotbYbrbXg==@kvack.org
-X-Gm-Message-State: AFq9FYLMWDLg8oLE9nZy2tXnYhFwT5fx1MI6+ktrw28LHXT6DRTvCDhi
-	Zi6G/gWWrvuto9F7NrAHSMyH7Y2/W2iEtuqPT5N/HWvzaARzv9B912Lvcn8vdwugeLYzN3QbOba
-	lJ/lICkDPA5XB9kqTJa6S2w==
-X-Received: from pgbdn12.prod.google.com ([2002:a05:6a02:e0c:b0:cca:68cf:6f65])
+        bh=htfKz68Uuz6N9IF9mggRs6yYLkAuL8ZW2J7LXlHwfEI=;
+        b=zh+DjrMycJFb6ZQNphikj1oYV40+nj9Fu0jlb8iZ42GCHXtiyrmGp+9tlAW0xTCUvl
+         YTdFGS3uw+HEVg6l1xq4isnBggu4/AVcKXz5No0KgPDOfZU7CwUmpyMpFpwi8TXZOUid
+         aP1zUWMyB1K7465e4OeAlwmFFdeJ2lFZweKyoznyDaIqASssxy8kQWgdz1T/JwS7gkgW
+         brjguX83BempmyuwmP9jm7c3/I9CRD7lBpHXoqVcNQtA+is01CVli2b/Z0HSjkimb8Ep
+         F/l1LTTKCZRVNX3VgXWm2z/xBj9EDWRk3iqOayOfrjtMMOt82TgjcEiZe7QTPQHsIGdX
+         0vrA==
+X-Forwarded-Encrypted: i=1; AKwUvBwjMN5g67z1uOagJGlgwMf9ohCyO/E1JHEJMjQrDkr1uvRbelKX9EQ19WA28uPNw9940tBH/UYRhg==@kvack.org
+X-Gm-Message-State: AFuF++lekKWG5zyPASRmc2AhrrWYgJeNv8IUQuf3IdWCdHnYhJOeE6zg
+	dLij6bDEQpdH+kUuzdrcjtMTT4g0ukfLCAigiFAdhQKE0JWiBet+LUyGIOiqMTlr5XmlxWuVvfi
+	68/jyG27JBAlbOkvQimj2dg==
+X-Received: from pgip23.prod.google.com ([2002:a63:c157:0:b0:cc7:6138:fe1b])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4ac5:b0:3a0:ddef:3da3 with SMTP id 98e67ed59e1d1-3a4f32d94a2mr5433773a91.15.1790986901434;
- Fri, 02 Oct 2026 17:21:41 -0700 (PDT)
-Date: Sat,  3 Oct 2026 00:21:11 +0000
+ 2002:a05:6a21:1bc6:b0:3cc:ebeb:3efe with SMTP id adf61e73a8af0-3e0d68c7030mr953918637.9.1790986902363;
+ Fri, 02 Oct 2026 17:21:42 -0700 (PDT)
+Date: Sat,  3 Oct 2026 00:21:12 +0000
 In-Reply-To: <20261003002123.505555-1-jthoughton@google.com>
 Mime-Version: 1.0
 References: <20261003002123.505555-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261003002123.505555-9-jthoughton@google.com>
-Subject: [PATCH v2 08/20] hugetlb: Fully initialize tail struct pages of
- non-pre-HVOed bootmem folios
+Message-ID: <20261003002123.505555-10-jthoughton@google.com>
+Subject: [PATCH v2 09/20] hugetlb_vmemmap: Allow architectures to make HVO
+ enablement boot-time only
 From: James Houghton <jthoughton@google.com>
 To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -102,14 +102,14 @@ Cc: Nikos Nikoleris <nikos.nikoleris@arm.com>, Linu Cherian <linu.cherian@arm.co
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: DC59340006
 X-Rspam-User: 
-X-Stat-Signature: u96q5p7uk7foh6s5syc7cmf8gqgryaj8
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0EDE0140004
-X-HE-Tag: 1790986902-553168
-X-HE-Meta: U2FsdGVkX19b1dCHqk0LxMP8rNcTRHARV+nEI3I+eY2+qLzNgBefqoskz3hoAvj/jGzBnchb1wSNQkuMjCIHgiUQlmbfyB2wDv/tuxhe3g48y7lRagmbtTYCxSN81ZbbYkDFjEMAIgBI95qjTEYJtYg5sZuHYR/Vw8XPMNf1zg+8jWvG2W8V4Pd7bnbpFOoKhOwkKF2W0LjZZRsNvYqBy4NwIXMp0jHXSlUwgsaUXHh3hzQSTVXND0tH6RKhUnb7K3yNfm0G2kFE817yRMFTIYlL8ZipZmE+AWoN1EnBAsidVP1OJ/UayD+iwotuMeB+cj025YTX59oM0gtIn+iYq0/EJpQaOKyeQiv3HIhvJ06qwXIDmBp1zodxYTUQS0e/4vifDA3dl+hi5077GPZxNQ6bjJIhQhFsVLIfHjzQKh8if8V/cDxR/L0+hExHszUQwd5Gb6Q5wOG+i7xgwx9Q9W/IltIbJfpcjKRM+K+P7gXCIiXcjQmCnCL1FDEhwc8RhJmrjXwDzppluqnHb4JjX/y/GtE5qq9aHdjdyzkHCSJL3DPROljzwh6aQWqStIj6ncht5AfOEg7CbQaRwXIYjkCtG+a+j6mbXKb9RQk3BiG1qcvgSd+EfEZmKmY1vJT0xOKhzLfEE1mkMdIaw9SNKf+xAsmsuuuM8lxablDlg9g1zSD7R3Ptux4dku5Yd3HB5CWy//mWBjQ+JFnsLvuvK+D82GtPTlTrkJeEPgdJKPFn0CbQquycsVpQEAzZvAPcQaHcjY7NYJjafR1hQnZuwDpgNZXc22NfAOBWWctc1kmp3oOEWhKZEORXbLEehm7RlWQPyfTJIIqQ3YFXw2Yj8CWW14AXp7ldVPKimNjOG1wT7uhYkijOyb05cAQNr3EpEZQoqG376xCfVod4FjeyKnIdW1Za0h1AUp+kxW0LnuH4jDmbGVB9Z+2dgj31PiqDkDQui9P3TpLJqfrkSZv
- v3Cpmiwg
- HOB5LiGt9bvt+hqYxVBrd6hGh88KiNKc3W8FzxnCcQZ2hU3qDnTutgnBDgDM/myZFz4336KrvytaLk/TSc5amIiUpN4KBwFfdgdBu9+cg+yPi1EL9LV49TRtf554v6FAVM1519CkDJdVvMatInbMaZjhqmTnQpJW6ueWZcaqIrfvo0Q4sVqvZerKZpWuhqKfUPm4uxoEezu+/p/kcCFW1p/tj9KrJYg0nApqzfzqku5OSJ7ngJi08OY1dxc54eyF+mHMxAJGTbi7EbaPgOZKvu13MnU1jNInUzHrLLX2NXFBDTpbg21DWMowDApVNQBUc4T0DOXqjXeAQj3TyCraJMHqcmTOmeBqFJ7MrB6Ui7fbcfTtZZ19qqTpt8W2Tj1zD/LRQWtuKIYv8utmJ2Lkaeh3x10Sl77jFq21WDvBldhWjTtJrWBqmSX5thn5qdwt9gl4gg95389g479eErtHifW+gevnkLURVt4V2rPogCXbUlkd0TsCQ0kF8UWPLfeRe2ALqDXvvsol+I+JrLYhpkuG8YTg9qNamReJGMIK4Zgn/umgmGbw3ZPvah2REcvKYLuV8rbhETnjQ3+EdnEU4+fHkQ9kOX/kHclVGb1gHJEG6ygY=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: f69tue1jxpcermhbji8fgmyj8kiz1uu1
+X-HE-Tag: 1790986903-683517
+X-HE-Meta: U2FsdGVkX1/emSDLrDb/2pKDfGDxeH94GVoG2TMmHe0mzT81qVqfwdeX8zwQGDmi9p2/XZmJUDJEorBlD7bF8n0yYPtZ5Yh/8aB3PwP/UAVJPTREQME/0nl+5eQ0lsRNGH7Ckl9ZJzBhpga6vKuUQrye5P11z37L7XrNqrYn5WVHvf68ATsObNh/GoLL2O9ycFipWlbIGAnFs2RVJnJrJe90kO2MMmahc/wKaq2Ons9Og54hrsT4cdWUVaaa/Lyj7hvNaKJvaA+eOqLGL/pMeXdlELl94CVo+dBz+qKhIaPYeBeyK7IOq4GXnLvRLdRXOhSyRhiEr0dr5YB09waEon+wkSzBtekvV6QL5e8OsovZ3GMYAMhVg2rQn3phoEwQdeasU80sMckn3tvuUC3aqq4E2b6tc/nf524XR64aGpN65LxurQ8lsE17Sd2UsBY3iSRjz1o7L9cCiuZKV8PewLFULnSnEjLDvD1AlzRkfsyc/h3Ydat2ldTzrpnoVqwbLihN9Ebb6bd8AkcNe3HKuusM1jDsncO8JoxNLVCErnZOeaxiKaHkuGNwHMxGyF2/eCBClaMDtqj6vXUcJ53LVSUnJb30irIP8QJ6oouArqV495yo2qL1Tt4LTgtC1B/6Q05LaE0uFYhtaYbbwuVyJA1NgNIGxeGR3JsoUklFelPBw5xZMt470ccmUYtBm1pwgrXYdq8UpdLRzIELxnXTJ97ld0kCWY7FGoZuraqrSEqIgaXXjTcLV25P1amoKBcK3uVjAn9nEMrD0lk4rjDy0eOH12hrdWp35ce5lTftQaN/lzUXh8P0K5k7aYXX1ElINlIUagGWhzJUkEBtIePf0MR7KOqRfomHlUEVsjOm/STV2ep6YClqApnicAE3YOS3+06AzxcFSXxpiGe7oxXCUHE+39TKoGbAl33dxQ0bPPbT/r1vMBcjS+okogyYloTyIZn+NmJPslTrmMRPzjY
+ sfZVB/So
+ Rztx4bUQmknro2941PC5iXbPo+/0ZZ8c5AgZVcEzzKF9rr7uz+mWGvMW1fbsd9jrBvt2y92dNZz+w8edXYS0dOMG5ikhg8FxIny/sll4BXiRNqjFbY3+Jt7fEvFVL2A48HlIdYhA7KXPnvvQLHyYhXIcf4tu+gvrEnfZT/l82WCSLBB5e/6Fu9jraAYWbf/JSO0RDJG/oENGXMYfKCXp1tqvXxLs7XNo55WWf1H4Ow9Jxl9RY0AplLSWm9wwJHmWbyTSu4vwG6HNjO5LcoK0pZFV+MGs3jtj6VYTvQ+lTa4n4AVaI30pPppIGbKGxgv95/H1bkqmke55XqSkegx15VeaeQJMsVAC4xlTWr13VckrhZQ8IKaeXVeNH54Yx0/OgO8kAKTyilh6/3IP/Cc1qFOpfaPYw1DocxUbaiKrD/DxOLwuecDzBOYGoTEhD7SPdgtCrdU87BnWCnV4PAX+S/aVlVJ3T2Dj9axHS/Jl2iOuAks1QVAl4vVrzkA4Wars8xaJ6KdZQ7Ynfl5zTL5CDP/DPzu/gDb673lpaPEf7WeALKi+oYDuMA+FAu01QN86Ns6+VLBeySPJCd2J4GunESPya/ddtNllkjXzAhY/CJin+frxCZHp3GZsDQyKEg6Q4AULzBYsoRBUR9Syso8ctu4/NvdmysJGHuHYz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,94 +117,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-alloc_bootmem() marks all but the head struct page of a bootmem gigantic
-folio as noinit, and gather_bootmem_prealloc_node() then only
-initializes the first HUGETLB_VMEMMAP_RESERVE_PAGES struct pages. The
-remaining tail struct pages are initialized only if the folio ends up
-not being HVOed.
+arm64 needs all CPUs to support hardware updates of the access flag to
+safely update the vmemmap in place, and it will need to refuse to online
+CPUs that lack it, but only if HVO may be used. This only works if HVO
+cannot be dynamically enabled, otherwise incompatible CPUs may have
+already been onlined at enable time.
 
-This assumes that a bootmem folio is either pre-HVOed, or will not be
-HVOed at all. However, hugetlb_vmemmap_optimize_bootmem_page() may skip
-pre-HVO because arch_hugetlb_vmemmap_optimization_supported() does not
-yet return true that early in boot (e.g. on arm64, where support depends
-on a system-wide CPU capability), while it does return true by the time
-hugetlb_vmemmap_optimize_bootmem_folios() runs. Such folios are then
-HVOed through the regular remap path with uninitialized tail struct
-pages, which trips the PageTail() WARN in vmemmap_remap_pte().
-
-Avoid this by initializing all tail struct pages up front in
-gather_bootmem_prealloc_node() for folios that were not pre-HVOed. This
-makes the HVO-failure fallback in prep_and_add_bootmem_folios()
-unnecessary, as pre-HVOed folios are never passed through the regular
-remap path, and all other folios now already have initialized tail
-struct pages. A failed optimization either leaves the original vmemmap
-in place or restores the tail struct pages from the shared tail page.
-Remove the fallback.
-
-For folios that are not HVOed at all, this does not change the amount
-of initialization work, only where it is done.
+Add CONFIG_ARCH_WANT_HUGETLB_VMEMMAP_RO_AFTER_INIT for architectures to
+select. When selected, vmemmap_optimize_enabled is __ro_after_init, so
+it can only be set with the hugetlb_free_vmemmap= kernel command line
+parameter, and the sysctl is made read-only.
 
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- mm/hugetlb.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ Documentation/admin-guide/sysctl/vm.rst |  3 +++
+ fs/Kconfig                              |  3 ++-
+ mm/Kconfig                              |  9 +++++++++
+ mm/hugetlb_vmemmap.c                    | 17 +++++++++++++++--
+ 4 files changed, 29 insertions(+), 3 deletions(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4dac7ed1df57..e971e2362412 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3303,17 +3303,6 @@ static void __init prep_and_add_bootmem_folios(struct hstate *h,
- 	hugetlb_vmemmap_optimize_bootmem_folios(h, folio_list);
+diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+index 5b318d17aa4b..d962d563cfd4 100644
+--- a/Documentation/admin-guide/sysctl/vm.rst
++++ b/Documentation/admin-guide/sysctl/vm.rst
+@@ -692,6 +692,9 @@ pages.  So, those surplus pages are still optimized until they are no longer
+ in use.  You would need to wait for those surplus pages to be released before
+ there are no optimized pages in the system.
  
- 	list_for_each_entry_safe(folio, tmp_f, folio_list, lru) {
--		if (!folio_test_hugetlb_vmemmap_optimized(folio)) {
--			/*
--			 * If HVO fails, initialize all tail struct pages
--			 * We do not worry about potential long lock hold
--			 * time as this is early in boot and there should
--			 * be no contention.
--			 */
--			hugetlb_folio_init_tail_vmemmap(folio, h,
--					HUGETLB_VMEMMAP_RESERVE_PAGES,
--					pages_per_huge_page(h));
--		}
- 		hugetlb_bootmem_init_migratetype(folio, h);
- 		/* Subdivide locks to achieve better parallel performance */
- 		spin_lock_irqsave(&hugetlb_lock, flags);
-@@ -3337,6 +3326,7 @@ static void __init gather_bootmem_prealloc_node(unsigned long nid)
- 		struct page *page = virt_to_page(m);
- 		struct folio *folio = (void *)page;
- 		const unsigned long pfn = folio_pfn(folio);
-+		bool pre_hvo;
- 
- 		h = m->hstate;
- 		/*
-@@ -3350,11 +3340,23 @@ static void __init gather_bootmem_prealloc_node(unsigned long nid)
- 		VM_BUG_ON(!hstate_is_gigantic(h));
- 		WARN_ON(folio_ref_count(folio) != 1);
- 
-+		pre_hvo = vmemmap_optimizable_order(pfn_to_section_compound_order(pfn));
++On some architectures, this knob is read-only, and HVO can only be enabled or
++disabled with the hugetlb_free_vmemmap= kernel command line parameter.
 +
-+		/*
-+		 * Pre-HVOed folios have their tail struct pages mirrored from
-+		 * the shared tail page, so only the first vmemmap page needs
-+		 * initializing. Otherwise, the tail struct pages (marked noinit
-+		 * in alloc_bootmem()) must all be initialized now: the folio
-+		 * may still be HVOed via the regular remap path (e.g. if the
-+		 * architecture could not determine HVO support at bootmem
-+		 * allocation time), which expects valid tail pages.
-+		 */
- 		hugetlb_folio_init_vmemmap(folio, h,
--					   HUGETLB_VMEMMAP_RESERVE_PAGES);
-+					   pre_hvo ? HUGETLB_VMEMMAP_RESERVE_PAGES :
-+						     pages_per_huge_page(h));
- 		init_new_hugetlb_folio(folio);
  
--		if (vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)))
-+		if (pre_hvo)
- 			folio_set_hugetlb_vmemmap_optimized(folio);
- 		section_set_compound_order_range(pfn, folio_nr_pages(folio), 0);
+ nr_hugepages_mempolicy
+ ======================
+diff --git a/fs/Kconfig b/fs/Kconfig
+index 1454b7fe9641..4222db17ba02 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -267,7 +267,8 @@ config HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON
+ 	help
+ 	  The HugeTLB Vmemmap Optimization (HVO) defaults to off. Say Y here to
+ 	  enable HVO by default. It can be disabled via hugetlb_free_vmemmap=off
+-	  (boot command line) or hugetlb_optimize_vmemmap (sysctl).
++	  (boot command line) or hugetlb_optimize_vmemmap (sysctl, if the
++	  architecture allows changing it at runtime).
+ endif # HUGETLBFS
  
+ config HUGETLB_PAGE
+diff --git a/mm/Kconfig b/mm/Kconfig
+index acefc994d9a8..ad313fddc9da 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -475,6 +475,15 @@ config ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+ config ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+ 	bool
+ 
++#
++# Select this config option from the architecture Kconfig if HugeTLB vmemmap
++# optimization may only be enabled or disabled on the kernel command line, e.g.
++# because the architecture configures the system at boot based on whether it
++# is enabled. This makes the hugetlb_optimize_vmemmap sysctl read-only.
++#
++config ARCH_WANT_HUGETLB_VMEMMAP_RO_AFTER_INIT
++	bool
++
+ config HAVE_MEMBLOCK_PHYS_MAP
+ 	bool
+ 
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index 817ce39d4cf3..de4148a8aabf 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -428,7 +428,20 @@ static int vmemmap_remap_alloc(const struct hstate *h, struct folio *folio,
+ 	return ret;
+ }
+ 
+-static bool vmemmap_optimize_enabled = IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON);
++/*
++ * Architectures selecting CONFIG_ARCH_WANT_HUGETLB_VMEMMAP_RO_AFTER_INIT rely on
++ * HVO only being enabled or disabled on the kernel command line.
++ */
++#ifdef CONFIG_ARCH_WANT_HUGETLB_VMEMMAP_RO_AFTER_INIT
++#define __vmemmap_optimize_enabled_attr	__ro_after_init
++#define HUGETLB_VMEMMAP_SYSCTL_MODE	0444
++#else
++#define __vmemmap_optimize_enabled_attr
++#define HUGETLB_VMEMMAP_SYSCTL_MODE	0644
++#endif
++
++static bool vmemmap_optimize_enabled __vmemmap_optimize_enabled_attr =
++	IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON);
+ static int __init hugetlb_vmemmap_optimize_param(char *buf)
+ {
+ 	return kstrtobool(buf, &vmemmap_optimize_enabled);
+@@ -751,7 +764,7 @@ static const struct ctl_table hugetlb_vmemmap_sysctls[] = {
+ 		.procname	= "hugetlb_optimize_vmemmap",
+ 		.data		= &vmemmap_optimize_enabled,
+ 		.maxlen		= sizeof(vmemmap_optimize_enabled),
+-		.mode		= 0644,
++		.mode		= HUGETLB_VMEMMAP_SYSCTL_MODE,
+ 		.proc_handler	= proc_dobool,
+ 	},
+ };
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
