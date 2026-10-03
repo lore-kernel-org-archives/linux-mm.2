@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1083BCA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:19:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 334D2CA5FDD
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:19:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27CB56B0096; Fri,  2 Oct 2026 20:19:49 -0400 (EDT)
+	id 515A26B0098; Fri,  2 Oct 2026 20:19:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22E016B0098; Fri,  2 Oct 2026 20:19:49 -0400 (EDT)
+	id 49EE06B0099; Fri,  2 Oct 2026 20:19:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F5336B0099; Fri,  2 Oct 2026 20:19:49 -0400 (EDT)
+	id 38FD56B009B; Fri,  2 Oct 2026 20:19:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D86C26B0096
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:19:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0949160514
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:19:47 +0000 (UTC)
-X-FDA: 85279406814.15.2D8F3ED
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5E693C0008
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:19:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=e7fDNC7v;
-	spf=pass (imf10.hostedemail.com: domain of 3IErAagoKCBM2C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3IErAagoKCBM2C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 14C096B0098
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:19:52 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 99373A07A3
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:19:51 +0000 (UTC)
+X-FDA: 85279406982.11.7C7F1A8
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E286F40007
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:19:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Ga9Yozt9;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3JErAagoKCBc6G4BH34GBA3BB381.zB985AHK-997Ixz7.BE3@flex--jthoughton.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3JErAagoKCBc6G4BH34GBA3BB381.zB985AHK-997Ixz7.BE3@flex--jthoughton.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790986786;
+	s=arc-20220608; t=1790986789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=K+i7FF1JdoB4a6M9CS0sHYTwNj12mJrugew1z6DccSk=;
-	b=U294WuDl5xo3fPjLCalWMm4s7xtL3ALcQYpSp+nAUsOTpQo0C+MgFz4sXYBK2Og2P0YJpi
-	0Rc5a9AbiOR78LxQXv5no7f+edy/wq6eY07+dVPXzX3lnOdwNARD7qb4KihwexQQt7lmRb
-	+NRdTYgtrN35ZytIiiBzinAAjUsLoxU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZE8POibTlx81KQbGmprkmVIECJXXinoiCqckkz2u65g=;
+	b=dLdicNoRXYSpo8G6t7KAVLsCyt7MGEyghmRK1q8oWHQqcE7rUD6tyz+Gtk/yvv8qKEHKQb
+	+5ICr+VfeS01Dj5AjJ04Q8NED3TgOZDmkH7YkcCHy82x82R5tpIHpQtMhoBdtm0c/Njw8M
+	52Q8ZTfwO4DIAa+vLnXI47XgQz5yRww=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=e7fDNC7v;
-	spf=pass (imf10.hostedemail.com: domain of 3IErAagoKCBM2C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3IErAagoKCBM2C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Ga9Yozt9;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3JErAagoKCBc6G4BH34GBA3BB381.zB985AHK-997Ixz7.BE3@flex--jthoughton.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3JErAagoKCBc6G4BH34GBA3BB381.zB985AHK-997Ixz7.BE3@flex--jthoughton.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790986786;
-	b=iQkSQpq0O4/OQ3lHCzmJTVnjItdz7WC73jZvYr42BxREMr9DrqVVjGBxHOvAWHXyo6l/+9
-	sYGmxyQeL0KV9f8A1S81RUF8zBOuX/R06bkl/P1r6eGJZHeozpA3VzeVcQKHUGPbPlCquK
-	GQX3wQgQllbkxlVj6dZKsU5GTtqWvE0=
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-88732460a55so88930b3a.2
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:19:46 -0700 (PDT)
+	t=1790986789;
+	b=JepYzV/RNT8IrbrZN/Aya1FZBxOA6qhSSyB1nt6Yg2zxKtlsfwXI72c5uG2f9oGnl5t6DF
+	M3a4XHQzaJGKkNp1S7pYSz82nlV+u3qSnzvD1Vhz6ffZJzLwtS5boCZPu0wkflVhN3HOwp
+	BMQ0XvBNMtwSh4XpqsFwPJsPxMPKHwg=
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-39deb05ef51so61192a91.3
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:19:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790986785; x=1791591585; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=K+i7FF1JdoB4a6M9CS0sHYTwNj12mJrugew1z6DccSk=;
-        b=e7fDNC7v874iReVp6oJTUcRZSHoGZ6jH3s6OAeJ7MPhPW2zQ02mab2a47HAtd/WlrZ
-         TrBlBNAl/+KJiY7UyeOC5c77i03peZRJBKqj0U1r2WEx/zEhlBnOnMW0tPSKGD4VLlL6
-         9lzRkRdA6W1n7v+pF6NvNlLJ53uNWJ4ZeZL5raXrIltNPFUsmVz1Y0iihOHBvQMNzGxQ
-         l1KD1xd5jlmzgAabaBtGRiB7kWhpHkN4ilF8IlHS/3i/R2eKQvBpO/PqQrPbjFkUEZec
-         rR1x4zHjuu1B9k/XSq8SmYobWtUtJnGe0IZNMGWv2+eaH9e8Cfwg5h7ygb8lSeLbe0WT
-         CHHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790986785; x=1791591585;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790986789; x=1791591589; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=K+i7FF1JdoB4a6M9CS0sHYTwNj12mJrugew1z6DccSk=;
-        b=kTrRuoXfjp4KWzo4ybeNOEKUU5ti5NmtTZLCvoee3euFhVz1R7JOSQnw/L9mzA4g9m
-         f4RfjXtyUgkYYayT6tJ5rLAf5sSWdUFan5bVahMtn765r3FAkQom+mb0WcTBpMg89Aqx
-         +6gJFcsoeM0RKKe+2TGJTNAVQy3PHmJKOMW2WRUUWcspwdadxhHJxvm2ww9iUyaU2xQH
-         2J6PW3HeJ3GyTTx3oCDrrDz3N/zXiMuTNzLLgzEJfb/fxsbGIYe+Td8TdBvbIM60ktFt
-         qKW7i+thfhQ6W5pAeR2hpZN4adbh/vnW8fJRMBcDY3Wf+HlKUMsXMB8/Y8AZBA0qcIHu
-         NEEQ==
-X-Forwarded-Encrypted: i=1; AKwUvByyNg3KmV2YYQUwh8lknuYzlfM11eq0Uc5GUrmeaq/APOCe0q/ibgXfwP4k7QKi3sJ8U9wVTjfqEg==@kvack.org
-X-Gm-Message-State: AFuF++kUA2U25SBqOG8cQDK48Hd73KNDe62JeVKaihPPz4c8jbjjbfbr
-	yTcoXrhAbUBv2bcnq4ffyhWWJ8sQOzT1z+9NcYwKlRELxO5NLE3HaBgFeb44wWoTgXIyNJ/pjVN
-	OoDatKdmoB52IF3axouHTMw==
-X-Received: from pfpk16.prod.google.com ([2002:aa7:9d10:0:b0:88b:9d6d:1e0e])
+        bh=ZE8POibTlx81KQbGmprkmVIECJXXinoiCqckkz2u65g=;
+        b=Ga9Yozt9VQEdmXZeHF68n9gYr96dEShYzD5JNAWj5wDjVX58NMGpk1EvxkuISRWL+k
+         WadE0nTtHgYcZ7n4bH4puPGNTZmQhWB1umhba+msOjVkevLz/nfGcaZZ4dgPqcW/S4CU
+         A8VOvo+TiQdOwoat7Tn+/sZuUW82unNkujug94gTaHmGYFh+ZtmS3zHarWh2DM0czvSY
+         y8leZ85rNqHkOg6wxL9lc+w4qRun+tx8xY/5V6ahDzMw5OYjE/V4rhq/ZMpBrCAlpowK
+         0ZpCrsim26TWMmcRdveDlPrlsam/hSqWJTozg9YDRzaMN+yUIUSnn11OPWJ47NC+s8ec
+         jiqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790986789; x=1791591589;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZE8POibTlx81KQbGmprkmVIECJXXinoiCqckkz2u65g=;
+        b=23uVywj0uqtJstkWWzJP1dojlrktivbCmNrfviVPsVoP21N8SyFQy5SLtWf3OOHzQ5
+         ctAZgaFvxyMXf4hWhbq+IsnXW7ArI+LwUeT0LlWAOGNTTdFTZvQpw6jPsvy9B22jQ1tG
+         F1y5Oc+6xKUCNrLJgAUtM2+YMpVxUcsrgI+1M+f7cCmVgiiCH/LMnrtr/meNoR9US3Sf
+         qYaCzwv9V9B+UAalPr16sT+RHogC8tCbsWk3q9+GEW4CBH6KO1kwxmq7QqVTKSN8Ha2k
+         cCEacSswxpujAIvWecMN3iHnERFPfPDtDD+JsbJsFxeM32VF4J/oczLSwUGto+aPJoQh
+         aIBA==
+X-Forwarded-Encrypted: i=1; AKwUvBx+QoKXxjb5j7s34CZd6DCyG81VgmhkQ2u+menpXfl/unEhc7RTOVmgpUX4UzeFOaewyMzzrYU2pA==@kvack.org
+X-Gm-Message-State: AFq9FYIkwMIr7vHC29x8Lx4O9PBEXdNuGSO96CIrRwT6vW9wBwtWn/OZ
+	Dta4q1iugOu7B0CelG34+8k1da4GRISH84sWr83jN3uxfxm028rWgqPCJ+HA8NUG3FKKimltmgx
+	Bfd5BAWbGsQlEkG7HISs1Tg==
+X-Received: from pjbfh20.prod.google.com ([2002:a17:90b:354:b0:3a4:8aa5:b794])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:3d0d:b0:880:849d:c07c with SMTP id d2e1a72fcca58-88af665979cmr3880920b3a.25.1790986784885;
- Fri, 02 Oct 2026 17:19:44 -0700 (PDT)
-Date: Sat,  3 Oct 2026 00:18:58 +0000
+ 2002:a17:90b:52c7:b0:3a7:f45:5cca with SMTP id 98e67ed59e1d1-3a70f4568b5mr732612a91.14.1790986788466;
+ Fri, 02 Oct 2026 17:19:48 -0700 (PDT)
+Date: Sat,  3 Oct 2026 00:18:59 +0000
+In-Reply-To: <20261003001859.502725-1-jthoughton@google.com>
 Mime-Version: 1.0
+References: <20261003001859.502725-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261003001859.502725-1-jthoughton@google.com>
-Subject: [PATCH v4 1/2] mm/khugepaged: Never install PMDs in
- uffd-minor-registered VMAs
+Message-ID: <20261003001859.502725-2-jthoughton@google.com>
+Subject: [PATCH v4 2/2] mm: selftests: Adjust the MADV_COLLAPSE selftests for uffd-minor
 From: James Houghton <jthoughton@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
@@ -96,14 +99,14 @@ Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Y
 	hughd@google.com, Kiryl Shutsemau <kas@kernel.org>, jthoughton@google.com, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5E693C0008
-X-Stat-Signature: xjx3wcpmm9g4owkp8i3gt8ze8iop6tab
+X-Rspamd-Queue-Id: E286F40007
 X-Rspam-User: 
-X-HE-Tag: 1790986786-592243
-X-HE-Meta: U2FsdGVkX1/JOUb7QU/yGv4nOdrnoX70G3Iawj/V5Hz6LKfp8jOdqxDTEBIOvgxPK4yJhrgOxokyYPSHz9QfdbtctPYy0ZNoKElIeSUYx9HRQGBP/vY2tbxg9hxBfJo+WybC9FINDTWKWi/xz1ncqJg5icv6mi+WcWKClkrZmJlN4yqZ0tp4WrSgE0NpdS3zuBllVa/eWGJd2s9TZig4Vf8/1X4wgMSFhd74aLxQvU3L4mb09h9v/Pr5ow2/ZjSEd1SzZiwJCuXdmEEji14pexG73xhZ2blp3qq3EVTBXONtAnco7mGIuieN35zpDiOh9QgI25qdyUp60eiqcfuNRnwWIvWNZ9K1rK5SgIKCWhtCTr1iS5owFDP3jr6+mv+eUGhQwMTYuOCgbGbf5VMoun1B1titjqttKVeX/b7hrw6VmIXU1ijeDO3TCXsiKXtT+k7bctKCx1G2pgSV62zWG3b7glstVoXUa2sIqH3FtTHzb+NwoAIVK64XUclqenxMnkNSGovT26f1P/6uHKfqhrYutawIVErL3CClxX7vOtWGwo6mzYcTCilBcXgom9JlbaujSbq3vg3M1KjMdB1EYLPwMfzyTM97cJcyw6Q1GD+2/x1i2WjHU0GZec5XUya39UD2tvCNAZm/K5GDwUUOak6Z3XVQZAghQlHYWwngTk+dtaaGhjixCpljVhVGrUQTds53WKMUa6Xwfh14YF8wGhoBFvMhQnCcMjS8pkfmU/1H+ftK1bkWOJ9GPT26m5Gvg1VQCRVd8C3vI+PlYDoDEZ9HP9dY+2MJcP7oLYHv0u6GO4Okm+hGeODLdpKgrbqKk0oABiSfbRkNxds/n3WwZZmKb6kZD8hYXMmnOCxTvlmwPiJyOre42a9YZXs8WKBGGTQrQZgYgLPM7vLscf67E55XbJt+aozKB7UN80nh9Ea4hs+SnA8cawsYoq90WyQqJaIlVkq49/xMm0ZyQU6
- yBj8Rrbt
- qBEd+EEq+T9Y2TxwXOP8LkwjhRAYcG2rHmvPOwpqSIL6PBFtX/uktm5jDr3Xycj1Y6Fq15YAYzG4YS6OrOizLcOFsOjcjotrSouvBSjT23erlok9Tks5fr63wYPKYVBRZ6Ix1OT5wWm39cuS3s3ZiJL6ANR7gp1+skannsZQgKz+CdfGrTUX5qBLFZIhMbfBtGom4HEoMYQYHOqEUe7YlHxoZGKPVf+8JL5nlC3hEn8/+Cb764c31Q9cTp6Ne+I9jm751agVWED8BZN9h8VloNsMqKI031Y7Dd+UZHGZ9f0Is2s2iZCiZuDkl05kMcltM5UdpUU9R49B06FtwSQcCo+k5BQbQBDGCAUSgmxX2uKk1KrZ63cAz9Jfenj0s75gnD21mke9LveduXH1PyaRnr2myMZxXipOB2avJ8gsxM7WSNAEOm4/tdNtJ3UDnpDjAi6NW1dQhAiScyUYDghzFfrGVIIiJD95c30Va9mGNNuNojzebiUbCXMAo7hcHTesdXaO5TBo45LjYMatSmXR7gEaA7q4fRBll01XHFDb4Hw/0hamGjm5qCqV6M7URvl6kjwlLhTCAg0Y3XUhqvHY5DNN8HtQpjvEQQeG0MXw/aEnPS2ux3mn4tyc6/7NSQIFNTtWg
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 6nm89j36a767cfzkpmjpqsw5f77qfgfc
+X-HE-Tag: 1790986789-576668
+X-HE-Meta: U2FsdGVkX19uD7lRBYCSwbR+WreZeH6GJR8OhW/ncZgBxQHoI7Ql7MI5b5N55b9Cq+jw3C931FTsGmIpWn79T/kRbaAMRfFhPquFmnArAkjKWfvfpHSTl9N6z22RSH42n7WbFe4qz6I2ePgSS7gJxmC4IM8P+AU/bJ7bD4eAMN5LldyBeDGAfHFOoynreH4/m2DrKGXvzyjCAj7rno676dQcfOA2vPrcrNUqiSirtc0zjwQoj0tEb5ewC7I0RjY6J48Y3PB+B5xFco2oSv1r9utT/1izhTpmxsyfvzSleKYtwNtZk7IyRA4XaRUZi/V+Qq+nev88r1v02VAmBuL4bmixYncs+2zJd45/ROqWSW19WTjTUTopQY/sxBuSP6UJAIyEHzy4jjfYMRqTndp6pXT0TgHh/AiZLmrQsRzSXQxv/wIxYmuGhR9+5eX12K3JKbLLFSvPZvXRPz604JA4UPOv/SMwvjwa/JIQA4IzNy35caQj88UT4T/NT/NGHHyUy7UWTHgfSti1IYR4CN3jwMkzbMn1U4HMv1plDbvmUlM/X2n789S4cLR5DryIyFcd27EUhonIi0o5MiVxN3A0koSaCDVWgw+ktT6saKVgP2Q+01hN973YsGW+QLks9JfDiEAKXX+8Lt5HJ4ecj7/mdsQn+pTCaaf+7N0JGpcy9dZ+0Vghz+j7pTFrhei7IPMTfIubQTZN5PBNK/RfcAguixat/2hgpEoUJnKsqpiL7OtIvX5d+S5pT6iOAMxu7nKtm/0Ia7x+KQs9VL5Ag1LPZd89nEUyeZOJPf1dPwMhxj9W4Knwg8n/6xljJ1OSIQ37MZuITAaokyyHw4EpOMzrvhXXek0KLNVJPcSLK97VrVNXIyOPE/BbvYgqCtZZGzk/Xd09tQgE3wxtv09DnsTIHt+GkmtBQ11KQtPipj+Q7jjShq/ftvsNU5EltGPFq788WPc1Bb58qm7QDwtedY9
+ VK1WDl0F
+ D4cHLzg0sqsb2kWU9AgNU+C7EdzIbL7VK16jtcmSPeNZ5Qf/HQwx3OYwUvK5Xj7ap3kmp2w8OM8qHuUHvkkpwTorcFIvlIbKQuNqZ+c3lokADOgaXUtkKEsxvpY9IY3fqSSJYZjEjNmnlU7E+ickE4OLj2mt4JOEM1GgMrJnQouLpBgH5a59OxU0uo0lHwW1cQoxysZAEw8JL0+DTOB95XOtZw+ylw+yexd9LwPDtP3zrmjchRRHv9aP5TOAfTsmuOcwT3zEw+APzR5RVz797j/FnVnvkPJuBSQzf3UJsJwIo3qlCHmnvuQjmzMRQjtf8nvckpGd+OAtg42KAGX1Vugyx17cqTJYj3aiWaWU04wXHobbLE+2QgZOHLul2HOQkw82MQS60OTQLoDJVEkUB8zUlfN3Az/lH5uheQrNEhZPuv+uee/CjCH/ZkTuhmQfvvSbbvEXGvhVh6DfR8vEs/PaLxEwDWdT1UeFXXJTIcpeTfvWNK62QgbWyUneeLvSnVPQhV6AZXuSW0Y2oJwwoO61v/Xicdfhb1zsYDUqd1MnAuv+o69DT/L/wsOcLW4Og/tazlKILFka2028fVYpfK9VvBVkwS8q0QOkZ2UwpAsY3OvwNnD7dxr0T3aZo3Y18uTFkXCcsCHqNOkyyLyUPKugwjdhOlhWzfhaeb1tP3wMOsks=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,87 +114,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Userfaultfd minor faults provides userspace with the ability to manually
-install PTEs with UFFDIO_CONTINUE. Right now, MADV_COLLAPSE can map
-holes in the VMA when a naturally-aligned THP is present. This is not
-true for khugepaged collapse: the PTEs will be retracted, but a PMD will
-not be installed.
+The behavior of MADV_COLLAPSE with uffd-minor VMAs has changed.
+Previously, MADV_COLLAPSE would install PMDs in parts of a VMA where
+PTEs may be missing, essentially suppressing userfaultfd minor faults.
+Now, MADV_COLLAPSE returns -EINVAL for uffd-minor VMAs. Update the
+selftest to demonstrate this new behavior.
 
-When MADV_COLLAPSE installs a PMD that mapped holes in the VMA,
-userspace is likely to expect UFFDIO_CONTINUE to succeed on the
-should-be holes. UFFDIO_CONTINUE will fail and return EEXIST.
-
-This is not inherently a problem, as MADV_COLLAPSE is an explicit
-userspace action. But, especially because MADV_COLLAPSE can be invoked
-by an external process via process_madvise(), a rogue caller could break
-a userfaultfd-minor resolver thread.
-
-Userspace cannot generally use MADV_COLLAPSE to resolve userfault minor
-faults, as MADV_COLLAPSE will only resolve such faults if a
-naturally-aligned THP is present, so this is not a functional
-regression for userspace.
-
-The naturally-aligned THP case is the only case where this quirk exists.
-Collapsing otherwise requires all PTEs to be present for
-userfaultfd-registered VMAs (i.e., max none PTEs is 0), which is
-correct. This check is essentially bypassed for naturally-aligned THPs.
-
-Suggested-by: Lance Yang <lance.yang@linux.dev>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Signed-off-by: James Houghton <jthoughton@google.com>
+The selftest, if left unmodified, will SKIP when it gets EINVAL back
+from MADV_COLLAPSE.
 ---
-Changes since v3:
-  - Prevent page table retraction in patch 1. Please see the comment
-    next to it. So this patch now has two hunks instead of one.
-  - Reworded the comment and combined the userfaultfd checks in patch 1.
-    (Thanks David)
-  - Simplified the selftest a bit given the behavior change in patch 1.
-  - Undid a change in v3's selftest that incorrectly handled the case
-    where MADV_COLLAPSE was not supported entirely.
-  - Rebased on top of mm-unstable, which includes Kiryl's changes.
-v3: https://lore.kernel.org/linux-mm/20260910023411.514987-1-jthoughton@google.com/
-v2: https://lore.kernel.org/linux-mm/20260828222640.1638457-1-jthoughton@google.com/
-v1: https://lore.kernel.org/linux-mm/20260828005004.2870750-1-jthoughton@google.com/
----
- mm/khugepaged.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ tools/testing/selftests/mm/uffd-unit-tests.c | 69 ++++++++++++++++++--
+ 1 file changed, 62 insertions(+), 7 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 913086eaf17b..438c4af1c058 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1868,10 +1868,11 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
- 		return SCAN_VMA_CHECK;
+diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+index 580178630ede..ab195c2c44d3 100644
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -518,19 +518,32 @@ static void uffd_wp_fork_pin_with_event_test(uffd_global_test_opts_t *gopts, uff
+ 	uffd_wp_fork_pin_test_common(gopts, args, true);
+ }
+ 
+-static void check_memory_contents(uffd_global_test_opts_t *gopts, char *p)
++static int __check_memory_contents(unsigned long offset, unsigned long nr_pages,
++		uffd_global_test_opts_t *gopts, char *p)
+ {
+ 	unsigned long i, j;
+ 	uint8_t expected_byte;
+ 
+-	for (i = 0; i < gopts->nr_pages; ++i) {
++	if (nr_pages + offset < nr_pages)
++		err("overflow in memory check");
++	if (nr_pages + offset > gopts->nr_pages)
++		err("out of bounds memory check");
++
++	for (i = offset; i < offset + nr_pages; ++i) {
+ 		expected_byte = ~((uint8_t)(i % ((uint8_t)-1)));
+ 		for (j = 0; j < gopts->page_size; j++) {
+ 			uint8_t v = *(uint8_t *)(p + (i * gopts->page_size) + j);
+ 			if (v != expected_byte)
+-				err("unexpected page contents");
++				return 1;
+ 		}
+ 	}
++
++	return 0;
++}
++
++static int check_memory_contents(uffd_global_test_opts_t *gopts, char *p)
++{
++	return __check_memory_contents(0, gopts->nr_pages, gopts, p);
+ }
+ 
+ static void uffd_minor_test_common(uffd_global_test_opts_t *gopts, bool test_collapse, bool test_wp)
+@@ -538,8 +551,8 @@ static void uffd_minor_test_common(uffd_global_test_opts_t *gopts, bool test_col
+ 	unsigned long p;
+ 	pthread_t uffd_mon;
+ 	char c = '\0';
+-	struct uffd_args args = { 0 };
+-	args.gopts = gopts;
++	struct uffd_args args = { .gopts = gopts };
++	bool bad_contents;
  
  	/*
--	 * Keep pmd pgtable while the uffd bit is in use; see comment in
--	 * retract_page_tables().
-+	 * Don't collapse if there might be PTE markers for userfaultfd-based
-+	 * access protection or if collapsing might bypass userfaultfd minor
-+	 * faults.
- 	 */
--	if (userfaultfd_protected(vma))
-+	if (userfaultfd_protected(vma) || userfaultfd_minor(vma))
- 		return SCAN_PTE_UFFD;
+ 	 * NOTE: MADV_COLLAPSE is not yet compatible with WP, so testing
+@@ -564,20 +577,59 @@ static void uffd_minor_test_common(uffd_global_test_opts_t *gopts, bool test_col
+ 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
+ 		err("uffd_poll_thread create");
  
- 	folio = filemap_lock_folio(vma->vm_file->f_mapping,
-@@ -2093,8 +2094,13 @@ static bool file_backed_vma_is_retractable(struct vm_area_struct *vma)
- 	 * and cannot be recycled to a shared PMD. Other vmas can still
- 	 * have the same file mapped hugely, but skip this one: it will
- 	 * always be mapped in small page size for these registrations.
-+	 *
-+	 * Userfaultfd-minor-registered VMAs should also not be retracted.
-+	 * PMDs will not be installed, as doing so can suppress minor faults.
-+	 * If retraction were allowed, khugepaged might continually cause
-+	 * unnecessary userfaultfd minor faults for already-CONTINUE'd pages.
- 	 */
--	if (userfaultfd_protected(vma))
-+	if (userfaultfd_protected(vma) || userfaultfd_minor(vma))
- 		return false;
- 
++	if (test_collapse) {
++		/*
++		 * Read just a single page and try collapsing. The collapse
++		 * should either be rejected or be a no-op.
++		 */
++		if (__check_memory_contents(0, 1, gopts, gopts->area_dst_alias))
++			err("unexpected memory contents before collapse");
++
++		/* MADV_COLLAPSE might return EINVAL for uffd-minor VMAs. */
++		if (madvise(gopts->area_dst_alias, gopts->nr_pages * gopts->page_size,
++			      MADV_COLLAPSE) && errno != EINVAL)
++			err("MADV_COLLAPSE failed unexpectedly");
++		/*
++		 * If the above collapse mapped pages that were not explicitly
++		 * CONTINUE'd, the below __check_memory_contents() will not
++		 * fault on some pages, resulting in incorrect contents.
++		 * The page we already touched should not be unmapped, so a
++		 * second userfault on it should not be generated.
++		 */
++	}
++
  	/*
-
-base-commit: b2b4b29b76dabdee576eba66953a66ca61c5fca0
+ 	 * Read each of the pages back using the UFFD-registered mapping. We
+ 	 * expect that the first time we touch a page, it will result in a minor
+ 	 * fault. uffd_poll_thread will resolve the fault by bit-flipping the
+ 	 * page's contents, and then issuing a CONTINUE ioctl.
+ 	 */
+-	check_memory_contents(gopts, gopts->area_dst_alias);
++	bad_contents = !!check_memory_contents(gopts, gopts->area_dst_alias);
+ 
+ 	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
+ 		err("pipe write");
+ 	if (pthread_join(uffd_mon, NULL))
+ 		err("join() failed");
+ 
++	if (bad_contents && test_collapse) {
++		uffd_test_fail("unexpected memory contents after collapse");
++		return;
++	}
++
++	if (bad_contents) {
++		uffd_test_fail("unexpected memory contents");
++		return;
++	}
++
+ 	if (test_collapse) {
++		/*
++		 * MADV_COLLAPSE will fail unless userfaultfd-minor is
++		 * unregistered.
++		 */
++		if (uffd_unregister(gopts->uffd, gopts->area_dst_alias,
++				    gopts->nr_pages * gopts->page_size))
++			err("uffd_unregister before MADV_COLLAPSE failed");
++
+ 		if (madvise(gopts->area_dst_alias, gopts->nr_pages * gopts->page_size,
+ 			    MADV_COLLAPSE)) {
+ 			/* It's fine to fail for this one... */
+@@ -593,7 +645,10 @@ static void uffd_minor_test_common(uffd_global_test_opts_t *gopts, bool test_col
+ 		 * This won't cause uffd-fault - it purely just makes sure there
+ 		 * was no corruption.
+ 		 */
+-		check_memory_contents(gopts, gopts->area_dst_alias);
++		if (check_memory_contents(gopts, gopts->area_dst_alias)) {
++			uffd_test_fail("unexpected memory contents");
++			return;
++		}
+ 	}
+ 
+ 	if (args.missing_faults != 0 || args.minor_faults != gopts->nr_pages)
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
