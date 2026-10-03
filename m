@@ -4,119 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B127CA5FED
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 17:05:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CA1CCA5FE6
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 17:43:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EBDE6B008A; Sat,  3 Oct 2026 13:05:24 -0400 (EDT)
+	id 32BB56B008A; Sat,  3 Oct 2026 13:43:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C3056B008C; Sat,  3 Oct 2026 13:05:24 -0400 (EDT)
+	id 304656B008C; Sat,  3 Oct 2026 13:43:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D9E36B0093; Sat,  3 Oct 2026 13:05:24 -0400 (EDT)
+	id 2411D6B0092; Sat,  3 Oct 2026 13:43:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 146E06B008A
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 13:05:24 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 95CC9809A6
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:05:23 +0000 (UTC)
-X-FDA: 85281940926.15.53246A7
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8199040003
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:05:21 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=truenas.com header.s=google header.b=gFfA07td;
-	dmarc=pass (policy=quarantine) header.from=truenas.com;
-	spf=pass (imf12.hostedemail.com: domain of ameer.hamza@truenas.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=ameer.hamza@truenas.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F36A06B008A
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 13:43:21 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A35B1C3001
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:43:21 +0000 (UTC)
+X-FDA: 85282036602.23.D7B7374
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E4489C0006
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:43:19 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jZU8EOjK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791047121;
+	s=arc-20220608; t=1791049399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V9/myqvD+Wu7dUPpez/fB+sxDbuYQxQUAR18f1smsBQ=;
-	b=AiNu3t/TrnV4y+54ZIx81E5K8h8e0GU/SMos3MltNmfAAz+xS8PDDODSuH2Z5CVxASRryA
-	OFmnfC1+jwim4kh7L4sRe/VQXofRlRVf31su1z7gmvFihCEAX8puOUFKEz1+MKSgmJ6pAa
-	QgzpsXC21OFhbwb9lYMXYhk8KoE1sfE=
+	bh=5i9V/0tMLP2xvI63Csg1dE0fJbtEKQ3vrLYSHswiMsI=;
+	b=wmsESharNIaavqJAlDm0KaY4tnX5+bz/sGfskxfHbwYpYAm7UFqw5SJH15qC94gJ3upgkc
+	A2SIjArGiuBUxxxsU961Gk8pFsuitZRoPQEvMrwH3snktII9ySk24FLMZInIFcu8jbhlmm
+	RHeWsPEnkR/uG1R4Yw142kO8VQ32N38=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=truenas.com header.s=google header.b=gFfA07td;
-	dmarc=pass (policy=quarantine) header.from=truenas.com;
-	spf=pass (imf12.hostedemail.com: domain of ameer.hamza@truenas.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=ameer.hamza@truenas.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jZU8EOjK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791047121;
-	b=VGDjkLDURj5FtkIetch+FyUUqBKon7bqXylvrdLEHaL+biQfkGb98nR3AWCE9p0VE38IdT
-	eBjDlcGWBgTEUmYEenS7Y1B5vyFEFQ4akgK7xfizjRJHOqysDVQLdmsSgOjDcQMarbz8ra
-	+BKOLIrLqbgLCLM32A/gFwaZCTPXY9s=
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912d8239so6025505e9.0
-        for <linux-mm@kvack.org>; Sat, 03 Oct 2026 10:05:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=truenas.com; s=google; t=1791047120; x=1791651920; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=V9/myqvD+Wu7dUPpez/fB+sxDbuYQxQUAR18f1smsBQ=;
-        b=gFfA07tduZ57iDj8o+1N8mVpvSCZCDHI2EcI8EvAzvKssGmbXbCbgclIMnKnWAC2LK
-         zhzDTrMc5YCzejJHRKYHiW2SdYtFpGZNZ4aOD/sY/WshA3JJfl4KUliRjfzYx3wAYuuK
-         0Kvt3jB53GgZYmGbWh7zWkcVDHxBBALvEb24gShn90iiAYslG3ua4NbS4evgpEHYBC3O
-         9nakVg/rEo1sB7js6jQ95HFZ5HcWGaMkdf37LyQyB4YXLTVEbEXxT1Z2/vlkDTANgPY4
-         bngfVlrWjec2fIIP/1rwoX2QBLR1XKHSlGazV0vfi0/H/jASer0+3i451+2vGwhXFQlZ
-         L/fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791047120; x=1791651920;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=V9/myqvD+Wu7dUPpez/fB+sxDbuYQxQUAR18f1smsBQ=;
-        b=TryCMdf3YkcpxuPsONdyOEn29V8mXlIu0Fz1HyqalXd78uIQWQZo+czaeZUKUL50fs
-         7Ti9+DhQMU1giVU1ZOUDDDidjW94ddplynwfRrPdF+i7SFrC0BNGiZigdyx41IPNDEpy
-         koV5Tuu2DT/C2dsfCBdYYh1qdUmwEZdTOdi0+jLdtwzqffQ57O5RvpSwuAOklwDJmogo
-         mcpB9iedBUuXm7kwbkfOIj/8B3jAePI+HdcMEiofYHyHV4er7b3f3qnAVWUzRJJaqF6y
-         F6tEsmecybdYMeYTLTe0m5/WgIHMo862F0f00+M7EPIXYSWO/tXQTQyO1IkaU1PaVV1v
-         OQeg==
-X-Forwarded-Encrypted: i=1; AKwUvByJN/R3NGL7y10XCrlWP0CERrE3NzQRD7Fx7axsvO8ue73PHd8nnBea+Mh1IHiHTMNZ5wNLBAGlmg==@kvack.org
-X-Gm-Message-State: AFuF++lXDgDdIdGeMzxwyL//cISlgAIovb+lN1ste5SVQLZORIKHT1m7
-	gIFzOSiAlUXHJLr6/mwqL69XX3JwlLoL7+nbEiuQ/DIDtG+B+SeQrmO0Tk/aksCqb85t0X0MUpU
-	t8DQBpUgz
-X-Gm-Gg: AYBFou3wLaAPqBjR1R74fpkz5+sINAn1nQbfBAFTmkqWxJUb04PC9MtQ5V/jFdoDEHc
-	W/4i5/YROr0u3DviGbIMQLo9+gBLy8QAlfeB3eIHFMAnzg9vjLmetLQ0kuQzE/FczqPlDTXtUvT
-	WKpEWJJ5ao05IMLPWvSkqck7KIbdaM/UDNE8HiewYrXp/FxsmxG6UlgL5V4GupnBV0qFuDQT+2R
-	nDIqmDQnqUqe62iOmlEOVPeTHmPMTGyuvJhT2u532mRBfkLZs0sjMTy/PsZ+uQCQJIBO97ySXV8
-	4RcUZjFVX34AlxpH6wvzxC5Vn421O9kSVuMOY+iIYIiYUilHEnNDWTRI555HYMWW1PWBRPExrVt
-	g6AB8SSNZLxpR1ldoHJAiT9JjzhBVp9Y2Q167URPA3GWNTmM8ulsLJz4KKd/Ch7Zz1NQO4Hovsw
-	j+VV4Sl6CTO27NcypZabu/o3mnYJ57PNjRUDrWFPhWsZOvb9wlzA==
-X-Received: by 2002:a05:600c:c16f:b0:49f:ed8c:6cad with SMTP id 5b1f17b1804b1-4a027594557mr93542555e9.19.1791047119916;
-        Sat, 03 Oct 2026 10:05:19 -0700 (PDT)
-Received: from hamza-PC ([2400:adc1:158:c700::2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0e1afbc44sm177013365e9.4.2026.10.03.10.05.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 10:05:19 -0700 (PDT)
-Date: Sat, 3 Oct 2026 22:05:11 +0500
-From: Ameer Hamza <ameer.hamza@truenas.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: ljs@kernel.org, rppt@kernel.org, peterz@infradead.org, 
-	akpm@linux-foundation.org, mingo@redhat.com, acme@kernel.org, namhyung@kernel.org, 
-	linux-mm@kvack.org, linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org, 4ncienth@gmail.com, sashal@kernel.org, 
-	alexander.motin@truenas.com, caleb.stjohn@truenas.com
-Subject: Re: [REGRESSION] secretmem: SIGBUS on memfd_secret() pages while
- perf record runs
-Message-ID: <asE0ctESLO306qYs@hamza-PC>
-References: <20261002175651.811343-1-ameer.hamza@truenas.com>
- <3c5b9d1e-5ed4-4bd1-b532-39f2d4612965@kernel.org>
+	t=1791049399;
+	b=7xKuJhXgjYa7UUhknqp/ulOWUB8r4/ZzibPkReB0hT4oJQIcqRujJupywpwQwqkXyoA2Rz
+	e2uF/HK6IJCqdCTHTrzT9esW8fPyrFaOd8OoCJuxKhURVeKag1h2/FzsCcTtix49juIpH7
+	CarFu6t5AvuoPlEDNpiFX/0muh6lBJI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D2A6060D9B;
+	Sat,  3 Oct 2026 17:43:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B24E1F0089B;
+	Sat,  3 Oct 2026 17:43:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791049398;
+	bh=5i9V/0tMLP2xvI63Csg1dE0fJbtEKQ3vrLYSHswiMsI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=jZU8EOjKU+MYLZs9eQDZdg4YA56eBHRuQQT5UH/NVxVYtYn58+xxIXgribTe/fJn6
+	 0q218POxlTo94NtpcOnJzbNtmZtHHQn9/BGdIg3NP4a1near0NIwDCLHQQ1NReSXh1
+	 kmwNWyXNME7PwqmoTm9BkOJdbOaFsOGSFwvEsnYmT6Ls9W2V46qeGOp4CcfdK2iFXy
+	 x6EkIwpkNbVNO3JDbnxp4nyaJpfeHLmYoqyFVw03jWqEgRQCo9WNrboRG6OsO/xJr6
+	 QIMs83fE36fjspk+OemRnS27dvdZLB/WDD+YyKJbkxC6TMgtpQqHwt8u9Nxml6hKQk
+	 KEtZSOIEY1WRw==
+From: SJ Park <sj@kernel.org>
+To: Enze Li <lienze@kylinos.cn>
+Cc: SJ Park <sj@kernel.org>,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@kernel.org,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	enze.li@gmx.com,
+	Joe Perches <joe@perches.com>
+Subject: Re: [PATCH v2 1/2] MAINTAINERS: cover all hugetlb headers under HUGETLB SUBSYSTEM
+Date: Sat,  3 Oct 2026 10:43:12 -0700
+Message-ID: <20261003174313.34495-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261003060029.2152489-1-lienze@kylinos.cn>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c5b9d1e-5ed4-4bd1-b532-39f2d4612965@kernel.org>
-X-Stat-Signature: 86hbk97kabkymy6ko54d4au19yw1yxzh
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: h4oea5pmj65c4yj85emtpcpf43omxg5j
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8199040003
-X-HE-Tag: 1791047121-614476
-X-HE-Meta: U2FsdGVkX1+u1g+Phm+8543fyJ2Wv5upyjiZgv74BDi6s1EaboservHr6KNy4Kwx5YK1kTpKlj3kmisrfAkRgX00uUitiRh4H6aT50mo0CRaZCMdkYOsGgicA1uF6MqZyHUwrQFLdxolo5XD0iNIYPIwLT2yZc1ABKXfKbOZ7f7rSqM4fhGmIUV2NkiweldV/Zeze6K4L8RBXGmTU9naLEp0A/gQVgdOyVGhnSXLwxFWS6eZKv8C+Rh4/lkSb1Mk+5k4vOLxHcHPrPnVzjwqn9jBkW1Pj23SGiNuSAKufVvyMYYVsX0PSMjB4zGH8T+9DZMmZBGDQH1sVzmjIWdbXFxt+dAUNuDt1lxZ8kEYJdYoWyI0PVQXM80b/4xRT6JQ83XcNsuejlC3gq0DhEcLKNcxHXqsMRaP83lA5ODxM9qar6l6K+YYHps1Del0s8lQ1MGHD+Ha9PkETSZH/JFVRbqvFlcHpJ6DmYJo5tUesLSyLoKdQQQ7VH0EjVeA2ADaqvRGnMHq5Bb2Kq9f5sp9eYCByPuP0Z+f43vVH74QbMBs71hL+dYELplaLoYBamazmZZaPRq+ZWG89rWB5rk0szrwK96ouGZ9BIMc+bhA6j7TdKFGts2Kb8rKy4KywM3PvRnUKe+lq6QhCvb1J+ePD2NqYTr5kojExuw9xJKEFn0j/zpkGi/ptUx4BUuEZA2Ed1fEI3pxEMSelQ+FtwiPVik8mCJbdpO4YmcIgwVAJhRRsqrlorYXTV/qbNBYpBbmyuKXIBMJ98iO9UjfGRNF9QDldMGU91+t2qXAKdPoX6l96zWC4sLPvJ9Ppy/crW1FPOl2au9ilTLFJ9ZEpSbP2d5/jkBYfFdIZsjykq77uyG5QxNmXUFK2rFt29FuB7LC5Ya8RC67Genk42pZ8PyAelTyqiWWwbihhAGic5HzBo/LuoVJTSpNmYyXGaoF/UbKanwtatLdrUf91eMKDx+
- cu5jKAGe
- wgPuslQUMzN05w3+/JXdBRukhNbgLWSoiW2GglwdOxmofgadfjipWb3whlAwTRFD7O4otg2b6JeGqrKJB0EXRb6/6ZqrKLUVE9nmtoVxe9AaRVuR8xr5CL7fmNS2UX0BFGLsDdelIkRw9jOBJ0ZJOFLo4cS8e055slc6jfgFaJZBJH45tqvvmb98Xy88K/ng5VMlWoF9iQh6jSTcjbHZCjumpyeaF+Z2hDTp0rJ4P6A6iJWtDa4ltZIzcIuYZ1Htyw9ZwGa+p74W9cY+mvR6o1Rv7sSIK9DEWa4WmT//YFu6pgqwWsDQCJ5Nkf7d+gaqEVK+zpRrcsMElj1AN0PeZwJ0p+3KqPUmNfy3zMrG3CUVhga8C8ROgbptbusIS1nzwNXvk66xgp+8yhHTMWDKqmfjudnI8fidylVO+neRTIKoDBXvq2QTUnz5/5QFnskzIIh03
+X-Rspamd-Queue-Id: E4489C0006
+X-HE-Tag: 1791049399-22462
+X-HE-Meta: U2FsdGVkX19esH+6v6VO4aArljgEIl1GV9eAS5GuNFN/Va6k4yRp8hdEbA8kBv9fWla6TX4Y5/sNgK7F/g8KMypSi2BpihbgJlGq+Cs3zQ2aVdK0zBNkUmOOIC8ML0e+S47RkJHCp04qJ0Rse6jXNVF3jshJWzzHetYLYnCC+dRGmm1uaf4HcenSFRKzWKtYVGN9FkgXlYxraevMDkiRYLefOpxOdtS9cDEBrntwqeo43QyiSmq25tVXOBRcHKyEfw3HPJ15ShcvdL1FzJANDGwQI1uW/KvgAtjIGNm5mIk5xu8NVZGkfXF7ev+hoIbDQDgojpzdMuhvLt4GvUQazvS06Gcuz/Pvwh5XJp4ZUA52BL2CzgKj16pjYzQBeF13v/B/5x9+EhA1c65sttQimXGoY66hT5ZZF0tXsPXkRybS2QBC8xz4lWpTzTw+8AmYtkvk4xQFNRo9SBUNo63a1ni9XhBosihl7XV+lSHVQ8AEavP8ISUY5M+F9Y0V8eYyl/Kk7cxjBpTgpJB8X9aaTsxZ1d5cnkC831ebsjd92TPncyi4Qi61OohSWXxi4yLFW7QyzobeMMXXAPSueZH+bOhlJ922vGXHVMR/czCZzSYYmMcnvUj+zVFbk61QdaYBCcAqlwJsY5mLBD7FGVjbQb2AwvroLTW5NM6T2pzrTmTRdRxeJdkQ9mdsXDiuQMrG3C0DXFP8NDmWunXQYgpbx+5RdD/0APqeiErcGEt8s9+j1fnPZD14feIYlc3kYFBcHqwqh38yVEZbQLzD/lgESBL4HubZ662WY7256glsh7Z7de7J6a1M47zqWzf/MsW1av9wuoQA27gw9nWLenuyYOS1rvZhDvE3Jghrf8SVZCWcvz8q7jPxlawYDDNDwAZ0oOXvlg+SzkDrY+aslj45E8Gg5NyDHkEi8+0IK4J/g78faZhw4EjSrlDu9XwYaftSVZaAotZ7vI4KSqG0yWA
+ lrhHP7xE
+ G3tX+Cl/rpnG5HC0YvkY2Q0j+K/O6/1t5jMWKqgbt6z9D0KTgwqa5nGHV/1FS+jgCpeuVE66aB+bigC9Tp2rP/SBlgNCgnfCN3uAhePzO8jF9HGl5YsP3HWHN6DyKSXs7rJ67ueUmwRGXYMLqy+7ds0ie/g23WN1R2lKaNqw6j83zHpHH6qZQiSLsM6mOq+NQaiDHpyKKXruyAvGCI7YVYBHhcCQ70LlAw4Kd6YdfWk5rdMq1FvxgE2+Q5HqlIiKEe9cfrmn/E6mUXqtqbmsY3KMIW0/Pdjd95ub4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,19 +97,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 03, 2026 at 04:14:49PM +0200, David Hildenbrand (Arm) wrote:
-> May I know whether this problem was found by
-> 
-> (a) A real workload
-> 
-> (b) A test case
-> 
-> (c) Complains by some tooling
+On Sat,  3 Oct 2026 14:00:28 +0800 Enze Li <lienze@kylinos.cn> wrote:
 
-(a). A root userspace process that keeps secrets in memfd_secret()
-failed while perf record ran on the same machine. I reduced it to the
-snippet in the report.
+> The HUGETLB SUBSYSTEM F: entries list include/linux/hugetlb.h
+> explicitly, but other hugetlb headers are not covered, so
+> get_maintainer.pl does not attribute them to the hugetlb maintainers.
+> 
+> Enumerating headers by hand is also fragile: any header not listed (such
+> as hugetlb_cgroup.h) falls outside the subsystem.  Joe Perches suggested
+> using a glob F: entry, which covers all current and future hugetlb
+> headers in one line and avoids the gap.
+
+Looks good to me.
+
+> 
+> Suggested-by: Joe Perches <joe@perches.com>
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
 
 Thanks,
-Ameer Hamza
+SJ
+
+[...]
 
