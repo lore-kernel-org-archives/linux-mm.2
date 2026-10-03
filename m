@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48086CA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:59:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9687CA5FE3
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:59:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 251C96B0093; Fri,  2 Oct 2026 20:59:28 -0400 (EDT)
+	id 6E5706B0095; Fri,  2 Oct 2026 20:59:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DB7F6B0095; Fri,  2 Oct 2026 20:59:28 -0400 (EDT)
+	id 6962C6B0096; Fri,  2 Oct 2026 20:59:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F20F6B0096; Fri,  2 Oct 2026 20:59:28 -0400 (EDT)
+	id 5D33F6B0098; Fri,  2 Oct 2026 20:59:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C3D116B0093
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:59:27 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 343A9C08B5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C8206B0095
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:59:30 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8208EA61D9
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:59:29 +0000 (UTC)
+X-FDA: 85279506858.12.F5CF1F2
+Received: from mta0.migadu.com (out-202.mta0.migadu.com [91.218.175.202])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 51A05180007
 	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:59:27 +0000 (UTC)
-X-FDA: 85279506774.21.7EFDD7E
-Received: from mta0.migadu.com (out-198.mta0.migadu.com [91.218.175.198])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 86CB5C0009
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:59:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.198 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Authentication-Results: imf24.hostedemail.com;
+	spf=pass (imf24.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.202 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790989165;
+	s=arc-20220608; t=1790989167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0B5lRIfkRgQkQ+r9ObsfslAmHHBfDhBXObfWofKu2go=;
-	b=vyxxKJQ39SKNUxBA9sRpz1ZHjKGBwkDdkNA1wVEovClN7R1wLwEH2/CTUqlI9zRsofNGHd
-	HMMQi6PIWUn4upglM5jpFp6BNvaS2GBjMqqc32jC2OXFb/4+fFZ8rjiFMGLc01ALHRnDrq
-	UG/GNhmN3CF3vxqjx/3Z7jL/T+5mO08=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.198 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	bh=cmmb2E1M/b4aWFMcAV2PChy+gWAirHDsWI+RWTVpI6s=;
+	b=DsG00h2hkUQbwagfSN5Bs/VbU/Nc6eZToEl/z4NphEUxf/7vMpo7BcyySL2+dAKFSyVlCy
+	zrlrjD5yBxoZn1t0q0h388Dda5G+ii9Y6FKSu17u3bkeX8b7fB0WLu302wjzI0U0qD3cvn
+	+EzOVb+ArcCi4+XW8MpRD6mxzv+/Nho=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790989165;
-	b=3fO7Tvmc9gg3Za9xLJORy7kAfdQHox8Jps9sbeK6cy88hbFb7B4vKG8u/rpMAaiLp6vjsW
-	eFIVp1es3BrXUnPhQ51YYMWcquDyIEwkXeLDnZtpajsw+akXgPfD2V9IRQ5pobph6BzNbF
-	GpLH8IHhp4mVvO2VPnepqKdGTPu/LZ4=
+	t=1790989167;
+	b=7xf/IcNhVgva37bruDqtFX35T2I383KqbhTcPfMZzf94i/TLqvtX2rAeLl3w7Urj8Tdt9+
+	3YD7NdDmZCRkd1J3H2lePJmILG1B44WdAAht9NeHSz7HaP9XLytG03ee4D1+/OEnOIzoRg
+	2HH16kk7qkdi0YFJE7oE1cH0+G8k/b8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=none;
+	spf=pass (imf24.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.202 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=none
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id eec46b8538ecd08a;
-	Sat, 03 Oct 2026 00:59:20 +0000
-X-Mizu-Trace-ID: eec46b8538ecd08a
+Received: by mta12.migadu.com with ESMTPS id b12d5abc85844bdb;
+	Sat, 03 Oct 2026 00:59:25 +0000
+X-Mizu-Trace-ID: b12d5abc85844bdb
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -69,23 +69,23 @@ Cc: akpm@linux-foundation.org,
 	riel@surriel.com,
 	klarasmodin@gmail.com,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 01/12] mm, swap: prepare the swap IO path for xswap backends
-Date: Sat,  3 Oct 2026 08:58:49 +0800
-Message-ID: <20261003005900.909710-2-hebaoquan@kylinos.cn>
+Subject: [PATCH 02/12] mm, swap: tag a swap table entry with its owning xswap entry
+Date: Sat,  3 Oct 2026 08:58:50 +0800
+Message-ID: <20261003005900.909710-3-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261003005900.909710-1-hebaoquan@kylinos.cn>
 References: <20261003005900.909710-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ypgi6hrxiqafyymh55qx9sw3811sj1x8
-X-Rspamd-Queue-Id: 86CB5C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790989163-260412
-X-HE-Meta: U2FsdGVkX19441Et7jzpRunF2ZxHhf5Wn5wau3Oc5kuGBDnZbPpDqVU/gDctVhhhXHFRLxxpLB9aygyK1i0T5DBx4Y6SIz+5rw5omOZ1+JRjo9qHHxVy+hSUoX7zud1PiqsEhlxsKHgKlB+phJWloMyF4vxSl7i5G5UdYeT4Bs/8YncCCk5vH+f8nehYEi6SYfTz86zpHHbCaB9elUv82hCumQ//rED4tNPugMyYUfrH+nZuC9PB6qIUelwYCeECWDN02IX7xx9sJKUZmpBeAiQL1jaoDMN00B6iIAve5nJFL6zzTq8aYeMyXiOEYWHku3sm8mwROz3MTuZ1c5GefkLcyUm0UB+Pmy+yAFiEtGsOrsjNaZfGWwnYuUBE+i2YvshjDXYMr6rGjfR3av8+OYFtndbMud1EZtdWQu9FZJmrmOuzzV+GMp96VWnTzciMmiXsNfGY4LquGHV/3HOEqRs5yts8zOeiek2S/aCRx/dMbVuwMspDeUyHfPBLE7u2+mWQlxKFRfyJwMkj+Ay3KSRlpgbr6BYa1vdjm6b1lu3gHckFcsF0HN2nwDXGtPYqnzEZ8kfolXdcQ0sBgLvLGB8b8HOtevY6sfIul3x7eGRBVgSuY5Neu/0UglgbgjO2Pd6PExMG3dz54znrYRcH66nixOcPL328EnTqPGtNtsTPEGQYk1LJB9FkJWhUnsBI5QPEYF9I48LAIYqD5X6y2YhC221LuAqYs+YELXsTL2QooNyW2D6KxafUyeMXT2iKkgwVRlSZ+Rm1VIcVTUZF1fQ7RR1u7v3YvEK4odjAc3kHeUokpWeXs01wkwREdNETSyrdoY3q0HY3iFVqRwloV/RmK1ESe2/Re7PGVOZ8CAkJx2NH0JzBJjGkSHOTu/0zNPg6VaS/GL/SohJ7PMTfp8WnQV/NNjfEYk0IQKXdCQ/BOarr2U8S+GvuB7ZX41u4O0ZrmSoZ6mUnZkhKMYf
- mtdwLRd5
- gi/jeTxxdtqLe89iFEH8+UcKB0Uu7WzfyzDZ39pB+f7gjZiAisIVmOm9h95Blye+If05j8g5IWV/rrfRgrZmSqKxvEicrbYEmQo0WvHmbhbN10lJ3+zaJhwCDWBTyJpY8IFgVlgU8XrEq/yNu6xtjIk4ys18/+H6hWGulZ8aeQKKfLkTYf1PLAVSOKDPFoSnwD6z4RzJQEsrxxr8XzzPz8TpsGLRFM4cEU/v5elkQU6ZzASjm5pePFvFj3nql7hwryoor8qQznyDV/J0gt120SB01kETiVQwd4MNYz80o8EI/5/W2Pa8S5chmoco+3uggp4oe
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 51A05180007
+X-Stat-Signature: bsxj6nanu8ed6ihwhw3prjufio5wa94a
+X-HE-Tag: 1790989167-891522
+X-HE-Meta: U2FsdGVkX1/ssAYEib9c5U44DWeItDdI87PIlDrie5y/RPX3oF/LWeIztA2dQ7WGl4zTKsxs+RiSG0exLyjhXFKU/EJin4DsLtAiUtC98vUUckhsIxwgn3oteo8YfqHw/1IAg9SaDRRYtcyUzHWo8PU5pXRvqSMesqpDPEnXd50mHwrDsiqRQhaKQiQge9904YDniRriMk7l5hwvGhlWZIi4QoVuqSW5IYiXbgflVxx3XvUgFMdWL8/4dV4auxjXLkLwN82bZ1LZ4FPXYsv+6ziOeVZx4Eq25JROsoTu+WVKWU0U9y5Ap1TiaoT6GmzVUj4jTIKnyXTC7qRLaxRJX7HS+EwE7pM4+rVxS673iQSArHt0sfjQs+ynIZO2tKlWoBZDVCHJqaYzgCp/CEt9sBDUgTj1eA2LwyXqzd5ThFaYOTbBGRSTNf99a34irneM4r99DHZoXtq6f5lI+oTAuefUh+Wq7NGVd4ZhSKwIeE9t4g8eXDD23ZlL84xPGVk37wO5kFu0RHkjyvBSlA1KceuA4NM18lYcvyEu0cc9OJmCAfVkRNBI8xqy5wPG3Ve9k/SFNYVBc0kylPtloSMzGYtV3kOD8CUa+BAnZxUA2RS+oLv7xOe0BQouWh0zJhV0NA4ZJPknBhuMzVW2MISzjB1bYGmJ+0bmRqOhsyRcAEd7cVrnGwTBAUugtLTJFBfsT13lSBMIlcCIzDqv7H2Q2NkJfrHBPgYbsbJroK9DulhKyGKZpgo/vCdPKDktWsxCV3zRZZJHeVt1ypp3jXwsSAFRrnkhQORrl8VO7klsC0+klnCKyWDKhGlaIhHyIQgqUuY7UPzy506TlwAEr/zvbolEhUr06WWNls1u447AmSLuj6UqSuEuxvYLf9AFlmict8NZXC9QPIKBquIHbS9jT+LmmycVq2IOQ5koF4ayGZhYquNVEl3hxuhFJrXUXbfr+PH5zZEZchBDAARhs4g
+ SFdGpTNY
+ KKvzhzIi1Y6uGD6jTy4NRcjMNK0fqfkvpkDWaj8eH+mibkPuT7PC+SqoCknrkScrV648YLR3Ftqh7z8bRn7wPLsqVclbpQTogX63QDNiZHZKtesVHSW1G4OSM+3ZPni6CFqHJkclLAkh1k0orUbzfn+HHVo+uAqmHpEdWHelGo6UUrwSxD5kvqa8hMt5JsxleAKLqdmDqbKD5lfHLUaus62qIy8/qT65wP4Dzx1WWkJzxDLaDy/rl4SKLElA5A4B/KGVEgJ42LwaaXWRJ26zVWLXIDEhFkHUakTd9S/JrVktJevE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,289 +93,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Nhat Pham <nphamcs@gmail.com>
+An xswap folio can be written out to a physical device. The data then
+lives in a slot on that device, with no folio in the swap cache. Store
+the xswap entry in that slot's swap table entry, so the owner of a
+physical slot can be found again.
 
-An xswap folio is written to a physical device, but stays in the swap
-cache of its own xswap entry, so folio->swap no longer says where the IO
-goes.
+The low three bits of a swap table entry tell its type; 0b100 is free.
+Use it to mark an entry that points at its owner, with the xswap type and
+offset in the bits above.
 
-The batched swap IO path takes the bio sector from folio->swap, which for
-such a folio resolves the xswap device. That device has no bdev and no
-extents, so the IO is set up wrong.
+Two paths hand out or cache a slot and know only the other two types.
+Make them skip a pointer entry: cluster_scan_range() must not hand it out
+as free, and __swap_cache_add_check() must not put a folio over it.
+Otherwise readahead on a physical device can walk into it.
 
-Pass the entry explicitly instead: __swap_writeout(), swap_add_folio()
-and swap_ops->can_merge() take it as a parameter, and swap_iocb records
-the first entry of each batch. The merge check, the bio sector and the
-completion path all use it.
-
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- include/linux/swap.h     |  1 +
- include/linux/swap_ops.h |  9 ++++---
- mm/page_io.c             | 55 ++++++++++++++++++++--------------------
- mm/swap.h                |  3 ++-
- mm/swapfile.c            | 13 ++++++++++
- mm/zswap.c               |  2 +-
- 6 files changed, 49 insertions(+), 34 deletions(-)
+ mm/swap_state.c |  6 ++++-
+ mm/swap_table.h | 61 +++++++++++++++++++++++++++++++++++++++++++++----
+ mm/swapfile.c   |  3 +++
+ 3 files changed, 65 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index ae2e49386443..2080540c6e39 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -418,6 +418,7 @@ extern bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry);
- extern int swp_swapcount(swp_entry_t entry);
- extern struct swap_info_struct *get_swap_device(swp_entry_t entry);
- sector_t swap_folio_sector(struct folio *folio);
-+sector_t swap_entry_sector(swp_entry_t entry);
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 3a4e9e447b0b..c5c182489d6a 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -179,6 +179,9 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
+ 		return -ENOENT;
+ 	ci_off = swp_cluster_offset(targ_entry);
+ 	old_tb = __swap_table_get(ci, ci_off);
++	/* Readahead of a physical device can hit an xswap-backing slot. */
++	if (swp_tb_is_pointer(old_tb))
++		return -ENOENT;
+ 	if (swp_tb_is_folio(old_tb))
+ 		return -EEXIST;
+ 	if (!__swp_tb_get_count(old_tb))
+@@ -196,7 +199,8 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
+ 	ci_end = ci_off + nr;
+ 	do {
+ 		old_tb = __swap_table_get(ci, ci_off);
+-		if (unlikely(swp_tb_is_folio(old_tb) ||
++		if (unlikely(swp_tb_is_pointer(old_tb) ||
++			     swp_tb_is_folio(old_tb) ||
+ 			     !__swp_tb_get_count(old_tb) ||
+ 			     is_zero != __swap_table_test_zero(ci, ci_off) ||
+ 			     (memcg_id && *memcg_id != __swap_cgroup_get(ci, ci_off))))
+diff --git a/mm/swap_table.h b/mm/swap_table.h
+index e6613e62f8d0..22322519c3fe 100644
+--- a/mm/swap_table.h
++++ b/mm/swap_table.h
+@@ -28,7 +28,7 @@ struct swap_memcg_table {
+  * NULL:     |---------------- 0 ---------------| - Free slot
+  * Shadow:   |SWAP_COUNT|Z|---- SHADOW_VAL ---|1| - Swapped out slot
+  * PFN:      |SWAP_COUNT|Z|------ PFN -------|10| - Cached slot
+- * Pointer:  |----------- Pointer ----------|100| - (Unused)
++ * Pointer:  |C|-- xswap type/offset --|100| - Backend slot
+  * Bad:      |------------- 1 -------------|1000| - Bad slot
+  *
+  * COUNT is `SWP_TB_COUNT_BITS` long, Z is the `SWP_TB_ZERO_FLAG` bit,
+@@ -49,9 +49,9 @@ struct swap_memcg_table {
+  * - PFN: Swap slot is in use, and cached. Memcg info is recorded on the page
+  *   struct.
+  *
+- * - Pointer: Unused yet. `0b100` is reserved for potential pointer usage
+- *   because only the lower three bits can be used as a marker for 8 bytes
+- *   aligned pointers.
++ * - Pointer: A physical swap slot backed by an xswap entry. `0b100` marks it
++ *   and the xswap type and offset go above it; C is SWP_RMAP_CACHE_ONLY. See
++ *   the layout in the CONFIG_XSWAP block below.
+  *
+  * - Bad: Swap slot is reserved, protects swap header or holes on swap devices.
+  */
+@@ -81,6 +81,59 @@ struct swap_memcg_table {
+ /* Bad slot: ends with 0b1000 and rests of bits are all 1 */
+ #define SWP_TB_BAD		((~0UL) << 3)
  
- /*
-  * If there is an existing swap slot reference (swap entry) and the caller
-diff --git a/include/linux/swap_ops.h b/include/linux/swap_ops.h
-index 57ac6c703f68..198c5738c3c7 100644
---- a/include/linux/swap_ops.h
-+++ b/include/linux/swap_ops.h
-@@ -10,6 +10,7 @@ struct swap_iocb {
- 		struct bio	bio;
- 	};
- 	struct bio_vec		bvecs[SWAP_CLUSTER_MAX];
-+	swp_entry_t		entry;	/* First entry of the batch */
- 	int			nr_bvecs;
- 	int			len;
- };
-@@ -30,15 +31,15 @@ struct swap_io_ctx {
- struct swap_ops {
- 	unsigned int		flags;
- 
--	bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
--			size_t prev_folio_size, int rw);
-+	bool (*can_merge)(struct folio *folio, swp_entry_t entry,
-+			  struct swap_iocb *sio, int rw);
- 	void (*submit_write)(struct swap_io_ctx *ctx);
- 	void (*submit_read)(struct swap_io_ctx *ctx);
- };
- 
- void swap_fs_prepare_rw(struct swap_io_ctx *ctx, int rw, struct iov_iter *iter);
--bool swap_fs_can_merge(struct folio *folio, struct folio *prev_folio,
--		size_t prev_folio_size, int rw);
-+bool swap_fs_can_merge(struct folio *folio, swp_entry_t entry,
-+		       struct swap_iocb *sio, int rw);
- int swap_fs_activate(struct swap_info_struct *sis, const struct swap_ops *ops);
- 
- #endif /* _MM_SWAP_OPS_H */
-diff --git a/mm/page_io.c b/mm/page_io.c
-index 25fa9b82ed46..16ae84e6b785 100644
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -257,7 +257,7 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- 		return AOP_WRITEPAGE_ACTIVATE;
- 	}
- 
--	__swap_writeout(ctx, folio);
-+	__swap_writeout(ctx, folio, folio->swap);
- 	return 0;
- out_unlock:
- 	folio_unlock(folio);
-@@ -332,24 +332,22 @@ int sio_pool_init(void)
- }
- 
- static bool swap_can_merge(struct swap_io_ctx *ctx, struct folio *folio,
--		int rw)
-+		swp_entry_t entry, int rw)
- {
--	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
--	struct bio_vec *last_bv = &ctx->sio->bvecs[ctx->sio->nr_bvecs - 1];
--	struct folio *prev_folio = bvec_folio(last_bv);
--	size_t prev_folio_size = folio_size(prev_folio);
-+	struct swap_info_struct *sis = __swap_entry_to_info(entry);
- 
- 	if (ctx->sis != sis)
- 		return false;
--	return sis->ops->can_merge(folio, prev_folio, prev_folio_size, rw);
-+	return sis->ops->can_merge(folio, entry, ctx->sio, rw);
- }
- 
--static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
-+static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio,
-+			   swp_entry_t entry, int rw)
- {
--	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
-+	struct swap_info_struct *sis = __swap_entry_to_info(entry);
- 	struct swap_iocb *sio = ctx->sio;
- 
--	if (sio && !swap_can_merge(ctx, folio, rw)) {
-+	if (sio && !swap_can_merge(ctx, folio, entry, rw)) {
- 		if (rw == WRITE)
- 			swap_write_submit(ctx);
- 		else
-@@ -362,6 +360,7 @@ static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
- 		ctx->sio = sio = mempool_alloc(sio_pool, GFP_NOIO);
- 		sio->nr_bvecs = 0;
- 		sio->len = 0;
-+		sio->entry = entry;
- 	}
- 	bvec_set_folio(&sio->bvecs[sio->nr_bvecs], folio, folio_size(folio), 0);
- 	sio->len += folio_size(folio);
-@@ -382,7 +381,8 @@ static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
- 	}
- }
- 
--void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
-+void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio,
-+		     swp_entry_t entry)
- {
- 	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
- 
-@@ -398,7 +398,7 @@ void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- 
- 	folio_start_writeback(folio);
- 	folio_unlock(folio);
--	swap_add_folio(ctx, folio, WRITE);
-+	swap_add_folio(ctx, folio, entry, WRITE);
- }
- 
- /*
-@@ -507,7 +507,7 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio)
- 
- 	/* We have to read from slower devices. Increase zswap protection. */
- 	zswap_folio_swapin(folio);
--	swap_add_folio(ctx, folio, READ);
-+	swap_add_folio(ctx, folio, folio->swap, READ);
- 
- finish:
- 	if (workingset) {
-@@ -539,8 +539,6 @@ static void swap_fs_write_complete(struct kiocb *iocb, long ret)
- 	bool failed = ret != sio->len;
- 
- 	if (failed) {
--		struct folio *folio = bvec_folio(&sio->bvecs[0]);
--
- 		/*
- 		 * In the case of swap-over-nfs, this can be a temporary failure
- 		 * if the system has limited memory for allocating transmit
-@@ -548,7 +546,7 @@ static void swap_fs_write_complete(struct kiocb *iocb, long ret)
- 		 * folio_rotate_reclaimable but rate-limit the messages.
- 		 */
- 		pr_err_ratelimited("Write error %ld on dio swapfile (%llu)\n",
--				   ret, swap_dev_pos(folio->swap));
-+				   ret, swap_dev_pos(sio->entry));
- 	}
- 
- 	swap_write_end(sio, failed);
-@@ -620,7 +618,7 @@ static void swap_bdev_submit_write(struct swap_io_ctx *ctx)
- 	bio_init(bio, ctx->sis->bdev, sio->bvecs, ARRAY_SIZE(sio->bvecs),
- 			REQ_OP_WRITE | REQ_SWAP);
- 	bio->bi_iter.bi_size = sio->len;
--	bio->bi_iter.bi_sector = swap_folio_sector(bio_first_folio_all(bio));
-+	bio->bi_iter.bi_sector = swap_entry_sector(sio->entry);
- 	bio_associate_blkg_from_folio(bio, bio_first_folio_all(bio));
- 
- 	if (ctx->sis->flags & SWP_SYNCHRONOUS_IO) {
-@@ -649,7 +647,7 @@ static void swap_bdev_submit_read(struct swap_io_ctx *ctx)
- 	bio_init(bio, ctx->sis->bdev, sio->bvecs, ARRAY_SIZE(sio->bvecs),
- 			REQ_OP_READ);
- 	bio->bi_iter.bi_size = sio->len;
--	bio->bi_iter.bi_sector = swap_folio_sector(bio_first_folio_all(bio));
-+	bio->bi_iter.bi_sector = swap_entry_sector(sio->entry);
- 
- 	if (ctx->sis->flags & SWP_SYNCHRONOUS_IO) {
- 		/*
-@@ -667,13 +665,15 @@ static void swap_bdev_submit_read(struct swap_io_ctx *ctx)
- 	}
- }
- 
--static bool swap_bdev_can_merge(struct folio *folio, struct folio *prev_folio,
--		size_t prev_folio_size, int rw)
-+static bool swap_bdev_can_merge(struct folio *folio, swp_entry_t entry,
-+				struct swap_iocb *sio, int rw)
- {
--	if (swap_folio_sector(folio) !=
--	    swap_folio_sector(prev_folio) + (prev_folio_size >> SECTOR_SHIFT))
-+	if (swap_entry_sector(entry) !=
-+	    swap_entry_sector(sio->entry) + (sio->len >> SECTOR_SHIFT))
- 		return false;
--	if (rw == WRITE && !folio_blkg_can_merge(folio, prev_folio))
-+	if (rw == WRITE &&
-+	    !folio_blkg_can_merge(folio,
-+				  bvec_folio(&sio->bvecs[sio->nr_bvecs - 1])))
- 		return false;
- 	return true;
- }
-@@ -689,7 +689,7 @@ void swap_fs_prepare_rw(struct swap_io_ctx *ctx, int rw, struct iov_iter *iter)
- 	struct swap_iocb *sio = ctx->sio;
- 
- 	init_sync_kiocb(&sio->iocb, ctx->sis->swap_file);
--	sio->iocb.ki_pos = swap_dev_pos(bvec_folio(&sio->bvecs[0])->swap);
-+	sio->iocb.ki_pos = swap_dev_pos(sio->entry);
- 	if (rw == WRITE)
- 		sio->iocb.ki_complete = swap_fs_write_complete;
- 	else
-@@ -700,11 +700,10 @@ void swap_fs_prepare_rw(struct swap_io_ctx *ctx, int rw, struct iov_iter *iter)
- }
- EXPORT_SYMBOL_GPL(swap_fs_prepare_rw);
- 
--bool swap_fs_can_merge(struct folio *folio, struct folio *prev_folio,
--		size_t prev_folio_size, int rw)
-+bool swap_fs_can_merge(struct folio *folio, swp_entry_t entry,
-+		       struct swap_iocb *sio, int rw)
- {
--	return swap_dev_pos(folio->swap) ==
--		swap_dev_pos(prev_folio->swap) + prev_folio_size;
-+	return swap_dev_pos(entry) == swap_dev_pos(sio->entry) + sio->len;
- }
- EXPORT_SYMBOL_GPL(swap_fs_can_merge);
- 
-diff --git a/mm/swap.h b/mm/swap.h
-index d5bf21f517dc..fcde284b16b4 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -258,7 +258,8 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio);
- void swap_read_submit(struct swap_io_ctx *ctx);
- void swap_write_submit(struct swap_io_ctx *ctx);
- int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio);
--void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio);
-+void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio,
-+		     swp_entry_t entry);
- 
- /* linux/mm/swap_state.c */
- extern struct address_space swap_space __read_mostly;
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index bf95663c2593..0d1288d36452 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -540,6 +540,19 @@ sector_t swap_folio_sector(struct folio *folio)
- 	return sector << (PAGE_SHIFT - 9);
- }
- 
-+sector_t swap_entry_sector(swp_entry_t entry)
-+{
-+	struct swap_info_struct *sis = __swap_entry_to_info(entry);
-+	struct swap_extent *se;
-+	sector_t sector;
-+	pgoff_t offset;
++#ifdef CONFIG_XSWAP
++/*
++ * Pointer-tagged swap table entry: the reverse map from a physical slot to
++ * the xswap entry it backs. Layout:
++ *
++ *   Pointer:  | xswap_type(8) | xswap_offset(53) |100|
++ *
++ * The low three bits identify the entry: 0b000 is a free or bad slot, a
++ * shadow entry ends in 0b01 and a cached folio in 0b10, which leaves
++ * 0b100 as the only marker still free.
++ */
++#define SWP_TB_PTR_MARK			0b100UL
++#define SWP_TB_PTR_OFF_BITS		53
++#define SWP_TB_PTR_TYPE_BITS		8
++#define SWP_TB_PTR_OFF_SHIFT		3
++#define SWP_TB_PTR_TYPE_SHIFT		(SWP_TB_PTR_OFF_SHIFT + \
++					 SWP_TB_PTR_OFF_BITS)
++#define SWP_TB_PTR_OFF_MASK		((1UL << SWP_TB_PTR_OFF_BITS) - 1)
++#define SWP_TB_PTR_TYPE_MASK		((1UL << SWP_TB_PTR_TYPE_BITS) - 1)
 +
-+	offset = swp_offset(entry);
-+	se = offset_to_swap_extent(sis, offset);
-+	sector = se->start_block + (offset - se->start_page);
-+	return sector << (PAGE_SHIFT - 9);
++static inline bool swp_tb_is_pointer(unsigned long swp_tb)
++{
++	return (swp_tb & (BIT(3) - 1)) == SWP_TB_PTR_MARK;
 +}
 +
- /*
-  * swap allocation tell device that a cluster of swap can now be discarded,
-  * to allow the swap device to optimize its wear-levelling.
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 7fe25f0b157c..cdba35e0fb5a 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1087,7 +1087,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	folio_put(folio);
++static inline unsigned long xswap_entry_to_rmap(swp_entry_t entry)
++{
++	unsigned long type = swp_type(entry);
++	unsigned long off = swp_offset(entry);
++
++	VM_WARN_ON_ONCE(type > SWP_TB_PTR_TYPE_MASK);
++	VM_WARN_ON_ONCE(off > SWP_TB_PTR_OFF_MASK);
++	return (type << SWP_TB_PTR_TYPE_SHIFT) |
++	       (off << SWP_TB_PTR_OFF_SHIFT) |
++	       SWP_TB_PTR_MARK;
++}
++
++static inline swp_entry_t xswap_rmap_to_entry(unsigned long swp_tb)
++{
++	unsigned long type = (swp_tb >> SWP_TB_PTR_TYPE_SHIFT) &
++			     SWP_TB_PTR_TYPE_MASK;
++	unsigned long off = (swp_tb >> SWP_TB_PTR_OFF_SHIFT) &
++			    SWP_TB_PTR_OFF_MASK;
++
++	return swp_entry(type, off);
++}
++#else /* !CONFIG_XSWAP */
++static inline bool swp_tb_is_pointer(unsigned long swp_tb)
++{
++	return false;
++}
++#endif /* CONFIG_XSWAP */
++
+ /* Macro for shadow offset calculation */
+ #define SWAP_COUNT_SHIFT	SWP_TB_FLAGS_BITS
  
- 	/* start writeback */
--	__swap_writeout(&ctx, folio);
-+	__swap_writeout(&ctx, folio, folio->swap);
- 	swap_write_submit(&ctx);
- 
- 	return 0;
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 0d1288d36452..af7a7524fc4d 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1120,6 +1120,9 @@ static bool cluster_scan_range(struct swap_info_struct *si,
+ 		swp_tb = __swap_table_get(ci, ci_off);
+ 		if (swp_tb_is_null(swp_tb))
+ 			continue;
++		/* Backs an xswap entry: the slot is not allocatable. */
++		if (swp_tb_is_pointer(swp_tb))
++			return false;
+ 		if (swp_tb_is_folio(swp_tb) && !__swp_tb_get_count(swp_tb)) {
+ 			if (!vm_swap_full())
+ 				return false;
 -- 
 2.54.0
 
