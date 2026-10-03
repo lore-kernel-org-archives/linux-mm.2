@@ -4,128 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10966CA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:19:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1083BCA5FDD
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 00:19:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DED756B0093; Fri,  2 Oct 2026 20:19:12 -0400 (EDT)
+	id 27CB56B0096; Fri,  2 Oct 2026 20:19:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9E616B0095; Fri,  2 Oct 2026 20:19:12 -0400 (EDT)
+	id 22E016B0098; Fri,  2 Oct 2026 20:19:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C402C6B0096; Fri,  2 Oct 2026 20:19:12 -0400 (EDT)
+	id 0F5336B0099; Fri,  2 Oct 2026 20:19:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 89A9D6B0093
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:19:12 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F28028078C
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:19:11 +0000 (UTC)
-X-FDA: 85279405302.25.544CE25
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 39B8740005
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:19:10 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EcdIhFM7;
-	spf=pass (imf01.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D86C26B0096
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 20:19:48 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0949160514
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:19:47 +0000 (UTC)
+X-FDA: 85279406814.15.2D8F3ED
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5E693C0008
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 00:19:46 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=e7fDNC7v;
+	spf=pass (imf10.hostedemail.com: domain of 3IErAagoKCBM2C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3IErAagoKCBM2C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790986750;
+	s=arc-20220608; t=1790986786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WN+hcxT2obu+Cvnf4TklNkJLPL9EbhZzUN79EAadJMk=;
-	b=6WN4yo/M+WkTOrYHvzExPc6lnM6ULUvbFpUOu4NOKqKko+FbnPtPwHAvUcf62wUBO/z/Yz
-	Of9AwITsoe9AlK9osTLPiLbpuMrDMXkSiISkjWu0hjmMUx5xvskyhrOnnB3pbb3oQu6IkG
-	fIkbZN2W2AoDMZQwgT6OVpuCxDGwktM=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=K+i7FF1JdoB4a6M9CS0sHYTwNj12mJrugew1z6DccSk=;
+	b=U294WuDl5xo3fPjLCalWMm4s7xtL3ALcQYpSp+nAUsOTpQo0C+MgFz4sXYBK2Og2P0YJpi
+	0Rc5a9AbiOR78LxQXv5no7f+edy/wq6eY07+dVPXzX3lnOdwNARD7qb4KihwexQQt7lmRb
+	+NRdTYgtrN35ZytIiiBzinAAjUsLoxU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EcdIhFM7;
-	spf=pass (imf01.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=e7fDNC7v;
+	spf=pass (imf10.hostedemail.com: domain of 3IErAagoKCBM2C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3IErAagoKCBM2C07Dz0C76z77z4x.v75416DG-553Etv3.7Az@flex--jthoughton.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790986750;
-	b=sv6/+/7GATOwj4TzSd3KV/jdi3u0XkQGgbGVVh2sscTUerTHgDNmFujucU7W9OQhu57AJT
-	u/uUcoL2TI/WP5mf/0aoGsUbTZPwfpS0GpQpM8JabAUloXvcew5MH/zLY51vE3pgYzq/TS
-	IEEoSvv2UBn9LSiNYw0JOIJrNk1Zda4=
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-81eaf8e18bdso318307a34.1
-        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:19:10 -0700 (PDT)
+	t=1790986786;
+	b=iQkSQpq0O4/OQ3lHCzmJTVnjItdz7WC73jZvYr42BxREMr9DrqVVjGBxHOvAWHXyo6l/+9
+	sYGmxyQeL0KV9f8A1S81RUF8zBOuX/R06bkl/P1r6eGJZHeozpA3VzeVcQKHUGPbPlCquK
+	GQX3wQgQllbkxlVj6dZKsU5GTtqWvE0=
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-88732460a55so88930b3a.2
+        for <linux-mm@kvack.org>; Fri, 02 Oct 2026 17:19:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790986749; x=1791591549; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WN+hcxT2obu+Cvnf4TklNkJLPL9EbhZzUN79EAadJMk=;
-        b=EcdIhFM74GBFZ2el38fJC/YI5wvDfeh9lBfL9igLp9B1OnflmvQcBnDRoozb1eQ2Hs
-         Q4x+vhQDe86HFmr0xlZ3jYvOebZEAtAkW1TAOTRB+B3k4Sc4xUlfyxgKtLNDQSwL6KJ8
-         /bhsN0AuM7Zvz5HgZfEsoFA69p/u3emQm4pgt+FzAHPuBEMXrUmdO271ywBNHn/GsPH/
-         NrHwGLe/ZJpu9hduOmHmdV43AkbEbEqBC+9nMmj5Pc5/HoJ2TXoLPIuPgaQghRblna+k
-         3djGBTZFOsgM+cxAu4YLu2DF2sB2g/aJfiZVGSIHaVTpUyXM4DDV9QGFzQ9ONvUxLkZo
-         SRhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790986749; x=1791591549;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=google.com; s=20251104; t=1790986785; x=1791591585; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WN+hcxT2obu+Cvnf4TklNkJLPL9EbhZzUN79EAadJMk=;
-        b=e6iguoTmKgfpoFZvnWaWqmqnnijen4CjEDltIAuMQiW50O1tNZsJ+PI2IgwWohuN+D
-         vNZQah8ywjrryke/KEPeuOO+v0mfbNzY66qogBsRHHIb1WUImtlM3j0JrIG2Jpxs7qL4
-         xyDvxaui4LAaUQ0KBxMljFCC/SV3m3/exFWE9/6lfniUN5jviq5wwell3sRvcqxzgalh
-         eGKDDqZIAMOz2M63VFJJ8kmxm3luJRt1ruqdAULR1wxNlpEt9gQTFIDIpSvGCdupZ9q/
-         wtIT27fIPiYga8bLZ+fHkQNISU4oD9muKr1G+KgCi1m8j04US/1ZAS7QXRtlDd82OR1D
-         ehyg==
-X-Forwarded-Encrypted: i=1; AKwUvBxA21h83FnwNMND2bAarQQtZS2g3lRGicD7Tbe4sj7ZkPrk80kAB91g6+wmbOh1LKMUxUOptGgYIw==@kvack.org
-X-Gm-Message-State: AFuF++maxRF7rIfvERCo9mo+0ENh1aFZLjSnJFc5D9fYB8mEKyebJbEA
-	rzZD2Hy5HsIgl1aAjNJM8voqaFJqwsLdh6wAUtY+gkfjio9q3Vvqwm1Z
-X-Gm-Gg: AYBFou28XlmHfU6yvgAiwi8vFVjHnm1BQux5/JPkzY8KNuHqjrJPIovidpoclSYshkA
-	xTIojLYW/FrdsK7ifNOCswhTRTwq3r4g5qLWHSwd9VfWG7/hzWrl+td/UsJ3DSPSbVueLiBsJZL
-	W9sLc35l8b72P8pgfmXEHnQ2h5ceWrA690LhM0rQ6P/7k6qgTVlvgGXh4kOkil7omLBANqrCvWA
-	Nhg1Ww9wdYdKVkgJybkFINKOzNw+6dEnRqhj/SYia0dBw01UkewOXlYZCC+8XqMoBzVMQSZfOvd
-	fwgfKTKAQhhTlhfLAXaiF+LSI5lwhOvx6sWFzbdHW05Mgzd+sFHx+osRTKR8kkmoFqsi903+3ec
-	UHSSzXJwwH0URpCXCr/I7seZXiHUQsZPYypArBgFPuK158tjkh3hhhUBgpA4GAARTbPE2p0fPaf
-	FseaZ4bb/U7IAdHYOQfIU8bHjL/GUspv9YnSSlXKdeerG2KoDAFOV4rTF14ZzM668o9xhp43EyA
-	GMT2Z7+xMOKtviKY8poRCYz1F/qgFLAYwOx0PeLyzIECHzcak49myh49R7CXg==
-X-Received: by 2002:a05:6830:44a6:b0:81f:acdd:bd0c with SMTP id 46e09a7af769-823fca26dbemr965968a34.12.1790986749202;
-        Fri, 02 Oct 2026 17:19:09 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:73::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-82279e73822sm4601292a34.16.2026.10.02.17.19.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 17:19:07 -0700 (PDT)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	shakeel.butt@linux.dev,
-	roman.gushchin@linux.dev,
-	willy@infradead.org,
-	jack@suse.cz
-Cc: mhocko@suse.com,
-	muchun.song@linux.dev,
-	david@kernel.org,
-	ljs@kernel.org,
-	vbabka@kernel.org,
-	liam@infradead.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	riel@surriel.com,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v1 3/3] mm/readahead: avoid per-folio memcg reclaim
-Date: Fri,  2 Oct 2026 17:15:55 -0700
-Message-ID: <20261003001555.3498357-4-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20261003001555.3498357-1-joannelkoong@gmail.com>
-References: <20261003001555.3498357-1-joannelkoong@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pbfu17zmzr9tip9xrikz83g5r3uo7oot
-X-Rspamd-Queue-Id: 39B8740005
+        bh=K+i7FF1JdoB4a6M9CS0sHYTwNj12mJrugew1z6DccSk=;
+        b=e7fDNC7v874iReVp6oJTUcRZSHoGZ6jH3s6OAeJ7MPhPW2zQ02mab2a47HAtd/WlrZ
+         TrBlBNAl/+KJiY7UyeOC5c77i03peZRJBKqj0U1r2WEx/zEhlBnOnMW0tPSKGD4VLlL6
+         9lzRkRdA6W1n7v+pF6NvNlLJ53uNWJ4ZeZL5raXrIltNPFUsmVz1Y0iihOHBvQMNzGxQ
+         l1KD1xd5jlmzgAabaBtGRiB7kWhpHkN4ilF8IlHS/3i/R2eKQvBpO/PqQrPbjFkUEZec
+         rR1x4zHjuu1B9k/XSq8SmYobWtUtJnGe0IZNMGWv2+eaH9e8Cfwg5h7ygb8lSeLbe0WT
+         CHHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790986785; x=1791591585;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=K+i7FF1JdoB4a6M9CS0sHYTwNj12mJrugew1z6DccSk=;
+        b=kTrRuoXfjp4KWzo4ybeNOEKUU5ti5NmtTZLCvoee3euFhVz1R7JOSQnw/L9mzA4g9m
+         f4RfjXtyUgkYYayT6tJ5rLAf5sSWdUFan5bVahMtn765r3FAkQom+mb0WcTBpMg89Aqx
+         +6gJFcsoeM0RKKe+2TGJTNAVQy3PHmJKOMW2WRUUWcspwdadxhHJxvm2ww9iUyaU2xQH
+         2J6PW3HeJ3GyTTx3oCDrrDz3N/zXiMuTNzLLgzEJfb/fxsbGIYe+Td8TdBvbIM60ktFt
+         qKW7i+thfhQ6W5pAeR2hpZN4adbh/vnW8fJRMBcDY3Wf+HlKUMsXMB8/Y8AZBA0qcIHu
+         NEEQ==
+X-Forwarded-Encrypted: i=1; AKwUvByyNg3KmV2YYQUwh8lknuYzlfM11eq0Uc5GUrmeaq/APOCe0q/ibgXfwP4k7QKi3sJ8U9wVTjfqEg==@kvack.org
+X-Gm-Message-State: AFuF++kUA2U25SBqOG8cQDK48Hd73KNDe62JeVKaihPPz4c8jbjjbfbr
+	yTcoXrhAbUBv2bcnq4ffyhWWJ8sQOzT1z+9NcYwKlRELxO5NLE3HaBgFeb44wWoTgXIyNJ/pjVN
+	OoDatKdmoB52IF3axouHTMw==
+X-Received: from pfpk16.prod.google.com ([2002:aa7:9d10:0:b0:88b:9d6d:1e0e])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:3d0d:b0:880:849d:c07c with SMTP id d2e1a72fcca58-88af665979cmr3880920b3a.25.1790986784885;
+ Fri, 02 Oct 2026 17:19:44 -0700 (PDT)
+Date: Sat,  3 Oct 2026 00:18:58 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20261003001859.502725-1-jthoughton@google.com>
+Subject: [PATCH v4 1/2] mm/khugepaged: Never install PMDs in
+ uffd-minor-registered VMAs
+From: James Houghton <jthoughton@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, liam@infradead.org, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Yang Shi <shy828301@gmail.com>, zokeefe@google.com, 
+	hughd@google.com, Kiryl Shutsemau <kas@kernel.org>, jthoughton@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5E693C0008
+X-Stat-Signature: xjx3wcpmm9g4owkp8i3gt8ze8iop6tab
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790986750-288755
-X-HE-Meta: U2FsdGVkX19wa3b5XM8W7Y3olywNVIh62JqIo86DRiNPBpjMWIu2QcSEaH73XMAb0yCfHGe7nPmTl5lJJJ9aghHFZJFgh9veqRIyFDVs1xR3RTDYKZo/1Li+9SXbTOwBdA3w21ND3DKDusxvS4/z6roIulYxPKe3yt78YY4RZwjR/U+pqiwnbvoCiKnSpfDVnrqz+0NLErvZZbUk/Sil33qIy0JlgQO6ein/b5/6l6/UbwOy/KqfVcd9gLa7Xbm/cO6LFnNBr73eNEq4ARZqEJXo/+2C6mC9oy/gvgRfwgq6CVkSCxtK/HB/D6airEMxMkEZ/p00mMXIvIF1B9eh8Q/pmfcTE718mqn3puGL9SwIIOXYxhEqjavCdJ5U6qa8rkt5Vat9X4XcqsfByqztQg+8vhbQFRqQdOYcMqPCje6GGiYhtXB4PKQ7sINvRsWQcbsT8H/LnvMb6WWK+3Z+TjOQZbaQ3GDWkMBxNwAVOloxlKRW4wvPL1QMQG1/6sx+mBAj5hzc0YQ+No2+XpjuWEgYPndzKqd3UU9SBiKpWE5ZrrEXnGYrF612pWlj8lS+NOutaxq++U68cytayqZV2pmZ7IABC5ug+noMXzEo01yZBa7t+m6UgN0WavP9JqZHOW3IJPT61dmpJxpGaRT78+WWB8HaMGvEFVzCfGkRvfxKHbLNsTdA5mulQmD4gqKZL2d6zcQK98poI4H1byW4ZICBVAYYwDPpxK2O4pHsatlVThTzFeHoZHX/Yv6SWWXMp/Ov80cIhjxQ0gvNY6sdjmhRSUXdHTo/zpuWI4S143rDQBoWg6FlQfXkmq6aiKcBDj6fgo0qQ0bf/TNb++IWBUeF4RgwQ9SU6NMnOHv3OPIx3WuFjW4dMwKFSazfZtaa7R9bn7doWqmBaeZKZEnDfvuGazdMVypQGoIFh++/LM275FiZ1oj9dhB6PnKn+CNUhUZoIQrGcjUfx3ia/ZC
- 4FgxsRzh
- +tckBTfZLA//bYMAoluIpgphk4KvC9aVKIRSi3U7jyAYHb8+J6Is5GjeggC5NCkpDSj+Qwxf76pcTmv6sHBuaGpMXg4VvA6mAxMVVLyxdDLGmeL04/ojyXsXLcsmnsJz8rG3kBzgGxQQgOV6i3EBWBmkffgxo80ZyMKVzpHv8JwawBPR1mMGJ2LkOu2zepvw8hTyRWSzszlaZE0nSe8SkCW039IcCV70/3Pnjib7gibqGV/RcuXS93tx335pToD4s2QKDgnkBAIs2ya7XwnKyM3XcrQ2nbRDKPNeZRspH4z01TSsvKRB3l2i0JXSBkp5f77GyO/F8Zpd40bq5tbwT0+YJ0vUeyLzyoG059YuhvpY8Euo8jQmDWAMgfXfW/pVZVyxb0aPZ3T6ri/qRCwry0e1AHNPGftFJnhHe573b0Sf1fWqLcXUcFHHWVYXdzWvLDM9EoEBb2e2bpZx1dLambjOfybxYPqFyo5RADz2YvHqc7eAMuZwrl3vOxvQQD4Zbt0tcpcgZ0m0I4Gjc5M2W2jR9lQ==
+X-HE-Tag: 1790986786-592243
+X-HE-Meta: U2FsdGVkX1/JOUb7QU/yGv4nOdrnoX70G3Iawj/V5Hz6LKfp8jOdqxDTEBIOvgxPK4yJhrgOxokyYPSHz9QfdbtctPYy0ZNoKElIeSUYx9HRQGBP/vY2tbxg9hxBfJo+WybC9FINDTWKWi/xz1ncqJg5icv6mi+WcWKClkrZmJlN4yqZ0tp4WrSgE0NpdS3zuBllVa/eWGJd2s9TZig4Vf8/1X4wgMSFhd74aLxQvU3L4mb09h9v/Pr5ow2/ZjSEd1SzZiwJCuXdmEEji14pexG73xhZ2blp3qq3EVTBXONtAnco7mGIuieN35zpDiOh9QgI25qdyUp60eiqcfuNRnwWIvWNZ9K1rK5SgIKCWhtCTr1iS5owFDP3jr6+mv+eUGhQwMTYuOCgbGbf5VMoun1B1titjqttKVeX/b7hrw6VmIXU1ijeDO3TCXsiKXtT+k7bctKCx1G2pgSV62zWG3b7glstVoXUa2sIqH3FtTHzb+NwoAIVK64XUclqenxMnkNSGovT26f1P/6uHKfqhrYutawIVErL3CClxX7vOtWGwo6mzYcTCilBcXgom9JlbaujSbq3vg3M1KjMdB1EYLPwMfzyTM97cJcyw6Q1GD+2/x1i2WjHU0GZec5XUya39UD2tvCNAZm/K5GDwUUOak6Z3XVQZAghQlHYWwngTk+dtaaGhjixCpljVhVGrUQTds53WKMUa6Xwfh14YF8wGhoBFvMhQnCcMjS8pkfmU/1H+ftK1bkWOJ9GPT26m5Gvg1VQCRVd8C3vI+PlYDoDEZ9HP9dY+2MJcP7oLYHv0u6GO4Okm+hGeODLdpKgrbqKk0oABiSfbRkNxds/n3WwZZmKb6kZD8hYXMmnOCxTvlmwPiJyOre42a9YZXs8WKBGGTQrQZgYgLPM7vLscf67E55XbJt+aozKB7UN80nh9Ea4hs+SnA8cawsYoq90WyQqJaIlVkq49/xMm0ZyQU6
+ yBj8Rrbt
+ qBEd+EEq+T9Y2TxwXOP8LkwjhRAYcG2rHmvPOwpqSIL6PBFtX/uktm5jDr3Xycj1Y6Fq15YAYzG4YS6OrOizLcOFsOjcjotrSouvBSjT23erlok9Tks5fr63wYPKYVBRZ6Ix1OT5wWm39cuS3s3ZiJL6ANR7gp1+skannsZQgKz+CdfGrTUX5qBLFZIhMbfBtGom4HEoMYQYHOqEUe7YlHxoZGKPVf+8JL5nlC3hEn8/+Cb764c31Q9cTp6Ne+I9jm751agVWED8BZN9h8VloNsMqKI031Y7Dd+UZHGZ9f0Is2s2iZCiZuDkl05kMcltM5UdpUU9R49B06FtwSQcCo+k5BQbQBDGCAUSgmxX2uKk1KrZ63cAz9Jfenj0s75gnD21mke9LveduXH1PyaRnr2myMZxXipOB2avJ8gsxM7WSNAEOm4/tdNtJ3UDnpDjAi6NW1dQhAiScyUYDghzFfrGVIIiJD95c30Va9mGNNuNojzebiUbCXMAo7hcHTesdXaO5TBo45LjYMatSmXR7gEaA7q4fRBll01XHFDb4Hw/0hamGjm5qCqV6M7URvl6kjwlLhTCAg0Y3XUhqvHY5DNN8HtQpjvEQQeG0MXw/aEnPS2ux3mn4tyc6/7NSQIFNTtWg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,183 +111,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Readahead adds the folios in its window to the page cache one at a time.
-Each folio is charged separately. When the memcg is at its limit, each
-one of those charges triggers reclaim (readahead's __GFP_NORETRY only
-stops try_charge_memcg() after a reclaim pass). With many tasks faulting
-in the same cgroup, the margin one reclaim pass frees gets consumed by
-the others, so the faulting tasks keep reclaiming, all to make room for
-speculative folios, and in the worst case, reclaim livelocks.
+Userfaultfd minor faults provides userspace with the ability to manually
+install PTEs with UFFDIO_CONTINUE. Right now, MADV_COLLAPSE can map
+holes in the VMA when a naturally-aligned THP is present. This is not
+true for khugepaged collapse: the PTEs will be retracted, but a PMD will
+not be installed.
 
-On Meta's fleet, this per-folio reclaim is a large cost. Page cache
-insertion triggers around half of all memcg limit reclaim CPU, 93% of it
-from mmap fault readahead, in services whose cgroups run at their limit
-while many threads fault in mmapped files. Of the CPU time spent in
-filemap_add_folio(), 83% is memcg reclaim while inserting the folio into
-the page cache itself is 6%.
+When MADV_COLLAPSE installs a PMD that mapped holes in the VMA,
+userspace is likely to expect UFFDIO_CONTINUE to succeed on the
+should-be holes. UFFDIO_CONTINUE will fail and return EEXIST.
 
-To avoid this, add readahead folios to the page cache without direct
-reclaim, and when the memcg is at its limit, reclaim for the rest of the
-window at once with mem_cgroup_reclaim_for_batch() instead of once per
-folio. If the memcg hits its limit again before the whole window has
-been added, try one more time, since other tasks charging the same memcg
-may have used up the room the first attempt made. If there's still no
-room, stop readahead early rather than reclaim harder, since readahead
-folios are speculative. The count of reclaim attempts lives in
-readahead_control so that it covers every path that adds folios for the
-request.
+This is not inherently a problem, as MADV_COLLAPSE is an explicit
+userspace action. But, especially because MADV_COLLAPSE can be invoked
+by an external process via process_madvise(), a rogue caller could break
+a userfaultfd-minor resolver thread.
 
-This only affects speculative readahead folios. There's no change in
-behavior for the folio a fault or read actually needs. If readahead
-didn't bring that folio in, filemap_fault() and filemap_read() allocate
-and charge it with the mapping's normal gfp mask, like before.
+Userspace cannot generally use MADV_COLLAPSE to resolve userfault minor
+faults, as MADV_COLLAPSE will only resolve such faults if a
+naturally-aligned THP is present, so this is not a functional
+regression for userspace.
 
-There are two other differences from the current behavior. The first is
-that readahead charges that push a cgroup past memory.high leave the
-high reclaim to the return to user space, as other non-blocking charges
-do. The second is that under global memory pressure, readahead's page
-cache xarray node allocations no longer enter direct reclaim (they still
-wake kswapd). If one fails, readahead stops early, as it does when a
-folio allocation fails.
+The naturally-aligned THP case is the only case where this quirk exists.
+Collapsing otherwise requires all PTEs to be present for
+userfaultfd-registered VMAs (i.e., max none PTEs is 0), which is
+correct. This check is essentially bypassed for naturally-aligned THPs.
 
-Tested on a 26-core/52-thread machine with btrfs, running 26, 52 or 104
-processes (one per core, one per thread, and 2x oversubscribed) that
-each mmap their own file in one memcg with a 1G memory.max (before and
-after measured in the same boot), reclaim passes per major fault drop by
-94-96% for both random and sequential reads. With data compressing ~3:1
-under compress-force=zstd:3, the runs that livelocked in reclaim without
-the patch (4 of 18) no longer do. Throughput with incompressible data,
-where the disk is the bottleneck, is within 5% of before in either
-direction, and the drops are within run-to-run variation. With the
-compressed data, it is 9% higher at 104 processes, where reclaim
-contention is. Sequential readers get up to 18% fewer pages per major
-fault, since readahead now stops early when there is still no room, but
-their throughput and read bandwidth are unchanged or slightly higher.
-
-Reported-by: Rik van Riel <riel@surriel.com>
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Suggested-by: Lance Yang <lance.yang@linux.dev>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- include/linux/pagemap.h |  1 +
- mm/readahead.c          | 51 ++++++++++++++++++++++++++++++++++++-----
- 2 files changed, 46 insertions(+), 6 deletions(-)
+Changes since v3:
+  - Prevent page table retraction in patch 1. Please see the comment
+    next to it. So this patch now has two hunks instead of one.
+  - Reworded the comment and combined the userfaultfd checks in patch 1.
+    (Thanks David)
+  - Simplified the selftest a bit given the behavior change in patch 1.
+  - Undid a change in v3's selftest that incorrectly handled the case
+    where MADV_COLLAPSE was not supported entirely.
+  - Rebased on top of mm-unstable, which includes Kiryl's changes.
+v3: https://lore.kernel.org/linux-mm/20260910023411.514987-1-jthoughton@google.com/
+v2: https://lore.kernel.org/linux-mm/20260828222640.1638457-1-jthoughton@google.com/
+v1: https://lore.kernel.org/linux-mm/20260828005004.2870750-1-jthoughton@google.com/
+---
+ mm/khugepaged.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 73af18a37367..973a836076bd 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -1409,6 +1409,7 @@ struct readahead_control {
- 	pgoff_t _index;
- 	unsigned int _nr_pages;
- 	unsigned int _batch_count;
-+	unsigned int _nr_memcg_reclaims;
- 	bool dropbehind;
- 	bool _workingset;
- 	unsigned long _pflags;
-diff --git a/mm/readahead.c b/mm/readahead.c
-index 6e5563290287..e06375559e9b 100644
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -204,6 +204,41 @@ static struct folio *ractl_alloc_folio(struct readahead_control *ractl,
- 	return folio;
- }
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 913086eaf17b..438c4af1c058 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1868,10 +1868,11 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+ 		return SCAN_VMA_CHECK;
  
-+/*
-+ * Max number of memcg reclaim attempts per readahead request. The first
-+ * makes room for the rest of the readahead window. If the window runs out
-+ * of room again, try one more time since other readers in the same memcg
-+ * might have used that room up.
-+ */
-+#define READAHEAD_MAX_MEMCG_RECLAIMS	2
-+
-+/*
-+ * Add a readahead folio to the page cache without direct reclaim. This prevents
-+ * a memcg at its limit from running reclaim for every folio in the readahead
-+ * window (folios in the window are charged one at a time). If adding the folio
-+ * to the page cache returns -ENOMEM, reclaim enough room for the rest of the
-+ * window and retry adding it.
-+ */
-+static int readahead_add_folio(struct readahead_control *ractl,
-+			       struct folio *folio, pgoff_t index,
-+			       unsigned long nr_pages_left, gfp_t gfp)
-+{
-+	struct address_space *mapping = ractl->mapping;
-+	int ret;
-+
-+	ret = filemap_add_folio(mapping, folio, index,
-+				gfp & ~__GFP_DIRECT_RECLAIM);
-+	if (ret == -ENOMEM &&
-+	    ractl->_nr_memcg_reclaims < READAHEAD_MAX_MEMCG_RECLAIMS) {
-+		ractl->_nr_memcg_reclaims++;
-+		nr_pages_left = max(nr_pages_left, folio_nr_pages(folio));
-+		if (mem_cgroup_reclaim_for_batch(nr_pages_left, gfp))
-+			ret = filemap_add_folio(mapping, folio, index,
-+						gfp & ~__GFP_DIRECT_RECLAIM);
-+	}
-+	return ret;
-+}
-+
- /**
-  * page_cache_ra_unbounded - Start unchecked readahead.
-  * @ractl: Readahead control.
-@@ -290,7 +325,8 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
- 		if (!folio)
- 			break;
+ 	/*
+-	 * Keep pmd pgtable while the uffd bit is in use; see comment in
+-	 * retract_page_tables().
++	 * Don't collapse if there might be PTE markers for userfaultfd-based
++	 * access protection or if collapsing might bypass userfaultfd minor
++	 * faults.
+ 	 */
+-	if (userfaultfd_protected(vma))
++	if (userfaultfd_protected(vma) || userfaultfd_minor(vma))
+ 		return SCAN_PTE_UFFD;
  
--		ret = filemap_add_folio(mapping, folio, index + i, gfp_mask);
-+		ret = readahead_add_folio(ractl, folio, index + i,
-+					  nr_to_read - i, gfp_mask);
- 		if (ret < 0) {
- 			folio_put(folio);
- 			if (ret == -ENOMEM)
-@@ -457,7 +493,7 @@ static unsigned long get_next_ra_size(struct file_ra_state *ra,
-  */
+ 	folio = filemap_lock_folio(vma->vm_file->f_mapping,
+@@ -2093,8 +2094,13 @@ static bool file_backed_vma_is_retractable(struct vm_area_struct *vma)
+ 	 * and cannot be recycled to a shared PMD. Other vmas can still
+ 	 * have the same file mapped hugely, but skip this one: it will
+ 	 * always be mapped in small page size for these registrations.
++	 *
++	 * Userfaultfd-minor-registered VMAs should also not be retracted.
++	 * PMDs will not be installed, as doing so can suppress minor faults.
++	 * If retraction were allowed, khugepaged might continually cause
++	 * unnecessary userfaultfd minor faults for already-CONTINUE'd pages.
+ 	 */
+-	if (userfaultfd_protected(vma))
++	if (userfaultfd_protected(vma) || userfaultfd_minor(vma))
+ 		return false;
  
- static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
--		pgoff_t mark, unsigned int order, gfp_t gfp)
-+		pgoff_t mark, pgoff_t limit, unsigned int order, gfp_t gfp)
- {
- 	int err;
- 	struct folio *folio = ractl_alloc_folio(ractl, gfp, order);
-@@ -467,7 +503,7 @@ static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
- 	mark = round_down(mark, 1UL << order);
- 	if (index == mark)
- 		folio_set_readahead(folio);
--	err = filemap_add_folio(ractl->mapping, folio, index, gfp);
-+	err = readahead_add_folio(ractl, folio, index, limit - index + 1, gfp);
- 	if (err) {
- 		folio_put(folio);
- 		return err;
-@@ -532,7 +568,7 @@ void page_cache_ra_order(struct readahead_control *ractl,
- 		/* Don't allocate pages past EOF */
- 		while (order > min_order && index + (1UL << order) - 1 > limit)
- 			order--;
--		err = ra_alloc_folio(ractl, index, mark, order, gfp);
-+		err = ra_alloc_folio(ractl, index, mark, limit, order, gfp);
- 		if (err)
- 			break;
- 		index += 1UL << order;
-@@ -813,7 +849,8 @@ void readahead_expand(struct readahead_control *ractl,
- 			return;
- 
- 		index = mapping_align_index(mapping, index);
--		if (filemap_add_folio(mapping, folio, index, gfp_mask) < 0) {
-+		if (readahead_add_folio(ractl, folio, index,
-+					ractl->_index - new_index, gfp_mask) < 0) {
- 			folio_put(folio);
- 			return;
- 		}
-@@ -842,7 +879,9 @@ void readahead_expand(struct readahead_control *ractl,
- 			return;
- 
- 		index = mapping_align_index(mapping, index);
--		if (filemap_add_folio(mapping, folio, index, gfp_mask) < 0) {
-+		if (readahead_add_folio(ractl, folio, index,
-+					new_nr_pages - ractl->_nr_pages,
-+					gfp_mask) < 0) {
- 			folio_put(folio);
- 			return;
- 		}
+ 	/*
+
+base-commit: b2b4b29b76dabdee576eba66953a66ca61c5fca0
 -- 
-2.52.0
+2.56.0.rc1.315.gc6ed9934b7-goog
 
 
