@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE7B2CA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 01:00:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0978CA5FDD
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 01:00:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3D296B00A2; Fri,  2 Oct 2026 21:00:04 -0400 (EDT)
+	id CDA886B00A4; Fri,  2 Oct 2026 21:00:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC6E86B00A4; Fri,  2 Oct 2026 21:00:04 -0400 (EDT)
+	id C8AE46B00A5; Fri,  2 Oct 2026 21:00:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB7096B00A5; Fri,  2 Oct 2026 21:00:04 -0400 (EDT)
+	id B79786B00A6; Fri,  2 Oct 2026 21:00:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 666616B00A2
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:00:04 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D29B71C3C0B
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:00:03 +0000 (UTC)
-X-FDA: 85279508286.01.5EC9685
-Received: from mta1.migadu.com (out-52.mta1.migadu.com [95.215.58.52])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CE8ADC0003
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:00:01 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.52 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 909B06B00A4
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:00:13 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2FA9F4089B
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:00:13 +0000 (UTC)
+X-FDA: 85279508706.12.4AC1757
+Received: from mta0.migadu.com (out-223.mta0.migadu.com [91.218.175.223])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 35D071A0003
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:00:10 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.223 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790989202;
+	s=arc-20220608; t=1790989211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L53CDxlnlm4pAXHd235DOe/J5dhxOWi14EIGdGDYDtg=;
-	b=YIyrvDiKFzjULcQWQcqNJcAv17wTF6Vl5AE6Sk2qFYw0MAQwn733LuatHgUAlHDyv4m9hR
-	VywFBsb7nJ2h/XLETaSyNo5KD9akk1XJtkqtS8dhrIjQMooZ/2RUk4Yh7cvwlvNzjdnWjf
-	wh6vDoc0lmxbH7ttZ8Y3oABSV6PgA3w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790989202;
-	b=HZ67QIjn4IenGPQvckIQnPJsICiFAWVHoVX/YGuKnyYTOXXGQeGzDdRoqMpZVKciS/Y6nL
-	/KDnWK6O3vp6H1JFVmIHwVui3Nnwu9r/6knDwB/cBqBSE6nYorYnIEMvqzTrOiC7UewKRh
-	sz5QvIq7z84gRsW0qyQ86eVFaZ2CjCk=
+	bh=17kKT0bMr3KFMChqsfdAt885376fPpNxTHUYU4ojskI=;
+	b=3ZBhbbTziP4SlfycjZn5e6nhmkCeVOVjfwRjiTYrfNhhwNUtbZZN/BzbBjlNcrygr5b2YN
+	i/tpipE7mK8aShzCgwewN2GSVhvJoVBQjegIA+m/lscIizj+b70wDlGyBDHbhbHXOOYfYV
+	/O/L0VjuJG+OAcss/RxG1UR/WxI1w7o=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
+	imf19.hostedemail.com;
 	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.52 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=none
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.223 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790989211;
+	b=5pesWpL7xGnNTuxmLclC9NkXQuy5WbH01430/sVItrDJChUeHMUgAjyPN9FVQAU7h/Gfjg
+	ZbjWLnXtk93F3sKoYcpNk2jMvcSCdtoojS559TXr8ZdPNZUK0L/KovkrvJLyHoB1OZWqK6
+	Z3839GEl9383xGV4CO2fAsf3P3DgZSg=
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id fa46dd14b3501d09;
-	Sat, 03 Oct 2026 01:00:00 +0000
-X-Mizu-Trace-ID: fa46dd14b3501d09
+Received: by mta10.migadu.com with ESMTPS id 2a189c04d7a24183;
+	Sat, 03 Oct 2026 01:00:09 +0000
+X-Mizu-Trace-ID: 2a189c04d7a24183
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -69,23 +69,23 @@ Cc: akpm@linux-foundation.org,
 	riel@surriel.com,
 	klarasmodin@gmail.com,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 07/12] mm, swap: support swapoff of an xswap physical backend
-Date: Sat,  3 Oct 2026 08:58:55 +0800
-Message-ID: <20261003005900.909710-8-hebaoquan@kylinos.cn>
+Subject: [PATCH 08/12] mm, swap: reclaim physical slots backing cache-only xswap entries
+Date: Sat,  3 Oct 2026 08:58:56 +0800
+Message-ID: <20261003005900.909710-9-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261003005900.909710-1-hebaoquan@kylinos.cn>
 References: <20261003005900.909710-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CE8ADC0003
-X-Stat-Signature: r7ddstay88kzwgx8xc5nyahmeuyufk53
+X-Stat-Signature: 4kdouo7hcug38p7kjcsjb4kip1yfhiuh
+X-Rspamd-Queue-Id: 35D071A0003
 X-Rspam-User: 
-X-HE-Tag: 1790989201-274275
-X-HE-Meta: U2FsdGVkX19+Am4IomvyH3UTPDv5Yx/Qs4MiPGd04/R6ddBiuEASDgvUZonZyiQMFdJEVN2cwxavFoAPJulI9E7Al38f+YHgfx69uruzVQdZ/ldbVXBstkMAHnSOMLZAK/aN3dkIOPIMUtlTTho+dqaeXgEXfdaJjx6A1xXFRl4SiSaJqOhS2Nr+t5MCcOy6rwOU9n1BgtcMMMv1EbBaggDKLs8+BJf4/M/rWfor7FaJivEgZz05gj1Y6OpUiiZp2m/jVXx+Fu4HDO5QCvfUhoAMStTJSMipWg9jf8hyrS2iach/ALn+VCmxFH+JM5fyYbV86F+CU8DcYiR6SJcOOP6z0cO3WAbd1/POpx4zRA/W2URjfiRZSMBUEnhNdCiHzndmTOez1KMZrLLNyTZ71e3dEs9P+z+X3w4WbfjVcayzQ70USLPFv8hyBOTJPXrbLhbxdJwq4M8uo/zwHrYD07P+NuhbdxPy+sc9EH1lmKq1gK5tiwzJyN1V2R1Rwf0XAPxkhneQqUEOAKoYMKFiLEAiEepdb7QdsA7N8jItxcaT+OmFHtPRtD2gPg/Gj7h0VfHV53G5BWuTgiTUOCehXcZ3AwaldYu19KPZIzAio+gfMWhDUx7toSaIasz9XuDHjlYmoPmSyxOaLQ37lDI+1VB+0eoy7IQtdiGKW1Mtavx3Pf+0HPZSqUFusukRvLYNnb1wKEEBuDLFIc3WDLtc4z67bU1WviJQ91uSJcHO9pGfW8qHW+3KZ0wdFgZELmDZOxwbtxSyUdyiYgeeFQLBtuCJaP8wqfm1RG0O8I7K47zE4tUi2xzy1yunSWZ9cFpzdOxq2gG3oWObjhMRCzS0IPz5aH9HyPoqXtEuyaledJIy2ZWgOCrfLtvhUsmz7VLX7v+TyQlPapV3v5WIF0FAWQnAq7Ku/z5xpPpMAKfgw57OBoCrjgRWcj0r1o938DkE5cPVjuM3nXwlaxkuMdc
- db5A9NXb
- 5pxGg1kPoTdtnOa7KSF2pZKdyIuXuhPj4Ct6qV4pDcmR2nJJf2tB4s6BweTepeZh1bufdCnuTUq2Ce7+VxhCWLaIhrAAZKoAXMhLThqTClLlRi3oQ1tJ97avT5rT5Ay02bdzkhWVS4gBcXHiQJKxc5u3KZaVcXYI21YbCwsH6UZNW8BmYpPMgD7XBUrDC/c9aEtMsDr9s+qO5VBBLTgGHHtlji5m76mX4T0W7psFHm8+i8ezZXfk5SvwXqJ0nAG5ynt9OtuiCj1nTmSMaWyB+Eo2qWhT6XK3Ob8mKaow+hAnxsDM=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790989210-786215
+X-HE-Meta: U2FsdGVkX1830HUgheKxz8udTt34XwqLeelJ1LHcwtXIBtPyYGqcPp9D+X/xDV2FCB07MEQb8vwe7dnUDXjGxufzbh6OiTyFjrwFnjg91iVBUBWF6rEOT7EX3XQo1KhblUwuw8/UTND1g5yx8lMbtv4FbUF6H8edaYatPw95P4gVJSCrBdu5MyRwDS4Yd5gQGkbvjKwQx2Y/wMWO801ymImd9fMOu6hZXtTJdRsGfyweTTFtCKUZ6PGl3ewod47ad1C5OILq19Yj00gsR+un4OpYc3773SYHnZ8+W91xnDpEcgfuJrCapWqbu6ZyNNoUTNv0/CNGICWF5xtNO0aZ7ZGe5pI7ZnWSiLXTPYRyXzs9p4ipo7xO/XSvnyVlqNiNzud1r2z6NUsisHkOkTVAksC5D9gnKKHxauwl0yGMfynbqLPRUfdxwHLPu8E1CpwNsrNChXZH2IZV7RA8DtOTLXR8uCVdr5Co1nRKbLMlvmxlxbdjGfGYxrxPCc7vzSVnsfq499zxw87K3LUO2AOFk2UXrHd8V6cOvZgC5lTJGkyV/o+kd7e3oc+Tj0r73U1By+WXDydWTn0deOpFBs190KrGiGoleQ5N10nXCImWvanwhNZ4W+0BwOn2q3kQMTgvxHt7WIENydX9X2T7+dgLVVxOkgdazvzD0iX4rqageRC6U/jpcYEISMTWvW/FzzIP3A/t2Kol5kR0ylAG9YbcHKfPWlRJkhS8WV83wH/JmlWpg3J6peeTjInTUI9ohHGLA576vTAccpCWFozXMnDTCzZcalIvbIbVY6bMODDBC+OYZ6MW8J5mhA5IaZ+i5f8yunDGkrui/yD9T2NX+ozEDrdDnpYfMlpW5s4jNpUDfiq5ZvspGsjz6Lmp2vzptG75/PH7rwso/W/bYK4fyqv206y3Xdek3xmOLkRh0OUzlNCnj2WwPWZqvXd7AGXeVbTq5AE9V3mQ1FY/TIt6tcK
+ 6HYEQnrv
+ ocYQP13sTU/e5ktMTm7GUE0TjzPdhSy6+Qk/1QlQFEcMJ8ypTkZ6YCk1WFn1WQ0gSQioXTbuNILk7teCUCdkekDDH7BXdVqx47RPNaaBYuK4SJboa4XXe3fLtL3SFpIqyOPIvT05Wy1YClGUiDOG2Tq+TLBhTUi2y9IozPQNK1Jsk06iOhlI7YLrDOHRUsk3Fx8OO1TIznbNoM2WnjF6NPi+3CfHvLjLuy2yXk3tSIf2cZG+mmrnZi2zmBrpeFgWhDdiUkQBxtB6RYg5/fXjMgtOAoNkJsLi+tsDh0geYaNuOqTI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,195 +93,246 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-swapoff of a real swap device iterates its slots through try_to_unuse()
-and reads each one back into memory. A slot that was written back
-from an xswap entry has no folio in the swap cache, so the loop
-skips it and the slot is freed without ever reading the data. While
-the xswap entry will keep pointing at a slot that no longer holds
-anything.
+The swap count of an xswap entry can drop to 0 while its folio is still
+in the swap cache, which leaves the physical slot redundant but occupied
+until the folio leaves the cache. This happens when the page is faulted
+back in during its write to the backend: do_swap_page() does not wait for
+writeback, folio_free_swap() refuses a folio under writeback, and a
+real-device write does not drop the cache when it completes.
 
-Now change try_to_unuse() to analyze such a slot through its reverse
-mapping: bring the folio back, mark it dirty so that reclaim stores it
-into zswap again, and only then drop the backend.
+Mark the slot with a cache-only bit in the swap table entry that points
+back to the owner, set when the count drops to 0 and cleared when the
+slot is reused. The physical reclaim scanner already walks full clusters;
+make it free the slots with the bit set. It reads the bit directly,
+without the xswap cluster lock, which would invert the lock order.
 
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- mm/swapfile.c | 147 +++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 146 insertions(+), 1 deletion(-)
+ mm/swap_table.h |  37 +++++++++++++--
+ mm/swapfile.c   | 122 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 156 insertions(+), 3 deletions(-)
 
+diff --git a/mm/swap_table.h b/mm/swap_table.h
+index 22322519c3fe..40bab9890670 100644
+--- a/mm/swap_table.h
++++ b/mm/swap_table.h
+@@ -86,21 +86,52 @@ struct swap_memcg_table {
+  * Pointer-tagged swap table entry: the reverse map from a physical slot to
+  * the xswap entry it backs. Layout:
+  *
+- *   Pointer:  | xswap_type(8) | xswap_offset(53) |100|
++ *   Pointer:  |C| xswap_type(7) | xswap_offset(53) |100|
+  *
+  * The low three bits identify the entry: 0b000 is a free or bad slot, a
+  * shadow entry ends in 0b01 and a cached folio in 0b10, which leaves
+- * 0b100 as the only marker still free.
++ * 0b100 as the only marker still free. C is SWP_RMAP_CACHE_ONLY, the one
++ * bit left at the top.
+  */
+ #define SWP_TB_PTR_MARK			0b100UL
+ #define SWP_TB_PTR_OFF_BITS		53
+-#define SWP_TB_PTR_TYPE_BITS		8
++#define SWP_TB_PTR_TYPE_BITS		7
+ #define SWP_TB_PTR_OFF_SHIFT		3
+ #define SWP_TB_PTR_TYPE_SHIFT		(SWP_TB_PTR_OFF_SHIFT + \
+ 					 SWP_TB_PTR_OFF_BITS)
+ #define SWP_TB_PTR_OFF_MASK		((1UL << SWP_TB_PTR_OFF_BITS) - 1)
+ #define SWP_TB_PTR_TYPE_MASK		((1UL << SWP_TB_PTR_TYPE_BITS) - 1)
+ 
++/*
++ * Set when the xswap entry owning a physical slot has swap count 0 but its
++ * folio is still in the swap cache. The slot is redundant then, and the
++ * physical reclaim scanner may free it. The bit sits on the physical slot
++ * so that scanner can read it without the xswap cluster lock.
++ */
++#define SWP_RMAP_CACHE_ONLY		(1UL << (BITS_PER_LONG - 1))
++
++/* swp_type() must fit, and SWP_RMAP_CACHE_ONLY must own the top bit. */
++static_assert(BITS_PER_LONG - SWP_TYPE_SHIFT <= SWP_TB_PTR_TYPE_BITS,
++	      "xswap rmap type field is too narrow");
++static_assert(SWP_TB_PTR_TYPE_SHIFT + SWP_TB_PTR_TYPE_BITS == BITS_PER_LONG - 1,
++	      "xswap rmap fields do not pack");
++
++static inline void swap_rmap_mark_cache_only(struct swap_cluster_info *ci,
++					     unsigned int off)
++{
++	atomic_long_t *table = rcu_dereference_check(ci->table, true);
++
++	atomic_long_or(SWP_RMAP_CACHE_ONLY, &table[off]);
++}
++
++static inline void swap_rmap_clear_cache_only(struct swap_cluster_info *ci,
++					      unsigned int off)
++{
++	atomic_long_t *table = rcu_dereference_check(ci->table, true);
++
++	atomic_long_and(~SWP_RMAP_CACHE_ONLY, &table[off]);
++}
++
+ static inline bool swp_tb_is_pointer(unsigned long swp_tb)
+ {
+ 	return (swp_tb & (BIT(3) - 1)) == SWP_TB_PTR_MARK;
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 20a9192c39de..45a871eb7bc2 100644
+index 45a871eb7bc2..5b33b2c78ee4 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -44,6 +44,7 @@
- #include <linux/suspend.h>
- #include <linux/zswap.h>
- #include <linux/plist.h>
-+#include <linux/swap_ops.h>
+@@ -109,6 +109,12 @@ static void xswap_release_slot_backend(struct swap_info_struct *si,
+ 				       unsigned int slot);
+ static void xswap_free_xs_table(struct swap_info_struct *si,
+ 				struct swap_cluster_info *ci);
++static void xswap_mark_cache_only(struct swap_cluster_info *ci,
++				  unsigned int slot);
++static void xswap_clear_cache_only(struct swap_cluster_info *ci,
++				   unsigned int start, unsigned int nr);
++static int xswap_reclaim_backing(struct swap_info_struct *si,
++				 unsigned long offset, swp_entry_t xentry);
  
- #include <asm/tlbflush.h>
- #include <linux/leafops.h>
-@@ -3262,6 +3263,138 @@ static void xswap_release_slot_backend(struct swap_info_struct *si,
+ static int xswap_create(int prio);
+ static int xswap_destroy(int type);
+@@ -1325,6 +1331,18 @@ static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+ 					offset += abs(nr_reclaim);
+ 					continue;
+ 				}
++#ifdef CONFIG_XSWAP
++			} else if (swp_tb_is_pointer(swp_tb) &&
++				   (swp_tb & SWP_RMAP_CACHE_ONLY)) {
++				spin_unlock(&ci->lock);
++				nr_reclaim = xswap_reclaim_backing(si, offset,
++						xswap_rmap_to_entry(swp_tb));
++				spin_lock(&ci->lock);
++				if (nr_reclaim) {
++					offset += abs(nr_reclaim);
++					continue;
++				}
++#endif
+ 			}
+ 			offset++;
+ 		}
+@@ -1935,6 +1953,10 @@ static void swap_put_entries_cluster(struct swap_info_struct *si,
+ 			}
+ 			/* count will be 0 after put, slot can be reclaimed */
+ 			need_reclaim = true;
++#ifdef CONFIG_XSWAP
++			if (ci->xs_table)
++				xswap_mark_cache_only(ci, ci_off);
++#endif
+ 		}
+ 		/*
+ 		 * A count != 1 or cached slot can't be freed. Put its swap
+@@ -2041,6 +2063,10 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
+ 			goto failed;
+ 		}
+ 	} while (++ci_off < ci_end);
++#ifdef CONFIG_XSWAP
++	if (ci->xs_table)
++		xswap_clear_cache_only(ci, ci_start, nr);
++#endif
+ 	swap_cluster_unlock(ci);
+ 	return 0;
+ failed:
+@@ -3263,6 +3289,102 @@ static void xswap_release_slot_backend(struct swap_info_struct *si,
  		xswap_free_phys_slot(psi, entry, phys);
  }
  
 +/*
-+ * A written-back slot has no folio of its own here, so the unuse loop would
-+ * skip it. Resolve it through the reverse mapping and free both sides.
++ * Mark the physical slot backing xswap slot @slot as cache-only. Its folio
++ * is in the swap cache, so the physical copy is redundant. The physical
++ * cluster lock is needed: xswap_free_phys_slot() clears the rmap under it.
 + */
-+static int xswap_unuse_rmap(struct swap_info_struct *si, unsigned long offset)
++static void xswap_mark_cache_only(struct swap_cluster_info *ci,
++				  unsigned int slot)
 +{
-+	struct swap_cluster_info *pci, *xci;
-+	struct swap_info_struct *xsi;
-+	struct swap_io_ctx ctx = {};
-+	struct mempolicy *mpol;
++	struct swap_cluster_info *pci;
++	swp_entry_t phys = { .val = ci->xs_table[slot] };
++
++	if (!phys.val)
++		return;			/* still in zswap, no backend */
++	pci = __swap_entry_to_cluster(phys);
++	spin_lock(&pci->lock);
++	swap_rmap_mark_cache_only(pci, swp_cluster_offset(phys));
++	spin_unlock(&pci->lock);
++}
++
++/*
++ * Clear the cache-only mark of slots that were re-referenced. A slot that
++ * was cache-only had count 0, so count 1 is exactly the one to clear.
++ */
++static void xswap_clear_cache_only(struct swap_cluster_info *ci,
++				   unsigned int start, unsigned int nr)
++{
++	unsigned int slot;
++
++	for (slot = start; slot < start + nr; slot++) {
++		struct swap_cluster_info *pci;
++		unsigned long swp_tb;
++		swp_entry_t phys;
++
++		swp_tb = __swap_table_get(ci, slot);
++		if (!swp_tb_is_folio(swp_tb) || swp_tb_get_count(swp_tb) != 1)
++			continue;
++		phys.val = ci->xs_table[slot];
++		if (!phys.val)
++			continue;
++		pci = __swap_entry_to_cluster(phys);
++		spin_lock(&pci->lock);
++		swap_rmap_clear_cache_only(pci, swp_cluster_offset(phys));
++		spin_unlock(&pci->lock);
++	}
++}
++
++/*
++ * Try to reclaim the physical slot backing cache-only @xentry. The physical
++ * cluster lock must not be held. Returns the folio size, negated if the free
++ * failed, or 0 if @offset turned out not to be the folio's slot.
++ */
++static int xswap_reclaim_backing(struct swap_info_struct *si,
++				 unsigned long offset, swp_entry_t xentry)
++{
++	struct swap_info_struct *xsi = __swap_entry_to_info(xentry);
++	struct swap_cluster_info *xci;
++	swp_entry_t first;
 +	struct folio *folio;
-+	unsigned int noreclaim_flags;
-+	unsigned long swp_tb, xoff;
-+	swp_entry_t xentry, phys;
-+	bool fresh = false;
-+	bool drop = false;
++	unsigned long xoff, i;
 +	int ret = 0;
 +
-+	phys = swp_entry(si->type, offset);
-+
-+	pci = swap_cluster_lock(si, offset);
-+	if (!pci)
-+		return 0;
-+	/*
-+	 * The cluster can have emptied since find_next_to_unuse() read its
-+	 * count without the lock, and freeing a cluster clears its table.
-+	 */
-+	if (!cluster_table_is_alloced(pci)) {
-+		swap_cluster_unlock(pci);
-+		return 0;
-+	}
-+	swp_tb = __swap_table_get(pci, offset % SWAPFILE_CLUSTER);
-+	if (!swp_tb_is_pointer(swp_tb)) {
-+		swap_cluster_unlock(pci);
-+		return 0;
-+	}
-+	xentry = xswap_rmap_to_entry(swp_tb);
-+	swap_cluster_unlock(pci);
-+
-+	xoff = swp_offset(xentry);
-+
-+	/*
-+	 * Pin the owner before reading its cluster_info:
-+	 * free_swap_cluster_info() only unmaps that after killing si->users.
-+	 * No owner left means the slot is dropped below.
-+	 */
-+	xsi = swap_type_to_info(swp_type(xentry));
-+	if (!xsi || !(xsi->flags & SWP_XSWAP) || !get_swap_device_info(xsi))
-+		goto out_free;
-+
-+	/* Keeps the shrink, and a reclaim below, off xsi->cluster_info. */
-+	noreclaim_flags = memalloc_noreclaim_save();
-+	mutex_lock(&xsi->xswap_lock);
-+
-+	/* The shrink lowers this under the lock, so check it here. */
-+	if (xoff >= READ_ONCE(xsi->nr_clusters_mapped) * SWAPFILE_CLUSTER) {
-+		/* Owner gone, so the slot is an orphan and has to go. */
-+		drop = true;
-+		goto out_unlock;
-+	}
-+
-+	/*
-+	 * Bring the data back before the slot goes. A dirty folio is what
-+	 * reclaim stores into zswap next time.
-+	 */
 +	folio = swap_cache_get_folio(xentry);
-+	if (!folio) {
-+		mpol = get_task_policy(current);
-+		folio = __swap_cache_alloc_folio(xentry, GFP_HIGHUSER_MOVABLE,
-+						 BIT(0), NULL, mpol,
-+						 NO_INTERLEAVE_INDEX);
-+		if (IS_ERR(folio)) {
-+			ret = PTR_ERR(folio) == -ENOMEM ? -ENOMEM : -EAGAIN;
-+			goto out_unlock;
-+		}
-+		swap_read_folio(&ctx, folio);
-+		swap_read_submit(&ctx);
-+		folio_lock(folio);
-+		fresh = true;
-+	} else {
-+		folio_lock(folio);
++	if (!folio)
++		return 0;
++	if (!folio_trylock(folio)) {
++		folio_put(folio);
++		return 0;
 +	}
 +
-+	if (folio_matches_swap_entry(folio, xentry)) {
-+		folio_wait_writeback(folio);
-+		if (unlikely(!folio_test_uptodate(folio))) {
-+			/* Drop the folio so a later read can try again. */
-+			swap_cache_del_folio(folio);
-+			ret = -EAGAIN;
-+		} else {
-+			folio_mark_dirty(folio);
-+			/* Reclaim cannot find a folio that is not on the LRU. */
-+			if (fresh)
-+				folio_add_lru(folio);
-+			drop = true;
-+		}
-+	} else {
-+		/* Taken from under us, so nothing was read back either. */
-+		VM_WARN_ON_ONCE(1);
-+		ret = -EAGAIN;
-+	}
++	/*
++	 * The folio must own @xentry, and @offset must be the slot this device
++	 * holds for that page of the folio. Otherwise the rmap went stale.
++	 */
++	if (!folio_matches_swap_entry(folio, xentry))
++		goto out;
++	i = xentry.val - folio->swap.val;
++	xoff = swp_offset(folio->swap);
++	xci = swap_cluster_lock(xsi, xoff);
++	if (!xci)
++		goto out;
++	first = xswap_slot_backend(xci, xoff % SWAPFILE_CLUSTER);
++	swap_cluster_unlock(xci);
++	if (!first.val || swp_type(first) != si->type ||
++	    swp_offset(first) + i != offset)
++		goto out;
++
++	/* The run is ours: skip it all, whether or not the free succeeds. */
++	ret = folio_nr_pages(folio);
++	if (!folio_free_swap(folio))
++		ret = -ret;
++out:
 +	folio_unlock(folio);
 +	folio_put(folio);
++	return ret;
++}
 +
-+	/* The slot is going away, so drop the record that names it. */
-+	if (drop) {
-+		xci = swap_cluster_lock(xsi, xoff);
-+		if (xci) {
-+			if (xswap_slot_backend(xci, xoff % SWAPFILE_CLUSTER).val ==
-+			    phys.val)
-+				WRITE_ONCE(xci->xs_table[xoff % SWAPFILE_CLUSTER],
-+					   0);
-+			swap_cluster_unlock(xci);
-+		}
-+	}
-+out_unlock:
-+	mutex_unlock(&xsi->xswap_lock);
-+	memalloc_noreclaim_restore(noreclaim_flags);
-+	put_swap_device(xsi);
-+	if (!drop)
-+		return ret;
-+out_free:
-+	/* Leaving the mapping in place would make the unuse loop spin. */
-+	xswap_free_phys_slot(si, xentry, phys);
-+	return 0;
-+}
-+#else
-+static inline int xswap_unuse_rmap(struct swap_info_struct *si,
-+				   unsigned long offset)
-+{
-+	return 0;
-+}
- #endif /* CONFIG_XSWAP */
- static int try_to_unuse(unsigned int type)
- {
-@@ -3321,8 +3454,20 @@ static int try_to_unuse(unsigned int type)
- 
- 		entry = swp_entry(type, i);
- 		folio = swap_cache_get_folio(entry);
--		if (!folio)
-+		if (!folio) {
-+			/*
-+			 * Only a physical backend holds pointer entries. An
-+			 * xswap device's slots are shadows, and its
-+			 * cluster_info is what find_next_to_unuse() reads
-+			 * without the lock.
-+			 */
-+			if (!(si->flags & SWP_XSWAP)) {
-+				retval = xswap_unuse_rmap(si, i);
-+				if (retval)
-+					return retval;
-+			}
- 			continue;
-+		}
- 
- 		/*
- 		 * It is conceivable that a racing task removed this folio from
+ /*
+  * A written-back slot has no folio of its own here, so the unuse loop would
+  * skip it. Resolve it through the reverse mapping and free both sides.
 -- 
 2.54.0
 
