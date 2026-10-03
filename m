@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C003CA5FE2
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 01:11:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7262ACA5FE2
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 01:11:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F80F6B0088; Fri,  2 Oct 2026 21:11:20 -0400 (EDT)
+	id 724D26B008C; Fri,  2 Oct 2026 21:11:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A8946B008A; Fri,  2 Oct 2026 21:11:20 -0400 (EDT)
+	id 6D3D16B0092; Fri,  2 Oct 2026 21:11:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BE226B008C; Fri,  2 Oct 2026 21:11:20 -0400 (EDT)
+	id 5EA0E6B0093; Fri,  2 Oct 2026 21:11:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ADD26B0088
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:11:20 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D3FAC1A0883
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:11:19 +0000 (UTC)
-X-FDA: 85279536678.14.1969C24
-Received: from mta0.migadu.com (out-72.mta0.migadu.com [91.218.175.72])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E955A40004
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:11:17 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.72 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 276D66B008C
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:11:29 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ACDCAA7870
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:11:28 +0000 (UTC)
+X-FDA: 85279537056.10.10F597D
+Received: from mta1.migadu.com (out-161.mta1.migadu.com [95.215.58.161])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A882220002
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:11:26 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.161 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790989886;
+	b=Q6TuEBHnKvhWLZYq/+QiWC0j70u9/GR5KhELXryH0MhfB+a53KZjXJx0RKVV2XAbb2xh9V
+	XQPqcjQ63myTNTXSIfpCZ5sM6+GWxc2q+NlUssghaxc3V29bUdkGb7gFejI1Qbp+Ie5gTJ
+	yL4bRYq26Bkhf/iDC8m79K2wzVqgG7c=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.161 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790989878;
+	s=arc-20220608; t=1790989886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=NdFhe+3lPU99MaZo8XiPz9Oyx70QbjhFrYZaOYJvg50=;
-	b=d8mQ1ENUFtzlILyaH4rlg8nDtCEsc17iP00PaJn5VuQ9SXfF7QvX52KJCLMWdtMghel9Hf
-	3QT+cAa6hJUNE9/VGg0W98zCiNbN4ZIfi8rJwGgcb9NWN3bQl6QW1GzXgG4q+GJyzU9adf
-	XYCwK3NX2ujBAORMs+2jjJysD51pXFw=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.72 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790989878;
-	b=i573CWaI/r5SddpqQVCX3dQJWx5QgA8u1ixb82LMNmsMMPBHlqZ22J760J7mSJEfhcCpKT
-	2c6OQLpHXIeTPppZf+V0yLotXNqKYYUmy/3LM+kzc1sEf6JRgbCddwkHCJA5jvzWNbMbGh
-	K9M19o3ZPOsTaHqWIm5p4QGO2JnGzH8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l11pwVfY23yFMiPDG+00UbHCocDgKQF8G8I3AZM2mZA=;
+	b=4pPvcCzIr+H2v1YXT/pJIw0dbSUM9znTmYl15lkyv1Wza4rYu2/UWn5wpnTITDq+Uwscpl
+	bKwnaH+CAl8Lw2uxZinhIEQ9VEv+6KjHPviFPwfjuLzdAsr71pSiVwdioD6D1dQJ9ZggZg
+	MvMtIHqON/bg2B4rzBUHYd3J8J196RQ=
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 2a5d2434c84c6a24;
-	Sat, 03 Oct 2026 01:11:16 +0000
-X-Mizu-Trace-ID: 2a5d2434c84c6a24
+Received: by mta12.migadu.com with ESMTPS id f0940ff2c2aec469;
+	Sat, 03 Oct 2026 01:11:22 +0000
+X-Mizu-Trace-ID: f0940ff2c2aec469
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -69,21 +70,23 @@ Cc: akpm@linux-foundation.org,
 	youngjun.park@lge.com,
 	linux-kernel@vger.kernel.org,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 0/6] mm, swap: charge xswap for physical backing (xswap phase III)
-Date: Sat,  3 Oct 2026 09:11:05 +0800
-Message-ID: <20261003011111.1003090-1-hebaoquan@kylinos.cn>
+Subject: [PATCH 1/6] mm, swap: split the swap memcg charge helpers
+Date: Sat,  3 Oct 2026 09:11:06 +0800
+Message-ID: <20261003011111.1003090-2-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261003011111.1003090-1-hebaoquan@kylinos.cn>
+References: <20261003011111.1003090-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E955A40004
+X-Rspamd-Server: rspam06
+X-Stat-Signature: iphojfpbgu7f34d6ukco96gonzpombmn
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: hcnb3asz93ds9gqg36zf516p1h1a1dxw
-X-HE-Tag: 1790989877-32168
-X-HE-Meta: U2FsdGVkX18pskdRyqX1eIGxUwUPPxwNkyTKBweQHj0KCuVN+g5WCRvl5tnNRySTO8FhFZgF2BDRFGy2c0AYnd945l5Lm2O8n+o1le6sC2STQgOF/zKv1WFst+lDK782ZblsouviL3Zs8V5eQ/rHg9aZUp5rw+3lBovfsnEWzSuvy5866MTZDoCKWh2LKu96PyFS+Zkz3/eSGGkTHbmZP54zC8JEyDRvV3fkud65ExghuUgqqwDOAYTWP41C9i3o5D+YY7fjJKlvjonwYx26H9Y9cZRh8eeqGeShS6o+fEWpTbXJiSX+72at51yiTcFwEz4sO+6WbZSlO7st74xmM8SQJXoMg+4OUGQyq8a5yaG9izHfzWamozY77qQXvAp63IOPvGT+8X538CXYIy8ZTeQ3LSHXpIGQVPjd6YfhXxrMsXWQjuScMid8XA/zuGizlLkfNTdJ6UpMDq00qmACAZST7XYcZ8HpQELKywj/rNbgoXyU2DO/OxPlFeGtLGhnW2nAVuSfDZbXFtkQa8FEkq1ikrwTr2kZzto2vzORQvFNCHk/+7gGhfN2A5G1xM22ta1fv1lWW5CbMyQsbZ8HCZiPmaTis6MLPIAWoZbujNYxD1tLmTbpPcV4Pyjn1MUsCKnlUR4NZ3pwg+WS/pMbgPLayHjm0Zo7AAE7FXpcoFcJYAN81FrC7c74YhT0vfISjjc7GHOr1Yr8N1AZFcK4Feow7M3HnVydkJiSBHpCg6UppkKZ8FvjFSEFn2DjPRfagg2yjBooB1ZxZDVYfcNaVXO01C67LB1OUV0BLpkQmCwMOQFZI141ewnTnoUFxldgVcMczfQA0DNwycKatXJzv9J5w0iK5lCBSNt5K7EN5yIJ29sKQ5c/u0ZKKC8XIRK9m/Jmxib0Ca9tl7+Z7Z54IuG0PW8AlAWlp+4MzPORxW7JAYzQl5cryYuAeC6ayxJ7sGSVmu2Ahhbu5kUFKPc
- C/YKJFvK
- fHvlpiTp0OSiUNsACTViqvcmNmUD8A5HEKjaN3w9UHiVEam06xWEtQOTraS+MBiS7fTjwmHDBa0pc1gvZipJRqqiX+iguBzecNuwrOW8TfKKfbarGU29HkPVs1kH8WbjhdxfURoC1tBtIH6R3YIy8URL86ZJ3kH6Zvr0Zg+yYwmjjI8MGpnK5x91NikEStSZo/HjN4rY6ZxPKLCL9jHhzEL2ElTl33NfcpUEO
+X-Rspamd-Queue-Id: A882220002
+X-HE-Tag: 1790989886-463953
+X-HE-Meta: U2FsdGVkX19+5KD9BYDIHZmIfse17xhS+DPvrrXsJMqhjtEcGIJNZOHml4xZObTB0DEtL9280mpKKe6rJOpp8MAI1j4zoMO++iMfS6BJUb4Z4enLLYqDtGLOFiFeF8CLnWLItBi8d2MnE76EU2KlogvAsod0Jbe0FexMRpvj6ZMSUKIPvc8A2rdgtwGfWBWkMOzWFHutStZibrKF4gCQnQL4CqRVW/muxMCfjy1UVmdyrDsMrpCtAc3162ZLtGNPG1jVFnBWR5nkczhZ5BLfKo9P1JFSWdnZhmA8r29VV6ZHUTPpLDAv8eHil5olHlee08qwTV5ikBQewaMEVBoPfqFz/siouY9O4yWMMVwSrWOPE6qNfKNRToA6YxkX5SktQeAeum1hALIbZo0pHCk9TVW16oiQ9v/dTSg8sKhF5FME+PGYupvlnZfho07B+vI2S5iNPiRjHaDANcMfCl9yHCmt4SckVwzCf7VP4lUpu4FJLsNiGyn/msovYAB19PSfyfXzK8PnLB8MMNtaP7yjzOmKDyBC5Snc/8tXpbAvh7diRCE/LNTDlDqayAq62Mlw3Cw15qYwB8s7pcBoGI0BOGKLK6+jy4u9UmZxAPC+PvnGl5hKvrbhaIZoCHTljtqyLE/tQD1sZto/vtyS0ePhOkrN/lj8KxJfIinK28ICrdkI2M9hhA1DzoLO3emNobKwiHGrqNMd2tSHXMcLrsiQ9zM464hTX3AQ+RK44MB/fwy+dO+T7n4yzX06gDQ/V6Uqa5cxFDy6hxEXhqn/pxC5sFUTPrQG9gnjLNjmORsSCASiGzWFzfMHPo6mvKc67t30G82JKgiCnW94Y2tGFgDwu0WGSTytpIJBVivK3JxT/Unf3XF21H07SfBwkjtIr12xaHOxu9ATO1QOXFY+0OMoBS9d8OXEmVu6dg5K3nXADPMSJsGqBnas4RuV2/LOad8u7QcQyLAqh7qOPmz2koU
+ 8HfKTED5
+ t4oH1pKvfVPDgGzo1lBf8KkM9btnxyMLp47xKfWwl757EwltlE9Ungoa8Wc7m0A3tovHRn6NLQA8zYu37KG/eso9k9EQA1WzxrI2oPzOan24sS4LCCAy9obBa20G1AJLpn7w6th74oES8szXoAivGTZxXUoJPIpMjg0aDah4h78Zo5ivmnKnWZRpDe3zKq1RSG+XQ11ST7oFqTmeLnzKqIn4McBOItaPQLU5+/D93X7WY6VEKTQQHkJYF26Vqw7ApfhdgQvkY+isLOqgG4QlTGU/xP1Jvs8GgmSORiimoegpPhNjlA+i4da6jIA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,100 +94,464 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-An xswap entry reserves no swap space: its page is in zswap, which costs
-memory, not disk. It was still charged against memcg->swap at allocation,
-so memory.swap.current counted pages that never reached a disk, and a
-cgroup with memory.swap.max at 0 could not reclaim its anon memory at all.
+From: Nhat Pham <nphamcs@gmail.com>
 
-The charge belongs where the backing is taken. Record the owner at
-allocation; charge only when the entry takes a backend slot, and release
-the charge with the slot.
+Split __mem_cgroup_try_charge_swap() into separate get, charge, record,
+uncharge and put helpers, and factor mem_cgroup_may_zswap() out of
+obj_cgroup_may_zswap().  Recording the owner of a swap slot and charging
+it no longer have to happen together, so a later patch can charge swap
+only once it gets physical backing.
 
-Phase III of three, posted separately because the charging semantics are
-still under discussion. This series makes memory.swap.current count only
-the pages that hold a backend slot; it used to count every swap entry, and
-an entry always held a slot until xswap separated the two.
+No functional change.
 
-Design notes
-------------
-
-Patch 1 splits __mem_cgroup_try_charge_swap() into get / charge / record /
-uncharge / put, with no behaviour change, so the record and the charge can
-happen at different times. The owner is a private ID, not a pinned memcg:
-an ID is what the swap table holds, and the uncharge path resolves it back
-under RCU. Patch 4 stops mem_cgroup_get_nr_swap_pages() from gating on the
-physical margin for a cgroup that can zswap.
-
-The patches
------------
-
- 1 split the swap memcg charge helpers
- 2 do not charge zswap-backed xswap entries
- 3 charge an xswap entry when it gets physical backing
- 4 don't gate xswap on the physical swap free count
- 5 do not retake the cluster lock when uncharging an xswap slot
- 6 drop a refused xswap backend run directly
-
-5 and 6 fix bugs in 3: a spinlock taken twice, and a refused run given back
-through a reverse mapping that is not installed yet.
-
-Testing
--------
-
-qemu KVM guest, 8G RAM, xswap.max=10G, zram as the backend. memhog faults
-<total_gb> of anon, fills it with a fixed pattern, and holds it. The
-invariant through all of it:
-
-    memory.swap.current / 4096  ==  backend Used / 4
-
-Both count pages holding a backend slot, so over-charge, under-charge and a
-missed uncharge all show up here.
-
-  # echo 1 > /sys/module/zswap/parameters/enabled
-  # echo 100 > /sys/kernel/mm/xswap/create
-  # mkswap /dev/zram0; swapon -p 0 /dev/zram0
-  # mkdir -p /sys/fs/cgroup/xswap_limit
-  # echo 2G > .../memory.max; echo max > .../memory.swap.max
-  # echo max > .../memory.zswap.max
-  # ( echo $BASHPID > .../cgroup.procs
-  #   exec env MEMHOG_FILL=pattern numactl --cpunodebind=0 ./memhog 4 600 ) &
-
-With zswap on nothing reaches the backend and nothing is charged. With
-zswap off the two sides agree (526429 == 526429). memory.swap.max is
-enforced at the backend: at 0, a device-less cgroup is killed, but with an
-xswap device the pages go to zswap, cost no swap space, and reclaim keeps
-making progress. Destroying the device returns the charge and the backend
-Used with it, workload alive, over ten cycles. Also exercised: the same
-invariant on an ordinary swap device with no xswap device.
-
-Changelog
-=========
-RFC -> v1:
-
-- Taken out of the RFC as a series of its own. The direction for charging
-  is still under discussion, and the writeback series should not wait on
-  it.
-
-Baoquan He (2):
-  mm, swap: do not retake the cluster lock when uncharging an xswap slot
-  mm, swap: drop a refused xswap backend run directly
-
-Nhat Pham (4):
-  mm, swap: split the swap memcg charge helpers
-  mm, swap: do not charge zswap-backed xswap entries
-  mm, swap: charge an xswap entry when it gets physical backing
-  mm, swap: don't gate xswap on the physical swap free count
-
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+---
  .../admin-guide/cgroup-v1/memcg_test.rst      |   2 +-
  include/linux/memcontrol.h                    |   6 +
- include/linux/swap.h                          |  66 ++++++-
+ include/linux/swap.h                          |  60 +++++++-
  mm/memcontrol-v1.c                            |   3 +-
- mm/memcontrol.c                               | 164 +++++++++++++-----
- mm/swapfile.c                                 | 138 ++++++++++++++-
- 6 files changed, 318 insertions(+), 61 deletions(-)
+ mm/memcontrol.c                               | 141 +++++++++++++-----
+ mm/swapfile.c                                 |  27 +++-
+ 6 files changed, 184 insertions(+), 55 deletions(-)
 
-
-base-commit: 456d37694d1e05a1b9ddbd1e493bcd6cf2016b4f
+diff --git a/Documentation/admin-guide/cgroup-v1/memcg_test.rst b/Documentation/admin-guide/cgroup-v1/memcg_test.rst
+index d9951c319ef5..cd565626c435 100644
+--- a/Documentation/admin-guide/cgroup-v1/memcg_test.rst
++++ b/Documentation/admin-guide/cgroup-v1/memcg_test.rst
+@@ -43,7 +43,7 @@ Please note that implementation details can be changed.
+ 	mem_cgroup_uncharge()
+ 	  Called when a page's refcount goes down to 0.
+ 
+-	mem_cgroup_uncharge_swap()
++	mem_cgroup_swap_uncharge()
+ 	  Called when swp_entry's refcnt goes down to 0. A charge against swap
+ 	  disappears.
+ 
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 74110a324f9e..b9072a3c9a2a 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -1944,6 +1944,7 @@ static inline void mem_cgroup_calculate_protection_path(struct mem_cgroup *root,
+ 
+ #if defined(CONFIG_MEMCG) && defined(CONFIG_ZSWAP)
+ bool obj_cgroup_may_zswap(struct obj_cgroup *objcg);
++bool mem_cgroup_may_zswap(struct mem_cgroup *memcg, bool may_flush);
+ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size);
+ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size);
+ bool mem_cgroup_zswap_writeback_enabled(const struct mem_cgroup *memcg);
+@@ -1952,6 +1953,11 @@ static inline bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
+ {
+ 	return true;
+ }
++
++static inline bool mem_cgroup_may_zswap(struct mem_cgroup *memcg, bool may_flush)
++{
++	return true;
++}
+ static inline void obj_cgroup_charge_zswap(struct obj_cgroup *objcg,
+ 					   size_t size)
+ {
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index e78717327126..745606f23e62 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -531,36 +531,80 @@ static inline void folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
+ #endif
+ 
+ #if defined(CONFIG_MEMCG) && defined(CONFIG_SWAP)
+-int __mem_cgroup_try_charge_swap(struct folio *folio);
+-static inline int mem_cgroup_try_charge_swap(struct folio *folio)
++bool __mem_cgroup_swap_get(struct folio *folio, unsigned short *id);
++static inline bool mem_cgroup_swap_get(struct folio *folio, unsigned short *id)
++{
++	if (mem_cgroup_disabled())
++		return false;
++	return __mem_cgroup_swap_get(folio, id);
++}
++
++int __mem_cgroup_swap_charge(unsigned short id, unsigned int nr_pages);
++static inline int mem_cgroup_swap_charge(unsigned short id,
++					 unsigned int nr_pages)
+ {
+ 	if (mem_cgroup_disabled())
+ 		return 0;
+-	return __mem_cgroup_try_charge_swap(folio);
++	return __mem_cgroup_swap_charge(id, nr_pages);
+ }
+ 
+-extern void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages);
+-static inline void mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
++void __mem_cgroup_swap_record(struct folio *folio, unsigned short id);
++static inline void mem_cgroup_swap_record(struct folio *folio,
++					  unsigned short id)
+ {
+ 	if (mem_cgroup_disabled())
+ 		return;
+-	__mem_cgroup_uncharge_swap(id, nr_pages);
++	__mem_cgroup_swap_record(folio, id);
++}
++
++void __mem_cgroup_swap_uncharge(unsigned short id, unsigned int nr_pages);
++static inline void mem_cgroup_swap_uncharge(unsigned short id,
++					    unsigned int nr_pages)
++{
++	if (mem_cgroup_disabled())
++		return;
++	__mem_cgroup_swap_uncharge(id, nr_pages);
++}
++
++void __mem_cgroup_swap_put(unsigned short id, unsigned int nr_pages);
++static inline void mem_cgroup_swap_put(unsigned short id,
++				       unsigned int nr_pages)
++{
++	if (mem_cgroup_disabled())
++		return;
++	__mem_cgroup_swap_put(id, nr_pages);
+ }
+ 
+ long mem_cgroup_get_folio_swap_margin(const struct folio *folio);
+ long mem_cgroup_get_nr_swap_pages(const struct mem_cgroup *memcg);
+ bool mem_cgroup_swap_full(const struct folio *folio);
+ #else
+-static inline int mem_cgroup_try_charge_swap(struct folio *folio)
++static inline bool mem_cgroup_swap_get(struct folio *folio, unsigned short *id)
++{
++	return false;
++}
++
++static inline int mem_cgroup_swap_charge(unsigned short id,
++					 unsigned int nr_pages)
+ {
+ 	return 0;
+ }
+ 
+-static inline void mem_cgroup_uncharge_swap(unsigned short id,
++static inline void mem_cgroup_swap_record(struct folio *folio,
++					  unsigned short id)
++{
++}
++
++static inline void mem_cgroup_swap_uncharge(unsigned short id,
+ 					    unsigned int nr_pages)
+ {
+ }
+ 
++static inline void mem_cgroup_swap_put(unsigned short id,
++				       unsigned int nr_pages)
++{
++}
++
+ static inline long mem_cgroup_get_folio_swap_margin(const struct folio *folio)
+ {
+ 	return PAGE_COUNTER_MAX;
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index b7f286888507..b75478457a0e 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -371,7 +371,8 @@ void memcg1_swapin(struct folio *folio)
+ 	id = __swap_cgroup_clear(ci, swp_cluster_offset(folio->swap),
+ 				 nr_pages);
+ 	swap_cluster_unlock(ci);
+-	mem_cgroup_uncharge_swap(id, nr_pages);
++	mem_cgroup_swap_uncharge(id, nr_pages);
++	mem_cgroup_swap_put(id, nr_pages);
+ }
+ #endif
+ 
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index aad0498a7bd6..ba13d2a1ead5 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5989,62 +5989,99 @@ int __init mem_cgroup_init(void)
+ 
+ #ifdef CONFIG_SWAP
+ /**
+- * __mem_cgroup_try_charge_swap - try charging swap space for a folio
++ * __mem_cgroup_swap_get - take the private ID refs for a folio's swap slots
+  * @folio: folio being added to swap
++ * @id: out, the ID to record and later charge against
+  *
+- * Try to charge @folio's memcg for the swap space at folio->swap.
++ * Takes one private ID ref per page of @folio on its memcg, or on its closest
++ * online ancestor if it has been offlined. The caller records and charges
++ * against whichever ID comes back, so both land on the same memcg.
+  *
+- * Returns 0 on success, -ENOMEM on failure.
++ * Return: true if an owner was taken, false when there is nothing to account
++ * for. Drop the refs with __mem_cgroup_swap_put().
+  */
+-int __mem_cgroup_try_charge_swap(struct folio *folio)
++bool __mem_cgroup_swap_get(struct folio *folio, unsigned short *id)
+ {
+ 	unsigned int nr_pages = folio_nr_pages(folio);
+-	struct swap_cluster_info *ci;
+-	struct page_counter *counter;
+ 	struct mem_cgroup *memcg;
+ 	struct obj_cgroup *objcg;
+-	unsigned short private_id;
+ 
+ 	if (do_memsw_account())
+-		return 0;
++		return false;
+ 
+ 	objcg = folio_objcg(folio);
+ 	VM_WARN_ON_ONCE_FOLIO(!objcg, folio);
+ 	if (!objcg)
+-		return 0;
++		return false;
+ 
+ 	scoped_guard(rcu) {
+ 		memcg = obj_cgroup_memcg(objcg);
+ 		if (!folio_test_swapcache(folio)) {
+ 			memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
+-			return 0;
++			return false;
+ 		}
+ 
+-		private_id = mem_cgroup_private_id_get(memcg, nr_pages);
++		*id = mem_cgroup_private_id_get(memcg, nr_pages);
++	}
++
++	return true;
++}
++
++/**
++ * __mem_cgroup_swap_charge - charge physical swap space
++ * @id: the ID the slots were recorded against
++ * @nr_pages: the amount of swap space to charge
++ *
++ * Return: 0 on success, -ENOMEM if memory.swap.max is exceeded.
++ */
++int __mem_cgroup_swap_charge(unsigned short id, unsigned int nr_pages)
++{
++	struct page_counter *counter;
++	struct mem_cgroup *memcg;
++
++	if (do_memsw_account())
++		return 0;
++
++	scoped_guard(rcu) {
++		memcg = mem_cgroup_from_private_id(id);
++		if (!memcg)
++			return 0;
+ 
+-		if (!mem_cgroup_private_id_is_root(private_id) &&
++		if (!mem_cgroup_private_id_is_root(id) &&
+ 		    !page_counter_try_charge(&memcg->swap, nr_pages, &counter)) {
+ 			memcg_memory_event(memcg, MEMCG_SWAP_MAX);
+ 			memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
+-			mem_cgroup_private_id_put(private_id, nr_pages);
+ 			return -ENOMEM;
+ 		}
+ 		mod_memcg_state(memcg, MEMCG_SWAP, nr_pages);
+ 	}
+ 
++	return 0;
++}
++
++/**
++ * __mem_cgroup_swap_record - record the owner of a folio's swap slots
++ * @folio: folio being added to swap
++ * @id: the ID taken by __mem_cgroup_swap_get()
++ */
++void __mem_cgroup_swap_record(struct folio *folio, unsigned short id)
++{
++	struct swap_cluster_info *ci;
++
+ 	ci = swap_cluster_get_and_lock(folio);
+-	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_pages, private_id);
++	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap),
++			  folio_nr_pages(folio), id);
+ 	swap_cluster_unlock(ci);
+-
+-	return 0;
+ }
+ 
+ /**
+- * __mem_cgroup_uncharge_swap - uncharge swap space
+- * @id: cgroup id to uncharge
++ * __mem_cgroup_swap_uncharge - uncharge physical swap space
++ * @id: the ID the slots were recorded against
+  * @nr_pages: the amount of swap space to uncharge
++ *
++ * The owner refs are not touched; drop them with __mem_cgroup_swap_put().
+  */
+-void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
++void __mem_cgroup_swap_uncharge(unsigned short id, unsigned int nr_pages)
+ {
+ 	struct obj_cgroup *objcg;
+ 	struct mem_cgroup *memcg;
+@@ -6060,11 +6097,33 @@ void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
+ 				page_counter_uncharge(&memcg->swap, nr_pages);
+ 		}
+ 		mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
+-		__mem_cgroup_private_id_put(objcg, id, nr_pages);
+ 	}
+ 	rcu_read_unlock();
+ }
+ 
++/**
++ * __mem_cgroup_swap_put - drop the private ID refs taken for swap slots
++ * @id: the ID taken by __mem_cgroup_swap_get()
++ * @nr_pages: number of refs to drop
++ *
++ * A separate step from __mem_cgroup_swap_uncharge(): a slot's owner is held
++ * from the allocation and released when the slot is freed, while the
++ * counter is charged and uncharged whenever the physical backing comes and
++ * goes.
++ */
++void __mem_cgroup_swap_put(unsigned short id, unsigned int nr_pages)
++{
++	/*
++	 * The refs are the thing being dropped, so an ID that no longer
++	 * resolves has none left and there is nothing to do.
++	 * mem_cgroup_private_id_put() would dereference the NULL instead.
++	 */
++	rcu_read_lock();
++	if (obj_cgroup_from_private_id(id))
++		mem_cgroup_private_id_put(id, nr_pages);
++	rcu_read_unlock();
++}
++
+ long mem_cgroup_get_nr_swap_pages(const struct mem_cgroup *memcg)
+ {
+ 	long nr_swap_pages = get_nr_swap_pages();
+@@ -6261,8 +6320,10 @@ static struct cftype swap_files[] = {
+ 
+ #ifdef CONFIG_ZSWAP
+ /**
+- * obj_cgroup_may_zswap - check if this cgroup can zswap
+- * @objcg: the object cgroup
++ * mem_cgroup_may_zswap - check if this cgroup can zswap
++ * @memcg: the memcg to query
++ * @may_flush: force-flush stats for an accurate check (sleeps). Pass false
++ *             from atomic contexts; the check is then best-effort.
+  *
+  * Check if the hierarchical zswap limit has been reached.
+  *
+@@ -6272,36 +6333,38 @@ static struct cftype swap_files[] = {
+  * spending cycles on compression when there is already no room left
+  * or zswap is disabled altogether somewhere in the hierarchy.
+  */
+-bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
++bool mem_cgroup_may_zswap(struct mem_cgroup *memcg, bool may_flush)
+ {
+-	struct mem_cgroup *memcg, *original_memcg;
+-	bool ret = true;
+-
+ 	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+ 		return true;
+ 
+-	original_memcg = get_mem_cgroup_from_objcg(objcg);
+-	for (memcg = original_memcg; !mem_cgroup_is_root(memcg);
+-	     memcg = parent_mem_cgroup(memcg)) {
++	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
+ 		unsigned long max = READ_ONCE(memcg->zswap_max);
+ 		unsigned long pages;
+ 
+ 		if (max == PAGE_COUNTER_MAX)
+ 			continue;
+-		if (max == 0) {
+-			ret = false;
+-			break;
+-		}
++		if (max == 0)
++			return false;
+ 
+ 		/* Force flush to get accurate stats for charging */
+-		__mem_cgroup_flush_stats(memcg, true);
++		if (may_flush)
++			__mem_cgroup_flush_stats(memcg, true);
+ 		pages = memcg_page_state(memcg, MEMCG_ZSWAP_B) / PAGE_SIZE;
+-		if (pages < max)
+-			continue;
+-		ret = false;
+-		break;
++		if (pages >= max)
++			return false;
+ 	}
+-	mem_cgroup_put(original_memcg);
++	return true;
++}
++
++bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
++{
++	struct mem_cgroup *memcg;
++	bool ret;
++
++	memcg = get_mem_cgroup_from_objcg(objcg);
++	ret = mem_cgroup_may_zswap(memcg, true);
++	mem_cgroup_put(memcg);
+ 	return ret;
+ }
+ 
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 180cf538f9ab..8e52ace44de8 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2095,6 +2095,7 @@ int folio_alloc_swap(struct folio *folio)
+ 	unsigned int order = folio_order(folio);
+ 	unsigned int size = 1 << order;
+ 	struct obj_cgroup *objcg;
++	unsigned short swap_id = 0;
+ 	/* True unless the gate below finds an xswap device to route away from. */
+ 	bool may_zswap = true;
+ 
+@@ -2141,10 +2142,17 @@ int folio_alloc_swap(struct folio *folio)
+ 			goto again;
+ 	}
+ 
+-	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
+-	if (unlikely(mem_cgroup_try_charge_swap(folio))) {
+-		swap_cache_del_folio(folio);
+-		goto failed;
++	/*
++	 * Need to call this even if allocation failed, for MEMCG_SWAP_FAIL.
++	 * The owner is taken here, then charged and recorded.
++	 */
++	if (mem_cgroup_swap_get(folio, &swap_id)) {
++		if (unlikely(mem_cgroup_swap_charge(swap_id, size))) {
++			mem_cgroup_swap_put(swap_id, size);
++			swap_cache_del_folio(folio);
++			goto failed;
++		}
++		mem_cgroup_swap_record(folio, swap_id);
+ 	}
+ 
+ 	if (unlikely(!folio_test_swapcache(folio)))
+@@ -2290,6 +2298,13 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
+ 	return ERR_PTR(-EIO);
+ }
+ 
++/* Uncharge a batch of freed swap slots and drop their owner refs. */
++static void memcg_swap_free(unsigned short id, unsigned int nr)
++{
++	mem_cgroup_swap_uncharge(id, nr);
++	mem_cgroup_swap_put(id, nr);
++}
++
+ /*
+  * Free a set of swap slots after their swap count dropped to zero, or will be
+  * zero after putting the last ref (saves one __swap_cluster_put_entry call).
+@@ -2332,14 +2347,14 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
+ 		id_cur = __swap_cgroup_clear(ci, ci_off, 1);
+ 		if (batch_id != id_cur) {
+ 			if (batch_id)
+-				mem_cgroup_uncharge_swap(batch_id, ci_off - batch_off);
++				memcg_swap_free(batch_id, ci_off - batch_off);
+ 			batch_id = id_cur;
+ 			batch_off = ci_off;
+ 		}
+ 	} while (++ci_off < ci_end);
+ 
+ 	if (batch_id)
+-		mem_cgroup_uncharge_swap(batch_id, ci_off - batch_off);
++		memcg_swap_free(batch_id, ci_off - batch_off);
+ 
+ 	swap_range_free(si, ci_head + ci_start, nr_pages);
+ 	swap_cluster_assert_empty(ci, ci_start, nr_pages, false);
 -- 
 2.54.0
 
