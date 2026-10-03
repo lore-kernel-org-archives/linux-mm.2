@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E396CA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 01:11:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99A48CA5FE2
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 01:11:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEB7C6B0093; Fri,  2 Oct 2026 21:11:35 -0400 (EDT)
+	id A313D6B0099; Fri,  2 Oct 2026 21:11:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC36B6B0096; Fri,  2 Oct 2026 21:11:35 -0400 (EDT)
+	id 9BA166B009B; Fri,  2 Oct 2026 21:11:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E07096B0099; Fri,  2 Oct 2026 21:11:35 -0400 (EDT)
+	id 8D1BE6B009D; Fri,  2 Oct 2026 21:11:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BD5236B0093
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:11:35 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8C68CA0889
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:11:34 +0000 (UTC)
-X-FDA: 85279537308.30.8B773A7
-Received: from mta1.migadu.com (out-167.mta1.migadu.com [95.215.58.167])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8884A80005
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:11:32 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.167 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 67D5C6B0099
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:11:40 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E84C1140846
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:11:39 +0000 (UTC)
+X-FDA: 85279537518.06.9F14554
+Received: from mta0.migadu.com (out-85.mta0.migadu.com [91.218.175.85])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0FB3F20007
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:11:37 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.85 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790989892;
+	s=arc-20220608; t=1790989898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2IHJk1vhpMhmiZcAtLhVlmxysij74ovfXQldT94sXpM=;
-	b=hUy/apw2ahJADcvjSNPejNRhEvRGvQ+3rI51RVf77YqWAjc2s6D0t1w9pj9eYQpSrkMs/G
-	0OgUEM7jsMO+ZWLvAwa7whkGKF+vRihZQhEYkljK4+ZddboxbjHHwiSd3k962vXGOY2G5q
-	Hp11kvDnxBDyGrJRz6t1wlgIw4PfxnA=
+	bh=1nhK3nJVhaqCxZzWSecqIzI7wzUreUVGr8GUe639FgM=;
+	b=h0q9xryvw/EK/Kz9PyfgkrcrzBq5hrf6X1pRBeeGvinEFZPPr88EYQEtpLhhD0FzwGI+ZP
+	VBYY9qoQlvQX6JxxPPwtWrLYES9rUiMpAEQWLOl075YD1r2Yux/Znlon5U6eThTTexE05k
+	y8lVqaRiYLtupzYyJGQsHbzwah1mV9s=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
+	imf31.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.167 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.85 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790989892;
-	b=8DXoMurPtTUI0X0ivbrUkmDa9wZop4YRwn7y4E/owE/YoYvju/8tG8+OQ1KYyDcpdawTK+
-	qgjW7UhMHFKiT8SISbWgRc3h43cznmbyYFD/mLnGicyKDjRuHXSTtoGY1wQccjLk2xAE5s
-	/97fpDHTzHfeWzBrskrU9YqTR+E3gBQ=
+	t=1790989898;
+	b=5Pe8qos3w1zKs+TttirV9/ozzOYiKKi/N1txmNY1tHctze+8qI1mOZ283Tzev5Zyty4+i+
+	nrOvT+IEpokJYDa9BLSwxAPyN0koO7byJdisIOPujm1Jw/IuidFleoP15MGGyN+TWB9xb8
+	D4ziLtOSUysRu6LjKR8H+62aLwVnjXU=
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id bb32ca3e7bf7924e;
-	Sat, 03 Oct 2026 01:11:31 +0000
-X-Mizu-Trace-ID: bb32ca3e7bf7924e
+Received: by mta12.migadu.com with ESMTPS id d81cff4ff6dbfbf7;
+	Sat, 03 Oct 2026 01:11:36 +0000
+X-Mizu-Trace-ID: d81cff4ff6dbfbf7
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -70,23 +70,23 @@ Cc: akpm@linux-foundation.org,
 	youngjun.park@lge.com,
 	linux-kernel@vger.kernel.org,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 2/6] mm, swap: do not charge zswap-backed xswap entries
-Date: Sat,  3 Oct 2026 09:11:07 +0800
-Message-ID: <20261003011111.1003090-3-hebaoquan@kylinos.cn>
+Subject: [PATCH 3/6] mm, swap: charge an xswap entry when it gets physical backing
+Date: Sat,  3 Oct 2026 09:11:08 +0800
+Message-ID: <20261003011111.1003090-4-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261003011111.1003090-1-hebaoquan@kylinos.cn>
 References: <20261003011111.1003090-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8884A80005
-X-Stat-Signature: w6g9f4zueq5eebuggy3ncoquhdwyyjc1
+X-Stat-Signature: ypfbnrmfipxyq6kg5xmj54hwqmhhzdcw
 X-Rspam-User: 
-X-HE-Tag: 1790989892-469999
-X-HE-Meta: U2FsdGVkX1/S/xocwGTDgVVt7FiuokjrfWrAjHb9IrEwykI9gWzFWVANB/sNEzpIvUmRtHA1bjdUYTysefwJwgKGwbV7DJn7Cqt85CvqHV/f2T0/eclZAIJst67tefmZ4NKkEtMdy9Els/sMcIlOYebqBqdOyIOFgb2b4/RagwWz4FwHLuJextt9+w1WbQC/aXo4eKqxme9i8lmxmQhwL7Oc9J+IaiT84uPdO7W2fPl5zpw14OeicdilKJf1K5UW4/QVhMQsf69J1ptkfVhqY2s5ihcv80M+TeJVo56G5qzDtatETVJms4Slf/9GmmEdtOFbqj70I6JmFKQl0FfS10joVW5gdgxT4WDnDEF8R/1SwDTQDo3G/W9CuKw+uz/YDBxtjDckPKj2b6kCpDAQJwQI6hDrU95Mcj1d0Ai9cjTTESB4B6BjTwVfs8UNm6e2481FUnJ63YUUUC0N+gKxoOu9/xhAkmEuxbsFIv+57CEpU8o9J+ERMoOOXjUlYpzgWUOdktOrXcKpvrA+OxhlNiGFHmt7J9CPVzeOVy3KH07Tap2IpTLLGNlpdHNCySvod0rvqlm1PeWSc+jdri4mSCopsX34e37IQdr+YmIgJaE2PHdjj6GUA/Tj1I1TTbfbk80/3ApidOfGjQjz/EvdNgXclT8SkO0HK/OJfhYG41R1gmy6fzv/eEXCYdEoF1AJz04mbVmzcdndTURatmu3KxoVC41r+PbBcFz1mCbT7HymvXZ+y7zbjcZguXlAhKNFxFeiOWJbkcHEokDMRNugxCvxiWj2QkNxMbDFMinjyfdn6u2Bv1onhU9Q3mWzXo3FFrmfTDT3IxhqflLBtQpOYlBlNsWo0UNhSFlcUx3F/hFtdl9ZgdYO/QS2EcCu8ZPFjuy0Bx8YAWuAlAZHikW4S2xly/aZBa4N2jrJP/2gKKeGnszE8bqOt3clp6krvAgKPmP58sr9WL5FbfkmFma
- eEUzRKNx
- xJ5bXguppYpqVpGGxFmwlEEcuxJWEfKaB4fusOiSxxppm5lC8XYbunHiPHjafG3sAT1gcYuVGrodUFS99dOEKKjMYSJaeWEO7Edl37VkjbjCvwvVE0JhhSJdIZcIuMYW3/BXNkAP/bgN+Bl762kClukHMKuYAIiFgK67aBpdk/DDtUc5IGVUx8YxCYYi/C/g3rNKa6/maI/XtVZZSXKjaqBnim1T46qklg1FCTLiJrG2ak9McOBUbh3nWbeEuS1hohrisWVHjFovjNqwp7gfUJDTDqUYWgCcBblwojWedFMyds0tMl55g500bfw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0FB3F20007
+X-HE-Tag: 1790989897-636790
+X-HE-Meta: U2FsdGVkX199/dVuJSdcm7weizxIFq0czLnHkv8RCIw2WMhLRLj5/zpHyk+PiOFYBjAInGqhQsPV12moABqy8uZYCCJEXj6CagQV+5sQEbDY9ejiJFg7qMpk9AwRt6adj4gl2oEzBx+yDhske0Semh3mrbzsBKyv7raBGiqV/UP3cnl16Lmhj+UP56GFfHvBpDMD0PfcVuZdtJiPcE2aXqYtV7RIsYu6Htv/d+aNaSnW5NliYSg9cxy/UF/L0BaMbSGFi4IRVTuuCAEBVPlEG/HU+NsbzzKDPf/KGxZxLMmRvudpCIDOu/Rv1IIQzM+ii2OGTo2Wt/05RZ3BTfyamwUYJaBXSHjizvSZ24qD+6gi17dPWvQLqDLZnv/eN9z1rEN63tEDqmFdMmea+xpliQz6Kem8CURaXBiPhsx9115BCxbV4AIF9gBeOUSUtOdRwbJCT2Vlhgwi/1XjU+aChA/uxlTgkQ+Z51HuN7ChvLYt6aEGtX/5n6lHi3V0LZqy3xxMf6EaGe4PIXuP4WAymUza46XRCOL06w0mWrE24Q1iRtWZ7n+3w57Ythh1Qy0UoafbMnCIN/zvHRQRveTE2xwUnhzYvbe7ojhBZtArf81Uwd85tnPHehejDQMdA0Th53WWp932A3EgO5BIiDZHruGVlzJjvyJ7gYJnDVB3Ne5iMJQiXo5F5q3Q4Mz/Eim4nGovU1IpIXORCi/8oVKgw3JGK2VUmkiNMDx5my8F7hUkwADOZ8aDxxZljKbW/YbHpS1gBKAPy2CFPUEkjygWQnK540PMZLkE0gK4JH5I6KzRjt5Oh0a+J9sbQ8bXp/PGbW77fG3SRMTiSR+SjS9RX37BGbOo0GW1LjxTc0VavHth/FhvScVKlgeJJBPKMPg8dU4yFJY5vUmqkr0WntTL2Z5VqOwSdrERtKB7UGSgjF5bZTNBJi2wxWW5paIyPXD2b3YrErZwzqt+xlooUtz
+ unYIp6Cy
+ dxGa3JjnPkHEd/5/yJu0pDPwrBzjCIFqqhdW1BffU3be9ifyNb0TQrfqUYAKVU/SzIbVe+UPovuc3shPxBFfTF4cpM4YgNUv6/SVmPQyJo3Zq7v0Zpd0x9m6IlZHu0gTjpSWquefHaKAFOLvj4ZWWcXDDEgYIEUrLDEJ6GlX+yX8UHTAfIORD/TQbzH9s1qzbQxPQwUsc2aV8vDfnNp3Kda4eju9VR6Lszf1/lXnXB39gNmA8jp9M74wo/MNN038DcKdTosAlPcQX7LedxFYLNeLTYB7lUEIvrnwUeheKaqs+4izwlhkm/3Hb4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,86 +96,124 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Nhat Pham <nphamcs@gmail.com>
 
-An xswap entry occupies no physical swap space: its data lives in zswap
-until a backend is taken.  It was nevertheless charged against
-memcg->swap at allocation, as if it did.
+An xswap entry is recorded but not charged at allocation.  Charge
+memcg->swap when the entry takes a physical backend slot, in
+xswap_backend_alloc(), and uncharge it when the backend is released.
 
-Record the memcg at allocation but do not charge.  The charge is taken
-when the entry acquires physical backing, and released with it.
-
-memory.swap.current therefore counts only on-disk swap usage, not
-zswap-backed xswap entries.  A cgroup can reclaim its anon memory with
-memory.swap.max set to 0, provided zswap is allowed for it.
+memory.swap.current therefore still counts the pages that do reach the
+disk, and memory.swap.max is still enforced on them.
 
 Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- mm/swapfile.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ mm/swapfile.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 56 insertions(+), 2 deletions(-)
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 8e52ace44de8..0310b474f08d 100644
+index 0310b474f08d..86ab4a86857a 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -2147,7 +2147,12 @@ int folio_alloc_swap(struct folio *folio)
- 	 * The owner is taken here, then charged and recorded.
- 	 */
- 	if (mem_cgroup_swap_get(folio, &swap_id)) {
--		if (unlikely(mem_cgroup_swap_charge(swap_id, size))) {
-+		/*
-+		 * An xswap entry has no physical swap yet, so only record the
-+		 * owner here.  Its backing is charged when one is taken.
-+		 */
-+		if (!(__swap_entry_to_info(folio->swap)->flags & SWP_XSWAP) &&
-+		    unlikely(mem_cgroup_swap_charge(swap_id, size))) {
- 			mem_cgroup_swap_put(swap_id, size);
- 			swap_cache_del_folio(folio);
- 			goto failed;
-@@ -2298,10 +2303,15 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
- 	return ERR_PTR(-EIO);
+@@ -115,6 +115,11 @@ static void xswap_clear_cache_only(struct swap_cluster_info *ci,
+ 				   unsigned int start, unsigned int nr);
+ static int xswap_reclaim_backing(struct swap_info_struct *si,
+ 				 unsigned long offset, swp_entry_t xentry);
++static unsigned short xswap_entry_id(struct swap_cluster_info *ci,
++				     unsigned long off);
++static void xswap_backend_uncharge(swp_entry_t entry, unsigned int nr);
++static void __xswap_backend_unlink(swp_entry_t entry, swp_entry_t phys,
++				   unsigned int order);
+ 
+ static int xswap_create(int prio);
+ static int xswap_destroy(int type);
+@@ -3315,6 +3320,8 @@ static void xswap_release_slot_backend(struct swap_info_struct *si,
+ 	psi = swap_type_to_info(swp_type(phys));
+ 	if (psi)
+ 		xswap_free_phys_slot(psi, entry, phys);
++
++	xswap_backend_uncharge(entry, 1);
  }
  
--/* Uncharge a batch of freed swap slots and drop their owner refs. */
--static void memcg_swap_free(unsigned short id, unsigned int nr)
-+/*
-+ * An xswap entry was not charged at allocation, so there is nothing to
-+ * uncharge here and only the owner refs go.  Its backing, if any, was
-+ * uncharged when it was released.
-+ */
-+static void memcg_swap_free(unsigned short id, unsigned int nr, bool is_xswap)
- {
--	mem_cgroup_swap_uncharge(id, nr);
-+	if (!is_xswap)
+ /*
+@@ -4651,6 +4658,7 @@ swp_entry_t xswap_backend_alloc(swp_entry_t entry, unsigned int order,
+ 	struct swap_cluster_info *ci;
+ 	unsigned long nr = 1UL << order;
+ 	unsigned long off = swp_offset(entry);
++	unsigned short id = 0;
+ 	swp_entry_t phys;
+ 	unsigned int i;
+ 
+@@ -4671,6 +4679,21 @@ swp_entry_t xswap_backend_alloc(swp_entry_t entry, unsigned int order,
+ 	if (!phys.val)
+ 		return phys;
+ 
++	/*
++	 * The xswap entry was only recorded at allocation, so charge the
++	 * physical swap here.  On failure, drop the physical run without
++	 * uncharging it.
++	 */
++	ci = swap_cluster_lock(si, off);
++	if (ci) {
++		id = xswap_entry_id(ci, off);
++		swap_cluster_unlock(ci);
++	}
++	if (mem_cgroup_swap_charge(id, nr)) {
++		__xswap_backend_unlink(entry, phys, order);
++		return (swp_entry_t){};
++	}
++
+ 	/* One IO reads a large folio, so its range has to be contiguous. */
+ 	VM_WARN_ON_ONCE(swp_offset(phys) % nr);
+ 	VM_WARN_ON_ONCE(off % SWAPFILE_CLUSTER + nr > SWAPFILE_CLUSTER);
+@@ -4688,8 +4711,32 @@ swp_entry_t xswap_backend_alloc(swp_entry_t entry, unsigned int order,
+ 	return phys;
+ }
+ 
+-/* Undo xswap_backend_alloc(): the zswap copy is still in place. */
+-void xswap_backend_free(swp_entry_t entry, swp_entry_t phys, unsigned int order)
++/* The ID that owns an xswap entry, or 0 if it has no owner recorded. */
++static unsigned short xswap_entry_id(struct swap_cluster_info *ci,
++				     unsigned long off)
++{
++	return __swap_cgroup_get(ci, off % SWAPFILE_CLUSTER);
++}
++
++static void xswap_backend_uncharge(swp_entry_t entry, unsigned int nr)
++{
++	struct swap_info_struct *si = __swap_entry_to_info(entry);
++	struct swap_cluster_info *ci;
++	unsigned long off = swp_offset(entry);
++	unsigned short id = 0;
++
++	ci = swap_cluster_lock(si, off);
++	if (ci) {
++		id = xswap_entry_id(ci, off);
++		swap_cluster_unlock(ci);
++	}
++	if (id)
 +		mem_cgroup_swap_uncharge(id, nr);
- 	mem_cgroup_swap_put(id, nr);
++}
++
++/* Drop the physical run and the reverse mapping, without any charging. */
++static void __xswap_backend_unlink(swp_entry_t entry, swp_entry_t phys,
++				   unsigned int order)
+ {
+ 	struct swap_info_struct *si = __swap_entry_to_info(entry);
+ 	struct swap_info_struct *psi = swap_type_to_info(swp_type(phys));
+@@ -4718,6 +4765,13 @@ void xswap_backend_free(swp_entry_t entry, swp_entry_t phys, unsigned int order)
+ 	}
  }
  
-@@ -2318,6 +2328,7 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
- 	unsigned int ci_off = ci_start, ci_end = ci_start + nr_pages;
- 	unsigned long ci_head = cluster_offset(si, ci);
- 	unsigned int batch_off = ci_off;
-+	bool is_xswap = si->flags & SWP_XSWAP;
- 
- 	VM_WARN_ON(ci->count < nr_pages);
- 
-@@ -2347,14 +2358,14 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
- 		id_cur = __swap_cgroup_clear(ci, ci_off, 1);
- 		if (batch_id != id_cur) {
- 			if (batch_id)
--				memcg_swap_free(batch_id, ci_off - batch_off);
-+				memcg_swap_free(batch_id, ci_off - batch_off, is_xswap);
- 			batch_id = id_cur;
- 			batch_off = ci_off;
- 		}
- 	} while (++ci_off < ci_end);
- 
- 	if (batch_id)
--		memcg_swap_free(batch_id, ci_off - batch_off);
-+		memcg_swap_free(batch_id, ci_off - batch_off, is_xswap);
- 
- 	swap_range_free(si, ci_head + ci_start, nr_pages);
- 	swap_cluster_assert_empty(ci, ci_start, nr_pages, false);
++/* Undo xswap_backend_alloc(): the zswap copy is still in place. */
++void xswap_backend_free(swp_entry_t entry, swp_entry_t phys, unsigned int order)
++{
++	__xswap_backend_unlink(entry, phys, order);
++	xswap_backend_uncharge(entry, 1UL << order);
++}
++
+ static int xswap_map_clusters(struct swap_info_struct *si,
+ 			      unsigned long start_idx, unsigned long nr)
+ {
 -- 
 2.54.0
 
