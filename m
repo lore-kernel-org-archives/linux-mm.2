@@ -4,123 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DBFDCA5FED
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 17:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B127CA5FED
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 17:05:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B15B6B0092; Sat,  3 Oct 2026 13:02:35 -0400 (EDT)
+	id 7EBDE6B008A; Sat,  3 Oct 2026 13:05:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 462E36B0093; Sat,  3 Oct 2026 13:02:35 -0400 (EDT)
+	id 7C3056B008C; Sat,  3 Oct 2026 13:05:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 377C86B0095; Sat,  3 Oct 2026 13:02:35 -0400 (EDT)
+	id 6D9E36B0093; Sat,  3 Oct 2026 13:05:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A8686B0092
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 13:02:35 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 942321C3DCE
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:02:34 +0000 (UTC)
-X-FDA: 85281933828.16.61EFECD
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6E0A81C0009
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:02:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=canonical.com header.s=20251003 header.b=oDxinKuH;
-	dmarc=pass (policy=reject) header.from=canonical.com;
-	spf=pass (imf18.hostedemail.com: domain of chris.bainbridge@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=chris.bainbridge@canonical.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791046952;
-	b=j87nvKNP0D2Zua/KcwRz4krox8lKlqpdci4hIX/T/ywvKCdVM7VaMm8PrBKA8o2Sbx3yXP
-	HWsI4azBWLLwENZju1mQyLxbGJmVuy5otJUgS2IftFPxOnX26qQUMPpdIypP6/Ah5F384+
-	3/i6NXiSw/EjaJ7wX7z9EymC4F6GtY8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=canonical.com header.s=20251003 header.b=oDxinKuH;
-	dmarc=pass (policy=reject) header.from=canonical.com;
-	spf=pass (imf18.hostedemail.com: domain of chris.bainbridge@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=chris.bainbridge@canonical.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 146E06B008A
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 13:05:24 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 95CC9809A6
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:05:23 +0000 (UTC)
+X-FDA: 85281940926.15.53246A7
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8199040003
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:05:21 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=truenas.com header.s=google header.b=gFfA07td;
+	dmarc=pass (policy=quarantine) header.from=truenas.com;
+	spf=pass (imf12.hostedemail.com: domain of ameer.hamza@truenas.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=ameer.hamza@truenas.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791046952;
+	s=arc-20220608; t=1791047121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=kLoV5W1FHSMCnQXJR94hBtpM1Iv97CLc5Gk+9EMFE3c=;
-	b=6k4sZ6p//vs+toTi2szWbpia5n59P7cZm/EQfvKeyh2/GBeopiijT8CQIl47mBCFoyp2oz
-	2wPAyFS5rzhA4COT29MtiGLRGtk+I3wX5Edx4xrQTR26L0Cse0lZowt6YfPjKY9PDTTAaM
-	hORWlThO+vU+Q1CSsRvZBdFAbPMd5YI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 80F493F193
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:02:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1791046950;
-	bh=kLoV5W1FHSMCnQXJR94hBtpM1Iv97CLc5Gk+9EMFE3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type;
-	b=oDxinKuHjSwh31QA9ULq54Z0Ka3ICwf6Mm+tdVnkM2VCtxgbrTphDAaxTtj3bHKvh
-	 78EgtWchmjblnTJmdW79O/x1M9TQ3JIbaHQH0vWmn4/rs8QPf19aJqM0y9HWHeLCFG
-	 FCxDNLRmZFMyy+WcJMGl5Ex528DbAArYEXbX3TTAp3GuTRH6jQq6zlPomY8wFBKo7/
-	 m4YNaGXO93hcs2fw4DtuZLeuPeCbAsYYUjAc/ILCXgnb+kGlkBOluIna7w2H+I3rEp
-	 QVWSEhhGFiXJlsUZtU3ot3pjM0eWFL6rsAS6/vbSbqYTbXVwUhBtpBqdh+tCO8VYTM
-	 ciIqkrOECxtRbx2ylA9aQfiM24gdlrdjS9YkmVOAO7h1GwHTPEssGD1TLBCTL7OVJR
-	 YO9R1Fm08M3lNhY78i/ajFG3yAv+q7OyG1222rlbJ9XBa8I7LnSgZyWsf6KlHeAZVX
-	 MiL5VN7es0oakI1vvnA3RKdzjCjC/Q7VS96sAMqomj6RUzs+SCWUYT1gbmr3cQj/Rp
-	 OpgmeZOeIThCglW9H9qOTtacdLCct0I1HwkSFwB3e05sJ8EG0j3pq6LpKQRMGJwC5W
-	 5oRfiii9TvMy47pN5PsZqMLXpOIGnQFRJyVdMlBdVsUSKqnQ5uIL2o+kC/slooAlKF
-	 Qa/d0vr/A+83MXyjwjwRYyrM=
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a01ba12198so6656905e9.1
-        for <linux-mm@kvack.org>; Sat, 03 Oct 2026 10:02:30 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=V9/myqvD+Wu7dUPpez/fB+sxDbuYQxQUAR18f1smsBQ=;
+	b=AiNu3t/TrnV4y+54ZIx81E5K8h8e0GU/SMos3MltNmfAAz+xS8PDDODSuH2Z5CVxASRryA
+	OFmnfC1+jwim4kh7L4sRe/VQXofRlRVf31su1z7gmvFihCEAX8puOUFKEz1+MKSgmJ6pAa
+	QgzpsXC21OFhbwb9lYMXYhk8KoE1sfE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=truenas.com header.s=google header.b=gFfA07td;
+	dmarc=pass (policy=quarantine) header.from=truenas.com;
+	spf=pass (imf12.hostedemail.com: domain of ameer.hamza@truenas.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=ameer.hamza@truenas.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791047121;
+	b=VGDjkLDURj5FtkIetch+FyUUqBKon7bqXylvrdLEHaL+biQfkGb98nR3AWCE9p0VE38IdT
+	eBjDlcGWBgTEUmYEenS7Y1B5vyFEFQ4akgK7xfizjRJHOqysDVQLdmsSgOjDcQMarbz8ra
+	+BKOLIrLqbgLCLM32A/gFwaZCTPXY9s=
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912d8239so6025505e9.0
+        for <linux-mm@kvack.org>; Sat, 03 Oct 2026 10:05:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=truenas.com; s=google; t=1791047120; x=1791651920; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=V9/myqvD+Wu7dUPpez/fB+sxDbuYQxQUAR18f1smsBQ=;
+        b=gFfA07tduZ57iDj8o+1N8mVpvSCZCDHI2EcI8EvAzvKssGmbXbCbgclIMnKnWAC2LK
+         zhzDTrMc5YCzejJHRKYHiW2SdYtFpGZNZ4aOD/sY/WshA3JJfl4KUliRjfzYx3wAYuuK
+         0Kvt3jB53GgZYmGbWh7zWkcVDHxBBALvEb24gShn90iiAYslG3ua4NbS4evgpEHYBC3O
+         9nakVg/rEo1sB7js6jQ95HFZ5HcWGaMkdf37LyQyB4YXLTVEbEXxT1Z2/vlkDTANgPY4
+         bngfVlrWjec2fIIP/1rwoX2QBLR1XKHSlGazV0vfi0/H/jASer0+3i451+2vGwhXFQlZ
+         L/fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791046950; x=1791651750;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kLoV5W1FHSMCnQXJR94hBtpM1Iv97CLc5Gk+9EMFE3c=;
-        b=jVEAS+XSx8u3XI8hKIN0IWkh32JhuaUgzw5SeUe3q94fqre5kzzFef12/GdogpIs0y
-         +qmVfwIlnkEioSJ6D+rOgI+V3bp1S/zRf5sNq898CmdmwmKHB3bQqUCOVzilWirNXgr8
-         AXzeqZ4OWB036FTEmmYSrLSM9TjwyybD7wU8gdvpACSzJSR/XDFEOCU7m920QGVGQapW
-         IMS9he9cION8POmQvaTvWAofwFjFOqrL9uuWZZL1EfBzHN5LTXWSwzTmaHT2GBxbgHkU
-         2U9+ccHxpTRKBUHPNolzLBDFE4WW+6hGuV3Ak0zQ9xNsXjcg+AkzUkV7EMKOUpU3Y8j7
-         q2Qw==
-X-Forwarded-Encrypted: i=1; AKwUvBxBKC4xNU4bZa/+Lq0hi2ehiT6YM43vFbg3HMexdv++ElGm/JbDegjSGDnuyxpyv5gGoitgcHZkQg==@kvack.org
-X-Gm-Message-State: AFuF++ktuDwrYwyBHOvMRSrry30vOOoYQPwgKzsa5I57PMALSvcuT5Pi
-	X1KV/q86IHcHZ1POTp+B/lurDlgO3h6s8NKIvvyFEF0qFAsDgw0Gdj5rIZ+AzrAGFuOB+fC69RP
-	EXP3Gwo2g6JUfFj9BB3hYE/puXD6C1hM6KgAjg3lFWUrDl3kRaOe3ZE7AT4FysjfrD6ZF
-X-Gm-Gg: AYBFou3EXwKztdQFGF/nJiZ/6uK09DA8Xjj+iGnt+vY4ZBMa6+M6g+rLeigxikR5bsZ
-	bQ07/hEWx8sIYh4NTmLFhTdOo5JUEvMBuaV1MYovS356M/QPjdR4Ar/lRGJdp18yxIlOsXyU7iY
-	XLfcb1bn9drq3egueipsb2AoP0tXfCLrBoDNz8PS7Rl79dwptbg2EuglxRyY4IzQUtXdaeYNLPy
-	OwXS3JewqqudgHzt38RRIABCdEs1TU79wiIaQI4DlmyDmo8KHf8OdcmhnBD/EQwOmFREhrGHh1b
-	w5ceVcc/ReHEP1VLuzVMA15m2fTYyMDI2mMALjpVYKiay+4uJBq6PF9ZHreZWZppiIBO9uxvc0U
-	AVFvNWfk=
-X-Received: by 2002:a05:600c:3e19:b0:49b:8f5e:51fb with SMTP id 5b1f17b1804b1-4a027534b98mr106170585e9.3.1791046950097;
-        Sat, 03 Oct 2026 10:02:30 -0700 (PDT)
-X-Received: by 2002:a05:600c:3e19:b0:49b:8f5e:51fb with SMTP id 5b1f17b1804b1-4a027534b98mr106170055e9.3.1791046949625;
-        Sat, 03 Oct 2026 10:02:29 -0700 (PDT)
-Received: from px13 ([2a06:5902:822:4600:184c:5422:d333:cf3f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a02752aeb3sm192763715e9.0.2026.10.03.10.02.28
+        d=1e100.net; s=20260707; t=1791047120; x=1791651920;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=V9/myqvD+Wu7dUPpez/fB+sxDbuYQxQUAR18f1smsBQ=;
+        b=TryCMdf3YkcpxuPsONdyOEn29V8mXlIu0Fz1HyqalXd78uIQWQZo+czaeZUKUL50fs
+         7Ti9+DhQMU1giVU1ZOUDDDidjW94ddplynwfRrPdF+i7SFrC0BNGiZigdyx41IPNDEpy
+         koV5Tuu2DT/C2dsfCBdYYh1qdUmwEZdTOdi0+jLdtwzqffQ57O5RvpSwuAOklwDJmogo
+         mcpB9iedBUuXm7kwbkfOIj/8B3jAePI+HdcMEiofYHyHV4er7b3f3qnAVWUzRJJaqF6y
+         F6tEsmecybdYMeYTLTe0m5/WgIHMo862F0f00+M7EPIXYSWO/tXQTQyO1IkaU1PaVV1v
+         OQeg==
+X-Forwarded-Encrypted: i=1; AKwUvByJN/R3NGL7y10XCrlWP0CERrE3NzQRD7Fx7axsvO8ue73PHd8nnBea+Mh1IHiHTMNZ5wNLBAGlmg==@kvack.org
+X-Gm-Message-State: AFuF++lXDgDdIdGeMzxwyL//cISlgAIovb+lN1ste5SVQLZORIKHT1m7
+	gIFzOSiAlUXHJLr6/mwqL69XX3JwlLoL7+nbEiuQ/DIDtG+B+SeQrmO0Tk/aksCqb85t0X0MUpU
+	t8DQBpUgz
+X-Gm-Gg: AYBFou3wLaAPqBjR1R74fpkz5+sINAn1nQbfBAFTmkqWxJUb04PC9MtQ5V/jFdoDEHc
+	W/4i5/YROr0u3DviGbIMQLo9+gBLy8QAlfeB3eIHFMAnzg9vjLmetLQ0kuQzE/FczqPlDTXtUvT
+	WKpEWJJ5ao05IMLPWvSkqck7KIbdaM/UDNE8HiewYrXp/FxsmxG6UlgL5V4GupnBV0qFuDQT+2R
+	nDIqmDQnqUqe62iOmlEOVPeTHmPMTGyuvJhT2u532mRBfkLZs0sjMTy/PsZ+uQCQJIBO97ySXV8
+	4RcUZjFVX34AlxpH6wvzxC5Vn421O9kSVuMOY+iIYIiYUilHEnNDWTRI555HYMWW1PWBRPExrVt
+	g6AB8SSNZLxpR1ldoHJAiT9JjzhBVp9Y2Q167URPA3GWNTmM8ulsLJz4KKd/Ch7Zz1NQO4Hovsw
+	j+VV4Sl6CTO27NcypZabu/o3mnYJ57PNjRUDrWFPhWsZOvb9wlzA==
+X-Received: by 2002:a05:600c:c16f:b0:49f:ed8c:6cad with SMTP id 5b1f17b1804b1-4a027594557mr93542555e9.19.1791047119916;
+        Sat, 03 Oct 2026 10:05:19 -0700 (PDT)
+Received: from hamza-PC ([2400:adc1:158:c700::2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0e1afbc44sm177013365e9.4.2026.10.03.10.05.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 10:02:29 -0700 (PDT)
-Date: Sat, 3 Oct 2026 18:02:27 +0100
-From: Chris Bainbridge <chris.bainbridge@canonical.com>
-To: Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Jason Miu <jasonmiu@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>, Ran Xiaokai <ran.xiaokai@zte.com.cn>, 
-	regressions@lists.linux.dev, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org
-Subject: [BUG] KHO handover hangs when memmap reserves PMEM
-Message-ID: <asE0R_f2r2TL-3Sy@px13>
+        Sat, 03 Oct 2026 10:05:19 -0700 (PDT)
+Date: Sat, 3 Oct 2026 22:05:11 +0500
+From: Ameer Hamza <ameer.hamza@truenas.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: ljs@kernel.org, rppt@kernel.org, peterz@infradead.org, 
+	akpm@linux-foundation.org, mingo@redhat.com, acme@kernel.org, namhyung@kernel.org, 
+	linux-mm@kvack.org, linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	regressions@lists.linux.dev, stable@vger.kernel.org, 4ncienth@gmail.com, sashal@kernel.org, 
+	alexander.motin@truenas.com, caleb.stjohn@truenas.com
+Subject: Re: [REGRESSION] secretmem: SIGBUS on memfd_secret() pages while
+ perf record runs
+Message-ID: <asE0ctESLO306qYs@hamza-PC>
+References: <20261002175651.811343-1-ameer.hamza@truenas.com>
+ <3c5b9d1e-5ed4-4bd1-b532-39f2d4612965@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam06
-X-Stat-Signature: druo3yqgcz3hzq64dsafsi8rhjztfiia
+In-Reply-To: <3c5b9d1e-5ed4-4bd1-b532-39f2d4612965@kernel.org>
+X-Stat-Signature: 86hbk97kabkymy6ko54d4au19yw1yxzh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6E0A81C0009
-X-HE-Tag: 1791046952-811906
-X-HE-Meta: U2FsdGVkX1+rWzP9nqZRbkzeo1g1GK2csRrU06YGqLD0Zi6qdpqp6X1hdcYFTclNUVD53hUyAgEJLl2Id7fQaoies46ha4isqutIy1vKtFCVvwLY9YtkRicionlwdw9nJoDgMLNxMX6rutWGHmHUP4mitF0ya1KaLhkr3eE4emIJgt6bHM2SPtbpp9tRvrWyJv16f8jQ2Vs7QUGpitf9FioRwqL735+hMIwxYFfa1NobH32Es8o955LCWNUUIu4LZakzyNJX+w+hraGFRpUHqSwDhaE9bGkj5bUU9cS0ueUfE7Y0l2v1pcqZV75PF/hDRBziY1FXBgdK9J13K9mj/VKj93Unq18ppfOyYfkrONRUIgLJ/oO+qJNlPPKR58xsEIY7urKP+O2Y87P0CNGdbM4YtkawPKfBvULA/hHcqDLUT+2id729akkjUphJpp1zhVMg+5lMiZ/N5DibhrZmZbHh5cc2L7EOglmlrqVi4jG+/hdTWQ/PtKtKBkqNq1ZAUXjsr126sXLru8LCFNT5ecfPNYQ+dOMDOaNF23XZH/pYVms0X8rHWhgUZ1SeOoWfEm+vriKR+22l8VWTkK7ctjF9uMQjwbh18krtkQE4Dt0i0cawa2r2lT0M/d8cB7V/c31WDTaV2NPu7plTaVZYSBnOkSkOBEpC99Ue1E4QUJtQGttXmkClGptW8ZgaqhrX4W68wxZMllmKWaF4+PhR05jb3HLJExT4y9Rb25tzczX2RRVv6ISyli7Dl0XhHszI/rtUXLinBUJ7FOamXSzoYHp1vDlbYHAPa8xJz1HPavBlR60G3JRoWYxUXSgo646THkcuRgJznRjVSATtjsIhRLS5d0qG1PaCPJsvnlcehxXDpdgiN/05EGa7WPhMNfZhtDa/WQeEuQDK9HC0ag6BHSuStSMahkbHnvvWzC49LXR6rAUyotZ47lFkD/7fzx2NnFseQpI1MNvXx8xA4o0
- tKftKgbs
- pyGdD9fNKSSCLX3brl5VxHy5165Fm5rHCdxm9W/+t51XIxKRS4p+oQ7gy6hZ4M3tBzuM5qF1SoocVxWIqLah5QtTES1tQPZIyoQQjYZCzCr+46mDe2/PhLNEmvyqO1VqbPoJYkz5Io3Hsbx+XWUJyTb5uBaH3Semdp1ZF+RhKrDc6p/gL8SpwAKltHlzDBtejKI/72CLmIKj1eU8fFC30cDFAFlgigEGfYXvqgWGgi1dPmfThlE+a2kUkeeTs9pdUCNB77kT1HofF8Cb0sVKMBUURlD3Ln+swuFcusCVQ0vKOyLMJA3al76eQpX2qJbB9UuEhU9AI5Tbc41nMM5cqM+VbSS0tlbWzJIGf5WqQn4q8NWYSLo1tUsI/mxyLDSKQy3oKStN0nYIt2mU7MItadHAFsUoED8HSFoJX
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8199040003
+X-HE-Tag: 1791047121-614476
+X-HE-Meta: U2FsdGVkX1+u1g+Phm+8543fyJ2Wv5upyjiZgv74BDi6s1EaboservHr6KNy4Kwx5YK1kTpKlj3kmisrfAkRgX00uUitiRh4H6aT50mo0CRaZCMdkYOsGgicA1uF6MqZyHUwrQFLdxolo5XD0iNIYPIwLT2yZc1ABKXfKbOZ7f7rSqM4fhGmIUV2NkiweldV/Zeze6K4L8RBXGmTU9naLEp0A/gQVgdOyVGhnSXLwxFWS6eZKv8C+Rh4/lkSb1Mk+5k4vOLxHcHPrPnVzjwqn9jBkW1Pj23SGiNuSAKufVvyMYYVsX0PSMjB4zGH8T+9DZMmZBGDQH1sVzmjIWdbXFxt+dAUNuDt1lxZ8kEYJdYoWyI0PVQXM80b/4xRT6JQ83XcNsuejlC3gq0DhEcLKNcxHXqsMRaP83lA5ODxM9qar6l6K+YYHps1Del0s8lQ1MGHD+Ha9PkETSZH/JFVRbqvFlcHpJ6DmYJo5tUesLSyLoKdQQQ7VH0EjVeA2ADaqvRGnMHq5Bb2Kq9f5sp9eYCByPuP0Z+f43vVH74QbMBs71hL+dYELplaLoYBamazmZZaPRq+ZWG89rWB5rk0szrwK96ouGZ9BIMc+bhA6j7TdKFGts2Kb8rKy4KywM3PvRnUKe+lq6QhCvb1J+ePD2NqYTr5kojExuw9xJKEFn0j/zpkGi/ptUx4BUuEZA2Ed1fEI3pxEMSelQ+FtwiPVik8mCJbdpO4YmcIgwVAJhRRsqrlorYXTV/qbNBYpBbmyuKXIBMJ98iO9UjfGRNF9QDldMGU91+t2qXAKdPoX6l96zWC4sLPvJ9Ppy/crW1FPOl2au9ilTLFJ9ZEpSbP2d5/jkBYfFdIZsjykq77uyG5QxNmXUFK2rFt29FuB7LC5Ya8RC67Genk42pZ8PyAelTyqiWWwbihhAGic5HzBo/LuoVJTSpNmYyXGaoF/UbKanwtatLdrUf91eMKDx+
+ cu5jKAGe
+ wgPuslQUMzN05w3+/JXdBRukhNbgLWSoiW2GglwdOxmofgadfjipWb3whlAwTRFD7O4otg2b6JeGqrKJB0EXRb6/6ZqrKLUVE9nmtoVxe9AaRVuR8xr5CL7fmNS2UX0BFGLsDdelIkRw9jOBJ0ZJOFLo4cS8e055slc6jfgFaJZBJH45tqvvmb98Xy88K/ng5VMlWoF9iQh6jSTcjbHZCjumpyeaF+Z2hDTp0rJ4P6A6iJWtDa4ltZIzcIuYZ1Htyw9ZwGa+p74W9cY+mvR6o1Rv7sSIK9DEWa4WmT//YFu6pgqwWsDQCJ5Nkf7d+gaqEVK+zpRrcsMElj1AN0PeZwJ0p+3KqPUmNfy3zMrG3CUVhga8C8ROgbptbusIS1nzwNXvk66xgp+8yhHTMWDKqmfjudnI8fidylVO+neRTIKoDBXvq2QTUnz5/5QFnskzIIh03
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,29 +124,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Sat, Oct 03, 2026 at 04:14:49PM +0200, David Hildenbrand (Arm) wrote:
+> May I know whether this problem was found by
+> 
+> (a) A real workload
+> 
+> (b) A test case
+> 
+> (c) Complains by some tooling
 
-I am reporting a regression in KHO handover.
+(a). A root userspace process that keeps secrets in memfd_secret()
+failed while perf record ran on the same machine. I reduced it to the
+snippet in the report.
 
-In the most recent Ubuntu 26.10 beta mini-ISO releases (2026-09-18 onwards),
-the first kernel reserves RAM for the downloaded ISO with a memmap directive
-such as memmap=<size>!4G, then kexecs a second kernel. On affected kernels, the
-first kernel reaches "kexec_core: Starting new kernel", but the second kernel
-produces no further output and QEMU spins at 100% CPU. On unaffected kernels,
-the second kernel starts and finds /dev/pmem0 with the expected "Persistent
-Memory (legacy)" range in /proc/iomem.
-
-A source bisect identified 3f2ad90060f6 ("kho: adopt radix tree for preserved
-memory tracking") as the first bad commit; reverting it at the bisected
-revision restored the handover. The regression appears related to KHO metadata
-being accessed after the receiving kernel's memmap directive changes how the
-metadata's physical range is mapped.
-
-#regzbot introduced: 3f2ad90060f6
-
-I have an AI-generated candidate fix that changes 22 files. I have not attached
-or published it: although the AI did extensive verification on both x64 and
-arm64, I cannot review or explain the complete change, so I am not submitting
-it as a fix. If one of you thinks an unreviewed candidate would be useful for
-further analysis, please let me know.
+Thanks,
+Ameer Hamza
 
