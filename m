@@ -4,80 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A4ECCA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 14:15:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B245FCA5FEC
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 14:17:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFEC36B008A; Sat,  3 Oct 2026 10:15:04 -0400 (EDT)
+	id 80CB06B0092; Sat,  3 Oct 2026 10:17:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAF056B008C; Sat,  3 Oct 2026 10:15:04 -0400 (EDT)
+	id 7E4B16B0093; Sat,  3 Oct 2026 10:17:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9E5D6B0092; Sat,  3 Oct 2026 10:15:04 -0400 (EDT)
+	id 6D33F6B0095; Sat,  3 Oct 2026 10:17:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F7F06B008A
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 10:15:04 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 007C3A096D
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 14:15:03 +0000 (UTC)
-X-FDA: 85281511728.25.ABB0D3C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FA286B0092
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 10:17:57 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C88A71A09B8
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 14:17:56 +0000 (UTC)
+X-FDA: 85281518952.08.7F8BD7A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 21B584000C
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 14:15:01 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SNRktYnE;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 01A17A0008
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 14:17:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CI2bAzS7;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791036902;
+	s=arc-20220608; t=1791037075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L3O+SY14NmcYs4JOqo1ht8ryDCyOse2Feg9y7x3ofFA=;
-	b=cayasfDLBWRE/h/g9bl5IaYZdtgfzjVA+mzZ3ALv9JWT3JDkqZXQadr0JpRnlFFkDzG8GC
-	5Do7egkbdYRIOPIkDhIe8iOE5jg9CT96WS67xkeHmIuSrYKd8AaIq7pKPadMzGtzUEFRR3
-	+Oqfg8GQkWfZgWTuUviZtKH204vw5k4=
+	bh=n8AIQwl2OrZDgj7oT0ladgcZH3iXGu99gQT2AXUqZ54=;
+	b=gIa/JF9NAON6neWDfIdeO17FwtiAGshLNk9GPazi3u1Ef0aSnVTaZ6lCKz5jGec5td5Qna
+	/Dd4ICppp0MGhUkd75ToiReLumnw+rHmKzJO7QAarLt5xEvderj8bVO30MfOPKejw9OLEb
+	bkh5Nx5mPU6UW6Fl+qOxLHRXBnRFux0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791036902;
-	b=iy6XmhroQpG8xOfwR3L4NcewlgUCYD+o8Zg5jK2RhT1JSumMb11h/CHMh7bxt/vGoPfvKQ
-	zhym+I1TLxGaMMHCUgcHS15LHlBPt3uGvxs5qsEAvcY3bCXCAQPep+o5c1y1ni5ss1dzwS
-	8he0MDMthOKkwMb+DyU0ffEMEi9miAI=
+	t=1791037075;
+	b=rcOHS5IPS+srFFnTU+QA5VT1UAWYd68dPsZ3ufmkw7uVS/ZoYD/nww+cMFwvK/TFJTpXhr
+	2jF9zDm8MBn4imqi+3Tbe1eDja67HUxrsweixjNq0O7VmfQmL1celbKStYJkP1TO/2eXIQ
+	7JdWgwz9ARhWxl10XvHPYH6/lThGYnc=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SNRktYnE;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CI2bAzS7;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05491438A2;
-	Sat,  3 Oct 2026 14:15:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BE61F0089B;
-	Sat,  3 Oct 2026 14:14:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2DAFC444F7;
+	Sat,  3 Oct 2026 14:17:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800A31F0089B;
+	Sat,  3 Oct 2026 14:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791036900;
-	bh=L3O+SY14NmcYs4JOqo1ht8ryDCyOse2Feg9y7x3ofFA=;
+	s=k20260515; t=1791037074;
+	bh=n8AIQwl2OrZDgj7oT0ladgcZH3iXGu99gQT2AXUqZ54=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SNRktYnEK7R9VzzxgyiWbfu//bLlEPx/3iTGJPYJdLhai16FG6aTFMGU7JaT84h4M
-	 BZEiUB1axFm6wSUaqikzT6RE1ZoaRJeioaFzRzmxOJRsIJlbJw0kxd+cc4GgPEiLRQ
-	 ow4txwe8rn5oRcUGBeG620aug3LlerZYFAaHdf8pbsuss0xkr6v2qqbCHbeIOslQpG
-	 b2+sCRTcAHTYIaiKX1n/ZSzg0I3Is3olC9np5K1rB2CFpQPyrr7gJlAEG+6v2h+m83
-	 6zId4Q7f2KOeGRM+tXszpsKBfd/MDgXM/XrYQCVCtnJEGCzXCNX09K1Cy1vIQh6UE8
-	 mWCea77kqo/uw==
-Message-ID: <3c5b9d1e-5ed4-4bd1-b532-39f2d4612965@kernel.org>
-Date: Sat, 3 Oct 2026 16:14:49 +0200
+	b=CI2bAzS7VGFvm/jMj/IP+6khSVm+FAzXr3svn6kl94i9lyrxO8UFNipR/leP3ec1h
+	 zBldVpw5UekTF0+yEwuyKmALPgrduSQ0AZEmmrQ7p51JWZOJT1Re6DCejhkJ4t4VrS
+	 XtiV6Fa1AJFyvhgduN7x3zLcqYqKTyS7AKVNePXA60nUiYAx/+g4iADsSSFR0Wfq16
+	 sWDBEWP2lyoH9DLNt/pLlT1JlNxWS22+iA7mu7ZfUDTr6izhaQlg0J8eTEJQyAjG6a
+	 YYAJqn1A3RH93XkdRXYgfbK48r66vot9LOqmpj0vkpNrOCu756QsBl8D8SyHTeTjrn
+	 0lYrzWcP0Tejw==
+Message-ID: <f6d1d42d-a234-4dba-9891-058b96d67ba6@kernel.org>
+Date: Sat, 3 Oct 2026 16:17:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] secretmem: SIGBUS on memfd_secret() pages while perf
- record runs
-To: Ameer Hamza <ameer.hamza@truenas.com>, ljs@kernel.org, rppt@kernel.org,
- peterz@infradead.org
-Cc: akpm@linux-foundation.org, mingo@redhat.com, acme@kernel.org,
- namhyung@kernel.org, linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
- linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
- stable@vger.kernel.org, 4ncienth@gmail.com, sashal@kernel.org,
- alexander.motin@truenas.com, caleb.stjohn@truenas.com
-References: <20261002175651.811343-1-ameer.hamza@truenas.com>
+Subject: Re: [PATCH v2 1/2] MAINTAINERS: cover all hugetlb headers under
+ HUGETLB SUBSYSTEM
+To: Enze Li <lienze@kylinos.cn>, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, sj@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, enze.li@gmx.com,
+ Joe Perches <joe@perches.com>
+References: <20261003060029.2152489-1-lienze@kylinos.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261002175651.811343-1-ameer.hamza@truenas.com>
+In-Reply-To: <20261003060029.2152489-1-lienze@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 9hcp9jgncwhs8ai5ksisfkpemodk61z9
+X-Stat-Signature: hwaaqn7gmkubkzceybcnisnqpptpm88g
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 21B584000C
-X-HE-Tag: 1791036901-860437
-X-HE-Meta: U2FsdGVkX1/MGObhRePyVNANHV4tdXSsm/ODPXgVq/OTAReuC4E7zqsk5aSeb5WKDjyo9SdC09fSphIBXJbeWAgWrHFR4OCnl20ALS68x2c1dm/5u53mtTi3t5We4sVHGXl3Z7gbTqRISecUe1Bt1hh/3O0dxEQZfJ+674tdMUB2Mxqo4M8UiO72+DZGa9HMXs7n5Oyllw2gXswjjiUDvaNbU5ktt/MyqF1eXVm/N9JhjNkrrauQzIzen0xYjZiHB2ejr2LDOa35PjeBi4tB3h1ChCh9E3vdyKst7FQNNOfTxD1LhbAzDOFjept4F1FACuzg0vY3+VettA8fRE+wqmBmk+RG5v0m+iFbv4i7mj2XTBXgivxzzN9M9W3pdblZ2vVTT2+Hiqr8RJ/gA30I3MW6kX4WER8j1v5a9jWQOLFH/TNBsM3EWTKsrEicR0Vb5McYe2CBzszh0/hz2+woXUgh+mGt+4+QKeG0ui054rt/++JOeSMQt/nSGozTytCvuFM1NzX8yZumZIHAn3W8fImYhxSVaUBJ6KqJNilv6Edra9nrhtAnDS4fgUDrPf2H2b/Llsg7sIkv3yqnHNW86/cmHFUH5EVI33skSC4BcyT1hCAiejIhFR8etjDkGlqVx4rVA1rpLYCiBmloDJcvL41gDsY0GDTU1f7SHP0E/8mhQyAI8QGEyRwuagLg4gGsfMohXDmWYEddRCT2HAyvY21nCNm30jUNDdoNpLoN2jl48pwsvneerBoUHGR63AfK0NOZb3R74vZm4USihuTmywoQvS+xrYn05lGwFOHsiBJzojjxl05sO6siOMNM92N7hG+iIXrBBIAornK67YQkqx51UgPFm7+o45u3/oB77ENsuw5vRIlSxPes5H2EqZZXQYQNCuF0NBsc1pudncdGiBv5saYH26Rxrm0QjEIY7zKMdUz2RTa8fg6aM6qTl/pCPEOXlTXUuAl+aWI2Dpd
- QxmMqN8G
- jLcqVDJ0KGrGNaCQGdnKKaPZS1E+bA6Kwi3iMgieCj93akXSGt1oad0GGP8gjkzVPaSb7Px32v89T7jcKfF/EZEzoiThXrv1EPsCUpppx+Xx68a/WJXO/m+4+NxrDUtdhy/5ItQCzVEiRlWUHscpC+EYhadRlhQLxz9TghvN+BemPBmYBrUGb3hm2ucs7Zoihoq6yzyh4FLYLNb1r0kbB6JjEQ5RkLznP5TIvz+lnVuvQpVJ2Z/r1KCTMCzP5SXZ8JnPXOH/nlYtK0531uX8LazxDrAbEO3XQQfQUUKQib30HvTqm5nVc9O+xhZI5BQE685eav05qqUijKF8DTPNySXiE1VhW+ZHrda98FKL7lqqMMOQ=
+X-Rspamd-Queue-Id: 01A17A0008
+X-HE-Tag: 1791037074-938445
+X-HE-Meta: U2FsdGVkX19qcNdjXyIoX9e9PBG0YhDLPwyhcordXC6VHA9FglHG/NJCDvyGD2d/8/E0jDP7zqbDJH15jNwGhfV3KUfOYI2QaMPZ4dRHHcc5m2WiD9oL7aWcarIxiA+OK207yrED0xdc2Sln1Hnr/J+HFn/YpH2+q0s9dJ6goGwnJkMvzF/+SmyLQzsBorHq6mJXJVhCZ0UCY1rYdnRcm40t9bN0JSiPaPbXwmtlquNdeHq0z0NLmX9cm7PisRml0F4OQD1PDH7N566ISaFiWJrATh/lEvAJDmwx3dG0qir4PuSfLmo+OvvXpYk68iQ7D2Jm/Ck5YbOdMiRbnWG8qGBfK0DWLuFE08R2WhL6zEgFfHJLrU4Yf9K7UTSGkcO5PQkxM6keOF6FxMsZZk7IGzC/1KOEsDNmPMW6mQABK7vPXorjcJ366MXC6Ltf0+C1BnEn3h7l4K/X21NsjzzjUur1IsrMb+q3PAFYVF9/Cvi7M3iBP+X4DFHuAJ1NfkD78Y8ZmuaFkHHv/rD+GXRXJQteL8sGWtP9wqWLfLSqTJDeD6smRRQwy9MWzUz0DBXHU3KPsLrYItkBcpJbh0B6C8P9Vp19XXRe7P+KMsinjitNGtXC/uMaPvjfkaLl0q1eYYedkxAuHc9NpZtFl4CXhRwYz7VS3dtNntPrNveiIy2lI7pdNt+9qck1mNOTkSEB2fvVX7Uu2vdBQDpEL+sIX5FEO2Lfr7XYdcB9eoJkJHwb2R/XzEPTtWLIvdYsdIMwoRnapXG3ImLgficar/v1Mh2VPM5M+JgqmgiG7RqRA3d9QCotNs3x/2Q9G0CTY+7wDW/M0m/FP/46FFAyoNGkP/9YRme/+e8oJBDtHc9sOVnyLWxUK2RFqOxiBln8uV/CKGznFG7OgDgDr+rEKyx9eOdKG2NCmiDcOPKWeNm1XU81W4WZgfSfA1MAviZ+buwuK/8wokBrsaay66u2WWy
+ PnVstsgq
+ uwrAJSYyXeH7sVg8GUq2T4gyjC459C4Iluom4tGDIG5s3b5zYH3OhPoRqd8b7rqFyRaO9wIPXP9Q2egGiBJQW72wzhf/zhVNh0PHRUJF8PzhAQUukhz7pWOM2KioFxdrUVKq1uK1DE7c/sccEM66UJOBincT5FTlm6WgRrQ6x4YQQ9wh8qc5CWbi4QB19Q3rteeewUVu3c9sM7uR12GNBSy2stj+vNFl4GXIfFY1hWwIVAwd4l0kpvrzfVwsAr0IS4BMiBx2EPu8etBn5mFT/xDHMmXixdGDqaTyMPWko+dNCEcM2Ed5ViIp5RfWiUthPT2VIcYpL82Sz9zA0FZX0YnR9Wg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,33 +139,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/2/26 19:56, Ameer Hamza wrote:
-> Hi,
+On 10/3/26 08:00, Enze Li wrote:
+> The HUGETLB SUBSYSTEM F: entries list include/linux/hugetlb.h
+> explicitly, but other hugetlb headers are not covered, so
+> get_maintainer.pl does not attribute them to the hugetlb maintainers.
 > 
+> Enumerating headers by hand is also fragile: any header not listed (such
+> as hugetlb_cgroup.h) falls outside the subsystem.  Joe Perches suggested
+> using a glob F: entry, which covers all current and future hugetlb
+> headers in one line and avoids the gap.
+> 
+> Suggested-by: Joe Perches <joe@perches.com>
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
+> ---
+> Changes in v2:
+> - Adopt the glob pattern "F: include/linux/hugetlb*" as suggested by
+>   Joe Perches.
+> - Drop the Acked-by: tags from Muchun Song and David Hildenbrand, since
+>   the patch content changed.
+> 
+>  MAINTAINERS | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index fc95062c7e38..5c38da7090db 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -12097,7 +12097,7 @@ F:	Documentation/admin-guide/mm/hugetlbpage.rst
+>  F:	Documentation/mm/hugetlbfs_reserv.rst
+>  F:	Documentation/mm/vmemmap_dedup.rst
+>  F:	fs/hugetlbfs/
+> -F:	include/linux/hugetlb.h
+> +F:	include/linux/hugetlb*
+>  F:	include/linux/vmemmap-optimization.h
+>  F:	include/trace/events/hugetlbfs.h
+>  F:	mm/hugetlb.c
+> 
+> base-commit: 763ad0211c7b587344f03bc4d1299810aeb736f4
 
-Hi!
-
-> Since commit 97d34aa65c29 ("mm/secretmem: properly account locked
-> pages"), in v7.3-rc2 and the 6.18.52 and 7.2.5 backports, touching a
-> memfd_secret() page for the first time fails with SIGBUS while the
-> same user is running perf record, and read() into such a page fails
-> with EFAULT. This happens for root as well as for an unprivileged
-> user running its own perf record. It reproduces on v7.3-rc4 and
-> 6.18.52, and the same test passes without the recording or with the
-> commit reverted.
-
-Thanks for the report!
-
-May I know whether this problem was found by
-
-(a) A real workload
-
-(b) A test case
-
-(c) Complains by some tooling
-
-I am asking, because so far I was under the assumption that secretmem isn't
-heavily used in the wild.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
