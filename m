@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AC89CA5FE4
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 21:23:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B765CA5FE4
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 21:23:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 116796B00A1; Sat,  3 Oct 2026 17:23:07 -0400 (EDT)
+	id 02B686B00A2; Sat,  3 Oct 2026 17:23:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EDE26B00A2; Sat,  3 Oct 2026 17:23:07 -0400 (EDT)
+	id 003596B00A3; Sat,  3 Oct 2026 17:23:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED0416B00A3; Sat,  3 Oct 2026 17:23:06 -0400 (EDT)
+	id E33EE6B00A4; Sat,  3 Oct 2026 17:23:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C19BD6B00A1
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:23:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4FE761609FD
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 21:23:06 +0000 (UTC)
-X-FDA: 85282590372.12.F58F7CB
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 05F03180006
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 21:23:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="Izb3my/y";
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AFE476B00A2
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 17:23:07 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2D4AA40A58
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 21:23:07 +0000 (UTC)
+X-FDA: 85282590414.19.02DD7D6
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7831120002
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 21:23:05 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ASAmvzJx;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3NnLBagYKCH0msj00phpphmf.dpnmjovy-nnlwbdl.psh@flex--lrizzo.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3NnLBagYKCH0msj00phpphmf.dpnmjovy-nnlwbdl.psh@flex--lrizzo.bounces.google.com
+	spf=pass (imf03.hostedemail.com: domain of 3N3LBagYKCH4ntk11qiqqing.eqonkpwz-oomxcem.qti@flex--lrizzo.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3N3LBagYKCH4ntk11qiqqing.eqonkpwz-oomxcem.qti@flex--lrizzo.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791062584;
-	b=ZYJ5wPEsZ0DlEZ4SVIS0TdgqExpeA716y9iYdXXAkbpBlndJk+2P0Kzx1wb8YJ0nV+1fad
-	WVxJMUg//WfW4nMeTwUgCi7U2OFDk0VQqgWz7YC7nCpxaNq4nGw4PwIWa6FcnpuVrSUNis
-	v04HEhWws8wBqL2HdBwWqRW+gHFFcqs=
+	t=1791062585;
+	b=tUNZeaE5i/BI60fb+ai4/H8UZAvmcP+pBnov3z5j2LT5hUkEZWIpMFEWUmNV98XIlwCGuz
+	PwLNQaIUcrgM3bu8kVNGu72jTpCzks3Ao7C507Zt77+Vi4pEd4X6Di/apMOvsC9AYXKGLw
+	A+2D05GzPPli4s/ZKSwj9IYWez5JAlg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="Izb3my/y";
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ASAmvzJx;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3NnLBagYKCH0msj00phpphmf.dpnmjovy-nnlwbdl.psh@flex--lrizzo.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3NnLBagYKCH0msj00phpphmf.dpnmjovy-nnlwbdl.psh@flex--lrizzo.bounces.google.com
+	spf=pass (imf03.hostedemail.com: domain of 3N3LBagYKCH4ntk11qiqqing.eqonkpwz-oomxcem.qti@flex--lrizzo.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3N3LBagYKCH4ntk11qiqqing.eqonkpwz-oomxcem.qti@flex--lrizzo.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791062584;
+	s=arc-20220608; t=1791062585;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Y6eccMU3oNOC6nPRXFDlu2gRIyDfLt0ekbGijFBkOg=;
-	b=dCWMx+EV2D3iA/tCv24V3PAy/gmHtbr3H3NBUrHCCzIpZM6wXSU4Q1rwK0Glpkks96t1I+
-	ne+vn0Ky9eplYGm3wl1C1YZ6yuw5nGqeVsLYlz4AX5VFcuLE9+riAGQ/Jj0/0al/eWir21
-	e3m4P0sHekYRVDlPpg+4Y64L2z5M9pc=
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c2e6affec80so71661566b.2
-        for <linux-mm@kvack.org>; Sat, 03 Oct 2026 14:23:03 -0700 (PDT)
+	bh=A8y+NqNGWEVo5m0sdN+ejiIJNOP7rTpNObbOwi7GoT0=;
+	b=yTMg8f/aeUoeWirh90py/2+ndIxjFnCvdtfdBFxIxGU+pD/oylFE/hTyIZzD48eL5tXp2K
+	88XKcDlQQCRaBg5DWMrANObQ4HG1QaoKYfqI9n67MN0yy3p9BLjflBqQTz3FarjjOib5io
+	Zy+zS1qShozX9iUmix8CbuTQSFV9dys=
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6ae18a3adaeso964745a12.0
+        for <linux-mm@kvack.org>; Sat, 03 Oct 2026 14:23:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791062583; x=1791667383; darn=kvack.org;
+        d=google.com; s=20251104; t=1791062584; x=1791667384; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=9Y6eccMU3oNOC6nPRXFDlu2gRIyDfLt0ekbGijFBkOg=;
-        b=Izb3my/yiuEWHzpHLV83mk77vE3NR5+uZHtWsJPiKTNLH6eRQIYUMT2BIHJlLy7HH9
-         S1WSzKYAZ5ZanIPMDXKprB8z+X2YAQQgYYI7pgAs6cwCfaLvNiN1YkuDsbGT5qp6ZqGq
-         KfmhHoXXQurrd9jBVYK+PMfEncbTCHcrSKHSxL5imNuXaNNXN7THNtMcklAweD1LL+Gg
-         3Zhdy/r253aq0E4YtwE/ryyca36C1+wNT59X8/B4ZaV618UIKMqTUM3mY7eBsRayVACL
-         zT9F2giOzUAhVlc3KkQ/Qy9ZFtw0lEamvfQUAH23Vrx3gnYU3bF7NjhKIqIbw+KmpCaK
-         V9Ow==
+        bh=A8y+NqNGWEVo5m0sdN+ejiIJNOP7rTpNObbOwi7GoT0=;
+        b=ASAmvzJx7bzFrspMI45T6H7Fz6PBNnhddxvQhxwJe+qHiQfTNFBDQhzAXhLSB0fe0d
+         8tCKPgUZvWW2PAo8KuBs61Tbi/Y3H4pAcy19A6Kng9onrRUINMAbJKFFR9G0Nlh50BkK
+         T2VKytJV5dhT87mQKVavWT5Rgi80YykgNwEPlCuceKJX+kM5Y9CuxLr9DBwOkTF9n7CZ
+         bZ5Xs4tyTo8hWNxU7XNUQSkwQK8iLiqtxN5sPU76CE0M5M6Mv9INMc3pEIkL2fbtjTpq
+         FQx0S4aDGP68XOIHA+woQTsxLbWLNRqmOgljcPYrknWzB+1BkZx1FnX+Ls/6DLwchsN7
+         zBtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791062583; x=1791667383;
+        d=1e100.net; s=20260707; t=1791062584; x=1791667384;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=9Y6eccMU3oNOC6nPRXFDlu2gRIyDfLt0ekbGijFBkOg=;
-        b=q/C0l8ZPFryJw/GbSo4PBPWcKeNvuv/BLZJrIqWY+LRW9amvbwufyuPgHKw/8lMoCp
-         uafOl5BVY8jtJtSon0Wz7M/Y/d89HaBT9WJ0BrN78FkcU8/cnaw6Ma9Twce9Nz1ZXkto
-         VF1cJir+tO57mnKgROgnrsGYDykIlDygpjFyEl2zf3hWhZn4y3Ncrgaj1d8xMV2NQTYS
-         /Q5FFZXR9viVlqtKJi7mYTC5MrzslzN0n18fMxXF46PDetC55agyr0EkWkyMyvKXmDwG
-         1JYx/bIyvpHBxpLIfLeTwnSVOjSbDLTOCPUeXdsDqY6PEcc0THRz+XiJrnqsoAdD2dcm
-         eHuQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx7v8iHP4J5/13VlIFgf7aNA+SfIT7czltKkS/Ve9S00sG1u6bX40Gzv4F/3GGJC3yM4jPURisJXA==@kvack.org
-X-Gm-Message-State: AFuF++mKUk1tozrvNEJwwGQPQDseAIetiV9+QEu11y2QcJFTZYj2r4Qs
-	B+IaxqXC9Yz7owDpWOMFsE/Kew7Z9tq/CdX9LLjztkiPXFQkgP08n45U1J+b/LSUd12xhxAK8yz
-	mBY37YQ==
-X-Received: from ejbs7.prod.google.com ([2002:a17:906:607:b0:c2e:1f26:6d02])
- (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:72cf:b0:c2d:cbc9:3529
- with SMTP id a640c23a62f3a-c2e4af393e2mr567647366b.20.1791062582284; Sat, 03
- Oct 2026 14:23:02 -0700 (PDT)
-Date: Sat,  3 Oct 2026 21:22:31 +0000
+        bh=A8y+NqNGWEVo5m0sdN+ejiIJNOP7rTpNObbOwi7GoT0=;
+        b=djtE9QfzX6nqlVrqzLbb9nznawg9Yzwa/cSJ1FpApmH7KN0r3RtY2CJZcNcRwshDyY
+         kz5yjF7TBfiB/t4m9c3ayh5OeRu5OyjdeLklWPAT1vhfRcWytouF9BnRdFY12FXIjOL1
+         EQ5SQm9SjctACro86iSkocfFI/WSb4XZqAnJvl+SHULXnXWf1WeeOqbSvRNdWMZcOoIR
+         pDQnoEMYzhxbhzi3f9xB6PESLwDNMsJgQ0BWBfG/UUMMD2G8W5Yu/C1vMb5fhmwCsdRr
+         q4UYS8CkWOWqlRIMJ+wzKGdKT9TYjK1+vGkOgzHzhNX+5ACF91yO18RKMEcUJwzHYyEe
+         3U6Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzgeP4BApw2bIYBkp8n6UKFe4XDmj0yOc1ipQglB1Xnip0qFz0F3Tcy+cxnKrGeSLmZfGNCpvuRXA==@kvack.org
+X-Gm-Message-State: AFuF++mnmY7qLrt6iozu/AW8XaT19nZftInycYbc8rKd80tVKxG5cAn0
+	uoHVZsbN3dfb4xeQxqQFvwJUn61OOcx2IEmjCrJqJE2iqXn+TBBpMm6MErI+NfNQY1vqBjGf4Kl
+	4RouUMg==
+X-Received: from edse14.prod.google.com ([2002:aa7:d7ce:0:b0:6ae:2c82:36b6])
+ (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:97c7:b0:c2e:22f7:59c5
+ with SMTP id a640c23a62f3a-c2e33ef144dmr845653066b.7.1791062583666; Sat, 03
+ Oct 2026 14:23:03 -0700 (PDT)
+Date: Sat,  3 Oct 2026 21:22:32 +0000
 In-Reply-To: <20261003212241.3432303-1-lrizzo@google.com>
 Mime-Version: 1.0
 References: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261003212241.3432303-13-lrizzo@google.com>
-Subject: [RFC: DMA_PMD 12/22] net/core: Use per-CPU DMA_PMD pools for skb_page_frag_refill()
+Message-ID: <20261003212241.3432303-14-lrizzo@google.com>
+Subject: [RFC: DMA_PMD 13/22] net/core: Use DMA_PMD for page_pool memory
 From: Luigi Rizzo <lrizzo@google.com>
 To: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
 	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
@@ -109,13 +109,13 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafae
 	linux-kernel@vger.kernel.org, Luigi Rizzo <lrizzo@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam06
-X-Stat-Signature: kw1ny4yq8zk6czjpddkco7tpapnhu5i9
+X-Stat-Signature: r4sbrcjz8g6841s3q39qnxg9wtfyknax
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 05F03180006
-X-HE-Tag: 1791062583-434677
-X-HE-Meta: U2FsdGVkX19fIMKPer4K30WdvTE4s5LNUquDllSNnXbsZk6TMQUAvcP3zxa+U7fXRf6fRSiAXBPrpSfPixoxfJeWMEO9izc/EGbJpqHkLsEAQQw5UAzPiG8gUeLUr6QiTCKbrV1O9fkZK6w2DLZErVSOriLBza7AqLR3qkTZIN4HKU3M1wUndVPK+VTHVxYz5z+8V515X2P1QwwRTQi/1Fnk9PA1cQgP+tuq6teThJ9r+seYKUoulczSvLEwY4xOG7i7XmmR77pEHsLRoUw1HDyqJ/Jr252yUy473PsC9sP1vyboNRto+r+nZQFFFVgbygD60xkx9IhXGjMnqWVIzzKB/OgK6jzYuGaNhFwGxpc5V4/RqIlBqtt88Xh8KrUyQgYYp9p6m9jwSwlV18GlMdhU9IOp1OR+csxSyPAwQaXT040u56x7VJT1eylJS/KB9tDGV/Ra7EEC1E848rE53m8qqI21c7VmP62hhkLMs3grLkOqFtYldqWjrcFuFQjew5R1uVTBE8o3b9zBbqGYtVDLBOXnGhKpotvzY4QEDrBz3gjohKf15ibIkw7ZUlutXVqw1rd1M6kwF0U1Vospli0ovyp+OxN3/KLU4bz+5YPoOAbkPRkyJkgDxCOVhdRD63+D6KtlEd2WB5wuAGMULILDGvsiBllRo2dzSVqIyw7hQDjUDCkOTlgzEyZZSLI2lQ3c/iBiQ2u9KJkTJ/wdwKej3cnoeqkevoUPrBJOjpfzcAnbFCxy3LJDwov7iJ1cPx0HPDMup/L3URh+Cp5h0EwEb8Ibn9ExqQvmqirxsmkS5ReFgumYtasL5ASD09eAQfhk/ssalqjfBoEXaTODpLI2tmieDE007kVUKFMUii7I6DsbOa635ec7JqClrSzCuQCb2tyeXx3l1uQIm2vs6JiLvc71kNQj0CChgkusZDkmDfDkpkFjkqVu769v/5+3bZgIpWtspEv4yOzsyS+
- oa9pBt6I
- pVAMRwfPbwLcqzSlDMRtCYKrqQJ82M/OFWMZGl66TcBnIYOVKt9fB3NfFbXZlfAlNLVsHmT5isDS2geo1kFf/HpEb8Ie27JN/9MLEXBIDHkKo/Z8gpf9sZ1ZbwfEKqfK8DYmyYHkBbD5Q5qJ7JBNdCvIeWNkaR+Jd/9i9B3bCIwm5vFp1OSjRrm5jR8SopgDyv0VooFmYY3AV/MI/AFC4GlsheGzLH+4snduumUejQXNLT9Tv9zyVUxC+P97SD/p0rSMtoyCiG6zHSnyj8TWB8vEdeZDk73yB5GeYsChADP3i7DHS+9TGUK2c8nnCbE/a+H3GMVAcz8C8m+0GqtPxiQa8yi1VxlUm1dFB2OehKQtbtz5QFQ5PJ6SPrhwfyWIOB8YB6kr2ycalt56jwcjMfrEF/OCMZdHeoxDxL9zT8ytMH4s9XxFYar5RtV8PFaRD4bp7TSdmbdGtRprnY9xinTHpCGgFPIuNHG7qkkgyzb4RiMVlAXOoM8IKBMI5DsMB5W0/NdOcfCO32+t1zOSVgR+s1OnmdYvYo/ORDZqfWpybtfhrJlf9ZI3nqlQbPyo+rbbJr2uIdwTor+xPoiATnud++S0wuiY2Neve5elzS4Jv0RPq1ugCB6Lsp/EUgtiuwwQUS7CWlyosDpBXPfwY0XQuQeA5zTO6QJhf4y33d6cKA2A=
+X-Rspamd-Queue-Id: 7831120002
+X-HE-Tag: 1791062585-745285
+X-HE-Meta: U2FsdGVkX1/7LCUvruZ20+E/BzOPrIlGaAylgn+STilvb0uUh4uitMcqgN1u2blwF8Ejqy/pdu4kuvbRYugBWrcqc75SlYaf+upbBCW8VIyJtDQC29spdr4vitQ+dmYkbF6rtaE5hRmgQss0rjXd3kHjwZ2zLOI8+Qjft9clvrLfr8fE+ON2vKlqRHYfdw5SE7JvApUyONq2cSRqQjv3G/Vd+5RnxYL8uBLKdy/yBxJPEkMC01OwVD+1pGPrJn6TkjAVnXfgY7gNIxS3hGXgRjS5zHYi9ywn64vc+dT78bOkWsAO0BDQWJ1BD+0YjJAcWEdBN/PTdmGYoyKSM/busdo3VCe5+TJ/zCJ/uEu7yvsle2Ztp5OsHtLiwnmg4ISviSl+e+3ODgk2In+FQ6SlY1zTbcdqPFmb6CmJe5IYgXKVqDMzhckFOP8Fiwpuqe5k3CygeysThU2eS7ISBtn4Q0iPXndnJ5obpjTzVl5XzXcOES/YAeYObMwGuYSaPF+OjnB31mBN7FuPbgszF6puPyw0FaEwV6oyFd6v4N6kux7Za1T2D4DXA43wAd8gkQ6D1Pn/XA2ti96qf5Vh13R5p6khBK8Ox2ksVNFFmctVOlVkkMlBN29YHjZExRUOo/BMusWGsywKQlS59Y870forCvrvRbbb5ipdBLBqHo6fdnX94H9rbEYCKRFFJtJCOV3osFRh8EqRAqr5vf92yStQfwUaE0I5Dzc43oOizK5ZlKQkVdj3J2yJzS23a1UihRrrF9Ltu4A2GRyaRfxeFTNOUXPiuMl8lDY9jx06gGL/sz4CnHcAGM/y8PhAtDwilgOb3Lp8ZAKFjh7xAub7GfhyZaIMuh6vQBAbgipw55EVUiOl7D2bguv3xkopKDfC8vI9R0X5aTdONa06EISBTR9o3E4FW+R3CcCPpmJ4hxQkXqP2ogqWk6y/7dApXuZuNmpPMFFubOCbNTqmR3pxwpy
+ GtPckdrt
+ ogtI9QVNbWwB6r76tn4Sggo2W9r9kC52cHzNDMLRHbj3FphKYEeeVuE/boP+0aIR7SRWXT0JMWupmtklVX5Hm7e+aaYYCfZKqzEDV34lE++/I19GodIqI6uMtNBNsz0QRJjE4c+A7FeY8njW0MwxM4h6BHPAAMN9YNy2goQCAo8SX/xCPzvHTxeR24cIlyb6x7Y63APmZvrZ8XXZqXKO+f9QQQRsSh5JOQZVbwLEhgg9u61BJZglXTkQddgY3gQomkxQrLgF3Le0Q6ab4U62uV9YysN1bXlJdd61Nzw9nrx3A9fe8t7wE18vuUl12dlyeFdI4aHHilfqa6V0DelqQQLEf7dWnJrqTnuRg6JWOpheG23x5h1w8utMWOkfV0Z2YVpesdKNM7oseIvTQ6Jn3M5cAxRLIQYMDDZ7nn15ioO647ynOvYK6xE549pf9qRDIJqqy3w2jmbFzAUg8o84y/TL1iyq/PA+IAtW2q5MIqfKb3unF7GnMjJNnrvT0kyhvv9jO9ObBWZf5jJc3DN7z5IFOIigpj85UyQpmRKijPZtxAtZhslYjmzB/ejOzS8F19l28oGkaDQV9MbTfpTIHd8R3oAEh0ZNAlG02gsr1CvgRI9tqduMDvqf1WVkfGBb+l9tDSMcHU8/IF3B+r6dvc0dquiSckufDw+VL+cvMV4QY2b0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,172 +123,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add sysctl net.core.tx_enable_dma_pmd to back skb_page_frag_refill() with
-per-CPU order-3 (32KB block) and order-0 (4KB block) DMA_PMD page pools.
+When dev->dma_pmd_rxbuf is enabled on the pool device,
+use a per-page_pool DMA_PMD pool for page_pool allocations
+(__page_pool_alloc_netmems_slow() and __page_pool_alloc_page_order()).
 
-When enabled, TX socket buffer page fragment allocations draw fragments
-from DMA_PMD physical pages registered with per-CPU dma_pmd_pool. The
-first allocation maps the entire DMA_PMD page, subsequent allocations
-reuse the cached PMD_SIZE IOVA mapping locklessly without per-packet unmap
-or IOTLB flush.
+When enabled, pages leaving the page_pool cache (e.g. held by socket
+buffers beyond NAPI) return to the DMA_PMD pool on final put_page(),
+retaining their cached IOVA mapping, avoiding per-page 4KB IOMMU
+PTE updates and IOTLB flushes on replenishment. Plain 4KB pages are
+opportunistically replaced in __page_pool_page_can_be_recycled() when
+free pooled blocks are available.
+
+Also skip inserting and erasing DMA_PMD pages in the pool->dma_mapped
+XArray (used for DMA_ATTR_SKIP_CPU_SYNC tracking), as dma_unmap_page_attrs()
+is a no-op for DMA_PMD pages and skipping the XArray avoids xa_lock
+contention on refill and release.
 
 Signed-off-by: Luigi Rizzo <lrizzo@google.com>
 ---
- include/net/sock.h         |  3 ++
- net/core/sock.c            | 86 +++++++++++++++++++++++++++++++++++++-
- net/core/sysctl_net_core.c |  7 ++++
- 3 files changed, 94 insertions(+), 2 deletions(-)
+ include/net/page_pool/types.h |  3 ++
+ net/core/page_pool.c          | 61 ++++++++++++++++++++++++++++-------
+ 2 files changed, 52 insertions(+), 12 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 60ea55dc18854..a06b53e9ff225 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -3092,6 +3092,9 @@ extern __u32 sysctl_rmem_default;
+diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
+index 03da138722f58..62a5c50dda43f 100644
+--- a/include/net/page_pool/types.h
++++ b/include/net/page_pool/types.h
+@@ -34,6 +34,8 @@
+ #define PP_FLAG_ALL		(PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV | \
+ 				 PP_FLAG_SYSTEM_POOL | PP_FLAG_ALLOW_UNREADABLE_NETMEM)
  
- #define SKB_FRAG_PAGE_ORDER	get_order(32768)
- DECLARE_STATIC_KEY_FALSE(net_high_order_alloc_disable_key);
-+DECLARE_STATIC_KEY_FALSE(net_tx_enable_dma_pmd_key);
-+int net_tx_dma_pmd_sysctl(const struct ctl_table *table, int write,
-+			  void *buffer, size_t *lenp, loff_t *ppos);
++struct dma_pmd_pool;
++
+ /* Index limit to stay within PP_DMA_INDEX_BITS for DMA indices */
+ #define PP_DMA_INDEX_LIMIT XA_LIMIT(1, BIT(PP_DMA_INDEX_BITS) - 1)
  
- static inline int sk_get_wmem0(const struct sock *sk, const struct proto *proto)
- {
-diff --git a/net/core/sock.c b/net/core/sock.c
-index e8551df8330ff..1fd338a547ce1 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -115,6 +115,7 @@
- #include <linux/memcontrol.h>
- #include <linux/prefetch.h>
- #include <linux/compat.h>
+@@ -234,6 +236,7 @@ struct page_pool {
+ 
+ 	void *mp_priv;
+ 	const struct memory_provider_ops *mp_ops;
++	struct dma_pmd_pool *dma_pmd_pool;
+ 
+ 	struct xarray dma_mapped;
+ 
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index d7c88c0b67e53..5774247a06291 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -22,6 +22,7 @@
+ #include <linux/page-flags.h>
+ #include <linux/mm.h> /* for put_page() */
+ #include <linux/poison.h>
 +#include <linux/dma-pmd.h>
- #include <linux/mroute.h>
- #include <linux/mroute6.h>
- #include <linux/icmpv6.h>
-@@ -3173,6 +3174,87 @@ static void sk_leave_memory_pressure(struct sock *sk)
+ #include <linux/ethtool.h>
+ #include <linux/netdevice.h>
+ 
+@@ -304,6 +305,10 @@ static int page_pool_init(struct page_pool *pool,
+ 		goto free_ptr_ring;
+ 	}
+ 
++	if (pool->dma_map && pool->p.dev && !pool->mp_ops &&
++	    READ_ONCE(pool->p.dev->dma_pmd_rxbuf))
++		pool->dma_pmd_pool = dma_pmd_pool_create(pool->p.order, 8);
++
+ 	return 0;
+ 
+ free_ptr_ring:
+@@ -318,6 +323,7 @@ static int page_pool_init(struct page_pool *pool,
+ 
+ static void page_pool_uninit(struct page_pool *pool)
+ {
++	pool->dma_pmd_pool = dma_pmd_pool_destroy(pool->dma_pmd_pool);
+ 	ptr_ring_cleanup(&pool->ring, NULL);
+ 	xa_destroy(&pool->dma_mapped);
+ 
+@@ -406,7 +412,9 @@ static noinline netmem_ref page_pool_refill_alloc_cache(struct page_pool *pool)
+ 		if (unlikely(!netmem))
+ 			break;
+ 
+-		if (likely(netmem_is_pref_nid(netmem, pref_nid))) {
++		if (likely(netmem_is_pref_nid(netmem, pref_nid)) ||
++		    (pool->dma_pmd_pool &&
++		     dma_is_pmd_page(page_to_pfn(netmem_to_page(netmem))))) {
+ 			pool->alloc.cache[pool->alloc.count++] = netmem;
+ 		} else {
+ 			/* NUMA mismatch;
+@@ -565,9 +573,20 @@ static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t g
+ 		goto unmap_failed;
+ 	}
+ 
+-	err = page_pool_register_dma_index(pool, netmem, gfp);
+-	if (err)
+-		goto unset_failed;
++	/*
++	 * DMA_PMD mappings are owned by dma_pmd_pool (and torn down on pool or
++	 * IOMMU domain release without pool->p.dev), not unmapped per-page in
++	 * page_pool_scrub(). Leave dma_index == 0 so page_pool_release_dma_index()
++	 * skips dma_unmap_page_attrs() without dereferencing pool->p.dev on
++	 * late returns after device removal.
++	 */
++	if (pool->dma_pmd_pool && dma_is_pmd_dma(pool->p.dev, dma)) {
++		netmem_set_dma_index(netmem, 0);
++	} else {
++		err = page_pool_register_dma_index(pool, netmem, gfp);
++		if (err)
++			goto unset_failed;
++	}
+ 
+ 	page_pool_dma_sync_for_device(pool, netmem, pool->p.max_len);
+ 
+@@ -585,10 +604,13 @@ static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t g
+ static struct page *__page_pool_alloc_page_order(struct page_pool *pool,
+ 						 gfp_t gfp)
+ {
+-	struct page *page;
++	struct page *page = NULL;
+ 
+ 	gfp |= __GFP_COMP;
+-	page = alloc_pages_node(pool->p.nid, gfp, pool->p.order);
++	if (pool->dma_pmd_pool)
++		page = dma_pmd_pool_alloc_node(pool->dma_pmd_pool, gfp, pool->p.nid);
++	if (!page)
++		page = alloc_pages_node(pool->p.nid, gfp, pool->p.order);
+ 	if (unlikely(!page))
+ 		return NULL;
+ 
+@@ -634,8 +656,14 @@ static noinline netmem_ref __page_pool_alloc_netmems_slow(struct page_pool *pool
+ 	/* Mark empty alloc.cache slots "empty" for alloc_pages_bulk */
+ 	memset(&pool->alloc.cache, 0, sizeof(void *) * bulk);
+ 
+-	nr_pages = alloc_pages_bulk_node(gfp, pool->p.nid, bulk,
+-					 (struct page **)pool->alloc.cache);
++	nr_pages = 0;
++	if (pool->dma_pmd_pool)
++		nr_pages = dma_pmd_pool_alloc_bulk_node(pool->dma_pmd_pool, gfp,
++							pool->p.nid, bulk,
++							(struct page **)pool->alloc.cache);
++	if (!nr_pages)
++		nr_pages = alloc_pages_bulk_node(gfp, pool->p.nid, bulk,
++						 (struct page **)pool->alloc.cache);
+ 	if (unlikely(!nr_pages))
+ 		return 0;
+ 
+@@ -825,9 +853,18 @@ static bool page_pool_recycle_in_cache(netmem_ref netmem,
+ 
+ static bool __page_pool_page_can_be_recycled(netmem_ref netmem)
+ {
+-	return netmem_is_net_iov(netmem) ||
+-	       (page_ref_count(netmem_to_page(netmem)) == 1 &&
+-		!page_is_pfmemalloc(netmem_to_page(netmem)));
++	struct page *page;
++
++	if (netmem_is_net_iov(netmem))
++		return true;
++
++	page = netmem_to_page(netmem);
++	if (page_ref_count(page) != 1 || page_is_pfmemalloc(page))
++		return false;
++	if (page->pp->dma_pmd_pool && !dma_is_pmd_page(page_to_pfn(page)) &&
++	    dma_pmd_pool_has_free(page->pp->dma_pmd_pool))
++		return false;
++	return true;
  }
  
- DEFINE_STATIC_KEY_FALSE(net_high_order_alloc_disable_key);
-+DEFINE_STATIC_KEY_FALSE(net_tx_enable_dma_pmd_key);
-+
-+static DEFINE_PER_CPU(struct dma_pmd_pool *, tx_pmd_pool_high);
-+static DEFINE_PER_CPU(struct dma_pmd_pool *, tx_pmd_pool_order0);
-+
-+/*
-+ * Lazily initialize the per-CPU DMA_PMD page pools on the first write to sysctl
-+ * net.core.tx_enable_dma_pmd.
-+ *
-+ * Once initialized, the struct dma_pmd_pool descriptors remain allocated for
-+ * the lifetime of the kernel so that lockless raw_cpu_read() in
-+ * __alloc_pmd() is always safe against concurrent sysctl
-+ * toggles. If pool creation fails partway through, all pools created so far are
-+ * destroyed and per-CPU pointers are reset to NULL.
-+ */
-+static int net_tx_dma_pmd_init(void)
-+{
-+	static DEFINE_MUTEX(mutex);
-+	struct dma_pmd_pool *pool;
-+	static bool initialized;
-+	int cpu;
-+
-+	if (!IS_ENABLED(CONFIG_DMA_PMD))
-+		return -EOPNOTSUPP;
-+
-+	mutex_lock(&mutex);
-+	if (initialized) {
-+		mutex_unlock(&mutex);
-+		return 0;
-+	}
-+
-+	for_each_possible_cpu(cpu) {
-+		if (SKB_FRAG_PAGE_ORDER) {
-+			pool = dma_pmd_pool_create(SKB_FRAG_PAGE_ORDER, 16);
-+			if (!pool)
-+				goto err_cleanup;
-+			per_cpu(tx_pmd_pool_high, cpu) = pool;
-+		}
-+
-+		pool = dma_pmd_pool_create(0, 16);
-+		if (!pool)
-+			goto err_cleanup;
-+		per_cpu(tx_pmd_pool_order0, cpu) = pool;
-+	}
-+
-+	initialized = true;
-+	mutex_unlock(&mutex);
-+	return 0;
-+
-+err_cleanup:
-+	for_each_possible_cpu(cpu) {
-+		per_cpu(tx_pmd_pool_high, cpu) =
-+			dma_pmd_pool_destroy(per_cpu(tx_pmd_pool_high, cpu));
-+		per_cpu(tx_pmd_pool_order0, cpu) =
-+			dma_pmd_pool_destroy(per_cpu(tx_pmd_pool_order0, cpu));
-+	}
-+	mutex_unlock(&mutex);
-+	return -ENOMEM;
-+}
-+
-+int net_tx_dma_pmd_sysctl(const struct ctl_table *table, int write,
-+			  void *buffer, size_t *lenp, loff_t *ppos)
-+{
-+	if (write) {
-+		int ret = net_tx_dma_pmd_init();
-+
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return proc_do_static_key(table, write, buffer, lenp, ppos);
-+}
-+
-+static struct page *__alloc_pmd(gfp_t gfp, unsigned int order)
-+{
-+	if (!static_branch_unlikely(&net_tx_enable_dma_pmd_key))
-+		return alloc_pages(gfp, order);
-+	if (order == SKB_FRAG_PAGE_ORDER)
-+		return dma_pmd_pool_alloc(raw_cpu_read(tx_pmd_pool_high), gfp);
-+	return dma_pmd_pool_alloc(raw_cpu_read(tx_pmd_pool_order0), gfp) ?: alloc_page(gfp);
-+}
- 
- /**
-  * skb_page_frag_refill - check that a page_frag contains enough room
-@@ -3200,7 +3282,7 @@ bool skb_page_frag_refill(unsigned int sz, struct page_frag *pfrag, gfp_t gfp)
- 	if (SKB_FRAG_PAGE_ORDER &&
- 	    !static_branch_unlikely(&net_high_order_alloc_disable_key)) {
- 		/* Avoid direct reclaim but allow kswapd to wake */
--		pfrag->page = alloc_pages((gfp & ~__GFP_DIRECT_RECLAIM) |
-+		pfrag->page = __alloc_pmd((gfp & ~__GFP_DIRECT_RECLAIM) |
- 					  __GFP_COMP | __GFP_NOWARN |
- 					  __GFP_NORETRY,
- 					  SKB_FRAG_PAGE_ORDER);
-@@ -3209,7 +3291,7 @@ bool skb_page_frag_refill(unsigned int sz, struct page_frag *pfrag, gfp_t gfp)
- 			return true;
+ /* If the page refcnt == 1, this will try to recycle the page.
+@@ -1178,7 +1215,7 @@ static void page_pool_scrub(struct page_pool *pool)
+ 			 * if there are no outstanding mapped pages.
+ 			 */
+ 			if (dma_dev_need_sync(pool->p.dev) &&
+-			    !xa_empty(&pool->dma_mapped))
++			    (pool->dma_pmd_pool || !xa_empty(&pool->dma_mapped)))
+ 				synchronize_net();
  		}
- 	}
--	pfrag->page = alloc_page(gfp);
-+	pfrag->page = __alloc_pmd(gfp, 0);
- 	if (likely(pfrag->page)) {
- 		pfrag->size = PAGE_SIZE;
- 		return true;
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index eb35da3556f4a..d9a7d9cb349e0 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -651,6 +651,13 @@ static struct ctl_table net_core_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= proc_do_static_key,
- 	},
-+	{
-+		.procname	= "tx_enable_dma_pmd",
-+		.data		= &net_tx_enable_dma_pmd_key.key,
-+		.maxlen		= sizeof(net_tx_enable_dma_pmd_key),
-+		.mode		= 0644,
-+		.proc_handler	= net_tx_dma_pmd_sysctl,
-+	},
- 	{
- 		.procname	= "gro_normal_batch",
- 		.data		= &net_hotdata.gro_normal_batch,
+ 
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
