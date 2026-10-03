@@ -4,89 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07C5FCA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 15:56:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EB2ECA5FEC
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 16:12:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD15F6B008A; Sat,  3 Oct 2026 11:56:41 -0400 (EDT)
+	id ED90F6B008A; Sat,  3 Oct 2026 12:12:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D82EB6B008C; Sat,  3 Oct 2026 11:56:41 -0400 (EDT)
+	id E8A076B008C; Sat,  3 Oct 2026 12:12:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C99626B0092; Sat,  3 Oct 2026 11:56:41 -0400 (EDT)
+	id D78826B0092; Sat,  3 Oct 2026 12:12:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A40D46B008A
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 11:56:41 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 19631120A51
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 15:56:41 +0000 (UTC)
-X-FDA: 85281767802.21.6C293B1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 87E9520002
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 15:56:39 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UPGAYEhX;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B02CD6B008A
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 12:12:12 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 82E441A09ED
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 16:12:10 +0000 (UTC)
+X-FDA: 85281806820.03.977F19C
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C5CF4100006
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 16:12:06 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	spf=pass (imf14.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791042999;
+	s=arc-20220608; t=1791043927;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NzhxsV7jtoLr70i/Q5PxTj0BUfUeVGbJ6ybWMLKfAzA=;
-	b=W2wy+tZVadSYWoTqb/U0pnyIlNbG0Z0xEu8jhgJQd8grvmikipZ96mY6yR3VmpGSVkWyev
-	uTgBWB8ZgzSPXf8XOk/mdgAUfgaFdDcWJhVlgHr29z/ofsDNP6BNAIkD5N9Qbqk6SCCBfw
-	teddR/1WD4Qyrwr5O7CGIq+swK/CzB4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=OI0+fRFIw3ijgBrChoUFFfvqPlB92sMXLs4JNkIMiTo=;
+	b=8cMvIHwLODtfOtoNjgmDLuJtcmpOp+1OqEytWOzYlg8XQH2jQZ6qeYYa2hozUgLdV5RE3F
+	v3G7p32FpDzm1KUAYTL55vTTXJgiu0ftV/2PUQgOfjwKqTsyZry04HTmNMrIy/cAY5doZJ
+	9eFwE/1CUd98lMoYv3IwI8YKHG6Z/z8=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UPGAYEhX;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791042999;
-	b=PeAzqQAKCBaufYCpPZ4tog3XZBKlu1iX5/G+CP/J/CopQy040nSM1HZqPtWkFFQ91FI5Lt
-	QI2LkVzQUYjMhnmDDhNtYFL0am8pQvUpdwI5XEEalOLAeSkHrkqPr54CBkEDHbRMVsjGh0
-	3tKkItrKOhjgY6gASN6bWuDjaG/C5M8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BF99560D99;
-	Sat,  3 Oct 2026 15:56:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679141F0089D;
-	Sat,  3 Oct 2026 15:56:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791042998;
-	bh=NzhxsV7jtoLr70i/Q5PxTj0BUfUeVGbJ6ybWMLKfAzA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UPGAYEhXKD563KxiLn5ax0iwVPtf7O8U/4Rrb7nteA/xQiyDEM7ymdL3mWaQ4HF4v
-	 qOfW01Y+a4iSnEmajSp0nHa77ZjyUH8XNKCKdf2dw9hYFa2HTBOg61IDwMtyTWcARE
-	 Ep54D2ZuvN89OY7aCj2sH9wCDrdnhPBt2YZOqyq1CxkozpJEX2GC0tKNR5oUrSabhV
-	 Z08QwcxH0Jzk5Yg5lBF40TagpG5a0CDp7iyXTaF7Y+5zYsaDi12VW17ywuDgGaKufs
-	 WrJTYFodEGflFSOWoLnRFCY3cLC0pAzd9dkj9XWX2KMtimdQ0RDHV1njziP5LvrXDo
-	 1xkenDJLThOTA==
-Date: Sat, 3 Oct 2026 16:56:32 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Ameer Hamza <ameer.hamza@truenas.com>
-Cc: rppt@kernel.org, peterz@infradead.org, akpm@linux-foundation.org, 
-	david@kernel.org, mingo@redhat.com, acme@kernel.org, namhyung@kernel.org, 
-	linux-mm@kvack.org, linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org, 4ncienth@gmail.com, sashal@kernel.org, 
-	alexander.motin@truenas.com, caleb.stjohn@truenas.com
-Subject: Re: [REGRESSION] secretmem: SIGBUS on memfd_secret() pages while
- perf record runs
-Message-ID: <asEllR7if-J3wteg@gremlin>
-References: <20261002175651.811343-1-ameer.hamza@truenas.com>
+	t=1791043927;
+	b=mDKZrEr8liH7iNZJNXEEZAfryL7ySvxehWFs4lCJvfD1B7dpn+egD6k5/AHfmGTkbk17tc
+	aIjpYzw4cyPptAWSKNCSk6kRYsgmTfJBtVBagreyhZhu8lMJTBb9AivjIFILtcA2TPCarP
+	IlmEwSnkbPrLBs6Yj9gwwyvlok2g+Ks=
+X-UUID: 2635b57ebf4511f19a56ed5b684f684d-20261004
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_UNTRUSTED, SRC_UNTRUSTED, IP_LOWREP, SRC_LOWREP, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
+	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:c0850011-acab-4d49-82a6-41f594baa385,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.19,REQID:c0850011-acab-4d49-82a6-41f594baa385,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:7db8b62,CLOUDID:48e50d00358a2b9b54db0b4daa3d3f58,BulkI
+	D:26100400115821J6TXFL,BulkQuantity:0,SF:17|19|38|66|78|102|127|850|865|89
+	8,TC:nil,Content:0|15|50|99,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS
+	:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,A
+	RC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 2635b57ebf4511f19a56ed5b684f684d-20261004
+X-User: lienze@kylinos.cn
+Received: from localhost.localdomain [(175.169.70.242)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 366136427; Sun, 04 Oct 2026 00:11:53 +0800
+From: Enze Li <lienze@kylinos.cn>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net
+Cc: linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	enze.li@gmx.com,
+	Enze Li <lienze@kylinos.cn>
+Subject: [PATCH] docs: hugetlbpage.rst: fix typo in per-node attribute description
+Date: Sun,  4 Oct 2026 00:11:25 +0800
+Message-Id: <20261003161125.40485-1-lienze@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261002175651.811343-1-ameer.hamza@truenas.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 87E9520002
-X-Stat-Signature: cze19rqtrkk4qs5nu91qn46n81xez5ax
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1791042999-987841
-X-HE-Meta: U2FsdGVkX1+5KvwSGZ8iJ6ePqOmMBFovewuLmaL4pM0GP/DBWJgHQOa5KovI1T601O0ND5AsyoVuMFDTprt6J+tj5+UYIUeg7lIvvfUh31LGURJ4AarWKUPqrc7Oa03Ccpd6xvdv18/f1K4VjsMkyvJ1aTCTxIDOjGPhZpYqZ6bqUeiXAA9hNUFectJlN9UV1oXFMSXsIsb0RGID8lrb27oyQM63j1gQTseT/Dppse7WiM3AnSqRhDVNrJcEqKD8QHpx2wQealCkiDUj0E36Njzd7FtOv1luUtNlqxULveLMECODFa1XR1GH/xO4JbROryYRS+9Op6xnV4JXPExryTw07vZtqSLcU7qrjPX+jbILh0AIVr5eRrAdqQUQs+OkaNEW2UYB11GyYnUJMchc9cFvh6oZFRwlkOAKYaL9uOfZEcJemIlcXvg4mOWL6Qt7Idxw9mYJS8SAgmQazIDMcNcT0apuVti4OuP4E9mDEuEJNHp93/neovmGkVIrWcSCY2o2L51E0BTjJR0PrPnUMEr22mWPujxSABAj9r8MXpB+lAFnE8wE4/gpxyv5FmU/VJdXuH/zvGHRPM9yiK21+O0/ry+jUu8KJR+cbvhsZZ2Qk3NgPb/Hj932V+gcxXcyFjtFS0yzqBdILel1X+ijgdnlN7xUD4MJk3Tdl3z0V6HgS5OwKh1kR9kDg8gifWqNpKXJU0CXlKRE2sgBHSGUMuj3GZnQcHMBN/Y/Tv5pCHqzbDMRRjW+b9yuc/7v1dwBg/4jEdBSUUdsLVrvHpmQApIx8qCULItE7B3Lg+iZJOo9BYrBXg4wKbEvi/dx4TNcdSUnRyHlNTQ1UVFc0VZuU8LvfOgTxouwKECrXcI+qHGyvCn0iRkZLGRfkELj43bmiwK+k4kUMOyYfsJzO4O9yXGabOg2iuT058fZzyXdTI57rqEON6qerIuQ5HXUZc9MoyqvvorzrdIzOxmyyQC
- LbF5IcDZ
- S35hLc9+ozu6lf+vXNDBLBWD9zrF6UhTW8L5uIAcEJEPVTvRw3dD81BUTHuxPF0ia5/RIKE6IDIBL5/iyvKvN+osN5lfVujAm3pmkAyWDnKkFiRJLhX/rHNUMSkrAEH1nHwUXCMSJBeGvoYeQ/TTygqUuSmUOEk2WLjOX+ezissPueLPIKwctZmid1ScngB33IgiqWysQXCvthVOllk+tGkAEJXHnYnXHBPwST9URpudf30Gh6VeeL5G7djzJMHbRm9DLyu97GGVUF1lMuInqZWudfdQG8j3Yy8/Au+lnh9VpESJxOY7fRk7SMGUMR80LD0wo
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C5CF4100006
+X-Stat-Signature: j3bqy1ih4gynwihyo3yeb3st98owax1t
+X-HE-Tag: 1791043926-410852
+X-HE-Meta: U2FsdGVkX1+g2m8Mhpxn1WojczTQ5C3MKmxchumKtSr5vZl9b1C8nLvIEuRQk4iAvE1Vpi9y8+364VwKGgPVwuiZ7fnrLfTlJFsZalQ5tpwGVmpbjeT33P1JJmHjLu0Uk/OWY1CMsG4DhJQFyaPHXb8x+IqSOM6o2nG0HA/uNooiR477vNikfb7kU8sNZ7y/arYTam1U/A87S35DxtlTgFLt+1c6+dMuoiMHR1B3dW3//lh59++7sBMfXowXw4/oO1bvVqnPpBrUztKvRr8nrPAPuevMFBOYhnreTahKb8SKkCLJyxYWmbBv2vT8TVDGRW4OFPC+SUvFdFHF4+4uQzS+0cbCgDgksxAd/fmbOoD3xrCRey7rQcV0P6+slA/B33Zm3pBBD2KkxIP3AZFrEd+zh5AVfYfodpem8bDNwjzSYiCbNKBkgonv0TY1GRNCrHXNXq5b2M+2hO8nFapReh9aGwR/oVMGoZ4f10+IpCmoYr7dRtoI9oL0IOduGpAhugEKNpQFGFQDlCcuZwVMlqpKQGS4X02LnEp/f08hrmqhV6cNB/+akrtRibybOJlPuxJarbJ8qQpn+VS5rO9qVaQuDZv06/AN30tqrSsYZ3ZdG7M2mm/e1iNf8QN4iIGmZ3m0kAQNQO4rvr8JFqx5c3xC5cRwAsXR5o/nSmkP+3Vy1f3l58ILdUGsq0t4AyjWIogVmwcjQ38fK2pAa76HMv9xj9Awo7BDMTTS7XP87EIVliu7DWEMhL9gyoSZdtd1WMxTkoVECvBwtjdmjY500bWfHjTPJseE50WxCC+ME8nmw9ce+WBkg5pePQoYmlRcIhpDU+8veJPibl5bKdy13owPiCSnk4oxvBI53K8k61fAaQUZIa7wSugcef8m+r2l+FCdsGNBkDv+4DqVXYIDDmfDZx9XWyfNmmPACuYQ/yOKrXfxtr8xyIOTvwjULig5QT/qCzlKxn5ybOWhjbH
+ ytE9I3nD
+ vbee8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,98 +108,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 02, 2026 at 10:56:51PM +0500, Ameer Hamza wrote:
-> Hi,
->
-> Since commit 97d34aa65c29 ("mm/secretmem: properly account locked
-> pages"), in v7.3-rc2 and the 6.18.52 and 7.2.5 backports, touching a
-> memfd_secret() page for the first time fails with SIGBUS while the
-> same user is running perf record, and read() into such a page fails
-> with EFAULT. This happens for root as well as for an unprivileged
-> user running its own perf record. It reproduces on v7.3-rc4 and
-> 6.18.52, and the same test passes without the recording or with the
-> commit reverted.
->
-> The commit charges secretmem pages to the per-user user->locked_vm
-> and checks that counter against RLIMIT_MEMLOCK, with no CAP_IPC_LOCK
-> exemption because the fd can be passed to other processes. perf has
-> charged its ring buffers to the same counter since 2009, up to
-> perf_event_mlock_kb per online CPU, and only what exceeds that
-> allowance is checked against RLIMIT_MEMLOCK. sysctl/kernel.rst
-> describes the allowance as not counted against the mlock limit, yet
-> it sits in the counter that secretmem now enforces. perf record sizes
-> its buffers to the allowance by default, 516 KiB per CPU, so on 16 or
-> more CPUs one recording uses up the default 8 MiB limit on its own,
-> and on fewer CPUs it leaves correspondingly less for secretmem.
->
-> Reproducer, as root on a 16 vCPU x86_64 guest with the default
-> ulimit -l 8192, while "perf record -o /tmp/p.data -- sleep 300" runs
-> in another shell:
->
->   fd = syscall(SYS_memfd_secret, 0);
->   ftruncate(fd, 4096);
->   p = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
->   read(open("/dev/zero", O_RDONLY), p, 4096);   /* EFAULT */
->   p[0] = 1;                                     /* SIGBUS */
->
-> The commit closes a real hole, unbounded pinning of unevictable memory
-> by unprivileged users. The question is whether the perf_event_mlock_kb
-> allowance is meant to count against the RLIMIT_MEMLOCK budget that
-> secretmem and the other subsystems accounting to user->locked_vm
-> enforce, or whether perf should keep it in a counter of its own, which
-> would leave the hole closed and secretmem usable during a recording.
->
-> #regzbot introduced: 97d34aa65c29
->
+The per-node hugepages section writes the free_hugepages and
+surplus_hugepages file names with stray trailing quotes.  Quote the real
+names as inline literals instead.
 
-Hi,
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+---
+ Documentation/admin-guide/mm/hugetlbpage.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Thanks for the report, however this is not a regression in secretmem.
+diff --git a/Documentation/admin-guide/mm/hugetlbpage.rst b/Documentation/admin-guide/mm/hugetlbpage.rst
+index 3cc15d800be1..2075f1f14a42 100644
+--- a/Documentation/admin-guide/mm/hugetlbpage.rst
++++ b/Documentation/admin-guide/mm/hugetlbpage.rst
+@@ -373,9 +373,9 @@ contains the following attribute files::
+ 	free_hugepages
+ 	surplus_hugepages
+ 
+-The free\_' and surplus\_' attribute files are read-only.  They return the number
+-of free and surplus [overcommitted] huge pages, respectively, on the parent
+-node.
++The ``free_hugepages`` and ``surplus_hugepages`` attribute files are read-only.
++They return the number of free and surplus [overcommitted] huge pages,
++respectively, on the parent node.
+ 
+ The ``nr_hugepages`` attribute returns the total number of huge pages on the
+ specified node.  When this attribute is written, the number of persistent huge
 
-The field that is being used for tracking the allowance (user->locked_vm)
-is used by everything-but-perf to track against RLIMIT_MEMLOCK, but perf is
-using it for something else (pinned_vm).
+base-commit: 763ad0211c7b587344f03bc4d1299810aeb736f4
+-- 
+2.25.1
 
-So this is a bug in perf, which should use its own counter for this,
-AFAICT.
-
-Actually it seems perf invented the field (user->locked_vm) to calculate
-memory that actually isn't mlock()'d, but is kernel-allocated and pinned so
-treated 'as if' it were.
-
-It tracks a per-process (rather than per-mm) RLIMIT_MEMLOCK allowance plus
-a 'gift' of extra available pages which exceeds this.
-
-Every other user since is checking against RLIMIT_MEMLOCK (and you'd hit
-the same issues with them too) - io_uring, MSG_ZEROCOPY, AF_XDP, iommufd,
-s390 KVM zCPI and now secretmem.
-
-So this is a long-standing bug it seems.
-
-Other things:
-
-The SIGBUS is unfortunately necessary - since the region is populated on
-fault, it is only then that it can be determined whether the limit is
-violated.
-
-Not being unlimited on CAP_IPC_LOCK is also, unfortunately, necessary to
-resolve the security hole - often privileged processes hand out secretmem
-to other unprivileged processes.
-
-If those processes then didn't apply the limit check, the mitigation can't
-work.
-
-The commit message goes into detail about all this.
-
-The way to address this right now, as I see you've applied yourselves as
-far as I can see (in [0]), is to change the limits to account for this.
-
-I will work on a patch for perf that fixes this specific issue.
-
-Sasha - you can re-queue the fix. I will send out another fix for perf.
-
---
-Cheers, Lorenzo
-
-[0]:https://github.com/truenas/truenas_ros/pull/128
 
