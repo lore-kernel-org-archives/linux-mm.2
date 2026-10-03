@@ -4,94 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3252CA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 05:42:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58BE9CA5FC1
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 06:01:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5092D6B008A; Sat,  3 Oct 2026 01:42:28 -0400 (EDT)
+	id 1D07A6B008A; Sat,  3 Oct 2026 02:01:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B9AB6B008C; Sat,  3 Oct 2026 01:42:28 -0400 (EDT)
+	id 181756B008C; Sat,  3 Oct 2026 02:01:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D0066B0092; Sat,  3 Oct 2026 01:42:28 -0400 (EDT)
+	id 071816B0092; Sat,  3 Oct 2026 02:01:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DB946B008A
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:42:28 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0DEC31403E0
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 05:42:26 +0000 (UTC)
-X-FDA: 85280219892.20.5187108
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 82C3380002
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 05:42:24 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BGcc8t9L;
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D97336B008A
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 02:01:21 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69CDCC090D
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 06:01:21 +0000 (UTC)
+X-FDA: 85280267562.03.EE84BFA
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 403A9140004
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 06:01:17 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	spf=pass (imf09.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791006144;
+	s=arc-20220608; t=1791007279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Lxs32MO/1KaQWUGPpR8gZBNICnnme3zabEKaWBwIZ+Y=;
-	b=ohBlNVQ9akh7JKul7fvbuRMnKDGrRcOo/ePPNTS29Cu4E3Vesghd2kCf81Ftt6UXQJPIuV
-	ixfPJnFHRupJVpasYqLc3dIJhZ+Kni1qkKshf6FxcKX4fuOPv1n7EXq3z1Nui7bGVErS/8
-	dljIjIiQwdSOGtl7CEwHsogvv6dXU1o=
+	 in-reply-to:in-reply-to:references:references;
+	bh=8PbHEv8izSKbYwrwnCZfg9pd6cwtBbIAIkZu3b3fO4k=;
+	b=YziyuxjrlKgVXdrOFzRCAxwvKxl0wFhFOD5+s6VZ/fk1ZPLJHdRel2pFlKGtGsI5FpU/Nj
+	BIoGGLo+XShyNzmAygRMvRrIcE30VGPU2ouKW4rG1D08AIVGLyoWcF6l8wVGmCMKxod0hz
+	NLsKLqk53YnuhTLi0HRBc/5xTo7d5Ds=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BGcc8t9L;
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791006144;
-	b=jgjSSXYWx0ZKOOCH0N9TEZTRptbPRvcxrY0up+7nDexo9MPyJZW1BXVGipqs5HrkiCo0cV
-	2z5ofjmEPpDxB9JP/FDpspaSLaBCzzZSmcCB0L7ciFKhsb4+Us6RPIq/pdUrAzcfA0Gn2M
-	b/8+aQATNnC41W+GSPWnH0x5jMHvk6o=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D1F0860AAF;
-	Sat,  3 Oct 2026 05:42:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB431F0089B;
-	Sat,  3 Oct 2026 05:42:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791006143;
-	bh=Lxs32MO/1KaQWUGPpR8gZBNICnnme3zabEKaWBwIZ+Y=;
-	h=From:To:Cc:Subject:Date;
-	b=BGcc8t9LutZCkZm4brTVAGjgD20mBYs268Ll02tD8yG/XxcwUPrWlKTrbA180hn4r
-	 BPlyC21urqOPvMO8nHC8MKb5ejGX4Oq7tAi+//ClL22VRQskArFVK/rMiZlsByaxIp
-	 s3YOhe3ZAm8uQMb9XaYMl1yWHPnpdeTN1PXS6gAyLn5iWCJafcY0bh8aNErru2QulN
-	 gKc3IoUd/z5xpbmIqpaGSiSgMGHeroyyvTsXSFwB5NXnrRm+vFoXjoL9coQP4ttOb2
-	 gQZlB0B9pm54QqtENseZm9kLHbR8bi97eEDzN1QaHl03eRf/QgjfLPJY20i6XKqEj3
-	 TwkxA/w4lahhg==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu.xie@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	chenridong@xiaomi.com,
-	Yu Zhao <yuzhao@google.com>,
-	Bo Zhang <zhangbo56@xiaomi.com>
-Subject: [RFC PATCH] mm/mglru: Avoid reclaiming kept folios during retrying missed rotated folios
-Date: Sat,  3 Oct 2026 13:42:16 +0800
-Message-Id: <20261003054216.9155-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	t=1791007279;
+	b=vreqifFF+0JaDlJPo5DqpRYFOVWqKbISTL1ATvbNYxeABKxbK3S5Cw3fIp8pnsQDU5Ylq5
+	Mj8zJZMkcgNO/GsleppZJT4P8qugmliJ6imxXAG/ISDzfVGc7k9dqBVaem/harISie1fqI
+	NV9TW2n/WcHY9BOCByFjsi56m/bblAs=
+X-UUID: d518d70cbeef11f19a56ed5b684f684d-20261003
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_LOWREP, SRC_LOWREP
+	SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS
+	DKIM_NOPASS, DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF
+	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:c2f9a782-b875-44b8-8b2f-1d460e9e9de3,IP:10,
+	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:5
+X-CID-INFO: VERSION:1.3.19,REQID:c2f9a782-b875-44b8-8b2f-1d460e9e9de3,IP:10,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:5
+X-CID-META: VersionHash:7db8b62,CLOUDID:ee5ce49d2d2fb665b8389a4051ad5556,BulkI
+	D:261003140113NOZ9QDVA,BulkQuantity:0,SF:17|19|38|66|78|81|82|102|127|136|
+	850|865|898,TC:nil,Content:0|15|50|99,EDM:-3|-100,IP:-2,URL:0,File:nil,RT:
+	nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:
+	0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: d518d70cbeef11f19a56ed5b684f684d-20261003
+X-User: lienze@kylinos.cn
+Received: from localhost.localdomain [(175.169.70.242)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 302574845; Sat, 03 Oct 2026 14:01:10 +0800
+From: Enze Li <lienze@kylinos.cn>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@kernel.org,
+	akpm@linux-foundation.org,
+	sj@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	enze.li@gmx.com,
+	Enze Li <lienze@kylinos.cn>
+Subject: [PATCH v2 2/2] mm/hugetlb_cgroup: add trailing #endif comment for include guard
+Date: Sat,  3 Oct 2026 14:00:29 +0800
+Message-Id: <20261003060029.2152489-2-lienze@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261003060029.2152489-1-lienze@kylinos.cn>
+References: <20261003060029.2152489-1-lienze@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 82C3380002
 X-Rspam-User: 
-X-Stat-Signature: ddbo3r7t98xwscoopxjc79ohwehmhnbf
-X-HE-Tag: 1791006144-337391
-X-HE-Meta: U2FsdGVkX19FjEtm3jjOdY+N3XwR9GGxkNfaH02vs7xNtf1aYWEy/vRODv1JAztyCj5uxagUedcQqTd64XOoP7WEqP6AiLUsIvp0jb6LowEoEcuaYA5JmNKrukJHdgmkkEdRXVTmQnUg6SabtgETFzswaT+D4biLRmb7ngFjr0qB8Pq+16+zAh8nuKnlCm/l/BlzHQoT02fJss9QxXf3pWTqleyHZ8LSph8cLFipB1V5WgI3F0H5tqbVzGUgSv5bBzPPa/pM9hpBfMoprmrRlJmcvGrJtUxsnqpwe0VVDWi0I5g+j3nkz5yypGt3i1aqknh0H2yFDGaydXQszQOtL2U6KaSuxOz7qDE+5I94TdLmZwteytp4A2qfANB0/yZMoEORZcbiku/M/0Yl7stdyY3IifkQEPfhGabP8rNm2flNF1DmKQoOoRQ1S0jnBIou8nNqGJhE2YaUASUwdvqKmukChebsg0BEsRWSDDnZgQZ816WoElIim2G/KeFXyrMtKYVjj7A//Q5hkfiUoRoqMGiSYt41RRn5TxId8wgS1a8Alywg722iVI0gvkE70xoM2UKwx8OYKj5EczQxn79UqsXtNusuRN5u//i+eBaCVlc0C1gm1redfbKE0fcQGhp+iv7Jn6+WeevD81adDM8l7g0P6iGZ2IiaA+Fhawx5WU1Lj9OeGiWgg6vPsxiNk+GyBKogAj+Y6lXGaD5FhKfUs1XuWPaxqCJ4/AYnMkWGOdqOuzLuASkDrcR0VIFMdc2Z9HJcEuwv6Pk3N+AgX/F1ZcuNLYpThDOItHdNb28ncTZCoRE3El34S4fiYjZfsWvAhA8wkTms6FytkBpS2bK2/vlde4XHEGsTwmByP+Z2wuXX+46tIuZBNEBiaxFcdAiVCzH8Z1Mxsz5H1J1xs6IrrmVrLEsOMW+UivZ4cacQaxMtcZwMNjSQe2bvr2TJaPmRaZaJ54E5kW04IeVc6FA
- r4pvFat5
- 4+1GvKRkvJejjlhHYLtCIBJwXRrMbZUg8fg5FTYEy7DaluefyLqsOgoaS56eEI975AdFoJFN4KK8S+q8S+kwgiXZKw2J5x2Z7yrFA/eH4px6Veow82Dri/GT1gHcGoXMlL79stiGtTieIFJDoVo2Aeg6Wf6Ha9vV1EzEpkalbMFdIRGIcEFAUOv4dNIT8Dl/c7GtFi8oGZZQoNhUfLp7Bbao3NSaoEKvV/zOsyFaKeNzBpwlPvdWN+P0d/B2pNOrrWKmh/bO2eu/IkodJYPbxbECOBQ==
+X-Stat-Signature: 6q8tzicpgqch141z1ynxcrqm6owrxa1d
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 403A9140004
+X-HE-Tag: 1791007277-660783
+X-HE-Meta: U2FsdGVkX1/NFUTAAexdVe1cZh96BZv7FEReHZVHnqFeWz/l0YzFE8j3NZUE4jxiAGcL+JvprwU6gWSs6woFWzEveDcpeuJSoUrdZKvE9AS9Tn9vGpQM0+XFiH7tORu2tRoJ2pYSd7o3llnaJ3gy1/QuhbJGQuC4EIv9eW9hzUtplj1DOEQJfPXyVeot71MN/4tG5eSjw7EPiqh4khp90lXzqZsjGYWUR0pO0QqZQMg3bgWzDAgX92JUtCpdrQwaU8AXLkY8oYoIjZzTZBQ/VXFN36JzJdPSyjgfXqSOxxepK2JAI9t+nrd72OOTMWdUSD5j4xuLjX1VSr2gZprJBz3IwNNf3RvQ4L685xg8AFMdpbt4er/7W2QzmCCZkR9lKjp0m46n+zAGPsuANttOoif4bo8zR56kbPBlgLc/d4nK1eqfUD3Z4DIdBTNPOlYONSbKkz+eOLUBf68+Uc/K8qBRFwEFTbxCuZlpLe26C14Gcd7ZcxuySzyTcyNlJBI47ySagbb8YCmrw2jCY0tXRg1UrkEPJF5nsiJ202ihPBONu3PmDkF6BYc+8ENfivw8b45+JtgQkf+Ap/4iqHZHS6inyL3DsyZI3Nxx8r+u3czvGhwJFTX0gsBRcWwBjTd3tdyQsSIupLwU8a2qBCZaLckOccJpYYH20qThXWEdTD2+tLbPntxqpw6yy1kk+vv9bqoJrxrBTx55qW7SQVNkhdz45+fJ2TsOAEzwovCxRq/BtI/bYW5j0Db2XMB/Ux7IbrHVtShhfPks2kSraAa1vBnxh318/chJAB5986zIYvYzn2YMBYsxpoBLWr+wwqHOGBoK2DgsTqUhL9pT4XYeNKSgJyQgGPV6PUh2XkmS86PZbm/d87LOoGn4OFPXwuAORpNy1lBe8UB7TFNSJOjK4vI2kXheDNLGnPzBn4W4mcmU35dTldnyLUicnziqm8gaGxQPZOcLF8malJ6H58h
+ iDFXcPDE
+ Pp8U03voweubXbqZPPeC90FTBy3aYPZNHXGuSna+dwHTjWlY4WJpSni5jyUlnSMQUibRm44i6me33sKxMPaIurVsngShnpqVL/9KNDGaVoIN0+YY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,54 +111,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit 4d5d14a01e2c ("mm/mglru: rework workingset protection"),
-`folio_test_referenced()` was accidentally removed when checking for
-missed rotated folios. As a result, kept folios without an active set
-could be added to the retry list and eventually reclaimed.
+The final #endif that closes the _LINUX_HUGETLB_CGROUP_H include guard
+is left without a comment.  Add the macro name to the comment for
+consistency and easier navigation.
 
-The impact should be very small, as we have the `folio_mapped(folio)`
-check before retrying. Kept folios won't have `try_to_unmap()` called,
-so this is really only applicable to folios that are unmapped by users
-after `folio_referenced()` has been called.
-
-I'm not sure if anyone else has seen any issues with this. Sending an
-RFC to check whether it is worth fixing.
-
-Fixes: 4d5d14a01e2c ("mm/mglru: rework workingset protection")
-Cc: Yu Zhao <yuzhao@google.com>
-Reported-by: Bo Zhang <zhangbo56@xiaomi.com>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: SJ Park <sj@kernel.org>
 ---
- mm/vmscan.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Changes in v2:
+- No code changes.  Carried tags from David Hildenbrand, Muchun Song and
+  SJ Park forward.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 91295070ca33..6a931b576b7d 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -994,8 +994,10 @@ static enum folio_references folio_check_references(struct folio *folio,
- 		return FOLIOREF_KEEP;
+ include/linux/hugetlb_cgroup.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/hugetlb_cgroup.h b/include/linux/hugetlb_cgroup.h
+index 16d72c8c71f6..b4e0958eabf3 100644
+--- a/include/linux/hugetlb_cgroup.h
++++ b/include/linux/hugetlb_cgroup.h
+@@ -268,4 +268,4 @@ static inline void hugetlb_cgroup_migrate(struct folio *old_folio,
+ }
  
- 	if (lru_gen_enabled() && !lru_gen_switching()) {
--		if (!referenced_ptes)
-+		if (!referenced_ptes) {
-+			folio_clear_referenced(folio);
- 			return FOLIOREF_RECLAIM;
-+		}
- 
- 		return lru_gen_set_refs(folio, &vma_flags) ? FOLIOREF_ACTIVATE : FOLIOREF_KEEP;
- 	}
-@@ -5110,7 +5112,8 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 			continue;
- 
- 		/* retry folios that may have missed folio_rotate_reclaimable() */
--		if (!skip_retry && !folio_test_active(folio) && !folio_mapped(folio) &&
-+		if (!skip_retry && !folio_test_active(folio) &&
-+		    !folio_test_referenced(folio) && !folio_mapped(folio) &&
- 		    !folio_test_dirty(folio) && !folio_test_writeback(folio)) {
- 			list_move(&folio->lru, &clean);
- 			continue;
+ #endif  /* CONFIG_CGROUP_HUGETLB */
+-#endif
++#endif /* _LINUX_HUGETLB_CGROUP_H */
 -- 
-2.39.3 (Apple Git-146)
+2.25.1
 
 
