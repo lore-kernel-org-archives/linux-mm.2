@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95DCDCA5FE4
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 23:13:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D742ACA5FE4
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 23:13:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 199E16B0093; Sat,  3 Oct 2026 19:13:27 -0400 (EDT)
+	id 606626B0095; Sat,  3 Oct 2026 19:13:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14ACC6B0095; Sat,  3 Oct 2026 19:13:27 -0400 (EDT)
+	id 58DE16B0096; Sat,  3 Oct 2026 19:13:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E91C26B0096; Sat,  3 Oct 2026 19:13:26 -0400 (EDT)
+	id 3E2896B0098; Sat,  3 Oct 2026 19:13:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C07216B0093
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 19:13:26 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B939120ABE
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1792D6B0095
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 19:13:29 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A7EA41C3E16
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 23:13:28 +0000 (UTC)
+X-FDA: 85282868496.06.2A89969
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id EB264160004
 	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 23:13:26 +0000 (UTC)
-X-FDA: 85282868412.11.6D58EB3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8B18C180004
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 23:13:24 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h06qkKwp;
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GJSJZfuT;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791069207;
+	b=LP9T51gbtfXWizqhZ1Q3EOYAnY5+KWJVGh1lLK8TFzkcGOlruIuALDCuMcfjLEG7/q3jTc
+	DvLzCwCZ1VPKFxC7SCDUKwETGAcsf/EQDdi9l19fa0KwV4BVG26di+zHWwu300uTJzuXcL
+	FwuLiWZBGUYgv8bI1sM5xjn4NtAAdvY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GJSJZfuT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791069204;
+	s=arc-20220608; t=1791069207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eGdC2lf8b/ZOvjCNTArSuVDjf7dxJqfVxE783PPAfaM=;
-	b=Ks3Up63uNuGxjc4A3Se/mX3B2ArnmusJfHiNKB4zIt6DcY+QzArmu1lZZmkWag8tHyZsQM
-	FTI/TtM7ogKBwKtbfoW4kYOZfBXX+7ikUtC46DteLc6IS+14Ef1Fu9s8SIlyX6as4BoKJo
-	Ec21CV7fB+3DlZi6Cl1r3zHhWi/NS+w=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h06qkKwp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of netdev-bot+sashiko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=netdev-bot+sashiko@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791069204;
-	b=wJXrRw6GlCfmZMUw4hpD3PbndTnnLh9q5aN07JInou0YGSj7Lf9f28wGVFM5It+eutgEmB
-	yeSbzLw8/CGOBQR3TrrMRvknGPnfKnhaac9vapM6i9WEzbmKAeAbUrKNQyPTddLj/UytoE
-	BTR33z5ggeXGXMxe4yAjORLES5p4QpU=
+	bh=WEvGVkjJzFQ0aHmQXFQPEujNs9Tyg+JaVUsrq9l1VIM=;
+	b=N1ATxyNOpp9dZObTihPoOfRcdjAhos6G7cdxJt4M/w39PexhW6+CjG1/Ey4GcKyPJyROIY
+	cD5N/UdfLDuHudxBkWykWO2jU4oTiTrhva2wDfF2HEnr8lMx0Y9mRzL2W2BFvILeqfN5bg
+	eFF9sBOQxn6XkjI8fEgzoz+rhjxUym0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 19B0660214;
+	by sea.source.kernel.org (Postfix) with ESMTP id 11B6644591;
+	Sat,  3 Oct 2026 23:13:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6861C1F0089B;
 	Sat,  3 Oct 2026 23:13:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445E21F0089C;
-	Sat,  3 Oct 2026 23:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791069203;
-	bh=eGdC2lf8b/ZOvjCNTArSuVDjf7dxJqfVxE783PPAfaM=;
+	s=k20260515; t=1791069205;
+	bh=WEvGVkjJzFQ0aHmQXFQPEujNs9Tyg+JaVUsrq9l1VIM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=h06qkKwpPs/8cPDBnXeUIyOF63McYZaAPtjHzscLIuPtdiDDJY5g3tGOKKarSP1QV
-	 DBCAk9RaqbcNKueKTR8559a9EI8ja7x3kLUHrHU/nVBmI+j6QnYFVFp0Stk1OSlHO5
-	 jnn/Ul3JQ8c9hBeTodVMgLext99iVLgcfHDyTlp/4iLY0VkbRLoXiNNFMqwecWC028
-	 yfBI7wq0UKa9SUn7M6mTK7RzofyKnhDsOqnrCR5lxo1NB7YJf1xQSTCb3wIHwQYdBF
-	 ycnUmkJGmjISEfsXT+jXdzywid8Ukai0Mp/TbGDqvvecT6f5wwGJBaeybzfpVVGrlu
-	 kwk1BctuyWmsA==
-Subject: Re: [PATCH net-next v5 5/7] mm/slab: Provide kmalloc type fallback
- for bucket allocations
+	b=GJSJZfuTQIRM1fr+0rl5LHjZAJyqd4InMjLwI/zFJvIuv5T37W0Q4zyR8ewpgXlyN
+	 Emd/SeeL1MakfSB7/zU4yzPaVMIWa/m4cDg0F2yOQ1tLwt1IcvAHUr5L7RJV9iDShB
+	 /DLiVokz/HjfEL9i/jB1Ljjuw/mcFKeqshkRKihvTcit8VIEHiwmL2Z3gUxxiPcY01
+	 slSnCIqcilboDr/L36IMdwjN0l9ehq6MUd0varD8JEarJqFX+MDWaKmXX1sfdT9TyB
+	 7eaQhg1mhCod7b1YTiKqCf8WqG+uv+D1OfLWfbBkD6DwHr2SO/Fa/tr816rvQgw9Od
+	 5gBy+sWQDbReQ==
+Subject:
+ Re: [PATCH net-next v5 6/7] mm/slab: Let a bucket set handle __GFP_ACCOUNT
 From: netdev-bot+sashiko@kernel.org
 To: kees@kernel.org
 Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org,
@@ -78,22 +78,22 @@ Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org,
  willemb@google.com, almasrymina@google.com, bjorn@kernel.org,
  jiayuan.chen@linux.dev, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
  netdev@vger.kernel.org
-Date: Sat, 03 Oct 2026 23:13:21 +0000
-Message-ID: <179106920182.434549.1755707422798774394@kernel.org>
-In-Reply-To: <20261002231132.1646573-5-kees@kernel.org>
-References: <20261002231132.1646573-5-kees@kernel.org>
+Date: Sat, 03 Oct 2026 23:13:23 +0000
+Message-ID: <179106920397.434549.7271409150598093746@kernel.org>
+In-Reply-To: <20261002231132.1646573-6-kees@kernel.org>
+References: <20261002231132.1646573-6-kees@kernel.org>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
+X-Rspamd-Server: rspam06
+X-Stat-Signature: rogeohrie7iqyscbbftqsj8bjxk4qn18
 X-Rspam-User: 
-X-Stat-Signature: iciihijwp15eii6m4k6do9peda4you5u
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8B18C180004
-X-HE-Tag: 1791069204-807170
-X-HE-Meta: U2FsdGVkX18X0hFBSDZuQj4QzAXeOnSgQ1gQk4pBTGoxz0/OOD2zI/1V85N/x8j1Sg99XQBkr3jajckI5xmrI4JmKMW+JVjAmwvEYJr7twQopWC8ahMpN8DOmi9wCraCetSbN4BThSWb8K20SMjVwbXh7FtFcUMnJdymkINM6IQC0Hl7dOI8mH1zkLFW1iE/EQ0/0LW5J81Ss4pTl3u+nu9ATK4AdQd/Aop8cMN9bV/LUtSawG9aGICPXk0Jb8MwvApWMOV5ChPbg6VV5Gh4G35ifkPGEBTvvEpeTe6IGQK+JCGZQoWd0tb/5xjtzyM/YcvyDseEvIy9boX6raBS39GSE+m8gpn3NL6vTaNmNG37qrnmL3qHIpQenNbCf20MinjLWkk1BKpqLKSaT8G4db+XTW02UJ4de91iwLlBKNFuqdp2XjtTTDqfG1Dl++GZEc+ETOx1W140UB6RNiUXbK4pozgNLiwkeFe8GepgiIFUVXTyLvThtyN6Dr4onat2I240AQYSC/vCcWO8I65YvTy1ZSHru78OTLIrS9No+LTaInKkF0ykb0+bYONOoa51ixtpSl8/kV3x+Qc0i3H4kXeEePPDNX2v1UtVCiTZjr+SnV+8Ulhl4jmHlXZPk8GzG99KDqtkheRwO6Q8mpG3CiXHqx+4kk3hGRYOJ3sj/BJJ9s//1QPzu5FdD64xXW6a22P9cWyZ4L1fqlnYVMJt2F1eghBncuoDOx3EPNv04zTu5Ovx1mGm5wICL9FVXSv8qQiJjvHJP6ex0q0UbEv/be+oLKGaGyeLp9m2jBm3JSHnp4iHuDYzP14vhwrxTtNXwwHPq1RjHF1v8fqVTmwX63eUw2mzUsmD91nVj44D1YhKcxL4PJo5ISppGuRvf8VSVGDFLrvd/IEwhNF/5xuY5zpNy5E9NjZDhH4B6lYc6BkGvXu0iqUiKnNQP3uVDUxrGO8URvcllLEhEZxE2Bl
- lJCOfq9J
- aBYwK+NGKslQMDhuVXXLdPZ810obWaLkAbAwEjN1D6voe9mAMk8etOYBXoUrqJectKyYxZGii+nXvgH1WSekjd+runH9HccnJGoTdJoUoT1qWd2kt8vaQSfb4fUF/qkxD3mkKZYIarbARn7D7J1MvJ1LqZtjtKI+LWx70lGeW94xz47zO/Bhd+Qj/8TyKVKy9Ad4tSvWlilqbh2EZTcKKp9T/HSY5sozeQngM6OoyncBmcKjMOPhNt9nLJUQV3luYvGVw71mLmm0FNJLlnIJ7njAW0WcvGH5tE0+UAW6l1PtWQnUNNUkn5mtKfU+CfUQpOB2pA7B9sf2xAlu4wqWVqJW2PUVnEzMQKiGWGwB2h6/ArM3VoCT28PHKaVo08fno+1EeZTp5HPE6UvoyIV1rW+zgoormhdQzBi7qamNxUy0iXAYxMcT8riKwRw2sBJnesJ8aj/NVWBx/6hA=
+X-Rspamd-Queue-Id: EB264160004
+X-HE-Tag: 1791069206-498076
+X-HE-Meta: U2FsdGVkX19dxqVwHj7yIyf8h9HVyfzjteMj1kPGm0fy4CDn+zxlJAw0D+pIc4LNNoaKgccCZJoJvWvsZNeXxIfxWpyljarRKdgvwJh7Ke47P6cWjc8XrD0gUSn1SIGaHwGiBmzBnYUmaL2mMAeKlW/6D/9sze1FVY8T28jsnloQjX86GYXTgY/rveWUmg+d/6ortI4gjSxxgHXmZJKkz2F1lrl2BWh6GjKFfYGBBiBmIIh+4M4uQ50mqg4DyyxW6B1WmmV4imQV497aQ/xEbYnu+schYSgqWL/TXUJzzrerQmIsPKkt7L7n6a/yXJH9u/m1knODLRcOaAjYdDppDMniSmJf9OPa79nYolTZ7jNvXBzdNFOy1CasbrMpu6TuyzCtAl6hxFjyUx04LiJbTlTze6O4hCUErMrmVKAQL2TS3IXOYnPhPx2d8KVfq/RJwXyElzyLioEo71piHyTIILgi3O1U20dvQGfdR2LW0FJepaOHSqipw0Bhd8gMdk8dFBQJh+43NL4iy9+M+jyuauSuDnLbZkFQeth5T+UZREKlvm7gosbXPD6Zde5vrAPJaKRc/9Gwu+JSICZBG9hTN4jcWDrhG+FYo72dgaCNMaMJAcErDjO3xQVEF//ahbjrscYTZ9Q/ia9zh+S/A7DBJHmmAzdv5ckN4IrcWc6MWPe8NeR9Gn618swH78PzqqAmP8NKGBaN+IBot98LtAEnqLGwqM1CVW3UWdDCxtANp7MPlF4leGyxXXHtPKRZuiGuPlEZXJx8wEGFs7GcqDsIuVB9A9meBtaG2t1cEPtCwjxQgyBul6Bt6qdRiy1w7c/Z7QYPk7lZrHVDbNFlKjk2SFNyHQHKgtdMjn6azNCGW63j5qcMHvqkE0Um8VPBMca/me8OMCDEtSCEXnIY7fJrBasaAYtb5N5CXf2boyGf2k0Q3hh8j6N5vv4XC1vtbTDuVd5aQ4unC9SZv7wy2hk
+ qnhhecu4
+ PW/xe57fhACIybkjkOYBZFwJpjd2CrbCDPgMkz9u7CaHfmnMS3Qr69yaBpVzPNhN8zVJU+MMqZhfNtJ+1wdgLlJLYYiqOnNl01ZczItaXQ90Vtq2vbXT6Wa1vyS/iRQDTdIg6KtAHRXh0QMyKsMFRsTLC1WP9dkOK3o53hoegkrp/MJKNdncm0YSWXFhYVYirOIa5Qs2/wFsDIS3PaOOCoi3rfP5BiWCj/Fgl1mXIIVVVaqIYgK4CxrParj+OVPAa/VvaQvB/vcpOGi4PEHvrkIOMfBsM70LF6fihkCOeLVn4TwuOmei4reojQ30zSGmmxMcCpN+5wh0/C6E8jrEzk3ehH94ZEjz1s2QJLA9/Yo6Xc5DJb1Xp+ciJ/HGq+3S5rK9yefqh4SdG348nh6y1zCd48hpWlcQfrhFy3GLkUa4wEuVvIvR6BfByBXymoXXWAygVbANwGRmzjWGUwvqOWgwsOqqF6mj6PH6+tZj3K78LBVc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,130 +112,101 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] kmem_buckets_create() takes @ctor, @align,
-  @useroffset/@usersize and @flags (e.g. SLAB_ACCOUNT), and applies them…
+- [Medium] The patch adds a WARN_ONCE() in kmalloc_choose_bucket()
+  (mm/slab.h).
 
 --
 
-mm/slab: Provide kmalloc type fallback for bucket allocations
+mm/slab: Let a bucket set handle __GFP_ACCOUNT
 
-This patch changes kmalloc_slab() so that a bucketed allocation whose
-kmalloc type the bucket set doesn't hold (DMA, reclaimable, accounted,
-and so on) goes to the general kmalloc caches. Before, it was always
-served from the bucket's normal caches. It also adds a KUnit test for
-the fallback and exports mem_cgroup_kmem_disabled() for KUnit.
-
-Link: https://lore.kernel.org/all/04debe19-bbe8-4b5f-9668-753d1f97832d@redhat.com/ [1]
+This patch adds an optional accounted row (KMEM_BUCKET_CGROUP) to a
+kmem_buckets set. The row is selected through the type mask of a new
+kmem_buckets_create_types(), so __GFP_ACCOUNT allocations can stay
+isolated in the set. kmem_buckets_create() becomes an inline wrapper that
+builds only the normal row, and under cgroup.memory=nokmem the accounted
+row aliases the normal one.
 
 > diff --git a/mm/slab.h b/mm/slab.h
-> index 8fd6835e42352..7f1bfee83b92e 100644
+> index 7f1bfee83b92e..2af44e09edda1 100644
 > --- a/mm/slab.h
 > +++ b/mm/slab.h
-> @@ -421,6 +421,26 @@ static inline unsigned int size_index_elem(unsigned int bytes)
->  	return (bytes - 1) / 8;
->  }
+> @@ -435,10 +435,31 @@ kmalloc_choose_bucket(kmem_buckets *bucket, enum kmalloc_cache_type type)
 >  
-> +/*
-> + * Which set of buckets to use for the given kmalloc_cache_type. If not
-> + * handled by the kmem_buckets, fall back to general caches.
-> + */
-> +static inline kmem_buckets *
-> +kmalloc_choose_bucket(kmem_buckets *bucket, enum kmalloc_cache_type type)
-> +{
-> +	enum kmem_bucket_type btype;
+>  	if (type <= KMALLOC_PARTITION_END)
+>  		btype = KMEM_BUCKET_NORMAL;
+> +	else if (IS_ENABLED(CONFIG_MEMCG) && type == KMALLOC_CGROUP)
+> +		btype = KMEM_BUCKET_CGROUP;
+>  	else
+>  		return &kmalloc_caches[type];	/* No set holds a row for it. */
+>  
+> -	return &bucket[btype];
+> +	/*
+> +	 * Either this row was created, and holds a cache everywhere the
+> +	 * general caches hold one, or it was never created and holds nothing.
+> +	 * Test with the KMALLOC_SHIFT_LOW which exists in every configuration.
+> +	 */
+> +	if (likely(bucket[btype][KMALLOC_SHIFT_LOW]))
+> +		return &bucket[btype];
 > +
-> +	if (!bucket)
-> +		return &kmalloc_caches[type];
-> +
-> +	if (type <= KMALLOC_PARTITION_END)
-> +		btype = KMEM_BUCKET_NORMAL;
-> +	else
-> +		return &kmalloc_caches[type];	/* No set holds a row for it. */
+> +	/*
+> +	 * A row this set _could_ have held, but was not created with: the type
+> +	 * mask passed to kmem_buckets_create_types() did not cover what its
+> +	 * callers actually tried to allocate. Report the mismatch but still
+> +	 * fall back to the general caches.
+> +	 *
+> +	 * At present, only __GFP_ACCOUNT can be missing.
+> +	 */
+> +	WARN_ONCE(1,
+> +		  "kmem_buckets: __GFP_ACCOUNT needs BIT(KMEM_BUCKET_CGROUP) in create mask\n");
 
 [Severity: Medium]
+Can a set built with plain kmem_buckets_create() reach this WARN_ONCE()?
 
-If a bucket set is in use and the type is above KMALLOC_PARTITION_END,
-this returns the general kmalloc caches. That happens for GFP_DMA with
-CONFIG_ZONE_DMA, __GFP_RECLAIMABLE, and __GFP_ACCOUNT with CONFIG_MEMCG.
-Do the parameters passed to kmem_buckets_create() still apply in that
-case?
+That wrapper passes only BIT(KMEM_BUCKET_NORMAL), so the
+KMEM_BUCKET_CGROUP row stays zeroed. With CONFIG_MEMCG=y, take this call:
 
-kmem_buckets_create() applies align, flags, useroffset/usersize and ctor
-only to the bucket's own caches:
+    kmem_buckets_alloc(b, size, GFP_KERNEL | __GFP_ACCOUNT);
 
-mm/slab_common.c:kmem_buckets_create() {
-    ...
-			(*b)[aligned_idx] = kmem_cache_create_usercopy(cache_name, size,
-					align ?: kmalloc_caches[KMALLOC_NORMAL][idx]->align,
-					flags, cache_useroffset,
-					cache_usersize, ctor);
-    ...
-}
+kmalloc_type() returns KMALLOC_CGROUP for it, including under
+cgroup.memory=nokmem. kmalloc_choose_bucket() then maps that to
+KMEM_BUCKET_CGROUP, finds bucket[KMEM_BUCKET_CGROUP][KMALLOC_SHIFT_LOW]
+is NULL, and warns.
 
-The general caches have no ctor, and their usercopy window covers the
-whole object:
+Before this patch, that allocation fell back to
+kmalloc_caches[KMALLOC_CGROUP] without a warning, and
+test_kmem_buckets_type_fallback() checked for a "kmalloc-cg-" cache. In
+this patch that check is replaced by a comment saying the fallback warns.
 
-mm/slab_common.c:create_kmalloc_cache() {
-    ...
-	create_boot_cache(s, name, size, flags | SLAB_KMALLOC, 0, size);
-    ...
-}
+The documentation added in this patch still seems to describe the old
+behaviour. The kernel-doc for @type_mask in kmem_buckets_create_types()
+says:
 
-With the fallback, it looks like four things are lost:
+    Allocations of a type that is not covered are served by the
+    general caches instead, so a caller need not know in advance
+    which types its own callers will ask for.
 
-  - the ctor never runs
-  - the requested alignment is not honoured
-  - the hardened usercopy window widens to the whole object
-  - creator flags such as SLAB_ACCOUNT are dropped
+The kernel-doc for kmem_buckets_create() in include/linux/slab.h says:
 
-For the SLAB_ACCOUNT case, ipc/msgutil.c creates msg_msg this way:
+    Covers KMEM_BUCKET_NORMAL only. Allocations needing another kmalloc type
+    are served by the general caches, keeping the type they asked for and
+    losing only the isolation.
 
-	msg_buckets = kmem_buckets_create("msg_msg", 0, SLAB_ACCOUNT,
-					  sizeof(struct msg_msg),
-					  DATALEN_MSG, NULL);
+The commit message also says kmem_buckets_create() keeps its name,
+"leaving existing users as-is", and does not mention the new warning.
 
-Suppose a bucket like this gets GFP_DMA or __GFP_RECLAIMABLE without
-__GFP_ACCOUNT. The allocation would land in dma-kmalloc-N or
-kmalloc-rcl-N, and neither has SLAB_ACCOUNT. memcg_slab_post_alloc_hook()
-then returns early:
+No in-tree caller appears to hit this, and that is still true at the end
+of the series. However, kmem_buckets_create_types() is exported, and a
+caller that follows the documentation would get a WARN splat. With
+panic_on_warn set, that becomes a panic.
 
-	if (likely(!(flags & __GFP_ACCOUNT) && !(s->flags & SLAB_ACCOUNT)))
-		return true;
-
-Wouldn't the memcg charge be skipped here?
-
-Before this patch, every bucketed allocation got these parameters.
-kmem_buckets_create() doesn't reject or warn about combinations that the
-fallback can't honour.
-
-No in-tree caller hits this today. memdup_user uses GFP_USER and msg_msg
-uses GFP_KERNEL. skb data uses ctor=NULL, align=0 and a full usercopy
-window, so it loses only isolation on its rare GFP_DMA path. The API is
-exported, though.
-
-A later patch in the series doesn't change this either. After "mm/slab:
-Let a bucket set handle __GFP_ACCOUNT", the kmem_buckets_create()
-kernel-doc in include/linux/slab.h says:
-
- * Covers KMEM_BUCKET_NORMAL only. Allocations needing another kmalloc type
- * are served by the general caches, keeping the type they asked for and
- * losing only the isolation.
-
-Is "losing only the isolation" accurate, given that the ctor, alignment,
-usercopy restriction and creator flags are lost as well? The existing
-kernel-doc in mm/slab_common.c also says the ctor is "run when new
-allocations are made", with no exception for fallback types.
-kmem_buckets_create_types() has the same fallback for any type it doesn't
-cover.
-
-Should kmem_buckets_create() reject or warn about the parameter
-combinations the fallback can't satisfy? Or should the documentation
-describe what is lost?
+Should the WARN_ONCE() be dropped to match the documented contract? If
+the warning is intended, could the commit message and both kernel-doc
+blocks say that __GFP_ACCOUNT allocations need BIT(KMEM_BUCKET_CGROUP)
+and warn otherwise?
 
 > +
-> +	return &bucket[btype];
-> +}
-> +
+> +	return &kmalloc_caches[type];
+>  }
 
 [ ... ]
 
