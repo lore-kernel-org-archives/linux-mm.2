@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA279CA5FEC
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 12:56:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A770CA5FEC
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 13:05:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 157206B00A4; Sat,  3 Oct 2026 08:55:27 -0400 (EDT)
+	id 70FCF6B00B3; Sat,  3 Oct 2026 09:05:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12FE46B00A5; Sat,  3 Oct 2026 08:55:27 -0400 (EDT)
+	id 6E71A6B00B4; Sat,  3 Oct 2026 09:05:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 044866B00A6; Sat,  3 Oct 2026 08:55:26 -0400 (EDT)
+	id 5FCE96B00B5; Sat,  3 Oct 2026 09:05:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AF0EA6B00A4
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 08:55:26 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B418A7880
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 12:55:26 +0000 (UTC)
-X-FDA: 85281311052.30.9DF9155
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B2D46B00B3
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 09:05:28 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C1C954062F
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 13:05:27 +0000 (UTC)
+X-FDA: 85281336294.12.44A226A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 224224000B
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 12:55:23 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B9cRjHRy;
-	spf=pass (imf01.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id C52A3A000C
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 13:05:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CJSITcYm;
+	spf=pass (imf25.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791032124;
+	s=arc-20220608; t=1791032725;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J6lehF+F3VMe9JYegLP6nqIvi8tiTrKftBQQ/LyrvI0=;
-	b=AXlSCrBYvRHtCkFyx6cYLxtohUucN1y3RuwWBFZhRYkl3T0e9CRyyF6CwOorrFzaeZpYT7
-	nXzBWeFA5YwOfzbBDIY1srRvzBsuZsiRgXkQi0YVLsLp723HeLNTnp6Q55n2DzjsHg+qK5
-	HNvLLkp0h/2y4UTB8JGMf0RK1lMlFe0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B9cRjHRy;
-	spf=pass (imf01.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=BnJdVVWq837rhBYU16aOeLIgPKf20zgYEbSDFDOxp1U=;
+	b=N0kPsddqwWKVb5ud5taaU+CtWi/79lFWxDMkCDzkWocSPyWmGb8BDlqc/VLK9aQiXHgrjm
+	Lkst5ZCp60vAcjQdd5OLnLP2h1isH3YADq1JNvqTplFGjtVTfn9h4GQbPGJpikR2Groy71
+	E0YMOtRBlFUMW1ubXATKc5dNCMbx3Xo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791032124;
-	b=7YuSi2myXjH4IKWGTMM1bImKfPvRba0tw5l6R8J2IJ/6Tex4wTO7diM1j2nfiIzi9AKf1Y
-	wPhCh3y6jbKETnIFxwA38x0ZKBouYsL33qCiYFKh2wzGnV5fo+kqVioSRP2H80SoMbtCOR
-	qZcdMSc4qsncleNCJcHgAsz7lLgEP5U=
+	t=1791032725;
+	b=ixm6SIPz0sH69dvwMmKC5EUXEJz3Ew4QxaMpS+kmi1n89+zOoG4NnraCmH/zmDbYCOhbqy
+	EcxtOvCbog+tKzex56ppNOmNRPezmaxfClQehkYuUYMrt+R++jtKRSaKfz39ZeDSsnFP+w
+	6iX19ZHoMoAX3PoD2trKToOlOn85ujY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CJSITcYm;
+	spf=pass (imf25.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E5EF944898;
+	by sea.source.kernel.org (Postfix) with ESMTP id B449E44884;
 	Sat,  3 Oct 2026 12:55:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C0C7EC4AF14;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 87A6CC2BCF4;
 	Sat,  3 Oct 2026 12:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1791032118;
-	bh=bvlwLo+f3lqZRNSnnjkqTGuXRJFGyVhG1DvB+XQ/2xo=;
+	bh=IJdbSdqfzsSly2joDn3fNhJSn8tjPPt0T36DegRwlxc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=B9cRjHRyHOU3qoJSUdEbbcEBzvoia9dCrEg7oQDuSbh3iT0lNSbkcRs/HU/gpufLd
-	 pMQaPxmkGd0wvs8GUPnUPdD/6DEMSXJToHAyScEZvUBotnvwA2NK++VHSW0RYXo2Xj
-	 NmOfsnSNei0aSlHkfj95ydMS0bn6IHOFw5dDrbhT2IblDTVc16RuC7hDz4yOvW9xy2
-	 uVMA/SE7RP25C1lxkzwSP5uLlP42JGc2Ocwui2XA8xp/Sa0Ah9sTMgAq+mw/5q3FhB
-	 2o+mw5O7I5krjyOLjfsxBvOJkfaK8rCEXMNesnxL2gj7jZ9m7KJs7rSbzUwhbjLFn0
-	 xhmfSvBV3WzVQ==
+	b=CJSITcYmlzgykRDtHoAMMc9rvneeMX7Im+KmUYQ+KUoIKQdI7buDMt3flwHzciOWs
+	 62DN/OYaQA9N1gbFxM5wP/iIEgsK9yyfmU1cDE6g/k7QRBOXUOI/kpz6M+2sYpmrGw
+	 7NVlnCURXwXh2nun9VuOVh23cQI5B9zhAZyCIiLM3RMYnjr+iHdt8PrPx2ccSvT7Il
+	 mE3WbvcTbgpM8qreHKUxO5+TkqMN5XkJhJ6yOyp82qUVbnM9BtBnQ69ttfongn8SK1
+	 ipBXiAO/QfSEeaFlFXrYfc5U1o2/5FjH0nKSczAk8yDy2R8/b2UwYX/43XO3eHu924
+	 RZW6HAvC90Njg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC47BCA5FEF;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BF12CA5FEC;
 	Sat,  3 Oct 2026 12:55:18 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Sat, 03 Oct 2026 20:55:28 +0800
-Subject: [PATCH RFC v3 17/17] Documentation/mm: multi-gen LRU: update for
- frequency guided promotion
+Date: Sat, 03 Oct 2026 20:55:25 +0800
+Subject: [PATCH RFC v3 14/17] mm/mglru: reparent folios from all
+ generations
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261003-mglru-fg-v3-17-cbd4546a5bd9@tencent.com>
+Message-Id: <20261003-mglru-fg-v3-14-cbd4546a5bd9@tencent.com>
 References: <20261003-mglru-fg-v3-0-cbd4546a5bd9@tencent.com>
 In-Reply-To: <20261003-mglru-fg-v3-0-cbd4546a5bd9@tencent.com>
 To: linux-mm@kvack.org
@@ -107,25 +107,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791032114; l=5784;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791032114; l=1313;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=j02R/N4wDd5tuvRxCLtAnoFnZEzIETZrPJrk4BlFk8o=;
- b=/e3lLeVO7s3peT3r24x5FdfjgN97h/4EKdHB7aQf+0QVxMnEuyyYTfJbN71sfS9Dyuiaab18M
- b8mL1aI363OAPorcJCWZlpLBOqPofT+fkS2fBgMEQFB4/DYp5vPTz4L
+ bh=SSFKxw+1JpTaEsw62vhOq7gyElbyAMh0m4zwnBqF5GM=;
+ b=q/9LD6c8gvmYPxhU9rc4D78+Qn6i7gyt4FS5TgMbJyWibJ6FDwhn5CpOgRWjUSFIXWaya3eLk
+ IpKqXPrIu6BBt4SlTOlR8kUzCIcqRDOVwI9FL2gt71dDdlXy/BvzPBn
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 224224000B
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C52A3A000C
+X-Stat-Signature: rtt19y5gy7gawt9sfgscoh3mo8ywrjmm
 X-Rspam-User: 
-X-Stat-Signature: nr4mafuiasxsuwz5kkinoeydtiopog9h
-X-HE-Tag: 1791032123-282903
-X-HE-Meta: U2FsdGVkX1/Bq2/WWLkdeTto5FeMZg+HrvB/PJxNcqyp23rCJNRxtyA51x0M87/TvU7EadfPOyL34Xwoj2G/6TwBFRV2Ma0uQV8hWHgVJmLrEmjFZjp2wzcV18K7CAUurUUNvRVfFtcZ1sRhNDANlDn1DoOEkILBPc8Hm0WcJLHy8sTJn9l2gJd6/aWgct3VjKHYcn8TjX8SPT3AZ1on3V6YNvGABcYTpCS6b/gHuk6kY7bvi1f9omlwmtlZlXHkrkArzPn+w1c2rvE1wFAYB1B11HOyBsXJHcV15wmUyPKfSfYJAvT7vm5xLEWB0RjsuG54vBT4JzOI2Fm8yErJEiuDIh+e9trqFXKqL0mZK8lcCJrKHdgeDs5QdsTMnrhvVw5geojxyxanYmxl2h0ebXi9BYrxDK0PwxXqLBYaTyxVDPgXJCP/wkz79KIiZ2IVMWY2MKVmz4v+uxlmT9jROrJqLTVN4qW0zhYaCGwdDryGwKevnSzbMNelQul9NKpg/48UJrTmy2s+KzpbXWRvdUI0txkvL4syPxDkkers49A2RanlBr81j9SwzwNDmOJA7DOI4KIKcnM2oTXAk7MNbF5kDL3Z5yMqRAGVKYKMZE2/w140AbeNb3FC+k6nvWsZNABJq/T4tuKEEYpWjMYxGoRAYjAGogLLT1//7NJzqN4UVJx8EjOWHiXxwgLgH07E4cb9p2ZYw+jw0L9Qp+99h8zOOghljOyD/hMVlVK/6B/WzokCSPlSsVACIj06RbFaqMG2H2HPhc8vFb89Wnq98sLEqgtHXsQso68pHcoHTZnixCdZCkfcnVO9K5H1ZZDbf1J43CniXMGy6kKeSVzSX3WceATo3O+/7QzQNsNiGx7gOKnyinWa8B1xz65F04Ro596QBh0KSYE41Tzjf2mJx6qRUmaNJPo6HSUccE2U5CCNE3RoAvMwDRp9qEl5S9nFxuG5cgLbnk7n/xnWmCz
- pfFiDAOy
- enp/SvzvHw5qlqaiWnIHh3zSerH8TSrjCZyCUyFQMDAslZXFhxTjsxonhk1T/GEHus+E4S+GTkc3QgB173jqmIebWL5aXgP4YcuqRyDQeLzhlnCc6E59fBd8OkmGcxmlGsMRyIQ8Oyomy08z2PurvEgsU1EFpSRAtaPtNwDhnrBZO240GOVgYEoOyJXDbxVKdrqHDJ7/RLKgzDbLiGrMw98ymDcMypheIh8MJjSYZ9r0cnW2E5TyOpLHY9cHTwkipUw9ZGnROzkX245wgeLvyLl0aD13ZCVVBraxdrTn9DJhz5+bJacpJUA4ceNKEBhTrIf/qLKXKnPy1L1KqcPjJ7H1ZZ7stLSKht6+UCIfCAz8PrrR/TiOugNadw2xf4gQJz6HISso4h99dHhdYUR0K4DBxrM3xWNaEp/CaQreXEpaAhDGQW9sz+Iej4+VLechX1r3O
+X-HE-Tag: 1791032725-580625
+X-HE-Meta: U2FsdGVkX1/r0e6uSBtc53HV0k29wzROUHPKcUxWvURYbst70FDkMbRaVFrgukll7Oz9iclRyMO3+kIGpPkOD5ACfGDr96XEaDjqWPpE+HrdVJCgoh7uHdSneErX9LDUKq4RCFDSmvS/31bYIOwcZW6KMOcRZY5fxZnFIqSHVo6vFKEF6JgOVrY3OgvC0WA2aINqn2ZQeSD/maIQkBTImi77y0Lku03zFlnyZfZiYRUvr6oproPLFS0C6lvL85DSZSONXuPytkWsiWfM+2ix8IIxMRjrIWxRla9HmCU8Dsc1NKSSgZhYJiwU/wh0Q1eXVMYrp2i+agdBS4LrlXpSr/CoPpQ1JVoypk+hCWa/HROq+Ltrp7vjDjeTkUdLIHCHJcY6tJYAgkFSjsKIREbzHdW19fV5ns6Yd2xlXYjAJ9l3ErPPO20BvPn+uwbIJB8TGGj3OxD036XWcaOYRo/8yyDRYrsysQJ9dpaZYhJQiUVQLlgdr+ai2nfoLejJP5eCr2Zff/xyZGq3RrHhF+whj9mlhKVhpnNxim9SFWFIaz7xzbeiDxLxx6PQR29im+4w9gOnyy8GwS9IAuenuOUcNa32Ofz/SI8FFmXuRRAIGSwT4xaEeVyruOmjnf2ahBZ6xFwQTXaQtS1FwgNhPEj5u3dhz2Uer0LSW0jrS2rVqA18dX4WPPJTSeudXX9ZQHEltQHCOBHznv+wS7jzuDF3E+5OjzxNcXZMiH+0ghuq8Lwt270lAhQ0VAWL7yF4zinUn3YRJlEKbKL89nBtlQsUJ6zIaQwCQwbITAWp0kHbsD5mamrtIHIT5wjMOoi7ozIlHROoLWPEVIUcygXG8HsjUUzfagdLn7jYzIm8dUxRgoZ4ekHoyG05HUUMRvVkMuEFA1DaH8Cu1eirP7xWAbTXa1uquf9xkH0hlLrbLB9uHiTyVv6zWlwjSHytLm+zcNjrOkfLsNZbcM0Q8lFixvs
+ 8aMAeyk3
+ fgcixhMdOHxSR+oEdd1IwWFsX2F7V2SXgCaME2Gy+7z3Rma1FsY58ryEpirjCqxPMmN53DPql8BfETk5LtWuXJ6EMShZdSBIiu51pT4+qBAlcoujeocg5oEWzkdMCdYwEm/bof1LppuZwLPQKP3lmXZm0tAPO86esdH70QBAUNkIXyehKVkF0qeQksR4rwNTzBEWod16A2ghg+qCIQI1EK30Wh4t/V4xhzDq9fQVCu0hKiVyn1yoGBkbIk0faZtdXGjacXRhJsfxlz0HaZr/IWb0ZCDMqN9oZO4DzxZSYL+A6oEz6F7oDgDDEIJ008hNxzsSWdUWjrBPMDYOtmyy1sudqrpJLInDUC5tYsgGJC3jCuqp1iTvU5+mZ4/MCfJjR+vXdBtOt/jStmsw/VbOpJ1zjvyRlP0pAz1vW1ACZ1xk57McdrYrYbQ9KsZjjLLCBt8mi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,108 +135,36 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-The design doc still describes the old tier and promotion model:
+A lockless promotion racing with aging can reuse a generation index,
+see folio_inc_lru_refs().  The retry repairs the folio flags, but
+sort_folio() may have already moved the folio to the list of a
+generation outside the [min_seq, max_seq] window.
 
-- Tiers are no longer order_base_2() of the file descriptor accesses.
-  A folio's tier is derived from its referenced count, which counts
-  accesses from both page tables and file descriptors.
-
-- A young PTE no longer always promotes a folio to the newest
-  generation.  The first access only moves a folio out of the oldest
-  generation, a second access promotes it, and executable file folios
-  are promoted on their first access.
-
-- The eviction no longer uses the first tier as the only baseline.
-  The type is selected by comparing all tiers of each type, and a tier
-  is protected by comparing it against the tiers below it.
-
-Update the aging and eviction sections accordingly.
+__lru_gen_reparent_memcg() only splices the lists inside the child's
+window, so such a folio would be left on a list of the dying memcg.
+Splice the lists and move the counters of all MAX_NR_GENS generations
+instead.  Those outside the window are empty in the common case.
 
 Assisted-by: LLM
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- Documentation/mm/multigen_lru.rst | 56 ++++++++++++++++++++++-----------------
- 1 file changed, 32 insertions(+), 24 deletions(-)
+ mm/vmscan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/mm/multigen_lru.rst b/Documentation/mm/multigen_lru.rst
-index 52ed5092022f..e3dab858887d 100644
---- a/Documentation/mm/multigen_lru.rst
-+++ b/Documentation/mm/multigen_lru.rst
-@@ -95,16 +95,19 @@ at most ``MAX_NR_GENS`` generations. The gen counter stores a value
- within ``[1, MAX_NR_GENS]`` while a page is on one of
- ``lrugen->folios[]``; otherwise it stores zero.
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 9cc06a95d931..1bc8e5056265 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4947,7 +4947,8 @@ static void __lru_gen_reparent_memcg(struct lruvec *child_lruvec, struct lruvec
+ 	child_lrugen = &child_lruvec->lrugen;
+ 	parent_lrugen = &parent_lruvec->lrugen;
  
--Each generation is divided into multiple tiers. A page accessed ``N``
--times through file descriptors is in tier ``order_base_2(N)``. Unlike
--generations, tiers do not have dedicated ``lrugen->folios[]``. In
--contrast to moving across generations, which requires the LRU lock,
--moving across tiers only involves atomic operations on
--``folio->flags`` and therefore has a negligible cost. A feedback loop
--modeled after the PID controller monitors refaults over all the tiers
--from anon and file types and decides which tiers from which types to
--evict or protect. The desired effect is to balance refault percentages
--between anon and file types proportional to the swappiness level.
-+Each generation is divided into multiple tiers. A page's tier is
-+derived from its referenced count, which counts the accesses collected
-+from both channels above and is capped at ``LRU_REFS_MAX``: pages
-+accessed at most once are in the lowest tier, and the tiers above hold
-+pages accessed at least twice. Unlike generations, tiers do not have
-+dedicated ``lrugen->folios[]``. In contrast to moving across
-+generations, which requires the LRU lock, updating the referenced
-+count only involves atomic operations on ``folio->flags`` and
-+therefore has a negligible cost. A feedback loop modeled after the PID
-+controller monitors refaults over all the tiers from anon and file
-+types and decides which tiers from which types to evict or protect.
-+The desired effect is to balance refault percentages between anon and
-+file types proportional to the swappiness level.
+-	for (i = 0; i < get_nr_gens(child_lruvec, type); i++) {
++	/* Lockless promotion may leave folios outside the child's window */
++	for (i = 0; i < MAX_NR_GENS; i++) {
+ 		int gen = lru_gen_from_seq(child_lrugen->max_seq - i);
+ 		long nr_pages = atomic_long_read(&child_lrugen->nr_pages[gen][type][zone]);
  
- There are two conceptually independent procedures: the aging and the
- eviction. They form a closed-loop system, i.e., the page reclaim.
-@@ -122,25 +125,30 @@ and calls ``walk_page_range()`` with each ``mm_struct`` on this list
- to scan PTEs, and after each iteration, it increments ``max_seq``. For
- the latter, when the eviction walks the rmap and finds a young PTE,
- the aging scans the adjacent PTEs. For both, on finding a young PTE,
--the aging clears the accessed bit and updates the gen counter of the
--page mapped by this PTE to ``(max_seq%MAX_NR_GENS)+1``.
-+the aging clears the accessed bit and bumps the referenced count of
-+the page mapped by this PTE. A second access promotes the page by
-+updating its gen counter to ``(max_seq%MAX_NR_GENS)+1``; the first
-+access only moves a page out of the oldest generation, so that the
-+next time it becomes the oldest one, its accessed bit reflects
-+whether it has been used again. Executable file pages are promoted on
-+their first access, since reclaiming them causes typical I/O
-+thrashing.
- 
- Eviction
- --------
- The eviction consumes old generations. Given an ``lruvec``, it
- increments ``min_seq`` when ``lrugen->folios[]`` indexed by
--``min_seq%MAX_NR_GENS`` becomes empty. To select a type and a tier to
--evict from, it first compares ``min_seq[]`` to select the older type.
--If both types are equally old, it selects the one whose first tier has
--a lower refault percentage. The first tier contains single-use
--unmapped clean pages, which are the best bet. The eviction sorts a
--page according to its gen counter if the aging has found this page
--accessed through page tables and updated its gen counter. It also
--moves a page to the next generation, i.e., ``min_seq+1``, if this page
--was accessed multiple times through file descriptors and the feedback
--loop has detected outlying refaults from the tier this page is in. To
--this end, the feedback loop uses the first tier as the baseline, for
--the reason stated earlier.
-+``min_seq%MAX_NR_GENS`` becomes empty. To select a type to evict from,
-+it first compares ``min_seq[]`` to select the older type. If both
-+types are equally old, it compares the refault percentages of all the
-+tiers of each type proportional to the swappiness level. To select a
-+tier to protect, it compares the refault percentage of each tier
-+against that of the tiers below it. The lowest tier contains pages
-+accessed at most once, which are the best bet. The eviction sorts a
-+page according to its gen counter if the aging or an access has
-+updated its gen counter. It also moves a page to the next generation,
-+i.e., ``min_seq+1``, if the feedback loop has detected outlying
-+refaults from the tier this page is in.
- 
- Working set protection
- ----------------------
 
 -- 
 2.55.0
