@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F39FCA5FDD
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 01:11:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82F7ECA5FDD
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Oct 2026 01:12:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96DBB6B009D; Fri,  2 Oct 2026 21:11:49 -0400 (EDT)
+	id 6D63F6B00A1; Fri,  2 Oct 2026 21:12:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 945826B009E; Fri,  2 Oct 2026 21:11:49 -0400 (EDT)
+	id 6ADB86B00A2; Fri,  2 Oct 2026 21:12:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85BAF6B009F; Fri,  2 Oct 2026 21:11:49 -0400 (EDT)
+	id 5C3AA6B00A4; Fri,  2 Oct 2026 21:12:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CE736B009D
-	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:11:49 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E766F1208CE
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:11:48 +0000 (UTC)
-X-FDA: 85279537896.26.F9FE66A
-Received: from mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E94A61C0003
-	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:11:46 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	spf=pass (imf21.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 373146B00A1
+	for <linux-mm@kvack.org>; Fri,  2 Oct 2026 21:12:03 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AAA521208D9
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:12:02 +0000 (UTC)
+X-FDA: 85279538484.29.46C720B
+Received: from mta1.migadu.com (out-190.mta1.migadu.com [95.215.58.190])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D7439180002
+	for <linux-mm@kvack.org>; Sat,  3 Oct 2026 01:12:00 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	spf=pass (imf24.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.190 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790989907;
+	s=arc-20220608; t=1790989921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=51osT/J4BX8PGUKDzP6umO/QrqQ/ifoUbOD6HLAIvFE=;
-	b=uQpx77K5bJDjupvf/1OEp3AwGg+5poL4Se4xrXCNxYMHH9L3yrUe8iSw3phHqMUnXB8ARC
-	eW/fiOgTiQQTcm6OWyLI3UgFu0pQ3z0UAwndWiKi2+Gvvyi1yP8uU9ubMDocbnOvBAU+oN
-	n86xunOWkW8rilg1PK+ImoeTmWEwDCs=
+	bh=xX4+ARMrOziQ/1hS9yPr4jFm9SdRT/pYEaPWAdNf6ho=;
+	b=xmZViAFOuGk8FimxCT8njHLRXH1Ac5o8FEIP2AlwRM9Ou3XcvsWA2U3sLUYIQ2glQXk7nM
+	BTVCxTdSYbG+hwerWd6wvSuqbzwe4jDBEGJf2PjKuzhumfoTj5LoSQXvOtpf/s9RlqFDnH
+	wPYFYPjYsJ/ibS9hYOmrql0mAkeSFc8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
+	imf24.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	spf=pass (imf24.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.190 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790989907;
-	b=gnvp6MRA0MiqH697ynNgjpR2QfWgWmlO7qd+XSqSzTcqlAiFmhg0kKMbxw5s93jaN+jKgn
-	8iqK3pbwzyY4PnOmwsWjw81XOAK5YHY3w/af/OUxmuFzrQnSLP3wa8UJoPBvcTEH0LKNq/
-	nsz0M1HqQcxT5pwt52wbLues5djpLZE=
+	t=1790989921;
+	b=3aJTdST2G0NB/soi9vClcjsbUYPg6nIRMMHO9dV9Pzv4tadRuPrhtRkB0Ew4bBol4VrIVc
+	q8z3JT9XxKOPIhkpwxIKluAABpoE84sQknYAad5GMfkDTQrPZt0lsJwugQ1r9TFOEmwOrP
+	sm1J7kZo27RFpgBwA8PokDSo4Fy/FuY=
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id d479558952a2d234;
-	Sat, 03 Oct 2026 01:11:45 +0000
-X-Mizu-Trace-ID: d479558952a2d234
+Received: by mta11.migadu.com with ESMTPS id c080e56c016d6bad;
+	Sat, 03 Oct 2026 01:11:59 +0000
+X-Mizu-Trace-ID: c080e56c016d6bad
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -70,23 +70,23 @@ Cc: akpm@linux-foundation.org,
 	youngjun.park@lge.com,
 	linux-kernel@vger.kernel.org,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 4/6] mm, swap: don't gate xswap on the physical swap free count
-Date: Sat,  3 Oct 2026 09:11:09 +0800
-Message-ID: <20261003011111.1003090-5-hebaoquan@kylinos.cn>
+Subject: [PATCH 6/6] mm, swap: drop a refused xswap backend run directly
+Date: Sat,  3 Oct 2026 09:11:11 +0800
+Message-ID: <20261003011111.1003090-7-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261003011111.1003090-1-hebaoquan@kylinos.cn>
 References: <20261003011111.1003090-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: f7djwjbbw7z1gyhb9cixqdphersi1ewq
+X-Rspamd-Queue-Id: D7439180002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E94A61C0003
-X-HE-Tag: 1790989906-359929
-X-HE-Meta: U2FsdGVkX1+yNNNi4GHBClsp9FTioNARLWwLjkwww/RdUldADYyHM18e6rcVih/SuXwTfwdRJu4ijNb1ZAqv2cPHy170a35rpSvZzuyI+f/RawiFoPlYjpLvdJ6ZbJY8qS273CWFdi96WEaYtXg3qH0sNSQ0ZKNBN1+iyp6DfmcRlqpUWBBMpwciR4xCWmZH8PbZMmFZ8DfKk/F9F3SWtdH8FFkRZN89lVGbR3OG0ZI18+7q22NFlbxP1rjxuCvGrylF7XHvcqrHn/UQgaiN4YFwHAwTt3Wf48jxPmn5ZoLGwiBnIgJgjryhklrSY0jALA5Ae+2nw3YNVSlNNQxvc+aBEIVYWTgKTAc26uZPHvIJoZvSdrdubt2T3Kdo3M63lksj/DZ0DS8xzj+h+u+tSwLVlNB1RrdhnGqLiqj2T5l51YwrKOsWvRdH8arYY5kpEb2Y1d3FB/UOKfoUSEoXdwioupxg7l95AhWbIQtcbCHpBapBPuwU+mTfG/CW24SERKLgNOYK0XUKUpUEUUNMO+ZDhefF1rEu9rPzl+VcJTP0w1wmweufSLvQMvXCh98CgRNun2+ZcV4LjIokRxpTmPg3NWLInbjnHdlZwI9uFtXmF1ocZEq57ic7H0vhiyN8xp9jzPdObelFCQiCgkul3BYBfWJOReYIraCqeAmmBbD/iUUvf5rvp0y+zhUPGdrQHgkMYkQwLWE4Uh7DvovSnEyizWu6EdsJcIFBtlOMTWFNVtS5z1/BvYQ5Wi4qa8vV0O7oMqvU/IDFXX/dtqoCXVboChCjaj2nfDOtZMxm8csFewBV1M5jQE/v0K3AUbtvlzBwmSG5LW42VeD6NFrhX53UiG+HUzVZmfS73LRzX5KddO6wLjeV85nGTXtsxIJdHYAEnYMTOHvhxupoEaMPQlk5GTK5GkXJwXJ590vLfsvos0dvfT22I1Zxl7BwwFalfmReU/+O7JTooswTrxb
- yCxPOQGH
- U/qKXxh7Roy1sPW8casbXTB0IUE3RqSNtNsbNx68rfZHReBH1sPKuXj2SWz6M7iTxiHI3125XkzwdQTWMpmv93yPhglkpzc97ePRiChgauSjLODemhiH6eFPySQAjj66XLHmMBnCX/8uSo+NB9bNYAa7M8vxA8uIw8f/xhder34QDqQ2E7DcCwWQvMOc6tSQ4j4HM/1pWKK+z+4Npgtzg4cdpMGxCaCrkBWkwzxHDIofS/JRW9M2SbRFnzU2VC7j3IqRAaxlKjOo443u35mh8m8PNMVgjo0TY0hC+HniCbJHw0AMKkorCTwS32Q==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: d4mr8ykacahw6hcxww93itp14y1gmpae
+X-HE-Tag: 1790989920-485505
+X-HE-Meta: U2FsdGVkX1+/zjf6BYrLzGMRkdSHES4TE8K2/edWMa09zSrSY7KMAa3kr4MYA3MALQwiOPnqS6BYp2Dff0jDBBE1twTiFLhEvyfCrzR9Hv+oOg1KYW/pE4eXh2almfzZ64bFzQGS20NR79N/2oWMQmFdy50Zq4yL4/egbzqZA3EenCNLFCoNdTkEGAl2QKMKbv5EkO11/w+PuHoKKbBBDTveVYDAfv26Uj1jxV9zRQdzay1vQEPUETsvRVzXZrRhAv3V1roR+mUdep5/jnR1uWKZhN2RsAUrOTPYnO7pg1uFavz9CO3SX+zUle6BTT+iv0QNmQfO0KSIXC/HhSoJo6QIkZ4I6+q7ox2AQyMif6pKmNE7G/e3Rv+VI+ESYhetKk128s/SPhZL0gOuftZ0t5pbwsuLIv1a7uYb+lpP6d86FdlHfQkE67P31CVZVeKB3L3JCWybcWKHio67yLhAYsoSniLTeTAzodI1i8Q5c0GMtFP29XeogZNVMIss6ZcpXnJ06uygfH9ISNnriwb9tyaIcpab3YHyRstDkzPYBNtmsaDXlyoTKQ7DRBPYRrJt67fGnbz+CxKMqW1/zx/4ta2T1HskxtbOLP6kUEPLZ/MhKtlSi6D0PA+ssMrbNxl+kLPQLxj6n7dM9XqRw2vwlPuOZRi7fq/FxL4p4tCtHkjElc7xAzveYNY7CYJjL/wDH6c6KIDmPg3ey6cDXEWbT3G/3Eq3RjFjfz5LVPqrKqrGMd6855tNwsRQLHruyXnC4xZO76/AyQlvDkiI7wkN5hV/fNAhOm3mtw3RE5jqssn5gdKY9iGpE3ewGlzi80E8HDUvYBG781kI/fwtkzIjpxfVZs9xxKEb5TKWxEtjyVNkdO+7CF/jEgiS8ESdJAjfRjMUMGUy7J1UPDeVtXuixWBAgV/e4v2bUApXEbS46CdieR822KGSqWLbmrmWs9vLY+9CoWzQvDusOaLBWGL
+ 29PeewJS
+ jJzCX1xPB4CnXwH+isUBknCZziAhi+O145PhgDwg2FH4IbqRz40YdZPkonEqQBn3sHkIZR+teCv+7tnc4IUVNbgBolAnTwL8I9GDZjBjAGMuOq5znytF6XB+VleZvbtm8e/5jowb539DZG8dqM43Ef9p6eMcQ2/RynEp4GanM2/SE4HI0KWb8SCyfdqTfjkVnhhbsgbu1kZaFLnRpYJxTr6HMUhGKEbJaqKTE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,141 +94,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Nhat Pham <nphamcs@gmail.com>
+On a refused charge, xswap_backend_alloc() gave the physical run back
+with __xswap_backend_unlink(), which finds the run through the reverse
+mapping. That mapping is not installed yet at this point, so it
+recognised nothing and freed nothing: every refused charge leaked the
+run and tripped a VM_WARN_ON_ONCE().
 
-An xswap entry is charged only when it gets physical backing, so a
-zswap-capable memcg can keep swapping out through xswap even when its
-physical swap margin is zero.  mem_cgroup_get_nr_swap_pages() would
-otherwise starve anon reclaim with memory.swap.max set to 0.
+Drop the run directly instead; the caller holds it and nothing points
+at it yet.
 
-Return PAGE_COUNTER_MAX when an xswap device is active, zswap is on,
-and the memcg allows zswap.  Track active xswap devices in nr_xswap_files,
-mirroring nr_real_swapfiles.
+Seen with a cgroup at memory.swap.max: the backend held 48663 pages
+while memory.swap.current was 0.
 
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- include/linux/memcontrol.h |  4 ++--
- include/linux/swap.h       |  6 ++++++
- mm/memcontrol.c            | 31 ++++++++++++++++++++++++-------
- mm/swapfile.c              |  2 +-
- 4 files changed, 33 insertions(+), 10 deletions(-)
+ mm/swapfile.c | 35 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index b9072a3c9a2a..be335128806f 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -1944,7 +1944,7 @@ static inline void mem_cgroup_calculate_protection_path(struct mem_cgroup *root,
- 
- #if defined(CONFIG_MEMCG) && defined(CONFIG_ZSWAP)
- bool obj_cgroup_may_zswap(struct obj_cgroup *objcg);
--bool mem_cgroup_may_zswap(struct mem_cgroup *memcg, bool may_flush);
-+bool mem_cgroup_may_zswap(const struct mem_cgroup *memcg, bool may_flush);
- void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size);
- void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size);
- bool mem_cgroup_zswap_writeback_enabled(const struct mem_cgroup *memcg);
-@@ -1954,7 +1954,7 @@ static inline bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
- 	return true;
- }
- 
--static inline bool mem_cgroup_may_zswap(struct mem_cgroup *memcg, bool may_flush)
-+static inline bool mem_cgroup_may_zswap(const struct mem_cgroup *memcg, bool may_flush)
- {
- 	return true;
- }
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 745606f23e62..ebcbb92849b7 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -390,6 +390,12 @@ void free_pages_and_swap_cache(struct encoded_page **, int);
- /* linux/mm/swapfile.c */
- extern atomic_long_t nr_swap_pages;
- extern atomic_t nr_real_swapfiles;
-+extern atomic_t nr_xswap_files;
-+
-+static inline bool xswap_enabled(void)
-+{
-+	return atomic_read(&nr_xswap_files) > 0;
-+}
- extern long total_swap_pages;
- extern atomic_t nr_rotate_swap;
- 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index ba13d2a1ead5..2ca39f64c4db 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -6126,8 +6126,20 @@ void __mem_cgroup_swap_put(unsigned short id, unsigned int nr_pages)
- 
- long mem_cgroup_get_nr_swap_pages(const struct mem_cgroup *memcg)
- {
--	long nr_swap_pages = get_nr_swap_pages();
-+	long nr_swap_pages;
- 
-+	/*
-+	 * xswap charges physical backing, not allocation, so virtual swap is
-+	 * unbounded for a zswap-capable memcg and the swap.max walk below
-+	 * would starve anon reclaim.  swap.max is still enforced when the
-+	 * backing is charged.
-+	 */
-+	if (xswap_enabled() && zswap_is_enabled() &&
-+	    (mem_cgroup_disabled() || do_memsw_account() ||
-+	     mem_cgroup_may_zswap(memcg, false)))
-+		return PAGE_COUNTER_MAX;
-+
-+	nr_swap_pages = get_nr_swap_pages();
- 	if (!mem_cgroup_disabled() && !do_memsw_account())
- 		nr_swap_pages = min(nr_swap_pages, page_counter_margin(&memcg->swap));
- 
-@@ -6333,13 +6345,15 @@ static struct cftype swap_files[] = {
-  * spending cycles on compression when there is already no room left
-  * or zswap is disabled altogether somewhere in the hierarchy.
-  */
--bool mem_cgroup_may_zswap(struct mem_cgroup *memcg, bool may_flush)
-+bool mem_cgroup_may_zswap(const struct mem_cgroup *memcg, bool may_flush)
- {
-+	const struct mem_cgroup *pos;
-+
- 	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
- 		return true;
- 
--	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
--		unsigned long max = READ_ONCE(memcg->zswap_max);
-+	for (pos = memcg; !mem_cgroup_is_root(pos); pos = parent_mem_cgroup(pos)) {
-+		unsigned long max = READ_ONCE(pos->zswap_max);
- 		unsigned long pages;
- 
- 		if (max == PAGE_COUNTER_MAX)
-@@ -6347,10 +6361,13 @@ bool mem_cgroup_may_zswap(struct mem_cgroup *memcg, bool may_flush)
- 		if (max == 0)
- 			return false;
- 
--		/* Force flush to get accurate stats for charging */
-+		/*
-+		 * Force flush to get accurate stats for charging. The flush
-+		 * only reads the counters, but takes the memcg mutable.
-+		 */
- 		if (may_flush)
--			__mem_cgroup_flush_stats(memcg, true);
--		pages = memcg_page_state(memcg, MEMCG_ZSWAP_B) / PAGE_SIZE;
-+			__mem_cgroup_flush_stats((struct mem_cgroup *)pos, true);
-+		pages = memcg_page_state(pos, MEMCG_ZSWAP_B) / PAGE_SIZE;
- 		if (pages >= max)
- 			return false;
- 	}
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 86ab4a86857a..a3d4561566eb 100644
+index 419d19f3b98c..0f841616d27e 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -284,7 +284,7 @@ static unsigned int nr_swapfiles;
- atomic_long_t nr_swap_pages;
- atomic_t nr_real_swapfiles;
- /* Active xswap devices, as in nr_real_swapfiles. */
--static atomic_t nr_xswap_files;
-+atomic_t nr_xswap_files;
+@@ -3302,6 +3302,39 @@ static void xswap_free_phys_slot(struct swap_info_struct *si,
+ 	swap_cluster_unlock(ci);
+ }
+ 
++/*
++ * Give a run of backend slots back. Nothing points at them yet, so there is
++ * no reverse mapping to look up and no record to clear.
++ */
++static void xswap_drop_phys_slots(swp_entry_t phys, unsigned int nr)
++{
++	struct swap_info_struct *psi = swap_type_to_info(swp_type(phys));
++	unsigned long poff = swp_offset(phys);
++	struct swap_cluster_info *pci;
++	unsigned int i;
++
++	if (!psi)
++		return;
++
++	pci = swap_cluster_lock(psi, poff);
++	if (!pci)
++		return;
++
++	VM_WARN_ON(pci->count < nr);
++	pci->count -= nr;
++	for (i = 0; i < nr; i++)
++		__swap_table_set(pci, (poff + i) % SWAPFILE_CLUSTER,
++				 null_to_swp_tb());
++
++	if (!pci->count)
++		free_cluster(psi, pci);
++	else
++		partial_free_cluster(psi, pci);
++	swap_cluster_unlock(pci);
++
++	swap_range_free(psi, poff, nr);
++}
++
  /*
-  * Some modules use swappable objects and may try to swap them out under
-  * memory pressure (via the shrinker). Before doing so, they may wish to
+  * An xswap slot being freed may still own a physical slot. Drop it, or the
+  * physical space and its reverse mapping leak. Caller holds the xswap
+@@ -4697,7 +4730,7 @@ swp_entry_t xswap_backend_alloc(swp_entry_t entry, unsigned int order,
+ 		swap_cluster_unlock(ci);
+ 	}
+ 	if (mem_cgroup_swap_charge(id, nr)) {
+-		__xswap_backend_unlink(entry, phys, order);
++		xswap_drop_phys_slots(phys, nr);
+ 		return (swp_entry_t){};
+ 	}
+ 
 -- 
 2.54.0
 
