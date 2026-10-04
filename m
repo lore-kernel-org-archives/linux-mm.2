@@ -4,90 +4,200 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC55DCA5FE6
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 17:21:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5748DCA5FE6
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 17:23:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A38D36B008A; Sun,  4 Oct 2026 13:21:16 -0400 (EDT)
+	id 644996B0092; Sun,  4 Oct 2026 13:23:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E9256B008C; Sun,  4 Oct 2026 13:21:16 -0400 (EDT)
+	id 5F57D6B0093; Sun,  4 Oct 2026 13:23:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 926336B0092; Sun,  4 Oct 2026 13:21:16 -0400 (EDT)
+	id 4BD426B0095; Sun,  4 Oct 2026 13:23:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DDBC6B008A
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:21:16 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FFE36B0092
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:23:06 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D67391A0B94
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 17:21:15 +0000 (UTC)
-X-FDA: 85285609710.24.256EE76
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4F67E40005
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 17:21:14 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dRc8M5K5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791134474;
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8FB2AA0B40
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 17:23:05 +0000 (UTC)
+X-FDA: 85285614330.24.7F789C3
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B0611120003
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 17:23:03 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YNEeXleW;
+	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791134583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5DHJ05YuSaH+xr8cKdC4cMoW1ZLSjTRGXK11CvcxzcE=;
-	b=EGrlBPOZhlN1BUK2d5lIDdqg+tnboStvF/K3pveRwoQur5PVT1NnsU/l/fK4kD+DfQTNRS
-	CVXJj54AFD3CtkS8RtrSSU1qUkXumSG57J1opoF47/jq610YtXv7DaypoEi2+1Cr3rpIOb
-	MCubNny1Plcs8jSDl10xOaMeDP+jDrE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dRc8M5K5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791134474;
-	b=CFS+s8xWy57a3rSlaB8n14j48oYvJP8DutNKppdw+kH4tOdV3t6UoOZYqS0WsNLPhkSVbC
-	iVWaCnvDA3sZSaOrttEmrAUQiAmQm8RpzdyLS7q2CpLb4VCZHoG6/aWmk1aBkTH5Uipat/
-	/tKQeU8DczIU9YwxfodsYBVuK+hMrjA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA47A60120;
-	Sun,  4 Oct 2026 17:21:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D536B1F000FF;
-	Sun,  4 Oct 2026 17:21:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791134473;
-	bh=5DHJ05YuSaH+xr8cKdC4cMoW1ZLSjTRGXK11CvcxzcE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=dRc8M5K5uZMZIVGAAwj7Y7uhyYSUbAcWbnq+NtuV/keIDnxjDLhJJIcmxQIkLoCzR
-	 33+SxYgjWcYH8y9a1+FKiwzTMFn5drCn7RebxPcOa+PMlUQkU4D7xznSJc25AQfrWJ
-	 I0I5UYHGbP/vnztJHoPEcqicUXsjX2zH8/9PJTh6ZS7/oO/40JhyTmNxxgwQ/6PKVA
-	 tIF9Nu0lWRhVXfnXJUCP49MXSlKlYbsmKS6w9TY6oKunJkslNtsNgrLS1bBdnP7QVD
-	 1SE6+4jXIwIl5NSkUaDznyxrjDrCo33BvokSYO2oeVm86q/I6+pirNn5xN3BNE6URC
-	 2mW0Jacr6qckA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
- <rppt@kernel.org>,  Pratyush Yadav <pratyush@kernel.org>,  Alexander Graf
- <graf@amazon.com>,  David Matlack <dmatlack@google.com>,
-  tarunsahu@google.com,  open list <linux-kernel@vger.kernel.org>,  "open
- list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>,  "open list:KEXEC
- HANDOVER (KHO)" <linux-mm@kvack.org>
-Subject: Re: [RFC PATCH 0/6] Introduce file handler dependency level
-In-Reply-To: <20261001005734.1033516-1-skhawaja@google.com> (Samiullah
-	Khawaja's message of "Thu, 1 Oct 2026 00:57:28 +0000")
-References: <20261001005734.1033516-1-skhawaja@google.com>
-Date: Sun, 04 Oct 2026 19:21:10 +0200
-Message-ID: <2vxz4if1l6ux.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=bqiCaT+6hB/MlQ3EgaRNQmjR57IQALnN7KoYl50i5vw=;
+	b=b0lcPObXGw6WX4CH3vYXk4YL4nXqlgIYb0NEyYipI0nKPBTNMCj2ohd0TSWv3Ro1m+QLEQ
+	MMoTh8I6sBCEHO6hIWUItOho/9H2zXoke6q9+1xcziLTwIlU2MxFYgRp2KASC5iC2ouWm3
+	wqVPPWKF0Dr5XFCdk+TsHnPYSwyo1Ns=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791134583;
+	b=IlAhyOs7Pu9X/+hFPdfiHQOvF8UI+6D56mm1m5B/DWhIM7pZblNohlJEn+SXIZZTv0BjfQ
+	/izaWN3Qrk1QpQjjLqeilf2vXjXP1A0F1SjNQulNq3BbbVLyXfB2Grir+y1EtY3Kf/QRRI
+	dM+PFITwGH6ciHSwnRP1oXqlhJmpI9w=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YNEeXleW;
+	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5337c7b9937so259701cf.0
+        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 10:23:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791134583; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NnpRol2WSfSPSMevh87GiQMSVJ+WFKG8W1rTG2FfsdzSspwNaWqYPsIidYV8TNWLz0
+         biPcE+tjnTSFRWE3lnrwpAx35gq9HWAQu0CBPdZo8kinmqeXeNxgrdxNuqok7JXySojM
+         AE6otGN58wllG/mrWAEb+N5eH9c0Ofb/n8PaxZBx8YzqirvEGw0k09yKlAoCqe0Kkfys
+         UPlk9X6a/INr/QvVTAsjraP0HpmQroie6ZOQMM2Rv98meC/JSNJdlxsAt1MaRtwmjvtb
+         IxA/igvW7VF0GWwYjk1OdRCGCeoE5GRv2xCsz/8betPLgiebJyN3PgsQkDLwoo37B9F7
+         bSkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bqiCaT+6hB/MlQ3EgaRNQmjR57IQALnN7KoYl50i5vw=;
+        fh=+kdz+XuoXKudocbtc1iUesqoTmHnxKiZbZNhTDgj3Js=;
+        b=LIPpLmqppzRcBew4xY30ZaZPvW6WDMsRBy61N+OKZAgYyB6eaq62y9SOe29bbYLYYT
+         fH/oz7sHHKEDQtc7fqnpwUECPhjDmbbsQU95N2IHNmJ9oK5sqeHCUJbknyc8kcuHccTV
+         cAX2LLqTA8ThltBX3TSH98KwbyflNC9Q5e901hFrUCQOtburPd76bMdg9A+5xUQUmvOX
+         tHq1h29wz2Fb+1kv092pCGAmhAOU5waitvl6kJKO2WlNFwfFZxhwvWhy8X3JTn99RBU5
+         JkZz85Xu0b+rkBk/XzLVG3Zcy9d4anxRQF669+LuK25hD8QbWd0/X0WgSvmWvlqoICdS
+         SBKA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791134583; x=1791739383; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bqiCaT+6hB/MlQ3EgaRNQmjR57IQALnN7KoYl50i5vw=;
+        b=YNEeXleW+ul+O4OssGg5ektcsAmJZStcvM2pD0PR/l7ZXOnEwrKvocpip/6YGWIiUW
+         OKrS262VYUgiAoqnbGJmw4FLlnNI55omM5GejcVOi2olFN+EW40hvoG06KTjq0WcYa3r
+         7UGo1r9SM9P+bhzK6mmZAJHr0CFyADArA12Q8Y4CgBe1Tdv1bcEPcWL9e9KeGLxUoqeF
+         85hmNBuproE6qCf5YLqdm8U6CRDbtY+TL0R6p1ExQBaM2UaSRKwSL2vEJ+uMjJqreZWK
+         eujaFBtZS+GDpwBPOADBDV5JaTqIVqGYS+Kz1oVmVYwORduMReZKj1629XcsV/EgArfs
+         4stg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791134583; x=1791739383;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bqiCaT+6hB/MlQ3EgaRNQmjR57IQALnN7KoYl50i5vw=;
+        b=zlx5o+x8ngYilE/oPzz2eVquhbVlIMQa2ET8hjqskmlsMoOqeT4eD0F+qJUMQCNit9
+         SfuxeQiOoNMzn1KsA+pvEeZRffdSIHzXogyDGrmQzYSDQQTTmFOXY1Ca9SelA2yKxbYe
+         2rfD0Rsy6zx4EKXeqhbJ6iLi3Q2Bna9JZ7keMip/27fIwehoNCr9l/RJTpaay5sxTh+X
+         TkHu2e+EL1Ve27e4WSQJp30Xz4iNNPdkfvGSUSKS/hCth99bVPnbtoPqixlGpw8Ih6gy
+         4fnyL3JC3xY4dDLSiMCeNueZ9QgPZ7jKYWbW4ezuhZuMsatL9kIO26z9rycPQhhYCVsa
+         X6SQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzkGr0/scj0kFq2tUFJF5yHJYnxkxgvwwwbShC5QpVfdR9hfkBAOLHaVeHYlK1IfJUkqQUgUUvigw==@kvack.org
+X-Gm-Message-State: AFuF++mGK29q3FCkpQIul3ntyfhGiOJsVPSZPcJgsKZ4QUKf5YPPXLu+
+	DgZohk1aFqDKfKk8MrLr2dqx3LfLhYt/mwVIJlerAZ7Rx0ml/WkBqWWMLYy+U6tKUbY4ZAq+IIM
+	vcJptH3i1p2h9dAIffi5AVsH+fSU8xTgdmqclVJBw
+X-Gm-Gg: AYBFou2WBF2XhVMOpvhIHGNxtxX7BMox2n+ZRKqu3E7/k+YYf+nJ7vfsiqIe/ZWxeC7
+	QbMTcZmsxl8RUWI5c2wzaWqz+2k2oZQZFeJu/mSmBJaDUL49IVoQy6m72nn3dkrVRMLwwLaAv2T
+	8HsWZ8J9UblBdoLqQXdiIxvc3jCUcZw6ymi/GhTew7mfRDVWv8rqiFAV/qxJIEA3a+39anBf7Jz
+	47QdcgDwxIFGmQ3ZGfiH4spQ1kwVAJgOwQ0+YV0Xz7g3wMzyhiamPw1HiKDD9ZKml1Zi/b4s8tI
+	CbOj8rolWMmiF6RlAr2vBtunvGxJJewt7dr3R6Q/GE8idETAZq2r6Ise6m49oAyPoZg=
+X-Received: by 2002:ac8:574c:0:b0:531:475:4ce6 with SMTP id
+ d75a77b69052e-535131b2b85mr16362481cf.9.1791134581910; Sun, 04 Oct 2026
+ 10:23:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: jy6hq9e17za4wkh6b9hx667iwm66gfue
+References: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org>
+ <20261003-b4-mmap-prepare-vma-flag-sanify-v4-12-a1f052500fd7@kernel.org>
+In-Reply-To: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-12-a1f052500fd7@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sun, 4 Oct 2026 10:22:50 -0700
+X-Gm-Features: AclHuK9b8f-m7wgF2pmH0VTlVxkwioKHBPR714nLjuu-GaXS_Vt3fJyAlsba0Do
+Message-ID: <CAJuCfpH8GeLKqFtfC_a5i08dQ2ZyyROSrYqYP6Btq03xbF_nXA@mail.gmail.com>
+Subject: Re: [PATCH v4 12/38] ALSA: pcm: use vm_insert_page() to map PCM
+ status page
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+	Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
+	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
+	fuse-devel@lists.linux.dev, Takashi Iwai <tiwai@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B0611120003
+X-Stat-Signature: ic8gbtyiem58zznudtw6jrodqgfj1c7r
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4F67E40005
-X-HE-Tag: 1791134474-224515
-X-HE-Meta: U2FsdGVkX1+FLKbnezqOCfA82tbuFcOrDAuuHMED8BJX4L5zbZmfzEo+h0tj0OS0BXL/zHVHd/urPTUL53akTf/Okww4IiGfTpWi1+62KATY35ZLLIlpq6lAfnI6U0LHp+B4aaQsy7m2I0bOEi58ey6DPpfU4zlcXy6SozQK4qwTlF/AUhtQnSX6Y1sKTh7G4NS9hRfZNXWWbRlunvvPrClI37SeE6gJZwUXOi9Lmxp6jLXoJW+tT2mHNduqnRpgQlq28eXjJ3BtYzFRVpf0PUxXcrzqG11xRRgvpC3hhEWf4TNEypZasNbxDsAtTJmhcNuV09xl9lgpgZQh1t/sINq7Gb9q/H8GlwWKyfbmpZeqlUUPydKIZrfUfNqiUVedi/kDCz8wuZ4+8bXxY1N7v53prfKfCFxpRK8heRA5VMjt1jlSDnRIE9WZu6mNOzH2Ua6pYkTEGJBXjlHsUJfit/mFXLn4/lE4E7smsHxstrIZoyi5E9vOcVmxrqpTZUxeySrp6+PywPXmn+U72/HYD1iyf15vesc7z9xdEdu2VAL5OENmm7BahK/WcLE2xxFAhcCTh4zg1m8WgCpaL6j8m8hfiLIVYhBU7o72cScK6Zm5fF+xHhUvuthOYUJ3s9EueIqbne3Q78jAqTDLYP3USVPg/p1aHAEpW3l6FX/oWtXPC/W4w5D8dSgLcDNDSzqg9YoPQt+hAOhZEKoPg0D4Uusx8LoU1B4PkfQ+7CFCBbbgWtuw4ievWcfou25x3k+CBqcZjvB3mgLsS9Vg8wHH+mTxDQ6162C+hcseQJ8IC4MK0/OpG5RogQyUKgwREO6JAuKgUvpFDBQ7isvqS93ZplYQxto1ZlcGocOnXlfZH9+DKfXcgEBSGlDy2/c118bVOlce7MppWAIopeJl66XGJFfCaXC50FmJhTcLm9QG5nVW7XGtod/HUaKei6JTtPm/z6UZjcipgA+23pSE3wr
- alGzQqw3
- cwONb+C7/EkK3ApQemhSkhNk7y8BxxWKx1otZcin2+hiCZyOu73FNKKT3+JcNmT+o4bCy7jyJ6ArnjWt7CLlrzs99yMFfHddfjRo8vTjoDUZhi/4oHjbAGuvxwF2++qlJz3YP5WRMOFQbd8SLAYt+YOQsYBRasxA7cQdzuZewLzJRzHy8nq9sDu4nMjH29MahqzNL6Qol5bUQs6D84p93ChAA8goZCc6sTNBIKL+tyJNXnzba4k6EGV16gA3wKF1a1zZJy/s4eaO/M0xx/kK7WOpBnA==
+X-HE-Tag: 1791134583-402132
+X-HE-Meta: U2FsdGVkX1/fDtAdI6HyKAag1p79jUqjozR51I458r0jWMMkPV03XquZ06Qvv+CURk6DgBpo6ezQIwYHSXZjQdXBmZudZLfy20R31LaovMWEP+WOQwjLbWdfWiE+mKR19ZRheSjUutFjYJstHYDuDI/k+LnZXl498UNNpi0iS6Z8ctkI8JVtEyBZ68ZxpjvH20J+BhAJZtQ/9wHbXuO6OdEBJJD+mHk6t5sE5MD+5fP+4Oj5Ox8w34QIPD4BKTPvImJuUVRnehjhcEOh+Hj7tFylrklS1kIULuLqBwsa0wTg04NxV+AAptpokrP3N/7ebk+nUA+FLav1uM/wfKWX5Hu9Hz9FG1SMoRMkaCYaDERtVtH8PzkFijM0rJr/dTaApm9VQjQKBbUF9cxZZ+m7p/ApCyxUtC0UP21KjvZy+kdL2UPM+t46Dt3xKmafa9u84/x1DcadeiCVgsKvmR+3vd6OF5ZHJRu4rIXPgnt2rd3xva3cHkqo9e8/C0Qr6VRLCdtsiT7U9wIggUpiO8eI2A/KZFHKaJUdlD+bO4+61t3UNukuTg/K6AEn1j//XJ6qPmUMnypzCgjAhFChNYh4S+AkGDnl7WWxXO/5uRlVO/sWFVYcx+rchMXCJU67fyasJqd+VFLaEFZXSs58nEWLdGOnBZzQ0hVOVAvTCjg+wtNZISC/48xRwmRrbA1weoRRjc7PnvoCRDRnO2fYkualTxalZko/v4iUFrDbK+knmIjKlyNJ2lIYi5v77ZhdGklq0jkWL8s2jM2MwrTkoxLY4MSttSPsU6XQuG+0yy46KAMZbCE6jCh9FjlvtRl/ADcl0HfjunyVngRDg41Xk2occ/saznAVooaVDWJVhhOgm86depPy3gFWSYdt+81srLIBTRush8D6+ZeEHilLr6tXRYMF/zzwnCH+aqno7og8Q4fnJjVGpTYZhWxv1ZgkmS//hft6jRXeEWV2viOa1lJ
+ HkXBiZTN
+ J1Z1YOsAxBnkeZxF5OteB0jvZLhzpMF0MRHAKJA1SeHWv6FWTky7dXbdryFK5cg84Pw8AziAKtr2F2WlZYhbNghRwz34jI6QzEZ2KD/migytG0Cj2bEx8CxCLtpNZtoLJq7AVsJ6gzpoSclB5u0m5tEoJyIgs0iRQnKqcwR++aJsEX9Ecp3TuW6LnoAZJtzXT+raNpEEC2CosaOSH8ZIjv/17+WEjaPGpVsPQlupaifADniyR2SCdj6f4oUyjQPQNCD/1E+ROjvgJi8WdC4HfFax3cv9H+JHOPQv5oa+hebZLlB6e1flU6zMD3oP7LlPUXHR4AG8+mWzcPMnXzuyn28uY0IkH42Ibcf+s+KxH02sfVFvzjDvhpsRqmpZHuXKKrx/6CgWS/Wwdr9l2HYsoolowD76+hACfVVBl8i/WS4hk2TNfFt1zfcJkLGojBAfmLBxllfSfJFMtN3aawU1nsWiGJyrndyZzQ9sbCKdhpCy9fjTc++w25cblmXfzHzYPz1bVBE4jbxcf8NYuf+tEo1ysTvz72/8vfSeDiNV1QIsjwH2w7qcqgn1qqsNl7OU0wolyU3JA2QnRZFDEw01sThRsLOcQ+FAsPb8uSyKZizYMW9KO5yrrKjMANmndpnTK+Dn/4+KNooMA5Gu3J5klzfw+E9yeBf7pDdMyIweJQ/Q5mg1fM+BO/eg5JiTrlyiYayeTWveC7kliYDYwUEP/U8mOoPVaJNJkxKhaA5hLsacMtfyFAOZ7AGB7gcwPYRV9VagAp5OxBQsho5fFlURlkuhlVgq6jyQkEBgiW8QQ9Dq2ZGWgGYro546EyLYwHOSWiNcQDFqihNoNfZae58/oud25tEbqa535alcgTiePzOMCwSYV5zDx63d2v0jIKd5MlSqZQLfKDl1T9b2DHzB/FS0aNvn1xOnDJnlYmrJGGGvt8FrEmYJElHZ2mgVseP3rw3qNuyzpVsZ3NQjUP+AJvkiSkZ6u
+ 9jw6iB3a
+ WQximL3ONeEV942ML1mztid/8TJ4GwDQNRZAXK4TVO73rpOjtPl2ZlBOHrVn2q3LHtdCkP0vlmsWuJluDfNFul1JAFg039cAyS2H8fMYvCQ9bDdVlaqYRbC9wV4IefQ8zunlheevW8JfoICyTPGESiW9Z7yjvWm3W7ZH867LrcQwQdUiJKrTiKuAn1wqsC4yS2vQpXj4t4C8jc1Vlv/IoaK4OHWlAQdOLOON/tnWOF4b6JEQ/xLLLio8sGCE+ub+Bf1Bo8uCEp0MTc/d0Pj/07ifbtnlxgJeamWQmw2gm+wjyIFXBXXn0NwDJUTGYv30EVJ8uE716Yr0PLuXcBciWlBlz0Fd2cizki2bdvqDHBBOKbpxg+nqpst39r6MTdM7kTbzdDf6jnoTV7ff5Gh7DLelSLZ/cs67nkX4OzKjUe1H478eBiDHP19uNLV7ILjNbC6NdGxzQmjh5ygO6Aq7lp9sgcxjHs2UTpf1HJ6Rsye7MBiU+vJkIkE1t61i7dgARXFoMoGt/ZfzGeXERLjBAwmWUQb3GrEeeLwHj2vTkp5XWha7z8mDjRW2vKpbAz1Ws0Znx+17xXJPEEt0IL1B+gHdMc1odhTRTzYMW28RY9xP/T7SGRh0KbQPjJaU6/yjEJEGnrtrNlhT6ci6uzkmXCpOjWCw+FKcNrEbOTCoFqkGkzglqmvB16+zWTd8ZhdL2BeSbcl/GpoxRyMLn7gk7vcKV312sDint4ENYPcIzFkA3HJPL1W7FvV+gKBAd9YFO3Wr/GZuDcSPHhKbHckUo/eMZPIF3acfY6Mas3s3UZbs7KcIfTHUTshblIrfwIAmkkk4etfdkZJ6J/VvMZrsMuLrJmWHd9dj29+pYD8c1kE0xJJa9v9b434bcaUjGagfP4oZnKJrvMfUtTjrKPzuEgRt2BlXi3bgFaRNmxLaLtzm6lXpuBPJet82tT3d5GpGshZnas+gtaHpgAU+CEVmAhV7PKGt9
+ JYsDVgAm
+ 49oJaZ3LrsxJkALvxinucgjY0yLUz8Nc7fAwyKg3O7UpCDfz4h48PwNtIc1pVw6ujb5w80zzgS4TcvYgLb9GrvIA8s7Gl4qVLPmpAjE+yAeM4kqlIS9vOcjTdUxh6x0KqS7diBP8ZzvDs3dHKcdEyFvjxPYiFmWHoT3iuPGWNJCK1XGTI1S12bf5c1HN5+IKpXQFmx0q50TvMs2ha75h4bB4bSi41UqLD33qklAeoiV/ts6iOEziGEU3K6mOgJ1TQuBsNc+0RQr0E5kNZSj6y89v0zNI1jmeECzSy7RuUY5d0/CGIn3gWMfqBXasCp+8RztpUdhhooqdnF7swuAI5DtKDC6IhnQ/whmCIeat5rxi7TieLHjzOA9nBRV2qZ0S5MPpEkdZaDPBp/tZXQz+zUjUyhkWOdSDDYhjUyu2ppatYnOjhBzSt/9WowNcBiA19p4ZYQFJ3zh+kzOtgEr2N8TlOffFTAofEDgbIHzmiVZTIsUl7YPNTkYX4U/2CtE80Gtj1pjsgBbueTtUSGlCTlFO+8cWoDAQtvZ9ygksR9TqldjlVFo8Xma8P9tGOxCFvNkR/tZNO4iH9ot8aktEuwo8q2uZboESWeI0Ss5j4kBwpbePldxxOjxKMxKaiIdWomzaLuTfEb/qkJ4zfZGkxGqof1eSLrcI4IUxXMC+EM7MOBKZGBvYv/xvYw2b+ZzBAsucpsrRJ8X00S8umfdFcSHZdfv1z19UFHxwKlbUGYzq0D62btAASl4veNUQdLBSA9YlN3S6TbcFdkKv/m3eZQJ4FHpO9xajbMGVvd9XdhBo+Iab+V0HBFHGqUFDnwN1Z0dfbJfnr9r9UEkMMLp+RlFZdiuvox5w3ywyBpfStK3g9FOFlINH9kWYV49+hl7dpyS9qPkty/4ucgaidwPtQNaD71DLTUozb8D3/jsWXxPiIHq3DyCM3WyJLz9qlwrAoF6VGcWqWcjvq7Ut9O2fzpb+tMLaX
+ 1+OYAkuJ
+ 7hnKvBL9LJqKa5NpL9XKLlI49UHWnBJIcmnniLm4i5zK7RROEL9fzB1oNtqd/vVeWVWXWpZ+KvrRjDZGXH8s5p7pvTIjrJ4kt7l3vIisFFrIjr6KgI+AwdN74rVEiEBw4b/F25GLCUQXzun7ijSl0hlfGBVikUorw6bQtDvVG5iqpzPe+pwfciJM9sBh+EPXQKAKSxaR6wHdVIEuB60zLYxfpIpddmc8XdRbr++itNQc3RATYQvdY8AZ7IhYJHSDku9EqEhxu3ezvkFLZNnRIY9Q4i8Ozu7cm3Gg6aOLAXf0HEdzUh24Bbbas1Bm7+dG+ZDuxWoeuoCW1SaYI0JJd3hfIsTapizFgYMfGoV2aJV/V+wHXRIRsy3qUyQIj5vTU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,123 +205,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Sami,
+On Sat, Oct 3, 2026 at 6:37=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
+>
+> There's no need to keep a fault handler around for this, instead map on
+> mmap.
+>
+> While we're here, rename area to vma to be consistent.
+>
+> This correctly makes the mapping a mixed map mapping.
+>
+> This works towards establishing the invariant that only PFN mapped or mix=
+ed
+> map mappings may clear the VM_MAYWRITE flag. The status page mapping clea=
+rs
+> VM_MAYWRITE, so it must not be mm-managed; the control page mapping remai=
+ns
+> writable and is left fault-based.
+>
+> The assumption is made that the struct pcm_mmap_status structure is at mo=
+st
+> a page in size, which is asserted as a build bug.
+>
+> This is safe to assume, as the size of the structure is 56 bytes at most.
+>
+> Acked-by: Takashi Iwai <tiwai@suse.de>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-I've skimmed the patches. I didn't dive too deep into the code, but here
-is at least my first reaction.
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-On Thu, Oct 01 2026, Samiullah Khawaja wrote:
 
-> LUO allows preservation of FDs into sessions. An FD can depend on other
-> FDs, and for some FDs this can mean the dependency must be preserved
-> before it due to various reasons including immutability and performance.
-> See discussion on FD dependency patch series [1] and documentation [2]
-> for details. Also see the Liveupdate IOMMU [3] and guest_memfd
-> preservation [4] patch series for examples. These dependencies are
-> enforced by the file handlers, and userspace is responsible for
-> preserving the FDs in the correct order.
+> ---
+>  sound/core/pcm_native.c | 38 +++++++++++++-------------------------
+>  1 file changed, 13 insertions(+), 25 deletions(-)
 >
-> This RFC proposes a mechanism that allows userspace to preserve the FDs
-> as a batch, and the kernel preserves them in the required order. This
-> allows the VMM to preserve a bag of FDs without worrying about the
-> order. A new ioctl is added that allows userspace to provide an array of
-> FDs and tokens for preservation. This gives the kernel the token and the
-> intent to preserve every FD in the batch up front.
+> diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
+> index 62324282fcae..c98fb3df14f3 100644
+> --- a/sound/core/pcm_native.c
+> +++ b/sound/core/pcm_native.c
+> @@ -3760,39 +3760,27 @@ static __poll_t snd_pcm_poll(struct file *file, p=
+oll_table *wait)
+>  /*
+>   * mmap status record
+>   */
+> -static vm_fault_t snd_pcm_mmap_status_fault(struct vm_fault *vmf)
+> +static int snd_pcm_mmap_status(struct snd_pcm_substream *substream, stru=
+ct file *file,
+> +                              struct vm_area_struct *vma)
+>  {
+> -       struct snd_pcm_substream *substream =3D vmf->vma->vm_private_data=
+;
+> +       const unsigned long size =3D vma->vm_end - vma->vm_start;
+>         struct snd_pcm_runtime *runtime;
+> -
+> -       if (substream =3D=3D NULL)
+> -               return VM_FAULT_SIGBUS;
+> -       runtime =3D substream->runtime;
+> -       vmf->page =3D virt_to_page(runtime->status);
+> -       get_page(vmf->page);
+> -       return 0;
+> -}
+> +       struct page *page;
 >
-> This RFC introduces the concept of file handler levels. Each file
-> handler offers a certain type of resource or functionality that relates
-> to other file handlers. These can be represented by levels. This RFC
-> adds the following levels and more can be added later:
+> -static const struct vm_operations_struct snd_pcm_vm_ops_status =3D
+> -{
+> -       .fault =3D        snd_pcm_mmap_status_fault,
+> -};
+> +       BUILD_BUG_ON(sizeof(struct snd_pcm_mmap_status) > PAGE_SIZE);
 >
->  - Default (no level set)
->  - Memory Providers
->  - Memory Mappers (or users)
->  - Devices
+> -static int snd_pcm_mmap_status(struct snd_pcm_substream *substream, stru=
+ct file *file,
+> -                              struct vm_area_struct *area)
+> -{
+> -       long size;
+> -       if (!(area->vm_flags & VM_READ))
+> +       if (!(vma->vm_flags & VM_READ))
+>                 return -EINVAL;
+> -       size =3D area->vm_end - area->vm_start;
+> -       if (size !=3D PAGE_ALIGN(sizeof(struct snd_pcm_mmap_status)))
+> +       if (size !=3D PAGE_SIZE)
+>                 return -EINVAL;
+> -       area->vm_ops =3D &snd_pcm_vm_ops_status;
+> -       area->vm_private_data =3D substream;
+> -       vm_flags_mod(area, VM_DONTEXPAND | VM_DONTDUMP,
+> +
+> +       vm_flags_mod(vma, VM_DONTEXPAND | VM_DONTDUMP,
+>                      VM_WRITE | VM_MAYWRITE);
+> +       vma->vm_page_prot =3D vm_get_page_prot(vma->vm_flags);
 >
-> The levels are optional static configurations of how the file handlers
-> relate to each other. Each level represents a class of file handler,
-> which fixes the order of preservation between them.
+> -       return 0;
+> +       runtime =3D substream->runtime;
+> +       page =3D virt_to_page(runtime->status);
+> +       return vm_insert_page(vma, vma->vm_start, page);
+>  }
 >
-> The levels are spaced out to allow addition of new levels. LUO can use
-> these levels to deduce the order of preservation of a batch of FDs.
-
-I think you need to explain what problem you actually solve here.
-
-This seems like a lot of complexity to essentially turn file handler
-dependencies into heuristics. Because you basically assign a "priority
-number" to each file type. But dependencies can really be complicated
-and I think modelling them as absolute integers is going to paint us in
-a corner real quick.
-
-And I don't get what this buys us. Why not take the much much simpler
-path where a file handler just rejects a file if its dependency isn't
-there? This would force userspace to preserve files in the right order.
-
-And userspace doesn't necessarily have to to anything complicated
-either. It just needs to write the code in a way that a memfd is
-preserved before its iommufd. So we leave it up to userspace to figure
-out the order, and in the kernel we only _enforce_ it.
-
-This also lets us express the real dependencies and we don't have to do
-the dance of giving each file type a number and trying to make sure the
-number sits in the right place on the list for all use cases.
-
-Or, if you _don't_ want to burden userspace with this work, why not take
-the files in any order and do the final check at freeze()?
-
+>  /*
 >
-> The batch is atomic: either all FDs are preserved or none are, and on
-> failure the index of the failing FD is returned to userspace. The
-> existing LIVEUPDATE_SESSION_PRESERVE_FD ioctl is unchanged and behaves
-> as a batch of one. Note that this does not break compatibility and
-> userspace can still attempt to preserve FDs individually using the
-> existing preservation ioctl.
+> --
+> 2.55.0
 >
-> The patch series builds on top of the Liveupdate IOMMU series [3] to
-> demonstrate the FD dependency. The full tree, including the
-> dependencies, is available at:
-> https://github.com/samikhawaja/linux/tree/luo/fd-dependency-rfc
->
-> I will present this at the Live Update MC at LPC 2026. I will also talk
-> about alternative solutions I considered.
->
-> Future work:
->
->  - Allow file handlers to be preserved at multiple levels to allow
->    resolving circular dependencies.
->
-> Looking forward to your feedback on this.
->
-> [1] https://lore.kernel.org/all/alrDpAMknlYN9jL9@google.com/#t
-> [2] https://lore.kernel.org/all/20260910173659.1945246-2-skhawaja@google.com/
-> [3] https://lore.kernel.org/all/20260921004834.2601285-1-skhawaja@google.com/
-> [4] https://lore.kernel.org/all/20260728121138.1103610-9-tarunsahu@google.com/
->
-> Samiullah Khawaja (6):
->   liveupdate: Introduce file handler dependency level
->   mm/memfd_luo: Set Liveupdate level of a memfd file handler
->   iommufd: Set liveupdate file handler level
->   vfio/pci: Set live update file handler level
->   selftests/liveupdate: Add API to preserve a batch of FDs
->   iommufd/selftests: Preserve all the FDs in a batch
->
->  drivers/iommu/iommufd/liveupdate.c            |   1 +
->  drivers/vfio/pci/vfio_pci_liveupdate.c        |   1 +
->  include/linux/liveupdate.h                    |  24 ++
->  include/uapi/linux/liveupdate.h               |  39 +++
->  kernel/liveupdate/luo_file.c                  | 316 ++++++++++++------
->  kernel/liveupdate/luo_internal.h              |   2 +
->  kernel/liveupdate/luo_session.c               |  45 +++
->  mm/memfd_luo.c                                |   1 +
->  .../iommu/iommufd_liveupdate_kexec_test.c     |  27 +-
->  .../liveupdate/lib/include/libliveupdate.h    |   2 +
->  .../selftests/liveupdate/lib/lu_utils.c       |  20 ++
->  11 files changed, 379 insertions(+), 99 deletions(-)
->
->
-> base-commit: 945d61765894dda2f0344de50cb1ade2e51b66fd
-
--- 
-Regards,
-Pratyush Yadav
 
