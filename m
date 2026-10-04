@@ -4,128 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3ADCCA5FEC
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 09:10:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB7C3CA5FCE
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 09:15:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32C286B008A; Sun,  4 Oct 2026 05:10:38 -0400 (EDT)
+	id 88D9C6B008C; Sun,  4 Oct 2026 05:15:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DC536B008C; Sun,  4 Oct 2026 05:10:38 -0400 (EDT)
+	id 83E446B0092; Sun,  4 Oct 2026 05:15:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CE946B0092; Sun,  4 Oct 2026 05:10:38 -0400 (EDT)
+	id 72CC46B0093; Sun,  4 Oct 2026 05:15:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E2B5C6B008A
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 05:10:37 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4A98C160A9F
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 09:10:37 +0000 (UTC)
-X-FDA: 85284373314.01.105F865
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 804CB180006
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 09:10:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hanemzs8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791105035;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 45E756B008C
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 05:15:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C7E8840B17
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 09:15:12 +0000 (UTC)
+X-FDA: 85284384864.25.D124408
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DE9CBC0008
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 09:15:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mjM1hrtt;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf28.hostedemail.com: domain of rizzo.unipi@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rizzo.unipi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791105310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hn1knN0Ne9g7tVudusR3tVlb1NSZVYCjpb+Hy/EfMyI=;
-	b=LafCjb58RqDsnD5KxKvJSjf9H/tVtr5Udg179lw+xYJmUzMAYLeqal2yXJfM6J67l4e5yo
-	/jNy0u57PZm9FwMajDuG2Cwq8327NcPRrImLSsa+EuH4CPv7DKusZXfk1V48SftPtKLAhc
-	K5d01wJPBirOlGbXaTUqPw/xgbezd08=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hanemzs8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791105035;
-	b=OL6dwanNvV44Viqo+z7cU7fMVpiySLYj4cTDID/bNh69UkhW5sB0588UzWMT7ZChL7iYbS
-	Fza8KqtwdC2egKaI+FpKc9s/1YAxGIETOPGaMqXBwIp9dy0rGm9s0g61ed9awqbgcCES5P
-	5t4uVqfPwJgbAsoyQTmUIGIdWglOQ44=
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-88c72646f03so343520b3a.2
-        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 02:10:35 -0700 (PDT)
+	bh=kaMhgqh0cNyzIJvdM7MdSJL/gkpQL52j+U/jEExbMjs=;
+	b=WrsgNMuUbo2w4rBQASOM+jAQkEetfrLjhPv6RBik87NvwN5nMcmhIQTJmRtSQ4dPFZEMwn
+	N3N54ELCHaGai3cXg0+jisa654SwRVmX6OGrBduJRXn90e061+tf1VD5WeahrDL/oW5ugL
+	+ebI9LOaBd0MhnNk/rnmy7cOPQVLY88=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mjM1hrtt;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf28.hostedemail.com: domain of rizzo.unipi@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rizzo.unipi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791105310;
+	b=dunxo+jhW+FEYyNtvHez2Qu3s/zb7jpjdfp0jzngVwW+8UHOwGVHM8fAgCNMwsPX5jF4D5
+	4HMMYU45qWkbj0GzAlr//3VzShJfYuuYrUJ+Do70Dt2wPSkqufa7KSwhHfzDFZxHosM141
+	tIMRMOElGA3ACMdDMGQi/lg9z1jgqkE=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2dd76b1361dso5286535ad.1
+        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 02:15:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791105310; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Tn1aqch3HeLncSdaQahg85MaxTkFXFUZ8+FRaBaBQyo7C/LPO3oB9xjl+HQ2vy9Tv3
+         kw1LP3VzvYHdGfowWpOnPJArO/ohi/XHMJSDyfGGmEsLgs7aTC6xDw9K1L1caepc7wWM
+         n2aAUAvfzCAP3YPXdsQsL4/98X2VRXw2MwkXfbjv35UF+450OcBEzgxZ2gppvhPBJ76C
+         yPaKwcH1Kt6gvlExkS4SP9VuJm6JHIgBUqTF17S6+7zbNj8EMsSx38NCu5E9tLBUEd2O
+         M1pdaWILaZLihkLTIONgAmNqflok6e+Izj34QHU4Giza1MskYFGH4eP8ntDGbDFHYHCQ
+         PnUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kaMhgqh0cNyzIJvdM7MdSJL/gkpQL52j+U/jEExbMjs=;
+        fh=IWHOKRwqqNJ5Jcl1HP9bswys5m5BXPgTlpz8bnjjfgo=;
+        b=AbczHAxzVr1kd6XeQ/y56GAOHuFeh/r9iiCIAi+ox9xpfXEL7tXetGfgYcIGn9oWqQ
+         /9DCvtSvLt2NmoCdALuuoKFloxWsVahazDWXR6AcRylgK3VuNYAAjQfhbbQMjCjogF82
+         HaTJ8jhrZlyVu0gKLQJ3d8SLp0MYPLZhA45J+GQmmrxv9oZQbkcA7DI2U0aDvSPgz+pS
+         BgSSvzEyYL0aQ/A8+/S0LIQ47vOzKBW/YVxj+bzCbJge8zX2LsMP/uh3knIeMruc9RG1
+         yRCphNRa1lBXGaq1lybwyh4A/AiAu+uLVyYUvjlFPAPZ8CGqRREyvBB2YNPOkh0nmkUS
+         /v8g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791105034; x=1791709834; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hn1knN0Ne9g7tVudusR3tVlb1NSZVYCjpb+Hy/EfMyI=;
-        b=hanemzs8I3vs8nDpG8SqFAT9KxWCGd8GMIg9iS/yWmGut5MLz0sHfwtWIrsaKSldHr
-         Iav6npHvJRUinxDiJcCeeTCxO4t+AQlXM6pJvaOO7vXjCFgsRpCpfmKCKYhCH4xdnT/e
-         9a6FNuboywQ/FsZ79R6DtRhkiny4Z1sx7nqCrqEwk3g7sF0tWhbqYk+c4fJmy7hqE2QU
-         bFC44K2UK2bzXuJPBfrffhqxEAn7F2BbxCWQPzcH3gOaJa5lrC7bu9Ra7ADy24Tmzk2m
-         sAgqwcKimvwuqCuLfNrrzvQdJB32m8POHmfxDkwi2IrmjpQIWRMG4+wApmcG+567OV0w
-         3A7Q==
+        d=gmail.com; s=20251104; t=1791105310; x=1791710110; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kaMhgqh0cNyzIJvdM7MdSJL/gkpQL52j+U/jEExbMjs=;
+        b=mjM1hrttXMTvFsN+0YmhfmNHpCP2GOFcj/Hr27xkQcL/6o4REUqUjQt2IKu1Iz+/tY
+         b/oU2xw6wz0QUdks4nYDmyHnTO0a9yDPl006fr3wx3oTFikLAGMsuQw/Dzm8vYkcEBom
+         ricGH66OUi9zgDGNtK2brhRpkr7SizW3AJZknDU/5djZHEz1R+0uiXJWB65zcNBu+K9v
+         Zzf/959RvOsA87tGAbZvh21VmIJRtWSS6aK85mFhr9UlBMoWjxSx+Cdzd+luhUE389WL
+         usHMmOc5kqpQwOD2lmlurijAb219ZHkO22+8Ln/EjmuEuIx2IP9Qf5cd3xIHz5saJuTM
+         3IJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791105034; x=1791709834;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hn1knN0Ne9g7tVudusR3tVlb1NSZVYCjpb+Hy/EfMyI=;
-        b=Mjv0wrSopmNQL1vl2NeRZBhoNkj2KLtqgbHBhV8PTKqAPzt5pTwwMuywhCSNYsgiNg
-         4K16EUfyuKFpTDz1+J2G1/Kh18/bir/OKn5VMnwpq0ZkSE8/DSf57Dv5jt76x83GFVNU
-         X+Q2M81t3FZOf/0Ypqq+xvQghiY0DArpGxLAC8FWhZwE2PAH3hHxzOow5D2ycaqSwdBc
-         v+JQiijJ+kXoW2n1DcfC1uIUxwyYwmv5n8aw0DK1rcTXZZJpRzkbMMFAIZZtUUQv4MKf
-         T8HuiZp13L/STxERW97Z7hniwuIGlb51EQN3LFkS4nxAln9hi1N9KbNc98tDiF9G8LJ0
-         EDZw==
-X-Forwarded-Encrypted: i=1; AKwUvBx64Gr0Ezjm8al94ntIS/pXOa40kF/gx1o5dFkSw77hZeKSRaDJrz6tTUN8XKLfCQ/uOcv0PRAraw==@kvack.org
-X-Gm-Message-State: AFuF++nUsH9fXoXcum57A0G6jW0paS33tR0RdNIP2mylHEyUCXV/Cqoq
-	NpMCpVihrIw6+Xs0mzRTYOhoBC156kqqRIUgsuwjkeEc2CvCTnMHoelA
-X-Gm-Gg: AYBFou3EwQD26NWtTFWQSHJh75BpXL97FPwItgu1/jPjquFTxvNbBoASDVnbDH5a3YP
-	YwYQjOVR4e/AIktx5o0Upgd3R/q7hCJcy1dFi0DBTySzTZG5TT3MJvvaKxhC0VIc+vVAM0Z+xlY
-	hIXUJW0XVQjxuztuO3VKJdmV6GdXYG4fcfu4Le1io6rbCekCQADVQfeZGUuTzecBw6DcrjchvlV
-	Y0ijtXP6ukGsyk5UmJSA8vTueWPMUtavFqvwRjtrN17uf5XsN85eteNN98eT9yWY/UIQ9FkYt1P
-	h7JqHShU18Ald4ngN6kIQSPE1M2owI84sPfAKVkp1JgfBaUZJfR1oB/WpR2uLKvkbmQm1NaCUOZ
-	MZDXcrC6Zu6baugOaYTUlWBkhQ1uCqKjNWhg2EFSKhhquftX+yOvr3H5tIfm4fNRhXm2xdCniyo
-	pMpIu140gsXCbFLDN/NJDkA4DMpMAsuSBx7uV0zhG8MFf0eel1/5eP3BSmjPsPLk/NPkh9
-X-Received: by 2002:a05:6a00:14d0:b0:88b:af3d:2891 with SMTP id d2e1a72fcca58-88c628fca60mr3777134b3a.22.1791105033760;
-        Sun, 04 Oct 2026 02:10:33 -0700 (PDT)
-Received: from gmail.com ([185.220.238.43])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-88b0ca7c6b7sm2374693b3a.44.2026.10.04.02.10.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 02:10:32 -0700 (PDT)
-From: Kunwu Chan <kunwu.chan@gmail.com>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: Kunwu Chan <kunwu.chan@gmail.com>,
-	SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Gregory Price <gourry@gourry.net>,
-	David Rientjes <rientjes@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Bijan Tabatabai <bijan311@gmail.com>,
-	Ajay Joshi <ajayjoshi@micron.com>,
-	Honggyu Kim <honggyu.kim@sk.com>,
-	Yunjeong Mun <yunjeong.mun@sk.com>,
-	Akinobu Mita <akinobu.mita@gmail.com>,
-	Lian Wang <lianux.mm@gmail.com>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [RFC PATCH v3 2/9] mm/damon/core: replace the access report buffer with per-context rings
-Date: Sun,  4 Oct 2026 17:10:21 +0800
-Message-ID: <20261004091023.630362-1-kunwu.chan@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261003-damon-perf-rfc-v3-send-2026-10-03-v3-2-0f00417b41bc@gmail.com>
-References: 
+        d=1e100.net; s=20260707; t=1791105310; x=1791710110;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kaMhgqh0cNyzIJvdM7MdSJL/gkpQL52j+U/jEExbMjs=;
+        b=B6qrZDDLGoKYC2P7ldjrG3pFwZpvQZgcXIxlnpS3iEogRIgv1+DNPQGLsJdOVifNah
+         xKOPO/cHtxLbhaKlBB1pcU0+4pkFBkOoBHhwMpdQN6ITqWOgY/oFyS4vp0/Yr4QX/a+l
+         8hji4p1zWwy1rOpAQS20QHt6nTJKwQuj+uRvLO5M0YtVmmwASZCo95FbSTDrJK+khjo5
+         OVEQmLmx2GZqYdkqrTQm1UqdJi8rP/GWfCKcymMdTyiPIhE5myJZs/SvWV+C3fpRaE9i
+         HKcus7c/5gvwRYI7Q7FJL90ULOv7dHEgCeaXuWzoFsOu5aPFBFNuNO25utLuvSnNB6ND
+         FV7A==
+X-Forwarded-Encrypted: i=1; AKwUvBxCSiet74CL1KZO4nYVr3+XUOXMhhjbGnpWUUMxZOs9WmHptQ/cbHxukYmqReRFeT3X1X4OVZ9zRg==@kvack.org
+X-Gm-Message-State: AFq9FYIyJosxF0Ueg8u7MmpQHvWP3vFlUliwdfPQBV4cpZwqn5nOoGEF
+	oDU6lDtB0moS9jNcFrI40t0itxwPP/ouNlCZEKcV6JppUt0oXgUS5fkEB9FB4ZvmyevaLtg2Enw
+	CvYUL2bdbjfaqfHVYsfrVu9HHArnb0Uo=
+X-Gm-Gg: AYBFou1JRK0mll/K45OE703E0ouFMCRv6ZtFT6HZZFlalSuqw+mFMt6q0O9gYOrzUS1
+	8gDIK6r8uqSMRFa81NMGRfFFRlcpAvi08JT6EVp2IbLse+19mzr+RdIiZV7rlaGu+rzHEsjrJON
+	Nl9eMKBfYpdwZMQUjzdNwDgDgdgxLOEcuHHNLSEk5hJoSA6OS2N3E2HteLJVtUpGFEL0dzBp56T
+	aj4erMWRwZw1yQNHQw/EMyjMw1KN4uAVaNAaEuN8H6zLTR7927zGlNJYguuHA3uHhCmOLkJp+9X
+	LcKqn4xjdWyPlJHawBTl8RfXokZ8Dizl2F6/CezQbRSq42a+U2v2wg==
+X-Received: by 2002:a17:90b:2548:b0:3a0:d651:3957 with SMTP id
+ 98e67ed59e1d1-3a7873ac66fmr3158501a91.35.1791105309539; Sun, 04 Oct 2026
+ 02:15:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261003212241.3432303-1-lrizzo@google.com> <20261003212241.3432303-2-lrizzo@google.com>
+ <7ce092a4-5c85-4391-809a-3d04b638a722@infradead.org>
+In-Reply-To: <7ce092a4-5c85-4391-809a-3d04b638a722@infradead.org>
+From: Luigi Rizzo <rizzo.unipi@gmail.com>
+Date: Sun, 4 Oct 2026 11:14:58 +0200
+X-Gm-Features: AclHuK-h1jLN5HUM25V1KDJrvXlK_1XFkjlYVZ2OmcSjQmXYi39ZO7A1D8RAYWw
+Message-ID: <CA+hQ2+ieCiXpnRzv7t003cHKG-YL+jSOSgVO_KavGEkbKfOeuw@mail.gmail.com>
+Subject: Re: [RFC: DMA_PMD 01/22] iommu/dma: introduce CONFIG_DMA_PMD and
+ metadata table
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: Luigi Rizzo <lrizzo@google.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DE9CBC0008
+X-Stat-Signature: 6bcy1b4m9n3oknnshzqkauo9e3pfxg4y
 X-Rspam-User: 
-X-Stat-Signature: zd383ofqpeahh348rsatdb4g4pqs45yi
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 804CB180006
-X-HE-Tag: 1791105035-807130
-X-HE-Meta: U2FsdGVkX1/xJvB0o/COe1cJw39GJgxoOHo1Nc8NoHI0MDMg+Cz8K5/uRs99w9xDJdlfx2/BXCsEjqBBNzh/X+MjrhGZnUST+E0DZz2m3z1m0Pt8y2pHfwF/8/VbF/YrYNK+OQU8TW1FwYJ3xX8Ra7RAPCD87CVdAcxyQZsd05CEWcbjFL6/i5byNQNND8Lz76tRv23tjDQt5L5q2AJ9KMuXWvY0blWnXoY3kBwbo6SkeAosJgLHgSieDQjmLGGHywPMR2uYX6qEdzW0Ncq/F+2xTMPMJGcIMFItlDc04FyoEIRvoyfC/4YCu4gBXBksbbIXkAzgjvq3v7mIcz0H1zeniS/4kjkMOiDQmhI2zKZXdfhvSFKCpwtnzOKgQL7GOuTSLb7RIidZGZKHpuavBPF7mAikHVEnupHrXX7uxs0Q6M1R9yiruDTgzUiDaOIm9q8AYbmmn/a6HlJEC9wayRbqASDZXFNSSsPihs2NmD0ihxnYdlV4NWdouRkD/Zexr33a5mTcYLZoKt+1J808qX6j/+TSeZBIqw8noDPb0zs1/j0VAORf9Cd9+ykgu97DV8mg31m9oIJgNv3gEJ0lFhvBbX0JxyYGR9D5D3v9Ki21L4Tv2guBqAT0rPDSmw6NJhHp8QLxvMVG5cJa9Q8AHocGuy7oDShLHMK315IDEqtDhGQjJPnI4oNQtbdGqMuRgEcLrSse0bG5VSQRqeSPcmcnWKTbSwXEdDHJNJvBeaszBhFn75T9K85HacJXsVJWkHXVHLPNjRPbJrI0CE13II7MogjEETjZmAL/PRVtfz04qHgZWVuTTjKZETWgo/3hYDGfUTUvdkw623HDgcRYKyhxcW4kQkJ61W9R0rOdM5YKdwAT584EuFtLsd4fE2ho5gzZVLuWdIKtXn9ciRho6zESYtKYcIUU7ajQpVKdphSer+s1NP3A77l0fv3KSOIsinY/DdADtYKxH3ECYJ+
- TurVFVbz
- uOVA1PXiCJy5q4maHrZD1ejzTbJaIMauFU4Tm5c0S9fbsEDRoLMZedHyLP49NNjOZW1VMvx2DMtq6uqNkAxaZQD8aDVScUWeu9e8FrmLomLBswYpmRHqFrjxI4Dg0rmdx5oECOriJ8INepNMqzu8Z992sPGmK3OSuNCB/pfz7TDgG+lkB6q6/ID98EejreWF1hVPMlpWHaUd/3Z43lZ0hj/wzM6p+xfpOInRjlJw0Eh7PVMSfJSQF/M1KEyaNFEhM9KxHGtxhXyxK50CG/E0ulMxuUNgp2CvLUQBSfFSq9QAinvFiVVCy/NorsJPtpLiVcHUMmaKo9HLV7bkFJOkFFltxgEe1sTdSpczOzuKEi0o7fLMjHw3NG4lMLMz4YShx22AAYV4HsJNcc1K7u2R1roH+TmvmdhEap4w4Xyo2Jn/P5CDTReRsoFbx+ZyoSsPCxnPHa5reqPUc+nb1O0/XNA1BdvDz0IKlzLTq
+X-HE-Tag: 1791105310-632044
+X-HE-Meta: U2FsdGVkX189m1IfPsIjI4/ZACxVM8rOwK8mZwZZVpVkNtpGuR1P3FMiGcBL9xImKG2AFxW3XQsoxgGVvCMaVTo8rdIZXa9rzXGHUmnx2lybC6cARRdtE4Ri1CeZV2Hst8INrOFOBGYz+kHBgZrFGoKEKYkCNbVLLnbOBKZK4VODEQmM0vK79N11yz+AuxLQfYdaVMzaLnziTuYA6pqeNQPnxv2enG5zhJ6FIUUNxDpN524G39fPJt1Cagfanyt9ovsx6jqlWafF2tfZJmzZeGb6zDXcq2PO93hB8oYSk1z/LJgmXbJBUk5AHUEgVDqxiHTwUsouc8hA0I417/g/0BCDjJGlid5grLt0nmzSELlQEhIZZpyi3DjwJxr9Jnyb8fk4mb9YthKCfG21zrUE5nKNAWnhyora/yddtX/HHu2inFavrFcYmtxibXgF7cdMyJQ4kE7vrKuGiCk/wLs2mBuRgAw/aOKXzXikPESxp4cTRsfmozytcHf5gbRIUR+TxdkPTFf3U/uA7rpYIQjxI3rU7OMR1IFvvfzm11XYFtps5LRkz+zMTFAopGlEMJD3UPDAqEXC7WK1AjmIQAzIFnppI7WRrI0ztL1fk3oCqkC6r48D+55W6zWVK0mTPQDzNm+L+dDXBNZWRcjWh92XCkDp3GBpBqEUZWC7Nb6uEA5dwmtEOico5CtpcrrMfrsWePFq6XM8q/oz/tRhBc41xEElhfZQ9Qz7w7JCNtJhNvQ84zNQL9O5zEOZCZ+uT0+aevfvzmxvmXJxkz38mAJ7gldt1jQNByjdTM5X/jq3vgZVAb9HGg+P6a+XJ9MNAj1hRCopHyGh9W/1wbqQ9MaFQ/tKafuANYjSKEpDoAnFTQl0tKmFz7GgKx/leCcAlUIih127TcQ/xTBsUN350tjwZmI1V5g0xOVSPjqTEEA+Y0Erf1qpwI4k7Op0r49sR0X2ll+qltmlRWEjfX+cNUz
+ zRjoup1o
+ JGAND89FGxJ9b24XWOzSqOP+XpbDuRwDM1nSiLmdpYBOskF4AsLfpFuhmNIBU3pPxXlCq/Q7cD/5qfQ8W7+vo2UDDo5+u5qdsRUaf47LIpfqh1lGszjOwdkPJSAjMZpQ1NmVyvza2v4wz02hERCLx9/cphE1Nz+A37kbAz12b3Ijt3iE3SCTIVMS0jBh386znxTelnM/9nzYn0nAlME4KT7Z37/Uq3cDgrwcwnpPUnOxXbKxzENkLHvIZU16YKq2yKXiPayEsa3+fHv6kHM/GWDjDHKbcXChJyYQ0TSw2JCHsaV0dLISM56qm6PfwJhxHP1kkqBnCpWCVN+SSPUNfYFO3bp3YE658SzQMVbr5+1VGYvAspKiwx6JV//xkyIsisqjojRi9E2+AyUjE/Vdc8MiK4y3I3PUaK9NwlgiEIfpwAp5sksdxdCJ9F6hsa7CAM5jv5tMlIcPNRL1HFacvOh+kejn9/IzGQfZTpDe8XWwL7NExVQpHFu8YcmJTh/JUVTWP7nlMPh4ihe/ZcvY54QxnFHNxp9PBayYX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,132 +156,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 03 Oct 2026 14:07:55 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+On Sat, Oct 3, 2026 at 11:44=E2=80=AFPM Randy Dunlap <rdunlap@infradead.org=
+> wrote:
+>
+>
+>
+> On 10/3/26 2:22 PM, Luigi Rizzo wrote:
+> > diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+> > index 6e07bd69467a3..1bb347fd9da4a 100644
+> > --- a/drivers/iommu/Kconfig
+> > +++ b/drivers/iommu/Kconfig
+> > @@ -158,6 +158,38 @@ config IOMMU_DMA
+> >       select NEED_SG_DMA_LENGTH
+> >       select NEED_SG_DMA_FLAGS if SWIOTLB
+> >
+> > +# PMD_SIZE IOMMU backing for DMA-coherent devices
+> > +config DMA_PMD
+...
+> > +       Costs 128KB of metadata per GB of DMA_PMD buffers, allocated on=
+ demand.
+>
+> Paragraph 1 of the patch description says 64KB per 1GB, not 128KB.
+> Or am I mixing things up?
 
-[...]
->  
-> @@ -2519,30 +2662,107 @@ int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control)
->   * damon_report_access() - Report identified access events to DAMON.
->   * @report:	The reporting access information.
->   *
-> - * Report access events to DAMON.
-> + * Report access events to DAMON via a per-context per-CPU SPSC lockless ring
-> + * (ctx->perf_rings).  Producer is the local CPU (typically NMI from a
-> + * hardware-sampling backend); consumer is the kdamond drain in
-> + * kdamond_check_reported_accesses().
-> + *
-> + * The destination ring is selected by this_cpu_ptr(), i.e. by the CPU calling
-> + * this function, not by @report->cpu, which is sample metadata used by the
-> + * drain-side filter.  The two coincide for a sample delivered by an interrupt
-> + * on the CPU that produced it.
-> + *
-> + * A backend whose PMU writes a record stream into a memory buffer instead of
-> + * raising a per-sample interrupt, or one reading a device counter table, must
-> + * therefore decode CPU N's buffer on CPU N -- for example by queueing per-CPU
-> + * work with queue_work_on() -- rather than calling this function in a loop
-> + * from one thread.  A single-thread loop puts every report in that thread's
-> + * ring, which caps machine-wide capacity at DAMON_REPORT_RING_SIZE - 1
-> + * reports per drain regardless of the number of producing CPUs, and does not
-> + * satisfy the single-producer invariant if the thread can migrate.
-> + *
-> + * Context: any (NMI-safe).  An NMI nesting on top of a process-context
-> + * producer on the same CPU would otherwise stomp the same entries[head]
-> + * slot; the busy guard detects and drops in that case.
->   *
-> - * Context: May sleep.
-> + * If the ring is full, the sample is dropped and the per-CPU ring-full
-> + * counter incremented; a busy-guard drop increments the busy-drop counter.
->   *
-> - * NOTE: we may be able to implement this as a lockless queue, and allow any
-> - * context.  As the overhead is unknown, and region-based DAMON logics would
-> - * guarantee the reports would be not made that frequently, let's start with
-> - * this simple implementation.
-> + * Return: true if the report was queued, false if it was dropped.  A producer
-> + * holding a single report may ignore this.  A producer decoding a batch out
-> + * of a hardware buffer should stop on false and leave the remainder in that
-> + * buffer for the next round, since a report released from the buffer but not
-> + * queued here is not delivered.
->   */
-> -void damon_report_access(struct damon_access_report *report)
-> +bool damon_report_access(struct damon_access_report *report)
->  {
-> -	struct damon_access_report *dst;
-> +	/*
-> +	 * Only perf-event reports (probe_idx >= 1) have a ring to feed: the
-> +	 * global page_fault ring this dispatch also fed has been removed.
-> +	 * A probe_idx == DAMON_PROBE_IDX_NONE report has nowhere to go and is
-> +	 * dropped here rather than at each caller.
-> +	 */
-> +	struct damon_report_ring *ring;
-> +	cpumask_t *pending;
-> +	int __percpu *busy_pcpu;
-> +	unsigned int head, next;
-> +	int busy;
-> +	bool queued = false;
-> +	struct damon_ctx *pctx = report->ctx;
-> +
-> +	if (report->probe_idx == DAMON_PROBE_IDX_NONE)
-> +		return false;
->  
-> -	/* silently fail for races */
-> -	if (!mutex_trylock(&damon_access_reports_lock))
-> -		return;
-> -	dst = &damon_access_reports[damon_access_reports_len++];
-> -	/* just drop all existing reports in favor of simplicity. */
-> -	if (damon_access_reports_len == DAMON_ACCESS_REPORTS_CAP)
-> -		damon_access_reports_len = 0;
-> -	*dst = *report;
-> -	dst->report_jiffies = jiffies;
-> -	mutex_unlock(&damon_access_reports_lock);
-> +	/*
-> +	 * A perf report must carry its owning ctx (set by the overflow handler)
-> +	 * and that ctx must have an allocated per-ctx perf ring.  If either is
-> +	 * missing (e.g. an overflow racing teardown after the ring was freed, or
-> +	 * a report raised before the ring was allocated), drop the sample rather
-> +	 * than touch NULL/freed storage.
-> +	 */
-> +	if (!pctx || !pctx->perf_rings || !pctx->perf_ring_busy)
-> +		return false;
-> +
-> +	/* Pin to a CPU so the SPSC invariant holds for preemptible callers. */
-> +	preempt_disable();
-> +	busy_pcpu = pctx->perf_ring_busy;
-> +	busy = this_cpu_inc_return(*busy_pcpu);
-> +	if (busy != 1) {
-> +		/* NMI nested on a process-context producer; drop. */
-> +		this_cpu_inc(damon_report_busy_drop_perf);
-> +		goto out;
-> +	}
-> +
-> +	ring = this_cpu_ptr(pctx->perf_rings);
-> +	pending = &pctx->perf_pending;
-> +	head = ring->head;
-> +	next = (head + 1) & DAMON_REPORT_RING_MASK;
-> +
-> +	if (next == READ_ONCE(ring->tail)) {
-> +		this_cpu_inc(damon_report_ring_full_perf);
-> +		goto out;
-> +	}
-> +
+256B per 2MB page, 128KB per 1GB is the correct version.
+The number in the patch description is a leftover from an earlier
+version, I will update.
 
-Hi Ravi,
- 
-I noticed that ring overflow drops reports and updates an
-internal counter.
-
-Since hardware sampling is used as an access observation source,
-could userspace get any indication that reports were lost during
-an aggregation window?
-
-Without such visibility, users cannot distinguish an aggregation
-result affected by report loss from one collected without loss.
-This may make it difficult to evaluate the reliability of the
-observed access information.
-
-Thanks,
-Kunwu
-
-[...]
-
-Sent using hkml (https://github.com/sjp38/hackermail)
+cheers
+luigi
 
