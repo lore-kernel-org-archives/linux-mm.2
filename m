@@ -4,200 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBFF9CA5FF0
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 18:02:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 529F9CA5FF0
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 18:07:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1E226B008A; Sun,  4 Oct 2026 14:02:18 -0400 (EDT)
+	id 4EA266B008C; Sun,  4 Oct 2026 14:07:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF5BD6B008C; Sun,  4 Oct 2026 14:02:18 -0400 (EDT)
+	id 49AD26B0092; Sun,  4 Oct 2026 14:07:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE4646B0095; Sun,  4 Oct 2026 14:02:18 -0400 (EDT)
+	id 389F86B0093; Sun,  4 Oct 2026 14:07:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 98E2E6B008A
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 14:02:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F1A6B1A0BB2
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:02:17 +0000 (UTC)
-X-FDA: 85285713114.12.CA66317
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D88BDA0010
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:02:15 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JJVmz4dW;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0863D6B008C
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 14:07:07 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9915D160B86
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:07:06 +0000 (UTC)
+X-FDA: 85285725252.20.6FB300B
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010053.outbound.protection.outlook.com [52.101.201.53])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AAB0B180008
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:07:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QOvGeb1x;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.53 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791136935;
+	s=arc-20220608; t=1791137223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fxl6gThguTjmryCDwAa1VxSTqh72eFueCyhgsTktke8=;
-	b=qIqp1MQVN/qL28yX6QCqv+74gBwsPdZ/sokXYnoziqNfhjn0zjtKWQZ4mtbQKyT+C4sitN
-	BYVRD1HqW/K0G2soNmTfbpW1JFu7i/Z8Bn9plSvBelnVUXPyQuDj5E5VabYTRSMefdRjg6
-	quWCAxNyDv9FxjORHNQWK+0rgyCgYbA=
+	bh=LKl1Pq8id71YkKUpt3N3dSvtHPnSmyqjIoaUcssKSRY=;
+	b=opoHpCjyabUaKD663a+gTdCKIPE6W4HIwKHi07VDajZuuKedb7ARlkJvZakngvltOMfiEC
+	ANuno+7cpGDKJrGCMH1DGsUR4EgqrSUo2wGmIoZSiHbVNTs1XCXbLo5rPCrvu5ASQTDVGN
+	BEnWibJiSqgvyEXRMoh7vspSJ795WE8=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JJVmz4dW;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QOvGeb1x;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.53 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791136935;
-	b=hNMfgGuRXSBjSh3+RyyXRli3747WjwFZxQVTl+DjHfxVNS0DVK7viHY/vt0ab6bNcIzGP6
-	3q0CJUVaavWkKH57n3qJlmh2BnrTwRgVttJ6olLnNdC7AiCmwBUps+zBMEM+AD5pioPPQb
-	Se1ZcbnjMx68d9l63x+JkrL8xEpxAEI=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5337c7b9937so262821cf.0
-        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 11:02:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791136935; cv=none;
-        d=google.com; s=arc-20260327;
-        b=aW4MDV9iU+z7UBOU5X1+T5XLnb2d/bWfqRwmO37cSKwPbHG5rkb9SkYvAeRpBcGbNI
-         SjsenXH23nZ/qa8sbmeFk9UOYDBF3GJNIQ7/4XS1SZeHR746BRcpuo/OyjGrxyEBvk4Y
-         wRMjhC01vTP4TRTDjpEBpacZBtqy9SlDNktMYJCXKSb72gH05TCyKv6jfz1UNhEiggxN
-         qPYktvWB+7if59Q0e1bfuKrIi+2koQlmy5qndf7OKWxrYbrB9AS6FtbUrzdOVRVTpIvj
-         pDmdqaSsxYB8htbxdeBVIoC+aq1e0ma1Iru00VTD+b7mRKkyuFOpNQkRhEbHIAjTjLZp
-         0CsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fxl6gThguTjmryCDwAa1VxSTqh72eFueCyhgsTktke8=;
-        fh=uC2R5oETiIzcB3fAmyeerxw/GRuTsguf/h0lmncs9D4=;
-        b=rEr3fQxO4u4/CZoYJ2rza7cLAfn+vWRAlpTmKHDbAWGyCafJThz2/wCwk1baoFm5WK
-         msBBtMsVSqmPY3lAXPRC1i2PZTodIG9VlIXgga+e/Uo8CuQf/PYjdeax6BnNhCpn99q1
-         R8ePrunbEWINbtf9MAv+Gxlp9BETeOKwlvGyCSEticutpJXyIaL1KdqVJLKwW1jll9P4
-         qI1xLU30CoJDJEQRweE0zPuMOblM6jR65Jy6Q9mXULnH5OU4iNvLUEMMSNKTnYh1OT94
-         SOu2bBcADSAoiyxFARtM5Lrx32khgb2zU8qB1UHruzPPHVuFzqi1d2Y7B/yop6LF7wKH
-         JRNg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791136935; x=1791741735; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fxl6gThguTjmryCDwAa1VxSTqh72eFueCyhgsTktke8=;
-        b=JJVmz4dWdTJkb4ArKPnMmceeUGu2a4fDIgDGrm/8FS/ccXy52Qvw+TJSrJa1TOb0D/
-         Wn13Cvl+Y4BAdebGkhNJivGc0drBnOh9M9NTSD5meKy1j4t535DKANBVFOS09G4ulQDG
-         e8ts4ZEoxzgM54hjFAQ5Usp0QfK8UZoa9gNhOChQeTYP2CdJPFHGQKGYKznuJrkswPRr
-         olqpWleWPJmX54Cm622P+Xj4An0E7elf63wY1lTQo6tcU+t35WC0qx5QESMUVHG8CDpd
-         oc6ryh1KtSNb53X+INRBwUrWCdeA4mBTYpNB17HP7crx1U8GTjU1hk/uDRZPQBcu6FJu
-         Jemw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791136935; x=1791741735;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fxl6gThguTjmryCDwAa1VxSTqh72eFueCyhgsTktke8=;
-        b=NMJt3DFZrnRA2PQFplLyQOorLwy9uZNJ9zRH5O2AM7S8ONPz1fwm78dJnOGlFlpaWE
-         n/WvppBcc6JUtcw6I2KLJ7+cz64gLrJhBmM/9PaToaXgxakd4rcJyzaKGTC/Ry1Qp3Zo
-         K8tpvMkWlc1Ll/r18cVp3QbZyO7ib6uRMzutyK35vLl3DAJzmckNkutw3GlD90lq3A/D
-         fV5LCWM6EKKfcZEvYFu/gCv4o8TDfSWlSBK4NCb7YrC5H5845bGvmTYRg542AmGWEb09
-         plxR5Nc8r1zaUraCenoMQvtD7+IFvQIUF+4gctw/xW7s7UJHc2KTZE277da4VnKUZMON
-         I7rw==
-X-Forwarded-Encrypted: i=1; AKwUvBzgQQQKnW7QomQq4VfoGTRcnKuGD/2R8KjdH5rF/zwljuaQ7Gg/LzMndIAzsYAlbrvVf6gRVo6Wgg==@kvack.org
-X-Gm-Message-State: AFuF++nK+DVSrhwZeOYeQ2qA8WBejBupPD6hJ99BFXjkHD9dnKyn8Er6
-	yoC/vj+QRHeAsGT4Ia/rTO+uDFnAXiw0Qp1MZl/C1CR2yAn8W8HO4aj1nGP/wpoP3pgjpbIe6Gd
-	lrNuGihBBbdhJ+GNqnxgEjwuSQPrCGdnVUBm1p8u0
-X-Gm-Gg: AYBFou3JQ880XEIvCrb3eY0IqrXZdtLo4p+TlLMQwzr91Vv+kSStaAFNM7ZUoa7dvX9
-	0ButIFfauXqCYCbxbkMPbNyJwBmJRT64qJQsFU35WIO70Dlguu2BP9hX6/OiX+77iBPmL4cMEDK
-	OPNtmnkSPTKNrtZAaYzk4A3K8aqMJFjqFE7Ao4+DTnk7dMvjcNjBMYmGzqfl4LUAihWTy9BZnHz
-	GUzAl2Vb6QA2x6GcsfeB9XSW8FpO78kQzTJ6Gsyu4pReiNaabKpTdndMbFOMwQyQHRD9PGg5zfV
-	oqIrLSB5hVBUq3vY5QF+uvNVpQW/xT4/2yNPM+sVrrbpPA+yESp48REX
-X-Received: by 2002:a05:622a:1b20:b0:530:e335:4ef with SMTP id
- d75a77b69052e-535113c3cb6mr18023261cf.2.1791136934142; Sun, 04 Oct 2026
- 11:02:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org>
- <20261003-b4-mmap-prepare-vma-flag-sanify-v4-18-a1f052500fd7@kernel.org>
-In-Reply-To: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-18-a1f052500fd7@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sun, 4 Oct 2026 11:02:02 -0700
-X-Gm-Features: AclHuK_nOqMX3djeZOdNLjNPymjaWdesvnL51eoG4SJjNhtYox1cB5x1yziRAMs
-Message-ID: <CAJuCfpHiaV6uDCfOMmHJ4tPosUBPRMUF9zjrB0fkCWZG1umG5w@mail.gmail.com>
-Subject: Re: [PATCH v4 18/38] fbdev: defio: assert FBINFO_VIRTFB, drop VM_IO,
- add VM_MIXEDMAP
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
-	Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
-	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
-	fuse-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+	t=1791137223;
+	b=oeRotLaHdPq38D7Qp98uQuA3xT2YXggLpWm8kVl6SAUjJtJa0g73YDNNiwnNvNNYRmMoXZ
+	/uYmEY8S/wPV4UJSpzm0t4l6yfqioKTX9yTxPiGmLJ+R1iJzIG2tFq8z0rNJFbGyIKky0G
+	Qab29GXl4dD9ZPOSfp8ZwQ4G/Ejs6Qw=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vgGw5Yt3EPdBosBy1PvIYMGsB0eZN46t/nDmcJwfgdM/BgkaGXCfvlsYVxQ2Ul5Ou826qW51QgbnCkgauYoMQ3LscBsVrpgEs1jh0rbq3vFZnYSuI0anYGal3pSJjWlSs8d3+5hHpeYWlr2WSUOsqxOKROJT2yjLnnF6vdZLGFtYntGHkNucsgCvaKcGL+QwUE0xBbiuB+esCF6V6/2ypG6qnM2A87/BLALZiJ7WX2q46XK8AtvLSQg0dCDAMdLSBG9ePoIkALYw0WMT9sQwEfYmuHjyW64KwhjGqDk8szeiU97yuesNG8/524raVQJXw5b/nZpUGcTJ/6TGIQVNbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LKl1Pq8id71YkKUpt3N3dSvtHPnSmyqjIoaUcssKSRY=;
+ b=qe7XH2VuKGQOXDcybHbQbrCuWsF4D4HO2cA+A5SiCO8q9JKhXSpJhhQpCIIWq6qw8f/j7NSaysBG93Z0O1U+tP5TyLLuGlupOx+/6O+HjjqBBxJezzsbBXVN6xR6NCWyZMKOwp2otj1CVnFYcKvYhzfY2LGNhoJkcVaMkt8S63uMTNbH6vps2EoxRfshDFC3B2SjRKRtV5YUSH5ap/R0hjBf9UwCctwY3MmOQdFTuIFgxkfsN68k4mgP/IjHR+VO6WzZdWMgqD+Sbo8sjirfuOch7tL/D+BnfIQIgjvjiBMTie0h5F8/fymsCcBkS4m8/jxF5ntvuOg8/d4VzNsnyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LKl1Pq8id71YkKUpt3N3dSvtHPnSmyqjIoaUcssKSRY=;
+ b=QOvGeb1xTBbPwugR+Ewlia464ENfu5yQpqUnHDTbAIjIojV07ImleqrhdVj+rqxp8qGcB4AS5XuaRNdRPTCD7++xiYmrTkDkzAhan2dyrbP7zr7XL5qXiFY/nysXRFv4iv/XgHCFX/0pxYgz1geIk9TrSJpf+Z6ESgBuVpfS1D16eYgq+7/wEUXRaa6p5nBQjjmdg6fcR5ZBNKyiA8iKCMoCKPwNjYtE4+Nkf3JOAqHr6omziGYW7qlGSQTZFUC/iAwmBzmta/HC7yNJMCqZSeeYFNn5pWKV4/KS2+g951nYTHjQXEEtGujSzv2uD8Jyl7PTg1ey1ALESpWACdQBwA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by DS0PR12MB8479.namprd12.prod.outlook.com (2603:10b6:8:155::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Sun, 4 Oct
+ 2026 18:06:56 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0472.016; Sun, 4 Oct 2026
+ 18:06:50 +0000
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 04 Oct 2026 14:06:48 -0400
+Message-Id: <DLW95E2XWSVT.8W90FW4WG6K8@nvidia.com>
+From: "Zi Yan" <ziy@nvidia.com>
+Subject: Re: [RFC 00/12] arm64: Add support for TLBI domains
+Cc: "Catalin Marinas" <catalin.marinas@arm.com>, "Will Deacon"
+ <will@kernel.org>, "Mark Rutland" <mark.rutland@arm.com>, "Ryan Roberts"
+ <ryan.roberts@arm.com>, "David Hildenbrand" <david@kernel.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Linu Cherian" <linu.cherian@arm.com>, "Anshuman
+ Khandual" <anshuman.khandual@arm.com>, "Lorenzo Pieralisi"
+ <lpieralisi@kernel.org>, "Hanjun Guo" <guohanjun@huawei.com>, "Sudeep
+ Holla" <sudeep.holla@kernel.org>, "Marc Zyngier" <maz@kernel.org>, "Oliver
+ Upton" <oupton@kernel.org>, "Fuad Tabba" <fuad.tabba@linux.dev>, "Joey
+ Gouly" <joey.gouly@arm.com>, "Steffen Eiden" <seiden@linux.ibm.com>,
+ "Suzuki K Poulose" <suzuki.poulose@arm.com>, "Zenghui Yu"
+ <yuzenghui@huawei.com>, "Ard Biesheuvel" <ardb@kernel.org>, "Ilias
+ Apalodimas" <ilias.apalodimas@linaro.org>, <linux-mm@kvack.org>
+To: =?utf-8?q?Kristina_Mart=C5=A1enko?= <kristina.martsenko@arm.com>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-acpi@vger.kernel.org>,
+ <kvmarm@lists.linux.dev>, <linux-efi@vger.kernel.org>
+X-Mailer: aerc 0.22.0
+References: <20261001110655.461473-1-kristina.martsenko@arm.com>
+In-Reply-To: <20261001110655.461473-1-kristina.martsenko@arm.com>
+X-ClientProxiedBy: YQZPR01CA0136.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:87::7) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS0PR12MB8479:EE_
+X-MS-Office365-Filtering-Correlation-Id: b2303fad-ba7f-4d9a-e50f-08df2242437b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|10067099003|56012099006|6133799003|11063799006|3023799007|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	YG8SbDp3221bnK0U74/vL9hMkGDwxNd+ugi8N606yyH2Gtg5WNDraHWqrSNAvD+Z4pDFpT80gddM3AgUGwimLuqUanvgJTY4FDVyQflVLlbnmH9b/DLNFj0oxCf9UChYc9ndSlfOmxTrRy5MlU5RLcRBfJIjGOt6reDI+x6XysEQsyJANOvLTSn8eNj7d6jjBT89TyEuXCgq2OgLq2btlaNG0HYFlj5vYns+0fKKc+ALd8wz4tU6noVvLbi7HI+vnSIDBbOKO3ed9zmWVjwDTXe271uegekqkcHzQdlkPEBmbSsvSTnTt4La5rUKc95frZttQPJOplkvSh99A8f+pN1w6uz1ev2s196IxuXD5raa30qQXN1KsNwy3mw4csE5hbvfGaS6R/9YZyog/x57sg41ZYU2TLazbJhobGR+jr2WA090szU94E+3L9DrsTKkYXk0OXDSo1uPUtCiZHWPObFPBvJiZJb6cHbmfTkFUnQcXsb1YjQiWQ/LqLIVTJfZL2dcush1iJIg1JwSQSj0fR4YCLaDklRc0tOjhRQU++eaTcPvP23evBnbyAI42LnCbBTbIj71AzE+kDW8b6SJN15J2G4cefhnlkGAjyI7XosdbgpH86Sp+VN3YTO2+6wt0NYmaD+eBtSdE82kP7GbbP25Byio1JoJSXz2+2CZ1GQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(10067099003)(56012099006)(6133799003)(11063799006)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U3FsMWw3Mkh3WE1jNlQ1SUNINlg3ZU1pNDlqRnNMTUV3ZW03MjBWY05NZ29X?=
+ =?utf-8?B?RVRaVG92ZU5mRURVMUgyNUZrblVZVFM4aHYyTkNVM3lQRFIyN3ppd1JkbnVi?=
+ =?utf-8?B?YnRBbVFMN21oQ0pTNEtnSVZXRnF1Y3NCMndYOCs5UGZkK2hrOVlRbWU5Q29Y?=
+ =?utf-8?B?WjlERUJjMlhEWWRQY1VvZkFSSjJXMVdTaTdsUUxSTVlXekY1V3QwZ0Rsdlhj?=
+ =?utf-8?B?Q2EyR2h6eWcvYlVqNVovK2V4UzRCTm9zS0h0eGJUVEVrUGxxZHFBVTVkNUpO?=
+ =?utf-8?B?QUNmYUlod2hQQjBnOENiSDE2bjlkZVVWWWxaNHpSalNLTjQrWXBIT1R2U3R6?=
+ =?utf-8?B?eDBmY3BhLzhselY4THJDZ2NhaW1kbGIzTUZhb0VJRGtIa25sbHpCMU9kSnJr?=
+ =?utf-8?B?K1BHckFpYno0YWE2TmE2WlZBUWhaSEJIT0M5cSs4NXpZUkppTG9LMHU3WmR5?=
+ =?utf-8?B?SVhBWTZMN1hsZXc3TVJlMWR0NjI1U3ptVE9KMjRWN3gxUE82TllzMFhJZXBF?=
+ =?utf-8?B?eFRwR2xDVjdWcXdqNDlwM3l4aDFPOHVpMlZWVHdrKys5UDF6ZytuOHNDKytj?=
+ =?utf-8?B?ajk2d1R4ckpIUEUrWGwrT2lzb1FoL0RuWmVkRkVCbmVMSEpkSmdrbytMYVND?=
+ =?utf-8?B?dXpBYnRWYmErNFYwaHIvek9OZ1IzY00raGx3RmttamFFSU9jN2NsT2FKbU1P?=
+ =?utf-8?B?U2orS0I5QS9XS2N4MWRVZlhtVWh1NUhCVS91Y0s1bk1sMzJvOGxUb2s1RTU0?=
+ =?utf-8?B?MGZlQVZVQUlMOHo3NkxUYUtDczZzRFpFQVRRWWQ4NXI0TDlIM3o5SkRxWHVa?=
+ =?utf-8?B?WkdJUnFrVFBYREF3UHFwU1FNTWd5THJKTzNDdEpzdTM3K0lOb0Q0akVkU0Ja?=
+ =?utf-8?B?VXJqM21MeHhRUStOc2hWbjJLWGdVamp5WHpxWTdSWFRCSTRLbnhmRWRsMkpM?=
+ =?utf-8?B?dXd3RmVxbDdsTnhGYjFrWjR0bEQ1bkd2bVRORU56RzArNlZHOFordnRCL013?=
+ =?utf-8?B?SnkyZCtKRnJlNFlTSDlkMU0yd3VNbUNzV3VCblAzTVBQUzZZQkpzZ29DVFVC?=
+ =?utf-8?B?THg1YlRPU292TmdWU0FVelRRd21nbHVyMEZJbzA0WEpUVlJieHNXRzdmTGZs?=
+ =?utf-8?B?YVp5Rm0zOXdQV29uc1NPTnRSa29hNzVyTlpCYXZNR0tJQVN4cC9sMlAxQldP?=
+ =?utf-8?B?S013VUtzSHIva1lQMVczOXpxNitoL1YzZHlhVUNmZnlnOEtpeHhUZktoRVpK?=
+ =?utf-8?B?SjdydjRQM2hPcXJUZXMrKzRNL3JUV1FHN2Y5WGZtbDd5WVoraEtyRlQyc05N?=
+ =?utf-8?B?RHJwTkR1aEgySHUwSWV6SDh3eXIzbzd3dEVsSnZQN1FZM1VDb1Z2WkFuZjdp?=
+ =?utf-8?B?eklJdU5WMzh6aG1vTW9CajRNTzEzcnFWTVNpWXpEczhmdnZobFdRQS9rN1li?=
+ =?utf-8?B?UWk1SE05MmJYYU5TY3pDTk1tK084Q2djQlphZ245NWFMTmhhcTVUV1JoU1pP?=
+ =?utf-8?B?d1I3S2QrZXAwTS9wZVJsNXkxUzRmdHZELzlYc0dWN2JUR250MG1hdVYvV0U1?=
+ =?utf-8?B?ak1ES3Rra2ljK1NlWFRqYlNBOFRweklDMDhDTFZIZXJCaG1iN2tka0xSbHlp?=
+ =?utf-8?B?cTAwei85OFZwNG9rU3Y4eHJiRkF1dlBXbmRKTjJyUnphRHB2R2VSRkgydDA4?=
+ =?utf-8?B?b3lRZGNDQlhQSnYyenhadndwM25EaGR0Q1BzWEw2QVJPd1g1aUtNR2d1RUZs?=
+ =?utf-8?B?UkZiVnpCSTZMRWdNODVGeGZOTlkwSElkTGIwRWtwM2QyQzZpeTZkQ0dOMG1W?=
+ =?utf-8?B?Vzl4VTIyL0w3ZzZMNEZucFZyR0lJVitxRHl4SmxHdmlDVVJBNFkxMGowbThN?=
+ =?utf-8?B?VjBMZXlQdjhrdThQZE8zNmVPZzhIQkpzVkNvbGRnc0lkU2ZsUHdLYlNnK2JZ?=
+ =?utf-8?B?eHdXN0wwcVdwcWx2RzZLT1V6aXZDblIzQ011K2h4S1piTDQvcWk5UUVTTmx2?=
+ =?utf-8?B?cWpXb1VuRStRZThsT1E3Qjk3RVFkTFZhQmI3ZHRTZTVaRm81WGh3ZVUrNllv?=
+ =?utf-8?B?YTdKSndNNVoza2FqemxFU1lXcCtDSW5WUzlDWE40N09HRWhlcmgrdWJHR0No?=
+ =?utf-8?B?ZkpVRFRnVjU5dTJxN0cveEpCVUVCQmJDN2UyNDFwOWoxeHFJM0FGOVZHcFZL?=
+ =?utf-8?B?dktyWnM2WmpYcFVTYWYxOGN3R2ZPSlJWcmpibFd6cVhyaGRhTGpBSnVxWFNN?=
+ =?utf-8?B?Q09sVmY5ZnlHZWdOZlNxUW04U0NXNnRKZnBsdWxaMEdiRXhEbVdaNUdnL2hk?=
+ =?utf-8?Q?udgJfHDof4oLWJ84Wr?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2303fad-ba7f-4d9a-e50f-08df2242437b
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2026 18:06:50.6717
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lw3as9qm8Yr60/LalEpHR2zBOc9gmZP9NFUGiyUAYftemw1lSX9sc8Mgw/AcJ+iT
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8479
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D88BDA0010
-X-Stat-Signature: za95agqa8w85cs7yempymwo35yzbjcwz
-X-HE-Tag: 1791136935-934736
-X-HE-Meta: U2FsdGVkX18Njsfd0FJGz5wpFsvc9MI5J8CBX6wUoS5X7OeIW0oIBCodrr7Ag8X6dcifG8ta1sTRRkFE8/4eM21A/wDuX6qAMQn10wdn5+iVP6UeFs1QHXUsWDVYyYYzGlWIeD1IWS4FTGh5TlMAyjOVbpRwtlTDIkGgoDCBvQcCUq7RFkVBv8IyMRGZj0k+8lBTfXsJ7vHOOFAjvWamDV+g/p+E5VGfGgHufAcOF4QPS4YLq7HwcANkITK1F4iTmLLIbek3Qfl7ca8ImJ3g6rt0+TdgTqljUpLp1wbHgBPubT94gxDKEFph6tvxrecQz+uASO4l9jAwBWf9iaknCWpbY5KqYKRfF9XDBH4ze+N57AhPs5vBS4SZk/67C1LdHBI2eW9Qp6XKxup1pdSl1iEhS++ayFaBZj6nDTaQn2c56HomjDdqUSxHOKI6f5DVI1MkPeQvrz7mn4l8JjINXDCEC+ynjmJ1XFSFKU07N4OmdGvr60UPEQFm5h3/5sKb+gsj4Fdg/76331l/xcv6UjYwyanC+8Ljlrw1VBpNfEGbAs1tKe1XVHdcWk6o+eNE5h4+O9WKWboTkXPeFhIFrETw6+kLpZlktXZrbQ4+EP0o4kP1wbOd1BNqmO7tkX6qr6NgCZa+Egk9eFsSUrT86egE8kFWbnET2Iy7lOTgbCqp+yUyLq2coU3eMFv/1/e0V2VBpx3r3rQcjnGWJm90oz0C588Z0j2Be+6QLO1mNik6CW37e3iMpug1NSzdXosdvGXsjYLyR/n/Wdueey1E22B6dmrqwcf0RM4/3CSc4uk8Vr2iAwjxM0nBX3uVl3MpvQVA8vXmbIeSW6qLoeTCgkI7vPTNgwsedmzhMRmGU+hTu0sy6AemEl/CCnTPn2hKVfPHU8gMndVItDyX7NyG2sRytEnFM2PdKIL15wlxuT2bod7D38ow2AufLQkS2cr9VYSWCmaSqA7CK+3MBLX
- KNMIv6+g
- /Eq4amGwzfhtHD3kV5CxIyNJSZx7gMCdvBqIv+oGLX1F1AoKSpFEE4eT6VeVC7sJPW5Zllg/mWOAVkTxIxEAK+EcJ6aZqqJEMUaw7cxk2xllVHy8w1krqKfR3IC/K958k5noOTTtn5fqXihSIIsHFQO9cVD9OKA1FC24tUNt6L9pBMAHudnNc6skZ6EUoMqcJjJ2dFfYeNxk5qJx0hxdTBYIx0aXN5o7BxLeGi08MUO4jcLXpeopTULsyx2fjgwcGyccJ//dr+6965vUfgaDsdPpi5mg+RdzFILuu6Tn6LxBRPdOxDW2wNO4jAwvMPalJyzKwnbvVX8kk3ZiA1PbkFaKsgUhGkXMCSMGpHWsrikH7cMnzb0zMbrfUF5FYZ2ldIBsAYbAaPtJFj/x0Ss7Ol0p5Wc7A1FBqZHBdfKR8NJ6srWbabjigE/0Q1hjm/KPVtGqhkQaBfrDfSycSpLEC9tMHAFuO/900tIOP8ILPNsBs9hsf1wyzUMNYH3DZTFN7OFjQ0TkdB4fTljXxhu9O2FyJB5EAfGXFR3jgULWFSNzmCaOc/oThNoCYZK/N9QsYFHqsNtE2TVcAP3tEdbH4grBNLJtp+rkf+vQyFBdmnOzDMt5ulFDRc13Wyx/gUPzPqqBb+g1lDNJ90NaAwtT4w1+rD60o1+8wlkohKK9gL77gYwhi//9Mrm5gsePyEYEDmxSaRpKNVdpCmw9nC/GI7aREDA/g5bPJMHJhpYKcfBLqGrimGqpM68APQLU9Ozu25JLUiSC6i/mH37zCHmfrwmgx5HY9E6jSiFSX4uR0OUyJ8AGbBM4Ob9KVLG7R/HkF8jqgSnsRR9om9hHfLDJOPnRxTmTWbLK9iM2S4j2aOMRFQWFlATERWsOtARVvow5D6/28vf0JZBKhnEMuEjvRDytBF41czvnOT5tTuzm2fO/qRcuBrKQHpFNoztW8G1eSEo875eMztvAOl69Xy/Zi6gzcpM/h
- Y6o1owcB
- jCjWPjiijjfzffok7ADMswDRFNgvWX6Lo7R+VmEvZEvv20XFBSg//b77Z9FfCKzS6sN1qr3lKHC8mmUjQnHHK/ON0+8+2NA8z8Gx6j/RFbekvfR7esy0GxMv0aDTvtA0mjx2lw1P0CmwJtpzdML4GRp98oT8vboXYWIdqjOPZBACBXwMqXZ9jSRpk+FetHyO5nwKP3T//uh2fk4B5nT9hMn3lMhB+QZqm+6T61w4SHVYilvdkOSTAJLs6shd3sKihJObu0kzJAQswQ526YgO23EHgcYpF8AnNJen9p6L6EwmpsZmocwvpLGegM0OrSLLJNdVHokIVhpJ0IPYIaBgB0PunY10DimvU5eOnAX9EZyPy88Aol9ig5jwvdNlMuOuuka90qfYTI63Z5sUvYu/3oxdAmNiWDWG2/GwkCUjtf9eCdkf02AE5BOxVXzthWysvNrSpHV6eObtUB+egFggyhyxaMBmlA/SOoIY81/sAJmWewXyGLN5sjl+BXFA899wbz6Tli45EBaorghCrGvyLaX313IknmT9Im+DDwC8Zo5eaCKJoMJhfQOmdObbAnvymjlFbs5+Jv37GKdlOx5MfVaar0zMlAbUPiTpvuYObJtuKs2OUHEVfzT581/srhIB3VzO5Kw/CxwPWdlOhIUvW+M2eHNDPXk4Dz8hVauL1bqfh/XASLG7PAilWoWrs+YF+3/dV3W+xofHdU6Rs4DtY5VViSYiU4blkehlV7LIUTjJuFJII4sfko89E0pIVUZCO3YNS1f0kamuJvgusgGlPqduQjiO0wYX/wpp5XvXav0a6vsTzEVZhRmSONNEKI/QCNiU9vj+91JBMJs61pO/RsKSQabYJNS0YRRtmXdAVTLSsHc9uWZnrc1LlQpFXb646b+RJlFBOqV5A4d53+F8h6/udkob9xWZpq05tCiUpeEcHVwB35D4tjvhdL3VGZU7BK9ZcXob4avSaCTJ12XxCp08HVj2+
- sqKbcaJU
- N/0yNbOCzJiVJEujJ6+2/3itLpLPO5G11r9v+a3hTEf0nt4DgdiyjLV+HA2ANA0b7P54e5yhxLWMxdUH8o5nXqY5FzP/v7GZLPRvH12aUAimacP8lem2GN2dgb5YhtwTYGkOnmXlQ/36TwWdB1I29Qbt5mrl7QwBd99UE47CZ/aTBTYyUAcsebjJiwZYZnLWLzxsAcjUqzcSk7b6MqOJFNgRyr2T3r6RCK5ZCVzBETP0aP1qKBTDczmC5Os/mQPdubTbuZn7Vq3ti3Sv9hzwQSgPOMlINwXC7PWt5CL1iBmNJRMZSi6uDMM+qUD6+0kbFhgR+prdPRBt7NT/H7tiR8HqdGZ4Q5WoyjUYa63Ccpn6njb/pq4R4wS3LB6R6lFc0Ry+4OF8a6pYn8kXj5Jmvh4H0PraLEiDq9C7yvbTF8RZs80jW4YqSjpqL/5/N4D9UCDgpuOBMnlAuAxQ0qLWuygmHafdhQlSkfV9Tv3jWZy8NaQQ/G/w3gsih520P6Nl/iKfFb4y5N9Zcc+SM/ucQUPXaKVfuSS0idstsz3I2IeIiIUiiDLtexVyf+OEsqmHjqZ3dVfn7njTPHSFcI8pc6YgxuY3BF1hI3uFEdu181/iAiv8A29LwqaiionkAaCswIrqMwVyvla5hs/JXHLslOegQg7I/jtf7NMmkXmcqT13qZ49cTYgenbf5TXPFUrdrqlaDIB5bYmk/Oa85XHQZNuxXT2rS9nMuooJd0gIvWNgiTinw/01wZrS68NGfrPHMpV8mQ7JDkLfdj4wTQ5q7s1S5iU8yUBlN5yySxIzSyfqzg+f5vpWn9jZ5YhPwkA92yGzN+GMC9QOif8hMxyGGjeEtxfNWTY1XPojyYYtpyQCN7dEN+q3pzNi+f/baYP+1CfpmdgjPBZXEJxrNtwHBLnpi+EvHiV1sAUz7CrE1VdMgR1wpG4uRthgRb0fkj3Yz7+3jY0grNy1FqoPesxfIU0Qoq9bD
- mXTIyfw6
- I0pGB98jpXqQZWuy9V8BCcct1KonqCKX5BMo7sgKDfRxSusSEbdbyg5+eQvxZi5T9pt8jgq/+hrKkXWO7mmvvjvpL0Jzp41ngmlrMGR0RQjNZ5fSz1TNAyMab16RRY5wjupMr+fgRTk2sjZTd6aOfB/wAZEaGwNckhysWGdbo3dRD09rK2fwhFfvF0JTObrLPNmeuHeGDH4M18cdw+JbEYxwDzpCwJ7/bu55mhRMSYswFi+JCiAYx0pVb1vI2D4FEMCWPLXomi8ybHfYO04DTwPtiSCZ1jseb2fA9PAWR3jZqp2C+mMrUMZ3azh2BCmk+Q0pSP/4u4snujZ2kykyCnWevzVR/c+pwVo4DzilpPHDlwYsJ97wS2LiCDX+gxB04=
+X-Rspamd-Queue-Id: AAB0B180008
+X-Stat-Signature: nwwrrkjjon9dfg54i8huxya7nh4jxfko
+X-HE-Tag: 1791137223-482114
+X-HE-Meta: U2FsdGVkX1/rZGdQYa2YRdhHXjyiuZD/EPHg4MtAFX7obf9DOZD5M0J9adICcOyZoePaoJJuCt6mldczkjsEVgha79Yh7OuJS3L/qEIlxh7oaC5JeYb17rmjsUz2TiDs7v8ap5MHkDP4NcpfymkjMzvWvvSSMqhdwEXIgPdQySSZwFnv8kqnfuThgRmo1QPmujg1Q4C72G0Rhy6QX08wcCAdOdo3PKH7lGl7T/NrrAN7V8dE6ISuhDIF2ifO1bkCVt/ZeYY2t7J3npLQVZ9YKe8XH7E7cQt0RiNkhJzlTI4KnpOuYTn56+JFDFcb9LRGQFNJJh9nBVeKkdkEwrA/d0mBrOlSWmO6H6yLl5lkWnk/ijkC3RP19ecznfAdq1cVdrwAVZVDeRx//xIsek7L4680UGW2h2zvERxDRHBJvf7t8qBz8pjZW76GcpQwSo9FEvJoG9LaQkfejQwl9f53pygvnr4MyV6MjgvZb6ERjSARiP8S9SC3QksnY2dslDp2onu+T41LWn57v8MolMUmBBdkMWcfIhW7EGZmF7urOyEax2/tJzj5CRIxXFSuCsb/Rdocxgpd68KETzkU96+TE/jgBpBCBxsE+mt8Bi0kQr58Rgugejx7m0ovKyBC4nrFkC56iSKf4OzaXMddw/KQ5lmgFL6vJG8Dyad0mYTNaW17OpNhiLp4nYZxyjrwOHzU+ITcNUvRwW1npKAt6UNP7V3hnpNrxpH1WNO6oVR2Sh6qPhtZflJYffV2mUhEfJeEc1VRxuexTceD4/7Y8K8CyuagneE6FNLkkgngpe9qv0zvyZoYdHpfI3AYjr0IWXpfyJgmCZWK4oM33u5uf78yr+531HQCwNV5fTP4WCD9ceo+O8Zz3F78wpHQby42k5kKMa70vwCHSELQTXbKGsjuQ/RW/v5CV4pS+5LW9tHZI5ZXHIEWdMeh2Ftkgp12jBkHWFOzkJF4HafmwxML+3H
+ fsiMOpC5
+ O/ytE3bNsgMcSQAiLBLYXEA0zgdZDd7mYD6Le5UWIZdwm21C0cx0XClqd8jOvc6l1zyjDN7wH488E+w9QmIOCRyTlUOpCvx9YL0CqG4zCtKwoGxrrT5+cXFDPXkFmc6rEz6gwfHMsqdUGpfTJhYzbCa0S5aeoQHFiEcNdDzbyWndrmDscLaBS1PbuQKtV14HsY3eHxZga2ITLEqhQtXx33vb0kPFKssT8RbwU/kmGGy7XmDxYkXlcekBKrLowdkRbPcd/Xn7gVhJTJVP0W2fhL2Z4KnGgBYFKXn4MU07CE0J/CXlIIaSDln25v2lbHUjIvBC4VBt5EQNXq730tBQKm4fbcRVMFGxRTxlkIu+Zxk07ToyA70hPOdYXHYJ3IQVQ/LxBDsrDJ1RW3EaZa40bLkorZ5K2AmCWJaaoWjBzy16n7YxicMMQJUcWKGsgzplFMmVu9oTr+13/iMs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -205,80 +181,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 3, 2026 at 6:39=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
+On Thu Oct 1, 2026 at 7:06 AM EDT, Kristina Mart=C5=A1enko wrote:
+> Hi,
 >
-> Currently all drivers which use defio allocate system memory. All of them
-> also set FBINFO_VIRTFB, other than ssd1307fb, however this driver allocat=
-es
-> system RAM, so simply failed to set this flag when it ought to.
+> This series allows the kernel to use TLBI domains. TLBI domains (FEAT_TLB=
+ID) is
+> an Arm architecture feature that enables a TLB invalidation to target a s=
+ubset
+> of CPUs instead of the whole system. It can improve performance on system=
+s with
+> many CPUs. TLBID is not yet part of the Arm Architecture Reference Manual=
+ but
+> some of it is described in the latest XML [1].
 >
-> This patch sets FBINFO_VIRTFB on ssd1307fb probe, then drops setting VM_I=
-O
-> in fb_deferred_io_mmap() and instead requires FBINFO_VIRTFB to be set,
-> erroring out with a kernel warning if not.
->
-> The logic requires a page from the driver and since commit 1ecbc7dd2902
-> ("fbdev/deferred-io: Always call get_page() for framebuffer pages") has
-> always required it to be refcounted, so this was implicitly already the
-> case.
->
-> Finally this patch sets VM_MIXEDMAP, as the logic is mapping
-> kernel-allocated memory so this is appropriate.
->
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> The goal of this series is to send TLBI commands only to the CPUs where a
+> process has run (i.e. where its page tables have been installed). The las=
+t
 
-With the same disclaimer as in previous patch,
+IIUC, mm_cpumask() is used to store this information on x86 and other
+archs. I see you put this information in tlbid_domains of mm_context_t
+from patch 9, although in the form of tlb id domains. I wonder why not
+make arm64 also update mm_cpumask() like x86 and other archs and derive
+the tlbid domains based on mm_cpumask() and a cpu-to-domain mapping
+(added in patch 7).
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Thanks.
+
+> patch explains a bit about how it works. This is an RFC since I'm not fam=
+iliar
+> with the kernel's TLB/mm code and I'd like feedback on whether the genera=
+l
+> approach is correct.
+>
+> A few notes and open questions:
+>
+>   * Domains are described in a new "TLBI" ACPI table. This is not yet par=
+t of
+>     the ACPI specification. There was an initial proposal [2] but this se=
+ries
+>     uses a newer WIP version of the table that aims to be published by th=
+e end
+>     of the year.
+>
+>   * There is currently no device tree binding since the feature is mainly=
+ meant
+>     for server-class systems.
+>
+>   * It's also possible to use TLBI domains to limit a KVM guest's TLB
+>     invalidations to CPUs where the guest has run. I'll try to include th=
+at in
+>     the next version. This series only disables domains for guests.
+>
+>   * With this series a long-running process may eventually run on all CPU=
+s and
+>     just issue broadcast TLBIs. It may be worth periodically reducing the=
+ set
+>     of CPUs but it's not clear when.
+>
+>   * There are currently no performance numbers since there is no hardware=
+ with
+>     this feature yet.
+>
+>   * The series has been tested on an Arm FVP which supports the TLBID
+>     architecture but does not have any domains (except domain 0).
+>
+> Any feedback is welcome.
+>
+> Thanks,
+> Kristina
+>
+> [1] https://support.arm.com/architectures/a-profile-architecture#Download=
+s
+> [2] https://github.com/tianocore/edk2/issues/11999
+>
+>
+> Kristina Mart=C5=A1enko (12):
+>   arm64: sysreg: Add definitions for FEAT_TLBID
+>   arm64: Detect FEAT_TLBID
+>   KVM: arm64: Hide TLBID from guest sysregs
+>   KVM: arm64: Hide TLBID from guest instructions
+>   ACPICA: Add TLBI table definition
+>   ACPI: TLBI: Parse domains from table
+>   arm64: tlbid: Set up CPU domain bitmaps
+>   efi/arm: Check return value of init_new_context()
+>   arm64: tlbid: Track the TLBI domain of a task
+>   arm64: Support TLBIP instructions
+>   arm64: tlbid: Pass domain to TLBI instructions
+>   arm64: tlbid: Add documentation
+>
+>  Documentation/arch/arm64/booting.rst    |  10 ++
+>  arch/arm64/Kconfig                      |  12 ++
+>  arch/arm64/include/asm/acpi.h           |  10 ++
+>  arch/arm64/include/asm/cpu.h            |   1 +
+>  arch/arm64/include/asm/cpufeature.h     |  15 ++
+>  arch/arm64/include/asm/el2_setup.h      |  76 +++++++-
+>  arch/arm64/include/asm/kvm_emulate.h    |   5 +
+>  arch/arm64/include/asm/mmu.h            |  13 ++
+>  arch/arm64/include/asm/mmu_context.h    |   9 +-
+>  arch/arm64/include/asm/tlbflush.h       | 219 +++++++++++++++++-------
+>  arch/arm64/kernel/cpufeature.c          |  25 +++
+>  arch/arm64/kernel/cpuinfo.c             |   3 +
+>  arch/arm64/kvm/config.c                 |   6 +
+>  arch/arm64/kvm/emulate-nested.c         |   1 +
+>  arch/arm64/kvm/hyp/include/hyp/switch.h |   7 +-
+>  arch/arm64/kvm/hyp/nvhe/tlb.c           |   2 +-
+>  arch/arm64/kvm/hyp/vhe/tlb.c            |   4 +-
+>  arch/arm64/kvm/sys_regs.c               |   3 +
+>  arch/arm64/mm/Makefile                  |   1 +
+>  arch/arm64/mm/context.c                 |   6 +-
+>  arch/arm64/mm/tlbid.c                   | 210 +++++++++++++++++++++++
+>  arch/arm64/tools/cpucaps                |   1 +
+>  arch/arm64/tools/sysreg                 |  53 +++++-
+>  drivers/acpi/arm64/Kconfig              |   3 +
+>  drivers/acpi/arm64/Makefile             |   1 +
+>  drivers/acpi/arm64/init.c               |   2 +
+>  drivers/acpi/arm64/init.h               |   1 +
+>  drivers/acpi/arm64/tlbi.c               | 196 +++++++++++++++++++++
+>  drivers/firmware/efi/arm-runtime.c      |   3 +-
+>  include/acpi/actbl2.h                   |  32 ++++
+>  30 files changed, 858 insertions(+), 72 deletions(-)
+>  create mode 100644 arch/arm64/mm/tlbid.c
+>  create mode 100644 drivers/acpi/arm64/tlbi.c
+>
+>
+> base-commit: 93f51579e7df248780214094418f205253383cc5
 
 
-> ---
->  drivers/video/fbdev/core/fb_defio.c | 6 +++---
->  drivers/video/fbdev/ssd1307fb.c     | 2 ++
->  2 files changed, 5 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/co=
-re/fb_defio.c
-> index fd00b86e1ae6..fb359ecc3966 100644
-> --- a/drivers/video/fbdev/core/fb_defio.c
-> +++ b/drivers/video/fbdev/core/fb_defio.c
-> @@ -366,13 +366,13 @@ int fb_deferred_io_mmap(struct fb_info *info, struc=
-t vm_area_struct *vma)
->  {
->         vma->vm_page_prot =3D pgprot_decrypted(vma->vm_page_prot);
->
-> +       if (WARN_ON_ONCE(!(info->flags & FBINFO_VIRTFB)))
-> +               return -EINVAL;
->         if (!try_module_get(THIS_MODULE))
->                 return -EINVAL;
->
->         vma->vm_ops =3D &fb_deferred_io_vm_ops;
-> -       vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
-> -       if (!(info->flags & FBINFO_VIRTFB))
-> -               vm_flags_set(vma, VM_IO);
-> +       vm_flags_set(vma, VM_MIXEDMAP | VM_DONTEXPAND | VM_DONTDUMP);
->         vma->vm_private_data =3D info->fbdefio_state;
->
->         fb_deferred_io_state_get(info->fbdefio_state); /* released in vma=
-->vm_ops->close() */
-> diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd130=
-7fb.c
-> index c4fdecafd856..958514a35433 100644
-> --- a/drivers/video/fbdev/ssd1307fb.c
-> +++ b/drivers/video/fbdev/ssd1307fb.c
-> @@ -763,6 +763,8 @@ static int ssd1307fb_probe(struct i2c_client *client)
->         info->fix.smem_start =3D __pa(vmem);
->         info->fix.smem_len =3D vmem_size;
->
-> +       info->flags =3D FBINFO_VIRTFB;
-> +
->         fb_deferred_io_init(info);
->
->         i2c_set_clientdata(client, info);
->
-> --
-> 2.55.0
->
+
+
+--=20
+Best Regards,
+Yan, Zi
+
 
