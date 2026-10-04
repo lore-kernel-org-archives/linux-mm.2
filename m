@@ -4,99 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79C47CA5FE6
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 08:01:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2E64CA5FCE
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 08:19:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CD4A6B008A; Sun,  4 Oct 2026 04:01:22 -0400 (EDT)
+	id 87F816B008A; Sun,  4 Oct 2026 04:19:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37D546B008C; Sun,  4 Oct 2026 04:01:22 -0400 (EDT)
+	id 809C76B008C; Sun,  4 Oct 2026 04:19:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2939E6B0092; Sun,  4 Oct 2026 04:01:22 -0400 (EDT)
+	id 6D3E16B0092; Sun,  4 Oct 2026 04:19:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 063F56B008A
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 04:01:21 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 040CE40B0D
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 08:01:19 +0000 (UTC)
-X-FDA: 85284198720.17.8057D9A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 641D580011
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 08:01:18 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bV2Oz3wP;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B8266B008A
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 04:19:26 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8AD09120B2B
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 08:19:26 +0000 (UTC)
+X-FDA: 85284244332.24.4DD3AE0
+Received: from mta1.migadu.com (out-157.mta1.migadu.com [95.215.58.157])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6988A40007
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 08:19:24 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cInPyJUB;
+	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.157 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791100878;
+	s=arc-20220608; t=1791101964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p0bhkDeR0q/RIGHHdpd7D589iSN3oIrJp74cDlV3Lkg=;
-	b=UXxBc+CzOBIjoan5QgwhdkYTWblfFyoINUbMdvyztShYSOfhio5KDr3HumL1QEEdxagNI3
-	QKa24Rsy5XXbHtYhx6K1BqLdtKpW0b2IIeEimKNebOZD30eGtjHGj/z0lr4W1gHys4yFG/
-	q2UFEXFQfiCskg+ZA3/XWMtaJ2E7cIE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791100878;
-	b=0N2e5nqfyFZSvHJWTA96eq4yXa64F6mgl1wz+VgJ8TUwxyE1+erg8QgjTdZUaOhlGPBUls
-	/1t496LNGMQW8DdkJGexThKguMgIROOa6xB0ae566jiJH8xfS8M5qz59OwrUg3mhYO+QjM
-	IdoLYJO/DggdUIQvZ2znq2h3eJlpE58=
+	bh=KvagPUqMOcLymFNy70AsIuZOLdYZiwr6NU0P2uKsOp8=;
+	b=xjLi/zwzf3O0YT5rNeWIe/ux7QOPWL/S9n4Ihj2tBUhO12F+N8U2MtdOjLes/pfY05Ci17
+	DR7o64VLe2SVraCWGx49oN+2R0AKsitsT3oy0Z7ALwzpL/88MApxPvCsRd3A68gRGdHGEz
+	KlY2Vfs8zHzizxOmibDOrE68TZK8Fnc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bV2Oz3wP;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8B4A860120;
-	Sun,  4 Oct 2026 08:01:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D391F000FF;
-	Sun,  4 Oct 2026 08:01:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791100877;
-	bh=p0bhkDeR0q/RIGHHdpd7D589iSN3oIrJp74cDlV3Lkg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bV2Oz3wPh9CI2vgAGfVd43hYzt6c1uvlk7ix0Dq2MmknOdhfzHxfi/W7w31THvoWE
-	 ebDtjhVfvO+acPp+9yL7RsNOL5Rnl8eTDIO+Fe1PPIQN6rHL5hOhIDu6621+gzqlv8
-	 H83jxW1Eh7YMuhBvyHR7p5n+lW2MQhJ5AQ04Ynrvyg6TVqawhuYYm2op2HCUbhR+H2
-	 ADXlY4fPPr0KuKg2w4ISnUM2WB9WJk9Mi3a4P8GEh0YgdiHnq8lPBivxcQSSUJYM1z
-	 iVyyKP1HFEX+iRR952RqoePaLSF7/UVXRTOuVV/FT7PJh4eTrM7eD2LUyNM9bh8SmF
-	 xfMmHCv1XGaSg==
-From: SJ Park <sj@kernel.org>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cInPyJUB;
+	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.157 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791101964;
+	b=L54OvC7h7tN5lfuuDlgYOfGRbanzroBsjT/57pl4dFhWfqJGrQVzoWmZnSTs1cpEKnp6zY
+	fHmMW7pCJJgZF3Yx1yigzDcTRxVl6O9kQOYiQpCv9GeRTh5UEo1bZdZXIc6lO7OuP+Bfmy
+	CKjfpG70cKcyLdRHcuz8IsHKa++8Wog=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=N1P1P3jMKJo9ggmNihU/EA7zpJLYlMm+cg9cdHhLxxg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791101962; v=1; x=1791706762;
+ b=cInPyJUBLGSY2wxghyK4yA+Y3qVmWpB0fPPJsxBZ/om6qJbIgcRDoGOkaVyPvZu0Ptj6/RZG
+ lYJi6x34tB4cfYSl/Yu346FdSoWRvDu6wLjcomAj+fgeLjtD6kGs82Jl7U50eu7o0e2pNexUin/
+ 33Oi4UkExep6r0kMqHOuvyw0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id e992c55305e9727b;
+	Sun, 04 Oct 2026 08:19:22 +0000
+X-Mizu-Trace-ID: e992c55305e9727b
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: usama.arif@linux.dev
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	ljs@kernel.org,
+	ziy@nvidia.com,
 	linux-mm@kvack.org,
+	ying.huang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	willy@infradead.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	alex@ghiti.fr,
+	kas@kernel.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
+	nico.pache@linux.dev,
+	liam@infradead.org,
+	ryan.roberts@arm.com,
+	vbabka@kernel.org,
+	lance.yang@linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Bijan Tabatabai <bijan311@gmail.com>,
-	Ajay Joshi <ajayjoshi@micron.com>,
-	Honggyu Kim <honggyu.kim@sk.com>,
-	Yunjeong Mun <yunjeong.mun@sk.com>,
-	Akinobu Mita <akinobu.mita@gmail.com>,
-	Lian Wang <lianux.mm@gmail.com>,
-	Kunwu Chan <kunwu.chan@linux.dev>
-Subject: Re: [PATCH] mm/damon: add damos_node_eligible_mem_bp tracepoint
-Date: Sun,  4 Oct 2026 01:01:10 -0700
-Message-ID: <20261004080110.37328-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261003202727.3673-1-ravis.opensrc@gmail.com>
-References: 
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	yosry@kernel.org,
+	qi.zheng@linux.dev,
+	luizcap@redhat.com,
+	kernel-team@meta.com
+Subject: Re: [PATCH v8 26/30] mm: handle PMD swap entries in UFFDIO_MOVE
+Date: Sun,  4 Oct 2026 16:19:17 +0800
+Message-ID: <20261004081917.20111-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261002095503.3585565-27-usama.arif@linux.dev>
+References: <20261002095503.3585565-27-usama.arif@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6988A40007
+X-Stat-Signature: 5ox9tab648t5hzqoa5bb9mpg9dp41dga
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 641D580011
-X-Stat-Signature: mj8pckpm55mumjyxax77eg89s1xt3tp8
-X-HE-Tag: 1791100878-672595
-X-HE-Meta: U2FsdGVkX18FU7O8ufTqPHVvU+jUhzT6QuaVPEFQkckbpvtBXPWzSm9pjkfsW0HJdnihWlWoAW+T2Bpq/r3XwfyHc3fux1BW+GCM+nXAnegKTkPX2fIv/Va7P3KDYJbwtfdp/rdDMWpFgm9a0dUlk/HC1AZn2wyaVO4O3fV9ROFOEBCp2ny9OQYQrWfdl4cPiwX0GNQzmvwHIxOvvjG4dP2stXx7my7weBoEBZK7OvxaYromZlZy4b9/0/QC8lnUHXG5PCoEuwAz7v/RhfyyJD9wN1JgyvaTJ/nsE4yp3QLXndYna6KH9ERKinFFUCTTFASPrkOKLhR1+XTsjEz4Pcr3lTk3Oj5eLKixLGbWUk3XKBnLAeCXpGO4Un4IpWu4qNwn6o8zHKISOZIVitby5AdMsVO2IpChFHly7P2ZUZGXV9cok2FXyoXyxC6kATrTF6MugJD/1kfyRBHBZ0qw4K4tFMaOLenbjFCyEHLGfyx/pBbgEC7AuRbLG+Lxyqkhs88YUxTANsv4wgeObVIHpOznVdMgyZ9Yx7uMPPbTHmRafqyb72+z+AsaeeeKWkNVvhM1hh6Kk0OtjYwa6lwy8t5umElRY5EPBbJe5Y0NaNpc+ihC4R1RqKJ2pze8XoaoldqHXoSH7cGO3hK76j6fa9jbD79N5Hv9vTJQs3BiR5GzlRPu8NbfOLZok980rod+Z+haHzPreb3y00FPTFA3lL46CWNJzAk+jtQevAffpom8tV38041pZNpJtNrs0/P9hpo5E3mOOnstH8UQHy3V8QABeUtLmXMEzI07HqlMQsf88AhtS8aTDbk7ZDs4JM/Ptvcd9ofdvqslqTL10l5fYwX/V4Tbbko+XQEHtczWdmKEYyyVQUK7zuNFiFJwA1NxaHUVmn2dyOCFsMnmKYXv1Ylx/MnLEfoDU5M89AOkgyqbgsdtqsb8wPrvCZESzyBSKxaB6IhQZuDgbXy+GN8
- AD+3HYHh
- tUtBsD2r4x7sgd1MC06dsupgqANiIehDouWwYDAgumSoliugm+ft5Auz2WBrBePgTEGm5mI/u7jDJz1WMnXC+JokEk4FdWSOCZQu9NMxdn4tj/XgNfoNfGIgqvUNeIWR4/yeke1jvpq3Mw3UbRMZUsgWvxzziH9hxa6XnHHnM1hIePyJNZ3y1PDlGElZS7TDQoP5cfJE8qKYFjvb5sHzKAU/bezbWop1DKGY/MgLRM58HIZzaG63rJIWOsQQqLHLqSaYq53GE5c7VNqGLPnh2UsMUrpWv24Q3a9bZjb12/URLtugKEoWT9+ffqmJJwqwUOUHyeqmolnSfQf3abFXxc+U3DCVjZv1nUQhl+zVTp1tR1gB6Vyem8x8M4PiLSlQy6w2LZ5GetxFUoTb5KffKRW8GQQ==
+X-HE-Tag: 1791101964-74039
+X-HE-Meta: U2FsdGVkX1+sSKhVLTUu4oST7+0LcTz10JsFIUKck+qwyAVfOgW0HUHFIn945vVkH5sYohYk52vZY4zC3DYeO7Mns7Pv8tZwkF/ZsHyKtGIWeEoJpeS26+uJrnMXqX8Ap+EKT/xWOjWRT+TFnuOuC3OahxsRKPkpAeQO6QhhkpfIbpcnh+zaFCUiSSl2W3JKQk2UlPrdjLpVygXuJTgHHInpQZtjZgAPA3itclo3aUcXGBScqj+igqWzxBUJylPcUmPA7FG/03rcaifyB6EeuJBwkPfMGwmK1uB0oy3xN64MenT9y4A7qzVOZNgGAGCA1irMkAu3ZXPrkSqLPLftWWBDI+z1/IbTfuxyDWZFaXwG2toZWxIhpl+fSM4YqfuApXWpsYEx3KssVBL1FbPpWU2kXfTd2onUeaFGTMhUyfS0IrdVwXleqN9mlJxj9bZSqQHsjxy+2ye6zCTSbKHR/aJzxImenzPhXss2EKY13IQpqE36bhwvWxGkdCvTILoB7c/PA2lFEfQhJtYpD+adxd+0ynMwW8yyC1CESlB9tPW0C6N5R64klgmDa9keoDGnmRcKUDxIi+TZxHBnAtwsTdHAPqGuquuFRgCH7L+r0uYrxbpj54kXhD6ievCOTU4K8zU9DPz+m/fOBLCbpbL2CtwJgQUW225JVnx3oxvHCPDYMgxYI5mJrYQLTZIyOfGaYXZh1vBnNd90hEGlU3Omyggmk34/amUoODrhkDMiFKhihD8AkPWze7YUpQ4JnJ2RxmmyOj/ksDH5rg0U/xOr504ZwrUk26LYz9MNW55X2hRgonki7IZB79hEbMdGyDyoUj2GIt16WsnNDZq058a5rYcBv6YlxUkxFoVgTZidBXC+x4e+X3qLp736NIhT2qfE30b7LaWsVI6cRyww8j90TYSp04ucICjDhyXBtBTbEyxWu/pp+RZcPxp/r4JURWHt8CCr9IhORbX3yiZSC8T
+ /9+riiMq
+ 4Zk0eGq4nudR0xHHJTZbw4PUEXe0zBAC4GzytptaDt5aq53ak3DCIUKELc5+DfEpBu5wkBcrMvQfDDMqhyHO0QZ1OXQN1VGCvBo4YEm5JNxE7iO/dU1j3BwPD7Y1n6Dg5OGsaTDFOJ3CsPHzRxkAiTppkWB2KAexk/Qwe3Mf7kKRndUQa5RXLWHYfPKQoWAN+fSl18qJKwPI88P2eHiDHjKoP9vjW0lYdYn8eMaDy89zVW1f9oPcedV0ss4V3uEOTUminUItnDbeTiML0kFfq0qgt1Zq8ETy6Wp9N
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,42 +119,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ravi,
+Hey Usama,
 
-On Sat,  3 Oct 2026 13:27:27 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+On Fri, Oct 02, 2026 at 02:52:40AM -0700, Usama Arif wrote:
+[...]
+>+static int move_swap_pmd(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+>+			 unsigned long dst_addr, unsigned long src_addr,
+>+			 pmd_t *dst_pmd, pmd_t *src_pmd,
+>+			 pmd_t orig_dst_pmd, pmd_t orig_src_pmd,
+>+			 spinlock_t *dst_ptl, spinlock_t *src_ptl,
+>+			 struct folio *src_folio, swp_entry_t entry)
+>+{
+[...]
+>+
+>+	moved_pmd = pmdp_huge_get_and_clear(mm, src_addr, src_pmd);
+>+	if (pgtable_supports_soft_dirty())
+>+		moved_pmd = pmd_swp_mksoft_dirty(moved_pmd);
 
-> Add a tracepoint for DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP quota goal
-> evaluation.  The tracepoint fires once per quota-score computation when
-> the goal metric is DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP, exposing
-> context_idx, scheme_idx, nid, target_value, and current_value.
-> current_value is reported as the quota tuning sees it, after the goal's
-> complement setting is applied.
-> 
-> The DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP metric expresses node memory
-> occupancy as basis points of eligible bytes.  This information is not
-> exposed through any existing external interface (perf stat, /proc, or
-> sysfs), so the tracepoint is the only way for userspace to observe the
-> target and current eligible-memory basis point values at quota-scoring
-> time.
+Shouldn't we clear the source UFFD marker here?
 
-Thank you for this patch!
+	moved_pmd = pmd_swp_clear_uffd(moved_pmd);
 
-We have damos_esz tracepoint.  Have you considered using it?  It doesn't expose
-the current value, though.  I thought it wouldn't be real problem in most
-cases, but I can show it could be problematic for node_eligible_mem_bp case, as
-the metric value is not straightforward to see without using DAMON.
+just like move_swap_pte(), no?
 
-If you really need to know the current_value, I'm open to add a new tracepoint.
-But I think it has no reason to make it only eligible_mem_bp specific.  How
-about adding more general purpose tracepoint, and/or update the current_value
-file [1] under the goal sysfs directory to show the current current_value for
-all goal types?
+>+	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
+>+	if (userfaultfd_rwp(dst_vma))
+>+		moved_pmd = pmd_swp_mkuffd(moved_pmd);
+>+	set_pmd_at(mm, dst_addr, dst_pmd, moved_pmd);
 
-[1] https://origin.kernel.org/doc/html/latest/admin-guide/mm/damon/usage.html#sysfs-schemes-quota-goals
+static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+			 unsigned long dst_addr, unsigned long src_addr,
+			 pte_t *dst_pte, pte_t *src_pte,
+			 pte_t orig_dst_pte, pte_t orig_src_pte,
+			 pmd_t *dst_pmd, pmd_t dst_pmdval,
+			 spinlock_t *dst_ptl, spinlock_t *src_ptl,
+			 struct folio *src_folio,
+			 struct swap_info_struct *si, swp_entry_t entry)
+{
+...
+	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
+...
+	orig_src_pte = pte_swp_clear_uffd(orig_src_pte);
+	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
+	if (userfaultfd_rwp(dst_vma))
+		orig_src_pte = pte_swp_mkuffd(orig_src_pte);
+	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+...
+}
 
+Suppose the source is an exclusive swap PMD carrying a UFFD-WP marker, and
+the destination is an empty hole registered for synchronous UFFD-WP without
+RWP. We haven't write-protected the destination, but a successful whole-PMD
+MOVE carries the source's UFFD-WP marker into it.
 
-Thanks,
-SJ
+On swap-in, that marker is restored in the present PMD, leaving it
+write-protected. The write fault then reaches
+handle_userfault(vmf, VM_UFFD_WP), even though we never write-protected
+the destination ...
+
+That would be quite a surprise for userspace, and could leave the writer
+stuck if the unexpected WP event goes unhandled :)
+
+vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf)
+{
+	struct vm_area_struct *vma = vmf->vma;
+...
+	bool exclusive, stable_writes, rwp_restore = false;
+	bool write = vmf->flags & FAULT_FLAG_WRITE;
+...
+	pmd = folio_mk_pmd(folio, vma->vm_page_prot);
+...
+	if (pmd_swp_uffd(vmf->orig_pmd))
+		pmd = pmd_mkuffd(pmd);
+	if (pmd_swp_uffd(vmf->orig_pmd) && userfaultfd_rwp(vma)) {
+		pmd = pmd_modify(pmd, PAGE_NONE);
+		rwp_restore = true;
+	}
+...
+	if (exclusive) {
+		if (!rwp_restore && (vma->vm_flags & VM_WRITE) &&
+		    !userfaultfd_huge_pmd_wp(vma, pmd) &&
+		    !pmd_needs_soft_dirty_wp(vma, pmd)) {
+			pmd = pmd_mkwrite(pmd, vma);
+			if (write)
+				pmd = pmd_mkdirty(pmd);
+		}
+		rmap_flags |= RMAP_EXCLUSIVE;
+	}
+...
+	vmf->orig_pmd = pmd;
+...
+	if (write && !pmd_write(pmd) && !rwp_restore) {
+		vm_fault_t wp_ret = wp_huge_pmd(vmf);
+...
+	}
+...
+}
+
+vm_fault_t wp_huge_pmd(struct vm_fault *vmf)
+{
+	struct vm_area_struct *vma = vmf->vma;
+	const bool unshare = vmf->flags & FAULT_FLAG_UNSHARE;
+...
+	if (vma_is_anonymous(vma)) {
+		if (likely(!unshare) &&
+		    userfaultfd_huge_pmd_wp(vma, vmf->orig_pmd)) {
+			if (userfaultfd_wp_async(vmf->vma))
+				goto split;
+			return handle_userfault(vmf, VM_UFFD_WP);
+		}
+		return do_huge_pmd_wp_page(vmf);
+	}
+...
+}
+
+So, clearing the source UFFD-WP marker before the destination RWP check
+would match the PTE helper and keep the RWP re-arm :)
+
+Am I missing something?
+
+>+	src_pgtable = pgtable_trans_huge_withdraw(mm, src_pmd);
+>+	pgtable_trans_huge_deposit(mm, dst_pmd, src_pgtable);
+>+
+>+	double_pt_unlock(dst_ptl, src_ptl);
+>+	return 0;
+>+}
+>+#endif /* CONFIG_THP_SWAP */
+>+
 
 [...]
+
+Cheers, Lance
 
