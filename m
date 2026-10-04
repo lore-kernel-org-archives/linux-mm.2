@@ -4,93 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AB88CA5FCE
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 13:39:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BA73CA5FE6
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 13:41:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB6076B0088; Sun,  4 Oct 2026 09:39:32 -0400 (EDT)
+	id 0D3386B008A; Sun,  4 Oct 2026 09:41:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C67746B008C; Sun,  4 Oct 2026 09:39:32 -0400 (EDT)
+	id 0AB536B0092; Sun,  4 Oct 2026 09:41:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7C7E6B0092; Sun,  4 Oct 2026 09:39:32 -0400 (EDT)
+	id EDBA46B0093; Sun,  4 Oct 2026 09:41:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 961776B0088
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 09:39:32 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CC1D26B008A
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 09:41:08 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 15C2E160987
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:39:32 +0000 (UTC)
-X-FDA: 85285050984.16.F1215F4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 68EF2C0005
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:39:30 +0000 (UTC)
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3CF30120BC2
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:41:08 +0000 (UTC)
+X-FDA: 85285055016.16.9A061A1
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CD6B5C0006
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:41:03 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZcOs3bFT;
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	spf=pass (imf10.hostedemail.com: domain of chenhuacai@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=chenhuacai@loongson.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791121170;
+	s=arc-20220608; t=1791121266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GsrDocJZdlQZzp7Ptz2pku4WR7O9fSJpN8UbwntIi3A=;
-	b=GO8LP/q6xxs4ZmiT1PcAFUpnyFMHas18PcmNCf+jONY506yG5bxmpp+qzVJyCtNxpfVRQ/
-	0QiTC2H8Hr7iHfJ1o8WtfDayqqxoIjcA/s38ibtsiV2lEe2FFumJnO9lWLIXeC08QKnWCp
-	XyKeVmK3bkhtkJyPY6onbRvAAWwhmmI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791121170;
-	b=0xaJoeb9xmO5fVn6UXa1I3gKKWOPnsWKPylKdLimruHLRBKTGM70F8CmGvOMFP4kdOvx3h
-	77Z8zDwjaQdCVNKl51JeKDiwB2YsPHYsa0ZggH674dR2UCIPP2SGxF6HWHT1Fj/mCEPP3H
-	jrWVcQrHWzGXxYmnW/8KJZF85qwqC00=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=Q7JMG1h3g+GXlTGGFX7QP0BF5Llh0rqGnDT6H0c1fxg=;
+	b=CbgbtfseFlAVgk1O0vsMXeLcGkECR0IoLBS2gq6y3HzZ0LMxZmsmvgwfeSzcNB2Uf3V9dr
+	KQ++yz11Ck0vuYd+dVmGzuh2kC6eZ80RNLdzyylKJVGtTiq5X6lw2olAaufZjdYy+Z1s2k
+	Yj9mARme+x8LBU37BoLzfTtdkPE0/so=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZcOs3bFT;
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 715BA409C6;
-	Sun,  4 Oct 2026 13:39:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5187D1F000FF;
-	Sun,  4 Oct 2026 13:39:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791121169;
-	bh=GsrDocJZdlQZzp7Ptz2pku4WR7O9fSJpN8UbwntIi3A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=ZcOs3bFTNsWZukdiTl3x+IP7PA8A2DliLliY5QfGjDg27+Z2MCB18ILo6snmzo0/W
-	 xo7htjt3Fp6s2EEBNA4CZgWLFFiRbq0z8Np7J7OeRAtXN2ddBRb/g5UHnWRAiyd805
-	 Qc+IDCsNXXpmRjHj/+DV/Bccru5g270fmeKKDXoo1IHTf4efZ4MQeDrqM7sKEyhii3
-	 53CjYfZTtvNNSMnt0k7ksGc3imoaU9C3dKqwB7fLCYpqzi5GE9gWTeB9zhvKQNp9me
-	 7tEtoSweYdktzE7hX/E7FHLU55YjOMVMelRl9n/74VzKyJAr8fnxGRYaL696gVLa5a
-	 BuW+FJdbiyOIA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Chris Bainbridge <chris.bainbridge@canonical.com>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Jason Miu <jasonmiu@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>,  regressions@lists.linux.dev,
-	linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
-	linux-mm@kvack.org, =?utf-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?=
- <mclapinski@google.com>
-Subject: Re: [BUG] KHO handover hangs when memmap reserves PMEM
-In-Reply-To: <asE0R_f2r2TL-3Sy@px13> (Chris Bainbridge's message of "Sat, 3
-	Oct 2026 18:02:27 +0100")
-References: <asE0R_f2r2TL-3Sy@px13>
-Date: Sun, 04 Oct 2026 15:39:25 +0200
-Message-ID: <2vxzcxtplh4i.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of chenhuacai@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=chenhuacai@loongson.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791121266;
+	b=jJlT+hddo4mXjknYxtBt3W3cwPTlhB7l87JWXS1klcjQDfCYjiXZhshrw1olDWJGErBxRA
+	VK7aDljLSdoQuxH+GjzHhGh5YYa4VTt6F7gZX9/fnsXwneyQHtnQbY15TC0lvmHg0eXRxq
+	Z5f3LQAHWfMHjjCf5t8JP5vEFvL2jvw=
+Received: from loongson.cn (unknown [223.64.68.159])
+	by gateway (Coremail) with SMTP id _____8CxPNJnV8JqtIYSAA--.54396S3;
+	Sun, 04 Oct 2026 21:40:55 +0800 (CST)
+Received: from kernelserver (unknown [223.64.68.159])
+	by front1 (Coremail) with SMTP id qMiowJAx2c1gV8JqfWUoAA--.19823S2;
+	Sun, 04 Oct 2026 21:40:54 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	linux-kernel@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH V3] sched: Update the THREAD_INFO_IN_TASK description
+Date: Sun,  4 Oct 2026 21:40:34 +0800
+Message-ID: <20261004134034.3622868-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAx2c1gV8JqfWUoAA--.19823S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7CFWxtw48Aw13Jw1kJw4kXwc_yoW8uF4Upr
+	Z3G3W7Gr45Ar4F9rWkJa4xuFn5Jrs2gay5Gr97J34UK34xGw1jgryfCay3Cr15Ar4v93Wj
+	yr4qg3sxWFWqkabCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Jr0_Gr1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1D
+	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
+	1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j5o7tUUUUU=
+X-Stat-Signature: 4muuiub5hng7roj9zrekx9ixjfgyyouw
+X-Rspamd-Queue-Id: CD6B5C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 68EF2C0005
-X-Stat-Signature: hoq1hys4a3dke1ps9inowks4a7apqhpf
-X-HE-Tag: 1791121170-523065
-X-HE-Meta: U2FsdGVkX18hL7licXGLVa33vcvmi34alaFRKmfpUs6hYEhC7IKeVcGSQnE1wotn77GJlwl1aC2QyMwP57sIDE9bP2RIoce8u48aT1rtIAgzHn5RJOJb5KFXLzEqYzMGoevvTeHR07Fqjp73UloFXYTo3FAX2PM0//2rjc9SxMl9C2dxvGwvd9wycx4Y05dv3W57QbDnwLReRXlza3gUYnZPVUKA0wfUJ6JRLJzDqM7LZXSg/ySD0lU4i3lnDlYzmcwV7MxH8BaNjOvpEwfAbtaFaQ4VXZNr1lYNqxvU9j8rL1H3F8BN81I8pp91Wfr9RUPQyYSV8UUg5AfPg8WpD03wkFFhexh7Z8k4JV6tdZZ8BHZ25m4dBwGGgGIl/VTrJUFvI+/7ITpacHQJQdBlpvYMpwWGlfg6C8OEq8NclUJU6dPxDJv3C2ygj2PbPq9fNBqhcSXLHXbAXHRV9P36hkEh029/qDoZdczTNhSPMXD+6jmRsNaZl6XZUFc3EQRLU6XiMz65uJaBxgTYMS6NXImqfk2LgBdagm04lqShymwhh+rmLdubTwf2XoAIWMVf4j1rKi/bQbJ6kHj1pRp9N9+jnbpyibdz4YCEtjVH1Q7DPe6pZ6D8ZlSfYsbTTrymQzDosah2yBkXGvLb5zJhn+Euv9iFpI6ZhDvE0UpsIvV78hgr2hgEAPtGwgnI1LGNCvxC0aMiZ3HeMmAVqyOI+QpF/qFtq8/vN8jgcNV20alu+UEO75gJrhhcpn7ARKPXjHS2hqFC6yhY2kh4cGywj8y5/KSq5F/I9FIBnlmevdLhC8Rv98R2z7QthlT/hFHrWXcvA0Cruni8MJEVoi6IE6nZbp37sI96kVOpRmFMoY8Yz7DM2/GDmU2cY+Yq5QT+sEKp0WUnJjNEYNDuXLNhugRQxE+aTd7+6Hy8EsrBoW/CZxyXAFEkrBWU4CXTq9PAiOhZ9AeiYAcofLrP64I
- 0qiNO+ad
- kWmo1CAuvELqUkeR9+9psvhOxrWwTZP+jVQNL0+bNmygu4GB24HbXLJ/E2W4fkdD7iYhQ7yXVeQR5M6aVBR8hz7Nt2Sop1en+oiKy3lAT3fplGP8ly5B5Hj+XZgjXd3DTSDBmgK0fXCkLVkgdpUnfFX6djgNmZ0qZYwIOp7VbaN1Slurd0/PzSC7x49RQKgffUcXzqUamDacLNm9bPn1jnLCN+Q==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1791121263-221149
+X-HE-Meta: U2FsdGVkX1/GzqGCycYEMju/afXCVOn59HQMNEgXfaCkwhOXgyUd/Kn9blcWkMXXcejT6VOrCrXt+Bi5ayw4K169pgK4CgWaeEFJ8i4awVLeZQSgjNw2T5QUiv1BdaL6IKt1wMG4nTl7rKF048guoTR5Eb5kCi6qGpXb0EhvZSfFUlgiX/kf4K/uCkRQIONtmxHO+65Bdc1ou2ye8BOdFnP/gPgI6vyc6wf8PXVYSmnyOMgjkIJA0fCSdnNmXMUjv4vjss7uRStrFQUTrB5tPbTp88TGYLF3vOmnPs0hKW3g68pwsxCjpBCfZMX6tcoymlBgV5ujDVqnTuGn4/bWRiTfHy8tl5fZvNraCJI8MDciiDxZblzZ9V4LMcAFf8dx2GG331qbu5/S6G4cchvzqRXV6FbIoukrbbXv+UvRzPXA74IYSrB9AbYXrP15OYm2xhdQ61qNmbyJPekv/dw4ooLWN8TPdDolYDCfTS66ZlEk+NksfJCt+Td7h6EZepodeq7az4K77tH8zd4S+pJohIGwA2RgMUtcGB88p4H1dU9otq6KtovJaXKe5GfGzxNcaNCvmvJwy2KbQqFiU7zBurJgz9Ei9I1ugvtU/ahBKEoZFcXPjAqpm8JCyIgVp72rsCl766gQqWLPW3WfInPLyHi7Zy6boffb2YGmxSUWwyxChA0PcL9TYegmn/cTZBfipGqSVgu9cZJL2vzM17REFbxOLnC3n5ygMNNAjNh1A4P+7gyXe0/80GJOisKWVefinjkz0q3AVB5C0lsjYCiD9eBApW3KA22ZJ4e4XPtajT2S2hl3bf8+gQPOXnCvly4tgkAmljAlj+GEb0QctDY4owzRIoeMtrt8HdBZFb4GSTDGFvGM+E29xj4AzUw3WBDkTQfC3aW6UCaPz8OLMYQepB0OZOrO16671gor2Rf9I1hZlk/EGTufkysGc7jItu+7tQjd91L3d+ETDED6Nq2
+ NKaIt9kK
+ vMmGgX4EnAEUAyYrGoBAXxgegz9I4uO0OZsptjXI3HJOI1QN6PW1JCdrh9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,57 +108,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+When commit c65eacbe290b81 ("sched/core: Allow putting thread_info into
+task_struct") introduces THREAD_INFO_IN_TASK in 4.9, the only supported
+architecture is x86 and thread_info only has a flags field. The Kconfig
+description said thread_info should only has the flags field but didn't
+explain the reason.
 
-On Sat, Oct 03 2026, Chris Bainbridge wrote:
+When commit c02433dd6de32f ("arm64: split thread_info from task stack")
+introduces THREAD_INFO_IN_TASK for arm64 in 4.10, its thread_info has
+more fields than a single flags, and arm64 works well.
 
-> Hello,
->
-> I am reporting a regression in KHO handover.
->
-> In the most recent Ubuntu 26.10 beta mini-ISO releases (2026-09-18 onwards),
-> the first kernel reserves RAM for the downloaded ISO with a memmap directive
-> such as memmap=<size>!4G, then kexecs a second kernel. On affected kernels, the
-> first kernel reaches "kexec_core: Starting new kernel", but the second kernel
-> produces no further output and QEMU spins at 100% CPU. On unaffected kernels,
-> the second kernel starts and finds /dev/pmem0 with the expected "Persistent
-> Memory (legacy)" range in /proc/iomem.
+Then commit 37a8f7c38339b2 ("x86/asm: Move 'status' from thread_struct
+to thread_info") adds status back to thread_info for x86 in 4.16, and
+x86 still works well.
 
-Just to confirm, the first kernel boots without memmap= right?
+After that, risc-v, powerpc and many other architectures all introduce
+THREAD_INFO_IN_TASK and their thread_info have more fields rather than
+a single flags field, of course they also work well.
 
-If so, I have seen this before. Michal (+Cc) found this originally in
-our downstream test suite.
+I don't know the exact reason of the original description, but obviously
+it is wrong and misleading, so I update it, let LoongArch and some other
+architectures easier to support THREAD_INFO_IN_TASK.
 
-I think the main problem is that the radix tree pages can be anywhere in
-memory. So on the first kernel, they can land in an area that the second
-kernel's memmap= reserves. So kho_memory_init() might end up using
-memory that memmap= reserved. I'm not sure why exactly the next kernel
-doesn't produce any output, but IIRC memmap= memory is not mapped to the
-direct map, so accessing those pages likely causes a page fault.
+Also improve the try_get_task_stack() and put_task_stack() description.
 
-It is not easy to fix. We would need to make memmap= aware of KHO and
-skip the radix tree pages, but that is pretty complicated to do for
-early boot code. And honestly, I don't think it is worth it either.
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+V3: Update the Cc list.
 
-So I'd suggest you turn KHO off for the kexec that adds memmap= if you
-can.
+ init/Kconfig | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
->
-> A source bisect identified 3f2ad90060f6 ("kho: adopt radix tree for preserved
-> memory tracking") as the first bad commit; reverting it at the bisected
-> revision restored the handover. The regression appears related to KHO metadata
-> being accessed after the receiving kernel's memmap directive changes how the
-> metadata's physical range is mapped.
->
-> #regzbot introduced: 3f2ad90060f6
->
-> I have an AI-generated candidate fix that changes 22 files. I have not attached
-> or published it: although the AI did extensive verification on both x64 and
-> arm64, I cannot review or explain the complete change, so I am not submitting
-> it as a fix. If one of you thinks an unreviewed candidate would be useful for
-> further analysis, please let me know.
-
+diff --git a/init/Kconfig b/init/Kconfig
+index 8583d9f06c52..921f2fcdcb30 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -210,11 +210,12 @@ config THREAD_INFO_IN_TASK
+ 	bool
+ 	help
+ 	  Select this to move thread_info off the stack into task_struct.  To
+-	  make this work, an arch will need to remove all thread_info fields
+-	  except flags and fix any runtime bugs.
++	  make this work, an arch will need to remove the task_struct pointer
++	  field from thread_info and fix any runtime bugs.
+ 
+ 	  One subtle change that will be needed is to use try_get_task_stack()
+-	  and put_task_stack() in save_thread_stack_tsk() and get_wchan().
++	  and put_task_stack() in save_thread_stack_tsk(), get_wchan() and any
++	  other stacktrace functions.
+ 
+ menu "General setup"
+ 
 -- 
-Regards,
-Pratyush Yadav
+2.52.0
+
 
