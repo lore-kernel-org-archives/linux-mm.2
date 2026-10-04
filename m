@@ -4,97 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AFE1CA5FCE
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 12:39:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AB88CA5FCE
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 13:39:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1C936B008A; Sun,  4 Oct 2026 08:39:44 -0400 (EDT)
+	id CB6076B0088; Sun,  4 Oct 2026 09:39:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCD936B008C; Sun,  4 Oct 2026 08:39:44 -0400 (EDT)
+	id C67746B008C; Sun,  4 Oct 2026 09:39:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE2DE6B0092; Sun,  4 Oct 2026 08:39:44 -0400 (EDT)
+	id B7C7E6B0092; Sun,  4 Oct 2026 09:39:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AEAB56B008A
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 08:39:44 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 11D2B16099A
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 12:39:44 +0000 (UTC)
-X-FDA: 85284900288.09.227C391
-Received: from mta1.migadu.com (out-10.mta1.migadu.com [95.215.58.10])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BE43B20008
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 12:39:41 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nRcqtA1u;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.10 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 961776B0088
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 09:39:32 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 15C2E160987
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:39:32 +0000 (UTC)
+X-FDA: 85285050984.16.F1215F4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 68EF2C0005
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:39:30 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZcOs3bFT;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791117582;
+	s=arc-20220608; t=1791121170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oBWmqnMZ2eh2SNXsdMgayJ5cgB3d0+mfuddwasHosY4=;
-	b=TFRXYsjbWZg8kwcoJoTuFQTQ5djp1ua+rCqtwOvpKu/vKHinJt5AjUiBxOkhliHZvaHxtt
-	zbclYruE0LFiFYUedtnmSMD0ytO0WzrREvLMTRIP//WWZycxYKpb7qIxJLzAII9eiR6vzp
-	B1zmFa1bsioCep5UH123mjumhSsy8xc=
+	bh=GsrDocJZdlQZzp7Ptz2pku4WR7O9fSJpN8UbwntIi3A=;
+	b=GO8LP/q6xxs4ZmiT1PcAFUpnyFMHas18PcmNCf+jONY506yG5bxmpp+qzVJyCtNxpfVRQ/
+	0QiTC2H8Hr7iHfJ1o8WtfDayqqxoIjcA/s38ibtsiV2lEe2FFumJnO9lWLIXeC08QKnWCp
+	XyKeVmK3bkhtkJyPY6onbRvAAWwhmmI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791117582;
-	b=T1HXQaDpSvZ6gpCWxY7d/04XxA23WkyZ22OrLEa/2AwVZjkBVHHJnfwD5m4ljzUsnYUreL
-	rxuepkFGl84eHnox3hiYyZ4XHtrt0M6/CoSA2jueGY+LdPQoB5gRY5D4j2a0kkfZIdKvpc
-	vBK7zrZ6JJhbCLDDHREckeBbGLClBkg=
+	t=1791121170;
+	b=0xaJoeb9xmO5fVn6UXa1I3gKKWOPnsWKPylKdLimruHLRBKTGM70F8CmGvOMFP4kdOvx3h
+	77Z8zDwjaQdCVNKl51JeKDiwB2YsPHYsa0ZggH674dR2UCIPP2SGxF6HWHT1Fj/mCEPP3H
+	jrWVcQrHWzGXxYmnW/8KJZF85qwqC00=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nRcqtA1u;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.10 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GjG9IXEV3KJ1cynJiT/y41reNwnp88Iy9TKL1JQcBbc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791117578; v=1; x=1791722378;
- b=nRcqtA1uW8d1T+SF0YOBZE1HWCyO4M9CBEtw8Uo87/jFFsvmu7HrkMzQLfKtGsBKnYRf0HsJ
- LER+fVq/+KeY8i/xTBHRsxUS/NcpUAGsBEoIWcj5MkxIbzv2dJB2aCJps8qiAMvT/1G2lgB25dS
- V9W0ZvQ0JPsNnzIPCMXKljCg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e71eaeadc4a5a23e;
-	Sun, 04 Oct 2026 12:39:38 +0000
-X-Mizu-Trace-ID: e71eaeadc4a5a23e
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <0b188796-502f-4d1d-8b57-08e6540531ef@linux.dev>
-Date: Sun, 4 Oct 2026 13:39:33 +0100
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZcOs3bFT;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 715BA409C6;
+	Sun,  4 Oct 2026 13:39:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5187D1F000FF;
+	Sun,  4 Oct 2026 13:39:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791121169;
+	bh=GsrDocJZdlQZzp7Ptz2pku4WR7O9fSJpN8UbwntIi3A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=ZcOs3bFTNsWZukdiTl3x+IP7PA8A2DliLliY5QfGjDg27+Z2MCB18ILo6snmzo0/W
+	 xo7htjt3Fp6s2EEBNA4CZgWLFFiRbq0z8Np7J7OeRAtXN2ddBRb/g5UHnWRAiyd805
+	 Qc+IDCsNXXpmRjHj/+DV/Bccru5g270fmeKKDXoo1IHTf4efZ4MQeDrqM7sKEyhii3
+	 53CjYfZTtvNNSMnt0k7ksGc3imoaU9C3dKqwB7fLCYpqzi5GE9gWTeB9zhvKQNp9me
+	 7tEtoSweYdktzE7hX/E7FHLU55YjOMVMelRl9n/74VzKyJAr8fnxGRYaL696gVLa5a
+	 BuW+FJdbiyOIA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Chris Bainbridge <chris.bainbridge@canonical.com>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Jason Miu <jasonmiu@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Ran Xiaokai <ran.xiaokai@zte.com.cn>,  regressions@lists.linux.dev,
+	linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
+	linux-mm@kvack.org, =?utf-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?=
+ <mclapinski@google.com>
+Subject: Re: [BUG] KHO handover hangs when memmap reserves PMEM
+In-Reply-To: <asE0R_f2r2TL-3Sy@px13> (Chris Bainbridge's message of "Sat, 3
+	Oct 2026 18:02:27 +0100")
+References: <asE0R_f2r2TL-3Sy@px13>
+Date: Sun, 04 Oct 2026 15:39:25 +0200
+Message-ID: <2vxzcxtplh4i.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 00/30] mm: PMD-level swap entries for anonymous THPs
-To: Zi Yan <ziy@nvidia.com>, "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
- kasong@tencent.com, ljs@kernel.org, linux-mm@kvack.org,
- ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
- willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
- shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
- luizcap@redhat.com, kernel-team@meta.com
-References: <20261002095503.3585565-1-usama.arif@linux.dev>
- <ebc72eb7-daf3-45be-8994-b51e5e301b56@kernel.org>
- <D596001F-875E-4061-8124-68B0DB34CF19@nvidia.com>
-Content-Language: en-US
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <D596001F-875E-4061-8124-68B0DB34CF19@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BE43B20008
-X-Stat-Signature: z735uwi5ozdwnontx93myotjqo5rz4n5
-X-HE-Tag: 1791117581-319107
-X-HE-Meta: U2FsdGVkX1+euJO3Q/p/KuUeY8cmTj+rQYQ05zayrrZ3OCmmE+fGn6NtApankFjQLhe/yvQ1KkV37Hk+s+hwtDXhGFLMsBOwrMsvDw2tc4oC4qCvfu3BWlSnKyY3OSaaV+7inds/Z9U4CiTKTDmE6wQK85jOgnFPMEbupJ4DuWmhcnDQrV/OT1gKMyRzOWExXrKBEMM7mZTKMxvnCU3i3TR826Hscg8FsSdrTUi2mWJEtDfl2xY8/FikwNIYFnGY85fjZlSfm9+u0pHShfvcSFrSkCPptp5nBMcR/psK6Vs6yZiKlUIMjfoBiP7XJ8zrfeO6GTEojewZCQsI3ToLsYhOQpZMCm+nNlTipaRRj2Glt4wCzTrtUaxUSwVKdxfWd4kCwEklyyGECB/a7NrLTe6ehj8LoxkQ7a46asB/mRfoTCBC2xc8pJnomTUo2UtEkdXYlnM7W7MHcur8+E5La7xQIJ5glQKhyUiFqJFNaF8upf4B1zFY/q2NI1USD7ovPKh5iNLMfggNjM9aMPzGCNjr/Gjt8bH95B2tMfeYOlB7m/pk3n2d0grUjXQgccS+0bbQwLKGoUTJVL6TMHOVO1Vkb6TqPSgp4yp4yJOERqZF4NUm1y3vUtsZjynUU2kmrVYxHOMKyFxi6+FfdqOeAtv1IvhJOhCuc7G9322LGE8nvMfWgNex2cB5pMrRKfQml/wKaacefUM2fDpe43YMNRiMD8XN2/WxuAGxi5G68bd6OpBMtBs5hAu0aSB/Chb224bKXJx5PZMABfgY/3gVkB+aGlUmEQkrBtidix8iTwFlTfYfYYBQPc8YrwZelavY1puDMTG0YaR7ZI34KsTmSxMrcss18pdIyMb7fugy+jen3Q5DUX6k+yxuhR0o9OvnZXgH36vnLYAgTvzYFgdlp3uznn136znnjYJZ4fWbmhh6f4EonBS4vtaMuCPUGbCt4qkl7TPYlVbcLgK1p6i
- jFcNmOaG
- ZpaGb99cLly89nZg4OoVjzHH5MmK8hox2z/f8Y70uYX0d6Ebq3O7s952Us2Z4xhP3urQd8U1t496ZuONhXfHHnKNv4nrq85griqw7suljN7qdrhT9hSnsUYDqVHH3bXKiUSRMYqlMosQXjtwdqrPYztQnsrjG9sMtSDUi4ewtgaHUIvPE8XZGITLDm/4oARWr5LMl5u/COumss4wB79pLNppLBp4jdvC9gHoo7wgYVp1TbyFeh0upaZfa2PWVRs9kf0DFo/T1bolVZalJQUjyKPU9mL1MduQw+3ji4+m3ISFgIQA=
+X-Rspamd-Queue-Id: 68EF2C0005
+X-Stat-Signature: hoq1hys4a3dke1ps9inowks4a7apqhpf
+X-HE-Tag: 1791121170-523065
+X-HE-Meta: U2FsdGVkX18hL7licXGLVa33vcvmi34alaFRKmfpUs6hYEhC7IKeVcGSQnE1wotn77GJlwl1aC2QyMwP57sIDE9bP2RIoce8u48aT1rtIAgzHn5RJOJb5KFXLzEqYzMGoevvTeHR07Fqjp73UloFXYTo3FAX2PM0//2rjc9SxMl9C2dxvGwvd9wycx4Y05dv3W57QbDnwLReRXlza3gUYnZPVUKA0wfUJ6JRLJzDqM7LZXSg/ySD0lU4i3lnDlYzmcwV7MxH8BaNjOvpEwfAbtaFaQ4VXZNr1lYNqxvU9j8rL1H3F8BN81I8pp91Wfr9RUPQyYSV8UUg5AfPg8WpD03wkFFhexh7Z8k4JV6tdZZ8BHZ25m4dBwGGgGIl/VTrJUFvI+/7ITpacHQJQdBlpvYMpwWGlfg6C8OEq8NclUJU6dPxDJv3C2ygj2PbPq9fNBqhcSXLHXbAXHRV9P36hkEh029/qDoZdczTNhSPMXD+6jmRsNaZl6XZUFc3EQRLU6XiMz65uJaBxgTYMS6NXImqfk2LgBdagm04lqShymwhh+rmLdubTwf2XoAIWMVf4j1rKi/bQbJ6kHj1pRp9N9+jnbpyibdz4YCEtjVH1Q7DPe6pZ6D8ZlSfYsbTTrymQzDosah2yBkXGvLb5zJhn+Euv9iFpI6ZhDvE0UpsIvV78hgr2hgEAPtGwgnI1LGNCvxC0aMiZ3HeMmAVqyOI+QpF/qFtq8/vN8jgcNV20alu+UEO75gJrhhcpn7ARKPXjHS2hqFC6yhY2kh4cGywj8y5/KSq5F/I9FIBnlmevdLhC8Rv98R2z7QthlT/hFHrWXcvA0Cruni8MJEVoi6IE6nZbp37sI96kVOpRmFMoY8Yz7DM2/GDmU2cY+Yq5QT+sEKp0WUnJjNEYNDuXLNhugRQxE+aTd7+6Hy8EsrBoW/CZxyXAFEkrBWU4CXTq9PAiOhZ9AeiYAcofLrP64I
+ 0qiNO+ad
+ kWmo1CAuvELqUkeR9+9psvhOxrWwTZP+jVQNL0+bNmygu4GB24HbXLJ/E2W4fkdD7iYhQ7yXVeQR5M6aVBR8hz7Nt2Sop1en+oiKy3lAT3fplGP8ly5B5Hj+XZgjXd3DTSDBmgK0fXCkLVkgdpUnfFX6djgNmZ0qZYwIOp7VbaN1Slurd0/PzSC7x49RQKgffUcXzqUamDacLNm9bPn1jnLCN+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,26 +98,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
->>
->> I was hoping that we could get this into the next merge window, but as we are
->> approach rc6 and I didn't even manage to review all patches (shame on me), I
->> assume this would be a quite fit.
->>
->> So I assume this series is one of the things that we'll try to get in shape over
->> the next merge window to queue it early after rc1.
+On Sat, Oct 03 2026, Chris Bainbridge wrote:
 
-No worries! Really do appreciate all the reviews and the feedback! I will need to
-learn your magic of reviewing so many different ongoing series at the same time.
+> Hello,
+>
+> I am reporting a regression in KHO handover.
+>
+> In the most recent Ubuntu 26.10 beta mini-ISO releases (2026-09-18 onwards),
+> the first kernel reserves RAM for the downloaded ISO with a memmap directive
+> such as memmap=<size>!4G, then kexecs a second kernel. On affected kernels, the
+> first kernel reaches "kexec_core: Starting new kernel", but the second kernel
+> produces no further output and QEMU spins at 100% CPU. On unaffected kernels,
+> the second kernel starts and finds /dev/pmem0 with the expected "Persistent
+> Memory (legacy)" range in /proc/iomem.
 
-> 
-> I am going to review this series, since I have done with Lorenzo’s VM_SPECIAL one.
+Just to confirm, the first kernel boots without memmap= right?
 
-Thanks Zi!
+If so, I have seen this before. Michal (+Cc) found this originally in
+our downstream test suite.
 
-> 
-> 
-> Best Regards,
-> Yan, Zi
+I think the main problem is that the radix tree pages can be anywhere in
+memory. So on the first kernel, they can land in an area that the second
+kernel's memmap= reserves. So kho_memory_init() might end up using
+memory that memmap= reserved. I'm not sure why exactly the next kernel
+doesn't produce any output, but IIRC memmap= memory is not mapped to the
+direct map, so accessing those pages likely causes a page fault.
 
+It is not easy to fix. We would need to make memmap= aware of KHO and
+skip the radix tree pages, but that is pretty complicated to do for
+early boot code. And honestly, I don't think it is worth it either.
+
+So I'd suggest you turn KHO off for the kexec that adds memmap= if you
+can.
+
+>
+> A source bisect identified 3f2ad90060f6 ("kho: adopt radix tree for preserved
+> memory tracking") as the first bad commit; reverting it at the bisected
+> revision restored the handover. The regression appears related to KHO metadata
+> being accessed after the receiving kernel's memmap directive changes how the
+> metadata's physical range is mapped.
+>
+> #regzbot introduced: 3f2ad90060f6
+>
+> I have an AI-generated candidate fix that changes 22 files. I have not attached
+> or published it: although the AI did extensive verification on both x64 and
+> arm64, I cannot review or explain the complete change, so I am not submitting
+> it as a fix. If one of you thinks an unreviewed candidate would be useful for
+> further analysis, please let me know.
+
+-- 
+Regards,
+Pratyush Yadav
 
