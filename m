@@ -4,113 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16232CA5FF0
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 18:46:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31EAACA5FCE
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 19:35:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A1BF6B008C; Sun,  4 Oct 2026 14:46:21 -0400 (EDT)
+	id B11C16B0088; Sun,  4 Oct 2026 15:35:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 053536B0092; Sun,  4 Oct 2026 14:46:21 -0400 (EDT)
+	id AC27A6B008C; Sun,  4 Oct 2026 15:35:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E83F56B0095; Sun,  4 Oct 2026 14:46:20 -0400 (EDT)
+	id 9D90B6B0092; Sun,  4 Oct 2026 15:35:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CE5056B008C
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 14:46:20 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 669851C3FEC
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:46:20 +0000 (UTC)
-X-FDA: 85285824120.12.1D7AD40
-Received: from gwu.lbox.cz (gwu.lbox.cz [62.245.111.132])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E3ACD160007
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:46:17 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linuxbox.cz header.s=default header.b=cPsT5ZcH;
-	spf=pass (imf08.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz;
-	dmarc=pass (policy=none) header.from=linuxbox.cz
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AD646B0088
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 15:35:57 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DDB841A0BC3
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 19:35:56 +0000 (UTC)
+X-FDA: 85285949112.27.12E1F36
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 54F48180003
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 19:35:55 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UEGLs4Y/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791139578;
+	s=arc-20220608; t=1791142555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9HrLouAe+9dAbXUMKxgFdSHX5a0LnpsaBifZX7zcJOM=;
-	b=wFmZWyGf34Q0ZP4EeFlBOk7N7K8fj3Kak4M6lLI4jCzalvcWYILTa/Ws7hfuQY152+QxT3
-	yMsIwRY1dvM+XmOwT6YC4QWtOggIYdGw3MqvPnxV3Y9EbBDz4PX1oeCK/u3NhPBLbZfmQJ
-	wDezfFgMF/qmLk3htLR7v8tulfXFPXY=
+	bh=bVzs3nKi3STeEpl2UyULOorVsImcNQe0xcTlZn/ds2A=;
+	b=oOOXcosCI3ah7WBkYkgVoWr9FCBitp1QlppfrOhH1B9qhF2GyL7aZ0wX8O5CSdCXfgqk99
+	1/TXXLx/d3/RfSHdX6rEGCGn+tS12/UW180nKc5SXdZrOWSrxbfbXczmRec3zw00gFC8ZS
+	szBYwcc1i3Krw65H5+MjmuOyYudw+WM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linuxbox.cz header.s=default header.b=cPsT5ZcH;
-	spf=pass (imf08.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz;
-	dmarc=pass (policy=none) header.from=linuxbox.cz
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UEGLs4Y/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791139578;
-	b=sn7KTWLEdnvZkETHGUdAGVaaaW4X3FFanMgJMAxTL8nDvD3ZFT7uDjVwKrFXwwOkl4BVof
-	48xBiaG/aFOxmIcCSowCN5yieFpOuPbB+TXgX3Rv/2C9TBaS6D7uOryaeKIsgf01X5jKvh
-	vW45P1trGa73a+zqX+Pjm5HdGwzhvwE=
-Received: from linuxbox.linuxbox.cz (linuxbox.linuxbox.cz [10.76.66.10])
-	by gwu.lbox.cz (Sendmail) with ESMTPS id 694IjpYK4062391
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sun, 4 Oct 2026 20:45:51 +0200
-DKIM-Filter: OpenDKIM Filter v2.11.0 gwu.lbox.cz 694IjpYK4062391
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxbox.cz;
-	s=default; t=1791139553;
-	bh=9HrLouAe+9dAbXUMKxgFdSHX5a0LnpsaBifZX7zcJOM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cPsT5ZcHW36/chAnpDmGiHAT7yG5g4jxV+GDs+8iYhqbX/hH1mXRwGzbJn2+EIHQ7
-	 Fz2NyGs083JF/pboieVHuv1Pepeg2TbjhAJD/ine52TroiGHRt4Qy9ptLk25AyPUXl
-	 HHjM/gi/1u0lkd4L6jrlbCLw8KAEpyjx9kk+JGlU=
-Received: from pcnci.linuxbox.cz (pcnci.linuxbox.cz [10.76.3.14])
-	by linuxbox.linuxbox.cz (Sendmail) with ESMTPS id 694Ijool022808
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sun, 4 Oct 2026 20:45:50 +0200
-Received: from pcnci.linuxbox.cz (localhost [127.0.0.1])
-	by pcnci.linuxbox.cz (8.18.1/8.15.2) with ESMTPS id 694IjmMx2331923
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sun, 4 Oct 2026 20:45:50 +0200
-Date: Sun, 4 Oct 2026 20:45:48 +0200
-From: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-To: Borislav Petkov <bp@alien8.de>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        david@kernel.org, Mike Rapoport <rppt@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
-        luizcap@redhat.com, pbonzini@redhat.com,
-        Tal Zussman <tz2294@columbia.edu>, Rik van Riel <riel@surriel.com>,
-        Matt Fleming <matt@readmodwrite.com>,
-        Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-Subject: Re: hunting memory corruption bug in 6.18.x
-Message-ID: <asKe3M5VRvMvdY7s@pcnci.linuxbox.cz>
-References: <arde/t0zQNEkWqi5@pcnci.linuxbox.cz>
- <areOeRwZOez0eHm7@gremlin>
- <arotyz5g6LozSjb1@pcnci.linuxbox.cz>
- <arwNebjYXyGqrp32@pcnci.linuxbox.cz>
- <arzRBv9ceJsxJppI@gremlin>
- <ar1Xl7PE2rcoT9h3@pcnci.linuxbox.cz>
- <ar63St2LBfCdyhwj@pcnci.linuxbox.cz>
- <ar9yRqq6cBxHDWKA@gremlin>
- <ar/F6+OUzj8qQ8YC@pcnci.linuxbox.cz>
- <20261002220248.GJasAqCFwxOK4l2TbS@fat_crate.local>
+	t=1791142555;
+	b=3q5dxnCwU/ezf68Yilwu2Z+q0HQzNy7m+z6vwkNDSTHCIOyutmE9gvOkfTVDnssTozlCTe
+	ssMWQiqVNcv21ghJW1yQrmkYD5dNIbUM0HT4uSDUPQmeHoL+k/3LMyrQrTm5CjNXe0rllm
+	3QOf4Jy+7bcpzHQdHxb7pqfXMkxvV8w=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 30521433EE;
+	Sun,  4 Oct 2026 19:35:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740C71F000FF;
+	Sun,  4 Oct 2026 19:35:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791142554;
+	bh=bVzs3nKi3STeEpl2UyULOorVsImcNQe0xcTlZn/ds2A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UEGLs4Y/E+ufn6rjORVJC4qBwgayQk201Ab5LdI8A/H7kAObN2X4rwybWoGYOlAWn
+	 LBFThAKr195RP5Ck1itiVbU4NaQfSVJXpD9eWcyhjrbUqsu0x7xZ/jqkZ6Rrfy+8iC
+	 XY5u/vO197mG/W9DHiQnps2O8KPAOKyYUHhZ4jzAbChKXRhthIlKDCnBx7jrrI7h0f
+	 FbqfrInglgzFvLYf103tXFSztmxkW3vvJp6wgmvarLpcqfi8LnFJ3yyiM+G4/xXnxC
+	 aSW3xwivPyy21guZRkVkIeXFzIXsA6Yu6PoTuwyb5fGwR4jNqy2x2jqcccHmb96IMS
+	 2dt7+vLU7bbnA==
+Date: Sun, 4 Oct 2026 21:35:49 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] docs: kernel-parameters: adjust reserve_mem build option
+Message-ID: <asKqlZFS_A42w2hb@kernel.org>
+References: <20261003213457.96408-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261002220248.GJasAqCFwxOK4l2TbS@fat_crate.local>
-X-Scanned-By: MIMEDefang 3.7.1 on 10.76.66.3
-X-Scanned-By: MIMEDefang v3.7.1/SpamAssassin v4.000002 on lbxovapx9 (nik)
-X-Scanned-By: MIMEDefang 2.86 on 10.76.66.10
-X-Antivirus: on lbxovapx9 by Antivirus 
-X-Milter-Copy-Status: O
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E3ACD160007
-X-Stat-Signature: hyw3gxou8p88mqu8ct1brdaedifgmoje
+In-Reply-To: <20261003213457.96408-1-rdunlap@infradead.org>
+X-Stat-Signature: j5cad8fih84hsi8gx9yz4t9sehbq5qh9
 X-Rspam-User: 
-X-HE-Tag: 1791139577-1436
-X-HE-Meta: U2FsdGVkX1/D1HEl/C0eaMpSYoEY91o7PDo4FluD7zu84Ad3rlD63VJBESVAR+MqYsNiYPlIIY5UqXSio5lhOhhqli2oiNGrd40tKZNKTS8kBn9Fk19LeIw5I/Y+wepYej4sMGSTiMRHtreg1F+GsGjv/zImZX/B2aY4EKBOvLaT6FV5zmUI3L6bQB85G+IucHCNVyi+Ka+9Bw1fuxFUcgMkkaoOMW69VoiFFFFJyv9wfG+ZJczNj2zs4OL1TQrqCBe5iTbPHuWcD03rOZpWu2KtYBqT/M4+5F14hqBywJ7t8xBB2KMud0CZwen0H7FqDDhEidZA7eCZ3/LpqaKda5H/edlKHO0tRbH7zglguyI0ItbF5+0lrg0PEyRfWSODAlPRqNz4IEOEy1Bky980RijF7y7joEtJnuaj1tm2cxcV40MOvHVxotZmAqccYTdLdANOIIG6LHtiDRDHXedJUTvwDds5poovotsWH8OX6nDICHo/tdXQmZEj0PWG2opm2MhWP2RI+AbKqNaC0/IIQKdt7Ic70WrVlrI2qe7svjFoyRSv4uqeWioOFeJiHon1/rkVanHuTzHBM2/4I/5MXNn2/K8OYlq5Z59EshJMqF7u5OQKlyJLrzAQxZjxY2AN15474Nl2Yj13qABH3OAbM2w+itmsA1e6Iqt2a6alzn3ne+EbXRtdGgbya5ecrK/qBySn9zyjEwHY0VlPB2svGSoA+1di2LTkHgNwl26vtFacWsZdNX/okCgdsuOxbUxMF0kaWw1Z/s3x7kVanaNtuFmazjrFdFwqPScoNXar+6NgXeKn3nOgWSq+VG7AHRlYanmAJJ/NXremhBlqgAC1lKJ0FHEgtP6jw/91UVew/GEVzeyoS6grq9Ls+HPbFrykOtqBk7S62/q65RHe9xKoVlzjzoijM2i0Uy2lJ5JRLwenDIHeoOEzuqabj7njbw5mPDHRlsVAW+KFsaxaKtG
- SE5cvsd7
- XMfphFdlDQ4VmQcekVTY94MNLPSQWtGYichb+8td5bHX4ZAjsfSaF1I9Zk7irgwGID4iDX7YtZFptqs+eQsh1PNmabVAJmU2tFPKkLIupjNIoOqZGyuWdqUS5KqikuMKsvuyiNweUvFgWeCsgczXwEFkWHzoA5+ARKzL3RfUUmaBYzVRUfKbWxeWd0RBLg857Skxryva5mA3KVBDnN4whmB4/Y9drhiwt0ykxigBe4Eta3S7I1iG3HbQpDak1UGQvpNv+MduAUDzwgNwBpLk5P5Tg0yIfz2NuPW6seKmPk1pNw1Qn/FuKgBcvz/Vk91/tdzItqzqAVAhMNyE=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 54F48180003
+X-HE-Tag: 1791142555-834530
+X-HE-Meta: U2FsdGVkX19A5zQwyXw3BnC8MR1FuwKRMl4TSoWlhIzevQyFd4OfT3gQDD2H8nwKNFAczDAXW6uZt2Su/RJpJMuSYDUvWWOlYjfX5XofCBrxRhuIzOqAVMIHNgFvQzoX67BDmnQPTe3nYahfxzdWexQUP0d147fLtN6Bh9BtUPtMCH6iKP8EsZNzL1KHzcxGBE/BXCbGhM0ocONsieAHt5pt6NWz8JPdkSNZnNa4Oa6S7WePLJ24RKgeDMYhW+R6RV2sSpLChKkbZiyxYT5q1/oF1Feew0UJUkm4nhtWZA2HHRR7L+zIOkaaZ8p6QRHPgP6CF9wKF6vHoOkIGN60mo0uFI1nAM6crJfU6Zczx69vZpix3jX2O+fXI6KjxHbVI7tZZYX884YlhMN54cELToueftR3egqRlmnGYGCPR/HfeitfHlp6qx0kbIwcnM+6axx5d0nHpdOLTBWf49fZXYxZyQQRgSLxvviqNtpJSzuaZLIQhiKONOQB4HVb2qANpqrQQCH2O/fRX1BlwW06ORTurP33zBMU2jL593H7Z2/RPFMhiKbvSBw69ahA51VzBEVgGqDw5qSKIAO2Dhtl/0LQr4mtJd31pnMHyzG/dCQoQ/sp71X/4rX+9unJHDp6ApBKurpgPNFtXrgMAtQuAl8rdtJOTlcLByFBOlLFPce+IFkaOCdQ/7TYqOPrktUM8d8syXbz1FgkzQCEYZHFjtUoL8dxd3tRiCKvRtl6o8GbRpmquLtxPqmyibPh4L/lzxdYi9Zs7PXUGofO0lKX1fXKbPZPmPqkFoDuF/3WRs1CUvl3fi1NTIDsHvwBQpYWPIL1SFBp/POps9RYB8uhKba2LlwYPmMjwwnO8K2mZOUou4eU1cCxj6PlwonWZhlkLvY5FKVYoeID9cMx78nT/2EyoitZaB2LikpzXPcuAESS3j0gATJoNoVmzRvZV2Wg0BRvtXdipdybbPyu5t1
+ 8xJFZsvi
+ 8BErJhFB8ytXQ1lJGUPrOT7rTRm/X1VDa4mRRYPlFJ+xu9H+sEyp8uUPBZ9UehZ2JPfY4D9fZIP8mBlf6d75q22/oDqNMhKjT+lT6JrcErJ6Xk9LqyzkHLDNPGcdTWXasoxYzVi+UxK5mKCSEpUieE+7pRjNlAInunq7WAeIp0d3ziQGYl6SMHjbtvErkV45idqIynq2OXJ98Iyx20RUyQQEIJhpPArlWqbWrDp3hDlRJT67bKjADj3cDucHXIM3RRh6h+CKZL+sO2M3F7oKneQnkXnZdUz16riH3eWHrBPsvPVe1rYhnPCN/n5AOYmM1w5Ei3ZtYoIt5i82KyQdOkjr9YWTaLPCZQWPwlDdHUJeVFpy0Pru0vKiQiLK+F5KvW7KgmqNvuqgGMqCNkLFbb3UHtNfnQ/SpQw3P9oNOvybb4sYpn3TAe+MBmrfN7t6260wP3ymtrtmWKufAY5QqH5Hnttf67EJM4yhD2INKR8dsAfTj3QGSUZjqwC4I/Sty31w3lk2+XJrW3m+Uo73HsRksAF98+DcP7NuplSx7vAJ2q/CCfDx6O8oYbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,59 +91,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 02, 2026 at 03:02:48PM -0700, Borislav Petkov wrote:
-> On Fri, Oct 02, 2026 at 04:55:39PM +0200, Nikola Ciprich wrote:
-> > I'll leave it running for few hours, and report back. If I'm able to reproduce,
-> > I'll try recommended workarounds and report as well.
+On Sat, Oct 03, 2026 at 02:34:57PM -0700, Randy Dunlap wrote:
+> "[RAM]" means that the command line option is applicable when
+> "RAM disk support is enabled." However, the reserve_mem command line
+> option is not related to RAM disk support, so modify its build option
+> relevance to "[MM]" instead.
 > 
-> I'll venture a guess here and say that Matt's reproducer won't trigger on your
-> machines.
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 
-and you're right :(
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
+> ---
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Shuah Khan <skhan@linuxfoundation.org>
+> Cc: linux-doc@vger.kernel.org
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: linux-mm@kvack.org
 > 
-> Just to rule out any other issues which got fixed in the meantime, can you try
-> mainline Linux and see if you can reproduce your observation with it?
-that'll be very complicated in production.. it'd help a lot if we could reproduce
-it in lab again..
-
-I guess we'll add more windows guests and more load in them and see if we can reproduce
-it in lab..
-
+>  Documentation/admin-guide/kernel-parameters.txt |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> If so, you could share your crash core along with debug kernels yadda yadda so
-> that I can poke at it.
-> 
-> And before you do, make sure you have the latest BIOS and microcode installed on
-> that machine.
-> 
-> Also, where can I find full dmesg and /proc/cpuinfo from those machines which
-> trigger this?
-
-I'll gather it all and put it on storage to download tomorrow.
-
-cheers
-
-nik
-
-
-> 
-> Thx.
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
-> 
+> --- linux-next-20261002.orig/Documentation/admin-guide/kernel-parameters.txt
+> +++ linux-next-20261002/Documentation/admin-guide/kernel-parameters.txt
+> @@ -6693,7 +6693,7 @@ Kernel parameters
+>  			them.  If <base> is less than 0x10000, the region
+>  			is assumed to be I/O ports; otherwise it is memory.
+>  
+> -	reserve_mem=	[RAM]
+> +	reserve_mem=	[MM]
+>  			Format: nn[KMG]:<align>:<label>
+>  			Reserve physical memory and label it with a name that
+>  			other subsystems can use to access it. This is typically
 
 -- 
-Ing. Nikola CIPRICH
-technický ředitel
-
-+420 591 166 214
-+420 777 093 799
-nikola.ciprich@linuxbox.cz
-
-www.linuxbox.cz
+Sincerely yours,
+Mike.
 
