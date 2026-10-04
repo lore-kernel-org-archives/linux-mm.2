@@ -4,86 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31EAACA5FCE
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 19:35:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3E01CA5FCE
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 19:56:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B11C16B0088; Sun,  4 Oct 2026 15:35:57 -0400 (EDT)
+	id 40DFC6B0088; Sun,  4 Oct 2026 15:56:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC27A6B008C; Sun,  4 Oct 2026 15:35:57 -0400 (EDT)
+	id 3BDD96B008C; Sun,  4 Oct 2026 15:56:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D90B6B0092; Sun,  4 Oct 2026 15:35:57 -0400 (EDT)
+	id 2AD326B0092; Sun,  4 Oct 2026 15:56:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AD646B0088
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 15:35:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DDB841A0BC3
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 19:35:56 +0000 (UTC)
-X-FDA: 85285949112.27.12E1F36
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EC7266B0088
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 15:56:05 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B065120C3E
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 19:56:05 +0000 (UTC)
+X-FDA: 85285999890.18.1883168
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 54F48180003
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 19:35:55 +0000 (UTC)
+	by imf16.hostedemail.com (Postfix) with ESMTP id 59FD4180002
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 19:56:03 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UEGLs4Y/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="bsc/Ldmj";
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791142555;
+	s=arc-20220608; t=1791143763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bVzs3nKi3STeEpl2UyULOorVsImcNQe0xcTlZn/ds2A=;
-	b=oOOXcosCI3ah7WBkYkgVoWr9FCBitp1QlppfrOhH1B9qhF2GyL7aZ0wX8O5CSdCXfgqk99
-	1/TXXLx/d3/RfSHdX6rEGCGn+tS12/UW180nKc5SXdZrOWSrxbfbXczmRec3zw00gFC8ZS
-	szBYwcc1i3Krw65H5+MjmuOyYudw+WM=
+	bh=hpkaiXvdHhIcWibB9SYBycVYBcgkusfdPB8A5buHEEk=;
+	b=Ne/xm1bHssAsBTsTJsB/8RJnN0LX8FSchWxYbm85fENH90DhxFG8cyAFrXh0YJmYUHnHAD
+	PpWnFlQjHQuTOmMxsg5nfxSJmMkM7JZmplMIwp9LU/d71sW4UPwJnSkG/AKe8DBWVXxaqS
+	NlUk+srcIj6XaSRapwrZzvdeQJPXCZ8=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UEGLs4Y/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="bsc/Ldmj";
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791142555;
-	b=3q5dxnCwU/ezf68Yilwu2Z+q0HQzNy7m+z6vwkNDSTHCIOyutmE9gvOkfTVDnssTozlCTe
-	ssMWQiqVNcv21ghJW1yQrmkYD5dNIbUM0HT4uSDUPQmeHoL+k/3LMyrQrTm5CjNXe0rllm
-	3QOf4Jy+7bcpzHQdHxb7pqfXMkxvV8w=
+	t=1791143763;
+	b=dmBKDJ1Nz1xsUAkddfiHeuNHPoxcC+PrzVKhCh/s75+J6lKPTAuv7p/cclSfIlHSQSqBLN
+	pSK0WquK1XFFSWxuAlbCRQKihcn3zs125XNuTVINEgAR23chCCYVKsslWNPc4BypTwk+l/
+	QfWaAe6cJJUZM6SCIbQggiRQcJrIYg0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 30521433EE;
-	Sun,  4 Oct 2026 19:35:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740C71F000FF;
-	Sun,  4 Oct 2026 19:35:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791142554;
-	bh=bVzs3nKi3STeEpl2UyULOorVsImcNQe0xcTlZn/ds2A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UEGLs4Y/E+ufn6rjORVJC4qBwgayQk201Ab5LdI8A/H7kAObN2X4rwybWoGYOlAWn
-	 LBFThAKr195RP5Ck1itiVbU4NaQfSVJXpD9eWcyhjrbUqsu0x7xZ/jqkZ6Rrfy+8iC
-	 XY5u/vO197mG/W9DHiQnps2O8KPAOKyYUHhZ4jzAbChKXRhthIlKDCnBx7jrrI7h0f
-	 FbqfrInglgzFvLYf103tXFSztmxkW3vvJp6wgmvarLpcqfi8LnFJ3yyiM+G4/xXnxC
-	 aSW3xwivPyy21guZRkVkIeXFzIXsA6Yu6PoTuwyb5fGwR4jNqy2x2jqcccHmb96IMS
-	 2dt7+vLU7bbnA==
-Date: Sun, 4 Oct 2026 21:35:49 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] docs: kernel-parameters: adjust reserve_mem build option
-Message-ID: <asKqlZFS_A42w2hb@kernel.org>
-References: <20261003213457.96408-1-rdunlap@infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261003213457.96408-1-rdunlap@infradead.org>
-X-Stat-Signature: j5cad8fih84hsi8gx9yz4t9sehbq5qh9
+	by sea.source.kernel.org (Postfix) with ESMTP id 816CA429D8;
+	Sun,  4 Oct 2026 19:56:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFED1F000FF;
+	Sun,  4 Oct 2026 19:56:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1791143762;
+	bh=hpkaiXvdHhIcWibB9SYBycVYBcgkusfdPB8A5buHEEk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bsc/LdmjzyZjLRf2S+ltcr9UoQpASsvsad4cpVvRzBRa/bXU+oDQcpooSXbyMetul
+	 RsbKSU5SV6H6QLjDtc1lcov9ztMd2PZHkxZw2X5vcu0BJ8E2GyOkHq4fpIHjB4rsjW
+	 DliqWVNiUt6/tBgXYYAxRdEg4b6mHcfWTfymaXTA=
+Date: Sun, 4 Oct 2026 12:56:01 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Nguyen Duy Nhat Anh <neganhat@gmail.com>
+Cc: david@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/gup: fix NULL pointer dereference in
+ fixup_user_fault()
+Message-Id: <20261004125601.c06953a6f0660df9859b0c2a@linux-foundation.org>
+In-Reply-To: <20261003194846.205918-1-neganhat@gmail.com>
+References: <20261003194846.205918-1-neganhat@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 54F48180003
-X-HE-Tag: 1791142555-834530
-X-HE-Meta: U2FsdGVkX19A5zQwyXw3BnC8MR1FuwKRMl4TSoWlhIzevQyFd4OfT3gQDD2H8nwKNFAczDAXW6uZt2Su/RJpJMuSYDUvWWOlYjfX5XofCBrxRhuIzOqAVMIHNgFvQzoX67BDmnQPTe3nYahfxzdWexQUP0d147fLtN6Bh9BtUPtMCH6iKP8EsZNzL1KHzcxGBE/BXCbGhM0ocONsieAHt5pt6NWz8JPdkSNZnNa4Oa6S7WePLJ24RKgeDMYhW+R6RV2sSpLChKkbZiyxYT5q1/oF1Feew0UJUkm4nhtWZA2HHRR7L+zIOkaaZ8p6QRHPgP6CF9wKF6vHoOkIGN60mo0uFI1nAM6crJfU6Zczx69vZpix3jX2O+fXI6KjxHbVI7tZZYX884YlhMN54cELToueftR3egqRlmnGYGCPR/HfeitfHlp6qx0kbIwcnM+6axx5d0nHpdOLTBWf49fZXYxZyQQRgSLxvviqNtpJSzuaZLIQhiKONOQB4HVb2qANpqrQQCH2O/fRX1BlwW06ORTurP33zBMU2jL593H7Z2/RPFMhiKbvSBw69ahA51VzBEVgGqDw5qSKIAO2Dhtl/0LQr4mtJd31pnMHyzG/dCQoQ/sp71X/4rX+9unJHDp6ApBKurpgPNFtXrgMAtQuAl8rdtJOTlcLByFBOlLFPce+IFkaOCdQ/7TYqOPrktUM8d8syXbz1FgkzQCEYZHFjtUoL8dxd3tRiCKvRtl6o8GbRpmquLtxPqmyibPh4L/lzxdYi9Zs7PXUGofO0lKX1fXKbPZPmPqkFoDuF/3WRs1CUvl3fi1NTIDsHvwBQpYWPIL1SFBp/POps9RYB8uhKba2LlwYPmMjwwnO8K2mZOUou4eU1cCxj6PlwonWZhlkLvY5FKVYoeID9cMx78nT/2EyoitZaB2LikpzXPcuAESS3j0gATJoNoVmzRvZV2Wg0BRvtXdipdybbPyu5t1
- 8xJFZsvi
- 8BErJhFB8ytXQ1lJGUPrOT7rTRm/X1VDa4mRRYPlFJ+xu9H+sEyp8uUPBZ9UehZ2JPfY4D9fZIP8mBlf6d75q22/oDqNMhKjT+lT6JrcErJ6Xk9LqyzkHLDNPGcdTWXasoxYzVi+UxK5mKCSEpUieE+7pRjNlAInunq7WAeIp0d3ziQGYl6SMHjbtvErkV45idqIynq2OXJ98Iyx20RUyQQEIJhpPArlWqbWrDp3hDlRJT67bKjADj3cDucHXIM3RRh6h+CKZL+sO2M3F7oKneQnkXnZdUz16riH3eWHrBPsvPVe1rYhnPCN/n5AOYmM1w5Ei3ZtYoIt5i82KyQdOkjr9YWTaLPCZQWPwlDdHUJeVFpy0Pru0vKiQiLK+F5KvW7KgmqNvuqgGMqCNkLFbb3UHtNfnQ/SpQw3P9oNOvybb4sYpn3TAe+MBmrfN7t6260wP3ymtrtmWKufAY5QqH5Hnttf67EJM4yhD2INKR8dsAfTj3QGSUZjqwC4I/Sty31w3lk2+XJrW3m+Uo73HsRksAF98+DcP7NuplSx7vAJ2q/CCfDx6O8oYbA==
+X-Stat-Signature: e6caks4m4ani1m1hg1du9ij78gjb1od9
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 59FD4180002
+X-HE-Tag: 1791143763-351115
+X-HE-Meta: U2FsdGVkX18ADB9IXxeMP2APsMCiNqdootF/OGLe5IicDx9LJwQaIeCbRbdW0wwSTNc768PRVegdeHtilzrOZZzV+eGAmqGffQKAxmGkIi9aQ6FaJx3k4EQCYkjCmog1/eAdXdgFS54ML9sSXtUhZsktryc4mhs5Rj8GPvNhwcWb6041wZr+Igptw611sEK22RPnMMH24idEYs7yED9mt9mKKL6OMf9PMHVutv/DverrIk+ScUGt05lmI6pwh9LUyW4jdtfvQX5VNPXwZUDjr1inKNb/k7pdtH2dpShEclQdV2lKQjUkQIIj+3OBlDdr3IRU4wNeTAGZ76kK3LXxiwonZQ8/PnDDDkkskzS8m/OfGbEcRBUcCzgdRh73nkTFXsQ5QuY6s/lbDoGQUdbncZrxJtO71k3E1SjR0Y+01gj3+Ky2Gn8pdtZGleQoDhdPqagA87GqQMtZzUNtYXhFQ+skA82bwEOqnCfGwUE5pQJYNRUFbyCRhu+DIp+3GhQYe+Jn4ewZpNFEmHtAu6XSW+fUTVyti6AhiPGsvPnSZ+AP0Ka+PmYzX4tX90Ck4dPkYj5jqxMelhhoT+dcWggHGwBUX+uR7AJE6G+Whsas7O5cF+h106Lw/hYLBaAfCGfgem/nXr4P7og2J4LudjHNz9R21PAR99n0HJubCOxkNg97Fo2bJeaOiLP0/ynNTAkAVF3GZ4Tujhxqlc7O46wXggtTfGIMupdKNXrXFOsnI9DXYtNTg9B0rNf3xb2G7Kf2ePVHSqZXoMbt3+FbWnoLvl/qj2m8SaPdmXm2V0+HsGXMOk+9px8LZJRAnkEZeiCqyvdpUrzRAcSahmMvh3Uil/+8GXzkcCWFakmy6PDhO/uitAkxHn+OXwpaYCWavIbOsb0D1eZoIC201I0VN7wnTEND5KJy5NiNxsA1Oc845FrxBRdwAmxW2VRvZf8a8aRsnBRMQ4QOLsM7s/h7Zxd
+ huxcu3iJ
+ x9DpVqeNr5dzze7u5KSyzC3Bir7xH3zPjYE6yvRYApIeJioAnccylq+gzqEryIkbSNzgsjGuH0F9IcTA9mSP5ud9YQUUica+oHlZXqZruoxnUs+Pvl5rBXqF4aMCpM7x29wdbWBfvZ1kDDOIjoVHV2s/ePMO1XDhuK0+xxIL/zoPd7lAFLbMkbUyPzxzxuZAdO+yDZ14egFojWyqbZPlXlKsY8RueiLWWUTl8Sp+pGtMirrcK03dZVaSdWaVxV9QslI9c2EZlrgyWnd9AMbd/B6qCE4fjafAcoLaq0s/Dm2UPPLScP3DgJ27mmST61ius7Eza
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,39 +90,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 03, 2026 at 02:34:57PM -0700, Randy Dunlap wrote:
-> "[RAM]" means that the command line option is applicable when
-> "RAM disk support is enabled." However, the reserve_mem command line
-> option is not related to RAM disk support, so modify its build option
-> relevance to "[MM]" instead.
-> 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+On Sun,  4 Oct 2026 02:48:46 +0700 Nguyen Duy Nhat Anh <neganhat@gmail.com> wrote:
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Shuah Khan <skhan@linuxfoundation.org>
-> Cc: linux-doc@vger.kernel.org
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: linux-mm@kvack.org
+> In fixup_user_fault(), the 'unlocked' parameter is checked for NULL
+> early on, allowing callers to pass NULL if they do not track whether the
+> mmap lock was dropped.
 > 
->  Documentation/admin-guide/kernel-parameters.txt |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> However, if handle_mm_fault() returns VM_FAULT_COMPLETED, line 1597
+> dereferences 'unlocked' directly (*unlocked = true) without checking
+> if it is NULL. Callers like s390's pci_mmio.c pass NULL for 'unlocked',
+> leading to a kernel NULL pointer dereference when VM_FAULT_COMPLETED
+> occurs.
 > 
-> --- linux-next-20261002.orig/Documentation/admin-guide/kernel-parameters.txt
-> +++ linux-next-20261002/Documentation/admin-guide/kernel-parameters.txt
-> @@ -6693,7 +6693,7 @@ Kernel parameters
->  			them.  If <base> is less than 0x10000, the region
->  			is assumed to be I/O ports; otherwise it is memory.
->  
-> -	reserve_mem=	[RAM]
-> +	reserve_mem=	[MM]
->  			Format: nn[KMG]:<align>:<label>
->  			Reserve physical memory and label it with a name that
->  			other subsystems can use to access it. This is typically
+> Fix this by checking if 'unlocked' is non-NULL before assigning to it.
 
--- 
-Sincerely yours,
-Mike.
+This code is too subtle so you aren't the first to attempt to "fix" it.
+
+The key hint is in the kerneldoc:
+
+ * @unlocked:	did we unlock the mmap_lock while retrying, maybe NULL if caller
+ *		does not allow retry. If NULL, the caller must guarantee
+ *		that fault_flags does not contain FAULT_FLAG_ALLOW_RETRY.
+
+Trace through the
+FAULT_FLAG_ALLOW_RETRY/VM_FAULT_COMPLETED/VM_FAULT_RETRY logic
+to confirm that the null deref is a cant-happen.
+
+It would be great if you could pick through all this and propose
+addition of a comment which will make this code less confusing for
+others.
+
+Thanks.
+
 
