@@ -4,122 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89966CA5FF0
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 17:39:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82019CA5FF0
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 17:42:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C2256B008A; Sun,  4 Oct 2026 13:39:12 -0400 (EDT)
+	id 88BB86B0092; Sun,  4 Oct 2026 13:42:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 773326B008C; Sun,  4 Oct 2026 13:39:12 -0400 (EDT)
+	id 83C786B0093; Sun,  4 Oct 2026 13:42:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6620A6B0095; Sun,  4 Oct 2026 13:39:12 -0400 (EDT)
+	id 72CDF6B0095; Sun,  4 Oct 2026 13:42:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BF066B008A
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:39:12 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A757EA0B7A
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 17:39:11 +0000 (UTC)
-X-FDA: 85285654902.11.3C760CC
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D3BF41C0003
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 17:39:09 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EAE726B0092
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:42:26 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4DC731C3FA2
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 17:42:26 +0000 (UTC)
+X-FDA: 85285663092.02.D76B18C
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5BDA41C0008
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 17:42:24 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kdH41uH1;
-	spf=pass (imf20.hostedemail.com: domain of her0gyugyu@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791135549;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iNeZnHC+;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791135744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6hJVS5+jE0uXV92n3fYslDINcPr4GX7oGIj8l2+wqvM=;
-	b=NVGpGuhLN6MchWnuoThP+sZ1GGpdwgCQDrqn2HYTG+WCKO6z5Y1i8ZUIAshczC2xWpBZtp
-	VdlnyqNIZ8fNAs4mQj9ExTlz3oIURuqtwwntyC6dPhaLGbmGXNdD+tL1GRQmOrSYM1cox3
-	OrXMAHSLcwqnaexEfZKPL1n6wq/nIGU=
-ARC-Authentication-Results: i=1;
+	bh=Lc5562D3mWi9zthF4OGWqkURt3JXx0LaNSqwCjnMAYk=;
+	b=xKjsgbs5TsytvEILvdg1+vRVREPpWa0m/jvMnzZWvlRLcOZQ1u8Sp4+dlTVWUzlIvdCp7A
+	0K0F8nWP/vXwsTCs0NP7uxP5spSNeDjJ0yGPR7rHayJuZHvUoc3XEZl1rXrfMGjIk9UJqV
+	CFez1X3CtPWCrLxZJtDVX0uW7yDpp3g=
+ARC-Authentication-Results: i=2;
 	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kdH41uH1;
-	spf=pass (imf20.hostedemail.com: domain of her0gyugyu@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791135549;
-	b=FCpBDrnMjGp3M+lBxBRbiDfczCWHzulZlndI0d4g3cwpu4nrc6tsNDrT+snH7K1ZngN6F9
-	aNps4Qk6GzL7npk+pTanEs0zAaNGgsKeDvcGSmQIrr0lRfE29uiePXjo3870D06i/4bigw
-	s3y5wblvxqUvVuU/VHQ9EmTuYK3jrUA=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2e576377715so1608805ad.1
-        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 10:39:09 -0700 (PDT)
+	dkim=pass header.d=google.com header.s=20251104 header.b=iNeZnHC+;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791135744;
+	b=KgUl30C9UFiBTDmYs4VsHDlCfFel14MEld57cEyoeFLd4RQjnPGyca15J8+ZN7hrdsn+c0
+	HYIjpVPSDayjmA6OPzjd29ZjnzpHfaPVrNAfpCSjFw4iIL+/mCrmvPSiE1wQC6J2dJ7cxp
+	/THESSBup52YboBDZnGMpJUSdmod49o=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5337fa12431so183151cf.1
+        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 10:42:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791135743; cv=none;
+        d=google.com; s=arc-20260327;
+        b=A0v7d+PWgFK8SAgndFIFcKN5qBk33L416cjrC/AM68F1v8stMxDoMZL8dsuYPTICYg
+         NDxsU/YhNn5cD3WC/7RdL/ZREryoHxKWB2bZI1tRRSalHyaL9EP6Orp0T/MMv0mED5ed
+         IC1Z8XFBWE8DclmcUzNjo7FcWR+vyFffddgMSkENBzMu2fiIhVrToMP708rzd95evy58
+         3WQQbGOuD/vpogRQUMLGyLFXf0Hh+rWv1GoxaheqEbocHAZrcvuKPqd1mvhKEEzT72Tj
+         ecaew6za7HRKW502E/0dahWtI2fSe9UupKrE8xqFIO7r334om/P5VY+Vt2ZpMYJoLk/B
+         RJFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Lc5562D3mWi9zthF4OGWqkURt3JXx0LaNSqwCjnMAYk=;
+        fh=cZKWfUlqvWLMV4VA8xEs14D+yBLDtmD/p97Hk1MOUDU=;
+        b=K3K7iN8bf+fmFUuboBemY5dNEBxwdxenGOMCnufZy559sykeVu2Q8S2Ngb1/3rUtji
+         Vwy1U3F0vTbXOc4RMQlE9lYoSdW1+DOtXY6t748GYH0JNdWISKauREUCFMm3AWsQSOWX
+         ZB9PMRBeDSFFVgpeFDg+i87ggkructh/LEYjeBSY9O/mVu9jnXk7HT4EWy9XXyA7ENgB
+         2aVaIneG85IH8WHdM01RO109C+ktur3xKZeR/X4aLJ5hsKNCTG89mhiV7LsWsPKhxe+7
+         Q3QPZqdGGGGEbOPTN6HZmwzYjW/BbP2ta+8/0eQdQpPDpecRpsSbvMBqNbndfdAaz9nH
+         0YGg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791135548; x=1791740348; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1791135743; x=1791740543; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=6hJVS5+jE0uXV92n3fYslDINcPr4GX7oGIj8l2+wqvM=;
-        b=kdH41uH1LSiQnekLp5n7fHj3iDlYnSyIYfXi4B2hwHNIkN2el6G54jrcAYGL7iRgjB
-         B+SbtuYgmvJp+P6f5y3JfzRin+8fc1RWsc+SgoC9tgTmV0Jd1mjlWh05eTqzABOV8Uu4
-         BZqG5i62Zbdm5eCSJKUqsdCOK3E7VskBjg7o0FwhZBcooKB9w2T4vtWK80LIDZzNEvDY
-         OWnZO24j4nDY/UoLmkVYlb6bsIOcU0JQtYj1YFXmsLrk6YcQf3xMvpARjd2s1DtTKDWZ
-         bjtPLoN+HGwvvE1LNZQjTjMYOydIIDZxyaRhBdIWrTDWed0IdzY7vcMx9FUsbMABysEl
-         0LOA==
+        bh=Lc5562D3mWi9zthF4OGWqkURt3JXx0LaNSqwCjnMAYk=;
+        b=iNeZnHC+dJtoMH4hMEzUjxl5166errFi0yrWdvAl6Upd+0uBWTyQm2P1/P7z9NlWfR
+         9HefmwL986/YcaPrpZTsYZ3IAX3GRO+YgtbXgiFiyWZxG/POnItEYn3tIyebSbNNTGhs
+         eDg1eHA96JJCmw+kjD4NYKjFvPtzNM2pZde7mi5RAgxfI94O4FwDjsVnb1kgJ+J6125h
+         slFBNNF3RcR/T0neKD8/kjfJ7s8ur0B+sUYnr7C5qST8dXkvdt+BpOeW+EsymTH+3qcI
+         RO2xWwBbLL4mUfBox2HmUyfOV4NZnQJKE9yifT0x0NKXBMOJd01tm5LedCR77xfi3Qiq
+         jkmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791135548; x=1791740348;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1791135743; x=1791740543;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6hJVS5+jE0uXV92n3fYslDINcPr4GX7oGIj8l2+wqvM=;
-        b=s1Eyme2mb37XtoR5sJWXokHaoXbwnWuYarRPtMV4YCn1lobP0nb5T3DrZ+prrC6mr1
-         h2AxYNNSyJI+q05aKXHKNYj3yflpEpFKmJ69kdrZVUaWEebV2uEF2/nwx2u7HNSlejAC
-         FnQZKNNMa8JwQXdaw6kFFVmrgEw4gCKC4k3UqXNFv6Dq7+9N500X8BrAb5iIurAwv4OM
-         geO1Rrqc6e6gs9cJRJ5WMp9E+DQ3Ph2q5CKSAjG5zx+SNvbq5f98V2r73H8DxNLUbtpZ
-         v/OaNnEF6cNfubk0pYItADMKw3uhEvHliufDCzQBgDmf+LTJA0sZY7V94BY56Fh9eebY
-         6hbw==
-X-Forwarded-Encrypted: i=1; AKwUvByfmzGhknEbedIml+AFHB1FxNGl45u/OM5a+x59Mtab+oqXd7pw3C4X2/7fL0sdrl1ZjZp8cf+raA==@kvack.org
-X-Gm-Message-State: AFq9FYJJ3wOOUxyuXT1hxU+Evw2D3DLKselmjCiGZhlW4nqs3NMCEEvQ
-	g+iO19OdeflJb3nsT2dL46FJqdTATMPp9+Sl+qJxPmUKZIkciywhmIu7
-X-Gm-Gg: AYBFou2awJj/nrBkiSAw1Zewj8WHbPqZcJM4SLDT4+8Rr/Xs1aC4D3d5Qgixlj2OBbp
-	VFEUFafT4Euy6uxzRKEmqEKs4pOLzH3s4nzaxoOgazc9kDXGvamckNo+9JBh4cRp+HcyboJCj3+
-	KvC9+z0NEUK2C1U24yLHmBPQBBVzWpWkxOMK8qzyUo/quH+OH0yYcj/7rXFAX2PORJkk0yAMVYV
-	VzPpViV17Fqa07oaWXLK7T6sdJs8PZ9k4FoLYtg13K6ExNi5KYU7SLqQI2JHPiCEudUUGNt/1Wm
-	wCe6jOcLhPGy2NkgxlSJ4m6zSfkoyMQkj6sKXaOy4uof/2DnsoA56KrzT12Bwo/fTu8g3ePROUI
-	LoGaIzSHkah/20wHkFV1LVr3TA5CeM4mmIFfO1HpBV8V3sakumVe3m5uVIsaiuntzvDfUP90fir
-	6rZktnqCLD6kW0ZUvOFxz6hJWYfVy/ERPvrsTKzmc9UcCm3RU+Ne+96F4HCYwrJg+b6dUFbvLZA
-	7FpC4gvWozyfGSxDjtcRSf6eh748ptaWkCTmP0cpg==
-X-Received: by 2002:a17:902:cf03:b0:2e5:33a5:36ec with SMTP id d9443c01a7336-2e533a538b5mr43880885ad.4.1791135548480;
-        Sun, 04 Oct 2026 10:39:08 -0700 (PDT)
-Received: from gmail.com ([220.85.166.190])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e49f6fe249sm24473095ad.61.2026.10.04.10.39.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 10:39:07 -0700 (PDT)
-Date: Mon, 5 Oct 2026 02:39:03 +0900
-From: Youngjun Park <her0gyugyu@gmail.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-mm@kvack.org,
-	linux-pm@vger.kernel.org, taejoon.song@lge.com
-Subject: Re: [RFC PATCH 00/10] mm/swap, PM: hibernate: improve image slot
- allocation and I/O
-Message-ID: <asKPN6X_Rs5h8n3N@gmail.com>
-References: <20260915031658.1505680-1-youngjun.park@lge.com>
- <aruGQpdsq7_O-AC8@KASONG-MC4>
+        bh=Lc5562D3mWi9zthF4OGWqkURt3JXx0LaNSqwCjnMAYk=;
+        b=IICVb0xS2uTbGx1WQkYrXzjhHcI6JV0fsrvqwN7wRYYCj+SmXVQ1IeZS94QBWmAw4K
+         LU+VT8BaMLMdXNwHJogKVplZQLu6OgbgpaZZLeDQdOCipBkk38VcLbmPX1oXZplXM3qF
+         73mOsLvJxFdwe49w++F2Xv6nk6qMgVSj5ECCxN3n36eYQEti4Ywo5v2bgoPbvYexs31D
+         HzqSBVILgv52OJgX8MdgqgH1hTnhLp8oHxL7NKZLvGS5+YNf5XSiAD84AVBd9Urdjg6Z
+         zaEFr76bUA71d7nqvQba+EXyqTFDJyxHf4eLuyhvU8GRLJbJ8L2ckNCKgJYj6ffqbirv
+         NROg==
+X-Forwarded-Encrypted: i=1; AKwUvBztAQOGR28YDb2vMrK5/i/lVTMkXN8xLaabXEpFG/LcT7bOGDlzqwNYGpFwU3uU+8FDhVb5pV4EVA==@kvack.org
+X-Gm-Message-State: AFuF++l/ntcle0H4U8NSQomW0I/T/h+ClJJ+eODX4wfvE48M2Bimg9M9
+	YtxiFb+ChUupJ2FaFTVkVWDEU3+Q1ZHxYAzKi4nc2eKETHk7yyF/7bMBODJv5fxa6YzNHMPBupC
+	2BOIrWkQgGssLl8qdiRyMB/GnurBhpi1bSkYQ+tU9
+X-Gm-Gg: AYBFou0lUKjjfmW8Mo1nK7b6UvuBkMMgUAmF9XxPnX0USMJmjR7LfVEuTzrPc/OTqNS
+	SvK1AiD08jToxnRcTM56juiWavcu0HwcykKQxGpl+ikydsQp85yqWg7cLYlW0+ztD1XAmiA6wHf
+	ORRz7W1UZtdBfkjAI1nIHcrTCh/w8kosf2OrwhCMFDl7UbGmykvLUl++CXTJstxPOPOWDinnynE
+	+r3STm1uaZHI+l6bneek8RpIGlqvVs5HS+D5ttGeLKf2FOUvCs2oiycSP7REld1iRrbfrLckX+k
+	NhTPd66t8Yr1P5ukei5zSFJY+34k8A/k34hbWkxtO/77hkLjvFK3QerV
+X-Received: by 2002:a05:622a:606:b0:532:84d3:abb with SMTP id
+ d75a77b69052e-535131b5a84mr14423871cf.7.1791135742728; Sun, 04 Oct 2026
+ 10:42:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aruGQpdsq7_O-AC8@KASONG-MC4>
+References: <20260929082014.160587-1-hao.ge@linux.dev> <20260929082014.160587-3-hao.ge@linux.dev>
+ <arzgoe-bXAz1poAt@milan>
+In-Reply-To: <arzgoe-bXAz1poAt@milan>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sun, 4 Oct 2026 19:42:10 +0200
+X-Gm-Features: AclHuK_ov-dYU8ZQ3hSK0lFHr-9gA3i8l8r8LsI_kBqLCittdU-KxegpDjovpwQ
+Message-ID: <CAJuCfpHavrwaJ2T6daHnJc+r=9khBwrv_zOp8s3Cwi347SHXRw@mail.gmail.com>
+Subject: Re: [PATCH v11 2/7] mm/vmalloc: undo partial mappings inside the
+ mapping functions
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Hao Ge <hao.ge@linux.dev>, "=Kent Overstreet" <kent.overstreet@linux.dev>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, kasan-dev@googlegroups.com, 
+	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5BDA41C0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D3BF41C0003
-X-Stat-Signature: hiz9dpixosgctj9ft91s6ka5foqeea1o
-X-HE-Tag: 1791135549-242892
-X-HE-Meta: U2FsdGVkX1/0sKpwMzKl+PNW5quxfIvxTVN5vR9Nxld6nUB5B2CTXfgzeaFdq5SsSrV+MeNdasgvWpeeatDgqC67LcEfbS/HkMKqZykx+DPEEFWIK6gGM4mMjzS2fePnFJ15yzu024dOA6wdE/eVUqc71pGU3TvkPXoA1ZIkhLKeNsZSr8ZcAfVUc/2tj7oPiamers0seqDub91aVE+gNeeLmhXzYGGM1We3EhHTmOResLm6aSCLpUETF+d/HwlMDredSGV06zsFcxU9WBzhiuEv8/4gBwgwXnzEpk2p1DZHBStRENP6gq/ZbZAYm2GoAwVexjmVS3FgHJGC9Vo9AhcUjwh+f6JdpBG0TPy6k7m/6cjP7bFfbvVJsURGtu07/OF0iMoLNUsk27LFaLG525uwTvD6gTbfc4L1ca8ZrTFRtaOtekEjfd/mZ33uynrPITdBMZ7/0ro/F2DsMWbZCrTVIl4gpYdM0Gz/AgmRpMyt5OhMkAgqSA2zOou0ULlH/8/91cZoGrjKyjV54hcqpnyDPsPw2VRfWxA1AqukeP2dYkQRReGOw6C1nIFi3qxe/t+W2Sp/Qo0keKGro1oGKGNwmDHciNfEqXsTpVjgiQYzgcDpp3/R2Juuy0yrm7/AN0NsgGWrAeJz3wMUnRPw1HUIi2kB1tcx7rybugjoouon/7fmgY5dNCMKY1srFsjD6owhOOl/xfS1ChF9HWfWJV0va+NGjN4rup7kNDuJjNp17CSEUmu3/gseSRMdrO6FVFwiDobAeVaYJR5mu9yUzIhDnw+39cD4toJvEMmr3ptWQeNEP118vEWdKLMQaCwXmP1qXfmgcXzyyfXJo16SAxalHznEG1Jn9SHgxAwlAuVgYKcpBkOdwS1r7i8tx5WgvSxlKV076fEtZi4wqpkR8naDQ2d8ejNWRJRNjiZs6mQKkWbGdwcf8BOCEjsrAtXVHDKFswErzLOMHVRAIhn
- I89dAeEy
- 1tqVVN81iZsalZCqT2hPnTWzxlzPGS/VVkdEqc17315is5O1ZRDqgEupl445Uz1qL61c0GBLOC5ndzq9qJlIx7vDdgqnwLtK4w2SMntW8lsqfCTYwP359z3lINa0Cp/sMW3DZSrQyCHr9TCr37FW0Y0vHrZgMF792eOwPlTE73e3+X2Oo1az2b4lbhA0hBIIAMkxFfguBZrY6ghGKubEIyxXT28io2UTWJJ8oT+ihAH4J8kmgWu3YvlC5Nd6bgEiKohpEu+Sa6XnCP6wN9an94pkdxzqc4SRsOhmmLqwLmWrpIYqX1mlOSQPE97Ch92KxHZzT0HOyRMdTmPOm8nMHD579BoxHayCsy1OqIXkRpa+tJD3MvIocuTlMlLpRtVAZCPRT9zTDxGpXVfQ=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: i6idq4zpb6oo8ux9bgqxrutd48bskjsq
+X-HE-Tag: 1791135744-139364
+X-HE-Meta: U2FsdGVkX190DYUYXmyM4S+qTkEVqOcybByCb4i5FiK92mzX8jKh3Vt/GiPQsRW06uVaxnZ3KjTiMh27YTWOR81s40IqV0xqGVcUoxn/2qcRaFP8BM3hbl8kjkFHveXuQZP6JlRXXeWq19qqSd2zPqAqygFqnVZA2XckYHzFiNBzqL6+0jtFQUaam02mtA7WvmU0L4FLU9QmVM5/ZpNWdzC7H1NJXOq9AyECVolPgky6qwwi5f53R/cOHsSQ3A2XhVPGKKmUUf/vfjBSGeMSvwkKROPz6nS3faRkHBFr2/jLcIVozzkJjJwTGm5Fxj4gqSRhejLZMf17HlYtWp3gjLZCGkSzF9EO4S1osY+mgUJ97fFF3yoUgyfsCyTg9ql27r0o52qv1HEeBQGCwOrgKu9lXTipcPTlzGMFmzX5W37pMvdosMRbKvhX8dx7znp+ZVh4y6isRTcrkmt39Ol6rUUKInusAUDZFE4ztlpAzFfV7NRyoSrA2A/zqODNWPKj2jDhDXpFWTGRa4YfFZrM43jO6JrCQMdhbRAnhJ0vGplj456YPtQjHrAILaw/0UHdXUU5VorO2hp/n8PmDK2htPOorF07dtCHr1c/8FIFOTdQv4KdcWYIfE982XhdZnaTSUbRQ+6su/+xXNJXNZqLOscmvEq/4qiX1eqVfNcf7/ydIAP6zMeJWr3AE/tjVu7kfMS7FyX7L8YIV8Qnkcq2ng9ZluaCsnHtdtxBi+zsyntFEH1rxwJwg3iK42zN+PCDC3w+2BEyb3KEC3q+uXykvEyrQW+kXl4CigX8+9iL1UL2GbVR7hOXVh1V9m95wrQzb8OVr/vcZ0hugeHY+0fJADXdQVFHdSILuehHoNVAEP18LgJ5XJxuE7dzs1o1iGpmArbG5k4f6v8gLObuCWSDG9eqEbORs2GJ98P7fATGK+e2YitRjbPN3XffAmGwx4nle8uxHTTOqiBlMPNzLtj
+ Ztdxp9DS
+ rpjpm375XK3JsnSvyKtNJsaW838Y4B6WzLx7WHtyBEdiW2rtwCyr4Z2QhHWB2aFotBPvfCZczFH4aPM5KLhqLbzY0VBy6AbZ5hWgZ6NXUKATazKBBRp7QEdCV7rq9JKt1DGCJfQRqXxmEJK38kUHdWyv40NXgDtiFHulgU6srGRr1mMcKgZmKhVy/zhc/Ou4kMrpLQgPW1F5GtNm3Uv9aFM9TOf8ebrHZ29kD6n74kUm6/w2OCk+6QQWLslnFbdtSowBjRFCaHHzv4fzXuDQ+P4DhRf0AjYnNp3rm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,138 +149,230 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Hi Youngjun
+On Wed, Sep 30, 2026 at 12:12=E2=80=AFPM Uladzislau Rezki <urezki@gmail.com=
+> wrote:
 >
-> Thanks for the patch!
-
-Hi Kairui,
-
-Sorry for the late reply. I was away on a family trip.
-
-Some of your questions and points need more thought, so I'll follow up
-on those once I've reached a conclusion.
-
-> Splitting out the hibernation specific part out of swapfile.c
-> looks a good idea to me. We can then compile that file conditionally
-> rather than having a huge ifdef block in swapfile.c.  Would be nice
-> to get more feedback from hibnernation side.
-
-Ack, I will keep going that way. :)
-
-> That's pretty nice indeed. But I'm a bit concerned about having a
-> specific cluster isolation path for hibernation.
->
-> Will it be cleaner to provide a more generic cluster sized
-> allocation (PMD sized) so common swap can benefit too?
-
-I am still thinking about it. For now I am not sure what common swap
-would gain. The gain would be mostly cleanup, e.g. the allocator would
-no longer treat an allocation without a folio as hibernation.
-
-> And I'm not sure is IO batching working properly before?
-
-It depended on the case! Before this series the image is written with
-a bio per page, and the block layer merges them back only while the
-slots are contiguous. They are not always contiguous. Two cases come
-to mind.
-
-  1. The image shares the per-CPU cluster with other swap-outs on that
-     CPU, so their slots can fall in between.
-  2. When nonfull clusters have holes, the image fills the holes first.
-
-When these happen often, batching does not work well.
-
-And plus, on this RFC I manually collect bio before submit.
-batch will work well from this patch as I think.
-
-> How much performance gain is due to the cluster sized IO?
-
-By cluster sized IO, do you mean the batched I/O of patches 7 and 8?
-Sometimes it is cluster same sized, small sized and bigger sized(little situation maybe).
-
-If so, allocator + bio cut the write time by 18 to 25% and the read
-time by 11 to 20% in the cover's tests. The large contiguous I/O is
-also friendlier to flash as I think
-
-> But if other appraoches won't work or hibernation is really
-> special, and we can keep all the hibernation tricky clean and
-> simple in just one place, maybe it's not too bad.
-
-Since you prefer the common swap code, I will try it in the existing
-allocation path and compare it with the current swap_hibernate.c
-approach. I will come back on this with the next series.
-
-> > Note.  [3] gives hibernation slots their own swap table entry, keeps
-> > readahead off them, and frees them by offset alone.  The single slot
-> > path of patch 5 builds on that.
->
-> Nice, maybe that series need a refresh to get merged first.
-
-Yes, I will refresh and resend it soon. :)
-
-> > 2. Whether the reservation in patches 9 and 10 is worth keeping.  It
-> >    makes sure the image gets contiguous slots when swap has room to
-> >    spare.
+> On Tue, Sep 29, 2026 at 04:20:09PM +0800, Hao Ge wrote:
+> > __vmap_pages_range_noflush() and friends can install some PTEs before
+> > failing and leave them mapped, and the kernel callers do not agree on
+> > who cleans them up. For example, pcpu_map_pages() and
+> > kmsan_ioremap_page_range() unmap the leftovers themselves, while
+> > vm_module_tags_populate() and the __GFP_NOFAIL retry loop in
+> > __vmalloc_area_node() relied on the mapping functions cleaning up and
+> > did not call anything like vunmap_range() themselves. When the same
+> > range is mapped again, the attempt hits the leftovers and fails, with
+> > BUG() in vmap_pte_range() for huge mappings.
 > >
-> > 3. A block device of its own for hibernation instead of swap.  Not
-> >    taken for now.  Sharing one device keeps the spare space useful, the
-> >    existing infrastructure stays, and the ideas above give much the same
-> >    effect.
+> > After discussing with Suren and Ulad, we decided the cleanup belongs
+> > to __vmap_pages_range_noflush() and friends, so the callers no longer
+> > need to unmap the partial mappings themselves. Each function now
+> > undoes the PTEs it installed itself.
+> >
+> > The rollback calls the low-level __vunmap_range_noflush(), it just
+> > clears the PTEs of the range it is given, which is all a rollback
+> > needs. It cannot use vunmap_range_noflush() because these mapping
+> > functions also map the KMSAN shadow and origin, and for a metadata
+> > range its hook would look up the metadata of the metadata, get 0
+> > and BUG() on addr >=3D end. The failed mappings were never accessed,
+> > no TLB flush needed.
+> >
+> > Fixes: 9376130c390a ("mm/vmalloc: add support for __GFP_NOFAIL")
+> > Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as nee=
+ded")
+
+I don't think this fixes 0f9b685626da. I mean it fixes it but
+indirectly. That patch expects vmap_pages_range() to undo the mappings
+when it fails, which is a reasonable assumption. By fixing
+vmap_pages_xxx we fix all its users, including
+vm_module_tags_populate(). So, it indirectly fixes several callers but
+when adding a Fixes tag we do not list all patches we indirectly fix.
+
+> > Reported-by: Sashiko <sashiko-bot@kernel.org>
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> > ---
+> >  mm/kmsan/shadow.c |  4 ++++
+> >  mm/vmalloc.c      | 31 +++++++++++++++++++++++++++++--
+> >  2 files changed, 33 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
+> > index 0c88d89bf0d6..2166086d3dc3 100644
+> > --- a/mm/kmsan/shadow.c
+> > +++ b/mm/kmsan/shadow.c
+> > @@ -258,6 +258,10 @@ int kmsan_vmap_pages_range_noflush(unsigned long s=
+tart, unsigned long end,
+> >                                           o_pages, page_shift);
+> >       kmsan_leave_runtime();
+> >       if (mapped) {
+> > +             /* Undo the shadow mapping set up above. */
+> > +             kmsan_enter_runtime();
+> > +             __vunmap_range_noflush(shadow_start, shadow_end);
+> > +             kmsan_leave_runtime();
+> >               err =3D mapped;
+> >               goto ret;
+> >       }
+> >
+> Can we just do that inside the vmalloc? For example in the
+> __vmap_pages_range_noflush() as entry function for all(?) helpers?
+> So we do not need do it manually?
+
+Agree, that would be better.
+
 >
-> So is the idea for 2 and 3 here to make sure hibernation always success by
-> avoid the allocator using too much for common swap?
+> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > index 859e6d2d57a3..9bbf75706627 100644
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -349,6 +349,10 @@ static int vmap_range_noflush(unsigned long addr, =
+unsigned long end,
+> >       if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+> >               arch_sync_kernel_mappings(start, end);
+> >
+> > +     /* Undo the PTEs installed before the failure. */
+> > +     if (err)
+> > +             __vunmap_range_noflush(start, end);
+> > +
+> >       return err;
+> >  }
+> >
+> > @@ -363,6 +367,9 @@ int vmap_page_range(unsigned long addr, unsigned lo=
+ng end,
+> >       if (!err)
+> >               err =3D kmsan_ioremap_page_range(addr, end, phys_addr, pr=
+ot,
+> >                                              ioremap_max_page_shift);
+> > +     if (err)
+> > +             __vunmap_range_noflush(addr, end);
+> > +
+> >       return err;
+> >  }
+> >
+> > @@ -667,6 +674,10 @@ static int vmap_small_pages_range_noflush(unsigned=
+ long addr, unsigned long end,
+> >       if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+> >               arch_sync_kernel_mappings(start, end);
+> >
+> > +     /* Undo the PTEs installed before the failure. */
+> > +     if (err)
+> > +             __vunmap_range_noflush(start, end);
+> > +
+> >       return err;
+> >  }
+> >
+> The only one user of that function is __vmap_pages_range_noflush()
+> so we can cover both cases there small and huge path.
 >
-> We only want one of them I think, and we need to be careful here to not
-> make the maintainance messup by adding too many knobs...
-
-Yes, that's right. Both keep space for the image that normal swap
-cannot use, so hibernation has room and gets it contiguous. I agree we
-only want one. 3 looks like too much to me, so I would like comments
-on 2.
-
-> > 4. Whether the extent tree can go.  A normal hibernation never walks
-> >    it, the swap state comes back as it was at the snapshot.  It is only
-> >    walked to free the slots after an error or a wake from hybrid sleep.
-> >    With the slots marked in the swap table [3] and taken as whole
-> >    clusters, a free could find them without it.
+> Is that enough just to do unroll in the below:
 >
-> The extent tree is not a hibernation issue right? At least for block based
-> swap the extent tree is useless (only one node). I think swap_ops can be
-> used to make this limited to certain swap_ops (e.g. file swap ops).
-
-To clarify, item 4 is about hibernation's own tree, swsusp_extents in
-kernel/power/swap.c, not the swap device's extent tree. It records the
-image's slots so they can be freed later.
-
-> And maybe, the swap_ops can provide some interface for hibenation usage to
-> make things cleaner?
-
-I need to think more about swap_ops here. Nothing concrete comes to
-mind yet.
-
-> > 5. Whether SNAPSHOT_ALLOC_SWAP_PAGE should refuse a request made before
-> >    storage is suspended.  Such a request gets single slots from the
-> >    normal allocator today, and s2disk only asks after
-> >    SNAPSHOT_CREATE_IMAGE anyway.
+> __vmap_pages_range_noflush()
+> vmap_page_range()
 >
-> Is that a even a right thing to do during hibernation?
-
-Sorry, I don't quite get the question (intention). Could you clarify it?
-
-> > 6. Two cases are not measured yet.  A device with both a shuffled free
-> >    list and partly used clusters.  An image bigger than the free
-> >    clusters, so part of it comes from nonfull and frag clusters.
+> functions? It will also fix NOFAIL case:
 >
-> I think that's fine, free cluster shuffle should not effect the
-> performance much as 2M is a pretty big IO unit. For the
-> fragmentation batching IO should be very helpful.
-
-You are right. I listed it only because it is the worst case for the
-long runs this RFC builds. For the I/O, cluster sized runs are enough.
-Longer runs mainly help the allocator, which can then hand out more
-slots at once.
-
-Thanks!
-Youngjun Park
-
+> <snip>
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 89c327a6ce7d..fa1f357ecf3f 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -359,10 +359,19 @@ int vmap_page_range(unsigned long addr, unsigned lo=
+ng end,
+>
+>         err =3D vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
+>                                  ioremap_max_page_shift);
+> +       if (err)
+> +               goto error_cleanup_range;
+> +
+>         flush_cache_vmap(addr, end);
+> -       if (!err)
+> -               err =3D kmsan_ioremap_page_range(addr, end, phys_addr, pr=
+ot,
+> +       err =3D kmsan_ioremap_page_range(addr, end, phys_addr, prot,
+>                                                ioremap_max_page_shift);
+> +       if (err)
+> +               goto error_cleanup_range;
+> +
+> +       return 0;
+> +
+> +error_cleanup_range:
+> +       __vunmap_range_noflush(addr, end);
+>         return err;
+>  }
+>
+> @@ -683,26 +692,35 @@ int __vmap_pages_range_noflush(unsigned long addr, =
+unsigned long end,
+>                 pgprot_t prot, struct page **pages, unsigned int page_shi=
+ft)
+>  {
+>         unsigned int i, nr =3D (end - addr) >> PAGE_SHIFT;
+> +       unsigned long start =3D addr;
+> +       int err;
+>
+> -       WARN_ON(page_shift < PAGE_SHIFT);
+> -
+> -       if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
+> -                       page_shift =3D=3D PAGE_SHIFT)
+> -               return vmap_small_pages_range_noflush(addr, end, prot, pa=
+ges);
+> +       if (WARN_ON(addr >=3D end))
+> +               return -EINVAL;
+>
+> -       for (i =3D 0; i < nr; i +=3D 1U << (page_shift - PAGE_SHIFT)) {
+> -               int err;
+> +       if (WARN_ON(page_shift < PAGE_SHIFT))
+> +               return -EINVAL;
+>
+> -               err =3D vmap_range_noflush(addr, addr + (1UL << page_shif=
+t),
+> +       if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
+> +               page_shift =3D=3D PAGE_SHIFT) {
+> +               err =3D vmap_small_pages_range_noflush(addr, end, prot, p=
+ages);
+> +       } else {
+> +               for (i =3D 0; i < nr; i +=3D 1U << (page_shift - PAGE_SHI=
+FT)) {
+> +                       err =3D vmap_range_noflush(addr, addr + (1UL << p=
+age_shift),
+>                                         page_to_phys(pages[i]), prot,
+>                                         page_shift);
+> -               if (err)
+> -                       return err;
+> +                       if (err)
+> +                               break;
+>
+> -               addr +=3D 1UL << page_shift;
+> +                       addr +=3D 1UL << page_shift;
+> +               }
+>         }
+>
+> -       return 0;
+> +       if (err)
+> +               __vunmap_range_noflush(start, end);
+> +
+> +       /* 0 on success. */
+> +       return err;
+>  }
+>
+>  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+> @@ -714,7 +732,13 @@ int vmap_pages_range_noflush(unsigned long addr, uns=
+igned long end,
+>
+>         if (ret)
+>                 return ret;
+> -       return __vmap_pages_range_noflush(addr, end, prot, pages, page_sh=
+ift);
+> +
+> +       ret =3D __vmap_pages_range_noflush(addr, end, prot, pages, page_s=
+hift);
+> +       if (ret)
+> +               /* Cleanup KMSAN metadata. */
+> +               kmsan_vunmap_range_noflush(addr, end);
+> +
+> +       return ret;
+>  }
+>
+>  static int __vmap_pages_range(unsigned long addr, unsigned long end,
+> <snip>
+>
+> --
+> Uladzislau Rezki
 
