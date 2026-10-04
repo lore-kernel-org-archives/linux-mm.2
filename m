@@ -4,121 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A240ACA5FEC
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 20:55:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4408CA5FF0
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 22:21:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B34556B0088; Sun,  4 Oct 2026 16:55:38 -0400 (EDT)
+	id 260756B0088; Sun,  4 Oct 2026 18:21:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE6196B008C; Sun,  4 Oct 2026 16:55:38 -0400 (EDT)
+	id 212256B008C; Sun,  4 Oct 2026 18:21:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FB436B0092; Sun,  4 Oct 2026 16:55:38 -0400 (EDT)
+	id 0D99B6B0092; Sun,  4 Oct 2026 18:21:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 687836B0088
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 16:55:38 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E72CB40C06
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 20:55:37 +0000 (UTC)
-X-FDA: 85286149914.14.3B210B8
-Received: from mail-wr2-f11.google.com (mail-wr2-f11.google.com [74.125.225.75])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 415B91C0003
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 20:55:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UW6piJOh;
-	spf=pass (imf21.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.75 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D56F36B0088
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:21:03 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACE56140B22
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 22:21:01 +0000 (UTC)
+X-FDA: 85286365122.29.E4DBB6B
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 180C1180005
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 22:20:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="kzh9Oy e";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791147336;
+	s=arc-20220608; t=1791152459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=UzFidq+NXBj47/Ep/6RIWkRxXs+9tuu6zEHYY1jeWcY=;
-	b=Go3uB6oDvGDLhGO7Ex1Y7AdYCnw3Mfs2Q9jy1sgveTdONIAmkcUg3UU+TKpZ35mqMkzh8N
-	zWQl9mDnP8GlKFK0Xzi0c0EJdc3MWgaIJSZuzT2yZU8wF9w8cOrJV32uGtt/fhm3L+fOYx
-	Ex+KYMsuNiyYULPN85/92uSFtFlyBo8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wb7gxph3IORTxgMsT1OoGvtue2WX8WwlEpGiimQayxo=;
+	b=Yq6CdkyY1dHvidgjgS/Ov2nRTOIYiI7LSTPW9ZLaCRRmCG1s4QFAcI8S2O/mVNyDzAFAPe
+	UaPBku+1lymmg7Wth4qkMw7MlFszVHRPgiuLm1J+M5m+Rp+eLgY2Cw/hh3O+t5e8BOoOCY
+	a+K7WUqmh1LrbmXVe1iEP8u+5dpCjWQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UW6piJOh;
-	spf=pass (imf21.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.75 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="kzh9Oy e";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791147336;
-	b=s0ZGjAzsC732ymARteW9EbkX3jfU9fwYacugFQa4kNs5DR6IvCRtJboTpz/s2zaazEQn/t
-	5pbbtT1VJHwOgXfy9Ggsm4UvG6nbx2DrOFeaJTznd9r9PqmoIqN1aJnkOduXPjKTbd/J05
-	6IkAmnigKwP0R7zBsSAjFfidbbB+leo=
-Received: by mail-wr2-f11.google.com with SMTP id ffacd0b85a97d-48b05d75172so689135f8f.1
-        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 13:55:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791147335; x=1791752135; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UzFidq+NXBj47/Ep/6RIWkRxXs+9tuu6zEHYY1jeWcY=;
-        b=UW6piJOhKpQM4MHjwHc1vGv0s0jVdjwy85KK9cG9m2A6uDKBf5JveEu19LthWly93S
-         BaJEJ4vKyUW38V+rMBUuLSEiZpkyxdYEq4xrF04dVBOII0MEIuPPSSBD2Y/oqzmjUiXy
-         DVirHFO6k0GXSukHT6TGajjUF9qqdJMjpDNdY+DnA73+caAr0qxN7IliaUq7eAc2L/Du
-         /Z9A7yYgqNUIJk/22Kvre/YHdEZvXTW2AtngyL5ny8q3pVTmkq2XW4NKXaTH+xjUFiF0
-         kSUOF0HrmATm5S2Dbyu7b21zLo0cbT0BlWIrKh30dzA4Bzc1RGEWMp0VTp4/0qHM+msG
-         Dimw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791147335; x=1791752135;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UzFidq+NXBj47/Ep/6RIWkRxXs+9tuu6zEHYY1jeWcY=;
-        b=x7eZksou9UdruOyhWRSrAdcdzRH2N+YZylh42DcsXh+KgNgzoLalY7uZAnQzC7UR61
-         yMST1l5cMNSPl82NnxOOkZett+vytUI5sNxJeyHPqpIRbkxd6IsmLg2LUSabgLdM4I6S
-         T9mXd/0yRGV1vyEu7KpICS3d/A0awAhhgUTZ3v5MPHs8zpX2GBq7sMk8YYT6fUNfvL/V
-         j3Dft1CdZ8w0PE5nULClexy6I8P/NbaXMgYP0D3IgxljxwthwKwHQrE5HUr515yCT3xy
-         5jLg8t9J3FEooRZDhmtz3xQeK4maCE9CxUWwzrV7TLfGpZKxQptxvJddotyLAwpVuq52
-         hFbg==
-X-Forwarded-Encrypted: i=1; AKwUvBzrDAMhAPcyMtXF2FpIS/UynjVaM63gye3GvBt7tBf6L4E5ZNWPinTzz0Ub/PCIbSVqFX7VoXCEcQ==@kvack.org
-X-Gm-Message-State: AFq9FYLGsfGbuqt0AI3sgVt2IJcFoH2Ntb70jTXoRS4pebXZjTDIrudB
-	KWneX3z4d+kPyPXzoMw7RKCXgx52jlKhXG1ic5ZifJS2Pn/XT3XHXw7C
-X-Gm-Gg: AYBFou0smAJ2EpdC/HxwR17c83XsSqD+VHV3nXTJZERh9GU8nqXOPdiU6CUK3lVDac9
-	dMhZfEBKhDOHexTtLYhuTY9KtnN4Hmq+YVkzciTcpi+uk+ywV5zlqfEGq5Tca2UY/edSgFssccu
-	isXSfaOVPvVFsnK+fQ7bzVYbeqlyArpFSTalRcMGNPLnvKenU+2d7wHkEFld3UceqGRSopn50JL
-	J7nmNd22/WeF2yH1uRYrOHrfdF8h7oQhPEX6rjQy1WICDdYMRQJwK/SER9VbrjRkqkcVM5Vgnij
-	6rM5z9r//pX+ZqzU6+TN2qC1iIz83PKU/bOV0TCTdS0ManYJe1oJp41HRd0f0WrBYpBCCBgEySf
-	bSd/96ri43YfXgFLjRFUAdeKkDEoV9ndc4QsYS3uW1Q/5Xv7XjK7Y5okuRT4kiMQVJYZb0lOAei
-	DJWeKnSOujkBovCBULqV/rcbJTov8+bIIcBYa+9DcJC0Tb7YdDxY0tF6Bugj0jZKyFFd+/SFNjE
-	/eYt9K+ypfSlAtfjBGjd5n9SX+3kP8lyQltr1DPZePm8irQzX9K8gEpq7J1Ykumu7VbY+gb0eSV
-	DvhSbWJsEY6GF27/NiL1D8s12YUDshjJzg==
-X-Received: by 2002:a05:6000:2586:b0:486:f3c0:c26b with SMTP id ffacd0b85a97d-48c4803032dmr9225013f8f.57.1791147334624;
-        Sun, 04 Oct 2026 13:55:34 -0700 (PDT)
-Received: from lima-kernel.telekom.ip (84-115-220-212.cable.dynamic.surfer.at. [84.115.220.212])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b380f0ab7sm20855638f8f.7.2026.10.04.13.55.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 13:55:34 -0700 (PDT)
-From: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-Subject: [PATCH] selftests/mm: hugetlb-read-hwpoison: add setup of HugeTLB pages
-Date: Sun,  4 Oct 2026 22:54:58 +0200
-Message-ID: <20261004205458.119608-1-jaeyeon.lee.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	t=1791152459;
+	b=E5kafQ3ksycOBz2uftcYefQR67tx7VswLGDSHgqFHvaD0Zem2FP/vvQgCMxf3VwXV5E1aN
+	+KiCmjN9DqxtutbtlPVOstMS7GjDebD303o0hClDU3vp458PVuSDhFgiLMbYYoY6E+84U5
+	ulO6HbZ0jZ6kPDW98z8gl7IuLs/3XM8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=wb7gxph3IORTxgMsT1OoGvtue2WX8WwlEpGiimQayxo=; b=kzh9Oy
+	ezuKgD1ELQmY59jqiTCXZMO/iaBk882jo9olUCB8W7d22TfzFudo/clSkvsPu0kheA8NYSYce3yGz
+	d3IU0U1NB3bUkcUWNL4Fjk21MCStalg72U1ksTe4VBqmK1n0Jtzc2LMfozDZX+Zpqm+LxcNrSD9iB
+	S60jStfBnirFrJaF/XHr25I4x6ay8U3NGjMeQyuIIpJiGWzC0NhI6Eaehkuda8frpZTgE58qKuRK9
+	UPB0pdkIONsXEnT7xpwbnd/c83OPZxCFIWF3EfIZ5SQQ9AyG82wwHrM/YkEb5Za0vlSCrhhUmOE4e
+	RUuNiMPCuQnUmkjyBZflblfnJ2sw==;
+Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1xDUZf-00000005xhB-2HwS;
+	Sun, 04 Oct 2026 22:20:51 +0000
+Message-ID: <e31bb97e34de9e37ef27f02ff98f63fb17fc57a0.camel@surriel.com>
+Subject: Re: hunting memory corruption bug in 6.18.x
+From: Rik van Riel <riel@surriel.com>
+To: Nikola Ciprich <nikola.ciprich@linuxbox.cz>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ david@kernel.org, 	ljs@kernel.org
+Date: Sun, 04 Oct 2026 18:20:50 -0400
+In-Reply-To: <arY1Wq6R9OY20ans@pcnci.linuxbox.cz>
+References: <arY1Wq6R9OY20ans@pcnci.linuxbox.cz>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 874tp67e148nddazyn4ct363s6h5unt8
-X-Rspamd-Queue-Id: 415B91C0003
+X-Stat-Signature: kfy6a64cymdsiyr5ekbbyydwcacx84bm
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1791147336-392140
-X-HE-Meta: U2FsdGVkX18zZGaPI4JeQHXZJK7WDPgZAI0Cb5rcZiXgfxONbwGIIuNSj9kKGucZVQ0z6m6Z03qOSeN4cp3EYqBWGiEQ1wKcHpqHkONCoNd+JB386H6C7lknjHNEN2YFvZWSLgMMEqoAMSBoVuWfySJ4Z4muZ6/81OLzoKX7ELGpQEeA5/JFrTrlxWsXl0/MOaq3zSyfOWj3c+PBwcvQoP8vstRF5CC1wgWSL5VJMdMy12uWlsO00UMIz0LHSWI4k7TCc709XakEoGwIPAsA+LTIhc5f19w4kurw6IcZZrMQpvHYSRJQPAr2NmMnqhrAzZ3J8Ww1vMUHyinZ9AziGycKw0xelpRtYvUCmlD2FkShNkfDJKYTe0mpjDLBBKf5Yn1Va2bx1p/fHK7tzgoeHxqJt1kwtL4jV/t8AjinPacTSMucaGEWunj5de7iGaw4AvjRNX8cAivY1p1T6TTuRoV6fcHDufNuvLtt4r5JI3HwylVf+sIsTs5haHbs4pjBwxVCrdF5VGhG12TETAFaPYsJ4GreDeimW7SvsrFPgmE4yLhzpekOrBk5P1aPuDqiecHwu7kYbUvI1y8sbNT7+20xLkLgfLPDPU0PGeLiNHnMkdpp8BIjKocb7Q+ZgkJryqYPIpXVLgszR0nn09w6lqkLAAxUqZYUjCZlEKKvKJIDGf6PC4ijFUOlKtGc1YlA/NwsbGY9T+xUGhKIV/j+w1aJ/MkD74Vi2RW6s9Mr3oGKO5vPMLPSljJyC6cJFAoX/EVmE99TlCxWMBWWZc1Sl41b5DNHQjWEvxu9w8TiPYb2ZhCStWw36WKO0KuTWi+aTfARquZHoJza3FkNhNTBlJXLDzvgdEfl43OW06XikxJ7mbXVklI5adEyAUkT+M8GVkuBuXolR7Xn4An6xsUflFo+wUu0ySk/9FePf+1edg0+s6A9HIcNa51wh1hs+Bk1WcpBoVXQkSf7hxAB677
- Alx7klTz
- aYgDo+dHJfNf2+eVhWCXU9d01aT+OV+TXbYYTWewxod811QhHcf6WneaFjrAuLjjwrQCgDupX94PJNWaQ+FVdmqUJY7bEmnOn2BNv7eFXEre6Tt55//uMm+JXwAaCVWxxBby5X4T0MCAH3Mq/3tFDbmlUGotHGE7v7klpOlhlA2U8fH/NjuZtBwUQ61wbuz78MiNnyhlYAa/r4y1kgyDxhOLptlPqpIBitA0B8psFD64GfJF6uxjqZr7VibvzITIV7nJvzaSeS38XjcL0JghSlw8R3rMDCAGnsgmxgKSwmGzs14ZplV3y/sQI++FzHrua5459PQjKoO8k/s0nQlmMuhyL0Y4IVETRbvrpvwyQqDQk4cf+dMMFLeXyQzC+BH4AmtP+pAO4BnISuPy3E4GKHeSZdKYioifrxGlXXhQefEXBTElNEtPpiW0a0RkgteBACgwv+vex/Mn/+fA/DwiVa+9GFnGff3Eotg2Qjc4VxjHEpOE=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 180C1180005
+X-HE-Tag: 1791152458-42822
+X-HE-Meta: U2FsdGVkX183YsTlY/5ANlXuDAvnNXeurVNaRe3LpBSzql+s41Q3Lf0oVm0SL1ko/9xGy7s1nafvQ3TKoNIpTN+AkYuqx6+8HatB75Mg0Iz2IgUtZ4q45DhWOILIAQYXK+xQI+dGInFiabvJ5YzBCAQP758eD8ynII4kiLp+l+RTAiJP7aHoh027QWIw+KwvnW90HTcweGpvI+I974u5PKZRVvzpxxW/rJnIWM7BAQu9EUsFxLoFqNR3Y2hVqhgTlUshGTqTelpJrmhKV/tJMBwbKCWycC+zOO+GCsZ620D3l8prIKsqBv8RdMG4MY5NYfOm1wtnbJ4N0x8tFwep86s8LgcWCD2gfxK2VgVVwuRsm7RfGUbntOpqfvi3uqZAts/aHHgKSOBmX/vXYFQVNiznlmT9/3NPl3bq7pWK8GdAsDBq7GW2LsMjfev4y7Ntd+O2MjHs5EcL7o391Za71t70G0NJ1Aov3P8HY+HQ7mcNznqI+rj5vJfVoEuUQZSi1XjV2JphXHNXpQ19yPF5Z4ioG+sXc7JARfYropQQsEI2rRWA0/ABlclowHAqDeVcCxSHGmFsvz/QvKRlh+AYvHoMvtFjhDHxIEluPANxcpTyGEDDGWSKFuFYbxSj4sb0IXBVqdgBPWR/HUR7rMKI43e3YAid3vjlf7rIj6CzJ8rEMtmh7wNLrq2JBhf4ccinvdtVbZ5fy+8EEDpWNUlc7VlSTzm+IA/Kk3k92ASJxJz/CFh1ll50MPudiCzrdT3d6tNCXr7lrlSjgMsb9WAi/XS4o8hUk0m3dWV5WRevDNWQYWtMOPm/J2+JYtGW3Ln556k3oji0Ob7HFUJF2ou8aEPEukzciCfMcD8ouLl//JgKk7Ua5a6ULwEA8tLdmzGXEQi4EIubWcEwm5d8Ni+ITDJMpLYlUie9YtJ29ehby8yJbo2jYNLvQmqn3REmrgnkw3yD3a2yZ61fKqhekPt
+ G6ekUerX
+ i6hc3cC4yfeYBpVAcYUhoTKY0EcUYO2AbkiM9Zd+DEIfyzLhxqCLdseSfof9/X0hUR5u+HVrHRbjux1NuaiUd0ztE90rlHggX7Wef7/GV80n8RAmag4y/eq9dhyoEzah7AdIBoXjr3klFXdiElf/2sibouyZgJ09Ler4jV8gn+T/tE8s8EbeAQmzMfHSsnp4XtOcfAPE3h55ciXP0SSICpo4Kenpl/eEzkAE1EDHbiolLg/YtBASf68u+oq/selkE78JFj54EznFadIlLOOtKk52C8OJLSToNklTklTgSRN17ltakn32nZR0RwhdROssgtpy3lhy56g/InRM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,52 +117,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Every test is expected to reserve the HugeTLB pages it needs.
-hugetlb-read-hwpoison was not converted, so on a system without
-pre-reserved huge pages the MAP_POPULATE mmap() fails with ENOMEM and
-every test case is skipped.
+On Fri, 2026-09-25 at 10:48 +0200, Nikola Ciprich wrote:
+> Hi,
+>=20
+> I've been hunting a weird memory corruption bug for the last few
+> weeks,
+> without success so far, so I'd like to report it and kindly ask for
+> help.
+>=20
+> We first hit it after a live VM migration between two KVM hosts:
+> suddenly some dynamic libraries in the host appeared to be corrupted:
+>=20
+> Inconsistency detected by ld.so: ../sysdeps/x86_64/dl-machine.h: 548:
+> elf_machine_rela_relative: Assertion `ELFW(R_TYPE) (reloc->r_info) =3D=3D
+> R_X86_64_RELATIVE' failed!
+>=20
+> (Later we also hit this with libcrypto.so.3 etc.) The files on disk
+> were OK; the problem seemed to exist only in RAM.
+>=20
+>=20
 
-Reserve the pages with hugetlb_setup_default(). Each chunk size runs two
-HWPOISON tests and a poisoned huge page can't be reused, so reserve two
-pages per chunk size. The pool size is restored on exit. The poisoned
-pages remain allocated until reboot.
+> I suspect two subsystems that have seen a lot of changes:
+>=20
+> - transparent hugepages
+> - NUMA balancing
+>=20
+THP has a recent patch that may be relevant:
 
-With the patch, all 12 cases pass on a system with no huge pages
-reserved (tested on Fedora, x86_64, CONFIG_MEMORY_FAILURE=y).
+https://lore.kernel.org/all/20260903031608.1194238-1-vernon2gm@gmail.com/
 
-Assisted-by: LLM
-Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
----
- tools/testing/selftests/mm/hugetlb-read-hwpoison.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+> As a safety measure, we've disabled THP and NUMA balancing on all
+> hosts.
 
-diff --git a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-index 70b24e3660c4..31748a24448f 100644
---- a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-+++ b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-@@ -13,6 +13,7 @@
- #include <signal.h>
- 
- #include "kselftest.h"
-+#include "vm_util.h"
- 
- #define MAX_WRITE_READ_CHUNK_SIZE (getpagesize() * 16)
- #define MAX(a, b) (((a) > (b)) ? (a) : (b))
-@@ -281,6 +282,13 @@ int main(void)
- 	size_t i;
- 
- 	ksft_print_header();
-+
-+	if (!hugetlb_available())
-+		ksft_exit_skip("HugeTLB is not available\n");
-+
-+	if (!hugetlb_setup_default(ARRAY_SIZE(wr_chunk_sizes) * 2))
-+		ksft_exit_skip("Not enough free huge pages\n");
-+
- 	ksft_set_plan(ARRAY_SIZE(wr_chunk_sizes) * 3);
- 
- 	signal(SIGBUS, sigbus_handler);
--- 
-2.43.0
+Does the issue still happen with THP and NUMA balancing disabled?
 
+>=20
+> [1924553.414736] Oops: general protection fault, probably for non-
+> canonical address 0xfffffff0c930038: 0000 [#1] SMP NOPTI
+
+This is more than a little curious. That does not look
+like a normal kernel address.
+
+Documentation/arch/x86/x86_64/mm.rst confirms:
+
+   fffffc0000000000 |   -4    TB | fffffdffffffffff |    2 TB | ...
+unused hole
+                    |            |                  |         |
+vaddr_end for KASLR
+   fffffe0000000000 |   -2    TB | fffffe7fffffffff |  0.5 TB |
+cpu_entry_area mapping
+   fffffe8000000000 |   -1.5  TB | fffffeffffffffff |  0.5 TB | ...
+unused hole
+   ffffff0000000000 |   -1    TB | ffffff7fffffffff |  0.5 TB | %esp
+fixup stacks
+   ffffff8000000000 | -512    GB | ffffffeeffffffff |  444 GB | ...
+unused hole
+   ffffffef00000000 |  -68    GB | fffffffeffffffff |   64 GB | EFI
+region mapping space
+   ffffffff00000000 |   -4    GB | ffffffff7fffffff |    2 GB | ...
+unused hole
+   ffffffff80000000 |   -2    GB | ffffffff9fffffff |  512 MB | kernel
+text mapping, mapped to physical address 0
+   ffffffff80000000 |-2048    MB |                  |         |
+   ffffffffa0000000 |-1536    MB | fffffffffeffffff | 1520 MB | module
+mapping space
+   ffffffffff000000 |  -16    MB |                  |         |
+      FIXADDR_START | ~-11    MB | ffffffffff5fffff | ~0.5 MB | kernel-
+internal fixmap range, variable size and offset
+   ffffffffff600000 |  -10    MB | ffffffffff600fff |    4 kB | legacy
+vsyscall ABI
+   ffffffffffe00000 |   -2    MB | ffffffffffffffff |    2 MB | ...
+unused hole
+
+That address is in the unused hole between EFI
+region mapping space, and kernel text mapping.
+
+That is not an address that should be overly
+affected by TLB flushes, since the kernel never
+maps anything there, and never has anything to
+flush at that address, either.
+
+> [1924553.434800] CPU: 23 UID: 189 PID: 7538 Comm: pacemaker-contr
+> Kdump: loaded Tainted: G=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 E=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 6.18.44lb9.01 #1
+> PREEMPT(voluntary)
+> [1924553.456934] Tainted: [E]=3DUNSIGNED_MODULE
+> [1924553.465551] Hardware name: ASUSTeK COMPUTER INC. RS720A-E12-
+> RS12/K14PP-D24 Series, BIOS 2305 11/21/2025
+> [1924553.484152] RIP: 0010:__d_lookup+0x4a/0xc0
+> [1924553.492878] Code: ff 48 89 c5 c1 e8 07 48 8d 1c c2 e8 60 8f d1
+> ff 48 8b 03 48 89 c3 48 83 e3 fe 48 83 f8 01 77 0a eb 2f 48 8b 1b 48
+> 85 db 74 27 <39> 6b 18 75 f3 4c 8d 63 78 4c 89 e7 e8
+> d5 e1 7c 00 4c 39 6b 10 74
+> [1924553.525191] RSP: 0018:ff7532a13699fda0 EFLAGS: 00010212
+> [1924553.534986] RAX: 0fffffff0c930020 RBX: 0fffffff0c930020 RCX:
+> 0000000000000000
+
+Which suggests it's probably following a bad
+pointer in __d_lookup.
+
+The dcache is allocated with kmalloc, and lives
+in the kernel linear mapping. That is also not
+a range where TLB flushes commonly happen, except
+as a side effect of global flushes, or changes in
+kernel mapping size (CPA flushes).
+
+The filename lives in kernel stack memory, which
+is often allocated with vmalloc. I'm not aware of
+any recent vmalloc TLB issues, but maybe somebody
+else knows something?
+
+By the time memory is allocated to be used as a
+kernel stack, the previous users of those pages
+should be long gone.=C2=A0
+
+This does not feel like the INVLPGB bug, which
+has a very short race window.
+
+Lorenzo's CPA explanation seems like the most
+likely right now.
+
+If it still happens with that fix applied, we
+need to do more digging.
+
+--=20
+All Rights Reversed.
 
