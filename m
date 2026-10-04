@@ -4,85 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3E01CA5FCE
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 19:56:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA19ACA5FE6
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 20:07:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40DFC6B0088; Sun,  4 Oct 2026 15:56:06 -0400 (EDT)
+	id 695536B0088; Sun,  4 Oct 2026 16:07:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BDD96B008C; Sun,  4 Oct 2026 15:56:06 -0400 (EDT)
+	id 6449B6B008C; Sun,  4 Oct 2026 16:07:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AD326B0092; Sun,  4 Oct 2026 15:56:06 -0400 (EDT)
+	id 55C996B0092; Sun,  4 Oct 2026 16:07:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EC7266B0088
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 15:56:05 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B065120C3E
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 19:56:05 +0000 (UTC)
-X-FDA: 85285999890.18.1883168
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 59FD4180002
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 19:56:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="bsc/Ldmj";
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 360CC6B0088
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 16:07:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 423301C4011
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 20:07:55 +0000 (UTC)
+X-FDA: 85286029710.23.80443CA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 87AAC100003
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 20:07:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Mx3OeGyw;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791143763;
+	s=arc-20220608; t=1791144473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hpkaiXvdHhIcWibB9SYBycVYBcgkusfdPB8A5buHEEk=;
-	b=Ne/xm1bHssAsBTsTJsB/8RJnN0LX8FSchWxYbm85fENH90DhxFG8cyAFrXh0YJmYUHnHAD
-	PpWnFlQjHQuTOmMxsg5nfxSJmMkM7JZmplMIwp9LU/d71sW4UPwJnSkG/AKe8DBWVXxaqS
-	NlUk+srcIj6XaSRapwrZzvdeQJPXCZ8=
+	bh=F2CprrIV1+vnrvZtv7aumlrns7J0kiy7ez1pluHWuPI=;
+	b=IZhyReXUAqKXCOXtrk/hu904trY7JVbU5B+imMcOgMT+X06GVljEc99Uo6Ll4DpbJ/TX63
+	jQdXoyyeQYQKmn2TqPV9IeUqhuZgaG1cpsdrIAF+aCShGmD2hP/gs2Gv7izyof/HsymSXk
+	dn519YPbnti07UzQiEoU9UPWjrHbrMQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="bsc/Ldmj";
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Mx3OeGyw;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791143763;
-	b=dmBKDJ1Nz1xsUAkddfiHeuNHPoxcC+PrzVKhCh/s75+J6lKPTAuv7p/cclSfIlHSQSqBLN
-	pSK0WquK1XFFSWxuAlbCRQKihcn3zs125XNuTVINEgAR23chCCYVKsslWNPc4BypTwk+l/
-	QfWaAe6cJJUZM6SCIbQggiRQcJrIYg0=
+	t=1791144473;
+	b=tyDoRe1P2lnScPqPfiwb90qUlzpIos12EaifyoPOXndagVnV96wMcrokTTYRAVmvGVSbI4
+	0w4nxJDbDnzxMczPM61UYv0P56CEI9y8QqfHEg6AWx8V6n+yqnXCh6WtBFI2aWRSms/EBD
+	nTT4TLEyAgo/vFC1Uk9hzvW7O4uk0SQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 816CA429D8;
-	Sun,  4 Oct 2026 19:56:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFED1F000FF;
-	Sun,  4 Oct 2026 19:56:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BCAD9601F7;
+	Sun,  4 Oct 2026 20:07:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9B01F000FF;
+	Sun,  4 Oct 2026 20:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1791143762;
-	bh=hpkaiXvdHhIcWibB9SYBycVYBcgkusfdPB8A5buHEEk=;
+	d=linux-foundation.org; s=korg; t=1791144472;
+	bh=F2CprrIV1+vnrvZtv7aumlrns7J0kiy7ez1pluHWuPI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=bsc/LdmjzyZjLRf2S+ltcr9UoQpASsvsad4cpVvRzBRa/bXU+oDQcpooSXbyMetul
-	 RsbKSU5SV6H6QLjDtc1lcov9ztMd2PZHkxZw2X5vcu0BJ8E2GyOkHq4fpIHjB4rsjW
-	 DliqWVNiUt6/tBgXYYAxRdEg4b6mHcfWTfymaXTA=
-Date: Sun, 4 Oct 2026 12:56:01 -0700
+	b=Mx3OeGyw4mBMuZbhxP+kZ8Yze1JJTWm6pV1IAfezi4CT5EdyzeaQ4TdJfJEW6VwBl
+	 p8EdqXusXxKObgj9b4Q4/xfVD61oTz+Gb23FrCuX4GO8LyEuMBBsTXivo5hQR43jZf
+	 Dw65pGexM1LNSYVm+ZFNLaFjxvakbKogJgT96vEI=
+Date: Sun, 4 Oct 2026 13:07:51 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Nguyen Duy Nhat Anh <neganhat@gmail.com>
-Cc: david@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/gup: fix NULL pointer dereference in
- fixup_user_fault()
-Message-Id: <20261004125601.c06953a6f0660df9859b0c2a@linux-foundation.org>
-In-Reply-To: <20261003194846.205918-1-neganhat@gmail.com>
-References: <20261003194846.205918-1-neganhat@gmail.com>
+To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+Cc: rppt@kernel.org, peterx@redhat.com, surenb@google.com,
+ aarcange@redhat.com, david@kernel.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, mhocko@suse.com, shuah@kernel.org, kas@kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] userfaultfd: clear the inherited uffd bit in
+ move_swap_pte()
+Message-Id: <20261004130751.1cdab825ae521c16e02f66ec@linux-foundation.org>
+In-Reply-To: <20261003103030.63380-1-donggeunyoo.kernel@gmail.com>
+References: <20261003103030.63380-1-donggeunyoo.kernel@gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 87AAC100003
 X-Rspam-User: 
-X-Stat-Signature: e6caks4m4ani1m1hg1du9ij78gjb1od9
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 59FD4180002
-X-HE-Tag: 1791143763-351115
-X-HE-Meta: U2FsdGVkX18ADB9IXxeMP2APsMCiNqdootF/OGLe5IicDx9LJwQaIeCbRbdW0wwSTNc768PRVegdeHtilzrOZZzV+eGAmqGffQKAxmGkIi9aQ6FaJx3k4EQCYkjCmog1/eAdXdgFS54ML9sSXtUhZsktryc4mhs5Rj8GPvNhwcWb6041wZr+Igptw611sEK22RPnMMH24idEYs7yED9mt9mKKL6OMf9PMHVutv/DverrIk+ScUGt05lmI6pwh9LUyW4jdtfvQX5VNPXwZUDjr1inKNb/k7pdtH2dpShEclQdV2lKQjUkQIIj+3OBlDdr3IRU4wNeTAGZ76kK3LXxiwonZQ8/PnDDDkkskzS8m/OfGbEcRBUcCzgdRh73nkTFXsQ5QuY6s/lbDoGQUdbncZrxJtO71k3E1SjR0Y+01gj3+Ky2Gn8pdtZGleQoDhdPqagA87GqQMtZzUNtYXhFQ+skA82bwEOqnCfGwUE5pQJYNRUFbyCRhu+DIp+3GhQYe+Jn4ewZpNFEmHtAu6XSW+fUTVyti6AhiPGsvPnSZ+AP0Ka+PmYzX4tX90Ck4dPkYj5jqxMelhhoT+dcWggHGwBUX+uR7AJE6G+Whsas7O5cF+h106Lw/hYLBaAfCGfgem/nXr4P7og2J4LudjHNz9R21PAR99n0HJubCOxkNg97Fo2bJeaOiLP0/ynNTAkAVF3GZ4Tujhxqlc7O46wXggtTfGIMupdKNXrXFOsnI9DXYtNTg9B0rNf3xb2G7Kf2ePVHSqZXoMbt3+FbWnoLvl/qj2m8SaPdmXm2V0+HsGXMOk+9px8LZJRAnkEZeiCqyvdpUrzRAcSahmMvh3Uil/+8GXzkcCWFakmy6PDhO/uitAkxHn+OXwpaYCWavIbOsb0D1eZoIC201I0VN7wnTEND5KJy5NiNxsA1Oc845FrxBRdwAmxW2VRvZf8a8aRsnBRMQ4QOLsM7s/h7Zxd
- huxcu3iJ
- x9DpVqeNr5dzze7u5KSyzC3Bir7xH3zPjYE6yvRYApIeJioAnccylq+gzqEryIkbSNzgsjGuH0F9IcTA9mSP5ud9YQUUica+oHlZXqZruoxnUs+Pvl5rBXqF4aMCpM7x29wdbWBfvZ1kDDOIjoVHV2s/ePMO1XDhuK0+xxIL/zoPd7lAFLbMkbUyPzxzxuZAdO+yDZ14egFojWyqbZPlXlKsY8RueiLWWUTl8Sp+pGtMirrcK03dZVaSdWaVxV9QslI9c2EZlrgyWnd9AMbd/B6qCE4fjafAcoLaq0s/Dm2UPPLScP3DgJ27mmST61ius7Eza
+X-Stat-Signature: rt5wj8qowehyyaakgybab33pw1wqirmm
+X-HE-Tag: 1791144473-38940
+X-HE-Meta: U2FsdGVkX19iy/pQmq9VDB2COEJMSBFebc+etq0rBOy4i3jF5fLCc+FVrK1ByRR7f5dOeSuOXxZMA8sNqcKiYv7HNVum17VhrtcoES82lzMsnWGiSOk6MdUZCLGmLjR/yyJj/aLDDarNGHCdmWRlNPMoyd2FlexvgQvdmMkkUrYTmnVhuqcVmb2/+b9GtZBW/MT2zbBW7c8fRh3yBRLJzPgDY3TG8EuDGERs3DQwl2AlyYkbvsnMHqYOUIgep17GBobZsn/v/oEvbxR3AA3yS9Eqvg7hkY90IUjYxahJDF4vVVGWd/JekuI1C8sR8qEBx58xpCD9saWjr/eeUdw6kM6qtmGNeOngksQdN59ES6S9EwHRnLdywv7JY/++G6J4rdEi7Q6Euo9Z0n7JSwIAUSyRrsF9e0+pmXf7bvfgN2R1ybnCSQn/26FvPdPkOlVKQGQtYmWjMK74QIVeswkfChF63oLf5D1Pfgy6aRomZMKga/VjnWe/aXblQUtQd5+y1DJuMOB1AmEhlalTb1yyi7hZ5qujDN+OLIDq5at2w4w2P3WSozvAR8L863r25w0vL0q8V5z0NxQbp7wAMxp49ylVoB3YfT4Wf46uISRaiAxZXqxJZh7YIunTzz2XoIKfKj8QmuSvvI2uAlnUlEwWHhKZDI1rCCOWaWjeyALmdOc1exUOu2yYxaVKhh4f3FOgVXEIY/7v8NtFtkdTKpzN0Ned3Up8eU5eWbO278RItyuXaD0SMY4UGAHUQB2Bw8AWkTgG5uGpghYkPld373bwZ3To4qA0xZylpeBXgp7tKUJGWSTd5/R2TYZjhMvgvcofvuaeYH+k67b4aNzISZ+HYp2KmZ7e9tFd6YoZNWStnUi8zTW2UZztt/+3UEmtoS/WlkMmL/C5fpcb5opva4ieSlKmDJbQCOlOQJjp1ukWoe4So0QVT1DW9I2oRVqssshrvkbD7bF9r1GjDqcdNIt
+ 4kbqVhrh
+ L9zOKROj+Qpjf/iRLAVKstSdouKeRH1M6rvb5rQ+kC4HrRiKggUglNoHonmZTfS0YaHo2R/i23A2JyKtRbYPNALRIx1ZqEIkCB1ZxoS5AMarFLQ6smrtBW8XDCdWT0OqtIujIfInOSOKzLiDIecZQzudcvGDkPPoJ/XacrfgbTEfD4NaG67ncRsklG/eNGtTIy6eNX2Bpyq3viTp0+eSFA/3dXVqiw9rUnyvBIsdDTNuCu8HLih5N7417lWg7+IWBXRNZMxMz3FJp6ad+xT4lZ2FoWXZM16IbpMgUVTlXGc+uy+3LFtX6FOd8+XYGeajX42d6XrqhjxccdxAA8hS70PX492q/BhGJZdiXMX8rtPi1wc4sXUw8im20S6KmvU6gwchF38Hb5ISCRF8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,36 +93,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun,  4 Oct 2026 02:48:46 +0700 Nguyen Duy Nhat Anh <neganhat@gmail.com> wrote:
+On Sat,  3 Oct 2026 19:30:28 +0900 Donggeun Yoo <donggeunyoo.kernel@gmail.com> wrote:
 
-> In fixup_user_fault(), the 'unlocked' parameter is checked for NULL
-> early on, allowing callers to pass NULL if they do not track whether the
-> mmap lock was dropped.
-> 
-> However, if handle_mm_fault() returns VM_FAULT_COMPLETED, line 1597
-> dereferences 'unlocked' directly (*unlocked = true) without checking
-> if it is NULL. Callers like s390's pci_mmio.c pass NULL for 'unlocked',
-> leading to a kernel NULL pointer dereference when VM_FAULT_COMPLETED
-> occurs.
-> 
-> Fix this by checking if 'unlocked' is non-NULL before assigning to it.
+> UFFDIO_MOVE on a swapped-out page installs the source PTE at the
+> destination unchanged, so a uffd bit set on a write-protected or
+> RWP-protected source lands in a destination VMA that was never
+> registered for either, and nothing clears it afterwards.  Patch 1 clears
+> the bit, then re-arms it if the destination is RWP-registered, which is
+> what the present-page and zeropage move paths already do.  Patch 2 adds
+> the tests that catch it.
 
-This code is too subtle so you aren't the first to attempt to "fix" it.
+Thanks, I updated mm-hotfixes-unstable with this version.
 
-The key hint is in the kerneldoc:
+> Changes in v4:
+>  - patch 1: add Acked-by from David Hildenbrand and Mike Rapoport; no
+>    code change
+>  - patch 2: protect the source right after registering it, open pagemap
+>    at the top, and use a designated initializer for the move (David
+>    Hildenbrand)
+>  - patch 2: fail only the test case, not the whole run, when UFFDIO_MOVE
+>    fails (David Hildenbrand)
 
- * @unlocked:	did we unlock the mmap_lock while retrying, maybe NULL if caller
- *		does not allow retry. If NULL, the caller must guarantee
- *		that fault_flags does not contain FAULT_FLAG_ALLOW_RETRY.
+Here's how v4 altered mm.git:
 
-Trace through the
-FAULT_FLAG_ALLOW_RETRY/VM_FAULT_COMPLETED/VM_FAULT_RETRY logic
-to confirm that the null deref is a cant-happen.
 
-It would be great if you could pick through all this and propose
-addition of a comment which will make this code less confusing for
-others.
+ tools/testing/selftests/mm/uffd-unit-tests.c |   36 ++++++++---------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-Thanks.
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c~b
++++ a/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -2049,28 +2049,29 @@ static void uffd_move_swap_test_common(u
+ 				       bool rwp)
+ {
+ 	unsigned long page_size = gopts->page_size;
+-	struct uffdio_move move = { };
+-	int pagemap_fd;
++	struct uffdio_move move = {
++		.dst = (unsigned long)gopts->area_dst,
++		.src = (unsigned long)gopts->area_src,
++		.len = page_size,
++	};
++	int pagemap_fd = pagemap_open();
+ 
+ 	if (rwp) {
+ 		if (uffd_register_rwp(gopts->uffd, gopts->area_src, page_size))
+ 			err("register src failure");
+-	} else if (uffd_register(gopts->uffd, gopts->area_src, page_size,
+-				 false, true, false)) {
+-		err("register src failure");
+-	}
+-	if (uffd_register(gopts->uffd, gopts->area_dst, page_size,
+-			  true, false, false))
+-		err("register dst failure");
+-
+-	if (rwp)
+ 		rwprotect_range(gopts->uffd, (unsigned long)gopts->area_src,
+ 				page_size, true);
+-	else
++	} else {
++		if (uffd_register(gopts->uffd, gopts->area_src, page_size,
++				  false, true, false))
++			err("register src failure");
+ 		wp_range(gopts->uffd, (unsigned long)gopts->area_src,
+ 			 page_size, true);
++	}
++	if (uffd_register(gopts->uffd, gopts->area_dst, page_size,
++			  true, false, false))
++		err("register dst failure");
+ 
+-	pagemap_fd = pagemap_open();
+ 	if (madvise(gopts->area_src, page_size, MADV_PAGEOUT))
+ 		err("MADV_PAGEOUT");
+ 	if (!pagemap_is_swapped(pagemap_fd, gopts->area_src)) {
+@@ -2078,11 +2079,10 @@ static void uffd_move_swap_test_common(u
+ 		goto out;
+ 	}
+ 
+-	move.dst = (unsigned long)gopts->area_dst;
+-	move.src = (unsigned long)gopts->area_src;
+-	move.len = page_size;
+-	if (ioctl(gopts->uffd, UFFDIO_MOVE, &move))
+-		err("UFFDIO_MOVE");
++	if (ioctl(gopts->uffd, UFFDIO_MOVE, &move)) {
++		uffd_test_fail("UFFDIO_MOVE failed: %s", strerror(errno));
++		goto out;
++	}
+ 
+ 	if (pagemap_get_entry(pagemap_fd, gopts->area_dst) & PM_UFFD_WP)
+ 		uffd_test_fail("uffd bit moved into an area registered for missing faults only");
+_
 
 
