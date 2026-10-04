@@ -4,141 +4,200 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 103B7CA5FF0
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 18:38:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F421CA5FF0
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 18:39:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC62B6B0093; Sun,  4 Oct 2026 14:38:11 -0400 (EDT)
+	id 7C08D6B0098; Sun,  4 Oct 2026 14:39:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C77946B0096; Sun,  4 Oct 2026 14:38:11 -0400 (EDT)
+	id 7711B6B0099; Sun,  4 Oct 2026 14:39:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3F526B0098; Sun,  4 Oct 2026 14:38:11 -0400 (EDT)
+	id 638EB6B009B; Sun,  4 Oct 2026 14:39:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 860FD6B0093
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 14:38:11 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D56440BE5
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:38:11 +0000 (UTC)
-X-FDA: 85285803582.27.B3AACC8
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 233B8C0009
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:38:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=m9Kt60Wz;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A4A06B0098
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 14:39:24 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BE51214070A
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:39:23 +0000 (UTC)
+X-FDA: 85285806606.15.6B08712
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D3AC98000A
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:39:21 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RQm6geG0;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791139089;
-	b=xW/i71w/LKnpSGxqJnAMWcBjm3Y18jLvz1o8ajrlTI1QjkN2mWTxpHWrMIami4iAl8URvU
-	xcv6ZBJa0M/wsn5+SAafrEBGUsUNGhRkC5XdrgtS6KIoXz2vJrpNXs58p6xlI+dFzR7SoJ
-	eP9XxsxZ2+ExGFFFLQLoiCa1pxSaymU=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=m9Kt60Wz;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791139089;
+	s=arc-20220608; t=1791139161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4c7dYjrT6sZNHYJQlTA+JnOu2XHVq9WNP85b0Iivahw=;
-	b=lT/U+GfWyTcjdaXAiuALZ4GubvtgtzeZMbWjRELuS7fwBe+xsg9C4ypf7VjfR69r5bf8Xg
-	7tqFqPdHz+sQssuhODzciWo40t95zrqoOk/SvVhdcgI6CQ1qjzd4MLm5zPDU1dIFFu06ML
-	s7bhTSsbMqv3DeTjoUrcV/IXczipJwY=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-5337c7b9937so265341cf.0
-        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 11:38:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791139088; cv=none;
+	bh=ZSC0w1neootLkbih9TUxoXkKPCkBI7t1n5ZaTzyKsnU=;
+	b=OT4q7ivHYkC3fxoLo6WlzNbVkW+ZWDbHXLViTVFNPTeI3BBCkFmzP2ihDQscxWccL7xPbj
+	9DBLgK2CqNzjTYurRbtllMpAhfGgzygz/jjdTgX30uZKr53WFatCZUymGZxhQhQqSkl9QN
+	wc8Tp0Mfm0snzQcctszstiMWrWNe5so=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RQm6geG0;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791139161;
+	b=QAoG81sOQpvg6oI+7BaIPBT1sM4yS5OWmuynt+99J1xhI7Wnr2yZXIrvZcNANaF7WH7bw2
+	I/jF4LhrxxKKcsmjv+7NyhXDRqmytVHHUN0nY9skNHpPdmBn/uT1CBGTJrDjWCzIWwHIow
+	LKeL5ybCApqyTBW/NE9p8MEGCfJ36SU=
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5337c7b9937so265871cf.0
+        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 11:39:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791139161; cv=none;
         d=google.com; s=arc-20260327;
-        b=Cib4CVcnPEh92yCGFwZwNmtMMNE1fVnYNHNuezfgShDi3/ABIP0v9F2lum6Zpl+fIC
-         oqy7k9T+OmMiEkN0Hse4NJFUQpDwhLJ3cA64L1wwJ8iXbYY79MEQrxnUhJKBphQ5cgc0
-         9s6nFkD8uMAmuEtO+CZrt/5tZGDt0tt5S1GH5Y6DlQxoR16j13O0ApmXKKDnMQ5vWZp3
-         yhNxMgzJEflYDL5iovIL9cK3JRLHL79CShEHMNaFMa8l8MOu/JjrldgXl3pR450KNcn7
-         k0HwDX7bJLgNE8139I3aw2IdZQAEpFaDQ8L84JjP/kFabYYz5pZccqMaXDGiwO4wFhQU
-         HA2Q==
+        b=eMkS666I5X0gCfmLO5lCU6grSt3WFx21dxnqGKKPbrAcE36nv5tuo16MAUKtKqfg3o
+         rRj1tJMatCti644Fu+U6V+9+nSL7LXRZtFGWSt/i7NF9vKHOF9R8+aFXcQzn1mHEe4Et
+         VaBKjg6aIVFFpu4NEnaCCtKN0HuoAK03KfxMrKhOPxXyQD6SDp2yzxknXtim3V8E6eZl
+         yb8RUAACnDZPk3Di0dmffKns6P38GhXJ2AN8S36zx5Je1nsR4TodJmML6YNi3J8XugCk
+         AVDFCyfXQIkpem+2wYhycKAMdJzlsq3zczZMXNhGBwFENc1pa8LZnas9+P05yCq8+JNT
+         09nA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=4c7dYjrT6sZNHYJQlTA+JnOu2XHVq9WNP85b0Iivahw=;
-        fh=w+Mx+Lw7Gcgz/94BhVU3D8XgN3R4qlcS4oyTvBFtv4A=;
-        b=nEbaegrc0wc+/xkbrYFM1h17aC4n+o6MXERn6QVpDpfdzhFJsVOk5uPNGCfuVjsiMX
-         0fkQrhrzUUs6gjf/kLeOWO8jfuKOGSKe0LaHXjEcwslUow4ugjrfx0YdOnLLVw0SrdFq
-         NktnPOh18LnMCb3nkhDhJb3ppBpiQ7Hj3RWGE65n9X3wMlqawMkNBKPLXCQX25PuiirI
-         DfXY80kCy+mTDJVONJwpVfbCuk01f5k2LFIqx9+Lbp3eKo5DQUugPbCOMvWbJopG6HGx
-         9knRbCFKA/8IFjYXaYN4EH7KhMh1vgLQg2bjthhOTG2kSBsW1c8GKFZNy4YmtYpZYRY8
-         5zug==;
+        bh=ZSC0w1neootLkbih9TUxoXkKPCkBI7t1n5ZaTzyKsnU=;
+        fh=BBDZ5Z1lO5ljlsDvDSE4cMjeQ34FIbRXd0D2Njp3GKw=;
+        b=HNd/p+d9iQk8aEsXlv7s5aLPOKu1BWeKQFgYpweSuW8+7JLgC8EyYW0PoD25VSbMqm
+         WN4WcNnNOPzHn57Zmm0dP0eJ1sa8bEW2RwZKoLx5DoPA09y6kmwVOiS/Q+CGtgE11Qs2
+         +H2N19qVYUK6I5dtk+pUos/Z0zllI47DY0dcx5YAOESWAU6K+p/QM25IrIGQ6847/s1b
+         NWMCCL2QSQpaqjktfsTSUGyLerE26W5agE61l98n+DIj7PX6dOmsOv2y5bWsl/vSTZU2
+         diHldwLih+H95vLgrqI5NusN2+QI6UrrZw4okSTz9b/3heJ9mNrPWfMwXyoIVbg1jYSh
+         3VUw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791139088; x=1791743888; darn=kvack.org;
+        d=google.com; s=20251104; t=1791139161; x=1791743961; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=4c7dYjrT6sZNHYJQlTA+JnOu2XHVq9WNP85b0Iivahw=;
-        b=m9Kt60Wz3LYWQOOkqW658ek/vaz5T5ykdgmjtq7/dmkcRkBNOhjvlKf6w80DKGtIQc
-         y7cyHrXfrDr/+k1PNNqWLQYktZ8KWXw5xzVBhpcK4Gr1gnbLUtmhTAo0nFLwBaUsoRuw
-         E/sG4qiCA0YnrsfBKRR+naa+b2fs58ZAWKUKJ+qhjSvC4r2D1xKY4Ypn9YIR6ZPAd2ci
-         8WK0UGdrTb33eOjeZcy/iVLKTb2Yg5sXrtb6zD8cnES1sFZohRk+IvX2kj/Vr1oAfmdX
-         hTAWuyyA5ewmBH5dr8YRbUUmjLN++5WdnE93VLYj6np1tfC2fBG+8DPOAjHUv3rYJr82
-         7HCg==
+        bh=ZSC0w1neootLkbih9TUxoXkKPCkBI7t1n5ZaTzyKsnU=;
+        b=RQm6geG0ihtfSKGLzBc2ghb2FpUlwIZFh4gv8Iyn4kp5IdFyS2xKq/rcnOEGbsh3ox
+         swy1KuQCnyrt3Hot07Io3gk/yBCUftMYPQyIIwRS057S8OGFHWwcI1HPMchDuGEczZNh
+         2gWytkOwJ91FRe05YsTh2L7UL4LGbDtSi3tTWE41w5e0j0DMyT4cBcbh81PCRXDIhxf8
+         8QmvkhnHWlIShr/gnhsLC/zS+Y5WyOxyhOtG1tQFXGvNyjhXHdMdvFDkwXObS5G0Bg2g
+         p+DXFTaahICdpOtAeXkiqBNX20ADv/RTwW7g4xBTdGS2PiolkAfdcAuQGlsQUHTUBuo5
+         vIjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791139088; x=1791743888;
+        d=1e100.net; s=20260707; t=1791139161; x=1791743961;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4c7dYjrT6sZNHYJQlTA+JnOu2XHVq9WNP85b0Iivahw=;
-        b=qm0N5gGPIyiE4JBd1stIdR+UL0oeJXj2jxs+GRb8ir3Sq0hpELipltnsOdjIDNXwmD
-         VBCqTdM6dROxZTtzNZN3wWJCoZV5IiDLzOyBYXn2uNqiBDOR4VIWNyODwv6eZQKxhqGT
-         4hwFFRDzOvLRb3ZAn0/bZsEr1MnJ7ODzcySGNh24MGpcyUVQB12mp10EM6gOGIml1EiN
-         ALaet6h7+0k5vBJLrgfAHJlYbqvx12JTndC+ijJCZtH1jJHj4r6wenYbhAysnLboiUio
-         1RzMKUp/SgpNASJqfQsir3Eo6543aVaSdOW91xjNuz/c1G8B8W3FqbJSOPv4dNMa3IJo
-         FeTA==
-X-Forwarded-Encrypted: i=1; AKwUvBxt//hxA/qSi3rvIJ79g21CWFBhMcaCCrL6+Ga5pIMBTBzq8jumTFHqpb+ZmK2b6ynLZ36+Com71Q==@kvack.org
-X-Gm-Message-State: AFuF++kVfNd6AeJJcuB1F8ICY94+QydTVdE0LwM2FBoP636Xw5uKjO/V
-	kRrTAcFDIOh5s7xW9MLxe0EyzyuWZKDWRUKs4//mwAhc9J31QiWZR6uIWZdhwH7WIesUhcW2g7a
-	jkb3ms6A/kNtNxlvbckg7tEMfBTXwNvjXWfGN59mT
-X-Gm-Gg: AYBFou0lXHqNKljJsWjnEIWfWiRe09g0lTJLfWpYXNbYx7b3A4uqxQmlZu5J+0RGwpT
-	I4zUEf4i3iedRMCyL/LYZoef8DWrQUqPu4m5O2Hn59rO4l2Ag7wXeD/uIK/5LzkwZAjrw5Ib0m+
-	Kxovq0P7t6E6PIRh3Qyb+6MgAAwX7a5nVrsdqHkALqA9+wgxpN+6s+sVdXZz9el9N/jcKZQthF2
-	+Lgk1zu3NGx86ENWIYIMYWtRw8YhqKV7h7d4M90EGDxl9+aROAEM2EtJXK4R6c0fLs2uzctq5ne
-	MOfIck2Yadxx6vlq4X1n+7DJk0iy3fn3LWQjwxjSnXtgemj5NqCJCoBA
-X-Received: by 2002:a05:622a:5984:b0:532:858d:e791 with SMTP id
- d75a77b69052e-535131b5a91mr17889301cf.8.1791139087466; Sun, 04 Oct 2026
- 11:38:07 -0700 (PDT)
+        bh=ZSC0w1neootLkbih9TUxoXkKPCkBI7t1n5ZaTzyKsnU=;
+        b=ijngW0mvdd5+qCtEgdkIFLVG/2C+pTMhD3Xl8y9HITtSSeXNDbZGw2k1YOgF+DOJg2
+         texGu7NVv8hvjPGGH7xhmuptwj0fae/IJTVYnWE+KS5oC4C0VelSEqF4QhSS7xl5taRX
+         lJXj8+vpUhaJwy1aaTYrQdl6ozzdOu85dIBCCTHkAIaJ+tDbdCD2GTCYuzSgTxtqDQVB
+         aA2zaZJGk8s23YpgIuW5yNjCvENSYJ7seh5VoidrzOk7pSbOFwxelLai3E0OYUTOhjD4
+         31+GjQbLin14Yi1EcVwj/OZrrwSay5mExAyvUmMgjkqyWWaEU/ZQ/0LAZ/3VOMi6LTbU
+         rqlA==
+X-Forwarded-Encrypted: i=1; AKwUvBxm+CHN3G4tx5KGcnvLpAjcSduDzGB4QpDf7KPiQ1e5d3qLofIw8BDMmcLmFAshWr71X9+UksyGVA==@kvack.org
+X-Gm-Message-State: AFuF++lEVgIpMsxJMh799yeu8E6sgqvWsAA/pzrR5eKpRhBiLwZ1MUOa
+	u0f7TC+ajDF0ieaOtMLmFKMFjNDsVrY/W4Nx1HrdnpA5UY9JRLMuRmOblO8RnpYqK1+zxYILEjO
+	Q+TXe2EYQ790MtJSEar6uwrJjPMfzYZNt51r51GiA
+X-Gm-Gg: AYBFou1uookXKJAoQSQcBsx7HEk8WU7yel9kehFAXrwIoXLJYnhdTIPVkTVKEnAXH8f
+	f/nha8bpFTZhIpFnp69/Q/G0ITBfCP4VBDYXCnm3o5vlYEmcPNE1yRFGZUl4QckGPy54nOf+9R7
+	YuMx5hY3+1qtH+x9foNuEVWLWKXopeGeAliotLMOMCJFYR0tBM3YekLoZttHrc9DiEM3wVx8IJK
+	4TTM4wJWGg/SdmZ3VGjwNp5U1XVB2oFlLhHnHVRBmXoJGkMNkVpmfT0h+vMw/kjvgiiZy9woYvy
+	eqb6GJ1ERZmP1sOayTq4CNA9XHep0OhcQFec0JYxyh95UL76WwTzhaId
+X-Received: by 2002:a05:622a:a16:b0:531:282:6560 with SMTP id
+ d75a77b69052e-5351322e1b3mr19806961cf.15.1791139160071; Sun, 04 Oct 2026
+ 11:39:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260929082014.160587-1-hao.ge@linux.dev> <20260929134401.a1a385ff4369661f879b5d2f@linux-foundation.org>
- <CAJuCfpFRW3uNUW_VrjpOfLwS1LBHqGEpqK3yBTPSpGOORY5jiQ@mail.gmail.com> <fc4f3d08-393f-43ed-934b-e7e1ba6d0137@linux.dev>
-In-Reply-To: <fc4f3d08-393f-43ed-934b-e7e1ba6d0137@linux.dev>
+References: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org>
+ <20261003-b4-mmap-prepare-vma-flag-sanify-v4-21-a1f052500fd7@kernel.org>
+In-Reply-To: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-21-a1f052500fd7@kernel.org>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Sun, 4 Oct 2026 20:37:54 +0200
-X-Gm-Features: AclHuK-tgnRy3c8tRpdQgoIviLT7ezLMAJcWRyqSp8rv6XK6Qm-JduLkT1yGnnc
-Message-ID: <CAJuCfpGAZUcQnursYh=rvp+EzckvDmXX_KveJvEuyjzzG=9mww@mail.gmail.com>
-Subject: Re: [PATCH v11 0/7] alloc_tag and module codetag section fixes
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, kasan-dev@googlegroups.com
+Date: Sun, 4 Oct 2026 20:39:04 +0200
+X-Gm-Features: AclHuK-BFFMO7RL_23L1uoIyefqTPzoxo4liaojYggefG4PLZrnFo0OrrSwhSqQ
+Message-ID: <CAJuCfpGtyaqwi__OXcB=iy2+LUVzFnLo-Q=Rdxz728_EHdTaWA@mail.gmail.com>
+Subject: Re: [PATCH v4 21/38] uprobes: remove VM_IO, set VM_MIXEDMAP for
+ mapped kernel pages
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+	Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
+	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
+	fuse-devel@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Stat-Signature: bxessce31jd77jis6zeoewjnnt4famgb
+X-Stat-Signature: 99e55hadyurkyih9ixf7sxofu4sp93ew
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 233B8C0009
-X-HE-Tag: 1791139088-618008
-X-HE-Meta: U2FsdGVkX182xURygDVIBbUH2igugnEpQLA+Kgfb+SWfH8kwEomnpNc/am3ObmFEQYfHhrAHtO8clbv4WSDAImSys0sQO9XRmIu6UG9GEX7B5lHHlbGzmmMKGa8nGojkLjNpMmhsg2EQNtZfpJPIP3pI0SgkstC0+ujXPWgTiXnziabFjJdeKS1In3vvkxoaLsUfeahl9dp6YN12uSl5dKBGKHSJbCvi9oteeueegGGd5RRmAvC0rIbq4mjHi1cCfXcSWDq6UoL0yf8IxoC/vX6DUxvtEK5rQO32rkaYx6V8ezGgpYuRWsHaFwSwXOlRHfYp8IxaiXEJxuAE6f/8E8r2rhmIe7GJzOvXGQZ/yBk6ht3aSbdq15LFfRWOGKN/KkVUgXSLt9JhYxQ8vpehAFfZRB/nM+LWi4nGfIIQ7HIyPXhpogtgBk2QLceC/seSrM4fY9Aix9dwcuqnhl0Isrn+D3/4Ezbbtp6pfAqH+Riw/DCGtFQp4qj1BRUjmm2XPFKmig0hOSXkHD6q1JN0oDw00wS1WZS15QvVZe3ek6IeB9thFk1aIGxqdmalPMzFj+DIE7jTtd2A49iRJTBbC6P5WUWXSn89Lb/a4LOcgWrRHS5TjTBuWE7ZiAgqPRfiiPHYxrVayQnQ4/OgrCI93tJtSJTESbQwcBrQDtBkmoB6tyuD6dPp6kjbrbK7nNqk5ZRU7R+lSLiID4IxCsah9Rrsh1rL6X3vwVZQZ7MKOIggwSMcNmikyVzDNvG/MU54G7qX86KdEz0MnjrDULqn/5vg7bvW4Ealt9uzurbKv3Fybc7q0AimNLOtl3oC72oR9DXzFP3xPzSx4/0xYajccpIwOPn9seUDMhlQTaXI9aIRNDecS0Nf3dXoQPsfYhtIwvNIMkKandz0cYNZ1uGuYJ/X6PwYLqrZ69kiRbVjH1bi1uWnOlR9ciaC/Acl+9f7jQqsU0zj18uupGDBlkA
- qXkSQoUj
- aTGSVepNH2ydFzsXt4tvTGiWyXfwLqjjKAQDptWdNaqHl6N4pm1g+nKEZooVScTSmrACscgpJhMOGubV8rS/ouaIkkTAq5/aF5aDKLeofk1i5i7b/lE8C3zgpBgXfni+wvn8J4Onl0nV+JoMDgs4QPRqvP2uMJheE+GEsBEmyt2Qi+87UpgFakKlbSJsSFpkpziXwJ3PM/mmKU098frqNtwsDGDL/J1XJ7cCu+cCD/8aMoWrnzl6p6XihzX9gI9dbbURUxtoDWjQgHWuiWaA8uXQim+yceIcR7xsZSBR8BexJWTcbowB5P0WLXipccr5gUH91lbF+hxdysOQvYyJN2C+lq7T9FaYxgyNUIWGWVw8FOK7k6mLaGByea4BYV1mQ8InhkhMtaU+AkGLvCFqmiwVyYeMNMB9xwjfNG/U9XA3P61k=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D3AC98000A
+X-HE-Tag: 1791139161-870286
+X-HE-Meta: U2FsdGVkX19ifN3Qa9YoHp5PRYP5l05zSnDRq/Kc6pbMY/h5H5rAtkH4uFxeiXcU2FhhVNzSSdxG8kGhMI9OGfMRUjMFFglHW0UEi5ZAplT7h8MNE55wh11ijxRkjtrARRFEZMnyI+VuKFHKyJhaJsMfn2ebSO6pXbH+roZZk8BP3l+b7+lpsbuiF+zmPYvGDcqIRFAduLGgGD4x7r8zEPqKsocQj7Re6SsdGQt8fXq3f/Jzu7CMV52Z/mWdA2dT4gh85v9+OojijRB2g8V/ZBZvcxQiyEw5z+hWmQPa306FWaLva4Ph/E/siLWAxupZIvz3nWK4jhbDsToGW1c7PR1KJsPtIP/jKvQTDoPni6B/ciWoKVph1ZnNW64Npbts/TRZePHFddkwwKUqrC50q0/+XQeEYgswfcM/NSQeYmhcLTAQROBd3z427foPijw0QoUgC5gUNOd0ttuyq/MEXOc0g0zVqoAIjcrkzva/UhOrwoHxx1yrnyHF6dLIR/M6sLvNK5fAXSzewopFSWHjD7xY0yLntygeAvK6j1Gl7k5BhYxxz0NHSVHBJUsSYvs7YNO7NzTLVk+KJ/rHZbP3VQhidTC1Z4TzTt36t5q6xRvRHrIhIoR/MJ8jiqzMN9KzNQ9/OaCtPKpd65NqMQpuQm9cxNYKzTjBPx53Mgj2aMvEgx5eAYKsLKeWeXjxGqoBt53khpT5wXOzUY+/sRw8zeeMRFdIDTO8AWP5V0NphmM8OoGdHeaKG4qEiJ98rAAt5ZV0PoRXr3B+MWTeLXIZjavVo8t+Kry24w4o2JGedAjIzt1LUUzlLOKklrlMb5sr09NUOG5dA4dH1XU3XHQoiu9e9WaRydc6spJAlTcWdfOh17ZzE39UYLKZ2BN9kxAqRHlPmhefA5SuFBcDzJ+FdGGEE7e/+ny2VwOLJd1VSQHkWMzCNfiF4499e9MCGOr8sOz6NxG8C0YSmhxlcDp
+ UJM6Sbwn
+ mzTqwlXAWICQSxgOPEUH0g6KI36O+WwUIpxLg4X5Ddybwq3Ig7BMN/2JD34MsK+avciqnvnrRWXPWxGNzcqosRDAHsc4iYa8ekotWaJgQk5ow8T/e4R85CrBX2eL7wffpZd1ap4uHXlCnzBwpEgHSuOx23exxN1Oi9cIZFuZ0pw1HxII+4U9xeEFc9czXTaUBIdjU5iT2HMfOv5G9H0JxJhf55xQqxvmc3Z00J9aUahKWOsGHMlsp01UM6/5gV+TthFC+tyuSrgByuqRlqPAqMHUpawfp+sc7A19kGfP7fYeeFLyJrIcKx/KcZRUwtLvMBDLUY1qw78z0LSJUuG9BcFMnNhddPle/PvZShHMHFqKg4aTNN9/MEWgx1LRtzQoL4EfFCLL+RWsQcsy16N9k+z1lze5Rcw6aGuCyFAmRhWnjsLsobcDOfWCH2QR9x1kbjxFW6YIM4BgK13/ulXlQE7TNspFD+cjkvrahm+wo5kzSbNPkJzLIz0L5DZjpUZ8YgGIipyexox4KyGDu8+bKU/1QsBUam1lIIK2Qwxl95IoptR3v5YIVhoKX6EbLbL6ur6+fO7waJzi1X6rESkw5bEG9o1iOiCpGJab5fXIaSyLD9GJ51t+L+a1DRiorOu58D2obvD4exOkIPXyD7MdtYpVFGgYdqoSxkEx/t964C3cEXmgKcW9EQSJK3gKbQfc83JUIWaPJ87eY3rLZSq4RSzYj2b28ux2NXe07t5ZNbEgXcTvRYDoEcgjnY+kkEj6QQu+MN3AvZpCwG1SsyMEw662/8SLeHyCJcnJK2xT7gsbJGuVVBsmcneknY1p4wf+f3W8z6FbsoOJONgTwX5o/ladGgSPrR7JgyIw81SmqYcIWt9r3WBdI15dTlNKp9NK8cwbsftES8a5c4ovYrsq9dO5PhpDT0rWInlDAH16qP9QS9rr2Oan6hdFDOLNB0ho71y/2H8PTzntKSXCzcwFvtonUdOXf
+ x/MFOGjL
+ Ysi+4SgO9U7XjYlKADji9ZNZ1CTA99uc/02gpQC6ziwITRrLEP9qTRn++I3in14pQnWo4DLoQdiunU4nsn15gARq2kBtEXigxCrKJ6/OYhTvAwkejrDSZOQEALlxp2KNVHY2uxdrugTVgtzYHfAL+wAo9Sis5j3QrT2e9KwF0Y+6QvZawm3byo3t185dTqYAEhXQd2e0TVOA4GDqjMiST+1MVg0Ccm0M8l0Zz7gXpUt5OB3lVLQJgFrOL1BKC2vCtzOfqidun9KUhSYSLiJmfE0l+fFKzoMVKx1ORWmS4du/xm1Udszew/4IevUJj0dZ9eC+qnEDq9djQPLmgOmCf3QdM+eNcRpsnAAcmhpVTf48UExfRKnlAuCNN2ZMePrF4T02Ug6ul+EYByVEghM3Mty1sTHRzrKisO/2UFKNp+VslnQhhXe2vpkh5TWQf0c3Wia1KVuV2P+7axdWnNeJ+TD8WqwF7CsRF9UfyPBHOd3isubGCmzo0YKy4M898o9tHLjNo5TVvWBNx6I7ynYUw2uf069J+KGqxx1/LOTu/kR5YU3hc3g8ZN20dbZRGfmxfEqhNhmL88SxpXsr1Qk9/Xwh55vdmufj6OgDrnS368I+iiWdNlvZnMin9iJItykYLRnNl6dPpOZZZTZUGVY+tsrOjh05/9CGm6/RNFZ8jtwTwIc8P9dqn02ElmT+hDVbL7zzKDuiYoJLLwGFhwk42F2iT9NCIDBsG7MxNXjn12Ns+jpPcPIQC8o29ydo2cYI45UslpRDMZ2IpeNO04+DvkUFUyQv8fIo09Lx3GsgjdUOS5NvwBp21P8LrZE804so9frDCfZGOz9alkSl4o178sycSMVJ6vFh5MVLwVN3OiZ4zwu/lAPyIPq412JsxoxYVrQQxwAqxDWqWjp2MoevTXpFGXKFkJ4/8EsE7EG/znvFlIFM56BolMjfpeB18skoHgXP7LVYUtGcI5qiUnOU0W9QoBD1Y
+ GpnbKCu7
+ EVX/SZOBYSGTo3RtxChCPrBFJ9F+h3OORoBv1h8fjfhZAsqHtxLzQKrhjSJ4cIR0PNMRZy3VW/aUdFtylwDSWlt0VFpECGii6gmFz6ajI9Opvm5jlomMlscFEC/1xnktX3ogYkMD8PXjbIeMcgJj8s5l6+5RCWFaGZImKggGjAKsimFwjELxQHXcLsjN3n7O7FdOrQ3Fuzpde3+VXqlzfQgc7RcBA1/nS1+8iXO7I8qU8G2zJEasoRGNUrb5SfI+apzk76XhABUKOPxgiworpYtgQTE1HQb7EabGQo5IMu3eADYc/3Kq23B367/mK4PLFVmIQ94s7PpUQFQZh4L4agUhguxDOkA6iHGPC8rgjQg7QzBXcc+/+Xk6LX+4E7X8iXbQwfBz/JFP5VUJWaSmM9KZLQHyTm3AtlVddlbiWoPZkBF3fM3k7xk7aOEjUy0Y4Ilw9zaZgOGksAbwinJG6fFA7ENCjOAcftIMFr1TAiE9hjqrxLuUtpmSJvlGJje4FdzI+FUmaiq1e7oB16kaIYlAupr7z63tIBxFw5Tui4yMXixs8cSj4ctLFQyDBgj85L8nvyZdCJGAQe24IAMxUK0FK2crMzXZUnaLQr+XkRBuXOkylIaXvbVgwW9u+Ytbqtf8/DIpEH5SKfPyso8xoBbu7dIXdoqt7j3hnlx15urIhBy80T/7AvI+gX2omjO7VI/1vhqc6THknwOfu8mVY4mljteZgyB8TZ0eH82bmbUWebvtg+U4prIanZONKVxnMzD5a2MkgzuNc1qKNgZ0L9zp5M/BugaPHRKHa66gZkPvfnT612Rb4/0Y6SUr42UsYn1WquAPCSjwbNzz038oPN8f8ET3U1CWwZD72BCxiphuai3w4qyktYcKFBIYQB0SFTH1agsygYwf+567h5qnRBYL0/yeTPZz46DJW4gW76OAZlRSTaTyOf/LoKr8k2l1U0Xpfl/od8bfSBhIZrPfdezyA9sGv
+ RsjjNler
+ 8pJuP/JwUMvHEc+R9qVlGgZvcVGDw8w6z07epkECHIyTiaXqT8vuKoXc6CMvASUdg6YUkGU1MntR9W6VCXUJj1vF2lnVEENoKaVeqI/ssXabYbgzqsoupZ7bOxSyAie9+XBSTR3kSnAfRB2cf3t7XUvTG0G7TBorkzMB1w4Xi2lILa70Yc5qmks/RepVvoNt1UUcq7j+epGDFmppknRCZTlHJJKZNRtzobfIZ/xBCW2/0u6cZhaXpiG2453RovQq9i05CLmX2KomuV7AqyPEP2upx2IWMm2i88Xdj1GSURPnlI8pBrbvME6k4ITYRyvObSkgFL/nG0p9ZSd/F3M8CGHzX26wkpymT5gE94dEevIZyZ2KETC/w2cgjdy6q2wi0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,103 +205,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 30, 2026 at 5:25=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
+On Sat, Oct 3, 2026 at 6:40=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
 >
-> Hi Suren and Andrew
+> These are not MMIO pages so VMA_IO_BIT is an inappropriate flag to set.
 >
+> Instead, set them VMA_MIXEDMAP_BIT as they are kernel mappings and this i=
+s
+> the appropriate flag to set for those.
 >
-> On 2026/9/30 10:39, Suren Baghdasaryan wrote:
-> > On Tue, Sep 29, 2026 at 8:44=E2=80=AFPM Andrew Morton <akpm@linux-found=
-ation.org> wrote:
-> >>
-> >> On Tue, 29 Sep 2026 16:20:07 +0800 Hao Ge <hao.ge@linux.dev> wrote:
-> >>
-> >>> With profiling toggled off, the overflow check in
-> >>> reserve_module_tags() did not run, a module could load with more
-> >>> tags than the page flags can address, and re-enabling profiling
-> >>> then silently corrupted /proc/allocinfo. On overflow the fix shuts
-> >>> profiling down, releases the reservation and returns -EAGAIN, and
-> >>> the codetag section lands as regular module data in the same load,
-> >>> so the module loads without profiling.
-> >>>
-> >>> Review of the earlier series by Sashiko turned up more problems.
-> >>>
-> >>> One is a race. layout_sections() and move_module() both asked
-> >>> codetag_needs_module_section() where a codetag section goes, and
-> >>> mem_profiling_support can change between the two calls, for instance
-> >>> when another module load overflows the tag index and shuts profiling
-> >>> down. move_module() then copied the codetag section to offset 0 of
-> >>> its regular destination and clobbered the first section placed in
-> >>> that region.
-> >>>
-> >>> v7 reworks where codetag sections are allocated, on a prototype by
-> >>> Petr Pavlu [1]. The allocation runs before layout_sections() and the
-> >>> placement is decided in one step, so nothing re-asks the question
-> >>> and the race is gone. The retry is gone too, on -EAGAIN the section
-> >>> is laid out as regular module data right in the same load.
-> >>
-> >> Thanks.
-> >>
-> >> Seven patches, all cc:stable.  Why is a backport proposed?
-> >> Documentation/process/stable-kernel-rules.rst gives guidelines - does
-> >> this series meet them?  Does Suren have thoughts?
+> This provides the semantics required - no VMA merging is permitted, but
+> does not prevent GUP.
 >
-> Thanks, I've just gone through this carefully.
+> However this has no meaningful impact as these are refcounted and thus ca=
+n
+> be GUPed.
 >
-> >
-> > I think vmalloc fix in patch#2 should be posted separately and clearly
-> > quialifies for backporting as if fixes issues Hao found at [1].
+> A previous commit already prevented __mm_populate() from being invoked on
+> XOL areas, which VMA_IO_BIT was previously relied upon to do, so that is =
+no
+> longer required.
 >
-> Agreed. Patch #2 was added to this patch series because vm_module_tags_po=
-pulate
-> suffers from the same issue. If we want to be more conservative, I'd pref=
-er to keep
-> vm_module_tags_populate as it was in V10:
-> https://lore.kernel.org/all/20260915070001.113559-3-hao.ge@linux.dev/
+> Both VMAs set a VMA name, so always_dump_vma() returns true before
+> vma_dump_size() reaches its VMA_IO_BIT check, and thus there is no change
+> in core dump behaviour.
+>
+> Change this for both the core xol_add_vma() function and the x86-specific
+> get_uprobe_trampoline() function.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-I disagree with this approach. That means we are introducing an extra
-code inside vm_module_tags_populate() only to clean it up later.
-Instead please post Patch #2 separately. That posting should have your
-current patch that changes vmap_pages_xxx() to clean up on failure,
-followed by patch(es) which remove unnecessary cleanup that some
-functions currently perform by themselves. This patchset should
-definitely be tagged for stable.
-Once that patchset is accepted, the rest of your current patchset
-fixing alloc_tags can be posted with correct assumption that
-vmap_pages_range() cleans up its partial mapping when it fails.
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-I know this sequence will take longer to upstream but I think it's the
-right way to go.
 
+> ---
+>  arch/x86/kernel/uprobes.c | 2 +-
+>  kernel/events/uprobes.c   | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 >
-> Then we can submit a fix for __GFP_NOFAIL retry loop in __vmalloc_area_no=
-de() as a hotfix together
-> with our new patch #2. While at it, we can also check if there are any un=
-necessary calls to
-> vunmap_range family functions that can be cleaned up now that patch #2 is=
- applied.
+> diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+> index 65a2de82ecd2..0f60c0d076b6 100644
+> --- a/arch/x86/kernel/uprobes.c
+> +++ b/arch/x86/kernel/uprobes.c
+> @@ -715,7 +715,7 @@ static struct vm_area_struct *get_uprobe_trampoline(s=
+truct mm_struct *mm, unsign
 >
+>         *new_mapping =3D true;
+>         return _install_special_mapping(mm, vaddr, PAGE_SIZE,
+> -                               VM_READ|VM_EXEC|VM_MAYEXEC|VM_MAYREAD|VM_=
+IO,
+> +                               VM_READ|VM_EXEC|VM_MAYEXEC|VM_MAYREAD|VM_=
+MIXEDMAP,
+>                                 &tramp_mapping);
+>  }
 >
-> >
-> > The rest are also bug fixes but their size is concerning. I'll review
-> > them first before advising on which ones should be backported. Some
-> > fixes address issues that happen very rarely and if a fix is too
-> > complex it might make sense to leave it be or fix it some other way
-> > with less churn. Please give me a couple of days to review them. With
-> > the upcoming LPC I'm trying to multiplex between several projects.
+> diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+> index 7709ea882477..b89cc5cee002 100644
+> --- a/kernel/events/uprobes.c
+> +++ b/kernel/events/uprobes.c
+> @@ -1726,8 +1726,8 @@ static int xol_add_vma(struct mm_struct *mm, struct=
+ xol_area *area)
+>         }
 >
-> Thanks, sorry for all the hassle on you folks.
+>         vma =3D _install_special_mapping(mm, area->vaddr, PAGE_SIZE,
+> -                               VM_EXEC|VM_MAYEXEC|VM_DONTCOPY|VM_IO|
+> -                               VM_SEALED_SYSMAP,
+> +                               VM_EXEC|VM_MAYEXEC|VM_DONTCOPY|
+> +                               VM_MIXEDMAP|VM_SEALED_SYSMAP,
+>                                 &xol_mapping);
+>         if (IS_ERR(vma)) {
+>                 ret =3D PTR_ERR(vma);
 >
-> Thanks
-> Best Regards
-> Hao
+> --
+> 2.55.0
 >
-> >
-> > [1] https://lore.kernel.org/all/b8005c24-ecac-45c4-840a-fd282f9693b5@li=
-nux.dev/
-> >
-> >>
-> >> Also, Sashiko has been busy again:
-> >>         https://sashiko.dev/#/patchset/20260929082014.160587-1-hao.ge@=
-linux.dev
 
