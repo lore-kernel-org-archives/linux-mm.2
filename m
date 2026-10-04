@@ -4,103 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BA73CA5FE6
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 13:41:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24DACCA5FCE
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 13:47:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D3386B008A; Sun,  4 Oct 2026 09:41:09 -0400 (EDT)
+	id F35C06B0088; Sun,  4 Oct 2026 09:47:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AB536B0092; Sun,  4 Oct 2026 09:41:09 -0400 (EDT)
+	id EE6CD6B008A; Sun,  4 Oct 2026 09:47:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDBA46B0093; Sun,  4 Oct 2026 09:41:08 -0400 (EDT)
+	id DD5186B0092; Sun,  4 Oct 2026 09:47:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CC1D26B008A
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 09:41:08 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3CF30120BC2
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:41:08 +0000 (UTC)
-X-FDA: 85285055016.16.9A061A1
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CD6B5C0006
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:41:03 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of chenhuacai@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=chenhuacai@loongson.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB3846B0088
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 09:47:13 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CEFF7C0B51
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:47:11 +0000 (UTC)
+X-FDA: 85285070262.15.E7E8431
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 31B54180007
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 13:47:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VxhHcyw1;
+	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791121266;
+	s=arc-20220608; t=1791121630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=Q7JMG1h3g+GXlTGGFX7QP0BF5Llh0rqGnDT6H0c1fxg=;
-	b=CbgbtfseFlAVgk1O0vsMXeLcGkECR0IoLBS2gq6y3HzZ0LMxZmsmvgwfeSzcNB2Uf3V9dr
-	KQ++yz11Ck0vuYd+dVmGzuh2kC6eZ80RNLdzyylKJVGtTiq5X6lw2olAaufZjdYy+Z1s2k
-	Yj9mARme+x8LBU37BoLzfTtdkPE0/so=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2Anbtm+pdahgrR9ZC/t4cu36UZjvdx8AEA18HRuyx4U=;
+	b=PniwWwbH9gAnZiS7CnBup4O7AZCJSiqUuXk79JRSN+dBCNZDDMvGyl4a+dnhSHMuFivR0L
+	deNiJ1qjpsfAt49bSEV4RMwV5y2ZR+3ns6pCcHFir4FQsTUsKEbzCWiZlzOgLDx6EPZh7M
+	8H9fagJzEcAl49HLLfkB/sjo3gCFtgo=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of chenhuacai@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=chenhuacai@loongson.cn
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VxhHcyw1;
+	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791121266;
-	b=jJlT+hddo4mXjknYxtBt3W3cwPTlhB7l87JWXS1klcjQDfCYjiXZhshrw1olDWJGErBxRA
-	VK7aDljLSdoQuxH+GjzHhGh5YYa4VTt6F7gZX9/fnsXwneyQHtnQbY15TC0lvmHg0eXRxq
-	Z5f3LQAHWfMHjjCf5t8JP5vEFvL2jvw=
-Received: from loongson.cn (unknown [223.64.68.159])
-	by gateway (Coremail) with SMTP id _____8CxPNJnV8JqtIYSAA--.54396S3;
-	Sun, 04 Oct 2026 21:40:55 +0800 (CST)
-Received: from kernelserver (unknown [223.64.68.159])
-	by front1 (Coremail) with SMTP id qMiowJAx2c1gV8JqfWUoAA--.19823S2;
-	Sun, 04 Oct 2026 21:40:54 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	linux-kernel@vger.kernel.org,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH V3] sched: Update the THREAD_INFO_IN_TASK description
-Date: Sun,  4 Oct 2026 21:40:34 +0800
-Message-ID: <20261004134034.3622868-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.52.0
+	t=1791121630;
+	b=IUcOTPHFK/LrrlmxX89WRgF32x7xMjN1h7civOh1DYe6kOtjooKjRPeHLKZciUQQdpmy3w
+	+PhP6fGFyB2x3m9lnrIwOAwvqqtLzFZeWmex+4/InZVxHpweNwDJ/PqAo/+Z/CBthjFfGR
+	urlvE8Outukqjj/SivEL3p7fu5+gId0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6A8AB436EF;
+	Sun,  4 Oct 2026 13:47:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915591F000FF;
+	Sun,  4 Oct 2026 13:47:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791121629;
+	bh=2Anbtm+pdahgrR9ZC/t4cu36UZjvdx8AEA18HRuyx4U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=VxhHcyw17121mWewQWnFBlYu36WeLuxLz3s760/ygRpHOFWiW8bTFngobR3fAy91w
+	 F1s4OP2siQlEdbeom+A0c7ukrdAI2zTErw1X22qTFMh7SIi7eE7iw4loPqsHFBobAu
+	 68ewnymwJZ6caC1aE7V/FpxHLPVuPSJLcVQZ+xWsuEMefzBeD9b5Hx+ibfJgVHy5Md
+	 dy/CqZy0oru33VHC2txLf1g9Wd5aS+/axHyLERZhV1qTikLOp6/f0mzSrNb8wT8VJc
+	 S1XnWjiYpj1LRD3+fhTfaWIqZWUtBCe2ufRB0UoVE0z+MQ5gRpnb0kaEAhyKicwLYl
+	 kvo/Uswz0DQbg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  dmatlack@google.com,  Mike Rapoport
+ <rppt@kernel.org>,  kexec@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  dev.jain@arm.com,  Pratyush Yadav
+ <pratyush@kernel.org>,  linux-mm@kvack.org
+Subject: Re: [PATCH v3 2/2] memblock: use binary search to locate candidate
+ regions
+In-Reply-To: <20260926092448.4090401-2-tarunsahu@google.com> (Tarun Sahu's
+	message of "Sat, 26 Sep 2026 09:24:48 +0000")
+References: <20260926092448.4090401-1-tarunsahu@google.com>
+	<20260926092448.4090401-2-tarunsahu@google.com>
+Date: Sun, 04 Oct 2026 15:47:05 +0200
+Message-ID: <2vxz8q4dlgrq.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAx2c1gV8JqfWUoAA--.19823S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7CFWxtw48Aw13Jw1kJw4kXwc_yoW8uF4Upr
-	Z3G3W7Gr45Ar4F9rWkJa4xuFn5Jrs2gay5Gr97J34UK34xGw1jgryfCay3Cr15Ar4v93Wj
-	yr4qg3sxWFWqkabCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Jr0_Gr1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
-	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1D
-	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
-	1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
-	Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
-	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
-	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j5o7tUUUUU=
-X-Stat-Signature: 4muuiub5hng7roj9zrekx9ixjfgyyouw
-X-Rspamd-Queue-Id: CD6B5C0006
+Content-Type: text/plain
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 31B54180007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1791121263-221149
-X-HE-Meta: U2FsdGVkX1/GzqGCycYEMju/afXCVOn59HQMNEgXfaCkwhOXgyUd/Kn9blcWkMXXcejT6VOrCrXt+Bi5ayw4K169pgK4CgWaeEFJ8i4awVLeZQSgjNw2T5QUiv1BdaL6IKt1wMG4nTl7rKF048guoTR5Eb5kCi6qGpXb0EhvZSfFUlgiX/kf4K/uCkRQIONtmxHO+65Bdc1ou2ye8BOdFnP/gPgI6vyc6wf8PXVYSmnyOMgjkIJA0fCSdnNmXMUjv4vjss7uRStrFQUTrB5tPbTp88TGYLF3vOmnPs0hKW3g68pwsxCjpBCfZMX6tcoymlBgV5ujDVqnTuGn4/bWRiTfHy8tl5fZvNraCJI8MDciiDxZblzZ9V4LMcAFf8dx2GG331qbu5/S6G4cchvzqRXV6FbIoukrbbXv+UvRzPXA74IYSrB9AbYXrP15OYm2xhdQ61qNmbyJPekv/dw4ooLWN8TPdDolYDCfTS66ZlEk+NksfJCt+Td7h6EZepodeq7az4K77tH8zd4S+pJohIGwA2RgMUtcGB88p4H1dU9otq6KtovJaXKe5GfGzxNcaNCvmvJwy2KbQqFiU7zBurJgz9Ei9I1ugvtU/ahBKEoZFcXPjAqpm8JCyIgVp72rsCl766gQqWLPW3WfInPLyHi7Zy6boffb2YGmxSUWwyxChA0PcL9TYegmn/cTZBfipGqSVgu9cZJL2vzM17REFbxOLnC3n5ygMNNAjNh1A4P+7gyXe0/80GJOisKWVefinjkz0q3AVB5C0lsjYCiD9eBApW3KA22ZJ4e4XPtajT2S2hl3bf8+gQPOXnCvly4tgkAmljAlj+GEb0QctDY4owzRIoeMtrt8HdBZFb4GSTDGFvGM+E29xj4AzUw3WBDkTQfC3aW6UCaPz8OLMYQepB0OZOrO16671gor2Rf9I1hZlk/EGTufkysGc7jItu+7tQjd91L3d+ETDED6Nq2
- NKaIt9kK
- vMmGgX4EnAEUAyYrGoBAXxgegz9I4uO0OZsptjXI3HJOI1QN6PW1JCdrh9Q==
+X-Stat-Signature: hboqysw6qjmrfrb9heeurk3fy7wrqy64
+X-HE-Tag: 1791121630-856040
+X-HE-Meta: U2FsdGVkX18oSpeYEIimwqNLKX4zQiR+96CFukSAfqFSx5SqEvRSB0ZR5gjZgtjIfHHLhwXE5hACnAlreSUN2yEL2k2BERA/UB56UZPp6djgcEUIKh7ZUr17fyZFyJFjVS8rx4KfaaABIN5c12PIiFzEV64k3+KjVSNlrAlB/qy9J4ZNWM2vU2K4tkBSvFK3quf+EIHnrL0rwO2WZZFHeNhIKb8sLLn9FQJDrp9z4LSsT+MifBxf365YsAGSskMlT/opWRiVfjB+MkWLqCx3QT3Q5cT/Cbqdm6wQ/5iUMMjcK4X60oK1yqMKr1Xoud55pikHp5JFk3acxqWCg/A8RnGbIzVbxcATORW/tvEJ4t489GCf55FPsYuRMdKBk/bMCx7RJ4nHu9X0Pm4V9eey4CYDEqHFWzjCRcHsL0da3UXECUzcu++paghG8EV8gY6+0KrZyG1ftwT+RAHykoXA6OVLnMD1z+TJ20ZZzBx+WYfZi8X559XiTo2X5kCMLwqoa9NYqSR8vc5DFESolCx9X1vXSd2s94JrCNShsaQWEDH993Ub8olMM9ZZwukDcfmZZtyeN7TMsI/oCiWF3XJStR+T1cBwmKt0zz3/2a+rMXqsOC00w9hgbeZx+n/RrP2dDFbu/0hBWdhq+UXgltQooegyJVOuOnvInR3DY5sxMniPdA6K92VVlNxTsFExBp9TeR9GIpGwi1saeN1mGgcdw12VEW6uU0Nd7HNkjYghnJP+E8sTQ/r4OcEsoo9htLSgz0TbHH8J/Y+BQuW2Ww7FCQZcBdh5sWyCqcjGzB0+I7x8uQ/OWta4f9ZolK4XjVA7aW3pQOlPwmNiJ6Li0+uXuUElXfGYbU7tiUQxX6fybNc1hEkcAZXyAIx4WBs1eQfOILYVrsHg2j8Kp3Z0G218/MQmo1QxuxicVcm0y77EC0no1SwkGY554hYOud1+WNrqTKqQgqAp5KN7iU1kdDD
+ UTfcksma
+ gX9cVa1FpbNwKh3KyTCi3Dmpfs43dAh4YLuybv/VVtT6seIyOoHMUz8Lc9+5PaiXf32o2fLcF7Tn7KbojCcVWskPxf+QBR03IylU2GtcWoHRfJGQOLx6EK/rm+xCC+ARnDkdhkqnGRAtrGxloZyuqdp+3zZgnFSypAJTpbkhfLq7H/A8twSL4dpYa28Gw9GpJwukZBlgMGhFeuig7giJV6YAT8Ix4yGbCQ6r+kPHRSLNGMo9Em73qvYUSbedBfqDAAlSO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,58 +96,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When commit c65eacbe290b81 ("sched/core: Allow putting thread_info into
-task_struct") introduces THREAD_INFO_IN_TASK in 4.9, the only supported
-architecture is x86 and thread_info only has a flags field. The Kconfig
-description said thread_info should only has the flags field but didn't
-explain the reason.
+On Sat, Sep 26 2026, Tarun Sahu wrote:
 
-When commit c02433dd6de32f ("arm64: split thread_info from task stack")
-introduces THREAD_INFO_IN_TASK for arm64 in 4.10, its thread_info has
-more fields than a single flags, and arm64 works well.
+> Use binary search (memblock_bsearch_start) in memblock_add_range() and
+> memblock_isolate_range() to locate candidate regions instead of linearly
+> scanning from index 0.
+>
+> Under heavy memory fragmentation (such as KHO page preservation registering
+> hundreds of thousands of disjoint folios), scanning from index 0 on every
+> insertion and isolation results in O(N^2) complexity, causing boot-time
+> memory retrieval to take several minutes (~268s for 393k pages).
+>
+> Using binary search reduces the worst-case complexity to O(N log N)
+> (and O(N) for sequential appends), cutting KHO memory retrieval time
+> from ~268s to ~50ms.
+>
+> memblock_search() open codes the same binary search, so reimplement it on
+> top of the new helper.
+>
+> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+>
+>  mm/memblock.c | 53 +++++++++++++++++++++++++++++++++++----------------
+>  1 file changed, 37 insertions(+), 16 deletions(-)
+>
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index 59dda7d085f3..87c71435c80c 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -586,6 +586,33 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
+>  	type->total_size += size;
+>  }
+>  
+> +/**
+> + * memblock_bsearch_start - Find the first region index where rend > base
+> + * @type: memblock type to search
+> + * @base: base physical address of the candidate range
+> + *
+> + * Returns the first region index that could potentially overlap @base.
+> + */
+> +static int __init_memblock memblock_bsearch_start(struct memblock_type *type,
+> +						  phys_addr_t base)
+> +{
+> +	int mid, low = 0;
+> +	int high = type->cnt;
+> +
+> +	if (type->cnt && base >= type->regions[type->cnt - 1].base +
+> +				 type->regions[type->cnt - 1].size)
+> +		return type->cnt;
 
-Then commit 37a8f7c38339b2 ("x86/asm: Move 'status' from thread_struct
-to thread_info") adds status back to thread_info for x86 in 4.16, and
-x86 still works well.
+In some testing I did of this patch some time ago, I recall that this
+check didn't have much of a difference on performance. The binary search
+is the real optimization.
 
-After that, risc-v, powerpc and many other architectures all introduce
-THREAD_INFO_IN_TASK and their thread_info have more fields rather than
-a single flags field, of course they also work well.
+Do you think this check is worth keeping?
 
-I don't know the exact reason of the original description, but obviously
-it is wrong and misleading, so I update it, let LoongArch and some other
-architectures easier to support THREAD_INFO_IN_TASK.
+Other than this, I only have a couple minor nitpicks below.
 
-Also improve the try_get_task_stack() and put_task_stack() description.
+Regardless of these small comments, this patch LGTM so feel free to add
 
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
-V3: Update the Cc list.
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
- init/Kconfig | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+> +
+> +	while (low < high) {
+> +		mid = (low + high) / 2;
+> +		if (type->regions[mid].base + type->regions[mid].size <= base)
+> +			low = mid + 1;
+> +		else
+> +			high = mid;
+> +	}
+> +	return low;
+> +}
+> +
+>  /**
+>   * memblock_add_range - add new memblock region
+>   * @type: memblock type to add new region into
+> @@ -609,7 +636,7 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+>  	bool insert = false;
+>  	phys_addr_t obase = base;
+>  	phys_addr_t end = base + memblock_cap_size(base, &size);
+> -	int idx, nr_new, start_rgn = -1, end_rgn;
+> +	int idx, start_idx, nr_new, start_rgn = -1, end_rgn;
+>  
+>  	if (!size)
+>  		return 0;
+> @@ -644,8 +671,9 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+>  	 */
+>  	base = obase;
+>  	nr_new = 0;
+> +	start_idx = memblock_bsearch_start(type, base);
+>  
+> -	for (idx = 0; idx < type->cnt; idx++) {
+> +	for (idx = start_idx; idx < type->cnt; idx++) {
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 8583d9f06c52..921f2fcdcb30 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -210,11 +210,12 @@ config THREAD_INFO_IN_TASK
- 	bool
- 	help
- 	  Select this to move thread_info off the stack into task_struct.  To
--	  make this work, an arch will need to remove all thread_info fields
--	  except flags and fix any runtime bugs.
-+	  make this work, an arch will need to remove the task_struct pointer
-+	  field from thread_info and fix any runtime bugs.
- 
- 	  One subtle change that will be needed is to use try_get_task_stack()
--	  and put_task_stack() in save_thread_stack_tsk() and get_wchan().
-+	  and put_task_stack() in save_thread_stack_tsk(), get_wchan() and any
-+	  other stacktrace functions.
- 
- menu "General setup"
- 
+Nit: why have start_idx as a separate variable? Why not assign idx to
+the result of memblock_bsearch_start() directly?
+
+>  		struct memblock_region *rgn = &type->regions[idx];
+>  		phys_addr_t rbase = rgn->base;
+>  		phys_addr_t rend = rbase + rgn->size;
+> @@ -809,7 +837,7 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
+>  					int *start_rgn, int *end_rgn)
+>  {
+>  	phys_addr_t end = base + memblock_cap_size(base, &size);
+> -	int idx;
+> +	int idx, start_idx;
+>  
+>  	*start_rgn = *end_rgn = 0;
+>  
+> @@ -821,7 +849,9 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
+>  		if (memblock_double_array(type, base, size) < 0)
+>  			return -ENOMEM;
+>  
+> -	for (idx = 0; idx < type->cnt; idx++) {
+> +	start_idx = memblock_bsearch_start(type, base);
+> +
+> +	for (idx = start_idx; idx < type->cnt; idx++) {
+
+Same here.
+
+>  		struct memblock_region *rgn = &type->regions[idx];
+>  		phys_addr_t rbase = rgn->base;
+>  		phys_addr_t rend = rbase + rgn->size;
+> @@ -2062,19 +2092,10 @@ void __init memblock_mem_limit_remove_map(phys_addr_t limit)
+>  
+>  static int __init_memblock memblock_search(struct memblock_type *type, phys_addr_t addr)
+>  {
+> -	unsigned int left = 0, right = type->cnt;
+> +	int idx = memblock_bsearch_start(type, addr);
+>  
+> -	do {
+> -		unsigned int mid = (right + left) / 2;
+> -
+> -		if (addr < type->regions[mid].base)
+> -			right = mid;
+> -		else if (addr >= (type->regions[mid].base +
+> -				  type->regions[mid].size))
+> -			left = mid + 1;
+> -		else
+> -			return mid;
+> -	} while (left < right);
+> +	if (idx < type->cnt && addr >= type->regions[idx].base)
+> +		return idx;
+>  	return -1;
+>  }
+>  
+> base-commit: 1f18d740165163910df64d3063e1ad31648bc5e0
+
 -- 
-2.52.0
-
+Regards,
+Pratyush Yadav
 
