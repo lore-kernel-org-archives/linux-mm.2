@@ -4,114 +4,210 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9EFECA5FEC
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 10:19:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D391CA5FEC
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 10:51:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A294C6B008A; Sun,  4 Oct 2026 06:19:52 -0400 (EDT)
+	id 2018C6B008A; Sun,  4 Oct 2026 06:51:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DAD66B008C; Sun,  4 Oct 2026 06:19:52 -0400 (EDT)
+	id 18C496B008C; Sun,  4 Oct 2026 06:51:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CB116B0092; Sun,  4 Oct 2026 06:19:52 -0400 (EDT)
+	id 006A86B0092; Sun,  4 Oct 2026 06:51:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 67FED6B008A
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 06:19:52 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E71701A0AE6
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 10:19:51 +0000 (UTC)
-X-FDA: 85284547782.22.ADDBB68
-Received: from mta1.migadu.com (out-117.mta1.migadu.com [95.215.58.117])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CA16340005
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 10:19:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=D9dNpuhy;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.117 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C834A6B008A
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 06:51:30 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A0061C3F1D
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 10:51:30 +0000 (UTC)
+X-FDA: 85284627540.20.DE5B011
+Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 924D880005
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 10:51:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RehzjDjk;
+	spf=pass (imf02.hostedemail.com: domain of anshumantewari123@gmail.com designates 74.125.229.42 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791109190;
+	s=arc-20220608; t=1791111088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BFLE/uieRjtJI1j29cKPFxLM8vBds0xSR1XQp/1w+uo=;
-	b=VS9aknvvwmujYOjdtr0W5hrfJBH2zwFlSXS36mNjGTx65YJb8cC8pIzN0VFiPjf8KDNI0X
-	8E006YCpsU8VaoJH+ccJ75Qkox9lkAZBjF3KMz56kF7V2lU3vqsT+cSFDMO8eNEB7+coOC
-	SWwhlZzR4zwxrftRPn4k7hXGbmoym4Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791109190;
-	b=ILyaEEyIyhfbv/kIXkKpan+EJ3arzuFa0NAMVDXRnHBOLydrmjviDYILM/HUg1Ui8Ti81e
-	Srv/gkvOe8IOwATruK7ZfHZHDd6crhbPsITffsa4JNdvnXPUsdhs3ddVujjnReq61NsED+
-	PVXYwbGYCXmsgmIlFn7brqi+bBuUDic=
+	bh=OU10JUkOnCjExkP9pLJslSiL15VSpV7uAw3VaBnuTMo=;
+	b=6+p1dKowcozfwrtqZe9f0ZhjdcAaFh0UzXK1dQRCIxRuMEOTc2pGJQnSfTBa5qs0DBf/yr
+	EDLGpJY1RnSwT9LGM5RE/C25Z6s5TJ1elXyvBXYgbf5S7jjamuLPEaGibVCpVLxql9vVsE
+	MVkMKZKKF6Sg88zCbupYCRB/iq3zelA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=D9dNpuhy;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.117 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=6O4YKjUA/noUWUt8Bp8Ed6UeHxLSNb/5kmUlDJIMcSk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791109188; v=1; x=1791713988;
- b=D9dNpuhyxBe2ShYZ6GgHz5fkyj7WRKDPJoeYb8HfA5XgnFJ9sTmwGHbRP7A8LoJUbO45BFyX
- L5pnIXVC18QaokAN4cDxUfukjNT9FsiG+/e9kTy42CO1Hkzy8GCjCYWHzv8aAvnyx+tq6v3fAI+
- Ea7BHAraN3ZwKlJBIkLo+U/E=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5cb6a8fc302a0cd8;
-	Sun, 04 Oct 2026 10:19:48 +0000
-X-Mizu-Trace-ID: 5cb6a8fc302a0cd8
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: usama.arif@linux.dev
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	ying.huang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	willy@infradead.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	alex@ghiti.fr,
-	kas@kernel.org,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
-	nico.pache@linux.dev,
-	liam@infradead.org,
-	ryan.roberts@arm.com,
-	vbabka@kernel.org,
-	lance.yang@linux.dev,
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RehzjDjk;
+	spf=pass (imf02.hostedemail.com: domain of anshumantewari123@gmail.com designates 74.125.229.42 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791111088;
+	b=AA+mHEc/y/PH/6TUFISsqf4uHI2bYUJGg7OXq5X4pXY+a5ZqHmdMoNLN2tJNyQoO6KKfgB
+	Z3Wc2ABLqvSfPVX3xKpz00b3OUVlxXLRVfzi4VPHsP4bOkqgcCwtUuOrkGHsGCkXHttHgF
+	6MrR7xmAzX3o50ueoeNpySEGLVcL7gs=
+Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-3510b42f4e3so843164eec.2
+        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 03:51:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791111087; x=1791715887; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OU10JUkOnCjExkP9pLJslSiL15VSpV7uAw3VaBnuTMo=;
+        b=RehzjDjk/8TGB85E4HyLVrj2MqXp2i+kF94Pk4V+OdaoHew/zG4V4FgBDZYNU37EH7
+         kLKYR1DkkHCA7xM2LYF6yfjFSiwTSZUThzXqV6p4AyQ8Yj3iuDyanNNuIM/rYwInd943
+         /lu+9RtDHVNZ90mNhujSe9PF8NQM5LvfMQqvpyk7WO9zR24jcg+ew9+jyAsXQDtxKT75
+         lM6xeeXf1bOzYWM7HXdexv0ZHgrYfZb+9agTz4tUHH3eXE3P0GzNBhwev+tc7pWOaQAI
+         0LEQVxZAHydvJGPr5FH91FwAOk91pAkLE3ruSpget6GBH+GPqN2zGfL4+oL983yfC4Oe
+         /Npg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791111087; x=1791715887;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OU10JUkOnCjExkP9pLJslSiL15VSpV7uAw3VaBnuTMo=;
+        b=QG2FrYl/scwqrESsUKBqKhXSzBgWmMPktC5PU17sgutolxiPaLW5Iut+1G9s8xGGcx
+         rErAwNT7jZl761rqir4nYP8Bm9EwbadGpeTcUOOUcv3WacHugIcrreZ9w35WlW7ptrWq
+         VpMtn016dWCH5Fhc+78s/iHSi1XMU+NuLYA3dgNJbWpa+BQ4K9I0Fj2nVT3RxM4i9dvJ
+         Ym7vXTMDIfYfbP/wsRbAMI+jgr5L1hqyeeREDTVsSVIY2hyHXZfyj6aPpQqkS5FH6Mrc
+         Uj0fxyPciKOFdyBAo2hz7K+YGeUHfxdFVSju4mJVEQaPA/nCunSkbF8MkiLP9+EwTKiu
+         uBog==
+X-Forwarded-Encrypted: i=1; AKwUvBxVIsImlsm6504Id7RoyGn7g6SEhsNBweMeH3VrEADh5Jml34f8nEu5LgnZNRmwB4frBzlbW3PZpg==@kvack.org
+X-Gm-Message-State: AFq9FYICQjo33o1Asz/dy08hfsoFcembo/9CSspqnYzXhlpLaAJRtlFJ
+	uV9NoDcnTJYiCEZ6imzln9Zwn5DroyLasRAlGQqcrE16Hy00cAJkxola
+X-Gm-Gg: AYBFou1/wSOZ7b03Nm6cpQN35U8A3iUY1rcTJkWjtN6rK3WohMfDb8puI2naddyQIqw
+	BnIvqLeHiSueiSkiEjMRfPlNcq+QCvhXttdlTONQnL8qrDpng3oQiqplMwprdCwJA+4ghJtGMVt
+	5HZGeiry8GL7jYl/Kd5vnkjGd2RUAwgfU2f7Pwr9Zs+aPsRGGs/vvubjoO5wCRT/aWTYdjYWY3s
+	bDzvxEX121kUrR6ug1ChS46uZPdKJESWdox+SA8EeNHjRRilCZVNy658nE3+8hV3/22mypYyecI
+	6SJ+jjbYu1pBCC6IanaFZs2maOUoROKOJHK9uaHqptULvFTVHbCb38AweKWYO6LWMWkOfrZWysj
+	IBFUK+6+4sAO0tdoyONeZnXwyfyRg49hAqval+Jw/FtInkJNeSUPNTnpqktJMbrtDH/EbO996YP
+	/oxs8SgjUXw9P0lPF/0mEd3dx+1Qo5aSJkFfkW3rFo0cVr5/OuT855LS1A/3Nvd1j0pC1mgs3nc
+	ZceW38DzfLAn86yj0D5aLm8R3m08spQEEr1oOnyqjLwl0M=
+X-Received: by 2002:a05:7300:e5c2:b0:341:3ca2:de2d with SMTP id 5a478bee46e88-34f15077edfmr9383419eec.6.1791111087081;
+        Sun, 04 Oct 2026 03:51:27 -0700 (PDT)
+Received: from Anshuman ([123.63.59.156])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-35127161474sm3815965eec.13.2026.10.04.03.50.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2026 03:51:26 -0700 (PDT)
+From: Anshuman <anshumantewari123@gmail.com>
+To: kees@kernel.org
+Cc: Frank.Li@kernel.org,
+	James.Bottomley@HansenPartnership.com,
+	airlied@gmail.com,
+	akpm@linux-foundation.org,
+	andriy.shevchenko@linux.intel.com,
+	anton.ivanov@cambridgegreys.com,
+	apparmor@lists.ubuntu.com,
+	atomlin@atomlin.com,
+	benjamin.berg@intel.com,
+	bhelgaas@google.com,
+	bp@alien8.de,
+	bvanassche@acm.org,
+	corey@minyard.net,
+	da.gomez@kernel.org,
+	daniel.lezcano@kernel.org,
+	dave.hansen@linux.intel.com,
+	david.e.box@linux.intel.com,
+	dmaengine@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	dvyukov@google.com,
+	elver@google.com,
+	eperezma@redhat.com,
+	georgia.garcia@canonical.com,
+	glider@google.com,
+	gor@linux.ibm.com,
+	gregkh@linuxfoundation.org,
+	hansg@kernel.org,
+	hare@suse.de,
+	hca@linux.ibm.com,
+	hpa@zytor.com,
+	ilpo.jarvinen@linux.intel.com,
+	intel-gfx@lists.freedesktop.org,
+	jani.nikula@linux.intel.com,
+	jasowang@redhat.com,
+	jbaron@akamai.com,
+	jgg@ziepe.ca,
+	jim.cromie@gmail.com,
+	jirislaby@kernel.org,
+	jmorris@namei.org,
+	johannes@sipsolutions.net,
+	john.johansen@canonical.com,
+	joonas.lahtinen@linux.intel.com,
+	kasan-dev@googlegroups.com,
+	kvm@vger.kernel.org,
+	laurent.pinchart@ideasonboard.com,
+	lenb@kernel.org,
+	leon@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	yosry@kernel.org,
-	qi.zheng@linux.dev,
-	luizcap@redhat.com,
-	kernel-team@meta.com
-Subject: Re: [PATCH v8 28/30] mm: handle PMD swap entry faults on swap-in
-Date: Sun,  4 Oct 2026 18:19:42 +0800
-Message-ID: <20261004101942.37331-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261002095503.3585565-29-usama.arif@linux.dev>
-References: <20261002095503.3585565-29-usama.arif@linux.dev>
+	linux-media@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-modules@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-usb@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	lukasz.luba@arm.com,
+	macro@orcam.me.uk,
+	martin.petersen@oracle.com,
+	mcgrof@kernel.org,
+	mchehab@kernel.org,
+	mingo@redhat.com,
+	mst@redhat.com,
+	netdev@vger.kernel.org,
+	openipmi-developer@lists.sourceforge.net,
+	paul@paul-moore.com,
+	pbonzini@redhat.com,
+	pengpeng@iscas.ac.cn,
+	peterz@infradead.org,
+	petr.pavlu@suse.com,
+	qemu-devel@nongnu.org,
+	rafael@kernel.org,
+	richard@nod.at,
+	rodrigo.vivi@intel.com,
+	rui.zhang@intel.com,
+	samitolvanen@google.com,
+	seanjc@google.com,
+	serge@hallyn.com,
+	simona@ffwll.ch,
+	somlo@cmu.edu,
+	srinivas.pandruvada@linux.intel.com,
+	stable@vger.kernel.org,
+	stern@rowland.harvard.edu,
+	tglx@kernel.org,
+	tiwei.btw@antgroup.com,
+	tursulin@ursulin.net,
+	usb-storage@lists.one-eyed-alien.net,
+	virtualization@lists.linux.dev,
+	vkoul@kernel.org,
+	x86@kernel.org,
+	xuanzhuo@linux.alibaba.com
+Subject: Re: [PATCH 01/11] params: bound array element output to the caller's page buffer
+Date: Sun,  4 Oct 2026 16:17:41 +0530
+Message-ID: <20261004104741.51238-1-anshumantewari123@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260521133326.2465264-1-kees@kernel.org>
+References: <20260521133326.2465264-1-kees@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CA16340005
-X-Stat-Signature: pbns4zo317o6wioiawyz3hikcz5kimmc
 X-Rspam-User: 
-X-HE-Tag: 1791109189-27759
-X-HE-Meta: U2FsdGVkX19nFOUfqgUiyUdW62tMtBZK43Vf4CzJ+8OBhOJ/irDP9pPyoJP6RVQZJbhSSR6jarVokYLoEi1K2dTQbUYd2U9U09zuZEkM4PIbn6MXJfrECKFIlKt0GOCTQkZnH2BaUPIZbDa9V7CDKgdZgc055q8kDGH03KmuwpZ2I9yFlHl9eJUYQpyqI+Y688SBt0lqnVGDf+/+tXCxf8+0Y8WIjiu5ar4Vk8n0oMpqGJ6H4pG5tkZ/GvCKhxQ0uSCoLOC1sHHDCrLJ9bX/t9ZmejwFgz0mvmbeXAsqU16m2Z9kdiTvrU70mHWWl5RUkFfo1oRK8SRSj4nhRslzjugdeaEfWQ+G7nNeXxkASOLY8uT6xa/XbUkmxGfH2XteNFDPIV/RMT3gDirMDMcjosFpp9y/fn6vjkF2TQ8LJc0L28rj/xw0DxnOGR4UYHf9VM+/V9UahUUTS/R3DHgUMzxY1LttQv2JUaCLXgXVC24Ia+xwlZa1FY3qbmBjAqCesrrB0VOME9RHEJXa67A+uA2rDDWKuPeZA+/cMk3Ok4zC3zAFRQf3QapMTrETw8R36bELU3Sm4CsnkzsbyH6bW1T5aiPAzqxDtUPfTEkjhKfj3xE4+Myo5hGUbtWEunWV+fIbjESsUYs5Kp4Wlh5PsJ/3Jcq6/q+3Zu2OvseCfJGfM341+3MPCKuGygmamW4jCodNsIERCs2oMEaL1/Wo5tKqMev4f6iiDplTwX2lz2XnePmzEs5qT2CgaywdIy+GIkvs3wQTu8EzYpMLSdLDQo+9l4Qh+nUhHdjt1kBN57/glHtropTCAkNlsDyVppHZampYRYTYOMb+G4pYCdHdbGN1imXYxQZgf3TnVnqcH+w1Sld9qhgcYjXI6ZxLjktDg8AX5bfyxokHks2SX/bTnGaA7gGNNiyNsnqnvOBQMl2jE7trFAT5xu54reuRF8PBE8pkiYqBjAKFLkwtulK
- WGrl+gIx
- ka9XYdFnX9Y25VPU5L7gpQAoqWVNGufdIq3vMGrYs7Exb1t+jGrlmLgiapoDCF8o9k6XfktVsicFi8B5gRLUqvOMoRQ0chwVRW/sdY91ieeWLdZ13RKcTHuZfqK8yfl25ekCovN8eO+qAl1VlPc8w8sN25Ts0s6bUZg+6D8M20VbRSSM4p+n+qE54++i8Z2KJs4hxRfyg7KMa/Xd0MiGMcSJCfSYOgP3pFDG7Z6zkF83p5Vg=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 924D880005
+X-Stat-Signature: qsunbpurdsrhz5ou3upywny3aq3wxubz
+X-HE-Tag: 1791111088-80533
+X-HE-Meta: U2FsdGVkX18YzyBvC9aXON1W/QTgPQ0MBaIBQsI8YlgPFOZ3H2hMO/IQqcPF9Mz5xPv50FRgAFJHYWiijRlypvgTvrUj94zugqqvf6ih1ihB2wInobBPXh4K/5+BLChsSQ6wM3h4dawgwfQFfkILXRX/UFGgenmJ9KP0VzUnLPSK6WFevLiw+p4AsINHHRlkE1oZnMj2PIsZhzjjgIu3NQ3S3kv9rU9mYLD83GSZShVAuglG1bOS53L2eTAGoeP/b+1qV6rqLVW/m6FWqFsz1zNT+bs6fD139Zf44nVWHTxjOWbadkHg+bHQC42qq/eFeK6oolrER8PDnX2Ducm5nuBBm5qf6sGaYyH8mWHyD6O/uM8ivghQGSAnG2sesaf4ZhQunR1UDt0kztl6r9I+I+R4Kc3HyXI3vBXXyaW8Nk73XwF1a+Ee5WhzikMX9w8UszjEKB3yJt3aqM5vWYbh/dBojNEL2xoDCtHGy3izcFg9Qdpm4sQwnRE/4oA2fROgKNfaDDIxaqtcxIBsNorl51WqVbv4Y6XsDUDYnuMnLEA+LGTGnBN/oWE8G9JBKlm+k9pCj4dOuxtRg9FntuURasiCb4kAfuhdV+fDz+XasA9FlVmJ3t+lpPojscErzqRjlXF0DF3Ilt6QVXI1X0xXIKMs8DQccJu76Zb5HMnERfWKOf1dCkRnuaWoaa+I0ZyQsIbJymBXPsfePx7H23SA3IYdukFcZGvswcxgaOD383FO2KBW6dOQblxSbu/MgNJwiA1RHEZJeFJzU3tlFhP2FXLUoPMMTTYZzFUPIPP/3b6Jsm9OhyxYyEjMWDLEzhsF5US7yqg7By8WEYVYSQoVpr133RAe7Rc3+hbvwrB9UDbo8qN1myveouA+A+zuEIXq7JOIX4HeX1EmDrWq5KjxiE8xkeEH32ebyYZFA/B9YcvLXgOo8iIspxkPvUwMux8rfLrbcrWbI1y/Bda73DE
+ EsKVOEO9
+ 4ODBH8qF7WLz4tQ7PKi1NkYf+jmQf9FAOYv1Dl+28dcSOBvtf/zT5P/+9xL3NXim6tF8FOcmaCF2ZTlshCo9B/AD6jj0GX3qaDFk2gZRDPyXZFOHpPzOBYrWEn7bIYjAuv53oVRyeUqRnJO5zngz9ruDu6v0todsED+5utWThUexN3bxAfhoMmhommyEt96/gri/JIHDnDGHZa/5O/WZtIuQWQWSonbYpGHgbDUrT1/BqTrrqpjeNgaTW0ePP9O1Lz+37M2HPtrgrZW6F9aaFQ8+STeX613wqxU+072jWxubgJvyPpsNJ9F/V8MPOnToWrtJnWoKM+486eICyQLY9H4l76Fj8uT9Tsv/PaI+jwCWhdWCgVwTh6dns7xxFf0AaLm3l3ceKVrvGFwjyjKGnn1IjKlVqr9/QN3POi4LxqJ8CAwBipHIxofIOy75eE3yiazgruQ9w7OcbIFjl4rOscD+ZoLMQ9BjOmRuhws82yz3cE+i2cd2FQeyabYlQuwUJQSkT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,390 +215,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hey Usama,
+On Thu, May 21, 2026 at 06:33:14AM -0700, Kees Cook wrote:
+> ret = min(ret, (int)(PAGE_SIZE - 1 - off));
+> if (!ret)
+> 	break;
 
-Not an expert on swap, so the below may be naive ...
+One question about the truncation behavior here: when an element does
+not fully fit in the remaining buffer, this min() can cause only part
+of that element to be copied. For example, if the remaining space is
+4 bytes and the next element produces "123456789\n", the resulting
+output could contain only "1234".
 
-On Fri, Oct 02, 2026 at 02:52:42AM -0700, Usama Arif wrote:
-[...]
->+#ifdef CONFIG_THP_SWAP
->+/**
->+ * do_huge_pmd_swap_page() - Handle a fault on a PMD-level swap entry.
->+ * @vmf: Fault context. vmf->orig_pmd contains the swap PMD.
->+ *
->+ * A PMD swap entry is a compact encoding for HPAGE_PMD_NR consecutive swap
->+ * slots. If the swap cache still has one PMD-sized folio covering the range,
->+ * map it directly at PMD level. If the range has been split into per-page
->+ * cache state, or zswap may have per-page state for it, split the PMD swap
->+ * entry and retry at PTE granularity.
->+ *
->+ * Return: VM_FAULT_* flags.
->+ */
->+vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf)
->+{
->+	struct vm_area_struct *vma = vmf->vma;
->+	struct mm_struct *mm = vma->vm_mm;
->+	struct folio *folio;
->+	struct page *page;
->+	struct swap_info_struct *si;
->+	unsigned long haddr = vmf->address & HPAGE_PMD_MASK;
->+	softleaf_t entry;
->+	swp_entry_t swp_entry;
->+	pmd_t pmd;
->+	vm_fault_t ret = 0;
->+	bool exclusive, stable_writes, rwp_restore = false;
->+	bool write = vmf->flags & FAULT_FLAG_WRITE;
->+	rmap_t rmap_flags = RMAP_NONE;
->+	enum swap_pmd_cache cache_state;
->+
->+	entry = softleaf_from_pmd(vmf->orig_pmd);
->+	if (unlikely(!softleaf_is_swap(entry)))
->+		return 0;
->+
->+	if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_PAGEFAULT,
->+				     HPAGE_PMD_ORDER)) {
->+		__split_huge_pmd(vma, vmf->pmd, haddr);
->+		return 0;
->+	}
->+
->+	swp_entry = entry;
->+
->+	/* Prevent swapoff from happening to us. */
->+	si = get_swap_device(swp_entry);
->+	if (IS_ERR_OR_NULL(si)) {
->+		if (IS_ERR(si))
->+			return VM_FAULT_SIGBUS;
->+		return 0;
->+	}
->+
->+	cache_state = swap_pmd_cache_lookup(swp_entry, &folio);
->+	if (cache_state == SWAP_PMD_CACHE_SPLIT)
->+		goto split_fallback;
->+	if (!folio) {
->+		/*
->+		 * PMD swap entries encode ordinary per-page swap slots. If any
->+		 * slot is in zswap, split and let the PTE swap path load the
->+		 * range per page. Otherwise the range is all on disk and can be
->+		 * read back as one PMD-sized folio.
->+		 */
->+		if (zswap_is_present(swp_entry, HPAGE_PMD_NR))
->+			goto split_fallback;
->+
->+		folio = swapin_sync(swp_entry, GFP_HIGHUSER_MOVABLE,
->+				    BIT(HPAGE_PMD_ORDER), vmf, NULL, 0);
->+		if (IS_ERR_OR_NULL(folio))
->+			goto split_fallback;
->+
->+		/* Had to read from swap area: Major fault */
->+		ret = VM_FAULT_MAJOR;
->+		count_vm_event(PGMAJFAULT);
->+		count_memcg_event_mm(mm, PGMAJFAULT);
->+	}
->+
->+	ret |= folio_lock_or_retry(folio, vmf);
->+	if (ret & VM_FAULT_RETRY)
->+		goto out_release;
->+
->+	/* Verify the folio is still in swap cache and matches our entry */
->+	if (unlikely(!folio_matches_swap_entry(folio, swp_entry)))
->+		goto out_page;
->+
->+	/*
->+	 * Folio should be PMD-sized; if not (e.g. split in swap cache),
->+	 * split the PMD swap entry and retry at PTE level.
->+	 */
->+	if (folio_nr_pages(folio) != HPAGE_PMD_NR)
->+		goto unlock_split_fallback;
->+
->+	/*
->+	 * A read that failed - a PMD-order zswap load that found per-page
->+	 * state, or an I/O error - leaves the folio clean and not uptodate.
->+	 * Fall back so the PTE retry reads each slot again rather than
->+	 * returning SIGBUS for the whole range.
->+	 */
->+	if (unlikely(!folio_test_uptodate(folio)))
->+		goto unlock_split_fallback;
->+
->+	/*
->+	 * If any subpage is hardware-poisoned, split the PMD swap entry and
->+	 * let the PTE swap-in path handle each page individually so
->+	 * do_swap_page() can return VM_FAULT_HWPOISON for the poisoned
->+	 * subpage rather than mapping the corrupted memory as one THP.
->+	 */
->+	if (unlikely(folio_has_hwpoisoned_subpage(folio)))
->+		goto unlock_split_fallback;
->+
->+	page = folio_page(folio, 0);
->+	arch_swap_restore(folio_swap(swp_entry, folio), folio);
->+
->+	folio_throttle_swaprate(folio, GFP_KERNEL);
->+
->+	/* Lock the PMD and verify it hasn't changed */
->+	vmf->ptl = pmd_lock(mm, vmf->pmd);
->+	if (unlikely(!pmd_same(vmf->orig_pmd, pmdp_get(vmf->pmd)))) {
->+		spin_unlock(vmf->ptl);
->+		goto out_page;
->+	}
->+
->+	exclusive = pmd_swp_exclusive(vmf->orig_pmd);
->+
->+	/*
->+	 * Some swap backends (e.g. zram) don't support concurrent page
->+	 * modifications while under writeback. If we map exclusive on such
->+	 * a backend while the folio is still under writeback, the writeback
->+	 * may see partial modifications and corrupt the swap slot. Drop the
->+	 * exclusive marker and only map R/O for that case; further GUP
->+	 * references can't appear once the page is fully unmapped, so this
->+	 * is safe.
->+	 */
->+	/* Lockless like do_swap_page(): SWP_STABLE_WRITES never changes. */
->+	stable_writes = data_race(si->flags & SWP_STABLE_WRITES);
->+	if (exclusive && folio_test_writeback(folio) && stable_writes)
->+		exclusive = false;
->+
->+	/*
->+	 * Set up the PMD mapping. Similar to do_swap_page() but at PMD level.
->+	 */
->+	add_mm_counter(mm, MM_ANONPAGES, HPAGE_PMD_NR);
->+	add_mm_counter(mm, MM_SWAPENTS, -HPAGE_PMD_NR);
->+
->+	pmd = folio_mk_pmd(folio, vma->vm_page_prot);
->+	pmd = pmd_mkyoung(pmd);
->+
->+	if (pmd_swp_soft_dirty(vmf->orig_pmd))
->+		pmd = pmd_mksoft_dirty(pmd);
->+	if (pmd_swp_uffd(vmf->orig_pmd))
->+		pmd = pmd_mkuffd(pmd);
->+	if (pmd_swp_uffd(vmf->orig_pmd) && userfaultfd_rwp(vma)) {
->+		pmd = pmd_modify(pmd, PAGE_NONE);
->+		rwp_restore = true;
->+	}
->+
->+	/*
->+	 * Check exclusivity to determine if we can map writable.
->+	 */
->+	if (exclusive) {
->+		if (!rwp_restore && (vma->vm_flags & VM_WRITE) &&
->+		    !userfaultfd_huge_pmd_wp(vma, pmd) &&
->+		    !pmd_needs_soft_dirty_wp(vma, pmd)) {
->+			pmd = pmd_mkwrite(pmd, vma);
->+			if (write)
->+				pmd = pmd_mkdirty(pmd);
->+		}
->+		rmap_flags |= RMAP_EXCLUSIVE;
->+	}
->+
->+	flush_icache_pages(vma, page, HPAGE_PMD_NR);
->+
->+	if (!folio_test_anon(folio))
->+		folio_add_new_anon_rmap(folio, vma, haddr, rmap_flags);
->+	else
->+		folio_add_anon_rmap_pmd(folio, page, vma, haddr, rmap_flags);
->+
->+	folio_put_swap(folio, NULL);
->+
->+	set_pmd_at(mm, haddr, vmf->pmd, pmd);
->+	update_mmu_cache_pmd(vma, haddr, vmf->pmd);
->+
->+	/* Update orig_pmd for any follow-up wp_huge_pmd() below. */
->+	vmf->orig_pmd = pmd;
->+
->+	/*
->+	 * Conditionally try to free up the swap cache. Do it after mapping,
->+	 * so raced page faults will likely see the folio in swap cache and
->+	 * wait on the folio lock.
->+	 */
->+	if (should_try_to_free_swap(si, folio, vma, exclusive, vmf->flags))
->+		folio_free_swap(folio);
->+
->+	spin_unlock(vmf->ptl);
->+
->+	folio_unlock(folio);
->+	put_swap_device(si);
->+
->+	/*
->+	 * If the write fault wasn't satisfied above (folio is shared without
->+	 * exclusivity), call wp_huge_pmd() to handle COW or
->+	 * userfaultfd-wp without forcing a second fault.
->+	 *
->+	 * wp_huge_pmd() may return VM_FAULT_FALLBACK if it had to split the
->+	 * PMD; that's a normal outcome, and the natural PTE-level refault will
->+	 * complete the COW. Mask it so callers (and the arch fault handler)
->+	 * don't see VM_FAULT_FALLBACK as a fatal VM_FAULT_ERROR.
->+	 */
->+	if (write && !pmd_write(pmd) && !rwp_restore) {
->+		vm_fault_t wp_ret = wp_huge_pmd(vmf);
->+
->+		wp_ret &= ~VM_FAULT_FALLBACK;
->+		ret |= wp_ret;
->+		if (ret & VM_FAULT_ERROR)
->+			ret &= VM_FAULT_ERROR;
->+	}
->+
->+	return ret;
->+
->+out_page:
->+	folio_unlock(folio);
->+out_release:
->+	folio_put(folio);
->+	put_swap_device(si);
->+	return ret;
->+
->+unlock_split_fallback:
->+	/*
->+	 * PTE fallback cannot add a single-page rmap to a PMD-sized folio that
->+	 * has never been mapped: do_swap_page() would hand the whole folio to
->+	 * folio_add_new_anon_rmap() while installing one PTE. Nor can it do
->+	 * anything useful with a folio that failed to read. Remove either from
->+	 * the swap cache so each slot is read back into its own order-0 folio.
->+	 * An uptodate anon swap-cache folio can be mapped one PTE at a time and
->+	 * must stay cached, so that any poisoned subpage stays visible to
->+	 * do_swap_page(). This mirrors unuse_pmd_entry().
->+	 */
->+	if (folio_matches_swap_entry(folio, swp_entry) &&
->+	    (!folio_test_uptodate(folio) || !folio_test_anon(folio)))
->+		swap_cache_del_folio(folio);
->+	folio_unlock(folio);
->+	folio_put(folio);
+This leaves the reader with no way to distinguish a genuinely short
+value from one that was truncated due to the PAGE_SIZE limit, while
+the array otherwise still looks like a normal comma-separated list.
 
-Requesting BIT(HPAGE_PMD_ORDER) doesn't prevent swapin_sync() from
-returning a cached order-0 folio ...
-
-struct folio *swapin_sync(swp_entry_t entry, gfp_t gfp, unsigned long orders,
-			   struct vm_fault *vmf, struct mempolicy *mpol, pgoff_t ilx)
-{
-...
-	do {
-		folio = swap_cache_get_folio(entry);
-		if (folio)
-			return folio;
-		folio = __swap_cache_alloc_folio(entry, gfp, orders, vmf, mpol, ilx);
-	} while (PTR_ERR(folio) == -EEXIST);
-
-...
-}
-
-static int zswap_writeback_entry(struct zswap_entry *entry,
-				 swp_entry_t swpentry)
-{
-...
-	folio = __swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
-					 NO_INTERLEAVE_INDEX);
-...
-	if (IS_ERR(folio))
-		return PTR_ERR(folio);
-...
-	if (!zswap_decompress(entry, folio)) {
-		ret = -EIO;
-		goto err;
-	}
-
-	xa_erase(tree, offset);
-...
-	/* folio is up to date */
-	folio_mark_uptodate(folio);
-
-	folio_set_dropbehind(folio);
-...
-	folio_put(folio);
-
-	/* start writeback */
-	__swap_writeout(&ctx, folio);
-	swap_write_submit(&ctx);
-
-	return 0;
-...
-}
-
-void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
-{
-	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
-...
-	folio_start_writeback(folio);
-	folio_unlock(folio);
-	swap_add_folio(ctx, folio, WRITE);
-}
-
-Say we hit the following race:
-
-1) swap_pmd_cache_lookup() finds the range empty, before zswap writeback
-   inserts its order-0 folio.
-
-2) zswap writeback puts that small folio in the swap cache at the first
-   slot, then erases the last zswap entry in the range.
-
-3) The fault thread checks zswap and gets false from zswap_is_present().
-   It then calls swapin_sync(), which returns that cached small folio.
-
-4) After __swap_writeout() unlocks the folio, the fault thread can lock
-   it while writeback is still pending. The folio isn't PMD-sized, so
-   we reach that cleanup ...
-
-zswap has already dropped its allocation reference, and writeback itself
-doesn't hold one. So, without any other references, we're left with the
-swap-cache reference and our fault reference.
-
-The folio is still !anon, so swap_cache_del_folio() removes the cache
-reference, then folio_put() drops ours. That can drop the last reference
-while I/O is still using the folio ... :(
-
-So ... could we just unlock and put it on the size mismatch, then jump
-to split_fallback? That would keep the folio in the swap cache for
-do_swap_page().
-
-Something like:
-
----8<---
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 69721801cf9f..53c15bfdb0a1 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2507,9 +2507,14 @@ vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf)
- 	/*
- 	 * Folio should be PMD-sized; if not (e.g. split in swap cache),
- 	 * split the PMD swap entry and retry at PTE level.
-+	 * Keep the folio cached: zswap writeback may still be in flight and
-+	 * relies on the swap-cache reference to keep it alive.
- 	 */
--	if (folio_nr_pages(folio) != HPAGE_PMD_NR)
--		goto unlock_split_fallback;
-+	if (folio_nr_pages(folio) != HPAGE_PMD_NR) {
-+		folio_unlock(folio);
-+		folio_put(folio);
-+		goto split_fallback;
-+	}
-
- 	/*
- 	 * A read that failed - a PMD-order zswap load that found per-page
-@@ -2647,6 +2652,7 @@ vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf)
-
- unlock_split_fallback:
- 	/*
-+	 * Only PMD-sized folios reach this cleanup.
- 	 * PTE fallback cannot add a single-page rmap to a PMD-sized folio that
- 	 * has never been mapped: do_swap_page() would hand the whole folio to
- 	 * folio_add_new_anon_rmap() while installing one PTE. Nor can it do
---
-
-Hopefully I didn't miss anything :D
-
->+split_fallback:
->+	/*
->+	 * Only split if the PMD is still the swap entry we were called for.
->+	 * All the reasons we get here (allocation failure, zswap state, a
->+	 * split or poisoned cached folio) were observed without the PMD lock,
->+	 * so a racing thread may already have swapped the range back in as a
->+	 * THP -- splitting that would silently demote a perfectly good huge
->+	 * mapping.
->+	 */
->+	if (pmd_same(vmf->orig_pmd, pmdp_get_lockless(vmf->pmd)))
->+		__split_huge_pmd(vma, vmf->pmd, haddr);
->+	put_swap_device(si);
->+	return 0;
->+}
->+#endif /* CONFIG_THP_SWAP */
-
-[...]
-
-Cheers, Lance
+Is this partial-element truncation intentional for this patch, or is
+the expectation that it gets handled as part of the later seq_buf
+conversion? Would it be preferable to avoid copying an element unless
+it fits completely, and leave the larger-buffer case to be addressed
+later in the series?
 
