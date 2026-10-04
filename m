@@ -4,199 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87254CA5FF0
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 18:24:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 103B7CA5FF0
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Oct 2026 18:38:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83F316B0095; Sun,  4 Oct 2026 14:24:28 -0400 (EDT)
+	id CC62B6B0093; Sun,  4 Oct 2026 14:38:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 817796B0096; Sun,  4 Oct 2026 14:24:28 -0400 (EDT)
+	id C77946B0096; Sun,  4 Oct 2026 14:38:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 705526B0098; Sun,  4 Oct 2026 14:24:28 -0400 (EDT)
+	id B3F526B0098; Sun,  4 Oct 2026 14:38:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 43D346B0095
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 14:24:28 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B852D120C27
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:24:27 +0000 (UTC)
-X-FDA: 85285768974.16.87BE020
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CE3F5A0002
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:24:25 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=hcOMM8Zr;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 860FD6B0093
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 14:38:11 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D56440BE5
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:38:11 +0000 (UTC)
+X-FDA: 85285803582.27.B3AACC8
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 233B8C0009
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 18:38:08 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=m9Kt60Wz;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791139089;
+	b=xW/i71w/LKnpSGxqJnAMWcBjm3Y18jLvz1o8ajrlTI1QjkN2mWTxpHWrMIami4iAl8URvU
+	xcv6ZBJa0M/wsn5+SAafrEBGUsUNGhRkC5XdrgtS6KIoXz2vJrpNXs58p6xlI+dFzR7SoJ
+	eP9XxsxZ2+ExGFFFLQLoiCa1pxSaymU=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=m9Kt60Wz;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791138265;
+	s=arc-20220608; t=1791139089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=COuPsBcUBk1eT8Q71dO8QdpqB3ZPgP0C77xCCCNJQiA=;
-	b=a79B06zMd5W6nDkeO8Hkokueu4lEN0n8JkM+BNbGOak3XaofE52zvuxXntrLztJj3iKTDA
-	chbnJpKFLAL+9YkH8Y52t/t5FrTujyYWdBRF2rOGofWFUKMAdklX/nHO25JYv0I8buzzPH
-	VdMT7Mkrlhd9Mwkt+D4aEXjSJSNZoOo=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=hcOMM8Zr;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791138265;
-	b=pkZD3X5KuZiCn+8IPtYBwd1/n/n4I3aqkmGXyn85RVuvKbHqtz28FD1VcppcuxxBJnkVpX
-	1HOULWM6RIDU8N7nCdwei6JQLe24Z05k8gN8KBl/67YIDoc2a5hDMz4WM0h8iEzksrmDKB
-	wBRVZIn9veTpBfAaH//zPpmLd2vqVG4=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso5467a12.1
-        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 11:24:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791138259; cv=none;
+	bh=4c7dYjrT6sZNHYJQlTA+JnOu2XHVq9WNP85b0Iivahw=;
+	b=lT/U+GfWyTcjdaXAiuALZ4GubvtgtzeZMbWjRELuS7fwBe+xsg9C4ypf7VjfR69r5bf8Xg
+	7tqFqPdHz+sQssuhODzciWo40t95zrqoOk/SvVhdcgI6CQ1qjzd4MLm5zPDU1dIFFu06ML
+	s7bhTSsbMqv3DeTjoUrcV/IXczipJwY=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-5337c7b9937so265341cf.0
+        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 11:38:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791139088; cv=none;
         d=google.com; s=arc-20260327;
-        b=gNGbSnrAED3AawAx3dkcTvDZ2arVXhkdh5SBwgzAJ9hhPxIYZBvAA/OCmUKUnYemLg
-         HcwbK5WltFMLIueV0n/Obh921AAfRuaRZ9ezeSHNbdSTZCZYCTY2aVowSkdAhDBTZHOG
-         gjJ0c4F2+uS+B53iRt7pHXnTJmwT1BaXW4tOV7hcOGtplVJf9Zq1r/MipE4xupyFKb27
-         GBFI4BqMcS84FDQ3fxgFcTWQ9dwJ/AHWicdJOYpyTqRQWvogdJgkqJ4N3zFwtov+1u5F
-         uNBe1XSiGRxJ3elTlpWPyGDesV3lP4Yk3W0c95e3NKTxscobQ14vArunLor979Z/p7CC
-         oHhg==
+        b=Cib4CVcnPEh92yCGFwZwNmtMMNE1fVnYNHNuezfgShDi3/ABIP0v9F2lum6Zpl+fIC
+         oqy7k9T+OmMiEkN0Hse4NJFUQpDwhLJ3cA64L1wwJ8iXbYY79MEQrxnUhJKBphQ5cgc0
+         9s6nFkD8uMAmuEtO+CZrt/5tZGDt0tt5S1GH5Y6DlQxoR16j13O0ApmXKKDnMQ5vWZp3
+         yhNxMgzJEflYDL5iovIL9cK3JRLHL79CShEHMNaFMa8l8MOu/JjrldgXl3pR450KNcn7
+         k0HwDX7bJLgNE8139I3aw2IdZQAEpFaDQ8L84JjP/kFabYYz5pZccqMaXDGiwO4wFhQU
+         HA2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=COuPsBcUBk1eT8Q71dO8QdpqB3ZPgP0C77xCCCNJQiA=;
-        fh=ephLcXmWRcmwiZfFEdbYC9wHnYPvx4sPMoWSPI7Mpyo=;
-        b=rn7r8yI/546hXS4iOI3UNxto2bWVc90sI/T5g4tNLvkEOhFSdSv+jWfOlfpQgNBrxl
-         kQO782sca5T4sogTRY8Ya5XqIjMalSNW/+9HTElL9Gti21+gFweJ/s2zHIk30UYv3KYZ
-         O3/Pdo9zHb4w1RCnfmxk6eCONITO10LwZkEn+gwZ7s9nFkl6AJZ4t3XbAaVrIJ3EKodX
-         Zca2tlkcPHyHVtV8IM4eSnbBMWwbxboLCRN68RLVV0IttTKxfljoJIALN0CGTN/LnhpZ
-         o4BhJcwRGqR+F0YrlbR958Khsun9Sd/Q9jkQSheY6QKZQUqwcuLBhgykK6HHB3BcbgQV
-         8FzA==;
+        bh=4c7dYjrT6sZNHYJQlTA+JnOu2XHVq9WNP85b0Iivahw=;
+        fh=w+Mx+Lw7Gcgz/94BhVU3D8XgN3R4qlcS4oyTvBFtv4A=;
+        b=nEbaegrc0wc+/xkbrYFM1h17aC4n+o6MXERn6QVpDpfdzhFJsVOk5uPNGCfuVjsiMX
+         0fkQrhrzUUs6gjf/kLeOWO8jfuKOGSKe0LaHXjEcwslUow4ugjrfx0YdOnLLVw0SrdFq
+         NktnPOh18LnMCb3nkhDhJb3ppBpiQ7Hj3RWGE65n9X3wMlqawMkNBKPLXCQX25PuiirI
+         DfXY80kCy+mTDJVONJwpVfbCuk01f5k2LFIqx9+Lbp3eKo5DQUugPbCOMvWbJopG6HGx
+         9knRbCFKA/8IFjYXaYN4EH7KhMh1vgLQg2bjthhOTG2kSBsW1c8GKFZNy4YmtYpZYRY8
+         5zug==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791138259; x=1791743059; darn=kvack.org;
+        d=google.com; s=20251104; t=1791139088; x=1791743888; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=COuPsBcUBk1eT8Q71dO8QdpqB3ZPgP0C77xCCCNJQiA=;
-        b=hcOMM8ZrHmf8RrF9JDLIrJNRV6Cv/4Lauw2STDWPEKXq2N+ISOTmwTh3TPxKk6nbVs
-         TDu2X15V70l/iR3ff9gjbCasRvCRtrpgwqGFyRuzRUMP7V+hTWGRog7ab+f7rVI/0QPX
-         3PWIOdKKwVL4NgzhdJk0Xdv8B4Mire1rWdubH1/fZfjAzsPOdlytnLq+im/TMTEXtmKX
-         XPxkSccmt61BAgQZoD1XI8TzEQR3wVzMyNx/GIBvgsZkezFID+t3g67RXjKPZGkzoh6/
-         DgvbSMMscoD7xrQavfr0EiDv2HLJUqcdJ+lLLCQXRyDxnldBOBzFbwApkAFe8GhWqhGP
-         UZkA==
+        bh=4c7dYjrT6sZNHYJQlTA+JnOu2XHVq9WNP85b0Iivahw=;
+        b=m9Kt60Wz3LYWQOOkqW658ek/vaz5T5ykdgmjtq7/dmkcRkBNOhjvlKf6w80DKGtIQc
+         y7cyHrXfrDr/+k1PNNqWLQYktZ8KWXw5xzVBhpcK4Gr1gnbLUtmhTAo0nFLwBaUsoRuw
+         E/sG4qiCA0YnrsfBKRR+naa+b2fs58ZAWKUKJ+qhjSvC4r2D1xKY4Ypn9YIR6ZPAd2ci
+         8WK0UGdrTb33eOjeZcy/iVLKTb2Yg5sXrtb6zD8cnES1sFZohRk+IvX2kj/Vr1oAfmdX
+         hTAWuyyA5ewmBH5dr8YRbUUmjLN++5WdnE93VLYj6np1tfC2fBG+8DPOAjHUv3rYJr82
+         7HCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791138259; x=1791743059;
+        d=1e100.net; s=20260707; t=1791139088; x=1791743888;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=COuPsBcUBk1eT8Q71dO8QdpqB3ZPgP0C77xCCCNJQiA=;
-        b=QpFvV9XdIxXJbJAnM5HU7rYQ0kcW2OSyfrvLu3wmteKD74LtXEwpdC9s1S1QdatH32
-         J5CxCkQuvGiWd1sDyx9jYhjotSQnnA0l6jYMNUKk+ZG/m4kDyvfPQSygjm4eI0e8CVnf
-         UiuoWgAZw+SwqSwjP8a62Zp1VueQoCThRsjnBANU1R2evjKQGO8gEVc5CJ+ShuuFkOQ2
-         o38RGFj3lzSiulbYBqBA2fSD7AL4dWpdkfLaAEUrMIMXwRQfHsh1I7AlLCr8kjoTMu5L
-         t+CSScWv9Wp/9V/sRb5PsSdywpjzht5BByLAg3I9jO32vVnyzr8p55oloiYHnW1YyIgS
-         kyNQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzZ1nF8d6r7Ob8RaXVVGpCsXp/sCWgxN3vqxujA7sBgFO4mkuBp+z4CZXZZgnlfsuyH/+/2Oq0wwA==@kvack.org
-X-Gm-Message-State: AFq9FYKb4JOg2F53oFNA5+fvWA3YOqzq3ukLrCXwYHji2lvlvAfgwmBn
-	CgRCW9HsTQFOaLkoFRgB3vc3xC0q6B2vgcDaVfkuk8y5zGeCL+dVFGMRziCUHSC/Abnv0Jd7Ijo
-	Si/MW7r1sWMNTdGIF7E/mVi8xZLlfFRA7ugTRwGUh
-X-Gm-Gg: AYBFou09TYEUkSPsQQyL/MGyt4Fb1eHx9Mp9MCk3jfh+PFgLdIeuHKD6/4w1WF6z07Z
-	KxAZ0FJKILelQkZEoq/6y3vRBJTDHyo6MsUxY26Gm2chzcV3jfcj8/CdFAxSBwPnEbF+sOAojhI
-	gAPwePLuYvDOUhBhpYQuChzAh1oV3btokqG3fIRVbb3/GY0R78hT9RvUj1WZTOh53A4gjz7D7lM
-	wMiC7zcNBowWP7aMVxzlqWO8r+9KtUlQTtle06KL0tPWYwwQteFKFDDHH5TawXuq4mXofgMN1ar
-	vfaDaLQsJaHwgIEJ/QPrPKmiZiYKWpjwGZeaEcpSHbCrcbHmYmlMAwCPiCi9RPu92TU=
-X-Received: by 2002:a05:6402:a2cb:10b0:6af:7a5a:97e4 with SMTP id
- 4fb4d7f45d1cf-6afaf6bf03amr34523a12.12.1791138257648; Sun, 04 Oct 2026
- 11:24:17 -0700 (PDT)
+        bh=4c7dYjrT6sZNHYJQlTA+JnOu2XHVq9WNP85b0Iivahw=;
+        b=qm0N5gGPIyiE4JBd1stIdR+UL0oeJXj2jxs+GRb8ir3Sq0hpELipltnsOdjIDNXwmD
+         VBCqTdM6dROxZTtzNZN3wWJCoZV5IiDLzOyBYXn2uNqiBDOR4VIWNyODwv6eZQKxhqGT
+         4hwFFRDzOvLRb3ZAn0/bZsEr1MnJ7ODzcySGNh24MGpcyUVQB12mp10EM6gOGIml1EiN
+         ALaet6h7+0k5vBJLrgfAHJlYbqvx12JTndC+ijJCZtH1jJHj4r6wenYbhAysnLboiUio
+         1RzMKUp/SgpNASJqfQsir3Eo6543aVaSdOW91xjNuz/c1G8B8W3FqbJSOPv4dNMa3IJo
+         FeTA==
+X-Forwarded-Encrypted: i=1; AKwUvBxt//hxA/qSi3rvIJ79g21CWFBhMcaCCrL6+Ga5pIMBTBzq8jumTFHqpb+ZmK2b6ynLZ36+Com71Q==@kvack.org
+X-Gm-Message-State: AFuF++kVfNd6AeJJcuB1F8ICY94+QydTVdE0LwM2FBoP636Xw5uKjO/V
+	kRrTAcFDIOh5s7xW9MLxe0EyzyuWZKDWRUKs4//mwAhc9J31QiWZR6uIWZdhwH7WIesUhcW2g7a
+	jkb3ms6A/kNtNxlvbckg7tEMfBTXwNvjXWfGN59mT
+X-Gm-Gg: AYBFou0lXHqNKljJsWjnEIWfWiRe09g0lTJLfWpYXNbYx7b3A4uqxQmlZu5J+0RGwpT
+	I4zUEf4i3iedRMCyL/LYZoef8DWrQUqPu4m5O2Hn59rO4l2Ag7wXeD/uIK/5LzkwZAjrw5Ib0m+
+	Kxovq0P7t6E6PIRh3Qyb+6MgAAwX7a5nVrsdqHkALqA9+wgxpN+6s+sVdXZz9el9N/jcKZQthF2
+	+Lgk1zu3NGx86ENWIYIMYWtRw8YhqKV7h7d4M90EGDxl9+aROAEM2EtJXK4R6c0fLs2uzctq5ne
+	MOfIck2Yadxx6vlq4X1n+7DJk0iy3fn3LWQjwxjSnXtgemj5NqCJCoBA
+X-Received: by 2002:a05:622a:5984:b0:532:858d:e791 with SMTP id
+ d75a77b69052e-535131b5a91mr17889301cf.8.1791139087466; Sun, 04 Oct 2026
+ 11:38:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org>
- <20261003-b4-mmap-prepare-vma-flag-sanify-v4-20-a1f052500fd7@kernel.org>
-In-Reply-To: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-20-a1f052500fd7@kernel.org>
+References: <20260929082014.160587-1-hao.ge@linux.dev> <20260929134401.a1a385ff4369661f879b5d2f@linux-foundation.org>
+ <CAJuCfpFRW3uNUW_VrjpOfLwS1LBHqGEpqK3yBTPSpGOORY5jiQ@mail.gmail.com> <fc4f3d08-393f-43ed-934b-e7e1ba6d0137@linux.dev>
+In-Reply-To: <fc4f3d08-393f-43ed-934b-e7e1ba6d0137@linux.dev>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Sun, 4 Oct 2026 11:24:03 -0700
-X-Gm-Features: AclHuK9H1gPgFkK4n-5s4Gd8NQjwfuvbGlNRYoPrM6gC5ICSAC1H3Sf5qTdT1bA
-Message-ID: <CAJuCfpHOo8UhAZMvO5A3dKbqxQGAWtKGMHXJ+Fc=qwH=Nm0b6w@mail.gmail.com>
-Subject: Re: [PATCH v4 20/38] mm/gup: error out early on !VMA_MAYREAD_BIT VMAs
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
-	Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
-	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
-	fuse-devel@lists.linux.dev
+Date: Sun, 4 Oct 2026 20:37:54 +0200
+X-Gm-Features: AclHuK-tgnRy3c8tRpdQgoIviLT7ezLMAJcWRyqSp8rv6XK6Qm-JduLkT1yGnnc
+Message-ID: <CAJuCfpGAZUcQnursYh=rvp+EzckvDmXX_KveJvEuyjzzG=9mww@mail.gmail.com>
+Subject: Re: [PATCH v11 0/7] alloc_tag and module codetag section fixes
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>, Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, kasan-dev@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Stat-Signature: bxessce31jd77jis6zeoewjnnt4famgb
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CE3F5A0002
-X-Stat-Signature: brrhaodoaoezrmh6wwzhg868zuyntsk5
-X-HE-Tag: 1791138265-234704
-X-HE-Meta: U2FsdGVkX1/kZynK7IKhuPYxF4qAC7bhqRyFPE6h/kNWzajWEjYCOU8tQEj4cMbbkv6Q4baoSALKXoHc0MPIzjnWsAvrhQ6FK5iEBRlLwCur5Cn8Friz+ygNdoT/Z3FDtaB5Auj1sb3/TXvmKPa5hPiJOcklF1NctAH2jSYxl0axcZT2MCMF3bneBcaXhstktzvUcXmXYWzKFouPk/lc0LXQqQ//rWQDbynKd5Ms8IRRs6stD5VkMJPeX6y/Np2F+kXMs+dwIsSNueYnkwhZjy8WOd2FwnW2m8ODAzM+8yj3kTfA9ptK3wS5/A2fPYX817Ws82qzQL2DBUmVTmJg3QSii5de1qJf4PqjLz7Jv++Qu7461kuxbGe+Hvjz0dN6NeBPlj/nhhk5HI8cf3jCMy7QDYOdOgK1zcjCHz9XIkuBp+K5yGr3y9BDsnMe/LN5RV4T5i2kC1oPZXrqugSvw0T3AsaeZKOflt1jYtAW536k+0zJALS7zx+92X4XwIFyiXgd4RW32JOq49eb9wtdF9q6COh8EGLNlrAv1P291icbIhknqTFPckn2brOkZ89pUcYc5QeXQIxSB98TQyZ1bjTuTIDHSGoq2TBxQzhNYtTrK1fyMkfR5GpLeQGxHN1kVzFCg3YY0tygzFrahjOHjllU3h8K34Hr7FGvkMbbop0kiu6ba/jeVjCKVMoQfWkCeVobi9GNXzTFzRiPk5+O3uGrjvvYJnxQkFrZLDtVaspZX585dcJytfP9voMrtoTjA95ZaAnb/X4oGXob4NS+xj7NtcNFkBSFi5f8G6ajpxX/5xsN2Hjri3Vul9bn9NIH5k5wzueS0WJr833AA3UhOksLFVGG/sm9kCVnkN3rfd0A5SV4PuCHd8T2+zQF76iIsrrMeZKkbT7uP4FDbNlq6gAT/t4vwAFxbLxnGfyPuWNXyeUwORl7/0SZ6/Tl5y89X+28lfke6VSFl+DtjRU
- 5hijkIl4
- u3XH9XKwMMMvGiFSlewv1T24M6HDhXTAdqwcPx4E9TklshPsgBjZvPQH6nz1jI1/8KjaOCHWIEDZPdnt59B1JmpGyZabq9qjtI3DiwlA1paWn7mr15sMaINGRu89+m153RQr/T8Wq4vOdk5/Lzl9Hj5seX9fLTJGRkKYeQmdZvR7SVz14j16iIfMrVVwQHkouHenR+SAUUbnqM2fKVGfJYLlB8b9U49f+3sIMHKfE2cFyCxSdv2IkQIqstrvGmWVWrYCGYah6A8M9UV0DaP4zd4TvyTKaTWOw9CuTBWbVVDdfx6JVsfjePeOQItsTUGbl5adc4Pt1ax7uVFcNbl0Yipa5kdmj43wDrdkAEyKfiLCM1/Djjq9lb5Bv9SFdCPuoEBXsk0RORx8VimkJtnTFtx7jltXqaCEFkKV5x/l+sEJjXOeReUyb3kxd5uWwX861cozid11VSuiLZuzZIpZwEeXQklkh7jx1RkIPhkeOxRM0Wpkw6ZPHIHcqctY4VFyX0vWsJ/eZaaFUESos65ziudb89yl+bL6SMRY+4XPJMvi0S+uRbRfUJfMoa+GOkqafnlFGllopggTPOGD4zUx4ywag5O15dmP/tBXHvF/Liqo1z1roSdpHjIP9gSivW9ekgVZ3ZcT3saR8S93XOjJRPGX7O7SQBbdsZlZuC83qU+mMDNXAhvN7ugwan2YdKaX6Clj122AfN3hHP+TnWPr+FpcG/P1wolEPB+JVzb+vFx8FZpAEdQvuW3A9p4gdIiwjzZIZFEXjRI2Cxec0g3IIqg2EFoltrIaC94xUq5L53D9xTEExrxMPB5nCNWyr1blfrzDreYoeSP+nsWheYaVwlU9nKm2T+tN/dMohFDATGReaYN+QyCQyF/3W02bRyR83hyElFiEiUvQm/U2jSx8+C0/NyWSqhkFo2QyzftQtb3PccYDULHAU1MBzhnK+5tule1/MggbGegNEw4p8PT7rY41HLv3V
- hogN0HyI
- SW0Sbpuv9dcLz2akWf1//24/mfg0QAGVD2qMbxDnEiA0KIxwPAyJAtgPTOhUVuQfX3MG9MN/cai3Ave50DuxPOGklpzAhIk3hKr+4W8BmkE9wwNeHGq8efI0BBTvMgTpQHGYz16iBJ3oUjHHc8jWcvZmEumkB6lNmhUPnCXzmUUrDcQ8MOSU8Drl3cgm1L3T2quSihbHz1Gw7ffIdeXKY258SMOQ3YJV3g3xlMt6uSIfy6Kao0TVpt7Osp3rdQlxqTkN2zY1U7fxHwClgVVv+kYBnjH4EsyUj66H3lN6XXfNCkhFSOyG5BYFd8NSdbPxJGSIlFwsE8D0ZaRbR2WSEM+CgFngL4H/B0Bjyj78aY3MlTPwdjqFxTPCq8JQBqthZgtOK1Dx7WG98xTKThgJTrG/4bRqoB67B50A8A+d/dfEWiw04wIbp4Pbn4UCmnJWJj9h9t2C6VtWF1a/OPf063kFAvruqCVSDufdBPZ/xJb4WF8FMk+woKlPeS0XOynMh/IYC/pMVy33NF1cZ9meHNddy7PgsQKCuFaw6XPnWsQcVds2LyXygXXWEFmQFj+el8pu/VsYAHgv0YnVumFAJDhh/BtN3eUIx1GbQ491p1E6vvxW5ZFw1EI0O1MWnnHB4qP6Ov3TKbz2LsLgMOjDc1SIgJnZWlGUc6XGlS10LS48kd+HPtHfVxE/bTbGyk9dpPHSeDIjJhULimln/Uq5pgu6zE8pOj0rTEIL6flYUjgItZfx/jZs92io+0V/H02mnInOtWpfjtrD2dlgLYSuc7WobJVJeZRwk9/zE9OYzJ/H4ZZlfhVRvqpb8kYCHoXg8tEO78sxC/4Kq0YZWlI8DOkgabaxF0q4eiyZ8zgZ/A0i/HfDJo0xOzLwWsiHICnaGl7Zt33SY2RGhJF0R0oA6x3JKdqiyfpWn1LKuBwFzirq07nnoZ3cjpff5tG3hGXXmCuuIEpY/3zsB35RmEGb7hreERidt
- hpm7vNvw
- C4gKhftJo97WENsb/g0syMUqztRL0s/lSd6yXjeEfNZVw9f+cnfqovBCFQ2+7fv/seLi1haS0R7JMr+hwcTETG2Ot88BZF/Q9fOA9gKKWV/0tIGX62SWReAUKYdpM/S0q2dr7XhSYZJgzwJ7ti/ToNhY5sE/KOdRl0X3U8wWtojnVVRsK2FXkd+ENyDLCFmxrNDmzVEBUkB8OXKQHbZyIjlUQUL+PrQVMd3CI4cZnJcf2auuk0wSUxcZBwySxAbDV+p9VNrTRXPWaYJthTANzZkTOfYHrGcMzm/rtmkCmx9ZZ8BQGZ2y++lRUF9s+Kj3+6l5oHskLAp/TCpf0/qYS9IeCsSIyISZQWu5WA+lsT09VCVDTobTXIaMUCP+Kzrb3m/0rHaUkg4QwYjtMeKjTb0KUL2ZAn7oDILpfmIYU5Q9vidToaht2eEvguh7whHGeJ22PC3XPkXQb2HpmIeUK6N1fvuxmlA9Ww6BIjHyEyDbsgZO6rDJtJPyHoFT9XcYT5dBpTaOSEWGoJoDpqBNuQWM5B1aXtKM6U4YpavuWDAfRlDCtCk0RjKPzbn6e38m81MpqDCesS4XrG5nB1XI2asYcMH/hQL5cdkgwU3zEjTqd5XlXUXAAWZG2Nhigt+cnd4Lq6DB0/A0j6sXQovsqQ1ZakNw8OlAPpQAJkMokf2r/avVwvSiVnetVQg1n3Jltt9O/EI+L/xlaoSRXGCNhSvseQr6jk5ZxLG6sdznYxTuhkijwsgGgorJB81eDPXmZP6zyL6U41bkCGJVnHS+EdCD+EoNRF1dZziaENPWb62q/VgriGtrBNvEsDIOkA5x0jS6W8my77lHiDgjiZaOM+35V98H5N4jbGWWJ003M/jDoSwEZyD9nL65KBjqPf25SykkS/krwyWmcytYegOTPT0UYCurhmVGFbkk2mdRQlTe4hTMpB7mwdrpyJFW95bAZJXiXKUXcEioN6DBq8tm+jT64VMUA
- jJ1f/k7f
- ItMbhs7IBXFDxTz7Knt7eYfLwNAlfKlwNr8f9LCzdDU90oR10XQKgysgMs0Hb61CAsEFN8Q9yiPZYDzcxOtljrff+LH7DN7Kq9yqeLzj2cy+53rbqlIUhNLu1NJ9K9um+VsylK7f33zXknyhstxlALCq3BmBRkACme1FJk8Q/RiQYDOYCkHTzNngvojQmu3LZq5KhBeh3xTv8INzUBQUeioqw5tyvIbxflGz3S7B46lzr6WOojcNQMjAndKlulcLCx039qIiF5S24XrzlWNbPswQ6to+lWOj+8Kb3nodYaMvoTh5Brzn25grqXTb893ul7teQlLxot2zacLdMTG+RTe+CLsMxe3r6C3dD+TNbbr2zOfHAWcEKoSux0ICilfvgeeUqUU1khlqRxQSpgSh+FLDQ490hX60T0osPbs0NJiZuc6TCbglv1aPhuL5whF+A=
+X-Rspamd-Queue-Id: 233B8C0009
+X-HE-Tag: 1791139088-618008
+X-HE-Meta: U2FsdGVkX182xURygDVIBbUH2igugnEpQLA+Kgfb+SWfH8kwEomnpNc/am3ObmFEQYfHhrAHtO8clbv4WSDAImSys0sQO9XRmIu6UG9GEX7B5lHHlbGzmmMKGa8nGojkLjNpMmhsg2EQNtZfpJPIP3pI0SgkstC0+ujXPWgTiXnziabFjJdeKS1In3vvkxoaLsUfeahl9dp6YN12uSl5dKBGKHSJbCvi9oteeueegGGd5RRmAvC0rIbq4mjHi1cCfXcSWDq6UoL0yf8IxoC/vX6DUxvtEK5rQO32rkaYx6V8ezGgpYuRWsHaFwSwXOlRHfYp8IxaiXEJxuAE6f/8E8r2rhmIe7GJzOvXGQZ/yBk6ht3aSbdq15LFfRWOGKN/KkVUgXSLt9JhYxQ8vpehAFfZRB/nM+LWi4nGfIIQ7HIyPXhpogtgBk2QLceC/seSrM4fY9Aix9dwcuqnhl0Isrn+D3/4Ezbbtp6pfAqH+Riw/DCGtFQp4qj1BRUjmm2XPFKmig0hOSXkHD6q1JN0oDw00wS1WZS15QvVZe3ek6IeB9thFk1aIGxqdmalPMzFj+DIE7jTtd2A49iRJTBbC6P5WUWXSn89Lb/a4LOcgWrRHS5TjTBuWE7ZiAgqPRfiiPHYxrVayQnQ4/OgrCI93tJtSJTESbQwcBrQDtBkmoB6tyuD6dPp6kjbrbK7nNqk5ZRU7R+lSLiID4IxCsah9Rrsh1rL6X3vwVZQZ7MKOIggwSMcNmikyVzDNvG/MU54G7qX86KdEz0MnjrDULqn/5vg7bvW4Ealt9uzurbKv3Fybc7q0AimNLOtl3oC72oR9DXzFP3xPzSx4/0xYajccpIwOPn9seUDMhlQTaXI9aIRNDecS0Nf3dXoQPsfYhtIwvNIMkKandz0cYNZ1uGuYJ/X6PwYLqrZ69kiRbVjH1bi1uWnOlR9ciaC/Acl+9f7jQqsU0zj18uupGDBlkA
+ qXkSQoUj
+ aTGSVepNH2ydFzsXt4tvTGiWyXfwLqjjKAQDptWdNaqHl6N4pm1g+nKEZooVScTSmrACscgpJhMOGubV8rS/ouaIkkTAq5/aF5aDKLeofk1i5i7b/lE8C3zgpBgXfni+wvn8J4Onl0nV+JoMDgs4QPRqvP2uMJheE+GEsBEmyt2Qi+87UpgFakKlbSJsSFpkpziXwJ3PM/mmKU098frqNtwsDGDL/J1XJ7cCu+cCD/8aMoWrnzl6p6XihzX9gI9dbbURUxtoDWjQgHWuiWaA8uXQim+yceIcR7xsZSBR8BexJWTcbowB5P0WLXipccr5gUH91lbF+hxdysOQvYyJN2C+lq7T9FaYxgyNUIWGWVw8FOK7k6mLaGByea4BYV1mQ8InhkhMtaU+AkGLvCFqmiwVyYeMNMB9xwjfNG/U9XA3P61k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -204,56 +146,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 3, 2026 at 6:40=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
+On Wed, Sep 30, 2026 at 5:25=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
 >
-> When populating a VMA range via the aptly named populate_vma_page_range()
-> an unreadable VMA will always eventually fail with -EFAULT.
+> Hi Suren and Andrew
 >
-> That a VMA is accessible is always checked, however VMA_MAYREAD_BIT is no=
-t.
 >
-> All user mappings always have VMA_MAYREAD_BIT set, so this check only
-> impacts kernel mappings.
+> On 2026/9/30 10:39, Suren Baghdasaryan wrote:
+> > On Tue, Sep 29, 2026 at 8:44=E2=80=AFPM Andrew Morton <akpm@linux-found=
+ation.org> wrote:
+> >>
+> >> On Tue, 29 Sep 2026 16:20:07 +0800 Hao Ge <hao.ge@linux.dev> wrote:
+> >>
+> >>> With profiling toggled off, the overflow check in
+> >>> reserve_module_tags() did not run, a module could load with more
+> >>> tags than the page flags can address, and re-enabling profiling
+> >>> then silently corrupted /proc/allocinfo. On overflow the fix shuts
+> >>> profiling down, releases the reservation and returns -EAGAIN, and
+> >>> the codetag section lands as regular module data in the same load,
+> >>> so the module loads without profiling.
+> >>>
+> >>> Review of the earlier series by Sashiko turned up more problems.
+> >>>
+> >>> One is a race. layout_sections() and move_module() both asked
+> >>> codetag_needs_module_section() where a codetag section goes, and
+> >>> mem_profiling_support can change between the two calls, for instance
+> >>> when another module load overflows the tag index and shuts profiling
+> >>> down. move_module() then copied the codetag section to offset 0 of
+> >>> its regular destination and clobbered the first section placed in
+> >>> that region.
+> >>>
+> >>> v7 reworks where codetag sections are allocated, on a prototype by
+> >>> Petr Pavlu [1]. The allocation runs before layout_sections() and the
+> >>> placement is decided in one step, so nothing re-asks the question
+> >>> and the race is gone. The retry is gone too, on -EAGAIN the section
+> >>> is laid out as regular module data right in the same load.
+> >>
+> >> Thanks.
+> >>
+> >> Seven patches, all cc:stable.  Why is a backport proposed?
+> >> Documentation/process/stable-kernel-rules.rst gives guidelines - does
+> >> this series meet them?  Does Suren have thoughts?
 >
-> It is implemented specifically to disallow population of uprobes XOL
-> mappings which are exec-only.
+> Thanks, I've just gone through this carefully.
 >
-> A nasty interaction with these mappings may occur if they are mlocked, so
-> actively disallow this early.
+> >
+> > I think vmalloc fix in patch#2 should be posted separately and clearly
+> > quialifies for backporting as if fixes issues Hao found at [1].
 >
-> This allows a subsequent commit to remove the VM_IO check in
-> __mm_populate() which otherwise requires non-MMIO mappings to be wrongly
-> flagged simply as a workaround.
->
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Agreed. Patch #2 was added to this patch series because vm_module_tags_po=
+pulate
+> suffers from the same issue. If we want to be more conservative, I'd pref=
+er to keep
+> vm_module_tags_populate as it was in V10:
+> https://lore.kernel.org/all/20260915070001.113559-3-hao.ge@linux.dev/
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+I disagree with this approach. That means we are introducing an extra
+code inside vm_module_tags_populate() only to clean it up later.
+Instead please post Patch #2 separately. That posting should have your
+current patch that changes vmap_pages_xxx() to clean up on failure,
+followed by patch(es) which remove unnecessary cleanup that some
+functions currently perform by themselves. This patchset should
+definitely be tagged for stable.
+Once that patchset is accepted, the rest of your current patchset
+fixing alloc_tags can be posted with correct assumption that
+vmap_pages_range() cleans up its partial mapping when it fails.
 
+I know this sequence will take longer to upstream but I think it's the
+right way to go.
 
-> ---
->  mm/gup.c | 4 ++++
->  1 file changed, 4 insertions(+)
 >
-> diff --git a/mm/gup.c b/mm/gup.c
-> index c2dfcb4744bc..e6310a7cc05b 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -1836,6 +1836,10 @@ long populate_vma_page_range(struct vm_area_struct=
- *vma,
->         if (!vma_is_accessible(vma))
->                 return -EFAULT;
+> Then we can submit a fix for __GFP_NOFAIL retry loop in __vmalloc_area_no=
+de() as a hotfix together
+> with our new patch #2. While at it, we can also check if there are any un=
+necessary calls to
+> vunmap_range family functions that can be cleaned up now that patch #2 is=
+ applied.
 >
-> +       /* Unreadable VMAs also cannot be faulted in. */
-> +       if (!vma_test(vma, VMA_MAYREAD_BIT))
-> +               return -EFAULT;
-> +
->         gup_flags =3D FOLL_TOUCH;
->         /*
->          * We want to touch writable mappings with a write fault in order
 >
-> --
-> 2.55.0
+> >
+> > The rest are also bug fixes but their size is concerning. I'll review
+> > them first before advising on which ones should be backported. Some
+> > fixes address issues that happen very rarely and if a fix is too
+> > complex it might make sense to leave it be or fix it some other way
+> > with less churn. Please give me a couple of days to review them. With
+> > the upcoming LPC I'm trying to multiplex between several projects.
 >
+> Thanks, sorry for all the hassle on you folks.
+>
+> Thanks
+> Best Regards
+> Hao
+>
+> >
+> > [1] https://lore.kernel.org/all/b8005c24-ecac-45c4-840a-fd282f9693b5@li=
+nux.dev/
+> >
+> >>
+> >> Also, Sashiko has been busy again:
+> >>         https://sashiko.dev/#/patchset/20260929082014.160587-1-hao.ge@=
+linux.dev
 
