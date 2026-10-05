@@ -4,123 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 009AACA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 13:46:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AABE1CA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 14:16:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE0326B0088; Mon,  5 Oct 2026 09:46:53 -0400 (EDT)
+	id 54F426B0088; Mon,  5 Oct 2026 10:16:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C90F36B008C; Mon,  5 Oct 2026 09:46:53 -0400 (EDT)
+	id 528486B008C; Mon,  5 Oct 2026 10:16:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA7036B0092; Mon,  5 Oct 2026 09:46:53 -0400 (EDT)
+	id 4159C6B0092; Mon,  5 Oct 2026 10:16:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9996C6B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 09:46:53 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1D04C14027A
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 13:46:53 +0000 (UTC)
-X-FDA: 85288698306.09.FF811CD
-Received: from mta0.migadu.com (out-3.mta0.migadu.com [91.218.175.3])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D09371C000B
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 13:46:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tx0L2iTv;
-	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.3 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 21CA96B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:16:57 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F69B12028A
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 14:16:56 +0000 (UTC)
+X-FDA: 85288774032.16.BFF1FBA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9154D1C000B
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 14:16:54 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bgzHUU6f;
+	spf=pass (imf18.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791208011;
+	s=arc-20220608; t=1791209815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6+VIsiqdBfhERbl/ljmwWMiBNflFUbgtYvnly6hHD14=;
-	b=OJ5YVteghK6386VF1p0HLvRxLC9MtHb70zyzEyRBKzo74pspaPekUbOV+HVqFISa/w15Np
-	pwSs/Y6wLlM7LOb89gpwVVaRQ892HfY96YU1mOw5U9CrWy1xaSWiW58MzT29CriCzaooMr
-	pjR6Ubs/2lUtnddQse9jXflxYRkdTCg=
+	bh=IXAyPFGuOfJvky6xwcn7tskfN6n5dL/Z9O3DSglTcqs=;
+	b=nknECIm5Kl3f+J0HmMgHIAvyyBNcm5i95Uv14scZfQFBMidHdBiY+GmGI2YjOskcxAg6Fq
+	wewc8u+xengiv/GbQj8+GQaZxupJo87bOHMz5LrhEI5RjL+lcYzBILn6/w30K3hYQXkxt4
+	PiF7ZWaajbQqlGTm3FvZ4A0tD7mI/co=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tx0L2iTv;
-	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.3 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bgzHUU6f;
+	spf=pass (imf18.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791208011;
-	b=be5Xj6CpIR2+ZbzzEIW2ys1U+GyFIheJpD/JJb1oM5KL7VjTzsA++T9EGsHD/0UTIG47qQ
-	uFCnGjr463OdCuwKst4vfTYi2TWeJzBpERv9c0LFyWVX7cDqMGU48M4j0bLKwA6mix566T
-	yRlCxWW61Gw2Fpjn20+8VMVJGTVXdMo=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=UPW5rxLXXCUQyxl4itU7Omf05ILDh+oFB7ALgw7XWYk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791208009; v=1; x=1791812809;
- b=tx0L2iTvL1t4Gc/ZauTkCdpHFTdtsUKl8VPxSamBBRMTVwXZ5qqXopDuGeJG4ImvGBpQ9j5S
- +vGxW1iw07Lnb0rcg90dbiqvRzPH+Dp/22EmpQXX0xvY4VM4aGH8mpzWGd6EZYzx/hk5JlnatTg
- yJtBUGrVEm2BY2B+LAGWpIto=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 2868cb32e0b71532;
-	Mon, 05 Oct 2026 13:46:48 +0000
-X-Mizu-Trace-ID: 2868cb32e0b71532
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: lance.yang@linux.dev,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	akpm@linux-foundation.org,
-	zhangchunyan@iscas.ac.cn,
-	rppt@kernel.org,
-	kas@kernel.org,
-	andrew+kernel@donnellan.id.au,
-	rmclure@linux.ibm.com,
-	debug@rivosinc.com,
-	baolin.wang@linux.alibaba.com,
-	usama.arif@linux.dev,
-	wangruikang@iscas.ac.cn,
-	namcao@linutronix.de,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	alexghiti@rivosinc.com,
-	viro@zeniv.linux.org.uk,
-	ajones@ventanamicro.com,
-	arnd@arndb.de,
-	axelrasmussen@google.com,
-	brauner@kernel.org,
-	conor.dooley@microchip.com,
-	conor@kernel.org,
-	jack@suse.cz,
-	liam@infradead.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	paul.walmsley@sifive.com,
-	peterx@redhat.com,
-	robh@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	yuanchu@google.com,
-	stable@vger.kernel.org,
-	pasha.tatashin@soleen.com,
-	linux-mm@kvack.org,
-	me@ziyao.cc
-Subject: Re: [PATCH 1/1] riscv/mm: fix soft-dirty migration PMDs being treated as present
-Date: Mon,  5 Oct 2026 21:46:41 +0800
-Message-ID: <20261005134641.5801-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <fabd52b6-36a7-442e-9cfb-47a39e4ae3d6@kernel.org>
-References: <fabd52b6-36a7-442e-9cfb-47a39e4ae3d6@kernel.org>
+	t=1791209815;
+	b=vuBib+ZxxgJnfI0209e2G+jSrjZ4gWY74xOxlIE8WMrRl4vV+piVlqmOUl0MA0JnTabT21
+	UPQiJXtwmsqCb4azQ8jCnZKPM0ZxCPTdB3KnbvNKIv07vLwQHThO3qLy4Woln8AVAcbBjk
+	0wYh03W/ierZDc9xuYjGcqx3n6+Bs+Q=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1826F152B;
+	Mon,  5 Oct 2026 07:16:50 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D7F253F66F;
+	Mon,  5 Oct 2026 07:16:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791209813; bh=g/PvErAkWqPLLMhfdp6s6oupiEeHn6mW6CPEnvMmZuM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bgzHUU6flQh4WV6N8wrHBOjkrnfRN1RjtIvlMsJTgnfprNOTNrWuI3ZbDwgLxQR6u
+	 v7S8MV4n/CktpjfTJ9ZhjsMfIcAKAAGxPtN1AqraVPnHJIKph8wN59edTO4IJ6CtLR
+	 dvUlUakISZh2+PUjuHQ8j7SIV0IRr3EekSiHKrfE=
+Date: Mon, 5 Oct 2026 15:16:38 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:BPF [GENERAL] (Safe Dynamic Programs and Tools)" <bpf@vger.kernel.org>,
+	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
+Subject: Re: [PATCH 0/7] arm64: Batch PSTATE.TCO handling in kernel nofault
+ loops
+Message-ID: <asOxRkayznzX-K4c@arm.com>
+References: <20260824160523.3907021-1-usama.anjum@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824160523.3907021-1-usama.anjum@arm.com>
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D09371C000B
+X-Rspamd-Queue-Id: 9154D1C000B
 X-Rspam-User: 
-X-Stat-Signature: 37ydzqduyfp3to9nco5btkauqmm8h8qx
-X-HE-Tag: 1791208010-41215
-X-HE-Meta: U2FsdGVkX18+vCFbwY+7M+4TtmKYw9BhDWqIOghw64TGjhpuyPtseXAy1H7BZx8O1RZ556oIZRs0VQDTmAAgu04eNYwrnJRq7DlNRiiQ0YLgr/EXoJZB+1S/HOucTLsIxpxdxTqaNgCcOcNZWBvJqBkHxbIB+NRMMyyEPi7tpK78RkIlWg35nd6qD4tiQ/6WZSUXJMTyLXq+kk2Qm7YbLvnrx0miqCZA8h4GjiyzdqDIVP1+0txNgD9NzCnMVfQ+zYFhHdLn4unMQhW6TfeHuHNpAJJyqsImc6rw5LZgkafsw0JzLDTG6tcq6lJT8kx/BRRfYGEMhzb4gyWQalFkob4Un9uUE0q8vACTlwOkTw8dX0xSqpigHQLGTp/lTya6Y8vlk2LPJJUma0G+XwtcgsO9pIMrS238A0yDIA96KW4Pd2lhQC1Hm18wJSY1isJnyMqlQvoMyqC6ntRS6iowJZIxmZlcaAjUPe1rJRBTNjP02s+l5/qa0A0uo96hmXq87YjjGTNAdirHLIXE5GkjAzQzcq2ilww5aj8Mo2H4nuRZt7GUIkoWmaIjh1UWehSzMQYEEM2PbNiitpBnqgkYQk+ytAf+kBnffdnzFvI9ukKkbL0Y2tsFvi6VVQzTseL0WHOBy7WQosEQ7eL+1kc+/02yPrHwGATO0OF+3YO5yTyP1RsbS8PId2nkjw1uZ51vOSP0h1yCj2A58BK3JDeutsJ2dlx5tusNTcfQypO2GkU6EdIz0gCa8xkYls6cJFr1x1i/OPX+aaPU/JsrJsv6xyt2s/RJwECjDELYiRlKGrPalpN5GDTTS3lZ+r49V+LM3djwmc9tZ6af74H9N1p+QrDl3BJd9A27jzEwP6eEZb7C38LSUJRIBypJ7GfUoBoGj55zUFgJlxMM2kWnuThxWquHobuMdFgcAJVUlOfy6Oie9IaPNH9BIARhw4mSwOYC4Y7fso4tX+KFxJIdyTH
- 5xeQBjJH
- tyZFyckEBGWG7p+AElZDSITP4EotOGFjVZg0Ki1+J9DlQCgICPmLNPc0DQbpKmNVxWD0seve6jav2wVQK922dIAG4StmJAGCb1yIkgUxq9lMh81aOmLMTUcMeG1TrfGi7DBsX/xP0am4ks89+EiGFNzFFB+L2Ookt/mVnuA3Cn3sNRqkLN4yKxn3wD2tgsxQ7OLEz7gQiqb+i4OvDvZWweUeOSjAjEaEn8xPUnLAuBN2MvV5Are4E5XVv1Kc8im99xxC9tk0d/0b6z8XZhtk68rJzG8PvI0bEdtJrjVmUuiUEBcm9R5X1Qw7HiMPW/NJgzGrWpDCytfEJKEnWb3JWksYL1/BTJP2ZRf4W
+X-Stat-Signature: 7xczuwju963ehtusfdf7gowb18tc1nfw
+X-HE-Tag: 1791209814-541247
+X-HE-Meta: U2FsdGVkX18NOPH81I4WAIU8D9Hr/oHc5g8qLM9fvbYWzEdPG/jdpOeIoYu1r74Qnq8Vl0Sc4yj+peQc9AV4TP8c20cmg330rsBvwXJrIwh7/6xmp/LDrctrSskcHSCLVJtEQ0NB73s3nGQSPdIeFg2bNz8mV1Jn6UhaW5pHR0/BEdL8jzhxrN9j1WM1MrBzcyg4OkxvISP11w8k+6/K5pCQRjfVV8//w3iu0wPAp9ta36zEEITIaXiOsnb4ezVop6dY5x6T6STwNaC+aeAxJH8V+JSeBglOBWenOG2xJJ86MOECPSRz9EiZ+Iwzy/D5qz1YHBUq18wq86jBVsUhrc8xuah1TU7Im6Zb8nhLcXpdyEEdxbdE1p5W4UZsniXKpjrU6j8FDVMXp3BlL3MBOxggM0/5B+vM5yd1Qzg1SdlK88C82dcxV7hlF7lVt2iHJAp+XRjvoez7exAzCqQTrY89blT91CRNZR2F9ahU7Rt44gsS+zO1vzMl7saDya9BsqzT9uCOSTcXFYkJeQAISVzWeon5l7WtfWhZSL4SN33PJdcGq+4TsKy3OI4SM+l/Y5iwB63WJy8x/44zcctjM4OMvRmqAzAV+UlHjWm76OtYsckOYWnvB0EjfVkWclOZKMtH4QJJlp+CJo0r05oJOfF4Qs02meEU29us/sml+iDhDrbB+H7ygp4883XRNTq6tyC6siiN882bWxPVYTahIjeYWXtoOT66oQnr101+5Gt3CKp7ZqCJD581/UV0ZvczIYib52HTrFaIwDmpnd88Oz+/5Y5y0nVO8PP0YYxDhRzJ92VcsLohd+Bh6G/YdqBqBG8p8+Qgdrgp3DQ2tb4i3Efu8VQ1J/QU9HrlNDe08SRffCxIYLPwLljYrCR0l728tlFpOT/SxspT1fPCzKqnH/hkjqysNpPij5Dr4O38aWypfEOi4pK7nvHAp5x1kSpa0Kmb7ZSLih9JWErRVW6
+ SOQEctLs
+ O3SoQ4YUXKhZZccGKpqmYmL0S2bn4D8l37k47E7JtuBAa4icgDVE+kR5nSKKd1vHxNmIdrIFdEdCEs6tkJPkvYCoc6RRaSqQTECGUdxc9tWYnO93qM0rklATxUzqmLzc33kVv52Updtfn9wn9bOiECYHWhQG2Ku3I2cSghsp0uM1aCR5Ociibl/1Zt1beR93sTu4JypR5xTc+wKZw1Ksf07afM3Tg7MUtkSzxfCAQ1UItc7M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,70 +109,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Aug 24, 2026 at 05:04:45PM +0100, Muhammad Usama Anjum wrote:
+> With Hardware Tag-Based KASAN in asynchronous or asymmetric mode, kernel
+> nofault loops currently set and clear PSTATE.TCO around every access.
+> 
+> Introduce bare nofault accessors, batching hooks, and an internal scope
+> guard. Convert maccess page-fault cleanup to scoped form. Skip
+> page-fault setup for zero-sized kernel nofault copies and zero-length
+> BPF string operations. Then use bare primitives in the maccess and BPF
+> loops. For non-empty operations, this reduces the code-derived dynamic
+> MSR TCO execution count from 2N to 2. Two-string BPF comparisons fall
+> from 4N to 2.
+> 
+> The BPF changes and an earlier maccess implementation with explicit
+> cleanup were tested with QEMU arm64 using Hardware Tag-Based KASAN in
+> synchronous, asynchronous, and asymmetric modes. All nine arm64 MTE
+> kselftests passed in each mode, as did the 138 focused BPF string_kfuncs
+> and varlen subtests. The focused BPF tests also passed with the default
+> non-MTE arm64 CPU model. Both final maccess scoped-guard patches were
+> arm64 cross-built. Runtime tests have not been rerun after that
+> conversion.
 
-On Mon, Oct 05, 2026 at 12:37:20PM +0200, David Hildenbrand (Arm) wrote:
->On 10/4/26 05:03, Lance Yang wrote:
->> RISC-V uses _PAGE_EXEC for swap soft-dirty tracking when
->> CONFIG_MEM_SOFT_DIRTY is enabled and Svrsw60t59b is available. That's
->> a problem for PMD migration entries, since pmd_present() also checks
->> _PAGE_LEAF (R/W/X) to recognize THPs with _PAGE_PRESENT temporarily
->> cleared during splitting.
->
->I'm curious: why do we have to set leaf indications for non-present things? The
->HW sure will ignore it, right?
+TBH, I fail to see the benefit. There's a reduction in the number of
+MSR instructions executed in async/asymm mode but does it result in any
+improved benchmark numbers? Which workload hits these loops often enough
+to matter? They are mostly used by tracing and debug code.
 
-Yeah, that surprised me too :) Still wrapping my head around the details
-...
+AFAIK, most people wanting to use KASAN in a non-debug environment want
+to go for sync mode, where there is no MSR and this series only saves a
+few NOPs. We might as well go for a config option to force sync mode (or
+off) and remove the unnecessary NOPs, *if* you can show any performance
+improvement.
 
->Is this a sw problem? Who needs that?
-
-IIUC, it's for software during a PMD split.
-
-__split_huge_pmd_locked() invalidates the huge PMD and flushes the TLB
-before installing the PTE table. Software still needs pmd_present() and
-pmd_trans_huge() to recognize the THP in between.
-
-RISC-V clears V but keeps the R/W/X bits for that, so the entry is invalid
-to hardware but still identifiable as a THP by software.
-
-Hopefully I didn't miss something.
-
->> 
->> When a soft-dirty THP is migrated, set_pmd_migration_entry() preserves
->> soft-dirty with pmd_swp_mksoft_dirty(), setting the X bit in the
->> migration PMD. Even with _PAGE_PRESENT clear, we end up treating a
->> migration PMD as a present THP! The fault handler skips
->> pmd_migration_entry_wait(), and a write fault can end up in
->> do_huge_pmd_wp_page(), where pmd_page() decodes the migration entry
->> as a mapped PFN.
->
->That sounds bad.
-
-YES, looks a bit off ...
-
->> 
->> Move the swap soft-dirty bit to bit 12 and start the swap offset at
->> bit 13 when CONFIG_MEM_SOFT_DIRTY is enabled. This keeps R/W/X clear
->> in migration PMDs and lets us keep the existing pmd_present() check
->> for invalidated THPs. Leave the offset at bit 12 when soft-dirty
->> tracking is disabled.
->
->That reduces the effective swap size (and PFN we can store). Could that be a
->problem?
-
-We don't need all 52 bits of the swap offset.
-
-RV64 PFNs only need 44 bits for migration entries, and actual swap is
-already limited to about 16 TiB per area with 4 KiB pages by
-last_page (__u32) and swap_info_struct.max (unsigned int).
-
-So there's room to reserve a bit without reducing the supported swap
-size or PFN range.
-
-CONFIG_MEM_SOFT_DIRTY is only available on RV64, so RV32 keeps its 20-bit
-offset.
-
-[...]
-
-Cheers, Lance
+-- 
+Catalin
 
