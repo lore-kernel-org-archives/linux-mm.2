@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB415CA5FF1
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 02:20:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FAF0CA5FF1
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 02:37:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B5056B0088; Sun,  4 Oct 2026 22:20:08 -0400 (EDT)
+	id B8C3E6B0088; Sun,  4 Oct 2026 22:37:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 465886B008C; Sun,  4 Oct 2026 22:20:08 -0400 (EDT)
+	id B3CDE6B008C; Sun,  4 Oct 2026 22:37:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37BC36B0092; Sun,  4 Oct 2026 22:20:08 -0400 (EDT)
+	id A52C76B0092; Sun,  4 Oct 2026 22:37:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 178516B0088
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 22:20:08 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 908451A0C4B
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:20:07 +0000 (UTC)
-X-FDA: 85286967654.01.1511BD7
-Received: from mta0.migadu.com (out-101.mta0.migadu.com [91.218.175.101])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4598820005
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:20:05 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=v6tUDCQR;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.101 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 76C756B0088
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 22:37:05 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D581F1A0C4C
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:37:04 +0000 (UTC)
+X-FDA: 85287010368.07.71ADB7A
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A306F100005
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:37:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=rnGKV3nE;
+	spf=pass (imf14.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791166805;
+	s=arc-20220608; t=1791167823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8nPpl7GLrPQQE/oDEXMZg1667cGdYmbsDVBweP7Qa0w=;
-	b=o/1yFMWgdxlsecTg1eIibU96ImINb89ZTSkCCSSSCjNHKYT96D0QSjmU6LQLYPMnkl1J1P
-	FmNMJ3DkSFbrHFuh+tFQnTvpA2bQ8ZAXJfeWEPWQMZcHZPnd99vKI4+MsGpcYVtfCTsuig
-	ec53tDRqG2OukhKPgV5W5dngrnfj55A=
+	bh=TfIimseJqSA5uPJd5LFM1PZWNBa4p+aGlT3kqNAV9WQ=;
+	b=mW78/WhaTW2xojIm7I5u2jo2Om4P5V4waNoXurNxQh6wK54VX9hsxzev09qouVPjgTu5Yf
+	9chYC5rVmqHHPfoUsFB3ezEmSjAPJ3fIO0A808ok+SmgdSShR6w3buyHoctsPlGUaOQoMs
+	xq1ZULK+ekmxEldPwKg/vl6AXZb3t3o=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=v6tUDCQR;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.101 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=rnGKV3nE;
+	spf=pass (imf14.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791166805;
-	b=C+qeYG6QEYT7ggjoBr4DrJfTQDLPGak0ReiSZ5wtbL37XS07aKi0pn+ph7FOzJkVWwgXfG
-	uDSZF51r4IOo7BzzfLrh0Egp2FQ0gifS5JOe5/p8v4bHpYkoeDgWKcEAF9nzRq8dN6E8U2
-	RYgW8MZU54n3a41O24zhVlkeVsWhgfQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=xKi0fX2xbV6KEgiTf5sK2JRYLQwgg8in4PK26lZnbGc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791166803; v=1; x=1791771603;
- b=v6tUDCQRHGh5I1Lz048HFXRrdxOwL96yS5k5fXchQCrRcTIfYe/JNgCgZ1tUOdC7H3JTYgwu
- cfRrnDLRZyK+XLjwuW+qqw/L51Ghk8BerzYpLvSAV69Am1oui+YoiGkZIjO14v/Wzk2ORMslPxD
- 6hlfG46aRtefryzGLFvFdJYM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4cae8ba250b31cd8;
-	Mon, 05 Oct 2026 02:20:02 +0000
-X-Mizu-Trace-ID: 4cae8ba250b31cd8
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: neganhat@gmail.com,
-	david@kernel.org,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/gup: fix NULL pointer dereference in fixup_user_fault()
-Date: Mon,  5 Oct 2026 10:19:57 +0800
-Message-ID: <20261005021957.5254-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261004125601.c06953a6f0660df9859b0c2a@linux-foundation.org>
-References: <20261004125601.c06953a6f0660df9859b0c2a@linux-foundation.org>
+	t=1791167823;
+	b=5eot8xbrDPjvLlFClSiLZK6aBSLHsP9ybda/kDMeIea7xw2RME574N6ogzJ/JebXMGmXX+
+	ggiU8vQosiz9Jz72vfuMuuKKoGEUYdL03ADsC+YQnR9mWX/O/YqRXOQjcWiABPkjATLzj3
+	ZdXs5WEv/4vNIskkMbkI4IgUgZHU+s8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F37D81595;
+	Sun,  4 Oct 2026 19:36:57 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9D30B3F763;
+	Sun,  4 Oct 2026 19:37:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791167821; bh=vl5s19mW9JNXxaeLZH+yT4sg+eJntMKRYJiYiz2MomI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rnGKV3nEwlK1X7k2zdzTLzFY3mWapTTQwNrztTtOi3ummT0/lyYsdvlaUhu45qvFY
+	 xpwyQmnpwBWKkCvOdt+6ByczUIMmQ23umDaPucYD6k+OSjQ5ZsFEXF3+XcahbKsM9i
+	 XYobLAf2SI5KCsWqouvorXCBMdU284WPfwjFxhIc=
+Date: Mon, 5 Oct 2026 08:06:57 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Jose A . Perez de Azpillaga" <azpijr@gmail.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v2 1/3] mm/memory: remove unused
+ vmf_insert_mixed_mkwrite()
+Message-ID: <d7bksa3fzrynovdlajlvlnlwzgkyw433dyp7zkvme562hrxap6@xfifh46fce5n>
+References: <20261002160535.661399-1-ekffu200098@gmail.com>
+ <20261002160535.661399-2-ekffu200098@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: g1zizx6943kmgqdugoc9cpx4iaic1kaj
-X-Rspamd-Queue-Id: 4598820005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261002160535.661399-2-ekffu200098@gmail.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A306F100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1791166805-277396
-X-HE-Meta: U2FsdGVkX19d3AnihCCoAB3nAzwc1Eo+vBPGSzm6dfVpogBc2rKw3l/kGTc3SwvF7pwYwmjWvespgOU0YhaZOjBJKyj3NCl9TC74NmrIKySUTqA4p4xwKonBQ00jccB9Xr6+ww0ien/mBMwINRIDdfDV/TMquxTVKlo5aFkuMpr7sYfK/KvD5BEfBCZ3cQcs2bza1svWn1wIW9MhL9/fCSwV4HBQuABr31gTbPaHsVeAbYx3gctwVmB+xQrS4ezVtBCr5n8sqB3CIF8clCCwvcMF3qMNwxzYtxtXWXtbUQeQZhgF5/8rdqaoLVMDMVHbBe3Zxk7+VWi4isG5zbgn3EkJLT5rcE1XOCW3g3F/l7IdJL+e0IpajrfjYKJs8wNJ/Bn830+EP4Rhq15VNCZXeq30ohivYwRNvRwWftIco4mn2GXtOcHRHRErSTHqGv5EVSlj6IzwdAuKzMrM6zRKCfGTI6Hg4jNboMCBSk1yNJ0NFvio1O7G03jLffi71PTp4u0mvLzKE9dqkhH6iItWoxdB/8N3wm++jyxWfRBaP9fYHdGlX/7cL/au55zu0NFoje5qRaY1eDI/ZO3sARkE8vlvxQdmBPzObgKPo1D0tTHizfbg0hVEyBSkeJU2jq2F1itnc5GEYeXCZ7KLuElrkaketKIibxRjZICwyBmHv/qBC/rlraZvalgJDuhn8Tg5ty4mJn/Wd3etUb20uKJY3k5VfFpzLLF24p23S3J9hayZdQAMiEx/JVIxWDuP8Pa7ngv4S/xBof86R9Q5/MtRUuezwhazwmRAoOI7G0UGw2ozT7VGgqStwywylXVgeLsX/1fL9gUnRyXwuqUlrEBCBYwLjG/ew8SP8LOzUPHS34biQmEp5RlgvVgp5I6QqvqAx31gmz0FKhLb+M8iOWG3vLkSbPFR8VXVHXfTZxvguA8ibrOk1cUBGpSfxWBQBVB3yMqZxaMzCmKEw+J7jRH
- jrZ7Qwvg
- P2I41ym0s8pkC6LmDjD1kU6S/FlJG3szkmBVjP4QvqZAc31wr0+Dm8SQfew2jEnFknt/80cwConvt4Djy6VKiZzE9j1/qYy1qL723o42DYnrkWZkwkRggIHk8k3BH+J/9qLta7+Im88xHDDYQQ7k7fvPsbMGV5MMScJwJSTH3ynlE54o+v+FOgmMUXUrLaOSJ7zgNEuIVrhdZ8AaqYpt6GsbdsRnBa3709zLGuPe5mW7zAa8pti03QX4gXJZ6+USnzbj38TdrUOCEIBL378XKxXtvDGcxVdDkD4r2VBsDScK+wkzeFE9uVA4WNQ==
+X-Stat-Signature: qjny4naajktagnbpb7esnwiyigoua4op
+X-HE-Tag: 1791167822-3525
+X-HE-Meta: U2FsdGVkX1/CJku2zmGSMYJ8yBtGIldh5VMcgAAhrPos0xgjDFmbh/7qGv9EJEQbYLqNWvvlOcS48byiZTHKdIM6bvCZaWAW9tFrCzdBmD7fFTKdEq9O2ghxqWvWTV6ZU7Rn/JTcl2CbPFqOiDrC1lQvpiBLawT0W+MkSXOqI8phd63LInKpQsYWCNzyDRbtXssbJWN+UYyqbJqm7ECrcaEiGry4g6PaWDDFhIVfmCl+BwC9oNo509/7DAw5XlE4TDHwxEbYPYW4kmxnkbd1bqgWM/0+pO3GMaBK+n6PUVFYb6ZOflEl7ulyfcQjjHfntCZxHSNtrUXEJFrrjdEkfjWSiK46skLtcsERMcoUv5llIIiBAFDT3JV3vYR+OK9rGnQwCutA0fsXPt/BW5G4frQAiSIy0NEjazhNocAJx2PtQPEuf5sA8dvLoDwAbsFWwSOF2fkY/Zbpz0wiS/qmxYkf6hQuOXgnBrj++aSSUFHK6udOSMXjY1UhHstj2tk/CXvYuGi5oz7RhoUiwXxSlZGafS5QSZBb2hFpXEah4OsXOAJ+1Q3UvdhUuTrHxVFS5+TAbjxqIe4fnijKwflDN1PtaD2mNeVqsHqlqrur6LnCh6+VaOPAsIuujJCGMC6fYiSfpTGu6y3bCOZkAli1BQufvBJn/ZOrvrXVYE5v+9/HgEIE0K4B6q7Y9wJXxouXDAg/wZoAVNRnKrQiPLTMfphUIAFUk0VVlK69nVL2gTr4tfssqDJjp2BB0Bgfy3OJVO0CdLt3wqYrVhVu77lt1E9a8niYSWvE6VjPX5CJ8/p9jKPoyW0SydBa9JBIf+UnZSD/lYNpDTLj1vIsIfCL5n/bcGhhrk2O3eEe1a5GYB2MSEtLWF8PXxWf7+hsaGfznD3+m8YrF+5WqkAPqXPTv69Kh2g+xcWgMTnvrgoYM4kh+pTWQvvwKaOA9r/KBhdL2EBII/vtEN2VmY1SYDZ
+ QbLrNo9I
+ H+QTppiuDMNGUrNtGLzx9vlJiFee9ltfWrzlkHo/IgLliM/S9GZAirKxS+kS+KtJyHtBlitNUK4AaQt9d82AGfO3ceDxinRCWdordLCJXFjrb1jGc+sts4RqiM17/GGx1WIEAKqACwIBVJB8Bzeq2R7eADlKHJ9Stdej5IqCsUStkDYXUawjxihGA1lIhbqKXv5ZgDZZLonA0x4g3P8q0WzNImCzJ02JX7DQYrMuODXuZ9scoD/noZqagGuYoN75F5wcB09pwx1hTiZRS+FaOquuTi0ldcsNxoELgtHLiirUxUs4X/rIR4YIelW7sOBKGXLwXj4+Q5L6MWIpE/n2FwCkkaJblQa320mS4sITNDBL5w8LP+3ZX6J5ohk/xXH1BtjnQtUTsYOPSHwPtcNQQGxhULA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,33 +92,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Oct 03, 2026 at 01:05:32AM +0900, Sang-Heon Jeon wrote:
+> Since commit 38607c62b34b ("fs/dax: properly refcount fs dax pages"),
+> vmf_insert_mixed_mkwrite() has no callers.
+> 
+> So remove the function and its declaration.
+> 
+> The comment above the function describes the -EBUSY handling in
+> __vm_insert_mixed(). Move it above that check.
+> 
+> No functional change.
+> 
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-On Sun, Oct 04, 2026 at 12:56:01PM -0700, Andrew Morton wrote:
->On Sun,  4 Oct 2026 02:48:46 +0700 Nguyen Duy Nhat Anh <neganhat@gmail.com> wrote:
->
->> In fixup_user_fault(), the 'unlocked' parameter is checked for NULL
->> early on, allowing callers to pass NULL if they do not track whether the
->> mmap lock was dropped.
->> 
->> However, if handle_mm_fault() returns VM_FAULT_COMPLETED, line 1597
->> dereferences 'unlocked' directly (*unlocked = true) without checking
->> if it is NULL. Callers like s390's pci_mmio.c pass NULL for 'unlocked',
->> leading to a kernel NULL pointer dereference when VM_FAULT_COMPLETED
->> occurs.
->> 
->> Fix this by checking if 'unlocked' is non-NULL before assigning to it.
->
->This code is too subtle so you aren't the first to attempt to "fix" it.
->
->The key hint is in the kerneldoc:
->
-> * @unlocked:	did we unlock the mmap_lock while retrying, maybe NULL if caller
-> *		does not allow retry. If NULL, the caller must guarantee
-> *		that fault_flags does not contain FAULT_FLAG_ALLOW_RETRY.
->
->Trace through the
->FAULT_FLAG_ALLOW_RETRY/VM_FAULT_COMPLETED/VM_FAULT_RETRY logic
->to confirm that the null deref is a cant-happen.
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-IIUC, that's indeed a can't-happen :)
+> ---
+>  include/linux/mm.h |  2 --
+>  mm/memory.c        | 16 +++++-----------
+>  2 files changed, 5 insertions(+), 13 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index c038d06825c3..2ac734efd4ec 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -5008,8 +5008,6 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
+>  			unsigned long pfn, pgprot_t pgprot);
+>  vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
+>  			unsigned long pfn);
+> -vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
+> -		unsigned long addr, unsigned long pfn);
+>  int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len);
+>  
+>  static inline vm_fault_t vmf_insert_page(struct vm_area_struct *vma,
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 330cde31bf8b..4b2e4be28031 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -3052,6 +3052,11 @@ static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
+>  
+>  	if (err == -ENOMEM)
+>  		return VM_FAULT_OOM;
+> +	/*
+> +	 *  If the insertion of PTE failed because someone else already added a
+> +	 *  different entry in the mean time, we treat that as success as we assume
+> +	 *  the same entry was actually inserted.
+> +	 */
+>  	if (err < 0 && err != -EBUSY)
+>  		return VM_FAULT_SIGBUS;
+>  
+> @@ -3085,17 +3090,6 @@ vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
+>  }
+>  EXPORT_SYMBOL(vmf_insert_mixed);
+>  
+> -/*
+> - *  If the insertion of PTE failed because someone else already added a
+> - *  different entry in the mean time, we treat that as success as we assume
+> - *  the same entry was actually inserted.
+> - */
+> -vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
+> -		unsigned long addr, unsigned long pfn)
+> -{
+> -	return __vm_insert_mixed(vma, addr, pfn, true);
+> -}
+> -
+>  /*
+>   * maps a range of physical memory into the requested pages. the old
+>   * mappings are removed. any references to nonexistent pages results
+> -- 
+> 2.43.0
+> 
 
