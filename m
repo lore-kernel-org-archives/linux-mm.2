@@ -4,125 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1258ACA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 06:23:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEA00CA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 06:30:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E1856B0088; Mon,  5 Oct 2026 02:23:04 -0400 (EDT)
+	id BD97A6B0092; Mon,  5 Oct 2026 02:30:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 192276B008C; Mon,  5 Oct 2026 02:23:04 -0400 (EDT)
+	id B63736B0093; Mon,  5 Oct 2026 02:30:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A99F6B0092; Mon,  5 Oct 2026 02:23:04 -0400 (EDT)
+	id A2B186B0095; Mon,  5 Oct 2026 02:30:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D8DEE6B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:23:03 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5464EC0155
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:23:03 +0000 (UTC)
-X-FDA: 85287579846.23.B63B591
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 423FE120007
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:23:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QkWeSL6h;
-	spf=pass (imf29.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F8EC6B0092
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:30:03 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F1A19A3C16
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:30:02 +0000 (UTC)
+X-FDA: 85287597444.11.D759365
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4F782C0002
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:30:01 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gFHs0RI0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791181801;
+	b=7VeqbTY+u33sHOn0bUMaJB9JlcQuf6jRo7iq6KWTtxGM39iz1SaOdnq2EYNMxqX3g/gE4G
+	YWUf4HZWHjIUbCAbMtxesWKY/Gh9yNx8BPkEhROncrVjdZ2M69iJm/geXbkSWFnwiGQAI9
+	mp8SeP8Nv3sktwLSh9KjN4STPlizD70=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gFHs0RI0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791181380;
+	s=arc-20220608; t=1791181801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=sK5flBSyUz9JPc2AauHO028it+gKWcI0pXP1AO189cA=;
-	b=on3vzylH43v/3zctDyWxL4g1zV3jxtsI/y5VRG+IbWJYuV32ETlUjsuAzXtKdZ0r7jVwo1
-	4hfePwUf75QJkAnNwuR6PXr7XPgsRG4nT7bla6qiX5DEXeoBEDzSB/VAPkvnwk3CimnaSA
-	6z+P3oMNg4pH6gnZmlIm1JdjYcFDQP0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791181380;
-	b=IYZ5Ky/YOQRpQy/fOs5nmksu6U1kbLi6C1vFk1I7hqTeyBv2kXjmsKp0eCHmbgXu3UarrD
-	IpIMZA7F6eRNKvaIliCGlvIO9/024B9Hx4fTWaftKd3eWXGYtrzJ8P9K1YUD/Kx09oQYPP
-	iCkwo3as4u6SMGQsz/9AVyb5a4mxkw8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QkWeSL6h;
-	spf=pass (imf29.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cbee846deecso1020153a12.1
-        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 23:23:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791181379; x=1791786179; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sK5flBSyUz9JPc2AauHO028it+gKWcI0pXP1AO189cA=;
-        b=QkWeSL6hy6yY83caq+7frqHFDarPv06OMcyurw0wu+65NT1kQSm9K53TDTXcrFyxIl
-         vVdQa4phM5SipcYQPb/SNALQVNyDLqafBIfrGZFCjOUKYADQOZXG771BOxKLawJ/0uhM
-         4FTi/B++8DkIA/PR7miPFO0Oq0BzeVQUi1hYjPDKNlto9TOOz9rrx5S8C+GvUToyshAd
-         YXmkn/tVuR6sFp++DyNODTwnBFCbSOwG8NbCzpGyxGm3MqaOz73+kE8DUYHc9U9IJQyJ
-         9mo9kk7BKfKYXF5ASm/GphEtoZKSKXVDdxziJp4M/Yz41zqB2cxDpqpodhVzoaiGLYf0
-         S1gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791181379; x=1791786179;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sK5flBSyUz9JPc2AauHO028it+gKWcI0pXP1AO189cA=;
-        b=WigO+xCxPOooutzj5X8EvkkIZorGjCzMY35EE9IGi4nxtHN9bx2Yy/7PVyvaQvEqTm
-         2ca3gi0xPgl0A5+cxsruJkAm7e+kQa5niSRV8Oox8ofkIl3urdVB4zZev9P+euxYjKvd
-         qQ1uqFoEcyUJ6ppzyiw1a+mblf8ZG3Lu4VcCB7C9bevSediDdK5ui6GvA1+KHuGB3oIP
-         M+3pJNITBYpPhziW3QozlxdUj2qmk70wCv3Ak09jT5B+hbHWP6Vpm5PQSWD3Ca8yk15f
-         GFozOoQ4zu6cVkmJUDNc8frc3riJymyFqFx9XdkfP0nFN0k+an4lVAvuj+tYUVbemNBY
-         l9fQ==
-X-Gm-Message-State: AFq9FYJImlXZKF/78eV05+4THhPXeuwDTLLLIQxemVWuAy2YTBUe6dJm
-	UvHgOExH7k0xbWb7kdnAtlMZbg32Lcoe8EWk+7kHcPYPzuODY1tMupO7
-X-Gm-Gg: AYBFou16zmQde0ySbsrduYdiDoCqwIcXRgvkQ+rmh+LwrzgdMfX8Ppwh9suTLu4rW9R
-	vMPZrvO0eaPEqTSH88LfRaZVhwW3FttNQfXreng5V+gl4vqa/spA37HyyB6aQ+GKDQyov2dXrZd
-	APZ0M2i4dXdo7dRZIw4Ntidmta5t3LZymw5orLp2yNo3Cvh5cReB1DQ5IqjgPUW4babkQEa+ZDQ
-	2ae3tOK6RaAKskeec4inbfTQq404oxtOHTGwD4j/wVauOdwsAW+AvBPHOOTcUML6wqWLKkKfnBp
-	uAEPK0XrztxN0EQP8P9NOeA+459w59t4V31Kf/FZyerhh1JMUJ4qoRJpJdaUG4AgdAnsnM3VQOq
-	yCS6VjNxf/ngH526byeIxolmOGdJpmqiQWLsWqvjBiCpoA6JdpRZt72/DrNTtfvvv0IF73ICNNl
-	MwXZg/FxavWbGO0NJBQkYHptm582lRLyflJlVLcrjwUNkQyYA4JNwsimCMj//AsLnjBKXwGXYFC
-	jeDhkmOF9mR3g==
-X-Received: by 2002:a17:90b:2f0e:b0:3a8:1cc6:c8e0 with SMTP id 98e67ed59e1d1-3a81cc6c99amr788163a91.6.1791181379004;
-        Sun, 04 Oct 2026 23:22:59 -0700 (PDT)
-Received: from localhost.localdomain ([240e:b8f:1df9:a600:c693:b19f:ada0:748])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78e4a1bfesm10661197a91.12.2026.10.04.23.22.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 23:22:58 -0700 (PDT)
-From: Vernon Yang <vernon2gm@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	ljs@kernel.org,
-	roman.gushchin@linux.dev,
-	dave@stgolabs.net
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Vernon Yang <yanglincheng@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm: vmscan: don't count per-node proactive reclaim as memory pressure
-Date: Mon,  5 Oct 2026 14:22:36 +0800
-Message-ID: <20261005062236.564210-1-vernon2gm@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NMXP+3HOcHF428TlVrg2cs9+rmnJKLTevmDSSnYryBQ=;
+	b=k7pqdHcq0oRGzs0ETg9C8aRZU16X+NPMLTPgd8S9ipZ8LtE0U9q39WW3uBWYhUiUmWyOwm
+	xeOA3xCgPickxCv4nj09Z5e43UlWCnurvQcc4MnLIlcC82/kOt4ygTtsr46oDq/nbtzO44
+	GTYFTLZjhlBVOkLqV7Vo3b5wk+SfCno=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 71BE56022B;
+	Mon,  5 Oct 2026 06:30:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E65B1F00893;
+	Mon,  5 Oct 2026 06:29:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791181800;
+	bh=NMXP+3HOcHF428TlVrg2cs9+rmnJKLTevmDSSnYryBQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gFHs0RI0vQiYN70xLjJK6AIYAhKscdvLrr5shld7PhX2KZychrY1pspfUyGMIyjgR
+	 mbkFt9Cb7WMu6rmV0YK7D6FB1RqQpIwcnjbvH/a8zwzdISBXeDxfcPXSds6DBbys25
+	 UPDLmNmI5IR8DhAvnAxyD7B0lABLUqOm8rN5+XVq/cKEJprw7em17Xe35a7kBMxQnj
+	 2nIkE+qQq91I2LBKt5owi+zYqepp7uqZU1R5dNPMIPeduKfGwHtf9JvyuvaHBtbPLX
+	 oSWkiCiwB41mvjZxskSm+7HDZWrGWb6aVcllIiebe2luvrsOd4VQUN7q9UO4HkfmtL
+	 EZb5je/2vyG6w==
+Date: Mon, 5 Oct 2026 07:29:51 +0100
+From: Will Deacon <will@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Kristina =?utf-8?Q?Mart=C5=A1enko?= <kristina.martsenko@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+	kvmarm@lists.linux.dev, linux-efi@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-mm@kvack.org
+Subject: Re: [RFC 00/12] arm64: Add support for TLBI domains
+Message-ID: <asND3-Wnb2hiDAop@willie-the-truck>
+References: <20261001110655.461473-1-kristina.martsenko@arm.com>
+ <DLW95E2XWSVT.8W90FW4WG6K8@nvidia.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 423FE120007
-X-Stat-Signature: iwenahstrsejyc3z6fz5qzfezdnfroum
+In-Reply-To: <DLW95E2XWSVT.8W90FW4WG6K8@nvidia.com>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: kr6nkppax1f1rfzi9757jnb9da7i9dfy
 X-Rspam-User: 
-X-HE-Tag: 1791181380-686734
-X-HE-Meta: U2FsdGVkX1+1p2OyVec7Hi0emeJGAe7p5zYyQFeu6AldH3Esx4oF/6huVupCuLz6dt8kZR8i+LbVuED3bujUkSLSemrkAuVGf2eYOk7FOmOP5I+5KPp2RAh1l+1nJAMna9P1Pfc6sWRTNy0jCeJgW1CyUpJsMO0nBEgrEr/qWa7OI7vOl5+UPLsAV5AYftn7H4FyfOTMI0Sn+AVKfDSXTN1MH7olr6GChNW8s/Ld5MYXr72RAliy8fGdIIbT7RGlgAX6n1DievzZExhR/kMGHM9SrJeL68xnjLFv4Gel9I0kL5sSiYEXahDrZtt4SZqRa+dmXD5XSQHMsYWumuZ/ATFMmslGkU5ZpudKh/jY+uuPCElMoJ+ZpVrjteJKRESd/nTPFxvRiFrURYpFu4ixpGOd3JkFMtHxaSfZng7Wx+kE5FD5+WfMyY6kf0cLaFEDS7OWM+GYvktixHpQD06Kv+34grBoc7RW5B5jf1cO751o9J0fJYt1OD6/YWng+4E7jXRJhhSRmm1T23hhPOaEYw6ycj1bZdC38eYBN78SG71BPDmvZaPzc9WLJ9tk3im+wv9JEQrA6OL+BSeWBae7v46VtLFhoj0K4UZicCrohoWq69MUn8kqzf9kE2HSeJGhTGNhijJ39RzB7c015ATIPyyZXX6rFNY9vTYd11vDwUxDYU+tqEco27mjVMs9TLGopa81RfHi/corlMj26B+M9OJZ6rxja8Zum7PWYux70f8NGKJo2D+K/383oKCGmX2JMjKt8XfMhx6GiNVYlEdMrsiST7Ecayc7t7Fin9sBGeNr+NQvfw+cJaCE8E9wcaf+mhIvpS6kDD20KHGEJ72pmcGsxm0vRwXKPKqJI/fwPub/yvS0lWH5GpD+jvVhmrXzRnEXw8i3zXgoOQnTAFfYQyn2NuvAIfoFEUZOvfWeth95xiBsyETMWDbrDi+qnqXhDR3vmYeBadcF6NV+eZa
- cQxHHX2M
- 2da33OBN9hLMFCLxmcnvsklGHSPVatao/PSl8aBnFpHS4BmDIEjc0+6GjJAh2OaKvrylauFSd2Lgv/qkROBQKRiuIJdYN8oTGdGpCIAZNpUsPFGwC47CXShB65o5b9p+ivBZJD1tkx9Ydc3Rs3ewFV99ddSdgoYjhVP/BobrTq18dgXRJWLq9CdNmz2l5T9vR8DkI4VJeTF7lfnmWabRh5kYn3fh7mf7XCcGPfmNxpx2PZ8KZgaQhLCaB45tWRRmEZkx8xRnSG1Vl8qMg/jEvkDgTVpBsBq+KC43OLaPL9FC0ZqRdyzU8R/ljkpkJjIknHt4dhRnJGPioRTAB8V6MC6lN4BXn0ebVl8bWJm/32d5WnyIdkPsoMqHKmDGEQLP1P/apEU6FFWKP63h4AvmlEtXf9ftd2dTLzYogRt0ecVH5Qv780z1Uqh77yCqAbDXLLZ9D53ZDgIIuH2DIZh66ACv8Oniq2V+vUoL2
+X-Rspamd-Queue-Id: 4F782C0002
+X-HE-Tag: 1791181801-937802
+X-HE-Meta: U2FsdGVkX1/5AquVRT8FdcmgIIEOQn4QmW2NYIU/BhpZ9pGlt3WZsz2808RVmKiYPrqnPAgQp/aYieOmsU+ggKWod38M27w57AF+hL4OZM2AnhueaKbmznZjJbwYyYVWgAQ1vY1F1ZmpWT2yIoHcT7TLh4Hcut5JrRfDqfU60fcoCeUtsU72e5lnoM06a0Nk7atrBaK2TmNGPZyou8B/UqgwDPJJQVbWoMibR142na1KG3yXcnGc5Fpz3yFBBbvt/GtoPOT4fwZZK+EXbm4gDNf26wvTKTZWrVkhsPCS0jxHaE7RzyqkWtUf8mYlwaL1KhdCIRxrUiL1cX3w7XelbUZTQkVCHL3HRQ0Xo1TMSSxM4NsiceVd4OboaFino/ItZ4FiUTK/VSnAP1C+YdhUMWoCVn0d6brrcgSvqnbWgz9yVIVolvMmmevwZEGTRu06UlpehgrBfTD4XVZo6/6SVHBycPvEEd0eY2aBY8Wec4/R9Xs+l1f82jU/ksZv2hJLYBypwc1eJBnu5pUxfGuCqoQHu4E83It/o7VqTPD710wpemYwELM68gX9WMJ3Qwbq24PANG3FxU76cvHUJvjVYxVL7eGhX16eE42ugOwoHS2hf4NQqpz6/nffzAL6Ps409XVrFCg3waSEWnOgdChs2wIeOzpB8QUuymoq21iGFzzv/tuVGCwWw7i1L8YorBGTSwYbYM9eZG21Q4jnh7wPyQza/wJkYBj2sQxEKVeXMyNh+/h/vSdX8J7D9X5c6Nl02deZZ4rctu7MmVqQc7Rwqo67Ec/SvxN0dN6taLR+cqAsqt/4ujcpqWZj2EwLtR9zVuIbusbT2QDaeGdkxtuyQcMfPRQKHHVxqv1xS6yjre6iIEvyavuzdznpcjVk/AY3jFzObvRmglqY7JrdQJpn/nECL1X9tnd7e7AIG6uznvUI7GoxPuzNmY3XCryXUgsoHRVulhSnAogHdj3dnCb
+ bwqU8v4n
+ RPFymlfpdXqrRv9dj1S/lG2Bo7HcYdVZTFBYE0PDYjDWHYTT30zB2elScaQqjieGiGEaVi3HOiCOIon6y1vzkubR5O2NrpQTCL5Gmj2kNZ3TORRp0b2XekFV2U+s5WphB5cr2A8UYO50Hu9Njx2+wrUXYRrZ5MYjPXjwyEMkpyGZlis0j4JANjnzEHDC4LTZhZNzsl77MogKDurf567zCHP0zNc923w97MJuh0StwYjcMG+5+9LT8Lk9j2JelviLbSFCOKAifI27LDV8eFreR8Zs0jg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,102 +110,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Vernon Yang <yanglincheng@kylinos.cn>
+On Sun, Oct 04, 2026 at 02:06:48PM -0400, Zi Yan wrote:
+> On Thu Oct 1, 2026 at 7:06 AM EDT, Kristina Martšenko wrote:
+> > This series allows the kernel to use TLBI domains. TLBI domains (FEAT_TLBID) is
+> > an Arm architecture feature that enables a TLB invalidation to target a subset
+> > of CPUs instead of the whole system. It can improve performance on systems with
+> > many CPUs. TLBID is not yet part of the Arm Architecture Reference Manual but
+> > some of it is described in the latest XML [1].
+> >
+> > The goal of this series is to send TLBI commands only to the CPUs where a
+> > process has run (i.e. where its page tables have been installed). The last
+> 
+> IIUC, mm_cpumask() is used to store this information on x86 and other
+> archs. I see you put this information in tlbid_domains of mm_context_t
+> from patch 9, although in the form of tlb id domains. I wonder why not
+> make arm64 also update mm_cpumask() like x86 and other archs and derive
+> the tlbid domains based on mm_cpumask() and a cpu-to-domain mapping
+> (added in patch 7).
 
-When the cgroup has no memory pressure at all, writing to
-/sys/devices/system/nodeX/reclaim triggers proactive reclaim on
-NUMA node, causing increase in the writer cgroup's memory PSI.
+Historically, maintaining mm_cpumask() was a horrible source of contention
+when we looked at it in the past. Maybe that's no longer true, but it
+would be good to see some numbers if we want to start keeping that thing
+accurate on arm64.
 
-Due to this reclaim is performed in the context of the write(),
-accounted as memory pressure on the writer, like
-commit e22c6ed90aa9 ("mm: memcontrol: don't count limit-setting reclaim
-as memory pressure"). This is unexpected, the phenomenon resembling
-senpai will appear again.
-
-The Documentation/ABI/stable/sysfs-devices-node documentation also
-notes that "This interface is equivalent to the memcg variant."
-
-This patch unifies the semantics of the memcg and node interfaces:
-per-node proactive reclaim is no longer counted as memory pressure,
-and the per-node proactive reclaim interface no longer produces
-phantom pressure.
-
-I ran demo[1] that performs per-node proactive reclaim 10000 times
-in qemu, writer cgroup memory.pressure as follows:
-
-without patch:
-
-some avg10=31.53 avg60=13.42 avg300=3.31 total=10602985
-full avg10=31.53 avg60=13.42 avg300=3.31 total=10602985
-
-with patch:
-
-some avg10=9.59 avg60=3.41 avg300=0.81 total=2686221
-full avg10=9.59 avg60=3.41 avg300=0.81 total=2686221
-
-[1] https://github.com/vernon2gh/app_and_module/tree/main/reclaim_node_psi
-
-Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
----
- mm/vmscan.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 91295070ca33..8e22b8a6038b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -7988,13 +7988,10 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
- {
- 	struct task_struct *p = current;
- 	unsigned int noreclaim_flag;
--	unsigned long pflags;
- 
- 	trace_mm_vmscan_node_reclaim_begin(pgdat->node_id, sc->order,
- 					   sc->gfp_mask);
- 
--	cond_resched();
--	psi_memstall_enter(&pflags);
- 	delayacct_freepages_start();
- 	fs_reclaim_acquire(sc->gfp_mask);
- 	/*
-@@ -8011,7 +8008,6 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
- 	memalloc_noreclaim_restore(noreclaim_flag);
- 	fs_reclaim_release(sc->gfp_mask);
- 	delayacct_freepages_end();
--	psi_memstall_leave(&pflags);
- 
- 	trace_mm_vmscan_node_reclaim_end(sc->nr_reclaimed, NULL);
- 
-@@ -8021,6 +8017,7 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
- unsigned long node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
- {
- 	unsigned long ret;
-+	unsigned long pflags;
- 	/* Minimum pages needed in order to stay on node */
- 	const unsigned long nr_pages = 1 << order;
- 	struct scan_control sc = {
-@@ -8067,7 +8064,10 @@ unsigned long node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned i
- 	if (test_and_set_bit_lock(PGDAT_RECLAIM_LOCKED, &pgdat->flags))
- 		return 0;
- 
-+	cond_resched();
-+	psi_memstall_enter(&pflags);
- 	ret = __node_reclaim(pgdat, nr_pages, &sc);
-+	psi_memstall_leave(&pflags);
- 	clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
- 
- 	if (ret >= nr_pages)
-@@ -8193,6 +8193,7 @@ int user_proactive_reclaim(char *buf,
- 						  &pgdat->flags))
- 				return -EBUSY;
- 
-+			cond_resched();
- 			reclaimed = __node_reclaim(pgdat, batch_size, &sc);
- 			clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
- 		}
--- 
-2.53.0
-
+Will
 
