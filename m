@@ -4,139 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D95EACA5FF5
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 20:40:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EFC6CA5FF5
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 20:45:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6ED86B0088; Mon,  5 Oct 2026 16:40:30 -0400 (EDT)
+	id 7436E6B008C; Mon,  5 Oct 2026 16:45:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A46DD6B008C; Mon,  5 Oct 2026 16:40:30 -0400 (EDT)
+	id 71BA16B0093; Mon,  5 Oct 2026 16:45:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9350C6B0092; Mon,  5 Oct 2026 16:40:30 -0400 (EDT)
+	id 6590E6B0095; Mon,  5 Oct 2026 16:45:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 69D006B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 16:40:30 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DAA14160493
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:40:29 +0000 (UTC)
-X-FDA: 85289740578.03.14BB684
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3901540010
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:40:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eiJZdfPl;
-	spf=pass (imf17.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D3386B008C
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 16:45:52 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C03D0A0420
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:45:51 +0000 (UTC)
+X-FDA: 85289754102.13.EA03FB0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CDC0CA000C
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:45:49 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nnuELlo/";
+	spf=pass (imf15.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791232827;
+	s=arc-20220608; t=1791233149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hW5P4NCcHfyGHbJZF1DNl1NQBu8IkdsCT0CTDVEsdgw=;
-	b=bBiqpvnie84litUBgV8rHBj1BsiE6fOKJJ8NK7QH3yGoITKX1ZhBg0L2TZ0RN6Tu+jsP3z
-	5pUiJJUayYZQ+H5uvVSwSGzIWDpeb2qHAkdrafnP6zS2OEgsaOgLSgdIYCkIlUN5gHmB0z
-	vOtKThqH2APPdlkrvGbKNuFaZyZK0B0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791232827;
-	b=BuDhKGtQRmsvepug9+AvLoUOy13JDiFgaqaZLQo7cJ2UnCel0T+z1Ka48mFviZbXI+fELV
-	bC5sL70uazeFrNTRngEYHnnntToLYc5E/KBuPFSwL5LRXMFOVeaR91QH2p73qKTwmXKc+q
-	LmgCb2/ty+iDFjgE0pt5Nkd6FkcaBJA=
+	bh=NLFOoYWWtnRY6Ceo7GoZb6AHkD3ORrSQ4V9OneUN+Ow=;
+	b=57CQCaiGQdh9vaGFhtuUk41gzRtKloEsat77roHZE5oOlJ6RBUiziLLKJk4TRGDBYL62ky
+	vgAd6d0wi3hE2LRI8R97rtr8RQgjeZUase/GHpl3yE1YuXdpWF7iOxaAlKTN7pypCJQyXP
+	88xDE45r3fKum/RAxaFakffqd5p8j4w=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eiJZdfPl;
-	spf=pass (imf17.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791232826;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hW5P4NCcHfyGHbJZF1DNl1NQBu8IkdsCT0CTDVEsdgw=;
-	b=eiJZdfPlK/vFaLtLo/M3S93+Kh+rLYhvjB6TjcyHGaFnB4zPCbX8AtgpGnJ3HRzV+z2qE5
-	BLlPysAa7d7flJW68K4gL3eEcDEmB5j3gE1cYWnLgCHb8yrqL5x71XHsWOnKDjAxjO+u7y
-	T0qDO9HTjzwUF+HoY4LiIsBHL7kGNi0=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-4zz0Y31nMN6uCR6s8EbjJg-1; Mon, 05 Oct 2026 16:40:23 -0400
-X-MC-Unique: 4zz0Y31nMN6uCR6s8EbjJg-1
-X-Mimecast-MFC-AGG-ID: 4zz0Y31nMN6uCR6s8EbjJg_1791232822
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-3a781d434f0so15483821fa.3
-        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 13:40:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791232822; x=1791837622;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hW5P4NCcHfyGHbJZF1DNl1NQBu8IkdsCT0CTDVEsdgw=;
-        b=EVjhTFnGOq9wgoAImA5Spsz1Pr3w676JA/v4WNWSU06g2zrt/7Z9gzazh6SbKnSaEI
-         hLZnhFI2Wd6T8UOHB+FfsTzFazyNEV/WgTRkfImzdDwcZoGJptSKJf2xCYD8PwVp4EMi
-         Y6gIjuhdXbrLO9s00w8ydEfrnbKZ9zUb1ZOCTafdsO6gOMs4lO7ZaeCk2HEW6i9LSE/u
-         Vbq9mM7yVUM6oSeWxxUDbZMzZrV8IQJknAt/f6O3ThNe4a/F0ACRmerUzy8RqIxOY8zs
-         sTrksSz4C9fuCFHUqu4hwncevePtrm99ZYDROxnFqX55wlmNdrKU3/6gax4cfMJg1LPQ
-         Ut+Q==
-X-Forwarded-Encrypted: i=1; AKwUvByaDCOE9yqqjmPN7vefS3LkmRZ0i7TkTcICt4k3hqqR9vF7qzyI0+PNlMn3m+LFqWdEYoDwN2qkZA==@kvack.org
-X-Gm-Message-State: AFq9FYL61zsUFtX9QsXkACIiDeQfyT5cZk6jCO3BdwOaZwqSd1ckdrZ6
-	G4kZeSlFMosXA30vGGKgYke27YUy+KHspBH1SUcyMUwU/RpvIPBnW5+23qgtKnPXSQ9Hugs5b5z
-	Ma6TgpBR6Qh06nmU1K0RyK+50Ioeqa1Y5GxZqdIRxDKObmhAOnqzE
-X-Gm-Gg: AYBFou1E/K+2XMc/hCBJLGoIlA9/1chuddfYEFwK7TxfFdn8y6+Gbx0tsNDfRkKlxix
-	3/oETT586xeHgcKC6F0+xIiH2QUcuVdYKU1E3vV0bXb71d/KXxaaY/MMiM0GAzFpHEI4Q3xiCOE
-	pkoKoGCHufUC2Twkx9+P0V+u5x/C8fLO+ZaaQTOgZNcyTPraTjo5unKc8u5n/6VYBu0AlayUaKP
-	YsbCGvYvfHz16tqWl8wEh2D7H+cOLV+t/bObQxg6MaJPXpGB91xuoadlG7vJAeklWSBgXngttSY
-	sfvmJaIG3YlIh0ky3rmMJ3Y87sdXWIVzvZZEIQxkT5SalwfUwVUhm6NEt7gY1rp1rP6mmoJn6dZ
-	etBk=
-X-Received: by 2002:a05:651c:1602:b0:3a5:b1f7:a7bf with SMTP id 38308e7fff4ca-3a974f64065mr22350591fa.21.1791232822110;
-        Mon, 05 Oct 2026 13:40:22 -0700 (PDT)
-X-Received: by 2002:a05:651c:1602:b0:3a5:b1f7:a7bf with SMTP id 38308e7fff4ca-3a974f64065mr22350491fa.21.1791232821598;
-        Mon, 05 Oct 2026 13:40:21 -0700 (PDT)
-Received: from [192.168.2.110] ([142.172.30.162])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a87e28b131sm45437081fa.1.2026.10.05.13.40.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Oct 2026 13:40:21 -0700 (PDT)
-Message-ID: <9adb6aaf-6e50-4ab0-a021-2529807dff02@redhat.com>
-Date: Mon, 5 Oct 2026 16:40:14 -0400
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nnuELlo/";
+	spf=pass (imf15.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791233149;
+	b=S1uoukbq9CzBL3nJjmx2czzNa5R5mAar4acCVohcjKLupXtkBJ0oBpq9k68iONn+kWaRoD
+	u02LAStnnZKBw0lmJVLCLwUdQuDUtwPNnS1sKYqxVjXYwevqYPK3ka1//3H59MXso2oGqX
+	6eYTgSZzu/rzi6x9svOhrDWbpJk4gMY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DD22043F9B
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:45:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72251F008A1
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:45:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791233148;
+	bh=NLFOoYWWtnRY6Ceo7GoZb6AHkD3ORrSQ4V9OneUN+Ow=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=nnuELlo/mACSEwSUq3E6UHbBvwkqiJor4R5vdiUQ0PQ9PYoN3BmVH2v7zEKWsUfvs
+	 PKPYRDW0hNp3HncNPCbgpu0D0BmbQlnqnBslDQdPWv+n7uSy+SXYSkKvbDZ/v7u6o2
+	 otWP6/qYKlVDx3yKhcet53nAFnf12R4Qd2OVI/mP02xVfjMGN4eXYqStxf/liS5Hpq
+	 0d6eQRLyA2QknqU+u4te6ymfN3uZCQzfbSHqxfmon8GYiUn04s9wRsAMPg/zofaDUB
+	 vlqUqVdk8QAG0xQOt82im8ryWm1q3/QFQraLFWaqNiL3mzC49m/qFB+fA4bzfMPfCK
+	 riRUoA1EOIxMQ==
+Received: by mail-ej2-f40.google.com with SMTP id a640c23a62f3a-c2e417a5a81so370864666b.3
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 13:45:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxTorIs1YGE+ETZyqE/YrCtTjT7TxchWZboVQT8nDzapEGsG5DY4IyGzpe940ZcbqGnUWwgXaTaZw==@kvack.org
+X-Gm-Message-State: AFuF++mV5mmMdyyyz8RjnusrFqw6rFsAjUjec0babNPwIUhPn3pDCJGZ
+	mtosIsnZHvSf43C3fmNY6Xdlfgil97L0QEN1C48PwNS30a6ZNXru5MRawzv6LrkENrbPLv+kgzl
+	faWxSA/3jFU5BBu5i5hcEK6DMdygTDaM=
+X-Received: by 2002:a17:906:f594:b0:c29:53ba:a4cd with SMTP id
+ a640c23a62f3a-c2e4ad13e7amr997364966b.11.1791233147408; Mon, 05 Oct 2026
+ 13:45:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 09/14] powerpc: move has_transparent_hugepage() out of
- THP guard
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
- lance.yang@linux.dev,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, hughd@google.com,
- dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
- dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
- dev.jain@arm.com, usama.arif@linux.dev
-References: <cover.1789695931.git.luizcap@redhat.com>
- <05a71b6011a6eab7b096f262485fcb8b4987976f.1789695931.git.luizcap@redhat.com>
- <f54d5d75-5cc1-488b-b640-76163419cf4d@kernel.org>
- <25bb02df-a795-4e48-9de6-99f1ca799176@redhat.com>
- <802564f8-1376-451e-8308-6f98d1efb099@kernel.org>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <802564f8-1376-451e-8308-6f98d1efb099@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: H786pmLFAxw9Av9kZ1i8xKq-yB0HCPEPBiOAAHsWurk_1791232822
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3901540010
+References: <CAJnrk1bk66ZhRAS7mojSnD5RBfFS+0ChAPymE3ObRWr0C_udWg@mail.gmail.com>
+ <CAO9r8zPpe6fWOSXtRUjFB8WNMroeBqvLT+2QtAU4E27AtLUXMQ@mail.gmail.com>
+ <CAJnrk1YifN22mA5PFRVrh3m_ygxax6x4_8nraG2hPqCzyzBj7A@mail.gmail.com>
+ <anpsLy_pCanocgS1@google.com> <CAJnrk1Yoj7fqbzurmHkbA-vegpQu3cf-_dfvKor_VxuNhPR-AA@mail.gmail.com>
+ <CAO9r8zPLipVW6bvyDK1ypSawbo=LHKvmLqWH0xA6WMR9GYNJpg@mail.gmail.com>
+ <CAJnrk1ai-TqcudPoK-qFRYAJnUjBmg1kVa6Vxg3eDm5w5ivqSA@mail.gmail.com>
+ <CAO9r8zNJ=Fpc0pZExrttVTDCM3yzSmLPCAU=+RS0k5Pm+hY96w@mail.gmail.com>
+ <CADrL8HV7_f68qfd6hG=xCTqzupPqr77ynbwdz8jm0hzjdgDVeg@mail.gmail.com> <CAJnrk1aHdBm4CofvKfx7B3H-uF2xRXZUQs47J_4xeRmRZ4hcZg@mail.gmail.com>
+In-Reply-To: <CAJnrk1aHdBm4CofvKfx7B3H-uF2xRXZUQs47J_4xeRmRZ4hcZg@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 5 Oct 2026 13:45:33 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOkBVgxdb3pCyHs-ZQTxhwBmA1_+aH0snV7dzbVaVsPsg@mail.gmail.com>
+X-Gm-Features: AclHuK9bsxnzrNzCEGYxM5xbrCEvC4kIDgtRMWmkPhx27BYSlzrkiZ8zssPr8fA
+Message-ID: <CAO9r8zOkBVgxdb3pCyHs-ZQTxhwBmA1_+aH0snV7dzbVaVsPsg@mail.gmail.com>
+Subject: Re: memcg stats flushing (WAS "Re: [PATCH] fuse: disable default bdi strictlimiting")
+To: Joanne Koong <joannelkoong@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>
+Cc: James Houghton <jthoughton@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Tejun Heo <tj@kernel.org>, Jan Kara <jack@suse.cz>, Miklos Szeredi <miklos@szeredi.hu>, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>, kernel-team@meta.com, 
+	fuse-devel <fuse-devel@lists.linux.dev>, Jingbo Xu <jefflexu@linux.alibaba.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm <linux-mm@kvack.org>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>, Song Hu <husong@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: bwwwwic7we8tohxe96y53tf663q161r8
-X-HE-Tag: 1791232826-897619
-X-HE-Meta: U2FsdGVkX19DShWmMZuQFZRc8qdqy7hOHvt6sH3Oi8i2H69znBq3ehJ1QSrW/sLucQw3C2vWT44JUtX9cV6+a14oR3EyCDlNmVLmscx5ljwGidYyi7lgIWJ8FhCTXSxEGTkrM2fBIUTgRrwapIAN10HmK3OV/E6IOSR0Dz0Ji5glkXxwf1Z+/wO6Hdh8sXzSLABIBI78LeFHDr+5Y4FWYqyp2SamfU8Txxlawcs0M6YF0M3I5KRMXsq7izma0nakDG3Fo2CaGtZ8BaRU5gPYDshYnTRRW6aBCt+dIwqTiAIel4RD1V/BALQoML8TgyFXlTUejEp4spg/u7NOGOC8WU8xMYF8CBVqW2IdtuT6+ueD8qoNiRtc5KU3qf50+aJdTDemyvbvIBmWvGNm7Rkgp57R93EdRJ5C+jRn5wsqXwlRyyZckSxWZUYkuk9VGG4D2fIXwUuqxe79rVI6g5cGI7ey5RvppTffCsAF0BxhqsplJvZKi45hMBOQ6OR4vuO2x21PUoBwpGqGTRc8rp2FYy45WPtfPZqBUPWojQ5h+CNqmA5whLVaZmEnmgX2CQxGHpV0rpPdvsl3aDbXAl/YfL4tshJsScsCAf7Ql/dBA2gTOGwaJzJlo+7X+EhHnshDRTOvpMYxoNfsUpIRHD2TPGbj+njSzF9Vn6IZYVJ2E+38g5qb3TmNmIAQFE/gA68nJ2+ouh0N0rh1W6NPCOTw1Tq+A8QR3hKfpXXb9v+CPeoIwEtoezCyQFg/lWmSpUXLUegUQpsOJMevmW+k/hZegmHUfgdW6rhv2+iAuNo+LlqP4TBM0x9oE+fJuAq6k3snxPrJW8ZMbSHH6zD0O/neYYZD18b+/3iBX6RoHJwtOqPWiS+K5LQ7SZXu2A2OwhFIZGq8DtEPoV1ZOunVmJovySlpyULSaDKrsWRu020V8tnqh6uzuBX6y3HMpGt9iuss0+bdAo2Fv4+aeMc87JR
- DanBdgNu
- Po4NgH4DpLjb8FWJEwzocOrXeaqr6ePEc+D1JULUSLMuYzC0Hagr68szXagvuRJLlh6N7emQtGpAetH1cjz9U6tvyQWO9i1mQMyCDK+63L6RndHCIBeQe3Gl9jVBoR7kCvL2/yke4oFl8IqUsfATfetYcBgg/NhF4YnRA7UBTtaDG74+k6yLtO2GSUWvujX87yuo3G7aklRRJztep+2cR/PsXEmN3luW4xEfOUZ0mENh7Vzl3MTedc68WvumuUfy5IYfsHc6Hwth+Tm3GZ6sYoU/jD3Ylge+nx6M4iC7+Ij+LTEqzGO8MeuKtpvUJ3se48yza96v3Iql94IX6NY0i3s7tcuxp8HRLFDK7AEjH7MEe0RQHyE9DvoFwAkhvYnaqNdnci+BebPaQSi9ydMYqVbtGUQuBFFhrk4QhbS73RiNEOq6MFV8MU5MefdEtUINwx2V60IRs0RLjVBIgq1YeGZy9naHdqYzWz4xEptVvDwz+/zIcYPlGxfX6A59DWMfH7ktXvCftL/PlElNVhdsWiSSgWF/3AYKv9dqN
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CDC0CA000C
+X-Stat-Signature: agjkc3xazr38omeankma8nkf9j334o5r
+X-HE-Tag: 1791233149-269420
+X-HE-Meta: U2FsdGVkX1+vveUJzFG0IcuISekkhyAYZUfQaU8HuRVcByi/wN50A+HMaMI9SaVZ/XOJkf1ZODD5PMXT09ArWQcKDRt/dVBadUN/UsIxssSul1Cu9X+ljThsln0LyavjMtwPWwdCIgLiHdja8Jn6anaJcnlN41/HfN9EwTk7FgcH8Z6v1vADT0A86I1JOoyXzCSN1r0LL7Zb59caXzj29u0m4Ar0mlwaFLIKFdJfnFRHFSHkkEE7KRG5wRZAgk2vmqirWB+LtjamL6ZOewP8Q/Ge3oirA6oN34qE35l/VPUtjdA+IW5RwCEBj2vC/I1sOEax5/U2iLfgSzaMy8kiSNziyqnaLESWjeEdsEhnjlilfuZB1VwkdvCz9pd/P+yJVuaHN2ESuci51PgayhLytesWohF85+aliqvrMK3NWa+dE5fKAkzMc7AHUPM8gk7dNwu5eQcrHW4Oa8pBe80e3wnKBoQoqnhva9IBCT0/qJRc7cuOxSTYWGA/ldjMpSvL7f7MXHou1Zo1Y7kV9xI+xHA2wyKyJcpCeb0ewsFOsi33ReeX3rfGNyem1S9DWGAI3s7FQ7xyk6czHETwz0VVSSPTSuE3gh7F9M1aH3MOR8ZAjx+ZXg+ujdmlh0xQMLdkUoBZ97cIGrEOj95opCJ+QA6JDyMf7x01cMYX6MNAkipUWhTZRFEiRcJRCmnR3rEK7xnhlmbHj0bcc9mJmI+D+nvOgtBPmYCPsWjuDxGfrEO9hYnier88r5GV4nzm/BmBfzB6pjBNPE4LcfHAdX69WdtLKK7Ey8GIsPsaxz9ln46YQdBA89PzNT7djAN8u510ReOcd8xknt5DcUFel3DetJzS8Mqd9jBntwh9SSDt+ZF/h1ly56bI2VELp8XtopjXj2MMcAP5v0QbFTqnQJ/39gzsBa14vHgQbTyhXFBeqNIgEct6ZVxuJgp5LesA8IQvx/8clZWKa5lYhpJuCvs
+ ZGs2Ak1T
+ LkE3sqn+MrY8OT8S3WayV5Z3k3awzxriDsP/V1HbFuo6I1ep7KeFk1ZxYwsInYiGqlwgAGRqrSjclVJ0zmHwuhffVGrqjccuMx8s4Dhw88UQS+vjR07oyQGAj2fPtHIjCrNVq4VqdVs1oYcVK9HaDU7q41G8SVvU3saA27kzsAIV0wp/CT0udwgXxCDYTUX2zzikiGMuurkngdjlLdo41gLQS7o/NkBPf1r+Sa2RS2Ah8SXFEKC+96j6SORkwIHxLYmgo/rikviKay1kIgvSkGAda6MqDcWzZtny8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,136 +112,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+> I added some instrumentation to prepare_scan_control() and have been
+> seeing that the OOM gets triggered in this pathway:
+> a) the memcg is created with memory.max set to unlimited. 512 M gets
+> faulted in. The new anon folios get put on the inactive list. Nothing
+> reclaims them yet
+> b) userspace then sets memory.max to half of memory.current (~271M
+> from ~542 M currently used). This causes memory_max_write() to trigger
+> reclaim logic
+> c) the folios have already moved to the active list (my
+> instrumentation shows 122684 active vs. 179 inactive) when reclaim
+> does the scanning, which means the only way for pages to be reclaimed
+> is for pages to get deactivated from the active list back to the
+> inactive list.
+> d) prepare_scan_control() (which decides if the pages get deactivated)
+> reads the LRU sizes from rstat. This memcg hasn't been flushed yet
+> (the 2s flusher hasn't yet triggered since when the memcg was
+> created), so the NR_INACTIVE_ANON and NR_ACTIVE_ANON stats are all
+> still zero. The real values are all still sitting in per-cpu buffers
+> that haven't yet been flushed. My instrumentation shows:
+>         inactive_anon       rstat: 0    actual: 179
+>         active_anon          rstat: 0    actual: 122684  (~479 MB)
+> e) the deactivation logic in prepare_scan_control() is:
+>
+>                 refaults = lruvec_page_state(target_lruvec,
+>                                 WORKINGSET_ACTIVATE_ANON);
+>                 if (refaults != target_lruvec->refaults[WORKINGSET_ANON] ||
+>                         inactive_is_low(target_lruvec, LRU_INACTIVE_ANON))
+>                         sc->may_deactivate |= DEACTIVATE_ANON;
+>                 else
+>                         sc->may_deactivate &= ~DEACTIVATE_ANON;
+>
+> The if check fails:
+>      refaults != prev refaults: 0 != 0      (false)
+>      inactive_is_low(): both LRU inactive and active values are 0: 0 *
+> inactive_ratio < 0     ( false)
+>
+> DEACTIVATE_ANON gets cleared
+>
+> f) pages don't get moved from the active list to the inactive list, so
+> reclaim ends up freeing nothing. memory_max_write() goes through all
+> MAX_RECLAIM_RETRIES and OOMs, even though there's 479 MB reclaimable
+> (but it's all on the active list).
+>
+> I saw that the skipped_deactivate retry did fire (on 858 of 4264
+> scans), but not enough to get the memory.current back under the halved
+> memory.max, so memory_max_write() still exhausted MAX_RECLAIM_RETRIES
+> and OOMed.
+>
+>
+> imo I think the best fix would be
+> a) for non-root memcgs, revert back to the non-ratelimited version
+> (mem_cgroup_flush_stats())
+> b) for root-memcgs (which if flushed will flush every cgroup on the
+> machine), don't use rstat at all and use the existing node counters
+> instead (which is what the non-memcg case already uses).
+> mod_lruvec_state() always updates the node vmstat and the memcg lruvec
+> stat in the same call. For the root lruvec, the node counter reflects
+> the same value and doesn't need any flushing. It has an error bound of
+> 125 pages/cpu at most, but this is tighter than what we currently have
+> with the ratelimited version.
 
+This seems like the right thing to do. If we have global stats, we
+should avoid a rstat flush. I actually wonder if we should start
+systematically eliminating root flushes, and if that ends up being
+good enough to keep everything else as-is for in-kernel flushers. The
+flush in zswap_shrinker_count() is also a good candidate, we already
+use global stats when memcg is disabled there as well.
 
-On 10/5/26 12:52 AM, Christophe Leroy (CS GROUP) wrote:
-> Hi,
-> 
-> Don't forget <linuxppc-dev@lists.ozlabs.org> when you address powerpc architecture.
+>
+> commit 90a6f2a8f442 ("memcg: use ratelimited stats flush in the
+> reclaim") was what switched vmscan to using ratelimited flushing. The
+> reason for this was to fix the stalls from concurrent reclaimers
+> contending on the rstat lock. For the Cloudflare case, kswapd threads
+> were contending on the rstat lock on 8 numa-node machines. That's the
+> global path (eg sc->target_mem_cgroup is NULL,
+> mem_cgroup_flush_stats() turns it into root, so this flush essentially
+> ends up flushing every cgroup on the machine), which gets addressed by
+> adding the fix in b), which takes kswapd and global direct reclaim off
+> rstat entirely. For the non-root memcg case, the flushing is bounded
+> by the MEMCG_CHARGE_BATCH * num_online_cpus() threshold (a non-root
+> memcg's stats_updates only accumulates its own subtree's updates, so
+> it takes a lot longer for it to be exceeded than the root's does).
+>
+> I ran some benchmarks to get a rough idea of what a) costs. I set up a
+> workload that allocates 512M of anon memory in a memcg with memory.max
+> set to half of that to trigger reclaim continuously. I varied the
+> number of threads touching the memory, so that N of them hit
+> memory.max and enter direct reclaim on the same memcg at once. I used
+> bpftrace to measure the time spent inside css_rstat_flush() and
+> shrink_node() and used those two numbers to get a percentage for how
+> much of reclaim is spent in flushing. These are the numbers I saw:
+>
+> # threads      flush as % of shrink_node()
+> 1                ratelimited: 1.10%       non-ratelimited: 2.22%
+> 16              ratelimited: 0.36%       non-ratelimited: 2.87%
+> 64              ratelimited: 0.16%       non-ratelimited: 2.52%
+>
+> Between the ratelimited and the non-ratelimited runs, walltime and
+> pgsteal were pretty much indistinguishable (42.7s vs 43.6s at 16
+> threads and 41.7 s vs 42.4s at 64, with the ranges overlapping, and
+> pgsteal within 0.2%).
+>
+> I also measured the lock contention. At 16 and 64 threads, 15-20% of
+> __css_rstat_lock() acquisitions hit a contended trylock with the
+> non-ratelimited version. At 16 threads, the mean flush time rises
+> about 8% and at 64 it roughly triples from the single-thread case
+> (26us at 1 thread, 42 us at 16, 87us at 64)  but I didn't see any
+> effect of this on wall time or pgsteal between the non-ratelimited and
+> the ratelimited version, and the percentage of reclaim time spent
+> flushing stayed at 2-3%. I think that's because css_rstat_flush()
+> takes and drops the lock once per cpu rather than holding it across
+> the walk.
+>
+> I also ran it with 32 actively churning sub-cgroups under the reclaim
+> target, since css_rstat_flush() walks the descendants that have
+> pending updates. I saw that per-flush cost rises slightly (~24 us to
+> 27 us) but the share of reclaim time spent flushing went down rather
+> than up (4.1% to 3.2%), because reclaim gets more expensive faster
+> than flushing does. I don't have a ratelimited baseline at 32 children
+> though, because with the ratelimited version, all the runs I tried
+> OOMed. I think this is an alternative repro to the OOM issue but
+> doesn't need/have KVM dependencies, so if this would be useful to
+> clean up and send as a standalone C repro, please let me know.
 
-Will do.
+It might be useful if it can be added as a selftest or similar, so
+that such regressions can be caught more easily in the future?
 
-> 
-> Le 03/10/2026 à 17:44, Luiz Capitulino a écrit :
->>
->>
->> On 10/2/26 3:28 PM, David Hildenbrand (Arm) wrote:
->>> On 9/18/26 03:45, Luiz Capitulino wrote:
->>>> A future commit will introduce a kernel API to allow for checking if the
->>>> CPU supports PMD-sized pages. This API will be based on the
->>>> has_transparent_hugepage() implementation but will be orthogonal to THP
->>>> and therefore must work when CONFIG_TRANSPARENT_HUGEPAGE=n.
->>>>
->>>> Move its definition out of the THP guard.
->>>>
->>>> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->>>> ---
->>>>   arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
->>>>   arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
->>>>   arch/powerpc/include/asm/book3s/64/pgtable.h  | 18 +++++++++---------
->>>>   arch/powerpc/include/asm/book3s/64/radix.h    | 14 +++++++-------
->>>>   arch/powerpc/mm/book3s64/hash_pgtable.c       |  4 ++--
->>>>   5 files changed, 20 insertions(+), 20 deletions(-)
->>>>
->>>> diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/ powerpc/include/asm/book3s/64/hash-4k.h
->>>> index 8e5bd9902bed..79511e6abfca 100644
->>>> --- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
->>>> +++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
->>>> @@ -165,9 +165,9 @@ extern void hash__pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
->>>>   extern pgtable_t hash__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
->>>>   extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
->>>>                          unsigned long addr, pmd_t *pmdp);
->>>> -extern int hash__has_transparent_hugepage(void);
->>>>   #endif
->>>> +extern int hash__has_transparent_hugepage(void);
->>>>   #endif /* !__ASSEMBLER__ */
->>>>   #endif /* _ASM_POWERPC_BOOK3S_64_HASH_4K_H */
->>>> diff --git a/arch/powerpc/include/asm/book3s/64/hash-64k.h b/arch/ powerpc/include/asm/book3s/64/hash-64k.h
->>>> index 7deb3a66890b..a4a44a112ff9 100644
->>>> --- a/arch/powerpc/include/asm/book3s/64/hash-64k.h
->>>> +++ b/arch/powerpc/include/asm/book3s/64/hash-64k.h
->>>> @@ -278,9 +278,9 @@ extern void hash__pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
->>>>   extern pgtable_t hash__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
->>>>   extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
->>>>                          unsigned long addr, pmd_t *pmdp);
->>>> -extern int hash__has_transparent_hugepage(void);
->>>
->>> Without some of these helpers in place, I assume actually using PMD leafs
->>> without THP would require some more work. (which is not the goal of this series,
->>> just asking).
->>
->> Yes, you're right.
->>
->>> I do wonder whether the architecture should instead simply say "not supported"
->>> if !CONFIG_TRANSPARENT_HUGEPAGE?
->>>
->>> That should still enable your series: using mTHP without PMD support.
->>
->> Yes, it would. However, I think this introduces an inconsistency.
-> 
-> powerpc has two types of MMU (HASH and RADIX) with different page layout. MMU type is selected at boottime based on the capabilities of the CPU. For transparent page you have:
-> 
-> static inline int has_transparent_hugepage(void)
-> {
->      if (radix_enabled())
->          return radix__has_transparent_hugepage();
->      return hash__has_transparent_hugepage();
-> }
+>
+> (Also btw (this is a bit tangential to this OOM issue, but somewhat
+> semi-related), I don't think the WORKINGSET_ACTIVATE_{ANON,FILE} stats
+> checking really does anything in practice. On my benchmark runs, the
+> "refaults != prev_refaults" check evaluates to false in pretty much
+> every scan. Even with flushing working properly, it didn't trigger on
+> 1673718 of 1674912 samples, even though the cgroup was thrashing the
+> whole time (a separate run of the same workload counted 6371860 anon
+> refaults vs 6523 activations). I think it's because reclaim is
+> scanning faster than the refaults counter advances, so it'll almost
+> always see no change. I'm not sure how much this matters in practice,
+> but I think effectively in that check above in prepare_scan_control(),
+> deactivation relies entirely on the inactive_is_low() check.)
 
-Right and, unless I'm misunderstanding your comment, this supports my
-position that the new arch_has_pmd_leaves() API is all about reporting a
-hardware capability and not tied to THP support.
+I am also not sure about this one. I am not sure if reclaim moving
+faster than refaults is something universal, it seems like it would be
+workload-specific. Johannes is the person that comes to mind when I
+think about these heuristics, so maybe he has an opinion about this?
+:)
 
-> 
->>
->> In in its current form, arch_has_pmd_leaves() should always report a hardware
->> capability. This is true even for the default case where
->> arch_has_pmd_leaves() defaults to
->> IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE) in the assumption that
->> archs supporting PMD-sized pages by default will have this config
->> enabled.
->>
->> Your suggestion will change this and for some archs
->> arch_has_pmd_leaves() may have different behavior depending on the user
->> configuration. Additionally, I intended to decouple the base API
->> implementation from THP.
->>
->> If you feel strongly about this I can implement your suggestion, but I'd
->> still vote for keeping the API about consistently reporting the hardware
->> capability. Even if the only user is THP code today, new use cases can
->> be added incrementally.
->>
->>>
->>> [...]
->>>
->>>> -static inline int radix__has_transparent_hugepage(void)
->>>> +static inline int radix__has_transparent_pud_hugepage(void)
->>>>   {
->>>> -    /* For radix 2M at PMD level means thp */
->>>> -    if (mmu_psize_defs[MMU_PAGE_2M].shift == PMD_SHIFT)
->>>> +    /* For radix 1G at PUD level means pud hugepage support */
->>>> +    if (mmu_psize_defs[MMU_PAGE_1G].shift == PUD_SHIFT)
->>>>           return 1;
->>>>       return 0;
->>>>   }
->>>> +#endif
->>>> -static inline int radix__has_transparent_pud_hugepage(void)
->>>> +static inline int radix__has_transparent_hugepage(void)
->>>>   {
->>>> -    /* For radix 1G at PUD level means pud hugepage support */
->>>> -    if (mmu_psize_defs[MMU_PAGE_1G].shift == PUD_SHIFT)
->>>> +    /* For radix 2M at PMD level means thp */
->>>> +    if (mmu_psize_defs[MMU_PAGE_2M].shift == PMD_SHIFT)
->>>>           return 1;
->>>>       return 0;
->>>>   }
->>>
->>> You are swapping both implementations, which might create some unnecessary churn
->>> I think.
->>
->> I suspect this was done by git diff as I just moved the functions, but
->> I'll take a better look.
->>
-> 
+>
+> What do you all think about adding a) and b) as the fix for this issue?
 
+I generally agree. Doesn't really matter much, but I think we should
+do (b) then (a) to avoid reintroducing the regression temporarily?
+
+>
+> Thanks,
+> Joanne
+>
 
