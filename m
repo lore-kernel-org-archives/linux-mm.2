@@ -4,122 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 388CCCA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 11:25:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 173EDCA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 11:51:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D10986B0092; Mon,  5 Oct 2026 07:25:54 -0400 (EDT)
+	id DB10D6B0088; Mon,  5 Oct 2026 07:51:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC1096B0093; Mon,  5 Oct 2026 07:25:54 -0400 (EDT)
+	id D626C6B008C; Mon,  5 Oct 2026 07:51:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAFC86B0095; Mon,  5 Oct 2026 07:25:54 -0400 (EDT)
+	id C51536B0092; Mon,  5 Oct 2026 07:51:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 92B946B0092
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:25:54 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 596DDA64E6
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:25:53 +0000 (UTC)
-X-FDA: 85288342986.16.917AD62
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9ACA780007
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:25:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="AX5sdA V";
-	spf=pass (imf30.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A2A786B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:51:00 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B7FB1A0219
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:51:00 +0000 (UTC)
+X-FDA: 85288406280.18.E896F0B
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 793798000A
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:50:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Yq5tNvvP;
+	spf=pass (imf02.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791199550;
+	s=arc-20220608; t=1791201058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jGz+zDfvrEqcuYJJt7frz3VKayhJ6cscOwEJS8/IB9Y=;
-	b=Ue0oO9kQUujxSBfk4ezumRTDnuMGlZqt+wFYiQGSqG4bQS+Dq5pCQDlYYwdSZGUu4HW3Gv
-	BHTG2Pwsu76bd4IzeXHidTzMWsPoUlPg9mzDTlIjRA35datU6fOMO8GXzW3KG8SdU9KluY
-	sFSiw/ZAO0+uoMXMLIp1KbHrocjkwGc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791199550;
-	b=B+XIRum96c1wr1w8cnzg12OaakTJnzh6sEyUyEe0fZVbDj3+ew98OPS0rNHWJwSRs4ZKzm
-	gKlT2V75lyrIJAX+M76UGF1FN2zVMsg9LBbs7Tnq4Ybwcbbtd3i9vt/PwGc7KMB1Gh7nT7
-	s0MgTCvNaSUq2rCIVLpKcPRk1DNI2Dw=
+	bh=e3CuOM2eCvGmHoYcmlFPplrZp0K02m2jIXVmvukgLTM=;
+	b=Ki9YwUnVbzU0KY0lzn2c8+KDWIjd5poOVlaSlmtypgwoarCSCnmkdlXO5dWf2T+9VAIbEt
+	lRO7DKv0vD0Ec0n06WGzySJRt9jSpeU6FVv3qmnG8SjOV3uw0mlBMGEw02yGglE6qfP5qt
+	ZTX74b0sXDLbIy1hIzlK3zvAbUQXMeI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="AX5sdA V";
-	spf=pass (imf30.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=jGz+zDfvrEqcuYJJt7frz3VKayhJ6cscOwEJS8/IB9Y=; b=AX5sdA
-	V8hSFC2YwdUWzQjkBonxKt5VrVOmxLSmoc4VoaDT7eJNR9wmG2gTv+PtgbunvXImHmo0FIYmCIapv
-	SoFg+wElMK6YCHX6RrgxIr3xKH+WXEB7DezoDB2fJlTIpeHn1rGTM9e4gDVzdjZVmktShAQn3yiy3
-	kD0MwfzIJ2svgaaldBy2borveeekSicFYlcia6Bw0LBunxyXjpxPXAtvUIuk40RInWsmccipjc2cm
-	Yc+lgGLpoKJ0yXdE02ENyuSnZCrIeP4O6OIrO0FZdM3zBLcnOrnDp9wCTXNizF2s9bwBhNdDoUbne
-	ZrFcBHHYcvYR0ag7Cf/IfMKMsVIg==;
-Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1xDgp9-00000006F0B-3hR6;
-	Mon, 05 Oct 2026 11:25:39 +0000
-Message-ID: <bd8e9b01ad88cafb12da33331f32a1ce315f590b.camel@surriel.com>
-Subject: Re: hunting memory corruption bug in 6.18.x
-From: Rik van Riel <riel@surriel.com>
-To: Nikola Ciprich <nikola.ciprich@linuxbox.cz>, "Lorenzo Stoakes (ARM)"
-	 <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org, 	david@kernel.org, Mike Rapoport
- <rppt@kernel.org>, Dave Hansen	 <dave.hansen@linux.intel.com>, Pedro
- Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
- luizcap@redhat.com, pbonzini@redhat.com, Borislav Petkov <bp@alien8.de>, 
- Tal Zussman <tz2294@columbia.edu>, Matt Fleming <matt@readmodwrite.com>
-Date: Mon, 05 Oct 2026 07:25:38 -0400
-In-Reply-To: <asKdhWiJb3qXeopz@pcnci.linuxbox.cz>
-References: <arde/t0zQNEkWqi5@pcnci.linuxbox.cz> <areOeRwZOez0eHm7@gremlin>
-	 <arotyz5g6LozSjb1@pcnci.linuxbox.cz> <arwNebjYXyGqrp32@pcnci.linuxbox.cz>
-	 <arzRBv9ceJsxJppI@gremlin> <ar1Xl7PE2rcoT9h3@pcnci.linuxbox.cz>
-	 <ar63St2LBfCdyhwj@pcnci.linuxbox.cz> <ar9yRqq6cBxHDWKA@gremlin>
-	 <ar/F6+OUzj8qQ8YC@pcnci.linuxbox.cz> <asAE3kLFDUx5v0Nw@gremlin>
-	 <asKdhWiJb3qXeopz@pcnci.linuxbox.cz>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Yq5tNvvP;
+	spf=pass (imf02.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791201058;
+	b=z++PEjYhJ9xZPZ6ULye7uk7TG0pYwJMniEoMPvbaL1F/br1DIi3pwp2pjm+Cz1jfh80Lk2
+	PhzEgnw9u6ryKA7UnU/eSEEFwxzqTPtEIWt253ZiL4Y5WAfjh/A1OV0z4v4XPk7eroBtQ9
+	s9nahnagLcbdqWIo5OncEYJQu8989jM=
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-39b2ad83dc6so1002388a91.0
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 04:50:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791201057; x=1791805857; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=e3CuOM2eCvGmHoYcmlFPplrZp0K02m2jIXVmvukgLTM=;
+        b=Yq5tNvvP+1/9wfVfboP35ch8SiwYDZL0NoZp6rIXbjnMMXCU/V8y57vNw3REthsc1/
+         F4l1A+LPu3Kq5OzYKSUR5ZIC0tv0FM1sFNWGE2u2UOWEB3S0Nm/7a9HRzhnoA9VdzMAS
+         B8xwHxNJLsGynq3NsI55JKh/aFL8fQDUwS7gaTXNuT4k/k//xR7smtrnrHB0eR5AY9u5
+         VDTiSRrLGGnQzlmSJiYyCtot/0dQN8Bm4UkQhPglG6ayWjmhkQ/UGmh9BksuzeFJqP49
+         I4kHpSqljZ9LB5PlJmlBTkH4mUOTxUTDCpTCu0YNvBidWIVRn50RJ8TPOo1Zf4wruU+2
+         A0rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791201057; x=1791805857;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e3CuOM2eCvGmHoYcmlFPplrZp0K02m2jIXVmvukgLTM=;
+        b=iKJcnrXwhKYlhLb4Tln+dP5jb4JMGoullOb+vR3ZjTNpcpbXiYrK4E6AqntACDg1vf
+         WQc+PeeUgAZjPYGXsIc/ut61uQBvJ184XTWM2lxsj1E5utn6Z4pJug+QzC8Z9710FfLY
+         lxILbbJr7XCo3CEtVGJ+B1alB3/mrliUbC8QZvNubMb0ynfOwZuoca8dKRIpRsyUKhns
+         7qBBluZJuTFXnxJ/GGil57Ut/xGXZNyT7T6sujM/GFSvuFeXudIhGu/YbN/NQGpZmVRt
+         Rz1LRBU+bMCE5hEp0nGnsNCUuDcMXKCzr9DTHaFs509BH3aduTjdnHIpVf7E7hshut6d
+         eVKw==
+X-Gm-Message-State: AFq9FYJAz5RdovvCJrgadrHmKf2kAenjvyDc/7pRTJmoBggaURQ231DL
+	kr/AAaQdTw7/ElKdWMuxJ0edj8xpxX+jUajh8p87HlUidh6fCxFbDETZjv4dhAs=
+X-Gm-Gg: AYBFou0tdtox83mlEHunSE4EBfOjyLhSkTz0jMA+YeZGG9sKpgwyymGw0dlYvfIsWJR
+	Sw0GLRahbc5/TrNHQw6Mw6hRxek7OYeAAkibwa0h7Tb4mI6pDrIW4saNoRAAkOrcDtrkEUukQbX
+	ifYPZaxIrbP88/iXZ/EB1MsU91kIq5Ytoolk/UgF+fRZxINsUYs0MmqJ6RRAkyF1ZlgNqpL2Vsj
+	/afcw40qsg9UBHWpWKdMf8WS/hLo1A0Nh02eTayc1ioIjX6Qtb8J30baOR5YVuLVU53ou69AWqk
+	p9h+J5snENBvdJ2ab5pp0ZZl87ucYzoYmTwubf9vYNsqHww5XXxV521pY52zby3SqZT9tfKvl7U
+	r0tzYsctZLMbkbOT73Fm1zemCA0pV0luWhSfTZEnVnVj5RQSShrhUzM3ZfWE2Li+JalzdNUFUd8
+	kKweEfGHuJZlQORgh3PjGGcWtvqVgC2pq4+2GpKI8gFjzgnovax0dJqkfAtrzLFCOtTmUUJdGol
+	XLJhYMKxcLYN08jjYcpf3RHzpM=
+X-Received: by 2002:a17:90b:17ca:b0:3a7:f45:5cbf with SMTP id 98e67ed59e1d1-3a70f45678amr6816057a91.28.1791201057185;
+        Mon, 05 Oct 2026 04:50:57 -0700 (PDT)
+Received: from ydg-Zenbook-14-UM3406GA ([2001:2d8:7102:e8f6:be5c:45bf:9b70:944a])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78e4262f0sm11942752a91.4.2026.10.05.04.50.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 04:50:56 -0700 (PDT)
+From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+To: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: peterx@redhat.com,
+	surenb@google.com,
+	aarcange@redhat.com,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	kas@kernel.org,
+	donggeunyoo.kernel@gmail.com
+Subject: Re: [PATCH v4 2/2] selftests/mm: add tests for UFFDIO_MOVE of a uffd-protected swap entry
+Date: Mon,  5 Oct 2026 20:50:51 +0900
+Message-ID: <20261005115051.3950585-1-donggeunyoo.kernel@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <4a24f7b1-65f7-4947-a325-7c9e9f642f2a@kernel.org>
+References: <20261003103030.63380-3-donggeunyoo.kernel@gmail.com> <4a24f7b1-65f7-4947-a325-7c9e9f642f2a@kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 9ACA780007
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 793798000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 4bwwnwyqhpfucnomi84gfgpzxs5updan
-X-HE-Tag: 1791199550-458741
-X-HE-Meta: U2FsdGVkX1+m7qWxMVsZ8OaqYceq+ksYSJ7Fxpu9jwkj868DozYbXaQVsUVL4Zi7M1GlzCWnOtuVX4QbfiJjvY0l7dWwIBSbqLZmd/CI8qHKKsGgMurfpw8uCr0NKbYs9ZlLDCGBJ+9rj2aTg/IkhWrNv13CjWFdpz0fWqKAY/6HktLzcsGhpvpqHe393EcV1MaJ1UzqcZdYXVsnwd+KwMpymEqoQ0rj8UQ4rz17Bcr1rxqyPPDuVvAidLYpqXPXhzJRE+Aju4tKrZfLCVuDULppTnR/7wLe3AwjzLz1HUhdJlFiamwDyzFl0OoGdxmnjAOVi0PIs7laE3C9+2oMbPY3wUbaA44cVTncWqU8BGP5aA2feGaooe9pu2BZw5/5l0DpwoF4o9Iqgt8mFV4fnaGMrYrSMk34gz+/m7W/yCak0N7AJvazWMCvzuCAEHzSB2YWMKyozfeLb24A6tTqMEX1UZPIaYA2i4Ww2XtYqUUAeIEp2EmOgso4GxUwRr6j1Y/3AH1ZrXTdQCeZCc7MncPqrpavMrGxctSdBuHbK60sdAeba+UeVCOZ5lp7yo1GxhhQaLVym/+JJMYALV+wdxrHVqhpUabQTyQsN6eVnOCHT8QfrzrdS4VRGLAyz/oBXjAK2gpquhZ/ocNT8+HpH106VAR/QRDUwh+bsRCLBjxevpYm7Dcrm06N3nqgduoW3rx5PxVBxG9rccTIaG3bg6czXsctSkkj0tWs2JnpRaDot8FW10Bb46d/JAunWUu/EynO+rNfHwcJCY5Qi0RJySuhUq/Fv/kQn9YrOoY4Mxq4IPz1wwy40mTZ91CQvRigOW/WHS0hgm/fDQTezTA7D2XY0cBxlKlaNzV6x3Y4a4HWDiRADSTSltT1iQST+4GW4XL+BsxTZ62Ig7q2zkwfpBsJ4ibzhHIAN/g8YswAuh+VLfqwS1u/V9CRJ0fGOn3EzM3nc8YAaBYnsm1CicK
- Cl4b91Ul
- OVyQP5TiyCcODd6saeW+tEw3gHmSWbnjfUp7pI3xmueUsBrclSZG7YGbg6Izm35FfK1uEhHyq1WVqbIEae3xg6qPGor9YVdhmYYX6WEJgx2ufYVxqDLEd6vHAvGBYfmohhkAN/Ie0OOK2122E3ym5motdNZElXpkc2C13TexiA1fLqs9BHy2W/m0R2+4cVsPuBjT2F9LfxXyaexC+0L6NuEzyrTq2glki6BcoVnworMeUmL37D/NLfIzw03OcCsP7pgm2vPv2IpoGnU1obhA0wJd23g==
+X-Stat-Signature: rr1q3cizapudg1ojxwcsrguhhgaqt1q6
+X-HE-Tag: 1791201058-481517
+X-HE-Meta: U2FsdGVkX188/HAKMUYjAzMBy0t4Dv7sJAch+RJpRrN+9JomAvU882CzFk7Cm/ZTd6JY65/Ljj56ehHq8rKuYoXb5z60Zi8NzYS2dJCvQPCpFqivxrPRPX/Ravmn3n45AOOfC1qyvwfao4N4OHBmmuxZ6X9tvaDjaLomyjeNFTKSiFm0l2Olp1NujtbQuDRHKRx4+szgyufvAlCj3t23vTKCozD4eiwTGXnk8DiDweINisv5xx2z9CDAvjUnmFOqPYX48pD0z2lOBT5YScDyBNjEqW9n4RzK5jmgGjyPZSxAQkK55OKoQYevjhffk1B8n9DG8GYkaWKcUG4IHHwT1Ne21d6caEU2xJpFPvV9spDu4ysg/1oZ3Jiz2V/xDLJbwNHeWizUCcFUwrY/q3kplhwZQ3jvIOWefFeEN4QioXyxDxmhKxORrxqLxbXk6DecTzJaWwPCyeUhwWsyhHLFkYyoJpb/rJkv255wWgDhHyWafbxG/PMgE6k79xBxIf2D7FhdBX2neMcYh24VKpTCYzuWQwqQZTIufIbF96B1ALoAhX1MGgHWfno1iQWl9Ha/e2n39UPiJymTNwLnihMVi01V34aSLPZ6bbX0lQ6RQtWK04RJiVQgwzXy62YYgDjZKw47PNW4GTEpnWf2BNBNPfCMAsw1j5pu888q34kU2wdu39ydOmBfZjzt1IwDof3RPHhq4QeKXnlmunQn6l+mfsTyMeXAHpmrKQTtrwq1YwWGOxI79DbGnvPiFVDbAmkNSHIInHof/dIgq3zpak2DQzFT0JJG7QdEQLZOgepfs4gQKmNLAYWppmHKKrH5shbmcC28CWrelvyIUP+ynLW5XILh3s4RDV6k2MQuGy1fRwczBgF7nQCyJ4/AzRBfYrGJcKUuQg5m5sb4TMlgBnRsARx/3DmhBhKZ7k6axZniz3miigsA6r2Qgto6p6896NMqbFDyKuSs6vMOWPmJj7X
+ V4WKlROA
+ uzaF4icTxGi0pQpQRH4KtLIDKwyYRNoDRWzT2HHa0EFUMG3gNi/J/aiu9feUjcD8ijIGlHJhO2C6e6q9ODn0wm0JuiyvBHrBELXuUnPwfkZxEkQV1mSkzq4sYMtzdc6O+cEsDAtzKKgjSNEovZeFr5mVgYVqV8BQQex3Hlm0zss+9v/+TnCkbfxarFQurfKN5WSgArjPZApCG4knCD/cBhpmpS/y6/f8wTkOa2C9Bk4SEkwZ/QyK7AAPTv4DrWrwAKezMCbTtuNiEmhGkGg8aQDg2iq1yiMtUsMd3dC3sakpnYO1J+ttSyBIO3OUB2kqh5E1hh7S4+ZSVZsra9S5nBk9mevLBW4aNdqSytJkLoELmJP9HAaFi8NbqrPQx7PPp4HihAhZI1cDl7zJjrLho7eZ/zxFT9osQjTFkHgAHpfXuPo/ve38ZF6RA7tqYCigdRAp8VM6COOw3MlB76nIiyL2mwcykSb/YJM8RtDvndIdEyR2g451+2TnOEDMuh43GlzzNJ15hZ0CtAJZTr7MFWjsB6axoLeQqjd4SRV0A/pSAIQcV6Pn+hHBGjl+T/RltOpUQZ7J5hI0MYrpV9M66Br58cQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,105 +130,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 2026-10-04 at 20:40 +0200, Nikola Ciprich wrote:
-> >=20
->=20
-> crash> rd -64 0xffffb18905f60000 512
->=20
-> ffffb18905f60430:=C2=A0 0000000000000000 0000000000000000=C2=A0=C2=A0
-> ................
-> ffffb18905f60440:=C2=A0 0fffffff0c930020 0000000000000000=C2=A0=C2=A0=C2=
-=A0
-> ...............
-> ffffb18905f60450:=C2=A0 0fffffff0c930020 fffff86eb0c30000=C2=A0=C2=A0=C2=
-=A0
-> ...........n...
+On Mon, 5 Oct 2026 12:43:48 +0200, David Hildenbrand (Arm) wrote:
+> The CI complains as reply to this patch:
+> ...
+> ✗ userfaultfd(2) test failed:
+> # not ok 43 minor-collapse on shmem
 
-Two copies of the exact address you crashed on,
-in a vmalloc area, presumably the dentry_hashtable?
+Thanks for passing it on. I couldn't reproduce it here. Could you share
+the full log of the failing run, or a link to it?
 
-Can you use vtop to check that the different occurrences
-of the 0fffffff0c930020 address in the same vmalloc
-area map to the pages you found in this crash dump?
-
->=20
-> crash> rd -p 0x103360000 512
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 103360440:=C2=A0 0fffffff0c930020 00=
-00000000000000=C2=A0=C2=A0=C2=A0
-> ...............
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 103360450:=C2=A0 0fffffff0c930020 ff=
-fff86eb0c30000=C2=A0=C2=A0=C2=A0
-> ...........n...
->=20
-The same thing when reading the page directly.
-
-So the invalid value the CPU reads is being read from
-memory, and not hallucinated by the CPU.
-
-> crash> search -p 0x0fffffff0c930020
-> 103360440: fffffff0c930020
-> 103360450: fffffff0c930020
-> 114c32440: fffffff0c930020
-> 114c32450: fffffff0c930020
-> 1ae234400: fffffff0c930020
-> 1ae234420: fffffff0c930020
-> 1ae234430: fffffff0c930020
-> 1ae234450: fffffff0c930020
-> 24f0e2400: fffffff0c930020
-> 24f0e2420: fffffff0c930020
-> 24f0e2430: fffffff0c930020
-> 24f0e2450: fffffff0c930020
-> 342c40400: fffffff0c930020
-> 342c40420: fffffff0c930020
-> 342c40430: fffffff0c930020
-> 342c40450: fffffff0c930020
-> 77475b400: fffffff0c930020
-> 77475b420: fffffff0c930020
-> 77475b430: fffffff0c930020
-> 77475b450: fffffff0c930020
-> b2fabe400: fffffff0c930020
-> b2fabe420: fffffff0c930020
-> b2fabe430: fffffff0c930020
-> b2fabe450: fffffff0c930020
-> ea2d7c400: fffffff0c930020
-> ea2d7c420: fffffff0c930020
-> ea2d7c430: fffffff0c930020
-> ea2d7c450: fffffff0c930020
-> ef7a2d400: fffffff0c930020
-> ef7a2d420: fffffff0c930020
-> ef7a2d430: fffffff0c930020
-> ef7a2d450: fffffff0c930020
-> ef7a90400: fffffff0c930020
-> ef7a90420: fffffff0c930020
-> ef7a90430: fffffff0c930020
-> ef7a90450: fffffff0c930020
-> 10371fa400: fffffff0c930020
-> 10371fa420: fffffff0c930020
-> 10371fa430: fffffff0c930020
-> 10371fa450: fffffff0c930020
-
-These are not random offsets in the page,
-either.
-
-These all seem to be at offsets 0, 0x20,
-0x30, 0x40, or 0x50 into the page.
-
-If you look at the other addresses, are
-there any that are not at one of these
-offsets?
-
-If this is a case of "system writes
-fffffff0c930020 into one of 6 slots",
-there could be some at offset 0x10
-too.
-
-I'm having AI comb the kernel now for
-places where we could conceivably
-construct this value, and write it
-into one out of 6 slots.
-
->=20
---=20
-All Rights Reversed.
+Donggeun
 
