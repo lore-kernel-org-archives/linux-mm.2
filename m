@@ -4,90 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01B73CA5FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 15:31:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE2ECA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 15:37:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1DE36B0093; Mon,  5 Oct 2026 11:31:40 -0400 (EDT)
+	id 156956B008C; Mon,  5 Oct 2026 11:37:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF4F86B0095; Mon,  5 Oct 2026 11:31:40 -0400 (EDT)
+	id 107466B0095; Mon,  5 Oct 2026 11:37:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0B2D6B0096; Mon,  5 Oct 2026 11:31:40 -0400 (EDT)
+	id F37AE6B0098; Mon,  5 Oct 2026 11:36:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B48D46B0093
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:31:40 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 47B1F1C2766
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:31:40 +0000 (UTC)
-X-FDA: 85288962360.06.380461E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4AD50120006
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:31:38 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=exVUm0cZ;
-	spf=pass (imf29.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D0D7D6B008C
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:36:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 674CD402C0
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:36:59 +0000 (UTC)
+X-FDA: 85288975758.05.EEE6ED3
+Received: from mta1.migadu.com (out-153.mta1.migadu.com [95.215.58.153])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2D23840002
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:36:56 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QoEIM2Ha;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.153 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791214617;
+	b=w/QUnP8eaPfF5+0XNFzIhj3HL+kx/8vFucvzr67FieVHjS33/IQp9oMVKo8t0XspTwEWQo
+	DBL2Apd3jrkzfV4f48mHe8EgkVTcJcbN+NriC665RgFhuiBwPcbZxK27lnIA4jDMzTXqVP
+	SKOyh/md7ip8Z7dAAFUPBOb65WPDqh0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QoEIM2Ha;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.153 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791214298;
+	s=arc-20220608; t=1791214617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KptHfrcQ4aindQkNpO+syEz+BjMEx0loaikAdffFS7M=;
-	b=P1nj1X6Ne9hg1Bj0CTFUQjxwijVEKha0fOc4WcLjc4Doov2uNhDCN4uZ/zMo7kl9WRooOL
-	laBmwyKIk9qwEGlBQ6GThy7SDwTOmbawKLCzZTJe3SQ5WpeCRpM2W5qWe5aw4rdSQJm1PP
-	zf5m6pom/9P6u6PSsWbQrmrYaZmW22k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791214298;
-	b=amPQgKGsYlTo+7wBe/NmikSCJktG4Y6Wg9aeNoDGNddzWU49ght9dcyblW3/NqRxmS1tEb
-	PV1kBatxkN/hFq+xu0Ohfc8M6zTL98/601dPn0WXVvq9eGnf7imuPNstSZg5FNGIrTKmcE
-	jRXBcUbQi51QIdXSfDqr1OtwldKrDyE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=exVUm0cZ;
-	spf=pass (imf29.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EDDB1152B;
-	Mon,  5 Oct 2026 08:31:33 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B85EB3F66F;
-	Mon,  5 Oct 2026 08:31:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791214297; bh=UfbkEj7jWC5+3mriZ290i7LpZ34xnOeNx98uhNGcwvs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=exVUm0cZnHQnY5eDcThWwtVtsV8bnj/H4FIk9vMSC0M9uS6j/8ciV6Puh+y0NX116
-	 oI/KBHXz6lA63AsMY4N4h+jtZA/cp2j9D7tDztXG8s4lHbkVXoN5n7cQWvthLajd+L
-	 3/qGM3C3zhcyE1sjAcn3EEG/VTNV+Zr8YqR+3xUg=
-Date: Mon, 5 Oct 2026 16:31:28 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH V3 1/4] arm64/mm: Use pmdp_get() for PMD accesses
-Message-ID: <asPCv5Icdm7Z9mWF@arm.com>
-References: <20260924062214.1635078-1-anshuman.khandual@arm.com>
- <20260924062214.1635078-2-anshuman.khandual@arm.com>
+	bh=oUBuiof6DvhZfufyvJ9K9IojiW0eiKyws5GfCSVQra4=;
+	b=J00yhLzU7kWvFSenqXZN7mnyJ4tP0wtSDfwIpEYzI0eJeQafeRhTHga/zgveOa87uvC283
+	7txwfRuosShAE+klwxeiEQZEkGQJsYyKksOjV1Y1Zqi0Szd8UeG9X+WWGGvzsDxQyLGFjC
+	EV/ZlC0GvoQQ2D1H/qlIV4gbYw835JA=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=5zX+01E1uYtcKNTedIU5E0EoruaCd2DT0fqXgC7ia5I=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791214615; v=1; x=1791819415;
+ b=QoEIM2HaXyPtk7CN494dWenrpWjsWWgEMg+swUH9vkjcn2co6GeBCNw8Ph6nj8SvPT9DDQzg
+ KOULzsPzjm5jNf5CQjkZv2FLUVjTpabtBq3Cl3Yl78+V6HkS+GE7HCDuEHsooEYsxrHW/KwSo8w
+ 325ie3y0MOYH9BNQaciGz8lE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 8941f7e82ec68c72;
+	Mon, 05 Oct 2026 15:36:55 +0000
+X-Mizu-Trace-ID: 8941f7e82ec68c72
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <6ad07601-eeef-4fe6-9758-f6936a3bff41@linux.dev>
+Date: Mon, 5 Oct 2026 23:36:36 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260924062214.1635078-2-anshuman.khandual@arm.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4AD50120006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with
+ TCE
+Content-Language: en-US
+To: Andrew Cooper <andrew.cooper3@citrix.com>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, riel@surriel.com, linux-kernel@vger.kernel.org,
+ qi.zheng@linux.dev, nadav.amit@gmail.com, thomas.lendacky@amd.com,
+ kernel-team@meta.com, linux-mm@kvack.org, akpm@linux-foundation.org,
+ brendan.jackman@linux.dev, jannh@google.com, mhklinux@outlook.com,
+ Manali.Shukla@amd.com, mingo@kernel.org, stable@vger.kernel.org,
+ toshi.kani@hpe.com, david@kernel.org, mikhail.v.gavrilov@gmail.com
+References: <20261005052302.43042-1-lance.yang@linux.dev>
+ <asM7b8ECO34-jiwi@pedro-suse.tail5790ac.ts.net>
+ <60d5db86-8002-4d87-b8d3-c161d674122b@linux.dev>
+ <ab077b6a-160f-41a2-a167-813f0560e30d@citrix.com>
+ <38541ec6-d796-4f35-a700-75ab097b6df5@linux.dev>
+ <7ad90e94-d04d-453a-ba22-9640a5024d8c@citrix.com>
+ <6801221a-6307-407a-85fc-46906f95d22e@linux.dev>
+ <9459bab2-b373-4008-8f3d-f84b62db5b67@citrix.com>
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <9459bab2-b373-4008-8f3d-f84b62db5b67@citrix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6nwm5qb9zborxpe84yta9gb9zoo6jiqg
 X-Rspam-User: 
-X-Stat-Signature: 1nmpwwryrbnk8ujb6hdstxxbaqiz7o4d
-X-HE-Tag: 1791214298-249534
-X-HE-Meta: U2FsdGVkX1+3r8aIxfFHyr/nnsbiyqGAHHx1+J6/UjGb7rH19O3EEbexafMtdpg6LkCb4w7dH6mq/y3t1uZd1M1HghveFR+JnEmST/tUtFyNINeMVRlaVVbIQIvPD3H300t0E8mgJFQkXrqtJ/Z7A0CyRLE6/vZJDAtVOtZp8cNZNMlQd4fCYZUdywRsewuGNrRA+3FjPzCuspmiOcKCHoDtwNIOUE9M4CIVcgItBNHZ9Y+GVl4JqeQqZ/hSpmOg4iIA8x59h2iAM79GypMnnQy/QGXaWIBoPw09MZ+ZoEZgaCfETy/F2+Z7MqXoXqhMoKR5KMEvr6d63/UXx4cDzyoUJaggTl4Fw5CFlEJuEfy2J0gP5vRH9G/M6tQroeeScIeAAAQQj2Z7wzZoSvKGfQtweK64dP2afUx1er8m3hY/QEiWcg4Ndtndgfx2wNgFtV/2fTdOES+5G0Q5da3S78WPMYzn26ZkAWSyEy6s4zwFoeZFTU1MLq0QKGwFZfnjD59nNaPN9hgvmw9kjLkIUT4gVOFmOCK/2T4GK++svV7W+mwnR42eqjj00IaqeCm4SKzc0d49qhXqVNyQuQBIvm5Qb5QkVO41YY4YNhDja0Joa9D0ub65tnRhDGvokHlrbCEFbTNLD5gOSBDcbpB8uiXgOGNZEaH1kRFfiAAKVPH/D6gYS9omY6cbZhkgE6amQefxh0omqCgn7Wn3ayvirNlNN5VdPbGffRjIBA+X8jWfMq+vJRvZY9iutUPMo/lwPq7XiO1k3XtjGLr/4n0f6na/BR1WKNT/gLfs1ySiFXsm1RSpN9DHkAFkFRmJzonXobMjn5qMIHmKBuduvrZxlmJKW0KZZ1HB60b6C7GgKl14+24bwVxthsWiBTgFqiV1qHUfr976tKFv31zvJfCFIWC3FpmTz26VcIv6ocqGlAyaUpfdEt2iYdKT0dDXysMXx7dOQDp/h0eOv9tC6zb
- EseCPimV
- dnAok+FlEE016sVfh47qrs+QTfmJAo9Q2CwdgreLme8j5sSwK9Yy9RVsIbQgJcLo78O2fDCVi3uaMwQT6ZDMZkQLh3u5pJnx8/cI+9I3kYTGrkBMpXrP3gAk8hHOCCzqKNeba1Clb4LLWHk6pgnjZR14ev/b5BD55B/+GUhTnvZOc6NMEJfyL3ztnO9gSsw2i8sitJuq2kUlHh+D6uRMWKQB2+VQ0P9twX3s8mQeR3WS2Bg5z+5rX1IQ5Ut+eq1a+DiaVMBHQ41WcmwZEN9Q64uwyMg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2D23840002
+X-HE-Tag: 1791214616-953168
+X-HE-Meta: U2FsdGVkX19IiZqq2kWOIPsIqZ0+h7y41YvEZ1ZaweyV2paIeSFGGHM1TeT26Nhx0qmpmrzuDF0luqQvoOJkyuCH7Q6Te0KvfOKbXiWgNyjftXmB5AduQj7lW0HPAxj/lrBjEFeWtvVTu1b3Q09f4A/Q5+4/MPYnyLsf9KcT6yIzDJFL/QTXwce3yJ2EzqFSo4DD+c9RASKhfp+ylV24eTEVzRHaa3Pzd6dbBKSpDizzVQGNfw7caXdkwfY3M8aPqCTvXqnSuyoj3nyMdQrdQsVncB2294O7r49BbDxwEECVAB8y/gomeXImvq/FRz9MDzEJZoCQuC7T9Uo8yRQLDMKDqUzGtT69SFfRH0jdIdOMM1teMIhiZmmVoHd5JloZtGEBiR1FhNwyKDJ3jnpMIYQgi+IFoQlwqj5bwtIjRR296c3H34gzwJdtoxI2pNB26JYyutxqAusFqcl/CyJl/XGbb6d5UsuPMOKdDLR9/DqSuFTMDotvkwVihBcE2Kz7G2P6aS70yr8pjmArmyJMQ+QUWGD7/wLyZ1fL9rgYARmuwoOFUHrkbIjOlWqhUR2Zh1Q1VX8H5E1XyGFjGQEI2VLG7GfljsJuj51aqOA08t7S2/A5ys/6AGh7hHJLIj1NZZjNVX/9jnmWeJXaT5UjnDB77l8+CpYHIF0hbtWCXOGiM6zv9JT4GszRFnzZP6fkh7pnrCuM+IuGbnVJOSAFxVClig2O9mgG7/p/PbRJ6C//7nm82BTjULMyG8ZFcAaqib6d9BlaEkv1Dpt6wqwsui/syIMuU32JIHF95wIssTdeGvjdchjmR3ctfS8SC0LMla9AFrL9T4rJ68blQILQ5o40iRWMJhLUrHoBCLspkI6sAmIa4Sj+hDFuXYI8AWsMn97x8hp9BILVnyyJUcOtxn0rh5bLKcuicIQtRaG9QMrbMjk422jUZ4BCI80odcogIKijshAFWFA1cFWkhVq
+ 1QxcV0My
+ 7Elrq5zmHWh4wBt86taI7BjmqnAfhEwSu5WUznbFi7k9dz440ARiUA3cE+U0v4HUnjd9aEHO0YyT+nWhWuCKS9Ns/3enIREb5YkI9K4y4LvYqzoJLOPM2yVfpB7fZNo9JvrEZvjnJxdyfV4VngFGxBdYJBH2RMDchsHpvRNi639ApJjpeay4YCfS6J8HzebSH41JiIewQQrHXuFvWYgD7raA/wiDYyUn6RAIKZzYow6Qn/dnkK99FFdGQRxgEfmAUor22ApN/+jtCtoQ4MDKDRwkNQKL54EGi347O6VsFDkzHWo1qgtbozS2oD8DFMD4MzyUDz5ngo1vr28HnBW1JfpHqWld46cwI+rSc3z/iKliIkckBuj8zNrbHlaRz0L20aczdobRZAuqLdVCcqDRWEF5jGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,37 +106,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 11:52:11AM +0530, Anshuman Khandual wrote:
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index 763c5a411d64..9ad2d03e86ad 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -84,6 +84,12 @@ static inline void arch_leave_lazy_mmu_mode(void)
->  	arch_flush_lazy_mmu_mode();
->  }
->  
-> +#define pmdp_get pmdp_get
-> +static inline pmd_t pmdp_get(pmd_t *pmdp)
-> +{
-> +	return READ_ONCE(*pmdp);
-> +}
 
-This is the same as the generic version. Does it need redefining?
 
-> +
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
->  
-> @@ -811,7 +817,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
->  }
->  
->  /* Find an entry in the third-level page table. */
-> -#define pte_offset_phys(dir,addr)	(pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(pte_t))
-> +#define pte_offset_phys(dir, addr)	(pmd_page_paddr(pmdp_get(dir)) + \
-> +					 pte_index(addr) * sizeof(pte_t))
+On 2026/10/5 23:22, Andrew Cooper wrote:
+> On 05/10/2026 11:12 am, Lance Yang wrote:
+>> On 2026/10/5 17:57, Andrew Cooper wrote:
+>>> On 05/10/2026 9:32 am, Lance Yang wrote:
+>>>> On 2026/10/5 16:19, Andrew Cooper wrote:
+>>>>> On 05/10/2026 8:29 am, Lance Yang wrote:
+>>>>>>>
+>>>>>>> Did you repro any bug related to this? The functionality is perhaps
+>>>>>>> underspecified in the AMD manual.
+>>>>>>
+>>>>>> TBH, I don't have a reproducer yet. Just LLM stumbled upon this while
+>>>>>> I was investigating another memory corruption issue [1].
+>>>>>>
+>>>>>> [1]
+>>>>>> https://lore.kernel.org/linux-mm/arY1Wq6R9OY20ans@pcnci.linuxbox.cz/#t
+>>>>>>
+>>>>>
+>>>>> What hardware are you running on?
+>>>>>
+>>>>> That looks like the Zen5 issue, for which you want either the latest
+>>>>> microcode out of linux-firmware and/or
+>>>>> https://lore.kernel.org/r/20261002211617.1001617-1-bp@kernel.org
+>>>>>
+>>>>> TCE is a no-op in Zen1 and later, so unless you're on older
+>>>>> hardware, it
+>>>>> won't be that.
+>>>>
+>>>> Just to clarify ... these are two separate issues.
+>>>>
+>>>> I mentioned [1] only to explain how this came up while investigating
+>>>> something else. I'm not claiming that TCE caused the corruption
+>>>> reported
+>>>> there :)
+>>>
+>>> Please can you answer the question.  Which CPU are you seeing this on?
+>>>
+>>
+>> Which CPU? None so far. As I said, I don't have a reproducer. I'm trying
+>> to make sense of what the manual says and what the code does ...
+> 
+> I'm afraid that if you're trying to be helpful, you've had entirely the
+> opposite effect.
+> 
+> TLB handling is a complicated topic.  What you've done is present what
+> is effectively a query about the AMD manual as if it were a bugfix for
+> an critical-sounding issue.  You even sited a real bug-report for an
+> actually-critical issue, despite it turning out to have nothing to do
+> with your submission.
+> 
+> The patch is buggy.  For starters, you should be checking is whether TCE
+> is enabled, not whether it's available on the system.  This causes the
+> more expensive option to use used even when TCE is turned off.
+> 
+> But, AIUI INVLPG only flushes the whole structure cache because of a
+> windows bug which caused it to crash on a 486.  AMD deliberately
+> introduced TCE to remove this overhead for every OS which didn't want
+> lumbering with a workaround for buggy windows.
+> 
+> Linux currently believes that it's TLB invalidation algorithm is
+> compatible with TCE, so at a bare minimum, you need to have some kind of
+> discussion on why you believe this not to be true before claiming that
+> it "might be unsafe because the manual says so".
+> 
+> 
+> It's fine to ask a question, and even ask "so shouldn't the code look
+> like this?" but such a patch needs a very clear RFC or QUESTION tag.
 
-Why not make this change in the generic version?
+Thanks for explaining! Lesson learned. I should have made it clear
+that this was a question about the manual ...
 
--- 
-Catalin
+Let's drop the patch. I'll take another look.
+
 
