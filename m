@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0199ACA5FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 07:24:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 711B6CA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 07:29:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFC146B0088; Mon,  5 Oct 2026 03:24:01 -0400 (EDT)
+	id 78B6D6B0088; Mon,  5 Oct 2026 03:29:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED34F6B008C; Mon,  5 Oct 2026 03:24:01 -0400 (EDT)
+	id 73CBC6B008C; Mon,  5 Oct 2026 03:29:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE9FF6B0092; Mon,  5 Oct 2026 03:24:01 -0400 (EDT)
+	id 603CE6B0092; Mon,  5 Oct 2026 03:29:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B8A506B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 03:24:01 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4D55F8016B
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:24:01 +0000 (UTC)
-X-FDA: 85287733482.27.2410E78
-Received: from mta0.migadu.com (out-131.mta0.migadu.com [91.218.175.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 25F2080005
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:23:58 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wchswUTx;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.131 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 437916B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 03:29:38 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D10CB1C01BD
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:29:37 +0000 (UTC)
+X-FDA: 85287747594.20.F079105
+Received: from mta0.migadu.com (out-243.mta0.migadu.com [91.218.175.243])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9C1FB80005
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:29:35 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jYPdXbL0;
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791185039;
+	s=arc-20220608; t=1791185376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N9GiSmyFN+AotyFfYv+69WAwkBv56CpP7oDts31Ov9E=;
-	b=c60YkG1kPYMvI3sOs8lVxIDwPiRraNR1Xrd30dcQATKoQpZCHKpqW34SubRQ70W2mTzAKG
-	DF7FARP9zuJorPUic9lU13l/LPlkb09iK3n7msBljiftnhf2ldkB7pVBsiFyn2IstSoBqa
-	36a+43Jmw2NH5uTL2cpHU5Prub14/KA=
+	bh=vJU4wD33mIc8JQxf/rrKic/UXk6SSrGUmqTaAUnzNUA=;
+	b=SpM1eqxO2fLtUYy5u4OXZ4cp5jHZr0nfEzUbZhuEHNyI/WVUDBGoA3rmgYEFG6Cex3j+9J
+	dAaUhe+kuQO23Pqa6qDS8XadlE5lLZbGMiJG8wT3CXSCKhRn4B2zcAwDfRsbA+OcxNUvYV
+	8QCQ3HQ7qONJaNyP6GaUo/NM/NgRbh4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wchswUTx;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.131 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jYPdXbL0;
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791185039;
-	b=KVzLOPwzNk+Zdj/IyHfPYfjPxCqSPsuilUUCQ2YBjoCUhT4O40ktH8Aas9mPPnItmvdOlZ
-	t/qxCDKk3TaRobQhHHFCaNrZRUkm6IHvfFagGkjEN6UZkiNvQL0YRc3MS3WBbawcotNu+9
-	xXtNhHc4CA/hQ10KvbkAtwbG9IpLl1s=
+	t=1791185376;
+	b=awiqk/QMdT090DC23T+K6ihTs1/2aTQAZQeGxxLFgFc5wq8xFwk2ZYPy32auCZJF1BOHgR
+	fDmq0YDQlzNC7WUchJIRIdMhAapc2H2Km6R/k/DzYAuN8KS6iqN9aIU/Hh6IAdS1DMMc0T
+	3wqi16K3ttg2ObrWmDHzQuUmsoT6fgY=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Gmsh/yjeWQhuRRzt7tOzKvgXe8nse8xEadBQY+u8XjM=;
+DKIM-Signature: a=rsa-sha256; bh=sK9V2jYPHnq/dXSshCTHnIO11I1X6+eo1StxCE06jiE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791185037; v=1; x=1791789837;
- b=wchswUTx3q4XFhZr3lr+cgPzLyyaYnbldXpuAa9VsE3xssRtOj4zVsJIpyLPxu3HEhVRX2ME
- M3HYnlJv8VM/2eyRq3DwN4cP+SlhP/xQuacqs9sKiTsnAyr7bF6c6H+kpfYvFo7D/R9u7eNhQ0k
- wR66Obpf1Ms+0IuHeSUFnnL4=
+ t=1791185374; v=1; x=1791790174;
+ b=jYPdXbL0bEvo4/CEfima5qxmIMBAoDtxF5EhkCsW2q8qWeMN+37WuD9rlTJbTbUItvpO1gcP
+ pkgs9zmzljDymTwLNKL8wNHtGhoBJiVUE3lICIlRIFNx4iNfAi7j7DmMlZinl+ZKmwK89+yhY6b
+ QEFMk5nv10+erCzergbo74uU=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 943f59b3aa53cf7d;
-	Mon, 05 Oct 2026 07:23:57 +0000
-X-Mizu-Trace-ID: 943f59b3aa53cf7d
+Received: by smtp.migadu.com with ESMTPS id 443fea304e721487;
+	Mon, 05 Oct 2026 07:29:33 +0000
+X-Mizu-Trace-ID: 443fea304e721487
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <c6421cab-1a21-4d39-87ff-05dc7be6bc02@linux.dev>
-Date: Mon, 5 Oct 2026 15:23:45 +0800
+Message-ID: <60d5db86-8002-4d87-b8d3-c161d674122b@linux.dev>
+Date: Mon, 5 Oct 2026 15:29:22 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with
  TCE
-To: Nadav Amit <nadav.amit@gmail.com>
+Content-Language: en-US
+To: Pedro Falcato <pfalcato@suse.de>
 Cc: dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
  tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
  hpa@zytor.com, riel@surriel.com, linux-kernel@vger.kernel.org,
- qi.zheng@linux.dev, thomas.lendacky@amd.com, kernel-team@meta.com,
- linux-mm@kvack.org, akpm@linux-foundation.org, brendan.jackman@linux.dev,
- jannh@google.com, mhklinux@outlook.com, andrew.cooper3@citrix.com,
- Manali.Shukla@amd.com, mingo@kernel.org, stable@vger.kernel.org,
- toshi.kani@hpe.com, david@kernel.org, mikhail.v.gavrilov@gmail.com,
- pfalcato@suse.de
+ qi.zheng@linux.dev, nadav.amit@gmail.com, thomas.lendacky@amd.com,
+ kernel-team@meta.com, linux-mm@kvack.org, akpm@linux-foundation.org,
+ brendan.jackman@linux.dev, jannh@google.com, mhklinux@outlook.com,
+ andrew.cooper3@citrix.com, Manali.Shukla@amd.com, mingo@kernel.org,
+ stable@vger.kernel.org, toshi.kani@hpe.com, david@kernel.org,
+ mikhail.v.gavrilov@gmail.com
 References: <20261005052302.43042-1-lance.yang@linux.dev>
- <D8AEF6EF-D92A-4838-95A7-EB93BE319BE1@gmail.com>
-Content-Language: en-US
+ <asM7b8ECO34-jiwi@pedro-suse.tail5790ac.ts.net>
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <D8AEF6EF-D92A-4838-95A7-EB93BE319BE1@gmail.com>
+In-Reply-To: <asM7b8ECO34-jiwi@pedro-suse.tail5790ac.ts.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 25F2080005
 X-Rspam-User: 
-X-Stat-Signature: knqtqpsef8mban33babnxbdfypwq7ee8
-X-HE-Tag: 1791185038-804800
-X-HE-Meta: U2FsdGVkX19CF+4oZaEEhj9xv9wWPSjBeghwPxBFYrpPhsOBmrYbttyN9uWTXVQ7AHtHOXsrYd6ZUKuRTw45WgEwupUIBoLx7H/kio46ydd9MIz0ZwtSTPLxxx+rJ98VBGmb6pcfy0dChakoGFV/Zw8sWMiQPTs6K9N5jNloU0PZTIeTNyVlt/k5VFEo35hzlAuGlBvij0D9mj3nxC7caxpt6gA8xVTh4CRT9OoY9ghigpVDAWpLPOjCPvlETMKbJCAifUkJhBsOU5r+jljGBbUWsx9i0TlNVKdD0pdNog4azCTEvGF2O+VFupsOPLoN/kx816/DkXL3qW4BGPGS7g6ism4okr5KUh7HncIYSnqzhzeFb+FDWW/twDUSw8yhfzQNW3qI1rQw1M0XY1mZzyiXimIkwxBiJtjC3ymI3tf1p469mWwp7tIJT6FU/UdnpD1zowlxmYoVURr3gTP3h35FAv3Dt0XSs9g8mhTNFB+f7qrbtzluCi1ysmH4QZKl2X2+kUqFrVJoa6ErRy20KhoSVz5j560Nh1dGVb4Uu2uUjRtwbUSZRXvMGsEpAAly3iC4mXQcYsJqYErY7jybPWqnssC2i75IXr49Hk8wUmtEXcbCUOhNsuDOHql/eOm9adPa391czge9TJY7GOZ/F8XaJN3weXmSlZ50FGzIYebfRJ7e/UX7ewS8fn/p2HcheFmLel6cy1HA9x8LOUEz3GZQsIZsSbLVlOdhm0O6w62ztYnBdKMlbx+zOC1bporW3SkTQxtpkuXLwWdPYxnpBlITC7a63YBy/s595nekdhF6MCUyXC1vo76bxiRvCdtg7AQP9HqpM94PFxwmntQXPcvLG7zN9Mj9Ofc8M076KcmwaU8jmvXTf4R/1/3n0TTS996sBSnJqvpIwhj49qrEMHLQ1QF1zFUZV/nuc3w3NBThAKsrMKJj/zHCBNmuGc+V92nTI0gagz4aNIZqZo6
- jmQGWP54
- GFllRf2+emgirfuz2MZ6A7Cvsa8bfZ0FR3EvYRYsKfqv0yzxVYQXxThwmbzYAVZnEGk7qwP+gh2IgjvEMC85WzPsFY7CZKeKPitZur6o/7CJ7cyqEEr95fV0K4QgLMnou8sYAupSRPWrURBFT6BmHNZVYZXgRrAHTypkDst5aEvWDJEu48mZYfZROz6wKlLZGZEai+cZsaPcy6yCvWUt8cNjLl+UG25wqp4ICm3nY8IyZlOSSAVwnDLb4FvU6L4vngvSgjdq6nVWX54isV05jhOnc+Ujz7mmXpETnKi39YPZk6OjYc3stJaWsTxru/ghTZAIzr376zQF5gFUSTQ6ZrI70Dbdqcxav1UKJ73HhI+Z9ntmRD7eG4iRXcA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9C1FB80005
+X-Stat-Signature: m363gp7cbir9w7im6wmrj5czdit4sdug
+X-HE-Tag: 1791185375-964850
+X-HE-Meta: U2FsdGVkX193jwIlvZYe5IGmwInpj4C0Yh9yF9TiDzlgDbYqr+8A+44YE6k7Wfn7MHdPI/Hifxx9yP3xfzmVrGqiBrhOdx3r6yDVJ2SLL4uLUfE/6wKf060l6feMqGDF/7jeyEO+cTIziuh75YTGsuXFp4JGfj7PmDjU9JiirWrNMSjf58sdBzJP73qNwW4aowy0sGFD7gviH9/dCJGHZeLrfAhf2t5aoTpDpHl3VhnEhymavET79uX5k9lm/Bi1s4fi3VKJ5jjkd6t4MT4utBjHbbUApOqEi8IOBHHgLlcNcTb5XyUpLNcsOxrMVuYvS95Q0zcalDdmP5OuLrolM5XpZlGx/jX7h+1+v7Sc/kKRU3oRqJoHM25MzvR/df0v26LMeh6S5StN+0O5lLSTRv3T9oL4826xUX1dX6FKNFagis4oC+CGZNvYEevvy90UTlchdfWE7CI7aPI3tafAFEwOw5trCOk8C1MAx+PDVzAom0IKV42vxg+/s1u0Ty9cOkoPrXOeftaL3LjtIeY0zwsiXTxJm215WD8iiBophbEClvYY23hTWj9TsjNMu8SAjJitM7i2zQwxSkpP4o/rsYDr5ncbpRqnvBjIEKrrEjaLaSdZCrI2CfCI8sw82UM2+NSFBXm+t/MAvNxEsU73dYtmNqq1V89I4A+fFDf0+g+8wXMQSdJsnNvVLSMw6F3dHOH8zuhmD3TD37jt8XvGv+lujYDdcKpUxfcwyYNwGXoZXrCqx6nFh5MU6TsqVKaL5Fb0yt7MymZ5PjH63Ik3SlIpLQMLf5TKOLiysHGVzf8eztRzMIAcYTu7d5qjR6qEXFx/5DjoohFX5k1NIWWQDrxV15X925gGQrL6G/GzOa9UNOGGisaUIz/C/yk83gtkTblaPPcK9qcU1uD3xxf7EBePohI4rmghCsDbfy7U/Ep4FOubdQM6thS9hmRCm/HrLRoHNqwjBskvpVSHDbX
+ DomjUR1+
+ zJsQvYuj6MuRSleBUNQjg70VU2fcUm61Bgky1yyTmvK6KI4s2xueqXNRmr8ZoOyMICmoXPSMYIpkTekVrCLPDmD2EBS5OioL1Afyz4KAOeWFSKr1pYIJ8YSfqDRB5uAfIEZf9/jsiJ6sJx9LsrwqQtqI4tKAGk8+IPMwOMOoHLytd7t3qlkhD25Fz98K/3LPmLUaXMGT6K3928EZ63ydzu6bCLAdTDD0/X4BnpujlrI0e/Ej7qltzBzVyEjgQ330dOb+6hztECcYxJwm7PZEKO+Lgl/E6B1jJX/CVc6ogoAJNCXOJhCwRJwR1hvDaszuV2Xgy4/s3B8LOdIzfgo03KRrGg6unovKzlmkxvMaLFKrMyZFXvWfNfD1HDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,13 +102,8 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/10/5 14:38, Nadav Amit wrote:
-> 
-> 
->>
->>
->> On 5 Oct 2026, at 8:23, Lance Yang <lance.yang@linux.dev> wrote:
->>
+On 2026/10/5 14:09, Pedro Falcato wrote:
+> On Mon, Oct 05, 2026 at 01:23:02PM +0800, Lance Yang wrote:
 >> pud_free_pmd_page() uses a single-address invalidation to flush the
 >> paging-structure caches before freeing the page tables. With AMD TCE
 >> enabled, this only invalidates upper-level entries associated with the
@@ -118,8 +113,8 @@ On 2026/10/5 14:38, Nadav Amit wrote:
 >> The AMD manual quoted in the commit enabling TCE says these instructions
 >> remove
 >>
->>   "only those upper-level entries that lead to the target PTE in the page
->>   table hierarchy, leaving unrelated upper-level entries intact."
+>>    "only those upper-level entries that lead to the target PTE in the page
+>>    table hierarchy, leaving unrelated upper-level entries intact."
 >>
 >> Even with all PTEs cleared, speculative page walks can cache present PMD
 >> entries after the earlier TLB purge.
@@ -130,41 +125,32 @@ On 2026/10/5 14:38, Nadav Amit wrote:
 >> Fixes: 440a65b7d25f ("x86/mm: Enable AMD translation cache extensions")
 >> Cc: stable@vger.kernel.org
 >> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->> arch/x86/mm/pgtable.c | 11 ++++++++++-
->> 1 file changed, 10 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
->> index 4a105f283cfb..6b7fa44f1bf6 100644
->> --- a/arch/x86/mm/pgtable.c
->> +++ b/arch/x86/mm/pgtable.c
->> @@ -727,7 +727,16 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
->> 	 * via normal page walks. Make them unreachable
->> 	 * in cached mid-level walks too:
->> 	 */
->> -	flush_tlb_kernel_range(addr, addr + PAGE_SIZE-1);
->> +	if (boot_cpu_has(X86_FEATURE_TCE)) {
->> +		/*
->> +		 * With TCE enabled, a single-address flush does not invalidate
->> +		 * cached PMD entries for the rest of the PUD range.
->> +		 */
->> +		flush_tlb_all();
->> +	} else {
->> +		/* INVLPG to clear all paging-structure caches */
->> +		flush_tlb_kernel_range(addr, addr + PAGE_SIZE-1);
->> +	}
->>
 > 
+> I'm not sure this is correct. The PUD is clear. We invalidate the TLB, which
+> invalidates the translation caches for that walk. invlpg will notice the PUD
+> isn't present. I don't see a case where it can ever not clear the rest
+> of the translation caches for all leaves. And, in fact, by that point the CPU
+> can (does?) probably formally treat the PUD as the leaf.
+
+IIUC, clearing the PUD in memory doesn't invalidate cached PMD entries by
+itself. With TCE enabled, flushing one address only invalidates the entries
+associated with that address ...
+
+(That's how I read the manual, but AMD folks, please correct me if I'm
+missing something.)
+
+So couldn't other cached PMDs under the same PUD survive?
+
+Later/speculative page walks could use one of those cached entries
+without rereading the cleared PUD, and access a PTE page we've already
+freed ... If that can happen, it sounds pretty serious ...
+
 > 
-> It might be cleaner to replace flush_tlb_all() with:
-> 
-> 	flush_tlb_kernel_range(addr, addr + PUD_SIZE - 1);
+> Did you repro any bug related to this? The functionality is perhaps
+> underspecified in the AMD manual.
 
-Looks much cleaner, Thanks!
+TBH, I don't have a reproducer yet. Just LLM stumbled upon this while
+I was investigating another memory corruption issue [1].
 
-> While the flush-ceiling would usually end up doing a full flush, the
-> code would be easier to follow (the very least). Maybe adding stride
-> to kernel TLB range flushing would make sense in the future.
-
-Ack.
+[1] https://lore.kernel.org/linux-mm/arY1Wq6R9OY20ans@pcnci.linuxbox.cz/#t
 
