@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65CA4CA5FF1
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 02:40:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00D1ACA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 03:14:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E46C6B0092; Sun,  4 Oct 2026 22:40:14 -0400 (EDT)
+	id AC0A26B0088; Sun,  4 Oct 2026 23:14:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 097056B0093; Sun,  4 Oct 2026 22:40:14 -0400 (EDT)
+	id A71996B008C; Sun,  4 Oct 2026 23:14:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EECCB6B0095; Sun,  4 Oct 2026 22:40:13 -0400 (EDT)
+	id 987306B0092; Sun,  4 Oct 2026 23:14:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B96316B0092
-	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 22:40:13 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12CD1120C81
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:40:13 +0000 (UTC)
-X-FDA: 85287018306.29.926D41F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C6176B0088
+	for <linux-mm@kvack.org>; Sun,  4 Oct 2026 23:14:28 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E77F7C0C5C
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 03:14:27 +0000 (UTC)
+X-FDA: 85287104574.02.8BE4EB9
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0B26F180003
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:40:10 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=XMUBUTAR;
-	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2E757100005
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 03:14:26 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=oa7+Ev3a;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791168011;
+	s=arc-20220608; t=1791170066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f8452iUaS5o0CW4R7Mgbqf97iERo9aC326JELO5+2Q4=;
-	b=w5p/bmcUs3gFd1Y7Cuc6RbvuF8tPKxLLHY4XxwC5YiAbZv9x6J6390xJ9iyX2k8NImuE7K
-	o27bFaWr71YgojhxP80zn5eVxoVVpyUSdKK2YM+N1koAHN7vUrzWDTlhIIqYyvrH+mopBe
-	eSUdiyuH2kZ5FolgZKTbF1kb5SnEkh4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791168011;
-	b=8HT34Yiy5Kh+M0KxFyLR58CetjS75xHaxK+M4GoQiN3BWT4qu+ote6qkhCcyRPA22v3075
-	c6PxkR6oGhXsdbmrzTiy6uvmoLPwwe4CTGfTff89NshS5IPrf5ZVWD90OvhCFFB3IXPtTT
-	8gMuPe0YaVeKSWW3IdklyvL9g69uCdw=
+	bh=XXlpucTuM2Y7J659tudsG5fCcp4t5Gm17zw/UMZGcRY=;
+	b=Wdf2VhBm6kT42fojVBuWX4GhgZejkkzwsj5e57gK+KkvsS1ADAwKQDqLKRl1xbabFFEXKA
+	xxB68fUBuodRWuEgT3Y9XULSQ7d37JOWs8f+KkzzYC1FgWXCtLv9mA3CMULb4Ijyk+mV7f
+	BZV1VI74lBe/mo+W7OniiMDYuz0+MOA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=XMUBUTAR;
-	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=oa7+Ev3a;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791170066;
+	b=JdeDmpq9hJdmOvCDZ/9hFP3knKKE4K7YIScVxSk+S+KDDCixsGSY8q5+y70KbSb60krbLf
+	r6dqqhOqn/MOrKM2K3elruT/1HhCrgq6vtcecjEiU9ACf+4oe1Zvyb4Jxd+BphqKoiJosQ
+	8JtPF421yONzdjOEek59hOHC6iw/Qm4=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 939061595;
-	Sun,  4 Oct 2026 19:40:06 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E00CF1595;
+	Sun,  4 Oct 2026 20:14:21 -0700 (PDT)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3EF083F763;
-	Sun,  4 Oct 2026 19:40:09 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8AA703F66F;
+	Sun,  4 Oct 2026 20:14:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791168010; bh=4nKoqMv1Uc1IZmsQ8w941NyDGQ2IHgdv/9GpM2fH8Ss=;
+	t=1791170065; bh=RwRpQ6j7Lh8Cw0VxVyBV2Ml57YHE5z8+0pVEOB0/zWE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XMUBUTARAG359qBmKsP9jDxEE8bgeYMhPMO6ZFfBn9WWyS11rP7LAl+jhXbO+E/u4
-	 am5BFAH1a+yV1q6HEz3iCJiIFkwOP0hxMXYNH0ghYKSLBOCtc6MlR/kmWfKHpyjhBR
-	 jhQMx6WFTbeiXefXKOmjaJDLkuNdm8074HpuOPdo=
-Date: Mon, 5 Oct 2026 08:10:06 +0530
+	b=oa7+Ev3aFSuAcjDxN++3JTFT/7QLfaF0ONAhnlcbnovBD+A+ezJ0eOKSGpysU5g9C
+	 /5OW1eJMf6ZA0AKa+qr/tuCSfRnU8RmC3Ng9Hk8SHMCPxugcJ2R7bl87JbpiAXPPQh
+	 JJ46vqfpSHuZ8Xw+lkp4h5+64vLNio1IJg0+xzkc=
+Date: Mon, 5 Oct 2026 08:44:21 +0530
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: Sang-Heon Jeon <ekffu200098@gmail.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -68,23 +68,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	"Liam R. Howlett" <liam@infradead.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
 	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
 	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v2 2/3] mm/memory: remove the mkwrite argument from
- __vm_insert_mixed()
-Message-ID: <i64bejs7dhn5bozzphibmoh2ghgzklruvk4evzag7tqkvbq6ez@epb3kdpmcs3b>
+Subject: Re: [PATCH v2 3/3] mm/memory: merge __vm_insert_mixed() into
+ vmf_insert_mixed()
+Message-ID: <5rttqmps6cycg7pxlsvynfilvt3auj3isl2prhv7ay6epel32x@nyezrhn4wut6>
 References: <20261002160535.661399-1-ekffu200098@gmail.com>
- <20261002160535.661399-3-ekffu200098@gmail.com>
+ <20261002160535.661399-4-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261002160535.661399-3-ekffu200098@gmail.com>
+In-Reply-To: <20261002160535.661399-4-ekffu200098@gmail.com>
+X-Stat-Signature: 7h386paxb5chxy9fzj3xmibjddrymyhu
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0B26F180003
-X-Stat-Signature: 1effqyfbjn1g5skf75bu1h1x97wf3jkf
-X-HE-Tag: 1791168010-317617
-X-HE-Meta: U2FsdGVkX1/94Rls24ZPkj5X0NbB9tXVj/Osoj/Zqr0ktHwrT9m5aKUEMaFTOq/IqNthWHqH6oZSIdfYnuUE/6IVrAs0lkBeDLSSw/oSYWf/kR9AznZcikRglpkmmReacfs8vwhct7BNCkVf/H1F+tTovr1O3iqQE4nJZrXIsZEh3zJ4UGpjokNxxvWy9wPpG9toLbzaU9CUsuVz7qw1qxY0oV5gO/SnMkj8cP139w/PLeAJZR5xM6BQNYrHucQk07I6CC9fOOzum85E4ew61fbWkIP+3pvJSfoMrwuYcY+YCMay9xIYzc3UgGIISZRyrZzk0mZ++LRCbmtSRhFc/D7w/wrIP0UI6P3w8A/Zj2Bb9PjJfFexuFRdxoZjYGPWoTgTcGJUhNF90pSIohN3oD3yGT7yD0wMbef2wtxI8E20OQok4EIXPL3DHBPK6JWM7BpGNsCw2jgx+ZHgJ3u5e1IakrBoNu5pFKtGZLak25ysZnaK/hRxtC+IBXLX/G5ufyzAzD7wgloVyXgyY51c7Cdl/i06tnKT/pmw6zeRpsI1dgGir/aL1tuPK8+C1EM50NtP69O9ZURPytVEyFMvlsj8exZgPWN8wWR30NrJsYt8Iyb67BgYUEdaWFFY4yDG4QDyEri23CtsrjLa7Dg1Y1ZLJawXQrd0IL4WNjT90lUXlY/ZmRClnsFZrxFWVcpjdpsvLJOCRfF7zleSqite78BNdxk4J+Fkix6ntD39CR9iAUKhpfeI91Q0lmH3V6E6TLf0kRb+vnEol3kkZzyuID38HIh7n+pHk2mbibbmmEVBaEUQov9tQK3ZrSvnwfj5NDbJBfzSMVYknlEHDrOZuuyLzDviEc7iCTuy6Q+mQMCMbTJb4RnYx9AyU6rdqImH1g/HG1U28v+X8xElK//JFfyHqdsQ8gHiEpoVLdYiugiH8rYjyl+cDPgU6BWjpHXdhkJWArRMapQNWe9AP5n
- LJ/BxsaA
- AMHziAHAYcu4kgpMdRnf4j4Xf1G0VyrMCaa/leg0ULgDbIQo2rwzjtLpG9f6zeM7Cq+5STmL6QMicq4rNs1V1b7BavKPRHCqJ66QrWmajohlTB0F+nM0eEng9dJCdcmOqZoILJUy6s9VW5dQTjq8BYabzHsyvqIuS9hhQHXxw5a59mW2uh4N1XCi9mzJsoQIHiq0bV8C2+CC650A9p0xZ3PoqDPgX11Zipxkdvmc10FpP3oBD9Guj7+geQFAf9N+CKHVjgZw04oPYczJ+H13rd7kOOhG471KaWl5OCFXTuJxQqMsNpT5teH45nRdXqFWf9Fcjin58Y7YGuLr2YPsT3nPk1oWlArPRMghB+1UBqc/1AOo/KEozNwmwvko1eiuttLXgmU/bbZuneCOmYlrkREua3w==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2E757100005
+X-HE-Tag: 1791170066-198106
+X-HE-Meta: U2FsdGVkX192OyO/+aGMVbE2YW4Rp7Sz04aaTBzIAcYYWOLrzWMi1NqSiQgouCZFGfk5GUOFvRoRV1N1YXOfZHthTRN2mQnf3nberPmZuJM32frgUYIhEbpfXV7gMHBnJCVkM7cZ6CNtRq739wCDqTariz7jNfWe0U9RPTa/7vWItDBEE3SnweHEVxYaYEvFkM+9yxpYv7jGyUlqts8vpEB9ZxaHG08FR6krbsxsZRKqqkdr1yHpkJA7AHNTTXfk2zKOMeRiTexe33m4iJFkiallIfiaxex6bCDeWGQ2bFaDHwaDbDdQzNPJu4Smy/CVvFa9dV5QVQRiPutx2UI772j4oD4xPz6u6PenR18HeE7SAvLAXOXSa30rIQB7MwdcUMfeMNlW6/gDfs688i9sI2YEsNIoeQbQr/gKIvimNO78Nmykd2iD8vjaqCBsPKQaO7eyXQLNNix6XPQlQj68TDKYLmmlN7fvGFQj5dL/M3hsK13zYTJWP6532nXEkZAKA6YTKmJAZCSmp3QX7zg7ivwganQiy7M7XwvdB4K+SOYQunCk5OzsUMcK4cnNpUA/w2WEySlrDakLe49Xe40Bogr9Ur33SjQWW+kqcYHajlfDed/wTa0GX7kX4WHObPwB/TCfN0m/m2F5bLxxOCmMVlLYYPf/yQ9llAUPe+amq5eBECIo7KkN3mSLYVd7qi1S6DWXaPBReGIqgVHvrlftZ1V0l7TDA7L/KlxbjJOGrR13219FYYvhqAzV0g7VAcQiwtPJo0NZVxuH4LVFfxdsacB9scvrNmI3uLWEht51ihrMIFASWA7TncG9+fnHmxuH6D0XcYayZIYrb23IAqWkr8abVahmUg4DBg8ZE5pKt03Ko5itnM4jlnSfK+2qsJxLQNi0ovEMyfLzpY7t9LGS0laADViUfQpHK4tqD5NRuUHprUPubUVEkU1HsO5Ud7a2hjGhuKzM52K9XOb1UOv
+ J7GQE64G
+ VfvxmJrbYUQRRv9Fus5J4/orvDzjarbj+k72WDosMO5Lq69xSYlRKZO4ia3adTY71yvjF4qoruRbMGdglKrxxCM6iccVmyLbHdeQMUkr1TTndbIXoK7RrxHo43KZ065X7LUDjLD7Ti6OugfRFg+nDIhgXHsWM62/7hnXmR3Cjod/8Zg1xNrIdMMmzyVoiAvgLA+4eZyfZ916YRhboA1EhIAPog7SNf5kjyEUFJKGeAmXz5xBDNr55KcDbPB+1/U+C77IO+uSPnNzerdfpoIVeXBMvQAwbYumGFO9/nIn+Gop3Tn1f5XC6o6i4DRX1xt3sLRjy9tSUFqyaBEpbrYSjt39AePRXVv/aBWJW3Sx7yGIcFC2Y+Ug/4aZ5bYwwFunzC9uADN9C3ucgcBUtxYOXMQESIw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,12 +92,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 03, 2026 at 01:05:33AM +0900, Sang-Heon Jeon wrote:
-> __vm_insert_mixed() is only called from vmf_insert_mixed() with
-> mkwrite == false, so mkwrite is also always false in vm_mixed_ok()
-> and insert_pfn().
+On Sat, Oct 03, 2026 at 01:05:34AM +0900, Sang-Heon Jeon wrote:
+> vmf_insert_mixed() just calls __vm_insert_mixed() with the same
+> arguments.
 > 
-> So remove the argument and the unreachable code in insert_pfn().
+> So merge __vm_insert_mixed() into vmf_insert_mixed().
 > 
 > No functional change.
 > 
@@ -106,137 +105,46 @@ On Sat, Oct 03, 2026 at 01:05:33AM +0900, Sang-Heon Jeon wrote:
 Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
 > ---
->  mm/memory.c | 57 +++++++++++++++++------------------------------------
->  1 file changed, 18 insertions(+), 39 deletions(-)
+>  mm/memory.c | 12 +++---------
+>  1 file changed, 3 insertions(+), 9 deletions(-)
 > 
 > diff --git a/mm/memory.c b/mm/memory.c
-> index 4b2e4be28031..6c1d38eba7b2 100644
+> index 6c1d38eba7b2..bde650e207c9 100644
 > --- a/mm/memory.c
 > +++ b/mm/memory.c
-> @@ -2453,7 +2453,14 @@ static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
->  		if (!mkwrite)
->  			return -EBUSY;
->  
-> -		/* see insert_pfn(). */
-> +		/*
-> +		 * For read faults on private mappings the PFN passed in may
-> +		 * not match the PFN we have mapped if the mapped PFN is a
-> +		 * writeable COW page.  In the mkwrite case we are creating a
-> +		 * writable PTE for a shared mapping and we expect the PFNs to
-> +		 * match. If they don't match, we are likely racing with block
-> +		 * allocation and mapping invalidation.
-> +		 */
->  		if (pte_pfn(pteval) != page_to_pfn(page)) {
->  			WARN_ON_ONCE(!is_zero_pfn(pte_pfn(pteval)));
->  			return -EFAULT;
-> @@ -2858,7 +2865,7 @@ int vm_map_pages_zero(struct vm_area_struct *vma, struct page **pages,
->  EXPORT_SYMBOL(vm_map_pages_zero);
->  
->  static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
-> -			unsigned long pfn, pgprot_t prot, bool mkwrite)
-> +			unsigned long pfn, pgprot_t prot)
->  {
->  	struct mm_struct *mm = vma->vm_mm;
->  	pte_t *pte, entry;
-> @@ -2868,38 +2875,12 @@ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
->  	if (!pte)
->  		return VM_FAULT_OOM;
->  	entry = ptep_get(pte);
-> -	if (!pte_none(entry)) {
-> -		if (mkwrite) {
-> -			/*
-> -			 * For read faults on private mappings the PFN passed
-> -			 * in may not match the PFN we have mapped if the
-> -			 * mapped PFN is a writeable COW page.  In the mkwrite
-> -			 * case we are creating a writable PTE for a shared
-> -			 * mapping and we expect the PFNs to match. If they
-> -			 * don't match, we are likely racing with block
-> -			 * allocation and mapping invalidation so just skip the
-> -			 * update.
-> -			 */
-> -			if (pte_pfn(entry) != pfn) {
-> -				WARN_ON_ONCE(!is_zero_pfn(pte_pfn(entry)));
-> -				goto out_unlock;
-> -			}
-> -			entry = pte_mkyoung(entry);
-> -			entry = maybe_mkwrite(pte_mkdirty(entry), vma);
-> -			if (ptep_set_access_flags(vma, addr, pte, entry, 1))
-> -				update_mmu_cache(vma, addr, pte);
-> -		}
-> +	if (!pte_none(entry))
->  		goto out_unlock;
-> -	}
->  
->  	/* Ok, finally just insert the thing.. */
->  	entry = pte_mkspecial(pfn_pte(pfn, prot));
->  
-> -	if (mkwrite) {
-> -		entry = pte_mkyoung(entry);
-> -		entry = maybe_mkwrite(pte_mkdirty(entry), vma);
-> -	}
-> -
->  	set_pte_at(mm, addr, pte, entry);
->  	update_mmu_cache(vma, addr, pte); /* XXX: why not for insert_page? */
->  
-> @@ -2967,7 +2948,7 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
->  
->  	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
->  
-> -	return insert_pfn(vma, addr, pfn, pgprot, false);
-> +	return insert_pfn(vma, addr, pfn, pgprot);
->  }
->  EXPORT_SYMBOL(vmf_insert_pfn_prot);
->  
-> @@ -2998,11 +2979,9 @@ vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
->  }
->  EXPORT_SYMBOL(vmf_insert_pfn);
->  
-> -static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
-> -			bool mkwrite)
-> +static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn)
->  {
-> -	if (unlikely(is_zero_pfn(pfn)) &&
-> -	    (mkwrite || !vm_mixed_zeropage_allowed(vma)))
-> +	if (unlikely(is_zero_pfn(pfn)) && !vm_mixed_zeropage_allowed(vma))
->  		return false;
->  	/* these checks mirror the abort conditions in vm_normal_page */
->  	if (vma->vm_flags & VM_MIXEDMAP)
-> @@ -3013,12 +2992,12 @@ static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
+> @@ -2991,8 +2991,8 @@ static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn)
+>  	return false;
 >  }
 >  
->  static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
-> -		unsigned long addr, unsigned long pfn, bool mkwrite)
-> +		unsigned long addr, unsigned long pfn)
+> -static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
+> -		unsigned long addr, unsigned long pfn)
+> +vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
+> +		unsigned long pfn)
 >  {
 >  	pgprot_t pgprot = vma->vm_page_prot;
 >  	int err;
+> @@ -3041,6 +3041,7 @@ static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
 >  
-> -	if (!vm_mixed_ok(vma, pfn, mkwrite))
-> +	if (!vm_mixed_ok(vma, pfn))
->  		return VM_FAULT_SIGBUS;
->  
->  	if (addr < vma->vm_start || addr >= vma->vm_end)
-> @@ -3045,9 +3024,9 @@ static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
->  		 * result in pfn_t_has_page() == false.
->  		 */
->  		page = pfn_to_page(pfn);
-> -		err = insert_page(vma, addr, page, pgprot, mkwrite);
-> +		err = insert_page(vma, addr, page, pgprot, false);
->  	} else {
-> -		return insert_pfn(vma, addr, pfn, pgprot, mkwrite);
-> +		return insert_pfn(vma, addr, pfn, pgprot);
->  	}
->  
->  	if (err == -ENOMEM)
-> @@ -3086,7 +3065,7 @@ EXPORT_SYMBOL_GPL(vmf_insert_page_mkwrite);
->  vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
->  		unsigned long pfn)
->  {
-> -	return __vm_insert_mixed(vma, addr, pfn, false);
-> +	return __vm_insert_mixed(vma, addr, pfn);
+>  	return VM_FAULT_NOPAGE;
 >  }
->  EXPORT_SYMBOL(vmf_insert_mixed);
+> +EXPORT_SYMBOL(vmf_insert_mixed);
 >  
+>  vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
+>  			bool write)
+> @@ -3062,13 +3063,6 @@ vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
+>  }
+>  EXPORT_SYMBOL_GPL(vmf_insert_page_mkwrite);
+>  
+> -vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
+> -		unsigned long pfn)
+> -{
+> -	return __vm_insert_mixed(vma, addr, pfn);
+> -}
+> -EXPORT_SYMBOL(vmf_insert_mixed);
+> -
+>  /*
+>   * maps a range of physical memory into the requested pages. the old
+>   * mappings are removed. any references to nonexistent pages results
 > -- 
 > 2.43.0
 > 
