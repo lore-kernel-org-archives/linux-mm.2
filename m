@@ -4,89 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98D21CA5FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 08:31:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99C48CA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 08:32:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 629826B0088; Mon,  5 Oct 2026 04:31:22 -0400 (EDT)
+	id 911A56B008C; Mon,  5 Oct 2026 04:32:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D9C26B008C; Mon,  5 Oct 2026 04:31:22 -0400 (EDT)
+	id 8E9846B0092; Mon,  5 Oct 2026 04:32:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C96C6B0095; Mon,  5 Oct 2026 04:31:22 -0400 (EDT)
+	id 8000A6B0095; Mon,  5 Oct 2026 04:32:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F3DA6B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 04:31:22 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 94C53C018C
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:31:21 +0000 (UTC)
-X-FDA: 85287903162.01.21C4DAC
-Received: from mta0.migadu.com (out-82.mta0.migadu.com [91.218.175.82])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 654A280005
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:31:19 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=j89UXEVf;
-	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 5AAA76B008C
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 04:32:30 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEB4BC0172
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:32:29 +0000 (UTC)
+X-FDA: 85287906018.02.5128096
+Received: from mta1.migadu.com (out-72.mta1.migadu.com [95.215.58.72])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 734AE40002
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:32:27 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oQ6rdbUH;
+	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.72 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791189079;
+	s=arc-20220608; t=1791189147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0etm5y0JSEfvHQiFIPISfzo3FkIiRqHMguzUOcDnjd0=;
-	b=QmhFS/axZ5Xgm2Wgbz+qKi1Rq1JkjWAPzU0oxwyxxVNikO7Z+pGbAK7myswZgwQ7MIAWSz
-	Hf+x89F++UxmNm53Ic9Els1uEPuGPQ/y9v5ZQcGIGDZaxpdfL6OTNLEyy+leuEIYrdiNLl
-	yFrU4amE9TB9hmo/Crky2yzY3YgtkJw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791189079;
-	b=ukxzs4HA4JZ5sJ/3/Wt/L9zDfaeAB5wu5d8Ql/HDCCXzh/tONEKjfrGTcvyiwjh5tkE+Da
-	18/iZ3+GPogewPcyxaSzuF1dqtD6OMa7/2OBlacgH3lOae3AXavXlAK8tmGnAomzrSI9z0
-	FbMO0ou+/DZQjTTuKh1bh2XMc3yQMKo=
+	bh=VKwFasuTx2dQsWLxaZQLp7rNh+Vz/wDhfTS9l9pBQUM=;
+	b=1CqEOBxCHMM4bhlvs5/TqOuVRpflbq6dWXYXtq3UfuxgawZNwOIP8LzTId5m2j//prlo6k
+	km2DfPX2jZaHNLuKQdA42hN3gW9uS9r/JHeflQDzI22qM/PSgXCHRGb8r1X4Ba6Z4OvF6f
+	HEPHuOd1F4yGSvQPxUKaPelAjRnu42s=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=j89UXEVf;
-	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oQ6rdbUH;
+	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.72 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791189147;
+	b=HHSJDO8RnbQbpVEgJV0YaYwTcHjmGErY7/OUYrL2z03ft3ypDUVXl5U7M6bHXJTa42IeFB
+	CyiDagQtE+y5yWYXhhBa9FxmVD2rlspMunQKb2rZydmX0w6fq6TRaRrqXLIziBJit7ZBjq
+	vHJTJCgD+Dl9sFJiVlPDUjYz1ZGXW2E=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=gNitw50LwGM11s3LoORNB2PRRIlwARQQvdJlo/NxCq4=;
+DKIM-Signature: a=rsa-sha256; bh=ZVqDd9QcXqvYOGttGtquLNTksUQ0N7zdBVZm8WxBuns=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791189077; v=1; x=1791793877;
- b=j89UXEVfyfXObGOL8oWeTvnMfv38mITKuCkbIIG9YvDmSmwbHgJkLCLVojMxhTJzRIaiA5wB
- gy9ki3kZ6FtABhQpAP/YVlbzekpB1TQIq3kxkUCJL22c3cMIaozMJW/x/UPTnsEZc2+RLn+ohZD
- 97b0nboU+JMKgyPjzim9ttLI=
+ t=1791189146; v=1; x=1791793946;
+ b=oQ6rdbUHuhSP+4h5cRRL3sBX8z5na8Ci6CGhJuK/EKEZdb1QKW3sGH/PB8MTZ7D2UEHrTDDK
+ TO9JikHQpuTKrwBCnHoRNHBOWr17uXf2NpvhoNbfEGNCUTjla+OoNZrcCFSno+RcHVUMADzdV9a
+ XTrqpUOEHNGnmAunn60ROhqI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e14146ab66f2a19e;
-	Mon, 05 Oct 2026 08:31:17 +0000
-X-Mizu-Trace-ID: e14146ab66f2a19e
+Received: by smtp.migadu.com with ESMTPS id 73cb7fec8dce91d4;
+	Mon, 05 Oct 2026 08:32:25 +0000
+X-Mizu-Trace-ID: 73cb7fec8dce91d4
 X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: nikola.ciprich@linuxbox.cz,
-	andrew.cooper3@citrix.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Subject: Re: hunting memory corruption bug in 6.18.x
-Date: Mon,  5 Oct 2026 16:31:11 +0800
-Message-ID: <20261005083111.71376-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <arY1Wq6R9OY20ans@pcnci.linuxbox.cz>
-References: <arY1Wq6R9OY20ans@pcnci.linuxbox.cz>
+Message-ID: <38541ec6-d796-4f35-a700-75ab097b6df5@linux.dev>
+Date: Mon, 5 Oct 2026 16:32:10 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 654A280005
-X-Stat-Signature: q5b7dygi6wigm6i8eoidk97oc3qnzim1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with
+ TCE
+To: Andrew Cooper <andrew.cooper3@citrix.com>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, riel@surriel.com, linux-kernel@vger.kernel.org,
+ qi.zheng@linux.dev, nadav.amit@gmail.com, thomas.lendacky@amd.com,
+ kernel-team@meta.com, linux-mm@kvack.org, akpm@linux-foundation.org,
+ brendan.jackman@linux.dev, jannh@google.com, mhklinux@outlook.com,
+ Manali.Shukla@amd.com, mingo@kernel.org, stable@vger.kernel.org,
+ toshi.kani@hpe.com, david@kernel.org, mikhail.v.gavrilov@gmail.com
+References: <20261005052302.43042-1-lance.yang@linux.dev>
+ <asM7b8ECO34-jiwi@pedro-suse.tail5790ac.ts.net>
+ <60d5db86-8002-4d87-b8d3-c161d674122b@linux.dev>
+ <ab077b6a-160f-41a2-a167-813f0560e30d@citrix.com>
+Content-Language: en-US
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <ab077b6a-160f-41a2-a167-813f0560e30d@citrix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1791189079-700037
-X-HE-Meta: U2FsdGVkX19AhG44nNwoZQwL9q06XY7HktdovVcnKIUoKaF2jlJGfJyvIYp2Cschz5Ty/hVipMw5/dApS+vB2luS7DG2idgMx7thfvFhtyTkCAGSCnrkN/uYXtJlOJTnXTB9BjeOTXvWfw7S1Yg+OOTSDAb3A6B7s0kNk50fqixU+A28Fz4ICROrfcrv0pQwKd4vdSe8sSV17/bi0tdbivcJNsylwGvM3amhV1C/Wwu9TGK115F/UWEZ3+CvuvWzJPOT3PUmo5u40VadNAw+5U+WsRP7K81oTM17D1qA6TcaUEGJ9w9DHElrGjQ/7eErhKi/JliHWgV8Gdy/+CuK4WxzVBGCkiBX3VX5pSsHgmq9uh6Yc6oDylEqBVODMFFyLsDFk9cLTAAAhyzJSAqxkkRXJjWwyoRVRxxzKis28RypM+K1N5M7shXbV6Ny/4Szxdjvu9GP5n9i/scPQJoBct3tRFD6Axm//cMyfnkc1BG3qC1M0P7Lvm2ogvxCF7M7foMODf77ItniLWoF+G9aGKs585rCML81muaqJ4odkOgc+chO0jghDFBGLx973i8DCP9g0+0ohZCzaR3x/eTZetAIJLwNaLFQhjtiewwbf6bJaFE3VHOj7LYiPMX7KGI1ybiU0FAtkHXUEWGiPrz7D8DNMHmi+8QSx7JFCDahrnJv6GF9WA/vx0gv3jveUz0n05VC9m6fV53U+Zmw8pt2hvNOpa+HK77o8ZhB3wKiLPWT4BlxKJpcbikV+CbwTO1dt8vTK/VkDTxtlyXk7WqkaT+pP+v43uBDlXLLd2R2MRBnJsYujpK9frnRN7N4sH3pCfK7GHIUCjZyMBVyENMagEi25UlkwSFlXpHiMO2BPqBUQOrZGyMp0rZ72sPJXnp9cTLnhEJ2sMM7V4348pFEPUgjaBhvHDWJSCKiuYmOpcYoGEf0EV5tDT7Ge6GwcZ+MGOuGYSZk7XwfxIrl9vT
- KOGAtzHR
- qenLlfs/txeEAoOTDe/HeuUWs8Evr1vHE75GN4N/SbLSLesxqzWlCSzLmdwivzVtQD7iU9nY1aX1TuJDrxyfvGk3zDUgPBvaLHuzLY0rv1HDFd7zNt2nj1eyLFKbk9CCijr95bY64N8h4kPJ2jl3ckuRO9GVoVZvRTjBotBuz2A+0JVXHR2JbJDQDSs+iXKCuHJCJRRum/OG0Q/XdCi5sZRGv9KTb4bbJaIr/KKtmDty5pZI=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 734AE40002
+X-Stat-Signature: stcxjf15ic5iroz4cteguowh7n33us8t
+X-HE-Tag: 1791189147-521551
+X-HE-Meta: U2FsdGVkX199tdPR8KVvAPfUPR1yje1rneHcg7J3FLYoz5xnT5ouIbqdloKXyzr11ghsouf82ypPCs+/j7+JDWKvjUVJSGBFjE2kRVCofxFw33Kw7jxTwZN+BpdLk6HiOvyET6PcB7RPIBPs/NkcN2U6pnPz32OVxh4qXjdOr+UgYTcqjSNoPVaQHocO0/CczS1Jd5vC/2hAEjf75JPQKGjJwvUy9ncIFCA2UlSPXs8Aw0RlC3kCPxeB7X68jM7kLN30cdNyoGif46b5qEjT6vRDEZpVZ93KzmCU+0DqhYIw3rUVpgkNoTGVMOrC2+G/C0adi+6hgSqXD0TKtJdfzPu8GAM2srRprvpEZRL2nxN4/AuPQyCxXYtUk4F92gOLcQvaLFxD3WNjXjWQYCFfFu3wTAcr10t4+5yM80u3qIujVGqUq+GdZ5xCkP0v4y++Nl/sH5Xwhn/jghgWm2rBnX3rtkLGrkALwb780xdw4sez8bqVXWZ6ExSyTo2VZea8JLs3/ZKgsAHbKwY2PAU1Pb2oMVtPqskytfrBy/TnR5FBfFOGxb/XOCziX0pjXq+jgIIyfwQBe8gJEGj6bH4YJ0UHsLm6m9iQh7Q5IqBzNIZcHxYLToFFKz3A4uGmxz5EGXpUbHMrRs0rLbXAm7KL4/YpKBPE+IDPAzT8+fNy+pYt7Dk7Qjp4a2MbTQglmWGH012KEhPxJNEXSkVH0DSyxv+HzOf0nM1vnSXVJc8LZvDKuILLT9tAtlbpgkHs/DOEn5FMLwAWaLtLa2tA8MgezGWm7T6xFUlzKDR5VA4oDEZstNuEVGvXH52bJVlvGBxGIy6+i7202j/GCT0CbSf4hXxQRCaUuU1xh7h7GSKTuH0e1JNYJUpRCjy45SmJ/sUQsh05Iu8yl4njGDcP/j3e4/aLhm5+sSIgpxp2uSw28DRgsog1AcR9JqZDTysaAW0tueY2jWDywbtU4PGIsX5
+ 0f3qyHS0
+ l/NalDd1YZI7LGuEBUZEhgTz4ppY3kClzwfQVcFK0Oc2En99G8CM+h4u/HCWtCRJk6oq1NErDgrO3pakMf6YcN+q2b318yi9FWImozy+JCY0kQL24v7bkRabuw/CJHucESqTuOVETUdDW9fI8Pow0t3FT8EZxFDt1jqF/fzblIVL9JdrXcSpYuSrW9GX8JfhdRo+P9u9CpuHTqfEHsQ45/AWIXYhXmpN0sYglhcMdIeGmpUd8z6RwwoqFGJRr52oIPmGUC0cgkakOuLMMoNln+unXmkWNGd1X6f1J0dEIMssXfDzSZHj7V6P+BYEkNfrPCCOJPogQkZJufZi0CMSvowYwtIXgiyl24BqeyTWScrxDu4jF0tMEEoERTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,139 +102,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc: Andrew Cooper
 
-Andrew mentioned
 
-"
-That looks like the Zen5 issue ...
-"
+On 2026/10/5 16:19, Andrew Cooper wrote:
+> On 05/10/2026 8:29 am, Lance Yang wrote:
+>>>
+>>> Did you repro any bug related to this? The functionality is perhaps
+>>> underspecified in the AMD manual.
+>>
+>> TBH, I don't have a reproducer yet. Just LLM stumbled upon this while
+>> I was investigating another memory corruption issue [1].
+>>
+>> [1]
+>> https://lore.kernel.org/linux-mm/arY1Wq6R9OY20ans@pcnci.linuxbox.cz/#t
+> 
+> What hardware are you running on?
+> 
+> That looks like the Zen5 issue, for which you want either the latest
+> microcode out of linux-firmware and/or
+> https://lore.kernel.org/r/20261002211617.1001617-1-bp@kernel.org
+> 
+> TCE is a no-op in Zen1 and later, so unless you're on older hardware, it
+> won't be that.
 
-in another thread. Could you elaborate on that?
+Just to clarify ... these are two separate issues.
 
-Cheers, Lance
+I mentioned [1] only to explain how this came up while investigating
+something else. I'm not claiming that TCE caused the corruption reported
+there :)
 
-On Fri, Sep 25, 2026 at 10:48:26AM +0200, Nikola Ciprich wrote:
->Hi,
->
->I've been hunting a weird memory corruption bug for the last few weeks,
->without success so far, so I'd like to report it and kindly ask for help.
->
->We first hit it after a live VM migration between two KVM hosts:
->suddenly some dynamic libraries in the host appeared to be corrupted:
->
->Inconsistency detected by ld.so: ../sysdeps/x86_64/dl-machine.h: 548: elf_machine_rela_relative: Assertion `ELFW(R_TYPE) (reloc->r_info) == R_X86_64_RELATIVE' failed!
->
->(Later we also hit this with libcrypto.so.3 etc.) The files on disk
->were OK; the problem seemed to exist only in RAM.
->
->I'm fairly sure this is not hardware related: there were no ECC errors,
->and we have since hit this (and similar issues, more on that below) on
->multiple machines.
->
->The problems started after we moved from 5.15.x to 6.18.x kernels.
->
->Since then I've spent a lot of time trying to reproduce it on a lab
->cluster, and we were able to trigger some corruption after days of
->migrating VMs back and forth. At first I suspected the Intel ice driver,
->for which I found similar reports, but we saw new problems even after
->backporting fixes (and also with Mellanox cards).
->
->So far we've hit three different kinds of problems, which may or may
->not be related:
->
->- .so library corruption right after VM migration
->- VM crashes (or process crashes inside VMs), possibly related to
->  migration (those always happened during migration)
->- host crashes due to kernel structure corruption (these happened
->  without any VM migration)
->
->We first hit these problems with 6.18.31; the last crash I saw was
->with 6.18.44.
->
->All affected machines use AMD EPYC CPUs and act as KVM hosts; the OS
->is AlmaLinux 9.
->
->I suspect two subsystems that have seen a lot of changes:
->
->- transparent hugepages
->- NUMA balancing
->
->(but those are just my guesses)
->
->As a safety measure, we've disabled THP and NUMA balancing on all hosts.
->
->I'm aware this is still a very vague report with a lot of guessing,
->but my question is: has anybody hit similar problems with 6.18 or
->newer kernels?
->
->I see a lot of patches in every stable release, but simply trying
->newer kernels doesn't seem efficient here. Deploying them is also
->risky, since the hosts have to be emptied by migrating VMs off them
->before reboot, and that migration itself may trigger more crashes.
->None of the released or queued fixes for 6.18 seem to be directly
->related.
->
->I tried running my migration tests on hosts with KASAN enabled, and
->also with SLUB debugging, but was never able to reproduce the problem
->with those enabled (without them, I was able to hit issues within
->days).
->
->I'll start another round of migration tests in the lab, now with
->6.18.54-rc1, but I still thought it would be good to report this and
->ask here.
->
->last but not least, here's kdump from last crash (this was not related
->to any VM migration, but is very similar to another few crashes
->we got):
->
->[1924553.414736] Oops: general protection fault, probably for non-canonical address 0xfffffff0c930038: 0000 [#1] SMP NOPTI
->[1924553.434800] CPU: 23 UID: 189 PID: 7538 Comm: pacemaker-contr Kdump: loaded Tainted: G            E       6.18.44lb9.01 #1 PREEMPT(voluntary)
->[1924553.456934] Tainted: [E]=UNSIGNED_MODULE
->[1924553.465551] Hardware name: ASUSTeK COMPUTER INC. RS720A-E12-RS12/K14PP-D24 Series, BIOS 2305 11/21/2025
->[1924553.484152] RIP: 0010:__d_lookup+0x4a/0xc0
->[1924553.492878] Code: ff 48 89 c5 c1 e8 07 48 8d 1c c2 e8 60 8f d1 ff 48 8b 03 48 89 c3 48 83 e3 fe 48 83 f8 01 77 0a eb 2f 48 8b 1b 48 85 db 74 27 <39> 6b 18 75 f3 4c 8d 63 78 4c 89 e7 e8
->d5 e1 7c 00 4c 39 6b 10 74
->[1924553.525191] RSP: 0018:ff7532a13699fda0 EFLAGS: 00010212
->[1924553.534986] RAX: 0fffffff0c930020 RBX: 0fffffff0c930020 RCX: 0000000000000000
->[1924553.546679] RDX: ff2e6dbe0d9b6000 RSI: ff7532a13699fe60 RDI: ff2e6d1e4e630d80
->[1924553.558367] RBP: 000000000b654440 R08: 0000000000002403 R09: 0000000000000179
->[1924553.570026] R10: 000000000000000d R11: 0000000000000000 R12: 0000000001876e5c
->[1924553.581601] R13: ff2e6d1e4e630d80 R14: ff7532a13699fe60 R15: 0000000000000000
->[1924553.593115] FS:  00007ff8743aaa80(0000) GS:ff2e6e5e94c45000(0000) knlGS:0000000000000000
->[1924553.605576] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->[1924553.615611] CR2: 00007ffcd63a5000 CR3: 00000003ee840001 CR4: 0000000000771ef0
->[1924553.627022] PKRU: 55555554
->[1924553.633869] Call Trace:
->[1924553.640353]  <TASK>
->[1924553.646369]  d_lookup+0x27/0x50
->[1924553.653366]  lookup_dcache+0x1f/0x80
->[1924553.660713]  lookup_one_qstr_excl+0x1e/0xe0
->[1924553.668589]  ? preempt_schedule_common+0x2c/0x70
->[1924553.676837]  filename_create+0xc4/0x160
->[1924553.684209]  do_mkdirat+0x5a/0x190
->[1924553.691050]  __x64_sys_mkdir+0x42/0x60
->[1924553.698163]  do_syscall_64+0x64/0xbf0
->[1924553.705145]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
->[1924553.713533] RIP: 0033:0x7ff8754ff08b
->[1924553.720358] Code: 8b 05 91 bd 0f 00 41 bc ff ff ff ff 64 c7 00 16 00 00 00 e9 4f ff ff ff e8 12 f7 01 00 66 90 f3 0f 1e fa b8 53 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 5d
->bd 0f 00 f7 d8 64 89 01 48
->[1924553.748552] RSP: 002b:00007ffc05e5c148 EFLAGS: 00000246 ORIG_RAX: 0000000000000053
->[1924553.759401] RAX: ffffffffffffffda RBX: 00005623cc0bd513 RCX: 00007ff8754ff08b
->[1924553.769760] RDX: 000000000fde421b RSI: 00000000000001c0 RDI: 00005623cc0bd4f4
->[1924553.780083] RBP: f49998db0aa753ff R08: 0000000000000004 R09: 0000000000000001
->[1924553.790348] R10: 00007ff87587d000 R11: 0000000000000246 R12: 8421084210842109
->[1924553.800604] R13: 00005623cc0bd513 R14: 00007ff8755bd740 R15: 000000000fde421b
->[1924553.810819]  </TASK>
->
->I'll be very very gratefull for any hints here..
->
->with best regards
->
->nikola ciprich
->
->PS: I tried to CC maintainers of suspected subsystems, but those are just my guesses,
->so I hope I won't offend anyone.
->
->
 
