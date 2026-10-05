@@ -4,116 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22D7ECA5FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 07:13:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0199ACA5FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 07:24:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A0456B0088; Mon,  5 Oct 2026 03:13:05 -0400 (EDT)
+	id EFC146B0088; Mon,  5 Oct 2026 03:24:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1525B6B0095; Mon,  5 Oct 2026 03:13:05 -0400 (EDT)
+	id ED34F6B008C; Mon,  5 Oct 2026 03:24:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 040B46B009B; Mon,  5 Oct 2026 03:13:04 -0400 (EDT)
+	id DE9FF6B0092; Mon,  5 Oct 2026 03:24:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CC0FD6B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 03:13:04 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 59615A4BA0
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:13:04 +0000 (UTC)
-X-FDA: 85287705888.05.9FB8D87
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1C42E180002
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:13:01 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dMpYcVEi;
-	spf=pass (imf16.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id B8A506B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 03:24:01 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4D55F8016B
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:24:01 +0000 (UTC)
+X-FDA: 85287733482.27.2410E78
+Received: from mta0.migadu.com (out-131.mta0.migadu.com [91.218.175.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 25F2080005
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:23:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wchswUTx;
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.131 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791184382;
+	s=arc-20220608; t=1791185039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qex3q47o/llFp5icyZaFvcldeQl44QEXS98v350pNx0=;
-	b=agz+9mgVOknD9JWUwW11l9kzUzMZ8UKpme+igbuluFsSYHwjhvhzFYtpwKxNldLm8jYgnP
-	aqq4qOmJeAu1lNRTZitxYLSIE9RggMhpLk7JOfhV1xHcBoVRigfTTWWAJrT161frUvznOP
-	TNjsSBI+OJ3KnGJP8SoxuoW8c5+feqs=
+	bh=N9GiSmyFN+AotyFfYv+69WAwkBv56CpP7oDts31Ov9E=;
+	b=c60YkG1kPYMvI3sOs8lVxIDwPiRraNR1Xrd30dcQATKoQpZCHKpqW34SubRQ70W2mTzAKG
+	DF7FARP9zuJorPUic9lU13l/LPlkb09iK3n7msBljiftnhf2ldkB7pVBsiFyn2IstSoBqa
+	36a+43Jmw2NH5uTL2cpHU5Prub14/KA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dMpYcVEi;
-	spf=pass (imf16.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wchswUTx;
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.131 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791184382;
-	b=nvg5rez2hqUoPDPlva1VYXVPZwsYpBORWo6K3EEEGGqZwFoM9ERgCMvVKwtNf4dqK/DYrC
-	dvbcgFlgCLvKuoMICqI6LDV4I19uxJB0m4IgoTcE7QqjTCY9UUDjpmcxk2kpzs6tzfX3GX
-	lvWJ/yrfQbdjRYHHbxHrG+2T6gErw6E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791184381;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qex3q47o/llFp5icyZaFvcldeQl44QEXS98v350pNx0=;
-	b=dMpYcVEicL3SN3GS/aBoNhBoe+YkT+riRR+pf6bmjx0Amqk+o64m8C41wHrK0mS6PWcGvm
-	BIJnY+VvblfaO3E1bRsSVybzQD7EHV25AwJkh1T6aJ6ROR/Kch7FLX+hIroB68ih13F/pA
-	pmQLAQ1KUB45qg8bieJgMaq39K4UMog=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-86-57Ru-Qh6OESMsKZrHMXjZw-1; Mon,
- 05 Oct 2026 03:12:56 -0400
-X-MC-Unique: 57Ru-Qh6OESMsKZrHMXjZw-1
-X-Mimecast-MFC-AGG-ID: 57Ru-Qh6OESMsKZrHMXjZw_1791184373
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CCDDD180061F;
-	Mon,  5 Oct 2026 07:12:52 +0000 (UTC)
-Received: from warthog.com (unknown [10.44.32.90])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 322B119373D8;
-	Mon,  5 Oct 2026 07:12:45 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Stefan Metzmacher <metze@samba.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v12 1/8] mm: Make readahead store folio count in readahead_control
-Date: Mon,  5 Oct 2026 08:12:18 +0100
-Message-ID: <20261005071227.147182-2-dhowells@redhat.com>
-In-Reply-To: <20261005071227.147182-1-dhowells@redhat.com>
-References: <20261005071227.147182-1-dhowells@redhat.com>
+	t=1791185039;
+	b=KVzLOPwzNk+Zdj/IyHfPYfjPxCqSPsuilUUCQ2YBjoCUhT4O40ktH8Aas9mPPnItmvdOlZ
+	t/qxCDKk3TaRobQhHHFCaNrZRUkm6IHvfFagGkjEN6UZkiNvQL0YRc3MS3WBbawcotNu+9
+	xXtNhHc4CA/hQ10KvbkAtwbG9IpLl1s=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Gmsh/yjeWQhuRRzt7tOzKvgXe8nse8xEadBQY+u8XjM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791185037; v=1; x=1791789837;
+ b=wchswUTx3q4XFhZr3lr+cgPzLyyaYnbldXpuAa9VsE3xssRtOj4zVsJIpyLPxu3HEhVRX2ME
+ M3HYnlJv8VM/2eyRq3DwN4cP+SlhP/xQuacqs9sKiTsnAyr7bF6c6H+kpfYvFo7D/R9u7eNhQ0k
+ wR66Obpf1Ms+0IuHeSUFnnL4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 943f59b3aa53cf7d;
+	Mon, 05 Oct 2026 07:23:57 +0000
+X-Mizu-Trace-ID: 943f59b3aa53cf7d
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <c6421cab-1a21-4d39-87ff-05dc7be6bc02@linux.dev>
+Date: Mon, 5 Oct 2026 15:23:45 +0800
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: zRsrhugkNMl4HwyJF0BXQ6R00rAYP071Ce9OVSq787o_1791184373
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with
+ TCE
+To: Nadav Amit <nadav.amit@gmail.com>
+Cc: dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, riel@surriel.com, linux-kernel@vger.kernel.org,
+ qi.zheng@linux.dev, thomas.lendacky@amd.com, kernel-team@meta.com,
+ linux-mm@kvack.org, akpm@linux-foundation.org, brendan.jackman@linux.dev,
+ jannh@google.com, mhklinux@outlook.com, andrew.cooper3@citrix.com,
+ Manali.Shukla@amd.com, mingo@kernel.org, stable@vger.kernel.org,
+ toshi.kani@hpe.com, david@kernel.org, mikhail.v.gavrilov@gmail.com,
+ pfalcato@suse.de
+References: <20261005052302.43042-1-lance.yang@linux.dev>
+ <D8AEF6EF-D92A-4838-95A7-EB93BE319BE1@gmail.com>
+Content-Language: en-US
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <D8AEF6EF-D92A-4838-95A7-EB93BE319BE1@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 25F2080005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1C42E180002
-X-Stat-Signature: mrffbty5xs5s17tip9hayqeun939xzkg
-X-HE-Tag: 1791184381-715474
-X-HE-Meta: U2FsdGVkX1+1gR2DLWRs5kqW/s62m3ZI6yd+PRbQa/nTsX2qzQqA6DMM0081/1T3TP2ZUcidpf3GoHtORPZaauL5nh0D7P0M+R2UpVNnnvNCELRTfq40vSpiKS62MEqO7lIY8sPpZRNs/jyXG0dPuszVGbP1RjWpL14AWtaGEl3wILFpGPtnjl3NfSe08X6d+d8WgFAk1FAVW2VLTEmKZfVZvsbqhmcDjd3BxdwMNJHLCl9UjQOSWqewKgM4Ij6GXph/8QIatTGacpCxkRYco8Ee9OxzaHjXcxDPvqKjqve7Vboa03+euTCRb62WlrmjqtHiRB+Di7fIvL5onSU3VzIcTLKenVnwnOZLowgrrABakeCa0yWJvlUJO23oHCHxsRLawzJYfzq752FD8YSMj72jpCoC/2GjizLBB0t7EBz76kQFXtWe2G2GCZcjsty99LrvTh5/cPIfAyoopi5ZmtchdLGKS9xiRLM6XZpUF9BOi7QkWzr+fTmtJe2vfBFIT1Hwi/8OBjf2xaX7l4rcV/AgrxnK6lm6LWBoR3Iw45TYAKHB8+eXoaSRYSLDuPKxM6Inu5qbKIIsPsiTaR4AVgaUCJBkd1UtGHmMfqvr8CTbi/NSxe2lHVu4Ai08I2IPiUztwi02sY/KiHUojRY0K8RNS0GwUppKrdzTh3pD/A9J/QMUZM7jOo5TriH1CRkdIdnTwtl8yeD+ayvajeVCt1yJiovKwMGC5wMIhoj7L4o7QC5bDtxFoaslkXv98Hf+YrCLNi3Ou/afJ387CV/sL7v8d2Ssmxq/BBAiztm6b29tZ8xHE2uinQshhiA6sfx6SQjuCRtqoW8urNH7A7VGHRXkxDgKnh0p1kWRhxi0NgaULho2zmtzlOp9O0B8HsWTaP8SkjumMlhMkftBic0DJVnyMnbc1N+uwRtvozi0YF7v7eBKgRGPclxSDgF0Cz6/TnTjpz7thQhO4l3ZEnz
- sKV72kQ3
- 6NWwYYVjqkETkwSzctu9gTG3B50/zZ1V7AhOstvygLrY6JG0D2tw4S5bDIn/9eU/vNp8kG0P171hgvPvHMhu1iOB7yOI+R7voBxlxwrS0kyDoTSqf1207bqy9afTLxdqDaEqCZ7rxTQg2cs5HsQbjicMT5gPvyh/Juuu2FgRhIXK7QoXOLqyBDbL/KKexqC0fjbEdDJm2lB+UiQ0pBTFlOOvFIXNx0JVntHdiMU4ROn++Ntw8omwpbgOcZyefOxLf5M7+JFXTuA2/OGQxS6P+fBTx/1S+56UULwOe9UCKushl5YTHY2H1S0LxEs1B185fXug7CiFOgkgD/eBPBNlbtYpYpjQ+cf2CdNRGRvz8GzQfFI2yxwAMkPg/3/82sOq9mCuOn9Bgj8EAPl4nEPh6hvXP8PJ17ZRSpcqRqspOnbuFZX++xeLREDiMgz1cQdtmsJIVptMjiiQJ0lnOgTadb/KHjxJKsXFZCl5KLgU+etKJg0ITlCw3h15+9V3aY+zSuUg3JgErQvb6OChKinOwg/Lwm0QJ55F7WSWjnL479aSn5AjNDaqhO97ixJYwDAqFJqaje3DCAlKEV5kdwB8YKnm2DQ==
+X-Stat-Signature: knqtqpsef8mban33babnxbdfypwq7ee8
+X-HE-Tag: 1791185038-804800
+X-HE-Meta: U2FsdGVkX19CF+4oZaEEhj9xv9wWPSjBeghwPxBFYrpPhsOBmrYbttyN9uWTXVQ7AHtHOXsrYd6ZUKuRTw45WgEwupUIBoLx7H/kio46ydd9MIz0ZwtSTPLxxx+rJ98VBGmb6pcfy0dChakoGFV/Zw8sWMiQPTs6K9N5jNloU0PZTIeTNyVlt/k5VFEo35hzlAuGlBvij0D9mj3nxC7caxpt6gA8xVTh4CRT9OoY9ghigpVDAWpLPOjCPvlETMKbJCAifUkJhBsOU5r+jljGBbUWsx9i0TlNVKdD0pdNog4azCTEvGF2O+VFupsOPLoN/kx816/DkXL3qW4BGPGS7g6ism4okr5KUh7HncIYSnqzhzeFb+FDWW/twDUSw8yhfzQNW3qI1rQw1M0XY1mZzyiXimIkwxBiJtjC3ymI3tf1p469mWwp7tIJT6FU/UdnpD1zowlxmYoVURr3gTP3h35FAv3Dt0XSs9g8mhTNFB+f7qrbtzluCi1ysmH4QZKl2X2+kUqFrVJoa6ErRy20KhoSVz5j560Nh1dGVb4Uu2uUjRtwbUSZRXvMGsEpAAly3iC4mXQcYsJqYErY7jybPWqnssC2i75IXr49Hk8wUmtEXcbCUOhNsuDOHql/eOm9adPa391czge9TJY7GOZ/F8XaJN3weXmSlZ50FGzIYebfRJ7e/UX7ewS8fn/p2HcheFmLel6cy1HA9x8LOUEz3GZQsIZsSbLVlOdhm0O6w62ztYnBdKMlbx+zOC1bporW3SkTQxtpkuXLwWdPYxnpBlITC7a63YBy/s595nekdhF6MCUyXC1vo76bxiRvCdtg7AQP9HqpM94PFxwmntQXPcvLG7zN9Mj9Ofc8M076KcmwaU8jmvXTf4R/1/3n0TTS996sBSnJqvpIwhj49qrEMHLQ1QF1zFUZV/nuc3w3NBThAKsrMKJj/zHCBNmuGc+V92nTI0gagz4aNIZqZo6
+ jmQGWP54
+ GFllRf2+emgirfuz2MZ6A7Cvsa8bfZ0FR3EvYRYsKfqv0yzxVYQXxThwmbzYAVZnEGk7qwP+gh2IgjvEMC85WzPsFY7CZKeKPitZur6o/7CJ7cyqEEr95fV0K4QgLMnou8sYAupSRPWrURBFT6BmHNZVYZXgRrAHTypkDst5aEvWDJEu48mZYfZROz6wKlLZGZEai+cZsaPcy6yCvWUt8cNjLl+UG25wqp4ICm3nY8IyZlOSSAVwnDLb4FvU6L4vngvSgjdq6nVWX54isV05jhOnc+Ujz7mmXpETnKi39YPZk6OjYc3stJaWsTxru/ghTZAIzr376zQF5gFUSTQ6ZrI70Dbdqcxav1UKJ73HhI+Z9ntmRD7eG4iRXcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,95 +100,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make readahead store folio count in readahead_control so that the
-filesystem can know in advance how many folios it needs to keep track of.
 
-This is cleared by read_pages() in case it is called from a loop.
 
-The count is accessed by the filesystem with readahead_folio_count().
+On 2026/10/5 14:38, Nadav Amit wrote:
+> 
+> 
+>>
+>>
+>> On 5 Oct 2026, at 8:23, Lance Yang <lance.yang@linux.dev> wrote:
+>>
+>> pud_free_pmd_page() uses a single-address invalidation to flush the
+>> paging-structure caches before freeing the page tables. With AMD TCE
+>> enabled, this only invalidates upper-level entries associated with the
+>> target address. Cached PMD entries for other addresses in the PUD range can
+>> still reference the PTE pages being freed.
+>>
+>> The AMD manual quoted in the commit enabling TCE says these instructions
+>> remove
+>>
+>>   "only those upper-level entries that lead to the target PTE in the page
+>>   table hierarchy, leaving unrelated upper-level entries intact."
+>>
+>> Even with all PTEs cleared, speculative page walks can cache present PMD
+>> entries after the earlier TLB purge.
+>>
+>> Use a full TLB flush before freeing the page tables on CPUs with TCE. Keep
+>> the single-address invalidation otherwise.
+>>
+>> Fixes: 440a65b7d25f ("x86/mm: Enable AMD translation cache extensions")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>> arch/x86/mm/pgtable.c | 11 ++++++++++-
+>> 1 file changed, 10 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+>> index 4a105f283cfb..6b7fa44f1bf6 100644
+>> --- a/arch/x86/mm/pgtable.c
+>> +++ b/arch/x86/mm/pgtable.c
+>> @@ -727,7 +727,16 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
+>> 	 * via normal page walks. Make them unreachable
+>> 	 * in cached mid-level walks too:
+>> 	 */
+>> -	flush_tlb_kernel_range(addr, addr + PAGE_SIZE-1);
+>> +	if (boot_cpu_has(X86_FEATURE_TCE)) {
+>> +		/*
+>> +		 * With TCE enabled, a single-address flush does not invalidate
+>> +		 * cached PMD entries for the rest of the PUD range.
+>> +		 */
+>> +		flush_tlb_all();
+>> +	} else {
+>> +		/* INVLPG to clear all paging-structure caches */
+>> +		flush_tlb_kernel_range(addr, addr + PAGE_SIZE-1);
+>> +	}
+>>
+> 
+> 
+> It might be cleaner to replace flush_tlb_all() with:
+> 
+> 	flush_tlb_kernel_range(addr, addr + PUD_SIZE - 1);
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-mm@kvack.org
-cc: linux-fsdevel@vger.kernel.org
----
- include/linux/pagemap.h | 10 ++++++++++
- mm/readahead.c          |  5 +++++
- 2 files changed, 15 insertions(+)
+Looks much cleaner, Thanks!
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 0adfa6605653..b7154b81d0d7 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -1411,6 +1411,7 @@ struct readahead_control {
- 	struct file_ra_state *ra;
- /* private: use the readahead_* accessors instead */
- 	pgoff_t _index;
-+	unsigned int _nr_folios;
- 	unsigned int _nr_pages;
- 	unsigned int _batch_count;
- 	bool dropbehind;
-@@ -1590,6 +1591,15 @@ static inline size_t readahead_batch_length(const struct readahead_control *rac)
- 	return rac->_batch_count * PAGE_SIZE;
- }
- 
-+/**
-+ * readahead_folio_count - Get the number of folios in this readahead request.
-+ * @rac: The readahead request.
-+ */
-+static inline unsigned int readahead_folio_count(const struct readahead_control *rac)
-+{
-+	return rac->_nr_folios;
-+}
-+
- static inline unsigned long dir_pages(const struct inode *inode)
- {
- 	return (unsigned long)(inode->i_size + PAGE_SIZE - 1) >>
-diff --git a/mm/readahead.c b/mm/readahead.c
-index 6e5563290287..196542fb1c93 100644
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -188,6 +188,7 @@ static void read_pages(struct readahead_control *rac)
- 	if (unlikely(rac->_workingset))
- 		psi_memstall_leave(&rac->_pflags);
- 	rac->_workingset = false;
-+	rac->_nr_folios = 0;
- 
- 	BUG_ON(readahead_count(rac));
- }
-@@ -303,6 +304,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
- 		if (i == mark)
- 			folio_set_readahead(folio);
- 		ractl->_workingset |= folio_test_workingset(folio);
-+		ractl->_nr_folios++;
- 		ractl->_nr_pages += min_nrpages;
- 		i += min_nrpages;
- 	}
-@@ -473,6 +475,7 @@ static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
- 		return err;
- 	}
- 
-+	ractl->_nr_folios++;
- 	ractl->_nr_pages += 1UL << order;
- 	ractl->_workingset |= folio_test_workingset(folio);
- 	return 0;
-@@ -822,6 +825,7 @@ void readahead_expand(struct readahead_control *ractl,
- 			ractl->_workingset = true;
- 			psi_memstall_enter(&ractl->_pflags);
- 		}
-+		ractl->_nr_folios++;
- 		ractl->_nr_pages += min_nrpages;
- 		ractl->_index = folio->index;
- 	}
-@@ -851,6 +855,7 @@ void readahead_expand(struct readahead_control *ractl,
- 			ractl->_workingset = true;
- 			psi_memstall_enter(&ractl->_pflags);
- 		}
-+		ractl->_nr_folios++;
- 		ractl->_nr_pages += min_nrpages;
- 		if (ra) {
- 			ra->size += min_nrpages;
+> While the flush-ceiling would usually end up doing a full flush, the
+> code would be easier to follow (the very least). Maybe adding stride
+> to kernel TLB range flushing would make sense in the future.
 
+Ack.
 
