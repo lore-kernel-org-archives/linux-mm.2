@@ -4,137 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF71ACA5FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 11:22:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 388CCCA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 11:25:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC1016B0088; Mon,  5 Oct 2026 07:22:57 -0400 (EDT)
+	id D10986B0092; Mon,  5 Oct 2026 07:25:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4A566B008C; Mon,  5 Oct 2026 07:22:57 -0400 (EDT)
+	id CC1096B0093; Mon,  5 Oct 2026 07:25:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9120F6B0092; Mon,  5 Oct 2026 07:22:57 -0400 (EDT)
+	id BAFC86B0095; Mon,  5 Oct 2026 07:25:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 592236B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:22:57 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB638C021E
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:22:56 +0000 (UTC)
-X-FDA: 85288335552.08.AACD7C2
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CB3D8120009
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:22:54 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WomTtJZg;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of neganhat@gmail.com designates 74.125.225.99 as permitted sender) smtp.mailfrom=neganhat@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791199374;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 92B946B0092
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:25:54 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 596DDA64E6
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:25:53 +0000 (UTC)
+X-FDA: 85288342986.16.917AD62
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9ACA780007
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:25:50 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="AX5sdA V";
+	spf=pass (imf30.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791199550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yxZI1soPxTmfDPPU+JgwdQfVtmxFB63dai3uLQf2Sjw=;
-	b=BwdN+1NmBZe8Dpo7r4dL1+vWwYsk1cF52pQRjRcsZ4YsvUGX1NcatNH30px0DrHqdE+S00
-	N3vYHPR4xJXHcCToI5Tm7+A32K9l0xCuOMd8p1YSOwfoNQejrubgWOWj/dcoNWpZFpJbR0
-	Yw80FSEA9WZeCg09so34JIpjCPHiVSE=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WomTtJZg;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of neganhat@gmail.com designates 74.125.225.99 as permitted sender) smtp.mailfrom=neganhat@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791199374;
-	b=MSOk17NPr8zEe1AcGuLRr7rWvp2nhQ9JBFLjm7RUEi1W7iRZgjwur9AlpuxrbpkD/Ob1Bc
-	TivG8bRyxdaNLY+cPaxrDGNyce0iD0s+8NQ8qGFcCkylJrFXFPzz/kvCecEC6KUqsdJj2T
-	PNVFy8Zx6a0ePkBcpDBE02HuVfFQdIE=
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48b05fdb2f9so1324286f8f.0
-        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 04:22:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791199373; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Xm4bsoJ7m6GFkuDDAN0rZRR56D1aHhYp2TdG/BYAJ/jKDXZl7Ao0Zcx9Fx7oG8fv7b
-         n3C845M8uCyWiVZRHvIpCvFZ4LBUkQ7yuxPJyUBDnklnObPA/ASam49tpWI2HhfPZCpZ
-         +tNrlBt0KXVwjPgRtW7CIBhdRfFjCysbM06tpCipGPflEttEBd+CT4hk7p26zEvqU8lR
-         e3aTr0P06kUNdJwo/+bxrB+/PrcM82ZLRZeoVUyzCWIksUqUjAO3Fp47Yu4hl2pzEUvM
-         GqB9LNgJk+uncBD4Pe/G7n5ALSapuxXLGviEtgNRrE/f9q5NRF5Uc3n2W0z/VOMacGXr
-         fwZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yxZI1soPxTmfDPPU+JgwdQfVtmxFB63dai3uLQf2Sjw=;
-        fh=BZCqozHIP6QvLUIkip3ZAjdTOrRgd9KaF9CGAvPhSG8=;
-        b=CRQUcF4zehUUSaz+pBOA2uXqrTBmT+/KLZYCV6WNS9SS7nmTe4+45zDOcBLld/BFgv
-         Bvm5PcvBZRfh4W+5jk4+Bz6maOKg5ZG5EBnGNRDWMQlxUQtVlhPXpQKRf7AZzUDdN3bX
-         c5qvBoOqiunYi4GfsYoSaexD5ifHcAzKssgyZVTW6DY7vRBgh9DkxS1N8hiyUWMRrRXM
-         YWHAsPmsmymQeBYulxCqt12othsslIx8lnwwiQt3U3s1TMFARLn+1B8rUN1fH13ztV9C
-         ALF2n552VSwycUtz/DfPjIJiH6IADH6kY5HED+WHl+tE13aX0lRlzdFNX7KdGuMXVGFl
-         8erw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791199373; x=1791804173; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yxZI1soPxTmfDPPU+JgwdQfVtmxFB63dai3uLQf2Sjw=;
-        b=WomTtJZgcPWN/EvpOI5vp1jzOJ3PyaJ8FtKC6unUl1yoMoNvaWqGLoJydoHkVFcjOn
-         1sLqdGSxvCLd8P0WP8Z9B1iEtjrCHR2mmWrJgtoZ1iJIxAZ2eEEwCpKK3Zsr0gONfC66
-         FBQIvUiq+UuYO4F3TwF+LzRfdJqKiWPVzMlyq1WR9tHVjSp+7ziWtt1XcQVTYyjUDjh4
-         f3WAUncFIdvIHcwgJLR7GcKsx/BFZIUvxlkthOzmHDrpUX/d/NWUBn3t064e1JHIy6bs
-         ht8oFFwl96hoRTbkWa1jZ1IF4wjNaPUBFVZZRYsiLmr/uaNK/IaUUiFciUKFG3YiJtKM
-         uz1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791199373; x=1791804173;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yxZI1soPxTmfDPPU+JgwdQfVtmxFB63dai3uLQf2Sjw=;
-        b=EhBesk1Xm9i7nCKRQ0gAo7JR9lI8T259aXAENCrmZ6JqajeW1tgt6rYuy52qfvf1jI
-         px22T7Yfx+nBzgWZAqAgpgjzSVdU7IwQ98Ng8aFKboYFqCOjK5jPNbA815ZPxOGGPE5a
-         BmDaAUwbVTBWTPyGtTXF+Ho03IIpksjiOu/ba9MbWRBVx8ZfsPTZSs3vKaEg2yRcCBRR
-         TiqDLu6/KzVtnQ/VSXEnsCFFS2bZH4OtVuJ+JLdYlcs+yn+txfpARRBQ0wAT9Pw8odVx
-         EgBOOR3V75YoM/yEnxXC7a4Lmj8QHQuVIP3/tcmguFivRyckGAwT0IktRAjFKWui0ClP
-         3rSQ==
-X-Forwarded-Encrypted: i=1; AKwUvByaLK7c+nntgjc8fcsdJxT/x8EN40pt0FbyAGcuwPfs1eeUiS3aftrH4okensHGJ43OlwR2qxyMSA==@kvack.org
-X-Gm-Message-State: AFq9FYKT4I7OnLcOAVsVyCuZOODerlStZSmbH9XE5xZq0jT8irFUTAHj
-	4PJIlOxE6YUiTxSOzoTxjFEWFqWM6hjZ0oX5aPTtZte6/5NwK7EiMhRL93s8BwfryWpcO8yxlCg
-	FZwTc7o/kmT4yFBfDo2tvdudIV6jrzis=
-X-Gm-Gg: AYBFou0LSzsCSHeuskT8SMnc9lKqY+3MbeRoCjG0wj+fAxts37RTrb6JtRhVqYnFiBF
-	xWeyVRxNi1oicUVXT5eLB3JgEVicvRsK6CTkuSSHyqMr6CrLttdR1EQLXIpiBKmc8j9tRtkWC45
-	5rFnYGn9DjtBNdj8LP4bH3UBaVU7u6RzR/9DxqtD6QjgEbzhYSeg5ncNZbk6qDQTMtaQ1ILR5v/
-	DAYD7GnlGWLPk//Yz7Bsoo9Go1Cap191W5+gywuMSFH5SFkqelMjISlO2GVcUFxaEfFnCXFYZof
-	hllmR5HuohUVxf8Yc4tF+a1apd1PfBW9rEYl73iWmp1kbjDyIXIHdm4ixX6UfaMzSyTY2UD1zZc
-	ugIKT6mQb34ImyIWPuaBcrtDh/O+GlBUn4mXykbpCmUfqt8FlLgbSzSrxbFjW6TOOWfFAqvraIe
-	FIaL7ITxI=
-X-Received: by 2002:a05:6000:4210:b0:48c:571a:a1aa with SMTP id
- ffacd0b85a97d-48c571aa959mr7447673f8f.19.1791199373177; Mon, 05 Oct 2026
- 04:22:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <20261004125601.c06953a6f0660df9859b0c2a@linux-foundation.org>
- <20261005093756.22709-1-neganhat@gmail.com> <645204ff-6c50-4ef3-9070-78ac602560b1@kernel.org>
-In-Reply-To: <645204ff-6c50-4ef3-9070-78ac602560b1@kernel.org>
-From: =?UTF-8?B?Tmjhuq10IEFuaCBOZ3V54buFbiBEdXk=?= <neganhat@gmail.com>
-Date: Mon, 5 Oct 2026 18:22:41 +0700
-X-Gm-Features: AclHuK_C8DWb7keJEldBGEQQGJ_SM_ZaF6oftPzgImWFpm52x1_XSGgSqgP23-E
-Message-ID: <CAFJkwZx9zmz2sxMyByFbYgfCi9zMN+iLxKrypKBCZY9NsLQz1g@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/gup: document unlocked invariant in fixup_user_fault
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
-	peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+	bh=jGz+zDfvrEqcuYJJt7frz3VKayhJ6cscOwEJS8/IB9Y=;
+	b=Ue0oO9kQUujxSBfk4ezumRTDnuMGlZqt+wFYiQGSqG4bQS+Dq5pCQDlYYwdSZGUu4HW3Gv
+	BHTG2Pwsu76bd4IzeXHidTzMWsPoUlPg9mzDTlIjRA35datU6fOMO8GXzW3KG8SdU9KluY
+	sFSiw/ZAO0+uoMXMLIp1KbHrocjkwGc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791199550;
+	b=B+XIRum96c1wr1w8cnzg12OaakTJnzh6sEyUyEe0fZVbDj3+ew98OPS0rNHWJwSRs4ZKzm
+	gKlT2V75lyrIJAX+M76UGF1FN2zVMsg9LBbs7Tnq4Ybwcbbtd3i9vt/PwGc7KMB1Gh7nT7
+	s0MgTCvNaSUq2rCIVLpKcPRk1DNI2Dw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="AX5sdA V";
+	spf=pass (imf30.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=jGz+zDfvrEqcuYJJt7frz3VKayhJ6cscOwEJS8/IB9Y=; b=AX5sdA
+	V8hSFC2YwdUWzQjkBonxKt5VrVOmxLSmoc4VoaDT7eJNR9wmG2gTv+PtgbunvXImHmo0FIYmCIapv
+	SoFg+wElMK6YCHX6RrgxIr3xKH+WXEB7DezoDB2fJlTIpeHn1rGTM9e4gDVzdjZVmktShAQn3yiy3
+	kD0MwfzIJ2svgaaldBy2borveeekSicFYlcia6Bw0LBunxyXjpxPXAtvUIuk40RInWsmccipjc2cm
+	Yc+lgGLpoKJ0yXdE02ENyuSnZCrIeP4O6OIrO0FZdM3zBLcnOrnDp9wCTXNizF2s9bwBhNdDoUbne
+	ZrFcBHHYcvYR0ag7Cf/IfMKMsVIg==;
+Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1xDgp9-00000006F0B-3hR6;
+	Mon, 05 Oct 2026 11:25:39 +0000
+Message-ID: <bd8e9b01ad88cafb12da33331f32a1ce315f590b.camel@surriel.com>
+Subject: Re: hunting memory corruption bug in 6.18.x
+From: Rik van Riel <riel@surriel.com>
+To: Nikola Ciprich <nikola.ciprich@linuxbox.cz>, "Lorenzo Stoakes (ARM)"
+	 <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, 	david@kernel.org, Mike Rapoport
+ <rppt@kernel.org>, Dave Hansen	 <dave.hansen@linux.intel.com>, Pedro
+ Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
+ luizcap@redhat.com, pbonzini@redhat.com, Borislav Petkov <bp@alien8.de>, 
+ Tal Zussman <tz2294@columbia.edu>, Matt Fleming <matt@readmodwrite.com>
+Date: Mon, 05 Oct 2026 07:25:38 -0400
+In-Reply-To: <asKdhWiJb3qXeopz@pcnci.linuxbox.cz>
+References: <arde/t0zQNEkWqi5@pcnci.linuxbox.cz> <areOeRwZOez0eHm7@gremlin>
+	 <arotyz5g6LozSjb1@pcnci.linuxbox.cz> <arwNebjYXyGqrp32@pcnci.linuxbox.cz>
+	 <arzRBv9ceJsxJppI@gremlin> <ar1Xl7PE2rcoT9h3@pcnci.linuxbox.cz>
+	 <ar63St2LBfCdyhwj@pcnci.linuxbox.cz> <ar9yRqq6cBxHDWKA@gremlin>
+	 <ar/F6+OUzj8qQ8YC@pcnci.linuxbox.cz> <asAE3kLFDUx5v0Nw@gremlin>
+	 <asKdhWiJb3qXeopz@pcnci.linuxbox.cz>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CB3D8120009
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 9ACA780007
 X-Rspam-User: 
-X-Stat-Signature: un4her48prp5nyaiaj6i4pjhwbbacp4m
-X-HE-Tag: 1791199374-51715
-X-HE-Meta: U2FsdGVkX18GZC+/eE8vfkj0IjKGK7ZYgcQRH7UqBUzujKdXgScMSN6D5XwmpC2mB1y0uqcPZ+3OUrc9atelFoO9vn2HCm3Y38KOzGHoNMzzR1RbotsBlRq0w6bU8XMQ+Ovl2KfqZJra0tEZMF72BxccdX48exCOJP/kE+twDSa11gFtQprwSWgTuH3Ue/nU8zYjamaR8shROcSmTWd4C58UfEtBtrTtRFQVp/kqndezuR6lVOS1vgXI5KmqtZw6mT4bXn1kwHRM8P7R2SFmR+9ShMymugYANbqfxh71KLKmkywqcME6mAYVSN6cU8oRfjn/+9sjWBdqzd5p4UbiWJqB7K6HhO6czUKlZolO43uC5Z5mMFy+V+lLRJ7/OuS2uvaSGIBTRJZGk192NWtQPbUGuNYUtz2BphVrXtw4VG6Sj8jo1xwa6PpnWdxOF27iFsZcAoPmr3tm/N9ndDejyiuNKPRRAc8xpQHqzV7JrVUolWK7OVtVJZgNPWGuh5TRAD3uJz+8zuwDzKenRP2VGl3PHfXK0BqXQVczcXDQTpIyuJp+Z3+vw5UsnS+IWdiLPnuZTK6wrTz9wdZwo2v9/g/9LaDVDyZOnYSK0ePA4u9RWcqVrUPiYxeWpzEZKSKtBdFnpVxhX+2YjYLmnTI3KU2pj8GYGSo1aW9qHy6RcbnH7rBapQrFCOvK7DUfNvZCU7m7YKLcIjRBnVlghu947QHWfqgaxb1KpabPOj7ERzve95i31DfFkn9Luf8fLPz5jgC0KrWeJCit9JoxDlThQ8nsuZwuGKFn+1VQDbPlV2eOndqeclETQXoYcvAgY6iBsm5U/R5EkqyBUBJDQsxNFRqTeJKNp3M/GiP/Xj6Eqk4OyuB+5da/Vpm4bRvTnFIVidZCwin03OR/46uOIkiUk5bpvRETLjAKUjO6n5eDMD8rDgPbepBRTi6dQptXvsWo7/+Zs2dFsUCclKEa6tn
- mNDPPVJX
- Ln0L+bkx/D/cS5Qbn5POzyGQxR/mEnKjh/mwv4FqptiRml2hRSg1tB8FLX3xwiMh0WK84W6AAK3omRCmXLvVZJYt5pCKbyGNWvGwEcy10IzTyjLqwDDz5rHDob8nLXO5oV/KgPrcwx/Xd0iWgNLhQlSHc2GQyyqMbX/tTxXWBLtGgNpmtukl1MVZn7mMxtwVpxh3jJf64CSh3wexIk4ycfmBa1higgfLdcEHcwuMAo2r3Tj0NgJ3iepLy0dSJgLe+cCacGELwNfsoaFjksYweBc3DW7wADRbmqTlXpFjwJH/U1juNu0IN8HxcEHxyHkIzhDulsOG02q1/ty4tUmJwjcMvU2o4q8OUm5W8n7ryMGbhtBnhz6SacMqXZ9i71EX9/Lqmk4e4Tns/yr/lNVy2qiuQUK9hU0ycxf8odHIBGr4dbJn1cCgeWDwPa1LlORh0zR7U8kizcnnMx4VprmxcLQw4u9IMkpcIPfVCQ/nY5H+k8lSwJcNMFKdAem1Gc5fCTRqw065MLwkiL6bvkoE0hh9tZacWI+O3wB4WSWd3M6bloYVn6ebeWPVVys+NtIZCeHlO2ThWgS4qi+fMB5vPcB7yqs1ocdq6lB5VwaGosd47Lbg=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 4bwwnwyqhpfucnomi84gfgpzxs5updan
+X-HE-Tag: 1791199550-458741
+X-HE-Meta: U2FsdGVkX1+m7qWxMVsZ8OaqYceq+ksYSJ7Fxpu9jwkj868DozYbXaQVsUVL4Zi7M1GlzCWnOtuVX4QbfiJjvY0l7dWwIBSbqLZmd/CI8qHKKsGgMurfpw8uCr0NKbYs9ZlLDCGBJ+9rj2aTg/IkhWrNv13CjWFdpz0fWqKAY/6HktLzcsGhpvpqHe393EcV1MaJ1UzqcZdYXVsnwd+KwMpymEqoQ0rj8UQ4rz17Bcr1rxqyPPDuVvAidLYpqXPXhzJRE+Aju4tKrZfLCVuDULppTnR/7wLe3AwjzLz1HUhdJlFiamwDyzFl0OoGdxmnjAOVi0PIs7laE3C9+2oMbPY3wUbaA44cVTncWqU8BGP5aA2feGaooe9pu2BZw5/5l0DpwoF4o9Iqgt8mFV4fnaGMrYrSMk34gz+/m7W/yCak0N7AJvazWMCvzuCAEHzSB2YWMKyozfeLb24A6tTqMEX1UZPIaYA2i4Ww2XtYqUUAeIEp2EmOgso4GxUwRr6j1Y/3AH1ZrXTdQCeZCc7MncPqrpavMrGxctSdBuHbK60sdAeba+UeVCOZ5lp7yo1GxhhQaLVym/+JJMYALV+wdxrHVqhpUabQTyQsN6eVnOCHT8QfrzrdS4VRGLAyz/oBXjAK2gpquhZ/ocNT8+HpH106VAR/QRDUwh+bsRCLBjxevpYm7Dcrm06N3nqgduoW3rx5PxVBxG9rccTIaG3bg6czXsctSkkj0tWs2JnpRaDot8FW10Bb46d/JAunWUu/EynO+rNfHwcJCY5Qi0RJySuhUq/Fv/kQn9YrOoY4Mxq4IPz1wwy40mTZ91CQvRigOW/WHS0hgm/fDQTezTA7D2XY0cBxlKlaNzV6x3Y4a4HWDiRADSTSltT1iQST+4GW4XL+BsxTZ62Ig7q2zkwfpBsJ4ibzhHIAN/g8YswAuh+VLfqwS1u/V9CRJ0fGOn3EzM3nc8YAaBYnsm1CicK
+ Cl4b91Ul
+ OVyQP5TiyCcODd6saeW+tEw3gHmSWbnjfUp7pI3xmueUsBrclSZG7YGbg6Izm35FfK1uEhHyq1WVqbIEae3xg6qPGor9YVdhmYYX6WEJgx2ufYVxqDLEd6vHAvGBYfmohhkAN/Ie0OOK2122E3ym5motdNZElXpkc2C13TexiA1fLqs9BHy2W/m0R2+4cVsPuBjT2F9LfxXyaexC+0L6NuEzyrTq2glki6BcoVnworMeUmL37D/NLfIzw03OcCsP7pgm2vPv2IpoGnU1obhA0wJd23g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,95 +127,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+On Sun, 2026-10-04 at 20:40 +0200, Nikola Ciprich wrote:
+> >=20
+>=20
+> crash> rd -64 0xffffb18905f60000 512
+>=20
+> ffffb18905f60430:=C2=A0 0000000000000000 0000000000000000=C2=A0=C2=A0
+> ................
+> ffffb18905f60440:=C2=A0 0fffffff0c930020 0000000000000000=C2=A0=C2=A0=C2=
+=A0
+> ...............
+> ffffb18905f60450:=C2=A0 0fffffff0c930020 fffff86eb0c30000=C2=A0=C2=A0=C2=
+=A0
+> ...........n...
 
-Thanks for taking the time to review.
+Two copies of the exact address you crashed on,
+in a vmalloc area, presumably the dentry_hashtable?
 
-My motivation came from running Smatch over fixup_user_fault(), which flagg=
-ed
-the dereference as a potential NULL pointer issue. Because the relationship
-between FAULT_FLAG_ALLOW_RETRY and the unlocked pointer is subtle when
-first reading through the path, I initially misread it as an unguarded
-dereference in v1.
+Can you use vtop to check that the different occurrences
+of the 0fffffff0c930020 address in the same vmalloc
+area map to the pages you found in this crash dump?
 
-When Andrew pointed out the invariant, I thought documenting it might help
-future readers or newer contributors who hit the same static analysis warni=
-ng.
+>=20
+> crash> rd -p 0x103360000 512
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 103360440:=C2=A0 0fffffff0c930020 00=
+00000000000000=C2=A0=C2=A0=C2=A0
+> ...............
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 103360450:=C2=A0 0fffffff0c930020 ff=
+fff86eb0c30000=C2=A0=C2=A0=C2=A0
+> ...........n...
+>=20
+The same thing when reading the page directly.
 
-If adding a comment isn't the right approach here, would you prefer leaving
-the implicit contract as-is, or is an explicit runtime check (such as
-VM_WARN_ON_ONCE) something more fitting?
+So the invalid value the CPU reads is being read from
+memory, and not hallucinated by the CPU.
 
-Thanks,
-Anh
+> crash> search -p 0x0fffffff0c930020
+> 103360440: fffffff0c930020
+> 103360450: fffffff0c930020
+> 114c32440: fffffff0c930020
+> 114c32450: fffffff0c930020
+> 1ae234400: fffffff0c930020
+> 1ae234420: fffffff0c930020
+> 1ae234430: fffffff0c930020
+> 1ae234450: fffffff0c930020
+> 24f0e2400: fffffff0c930020
+> 24f0e2420: fffffff0c930020
+> 24f0e2430: fffffff0c930020
+> 24f0e2450: fffffff0c930020
+> 342c40400: fffffff0c930020
+> 342c40420: fffffff0c930020
+> 342c40430: fffffff0c930020
+> 342c40450: fffffff0c930020
+> 77475b400: fffffff0c930020
+> 77475b420: fffffff0c930020
+> 77475b430: fffffff0c930020
+> 77475b450: fffffff0c930020
+> b2fabe400: fffffff0c930020
+> b2fabe420: fffffff0c930020
+> b2fabe430: fffffff0c930020
+> b2fabe450: fffffff0c930020
+> ea2d7c400: fffffff0c930020
+> ea2d7c420: fffffff0c930020
+> ea2d7c430: fffffff0c930020
+> ea2d7c450: fffffff0c930020
+> ef7a2d400: fffffff0c930020
+> ef7a2d420: fffffff0c930020
+> ef7a2d430: fffffff0c930020
+> ef7a2d450: fffffff0c930020
+> ef7a90400: fffffff0c930020
+> ef7a90420: fffffff0c930020
+> ef7a90430: fffffff0c930020
+> ef7a90450: fffffff0c930020
+> 10371fa400: fffffff0c930020
+> 10371fa420: fffffff0c930020
+> 10371fa430: fffffff0c930020
+> 10371fa450: fffffff0c930020
 
-On Mon, Oct 5, 2026 at 5:29=E2=80=AFPM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
->
-> On 10/5/26 11:37, Nguyen Duy Nhat Anh wrote:
-> > Static analysis tools flag potential NULL pointer
-> > dereferences of 'unlocked' in fixup_user_fault() when handling
-> > VM_FAULT_COMPLETED or VM_FAULT_RETRY.
-> >
-> > These warnings are false positives. 'unlocked' is only dereferenced whe=
-n
-> > handle_mm_fault() returns VM_FAULT_COMPLETED or VM_FAULT_RETRY. Both of
-> > these return codes require FAULT_FLAG_ALLOW_RETRY to be set in
-> > fault_flags, which fixup_user_fault() only sets if 'unlocked' is non-NU=
-LL
-> > upon entry. Therefore, if 'unlocked' is NULL, the control flow branches
-> > that dereference 'unlocked' are unreachable.
-> >
-> > However, this part of the code is subtle and can trip up
-> > contributors or automated tools. Document this invariant with a comment
-> > above 'if (unlocked)' where fault_flags is constructed, explaining why
-> > omitting FAULT_FLAG_ALLOW_RETRY guarantees 'unlocked' will not be
-> > dereferenced later in the fault recovery loop.
-> >
-> > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> > Signed-off-by: Nguyen Duy Nhat Anh <neganhat@gmail.com>
-> > ---
-> > v1: https://lore.kernel.org/linux-mm/20261003194846.205918-1-neganhat@g=
-mail.com/
-> >
-> > v2 changes:
-> > - Instead of adding runtime NULL checks at dereference sites,
-> >   document the FAULT_FLAG_ALLOW_RETRY invariant above if (unlocked).
-> > ---
-> >  mm/gup.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> >
-> > diff --git a/mm/gup.c b/mm/gup.c
-> > index eb898ea1ee22..58fa75441da1 100644
-> > --- a/mm/gup.c
-> > +++ b/mm/gup.c
-> > @@ -1570,6 +1570,12 @@ int fixup_user_fault(struct mm_struct *mm,
-> >
-> >       address =3D untagged_addr_remote(mm, address);
-> >
-> > +     /*
-> > +      * If the caller passes 'unlocked' as NULL, FAULT_FLAG_ALLOW_RETR=
-Y is omitted.
-> > +      * This guarantees handle_mm_fault() will never drop the lock or
-> > +      * return VM_FAULT_COMPLETED / VM_FAULT_RETRY, making subsequent
-> > +      * dereferences of 'unlocked' unreachable when NULL.
-> > +      */
-> >       if (unlocked)
-> >               fault_flags |=3D FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILL=
-ABLE;
-> >
->
-> For which audience is the comment targeted? For people that know what the=
-y are
-> doing? No.
->
-> For tools that report such problems? No.
->
-> So I don't think this (4 lines of comment) is the right way to improve th=
-is.
->
-> --
-> Cheers,
->
-> David
+These are not random offsets in the page,
+either.
+
+These all seem to be at offsets 0, 0x20,
+0x30, 0x40, or 0x50 into the page.
+
+If you look at the other addresses, are
+there any that are not at one of these
+offsets?
+
+If this is a case of "system writes
+fffffff0c930020 into one of 6 slots",
+there could be some at offset 0x10
+too.
+
+I'm having AI comb the kernel now for
+places where we could conceivably
+construct this value, and write it
+into one out of 6 slots.
+
+>=20
+--=20
+All Rights Reversed.
 
