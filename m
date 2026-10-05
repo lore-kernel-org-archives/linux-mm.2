@@ -4,222 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 416C6CA5FFC
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 15:22:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B7D0CA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 15:30:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 274EA6B008C; Mon,  5 Oct 2026 11:22:46 -0400 (EDT)
+	id 14A826B0088; Mon,  5 Oct 2026 11:30:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24D296B0093; Mon,  5 Oct 2026 11:22:46 -0400 (EDT)
+	id 0FBD86B008C; Mon,  5 Oct 2026 11:30:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0ED916B0095; Mon,  5 Oct 2026 11:22:46 -0400 (EDT)
+	id 011826B0092; Mon,  5 Oct 2026 11:30:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DBF2F6B008C
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:22:45 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 68AA51402E4
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:22:45 +0000 (UTC)
-X-FDA: 85288939890.08.C08F009
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010047.outbound.protection.outlook.com [52.101.85.47])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 675CF1C000A
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:22:42 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id D67E36B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:30:49 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 49665802F5
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:30:49 +0000 (UTC)
+X-FDA: 85288960218.26.303FFC1
+Received: from mta1.migadu.com (out-3.mta1.migadu.com [95.215.58.3])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0100C1C0009
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:30:46 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=citrix.com header.s=selector1 header.b=q+LxoyvS;
-	spf=pass (imf18.hostedemail.com: domain of andrew.cooper@citrix.com designates 52.101.85.47 as permitted sender) smtp.mailfrom=andrew.cooper@citrix.com;
-	dmarc=pass (policy=reject) header.from=citrix.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791213762;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j6VTrRgn;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.3 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791214247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LKO31lXYdfPbDxV1efG7Ao0Bl2Aj/c/SoSfBDZdkcOA=;
-	b=x05qt5cCwq5grjWc8NDkcW2lKky+ZeMW0xrgj+VMzehomGhZBqzRggx/4lkjLJDfXLwuAB
-	n9Q5WEtoNgVZBvmD0DJ31D6p+JS7dOTJfDOPAZwBBJ3atqrmTY/GafjrPnxsdMe2Gczd4u
-	7MxDdeJwefDeV5kVko5dt8rcKHLQKv8=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791213762;
-	b=ig4srQIfIEoYwdlehePD0ppeHrH5jEjq15+lfYxlzVDE+arFjKa88yueDsYE+OmB4YjGma
-	NcDun8TOcwUk2wrzWJjvtR8y+2D1Uj2IvVXkzzWL//Rh6FSUmSOzZAySdEoOwQcoyu8yPi
-	aVX8ASMkzttFFObYqs3SpuDKICPSlCc=
-ARC-Authentication-Results: i=2;
+	bh=B2VA45vllBvMtIoncXl0OySE2UGSiOHXwSV6ttVKDEM=;
+	b=ZjWnwk9w4lQmkLHhFBcvH3Fef1hXWJlfi9UH/RFdGGGDsLLuBgGo0c28pLYwdOleH3Ab5V
+	SQJpaeR+PUbYnTi3E1mHQsRbYqQxktWtq8zwhFji9P69auHrVAF0PTsXGBs4eySSEBAxKj
+	A50hDawyuy1QzXA86C8zZpDPJJOAvlU=
+ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=citrix.com header.s=selector1 header.b=q+LxoyvS;
-	spf=pass (imf18.hostedemail.com: domain of andrew.cooper@citrix.com designates 52.101.85.47 as permitted sender) smtp.mailfrom=andrew.cooper@citrix.com;
-	dmarc=pass (policy=reject) header.from=citrix.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ghkVt2aCHIKPo8lKoxcyVO9XmY9VWn8fYLX9b4WrymT48iXzSe0Eb6V+4/pRrREM2IXQM7pNRbB+E8L68Qn91oXcgP8bzh5+IduC30itzemZplZUBnl/I1qpKYWlAoCLeN/i22rnW8qacsZRdid8exZZnevgP1y2Grb0vcJxNSslt+059B6IThR64LjfTwzeSxkIYXOjZTaCMRJ90Lb4xWqS6b1OIzSKRtk+1qdxvF00ofi+Ei/J+YhpUfoC17dUmIUwTS6KEHfx34diOVwhdkip6E/e1voFqSqannhie69Oot+zh9lSduPcztEruyXpK8wnzQvPp4eNyDc6otaJfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LKO31lXYdfPbDxV1efG7Ao0Bl2Aj/c/SoSfBDZdkcOA=;
- b=a6WzqeUdhnwB9gWFqo+FuHnGB08pmHq7EaNofbssU+ZgcfUDsVbFpP6Jt4V720eXo3jfah3tt8NS6PeJ7q0HumhTM0awODWjD+PNoK2g2JJFwUzOuAjiX65V3/SYRr83O0yenEXCJRd14s6AvpuX3nuJ8LkiftJJiietRTIXunBeTXrYdyVHceahFXjLVH+RN167ULaI2Hz04X+q0bDqvyyv19LCi9sz4eUvg/jtHgZOyQDL6RFvcMnv51nCHKPWVYAg2PT9xCZx+URjYE2LyNJaw13ynYoOlCC/sTrYRF+qCLeOM18hl7qVVH5JDTM1xKjU/poJ27snTVcxFWEZqA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
- dkim=pass header.d=citrix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=citrix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LKO31lXYdfPbDxV1efG7Ao0Bl2Aj/c/SoSfBDZdkcOA=;
- b=q+LxoyvS7Bwkh7VktXVGEI32CntZRt8lHUgqi2J8ePrdSki9axbdV/oQAQkrhXAF3qZ/v1SqKi7xh3dWHGf5mXzOFlw6jcJpUAqHALb9LvRRBHs3ISbWLEKWDZm28SJk0gWhEaPhDNGrkYa2OzzxYflUE5JRbSXHvrYtL96gyhY=
-Received: from CH8PR03MB8275.namprd03.prod.outlook.com (2603:10b6:610:2b9::7)
- by SJ0PR03MB5773.namprd03.prod.outlook.com (2603:10b6:a03:2db::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Mon, 5 Oct
- 2026 15:22:37 +0000
-Received: from CH8PR03MB8275.namprd03.prod.outlook.com
- ([fe80::a70d:dc32:bba8:ce37]) by CH8PR03MB8275.namprd03.prod.outlook.com
- ([fe80::a70d:dc32:bba8:ce37%7]) with mapi id 15.21.0472.016; Mon, 5 Oct 2026
- 15:22:37 +0000
-Message-ID: <9459bab2-b373-4008-8f3d-f84b62db5b67@citrix.com>
-Date: Mon, 5 Oct 2026 16:22:31 +0100
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j6VTrRgn;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.3 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791214247;
+	b=HTMcv2sFi8lLNqozlOXHgLPn5hhxl+oLDmzRkjrXB6QDGd9S2Iai8tkycaqaX/iG7RvnTu
+	4v1HaLzrYpm6PwY6ic4JEuBNAOHDrdITIosJcYTqoWSz0jk6mcFoImO0PlSpQSPyO+bLPa
+	LmFOYailgTGbVLvncexrb41q5wNBSNw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=21gxMkJy8Tqmj1dU+Rerqv+FZsw/hh5Y+yv1SLdWWq4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791214245; v=1; x=1791819045;
+ b=j6VTrRgnmgzRxAAV5m0NuUV7WgNA5nN8NbSXu28bo6iVIfQN3PvHmEkXzYNdZ5rWnac5ytVp
+ Q3TotqNBm6pnqRcQnDWmsImLU3aT1Y9TxpIWmn7u08n7L6pSkC0iswyl3r7264eH7INwvUAKvcW
+ CuBWw23onubzWK8GWFH4DDYQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0be697459824643c;
+	Mon, 05 Oct 2026 15:30:33 +0000
+X-Mizu-Trace-ID: 0be697459824643c
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <5fd2d5a3-8499-4811-b2b0-457a2116807e@linux.dev>
+Date: Mon, 5 Oct 2026 23:30:18 +0800
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>, dave.hansen@linux.intel.com,
- luto@kernel.org, peterz@infradead.org, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, x86@kernel.org, hpa@zytor.com, riel@surriel.com,
- linux-kernel@vger.kernel.org, qi.zheng@linux.dev, nadav.amit@gmail.com,
- thomas.lendacky@amd.com, kernel-team@meta.com, linux-mm@kvack.org,
- akpm@linux-foundation.org, brendan.jackman@linux.dev, jannh@google.com,
- mhklinux@outlook.com, Manali.Shukla@amd.com, mingo@kernel.org,
- stable@vger.kernel.org, toshi.kani@hpe.com, david@kernel.org,
- mikhail.v.gavrilov@gmail.com
 Subject: Re: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with
  TCE
-To: Lance Yang <lance.yang@linux.dev>, Pedro Falcato <pfalcato@suse.de>
+Content-Language: en-US
+To: Rik van Riel <riel@surriel.com>, dave.hansen@linux.intel.com
+Cc: luto@kernel.org, peterz@infradead.org, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, x86@kernel.org, hpa@zytor.com, linux-kernel@vger.kernel.org,
+ qi.zheng@linux.dev, nadav.amit@gmail.com, thomas.lendacky@amd.com,
+ kernel-team@meta.com, linux-mm@kvack.org, akpm@linux-foundation.org,
+ brendan.jackman@linux.dev, jannh@google.com, mhklinux@outlook.com,
+ andrew.cooper3@citrix.com, Manali.Shukla@amd.com, mingo@kernel.org,
+ stable@vger.kernel.org, toshi.kani@hpe.com, david@kernel.org,
+ mikhail.v.gavrilov@gmail.com, pfalcato@suse.de
 References: <20261005052302.43042-1-lance.yang@linux.dev>
- <asM7b8ECO34-jiwi@pedro-suse.tail5790ac.ts.net>
- <60d5db86-8002-4d87-b8d3-c161d674122b@linux.dev>
- <ab077b6a-160f-41a2-a167-813f0560e30d@citrix.com>
- <38541ec6-d796-4f35-a700-75ab097b6df5@linux.dev>
- <7ad90e94-d04d-453a-ba22-9640a5024d8c@citrix.com>
- <6801221a-6307-407a-85fc-46906f95d22e@linux.dev>
-Content-Language: en-GB
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
- 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
- 6+ahAA==
-In-Reply-To: <6801221a-6307-407a-85fc-46906f95d22e@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+ <4686fbed54796cbd32b5d524938d9cde184ca501.camel@surriel.com>
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <4686fbed54796cbd32b5d524938d9cde184ca501.camel@surriel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P265CA0273.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:37a::10) To CH8PR03MB8275.namprd03.prod.outlook.com
- (2603:10b6:610:2b9::7)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH8PR03MB8275:EE_|SJ0PR03MB5773:EE_
-X-MS-Office365-Filtering-Correlation-Id: 396d22c9-aac3-46eb-9ec3-08df22f47caf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|10067099003|56012099006|4143699003|5023799004|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Z43KP3XyrcywWiVBLZTXMtba7/wOX0PCHjoBfgYN4CqQo5ljuEdcYVUE8GHXvEKbIIsSGxTUDCP2gthWkhdxdXhXnf5eqNFBG2psu9Ikqdwsmg3maiil4o6Y6RMwZ86bsDpsTzXEKxqK3uiadwDwMB8gLEvAsMNoDJHJ4Tr7sIvS2/T/HlR4EfFGQfNbG972cDXtaNqmZVi49PSImY7uBPsPE9zvWP6r5RIYulmvAtpyB1TmCLU+BQgG1q7yLqhzhv4FNqk9vb5mg3abiAkX56whUBpe/sN0jizJ+JyCc1YBEu83Q23nCTQmFTG1ZWRf5j2iqX4fRHVYrQWY1yD/YH4/KVIk4qhcuOuK4cEUUNv9NeZ4e3BDGS05fmUQN+Ldge+/YNJhEyykAyCppHlWiy5uZ4pdl2hDYOFA4B8dlDZYQ++Hnx3QZNsb5a4swyn+j07uCcIYzZGTFTgxzxGLFR/tuIgDF70W5PkZ5cEk4qd1+hN1GfyFpJ61wQZkmvejg6OZlgSX3Fl0vmgJ5PJMFErPjYtxRGvhAW4G+DVfSST0TgR8NgUcBZc83wHRiFTkP+frjLDMY33Zd52QBJcBkrRH/Qrqzz2rdoBfcZBxsVsNRuX8sq4Ly4xGXlfG/R2K
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH8PR03MB8275.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(10067099003)(56012099006)(4143699003)(5023799004)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ay9jeUh6R2hvczNPTHMxUGVEdDR0OFhXQmRvMUlra1VlNXdVc1d4R2RYbDNS?=
- =?utf-8?B?YzBSOWNQamt3Z3l5eGgvU2l6aXdjNVVvZkJUMTQ2d3RpODdGT3ZzUGs1bjN1?=
- =?utf-8?B?amhTSkpQVEJYbnBYY3JnWWcrQmtMbTc2akpMQ1F2b0NQbUlrK3UvbEVKaDBm?=
- =?utf-8?B?b2lzVUl5QkNYbGZhUWFFeTBOeFk3WEhRYmZjMUxEL3kzcWd5OFpxNUVHWWlX?=
- =?utf-8?B?bEI5ZTNwalZ2VHVtNkRNQk9lK2VRZ0FVTnJxZ1ZoanU0WVNFU0JzS1IyS1Y5?=
- =?utf-8?B?bFNFczFpU2pTUG9tT0hsbXVTeVZZdUxEYWllNEdsU3gzMVJKVkFWQVM5TWJH?=
- =?utf-8?B?cDd0elJqR21iT3dIT0tWSUNOMlZtTDQ5TW10M0xvZFFsaHMwMXZjYXo0OFZW?=
- =?utf-8?B?d0pGYno4MnJXTkRQTGV6YmpMSDEyUCtMdFYrYmtwWHJQT0JMeXpsQUJ5NnFV?=
- =?utf-8?B?QU95Z3N3eXBhMENVcGM5YlV3eVVZZUhLendoMmJRWjJ0YWJOaGZHempPK3Fi?=
- =?utf-8?B?MHhCa2d2R2hMTzZyZ0JoQXpVbG50K29XSlQ0aTVURnRFS0RDSmhJTFZPTG11?=
- =?utf-8?B?TENhSU1udCtwMkpKYU90ZTJrcDZuZmpCQVZlN0xtZG44L1FCeW91RXI2dHVl?=
- =?utf-8?B?a3V6WnNuQVNnV0ptNXE5aktWcno5ZlJLeGF1UnN4eWduaXRhVkRJcDlDRFlE?=
- =?utf-8?B?dEVzRWtjOFJZeTkvbEhBdlZwMmQ5MnhtNzRDWjZRQmROTGt3OW1aSTNyaXhO?=
- =?utf-8?B?UDV4OXdjdCtxeWRoeHBia3J5OEp1dHVVZFFiS1F2NkNPV0RkUW16c2lxbVF3?=
- =?utf-8?B?SStZcDNPNjA2QzJzNWoyRFYycUw1YzRpUFJaTnVsekE0Tkk4dXRiN1UwdWpE?=
- =?utf-8?B?dVVqSE5DN0ZSeDRFeDl1dkpQYU9LVURwcnQ4QTlGVW5pSjdpbGdtVDNYM2Zv?=
- =?utf-8?B?akxock44a3pwZGQ3VHFDdFpSYXZnblZtZHNRRXlMYjM5VVp1bTQvUUI2U1BB?=
- =?utf-8?B?ZE5hdWszQnBLWkdsKzQ2NmRCUGQ4UXNhUkRCTU1nb0hpZ25KOW15UzRHQzRE?=
- =?utf-8?B?YlpiWHpjY2FGamE4elN0OEYvUkhwZTZFRzcxVWdxNExheXlSc2NBbStaU0FY?=
- =?utf-8?B?bCthdTlQUzkrYkVHeURXNE9GR29xNy95MzViYmRCNUJlNEFEbTZyQjMwVXNL?=
- =?utf-8?B?SnJTeHo1OWtHVTYrcE9BV25SMWY4ZGNYYUtMc2J5RWRQRm0wem1henlMZlBO?=
- =?utf-8?B?SjJzbkIrNGhyR1VrWlJjcit2U01YaDQydHRPTXdJU0JEWGZYUyszTEJxREVE?=
- =?utf-8?B?VHhYTXFybHhtWGQrd0tkQW0rZElQbG9qZUN5THlldE1xRGY5YldTYXFDdVlk?=
- =?utf-8?B?cW4ra0xBWFRabGN2WklVR3p5bDJwUktyOWpyaXpLalpCdFcvK3RwQlJBTEpx?=
- =?utf-8?B?Sm00Qlp2cHdsbU5SOUVyaSt0T2QzeG1peW9zSlBod2pxNzMvK1ppTENUdE9j?=
- =?utf-8?B?VWNmV3IwVDFWVnlZUE1VckhPWk50WUc0TG9nMEtITHZqaFcyZHhtYzlFMCtG?=
- =?utf-8?B?U045a3F6M1lsTEZicUxhWW92MUVjNXFDaVcrY0pkRmE2V2MwSmRYVXhUNVR5?=
- =?utf-8?B?ZzVjSEdRVm9aS1F2TGRoY3h5aUIyUzlib1NqZzI3dTZTb1Q4WjZXOWFEc2lE?=
- =?utf-8?B?ZThkZEZLRUdVTUFlNDFMNmRkUUhPMGEwNldweE5kTGtIOGFTNUQ1dDIveUpH?=
- =?utf-8?B?R2dUQVBlYi9iK2gvdUlYZDY0NitobUgxVGV2bkxQeXNIQ1dRaVhDWHcxUFFi?=
- =?utf-8?B?ZkJrdGkvT2ZGdG16d0JEQzc3TnI5OFcvTGc4eloxTk03L1BFcWlTcUY1bUxs?=
- =?utf-8?B?c0MyUURiZ1FHU0RMcFVUZXVyRVNxTXYvejRLS0JrVmRGN29aOEdWeXpmNXpD?=
- =?utf-8?B?WDRZM2xadEE3aElKQzFFUEtybnRnMjQzZUpIdVZJV2lvNXd6eFZZNGwvZEYr?=
- =?utf-8?B?blZjamVXY2g5ZndmM2RXLzdzMUF3Ui9GMGYxV2ZjY05mMm81bjlCR2NCeHhz?=
- =?utf-8?B?bkFmQmgzKzRuWlZIblQ5eGRxVG1tUDZON25FNktKMDJBcjM4cUljdzZJL0VX?=
- =?utf-8?B?ZGdMSmhFZFpHSGltRDQ2NkQvUE9Cc2cwTURjcHRwMkhXSmo3UUIyL1dDbXYr?=
- =?utf-8?B?Q0xyQ2Z0Nm9MdWt1dnllcDQ5SmNHVmoxTER4OXh4enphbEpSN2hDRG9YdktI?=
- =?utf-8?B?aVFsdmZycXFRSlNiSys0cmo5MmhFSC9YeUxhQ2RBbFIxNytoSytyWmFiN1hj?=
- =?utf-8?B?WTBoTXlwaVBubVdkWkFRWEVSL1ptcEFEZVdWSDlEcEFlS2swb2JpUT09?=
-X-OriginatorOrg: citrix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 396d22c9-aac3-46eb-9ec3-08df22f47caf
-X-MS-Exchange-CrossTenant-AuthSource: CH8PR03MB8275.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 15:22:37.0030
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5e4hFUZf4Ry4v+Bjd1taQkadMGcdlNzNG7pEjRRdFIHnAw3CgSYTBiDwf4yC7yhN2l3s70jJnpJIQQMgJqoqUHhjn5044XJqrbM17ieH/dk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR03MB5773
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0100C1C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 675CF1C000A
-X-Stat-Signature: scfq5gx7caeuahgu6cbsw6rg77kzqnp7
-X-HE-Tag: 1791213762-239296
-X-HE-Meta: U2FsdGVkX1/lqw3nUYgEDaraQ8L9D+wQTP5yQ1U8YGWR+/Gx+7yioIRcPV9RD2T0RmecKBKYoLvi8epy6eFeHeehncCbiNQAl4CMMKZqFzQyXn+CAMshqgqNY3Mheau3xuqJyf7fWSqbKU7UAOvpIggS6gLJRLRnsQacVGOIcBTSRaqJUAb+g72NOvuScBc1EnBsw43CDhvKLH0d9LiQ8O7+jYIq2VQFlzeJSGFU1PXdxxLC0ZpxP9JaXG7iZNjwRHTunJR9GxXOW+EMpPSjUryR7tmWKox3jYnUlh6f21KkTrme8m1cEOBlxebPp0kNROFEF6fQBm6rH0VUVDGViPk6A7pdW79K2YGQOQEMF3H17/lX/YtQUw/6nG2Ucq1WRZUBYDhcSY8VLWKXX+spPMmNAQRyTglh0amkUZXjW6HWfT/OxQqfkFtU/1XsNBTGpJMZE8WxfEXA15NByOkxQ4wk9yvT+xaS+4H4DM1EiZEnCr1b96VN+8B5qLyGdqfXW64CPOXxpNy/zvymLRryR/6Sxl+YLcqeKojouwPSueTjxZm5T6IAqv0Zh4rfigrR4iT+a4CPiO/L9ctuwOIXgVBXc6w8mSZNvB5Tyemt2ng0+UDW0zbQSGs5+DaLtr/M4KBTuukz/5MPkniBFfefl5afABbcPGOOHm1hgw5jKNktk98wdCoXvGZp1w4l/qJfCp4GhbqUse99mt4Uc2TxDtlfY2Ma2a2MRNq5kUx5G14VsRNSPsUoZf+RXoYuyygpjSUDrUZrRbRZhEjXTbm85af5DUCGp2YX5SxF8GAq8VFDijb22kLQD6zPDlmzqi+5X2CwhSW87thfqULJnnw28LM1Ua7qFOWcqz4ZIQ/goTSKAb8lgvdCsLFHSZCy3eyJjxoq8j6zzpDT3K+tGA7M/X2jLyeGn0VW6BpKY05saGcRwqX6SkLyXiKhgww6+oXC1ck57WtLVIBtf1Kcp1j
- ZSVHDtlp
- jOVLPjYZdn08WVtO5vcHliIKVEUsmeUJQb3HaEpsthTSTqkKQigveg3WTqjFx9AvdZj3T4NMZxE9RLjbBqR75PvlATkMq0OVFg8U+6xLX8sZVgr1snBDfgWG0iefz3y5cBm9kNH073F36tomT3AmCeUAyolELEowQnOJHlllwEbNdXc1R/5XpWYFXwyTCtv06mT3J9L11XNIjsRfZJZ4T6ivnsqja7gxSE8dGo7KBBuLb8gCm8NGZ07ys7C20eeZtuENI5goziiYdI8eobzQfs3hCpMANzrB9ITScHZxGI1vTc/uSxnZ+sKcaP5YJSUha5z+fEQndHxkXtufFE0nNDTx73jD46AaF8HLAegDUXpgTfAlpkxYMFsXsE53ZoMjgJEWd1EOst2enJUwYLJ/vLU6m1+ynmWwx27EhXKsOJddHcOzHV9sU8edLM2BfMNJXvmZuuHsanRtXjuJa3pZLSPqGxM/aFQZAJCFCqNJCVzdzINAW9oxxdNtApX/ubRLp6z7KbsfYXNfuHtO90MvldjDx4lNMd19ZHFdkR0Gj9Ri2cQmAWiwYydSCEwmjASuBUCeIs7OLFPdhOdqfWzl1tn+HySQFQ1H5eXuPP95ohF8FI9KKKgZRMoqG5ZqilhJ0ccHNNnE2m77TJHafxPDXpPTyvqA+jvQMeuWWLhBpBw9FcWj05chuyIPScTkneWhiEynl/5Je1J9S9Pk=
+X-Stat-Signature: 1qn643bwikw1ej96m13g37zawiq5bkmd
+X-HE-Tag: 1791214246-494657
+X-HE-Meta: U2FsdGVkX19s13oBzsdlyJhbbECylVVclV90uoPUT4flPr5nrlSb32KkDl6QlnG/iFtyzolvu/4FzgpoWF72RlPgU4pW4TuHd18NAtFAx0QxI5C3Uwib/eULWqB0HYUHP2AsS51oKb59nm04aI2ABnGZM42bM270yMZXoG7PrzdlBO2zPed9QV3EdQJE/ku9ANFt4/mHj4ZVAMrb4wV11d8w0Y4n9GeDVsFmpGMQ3sNvt9tXjiO63IEFjBhFP2zbIUfgkKK1G9NRtIttxYSsQa4T9g2Ij0U/0sSWuVjECSXsUI1W7LNZwHqNPJLMHj4iit1UhD/b3d5Soaq0xKI5HzFF74hmdETNEZQhyTzJFnSMckSou+bNmzxE4RFCL+Zj+0QXZme2F1Bbq6iKCb7lchbzNtvsqzQH1dcouXtkq8Bm5ur6UMaQWr+iCCWBwalMrBI107h2GsYvfth7Mh6INCjZ5gxuzW+Vwq9bdS5qwPxyNXShQJZVvM0i41xwz7GCQbAvp9rwSFtAP5y1EoFr67HvwmRtlatBdkxXMGOKieQ5resaP/zejMsp2zHuCIg7NrEpJ8MDidP20vXR5F/Vya5bkIlUJEPX5ZFqowTCay0iLzlIkj/qtme4ArrhilkxTK4JIgCFLctTYbZyt5NPFq7Uc4l34DbiY2No5ShYrn+S1PM/Dq66MTVrqck2ZrvXbrSg4b+0MPuG9Wy2BqKnjoNKIZjmPQyMJtUclnC0WK6hTuw28aihnuc72rQdso7zSmGMpfFg9CJuTef+Ee3oxKgdt7BOOz1YRolsIhHpzhwK0MeGnFpJPSU8NJJcTYGOBL3oOudKd4wBiUIpHKqWUaBUxN7khEstkqEzx+VSkSQZbMyerps4ED3anAt+C9Aj+2KKOsTtZaUmB+dj1SiTA/WUlEpD417ZACyLtoyWzM1BXWI92FnFq3mp7vYYErxisaFrgdCX+ttAhmJ3VW8
+ +pzYwgU0
+ vkU0eAl+CfROySkYx84zhLFh8DhdJKfEhaQar1vEVd99rakUz0T3KTHc4XND8OM+L/BnCl1+C9uox8ZC1CBSGaWlHLg0y8/VVdoFj+MFcoNrbVbx83ofZySEXI9DnaO+gyZ5PRaXav4GTM9AaMcilp1IR2CNAYJS7o8gHXQFi+c/tY1/kGIE1TqNdcUvg9f2d5tBbA4aJyuQ6JpdDjsxaSW+CKi8/6E1Yl8dXRXEPy3pw+X4EmznecEHSs0xmRAz1xS/WLi9iVI/8cWOsJ27F8VVgmv7FirUi7kJfzf+mVNsaeYu4v9ZB6Jp3g18FHYvszyxzLrZR1ItemfTvVN2sArNIouNkbPDksQo9CMDC84tCYuOrAbzNzH43sT+FH9MXxN7A
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -227,71 +99,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/10/2026 11:12 am, Lance Yang wrote:
-> On 2026/10/5 17:57, Andrew Cooper wrote:
->> On 05/10/2026 9:32 am, Lance Yang wrote:
->>> On 2026/10/5 16:19, Andrew Cooper wrote:
->>>> On 05/10/2026 8:29 am, Lance Yang wrote:
->>>>>>
->>>>>> Did you repro any bug related to this? The functionality is perhaps
->>>>>> underspecified in the AMD manual.
->>>>>
->>>>> TBH, I don't have a reproducer yet. Just LLM stumbled upon this while
->>>>> I was investigating another memory corruption issue [1].
->>>>>
->>>>> [1]
->>>>> https://lore.kernel.org/linux-mm/arY1Wq6R9OY20ans@pcnci.linuxbox.cz/#t
->>>>>
->>>>
->>>> What hardware are you running on?
->>>>
->>>> That looks like the Zen5 issue, for which you want either the latest
->>>> microcode out of linux-firmware and/or
->>>> https://lore.kernel.org/r/20261002211617.1001617-1-bp@kernel.org
->>>>
->>>> TCE is a no-op in Zen1 and later, so unless you're on older
->>>> hardware, it
->>>> won't be that.
->>>
->>> Just to clarify ... these are two separate issues.
->>>
->>> I mentioned [1] only to explain how this came up while investigating
->>> something else. I'm not claiming that TCE caused the corruption
->>> reported
->>> there :)
+
+
+On 2026/10/5 23:15, Rik van Riel wrote:
+> On Mon, 2026-10-05 at 13:23 +0800, Lance Yang wrote:
+>> pud_free_pmd_page() uses a single-address invalidation to flush the
+>> paging-structure caches before freeing the page tables. With AMD TCE
+>> enabled, this only invalidates upper-level entries associated with
+>> the
+>> target address. Cached PMD entries for other addresses in the PUD
+>> range can
+>> still reference the PTE pages being freed.
 >>
->> Please can you answer the question.  Which CPU are you seeing this on?
+>> The AMD manual quoted in the commit enabling TCE says these
+>> instructions
+>> remove
 >>
->
-> Which CPU? None so far. As I said, I don't have a reproducer. I'm trying
-> to make sense of what the manual says and what the code does ...
+>>    "only those upper-level entries that lead to the target PTE in the
+>> page
+>>    table hierarchy, leaving unrelated upper-level entries intact."
+>>
+>> Even with all PTEs cleared, speculative page walks can cache present
+>> PMD
+>> entries after the earlier TLB purge.
+> 
+> The comment above the function says it all. The TLB
+> range should already have been cleared by the time
+> pud_free_pmd_page() gets called:
+> 
+> /**
+>   * pud_free_pmd_page - Clear PUD entry and free PMD page
+>   * @pud: Pointer to a PUD
+>   * @addr: Virtual address associated with PUD
+>   *
+>   * Context: The PUD range has been unmapped and TLB purged.
+>   * Return: 1 if clearing the entry succeeded. 0 otherwise.
+>   *
+>   * NOTE: Callers must allow a single page allocation.
+>   */
+> int pud_free_pmd_page(pud_t *pud, unsigned long addr)
+> {
+> 
+> The PMD could have been (speculatively) loaded by the
+> CPU after the PTEs were freed, so that one PMD mapping
+> needs to be flushed here, but there should not be
+> anything else left to flush.
+> 
+> The code looks odd, but it's a good idea to always
+> ask your AI to draw up a full chain of events for
+> a bug to trigger, going all the way back to something
+> calling the mm from the outside.
 
-I'm afraid that if you're trying to be helpful, you've had entirely the
-opposite effect.
-
-TLB handling is a complicated topic.  What you've done is present what
-is effectively a query about the AMD manual as if it were a bugfix for
-an critical-sounding issue.  You even sited a real bug-report for an
-actually-critical issue, despite it turning out to have nothing to do
-with your submission.
-
-The patch is buggy.  For starters, you should be checking is whether TCE
-is enabled, not whether it's available on the system.  This causes the
-more expensive option to use used even when TCE is turned off.
-
-But, AIUI INVLPG only flushes the whole structure cache because of a
-windows bug which caused it to crash on a 486.  AMD deliberately
-introduced TCE to remove this overhead for every OS which didn't want
-lumbering with a workaround for buggy windows.
-
-Linux currently believes that it's TLB invalidation algorithm is
-compatible with TCE, so at a bare minimum, you need to have some kind of
-discussion on why you believe this not to be true before claiming that
-it "might be unsafe because the manual says so".
-
-
-It's fine to ask a question, and even ask "so shouldn't the code look
-like this?" but such a patch needs a very clear RFC or QUESTION tag.
-
-~Andrew
+Thanks for looking into this! I'll take another look
+and trace it through.
 
