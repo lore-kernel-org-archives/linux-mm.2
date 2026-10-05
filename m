@@ -4,129 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00076CA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 12:27:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E8BECA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 12:48:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EB7B6B008C; Mon,  5 Oct 2026 08:27:06 -0400 (EDT)
+	id 4D2C16B0088; Mon,  5 Oct 2026 08:48:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1753B6B0092; Mon,  5 Oct 2026 08:27:06 -0400 (EDT)
+	id 45CC46B008C; Mon,  5 Oct 2026 08:48:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03D266B0093; Mon,  5 Oct 2026 08:27:05 -0400 (EDT)
+	id 323E46B0092; Mon,  5 Oct 2026 08:48:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D65476B008C
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:27:05 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6C64316022F
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:27:05 +0000 (UTC)
-X-FDA: 85288497210.29.35ACF86
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 00A90C0005
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:27:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=x4jPGH00;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Kzh/Utin";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hiTqsmgv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gQM2+0GQ;
-	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0794B6B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:48:06 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C193A66B2
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:48:05 +0000 (UTC)
+X-FDA: 85288550130.22.0B872E6
+Received: from danaos.cslab.ece.ntua.gr (danaos.cslab.ece.ntua.gr [147.102.3.1])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 82440180002
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:48:03 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=cslab.ece.ntua.gr header.s=smtp-cslab header.b=A7ls1Sud;
+	spf=pass (imf24.hostedemail.com: domain of dchar@cslab.ece.ntua.gr designates 147.102.3.1 as permitted sender) smtp.mailfrom=dchar@cslab.ece.ntua.gr;
+	dmarc=pass (policy=none) header.from=cslab.ece.ntua.gr
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791204484;
+	b=EQmWWksYBY7EdmsMhNxQavjw+TtxyVeS36Dz3fE91UzO+JQDsyjBldrdurwx2grrMzRndg
+	zadVUhF9cguc8P2WAQByON5Pmkp5RZ8U2w6BzfYwax4+/2fl0nBVR6F2zpdWooRMnSewNv
+	qPv3HIuUDXziyRMJ7Ljd0/zeZQeEAN8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=cslab.ece.ntua.gr header.s=smtp-cslab header.b=A7ls1Sud;
+	spf=pass (imf24.hostedemail.com: domain of dchar@cslab.ece.ntua.gr designates 147.102.3.1 as permitted sender) smtp.mailfrom=dchar@cslab.ece.ntua.gr;
+	dmarc=pass (policy=none) header.from=cslab.ece.ntua.gr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791203223;
+	s=arc-20220608; t=1791204484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5l7VlPR66me4odboWE7ekILisSjtVBHA12CHM7mb7Qc=;
-	b=7K376TPit5TCZjefyINbz4DJ33YvKkyTNTlkX1ssVAVQd/UpuzEJs9MlIUVemzb5Vwj2qn
-	zlbLFVUZyfn4/Nhoj/7sTBjtHz9h35kKWfAcT/9n1oVbm0AWqxlcNu33GKDcjJ5nJ6WwD5
-	VVnQem7nN2eI2ktHyKUJYHZ33c50sSQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791203223;
-	b=YIPMjrob1cyC0cBX++dCRVAYeboKky4j5hQZQW+iWMC97doqy5YSQFRE3l7H17xP48jMpK
-	TAL9/s5QVRDqL7ZTV+FYd48m3OIPYY3AUpasF53u8mRdQgNdp6qyd9wOkQ/2MdZicGQ79R
-	SNJg/3h45ToRZ2T74OaqJtF2MBcydSk=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=x4jPGH00;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Kzh/Utin";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hiTqsmgv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gQM2+0GQ;
-	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CB7311F7A1;
-	Mon,  5 Oct 2026 12:26:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1791203216; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5l7VlPR66me4odboWE7ekILisSjtVBHA12CHM7mb7Qc=;
-	b=x4jPGH00IsomYD4qsQk8nGLEHpkznazt0J5G/ZSNTgYqi6h2b6Wq2/mqLZZPwfL2a5jEBf
-	/R9TGEp7Qen8RKGTqDaOSigs/TipAfMOUZEsDTeKEgEs3HFS/PaCD4LKe2rGIJPu7YTeRr
-	AXpBqY866zWoM5pmEaCIcx6+abAWwmQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1791203216;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5l7VlPR66me4odboWE7ekILisSjtVBHA12CHM7mb7Qc=;
-	b=Kzh/UtinkfQwYwOQ55VuN6tk60EmvHb2WU3/VUGfaPs4bIFOLyeYx0q1XxotsbSw0EClcg
-	r4TGr9ZnMbdQDoCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1791203212; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5l7VlPR66me4odboWE7ekILisSjtVBHA12CHM7mb7Qc=;
-	b=hiTqsmgvEsIUVBBYAV2gQXRLmfYRQVaAcD92s1gejeh6CT8Yq01Yc1OeU0nYED+vkM3kvw
-	qoZ7/W5BoYyY06ovtPGG3EwrEFC7FR+UqhvB7FM/ObbM7bpQYm7CO52kmedjS8AGrrfP71
-	N9JUx71HT3iuQfctEdPKw5bdm91UcdY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1791203212;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5l7VlPR66me4odboWE7ekILisSjtVBHA12CHM7mb7Qc=;
-	b=gQM2+0GQp/lhMVWk8oCqV6wYtDGpUJc9+coi34x8nsEmlgto+Hzxb+yMRAtyk4vbGbdNw4
-	5txWsYkxLsLWu3BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 88F4513AD2;
-	Mon,  5 Oct 2026 12:26:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 16HeF4yXw2rMKgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 05 Oct 2026 12:26:52 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id C40B4A13FB; Mon, 05 Oct 2026 14:26:51 +0200 (CEST)
-Date: Mon, 5 Oct 2026 14:26:51 +0200
-From: Jan Kara <jack@suse.cz>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, shakeel.butt@linux.dev, 
-	roman.gushchin@linux.dev, willy@infradead.org, jack@suse.cz, mhocko@suse.com, 
-	muchun.song@linux.dev, david@kernel.org, ljs@kernel.org, vbabka@kernel.org, 
-	liam@infradead.org, rppt@kernel.org, surenb@google.com, riel@surriel.com, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v1 0/3] mm/readahead: avoid per-folio memcg reclaim
-Message-ID: <gz7cxhldkfkinbzpx4goa6rhdqpzldpaenzhtfoxcztpzj5avw@hkzo4fbdbck3>
-References: <20261003001555.3498357-1-joannelkoong@gmail.com>
+	bh=p+4j+2Y8EMDQkEbNTWfPTT/aEWlmRsgNZQpahLYccWY=;
+	b=S8oDssA5SOOPFQJCYVmJHMq/sU9xA9IMtSoqHDGoxzwuhr6UTsIBgGwk2ousTXFAlo6KyG
+	qJyvjH+zfibeW52N1L9yar1/Q6LSYzj20SbrlSiW9JUxnnQ7oxIjOtK2TnfQPcF0m2HShl
+	Ch7gdiWzbeVNzaCphliDja/eN3rT1FI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cslab.ece.ntua.gr;
+	s=smtp-cslab; t=1791204479;
+	bh=RT0cvZhZuYfunz+KKV/LNA7VnNO4f0qqJFRrlvkn7RE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=A7ls1SudXyt2eIr/ey819WhfOElxRY+itA9X5ICt39FFvjh32z04x01RS0n3gHwze
+	 uwfej74RVhDDx19sPz406tzbJiK4/pVhHS+oSzK9HxK7qvbVUDURbh51PNGzoRJN2a
+	 j+lcrfC/vSU7pk0k9Vyl4reDhJqO3SSB9RDjXTeA=
+Received: from [127.0.0.1] (armor.cslab.ece.ntua.gr [147.102.4.33])
+	by danaos.cslab.ece.ntua.gr (Postfix) with ESMTPSA id 95FC3120A09;
+	Mon,  5 Oct 2026 15:47:59 +0300 (EEST)
+From: Dimitris Charisis <dchar@cslab.ece.ntua.gr>
+Date: Mon, 05 Oct 2026 12:47:27 +0000
+Subject: [PATCH v3 1/2] maple_tree: fix maple_range_64 crashes in RCU mode
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261003001555.3498357-1-joannelkoong@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261005-fix-maple-tree-range64-rcu-v3-1-ebe7fb278e20@cslab.ece.ntua.gr>
+References: <20261005-fix-maple-tree-range64-rcu-v3-0-ebe7fb278e20@cslab.ece.ntua.gr>
+In-Reply-To: <20261005-fix-maple-tree-range64-rcu-v3-0-ebe7fb278e20@cslab.ece.ntua.gr>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Andrew Ballance <andrewjballance@gmail.com>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: maple-tree@lists.infradead.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Dimitris Charisis <dchar@cslab.ece.ntua.gr>
+X-Mailer: b4 0.14.2
+X-Stat-Signature: 95uzcxgxteaje9srui998ccrpe9j5m5n
+X-Rspamd-Queue-Id: 82440180002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 00A90C0005
-X-Stat-Signature: pt67fpj31s1em6r6onw6pmdb8d31fe6r
-X-HE-Tag: 1791203222-8779
-X-HE-Meta: U2FsdGVkX1+wWwrN6Y5V32A+Sd3Hp8vn53w0xE1qXlPvPlDo7Wckw5F+ntQGkpGBfA33PXMXxuaQ0Nu/0lfHYOLmmmcd8h0pl3c8mIC4iIoBrx+F6P1LiHxkNm9SM7xlQ+34ASPj5KYieIosVLVaXR83V9ReAEqtvM2/Cc5WVaYfY7ubMzIoBu737Cfl7N2dFl1ukKsJKtyR2G265tBCB7n/anDR4h8gJxC8sKx9sv9kQ50YvQ5xPejXCwIN1/A2wxmBkwmn95Z6ChwzkKSzH54uafHqgbl4OZwGYerNCRJrfTRrw8tMmdJ/dVRWQ3xsBUlf6GU+cLovrKCYYXSGZDQZ3AHsqtJJAf4F9reV5c+xgbhiFB9b28YvCdyOZn3lLE2t5NQkccSaeIt8JYl3mpYIAGUO0yDXRz9F8rGDu3X8xw1PAQazYz5v0+iOgcKOZjeUYZ63Ech+mEPvdmnK7J8ac/P4ylF4GCYz4ilfmt0BvJaCkWds9TzYJ7wWYUlg3FNa8MAWFaxhBSVCeppcU3CwQQ0AXvFtbSduIsIN7bqHKW/0Wcz63ZR+hdbFSKYzerURgRRpMedt0T9M/vPHDnBWbP/MSVvjhQ6RKaCDthd8ovEebDdEiux4kx1TGeWQ/JyqPCrhd4qP2r6rlr5uWQdCoudWY0WpstGpb98T7+KcHNNOMKumw7sH7bzcsqYRpWgHRmFU9ofiqf6xa2IwV2xOG3/9yDS0i0yKnzaIGalWnfwX8+HXTJq/iMZgL8HotdMfFLcv7ROLlSZVtdLlSqezu8RgYIjmw1PtUNDxZu4xYsKPYzW3o/PuYFEzoD19DKdgqY1QxIzTtX/3WeP1AbJxcWdYuzhXXgdW90vxJGFJbKmiTaojx0qHPxLlipmPOUme/K0LNMedErFd4nb2HNtgbRtKAJS4f+lEwlB5JfTkKD9Du7ix3B1CMpRiwm4E94ql/BONNBP5sSjjUaw
- FA2B70v9
- MDvflvaxisXv3HAmfF64CtrkUqceBLf0mpgaZuBwjVpdH7qOVf7kGATt3GGKWpIZ64vLE8Y2A2JsuaB0HBIvlSBDN0OPluUy9sReMQHjkr729/x6yxX2eDDQxwacDZ3bQDDfQ0DuRZMsWvJPxS8jOZ8HFjMRqwvsF6K7HiT8I/DMtohQKawVp8cRAhMycSAflQqfC/COZE8p/XVV4ZMjB69fYLMnN+/rV+OZD7+cdsg+3GNDFpU6e2o0cM0Zlzn2MLdpGrBqxVI6NJPA/KnqlBbVJFvTO8JeMD/abVog0/dlThwfK3MxHW54l8bd59FJRLwwH10FhmqXMyXEz0VR7GLoIUg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791204483-138503
+X-HE-Meta: U2FsdGVkX18YerXj0Dpe7khevG9SC1RsiNwwKupyqG6upqDLyiHND9sJ2U8ZiycvcGZkGn7XQF9kRH9NqfD3S3oUA3p9uM5+u0pIqBIrbiPt3nXfbNOrifEIlsPELaeVx82Pi4367auSwOnm4G95ClO7kZIHUoHg9g7dIHRupnEayABah3jh69rq0pW7BKVwoFYHo3SqQ3qi04HUXkFC9b+JvEQVrfV7kOMHkEWdZchD4C0RS73xLzo66XzXdwhXA4oWRdbW+PQ1VNJM//d1LdzXa4S/KKdA2CEAoXSXK96QfF29idyLZnEMKzfzrXNtr6dDPBD9+rS9ACZI5LtmeVqoP4+/l8Z5UZQW8pb/Bk2ji2dC02qf6HWLdSDlLVm+q3ybIECbmNAS7icrj9JL8ycGR6R2CT/H3O6ShFMwj8hwY0Iq59Lgd+uY+70KXtiCL4hSdjXrEw+ORqMuAKuWNEmYbmR7JeT6S2sO93zdGqMIfASjW3YlS/HeLkvkBRyYGxLxY7S325gOFNokKKnE73vkbqYD0fVARX6MK9NiQ4vsEHFYnTKHTPc8tFEyp62ZbboiFfe4DKbOyn4PwlMfAL/7rzR6twWrGA05JjzVN4zlJQthu/eOab6qglxeAQQhQ134v2va2IzIya17r1/QP7SAM0GoGVfKdyWbz4ZPG0iegOee7iKOsl67iqx2Q6rdA5vU5ethOtdsOM9Ognhbqaop1YwOivNusH1VCgOSdsgjUv10YYT5c327TMFnnGY4NzmTSa9uxfFWtHl9GU9lEWQ5y7+re/GlYTcIRKdQz1fbMzbrYukQ/TBwLJdsj6foK8cmhqZBvMSwCfcm0kCm1JJfJRNfe+X1DlOEtNHe406kNYFN8wc/dnBEqg1CA8Oi38eTkH5Vh1AMXcVCVJ8UU6TIKn/JQTH6G1bnXslz+hFbzfYd3ZABe6g9rw7GnQyeNFXyZfV+dz/8lgKPxhE
+ p2eh4ioS
+ J18qcVC2AlsGIBU3Cwn8CytFSIySXQ9Sp7gRj4AN/eZngV9yQoZbD8pSaqUzUYuUIbmiHvGvETxn4hTazYyzCkNTP2GsQC0nRZagT7R5Y7RXCbjIsv4WjVlcEJz4b3eU1FFIR9J+JU3BEfro2yguDQc8TFmEXpw2yUmjg5f2/CbPWE4Z/kgMBseQ/h8ginx/A0Hyf+IibpbIYU0Ciy36UBEHk5RQx7NqVI/jIaZVxYhjFk0kZX75jWkWTmUm8ZhhT+uOwMBCEMBHx5RRG5lGkWDw7vE1IBjEo8bTzV7LxJ3CE/6VWcvWj0VrnY1ZLHTk+owE43HAZgM9y0CKK5AqwmitfMQ/CzQRLHqbDc43/awBxAc1efBQMaN3EDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,150 +91,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Joanne!
+This commit fixes two issues in maple_range_64 nodes under RCU mode. A
+maple_range_64 node repurposes its last slot to hold metadata whenever
+the node is not full. Both issues arise from mishandling that last slot.
 
-On Fri 02-10-26 17:15:52, Joanne Koong wrote:
-> Readahead adds the folios in its window to the page cache one at a time. Each
-> folio is charged separately. When the memcg is at its limit, each one of those
-> charges triggers reclaim. With many tasks faulting in the same cgroup, the
-> margin one reclaim pass frees gets consumed by the others, so the faulting
-> tasks keep reclaiming, all to make room for speculative folios, and in the
-> worst case, reclaim livelocks.
-> 
-> On Meta's fleet, this per-folio reclaim is a large cost. From fleet-wide CPU
-> profiles at Meta:
-> 
->  - Page cache insertion (filemap_add_folio()) triggers about half of all
->    memcg limit reclaim CPU, more than anonymous faults, swap-in and
->    memory.high combined.
-> 
->  - 93% of that comes from mmap fault readahead: filemap_fault() ->
->    do_sync_mmap_readahead() -> page_cache_ra_unbounded() ->
->    filemap_add_folio() -> mem_cgroup_charge() -> try_charge_memcg() ->
->    try_to_free_mem_cgroup_pages().
-> 
->  - In filemap_add_folio(), 83% of the CPU is memcg reclaim while the page
->    cache insertion itself is 6%.
-> 
-> Most of it comes from services whose worker cgroups run at their limit while
-> many threads fault in mmapped files, mostly on btrfs, which our hosts mount
-> with compress-force=zstd:3.
-> 
-> This series adds readahead folios to the page cache without direct
-> reclaim. When the memcg is at its limit, readahead reclaims for the rest of
-> its window all at once instead of once per folio, and tries a second time if
-> the window runs out of room again. Please note that this only applies to
-> speculative readahead folios. For the folio a fault or read actually needs to
-> read in, it is still charged with the mapping's normal gfp mask (with the
-> reclaim flag set), like before.
+More specifically the two fixes are:
 
-I cannot really comment on how much sense this makes from memcg POV (I'll
-defer to people understanding that area better). When I'm reading your
-problem description I'm wondering about one thing: Are the folios we are
-faulting around really used in your workloads before they get reclaimed?
-Because what I'd expect to happen in cases under heavy memory pressure is
-that ra->mmap_miss would quickly grow over the limit (100) and we'd just
-stop doing mmap readahead for the files. If the read-around pages aren't
-getting used before being evicted, then the first natural thing would be to
-actually stop reading them in the first place :) The mmap_miss logic is
-actually rather dumb so I wouldn't be surprised if it doesn't work in your
-case...
+1. Remove mt_clear_meta() function. mt_clear_meta() decides whether the
+   last slot of a maple_range_64 node holds a child pointer or a
+   struct maple_metadata with the check
 
-The experiments you have conducted below indicate that if you effectively
-disable readahead you get more page faults & smaller IO requests (expected)
-but for your realistic loads under memory pressure is that really an
-overall performance loss?
+        if (unlikely((mte_to_node(next) &&
+                      mte_node_type(next))))
+                return; /* no metadata, could be node */
 
-								Honza
+   The check expects the pointer to be encoded.  But the only callsite
+   of mt_clear_meta() is mt_destroy_walk() on the RCU destroy path, and
+   by the time it runs, mte_dead_leaves() has overwritten every slot on
+   a full node with a raw pointer, stripping the type information. Thus,
+   the check above never returns early for a full node as it should. It
+   falls through and then:
+           meta->gap = 0;
+           meta->end = 0;
+   zeroes two bytes of a valid child pointer. Later, mt_free_walk()
+   dereferences the corrupted pointer.
 
-> 
-> On a 26-core/52-thread machine with btrfs, running 26, 52 or 104 processes
-> (one per core, one per thread, and 2x oversubscribed) that each mmap their own
-> file in one memcg with a 1G memory.max (before and after measured in the same
-> boot), reclaim passes per major fault drop by 94-96% for both random and
-> sequential reads. With data compressing ~3:1 under compress-force=zstd:3, the
-> runs that livelocked in reclaim without this series (4 of 18) no longer do.
-> Throughput with incompressible data, where the disk is the bottleneck, is
-> within 5% of before in either direction and the drops are within run-to-run
-> variation. With the compressed data, it is 9% higher at 104 processes, where
-> reclaim contention is.
-> 
-> More details on the results seen (medians of 3 runs of 10 secs, 5 for seq, rand)
-> are as follows:
-> 
-> Reclaim passes per major fault:
->                        26 procs      52 procs         104 procs
-> cold, rand          23.2 -> 0.88    23.2 -> 0.88    23.1 -> 0.89
-> cold, z3            21.7 -> 0.95    20.0 -> 0.91    17.9 -> 0.85
-> seq,  rand          78.3 -> 3.66    45.8 -> 2.37    26.8 -> 1.24
-> seq,  z3            42.0 -> 2.59    37.2 -> 2.01    22.9 -> 1.24
-> 
-> Throughput (pages/s), after vs before:
->                        26 procs      52 procs         104 procs
-> cold, rand            -5%             +5%             -5%  (disk-bound)
-> cold, z3              -3%             -1%             +9%
-> seq,  rand            -1%              0%             +4%
-> 
-> (read_ahead_kb=128, "cold" = read 64 pages from random offsets, "seq" = read
-> 4096 sequential pages, "rand" data doesn't compress , "z3" data compresses
-> ~3:1, which moves the bottleneck from the disk to the CPU).
-> 
-> Cold readers get the same readahead as before (pages per major fault within
-> 2%). Sequential readers get up to 18% fewer pages per major fault, but their 
-> throughput and read bandwidth are unchanged or slightly higher, so readahead
-> pretty much does the same IO but in more and smaller pieces.
-> 
-> There were a few alternative approaches considered and tested in experiments:
->  - don't reclaim in readahead at all:
->    This cut reclaim to 0.02 passes per fault, but effectively disabled readahead
->    in cgroups that live at their limit, and led to ~100x as many major faults.
->    Each read request sent to storage was around 5KB instead of ~120KB.
-> 
->  - charging the whole window up front:
->    This leads to overcharging, as it charges for folios that may turn out to
->    already be cached. With every other 16 page jjchunk of the file cached it
->    triggered ~15x more reclaim passes per fault than this series.
-> 
->  - One reclaim attempt per request:
->    This led to the fewest reclaim passes (0.75 per cold fault), but at 52 procs
->    10x as many requests end early and sequential readers lose 29-35% of their
->    pages per fault. This is because with many tasks in one memcg, the room one
->    reclaim attempt makes is often used up by other tasks before the window has
->    completed, and with no second attempt, readahead stops early.
-> 
->  - Two attempts per request without the immediate drain-and-retry:
->    3x as many requests end early as this series and sequential pages per fault
->    drop 16-22%.
-> 
->  - Up to four attempts per request:
->    At 52 procs on z3 data it gave 14% more pages per fault for 8% more reclaim
->    than two attempts, but this is within the noise of the two attempts'
->    run-to-run variation (13%)
-> 
-> Swap readahead charges the folios in its window one at a time in the same way,
-> so it can hit the same per-folio reclaim at the memcg limit. This will be
-> further investigated and followed-up on in a separate independent series.
-> 
-> This series was run through an LLM for sanity-checking / reviewing,
-> structuring the cover letter and improving the wording of commit messages,
-> helping generate some test scripts, and for bouncing ideas for different
-> alternative designs that could work better.
-> 
-> Joanne Koong (3):
->   mm: memcontrol: factor reclaim logic out of try_charge_memcg()
->   mm: memcontrol: add mem_cgroup_reclaim_for_batch()
->   mm/readahead: avoid per-folio memcg reclaim
-> 
->  include/linux/pagemap.h |   1 +
->  mm/internal.h           |  10 +++
->  mm/memcontrol.c         | 131 ++++++++++++++++++++++++++++++++--------
->  mm/readahead.c          |  51 ++++++++++++++--
->  4 files changed, 163 insertions(+), 30 deletions(-)
-> 
-> -- 
-> 2.52.0
-> 
+  Fix this by removing mt_clear_meta() along with its only callsite.
+  mt_clear_meta() is only called for the root of each sub-tree destroyed
+  under RCU. Descendant nodes retain their metadata until they are
+  freed. RCU readers may use the metadata while traversing a node, but
+  do not use cleared metadata to detect that a node has been removed.
+  They detect a dead node via ma_dead_node().
+
+2. Fix invalid memory access in mt_free_walk().  mt_free_walk() descends
+   to the left-most unvisited "parent-of-a-leaf" node by checking the
+   condition:
+
+        if ((offset < mt_slots[type]) &&
+            rcu_dereference_protected(slots[offset],
+                                      lock_is_held(&rcu_callback_map)))
+                slots = mte_dead_walk(&enode, offset);
+
+   On a maple_range_64 node with MAPLE_RANGE64_SLOTS-1 children *all*
+   slots are non-NULL. The first MAPLE_RANGE64_SLOTS-1  hold valid
+   pointers to child nodes, and the last slot contains metadata. The
+   above check therefore passes for all offsets, and mte_dead_walk()
+   dereferences the metadata as if it were a node.
+
+   To trigger this, a node at least two levels above the leaves has to
+   have exactly MAPLE_RANGE64_SLOTS-1 valid pointers to other nodes.
+   maple_arange_64 nodes cannot hit this since they store the metadata
+   in a separate field.
+
+   Fix this by bounding the descent with slot_len which holds the number
+   of children of a dead node.
+
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Fixes: 2e5b4921f8ef ("maple_tree: fix freeing of nodes in rcu mode")
+Signed-off-by: Dimitris Charisis <dchar@cslab.ece.ntua.gr>
+---
+ lib/maple_tree.c | 43 +------------------------------------------
+ 1 file changed, 1 insertion(+), 42 deletions(-)
+
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index 1aba6cced71307245cbbca26986e14e74b35a14f..0b0036c9f848929a7c9a26650ccd935c44aa1376 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -763,43 +763,6 @@ static inline void ma_set_meta(struct maple_node *mn, enum maple_type mt,
+ 	meta->end = end;
+ }
+ 
+-/*
+- * mt_clear_meta() - clear the metadata information of a node, if it exists
+- * @mt: The maple tree
+- * @mn: The maple node
+- * @type: The maple node type
+- */
+-static inline void mt_clear_meta(struct maple_tree *mt, struct maple_node *mn,
+-				  enum maple_type type)
+-{
+-	struct maple_metadata *meta;
+-	unsigned long *pivots;
+-	void __rcu **slots;
+-	void *next;
+-
+-	switch (type) {
+-	case maple_range_64:
+-		pivots = mn->mr64.pivot;
+-		if (unlikely(pivots[MAPLE_RANGE64_SLOTS - 2])) {
+-			slots = mn->mr64.slot;
+-			next = mt_slot_locked(mt, slots,
+-					      MAPLE_RANGE64_SLOTS - 1);
+-			if (unlikely((mte_to_node(next) &&
+-				      mte_node_type(next))))
+-				return; /* no metadata, could be node */
+-		}
+-		fallthrough;
+-	case maple_arange_64:
+-		meta = ma_meta(mn, type);
+-		break;
+-	default:
+-		return;
+-	}
+-
+-	meta->gap = 0;
+-	meta->end = 0;
+-}
+-
+ /*
+  * ma_meta_end() - Get the data end of a node from the metadata
+  * @mn: The maple node
+@@ -4789,9 +4752,7 @@ static void mt_free_walk(struct rcu_head *head)
+ 
+ 		type = mte_node_type(enode);
+ 		slots = ma_slots(mte_to_node(enode), type);
+-		if ((offset < mt_slots[type]) &&
+-		    rcu_dereference_protected(slots[offset],
+-					      lock_is_held(&rcu_callback_map)))
++		if (offset < mte_to_node(enode)->slot_len)
+ 			slots = mte_dead_walk(&enode, offset);
+ 		node = mte_to_node(enode);
+ 	} while ((node != start) || (node->slot_len < offset));
+@@ -4885,8 +4846,6 @@ static void mt_destroy_walk(struct maple_enode *enode, struct maple_tree *mt,
+ free_leaf:
+ 	if (free)
+ 		kfree(node);
+-	else
+-		mt_clear_meta(mt, node, node->type);
+ }
+ 
+ /*
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.47.3
+
 
