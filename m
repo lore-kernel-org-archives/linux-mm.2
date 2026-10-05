@@ -4,92 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17525CA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 12:54:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2CD3CA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 13:06:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BB056B0088; Mon,  5 Oct 2026 08:54:07 -0400 (EDT)
+	id E43226B0088; Mon,  5 Oct 2026 09:06:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 292C96B0092; Mon,  5 Oct 2026 08:54:07 -0400 (EDT)
+	id DF3CF6B008C; Mon,  5 Oct 2026 09:06:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CFC66B0093; Mon,  5 Oct 2026 08:54:07 -0400 (EDT)
+	id D09B46B0092; Mon,  5 Oct 2026 09:06:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F117C6B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:54:06 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 73BEFC0254
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:54:06 +0000 (UTC)
-X-FDA: 85288565292.27.AE0745D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A0EC31A000A
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:54:04 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yyipCU4a;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B4E116B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 09:06:25 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4D3F6140263
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 13:06:25 +0000 (UTC)
+X-FDA: 85288596330.14.1F273F2
+Received: from mail-ed2-f32.google.com (mail-ed2-f32.google.com [74.125.228.96])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8B8B640006
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 13:06:23 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TFajk0Eg;
+	spf=pass (imf04.hostedemail.com: domain of paul.dolan.dev@gmail.com designates 74.125.228.96 as permitted sender) smtp.mailfrom=paul.dolan.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791204844;
-	b=IsVRKYsQsNRsrKC8HDLbOnzON93zsx/zm4zZ8nnXwLaJGspOL2IhLy3iylWA8d21Asl6ey
-	8eKI7Seos+nfg6aQ3DXRZyv2QnfkrffHeA6Q1h/Lo5gXqD6uZFcCG21uaShCqVMwcrBbKl
-	g9f/FI4MqzxENb9iixTcZEHcpcD7gko=
+	t=1791205583;
+	b=FEJcEqNMXJY6QpyKkV1KSyeW6QIJDQO7VK8Je5n9/iQJwTZLwxXntB4fNukRh6VMXG6/jS
+	xQcUnnOLFzJ9PzuIBlPiqxxij3wWmr7Uu3WDGapJumz1qhZ5btMyofAM4cBsjCRn/r8G92
+	fIuKoU9RnosuLAjyElMyOo4UzgHXdJI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yyipCU4a;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TFajk0Eg;
+	spf=pass (imf04.hostedemail.com: domain of paul.dolan.dev@gmail.com designates 74.125.228.96 as permitted sender) smtp.mailfrom=paul.dolan.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791204844;
+	s=arc-20220608; t=1791205583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L0WZ+X3bCrlqT3aScryv2WGhSJF2SKbCE0Wf2Qf1Okk=;
-	b=J9BwdBZm11cm7gYZsFGuHp8Om1+dJwBuCipb4UpTnsZibllIxrThAsNTFXgbRXa3S+ZGLI
-	1u8jl5DMNMo5VvCFe3I9RReroq6ujUBFho/Bs1YHLzmLdSSWA3biL92RWbzX2IO/mMoiwd
-	ym7jwPKS47jF0bvDyI2dQ1Ws416UcCI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9B2374002C;
-	Mon,  5 Oct 2026 12:54:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A667A1F000FF;
-	Mon,  5 Oct 2026 12:54:02 +0000 (UTC)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BjL2pXlHfuAQFc/3GOIX7IQe1y00mLqM+xdgaQa2Gmw=;
+	b=p0OPIUydpwLZtdpl69qyZ96WgNBDK98xpXlfde3QjIkB0Id0wf7amRYQiclblR3RMwIGeb
+	VSe7Ywm7SF8ptQPxJjvBAjJHKlAX3IeEs8otymllHmSKdQafohmLCecETvc6VdyD2V9lq2
+	3GqhYwBoxOkpl16ieMnFEv0IAkeKFKY=
+Received: by mail-ed2-f32.google.com with SMTP id 4fb4d7f45d1cf-6acae8342d2so2358755a12.3
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 06:06:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1791204843;
-	bh=L0WZ+X3bCrlqT3aScryv2WGhSJF2SKbCE0Wf2Qf1Okk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=yyipCU4al7wZUCxLPJtBmtOl5273fibvVCgLfHNF7po9bNlRLGzN210UCpk8JwAsi
-	 doC9AmMcNB38C98pfORUq0o7zRTx6j3Dt14cazQjO+uIbCyhbpjfb5aJVWVrHAS8kP
-	 Cm+cpgWnTUI3Up4Tp9CQJNZTLyemXpfPW13JBFn0=
-Date: Mon, 5 Oct 2026 05:54:02 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: david@kernel.org, kasong@tencent.com, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
- hannes@cmpxchg.org, mhocko@kernel.org, ljs@kernel.org,
- roman.gushchin@linux.dev, dave@stgolabs.net, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] mm: vmscan: don't count per-node proactive reclaim as
- memory pressure
-Message-Id: <20261005055402.61065464d9c66f1540a08c94@linux-foundation.org>
-In-Reply-To: <cec875e1-2afc-44bf-929d-b8f2b2a795f8@gmail.com>
-References: <20261005062236.564210-1-vernon2gm@gmail.com>
-	<20261004233615.df26e580c1bc916c7f3a23b2@linux-foundation.org>
-	<cec875e1-2afc-44bf-929d-b8f2b2a795f8@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zucenot9ncj5ep153m1nkp8g836k97bw
+        d=gmail.com; s=20251104; t=1791205582; x=1791810382; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BjL2pXlHfuAQFc/3GOIX7IQe1y00mLqM+xdgaQa2Gmw=;
+        b=TFajk0EgY7/d1EN4ox5EPXoxmLqYHXu9G9dUJfb9nS/J70cV4xw7NPXI9hyqSxLa28
+         cTIodPwR1DHvl+Yc5aRKV1dnrrAFYy9r8P/obpEftIXK8Qxa57KcdTV+a7KvKcF7U4W0
+         Yrpgfi5dXYx6Pq8fVo2npyt+xI3Uo+n5s7uxL6HGYClpaInKFM1JCdUdxxJ5ZNz4OM78
+         +LpV/GK8ixi/YOO0xiQ0F+nvrP0cFbynYaLMjrv5DsHG2xPm/3QUXUKPfByKlTrqDB34
+         1YQO+60ramuc3AMg9UntMZk7Ecr+qreXV78EdTJhGcD0Dqjc3AkzhL3fgm8OWxJYSEq1
+         P66Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791205582; x=1791810382;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BjL2pXlHfuAQFc/3GOIX7IQe1y00mLqM+xdgaQa2Gmw=;
+        b=FeUs2fGU6ODyfzRAyklcMW5f4LT4qR6rCeCINPjq/cSVGti3zejZpaPvbQymgLk/l9
+         +t8ycRreOM4Zjfz2BXCbZ22ak5GMVq/gSe1GaBUe95gdCs+qkat2JYyTFzo3xkylvzl/
+         uOO9vJ+HTv5kzSgJfzMpZzrY/jGu4OliYtQLd1ny59qvntTZSry47pRCYbf6iT3vaP1j
+         VdAaOzrf0VSKdmAY2ZZqRkcHl6Ry2pfCudIAh9dxqHmOVRIFFtCMRNzPg1W/gbFozuyA
+         Jx6paPzbOutQuF1wQ84Cqxz7+cIfAyzdsHUMPFbb9lzA7p/ro83xyjSNx2SeqeK/FWTK
+         hL+w==
+X-Gm-Message-State: AFq9FYITS/UHBk8BNt5DPTBb1qGBZaoiYfPjfEHY+e5qDczpW2TW/Ogd
+	0J/vTmjtVJD8sBKRNR+jvUz3ROeLgaNYu6ylsB4K+tSL0wAgtu1u43SsAoLeMA==
+X-Gm-Gg: AYBFou2+ygaIiPXurQoDl3Ftq09K7p7LdITBcTv0Atw8b907VZg8rw440vderNyFRB+
+	xYkOYoLy7vgBwPp/vXGLFd0y6gLgbmIfFk++blo4nUCDi4CbdZEdpdQTLNhhqZDxt5A2KtBbMh0
+	ppr6KQ5ehxTxrmOwtRtt63/Jc+AofHOJMeWjB7ZsRHYA6RBWg0CQ2qCbV7y0ISfiAfxWU9CCHCc
+	k3EwMCFYUg9y1NmEHeRKgWx72wIgqjDLzuAvweWmhsGMCXdheTAhQdhBeoPMFSP6clRn4N3rbWT
+	Oc6z0QzC5h3Mylh0ZisJW9GbPmywpXr5UnAT/7b5/09JUCB+DejJR6ltdWx429MEYB0kxoWOIQN
+	hnGAO5Uw7ZIZwUQIWb8oNfx3s/+YFTe56s8CX8QByXeyu56D2vkVEUBrVWWGpdXHgvvZAKTOwPl
+	EUZgg/5LSclRrO+EySRoAeEJQKDL2UXRPKjutVpcIuq6BmClGAjad3ci9lO6mxl4V926DmqyApk
+	/cizecHTQ==
+X-Received: by 2002:a05:6402:378e:b0:6ac:934e:a9d6 with SMTP id 4fb4d7f45d1cf-6af9e022bcamr9401777a12.5.1791205581824;
+        Mon, 05 Oct 2026 06:06:21 -0700 (PDT)
+Received: from fedora ([51.37.100.165])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6afb005a424sm3390647a12.0.2026.10.05.06.06.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 06:06:20 -0700 (PDT)
+From: Paul Dolan <paul.dolan.dev@gmail.com>
+To: keescook@chromium.org,
+	shuah@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Paul Dolan <paul.dolan.dev@gmail.com>
+Subject: [PATCH RESEND] selftests/exec: reject zero as power-of-two alignment
+Date: Mon,  5 Oct 2026 14:06:12 +0100
+Message-ID: <20261005130612.162824-1-paul.dolan.dev@gmail.com>
+X-Mailer: git-send-email 2.55.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8B8B640006
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A0EC31A000A
-X-HE-Tag: 1791204844-744674
-X-HE-Meta: U2FsdGVkX191yf/qpo1p2n01kVJnNH9Kaz68aGwRiWNdI59J+IipjZyxcBPj7JXN9T3d4d+ncUn6boHnlrKSU16cxJfITPrJaXdcpqyQZl2vVmdJ4/SgSs1tEbgpnKfHVIHtAPwCs1akwY0Qkqujk1JfLWLUcVWqhAQENQPGrJRUiP+KlbKtsWPSS04Rx46E4unhPj4qko/cNOFrYWC2sXp5LnL6r4s802JDsBia/t1F2NWHqPixidE0jC5mw3AQ23c7sCfxFJ0kDf0pInJzNWU4mHcf2ZSy7rA0YsIdFHSynp4dWZIzZqtOPHfyk+UHaPGKNEdowBoW/+TuhQx7yiXPWxfgXrtCQryUhVmcZt5NZjru1o0oLBdg2EiZ0mPt3Ueey/zC45N9fNdnnkn1Nv/fQ3ERuonLBo7HtrtAKKAShyvoPXQAm7BboiXRQOben+YZuHVhor+8NIl5pU8yVkVJ6ZJwNkN675WLnbbxeoYPtU7HKhdjVbgSn1eMH0hc09vVfUN8VzmvknBcIFmQmZTdpA3KfwkLmpjA9+fgryo9/968rsgq3SUTpz+V8fHqmbmOWYxl728IzeYHIuipKzmUFnlkgRGxXuqMnbY7j+4ywFp+u6QSZukkcyEVPFYl6WEaoaWOJ/cydSTr/SCCfjyrka7PTtxSCuQ4eonNjflJdcMrNE/63R+Zh1myL6nBAFCJE3bkOX3ITgBlmAk9sju8mo2rt3h9acy+A8Lkb2ssjoo4HyF90RPk1CvoVjSQMr7qK8VLNVzWDRHsq8vceDv3lpWCRvz/Pn8SD1h4hsEsuW7qDzmGQrwD8OvwSvTC1x9qAM0tBAMckWggZLc+3CFDW8Y87/0G+6ciCXXE4JrtajUbaszQH/RnNT7tMa6XMSU1vu2pC2IHnI0aOueDGjrrv4SV48CrCEhhQ+5zKYIWabrwyviqYqjBdzo5/+lqT772n+ac2sloBouLc/e
- wTvy1WL0
- gEAGUt8Plz0lKITeCK5GmTIgT/epkJx6B7p6xV1QRYTpIH8kO+rGVMdJ6YyRmW5njq7d9BnKw30ydLROmyAlewB1cBxB7VImOfml0YFzp4BgiKc2IEWQ5ln4TbD2pSy09cswxigK4P73bC/vbhfS2nE03CSHTMvB5Bn9WwXWAsovZnjFxDd1wxNxiUCqU8a8Jsz4GLHPeJMPwt5dGs7g5/HNqEMjsf5ojAm6aS8jAERxAS/MBFajpyLdmlO17oavHjJaAgdmcq7RQOQxec/JsLE8g6A2BPav5vCdjXfpNb0Qv8mw=
+X-Stat-Signature: kdwbeiwg9a8xu1yp4eha8nag1c6n1em9
+X-HE-Tag: 1791205583-259171
+X-HE-Meta: U2FsdGVkX18nWvzwceZMFdP5goqd2hzek5z9r4qv3a64L1/e3cV6LAcAxwTsC3/l7xQA5r/kEDAEe48zurqSwVGiYYoQon50R9rLFzI4SEdJ/qwSUlmzvGNZYZ/uPBq3ETXa6LxrFIb8MxfgiC2aQfWDGmWS9XR35tAvd9EFMEya15Z8vxwcFm5EpaYqnUbq7Dz3NWzfOsorRw0ylMbv1QDMS68uMXcuaEjaho/y4tSW7124f2UbtNGSm0iZ8LZCIaCSYHlcWi2ThbOaILbXb1tKQr4FQgiFel+2pFBUDmq54NBiY1K52MTecaueQMemZHgFZEH1B8kwmjBbLuzixTf/92xERrnzkVOC/cD+TqnB/azlAZVrVR6Jn4J8bZ8f7pDR1ionl0lmBWGR/gKQD2XmjmXYK8OtqiIjo87thUEy4O7+MYEWL1nvNQlARBOi8ecxUnGtOt60MuCuJNyhqbc+w1t3bBR8iQ76zvbYavoHOCP17UOTFKPO4YkTKt7FxcZx3tDVMnEOzcDfwTdNw6ShtCP9wbtCSaJPOf/dyQNlcmBgt9PI5ZopJld/JcALm91i/8rdHAZds1l8qLObRREpftBfs0QEB8OuLQyRAGocVjF4MixubaGQB1z/wboOSdtAddwSV1iq1zXZiSypJGq88HBDvL4T9M1PefV5z1ZrVdiGNXuA+KkEblZREWIZo/cVfpK3ACAS7L3XHY5sH+UJAHL+cdkKP8WGXHikR0eSf6Ia0chLrWnbq/iGllGpVdsxCkONyQCamghL3aI9yP2HdWEkMs9zt1D0U9nkGn4wFQcR45DQwc6oSaH+1frBDiOu8rhQVEFFSuvAGYbovyB53j5WL+kd8lNuBNCIgQ+eSsTJHLYipVqSSZnFcSQk3MSd3CuGywbKbixmlBtiu1G9kSpsw/I00QS691MpmZQ6bJSTVn87QOqlHe92QLl9e3CNxJBvs0D3I92CM1e
+ npN9uevI
+ xQpxp2vxVniwD0KUIraFaDdX3XSwkYjCTgNpjsbDVpUBMRCLzluEnxmUNj2n0wzl217GDbVMludd6QhZeE4v3Ud2n0SclbLLwAWGOsMmiNWyYvoN2CzvmR9SFYW6qJc8RfGZSAbR9c1giLDXJUYxhFnw4zxFo1D0PhOQPOycGwWgbUAC4AlUibm0ERleXMoMQkvoeFn+4AEufvnxUfbkIzCqQ89SMVpH1UgoeMPV8QTzB5AU/KwhUu5zfwQskXz+x1LxzU2vOTPcU4fhtvBuK+ObK5gMPKbVXH7scBFkbRUyHHBvjEPOMLR3yDaPU5AzIOpOQShlZkhcd0LZpoT27WG1gEOHmJ9GcrajJn6jFqXoQbVUvG1839YQVtcQgQH+iKIhJhSu1L7y90xstatiQ1NJKSAqRBvFDdwnz6Kl/bakNEwU6W4k6zXMwuozY5MmndBeQsbglqIoYTkEyL79x9bwQl7/37blp96oJCkhZFEzMgZE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,27 +117,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 5 Oct 2026 18:10:45 +0800 Vernon Yang <vernon2gm@gmail.com> wrote:
+The load_address test reports whether an alignment was found separately
+from whether that alignment is a power of two. However, the usual
+x & (x - 1) check also evaluates to zero when x is zero, causing a
+missing alignment to be reported as a power of two.
 
->  the phenomenon resembling
-> > > senpai will appear again.
-> >
-> > What is this?
-> 
-> This is commit e22c6ed90aa9, which addresses a scenario mentioned in
-> memory limits of a cgroup, in detail as follows:
-> 
->     Currently, this reclaim activity is accounted as memory pressure in the
->     cgroup that the writer(!) belongs to.  This is unexpected.  It
->     specifically causes problems for senpai
->     (https://github.com/facebookincubator/senpai), which is an agent that
->     routinely adjusts the memory limits and performs associated reclaim work
->     in tens or even hundreds of cgroups running on the host.  The cgroup that
->     senpai is running in itself will report elevated levels of memory
->     pressure, even though it itself is under no memory shortage or any sort of
->     distress.
+Require the alignment to be non-zero when reporting the power-of-two
+result.
 
-ah, thanks.  It's arguably appropriate that the procfs-writing process
-gets blamed for the I/O which it caused, but clearly that's the wrong
-place to account the memory pressure.
+Fixes: b57a2907c9d9 ("selftests/exec: Build both static and non-static load_address tests")
+Signed-off-by: Paul Dolan <paul.dolan.dev@gmail.com>
+---
+ tools/testing/selftests/exec/load_address.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/tools/testing/selftests/exec/load_address.c b/tools/testing/selftests/exec/load_address.c
+index 55fd3732f029..e279d85e8f19 100644
+--- a/tools/testing/selftests/exec/load_address.c
++++ b/tools/testing/selftests/exec/load_address.c
+@@ -92,9 +92,10 @@ int main(int argc, char **argv)
+ 
+ 	/* Is the alignment sane? */
+ 	pow2 = extracted.alignment & (extracted.alignment - 1);
+-	ksft_test_result(pow2 == 0,
+-			 "Alignment is%s a power of 2: %#llx\n",
+-			 pow2 == 0 ? "" : " NOT", extracted.alignment);
++	ksft_test_result(extracted.alignment != 0 && pow2 == 0,
++		"Alignment is%s a power of 2: %#llx\n",
++		extracted.alignment != 0 && pow2 == 0 ? "" : " NOT",
++		extracted.alignment);
+ 
+ 	/* Is the load address aligned? */
+ 	misalign = extracted.load_address & (extracted.alignment - 1);
+-- 
+2.55.0
+
 
