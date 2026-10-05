@@ -4,113 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 238D8CA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 19:26:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96D31CA5FF5
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 20:12:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD8AA6B0088; Mon,  5 Oct 2026 15:26:35 -0400 (EDT)
+	id 1D3E56B0088; Mon,  5 Oct 2026 16:12:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D890A6B008C; Mon,  5 Oct 2026 15:26:35 -0400 (EDT)
+	id 15E366B008C; Mon,  5 Oct 2026 16:12:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9EA96B0092; Mon,  5 Oct 2026 15:26:35 -0400 (EDT)
+	id 0245A6B0092; Mon,  5 Oct 2026 16:12:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A77766B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:26:35 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 26BF81A0435
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 19:26:35 +0000 (UTC)
-X-FDA: 85289554350.09.0618129
-Received: from gwu.lbox.cz (gwu.lbox.cz [62.245.111.132])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B803C1C000B
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 19:26:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linuxbox.cz header.s=default header.b=J7hDwnY9;
-	spf=pass (imf18.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz;
-	dmarc=pass (policy=none) header.from=linuxbox.cz
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D4CA76B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 16:12:05 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 62185C045E
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:12:05 +0000 (UTC)
+X-FDA: 85289669010.21.CC682C9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6971D10000D
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:12:03 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XrO7StUj;
+	spf=pass (imf05.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791228393;
+	s=arc-20220608; t=1791231123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QpuccrIcgCvueKGVQVkI+hAnPAS4VH0mRSHq0z2XlXs=;
-	b=2hGubkSVDdT7xqW8f0nRt5uziM9LBRwHc+wfJibc64oZfJg50Wxp/yrF0hSfK3CZ4MG2WQ
-	PiBVywE4vsj9vJ2IdTrE2b59Kue4DBvAj8NjklD5jYmAt1N22u1lu/kFTI59A1+bHKVVj5
-	LoaWvIVfrRP3OW9tXxSyEpYetcgPOd8=
+	bh=07TxSlYygyGizwu2KJq+nLfuTWfbhdZOQVcdtdrnwls=;
+	b=xIK5ybm0LKxzW/gILb0yROGNBjJJZ4sHrDMsdhriz7pXyPRsOE1Wh1mo0OzU7pOPXD8QTb
+	gIehLlrmAKvgcRSRdYJdYB8VrwcWXi7h2wC4eJ8H1136l+npLF0l1JwWf5B4dCU5k2OrEB
+	5I5ebNIo1kFVzvTWhsovH58VNIciHaI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linuxbox.cz header.s=default header.b=J7hDwnY9;
-	spf=pass (imf18.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz;
-	dmarc=pass (policy=none) header.from=linuxbox.cz
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XrO7StUj;
+	spf=pass (imf05.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791228393;
-	b=y5PXU4b0VgYGVAkaaAw8CGog1wveX+rrTy1P2vD7ZzeJsYUZJnjgqGnYQVkWvB0C5Muxqb
-	WJStmzwYVWyCReED7Wp4gFddG9Fr6hUQwUe9f0G+6TFQm4ua1AGmZ58zjidU56i6ZMgGnY
-	GZdSjRRRZLlFHKKL+EVOLnZQtnmpgP8=
-Received: from linuxbox.linuxbox.cz (linuxbox.linuxbox.cz [10.76.66.10])
-	by gwu.lbox.cz (Sendmail) with ESMTPS id 695JQ19o4191092
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 5 Oct 2026 21:26:01 +0200
-DKIM-Filter: OpenDKIM Filter v2.11.0 gwu.lbox.cz 695JQ19o4191092
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxbox.cz;
-	s=default; t=1791228362;
-	bh=QpuccrIcgCvueKGVQVkI+hAnPAS4VH0mRSHq0z2XlXs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J7hDwnY9F+btQChNhiXnDDvaPyIyZ25bzylci95cw5Ii+q9pOYzy19sME9STPS3mW
-	 1P1P1RDB7tXKeDjKlOIO/cF/ZCo0n8CdmNE48eyRx4WsrUYrSGAWfnNJ1dhed4EbpH
-	 cNQn2XihNsaomyCIFHjIlewPeCqkL+fKeF4IKYto=
-Received: from pcnci.linuxbox.cz (pcnci.linuxbox.cz [10.76.3.14])
-	by linuxbox.linuxbox.cz (Sendmail) with ESMTPS id 695JQ0hY042712
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 5 Oct 2026 21:26:00 +0200
-Received: from pcnci.linuxbox.cz (localhost [127.0.0.1])
-	by pcnci.linuxbox.cz (8.18.1/8.15.2) with ESMTPS id 695JPue52387525
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 5 Oct 2026 21:25:58 +0200
-Date: Mon, 5 Oct 2026 21:25:56 +0200
-From: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        david@kernel.org, Mike Rapoport <rppt@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
-        luizcap@redhat.com, pbonzini@redhat.com,
-        Borislav Petkov <bp@alien8.de>, Tal Zussman <tz2294@columbia.edu>,
-        Matt Fleming <matt@readmodwrite.com>,
-        Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-Subject: Re: hunting memory corruption bug in 6.18.x
-Message-ID: <asP5xK4axiUk7jun@pcnci.linuxbox.cz>
-References: <arwNebjYXyGqrp32@pcnci.linuxbox.cz>
- <arzRBv9ceJsxJppI@gremlin>
- <ar1Xl7PE2rcoT9h3@pcnci.linuxbox.cz>
- <ar63St2LBfCdyhwj@pcnci.linuxbox.cz>
- <ar9yRqq6cBxHDWKA@gremlin>
- <ar/F6+OUzj8qQ8YC@pcnci.linuxbox.cz>
- <asAE3kLFDUx5v0Nw@gremlin>
- <asKdhWiJb3qXeopz@pcnci.linuxbox.cz>
- <bd8e9b01ad88cafb12da33331f32a1ce315f590b.camel@surriel.com>
- <20261005132113.43548696@pumpkin>
+	t=1791231123;
+	b=MOzbAMelT9U1rG9+wFHMHZIuClPocmsOWe2ymgwJ5Eq8Np2bd84g7YrwqfkXmyss2b9y/P
+	adUh+DFAOobG/vg+MnMb3+dc9fjTVIoo+auDvvcytOIJ+WNqr6Q69/fwsZBKF1DQYSMjuj
+	vCnweYfrpxU3noSdcwsw3Xm96hsQz4E=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D776C412BC
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:12:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0011F0089C
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:12:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791231121;
+	bh=07TxSlYygyGizwu2KJq+nLfuTWfbhdZOQVcdtdrnwls=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=XrO7StUjqMXCHQdCXLfRRZfvH+Uwk9EhguUvvRp4E+YQOv9St4XL8WHb2pEcl/6FX
+	 0eliPvZ2bJA7A7ryQbWS3G4Gn3cclzegjntRSZm7Okk6K9ogM5yi1M21eTe11L6N9W
+	 PW+7gzcI1VqH6N8862BkF65QY0HfzZVbP/P/OB89OVDEYFsHas4v/3seejctQnXEbY
+	 mAJx8xctGw5R7LVCpsiVP4xH/WGehiHxcfs8oQsOSRgZh2Zwln5ADtHFGxIXkdIgEq
+	 8PXFei+q8rwCMo1bfRr/FaxBTo4ffTLrhsAuH/Ft6sBUcLImd8bJqA962EIalqazcg
+	 tvRlObOt5uOeQ==
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c2e69aa07c3so321604266b.1
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 13:12:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzjOjLRlC+iCzbbxdXkO8WZCNzkJ/SUx2VqpChIDWJJ5GnEoNkWUX5DUbETbSN3ge5IORfG9p3YtQ==@kvack.org
+X-Gm-Message-State: AFuF++mpbS249he9NPXE32fwCMAa9ov1Yxe9MghIkVjVRvv0pWcS1gDT
+	1YqHyk8NPmJjhjs9e130UuU/zKDbfPoPr/RChEPhLmkvEwb6BL+4sky6ZINPdzoL/BO9/aG0Xc3
+	9bS7j/Cfv4MW2iucPoNHYiURvrAfDbqA=
+X-Received: by 2002:a17:907:c011:b0:c29:d33e:9ba3 with SMTP id
+ a640c23a62f3a-c2e6e9ca0e8mr731438166b.6.1791231120621; Mon, 05 Oct 2026
+ 13:12:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261005132113.43548696@pumpkin>
-X-Scanned-By: MIMEDefang 3.7.1 on 10.76.66.3
-X-Scanned-By: MIMEDefang v3.7.1/SpamAssassin v4.000002 on lbxovapx9 (nik)
-X-Scanned-By: MIMEDefang 2.86 on 10.76.66.10
-X-Antivirus: on lbxovapx9 by Antivirus 
-X-Milter-Copy-Status: O
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B803C1C000B
+References: <CAO9r8zNJ3mSRf5YyRQYYW-eM2eiFvQMXW4Rh0cT=31jsKZpuSQ@mail.gmail.com>
+ <20260903072625.62694-2-itazur@amazon.com> <CAO9r8zMxdg2BTFguwcRQn8n-2CPaEJJfg+T8dWcgO2eV4uNaHQ@mail.gmail.com>
+ <aqlpxa61SrzhWF1O@gourry-fedora-PF4VCD3F>
+In-Reply-To: <aqlpxa61SrzhWF1O@gourry-fedora-PF4VCD3F>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 5 Oct 2026 13:11:48 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNjeUz1sjOo5VVKefRXkFHF_=H7rAyCghJ4zGSp8Mupsw@mail.gmail.com>
+X-Gm-Features: AclHuK9_Dkkt3de2FR8OeLNm291y3_bXQtNm-SuLQJP9zgu2zzwzjIBMyyyGpc0
+Message-ID: <CAO9r8zNjeUz1sjOo5VVKefRXkFHF_=H7rAyCghJ4zGSp8Mupsw@mail.gmail.com>
+Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+To: Gregory Price <gourry@gourry.net>
+Cc: Takahiro Itazuri <itazur@amazon.com>, Sean Christopherson <seanjc@google.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
+	Roy Patrick <patrick.roy@linux.dev>, Andy Lutomirski <luto@kernel.org>, 
+	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>, 
+	Nikita Kalyazin <nikita.kalyazin@linux.dev>, Ackerley Tng <ackerleytng@google.com>, 
+	Takahiro Itazuri <zulinx86@gmail.com>, cc-open-source@amazon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: xw5qkbmkuimhugua4ksre6ju3rac6f6h
-X-HE-Tag: 1791228392-984589
-X-HE-Meta: U2FsdGVkX18YpYo/O2xO8PXv/xFYC2xB/jag4Hj6TF/UWzBWHmW6mqlovjkjQw2QVn3RaXxBal84DnadWsIfIU6V+ECpBR5WZlKAMGmQ5xSio/rHbVhO31l/3wYvjsGNJFXdM0+33pbJeVVhpGej46JXSFqnm1zWFd0j4Eutqy763VF/zQRKeZ27kzU1XunCcnibJD35QXWpQXwc1ijOKn3a0J5igMSEBljWRSXR8YMqoYDPu/clE4aYb0jHHRDiKxYvB1m7VpWPKUhBildAiuNJm9HbpLWsOA13LzGzn8dng/P/FGYssmt8AJC7I7UhjDdjeAhwdwOEdaOiC7v71vy4R5kFLGej1OQlWTCMkKlfcjnKZ/edl3muf6aL+2trwUoZCL1BOAJn3yipKBXJXu84Zc7PymDrHTJ9467eS3bRMELOYKVVqPmB5XBEkiwfEuWxzzFVcsQgf2fsQs1pG3lU3gtHHvuBJ8jNLgQGWqd/hgaUZ0nuYOF8jwKmsz4bqByuDH9JjoWwTIt98gL/SfJWJguM9eLEnPJGu1ehFIVA9NtGpuLVdVcNTRCVYxIP4gQtIZbAU3xMR5M0Ae8JbWZrjglHvizgCKK4b76p53iN55Ui6fxGbIDwLWVtjiQVUss8SYIoynZnA0EHGqwafTqq3YgUSAefPA3QXA9OGuODRnCqW18gTAT6BBFe5tlmCW04RGwh5SNS+189XCw4YPIi4gfHixKN9ihmjD9j5BFil5cmNPGQZQBoeXOGiviQBO82MHhKUngntufDfXGgZZuavIVwRf82bF4Es20jkljIDujHA0nZ2bIfuwEaGwT3+oP//dUXLgVitDj5TMSUCHZyjc+daffSuwRsdUCVVcagbnrSF0bE8hU7ppH19Bb4IC9/BYnDnSvN65+tqGcO962U+L6HHQeP6WGWHsWzlg4+AUu/mzZXB6F0fy9W77RZ7smRruAPB2iwad7UF5t
- M/lTD4a/
- VO7r3uyBYWlYB9wgIoNlbJME1+w5tXp+RouG7WvimNkdRyLxM+aDFmRsfflwf3ZBPvgGLD3CKnigKNz4R0wvyfjO4eDzMlYV+dCSrClNaUhTiTuGNBEcYq6xmwxqJ7EK9vRQJfFHwlgpTCM+fQQCG9zN0lfdMESc2MW1FQSV6VRR8UDAvDALS/UMnslHYpGLOhtQJckoz0EaUzaNCFXrJUQskKQ6zHz0HM+N/Ck7rqU9eOABMl3l0P+d5nR0FzMCpNQOPX6s76h0n87E+0l77FgIT5KO0NqBbqyflPa9BEPhrOROsQe7THgu1ljKjKZpEtogmYYvzZ6lN93UsyweFxEG6lNPjCKf5RyHq6BjPf2VK8+ZG9BWzhWjj5Q91FlaAPTFV
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6971D10000D
+X-Stat-Signature: jkguirwgtwzearj35sfm4gt5w68fqu5w
+X-HE-Tag: 1791231123-254182
+X-HE-Meta: U2FsdGVkX199TPKvmdBLIIn8hs/KK7erpGP15nP6wKFt/fzKUIRMR4NCpyVI1N98Pn/Gq5pVaajhreyLnhGcxm2FQgukCtpk9K2Sy82O54feiUJgKL/FepsSvMjFX45iByO8QzVhAyDayBYMhlohUkm0N5BH2Q9XzK7NjivCI7KcZGY7/vkI7KSjgXl6ADhn0vRdR55CtWmCGwsWUxOCaIhr9th2jjegG0XzHVQg35UUoCw5mRWoWpmu5SbgtocD99IzVdE5WdSlY1EAYmcxHsL26qJhcjX00MbBY/6jvRe4fE0ELhXF5AhhUy17SFsQgetra8lZr/18aVYHPMtfAXtBUtIUKryd9jBGPE5Fx6aGApELvh+TxkTu3/gg7K0jpfwSQw7F88NzA6AtkN8XvrCwry5m5ubpNm5J62Z4/Dhgp+EUrlh+GjPlr9DOjsux2cqa/jsXgKLjX70rXK1xDDigVWGMEMFu8ufpTFGPL/aRBvOOW05q0yf3oGQZfl1/3Le50wC95+9q9Wleykq40+lQLAEFRqNVAP9NmAwE4YtBXLT/d/wEXxODTn+6dYLr28hwp0IWAHw9ItrPtLLoQhJ4ut3wLWvuQ+27p9cJjI5vywcrNKVb5WAN/4JNhjBkuXGa2Tmhf36wq+8iXrB82FqDavy5p7UD30SwmFRUsSmV/EbIQLXTKZ5wVDw7hEJ5d/2NlxIKZmtfhxuxVee5VkKZUKF8oZWrb0BtFTo1z7zN6YVsQcr6VpqDYWVZBvCPJuMlYoBqB7/uFGlv9QlyG4AFy/5d684FcZco5ZAhLJvZVUvY3KC0rZR9/fcfUGDMQryx7C0bMui1JT4D3Edd6KXssaiAE0Y6vmmwXKkpMWR6aUsnQ07GKentSU8Jn0pDKSILiDzoo4mnrWEMqyOr+qgrH0KMEyn7GThleXbQpJon4xVPpr2CWUr6rmBkTkmuFyErW2QMHzxHvKZ62c3
+ VdLEnTsX
+ yUgEXtqQAkmMRRw12ZQssJyZ5M5z3gQlCGRC8H3FsJ1pSJOvmcPDJHxRiU0zLjjS7QPiVSC21VpRA/tdw/tcGpu9WDSXkrLdvSPAXwVob4JqE/pEy1JoxorIE5l4vuxpIqHbFggAm3NYgkG9OG6cmXXReQPSH8AxWrHU5Q14x2GumuIaCVzbY8c1n/SlqIVwg62/rtDQKsTCVXNRuQBs7ftSOsShChAMVV4Jho+mpmPWx9xt1WkjdEKyALPuvOPKTATcorAUqUp/y3psKdCtQ4Q5CxEPHSo9MgtUAbQ87v2CSYCnXa6sHnNIbeD3Padc90XbprWn2305pSFhM6H1CL9gScd5Wxm38gGEx1FVnS2isJB6FKnk8EpRuuHw1OcQvS3iPK9dsSYFwc+kUQDo9vROailL7xx1aT3tx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,136 +115,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Sep 15, 2026 at 9:01=E2=80=AFAM Gregory Price <gourry@gourry.net> w=
+rote:
+>
+> On Thu, Sep 03, 2026 at 07:06:02AM -0700, Yosry Ahmed wrote:
+> > > As far as I know, Brendan is no longer at Google.  I do not know whet=
+her
+> > > he plans to continue the ALLOC_UNMAPPED / mermap work, or whether som=
+eone
+> > > else at Google has taken it over.
+> >
+> > I am currently working on a new version of the ALLOC_UNMAPPED series,
+> > I am hoping to send something out soon.
+> >
+>
+> Hi Yosry,
+>
+> I've been trying to pull just the alloc_flags extensions (bulk and folio
+> allocator API extensions) out of this set and my private-node work.
+>
+> I was taking another browse to make sure I didn't miss anything.
+> I just saw this, and noticed i should have probably been cc'ing you
+> here instead of Brendan:
+>
+> https://lore.kernel.org/linux-mm/20260914155115.439742-1-gourry@gourry.ne=
+t/
+>
+> Do you have any concerns with me trying to pull this plumbing out ahead?
+> Trying my best not to cause annoying conflicts.
 
-
-> > > 10371fa400: fffffff0c930020
-> > > 10371fa420: fffffff0c930020
-> > > 10371fa430: fffffff0c930020
-> > > 10371fa450: fffffff0c930020  
-> > 
-> > These are not random offsets in the page, either.
-> > 
-> > These all seem to be at offsets 0, 0x20, 0x30, 0x40, or 0x50 into the page.
-> > 
-> > If you look at the other addresses, are there any that are not at one of these
-> > offsets?
-> 
-> If you hexdump the start of each page do they look 'similar' and are there
-> any valid addresses that might point to other data and could help identify
-> the what the memory was used for.
-
-(again, I used AI to answer that, hopefully it does make sense...)
-
-Yes to both. Results below.
-
-Valid pointers in the crash frame (0x103360000):
-Only two of the non-zero words in that page are valid kernel pointers; the
-rest (e.g. 0xfffff86eb0c30000) are not in the direct-map or vmemmap ranges
-(page_offset_base=0xffff985a80000000, vmemmap_base=0xfffff27140000000), so
-they're data, not pointers. The two valid ones both resolve to the dentry
-slab cache:
-
-0xffff985caf209d48 -> dentry cache, object [ffff985caf209d40]
-0xffff998c79483448 -> dentry cache, object [ffff998c79483440]
-
-(Both slab pages show flags ...01 "locked".) So the dcache is in the blast
-radius, same cache as the crashing __d_lookup.
-
-The other value-bearing frames are NOT junk — they're a repeated structure:
-Dumping the start of three of the frames the bad value appears in
-(0x1ae234000, 0x24f0e2000, 0x342c40000), they are near-identical, a
-fixed-format record. Field-by-field for the first 0x80 bytes:
-
-off 1ae234000 24f0e2000 342c40000
-+0x00 00ff00ff00100010 (same) (same) const
-+0x08 bdcc802700060042 (same) (same) const
-+0x10 0000000000006e43 (same) (same) const
-+0x38 0bb8008000000000 (same) (same) const
-+0x40 0000000117bc0000 (same) (same) const
-+0x48 00000026813e0000 0000000fbb9be000 0000001b56718000 varies
-+0x50 fffffc0ea76249a0 fffffc0ea76258c0 0007bb3a5e4ed461 varies
-+0x58 0000000000001070 0000000000000906 0000000000000903 varies
-+0x60 0000000003000200 (same) (same) const
-+0x70 0000000000000078 (same) (same) const
-+0xd0 ccccc30014894100 / 48cccccccccccccc (0xcc padding) const-ish
-
-So: a constant header, a few varying fields at +0x48/+0x50/+0x58 (look like
-a length/cookie/handle), and 0xcc padding. The same template appears in
-physically-unrelated frames.
-
-The corrupt value 0x0fffffff0c930020 appears deeper in this same structure
-(page offsets 0x400/0x420/0x430/0x440/0x450), i.e. it is being written into
-specific slots within this record format, not scattered randomly. That lines
-up with the "written into one of ~6 slots" pattern: relative to a 0x400
-base, occurrences are at +0x00 (x9), +0x20 (x9), +0x30 (x9), +0x40 (x2),
-+0x50 (x11); none at +0x10.
-
-Question: does anyone recognise this structure from its header? The constant
-signature is:
-
-+0x00: 0x00ff00ff00100010
-+0x08: 0xbdcc802700060042
-+0x10: 0x0000000000006e43
-+0x38: 0x0bb8008000000000
-+0x60: 0x0000000003000200
-+0x70: 0x0000000000000078
-
-I haven't positively identified the owning subsystem. Given the earlier
-observation that these frames carry stale page_pool metadata in their struct
-page (pp_magic set, pp_ref_count=0), a network/driver descriptor or buffer
-origin is my guess, but that's only a guess — the header bytes should be
-recognisable to someone who knows the relevant format.
-
-Happy to dump more of any of these frames, or struct page for them, if
-useful.
-
-
-Field decode of the constant header (little-endian sub-fields), in case the
-layout helps identify it:
-
-+0x00 u16: 0x0010, 0x0010, 0x00ff, 0x00ff (counts/markers?)
-+0x08 u16: 0x0042, 0x0006, 0x8027, 0xbdcc
-+0x10 0x6e43 (bytes 'C','n') (signature?)
-+0x38 0x0080=128, 0x0bb8=3000 (size/timeout?)
-+0x58 small, varies: 0x1070 / 0x906 / 0x903 (length/seq?)
-+0x60 0x0200=512, 0x0300=768
-+0x70 0x78=120 (sub-struct size?)
-+0x48 varies: looks like a 64-bit addr/DMA handle
-+0x50 varies: 0xfffffc0e........ (two frames) (per-cpu/fixmap/IOVA-shaped,
-not a direct-map/vmemmap ptr)
-+0xd0 0xcc padding (record built in 0xcc-poisoned buffer)
-
-I can't identify the owning struct from this. If anyone wants to grep: the
-first two u64s (0x00ff00ff00100010, 0xbdcc802700060042) are a distinctive
-constant signature across all affected frames.
-
-BR
-
-nik
-
-
-
-> 
-> David
->  
-> > 
-> > If this is a case of "system writes fffffff0c930020 into one of 6 slots",
-> > there could be some at offset 0x10 too.
-> > 
-> > I'm having AI comb the kernel now for places where we could conceivably
-> > construct this value, and write it into one out of 6 slots.
-> > 
-> > >   
-> 
-> 
-
--- 
-Ing. Nikola CIPRICH
-technický ředitel
-
-+420 591 166 214
-+420 777 093 799
-nikola.ciprich@linuxbox.cz
-
-www.linuxbox.cz
+Not at all. I have been poking at ALLOC_UNMAPPED to post v4, but I
+have run into several issues (which is why I haven't posted anything
+yet). So please feel free to pull out whatever you want, do not block
+on this :)
 
