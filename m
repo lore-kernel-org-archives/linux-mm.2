@@ -4,101 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE2ECA5FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 15:37:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6620BCA5FFC
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 16:26:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 156956B008C; Mon,  5 Oct 2026 11:37:00 -0400 (EDT)
+	id 497FC6B0088; Mon,  5 Oct 2026 12:26:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 107466B0095; Mon,  5 Oct 2026 11:37:00 -0400 (EDT)
+	id 470466B008C; Mon,  5 Oct 2026 12:26:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F37AE6B0098; Mon,  5 Oct 2026 11:36:59 -0400 (EDT)
+	id 35EB76B0092; Mon,  5 Oct 2026 12:26:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D0D7D6B008C
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:36:59 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 674CD402C0
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:36:59 +0000 (UTC)
-X-FDA: 85288975758.05.EEE6ED3
-Received: from mta1.migadu.com (out-153.mta1.migadu.com [95.215.58.153])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2D23840002
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:36:56 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QoEIM2Ha;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.153 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791214617;
-	b=w/QUnP8eaPfF5+0XNFzIhj3HL+kx/8vFucvzr67FieVHjS33/IQp9oMVKo8t0XspTwEWQo
-	DBL2Apd3jrkzfV4f48mHe8EgkVTcJcbN+NriC665RgFhuiBwPcbZxK27lnIA4jDMzTXqVP
-	SKOyh/md7ip8Z7dAAFUPBOb65WPDqh0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QoEIM2Ha;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.153 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 121436B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:26:06 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 93D7140326
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 16:26:05 +0000 (UTC)
+X-FDA: 85289099490.20.2364E10
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4E2E1C0002
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 16:26:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="k5ruQcs/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/uqe5lrM";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Bna+jeUN;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ljolE5FX;
+	spf=pass (imf28.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791214617;
+	s=arc-20220608; t=1791217563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oUBuiof6DvhZfufyvJ9K9IojiW0eiKyws5GfCSVQra4=;
-	b=J00yhLzU7kWvFSenqXZN7mnyJ4tP0wtSDfwIpEYzI0eJeQafeRhTHga/zgveOa87uvC283
-	7txwfRuosShAE+klwxeiEQZEkGQJsYyKksOjV1Y1Zqi0Szd8UeG9X+WWGGvzsDxQyLGFjC
-	EV/ZlC0GvoQQ2D1H/qlIV4gbYw835JA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=5zX+01E1uYtcKNTedIU5E0EoruaCd2DT0fqXgC7ia5I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791214615; v=1; x=1791819415;
- b=QoEIM2HaXyPtk7CN494dWenrpWjsWWgEMg+swUH9vkjcn2co6GeBCNw8Ph6nj8SvPT9DDQzg
- KOULzsPzjm5jNf5CQjkZv2FLUVjTpabtBq3Cl3Yl78+V6HkS+GE7HCDuEHsooEYsxrHW/KwSo8w
- 325ie3y0MOYH9BNQaciGz8lE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8941f7e82ec68c72;
-	Mon, 05 Oct 2026 15:36:55 +0000
-X-Mizu-Trace-ID: 8941f7e82ec68c72
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <6ad07601-eeef-4fe6-9758-f6936a3bff41@linux.dev>
-Date: Mon, 5 Oct 2026 23:36:36 +0800
+	bh=3QCxilX6Jn3NHwpmrQszL9nBtZP+KGRKGSWPtHz/iVU=;
+	b=iORB56di2wmFGoghn1ftGQTnnwvfprrLm1O2lTP0mdPegXPb9WVR40E3uhCpCBuj3KRCaM
+	koop84qO4lSveySzQ2gyEqQmiPQJN75XZ+GMHU/oRuyLdmWpb1XoNIjfWgT/WISjfRhleQ
+	9zVxLBy7dI9CGHtwR4FtFkvM9snDAJY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791217563;
+	b=BX3DYIal96zLAAkUOJbpAJK1UDiFXYogqGj4v4zCdCeHcanYcPeUpcPp1YmXVANB0sv+tR
+	HihRs9UPeOmQIGipRu/TBp97VWMrYcCNE210ZTb7W8QVoqSdHUrnzvV8YBZrW0ZmooUnOe
+	7+fY9MF3qkEspbMTf4rFyGfyz8K9X7Y=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="k5ruQcs/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/uqe5lrM";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Bna+jeUN;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ljolE5FX;
+	spf=pass (imf28.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 534A521CC9;
+	Mon,  5 Oct 2026 16:25:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1791217557; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3QCxilX6Jn3NHwpmrQszL9nBtZP+KGRKGSWPtHz/iVU=;
+	b=k5ruQcs/on2VIzOXmxqSS4IfZ8wf8r/4SV8G3Fdr+JJby1qa2X7bl98nKgAAgmZd7yJal0
+	otTQlTiFFDc4hYaJCiCJkvNAQdvOiPbNod2YvcEkkXtdLYNSTuoBho0LcCoqlRHhD/EPzb
+	uzIYbioILKr1owBgdsDbD40Qq/c2pnw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1791217557;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3QCxilX6Jn3NHwpmrQszL9nBtZP+KGRKGSWPtHz/iVU=;
+	b=/uqe5lrMr+KbBX+d1oDtcrnwCe1K7WykRsGn5rf3yW6RV1/KVRPYtWEVdt9FhzndnPexep
+	HxTgMuod5n952/Bw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1791217553; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3QCxilX6Jn3NHwpmrQszL9nBtZP+KGRKGSWPtHz/iVU=;
+	b=Bna+jeUN7vDJuAQDE0OYULGaLBRqrJz0GjUweYJBDTlet0ToeEucKYTWFl+8qfEt9gnXE4
+	xqCTx1ilWdrVH7SHLfJ9pKPNEVugJPw7/Y6UD8bGfiXkY3vwAiseYC6RimegfTLJsR1LXU
+	txWfS2NAwOIRp/jrk+uoZ/aErveQLzs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1791217553;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3QCxilX6Jn3NHwpmrQszL9nBtZP+KGRKGSWPtHz/iVU=;
+	b=ljolE5FXb6fhoA41wVfhQWOHSZPyVH3M4vv8Vv0KneEzDxhIsyyBZWCJeZXMqNPzvMFl0d
+	D7QPKOBnXMfcu4Bw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E0F3013688;
+	Mon,  5 Oct 2026 16:25:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TpvxLpDPw2qXMwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 05 Oct 2026 16:25:52 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 1CB3CA13FC; Mon, 05 Oct 2026 18:25:52 +0200 (CEST)
+Date: Mon, 5 Oct 2026 18:25:52 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jan Kara <jack@suse.cz>, Julian Sun <sunjunchao@bytedance.com>, 
+	linux-block@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
+	willy@infradead.org, tj@kernel.org, akpm@linux-foundation.org, 
+	Boris Burkov <boris@bur.io>
+Subject: Re: [PATCH v9 1/3] block: introduce bdev_flush_by_dev()
+Message-ID: <bsb5vk2s3vyqglw6bv6pgpoqqvkho2p5kfnskfwfban5azi2vt@sceqd6t36yai>
+References: <20260925064444.3944820-1-sunjunchao@bytedance.com>
+ <20260925064444.3944820-2-sunjunchao@bytedance.com>
+ <arYaMbJUh6unvz_t@infradead.org>
+ <3w6vfwfkojmfqy2qs5j4q2s2366ajqiwmqf624lyn3odrv42v2@va2r7a6ngfz6>
+ <aroIAqoCNDBPlB2A@infradead.org>
+ <9e9c02fe-e94d-4f70-a21b-47b46bab2c3b@bytedance.com>
+ <5my3hyw54ej2tw24dqnacsy7xppywdjovvnwvrevmczsllzq7c@berxapmobgfa>
+ <asNfNHd-kcsI4B1S@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with
- TCE
-Content-Language: en-US
-To: Andrew Cooper <andrew.cooper3@citrix.com>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, riel@surriel.com, linux-kernel@vger.kernel.org,
- qi.zheng@linux.dev, nadav.amit@gmail.com, thomas.lendacky@amd.com,
- kernel-team@meta.com, linux-mm@kvack.org, akpm@linux-foundation.org,
- brendan.jackman@linux.dev, jannh@google.com, mhklinux@outlook.com,
- Manali.Shukla@amd.com, mingo@kernel.org, stable@vger.kernel.org,
- toshi.kani@hpe.com, david@kernel.org, mikhail.v.gavrilov@gmail.com
-References: <20261005052302.43042-1-lance.yang@linux.dev>
- <asM7b8ECO34-jiwi@pedro-suse.tail5790ac.ts.net>
- <60d5db86-8002-4d87-b8d3-c161d674122b@linux.dev>
- <ab077b6a-160f-41a2-a167-813f0560e30d@citrix.com>
- <38541ec6-d796-4f35-a700-75ab097b6df5@linux.dev>
- <7ad90e94-d04d-453a-ba22-9640a5024d8c@citrix.com>
- <6801221a-6307-407a-85fc-46906f95d22e@linux.dev>
- <9459bab2-b373-4008-8f3d-f84b62db5b67@citrix.com>
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <9459bab2-b373-4008-8f3d-f84b62db5b67@citrix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6nwm5qb9zborxpe84yta9gb9zoo6jiqg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <asNfNHd-kcsI4B1S@infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2D23840002
-X-HE-Tag: 1791214616-953168
-X-HE-Meta: U2FsdGVkX19IiZqq2kWOIPsIqZ0+h7y41YvEZ1ZaweyV2paIeSFGGHM1TeT26Nhx0qmpmrzuDF0luqQvoOJkyuCH7Q6Te0KvfOKbXiWgNyjftXmB5AduQj7lW0HPAxj/lrBjEFeWtvVTu1b3Q09f4A/Q5+4/MPYnyLsf9KcT6yIzDJFL/QTXwce3yJ2EzqFSo4DD+c9RASKhfp+ylV24eTEVzRHaa3Pzd6dbBKSpDizzVQGNfw7caXdkwfY3M8aPqCTvXqnSuyoj3nyMdQrdQsVncB2294O7r49BbDxwEECVAB8y/gomeXImvq/FRz9MDzEJZoCQuC7T9Uo8yRQLDMKDqUzGtT69SFfRH0jdIdOMM1teMIhiZmmVoHd5JloZtGEBiR1FhNwyKDJ3jnpMIYQgi+IFoQlwqj5bwtIjRR296c3H34gzwJdtoxI2pNB26JYyutxqAusFqcl/CyJl/XGbb6d5UsuPMOKdDLR9/DqSuFTMDotvkwVihBcE2Kz7G2P6aS70yr8pjmArmyJMQ+QUWGD7/wLyZ1fL9rgYARmuwoOFUHrkbIjOlWqhUR2Zh1Q1VX8H5E1XyGFjGQEI2VLG7GfljsJuj51aqOA08t7S2/A5ys/6AGh7hHJLIj1NZZjNVX/9jnmWeJXaT5UjnDB77l8+CpYHIF0hbtWCXOGiM6zv9JT4GszRFnzZP6fkh7pnrCuM+IuGbnVJOSAFxVClig2O9mgG7/p/PbRJ6C//7nm82BTjULMyG8ZFcAaqib6d9BlaEkv1Dpt6wqwsui/syIMuU32JIHF95wIssTdeGvjdchjmR3ctfS8SC0LMla9AFrL9T4rJ68blQILQ5o40iRWMJhLUrHoBCLspkI6sAmIa4Sj+hDFuXYI8AWsMn97x8hp9BILVnyyJUcOtxn0rh5bLKcuicIQtRaG9QMrbMjk422jUZ4BCI80odcogIKijshAFWFA1cFWkhVq
- 1QxcV0My
- 7Elrq5zmHWh4wBt86taI7BjmqnAfhEwSu5WUznbFi7k9dz440ARiUA3cE+U0v4HUnjd9aEHO0YyT+nWhWuCKS9Ns/3enIREb5YkI9K4y4LvYqzoJLOPM2yVfpB7fZNo9JvrEZvjnJxdyfV4VngFGxBdYJBH2RMDchsHpvRNi639ApJjpeay4YCfS6J8HzebSH41JiIewQQrHXuFvWYgD7raA/wiDYyUn6RAIKZzYow6Qn/dnkK99FFdGQRxgEfmAUor22ApN/+jtCtoQ4MDKDRwkNQKL54EGi347O6VsFDkzHWo1qgtbozS2oD8DFMD4MzyUDz5ngo1vr28HnBW1JfpHqWld46cwI+rSc3z/iKliIkckBuj8zNrbHlaRz0L20aczdobRZAuqLdVCcqDRWEF5jGg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4E2E1C0002
+X-Stat-Signature: atcxtmogam939mhce1g6nghsthg744h8
+X-HE-Tag: 1791217563-208681
+X-HE-Meta: U2FsdGVkX1+APkL0U5jIcz0VAhpALJ47sjmY6n0dn6R5vShf92fjc8P4XkSAscHe41hHaTu+tDf5zv8dn1iHXp3xQxVvi0TCSB93MxqmSr5jUUMNgOIWKxi7N5fIUkAZJA31NbTcLIsws7zkpMRvHwWQz7XTFA3RVedYIep15QFd3VMfem2kW0Gwvrj+yXdaOYaXEgaD+hBG9++NQ5rOEEGmKU3zRVfHN8t/siV9NICx4oWeikeQsqIAGJVRfae0VCHtiTx+K102Qug8Lvi+SOFY12xwgLujpZGJsBOWLIpAMPh5IspG6tVZLfaLNrDf77UkbGAcEMQoNN4MVOm1VsITFiVp8+2nVEK/pYq5g4DN2Bf0GBVVTWcnGf3KvLpSYXMLsF9v/d2R6xkIObqKeqTRvBEbciJexgZ1tP63vKbkHWezSo5l92L9h1VaYoNrJIU8dq14KOl4kvg9s8+zB4Uw1uGFqO07pZEMw5aUT9OCO06vnECxC1x0in/zmvRgxICswZfV2j2XSZeN7I93sx8nNblUiTgp47ekrr2z3t4BWH2Bc154n8WcVNhet+/Xea9vqsH+Zz8NuvBr9BrDt3+OwmW4haOgtVgPsIq2pGvhh3Sw0RupJaLyaxjYRQ2DG7Jx2jcWJj1HHC+BiLYSq0RAw3DTlP/JJ8W1ULlEHw/DHfV6Q9PXMJvVQhE2vt8RlYigDvlcJnV0FC+yYw1aVK9rLfYYYDRA0S9Lv6oGfFW7Je7BjhGj0Qoum0qKJBMnp+wH7G0fP1JVu6xg+Azu04uGzNJVnx2jD46fmYU2KiIn7Mu70d9P3+tlVBv2HgoO4/wSETMoI96xCO1S89Q9dsX6S9+niFVq3hy1FX60rxHNjtrsFhn4NeMHBTKZBlvoChTechkjk0ofI3Ljot63mM6CjwU/2IO60XfdzYX0H9CiygnkgP0/TlR5fe8oqF2aT1agE+/+F6pYaCpSVcH
+ DWLIYev/
+ FyX0sxRSSePPA00EN9jcDGgcr/KYW68HzenUutaCH8m+PhO595NqQhZG1wtgPhQ2/I0vdMekw2AEr2c01nClLJHIx87YB5bx8fpNnxAxwL9VVZI0Dr7h4CgfUnO1Iq76wUgpctaXA1lFUwW4oOd+/1AdCrrQr4kJdGocrlTxHuaGgypjay0dyES2C0GBWMgODMahbdXzVp/Srdykt/pSKxOYFb0UczWMGX/AzfUo5+9DjqH1uxVnZCSV/WotQoO8gNPu+y0tN6oSlHAcylkXS8WoZ2CNXF8FbpXsuQEinIWxS8wpeaGBq2qWDMWsYZmoSawrqu/w3qFoCM09xGX2WP34KxnDznjfaHBRxEkec4ixYehLZSZGnHSPCf8b4rZPSulycoc7z+XfRlRY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,78 +142,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon 05-10-26 01:26:28, Christoph Hellwig wrote:
+> On Fri, Oct 02, 2026 at 01:10:42PM +0200, Jan Kara wrote:
+> > FWIW I share Julian's concern here. It would be fine to use AS_KERNEL_FILE
+> > for ext4 metadata but I think just unconditionally setting AS_KERNEL_FILE
+> > for bdev mappings will cause issues because some users may be using bdevs
+> > directly for their workloads and they could still expect proper memcg
+> > accounting to work in that case.
+> 
+> Agreed that it should not set unconditionally.
+> 
+> > We could set AS_KERNEL_FILE when opening bdev for a filesystem (and remove
+> > it when releasing bdev) but that would have to make sure there are no
+> > folios in the bdev mapping when changing the flag as otherwise the
+> > accounting would go wrong. Looks it might be doable but getting all the
+> > cornercases right will be hairy and overall not very appealing to me...
+> 
+> I'd rather not support special case writeback code just for this legacy
+> fs abuses bdev buffer cache case.  And we basically need to tear
+> down pagecache at unmount anyway, as i_blkbits can change, so while
+> we do need to be careful, I don't think it really is a major issue.
 
+OK, after some more thought yes, I think we can make that work.
 
-On 2026/10/5 23:22, Andrew Cooper wrote:
-> On 05/10/2026 11:12 am, Lance Yang wrote:
->> On 2026/10/5 17:57, Andrew Cooper wrote:
->>> On 05/10/2026 9:32 am, Lance Yang wrote:
->>>> On 2026/10/5 16:19, Andrew Cooper wrote:
->>>>> On 05/10/2026 8:29 am, Lance Yang wrote:
->>>>>>>
->>>>>>> Did you repro any bug related to this? The functionality is perhaps
->>>>>>> underspecified in the AMD manual.
->>>>>>
->>>>>> TBH, I don't have a reproducer yet. Just LLM stumbled upon this while
->>>>>> I was investigating another memory corruption issue [1].
->>>>>>
->>>>>> [1]
->>>>>> https://lore.kernel.org/linux-mm/arY1Wq6R9OY20ans@pcnci.linuxbox.cz/#t
->>>>>>
->>>>>
->>>>> What hardware are you running on?
->>>>>
->>>>> That looks like the Zen5 issue, for which you want either the latest
->>>>> microcode out of linux-firmware and/or
->>>>> https://lore.kernel.org/r/20261002211617.1001617-1-bp@kernel.org
->>>>>
->>>>> TCE is a no-op in Zen1 and later, so unless you're on older
->>>>> hardware, it
->>>>> won't be that.
->>>>
->>>> Just to clarify ... these are two separate issues.
->>>>
->>>> I mentioned [1] only to explain how this came up while investigating
->>>> something else. I'm not claiming that TCE caused the corruption
->>>> reported
->>>> there :)
->>>
->>> Please can you answer the question.  Which CPU are you seeing this on?
->>>
->>
->> Which CPU? None so far. As I said, I don't have a reproducer. I'm trying
->> to make sense of what the manual says and what the code does ...
-> 
-> I'm afraid that if you're trying to be helpful, you've had entirely the
-> opposite effect.
-> 
-> TLB handling is a complicated topic.  What you've done is present what
-> is effectively a query about the AMD manual as if it were a bugfix for
-> an critical-sounding issue.  You even sited a real bug-report for an
-> actually-critical issue, despite it turning out to have nothing to do
-> with your submission.
-> 
-> The patch is buggy.  For starters, you should be checking is whether TCE
-> is enabled, not whether it's available on the system.  This causes the
-> more expensive option to use used even when TCE is turned off.
-> 
-> But, AIUI INVLPG only flushes the whole structure cache because of a
-> windows bug which caused it to crash on a 486.  AMD deliberately
-> introduced TCE to remove this overhead for every OS which didn't want
-> lumbering with a workaround for buggy windows.
-> 
-> Linux currently believes that it's TLB invalidation algorithm is
-> compatible with TCE, so at a bare minimum, you need to have some kind of
-> discussion on why you believe this not to be true before claiming that
-> it "might be unsafe because the manual says so".
-> 
-> 
-> It's fine to ask a question, and even ask "so shouldn't the code look
-> like this?" but such a patch needs a very clear RFC or QUESTION tag.
+> We might be able to restrict to setting it when
+> CONFIG_BLK_DEV_WRITE_MOUNTED is disabled to avoid the problem of non-fs
+> shared mmap writers, as anyone using a modern kernel and cgroups really
+> should have that disabled.
 
-Thanks for explaining! Lesson learned. I should have made it clear
-that this was a question about the manual ...
+I don't think that's really needed. If such writes are happening, they are
+*very* limited and done by a system administrator only (as they are very
+dangerous) so the fact the writes will get charged to the root cgroup is
+not an issue.
 
-Let's drop the patch. I'll take another look.
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
