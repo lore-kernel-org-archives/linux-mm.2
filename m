@@ -4,132 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15D7DCA5FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 06:09:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1258ACA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 06:23:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB4DC6B0092; Mon,  5 Oct 2026 02:09:49 -0400 (EDT)
+	id 1E1856B0088; Mon,  5 Oct 2026 02:23:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B65A86B0093; Mon,  5 Oct 2026 02:09:49 -0400 (EDT)
+	id 192276B008C; Mon,  5 Oct 2026 02:23:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A53F86B0095; Mon,  5 Oct 2026 02:09:49 -0400 (EDT)
+	id 0A99F6B0092; Mon,  5 Oct 2026 02:23:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EB276B0092
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:09:49 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D2C1E40134
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:09:48 +0000 (UTC)
-X-FDA: 85287546456.11.2088C62
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8F54B140005
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:09:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ry9geKI6;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="//qhazbQ";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SJbVbon5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=B8Z8v9rg;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D8DEE6B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:23:03 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5464EC0155
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:23:03 +0000 (UTC)
+X-FDA: 85287579846.23.B63B591
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 423FE120007
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:23:00 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QkWeSL6h;
+	spf=pass (imf29.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791180586;
+	s=arc-20220608; t=1791181380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s/ejuC82x28bAndFLSItnOGKHqAeicBTwXUq8uK5v1Q=;
-	b=plcXgceYH93jTeIzPb7vN5+JvKto0oIshm/tWts6RbejRafl2SjU2LMkFzRLDfn6bKKRQ8
-	4BQUVW/MaEW+e0AWBukkXSUP5BVbmHO7HNZwypPyXwyQysCiwOI54Qgp70m+q1xASsPRIx
-	gDDccBhyX1fhN+oermWwvPs//TCn0ic=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ry9geKI6;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="//qhazbQ";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SJbVbon5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=B8Z8v9rg;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sK5flBSyUz9JPc2AauHO028it+gKWcI0pXP1AO189cA=;
+	b=on3vzylH43v/3zctDyWxL4g1zV3jxtsI/y5VRG+IbWJYuV32ETlUjsuAzXtKdZ0r7jVwo1
+	4hfePwUf75QJkAnNwuR6PXr7XPgsRG4nT7bla6qiX5DEXeoBEDzSB/VAPkvnwk3CimnaSA
+	6z+P3oMNg4pH6gnZmlIm1JdjYcFDQP0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791180586;
-	b=hgoGIgDVFoYwsig3KUkb+Vh38hJ6JUKmRxUuD4XbHV5K17nXnfX2WzYvjsHyZ6KeU0ksHx
-	Y13HN8GssJzMoXn0KtrkyoFisV1XvUZH0TsLCrFHh0JNHNy+1ceHyhrSsIXoYFvZq4hTKQ
-	35suab8ndK6cQVoRcDdy6H9EmcEExII=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id BA62A21E86;
-	Mon,  5 Oct 2026 06:09:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791180580; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s/ejuC82x28bAndFLSItnOGKHqAeicBTwXUq8uK5v1Q=;
-	b=ry9geKI6pF6M9QVELgUcIpqEQ1VAuj2yrQmleMftMLPZATU/dwl0qyKb7B8r0bOjnkqvf0
-	L8x5kSRDo/CjphWS/wnmUarWkywSKnrJINMOaPu2WnmR3/WQwPc8AbGNytuZ0OIM2t5RfQ
-	+0jLOqGdTDbZwjaTtXKifrQXReOReE8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791180580;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s/ejuC82x28bAndFLSItnOGKHqAeicBTwXUq8uK5v1Q=;
-	b=//qhazbQCMNmF5Go41k/pRzufO5Rjb3yi/U7HM5ED0wRsmGLuKk9aF6Ll8GiIpM2Nil3Km
-	DVonZWNtJdEiSqCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791180576; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s/ejuC82x28bAndFLSItnOGKHqAeicBTwXUq8uK5v1Q=;
-	b=SJbVbon5JV5mnQRgQ0jGovGLeXzEt4BOwiYjz6efFIVmmOQkAr0PEjfUM/7P0ASQNPcgfD
-	9GBwCkzf84o8MK42Ov2jVfGvsI/LBoB9onMzzRqsp7PQVNCPlC1W/bTb7O+rQEcrba+DED
-	NtdXomhXQ7CZLLvurEp0yRa8A6JgdEo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791180576;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s/ejuC82x28bAndFLSItnOGKHqAeicBTwXUq8uK5v1Q=;
-	b=B8Z8v9rgicrwKF/cCc2/ox4K/Z+vy5h9dn8QcYR2drEnQhtfKAe5ccHZQeLXeVWBocQRFw
-	SnTv6tpReDGIOpDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 43831132D3;
-	Mon,  5 Oct 2026 06:09:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Z2cGASA/w2oBDwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 05 Oct 2026 06:09:36 +0000
-Date: Mon, 5 Oct 2026 08:09:30 +0200
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org, 
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com, 
-	riel@surriel.com, linux-kernel@vger.kernel.org, qi.zheng@linux.dev, 
-	nadav.amit@gmail.com, thomas.lendacky@amd.com, kernel-team@meta.com, 
-	linux-mm@kvack.org, akpm@linux-foundation.org, brendan.jackman@linux.dev, 
-	jannh@google.com, mhklinux@outlook.com, andrew.cooper3@citrix.com, 
-	Manali.Shukla@amd.com, mingo@kernel.org, stable@vger.kernel.org, toshi.kani@hpe.com, 
-	david@kernel.org, mikhail.v.gavrilov@gmail.com
-Subject: Re: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with
- TCE
-Message-ID: <asM7b8ECO34-jiwi@pedro-suse.tail5790ac.ts.net>
-References: <20261005052302.43042-1-lance.yang@linux.dev>
+	t=1791181380;
+	b=IYZ5Ky/YOQRpQy/fOs5nmksu6U1kbLi6C1vFk1I7hqTeyBv2kXjmsKp0eCHmbgXu3UarrD
+	IpIMZA7F6eRNKvaIliCGlvIO9/024B9Hx4fTWaftKd3eWXGYtrzJ8P9K1YUD/Kx09oQYPP
+	iCkwo3as4u6SMGQsz/9AVyb5a4mxkw8=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QkWeSL6h;
+	spf=pass (imf29.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cbee846deecso1020153a12.1
+        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 23:23:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791181379; x=1791786179; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sK5flBSyUz9JPc2AauHO028it+gKWcI0pXP1AO189cA=;
+        b=QkWeSL6hy6yY83caq+7frqHFDarPv06OMcyurw0wu+65NT1kQSm9K53TDTXcrFyxIl
+         vVdQa4phM5SipcYQPb/SNALQVNyDLqafBIfrGZFCjOUKYADQOZXG771BOxKLawJ/0uhM
+         4FTi/B++8DkIA/PR7miPFO0Oq0BzeVQUi1hYjPDKNlto9TOOz9rrx5S8C+GvUToyshAd
+         YXmkn/tVuR6sFp++DyNODTwnBFCbSOwG8NbCzpGyxGm3MqaOz73+kE8DUYHc9U9IJQyJ
+         9mo9kk7BKfKYXF5ASm/GphEtoZKSKXVDdxziJp4M/Yz41zqB2cxDpqpodhVzoaiGLYf0
+         S1gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791181379; x=1791786179;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sK5flBSyUz9JPc2AauHO028it+gKWcI0pXP1AO189cA=;
+        b=WigO+xCxPOooutzj5X8EvkkIZorGjCzMY35EE9IGi4nxtHN9bx2Yy/7PVyvaQvEqTm
+         2ca3gi0xPgl0A5+cxsruJkAm7e+kQa5niSRV8Oox8ofkIl3urdVB4zZev9P+euxYjKvd
+         qQ1uqFoEcyUJ6ppzyiw1a+mblf8ZG3Lu4VcCB7C9bevSediDdK5ui6GvA1+KHuGB3oIP
+         M+3pJNITBYpPhziW3QozlxdUj2qmk70wCv3Ak09jT5B+hbHWP6Vpm5PQSWD3Ca8yk15f
+         GFozOoQ4zu6cVkmJUDNc8frc3riJymyFqFx9XdkfP0nFN0k+an4lVAvuj+tYUVbemNBY
+         l9fQ==
+X-Gm-Message-State: AFq9FYJImlXZKF/78eV05+4THhPXeuwDTLLLIQxemVWuAy2YTBUe6dJm
+	UvHgOExH7k0xbWb7kdnAtlMZbg32Lcoe8EWk+7kHcPYPzuODY1tMupO7
+X-Gm-Gg: AYBFou16zmQde0ySbsrduYdiDoCqwIcXRgvkQ+rmh+LwrzgdMfX8Ppwh9suTLu4rW9R
+	vMPZrvO0eaPEqTSH88LfRaZVhwW3FttNQfXreng5V+gl4vqa/spA37HyyB6aQ+GKDQyov2dXrZd
+	APZ0M2i4dXdo7dRZIw4Ntidmta5t3LZymw5orLp2yNo3Cvh5cReB1DQ5IqjgPUW4babkQEa+ZDQ
+	2ae3tOK6RaAKskeec4inbfTQq404oxtOHTGwD4j/wVauOdwsAW+AvBPHOOTcUML6wqWLKkKfnBp
+	uAEPK0XrztxN0EQP8P9NOeA+459w59t4V31Kf/FZyerhh1JMUJ4qoRJpJdaUG4AgdAnsnM3VQOq
+	yCS6VjNxf/ngH526byeIxolmOGdJpmqiQWLsWqvjBiCpoA6JdpRZt72/DrNTtfvvv0IF73ICNNl
+	MwXZg/FxavWbGO0NJBQkYHptm582lRLyflJlVLcrjwUNkQyYA4JNwsimCMj//AsLnjBKXwGXYFC
+	jeDhkmOF9mR3g==
+X-Received: by 2002:a17:90b:2f0e:b0:3a8:1cc6:c8e0 with SMTP id 98e67ed59e1d1-3a81cc6c99amr788163a91.6.1791181379004;
+        Sun, 04 Oct 2026 23:22:59 -0700 (PDT)
+Received: from localhost.localdomain ([240e:b8f:1df9:a600:c693:b19f:ada0:748])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78e4a1bfesm10661197a91.12.2026.10.04.23.22.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2026 23:22:58 -0700 (PDT)
+From: Vernon Yang <vernon2gm@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	ljs@kernel.org,
+	roman.gushchin@linux.dev,
+	dave@stgolabs.net
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Vernon Yang <yanglincheng@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm: vmscan: don't count per-node proactive reclaim as memory pressure
+Date: Mon,  5 Oct 2026 14:22:36 +0800
+Message-ID: <20261005062236.564210-1-vernon2gm@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261005052302.43042-1-lance.yang@linux.dev>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8F54B140005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 423FE120007
+X-Stat-Signature: iwenahstrsejyc3z6fz5qzfezdnfroum
 X-Rspam-User: 
-X-Stat-Signature: uiz8eonumwu8ztis3scz6i8p1za69e91
-X-HE-Tag: 1791180586-877291
-X-HE-Meta: U2FsdGVkX19dbyccbBLJtRpMiaYSxBclHWrvHBTaC0tZ1a5a4x1M0OX+/TgpW6T0mObF9E00h+xa/5jwIs31nsLu4enoUTAT12netpoT4PXbswnMfP+9RD1RmuefwZ6qnbmAQ5/Bg3wZ9v4GgiynB65wFJUjqBv9Z/rpyJRKPA9WW8TVfx/1SpVBHJHFRWOc4Y1HQ8oOd8M4vDVGcnhfGpTIW1vrSLj2diDb2DtBxp9m9xYb4LEr68p1VJEoQeM47xdeHpqsSmiVwJ4+Yg5ZTG92anLExBYNHz2PxGgK53FToym1l4osSWlg0fwSYQE4LRQS+kRtVlsvEwiuN6lk4Mg7YM5MwwAXD5oEL6izT7ZtY+HRgMihG5MUqWnEHE5dzy0peLKAhWmZL57iV3ZHIKyQvsDrnBTP5/lnORcASR7UhhvYMoDbC9EYbUvG52Io42KaqXkQqed+Ru6hhdi/e9aj4CkERoWCW5VTJcnABK4djl7ah7th0rRRBDHqsWW//UMVOsjqft+562AGG+gR5HYX9hEJrImIuf8iuKPmc+PsIZbTyekip1AdImzuD3KGvrQBhgketU1957EnjpSZFGnkE0r0VbWaLR+IXJh8khoXAr7CUeNhKpH7cPgowjQoco/b6dtfxX4rAnWqJRZTHxN/SZyeyD4P1wFADI1wiAg0xTaelrCFSKYUjlpWeULxeG4/fn43uEHzPmnk9oHJcIXWNmedjttwquEZ5S+eeu6is3z3Vf+f3XFrp3CFzSVBO9ZKUTZDPEOFTLxNjdVSsbGrkvhReV7wBKGmM0JgZ4jVXDjl0Peg3qEXyw92CVD0BC3WSkP9D+t06Ar7kg/fE9Tw7KRGMqUG2bXLYN4ffnJ8yYQvRCfksvNPDwUyqhYZZ7gHv7XajS+TMFgRdCQU06+xvpprZ7joG2R6f1kzB4bFTYxOiFKuZMOVKVetZvXJpdzTs3IiICkh7p+h2th
- glJx2mhK
- ExywvLmwjEKlTJCRqjnND+mpL9kBApRn+Qd5OmgFzP1CLDy1JXCC/m9VUY+HBLvxSb/MZ0JnqvVmD0MJr3bNxkuIUi4t9B6PFUWISQ310riskistKOvJPKuIoswfgsl9e85URsf2R7oXNeC/xsm+eAvF9tecAY7ptSZdrKqkKqMtl6r44BixwLfry01aQAMpMld7bzu61k0H2uUJDdNH9b/7YHZLhLgvvwqSWO8xqSBN5UTSopA+NPBAU1YhqptNSpcDSIxHkNYkprWtgRqXIV2L8PRZMD+/dlBuZqdTfTbnqKrPGyAklL4sWxmk5g/IIkJpeMudnzXokYHxm/e/IOdaBEHRDprqvJZNAntCjE+0awaA=
+X-HE-Tag: 1791181380-686734
+X-HE-Meta: U2FsdGVkX1+1p2OyVec7Hi0emeJGAe7p5zYyQFeu6AldH3Esx4oF/6huVupCuLz6dt8kZR8i+LbVuED3bujUkSLSemrkAuVGf2eYOk7FOmOP5I+5KPp2RAh1l+1nJAMna9P1Pfc6sWRTNy0jCeJgW1CyUpJsMO0nBEgrEr/qWa7OI7vOl5+UPLsAV5AYftn7H4FyfOTMI0Sn+AVKfDSXTN1MH7olr6GChNW8s/Ld5MYXr72RAliy8fGdIIbT7RGlgAX6n1DievzZExhR/kMGHM9SrJeL68xnjLFv4Gel9I0kL5sSiYEXahDrZtt4SZqRa+dmXD5XSQHMsYWumuZ/ATFMmslGkU5ZpudKh/jY+uuPCElMoJ+ZpVrjteJKRESd/nTPFxvRiFrURYpFu4ixpGOd3JkFMtHxaSfZng7Wx+kE5FD5+WfMyY6kf0cLaFEDS7OWM+GYvktixHpQD06Kv+34grBoc7RW5B5jf1cO751o9J0fJYt1OD6/YWng+4E7jXRJhhSRmm1T23hhPOaEYw6ycj1bZdC38eYBN78SG71BPDmvZaPzc9WLJ9tk3im+wv9JEQrA6OL+BSeWBae7v46VtLFhoj0K4UZicCrohoWq69MUn8kqzf9kE2HSeJGhTGNhijJ39RzB7c015ATIPyyZXX6rFNY9vTYd11vDwUxDYU+tqEco27mjVMs9TLGopa81RfHi/corlMj26B+M9OJZ6rxja8Zum7PWYux70f8NGKJo2D+K/383oKCGmX2JMjKt8XfMhx6GiNVYlEdMrsiST7Ecayc7t7Fin9sBGeNr+NQvfw+cJaCE8E9wcaf+mhIvpS6kDD20KHGEJ72pmcGsxm0vRwXKPKqJI/fwPub/yvS0lWH5GpD+jvVhmrXzRnEXw8i3zXgoOQnTAFfYQyn2NuvAIfoFEUZOvfWeth95xiBsyETMWDbrDi+qnqXhDR3vmYeBadcF6NV+eZa
+ cQxHHX2M
+ 2da33OBN9hLMFCLxmcnvsklGHSPVatao/PSl8aBnFpHS4BmDIEjc0+6GjJAh2OaKvrylauFSd2Lgv/qkROBQKRiuIJdYN8oTGdGpCIAZNpUsPFGwC47CXShB65o5b9p+ivBZJD1tkx9Ydc3Rs3ewFV99ddSdgoYjhVP/BobrTq18dgXRJWLq9CdNmz2l5T9vR8DkI4VJeTF7lfnmWabRh5kYn3fh7mf7XCcGPfmNxpx2PZ8KZgaQhLCaB45tWRRmEZkx8xRnSG1Vl8qMg/jEvkDgTVpBsBq+KC43OLaPL9FC0ZqRdyzU8R/ljkpkJjIknHt4dhRnJGPioRTAB8V6MC6lN4BXn0ebVl8bWJm/32d5WnyIdkPsoMqHKmDGEQLP1P/apEU6FFWKP63h4AvmlEtXf9ftd2dTLzYogRt0ecVH5Qv780z1Uqh77yCqAbDXLLZ9D53ZDgIIuH2DIZh66ACv8Oniq2V+vUoL2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,38 +130,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 05, 2026 at 01:23:02PM +0800, Lance Yang wrote:
-> pud_free_pmd_page() uses a single-address invalidation to flush the
-> paging-structure caches before freeing the page tables. With AMD TCE
-> enabled, this only invalidates upper-level entries associated with the
-> target address. Cached PMD entries for other addresses in the PUD range can
-> still reference the PTE pages being freed.
-> 
-> The AMD manual quoted in the commit enabling TCE says these instructions
-> remove
-> 
->   "only those upper-level entries that lead to the target PTE in the page
->   table hierarchy, leaving unrelated upper-level entries intact."
-> 
-> Even with all PTEs cleared, speculative page walks can cache present PMD
-> entries after the earlier TLB purge.
-> 
-> Use a full TLB flush before freeing the page tables on CPUs with TCE. Keep
-> the single-address invalidation otherwise.
-> 
-> Fixes: 440a65b7d25f ("x86/mm: Enable AMD translation cache extensions")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+From: Vernon Yang <yanglincheng@kylinos.cn>
 
-I'm not sure this is correct. The PUD is clear. We invalidate the TLB, which
-invalidates the translation caches for that walk. invlpg will notice the PUD
-isn't present. I don't see a case where it can ever not clear the rest
-of the translation caches for all leaves. And, in fact, by that point the CPU
-can (does?) probably formally treat the PUD as the leaf.
+When the cgroup has no memory pressure at all, writing to
+/sys/devices/system/nodeX/reclaim triggers proactive reclaim on
+NUMA node, causing increase in the writer cgroup's memory PSI.
 
-Did you repro any bug related to this? The functionality is perhaps
-underspecified in the AMD manual.
+Due to this reclaim is performed in the context of the write(),
+accounted as memory pressure on the writer, like
+commit e22c6ed90aa9 ("mm: memcontrol: don't count limit-setting reclaim
+as memory pressure"). This is unexpected, the phenomenon resembling
+senpai will appear again.
 
+The Documentation/ABI/stable/sysfs-devices-node documentation also
+notes that "This interface is equivalent to the memcg variant."
+
+This patch unifies the semantics of the memcg and node interfaces:
+per-node proactive reclaim is no longer counted as memory pressure,
+and the per-node proactive reclaim interface no longer produces
+phantom pressure.
+
+I ran demo[1] that performs per-node proactive reclaim 10000 times
+in qemu, writer cgroup memory.pressure as follows:
+
+without patch:
+
+some avg10=31.53 avg60=13.42 avg300=3.31 total=10602985
+full avg10=31.53 avg60=13.42 avg300=3.31 total=10602985
+
+with patch:
+
+some avg10=9.59 avg60=3.41 avg300=0.81 total=2686221
+full avg10=9.59 avg60=3.41 avg300=0.81 total=2686221
+
+[1] https://github.com/vernon2gh/app_and_module/tree/main/reclaim_node_psi
+
+Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+---
+ mm/vmscan.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 91295070ca33..8e22b8a6038b 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -7988,13 +7988,10 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
+ {
+ 	struct task_struct *p = current;
+ 	unsigned int noreclaim_flag;
+-	unsigned long pflags;
+ 
+ 	trace_mm_vmscan_node_reclaim_begin(pgdat->node_id, sc->order,
+ 					   sc->gfp_mask);
+ 
+-	cond_resched();
+-	psi_memstall_enter(&pflags);
+ 	delayacct_freepages_start();
+ 	fs_reclaim_acquire(sc->gfp_mask);
+ 	/*
+@@ -8011,7 +8008,6 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
+ 	memalloc_noreclaim_restore(noreclaim_flag);
+ 	fs_reclaim_release(sc->gfp_mask);
+ 	delayacct_freepages_end();
+-	psi_memstall_leave(&pflags);
+ 
+ 	trace_mm_vmscan_node_reclaim_end(sc->nr_reclaimed, NULL);
+ 
+@@ -8021,6 +8017,7 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
+ unsigned long node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
+ {
+ 	unsigned long ret;
++	unsigned long pflags;
+ 	/* Minimum pages needed in order to stay on node */
+ 	const unsigned long nr_pages = 1 << order;
+ 	struct scan_control sc = {
+@@ -8067,7 +8064,10 @@ unsigned long node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned i
+ 	if (test_and_set_bit_lock(PGDAT_RECLAIM_LOCKED, &pgdat->flags))
+ 		return 0;
+ 
++	cond_resched();
++	psi_memstall_enter(&pflags);
+ 	ret = __node_reclaim(pgdat, nr_pages, &sc);
++	psi_memstall_leave(&pflags);
+ 	clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
+ 
+ 	if (ret >= nr_pages)
+@@ -8193,6 +8193,7 @@ int user_proactive_reclaim(char *buf,
+ 						  &pgdat->flags))
+ 				return -EBUSY;
+ 
++			cond_resched();
+ 			reclaimed = __node_reclaim(pgdat, batch_size, &sc);
+ 			clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
+ 		}
 -- 
-Pedro
+2.53.0
+
 
