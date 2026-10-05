@@ -4,144 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C878CA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 07:06:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22D7ECA5FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 07:13:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 035EA6B0098; Mon,  5 Oct 2026 03:06:42 -0400 (EDT)
+	id 1A0456B0088; Mon,  5 Oct 2026 03:13:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F29306B0099; Mon,  5 Oct 2026 03:06:41 -0400 (EDT)
+	id 1525B6B0095; Mon,  5 Oct 2026 03:13:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E179C6B009B; Mon,  5 Oct 2026 03:06:41 -0400 (EDT)
+	id 040B46B009B; Mon,  5 Oct 2026 03:13:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B98776B0098
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 03:06:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 543A3140157
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:06:41 +0000 (UTC)
-X-FDA: 85287689802.25.8EBAF0F
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9302A2000A
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:06:39 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bREG3I0k;
-	spf=pass (imf13.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id CC0FD6B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 03:13:04 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 59615A4BA0
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:13:04 +0000 (UTC)
+X-FDA: 85287705888.05.9FB8D87
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1C42E180002
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:13:01 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dMpYcVEi;
+	spf=pass (imf16.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791183999;
+	s=arc-20220608; t=1791184382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xfZ3u+8kppu334roBh57uG8qfuX2GjTQB+h2l+yzJBo=;
-	b=c/dHPCAAQbBnAfFGiqJtrOKixnzs71/UxnHD8LIJo0e0EOc39yQttqeyOGZ/7sz0+OpBbq
-	Rngy+7hIakwyn6LAfbsog/VKmjTftRzMy7Aricu7+2AtrBanRpW9vrJP9cil3qmk05xsCw
-	lFC5DBUOAMVGTBBxEVsYSAimAuQ+hus=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791183999;
-	b=tFwT4qtDMm5vuTkSbkJMo+Ruwtp4O+DBWntax/SgABVKgSHEulD7txCl7W4/BgpV/nGmCX
-	P9cYE8Lfka0qL4No+I65+RyOIBSQSVsV+z/KrwTBf0LC05O3R/uEArHveqxY+D8SUNNgCE
-	+usVHP8wpO/p0bVs+F2dea3kRz2y/Tw=
+	bh=qex3q47o/llFp5icyZaFvcldeQl44QEXS98v350pNx0=;
+	b=agz+9mgVOknD9JWUwW11l9kzUzMZ8UKpme+igbuluFsSYHwjhvhzFYtpwKxNldLm8jYgnP
+	aqq4qOmJeAu1lNRTZitxYLSIE9RggMhpLk7JOfhV1xHcBoVRigfTTWWAJrT161frUvznOP
+	TNjsSBI+OJ3KnGJP8SoxuoW8c5+feqs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bREG3I0k;
-	spf=pass (imf13.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49fff72474fso9364055e9.3
-        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 00:06:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791183998; x=1791788798; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xfZ3u+8kppu334roBh57uG8qfuX2GjTQB+h2l+yzJBo=;
-        b=bREG3I0kv6na28LRDtKD/1knpqokX0yroDukUHHR32ktliBVTqRKH47Bce2wuX6KWa
-         DEL0SSkhz1dkstYUw1YyI4O2KVsHGxaUGMwjYjZc/WsAj28jVQkTLL2HLW7OygGDRb6P
-         aj0tOddCTEl65Y4BILU/QmxAKytdZYki6WYYEK50bCcrsaO6bL9AJMxYhWHCM9sUUw7I
-         fRAlHSIZTZIiBHGOfklhd4ymhV/y2B+6lKwL7NL3cFpIFNo1mjmrfirW8FtyQwaRBNol
-         o9XcXEdAiQPDI+0V9HF8ZSe3nn+N4IVZTgdiZGsP4QvTsaDUgAvQs0uvlWsBm2PRDB3Q
-         fesA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791183998; x=1791788798;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xfZ3u+8kppu334roBh57uG8qfuX2GjTQB+h2l+yzJBo=;
-        b=jw1ONTIMMv2H7ObWPJsZcEHXXqFC8IpIOLRek5O+Pzi83c6J09RhcJZYhFUQyvt5B1
-         wjaOBu/aznxkRm/xVlI0Xoq3wei2Np8+tKLy4OCWi1MG12qYvgRbR/QejQ5EGaek8jSW
-         C9XX7Fnhx1P09gYltm4+TEIHG/9bRvs8aYur1XT3+QYgPYg83CFMYmL4V2u6DEOdI/iB
-         ZL/wMxoVhhYXG6xK3OocI/kkrmBaJLfZNrLmbU3AMieVJapypNSgo0bHJd9I4rxIgG13
-         POmjgzPMRyDPg+VcnAfY4TE1baaRmy1ClIlmcMkLQq3C3VKc7cl509uFv135pYxjyfmo
-         x9/A==
-X-Forwarded-Encrypted: i=1; AKwUvBzJIF+sOvwr2T/wKctL4WvhiDs2VhdmfMAu2nptavY5qRaopB7V8rqylwatp1bSM+mcLFIR5TB5kw==@kvack.org
-X-Gm-Message-State: AFuF++kzBQPzCxC6HP4DD5bts0wMmb+M5ogayUXZSNNk8kEc/nC2zORF
-	76cOkBpRe4xHSJgKw433k5mXg7c3WyJEoaHA3D0zbZnf0g1WuCyERzwb
-X-Gm-Gg: AYBFou3XE0MIaf4RpBPqPYsevC6NcVtVTG8nFdJHInRjSgFP6gzLs6Jx+f691PHc9PF
-	Z/8EGg/gVk6/DOFkKtgVI9OFopuLyFYZAyRJ7OE6BZLIVLlon5YSxX0csx4Vg3RRUPyKFPCu7YB
-	pq7zOzLwg1lHX+C3LXW0Wj1pd0xKv0L8EJLjc6HP2pr8ZRZxRJ1yE0Gj3EQjd8gD0I+pfKveFql
-	G43gjKUJmgrrLtyMIbsUQ+7qLy6vLHgwkfetdh5MntggwkcNbDMLEiwG2iIMSE5pgu8URh5VvWm
-	HPN9UsQK43Txu8swa7WjKzL0TGX49u8XJTC/OGc8k9mdoHfsZPnwvNV2DrSslHbLGbp0K7vE/QW
-	ep9Wk18JozlQ8r8TimjaJvWmW965WquOBXfrUluM+iu2PkuJMjDK/+giQKWQxGX0+p7dM63OqsN
-	QSVxRjCF8FZB0kA49T0NYsqEIS6OOxTQp6gW8Uea/EzY5P/0Er/y661P7HD/tOziypuxgaimQf1
-	2S1N8EF01THrn1i/TeoVv9v407/0FQd5KQkoDvULNjZJF7GrwUmfElKeGIQR3mDfE97JisoPraW
-	6jFakK6pqJki0FUl+zKfi4+aLOEv3r70yYoA3wGHOoT7YWsdbqUAESujjxGdBcyPAYmJuYYViVY
-	YVw==
-X-Received: by 2002:a05:600c:46cc:b0:4a0:258a:8de4 with SMTP id 5b1f17b1804b1-4a0274e9c3dmr145299735e9.4.1791183998159;
-        Mon, 05 Oct 2026 00:06:38 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-b305-2001-39fa-3d24-821a-4eae.310.pool.telefonica.de. [2a02:3100:b305:2001:39fa:3d24:821a:4eae])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a16bcb9a21sm283461465e9.10.2026.10.05.00.06.36
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 05 Oct 2026 00:06:37 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	David Hildenbrand <david@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Stevens <stevensd@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Shuah Khan <shuah@kernel.org>,
-	Amery Hung <ameryhung@gmail.com>,
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dMpYcVEi;
+	spf=pass (imf16.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791184382;
+	b=nvg5rez2hqUoPDPlva1VYXVPZwsYpBORWo6K3EEEGGqZwFoM9ERgCMvVKwtNf4dqK/DYrC
+	dvbcgFlgCLvKuoMICqI6LDV4I19uxJB0m4IgoTcE7QqjTCY9UUDjpmcxk2kpzs6tzfX3GX
+	lvWJ/yrfQbdjRYHHbxHrG+2T6gErw6E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791184381;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qex3q47o/llFp5icyZaFvcldeQl44QEXS98v350pNx0=;
+	b=dMpYcVEicL3SN3GS/aBoNhBoe+YkT+riRR+pf6bmjx0Amqk+o64m8C41wHrK0mS6PWcGvm
+	BIJnY+VvblfaO3E1bRsSVybzQD7EHV25AwJkh1T6aJ6ROR/Kch7FLX+hIroB68ih13F/pA
+	pmQLAQ1KUB45qg8bieJgMaq39K4UMog=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-86-57Ru-Qh6OESMsKZrHMXjZw-1; Mon,
+ 05 Oct 2026 03:12:56 -0400
+X-MC-Unique: 57Ru-Qh6OESMsKZrHMXjZw-1
+X-Mimecast-MFC-AGG-ID: 57Ru-Qh6OESMsKZrHMXjZw_1791184373
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CCDDD180061F;
+	Mon,  5 Oct 2026 07:12:52 +0000 (UTC)
+Received: from warthog.com (unknown [10.44.32.90])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 322B119373D8;
+	Mon,  5 Oct 2026 07:12:45 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-rt-devel@lists.linux.dev,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	cgroups@vger.kernel.org
-Subject: [RFC PATCH v2 3/3] selftests/bpf: exercise task storage from hrtimer_start
-Date: Mon,  5 Oct 2026 09:06:25 +0200
-Message-Id: <20261005070625.8871-4-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20261005070625.8871-1-kmehltretter@gmail.com>
-References: <20261005070625.8871-1-kmehltretter@gmail.com>
+	linux-mm@kvack.org
+Subject: [PATCH v12 1/8] mm: Make readahead store folio count in readahead_control
+Date: Mon,  5 Oct 2026 08:12:18 +0100
+Message-ID: <20261005071227.147182-2-dhowells@redhat.com>
+In-Reply-To: <20261005071227.147182-1-dhowells@redhat.com>
+References: <20261005071227.147182-1-dhowells@redhat.com>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: zRsrhugkNMl4HwyJF0BXQ6R00rAYP071Ce9OVSq787o_1791184373
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9302A2000A
-X-Stat-Signature: 9d9pa4jnqg87dza9th3j61tpgok7qudf
-X-HE-Tag: 1791183999-553023
-X-HE-Meta: U2FsdGVkX19cnIDPmbniokC6SnrB/MzWpQusrQ87qChqYNMUVO1k0CXQR5vZp+fjsk1KDqMIeC8f130CT8KMf4RkF7A5p9hYGRjsrImvQSluim0XlUlaUciVNw7XdHE6PsBtKfprfD3Rav5tNAk+9eUdTXosC41z5XFFRPJJnuNWu2vaLzwnE4gbgfqLLlaP2OUbdbERC6b0jZLXPz0F94+qNCl77qAqehmEKEhhtohdCpKh2o03FhagDNkTGsP+zkwQ4G9WjHCOBgcPfJc9f4ATWWyOetA0a1+6QH+7qJKuq5j7yD+NGjX6vCL2t4HwInPP5LVLuncYnCgivRARunvW2dFz5M8ZcyDxTW5CtM+LEV7vi6Iah1Kx40IRGqm3J5YPNjMWq6GD8n27DW2yodICi3PiFEOMOYgaw9LPYPXe6U5Y+q3ed8y4pixgMDV/KeD9+t0bkP57fqaLsliA0521YA83bX7NzrF+rRN8Zp9MuA3KMM61/3Hb+cLUMLDsPF02F4YJxfOWED75fT3fnL5321aWZVQcCVcVwRbhsEna4Vl8dCN1jtLhGK0cTVpX8xU4Vdm1ChTdoVQG63eygzjFz00Cns8dGS5hjq4hpZZysw97taay1nMsws9MbIO5fHqOumW1WGPw0GCX2ILCwJXk15dOAq5MjnQIGpkfOagHjiXFRCNWJtnzaLgRX8vwlKYcr0+LO+t5ATqipIKPEYJMC5rG6AzPWo5v9qU2gfZg8DIlsCAAj83m9jgyVTRZx3Jqmq4RwHtPOrcBQ0MiH2yLZeEqmzK1ON71Ky9hBq3qAA05/NOcnGx65JbtYlOmwieiDtp9Pm8KIo6X821BiTzt/sw/PajSDdK6r/HqByK4t4zFGPtRPC1Rs+yspB2HEhMexTTssbJ9vJnYuS4E3vii4kAt1AlgymCLABntmfiNpjffjwDfgzolnSzso0qWjqs9V1dhfNREFGp5Vu+
- ZgEt7s4K
- Ot6yUXwDzEEJVBrX+6tlaZcmoUjC1fFl52DwGUpBiHp8bQOvHimaN9JqaKydWSnMJdqTgkrghey/YZRBDw6d4TEOtYHjomGSR7upQ31RHy5+zvfyaRqkl1UvMSw15NIW/yMJG8wJbI6ibL6sSr3abEvtZ8AU/ZyKKp+cW1BTUCsFjvTN8HHrsufgSkF0MvUugNVNLyLiH7vSFdRe4ar6DGsqsteUmHAqvQ0xCMnfFoLi9x4PHh2r1s40nPznkSzdPuzfYyMzOwrk55Qx/GrpMpDktiVh49DxkQVrcJajhlRrHDEzg2iFU+MAsHwPI0AZZsXJNPvwz7o7LCXQ7ml0KLR8MUVTc1yA2Q7x+0TEv1fgm1R6mI92bEJFEgb24q8b8zULkExtM1rDPgURj/Wkl97niTNpRt94fYB28s4YJHHYvths2LqxEVUAuNBx+uWjeRLgE7XxPJM4Ui2mnyAY84Qgksg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1C42E180002
+X-Stat-Signature: mrffbty5xs5s17tip9hayqeun939xzkg
+X-HE-Tag: 1791184381-715474
+X-HE-Meta: U2FsdGVkX1+1gR2DLWRs5kqW/s62m3ZI6yd+PRbQa/nTsX2qzQqA6DMM0081/1T3TP2ZUcidpf3GoHtORPZaauL5nh0D7P0M+R2UpVNnnvNCELRTfq40vSpiKS62MEqO7lIY8sPpZRNs/jyXG0dPuszVGbP1RjWpL14AWtaGEl3wILFpGPtnjl3NfSe08X6d+d8WgFAk1FAVW2VLTEmKZfVZvsbqhmcDjd3BxdwMNJHLCl9UjQOSWqewKgM4Ij6GXph/8QIatTGacpCxkRYco8Ee9OxzaHjXcxDPvqKjqve7Vboa03+euTCRb62WlrmjqtHiRB+Di7fIvL5onSU3VzIcTLKenVnwnOZLowgrrABakeCa0yWJvlUJO23oHCHxsRLawzJYfzq752FD8YSMj72jpCoC/2GjizLBB0t7EBz76kQFXtWe2G2GCZcjsty99LrvTh5/cPIfAyoopi5ZmtchdLGKS9xiRLM6XZpUF9BOi7QkWzr+fTmtJe2vfBFIT1Hwi/8OBjf2xaX7l4rcV/AgrxnK6lm6LWBoR3Iw45TYAKHB8+eXoaSRYSLDuPKxM6Inu5qbKIIsPsiTaR4AVgaUCJBkd1UtGHmMfqvr8CTbi/NSxe2lHVu4Ai08I2IPiUztwi02sY/KiHUojRY0K8RNS0GwUppKrdzTh3pD/A9J/QMUZM7jOo5TriH1CRkdIdnTwtl8yeD+ayvajeVCt1yJiovKwMGC5wMIhoj7L4o7QC5bDtxFoaslkXv98Hf+YrCLNi3Ou/afJ387CV/sL7v8d2Ssmxq/BBAiztm6b29tZ8xHE2uinQshhiA6sfx6SQjuCRtqoW8urNH7A7VGHRXkxDgKnh0p1kWRhxi0NgaULho2zmtzlOp9O0B8HsWTaP8SkjumMlhMkftBic0DJVnyMnbc1N+uwRtvozi0YF7v7eBKgRGPclxSDgF0Cz6/TnTjpz7thQhO4l3ZEnz
+ sKV72kQ3
+ 6NWwYYVjqkETkwSzctu9gTG3B50/zZ1V7AhOstvygLrY6JG0D2tw4S5bDIn/9eU/vNp8kG0P171hgvPvHMhu1iOB7yOI+R7voBxlxwrS0kyDoTSqf1207bqy9afTLxdqDaEqCZ7rxTQg2cs5HsQbjicMT5gPvyh/Juuu2FgRhIXK7QoXOLqyBDbL/KKexqC0fjbEdDJm2lB+UiQ0pBTFlOOvFIXNx0JVntHdiMU4ROn++Ntw8omwpbgOcZyefOxLf5M7+JFXTuA2/OGQxS6P+fBTx/1S+56UULwOe9UCKushl5YTHY2H1S0LxEs1B185fXug7CiFOgkgD/eBPBNlbtYpYpjQ+cf2CdNRGRvz8GzQfFI2yxwAMkPg/3/82sOq9mCuOn9Bgj8EAPl4nEPh6hvXP8PJ17ZRSpcqRqspOnbuFZX++xeLREDiMgz1cQdtmsJIVptMjiiQJ0lnOgTadb/KHjxJKsXFZCl5KLgU+etKJg0ITlCw3h15+9V3aY+zSuUg3JgErQvb6OChKinOwg/Lwm0QJ55F7WSWjnL479aSn5AjNDaqhO97ixJYwDAqFJqaje3DCAlKEV5kdwB8YKnm2DQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,137 +121,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-No BPF selftest creates task-local storage from a tracepoint which runs
-while an hrtimer base raw lock is held.  On PREEMPT_RT, this can exercise
-allocator rtmutexes inside a raw-lock section.
+Make readahead store folio count in readahead_control so that the
+filesystem can know in advance how many folios it needs to keep track of.
 
-Attach a program to tp_btf/hrtimer_start for the test process.  Create and
-delete task storage on every event and trigger 1,000 events with
-timerfd_settime().  Detach the program before reading its counters, then
-require at least one successful allocation and balanced attempt and
-outcome counters.  Allocation failure remains valid for the best-effort
-no-lock API.
+This is cleared by read_pages() in case it is called from a loop.
 
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+The count is accessed by the filesystem with readahead_folio_count().
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
 ---
- .../bpf/prog_tests/task_storage_hrtimer.c     | 50 +++++++++++++++++++
- .../bpf/progs/task_storage_hrtimer.c          | 48 ++++++++++++++++++
- 2 files changed, 98 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/task_storage_hrtimer.c
- create mode 100644 tools/testing/selftests/bpf/progs/task_storage_hrtimer.c
+ include/linux/pagemap.h | 10 ++++++++++
+ mm/readahead.c          |  5 +++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/task_storage_hrtimer.c b/tools/testing/selftests/bpf/prog_tests/task_storage_hrtimer.c
-new file mode 100644
-index 000000000000..216e66263bf6
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/task_storage_hrtimer.c
-@@ -0,0 +1,50 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <sys/timerfd.h>
-+#include <unistd.h>
-+
-+#include <test_progs.h>
-+#include "task_storage_hrtimer.skel.h"
-+
-+#define TRIGGER_COUNT 1000
-+
-+void test_task_storage_hrtimer(void)
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 0adfa6605653..b7154b81d0d7 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1411,6 +1411,7 @@ struct readahead_control {
+ 	struct file_ra_state *ra;
+ /* private: use the readahead_* accessors instead */
+ 	pgoff_t _index;
++	unsigned int _nr_folios;
+ 	unsigned int _nr_pages;
+ 	unsigned int _batch_count;
+ 	bool dropbehind;
+@@ -1590,6 +1591,15 @@ static inline size_t readahead_batch_length(const struct readahead_control *rac)
+ 	return rac->_batch_count * PAGE_SIZE;
+ }
+ 
++/**
++ * readahead_folio_count - Get the number of folios in this readahead request.
++ * @rac: The readahead request.
++ */
++static inline unsigned int readahead_folio_count(const struct readahead_control *rac)
 +{
-+	struct itimerspec timer = {
-+		.it_value.tv_nsec = 1000000,
-+	};
-+	struct task_storage_hrtimer *skel;
-+	int err, fd = -1, i;
-+
-+	skel = task_storage_hrtimer__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "skel_open_and_load"))
-+		return;
-+
-+	skel->bss->target_tgid = getpid();
-+	err = task_storage_hrtimer__attach(skel);
-+	if (!ASSERT_OK(err, "skel_attach"))
-+		goto cleanup;
-+
-+	fd = timerfd_create(CLOCK_MONOTONIC, TFD_CLOEXEC);
-+	if (!ASSERT_GE(fd, 0, "timerfd_create"))
-+		goto cleanup;
-+
-+	for (i = 0; i < TRIGGER_COUNT; i++) {
-+		err = timerfd_settime(fd, 0, &timer, NULL);
-+		if (!ASSERT_OK(err, "timerfd_settime"))
-+			goto cleanup;
-+	}
-+
-+	task_storage_hrtimer__detach(skel);
-+
-+	ASSERT_GE(skel->bss->seen, TRIGGER_COUNT, "seen");
-+	ASSERT_EQ(skel->bss->attempted, skel->bss->seen, "attempted");
-+	ASSERT_GT(skel->bss->succeeded, 0, "succeeded");
-+	ASSERT_EQ(skel->bss->delete_errors, 0, "delete_errors");
-+	ASSERT_EQ(skel->bss->attempted,
-+		  skel->bss->succeeded + skel->bss->failed, "attempts");
-+
-+cleanup:
-+	if (fd >= 0)
-+		close(fd);
-+	task_storage_hrtimer__destroy(skel);
++	return rac->_nr_folios;
 +}
-diff --git a/tools/testing/selftests/bpf/progs/task_storage_hrtimer.c b/tools/testing/selftests/bpf/progs/task_storage_hrtimer.c
-new file mode 100644
-index 000000000000..a53c966f15b5
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/task_storage_hrtimer.c
-@@ -0,0 +1,48 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
 +
-+char _license[] SEC("license") = "GPL";
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_TASK_STORAGE);
-+	__uint(map_flags, BPF_F_NO_PREALLOC);
-+	__type(key, int);
-+	__type(value, long);
-+} task_storage SEC(".maps");
-+
-+u32 target_tgid;
-+u64 seen;
-+u64 attempted;
-+u64 succeeded;
-+u64 failed;
-+u64 delete_errors;
-+
-+SEC("tp_btf/hrtimer_start")
-+int BPF_PROG(on_hrtimer_start, struct hrtimer *timer,
-+	     enum hrtimer_mode mode, bool was_armed)
-+{
-+	struct task_struct *task;
-+	long *storage;
-+
-+	if (bpf_get_current_pid_tgid() >> 32 != target_tgid)
-+		return 0;
-+
-+	seen++;
-+	attempted++;
-+	task = bpf_get_current_task_btf();
-+	storage = bpf_task_storage_get(&task_storage, task, NULL,
-+				       BPF_LOCAL_STORAGE_GET_F_CREATE);
-+	if (!storage) {
-+		failed++;
-+		return 0;
-+	}
-+
-+	if (bpf_task_storage_delete(&task_storage, task))
-+		delete_errors++;
-+	else
-+		succeeded++;
-+
-+	return 0;
-+}
--- 
-2.53.0
+ static inline unsigned long dir_pages(const struct inode *inode)
+ {
+ 	return (unsigned long)(inode->i_size + PAGE_SIZE - 1) >>
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 6e5563290287..196542fb1c93 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -188,6 +188,7 @@ static void read_pages(struct readahead_control *rac)
+ 	if (unlikely(rac->_workingset))
+ 		psi_memstall_leave(&rac->_pflags);
+ 	rac->_workingset = false;
++	rac->_nr_folios = 0;
+ 
+ 	BUG_ON(readahead_count(rac));
+ }
+@@ -303,6 +304,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 		if (i == mark)
+ 			folio_set_readahead(folio);
+ 		ractl->_workingset |= folio_test_workingset(folio);
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		i += min_nrpages;
+ 	}
+@@ -473,6 +475,7 @@ static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
+ 		return err;
+ 	}
+ 
++	ractl->_nr_folios++;
+ 	ractl->_nr_pages += 1UL << order;
+ 	ractl->_workingset |= folio_test_workingset(folio);
+ 	return 0;
+@@ -822,6 +825,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		ractl->_index = folio->index;
+ 	}
+@@ -851,6 +855,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		if (ra) {
+ 			ra->size += min_nrpages;
 
 
