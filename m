@@ -4,87 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A505CA5FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 12:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17525CA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 12:54:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E481A6B008C; Mon,  5 Oct 2026 08:48:06 -0400 (EDT)
+	id 2BB056B0088; Mon,  5 Oct 2026 08:54:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD1906B0093; Mon,  5 Oct 2026 08:48:06 -0400 (EDT)
+	id 292C96B0092; Mon,  5 Oct 2026 08:54:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAE756B008C; Mon,  5 Oct 2026 08:48:06 -0400 (EDT)
+	id 1CFC66B0093; Mon,  5 Oct 2026 08:54:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 897B86B0092
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:48:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1636AA01FA
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:48:06 +0000 (UTC)
-X-FDA: 85288550172.01.1A488FC
-Received: from danaos.cslab.ece.ntua.gr (danaos.cslab.ece.ntua.gr [147.102.3.1])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C2FB2A000E
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:48:03 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=cslab.ece.ntua.gr header.s=smtp-cslab header.b=Qk3H8B7y;
-	spf=pass (imf25.hostedemail.com: domain of dchar@cslab.ece.ntua.gr designates 147.102.3.1 as permitted sender) smtp.mailfrom=dchar@cslab.ece.ntua.gr;
-	dmarc=pass (policy=none) header.from=cslab.ece.ntua.gr
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F117C6B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:54:06 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 73BEFC0254
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:54:06 +0000 (UTC)
+X-FDA: 85288565292.27.AE0745D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A0EC31A000A
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:54:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yyipCU4a;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791204844;
+	b=IsVRKYsQsNRsrKC8HDLbOnzON93zsx/zm4zZ8nnXwLaJGspOL2IhLy3iylWA8d21Asl6ey
+	8eKI7Seos+nfg6aQ3DXRZyv2QnfkrffHeA6Q1h/Lo5gXqD6uZFcCG21uaShCqVMwcrBbKl
+	g9f/FI4MqzxENb9iixTcZEHcpcD7gko=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yyipCU4a;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791204484;
+	s=arc-20220608; t=1791204844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s1LzhEkvulvfv08c4ES348Zk38ai3A9e9wWaPaOVj18=;
-	b=ONUR6/hAVJ+2umUsGY46O1vMnixI6ju++8ksEvpqO4cGkV5rI/Q6RxzTV6/iD+xbMn/ZVG
-	aWnwW+o7S0fvAQW+ImuKvJTqAQJVOeMllGEbJQ3A6cYS8t0g7K5Ws17yZCnQiBCWi9tMTX
-	aWUyTALfAP6BHz8zc8rj7Tkg1BMGhDc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791204484;
-	b=62XY8GONwwWKPAm2rLb7VoNRAJNopIWNcQKdbf95cBJnZPfKBI0ibn9GsoinHrdRHoIni+
-	aY5YVERDzcC4UGyO32Y4eNF9Gf54x1GxmvN6mjJL6eaVks+LL9bzNWzl5QiqJruY0SPnwT
-	+X82YikDbEoNwdsaU5hSh31V8OnvDYo=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=cslab.ece.ntua.gr header.s=smtp-cslab header.b=Qk3H8B7y;
-	spf=pass (imf25.hostedemail.com: domain of dchar@cslab.ece.ntua.gr designates 147.102.3.1 as permitted sender) smtp.mailfrom=dchar@cslab.ece.ntua.gr;
-	dmarc=pass (policy=none) header.from=cslab.ece.ntua.gr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cslab.ece.ntua.gr;
-	s=smtp-cslab; t=1791204480;
-	bh=Ar0z0+alqyvvWJZL6lxOGlhOZBgSDcNzH0BkqwPUC4M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Qk3H8B7y2LHxrqbe41B/4T2Gm25AnI8Qhiv3olkEVMSls9BDv6OBmMYB89DBfhGeY
-	 ewea/7CBB2kgYcsGsjz7ako9NGE0IaibJyTVEC7WbV3OIpXClHRkGP100rymvwyHOn
-	 KmmF+/Uw69EAVhwmiL+eZNhUMx4bss7O0kw0SLYs=
-Received: from [127.0.0.1] (armor.cslab.ece.ntua.gr [147.102.4.33])
-	by danaos.cslab.ece.ntua.gr (Postfix) with ESMTPSA id 12922120B35;
-	Mon,  5 Oct 2026 15:48:00 +0300 (EEST)
-From: Dimitris Charisis <dchar@cslab.ece.ntua.gr>
-Date: Mon, 05 Oct 2026 12:47:28 +0000
-Subject: [PATCH v3 2/2] test_maple_tree: test maple_range_64 node in RCU
- mode
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	bh=L0WZ+X3bCrlqT3aScryv2WGhSJF2SKbCE0Wf2Qf1Okk=;
+	b=J9BwdBZm11cm7gYZsFGuHp8Om1+dJwBuCipb4UpTnsZibllIxrThAsNTFXgbRXa3S+ZGLI
+	1u8jl5DMNMo5VvCFe3I9RReroq6ujUBFho/Bs1YHLzmLdSSWA3biL92RWbzX2IO/mMoiwd
+	ym7jwPKS47jF0bvDyI2dQ1Ws416UcCI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9B2374002C;
+	Mon,  5 Oct 2026 12:54:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A667A1F000FF;
+	Mon,  5 Oct 2026 12:54:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1791204843;
+	bh=L0WZ+X3bCrlqT3aScryv2WGhSJF2SKbCE0Wf2Qf1Okk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=yyipCU4al7wZUCxLPJtBmtOl5273fibvVCgLfHNF7po9bNlRLGzN210UCpk8JwAsi
+	 doC9AmMcNB38C98pfORUq0o7zRTx6j3Dt14cazQjO+uIbCyhbpjfb5aJVWVrHAS8kP
+	 Cm+cpgWnTUI3Up4Tp9CQJNZTLyemXpfPW13JBFn0=
+Date: Mon, 5 Oct 2026 05:54:02 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: david@kernel.org, kasong@tencent.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
+ hannes@cmpxchg.org, mhocko@kernel.org, ljs@kernel.org,
+ roman.gushchin@linux.dev, dave@stgolabs.net, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mm: vmscan: don't count per-node proactive reclaim as
+ memory pressure
+Message-Id: <20261005055402.61065464d9c66f1540a08c94@linux-foundation.org>
+In-Reply-To: <cec875e1-2afc-44bf-929d-b8f2b2a795f8@gmail.com>
+References: <20261005062236.564210-1-vernon2gm@gmail.com>
+	<20261004233615.df26e580c1bc916c7f3a23b2@linux-foundation.org>
+	<cec875e1-2afc-44bf-929d-b8f2b2a795f8@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261005-fix-maple-tree-range64-rcu-v3-2-ebe7fb278e20@cslab.ece.ntua.gr>
-References: <20261005-fix-maple-tree-range64-rcu-v3-0-ebe7fb278e20@cslab.ece.ntua.gr>
-In-Reply-To: <20261005-fix-maple-tree-range64-rcu-v3-0-ebe7fb278e20@cslab.ece.ntua.gr>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Alice Ryhl <aliceryhl@google.com>, 
- Andrew Ballance <andrewjballance@gmail.com>, 
- Suren Baghdasaryan <surenb@google.com>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: maple-tree@lists.infradead.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Dimitris Charisis <dchar@cslab.ece.ntua.gr>
-X-Mailer: b4 0.14.2
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C2FB2A000E
+X-Stat-Signature: zucenot9ncj5ep153m1nkp8g836k97bw
 X-Rspam-User: 
-X-Stat-Signature: yporjqbs3zktyozyzkxzg5ihb447irri
-X-HE-Tag: 1791204483-799371
-X-HE-Meta: U2FsdGVkX1+iaWuqtkr909o5TewncMVdDCSJZj014sqVor6vH7R5/Obd6xFGv/YYzlg43LSIRZwb3XJiyLV6PuEvFnMvDst7/AwpvdO3ScvYdP/sygiaLEKFueJi/mLdf9zlNPdiGIBxosC08zqkiCORFectOeszAmpFpaqLkFLpegv4D+tMcK0QWidQYP9Plyl3MtiVOlRzVU12uh8vvbzJ5OKD2TzGfJOBPwL9Mc5k3M8avxS++JHjzOQWkTLN/0XT3zqQL/754fUbPZujRth/lAaaUL/RdyehmI4wl3Y0h42WBSCGYX38+ZE7/at75UPM5y1t+3rpQo3+/rZgznTRF7NiIt9ebWyh3Rtyp4n76nnClMoT9a0xP89lC+CKGmq9xTHpUTCPYRpeDJRSlkzxoMHjYECDBJ4uth99zrPw59OETJ15ELkazdZ64B+AVikwCjmTSBUTOqujKusp4mo7z4tod7HZi4Wp2j11P07Q1xIyMzoa+uGycT6fuUc1u5dc+YYhD9vF6Hb8KR/DmP4ugOw19A7jq2nvdCjaA56YuRXxOxpygOOhoXbuHqcORlatgtfQ7u5FUtZYFckCmtyR3+J4mDAiQ8mLl7338MDWCBLQa/a1i3ermkqf96jtpXxrFf/KuNgg1dlRVUiEwpEv49cHcG0IVF/qoQrotZgYBh1gZJ9Znpkvc+erfjF9vGHsHvAZ5DfG6m6lnkk2iteDriCIedD2IKfQPeUlyQj6WqWAvgO7K04bj6dicvOj3JlyH2acWo+ZFnJsrQfB7KLCMLPlVYInIX8XRNdjkD62eKiSJ1m2t9P7H8gMs7mzBnXT28PRw6sFm+7BBAi9pBU1Is6gR9tnWWJMpDF9oGJls3Ei238W36kAabFVvpIzR5TMIrKKJ0VPvo+fwQFBYBkM1C6+cWYWvVZMDTdgipbiattKyDN012hlUpAF2pwzqFiAel6lO2QYo0pl6H4
- LKWRydik
- xFMCH39wlVLu3hQhmQ3cAErbqbJBTZW8zSqNO0yC5401UfXewxOz7K1gtx8FljtNQ459+NoKu2W2ZB7sI1ab6YO2qYm/wBHZVp/7iNuT8iM8b08dn5G8rJ8PPmX81NjK4VEEnUWmsXGx6byjJgBMq9qgPg0M019hyJDHZ+he4cnb+0jZiL3hUCXexZRd+lCVq/QWuD8g9f+KJvfwR084KUet0JHOgKhpehf8zGGycKYwPcEYcmEElCelm6r5abGbPwL5nXSq3DLQTzNtIGZ0iBVUuSz450znMVM1zO4H4uxwiQj1FytqZBiPAOLbu/MUeeh0sRr/19H8rV5YjrT4kJ43qKA4CmlF0lObpvse+YsLxOQplQrtqj5kP5A==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A0EC31A000A
+X-HE-Tag: 1791204844-744674
+X-HE-Meta: U2FsdGVkX191yf/qpo1p2n01kVJnNH9Kaz68aGwRiWNdI59J+IipjZyxcBPj7JXN9T3d4d+ncUn6boHnlrKSU16cxJfITPrJaXdcpqyQZl2vVmdJ4/SgSs1tEbgpnKfHVIHtAPwCs1akwY0Qkqujk1JfLWLUcVWqhAQENQPGrJRUiP+KlbKtsWPSS04Rx46E4unhPj4qko/cNOFrYWC2sXp5LnL6r4s802JDsBia/t1F2NWHqPixidE0jC5mw3AQ23c7sCfxFJ0kDf0pInJzNWU4mHcf2ZSy7rA0YsIdFHSynp4dWZIzZqtOPHfyk+UHaPGKNEdowBoW/+TuhQx7yiXPWxfgXrtCQryUhVmcZt5NZjru1o0oLBdg2EiZ0mPt3Ueey/zC45N9fNdnnkn1Nv/fQ3ERuonLBo7HtrtAKKAShyvoPXQAm7BboiXRQOben+YZuHVhor+8NIl5pU8yVkVJ6ZJwNkN675WLnbbxeoYPtU7HKhdjVbgSn1eMH0hc09vVfUN8VzmvknBcIFmQmZTdpA3KfwkLmpjA9+fgryo9/968rsgq3SUTpz+V8fHqmbmOWYxl728IzeYHIuipKzmUFnlkgRGxXuqMnbY7j+4ywFp+u6QSZukkcyEVPFYl6WEaoaWOJ/cydSTr/SCCfjyrka7PTtxSCuQ4eonNjflJdcMrNE/63R+Zh1myL6nBAFCJE3bkOX3ITgBlmAk9sju8mo2rt3h9acy+A8Lkb2ssjoo4HyF90RPk1CvoVjSQMr7qK8VLNVzWDRHsq8vceDv3lpWCRvz/Pn8SD1h4hsEsuW7qDzmGQrwD8OvwSvTC1x9qAM0tBAMckWggZLc+3CFDW8Y87/0G+6ciCXXE4JrtajUbaszQH/RnNT7tMa6XMSU1vu2pC2IHnI0aOueDGjrrv4SV48CrCEhhQ+5zKYIWabrwyviqYqjBdzo5/+lqT772n+ac2sloBouLc/e
+ wTvy1WL0
+ gEAGUt8Plz0lKITeCK5GmTIgT/epkJx6B7p6xV1QRYTpIH8kO+rGVMdJ6YyRmW5njq7d9BnKw30ydLROmyAlewB1cBxB7VImOfml0YFzp4BgiKc2IEWQ5ln4TbD2pSy09cswxigK4P73bC/vbhfS2nE03CSHTMvB5Bn9WwXWAsovZnjFxDd1wxNxiUCqU8a8Jsz4GLHPeJMPwt5dGs7g5/HNqEMjsf5ojAm6aS8jAERxAS/MBFajpyLdmlO17oavHjJaAgdmcq7RQOQxec/JsLE8g6A2BPav5vCdjXfpNb0Qv8mw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,73 +97,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This commit adds a test that builds two maple_range_64 trees in RCU
-mode.  The first tree has a root that is a full maple_range_64 node and
-ensures that the destruction under RCU does not misinterpret the last
-slot as metadata. 226 insertions produce such a root on a 64-bit build.
+On Mon, 5 Oct 2026 18:10:45 +0800 Vernon Yang <vernon2gm@gmail.com> wrote:
 
-The second tree is a height 3 tree whose root holds 15 child pointers
-and metadata in its last slot, so every slot is non-zero and ensures
-that the destruction under RCU does not descend into the metadata slot.
-3166 insertions produce such a tree on a 64-bit build.
+>  the phenomenon resembling
+> > > senpai will appear again.
+> >
+> > What is this?
+> 
+> This is commit e22c6ed90aa9, which addresses a scenario mentioned in
+> memory limits of a cgroup, in detail as follows:
+> 
+>     Currently, this reclaim activity is accounted as memory pressure in the
+>     cgroup that the writer(!) belongs to.  This is unexpected.  It
+>     specifically causes problems for senpai
+>     (https://github.com/facebookincubator/senpai), which is an agent that
+>     routinely adjusts the memory limits and performs associated reclaim work
+>     in tens or even hundreds of cgroups running on the host.  The cgroup that
+>     senpai is running in itself will report elevated levels of memory
+>     pressure, even though it itself is under no memory shortage or any sort of
+>     distress.
 
-Signed-off-by: Dimitris Charisis <dchar@cslab.ece.ntua.gr>
----
- lib/test_maple_tree.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
-
-diff --git a/lib/test_maple_tree.c b/lib/test_maple_tree.c
-index b9367c61e8b50d107ab972fc5222fb6a531fad87..fb40e193a3cb76f0eb02af3aa4a38630692a4a9b 100644
---- a/lib/test_maple_tree.c
-+++ b/lib/test_maple_tree.c
-@@ -3710,6 +3710,36 @@ static noinline void __init alloc_cyclic_testing(struct maple_tree *mt)
- 	MT_BUG_ON(mt, ret != 1);
- }
- 
-+static noinline void __init check_range64_in_rcu(struct maple_tree *mt)
-+{
-+	unsigned long i;
-+	unsigned long nr_entries = 226; /* Build a full maple_range_64 root node */
-+
-+	MT_BUG_ON(mt, !mtree_empty(mt));
-+	mt_init_flags(mt, MT_FLAGS_USE_RCU);
-+
-+	for (i = 0; i < nr_entries; i++) {
-+		MT_BUG_ON(mt, mtree_test_insert_range(mt, i*10, i*10 + 9,
-+						      xa_mk_value(i)));
-+	}
-+
-+	mtree_destroy(mt);
-+	rcu_barrier();
-+
-+	nr_entries = 3166; /* Height 3. Root has 15 children + metadata */
-+
-+	MT_BUG_ON(mt, !mtree_empty(mt));
-+	mt_init_flags(mt, MT_FLAGS_USE_RCU);
-+
-+	for (i = 0; i < nr_entries; i++) {
-+		MT_BUG_ON(mt, mtree_test_insert_range(mt, i*10, i*10 + 9,
-+						      xa_mk_value(i)));
-+	}
-+
-+	mtree_destroy(mt);
-+	rcu_barrier();
-+}
-+
- static DEFINE_MTREE(tree);
- static int __init maple_tree_seed(void)
- {
-@@ -3999,6 +4029,8 @@ static int __init maple_tree_seed(void)
- 	alloc_cyclic_testing(&tree);
- 	mtree_destroy(&tree);
- 
-+	check_range64_in_rcu(&tree);
-+
- 
- #if defined(BENCH)
- skip:
-
--- 
-2.47.3
-
+ah, thanks.  It's arguably appropriate that the procfs-writing process
+gets blamed for the I/O which it caused, but clearly that's the wrong
+place to account the memory pressure.
 
