@@ -4,187 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FAB1CA5FFC
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 07:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 026D0CA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 07:53:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1EF06B0088; Mon,  5 Oct 2026 03:41:08 -0400 (EDT)
+	id 5E25A6B0088; Mon,  5 Oct 2026 03:53:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD1836B008C; Mon,  5 Oct 2026 03:41:08 -0400 (EDT)
+	id 592E36B008C; Mon,  5 Oct 2026 03:53:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9ADD6B0092; Mon,  5 Oct 2026 03:41:08 -0400 (EDT)
+	id 4A8BD6B0092; Mon,  5 Oct 2026 03:53:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 918DC6B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 03:41:08 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2900140119
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:41:08 +0000 (UTC)
-X-FDA: 85287776616.21.FF85085
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2424D1C0003
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:41:03 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WtcGdPR8;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf20.hostedemail.com: domain of philip.li@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=philip.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791186064;
+	by kanga.kvack.org (Postfix) with ESMTP id 1219E6B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 03:53:16 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 858204016F
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:53:15 +0000 (UTC)
+X-FDA: 85287807150.16.22A0496
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0387A1C0004
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:53:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EEX+P8CP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791186794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SQ7065eK7n6Zy1+IfHptngDs3cr/F7JXv2eaxh4NFSo=;
-	b=y24uceTj3yMT01cuXQOJa+Bry/SOPD9WwARhDJJqP2pOG2Ny6BjmEkn6ys0f4ld4n9Wfqx
-	sb6rISELHwIg4AttqfiW+6hJBSewAbO3hIf7LJtyshOljRYpiOdvE8VYH/Utx5ERRSiZuu
-	YwXDo+ZSGzmxO/I9kYVXhbAhX/twb+w=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WtcGdPR8;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf20.hostedemail.com: domain of philip.li@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=philip.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1791186064;
-	b=dDgyhv9TbL8t1AN9OcsqVSBJrea5kpi4HT1yChCitZa1ssrMJfawoshVygTZjCQeEe32vu
-	4uiHDDGD9msxbGdB1nUV69YoLUO9kmoQomZe0UmBdKmnqrVnYCUBIXlGL/Yq5yl79/LIR2
-	w9ickuDOrRJBRD5cgRQkO8P9YP7AxSQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791186064; x=1822722064;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=ffM8MmGov8haolxWrbPaplstN+PMuR+1tThjHrUeVOU=;
-  b=WtcGdPR8Zp3IdXI28gYm0BaRfNHeVZMGA/dcJAZcpurmCCQqTwN/LIRy
-   Vp5UYPpFL/s/OmAwvY1vQGZx8bVA1NJFsZPK+dfM9YR+weE0jb7s7P9fm
-   kAZ/H4AP5qjVvm4ga42fY4dLz5UnDVhG6iq0Ks+ylpYhdETJ8TSnfgh0h
-   2+GMtB7xqkUv8axwNV/KVsZKEc+YkvJ6bTDPn0HKj3M1ZIl2VG3bARJFH
-   YUCUF4hMqZYJHGDZSEJpPoo6jVBWrNeTO/bs9dcZ0598NAbxj2tCdQU6t
-   jyLsJ884/uzmK2WiaV3h9cuCvrJEZTaQDfou9RRWEWOXgFjilh/1VWygP
-   g==;
-X-CSE-ConnectionGUID: lbb9nNH7QQiV+6OKZ9QqBg==
-X-CSE-MsgGUID: 2djE69ZyR6+H+J9NAupy/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11925"; a="90907018"
-X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; 
-   d="scan'208";a="90907018"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 00:41:02 -0700
-X-CSE-ConnectionGUID: +w65+lJhStW2dHUHk9QPzA==
-X-CSE-MsgGUID: fi1cqwoITUyVfYgmbmflQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; 
-   d="scan'208";a="830160"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa011.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 00:41:03 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 5 Oct 2026 00:41:02 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 5 Oct 2026 00:41:02 -0700
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.54) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 5 Oct 2026 00:41:01 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XX0q84CVznJIJJgXc9zlWZOjEaU/gjuOHji3uOq1uPVfGN7R7WlOSJuVP5IRuyBTCyqXmxnpZh0T3/vz/SCr0nS+ulbfAGu2YHScNf/CnNr0UO9Rusf2D9XZ7ZKf7/EE9pIT5rh179Ve97YyRuvaE0BAfzOXo37cwNWApn5FDpaC8OyDMH13ejXsgQVtGBHTqLFtft6v9YUnkfHWf0N1n4cOA3+dhQtEW6EeQ+GMKeMOAGJ3zrdk3Fldtr/4YPruMiPlORItOOxYby/yZ3kC1ORvfRdtfdaL/wyaJUfDA09FF9nZ7dZeR1ZVEC+RRJIj3HgGbQnO5YjK9WFEjw7HRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SQ7065eK7n6Zy1+IfHptngDs3cr/F7JXv2eaxh4NFSo=;
- b=gSazFnrk5Ud13CDLlQCB7Rsrb8Hx3gGtObJevJC72qBYD7R0820HFc7lSl8TLmXQomLn5OY9eEG7M1BaNJ7fhj/aCNrs8g6WfUA6lWEeBn/1tRNBPRg/H+V3t1Xmvb8dq/4+snDu/9+Tw2ro+MsbjDXuCEnEvFk18TXN82Pj7ofo3KjD2U4kH9nwlyZ2Qn5ttDF4CRblqXLQps+kcLDK5ZtmuiHyUy7IDYXojHb8dqGDDnoFlo+WhOXmdhWXOT3ZC5ZSpCsEfFleHXQE8EbiiuVI4OcTIvZZ6icXmHnqUWZvb4+/luEnrfkFqgDUe8JyDqsl4t/+YqMIDsPAOwnVSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS6PR11MB362586.namprd11.prod.outlook.com (2603:10b6:8:4c4::14)
- by SA1PR11MB5947.namprd11.prod.outlook.com (2603:10b6:806:23b::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.25; Mon, 5 Oct
- 2026 07:40:59 +0000
-Received: from DS6PR11MB362586.namprd11.prod.outlook.com
- ([fe80::71a6:38f9:43ed:8f8a]) by DS6PR11MB362586.namprd11.prod.outlook.com
- ([fe80::71a6:38f9:43ed:8f8a%6]) with mapi id 15.21.0472.016; Mon, 5 Oct 2026
- 07:40:59 +0000
-Date: Mon, 5 Oct 2026 15:40:49 +0800
-From: Philip Li <philip.li@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: kernel test robot <lkp@intel.com>, David Hildenbrand <david@kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	<mm-commits@vger.kernel.org>, Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [akpm-mm:mm-new] BUILD REGRESSION
- 763ad0211c7b587344f03bc4d1299810aeb736f4
-Message-ID: <asNUgRwsmaGWdsGf@rli9-mobl>
-References: <202610040408.3LHzXZUE-lkp@intel.com>
- <20261003143826.be180aae972aa1e6a24956e7@linux-foundation.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261003143826.be180aae972aa1e6a24956e7@linux-foundation.org>
-X-ClientProxiedBy: KUZPR03CA0022.apcprd03.prod.outlook.com
- (2603:1096:d10:24::18) To DS6PR11MB362586.namprd11.prod.outlook.com
- (2603:10b6:8:4c4::14)
+	bh=p8pB98yXVn3emMjSSVc5iGuD87aD74hXLFXwrp1IR14=;
+	b=hJyx6myVSTYhbSLGmKSNw1IfXf80o/pJfWMz5MFzkZ8nwio9XNWbcYVnk8J6bcQQg6txtN
+	5W1PZRJni4NO1T1z+0VcGPUj6ueyocAkPb+V7LBTFTNY8OYlhye8htKC43sSy7K/fI8j7H
+	RG5w4KR7QDR+2IoM95zpAxP/M1j/oRU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EEX+P8CP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791186794;
+	b=HaM8Lhziw1J2S2QOGfXGFBF7G9oOFnY2trdRXOD/hd0gEnFgrzcpnNjXn2br9tl3Cb76SG
+	UMobrnH4dr4M7zrbYVujAqvemVl5HVtW2bhVWZIpVv9Iza2zw3l9Pxub6CxtFk35UKnaxF
+	NdjfyTYdMg4nffHzfOt9D6WhJ0tRBgU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 560716022A;
+	Mon,  5 Oct 2026 07:53:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9521F000FF;
+	Mon,  5 Oct 2026 07:53:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791186793;
+	bh=p8pB98yXVn3emMjSSVc5iGuD87aD74hXLFXwrp1IR14=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=EEX+P8CPFeqWLSN59RzmGW3okJrWBjL6X4WZQ29o3f4Nq0tIqMaqJhXpenBYRESYX
+	 yLr/6vNkyiB/QVgs5zLCeYF1lZ/eWykY2jayP+n3JLO0BDVzLklA2oN66POyCpJ0M8
+	 ACoSS1yP91wzs2/kkXR6AGYVCW0G3/htMwHDa56r5fUmx5ZGlnI2TlDZval00GP2vd
+	 evxYEkphbACrDVnO3o/U/I9epZ0n8riPwtBTcw9qOkk/kHJh8Lw7KxjINSemSfbp9e
+	 jjBzb3UMLUYfwz81sU923vgWgmRmwclgx/rRb5kdSlzAN6+bKnYI9hvtvI9VL3OaWd
+	 EQXmRq8LXJ6Mw==
+Content-Type: multipart/mixed; boundary="===============0647874907332121866=="
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS6PR11MB362586:EE_|SA1PR11MB5947:EE_
-X-MS-Office365-Filtering-Correlation-Id: d2d8de84-5bcc-4d06-0ada-08df22b3ff5e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|56012099006|4143699003|10067099003|11063799006|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info: 2OKdzCsTemYjzdofcjbllXasVPpCHaqL86xFUWggMa+xpdykcztN+BrLZoDFMiaswIYwdmoI/wm+hzFc6NjZ+ib3jMR0BpOKKh5HUVVxaZSljCIk4HFK+W4nYrJO74VJdLtlKDx4dUgdDGDJw1yTyjqv0SjSw+vQWUVV8REn7JtBNtrahjzluwxeykGvchjYLQAQE5OawwzZ4g2VsVSBkPXJT0yRWwya+Yqqmr+sL5iJB2Dj7sABzbgUrOnKGwHeK4oI9oUeL8OoQiCh3X/L1izH/3ahJCITtPGwiYPPeAAYBJ1Ym42P1SYfGQfQgT87kOVCiPizvYfNMujLLWTlt3AEVBVCuYrPMRnv2u1/bH6QNgpmA87zFvQgiBInpMpOzVMvhEB+tGSdADmqoDfPhqhNsBMTWciTAC7im207fFUFc2o9DTIPZAvZs/2iiNw8v37zpGy5D9suNU1AXvXEmm97TcjrV3KrxJk5VNQeIpBdi2swNSOKXrtyQoluWKZqSrvpvm94/Ku6jvdRW7rL9G/RzXEDf7ZQkH1vpSdkTRn8fEiuWn0LoobGO9mNRU8LLcfUkfgh6DGRY8mfm2772I3UhqBVyM/cSMFpwbNBdAF/GS8OEoEi/kDQgSxLM1Wa
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS6PR11MB362586.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(56012099006)(4143699003)(10067099003)(11063799006)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8fWudmCWoX4icOd5nwCdzUo7GlD0EWJDUj6htxDBAskRGN7KsDr6kFWUdR1Q?=
- =?us-ascii?Q?cHDCR7YuoFSUFpbYY5BbLIbPpi/kex7/E6n4je/AD/kjzRAkTUDW+78PssQs?=
- =?us-ascii?Q?HP0u0Lp5yre/02jo5vAx/gsEzyNNjvwIGCKg7PBRr9ccQtOoR7/RwtWGvYZk?=
- =?us-ascii?Q?4+neMVPgwOF8JIKYgfuoxgxLraBR7zSPQBcolwuIRTlxvl1uEWIr5zCThaz2?=
- =?us-ascii?Q?qOzhng/OqRknPg3ujK5s37fhIORfITaVov6LG/Ev/SRLBWXuhxjQ845Yr+Li?=
- =?us-ascii?Q?s3UmgwO107ul2ia61MtnUhcBgjQQ+vwYNByKeH2ol300U8XcucuRnIcpLSx3?=
- =?us-ascii?Q?M1AJX6gi8QHl/eFzFF29lRdOhoxkU+66cDLAsZnzXqJgOZ1y9JGc1hGatJq+?=
- =?us-ascii?Q?usKVHBPLaqGPAXVreF1yGrl5Pj6tPEB5obPIit9nNwBYbY1J3s4TIt49pnWf?=
- =?us-ascii?Q?fedfNRS+5awkU3pqEZzIwnsv6UxsRcsypjyoeRZQdEWQXYJhB1gxYynhtShR?=
- =?us-ascii?Q?mwcxU5B+ChQgUzKhhBZUf32WwMshfAmhu2u0F9F7XLbkVKxabBdNy4qPOMH7?=
- =?us-ascii?Q?fM6UKJi7AkZXiL6xfOwffVGweattBjeAkTdy6eP6rYNn8gb9YQGpgIbiM/Xs?=
- =?us-ascii?Q?tkO5QXm/09n08rhiWnILakN97dKmjOMQ2a57yQJCDNs3288EjSIOCEbmlUpQ?=
- =?us-ascii?Q?wBNrb40FTL9UE7KW44fAdv78DvcFwc8DQuthzjCiaU8xwy6A+TL6J/vcg8hV?=
- =?us-ascii?Q?UoHZuJfJcqyqlKvinBDBNUCuiSAEN583y7yDA9vgVzfq5VZNOTYMzI+gpNUJ?=
- =?us-ascii?Q?OKh4hwOhJ2eGvmgWPpmPWYkO3SgDashdaH5UqLmmE/I+JX5lOa5+k4QztpKT?=
- =?us-ascii?Q?j8WjIA89Uq4zs/Y8dNQPHDaWJTFgcrlvV9EldxHtJFTkhIGDS1uS3lAQlz13?=
- =?us-ascii?Q?M0Ee6c11b2GCmPgwgkr1N3jYkros7dPdBy9kKUJos89gcxS3nZKZIM9nJfTY?=
- =?us-ascii?Q?SN9ED4yQEPqjZCBxYIcCqOMP7UzZyyJ1u9XX1JmDGQVJ3/ahvPNM8/X/Lc+p?=
- =?us-ascii?Q?czXoOvZ9I+olESoyh8uCjp62rjn991IaujHcbHwz+NUQrmLk1VUwAYrE/ce7?=
- =?us-ascii?Q?rzTGYaY0xhJeUwWWR+2ZERFNughnFoCJjGpMLddQ4I0n+3mB+j8VnP9HgbOi?=
- =?us-ascii?Q?ZRsFGHyIypo+C7Ujk4HUjSd+COljmiezIg5upNWTRvR2ABbt64GN24NSLyA0?=
- =?us-ascii?Q?jhuzOhgbbDIBK6fr91Puz0+hUphzJ2DJ3KC7aHCuHKxwvGPKzp6gOU2hxTN6?=
- =?us-ascii?Q?eJEYmUuf2hnK0/D2U9w8Og4I2X7MZn5o8M8zMPBbss8sQIJuWvCOzPirkaRq?=
- =?us-ascii?Q?6Pmfv0e2O9f9hQwmwnnBjfSkNaMObj7d3sZX++NpL9T88hPPC750NZLa1iMV?=
- =?us-ascii?Q?kGkvF9ImSCq4KLgi60eGvOxtvt9pp2BJ0v0u5CFUl/L/SRq/20YZ/UIaOu3E?=
- =?us-ascii?Q?9fZRwRwj5jaWAiYeX8pBvOYoW7A/cm5XfI0ZWe8Q+f4shYtPj4+JF0WiV2O1?=
- =?us-ascii?Q?WsG+zyMdWeoZF2szLIKMCTEe0a9nj0OwHM013Bura6QX3N9HUwRN8HYMtolY?=
- =?us-ascii?Q?nCFrTOUKNO2hLXdZ70s+Sbg7YVz/3GxVu9v1eeRtpVFkOzqcXvsYOXtb8CBZ?=
- =?us-ascii?Q?OVTmQpY9JP5ObgTFs9oSKUTIlIEQP6a2SYdhm4TWxE3kvWnPF+kbnVZAygJm?=
- =?us-ascii?Q?VaGd2NG90g=3D=3D?=
-X-Exchange-RoutingPolicyChecked: W/lLjDmAjo/aopv423InWfDkIZAQax7RDsxma5sB3FghoVi4kZsZQV8WXtxYPqB9Rp6SFJu37DKkqlVzuzfTMiKBtBYR9k1CGLLxmhLYC9liwBiR0UVWwlg75D1m7CZBzHAHcYp55EoyU4TjcqFTwydPoIDGQmcj9nIml4vYt+EXmIaiemrsqDPWcT33D4IfMrRHVOaigtkVuoNqipZ1hDSdA86CLNpocSlUAayp5ZL/FHqWX4+iSbMW/EHxqPZ76VIzvZjHc3csq1/BRyWo6MicjYK/z3mxmDGym283yt1hgZAjQNJj7rpQoIghDOeHho+89AkoCmRUcrJgZZemhg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2d8de84-5bcc-4d06-0ada-08df22b3ff5e
-X-MS-Exchange-CrossTenant-AuthSource: DS6PR11MB362586.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 07:40:59.0147
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: makU9WM5zrHu+T+ZzEtWRrb5LDiJIyopH/J+PZIgdPDlUEAOCHnyKG1wuwhSdTVDsMZUXk5X5lPRWkFO+envIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB5947
-X-OriginatorOrg: intel.com
+Message-Id: <3a4688cd7929354339fc61a5f4e8a0109e426a83097d9d9a2357ac6e3fe2c9ea@mail.kernel.org>
+In-Reply-To: <20261005070625.8871-4-kmehltretter@gmail.com>
+References: <20261005070625.8871-4-kmehltretter@gmail.com>
+Subject: Re: [RFC PATCH v2 3/3] selftests/bpf: exercise task storage from hrtimer_start
+From: bot+bpf-ci@kernel.org
+To: kmehltretter@gmail.com,peterz@infradead.org,tglx@linutronix.de,bigeasy@linutronix.de,akpm@linux-foundation.org,vbabka@kernel.org,harry@kernel.org,ast@kernel.org
+Cc: kmehltretter@gmail.com,mingo@redhat.com,will@kernel.org,boqun@kernel.org,longman@redhat.com,corbet@lwn.net,david@kernel.org,hannes@cmpxchg.org,shakeel.butt@linux.dev,stevensd@google.com,daniel@iogearbox.net,andrii@kernel.org,martin.lau@linux.dev,shuah@kernel.org,ameryhung@gmail.com,swarajgaikwad1925@gmail.com,clrkwllms@kernel.org,rostedt@goodmis.org,linux-kernel@vger.kernel.org,linux-doc@vger.kernel.org,linux-mm@kvack.org,linux-rt-devel@lists.linux.dev,bpf@vger.kernel.org,linux-kselftest@vger.kernel.org,cgroups@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Mon,  5 Oct 2026 07:53:09 +0000 (UTC)
+X-Stat-Signature: 8ams4ft364khphzqj6fm7g1esjcocx8d
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2424D1C0003
-X-Stat-Signature: ee3npooqbnrkb7de19zs17iiojuzwxsk
-X-HE-Tag: 1791186063-690455
-X-HE-Meta: U2FsdGVkX1+pQ0kqsikjTH3tlN+PZLfZC9/OZW0qXr68KAjAfmhObnms7z7CiXgoWJDStTCJ0DpB8cFx9DaNWE17L93OUlxbgMA5UBsyFT6iKjfC0afWFM5O/pPWkKh0ywdgPqUowaYBvHUetYufIZAmOZmaA0knQUsGjtD1wlsu7b7dmHA8LdmGooWF7S7v7FHxPGQnsWGo4GCtIPP3Pj0sUf1mw9F3MnMapRpCnfgO2SMZs5huozpJ8u4NcjEHaLrz/6w0jXd9YuSn82+lcL2QhZF/9jQGIjEPO6Gp7XqcpEtYXk7Mf/7H0N2UJZEtSN2ANDcnC0fBPdZ4T5iGhAr+pB1jPzsq8z9+jFut27sqm5W3Pd3Jolso09MQHOnm5MPTW/wCjBaTqWq3xk24BtyqDjz4v0c8stuKZMCHNHeFgQvlqtHBUNV/DC8n4tdCdIu8VtokpB65bD1TNSjKvmsZK+cRDCu5D8os8EjYAWEf+zEBtl0bqSmqhwLd99QtaqlZSfDdG39YkpXZmygUNDeE8YqhUDdCNWrIZYotksvKK7IshNJtnrCbq14qWZGMSNOJpB2gl6dLca+Cz11X0luIhCzRRVWjFstae3iC8H61fY6+k9SjjApZ8+iBPLb66IR0S1/SuvFVzBBAXuVyMKGKdG88XDKe3nLpvuEl1z9DaYke/14wZNGpsv+LN+1uM0NVMiJQ54Gp91TqphpUfPmMrmFCrr6otu6rMUWGKR8hH9f16emBxPks/QkHMOHgxqdJJYkJBHjSHBLIXGq9Kh+s+OGFufV/hISzPDQuRD7O+M/maSEkrjDKJOqq1MYf9jnmxxQhMHS3/J+XPhmBFv1KqsI79dfHNM/bBVv5izIcCoibWirpUdIG3gP/kQ0Guj4msn01ln4l8F8dRvZ1xuoUeJ48PIfIEt3BBDqgpWs9BSThQAL43pT0x1qsLO98jiUjmvwxB77/ybI+t8s
- B5k+EN/Y
- xdhXvUZBWqi9IOk2D5X+szf5PT0dLzNF/A2+z3+nneZCUD3HtdCKn2fz7Egnf4zI+HB680eLQRxpES6FPg95IDUEUDCyiUM5sBfb01dXKU3z92ZzHNNgmep/R/IooYO7t7TDyniD/rCLfPysgZY+VapVMoatoGhg37YR2zYszx58Bl7Hl0tYaCP3hYYOCBs7lfWre2FfYQjaQVUboin2E01Ymdkgn62VctLlonHpJFOBO9k6cLquCfiNktHydrbQ7DhrcOvwIhau3ZRIVHXrw5R7MT5OuvBLL1kSGK+Kud/S92BG5Lmsuhb5JdJBJUkNktxBE7QLfTzlTfSnV20ihtUyQ4DMAzhRGkmBmgVYG8/aNjoTFHxa3nIr1ou9zjvnT3R9w+ZLBP9Ck8NdVNgVqRXWoamQARdAvmNQoldUCTQdYGGM/vUr+B8/fYh0tyqoTQpiL/BAsmIbermYn28Oy0YMrVC70BWsxKJYjrAPBzB1+qPwFIQMIJqLzCMRYUctnkHizZAW2akfcr3Dw9seNRQZgK4cgudq48q5j
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0387A1C0004
+X-HE-Tag: 1791186793-194311
+X-HE-Meta: U2FsdGVkX19Nkq2svo1ZFbTT+Wbcie2OL5EIMGlH6k0flQoHqFlSrmw1E0dg96IzgdqNru28KlrjBQyKJOYVAS0+yf1aM22jlZ945yfzKvr7EiVgF2JhbroR5tldQ+9vzdu9OKPD6SN7cJByCS4I6F0GFZilFw/6TFKGtVdD/vbdNpIiEwPuL0iiRpGDvTse2wH22ugyoXHSLMjIh6s3Yiojoky89meGzPXIPW1fj7nsJ+simCPhSFTScyBgoX/E9AlpsVDainSSZMIYzJgeoZVvgpUH7p2Bd4siXDtp2HB3fdj5+2glXlIk70ATE938I1Obm1cpR5qkOVDtLXD6MGhyrNBg6flRnYYyf9A7lx1KihIWRVm90hpmO62WUHaRXUrbPAtr408ZCydBxCQqWXap976CjDG+Z9MMx7eDORwS11Ali5s7lIBT0qohZg86D/EpVh1yHP26pnhh6ZtmWsn+gv5JDiwU1L3XHPf5j9pfTZ02w+QTHvRssExr/LXIF7Z86FuUoIsHsR3VPFSn8AIm7i4XMIGJeaAgm/tVTuU2pPtWW82D8B1mbFHT+2BSHViCz7XJscjhLgkx3eo+DVk6yAjakQwcpYNCoHQdeuQ4P5KJd98P7145ZvH7Q45rJt8odXhzU27VpmtS9GID4CBMiR88UCRfb3wcsl23ZX3Ny3fM3d8IMZ8rdvMVHq5b7CXSl0GC46x7kaLDQ0MiGwAPFGR6lIqhJr6ANT3r16z3/inNnXUgO3w5Y/UH4ox4OymPG28fLW6t02oH+PX/A6VHORRZj5f0ONMrSV6QqPoRrO2JYRb2if+2PByJNrzue0MlL+PPshWtwtKfUI89cyZWc3q9lV8SHbcZNRf3wTuOfIOu2HPwFlhIzD0MD1j/4rbdt2CrEbNfhFg8tA4yCoacUeGhHb8tiHzkeD9eKDWp7Tzu8K5Y4R+DOldTu2aE8B1n+APxtS+/ynaKB49
+ kOgTQx+M
+ 0CwnQjFjKG1rPKy6Br+9E5cHfGVeeZl9OOnPBrLkFCwL7tAZzlfs0pxVKlNQSTlm4CiTupLoMYkTKfpQpiGJAdSNC9HmvWfFhyRNs3V+vmXdA9k/sOSJIt0POZakfI6xjgAFqZnnOebB+yHCGkll5ItJf9GJY2QeIPD97EfjXRGRznhRQVDtABBhdi3Kf2pov8nt063qcBzgH1Ni4kuaAiU7/7QjYA95u7xGENWqPa/QAtXDV2Wvqf6DoPngpPqAJy41zbscSeC7+Fbu7+2sZUQbehN+Xv++16W6uess/4JZ8HfxPJmqZAmEZvftcdEqn7t5w9tplJSicMb8mo6PLcUe1suOO+fA+unwHZlQO+GxuJ0Vam6QdhgNFyebSkB0HTt8n9m5mOopp9EaXQNrPnOu4Tmq98l5BS4HUX4wKGTw7ZpZjfuuIoed+jMntpksTl5jZf0U17JaoOyeFo/5nCj1/mfqj/IoD4w1Mf521G11o1WkZtKcO/lZajoxMUYy0uHiO1ZtN2wxCz/pV3nkQo60w8CbUQMcE9w+q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,290 +88,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 03, 2026 at 02:38:26PM -0700, Andrew Morton wrote:
-> On Sun, 04 Oct 2026 04:27:12 +0800 kernel test robot <lkp@intel.com> wrote:
-> 
-> > tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> > branch HEAD: 763ad0211c7b587344f03bc4d1299810aeb736f4  mm/swap, PM: hibernate: atomically replace hibernation pin
-> > 
-> > Unverified Error/Warning (likely false positive, kindly check if interested):
-> > 
-> >     https://lore.kernel.org/oe-kbuild/202609121707.Hya5cxAX-lkp@intel.com
-> >     https://lore.kernel.org/oe-kbuild/202609151628.hydefVEV-lkp@intel.com
-> > 
-> >     drivers/scsi/sg.c:294:1-17: ERROR: sg_fops: .read() can deadlock .write(); change nonseekable_open -> stream_open to fix.
-> >     fs/proc/task_mmu.c:1427 show_smaps_rollup() warn: 'vma' is an error pointer or valid
-> 
-> It would help if these reports told us which tool emitted the warning. 
+--===============0647874907332121866==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Sorry for confusion, I will enhance the report to show the tool clearly
-and show better connection between the report url and issue.
+> selftests/bpf: exercise task storage from hrtimer_start
 
-So far, it is not that direct, which need open the report link for the tool
-chain
+TL;DR: Test-organization question only: should the new hrtimer task-storage
+selftest be a subtest of task_local_storage.c instead of a separate file? The
+review finds the test logic correct and the standalone file defensible.
 
-  - it is smatch for 202609121707.Hya5cxAX-lkp@intel.com report as you
-    mentioned below ""
+> diff --git a/tools/testing/selftests/bpf/prog_tests/task_storage_hrtimer.c b/tools/testing/selftests/bpf/prog_tests/task_storage_hrtimer.c
+> new file mode 100644
+> index 000000000000..216e66263bf6
+> --- /dev/null
+> +++ b/tools/testing/selftests/bpf/prog_tests/task_storage_hrtimer.c
+> @@ -0,0 +1,50 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +#include <sys/timerfd.h>
+> +#include <unistd.h>
+> +
+> +#include <test_progs.h>
+> +#include "task_storage_hrtimer.skel.h"
+> +
+> +#define TRIGGER_COUNT 1000
+> +
+> +void test_task_storage_hrtimer(void)
+> +{
 
-  - and it is cocci for another 202609151628.hydefVEV-lkp@intel.com report
-    regarding "drivers/scsi/sg.c:294:1-17: ERROR: sg_fops: .read() can deadlock .write()"
+A subsystem pattern flags this as potentially concerning: this adds a new
+top-level test file for a narrow variant of behavior that an existing test
+in the same directory already covers more generally.
 
-BTW: both reports are unverified yet, which could be false positive.
+prog_tests/task_local_storage.c already groups the general task-local
+storage tests as subtests, including test_nodeadlock(), backed by
+progs/task_storage_nodeadlock.c.  That subtest performs the same
+bpf_task_storage_get(..., BPF_LOCAL_STORAGE_GET_F_CREATE) followed by
+bpf_task_storage_delete() sequence and counts failures, just from a
+different hook (lsm.s/socket_post_create).
 
-Thanks
+The only difference here is the attach point, tp_btf/hrtimer_start, which
+reaches the task storage allocator under the hrtimer base raw lock on
+PREEMPT_RT.
 
-> This one was smatch.
-> 
-> 
-> "proc/task_mmu: read proc/pid/smaps_rollup under per-vma lock" has:
-> 
-> 	vma_iter_init(&priv->iter, mm, 0);
-> 	vma = proc_get_vma(m, &pos);
-> 	if (unlikely(!vma))
-> 		goto empty_set;
-> 
-> 	if (!IS_ERR(vma))
-> 		vma_start = vma->vm_start;
-> 
-> 	while (vma) {
-> 		if (IS_ERR(vma)) {
-> 			ret = PTR_ERR(vma);
-> 			goto out_unlock;
-> 		}
-> 
-> The code is funky-looking but I think it correctly handles all three
-> cases: NULL, IS_ERR, valid vma*.
-> 
-> 
-> > Error/Warning ids grouped by kconfigs:
-> > 
-> > recent_errors
-> > |-- alpha-randconfig-r2107-20261003
-> > |   `-- drivers-scsi-sg.c:ERROR:sg_fops:read()-can-deadlock-write()-change-nonseekable_open-stream_open-to-fix.
-> > |-- alpha-randconfig-r2200-20261003
-> > |   `-- fs-proc-task_mmu.c-show_smaps_rollup()-warn:vma-is-an-error-pointer-or-valid
-> > |-- i386-randconfig-2103-20261003
-> > |   `-- drivers-scsi-sg.c:ERROR:sg_fops:read()-can-deadlock-write()-change-nonseekable_open-stream_open-to-fix.
-> > |-- nios2-randconfig-r2202-20261003
-> > |   `-- fs-proc-task_mmu.c-show_smaps_rollup()-warn:vma-is-an-error-pointer-or-valid
-> > |-- powerpc-randconfig-r2201-20261003
-> > |   `-- fs-proc-task_mmu.c-show_smaps_rollup()-warn:vma-is-an-error-pointer-or-valid
-> > |-- powerpc64-randconfig-r2101-20261003
-> > |   `-- drivers-scsi-sg.c:ERROR:sg_fops:read()-can-deadlock-write()-change-nonseekable_open-stream_open-to-fix.
-> > |-- x86_64-randconfig-2100-20261003
-> > |   `-- drivers-scsi-sg.c:ERROR:sg_fops:read()-can-deadlock-write()-change-nonseekable_open-stream_open-to-fix.
-> > `-- x86_64-randconfig-2200-20261003
-> >     `-- fs-proc-task_mmu.c-show_smaps_rollup()-warn:vma-is-an-error-pointer-or-valid
-> > 
-> > elapsed time: 882m
-> > 
-> > configs tested: 200
-> > configs skipped: 13
-> > 
-> > tested configs:
-> > alpha                              allnoconfig    gcc-16.1.0
-> > alpha                             allyesconfig    gcc-16.1.0
-> > alpha                                defconfig    gcc-16.1.0
-> > alpha                                defconfig    gcc-16.1.0
-> > alpha                randconfig-r2105-20261003    gcc-8.5.0  cocci
-> > alpha                randconfig-r2107-20261003    gcc-8.5.0  cocci
-> > alpha                randconfig-r2200-20261003    gcc-8.5.0  smatch
-> > arc                               allmodconfig    gcc-16.1.0
-> > arc                                allnoconfig    gcc-16.1.0
-> > arc                               allyesconfig    gcc-16.1.0
-> > arc                       axs103_smp_defconfig    gcc-16.1.0
-> > arc                                  defconfig    gcc-16.1.0
-> > arc                   randconfig-1000-20261003    gcc-13.4.0
-> > arc                   randconfig-1001-20261003    gcc-11.5.0
-> > arc                  randconfig-r2100-20261003    gcc-8.5.0  cocci
-> > arm                                allnoconfig    clang-17
-> > arm                          at91_dt_defconfig    clang-17
-> > arm                                  defconfig    clang-24
-> > arm                   randconfig-1000-20261003    clang-17
-> > arm                   randconfig-1001-20261003    clang-24
-> > arm                   randconfig-1002-20261003    gcc-11.5.0
-> > arm                   randconfig-1003-20261003    gcc-8.5.0
-> > arm                          wpcm450_defconfig    gcc-16.1.0
-> > arm64                              allnoconfig    gcc-16.1.0
-> > arm64                                defconfig    gcc-16.1.0
-> > arm64                 randconfig-1000-20261003    gcc-10.5.0
-> > arm64                 randconfig-1001-20261003    clang-17
-> > arm64                 randconfig-1002-20261003    clang-17
-> > arm64                 randconfig-1003-20261003    gcc-8.5.0
-> > arm64                randconfig-r2106-20261003    clang-24   cocci
-> > csky                              allmodconfig    gcc-16.1.0
-> > csky                               allnoconfig    gcc-16.1.0
-> > csky                                 defconfig    gcc-16.1.0
-> > csky                  randconfig-1000-20261003    gcc-9.5.0
-> > csky                  randconfig-1001-20261003    gcc-11.5.0
-> > hexagon                           allmodconfig    clang-24
-> > hexagon                            allnoconfig    clang-24
-> > hexagon                              defconfig    clang-24
-> > hexagon               randconfig-1000-20261003    clang-17
-> > hexagon               randconfig-1001-20261003    clang-24
-> > i386                              allmodconfig    gcc-14
-> > i386                               allnoconfig    gcc-14
-> > i386        buildonly-randconfig-1000-20261003    gcc-14
-> > i386        buildonly-randconfig-1001-20261003    clang-22
-> > i386        buildonly-randconfig-1002-20261003    clang-22
-> > i386        buildonly-randconfig-1003-20261003    clang-22
-> > i386        buildonly-randconfig-1004-20261003    clang-22
-> > i386        buildonly-randconfig-1005-20261003    clang-22
-> > i386                                 defconfig    clang-22
-> > i386                  randconfig-1000-20261003    clang-22
-> > i386                  randconfig-1001-20261003    clang-22
-> > i386                  randconfig-1002-20261003    clang-22
-> > i386                  randconfig-1003-20261003    clang-22
-> > i386                  randconfig-1004-20261003    clang-22
-> > i386                  randconfig-1005-20261003    clang-22
-> > i386                  randconfig-1006-20261003    gcc-14
-> > i386                  randconfig-2100-20261003    gcc-14     cocci
-> > i386                  randconfig-2101-20261003    clang-22   cocci
-> > i386                  randconfig-2102-20261003    gcc-14     cocci
-> > i386                  randconfig-2103-20261003    clang-22   cocci
-> > i386                  randconfig-2200-20261003    gcc-14     smatch
-> > i386                  randconfig-2300-20261003    clang-22   sparse
-> > i386                  randconfig-2301-20261003    gcc-14     sparse
-> > i386                  randconfig-2302-20261003    gcc-14     sparse
-> > loongarch                          allnoconfig    clang-20
-> > loongarch                            defconfig    clang-24
-> > loongarch             randconfig-1000-20261003    gcc-14.3.0
-> > loongarch             randconfig-1001-20261003    gcc-16.1.0
-> > loongarch            randconfig-r2304-20261003    gcc-13.4.0 sparse
-> > m68k                              allmodconfig    gcc-16.1.0
-> > m68k                               allnoconfig    gcc-16.1.0
-> > m68k                              allyesconfig    gcc-16.1.0
-> > m68k                                 defconfig    gcc-16.1.0
-> > m68k                         stmark2_defconfig    gcc-16.1.0
-> > microblaze                         allnoconfig    gcc-16.1.0
-> > microblaze                        allyesconfig    gcc-16.1.0
-> > microblaze                           defconfig    gcc-16.1.0
-> > mips                               allnoconfig    gcc-16.1.0
-> > mips                              allyesconfig    gcc-16.1.0
-> > mips                          db1xxx_defconfig    clang-24
-> > mips                 randconfig-r2102-20261003    gcc-13.4.0 cocci
-> > mips                 randconfig-r2305-20261003    gcc-8.5.0  sparse
-> > mips                        rbtx49xx_defconfig    gcc-16.1.0
-> > nios2                             allmodconfig    gcc-11.5.0
-> > nios2                              allnoconfig    gcc-11.5.0
-> > nios2                                defconfig    gcc-11.5.0
-> > nios2                 randconfig-1000-20261003    gcc-9.5.0
-> > nios2                 randconfig-1001-20261003    gcc-11.5.0
-> > nios2                randconfig-r2202-20261003    gcc-8.5.0  smatch
-> > nios2                randconfig-r2307-20261003    gcc-11.5.0 sparse
-> > openrisc                          allmodconfig    gcc-16.1.0
-> > openrisc                           allnoconfig    gcc-16.1.0
-> > openrisc                             defconfig    gcc-16.1.0
-> > parisc                            allmodconfig    gcc-16.1.0
-> > parisc                             allnoconfig    gcc-16.1.0
-> > parisc                            allyesconfig    gcc-16.1.0
-> > parisc                               defconfig    gcc-16.1.0
-> > parisc                randconfig-1000-20261003    gcc-11.5.0
-> > parisc                randconfig-1001-20261003    gcc-8.5.0
-> > parisc               randconfig-r2103-20261003    gcc-8.5.0  cocci
-> > parisc               randconfig-r2306-20261003    gcc-9.5.0  sparse
-> > parisc64                             defconfig    gcc-16.1.0
-> > powerpc                            allnoconfig    gcc-16.1.0
-> > powerpc               randconfig-1000-20261003    gcc-12.5.0
-> > powerpc               randconfig-1001-20261003    gcc-8.5.0
-> > powerpc              randconfig-r2201-20261003    clang-17   smatch
-> > powerpc              randconfig-r2309-20261003    clang-21   sparse
-> > powerpc64             randconfig-1000-20261003    clang-24
-> > powerpc64             randconfig-1001-20261003    clang-22
-> > powerpc64            randconfig-r2101-20261003    gcc-13.4.0 cocci
-> > riscv                              allnoconfig    gcc-16.1.0
-> > riscv                                defconfig    clang-24
-> > riscv                 randconfig-1000-20261003    clang-24
-> > riscv                 randconfig-1001-20261003    clang-24
-> > riscv                 randconfig-2000-20261003    clang-17
-> > riscv                 randconfig-2001-20261003    gcc-9.5.0
-> > riscv                randconfig-r2308-20261003    gcc-15.2.0 sparse
-> > s390                              allmodconfig    clang-24
-> > s390                               allnoconfig    clang-24
-> > s390                                 defconfig    clang-18
-> > s390                  randconfig-1000-20261003    gcc-12.5.0
-> > s390                  randconfig-1001-20261003    clang-24
-> > s390                  randconfig-2000-20261003    clang-24
-> > s390                  randconfig-2001-20261003    gcc-13.4.0
-> > s390                 randconfig-r2104-20261003    clang-17   cocci
-> > sh                                allmodconfig    gcc-16.1.0
-> > sh                                 allnoconfig    gcc-16.1.0
-> > sh                                allyesconfig    gcc-16.1.0
-> > sh                                   defconfig    gcc-16.1.0
-> > sh                    randconfig-1000-20261003    gcc-9.5.0
-> > sh                    randconfig-1001-20261003    gcc-15.2.0
-> > sh                    randconfig-2000-20261003    gcc-16.1.0
-> > sh                    randconfig-2001-20261003    gcc-16.1.0
-> > sh                   randconfig-r2302-20261003    gcc-12.5.0 sparse
-> > sparc                              allnoconfig    gcc-16.1.0
-> > sparc                                defconfig    gcc-16.1.0
-> > sparc                 randconfig-1000-20261003    gcc-8.5.0
-> > sparc                 randconfig-1001-20261003    gcc-8.5.0
-> > sparc                 randconfig-2000-20261003    gcc-16.1.0
-> > sparc                 randconfig-2001-20261003    gcc-16.1.0
-> > sparc64                           allmodconfig    clang-20
-> > sparc64                              defconfig    clang-24
-> > sparc64               randconfig-1000-20261003    gcc-16.1.0
-> > sparc64               randconfig-1001-20261003    clang-24
-> > sparc64               randconfig-2000-20261003    gcc-8.5.0
-> > sparc64               randconfig-2001-20261003    gcc-8.5.0
-> > um                                allmodconfig    clang-17
-> > um                                 allnoconfig    clang-17
-> > um                                allyesconfig    gcc-14
-> > um                                   defconfig    clang-24
-> > um                              i386_defconfig    gcc-14
-> > um                    randconfig-1000-20261003    clang-17
-> > um                    randconfig-1001-20261003    clang-22
-> > um                    randconfig-2000-20261003    clang-24
-> > um                    randconfig-2001-20261003    gcc-14
-> > um                            x86_64_defconfig    clang-24
-> > x86_64                             allnoconfig    clang-22
-> > x86_64      buildonly-randconfig-1000-20261003    clang-22
-> > x86_64      buildonly-randconfig-1001-20261003    gcc-14
-> > x86_64      buildonly-randconfig-1002-20261003    clang-22
-> > x86_64      buildonly-randconfig-1003-20261003    gcc-14
-> > x86_64      buildonly-randconfig-1004-20261003    clang-22
-> > x86_64      buildonly-randconfig-1005-20261003    gcc-14
-> > x86_64                               defconfig    gcc-14
-> > x86_64                randconfig-1000-20261003    clang-22
-> > x86_64                randconfig-1001-20261003    clang-22
-> > x86_64                randconfig-1002-20261003    clang-22
-> > x86_64                randconfig-1003-20261003    gcc-13
-> > x86_64                randconfig-1004-20261003    clang-22
-> > x86_64                randconfig-1005-20261003    clang-22
-> > x86_64                randconfig-1006-20261003    gcc-14
-> > x86_64                randconfig-1007-20261003    gcc-14
-> > x86_64                randconfig-1008-20261003    gcc-14
-> > x86_64                randconfig-1009-20261003    clang-22
-> > x86_64                randconfig-1010-20261003    gcc-14
-> > x86_64                randconfig-1011-20261003    clang-22
-> > x86_64                randconfig-1012-20261003    clang-22
-> > x86_64                randconfig-1013-20261003    gcc-12
-> > x86_64                randconfig-1014-20261003    gcc-14
-> > x86_64                randconfig-1015-20261003    gcc-14
-> > x86_64                randconfig-1016-20261003    clang-22
-> > x86_64                randconfig-1017-20261003    gcc-14
-> > x86_64                randconfig-2100-20261003    clang-22   cocci
-> > x86_64                randconfig-2101-20261003    clang-22   cocci
-> > x86_64                randconfig-2102-20261003    gcc-14     cocci
-> > x86_64                randconfig-2103-20261003    gcc-13     cocci
-> > x86_64                randconfig-2200-20261003    gcc-14     smatch
-> > x86_64                randconfig-2300-20261003    gcc-14     sparse
-> > x86_64                randconfig-2301-20261003    gcc-14     sparse
-> > x86_64                randconfig-2302-20261003    clang-22   sparse
-> > x86_64               randconfig-r2300-20261003    clang-22   sparse
-> > x86_64               randconfig-r2301-20261003    gcc-14     sparse
-> > x86_64                           rhel-9.4-rust    clang-22
-> > xtensa                             allnoconfig    gcc-16.1.0
-> > xtensa                            allyesconfig    gcc-16.1.0
-> > xtensa                   nommu_kc705_defconfig    gcc-16.1.0
-> > xtensa                randconfig-1000-20261003    gcc-15.2.0
-> > xtensa                randconfig-1001-20261003    gcc-9.5.0
-> > xtensa                randconfig-2000-20261003    gcc-8.5.0
-> > xtensa                randconfig-2001-20261003    gcc-10.5.0
-> > 
-> > --
-> > 0-DAY CI Kernel Test Service
-> > https://github.com/intel/lkp-tests/wiki
-> 
+Should this be a new subtest of test_task_local_storage() instead of a
+separate prog_tests/task_storage_hrtimer.c?
+
+For balance, the standalone file may well be defensible.  It uses its own
+skeleton, as the existing task_local_storage.c subtests also do, so folding
+it in would mostly move the test function rather than share setup.  It also
+exercises a path that no existing selftest reaches: none of the current
+programs that use task storage attach to tracepoints emitted from inside the
+hrtimer code, and the programs that do use hrtimer tracepoints
+(timer_start_deadlock.c, test_vmlinux.c) do not use task storage.
+
+The test logic itself looks correct: the tp_btf prototype matches
+TP_PROTO(hrtimer, mode, was_armed), and timerfd_settime() with a non-zero
+it_value emits one trace_hrtimer_start under cpu_base->lock, so the counter
+assertions are consistent.
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/37277547264
+--===============0647874907332121866==--
 
