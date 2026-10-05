@@ -4,101 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 234A2CA5FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 14:22:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5207CA5FFC
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 14:24:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C4B96B0093; Mon,  5 Oct 2026 10:22:02 -0400 (EDT)
+	id 954CA6B0096; Mon,  5 Oct 2026 10:24:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09DDB6B0095; Mon,  5 Oct 2026 10:22:02 -0400 (EDT)
+	id 9052F6B0098; Mon,  5 Oct 2026 10:24:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1CC36B0096; Mon,  5 Oct 2026 10:22:01 -0400 (EDT)
+	id 81B836B0099; Mon,  5 Oct 2026 10:24:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C83816B0093
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:22:01 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07AC3C01CB
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 14:22:01 +0000 (UTC)
-X-FDA: 85288786842.21.FDCB464
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E4CD21A000D
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 14:21:57 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	spf=pass (imf19.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791210119;
-	b=BMO9FmR/TTUsplca5cvWi7ZUW447o0HWQb4aWYR+1iA8z65PIhdNzsLh1eVBNrttqkEANt
-	zZSvkhmPSHys54fRDHuw6Yz+SRqVKSiurhncfj4/ae/PJdKNzUHjxON4YQ+xhQedXSCsrc
-	TBw7439mUNTtEFYVnc1ybRhmKZDGxck=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 16A8A6B0096
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:24:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC0EA802B6
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 14:24:19 +0000 (UTC)
+X-FDA: 85288792638.24.75FEE9B
+Received: from mta1.migadu.com (out-85.mta1.migadu.com [95.215.58.85])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9FD5640002
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 14:24:17 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="h6zOtN/q";
+	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.85 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791210119;
+	s=arc-20220608; t=1791210258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=dd2ahcUzokt9zubppyaUsQ8ScaNPCK7xleJSCDqMITA=;
-	b=sY/TpkWQ/uy0H0dcjDWE+6ZHAnyy/iftVRPSEeQcOZ26dN6TLospvNuZDjjA2ixBBOgVSN
-	RZDxCmh5liR8M4ETtPFLJmJFEQdaID0rsHzTKRs3HhgL/KyBvy97aRHFAsMq7/pUIvuW1H
-	tdbmat2cMVIOAkZFZ695sRrDWBjV3/c=
-X-UUID: 170b7cd0c0c811f19a56ed5b684f684d-20261005
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
-	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
-	ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:0dfb1966-5f27-4c05-b2b0-9a162f5eefa9,IP:20,
-	URL:0,TC:0,Content:0,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-5
-X-CID-INFO: VERSION:1.3.19,REQID:0dfb1966-5f27-4c05-b2b0-9a162f5eefa9,IP:20,UR
-	L:0,TC:0,Content:0,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:7db8b62,CLOUDID:e32978d867f735ec8dd91cb4c0b3d7e9,BulkI
-	D:2610052221484IO67GT4,BulkQuantity:0,SF:17|19|38|66|78|102|127|850|865|89
-	8,TC:nil,Content:0|15|50|99,EDM:2,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:
-	nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,AR
-	C:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 170b7cd0c0c811f19a56ed5b684f684d-20261005
-X-User: lienze@kylinos.cn
-Received: from localhost.localdomain [(39.156.73.11)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 2123756161; Mon, 05 Oct 2026 22:21:43 +0800
-From: Enze Li <lienze@kylinos.cn>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	enze.li@gmx.com,
-	Enze Li <lienze@kylinos.cn>
-Subject: [PATCH] mm/hugetlb_cma: remove two unused include files
-Date: Mon,  5 Oct 2026 22:20:40 +0800
-Message-ID: <20261005142040.675204-1-lienze@kylinos.cn>
-X-Mailer: git-send-email 2.47.3
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eMpthesKCh920SawTORYa5ywu/5n9CvVnzIRUX0mGF4=;
+	b=1O+VwS4Wn2rceggNb7oz4as9NiIoHntppWEJlqkT7okiHqRU3LKkzCH22Ia3Fm3s1OW0Kb
+	DaUEx9S7oEsBuVgDn7QtElJyEjOUlze1+mTlReilaK+EzuNCaf18a3+1+0kobCkuan+FfE
+	qL5PIDo2qUN34vMokYLrNlgHcWqkrjo=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="h6zOtN/q";
+	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.85 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791210258;
+	b=x2f1A58tuTqNbbcuiXUXW0r9IhM2eNMkmoF31rUgpV81hwNHSoATy2O4kc2CCDX+kdJCta
+	cHPRW53NwchGRqFh5PlBX6v/bhmiRV5GUZOFQSvULNiun0Ahq0GMvwVw9kUNL+qm20PCVo
+	umS7+hJQpzOvHRznZQ7ijAt6zwIIX/k=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=CbENxEWT081LxG9Ca/66oabxXg/6aD0RFXIFh5r/llo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791210255; v=1; x=1791815055;
+ b=h6zOtN/qBwuHI80mhLldSlsEthK5OvmsfCxKoEmVv2prrKumZMQj6qMudQmsfYofcg7Jl3EM
+ L/j2MfunxfX0R4jcbjOvxnrn6aynQP4GlaV/XAgKD6WmslFoiCAUaIzX7R7qx7D6UigUlZCz6g8
+ Ue9KIaQgKfVXdGG8VrRLtjfo=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ca78f09690eedc77;
+	Mon, 05 Oct 2026 14:24:15 +0000
+X-Mizu-Trace-ID: ca78f09690eedc77
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <b928b8a4-5ec5-4642-ac02-9ecbbbfd6218@linux.dev>
+Date: Mon, 5 Oct 2026 22:23:57 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E4CD21A000D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] riscv/mm: fix soft-dirty migration PMDs being treated
+ as present
+Content-Language: en-US
+To: david@kernel.org
+Cc: pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+ akpm@linux-foundation.org, zhangchunyan@iscas.ac.cn, rppt@kernel.org,
+ kas@kernel.org, andrew+kernel@donnellan.id.au, rmclure@linux.ibm.com,
+ debug@rivosinc.com, baolin.wang@linux.alibaba.com, usama.arif@linux.dev,
+ wangruikang@iscas.ac.cn, namcao@linutronix.de,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ alexghiti@rivosinc.com, viro@zeniv.linux.org.uk, ajones@ventanamicro.com,
+ arnd@arndb.de, axelrasmussen@google.com, brauner@kernel.org,
+ conor.dooley@microchip.com, conor@kernel.org, jack@suse.cz,
+ liam@infradead.org, ljs@kernel.org, mhocko@suse.com,
+ paul.walmsley@sifive.com, peterx@redhat.com, robh@kernel.org,
+ surenb@google.com, vbabka@kernel.org, yuanchu@google.com,
+ stable@vger.kernel.org, pasha.tatashin@soleen.com, linux-mm@kvack.org,
+ me@ziyao.cc
+References: <fabd52b6-36a7-442e-9cfb-47a39e4ae3d6@kernel.org>
+ <20261005134641.5801-1-lance.yang@linux.dev>
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20261005134641.5801-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9FD5640002
 X-Rspam-User: 
-X-Stat-Signature: w5kfa7rwo8ckkm5adr58wibw7ydbyj5e
-X-HE-Tag: 1791210117-601738
-X-HE-Meta: U2FsdGVkX1++bem1Jc8t2c16s+V0azcmstSeV+JgXTcy79ZlGRB76AyLkRTf2IFuAkps75fuf/xiuoFNJQVHyICIjFfHqNAvG/nOv3Dhgkdidb7f2b2NAXXse82uHhcnDbuHgJbkgvXbC1Qq+9KG1avRZwZvS1l20p9F3RVngD4WxcZyK2Cf2Rl+oKqMiCzh9NdOLzwFGfbmr5TgmMWk/a6bEhzta5rbXo+0+tggujVS+cnyefuOigulIp4c/H2SpzU7VMfF/YSL57t2+mU6iPzBYELJWl9HQZbb5c01sdmavr4fup5rIl8AoVUG0S4chtk7EeeMOa0JasEfHLslCcJha9f4YOs5tqOaV3+4IUfkPMufk+zfKfRkWlWL/lRIwjvHHidHQM3GS5fadpFpruvsbwg/jjWa4EL+JydG/jxjAZtEKDRNOwHIiX9QuGtVK9GKC7oVeULiey8ji7RpD3ldn8EPygRhllkpVJxbHB7y6Ncn3PCXdWT6dCEczSYi7d9bVtMN5HYuTJMLdnPapyXh5tJnxhCBIBGMM73Zwp4/vpucdwofNa8cvQYxm+WooAwVOzl6TW9fLH0xWWMb8jMRkRmzoFQoS03/UfvQVewHKBBCPlG8laBNtjTh91mLjny+kLl9KM8wSj4U2urPaZKynFLDGifxbm6EZwZGlOTSK1UKWzAbAEetMHYCIXhYmI5hHBrK2j1IFeLHkC5qlUT4DbGN6q7DEiy7FftNO1wOgqBwbWIshHB91UIQ6/OSGawOHPUtJi9Ese4Epz2nGP7ggodUGaHCOcUpJ1EQB6l3vrp+lhLQIo7Vbjk/XxxBbXLzWcOdYpAIDUw0ZSe6Z+4AxyBo7QgF5DN8dgTpTwqMUW7WirvcwlByA+LE5h/Idg65jA/FRrvjcEJMQgdDDdgKu5B5+IMWaDFeZVTxJVsS2NZp0i0sx+krDijm/9rN577JkICjvtntOl/NhfE
- 66k6XVyr
- IzJEzHCVRnIjOXjT682tDfkWCQFR0JC4Dcg6aGSb9ZUUNfcQ=
+X-Stat-Signature: wu9o1es9e7hrknhg94dtumwret6hdygg
+X-HE-Tag: 1791210257-6900
+X-HE-Meta: U2FsdGVkX18GIC+t2rCJ9cbrAaeYCLQVaHN3QNDXeTUGfXogkqZRtXTA5Z9ACn/jJH3FModhDDUJpkTHCvmqDPsSJisqHjKODNHyEVkHDEt5peUMpYe24BoG7iUOK9tO9FQnmr9CXltq0NonAXbX5J65rmn9TXfSevziN7J17gnQZjOd9TYoVXe6/9bmpF9v064B6xPfd6ONjwdQxnk9aCktugBmZjAKLYL3kbv/YjX2k/QVbJtyouzp0JmDXgm8rrWwhoFh4erRKwE4pd+EWvexPO1Wn1bd5A/JXZBuNxIgyiRG8x1I6PxUfGcjxyIJ0cCFNHGiSg9a2LWC+tlqwXgdnQNoVzZRDzNtS1WmpaMQrpVhmnML+yBTQrSST942Q1Gm6akrC0ukrcShKygNzeWMWFxS48l3r6CfMHjglCFXw5iixUjJaC5+6AkWY5w2E6cB03SvMAKdk6ik0vJGfaqVVSh9vX0QpqCzZ1J+hWUaJM522ga5bu8jQac0YYsYCy+Kv1l6dc7PkRCIjt8yEjq8L0aWlTB2d9g2Bzzuf93u5CkZgdejC1ZQJ7A19bAcHj/7nuzuDTQdW9LGvAfb5a8rlRCUZpCYHGLWlZug9flBfwaFpBqYtg6Rvl3quwMYDsQ3pqz5CNPb8RH05+PqUM7bNxYe4qazTu5MvECXB02fIZo6w2J9Bj7QJFIQtVgNc8DRcsRgwOALRjlMMfLBF/0a41jvB5xLeL+3hG0K/OFkgZOCLNQIzvScazcne01pRp90Zcsh71+r4gdHPf9ZCiJwWePagwCD2HDDLBRVflhV3jP2MmpmXwUNK2FyKWvY1E2sN8vB9R0xNroZNSB9HOPLKHVdJvvMW61Lvpsqkppwvz4O7x0L0/+VcmTKF3oHxGtcr2MChMIIdo5dJlbg2DOIjaYoBYFuxkDaFfVvq1oezcYtaLrdywt/SkjdOqW/yKOdWSIrAJZk8u1NtGu
+ ygw3TTH1
+ GpYBye+pYa3m/42IPi1gIPpDAdNFiITvFOv8EXCxTrKYTMaJhWSfDknqtrfjPDedbpsjZi9/cKcWCTFAeUQNhsDkvrzxXlKSvkb2Voij4cre3ItuHs0Br4eh8stsEKoyYSVzOnMMfWcNVdthgr9T4nRM5zo3eOVjGtbi2ExmRjoQhUY60JZWT6ewE3Ch41gGanmUALV9h7FtTeUSZYrrjc67loonGBs1mZ6Z1sOvTxKiFDeaMOF+pmMae8rmTHpz26XyU2HPQ0UcMfh/c1Jid0wTKNr7j3H7RLkslyz7/C1Qb+OtQKGDURMJf4wxdrdFMs940RIUbsHp7ioeTvLWm71DLc3WFD+VfXx9ayUopc6GRfb5XrhufnB2hcnhpC/ksDU+ciyRuqZAzaJ8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,36 +105,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugetlb_cma.c includes <linux/mm_inline.h> and <asm/setup.h> but never
-uses anything from them, so they can be dropped.
 
-Found with clang-tidy (misc-include-cleaner).  This holds regardless of
-config: the file's only #ifdef is CONFIG_NUMA, and it only touches memblock
-helpers, so removing these is safe on all arches.
 
-Signed-off-by: Enze Li <lienze@kylinos.cn>
----
- mm/hugetlb_cma.c | 2 --
- 1 file changed, 2 deletions(-)
+On 2026/10/5 21:46, Lance Yang wrote:
+> 
+> On Mon, Oct 05, 2026 at 12:37:20PM +0200, David Hildenbrand (Arm) wrote:
+>> On 10/4/26 05:03, Lance Yang wrote:
+>>> RISC-V uses _PAGE_EXEC for swap soft-dirty tracking when
+>>> CONFIG_MEM_SOFT_DIRTY is enabled and Svrsw60t59b is available. That's
+>>> a problem for PMD migration entries, since pmd_present() also checks
+>>> _PAGE_LEAF (R/W/X) to recognize THPs with _PAGE_PRESENT temporarily
+>>> cleared during splitting.
+>>
+>> I'm curious: why do we have to set leaf indications for non-present things? The
+>> HW sure will ignore it, right?
+> 
+> Yeah, that surprised me too :) Still wrapping my head around the details
+> ...
+> 
+>> Is this a sw problem? Who needs that?
+> 
+> IIUC, it's for software during a PMD split.
+> 
+> __split_huge_pmd_locked() invalidates the huge PMD and flushes the TLB
+> before installing the PTE table. Software still needs pmd_present() and
+> pmd_trans_huge() to recognize the THP in between.
 
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index 95fd2d190f0d..80b2407e9f07 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -4,10 +4,8 @@
- #include <linux/cma.h>
- #include <linux/compiler.h>
- #include <linux/cpuset.h>
--#include <linux/mm_inline.h>
- 
- #include <asm/page.h>
--#include <asm/setup.h>
- 
- #include <linux/hugetlb.h>
- #include <linux/memblock.h>
+Also, x86 keeps _PAGE_PSE to identify the huge PMD. RISC-V doesn't
+have a separate leaf bit, so it keeps the R/W/X bits to identify
+the PMD as a leaf entry :)
 
-base-commit: 0aaec43576cd41474a8e90c919631c0c9fc88417
--- 
-2.47.3
+> 
+> RISC-V clears V but keeps the R/W/X bits for that, so the entry is invalid
+> to hardware but still identifiable as a THP by software.
+> 
+> Hopefully I didn't miss something.
+> 
+>>>
+>>> When a soft-dirty THP is migrated, set_pmd_migration_entry() preserves
+>>> soft-dirty with pmd_swp_mksoft_dirty(), setting the X bit in the
+>>> migration PMD. Even with _PAGE_PRESENT clear, we end up treating a
+>>> migration PMD as a present THP! The fault handler skips
+>>> pmd_migration_entry_wait(), and a write fault can end up in
+>>> do_huge_pmd_wp_page(), where pmd_page() decodes the migration entry
+>>> as a mapped PFN.
+>>
+>> That sounds bad.
+> 
+> YES, looks a bit off ...
+> 
+>>>
+>>> Move the swap soft-dirty bit to bit 12 and start the swap offset at
+>>> bit 13 when CONFIG_MEM_SOFT_DIRTY is enabled. This keeps R/W/X clear
+>>> in migration PMDs and lets us keep the existing pmd_present() check
+>>> for invalidated THPs. Leave the offset at bit 12 when soft-dirty
+>>> tracking is disabled.
+>>
+>> That reduces the effective swap size (and PFN we can store). Could that be a
+>> problem?
+> 
+> We don't need all 52 bits of the swap offset.
+> 
+> RV64 PFNs only need 44 bits for migration entries, and actual swap is
+> already limited to about 16 TiB per area with 4 KiB pages by
+> last_page (__u32) and swap_info_struct.max (unsigned int).
+> 
+> So there's room to reserve a bit without reducing the supported swap
+> size or PFN range.
+> 
+> CONFIG_MEM_SOFT_DIRTY is only available on RV64, so RV32 keeps its 20-bit
+> offset.
+> 
+> [...]
+> 
+> Cheers, Lance
 
 
