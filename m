@@ -4,137 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB1FCA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 10:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 452EDCA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 10:48:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B18386B008C; Mon,  5 Oct 2026 06:43:58 -0400 (EDT)
+	id 2E0CE6B0095; Mon,  5 Oct 2026 06:48:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEEAE6B0093; Mon,  5 Oct 2026 06:43:58 -0400 (EDT)
+	id 2924F6B0096; Mon,  5 Oct 2026 06:48:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B6ED6B0095; Mon,  5 Oct 2026 06:43:58 -0400 (EDT)
+	id 1814C6B0098; Mon,  5 Oct 2026 06:48:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C06A6B008C
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:43:58 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 008B0A4E05
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:43:57 +0000 (UTC)
-X-FDA: 85288237356.26.A32ABC5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 25ECF80008
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:43:55 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YxyjbhaK;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CEE506B0095
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:48:10 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 68BB11601EB
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:48:10 +0000 (UTC)
+X-FDA: 85288247940.03.FEEC705
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9AC5620004
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:48:08 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XBax9bhC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of vdonnefort@google.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=vdonnefort@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791197036;
+	s=arc-20220608; t=1791197288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I9YxIdWVKeJd4/bB5ayzuob5ZI8t2MLqGLq4CqLRU6E=;
-	b=qXOzgon8Oeb0ldwTubMbjrmTC/Sjy+MsHgjUKvhAC/k3ERxq1vlgKebxkgaKno3dGf/ACJ
-	dkDF2BOB9cYIJFYHgmH65SnzhU4tcFq4ksGqlI9S9XA8+WzpQLA8ztkyuMG6xMfJGtIMdH
-	gKTYeUrdDINaS+03knnfrjYUYLMxW1M=
+	bh=0E0kZNEEosSgGH99aMOAH+blyCZGVgX/b9FbaeaxoPo=;
+	b=juWMM2vse8Xsdn0tMhzBMuwtoSZ+vV2sIVo72uwl/ez27NsUhTgnlVvTRvDTfMrFVpHMJN
+	aheso2iGI//KJpoFbANRjXY/kdYyn+f4RTDQCak0X87oqw55MbIW58l9+0Cl4bTNqLoPXC
+	evCnAteJV6IhsdjGxhC0vnGcovykrp8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YxyjbhaK;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XBax9bhC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of vdonnefort@google.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=vdonnefort@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791197036;
-	b=h9iH7wzemHE7POjMbsTdrCS52Oz2r0Acc5IIkAViyRuPfeOfWxaLFi84kEzXEAZG0s2ThG
-	dS04Zll8Lfdas8R2dGJsuz43xPDm5SxkbHrC4JBNeky4ZR+0ahPY5Mh9AXWHrJ+rlKM8Wd
-	9eYGR9goskytg8wBmbu2VPTMmRNpBrM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3CECB4382D;
-	Mon,  5 Oct 2026 10:43:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6530F1F00899;
-	Mon,  5 Oct 2026 10:43:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791197035;
-	bh=I9YxIdWVKeJd4/bB5ayzuob5ZI8t2MLqGLq4CqLRU6E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YxyjbhaKV4J3KWq5yAbCj043IUW/HILXjLF0F3kkPCQ2WaUvIjK1eq76i4d4auCLp
-	 /KY97mHjSMrICJPPlZd+0gIWHlBgtkFYBX2OoKJwf9/LP0Qe5Ph+XThvZ5E+h0iSqK
-	 Cscwr0iirEuj04JnGdZsrnY0ROtyRGzUeLrCqG80YHmMsLm+pk0DTUxr5O1tWwS2SP
-	 VQA5MkeLjX5LRrWHE3lasxUoRzxmdTB9IROC3KXUwv1kzS5QYGNe/i2V5H21pV2fpc
-	 vVOsRAom5vq9ZevdHDyTHCPbeSp2a/sxNECVbqAGEBjIsUE+TLzx0TD+K2xZsxwGRz
-	 A2l/wGOuFT4cg==
-Message-ID: <4a24f7b1-65f7-4947-a325-7c9e9f642f2a@kernel.org>
-Date: Mon, 5 Oct 2026 12:43:48 +0200
+	t=1791197288;
+	b=zBAHf85U9aM6WJrBOvVND8sG6GdcwVKZvYkFGD80L9h/f/PzhG9H/1WDJjlnekiRBZZWo9
+	39iYAmL8tNVAzMs9N03/XPbShKDn9fPyqE1rnMgnrgDVV/37wVYJtjSUZTijBdoCEKCkra
+	lIOMk0Ub+oIIhZPGFkAibGHmj6AcIWc=
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-4a169d33ef6so8983565e9.1
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 03:48:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791197287; x=1791802087; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0E0kZNEEosSgGH99aMOAH+blyCZGVgX/b9FbaeaxoPo=;
+        b=XBax9bhCULhjYM3yPyIwdpCCqGkzy1k2PW324IlxKg5O8JWKOTxEYRjW+Y56yKpUwf
+         ud6z0gioGeaj1JdDozqRrHDPs/AvnxzsKNf3hIdZ9Q1r14vw081LoJ0HEF/LV9ZzIXeT
+         opelYnPLdD6bRrfVQww/uNNFxvgTYBGJVTR0r0KPp7hWG2aem10H6S8fu2Zsh30Ceirm
+         KD3v4L4aPs3UqLzV2w8gxubH3eYnZYdostZCjrytXG5UoLlPKc2daPmQM+ZtcxPPE0VU
+         EGhzKJ2LzA+/GYgVhWh5hvBZ3TMyyrLZy/t9kGLDv4nXGIeZfTRh4yXLzt2lws/OUaAy
+         n+PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791197287; x=1791802087;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0E0kZNEEosSgGH99aMOAH+blyCZGVgX/b9FbaeaxoPo=;
+        b=WpbVaAmv54gMmTbbcQtTkR1MkdaEiYnQ7hvSXoMZ3YAGLjJDd+Qi2+CxhMmzKZPYP/
+         2AYI/p/e0mLBU9MT+Qw+Ob0EDrP8BhU6ZJ0UzcALahgb3m1m0cHDtZ4l8iROXstlwCyH
+         FEtTkl6ULkxnTLbOPMANUIBE7IRBIyoHguY0L2AYpb0R18QXdKOApYSs+gfEpU7UqID3
+         3Kw0HNKCTLkSKJpTWhSq+EIlG3CdGx3pvGuLlQl0d7axVcmeqEQfCC1nNt0WkQ18JDoo
+         gW0gyB2a/BlNT9FD5TdP6M//Z1bg/pK0fKmIOJHwKEFhn7WWnGXYO3XeXv+Zfe8oZ8Fd
+         aAfQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzCssF5d01a1pgpSNI4KGS5GTOUI/oNw7uk8drJly7jAszCT5CoIQ3K2tNneUj052P+nSOqRu3Jxg==@kvack.org
+X-Gm-Message-State: AFuF++niU/5fN0q4dpf7yKVd3jXmtAF3NE1f9RI900umJMGhfYHs7pp0
+	V49o4BMJT8ux6PE05nE3RXq5p316v5gowuvWmzG+Kx9NgT1+7Mtswqc+6lf3rqCX1Q==
+X-Gm-Gg: AYBFou2tAkKqCwKyJvbzAbgu/Ll5RQzZw/vP+b89xFRnD4SQskP0f6A9gHGEkDfpDmu
+	Eu3ZwkHlqu7kXe6u+E7J1mSCoFxzG9yvtHYcTNsMPKgFi/I6op0Vq7as0hXAcwv0e1egX9uy7aZ
+	e4ePh/f/joIRBcFIJIRiFx0J3cCMoFTfjGBbZI+dXCzUlFNdR3i7p9NH8tOa8UYhbSFlH4Gc2iu
+	PLbj1iyh9xjaZcSyn2tKT/8flYM1rxLYGOqwgk0SyYud8c/+L3bBgX3vXQnBZfmgOluUWI8FtFB
+	9/i9u8zFjEQKft+QgbaLjv6HCBnRvEuormacvtatDlKjCsDpyOuDcAxCa/UN/bOIxNsEIEDyjOe
+	R5FoLaRO3Mnl1M/AW2hsIcB8p4oiQ3avvR1ZwiSVqedwbMp5JW3lrWOmaLUsV8qKXKElkPCzSbe
+	8Op0hWmJq4gcOjL1l21gwonHHYQWbCgUcoIxV+333TOL+FqZZ1qMzv4OaOLXYw+vlQpTBfjHhYE
+	s5jb/FSgR0OCwRuFUrJ1qvRU2XxMB1m69Q210T/I2g=
+X-Received: by 2002:a05:600c:a112:b0:4a1:7690:d878 with SMTP id 5b1f17b1804b1-4a17690d93emr7713595e9.17.1791197286488;
+        Mon, 05 Oct 2026 03:48:06 -0700 (PDT)
+Received: from google.com (197.183.140.34.bc.googleusercontent.com. [34.140.183.197])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0e1afbc44sm329471285e9.4.2026.10.05.03.48.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 03:48:04 -0700 (PDT)
+Date: Mon, 5 Oct 2026 11:48:00 +0100
+From: Vincent Donnefort <vdonnefort@google.com>
+To: Will Deacon <will@kernel.org>, brendan.jackman@linux.dev,
+	catalin.marinas@arm.com, rppt@kernel.org, akpm@linux-foundation.org,
+	sudeep.holla@kernel.org, jenswi@kernel.org, robh@kernel.org,
+	mark.rutland@arm.com, ardb@kernel.org, thierry.reding@kernel.org,
+	david@kernel.org, danielmentz@google.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	op-tee@lists.trustedfirmware.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
+Message-ID: <asOAYODGZa-7EIV1@google.com>
+References: <20260921110050.3977591-1-vdonnefort@google.com>
+ <arIYtjmSKCs14SqO@sumit-xelite>
+ <arKW_91EeKA-w96m@willie-the-truck>
+ <are21BjeS1O3RYE3@sumit-xelite>
+ <aruh86rd5FMv2i9G@willie-the-truck>
+ <ar5TPvANFUoosxGW@sumit-xelite>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] selftests/mm: add tests for UFFDIO_MOVE of a
- uffd-protected swap entry
-To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>, akpm@linux-foundation.org,
- rppt@kernel.org
-Cc: peterx@redhat.com, surenb@google.com, aarcange@redhat.com,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, mhocko@suse.com,
- shuah@kernel.org, kas@kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261003103030.63380-1-donggeunyoo.kernel@gmail.com>
- <20261003103030.63380-3-donggeunyoo.kernel@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261003103030.63380-3-donggeunyoo.kernel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 25ECF80008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ar5TPvANFUoosxGW@sumit-xelite>
 X-Rspam-User: 
-X-Stat-Signature: 31y19kzbp9ih3nedxhdaepo3d9jqxjc5
-X-HE-Tag: 1791197035-568109
-X-HE-Meta: U2FsdGVkX1/sErFRZancR10qOB0+vuk9BpNIAQ98FGug37xjdzDT5KPEr5Oy/ZBl9tgcSIdWcQy8C8joxZuI2A+gA2/sNTaiE4l6VMaZk6zanM/VUFx1p5amUk4KfVJZtZzQrfpyN1cXOnmkzo43Q+382mC9iqvGIWdpfpy5kYR8N4Q9BnvLz7b0pkmKOORznx2siXKdQY+vaGDGGlSeUfLceeNDyKO+gv9RcLuPikpwISbA1WW5ZpPy9xP9vAPbEfnC/jUsWWHwurBQZ72tx2G+B42WiWzMMyDmpVo/TjiW0WWyYEzMxOP4DI1UXlqnwqKiizZK5+mm6kYzwvA0js/yuyqziei8NWVPkrEIm6yudHIUrXxR5djwQpaYpf/W3N/udrMMpm8dt59hmKax0ctjkAUBqga2WRa8qP2vnO0hDu7aE5/s7OFR0hkUHkK2td2gssKeHc7t/675ZEehXzrztJwTvrf1iW/jFPBc3Tosq3RlgAgiFojkwtZ73Zsi006WUbVax1YLGxV26FsFh55I+GlYFcZrDxLL8O54CK2VKojf6OW7Oulo5PJQCFTRXZ0bMugQHUM36eLLQqbfuiCfcj1MnB2WcZk/Cl005eJQaoYJKZAqLrDl/NC0xsIPUu+6/KbPW3cBmUJo5DOwNcD5rV1wB6SzVdhTFcwc66UY+ubCIQ/oNM9asHS8ozyGQeMo1tAyhhcz06HXMjpaMQdfiPIou36Dc+G5J3txNtK+QG6QGYXVOR2nlG4mFRPA3cf515MCzcS0iY6SFDui1sAm3ts0sYxm0OtK2rj1lwjvEZq7Z+DzQI19FkEePVwqwJ17IqyxGlXL5AptsWnEOQVNMfyTVZ+mf0R6mcx99t5Ivpwp+weCssO4MQVN8Aa/n07kKNPCFiQ+bH/uSuAmlrMkzEfDsUguC11phwjWIS9PE21sK042GT53+AXm+vxMxJrwUyNQEbjEEuuvs1C
- gXcIhRS6
- WCZw/N8I/FiP6EDxja+18uOzhl4GwRA6lCGD81LmYjrX6YtZefl/fXBsT8xyhNR7zXeaxVk3/n5NYbWjtlXXls90Yq0xqwizu6ciPxBzjOv86qSSFCNpyfqxThp5BvzyxeTXv9z4Y9aRCad47NhbZsc+AjKDY+R/h2SFvZgSSbHQnkV6gLQXMCM90QTsiCBqCoIrLrL9Qu3SW4pRXuHBb/uXg4Vx1oF0DjF37plhOw0UeLg6TjrIwJPv7LMqZHSjnQAyrk+wU+pjTqjwF10/+z1IUj+krSxa0KsqSbnTPwEd4kZ8MZ2RZN4lh/Wu29WGNUfNMYbsCmN0HdWbHm9BE5dcO0s+mi+WqHzAM03eqcpy1E0P04qa7t8WI6Wy+xF4ulGHIKWBZ3ZOVNJdqQKZNJEpeNb6h+Jsmzv58AhHSSN6yQSw=
+X-Stat-Signature: trxbron7z8cuq18rypr8sfeywu3w7ssq
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9AC5620004
+X-HE-Tag: 1791197288-990593
+X-HE-Meta: U2FsdGVkX1/GOzBIaAyID8KJjpdia5uIZ4nvdlicgu5Bi2Ki+dzsQOUhvqwpJWx+d4iEC1fUXNGH9611vpqbMAqZYsNLcnuX3o52gVkQZNbbcL3NUWf9agAIp0nPTEBwmquM3puxPm3wS6knwIV5+wQe2bFuUw0s+vOUi5anLkGwWZKRbOt56+7vCCM4Rk8SZ05YdwpCiMm4RmhP4IZyyLPdIG7Mulrqda9uukafgEdLLbxIn6rCq2Uu1tbLm31KUqJCBZ4AEVnywO5v+ZEwUUoKaoYinPWU26DZqHcKDh0QHYzXXsFGIS0uLBkCRyzzKuuzJCtPGTMo43OxPMVi2PkUlBsJwVpnkd9Pp+nmtrT6YSvPT9aTpTFj5GCF2f8rQyDiieW9VmQ/4TFKmQH7jPkJXA1vegLFKwFTqEeAXVBwXjjyUUdHYcLkyDzVVHktn58m3887CcDrvtRemIRSv6Dc2/w/sehAVjC7Bdyk2LQKp3NSzieT0HoPEZ4TxRc3Rpl+Y+g3SBlKBglsMN3AvFzdr5lZrF3eGpcuTXJ5zpJLh4RSUlehYVD0uTTECl3KebzJyxPR+JfDGbLWMnzyN5k0Ly6Aly/UXem/5clWpnff8Fb/rWp10MWS6HwI18nQEk0NzS8aTZF62aaWiAcmHhvcg8fwHmmrgp/r109+UVpOKVu3aKPfhJWn7tFnc1OrUS/3FRwATVhOf8ML5NKEAsrHi1G/o/HLVMFBO8E8D7jwWPpRz70jACOCOs3Vnl1tFaNl4NWuMM9woBuItSQxJozUKMILClYHu+tHq5aVA1qkEmwQDscmWWziP4hdiC6Iw62j0eoByeW9sJV9mK/Az8imY0VQeKfFWTty/VK+TYU9ogtjFSHf+l/CbTOy5zlKVHRRWGElgIUDaCXSS8TGH5JsbZJq9YIxJGl5FCjA7zbGXIA6hUjPPJB2SCdxb0AC/khplTpA8+OOcXxGZx2
+ SxU4F2eE
+ CtuWeksArfDqZ1BOjo4q9+JjJ8Gpe5Am0+nrONodX1g9USSBD1yw4aT4Yejz2raiIJ2yIN13PC5DYXO9itc5dCi0u9HMm68zuIM5aAY4T47GkrPu9fkks4eeOeLpEI6P+WSfBgVSIfjP8g3xz52+liW/N2oj7gEpx8CQ3b/SdUHLPUBDTHB0OBhcZpbn7aOjnJkOmMgVNgjhQ9CLyi/zZuo95nP28JjukXKiWSikyWSqnZkbkR7HuwnmqS4k8MVaYPkstv9ohEGaViqV9YyHi3HQVt8p3jZAjfTOk2nzWDRB0KRajl4RSNO2mGzeT4cwYKmKV+jN3GQW4wCZ9NQdsVDcW/8FDUw7rkC4QcsdMnqXOhBR/iZMq/VgCKX3mLjhfnp+G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,37 +129,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/3/26 12:30, Donggeun Yoo wrote:
-> Move a swapped-out page out of a write-protected or RWP-protected area into
-> a destination registered for missing faults only, and read pagemap bit 57
-> at the destination.  The destination was never protected, so the bit must
-> be clear.
+On Thu, Oct 01, 2026 at 06:04:06PM +0530, Sumit Garg wrote:
+> On Tue, 29 Sep 2026 at 12:33:07 +0100, Will Deacon wrote:
+> > On Sat, Sep 26, 2026 at 05:43:08PM +0530, Sumit Garg wrote:
+> > > Looks like you dropped me from your reply.
+> > 
+> > Huh, that's weird. If I hit reply-all ('g') in mutt, it moves the entire
+> > CC list to To: and drops you. I suspect the same thing happened to Thierry
+> > when he replied here:
+> > 
+> > https://lore.kernel.org/all/arJcN60nagFKXj2Q@orome/
+> > 
+> > I can't figure out why that's happening :/
+> > I manually tried to fix the To: and Cc: lines in this message.
 > 
-> Assisted-by: LLM
-> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-> ---
->  tools/testing/selftests/mm/uffd-unit-tests.c | 84 ++++++++++++++++++++
+> Thanks.
+> 
+> > 
+> > > On Tue, 22 Sep 2026 at 15:55:59 +0100, Will Deacon wrote:
+> > > > I spoke to Brendan at LPC (?) last year but this doesn't really work
+> > > > for arm64 because it relies on being able to unmap arbitrary parts of
+> > > > the linear map, which isn't generally possible unless you force pte-level
+> > > > mappings for everything, which is prohibitive for perf/power.
+> > > 
+> > > As per the cover letter it's about allocating pages that are not present
+> > > in the direct map. This essentially fits the protected DMABufs use-case
+> > > where we don't want any kernel mapping to exist at any time. Bufers
+> > > allocated from protected DMABufs are only meant to be accessed by the
+> > > TEE implementation or HW accelerators like in the secure media pipeline.
+> > 
+> > That sounds like it should probably build on top of this series, then.
+> 
+> The main problem I see with this series is it tries to move from the generic
+> CMA allocator to a reserved FF-A CMA pool which again comes from the
+> DT. We already support reserved pool allocations via "no-map" which are
+> discovered dynamically from OP-TEE.
 
-The CI complains as reply to this patch:
-...
-Running userfaultfd(2) test
-✗ userfaultfd(2) tests failed
-Running VMA merge test
-# # Totals: pass:27 fail:0 xfail:0 xpass:0 skip:0 error:0
-# SUMMARY: PASS=1 SKIP=0 FAIL=0
-✓ VMA merge tests passed
-Running vmalloc test
-# SUMMARY: PASS=1 SKIP=0 FAIL=0
-✓ vmalloc tests passed
-==========================================
-✗ userfaultfd(2) test failed:
-# not ok 43 minor-collapse on shmem
-------------------------------------------
+I can't think of a way around a DT declaration. We need to know what region is
+PTE-level before the direct map is installed and of_reserved_mem is very handy
+for that purpose. And as this PTE-level mapping is costly we certainly only want
+to enable it for platforms that absolutely need it.
 
-Didn't look into the details / trying to reproduce.
+> 
+> If we can rather support a generic CMA like allocator for arm64 which
+> can support unmapped allocations then I am all for it. These platform
+> specific reserved pools isn't a scalable solution.
+
+What do you mean by generic CMA allocator here? An extension to
+shared-dma-pool? Or having the CMA automatically doing the unmap/map on
+cma_alloc() cma_release()?
+
+Right now I have created an API for the unmapping/remapping part. It adds a
+burden on the caller, but the alternative solution is introducing post-alloc
+pre-dealloc callbacks in the CMA, which looked a bit overkilled to me when
+the users of that "ffa-pool" are only optee and the nvidia video dma-buf heap.
 
 -- 
-Cheers,
+Vincent
 
-David
+> 
+> > You could allocate the DMABufs from a CMA region that has no linear alias.
+> 
+> Allocation from generic CMA pool is already the case here:
+> 
+> tee_shm_alloc_dma_mem() ->
+>   dma_alloc_pages()
+> 
+> Do you mean it's just fine to unmap buffers allocated from generic CMA
+> region since it doesn't have any linear alias?
+> 
+> > 
+> > > > Vincent's series tackles that by using a pool so that only that part of
+> > > > memory requires the pte-level mappings in the linear map. That's the
+> > > > whole point of it, so I don't think it makes sense to drop it in favour
+> > > > of Brendan's approach (which doesn't work).
+> > > >
+> > > 
+> > > For protected DMABufs, we even don't require any pte-level mappings in
+> > > linear map. The whole idea of mapping and unmapping is just a bottleneck
+> > > for performance sensitive secure media pipeline use-cases. That's why if
+> > > we can support __GFP_UNMAPPED with the memory allocator on arm64 would
+> > > be the best fit for this use-case.
+> > 
+> > The point is that you will require pte-level mappings for the linear map
+> > if you want to unmap from it at runtime on arm64. If you don't, then you
+> > can end up needing to split a block mapping (e.g. pmd-level) when you
+> > decide to unmap only part of it and there isn't a safe way to do that on
+> > arm64 without transiently unmapping the entire block, which can lead to
+> > fatal translation faults during that window.
+> 
+> I agree with you here, what I am rather trying to find if on arm64 there
+> is any possibilty to have a generic allocator for unmapped pages. That's
+> the use-case here as well as what Brendan't patch-set was trying to address.
+> 
+> > 
+> > > Now the question is why arm64 can't support __GFP_UNMAPPED similar to
+> > > how Brendan is doing it for x86?
+> > 
+> > Because arm64 != x86? Presumably x86 doesn't have the strict
+> > break-before-make requirements we have on arm64.
+> > 
+> 
+> Sure, sounds like you are eluding to that the generic MM flag
+> __GFP_UNMAPPED being proposed can't be supported on arm64, right?
+> 
+> -Sumit
 
