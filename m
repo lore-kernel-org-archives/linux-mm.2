@@ -4,121 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CA45CA5FE2
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 04:59:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12007CA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 05:23:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F308D6B0095; Mon,  5 Oct 2026 00:59:02 -0400 (EDT)
+	id C77CD6B0088; Mon,  5 Oct 2026 01:23:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE1D36B0096; Mon,  5 Oct 2026 00:59:02 -0400 (EDT)
+	id C00986B008C; Mon,  5 Oct 2026 01:23:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF6AE6B0098; Mon,  5 Oct 2026 00:59:02 -0400 (EDT)
+	id AC8AC6B0092; Mon,  5 Oct 2026 01:23:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ADC706B0095
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 00:59:02 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A47321C03A5
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 04:59:00 +0000 (UTC)
-X-FDA: 85287368040.03.5575CED
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DA6E940006
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 04:58:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TQRxipQT;
-	spf=pass (imf11.hostedemail.com: domain of praan@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 841526B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 01:23:32 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ECD9980131
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 05:23:31 +0000 (UTC)
+X-FDA: 85287429822.17.6C44E77
+Received: from mta0.migadu.com (out-112.mta0.migadu.com [91.218.175.112])
+	by imf05.hostedemail.com (Postfix) with ESMTP id DE925100003
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 05:23:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I9IJYLy8;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.112 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791176338;
+	s=arc-20220608; t=1791177810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wh1AxkS8SWKuWWWh7pZFQjWGZF9aNJY94i0CrRQCRF8=;
-	b=2XJg870lTI2rMN7bwkEWZf7d8RCYgyIq1dJPDflZPd3EReqATXMXaA6ZVRgyOk5YL1x4I3
-	2a052xc+ZTopCuCIRG+AW+DZ2QfnUMfds0e08GCluWV5WjaHiUepZcIscAAZzNF/MedhQl
-	EgXa8FFx9cNg1sa0+x/jFdKzyN8Akqg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791176338;
-	b=xP9QvAwqZpO3UHcVs5Ok+WDBZLg/1iiF7WsmTrofjY4lSWDM+QKZ8z0uF8Xpf7VGoxfzAZ
-	Sp16m6yUH2DckoNFLQ5cfN0mNSskDVe+2YtYWcI70bZfQvEuWsspeFRgqw487RBlxxAEs/
-	pd5UrnorCPatiz+FQ4pForx6wE1MSzU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=8/bTdhBqp1lsrYcXQ9GT4z4PRpfui/LQPvU3nWaP+zo=;
+	b=tvBQ9JA0RZZ+tWqr9fsu4eTZUuvbL0AHOKhNnqaXVNyBiLsWSi4J6WiuBdOQZaqEEdLkoi
+	cP3WQ7clp+3sEpDFKb0fFNADC3Dv9su9hnOqhZZDrI7a3cUFxqbTaD2BPuRspAt+i6QN+n
+	wIX0N/XXYuU6HCdZO0oa3riSmE0sAyg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TQRxipQT;
-	spf=pass (imf11.hostedemail.com: domain of praan@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2e2e4ef20beso59575ad.0
-        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 21:58:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791176338; x=1791781138; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wh1AxkS8SWKuWWWh7pZFQjWGZF9aNJY94i0CrRQCRF8=;
-        b=TQRxipQTIT+IoePmfoOMZ+LqSo/Ojwc34p5QFmW5vrDgX+vhyWKxr/NJHHD7Mpk5nP
-         7xriShwBQIbDeYG2Ye8KKct2h1BpZRA2344X4smc70CBjwejBkL4z4BxRfQ7yPmf7uSk
-         3o3+2LirVpok0y0eF72WCBYeES74WqPANvCQfUhy9PDtLLuLqmqTvXmOKlBn5ZqVDtoT
-         2ZJoRe52xis4I4od9zoX63FiBXae5rl8Bcv1WrWu/RcMLezeBForYgKVwtdBLPY3/BL7
-         DvvuDCgsmensqD4ZPz4DC2Ck1RsCiqaSZjeNSGXMiGsj6x5eippn1lwBfvG79JvVZ+He
-         dyvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791176338; x=1791781138;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wh1AxkS8SWKuWWWh7pZFQjWGZF9aNJY94i0CrRQCRF8=;
-        b=JcnAAJ4I06lGL4TDSeTO4OXu0SoWG349jQ4fkstAMbyEFCDGRSLaffjT+ijBb8Jrvs
-         n+Q7sTVtpRQM0CfsTsezJXnsqLCZgThJm2zHyUm9Z9hIYbHbR4UxkNDOV1DyYfI1yJ5P
-         80Qtb7qIuvc18N1/CvRrup3++T/YexEbAyzS+jXoTOtukHu+CkHmaaOaWS6txVaT7fRb
-         EZZshEaUth0mk2e/CzHk5pmFv6f+00fAE+djK9DmRFxzx+l28plx+3+gUHRjAeNGFMk8
-         AaUqeryP5ifBZWih6iZTuQKDjYHkmeln0w0+vZnQUoJLVkATxUiPsEMPWpo/B5MyFUg6
-         cxmw==
-X-Forwarded-Encrypted: i=1; AKwUvBwObAJMTUBfdZVzNC9FrF1i2jJGZUYw9RGQV+FWJbzBLY9QLpkXa5LMMbbc2Jz/r+k6Hwv2tGCrXA==@kvack.org
-X-Gm-Message-State: AFq9FYLDF2KEG33SHYOHT8QqLF/EWS2u68bc73Rj4Sq3P0PVtJ6YwYZy
-	Wket84ffdgas7fO/9qka7tk6JM8+3kyKaUBKWsDpGu3KAzs6XYNrSgkTFPe1F3gzDg==
-X-Gm-Gg: AYBFou3px9j6rtn+25BsOaU/j+tbDJkCacO1Z4lcQz7miN6/sfZJv1LA/PI77/HJy5+
-	PJrLFYeMCnnMa7XeuT0tzj4C0Gq7FID75st9Ku7QTSWKiwYEoolgWGNtt+1OhBillUvDs0VV7pN
-	wpDxUvQKQCvR2mT1UNDeZ5VSlR2ha0CRrR2J6xcNCL/jDG2zMerSIzPEl3RBpoC8s+sG3UskVZT
-	tEi1CtmuXAufebtjzMAaTVbi9vXnqNooABt4WH9t58bB4tX0QT+sviOAlS0/Z4rw4c0Kjthlo3+
-	Jb7peVidyRmMZHLgUpW46CkHevO1LiRu66UWAS6ss5qCX/D+Q/Fu/0b2lmU8G5camzk3HBJ2rkw
-	vE/xSBYXIlsMcAIdca/D7Nr2IktDtbpWNBGnaJvx1hHg4uQKwuDCfnnZeTouDbA6fNX/WQxhymp
-	KjHZEX5sm0+wnUC39pN2yOOYe8f84PW36tpKGb1PzuP2w9LDu8AIiGvKBDyLCHIxCnzp/n8kJ48
-	bSRPS4bwCftUr4Ez8gjmTteQzS1hpPe9XMD
-X-Received: by 2002:a17:902:d987:b0:2d7:1cc3:a69c with SMTP id d9443c01a7336-2e5339b60b6mr5288515ad.7.1791176337084;
-        Sun, 04 Oct 2026 21:58:57 -0700 (PDT)
-Received: from google.com (105.211.142.34.bc.googleusercontent.com. [34.142.211.105])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cce6d901a2asm185534a12.17.2026.10.04.21.58.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 21:58:56 -0700 (PDT)
-Date: Mon, 5 Oct 2026 04:58:50 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Mostafa Saleh <smostafa@google.com>,
-	Daniel Mentz <danielmentz@google.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Logan Odell <loganodell@google.com>, iommu@lists.linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/5] iommupt: Introduce IO page table shrinker
-Message-ID: <asMuigioXmHZmjO2@google.com>
-References: <20261001230219.818128-1-praan@google.com>
- <20261002150844.GC3481470@ziepe.ca>
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I9IJYLy8;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.112 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791177810;
+	b=qqEuec9vdsS3uhZk/O/gsxJllU2yc+fTh79l8qDTul/fPk2rKfzV5tPFVfVdNxyaMZBKB0
+	aZdn1dgYGQz3ULWh1ws1h5xa6VGGubBs4ygRb27NlVei3EjC/JTrOCB6IpJHS3n1Bknnp8
+	WhEspocFntmtdUZ7xoUJktvQIw34GlE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=HvCCfJG7Kj4AzwyPWL74XPayQRFxzYMNbzWN/592PQA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791177806; v=1; x=1791782606;
+ b=I9IJYLy8QzPqdAqyDxJCc6wp3NlWaRvJhXv1CwRTO7cwyvygY6Wz3tlHvmZXqCJp5fn+6QbF
+ ytbQ4NAXlmav/Io2IXiwS/il6SakYlN9bvsDelrEfdo3RIpUalHw2/bAkC6pc3Kbo/FFYKJD2we
+ wcSYS8TnIKMvAjxvWCXbwtTQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0fbe826855e32b70;
+	Mon, 05 Oct 2026 05:23:15 +0000
+X-Mizu-Trace-ID: 0fbe826855e32b70
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: dave.hansen@linux.intel.com
+Cc: luto@kernel.org,
+	peterz@infradead.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	riel@surriel.com,
+	linux-kernel@vger.kernel.org,
+	qi.zheng@linux.dev,
+	nadav.amit@gmail.com,
+	thomas.lendacky@amd.com,
+	kernel-team@meta.com,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	brendan.jackman@linux.dev,
+	jannh@google.com,
+	mhklinux@outlook.com,
+	andrew.cooper3@citrix.com,
+	Manali.Shukla@amd.com,
+	mingo@kernel.org,
+	stable@vger.kernel.org,
+	toshi.kani@hpe.com,
+	david@kernel.org,
+	mikhail.v.gavrilov@gmail.com,
+	pfalcato@suse.de,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with TCE
+Date: Mon,  5 Oct 2026 13:23:02 +0800
+Message-ID: <20261005052302.43042-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261002150844.GC3481470@ziepe.ca>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DA6E940006
-X-Stat-Signature: gqpppyesw4jyikpchgwshtuzjnoffx1e
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DE925100003
+X-Stat-Signature: zqgekyccsrk81wcfqz1r3mn544i5af54
 X-Rspam-User: 
-X-HE-Tag: 1791176338-577805
-X-HE-Meta: U2FsdGVkX1+uXx/vujAJEBlEd4QFmFXes4Ar3N/Aj7VBPu8jZgLw/56bHPnb9BiBa4oeNsZ0YWqJu2a+kjaSSiZPOb5lQRzo3ZRsNjgxwmLyKRHG05I/pVQe+2S9RFv08/+ZQKO0+llrUvk+4zUG7f7vkymexMAgumg3WjJcUv167GOSttKGeRWRiMKAuvniZ7RaSKMwtll1hqE9C8nGWGoUFWmYvgaVe7PU/nb29uldjYbRSI2rfEbdZElJQXLS5K/LUbysaPNRqKq9kyIKZ3vpjXA0eD2yWWJFrNO/xhgnhCX2erq9oQAGOku8AdyaJThRXmHGaovaLjcGKumSAGpnKp6HvCfN0kSsZ2Byru7BWSp0/f1ZhCOFydOtW95RiTHfGqA7nxwUziJIz3iQdgoYqZICoFozdEYm8jcfdPBJp8NgmT5H+G83hOCP0a0q768WVVf+p1kmlNbiVxi5xwf4LrWB4m1Q6d8JaJqDinEUqJ5fzb3Bp/j45qxbsl4hETH+K/31Jo+nf2bJzg2/pn1ClXpZ59SY7ZKeX8gvD7sw8+NRlof2RBnLi2vYvdJUGOOMHbNFAyCed8dVQsTBSTiJmid08POBrs+rodRw7sDbRgPi4gPlPcvRlW7YMP6bpzUDHtFIhk8GR4lIrWsxop9qHmIAXF6JehxrjahrBX6DJr3eoMdlj1kTk75/4btKK8x3+pIUfUyJDXRWH1RfOPqxtpHreD2Fp8wViulIVC0wHFibm1WdttQIzSuhvLe7QoUWseO1IusO19wY5SKKAg0qULbvr2Ue92+sRa+82atjGcFmmRe+33jsbBfFqW72f7cgW1VQml5OyWtdKR1B98BKwLd+IZJlJv6LjtQi8fEMnnlzvjJE3oQDJMlT96eCYKEIZD6hLjMssivXPEya1Tf343tR+Glo+4RtRj2BGpwTwZY9bByFbg0QGCT7O3kA1Fhk5Cq/UkiVyf7MV1v
- ORxIjmAl
- B7NxQho6ygF879mJGFuHoMoUlv7+dgZSQU/BsWMfLTcIwdCC5I7+nslTRW5hXyZtoFrAvgFlQYs4jFV+I/ivkzs+Ih7bQOOCVS+hu6H8jQ2hQ8X/6npIPKsr6HNjOxUk4cyejiN+DJkP3SBj3ab2l7sDFrpFsuokBSjStBSGEZP8a3d80CjZnzsnCuDUNiN2V//QBSQgLfWUPQXyllrLtF00ssHH+JzQ5Im7JTmoG8rYKzCgeGOjVIsNAeGJRgaUNt2rqjDtMolIJRZfRNLXlkCupqUagHzjtnUF+G4rEcDBTvYjPtH+wNxaI4emvS4MZciUuEfZqefScJfWRQDgqpDxRgWbVD2I5PQ6e/lRuriL5PYg=
+X-HE-Tag: 1791177809-434967
+X-HE-Meta: U2FsdGVkX1/1I/nGctX3c/TmuD6AcZY1coE7uBRITHWHS/IpHtsAFMFH7RDk0hYjXBa7ofGNNpWMjcw7+Rfd6+Nbxl0PI4UVBfCFzMqJgLx8tGYK7SIf2DBo9l/0iU5WtsyKqL0EO6e1pGU/IMnrZG1XWlA/7g0NT8SmxsofkGhkAbc4SkiVwPFo5HBCgB8RRJTF5cTlOVc2Pec434zCphoByhrwqEOFWjBS0yJMLuR5qMrg1B9yGMS0TOwESj4DC+anbIaoWgtp5tsnDv5kWlGO2IlKb6aWYFkpwUIsn+6+56z+KRTlrcjhbcCnxEabO1k8O0pShJOH1nKjHnod6fTyqsnWipoII3LBJAUMTGbZf32Ks32RFoh+tvl6lIopws3IMTNxVYl1oyumum0+vX/PP8EC20yh6gsc4begI4QuIpqlRnRNuRbTAy6EjqVBikoYEj2Ip6TXp++49r/aAfs8MXTcZ7QjE3JyR90So3pLJ0blF/aUT3JmAllsqm6P+6xEgXxEo/OTLiDhXipGQTz1IyghcCI1hKqGMMVPPZK2IxbWdHhYKWj5tXaRqOa6erUwqdjz5VwqwSKsSXrAK9KIE5sMrcJrr096LUtTqkU80nu8wZE5IZVh4fN/y2ScQwOzCu25CqIB4rpSUOqteYAV2aCj37VdgUIxV+W3G+c3qk99N5eYV11Z2URkw+f87+BbRdy5kjzcaqsRZBvMz6diH8pLeVA3AusUovme/Bb83p+TcffNCIM4ZRn0H51niIYFVHCmHh3hV+HlQkF9OE48UNuoueNTuau1jMr9BoUDHnFwfDLN5SJV5wCd2m6btueb4QY866xuBB0LcQ9P3H+XA3EIXxxdm+S3rwe+dQBYKYkrsNhSX4qE9FtPKYNGsbvI8glQxXWC+UqvEXG+h+52aK3CWTmlL+B573LAf7lY1POz92KS1Ak28mm7oHRfReP81W40gsI4cL+qIae
+ S2nZBN2/
+ Ej/iMASG0kLUPbS9VjBSvZ82VFkQFXfxFw8lRNbH76w7wvC/fPInDsUMVSHdvndf8c3sx0UgaRL6Y8DLaBnAX0I4Q1iTB6N2aedGBVpnc5LPfsJbhYokh3lkW7COeZ36UJoIcPbaJNMYcmdECeotz4MMLQixOHeVN1PXxchDZZrLANSEE3AfveeEw1mQf+wT+snJC0XjNwFf/CqJFBsDwAn6ZRMr8VOHLFumCW0fcV56Z7zxolD1t9cgrc6gHgyOhQf35lIpWxJ8uz6YozpvaKSKkeNLBYuEjvqkLzlSCgn3TA+AxJdh33r5luwktlCfHb2QxdF+J+hWBOjk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,70 +111,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 02, 2026 at 12:08:44PM -0300, Jason Gunthorpe wrote:
-> On Thu, Oct 01, 2026 at 11:02:14PM +0000, Pranjal Shrivastava wrote:
-> > Introduce a lockless, deferred reclamation framework for IOMMU page tables
-> > built on the generic_pt library. As VMMs and userspace drivers map and
-> > unmap large, sparse IOVA regions through VFIO and iommufd, page table
-> > directories are often left allocated but completely empty. generic_pt
-> > frees a table when a single unmap covers it entirely, but tables that
-> > empty through a series of partial unmaps stay allocated until the domain
-> > is destroyed. Under memory pressure, this *stranded* memory cannot be
-> > reclaimed and has resulted in OOMs.
-> > 
-> > This series refcounts leaf directories natively in struct ioptdesc and
-> > registers a domain-aware MM shrinker that prunes empty directories under
-> > system memory pressure.
-> 
-> We had talked about doing it this way
-> 
-> But I had proposed a different, and possibly simpler, solution that
-> addresses *just* the iommufd use case.
-> 
-> After unmapping something have iommufd compute the gap in IOVA that
-> contains what was unmapped and then issue a 'clean(gap)' operation to
-> generic_pt.
-> 
-> This is the same operation as unmap, except we know now that the gap
-> has no PTEs so all it does is clean up the table pointers.
-> 
-> This requires no special refcounting or anything difficult beyond
-> some locking in iommufd to hold the gap stable while we clean it.
-> 
-> Would it work for you? It seems substantially simpler, but I never
-> tried to implement it.
-> 
+pud_free_pmd_page() uses a single-address invalidation to flush the
+paging-structure caches before freeing the page tables. With AMD TCE
+enabled, this only invalidates upper-level entries associated with the
+target address. Cached PMD entries for other addresses in the PUD range can
+still reference the PTE pages being freed.
 
-I was tempted to use the interval trees too, but I started thinking
-about:
+The AMD manual quoted in the commit enabling TCE says these instructions
+remove
 
-a) Locking: For the gap to stay stable while we clean it, we'd need to
-add some kind of serialization either through iova_rwsem or a dedicated
-gap_lock to prevent a concurrent map to allocate IOVA from that gap. 
-Thus, every unmap pays for clean under the lock. I haven't perf-ed it 
-yet, but I'm not sure whether users/Guests using virtio-iommu, where any 
-guest DMA unmap becomes an unmap on the host, would regress.
+  "only those upper-level entries that lead to the target PTE in the page
+  table hierarchy, leaving unrelated upper-level entries intact."
 
-b) Other users of IOMMU API (unmanaged domain) like the type 1 (which
-was the one hurting our systems) and other in-tree drivers that use an
-unmanaged domain and call iommu_map()/iommu_unmap() with their own IOVA
-allocator. One of the goals was to avoid enabling the user-space or
-in-kernel IOVA allocation (ab)users to cause OOMs via IOPT allocation.
+Even with all PTEs cleared, speculative page walks can cache present PMD
+entries after the earlier TLB purge.
 
-> An alternative version is closer to what you have here, somehow
-> connect iommufd to the shrinker and have it lock and walk the gaps
-> cleaning them on shrink requests?
-> 
+Use a full TLB flush before freeing the page tables on CPUs with TCE. Keep
+the single-address invalidation otherwise.
 
-I like this one better than cleaning on every unmap, since it keeps
-the cost off the map/unmap path and only does work under memory
-pressure. Although, it doesn't help type1 or the in-tree iommu_map()
-users.
+Fixes: 440a65b7d25f ("x86/mm: Enable AMD translation cache extensions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+ arch/x86/mm/pgtable.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-Would you consider those users worth covering, or would you rather
-they track their own holes and call clean() themselves? Happy to dig
-into this at the LPC session too.
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index 4a105f283cfb..6b7fa44f1bf6 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -727,7 +727,16 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
+ 	 * via normal page walks. Make them unreachable
+ 	 * in cached mid-level walks too:
+ 	 */
+-	flush_tlb_kernel_range(addr, addr + PAGE_SIZE-1);
++	if (boot_cpu_has(X86_FEATURE_TCE)) {
++		/*
++		 * With TCE enabled, a single-address flush does not invalidate
++		 * cached PMD entries for the rest of the PUD range.
++		 */
++		flush_tlb_all();
++	} else {
++		/* INVLPG to clear all paging-structure caches */
++		flush_tlb_kernel_range(addr, addr + PAGE_SIZE-1);
++	}
+ 
+ 	for (i = 0; i < PTRS_PER_PMD; i++) {
+ 		if (!pmd_none(pmd[i])) {
+-- 
+2.49.0
 
-Thanks,
-Praan
 
