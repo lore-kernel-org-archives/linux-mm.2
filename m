@@ -4,93 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D94FCA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 11:12:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF71ACA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 11:22:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35BA76B0088; Mon,  5 Oct 2026 07:12:35 -0400 (EDT)
+	id AC1016B0088; Mon,  5 Oct 2026 07:22:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30B6F6B008C; Mon,  5 Oct 2026 07:12:35 -0400 (EDT)
+	id A4A566B008C; Mon,  5 Oct 2026 07:22:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 222406B0095; Mon,  5 Oct 2026 07:12:35 -0400 (EDT)
+	id 9120F6B0092; Mon,  5 Oct 2026 07:22:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0448B6B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:12:34 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 592236B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 07:22:57 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 779741A0213
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:12:34 +0000 (UTC)
-X-FDA: 85288309428.08.EE3FA48
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9052420009
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:12:32 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=DiAmdi5c;
-	spf=pass (imf03.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791198752;
-	b=A8kIbjww0BopwFMnAujjNup0XRntxmALyf7BUGGtswm3TvA+jZ9YNMGeL70m20p8FX7snc
-	BKAVOIdSr9T3XKwTCHEMZTuCY9jBE9km72LZ5SjFwSrouuKOsZa4RVBc1jDR/6yx/uZhsR
-	RpYwQHgPJUE4JbRUg02EUErGirFVO28=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=DiAmdi5c;
-	spf=pass (imf03.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791198752;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB638C021E
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:22:56 +0000 (UTC)
+X-FDA: 85288335552.08.AACD7C2
+Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CB3D8120009
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:22:54 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WomTtJZg;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf29.hostedemail.com: domain of neganhat@gmail.com designates 74.125.225.99 as permitted sender) smtp.mailfrom=neganhat@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791199374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n6asPcMXLFOX0ANnIJU7SQSG1NIQTAQReGVm6nlDr34=;
-	b=UqtB+LQ1dqvU8sZCH7NMIu4WZ4P8MTHD5bWNm1a6GA+AE2h1xKu4oybrztjGCKdCLgdPXD
-	qWtqW7+OMJ9qdH0Gao56+/lxvH/twmri7qfWjKsyWbUXAdhGYN5B+GUyy1nJHEVTa+ti2p
-	Jw/6AkvQHjhl9pVaeoEBLhhloMRep1M=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 74D60152B;
-	Mon,  5 Oct 2026 04:12:28 -0700 (PDT)
-Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B1E33F86F;
-	Mon,  5 Oct 2026 04:12:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791198751; bh=MEZ3+wQPyUj1ckIQWi+S/NiOG90urc2hAt/8uUoF0i4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DiAmdi5cLAEzN4qUXoEyyBne5c2jWgZqTfITHQYH+W3s110u1+BSV4Bz3tXPmX99m
-	 TJWwBfGj/ceU7duWZCm7oID2NfY4ENQhfXBNeQMwJOXRIUGM+DJ/atEaav4avPLiHY
-	 K1EmaZH8Y5GxZMy/3SsdVdjY6phLG2JyrY4LDeyw=
-Message-ID: <ef380330-b15f-412b-a517-15383913e45d@arm.com>
-Date: Mon, 5 Oct 2026 16:42:25 +0530
+	bh=yxZI1soPxTmfDPPU+JgwdQfVtmxFB63dai3uLQf2Sjw=;
+	b=BwdN+1NmBZe8Dpo7r4dL1+vWwYsk1cF52pQRjRcsZ4YsvUGX1NcatNH30px0DrHqdE+S00
+	N3vYHPR4xJXHcCToI5Tm7+A32K9l0xCuOMd8p1YSOwfoNQejrubgWOWj/dcoNWpZFpJbR0
+	Yw80FSEA9WZeCg09so34JIpjCPHiVSE=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WomTtJZg;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf29.hostedemail.com: domain of neganhat@gmail.com designates 74.125.225.99 as permitted sender) smtp.mailfrom=neganhat@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791199374;
+	b=MSOk17NPr8zEe1AcGuLRr7rWvp2nhQ9JBFLjm7RUEi1W7iRZgjwur9AlpuxrbpkD/Ob1Bc
+	TivG8bRyxdaNLY+cPaxrDGNyce0iD0s+8NQ8qGFcCkylJrFXFPzz/kvCecEC6KUqsdJj2T
+	PNVFy8Zx6a0ePkBcpDBE02HuVfFQdIE=
+Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48b05fdb2f9so1324286f8f.0
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 04:22:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791199373; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Xm4bsoJ7m6GFkuDDAN0rZRR56D1aHhYp2TdG/BYAJ/jKDXZl7Ao0Zcx9Fx7oG8fv7b
+         n3C845M8uCyWiVZRHvIpCvFZ4LBUkQ7yuxPJyUBDnklnObPA/ASam49tpWI2HhfPZCpZ
+         +tNrlBt0KXVwjPgRtW7CIBhdRfFjCysbM06tpCipGPflEttEBd+CT4hk7p26zEvqU8lR
+         e3aTr0P06kUNdJwo/+bxrB+/PrcM82ZLRZeoVUyzCWIksUqUjAO3Fp47Yu4hl2pzEUvM
+         GqB9LNgJk+uncBD4Pe/G7n5ALSapuxXLGviEtgNRrE/f9q5NRF5Uc3n2W0z/VOMacGXr
+         fwZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yxZI1soPxTmfDPPU+JgwdQfVtmxFB63dai3uLQf2Sjw=;
+        fh=BZCqozHIP6QvLUIkip3ZAjdTOrRgd9KaF9CGAvPhSG8=;
+        b=CRQUcF4zehUUSaz+pBOA2uXqrTBmT+/KLZYCV6WNS9SS7nmTe4+45zDOcBLld/BFgv
+         Bvm5PcvBZRfh4W+5jk4+Bz6maOKg5ZG5EBnGNRDWMQlxUQtVlhPXpQKRf7AZzUDdN3bX
+         c5qvBoOqiunYi4GfsYoSaexD5ifHcAzKssgyZVTW6DY7vRBgh9DkxS1N8hiyUWMRrRXM
+         YWHAsPmsmymQeBYulxCqt12othsslIx8lnwwiQt3U3s1TMFARLn+1B8rUN1fH13ztV9C
+         ALF2n552VSwycUtz/DfPjIJiH6IADH6kY5HED+WHl+tE13aX0lRlzdFNX7KdGuMXVGFl
+         8erw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791199373; x=1791804173; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yxZI1soPxTmfDPPU+JgwdQfVtmxFB63dai3uLQf2Sjw=;
+        b=WomTtJZgcPWN/EvpOI5vp1jzOJ3PyaJ8FtKC6unUl1yoMoNvaWqGLoJydoHkVFcjOn
+         1sLqdGSxvCLd8P0WP8Z9B1iEtjrCHR2mmWrJgtoZ1iJIxAZ2eEEwCpKK3Zsr0gONfC66
+         FBQIvUiq+UuYO4F3TwF+LzRfdJqKiWPVzMlyq1WR9tHVjSp+7ziWtt1XcQVTYyjUDjh4
+         f3WAUncFIdvIHcwgJLR7GcKsx/BFZIUvxlkthOzmHDrpUX/d/NWUBn3t064e1JHIy6bs
+         ht8oFFwl96hoRTbkWa1jZ1IF4wjNaPUBFVZZRYsiLmr/uaNK/IaUUiFciUKFG3YiJtKM
+         uz1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791199373; x=1791804173;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yxZI1soPxTmfDPPU+JgwdQfVtmxFB63dai3uLQf2Sjw=;
+        b=EhBesk1Xm9i7nCKRQ0gAo7JR9lI8T259aXAENCrmZ6JqajeW1tgt6rYuy52qfvf1jI
+         px22T7Yfx+nBzgWZAqAgpgjzSVdU7IwQ98Ng8aFKboYFqCOjK5jPNbA815ZPxOGGPE5a
+         BmDaAUwbVTBWTPyGtTXF+Ho03IIpksjiOu/ba9MbWRBVx8ZfsPTZSs3vKaEg2yRcCBRR
+         TiqDLu6/KzVtnQ/VSXEnsCFFS2bZH4OtVuJ+JLdYlcs+yn+txfpARRBQ0wAT9Pw8odVx
+         EgBOOR3V75YoM/yEnxXC7a4Lmj8QHQuVIP3/tcmguFivRyckGAwT0IktRAjFKWui0ClP
+         3rSQ==
+X-Forwarded-Encrypted: i=1; AKwUvByaLK7c+nntgjc8fcsdJxT/x8EN40pt0FbyAGcuwPfs1eeUiS3aftrH4okensHGJ43OlwR2qxyMSA==@kvack.org
+X-Gm-Message-State: AFq9FYKT4I7OnLcOAVsVyCuZOODerlStZSmbH9XE5xZq0jT8irFUTAHj
+	4PJIlOxE6YUiTxSOzoTxjFEWFqWM6hjZ0oX5aPTtZte6/5NwK7EiMhRL93s8BwfryWpcO8yxlCg
+	FZwTc7o/kmT4yFBfDo2tvdudIV6jrzis=
+X-Gm-Gg: AYBFou0LSzsCSHeuskT8SMnc9lKqY+3MbeRoCjG0wj+fAxts37RTrb6JtRhVqYnFiBF
+	xWeyVRxNi1oicUVXT5eLB3JgEVicvRsK6CTkuSSHyqMr6CrLttdR1EQLXIpiBKmc8j9tRtkWC45
+	5rFnYGn9DjtBNdj8LP4bH3UBaVU7u6RzR/9DxqtD6QjgEbzhYSeg5ncNZbk6qDQTMtaQ1ILR5v/
+	DAYD7GnlGWLPk//Yz7Bsoo9Go1Cap191W5+gywuMSFH5SFkqelMjISlO2GVcUFxaEfFnCXFYZof
+	hllmR5HuohUVxf8Yc4tF+a1apd1PfBW9rEYl73iWmp1kbjDyIXIHdm4ixX6UfaMzSyTY2UD1zZc
+	ugIKT6mQb34ImyIWPuaBcrtDh/O+GlBUn4mXykbpCmUfqt8FlLgbSzSrxbFjW6TOOWfFAqvraIe
+	FIaL7ITxI=
+X-Received: by 2002:a05:6000:4210:b0:48c:571a:a1aa with SMTP id
+ ffacd0b85a97d-48c571aa959mr7447673f8f.19.1791199373177; Mon, 05 Oct 2026
+ 04:22:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: hugetlb_madv_vs_map: fix TAP plan
- mismatches
-To: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Guillaume Morin <guillaume@morinfr.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Breno Leitao <leitao@debian.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <aqgUdbtumaO8RiIb@bender.morinfr.org>
- <20261004230018.190880-1-jaeyeon.lee.dev@gmail.com>
-Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <20261004230018.190880-1-jaeyeon.lee.dev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: mrztmtffr1uo8ky9h7wr33ny5fdxr5sn
-X-Rspamd-Queue-Id: 9052420009
+References: <20261004125601.c06953a6f0660df9859b0c2a@linux-foundation.org>
+ <20261005093756.22709-1-neganhat@gmail.com> <645204ff-6c50-4ef3-9070-78ac602560b1@kernel.org>
+In-Reply-To: <645204ff-6c50-4ef3-9070-78ac602560b1@kernel.org>
+From: =?UTF-8?B?Tmjhuq10IEFuaCBOZ3V54buFbiBEdXk=?= <neganhat@gmail.com>
+Date: Mon, 5 Oct 2026 18:22:41 +0700
+X-Gm-Features: AclHuK_C8DWb7keJEldBGEQQGJ_SM_ZaF6oftPzgImWFpm52x1_XSGgSqgP23-E
+Message-ID: <CAFJkwZx9zmz2sxMyByFbYgfCi9zMN+iLxKrypKBCZY9NsLQz1g@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/gup: document unlocked invariant in fixup_user_fault
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
+	peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: CB3D8120009
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791198752-103079
-X-HE-Meta: U2FsdGVkX1+gCv9VZGg29CyoeWhbz0yPK7qWAgo9wXQ6TcG9jjyutSP1KbaZQBx3IOSSZrxg0MvYqVvLOPQyha4KF/mWwso3txbpWKrdqnzL7oBpnxjwN85cEru5trloOAGBPmQ+zWwWyi2zELy9TYF8iiu9aCHFQGGAD2PKUdbsliLEmb+Z+DHlTW8ulso56ayoGt2a5KH9mcaKHOq21FbslPKObL3Oh2G14YGwMSI+7/B4xnSQRx3zNNa9RX5a1XDP0YXrU/XWq9PPQqwXKV/780xrW4hlRXVNTNoA5c3nh3MKSLpVr1E6PQPQHGqDzVRLRaYy5zYPGr+YfSxn8xLDWhgu1rNCgIC9oSX9QaIgzK4uOPBpnSlck8wOTPryQUc/vk4LF1Qvm/3HdFSmJNz93PL5mDEojeqSTtU1XjBEWdU8E0dxO1bC+zeMTWG6CEL6UH5V/acXdNTcnE+zxGxc5dxjkkdDMB+Cxjjmgs4dhnvrG91m5e92FfyjImUvxTghPx1Blylw0+LQ8LKLv4SFi/6UZ+85haIpraKbpjHf5CknNHEu7pHfDf9FguVYyW7hks0k4sjvwGYtBDQRMbX9xuGk25xZJQPRE6OGbOABl0klUaFdAMbOlXZoMsIoPOZScbo9mbyk3ZTwjvipc4qxg+zoFVFdftJvlnryrIjiOHDuQ2yEahnb7bNCElnwCcUwXaCABepQ052fIgs52dt9/+4NxxZVYy2tVMQvX4VNY/y2rtZ8uf3sSK0NyfOVGQp3UsGxcnIbKf3D3uVfpbKsPs/GQM9YX69IMsIB7p8fwOM3ZNDm7o0nILIaQJiKqVsYBCvMNo4dhCxU00169/Fk3TmedYlHLJIWH+Je1ED74KKTqlmbULOZ32XqaRsN1gceJnSQWt3DjVvLWjY33PzN3wdoWMADvjrQ10YIolJaZ0UDXW8ETN7Pb5DcqpB4JFVU3Go73wppWTOMa4V
- kJ6V9/xB
- /vHcwv78akSy/Z9Vn0H/+SaNvhydK7JZKWPFNwSLdyqYlZOeyV40VDUm7Msv7jhSnpTESQYohHC1aku/a/J3rBqvyHPBstag2H8+A1Ny2VQYk3GNzzriTRce+iTGP+ALw1+P0fr/kikm6MIotf3uh6u5YfyLy46eCKRBcLHbE3DxnK5izwxY9ngpRGcRQS26y6/Sn7Z0pb7iW+z0T4YutzfdmP23e3EGtkiv0BkzbUBTjI3wtP3vESjClhvpUn9lctjeUh4Jo7ED/ubiV7VRCQsOecrvyCJiECcNvFOcmBvfU1RIdXCPP7iomIRv2r0mznWTswKLslZ9ObT1tqLuOxWhPfLO/k7lawi+UZfopPXoXc53wCOfxJHmIOU3g55no2J6X
+X-Stat-Signature: un4her48prp5nyaiaj6i4pjhwbbacp4m
+X-HE-Tag: 1791199374-51715
+X-HE-Meta: U2FsdGVkX18GZC+/eE8vfkj0IjKGK7ZYgcQRH7UqBUzujKdXgScMSN6D5XwmpC2mB1y0uqcPZ+3OUrc9atelFoO9vn2HCm3Y38KOzGHoNMzzR1RbotsBlRq0w6bU8XMQ+Ovl2KfqZJra0tEZMF72BxccdX48exCOJP/kE+twDSa11gFtQprwSWgTuH3Ue/nU8zYjamaR8shROcSmTWd4C58UfEtBtrTtRFQVp/kqndezuR6lVOS1vgXI5KmqtZw6mT4bXn1kwHRM8P7R2SFmR+9ShMymugYANbqfxh71KLKmkywqcME6mAYVSN6cU8oRfjn/+9sjWBdqzd5p4UbiWJqB7K6HhO6czUKlZolO43uC5Z5mMFy+V+lLRJ7/OuS2uvaSGIBTRJZGk192NWtQPbUGuNYUtz2BphVrXtw4VG6Sj8jo1xwa6PpnWdxOF27iFsZcAoPmr3tm/N9ndDejyiuNKPRRAc8xpQHqzV7JrVUolWK7OVtVJZgNPWGuh5TRAD3uJz+8zuwDzKenRP2VGl3PHfXK0BqXQVczcXDQTpIyuJp+Z3+vw5UsnS+IWdiLPnuZTK6wrTz9wdZwo2v9/g/9LaDVDyZOnYSK0ePA4u9RWcqVrUPiYxeWpzEZKSKtBdFnpVxhX+2YjYLmnTI3KU2pj8GYGSo1aW9qHy6RcbnH7rBapQrFCOvK7DUfNvZCU7m7YKLcIjRBnVlghu947QHWfqgaxb1KpabPOj7ERzve95i31DfFkn9Luf8fLPz5jgC0KrWeJCit9JoxDlThQ8nsuZwuGKFn+1VQDbPlV2eOndqeclETQXoYcvAgY6iBsm5U/R5EkqyBUBJDQsxNFRqTeJKNp3M/GiP/Xj6Eqk4OyuB+5da/Vpm4bRvTnFIVidZCwin03OR/46uOIkiUk5bpvRETLjAKUjO6n5eDMD8rDgPbepBRTi6dQptXvsWo7/+Zs2dFsUCclKEa6tn
+ mNDPPVJX
+ Ln0L+bkx/D/cS5Qbn5POzyGQxR/mEnKjh/mwv4FqptiRml2hRSg1tB8FLX3xwiMh0WK84W6AAK3omRCmXLvVZJYt5pCKbyGNWvGwEcy10IzTyjLqwDDz5rHDob8nLXO5oV/KgPrcwx/Xd0iWgNLhQlSHc2GQyyqMbX/tTxXWBLtGgNpmtukl1MVZn7mMxtwVpxh3jJf64CSh3wexIk4ycfmBa1higgfLdcEHcwuMAo2r3Tj0NgJ3iepLy0dSJgLe+cCacGELwNfsoaFjksYweBc3DW7wADRbmqTlXpFjwJH/U1juNu0IN8HxcEHxyHkIzhDulsOG02q1/ty4tUmJwjcMvU2o4q8OUm5W8n7ryMGbhtBnhz6SacMqXZ9i71EX9/Lqmk4e4Tns/yr/lNVy2qiuQUK9hU0ycxf8odHIBGr4dbJn1cCgeWDwPa1LlORh0zR7U8kizcnnMx4VprmxcLQw4u9IMkpcIPfVCQ/nY5H+k8lSwJcNMFKdAem1Gc5fCTRqw065MLwkiL6bvkoE0hh9tZacWI+O3wB4WSWd3M6bloYVn6ebeWPVVys+NtIZCeHlO2ThWgS4qi+fMB5vPcB7yqs1ocdq6lB5VwaGosd47Lbg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,68 +142,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jaeyeon!
+Hi David,
 
-On 10/5/26 4:30 AM, Jaeyeon Lee wrote:
-> The plan was raised from 1 to 3, but the HugeTLB setup check that may
-> call ksft_exit_skip() still runs after ksft_set_plan(), so a setup
-> failure reports one result against a plan of 3. Move ksft_set_plan()
-> below the setup check.
-> 
-> Also, when the underflow check fails, or munmap() fails,
-> test_underflow() jumps to err_cleanup and exits without reporting the
-> remaining results. Report the munmap() failure as a test result and
-> skip the final HugePages_Rsvd check in err_cleanup, so the output
-> always contains the planned 3 results.
-> 
-> Fixes: 827149aad495 ("selftests/mm: hugetlb_madv_vs_map: add underflow test")
-> Assisted-by: LLM
-> Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-> ---
->  tools/testing/selftests/mm/hugetlb_madv_vs_map.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-> index 1d111f42dd59..5dc44ff0a377 100644
-> --- a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-> +++ b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-> @@ -169,6 +169,7 @@ void test_underflow(void)
->  	/* First unmap, this will close the vma */
->  	if (munmap(huge_ptr, mmap_size) != 0) {
->  		ksft_perror("munmap failed");
-> +		ksft_test_result_fail("munmap failed\n");
+Thanks for taking the time to review.
 
-This is duplicating the "munmap failed" message. Can we simply put a
-ksft_test_result_fail("munmap failed: %s (%d)\n", strerror(errno),
-errno) here?
+My motivation came from running Smatch over fixup_user_fault(), which flagg=
+ed
+the dereference as a potential NULL pointer issue. Because the relationship
+between FAULT_FLAG_ALLOW_RETRY and the unlocked pointer is subtle when
+first reading through the path, I initially misread it as an unguarded
+dereference in v1.
 
-Also, please send your patch in a new thread instead of replying on
-another thread from next time onwards :)
+When Andrew pointed out the invariant, I thought documenting it might help
+future readers or newer contributors who hit the same static analysis warni=
+ng.
 
->  		goto err_cleanup;
->  	}
->  
-> @@ -203,18 +204,20 @@ void test_underflow(void)
->  	if (waitpid(pid, NULL, 0) <= 0)
->  		ksft_exit_fail_perror("waitpid failed");
->  
-> +	ksft_test_result_skip("HugePages_Rsvd check after child exit\n");
->  	ksft_exit_fail();
->  }
->  
->  int main(void)
->  {
->  	ksft_print_header();
-> -	ksft_set_plan(3);
->  
->  	if (!hugetlb_setup_default_exact(1))
->  		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
->  			       hugetlb_free_default_pages());
->  
-> +	ksft_set_plan(3);
-> +
->  	test_madv_vs_map();
->  	test_underflow();
->  
+If adding a comment isn't the right approach here, would you prefer leaving
+the implicit contract as-is, or is an explicit runtime check (such as
+VM_WARN_ON_ONCE) something more fitting?
 
+Thanks,
+Anh
+
+On Mon, Oct 5, 2026 at 5:29=E2=80=AFPM David Hildenbrand (Arm) <david@kerne=
+l.org> wrote:
+>
+> On 10/5/26 11:37, Nguyen Duy Nhat Anh wrote:
+> > Static analysis tools flag potential NULL pointer
+> > dereferences of 'unlocked' in fixup_user_fault() when handling
+> > VM_FAULT_COMPLETED or VM_FAULT_RETRY.
+> >
+> > These warnings are false positives. 'unlocked' is only dereferenced whe=
+n
+> > handle_mm_fault() returns VM_FAULT_COMPLETED or VM_FAULT_RETRY. Both of
+> > these return codes require FAULT_FLAG_ALLOW_RETRY to be set in
+> > fault_flags, which fixup_user_fault() only sets if 'unlocked' is non-NU=
+LL
+> > upon entry. Therefore, if 'unlocked' is NULL, the control flow branches
+> > that dereference 'unlocked' are unreachable.
+> >
+> > However, this part of the code is subtle and can trip up
+> > contributors or automated tools. Document this invariant with a comment
+> > above 'if (unlocked)' where fault_flags is constructed, explaining why
+> > omitting FAULT_FLAG_ALLOW_RETRY guarantees 'unlocked' will not be
+> > dereferenced later in the fault recovery loop.
+> >
+> > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> > Signed-off-by: Nguyen Duy Nhat Anh <neganhat@gmail.com>
+> > ---
+> > v1: https://lore.kernel.org/linux-mm/20261003194846.205918-1-neganhat@g=
+mail.com/
+> >
+> > v2 changes:
+> > - Instead of adding runtime NULL checks at dereference sites,
+> >   document the FAULT_FLAG_ALLOW_RETRY invariant above if (unlocked).
+> > ---
+> >  mm/gup.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> >
+> > diff --git a/mm/gup.c b/mm/gup.c
+> > index eb898ea1ee22..58fa75441da1 100644
+> > --- a/mm/gup.c
+> > +++ b/mm/gup.c
+> > @@ -1570,6 +1570,12 @@ int fixup_user_fault(struct mm_struct *mm,
+> >
+> >       address =3D untagged_addr_remote(mm, address);
+> >
+> > +     /*
+> > +      * If the caller passes 'unlocked' as NULL, FAULT_FLAG_ALLOW_RETR=
+Y is omitted.
+> > +      * This guarantees handle_mm_fault() will never drop the lock or
+> > +      * return VM_FAULT_COMPLETED / VM_FAULT_RETRY, making subsequent
+> > +      * dereferences of 'unlocked' unreachable when NULL.
+> > +      */
+> >       if (unlocked)
+> >               fault_flags |=3D FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILL=
+ABLE;
+> >
+>
+> For which audience is the comment targeted? For people that know what the=
+y are
+> doing? No.
+>
+> For tools that report such problems? No.
+>
+> So I don't think this (4 lines of comment) is the right way to improve th=
+is.
+>
+> --
+> Cheers,
+>
+> David
 
