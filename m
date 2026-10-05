@@ -4,99 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55E13CA5FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 10:13:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B0E9CA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 10:21:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D4AB6B008C; Mon,  5 Oct 2026 06:13:11 -0400 (EDT)
+	id 6A71C6B0088; Mon,  5 Oct 2026 06:21:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5845E6B0092; Mon,  5 Oct 2026 06:13:11 -0400 (EDT)
+	id 6313A6B008C; Mon,  5 Oct 2026 06:21:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 473B46B0093; Mon,  5 Oct 2026 06:13:11 -0400 (EDT)
+	id 4F89E6B0092; Mon,  5 Oct 2026 06:21:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 29ABD6B008C
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:13:11 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B61E81C1818
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:13:10 +0000 (UTC)
-X-FDA: 85288159740.08.4583DFB
-Received: from mta0.migadu.com (out-164.mta0.migadu.com [91.218.175.164])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8E2C21A0009
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:13:08 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=apu97VKc;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.164 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 274F26B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:21:35 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B37641C0BD9
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:21:34 +0000 (UTC)
+X-FDA: 85288180908.09.0C1EC1E
+Received: from mail-pj2-f39.google.com (mail-pj2-f39.google.com [74.125.227.167])
+	by imf26.hostedemail.com (Postfix) with ESMTP id DD8FA140005
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:21:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qVbKiWvp;
+	spf=pass (imf26.hostedemail.com: domain of vernon2gm@gmail.com designates 74.125.227.167 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791195188;
+	s=arc-20220608; t=1791195692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jBqvA15GisF4LHjA8W2t6sF9uStIhzLskQ6rjcIEa/Q=;
-	b=aY0PB+WGet1lAuRJGuI/aJIm8/9D08i2t5NFjgvvscWyrzSiXTUyXXfUw5ZQlZaXkuSqeU
-	+sMK9oyBVQSi836/K5039YuQT552tuZ88DG97/+fTbJbOvcCKfjGycCOzcyS8jhJ3FEG5j
-	Epi61lKEbvRF+Zf6/pArh+SBLOboliw=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=apu97VKc;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.164 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=K0Zp9opT8YiIxnyesajyW83vYzMWJ2UB1wS3KyXFGYY=;
+	b=FnW19NolV2KO8B6QO78lYsWuQf0JIXxzKc5zTAF0WtG1zwxtuJTzhBM7ckLzDSD4PLHQWH
+	ybDYrNEg0jwSkQIW3AkD0BhZyF3bLjDlpRT8r3Dh+evdZfuxhjvvZyyQXxH2GcY8Bxpigt
+	7zpfBWwZhs1BRJqEB7zsp+eBoNLPFL0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791195188;
-	b=I3Abqt3Y9LeHKOVuaDgAiSX1St77d3iLHG8SKvvsWVOQi1xIXs9IFNKspUx3J83h8xLXON
-	yp3OmHu3ivgzCV0a7lD/NxY0fyAL80D+PpsknIqHU7kHdhDMsg7M7jN6Hc+iYZrnRU8/mI
-	A2IZ/RbLUqhYiawH4ZN6OxwLgRNtT9I=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=EEjZqFY3s2FS+GoGeqCsbWhVvDm5TQFLGZuK1OsTwm8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791195187; v=1; x=1791799987;
- b=apu97VKc4yfs5pb6xyfFQoSHyABTaaeZSNBcVzNSiJnltv0jdAIDMCBGtC8/IcyJ/zJ7ilTG
- m/35yBKt7i6vI8Z3tF6FuYyP6Dm1fzD35ZNMiW816GYQ/aFYRSZqPvD+iQ6MVUeCiOMNxT/nsOY
- PqFPw8Jyh3rF0RP3m3cF4UlY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 73aaa0ae9db79217;
-	Mon, 05 Oct 2026 10:12:57 +0000
-X-Mizu-Trace-ID: 73aaa0ae9db79217
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <6801221a-6307-407a-85fc-46906f95d22e@linux.dev>
-Date: Mon, 5 Oct 2026 18:12:45 +0800
+	t=1791195692;
+	b=Q1FC7WIB53rQZ8fIXL4/qaP4DgD9Yf5mcT4moPrDaCfglkEsU2P67bJsydqt4p+KTkRkoD
+	LKTAcgjq7eRTCREOObYmpQK0lkLsxCkcYpQlNqSqtugRYfkLdxC29gOMC0MWMbnrWbmOT0
+	jdOlvsEHNkwhvsVSqoQLqc1AO1H+hts=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qVbKiWvp;
+	spf=pass (imf26.hostedemail.com: domain of vernon2gm@gmail.com designates 74.125.227.167 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f39.google.com with SMTP id 98e67ed59e1d1-3a49896dd9dso378007a91.0
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 03:21:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791195692; x=1791800492; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=K0Zp9opT8YiIxnyesajyW83vYzMWJ2UB1wS3KyXFGYY=;
+        b=qVbKiWvp2mAIa9WeYC9cjpa549dUBR9NNX1eGUStr0xHX7b19HgIG7GPI9NPOybhus
+         tmPYUeVkn1x0jPH5mw6zDj+/2t0YeF40A4wn4kthJSRGMF9ufO+RnqH68b516+WUs3vP
+         Ws9zwTpxjnlyDwPA2aootUCb/lJWyVIK/p5i5Oa8qQchjM8sQs0HovtspXDgWONKYPzl
+         T6oSmV5X0qZgmRg02Yq25FokTHd55KUWIAHBJKh7tNmyVacAo9aU9zgntR1cqpXqr8NO
+         mMsfUPDvdzjztWSR2ITFi7UEL0obg1UYhDWMHA87GFwBUoRVCs+9UaoaD/nJBFMM891q
+         C2fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791195692; x=1791800492;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=K0Zp9opT8YiIxnyesajyW83vYzMWJ2UB1wS3KyXFGYY=;
+        b=rBBFMQsHAqwpYcHXjzh67VUpweBcKO2+DnnOVpglsO3oRhGXOU2v4MCnw/nm3QZCXR
+         dBiz9KlM1TRsikFhH5EzKFAhtR5HtNVCohajgK7TSpP8tcDVGywaFtq3d1fmvlHLzoc1
+         mTP2/2S1es9/XQeWC1/w9WyRhPudEIDMr4t93yo8fvFaHMqaPWyDuup//yZj075jNLLj
+         2CgsDP6IzbQg0OrXYGrSSkU/ytfFWvnQzfGED5upWg5/TNkGvf9jRu5gdf51X/uxDT//
+         FT1Cxd1MSAO9nwNOu7hbnqMP51feBdtBkf/3rqj5+NZQFM5ApPqiI2yLEK2fntzC7CW7
+         BPDg==
+X-Forwarded-Encrypted: i=1; AKwUvBwBayOjQui1ggvekDXOB17s0NNIMd/qPBDKfMNqknh0aiK/jpCXbrwcF3uHU48Xt06VSB1bL0vivg==@kvack.org
+X-Gm-Message-State: AFq9FYKxTm5pkmfiiCD7Jo7hUmbMtxKlqlEIMk8F+5mWQFIIzbAj+kbh
+	4dvYuctwS/W6TqvXihCa+Ppe3rS++ai3VZud+8K6ySauG7jSguCE+pAt
+X-Gm-Gg: AYBFou3G53+8Pf5sptgU9jQkz8HyY72SRtjxLazFFzgQMvZ4HYgcWvE96D1X361G5lU
+	kmFfGCubpxCXBBWWdurmhEYYa5AkeNpsP1AGdT3vb8wMoJTHhb36pNQmAPmp8exhn7h5uFIWEH3
+	oSagLTtHc2uwlJwxJCA3gSsF9xq0Cep/7/CP14lIBqiBHwQXe/Dc01V5kL42GmCke+Yin0UAehI
+	cNWTwCsc/fLrHzGC3D7q1HvfIhXOMq9kZNQV9kjeA+PL3pj1V99jR7UHfTRaGWBZqlldiADv4yG
+	tJThwLTcO3RExfiBBQH5tzKZaOopa4hgXsKa5KC0rMkKF4qoWrEQd3AXpqItvemkrRfgsU2zWfE
+	f/U+dVrNfXhcAPycVCmpxigQ1+aGnVCAEgRCVkyb2hTFOUPyq4hxofXD5wAyzI80liWfNgIhm/g
+	dH+fkZBnw0MgRhx1jVbqlpaJ6z26e6zqoGOLPu9p6SqFJ0wbb4iOo6XXeZRvGpvTN5lrBo6hydj
+	L8enTwaS454GDRqDyXBJFzH
+X-Received: by 2002:a17:90b:5483:b0:3a4:b509:88be with SMTP id 98e67ed59e1d1-3a6ce981729mr5582306a91.15.1791195691651;
+        Mon, 05 Oct 2026 03:21:31 -0700 (PDT)
+Received: from localhost.localdomain ([240e:b8f:1df9:a600:c693:b19f:ada0:748])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6dd0cd76bsm8291372a91.2.2026.10.05.03.21.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 03:21:31 -0700 (PDT)
+Date: Mon, 5 Oct 2026 18:21:23 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, hannes@cmpxchg.org, 
+	mhocko@kernel.org, ljs@kernel.org, roman.gushchin@linux.dev, dave@stgolabs.net, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: vmscan: don't count per-node proactive reclaim as
+ memory pressure
+Message-ID: <4cdb95f5-4140-4116-8247-c04f4b2a5c4c@gmail.com>
+References: <20261005062236.564210-1-vernon2gm@gmail.com>
+ <CAGsJ_4yKSoCwcEDhtd=biKoUjUX9eTJJhFJGFAZWc=WsAyXycg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with
- TCE
-Content-Language: en-US
-To: Andrew Cooper <andrew.cooper3@citrix.com>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, riel@surriel.com, linux-kernel@vger.kernel.org,
- qi.zheng@linux.dev, nadav.amit@gmail.com, thomas.lendacky@amd.com,
- kernel-team@meta.com, linux-mm@kvack.org, akpm@linux-foundation.org,
- brendan.jackman@linux.dev, jannh@google.com, mhklinux@outlook.com,
- Manali.Shukla@amd.com, mingo@kernel.org, stable@vger.kernel.org,
- toshi.kani@hpe.com, david@kernel.org, mikhail.v.gavrilov@gmail.com
-References: <20261005052302.43042-1-lance.yang@linux.dev>
- <asM7b8ECO34-jiwi@pedro-suse.tail5790ac.ts.net>
- <60d5db86-8002-4d87-b8d3-c161d674122b@linux.dev>
- <ab077b6a-160f-41a2-a167-813f0560e30d@citrix.com>
- <38541ec6-d796-4f35-a700-75ab097b6df5@linux.dev>
- <7ad90e94-d04d-453a-ba22-9640a5024d8c@citrix.com>
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <7ad90e94-d04d-453a-ba22-9640a5024d8c@citrix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8E2C21A0009
+In-Reply-To: <CAGsJ_4yKSoCwcEDhtd=biKoUjUX9eTJJhFJGFAZWc=WsAyXycg@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DD8FA140005
+X-Stat-Signature: 9ff87wr479b9ynpwuzr55yacriwotcgm
 X-Rspam-User: 
-X-Stat-Signature: uwufaypfcusyd3gy1eehyt1tg3so6kej
-X-HE-Tag: 1791195188-74919
-X-HE-Meta: U2FsdGVkX1/JpmzBSK6PZgzbjAJR1FqWVDP2tI7kNtZezmtIrCWFCkEVTsexq5Q6aIaP2K2uKOi4jxJ4yjG1jl78qCRf0F5H2CT5tNZLV6+ZArNHMVaV0SaUzjKCIMVl1L/JJWSSjsH6jO75l8NVMD3Jx8myQzJDqKaM7DbwKoabQn+uUwFRkTThQMYpkNRNbYwlN/OpUtFhvLVfB7daZwO3JRSybB8qtgDNY014J1x316O/0fvMtfvIeUl5EvwrgdF3Soo6R2DcqX/Yd4+Qvlfn0DlKeh0aOFQdfAp/9ba4C4+FvTIx6TYUcVqv0WB+ZkqCZwTneFOlY5hhUqaPh+d7RJTkBZvr05Q6ayCO63c2QbDlLVtKLofkKT7JnGZPsvcO9G01xqNfSjSoFbxL41C7C9eXzXNEiWdZzuJQmn3Z26ZQShEYbgH0tmuw6faFuklKK1RYYb1h+B3YXPfKzfm44SsMGhi3eELVcKFqdGBV9BT1B9OogDSTjqMdCE+cAkVhSwtVELIWVyAvKWvdvdk8dIF2APnul5Cn6UrXh3HJNelhFhPmZGFbNRPT4c6xGrRLDqtA1f52NxtHJew7rkD2i1gDrrIo8iSx0QbL1xjrpEFwQNmoJAKT0uSEY+8en/70UVeeBOXF4LNbinkvCA+lfe8gVwD5b2hpRvRObuLeLkpJRufUo4NQ5WGr1MaL0QBGq6z59lOSDu2Jht+/9WrvmzHeulX1dAOXL4N99TSnlLEjjqzZ5RO2qHQvHH88HhtPZmthpZABwHEAjQ5+PcGWTEpAoXJog1EL/rQv08l7byaxZRXawTp+y2aAiQMnwtuQEsL3tRe38Ls0cJACH7UPtiTlgTUDnuogrpewl/yMXENMSX8lEjMkiOZ6i7DTXcqdhJYhKYQ6qQV27NjanYBoGfbnwxND90NMF4gYp+g48ms+c/qH31tCTNBtEL28Mz4rgcy7TdxWlLOMZzb
- aTXzTqG2
- nbDrLLRsWLN7QD2yO5BrkTGCmC/yCrero/EmFO+97278iLkMh+myO/em3B4S3KQg8Ojfahzbfgd7JOOCdLvXXfFlOwQsjbJScfCbQ1z8yvhgG8OZVniHe57ofPfVo7XCN63QulzLg/mRL1bsvKW+mN3UOvuZPnExsKM3rDEQbWbSVjjm9+lUctHkkkHM/jFsl5JQA4yCH6tbXxQKJ1MgUk80v+6zsvidoTZMhtOyp1OQGKE2bajVofwN5ITI2WskOYpd++5O5eGZPTfqb5+dBPW1QqNKPwKzPTlfLvvkUpkZWRRMkc46LKLI6tNq4kcNwoYdroqqkI2JCpxAogKODQS9hYiRvsJ1rKdrPgVgQZA3o1sNVnA8s/XxpB/9E07ubyxdjtSV42gXHQU7zakjvm1IBUg==
+X-HE-Tag: 1791195692-906820
+X-HE-Meta: U2FsdGVkX19BqKcGOzlLXO4ZnCWC8ZKd0BEtDAFJPiCtudc49r6BR+KsmyZKQLiDNhlzmuEAICeRyN9uZcuC7mrlbuFBUoExoZK0XVStvElsIq+6AsF9tUyI0TUFVa2F0LDShWkLpgLJqCIZPKLDq9s1bHuWaDQQq9MNujXww4rg6dVVhYTNsntWv+PVVjMihUYhFHiZmaA0404Qf66kui0oSATYoals9sfZcL7Up3oWIWsTxmRwfjUbYWEmXxsPl9+6QR4oHv9FLMMcgDSVtNnj8sXBxXUxj9mbC73NquOfhughhYNXm0QrPrHZEiUhYjTOH+lYPtdaHQTvra/HvUeGnPzn8dh3hjrFNAIqdUSaSjmwFoQBkKWaQvP0oEHSM9W0cUo8P5puOZC/lG300Yz/nqpBKoRx9YI3HxzD1SN/zUibqgteg4l/oh0W1BAsV/bUldZqcNCURJAF6okikQdsvH02JrQ9yR6L1RaWcpTxC9N1V+A43KPISWbqhtBGeNA3nWofRVjVhrl3v62GctM34laRgg2CCUCVBvnVWG6UPNAcncFmwZ5G4r7vUoJXH+xu8l/yGCycG5CKV3mnrLykNquG0s2mL13/FRxO1ldFzhcv5X1Yf9cC5aSiVmejPPHClqDkZIy7rwEOS+Oppm5BZxvVxRanhC981DDh5aVct5p69gqq7UrL+OquoNXV4kyXSnXlJz6duF7ze2nq/n6enSTvNI5tCC3vZ3cnFTFvnI0Knkqos22yih1F80963zeM/FK5r0xfru8nLXb5IhCgbVzGljEZcjD97YCQWRKTQM40rqIpo/Ekas/3uv4kyhrNph3aalSG9poNiW8LHdEzB3vO7kd8RaLMg3LIbp8CLRPz56pL3pFH9d2klrJbwLxh3F19yX+5UwJCG/Y7ZG2B+/N2DKBgGZZ/COQWFEdVuJfdTjh1oL711c69soWfjeB/BDz/EgELIBxWIq5
+ eMDpQH/2
+ KB8IQ+F4hNTlIrBjDLyiTl7oHMRv51NZY13GGRw0pJOyYoQNf6ssDUlegm5yFBuak6DWQXoqDPrK4OuI6kGtOzsGb+5J8yItN0FzRA9UAe5KZ5zBG/9yTME7F5ZQMZU7G2JLlHddsGTPA2X/2CRPDmaVcQspVRKJWss4POg+Xo/X1k/aAnAa3qtuIwFDCd/EYUZvCz8UICvOV4n2fFduko8arS1Xu9Tx5D6oX3u7vy+x1/JWTXKQJoVhdRFwe/2IubXbeV25uGrBs0ScSZoSBScsK/gdnCy7C91pihVPFKmdvxPXnnpgX/BegoHBJYNpKcExOrJCYqDwEeqPCjD5qJWjQe7haMIoexyVJVl99BN7sOKQbD6srzvMKvI11pQyjPquWmpo5FmHwq+VlUNQhmj9Xgdy8bWZadGWO5DCUieSkUpCoDaItEkeYqz+Po86l7E6e7X2MvFTZiuFyTKhiyD8ifKBN8kxyYJSRwTDMi8G8OHNuVgsSyh9d9AmlHiP6y1IcCfVC4+tBBD2/YNr3uW7+vgDrhgRGgdGW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,42 +127,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Oct 05, 2026 at 02:30:36PM +0800, Barry Song wrote:
+> On Mon, Oct 5, 2026 at 2:23 PM Vernon Yang <vernon2gm@gmail.com> wrote:
+> >
+> > From: Vernon Yang <yanglincheng@kylinos.cn>
+> >
+> > When the cgroup has no memory pressure at all, writing to
+> > /sys/devices/system/nodeX/reclaim triggers proactive reclaim on
+> > NUMA node, causing increase in the writer cgroup's memory PSI.
+> >
+> > Due to this reclaim is performed in the context of the write(),
+> > accounted as memory pressure on the writer, like
+> > commit e22c6ed90aa9 ("mm: memcontrol: don't count limit-setting reclaim
+> > as memory pressure"). This is unexpected, the phenomenon resembling
+> > senpai will appear again.
+> >
+> > The Documentation/ABI/stable/sysfs-devices-node documentation also
+> > notes that "This interface is equivalent to the memcg variant."
+> >
+> > This patch unifies the semantics of the memcg and node interfaces:
+> > per-node proactive reclaim is no longer counted as memory pressure,
+> > and the per-node proactive reclaim interface no longer produces
+> > phantom pressure.
+> >
+> > I ran demo[1] that performs per-node proactive reclaim 10000 times
+> > in qemu, writer cgroup memory.pressure as follows:
+> >
+> > without patch:
+> >
+> > some avg10=31.53 avg60=13.42 avg300=3.31 total=10602985
+> > full avg10=31.53 avg60=13.42 avg300=3.31 total=10602985
+> >
+> > with patch:
+> >
+> > some avg10=9.59 avg60=3.41 avg300=0.81 total=2686221
+> > full avg10=9.59 avg60=3.41 avg300=0.81 total=2686221
+> >
+> > [1] https://github.com/vernon2gh/app_and_module/tree/main/reclaim_node_psi
+> >
+> > Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interface")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> > ---
+>
+> This seems to be a valid concern. Personally, I don't like
+> having the code depend on whether `__node_reclaim()` and
+> `node_reclaim()` are called from proactive reclaim or page
+> allocation.
+>
+> Can't we check whether `sc->proactive` is true? Am I missing
+> something?
 
+It is also fine to directly check `sc->proactive` in __node_reclaim().
 
-On 2026/10/5 17:57, Andrew Cooper wrote:
-> On 05/10/2026 9:32 am, Lance Yang wrote:
->>
->>
->> On 2026/10/5 16:19, Andrew Cooper wrote:
->>> On 05/10/2026 8:29 am, Lance Yang wrote:
->>>>>
->>>>> Did you repro any bug related to this? The functionality is perhaps
->>>>> underspecified in the AMD manual.
->>>>
->>>> TBH, I don't have a reproducer yet. Just LLM stumbled upon this while
->>>> I was investigating another memory corruption issue [1].
->>>>
->>>> [1]
->>>> https://lore.kernel.org/linux-mm/arY1Wq6R9OY20ans@pcnci.linuxbox.cz/#t
->>>
->>> What hardware are you running on?
->>>
->>> That looks like the Zen5 issue, for which you want either the latest
->>> microcode out of linux-firmware and/or
->>> https://lore.kernel.org/r/20261002211617.1001617-1-bp@kernel.org
->>>
->>> TCE is a no-op in Zen1 and later, so unless you're on older hardware, it
->>> won't be that.
->>
->> Just to clarify ... these are two separate issues.
->>
->> I mentioned [1] only to explain how this came up while investigating
->> something else. I'm not claiming that TCE caused the corruption reported
->> there :)
-> 
-> Please can you answer the question.  Which CPU are you seeing this on?
-> 
+I chose the current coding because a previous similar fix commit
+e22c6ed90aa9 was written this way, and it is also very clear.
 
-Which CPU? None so far. As I said, I don't have a reproducer. I'm trying
-to make sense of what the manual says and what the code does ...
+Of course, it depends on everyone's preference. If everyone prefers to
+directly check `sc->proactive`, please let me know clearly. Thanks!
+
+--
+Cheers,
+Vernon
 
