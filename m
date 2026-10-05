@@ -4,133 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFC18CA5FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 10:25:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91C92CA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 10:28:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDDE06B0092; Mon,  5 Oct 2026 06:25:04 -0400 (EDT)
+	id 8D7506B0093; Mon,  5 Oct 2026 06:28:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB60D6B0093; Mon,  5 Oct 2026 06:25:04 -0400 (EDT)
+	id 88A276B0095; Mon,  5 Oct 2026 06:28:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACC1B6B0095; Mon,  5 Oct 2026 06:25:04 -0400 (EDT)
+	id 775BE6B0096; Mon,  5 Oct 2026 06:28:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B0CB6B0092
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:25:04 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C71A1C01E4
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:25:02 +0000 (UTC)
-X-FDA: 85288189644.06.16B94B1
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9A5A440008
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:25:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ikDzCcEp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=imk4MGAA;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Aki+slgp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=PzR80h+l;
-	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A1AF6B0093
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:28:00 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8EC7A01DB
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:27:59 +0000 (UTC)
+X-FDA: 85288197078.07.09B1BF8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3C1D9140005
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:27:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oKGrAF3Y;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791195900;
+	s=arc-20220608; t=1791196078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kFZLgiG+4IlxeGD7HzroLABOVng6ksFHCgPf63OPIsQ=;
-	b=rkCbqXJ02BcRyaYY6w3heu4ljtXgn8ZG+JvmNh+USAUvlafLFz/zi63ADU3xGOX3C+/AUq
-	QF7ufNYnX0iwXtYgF+epV/dTxgmFFIhtJPSroAYBFQigB7Aby98iDJ0nnlCZ3AA1ZPaDAD
-	OI6F1QX87lQeuEPIKoHRnockB1gqoA0=
+	bh=YV0ahyh+qROmkFhWhWDlwwYmMNujGqoOPIW1A6VxBOk=;
+	b=hwEgL3gg01+H8HFFe6KWJyP6kjWN7cWzk/YaMhtBR7g0KM2uvj0mNKGFH4T3eyLBXLik3m
+	11+rpSri6Z+keO7lGu84SmGn7j7uoIpv7ufDuBbPoxt+EY4pO/E9/TcIzF8hYWr/cLU9S5
+	HtEQpa2o+6hK6hH72zALcs2Obbueu+g=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ikDzCcEp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=imk4MGAA;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Aki+slgp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=PzR80h+l;
-	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oKGrAF3Y;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791195900;
-	b=t+UOD992nFZvYD3XJo6zZVbODu42tqLYfiz4O/He1xt8iuxE0UHzRJuKL508wqFzEogH+h
-	Oczg4stPEdPeKCYwiKZLwjuQNETJWpQxeNjcD7FcDr95qLPvLR30agKkhs0HO5AcOWAzks
-	K2Je9GC8K3ieMbLBmy4r/b1qW+MBsf0=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1177721C05;
-	Mon,  5 Oct 2026 10:24:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791195895; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kFZLgiG+4IlxeGD7HzroLABOVng6ksFHCgPf63OPIsQ=;
-	b=ikDzCcEpGmruSsQFidAwp9wkCVax1gJ0Pv2ATGDvLWy03YdpR6dCYK2gB8XyOYeTVcUeeq
-	f5SHU+sPvKCd9adBJn8PZ8yYrP59v7aZHRC53ZR9MscOs64jCNeO7Cyh8jBT3Q7JiaXG4Z
-	e0WW02FyNpBpXroTiDYKc4JPGHoKAPE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791195895;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kFZLgiG+4IlxeGD7HzroLABOVng6ksFHCgPf63OPIsQ=;
-	b=imk4MGAA27siQ7Wm3brQLl/xx6WXMa95OMHIlhcvzjR7gINYEK5qo/eTF3K5VTDqSCeNxB
-	q2eH36l5FgbsMyDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791195891; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kFZLgiG+4IlxeGD7HzroLABOVng6ksFHCgPf63OPIsQ=;
-	b=Aki+slgpTsmNNEwyAniczbuR1ttLN3oToyA2eo3vd9afv2kR8oLde1VoYLDH4JRcWyXv4C
-	OOcf5d15kRYXS8KYok+fFklkabzDFcudjYtsc3txnNn2v24ZqxFf3puDeuERonyf4RFXep
-	euC+wEF0YcP/jgOd/97BWOXRDFYL6uw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791195891;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kFZLgiG+4IlxeGD7HzroLABOVng6ksFHCgPf63OPIsQ=;
-	b=PzR80h+l23n/FtRrjUo1OMeYZiUz9OAVyLs//nM87tk51pUm3lBc4cW9t/aW1mpex2kvD8
-	V7NfQgyq5ps/b3Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A0BD8132D3;
-	Mon,  5 Oct 2026 10:24:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id HqCSGfJ6w2rFIgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 05 Oct 2026 10:24:50 +0000
-Date: Mon, 5 Oct 2026 12:24:49 +0200
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org, 
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com, 
-	riel@surriel.com, linux-kernel@vger.kernel.org, qi.zheng@linux.dev, 
-	nadav.amit@gmail.com, thomas.lendacky@amd.com, kernel-team@meta.com, 
-	linux-mm@kvack.org, akpm@linux-foundation.org, brendan.jackman@linux.dev, 
-	jannh@google.com, mhklinux@outlook.com, andrew.cooper3@citrix.com, 
-	Manali.Shukla@amd.com, mingo@kernel.org, stable@vger.kernel.org, toshi.kani@hpe.com, 
-	david@kernel.org, mikhail.v.gavrilov@gmail.com
-Subject: Re: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with
- TCE
-Message-ID: <asN4wjUbDAIcrfA-@pedro-suse.tail5790ac.ts.net>
-References: <20261005052302.43042-1-lance.yang@linux.dev>
- <asM7b8ECO34-jiwi@pedro-suse.tail5790ac.ts.net>
- <60d5db86-8002-4d87-b8d3-c161d674122b@linux.dev>
+	t=1791196078;
+	b=whBi7GVCDPpfPyW4IthXA9LV2649ag059XZxMnBUx9+L2JVG629qw3BHjwNf+kRJKCOduZ
+	xyYF5moCf+XeWCY9LLAHLcF8/5z45txN1h5GNB6DFRN1ibBv71xjaXmPVrUWDiWVHZUMFG
+	4CpLaXnJugoniyU2rhEV5f+rRUyintc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EA7AC6022E;
+	Mon,  5 Oct 2026 10:27:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3291F000FF;
+	Mon,  5 Oct 2026 10:27:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791196076;
+	bh=YV0ahyh+qROmkFhWhWDlwwYmMNujGqoOPIW1A6VxBOk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=oKGrAF3Y6UveLrA2UOY5wx0zRSLKy04JzXsiOxj3ysMaZPU993WGae1/63tiWDXuP
+	 StuarUNmsSOtX8r+bhrwT7f76+/Ej4S0PuDqW48GA2hdZiKejogy7nZLg4/rIAkM1V
+	 1mde+oIHX9VOk5yzlXz8e7Rjqv8uD5VER42XZoR5D5bJ6r+RvcrM1ZS01NXWIE75Ox
+	 x4xyDy5KgbHYLxmsY6c3XTK1IFNOCxux1W7wISTv+yyuwofen4r+m/Cl84l102VPW5
+	 RxvtZNU8JJR/pQEXXTPzJAZ85feEKmEQokKl3zjvM+7ePNjY+AbnDav77u3sKEo8AL
+	 UcRX5TS64TU5w==
+Message-ID: <ae9989b0-3797-4246-a2d2-985d7053d222@kernel.org>
+Date: Mon, 5 Oct 2026 12:27:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <60d5db86-8002-4d87-b8d3-c161d674122b@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/gup: fix NULL pointer dereference in
+ fixup_user_fault()
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
+Cc: neganhat@gmail.com, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261004125601.c06953a6f0660df9859b0c2a@linux-foundation.org>
+ <20261005021957.5254-1-lance.yang@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261005021957.5254-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3C1D9140005
+X-Stat-Signature: 5jq7ruy8eqddy43g374ah58bousuhgr9
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9A5A440008
-X-Stat-Signature: r84c9jhfkuqmd1jw85obrebnoq4wd63d
-X-HE-Tag: 1791195900-214814
-X-HE-Meta: U2FsdGVkX19q7NUv6h0yS9ikDoaeKRJc1WxU84ml67/Hep++lO2skporbP8VX5xybMCS8OvFmwPLLPCCFMhJnjqh+pGsAQKVdiDo9JqAwf4wTeRPETyiFWRM3QqloEyCUx9Q+3zBiFdkhiUQNtawyCi5/l0C2MnK422u2gku07ETPK3fWkVt5Qivlq1MdHG8Gt7+yQxjqqVaLk8lIciUZUryXxFgD5enmWxb/hVc6ohaQp0zPp5mspGcwEOXaiI6tQfGCOsLZn+zPs33bOQWBy6BXKMdB+B7LvCh2SJ28FXfc+gn9aYrv9KCoV52dNhuaJYgHd6x0XrPqm3YRfWNuNcl0hw0pexlvvMmLXQtyLYMBkNCXDznNBxxA4TMWrWMmoRAjGEUS+4tweLRb/RUMGMDH9Qls4LQEiI84dvcPj/sezMAmKER9iw6rJ3+TbkWcwxhtQqvZ4lNCmz/BZYbla7bLesVf6KeBjjACirw88Om2PYs2gPA9+mgZlaQ9Ol7LxAjeVJ1oaWSEbxCbLdnndZTuHipasCg5YH22AvLKQZTNFZq4Cd5mLsyTU+L6Ftt4ncGpIEfkdp45KpNm55z5Fj7+s+Q9BE6UCJ7i3qM4+/6MGuUZw7QHwcPMxRnyt4/7fhkTdX4BNVg0NuD+Iflra5rRMeRbyRItVDZdEMg+bHjwJqS2+AxAVErLatYTW06I8b8U4xTV3ldTL5CaNsh6w0zn+ifMpHP3IF1DdW+M82key/gPeEWdQLnD7AqYR+hcrZ1s0r8XwnkRg31Y3BjqfPBfoITrp+5W+lD7ZI3YMuKs8dG+OL844CROshPBkzC494TtcVoUeMdUz4ZcqPZee2dWnuJldnwN2jqrJHkJ1UbOWyhUa6FHhIgWw8DzlWOespFzYWh2PO/TmC74fmp0Uv6HyisgyYDku+2OU/SPTOonxIrfCj5nLc94k9BQlpQ0SpwwuW6QYPNvXMg5+b
- EOr2DV/9
- bpmgkoR80aE/ay18TqA9ZI3b3bMgTa7tDZvXYPqrso7HlAaNtDjOBIiDLnVTcl9JZShzhU2mE+pfdLfQCws+OYbxG27FjWykn8h9/1exc89INlbLKvQOMS9ItQDAsCYh9WfJW11tQ+LUMIhXMPznsiTfzH9INNTALFzC1dL9tLpVPfE2KsYHdQ3Unf+0jOyeg2OjBp+qjIRCxvvSz32iQ/ycJH+Lu7Sxdh/6n6yVBjeGP2lQtQ7w/iJIGiNWIY9VDERJpjgqeFSJJbiVdiPz2YXFcZ7hAgqMs1wSod19Rcc8/eJkAm2Fr6l5TLqZWfvxNGuCaiyBavTOzRitutuYfknb++u8hEgEqL+eVprp0R9zP5bA=
+X-HE-Tag: 1791196078-818123
+X-HE-Meta: U2FsdGVkX1/dsS2af7/gUQeoIJzZST9vAoxzDqFMm+6RA2aHtxUtMmRcXB41+27OE852z43c9V0VpLc9O4v17lrBXT5c2S9U+MJORWW5fyQ3rQbEJEel4aCVrQqTX0NVRJ4JcHBFT0KsYzzIkH7d86CUIY+m6Z65ynJtDyueyhFRf8agOhbA3mVJ39gd9Eom40XhBrltBsPRdW+TVZcoUNGGP4l2Ng1EQBmU6VYsMlTYaB33Pk5TZpqEhHKvVOkmX/Nc1HKMSVTskorRSE9iHz3DMDvc6nNWp+YoLimkA3eqUMzOBRfPAedE3/nuzKTgpKqulOTm1EjtFWNf4O27VQ6VhZEdgDWVaZf9p43G0UzX9WcZcifXdvmKjYs5gvRCtlM8iJm25pV2s7vBFrJ+xWnANfUjWaJVTsZ3iFAplfRO1ls00UAjtnTfrhhEF2a2vJvFWiQV+3ohGeYQzYITdDjUgyvu1t0kaDRCrlpcbMdXbe/izCQoJsJXgI47AiyeraUr1+W7oFzQ55flgKocf+miHrXkwkjiIyckaQSS563BVM3XBT9ov/F6PpTq5TJd9MVkeRVyVohoYkc8Dbw2+eFDVylY/0VJ73uIBtTYnDdRSqUhloXie9c/B/7Dka+KEfnbT7KkZCms00EmkZdIaWkEaM2DM+1olkFTYsUw0eq63FP/2nQwISzuZeXNhkTNLTnWAyx+mXGiqbWobgXUoX8AeNnc0lJyvxCNGMV4wlokbgORKMv4+xRFQLKvHmRSwsCUL69/j1SjYmZ4SONh8hy3cSPVt5urZu2S/ft71XvVEakhdzDI5SB7C4C/LuUt/iWIqTYqbVhrz+4XMGeAiJ3j5p9IsTBoUtfXaanaLV3U08rDcORiSSzwmfz1ht2xRlHrRGiIIrMVq5p09vQMDmXlsksuJObnzx2LnsU9SaAye8EC5kGl5iwGOJ74P+NNMTLuUvDUXy3eYwL1nwh
+ LFb037Ys
+ iqCzWOtMQ49mh/TVSFLIwCx51ZIQOSYLKdefP04lLLQYXSQBtc1ekRSMowKL5+qI7qCwfK47gkzvk99c06ClYvA1dt+nhDVDZ4W56OFoLa9DNDaHLnfvGt4Z8IatqNSvBZ/B43+JnyJPEzAsWEyvKN3PFV0HAm3wvdSkgIJiH8s+LKZTRLlpYVCE8PaiXtbU2/9GZdosUMLQeezAcbpKLmBaiyQ9odoBJUBGLRWAL00KIJiIpBKZT9p5+Dc9OSrB3W8bKW8G8CZkaMOqCMwob39n345e/5J4mSePuFvi6KuCwhr28Sq3QKW86R9aauEu6bUYNKz5WniQ0opY6l6lCLj2WPP7jonpdmCI5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,54 +139,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 05, 2026 at 03:29:22PM +0800, Lance Yang wrote:
+On 10/5/26 04:19, Lance Yang wrote:
 > 
+> On Sun, Oct 04, 2026 at 12:56:01PM -0700, Andrew Morton wrote:
+>> On Sun,  4 Oct 2026 02:48:46 +0700 Nguyen Duy Nhat Anh <neganhat@gmail.com> wrote:
+>>
+>>> In fixup_user_fault(), the 'unlocked' parameter is checked for NULL
+>>> early on, allowing callers to pass NULL if they do not track whether the
+>>> mmap lock was dropped.
+>>>
+>>> However, if handle_mm_fault() returns VM_FAULT_COMPLETED, line 1597
+>>> dereferences 'unlocked' directly (*unlocked = true) without checking
+>>> if it is NULL. Callers like s390's pci_mmio.c pass NULL for 'unlocked',
+>>> leading to a kernel NULL pointer dereference when VM_FAULT_COMPLETED
+>>> occurs.
+>>>
+>>> Fix this by checking if 'unlocked' is non-NULL before assigning to it.
+>>
+>> This code is too subtle so you aren't the first to attempt to "fix" it.
+>>
+>> The key hint is in the kerneldoc:
+>>
+>> * @unlocked:	did we unlock the mmap_lock while retrying, maybe NULL if caller
+>> *		does not allow retry. If NULL, the caller must guarantee
+>> *		that fault_flags does not contain FAULT_FLAG_ALLOW_RETRY.
+>>
+>> Trace through the
+>> FAULT_FLAG_ALLOW_RETRY/VM_FAULT_COMPLETED/VM_FAULT_RETRY logic
+>> to confirm that the null deref is a cant-happen.
 > 
-> On 2026/10/5 14:09, Pedro Falcato wrote:
-> > On Mon, Oct 05, 2026 at 01:23:02PM +0800, Lance Yang wrote:
-> > > pud_free_pmd_page() uses a single-address invalidation to flush the
-> > > paging-structure caches before freeing the page tables. With AMD TCE
-> > > enabled, this only invalidates upper-level entries associated with the
-> > > target address. Cached PMD entries for other addresses in the PUD range can
-> > > still reference the PTE pages being freed.
-> > > 
-> > > The AMD manual quoted in the commit enabling TCE says these instructions
-> > > remove
-> > > 
-> > >    "only those upper-level entries that lead to the target PTE in the page
-> > >    table hierarchy, leaving unrelated upper-level entries intact."
-> > > 
-> > > Even with all PTEs cleared, speculative page walks can cache present PMD
-> > > entries after the earlier TLB purge.
-> > > 
-> > > Use a full TLB flush before freeing the page tables on CPUs with TCE. Keep
-> > > the single-address invalidation otherwise.
-> > > 
-> > > Fixes: 440a65b7d25f ("x86/mm: Enable AMD translation cache extensions")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> > 
-> > I'm not sure this is correct. The PUD is clear. We invalidate the TLB, which
-> > invalidates the translation caches for that walk. invlpg will notice the PUD
-> > isn't present. I don't see a case where it can ever not clear the rest
-> > of the translation caches for all leaves. And, in fact, by that point the CPU
-> > can (does?) probably formally treat the PUD as the leaf.
-> 
-> IIUC, clearing the PUD in memory doesn't invalidate cached PMD entries by
-> itself. With TCE enabled, flushing one address only invalidates the entries
-> associated with that address ...
-> 
-> (That's how I read the manual, but AMD folks, please correct me if I'm
-> missing something.)
-> 
-> So couldn't other cached PMDs under the same PUD survive?
+> IIUC, that's indeed a can't-happen :)
 
-I don't read it as that. I read it as "flushing one address only invalidates
-the entries on that path". So, if you flush one address, you'll flush the
-whole translation cache for that range. And page table zapping agrees; if you
-follow the code from zap_pte_range() -> pte_free_tlb(), it will do a single flush
-for each PTE table (if the whole table is empty/non-present).
- 
+https://lore.kernel.org/linux-mm/c44e5924-091f-43ed-8cff-34e87c3d9763@kernel.org/
+
+People should stop trusting tool output and use their brain ;)
+
+If you did mmap_read_lock() and wouldn't have a way to indicate that to the user
+something would be seriously messed up.
+
 -- 
-Pedro
+Cheers,
+
+David
 
