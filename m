@@ -4,77 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06499CA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 10:29:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CA24CA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 10:37:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE3256B0096; Mon,  5 Oct 2026 06:29:57 -0400 (EDT)
+	id 73A166B0088; Mon,  5 Oct 2026 06:37:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBB2A6B0098; Mon,  5 Oct 2026 06:29:57 -0400 (EDT)
+	id 6EB466B008C; Mon,  5 Oct 2026 06:37:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD0B06B0099; Mon,  5 Oct 2026 06:29:57 -0400 (EDT)
+	id 5DA986B0095; Mon,  5 Oct 2026 06:37:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AE0F66B0096
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:29:57 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3CAEAC01F1
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:29:57 +0000 (UTC)
-X-FDA: 85288202034.03.4758A83
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 872BD1C0008
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:29:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DNQAufO1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 310686B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:37:38 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A011E1201E4
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:37:37 +0000 (UTC)
+X-FDA: 85288221354.13.57AE042
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C74BF180003
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:37:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UFzxhi2O;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791196195;
+	s=arc-20220608; t=1791196655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+4EBiRglyhJAEZs7meWIg1gAIPLsVdJjKbMSKscHBro=;
-	b=a01IEYFPJYDDcGDsnCdvYlQmWYSsEqhM8YU0cC51pVW6kcPmixI0e30F5ZqxDY4zyOGBxb
-	oM4gW6RVmjwICLkSwYOIAvXcv7Ap7wOwMCBdX4QcJ/RdrXEnwnQqGe5IEyC2JHjFjD9JNH
-	KG7zR3z78FBhaj9BaT2M/Ppr84Y275U=
+	bh=cByG7GqhBvWV2hjaYwUvk7XARELXPjKV24/eCyNbhZQ=;
+	b=1m077cjjL29vvVKve5tACOM6lTQfPngmpTR4/Tnk6Lqnj4nG86TKxTM1QyKN0BjbTVqqMn
+	aaGqZfwGqs5anZY6Ml8M5ifaMzv1AlbAJis/8r/53lXvCL1IBF1t2oTgIbvq0LX4MspKjj
+	8ZTzIhIFJ/+HSCdBTdwS2ZWCPwa3Zc0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DNQAufO1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UFzxhi2O;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791196195;
-	b=tRACxHJbe2ZuxA2oClWzfSBBDH8uEjzbN+UjUo0eq1GIF+jszmWmHjuYJair0nyPRzAxHx
-	iSixgFi5ES/jDsbWu4yVy0ealelAlwhludtIJvP3lQ2qWTajXXP/kW2mo8c+UbjHWSa4wc
-	jU4Gj2kZp/t0LyK0MCdsj3GpbmNIwx4=
+	t=1791196655;
+	b=p0DT1w1pufH+14H2qeDsh49ib9veirOIG8tQBmwipHnGrmoJH9ceUk83i1x0gjdvl3pWsU
+	33VaNLu9DX9M6upXtLtES+drL7zGc2F0Bf0FdkMHZ6M4HFng+kQXjm0wRm17FpgYnyjHaQ
+	bX0YHUEa9gNZzf/glkHckKGB00ypTR8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 273DD6022E;
-	Mon,  5 Oct 2026 10:29:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3FB1F000FF;
-	Mon,  5 Oct 2026 10:29:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B720F415B3;
+	Mon,  5 Oct 2026 10:37:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394661F000FF;
+	Mon,  5 Oct 2026 10:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791196194;
-	bh=+4EBiRglyhJAEZs7meWIg1gAIPLsVdJjKbMSKscHBro=;
+	s=k20260515; t=1791196654;
+	bh=cByG7GqhBvWV2hjaYwUvk7XARELXPjKV24/eCyNbhZQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DNQAufO12IvokR0ikNWlVFIiZQ28kRtWZnnTYray9D//Sg70spgwiNcT/8OgxX+dF
-	 hJbSK1gWIg1tq+qOrXfkbLbviPy/U6giQVGc4tqkWTz7o/KwXXZUJpbVFIg0/f10Uj
-	 AEEgmnNpbk85mKs2SPIR5VPUB02PPXmewo4KgyAOPh+ijS4uD19AdFWandppC32WmC
-	 4xjvYCQA/31WeRq8PychtqmYoZ2NnbNSOA1U+D1tJjaoFccTai6ctoJwQoUFS7IgDN
-	 uAsmTEPqD4bAoYP4mod71PJ4H5AhWkhtfRsvDcDXYxngn9ODrHmGfXhmGw2as+gcGk
-	 oIz/AdhUh+Ecg==
-Message-ID: <645204ff-6c50-4ef3-9070-78ac602560b1@kernel.org>
-Date: Mon, 5 Oct 2026 12:29:48 +0200
+	b=UFzxhi2OKhI7lOTnQNuT5HIVGpaxAbS1fgEPpdjeuyurAwRR8AVghIocUlZW6JGwR
+	 mnGCuSA4j3JWEpMfC4xPkdvyQAKVzSd/Jkj5tOT+vRbqFF0BcqFAj4HDAiqRyeXpgK
+	 rVFOS1s6YKwWKEiM//Z2aU/vsloh6wNr8iUpImltVL/MxI0rmEfGjkQkyLO3tsVRvK
+	 npu3l3PXt8mv0PZPj+ZEqOibABFIOqYktx455TvhuC6zXUmzbvs0vEi+sj+Xp5wBKR
+	 9N8QlqbV6+nm2AsncAr4ROh3G1k2HdVRDF68iEod47EmNtXDGQTexWFteH0cOtkckq
+	 LQ4dPVDY4yBrQ==
+Message-ID: <fabd52b6-36a7-442e-9cfb-47a39e4ae3d6@kernel.org>
+Date: Mon, 5 Oct 2026 12:37:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/gup: document unlocked invariant in
- fixup_user_fault
-To: Nguyen Duy Nhat Anh <neganhat@gmail.com>, akpm@linux-foundation.org
-Cc: jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261004125601.c06953a6f0660df9859b0c2a@linux-foundation.org>
- <20261005093756.22709-1-neganhat@gmail.com>
+Subject: Re: [PATCH 1/1] riscv/mm: fix soft-dirty migration PMDs being treated
+ as present
+To: Lance Yang <lance.yang@linux.dev>, pjw@kernel.org, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu
+Cc: alex@ghiti.fr, akpm@linux-foundation.org, zhangchunyan@iscas.ac.cn,
+ rppt@kernel.org, kas@kernel.org, andrew+kernel@donnellan.id.au,
+ rmclure@linux.ibm.com, debug@rivosinc.com, baolin.wang@linux.alibaba.com,
+ usama.arif@linux.dev, wangruikang@iscas.ac.cn, namcao@linutronix.de,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ alexghiti@rivosinc.com, viro@zeniv.linux.org.uk, ajones@ventanamicro.com,
+ arnd@arndb.de, axelrasmussen@google.com, brauner@kernel.org,
+ conor.dooley@microchip.com, conor@kernel.org, jack@suse.cz,
+ liam@infradead.org, ljs@kernel.org, mhocko@suse.com,
+ paul.walmsley@sifive.com, peterx@redhat.com, robh@kernel.org,
+ surenb@google.com, vbabka@kernel.org, yuanchu@google.com,
+ stable@vger.kernel.org, pasha.tatashin@soleen.com, linux-mm@kvack.org,
+ me@ziyao.cc
+References: <20261004030312.90163-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261005093756.22709-1-neganhat@gmail.com>
+In-Reply-To: <20261004030312.90163-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: r68jnj7m6mtkda85x4nyhpybihnyhdsu
+X-Rspamd-Queue-Id: C74BF180003
 X-Rspam-User: 
-X-Stat-Signature: zdw3szncqhahzk1hz4um6ftne9jx5ujr
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 872BD1C0008
-X-HE-Tag: 1791196195-640181
-X-HE-Meta: U2FsdGVkX19hkfJYgIhB8IP9RpInJ86ZRdr6HlqxiFVVyhOwP3FUTf7qpuuul+3uOsJMhh6F8gYvuCiNQxbMin+2wm6+Rub+xBjgysSvfyMHPY2CBnCVCvNzauG9oAGAzSIdlby1t+LNwowWztOZvVAE6THWxOAx2GXhVMEsEUWdcS1QWGIohoMkFW+XH9yQHjjOWHQ5OUrG0C2EropKiHZ/b+L9Brjx9mOZlnajHbB7f/Sw56VSinT/iVflF4m6W81SUmfBciyu6CngGwxmfZhC0u+/L13pO8B8QUompCBY6zMGfGU+O2MD6E1OLTHuJ0lENieZaRB55xMMkukQGXicdL4DJPklXg7O57TdMOF0lU70+s1b4obXCOMVsHMKB2EFA+Z71a2u+ziJ2ppJLBVw2lIFRnD318jss4C+6t1AeGqIED+PdJzrr+4td72IeK6RZEZJdQ6cgPMOSumZmRSfa26Z+tKW7aWOYpxr5ubFEua1dB2KZsg5UJKJhDglOWs4H6a+VVTbIYtmUSwSLQRuUj3XPhtG1GQTLrTpp6bmNuMvSGjdrg7vFnMNOqTmROASEl87VJe+E9R399yIHf1FTs0MKgd30uuoYbL+d9T9/ftA+JhFYkCg+4gMTHIhsQUmH3QacAa7WoUdjtggniv/OLTtJbkWmkp446f8+4LVppY8ARdNlWciXVfCYhdSTwYnyrF33c4FmrAJe2/SGmh17S1Rhc3AUAUouMp5Eoe20DGOreDAB+xCPaLxyvZ5vZWGieG3rRLDhm9j3PiEO/SNxJFMYwxjkHNUNDMJV7k+DLtCny9Lr+sM9AziJCz+OUo8H4FCMX4YDoBK9YSOdqDlwDaNK7KyHijpuKvCwyaTVlVYzmmAAbuOrGFXijtY4z9ViPi8tDwigYm8jsdUF/oYRBIGKtzOykx4fkO+AMC+W0/GgDT/Zo22MZDzgSWMvEjRikQTVDtSLWGXLqZ
- 7IRZ1GR+
- QRUp5WS8kjv/xy+iqQSDCWjVTrZqXIAffObQ0APy2hucIaNsLsSz0TiE/kxa5oZG/t8ZuNVLDA1AIyyBS2IK0zl9up1fYPqjmxrEtVA3btkq0RiF6kDxtopJIuQyCDDcXuWzfnqPcPoXAGNfbDHxRYJiMubW326Dx9tNHH+hC6EXEuHXV58ay+w19RXA3Pw6X501kmwIV9khTmajuFlTeAsLt49h1b+vFsRLWloHFcYD5qyqGO1uEZPwyUk42Ui6Gfo6bBRVrJMbduNqGmj70YY6SVqKrZJ9SMh9OArxLVRmkiC9fXYkm7lCfFGJy1F1koTHE2pyTsrGMCL9pnsrBv4awM2U9xGbORoOxyY22JEOAP7qJzyGLJkbjYC+NK8U9QxQPq27UXcdcMr2ZQlI+hoebbHB2mO6zfTMP
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1791196655-842306
+X-HE-Meta: U2FsdGVkX19rQmMvEw4JUHOb3a4e/rOnTkhiahRpOdbOddv7BAV79s9+rvm320xfLI+h8lCFGGKTSSOHsqqlecdSKLhY1445Jb1q5uMjnRXezqZYo/6v/Tb3DiWaIG+gxS6AqtSf7anu1Uivj5eQwkJDUN0DFN6XWeDdRyNbDxQW79UguQzjJBB3CHpQj4ZwYGQ84/3tj6HM2vzu/FYCtL2Vtfq4Ltx+uJXsZ0AC8Ya35W32ZzGcRKtbVtRsJ7sT+C6gn+p8HSFC7vwgQEZt5Ia/V2kVkRMAY46O7oUsj1v8r6JeZClusstDCQs1P79UK1Yd0eSFsB1tF3fIWnHRWtrbJcw7vzK9IJ3fkRFTIQ1hbj9KvsohB4SJVut9q2OE9IWmfFYk0PYqSXHJwx0FHCKhnIPr1FWGWgfS7l/G2dNMztD39fVAhPPtiTKbX29mKqW7ZJMWtkBU0OYeA3XnyJDsAoPWoMMeqBfTxgtXvLVmoqFeoeuUJQ/SMazsij7s+UmXpWJxnhmM/b+MA50HwnKD2h0NeEXWBUMjqHEea55OjyR58thguHMa5tBpC0vXEOkEsfyfeebXwURH/UfweoGZqZRHU2/jqWR+frjpzAtJ/SlBIL2fGC2qz1OQNqmVDgV/7VQUT2ltrltQJc/yBZ/xmP4pAncWy3iZhFUZwT6lhCy8lpyXj64vSn4SbCwWWN2OQQY8Re6gMBFp/zzzU/pdmMb+c0tjv5mLwJO1iH85K6y1YagTQN5a6ud+30AxZhXsyWXOxXyz41gfRGVauKkiMH/SO37K0rLqJo414tgO+o8RWsItUixvquCdyGBuMsrWJpC1Vx+iWy9rn0d0wOqbJP+NWGdpbGhQt0ro0B+cCz0ISQXaW87SJdTrZUY1u0+5V16mvbqyFEbyhD5Ajwp1DXq78kKg6jpUdLnZBWa1suCn/VONSJDygr7oYKJcgwUFCGeugSAO6OkojuW
+ /4pNUR6r
+ O3EXYs2LISzP0cUcSj5y6mhotDJSQpgt+3tgEWMOh/eVAgF4fVhDlXTWy3mG/HXj+4Hdd37cRGQbrUSVysYwL+nBfip01EnCpx2gCtZGNjuuNQMrqGrI82D9K08EJB0tXlyhAViq5aW5TAbKTSUlx6OKdWssc1FNlBDPkgZc+XvK18ePu8l0hbI3LN5M2Nw4hekDYA6Sm4EKsXb+QsdlhRVE1qJdzCXmkvyT8FDKKeHkD4oeQWrEW+K9CRcP7Jsriob9+x2jqL86yNZSXod1Tl49+4830NeovI5rdfIQxUgQsEotBh8e2Pf/RwIwdSlmCM8qLe7G6qYMPQN19UcK5Z3Mx7smx4IaDknIBSx5KZVbX63kwWVd1TcIhoUCPIz6MLGil9T/pSM7C6Fc3jWu8y2jL5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,60 +150,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/5/26 11:37, Nguyen Duy Nhat Anh wrote:
-> Static analysis tools flag potential NULL pointer
-> dereferences of 'unlocked' in fixup_user_fault() when handling
-> VM_FAULT_COMPLETED or VM_FAULT_RETRY.
+On 10/4/26 05:03, Lance Yang wrote:
+> RISC-V uses _PAGE_EXEC for swap soft-dirty tracking when
+> CONFIG_MEM_SOFT_DIRTY is enabled and Svrsw60t59b is available. That's
+> a problem for PMD migration entries, since pmd_present() also checks
+> _PAGE_LEAF (R/W/X) to recognize THPs with _PAGE_PRESENT temporarily
+> cleared during splitting.
+
+I'm curious: why do we have to set leaf indications for non-present things? The
+HW sure will ignore it, right?
+
+Is this a sw problem? Who needs that?
+
 > 
-> These warnings are false positives. 'unlocked' is only dereferenced when
-> handle_mm_fault() returns VM_FAULT_COMPLETED or VM_FAULT_RETRY. Both of
-> these return codes require FAULT_FLAG_ALLOW_RETRY to be set in
-> fault_flags, which fixup_user_fault() only sets if 'unlocked' is non-NULL
-> upon entry. Therefore, if 'unlocked' is NULL, the control flow branches
-> that dereference 'unlocked' are unreachable.
+> When a soft-dirty THP is migrated, set_pmd_migration_entry() preserves
+> soft-dirty with pmd_swp_mksoft_dirty(), setting the X bit in the
+> migration PMD. Even with _PAGE_PRESENT clear, we end up treating a
+> migration PMD as a present THP! The fault handler skips
+> pmd_migration_entry_wait(), and a write fault can end up in
+> do_huge_pmd_wp_page(), where pmd_page() decodes the migration entry
+> as a mapped PFN.
+
+That sounds bad.
+
 > 
-> However, this part of the code is subtle and can trip up
-> contributors or automated tools. Document this invariant with a comment
-> above 'if (unlocked)' where fault_flags is constructed, explaining why
-> omitting FAULT_FLAG_ALLOW_RETRY guarantees 'unlocked' will not be
-> dereferenced later in the fault recovery loop.
+> Move the swap soft-dirty bit to bit 12 and start the swap offset at
+> bit 13 when CONFIG_MEM_SOFT_DIRTY is enabled. This keeps R/W/X clear
+> in migration PMDs and lets us keep the existing pmd_present() check
+> for invalidated THPs. Leave the offset at bit 12 when soft-dirty
+> tracking is disabled.
+
+That reduces the effective swap size (and PFN we can store). Could that be a
+problem?
+
 > 
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Nguyen Duy Nhat Anh <neganhat@gmail.com>
+> Fixes: 2a3ebad4db63 ("riscv: mm: add soft-dirty page tracking support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
 > ---
-> v1: https://lore.kernel.org/linux-mm/20261003194846.205918-1-neganhat@gmail.com/
+> I found this while reviewing Usama's PMD-level swap entries series [1]
+> and comparing the swap flag bits with the PMD presence checks across
+> architectures.
 > 
-> v2 changes:
-> - Instead of adding runtime NULL checks at dereference sites,
->   document the FAULT_FLAG_ALLOW_RETRY invariant above if (unlocked).
-> ---
->  mm/gup.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> [1] https://lore.kernel.org/all/20261002095503.3585565-1-usama.arif@linux.dev/
 > 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index eb898ea1ee22..58fa75441da1 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -1570,6 +1570,12 @@ int fixup_user_fault(struct mm_struct *mm,
+>  arch/riscv/include/asm/pgtable-bits.h |  6 +++---
+>  arch/riscv/include/asm/pgtable.h      | 10 ++++++----
+>  2 files changed, 9 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/riscv/include/asm/pgtable-bits.h b/arch/riscv/include/asm/pgtable-bits.h
+> index d5a86b4df3ce6..d84b459e010c1 100644
+> --- a/arch/riscv/include/asm/pgtable-bits.h
+> +++ b/arch/riscv/include/asm/pgtable-bits.h
+> @@ -27,12 +27,12 @@
+>  	((riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B)) ?	\
+>  	 (1UL << 59) : 0)
+>  /*
+> - * Bit 3 is always zero for swap entry computation, so we
+> - * can borrow it for swap page soft-dirty tracking.
+> + * Bit 12 is reserved for swap soft-dirty tracking. The swap offset
+> + * starts at bit 13 when CONFIG_MEM_SOFT_DIRTY is enabled.
+>   */
+>  #define _PAGE_SWP_SOFT_DIRTY						\
+>  	((riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B)) ?	\
+> -	 _PAGE_EXEC : 0)
+> +	 (1UL << 12) : 0)
+>  #else
+>  #define _PAGE_SOFT_DIRTY	0
+>  #define _PAGE_SWP_SOFT_DIRTY	0
+> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+> index b644db16bda94..acaf6d3b54d04 100644
+> --- a/arch/riscv/include/asm/pgtable.h
+> +++ b/arch/riscv/include/asm/pgtable.h
+> @@ -1178,18 +1178,20 @@ static inline pud_t pud_modify(pud_t pud, pgprot_t newprot)
+>   *
+>   * Format of swap PTE:
+>   *	bit            0:	_PAGE_PRESENT (zero)
+> - *	bit       1 to 2:	(zero)
+> - *	bit            3:	_PAGE_SWP_SOFT_DIRTY
+> + *	bit       1 to 3:	_PAGE_LEAF (zero)
+>   *	bit            4:	_PAGE_SWP_UFFD
+>   *	bit            5:	_PAGE_PROT_NONE (zero)
+>   *	bit            6:	exclusive marker
+>   *	bits      7 to 11:	swap type
+> - *	bits 12 to XLEN-1:	swap offset
+> + *	bit           12:	_PAGE_SWP_SOFT_DIRTY (CONFIG_MEM_SOFT_DIRTY)
+> + *	bits 12/13 to XLEN-1:	swap offset (without/with CONFIG_MEM_SOFT_DIRTY)
+>   */
+>  #define __SWP_TYPE_SHIFT	7
+>  #define __SWP_TYPE_BITS		5
+>  #define __SWP_TYPE_MASK		((1UL << __SWP_TYPE_BITS) - 1)
+> -#define __SWP_OFFSET_SHIFT	(__SWP_TYPE_BITS + __SWP_TYPE_SHIFT)
+> +#define __SWP_OFFSET_SHIFT \
+> +	(__SWP_TYPE_BITS + __SWP_TYPE_SHIFT + \
+> +	 IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
 >  
->  	address = untagged_addr_remote(mm, address);
->  
-> +	/*
-> +	 * If the caller passes 'unlocked' as NULL, FAULT_FLAG_ALLOW_RETRY is omitted.
-> +	 * This guarantees handle_mm_fault() will never drop the lock or
-> +	 * return VM_FAULT_COMPLETED / VM_FAULT_RETRY, making subsequent
-> +	 * dereferences of 'unlocked' unreachable when NULL.
-> +	 */
->  	if (unlocked)
->  		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
->  
+>  #define MAX_SWAPFILES_CHECK()	\
+>  	BUILD_BUG_ON(MAX_SWAPFILES_SHIFT > __SWP_TYPE_BITS)
 
-For which audience is the comment targeted? For people that know what they are
-doing? No.
-
-For tools that report such problems? No.
-
-So I don't think this (4 lines of comment) is the right way to improve this.
 
 -- 
 Cheers,
