@@ -4,119 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 158FBCA5FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 09:09:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE3C9CA5FFC
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 09:11:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EC316B0088; Mon,  5 Oct 2026 05:09:22 -0400 (EDT)
+	id D768C6B0093; Mon,  5 Oct 2026 05:11:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29C8C6B0093; Mon,  5 Oct 2026 05:09:22 -0400 (EDT)
+	id D283C6B0095; Mon,  5 Oct 2026 05:11:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18CAA6B0095; Mon,  5 Oct 2026 05:09:22 -0400 (EDT)
+	id C16EE6B0096; Mon,  5 Oct 2026 05:11:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E85936B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 05:09:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C5D8C018A
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 09:09:21 +0000 (UTC)
-X-FDA: 85287998922.01.0D026F2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EEC86B0093
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 05:11:34 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 14A8FA56AD
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 09:11:34 +0000 (UTC)
+X-FDA: 85288004508.26.49CBE6B
 Received: from mail-dl2-f3.google.com (mail-dl2-f3.google.com [74.125.229.131])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8858840007
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 09:09:19 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fPtrOMoa;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf01.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.131 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2F9D7180002
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 09:11:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Y17XURaR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.131 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791191359;
+	s=arc-20220608; t=1791191492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Duw2nxZN8kxbqWipjB3kgCvhqho4PD5wPOWTNu1vMgg=;
-	b=VHKqmXPuVPcAeOw4IPWEGzUfprtUtBgQMDLAUsu1wbE8yAXJzyHG1GxOSoUU/U4o+TgRzp
-	vzIFk6ITlVhppR9vMPQJNVsufMclo16+b9cJLabdNuNENsTjAO72akKx7xe3ra+qJNnfIH
-	PeZGb/sbRmQfD/aPYime1gjyolV+dRs=
+	bh=nltl/oeRao/6F+EabSYNj0oW56X0G3LfHyr3jad4pvA=;
+	b=mYEUOARbB5cwJaSrr1ui1XxvCCa/Goc7BqNXiVEhj/ZBiWA33TlFQ5DO2YKOhBiXc3STbV
+	iYk2am3AlMX+gxYi+jK2y1F3XYGVOGPH6bJ21/8CnzQ174L3U9YV0OEmTo5dScK9rqaIGJ
+	fZoVq2WAmMNMNyR2WmLUA3tPQf5cOjc=
 ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fPtrOMoa;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf01.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.131 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Y17XURaR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.131 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791191359;
-	b=oUj+zf8ZcvujMbprvUSt79paVYArohhL5xCP/3HoJBRs9ZWyc3XZSG/BNrrBBzClMZVQxq
-	tszLrOXrggj75JlnFolTDcNHE7/q35xGKWPuqreNSe7S2wR5kBrakGS/S8Bvh+FoSkm4l7
-	dTEfq2+9uC0Se/5zpdUrTDuTREZ6UD0=
-Received: by mail-dl2-f3.google.com with SMTP id a92af1059eb24-1521c45a248so184222c88.0
-        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 02:09:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791191358; cv=none;
+	t=1791191492;
+	b=D+SDgsEVNUPd678eZwKpToVeZwhhLFm5kIlzAatMT2O2cnaugM1B+S2F6r30SoInwAQ5RP
+	Ps14SZRX2gnw+Vk4gh+KKSPIJvKHBsRFYlk3bWVj4ADHYHuij1zbKN6OtLgmOYsbVbR01z
+	BNAXF8CcEH1WqNmmKbLXZ1fXScKFPCU=
+Received: by mail-dl2-f3.google.com with SMTP id a92af1059eb24-15188ffe131so116774c88.1
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 02:11:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791191491; cv=none;
         d=google.com; s=arc-20260327;
-        b=TWHSYMyUr1riwengF9tCS++32S3c1RwCLpl30o7jaRq93QCr3PxJdp2qVcNXKgleew
-         no+S9Simw/FGWkBaIZAWY8cn8NmCRtum2KKNGFCMlFUVAOkT763h2wqmu4XNMNWEZEe6
-         785yJZIl4BBgG2AAWDComMntGBA3JMWpJoFdNBucz5bQFls9V6dc4Wj/MbfBWGT3rWxs
-         n13XMPVV/GBG5+zfZQTmdf0OlczMfCcPLRf7nPf2AA2EnJ+wVtlrEN0bsUwuVQ0Isyng
-         OegZRNJVto7WBGg3MvRFqk3NCK6Ln/S+OIwMAEPv+m18qh8xIuLlC/SUoOW17ozH4Zeg
-         0rdg==
+        b=GiegKUBxrE6kfQ6A4NaXg8kzNx0ay89PZrU93knnC3SZzQReHmgW9FXijNNuzHCdZN
+         Y6pr4DPY1RQ4JDDrLFaPfJpBqaSisxOIlBNsgteFR9grTrUeWpWfk2x4WYNQ8y0BddVY
+         W7GDpKRJDEji12/qDZgDq0ayjeCBPkFEjn2a4E1VbwCCzdLBZEAht3pazGKPLrMI5yLe
+         aw3gnl+DUiAj1YXPZfFLWHKEbyzzi7eUIy/8Uf84dritDcoikNhkuwiTwV/APk54ZcSw
+         ybC8HQHUhJmMt98cS8/EnTV1G/uEcYNJ5Usx/Pe6gjsowz+/Zs4Ws0v236TLMRd4pKIC
+         TNSg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=Duw2nxZN8kxbqWipjB3kgCvhqho4PD5wPOWTNu1vMgg=;
-        fh=79wlAEnNGwgT7rQGz887jA8mD0N5wEa+6tQQKd4cCf4=;
-        b=CjDYOiet+CytGt62/oft46ibgHX604RBrnGnfu+kzraiAwOXHcRxo5802ELZU2hrwp
-         IC7usl0GY1XHQeUFEML/4bEOOZef6HKeV2Eti/UzeMpTDcpRkpy23AeOHLsCnYAi8iFa
-         6ysqKLHvSFRLJUDpNE2mjcSxWjxyGY5E95/moXz/IT6e5XUn1+bdsmti0i05yl++mlho
-         TpYF4qEBVzwlVSfBAQUogurNYn6/SF2nXNcXqjS5sNL4qUU00cJxEwIdflLBroBIZkbJ
-         0l1+FCMFPsLlEYMYum8uYYTPohLc6WFB+zkjUm9L3oDBWivOZaEDT7cBesitTuBzYh1x
-         bngA==;
+        bh=nltl/oeRao/6F+EabSYNj0oW56X0G3LfHyr3jad4pvA=;
+        fh=jWykXLebmTvTyJkQSbmo2mvp/MC5Is/CGPCAbMFmYmg=;
+        b=ECXvmci0l0p8t8TZCx5l42p15iFrdebub3rgJh5rwN9lEh0PTmI55nz8GiIStviXfs
+         dd/I8HW/53hX1QMlVNVw/LwPKB82AyL8/JpE/9ELudJ/nLbwCIIyLvoVs+dFvbutWyZ1
+         CFPesRqqFkcV0WPoCpxm1Wt93gsD7T2rlWFYj7pQlMeyNOuC3KWw238Uv/t6acbOTB6p
+         Snn5ih69k17BhPz1SfWqzf7lotZ+x8bdQytbOPXY8i6SPsnN6mZiWG7fr2rzetaO0ewQ
+         u2VYyvpxFu3zgX5XfsMIG76/3Rx8SSgKw/k4O/X53RejSkQ3Ti1319X9Ym9hE7kT0Z36
+         /vbA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791191358; x=1791796158; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1791191491; x=1791796291; darn=kvack.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Duw2nxZN8kxbqWipjB3kgCvhqho4PD5wPOWTNu1vMgg=;
-        b=fPtrOMoayeF5axIhqC8xbjGN6qUtURjLoG0Uj60bfUTkHnfASUyvLzsF5CawnDOJwW
-         UPEzarggYEd7Oe7imXL4r1eqNubZDfgwhCcwY2YQesdyItj5/RwZAGD/+d43AYRfv3n9
-         e/s+f3bzlJDwdoYV3zbQgWDZHRjoITB16ZsNgKl/hYINyziHeG4iCQnyDlp9BdGsYiJQ
-         kmmpKyJ/qn/JkI1JZ5b4aX8KACHVo+rkKu7HaHlJ5/61EDyxgnrBIbe8E5kP5yAeov/d
-         soDjadqBqL4eydEMAqeNUGyLthV7OGJtapojZBF+aJd7EtbUyNTrS8M2lsxPho3YM2Zd
-         pjog==
+        bh=nltl/oeRao/6F+EabSYNj0oW56X0G3LfHyr3jad4pvA=;
+        b=Y17XURaRzdAad4WbeSvaFW+SyA3lMLd32UQLxZJk5FI7d3FiMMcQHnP+ik4ejfPk0B
+         bLtMoP1c6v+soRE4jGskv8U5D5+st29AnAI58QVJNiIwaaBkq1BLmQcU3NK7TvNLRl+9
+         w4SeZ27bJ990f22wLpIOKvdEURkoqhaYrg5Mnhs4U1xL99kafpVYwzEBo3hDqW5Tfcg5
+         mBhO9+8RzXbw+6mvKU4sp9FqGIoxs5Mo4x4egHr6lkeZvohUB3zMHwMD1jzBdFZCIV9o
+         A4x15uukLrUAYJ6C6Fp4TKavA03mPt2Kr9IMcKxYSsHvG8j6N2CFqp0kzbHYiqRcPpfy
+         /UjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791191358; x=1791796158;
+        d=1e100.net; s=20260707; t=1791191491; x=1791796291;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=Duw2nxZN8kxbqWipjB3kgCvhqho4PD5wPOWTNu1vMgg=;
-        b=GHFqV8lFfe+3O/FTYq32TVYahm91yMxUlnmEYzoRhka+HVqfi1YmP8/No2cOlirSlu
-         kaLs9ar1CnssL2RZCFTHzykpwHm6R+d20wnJxbaHQNlcR0Pg3i+JzhtNymVtAlxULHPs
-         aocfI7bO/S5ZxpgJReZGbbHrfFYRIoFedVvtDpWGxiwfRJhIwDqGYT3wBzRrTXUTGlDZ
-         6K2kzPZLbowLFozX3gEwXItnU4axXDEh0vTdtiFVD9XUCWibtXBT4QHuQHkYIizSUdvL
-         xTOE53OK0CacFCkreAX7KkoUCCfWxe1AFwSblGYdMf6dHRWG07RahhKzSXnwOd9uqvEw
-         +Gwg==
-X-Forwarded-Encrypted: i=1; AKwUvBzbG55EGOUoDS+Eh/uSk4obAN7asyb5dulMNq76l7lkpt4Lm2KyqlZCMWHWYm+lRTyPxCUI9FfJuw==@kvack.org
-X-Gm-Message-State: AFuF++lESyHTmJvlGLFO6DMuIytYb6NG5DWhrYhAp4+23AAl7bYu3+Ot
-	yUXsBCd+oJHS0dvpptupVVw7P0bCCKVBks1ikW2a7XDlCKfKaiY8sAm2unTFeQ2tMIj+7JIfNO8
-	4v4aeTM4n44tBxz7pGXTWw8OBG26k7w==
-X-Gm-Gg: AYBFou0syraIm25hWIMgED6J+EYTgdT4RbBOPeYCl8afnqU8rcrq0Qob3G+YTDy5raJ
-	4R4i00E0bzYZfe5R3agkDQgAgcJb6dfDBA7tzN0vQcafNx/fi2r40mMakpwg5EcgWiuEF+Mg5WF
-	cycZALgKwi0DqAG5620VND0wEq2I/kL/AMCAA19YeT+J+i9AZuE5WBU6NWeRUVuNyIrWU5q5dPZ
-	DeeKsf/mUo7imYs9JIpUbr4JvhQ0Tm1WC+HXGJQ/T7y1ltSTD4XkdjOnu+WfCRGRiCeGeZj1H1B
-	uq9rbdJBMFWslKwP6hXM0yPIlq8rlHU07JWb/rBR3Tw43tEtOCZcwKr2VIp77gixCLA=
-X-Received: by 2002:a05:701b:4583:20b0:151:ceb3:e105 with SMTP id
- a92af1059eb24-151cec32443mr9674795c88.11.1791191358038; Mon, 05 Oct 2026
- 02:09:18 -0700 (PDT)
+        bh=nltl/oeRao/6F+EabSYNj0oW56X0G3LfHyr3jad4pvA=;
+        b=w6Cck83jbLXv31pOgbj0I7gpsea6wFAFaxElXLT2EBnepmxRO906RC/Uz90IIKsz9e
+         7VZxOBp8C0XpfpGigwIuTIe3gBSX/Q4dXXiD9PNv34gSFKBSwlsOJS5sMF7JzNX0zOp/
+         0asITOxO0aDqik8Tvy0JnCylMzMmyk312kskKvl3M6egTMPiqpHjF44Zd5ioROtOIika
+         fE2l8pSqq71KpVn/MpJi6manOiKgOnD+4pIsw/1knSMjxMpsWGsZnrHu1toHRXUAIzCj
+         1E5B7s1FICFy9c251SFvobZhnk8SCERJlTdlP15Hp9/fC7Lb+qHvkCE6yUJGMd0GnYGa
+         FZiQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwx8fcGU7XTXZspOrwUGeTRPFJANRTFTFD9+l1mpVkkBOlzY5P3AKa944yEIoQn0u1bnlED7z+t3Q==@kvack.org
+X-Gm-Message-State: AFuF++n3GQK5SMWfOMaHp38F9NGQ5nq2omrKOpeg9JELZB0/sx5jbcoK
+	tnWJgETmztjZk0CleWB73dxipze5NbP5ZBFkwVNXd7iKyvStBg4sk4NcZgWzb8uUc+Cq3WxZ2j6
+	Hmr0iAeKqjSSuZbqccg0U5GNgtpUmyfrcwdJ5L16G
+X-Gm-Gg: AYBFou1+iGO+UTX7sJajbh7hZNgi7ZwA2DtxRHbBpdWZUo5VLEqfipSckEfYQICmkJ9
+	D+J9PAkeXJPX5ZN0rmxuBiXT/gY5wndS0sQ8y7D8+ZSG1UWxyNVn6TeyIntUhw07mK9NC15djNQ
+	iExLKmGkzFoToazi0vWVXekZQLy2aOYRSwXCvosJfKbnaxdpXNJibPM3LQ2oyIm635FE/anV4fd
+	woNJnSB7XGEPlGiW051F5Mc42myBha7D4HdbpVkS8elNBxmODPjxfbbPtika0CCBUaUn9igxJqw
+	+szKWm8k2x4UJWKgiTRDTmwkR0WMm4wQN7ArHrdgCHH4WFzqDkOYLjaY4w==
+X-Received: by 2002:a05:7022:fa9:b0:14b:ff40:af3e with SMTP id
+ a92af1059eb24-151c0b1c634mr16870099c88.5.1791191490914; Mon, 05 Oct 2026
+ 02:11:30 -0700 (PDT)
 MIME-Version: 1.0
 References: <20261003-damon-perf-rfc-v3-send-2026-10-03-v3-2-0f00417b41bc@gmail.com>
- <20261004083036.613169-1-kunwu.chan@gmail.com>
-In-Reply-To: <20261004083036.613169-1-kunwu.chan@gmail.com>
+ <20261004091023.630362-1-kunwu.chan@gmail.com>
+In-Reply-To: <20261004091023.630362-1-kunwu.chan@gmail.com>
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Date: Mon, 5 Oct 2026 02:09:05 -0700
-X-Gm-Features: AclHuK93ndMC4ovSjSP_cU8HjtSfyaChQiTBQ98ae5wltCXWwtXcA60S-czM1oQ
-Message-ID: <CALa+Y17BOR0DBLS9-vns2SQfRhCueT0f82XCVojHhg9uacOX+w@mail.gmail.com>
+Date: Mon, 5 Oct 2026 02:11:18 -0700
+X-Gm-Features: AclHuK9SLpvLjJzhBJihMA5kXTwHPEKQErl28l-hclZyIPjWGE7kxoL_9Ju2DmY
+Message-ID: <CALa+Y14isN3HmsY9Mgtdi3O3zxOH33uTtajSbJcxm9FO4Uon=g@mail.gmail.com>
 Subject: Re: [RFC PATCH v3 2/9] mm/damon/core: replace the access report
  buffer with per-context rings
 To: Kunwu Chan <kunwu.chan@gmail.com>
@@ -128,14 +128,14 @@ Cc: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, damon@li
 	Akinobu Mita <akinobu.mita@gmail.com>, Lian Wang <lianux.mm@gmail.com>, 
 	Kunwu Chan <kunwu.chan@linux.dev>, Jonathan Cameron <jic23@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8858840007
-X-Stat-Signature: oejwxmhu67ywuxzypq4xsrnojzj5zspc
+X-Rspamd-Queue-Id: 2F9D7180002
 X-Rspam-User: 
-X-HE-Tag: 1791191359-997691
-X-HE-Meta: U2FsdGVkX1/JZrGcaI/AEb39prYfZWOzE4ZPH1H1JI9mAb/yaYfcZr/OJ1xxrTSlvH5PALDA4eylr87iO1QyDw6yEQ4D7jVHwn38l6Lhst2IkwdeAHLjI+Em8ii24qbKLJWh/x3pOQU6goHh9Ncp4JuxloMHmoJcWKldOoFv1K3uL+23CFuPJKG38npJLc9GNSR8w4VkX0cNuEdjtfSwr+h4Ls1IYXfW3J+5ePc8ktI5Bm10o3o5J9gJjRl+T5SnjIur7BTS27g8dtc/wVMomW4uDvGm7+MAD3SryVLiMQLuMV8VY4ePb7o6RXzdGf2n4c+chPNiC1MyKMYmPG7f+R0E8TDyYODeo4Ig4ij4qgKdAraBdjfhhvfiTmdwhzzAjTkqD462wfg4jLBJ1nT/MMIiY6jmgZWoYC5EJH32T4QcnPNxK7xMjXn2YLmtZmCSWGLssitsWu+D/NAQ6Nuf5nuYmVmkhAx8r4ww+wA0rbYV/SyIUNexuj5qGr4spWAbbk94H6rB8IG06ftHl+FkwQ2XKN3ZObalPT/kTWZ+2IIQ7oWQecZILMZF3MbwrWpwzRYn4cWPARKpyggswQ2uNp1WTHg2WgQJF+SIz2burbwfEkE3RxbBewOoLqky2oxh0WkqiYaXU2c4ZPsZ7gFAeIWJERBPtx804eZFR5e6OkRca2ulfJnkEb1QbUfhwRcLphOCod+Lkd0melPfpEwvz1npQHZO2YjSgd6J2ZYwZ64v5lpXAWztvf5IjAfWORUMc5FqheQi4txivqOAuQGhkL9i3tz0GD7S0kmMoDwnrRMRH39x6ZiofiEQ9Wfx4HYHR8pEehF2WoKedN+uTPGZXonwBJVdxnW63k585i6gmPsSYTgwECCmZglC1A5puZA348klfu4Rx19MgIuP1Q+4F4GvuxJpHnSmxkwYzflRNKYEo/TqiD1y2umVy+lu752NKrBA+e84ThkooG/YI9U
- Wuleszmq
- nWCHbs8FD/MnujSHRcYz8s8SWcQgVFG0Km/1zhmsUC9S8w7vzDzNxncAT3N9mpe9ayAa9aBDDI2K2Kiajk15izOd/WPxr4Qlq+78ZKzSwJswsxvCh1yffPd8Y1/lb5w0qxoTMZBL6pVM0F2hYglCD9ej2gEKUMsAuw0Le5JI9kfsjpECN90H7/GgupGCi4iXKIku2XhuVVAiSEF3I5mgUojHlxxwdDBnXM4RUjZN8g2hR5oLbYqQG5nSgXJT+x8CSOoWMpU3iQnudvoWJQnE+aSTztC68MjWAYoXUSj9LKaNwzq4hFqfi5aCJDaK/c2SocuWVju67jVXXYHzuOytAkImXslrTXOhe1FxOCvPyfE7IY+gNV4UyB05jpDR5hOdwdGBhXZrT9pulkAvkIk/fIl+q5Eh7eAZtVmoSjsBsnlKtLh1H1Zej7ATmtDljDGMNqCoOl2mndvGt5+VALnfgWNUueRPhtZOJQHkvqAyvtOwL3FjRN1WKTd3HDKdQhPAr3aorugQ1aqtvPCg=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: e1zo17jgffppaegip8y8qbw64ofx3ybz
+X-HE-Tag: 1791191492-734980
+X-HE-Meta: U2FsdGVkX18TpHKRnbV2LaBj0pBvX7clP63i1hceuD0KO7vUoK1hfVUoEIU+OjtZrLClvzil94TSl8X6OTrR+0T4HCUDdnB0vE4Qi4YG4bMIcpOuHpNQOhlra/2yFOcs99WastXVdng1pAlF/lSWrANZqxY9Q3U/pvW1kI3BM9i97nwEtkWME8hKUZeeJb662jyHcvITopz/TIyY48cPwkm23/mPjSw8ZPFl2UFNEIjjEUaT48P9BxmOaRgeW3Ugr/N/1+OwZ8PVnt6erW+jn3vuhZhhUYI6wd4jgJTP40LQpNJicto+V7+LwR+VjfW7WAVoZtGB+9qHykCB26o2f+m1p7Ow0bBESIm9rfazg+fy51krvkVVGutaX9oMBSsMJlgtc8gDcn7E7009dJ8UBUp7Tzr/F4HpNwbBjGEUG3wFEsYLrBHxY7APkvLu1py2BGYwRoNuI8vKmf8gfmZt576t9iBxjGkXXP7/jDBcZq18KacRZQeQGXJsUcIJ0VZxMMJEusRwTdk/ATallcKNN20kxcDMju8AqUWCk61bUMoURZOCy3eVkmZV2P+VhTtcHCmCMEoEx2V6l/s6rQlfndW/YauyieAcsuzXVcfkPE8/JXD2PNuhIM3KIg1XaPtX8zOL4FfvbAIVWmtb3f/Gax8gi7EDXlwyN4Pauyw48nymDfx03ngFofPCrcF2VOeXcrz6e5+XE1F6skVnLoeKAPZRWB3ioB4RpZkXI57BZcm+VVoV2wOWjuZRS6mLrD7mrxWOVcSQfvQZDamPWivCVKZUmKdLOZxdmVETiQcZp4h67UKCUeF3mCliGyopG0srfljkLnO3XviKUu5SQf9kVNTMYKMLWBFLzT0NK/VPYcQDXQ1t2tIHXySSGGXp64SfpdUccfeSwXCpahbRNKokCqT6x+ycSwslGPcmQ9IakxpIFrYyciLNSxPPXd4z5RcUEbAbS9TP7PYJKanZO+D
+ qjYmltuD
+ SVYDA4E1Hsq6Zr9AUPZdPvvO2m9P3HtJkITJbgPUXxHPLR6KAoCGELzF0gFZRKWlYhy4/ffWJotNdgeNQCvfGMIUQ1+r5VyqyVbgvMuCo6deBdw63urLtFHVW/KsJG7mhhc79xxeTC+FcCc63qvV4gGx5rIzrUs7FdyV1kdw1HtW8mQLiaaUW5xqQpvja/IHZXXex7fXukDD9mqxN18FoXp64Pt1tnsDnhc1RkamWPJxuR7Kjk51GS1pcL8no8V5fZ0K6kniyfyz0I4/kCL9dTxsOQoOc7Wj57EVE2NqjBHtSj5X6H+sWZOfSm5ghYTBEJc+WWxqN48J+gxbXI0IKt8guZlCBzNTVkFGC7lZpvzpEhENe76hrJYNCLAs82G9cFrJc3Y4SDKphwpRed4Vynqzvv9SL+BLzoFKdEMu9HUhIOA1izXk6FjhkY4aBZS5DsWuxPAViXgbOoU97jeUW8xqJSLjqFMH+TZ2wFLbWDfUXI6x7Ne5tmDHRQPJr4KCp3MDhGCxNuld2Svc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,51 +143,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+>
+> Hi Ravi,
+>
+> I noticed that ring overflow drops reports and updates an
+> internal counter.
+>
+> Since hardware sampling is used as an access observation source,
+> could userspace get any indication that reports were lost during
+> an aggregation window?
+
 Hi Kunwu,
 
-Thanks for looking into this.  Yes, in v3 I made the drain raise
-nr_accesses once per drained sample.  My intent was that a region
-receiving several samples in one interval should show a stronger signal
-than a region receiving one, and it let the existing access-pattern
-schemes act on the samples unchanged.
+Not in this RFC.  While developing the series, I used a developer-only
+commit that exposed these counters through debugfs, purely for my own
+testing; it was never meant for upstream, so the RFC keeps only the
+in-kernel accessors that the kunit tests use.  v4 [1] is the same in
+this respect.
 
-> Unlike page-table or page-fault based access checks, where an access
-> report is generated from a deterministic access observation, a
-> hardware-sampled report represents a statistical hardware event whose
-> frequency depends on the PMU configuration.
->
-> For the same workload, nr_accesses may therefore have different
-> scales when monitored with different PMU sampling configurations
-> (for example, PEBS at a given frequency versus IBS with a different
-> sample period).
+> Without such visibility, users cannot distinguish an aggregation
+> result affected by report loss from one collected without loss.
+> This may make it difficult to evaluate the reliability of the
+> observed access information.
 
-Agreed, and that made me look at where this information belongs.
-DAMON's data attributes monitoring already keeps a per-probe hit count
-for each region, probe_hits[], which the probe weights apply to, and a
-PMU sample is exactly such a data attribute sample.
+I agree that userspace should be able to see dropped reports.  Two
+things to note before exposing them: the counters are global per-CPU
+counters today, not per context, so a per-context interface needs
+per-context accounting first; and when perf throttles a source,
+samples are lost without any drop being counted.
 
-So in v4 [1] the drain no longer touches nr_accesses at all; its scale
-stays with the access check primitives, independent of the PMU and its
-sampling settings.  A sample instead raises the region's probe_hits[]
-count, at most once per sampling interval, the same per-interval bound
-a probe hit has for the samples DAMON takes itself, which keeps the
-count within the samples per aggregation.  The meaning differs a little:
-DAMON's own sampling tests one address per region, while a perf hit
-means that at least one PMU sample landed in the region during the
-interval.  To act on the samples, a context sets a probe weight, which
-puts it in DAMON's data attributes-only mode, and its DAMOS schemes
-select regions with probe_hits_wsum filters.
+I see two options:
 
-> Should we document this distinction, so that users configuring DAMOS
-> schemes with nr_accesses thresholds understand that the value depends
-> on the hardware sampling source?
+a) a read-only file under the context or probe sysfs directory, once
+   the counters are per context, or
+b) the drop counts through a tracepoint, per aggregation window.
 
-With v4, nr_accesses thresholds no longer depend on the sampling
-source.  What still does is how likely a region is to get a probe hit
-in an interval, so yes, that should be documented.  I left the
-documentation out of the RFC until the design settles, and will cover
-it there.  Since I was already respinning for the v3 review, I folded
-this into v4 so that there is a testable series before Plumbers.
+Your PMU-agnostic observability series may be a natural home for (b).
+What do you think?
 
 [1] https://lore.kernel.org/all/20261005-damon-perf-rfc-v3-send-2026-10-03-v4-0-b03452e137f3@gmail.com/
 
