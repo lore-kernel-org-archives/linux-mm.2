@@ -4,114 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99243CA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 10:43:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB1FCA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 10:43:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B2126B0088; Mon,  5 Oct 2026 06:43:53 -0400 (EDT)
+	id B18386B008C; Mon,  5 Oct 2026 06:43:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2631F6B008C; Mon,  5 Oct 2026 06:43:53 -0400 (EDT)
+	id AEEAE6B0093; Mon,  5 Oct 2026 06:43:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1524E6B0093; Mon,  5 Oct 2026 06:43:53 -0400 (EDT)
+	id 9B6ED6B0095; Mon,  5 Oct 2026 06:43:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E4EE36B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:43:52 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5D2C7A01DB
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:43:52 +0000 (UTC)
-X-FDA: 85288237104.03.9824278
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EE45E40005
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:43:48 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=snu.ac.kr header.s=google header.b=MvfhggSl;
-	spf=pass (imf07.hostedemail.com: domain of hsj0512@snu.ac.kr designates 209.85.216.49 as permitted sender) smtp.mailfrom=hsj0512@snu.ac.kr;
-	dmarc=pass (policy=none) header.from=snu.ac.kr
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C06A6B008C
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:43:58 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 008B0A4E05
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:43:57 +0000 (UTC)
+X-FDA: 85288237356.26.A32ABC5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 25ECF80008
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:43:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YxyjbhaK;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791197030;
+	s=arc-20220608; t=1791197036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nyhge/uJYGnijVR9ixeqw1SZu6gs64VLCeBEpS6Zzhc=;
-	b=cGLxGhHJqpgoEA7VWEEBmDdpix4RZUHlmWi/JFkZCok4RPewy+CJMIwuJ9mBBS7YpsfDH3
-	9Xn9GTrl+9YaHSCQwUY68nZVJEB/PH5r1X6OzGhw+0yOJFMpUt7Lalgb63DJeJm+RxaNMH
-	xsPl0JahP1sILJxKaFBqUV0YpoRF7Q8=
+	bh=I9YxIdWVKeJd4/bB5ayzuob5ZI8t2MLqGLq4CqLRU6E=;
+	b=qXOzgon8Oeb0ldwTubMbjrmTC/Sjy+MsHgjUKvhAC/k3ERxq1vlgKebxkgaKno3dGf/ACJ
+	dkDF2BOB9cYIJFYHgmH65SnzhU4tcFq4ksGqlI9S9XA8+WzpQLA8ztkyuMG6xMfJGtIMdH
+	gKTYeUrdDINaS+03knnfrjYUYLMxW1M=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=snu.ac.kr header.s=google header.b=MvfhggSl;
-	spf=pass (imf07.hostedemail.com: domain of hsj0512@snu.ac.kr designates 209.85.216.49 as permitted sender) smtp.mailfrom=hsj0512@snu.ac.kr;
-	dmarc=pass (policy=none) header.from=snu.ac.kr
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YxyjbhaK;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791197030;
-	b=V8/mauy9VJv2QMze5+ycN68iahSaWoSodhvDMiQBsiv0DmsajvWB9vmc577UJVpLrMkPYw
-	fQoS+rtgSjDCPeXHVASNxmNTz3iZigyp2l+M6vLoik1nhBOkOJN4ll0F4YbAV/FdyBkaJU
-	zJCEPPJWfUaXA+Tq/VEJpg9zbsFaztY=
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso1080452a91.3
-        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 03:43:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snu.ac.kr; s=google; t=1791197027; x=1791801827; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nyhge/uJYGnijVR9ixeqw1SZu6gs64VLCeBEpS6Zzhc=;
-        b=MvfhggSl8R5L10QNF0khntemeciHSH+idFvkcVZQKDS6KSH3Np+jMi+q/iY83bIvGX
-         AGXzm4y/5bzH+zvgOnudQXrjRU6RfqihnqIczEZ9NEikSGed6sbeFzEDuvRiqGVXqv4f
-         OwEmAW1mY55V57y8K928AnSyHjLeTRjIdpBP4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791197027; x=1791801827;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nyhge/uJYGnijVR9ixeqw1SZu6gs64VLCeBEpS6Zzhc=;
-        b=h7LmuWvym0PUE/Nu6p7ASUicrpJPAtL+xxVEC84UV1ZWOqcrXhO1N/ZTwiAUO5f58s
-         65PGf/QcvO94t1hVQIQC3VjtD9gh61IMYwns9U1hX9+k2sEycTKvYPSed8L0r3eEtwUo
-         r+MeZdz3y83TNvQIsxP1OAb02ZIylmjCq1o6jwr9e54CkCbo3JBDg/7meNwaQKKc9syM
-         GWqtsxirBaJnSTAI+AFkTe/kSZBgzykCvsUiW1qiPTkk9XGZ5xNFbL/bu/EP7oQcEP4J
-         ss2tGVsmcxWJcW3aKYQfvXllaZ6+oJ2XbUk3Wh4M+tKjpPekQ807cFTcSvGfy6lRwtNS
-         aQeQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz59J3A00FxM9aFs8APExOD+U25SKP0YkwoO0I9CGSq9lm3HeMkk+39tsqANxFJkwOmb5qZFwoZbA==@kvack.org
-X-Gm-Message-State: AFq9FYLm9ZGQJKYTIjOBYVGD1VKsHXbHJ4m0HAb2gbLXkNP1ji0i3LtF
-	U7TOdrfoNnzHpXCjNn+4EMa/wQSIf0mAXj90BYqdVNU5W5f2L5M3nqcut+OKNmbA1Pk=
-X-Gm-Gg: AYBFou1vIjvgIj7Ih2U2vpE//dIC5iU7U9qpqYioKKMRFQSlOAJYKifZO8oRXczHZlb
-	aTj6Eye5ukfWSyZbxawrNGSnuw4xNt7zT2KSlHt6ISHlfepsQkV2KoiKaNwkzVrF0vyLNem8vaW
-	DOk7jevoxKMVxIr1bhea2F0iTlxPJDDpkRKVboewmhOHAXDT0CQVrBTWmEF0SJ/nUsDIlT6agYs
-	Km0KziSU4y0UnOUsxZlKN+FtrOgHcSZ68l5/BsoYHd5w2wWHBXHyBmHK47ebVPBtB1W0F8KrdPV
-	f18n2Cnddok/M36zNQbOSfAAWETZd3Jf1goApw+HEzmcrx+Iq9Uwtng4BnMr+9O0jr2AcC0z3pO
-	jX1Yl6rTHkgxlXLXoTTbl7JkoRM9dPXrQUYEfe8vs6SgSc+87FSZWu+jLhU6VRlWj1efYCHBikT
-	cCPUoEi2jwaeW1EmTMX6jldF5ceE0V+AZGhrG4QjZ4mcFFs2wIDbgP87RXOU64Llti
-X-Received: by 2002:a17:90b:388e:b0:398:b1eb:136c with SMTP id 98e67ed59e1d1-3a78673670bmr5645882a91.9.1791197027272;
-        Mon, 05 Oct 2026 03:43:47 -0700 (PDT)
-Received: from 1c1aead48890 ([49.142.45.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a7dbf4c81asm3142994a91.1.2026.10.05.03.43.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 03:43:46 -0700 (PDT)
-Date: Mon, 5 Oct 2026 10:43:42 +0000
-From: Seongjun Hong <hsj0512@snu.ac.kr>
-To: Harry Yoo <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] tools/mm/slabinfo: refactor slab attribute reading
-Message-ID: <a6cb4dbli4xaj7dfl2gwklq3suxz2nhrnjvrle4qrj336fxl4f@sf7de4bndqtv>
-References: <20260927-tools-mm-update-slabinfo-v1-0-a4ea0d4dc136@snu.ac.kr>
- <20260927-tools-mm-update-slabinfo-v1-1-a4ea0d4dc136@snu.ac.kr>
- <arqIzSPQVDky8jqc@thinkstation>
+	t=1791197036;
+	b=h9iH7wzemHE7POjMbsTdrCS52Oz2r0Acc5IIkAViyRuPfeOfWxaLFi84kEzXEAZG0s2ThG
+	dS04Zll8Lfdas8R2dGJsuz43xPDm5SxkbHrC4JBNeky4ZR+0ahPY5Mh9AXWHrJ+rlKM8Wd
+	9eYGR9goskytg8wBmbu2VPTMmRNpBrM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3CECB4382D;
+	Mon,  5 Oct 2026 10:43:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6530F1F00899;
+	Mon,  5 Oct 2026 10:43:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791197035;
+	bh=I9YxIdWVKeJd4/bB5ayzuob5ZI8t2MLqGLq4CqLRU6E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=YxyjbhaKV4J3KWq5yAbCj043IUW/HILXjLF0F3kkPCQ2WaUvIjK1eq76i4d4auCLp
+	 /KY97mHjSMrICJPPlZd+0gIWHlBgtkFYBX2OoKJwf9/LP0Qe5Ph+XThvZ5E+h0iSqK
+	 Cscwr0iirEuj04JnGdZsrnY0ROtyRGzUeLrCqG80YHmMsLm+pk0DTUxr5O1tWwS2SP
+	 VQA5MkeLjX5LRrWHE3lasxUoRzxmdTB9IROC3KXUwv1kzS5QYGNe/i2V5H21pV2fpc
+	 vVOsRAom5vq9ZevdHDyTHCPbeSp2a/sxNECVbqAGEBjIsUE+TLzx0TD+K2xZsxwGRz
+	 A2l/wGOuFT4cg==
+Message-ID: <4a24f7b1-65f7-4947-a325-7c9e9f642f2a@kernel.org>
+Date: Mon, 5 Oct 2026 12:43:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arqIzSPQVDky8jqc@thinkstation>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] selftests/mm: add tests for UFFDIO_MOVE of a
+ uffd-protected swap entry
+To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>, akpm@linux-foundation.org,
+ rppt@kernel.org
+Cc: peterx@redhat.com, surenb@google.com, aarcange@redhat.com,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, mhocko@suse.com,
+ shuah@kernel.org, kas@kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261003103030.63380-1-donggeunyoo.kernel@gmail.com>
+ <20261003103030.63380-3-donggeunyoo.kernel@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261003103030.63380-3-donggeunyoo.kernel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 25ECF80008
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EE45E40005
-X-Stat-Signature: xpkbprewqzro6c7fdsb3j9udfmi8bbh5
-X-HE-Tag: 1791197028-853256
-X-HE-Meta: U2FsdGVkX1+2NtfwHITWSCdmDKbqjM4xpHl0csd2qDgZrM1H3/oEt5fB8Pc9X8HGUg9XqiE+sLkM4eQh+IjyQqkXpo25vsQ6l/M/q99hhweJ5wOTBkdh7puxPRsXp5jN3XxoKCL12Gcyum7RM88UGd1hgOmylmdoGGQiil6Zt7LPrTxHkwoR0tACpnAEN7cmW5cBLoV2hWFss3/muVGU0ylopowLjndkRCKBwgG/eoqRw7P00ooBD7GcX7go24iLbQa79yECurwThUERyLO0fVAdfNq4h9l55mxL3TnMvZwQygU0OYVq0msaPNtWbU1EkC0jBh1CuLf3coZO6eSZGy+JJsX+pnwaTgPsRFtab3oCcCiPS18VdidqfaN3rJmwguF3DEiWBDG7zj6Grzit+R1fLCJpPPtGcIpu+EgBWHloY3cWpyVp7V8jUQ8kGtFOLyhALIHssYYE6viNVXjBvebLitERIl5DdWB+LCax+V/zEMQPWLl2FiRgJnNLd2viKA9AGtWJjMh+wdqgWfZChFA5nqR4w+UkASdsYyJo7cFMuhIs0IBTBep+/FmzqHwaGOjvCWMzOxGW1HFuWLfipOU+vZVM7JGoijkarEcX2zS7IT+Wlb9eZ3JrIkl7jT9esPkLLvm6cfUPq1IxPo9vd72xaYEuw24I9Hg+3dzm3rhGpetPQWsJvnUdm+UFF1t8srejokdEpzRJD6hQIK3GtzdJtHHMT9sTsuW2Fak/fd8DXVm/saPROZgKC9//f0FLvq9RY5FXSy8qAxn01vnLQVQop/4/LI57zFi5MCb/BynS/8uZr1xTxPj7eLlic6UcwIMZ642LDqZQLoFnmUXaZ2A9N/EIS85iki8YDUcwPpmB5uObfVkEn3qxV9Gy+biY+dk9J2dR1AC4IWLXLBjIAiGB/bWWckHWHsHnPcjoYW0gc6PDCByyUFGpgqHZm2GPCApUaa2m7NVMGg7/U2D
- 5LO26y67
- CE9n2/mV5ea9t7pds2MCLb/i+fEriX9r2Evhppqy81PLOe42jGU4y4YHQIy9V6vQzN+Opa3z9OfbwWEnn+Dq23SoBDfyBazzxiMfDvZcH3vl3y7N0wZB2n68NVTTzZMAl+lEnzGwuY8UYsUN9M46Rsv1/9SlZd9BBymbsVt20dmvrCJFRQDho+xuWkTdSzciruhhLmEjyz8sTIJOVg+MQft71cFWG1fp7DjL3o1VJ+0+NMq0Ze1NuArep8c2iAmsnjzJOTEQ8MT8574MMdyXw0I/Lz9uduj1co2z+x1i6UlidUFSMlWa7sw15jwAjLldJywiat7hwK7Yin5A=
+X-Stat-Signature: 31y19kzbp9ih3nedxhdaepo3d9jqxjc5
+X-HE-Tag: 1791197035-568109
+X-HE-Meta: U2FsdGVkX1/sErFRZancR10qOB0+vuk9BpNIAQ98FGug37xjdzDT5KPEr5Oy/ZBl9tgcSIdWcQy8C8joxZuI2A+gA2/sNTaiE4l6VMaZk6zanM/VUFx1p5amUk4KfVJZtZzQrfpyN1cXOnmkzo43Q+382mC9iqvGIWdpfpy5kYR8N4Q9BnvLz7b0pkmKOORznx2siXKdQY+vaGDGGlSeUfLceeNDyKO+gv9RcLuPikpwISbA1WW5ZpPy9xP9vAPbEfnC/jUsWWHwurBQZ72tx2G+B42WiWzMMyDmpVo/TjiW0WWyYEzMxOP4DI1UXlqnwqKiizZK5+mm6kYzwvA0js/yuyqziei8NWVPkrEIm6yudHIUrXxR5djwQpaYpf/W3N/udrMMpm8dt59hmKax0ctjkAUBqga2WRa8qP2vnO0hDu7aE5/s7OFR0hkUHkK2td2gssKeHc7t/675ZEehXzrztJwTvrf1iW/jFPBc3Tosq3RlgAgiFojkwtZ73Zsi006WUbVax1YLGxV26FsFh55I+GlYFcZrDxLL8O54CK2VKojf6OW7Oulo5PJQCFTRXZ0bMugQHUM36eLLQqbfuiCfcj1MnB2WcZk/Cl005eJQaoYJKZAqLrDl/NC0xsIPUu+6/KbPW3cBmUJo5DOwNcD5rV1wB6SzVdhTFcwc66UY+ubCIQ/oNM9asHS8ozyGQeMo1tAyhhcz06HXMjpaMQdfiPIou36Dc+G5J3txNtK+QG6QGYXVOR2nlG4mFRPA3cf515MCzcS0iY6SFDui1sAm3ts0sYxm0OtK2rj1lwjvEZq7Z+DzQI19FkEePVwqwJ17IqyxGlXL5AptsWnEOQVNMfyTVZ+mf0R6mcx99t5Ivpwp+weCssO4MQVN8Aa/n07kKNPCFiQ+bH/uSuAmlrMkzEfDsUguC11phwjWIS9PE21sK042GT53+AXm+vxMxJrwUyNQEbjEEuuvs1C
+ gXcIhRS6
+ WCZw/N8I/FiP6EDxja+18uOzhl4GwRA6lCGD81LmYjrX6YtZefl/fXBsT8xyhNR7zXeaxVk3/n5NYbWjtlXXls90Yq0xqwizu6ciPxBzjOv86qSSFCNpyfqxThp5BvzyxeTXv9z4Y9aRCad47NhbZsc+AjKDY+R/h2SFvZgSSbHQnkV6gLQXMCM90QTsiCBqCoIrLrL9Qu3SW4pRXuHBb/uXg4Vx1oF0DjF37plhOw0UeLg6TjrIwJPv7LMqZHSjnQAyrk+wU+pjTqjwF10/+z1IUj+krSxa0KsqSbnTPwEd4kZ8MZ2RZN4lh/Wu29WGNUfNMYbsCmN0HdWbHm9BE5dcO0s+mi+WqHzAM03eqcpy1E0P04qa7t8WI6Wy+xF4ulGHIKWBZ3ZOVNJdqQKZNJEpeNb6h+Jsmzv58AhHSSN6yQSw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,43 +142,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Harry, thanks for the detailed review and some nice ideas!
-I'll address the comments and prepare a v2.
+On 10/3/26 12:30, Donggeun Yoo wrote:
+> Move a swapped-out page out of a write-protected or RWP-protected area into
+> a destination registered for missing faults only, and read pagemap bit 57
+> at the destination.  The destination was never protected, so the bit must
+> be clear.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+> ---
+>  tools/testing/selftests/mm/uffd-unit-tests.c | 84 ++++++++++++++++++++
 
-On Mon, Sep 28, 2026 at 04:52:08PM +0100, Harry Yoo wrote:
-> Would you please separate this patch into multiple patches?
-> It's hard to review when multiple refactorings are done in a single
-> patch.
+The CI complains as reply to this patch:
+...
+Running userfaultfd(2) test
+✗ userfaultfd(2) tests failed
+Running VMA merge test
+# # Totals: pass:27 fail:0 xfail:0 xpass:0 skip:0 error:0
+# SUMMARY: PASS=1 SKIP=0 FAIL=0
+✓ VMA merge tests passed
+Running vmalloc test
+# SUMMARY: PASS=1 SKIP=0 FAIL=0
+✓ vmalloc tests passed
+==========================================
+✗ userfaultfd(2) test failed:
+# not ok 43 minor-collapse on shmem
+------------------------------------------
 
-Sure.
-
-> > +	 * Deprecated files:
-> > +	 * No STAT_ATTR()/SLAB_ATTR() for these exists in mm/slub.c's
-> > +	 * slab_attrs[] anymore.
-> 
-> This part of the comment looks fine, but
-> 
-> > Although cpu_slabs remains as a file,
-> > +	 * it is also outdated and always prints 0. Keep these for backward
-> > +	 * compatibility, but they should be removed later.
-> 
-> This doesn't seem useful information to put in the comment.
-> 
-> We were able to remove some files when
-> Documentation/ABI/testing/sysfs-kernel-slab says
-> "Available when CONFIG_SLUB_STATS is enabled", because that implies that
-> those files may not exist. 
-> 
-> But it's not the case for files like cpu_slabs,
-> and I don't think we're going to remove them in the future.
-> 
-> Probably simply say something like
-> 
-> "Deprecated files: the kernel does not create those files anymore or
->  always prints hardecoded "0" since they are deprecated" ?
-
-I agree. That sounds better.
+Didn't look into the details / trying to reproduce.
 
 -- 
-Seongjun Hong
+Cheers,
+
+David
 
