@@ -4,220 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1963CA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 09:57:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79FC5CA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 10:04:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 457116B0088; Mon,  5 Oct 2026 05:57:36 -0400 (EDT)
+	id 21A626B0092; Mon,  5 Oct 2026 06:04:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E0C56B008C; Mon,  5 Oct 2026 05:57:36 -0400 (EDT)
+	id 1CAD36B0093; Mon,  5 Oct 2026 06:04:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20BF66B0092; Mon,  5 Oct 2026 05:57:36 -0400 (EDT)
+	id 0BBC86B0095; Mon,  5 Oct 2026 06:04:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CD4156B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 05:57:35 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1D20E401DB
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 09:57:35 +0000 (UTC)
-X-FDA: 85288120470.21.AE3E178
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013069.outbound.protection.outlook.com [40.107.201.69])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 217EC20008
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 09:57:32 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=citrix.com header.s=selector1 header.b="fojMa/qz";
-	dmarc=pass (policy=reject) header.from=citrix.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf13.hostedemail.com: domain of andrew.cooper@citrix.com designates 40.107.201.69 as permitted sender) smtp.mailfrom=andrew.cooper@citrix.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791194252;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CC24C6B0092
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:04:48 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EC03BA5BDC
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:04:47 +0000 (UTC)
+X-FDA: 85288138614.07.9FF0BE8
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 289164000D
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:04:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DWPyQ7Wt;
+	spf=pass (imf04.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791194686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Us2A+MW98rFgAhR8FGraxoOStjA4mdzAvtB8OLypS14=;
-	b=rZd+yvPnZlV2iVEZqBUWeGsPxqp9myCOJyUY6BsEri1yEJ7TE4dMy5HD6mmyNPEAPtLrMN
-	neG/Q/7FpoSSsciCn6xRxGmUwzffUjwjgB7wFJ3P0WvNOnGcZkvDphjp4Typx9ai4Ssm2t
-	T/n/dUWZFISa+W/mzNg39MlEYUhMlWQ=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=citrix.com header.s=selector1 header.b="fojMa/qz";
-	dmarc=pass (policy=reject) header.from=citrix.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf13.hostedemail.com: domain of andrew.cooper@citrix.com designates 40.107.201.69 as permitted sender) smtp.mailfrom=andrew.cooper@citrix.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791194252;
-	b=38steq4jm/iGn23OakNzS1kwsHl9GNGpeSETT4UJoyhrsyozcLkeKe9tMDxWYDdgLXasUP
-	dHKzGZDmKDnqg/cDNCsvZgCRycvOvM4tEFHz3gjFdDi25FSDsRmAuPFlY71cBDW559lKB9
-	hlurItLRKZOpz8N2QhMuSWmJxQysmEA=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ecrh5LUO2YIjWU4QE3qkiYCUEsK/fLF5E/+1MReKmcMrl5kpWSGecdu4Y+PzrpGrWgjhUm2VRA/hbRsectD8sGs2n4Rt/VVz9cPaWqQhSAE1AGbIthKX62BClvt5VIMTEGwaoKiscOTHG8PctEVgNXF0BXTQK6eWtQEBvVjCfdaiCmjHb/AEEYhKMHZS0hw612HdbaOgzwSVQ1EJ3upiivWO06gCyjRU4kh9N+OeI/N4VNwAT3axZufmXQ7djqLOHn0FrOqAdlsde54qhDN8rG+XGRQ6pstCpyJb3CkMoFceO0C1D64snmqsKj5k5LgxMAxDEl9uABrlGp8BL4AvMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Us2A+MW98rFgAhR8FGraxoOStjA4mdzAvtB8OLypS14=;
- b=VfCqnXI16d6tJl/M2w9xs+oLmDiwfy4owIhiWF9pfD4me6B/ZaMbfTqxNsJixx/yIa0uclSDRCfYHOdgqSjNBjtU4bW2NoNhjeVIlY9YXgqau4xsM2YSdcoGKPtWZIprQis6wYtx9UcAgRZH7qHU/5uMFcdbXUXqpqNWsxauni5OrVRRe8a/2lDbIELOHnVNRWt/0ydYWPijPeFemjrUkRFFYU2dJ3f+nIy/pw2qFAKEWJsp7pfyNjjOMYlb7HXJtl8lSv7EeCk9fBBI0raHq5yR9khELb7OWI+Yvr19gZQHeb8nzgi8iGrCXfKEMD8u0EcxwotiPFnlf6mZdonbQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
- dkim=pass header.d=citrix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=citrix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Us2A+MW98rFgAhR8FGraxoOStjA4mdzAvtB8OLypS14=;
- b=fojMa/qzXATDWBGosELam4qWFC0BSdec5vyfQ/cQ0UaOhht4ooKyUlgozFLMiS1AyM+RtSuQGXe70K9resq4aGV6C8huBDtlFySRqsXbxo8bUM0XJ2BXhDyp2x6hjhW6psR2J9hv0Ck+ImrE9kp7p6U74idVkqhTZti4fbnqruQ=
-Received: from CH8PR03MB8275.namprd03.prod.outlook.com (2603:10b6:610:2b9::7)
- by PH0PR03MB6448.namprd03.prod.outlook.com (2603:10b6:510:b3::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.16; Mon, 5 Oct
- 2026 09:57:28 +0000
-Received: from CH8PR03MB8275.namprd03.prod.outlook.com
- ([fe80::a70d:dc32:bba8:ce37]) by CH8PR03MB8275.namprd03.prod.outlook.com
- ([fe80::a70d:dc32:bba8:ce37%7]) with mapi id 15.21.0472.016; Mon, 5 Oct 2026
- 09:57:28 +0000
-Message-ID: <7ad90e94-d04d-453a-ba22-9640a5024d8c@citrix.com>
-Date: Mon, 5 Oct 2026 10:57:23 +0100
-User-Agent: Mozilla Thunderbird
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>, dave.hansen@linux.intel.com,
- luto@kernel.org, peterz@infradead.org, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, x86@kernel.org, hpa@zytor.com, riel@surriel.com,
- linux-kernel@vger.kernel.org, qi.zheng@linux.dev, nadav.amit@gmail.com,
- thomas.lendacky@amd.com, kernel-team@meta.com, linux-mm@kvack.org,
- akpm@linux-foundation.org, brendan.jackman@linux.dev, jannh@google.com,
- mhklinux@outlook.com, Manali.Shukla@amd.com, mingo@kernel.org,
- stable@vger.kernel.org, toshi.kani@hpe.com, david@kernel.org,
- mikhail.v.gavrilov@gmail.com
-Subject: Re: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with
- TCE
-To: Lance Yang <lance.yang@linux.dev>, Pedro Falcato <pfalcato@suse.de>
-References: <20261005052302.43042-1-lance.yang@linux.dev>
- <asM7b8ECO34-jiwi@pedro-suse.tail5790ac.ts.net>
- <60d5db86-8002-4d87-b8d3-c161d674122b@linux.dev>
- <ab077b6a-160f-41a2-a167-813f0560e30d@citrix.com>
- <38541ec6-d796-4f35-a700-75ab097b6df5@linux.dev>
-Content-Language: en-GB
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
- 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
- 6+ahAA==
-In-Reply-To: <38541ec6-d796-4f35-a700-75ab097b6df5@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P123CA0263.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:194::16) To CH8PR03MB8275.namprd03.prod.outlook.com
- (2603:10b6:610:2b9::7)
+	bh=ndTgZQw5uRGHNOH8AqWMxH2rBGXg/PpSxnD0ym+93as=;
+	b=Uec5HD6If2aVYRwc7UIeIePHum/7P+xc8t+9YAcEo4+tAcHk0fnAXj7PukGRvJsvgCjCLW
+	sBSchqxI6/pbxq6gwd3StcbXl+0aJfE+iDNIbDcRKXExHW6cDhg1ZIALU66HwETPLN22cW
+	aofadEzooxT1E9am0LoqU3+G3rW19kI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791194686;
+	b=Pci8BmtZRRkjYi7auWQ5knssgc/gucSzATWlnbqL2veOGwhB75wvdYfwJzDxS1HuF7aylR
+	W1mA+b1x55Q9ROKjwWovPXN3MeGxgi9iSw+p49QXrUxQ6os8SInJVDPFoiTkoRZTFJnYly
+	ymOXfWjTY4byHTXUoYfXZBXu1/usYZ0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DWPyQ7Wt;
+	spf=pass (imf04.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cc4c7fab7b6so1030718a12.0
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 03:04:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791194685; x=1791799485; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ndTgZQw5uRGHNOH8AqWMxH2rBGXg/PpSxnD0ym+93as=;
+        b=DWPyQ7WtHQ+UrhvCnqplfhZPBpw02ZyUj/QwJWDHjw9Wjtn/bdunSlI3KSpkbPjXcQ
+         nk7VudOqK0x6Ni6N55wjk0jLgNdvd/a2aD3YvE97TBi7H/dZFmJuQk/iKD2sqmZzQp+G
+         sW3f2W9BkTJwxTwR4kMdcuEsgt65yac+mvY16+iGnY6noL7FHCR/W7kxxauJwHC5RzZH
+         Iezto0i5c/OV4g1db+KmilyopPJArau5Jfx1QEbhnZYKa2k0NPQ6JMij9lGJT0Htgfck
+         LQZ8+V+ANxnpPsOlXKl+YkUzeIckKG6eZNigpBRjLa1x3l6beRYfCFE+VCTMRua2fx/u
+         HAaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791194685; x=1791799485;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ndTgZQw5uRGHNOH8AqWMxH2rBGXg/PpSxnD0ym+93as=;
+        b=jxgbNr7N3z+6ftHwVuEs2JcqjvxYd7bUThW36zSa5YThMTes/A95xi3a0pClyYczHu
+         EJfYKUFT+Mf/Skqm6uGYS9NGprDmfJHgN2oVhL3i8KBYBTHsB9Eyh9+nsIwBHPBqfDf1
+         5dqXfKM3NENInokgCKSBSVfmPOymZoI7zwKdz5UEBtPAsWOdAVxbui5GGdpdTD1eXyHg
+         zpcdZnBpHmXMjNZfp/GaRCgC+M49J7hZPF//5kvsfXCAZet4M2bhgQEAjZY6fAPkd9rb
+         13ccqcP7Ios9QEpUWVypP5fRICSQV+OvHNB7M/ARa+tFXETjwUz4uUMvxIfttLj5eGtS
+         NSvQ==
+X-Forwarded-Encrypted: i=1; AKwUvByy+gVvIP3byiy26MX3YP5b7FTLGIRk9jQvrse9wbD7t8l2y8czBtMmq4ItTyxvRLu/9RiqikzSwg==@kvack.org
+X-Gm-Message-State: AFq9FYIzZvTCp/jPqpU1WjCH3AECmJngbWT+WV1wQYtD8RoaWUk0QLmn
+	1c7MbjNq7UpRwWwcsI4Z5mzERIUqrSaxv+Sx7zPC7VcdCVNCx3VX4uqG
+X-Gm-Gg: AYBFou017H1ficI3KUyN6w/NYjhLNRl927UUO3lfDHUfkRt/3vz/PvbCIrGbX3jUW5Y
+	5mCBo1yCtp222G4qSplAkSfCyhttL+JDVKikkGqpXN5qTAyumkQDRxCKw8Ln15JaO/8ACfMTlbk
+	LkLzBQvpeoj5u1Z3jc94iNiKvEsLpqIpDhbuZxsv5DM03mEft6Mi2RyemAQYFwtWJKUdlZtkUjL
+	Y7nWAXNPDiicUZuAKo82JcRLLkOIi0ETXxKogV7oSdErvZLsp0ignl4ilNTxasJlC83ZUKm9LmP
+	x4PSfl1t4AgyQuPyfbevv/K7Jf9mc/NYcD9SgB1akHKFdbXlzkGEzsiyNQpMHfH3NkNEDsWwvtW
+	tagPKgjikxSIGeMOKehzWSjecsQFR6JYG+gVXTYKIGgqlJxua23EEGx9pHCvCGl3fFvw7a36utW
+	O+QVROQaUPqwIH0HOQ/qCzQJ8n49gtTLbcdIwnI2IBdugaauCX1MBxnSxI9yaqTilO5t2hbWwz2
+	ixhXOAFU4kDkh9zG+Xa2A==
+X-Received: by 2002:a17:90b:2752:b0:3a4:b0b9:6b3e with SMTP id 98e67ed59e1d1-3a7873d9565mr5545486a91.36.1791194684453;
+        Mon, 05 Oct 2026 03:04:44 -0700 (PDT)
+Received: from gmail.com ([216.195.201.24])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78e4cd01asm10487467a91.14.2026.10.05.03.04.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 03:04:44 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: Kunwu Chan <kunwu.chan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Bijan Tabatabai <bijan311@gmail.com>,
+	Ajay Joshi <ajayjoshi@micron.com>,
+	Honggyu Kim <honggyu.kim@sk.com>,
+	Yunjeong Mun <yunjeong.mun@sk.com>,
+	Akinobu Mita <akinobu.mita@gmail.com>,
+	Lian Wang <lianux.mm@gmail.com>,
+	Kunwu Chan <kunwu.chan@linux.dev>
+Subject: Re: [PATCH] mm/damon: add damos_node_eligible_mem_bp tracepoint
+Date: Mon,  5 Oct 2026 18:04:29 +0800
+Message-ID: <20261005100435.1211485-1-kunwu.chan@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261003202727.3673-1-ravis.opensrc@gmail.com>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH8PR03MB8275:EE_|PH0PR03MB6448:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c8e4785-de4b-4c3b-51db-08df22c710bb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|56012099006|22082099003|18002099003|10067099003|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	Ditrg2QXSRvQ2LyqQqhLlpX4NZxfTZ4fPRqAS4zfQaiC6z8fgy0Ro/0N7yd05de5bq/5c82faYxpeAFqj1TbAvhNFb94zjvPdgAeSTIcRZ4GEJv27K7eePjVXaEvUbAXEmHWlUSE7NWA/WSHMolGdNJLJoCfoOQMiQhcOKK0DI+mD3WK0ctn+ZxctJ3ckHxtYPnAWv81ACFmul2NceFRCL57u2xztjo6Jy4wZMsIQP6XzuN+7hV++r31J9oJ5MDNQIgBHUIaYV0fgcSvpAg5WgeweTIijMqf5rj21XFgZzodTfwpPr8LM7Dn8X/GAVxdzRuSJFUpLLqGsJqzTb3Jemlw9sN+YDupyxT0bTqN9di9cnZR25MySl1aYq7g816/ZGOYBvnszcePig/dQw3Bzyw3CCwQYtbl6nLiPgCw2xxqM0MQaX9w5hGm444NPRt9b28MAJgpmoRfuFxS5T6uz1nTLWNKVfeg2OKW//eIJP3Ly80IBPYzzTLN7fbNVdUMtoUNWiRyRMNMwhlQuCKGwywUhhc+l04CEP19f16xpC342Z3xrwURPTgquGx2srIrDP7H5GetSssRok8BM9565VtseKApqqfb/bx13MIFeun5kz6uudKTmeWdPD0V2B7s
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH8PR03MB8275.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(56012099006)(22082099003)(18002099003)(10067099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WTVGaXdxb1l3WS95eG96dEthRDAzbmt2VjFWNXd1UkdJQWpMWEZXYmFoUXRy?=
- =?utf-8?B?dGdLR3pnWkVMWVhleTVHbmw1R0JQaWdsM0JFdjUwSWk1UkdGUE9ITHFYUzRm?=
- =?utf-8?B?VlRSanJxZVNWSkcvMFBndnlBV3FyZEU5ZnhnQVJwNmE1eW1QRExTbEdnajdK?=
- =?utf-8?B?T2UwVWp0RmRsbHp2R3V2Z0Y5MmRqYkNxVG5yVHRrU2F6NlpOUk5XTkk0T0ZW?=
- =?utf-8?B?a2g3RGsrMDUxY2FzdlQ4NEp3UStHZ2Naa2FPUUQydFNJSWd2WmNmUFBpd01B?=
- =?utf-8?B?eEJpcitzSllvUER0M1BvNFFMeEo2WkVmbE8weDN0N3NFUUhYdmFMK0lLckRk?=
- =?utf-8?B?QmZ1T1pXbXVjRWg1VmpqYW5WNVM0bktpM0V4SmExTEcrMjhha2pEcDl6L1hx?=
- =?utf-8?B?eW51U3UvOGo5cE1PRGUzd0pRVHZsRVFzWU1XMEs0a3VMUDlaTkU4TTI1eVVN?=
- =?utf-8?B?VmtLUnA3K2NGK3FtMU9HeXp4OWI2Zk8zV2VJaG9yeWVnOFBicXhvVlRvZGFi?=
- =?utf-8?B?Q3FWcEpPMjk5U1FXTlQ2SnV2ME52amFEeittVDZ0anUvK0dxZ1dJeGJ2T3FL?=
- =?utf-8?B?M0ovVzdGSVhUU082NnM5ZTdwbUk0UUZvZ091bHI5U1prd21EcUZPc1VRNHRj?=
- =?utf-8?B?VHFxaVk1QjJQT09VQXY0Y2tDR3MxWXNFYXBpT1B3dmc4MjdTWEpaeE03d3hY?=
- =?utf-8?B?SkVlempDWkpMc0poQlBGV2VPUGUxdWVZNEpqNll1N3NnL0t1bWlIVzZsWGs1?=
- =?utf-8?B?TlgxZlo5RVEzUXhMTlRxOXprMnpnTy9VSTdmS1RUbjlrbGIrRnZ5V0VRaUNL?=
- =?utf-8?B?K2hIYUF4djVKajd1SlkrTUJuVjBMUU5sbUowYmE2ZTNRdmh4VzQ2dGFuMm9E?=
- =?utf-8?B?WlV1Y2gxSkU1RXF6K2drYkpKWnlXMVJLVFFWRnRlcW5rVlVob21tKzQvYnk0?=
- =?utf-8?B?bnIwYll6a01sOTc2S3VCUkwzVldjKzFSZCtZMTlWd0pNTUVxZTNVNmhEZHVO?=
- =?utf-8?B?MkZOalNGNDVjTzlZUHcxTGRYNUlLQmt0Q3ZLV0NCWDN5aC9OWkpTMmFkcmUw?=
- =?utf-8?B?N0dNeXdUQWkrUGFUN1lvYW1ubzkzbG0yUVVVeVU1R0FqUGpjVUJ2TjJBTnRs?=
- =?utf-8?B?Qk9jUnBkWGpBa0VBQlpQd0NweFhTZFNYMVVLYkJTUGlwbG0ydDNuamxmVnFx?=
- =?utf-8?B?VVVxRzRtS0ZLUmpwTk1jalEzUitkak4rTzluZlNUQmM2UWVvR1YyS3BGNjRY?=
- =?utf-8?B?V0ZuaXdjVS9Vakd4OGNZUkNSTmQrR0xnQmVpWVdsLzRPMmFEcnZ4VWx6SzMx?=
- =?utf-8?B?MnRlbmxVTkJCYktOaGs2bTE5eFNLdkV0S2lwaGdNcU1aYlNiM0F1QWI4aURa?=
- =?utf-8?B?WjViWHcxSjdvM3JPL2J4N2ZZUHJmbU8zdmYwZ0hpdFZwTm1jWHJOYlRLZnJ2?=
- =?utf-8?B?RWxpL2dwVHhlY0I3a09wNldqSCtvWnBIQ3dwRXI4V2w2ZzExdGF6TGJ2a256?=
- =?utf-8?B?Q0VRbUNJTDgrV0RvRERXQTB4aTBGUkZEYzdFNnArVWFtUFVzcGdKc3J5Mk00?=
- =?utf-8?B?UTVVVFIrRkRJSCtuVTlIU0V5ZkZqaHR0WTlmWDdGbDJLWHUyQzBKN3AybFBI?=
- =?utf-8?B?bnJ6QmtDMFRzNWdWbFFLd0V4T1BiUVJtT3NsWW1hTHNvdzZESk1FU2hCbHJI?=
- =?utf-8?B?bDFjREVIYktLdGMrRW91SmVHVVA3U2tNUTdLY0EralIwa1RpWkNHak02NFlX?=
- =?utf-8?B?Zm0zVFpUVzc3UkJsQXF5T3ZEK3owRWdDNlRXaGk0SnEvUkx3Z1phQytsQzZY?=
- =?utf-8?B?K2FOR0h0bGpKVnRDNjZDSnZ5YUhBZ3dUK2pYMUlqM0FNcjd3ZlhuOWZKV3pB?=
- =?utf-8?B?R1JKcnZTdWI1amRBYkx1TFBFQlQ2OHFtUVJYbEFNNWR0V21xSjJvdjRUSXQ2?=
- =?utf-8?B?YnNISlFDKytTcHdBSnYvSW0yWUlyVEtldkEyRjBHYWNOZHRnK0hEUk1TMHJZ?=
- =?utf-8?B?YjdSb0w2U1piYjJralJ6NisxTkdsZ0NndjBSUVMzeVRnV0lqa1B6RTlVOEJh?=
- =?utf-8?B?REQwWCtjYUVvRHNaTDlmUWtjUTlBNjBreEt1UlhFUkJkQU9HTUxGd1FzWGZn?=
- =?utf-8?B?VnFmVDZLbW9jUXlMNWVSdjVBSE5qRjEra3ZibG1meEtuZndFR08rS2g0YXZl?=
- =?utf-8?B?cWtZNTBoUXBLdVdldkxxdVJsQitvbTZJd1hBNklQeWRFN2ptdXdSbVk3QXZX?=
- =?utf-8?B?WjE1VmNhQmwyM3YwQTcyN212M3B6VXVVVG05NnVjWllTT1Q2c3lmQTFmSDlC?=
- =?utf-8?B?cmhqYU1RWTFOYjZ6TnlZVkRzV3F3eW5wL0puZzhJLzZDVVUxREEzdz09?=
-X-OriginatorOrg: citrix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c8e4785-de4b-4c3b-51db-08df22c710bb
-X-MS-Exchange-CrossTenant-AuthSource: CH8PR03MB8275.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 09:57:28.6006
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WsmiJUsS5m/ATwGm+pTnhXwIlonyXAr7YJdC43s7C3cI+JtZqhQmeXrft0MJcps6BUSbmh4ecjUiLgsaTLtWWhAVjvdLwEY5pTyWc2H5gIc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB6448
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: kt9x71iqwfskbxicz8tc7pqtacuw7nnp
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 217EC20008
-X-HE-Tag: 1791194251-57505
-X-HE-Meta: U2FsdGVkX18KZCFaLl/G+LeOl1q6jzLHhAcEVz6yl3UbOzcrC66XJESNqi7i4h52BpKei66s0NW0nvPEkGMtoNW/9jaXRydaS8a7G57bdobKPu3Pg1ZjWsnZWyvIqPWE340/IpYBJLVTS850Owv7DR8cF2mwZiu7uoKuX9pDV3CRf5in62oCDY5iI8+rK9FstJ3viN1XRaj+utt45p1Qg1XWzIAyYNQnckTVQlkiKy6s0rAp+Dr+ZVAU1eo3Jem78hEY6iExxvwySKbL7I9W+kQMdbaY9czstALlDfZP0uftMwF47AjCzdgelmrmKIIiQKN8M1AyxlJjN+ARw3SF2b2sCmX2bXAhwYiqnC4n1Rl+2W9MtDBriZu9/ohhFomxUvGNxTHwRC55Lo4QcKE9O9grT+fj90G5ywpJ37+hYicPBm1otZb4iI2Tu9SY4sLx2OQQHh6QgvuFZI8NKARAI/9JXHAXJg+6SqepRrX0LzKr3hEG/ZGUX4gU+fPXYsfrvqmbv1lJ9F124jvXAi3+x/w2E9TKf2szmsJvYqqiet2O/YUVF3Y1bc2lhxBgUR77L2r2ofKcQFq7IZi0y482ZcXv0Ij4SkPmR4Bs1/7L3MRuqRHlqrdzz9kbL4DI8iEVLycRd/TYWg7GwEmIL34BzGcWH0bSjJXmcBC3aCN+tkNWFFi2qiMBE5unNjqjqKoHGtAblK2ZmoGlvL6/wRKzGfAHckegKWNqz093SSO3SBIajyF26xTW9ZZLZ/2lxUpeGz13gEOJ7GNybyJS37oEvQOOiO+wyDPdLhnMFZC2T4rOVF4ToTqAojPbCk/QJ4bOJ0o1hsQ/QQOC/In8kwageETnD6LT65wS7GRaGeUpT54Ua35ZFa00Ktt1/CMK4SzgW3t6Vy+UW61f1fPwN8xgZjoKt5L1IHvPL4lOm0moSFxTVJbiwtb4zT1qy7uyTXmbNLFCj2MWBBzLxihJ2V4
- xyls9IEB
- ukNZgLvBfMmolIYYP1GlgMqSFsKf9ursBTl77RPTxP6W48mMknn07lcHn1aerqr2qjF9sC+4Nk42L3dIo04vaLm6u0ZhVJ2rXJ2hBSKlMiRHTPHQa+Ur+1Jg3jlFcgP+4Mo7Px/70Lr2DkQ2qDdcycEmM9AojoVHYShazbQ+YcbSzZrLbeQkpz+cIx25qvri6Mg0FyTZ/kzZ737kg0hAA7tm5SHs0qBByJbMaLwMg0lDL7o17cXbhPQmZaTb0witlLvE7gOV2bb9zdaOhZULzbIy00WjFZQLDtzq/hYd6dKL0KrI6QzRUEgHOxToEIovsMRwiEwOJzw6yobb79nhzTF/vNLkQQKnI8ii/xfVwnz7/N8dHO8ATTyhwrOeN6gwqEQTxHAv0oHVTGiNoZuvN5ZyImc+7SCIVozzVAnIEIGVTF1olvk2mSu0R1Or1KAPwHpwejgC1djD9RnUWfFaj+DrMx45gufbpAVAOKFgpkBOqrE6z8XNHC1f1we6vIb8HZBqIbz4J/VQyh2VqPg12bEQx1/PLCJCu7UbTmgm+G0lrldmat0z/RV4jC0z58xqkSUr7fiK/Z1vU7hvZDdX4ssx+FuLm9AH+cVsxF4I0fraf/TKqke/+NX4LROuVo5DxH2wWT9874NOYDCO+puSEJp0wPH3XotlqgHjhD9Vp/RvLCWEb6wFRAKQpmpJuJz5LubC6daJYmhv1mec=
+X-Stat-Signature: h9hos3ao4o7xhhmyhcxeowx9om95rwse
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 289164000D
+X-HE-Tag: 1791194685-679681
+X-HE-Meta: U2FsdGVkX19w1B74jukrGc3YxMvddeqVpB3eB6LHtw9Mrftz6qgS6sN2xd7iDBbEXk6/6f7WylykiaOAeqHviWpR220tN1KIZcn+9dbXqGb5UjU8yMug/4ap/bryoEcnQF5ot5IaIa9br3D/FWobqPVWW2PqCOZXPrrdTKwAhaVoIgU0erwdBRAiKFoEa9X+4yWmgEIdJJdHlNiZPtqc+uULZr28fqFoxoE80Rv6oTErhyF0LWAR+gVIcnEBiIVtI6NUiGGi1UFxreZjn7uDvu8GeNnqjvObUcDoRD9Ev0ks8YP1uYWW0X4lCHVNGtrOTJdp2MWm0DgVIcFISncNJb+x44BfEOZvdvZMOCPq3+lhVzz4cc36FWbQ2Ox5PRzmSkqaj2xo0QrjbsFjM4yiOcPVrecAN7EWrDJvIGQAk2PkK0pqNPcRn5sOLpRee7VNO+GxzBv3JN9GohWOMvhFuD2OuPU0Y5OwU1P3zomVwoKK8eJT6CzcKESHz74EgFvCvLgW+Wa4p7VxHQKHV6N5i6fxUqT0YDoQZYjkBXCgIAsDFPhPa1GzqGqrnoWodZiudXXWcA7pm7SCbMWHN4FmyvWnSduXJZRSpEzXUsL2RUH8kG8QJVnem1NDpzYa8FQqih8+Ri9KZTDorNldarGi0Hme2RGTnAL3MKSA6pSNp8xk3ZK0O6mTvg9rfzwWYj56nRHILmZMUcB0+8BMCDWJgwBQ5n7o3FxI4wGf8cSStTcMA4WeCg9dlzGuxwSPe+hu5Sths56fWlo5QEYJ5cfLylQn1gZZBdXuOj4sW/NR84c6lJMSYGjTgLH1Wt8duHXx8AEh2XS4qgVHU5b8ws2ZZwu5lEzmgiFp6Wweh6/bp3JvuWQJHPvoHOoLMskml1dm546ZrFeTKSLDeqeenC4TNgMYia4ODK8cPvVsH+dENtyvH1cBov2W1rksGnFsfXUQaYyI2Ek70agXX1YF5rn
+ dtNew+xi
+ Dj6ExGtfzjoqNxCv/38320rg89zBZKj2l6Vg1C+AZtMMjVFtIIurYPbNfMgRB2Tab/ZsB+rN4hkb/ViWhkCSdvb7PvRpwCKuIXZG8cM/O6LXFM5taBNCHmEju/DgY3yub2vDuFcoP43EZCmfcc8Q7WBtfT8N1xbOnVdbi6BT1ryOFM06vsJE0W5QY1sCf2xJCFFIL8CsEZiJl2bEuV5lUG4FwolVfijlxyOP9Y5yzP2JS0td8OC1Ya/WX0fYdJpLyCZLB4zP3BNgk5OV3NK+fXc1jbzAI7ksMdyryZe6dKdKqSip6/tvsVRQHsqxXImQ7pgFYszfezABOJMjy09+z7qO2dfmwynr8td1/eOiFaeZBq6PCmJqWq9l71Y7hBUUMRCKHvoAKIN5cBrOFvSu/23i2h9NvK3mBHFMWWbakVDnw5f452o7HAU+pRlKrALQ8Xl/a32WXGv38ntN9IhLvLW945ZkOAzmw0Obqi7nLV8WnzpOMxYWJ82K+e828VIRqQYVt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -225,37 +133,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/10/2026 9:32 am, Lance Yang wrote:
->
->
-> On 2026/10/5 16:19, Andrew Cooper wrote:
->> On 05/10/2026 8:29 am, Lance Yang wrote:
->>>>
->>>> Did you repro any bug related to this? The functionality is perhaps
->>>> underspecified in the AMD manual.
->>>
->>> TBH, I don't have a reproducer yet. Just LLM stumbled upon this while
->>> I was investigating another memory corruption issue [1].
->>>
->>> [1]
->>> https://lore.kernel.org/linux-mm/arY1Wq6R9OY20ans@pcnci.linuxbox.cz/#t
->>
->> What hardware are you running on?
->>
->> That looks like the Zen5 issue, for which you want either the latest
->> microcode out of linux-firmware and/or
->> https://lore.kernel.org/r/20261002211617.1001617-1-bp@kernel.org
->>
->> TCE is a no-op in Zen1 and later, so unless you're on older hardware, it
->> won't be that.
->
-> Just to clarify ... these are two separate issues.
->
-> I mentioned [1] only to explain how this came up while investigating
-> something else. I'm not claiming that TCE caused the corruption reported
-> there :) 
 
-Please can you answer the question.  Which CPU are you seeing this on?
+Hi Ravi,
 
-~Andrew
+I agree with SJ that this would be more useful as a general quota-goal
+tracepoint rather than being specific to NODE_ELIGIBLE_MEM_BP. The
+target_value and current_value fields are not metric-specific.
+
+On Sat,  3 Oct 2026 13:27:27 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+
+> Add a tracepoint for DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP quota goal
+> evaluation.  The tracepoint fires once per quota-score computation when
+> the goal metric is DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP, exposing
+> context_idx, scheme_idx, nid, target_value, and current_value.
+> current_value is reported as the quota tuning sees it, after the goal's
+> complement setting is applied.
+> 
+> The DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP metric expresses node memory
+> occupancy as basis points of eligible bytes.  This information is not
+> exposed through any existing external interface (perf stat, /proc, or
+> sysfs), so the tracepoint is the only way for userspace to observe the
+> target and current eligible-memory basis point values at quota-scoring
+> time.
+> 
+> Link: https://lore.kernel.org/linux-mm/20260428030520.701-1-ravis.opensrc@gmail.com/
+> Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+> ---
+>  include/trace/events/damon.h | 31 +++++++++++++++++++++++++++++++
+>  mm/damon/core.c              | 16 ++++++++++++++++
+>  2 files changed, 47 insertions(+)
+> 
+> diff --git a/include/trace/events/damon.h b/include/trace/events/damon.h
+> index 8851727ae162..2c7249cc7c88 100644
+> --- a/include/trace/events/damon.h
+> +++ b/include/trace/events/damon.h
+> @@ -74,6 +74,37 @@ TRACE_EVENT(damos_esz,
+>  			__entry->esz)
+>  );
+>  
+> +/* Per-tick DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP goal evaluation. */
+
+The comment says "Per-tick", but the event is emitted for each matching
+goal in damos_quota_score(). "Per quota-goal evaluation" would be more
+precise.
+
+> +TRACE_EVENT(damos_node_eligible_mem_bp,
+> +
+> +	TP_PROTO(unsigned int context_idx, unsigned int scheme_idx,
+> +		int nid,
+> +		unsigned long target_value, unsigned long current_value),
+> +
+> +	TP_ARGS(context_idx, scheme_idx, nid, target_value, current_value),
+> +
+> +	TP_STRUCT__entry(
+> +		__field(unsigned int, context_idx)
+> +		__field(unsigned int, scheme_idx)
+> +		__field(int, nid)
+> +		__field(unsigned long, target_value)
+> +		__field(unsigned long, current_value)
+
+Also, context_idx is currently always 0 here, since
+damos_quota_score() only has struct damon_ctx * and no context index.
+If this tracepoint is generalized, it may be worth considering how the
+context/scheme are identified rather than introducing another tracepoint 
+field that is currently always 0.
+
+Thanks,
+Kunwu
+
+> +	),
+> +
+> +	TP_fast_assign(
+> +		__entry->context_idx = context_idx;
+> +		__entry->scheme_idx = scheme_idx;
+> +		__entry->nid = nid;
+> +		__entry->target_value = target_value;
+> +		__entry->current_value = current_value;
+> +	),
+> +
+> +	TP_printk("ctx_idx=%u scheme_idx=%u nid=%d target_value=%lu current_value=%lu",
+> +			__entry->context_idx, __entry->scheme_idx,
+> +			__entry->nid,
+> +			__entry->target_value, __entry->current_value)
+> +);
+> +
+>  TRACE_EVENT_CONDITION(damos_before_apply,
+>  
+>  	TP_PROTO(unsigned int context_idx, unsigned int scheme_idx,
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index b63e60ef8990..6ddd15dc4f55 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -3294,6 +3294,22 @@ static unsigned long damos_quota_score(struct damon_ctx *c, struct damos *s)
+>  		highest_score = max(highest_score,
+>  				mult_frac(goal->current_value, 10000,
+>  					goal->target_value));
+> +
+> +		if (goal->metric == DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP &&
+> +		    trace_damos_node_eligible_mem_bp_enabled()) {
+> +			unsigned int cidx = 0, sidx = 0;
+> +			struct damos *siter;
+> +
+> +			damon_for_each_scheme(siter, c) {
+> +				if (siter == s)
+> +					break;
+> +				sidx++;
+> +			}
+> +			trace_damos_node_eligible_mem_bp(cidx, sidx,
+> +					goal->nid,
+> +					goal->target_value,
+> +					goal->current_value);
+> +		}
+>  	}
+>  
+>  	return highest_score;
+> 
+> base-commit: 763ad0211c7b587344f03bc4d1299810aeb736f4
+> -- 
+> 2.54.0 (Apple Git-157)
+> 
+> 
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
