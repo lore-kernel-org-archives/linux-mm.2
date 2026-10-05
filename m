@@ -4,96 +4,218 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F5CACA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 08:18:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44430CA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 08:20:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD90D6B0088; Mon,  5 Oct 2026 04:18:02 -0400 (EDT)
+	id AA9716B0092; Mon,  5 Oct 2026 04:20:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8A236B008C; Mon,  5 Oct 2026 04:18:02 -0400 (EDT)
+	id A59C36B0093; Mon,  5 Oct 2026 04:20:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C78EC6B0092; Mon,  5 Oct 2026 04:18:02 -0400 (EDT)
+	id 8FA5E6B0095; Mon,  5 Oct 2026 04:20:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AD116B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 04:18:02 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1562E160181
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:18:02 +0000 (UTC)
-X-FDA: 85287869604.16.AE808F3
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2A25A40008
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:17:59 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=j5knjFn1;
-	spf=none (imf17.hostedemail.com: domain of BATV+468a587a01b7da22bf06+8443+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+468a587a01b7da22bf06+8443+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791188280;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F8786B0092
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 04:20:07 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E15F18018C
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:20:04 +0000 (UTC)
+X-FDA: 85287874728.14.F1E9F47
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010048.outbound.protection.outlook.com [40.93.198.48])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E8D72100002
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:20:01 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=citrix.com header.s=selector1 header.b=vRHh0dVk;
+	spf=pass (imf05.hostedemail.com: domain of andrew.cooper@citrix.com designates 40.93.198.48 as permitted sender) smtp.mailfrom=andrew.cooper@citrix.com;
+	dmarc=pass (policy=reject) header.from=citrix.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791188402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NuhGNh33RwpQYIAorkA2VvhjQZ6YMZLfJjskTBdQXyI=;
-	b=hFZxpwibzs0uKB8ypVkkWC3tdeTQtmA30AnIbeEJcfwPo42jZQCzWxKOZ43ZzUweKEQol1
-	rfrTACrK8sXYyQu5buIMwlJtOwy/f/vRe1r910bU4qb6IodqkGfa3wccCVZnP4/Cm2TdIY
-	P9A0wzaQnRuVjZAihxwk6n2wrBd8PD0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791188280;
-	b=OuqqKAY9an29lDgnTT+BDroZNjLV2MHZ0cMi4W2Cj8E22AH78Da36x86V0hCEeq5GeICam
-	q9NmEBDM6Jjt/4s7oDi+hpYPzO0KECBsg74BQBVSnGXx6WIic5kLGEO+f74mvatbnQpF9m
-	bgi61ZEBmV/ZkacY9zDHKNkX/SFovZU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=j5knjFn1;
-	spf=none (imf17.hostedemail.com: domain of BATV+468a587a01b7da22bf06+8443+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+468a587a01b7da22bf06+8443+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=NuhGNh33RwpQYIAorkA2VvhjQZ6YMZLfJjskTBdQXyI=; b=j5knjFn1RaLQq9uuPmpU4+3fzU
-	K1B4O6C+MlIn7MMaiUKEHpbjcCadAxow2q1BWjDX4yRIxpUtlNqI4G42kp5za1wmy/2Z11iuuSOqN
-	aei2LDuZfL79O0HopoD6b0SjVBZSPRC6dZ79kH0ElBm+AoarvbwqDOXdhO8NYCxPJMWFeNlFVnP6v
-	wdbSgiKumwwN7yyMAaoiaxUeC6XVVjIHwrhI2xPcq5+1HIpf/E9VbgqVEh7jj0UW7ds8+1i+8HLmm
-	4xrg9h1+cLyqg4U9KKtPrkoYy+m4Yy64bzlA2vCYXstj9i1XD7/EWjPuczj8IWheuHY8PkmmLSXh+
-	ZNGTf74A==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xDdtM-0000000Fra1-30eo;
-	Mon, 05 Oct 2026 08:17:48 +0000
-Date: Mon, 5 Oct 2026 01:17:48 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Matthias Goergens <matthias.goergens@gmail.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Subject: Re: [PATCH v2] drm/i915: look up shmem folios by index for writeback
-Message-ID: <asNdLJdbpkUVsQzU@infradead.org>
-References: <20261004094827.174193-1-matthias.goergens@gmail.com>
+	bh=KiQSGDC5s0wRyW65qbpj83xuSuMv4Vr9cSp0huB0Huo=;
+	b=AxRIqCGihyDMVWloyQi8wX77AoKV0+c2lhdk25nkDn+6eHAHIKzSi+0BdhNzrKILQNIBCu
+	poL6WOO6s8v2t8tg11vjnB3YCypThw4cNmc5Pi6pdK7how0+JoJOw2mpQmzsWx8wMDVTkZ
+	YuUh/+3Sy0xaJbD+yhOw14NZEEStYIU=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791188402;
+	b=vAorPKpAYB3KounOQaEWsWN20QJId2Gy8Q0YjNdYsZvUx+eh7RuYzuT5hVMg7rjsLWSAq9
+	aNiYVM//fCndrq7oZ3o0i5oJRnQtI4kjU+qdBMTGXvK5N8Dt9qWeO95GTIiagy3MriM42I
+	MakWjTFze/mBa9ixUTx851oAQYv3ZRw=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=citrix.com header.s=selector1 header.b=vRHh0dVk;
+	spf=pass (imf05.hostedemail.com: domain of andrew.cooper@citrix.com designates 40.93.198.48 as permitted sender) smtp.mailfrom=andrew.cooper@citrix.com;
+	dmarc=pass (policy=reject) header.from=citrix.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AFG3SaAFws314xFp9C5xtp2EGHe7CDI7jUDdqfjXig+t1v3+4Azq/vc8ZTuQK/XXBN9lDqqzQiHbHssZTN9xQX27sGNvmYTUx7HEuhfbnGqWj8d+0O4jwOv+XvBD/uEcf51RcCNFUWegcNmzfocApTr2wrfrK3ORWKw1mu/1sXgR8eA5aiZ+k3iM/tdGR9+8PCj5Vb8LzFWQC4frYu9bD2UqvRluoQpOh1mo0TWYS2nBSRMvkzb76QsvzgZJxpZnxhOkAuFQhUryG4W2eIXvYNjntdT1QDkWLNddaiKfmXXDtP+4oyexB4ErOjq/MFqBnDfOjXvj/JUoMHi5ztvi3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KiQSGDC5s0wRyW65qbpj83xuSuMv4Vr9cSp0huB0Huo=;
+ b=LC38DXtkoVw4ppBcv/eHjEvFVtZYGzjVzOsU/PvpVSHNss282VHRcEiVmXNEt2srkGy1FGwwetsvMzucTR7tYoYclZyZfMyf6ChJ+4Jer/l5SFeuuBYml/GWk9a+tAyQY3Zx75JoNzG/+63RlxrsCeN3KVRQwz58kgmyccfBnFzllNVNKKi97dg3bl9rDyDvgJPFyKaOEOUBlNljVR0U8I1RPgVP2zZz1zRJKPr3l+SK3Ne2hnhDSH5fJJ3ug0XQntQR3LQmLO8jX0N4v/1VjXMsifoqoEuCrxlSDxf+GtCFRNQJjrr03YPwnXge3PnI6PX5XnPZcFxDz9+F86+Txg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
+ dkim=pass header.d=citrix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=citrix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KiQSGDC5s0wRyW65qbpj83xuSuMv4Vr9cSp0huB0Huo=;
+ b=vRHh0dVkgo1nJ+379H/UZgurp/GdnXdgNZYrIjDfqRpPhNVZczs1Ym+th+P1LzkEP8y62u7wY0FQYAu0iT4Cgngz/sQIYzMQH4DXD4PRxxjTfxCFFZAwTlhWEpvAZTdMvycJ3PRDO4KZ6FiW6OeFxygokfndrp6tPcmIHdsxprk=
+Received: from CH8PR03MB8275.namprd03.prod.outlook.com (2603:10b6:610:2b9::7)
+ by SA1PR03MB7122.namprd03.prod.outlook.com (2603:10b6:806:338::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Mon, 5 Oct
+ 2026 08:19:57 +0000
+Received: from CH8PR03MB8275.namprd03.prod.outlook.com
+ ([fe80::a70d:dc32:bba8:ce37]) by CH8PR03MB8275.namprd03.prod.outlook.com
+ ([fe80::a70d:dc32:bba8:ce37%7]) with mapi id 15.21.0472.016; Mon, 5 Oct 2026
+ 08:19:57 +0000
+Message-ID: <ab077b6a-160f-41a2-a167-813f0560e30d@citrix.com>
+Date: Mon, 5 Oct 2026 09:19:50 +0100
+User-Agent: Mozilla Thunderbird
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, dave.hansen@linux.intel.com,
+ luto@kernel.org, peterz@infradead.org, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, x86@kernel.org, hpa@zytor.com, riel@surriel.com,
+ linux-kernel@vger.kernel.org, qi.zheng@linux.dev, nadav.amit@gmail.com,
+ thomas.lendacky@amd.com, kernel-team@meta.com, linux-mm@kvack.org,
+ akpm@linux-foundation.org, brendan.jackman@linux.dev, jannh@google.com,
+ mhklinux@outlook.com, Manali.Shukla@amd.com, mingo@kernel.org,
+ stable@vger.kernel.org, toshi.kani@hpe.com, david@kernel.org,
+ mikhail.v.gavrilov@gmail.com
+Subject: Re: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with
+ TCE
+To: Lance Yang <lance.yang@linux.dev>, Pedro Falcato <pfalcato@suse.de>
+References: <20261005052302.43042-1-lance.yang@linux.dev>
+ <asM7b8ECO34-jiwi@pedro-suse.tail5790ac.ts.net>
+ <60d5db86-8002-4d87-b8d3-c161d674122b@linux.dev>
+Content-Language: en-GB
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
+ 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
+ 6+ahAA==
+In-Reply-To: <60d5db86-8002-4d87-b8d3-c161d674122b@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PA7P264CA0167.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:36f::18) To CH8PR03MB8275.namprd03.prod.outlook.com
+ (2603:10b6:610:2b9::7)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261004094827.174193-1-matthias.goergens@gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2A25A40008
-X-Stat-Signature: dqaas5p3ou3e51nuwdti1nfo1b7d3f14
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH8PR03MB8275:EE_|SA1PR03MB7122:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5e919b7d-31cc-4ddd-93dc-08df22b97165
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|10067099003|56012099006|4143699003|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	VIfz5hIXbJz6LQ7D1VBvEi9CxOyw6fa/TZG9UJsGVQ8b3YnMp87IO9qgTsd7RU/h5I86MIP2cFMv1u+6uv4lDZRqG92UEqUK5WGh87Qm85zC5MRFFmN7q8PADOCTLAupq724d+LMAFq0tDk8Ywv6qBcuLHPMwhoPwLTOqSxOsJaAxYAydRNp3yFigxEAuQOf+2OfswYcIYYCIuCOJlFyU4rGCg3NbseJwh2EBLTDNbIBD3n+0lhJ7MJvoaU4ivVjM37ByTXjMmtUxutI2Ow6mLZQnWnqzbMCfAkpPzVdv55ah6e6OW/JAEfLDBVHrGbZFBQ32imk18iErZumxxnURZdj643ksKYbQU1ZT806fE+graCrBnoQ+xbseuFYVp/Vga03owK/W/o7YgVLI5EA1W4HhhlFxvxA/q3OpNXzGgyi1n6sEsTejSINErkOaunhazRrGhXbKEn7/GKbueURbl4j9uA1/9tVrFwxzw5N7T23mXmt8jlYlBxmPSJ8HwMqX3MPNlTzlzCWHD5rH6dvqRh8tx6GXiBg80lZGvMk76px19zTFggZpTBbspW3QZPsXWd4PYPWIQ0uBPdF/1jH5U0Lrep0P87cehYb2mlEea6lAcmiD7yTkWS2pDnoBfja
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH8PR03MB8275.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(10067099003)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eUI1aXN1L3VTZGc1L3dlN05oSU1ueXRrQW1qUFdYVzFhUUYwejZUb1RQR01m?=
+ =?utf-8?B?SkF0VndPM0RXV09YT2dnM0o2YXk2K01RZk1aNzVaTVNoRXFlOVNsMWxRZXlN?=
+ =?utf-8?B?eGpBYzU1VHZ2SnZhU2gxM3REVHFXU2pIeUNKcnpza0xEZjdDUzFvMUxzOGFO?=
+ =?utf-8?B?T0tzNzEvRlVsM2JvU1VFNU9yY3hEL2RubHExcGZHcjl6OFlNZjVXME1wNGda?=
+ =?utf-8?B?VlF0SXJ2RGozWmZpZjVnZGZlNnV0cCt0U0htek1jVlh4cUNBckdnU3g5Ymh1?=
+ =?utf-8?B?eGwrY2FzSXU2ZDQrTVBKMXN4TFVJanJJWS8xdTZ0ZE80ZjBVa3lkSDVyOGJo?=
+ =?utf-8?B?UTc1L0JCRmtwU3pGS3Y3Qm93M3FPMlIvdWwwVnpCKzJDZGZjODErK1ppTXhH?=
+ =?utf-8?B?OHh1SVBOR0JZTFNHaXRpbXJPUTB4eFdhOEM5T0JLMy9mUTl4MGp1Mm83TGZK?=
+ =?utf-8?B?bk1MQ3kxZHhPU1l0NEp2LzN5MkFyUElMZHUvNDgrYlBhZmFwV3V6RGFjR0l3?=
+ =?utf-8?B?YmJSZXVqS3MreTVaaGYwUEsvd1g5akRIR21BVXRDclV2ZEpWNkJjaGFwM3Z0?=
+ =?utf-8?B?WFFXUUxoYi9FRVJ2dnJPcDZYZkFxWldPT2hRZGtoU2ViYlNKOWtYSHNxTEpo?=
+ =?utf-8?B?TVNTalpMcDZGcnh1eVcrWlpVVkhCdmtrZG5KUTVNMUNLdEJ2ayt1NGROY0VT?=
+ =?utf-8?B?SSsyOHdjQXY2MGFBZ2hLeVVzMXJ3d2d4UnZxc2YvZGk0MElqUzhlL2tEME1S?=
+ =?utf-8?B?YmNxc0tHZFBqdkUvWjhEK3NOUmhnbDNXK01PV3hvaHVGdjJRNHVuSFdDcFcw?=
+ =?utf-8?B?OWh5V3FYNnZnZGZQOXMyME9uOGdWbCs2bHorUkRZN284ZjV0LzBJdEQrZlZw?=
+ =?utf-8?B?Z2RiTVFYZ09aOHJIUXJtM2NQUFhVMFRIalZaSDhoSXhIeVQ4ZWN4UklVcWVS?=
+ =?utf-8?B?RjJzdlJXeHdKditoZllXc1dyVkV1SndycnFSTDZET0gzSGFsaWFrTUZGU0ht?=
+ =?utf-8?B?eURDejE3cGtSTytZOTVueUw5bjMyeHE5SW83SG93NC9jME9qRGpyZWJlQS9Z?=
+ =?utf-8?B?SHFienhhVDJlZzNaaEtLY2tqeWEvQjIzS2QrSlVpbzduSXd5R1Rvd0dxeExt?=
+ =?utf-8?B?aFhQRktzZitQRTZZczJFKzNBc240VTIxWXM1VEZOd1lQako5ZG5XdHp3Wnpm?=
+ =?utf-8?B?b3JTSlJXYU9qbFZpWUdrd1o5Qm1xbFNiVCtBYllPQ2h0MzhyR3ZPZVZVaG5L?=
+ =?utf-8?B?aUdGRWh1NitVSU1DYXpVOWFmNHA0aS92a3pJTjVqNks5akltOEprQ3AzRVpU?=
+ =?utf-8?B?Q2FNNEt6WUQzdGdsYXlJS1F5MXdhMmU5aUlFV2VDVFNYM2hMWXVKMEg2c0xN?=
+ =?utf-8?B?d3piYmhSOFVZbXpYWkFpY3VLc0hETy84Qk8wTG9Bbmgxc2FsSnhYVU96SCtY?=
+ =?utf-8?B?QThuclZSSW0vUEhvUmQ4UmE3bFhEdEJxUTQycGFGTVBKanY1K29WL2IvbDdy?=
+ =?utf-8?B?SFZ6bGRJbmJiM0tDQndHVzNncWhxamg5TkFubDA3a0YrK044cHJtNDA1NEhH?=
+ =?utf-8?B?cnEyTzZsbDV5VDZtMUp4VVFwdTNQTUFMOFljVmoveWJ5dmxzYjdneklpNW90?=
+ =?utf-8?B?RWhqYUJjdnNvSEJFcGhDa0NscW9xQmdEWHBkcDNQT2x5cU9pSmY2VWJzZGZ0?=
+ =?utf-8?B?bElFZUNidFNBSkdrelBVc25aRThlMlFnMVhVeFJYbmtSMjVXQzRIZFlkTER5?=
+ =?utf-8?B?RkJlZHZSREZEL2FZOGRCZGtFU1lPaDQ3Y2NacHVubVdtemVjVDVyZG8zQkZH?=
+ =?utf-8?B?dE9jNXVaOWNYNDErdDlRcWd0RkJoQUNiS0VBVXJZZlA4RWtiTkNsNE5STjdG?=
+ =?utf-8?B?S2tIcWl0VkJkb2c3RFVJVzBnaHdEVWplbDlRL1BVUTV4L2pubVo0aXJqN3pr?=
+ =?utf-8?B?TDFMNVk2SCtwU2lWcW9rZGlCQmJMa0FXN2pBWGhPcTluRmNRa0h0L2FBeEJV?=
+ =?utf-8?B?R2crdTNJR01yQm9TT3ZjWVBUVEV3VTJpUkZ0YjQ5b29icCtTV1AxdUlTdC81?=
+ =?utf-8?B?b3g4T3MvYzVoYWxTc2FtR2dtRE0rWm1odHVRS1Q4TzB1d0xpQ0xYNTg3K0x5?=
+ =?utf-8?B?amhESmNJOHhvK2JKVzJBeDFYUVdMREVIcGdIYzEwYUhZZ1k3Y3liQUNxUURY?=
+ =?utf-8?B?YXNya2pSQ0NPc1lPbWovV0lnVlVHbTBVcE1id3Nmc2UrRmpydEZsNnlCQndQ?=
+ =?utf-8?B?dlQyT3ZDSmR6b0ZDb1prb0J4cTJFTGsxWld2enBPTWYvdHVUbDJxU1RIZUJu?=
+ =?utf-8?B?clZudzlTV1FOREw2NWRmeU5DSEpJTkpaNDBXZEFkV3U5c002SDVWQT09?=
+X-OriginatorOrg: citrix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e919b7d-31cc-4ddd-93dc-08df22b97165
+X-MS-Exchange-CrossTenant-AuthSource: CH8PR03MB8275.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 08:19:57.7454
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jCwa0fsf5X6Fa0If8Lv8Iw8lBn/WddmfGxEc0fRqKommMyTuab8TRgeS6rg3RoLQt+0XGUlv0dUObcPcoGEzGGxujRulo1Mkf9ANoPWlFLs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR03MB7122
 X-Rspam-User: 
-X-HE-Tag: 1791188279-268658
-X-HE-Meta: U2FsdGVkX19FNu11yAmQtiSq6RcEZmtXtB6ECSjd46PoiEPj4FHoZZiH94L2IWReVg3N6vbuKsuyYvViC3vukKa9MR0L+ear/NSJ5Yx3Nv3Zp4iYgZocCqm8gj0mypzirZ8y9JNPSOTpaZHv3rFMbbOjAv+A4pptz8HsB2A6f2rlGGYR3blBYLh4x11y0uOHU4j4dIT1DtYDGebvDeYXWKVKXCHKaq7uTd7lasrAKmSgfL1yREHclV5jS10cJkhDGqN5QwnqE/hW0PEUKZAjIt6wRUZjdxSn5WqtH1g5DL6K10ap3AQDSl235dFG9cQbi1B7NqkkPc117zj1tdzAM6ayGlkLSwdO2oclJ/9KapHvHO4glyT1fZWZRVF3QyKtHDar8tvPy0XudczNPrKwbRmqADl5ulUHnGo/KzZjf2krgq7E6B8oswyb4cdu7yX5yTQL3DdfTGK4rQFLOmoAbn2UlxQBN77wfIAxRa6SeslvR9uChPFd71BkOOIZ7Qfcwh7n/V1oWa74wHzN4QDGH5eonmf3IQfZnqFvu+T+CmkOo6oh7N5/MqHPB3uKLDAyQLs37MUEIMn6xsSeU/hmDSmTPDpM/c/SvRpOUq+9Sz6fFO4ukBFjQoO1AiPOtgCNs2w2SPL5rTNnf+1UbHHmo1jNmyZ9z/kQEYWa3OkTJSfDHX0+y+JrcQrN/7Q8hhHL7bakzB2BbVpJ6UM20m8gHRDFE2PGsKKOpK+BE0pTgDRFMlRQ+eG7nzl5iPQV2GTKBDTQfD5WnvpsyQAS9HkjzLRtinZwotaexFD+uI7qgJQjDPMmBu+4SRzjlWF63uC/DTq3z1NZL1M85S9+d3IcpqLMtaG8OJoQnhtlVSq4eVb3Zmo9oSgPzwnpIOZ2y45MsxetbZ19qHnGyl7TDmIT4Lk8XZ8QZXJ/AU0OifZ4FxBTiPxQApl0UL/DnjLvZFg9wskbrJOzwdnpfim3IWU
- b0XE+W5O
- mbKKDgjjkyDr8W7kMllECok460dHgdkjUQzw7LAKfnKAAymvLBXv18Eb0ygJuL5DFFc0C1+TdYasX0uWC711wNSo4Hqqx88wKd66hZzdAl69hxql2CWHzadwlOVT76zN4wnglUu04OtTQMg5C2bX+qqEeqXYZJcFeOvT8mtJ/+sIQILI8Ed3YYBpI/jUvkfDaP7YFKzpaXrjR3k2U08qV0RJi9+mmw59pbAbyer0tNtrBI2KjrSSSx4O+2u+ikOWADiECA/uokkoZnXfSgTPmy0Kd5HBXTc3WQLfOXQHLKCPj+BgTsmM2/Q7SDCNZjGSOhR0b0nJn4AAepQU+kSvlfi7gvNIme80M1TXhmvCwrJh0BpAkbLNuPOmQPsMcxkJgRNdI8+4iCX4e6r2kqaKg3yx/f0I4Yb4mggskWEyOTzyVEdVtirwFXwOyQM7zmMS8JBR5+Q9DOLqZ/kTO8+Y47dyDdLOQNxC57Oko71IGKw3uW1oEau387YejgpkVAJYedk3/IQqkOE3cKqizGc7q44MVv4Y+1YreLQ7ls9CqGnpBqFdBd9sNiPIVOUtmB3+hmKZl+IK5RW/pOe/HdIx9uyPJ8oHtbIrSAUwmKcvBMXyZAXFxvePb7/7cVEZ8XrgOK5jKIolaMmh2UacyAv36BpKWr/scXVW6jEZ0xldIHtMj0vsQ9UhQZtNGKQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E8D72100002
+X-Stat-Signature: o6xsuetecum934rusxbcnnkot7itco4n
+X-HE-Tag: 1791188401-805936
+X-HE-Meta: U2FsdGVkX19Qb71DhvHY+DcvUqRP6IX+RFZ5sY51vxZm6J9C4CUjNPIOkBVa4gPd5uqzO4wK2e8hHqXpzgWn629vo9je5sHmxSw66Kc/6O6eQ6sIJahs7JQQsWQ+dwtDkBC6zPcRFMcgpiZuVCIpjBrXVgUZ/igfQH7HUGqrxXaxUWkM0x6RXfFfhk1Djw6H3fZdeIGOaaKqhqcnYEagBqiPNmE1+99PAK2KKleMFqfISCwT3Sgqt0NEo+IkNPQVbO1S0/ZbyNx73+8Q8ilH/3klyy8Bc2skNID3ylsAjVOCW8ErvGRUc6zBcDa4f0ywRB+Sqo3XhAM2T9SBVNB/BAb7ulmmJrssk+lTvEPdEADU+8qoLrZypRDAimoRFLMczRDsFLOmgQfrtyzOSFHuXZiBQu7b95uPjnmQ7heU4QgoHC9kjIURDcD+Wo+zkX1MvDQ35iYEN6nVTkQSwTHGTJ031PJFa84yczMuuMjeF5Gb3JcwC3mUIRMwwBaqu2t8F570uHQ0kN6cEIcvrOmAfbivsiuV7/8mo+tZoeCBXsYWSmMtuqfo3tMDoX+okm78tO06IKREIj4h16plTrdxoOBn76AEtZFsxeWXom4vI8yGtGJo6BbSqNiqTnp0S9rSZXTkW2hqFCUWM1BOEevnXWcCFt7iBIav+Qlo8G4R6bny44mQGAdLDtlw4VfZuyVm4HHWXnOkX/yGnvkT6URay34p99Tox++DRkeaEqKrBnSsuvGWQ+nbBdUI+lG6mBKjuq0O7XGTWaeTg9BYf3/4cy30iNc7pZOw8me2OEsrFZERk65tLwPJgrh5J2PwGfBkd+0iovSKcZlgYBXphASVTx6+u0cbTPT3ERfRpNHxhc7S7fQBG+6T/VgXtGMMxhNvS6dKX3u3sP4zc48KIxzmOaXzDiTpFLSQDMC/F4OMxUeVqazqEdRgasavJOH0+sto0Smmbef9N7bv1KHvRHE
+ e4G9XAau
+ 4Lk05fQ1ts9bjyUMl+MtwD6kJVu5ghSGHlIV8WuA9PCriMRBPspDKmPCEx9lBnY7z+oMsciq53hUfBQCX2vgRQe79wcw81pRr0uf8ELxY6bJkE+B5fJsOoD8LwzpDQuYVfKYuCJORilHFXJQqFxMsEz7+AMbnaEDxjagmzxh3GZrO5YHILKH3Q2GYprFVnlB4R6y+8QJGXwwvFjwwenEPTBUZqE1KHMRXhUekWS8IifCvD9oPWAqYf3tML2CncEASlDZtgLNsOkrYp6+GuLsqyWHNii2k9TTWOnuJqulUm50mFUYw/zeWT6lRWhqEHt4B1cRyW8F7ryjjdWwh0ENna2FhiLXEwt9R6L5XPmxZ4iz8UcLwuUlJ1eJBkV2R8nKrjcuElktYZk62zfRqUtwt+Caz8a3FuDZjg0T9DPS7hXp7b0vNj0wBfdlYMksvVAGAcXDvkqVtbfY2zS7SoEM6abbClibs1yf9rSEG03TkjVyvVFMxDBp1DmuWJ3ED0rbX/WNeXWLpcuHaKwwkZWoqQUF6ibKZbk8WhvqRiAzdRI5Fw6ALHAfh4sI55buSgrFP5KnXDTFE7KoGWnGK0p2cAHYdizpAvXfxb0Y0heaIOqVVTBWzM3zSz6nYudfoovbjVrsWthLDZjK+8PBhcmwmv998KNFYpCDVlpwgBZTBGW4tMQ4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,196 +223,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As mentioned multiple times before, none of this code belongs into a
-driver or anywhere outside of mm.  This has come up basically everytime
-this got touched, and Matthew Brost said he was going to look into it.
+On 05/10/2026 8:29 am, Lance Yang wrote:
+>>
+>> Did you repro any bug related to this? The functionality is perhaps
+>> underspecified in the AMD manual.
+>
+> TBH, I don't have a reproducer yet. Just LLM stumbled upon this while
+> I was investigating another memory corruption issue [1].
+>
+> [1]
+> https://lore.kernel.org/linux-mm/arY1Wq6R9OY20ans@pcnci.linuxbox.cz/#t
 
-This patch that adds even more mm magic in the driver really is a no-go
-(as is ignoring the shmem and mm maintainers and lists).
+What hardware are you running on?
 
-Also if this was broken for a year and a half without anyone noticing,
-I really wonder what the impact really is, but it really does not
-sound like we should optimize for sketchy backports over the proper
-fix.
+That looks like the Zen5 issue, for which you want either the latest
+microcode out of linux-firmware and/or
+https://lore.kernel.org/r/20261002211617.1001617-1-bp@kernel.org
 
-On Sun, Oct 04, 2026 at 05:48:27PM +0800, Matthias Goergens wrote:
-> Since commit 776a853a43c9 ("i915: Use writeback_iter()"),
-> __shmem_writeback() starts writeback on no folios at all.  In
-> WB_SYNC_NONE mode writeback_iter() only returns folios tagged
-> PAGECACHE_TAG_DIRTY, and shmem never sets that tag: it dirties folios
-> with noop_dirty_folio(), because shmem relies on LRU-based swap writeout
-> rather than on the dirty tag (see the comment in __folio_mark_dirty() in
-> mm/page-writeback.c).  The loop before that commit looked pages up by
-> index and tested the page dirty flag, so it did write.
-> 
-> This affects the shrinker's I915_SHRINK_WRITEBACK pass and the i915 TTM
-> backend, which both call __shmem_writeback().  The pages stay dirty and
-> on the LRU, so reclaim still swaps them out later; what is lost is the
-> early writeback.
-> 
-> Go back to looking up the folios of the object by index, in batches
-> with filemap_get_folios(), and reschedule between batches, as
-> writeback_iter() does.  Mapped folios are still skipped.  Unlike the old
-> loop, do not wait for a folio lock, since this also runs from the OOM
-> notifier; a locked folio is left to reclaim.  shmem_write_folio()
-> returns with the folio unlocked except for AOP_WRITEPAGE_ACTIVATE, so
-> unlock it only in that case.  It may also split a large folio and leave
-> the rest of it dirty, so look the rest up again.
-> 
-> I came across this while measuring an earlier patch of mine to this
-> loop, which changed nothing because the loop never visits a folio.
-> This patch was measured without Intel hardware, with a test-only mock
-> selftest in a QEMU guest with swap.  Dirty, unpinned objects of 1 to
-> 256 MiB, with and without THP, went through i915_gem_shrink() with
-> I915_SHRINK_WRITEBACK.  Before this patch, no page was written in any
-> case; with it, every page that was not mmapped was, also when swap-out
-> split the large folios.  The contents read back intact after swap-in,
-> and the mock selftests give the same results as before.  This has not
-> been tested on hardware.
-> 
-> Fixes: 776a853a43c9 ("i915: Use writeback_iter()")
-> Cc: stable@vger.kernel.org # v6.16+
-> Signed-off-by: Matthias Goergens <matthias.goergens@gmail.com>
-> ---
-> v1: https://lore.kernel.org/all/20261002073107.2209644-1-matthias.goergens@gmail.com/
-> 
-> Changes in v2:
-> - Look the folios up in batches with filemap_get_folios() and call
->   cond_resched() between batches, instead of one __filemap_get_folio()
->   call per index with no rescheduling, which Sashiko pointed out:
->   https://lore.kernel.org/all/20261002091439.59C611F00899@smtp.kernel.org/
->   Measured with the same test-only harness in the same guest, v1 against
->   v2: on a fully populated 1 GiB object, the longest time the walk ran
->   without reaching cond_resched() went from about 85 ms to under 0.1 ms;
->   on a 3 GiB object (786432 pages) with 1% of its pages present and the
->   rest holes or swapped out, one call made 255 filemap_get_folios()
->   calls instead of 786432 __filemap_get_folio() calls.  A run of swap
->   entries is still stepped over inside a single filemap_get_folios()
->   call: about 2 ms for a fully swapped-out 3 GiB object.  I did not split
->   the range further, since every page of the object was in memory until
->   just before this runs, so holes and swap entries are the exception.
-> - A batch is looked up ahead of the writes, so if writing splits a
->   large folio, look the rest of it up again (v1 got this by reading the
->   folio size after the write).
-> 
-> This replaces my two earlier patches to this loop, which can be dropped:
-> the loop they change never visits a folio.
-> 
-> https://lore.kernel.org/all/20260915062924.2410550-1-matthias.goergens@gmail.com/
-> https://lore.kernel.org/all/20260914105606.3997649-1-matthias.goergens@gmail.com/
-> 
-> In 6.18.y and 7.2.y, the maintained stable trees that have
-> 776a853a43c9, the call is shmem_writeout(folio, NULL, NULL) instead of
-> shmem_write_folio(folio), with the same return convention.
-> 
-> In review of 776a853a43c9, Christoph asked for this loop to move behind
-> a shmem API instead of living in drivers, and Matthew agreed:
-> 
-> https://lore.kernel.org/all/Z--XtaM7Z3zbjzAu@infradead.org/
-> https://lore.kernel.org/all/Z-_hQwNeiOnNYJVp@casper.infradead.org/
-> 
-> I kept this fix inside i915 so that it is one patch for stable.
-> 
-> The test harness is not part of the patch; I can post it if that helps.
-> Testing on Intel hardware under memory pressure would be very welcome.
-> 
->  drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 70 ++++++++++++++++++-----
->  1 file changed, 57 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> index ef9440166295..d2077b823b1b 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> @@ -304,28 +304,72 @@ shmem_truncate(struct drm_i915_gem_object *obj)
->  	return 0;
->  }
->  
-> +/* Start writing a locked folio to swap.  It is unlocked on return. */
-> +static void shmem_writeback_folio(struct folio *folio)
-> +{
-> +	int ret;
-> +
-> +	folio_set_reclaim(folio);
-> +	ret = shmem_write_folio(folio);
-> +	if (!folio_test_writeback(folio))
-> +		folio_clear_reclaim(folio);
-> +
-> +	/* shmem_write_folio() unlocks the folio unless it returns this. */
-> +	if (ret == AOP_WRITEPAGE_ACTIVATE)
-> +		folio_unlock(folio);
-> +}
-> +
->  void __shmem_writeback(size_t size, struct address_space *mapping)
->  {
-> -	struct writeback_control wbc = {
-> -		.sync_mode = WB_SYNC_NONE,
-> -		.nr_to_write = SWAP_CLUSTER_MAX,
-> -		.range_start = 0,
-> -		.range_end = LLONG_MAX,
-> -	};
-> -	struct folio *folio = NULL;
-> -	int error = 0;
-> +	pgoff_t last = (size >> PAGE_SHIFT) - 1;	/* last page, inclusive */
-> +	struct folio_batch fbatch;
-> +	pgoff_t index = 0;
-> +	unsigned int i;
->  
->  	/*
-> +	 * shmem marks folios dirty with noop_dirty_folio(), which does not
-> +	 * set PAGECACHE_TAG_DIRTY, so writeback_iter() would find none of
-> +	 * them.  Look up the folios of the object in batches and write out
-> +	 * the dirty ones.
-> +	 *
->  	 * Leave mmapings intact (GTT will have been revoked on unbinding,
->  	 * leaving only CPU mmapings around) and add those folios to the LRU
->  	 * instead of invoking writeback so they are aged and paged out
->  	 * as normal.
->  	 */
-> -	while ((folio = writeback_iter(mapping, &wbc, folio, &error))) {
-> -		if (folio_mapped(folio))
-> -			folio_redirty_for_writepage(&wbc, folio);
-> -		else
-> -			error = shmem_write_folio(folio);
-> +	folio_batch_init(&fbatch);
-> +	while (filemap_get_folios(mapping, &index, last, &fbatch)) {
-> +		for (i = 0; i < folio_batch_count(&fbatch); i++) {
-> +			struct folio *folio = fbatch.folios[i];
-> +			long nr_pages = folio_nr_pages(folio);
-> +
-> +			/*
-> +			 * Leave locked folios to reclaim: this runs from the
-> +			 * shrinker and the OOM notifier, so do not wait for a
-> +			 * lock.
-> +			 */
-> +			if (!folio_trylock(folio))
-> +				continue;
-> +
-> +			if (folio->mapping != mapping || folio_mapped(folio) ||
-> +			    !folio_clear_dirty_for_io(folio)) {
-> +				folio_unlock(folio);
-> +				continue;
-> +			}
-> +
-> +			shmem_writeback_folio(folio);
-> +
-> +			/*
-> +			 * Writing may have split the folio and left the rest
-> +			 * of it dirty; look the rest up again.
-> +			 */
-> +			if (folio_nr_pages(folio) != nr_pages) {
-> +				index = folio_next_index(folio);
-> +				break;
-> +			}
-> +		}
-> +		folio_batch_release(&fbatch);
-> +		cond_resched();
->  	}
->  }
->  
-> 
-> base-commit: ce1e0223d8ad4211275c82a17ed6d43ab81e13d9
-> -- 
-> 2.56.0
-> 
----end quoted text---
+TCE is a no-op in Zen1 and later, so unless you're on older hardware, it
+won't be that.
+
+~Andrew
 
