@@ -4,104 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AABE1CA5FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 14:16:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 234A2CA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 14:22:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54F426B0088; Mon,  5 Oct 2026 10:16:57 -0400 (EDT)
+	id 0C4B96B0093; Mon,  5 Oct 2026 10:22:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 528486B008C; Mon,  5 Oct 2026 10:16:57 -0400 (EDT)
+	id 09DDB6B0095; Mon,  5 Oct 2026 10:22:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4159C6B0092; Mon,  5 Oct 2026 10:16:57 -0400 (EDT)
+	id F1CC36B0096; Mon,  5 Oct 2026 10:22:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 21CA96B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:16:57 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F69B12028A
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 14:16:56 +0000 (UTC)
-X-FDA: 85288774032.16.BFF1FBA
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9154D1C000B
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 14:16:54 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bgzHUU6f;
-	spf=pass (imf18.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C83816B0093
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:22:01 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07AC3C01CB
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 14:22:01 +0000 (UTC)
+X-FDA: 85288786842.21.FDCB464
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E4CD21A000D
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 14:21:57 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791210119;
+	b=BMO9FmR/TTUsplca5cvWi7ZUW447o0HWQb4aWYR+1iA8z65PIhdNzsLh1eVBNrttqkEANt
+	zZSvkhmPSHys54fRDHuw6Yz+SRqVKSiurhncfj4/ae/PJdKNzUHjxON4YQ+xhQedXSCsrc
+	TBw7439mUNTtEFYVnc1ybRhmKZDGxck=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791209815;
+	s=arc-20220608; t=1791210119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IXAyPFGuOfJvky6xwcn7tskfN6n5dL/Z9O3DSglTcqs=;
-	b=nknECIm5Kl3f+J0HmMgHIAvyyBNcm5i95Uv14scZfQFBMidHdBiY+GmGI2YjOskcxAg6Fq
-	wewc8u+xengiv/GbQj8+GQaZxupJo87bOHMz5LrhEI5RjL+lcYzBILn6/w30K3hYQXkxt4
-	PiF7ZWaajbQqlGTm3FvZ4A0tD7mI/co=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bgzHUU6f;
-	spf=pass (imf18.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791209815;
-	b=vuBib+ZxxgJnfI0209e2G+jSrjZ4gWY74xOxlIE8WMrRl4vV+piVlqmOUl0MA0JnTabT21
-	UPQiJXtwmsqCb4azQ8jCnZKPM0ZxCPTdB3KnbvNKIv07vLwQHThO3qLy4Woln8AVAcbBjk
-	0wYh03W/ierZDc9xuYjGcqx3n6+Bs+Q=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1826F152B;
-	Mon,  5 Oct 2026 07:16:50 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D7F253F66F;
-	Mon,  5 Oct 2026 07:16:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791209813; bh=g/PvErAkWqPLLMhfdp6s6oupiEeHn6mW6CPEnvMmZuM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bgzHUU6flQh4WV6N8wrHBOjkrnfRN1RjtIvlMsJTgnfprNOTNrWuI3ZbDwgLxQR6u
-	 v7S8MV4n/CktpjfTJ9ZhjsMfIcAKAAGxPtN1AqraVPnHJIKph8wN59edTO4IJ6CtLR
-	 dvUlUakISZh2+PUjuHQ8j7SIV0IRr3EekSiHKrfE=
-Date: Mon, 5 Oct 2026 15:16:38 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:BPF [GENERAL] (Safe Dynamic Programs and Tools)" <bpf@vger.kernel.org>,
-	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
-Subject: Re: [PATCH 0/7] arm64: Batch PSTATE.TCO handling in kernel nofault
- loops
-Message-ID: <asOxRkayznzX-K4c@arm.com>
-References: <20260824160523.3907021-1-usama.anjum@arm.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=dd2ahcUzokt9zubppyaUsQ8ScaNPCK7xleJSCDqMITA=;
+	b=sY/TpkWQ/uy0H0dcjDWE+6ZHAnyy/iftVRPSEeQcOZ26dN6TLospvNuZDjjA2ixBBOgVSN
+	RZDxCmh5liR8M4ETtPFLJmJFEQdaID0rsHzTKRs3HhgL/KyBvy97aRHFAsMq7/pUIvuW1H
+	tdbmat2cMVIOAkZFZ695sRrDWBjV3/c=
+X-UUID: 170b7cd0c0c811f19a56ed5b684f684d-20261005
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
+	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
+	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
+	ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:0dfb1966-5f27-4c05-b2b0-9a162f5eefa9,IP:20,
+	URL:0,TC:0,Content:0,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-5
+X-CID-INFO: VERSION:1.3.19,REQID:0dfb1966-5f27-4c05-b2b0-9a162f5eefa9,IP:20,UR
+	L:0,TC:0,Content:0,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:7db8b62,CLOUDID:e32978d867f735ec8dd91cb4c0b3d7e9,BulkI
+	D:2610052221484IO67GT4,BulkQuantity:0,SF:17|19|38|66|78|102|127|850|865|89
+	8,TC:nil,Content:0|15|50|99,EDM:2,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:
+	nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,AR
+	C:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 170b7cd0c0c811f19a56ed5b684f684d-20261005
+X-User: lienze@kylinos.cn
+Received: from localhost.localdomain [(39.156.73.11)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 2123756161; Mon, 05 Oct 2026 22:21:43 +0800
+From: Enze Li <lienze@kylinos.cn>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@kernel.org,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	enze.li@gmx.com,
+	Enze Li <lienze@kylinos.cn>
+Subject: [PATCH] mm/hugetlb_cma: remove two unused include files
+Date: Mon,  5 Oct 2026 22:20:40 +0800
+Message-ID: <20261005142040.675204-1-lienze@kylinos.cn>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824160523.3907021-1-usama.anjum@arm.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9154D1C000B
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E4CD21A000D
 X-Rspam-User: 
-X-Stat-Signature: 7xczuwju963ehtusfdf7gowb18tc1nfw
-X-HE-Tag: 1791209814-541247
-X-HE-Meta: U2FsdGVkX18NOPH81I4WAIU8D9Hr/oHc5g8qLM9fvbYWzEdPG/jdpOeIoYu1r74Qnq8Vl0Sc4yj+peQc9AV4TP8c20cmg330rsBvwXJrIwh7/6xmp/LDrctrSskcHSCLVJtEQ0NB73s3nGQSPdIeFg2bNz8mV1Jn6UhaW5pHR0/BEdL8jzhxrN9j1WM1MrBzcyg4OkxvISP11w8k+6/K5pCQRjfVV8//w3iu0wPAp9ta36zEEITIaXiOsnb4ezVop6dY5x6T6STwNaC+aeAxJH8V+JSeBglOBWenOG2xJJ86MOECPSRz9EiZ+Iwzy/D5qz1YHBUq18wq86jBVsUhrc8xuah1TU7Im6Zb8nhLcXpdyEEdxbdE1p5W4UZsniXKpjrU6j8FDVMXp3BlL3MBOxggM0/5B+vM5yd1Qzg1SdlK88C82dcxV7hlF7lVt2iHJAp+XRjvoez7exAzCqQTrY89blT91CRNZR2F9ahU7Rt44gsS+zO1vzMl7saDya9BsqzT9uCOSTcXFYkJeQAISVzWeon5l7WtfWhZSL4SN33PJdcGq+4TsKy3OI4SM+l/Y5iwB63WJy8x/44zcctjM4OMvRmqAzAV+UlHjWm76OtYsckOYWnvB0EjfVkWclOZKMtH4QJJlp+CJo0r05oJOfF4Qs02meEU29us/sml+iDhDrbB+H7ygp4883XRNTq6tyC6siiN882bWxPVYTahIjeYWXtoOT66oQnr101+5Gt3CKp7ZqCJD581/UV0ZvczIYib52HTrFaIwDmpnd88Oz+/5Y5y0nVO8PP0YYxDhRzJ92VcsLohd+Bh6G/YdqBqBG8p8+Qgdrgp3DQ2tb4i3Efu8VQ1J/QU9HrlNDe08SRffCxIYLPwLljYrCR0l728tlFpOT/SxspT1fPCzKqnH/hkjqysNpPij5Dr4O38aWypfEOi4pK7nvHAp5x1kSpa0Kmb7ZSLih9JWErRVW6
- SOQEctLs
- O3SoQ4YUXKhZZccGKpqmYmL0S2bn4D8l37k47E7JtuBAa4icgDVE+kR5nSKKd1vHxNmIdrIFdEdCEs6tkJPkvYCoc6RRaSqQTECGUdxc9tWYnO93qM0rklATxUzqmLzc33kVv52Updtfn9wn9bOiECYHWhQG2Ku3I2cSghsp0uM1aCR5Ociibl/1Zt1beR93sTu4JypR5xTc+wKZw1Ksf07afM3Tg7MUtkSzxfCAQ1UItc7M=
+X-Stat-Signature: w5kfa7rwo8ckkm5adr58wibw7ydbyj5e
+X-HE-Tag: 1791210117-601738
+X-HE-Meta: U2FsdGVkX1++bem1Jc8t2c16s+V0azcmstSeV+JgXTcy79ZlGRB76AyLkRTf2IFuAkps75fuf/xiuoFNJQVHyICIjFfHqNAvG/nOv3Dhgkdidb7f2b2NAXXse82uHhcnDbuHgJbkgvXbC1Qq+9KG1avRZwZvS1l20p9F3RVngD4WxcZyK2Cf2Rl+oKqMiCzh9NdOLzwFGfbmr5TgmMWk/a6bEhzta5rbXo+0+tggujVS+cnyefuOigulIp4c/H2SpzU7VMfF/YSL57t2+mU6iPzBYELJWl9HQZbb5c01sdmavr4fup5rIl8AoVUG0S4chtk7EeeMOa0JasEfHLslCcJha9f4YOs5tqOaV3+4IUfkPMufk+zfKfRkWlWL/lRIwjvHHidHQM3GS5fadpFpruvsbwg/jjWa4EL+JydG/jxjAZtEKDRNOwHIiX9QuGtVK9GKC7oVeULiey8ji7RpD3ldn8EPygRhllkpVJxbHB7y6Ncn3PCXdWT6dCEczSYi7d9bVtMN5HYuTJMLdnPapyXh5tJnxhCBIBGMM73Zwp4/vpucdwofNa8cvQYxm+WooAwVOzl6TW9fLH0xWWMb8jMRkRmzoFQoS03/UfvQVewHKBBCPlG8laBNtjTh91mLjny+kLl9KM8wSj4U2urPaZKynFLDGifxbm6EZwZGlOTSK1UKWzAbAEetMHYCIXhYmI5hHBrK2j1IFeLHkC5qlUT4DbGN6q7DEiy7FftNO1wOgqBwbWIshHB91UIQ6/OSGawOHPUtJi9Ese4Epz2nGP7ggodUGaHCOcUpJ1EQB6l3vrp+lhLQIo7Vbjk/XxxBbXLzWcOdYpAIDUw0ZSe6Z+4AxyBo7QgF5DN8dgTpTwqMUW7WirvcwlByA+LE5h/Idg65jA/FRrvjcEJMQgdDDdgKu5B5+IMWaDFeZVTxJVsS2NZp0i0sx+krDijm/9rN577JkICjvtntOl/NhfE
+ 66k6XVyr
+ IzJEzHCVRnIjOXjT682tDfkWCQFR0JC4Dcg6aGSb9ZUUNfcQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,38 +106,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 05:04:45PM +0100, Muhammad Usama Anjum wrote:
-> With Hardware Tag-Based KASAN in asynchronous or asymmetric mode, kernel
-> nofault loops currently set and clear PSTATE.TCO around every access.
-> 
-> Introduce bare nofault accessors, batching hooks, and an internal scope
-> guard. Convert maccess page-fault cleanup to scoped form. Skip
-> page-fault setup for zero-sized kernel nofault copies and zero-length
-> BPF string operations. Then use bare primitives in the maccess and BPF
-> loops. For non-empty operations, this reduces the code-derived dynamic
-> MSR TCO execution count from 2N to 2. Two-string BPF comparisons fall
-> from 4N to 2.
-> 
-> The BPF changes and an earlier maccess implementation with explicit
-> cleanup were tested with QEMU arm64 using Hardware Tag-Based KASAN in
-> synchronous, asynchronous, and asymmetric modes. All nine arm64 MTE
-> kselftests passed in each mode, as did the 138 focused BPF string_kfuncs
-> and varlen subtests. The focused BPF tests also passed with the default
-> non-MTE arm64 CPU model. Both final maccess scoped-guard patches were
-> arm64 cross-built. Runtime tests have not been rerun after that
-> conversion.
+hugetlb_cma.c includes <linux/mm_inline.h> and <asm/setup.h> but never
+uses anything from them, so they can be dropped.
 
-TBH, I fail to see the benefit. There's a reduction in the number of
-MSR instructions executed in async/asymm mode but does it result in any
-improved benchmark numbers? Which workload hits these loops often enough
-to matter? They are mostly used by tracing and debug code.
+Found with clang-tidy (misc-include-cleaner).  This holds regardless of
+config: the file's only #ifdef is CONFIG_NUMA, and it only touches memblock
+helpers, so removing these is safe on all arches.
 
-AFAIK, most people wanting to use KASAN in a non-debug environment want
-to go for sync mode, where there is no MSR and this series only saves a
-few NOPs. We might as well go for a config option to force sync mode (or
-off) and remove the unnecessary NOPs, *if* you can show any performance
-improvement.
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+---
+ mm/hugetlb_cma.c | 2 --
+ 1 file changed, 2 deletions(-)
 
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index 95fd2d190f0d..80b2407e9f07 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -4,10 +4,8 @@
+ #include <linux/cma.h>
+ #include <linux/compiler.h>
+ #include <linux/cpuset.h>
+-#include <linux/mm_inline.h>
+ 
+ #include <asm/page.h>
+-#include <asm/setup.h>
+ 
+ #include <linux/hugetlb.h>
+ #include <linux/memblock.h>
+
+base-commit: 0aaec43576cd41474a8e90c919631c0c9fc88417
 -- 
-Catalin
+2.47.3
+
 
