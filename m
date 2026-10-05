@@ -4,106 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AE71CA5FF5
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 20:18:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D95EACA5FF5
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 20:40:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C56D6B0088; Mon,  5 Oct 2026 16:18:40 -0400 (EDT)
+	id A6ED86B0088; Mon,  5 Oct 2026 16:40:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49DBB6B008C; Mon,  5 Oct 2026 16:18:40 -0400 (EDT)
+	id A46DD6B008C; Mon,  5 Oct 2026 16:40:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B4396B0095; Mon,  5 Oct 2026 16:18:40 -0400 (EDT)
+	id 9350C6B0092; Mon,  5 Oct 2026 16:40:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 125646B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 16:18:40 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A60B1A70C1
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:18:39 +0000 (UTC)
-X-FDA: 85289685558.24.2E301DE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D14D840008
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:18:37 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vib4knmL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 69D006B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 16:40:30 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DAA14160493
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:40:29 +0000 (UTC)
+X-FDA: 85289740578.03.14BB684
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3901540010
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:40:26 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eiJZdfPl;
+	spf=pass (imf17.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791231517;
+	s=arc-20220608; t=1791232827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aY2j7X8wBXJnkUSvdFrO7hrVLgYV9VQvfdE75ziBQEw=;
-	b=4lw3kpyEdlWS6uGPT1se3s1dIfq1RPxtiWl3OQB8PZs05uDj9JJX/Uw/pEv1ZCDHbT1ywG
-	ynXoULZVz27vEHOOpFQKNmbHbqFE2NOYh0pVKsWLpb4rPo4aH43sMnYRE6qMHrsBDrZZ6x
-	XBOUwfGqUFqWHinnrTDfY9JziQh83CE=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vib4knmL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	bh=hW5P4NCcHfyGHbJZF1DNl1NQBu8IkdsCT0CTDVEsdgw=;
+	b=bBiqpvnie84litUBgV8rHBj1BsiE6fOKJJ8NK7QH3yGoITKX1ZhBg0L2TZ0RN6Tu+jsP3z
+	5pUiJJUayYZQ+H5uvVSwSGzIWDpeb2qHAkdrafnP6zS2OEgsaOgLSgdIYCkIlUN5gHmB0z
+	vOtKThqH2APPdlkrvGbKNuFaZyZK0B0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791231517;
-	b=iqjyuuzFVh+vfBDPBs78po5Nm9pEACdHfavrhJelExgydl5ly2dcZ5j4kqHIeeLFGF43Wz
-	ruaJQeZyhRevdnfb0BppCbwJELz5FRfg/YyqFGsk7ieG5ggp2I13NkVEfvnHDOMT7tjxnM
-	h2Qe/wBwTdN+hWCG4NJpTT3LzOeg50U=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 116B9601FB
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:18:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09BC1F008BF
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:18:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791231516;
-	bh=aY2j7X8wBXJnkUSvdFrO7hrVLgYV9VQvfdE75ziBQEw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Vib4knmLGfUAovO3FFzzs1eZAaIJw1IddjkmwyiDgQB/MHE4iE7ZzjBsfBVIiC/K5
-	 uMvB4Ih45YfMJ0uT7vzUqJJerb6guypqGS3ddEJXhJzj2DWye+4QxlyrAz+ooirKq0
-	 9ClIlMWFiSwppQl48oAN8OghNE8n7MuDoy/U86vgMUo6V3NuvCg7JNBkrRZwrGHZMO
-	 NxvI0nIcgXJttMsZAWJdscctsveqoI3CTudqUJHb0xexiuEYAeCUVdvGz49FT2OG3A
-	 Jul3VE6F24zADMyXM2cmZCyEb3FkKrozHKNrGr2/Eqi26XLOGtaavDdcB7vpIsSNLW
-	 TAoFKgVHPPOUw==
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a9984f9adcso3293385a12.0
-        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 13:18:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByxqSpxJvIqHPDNkIc8E6nup3uEgGe8yEay/PeGXtwqGRX81b+xPf9KQrk5/ReRGGWdXM85nYT9zQ==@kvack.org
-X-Gm-Message-State: AFuF++msi/UZsCo+LXHWT17J0grw2gEu7VADji3PNZNR9kICZS5aMaYy
-	u2pWcd51wE/R0BiCVNI6h7cnZglOy925SQujR8TJxES8LHT5eDJ1sUjx90E/kmfU3MCQtqFrwo1
-	BIg5Sq81PsxV612njhAio/+Y7b9hTwuc=
-X-Received: by 2002:a17:907:3f95:b0:c25:32b0:e56c with SMTP id
- a640c23a62f3a-c2e4a95e407mr977900466b.4.1791231515414; Mon, 05 Oct 2026
- 13:18:35 -0700 (PDT)
+	t=1791232827;
+	b=BuDhKGtQRmsvepug9+AvLoUOy13JDiFgaqaZLQo7cJ2UnCel0T+z1Ka48mFviZbXI+fELV
+	bC5sL70uazeFrNTRngEYHnnntToLYc5E/KBuPFSwL5LRXMFOVeaR91QH2p73qKTwmXKc+q
+	LmgCb2/ty+iDFjgE0pt5Nkd6FkcaBJA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eiJZdfPl;
+	spf=pass (imf17.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791232826;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hW5P4NCcHfyGHbJZF1DNl1NQBu8IkdsCT0CTDVEsdgw=;
+	b=eiJZdfPlK/vFaLtLo/M3S93+Kh+rLYhvjB6TjcyHGaFnB4zPCbX8AtgpGnJ3HRzV+z2qE5
+	BLlPysAa7d7flJW68K4gL3eEcDEmB5j3gE1cYWnLgCHb8yrqL5x71XHsWOnKDjAxjO+u7y
+	T0qDO9HTjzwUF+HoY4LiIsBHL7kGNi0=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-311-4zz0Y31nMN6uCR6s8EbjJg-1; Mon, 05 Oct 2026 16:40:23 -0400
+X-MC-Unique: 4zz0Y31nMN6uCR6s8EbjJg-1
+X-Mimecast-MFC-AGG-ID: 4zz0Y31nMN6uCR6s8EbjJg_1791232822
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-3a781d434f0so15483821fa.3
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 13:40:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791232822; x=1791837622;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hW5P4NCcHfyGHbJZF1DNl1NQBu8IkdsCT0CTDVEsdgw=;
+        b=EVjhTFnGOq9wgoAImA5Spsz1Pr3w676JA/v4WNWSU06g2zrt/7Z9gzazh6SbKnSaEI
+         hLZnhFI2Wd6T8UOHB+FfsTzFazyNEV/WgTRkfImzdDwcZoGJptSKJf2xCYD8PwVp4EMi
+         Y6gIjuhdXbrLO9s00w8ydEfrnbKZ9zUb1ZOCTafdsO6gOMs4lO7ZaeCk2HEW6i9LSE/u
+         Vbq9mM7yVUM6oSeWxxUDbZMzZrV8IQJknAt/f6O3ThNe4a/F0ACRmerUzy8RqIxOY8zs
+         sTrksSz4C9fuCFHUqu4hwncevePtrm99ZYDROxnFqX55wlmNdrKU3/6gax4cfMJg1LPQ
+         Ut+Q==
+X-Forwarded-Encrypted: i=1; AKwUvByaDCOE9yqqjmPN7vefS3LkmRZ0i7TkTcICt4k3hqqR9vF7qzyI0+PNlMn3m+LFqWdEYoDwN2qkZA==@kvack.org
+X-Gm-Message-State: AFq9FYL61zsUFtX9QsXkACIiDeQfyT5cZk6jCO3BdwOaZwqSd1ckdrZ6
+	G4kZeSlFMosXA30vGGKgYke27YUy+KHspBH1SUcyMUwU/RpvIPBnW5+23qgtKnPXSQ9Hugs5b5z
+	Ma6TgpBR6Qh06nmU1K0RyK+50Ioeqa1Y5GxZqdIRxDKObmhAOnqzE
+X-Gm-Gg: AYBFou1E/K+2XMc/hCBJLGoIlA9/1chuddfYEFwK7TxfFdn8y6+Gbx0tsNDfRkKlxix
+	3/oETT586xeHgcKC6F0+xIiH2QUcuVdYKU1E3vV0bXb71d/KXxaaY/MMiM0GAzFpHEI4Q3xiCOE
+	pkoKoGCHufUC2Twkx9+P0V+u5x/C8fLO+ZaaQTOgZNcyTPraTjo5unKc8u5n/6VYBu0AlayUaKP
+	YsbCGvYvfHz16tqWl8wEh2D7H+cOLV+t/bObQxg6MaJPXpGB91xuoadlG7vJAeklWSBgXngttSY
+	sfvmJaIG3YlIh0ky3rmMJ3Y87sdXWIVzvZZEIQxkT5SalwfUwVUhm6NEt7gY1rp1rP6mmoJn6dZ
+	etBk=
+X-Received: by 2002:a05:651c:1602:b0:3a5:b1f7:a7bf with SMTP id 38308e7fff4ca-3a974f64065mr22350591fa.21.1791232822110;
+        Mon, 05 Oct 2026 13:40:22 -0700 (PDT)
+X-Received: by 2002:a05:651c:1602:b0:3a5:b1f7:a7bf with SMTP id 38308e7fff4ca-3a974f64065mr22350491fa.21.1791232821598;
+        Mon, 05 Oct 2026 13:40:21 -0700 (PDT)
+Received: from [192.168.2.110] ([142.172.30.162])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a87e28b131sm45437081fa.1.2026.10.05.13.40.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Oct 2026 13:40:21 -0700 (PDT)
+Message-ID: <9adb6aaf-6e50-4ab0-a021-2529807dff02@redhat.com>
+Date: Mon, 5 Oct 2026 16:40:14 -0400
 MIME-Version: 1.0
-References: <20261002095503.3585565-1-usama.arif@linux.dev> <20261002095503.3585565-15-usama.arif@linux.dev>
-In-Reply-To: <20261002095503.3585565-15-usama.arif@linux.dev>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 5 Oct 2026 13:18:24 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zN+9F0yh0bTDsysumziGc=zgs7vZMLvt-nWPhxq36wT0Q@mail.gmail.com>
-X-Gm-Features: AclHuK-vsi3EfpgIHJBHYD0tDXS4EbYOA2yKu19KkRG6I9OLgQqCV9dXUAiOl5Y
-Message-ID: <CAO9r8zN+9F0yh0bTDsysumziGc=zgs7vZMLvt-nWPhxq36wT0Q@mail.gmail.com>
-Subject: Re: [PATCH v8 14/30] mm: zswap: reject high-order swap cache
- allocations backed by zswap
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, chrisl@kernel.org, 
-	kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org, 
-	ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, willy@infradead.org, 
-	youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
-	shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, 
-	dev.jain@arm.com, baolin.wang@linux.alibaba.com, 
-	Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, 
-	Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
-	nphamcs@gmail.com, shikemeng@huaweicloud.com, qi.zheng@linux.dev, 
-	luizcap@redhat.com, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: qunb7my3qm1aqpjhpsz3f648jorffmw9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 09/14] powerpc: move has_transparent_hugepage() out of
+ THP guard
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
+ lance.yang@linux.dev,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
+ hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, hughd@google.com,
+ dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
+ dev.jain@arm.com, usama.arif@linux.dev
+References: <cover.1789695931.git.luizcap@redhat.com>
+ <05a71b6011a6eab7b096f262485fcb8b4987976f.1789695931.git.luizcap@redhat.com>
+ <f54d5d75-5cc1-488b-b640-76163419cf4d@kernel.org>
+ <25bb02df-a795-4e48-9de6-99f1ca799176@redhat.com>
+ <802564f8-1376-451e-8308-6f98d1efb099@kernel.org>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <802564f8-1376-451e-8308-6f98d1efb099@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: H786pmLFAxw9Av9kZ1i8xKq-yB0HCPEPBiOAAHsWurk_1791232822
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3901540010
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D14D840008
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791231517-612732
-X-HE-Meta: U2FsdGVkX19G9ga5k1uYQSXq4ySi+g4tDWGH8WyG+K0PwrLMyoo3EI/o2buAcOmG+qqJlJUcDwV9p29ZbHzvVLB7MC88PxdoHXrlOBveieYGpt0E2XIVKkAY/CS1g01mq86WT4HATRJgcw5obg2m4mzh0vG/Mtb5aPzRcVnBT3wGdmV36pvaGSWTgIG0QbjZECEB7wm8uX8h+j2Fb9y87n06+KVGnvUcfqN8RzIjFFrcbMoe4HuwyCOSd8zoB/JU43llJy8TUsrLrd1AQMvi483Vc6mNNUY9vOXufLXNZu9YPD23O2XsB04zKxPeeR+JyFZSLpXUYC7XmTP7lKkYH8F9RNDeBZKfnklsgNMnzJh2AWG/Vdl+UReyf7ONsilWUJH+4l57sQQspHylFgRnpMxraYd12ae4iqCBixvlstpFztu37uYsjtdsDHySrl9qWmYqRqjwz9PkU9zvnEBArqipYiK0JSbzCnKQKxW5dr0hXtNFw2WsrqnUz7Fefsoy4WfkrnxR7uHeeaaNut172WBp7MkR/j6nI1Ouc3lCSWeZKWdJ7SUiZ7kjdtuMK/1CsUHz2EGbU4D8lSeSJpnsBM2LNVK66CRuKxtmupk24YbSiqZrHFNaEq+zOXFN/vV+8BO0VMUQl5zFITVnHJNf1YvsYYa0W5YNp0PVmn6Q56n5x/9mPIM5HY2rdzxvme/elTHMYTbYj7au2cmJ2hYdqWX9wpuPM8nk4kCxFvv8VHvHfyJKSMDnUy//XE54EVQdTXO0JtXwnOVf+gn6Js3MaTSJUCW66pqgNeFEAJiVfIv89DmGvshTyW31MHhEOJ5mw2hqy+rFFsoqd9Pu7mkB7MEIKBQPFrUPjSVD5vL94QhzeKyMfsK5US9viNqgN7VJbCKCbaUq3cjXjXhmt86Ty5cZiTSyz64hQ3WfmIvN2UwmhaaZLJvW0Da0uqGniI63sbUQxDGPpb5x4Wplyjw
- fxDcaYjp
- Tx1uWADsb5jOSdcnJQzcXBD/NS6IrmJk353he1tE++BPeHrdK9lyhyrhehcnL9mbC8eBFckZyWr6qDdeQZxt5mLRj8EmKZNj/Zqj0bHm92F4nUXncbrGRrQub6CRch+Rc7Km45IT4sVBPcDxi3xc7C55weH4qxG1IWjO0V4npZV4nOP128fQKsfsI1FZ5i+EuMXHKQQpfOJnD1sHGl1UnRl++sh4rwpnQ/r0nlea0CCJoi9szn40u+oBlGX8BGPH9OevIJH3NyURgyrsdpdVbCxL+O1PH0qufXekw
+X-Rspamd-Server: rspam05
+X-Stat-Signature: bwwwwic7we8tohxe96y53tf663q161r8
+X-HE-Tag: 1791232826-897619
+X-HE-Meta: U2FsdGVkX19DShWmMZuQFZRc8qdqy7hOHvt6sH3Oi8i2H69znBq3ehJ1QSrW/sLucQw3C2vWT44JUtX9cV6+a14oR3EyCDlNmVLmscx5ljwGidYyi7lgIWJ8FhCTXSxEGTkrM2fBIUTgRrwapIAN10HmK3OV/E6IOSR0Dz0Ji5glkXxwf1Z+/wO6Hdh8sXzSLABIBI78LeFHDr+5Y4FWYqyp2SamfU8Txxlawcs0M6YF0M3I5KRMXsq7izma0nakDG3Fo2CaGtZ8BaRU5gPYDshYnTRRW6aBCt+dIwqTiAIel4RD1V/BALQoML8TgyFXlTUejEp4spg/u7NOGOC8WU8xMYF8CBVqW2IdtuT6+ueD8qoNiRtc5KU3qf50+aJdTDemyvbvIBmWvGNm7Rkgp57R93EdRJ5C+jRn5wsqXwlRyyZckSxWZUYkuk9VGG4D2fIXwUuqxe79rVI6g5cGI7ey5RvppTffCsAF0BxhqsplJvZKi45hMBOQ6OR4vuO2x21PUoBwpGqGTRc8rp2FYy45WPtfPZqBUPWojQ5h+CNqmA5whLVaZmEnmgX2CQxGHpV0rpPdvsl3aDbXAl/YfL4tshJsScsCAf7Ql/dBA2gTOGwaJzJlo+7X+EhHnshDRTOvpMYxoNfsUpIRHD2TPGbj+njSzF9Vn6IZYVJ2E+38g5qb3TmNmIAQFE/gA68nJ2+ouh0N0rh1W6NPCOTw1Tq+A8QR3hKfpXXb9v+CPeoIwEtoezCyQFg/lWmSpUXLUegUQpsOJMevmW+k/hZegmHUfgdW6rhv2+iAuNo+LlqP4TBM0x9oE+fJuAq6k3snxPrJW8ZMbSHH6zD0O/neYYZD18b+/3iBX6RoHJwtOqPWiS+K5LQ7SZXu2A2OwhFIZGq8DtEPoV1ZOunVmJovySlpyULSaDKrsWRu020V8tnqh6uzuBX6y3HMpGt9iuss0+bdAo2Fv4+aeMc87JR
+ DanBdgNu
+ Po4NgH4DpLjb8FWJEwzocOrXeaqr6ePEc+D1JULUSLMuYzC0Hagr68szXagvuRJLlh6N7emQtGpAetH1cjz9U6tvyQWO9i1mQMyCDK+63L6RndHCIBeQe3Gl9jVBoR7kCvL2/yke4oFl8IqUsfATfetYcBgg/NhF4YnRA7UBTtaDG74+k6yLtO2GSUWvujX87yuo3G7aklRRJztep+2cR/PsXEmN3luW4xEfOUZ0mENh7Vzl3MTedc68WvumuUfy5IYfsHc6Hwth+Tm3GZ6sYoU/jD3Ylge+nx6M4iC7+Ij+LTEqzGO8MeuKtpvUJ3se48yza96v3Iql94IX6NY0i3s7tcuxp8HRLFDK7AEjH7MEe0RQHyE9DvoFwAkhvYnaqNdnci+BebPaQSi9ydMYqVbtGUQuBFFhrk4QhbS73RiNEOq6MFV8MU5MefdEtUINwx2V60IRs0RLjVBIgq1YeGZy9naHdqYzWz4xEptVvDwz+/zIcYPlGxfX6A59DWMfH7ktXvCftL/PlElNVhdsWiSSgWF/3AYKv9dqN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,190 +144,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 2, 2026 at 2:56=E2=80=AFAM Usama Arif <usama.arif@linux.dev> wr=
-ote:
->
-> zswap stores swapped-out pages one at a time, so a range of swap slots ca=
-n
-> be split between zswap entries and the backing device. A high-order
-> swap-cache folio over such a range cannot be read back in one go: the dis=
-k
-> read would return stale or zero data for every slot zswap owns.
->
-> Reject that in __swap_cache_alloc(). Do the check after the folio is in t=
-he
-> swap cache: from that point zswap can neither start storing nor start
-> writing back any slot in the range, so the answer is stable. Callers
-> already fall back to order-0, which zswap_load() handles per page.
->
-> Export zswap_is_present() for the PMD-order swap-in users added later.
->
-> Co-developed-by: Alexandre Ghiti <alex@ghiti.fr>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-
-Overall looks good, but I think it can be split into 3 patches (one of
-which doesn't have to be part of this series), see below.
 
 
+On 10/5/26 12:52 AM, Christophe Leroy (CS GROUP) wrote:
+> Hi,
+> 
+> Don't forget <linuxppc-dev@lists.ozlabs.org> when you address powerpc architecture.
 
-> ---
->  include/linux/zswap.h |  6 ++++++
->  mm/swap_state.c       | 39 +++++++++++++++++++++++++--------------
->  mm/zswap.c            | 12 +++++++++---
->  3 files changed, 40 insertions(+), 17 deletions(-)
->
-> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-> index df6cafbe95dc0..94746fb71bb65 100644
-> --- a/include/linux/zswap.h
-> +++ b/include/linux/zswap.h
-> @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
->  void zswap_folio_swapin(struct folio *folio);
->  bool zswap_is_enabled(void);
->  bool zswap_never_enabled(void);
-> +bool zswap_is_present(swp_entry_t entry, unsigned int nr);
->  #else
->
->  struct zswap_lruvec_state {};
-> @@ -73,6 +74,11 @@ static inline bool zswap_never_enabled(void)
->         return true;
->  }
->
-> +static inline bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-> +{
-> +       return false;
-> +}
-> +
->  #endif
->
->  #endif /* _LINUX_ZSWAP_H */
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 625c185a1ca4d..251b48b2c60e1 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -12,6 +12,7 @@
->  #include <linux/kernel_stat.h>
->  #include <linux/mempolicy.h>
->  #include <linux/swap.h>
-> +#include <linux/zswap.h>
->  #include <linux/leafops.h>
->  #include <linux/init.h>
->  #include <linux/pagemap.h>
-> @@ -466,26 +467,27 @@ static struct folio *__swap_cache_alloc(struct swap=
-_cluster_info *ci,
->         __swap_cache_do_add_folio(ci, folio, entry);
->         spin_unlock(&ci->lock);
->
-> +       /*
-> +        * Now that the folio is in the swap cache, zswap can no longer s=
-tart
-> +        * storing or writing back any slot in the range, so this is a st=
-able
-> +        * answer. Reject a high-order allocation over a range that alrea=
-dy
-> +        * has per-page zswap entries.
-> +        */
-> +       if (order && zswap_is_present(entry, nr_pages)) {
-> +               err =3D -EBUSY;
-> +               goto delete_folio;
-> +       }
-> +
->         if (mem_cgroup_swapin_charge_folio(folio, memcg_id,
->                                            vmf ? vmf->vma->vm_mm : NULL, =
-gfp)) {
-> -               spin_lock(&ci->lock);
-> -               __swap_cache_do_del_folio(ci, folio, entry, shadow);
-> -               spin_unlock(&ci->lock);
-> -               folio_unlock(folio);
-> -               /* nr_pages refs from swap cache, 1 from allocation */
-> -               folio_put_refs(folio, nr_pages + 1);
-> +               err =3D -ENOMEM;
->                 count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK_CHARGE);
-> -               return ERR_PTR(-ENOMEM);
-> +               goto delete_folio;
->         }
->
->         if (order > 1 && folio_memcg_alloc_deferred(folio)) {
-> -               spin_lock(&ci->lock);
-> -               __swap_cache_do_del_folio(ci, folio, entry, shadow);
-> -               spin_unlock(&ci->lock);
-> -               folio_unlock(folio);
-> -               /* nr_pages refs from swap cache, 1 from allocation */
-> -               folio_put_refs(folio, nr_pages + 1);
-> -               return ERR_PTR(-ENOMEM);
-> +               err =3D -ENOMEM;
-> +               goto delete_folio;
->         }
->
->         /* memsw uncharges swap when folio is added to swap cache */
-> @@ -499,6 +501,15 @@ static struct folio *__swap_cache_alloc(struct swap_=
-cluster_info *ci,
->         /* Caller will initiate read into locked new_folio */
->         folio_add_lru(folio);
->         return folio;
-> +
-> +delete_folio:
-> +       spin_lock(&ci->lock);
-> +       __swap_cache_do_del_folio(ci, folio, entry, shadow);
-> +       spin_unlock(&ci->lock);
-> +       folio_unlock(folio);
-> +       /* nr_pages refs from swap cache, 1 from allocation */
-> +       folio_put_refs(folio, nr_pages + 1);
-> +       return ERR_PTR(err);
+Will do.
 
-Nit: You can pull the refactoring into a separate patch (as well as
-most zswap changes, see below), so that this patch only has the
-logical change to bail for higher orders if any entry is in zswap.
+> 
+> Le 03/10/2026 à 17:44, Luiz Capitulino a écrit :
+>>
+>>
+>> On 10/2/26 3:28 PM, David Hildenbrand (Arm) wrote:
+>>> On 9/18/26 03:45, Luiz Capitulino wrote:
+>>>> A future commit will introduce a kernel API to allow for checking if the
+>>>> CPU supports PMD-sized pages. This API will be based on the
+>>>> has_transparent_hugepage() implementation but will be orthogonal to THP
+>>>> and therefore must work when CONFIG_TRANSPARENT_HUGEPAGE=n.
+>>>>
+>>>> Move its definition out of the THP guard.
+>>>>
+>>>> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+>>>> ---
+>>>>   arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
+>>>>   arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
+>>>>   arch/powerpc/include/asm/book3s/64/pgtable.h  | 18 +++++++++---------
+>>>>   arch/powerpc/include/asm/book3s/64/radix.h    | 14 +++++++-------
+>>>>   arch/powerpc/mm/book3s64/hash_pgtable.c       |  4 ++--
+>>>>   5 files changed, 20 insertions(+), 20 deletions(-)
+>>>>
+>>>> diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/ powerpc/include/asm/book3s/64/hash-4k.h
+>>>> index 8e5bd9902bed..79511e6abfca 100644
+>>>> --- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
+>>>> +++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+>>>> @@ -165,9 +165,9 @@ extern void hash__pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
+>>>>   extern pgtable_t hash__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
+>>>>   extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
+>>>>                          unsigned long addr, pmd_t *pmdp);
+>>>> -extern int hash__has_transparent_hugepage(void);
+>>>>   #endif
+>>>> +extern int hash__has_transparent_hugepage(void);
+>>>>   #endif /* !__ASSEMBLER__ */
+>>>>   #endif /* _ASM_POWERPC_BOOK3S_64_HASH_4K_H */
+>>>> diff --git a/arch/powerpc/include/asm/book3s/64/hash-64k.h b/arch/ powerpc/include/asm/book3s/64/hash-64k.h
+>>>> index 7deb3a66890b..a4a44a112ff9 100644
+>>>> --- a/arch/powerpc/include/asm/book3s/64/hash-64k.h
+>>>> +++ b/arch/powerpc/include/asm/book3s/64/hash-64k.h
+>>>> @@ -278,9 +278,9 @@ extern void hash__pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
+>>>>   extern pgtable_t hash__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
+>>>>   extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
+>>>>                          unsigned long addr, pmd_t *pmdp);
+>>>> -extern int hash__has_transparent_hugepage(void);
+>>>
+>>> Without some of these helpers in place, I assume actually using PMD leafs
+>>> without THP would require some more work. (which is not the goal of this series,
+>>> just asking).
+>>
+>> Yes, you're right.
+>>
+>>> I do wonder whether the architecture should instead simply say "not supported"
+>>> if !CONFIG_TRANSPARENT_HUGEPAGE?
+>>>
+>>> That should still enable your series: using mTHP without PMD support.
+>>
+>> Yes, it would. However, I think this introduces an inconsistency.
+> 
+> powerpc has two types of MMU (HASH and RADIX) with different page layout. MMU type is selected at boottime based on the capabilities of the CPU. For transparent page you have:
+> 
+> static inline int has_transparent_hugepage(void)
+> {
+>      if (radix_enabled())
+>          return radix__has_transparent_hugepage();
+>      return hash__has_transparent_hugepage();
+> }
 
->  }
->
->  /**
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 507f2d19fd2a4..f5b5827d30084 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1587,11 +1587,14 @@ bool zswap_store(struct folio *folio)
->   * @entry: base swap entry of the range
->   * @nr: number of contiguous slots to check
->   *
-> - * Context: The caller must keep the range pinned, otherwise the answer =
-can
-> - * change under it.
-> + * Context: Unless the caller keeps the range pinned, the answer is only=
- a
-> + * hint: zswap can store or write back a slot right after this returns. =
-A
-> + * caller that needs a stable answer must pin the range first, as
-> + * __swap_cache_alloc() does by inserting the folio into the swap cache =
-before
-> + * asking.
+Right and, unless I'm misunderstanding your comment, this supports my
+position that the new arch_has_pmd_leaves() API is all about reporting a
+hardware capability and not tied to THP support.
 
-I would rather avoid naming specific functions as it will go stale
-quickly, and instead list the ways of "pinning" a range.
+> 
+>>
+>> In in its current form, arch_has_pmd_leaves() should always report a hardware
+>> capability. This is true even for the default case where
+>> arch_has_pmd_leaves() defaults to
+>> IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE) in the assumption that
+>> archs supporting PMD-sized pages by default will have this config
+>> enabled.
+>>
+>> Your suggestion will change this and for some archs
+>> arch_has_pmd_leaves() may have different behavior depending on the user
+>> configuration. Additionally, I intended to decouple the base API
+>> implementation from THP.
+>>
+>> If you feel strongly about this I can implement your suggestion, but I'd
+>> still vote for keeping the API about consistently reporting the hardware
+>> capability. Even if the only user is THP code today, new use cases can
+>> be added incrementally.
+>>
+>>>
+>>> [...]
+>>>
+>>>> -static inline int radix__has_transparent_hugepage(void)
+>>>> +static inline int radix__has_transparent_pud_hugepage(void)
+>>>>   {
+>>>> -    /* For radix 2M at PMD level means thp */
+>>>> -    if (mmu_psize_defs[MMU_PAGE_2M].shift == PMD_SHIFT)
+>>>> +    /* For radix 1G at PUD level means pud hugepage support */
+>>>> +    if (mmu_psize_defs[MMU_PAGE_1G].shift == PUD_SHIFT)
+>>>>           return 1;
+>>>>       return 0;
+>>>>   }
+>>>> +#endif
+>>>> -static inline int radix__has_transparent_pud_hugepage(void)
+>>>> +static inline int radix__has_transparent_hugepage(void)
+>>>>   {
+>>>> -    /* For radix 1G at PUD level means pud hugepage support */
+>>>> -    if (mmu_psize_defs[MMU_PAGE_1G].shift == PUD_SHIFT)
+>>>> +    /* For radix 2M at PMD level means thp */
+>>>> +    if (mmu_psize_defs[MMU_PAGE_2M].shift == PMD_SHIFT)
+>>>>           return 1;
+>>>>       return 0;
+>>>>   }
+>>>
+>>> You are swapping both implementations, which might create some unnecessary churn
+>>> I think.
+>>
+>> I suspect this was done by git diff as I just moved the functions, but
+>> I'll take a better look.
+>>
+> 
 
-Also, generally, the changes to mm/zswap.c seem orthogonal to this
-patch and can be a separate patch (which would be clearer if
-__swap_cache_alloc() isn't named here).
-
->   * Return: true if at least one slot in the range is in zswap.
->   */
-> -static bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-> +bool zswap_is_present(swp_entry_t entry, unsigned int nr)
->  {
->         pgoff_t offset =3D swp_offset(entry);
->         struct xarray *tree =3D swap_zswap_tree(entry);
-> @@ -1605,6 +1608,9 @@ static bool zswap_is_present(swp_entry_t entry, uns=
-igned int nr)
->          */
->         BUILD_BUG_ON(SWAPFILE_CLUSTER > ZSWAP_ADDRESS_SPACE_PAGES);
->
-> +       if (zswap_never_enabled())
-> +               return false;
-> +
->         return xa_find(tree, &index, offset + nr - 1, XA_PRESENT);
->  }
->
-> --
-> 2.53.0-Meta
->
 
