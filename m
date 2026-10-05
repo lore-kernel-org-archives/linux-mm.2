@@ -4,104 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11693CA5FFC
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 14:59:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 755D8CA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 15:16:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04A896B0088; Mon,  5 Oct 2026 10:59:25 -0400 (EDT)
+	id 6124B6B0088; Mon,  5 Oct 2026 11:16:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 022436B008C; Mon,  5 Oct 2026 10:59:24 -0400 (EDT)
+	id 59BCC6B008C; Mon,  5 Oct 2026 11:16:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7C4D6B0095; Mon,  5 Oct 2026 10:59:24 -0400 (EDT)
+	id 463296B0092; Mon,  5 Oct 2026 11:16:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C864A6B0088
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 10:59:24 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 550001402AF
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 14:59:24 +0000 (UTC)
-X-FDA: 85288881048.11.C3B7BC2
-Received: from mta0.migadu.com (out-26.mta0.migadu.com [91.218.175.26])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B96B9A000E
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 14:59:20 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ruRk7KT4;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.26 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 1AFCF6B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 11:16:10 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9E3BC140312
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:16:09 +0000 (UTC)
+X-FDA: 85288923258.28.450E89B
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 015AB1C0012
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 15:16:07 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="Rwv/1D Y";
+	spf=pass (imf21.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791212362;
+	s=arc-20220608; t=1791213368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yfEYpLLuHbCfQx1hpDtYvxD3m/YgtJD6akNnysgMhKs=;
-	b=c+JwDwVtgGKD+IS2A/y6irF0qg0aRzg+BJ9qRiGQrzoKgF4p+ZF69WF9OZAdgXb1HeYm1p
-	e0zj5cpF80yxNL12sIs6d0CZJDdTZzKffM86U7ntx7MM8PQ6JCvAss2ao6WVbd+UjyVifn
-	5pqChy1hifCYMyqWgvurR3Ij9ZKk30Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791212362;
-	b=VVcIm+dkOpGX08lqZ9ZKBIi6yRvmLdkJsXE76h9PP1G4RPRIyCIz6FUYwFs7pKqgB9dFj+
-	3N8RRKH0qfNp5AesQ1rMSKXOm9UnmzYKrontg9lUaohT5UgtpYAWwecF/w5JgZxwj4a+oA
-	0OVmIVrLDhLJ9Af+rIgcgTqxImYi8Yo=
+	bh=uWQLeNOxsComWCIOqGdY0uS9YTS69A3nhBq06GXeH+E=;
+	b=6+lfsAueunT7lb/Op9TYdmSQEWDdNaS8cVlooFawIj4hgtfyMQsWjqHziaoHQQKomNQxh2
+	s+uqz/eMFk5NFheWqE7GhYnE3xPjvO5qzi7v5mCg4Am662BSZUBo/GTLDD0g8vqhx/UNeR
+	ZgQZv1tYF5o7fFfQbL4bSYKX6ER+Ook=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ruRk7KT4;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.26 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=sjluPKWYfXjAFZOlS3RybtthbiIfsFMylOb79mxumII=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791212359; v=1; x=1791817159;
- b=ruRk7KT4pIDmtw6fbZANRAvch3wLg1hbVa9q9xWmPdW2SzNeHXjMp2phkaUHb/9zqmXJT34B
- Joqw0yaKZQE4bflto+lQ5Zzi3rpJIxjYG95SXG8S3F02R7bUdI/HMDPnZMghEEPEHA6kRAcIkEc
- +NHIP4wngeI1T5GMvDHdwTTc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 93dd8002214013a1;
-	Mon, 05 Oct 2026 14:59:08 +0000
-X-Mizu-Trace-ID: 93dd8002214013a1
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <0a0f7ae5-5fa0-430c-8074-9217f594a563@linux.dev>
-Date: Mon, 5 Oct 2026 22:58:52 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	imf21.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="Rwv/1D Y";
+	spf=pass (imf21.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791213368;
+	b=31YCBJj5XnsUQp32KFjud1qeyfC84I2155XGgWja+KGgW2KoKVkFgHhPG8frg21fqTE0Iv
+	VG7uqborIaZfW9DbJqYzlU9iWvR+oCQWn/PjRaPLSKfGLAEWQ/O6MexLRdhPztDIV/ibea
+	R06eyD+aOVLqxvT7ZFHDfixw4NtwxsA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=uWQLeNOxsComWCIOqGdY0uS9YTS69A3nhBq06GXeH+E=; b=Rwv/1D
+	YqKojMzxXW7ifrzuve7WNNLOz8yEFDnFY28bdQt5PWOR5qJVU4aisH7HmK3u+OvWd85CauHKjaqmC
+	0xTO1p/FQyfpXpReEJAbbKMwuixRr2FWrk/SkPcLdfY4Vzd2sprhB7ie4zm1H8jW3N8XFeNhBU4eQ
+	U0Ob1AqZ7r7xDdYF7iHr+RN3CPnScOd+e43XOxebhoCrZLdqbqz8w2fGPJRPIur6sidp73N4upKOj
+	+WFv99sRd4SooCprqq2NGRFV+d1nPTXZbaZIYBQiTxQcz5Y2wH9ik4cwUrkDHg2TWer7OFMihS0WQ
+	rWbrIUZZYruaGAQIPqpUH0/JQgYw==;
+Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1xDkPN-00000006JzU-1Y0n;
+	Mon, 05 Oct 2026 15:15:17 +0000
+Message-ID: <4686fbed54796cbd32b5d524938d9cde184ca501.camel@surriel.com>
 Subject: Re: [PATCH 1/1] x86/mm: fix incomplete page-table invalidation with
  TCE
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
- Pedro Falcato <pfalcato@suse.de>, dave.hansen@linux.intel.com,
- luto@kernel.org, peterz@infradead.org, tglx@kernel.org, mingo@redhat.com,
- x86@kernel.org, hpa@zytor.com, riel@surriel.com,
- linux-kernel@vger.kernel.org, qi.zheng@linux.dev, nadav.amit@gmail.com,
- thomas.lendacky@amd.com, kernel-team@meta.com, linux-mm@kvack.org,
- akpm@linux-foundation.org, brendan.jackman@linux.dev, jannh@google.com,
- mhklinux@outlook.com, Manali.Shukla@amd.com, mingo@kernel.org,
- stable@vger.kernel.org, toshi.kani@hpe.com, david@kernel.org,
- mikhail.v.gavrilov@gmail.com
+From: Rik van Riel <riel@surriel.com>
+To: Lance Yang <lance.yang@linux.dev>, dave.hansen@linux.intel.com
+Cc: luto@kernel.org, peterz@infradead.org, tglx@kernel.org,
+ mingo@redhat.com, 	bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+ linux-kernel@vger.kernel.org, 	qi.zheng@linux.dev, nadav.amit@gmail.com,
+ thomas.lendacky@amd.com, 	kernel-team@meta.com, linux-mm@kvack.org,
+ akpm@linux-foundation.org, 	brendan.jackman@linux.dev, jannh@google.com,
+ mhklinux@outlook.com, 	andrew.cooper3@citrix.com, Manali.Shukla@amd.com,
+ mingo@kernel.org, 	stable@vger.kernel.org, toshi.kani@hpe.com,
+ david@kernel.org, 	mikhail.v.gavrilov@gmail.com, pfalcato@suse.de
+Date: Mon, 05 Oct 2026 11:15:17 -0400
+In-Reply-To: <20261005052302.43042-1-lance.yang@linux.dev>
 References: <20261005052302.43042-1-lance.yang@linux.dev>
- <asM7b8ECO34-jiwi@pedro-suse.tail5790ac.ts.net>
- <60d5db86-8002-4d87-b8d3-c161d674122b@linux.dev>
- <ab077b6a-160f-41a2-a167-813f0560e30d@citrix.com>
- <38541ec6-d796-4f35-a700-75ab097b6df5@linux.dev>
- <7ad90e94-d04d-453a-ba22-9640a5024d8c@citrix.com>
- <6801221a-6307-407a-85fc-46906f95d22e@linux.dev>
- <20261005142216.GAasOymJHYnmn6wD5m@fat_crate.local>
- <de41b083-6368-429e-9928-90aa5440f750@linux.dev>
- <20261005145315.GCasO523MWyIIx2ngl@fat_crate.local>
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20261005145315.GCasO523MWyIIx2ngl@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B96B9A000E
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+MIME-Version: 1.0
 X-Rspam-User: 
-X-Stat-Signature: zt8iib33ku5ajapn8wc41p6f8eu3hoix
-X-HE-Tag: 1791212360-867174
-X-HE-Meta: U2FsdGVkX18LLPOxBTlymcrU28yS+SF0VnYjpSM/APADPP34tIGXO3q73oE0ckWMESCvmgWgVGlL1GmJ7zDD7fHRJ74ZGPGeLyjIMZ78gW483OA3zPgUG3Zk+z40kBdXwzDdiBrvk4dquspOcgtBiBDEFhwGxYg2EkMEYBkUTtuB7OOaLQhNbJoDKfoZxv503qSEpqc02tUg1Kji4N+1d2hXpZ/JH5Loiga2VwiDPEOPdGcKnUizCPESDHp8jz1wdrskxhgkB50nutcn+V0pKxaqd4AJF/IpZYTARassjsVKip8jJUfg4ddw0WfbUqv+9LV37145B/wh4zzfiZyFA3lPVrFyBC8H326QsGmNzYQpr+E+ePDVIVvuO+S+fAUds/nkGs3/ryc0cEKXx5r71zKJQG7pkSrBP6Jo32tWfc7VpcyZNQPVxOsE/uk2b4Ry2CE4/coliyVUCDezpEFAmhnFpkbKB4fh/14KcI1ieDKSslzOPsJTaB09SMQo/BUsxrjVSyrbMck12ngzVBz9BMZL00vM0Idx2bkeOnARek59zTyd5XkiURmIfuf5fItaEfaQBVZJjy4dxF8mwVe2TRRbHlSaQaZcu5B7dl9honPB3X0j4H6XQni8TRM+cGU11xwsaoAZvTBg1oFexZulIUWCgFv/KA4AjGlRfiVmUjMH+Dn/b045EalOPerMr1rCnJqKeXZazZxeZsWZq0kxaOHD0qd1TtrN5POooPEVHDic6yAW5bEZghSI2SHEuvpwWtmaBTa+i0JMapnayW0Xyy8+iqWdola3ejRSWMZYBou9Sh0ENYobCZa50SDZ6dsPgqaH7yOWBjoWYaVZSJs0lwvbC60v0trW0wKBEkes5oqadXKiC663IzvDSBZumLPIbXCBWDWw/bNoVJCP0xUJywK/QiORzMCf+2fOvU0cC28RVEYWCdXky8ZvaQyVKlo/O6T7I13mQIZoxUUPM1g
- 2Sv/RQqt
- 2+cl0V4Qm3JU7M5mjvxvtmtNo5fa21Y/OH7NeBVwRsWqB2L0rSd9ia3hVB9c5QXBBHZV13Jnd0fzGvoAq6p0yRekOeN3ey0ZgsijIf5mXhKlToPGhLqgJYMrr3E5wCBLuJyfyC4B5hGw4znF5+HKn3cs1WLFDuBV0wY1x+rjulFe6u8oVDCr1fsVQlIGIF+8ByXjGldGeQD/ovHhdpbmeifj1UHzKDOHQyKVTvuD8BNFXYdKU8yjj0AY+7aE0AWkSES3T6swt7UhQu4dnOOfUtesE9+6TmGXgUY3D67MsjSV6ErlHNIo5OzuKc1lDyal7ZqdVQqnNDdkLZu5s+Vh2r41EHAl8T70+21cqX2gwjLhpuoj2x7DWXWB4HAL4rkArV9Yn8X7ppq3hEU46ul3p5IMa/w==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 015AB1C0012
+X-Stat-Signature: fsi3hy9iqrwbyece1a7ee8tqyd65n1pd
+X-HE-Tag: 1791213367-658609
+X-HE-Meta: U2FsdGVkX1/zyJn0cXn6JkV17vvTQ5TpWK13UXz8bVsiCoftYsNOD23Mgzgxu/Om+tbtKUWBfSQt7OxOgAhJF1+5b8VfOCxSp06+fFXWfqhQp4JJLZBBU5lJBAqP7TxsNs4LPRfZ5ETmeGteXH6PmxxAFChpzxCcGpFFMRY+J9Tn7HGVp2ghqfhY6VsnSuS2iBM5i8BrggTZpFjC16aOWlZHyhqBQXiThEOkwNzBidgudOR/ylxoptHTZ+RhdH+6b8KEeWhH37FYbKn4ytpXFdObPp9O89faKfR4Se8kp8RTkY/nUuqtnZq4BFHtBcTf+N6mxb5+H/On5bgDsEAFNCxKrulsAokiUV25Qnl4QxILSL+Q4pt6l1eUMlXXiKXGS7g8MRfgJ4U+oEvhjqvsScav0uR5ivR0Ve+xcsVCDwiMJ5rQyoFYw5aNp902bBWp/K3uhkFFJ2aL0xe1UruLRSqVwZoJjL3nQhT/J2eAg+AF3nS7imphRptSKWQOUKRKZ+3G7hBpfaQ42jSI8D1C6LbgtLk9iawMwaXgtxkHIFpQbw6BdOUJeM/kvmjlRYTaPlumA54Ae8MXVaYcodas7zXXON0l/LR24BSRDvFQZrMkRXNmZmMCQkogtqZIIbXJfd5zfP7oZNa25mY16w0JgSg6klvnicyPe3ShgC1+bqJxRhl4GLKMP5inpK9F3dAox/6XqXrngfMbKvCsZbjP8K5a3FYN9YdlpLxRkLypU/0zXCQuYUfazJZACHW+yolhHRgLhwC2u9X9mIWfksbPazN78RWVxzz9GHiJzYOgqB+9e2un/C7Rh8of9PpAXBsGm4ta577WMFEhzllRBmAeIYcyBKa9t8CBXz0oVsepqfWrQDPmSt5B90APTPiXRDhyUWceWC588TTlly3wPDHSA/ZKYm1yNXiGEBcIm7TXOqApb0aHk3ehmCJOZLcORC1NgFAZ+NWo/9oIqdGsmw5
+ QZN6mzF8
+ z+MR/3ICN+h/fe2ET5oylSNrVE0lkuRczq9AGdggz7xQpT3QZXL0Xv6SDK54P0CEMFohNIdpUnaaKBzRUxVHsRaaC7sTJnCgKhSj6Iun8tAwGyLAdd+ICsFG1Cn/MyH1QcXx5TCmbxd5rpdEenEUoE7DljDLeuwtfMUWDwvsTrDi73XtQ0OWckXFEQ/+DSjtGEQzQUDwBo0KHY7m7TcHTgfrLBkHP0apRfS01NJG/W6XxGowb7K47MaQ2ISfS8A+TiZ9ykNfC1LNKJE8I8E5XmkEs18bV3lXsIcf2Q107bjAmQpmAje/5d6vAU3y3/HsTyu7mHdUijsxxso3zy9k/i0YmCGLxy/Ew1ieD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,36 +124,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 2026-10-05 at 13:23 +0800, Lance Yang wrote:
+> pud_free_pmd_page() uses a single-address invalidation to flush the
+> paging-structure caches before freeing the page tables. With AMD TCE
+> enabled, this only invalidates upper-level entries associated with
+> the
+> target address. Cached PMD entries for other addresses in the PUD
+> range can
+> still reference the PTE pages being freed.
+>=20
+> The AMD manual quoted in the commit enabling TCE says these
+> instructions
+> remove
+>=20
+> =C2=A0 "only those upper-level entries that lead to the target PTE in the
+> page
+> =C2=A0 table hierarchy, leaving unrelated upper-level entries intact."
+>=20
+> Even with all PTEs cleared, speculative page walks can cache present
+> PMD
+> entries after the earlier TLB purge.
 
+The comment above the function says it all. The TLB
+range should already have been cleared by the time
+pud_free_pmd_page() gets called:
 
-On 2026/10/5 22:53, Borislav Petkov wrote:
-> On Mon, Oct 05, 2026 at 10:36:26PM +0800, Lance Yang wrote:
->> I don't have an AMD machine to test this on. I spotted something
->> that looked wrong in the code and sent it out to see what others
->> think.
-> 
-> You send a normal mail - not a patch.
->   
->> Maybe I'm reading the manual wrong, but is raising a concern
->> based on the code and the manual really just "a wild hunch"?
-> 
-> If it is formulated like a patch which is supposed to be even urgent, then
-> you're reading our process wrong.
-> 
-> https://docs.kernel.org/process/development-process.html
-> 
-> And since you have not tested it to actually fix anything, then this patch is
-> nothing but a wild hunch.
-> 
-> And to answer your question, no, it is not needed. Definitely not the TCE
-> angle.
-> 
-> Now, the speculative thing is another story but that whole story you're
-> referring to needs a lot more debugging.
-> 
-> But we do not apply patches on a wild hunch, without any definitive data that
-> they fix an issue and, if very much possible, with a clear explanation why
-> they fix it.
+/**
+ * pud_free_pmd_page - Clear PUD entry and free PMD page
+ * @pud: Pointer to a PUD
+ * @addr: Virtual address associated with PUD
+ *
+ * Context: The PUD range has been unmapped and TLB purged.
+ * Return: 1 if clearing the entry succeeded. 0 otherwise.
+ *
+ * NOTE: Callers must allow a single page allocation.
+ */
+int pud_free_pmd_page(pud_t *pud, unsigned long addr)
+{
 
-OK, let's drop the patch.
+The PMD could have been (speculatively) loaded by the
+CPU after the PTEs were freed, so that one PMD mapping
+needs to be flushed here, but there should not be
+anything else left to flush.
+
+The code looks odd, but it's a good idea to always
+ask your AI to draw up a full chain of events for
+a bug to trigger, going all the way back to something
+calling the mm from the outside.
+
+--=20
+All Rights Reversed.
 
