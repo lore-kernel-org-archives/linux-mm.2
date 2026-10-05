@@ -4,105 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEA00CA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 06:30:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3F91CA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 06:30:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD97A6B0092; Mon,  5 Oct 2026 02:30:03 -0400 (EDT)
+	id DD6F16B0093; Mon,  5 Oct 2026 02:30:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B63736B0093; Mon,  5 Oct 2026 02:30:03 -0400 (EDT)
+	id D87836B0095; Mon,  5 Oct 2026 02:30:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2B186B0095; Mon,  5 Oct 2026 02:30:03 -0400 (EDT)
+	id C506C6B0096; Mon,  5 Oct 2026 02:30:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F8EC6B0092
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:30:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F1A19A3C16
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:30:02 +0000 (UTC)
-X-FDA: 85287597444.11.D759365
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A23566B0093
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:30:52 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3369540159
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:30:52 +0000 (UTC)
+X-FDA: 85287599544.28.B34D4DA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4F782C0002
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:30:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gFHs0RI0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791181801;
-	b=7VeqbTY+u33sHOn0bUMaJB9JlcQuf6jRo7iq6KWTtxGM39iz1SaOdnq2EYNMxqX3g/gE4G
-	YWUf4HZWHjIUbCAbMtxesWKY/Gh9yNx8BPkEhROncrVjdZ2M69iJm/geXbkSWFnwiGQAI9
-	mp8SeP8Nv3sktwLSh9KjN4STPlizD70=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gFHs0RI0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 569FD40004
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:30:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TNjA+qqU;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791181801;
+	s=arc-20220608; t=1791181850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NMXP+3HOcHF428TlVrg2cs9+rmnJKLTevmDSSnYryBQ=;
-	b=k7pqdHcq0oRGzs0ETg9C8aRZU16X+NPMLTPgd8S9ipZ8LtE0U9q39WW3uBWYhUiUmWyOwm
-	xeOA3xCgPickxCv4nj09Z5e43UlWCnurvQcc4MnLIlcC82/kOt4ygTtsr46oDq/nbtzO44
-	GTYFTLZjhlBVOkLqV7Vo3b5wk+SfCno=
+	bh=7Go1pW3kqcjzpvNXBPm8wCORyJtiYwbxuEZdhDPXEl4=;
+	b=KZnXPGXb6rWRIPPSCbk0BMvyKYujxTZ7KVdNjBItRhWvL+aDwrkMcmZsNMzQl+k2P8PhbX
+	RhGM3JPhy+iJzHmSpUmBwQe34JacFIKflUNj618ioA19Lb8Tk6FzvgP/j7gA2eEGK3vPTg
+	HmdF/ne2MA+GfpXVl7gKn5HOWx9ZTvs=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TNjA+qqU;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791181850;
+	b=cgQRR94plqK1VaTZWUpMAIfN8a9DgMRl49OORZOfowyAqDepB3PQDduqc2FyoeIAaV1izp
+	69sNpGvwtM8OcyDdNczvZsk1WS/0hSf8p9d6B29uaJSUckDU44r8XU/jNyP5mH1R6QgDVu
+	wtHWz4Ct9Z4Stn7uVq/8o6cIzi/E0XU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 71BE56022B;
-	Mon,  5 Oct 2026 06:30:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E65B1F00893;
-	Mon,  5 Oct 2026 06:29:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E4F646022A
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:30:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8E31F000FF
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791181800;
-	bh=NMXP+3HOcHF428TlVrg2cs9+rmnJKLTevmDSSnYryBQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gFHs0RI0vQiYN70xLjJK6AIYAhKscdvLrr5shld7PhX2KZychrY1pspfUyGMIyjgR
-	 mbkFt9Cb7WMu6rmV0YK7D6FB1RqQpIwcnjbvH/a8zwzdISBXeDxfcPXSds6DBbys25
-	 UPDLmNmI5IR8DhAvnAxyD7B0lABLUqOm8rN5+XVq/cKEJprw7em17Xe35a7kBMxQnj
-	 2nIkE+qQq91I2LBKt5owi+zYqepp7uqZU1R5dNPMIPeduKfGwHtf9JvyuvaHBtbPLX
-	 oSWkiCiwB41mvjZxskSm+7HDZWrGWb6aVcllIiebe2luvrsOd4VQUN7q9UO4HkfmtL
-	 EZb5je/2vyG6w==
-Date: Mon, 5 Oct 2026 07:29:51 +0100
-From: Will Deacon <will@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Kristina =?utf-8?Q?Mart=C5=A1enko?= <kristina.martsenko@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-	kvmarm@lists.linux.dev, linux-efi@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Linu Cherian <linu.cherian@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-mm@kvack.org
-Subject: Re: [RFC 00/12] arm64: Add support for TLBI domains
-Message-ID: <asND3-Wnb2hiDAop@willie-the-truck>
-References: <20261001110655.461473-1-kristina.martsenko@arm.com>
- <DLW95E2XWSVT.8W90FW4WG6K8@nvidia.com>
+	s=k20260515; t=1791181849;
+	bh=7Go1pW3kqcjzpvNXBPm8wCORyJtiYwbxuEZdhDPXEl4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=TNjA+qqUJDRTWZBsH1n3gz7lESCG3bZsRFEaMpgrCq4Y1zuyYxKUk8htOzw1oKCCu
+	 SxQ4byo1vq2hBZe0qs24tzuQAhtAb5lf0xUuRB1+6xBsMMoMb17JYdE1AYee2XXB5H
+	 Wwq7hAXJUMTvxXnPM5vhVdhu+Cu0CE6FzsfCw8D3vIeELbvZSJLGtBcyoSdtVaOSKE
+	 aBNgnjpXxu6w1rhD8xIYlpsubw019cWNaoo6oD3D7W7zNM/+PuWyW/jPidN5aO1kBC
+	 5ex7UrZPk+HZM8e47q2LFjdptnhWmGZ1GxC4OJWvJRPKztmFVDM2+AkJns6T6trPQ7
+	 7GF0M1i/ySAOA==
+Received: by mail-qk2-f41.google.com with SMTP id af79cd13be357-93bfa7b2093so117339585a.1
+        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 23:30:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxTjsEoHUajl46XEubrTBa6OIlaaSM8pNrmCRyZBLhxglQUzVIjZiBe7rUVpOdAILUR4wAdHRzQWg==@kvack.org
+X-Gm-Message-State: AFuF++msHD1UrpzgdNr7NOgp1PmyCnaV0o7t6Ytl3Gdr+DUpc9SZcPv+
+	Tqz81QIHCmlx7y3Vda1l6V6KWtMjH62tKQ6aXwveIsJlEbtqipi+X6y21T7LuusPzZB0eLW1Bl/
+	mY5yiU0LzNIopgNwUNafm+lPJz9dbTUM=
+X-Received: by 2002:a05:620a:2591:b0:93b:ec83:80ee with SMTP id
+ af79cd13be357-93cf19daf2fmr1840183185a.57.1791181848984; Sun, 04 Oct 2026
+ 23:30:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DLW95E2XWSVT.8W90FW4WG6K8@nvidia.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: kr6nkppax1f1rfzi9757jnb9da7i9dfy
+References: <20261005062236.564210-1-vernon2gm@gmail.com>
+In-Reply-To: <20261005062236.564210-1-vernon2gm@gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 5 Oct 2026 14:30:36 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yKSoCwcEDhtd=biKoUjUX9eTJJhFJGFAZWc=WsAyXycg@mail.gmail.com>
+X-Gm-Features: AclHuK8CRONO2VtLENz3jDK7DYC4CRj5Gx_73AqOwMereSu4SIWXUmZ8CWWfcGc
+Message-ID: <CAGsJ_4yKSoCwcEDhtd=biKoUjUX9eTJJhFJGFAZWc=WsAyXycg@mail.gmail.com>
+Subject: Re: [PATCH] mm: vmscan: don't count per-node proactive reclaim as
+ memory pressure
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
+	hannes@cmpxchg.org, mhocko@kernel.org, ljs@kernel.org, 
+	roman.gushchin@linux.dev, dave@stgolabs.net, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 569FD40004
+X-Stat-Signature: kd74ytc35y81cmdy8anzorsfrgsrzfk8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4F782C0002
-X-HE-Tag: 1791181801-937802
-X-HE-Meta: U2FsdGVkX1/5AquVRT8FdcmgIIEOQn4QmW2NYIU/BhpZ9pGlt3WZsz2808RVmKiYPrqnPAgQp/aYieOmsU+ggKWod38M27w57AF+hL4OZM2AnhueaKbmznZjJbwYyYVWgAQ1vY1F1ZmpWT2yIoHcT7TLh4Hcut5JrRfDqfU60fcoCeUtsU72e5lnoM06a0Nk7atrBaK2TmNGPZyou8B/UqgwDPJJQVbWoMibR142na1KG3yXcnGc5Fpz3yFBBbvt/GtoPOT4fwZZK+EXbm4gDNf26wvTKTZWrVkhsPCS0jxHaE7RzyqkWtUf8mYlwaL1KhdCIRxrUiL1cX3w7XelbUZTQkVCHL3HRQ0Xo1TMSSxM4NsiceVd4OboaFino/ItZ4FiUTK/VSnAP1C+YdhUMWoCVn0d6brrcgSvqnbWgz9yVIVolvMmmevwZEGTRu06UlpehgrBfTD4XVZo6/6SVHBycPvEEd0eY2aBY8Wec4/R9Xs+l1f82jU/ksZv2hJLYBypwc1eJBnu5pUxfGuCqoQHu4E83It/o7VqTPD710wpemYwELM68gX9WMJ3Qwbq24PANG3FxU76cvHUJvjVYxVL7eGhX16eE42ugOwoHS2hf4NQqpz6/nffzAL6Ps409XVrFCg3waSEWnOgdChs2wIeOzpB8QUuymoq21iGFzzv/tuVGCwWw7i1L8YorBGTSwYbYM9eZG21Q4jnh7wPyQza/wJkYBj2sQxEKVeXMyNh+/h/vSdX8J7D9X5c6Nl02deZZ4rctu7MmVqQc7Rwqo67Ec/SvxN0dN6taLR+cqAsqt/4ujcpqWZj2EwLtR9zVuIbusbT2QDaeGdkxtuyQcMfPRQKHHVxqv1xS6yjre6iIEvyavuzdznpcjVk/AY3jFzObvRmglqY7JrdQJpn/nECL1X9tnd7e7AIG6uznvUI7GoxPuzNmY3XCryXUgsoHRVulhSnAogHdj3dnCb
- bwqU8v4n
- RPFymlfpdXqrRv9dj1S/lG2Bo7HcYdVZTFBYE0PDYjDWHYTT30zB2elScaQqjieGiGEaVi3HOiCOIon6y1vzkubR5O2NrpQTCL5Gmj2kNZ3TORRp0b2XekFV2U+s5WphB5cr2A8UYO50Hu9Njx2+wrUXYRrZ5MYjPXjwyEMkpyGZlis0j4JANjnzEHDC4LTZhZNzsl77MogKDurf567zCHP0zNc923w97MJuh0StwYjcMG+5+9LT8Lk9j2JelviLbSFCOKAifI27LDV8eFreR8Zs0jg==
+X-HE-Tag: 1791181850-219958
+X-HE-Meta: U2FsdGVkX1/0SkIxFCE/1Q+GKcahTuZC646RpDFxE/sTCD8KrH4tsbXJYiER6ui9Y9649x+EwrFcEoLeR2ZymqaHssK1DAvyYLWoj81EDCfhZSdYx7l70WfZ9/gSNyNH4ntsGq1HNa3b62eUkHgg7qOYcJcs/Qj/x37juJHXIQpOq2Jd/znw0mbq5BjFgOieZ7KBUVIv9NYI5NJfjjecPJ6g2szavF+XTi/dvUzMcuW/XvfugStrf0RUn1a3uwlCTynZMyxgv7BmUlF77NeltZtrNAOLGJtnDdwH6nnKdniTRK5VVTzdOXgf1luh9n1Y7B6uX6Z0P1RldnGnDplfnh3Gc4apdLRVNgJt3gXhRXDXezAWAHV9v4h4nZe910Dw3C0UCLLXf695dZ/KU9+w1GzM+mFu7/0nRfLiBubgUSfqgKmpX1wwfBo0ut2ezmnqr9ncaFpVIjTVjrcFltZmnUrhuS+y7JOXYuB1SUol1syX/T2SCBcEs4IztZocBXjN7y0UVePsCCWAhO9qBR9KyCd7cxWckd2Y3gah7QI2XsZNqV1OGh/15EyiAK5itktcPj8TFmZep/xb5/nmrlK7phEh1bx9kLhhTVVDqLxlCe4rcTDXahluQKlAAtCJSemIpP6aXMYDwB0grjV8+IRgeSSAfdJnFlny2VId2NGScT7+KmGjEnWVBz+AQ2U+DJ8RpoNEfd6O8+qDGceV8Vn/kITCj8nwKEKUHsDB446B8MZsGqBiFzseKEjdjOesJREujgCf3/GbV6vge6d5Q4/xEkaxS/DmzFlnetYj9eaQnCj921x9o9D1wj1VbutOxx8YjNcFQD1ZzGZRx2K5cN3yGYG8Kf4bWH9VlzOPMy+bYPax6L4Ufcioph0VqaBQv/RdhkGFRd6sWQ5eMkWLJBuC9EePEQxKbZNS/9X5M0LdCLVmpea2kmMInU7MKoHpBSHl/uahKfIw/c7lNAPxsad
+ 7wYg5V7B
+ 74QxtabkRRBJQuvoDUhzm+hI6fO94Qr2nblMlnTc6QoSxMJLMcIrBQpy54XpBYjES/hSk5iWkrzWTv6+5yQe/JKjblhZRS9B4IVjX8DIXgd6TGRxkW/FwYs+oChI5kB3Dv6pTvS0PdlhOhkWnTO9v6Sb7h+4pbzhSCHdn6y/7mEk9vcarmJtWYaBpdZPEu6Hw9wWKCjMfhXL3tyuGe0Po5/DqrTKinwwShMQ+q5g7Lp0vUp+9KiDwP5ixYL7m6VA/Hf7yjeXqHi+nN65lxxapEEmGZynzMPnQ7OrL3qPWHEZ9vw3l4H3Ud8RLo29nTDa+CBnqT0uZjxnABTYMxwueufw32+jiyLvABRG6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,28 +108,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 04, 2026 at 02:06:48PM -0400, Zi Yan wrote:
-> On Thu Oct 1, 2026 at 7:06 AM EDT, Kristina Martšenko wrote:
-> > This series allows the kernel to use TLBI domains. TLBI domains (FEAT_TLBID) is
-> > an Arm architecture feature that enables a TLB invalidation to target a subset
-> > of CPUs instead of the whole system. It can improve performance on systems with
-> > many CPUs. TLBID is not yet part of the Arm Architecture Reference Manual but
-> > some of it is described in the latest XML [1].
-> >
-> > The goal of this series is to send TLBI commands only to the CPUs where a
-> > process has run (i.e. where its page tables have been installed). The last
-> 
-> IIUC, mm_cpumask() is used to store this information on x86 and other
-> archs. I see you put this information in tlbid_domains of mm_context_t
-> from patch 9, although in the form of tlb id domains. I wonder why not
-> make arm64 also update mm_cpumask() like x86 and other archs and derive
-> the tlbid domains based on mm_cpumask() and a cpu-to-domain mapping
-> (added in patch 7).
+On Mon, Oct 5, 2026 at 2:23=E2=80=AFPM Vernon Yang <vernon2gm@gmail.com> wr=
+ote:
+>
+> From: Vernon Yang <yanglincheng@kylinos.cn>
+>
+> When the cgroup has no memory pressure at all, writing to
+> /sys/devices/system/nodeX/reclaim triggers proactive reclaim on
+> NUMA node, causing increase in the writer cgroup's memory PSI.
+>
+> Due to this reclaim is performed in the context of the write(),
+> accounted as memory pressure on the writer, like
+> commit e22c6ed90aa9 ("mm: memcontrol: don't count limit-setting reclaim
+> as memory pressure"). This is unexpected, the phenomenon resembling
+> senpai will appear again.
+>
+> The Documentation/ABI/stable/sysfs-devices-node documentation also
+> notes that "This interface is equivalent to the memcg variant."
+>
+> This patch unifies the semantics of the memcg and node interfaces:
+> per-node proactive reclaim is no longer counted as memory pressure,
+> and the per-node proactive reclaim interface no longer produces
+> phantom pressure.
+>
+> I ran demo[1] that performs per-node proactive reclaim 10000 times
+> in qemu, writer cgroup memory.pressure as follows:
+>
+> without patch:
+>
+> some avg10=3D31.53 avg60=3D13.42 avg300=3D3.31 total=3D10602985
+> full avg10=3D31.53 avg60=3D13.42 avg300=3D3.31 total=3D10602985
+>
+> with patch:
+>
+> some avg10=3D9.59 avg60=3D3.41 avg300=3D0.81 total=3D2686221
+> full avg10=3D9.59 avg60=3D3.41 avg300=3D0.81 total=3D2686221
+>
+> [1] https://github.com/vernon2gh/app_and_module/tree/main/reclaim_node_ps=
+i
+>
+> Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interface"=
+)
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> ---
 
-Historically, maintaining mm_cpumask() was a horrible source of contention
-when we looked at it in the past. Maybe that's no longer true, but it
-would be good to see some numbers if we want to start keeping that thing
-accurate on arm64.
+This seems to be a valid concern. Personally, I don't like
+having the code depend on whether `__node_reclaim()` and
+`node_reclaim()` are called from proactive reclaim or page
+allocation.
 
-Will
+Can't we check whether `sc->proactive` is true? Am I missing
+something?
+
+Best Regards
+Barry
 
