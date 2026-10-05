@@ -4,165 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1E6ECA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 12:19:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A78E9CA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 12:20:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEA0C6B0093; Mon,  5 Oct 2026 08:19:42 -0400 (EDT)
+	id 365EC6B0095; Mon,  5 Oct 2026 08:20:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9B1A6B0095; Mon,  5 Oct 2026 08:19:42 -0400 (EDT)
+	id 33D706B0096; Mon,  5 Oct 2026 08:20:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C89A36B0096; Mon,  5 Oct 2026 08:19:42 -0400 (EDT)
+	id 27AC06B0098; Mon,  5 Oct 2026 08:20:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A163C6B0093
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:19:42 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3566B80205
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:19:42 +0000 (UTC)
-X-FDA: 85288478604.17.63AE15E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 79CBC1C000A
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:19:40 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fdf79agI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 01DD36B0095
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:20:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8BB20140262
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:20:54 +0000 (UTC)
+X-FDA: 85288481628.07.23A5012
+Received: from mail-pz2-f37.google.com (mail-pz2-f37.google.com [74.125.228.37])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D003EC0004
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 12:20:52 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Wmsjshs9;
+	spf=pass (imf22.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.228.37 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791202780;
+	s=arc-20220608; t=1791202852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uIF35PqlBZWF17mD/fW2HAHTBb88xGlR2fifKJo3V0E=;
-	b=VFrapofD6FKSB4Vsp0YH87I/swXWdH1mevlPil5nJUtI0vAZytkxGTcbX+QlynM6zLHErb
-	FTXJkXolqvmtNgyY/nJkZyT7LZHs44Jsf6a5nzgeeF4bYR1YhFcTRYofZwDdj3/5bSNy+/
-	AaxAkzfnIzk9oCC0S2K7OozHhFQRfKc=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kr2/73o+y15EzbO0RQo9G5wswmWW+XAsy0BXTjIVojc=;
+	b=aruApmSStmjiRlUBmgRyLCOwoci9dmGvJnagKsW0d9/DfN/9Z5iAUKzNgoguAkVVcLwA3/
+	NGsu3zoeAtyiG9HHSGU3DnLH+mtFPNfaGm5MqYTdRj+NLNRjH1nw+F/iMgYDys4wDNgBNd
+	IuU95RFrs5gL/vdEt401QfUj79lzWeQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fdf79agI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Wmsjshs9;
+	spf=pass (imf22.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.228.37 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791202780;
-	b=3jMeuHfGnuMruR/Bt3iQ+0rTlVBMUC4BNtYL8e2q2tsS47LKnrIyZ9V6C8YMCtYasi3ZQd
-	X28fu+vmQbp+GaJbh0UhlOypYqv6PJBL5xPoLr87BiGWOgWJX0nuT7zIL2Ix5/G5qir2Ws
-	vVKmWk63YjClzGkdxpE6uyLGlogLDKE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 569CB60236;
-	Mon,  5 Oct 2026 12:19:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B341F000FF;
-	Mon,  5 Oct 2026 12:19:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791202779;
-	bh=uIF35PqlBZWF17mD/fW2HAHTBb88xGlR2fifKJo3V0E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fdf79agIm0rXPbXqoAamy52BTxoDUGJuQsJlRExhXZu6PBhlvrsxhAmJWz5RUPLct
-	 p7sJFLCzvzDiAFlF1Fz6GmqnateMDVO52obrb9hOgtN/7FP/xmwbGPDt9QGlI5VKL5
-	 X5y8koh0BCRzb5nJGEA3eH9EjlJ9uyO/e5ibzPOntiSjkAd73JebyOEb/jGR+eV6s2
-	 PouOL9WbJsV+z2Vcaem8M3X8dDiQHjajk6nqdxRIfPwSHSTZZgXm5hDekYW66I9Vcy
-	 RNcDUqN3R8GikYbsOKDDwsRmeSxVUGlTdp7fG5/VMask5CE2+gmfJUND7zYbuFSd8U
-	 oV+EyzUHgb1YA==
-Message-ID: <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
-Date: Mon, 5 Oct 2026 13:06:28 +0200
+	t=1791202852;
+	b=BlxeWyc7UMIDGPNMAUXFSFvJOPIhwM3M8TEoF8RoXp6Z3KUh4fWba99EVgkvQd5mJ1ZagN
+	B+Nb+Qme2wDLuC8oVbrsiwO6GLE7AgwwQqLq3+Sc0rCjK5xYlUIVf/3XpR9xj7kEtbYr6O
+	uUs/xYQwXQsy+2XJEJB3pcRuRTIrgNQ=
+Received: by mail-pz2-f37.google.com with SMTP id 41be03b00d2f7-cc7c9c2df74so361586a12.0
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 05:20:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1791202852; x=1791807652; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kr2/73o+y15EzbO0RQo9G5wswmWW+XAsy0BXTjIVojc=;
+        b=Wmsjshs9kRLvzE77ds+oBUKFW/1SrFiJt45F6OeBwzoCQNfRhymZ/e8Eq6/YqJjfJJ
+         qRc/GrNyjyDD2l2mc3JPxw2xm0O3EcGDLb0NJC6sfWRJ6xjMmobRu4EcLLMYPcWfVrGS
+         7lCuP9Bg/LfLfwxg2wRjzsWb1dLsHRFqZUNTk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791202852; x=1791807652;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kr2/73o+y15EzbO0RQo9G5wswmWW+XAsy0BXTjIVojc=;
+        b=mCakNIrimb/YInutZZuBi6cOW63cn4ZyxV5VKSmUo9Ag/ORaJh18esNSbyRw+tIfUi
+         4cO5mtQ7eERnGqfq/MXnhtDY3I9+6JmMh8eDztwSbf6Fl+R3513cAVyHtN5Hlznz5yRF
+         ThTC9mPeaZfaTDVNNifnz7l0c9DzIR3V6GXwDCc2Bwa0y2BzRX7mSzyFLWCHpJZuj4pU
+         fgfMw60JvTfFeAqnOxPJuMq9m6efIJblije2VTwsUOwgxxsJm2Z3eN47X1MYEusrDIfR
+         dCl93a+MQ9tvUiqiN3d5ks3c+DLOxUCPEiT4UAIKhsKl9BseezbozW88nC3nqz3KwaqR
+         WDvQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwnfWwShWpvuRfJqd+dYLfQlrmwBwsTodxweolnnp+sIeUOI460lcNiFGPgs1SnAS84ds0zLMbBSA==@kvack.org
+X-Gm-Message-State: AFq9FYLrKUEB4skYXzrQyr7A+SH27xgVe7GEN0xL8NV+6cUKH5UwIc69
+	nFQWAuENMEtlvZPXoWGdUU3nh9aKTgQejKI8Y67NhSPuAGN/AfP+Tik3YPh20/4f40rLiOccSbC
+	i5+U=
+X-Gm-Gg: AYBFou03bJL+U1NMxLi5AHGFc0gva6AAj2+RED77dRkPU+TIiokPVOGTna+ZuduilAK
+	7HLLGsAJXuuXRkS8MSbxfOPLf+V8HZWiOd2KhmoPQG95L/qivhq4+KOcd5swQpdxGYJ29vEiDFL
+	gVWt75nhF2HGgdRq6R2OwdPGmO8GvVJpLpi+Z0jHnRqoO9xGg+oX+gXm/wwBoDcKZYbEjdNqxRn
+	6rZxcr8YzGSscsYio3xk7FRQxR3SEt/1Xn/Jf9RmmK4lTNfukkuU6QdHtZaJLsIHaX8wH7ESPFJ
+	G8YHyJO30wOriEqZJNU/7Jpo3GhLe4sBgUOla6o5rKPndAN6xPFQFZhNq0gOd0b4BiMhvVbz+JQ
+	6Nr+7e/9zx/SZA/jx28aZE3FMgQ6CKSCoIwgWH0wa3GqlW25hnHlKRQn64J42qnndOiChEZRmJr
+	dLZPWNfYAkhY8IdYqVlCXRGHOGJbI89xa+mBC6dH5ECWmx+dp728or6D4HOqJMz2R1oF6qmonRa
+	C7xXx6tT6h07yKlqNZhtgph0eJMCmGS/aTNMCCHWoIDLqnzka5fSX4iRMDq2QEP
+X-Received: by 2002:a17:90b:3ec7:b0:3a0:2900:f55e with SMTP id 98e67ed59e1d1-3a6cec20416mr6577046a91.29.1791202851545;
+        Mon, 05 Oct 2026 05:20:51 -0700 (PDT)
+Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:9211:ddf0:3c6a:bf9e])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a7e4b00de6sm3342997a91.1.2026.10.05.05.20.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 05:20:50 -0700 (PDT)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Brian Geffon <bgeffon@google.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Richard Chang <richardycc@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH 00/10] zram: redesign zcomp and rework backends
+Date: Mon,  5 Oct 2026 21:20:15 +0900
+Message-ID: <20261005122036.718976-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Path forward for Virtualized Swap?
-To: Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>
-Cc: Baoquan He <baoquan.he@linux.dev>, Kairui Song <ryncsn@gmail.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, =?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?=
- <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>,
- Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>,
- Meta kernel team <kernel-team@meta.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-doc@vger.kernel.org,
- "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Joshua Hahn <joshua.hahnjy@gmail.com>
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
- <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
- <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
- <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
- <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
- <aqgMCIOFi0dKx_6L@fedora>
- <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
- <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
- <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cszgzo6ekgkwobbpfic9iuw8f3tw1yfz
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D003EC0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 79CBC1C000A
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791202780-897861
-X-HE-Meta: U2FsdGVkX1+qzbPdbtLYy0MNaxRHtOeRv4pJ+Nf+Oh8MT0PyhEYiMMWLJWn/DjxZp6HUa6KEkRc6YcQfZkk4sYtLlIkGcEu3KfR+/iLde+5Phu5sIun2YSyd0gK/AyAgmTFJxoFJ1FpP3tK6xXCAcyPwhPwi9xIYiNwJ9UQbWAiJEzT2rUP1FdEqX4JguiBbou3gQwFHBZsopm9tYv6N+N5lSNKGW74h3PMauMzRLoopJ9Pbm6ekv4uNT/Qn5FjHfQpIv3pncbVR77OuYyh5cGj+FnA0ilSGQpIsmVPfevqHi7VZX5XnBO+zmEm1VJVQyw7IStdS31F+24PZce844qtvAORO5ewcU5fwjuo9cXK0P7+XW+NFguYcKw7vqTX/3dNgCLyr5dzBS7ziWia0OJ7OviP+AFcw7jN7BrhJjAbx+EnFUftpaM2ElTY3O0rqqNfYfb79w+FOJXfjGiZ986X1F2kYQabGXI8Hb0xX6/RM/l9XSWAxlC2jA2KFXG8jnHDUUIMvfplllIhUDTFYpaLvnreHcoDo8vjb89gtNDsQGQwTbyaSMrZ+mwIGxB4eisU2JRfFqujn/HpT9HplqWGbd3V02PiojjNygbcRPRkcg1i2weNpWVORtSUabWjzHmNDV3Y4B+WFp+A0V3WBzjI4m27CbWWSxcmWAhPgbbxlHDIQ1HsjOyRlIBnyzlc19ZNVCqrqYcrMoXOrHOSs87Ndgp/8w22ofEVn88LpJs4JHaOQRHGptiMt9RRUfFBplv8fYhJtcIIqxjXcpTVsEyhIf8xSM4irv3nnN4o5Lk2zc9t4EsC2iA02GHeA5fiXvATqyO4JK79+3wK6hw1ED3jAFWMtwSuHZSw1Yi6G1QE6DjxN7QbsblxJa7qQKJM4mPDC1/+T7bOvnIMqsiknS7edYdCow8pT4Wkv0W95bFxMeseIHTbfpo30glFIp0cNffjB07LJfS6q/x7cgxv
- tIUVvdpP
- ZwswaD0Ei/aVyx35/ArcT/88a9d6jwP41rqlgUMx7SXfu3KQ0qAqK7U5Dw3V+wqkMBuV0k2psaUehJYKd1con+b4Ra+iGX+Gl6U34RqRr+cqDEIlIRIw46+EtJxH6+9YkmSHbVRyI6bUOLSPbEiDT10nMWRXeOKjZ+ozGHVL98mVO2EY6qGlakQjBbk8k8CnVC1msnb7JL5Zpx8gqqTIXAAtjmp6VOp4b55c7fY11m26MRfmXajNVyqqVS9oZA/5xz/dUYHjMrSxJKTkRV9rPWn2frGmtRC6jNKGFrT5CW1hVn7DZBX++Am5jWRTpDxp1/9Uw3Z7zWjUIBxgjzHylzANa7acts0XYJII2IosU7LFORL4Sr/7xau+lk6zsFE/3qpqIoOEDV9z8hgcvqF5lxivZ6TLS1Mz/Oqshx/2AYqEww81crNmEB3BmQunRv6knu1ZrOvzJTsa0uzc=
+X-Stat-Signature: 8we6nejnx93kwf6etge7xru3icnczy6i
+X-HE-Tag: 1791202852-251597
+X-HE-Meta: U2FsdGVkX19DOnT/XfWKWDpSVr2KQaav820w6r5KI51Pxs8fuN1VtAuQ6Ipd0YPbPBgSfZVTyJCQb8GjPPdyCWLPt8DEMHfAN/fYwCXnbumi6wtqnB7dMY75L7ZsdQqi9SSgByzfcK6F+MMcprz0465wgjwBUGA0T2m7wdc/EQ6SNZsO/lp4G8S9hK/Dq0gibOmuPV8ACjNR4LBoEQyYllofJEBdpIBWWqMymmJm1kkr94Mz954xxKzi0AW2bis3vTpUc/fDNhISR8g8Q/gho+PGoSbGxycDQJIDk5KPXqwS++cCxjMKNj1o9xup/lXLW9/78cW01v49rZCAyZQBGuRkX2ywBwgJlxovmJE3nBJTLx9IvcfaEkL4NQh7eD7VDLQwheegg3F8DC+T2hyDkcserp6jGUfu1iLalc07Qo8pMKhuV6BAC+774gEaJWSMtVuCbLQZtBuK32UfUF8lMqE3M4epdJxF7tQJ45xeEhpiPeh/Xmq0L5EqcQeXuAWA0yQcyW/362XV3moI3ndsypoQS8DN+LFYpWTWh2k9pbgICCLwdoKapJt5DUzMJGzwtfu3jpOTSAxIH4mlTNLSWzWypBY8xx3PWlTgC7rl05s9ACwaMS8Ru0d/1u/uamwvCT8jBEqyPeGB2ZTEI9Y7IfJNFJLemRq8TIVT0InhT2kpsm+v9+3OkT4D1PZ5Yy03FW7+T6D3p3jFfhfD0VTV4zbyankSqISzfNlPv7j1EwZzh9QfpWzJgdFPNqJ4D6lUxkmSO0of//ZnBGTeR88bOnel9PZhArkxH4hNHVVm6vNxelXNZE9wh8AHpsZyjxZMV055F+vx/vOpu7SUrnbg4GU1AT37PfJ0wx1anmsNokqqpuxNFC5uWklcTKlj1VKi6d+vArkBejqrWcBotKeK3ARj3Bw64OOrVqgmhlerQohCDoM8qlVZNdvP3OloEMO3LS56nTKX7RDB7AIvwjv
+ ozmFDcVl
+ h2miQP9iKRHbwEQkgtOSEy3DuktaXgBoOsoRPS6c4aNtziAZheP54PgXJJNX8zohd+ZogskRIQvP02Nx+W3r+eHdorGjzlwBPhuNJno0ZuG+kHfIGw9DpxuGrWtK4IkLs4JX2nPt/EhmjBromNO1/FRWOoqdMrfWhOUVtbYfwjBfkh01X2CbWYaz32riS+GOZwCWKfF12F92xIA7DDW4s//9kG5SuI/j4QxyA6ugUWrMJMgw2PS7JdtA64P7AF513AmIaE6Kjt1mFEgkWAyXj9wBY2WVi6grMadcPvo/JxDRWVLXJL7fJ7U0acDD0YhJsZqN5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,45 +118,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/22/26 15:38, Chris Li wrote:
-> On Mon, Sep 21, 2026 at 8:56 AM Nhat Pham <nphamcs@gmail.com> wrote:
->>
->> On Fri, Sep 18, 2026 at 11:50 PM Chris Li <chrisl@kernel.org> wrote:
->>> No that time slot is too late for Asia developers. I don't think we
->>> should use that time slot for swap alignment.
->>>
->>> We should find a time slot more friendly to Asia.
->>
->> Any time slot would have that kind of problem. We're spread out across
->> the globe.
->>
->> Let's just use a standardized time slot we have for MM alignment sessions.
-> 
-> There are more swap maintainers in Asia than in the US + Europe, at
-> least based on the maintainer file. Please be more inclusive. If the
-> alignment is done without key stakeholders, it miss the point.
-> 
-> Sigh, we can't even align on a time slot.
-> 
-> In that case, let's keep discussing on the mailing list. At least it
-> is accessible to every one.
+The series has a number of memory usage optimisations and fixes
+that result in savings from double digits KB to triple digits
+KB per-context/per-CPU, depending on backend and its configuration.
+More details are in the corresponding commit messages.
 
-Looking at the mailing list, that approach doesn't seem to work.
+The zcomp redesign and backend rework happen in the final two
+patches.  zcomp part, basically, attempts to address the priority
+inversion problem, that is seen on some setups.  In zcomp, we have
+always kept Read and Write contexts together in per-CPU streams.
+With preemptible zram this becomes a bit of a problem, as a higher
+priority Reader can preempt a Writer, which may hold a stream
+lock, but since the compression stream is locked by the preempted
+Writer, the Reader gets blocked on the very same stream lock.
+However, we don't have any reasons to have Read and Write contexts
+share and compete for the stream, because Read (decompression) and
+Write (compression) paths are completely independent, they never
+touch each other's buffers.  Thus, we can split compression streams
+into per-CPU Read streams and per-CPU Write streams, so that Readers
+and Writers don't block each other anymore.  Kudos to Barry Song
+for the idea.  Decoupling Reads and Writes results in noticeable
+performance improvements on synthetic tests.
 
-Finding a time slot that makes US, Europe and Asia happy is ... tricky.
+The last patch in the series builds atop of decoupled Read and
+Write streams and reworks the way secondary streams are
+handled.  Secondary compression streams are only used from
+recompression, which is serialized by device lock, IOW it's
+single-threaded.  However, we still allocated secondary streams
+per-CPU (we needed to permit concurrent Reads of recompressed
+objects).  Because we now have dedicated R/W streams, we can
+allocate a singleton compression context (for recompression) yet
+still have per-CPU decompression contexts.  This saves a notable
+amount of memory with some backends and configurations (e.g. zstd,
+deflate, lz4hc).
 
-1 AM is certainly unpleasant.
+Sergey Senozhatsky (10):
+  zram: prefix backends printk-s
+  zram: remove debugfs entry on init failure
+  zram: zstd: do not allocate empty C/D-dictionaries
+  zram: lz4hc: pre-initialize dictionary stream in setup_params
+  zram: lz4: use LZ4_decompress_safe_usingDict()
+  zram: lz4hc: use LZ4_decompress_safe_usingDict()
+  zram: zstd: do not use kvzalloc() for zstd allocations
+  zram: reset writeback state in zram_reset_device()
+  zram: split zcomp into separate R/W streams
+  zram: use a singleton compression context for recompression
 
-US vs. Asia is also tricky, but doable.
-
-China 8AM vs. US West Coast 5PM?
-
-China 9AM vs. US West Coast 6PM?
-
-(Europe is 2AM vs. 3AM, who besides me from Europe would join?)
+ drivers/block/zram/backend_842.c     |   6 +-
+ drivers/block/zram/backend_deflate.c |  98 ++++++++------
+ drivers/block/zram/backend_lz4.c     |  85 +++---------
+ drivers/block/zram/backend_lz4hc.c   | 105 ++++++---------
+ drivers/block/zram/backend_lzo.c     |   6 +-
+ drivers/block/zram/backend_lzorle.c  |   6 +-
+ drivers/block/zram/backend_zstd.c    | 133 ++++++++++++-------
+ drivers/block/zram/zcomp.c           | 189 ++++++++++++++++++++++-----
+ drivers/block/zram/zcomp.h           |  35 +++--
+ drivers/block/zram/zram_drv.c        |  51 +++++---
+ 10 files changed, 421 insertions(+), 293 deletions(-)
 
 -- 
-Cheers,
+2.56.0.rc1.315.gc6ed9934b7-goog
 
-David
 
