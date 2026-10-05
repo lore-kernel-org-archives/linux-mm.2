@@ -4,104 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E838ECA5FFC
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 08:47:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02B05CA5FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 08:47:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72FE06B00A0; Mon,  5 Oct 2026 04:47:17 -0400 (EDT)
+	id 4975C6B00A2; Mon,  5 Oct 2026 04:47:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 692596B00A1; Mon,  5 Oct 2026 04:47:17 -0400 (EDT)
+	id 422946B00A3; Mon,  5 Oct 2026 04:47:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55AFB6B00A2; Mon,  5 Oct 2026 04:47:17 -0400 (EDT)
+	id 2E9D96B00A4; Mon,  5 Oct 2026 04:47:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 34E516B00A0
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 04:47:17 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 24E67A015C
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:47:16 +0000 (UTC)
-X-FDA: 85287943272.14.848C922
-Received: from mail-yx2-f1.google.com (mail-yx2-f1.google.com [74.125.224.129])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 49980C0009
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:47:14 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XY0Zn+yn;
-	spf=pass (imf22.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.129 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 026436B00A2
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 04:47:20 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7AF121C1AB1
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:47:20 +0000 (UTC)
+X-FDA: 85287943440.06.9E5FA37
+Received: from mail-yx2-f5.google.com (mail-yx2-f5.google.com [74.125.224.133])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A7034140003
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 08:47:18 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mzkrfXiK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.133 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791190038;
+	b=f2JofmdnwkU42ngfe/6TlhuEv+7HefVWRSHZS0kI7/ho5DXLjQzFos+N2YbDatv6x8GVb4
+	/jAkorSTs5JROyEqCNDrUVBWYqMx1GoOQZFKK1hMNwLwTgSe6HUrWoWKH7lrdjD0jhyjcm
+	dCF5BH7QGVrOXCry0hIzbyO3hXY4d7M=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mzkrfXiK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.133 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791190034;
+	s=arc-20220608; t=1791190038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3lOJYATF5GzgxnR6rvCgXN1lfrW7Tn1J/cuI+kptyHw=;
-	b=nYT+m5d/pgVoBDHFDPBrAvf4tDuauVtuAbFysZGbGPlS+7kjUbTvsOpyT3/v5FZ4q336ZE
-	7SNKukUjn9f10OhXDKR+Sdz2WQCWM++X2cM8HON+J3zLEifvcrlY0mh5RFUALyQRHfpjN8
-	OejQWgJSXvv8kQjM+lMOfcdZH7kI8ZM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791190034;
-	b=WIP6t2WL1dFpw2hk7AJkMeuTXUlZqTgm6A43w7OBe2jMva4YuP3on9W4tdjaOSZXWoJaxV
-	K3WRPZ7J/ixY1hzBcNrR92E1nM5NcbEyxc8h79p7ceUzbHk57xMoAdvNk4qourdH2K2Rtq
-	MC3rMhQRJzr0GOEw+G+kuOTDuDDnAQs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XY0Zn+yn;
-	spf=pass (imf22.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.129 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yx2-f1.google.com with SMTP id 956f58d0204a3-66d27631526so449472d50.1
-        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 01:47:14 -0700 (PDT)
+	bh=yNNeYfS92dPvp0CaRE/I5c5+qwjZ49qCZegwTjKDnBY=;
+	b=0SbdMe3m5WHBRKxUDnyXxhogGWF6cUz3R6qP+5rT6Kq0RjuoVEKoz7huUButH1LAQPjTOz
+	Od7MA6V38MVS8jRl7rM7pTWG8AMBC4qM7P2xxXoQfE22myEexqZ+NvjyJG8BiXSDYYWXZW
+	9AFSbT9YHPcKnSBk2w95/TClqDoqEh4=
+Received: by mail-yx2-f5.google.com with SMTP id 956f58d0204a3-677bd24a602so634205d50.1
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 01:47:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791190033; x=1791794833; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1791190038; x=1791794838; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=3lOJYATF5GzgxnR6rvCgXN1lfrW7Tn1J/cuI+kptyHw=;
-        b=XY0Zn+ynndvQ3FE4QNabiTDpxnQ1Sb3xmO2O8JZOEpyJ1h+FFygtaPBMOk4JeWzBp8
-         x6Qb+cN+TdeA6VS2pMhorw6o/y/3e9zJhsA2y0jBxwPKRYjkbJEm33VDXcC8U6faz4s2
-         jtOxtPSvT7/sm59WdhunBOHz2o26KLyYRfiGz8cXuLz40hgekWV6hKXrVYc0RZZPQNGi
-         ZtpwqIIYFgt5gkGssjffPEe7UP0i/Mw3i+sC2+taFOoUNkObzsnb+kPUiAvDpkn/1HHU
-         Bd9snDoTGDrcGfqSDGxaYByutNbLzFJDRYTLQkEGBUq1mf4gu7kNgqwtELUwUu0SrswY
-         b0Kg==
+        bh=yNNeYfS92dPvp0CaRE/I5c5+qwjZ49qCZegwTjKDnBY=;
+        b=mzkrfXiKmtzq+ANJCw0paRhIdmyAEdJz4eoQ0Z+nXf2ByzdqGlWpFrvf4gIA7WsBs1
+         jtez9dhn3c+qGxwQ07yFfzRTpgP8qskDJ2IMQZ3Rv672/PTp8+40r+kBLqBPS/qEEDoQ
+         fYN07XoSp8YcA3YrUHwGmPuUVid2jvHS8NTnBC9lf+PLcePgtIrEkvgnC+lrCKp7vvdv
+         YSoRlmus4sN/FU6dAcQGZqb2dAbaCp1P5XzZxXA1gF/sqbFsSkSew34ijOMRXO019OFx
+         eGJf/nSIQh0FiDn9VWvXxjCdK7Sb+ouoZ67YofdnpX6uRgfcPocdoVjoBiOy13v+HifH
+         mRmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791190033; x=1791794833;
+        d=1e100.net; s=20260707; t=1791190038; x=1791794838;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3lOJYATF5GzgxnR6rvCgXN1lfrW7Tn1J/cuI+kptyHw=;
-        b=ABleZ5LlZ35kDutXwKsgzJnkN1PA1bjqLPAmwO+oUZy9Dcy0jvM7xLVPwN/jDhvBvM
-         FCDOQDBuD4nvjDb9coDCzmMINqu+7t/YwPgbPUfd9qm80yNDkFiWcxPDYoS2fgAfVtE3
-         UnNlobHAY8rYgtp5D4yvlDosKG7xou/zn8MpJBlDq0GX9OgcHWmQP04tu21FuVZrnmoV
-         0+hLhXADjXUzdqECMXYxXyUIeOoUsmu6aIbmwTUFfrYotau6NbCAPbmjTykGyxNy3FIu
-         6ItHGwRLXzc/OX/b61padBT/6UFN2+IKOf0sIxvGnF0mdRAvtGIWixk5gcAOeLCc3rCV
-         jCdg==
-X-Forwarded-Encrypted: i=1; AKwUvBxc3kg+o3nEd9GUQBh1tN/Qyzma9knhTp1aZBBys/2UIQbtoGmwWhdlyy3eIyBqHmqti1NDjFvOHQ==@kvack.org
-X-Gm-Message-State: AFq9FYKIKyYx+J/tPKFFMMY6ntBDo+LEZ23A3AhSsK02WWR5et3hcSWL
-	ZtJKe+aQFeEngeTTUkvCvSaYXEIAuwtuxZ5H4vpfEkH6CdqOOrczJYY=
-X-Gm-Gg: AYBFou06Bp70eKbx6Gh+4EooDwCg+JdjVEXcJYr4A4GkJn8MpgIlDKisDXoGYzev0Th
-	DCv3c7gIDPvCUz57kS9tgzxKfMmUd2FIvBifWxOoPJ2KKeEW2z96LOy0h5RZ5hbrkPfnf879H8I
-	Grs0zGqTmLqcK8i3i0ohxvK8Eg19TRFgrs9J46GDybdEr2BDJkpZb6acS+n5WS43Iu8E/+8u+NZ
-	W8PC/A8Xn4jQuzbYRJXzOPyMLX6/tl1GQq6fHBmBvQeJAhYc/hc8p96f3RTtus6beY+W0vA2ToY
-	RoT7WISaph24oHiQ7YE/IgpteIGVqN981V87VE0lu1LiAhPStI/9UpA5p1VGjGzSlha8kLIMtbU
-	1XXLflN+cxwLCXTjUPXETNO9UwLB3EuYz1jI1K6ab8apF5zmtFwVdAMaqqPoorFnQZFIgndSFz7
-	WHTA/GdpNW7kDJ7xMBiRIKhn4R2/oHlCuOpZZU8a2BNEWp8n+mcK/tSIOXAsM6yGNkB4E0Zbdph
-	woeG12aFvItFgflukIjQ0zRz48qMDozBrcFK7/ZQt2eFnh2r3Akt28SaAOohkdb3+vp+5Qoorok
-	Mqr6+EV88QPr7eqzaOnL5p+yD8hYXLG7tw==
-X-Received: by 2002:a05:690e:12c2:b0:677:afe7:1f98 with SMTP id 956f58d0204a3-677bd3e2c84mr2661304d50.83.1791190033376;
-        Mon, 05 Oct 2026 01:47:13 -0700 (PDT)
+        bh=yNNeYfS92dPvp0CaRE/I5c5+qwjZ49qCZegwTjKDnBY=;
+        b=CAvDnf6UGdrRrq6QBq8pRLL/aBgKHNoMhQDaOfxCtz+53Uhgw4Odb6XwLlooKQQ3ir
+         C5O3WZoxsaL3ZL/C7DgymGL/poRWMLloKRuAExRTR9ot5K0GNyXqAohf4vJnBilazwQ0
+         WJaylLtNRRb2fivtszsQT39exFbqKibGf7LqwLCygBqrY9MU4GTrvmjFoOrGFW5LjCUp
+         TCScVsVhxh3sH2lJFB4EaoFBWDiEEDFfEWTYy0s+3QsVOCbM9y4mhCcoDPump/Cg5wVZ
+         fPseKN736inm12KnJhODZ7z2w1LO+HB2/Vr5pnK/YKj02qQ1fKjtsKJft5rjxlR0eKUl
+         6Vsg==
+X-Forwarded-Encrypted: i=1; AKwUvByHlzHt8KzMx8hJBKYJgXmHjzHd864B+mkdU9Mw4YZEwibslUK5En6uJ7olJvZRiqIuptiMytzJuQ==@kvack.org
+X-Gm-Message-State: AFq9FYLXsc+fOJAfpQlUpcXNL1B4wY33+vMDqS7/uk+540vMrx20NxXL
+	C0coW1yyI/x0DTRVwu8khABcdo0aGEVyArq6Id6KjUGh4Vd+pjTU48A=
+X-Gm-Gg: AYBFou29cB7HrnSiO6DX8Ib3zQeKY+47yJmn4S9gFvozt54D2U0W7+/gvM2+gEdbgFs
+	F0nIhXuZ1X1hmWgb6UzQfAUTfuBtgOvso50hD01sRRJ2T4l27A3CrgqqeAgkblDcUSKmjoVdzog
+	K7+1ZL10CEfMctjF8YOUuCw1OApmZPSMUsxQlR/Xhccrz+3t53F7dIdseLWnc/oqYeC4wWsDj86
+	AFpcLDgqOaEyMZ71HwsdCwH4qHkzb0ZCWiDh24xmPXcR/CgnfQqCFVWIbkMoeJ5RKHPc3dn/w1O
+	bJ1NddbU/4oAm7SI/9snfb9ncAtiVGa7op019xNXrCFj/UzJY3dFLrDXIkfni2HCNcTiTaardLe
+	WBL8wHxHyF/LnHR6UjU0dccqC271kYCM/5UiapQae8uQ23zGo7/DUYn00/iuKXMrNpwop4LR6ps
+	EfoYzbxRxxZx1h9Y1zpQbBJhjy8aHdAQ35gj51HPjftS4/Zt+dC0t1Llris1otcD5ZnPCrtw6gH
+	q6fuoHr488Rm8Oy53fdg2rGDyVDSXRkOp9rC0afamm4aBu7j2uoKEFWsqvM0Th7x36hvU5QWRbp
+	5jSzzS3JvGMvczvCGqr8p2yQVcwY+azxNv4=
+X-Received: by 2002:a53:c60d:0:b0:675:6161:4171 with SMTP id 956f58d0204a3-677ac159e1emr2637240d50.108.1791190037814;
+        Mon, 05 Oct 2026 01:47:17 -0700 (PDT)
 Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2600:1700:4577:1050:1149:2fcd:c86b:8747])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-677c1b9c895sm2346306d50.13.2026.10.05.01.47.10
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-677c1b9c895sm2346306d50.13.2026.10.05.01.47.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 01:47:12 -0700 (PDT)
+        Mon, 05 Oct 2026 01:47:16 -0700 (PDT)
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Date: Mon, 05 Oct 2026 01:46:52 -0700
-Subject: [RFC PATCH v4 8/9] mm/damon/core: cap the region merge threshold
- per target
+Date: Mon, 05 Oct 2026 01:46:53 -0700
+Subject: [RFC PATCH v4 9/9] mm/damon/core: apply probe_hits_wsum filters to
+ node_eligible_mem_bp
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261005-damon-perf-rfc-v3-send-2026-10-03-v4-8-b03452e137f3@gmail.com>
+Message-Id: <20261005-damon-perf-rfc-v3-send-2026-10-03-v4-9-b03452e137f3@gmail.com>
 References: <20261005-damon-perf-rfc-v3-send-2026-10-03-v4-0-b03452e137f3@gmail.com>
 In-Reply-To: <20261005-damon-perf-rfc-v3-send-2026-10-03-v4-0-b03452e137f3@gmail.com>
 To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
@@ -115,14 +115,14 @@ Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Ravi Jonnalagadda <ravis.opensrc@gmail.com>, 
  Jonathan Cameron <jic23@kernel.org>
 X-Mailer: b4 0.16.0
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 49980C0009
-X-Stat-Signature: 1rjn6m8two3bybczr8nq1rpyz4rfabih
+X-Rspamd-Server: rspam06
+X-Stat-Signature: rhgs3hu64rhqwgypjffz5iyypnkk5zmr
 X-Rspam-User: 
-X-HE-Tag: 1791190034-121848
-X-HE-Meta: U2FsdGVkX1+pF76KUEdfsncnupz2mykU4ue6Hz/gvKBK9WrtEIW3N2I/S/WpT/huwJvG0D14cVQ6rkXHMc5u8FTvMeP5OBbETlb/zwpyOw2ncWybN6hbcJIJglAhXhqe9QkuXMp29Bhwhxcp4lfe/eTsiYL7N+MVyupxNtPBb4YEFTJmBCB0Pqf6fVTMSGkPrLU1xxUmAcKpOSQKIdHAb9Wy+yJ5UMh+cMhZ2uD8vcMElCCYZECPFrFbSPIo6Yc8m8dVfXhjnun/KiXVWBhF+UrIOa79CjgLHbk5t2lwRyJJpziTFInVSPU7wgkFqGMxMoT5cvh1ltSz5u9KvXA5Gi4G8uwMOfdr4qMrf66R2+586s5sGkG8OvTYWN8f7Pg9K/DQajfDHHPvqtaFDPw5XT+tWoffoJd6LmVV4vOCDYEGwlirviH1zGG03S9vfLg6QJoDDRWwbOJjI5lE4vWiFbwvl5jOrey+Z1drmFKRWBlg8Pd+0GeGsemOn3tJL1NWmTJOaI9InrI9GLq4PVDqnrD2GlXp0nD9+kMRiVu+gp13AzjzcKkWREhqJAbDpQAKTeOHPu/tmA8vcQubeILnEpyIppuwx8i/uvv+yw4FNzv464VHvWvhMIvjl+P3CWugEuH8esbQ2zL3f5TNf4wbZlXnIqsu+ITzsXgVzsOcZxkGLkZnBTYh1rrMBT06q45bkwOvvESSvCjyyuj6stB7BxY4WZFwE9LYtTwiEsvGYjOg836PgDErjMirDEjj1mjEZV4EDvDBlWYG6IJ80ZU2HaeAINQVQTdSywcEnJO27hIhm5l1VZQEqr6nTKSgb11HFjJGWrphL1jNRUlDKlQF3zT1veRvFxSb2L/I3+y8q7mD8RcSg3CFE5OU9LryJgDWbSaOEx/jbo4zmBJwYDZUl7ToLGxrxpI0D2ez4q6nr9o+xdWUDmm7nNow2p38RK6Va5UAL1ahs8Q2AT/WJC7
- echp0swO
- GGoBjzPETEcljZ0m+Q8inNc8vfPl4KKE8VEI+tukm/i6jc0ofW3ts+4Fh9zwZSxPDE6i/dtpSyY4q6bd5yJY8NM6lKScLvvIBKLVmqCu99XIu2N0oXZhbWdgl8eYEcnUrAs8RNzPnFnOYjmXilEJesKzOvCstD5YWQ51fk19UZcNPdwDDjVQkxzApbgXkmRSrQuqYIs0M6YsjK0vclUYdDRmZHp57uq+g0svTjYphUi0iG6jz502hIk48h9a23gytdn8zbGW4lSmnTjBKII53PIcqNYBGD0C9BIExcH4HMHmuubZFTfxYU+daHSBPD3L6F/Oi/WcRp6eOiiTbD/HLkkZWQJYYuuc4FQo5XW9AJbj/zLUEgjr6uExftsDoNhZ44Jnf9m+8TNhh9wTgEqOzrzwuvp8W4YNGyPCQIv4GkR9cKon8UWG/A6dEnei/9DN72Fe2g04IsZx1vpypNMX+9kmzIUbeFFwxLxzOVQ6DSPMGafdPwIGTg4KrZbZsaD85bDbW
+X-Rspamd-Queue-Id: A7034140003
+X-HE-Tag: 1791190038-494624
+X-HE-Meta: U2FsdGVkX1+PFrjXwfPhna1wDnjbPEZLLLDg1QnmXVWGl30skKDN/uTTenlELvP80kDREChgb6UscauU4SU9x4C3UFwWHsSNILVwrNOGSW87Kk/mHz6nQLEIlbOJjHJrCM40gezoXyn7dnpA9TdpJP58hPBMi08VZR6DWV3NAs0vbDIz5wbq6KD4R5GSgs0hk5bHln+CRCbPXXkjTDD0bElzQQcP+sy1+X0eyPuS34owZfP2hUzSqr3fxUTmKbmJeZx3aQ2gXxPoU0Pzz/L2TNxjV6ZbOSVuEabhwMtdOdBcUZDu4jlZMWTmu2KuUotSy1k3lpt69IzK+dGAEE0dG99NXz6n9BOd7+hdr+viaNYD54tqRSoz/OObxKi8TpDXEmLFua6cKTSOLltT5PN57ciyzyMg/RwW8LatPO0J9PmXnahrPD7JOWjGN5Lns+/Jh0g9Mg2zqFz5xvJbtofOuO1aqN3iCZ9OX03HAvxMX0erh8LW5nad4uya0uBoS4p4RJCukGit2zAS51m4SNNXzKlyuefoKCw+wHM2nNczoAOy72kOp/pwJUROV31wCn3T2oUzyrEeCqLJBD2fiLosMlBkWP4PZ+r1F53h0ofXcFz23z/jecMjiGXaRYxzi/qbnilV6y6IImKUtkwdY0qov1IYjGBtq155bXpEUxb4zYlV4Kyr7T4Xp8YzEJJqpZPF4+TdMSTQnWxtEZE0sK0gTMOo20nRRBmkBgWvGlQTx5RFCEE9NxP7AReNHEVD/V1s/7KjxIaIfNtgVBnD8heqUyn564LR5JSoJD8GWl+GQwQWEpEeQV5Bwghiaa20tGxtywkL0IfdWVTebcgeLfGaz5GVZYFFgIxG0bIYhrflHcKvsf4pOmZamJwlBycS6fgTnlL8AuaKE89O7ZXODm3Sv8ULr1ON1WJT5ovTMv39ISeF2C6wa42c2GYmQNjc4fI9pG0g80PW9ASU9iLdR9P
+ 71xcFIbA
+ XBtAbDPp59FpgtGcIUxka98fY5GM0VlOIBjCQEUBIqu/MTzTIi5ULlvwgI8LZlniPlTwhpVW2xfXntzjXiKuPT9AD5C2npkIcEUJ+5BPWPts6YVmEEb48GWguo0Sqb2rpkHElrBcQD5HRlXRoVQfruowq7lTxYjnYGxkAarKxrbirT/TSE7rkBH3eQ4OTnI8STwyXNFWfKkswGafLl/8cQgw0DN+EnordlEXW2WHW9vppuvZKmPYHbD1PyAZe1lD3vjzJIXI/sFDdcVmAttf5MBoifKdXuVfnuVuCa+2XzSmtuQ/U2OSKVhFOTYtiY6RXSsOORZ0MqmXlBPUS1aNUHY1jTTTsXRK25YkgTqF0H+nsiytqE82FAmGZfHy3PbpcdQBkpgv3b9atao6cWH4OLcMQkHZ2GNfNJrYO3lA/No14rHaHgfn1JPmbxC9YV7w3xUW5AB7I5kcY2ksKkmtrjPOpi/MdSM++okux6z5JzwKOjnX5UsIuGdQ6Pp3zl1IfyuYqcMVhzLzjTSWKjOYroWfQNn5/3xT/JLcyfjjT/dNWyrs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,79 +130,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kdamond_merge_regions() applies one context-wide threshold, the highest
-merge score across all targets divided by 10, to every target.  When a
-high-traffic target and a low-traffic target share a context, the
-high-traffic target sets a threshold permissive enough to erase the
-hot/cold boundary in the low-traffic one: a region with nr_accesses=1
-next to one with nr_accesses=0 merges because 1 <= threshold, even though
-that difference is the only signal the cold scheme has to admit it.
+node_eligible_mem_bp is the share of a scheme's eligible memory that is
+on a given node, and memory is eligible when its region matches the
+scheme's access pattern.  In data attributes-only monitoring nr_accesses
+is not updated, so the access pattern cannot tell which regions the
+scheme is for; its probe_hits_wsum filters do.
 
-On the regular merge pass, cap the threshold for each target by a tenth of
-that target's own maximum merge score.  The score is the one
-damon_merge_regions_of() compares, so a probe-weighted context is capped
-by its weighted hit sums.
-
-The passes that follow the regular one exist only to bring the region
-count under max_nr_regions by escalating the threshold.  They keep using
-the escalated threshold uncapped, so that bound still holds.
-
-In a probe-weighted context the merge score is a weighted hit sum, which
-can exceed max_thres, the samples-per-aggregation ceiling the escalating
-passes stop at, when the probe weights sum above 1.  Raise max_thres to
-ten times the initial threshold there, so those passes still run.
+Count a region as eligible only if it also passes the scheme's
+probe_hits_wsum filters, decided as the scheme's core filters are: the
+first matching one decides, and if none matches, the region passes
+unless the last of them is an allow filter and the scheme has no ops
+filters.  The address and target filters stay out of the metric, as
+before, since they scope where the scheme acts rather than which memory
+it is for.
 
 Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 ---
- mm/damon/core.c | 30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ mm/damon/core.c | 34 +++++++++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index e3c29d7cff23..7c0df07f0a90 100644
+index 7c0df07f0a90..bae4569f0ab3 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -4167,12 +4167,40 @@ static noinline_for_stack void kdamond_merge_regions(struct damon_ctx *c,
- 	unsigned int nr_regions;
- 	unsigned int max_thres;
- 	bool count_age = true;
-+	bool use_probe_hits = damon_has_probe_weights(c);
+@@ -3609,6 +3609,31 @@ static unsigned long damos_get_node_memcg_used_bp(
+ }
  
- 	max_thres = damon_nr_samples_per_aggr(&c->attrs);
-+	/* weighted scores can exceed max_thres; threshold is max score / 10 */
-+	if (use_probe_hits)
-+		max_thres = max(threshold * 10, max_thres);
- 	while (true) {
- 		nr_regions = 0;
- 		damon_for_each_target(t, c) {
--			damon_merge_regions_of(t, threshold, sz_limit, c,
-+			struct damon_region *r;
-+			unsigned int t_max = 0, t_thres = threshold;
+ #ifdef CONFIG_DAMON_PADDR
++/*
++ * Whether @r passes the probe_hits_wsum filters of @s, decided as the core
++ * filters of a scheme are, with the other filter types left out: the first
++ * matching filter decides, and if none matches, @r passes unless the last of
++ * them is an allow filter and @s has no ops filters.  These filters select
++ * regions by their data attributes, so they are part of what makes memory
++ * eligible for the scheme, unlike its address and target filters.
++ */
++static bool damos_probe_filters_pass(struct damon_ctx *c,
++		struct damon_target *t, struct damon_region *r, struct damos *s)
++{
++	struct damos_filter *filter;
++	bool pass = true;
 +
-+			/*
-+			 * On the regular pass, cap the threshold at a tenth of
-+			 * this target's maximum merge score.  A high-traffic
-+			 * target in the same context must not set a threshold
-+			 * so permissive that a low-traffic target's hot/cold
-+			 * boundary merges away before the cold scheme can act
-+			 * on it.  The score is the one damon_merge_regions_of()
-+			 * compares, so probe-weighted contexts are capped by
-+			 * their weighted hit sums.
-+			 *
-+			 * The passes that follow exist only to bring the region
-+			 * count under max_nr_regions, so they use the escalated
-+			 * threshold as is.
-+			 */
-+			if (count_age) {
-+				damon_for_each_region(r, t)
-+					t_max = max(t_max,
-+						damon_merge_score(r, false, c,
-+							use_probe_hits));
-+				t_thres = min(threshold, t_max / 10);
-+			}
-+			damon_merge_regions_of(t, t_thres, sz_limit, c,
- 					count_age);
- 			nr_regions += damon_nr_regions(t);
- 		}
++	damos_for_each_core_filter(filter, s) {
++		if (filter->type != DAMOS_FILTER_TYPE_PROBE_HITS_WSUM)
++			continue;
++		if (damos_filter_match(c, t, r, filter, c->min_region_sz))
++			return filter->allow;
++		pass = !filter->allow;
++	}
++	/* as damos_set_filters_default_reject(): ops filters decide the rest */
++	return pass || !list_empty(&s->ops_filters);
++}
++
+ /*
+  * damos_calc_eligible_bytes() - Calculate raw eligible bytes per node.
+  * @c:		The DAMON context.
+@@ -3616,9 +3641,10 @@ static unsigned long damos_get_node_memcg_used_bp(
+  * @nid:	The target NUMA node id.
+  * @total:	Output for total eligible bytes across all nodes.
+  *
+- * Iterates through each folio in eligible regions to accurately determine
+- * which node the memory resides on. Returns eligible bytes on the specified
+- * node and sets *total to the sum across all nodes.
++ * A region is eligible if it matches the access pattern of @s and passes its
++ * probe_hits_wsum filters.  Iterates through each folio in eligible regions to
++ * accurately determine which node the memory resides on. Returns eligible bytes
++ * on the specified node and sets *total to the sum across all nodes.
+  *
+  * Note: This function requires damon_get_folio() from ops-common.c, which is
+  * only available when CONFIG_DAMON_PADDR is enabled. It also requires the
+@@ -3638,6 +3664,8 @@ static phys_addr_t damos_calc_eligible_bytes(struct damon_ctx *c,
+ 
+ 			if (!__damos_valid_target(r, s, c))
+ 				continue;
++			if (!damos_probe_filters_pass(c, t, r, s))
++				continue;
+ 
+ 			/* Convert from core address units to physical bytes */
+ 			addr = (phys_addr_t)r->ar.start * c->addr_unit;
 
 -- 
 Git-157)
