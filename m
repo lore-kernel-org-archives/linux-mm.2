@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC639CA5FCE
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 06:53:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31F3BCA5FCE
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Oct 2026 06:53:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFEF26B0092; Mon,  5 Oct 2026 02:53:05 -0400 (EDT)
+	id 488B06B0095; Mon,  5 Oct 2026 02:53:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAF276B0093; Mon,  5 Oct 2026 02:53:05 -0400 (EDT)
+	id 460536B0098; Mon,  5 Oct 2026 02:53:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9DD96B0095; Mon,  5 Oct 2026 02:53:05 -0400 (EDT)
+	id 376056B0099; Mon,  5 Oct 2026 02:53:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A6FE36B0092
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:53:05 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3AD7C40164
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:53:05 +0000 (UTC)
-X-FDA: 85287655530.01.CACB811
-Received: from mail-wr2-f34.google.com (mail-wr2-f34.google.com [74.125.225.98])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7499D40003
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:53:03 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cpDxdDFj;
-	spf=pass (imf27.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.98 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BADC6B0095
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 02:53:09 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9534E16015F
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:53:08 +0000 (UTC)
+X-FDA: 85287655656.25.41F960A
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D0B94140006
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 06:53:06 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nHdC2h55;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791183186;
+	b=p/tpRH+ZkX+Rnl/1VHVr2Ccop8SH+v4Q0coBkLOSoLWllHlIZi44OERQE2vToXtYgFeNp/
+	BogWLKtPF+MfqT7iH6zuf1BHDQYDWOM0OVZ5/XiqOeYWWHvknxaugv1pMgOs/JbqnIh2LE
+	uNlf39TiFijgg17aA/N/BkmOhlzzSgY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nHdC2h55;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791183183;
+	s=arc-20220608; t=1791183186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wNdiFKmiNwVXREQZb4H6BvkiMV9G9eQw2TPowFW6zrs=;
-	b=xUMYFSCPMHgLVA12wkaw8EJ6DgP2mkkdNTanHu0x541U05hjkHWtVgg0t3FcDnDMTd/U4v
-	aEBTgg33CKBtx8JNN4sYKzHR+zfXuQ4sj9UQ4QhLMuN+zh78wNV8nnxruDAQonZyIuHXSX
-	Qjp4RYaH4myF3LSWAjTwIfK8z6d8U+U=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cpDxdDFj;
-	spf=pass (imf27.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.98 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791183183;
-	b=V5zwNoY/CpFVcQ85PhjKA1GVc77ghqXWHptIMUnaVDwWATIoZI64UCs/PUzxAyXp1HznpA
-	99H7IMh4GOMaKWeQi1hOwS2orpHKW0JYFRGau9R7qfPu0enVaSnS2tQu7WmNZ/3Xg+/g9o
-	V+a0H7PG5NRGZFRZwq0JJ5hJJHnRgn4=
-Received: by mail-wr2-f34.google.com with SMTP id ffacd0b85a97d-48b00a0ac65so620668f8f.0
-        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 23:53:03 -0700 (PDT)
+	bh=J3qCoCe5HgkC4I11/aszYLTcw78qjIhlSBPgmqbtI6o=;
+	b=SxBzgOGTHkrDFcemJCGim1dEXZ2KlCeEPN7h9AGQDrT2299dY/Qy5MLoSrfPzs5ohy+Ek+
+	54tEpTDApGzckt81cEZsD12pPafbU1aEm9uKSVdxofMZ9Isqt0f35CasTLuReRlltb9WBm
+	+Sj+syWr3dvdP/7sMA2Ho9HmMRx07m0=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a1682bff3cso6628375e9.1
+        for <linux-mm@kvack.org>; Sun, 04 Oct 2026 23:53:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791183182; x=1791787982; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1791183185; x=1791787985; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wNdiFKmiNwVXREQZb4H6BvkiMV9G9eQw2TPowFW6zrs=;
-        b=cpDxdDFjRGsfPec114b/nqJX3Uy5LoTvt4fj/+Ek4ZxeME7ZfKEIVM5okQ3y7ftFMG
-         Bq4D5ZavOr7VYPYte9vJiZvut6FU9xFEKKQbOjHsOTMhEW9AvA+AL5Edz39Aa4VK9vf/
-         T/Jp0RPUyYVb1xYFKYm2k6NjYVXStpZj1vPHAwvUKkcEhJR7wNv7dWSdRrJINI7DRCxK
-         PfjVnIk0uJxR+/zRd3qtVgHF5fNU8xeED2pBvf3mr/jBkpmx2nkteNPXXJRzKOtjDBR+
-         fPxWab0SOqqIi53GAMwjXYndjdObKKyiv61bF2XUvflzRBKc0HNVG6BIbvQZRjqS0ZgI
-         uJgA==
+        bh=J3qCoCe5HgkC4I11/aszYLTcw78qjIhlSBPgmqbtI6o=;
+        b=nHdC2h55A2V19vdrBe5aefxNDqiXvGiy0EwLEgUCKRDsyS9apd8OAlw+B9musWzcfU
+         SDeIiZGqA8ZvXHjTOhfkS9hxfhtqww4dK9I1W7gIfJCkGmAu6xqRfN1v1ZO/nmS6QUWN
+         6WhtgwA7EJ3Eg/Gf6U1dQAltWF6JXh3dtgirlnZfhtjoYsEpp807f///x3kJO/1nJykA
+         zJ20crdD85L8raXiPVqxB1w+qC4Ja0qBH0mNjG6V/4+Bh+PrKkMILE0l2jsFSEujXnvZ
+         TaMURj5JwGSkKzjSiBsg2BOFj8+4mZZzjSgslhUqEJpio3+PMkjR62/gQ4Wo7sCCo+am
+         ZPEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791183182; x=1791787982;
+        d=1e100.net; s=20260707; t=1791183185; x=1791787985;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wNdiFKmiNwVXREQZb4H6BvkiMV9G9eQw2TPowFW6zrs=;
-        b=A+k7zK6h8JQQ9tn3GGkAYLbrXnJ0lclVqVvCJmwQdCgdFQd6AHhV+1/BfMM5qgyr0+
-         wQ1sAmGFT9TW7i4xIpejGb0ZTfSWsd0T/xZ1XEmOND7YUKuUclcV2GeiNV8o0IPOQX/k
-         Z4qs/324stUcFFHC1tpkEpdOgzfwS2e5AHc/i2vFuZOVeA3gtvYE5gvfJezjkrBwTY1z
-         fEfmPcI/iLheQCx4GAWN9Qx8MB7xBb6uf503LdJOyHm+OO1oQMJdTB6V3nfkD16Ibcho
-         MfsFD5LPHOasbHtgpqB03KGr9PyzxfNzjP4sXzNWJE8gP7dOpp5iAB7XkUH+u+XUs5BD
-         /J3w==
-X-Forwarded-Encrypted: i=1; AKwUvBzHuykWUIrVmefDdXnSxJjQR/0MNEt6v/Qt8ZVjfZHmxYSBqZU8RlwRfxw+Q1iienX/hjrQuJqN6w==@kvack.org
-X-Gm-Message-State: AFq9FYK5ytsvwTGopIgbPSkWZq2n/+P/laNMiVdiVe/07SN9aPBVX00l
-	X62gVMryqgz2YlGwIssDrw2QWMLpo2nCNSJqTN0m4H83kLuz+1qFjwGM
-X-Gm-Gg: AYBFou3jBCR8Zlh2wzieqZ2mQ1OEigFv5ms4o0mpfu2RPiQRX5ubK/jbj354y3UHpwk
-	nu8jtD/a2K8LZMDERPUGsany2NjbP0ZpTJQIuXL0/P1B2NNODZg7u8AVjuvBgyqSxh+XGDxLC9J
-	MREyUft4iOfAfvpYWQZVTErDIgYk5ym9+izJ42Rm23smq0M2vhHNmHnYAsQF3SEyiljnivhpzLz
-	ZQLEtIxY8gx53+MdML0ITIR9tBDL/3o4qE6wy6AE4rGw6rhn+l5m6F8sNPaQ7JZl8cIymr6gRZq
-	wVOUDRyb1kPdOcm8qz3LEpjBk9KWPU8bUi81AQqywjkcohHpRtSRQ5Np9lZpSxj+aBzrOVdzFbl
-	LpD2ZhG4zUzoQaBE21xswhLb3RHcXXxNb9g7LK8NG2xSpzYe4f4wAW7CZqqSu2Xt6dqrpwxh/r6
-	mb9WYIPzuYKgnAPNpPZBDQ3fGC419M2PMlDkL8Zm4s35yX8O4by6OA7Uo=
-X-Received: by 2002:a05:6000:4301:b0:48b:b1a1:a002 with SMTP id ffacd0b85a97d-48bb1a1a2c5mr20641697f8f.24.1791183182123;
-        Sun, 04 Oct 2026 23:53:02 -0700 (PDT)
+        bh=J3qCoCe5HgkC4I11/aszYLTcw78qjIhlSBPgmqbtI6o=;
+        b=venBW6BR860ysIg7WSv8EYnSCqKALFd+IMwxojP8UAq/QxSH/Xqc77Utv3gMElGh46
+         2gx4JCX7K5MHKg2VIpbCstdleIie/hgEtDycwZX5UHDnXagRvGoYHkxH/fpqIe8zjvBB
+         1ab2hPZ/gdsmpzR1svjjioei4NGRcc4oNMWdglmdFsGDmI15dNVEsJL/VblPN4yMHZnv
+         0OVo/0V6ra4v6sm5Z3ecBQ87CXVbkRy6tYwzXfYV8v7DbURLzyRo/DJilu0CF+E2rcsG
+         vC/vtpZVBLEoPjh21DhixibqQ22KJQ5IFVPv77edgqRwkgGc7I3rbzx/3OoLh/OMfkcT
+         Jq2g==
+X-Forwarded-Encrypted: i=1; AKwUvBx1FCp2ia0Nf3Jj2xhjIFvYmgynmQ2FuXXYdXW1Nz1fYDzOUO32HRr57t99sBdwawgQ1j/2+JrfHA==@kvack.org
+X-Gm-Message-State: AFuF++lAdSnholr8iLAt0GGPkd7qw/Uom+7QIMwpWRZTSe+jtKMSqyR1
+	pvmE+v+YjLjNTVK6jmL/N3INK+ljFwAy8Uh7gDrTHIXa5ngl4L7W6VSh
+X-Gm-Gg: AYBFou23OnkyMJWj2g+kc+4wK1zi4KxZQiH4Ub2weKmT4sIYTnZOAXUQpCBli/o3QLL
+	lxLXLJPkpz2jCSUjVw4pZlRloABqENTcCcpfSPxX+8SKEZ2j4tMIjBh2pg4jys3A7ux/dtIRn0N
+	mnWUibRMNQCP+X1N1H0bxTN+/hHJZ+/Gon55Bz5GHIgTWpGCEEgCzFr+fsHlkP1Sw4S5LHPZX7G
+	A4wpS69D8M6zAoXq50LkNQrTzxZ0ERtHMpLlfpNzocWhBan/6TOLNQK5Kev3NpAUkx/4CkW25ib
+	bAoPvKBL6UJ1TGstgIN+aoVUpJl2ks59PbB4m5zTZQvAu0fU48J4A9e+ompfFc5YXi7f/ZDXx9m
+	+81IjWi7e+2DTi9Q0A4jJYQTyeWoVXG4UvjRfceR3OBPKWibBvKejGiO+bGEZkco6hHxbnFVxLd
+	AQ3CnB20wbBS2z9WP3rlyaB/2KLQdWOBmi4e+T4mAsgW0mFOUDe7QTdCo=
+X-Received: by 2002:a05:600c:a116:b0:4a1:6517:ccf1 with SMTP id 5b1f17b1804b1-4a1680e9524mr72604545e9.9.1791183185355;
+        Sun, 04 Oct 2026 23:53:05 -0700 (PDT)
 Received: from nobara ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c6308481dsm1247436f8f.3.2026.10.04.23.53.00
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c6308481dsm1247436f8f.3.2026.10.04.23.53.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 23:53:01 -0700 (PDT)
+        Sun, 04 Oct 2026 23:53:04 -0700 (PDT)
 From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
@@ -107,22 +107,22 @@ Cc: Vlastimil Babka <vbabka@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
 	Park Tae-sun <ts930@dgu.ac.kr>
-Subject: [PATCH 1/3] mm/mlock: make a zero length request a no-op whatever the alignment
-Date: Mon,  5 Oct 2026 08:46:29 +0200
-Message-ID: <20261005065244.6935-2-azpijr@gmail.com>
+Subject: [PATCH 2/3] mm/mlock: reject ranges that cannot be represented
+Date: Mon,  5 Oct 2026 08:46:30 +0200
+Message-ID: <20261005065244.6935-3-azpijr@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261005065244.6935-1-azpijr@gmail.com>
 References: <20261005065244.6935-1-azpijr@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7499D40003
-X-Stat-Signature: fhbjf9jaqokcyh74p35dzxgqq9jzf7cf
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 4jot534es8fpmj4wo6gsozexrrisjfkt
 X-Rspam-User: 
-X-HE-Tag: 1791183183-363443
-X-HE-Meta: U2FsdGVkX1+5yjfvINAf772WGJ+xn6xGVhCqeDY21Y4LXwgatzpfx+xzA3MgHcR1GOSY933NhJF0iqcLnMUunDdRr++S4wKNFbQQkQJd/JFoExaUWA/zSwhaAHKvUMjhuCz5vt1UoLrfAzHlkqEk6R3p6chPJ/iRKpwouRQn+bNPqvUcgvbDR0JeAFCW4GmLcDNRY2H2TQklH2hj71IWGPDcwvUJogvSPyKptb6Wn3Krt7K5X7jSTFmRojWIJmegLkiwHqD/iNahsCqhB9sbRDujAoSwCB/ho544ED2y9XBbS5tsaivW3DXh17Zisemxa4Ong3MPHAztVtfeCoIHY5cLxCF99fIWldkYToBnDT3yHV7Uw1xueTCmOkJTY7A/X1pAYBlUJZlfg1c0LfRueneahyto31pKwe93Eq6javezN14heFDdgAnCR+gzZmBgK3QIxEh4cAZtbkwDG9FxnnFS5oZHJcG1NrV+2tPDnMYafZBhffNsYV0txS9wW9Nz4hi31zxOUPZv6i3ApsNcUCImGLguCfctF2cTcPlYIusKzCt1oQdQrS2lCNJCkP0Mg/JG2mx/vk2XP5NWAgBN+r3DehoZOUnWFAsYX8bdExpsmIMUgxrCvJvUKZaW4TxBjJyLVu02bAPkNY4KW0c9eNg5RXnIiMqIJoTbe36usNrzymPd2A+fKfkilnaNYRVS3NqnJ74ZvNVhxQvrbfXj47fzd5q6zb3AtxRoiJB6R1ImPgIiYMMQy1fQKiJFALEjzYf385b0hMJnSjtBcjHHlTJpo6g5rZa+pQGvw+L347Wi+prJYmQU9UgZtdNlCO+fJ7QTsrA7T40oFdMOBWDhtaA8UVHAmGHsCbEH68e556x034Bds8Lp7Avd9kwNumDpdzmZYQTXgY+/BS+fBbjilkrkDyjRgmNmE2GzB5uikga1d8bSvwmL5jpk7pZIxrzJNTdQnDzxpKnLxovcbI1
- ZHpTZXJA
- R8+VvpmE/AsPNY8qolTMPzlAMsI493sq1IKRm9ztx+WNCPVc+OptbRcP4dnxdy3EqoBDYumSL+H3wM0BQs0gXQkhvzSBvBsWe/u+oLV1TOM9ls8XhjWnsjUBIBBUct0HNzt1YaW/U49J9M8HI/FzulN+xVifSLl8tV4SYWkIhb7FKrh6xMgr6CTwDpECYqoM7FNTLIwNA++3HycUVx8P/dp8lIjMdgy9D40Jn5dQLief4uRv8iSgP7bzUL3JvSrVIdRIlHEta5W0Y7WMsLW4dU9VQGU9ALj7BzR58TAP0M6mo7IOI4d75/H4NHwzP3zCwzoE5l3NefiUkt/zSn+gHJ7AvKXEbvLEcI5DKb+rlvUwMihNIxD5j8IG+aYFwOaa/y8Ob074WOVryPaMpNltABQqbNi7TyEYcS2TWZApoczUBsDbTob4136MjELQvywEjhL3L3r1lL5TaeOS0a31zQRQWxQ==
+X-Rspamd-Queue-Id: D0B94140006
+X-HE-Tag: 1791183186-802324
+X-HE-Meta: U2FsdGVkX1+uy7fvyLwCxzMOf/qZhdlXfHkSqOkVMyuUysKvYpmwVAW+jSr4JvY33N6aImoDYJeRLSSymWHIwvsPNy+17auT8Qzkb5ruDJ4xDx9iY4LO7UkWMlibe3ZAqxwTEbcczBUCC8mdyWkz3mSVTTCxm6E+68txEWSW6l3O3tXjQ73N8oa0QxQDkx9QxBrT90YGL+njKN/Rt1E/p/ak0lT37fz3SftG0urzUdmhtjvRV0E5Sco9GkWdEVoC/y8hRahIIzuWnCfY9xAjsbgOAiKs8hrmWkYYU0bkVnYyqfKSORT84liMRPabyXlGeJ4Wl+7oRmS4GgCXHfFvKT2XAjaUw82UGI3OZmhm18uvYhIWtVRGesoTFO0qkz1GsUIBnlmkupt1/j8BDBTBLVe+aiK3nuFWzW3UkVsO353ioRlPzvRN1GH4zbNy74QukNXBpUKKjY6PYLHRzomabF5mbhWLNtOthX7as3SmLgslg5lIcI58S1Yvv9fseBBdAlzu4ImeDA+Oq2m8DV0ZZ9kkWxyTY6ex1GWLpcUCYuU9DzcF/NRbJjb0MHZ/VnIDYETfKmzXOvnKcNr3USy5LGdbrpZaR+Ogxgu0M4hyV0r9v3Z7eZdFT0R0giT1SAG5od+2CnWFpbNVFPcj9aHuMPcIq/buMXQWpA+s317KfnsxVLoJEXyrI81w2FvVACvBAt5mN0B3RTx6EZbH7/dIFGQlaUu7FOYyi/KaPO8DYZmniPALBmKFLFtL0JJqFNmcGMIinITs/dcqm9NVe8ANxj/258Jix6cuugpN7y+sEerpT+oILlR/TzeP4Y5FjydvqNCp0QI/Ctil+s15+MgfWIGMu7xR3AOD1TXMXqQezmhnF2YeQKlJw4VZsdKHOry7rFnzDEoZ/6j5QDjv5IAjQiN9zq2wtYDSFC4Rw5oFQPihSyT3rfh0LMDqokHOBIXLGxs/ENg0NgwIU/2fKUg
+ oqO4lzdM
+ IOHUrafk0TmoSPCMHsGNz3s1mniriKzYzfZs+tZU0qlUH0QER4zcKWDtKuLJbOceZRjrhNsFyrXtM3Zi9xt++yA2R1zuCS1enN7QbWbLM1KlzNm+d+iS5kBvWkGSZKSJWrQTl75gaYSCbxtuF6BCg7xpi9d4XUfwKg4EVoCOexewFmFvWGBmE50q8Q7ah+yFeQlk6rQmMUOuPs4KLD2uStYVvm8o5uP2lAlhn9k01JxWlvWpmZA5kqJ2lOD6ClymRINv1zdKQj5dTXGm04P9C7WLWX+w9wvZxOdLnkZmBcVQapX1oEwYVlGUdcowDXxy8l7oWsjPfesTjzDs8ckbWmSavrATY+hkD1kIIyQ35kqmWdHVQeWqeTCuWhl5QFF8RjQ/6kZBesuzPWumlGLlZTnOiAVPpS1vhayoO+Irs/82KvM9j4xX8zRhuFg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,49 +130,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A zero length mlock() or munlock() at an unaligned address is rounded up
-to a page, so mlock(addr + 5, 0) locks a page that was never asked for,
-and munlock(addr + 5, 0) unlocks one the caller may still rely on. An
-aligned zero length is already a no-op.
+A length within a page of ULONG_MAX wraps when mlock() and munlock()
+round the range to pages. At an aligned address the length becomes 0 and
+the call is a silent success; at an unaligned one it becomes a single
+page, which is then locked or unlocked. An overflowing start + len is
+only caught in apply_vma_lock_flags(), after the RLIMIT_MEMLOCK check, so
+mlock() returns -ENOMEM without CAP_IPC_LOCK and -EINVAL with it.
 
-Return early for a zero length, before the rounding and before
-can_do_mlock(). This is a uapi change: with RLIMIT_MEMLOCK=0 and no
-CAP_IPC_LOCK, mlock(addr, 0) returns 0 instead of -EPERM, which is what
-munlock(addr, 0) already returns. man 2 mlock does not say what a zero
-length should do, and -EINVAL would break callers that pass one today and
-get 0.
+Return -EINVAL, as man 2 mlock documents, when start + len overflows or
+the end overflows when rounded up to a page. Doing this before
+can_do_mlock() also avoids making the result depend on
+RLIMIT_MEMLOCK/CAP_IPC_LOCK. Requests that get a silent success today
+now fail.
 
 Reported-by: Park Tae-sun <ts930@dgu.ac.kr>
-Link: https://lore.kernel.org/all/179066531783.50175.13377521828379196177@dgu.ac.kr/
+Closes: https://lore.kernel.org/all/179066531783.50175.13377521828379196177@dgu.ac.kr/
 Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 ---
- mm/mlock.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/mlock.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
 diff --git a/mm/mlock.c b/mm/mlock.c
-index 4235a1518fc9..cc28e5d7413a 100644
+index cc28e5d7413a..a9e2b90c058f 100644
 --- a/mm/mlock.c
 +++ b/mm/mlock.c
-@@ -612,6 +612,9 @@ static __must_check int do_mlock(unsigned long start, size_t len,
+@@ -608,6 +608,7 @@ static __must_check int do_mlock(unsigned long start, size_t len,
+ {
+ 	unsigned long locked;
+ 	unsigned long lock_limit;
++	unsigned long end;
+ 	int error = -ENOMEM;
 
  	start = untagged_addr(start);
+@@ -615,12 +616,19 @@ static __must_check int do_mlock(unsigned long start, size_t len,
+ 	if (!len)
+ 		return 0;
 
-+	if (!len)
-+		return 0;
++	/* Reject a wrapping range before can_do_mlock() and the rlimit check. */
++	end = start + len;
++	if (end < start)
++		return -EINVAL;
++	end = PAGE_ALIGN(end);
++	if (!end)
++		return -EINVAL;
++	start &= PAGE_MASK;
++	len = end - start;
 +
  	if (!can_do_mlock())
  		return -EPERM;
 
-@@ -678,6 +681,9 @@ SYSCALL_DEFINE2(munlock, unsigned long, start, size_t, len)
+-	len = PAGE_ALIGN(len + (offset_in_page(start)));
+-	start &= PAGE_MASK;
+-
+ 	lock_limit = rlimit(RLIMIT_MEMLOCK);
+ 	lock_limit >>= PAGE_SHIFT;
+ 	locked = len >> PAGE_SHIFT;
+@@ -676,6 +684,7 @@ SYSCALL_DEFINE3(mlock2, unsigned long, start, size_t, len, int, flags)
 
- 	start = untagged_addr(start);
+ SYSCALL_DEFINE2(munlock, unsigned long, start, size_t, len)
+ {
++	unsigned long end;
+ 	vma_flags_t flags = EMPTY_VMA_FLAGS;
+ 	int ret;
 
-+	if (!len)
-+		return 0;
-+
- 	len = PAGE_ALIGN(len + (offset_in_page(start)));
+@@ -684,8 +693,14 @@ SYSCALL_DEFINE2(munlock, unsigned long, start, size_t, len)
+ 	if (!len)
+ 		return 0;
+
+-	len = PAGE_ALIGN(len + (offset_in_page(start)));
++	end = start + len;
++	if (end < start)
++		return -EINVAL;
++	end = PAGE_ALIGN(end);
++	if (!end)
++		return -EINVAL;
  	start &= PAGE_MASK;
++	len = end - start;
 
+ 	if (mmap_write_lock_killable(current->mm))
+ 		return -EINTR;
 --
 2.55.0
 
