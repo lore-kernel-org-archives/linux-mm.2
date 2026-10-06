@@ -4,100 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F08FCA5FF0
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 09:20:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8C02CA5FF0
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 09:20:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAB776B009F; Tue,  6 Oct 2026 05:20:39 -0400 (EDT)
+	id 0EAD96B0099; Tue,  6 Oct 2026 05:20:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2FB66B009B; Tue,  6 Oct 2026 05:20:39 -0400 (EDT)
+	id 04C1A6B00A0; Tue,  6 Oct 2026 05:20:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C598C6B0092; Tue,  6 Oct 2026 05:20:39 -0400 (EDT)
+	id D1D1F6B009D; Tue,  6 Oct 2026 05:20:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 955196B0096
+	by kanga.kvack.org (Postfix) with ESMTP id 8E8246B0093
 	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 05:20:39 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14D9F1405A0
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 17E97A76ED
 	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:20:39 +0000 (UTC)
-X-FDA: 85291656198.19.11041F4
+X-FDA: 85291656198.16.FFDAA63
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 62E3D180006
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6ACE6100006
 	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:20:37 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eNjDfRF9;
-	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J4co+Zpc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1791278437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ccnT8loHlbzY6gKdlIsiOUq8nG1NhEaTYWMJqGNG+Nw=;
-	b=5zR45/ZdVsU4kUrwnZwecJm8QvTRLGWk1aVDCVKqoVJJW7nfj1nsPRLNxZzCjeH9QfC4uq
-	vmy/D//WlqAn5u7rOBC+VmHG3YcP7P2yL+0+umqe0vRwjgxiSvQC1k0JcL2/uLjvSsSoHr
-	3GiRWCDu+oth6VXCvqH7isFyUdEppRk=
+	bh=RRyPEkZ+ZfmK6tjBW72oAefzXONIUsLRfqoAHzypc3s=;
+	b=p3DCuAGso+FtXpHq9vyvXRiiM4GtXmJenbfwfzaIq8X60N3PQ6NwQCyIcx/8Y7tPGi+pzL
+	arOdrHbrfPkowVqTM6sHyYzvoU2oXEnwqAOnNOhb+LOOFz8QpkR61/O0vXP3s+u+OfqlX0
+	ZGQMz2ddd+p7qO36VbUl9LHVb3X9SAw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J4co+Zpc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1791278437;
-	b=MzedQAM6jooFI2b24TEl2mQC9zdZOX2S6Dbzs8DScUB/sEYHxd2aBcwF/U1BPfTJcHpY/H
-	d8gEzICLm6qHpgdizePSHnldMe79d4SOvhk71tS8W6FekEqc4AsBQRJHdV2x25T5AsSRfz
-	lrTMT5fSUuldpNUbIYjH0ePKB8JxGoM=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eNjDfRF9;
-	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=ZVupzaLX87Kko9kA77AReXqddpXLiPwRd13TtKwLTDYBi/SFEIpH9TlrYip+iN7ULzdmQr
+	Gl1dGi6bYVp7vf1BYJwQzCmNfzeGt5FKO9XACxe+C143GgNE56748TgBlp/vuXH+UCLRQy
+	lmoux7wf1b+0vVxwYo78C6/ASkHV/6E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9BCB060546;
+	by tor.source.kernel.org (Postfix) with ESMTP id C2F256057A;
 	Tue,  6 Oct 2026 09:20:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CDFB1F00898;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7096B1F0089F;
 	Tue,  6 Oct 2026 09:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1791278436;
-	bh=ccnT8loHlbzY6gKdlIsiOUq8nG1NhEaTYWMJqGNG+Nw=;
+	bh=RRyPEkZ+ZfmK6tjBW72oAefzXONIUsLRfqoAHzypc3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eNjDfRF9MjDY8pC4+kVmQa56taS4A/Mks1cpkxJnt2eStLBin7XHBaqwR+h8+70XL
-	 gBBZFINQKmk7CBTSc4eXm4iLsxBJg/Pie0SI4i5JpWYMlWzIshznz2BuI8lD/iwtrc
-	 e7SH5BEDRCckE9rqxQf7fwbR0Q7HsyUSWCitHpJiiGd45W+OrZQE8AgYSGu1VkcqoG
-	 /If8s1fsVircgS13m2yPJiL80IjDUAqFoOWE3Q1TSF2y9Ixs0GFqyo33s4QwzblVds
-	 P3jsDmAlhGh5m6VYP7QPnqtbRuPfPtsbT5Ye1/VjxD/H21xguBhl3wdAFBa9fFfRY/
-	 Ef1eaoE9uZnOA==
+	b=J4co+ZpcCJ8t4bVYxlz7ppJ19xOX2Z+P98GC60KCa3ERMO6O69lS8UC7MM18SoDvI
+	 s/Lgo1ZJuQB2Qtii2akqe1NpJ23hbjsi7E7wRXd6uwZjYPXaJW688bmmFgThgH0Bli
+	 fBhMY2nIMwW0beaDf3H9t1SM8uZHAf/aInl90KsT3wI0nEJEl1jqsh8O41wrXJ//+t
+	 KkGZJ4s0djlVAe5fowLygTFmLbQTFc7eqFy/HZAgxTo36VICiJ8IO/IPJBViINoptL
+	 x/jr+7NXYQk4EB67SCnunmjnvoURxxDMxbDMzCWh0huDtBXlE99Fx/Q1Syqk64vUaz
+	 y1BkZgYGM8J3Q==
 From: Kees Cook <kees@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
+	Harry Yoo <harry@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	Pedro Falcato <pfalcato@suse.de>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
 	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v6 2/8] ipc, msg: Account msg_msg allocations with GFP_KERNEL_ACCOUNT again
-Date: Tue,  6 Oct 2026 02:20:28 -0700
-Message-ID: <20261006092035.166776-2-kees@kernel.org>
+Subject: [PATCH net-next v6 6/8] mm/slab: Add tests for the existing kmem_buckets behaviour
+Date: Tue,  6 Oct 2026 02:20:32 -0700
+Message-ID: <20261006092035.166776-6-kees@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261006092030.got.500-kees@kernel.org>
 References: <20261006092030.got.500-kees@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1765; i=kees@kernel.org; h=from:subject; bh=Tp8/qFUjEWwmLfgAKlPf3+uMGFYcGpgvjcTyJ+Rn3GA=; b=owGbwMvMwCVmps19z/KJym7G02pJDFlH9san2Z67WWLIEbElYQrLwT+f4ucfDn3AK/JGfX7CB xPei/dbOkpZGMS4GGTFFFmC7NzjXDzetoe7z1WEmcPKBDKEgYtTACby04HhF7NPzR7pnoLNpUZq eziev9U8t9zjVbfapYUfJkzxOb6F5SUjw/X8Wax7yh8xnmPMWqsho7Jzcke0aNvTS5dStju3nDj UyQ0A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10322; i=kees@kernel.org; h=from:subject; bh=k2v7XTUE7M2oSlV7PbZULb9YGZZnAP5BYpCfw9riwUY=; b=owGbwMvMwCVmps19z/KJym7G02pJDFlH9iaWaF63ar82eZX4n72zhZjuJhl3ezPJP9m8XOrww rDTp4Ind5SyMIhxMciKKbIE2bnHuXi8bQ93n6sIM4eVCWQIAxenAEzk7zFGho1CehqnJk+3udFt l/BRcn2Y6Zql6tKzHpVrWiUYJK43vMLw3133yMTfGtwn007fVc7+8yRgXxv/3Hu7VDc+zuea7vN TiAEA
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 62E3D180006
+X-Stat-Signature: 6g3ihr1bj7e8smwypqsprcduhrtuaquc
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: rhti5ew1rr5xhtindwpq31ao1uzi3yc9
-X-HE-Tag: 1791278437-751835
-X-HE-Meta: U2FsdGVkX195RL77oPez2HLjK4i11Q3TmizOikc6fKfUK3HpP6g5Sj1sfnrm4TKpQtzWQ1y1YbNI/HxHbgyCSyRWvwrKRtgrjllUvYP/S9OXErUohi7tUHry+J4HYlZPaR+dnnypD/A/ndTRc8QEr3MZ9rD/zHNgKHWBWZUsdA1h1Us/kzjYxBfep/dsZ44+MakA7IpnHDBoHcj2stBx/ji6EOt00oc3n2CchXDoSil2YhuLbxm50Mox/Jd7+5OmUmOAQwAKKth6wV0bXpbdB+NcmdDMAO5+vNPxiewCWwY40Tu9/b71uhmFL1cng2KQxXG0phCqCimltbzpcGRiiFCnDWDsudYLX10qQ5f86nuneF9MCoaTaLRWGL6JKiCW81MEyHwS4vHJnmaCSKd2hMkGWmaok+19sfxdvCAuTPFmxAQV2YzLM3SAXSOWQ6tsWxISCuetUV2OTXGaCECzcaOPQAm61oc5xOX3uTaanrsmZZSB4LH5Xy1uIhx+7q1VDU1GXyerKtNVuCqKKrQhrq0SIxiEzrcU6X96g9ytUEe2M7bgVQmSM+LphZlFGn3hMqaxMO4rC7bA0IsvIaVkEab8QeKXnZ3VZWj5CE0z1Wp2K5Sjw4GSNroN+lMMbOWSOggQhoPfE4wBFvAmBYDmWPg+d6YIWYPnpMTatK2o4nZuaiBjA3pmJNdW/6zYWndMF7yPWqazrB3oBmLjChxrxuNj1rB0wDKAaIOHvJv1PspNM0DaQsmVwT/gfFCbgi5o+ctIxoPzo2w19odxFKTd2RIRWgTo1nXLGiNDo78YilQGtxTBumrmYGjMla36SOjDLD3Lk+kpdsv6H29ktU/y+T3w5bji+HO1j1c8/L6PYYPR8hvH+DK1o2aP3jSm0jJLglqci3GUnevbTDkzZnv26bA8sMJ5NHp21M9EoPYrIbQ1n+iIgCNlYsDiNtK3u6APTigmdhtcyaerJWix6WN
- DotdfDUi
- n9tTtAEYu9A65kxn3a2TDjuUPKKkt9DBKZ9PIH7ipECjZVvg59x79Uk8cIswk0yyedSNtDNyccM0Pgxay8VgFq/jddJMAk33jB5Tc7lQqo///cj5Y3p/+glAoaeoyNpEwFLzVB5eDt8vNbxCb5QHUhcoW2cbBWvscKxwMAaxY1H/qPE8V0lRvQIHBqPA6JfVXmajkevsBzZHAwUH8nx9Vuzi6hLQE+LfeLp/llbdBNEZZKBHOPyxkKgS7A4qEBMyC2osjW4zfZ25wVEc2SD9T9rnhAA==
+X-Rspamd-Queue-Id: 6ACE6100006
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791278437-76144
+X-HE-Meta: U2FsdGVkX19RAqgUv/IgDW1MvVpTPZrdVmexMSaR0VRjvuZsN0N2Xri/YERW+EIzT/qSeEJZmSZweFQdY3MdDewxT2yS0ERveO0LC1wWQVyFA8spKtOojfeRTageYtdqi3Afl6FX+Mu99mM6XcjW+cijl26UQVLh8/BtxMmc6syYTtPkDav0I1uezURWsJko9+u7FrKdlnACyh14aSGnpZefOmdiK5kvX/G5C5EXmHYMcBSl9M+xQB8ufYjn2ndbk8KswCjsyNSJSeCzI+cxA9+IEhH7mCuE4fw/uVPn6rtjTAAWlVNC35L2rx/bC+jWOsUiM9ZSZ/9FOO0TgskAq4KQdFvNXooekxgVgVZkIcH+VN5oMulyk5RNAFgI3vtHewNzl9aZyxwCBlfiKF/D8iP8HUPw01YkahqZ8MJQilXFa9Z20a04dSfZAiXijvm23j1mlggHpOn8HADpJqbrXE15th9707oMTqs0gtmNNBs2fm31Eo1ESyXj1tVdTlps7Gk6dbojOpWZDm3kj0mvaPcCMGwSAG1Lg3d63bR91aIRyL2IHUgV+Rtmd45DtMqOwqSvdOrQa6N8UGZSWnRHXEU9VgpGVh9zwke0af2Vsnjmna4SRknKtMvxtuW6jcSOnCRq9yGnZJvBMoAEMLKYYkIXFKyLzyuz5rfd0mgi11yufz39zlD8qHSI4a+yNYmiCY5MwnuiabCBdEbJub6PMjJN4gQ1DCmEGMfmchQXptEKskXrzOdD9VGHwW96xn2A3ipFFV5MQJVnXs24y28WVClXl30MTdaFG1OpC9qDOfKu1KSjVufLDg6qiJ5lsezXKLzKN+7zHLyoPoiePSKmCwsrghjnunXHIWWbBBVx3uxn4fKu4jQsbvTqt2hF0FQLPvBd4nkx0JNhKjQqH9Ie4xXtkuMD5ciuupCqQzA1mlasocGMbg4vtzdkLG6N4YmePm7y8n1iLj2TWxfnlz7
+ +Uzg6vqs
+ 6KWGdqT1dtGowgsLKxSkzvENwUAPaZfqfC2tov9Ik1QQBhYTFXiJHT6nyNcSH2MHYUxRvYR7FZ1803fUKUDAncCxh0Rfw8mZPpnrFhtPeizn7VilVvPZHlp1a9XSbklzf92itdziFzpaqjEtFjkWx3LaEQekThNIjrwFwQAoS4bj3yfjCWYEZmrIvlRhWbo/lnoqyelSPdPTEPauRbhRYzZ/V2W58fmIPnkrA74ev73fqC5lbzLpWQEAAUmpa1i8dXc6JcyHGe0+6p+i6z+a5sFZLSA+yDmEY6iNX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,51 +102,302 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for
-alloc_msg()"), alloc_msg() allocates with GFP_KERNEL, and a msg_msg is
-accounted only through SLAB_ACCOUNT on its bucket caches. With
-CONFIG_SLAB_BUCKETS=n, kmem_buckets_create() creates no caches and
-kmem_buckets_alloc() is a GFP_KERNEL kmalloc() from the general caches,
-which do not account it; the same happens when kmem_buckets_create()
-fails. Either way, the allocation is not charged to the sender's memory
-cgroup.
+kmem_buckets has had no test coverage since it was added. Add tests,
+including stuff unique to the bucket design:
 
-Allocate with GFP_KERNEL_ACCOUNT again, as before that commit. Memcg
-charges such an allocation in whichever cache serves it, so drop the
-SLAB_ACCOUNT, which no longer adds anything.
+ - A bucket allocation comes from a cache of the set's own, and that
+   cache carries SLAB_NO_MERGE.
 
-Build tested ARCH=x86_64 defconfig with GCC 16.2.0, with
-CONFIG_SLAB_BUCKETS as y and n.
+ - Each size is served by a cache of the set, of the size kmalloc()
+   rounds it up to, including 96 and 192, which are not powers of two and
+   which kmalloc shares with a larger class on some configurations. Sizes
+   above KMALLOC_MAX_CACHE_SIZE go to the page allocator instead, bucket
+   set or not.
 
-Fixes: 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for alloc_msg()")
+ - Each cache is aligned like the kmalloc cache it mirrors.
+
+ - With CONFIG_SLAB_BUCKETS=n, kmem_buckets_create() still returns a
+   non-NULL (zero size alloc pointer), so that callers only have to check
+   for failure, and allocations through it come from the general caches.
+
+ - Destroying a set takes its caches down rather than only freeing the
+   set, which is what a module creating one on each load depends on.
+   A set freed without its caches would leave the names taken, and the
+   next load would warn about every one of them. This test skips when
+   KFENCE serves its allocation, since a KFENCE object is in none of the
+   cache's slabs for the teardown to find.
+
+The tests skip rather than compile out, which is useful for testing
+the CONFIG_SLAB_BUCKETS=n behaviors.
+
+Built and tests passing (with expected skips) on ARCH=x86_64 defconfig
+with GCC 16.2.0, with CONFIG_SLAB_BUCKETS as y and n.
+
 Assisted-by: LLM
 Signed-off-by: Kees Cook <kees@kernel.org>
 ---
- ipc/msgutil.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ lib/tests/slub_kunit.c | 228 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 228 insertions(+)
 
-diff --git a/ipc/msgutil.c b/ipc/msgutil.c
-index e28f0cecb2ec..1ba8e59cb255 100644
---- a/ipc/msgutil.c
-+++ b/ipc/msgutil.c
-@@ -43,7 +43,7 @@ static kmem_buckets *msg_buckets __ro_after_init;
+diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+index e3b63f0338d5..a2a15a49c5d7 100644
+--- a/lib/tests/slub_kunit.c
++++ b/lib/tests/slub_kunit.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <kunit/test.h>
+ #include <kunit/test-bug.h>
++#include <kunit/resource.h>
+ #include <linux/mm.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+@@ -9,6 +10,7 @@
+ #include <linux/delay.h>
+ #include <linux/perf_event.h>
+ #include <linux/kprobes.h>
++#include <linux/kfence.h>
+ #include "../mm/slab.h"
  
- static int __init init_msg_buckets(void)
- {
--	msg_buckets = kmem_buckets_create("msg_msg", SLAB_ACCOUNT,
-+	msg_buckets = kmem_buckets_create("msg_msg", 0,
- 					  sizeof(struct msg_msg),
- 					  DATALEN_MSG, NULL);
+ static struct kunit_resource resource;
+@@ -474,6 +476,227 @@ static int test_init(struct kunit *test)
+ 	return 0;
+ }
  
-@@ -58,7 +58,8 @@ static struct msg_msg *alloc_msg(size_t len)
- 	size_t alen;
++/* Destroy buckets on test exit so a failed KUNIT_ASSERT_*() doesn't leak. */
++KUNIT_DEFINE_ACTION_WRAPPER(destroy_buckets, kmem_buckets_destroy, kmem_buckets *);
++
++#define KUNIT_ASSERT_BUCKETS_CREATED(test, b)					\
++	do {									\
++		KUNIT_ASSERT_NOT_NULL(test, b);					\
++		KUNIT_ASSERT_EQ(test, 0,					\
++				kunit_add_action_or_reset(test,			\
++							  destroy_buckets, b)); \
++	} while (0)
++
++/*
++ * The cache an allocation came from, or NULL if it came from no cache at
++ * all, e.g. a size too big for any of them is served by the page allocator.
++ */
++static struct kmem_cache *cache_of(void *p)
++{
++	struct slab *slab = virt_to_slab(p);
++
++	return slab ? slab->slab_cache : NULL;
++}
++
++/*
++ * A bucket set exists to keep its allocations out of the caches everything
++ * else uses, so check the two things that make that true: they come from a
++ * cache of the set's own, and that cache is never merged into another.
++ */
++static void test_kmem_buckets_isolation(struct kunit *test)
++{
++	struct kmem_cache *bucket_cache, *general_cache;
++	kmem_buckets *b;
++	void *p, *q;
++
++	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS))
++		kunit_skip(test, "needs CONFIG_SLAB_BUCKETS");
++
++	b = kmem_buckets_create("isolated_buckets", 0, INT_MAX);
++	KUNIT_ASSERT_BUCKETS_CREATED(test, b);
++
++	/*
++	 * Free each allocation before asserting on the next one: the cache
++	 * outlives its objects, so nothing below needs them, and an assertion
++	 * that leaves one behind would make the deferred teardown report a
++	 * cache that is still in use.
++	 */
++	p = kmem_buckets_alloc(b, 128, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++	bucket_cache = cache_of(p);
++	kfree(p);
++	KUNIT_ASSERT_NOT_NULL(test, bucket_cache);
++
++	KUNIT_EXPECT_TRUE_MSG(test, strstarts(bucket_cache->name, "isolated_buckets-"),
++			      "expected a bucket cache, got %s", bucket_cache->name);
++
++	/*
++	 * Cache merging is on by default, and a bucket cache merged into a
++	 * same-sized general one would quietly undo the whole separation.
++	 */
++	KUNIT_EXPECT_TRUE(test, bucket_cache->flags & SLAB_NO_MERGE);
++
++	q = kmalloc(128, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, q);
++	general_cache = cache_of(q);
++	kfree(q);
++	KUNIT_ASSERT_NOT_NULL(test, general_cache);
++
++	KUNIT_EXPECT_PTR_NE(test, bucket_cache, general_cache);
++}
++
++/*
++ * Each size is served by a cache of the set, of the size kmalloc() rounds it
++ * up to, including the size classes that are not powers of two, which kmalloc
++ * shares with a larger class on some configurations. Sizes past the largest
++ * cache are served by the page allocator, bucket set or not.
++ */
++static void test_kmem_buckets_sizes(struct kunit *test)
++{
++	static const size_t sizes[] = { 8, 96, 192, 1024, 4096 };
++	struct kmem_cache *c;
++	kmem_buckets *b;
++	void *p;
++	int i;
++
++	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS))
++		kunit_skip(test, "needs CONFIG_SLAB_BUCKETS");
++
++	b = kmem_buckets_create("sized_buckets", 0, INT_MAX);
++	KUNIT_ASSERT_BUCKETS_CREATED(test, b);
++
++	for (i = 0; i < ARRAY_SIZE(sizes); i++) {
++		p = kmem_buckets_alloc(b, sizes[i], GFP_KERNEL);
++		KUNIT_ASSERT_NOT_NULL(test, p);
++		c = cache_of(p);
++		kfree(p);
++		KUNIT_ASSERT_NOT_NULL(test, c);
++
++		KUNIT_EXPECT_TRUE_MSG(test, strstarts(c->name, "sized_buckets-"),
++				      "size %zu: expected a bucket cache, got %s",
++				      sizes[i], c->name);
++		KUNIT_EXPECT_EQ_MSG(test, c->object_size,
++				    kmalloc_size_roundup(sizes[i]),
++				    "size %zu: served by %s", sizes[i], c->name);
++	}
++
++	/* Too big for any cache: a folio from the page allocator, not a slab. */
++	p = kmem_buckets_alloc(b, KMALLOC_MAX_CACHE_SIZE + 1, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++	c = cache_of(p);
++	kfree(p);
++
++	KUNIT_EXPECT_NULL(test, c);
++}
++
++/*
++ * A bucket cache stands in for a kmalloc cache, so it has to be aligned like
++ * one. The DMA layer decides whether a buffer needs bouncing from its size,
++ * on the grounds that a kmalloc cache of that size is already aligned for
++ * the device, so a weaker alignment here is not something a caller can see
++ * coming. Without slab debugging the size implies the alignment and this
++ * holds either way; with it, only the cache's own alignment does.
++ */
++static void test_kmem_buckets_alignment(struct kunit *test)
++{
++	static const size_t sizes[] = { 128, 512, 2048 };
++	struct kmem_cache *bucket_cache, *general_cache;
++	kmem_buckets *b;
++	void *p;
++	int i;
++
++	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS))
++		kunit_skip(test, "needs CONFIG_SLAB_BUCKETS");
++
++	b = kmem_buckets_create("aligned_buckets", 0, INT_MAX);
++	KUNIT_ASSERT_BUCKETS_CREATED(test, b);
++
++	for (i = 0; i < ARRAY_SIZE(sizes); i++) {
++		p = kmem_buckets_alloc(b, sizes[i], GFP_KERNEL);
++		KUNIT_ASSERT_NOT_NULL(test, p);
++		bucket_cache = cache_of(p);
++		KUNIT_EXPECT_TRUE_MSG(test,
++				      IS_ALIGNED((unsigned long)p, ARCH_DMA_MINALIGN),
++				      "size %zu: object %p is not %d byte aligned",
++				      sizes[i], p, (int)ARCH_DMA_MINALIGN);
++		kfree(p);
++
++		p = kmalloc(sizes[i], GFP_KERNEL);
++		KUNIT_ASSERT_NOT_NULL(test, p);
++		general_cache = cache_of(p);
++		kfree(p);
++
++		KUNIT_ASSERT_NOT_NULL(test, bucket_cache);
++		KUNIT_ASSERT_NOT_NULL(test, general_cache);
++		KUNIT_EXPECT_EQ_MSG(test, bucket_cache->align, general_cache->align,
++				    "size %zu: bucket cache aligned to %u, %s to %u",
++				    sizes[i], bucket_cache->align,
++				    general_cache->name, general_cache->align);
++	}
++}
++
++/*
++ * With the feature compiled out, kmem_buckets_create() still returns
++ * something non-NULL so that callers only have to check for failure, and
++ * allocations through it work (i.e. come from the general caches).
++ */
++static void test_kmem_buckets_disabled(struct kunit *test)
++{
++	kmem_buckets *b;
++	struct kmem_cache *c;
++	void *p;
++
++	if (IS_ENABLED(CONFIG_SLAB_BUCKETS))
++		kunit_skip(test, "only meaningful without CONFIG_SLAB_BUCKETS");
++
++	b = kmem_buckets_create("disabled_buckets", 0, INT_MAX);
++	KUNIT_ASSERT_BUCKETS_CREATED(test, b);
++
++	p = kmem_buckets_alloc(b, 128, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++	c = cache_of(p);
++	kfree(p);
++	KUNIT_ASSERT_NOT_NULL(test, c);
++
++	KUNIT_EXPECT_TRUE_MSG(test, !strstarts(c->name, "disabled_buckets-"),
++			      "expected a general cache, got %s", c->name);
++}
++
++/* Destroying a set has to take its caches down, not just free the set. */
++static void test_kmem_buckets_destroy(struct kunit *test)
++{
++	kmem_buckets *b;
++	void *p;
++
++	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS))
++		kunit_skip(test, "needs CONFIG_SLAB_BUCKETS");
++
++	b = kmem_buckets_create("destroyed_buckets", 0, INT_MAX);
++	KUNIT_ASSERT_BUCKETS_CREATED(test, b);
++
++	/*
++	 * Deliberately leaked, as test_leak_destroy() leaks its own: the
++	 * teardown below has to find it. kmem_cache_destroy() unlists the
++	 * cache either way, so the name is still released.
++	 */
++	p = kmem_buckets_alloc(b, 128, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++
++	/*
++	 * A KFENCE object is in none of the cache's slabs, so the teardown
++	 * would not find it to report.
++	 */
++	if (is_kfence_address(p)) {
++		kfree(p);
++		kunit_skip(test, "the allocation came from KFENCE");
++	}
++
++	/* Tear the set down now, rather than at exit, to check the report. */
++	kunit_release_action(test, destroy_buckets, b);
++
++	KUNIT_EXPECT_EQ(test, 2, slab_errors);
++}
++
+ static struct kunit_case test_cases[] = {
+ 	KUNIT_CASE(test_clobber_zone),
  
- 	alen = min(len, DATALEN_MSG);
--	msg = kmem_buckets_alloc(msg_buckets, sizeof(*msg) + alen, GFP_KERNEL);
-+	msg = kmem_buckets_alloc(msg_buckets, sizeof(*msg) + alen,
-+				 GFP_KERNEL_ACCOUNT);
- 	if (msg == NULL)
- 		return NULL;
+@@ -495,6 +718,11 @@ static struct kunit_case test_cases[] = {
+ #if defined(CONFIG_KPROBES) && defined(CONFIG_SMP)
+ 	KUNIT_CASE_SLOW(test_kmalloc_nolock_and_friends_kprobe),
+ #endif
++	KUNIT_CASE(test_kmem_buckets_isolation),
++	KUNIT_CASE(test_kmem_buckets_sizes),
++	KUNIT_CASE(test_kmem_buckets_alignment),
++	KUNIT_CASE(test_kmem_buckets_disabled),
++	KUNIT_CASE(test_kmem_buckets_destroy),
+ 	{}
+ };
  
 -- 
 2.55.0
