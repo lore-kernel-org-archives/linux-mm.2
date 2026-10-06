@@ -4,102 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6DACCA5FF0
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 13:26:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33A11CA5FED
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 13:33:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A4E26B0088; Tue,  6 Oct 2026 09:26:29 -0400 (EDT)
+	id 0755A6B008C; Tue,  6 Oct 2026 09:33:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 856A16B008C; Tue,  6 Oct 2026 09:26:29 -0400 (EDT)
+	id 025006B0092; Tue,  6 Oct 2026 09:32:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7452B6B0092; Tue,  6 Oct 2026 09:26:29 -0400 (EDT)
+	id E56266B0093; Tue,  6 Oct 2026 09:32:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FEC76B0088
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:26:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE7C11A018E
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 13:26:28 +0000 (UTC)
-X-FDA: 85292275656.27.2F50424
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 08F1CA0004
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 13:26:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=Xo20vtU7;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf25.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+	by kanga.kvack.org (Postfix) with ESMTP id C01956B008C
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:32:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5D000401E3
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 13:32:59 +0000 (UTC)
+X-FDA: 85292292078.05.94048A9
+Received: from mta0.migadu.com (out-98.mta0.migadu.com [91.218.175.98])
+	by imf17.hostedemail.com (Postfix) with ESMTP id F051040014
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 13:32:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Jekc39bp;
+	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.98 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791293186;
+	s=arc-20220608; t=1791293577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ilvLBZmTUTzmE/0HmWSaWsOHx+yR2B5vrGdgJnqNXLU=;
-	b=kPWO4lz8kZJU3lNnv3CBV9ZwDtR7s172GWajST/IIAq1zN2wpldl5HTQiAV+Pd2W0CiMoO
-	K5al7pKfLRgabIyDxX8SfyjMzoBDpfm+Syj1DQzB3f8hj+TjaMB7ZAdDIZVuavmQ2fLKQZ
-	jIBE0LuA34HZxBpP4db7osDlbkR+Chw=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=Xo20vtU7;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf25.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+	bh=smNz1eVU0GPZ0bGB5TxQ5+zWKlDqUlqFk7rJBl1+TLI=;
+	b=WI5cFw11ntMb+UxCCPfTV8HIGDO1LwEduwmUP1AjqhmrFj7ECOZzux2/PTXwzzlVELUBKQ
+	//px4KHy9QCI4QLDtYLlDI/FUO28o0CcgUB9anbWH5//B1RxaVDJ31aUwMTTUHuyi2FuLB
+	8HyAxOKnRMX/vO5H8Hhsq3cO3iEtkKk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791293186;
-	b=NiBc+GgnMkdPX7m1zT6whibZ+HyOZz3/N5P1BrHOmvAWZ21HA3r7/Txg2yhasIR7G2BvRG
-	z4m131ORPaH7lF6QdSLeyhwQCvxCyYmSWw7kLMOxZ66rqAThNhfunT+DtaKkw+uvZ3pgTy
-	OAMsr81YtarInnb2YgCbdovHjThw0a8=
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20261006132623euoutp01edf1c49739f2db08f8e45b4019f95719~b86jw8G3P2389223892euoutp01j
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 13:26:23 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20261006132623euoutp01edf1c49739f2db08f8e45b4019f95719~b86jw8G3P2389223892euoutp01j
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1791293183;
-	bh=ilvLBZmTUTzmE/0HmWSaWsOHx+yR2B5vrGdgJnqNXLU=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=Xo20vtU7vpz6oPUoo5J+3OTaVXCzYEoQLwGJLQfKlEieZQ+4aq6ct4FxV2dwnPz/D
-	 yx4SBODk1XoQCa5j4HwJKEaIxs8v9xdtu6dfama+2U5eK6SntjR0Uh3iaxA3MvMUdy
-	 /tKoGJSPDOTQ2YTToVsh2PWc+iaolL2UY3RkF6XI=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20261006132623eucas1p2f095ce115c383348370c030aa9756bab~b86jfzdIa1161711617eucas1p2E;
-	Tue,  6 Oct 2026 13:26:23 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20261006132622eusmtip134c8b3d58fbd753bef81a132148a358c~b86ibB-YQ3255432554eusmtip1f;
-	Tue,  6 Oct 2026 13:26:22 +0000 (GMT)
-Message-ID: <5dccea9b-a9e1-44f5-84d9-bc9efe04edee@samsung.com>
-Date: Tue, 6 Oct 2026 15:26:21 +0200
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v3 0/5] of: reserved_mem: several fixes about reserved
- memory
-To: Mike Rapoport <rppt@kernel.org>, Wandun <chenwandun1@gmail.com>
-Cc: robh@kernel.org, saravanak@kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <asC3DBvtlcO5AVsz@kernel.org>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20261006132623eucas1p2f095ce115c383348370c030aa9756bab
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20261003080438eucas1p2bdb68c248ecad088559285a4f736bfe5
-X-EPHeader: CA
-X-CMS-RootMailID: 20261003080438eucas1p2bdb68c248ecad088559285a4f736bfe5
-References: <20260920092852.614973-1-chenwandun1@gmail.com>
-	<arJA6fOMetzoBhDH@kernel.org>
-	<060fb694-ba1d-40e7-8a18-f32d5a4039ab@gmail.com>
-	<CGME20261003080438eucas1p2bdb68c248ecad088559285a4f736bfe5@eucas1p2.samsung.com>
-	<asC3DBvtlcO5AVsz@kernel.org>
-X-Stat-Signature: kogr6qduwg1qtzw7uxqjpiyrrjyhzcob
+	t=1791293577;
+	b=iAXKStpAerGOcV1/ZkL4vd0E/n3kkzU1rPXMbazIBUAYvKDt8sMfK3N6KWwYnLG/vyv4JT
+	TrQmF+JcUZT0VlGtNdOYlJUtog7RS1CLiM8LBPQZsoHUzQJrKG/FOpXt6W2cipbz6hmEHQ
+	Z9DaORFMYzZgY/7p4OTkOgDAQuPSuZg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Jekc39bp;
+	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.98 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=smNz1eVU0GPZ0bGB5TxQ5+zWKlDqUlqFk7rJBl1+TLI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791293575; v=1; x=1791898375;
+ b=Jekc39bpI+ioS9+/6w+urByOeYORvH5fCIWg9NHDTuHFtSIJ4zHHA8DJ8fSensly7uHX/HR/
+ 107fIDjvmzrDpMlAjWnOOfZClu0j0s7hC1Mj6DPm/mAmZBfuONGQURZ+fMeBqUKxRJL59z83wPU
+ Jq8nzS/PSiEN8JYwtO+Vjud0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 72132319fdfc02e7;
+	Tue, 06 Oct 2026 13:32:55 +0000
+X-Mizu-Trace-ID: 72132319fdfc02e7
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH v3 6/6] mm/mm_init: add zone mismatch warning during page
+ init
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <asTS6OtxPMVshuIO@kernel.org>
+Date: Tue, 6 Oct 2026 15:32:43 +0200
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Ritesh Harjani <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CF8ED1DC-9745-42D3-92F0-424A02385EC1@linux.dev>
+References: <20260929053231.66085-1-songmuchun@bytedance.com>
+ <20260929053231.66085-7-songmuchun@bytedance.com>
+ <ar5xbQsUpSQZg0wO@kernel.org>
+ <78D5D6AA-BE36-432C-B0F7-453F93DF18C0@linux.dev>
+ <ar9p39Y9SmlxvbA_@kernel.org>
+ <85941AA4-7E50-4AAE-BC05-0F443B21BE8B@linux.dev>
+ <ar_0GLYM6KsIH6tQ@kernel.org>
+ <D91CEA1E-6B79-434D-AF49-16C62C0FD095@linux.dev>
+ <asTS6OtxPMVshuIO@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 08F1CA0004
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791293185-569475
-X-HE-Meta: U2FsdGVkX1/1VLSqO0RP6Drne6v39X6lPf0QkMrJwhnk1wwlAwiJ81xByarc23WbCKJ29CuzZJJHht4O8vcUzn4NP1YM5HF+j6JlrtufU0/UkoKKrb9eZ1j7ahP5uURkGxPs1cfZJ/J+8KqB8GmG0vUqHCuENfsOhLcx+4dD3Ip8gItHurvuToXLpbT6u+sx/JW9jg0JFUXSSTYDCpovgvrjG8V3DxZtFlIQe+27UCR3/HG6XzwSaVLeKjrF94CmsT3C6pU91OHzrPL8zJH7lA0HzeGs1ysL/0jkWu+iLUjIMnoYvQ3I1zDzZecXK98BU2BpqAiRIqtCj424SeK9HGqzWamSerpebW4/mwyPGRu73nrEruM3AGWUSXT6raUo00Qp5oM9/wY6rtIvH+Nvv2ZgebfFcTp2u/Z/6y1xozAG8eWIJCNL4QhdulgTxpiJ3KqFXzZHkRDOmJgGEYGTTaXKkPbFpYj9YmPc0Vh7b5JQAFjNiAr6+xUvPaTzP1ayUxW2YPEHbs+jei1EF6nwuuNfUpGqNJT44OjouJUuV2EbHa/1D4Ct4LKu1zKzr5VKRgNSdjRdvq8w+b0clJAYxyGY30TwsjIV8nDNHXzWvf/hBk879RSQLVbsoIpNiG2Q35TQYOlkHK+am+YDLwY3ciW9AgGD/vHWmDToGYmWfGlcSnvi71IJE6VVk8CPv4XPMbKA5AhuOtFqkMUlyZ2vEft1y0/cKUSTkFyG/cnOCWaLX5+rGQIq8+yzXYXXTjtob3jOWvbdSC6l68CQnmk+5E9JaglMBBmJw2P6eRl++ytjzdqtMloOAGEZyTouenykyP9EyEBiNDcCt/jlRT2RMNak6xdievK5LSgIDJlaTvCCGp/Cm2uMZHjgA/0D5bAFjqZ9hd2FpCEAnyfgGPERCjyU+VMUoShG5W2gt3MmV+9Qel8QAl9qHOQGMstDzv5kCJ2OArAcyTCspYWzhig
- XYxtnDVZ
- QAWKud3th3ms/DrENUPEg7RtBE0zZn7BnhaHRk4V0gQF6LmNX4V6H77N+IPXpTI/f9MO+3pq2hIWgsIftuhwu/Og265HFtilAvvYl/oBRAO6oaZ4mOTb2taGMrjCjjCsqdVnU2Y3+D9IHMYraK/J2pzTsJglJDZlBq0AF1aBZNzzKXyCL+2YXiF9pbw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F051040014
+X-Stat-Signature: 3ypurr9jm1h8rhcutneowr4hnfjzfhfi
+X-HE-Tag: 1791293576-58640
+X-HE-Meta: U2FsdGVkX18Fu1QaaY3YoIvpD7L4X55AX1vDHCpAGB4Q2u8AyaT/4uZTFoZK3NldLf2qRyER9ARdzIzsTE6QGWSd9HFw3Wm8pqbizb7IKQL0lfPpI1kxKbqDzOy6RyxrmEBem4zz63qrANn1tV296RF+IJvM+q0un6I4IzDCAj+pYrIK27sSoWSSDs3S/rQ0kvgXAGNIdD1ljMZ1LObHwk0FsLoy5yaKB9aAGVfHsOgOEbLeblyucRks90GyIQN1kKz2H+Zdqu6/499MqDO+4IpjMF3jZ3CcjBiRReVbgwN2Pac/qRcGlFvdQcbUxgsbWWKdlGVAFkY540reH/F57eWwxa72TcVznv3G2sx+DA/HOfBAPw0ObdOdotZKXqIvUDfJf9pu51bcxd4XdED9qgiGWozJJHPwjBCMqqYkXxJwQbEYxJZaR943MDPMopt6dSbT0jLaEWpF9sPaL/kpC6YG7E21FXUxN2WoHP0WEBWwP0rgHvhDV6KRMzayKCD9Aozq8nUla06w3VHZtAecuTopqDDYrucntlof9/iBT84FMFeG8/rIGWklXQS6crGqx8WwOGK4xbHFntBSATRAGFhtsRVwpIq0aQbZqWvY/So8AY3KLge+C1n1KZZ7a66YmZBP3tCD9qbuV0PIicxXKVXhZiz5gLzZGKIymWOEpN2ChfpzJk7bwE0IiXMxi+92/ygcYfX3lwuYYy9AZ3K8QGYTVyqmWEInslf7eL+KxzKBgu1XHcVR16FyulhJIF1t+jcx+AuJxgW1At8X8KDmo5hmNlzBHWmv4W2xXpERqmhCkjcuNajItcOJJ0DOEsG2/0VGqM9EadM0EYN1L7cc6NJc2hkVNsNScSbGLZTwVf7KWm+7VF83lq71agGrNDWsqaxbrjOMqYB4eQWI+ZXbaVeuhb/N7XJ+81k/5QCPIedEpSrzdJxh0aW+f/g/3z0GnCWy09LgiP7E9dWn1rN
+ xQgmReZC
+ ORJkMe24HQUYJW0wbfuR2CLh4JbSFYP83nyOOXCJDLTf4+xPVJ07Gmqz+DZfYNIfoEYXEYQdPw+wEUZBH2RN1+IT5x8N7U49cVDOczrT/Wqq32brydPvxlYj5AcjnLcbELJlYONPsXDv+0IbVJ/KHSkDgsu3JvqlBZOd/6Ufc9tSjUw2cb4GXSMl6GbIvn8rAjJ4eL9O6eLwg01r7Z0eVpB807xi1DzGMbEcj4KUVfkSF6KTZooCzKRfVl3wsqqYg2S0nQa7ZUUEFQavla7hE2gkh0iEEYUjcyhPpK0APeIwJrHwRqwklDV2moC9r7AMFWQCZZPBrG7ij/7lA3JJYs5czPryG//uque42WqcKcTXeeOJvIY0Q0PG3O/dvpbgi6nA9+D/ndVASsSoYEROYB8W66qh2KztpKgEIs7xFoJmFfAfw3OSL5QqPtQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,70 +116,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03.10.2026 10:04, Mike Rapoport wrote:
-> On Tue, Sep 22, 2026 at 05:24:32PM +0800, Wandun wrote:
->> On 9/22/26 16:48, Mike Rapoport wrote:
->>> On Sun, Sep 20, 2026 at 05:28:47PM +0800, Wandun Chen wrote:
->>>> From: Wandun Chen <chenwandun@lixiang.com>
->>>>
->>>> This series fixes several error-handling issues in the reserved-memory
->>>> initialization paths.
->>>>
->>>> The first two patches fix cleanup of no-map regions after driver
->>>> initialization failure.
->>>>
->>>> Static reserved-memory nodes are reserved during the early DT scan but
->>>> initialized later. The third patch tags regions whose early reservation
->>>> succeeded, so the late scan can skip the nodes whose early reservation
->>>> failed.
->>>>
->>>> The last two patches reject overlapping static regions. Without
->>>> these checks, overlapping nodes can be initialized over the same
->>>> physical memory, result in data corrupt.
->>>>
->>>> Sashiko reported these issues in [1] [2] [3].
->>>>
->>>> [1] https://protect2.fireeye.com/v1/url?k=7e2f7441-1fa46164-7e2eff0e-74fe485cbff6-619f01488e6b7010&q=1&e=f3c07e6c-275b-4aa1-aec1-d931cda5f11a&u=https%3A%2F%2Fsashiko.dev%2F%23%2Fmessage%2F20260814090305.4C8741F00A3D%2540smtp.kernel.org
->>>> [2] https://protect2.fireeye.com/v1/url?k=a92ba57b-c8a0b05e-a92a2e34-74fe485cbff6-5f58f4b0f32080b9&q=1&e=f3c07e6c-275b-4aa1-aec1-d931cda5f11a&u=https%3A%2F%2Fsashiko.dev%2F%23%2Fmessage%2F20260814084718.29C341F000E9%2540smtp.kernel.org
->>>> [3] https://protect2.fireeye.com/v1/url?k=4f58aae4-2ed3bfc1-4f5921ab-74fe485cbff6-f4c4b3d0ed61b93e&q=1&e=f3c07e6c-275b-4aa1-aec1-d931cda5f11a&u=https%3A%2F%2Fsashiko.dev%2F%23%2Fmessage%2F20260806100605.2C2C01F000E9%2540smtp.kernel.org
->>>>
->>>> v2 --> v3:
->>>> 1. Rework the mechanism that checks in the late scan whether the early
->>>>    reservation succeeded (patches 3-5, suggested by Marek, thanks).
->>>>
->>>>    Patch 3 adds a new memblock flag MEMBLOCK_RSRV_RMEM, which is set when
->>>>    the early reservation of a static region succeeds and checked in the
->>>>    late scan.
->>> Can we keep this local to of_reserved_mem please?
->> Probably not. I do not see a way to keep this entirely local to
->> of_reserved_mem while handling the issue robustly.
->>
->> I previously implemented an approach in of_reserved_mem that records
->> static reserved-memory nodes whose early reservation failed in a local
->> array [1]. However, the early scan runs before paging_init(), so the array
->> cannot be dynamically expanded. If the number of failed nodes exceeds
->> the array size, some failures cannot be recorded and the issue remains,
->> and that is why Marek said "partial solution", although in practice
->> having that many failed nodes is unlikely.
-> Even before paging_init() there is memblock_alloc().
 
-One can call it, but such memory cannot be dereferenced/accessed for example
-on ARM64, because it is not yet mapped in the linear map.
 
->> To handle this robustly, the late scan needs a way to determine whether
->> the corresponding early reservation actually succeeded. Current approach
->> uses memblock to retain that state.
-> I can't say I like the idea of keeping this state in memblock.
-> This add flags and code to memblock to deal with corner cases of bad
-> firmware that reports weird memory layouts, and once there is a flag in
-> the common infrastructure, people tend to abuse it.
+> On Oct 6, 2026, at 12:52, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> On Mon, Oct 05, 2026 at 06:27:52PM +0200, Muchun Song wrote:
+>>> On Oct 2, 2026, at 20:12, Mike Rapoport <rppt@kernel.org> wrote:
+>>>=20
+>>> On Fri, Oct 02, 2026 at 05:56:40PM +0800, Muchun Song wrote:
+>>>>> On Oct 2, 2026, at 16:22, Mike Rapoport <rppt@kernel.org> wrote:
+>>>>=20
+>>>>>>>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>>>>>>>> index 1650d6bc1211..bd02e8d06965 100644
+>>>>>>>> --- a/mm/mm_init.c
+>>>>>>>> +++ b/mm/mm_init.c
+>>>>>>>> @@ -609,6 +609,9 @@ void __meminit __init_single_page(struct =
+page *page, unsigned long pfn,
+>>>>>>>> if (!is_highmem_idx(zone))
+>>>>>>>> set_page_address(page, __va(pfn << PAGE_SHIFT));
+>>>>>>>> #endif
+>>>>>>>> + =
+VM_WARN_ON_ONCE(vmemmap_optimizable_order(pfn_to_section_compound_order(pf=
+n)) &&
+>>>>>>>> + page_zone_id(page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) !=3D
+>>>>>>>> + page_zone_id(page));
+>>>>>>>=20
+>>>>>>> Hmm, page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES is initialized =
+a tad later
+>>>>>>> than page so it'll have stale data in the page->flags, won't it?
+>>>>>>=20
+>>>>>> Lance is right. The shared tail struct pages are already =
+initialized by
+>>>>>> vmemmap_shared_tail_page() during vmemmap population, so they're =
+not stale.
+>>>>>> The head 64 struct pages are initialized later =E2=80=94 right =
+here, after vmemmap
+>>>>>> population.
+>>>>>=20
+>>>>> Still it looks out of place here, can this check be done in =
+sparse-vmemmap
+>>>>> somehow?
+>>>>=20
+>>>> The struct page entries of a vmemmap-optimizable compound page
+>>>> are currently initialized in two stages. During vmemmap
+>>>> population, the shared tail entries are initialized first. The
+>>>> retained head area=E2=80=94normally 64=E2=80=94is initialized later =
+through
+>>>> __init_single_page().
+>>>>=20
+>>>> This warning connects the two stages: while initializing the
+>>>> retained entries in the second stage, it verifies that their zone
+>>>> information is consistent with the shared entries initialized in
+>>>> the first stage. Therefore, the same check cannot be performed
+>>>> during vmemmap population.
+>>>>=20
+>>>> I am planning to first unify the HugeTLB and Device DAX
+>>>> compound-page initialization through a common helper [1]. Once that
+>>>> work is complete, maybe it will be easy to move the initialization
+>>>> of the retained head area into vmemmap population. With both the
+>>>> retained and shared entries initialized in the same stage, there
+>>>> will be no cross-stage inconsistency to check, and this warning
+>>>> can be removed.
+>>>>=20
+>>>> Would keeping the check here for now and removing it as part of
+>>>> that follow-up sound reasonable to you?
+>>>=20
+>>> While it feels really out of place in __init_single_page(), but =
+having it
+>>> memmap_init_range() close to the if that skips shared tail pages =
+makes
+>>> sense.
+>>>=20
+>>> What do you say?
+>>=20
+>> Sorry for the late reply because of traveling to LPC.
+>>=20
+>> Putting the check in memmap_init_range() would validate the
+>> invariant for the shared-tail range skipped there. It would
+>> not, however, cover all vmemmap-optimized initialization
+>> paths: optimized Device DAX bypasses memmap_init_range()
+>> when there is no altmap, and deferred boot-time HugeTLB
+>> initialization may also initialize retained entries
+>> elsewhere.
+>>=20
+>> If the intention is to validate only the skip in
+>> memmap_init_range(), moving it there makes sense. If we want
+>> the warning to cover both HugeTLB and Device DAX generally,
+>> it still needs to remain in __init_single_page() or be
+>> called from the individual initialization paths.
+>=20
+> Yeah, putting this into all the callers sucks too :(
+>=20
+> With all the callers,__init_single_page() is the right place for this
+> check, but I think we can add a static inline in sparse.h, like e.g.
+>=20
+> vmemmap_optimization_verify_zone(page, pfn)
+>=20
+> to make it a bit nicer.
 
-So far I found no better place to store the information about successful
-region reservation.
+Yeah, factoring this into a helper makes sense.
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Since it currently has only one caller, how about keeping it as a local
+static inline in mm_init.c instead of putting it in sparse.h?
+
+Thanks,
+Muchun
+
+>=20
+>> Thanks,
+>> Muchun
+>>=20
+>>>=20
+>>>> [1] =
+https://lore.kernel.org/20260513132044.41690-18-songmuchun@bytedance.com/
+>>>>=20
+>>>> Thanks,
+>>>> Muchun
+>>>=20
+>>> --=20
+>>> Sincerely yours,
+>>> Mike.
+>>=20
+>=20
+> --=20
+> Sincerely yours,
+> Mike.
+
 
 
