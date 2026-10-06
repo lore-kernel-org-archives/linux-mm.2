@@ -4,122 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A720CA5FFC
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 06:17:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBD8CCA5FED
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 06:23:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 163926B0098; Tue,  6 Oct 2026 02:17:17 -0400 (EDT)
+	id C1F696B0093; Tue,  6 Oct 2026 02:23:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 141346B0099; Tue,  6 Oct 2026 02:17:17 -0400 (EDT)
+	id BAA0D6B009B; Tue,  6 Oct 2026 02:23:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 078A16B009B; Tue,  6 Oct 2026 02:17:17 -0400 (EDT)
+	id A49D56B009D; Tue,  6 Oct 2026 02:23:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D92646B0098
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 02:17:16 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 579B01C2489
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:17:16 +0000 (UTC)
-X-FDA: 85291194072.14.6DBFC52
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8F21380005
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:17:14 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WRf8nwbF;
-	spf=pass (imf30.hostedemail.com: domain of adrianhuang0701@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791267434;
-	b=OFRfPGNROvENU40ZiLg0bJ0Ta3OE8s1nS7UyN+r1dzO50yDYC422Ieo24TPt3DDPyWd+md
-	f+M/sdnRkcgLm75g9xo0YOY12nwo78KK5ROvVM8yLD62ghT+9a8mN071UwMQ9IXMIzbOWq
-	mnUYy8Q58lyuNZW3//Su6pKvhGH4Yjw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WRf8nwbF;
-	spf=pass (imf30.hostedemail.com: domain of adrianhuang0701@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791267434;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 737E26B0093
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 02:23:37 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4CB928059E
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:23:35 +0000 (UTC)
+X-FDA: 85291209990.13.46F17EB
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6903E1C0005
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:23:33 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mIo7EZRr;
+	spf=pass (imf20.hostedemail.com: domain of bgeffon@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=bgeffon@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791267813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3XGWdEYbUJd8tcJmO7sHix7Djo1stlaazK2dWhUeaRg=;
-	b=fg3jPuo9bHUuZKIA7ng0trScHKpMNfzZ9uhIg+LORmEg+L/qTslNj7iX9cCkoXbHTyxVAb
-	LWwSrrnQ+bxc9fk1NFfPqX4weEAeGW5vXhC6OpPJIZnBvmyQVYqMIzYvqeaAyAeqtOA8CE
-	QIBk6fri7DkJK9b8KvcHnPs83z9RGhs=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cc1cb472b76so91498a12.0
-        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 23:17:14 -0700 (PDT)
+	bh=d6+kRSXQFgdihasqR6LMoeFY3+MY7JRLIu/SoS6ybio=;
+	b=zaZSewSoBwH/pWkSd3oxiqf/VoVbCNwCNucPvr0QiSthkRa4MnyUiIYeJuEK+ZN4ad159A
+	eSENRxx0eJ8zK0rvh0M6vgw/Efqnhz+GK80xHMrIY40egQV739f3uavp83yXAItFjRaMAT
+	nBl19rd3L3qt5sR17EobQllU2t4n/yM=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791267813;
+	b=2eM9p7ILJPYfPRNIzZ6RvnYqdjC39i9IHtP7Ai+eD07Bk6qf9cVbFh+oCN6njHiV5aj5HT
+	OqpdaBVITETGCgcfvOVSnevbaZssIovplKTeSw4MEXTAGn+YE6enAGFYnjG9KpaLmTdhLK
+	8GXjfoKVGw4NLpO0B/N4v/G6de8mXHU=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mIo7EZRr;
+	spf=pass (imf20.hostedemail.com: domain of bgeffon@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=bgeffon@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-533202fe429so160101cf.0
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 23:23:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791267812; cv=none;
+        d=google.com; s=arc-20260327;
+        b=VuMLaW+We5KiZhcNrStE+a2oFXbbpTVi3knW7GycKmEJ+DN1RpRYvlYxPG06ANEgj2
+         QysA9+mYfDMktAaaDCanYRdtotNMsD5kpPNENz33irZU5qJxSQdljhby2QpiZ0pDEOtq
+         4ra7DzqeB/g6slTZXmF2fmVi9Zx1OCRvBeu3qNkI9kDgCygWbxeDFYSAhh+JYdlXTs3R
+         /L7kQrSWBzrxYBYwW2I4lLSne5zy1756S3PMv09t07zzOEWP16S5t9duVo0ChFaUJxrj
+         tN76epZ3EKrFDfAFJpQk8wUuBLisYqZropgO62e9tiNw2AgsNDUrEXPuHBAwQwqzIzPy
+         E0XA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=d6+kRSXQFgdihasqR6LMoeFY3+MY7JRLIu/SoS6ybio=;
+        fh=txCFK8E++vF66JiSqNDe5rdT6NIbBEomXvo4pUIZ9XU=;
+        b=BqlQ2mKc84SaR5XUvXeD9j0qMcY7t86G447pJm40QxyC89WWivKxCX/CNzQBDW1kUJ
+         PPBj23y9aNXUiGGCtUB9iPOXj16lpOVwgd2GY4cfp95Vl26cwTYjURj6tHMVaCj//fMZ
+         wfAitnBHHJ6wlXo+ewdwe3VTKtNRj17KE5lcKQAXpb2LtpSMg7swsBmoBvdW8IEb1Qso
+         NplzU4484+8t+drPy4lrlSnCUVLmCloHcJn/j0XnmWP3A6Cf0wJtQnopclbKdzZgIpNu
+         wpcHnd1bZg0TDJ6AIgVUCqWj86gNBjO8digX/hziuklSYa2A2+VDJA7+P/GbkDLaT0sa
+         FZsQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791267433; x=1791872233; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3XGWdEYbUJd8tcJmO7sHix7Djo1stlaazK2dWhUeaRg=;
-        b=WRf8nwbFw3Yjlus+kMkxtG+0BylStE9q5AM+CRza+NVwcU6iEhMALEXoy76UqrJIAm
-         s3uAY0Bdv7JQeeNAPDlW7wSaTH6vm7nWYM/cF9rS/Z0nxy1vKE1ULAfkVcl5QT1LoadD
-         TLDFAR+kilQsyHL7mi4MQJSQLKNFazpDoqo09kHaXjWg4NJbtBTAqJ2Ub/SpmzgwzSXt
-         bVBx7p0xmZ6llvQ3VUT/zTSxRkhgEFtZ4y8SfsTUl2qdW0jgxShrerXU4UokWYbZaPJs
-         v8jJVXYiofVG/GkBr0cL6n+04ug9zYq5hHTzS0F+CBZwwPjptZLov4CMAg2SjFor+NDW
-         0kZw==
+        d=google.com; s=20251104; t=1791267812; x=1791872612; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=d6+kRSXQFgdihasqR6LMoeFY3+MY7JRLIu/SoS6ybio=;
+        b=mIo7EZRrTOhlHoUU5YlC+s0kIgjqUYWHI+to2SRAT+5ylwlav+iIyiZmg8/IelZ/tC
+         BSVkpGa6gNNJv0uZqxv+pQRguG1BbDCewf6bmsIfPYaXbuaDiq5TRxTtufR3PKi11AS4
+         ddRI90RkRTbpIEkM0ogykF1BOCCgAcUoIX5/gkHbQbsY+mjXn7JQpDCnWJL4uJGa1QKM
+         MzWcVoQhOuyBE9erXSWiZNNtSOFA0WRzylc1D/HqQDrP1EOH9XiIjhSe03wIySl7v7z1
+         NHLj1N13CPGOVBcsnPLWH9/u8l8Do1AYNm9wp4By7CUH5t9wlPite9xPY/CfTfX7DAiS
+         qE3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791267433; x=1791872233;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3XGWdEYbUJd8tcJmO7sHix7Djo1stlaazK2dWhUeaRg=;
-        b=uQn/jkR3QkucLVLgTIkm91lcccYU6lTKkvEzO9IZKZz7Ium+N0vK5QMUEV1EbcCx6+
-         nzfuWIbV/VVRvINHiHMEeJ5c+vLtSSBIr0DI4df5vEUovf4KXKa/ECtmaPAVvpWvJWfz
-         aG6HIa+FOFEg8I/X+IoDtNGyDMqQkA8+OFfUNVcozTrn/3QgOrQDfZIi2Q8msLPq6U8t
-         0UQtlc84oBCOGR8Uk2yJFH9TSYqU2bI4w6M0F6wl5cE2KcmtlTElHd4P5CDwbxSGC/3v
-         fX/z6ssFbqPyPk5SBASS+H9S44npjAspQpiTy+hDCZse0tSF9icWNHuvZvf/k9BLtOmx
-         zZxg==
-X-Forwarded-Encrypted: i=1; AKwUvByR+wxEii7xG0ySrfiy4njRTLKY9spfjIBf0mI5ry3D+rRtBiEL05w+sBo+G0hkdJXSeT86ximWkg==@kvack.org
-X-Gm-Message-State: AFq9FYLi32HUPqA66pNKOavY10V2g/4cF7eEQ4coGj4s8wySaiUPRtma
-	y+u35xh12M6anJvijxe9ukqm/k087h7HhW79aO0jNK4F6/wue3Q2j97T
-X-Gm-Gg: AYBFou3zPtk/8AwVN7AsSQQxEh8XBNRu9W9UhpvRjoXgs/VYz0usIbSPh8MNOo4jiOD
-	HQTHcbCejel7FD5tNYQmRCg2RywumyjyvPLYXuvU2RzoGTD/ss6ijroNhYc5SAyyZS57A4UUG9J
-	sSMaTKqIeZJP+ru65fe3LiSxMJxOKLDNbeDQD+iYtJfgau1Ef4g4vBvcerLB8Ssd8fE6KpxFRir
-	7OqPVT7ZQhE74O6+jEVcHT300Q7QJGb7ZQihku1x1sHZU9phSKYoD6FblT1FKWDAP+PhieY2GUs
-	D5UhkZfJq+Wy7bFNFq7GUfPCIyDeBKmC0L6/gtag3EE6/NKENMLS09mMHg1NepyiJqtPPi9oePZ
-	RKXxoGER01XiM6UgbZoGscJH1X2Dyd2OX5Sa0soVw89eZ/8tbpZf0SyrJXvqjtq3LNcysW+XObQ
-	xuRfqJHHzvP145iPlblweeS2fjhDobUosgkyhtkPrfpKMVU7hiTCaxsiuwhYxXas87LEw71ER9l
-	F/BaK5Y74i3vRMp8RVFQaZ15yVDW/4z339cdmzWY3ahihqgXt2sXpCVZKwGEwlNQMyplln6fZOP
-	ZUKIbRA0mZVd350emIMwM2fRsYs=
-X-Received: by 2002:a17:90b:2e49:b0:3a0:c3d4:f3b2 with SMTP id 98e67ed59e1d1-3a873729daemr295202a91.56.1791267433227;
-        Mon, 05 Oct 2026 23:17:13 -0700 (PDT)
-Received: from AHUANG12-3ZHH9X.lenovo.com (61-221-208-111.hinet-ip.hinet.net. [61.221.208.111])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a8533aba95sm3662789a91.2.2026.10.05.23.17.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 23:17:12 -0700 (PDT)
-From: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
-To: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	ahuang12@lenovo.com,
-	"Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
-Subject: [PATCH 3/3] Docs/admin-guide/mm/damon/usage: Fix incorrect option syntax in perf example
-Date: Tue,  6 Oct 2026 14:15:49 +0800
-Message-Id: <20261006061549.627-4-adrianhuang0701@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261006061549.627-1-adrianhuang0701@gmail.com>
-References: <20261006061549.627-1-adrianhuang0701@gmail.com>
+        d=1e100.net; s=20260707; t=1791267812; x=1791872612;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=d6+kRSXQFgdihasqR6LMoeFY3+MY7JRLIu/SoS6ybio=;
+        b=kVMxAMJxrkb5jDL/XsX+LXUQLyZSRGpcGyc8EV2P55qTL+0T1veXycN5BnYerQJl4I
+         mQcstHxdUkl/6erlaV3kucS6/hnON4z3IyPpOvT4WkEnqC9dbyohgIDY5vCY7xjEtq1J
+         R5rpkY2twVwDSe85MHdRg7FmTVLNV02ETkXg2wSkljLH1Tq7wT17NU8B2sugUtHMZ/2X
+         +y205+0CJW5NYSGllrFMGem55yFI7qYcoRqO+Ae03Uyq0US8EBVBAJFVCZiUGAQiIJ/7
+         7/4cdErS4Jyu5guLOMB0hMRiHjOEVFTSHmLsvbk7hA5AzThF3+JJuT3bX9bi0h7FwbnV
+         1lUQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxeWNaJb7lqf5lSvC18nokWxhv0g558MBx3wPU3vEIjhhZU+vPyctLWnEkXVBHkXKtRSzEKOCex9Q==@kvack.org
+X-Gm-Message-State: AFuF++kHxnCa7bd6OU48UBZPrYhbvefTHRRf55Pr1yvZuAuabLNsHVlQ
+	0zxCda4JWYO7ZcYcl2G3mqAlTVUiVWiBYLb7r4vcogKfhFK0h2Yhv3JkaCpRDrHTX/MxkNXYigl
+	eULWEn2+Mf4BHeZ1YjSsS2WllXEljzUKUNIykrcmj
+X-Gm-Gg: AYBFou0IoCVWaNp2FJlzq4AupZfyG2og9ZnBZZWKjB7GNRD9o+SF10IENqC0lamkFL4
+	G/7NsmsBVHy7P1/fEjN2w/MTJd1KcJbYQxYsSc3d0nJJwOIEJeaECj1nhBvE4+wMMHqHxSX8KLV
+	8eCjqf+L4K4gAQtLDqrRk5SGU2hnccn5p4OwE7A+9kk8zF6FwnaEHTpW76bTSJDAmhaO9I7feo9
+	SeAZMvTFz/DYwbYQ85a6WQ0q81t+ZtxmJWL5l2tDFuIf5KIFlBUUGvuYihA5oCarTRbGMmtFsfI
+	r98r2rIssEXRrljsYLH7jq2TEI8q5gHi+KlFWr8c1gka24yIuDUVXae4n0YhuHDyuK+cX6wyyib
+	4D5hAuQ9Vujlg4cxGLs/uXbCdMgTXC7SILq/hqeLk2VJ8wF7Vv0D9s6UE330oMjIFIzHBxxBGoN
+	eicqKUSMCcKkG9Qoy6/880Pq3zv/o=
+X-Received: by 2002:a05:622a:244c:b0:533:9746:9a86 with SMTP id
+ d75a77b69052e-535406abef8mr12178981cf.5.1791267811940; Mon, 05 Oct 2026
+ 23:23:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bif45nfr3g9ithb6db383sieffs9pn1d
-X-Rspamd-Queue-Id: 8F21380005
+References: <20261005122036.718976-1-senozhatsky@chromium.org> <20261005122036.718976-7-senozhatsky@chromium.org>
+In-Reply-To: <20261005122036.718976-7-senozhatsky@chromium.org>
+From: Brian Geffon <bgeffon@google.com>
+Date: Tue, 6 Oct 2026 15:22:54 +0900
+X-Gm-Features: AclHuK8LYHoepKR1DX5jKzVYXr3tve8RqbZuZnlBMtj7jR1SkDVBcQxir3QS8S0
+Message-ID: <CADyq12wEtNYBi=gDaWxMGOaaxTPYj2DKg25YE4owBOxFuSbCpQ@mail.gmail.com>
+Subject: Re: [PATCH 06/10] zram: lz4hc: use LZ4_decompress_safe_usingDict()
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
+	Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6903E1C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791267434-285864
-X-HE-Meta: U2FsdGVkX1+zZ4bE92/obNoP2wdKRVZj/WJMzLAr1MWfUz++r2UL9BBKZ4UrvDqOAzxrd+xfUvEH/JnK8qEtTNShFPRJlDn0wv9V+d448mrqdbFEvHDmVmYwF/soyyE00ueAiSMu3gZ0DEC7N/fc3ipBk8s/b8c/zYb2G6JD7PBAytBBczyxwB0hJPuf8mto/obF6yKo1Jf7puUZJaGkOCW1CiGJ9rAUgtzsAdJtpntnLc71jxE4ogB1VtzBQAyvT8/jl8kJrzAF9wMKTlMw+S24Oq/D58kFBV1Mmgkl9sV3WAbqhKvTqY7oMdWtKRz3TWAVgKRu3zYJ02j40GiCTEnHt4pEthetIFc7juA7kSSUgomwvCfcm+h7RnmDV4bJfjiD/UZWFjHaqaBEGLk+CyUbVYqiOum7fTQ6P+oKXTRqzZqf1Zy9rFmte/5crijm8TpcubEkgmXq5synareVqvKzyM/4/pyvCOATpMjsCsFDkXPD2yADBVSR0VO6VCr38+fChOYeF/tDCsoRbadnSgIv7EXewX5e90LqzTBrfoc1fu62vVwCGEI2E79XHEuIhVPmBetxK6eCIuNgzq16ZODjM5DXK8Y2fHrPHYqhMtmTaPusRNRmn0R0I4paSSg/xeiZW9Uk8inlz/lUz37z10+eiIm6yEvF6EJLkG0iizHsymlGntcE8e5Zkp93l+AvtSO3n+VZctCFA3pKf6OvObwE/jcC3klbqRm4rsNtlyJT7Dn2UKpATiSj6xdqzdUkSGbPwuQv4fKbtwr30GKxdQETP9I2enlz1V8ycX5WoAFJsku4HsxFb4xRzqxkPSYCGUdvEv0VimyWhUGibyH4ISpv5wFJdVsq0tyjH6sDQNM+SF71ixY/Ka6dRq+UU/HdE6ihAPAmvVgUpZ6uEke8C//cw/juSRmrTntW7IsiPhEveCHNUtdMxh7v6QB2A8nJKscAE+Q2a4O+IU3+WiK
- WKTYP+iV
- 5oATPcznjJ7vwDGiDP2oWI5JBSAnbZqFwANfMn5RDxyWZyi3qGZikcKqQ6dYOFkZp2WbY5cEERWEI/X5RPsjaCWgxyPuoseYVTP/4ABof6IRPnlOBwDGyYccq9ucjyFK3b8D/8Jl/1Js66ejCjCFOpDKuEsDKIMkwsvgOFxHPnoKGVDczftgddamNgM+0djrhvhhSgX728BJuTTnjvXsxz+QyPk9NG/LuzvqSyzIAppDo+8jJyW+f9MuufmFVazzV0yFEJpZz91eiMBWX/cWK6kMehlMJwHRHmS1JOAbmydaL0WmU3YKMxSDjGgHNTDUczGVDN3xotarzbkoXbwQykURc6oCsrLbuwFgZ2y6eopu0Et3h6LMSHQcnbM27lrajzL7BcH7dRGhcRfP2RrDeXS/qhMZNzeH0m+Gi
+X-Stat-Signature: cjumuj1rywrekh3b16gy8uqz9kn5bozj
+X-HE-Tag: 1791267813-658211
+X-HE-Meta: U2FsdGVkX1/xN0O4aXNpB6KI2uDt69nFEljfGW2A5X3Pa7Pg3btCpIcCiWOnKmrpFFapf5GKT8P5VXjIsgK96BPrN/UqoFfFEH4y4AQURvJ5sQjXzvnITSnNpVXrrRBIClQ4RxuMl7GiqmVvq2YwNmtJdZMpThbNYFU9mPHO0456qBpHsMG0ESFAYY/D/k2nSOU3KCYZyZgLMwO0G+TRBmiuHwGFhmjcROnMbizxGPiCc3bL3l2xrdXgo0mvg4nrvR4QpISy/Rcj3iOyd1lTH74J6/wbgWTQ+X8PttCmK/AVr+ssb8pPTy+lBKG/xAF/R7CHXYZmmK7BGUNRdLIARPLNvr5GsdrFkJp0sZNOEmry3hu/6S2evnPHnQ0fMphU+rufG1aycLRkMxS5f6gcwPEIEDobV/pa/6LWZMwo0Gw5GBhhD4bFE+zJ3Ftqq7VFg1TQ7jZNCU+MltuYnB8FJN7h1yWoVcro+oNvrwBzrlSFqkLzNuN+Yj5AubD93frV2i+bXLt8VMH/Zw6ZEVxGRhBctWW3F77+SvFGkd+n7NUozhy4G54FwQvgSmKUUDrDdeM3fiB6EuCKj6jqYWZbM95AjmHD4LxoXpw4/9/Ef1f8dTR1VLdnayrYMe4EV6AN2kRiw3XjhvGTGS2TwdhbFUH18qSo61AmLAHiVPnAvLUrc66kcAHxuPDoKMo0ENWjSZXWRHL9Fw1RNICF65RK0EU1iHuCuFP738+9rajZ6KNY/737wbtE51tt7P2FOs5BNeLQsq5YotV/nY/f8uyJEmFK7ZCtA3f3OIYfWYw0mNVS30y3AdU6C9A2JgFwFmOkeZByKOcjtjTtmwMu8I7k6L6p3SpfhEc/vNrbn7vMMLFWmHh2FprorDXml6ZNfnP9zwxPJaxf4xbfm4ieJcsQF8dGGZct880PXK8zfXLCA83JmeTlRBDhFBZo6iVgv7EDCgL2KdoDeev3O7ppto5
+ T0umpvyz
+ VzQ8XsyotTF0NYv9huajUqU/sCPBtq6JFyBt5Na7+ZmCR3zxhuawTPJ3VwxBWjpgYfbQmKXWWEz6Mr9nv8zuHYyzp8VlpdvXGSVrG7NZ+ebPpmD8OW7MCURV6PR50JNOIBzYMwsV1B3ZAxf1duN6GwnTE51Xyr2ij1AmEOOZcYXLtQobGadRwiP070G+IdOqTgFAYEyy6xSJuQTc5MDVxWtH2kPfERW+O86BUbcRpzSUnxWYq90mdI9/fQizPtG1iVVSwoWeW1JwH7T69ZNk14vJ+Jzs/WuLQEmE/J2dHDco+pekO4NYA5olQ/3kBRkiYlzhHh7oLEnM1K0Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,31 +142,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The kill command in the DAMON documentation uses an incorrect
-option syntax in the perf example.
+On Mon, Oct 5, 2026 at 9:21=E2=80=AFPM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> Use LZ4_decompress_safe_usingDict() in lz4hc_decompress() to avoid
+> needing a per-CPU LZ4_streamDecode_t structure.  Drop struct lz4hc_ctx
+> as well and store the compression workspace directly in ctx->context,
+> matching backend_lz4.
+>
+> Using vmalloc(LZ4HC_MEM_COMPRESS) instead of kzalloc() for cstrm when a
+> dictionary is configured also avoids power-of-2 page rounding (~256 KB
+> rounded up to 512 KB), saving ~252 KB per CPU.
+>
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-Use kill -9 instead of kill 9 to correctly send SIGKILL to
-the perf process.
+Acked-by: Brian Geffon <bgeffon@google.com>
 
-Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
----
- Documentation/admin-guide/mm/damon/usage.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index 3d43954c7046..bd687d89ea4c 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -749,7 +749,7 @@ show results using tracepoint supporting tools like ``perf``.  For example::
-     # echo on > kdamonds/0/state
-     # perf record -e damon:damon_aggregated &
-     # sleep 5
--    # kill 9 $(pidof perf)
-+    # kill -9 $(pidof perf)
-     # echo off > kdamonds/0/state
-     # perf script
-     kdamond.0 46568 [027] 79357.842179: damon:damon_aggregated: target_id=0 nr_regions=11 122509119488-135708762112: 0 864
--- 
-2.43.0
-
+> ---
+>  drivers/block/zram/backend_lz4hc.c | 70 +++++-------------------------
+>  1 file changed, 11 insertions(+), 59 deletions(-)
+>
+> diff --git a/drivers/block/zram/backend_lz4hc.c b/drivers/block/zram/back=
+end_lz4hc.c
+> index f3656c27af21..b62736b26622 100644
+> --- a/drivers/block/zram/backend_lz4hc.c
+> +++ b/drivers/block/zram/backend_lz4hc.c
+> @@ -4,18 +4,10 @@
+>
+>  #include <linux/kernel.h>
+>  #include <linux/lz4.h>
+> -#include <linux/slab.h>
+>  #include <linux/vmalloc.h>
+>
+>  #include "backend_lz4hc.h"
+>
+> -struct lz4hc_ctx {
+> -       void *mem;
+> -
+> -       LZ4_streamDecode_t *dstrm;
+> -       LZ4_streamHC_t *cstrm;
+> -};
+> -
+>  static void lz4hc_release_params(struct zcomp_params *params)
+>  {
+>         LZ4_streamHC_t *dict_stream =3D params->drv_data;
+> @@ -65,61 +57,32 @@ static int lz4hc_setup_params(struct zcomp_params *pa=
+rams)
+>
+>  static void lz4hc_destroy(struct zcomp_ctx *ctx)
+>  {
+> -       struct lz4hc_ctx *zctx =3D ctx->context;
+> -
+> -       if (!zctx)
+> -               return;
+> -
+> -       kfree(zctx->dstrm);
+> -       kfree(zctx->cstrm);
+> -       vfree(zctx->mem);
+> -       kfree(zctx);
+> +       vfree(ctx->context);
+>  }
+>
+>  static int lz4hc_create(struct zcomp_params *params, struct zcomp_ctx *c=
+tx)
+>  {
+> -       struct lz4hc_ctx *zctx;
+> +       BUILD_BUG_ON(sizeof(LZ4_streamHC_t) !=3D LZ4HC_MEM_COMPRESS);
+>
+> -       zctx =3D kzalloc_obj(*zctx);
+> -       if (!zctx)
+> +       ctx->context =3D vmalloc(LZ4HC_MEM_COMPRESS);
+> +       if (!ctx->context)
+>                 return -ENOMEM;
+> -
+> -       ctx->context =3D zctx;
+> -       if (params->dict_sz =3D=3D 0) {
+> -               zctx->mem =3D vmalloc(LZ4HC_MEM_COMPRESS);
+> -               if (!zctx->mem)
+> -                       goto error;
+> -       } else {
+> -               zctx->dstrm =3D kzalloc_obj(*zctx->dstrm);
+> -               if (!zctx->dstrm)
+> -                       goto error;
+> -
+> -               zctx->cstrm =3D kzalloc_obj(*zctx->cstrm);
+> -               if (!zctx->cstrm)
+> -                       goto error;
+> -       }
+> -
+>         return 0;
+> -
+> -error:
+> -       lz4hc_destroy(ctx);
+> -       return -EINVAL;
+>  }
+>
+>  static int lz4hc_compress(struct zcomp_params *params, struct zcomp_ctx =
+*ctx,
+>                           struct zcomp_req *req)
+>  {
+> -       struct lz4hc_ctx *zctx =3D ctx->context;
+>         int ret;
+>
+> -       if (!zctx->cstrm) {
+> +       if (!params->drv_data) {
+>                 ret =3D LZ4_compress_HC(req->src, req->dst, req->src_len,
+>                                       req->dst_len, params->level,
+> -                                     zctx->mem);
+> +                                     ctx->context);
+>         } else {
+>                 /* Cstrm needs to be reset */
+> -               memcpy(zctx->cstrm, params->drv_data, sizeof(*zctx->cstrm=
+));
+> -               ret =3D LZ4_compress_HC_continue(zctx->cstrm, req->src, r=
+eq->dst,
+> +               memcpy(ctx->context, params->drv_data, sizeof(LZ4_streamH=
+C_t));
+> +               ret =3D LZ4_compress_HC_continue(ctx->context, req->src, =
+req->dst,
+>                                                req->src_len, req->dst_len=
+);
+>         }
+>         if (!ret)
+> @@ -131,22 +94,11 @@ static int lz4hc_compress(struct zcomp_params *param=
+s, struct zcomp_ctx *ctx,
+>  static int lz4hc_decompress(struct zcomp_params *params, struct zcomp_ct=
+x *ctx,
+>                             struct zcomp_req *req)
+>  {
+> -       struct lz4hc_ctx *zctx =3D ctx->context;
+>         int ret;
+>
+> -       if (!zctx->dstrm) {
+> -               ret =3D LZ4_decompress_safe(req->src, req->dst, req->src_=
+len,
+> -                                         req->dst_len);
+> -       } else {
+> -               /* Dstrm needs to be reset */
+> -               ret =3D LZ4_setStreamDecode(zctx->dstrm, params->dict,
+> -                                         params->dict_sz);
+> -               if (!ret)
+> -                       return -EINVAL;
+> -               ret =3D LZ4_decompress_safe_continue(zctx->dstrm, req->sr=
+c,
+> -                                                  req->dst, req->src_len=
+,
+> -                                                  req->dst_len);
+> -       }
+> +       ret =3D LZ4_decompress_safe_usingDict(req->src, req->dst, req->sr=
+c_len,
+> +                                           req->dst_len, params->dict,
+> +                                           params->dict_sz);
+>         if (ret < 0)
+>                 return -EINVAL;
+>         return 0;
+> --
+> 2.56.0.rc1.315.gc6ed9934b7-goog
+>
 
