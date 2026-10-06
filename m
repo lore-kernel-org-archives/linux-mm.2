@@ -4,95 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74EEECA5FF5
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 00:23:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1AA5CA5FF0
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 00:52:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 647C46B0093; Mon,  5 Oct 2026 20:23:24 -0400 (EDT)
+	id 08B526B0088; Mon,  5 Oct 2026 20:52:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AB1E6B0095; Mon,  5 Oct 2026 20:23:24 -0400 (EDT)
+	id 03B8C6B008C; Mon,  5 Oct 2026 20:52:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4728A6B0096; Mon,  5 Oct 2026 20:23:24 -0400 (EDT)
+	id E94026B0092; Mon,  5 Oct 2026 20:52:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E9FFB6B0093
-	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:23:23 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 629B380505
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 00:23:21 +0000 (UTC)
-X-FDA: 85290302202.10.36CF187
-Received: from mta0.migadu.com (out-71.mta0.migadu.com [91.218.175.71])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 73B80140003
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 00:23:19 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YonuEzSv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.71 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C33436B0088
+	for <linux-mm@kvack.org>; Mon,  5 Oct 2026 20:52:46 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C026160512
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 00:52:46 +0000 (UTC)
+X-FDA: 85290376332.20.52F2D42
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 87A851C0004
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 00:52:44 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bLnHL2gb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791246199;
-	b=iNMsEQFM+vxf7As0wrA1/zkDRz5Aoqg7+odI7pjFDmW69wlwnzzJL4O8hbtZFEV5JK5a0B
-	c6WBI8Y1oEmMX6v0NgIcrwqlnqJoaRaVeXk1xJ/KTJiMPc8XqloQgoJZ/c81HAzTsHrYfn
-	Ry3q53zM//2k8Z1huAO+OUAaNlSn2I0=
+	t=1791247964;
+	b=40S94Csdi1qW4WO/SYYO1ZFp6UGhf0JUhdQ2gQOhgsOVs6FLEn4VVCUTyFaXsI6S9BXAGN
+	zLSWF1YNNo21eov5wg7wjb54uN6x/MHyZLayqwJYBD8IVy1yE3Op3UkZSUO1BwxaWwLYxY
+	751dE1LcFG1eN8I8HXcmconW1mSFVeE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YonuEzSv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.71 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bLnHL2gb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791246199;
+	s=arc-20220608; t=1791247964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4EU20wDq8IDODZu9ohVxmjwkXNAS65twLINssHMbT3I=;
-	b=Hx37zhLhu00wi0FLWKPd/uesu4rGdwR7wKS+GySOBzpJiMeUZng2L8zibG6G4uu5ukl2hr
-	5SeaEWL2kFuzX1WJ9HVz8XKGybW+pP5naA99wiYNqE5wYA/yIVxnEoWyLGyEQ0ANlfdkhO
-	SLD41ODn3rA/wiTCe2sYwThGMc5f8gk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=nbJqiGn5pFkuXQBzYRivhDJLdV+pjGcePbifZ588ksg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791246196; v=1; x=1791850996;
- b=YonuEzSv6V1v6uLsWV1icfYMJZIDBdS3eiCoHZ/IFoawKjlt19ojM8GpCMaQelsqxqAtg2RB
- k0Y8d9PXDVp1aH0Q75280aKj5aWAEgHvAq6jGW5Iai8i4DNIrYi5zRUqht2ZkAcJh0lh9bV5bP/
- ihkDOOTO3+SrrUfzkxbSFOvQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 99567cebb8f6a1d1;
-	Tue, 06 Oct 2026 00:23:16 +0000
-X-Mizu-Trace-ID: 99567cebb8f6a1d1
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	chengming.zhou@linux.dev,
-	dsterba@suse.com,
-	hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	nphamcs@gmail.com,
-	terrelln@fb.com,
-	yosry@kernel.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	alex@ghiti.fr,
-	senozhatsky@chromium.org,
-	kernel-team@meta.com
-Cc: Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH 2/2] mm: zswap: use stack requests for synchronous decompression
-Date: Mon,  5 Oct 2026 17:22:51 -0700
-Message-ID: <20261006002307.2669023-3-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261006002307.2669023-1-usama.arif@linux.dev>
-References: <20261006002307.2669023-1-usama.arif@linux.dev>
+	bh=a6yHyvxgSFAtHWCFCMd4s/EWnCMi2wyyPVO4ODcFr4k=;
+	b=fEymgqqexAfVJuMcnEQt5MDdJbZ3NXp8XXhF4Hze7Jh5jy1VHre1cMGeQnLqfl+EvtiOiN
+	YXhQJzwyNiqtD8m1TGX0zbw98EunhUBdN2QNwhWNu7wB9w9WZEjQw5p4GFezBIeGGrWuFn
+	iGmA8uUAZkq/Y94Eo6WjyzAIGHpfOYc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0988744038;
+	Tue,  6 Oct 2026 00:52:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6BB1F000FF;
+	Tue,  6 Oct 2026 00:52:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791247962;
+	bh=a6yHyvxgSFAtHWCFCMd4s/EWnCMi2wyyPVO4ODcFr4k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bLnHL2gbeCWNkbpH9td+jOYWcisFag1WKNYRonRKZsQjeSs/vv73vLl7fIEhngC/u
+	 kr8+q7aBapijn3MEgS1UCicKD1luURaAL5imAaRwbllzE3JS9B9HWzk0YhB8Cx9XIf
+	 /7dv1YJE4Ig+4eASQDDy90UFaMx1grxitiainL0BkT8jrvLdsz8/DUz2kGSepbrxfN
+	 tZPdsKNC8QDKq8VC5rw4vOUtsltue1ZzpehpSm5P5kGNKlWBlQGa2/Hb3IpG6qKb4Z
+	 CIj2dkgElxLscz2EgeZFK1HMxMkVca6J+MexZZRIaVh6zwuSz4BNxh1D6h7I29HyPK
+	 +Pc8utcOPJqHA==
+Date: Mon, 5 Oct 2026 17:52:42 -0700
+From: Kees Cook <kees@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	driver-core@lists.linux.dev, linux-hardening@vger.kernel.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 2/2] devres: Provide kmalloc_obj*-style API for
+ devm_kmalloc
+Message-ID: <202610051752.4516E8CF4@keescook>
+References: <20260914223212.i.829-kees@kernel.org>
+ <20260914223219.901347-2-kees@kernel.org>
+ <2026100532-stench-enrage-0b81@gregkh>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ruws9h3aztpkxrz7z1y3t6zcsy4n9ph8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026100532-stench-enrage-0b81@gregkh>
+X-Stat-Signature: 4cc9kyp9kw7qu3uyrz3pcc8ic4bjbt77
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 73B80140003
-X-HE-Tag: 1791246199-70194
-X-HE-Meta: U2FsdGVkX19iF6DaHERMVjOfoXTE6whXIAhzMMOlX73LnPmRIO5yPco4Js/jflVb9IvowfUWBnLMD0ChH2Nb3zU0dYMOYlq8pIBQT3s0hji1Y5xz+UTnihPuyiUMyi4j207mJfKHPEv3XVCIscra02f4ZNt25S+/QYtrIxiw/1vjXrJtSHNXIMlppNASOnxwbITUNDmf4+I2LhALBZ6PcOy+AzVSFysj9dvxQT4Y6TePt64nXyv/xn0ZXYy+gil6stzzjplvOvehZSbjibOr+e/zMCny1t3QhWc/zAksR+JPxbJ2Hd++G9YWJ8JXi+VnTZ+LvyQMCC+PNtoVHpZhYDkY3c4quhvCjnu3pJ+x2PH8iAke3BeGACRmmd0eQibx2lkHIpWxGMGFr2h+0yPxvu6BAaa9tH//PhFknaAoILuptlzCl2NjL+yYFDBzb66GChcFy5T1uVfiNgm2EFZRxp1luGXm1oc6qaKnq87tw6hNlLy+Oe6lpukciz4RDTyqbark9H/FlG1KWZswwjVdJjnkXOTd/aYKKsDx1KamKXmgWa42km8RsACUOY9VHjLX0RGnsf/Br5YHyNlUpWYgkg5norlYeCsQhgC1fJlQaYSz90f5BuJ0VNJAdVgeiavwYx7JixpaG2N+gP2lbvUAfGtjOAg4dWlxxZq2C5H2tg9P5XGXk9QJLuDXj6KK7I6TPPTznFU0k944W1lOO6iEcMpdZJqBm5VWnjq/8rkcWTqUSDpcd7y3XqW8vpF3UjOtRdcvE5LjR50kMxd3hSTLSJO4bo3p3llsgeVWMPSv1yqSylC5GjFd8QkV3bU8C+4tlKIvdd9F61lks3yKu5X7eaKQVa5+QlmNPRqAkt+xsZTFs9BxeYNEgqMoYwMKFykL5Qh0vdkBMttmauAXAu/5fNuhyF1hVscGTxy+7EHc+XwAmmXM0ZatisIKOgYJqNi044rUUJGL2lpC/Rv7dqu
- 3Xei+y/0
- doRvW+f2OLJm76AYZtEZnhiIs1362gZB3fS6g+cNaUjP+GKnNKR0V1BAEiZ5gOaWEEIBi74Vf/zn+P63oLtGGeBJhYW3AIii78gveFxClwzT73zcginbvIXYINMkVrtKAoWU1bEjuwWOIhBPXJx5W/f8f0+sl7f/yf0uSTfFQm2PPb9F4e9xatFVhCsnH2RP3xszY8OzikQ1Bviaq/2/IfbPwPzXyg3+otuhsQe1ZJbN9aRc=
+X-Rspamd-Queue-Id: 87A851C0004
+X-HE-Tag: 1791247964-508638
+X-HE-Meta: U2FsdGVkX18ghdBpUWeZ6BEMDPPByLuKaMeBrv2LTEpmUMWghTdADwT+4kP2MPRDsFBr+Rw3p1MaswTTnxyAfQmG+qIYiKKMzccN1Ni/PFUH/3kpaOdevNXK3mbnt83mv0Nbp2RhC52jTu5cVDv6I2SUtEWm8rQWreiEi0pUJqXFhuoZcU7rUFE+GvdzjMYgY5lAie82xDTquWO6dEmfhaT8Rwc/UhFYIBkQI9/LkRxvm7OvI6NYgZUXT8DBgJXOsLFIkVB6t0N/nEe5075nty+rbu38v3/+LqRocVz7dvldpXOmihEu6J0iTbFeSLVd9bbTsdx1zeogJzmz6PwezIrJStsEdtMKHVR2LWeo07SDBCin8vPuQ6QhmzD0kckrsiLw1YWo5HTvXZnNebbgYJrTCxUlhqWfzBW/mSV787dmZgyGUiaGxSSuL4OPdpUJAMa/9OFGXFCZbG+P7UuGiBVHQXCo5gDuhAj/XC/taG97OLms9Gm4xG/iwVsvxDSBei/A6FVxM5T2GL/PsXE1p2JIxOt8zyhRsk/RTh+1tQDrrr2w5WG2Wk3H0ZHJXQgTTllSvTzmglPLfo9WQrxY/2qomfGsiN5OeqkfX9lZwl3hSWpYPBJWC+SxoZXUCnFDWml39s4JJsGwhPORs3SNqxKOf0lHmGejw3NxGGnphpvctk791LbKruzytvqey8nJn+vP8/E5MTQbvGYAwCay/i8WOXw8U4PkYi6QjkQOcaC7bkcN2SrRUu4fZbE3Oxc5f3J9bZh1wu7Y2faJ2VRMP6w3L905Z7YDWW5Y2LbExE88urOQ6PvuaHz1KBMJn1uBiauRJawOulxnLo6GkTRFOh4P7jPMAzPDd+gpu0OcoeFbjDY8DO9HLcLBnmItzlZrxS5nwNBP+vpE6asGvtQcVkgZHe9B+cH87uEPLKHT1wTC1xj8TaXK1rjIleYf5n6TpD+mcGagN+eyu49cbsb
+ 0s6zJ978
+ Up+d4FJPnzADeqDA5LUd6bLB7dd7SGD1juXRLQONuq6KRJnXhXXoEh7Nk1LeE4Qnp0NMyzf4to9ne/V7d490BZ15XyARf2vPXnhMoUY/3gw7eJ3bpJOYv8JGHC5gIYaixlt/sdlpJBJqnF1IfPtFT9fXiccm0k5vzt+87c6OGpCNcDdrpXL2/Dg/EvugBtolYpd9V+3KktrWOMZGd9tl1E8JaIRST/RpfO1IOhYU+aS+8WcA5WYSEwqdlsSG5dWVjpSiR5SdJH7b9uyH8PloaNHi56UdOowqI30BtD8CaFrggk8c3XWAQlLKa7dBXLTTmtja77xFPti5vULUrrSDvB8cxFkgVF3faHhtqHtS/7yCIr3XbgtfP8PkKFuVPr62caQoF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,151 +106,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With separate requests for compression and decompression, loads still
-serialize on the per-CPU decompression mutex. A low-priority load that
-is preempted after the codec drops its stream lock keeps holding the mutex
-and stalls every other load on that CPU, including higher-priority ones.
+On Mon, Oct 05, 2026 at 11:35:16PM +0200, Greg Kroah-Hartman wrote:
+> On Mon, Sep 14, 2026 at 03:32:17PM -0700, Kees Cook wrote:
+> > Mirroring the type-based allocation now in use for the kmalloc family of
+> > APIs, provide the same for the devm_kmalloc family of APIs. This will
+> > allow for future plumbing of type information (e.g. alignment) into the
+> > underlying allocations. This immediately gains type check on return
+> > values (instead of the prior "void *" return type).
+> > 
+> > Signed-off-by: Kees Cook <kees@kernel.org>
+> > ---
+> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > Cc: Danilo Krummrich <dakr@kernel.org>
+> > Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+> > Cc: <driver-core@lists.linux.dev>
+> > Cc: <linux-hardening@vger.kernel.org>
+> > ---
+> >  include/linux/device/devres.h | 102 ++++++++++++++++++++++++++++++++++
+> >  1 file changed, 102 insertions(+)
+> 
+> 
+> I'm guessing you want this to go through your tree?  If so, that's
+> great:
+> 
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Synchronous algorithms whose requests need no extra context can use an
-on-stack request, so decompress with one and take no zswap lock. All
-in-tree software compressors qualify. Asynchronous algorithms, and
-synchronous ones with request context, keep the per-CPU request and
-mutex, which is still taken before the zsmalloc read lock.
+Awesome; thank you! I'll get it into -next via the hardening tree.
 
-Reading the per-CPU context without the mutex is safe. Since
-commit ef3c0f6cb798e ("mm: zswap: tie per-CPU acomp_ctx lifetime to the
-pool"), it is set up before its CPU comes online and is not torn down
-until the pool is destroyed. The codecs keep their own stream locks, and
-crypto_acomp_decompress() rejects on-stack requests only for
-asynchronous transforms, which never take this path.
-
-For software compressors this drops the heap request added by the
-previous patch. The on-stack request and wait take 216 bytes, which
-makes the load path about 270 bytes deeper on x86-64. Asynchronous
-algorithms pay this too.
-
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
----
- mm/zswap.c | 65 +++++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 45 insertions(+), 20 deletions(-)
-
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 54187b1ef751d..7e7fb6e7ec24c 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -147,7 +147,7 @@ struct zswap_acomp_req {
- struct crypto_acomp_ctx {
- 	struct crypto_acomp *acomp;
- 	struct zswap_acomp_req comp;
--	struct zswap_acomp_req decomp;
-+	struct zswap_acomp_req decomp;	/* unused by synchronous algorithms */
- 	u8 *buffer;
- };
- 
-@@ -851,15 +851,20 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- 		goto fail;
- 	}
- 
--	if (zswap_acomp_req_init(&acomp_ctx->comp, acomp_ctx->acomp) ||
--	    zswap_acomp_req_init(&acomp_ctx->decomp, acomp_ctx->acomp)) {
--		pr_err("could not alloc crypto acomp_request %s\n",
--		       pool->tfm_name);
--		goto fail;
-+	if (zswap_acomp_req_init(&acomp_ctx->comp, acomp_ctx->acomp))
-+		goto req_fail;
-+
-+	/* Synchronous algorithms decompress with an on-stack request. */
-+	if (acomp_is_async(acomp_ctx->acomp) ||
-+	    crypto_acomp_reqsize(acomp_ctx->acomp) > MAX_SYNC_COMP_REQSIZE) {
-+		if (zswap_acomp_req_init(&acomp_ctx->decomp, acomp_ctx->acomp))
-+			goto req_fail;
- 	}
- 
- 	return 0;
- 
-+req_fail:
-+	pr_err("could not alloc crypto acomp_request %s\n", pool->tfm_name);
- fail:
- 	acomp_ctx_free(acomp_ctx);
- 	return ret;
-@@ -951,19 +956,14 @@ static bool zswap_compress(struct folio *folio, long index,
- 	return comp_ret == 0 && alloc_ret == 0;
- }
- 
--static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
-+static bool __zswap_decompress(struct zswap_entry *entry,
-+			       struct zswap_pool *pool, struct acomp_req *req,
-+			       struct crypto_wait *wait, struct folio *folio)
- {
--	struct zswap_pool *pool = zswap_entry_pool(entry);
- 	struct scatterlist input[2]; /* zsmalloc returns an SG list 1-2 entries */
- 	struct scatterlist output;
--	struct crypto_acomp_ctx *acomp_ctx;
- 	int ret = 0, dlen;
- 
--	if (WARN_ON_ONCE(!pool))
--		return false;
--
--	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
--	mutex_lock(&acomp_ctx->decomp.mutex);
- 	zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
- 
- 	/* zswap entries of length PAGE_SIZE are not compressed. */
-@@ -980,15 +980,14 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	} else {
- 		sg_init_table(&output, 1);
- 		sg_set_folio(&output, folio, PAGE_SIZE, 0);
--		acomp_request_set_params(acomp_ctx->decomp.req, input, &output,
--					 entry->length, PAGE_SIZE);
--		ret = crypto_acomp_decompress(acomp_ctx->decomp.req);
--		ret = crypto_wait_req(ret, &acomp_ctx->decomp.wait);
--		dlen = acomp_ctx->decomp.req->dlen;
-+		acomp_request_set_params(req, input, &output, entry->length,
-+					 PAGE_SIZE);
-+		ret = crypto_acomp_decompress(req);
-+		ret = crypto_wait_req(ret, wait);
-+		dlen = req->dlen;
- 	}
- 
- 	zs_obj_read_sg_end(pool->zs_pool, entry->handle);
--	mutex_unlock(&acomp_ctx->decomp.mutex);
- 
- 	if (!ret && dlen == PAGE_SIZE)
- 		return true;
-@@ -1002,6 +1001,32 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	return false;
- }
- 
-+static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
-+{
-+	struct zswap_pool *pool = zswap_entry_pool(entry);
-+	struct crypto_acomp_ctx *acomp_ctx;
-+	bool ret;
-+
-+	if (WARN_ON_ONCE(!pool))
-+		return false;
-+
-+	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
-+	if (!acomp_ctx->decomp.req) {
-+		ACOMP_REQUEST_ON_STACK(req, acomp_ctx->acomp);
-+		DECLARE_CRYPTO_WAIT(wait);
-+
-+		acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
-+					   crypto_req_done, &wait);
-+		return __zswap_decompress(entry, pool, req, &wait, folio);
-+	}
-+
-+	mutex_lock(&acomp_ctx->decomp.mutex);
-+	ret = __zswap_decompress(entry, pool, acomp_ctx->decomp.req,
-+				 &acomp_ctx->decomp.wait, folio);
-+	mutex_unlock(&acomp_ctx->decomp.mutex);
-+	return ret;
-+}
-+
- /*********************************
- * writeback code
- **********************************/
 -- 
-2.53.0-Meta
-
+Kees Cook
 
