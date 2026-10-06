@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E53A3CA5FED
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 18:33:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E169FCA5FFF
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 18:33:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 213686B009E; Tue,  6 Oct 2026 14:32:54 -0400 (EDT)
+	id 7E0476B009F; Tue,  6 Oct 2026 14:32:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EBB16B009F; Tue,  6 Oct 2026 14:32:54 -0400 (EDT)
+	id 7689C6B00A0; Tue,  6 Oct 2026 14:32:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B3226B00A0; Tue,  6 Oct 2026 14:32:54 -0400 (EDT)
+	id 60AEE6B00A1; Tue,  6 Oct 2026 14:32:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA5526B009E
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 14:32:53 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5602D802D1
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 18:32:53 +0000 (UTC)
-X-FDA: 85293047826.26.B090E4A
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6FF55140010
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 18:32:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ftb3HC1O;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of griffoul@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=griffoul@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791311571;
-	b=k0vxrWfL+gY/OJjrQvhmeakI0S/p8DQgcB+YFdcPgnhEAXX28sJhPwQ0MgBk2pLLHo36qj
-	KLZJUN9fw7/BNqDoyHQ180bJL9NGq+sAz+ngYf5GmEu8mih8Axv0xHYQ5qQrO4H67xZ10t
-	0mAOZZzJUBfAjJZZGmezsFYzM6wgXNU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ftb3HC1O;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of griffoul@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=griffoul@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3443A6B009F
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 14:32:55 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B0A3B1602E2
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 18:32:54 +0000 (UTC)
+X-FDA: 85293047868.11.C173863
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C3F8C1C0007
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 18:32:52 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LfowGpYI;
+	spf=pass (imf18.hostedemail.com: domain of griffoul@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=griffoul@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791311571;
+	s=arc-20220608; t=1791311572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=drh6ErUU2peV0xSdHj/I37HNFe8TgwEz/1p6UbIS+a4=;
-	b=paREPPDAYpJ4aMmWo56gbucN7eOmzBDTMSo/1MiSPj2UQjhUmCE7HbqUPMPacg0fNFnQpY
-	j0zO/2It+2p+4Ar/pKLSKBkPKi++XOoDCn9Q6kAe+vwIzSbkJSUjJpyN9Nmrh3hjZi6ovI
-	9mhJGhQGtBJhRSBvGB1hZxPQXDJ+YTk=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c2e62319cfaso326048066b.2
-        for <linux-mm@kvack.org>; Tue, 06 Oct 2026 11:32:51 -0700 (PDT)
+	bh=mrJHg4EcIiUcrJStP3IT7dLBVIoFsRs5h14JomE41+A=;
+	b=gR/MMASH2oUF80JNTN2f78Y5uyVELiB3loCTUEcuhkqQ6Gr+vT9m1LYJ0+u8jwC1UAVnix
+	r+7HgeJDkLVinx7EHwJUzq296ejRO93hphGh9fG1UBLW8LTMK16E2Z0tIYzxkhD3wSFc5a
+	5XGOlP0dEpOsA0LVZJ2FwtG7S/VuHGg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791311572;
+	b=G2GBFHzD25CDJB7/58m8wlOB0s3IiWHjUDQT79Z0UjIQjzEBV5TjjHa+yBS7DoArKxnkYd
+	QQE1RnEHhqNGXrRHINz6rbMzy4IstVZbUj6GbqwdMxVyivTKpS3GeG0cHgf4FtR4GRzD7P
+	8mMnelAPh+gRsE9UmZX6SdKxLGJb9mo=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LfowGpYI;
+	spf=pass (imf18.hostedemail.com: domain of griffoul@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=griffoul@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c2a832c6554so146048666b.2
+        for <linux-mm@kvack.org>; Tue, 06 Oct 2026 11:32:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791311570; x=1791916370; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1791311571; x=1791916371; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=drh6ErUU2peV0xSdHj/I37HNFe8TgwEz/1p6UbIS+a4=;
-        b=Ftb3HC1O6vP9zIcKmomPNooZaPTbVszshT1GwK9PMyes2ggJ0FK1uLJe5URe0VbDIt
-         wUNCsJSciywrtNdIwNhTy0OxRvKgaWoTZ0QujW6TF6GOuCC3QJbRlkh0i8G6zA+jBGaj
-         VuHm3CdY8tLIWi4ZJ1HBZZcFy54WKcWV/Dd5CYWCWDSDu8IN9c0/2i4v1N8m4rNtzQ3l
-         liBcuuKpMfT4qEGX0IJ1pJVoW2+A56joUgIikFa6az6VyMM56dai4cmSKgZ7Op1AKTgT
-         WGWy01WOegDJN0CR46KprNfmgmG597Kr1+YPWge9ERWlrZoZlzGN1m4qDv6Q9ECYCHib
-         r35Q==
+        bh=mrJHg4EcIiUcrJStP3IT7dLBVIoFsRs5h14JomE41+A=;
+        b=LfowGpYI0qF5QVQMT09AMvWoZhOtbnyQ4U+8CsfTpxhokyENfGTsLvNyMTH/u+saQ3
+         FONkcXOcuUSiG/JaWZyyl8HrEIC4Vy3jsHDQ057qYF8I06YTwiJXRxyg4y1RFq0P344c
+         0KEqmg+C0QkcZmILxbIwrFgxva0ioqrttT6RRo4rHKPYph/Yi4q5cg1hHGC6b4/THNYV
+         jFYkMs6DB+NZGtI+lpYCqY5KMHz5a5FohDho/vbczzO6DfwsOVU/3gW/vQpnhrMSp0dG
+         94YWZ1q5cd9hHZrRzOxuvsmgx4nIxsi+yhfiSUuMIc2DdjWz8IsPXEku3p1Sb2OY+Pyu
+         qlxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791311570; x=1791916370;
+        d=1e100.net; s=20260707; t=1791311571; x=1791916371;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=drh6ErUU2peV0xSdHj/I37HNFe8TgwEz/1p6UbIS+a4=;
-        b=lq6Zm26zbA4VS7oe27ImKzr9Q/45MUsFB0dmXsGbcvLCWsK7pflBdOTmXfwO82HSHV
-         zx3cRwCMGf8/tZICr5I8zOcWL/tOqlQfPY2kw97pDINt+kheEqg5CjMC6IdjJ/X22RCk
-         QyEoVbdiLLHLC3AOnTT+7/B0geKadghMeCQaiTOrs3ObM9YI434nT9GGvqzS7y2FL/Wl
-         qW7voiPwcWInQI9dGJHp+QxXXEj9Ua1iPUMcwNDRlXvjLfDUVkrHWGFotIalYaSWe080
-         bpVunjveA7Ar1m2vtV65klCeTU0pgE0CdPzlfJ8VwUO1j0+QID5t2RgabzCFYXvA5FMp
-         xXdg==
-X-Forwarded-Encrypted: i=1; AKwUvBw5cE1IzFulREz/LoJszhFdS6VuFzXGsZmGmsKXJX0vtaHQk5fXjmCe09Brt/PGxk5cqv26aG/UpA==@kvack.org
-X-Gm-Message-State: AFuF++lAkhptlUW40gxiEPbBeBpdWbw9/mjQbmAaHBYw/HXSYaIKTUHL
-	8sPKNygF7jjFKAUxZKJdZ7UmMF/CErcSW+4ePYELOdrvtAskNPpchp9I
-X-Gm-Gg: AYBFou268bxnzekiesPwlU8cXuvRXlXxEdXZMUp/+cqBWlGEve5Hd1fyyxx/iB+NmnX
-	EEYEC2aXJ8PRp87O/cp4Ayh4zG+PM96Dn5P2hGfkQdUK2Xh6QK22E2l7DFh6ld8XJgTT6v7EPAI
-	FYdhcUte9XsCgg5glF0mKFtCmd2zt28PCSQHNaiYDdZXeL4b0DQmxpwtQdybo4tQKEJkLnO5ARa
-	rGIDvV5SBzg8+47wFPblMNAjUDxlUISkTiwIVEBZy2/Wrel/QawYPhKYMvhqcwZtVMda+TYpCM2
-	2gfbo4MwKoNOvG76T9iJJtUOhjzi4ufxpi4a9cxJEnaTjihDdBqWezjE5eI7O58UDgUie65RBBx
-	Kr9F5kyEjvgdWPfxjTuWtyH9tWIOy6b0Dy1DJLLKJSO5fdH20WVuvzzqdLn3kbiHyqcEvwJuYUf
-	NXRlxcb5h5JTtPri91NkYVkjBtAMnxtT8K4BCmOkvnzEvmR2rOncxjPwEjIbJHpkrRnyx4rHrYD
-	EKrN+A5SjbfoD0Zv8ymBRnwrOw1tarY3m8D/aON6AvA0LYRE4OPeP4MEe/FZ24GPVM71CWeXF8/
-	51n3a0tRSOWmxWr3f0UmiMoGgU70tb8Espg=
-X-Received: by 2002:a17:907:a4cb:b0:c2e:4b90:3c56 with SMTP id a640c23a62f3a-c2e6ece5614mr1095900366b.13.1791311569727;
-        Tue, 06 Oct 2026 11:32:49 -0700 (PDT)
+        bh=mrJHg4EcIiUcrJStP3IT7dLBVIoFsRs5h14JomE41+A=;
+        b=mkR0QarYxHtJAqI4bT3O12ZZ/iNjWxOc2d/OsQfgtfxYjhG+NduW8PO7V/KA1L+OES
+         LWgAE0ykUJqdUMhKZR4tUSR9A1RrdIU/hRCHdWaAC0HvWy4Na4dRvGePiRNk1YsXzmfJ
+         ezV9UxS8fGpuyytUs5wsiEYPHEBggSo/zcvcHa00UYIpkyxWXbUXHy6AGid2411WACeV
+         kafUt8Yp1ULlST0fjpgf/LJslYPAaZ/KoLQW3DRsuF8WCRkiM0hMVfd6VzR3T5TrCgqQ
+         xa+hWmdy2xpWQ+onfRNZK/REh8YhhDAgMLv+HoJ7GvngsPSVIMhCZA0VicXtu95xgjqE
+         dB8Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwrQku+uy2agqJdagUn2J0aDw0wz+mb02irZXK6lXJ9dayfDgtEAwzW9NwjtoDRqx/eU9nkYvhXmg==@kvack.org
+X-Gm-Message-State: AFuF++mS29Ku9kf9xrLqFKPe7/eo+qZPqrqLZze739ACDioYOGlHOtir
+	CK1Zly+GQYwB8jaaD1VfX4kcwtuI2cIvousGqA25coXe2+z181gr+CXx
+X-Gm-Gg: AYBFou339nJE26qxiEzS2icjQh+80Riu3INZhjBxhr2m1m8TMZjDVzELaqKed4I+DuW
+	80yOYrTAx1Ml8VLQtohlR95bGmDLXBr5l8pWu2lBbopPkJUnk78hP99O12XI0SRrSyjPVK245Yp
+	VnuUI7c5b13+aQtIeZKbvV5kpJlLpDIAF5h3jFpL5IYZcfGFm8TTYLm+7rWQKTXmvqo2VMz/ZnK
+	wUGZM3AXGSi1VgSSSGGy3WUu2uOlnTysgXfwfKQyAUvaD40FWJbcU2zIh+gwwbvFgY9LwhJ7vxE
+	FFZv6YWrxYdrcOt1WWEdIzxlipHQobXwrdHlJAsNo3hfSaGa+VnoXTFtiw+w6Cd82ZA538eUPin
+	zf1NC05MApe+X4u/fA1g08Bpkd/9zZ20KM2MT3aSbM4myPlO0QBUhrXckRFyFvVETxMZspFrAcL
+	s1XuRiwBp1RHnT2rmmSnUi8JqhQa6wKxyvKseLhlsKNjLMMU2MToQ5QpXgfkEveNpaMusRxD21V
+	7AP//Xxs6/5lEfD6C9YNJ2wN7cBIF8J6pdnAOpk8s9iKsJp3sQqs4poMZKXoZCpln9n6hsioQdl
+	6wMklpq+5X0FhtHqpT4kWMAangqLQDfHfd4=
+X-Received: by 2002:a17:907:3fa3:b0:c31:5e99:6961 with SMTP id a640c23a62f3a-c316a0cd86dmr245698366b.42.1791311571180;
+        Tue, 06 Oct 2026 11:32:51 -0700 (PDT)
 Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c3158260f7bsm221934866b.6.2026.10.06.11.32.48
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c3158260f7bsm221934866b.6.2026.10.06.11.32.49
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Oct 2026 11:32:49 -0700 (PDT)
+        Tue, 06 Oct 2026 11:32:50 -0700 (PDT)
 From: Fred Griffoul <griffoul@gmail.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
@@ -134,23 +134,23 @@ Cc: David Woodhouse <dwmw2@infradead.org>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH 8/9] samples/kvm: Add a memory provider sample
-Date: Tue,  6 Oct 2026 18:32:34 +0000
-Message-ID: <20261006183235.16576-9-griffoul@gmail.com>
+Subject: [PATCH 9/9] KVM: selftests: Test a memory provider shared by KVM and iommufd
+Date: Tue,  6 Oct 2026 18:32:35 +0000
+Message-ID: <20261006183235.16576-10-griffoul@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261006183235.16576-1-griffoul@gmail.com>
 References: <20260720111259.122911-1-dwmw2@infradead.org>
  <20261006183235.16576-1-griffoul@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gfmn39n4zdhnkxmb4fee6gnobixda1sn
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C3F8C1C0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6FF55140010
-X-HE-Tag: 1791311571-617237
-X-HE-Meta: U2FsdGVkX1/0DtXRV5eTsqWa4o9fP/DlqbbYBVZYvwzdPoLdLId32F4Wck5QUpjvLv7khb8cpatHs8aT5b4uNkkvM5lsPdsg4WXRHsdRF/Yx/vF/EiQ4Mr7ovXwoBm0QW0z91FQJslO9SXpEFSqQgMeuMbef+FUZd3M2UCLBFgKN8QShQjOQOW9JqJftsti3sfMWol73l5yHxaSOl1u17FOPMyh7XOVap3odq9x2XEuBSsV5pxoWOTxl13z79AEwnDSHCizAChnw5VyHkepvGPE1IqAeTGo+evGhbT7IjtX70acv/08NdTD8u360sQFvXzaOSMXTfqQVrInn3NG/sMnACNMLVZbMD6Wozorb90YkUNhU1hjelPNnY2rHzWamodR5yVdHxmgj6pvI/bsikvWPYM9n3AbYiIjCU28yNnx8W3TI5Q0SXhuPeMwuX5dFTV80N95UQSRHPXwBtaOZAKWPTUlwMvJf27LiX5WF+QnZRlPZ1sPycOkkP3gAKmLXIAksToPM8750oLyTdx7VrWEt4avFjdXQRuew5nocmHmnik0uJAWdkFAkNPwx6LcOG6nBWLYUYBek2YOdouNCSKo7xf8vCaFNRK6ycozTgkt9XwmGFquhLGUYQi05W+wjrVJRS9D4UAY30L6gqXMt+SFN6FNZ9diDGt97FJJe0tGzyQKzDii1qhPCNNkgMMRaZyo/OpkLZv8M3qE2qZ/SUFrDo04bbBWlDV1+Jj0nVxklVzlMi9ZRA/hfJqzISzexhl0WF4njWaw60spoNCgldO+uygfuZ11reUoZFet7JSf3FmS7NiQAoTM/xA9wV0HZk0HJ0tzIjFooeu3rIp17q/qQva8ZzdhJ4+r6e840SaXRRWRecVYrUlu5QCLQg1Sfjtr7/ldhiPIdYUAuQANiIvF6A13KYvEgArKvMMrfX5JbvbqDsv/vbvqL7UiYMWoWKACrbcn+mPGGCU35kMO
- Co5iaLvD
- /wri82Y3/ht/n2BR5bNiTUgO2kKMJsYj05stBDizg/v+iYI//OtDa2u/FJbSDxPZxirfY2prF6l0FTJeKgzZZ+8pSW4Iq/1SyLXDzYdLV+9Jqws1y5a/Q8aiyFrpomaeKCbIQ5fb+zYLwkgeVn/Sf+lkl6MKmiksL8rP3XlE+YGj59NPFCliILZDmD//DPW3+F7WOOpbWpnZzalo0igZ2cLaIRRilxatYPPBhFJFoKXrPvZk4bNySDK5GOkJghJP4ZCYhusOm7fD9eOwtk9CUsA+sOEEc+FNaC+5DOgRKJaEAp0ZNkm2hI+I/DSlLZE4zhAhFuNcWjaU+GZtxd0RNTvE8SgdN6DzegQzQjrpK4ZEoFcX0nLuljhyszH52aYO4/XxhnlfocMfqhuu0huJPOMbNTiem6UjKQCOcInbZZD1FHynD21x48P97TQlite305K0RFixAfzQXkNFd2i56iAiURCVCtiYr0iVm6DxBb7FAYc775PIHpjHmOPCPMT/MG1yPP9dZ1jUL5ibHMqBCWcPYORRIhAa9CjNOtGn8cI6JUXACmKT9R+icgHBxslSopjp8vDgtFDr0P27fnJWbu5KR+lL+zomWDOW7WQh0OX4OdVGrFgj8sXnfbw==
+X-Stat-Signature: cdcg5jw98amdzk6ppx4d3xtdsrwytwsk
+X-HE-Tag: 1791311572-594363
+X-HE-Meta: U2FsdGVkX1927P3jCKfEPkZh5IplFwJa3gGRifVTZYYVFon7ZAiPu8Ueg1oAkmw7v93XQyUHsGeHZj1KukRrKfBMviP7oymGfV5O0YAJNwTUogPtqv565g69s/E8QnRWs4xoMAYk3+lq4aYB0QVr8uwjJhKyr+QWis1Eg9d6H6Plh2/Ggvpxxlpfb5gkAwJaDKNy3BIElqjGfzPdRvSG82zWf0NT66ahT1nRwCsoBwhHPfVTTNluiQ2Gvoo5RF14XY/ugDMPDyg+X2bAZtu9/KY9Ycpduq/tVnqj45mdo8KGa85NtyEmT0NCC6bkqGTTZiMpPEdDh0m667Aw3PhsVPyy4xXr/cFuRQpimNXIFiXajKKYjnBTq8TmGvnR1baHbaKlExE3kN44RFAEiuMoilzo1F653o+/cMBYD/hBZq4gkXP78X0gdvr3yHNHHs5B54oerIzVfdM4bV0R4smJyWYULZcvZPSkr2is4m1Kn8iLr/0mRNuGWpdrhcTqY5hQhEbpaLieJShtDorJIPthjANESrvq5BlC7+8DlI5Bf2WOa0wvVk54O4VXgRgDU90eMPpXghKQ4dHwSAR6UJS1smTFYeAa870s92Hd6uLwsr8mr4c4eToR69N/ifUGYNdX27araDiS5UDrKLdoDtyLkOWP0L1GHFj7SLDebBWRoza6J1Q9dL6Y5IdoZSsHwhfJ3pJzjvxEqSoFixtx8uWsDQcpxnA9eLSEJcy9ViaxPBCw266ZrJ304Ek22nimQbI5zDFlFIbs2M4JMA4YsLgGt0/lsIWnMtue6ZRFIsWCoZ/uCP34OIa6WA9NjSLAdLkSFDrce1TGNPRjVJ6oV7DmdR6HcStqqkO2cLbVX3259pdZ3f/4WXuZy7uWln9vG/Z5tsXzg78AU+KSbtuLl0kNhTpqNVdLor8KoBgGfeNTLH1zdGqfLjcX4bwp8H/AyBMGSjp0fYRv6SkFfW6uoZ6
+ 5o/FbmlU
+ bDrjy/Lu6NWKTX8gITmnBc8z3Q/G79DggA72GbRIhKsJ/A7mY/WsMWv+0SrxIKobzPfumQwgJGWMXrZS+NhibqBOFaK1NsczFus2gPtFTVIK1snC3ASqhecIGgbj3WPtQfmoFFwSp+PUT91G9Px/+OHQu0j9OKKPNPir+LWr72hE92Oj068ynpg0wlY3k1Zuij2g7wfMJliwaUP4mTwIwNagMhFlbN5oVbJZj7ijUdePa9mjH1xc8cFdryuc8TS698+zhEEz5eu9ukfVQ4+ictNbnS2imPOiW8+5gR7FmceWLHlRz03ikfEVKTR3pHHVsaXh4FsnI/yjHpF70GZhtkbZaoi+XxWw5rTSmRKtLmefx0sJyfDEDTO5kvHSUS1dmRJiNn/L+Waf5M0JdByCcZNHb72E18PXTjYMyvZl0UKRcltZzGW6Wl/BSvI20zabBj2ER/6jNLgoQqBRVvR09itGS7zdQQuHBsBRZPjE7ABVsHRN45SCsUVlEhwxsron8xCT/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,1096 +160,621 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Fred Griffoul <fgriffo@amazon.co.uk>
 
-The memory provider interface has no in-tree provider that a VMM can
-use.
+Test that guest, host and device mappings of one provider file follow
+the provider's changes.
 
-Add mem_provider_sample. It lends a region, either a fixed range given
-with addr= and len= or memory from alloc_contig_pages(), as child files
-that a VMM passes to both guest_memfd and iommufd. A control device
-moves pages between children, takes them back and makes them read
-only, and every change revokes the range. It uses no KVM, dma-buf or
-iommufd symbol.
-
-The fixed range is not System RAM, so the sample keeps a write-back
-memremap() of it while a file over it may be mapped into userspace.
-Without it, PAT would make the range uncached on x86, and the VMM's
-mapping would be uncached while the guest's is write-back. The sample
-is x86 only, as guest_memfd accepts providers only there.
-
-David's gmem_provider sample is unchanged.
+Two VMs get child files of the sample provider, each passed to
+guest_memfd and to an iommufd mock domain. The test moves a range
+between them, donates and reclaims pages, and makes a page read only.
+After each change it checks the guest, a host mapping and the device
+mapping. Pages are mapped on the host before a change, so the test
+checks that the revoke zaps them.
 
 Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
 ---
- MAINTAINERS                       |   1 +
- samples/Kconfig                   |  17 +
- samples/Makefile                  |   1 +
- samples/kvm/Makefile              |   1 +
- samples/kvm/mem_provider_sample.c | 855 ++++++++++++++++++++++++++++++
- samples/kvm/mem_provider_sample.h | 135 +++++
- 6 files changed, 1010 insertions(+)
- create mode 100644 samples/kvm/mem_provider_sample.c
- create mode 100644 samples/kvm/mem_provider_sample.h
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/x86/mem_provider_test.c     | 582 ++++++++++++++++++
+ 2 files changed, 583 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/mem_provider_test.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6cab075a3ff7..b6b47e132e16 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17366,6 +17366,7 @@ L:	linux-mm@kvack.org
- S:	Maintained
- F:	include/linux/mem_provider.h
- F:	mm/mem_provider.c
-+F:	samples/kvm/mem_provider_sample.*
- 
- MEMORY TECHNOLOGY DEVICES (MTD)
- M:	Miquel Raynal <miquel.raynal@bootlin.com>
-diff --git a/samples/Kconfig b/samples/Kconfig
-index d26a03dea072..e4c4aface3ab 100644
---- a/samples/Kconfig
-+++ b/samples/Kconfig
-@@ -344,6 +344,23 @@ config SAMPLE_KVM_GMEM_PROVIDER
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_KVM_MEM_PROVIDER
-+	tristate "Build sample memory provider -- loadable module only"
-+	depends on MEM_PROVIDER && CONTIG_ALLOC && X86_64 && m
-+	help
-+	  This builds a sample memory provider (include/linux/mem_provider.h).
-+	  Its files can back a guest_memfd and be mapped by iommufd.  Loaded
-+	  with addr= and len=, it lends a fixed physical range that has no
-+	  struct page, for example memory hidden with memmap= on the command
-+	  line.  Without them, it allocates a contiguous region with
-+	  alloc_contig_pages().
-+
-+	  It shows how a memory owner moves pages between VMs, takes them
-+	  back or makes them read only, and how guest_memfd and iommufd
-+	  follow each change.
-+
-+	  If unsure, say N.
-+
- endif # SAMPLES
- 
- config HAVE_SAMPLE_FTRACE_DIRECT
-diff --git a/samples/Makefile b/samples/Makefile
-index e85397e5e34f..0565141d1f45 100644
---- a/samples/Makefile
-+++ b/samples/Makefile
-@@ -38,6 +38,7 @@ subdir-$(CONFIG_SAMPLE_WATCHDOG)	+= watchdog
- subdir-$(CONFIG_SAMPLE_WATCH_QUEUE)	+= watch_queue
- obj-$(CONFIG_SAMPLE_KMEMLEAK)		+= kmemleak/
- obj-$(CONFIG_SAMPLE_KVM_GMEM_PROVIDER)	+= kvm/
-+obj-$(CONFIG_SAMPLE_KVM_MEM_PROVIDER)	+= kvm/
- obj-$(CONFIG_SAMPLE_CORESIGHT_SYSCFG)	+= coresight/
- obj-$(CONFIG_SAMPLE_FPROBE)		+= fprobe/
- obj-$(CONFIG_SAMPLES_RUST)		+= rust/
-diff --git a/samples/kvm/Makefile b/samples/kvm/Makefile
-index dcad6e53ea78..a885b5313804 100644
---- a/samples/kvm/Makefile
-+++ b/samples/kvm/Makefile
-@@ -1,2 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_SAMPLE_KVM_GMEM_PROVIDER) += gmem_provider.o
-+obj-$(CONFIG_SAMPLE_KVM_MEM_PROVIDER) += mem_provider_sample.o
-diff --git a/samples/kvm/mem_provider_sample.c b/samples/kvm/mem_provider_sample.c
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 4d7082448cea..ccee373b4c13 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -84,6 +84,7 @@ TEST_GEN_PROGS_x86 += x86/gmem_provider_revoke_test
+ TEST_GEN_PROGS_x86 += x86/gmem_provider_readonly_test
+ TEST_GEN_PROGS_x86 += x86/gmem_provider_iommufd_test
+ TEST_GEN_PROGS_x86 += x86/gmem_provider_vfio_test
++TEST_GEN_PROGS_x86 += x86/mem_provider_test
+ TEST_GEN_PROGS_x86 += x86/hwcr_msr_test
+ TEST_GEN_PROGS_x86 += x86/hyperv_clock
+ TEST_GEN_PROGS_x86 += x86/hyperv_cpuid
+diff --git a/tools/testing/selftests/kvm/x86/mem_provider_test.c b/tools/testing/selftests/kvm/x86/mem_provider_test.c
 new file mode 100644
-index 000000000000..8180959ab78f
+index 000000000000..bd7ae44f05d7
 --- /dev/null
-+++ b/samples/kvm/mem_provider_sample.c
-@@ -0,0 +1,855 @@
++++ b/tools/testing/selftests/kvm/x86/mem_provider_test.c
+@@ -0,0 +1,582 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * mem_provider_sample - a sample memory provider.
++ * mem_provider_test - one memory provider shared by KVM and iommufd.
 + *
-+ * The module owns a region of physical memory and lends it through provider
-+ * files (include/linux/mem_provider.h).  A VMM passes the same file to
-+ * KVM_CREATE_GUEST_MEMFD, for the guest, and to IOMMU_IOAS_MAP_FILE, for the
-+ * guest's devices.  The module calls neither KVM nor iommufd: it answers
-+ * "what is page N" and revokes a range when the answer changes.
++ * A control process and two VMMs, in one process:
 + *
-+ * The region is either:
++ *  ctl:  holds /dev/mem_provider_sample, the owner of the memory.  Creates a
++ *        child provider file per VM, moves pages between children, donates
++ *        and reclaims them, and makes them read only.
++ *        Never touches a VM.
++ *  vmm:  holds one child file, one VM and one iommufd IOAS on a mock domain.
++ *        Passes the child file to KVM_CREATE_GUEST_MEMFD and to
++ *        IOMMU_IOAS_MAP_FILE.  Never touches the control device.
 + *
-+ *  - a fixed range given with addr= and len=, which has no struct page, for
-+ *    example memory hidden from the kernel with memmap= on the command line;
-+ *  - or, without those parameters, a range from alloc_contig_pages().
++ * Scenarios:
 + *
-+ * The control device /dev/mem_provider_sample creates provider files.
-+ * SETUP makes one file over the whole region.  NEW_CHILD carves part of the
-+ * region into a child file, and MOVE, DONATE and RECLAIM change which child
-+ * has which page.  A page can also be taken away or made read only.  See
-+ * mem_provider_sample.h.
++ *  1. Launch:    each guest writes to its memory, the host sees the write,
++ *                and the device mapping covers the pages the child has.
++ *  2. Move:      a range leaves A for B.  A's guest and A's host mapping
++ *                fault on it and A's device loses only that range.  B's
++ *                guest and host read what A wrote, and B's device reaches
++ *                the frame A had.
++ *  3. Donate:    a range leaves A for the root and comes back on reclaim,
++ *                for the guest, the host mapping and the device.
++ *  4. Read only: a guest write to a read-only page exits to the VMM and a
++ *                host write raises SIGBUS; both land once the page is
++ *                writable again.
++ *  5. Window:    a host mapping of the guest_memfd faults after the range it
++ *                covers is donated.
 + *
-+ * Confidential VMs are not supported.
++ * Requires samples/kvm/mem_provider_sample.ko and CONFIG_IOMMUFD_TEST.
 + */
++#include <fcntl.h>
++#include <errno.h>
++#include <setjmp.h>
++#include <signal.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <string.h>
++#include <unistd.h>
++#include <sys/ioctl.h>
++#include <sys/mman.h>
 +
-+#include <linux/anon_inodes.h>
-+#include <linux/bitmap.h>
-+#include <linux/file.h>
-+#include <linux/fs.h>
-+#include <linux/gfp.h>
-+#include <linux/io.h>
-+#include <linux/mem_provider.h>
-+#include <linux/miscdevice.h>
-+#include <linux/mm.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/slab.h>
++#include <linux/iommufd.h>
 +
-+#include "mem_provider_sample.h"
-+
-+static unsigned long long addr;
-+module_param(addr, ullong, 0444);
-+MODULE_PARM_DESC(addr,
-+		 "Physical base of a region with no struct page (optional)");
-+
-+static unsigned long long len;
-+module_param(len, ullong, 0444);
-+MODULE_PARM_DESC(len, "Size in bytes of that region (optional)");
++#include "test_util.h"
++#include "kvm_util.h"
++#include "processor.h"
 +
 +/*
-+ * One provider file.
-+ *
-+ * Lock order: mps_root.lock, then mps_info.lock, then the consumers' locks
-+ * (taken by their revoke callbacks).  get_page() takes no lock, so a
-+ * consumer can call it from its fault paths and its revoke callback.
++ * The iommufd mock domain test interface.  The iommufd selftest helpers
++ * bring their own harness, which does not mix with the KVM selftest library.
 + */
-+struct mps_info {
-+	struct mem_provider_file mpf;
-+	struct mutex lock;		/* the bitmaps */
++#include "../../../../../drivers/iommu/iommufd/iommufd_test.h"
 +
-+	unsigned long base_pfn;
-+	unsigned long npages;
-+	struct page *cma_pages;		/* from alloc_contig_pages(), or NULL */
-+	bool fixed;			/* a SETUP file over addr=/len= */
-+	bool mmap_capable;
-+	bool fixed_wb;			/* holds a ref on the fixed-region WB alias */
-+
-+	unsigned long *absent;		/* taken away by CTL_SET_PRESENT */
-+	unsigned long *readonly;
-+
-+	/*
-+	 * A child of the root: its first page in the root, and the pages it
-+	 * has.  NULL @owned for a file made by SETUP, which has all its pages.
-+	 */
-+	unsigned long root_index;
-+	unsigned long *owned;
-+	struct list_head root_link;	/* mps_root.children, mps_root.lock */
-+};
-+
-+/*
-+ * The root region, owned by the control device.  Changes of ownership run
-+ * under @lock, which is taken before any child's lock.
-+ */
-+static struct mps_root {
-+	struct mutex lock;		/* everything below */
-+	unsigned long base_pfn;
-+	unsigned long npages;
-+	struct page *cma_pages;
-+	unsigned long *owned;		/* pages that a child has */
-+	unsigned long *donated;		/* pages kept at the root */
-+	struct list_head children;
-+	/*
-+	 * The addr=/len= region is used either by one SETUP file or by the
-+	 * root, never by both, so that its frames have one owner.
-+	 */
-+	bool fixed_setup;
-+	/* Files over the fixed region that may be mapped into userspace. */
-+	unsigned int fixed_wb_users;
-+} mps_root;
-+
-+/*
-+ * A write-back mapping of the addr=/len= region, held while any file over it
-+ * may be mapped into userspace (counted by mps_root.fixed_wb_users).  Without
-+ * it, PAT makes the range uncached on x86, and the VMM's mapping would be
-+ * uncached while the guest's is write-back.  PAT may still give a weaker type
-+ * if the MTRRs do not mark the range write-back.
-+ */
-+static void *mps_fixed_wb;
-+
-+/* A file over the fixed region whose pages the host may map. */
-+static bool mps_over_fixed_mappable(struct mps_info *info)
-+{
-+	return addr && len && !info->cma_pages && info->mmap_capable;
-+}
-+
-+/*
-+ * Hold a write-back mapping of the fixed region while any file over it may be
-+ * mapped into userspace.  Called under mps_root.lock.
-+ */
-+static int mps_fixed_wb_get(void)
-+{
-+	if (mps_root.fixed_wb_users == 0) {
-+		mps_fixed_wb = memremap(addr, len, MEMREMAP_WB);
-+		if (!mps_fixed_wb)
-+			return -ENOMEM;
-+	}
-+	mps_root.fixed_wb_users++;
-+	return 0;
-+}
-+
-+static void mps_fixed_wb_put(void)
-+{
-+	if (--mps_root.fixed_wb_users == 0) {
-+		memunmap(mps_fixed_wb);
-+		mps_fixed_wb = NULL;
-+	}
-+}
-+
-+/* Does @info have page @index now?  Called with or without info->lock. */
-+static bool mps_page_present(struct mps_info *info, unsigned long index)
-+{
-+	if (info->owned && !test_bit(index, info->owned))
-+		return false;
-+	return !test_bit(index, info->absent);
-+}
-+
-+/*
-+ * The length of the run from @index of pages with the same state as @index:
-+ * present, and the same read-only bit.
-+ */
-+static unsigned long mps_run(struct mps_info *info, unsigned long index)
-+{
-+	unsigned long end = info->npages;
-+
-+	end = min(end, find_next_bit(info->absent, info->npages, index + 1));
-+	if (info->owned)
-+		end = min(end, find_next_zero_bit(info->owned, info->npages,
-+						  index + 1));
-+	if (test_bit(index, info->readonly))
-+		end = min(end, find_next_zero_bit(info->readonly, info->npages,
-+						  index + 1));
-+	else
-+		end = min(end, find_next_bit(info->readonly, info->npages,
-+					     index + 1));
-+	return end - index;
-+}
-+
-+/* ---- Provider operations ------------------------------------------------ */
-+
-+static struct mem_provider_file *
-+mps_mp_attach(struct file *file, loff_t size)
-+{
-+	struct mps_info *info = file->private_data;
-+
-+	if (size > (loff_t)info->npages << PAGE_SHIFT)
-+		return ERR_PTR(-EINVAL);
-+	return &info->mpf;
-+}
-+
-+static void mps_mp_detach(struct mem_provider_file *mpf)
-+{
-+}
-+
-+/*
-+ * Reads the bitmaps without info->lock.  A change runs under the lock and
-+ * revokes the range afterwards, so an answer that a change makes out of date
-+ * is dropped by the consumer.
-+ */
-+static int mps_mp_get_page(struct mem_provider_file *mpf, pgoff_t index,
-+			   unsigned long *pfn, int *max_order, u32 *attrs)
-+{
-+	struct mps_info *info = container_of(mpf, struct mps_info, mpf);
-+	unsigned long run;
-+
-+	if (index >= info->npages)
-+		return -EINVAL;
-+
-+	if (!mps_page_present(info, index))
-+		return -EFAULT;
-+
-+	/* The aligned block around @index must be one run. */
-+	run = mps_run(info, index);
-+	while (*max_order) {
-+		unsigned long first = ALIGN_DOWN(index, 1UL << *max_order);
-+
-+		if (first + (1UL << *max_order) <= index + run &&
-+		    (first == index || mps_page_present(info, first)) &&
-+		    mps_run(info, first) >= 1UL << *max_order)
-+			break;
-+		(*max_order)--;
-+	}
-+
-+	*pfn = info->base_pfn + index;
-+	if (test_bit(index, info->readonly))
-+		*attrs |= MEM_PROVIDER_ATTR_READONLY;
-+	/* The creator of the file decides whether the host may map it. */
-+	if (!info->mmap_capable)
-+		*attrs |= MEM_PROVIDER_ATTR_NO_USER_MAP;
-+	return 0;
-+}
-+
-+static const struct mem_provider_ops mps_mp_ops = {
-+	.attach		= mps_mp_attach,
-+	.detach		= mps_mp_detach,
-+	.get_page	= mps_mp_get_page,
-+};
-+
-+/* Tell the consumers that pages [start, end) of @info changed. */
-+static void mps_revoke(struct mps_info *info, unsigned long start,
-+		       unsigned long end)
-+{
-+	if (end > start)
-+		mem_provider_revoke(&info->mpf, (loff_t)start << PAGE_SHIFT,
-+				    (loff_t)(end - start) << PAGE_SHIFT);
-+}
-+
-+/* ---- Provider file ------------------------------------------------------ */
-+
-+/* Byte range [offset, offset + len) of @info as page indices. */
-+static int mps_range(struct mps_info *info, u64 offset, u64 len,
-+		     unsigned long *start, unsigned long *end)
-+{
-+	if (!len || !PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
-+		return -EINVAL;
-+	*start = offset >> PAGE_SHIFT;
-+	*end = *start + (len >> PAGE_SHIFT);
-+	if (*end > info->npages || *end < *start)
-+		return -EINVAL;
-+	return 0;
-+}
-+
-+static void mps_set_readonly(struct mps_info *info, unsigned long start,
-+			     unsigned long end, bool readonly)
-+{
-+	mutex_lock(&info->lock);
-+	if (readonly)
-+		bitmap_set(info->readonly, start, end - start);
-+	else
-+		bitmap_clear(info->readonly, start, end - start);
-+	mps_revoke(info, start, end);
-+	mutex_unlock(&info->lock);
-+}
-+
-+static void mps_set_present(struct mps_info *info, unsigned long start,
-+			    unsigned long end, bool present)
-+{
-+	mutex_lock(&info->lock);
-+	if (present)
-+		bitmap_clear(info->absent, start, end - start);
-+	else
-+		bitmap_set(info->absent, start, end - start);
-+	mps_revoke(info, start, end);
-+	mutex_unlock(&info->lock);
-+}
-+
-+static long mps_get_stats(struct mps_info *info, void __user *uarg)
-+{
-+	struct mps_stats st = {};
-+
-+	mutex_lock(&info->lock);
-+	st.region_offset = (u64)info->root_index << PAGE_SHIFT;
-+	st.region_len = (u64)info->npages << PAGE_SHIFT;
-+	st.owned_pages = info->owned ?
-+		bitmap_weight(info->owned, info->npages) : info->npages;
-+	st.absent_pages = bitmap_weight(info->absent, info->npages);
-+	st.readonly_pages = bitmap_weight(info->readonly, info->npages);
-+	mutex_unlock(&info->lock);
-+
-+	return copy_to_user(uarg, &st, sizeof(st)) ? -EFAULT : 0;
-+}
-+
-+/*
-+ * A child fd is read-only to its holder: only GET_STATS.  The owner changes a
-+ * child's pages through the control device (MPS_CTL_SET_PRESENT and
-+ * MPS_CTL_SET_READONLY), so a VMM that holds a child cannot.
-+ */
-+static long mps_file_ioctl(struct file *file, unsigned int cmd,
-+			   unsigned long arg)
-+{
-+	struct mps_info *info = file->private_data;
-+	void __user *uarg = (void __user *)arg;
-+
-+	if (cmd == MPS_GET_STATS)
-+		return mps_get_stats(info, uarg);
-+	return -ENOTTY;
-+}
-+
-+/* Every consumer has detached: each one holds a reference to the file. */
-+static int mps_file_release(struct inode *inode, struct file *file)
-+{
-+	struct mps_info *info = file->private_data;
-+	unsigned long i;
-+
-+	/*
-+	 * A child gives the pages it has back to the root.  Pages it donated
-+	 * stay at the root, and pages moved out belong to another child.
-+	 */
-+	if (info->owned) {
-+		mutex_lock(&mps_root.lock);
-+		list_del(&info->root_link);
-+		for_each_set_bit(i, info->owned, info->npages)
-+			__clear_bit(info->root_index + i, mps_root.owned);
-+		mutex_unlock(&mps_root.lock);
-+		bitmap_free(info->owned);
-+	}
-+	if (addr && len && !info->cma_pages) {
-+		mutex_lock(&mps_root.lock);
-+		if (info->fixed)
-+			mps_root.fixed_setup = false;
-+		if (info->fixed_wb)
-+			mps_fixed_wb_put();
-+		mutex_unlock(&mps_root.lock);
-+	}
-+
-+	if (info->cma_pages)
-+		free_contig_range(info->base_pfn, info->npages);
-+	bitmap_free(info->absent);
-+	bitmap_free(info->readonly);
-+	kfree(info);
-+	return 0;
-+}
-+
-+static const struct mem_provider_fops mps_file_fops = {
-+	.fops = {
-+		.owner		= THIS_MODULE,
-+		.fop_flags	= FOP_MEM_PROVIDER,
-+		.release	= mps_file_release,
-+		.unlocked_ioctl	= mps_file_ioctl,
-+		.compat_ioctl	= compat_ptr_ioctl,
-+	},
-+	.ops = &mps_mp_ops,
-+};
-+
-+/*
-+ * Make a provider file over [base_pfn, base_pfn + npages).  The fd is
-+ * reserved but not installed, so that the caller can finish setting up
-+ * @info before another thread can reach it.
-+ */
-+static int mps_new_file(unsigned long base_pfn, unsigned long npages,
-+			u32 flags, struct mps_info **infop,
-+			 struct file **filep)
-+{
-+	struct mps_info *info;
-+	struct file *file;
-+	int fd, ret;
-+
-+	info = kzalloc_obj(*info);
-+	if (!info)
-+		return -ENOMEM;
-+	mem_provider_file_init(&info->mpf);
-+	info->base_pfn = base_pfn;
-+	info->npages = npages;
-+	info->mmap_capable = flags & MPS_FLAG_MMAP_CAPABLE;
-+	info->absent = bitmap_zalloc(npages, GFP_KERNEL);
-+	info->readonly = bitmap_zalloc(npages, GFP_KERNEL);
-+	if (!info->absent || !info->readonly) {
-+		ret = -ENOMEM;
-+		goto err_free;
-+	}
-+	mutex_init(&info->lock);
-+	INIT_LIST_HEAD(&info->root_link);
-+
-+	fd = get_unused_fd_flags(O_CLOEXEC);
-+	if (fd < 0) {
-+		ret = fd;
-+		goto err_free;
-+	}
-+	file = anon_inode_getfile("[mem-provider-sample]", &mps_file_fops.fops,
-+				  info, O_RDWR);
-+	if (IS_ERR(file)) {
-+		put_unused_fd(fd);
-+		ret = PTR_ERR(file);
-+		goto err_free;
-+	}
-+	*infop = info;
-+	*filep = file;
-+	return fd;
-+
-+err_free:
-+	bitmap_free(info->absent);
-+	bitmap_free(info->readonly);
-+	kfree(info);
-+	return ret;
-+}
-+
-+static struct page *mps_alloc_region(unsigned long npages)
-+{
-+	struct page *pages;
-+
-+	pages = alloc_contig_pages(npages, GFP_KERNEL | __GFP_ZERO,
-+				   numa_node_id(), NULL);
-+	return pages;
-+}
-+
-+static long mps_ctl_setup(void __user *uarg)
-+{
-+	struct mps_setup setup;
-+	unsigned long base_pfn, npages;
-+	struct page *pages = NULL;
-+	struct mps_info *info;
-+	struct file *file;
-+	int fd;
-+
-+	if (copy_from_user(&setup, uarg, sizeof(setup)))
-+		return -EFAULT;
-+	if ((setup.flags & ~MPS_FLAG_MMAP_CAPABLE) || setup.pad)
-+		return -EINVAL;
-+
-+	if (addr && len) {
-+		/* The fixed region has one owner: this file or the root. */
-+		mutex_lock(&mps_root.lock);
-+		if (mps_root.fixed_setup || mps_root.npages) {
-+			mutex_unlock(&mps_root.lock);
-+			return -EBUSY;
-+		}
-+		fd = mps_new_file(addr >> PAGE_SHIFT, len >> PAGE_SHIFT,
-+				  setup.flags, &info, &file);
-+		if (fd >= 0 && mps_over_fixed_mappable(info)) {
-+			if (mps_fixed_wb_get()) {
-+				put_unused_fd(fd);
-+				fput(file);
-+				fd = -ENOMEM;
-+			} else {
-+				info->fixed_wb = true;
-+			}
-+		}
-+		if (fd >= 0) {
-+			info->fixed = true;
-+			mps_root.fixed_setup = true;
-+		}
-+		mutex_unlock(&mps_root.lock);
-+		if (fd >= 0)
-+			fd_install(fd, file);
-+		return fd;
-+	}
-+
-+	if (!setup.size || !PAGE_ALIGNED(setup.size))
-+		return -EINVAL;
-+	npages = setup.size >> PAGE_SHIFT;
-+	pages = mps_alloc_region(npages);
-+	if (!pages)
-+		return -ENOMEM;
-+	base_pfn = page_to_pfn(pages);
-+
-+	fd = mps_new_file(base_pfn, npages, setup.flags, &info, &file);
-+	if (fd < 0) {
-+		free_contig_range(base_pfn, npages);
-+		return fd;
-+	}
-+	info->cma_pages = pages;
-+	fd_install(fd, file);
-+	return fd;
-+}
-+
-+/* ---- Root and children -------------------------------------------------- */
-+
-+/* Create the root on the first NEW_CHILD, from addr=/len= or of @size. */
-+static int mps_root_ensure(u64 size)
-+{
-+	struct page *pages = NULL;
-+	unsigned long npages;
-+
-+	lockdep_assert_held(&mps_root.lock);
-+	if (mps_root.npages)
-+		return 0;
-+
-+	if (addr && len) {
-+		if (mps_root.fixed_setup)
-+			return -EBUSY;
-+		mps_root.base_pfn = addr >> PAGE_SHIFT;
-+		npages = len >> PAGE_SHIFT;
-+	} else {
-+		if (!size || !PAGE_ALIGNED(size))
-+			return -EINVAL;
-+		npages = size >> PAGE_SHIFT;
-+		pages = mps_alloc_region(npages);
-+		if (!pages)
-+			return -ENOMEM;
-+		mps_root.base_pfn = page_to_pfn(pages);
-+	}
-+	mps_root.owned = bitmap_zalloc(npages, GFP_KERNEL);
-+	mps_root.donated = bitmap_zalloc(npages, GFP_KERNEL);
-+	if (!mps_root.owned || !mps_root.donated) {
-+		bitmap_free(mps_root.owned);
-+		bitmap_free(mps_root.donated);
-+		mps_root.owned = NULL;
-+		mps_root.donated = NULL;
-+		if (pages)
-+			free_contig_range(page_to_pfn(pages), npages);
-+		return -ENOMEM;
-+	}
-+	mps_root.cma_pages = pages;
-+	mps_root.npages = npages;
-+	return 0;
-+}
-+
-+static void mps_root_teardown(void)
-+{
-+	if (!mps_root.npages)
-+		return;
-+	WARN_ON(!list_empty(&mps_root.children));
-+	if (mps_root.cma_pages)
-+		free_contig_range(mps_root.base_pfn, mps_root.npages);
-+	bitmap_free(mps_root.owned);
-+	bitmap_free(mps_root.donated);
-+}
-+
-+/* A page-aligned byte range of the root as page indices [first, last). */
-+static int mps_root_range(u64 offset, u64 length, unsigned long *first,
-+			  unsigned long *last)
-+{
-+	if (!length || !PAGE_ALIGNED(offset) || !PAGE_ALIGNED(length))
-+		return -EINVAL;
-+	*first = offset >> PAGE_SHIFT;
-+	*last = *first + (length >> PAGE_SHIFT);
-+	if (*last <= *first || *last > mps_root.npages)
-+		return -EINVAL;
-+	return 0;
-+}
-+
-+/* Return a referenced child file made by NEW_CHILD. */
-+static struct file *mps_get_child(int fd, struct mps_info **infop)
-+{
-+	struct file *file = fget(fd);
-+
-+	if (!file)
-+		return ERR_PTR(-EBADF);
-+	if (file->f_op != &mps_file_fops.fops ||
-+	    !((struct mps_info *)file->private_data)->owned) {
-+		fput(file);
-+		return ERR_PTR(-EINVAL);
-+	}
-+	*infop = file->private_data;
-+	return file;
-+}
-+
-+static long mps_ctl_new_child(void __user *uarg)
-+{
-+	struct mps_new_child nc;
-+	unsigned long first, last, i, grant = 0;
-+	struct mps_info *info;
-+	unsigned long *owned;
-+	struct file *file;
-+	int fd, ret;
-+
-+	if (copy_from_user(&nc, uarg, sizeof(nc)))
-+		return -EFAULT;
-+	if ((nc.flags & ~MPS_FLAG_MMAP_CAPABLE) || nc.pad)
-+		return -EINVAL;
-+
-+	mutex_lock(&mps_root.lock);
-+	ret = mps_root_ensure(nc.offset + nc.len);
-+	if (ret)
-+		goto out_unlock;
-+	ret = mps_root_range(nc.offset, nc.len, &first, &last);
-+	if (ret)
-+		goto out_unlock;
-+
-+	/* A child that would get no page is likely a mistake. */
-+	for (i = first; i < last; i++)
-+		if (!test_bit(i, mps_root.owned) &&
-+		    !test_bit(i, mps_root.donated))
-+			grant++;
-+	if (!grant) {
-+		ret = -EBUSY;
-+		goto out_unlock;
-+	}
-+
-+	owned = bitmap_zalloc(last - first, GFP_KERNEL);
-+	if (!owned) {
-+		ret = -ENOMEM;
-+		goto out_unlock;
-+	}
-+	fd = mps_new_file(mps_root.base_pfn + first, last - first, nc.flags,
-+			  &info, &file);
-+	if (fd < 0) {
-+		bitmap_free(owned);
-+		ret = fd;
-+		goto out_unlock;
-+	}
-+	if (mps_over_fixed_mappable(info)) {
-+		if (mps_fixed_wb_get()) {
-+			put_unused_fd(fd);
-+			fput(file);
-+			bitmap_free(owned);
-+			ret = -ENOMEM;
-+			goto out_unlock;
-+		}
-+		info->fixed_wb = true;
-+	}
-+
-+	/* No other thread can reach the child until fd_install(). */
-+	for (i = first; i < last; i++) {
-+		if (test_bit(i, mps_root.owned) ||
-+		    test_bit(i, mps_root.donated))
-+			continue;
-+		__set_bit(i - first, owned);
-+		__set_bit(i, mps_root.owned);
-+	}
-+	info->owned = owned;
-+	info->root_index = first;
-+	list_add(&info->root_link, &mps_root.children);
-+	mutex_unlock(&mps_root.lock);
-+	fd_install(fd, file);
-+	return fd;
-+
-+out_unlock:
-+	mutex_unlock(&mps_root.lock);
-+	return ret;
-+}
-+
-+/* Take [first, last) of the root from @info.  Called under mps_root.lock. */
-+static void mps_child_lose(struct mps_info *info, unsigned long first,
-+			   unsigned long last)
-+{
-+	unsigned long s = first - info->root_index;
-+	unsigned long e = last - info->root_index;
-+
-+	mutex_lock(&info->lock);
-+	bitmap_clear(info->owned, s, e - s);
-+	mps_revoke(info, s, e);
-+	mutex_unlock(&info->lock);
-+	bitmap_clear(mps_root.owned, first, last - first);
-+}
-+
-+/* Give [first, last) of the root to @info.  Called under mps_root.lock. */
-+static void mps_child_gain(struct mps_info *info, unsigned long first,
-+			   unsigned long last)
-+{
-+	unsigned long s = first - info->root_index;
-+	unsigned long e = last - info->root_index;
-+
-+	mutex_lock(&info->lock);
-+	bitmap_set(info->owned, s, e - s);
-+	mps_revoke(info, s, e);
-+	mutex_unlock(&info->lock);
-+	bitmap_set(mps_root.owned, first, last - first);
-+}
-+
-+static bool mps_child_covers(struct mps_info *info, unsigned long first,
-+			     unsigned long last)
-+{
-+	return first >= info->root_index &&
-+	       last <= info->root_index + info->npages;
-+}
-+
-+static bool mps_child_owns(struct mps_info *info, unsigned long first,
-+			   unsigned long last)
-+{
-+	unsigned long s = first - info->root_index;
-+	unsigned long e = last - info->root_index;
-+
-+	return mps_child_covers(info, first, last) &&
-+	       find_next_zero_bit(info->owned, e, s) >= e;
-+}
-+
-+static long mps_ctl_move(void __user *uarg)
-+{
-+	struct mps_move mv;
-+	struct mps_info *src, *dst;
-+	unsigned long first, last;
-+	struct file *sf, *df;
-+	long ret;
-+
-+	if (copy_from_user(&mv, uarg, sizeof(mv)))
-+		return -EFAULT;
-+	sf = mps_get_child(mv.src_fd, &src);
-+	if (IS_ERR(sf))
-+		return PTR_ERR(sf);
-+	df = mps_get_child(mv.dst_fd, &dst);
-+	if (IS_ERR(df)) {
-+		fput(sf);
-+		return PTR_ERR(df);
-+	}
-+
-+	mutex_lock(&mps_root.lock);
-+	ret = mps_root_range(mv.offset, mv.len, &first, &last);
-+	if (ret)
-+		goto out;
-+	if (src == dst || !mps_child_owns(src, first, last) ||
-+	    !mps_child_covers(dst, first, last)) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+	/* Revoke from the source before the destination gets the pages. */
-+	mps_child_lose(src, first, last);
-+	mps_child_gain(dst, first, last);
-+out:
-+	mutex_unlock(&mps_root.lock);
-+	fput(df);
-+	fput(sf);
-+	return ret;
-+}
-+
-+static long mps_ctl_donate(void __user *uarg, bool reclaim)
-+{
-+	struct mps_donate d;
-+	unsigned long first, last;
-+	struct mps_info *info;
-+	struct file *file;
-+	long ret;
-+
-+	if (copy_from_user(&d, uarg, sizeof(d)))
-+		return -EFAULT;
-+	if (d.pad)
-+		return -EINVAL;
-+	file = mps_get_child(d.fd, &info);
-+	if (IS_ERR(file))
-+		return PTR_ERR(file);
-+
-+	mutex_lock(&mps_root.lock);
-+	ret = mps_root_range(d.offset, d.len, &first, &last);
-+	if (ret)
-+		goto out;
-+	if (!reclaim) {
-+		if (!mps_child_owns(info, first, last)) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+		mps_child_lose(info, first, last);
-+		bitmap_set(mps_root.donated, first, last - first);
-+	} else {
-+		if (!mps_child_covers(info, first, last) ||
-+		    find_next_zero_bit(mps_root.donated, last, first) < last) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+		bitmap_clear(mps_root.donated, first, last - first);
-+		mps_child_gain(info, first, last);
-+	}
-+out:
-+	mutex_unlock(&mps_root.lock);
-+	fput(file);
-+	return ret;
-+}
-+
-+/*
-+ * CTL_SET_READONLY and CTL_SET_PRESENT change a child's pages, by the owner on
-+ * the control device.  A VMM that holds the child fd cannot, so it cannot undo
-+ * them.
-+ */
-+static long mps_ctl_set_range(void __user *uarg, bool readonly)
-+{
-+	struct mps_ctl_range cr;
-+	unsigned long start, end;
-+	struct mps_info *info;
-+	struct file *file;
-+	int ret;
-+
-+	if (copy_from_user(&cr, uarg, sizeof(cr)))
-+		return -EFAULT;
-+	if (cr.value > 1)
-+		return -EINVAL;
-+	file = mps_get_child(cr.fd, &info);
-+	if (IS_ERR(file))
-+		return PTR_ERR(file);
-+	ret = mps_range(info, cr.offset, cr.len, &start, &end);
-+	if (!ret) {
-+		if (readonly)
-+			mps_set_readonly(info, start, end, cr.value);
-+		else
-+			mps_set_present(info, start, end, cr.value);
-+	}
-+	fput(file);
-+	return ret;
-+}
-+
-+static long mps_ctl_ioctl(struct file *file, unsigned int cmd,
-+			  unsigned long arg)
-+{
-+	void __user *uarg = (void __user *)arg;
-+
-+	switch (cmd) {
-+	case MPS_SETUP:
-+		return mps_ctl_setup(uarg);
-+	case MPS_NEW_CHILD:
-+		return mps_ctl_new_child(uarg);
-+	case MPS_MOVE:
-+		return mps_ctl_move(uarg);
-+	case MPS_DONATE:
-+		return mps_ctl_donate(uarg, false);
-+	case MPS_RECLAIM:
-+		return mps_ctl_donate(uarg, true);
-+	case MPS_CTL_SET_READONLY:
-+		return mps_ctl_set_range(uarg, true);
-+	case MPS_CTL_SET_PRESENT:
-+		return mps_ctl_set_range(uarg, false);
-+	default:
-+		return -ENOTTY;
-+	}
-+}
-+
-+static const struct file_operations mps_ctl_fops = {
-+	.owner		= THIS_MODULE,
-+	.unlocked_ioctl	= mps_ctl_ioctl,
-+	.compat_ioctl	= compat_ptr_ioctl,
-+};
-+
-+static struct miscdevice mps_dev = {
-+	.minor	= MISC_DYNAMIC_MINOR,
-+	.name	= "mem_provider_sample",
-+	.fops	= &mps_ctl_fops,
-+};
-+
-+static int __init mps_init(void)
-+{
-+	int ret;
-+
-+	if ((addr || len) &&
-+	    (!addr || !len || !PAGE_ALIGNED(addr) || !PAGE_ALIGNED(len))) {
-+		pr_err("mem_provider_sample: addr= and len= must both be set and page aligned\n");
-+		return -EINVAL;
-+	}
-+
-+	mutex_init(&mps_root.lock);
-+	INIT_LIST_HEAD(&mps_root.children);
-+
-+	ret = misc_register(&mps_dev);
-+	if (ret)
-+		return ret;
-+	return 0;
-+}
-+module_init(mps_init);
-+
-+static void __exit mps_exit(void)
-+{
-+	misc_deregister(&mps_dev);
-+	mps_root_teardown();
-+	if (mps_fixed_wb)
-+		memunmap(mps_fixed_wb);
-+}
-+module_exit(mps_exit);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Sample memory provider for guest_memfd and iommufd");
-diff --git a/samples/kvm/mem_provider_sample.h b/samples/kvm/mem_provider_sample.h
-new file mode 100644
-index 000000000000..3be453756d84
---- /dev/null
-+++ b/samples/kvm/mem_provider_sample.h
-@@ -0,0 +1,135 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _SAMPLES_KVM_MEM_PROVIDER_SAMPLE_H
-+#define _SAMPLES_KVM_MEM_PROVIDER_SAMPLE_H
-+
-+#include <linux/ioctl.h>
-+#include <linux/types.h>
-+
-+/*
-+ * A sample memory provider (include/linux/mem_provider.h).
-+ *
-+ * Every fd that this module returns is a provider file.  Pass it as
-+ * provider_fd to KVM_CREATE_GUEST_MEMFD with GUEST_MEMFD_FLAG_USE_PROVIDER,
-+ * and as fd to IOMMU_IOAS_MAP_FILE.  Both consumers follow every change that
-+ * the ioctls below make.
-+ */
-+
-+/* Flags for struct mps_setup and struct mps_new_child */
-+/* The host may map the pages; otherwise they are NO_USER_MAP */
++/* Mirrors samples/kvm/mem_provider_sample.h */
 +#define MPS_FLAG_MMAP_CAPABLE	(1u << 0)
 +
-+/*
-+ * ioctl on /dev/mem_provider_sample: create a provider fd.
-+ *
-+ * If the module was loaded with addr= and len=, the fd covers that fixed
-+ * range, which has no struct page, and @size is ignored.  The fixed range
-+ * then has one owner.  SETUP fails with -EBUSY while a SETUP file uses it,
-+ * or once the first MPS_NEW_CHILD has made it the root of the children, which
-+ * lasts until the module is unloaded.  MPS_NEW_CHILD fails with -EBUSY while
-+ * a SETUP file uses it.  Otherwise the fd covers @size bytes from
-+ * alloc_contig_pages().
-+ */
-+struct mps_setup {
-+	__u32 flags;	/* MPS_FLAG_* */
-+	__u32 pad;
-+	__u64 size;	/* bytes, page aligned */
-+};
-+
-+#define MPS_IOCTL_BASE		'P'
-+#define MPS_SETUP \
-+	_IOW(MPS_IOCTL_BASE, 1, struct mps_setup)
-+
-+/*
-+ * ---- A tree of owners --------------------------------------------------
-+ *
-+ * The control device owns one region, the root.  NEW_CHILD carves part of
-+ * it into a new provider fd for one VM.  The owner can MOVE pages between
-+ * children, DONATE pages to the root, so that no child has them, and
-+ * RECLAIM them.  Each change revokes the range, so KVM and iommufd follow.
-+ *
-+ * The owner changes a child's pages through the control device
-+ * (CTL_SET_READONLY, CTL_SET_PRESENT).  A child fd is read-only to its
-+ * holder: a VMM can only GET_STATS, never change the memory.
-+ */
-+
-+/*
-+ * ioctl on /dev/mem_provider_sample: carve [@offset, @offset + @len) of the
-+ * root into a new child fd.  The child gets every page of the range that no
-+ * other child has and that is not donated.  Ranges of children may overlap,
-+ * which is how a page can MOVE between them.  Returns the child fd.
-+ */
-+struct mps_new_child {
-+	__u32 flags;	/* MPS_FLAG_* */
-+	__u32 pad;
-+	__u64 offset;	/* bytes into the root, page aligned */
-+	__u64 len;	/* bytes, page aligned */
-+};
-+
-+#define MPS_NEW_CHILD \
-+	_IOW(MPS_IOCTL_BASE, 5, struct mps_new_child)
-+
-+/*
-+ * ioctl on /dev/mem_provider_sample: move [@offset, @offset + @len) of the root
-+ * from child @src_fd to child @dst_fd.  @src_fd must have every page of the
-+ * range, and the range must be inside @dst_fd's.  The pages are revoked from
-+ * the source before the destination gets them, so the consumers of the two
-+ * children never map them at the same time.
-+ */
-+struct mps_move {
-+	__s32 src_fd;
-+	__s32 dst_fd;
-+	__u64 offset;	/* bytes into the root, page aligned */
-+	__u64 len;	/* bytes, page aligned */
-+};
-+
-+#define MPS_MOVE \
-+	_IOW(MPS_IOCTL_BASE, 6, struct mps_move)
-+
-+/*
-+ * ioctls on /dev/mem_provider_sample: DONATE takes [@offset, @offset + @len) of
-+ * the root from child @fd, which must have all of it, and keeps it at the
-+ * root.  RECLAIM gives a donated range to child @fd, whose range must
-+ * contain it.  The sample does not scrub the pages.
-+ */
-+struct mps_donate {
-+	__s32 fd;
-+	__u32 pad;
-+	__u64 offset;	/* bytes into the root, page aligned */
-+	__u64 len;	/* bytes, page aligned */
-+};
-+
-+#define MPS_DONATE \
-+	_IOW(MPS_IOCTL_BASE, 7, struct mps_donate)
-+#define MPS_RECLAIM \
-+	_IOW(MPS_IOCTL_BASE, 8, struct mps_donate)
-+
-+/* ioctl on a child fd: read the child's state, for tests. */
++struct mps_new_child { __u32 flags, pad; __u64 offset, len; };
++struct mps_move { __s32 src_fd, dst_fd; __u64 offset, len; };
++struct mps_donate { __s32 fd; __u32 pad; __u64 offset, len; };
++struct mps_ctl_range { __s32 fd; __u32 value; __u64 offset, len; };
 +struct mps_stats {
-+	__u64 region_offset;	/* the child's range in the root */
-+	__u64 region_len;
-+	__u64 owned_pages;	/* pages the child has */
-+	__u64 absent_pages;	/* pages taken away by CTL_SET_PRESENT */
-+	__u64 readonly_pages;
++	__u64 region_offset, region_len, owned_pages, absent_pages, readonly_pages;
 +};
 +
-+#define MPS_GET_STATS \
-+	_IOR(MPS_IOCTL_BASE, 10, struct mps_stats)
++#define MPS_NEW_CHILD		_IOW('P', 5, struct mps_new_child)
++#define MPS_MOVE		_IOW('P', 6, struct mps_move)
++#define MPS_DONATE		_IOW('P', 7, struct mps_donate)
++#define MPS_RECLAIM		_IOW('P', 8, struct mps_donate)
++#define MPS_GET_STATS		_IOR('P', 10, struct mps_stats)
++#define MPS_CTL_SET_READONLY	_IOW('P', 11, struct mps_ctl_range)
++
++#define PAGE		0x1000ULL
++#define CHILD_SIZE	0x400000ULL		/* 4 MiB per child */
++#define GPA		(1ULL << 32)		/* each VM maps its child here */
++#define IOVA		(1ULL << 28)		/* inside the mock aperture */
++#define MAGIC_A		0xa11ce000a11ce000ULL
++#define MAGIC_B		0xb0bb0bb0b0bb0bb0ULL
 +
 +/*
-+ * ioctls on /dev/mem_provider_sample: CTL_SET_READONLY or CTL_SET_PRESENT on
-+ * child @fd, by the owner.  @value is the readonly or present value, and
-+ * @offset and @len are a byte range within the child, page aligned.
++ * The ranges of A and B in the root overlap on [SHARED_OFF, +SHARED_LEN).
++ * A is created first and has its whole range, B is created second and has
++ * its range without the overlap.  The overlap can then move from A to B.
 + */
-+struct mps_ctl_range {
-+	__s32 fd;
-+	__u32 value;
-+	__u64 offset;	/* bytes into the child, page aligned */
-+	__u64 len;	/* bytes, page aligned */
++#define A_OFF		0ULL
++#define SHARED_LEN	(4 * PAGE)
++#define B_OFF		(CHILD_SIZE - SHARED_LEN)
++#define SHARED_OFF	B_OFF
++#define ROOT_SIZE	(B_OFF + CHILD_SIZE)
++
++#define A_SHARED_GPA	(GPA + (SHARED_OFF - A_OFF))
++#define B_SHARED_GPA	(GPA + (SHARED_OFF - B_OFF))
++#define A_SHARED_IOVA	(IOVA + (SHARED_OFF - A_OFF))
++#define B_SHARED_IOVA	(IOVA + (SHARED_OFF - B_OFF))
++
++/* A page of A that never moves. */
++#define RO_OFF		(64 * PAGE)
++#define RO_GPA		(GPA + RO_OFF)
++
++/* Pages of A that are donated and reclaimed. */
++#define DON_OFF		(8 * PAGE)
++#define DON_GPA		(GPA + DON_OFF)
++#define DON_IOVA	(IOVA + DON_OFF)
++
++/* A page that B has from the start. */
++#define B_HOME_OFF	(CHILD_SIZE / 2)
++#define B_HOME_GPA	(GPA + B_HOME_OFF)
++
++struct guest_args {
++	uint64_t write_gpa;	/* 0 to skip */
++	uint64_t write_val;
++	uint64_t read_gpa;	/* 0 to skip; the value goes to GUEST_SYNC */
 +};
 +
-+#define MPS_CTL_SET_READONLY \
-+	_IOW(MPS_IOCTL_BASE, 11, struct mps_ctl_range)
-+#define MPS_CTL_SET_PRESENT \
-+	_IOW(MPS_IOCTL_BASE, 12, struct mps_ctl_range)
++static void guest_code(struct guest_args *a)
++{
++	if (a->write_gpa)
++		*(volatile uint64_t *)a->write_gpa = a->write_val;
++	if (a->read_gpa)
++		GUEST_SYNC(*(volatile uint64_t *)a->read_gpa);
++	GUEST_DONE();
++}
 +
-+#endif /* _SAMPLES_KVM_MEM_PROVIDER_SAMPLE_H */
++/* ---- Control process ---------------------------------------------------- */
++
++static int ctl;
++
++static int ctl_new_child(uint64_t off, uint64_t len)
++{
++	struct mps_new_child nc = {
++		.flags = MPS_FLAG_MMAP_CAPABLE,
++		.offset = off, .len = len,
++	};
++	int fd = ioctl(ctl, MPS_NEW_CHILD, &nc);
++
++	TEST_ASSERT(fd >= 0, "NEW_CHILD(%#llx, %#llx) errno=%d",
++		    (unsigned long long)off, (unsigned long long)len, errno);
++	return fd;
++}
++
++static int ctl_move(int src, int dst, uint64_t off, uint64_t len)
++{
++	struct mps_move mv = { .src_fd = src, .dst_fd = dst,
++			       .offset = off, .len = len };
++
++	return ioctl(ctl, MPS_MOVE, &mv) ? -errno : 0;
++}
++
++static void ctl_donate(int fd, uint64_t off, uint64_t len, bool reclaim)
++{
++	struct mps_donate d = { .fd = fd, .offset = off, .len = len };
++
++	TEST_ASSERT(!ioctl(ctl, reclaim ? MPS_RECLAIM : MPS_DONATE, &d),
++		    "%s errno=%d", reclaim ? "RECLAIM" : "DONATE", errno);
++}
++
++static void ctl_readonly(int fd, uint64_t off, bool ro)
++{
++	struct mps_ctl_range cr = { .fd = fd, .value = ro, .offset = off,
++				    .len = PAGE };
++
++	TEST_ASSERT(!ioctl(ctl, MPS_CTL_SET_READONLY, &cr),
++		    "CTL_SET_READONLY errno=%d", errno);
++}
++
++/* ---- VMM ---------------------------------------------------------------- */
++
++struct vmm {
++	const char *name;
++	int child;		/* the provider file */
++	int gmem;		/* the guest_memfd backed by it */
++	int iommufd;
++	uint32_t ioas, stdev, hwpt;
++	struct kvm_vm *vm;
++	struct kvm_vcpu *vcpu;
++	void *hva;		/* host mapping of the whole guest_memfd */
++	gva_t args_gva;
++};
++
++static void vmm_create(struct vmm *v)
++{
++	v->vm = vm_create_with_one_vcpu(&v->vcpu, guest_code);
++	v->args_gva = vm_alloc_page(v->vm);
++}
++
++static bool vmm_iova_mapped(struct vmm *v, uint64_t iova, uint64_t len,
++			    bool mapped)
++{
++	struct iommu_test_cmd cmd = {
++		.size = sizeof(cmd), .op = IOMMU_TEST_OP_MD_CHECK_MAPPED,
++		.id = v->hwpt,
++		.check_mapped = { .mapped = mapped, .iova = iova,
++				  .length = len },
++	};
++
++	return !ioctl(v->iommufd, IOMMU_TEST_CMD, &cmd);
++}
++
++static uint64_t vmm_iova_phys(struct vmm *v, uint64_t iova)
++{
++	struct iommu_test_cmd cmd = {
++		.size = sizeof(cmd), .op = IOMMU_TEST_OP_MD_IOVA_TO_PHYS,
++		.id = v->hwpt,
++		.iova_to_phys = { .iova = iova },
++	};
++
++	if (ioctl(v->iommufd, IOMMU_TEST_CMD, &cmd))
++		return 0;
++	return cmd.iova_to_phys.out_phys;
++}
++
++/* Give the child file to KVM and to iommufd. */
++static void vmm_attach(struct vmm *v, int child_fd)
++{
++	struct iommu_ioas_alloc alloc = { .size = sizeof(alloc) };
++	struct kvm_create_guest_memfd gm = {
++		.size = CHILD_SIZE,
++		.flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_USE_PROVIDER,
++		.provider_fd = child_fd,
++	};
++	struct iommu_test_cmd mock = {
++		.size = sizeof(mock), .op = IOMMU_TEST_OP_MOCK_DOMAIN,
++	};
++	struct iommu_ioas_map_file map = {
++		.size = sizeof(map),
++		.flags = IOMMU_IOAS_MAP_FIXED_IOVA | IOMMU_IOAS_MAP_READABLE |
++			 IOMMU_IOAS_MAP_WRITEABLE,
++		.fd = child_fd, .start = 0, .length = CHILD_SIZE, .iova = IOVA,
++	};
++	int r;
++
++	v->child = child_fd;
++
++	/* KVM: a guest_memfd backed by the child, behind one memslot. */
++	v->gmem = __vm_ioctl(v->vm, KVM_CREATE_GUEST_MEMFD, &gm);
++	TEST_ASSERT(v->gmem >= 0, "%s: KVM_CREATE_GUEST_MEMFD errno=%d",
++		    v->name, errno);
++	v->hva = mmap(NULL, CHILD_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED,
++		      v->gmem, 0);
++	TEST_ASSERT(v->hva != MAP_FAILED, "%s: mmap(guest_memfd) errno=%d",
++		    v->name, errno);
++	r = __vm_set_user_memory_region2(v->vm, 10, KVM_MEM_GUEST_MEMFD, GPA,
++					 CHILD_SIZE, v->hva, v->gmem, 0);
++	TEST_ASSERT(!r, "%s: SET_USER_MEMORY_REGION2 errno=%d", v->name,
++		    errno);
++	virt_map(v->vm, GPA, GPA, CHILD_SIZE / PAGE);
++
++	/* iommufd: the same child file, in an IOAS on a mock domain. */
++	v->iommufd = open("/dev/iommu", O_RDWR);
++	__TEST_REQUIRE(v->iommufd >= 0, "iommufd unavailable");
++	TEST_ASSERT(!ioctl(v->iommufd, IOMMU_IOAS_ALLOC, &alloc),
++		    "IOAS_ALLOC errno=%d", errno);
++	v->ioas = alloc.out_ioas_id;
++
++	mock.id = v->ioas;
++	__TEST_REQUIRE(!ioctl(v->iommufd, IOMMU_TEST_CMD, &mock),
++		       "no iommufd mock domain (CONFIG_IOMMUFD_TEST?)");
++	v->stdev = mock.mock_domain.out_stdev_id;
++	v->hwpt = mock.mock_domain.out_hwpt_id;
++
++	map.ioas_id = v->ioas;
++	TEST_ASSERT(!ioctl(v->iommufd, IOMMU_IOAS_MAP_FILE, &map),
++		    "%s: IOAS_MAP_FILE(provider) errno=%d", v->name, errno);
++}
++
++/*
++ * Continue the guest.  KVM_RUN fails with EFAULT for KVM_EXIT_MEMORY_FAULT,
++ * which several scenarios expect; the expect_*() helpers check the exit.
++ */
++static void vmm_resume(struct vmm *v)
++{
++	int r = _vcpu_run(v->vcpu);
++
++	TEST_ASSERT(!r || (errno == EFAULT &&
++			   v->vcpu->run->exit_reason == KVM_EXIT_MEMORY_FAULT),
++		    "%s: KVM_RUN r=%d errno=%d exit=%s", v->name, r, errno,
++		    exit_reason_str(v->vcpu->run->exit_reason));
++}
++
++static void vmm_run(struct vmm *v, uint64_t write_gpa, uint64_t write_val,
++		    uint64_t read_gpa)
++{
++	struct guest_args *a = addr_gva2hva(v->vm, v->args_gva);
++
++	a->write_gpa = write_gpa;
++	a->write_val = write_val;
++	a->read_gpa = read_gpa;
++	vcpu_arch_set_entry_point(v->vcpu, guest_code);
++	vcpu_args_set(v->vcpu, 1, v->args_gva);
++	vmm_resume(v);
++}
++
++static void expect_done(struct vmm *v)
++{
++	struct kvm_run *run = v->vcpu->run;
++	struct ucall uc;
++
++	TEST_ASSERT(run->exit_reason != KVM_EXIT_MEMORY_FAULT,
++		    "%s: unexpected memory fault at gpa %#llx", v->name,
++		    (unsigned long long)run->memory_fault.gpa);
++	TEST_ASSERT(get_ucall(v->vcpu, &uc) == UCALL_DONE, "%s: guest exit %s",
++		    v->name, exit_reason_str(run->exit_reason));
++}
++
++static uint64_t expect_sync_then_done(struct vmm *v)
++{
++	struct ucall uc;
++	uint64_t val;
++
++	TEST_ASSERT(get_ucall(v->vcpu, &uc) == UCALL_SYNC, "%s: guest exit %s",
++		    v->name, exit_reason_str(v->vcpu->run->exit_reason));
++	val = uc.args[1];
++	vmm_resume(v);
++	expect_done(v);
++	return val;
++}
++
++static void expect_memory_fault(struct vmm *v, uint64_t gpa)
++{
++	struct kvm_run *run = v->vcpu->run;
++
++	TEST_ASSERT(run->exit_reason == KVM_EXIT_MEMORY_FAULT,
++		    "%s: want KVM_EXIT_MEMORY_FAULT, got %s", v->name,
++		    exit_reason_str(run->exit_reason));
++	TEST_ASSERT(run->memory_fault.gpa == gpa,
++		    "%s: fault at gpa %#llx, want %#llx", v->name,
++		    (unsigned long long)run->memory_fault.gpa,
++		    (unsigned long long)gpa);
++}
++
++static void vmm_stats(struct vmm *v, struct mps_stats *st)
++{
++	TEST_ASSERT(!ioctl(v->child, MPS_GET_STATS, st),
++		    "%s: GET_STATS errno=%d", v->name, errno);
++}
++
++static void vmm_destroy(struct vmm *v)
++{
++	close(v->iommufd);
++	kvm_vm_free(v->vm);
++	munmap(v->hva, CHILD_SIZE);
++	close(v->gmem);
++	close(v->child);
++}
++
++static sigjmp_buf host_jmp;
++
++static void host_sig(int sig)
++{
++	siglongjmp(host_jmp, sig);
++}
++
++/*
++ * Read @addr, or write @val to it, through a host mapping.  Return the
++ * signal that the access raised, or 0.
++ */
++static int host_access(volatile uint64_t *addr, bool write, uint64_t val)
++{
++	struct sigaction sa = { .sa_handler = host_sig }, old_bus, old_segv;
++	int sig;
++
++	sigaction(SIGBUS, &sa, &old_bus);
++	sigaction(SIGSEGV, &sa, &old_segv);
++	sig = sigsetjmp(host_jmp, 1);
++	if (!sig) {
++		if (write)
++			*addr = val;
++		else
++			(void)*addr;
++	}
++	sigaction(SIGBUS, &old_bus, NULL);
++	sigaction(SIGSEGV, &old_segv, NULL);
++	return sig;
++}
++
++#define host_read_faults(p)	(host_access(p, false, 0) == SIGBUS)
++#define host_write_faults(p, v)	(host_access(p, true, v) == SIGBUS)
++
++/* ---- Scenarios ---------------------------------------------------------- */
++
++static void scenario_launch(struct vmm *a, struct vmm *b)
++{
++	pr_info("1. launch\n");
++	vmm_run(a, GPA, MAGIC_A, 0);
++	expect_done(a);
++	vmm_run(b, B_HOME_GPA, MAGIC_B, 0);
++	expect_done(b);
++	TEST_ASSERT(*(volatile uint64_t *)a->hva == MAGIC_A,
++		    "A: the guest write is not visible to the host");
++	TEST_ASSERT(*(volatile uint64_t *)(b->hva + B_HOME_OFF) == MAGIC_B,
++		    "B: the guest write is not visible to the host");
++
++	/* A has its whole range; B lacks the shared window. */
++	TEST_ASSERT(vmm_iova_mapped(a, IOVA, CHILD_SIZE, true),
++		    "A: device mapping incomplete");
++	TEST_ASSERT(vmm_iova_mapped(b, B_SHARED_IOVA, SHARED_LEN, false),
++		    "B: device maps a window that B does not have");
++	TEST_ASSERT(vmm_iova_mapped(b, B_SHARED_IOVA + SHARED_LEN,
++				    CHILD_SIZE - SHARED_LEN, true),
++		    "B: device mapping incomplete");
++}
++
++static void scenario_move(struct vmm *a, struct vmm *b)
++{
++	struct mps_stats st;
++	uint64_t frame;
++	int r;
++
++	pr_info("2. move A -> B\n");
++	vmm_run(a, A_SHARED_GPA, MAGIC_A, 0);
++	expect_done(a);
++	frame = vmm_iova_phys(a, A_SHARED_IOVA);
++	TEST_ASSERT(frame, "A: window not mapped before the move");
++	/* Map the window on the host too, so that the move must zap it. */
++	TEST_ASSERT(*(volatile uint64_t *)(a->hva + SHARED_OFF - A_OFF) ==
++		    MAGIC_A, "A: host mapping does not see the guest write");
++
++	/* B does not have the window yet. */
++	vmm_run(b, 0, 0, B_SHARED_GPA);
++	expect_memory_fault(b, B_SHARED_GPA);
++
++	/* A move outside the destination's range is refused. */
++	r = ctl_move(a->child, b->child, RO_OFF, PAGE);
++	TEST_ASSERT(r == -EINVAL, "MOVE outside B's range returned %d", r);
++
++	r = ctl_move(a->child, b->child, SHARED_OFF, SHARED_LEN);
++	TEST_ASSERT(!r, "MOVE returned %d", r);
++
++	vmm_stats(a, &st);
++	TEST_ASSERT(st.owned_pages == (CHILD_SIZE - SHARED_LEN) / PAGE,
++		    "A has %llu pages after the move",
++		    (unsigned long long)st.owned_pages);
++	vmm_stats(b, &st);
++	TEST_ASSERT(st.owned_pages == CHILD_SIZE / PAGE,
++		    "B has %llu pages after the move",
++		    (unsigned long long)st.owned_pages);
++
++	/* A's device lost the window and only the window. */
++	TEST_ASSERT(vmm_iova_mapped(a, A_SHARED_IOVA, SHARED_LEN, false),
++		    "A: moved window still mapped");
++	TEST_ASSERT(vmm_iova_mapped(a, IOVA, CHILD_SIZE - SHARED_LEN, true),
++		    "A: the rest of the mapping went too");
++
++	/* A's guest and A's host mapping fault on the window. */
++	vmm_run(a, 0, 0, A_SHARED_GPA);
++	expect_memory_fault(a, A_SHARED_GPA);
++	TEST_ASSERT(host_read_faults(a->hva + SHARED_OFF - A_OFF),
++		    "A: host mapping of the moved window still readable");
++
++	/* B reads what A wrote, and B's device reaches A's frame. */
++	vmm_run(b, 0, 0, B_SHARED_GPA);
++	TEST_ASSERT(expect_sync_then_done(b) == MAGIC_A,
++		    "B does not see A's write");
++	TEST_ASSERT(*(volatile uint64_t *)(b->hva + SHARED_OFF - B_OFF) ==
++		    MAGIC_A, "B: host mapping does not see A's write");
++	TEST_ASSERT(vmm_iova_phys(b, B_SHARED_IOVA) == frame,
++		    "B: window is not on the frame A had");
++}
++
++static void scenario_donate(struct vmm *a)
++{
++	struct mps_stats st;
++
++	pr_info("3. donate and reclaim\n");
++	/* Map the page on the host, so that the donation must zap it. */
++	TEST_ASSERT(!host_access(a->hva + DON_OFF, false, 0),
++		    "A: host mapping faults before the donation");
++	ctl_donate(a->child, DON_OFF, 2 * PAGE, false);
++	vmm_stats(a, &st);
++	TEST_ASSERT(st.owned_pages == (CHILD_SIZE - SHARED_LEN) / PAGE - 2,
++		    "A has %llu pages after the donation",
++		    (unsigned long long)st.owned_pages);
++	TEST_ASSERT(vmm_iova_mapped(a, DON_IOVA, 2 * PAGE, false),
++		    "A: donated pages still mapped for the device");
++	TEST_ASSERT(host_read_faults(a->hva + DON_OFF),
++		    "A: host mapping of a donated page still readable");
++	vmm_run(a, 0, 0, DON_GPA);
++	expect_memory_fault(a, DON_GPA);
++
++	ctl_donate(a->child, DON_OFF, 2 * PAGE, true);
++	vmm_stats(a, &st);
++	TEST_ASSERT(st.owned_pages == (CHILD_SIZE - SHARED_LEN) / PAGE,
++		    "A has %llu pages after the reclaim",
++		    (unsigned long long)st.owned_pages);
++	TEST_ASSERT(vmm_iova_mapped(a, DON_IOVA, 2 * PAGE, true),
++		    "A: reclaimed pages not mapped again for the device");
++	TEST_ASSERT(!host_access(a->hva + DON_OFF, false, 0),
++		    "A: host mapping of a reclaimed page faults");
++	vmm_run(a, 0, 0, DON_GPA);
++	expect_sync_then_done(a);
++}
++
++static void scenario_readonly(struct vmm *a)
++{
++	volatile uint64_t *page = (volatile uint64_t *)(a->hva + RO_OFF);
++
++	pr_info("4. read only\n");
++	*page = MAGIC_B;
++
++	ctl_readonly(a->child, RO_OFF, true);
++	TEST_ASSERT(vmm_iova_mapped(a, IOVA + RO_OFF, PAGE, true),
++		    "A: read-only page not mapped for the device");
++
++	vmm_run(a, RO_GPA, MAGIC_A, 0);
++	expect_memory_fault(a, RO_GPA);
++	TEST_ASSERT(host_write_faults(page, MAGIC_A),
++		    "A: host write to a read-only page did not fault");
++	TEST_ASSERT(*page == MAGIC_B, "write to a read-only page landed");
++
++	/* Clear the bit; the guest retries the same write. */
++	ctl_readonly(a->child, RO_OFF, false);
++	vmm_resume(a);
++	expect_done(a);
++	TEST_ASSERT(*page == MAGIC_A, "write after clearing read only lost");
++	TEST_ASSERT(!host_write_faults(page, MAGIC_B),
++		    "A: host write after clearing read only faulted");
++	TEST_ASSERT(*page == MAGIC_B, "host write after clearing read only lost");
++}
++
++static void scenario_window(struct vmm *a)
++{
++	volatile uint64_t *win;
++
++	pr_info("5. host mapping\n");
++	win = mmap(NULL, PAGE, PROT_READ | PROT_WRITE, MAP_SHARED, a->gmem,
++		   DON_OFF);
++	TEST_ASSERT(win != MAP_FAILED, "mmap(guest_memfd, page) errno=%d",
++		    errno);
++	*win = MAGIC_A;
++	TEST_ASSERT(*(volatile uint64_t *)(a->hva + DON_OFF) == MAGIC_A,
++		    "the two host mappings disagree");
++
++	ctl_donate(a->child, DON_OFF, PAGE, false);
++
++	TEST_ASSERT(host_read_faults(win),
++		    "host mapping still readable after the donation");
++
++	ctl_donate(a->child, DON_OFF, PAGE, true);
++	TEST_ASSERT(*win == MAGIC_A, "host mapping did not come back");
++	munmap((void *)win, PAGE);
++}
++
++int main(void)
++{
++	struct vmm a = { .name = "A" }, b = { .name = "B" };
++	struct mps_new_child probe = { .offset = ROOT_SIZE - PAGE, .len = PAGE };
++	int fd;
++
++	TEST_REQUIRE(kvm_check_cap(KVM_CAP_GUEST_MEMFD_FLAGS) &
++		     GUEST_MEMFD_FLAG_USE_PROVIDER);
++
++	ctl = open("/dev/mem_provider_sample", O_RDWR);
++	__TEST_REQUIRE(ctl >= 0, "mem_provider_sample not loaded");
++
++	/*
++	 * Without addr= and len=, the first NEW_CHILD sizes the root, so ask
++	 * for its last page first and give it back.  A fixed root that is too
++	 * small makes the test skip.
++	 */
++	fd = ioctl(ctl, MPS_NEW_CHILD, &probe);
++	__TEST_REQUIRE(fd >= 0, "provider root smaller than %#llx bytes",
++		       (unsigned long long)ROOT_SIZE);
++	close(fd);
++
++	vmm_create(&a);
++	vmm_create(&b);
++	vmm_attach(&a, ctl_new_child(A_OFF, CHILD_SIZE));
++	vmm_attach(&b, ctl_new_child(B_OFF, CHILD_SIZE));
++
++	scenario_launch(&a, &b);
++	scenario_move(&a, &b);
++	scenario_donate(&a);
++	scenario_readonly(&a);
++	scenario_window(&a);
++
++	vmm_destroy(&a);
++	vmm_destroy(&b);
++	close(ctl);
++	pr_info("mem_provider: all scenarios passed\n");
++	return 0;
++}
 
