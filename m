@@ -4,137 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81224CA5FED
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 09:47:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35F1ACA5FED
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 09:52:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84A6A6B0088; Tue,  6 Oct 2026 05:47:38 -0400 (EDT)
+	id 398736B0092; Tue,  6 Oct 2026 05:52:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FC506B008C; Tue,  6 Oct 2026 05:47:38 -0400 (EDT)
+	id 3223C6B0093; Tue,  6 Oct 2026 05:52:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EA736B0092; Tue,  6 Oct 2026 05:47:38 -0400 (EDT)
+	id 1EAD86B0095; Tue,  6 Oct 2026 05:52:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AA466B0088
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 05:47:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CDD5CC0185
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:47:37 +0000 (UTC)
-X-FDA: 85291724154.11.F9B0172
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DA3A8120009
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:47:35 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MNdz5s46;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791280055;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E96726B0092
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 05:52:33 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 748F340184
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:52:33 +0000 (UTC)
+X-FDA: 85291736586.26.5687713
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9D0ABA0004
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:52:31 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=IHyx76io;
+	spf=pass (imf25.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791280351;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CmmO8ScL+eeMfrapWdr48bCTojDCYx9YeRYZOdtKmKE=;
-	b=vfz71LWPmqS2i18E7gaw7cTtjft3l7UIpKMkul4jH3NzqDn/XBJTaP2OR6fQqS7vMe1VRs
-	LrFBpk5A/N8mGyQ6VLYn88V53dbOfSiXT4PRRNcTnPBIwMB0C8L2LtfBT4gQEmLuQfRTAJ
-	FaApv69i690OMNWBxTP16ECcbeFIaf8=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MNdz5s46;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791280055;
-	b=agEjEiyILBlkPyzseiZLDUOk4DKm0yzDdW9wqqF37BaD2NPglinelCsCukcsBAefKqAbNJ
-	MinETvXEiBm3afz5eQV7KvF2lj4dTW7qB7pi30rOkDBJG2xdrSxNCG/JHchoF8aVRhSEI1
-	4i9i5tY49B4A9Ew5DeA9HJPeozlYLOc=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49ff680331aso26648685e9.3
-        for <linux-mm@kvack.org>; Tue, 06 Oct 2026 02:47:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791280054; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nMZRvjAFtU3lSkPnlMS7WleAZGiMz691SfpH113ULedIOHmzcsm5CeHRfo7ku0IHzL
-         ECGpJhI+NNmqz9eIsZ68uxgIU+olDQp+HfiAKa4Fwf2UqK+oHTmhPXJkcfsfdgc6UKDB
-         bl8X32TXWX8X99fayIU++SZ4Lhs/a+IkJ0j3X3IrcGaW/2vmp2vltysdg/ktcMYrwoFL
-         k2tutDAM7qfYYwvo99fW+nXL/PLkUYoLjR3JoLOYnLu91VXWlCWsJLCcVAusMWx+fwJ7
-         Ps+r18s2OuHg8eoFvbKekWFKSL0oUklexNqzpKDR8UjVNGBye3ai3soIMmJFnA4IHeRY
-         YaEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CmmO8ScL+eeMfrapWdr48bCTojDCYx9YeRYZOdtKmKE=;
-        fh=SldPSq9EOO9FbsOXpAjLQLEH+3IP4V3Mj/pXGPC6ZRw=;
-        b=l6m9HCNKV/k1ygpExb54/Vn6r18mK7s5c/5e+kWkduTEe0Va4jyRAs5R7ucLnu4a8G
-         m0BzDcdURYz7gTfnFzWY8nVZWx3km/KX76V7xYIuhWHnk+UqdiPjadrVBlS44spgoXjH
-         hEFbnnwEQr+2eTnzuAzkhmLUSRP9UkdDhwKtrKBYU+vjjjFuynE3LVrGGKCfMcPmGy7Y
-         bEN3TksED/SQ8Do0neIaXs4YbXmrviCW6l3EaDI13qdW4XM5JaZKpVGSIXRGl494PWp6
-         NbvB6+l2qEydPQSAkkB0BclRn7Q4VxczQX2IEB9vV+JF02tq6v1do7bxYdjcObDv9w7Z
-         ThSQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=fg4heyaNVw7VYP4ZPvHMypbYfuDwCofB/Hw02l9JTQk=;
+	b=qPDYcKm1GhNpNy3NA9NS4k6V29WElpQTAQQURcuEWXW8O6iSH7c3vF9G+Rsm+aUpm5ywrx
+	7BvN5e2L5LH7KduLtxLe8LveCWDVa6PxsHLwEd03UKlVBXuSJtkwo872Yv6p0n3emXSTDe
+	jyq9oE5pam4Exsitt/gNiJu3zL/9i4w=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=IHyx76io;
+	spf=pass (imf25.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791280351;
+	b=2tiDBDBjtkFcdfvlftMMwaXDEVrLdSpla+W9Hj5S/yOVBOmQxkxjKihGPaxs67HVP7hgTa
+	fUmiJu3XikpYlZ8rg+m93Hg5nLSPu1sdIkoMWB/94zLQsIZVYyzD/lZUjrK8F7DnPke5D4
+	tlybcESDBrIXSLh5p5K9C0uTgtPxV3w=
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-88cfa501c5cso858719b3a.3
+        for <linux-mm@kvack.org>; Tue, 06 Oct 2026 02:52:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791280054; x=1791884854; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CmmO8ScL+eeMfrapWdr48bCTojDCYx9YeRYZOdtKmKE=;
-        b=MNdz5s462nR08uZspZiVr2eZ3oITmhpigAHPUT1fHzxIywBsb8mXG4PDa4xkaw9vat
-         Av5T/WMi3EneFPG98+ErILGDmyl+ln5ZdHYfeCmnqOh0DEubvPUCh/h5FMsxVEkOQFyo
-         12ZRTYaymxQGVXrupet0VW0zGGm45yDf6FPro9gEw2LoojuOAYmhRE3X0A9m4s4mZZu6
-         TXCO4K+bK4Vx3HO4rVhxUbWl8sW6/HayCGZmlpJPihPnE4I6swV0unxQSB9BVAn+NJDf
-         M2D75umA8NlBflTBmSRnN20y1cV7T+DnOBk0cYc0fDovlxL7boSeeK4ijBjSQQ5IHigB
-         n3tA==
+        d=chromium.org; s=google; t=1791280350; x=1791885150; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fg4heyaNVw7VYP4ZPvHMypbYfuDwCofB/Hw02l9JTQk=;
+        b=IHyx76iomSheGu01C0+pjvLsSsP4XCz35TYko6yqEs7gsvuENfxH6msJ/NrLB5c7YX
+         jFCgrJDZCR3ef7N10MwKonM1LyFWnx1zIy8Geq9OugJm1rkrHZlCKatjduc6wLTCy8tq
+         cN/Sfx6gBjJ/ZfHfzyUTVf/EMSXN6FKkBnFuM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791280054; x=1791884854;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CmmO8ScL+eeMfrapWdr48bCTojDCYx9YeRYZOdtKmKE=;
-        b=QJ7LpcE6d+csFc7L7kgw1/LzbJl/RolcbUvPiLmUHG5wIZNDa9ss3NND1ndELIzKng
-         lxsDB6isv38/f6v6ZqG9oVDXLkL/C9aKf6mXF3MIw9qy92taFstlJjiyLwaEJZXTcuLn
-         IG8RpdUUkFxkOc6pUpyKXCPUjceJzFdjF+sxGgUJ+ScUy4w3Ha8jIOnYlbI4e1sBWfCd
-         /HOuaDSB32y6w1sPLKkh1oxvxsblMW/uebkki1mhbRzNzv4hhmnzZQyHkMniYjW2THi+
-         crczefMrhwPJyu9+BCqtXmtn+aF1uW0HOMFDES2TuHfCd/sBloyoxHtxaoFdaVL3etcn
-         JY0A==
-X-Forwarded-Encrypted: i=1; AKwUvBygVjJa6t/OEcZvn2oL8roZ+hrOViP6u/Z+QdMZ+PM7g2ShXYEN9sObnlpYfVUNjyiREC765eHQnw==@kvack.org
-X-Gm-Message-State: AFuF++kuimcuD47r5+ewNp8UF9iAsR8I2ECWMaJ/A9+VVEV+w2SokvMJ
-	9kpI/i+77LjP1rKjjCzTOOyQeTgRxqFvCf7RO4AZMGzj1/w5RkplnBNj1vqCzHgrc7rOwrFUdce
-	VWsrZ+HPsffkUcjXu4o/G1/x8twACqoQ=
-X-Gm-Gg: AYBFou30yLN4Oqu5XX4saz9aN7DipB0gi94biROl1pqdOe68FEts+zZwMnfgVcIdm6l
-	oDiCHPArVa3DqKqObHy0SHQ4YGmn5AZ5LaJBpwpj7Tp/wapfBousWg3E9YFqX/SnShME5NPG4ei
-	jMyMETs++p9Mr9EDWAoPhLH8/TqTGNTewNydJIYNLbx40/es/ZOGipnKQ+ldWBZU/hNkCG+XxQV
-	n13yu+9wn0h07+yRT5IOFN5PGEgEX8ry50Z0tAH0AmJN4phXJHTmvDhYhXc4lMzSUfhAc9mtJYA
-	6AkZ/pkP5ytXel8sMlrrNRhaJvAmaE1wpp2txcWlxhoZYgm3EtjPuSjUHmMavpia4D1DSvnEIUw
-	jAcauA8YmEg==
-X-Received: by 2002:a05:600c:5883:b0:4a0:12d7:4c88 with SMTP id
- 5b1f17b1804b1-4a168101d97mr118976795e9.30.1791280054184; Tue, 06 Oct 2026
- 02:47:34 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791280350; x=1791885150;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=fg4heyaNVw7VYP4ZPvHMypbYfuDwCofB/Hw02l9JTQk=;
+        b=ubA886tsi6jagYxe7euiY4XwwmRW41RKwZhTx/oR/ovzJ9gA59/DgrMnXjH+AMrr95
+         mRty41PrfR9iCE/W+z1ze+aNVlTPaRgk9ks/kxmO/47+0Le/la9K+ILfXSqsS9KbODnQ
+         7Of+M0mvkO8XGIIAst/h3t7yxRFdX15xMwSDXxuwlGgpkjGJyyQLjtT2TWOJEoThsv8W
+         y73y+YLJKP01KOvP3ro0nWZdIg6Xh2l5aZeuJ+kDKQV1X5fwIQB6L9q4Tjgjp2p4hlJH
+         54EfAjXyGQtx0kkOzUnpy4G6X7WKx/bIyjs9vXHIq18TWzBGfsUiNmbMJ7xLXfDSipdu
+         Je2w==
+X-Forwarded-Encrypted: i=1; AKwUvBzRCAhLmvx0befmPw1qkVbpTvexPD0JdqH9a7YmpQcX9RZ2IWWph0lqDivFJ9bUhyS/8NgbfCev2g==@kvack.org
+X-Gm-Message-State: AFuF++n+DAV8cy/UKfteFMp+lVu13ajY1e/oHCSP5Bv08TscIuRkMQVr
+	+pkEzwqaK/sdCIZsSPGsXvuo4eYSTlpU2ma0MSFjQz6jWKSaoD1kSlL2YNuQVMh3nQ==
+X-Gm-Gg: AYBFou1H8Cnd169QmoY8i4mc+AQ3W+D3t7nQi/T3VzijWQH6QKk3ApkKt699kLuLGcZ
+	Ygky5ecY7KX5HrV+Jit5n907sQOe+O5MtmJSe6iUZT1jWCtYp88ENSl+B2I1r3pW6hp+SQ46OHk
+	7dwT1zOx25SBb1jL7NZIcqc9vm8HLxSZStqfiENA0TBvM0dI03RwuFCDZAI4UykkhtCgEL+Ol3M
+	/bZRvaaPOYJwtFOC+ltRfHqVm0hLCZUn17FxdcKM7pYFLLVKb6OIrxI8EMivGsBrarzDTMSTPju
+	if5FdU0tudHc6oYQT2GgH020Iwf4v/cUXGx2U2Oqs+201I/eVjG6XzwrYLa++3W16irHAGbVoOp
+	5KRaRQrEyglDJTkyxQpBZAcxMRurWJcIbkvDIr9Lj8+/hHcd4LJghbsEOsuo+j3QBB26MDEjsw/
+	EHeoKsxFyxMUVbr4xOakIT7u/jta3PY+dk79GvwGXkKOPSHRVw+BVgizyXCUM1n/RU8wjt++xC4
+	WRAN7osskmb64zx9bYQJgVup2grT7cJHPFREic=
+X-Received: by 2002:a05:6a00:27aa:b0:88d:284b:6ef3 with SMTP id d2e1a72fcca58-890e027488fmr698552b3a.58.1791280350355;
+        Tue, 06 Oct 2026 02:52:30 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:ed0f:30a2:6c81:a58e])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-88b0d152432sm4523788b3a.53.2026.10.06.02.52.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2026 02:52:29 -0700 (PDT)
+Date: Tue, 6 Oct 2026 18:52:24 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Usama Arif <usama.arif@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, chengming.zhou@linux.dev, dsterba@suse.com, hannes@cmpxchg.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, terrelln@fb.com, yosry@kernel.org, 
+	riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, senozhatsky@chromium.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH 1/2] mm: zswap: use separate compression and
+ decompression requests
+Message-ID: <asTEwVNe97_m0Iui@google.com>
+References: <20261006002307.2669023-1-usama.arif@linux.dev>
+ <20261006002307.2669023-2-usama.arif@linux.dev>
+ <CAKEwX=O=QNWUCTn9kcCwu9V3pTrSwTj8SMCMS6Z-8fwhGjrkdA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20261006002307.2669023-1-usama.arif@linux.dev> <20261006002307.2669023-2-usama.arif@linux.dev>
-In-Reply-To: <20261006002307.2669023-2-usama.arif@linux.dev>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 6 Oct 2026 11:47:21 +0200
-X-Gm-Features: AclHuK-gPua9uIItL7R1xoKxAEDDoC5tNOgy6aNtMtneqHY4TcEmx3Ke8MvnYho
-Message-ID: <CAKEwX=O=QNWUCTn9kcCwu9V3pTrSwTj8SMCMS6Z-8fwhGjrkdA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm: zswap: use separate compression and decompression requests
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, chengming.zhou@linux.dev, dsterba@suse.com, 
-	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	terrelln@fb.com, yosry@kernel.org, riel@surriel.com, shakeel.butt@linux.dev, 
-	alex@ghiti.fr, senozhatsky@chromium.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKEwX=O=QNWUCTn9kcCwu9V3pTrSwTj8SMCMS6Z-8fwhGjrkdA@mail.gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9D0ABA0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DA3A8120009
-X-Stat-Signature: mzir9x8fibsdnpq8fsmeoxcun4xp9opy
-X-HE-Tag: 1791280055-928533
-X-HE-Meta: U2FsdGVkX1+/juRAOyn31IRGle91INgyunEBwpqBI953MQ5KnY9Ev55Hv5K0KOf1B1qyn1YGsdnb09Q+uVCapxubbKuSUdcR2PllSV3NasKmztxd4yOTI7gLMNqNg0Q3HrTN1SfiXCh6SMErYrofUFqAOVE/kTpMiEX+yUBlx6733OrV6Mh2DgDqd4CxgsNu8fz6iNWNBn2uJkgt8PUIkDCwFMg9m0cw2hR3ym1AtTvdpFZAf3zpGT2/67p8wxGM8tlUD5PM2HWYpFVyeaCBe99ZEG3oxk7reLIy7eEl7pL6IsJjn03YHbeSO8dIjACK5ULGfsKV4mN4yG544b5YVdP+Ck88DWtwEZMciUkcxiX9fBCOADc56aw4I3ZL2xqQdJKXxNar1VVz1oe5qwYgnwbWjc6T2o3CjVYoeKKCVU3YuLzk6VL/NMyIZWYvQd7BdF3Knel9CiR6cbTkCbJng9dz2DVwsSjXRfTS0w6kzCNq90MSpMV8eZJY4kp5kUJrBALI3Nzf3cXyKIilvl7psP2WwSvmuLrdT2Upxi1MSNRXQrfJ2pdhUs0ZzkMdGcE+7U2JakMPeI2jfocIM5LKXdsHBeGVmYzerFNcbOdBYkXQGV/ql8p1E2v8yXfSL7cRCtAVHKLVnqaymE1kDXEwL2k9oKyBxi0dDyZuYFHW9HONtDs1wMC2F2EirkutGZ1rGjCee/hQ7iYdmCYcDvS5KaRYbsM2pRm0uppeqkq6lqeELdYHH+sV1wsNWj622DnUbHqqXgIEb7czC8fzds+1KKZA5RvaD8kEOwyWsS1Ethbnj0afETcH9DMpJPwc6vJI7bw/8ooy2xNa0UApYznge7r1vWkTP7kBhv7yuQ4Ni//eEFCka2okBe0mKLZXxrc/ivlFZXenYw3QmJWXlpR+E5N1NwyNdwYBjCCUvEDlAqyl+VkUmbKAPN1RwDxXaj1IwsF442KDeJ8EFtRD+k4
- 4N34n/S4
- WqyOrHrJuxBl6lIGRssgl3lBke5QwA1ao6qXnhPhihce+6GS9s4DRSkQ5M8d8vLdGuBYCZILJq+GwwL/K5tmXlSYFuMNrZWho6u+FDpzGJOGAmPtCauJ3OW/uDtZIggMgGd4GPJ5NpC5OsKKvkkLBq8qDMoZ5rurI5oDI8HhJ2KUS1iNenI/ewrS8n8iXoH+8ctM+FoOPT++5JZkeEXabG8T0D2rz08/YM+lvt8vaT+mwf6qbUrI6gPRTbt6iEmSLBkvB/ohAjaDwfWV5ivDx0vI7NPBSoaYIOrxfCXPTN4WVhBLppOnqeT4VUpTiZyDAayFp6224797mocaslemEC+xbBx5H8r9p+4cQzMpdADGnIGalBWbTQYGVT48f3GekdEJLIBApHKdw3ln2onaGLHeUD4D0NQNwPdvMHM7FdN6UvJFtN9Lvn4rXNuY523ZSf4nwGHgobGWHHl0=
+X-Stat-Signature: 8xnz18qrm6ek939w5s7girn7tha35h7c
+X-HE-Tag: 1791280351-499514
+X-HE-Meta: U2FsdGVkX1/QRvql0Ay064qo5dfvdYRzsYZ+Iqgyc4ss6PNaCqec66Ets4SBd/wx6zBXhiX2tGSHPAmPb5fS0YzUqpvUq1BZh5hC9sOkDp7CJ8Q5A2/7p1+Fiw35RLaM+4xHigUfGPkHWJ/Sg4zBbN9pGpYW1DosPPqAYC6H0EXIaIdej4oDB+WfkwY91hpGUUSerzoIwdEZXNX71K7UIGr56RoxWbEFPNDYS/eCvgUWwzmvY2M4O83bo+RvQ6jYycKTgZiIrm4wB/kTpqml1Wk2KE2NgyiOGdDLwuXQ7Q03FWRvDANxAzTm5jxlS5I1/eMt0IMcTVPo1cwzxkq6Ak32Fqt/EV7zcp+hQt3dCeHG/V6bAgvlzYvfKPeeXd3g0jfovRlla2GjJAUyElC/06d5mjgx3YoOLLRhWC4NcJcfKH7IqDGyKV7t1WktijpogbIsh21bL40A0ZAPAyBVZZVZDbSW298+8EDm+faRF9STn3SmE4HNcQfbz81p7UsMIPQC73Cx2Fq1Dze8Wd6R+4pCH6gEqEk76mQiSfLMTrDAtIXPkBjMQrfALN0ZU9H7sLsBBhq1IFZN+4x2mYel67nU9kdfar7SPOyEjhJzsr75QxQsqx0AkQm9o00trOV16/aWL/AOVDIiIpxnFiX9wqGEK/jWRk9d8uIjuCHNSTMKSdrbXsSdWMWQU7LY8ja9woN4Oc/aqld827V0ycgVsHPOcyQ3GsHiHOyZ7/OZ2zyCmOmzz2aS3/TJ3ozAI+eX7syWITNq2G8IOqouIHwkZi6Uzh7h+6SJDCLFf68CIh94LcpaY+Y+JzJi65ya67JdGSgL1sJOhZJbb3f8ZVdgGLszXIqYQ8wds/E0nmrxoVNSHM0+yxCnKfala88vPH3Nj0b3K4ImHxQnZKQqogvLqwG3wpbwHDuNjPn/BJC3dqOwgcY0Tmdd17ufiaGB8hcTIiXd8dpL9pG0JKXNrrk
+ q4HsOoke
+ gnquRDWQfKx2eYOuJXCGtnxSJ+KCvis9Rg+Br4B8VXYvc9XBf1EC983ikSvUUn3GvX/gSok8jvqvV3iNHGdU3dnuOZJ+Ug26cDwdqMb1TyKdUlzPEINgiq+FtZpmClxzpJzTNXG2RwH3cQeKyJRkcO5eaNSSKPy/70FJ8KOvHIJo6bcSU3lS95hQ9MR0xeiQo8yc8OgdWXmeYgjBrcPoFU2r3tH8EZtVIPFM+kvPYA83dPlDt6p0LVMicPyWQMU0GfauThw4Dxuz/dm8MzgrrDm4Raq5Tf755j6ochnVNjoJmYFzYPDMheqm6fkDE/++g0NC5AFVx20Yi098CyxtsuyEUzrC3t1+kwYjdxLkNjoj8WRdLEVqvbLROt7QC9yFyGJCB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,64 +124,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 6, 2026 at 2:23=E2=80=AFAM Usama Arif <usama.arif@linux.dev> wr=
-ote:
->
-> Stores and loads serialize on the same per-CPU acomp request and mutex.
-> A low-priority store can be preempted as soon as the compressor drops
-> its stream lock, while it still holds the mutex. A higher-priority load
-> on that CPU then waits until the store runs again, which can take a
-> long time when other tasks are runnable.
->
-> Give compression and decompression their own request, completion wait
-> and mutex. Since commit e2c3b6b21c77f ("mm: zswap: use SG list
-> decompression APIs from zsmalloc"), the per-CPU buffer is only used for
-> compression. The two requests can share the per-CPU transform: no
-> in-tree implementation modifies transform state while (de)compressing,
-> and shared codec state has its own locking. Loads can still wait for
-> each other on the decompression mutex, and stores still serialize on
-> the compression mutex.
->
-> This follows the proposal from Sergey Senozhatsky for the same split
-> for zram [1].
+On (26/10/06 11:47), Nhat Pham wrote:
+> On Tue, Oct 6, 2026 at 2:23 AM Usama Arif <usama.arif@linux.dev> wrote:
+> >
+> > Stores and loads serialize on the same per-CPU acomp request and mutex.
+> > A low-priority store can be preempted as soon as the compressor drops
+> > its stream lock, while it still holds the mutex. A higher-priority load
+> > on that CPU then waits until the store runs again, which can take a
+> > long time when other tasks are runnable.
+> >
+> > Give compression and decompression their own request, completion wait
+> > and mutex. Since commit e2c3b6b21c77f ("mm: zswap: use SG list
+> > decompression APIs from zsmalloc"), the per-CPU buffer is only used for
+> > compression. The two requests can share the per-CPU transform: no
+> > in-tree implementation modifies transform state while (de)compressing,
+> > and shared codec state has its own locking. Loads can still wait for
+> > each other on the decompression mutex, and stores still serialize on
+> > the compression mutex.
+> >
+> > This follows the proposal from Sergey Senozhatsky for the same split
+> > for zram [1].
+> 
+> Thanks, zram peeps :P
 
-Thanks, zram peeps :P
-
->
-> [1] https://lore.kernel.org/all/20261005122036.718976-10-senozhatsky@chro=
-mium.org/
->
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-
-Code mostly LGTM. Just one question:
-
-[...]
-
-> -        * If there was an error in allocating @acomp_ctx->req, it
-> -        * would be set to NULL.
-> -        */
-> -       if (acomp_ctx->req)
-> -               acomp_request_free(acomp_ctx->req);
-> -
-> -       acomp_ctx->req =3D NULL;
-> +       acomp_request_free(acomp_ctx->comp.req);
-> +       acomp_ctx->comp.req =3D NULL;
-> +       acomp_request_free(acomp_ctx->decomp.req);
-> +       acomp_ctx->decomp.req =3D NULL;
-
-Hmm do we not have to null check here anymore? Does
-acomp_request_free() handle NULL itself too?
-
-For instance, taking the code blob below:
-
-> -       /* acomp_request_alloc() returns NULL in case of an error. */
-> -       acomp_ctx->req =3D acomp_request_alloc(acomp_ctx->acomp);
-> -       if (!acomp_ctx->req) {
-> +       if (zswap_acomp_req_init(&acomp_ctx->comp, acomp_ctx->acomp) ||
-> +           zswap_acomp_req_init(&acomp_ctx->decomp, acomp_ctx->acomp)) {
->                 pr_err("could not alloc crypto acomp_request %s\n",
->                        pool->tfm_name);
-
-Here, we can success with the comp's req but fail with the decomp's req, ri=
-ght?
+:D
 
