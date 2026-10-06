@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 154D0CA5FED
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 06:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C46ACA5FED
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 06:58:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 162156B0099; Tue,  6 Oct 2026 02:56:33 -0400 (EDT)
+	id 2EB416B0088; Tue,  6 Oct 2026 02:58:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 139906B009B; Tue,  6 Oct 2026 02:56:33 -0400 (EDT)
+	id 29C566B009D; Tue,  6 Oct 2026 02:58:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0775E6B009D; Tue,  6 Oct 2026 02:56:33 -0400 (EDT)
+	id 1B29C6B009E; Tue,  6 Oct 2026 02:58:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CFE3E6B0099
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 02:56:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40D6B805B2
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:56:32 +0000 (UTC)
-X-FDA: 85291293024.22.4DB8F60
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AA8B41C0009
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:56:30 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0G2i9cq;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791269790;
-	b=iHi6MbPuIF2ex8fjybq6wFdXY2FZ/ukrTIxkLOOBhpHcmzCkoFn93qY9pf+/4Eiu/vhE8Q
-	xPyUU/eRcre+fGVI/g/ySb7Ng5CZZisHtCkXO5AYl1eVfQ3Ym+rHqVikfqj/DgxHLCPAHT
-	7jvJkG9ZRla5OAYVL7HORNQ2FxPbmNo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0G2i9cq;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F16BF6B0088
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 02:58:40 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 82E86A055B
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:58:40 +0000 (UTC)
+X-FDA: 85291298400.18.F706D7A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DFB1A40005
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:58:38 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LmxYwBNv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791269790;
+	s=arc-20220608; t=1791269918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2TrSGIznF7im8gcegltGhb5pwVxJVzRbP+0GzODKKlc=;
-	b=toXLqYH1iyA1sIZJbgt9hhx9YsNDky8Ti8/66RgiXJMeUP0UgRMaNrNr8wJRqwi05MDO3M
-	mhwaCCK0qdBy0v2nzdy3uVizh7mcKubFRxnIx/EY08L15cP2M0wL2pJHTeLqGU2fzZDX5S
-	fsKv0TzI+sbk6U7EInGR4Kjbmegvw6I=
+	bh=5jMDWwuGt+jQZDR9Iyz1q8YOljzx/yRv9CuAM3sIWNo=;
+	b=r/OVna7ZqeiVPlc4WjNkEZ8+r9npUCLFMRVALDuhFmy6oGbLO1a1ih2eJvE6zAJGTSGqnG
+	c7+FoTzY//0QYUsvWH/mswORlMGKlZJJAOxXYFwYoM3IPM+Otu7b5sFpuaep6wGP+vCvCV
+	i67xPssHnj4DwGDmBetkPQaSqNmEdTI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LmxYwBNv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791269918;
+	b=zVd8i6ht25ifW93aI3pxuELTNnqZEuDh+PZzpmhP/NkpcHYHBBM0HkhMRxYTSA25jIjVTe
+	hkM56dld9RG5lU5E1NKEfHC4210oXwyCsydaQHRwPJIhgfFCWnsx1iOdvCV924nhpgpzD4
+	YV8ZFOyOLzZD+vEpNVTQIFJPDkMMo9Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 544FB60142;
-	Tue,  6 Oct 2026 06:56:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543511F000FF;
-	Tue,  6 Oct 2026 06:56:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 633DD40477;
+	Tue,  6 Oct 2026 06:58:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8201F000FF;
+	Tue,  6 Oct 2026 06:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791269790;
-	bh=2TrSGIznF7im8gcegltGhb5pwVxJVzRbP+0GzODKKlc=;
+	s=k20260515; t=1791269917;
+	bh=5jMDWwuGt+jQZDR9Iyz1q8YOljzx/yRv9CuAM3sIWNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I0G2i9cqB3NKuWApR6iaSzv6q9mWeKzdc63fIAyzU7olFj1n2Oi5rn8pAvPTfRSy/
-	 7wI/+p35QAehJ9497fkMeU4VfutIk0IMj2REZ/mgM45ZNMdC12rbjQjyoBdJTnyK99
-	 wDacEREJELrPGk+WNJiBPx2yil077Fzeuq7rspLT+Hs4b7RA5m0+kVk8oI3AutEMOL
-	 /FXKiNDUgDOQi9gavHgJ9OgJ77FWoOtkXYwr5PENC4KxKmp/7MseQiMwd111e28A8v
-	 Gj+fWIv7Bduj4120aFPafMbUb9qYvNo2RdiTJfv9WBu6mUDobPJ4BNIsiPbKLO3JK5
-	 iwUJQFea/OCJA==
+	b=LmxYwBNv2vdo+Lt22Fbi+OrKJWuJvO6cgiMRz8f/tWa+V7XLK/jIVQav4JUG7YUKg
+	 1/kaSZ54kuOZ7iYK8aputcV43g8ExD9olA2aJq5eNsBAUyEBwmrAxErGxul5aFI7MZ
+	 0cqNFRDwYH6FYbtmO3BKjUakcGje0X7px7KxzbMQ4HzpQm7kcp/U4+nXX9h7oxatFy
+	 bUY6NkMKv6vz7mGipiVcui0XV1Kj2cmsfimrn2GZTfoOoziPQ31Jh9faTMyHARnM0u
+	 rVdOpw8qEYgV4BguzsU9zrImi9paa120ffgs4jXIPd09F2LqVreyQlDAvaI7Qd06YB
+	 Zr6wFEcOvcrMA==
 From: SJ Park <sj@kernel.org>
 To: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
@@ -75,22 +75,22 @@ Cc: SJ Park <sj@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Randy Dunlap <rdunlap@infradead.org>,
 	ahuang12@lenovo.com
-Subject: Re: [PATCH 2/3] Docs/admin-guide/mm/damon/lru_sort: Fix copy-paste mistakes
-Date: Mon,  5 Oct 2026 23:56:24 -0700
-Message-ID: <20261006065624.42053-1-sj@kernel.org>
+Subject: Re: [PATCH 3/3] Docs/admin-guide/mm/damon/usage: Fix incorrect option syntax in perf example
+Date: Mon,  5 Oct 2026 23:58:30 -0700
+Message-ID: <20261006065831.42201-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261006061549.627-3-adrianhuang0701@gmail.com>
+In-Reply-To: <20261006061549.627-4-adrianhuang0701@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: as17t1oe4ufkeedhryup4hdhe8wnic16
-X-Rspamd-Queue-Id: AA8B41C0009
+X-Rspamd-Queue-Id: DFB1A40005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791269790-870820
-X-HE-Meta: U2FsdGVkX19fMYmOeKDqOlO/wxYcZsfpe7OiTxLyO0eDUeZbNhEQNEiuAeCOfrgDnzJ0APTAcwzQP+UGgcVAIiFCvB3poGFPPHHCuNg/BEQSi1IdPppThs6seTdBtOl59KNH9tQmLFC1JTSd7+awItfHud50yQogeLAs05QINfjy/w7CmYqQetCLjy/Om6OV3fwRnRmgql/rSefdckRR/sv6K6TfA1JNxp8VTbwKPVJJam+fQ/IyciwKM1aCJ445H98xC5Gufpzxgy3WhB5HPml9F/V1DqS5LHbWMlXqtH3zR9nA2Ir5VjTGH4gus1XAYqT7OC3AsskY0Ug9AbikEEw4is9o07aZ2MkJ9RtawVGBZlIHUWSF5ph0dZthhS6kGgz4ddYQ1Qlkt7UrcUb8SQI3eMJu6e+zKAiEJLOLxul9liky4uZIzKnRBZ9HefcecnO02C4H0YmgWHXpPbOWffSoeZ6A4oNtLSESt/fucx2yipMf7PtLesY6tMN5lCpBTyC/lbUPN0K9aeGdk5AVzvfTzzzPBpIb72DfUDVCPOWU+2at53IMbETcR94nmgIMSwDNPBkDN4r3kdtB13TE9KMv9CDiVwzjIydehpJrr1vTnb91XIMPLDp3+Gw4ZMkHscrRYlBgOJabvwIa0M9bhwc6h1oQqJ1o1vrXZVlK7o9Pm1ZE2Pg+lmR63Oe51AnawORgTqVc8gCoD7iZdVG6bd360lRDAeMvozxuZ6Br9BiBBMasuG4+YAwYpegAmBoVnJ326MWLcTV8aQZWWn7ckfEXVYk045JUOxWJxFmJ2UiPCX1UKvCJbfdvCSdhCwS/Ncwz7yuc/lL1nKlPNBAkhEN2UwANNKCd5Vx1UndVWy0V2oGW3rxwxRvHcf6XGnkQ0ZnywCVX1bOkWrzGJ85pFX956P+7CYsYbs0l5wJpLtW27mfyRxODKcPWpQbyR2zRZKdbXIU7bAno+Sq7eNm
- yDk4zo5X
- TjeY1AtoDszqC9f9uKE3Kj9qvMMpxXHthMdf+zGTesgwSR+5i3fBE9RcDSb9ONJ7ie5HK2eOQQs8N74JkDqOoRhO/EDrD9aXSIQ5WaOsHLujbii/vTwqbpz7Gedqb5yIea+kRBTrLwhaZsOCabz5/oCBF0/2h9DYUl75cT+bK7NS47JJWWYxeRocip3RqFQRujAwQKt1OvQdXix8k3EGhb/vIKuXnkXCI0x2x1H1PniV3pry09mZtHPAdgyekpPfszFk/I664UlFiLvAApuDxs7BptmRJUsZcaJ4a/aoX4qA5PS0=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: c6yee99gofqbdh8geeu8x9prrc57b3fw
+X-HE-Tag: 1791269918-347996
+X-HE-Meta: U2FsdGVkX1/qKXbkGXg6tQqpFyCCI24n3gmKC40PctTp0MHD6aqaJVAajq2W0c6PgixFEDVNUnfwLoBez7dKtN6mllPCWYzh5NfFZgMG7yuT7FQ19z8rk2LPuiWYS2NH4cjBR+5gpunrIMMBGFM5NuhJtDOvT+17vMWftlNsFk6zqO3rRdmRYmkxBuEg8UiQd1yD24DaDE+c1Ms+R9DWZaeElllxT3WkyrBirLx7pSg2eZJWpQu/yUilTUhNoo1PjplebsoGU1MSyh/9N2IPAOxq1/2csjFfxHzrm3pL5egWIFOzeBs6wNM9KoqbtsyHcjcBUfoardUfRum5Cj7aO3FU5bRGT9o7CKuEFLJlCGgpB2dZC8GSRIZ2TKL6/MTKZDjPhsNZH/eP0EFoOWqTEhR2dFlX7+M+xvYHC57azHSMeyCX2GGODRxHYgv73nCYsC0zj7vz+s9kwRHifFkGv2/G+J1kweBcXA2Qdsz8IxvIJkLHwwbnq+TIpAbNs+XQWN+06dLRKx8r7VB859nZTYxkEhnZCxNDp09kTjPzW0guaviwFZ/3W6VQak4YH5T5KdciJymPKIo79gX7UkyTyEyt08ueM09NUZCxv0o2/DM+5KmW+IziU72E+F7TUsiYSjZDn4w6Q+obLoUxVt/U3KMU7WttnlH9G18SXMizCi/IEW3Hcdp+LYpMy6wOYScb2+wrg1op+eHX8D/Su9WIGpYoWKrekTzBfvKPIksFH19McXZF/IRf3Axa7A3Y6iGQRPrUV2fFRRuQNoqCy4VWWT+Z66IAre+TY4uqDySfDceD+NC5IO8Ba/rT3K4llgXPUmhmveXFIBBg7u5lR8dsuknH/1PPvWiVuqmNMxOUIdKqGJCf43q/YpmfPuS+XXr2UhcN0tHPV3UiiV1bOWJWJAva0isQT6wBTlnhgJ4McjsWAxCVrdF1Vryuf5uAB9N0ehKeQU8rZXfl8vDvXQ8
+ ttXws4VI
+ wr6+5pmN6Ha1QSS7Y17YDtTaFf0ZLKKu9o40Jc9J80LdmNQxh7cMIVE+d2TpjxfotzIXAQ61nSEOjnnpa5mZh6nG8zm64L7C+4Al5147uPP+WyOoQWZS06wKcogNO9gQS3YerPDBUQBFjYNUudsnpV8t1mXgsaM5Zi5j2hd6orxmbS4MhEQ2UBWzo0Q3WsF8Bbk9RNG7cvXX6tKIkX8wMOIrgksHXdAQgKhaYcSi3b4TJUM8/yWohBMBiwqtk/AcEBOQ+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,14 +98,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  6 Oct 2026 14:15:48 +0800 "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com> wrote:
+On Tue,  6 Oct 2026 14:15:49 +0800 "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com> wrote:
 
-> The DAMON_LRU_SORT documentation mistakenly refers to DAMON_RECLAIM
-> in a few places.
+> The kill command in the DAMON documentation uses an incorrect
+> option syntax in the perf example.
 > 
-> Fix these copy-paste mistakes to correctly refer to DAMON_LRU_SORT.
+> Use kill -9 instead of kill 9 to correctly send SIGKILL to
+> the perf process.
 
-Good eyes, thank you!
+Nice catch, thank you Adrian.
 
 > 
 > Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
