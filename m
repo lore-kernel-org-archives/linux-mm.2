@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40CA1CA5FED
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 06:52:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02E5DCA5FED
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 06:55:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C5736B0095; Tue,  6 Oct 2026 02:52:26 -0400 (EDT)
+	id 110366B0098; Tue,  6 Oct 2026 02:55:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59D046B0096; Tue,  6 Oct 2026 02:52:26 -0400 (EDT)
+	id 0C17B6B0099; Tue,  6 Oct 2026 02:55:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B2D36B0098; Tue,  6 Oct 2026 02:52:26 -0400 (EDT)
+	id F1A3F6B009B; Tue,  6 Oct 2026 02:55:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 204216B0095
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 02:52:26 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 31FE61C3705
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:52:25 +0000 (UTC)
-X-FDA: 85291282650.10.A7A02A9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D4CC16B0098
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 02:55:40 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 53E7E805BC
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:55:40 +0000 (UTC)
+X-FDA: 85291290840.14.2B243BD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9787FC0004
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:52:23 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XLYKtt2o;
+	by imf24.hostedemail.com (Postfix) with ESMTP id A4313180002
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:55:38 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bvCl3lwH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791269543;
+	s=arc-20220608; t=1791269738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oPGhPEdn4k02nRhaGV+54+OxW9Un+YDg3dsLDCMry2s=;
-	b=x9G+mcqAdzJH7G2DHz5I4e5axYBYLC952Kd3v7izWiPmpIAuIiLIPPNG468uGyCKs82YZF
-	zILIPxx3OBrCi4wLfkjeocbbhfUZT0+Pev+T5oCestYTv+IrUbQoscJndvzWGj/Q0MQ9yI
-	MKjZB5Jl7dEKp0q5cqEVh5amg05zQ70=
+	bh=COdJjkB8RgloxA5/tpxvNWdRqdglfQ2PJBNFE8IfdV4=;
+	b=UYchFMVvdgC2S6IjSMMAr8q+WlfFaL9CtMn6UBaETDJhAJYp4vE8cy09kRxAIkWVZ0AqtB
+	HQyY6YJl+qSkch0R2JbOb/+06eoQ+nslchrGkZzEpWU60yYuUFpXKCvDCFM4ix9CmHzC4j
+	FeZSGrO0BjQXhBCXK11p+OhYz8uSjpc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XLYKtt2o;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bvCl3lwH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791269543;
-	b=yKVQppZy9dthTEpbZJEHvm++/RhT4RNcD1yvnIDkuSiKC/jS/aZb6eAAxtFgixLD6DFq9j
-	MA4m7HkNKeWegrl5+3tOraCQ79xFFi8MkF57A1ykkJr+a0G3xbGA26CPFZXq0Kccn27Omm
-	MNEyYN+tBuWKZfiTz2NG+fStt2MGSUs=
+	t=1791269738;
+	b=4KnCDAyriT/Vt12GHWal+ku9llriVwe/VRq24zy/eDmgLsPqTyjNhuMDR4iKzz2Ij8O25Z
+	4GkxWrzIUQztP29Rum9HhAbcbCokCFsOOtiet9LKXGWnR+tcfrTiF27N5vJ0cGGoGePLia
+	hXnU6JcwbiIkL4oFSm+i/Dx8q82K2Mk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 344A3601F1;
-	Tue,  6 Oct 2026 06:52:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7356E1F00898;
-	Tue,  6 Oct 2026 06:52:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 31ACC60142;
+	Tue,  6 Oct 2026 06:55:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B211F000FF;
+	Tue,  6 Oct 2026 06:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791269542;
-	bh=oPGhPEdn4k02nRhaGV+54+OxW9Un+YDg3dsLDCMry2s=;
+	s=k20260515; t=1791269737;
+	bh=COdJjkB8RgloxA5/tpxvNWdRqdglfQ2PJBNFE8IfdV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XLYKtt2oNmQNaZG3Zsk4SNTtQhqBFDGvvm7AVt8J427Ty4skLLe1nE7LoVfTAbt+F
-	 T3ST74NAWPg3JbcNvLOZSOzVUn+YdxInLCPL9CkDpie8PvhCQDoroOhdjZgn2CPVBW
-	 ux7IhrdwsQG3Rzr8lgw5IjVfnICQRjPiU46i1a59XEe8jPYAjHTNbPMqQkQoLqDMIt
-	 1ewq/VMcGJwym2/pZ1TVpFnozve+g4JYqK1LpIyEm6MK2zAwnRfG4ze+Hot/ls/Vrt
-	 hgUzDMU3SdBUv2c04KQeU0eFEcPnthNITOjOcwN/t5rG253JREwkbNQ28t1dsmDx5P
-	 QFaLqqMZhMlRw==
+	b=bvCl3lwH+wReRHRgeMmv6HNtPsXxtmTS3xTrV6iyy1sU5LYGWjzBTyl4LjrgF4T1u
+	 FHX4MJcHEnVG+kZWYnt9HMUVZwI1A2O53GBFzYqHmdTy5ErHJ4mYpKQjbsHWu64gMK
+	 9QwV5RjdhsPBw3YLgkCVx4aZh1TTsOftAJqR1v01fME7MN6WIpeh9b6crJBvSD0c2d
+	 YYyIMZx1K51T1LqOATBAbsmwpXA/8JNZ4CshVg/Omu27hWCTN0YIy+fuShv4wNqntU
+	 aF/RVi0+GgrxCYMhvEefdyIm9ru7tmNCtTw8TW8iqAQLpZ1towr2uZ5cDPHwqf/DFs
+	 8NHlgZR21TJ+A==
 From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Liew Rui Yan <aethernet65535@gmail.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	SJ Park <sj@kernel.org>,
+To: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 3/3] mm/damon/tests/core-kunit: add test for unconditionally skipping the last region
-Date: Mon,  5 Oct 2026 23:52:07 -0700
-Message-ID: <20261006065209.41507-4-sj@kernel.org>
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	ahuang12@lenovo.com
+Subject: Re: [PATCH 1/3] Docs/admin-guide/mm/damon: Fix various typos
+Date: Mon,  5 Oct 2026 23:55:32 -0700
+Message-ID: <20261006065532.41913-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261006065209.41507-1-sj@kernel.org>
-References: <20261006065209.41507-1-sj@kernel.org>
+In-Reply-To: <20261006061549.627-2-adrianhuang0701@gmail.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ehrofjn7mbqah94ghz189mw7g4uyp179
+X-Rspamd-Queue-Id: A4313180002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9787FC0004
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791269543-18120
-X-HE-Meta: U2FsdGVkX1/qQ4B7IuWtqWkBHz7C17D1GTw5u1LcEVGCePpu1xHLl3I6FfcTc2jhnKDLVB/pnTI4yBSxBkpQ5KRKHEY0ZS0VXXNmkW6uJO7h4jQm7eR0FyBdX2Ckx762Q2MGofXZSKX6iB+qtvswdM+4T4xvvH/DTbQSN2IZYH1IDDvAMClILkOAY57PZJwJfGnu7E7ndS/JRF4Hp9nP5KQl9Q7X2BUPp+OLUU7VMj6XcJFKDs1Ut9Gk6QKKOa2Qw6TxfzX0zaOfmtWwcsjTklpYrNfgZf5QhzPTm7a2ILj3Gi7I/FKGtsPihda5LNv5bnY+nzyLwAQ9Ig03LCVWtQ6ttd/j5uPqqkOqa9tAX1pbQQmiwsi2M0+h+88hR2AHQtbcxph8Vri9U8BFIFOlnIz6gtBpHB7n5NTQQwvqvx5C9vnLkrM9LSB+Klhpk+FKpAe7ez8VQo3YXfqkbN/rWdFq4MmwYSO2AlG6GEoy/NWWxFsemAdw3giyhiG2LFN1SGA6X9s2X6TACcqETTR9SXsvbtuqd5gT28zBhx+K/fif/NAwppfRoBmy6ztIaOH6AVL235Za64P+zhtKAVj1tOY2ipePfQ3JvKdYASFugZItfNgXYviI/IL4bYbL42rB9EcAXeJRw+Xdk0m8Ig7wfRDbVjCHlw7vEzJ2CG0+LYf31SaQuIUHubh/9lygHjR4bDxUb76Pm36/wgUV7fiAJcJ5agweBn+mWvbnXO1RpzNuS6qMn9e4h+M9Rri81E7Gubq8rzt3QoQQY04Pwun77h3TxoQclqyrnrDYWB6zgHN/vBMT91S3FFROxV+f+RFRia8qwJ8f7/9bWcPoSJQ67VDWXVCaJ3oS/OY53TxQyjdhSi9EtqgXmzoWbyeJczaB37EJuuYbmmD1Cn4PmdkTdtXu+qDRY2Mmuxpf1SD+rKzA+YnIifMt1ZAKwx2j9GCmL2n+3tUNS9OViFHD4DK
- 93xJdLfa
- bZTcd7Dl2+Y9krmVY3v76rbgINzgJJ7R4ZWkzPjJBXumJmxATr2ylH/9WJNDThWz4pJsmZjeJQ1UdQex6sPTD2decuX8IHBmmgIEBMQ1b55WuwjyUuqPY5a96oCNUmkj878y4wSBN4r6h/Eqen+NaTHuxUARAisRHgJK6R0PLM+Ev52XnpcN/wj7aa1W5/2U6FXIFIVXtcTDczvoUxyHNayZ/vK07cgAJ04ns8Gdn1qtgPtaGFIAi8lj4NNy8cas+s09q
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 4btaokmxkbzer9o7sfrtrgrkntrrbjik
+X-HE-Tag: 1791269738-902084
+X-HE-Meta: U2FsdGVkX1/omjKsJj54u1REd/k1RRWLfuXcYTq31aCpOaOpNX9htb8P165ir3+prqwJxQDFLq+Vs9YmGU0PImUa9QA2NTK+8VijMmPXK5vSMZszgqVASDXza9AWTXHHWJeh/HAaxIKLhMUdaI86621Al7EjGCvelO0Y7VdumFo0D2QVtpctTO9y7UlkL8hmKCm0QhD9ZWW6r5L18gnt3PSJA6FLHlc4cahoz28tTJb/jCjpKVjyEDnipGAzZp3so8rBw2ZhYg4ChbDJL/Fg+11OjPVHLEVmtXgPgMq4V1Nk1zLziqjO+eieR2PnVfJuPXKzgqM44OImJX6Y97Lm6Nv/8+4/RCdA29cVR2TW3Yp6aZdyZqKO8YEc05xa1Q9EOZ0s2f/nzRRHNLMzpTAASFTaCLFpTyFDYQoXxCLVPEOPdNi+ez+2961wKTlkviWvigIiY7q30U30L2JRuzEoxCh+v9R8IvQ5muIrBBBrIX2ELNUNk/Kv2pZ851+vnizUHEutNZcwtAEfXz/37dzVMHLwa6FhPvZ/b+sAAX1YoEMLBmw6ws9KsOpRFt1fg5CPnhQIRxrZSp0u2rrA0O+8yhcWVRiJaUORFFnTL5D9q+/PlyUA+BtGHm5v+6cx3MvJi9D5iiskmbllEZIURUhkuO4AV813v5iIwcVQQpioRNBYgEK48K0ZD91e8uF824uw8BunTxtZtqN72N+bpw43wozH/6tiB+muVzIW8xjirRzas/rgggZXmFGsH6Q1J9fSnHSRjeztdshwDyf5JnyWC8mlMa/anrzmrnqjB0ebbTZQ9OImARkOpe3MSWpPqBGEBVWFUZ9qO+am0q/Mdc0xHAmw0hZlNvusFdvhc9NLQpPT4SnV3ojzWJXhGrGF4arJh81TY6xHsAfQxI7JpVsSgdmn2vn4UJzuhl/dw5uI31/gkcjsPEio6yXoUfwudQL0gBuxCD1Yk0JceqinpE0
+ qvxiZr1r
+ /q0RpvEQE0pLjZFpwqOtO6xGwEnG+nSEnzrOJYG14dvjy1r2FnPYJX+05Fum0hJSseC1rRTxrSOtRq+5nEDkD7UeWJ6RlLRqpLlIrhGsC41eW0KwhEsWsv9ZPCllY+6JLTKvHiSR4aHUWZUZNeTONhSU+XXkdGRfku22e3b5U5nHMCvZEHhMFhgR2GkTr3lQ+9HbYk5SVlM4+nzcccMu1x/1FbnwsP0yN/RK0U9huJSY7GPwd62jfT6QkcFh6aatNRFUC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,98 +98,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Liew Rui Yan <aethernet65535@gmail.com>
+On Tue,  6 Oct 2026 14:15:47 +0800 "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com> wrote:
 
-Commit b3723b596b54 ("mm/damon/core: fix unconditionally skip last
-region") fixed a minor bug.
+> Fix several spelling mistakes found while reading the DAMON
+> documentation:
+>   * trusworthy -> trustworthy
+>   * DAMON_RCLAIM -> DAMON_RECLAIM
+>   * charget -> charge
+>   * hetmap -> heatmap
+>   * colun -> column
+>   * evelenth -> eleventh
+>   * idlee -> idle
 
-Add a KUnit test case to cover this behavior and prevent regressions in
-the future.
+Thank you for finding fixing these, Adrian!
 
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> 
+> Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
+
 Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Changes from v3
-- v3: https://lore.kernel.org/20260927175159.60703-1-aethernet65535@gmail.com
-- Collect R-b: from SJ.
-- Rebase to the latest mm-new.
-Changes from v2:
-- v2: https://lore.kernel.org/damon/20260925045350.66595-1-aethernet65535@gmail.com
-- Change the commit message, mention the fix rather than the original
-  bug.
-Changes from v1 RESEND:
-- v1 RESEND: https://lore.kernel.org/damon/20260919080453.628679-1-aethernet65535@gmail.com
-- Drop braces for single line, as suggested [1] in coding-style.
-- Set min_region_sz initial value to power-of-2 value, '1'.
-Changes from v1:
-- v1: https://lore.kernel.org/damon/20260831113735.3349-1-aethernet65535@gmail.com
-- Resend since the dependent patch is merged into mm-new, that would
-  help us getting AI review help.
 
- mm/damon/tests/core-kunit.h | 42 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index ef146ca2ae8a..3fbb4e4e36fa 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -2439,6 +2439,47 @@ static void damos_test_esz_goal_temporal(struct kunit *test)
- 	damon_destroy_ctx(ctx);
- }
- 
-+static void damon_test_last_region_quota_reset(struct kunit *test)
-+{
-+	struct damos s = {0};
-+	struct damon_target *t;
-+	struct damon_region *r1, *r2;
-+	unsigned long min_region_sz = 1;
-+	bool skipped;
-+
-+	t = damon_new_target();
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
-+
-+	r1 = damon_new_region(0, 100);
-+	if (!r1) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region 1 alloc fail");
-+	}
-+	damon_add_region(r1, t);
-+
-+	r2 = damon_new_region(100, 200);
-+	if (!r2) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region 2 alloc fail");
-+	}
-+	damon_add_region(r2, t);
-+
-+	s.quota.charge_target_from = t;
-+	s.quota.charge_addr_from = r1->ar.end;
-+
-+	skipped = damos_skip_charged_region(t, r2, &s, min_region_sz);
-+
-+	/* 'r2' is not processed, it should not skip */
-+	KUNIT_EXPECT_EQ(test, skipped, false);
-+
-+	/* 'r2' is last region, it should reset charge_{target,addr}_from */
-+	KUNIT_EXPECT_PTR_EQ(test, s.quota.charge_target_from, NULL);
-+	KUNIT_EXPECT_EQ(test, s.quota.charge_addr_from, 0);
-+
-+	damon_free_target(t);
-+}
-+
- static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_target),
- 	KUNIT_CASE(damon_test_regions),
-@@ -2482,6 +2523,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_walk_control_obsolete),
- 	KUNIT_CASE(damon_test_rand),
- 	KUNIT_CASE(damos_test_esz_goal_temporal),
-+	KUNIT_CASE(damon_test_last_region_quota_reset),
- 	{},
- };
- 
--- 
-2.47.3
+Thanks,
+SJ
+
+[...]
 
