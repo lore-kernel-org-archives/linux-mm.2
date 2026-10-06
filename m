@@ -4,104 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 474DDCA5FF0
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 10:17:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C02ECA5FED
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 10:52:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE94F6B0088; Tue,  6 Oct 2026 06:17:17 -0400 (EDT)
+	id 5196A6B0088; Tue,  6 Oct 2026 06:52:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E99C16B008C; Tue,  6 Oct 2026 06:17:17 -0400 (EDT)
+	id 4CA8A6B008C; Tue,  6 Oct 2026 06:52:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAFAC6B0092; Tue,  6 Oct 2026 06:17:17 -0400 (EDT)
+	id 3E08B6B0092; Tue,  6 Oct 2026 06:52:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B34566B0088
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:17:17 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4A9E9C0427
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 10:17:17 +0000 (UTC)
-X-FDA: 85291798914.28.91E46F6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5E51E120005
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 10:17:15 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fjqGp+H/";
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791281835;
-	b=LAeJ7Bzg2UALQ0uioX1hP+i8gBKBnOtGNRYQ1xNAWOdcHr68RaKz+KiMPRlNzkUxRYEhlN
-	dxk1kIn/KXvWhs0Bc0iW6Gx96ZPrawnkpMPwD8NrhQgdWsGB+69Ux/Xbwo9+bdebqDbRWu
-	o5m+NiqTrwuujczvOrDdVkQcBIOuoqI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fjqGp+H/";
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 191FE6B0088
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:52:36 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7FB2240103
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 10:52:35 +0000 (UTC)
+X-FDA: 85291887870.21.BE5D34F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D5EF9C0002
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 10:52:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UPDc2rpr;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791281835;
+	s=arc-20220608; t=1791283953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YmX2e33OtnyC8Zxmc6TiwfeqHnZc+9E9szDbs6SS/Jc=;
-	b=5E06hKJSuvCZctJnt5P/9TDrvDshUsAevWYVON75xXvQNItgPHJJUOaFZr4nfCedKoRFdQ
-	wKPOfVnmo5gOVF+4BCyYkmka3TmOJoa+XwOS9fKzOSGm3NWDENRjwyb5THKkw1VRvNX+0o
-	nQ8kSZCF2PStEcPdIl0M+JwF3rDHwBo=
+	bh=Sb1SBwuGuPt1qP7ui7PIRFwQF/QwxhK7LWahurK/UGA=;
+	b=HCEU7Xk3rVrAVm7IhVYLFeIFuGIcvUYKT5zQAzLbqW700+X2QYxBvlywDvLkG6umu7lNL5
+	mYtPW/zr4vRAUpQ0RnQgKYpNWS4H6rZ/2a+TfGP3QcOvDXn8S/VGOTjUACJHGnsbKVj/pV
+	zmY1BnnhtSE6eN6hOHemexDqYdd0a/g=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UPDc2rpr;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791283953;
+	b=A6XR8EMmqDyydNWYqfFecMCbYp/gRBffFfGzMomblgGtOtSgSzNKJSzh3NewhStieNqUP9
+	3bka+nYyJp1WeuKjsKKnjVJl5AqICRnZgnf20wcyNYfbHizI+1ogWGtzuycE3gqJAJ14tj
+	l8OWN/kH79boCsT15cXbkoJuSZqXqrk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7D6FA43F48
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 10:17:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626361F000FF
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 10:17:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1198E6022C;
+	Tue,  6 Oct 2026 10:52:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0891F000FF;
+	Tue,  6 Oct 2026 10:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791281834;
-	bh=YmX2e33OtnyC8Zxmc6TiwfeqHnZc+9E9szDbs6SS/Jc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=fjqGp+H/NMcqXRHqNX9hJ3U35OYZBK3lYTsNnTk6HmQRjMFfWv3vREk7IE+ji51tF
-	 7ju8O2LAm3gLX4Chsgtp5ysz7IXw0HHhb1cbLG3Bb8+WuObBfvZjKeQ1mQLe6zzR2f
-	 ge/bW5cX6muyHXBfKAYhnc8ld1nchS5ZdbZPvCngcoTevDThcJbMP8EODgFPWxCs6L
-	 bGoC+nYKYERj79Fnh/mv9F+HujyGExO/Ln4I2EyUmomS7GMUT38QAytv4HKuFv71B6
-	 R2Y8HGxk5ve22a6MhgmohQJUAIoKRHuEN2wXir6uP46pKYbYlUTYECu0Qo7OtwaR6y
-	 dSAU4kzLpVLwQ==
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93c5b7f5bfaso177564385a.1
-        for <linux-mm@kvack.org>; Tue, 06 Oct 2026 03:17:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwxMkhVdYq2d2TWpfxIMv6fKAwr7sxmmzvh44bvtpsqW70bivI5SCArEWvs3RBzMS7IEHhaG4a4rA==@kvack.org
-X-Gm-Message-State: AFuF++mBy7xxCGyVEaaxWCL23rTQdJGE8TDucWj1b1UTChF59dH87yQK
-	YcxKtOEDY0S8NDjwgmJSmDstwXgfYghG12YBbpEeCh8Oq9EwASXI66/PCfREtv6rIirTWHoP+PM
-	AoyJi21ZIv65V2uK03ff+M/7IhgTlKdA=
-X-Received: by 2002:a05:620a:298c:b0:93e:60b7:eb1c with SMTP id
- af79cd13be357-93e8f30e9bemr133098185a.8.1791281833664; Tue, 06 Oct 2026
- 03:17:13 -0700 (PDT)
+	s=k20260515; t=1791283952;
+	bh=Sb1SBwuGuPt1qP7ui7PIRFwQF/QwxhK7LWahurK/UGA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UPDc2rprdWWklNjxtl84opXyR87sbol/pJaC9vtqX6Sxn4rnOqdifPu2HwdV1iQ+O
+	 u38O2miOTA5MnBFfEQq8L9YSpRWEYQpuWbZy6RYRA3f99TiWUQzS0KLiqV19rOFHqh
+	 fY5N0qs4goUW6KgL7eEj8lkxXZ5yVeeS3YQR0YFVOeGp3ao3Sx/h42dRjBQoER7W5Z
+	 xOUwp+ofq5vwtBjlRohMtRDAwPCJzDzRZT1QX7gpltGi3uewvT6Ys4uhTuU705Q7fP
+	 WnbobxKCz5yU2Z/9lGB/XJi/Ctpvap2cJHMiAGQ+iR9zPjPpYSOUSHu1pif14dCz9F
+	 GHd5d5QVErTLw==
+Date: Tue, 6 Oct 2026 12:52:24 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 6/6] mm/mm_init: add zone mismatch warning during page
+ init
+Message-ID: <asTS6OtxPMVshuIO@kernel.org>
+References: <20260929053231.66085-1-songmuchun@bytedance.com>
+ <20260929053231.66085-7-songmuchun@bytedance.com>
+ <ar5xbQsUpSQZg0wO@kernel.org>
+ <78D5D6AA-BE36-432C-B0F7-453F93DF18C0@linux.dev>
+ <ar9p39Y9SmlxvbA_@kernel.org>
+ <85941AA4-7E50-4AAE-BC05-0F443B21BE8B@linux.dev>
+ <ar_0GLYM6KsIH6tQ@kernel.org>
+ <D91CEA1E-6B79-434D-AF49-16C62C0FD095@linux.dev>
 MIME-Version: 1.0
-References: <20261005062236.564210-1-vernon2gm@gmail.com> <CAGsJ_4yKSoCwcEDhtd=biKoUjUX9eTJJhFJGFAZWc=WsAyXycg@mail.gmail.com>
- <4cdb95f5-4140-4116-8247-c04f4b2a5c4c@gmail.com>
-In-Reply-To: <4cdb95f5-4140-4116-8247-c04f4b2a5c4c@gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 6 Oct 2026 18:17:02 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4x3n1g1tqxFnnLj8mS46fyYNWQq6goqop+_2QoKO09eeA@mail.gmail.com>
-X-Gm-Features: AclHuK8lN8z7X7d6APZTpemSkGo0Ao6gHmfTzep6EKwyapPzIeCYDccx1RXySzg
-Message-ID: <CAGsJ_4x3n1g1tqxFnnLj8mS46fyYNWQq6goqop+_2QoKO09eeA@mail.gmail.com>
-Subject: Re: [PATCH] mm: vmscan: don't count per-node proactive reclaim as
- memory pressure
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com, 
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
-	hannes@cmpxchg.org, mhocko@kernel.org, ljs@kernel.org, 
-	roman.gushchin@linux.dev, dave@stgolabs.net, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: s3khw6qg4m37546c3a44nm5say9i3yuc
-X-Rspamd-Queue-Id: 5E51E120005
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <D91CEA1E-6B79-434D-AF49-16C62C0FD095@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791281835-191630
-X-HE-Meta: U2FsdGVkX19H5DIsksMsD+veIDiV7cOOpJXPt1PYtekbQy+PHghfFzOcYwk9L3zpJoqTxMcdVNBhzx3VHVRPvEBI5/rViLbvdRYXFpvwfy+wFgKG8ZLrOLvIIFThZLhrgt0Z6/QjoLQk9RSJP0RuSquTFO9NY4P3qVDstItYMiOL9h062o3kwtJyoUoQDosD3Hbdx4ddvubyWZGtHnfWRijz1yZjEWg/ngmhXnhL5k+RcsKDipYXRp3elDHjTUqzSqD0axU/6mi9SEQSxN4Ff+AcNvkMFxny3I24w3TYSvN0971n08d0hE4AtCTITflb7tCfbkAex3FOCp+KOeX0vgoCtZek630zOwBjBuH0h2W8alldiEDmP8XpOig7RpHdtyka+6x18mUi4CrmmDoqjzq2eRrydZRweQn76qMLmu6mShKJT24/VU/ggVEEYonnEh9zPj33QgorHEP8gWTem3B0qVAgZupirrf6KHnZi7BNZ1YtflfVBftg4VK8tAdA3m+spNJ39hgTDj6yeWDfqoGI3FHSY4t/SVxvXnhu+i4B+ORAJzVC+Az2HJheo9zjbJlLW4w+aXCL9wbAxskasERLlM5/AklzXcuomZ9flCLIZokSA+QZ3jKxS/Ky53/UB0fCWMz4VVJi4wZrzp72XGFLrnjRPhBmKAAhj5PjT+KSomjPj4zhD/x6Xa83kJzGauCOVU31pPDRz2GNdVAk/9cTMa+CTGK/r7jrlV2LWtgd9IcDF9NdGVW642IRNRNGBOd6GmtwpsUQvMX0ckXXxy7dOWX9EKUFn+H3G+Lp1mTxj/wsdd71o+s3l9dJV175C+ONL+nWiBMzzjufc/b1rPxVuTn2nIUmuEaGeo/v4zmnmbE0XI+VF4FjUAT1qoO1cORk2nDNVLaKPWbvek2/viVZw7dcTiQO8LSfbdc64fk0+qYvz2Ozcu+UyP50DAHD7NxKJlP5TmZvdl2L4Q7
- U6Rrc3p7
- aQ4fNOa0bUVNFIjeygigl4ir4cxNJiYCLFGLN+IzwGzgJoMk2BvPbjYoBHAorxmn6kgLmK1IAhcZHVawC9K14XwObWz5bZc9vYjwcbqPMHKOcJHKttIjMMzvjrSE2F0QdpRgHOgdSi6WXdqY+veOF9KEabUjfxE+12PMX/pLn/NMQTCZpCdS7CZeHppZvaWtEkQ4D+RuU+ae2EI5PC6W+wvAVEU3wMcpCxp0l2nymg6TCG0wbpOfkePb9kRJGbUy12ED7V5g0+9FBfl9uaPI3iBzWD7uTS48h9zNd7R+mgVj6M5z6fXuy7l8BwNhb/Vh1hnOamgNl6vleheQj+zLmcNcR2hnc8aRZEwoDVTlY8yTXf6Y=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D5EF9C0002
+X-Stat-Signature: icgmgbknbsndp54iu77yh6uym9195qa1
+X-HE-Tag: 1791283953-615285
+X-HE-Meta: U2FsdGVkX1/PcIjOeIelXV1DJmKv+eomV9ud1Nu8ePma9+2htxnkqXm/1rcemfzYVGVB4GlHpND8R6ThG6lOAKBXupNSg8P5ax+Z6OVbGrNOkdGkoMrTTvZuI3E2PyydHKRmehE9SU/3cSRIIO4nM195+/rOd1ro7wKkjG4QxrFlPn6RCqYCiljtUwnLtzTXsKEUdLeCYoHEHBmyM0wHacR7nu3HM7E3NSUuKciJ2hF2FtGlLfYMmgwbIoL5LefD6tMzg5wwP3GTcBcAso3Itggi2WE7YLYmSb/a3hmtfmm3LNIQ5NbLhtRuouV4dswbdUUpjy486dngrOpE6LRr2rylK6dxFssPsADab7OGXkWjX43oSPiAUURMPMMpIKvEoH3PUZ21ZfhNjtnaSlkLiIevmqr2exT8NjCo3s9zZcguGUWHOMxzD03NOLgtA6ega2XgpDq9Ets3MUobvIg1ePQoXKriZ43IOxV3OMnn55gfjpMjq1cpaXjLOV9UCZHjdxKAIf3ZyGdn9TyDDxk5vK3DEoWircHCUWqw/fZiVmJMUyojxQGqBju+XROxLOKA3TxLcz9XE82wvhxv6ZjbvniLjwdhFWtFvjyFv543/68lgbRrwDLN14QoyyTtXZWRpqdd9gsTJZ7pk49OBIlq23kuz3Mq37E6cYkzPRcp4wVDOzk3nP36cLkJy07Q9JeOyraDHSGp2yNpH/mJDqpb/2P91kftYpRmRB4/ayJ7OuO1hfQbdZXQ53uGPmTrnHNBCRWgRWxYFowuPB+KdTuVfSBcBA/mr5ZxfBCASI3s7WS84JM0OqCatVeLAHOkrtg/7FvmqCrUZvCDVAB3QP4Pgs4RgZHqJVB3jEVqTddGRDo6nKVcEKF0vVBo9m2IVgUZIz1XWoOezjv4lFZydp/UGwZWy7NzOMLVwbSp8OeV9DvYV3udTvmRh7THqj2Q1ClIRNyat8dow5kUAq7qtVx
+ lMreNj4J
+ vB65DOgUzwNVa9nqdNsey/gJk6VyQauaUymsmuWOU1T72m8vFRKxVdIKZhSFZyrY6j5hQGUrZ8fQX3meKYha1lW03SN8/3q/Nzdy0TuZwdO1jLhHMMAuCyAh2WyE1O0I2ql3kjrz384ZAkfEbGXdBoZAzp6OznkQ4GPHS3a1p8rfMKzIEEh2Lb1b4NXYNA2kL9sEt1dycGR30OMJI+Asdepf4fjwUmb+LqIjNpAxvgo3pE5DADo3KCzCqEgzXz8f6ur9wv6XtFUY8qtHaDyX0aGyGsq87KdTG5GEauerVaWuUxEAOwFUFUcw/lbVyQq5bLuriWUj4id+Kd5FehNAbTK+2SqrgPzyvz9gr8qzVPnjFhAlV58JmqLgYnvZk53IJapXBkO/JxEMGouzoI/pV7KcVEPPtNknWiJwJDfOfS+4fsPFErsxNHIxUqdd5KNTyvB6ew4mnOlAk5uM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,103 +114,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 5, 2026 at 6:21=E2=80=AFPM Vernon Yang <vernon2gm@gmail.com> wr=
-ote:
->
-> On Mon, Oct 05, 2026 at 02:30:36PM +0800, Barry Song wrote:
-> > On Mon, Oct 5, 2026 at 2:23=E2=80=AFPM Vernon Yang <vernon2gm@gmail.com=
-> wrote:
-> > >
-> > > From: Vernon Yang <yanglincheng@kylinos.cn>
-> > >
-> > > When the cgroup has no memory pressure at all, writing to
-> > > /sys/devices/system/nodeX/reclaim triggers proactive reclaim on
-> > > NUMA node, causing increase in the writer cgroup's memory PSI.
-> > >
-> > > Due to this reclaim is performed in the context of the write(),
-> > > accounted as memory pressure on the writer, like
-> > > commit e22c6ed90aa9 ("mm: memcontrol: don't count limit-setting recla=
-im
-> > > as memory pressure"). This is unexpected, the phenomenon resembling
-> > > senpai will appear again.
-> > >
-> > > The Documentation/ABI/stable/sysfs-devices-node documentation also
-> > > notes that "This interface is equivalent to the memcg variant."
-> > >
-> > > This patch unifies the semantics of the memcg and node interfaces:
-> > > per-node proactive reclaim is no longer counted as memory pressure,
-> > > and the per-node proactive reclaim interface no longer produces
-> > > phantom pressure.
-> > >
-> > > I ran demo[1] that performs per-node proactive reclaim 10000 times
-> > > in qemu, writer cgroup memory.pressure as follows:
-> > >
-> > > without patch:
-> > >
-> > > some avg10=3D31.53 avg60=3D13.42 avg300=3D3.31 total=3D10602985
-> > > full avg10=3D31.53 avg60=3D13.42 avg300=3D3.31 total=3D10602985
-> > >
-> > > with patch:
-> > >
-> > > some avg10=3D9.59 avg60=3D3.41 avg300=3D0.81 total=3D2686221
-> > > full avg10=3D9.59 avg60=3D3.41 avg300=3D0.81 total=3D2686221
-> > >
-> > > [1] https://github.com/vernon2gh/app_and_module/tree/main/reclaim_nod=
-e_psi
-> > >
-> > > Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interf=
-ace")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-> > > ---
-> >
-> > This seems to be a valid concern. Personally, I don't like
-> > having the code depend on whether `__node_reclaim()` and
-> > `node_reclaim()` are called from proactive reclaim or page
-> > allocation.
-> >
-> > Can't we check whether `sc->proactive` is true? Am I missing
-> > something?
->
-> It is also fine to directly check `sc->proactive` in __node_reclaim().
->
-> I chose the current coding because a previous similar fix commit
-> e22c6ed90aa9 was written this way, and it is also very clear.
->
-> Of course, it depends on everyone's preference. If everyone prefers to
-> directly check `sc->proactive`, please let me know clearly. Thanks!
+On Mon, Oct 05, 2026 at 06:27:52PM +0200, Muchun Song wrote:
+> > On Oct 2, 2026, at 20:12, Mike Rapoport <rppt@kernel.org> wrote:
+> > 
+> > On Fri, Oct 02, 2026 at 05:56:40PM +0800, Muchun Song wrote:
+> >>> On Oct 2, 2026, at 16:22, Mike Rapoport <rppt@kernel.org> wrote:
+> >> 
+> >>>>>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> >>>>>> index 1650d6bc1211..bd02e8d06965 100644
+> >>>>>> --- a/mm/mm_init.c
+> >>>>>> +++ b/mm/mm_init.c
+> >>>>>> @@ -609,6 +609,9 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
+> >>>>>> if (!is_highmem_idx(zone))
+> >>>>>> set_page_address(page, __va(pfn << PAGE_SHIFT));
+> >>>>>> #endif
+> >>>>>> + VM_WARN_ON_ONCE(vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)) &&
+> >>>>>> + page_zone_id(page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) !=
+> >>>>>> + page_zone_id(page));
+> >>>>> 
+> >>>>> Hmm, page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES is initialized a tad later
+> >>>>> than page so it'll have stale data in the page->flags, won't it?
+> >>>> 
+> >>>> Lance is right. The shared tail struct pages are already initialized by
+> >>>> vmemmap_shared_tail_page() during vmemmap population, so they're not stale.
+> >>>> The head 64 struct pages are initialized later — right here, after vmemmap
+> >>>> population.
+> >>> 
+> >>> Still it looks out of place here, can this check be done in sparse-vmemmap
+> >>> somehow?
+> >> 
+> >> The struct page entries of a vmemmap-optimizable compound page
+> >> are currently initialized in two stages. During vmemmap
+> >> population, the shared tail entries are initialized first. The
+> >> retained head area—normally 64—is initialized later through
+> >> __init_single_page().
+> >> 
+> >> This warning connects the two stages: while initializing the
+> >> retained entries in the second stage, it verifies that their zone
+> >> information is consistent with the shared entries initialized in
+> >> the first stage. Therefore, the same check cannot be performed
+> >> during vmemmap population.
+> >> 
+> >> I am planning to first unify the HugeTLB and Device DAX
+> >> compound-page initialization through a common helper [1]. Once that
+> >> work is complete, maybe it will be easy to move the initialization
+> >> of the retained head area into vmemmap population. With both the
+> >> retained and shared entries initialized in the same stage, there
+> >> will be no cross-stage inconsistency to check, and this warning
+> >> can be removed.
+> >> 
+> >> Would keeping the check here for now and removing it as part of
+> >> that follow-up sound reasonable to you?
+> > 
+> > While it feels really out of place in __init_single_page(), but having it
+> > memmap_init_range() close to the if that skips shared tail pages makes
+> > sense.
+> > 
+> > What do you say?
+> 
+> Sorry for the late reply because of traveling to LPC.
+> 
+> Putting the check in memmap_init_range() would validate the
+> invariant for the shared-tail range skipped there. It would
+> not, however, cover all vmemmap-optimized initialization
+> paths: optimized Device DAX bypasses memmap_init_range()
+> when there is no altmap, and deferred boot-time HugeTLB
+> initialization may also initialize retained entries
+> elsewhere.
+> 
+> If the intention is to validate only the skip in
+> memmap_init_range(), moving it there makes sense. If we want
+> the warning to cover both HugeTLB and Device DAX generally,
+> it still needs to remain in __init_single_page() or be
+> called from the individual initialization paths.
 
-I personally think the following is much more explicit than the
-current implicit code based on path dependency. no?
+Yeah, putting this into all the callers sucks too :(
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 6a931b576b7d..048ba11852fe 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -7997,7 +7997,8 @@ static unsigned long __node_reclaim(struct
-pglist_data *pgdat,
-                                           sc->gfp_mask);
+With all the callers,__init_single_page() is the right place for this
+check, but I think we can add a static inline in sparse.h, like e.g.
 
-        cond_resched();
--       psi_memstall_enter(&pflags);
-+       if (!sc->proactive)
-+               psi_memstall_enter(&pflags);
-        delayacct_freepages_start();
-        fs_reclaim_acquire(sc->gfp_mask);
-        /*
-@@ -8014,7 +8015,8 @@ static unsigned long __node_reclaim(struct
-pglist_data *pgdat,
-        memalloc_noreclaim_restore(noreclaim_flag);
-        fs_reclaim_release(sc->gfp_mask);
-        delayacct_freepages_end();
--       psi_memstall_leave(&pflags);
-+       if (!sc->proactive)
-+               psi_memstall_leave(&pflags);
+vmemmap_optimization_verify_zone(page, pfn)
 
-        trace_mm_vmscan_node_reclaim_end(sc->nr_reclaimed, NULL);
+to make it a bit nicer.
+ 
+> Thanks,
+> Muchun
+> 
+> > 
+> >> [1] https://lore.kernel.org/20260513132044.41690-18-songmuchun@bytedance.com/
+> >> 
+> >> Thanks,
+> >> Muchun
+> > 
+> > -- 
+> > Sincerely yours,
+> > Mike.
+> 
 
->
-> --
-> Cheers,
-> Vernon
+-- 
+Sincerely yours,
+Mike.
 
