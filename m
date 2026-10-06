@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC88CA5FF0
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 08:15:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF814CA5FED
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 08:38:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32EFA6B0092; Tue,  6 Oct 2026 04:15:55 -0400 (EDT)
+	id DDF526B0088; Tue,  6 Oct 2026 04:38:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DFA86B0093; Tue,  6 Oct 2026 04:15:55 -0400 (EDT)
+	id D90566B008C; Tue,  6 Oct 2026 04:38:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CEFA6B0095; Tue,  6 Oct 2026 04:15:55 -0400 (EDT)
+	id CA8496B0092; Tue,  6 Oct 2026 04:38:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E576C6B0092
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 04:15:54 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A45DC6B0088
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 04:38:47 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 75A2C1605B1
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 08:15:52 +0000 (UTC)
-X-FDA: 85291492944.06.9B6D2B4
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D290740004
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 08:15:50 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=CTmIyYMh;
-	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1A1AA1405D2
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 08:38:47 +0000 (UTC)
+X-FDA: 85291550694.06.259BA12
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1E1C5100003
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 08:38:45 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b="iigl/7S3";
+	spf=pass (imf14.hostedemail.com: domain of manuelebner@mailbox.org designates 80.241.56.172 as permitted sender) smtp.mailfrom=manuelebner@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791274550;
-	b=UFBGZ8S0TnwUAqbOvd9XM6IfIva7zSOYytM+TyVnRRdEmVAkzKafOUQLjE45IJK4Ooct82
-	FZZuUMnZAaZWFytsWdPKmAQ/KzagymU/u3/4B4S8PKY5H6FxeqrlXWDXmspoat+xT7oJkj
-	CXDPpdoImOSB/vyqgvJRYjqOwLx/9+w=
+	t=1791275925;
+	b=UqUPVL+Fk5B6H77F0sd4BuVDa86Q6GMeb3De9iaACnFBHRn9A/oQyzXp8BmXFed3OfGe84
+	G9BvXarLRNcoFdg2fmUkgY7DBvGQ/sQV6PN7BIc05oIF2s2Jg45C+lXPmGudl6YIdWbI9a
+	/g4YJpnOTqhNNgNCYhuJmCQC6XfPeMw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=CTmIyYMh;
-	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b="iigl/7S3";
+	spf=pass (imf14.hostedemail.com: domain of manuelebner@mailbox.org designates 80.241.56.172 as permitted sender) smtp.mailfrom=manuelebner@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791274550;
+	s=arc-20220608; t=1791275925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7w+ywd1PSZdlDyJtHv9jkoIkzwVkAbGER4qOmhoc9sg=;
-	b=m7zxZL7qhbmxjULt1yVQrwfK3mpzuG5kdU6EvFRnNyzVpKfZoBGbhXKtyvJBfl8rHzmklU
-	E2xj/MZymvKRGSTA8OWmhdfLOq2fjnx4OHo1V0zimpIeG/iI6zKjKp0MFRtu6LhGCcd93O
-	+u0ZDNXvJdTJ3oyRHQZEg7TxH3PVYwQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7w+ywd1PSZdlDyJtHv9jkoIkzwVkAbGER4qOmhoc9sg=; b=CTmIyYMhKZW/mp3AaVxMHgb+9K
-	X3vZdM9CDUMPceZXmRakufgvFfy2NMersd5i4sJ4Ckg2QWO/GuscHH/Scxd/z/8FDAjnkiKBXC9yL
-	XMeEG3A/u4Mh1Qrs+yallYQBLVAmyokd9vWHgEQpyWzeJlafboCbhXvDbMAFFZRMLjv2SswWjAYrt
-	lm8GWIYyGfZXUqCoNs/Yjrkg0G8hJ7nJk0ak6ZFxAMGerkX+7Yng5CtGPWubHg/3yy73vu9KCTZcY
-	D2eSuecRXnn7lKbpdjjuDLXBz/x3pHnO1BE721fCdVD8O7K33Ql2Yznu2mx4EqtDD3K0C1cCC8Hb2
-	x9TrmwOA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xE0Kx-003pm6-1d;
-	Tue, 06 Oct 2026 08:15:47 +0000
-Date: Tue, 6 Oct 2026 01:15:44 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Guillaume Morin <guillaume@morinfr.org>
-Cc: linux-mm@kvack.org, rppt@kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v5] selftests/mm: hugetlb_madv_vs_map: add underflow test
-Message-ID: <asSuFcNafCEnEo8t@gmail.com>
-References: <aqgUdbtumaO8RiIb@bender.morinfr.org>
+	bh=S7mbjJsdOH1y6cZEHFsKN84sSmvjkVA8r40kT4OvmcQ=;
+	b=gXwsOskanOWyrylow0czSvQXya0MEkjAOGGeQYBFEGsflwaZjExX8mmz5pXI60+fNquFtU
+	iPPzfQqrJ1Z5uv1k0pF6JNXqItvjZhHI7D8kDu1I5ggMNCg6cgE0o3uipQCZaPQxgG1UF0
+	H4bJ/J65Jg/W2HAAbtRlWJJMmG5ISrw=
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4hzV5t0L7fzMlT6;
+	Tue, 06 Oct 2026 10:38:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1791275922;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S7mbjJsdOH1y6cZEHFsKN84sSmvjkVA8r40kT4OvmcQ=;
+	b=iigl/7S3287vT3m4CcJM/cC+eb3MSdf2VrRcV/6tNkYERSvUJfOAQyd6vG8Pip1ytelUuT
+	rcGTp7e5kUgcOD/R1L9vaRYprUGUdr5tYw4ghxJWp96rOl+8DwWAyjkJ8MRmKxJDI16rHX
+	gso7NJ6+puFdMuqGKixccO31uB3Aaalft4t3p+gEd0hrbuytlTy/Do7iRg85DthegFDkqH
+	fFfLFe83tPHoBk+FXtElYWElgmH1UuRJ6+0HXgXP7oGeFtLJN2/gNiW195Nmc0vGFlBU9b
+	QzCqJL9GCezqx8zg6+51GHipDh+m2ylRhQWvpZQHiMtscd7ig86R5An0nyusww==
+Message-ID: <c2c4279ac5948b1debbe597eea1210fd667801f6.camel@mailbox.org>
+Subject: Re: [PATCH 1/1] mm/damon: fix typos in comments
+From: Manuel Ebner <manuelebner@mailbox.org>
+To: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>, SJ Park
+ <sj@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ 	ahuang12@lenovo.com
+Date: Tue, 06 Oct 2026 10:38:38 +0200
+In-Reply-To: <20260915102746.647-1-adrianhuang0701@gmail.com>
+References: <20260915102746.647-1-adrianhuang0701@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqgUdbtumaO8RiIb@bender.morinfr.org>
-X-Debian-User: leitao
-X-Stat-Signature: 4p5p4juss1hakukbr8dsc81rqxgt6xb9
-X-Rspamd-Queue-Id: D290740004
+X-MBO-RS-ID: 4f7708e9e185bd138c8
+X-MBO-RS-META: jfbsa4wbs98wgj5dz7dihncj5qdkb3ur
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1E1C5100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791274550-635640
-X-HE-Meta: U2FsdGVkX18SqVo8Xj/ZnNQpIvc7E01Q8TKwfF7bNQrB4/8suhChdPEw5K9wnbgjzIC+uBC02BpxeLaQqURuRQrIRbA4015lwUPV/jBXaCNKSgS/Boqt6suY/VAxfZBJhiXIrM/HE0eiosbZuKQ1Ob90PyHCNPEcD50ARi/Eqx7ocIpKtLroRS4/HOoMz0/ZYbktuot4s/LSFUspWpd6TAb1Md47hzA5khRUzieKIYfZNTdGdTXi6y579EB69vnjqIzcaNuCClP1iZg1Y7snp3d4to8CJhtzqEuXWX+r0MBw5Wi5bpgdHo5w2kN01/SAVgxmRo/BriWp6/Po/5pn05hgw4aPP4WYTRNoXGlzn8Ysnexp95/9fJyFvCYYXrlmbuoaT/QW0baqZp4JOB1ZOSHx3Zq0pc9ZeA3tk1ONJovQwPeYj45dufcKLfXb7KtTJ4F8JT7gaiHtbeS9pBoApcv7SnBKC0twKS3KLmJA/lQ3HNXoHaHdiRtxj2b0gfGl/aA4XheDAxsa4wKd4LwnyJCbFOw6PGRWOmS2UCQdu1+rQDm2MpI/y2jpYlKx+c8FkmaYz5kqwl8SMoOlTMwd2R7cF0we6mJWoCS0dNvkym191b1uSUm1XCr8fdoFOcCejSIphYgP6AKq8FmCgzqCe3WVBfYqPjls1tTGI/V1QAlf1tq9sBiCXKU3ffZHa3mBr4E2UrZtTN/sUM5Cb6IFSEk66KS9NL715SYqZqKafxmqzbd22wY1FshZ9qx5jq9y/tOm1ee2Hr3Pty8YyhjDHuNnGA7m56sf8JNZF1KZEXfpX6QJx79xokJlzwoQsV8iQR6yg3uGopjCqFlxgqgwAJFgRj8BGAYqkfHt8SOKPwAgNVn42Iw57XZuALrz+kqTkFtoQqDKvuk59/0y1UwDmKJDFRILjoCMLn9cy0atXbKenY3D6WNDNVbb+Wwxg1K1B09Nb71qwojd8ODHY/7
- YbibHzIi
- mPs08eP4mdYZ2LeS706G3ndDIluOVDgnlnHssrvyFmz/pJm0HF5iuGLNcZNYPnie2fcyHDoGt9uycTlhXVyjS8o9GFL3AF+J0mZl6XYSUsmIOXUAkY3QdbPBYKhVYcGZiN/Qu5a6pIV6oM+GCiztOujCtiXmVp5ojf6XxQB40L6KZTsFL/nuKGdoV+Y3+UJyBDIRvboSegtoa73rgSV2UagT1mYF9yK2NpeGYbTY+KauHR3jy4CCTqSXmJsJbqCsuEIoINROSe86BdPeWH1cQHUFLPvsqBJYbFipGgZm3MxfFiW7qEl1jEshqCVsCMjfyBCDyqV5RClyQBXeejc+zD1vYTar43yJ4W7mfso0Om9XkkONoHLkS0ONFXZjbl6I0khkt3bv4DJNBTtgJRnhCcM7+bOnEItPQ34xUOujRc0xcOb2KfRQYoYtUdw+FZNJm3yeypj8PiM1PMdlkkNy7OGMmsA==
+X-Stat-Signature: eg7efser9sdg44ukm4q67au8ksr6htrx
+X-HE-Tag: 1791275925-987101
+X-HE-Meta: U2FsdGVkX19s6qdomf625VU1WMjW7XLtPWE1p0cx/GwQN/XVd/NToILCeadcYb/BhSOl/YQo3LQEbHq4aJxHQAlpdvaxkIpo8ecLfybExFUUcQY6C6rlCJYtb4VkOSR4SIBhgvbqDgSirdBIcY8Bl7+Hx3L2TDg6C+6w6pAyKOeh0RQUAO3Sg1kXvuKDEAmlmG+l8/rXqnDFG3/haok/lFTjqwq9C4D7qiHv6D4PTm2MuUsGDBQikU8xk1VGfFjQkBHDRxn/XPp5mmxJF3crwDF+rCHuOkg96fCBuXi0eX9oXFGljDNImIsaNYS2FjtsDIy8UFbWORICyzQ52QFcOGJLWg4SAvoRDNDNWOoLZJAA8XJMeaQ0f3nxhkpHRw8Kau9vS7z+4CY3oNBQeRPaw03Uxtsgx6aYLWlFrn04jD00GT00CjU5zUvx+qgaz5bBJ+qvXNf6TG0B9ZkrfkjehsS5xRUVC3M0HCit2nyJGyI4wrHOienc3IbrX7hkBSK9LKbJIZseEoegG+/7aLwdjapMr8+HEYgLH6FTl5iPvLcMZCRwm0CX2T3EluxecQ6BpaT5DOD3Kjt7+KTmnJZUXHg1TsplbTGZZDxaPqm0KU5LtFPOFLcLqLVKwqgUmp5VsWYxBERWDaCtUUBMivf+Oopg/3ADv0okbhVRoV4bHFrwCB7BrmP9DQxBn6zNAIp0kWoNeY2Ezcp0OXpfy8khZx2COiUGsIh63iuwUfIwKcY9GVEHksYBYn0gE/AdWKpVmMo4x3PL7lTfo3Vqn00Zjz6GKRJSSt+RaiDuxJ9O5NLM+jLItXrli92MZXdCkGuzixQZ/3O61zLKvtA6n2p1JJRhCbBFyFkIh4qy8MZdnAdzFU3V/PNrbMYz/8ipjPHjgXBoKFIBOaXyJR8MzMUQtqA4KaXEqpRN3xZNpZPf0EppHafDB7muRKCXZ6mj+Soo2fQJqxCq3aMTj6gKBy6
+ Zu91e8IA
+ ky+4HFbcIv2g9K2oRelhqfqk3rCvNKGDw1zuQyJZWYLY8xBMeLrhq3luAdEzK2Coj420EUg4xGPaC58e5or0x9xIe6Ft/HQONMXpTLC0sVljRZapGnUawsTzncwk6ORsqzGkxM2UBPbIwfqNZVHPbtAiu/cIYsKcZDmhI2cLAuLOGBasVs1Xc5JYO5TYPyjyaRuNmolBa6P1sS+FpznCYg3V7EW7qAOs/NgLY2twnAJ0ZBVcR8FiBEKvDOMkpSrOq2SlmNBRvR+VTXZ8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,18 +98,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 05:36:21PM +0200, Guillaume Morin wrote:
-> Add a test that checks for underflows when a parent unmaps the page
-> first. Also check that when the child exits the reserve count is
-> correct.
-> 
-> Link: https://lore.kernel.org/all/alEJkwn5VlTTH_ZX@bender.morinfr.org/
-> Signed-off-by: Guillaume Morin <guillaume@morinfr.org>
-> Reviewed-by: Breno Leitao <leitao@debian.org>
-> Reviewed-by: Mike Rapoport <rppt@kernel.org>
-> Cc: Breno Leitao <leitao@debian.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
+Hi Adrian,=C2=A0
 
-Tested-by: Breno Leitao <leitao@debian.org>
+On Tue, 2026-09-15 at 18:27 +0800, Adrian Huang (Lenovo) wrote:
+> Correct spelling mistakes. No functional changes.
+>=20
+> Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
+> ---
+> =C2=A0mm/damon/core.c=C2=A0=C2=A0=C2=A0=C2=A0 | 6 +++---
+> =C2=A0mm/damon/lru_sort.c | 2 +-
+
+could you add this changes in this file?
+
+DAMON_RCLAIM -> DAMON_RECLAIM
+'set as' -> 'set to'
+
+> =C2=A02 files changed, 4 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 0c98f7e267d0..981a153619c0 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2447,7 +2447,7 @@ static bool damos_valid_target(struct damon_ctx *c,=
+ struct damon_region *r,
+> =C2=A0 * This function checks if a given region should be skipped or not =
+for the
+> =C2=A0 * reason.=C2=A0 If only the starting part of the region has previo=
+usly charged,
+> =C2=A0 * this function splits the region into two so that the second one =
+covers the
+> - * area that not charged in the previous charge widnow, and return true.=
+=C2=A0 The
+> + * area that not charged in the previous charge window, and return true.=
+=C2=A0 The
+
+Please make it 'area that is not charged'
+
+Thanks
+ Manuel=20
+
 
