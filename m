@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B8C5CA5FF0
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 09:21:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73F8BCA5FF0
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 09:21:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 560866B0098; Tue,  6 Oct 2026 05:20:40 -0400 (EDT)
+	id A10396B0093; Tue,  6 Oct 2026 05:20:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4435B6B0093; Tue,  6 Oct 2026 05:20:40 -0400 (EDT)
+	id 9499E6B009B; Tue,  6 Oct 2026 05:20:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F97D6B009D; Tue,  6 Oct 2026 05:20:40 -0400 (EDT)
+	id 83A226B009B; Tue,  6 Oct 2026 05:20:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E44ED6B0092
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 05:20:39 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 572B51402CD
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 440A96B009E
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 05:20:40 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5AB6A05D0
 	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:20:39 +0000 (UTC)
-X-FDA: 85291656198.06.51DA80D
+X-FDA: 85291656198.03.9B4316C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8FC20140004
+	by imf15.hostedemail.com (Postfix) with ESMTP id EA761A0002
 	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:20:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BFGwV6Ot;
-	spf=pass (imf26.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aQ4wYMkY;
+	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791278437;
-	b=y2/cSLu/mKWcqb4nb0NSl+NomL/2ZgxZGkV4rUNG0lLPS2JziHGvO0p6TC/G+VamqAx2ge
-	JdiaHR0ikmNbbdIVwdVhAl8SbMPZ78x2yqOE7SVIsdhCFjwstAs3TNkqSz8Aqwuw5Sa74s
-	x6KGW+pdxlzBGtFXl8z8iJuxsdQ/UMU=
+	t=1791278438;
+	b=1qW95QwLLZqEo1b70GK0ODOi8HlyyCMCSZ/kxPem48NKn+tsHFzEfVY4KoRUnSWohpZEow
+	wSVQ7RVzqikWkp5BXLd5xpilYwJZaMDwu+Lv6zQCk7aPOAn87tz3RmbDhJHLP19Nik443s
+	gEMB7tUBVGHNCjmz+KZkiO34jDUF/FQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BFGwV6Ot;
-	spf=pass (imf26.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aQ4wYMkY;
+	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791278437;
+	s=arc-20220608; t=1791278438;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ziXSIFKy4iYBIXzefxPjJEejxh6eI0ypyw0gaU6vVJ4=;
-	b=7qJB1pJ4XJWOkYVSIZ7S2EL10d+mHlq5XQmqFXUjZipg7Zg273Q3DUr5o0rI0cqBl5V8HK
-	Pz2/R0q8d/aVqhgggcjbv07LEdFqgT4HiqUahb/+DC57WzObXV0AyP1rIO1X88Dx+QC2k0
-	Ws4ZzMjkZY6H6Bra6spBNp02qPbHXtU=
+	bh=r5SQ+2kIxztKujOxzR77oFFLlb4omNpweC880YzyU/s=;
+	b=FlrWGehMcryI3g8CuNy6BMqu/x0cN+fgIzDMCj9ZuebxArVnuZXNvimIousb2qQCj9NgeT
+	E7HFUkBg5y1tJKs6s2f5pgwj0XQzy7Tv/IEXfuupINfCpXMUY9VTlbDn39BTwrXY673i5U
+	I9YQ7/1v9IMWniPIZzzIp8Rhp1Dt0K8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8627344787;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8C924447A2;
 	Tue,  6 Oct 2026 09:20:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4841F008A4;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1601F0089E;
 	Tue,  6 Oct 2026 09:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1791278436;
-	bh=ziXSIFKy4iYBIXzefxPjJEejxh6eI0ypyw0gaU6vVJ4=;
+	bh=r5SQ+2kIxztKujOxzR77oFFLlb4omNpweC880YzyU/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BFGwV6Ot437+lLzZytDMcJMCEjlmOPmJZxOkahUbroKgnSRzvq2jm/55eOIG13LlI
-	 QPrgWc8VKrKuJp+/FS8fxyKsXdhE9OvSuaYwxl3OBroTpN15iL/zqMT7oCx2r/pUDR
-	 hec+OLdi1KCYAQVarNnGmp8pO505achrSEtnNqSDRuyv6AUYzkoYrUD2rxuj8wTGQd
-	 w0tle1Uf7ZupVOVKzgRZTGcnytWNCSC0Zjv6qrxLC2h7wlMjx4/64mWERNVAd8VzQ7
-	 1aMRuu/dUmO+C68iyyQO4KRk7GJ4qNBefA8shkoNHj3TpYUD6PcLBgvxqmpU3CNXqs
-	 ah3u8MbFlFbZw==
+	b=aQ4wYMkY00Ex9Qr8zNd8lCDm5MIFeTYX6K1i4Vz6QAO+bcS5+D7kuBRd62KxXTW5T
+	 kC30EnTBpWG2xHCYvqhhoyIt0bEpyeC8Dk61mohcWYBb2MG0GLAknHPjE+iQxuK3pM
+	 5TzQvQrWoEVu09lM4wS2A+NXCeIyhVKMfcSgDqQhUvv2dbdwncTScxlUwfpanfVuT2
+	 4gxxTOTU44cQa4rPyyL4tKG7+VOO9Dcw1PXEaL9kQWKJnVBjQnvCxSc/VC4TpDWR4U
+	 DZ5AToxXNDPR29+bLWHUemAy3paMXR45Tb8QilEZshgGXL22El9RTFs0AX4zVQPoew
+	 mJR//XmSB97Zg==
 From: Kees Cook <kees@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -77,24 +77,24 @@ Cc: Kees Cook <kees@kernel.org>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
 	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v6 4/8] mm/slab: Give bucket caches the alignment of the caches they mirror
-Date: Tue,  6 Oct 2026 02:20:30 -0700
-Message-ID: <20261006092035.166776-4-kees@kernel.org>
+Subject: [PATCH net-next v6 5/8] mm/slab: Add kmem_buckets_destroy()
+Date: Tue,  6 Oct 2026 02:20:31 -0700
+Message-ID: <20261006092035.166776-5-kees@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261006092030.got.500-kees@kernel.org>
 References: <20261006092030.got.500-kees@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2206; i=kees@kernel.org; h=from:subject; bh=VTBkNsJfqD4uSQDLJ95b9wi9U4gRgcj84wnPIW38sWc=; b=owGbwMvMwCVmps19z/KJym7G02pJDFlH9iaweZyuaA6b/rog9YrLkeA5r36Gnl56NuLzg13xn E1P11yt6yhlYRDjYpAVU2QJsnOPc/F42x7uPlcRZg4rE8gQBi5OAZjI9iJGhlWezjx+4tOXzkp4 OPVPc8O0M8+2Cc+JZK4W2+BzdY0H+x9Ghtuc9yepvbvcsohJSCTt3JMj5uddw8/OLfgbMGf2pxk przgB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4334; i=kees@kernel.org; h=from:subject; bh=AI556dgcmDFEiUNFpt0nE2tTt5VEwxJ8p0QOtjqe2Tg=; b=owGbwMvMwCVmps19z/KJym7G02pJDFlH9iZ8m1ofIzR7u/LerWfWr5YWdV6tbrPhdkrQv9yWP l+vX5MtO0pZGMS4GGTFFFmC7NzjXDzetoe7z1WEmcPKBDKEgYtTACby6CrDP5Pg1iuu6UEHd354 arCgxT3x4YIcq/StnE83aVh/MV2aPYvhf4BNx+dJXgZPD7jPTan8dHz9wWMOFo0Pt3YevJ5umrV sNT8A
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8FC20140004
+X-Stat-Signature: y4918t4p5xmifa5yokz3bsfq5p71fo5q
+X-Rspamd-Queue-Id: EA761A0002
 X-Rspam-User: 
-X-Stat-Signature: we5posgsdwausknc9gegdb9dws8fzsqn
-X-HE-Tag: 1791278437-512913
-X-HE-Meta: U2FsdGVkX1/axRV7sDEBg5fcxzMyaXZJR0azd2B//6ocJbFvdZ+9ZD0HH0BbxvNo4o9kPXaF8ZRaG2R0vtctzOMcn+CpNq+YO/inMuAvx5df1P62lwyTlXQbALaWHXS1anoBTe3Lq9g9Xy+2/zbqUKYLtHC/ATRURBLBpW5UtfQVXZCPPXtcXrMXarDHKfEX006OFt8ahy/G5bl5vnE25jCl0fBstREqyzSjOx/5IwDKaDbMNlmnbxDAouXfaa5K7Og9hUqOrGV0O3QPBsp9H1M8AHFKylqNeZ/nJ/XGuNkbHDGNhmX7/Vs1ECAlWl2iGHFqY8oMqV2LpwLNm2V8QBd/4Hdujig4vjdfs1831jf8sWWnJ5DaXSyx9GUenTI/sN0Zk7LI2q6kqPsWB8ux/o5nQHy6tJOLtsDZ6tmdwgTPjpK1FmbjU/7UH7HtVbEyQGETvaXdODmEiGOx6DhzKqA6+AP9MYgslcbaNFJ9JSI69Xa0+jKtmG4Ioi9dDExBHIpwsX/kbYU+Eqx/Dl7UQpDsXC3MN7llkCZJWxY9uoWkHJaNASGsIJUSAVxoYqCkyxzCaq2UmiHF5urS2gKxxIApGPQW+0q3gOKoEMIMOojDyXCrB8lKiJrLWCz1a/sHvFVBBn7nQB0ajX1uAdVgcu2vNJmcljr497tfIlFE2p0780t4kgYNAJ9gbrzH7wzCV9uzWh8U3qsYJFGJhTyodezbmHjwmyVfJhjOTDrNs6oq/KDpOaLS6moKC68F9g3DFgOs7ZJOHEZLFb6HnFI3Mk2KHdkEHXpvjl3B/qmGjjGThBnGMzj262T/XUfkgqcVD64DEys/aYZYVNCD/uipR+QmRqzHVCTquoYCWVSTjn9as9SeMlqK1G8L6ls3KtY/aZlzMZNJwH1ICsOS3wuv+WWHfm+4BCCzxobZk+rFUM/g0SoOWYH5cMLnaL9yZllMndQvCBY9LhZQeaARkVD
- JtWAk1Sj
- +8btA8sIhg5JXZy2x1+q+vOt6O1HPq+ZhGsB8E7OUU1Nx2J+TjjST6mKwxFUARqLK456OtSsqPjGZL1mI+rCUBPx9xDqwZ7wQG/brjO94pvj4Vb5a1ibyHl+tbDREzGATSN6/wNHkPBJ7lT1qOgw0iqkoKKt+2TGGhcPTgdZAmzxUb+gnDWbkJxilcKCPJxj+Z+mRrCDTW4aI7vLQQhIwdKRuvsVlvVnVLY7KE+fOaKjRrMg=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791278437-430285
+X-HE-Meta: U2FsdGVkX19sAGrzobY3yE/MCw51bgSCRTngQ3NoTVRdh+JqPUQj55W3PYTZ9DDkhQqmQrX3IxTi6aswDtzsVmGu4KGNCDpxr5iZmlqETMA46NoW5cfyfZAOu8TqI3djMjNbES3PjQ4uJcdN+My7QFWxgkQHsThntwQfZ1A3Crf4XJc9k6blhmuB9qu7hz/yjoXOxRNIP/tRCy3/9eoQEl3oZhUFPhUcKLR8xLzSLqz2LrjgW0AMducA1aeSje/2jGN1nOPXhG4nIkbM9o2B4hCbYEXcdiGFdtaecHtt96HwWA4aPXLcnLxCeAjx2F2SR/cgsUikMCr2LupvGDcYEeLer6xRZykuzObswWXfPCRTdAJVSTvYx4xzD/4hTlenAg/wkqStuUWWJ855544JAO/WtxInwQMgj+YYjVzVUMJbukAZkanU3sHA4f4Ti+JG0X8YllwXWyZAj/L4dLUqH7i2jBUehA56jPxJ1clJr3ibtWlMWRA/aGxqXFPQyL9Zu3nJTSbMhmhjp58A48EXVQ+F9ffujMHJog7P2H08ikn9Z1BV87w6CTck+3sYN3FkwOrc3pc/L0tdbGeJ0DHnQ8MVPLzoDerfYVxr+pYw9/3uuR95sPrZKzZPWXKWjXNc0+I2yCJofOSi4KiLbZSopvHphkaWjJnx0vid1xDWdnB29QHhckCiKSoSI11fr5zBG6xWwXRXdEqBRdcY6nqDwIkiI3VItff8mmYllvjKtdXR1E48mBaAgP1ebHzOuo49OLO1Io1vh+1iIjiFCHAtY6GbcXE1NkGbh6EYK/vlAQ8dclW9KwIEg7K+lcaFaiRMFEOr2UA7Uyy3YulDHL20Pc3H6tJtnC4ZjuLGi9vorhaQUUmkcO8Q5WkiryjDE3Cx5zy2HLSgewA62Bw1A1gyEgnWsEPlLY3T56Gb8LbmMn1DOyPdis8w8ps0BWdVDda4X4EyBPHS8z9altshi/o
+ sHGkIZdG
+ wHVMjkpv9n+za6Ycjrvfk4sj9clrRor78oeWsXP73ZGYzE3Ke6tcsgvZw4PFZjAxmLz4fA4dXVTtlSIaeLXHtN5qt65oEiJ0SPEh+mnlK6sj7UDkwCutI49g2Kvu5qIT4h9kPFESQeYeDGdArXjAZsE8r2+uG2FCzkyTZMrOY64672GvG0WfNmO+Cvr53Srrn8uK0bf2+oAU9gT0GJ/XxATpg754r9ooo+ZYRtvlxtwMeOMz3jdaEo3qDkjy3hz1WGNuESR29pGrAp70u2n3d3hao7xORAbJWYcSs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,56 +102,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A bucket set is created with kmem_cache_create_usercopy(..., align = 0),
-so calculate_alignment() falls back to arch_slab_minalign(), typically 8
-bytes. The general kmalloc caches it stands in for are created through
-create_boot_cache(), which starts from ARCH_KMALLOC_MINALIGN and raises
-it to the largest power-of-two divisor of the size:
+kmem_buckets_create() intentionally had no "destroy" counterpart. Every
+caller has lived in core kernel code and creates its set once at boot,
+so nothing has needed to take one down. However, KUnit tests may be
+built module, so we need it now to support the coming tests.
 
-	if (flags & SLAB_KMALLOC)
-		align = max(align, 1U << (ffs(size) - 1));
+Some caches have size aliases, so the same pointer is stored at more
+then one index, so we have to save it, clear all matching instances, and
+then free the saved cache pointer. (This is what the bitmap was tracking
+before in the "allocation failed" error path.)
 
-This is only a problem when slab metadata is enabled with
-CONFIG_KASAN=y, CONFIG_SLUB_DEBUG_ON=y, or "slab_debug=...", because
-metadata changes the stride size off a power of two, for example:
+When CONFIG_SLAB_BUCKETS=n the whole body compiles away, matching the
+ZERO_SIZE_PTR that kmem_buckets_create() hands back in that configuration.
 
-	size 128:  bucket align=8 size=224  | kmalloc align=128  size=384
-	size 512:  bucket align=8 size=608  | kmalloc align=512  size=1536
-	size 2048: bucket align=8 size=2144 | kmalloc align=2048 size=6144
-
-So bucket allocations will fail the IS_ALIGNED(p, ARCH_DMA_MINALIGN)
-check, potentially creating problems for non-coherent DMA situation.
-
-Take the alignment from the kmalloc cache being mirrored, which is where
-the size and the name suffix already come from, so a caller moving from
-kmalloc() keeps the alignment it had.
-
-Don't take an alignment from the caller instead. With
-CONFIG_SLAB_BUCKETS=n, or when kmem_buckets_create() fails,
-kmem_buckets_alloc() is served by the general kmalloc caches, which give
-kmalloc()'s alignment and no other.
-
-Fixes: b32801d1255be ("mm/slab: Introduce kmem_buckets_create() and family")
+Link: https://lore.kernel.org/all/20240809073309.2134488-1-kees@kernel.org/
 Assisted-by: LLM
 Signed-off-by: Kees Cook <kees@kernel.org>
 ---
- mm/slab_common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/slab.h |  1 +
+ mm/slab_common.c     | 50 +++++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 44 insertions(+), 7 deletions(-)
 
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index 31f97e2579a7..034d4d0ece00 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -892,6 +892,7 @@ void kmem_cache_free(struct kmem_cache *s, void *objp);
+ 
+ kmem_buckets *kmem_buckets_create(const char *name, unsigned int useroffset,
+ 				  unsigned int usersize);
++void kmem_buckets_destroy(kmem_buckets *bucket);
+ 
+ /*
+  * Bulk allocation and freeing operations. These are accelerated in an
 diff --git a/mm/slab_common.c b/mm/slab_common.c
-index f8bb70d76eb4..885aafa23da7 100644
+index 885aafa23da7..fb1dd15953a7 100644
 --- a/mm/slab_common.c
 +++ b/mm/slab_common.c
-@@ -481,7 +481,8 @@ kmem_buckets *kmem_buckets_create(const char *name, unsigned int useroffset,
- 			if (WARN_ON(!cache_name))
- 				goto fail;
- 			(*b)[aligned_idx] = kmem_cache_create_usercopy(cache_name, size,
--					0, SLAB_NO_MERGE, cache_useroffset,
-+					kmalloc_caches[KMALLOC_NORMAL][idx]->align,
-+					SLAB_NO_MERGE, cache_useroffset,
- 					cache_usersize, NULL);
+@@ -430,12 +430,9 @@ static struct kmem_cache *kmem_buckets_cache __ro_after_init;
+ kmem_buckets *kmem_buckets_create(const char *name, unsigned int useroffset,
+ 				  unsigned int usersize)
+ {
+-	unsigned long mask = 0;
+ 	unsigned int idx;
+ 	kmem_buckets *b;
+ 
+-	BUILD_BUG_ON(ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]) > BITS_PER_LONG);
+-
+ 	/*
+ 	 * When the separate buckets API is not built in, just return
+ 	 * a non-NULL value for the kmem_buckets pointer, which will be
+@@ -487,7 +484,6 @@ kmem_buckets *kmem_buckets_create(const char *name, unsigned int useroffset,
  			kfree(cache_name);
  			if (WARN_ON(!(*b)[aligned_idx]))
+ 				goto fail;
+-			set_bit(aligned_idx, &mask);
+ 		}
+ 		if (idx != aligned_idx)
+ 			(*b)[idx] = (*b)[aligned_idx];
+@@ -496,14 +492,54 @@ kmem_buckets *kmem_buckets_create(const char *name, unsigned int useroffset,
+ 	return b;
+ 
+ fail:
+-	for_each_set_bit(idx, &mask, ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]))
+-		kmem_cache_destroy((*b)[idx]);
+-	kmem_cache_free(kmem_buckets_cache, b);
++	kmem_buckets_destroy(b);
+ 
+ 	return NULL;
+ }
+ EXPORT_SYMBOL(kmem_buckets_create);
+ 
++/**
++ * kmem_buckets_destroy - Destroy a set of caches made by kmem_buckets_create()
++ * @bucket: The set to destroy, which may be NULL.
++ *
++ * Destroys each cache in @bucket and then frees @bucket itself. As for
++ * kmem_cache_destroy(), every object allocated from @bucket must have been
++ * freed beforehand, and @bucket must not be used afterwards.
++ *
++ * Context: Process context. May sleep, as kmem_cache_destroy() takes the
++ *	    slab mutex and can wait on RCU callbacks for each cache.
++ */
++void kmem_buckets_destroy(kmem_buckets *bucket)
++{
++	unsigned int idx, i;
++
++	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS) || ZERO_OR_NULL_PTR(bucket))
++		return;
++
++	for (idx = 0; idx < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); idx++) {
++		struct kmem_cache *cache = (*bucket)[idx];
++
++		if (!cache)
++			continue;
++
++		/*
++		 * Sizes that kmalloc rounds up to a larger size class share
++		 * that class's cache, which kmem_buckets_create() then stores
++		 * at each of their indices.
++		 * Drop every reference to it before destroying it, so that no
++		 * later pass reads a pointer to a cache that is already gone.
++		 */
++		for (i = idx; i < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); i++)
++			if ((*bucket)[i] == cache)
++				(*bucket)[i] = NULL;
++
++		kmem_cache_destroy(cache);
++	}
++
++	kmem_cache_free(kmem_buckets_cache, bucket);
++}
++EXPORT_SYMBOL(kmem_buckets_destroy);
++
+ /*
+  * For a given kmem_cache, kmem_cache_destroy() should only be called
+  * once or there will be a use-after-free problem. The actual deletion
 -- 
 2.55.0
 
