@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3000CA5FED
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 06:52:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CE5ACA5FFC
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 06:52:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0475F6B0088; Tue,  6 Oct 2026 02:52:19 -0400 (EDT)
+	id 528B86B008C; Tue,  6 Oct 2026 02:52:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3AFB6B008C; Tue,  6 Oct 2026 02:52:18 -0400 (EDT)
+	id 4D9A26B0092; Tue,  6 Oct 2026 02:52:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4FD96B0092; Tue,  6 Oct 2026 02:52:18 -0400 (EDT)
+	id 3C8D16B0093; Tue,  6 Oct 2026 02:52:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C5C706B0088
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 02:52:18 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B9CC1A056E
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:52:18 +0000 (UTC)
-X-FDA: 85291282356.23.E8EB9A7
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BDEB6B008C
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 02:52:20 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 934E61C3735
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:52:19 +0000 (UTC)
+X-FDA: 85291282398.25.198F1DC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C2387C0002
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:52:16 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QEPBvpoO;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 006941A0005
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:52:17 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g0hXNJjQ;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791269536;
-	b=V9ryOyI+RW557oIyXdaW/kU6GU+9UGCVMr6/geYUjm12DlZbJVS+E7+xgt87tO89dAFtYK
-	r7GZhynP6mPFgXmuCuI+JejpBnQKGClW85cs4GmULEnZ0UiyAQ1Gt/9ilVbMhYkDdyGdPh
-	enJa/G80EE9BUkz0b2ByJorHub+0rv8=
+	t=1791269538;
+	b=kxCtuMZ/RmQEm1Df0lc8ZZrGm8bMZbfpi0iCu2CHBbgcVt3h1j6b6P8Rq+UARcvz628oC4
+	DoqC01C0ssQWKwCcVBAEfHrULn51zWfufTuvx5jRQ/rtETShTW+pCRwuP+4khLyRuduFRe
+	ZJevyNLkWVJeUnhmqhBSOcK2ox5YS5k=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QEPBvpoO;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g0hXNJjQ;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791269536;
+	s=arc-20220608; t=1791269538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=PSfSoVBXGadNhagMAHG18RgSe3v5QSKmmn3n3+vo4hQ=;
-	b=1WptzfRNtazq5rUzBOMjKQJka/s349vSIS/Y1SakbBQMuIQHIZWXqvCoHcprHfoXxtveI0
-	+YrutHLsk/6F1Ghx2H40TZpHnkGOdYO7mtBuxYHwmHfyepLhP/8vGLKEV562bY5ViSAgel
-	SWi4Jjp014KOfrVowXFM9G6Ca9KnNuw=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QPAjnO4sadYj3FVzedyJO8iaaP+d0ImiNneHLyndDTg=;
+	b=ds+TJKWWSzTiNzjQwDNfgjtI/o0O6Yjd9mp/kV+JvL9EbmHHuPIXE1VI4Nixps/+es9FZY
+	sBYxuJ+QLGeqpQF/fB94M71Qkql+Vxgjr8a/aNx/zb3zhkfmPGereC/zPlNxcJUC7nB4Pv
+	wd1BdaQYZ5E3ugwY7dNie8DgfsEOC+o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 75106601F1;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8EB32602A8;
+	Tue,  6 Oct 2026 06:52:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94FE1F00893;
 	Tue,  6 Oct 2026 06:52:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BEF41F000FF;
-	Tue,  6 Oct 2026 06:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791269535;
-	bh=PSfSoVBXGadNhagMAHG18RgSe3v5QSKmmn3n3+vo4hQ=;
-	h=From:To:Cc:Subject:Date;
-	b=QEPBvpoO5O23SJSlCo7NCFJ1p2qFiGwOekB6/LxdVAI+Te7qVga4p9nzOwdL1cCqS
-	 hKzHJKtMfbFvob8z3zLFnazHpYpP6gps5GpuT/YU8OTqHPP9YvvM5kDJW5pdyFvXSV
-	 6ppbILs25XjelKJt3I9ZXhQZ85wHn8Y2zDFxupX0WTrGbujX1m0AWIW9tZoqSQj7EG
-	 BmD+jYBHW9yixEO1Po+8aSw0G0hI8jbKW+M3BosWkY3t8z1Yw7aVatNFBk6aey8X3/
-	 BOkYzKqFedEnwp8/H3ldZ6NwYRFeWUDwqxLpm6FUhvWv9oH9yQV8qSIsdckP3sQ7RR
-	 Et39CxfPESlQA==
+	s=k20260515; t=1791269537;
+	bh=QPAjnO4sadYj3FVzedyJO8iaaP+d0ImiNneHLyndDTg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=g0hXNJjQsMh8I0I/vHbkxH6f0IQX1qlcvIqS5RV/VHxlfxmv6XedtSQhZ1HVxOsnF
+	 puTIv8bE71Z77JRjEUgwZ4beFvyQu8Dt2q8HeWXiJZH2XVAx5snzwkPehZLJgwdVH3
+	 GoSdnLE1/yfi3hoGTfwNTbQt3YF4/+KNloKBs22HiKymsD9hLlbKASvgV1VUIyhZJg
+	 0zb0Hd1Go5GHMxoQA0fJLH2uy3mvvrtr5T/b3Pxev6LznQyfz2GZB4WqQ3fc9lH3Gk
+	 rLVtM2nWhdRlFr+qIF7FHHQi0Ap4afM7nJectyWb5qXlPAf01v3wRWK/X7EiTnl0s8
+	 qCmgk3VQcG6ZA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	Gregory Price <gourry@gourry.net>,
+Cc: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>,
+	SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/3] mm/damon: fix a minor bug, clean code, and add a test
-Date: Mon,  5 Oct 2026 23:52:04 -0700
-Message-ID: <20261006065209.41507-1-sj@kernel.org>
+Subject: [PATCH 1/3] mm/damon/ops-common: fix age_in_sec overflow on 32-bit
+Date: Mon,  5 Oct 2026 23:52:05 -0700
+Message-ID: <20261006065209.41507-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261006065209.41507-1-sj@kernel.org>
+References: <20261006065209.41507-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 4qss3jdnx84p8fizpj9nnsy55tp5c1a4
+X-Rspamd-Queue-Id: 006941A0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C2387C0002
-X-Stat-Signature: 3wnbqibmono6nathacu88k7wsw17azgr
-X-HE-Tag: 1791269536-516825
-X-HE-Meta: U2FsdGVkX1/lfG5smRMwyqrHCku01FuMplSvHOISVcPE8jbgJdEFzp5jE29qKqmEC0vo13vayPnP3EN6tzmeliBbnzvwVoLq9qWX+xLS6ZWeO0tctFZ68OD2YOlfldcvpVASUkXXa5VJS38MqFTKQmKqnagEwR7vR8SyQGWZBHUEsliPtgD8gQj5GSvVCgLW/SlTejGUnXmEtYnMButsleXc8kw5BAwZFXeUbygb+7/GyeS+hfxJmkFwqN32AmZ0LikpyEhXmV72JN00s9u0KeECJb41ank+EK8GPodZEQTIQ+MpNpK4OGsPlA6QBXkToVf03yM+vR1d/8cTWv9UL0FQY9wGoCVFnce5wR1h/ecIrciW4w0WBRy3RRJbBSDf72MM1nSV69qlqZJQ4OaDqxOu3mAwZi9j2ziQGHQ1YG8bT++i2Nj/wubPobFFO4ZB7kpnU8z8VBkbEArodXwzPyDvGgYiaq6dDqEpJBNsrJRs6U78bIQ6eaXO1rpW+Eqs9YnJ+PMvjFIMQjS4p91eGJhdeg/CPgyBfwQa9yOHTAFkF7ALa9EPq8WULblRSKUz+wqXJodVjwVd7YLzMu5dDkbVfxZr4eAAsNhgzmrFy01yVXQrnacbv8INR0iP4AATFOh//5Hm9m/wNxBsb577eygdOf17fVQzyk0uRRTBZfQl+V5/+XWJqsn9IcH8pmEoYIQAGT7JOgp9HL/DuS1ttTyqeW/f6G6Kuyx4NiWiIgCGhJiqyltRv+hwl3OBM2wrk8oG4dFbX9z/GJjH0+I59nhiyCTgnBa2yamjoQe2k+t8ipUfw8cNz48txcjR+g13bVXZLiZQnFgtAphptkKmLYZppzKCt/mWMFNw0pIPlh1+1Hej2/mnDoLaTiTdcSIusWmlWzn7CTw0niZrOswS288R77g1GFFw9zVDSQ4+4fSBsU3EdXvfdBPGQMnZzS8kd8sSXGXV4I4JdfUwzVH
- RrDH/ZIH
- VyPUGE6V2UjO1NiW+PJBOXHpO+i19QVmo4fPDzv7ix6KdPa7Km24PD5RwPfImlghNhlhtrI3OlWjE5dIhQ2LECtC3QbkBfWSPd7nHBG5pVpvSzsw49/ay2qIdbmM3JdIKxaJqdk/7qFzJOk2iTiWyg/h+M8kQseFywSXpaLiSAOowRoXmES/v5cZEvCE/EPLeQCiVz2a/C2d35cCQfVG4FNzbOCi8krc8Ktp/qxajPCYxa5w=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791269537-944055
+X-HE-Meta: U2FsdGVkX1+fe1l1BRFCXwvng8o7ShRSeou2r8nr3TkPnkEfCX9aWTVbxHs2AOSWgyoWBI1LyKOGc/zYzNWw/aiMth5riMF0PL5o4j+HuDDFGgKyZPV3OErBvjV1WyT+Sf2+NNIxWPM6PwQcizxsO33jso94oB8H/wC0pv+E3gqdTXwki5yknqQ1B2nIuoQCR5+6IPIFjVp50UuJ7kJPEhxpynsYg5np6IDa76gssUOB5JNtSTekH5/bG6RZjZC1bzwMT11jbDKMSFQaAKCTyT+5Xukew4Ynwzm3gYVfMJDK+FQpL3pAqXSL/FShcNm32ph2y/SrZ8zBxvC3XoIFOQ/JOPjanN7FFAJMytPRZWURAZ497uT9MInZlmS+akFFtAJl1laIDotdhrVrY83IuqBUE2c9pAA58AUzooX4VB1CkZ0m9GwJayK/2pCwq0HB8oLoeXQfmf/QlhN/XnQUstnG/52lGvAoCUNHdFkonSpL/ieHRiqbIF6L7scjFC7rU3N2AZIbY9+XXKkyPbWpSam2VpALTQJg+SM9gaLIZvOUj0ysoEA4i7CREhocalXwPhG8btb8p1Am6HixuM9TEeg56gO1AapQVmp90hBnxhmeqA0I3rrahhcQjYD9EAX03hUeQLoOy9MZ8bMG8/5vWk+Zdchyx1elu4zug0gPauzaEspIjNlnBx7hWMEBp6oFBbX7IkAXUHYZvCcrMVPg9XUQ2QM1qK7ievccnTw/UubKCDwVSbWZHTOJW1gHFFEJ0fIQDTuAY/VGhBgADQT5HAmRdr787+tpSVF9PcA1hxTsPjZI5g3kq0etCaQGgIh0AR0AVQXc2WqNk4BstReTilP6qduCUUu5noPQn/yy+rGCeUSXliCqFh+Fdc4fiZhY2mwXOY6sZ8QsHMe9PGnlawKP40pSW9GnwKZe69skGlRby7khoGYxcPtDNnqs4j0peD6kC7fEd8ve/+rCQLF
+ uxT1JxD3
+ mHuKPCnWkAdE0d9Z5PkpR7I2tLUusBQrHBaQOw7tWEqJ8agBbkAWYoTYo99EdIHvmd7x/6I00L7ZA8FFjljbO8may6g9s+BH4+GYpwUjAXvfozahXini/MsKTOnPHI5ToWctXS/j0y2YTYpfIPKkpVX6W0h8hnJmXTOr5jlpJ5ysaZGHtQsFYYC8/il2TBEkeOMYarICx/sihi9rFtI5eMitseed4gNyNyn/dJIu3q4C/Uye0BeaXCxJwF/+bsc+ElwAt2EuOQrgGW8QbGSdj5VEO90l4Cqkun+frEcwm6Ea+FBZcbHw7yVw4EHWRWqr7LnJCCrLlJs+8QnyYDJ/i36i2gFtdaztPADSfdv1bK3yd4phc3KJvTbXbw4QxQ4VoZFt/wNGGyIXsm0pa/1HAakK15ZLrzF+G4c503D0WUAF6ozApo8gYQ7UexQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,34 +93,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Patch 1 from Jaeyeon Lee fixes a minor overflow issue in DAMOS.  Patch 2
-from Gregory Price (Meta) cleans up the code for handling of hugetlb
-pages.  Patch 3 from Liew Rui Yan adds a kunit test for a recently fixed
-bug.
+From: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
 
-Note to Andrew.  This is a batched reposting of DAMON patches that I
-reviewed and asking for merge into mm.git.  Since there are only two
-weeks before the expected opening of the next merge window, this will be
-the last mm.git merge requesting unurgent DAMON reposting until the next
-rc1.
+damon_hot_score() calculates the age of a region by multiplying r->age
+and the aggregation interval.  On 32-bit architectures, unsigned long
+is 32 bits, so the multiplication overflows once the age exceeds about
+4295 seconds.  Then old regions are scored as if they were young.
 
-Gregory Price (1):
-  mm/damon: use damon_get_monitor_folio() for hugetlb entries
+Fix it by doing the calculation in 64-bit arithmetic using div_u64().
+Also make age_in_sec u64, so the result is not truncated back to 32
+bits.
 
-Jaeyeon Lee (1):
-  mm/damon/ops-common: fix age_in_sec overflow on 32-bit
+The issue was discovered [1] by Sashiko.
 
-Liew Rui Yan (1):
-  mm/damon/tests/core-kunit: add test for unconditionally skipping the
-    last region
+[1] https://lore.kernel.org/20260623011652.1354-1-sj@kernel.org
 
- mm/damon/ops-common.c       | 11 ++++++----
- mm/damon/tests/core-kunit.h | 42 +++++++++++++++++++++++++++++++++++++
- mm/damon/vaddr.c            | 10 +++++----
- 3 files changed, 55 insertions(+), 8 deletions(-)
+Fixes: 198f0f4c58b9 ("mm/damon/vaddr,paddr: support pageout prioritization")
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Assisted-by: LLM
+Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+Reviewed-by: SJ Park <sj@kernel.org>
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+Changes from v1
+- v1: https://lore.kernel.org/20260930115812.138864-1-jaeyeon.lee.dev@gmail.com
+- Collect R-b: from SJ.
+- Rebase to the latest mm-new.
 
+ mm/damon/ops-common.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-base-commit: 1b1d9187f46db1efb64533dab8b8d5f4f2af0eb5
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 77366f42b3e5..7a7429359dc8 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -164,7 +164,7 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
+ 			struct damos *s)
+ {
+ 	int freq_subscore;
+-	unsigned int age_in_sec;
++	u64 age_in_sec;
+ 	int age_in_log, age_subscore;
+ 	unsigned int freq_weight = s->quota.weight_nr_accesses;
+ 	unsigned int age_weight = s->quota.weight_age;
+@@ -174,7 +174,8 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
+ 			DAMON_MAX_SUBSCORE,
+ 			damon_nr_samples_per_aggr(&c->attrs));
+ 
+-	age_in_sec = (unsigned long)r->age * c->attrs.aggr_interval / 1000000;
++	age_in_sec = div_u64((u64)r->age * c->attrs.aggr_interval,
++			     USEC_PER_SEC);
+ 	if (age_in_sec)
+ 		age_in_log = min_t(int, ilog2(age_in_sec) + 1,
+ 				DAMON_MAX_AGE_IN_LOG);
 -- 
 2.47.3
 
