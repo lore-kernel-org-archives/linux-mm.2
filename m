@@ -4,80 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E423DCA5FF0
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 07:03:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9452CA5FED
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 07:03:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B88F46B0093; Tue,  6 Oct 2026 03:03:22 -0400 (EDT)
+	id DA4D56B008C; Tue,  6 Oct 2026 03:03:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B09856B0098; Tue,  6 Oct 2026 03:03:22 -0400 (EDT)
+	id CB7286B009D; Tue,  6 Oct 2026 03:03:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F8396B0093; Tue,  6 Oct 2026 03:03:22 -0400 (EDT)
+	id B7E446B0092; Tue,  6 Oct 2026 03:03:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AE396B008C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 784696B0088
 	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 03:03:22 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EB686805BD
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 006391C1BDF
 	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 07:03:21 +0000 (UTC)
-X-FDA: 85291310202.04.9795F69
+X-FDA: 85291310202.26.6BFD575
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 063078000F
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0D77120003
 	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 07:03:19 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iQOrFN9i;
-	spf=pass (imf30.hostedemail.com: domain of devnull+michael.reeves077.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+michael.reeves077.gmail.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791270200;
-	b=JtHRsaDDGqFEVa0pRheI7hnOdbLY5xzO6g8JnAsk3Nj11hVl0O2OQ8tyT1PNDhyv/VUmb5
-	WGumhz2hs51kmcemDRt+iUNe5mxFEtmcbFVa/cWMNF2vOaivCYU7+Dp62+dztjnQKNDYBX
-	w2Vxd0+lCX51XvHix3ww8WSedFBaeGU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iQOrFN9i;
-	spf=pass (imf30.hostedemail.com: domain of devnull+michael.reeves077.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+michael.reeves077.gmail.com@kernel.org;
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WRHVCplf;
+	spf=pass (imf31.hostedemail.com: domain of devnull+michael.reeves077.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+michael.reeves077.gmail.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1791270200;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=1SQtbHoNQ21m+TSWZuwglPwr0v0Xq2UlF/jdJ3sL+fs=;
-	b=XaMSthJUfya6GsYHgrjETumHONopAT3nj5z1DjfZ8S9K8vIF6cyfYN1Lc2vI5LtkQTG59x
-	4Uusm1fa+JZSsgRZl8I+vohWkIRCePbGSOKQXRbZZh2ASITndKTb99MIcyBiXHBWY8Uyaf
-	sdioruAaZDjLtIOWrCwTJ+wJEqv+hgI=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=09pNJLDdyxZY7hIUzbsHU8itqxVgbdY+tOnkIBcHKTI=;
+	b=QOQROAOy6tZtCLrbOxERcoIuOZALoxSTImxAmLp6jUTqK92JWz03dgGiPupiuw07ZVm+vF
+	PgAAlSyT1O1qDxw3JdUopBnKxvuvF0PGbdFkncRL77CUEY3ra6W7ws5n87mNEPyMB5px1F
+	MyJw3Oz+UkjpcG7p+AqBoQMqlmte7tg=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WRHVCplf;
+	spf=pass (imf31.hostedemail.com: domain of devnull+michael.reeves077.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+michael.reeves077.gmail.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791270200;
+	b=7uS5UF2Jawh+B4O/q54EWxRze8xkHqAAS5WXskq4UCLjkZ68oWu7jAN73XJcGWaHZk16Oh
+	s4oiLGadi9MITeIM4Ax+HdJfs2xheQowkPn3f3up9KndkyFeKPJmRSjsOE4J8eePSHP4ze
+	l5ya5BfTsADJjz4Lt0SXrAwaGwLPfrc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 61F15601F1;
+	by tor.source.kernel.org (Postfix) with ESMTP id 61EFE60142;
 	Tue,  6 Oct 2026 07:03:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E67E3C4AF0B;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id F1F6DC4AF61;
 	Tue,  6 Oct 2026 07:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1791270199;
-	bh=Fw36XhTXe0b1nKcvjkrW0Rc3WDJ1Wu2lnc6LFxgAq3w=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=iQOrFN9icaXkzvwNYnnwcnEgucWmkSaAp241zZZ7XcNsGQLCuwqnx6WYvIJYyWtrS
-	 dHFdBSZksZQbAf5y1uHvyTDFVSl0k7tlymUNvvWy23TBUbEsj/0+Vlp9OAKZjrwmQK
-	 sQxI4MZv/aS3u6wsBTq2fV1JIehbnKUM/9bC/6bGfXSWG2G8Na1issy3viAeugNLfh
-	 wQahbi14qjIiu7rkb9NbmOukFK4tpubhyTJ033h0GqW+XE1czZs4QWj9bzsyYPkb3+
-	 O553oKUezmq2Ys+moWGTJme9E6pT88b8jPykK1T42zPKZxa/+HzE3EnN102F/e1+vV
-	 TRCy1G5XxquGA==
+	bh=cyIjSgiZBCj6qCcFCL7fETCO1R7toajPATwE4IXsxhw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=WRHVCplf0RtJE5iq+RnT2aalRiuBACxZU2ZPiZNV4dltLlIVgmxhz2f9gQ7zd9iEp
+	 bkTfkBt3MwI/c4Lv7aMlGlN7AFsIWVXU+wkAE4+ERxZRVZD9wMLfdv0EPAnPdtLz5Q
+	 rgh+m+1UPhWMBA64vK0EJ3ywfTFLce0wtlYY8qiCdmeJQ7Lv8S3OKl1QjS9Z+K3hjf
+	 ZFu/0i1azpBzc/W16AIBMzIw6ob9IWatXio+Nltcdbh5qXisyUgR2K752dllJ6mupW
+	 ZY2vXhnH33hF+iGMB50LIBOuULgD8z1DK7qPHkLgk6WPfJPBoAqmWTNLulfVTAsgfW
+	 jV2gPQrOZGwDA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C079DCA5FF0;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2805CA5FED;
 	Tue,  6 Oct 2026 07:03:18 +0000 (UTC)
 From: Michael Reeves via B4 Relay <devnull+michael.reeves077.gmail.com@kernel.org>
-Subject: [PATCH v3 0/2] regmap: Fix cache lifecycle locking and teardown
-Date: Tue, 06 Oct 2026 18:03:14 +1100
-Message-Id: <20261006-regcache-lifecycle-submit-v3-0-37bdd82fd47c@gmail.com>
+Date: Tue, 06 Oct 2026 18:03:15 +1100
+Subject: [PATCH v3 1/2] regmap: Remove debugfs before cache teardown
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42OQW6DMBBFrxJ53UmNATvOKveIuhgPA4yEIbIJa
- hRx90AWVVdVl2/x3v9PlTkJZ3U+PFXiRbJM4wblx0FRj2PHIM3GymhjtTc1JO4IqWcYpGV60MC
- Q7yHKDK5qS2sD6zaQ2vxb4la+3+3r18YBM0NIOFK/F++3PCfG+Bkxz5x2o5c8T+nxPrMUu/ef3
- aWAAk5lcDWh8423ly6iDEeaotp3F/NTKrSu/ioZ0OCdbSpd88mj+11a1/UFbwfSLS4BAAA=
-X-Change-ID: 20260925-regcache-lifecycle-submit-74f366be0fbc
+Message-Id: <20261006-regcache-lifecycle-submit-v3-1-37bdd82fd47c@gmail.com>
+References: <20261006-regcache-lifecycle-submit-v3-0-37bdd82fd47c@gmail.com>
+In-Reply-To: <20261006-regcache-lifecycle-submit-v3-0-37bdd82fd47c@gmail.com>
 To: Mark Brown <broonie@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
  Andrew Ballance <andrewjballance@gmail.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -87,26 +85,26 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  asahi@lists.linux.dev, linux-mm@kvack.org, 
  Michael Reeves <michael.reeves077@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791270197; l=1559;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791270197; l=2394;
  i=michael.reeves077@gmail.com; s=fedora-20260918;
  h=from:subject:message-id;
- bh=Fw36XhTXe0b1nKcvjkrW0Rc3WDJ1Wu2lnc6LFxgAq3w=;
- b=1TBN4aLDjXZNkcqUmaLZLH4OjfQzc8Jcun6vrb1+wdyzvEfLh1e+9zWeK/8G+R7wooWgl298r
- rv5E2j2yZhgBZJMaKrJ/YYeB1H18i3Ng5iGwnl4w+4sTgsNRV9sCsEv
+ bh=zFAOzXLct8D+NOZeYw7b3fI/ausJUSmG186K8w5WDHA=;
+ b=VG8lSoGwLN4wbL7/VfkD0KRIMazF1RCvOO959lmDM+49vcgPxdzSDnJxUquAxrHKVHfvTmkFG
+ 2T35AAhmJPNCmPKmopDCx18FC7Wex1MAsgMXon+PsqxqAX7TBAjVHU9
 X-Developer-Key: i=michael.reeves077@gmail.com; a=ed25519;
  pk=VJ0TvyQ9TvfzYZa908YSE9kpkjFLLD5luv0bERu+boc=
 X-Endpoint-Received: by B4 Relay for
  michael.reeves077@gmail.com/fedora-20260918 with auth_id=1035
 X-Original-From: Michael Reeves <michael.reeves077@gmail.com>
 Reply-To: michael.reeves077@gmail.com
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 063078000F
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0D77120003
 X-Rspam-User: 
-X-Stat-Signature: x646e1hxjg5xu1ewm1eskmiepgsx8ggc
-X-HE-Tag: 1791270199-331718
-X-HE-Meta: U2FsdGVkX18KZyiuFWzDXEe24T8/83SvNYOxNL5UxT0kNFR238TrRtkG6Dhs9s1CsQgxHNqbkETtXLs9oV1XiBbZZ5GxCMnGUNfNcQeYhoRpVdL7lhOEepCCIB0I+gG/R3/2x7tTYUqFmio1aB/mPLrV0cMZ162B0sWTLus08bimikJpyG2AizQBnX3biYGssX+dFUkV18HPBR5d8dg1qZL0UEO35GqhlwDupUOlLL28N8ns0Ko63RJtp8TnCcNlDwCsTzgX0kIkywiD6g9yaCnTJx27AOmB4DP/NWfsV45S4HvBAE+A+o7HK9BXGDPlvsv+1S/xgKqgMl4iTmqg7BG5Ll4UTrwDLgg+s+qWmFG8oVJsbabelvANuuUZMrSfbWgQjDXt6MfjIs0b217KUIeJXzcruLRkAlNIghWoq34gVY1SpQS68cnddMvUuIIGg0//e39OSWVu9Uwb+unneTFI4k2LK1Cj1VRWGEEb7Hd8lu2/dzKoauhECIKNfDnyJgjotDadVqX6mJCJGYKR0sKpQAZdROZJIsagAMqMXOZFIJbKSl3YmHNxE8XmMHPw6I9oQAXPI8zcL8jQ+hj8M7BjMwOQr6ONf+8/Yl9IrrTnpgnDx+FyWNbFanusELro0xVUUVcNke49KAeajQy5pkOFbTx9Dl4S1tbS8PTiPL4LmPZOd12HQek4FLSoTRCcqdcHGLo/I8qOP6pI6074Ia2dXTWxXogKaabW2ovdgKLCJrOQXygcl57yvYayK3L8wGfoQcfDG2MOOcR7eXgTVNuKy+6CLm/c232/fGcxw6DCdCtFoyw0Zqw14EkuJvpxsl85ljYD12q4CHssFsh6fRj3zhbi5g9DKp/iX4NKzN7psEVusUpiJ2ZG1W/8rILB4k/LHEFjjwEuCRB3gh1pUBNHqafzjJWhzjguoEALjQ8QXwSMUWhF0ypbdB8PCoYorj5m7B5HCWf1wU/5X/M
- 8HRIoM9T
- PmpzQJMs3RJZaMZrGw8PJTTD79wm0YUUq6FkTwfh214PbsVGAEastU+tsPejZoZ5xJ2Kd0HhwN+jbEOb05S0PWuCx9aiBqPNLkFTXI2I4NoF79dE5BjSQ76SLfJCVfKHYOE099E0DTHjG26rBVEXex4432Wg8969CQ8R/IeiOm01nYX0XKWIAPu/R59R3VShK+Ha+aCZW72wEe3rAlBjGPWcHbhzk02TjiKxXTwSduPTVb0GEO6/E5EAjquVeW+zzYZTt4X9hczviyXX2e8zkxp83JAGubBrDoWMlIIUGTj3tcHx3DhuWjwFCK7BaIkhw4GetwANk0S7f5sn29EkWwhsp5uCfotOCdq2B9FzCRuwbjaEDMmfJXBEoFI/QME7uCKIKTtA1QPNFuEYmsxuXxYA3Utq+dAxZe1QV1/PdeAWqYP6ZpC486K21N21yA4O7Sf4l5qbunXxrJNs2/ONx4R9oOn0tRdQjtFam70gAWVrcA6hrXOJK+pjZ3OOgeqZ4k/XYOWnXDuqU3hOMEwB5fM7j13AulWerQGmi2juIaeAy4R9rUW7jgcQTnOC1JYPrQ6Ou
+X-Stat-Signature: 1crbp6isieeus4zjtjebqh9conru1c5c
+X-HE-Tag: 1791270199-729454
+X-HE-Meta: U2FsdGVkX1+9HiEHIIMNrQVF4sye91NTER6FgJGlpnOzwqwhsa1tvawv2ErvEr43RSDjeiZDJw21dKHcAxNyceS2yUY4WyXDjqGvlWw1UtXsN9ae6jyPyvKlky4UCZN6KfKB+TUXdakJ6IbhjwPOk9GLLOaz1Ibo9lxeAHXOTvzjdtXkn7LcWVMmm+A0XaD3ixP9WWLRa0RCyKWt2t8bOJzsfBAPK7biLcd9yyDnpsusS97QRtexkwtivIFdC/Q/xID1I53LHjbrO5GW6R81L2jD9Nso+MAAxCDmLkEYJLrl8FEoagLxBiGw/q3q057rLWevSc5n1Y9XqLUl/ReB2kVk6d4Bg5URWchBazrgU0QRyXPPkN4qn14nb0TNxnoH8AIh84PLMPS3eSulKFyLV6ch6j/pW/Zxn6+Ug6SYlJ0V0r7955R3Gsh+yt2a+EDtcaZo1mLj0Elj+k0LpCa3KI3KzgcEJciriMrLkbCqpjA+vGudlhe+kd0F44S3jsMgkCmb5S78ozUbb0Crz1mbzABtAa1n9kpR77n3TVnn8Pp1tQz4hVOUhhV5IDZkOEIWtju+AUR6Jb4uo4plVqGoQ3wwXsqqqjb4wB3a5LIbJhlEVNtelc3pD30xpiose0C8jpfDgjFh1SOVtq1QRTT2irrTqpFGSckNtw5W2Z5c/W9FQHa66gtsrOSxaDfUoMsH04q8/GhLb/Q+u+z5yY6cCzn5mxRbNywStKUbbwopxf9he0k7HpO+Fthbak6yviSNNq6Bp/nDSH29e6ZanHpJGDZx5qUW2flloY8DprGOIHl7bLjrKW9nZSbHjsM+0FZyPZ2hsbj/+ffevDex5mEzRmqyKY0w/DbTU5EINddoJm/5hwfwOhilU4x6Km2DUpOFDlgxB2jTmpFD9zIJRcntL7weeOtpkSJ1KlQZaytmLLGp1SGFXBJVvATHL73+TBQXhMBkWMq9GVRZR+L6G/Y
+ cH9hYNbw
+ zDunsXV8+emFfhx4zHWtWqwG99tzrRJ8I9t7HyEFMxnQDkFyzUIZPYlPZeXKz8DZdJyLH9QPogVKWXsTJ+kJ4GDq+HwoRdRWe5a6M608pMAVbdHnaJHTAJ3oH1RQvd8Ce8ab3TVJ2kwsq+m6UeG9tcd8OF6KnIUB6vXlY+YaCkPuGtTY8umeiTsg/+38vBcNRKdN4Gv2o2G/35ytZHgjaVbdbuojJYATcNlPKGrKw3FPuPBksHWPlH0T3nySEQ3+RdybIkK5IpFl04WatubnMO0JHC+ku7qlJ+1YaU7bagdVVJiN1DDQTufPtu442fo4Qi2IxQpXImjpUODWfzOgHaKduPS4Qy1t+Yxdznvp14aGnEz6s6KdgrN4WO81Qc6ceKv27RSLAK9s4QVHgF1PaIm58eS4NhOJ86Lv96bqNyNGkQXiKzjO1HpR+pb+Cl7I1BDQwkJds/nfdAaAC4ldWDYGvHP8wFFuYU63ipZRsc4JmUe/OsX+KZWK/Xb9HUlHgQdB+EGvI4B/R8QNY6PKOyG+WZ6MQdCrwz1Xr67UumRC9YBs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,46 +112,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix an "Invalid wait context" lockdep warning during Apple GPIO probe and
-correct debugfs ordering during cache teardown.
+From: Michael Reeves <michael.reeves077@gmail.com>
 
-Tested on Apple M3 MacBook Air (T8122):
+regmap_exit() and regmap_reinit_cache() destroy the register cache before
+removing debugfs. A concurrent debugfs cache operation can therefore
+access cache state after the backend exit callback starts freeing it.
 
-- All 4 GPIO controllers probe successfully with lockdep enabled.
-- The "Invalid wait context" warning no longer occurs.
-- The regmap KUnit suite passes and lockdep remains enabled.
+Remove debugfs before cache teardown, and clear the debugfs pointer after
+removal. During cache reinitialization, recreate debugfs only after the
+new cache initializes successfully.
 
+Signed-off-by: Michael Reeves <michael.reeves077@gmail.com>
 ---
-Changes in v3:
-- Link to v2: https://lore.kernel.org/r/20261004-regcache-lifecycle-submit-v2-0-976d405e89a7@gmail.com
-- Add Maple-state irqsave and irqrestore helpers.
-- Use the helpers for cache teardown and document why IRQ safety is needed.
-- Rebase onto the latest upstream tree.
-
-Changes in v2:
-- Link to v1: https://lore.kernel.org/r/20260925-regcache-lifecycle-submit-v1-1-83b75ca79d96@gmail.com
-- Make Maple cache teardown IRQ-safe.
-- Fix debugfs ordering during cache teardown and reinitialization.
-- Rebase onto the latest upstream tree.
-
----
-Michael Reeves (2):
-      regmap: Remove debugfs before cache teardown
-      regmap: Drop map lock during cache init and exit
-
- drivers/base/regmap/regcache-maple.c |  9 +++++++--
- drivers/base/regmap/regcache.c       |  6 ------
  drivers/base/regmap/regmap-debugfs.c |  1 +
  drivers/base/regmap/regmap.c         | 15 +++++++++------
- include/linux/maple_tree.h           |  4 ++++
- 5 files changed, 21 insertions(+), 14 deletions(-)
----
-base-commit: 2c3418fffa9d037b2038a6db48be63f9e2291806
-change-id: 20260925-regcache-lifecycle-submit-74f366be0fbc
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
-Best regards,
+diff --git a/drivers/base/regmap/regmap-debugfs.c b/drivers/base/regmap/regmap-debugfs.c
+index 18f1c60749..9a09df2ba8 100644
+--- a/drivers/base/regmap/regmap-debugfs.c
++++ b/drivers/base/regmap/regmap-debugfs.c
+@@ -664,6 +664,7 @@ void regmap_debugfs_exit(struct regmap *map)
+ {
+ 	if (map->debugfs) {
+ 		debugfs_remove_recursive(map->debugfs);
++		map->debugfs = NULL;
+ 		mutex_lock(&map->cache_lock);
+ 		regmap_debugfs_free_dump_cache(map);
+ 		mutex_unlock(&map->cache_lock);
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index e6e022b026..8e50a05ff0 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1422,8 +1422,8 @@ int regmap_reinit_cache(struct regmap *map, const struct regmap_config *config)
+ {
+ 	int ret;
+ 
+-	regcache_exit(map);
+ 	regmap_debugfs_exit(map);
++	regcache_exit(map);
+ 
+ 	map->max_register = config->max_register;
+ 	map->max_register_is_set = map->max_register ?: config->max_register_is_0;
+@@ -1440,12 +1440,16 @@ int regmap_reinit_cache(struct regmap *map, const struct regmap_config *config)
+ 	if (ret)
+ 		return ret;
+ 
+-	regmap_debugfs_init(map);
+-
+ 	map->cache_bypass = false;
+ 	map->cache_only = false;
+ 
+-	return regcache_init(map, config);
++	ret = regcache_init(map, config);
++	if (ret)
++		return ret;
++
++	regmap_debugfs_init(map);
++
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(regmap_reinit_cache);
+ 
+@@ -1459,9 +1463,8 @@ void regmap_exit(struct regmap *map)
+ 	struct regmap_async *async;
+ 
+ 	regmap_detach_dev(map->dev, map);
+-	regcache_exit(map);
+-
+ 	regmap_debugfs_exit(map);
++	regcache_exit(map);
+ 	regmap_range_exit(map);
+ 	if (map->bus && map->bus->free_context)
+ 		map->bus->free_context(map->bus_context);
+
 -- 
-Michael Reeves <michael.reeves077@gmail.com>
+2.55.0
 
 
 
