@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B26ACA5FED
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 09:25:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 986F6CA5FED
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 09:25:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 734496B0095; Tue,  6 Oct 2026 05:25:29 -0400 (EDT)
+	id A8FE56B00A5; Tue,  6 Oct 2026 05:25:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E70C6B00A5; Tue,  6 Oct 2026 05:25:29 -0400 (EDT)
+	id A67806B00A6; Tue,  6 Oct 2026 05:25:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FA396B00A6; Tue,  6 Oct 2026 05:25:29 -0400 (EDT)
+	id 97E006B00A7; Tue,  6 Oct 2026 05:25:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 407036B0095
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 05:25:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5D904801D4
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:25:28 +0000 (UTC)
-X-FDA: 85291668336.27.41399BD
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 74B546B00A5
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 05:25:33 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0A166A05A7
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:25:33 +0000 (UTC)
+X-FDA: 85291668546.16.23291ED
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 94D2D20006
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:25:26 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="ZG/jv5FR";
-	spf=pass (imf13.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5114FC0005
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:25:31 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=OzD07csJ;
+	spf=pass (imf22.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791278726;
+	s=arc-20220608; t=1791278731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=E2FgdNmn6oEk5Jlq7Hb5C+tZBdjRU+OLXfXMDz1ojzY=;
-	b=dZ0LXknQFx6jWPnCjueDS6liiJxpyixZm1HxeeoO9pPqlmyQgzCYtfChrv4cSSHc43mYlK
-	w4r7KA33rmrKKJ/XQdIzsITdwhkLxQT37PQeJuaioaV2ieY/Pb2CSxm8Mw+a+E0+FyysSk
-	ZLmRTkH22MjRyHl9i4Ty3hqNFFy/bIM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jyriqiAYxXxXrQ8ApAc7aysVDOHUswxyOiWslfj6F6Q=;
+	b=F4s904SBh0or+uPEt+zynHkgzh6qJAK4iVv8fuZZBgOvcMj8B19suZIbkGXPx/f9yXyVJq
+	DZbzPtPBWji800zX1g7+jIfEqZ9pvgxA6ldQ2tCrVxlZ7/yE04GiFJnkUAx/6Kwyv5r73b
+	poJ8CcAODf7w2ma/F9Y5Q8NcrSHnelg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="ZG/jv5FR";
-	spf=pass (imf13.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=OzD07csJ;
+	spf=pass (imf22.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791278726;
-	b=Yh7BhY+BvE7VULghABUUnn/Vo/10gxHhje5xpvplksRsCcrWcJLXxFBXuNNtbg/dVkss+E
-	KkRHDkn1EyxJCpSWj4pIXUN+eJLxqP6DhtjFYnr+trBrv3sRoCzuCDG3bMW3zmoDP7BSJf
-	/vVyc4agDsR4zTioZQX5RsHS+hG1J80=
+	t=1791278731;
+	b=pvClNY/AXi9F6XsukOC/jnaphQC12C1O21aEgdXghL3BZSh8/asY0PMHTfbAesIwo0Zlrs
+	cF8g+wjKe1sUku58Da6lXQFX848dnOojOHm62fyHo+Wm9zzsU103/dhDg88Y5bzafFvwrc
+	xrce/aHcrmxfTB8bvXc7IZDbe0pG1AY=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 294051516;
-	Tue,  6 Oct 2026 02:25:22 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F210B152B;
+	Tue,  6 Oct 2026 02:25:26 -0700 (PDT)
 Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 46C213F763;
-	Tue,  6 Oct 2026 02:25:21 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 178663F763;
+	Tue,  6 Oct 2026 02:25:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791278725; bh=6ISjPM2u/Z+vYWm4XET8cat7X78rAK3YnbcaLUDy+tg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZG/jv5FRf0oHlBbQSrbUzXPCGLvasASjZG8I0HHQGD15RDdVfdoNMjdxdVsnbEJOd
-	 IhiLFhi37YnZuNgDPU8Mk/est4HJdQ48EJTJhmRqIRdQRypWCpa9gPxc+OaPcw3fr0
-	 fM6cPSib4lHk2Z16J3OEaOheUOfrNp6uxaEcYNvo=
+	t=1791278730; bh=rT9dP+qi1lu9WTSbwSfaqr1GwJLKLuxgpDVmof6dow8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OzD07csJ+pYeoO5LCpdCLD0TEiemxhh4995NGck9YbzWvxwT+Sew2JezCs0TC7JQM
+	 mnliVHtWtjBGb9mF9gSqX9OVrflKe//lmOQ5gYSM78W5wPc5/hrk+u/850lVFEJjXV
+	 4ap2PA7jVe7uhQs8ROOhK4+IeuEMli5iGMK11cHQ=
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org
@@ -77,20 +77,22 @@ Cc: ljs@kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH v2 00/12] selftests/mm: improve mremap_test
-Date: Tue,  6 Oct 2026 14:54:59 +0530
-Message-ID: <20261006092511.145776-1-sarthak.sharma@arm.com>
+Subject: [PATCH v2 01/12] selftests/mm: mremap_test: remove command line options
+Date: Tue,  6 Oct 2026 14:55:00 +0530
+Message-ID: <20261006092511.145776-2-sarthak.sharma@arm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261006092511.145776-1-sarthak.sharma@arm.com>
+References: <20261006092511.145776-1-sarthak.sharma@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 94D2D20006
 X-Rspam-User: 
-X-Stat-Signature: ywi11czzhnoc48ayme7j494a8d9jgxcs
-X-HE-Tag: 1791278726-845169
-X-HE-Meta: U2FsdGVkX19aWy4bRY9RNgfrqrYyg4HIGZZm+roUnQ9XuDm744vJ1U607eAfy77+SNWVfcqSN02oCEPCFjC39M9ygpS3KZHq0SrKbBlCkwcHUN6vNzcwQMwbDsIyNAG8oOpI812RlkD9yJpsSTGAZLIVmtWAkjGJXmo5OUq6mLsbJwzYgwJJoYUPSqAr1GUHVzToHtN6f85123tEFpqNyVlb457bZR0ZYT5cqcwHqLpvLu2knGAZ0FiY8JK3d1BLyIG7lqg4eaZlDvWREdhujRBA8qwuDSSDIQBA8lOQABk3pdsCVn+9E9S/Ums8c68erkoZW9JqMtK7tv6tmbZumMSZ2ud0w7F7mmgYK4ZOdjHAWh4+pJBcv1qVxBA+gpgGsCDIY+HIx4/KHCk3ttXU23oLoGLM350x+Tn3eXvqP19Sh9FIVApY0zlhDZMr4mF+SKdQuWu5Xdz+XKkKtggEhdTsFw+tToSYwW9H6bOkvG+C0Zv2ELgYiCfLDw2Qai/K1Ti9HQFffgN35Zvz9JK0FeGpqP86YdEKjP5xXwIH5Xbw2WVkHh2b9sgOr9j5t0lV6iLC/pt8MeYhxXsjH+FTueMIOgTLXf5r+m2/tQebSIDnaGQZgfEMzBRsqecmKeiodICjw962W+6PzGWguBEFi6tfsPwpebHVimAY7Lr4A+14rzEffpW2cusa3ZHHUVTH+0fMmfCNyBfR5uzJ/LEfVCa832n4L8kJXsNNRM5lM37CVq9AK2PbbtJeZSgqz23stRmw4Y9SphspT6TU5PqLeICdpsEVCuUQeoWfPdl4aydqySa9nPrbiP5VSvFNE0Wj/JLjp9RRXvcBnd8zKvzJcSXpE+gmP+GLgC7GvFzR592fUt9kLuXIEtnOjVf2j6ocI8mfAcKv7pdaQ9i5cQwnQ3wFmdM4xz9E58hZy0qaW63fQ2lhxOuu0M2B8eqfKdprPjmNFRdKlSDLPi6zaID
- HyEYmVnN
- 6JwbYhZMdQj3wcCwzQehUeIBAaALsVseqhALcPvEGZv3zuB9rXLyVVkQV+Sj9anr1zgTdCAKVHgokyUA6fww83P7VZLpzVsKkp7924PdRFrIMBY7VbvICD4+0b7UMD0D58bza5MREj1xj9r0O1ujsLieoJ3HFSExNzqHDoW2o9KEmztHqmRSQNRH2g1e9YImqaKPbzTiigeR8uxPYXLwqMaY38/+gQDuXPonGuYkyhpD5lezT/gym9Ch17QWRccr6X5P7ETU8uBv8T09eauUp24scicyXniyMt4UtORyA5NK2GsNU6bqIHaUOeUhjW1hf9bso
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5114FC0005
+X-Stat-Signature: yhhtk7zc3q1qyoxu6igebx53p7aqrwcd
+X-HE-Tag: 1791278731-670949
+X-HE-Meta: U2FsdGVkX19m4u1nBUICvNSdbdEZHlNBPVLi24+KDr1DDg+KqyJ+xT8JiTY9dPEEaLXjD9dBccmoO5KC+9BmM7Glcb7ZpTrAjQK1+4394GBuqF+uyR+tQtRFZFNi23MI6ACyXS9hXOt2MCc0/LyZBIkE9upD+dUrhMtXt5NhBZA6i9E7r8LmyoWTNoeWU+5X3DE3iA3PZHFpSRH3XU9cNxMKjTHFpErPYAqfyyxat17tGZQV0BhL7U35r4zCjWk1a+b9s2x3/G1l+wiohXal5UK1ccJrEVYkooZCiP5Tb7PQOHQdSnbZ1jfK7O2AqhahzgiO91G+RYyK6clO+91ATV8KsIJ5ptnpniKCFiwLYDIC6tYOk6kg6d3ZhcM8vAYWuXQPA7VqcJZlIijHZuw6zg1mVUH32gkntLVlqWV3XefO15aI8qSk2/J5fgCLDKgKIgPcTwsGuwBS7Qy6iCUt5EHk2caS4jfsd45ZCHkGpPax4gGRay7CIACxZTKJ22gV35mqfT2UqTrNiV1x5OrrrmCTUyDF2YS2VyhJbS75BAblmvZBxDhszW8VOMVZNEwUKubRR9csi9vuSaTUAe5f0TjMMyMEt1gRmjZ+fDAg+L3vMhYlaWUpDuLa1akalI7YLctELn4imFxFIVZCw26z0k0/oIzR1UnaWaOGZQ7SpOkTbrOfbM1n4LO8LZ0LlHKHdOwg58NWID/YmyaX6bu3hfHSYdXcwrYj+3zI+s0RZqbEXDAlBrSRfNaWS4hlqEns+zUPff9Ukazm8GGTzVXS0Ql/Gml/goQPU6s07TjogvTDoNS7CFlBNCtfseyXDcZ87zcfv4vXlLG/2X49CcoiM6v3IqKxo3rxeUJLGXkmydbCnqD5HsMEgPmvVdNhFzQ9LoTCRM/wjfjdmzgArTDNtbChG61LT/anIXeQ+0oHSP6cAf/b8PVaGkmzYpdFvDelhE6yEoatXtHv568praX
+ isGEIKNJ
+ H3b1brJO9dPpBxRyAby/K3GQPp2cJRJvTzmXz6xCJyECOh61ecF25LKFcyLGmek64bs6DEK5h8+Gj9NmE0MCDpO8s7muH5108X/lOyQpTgwbjDbKeYh0AudxmatlhilOZ44dUG+njpxIQifxb7QWOTh+3rMOW3OLRXm8xbgojIX+gHbEVVUuEbVzIOaFwurmxFJJEQH4YGg+OxJTYTl0tuwUGFwDfHpaqjhjxRSq118L84fwdTTWNX7eRbhhloujc5gdZDP0vtQ+QALBGPxSmwd/eWz0XzKUNdEZxEHzWSd3H8FeNHyKFItK6ZLqHdOhr3V1Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,57 +100,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series fixes correctness issues in mremap_test, simplifies its
-test infrastructure and strengthens validation of remapped mappings.
+mremap_test supports command line options for changing
+the validation threshold and random pattern seed.
 
-Patches 1-3 remove unused command line handling, unnecessary cleanup
-checks and redundant errno handling. Patch 4 converts the test to use
-kselftest helpers and removes manual failure tracking.
+As part of a larger series to remove validation threshold
+and randomization, remove all command line options from
+the test. The test is already invoked without any
+arguments in run_vmtests.sh, so no runner changes are
+required.
 
-Patches 5-8 fix handling of unavailable userfaultfd support, unexpected
-mremap() successes, data-corruption failures and cleanup after mmap()
-failures. Patch 9 removes perf tests and timing infrastructure.
-
-Patches 10 and 11 replace threshold-based random-data validation with
-sampled validation and a deterministic data pattern. Patch 12
-strengthens multi VMA validation by also checking the mapping state
-of holes after remapping.
-
-Changes in v2:
-- Add a first patch to remove command-line options
-- Add a second patch to remove munmap() checks from cleanup paths
-- Add a third patch to simplify errno handling
-- Drop the "correct multiple VMA range size" patch
-- Add an eighth patch to fix cleanup after target mmap() failures
-- Replace fully populating and validating large mappings with
-  populating and validating 10 pages each from the start, middle
-  and end
-- Extend multi VMA strengthening to userfaultfd multi VMA test
-- Fix minor formatting issues
-
-Previous versions:
-v1: https://lore.kernel.org/all/20260924050009.19974-1-sarthak.sharma@arm.com/
-
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 ---
-Sarthak Sharma (12):
-  selftests/mm: mremap_test: remove command line options
-  selftests/mm: mremap_test: drop munmap() checks from cleanup paths
-  selftests/mm: mremap_test: simplify errno handling
-  selftests/mm: mremap_test: use kselftest helpers
-  selftests/mm: mremap_test: skip test when userfaultfd is unavailable
-  selftests/mm: mremap_test: fail unexpected mremap successes
-  selftests/mm: mremap_test: fail on data corruption
-  selftests/mm: mremap_test: handle cleanup after mmap failures
-  selftests/mm: mremap_test: remove perf tests and timing
-  selftests/mm: mremap_test: replace validation threshold with sampled
-    checks
-  selftests/mm: mremap_test: replace random data with deterministic
-    pattern
-  selftests/mm: mremap_test: strengthen multi VMA validation
+ tools/testing/selftests/mm/mremap_test.c | 45 +-----------------------
+ 1 file changed, 1 insertion(+), 44 deletions(-)
 
- tools/testing/selftests/mm/mremap_test.c | 701 ++++++++++-------------
- 1 file changed, 291 insertions(+), 410 deletions(-)
-
+diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+index 97abf4713cc5..41f211c39c83 100644
+--- a/tools/testing/selftests/mm/mremap_test.c
++++ b/tools/testing/selftests/mm/mremap_test.c
+@@ -1188,49 +1188,9 @@ static void run_mremap_test_case(struct test test_case, int *failures,
+ 	}
+ }
+ 
+-static void usage(const char *cmd)
+-{
+-	fprintf(stderr,
+-		"Usage: %s [[-t <threshold_mb>] [-p <pattern_seed>]]\n"
+-		"-t\t only validate threshold_mb of the remapped region\n"
+-		"  \t if 0 is supplied no threshold is used; all tests\n"
+-		"  \t are run and remapped regions validated fully.\n"
+-		"  \t The default threshold used is 4MB.\n"
+-		"-p\t provide a seed to generate the random pattern for\n"
+-		"  \t validating the remapped region.\n", cmd);
+-}
+-
+-static int parse_args(int argc, char **argv, unsigned int *threshold_mb,
+-		      unsigned int *pattern_seed)
+-{
+-	const char *optstr = "t:p:";
+-	int opt;
+-
+-	while ((opt = getopt(argc, argv, optstr)) != -1) {
+-		switch (opt) {
+-		case 't':
+-			*threshold_mb = atoi(optarg);
+-			break;
+-		case 'p':
+-			*pattern_seed = atoi(optarg);
+-			break;
+-		default:
+-			usage(argv[0]);
+-			return -1;
+-		}
+-	}
+-
+-	if (optind < argc) {
+-		usage(argv[0]);
+-		return -1;
+-	}
+-
+-	return 0;
+-}
+-
+ #define MAX_TEST 15
+ #define MAX_PERF_TEST 3
+-int main(int argc, char **argv)
++int main(void)
+ {
+ 	int failures = 0;
+ 	unsigned int i;
+@@ -1259,9 +1219,6 @@ int main(int argc, char **argv)
+ 
+ 	pattern_seed = (unsigned int) time(&t);
+ 
+-	if (parse_args(argc, argv, &threshold_mb, &pattern_seed) < 0)
+-		exit(EXIT_FAILURE);
+-
+ 	ksft_print_msg("Test configs:\n");
+ 	ksft_print_msg("threshold_mb=%u\n", threshold_mb);
+ 	ksft_print_msg("pattern_seed=%u\n", pattern_seed);
 -- 
 2.53.0
 
