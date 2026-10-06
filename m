@@ -4,99 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDB3DCA5FED
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 09:21:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B26ACA5FED
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 09:25:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 013C36B009B; Tue,  6 Oct 2026 05:20:43 -0400 (EDT)
+	id 734496B0095; Tue,  6 Oct 2026 05:25:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1C5F6B00A2; Tue,  6 Oct 2026 05:20:42 -0400 (EDT)
+	id 6E70C6B00A5; Tue,  6 Oct 2026 05:25:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D43B26B00A0; Tue,  6 Oct 2026 05:20:42 -0400 (EDT)
+	id 5FA396B00A6; Tue,  6 Oct 2026 05:25:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A5F286B009E
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 05:20:42 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 22A50120182
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:20:42 +0000 (UTC)
-X-FDA: 85291656324.29.375F9F3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 641D64000B
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:20:40 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VVpLBxgf;
-	spf=pass (imf17.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791278440;
-	b=RH+S88/jupXG/fwkFd6bav+p4sKHZ89Mno1nlQYTnhFCOSEQhlbYzs+NpFWvvzeZaWUd3t
-	83yuXc19xlEM2TqWRJFEldaoBY3XiWWKHFd7ayZExsZa3iGpkrsRZbfMxT2ObSZ4nddCqX
-	WwlsfXOoJk6oMAUB/mMutk32+cR4bFc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VVpLBxgf;
-	spf=pass (imf17.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 407036B0095
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 05:25:29 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5D904801D4
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:25:28 +0000 (UTC)
+X-FDA: 85291668336.27.41399BD
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 94D2D20006
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:25:26 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="ZG/jv5FR";
+	spf=pass (imf13.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791278440;
+	s=arc-20220608; t=1791278726;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CnyrpAYa14sI6txd4i9BRZdPd5nnZg7VR0kQkLdWkQw=;
-	b=sFQ9oTlrcqeVfftS7ErybEEJohMByT/TBi4gU7laibiiQU8bEBIR3epPI5d4OR/VANA07i
-	RoXh+/a1KP4b1Lz+wJ68qRS1LybJrH0PbWOzymAc5PqrUlcKUcamFSOdCu0CrCeDNhBYJQ
-	1PTaxZdO0+nfOkrSbN6tNGrfYnZfVMo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AACB8447C4;
-	Tue,  6 Oct 2026 09:20:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888BE1F008A6;
-	Tue,  6 Oct 2026 09:20:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791278436;
-	bh=CnyrpAYa14sI6txd4i9BRZdPd5nnZg7VR0kQkLdWkQw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VVpLBxgfM0rONG8Wiwrrt+BhOMXh4zL2IuOALKVYginZxUX/sgl5lHJGPcHCzPhYb
-	 xyIfyzfGeLK/YZIAtGx2FM9tYy89UNeowwgeonbhVtB58jYPR2yraJiEpMbBWJSUcM
-	 uFhrZFhuZ+BXwXQaodLHmPNB+kvd1+oP7enMIKBsad3i0IVDBEDqE0GQGhCq1hJUnb
-	 D2+A7jGE4SpDgT1woYYm1nBOD+7fNCvcyKFOFfjDaaGHCXmx/RMcb3o2Rne/4ggJoC
-	 o06DCfwkWu0JNR7R3YwQ/R5QdgSp6E6dt2UoXzMLA5BsbnK2gc1kQpJJbKrFH4MlAc
-	 tQ1OaEdUcNw4w==
-From: Kees Cook <kees@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	netdev@vger.kernel.org,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	linux-hardening@vger.kernel.org,
+	 in-reply-to:references:dkim-signature;
+	bh=E2FgdNmn6oEk5Jlq7Hb5C+tZBdjRU+OLXfXMDz1ojzY=;
+	b=dZ0LXknQFx6jWPnCjueDS6liiJxpyixZm1HxeeoO9pPqlmyQgzCYtfChrv4cSSHc43mYlK
+	w4r7KA33rmrKKJ/XQdIzsITdwhkLxQT37PQeJuaioaV2ieY/Pb2CSxm8Mw+a+E0+FyysSk
+	ZLmRTkH22MjRyHl9i4Ty3hqNFFy/bIM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="ZG/jv5FR";
+	spf=pass (imf13.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791278726;
+	b=Yh7BhY+BvE7VULghABUUnn/Vo/10gxHhje5xpvplksRsCcrWcJLXxFBXuNNtbg/dVkss+E
+	KkRHDkn1EyxJCpSWj4pIXUN+eJLxqP6DhtjFYnr+trBrv3sRoCzuCDG3bMW3zmoDP7BSJf
+	/vVyc4agDsR4zTioZQX5RsHS+hG1J80=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 294051516;
+	Tue,  6 Oct 2026 02:25:22 -0700 (PDT)
+Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 46C213F763;
+	Tue,  6 Oct 2026 02:25:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791278725; bh=6ISjPM2u/Z+vYWm4XET8cat7X78rAK3YnbcaLUDy+tg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZG/jv5FRf0oHlBbQSrbUzXPCGLvasASjZG8I0HHQGD15RDdVfdoNMjdxdVsnbEJOd
+	 IhiLFhi37YnZuNgDPU8Mk/est4HJdQ48EJTJhmRqIRdQRypWCpa9gPxc+OaPcw3fr0
+	 fM6cPSib4lHk2Z16J3OEaOheUOfrNp6uxaEcYNvo=
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org
+Cc: ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@suse.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	jhubbard@nvidia.com,
+	kaleshsingh@google.com,
+	anshuman.khandual@arm.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v6 8/8] net: skb: isolate skb data area allocations into a separate bucket
-Date: Tue,  6 Oct 2026 02:20:34 -0700
-Message-ID: <20261006092035.166776-8-kees@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261006092030.got.500-kees@kernel.org>
-References: <20261006092030.got.500-kees@kernel.org>
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: [PATCH v2 00/12] selftests/mm: improve mremap_test
+Date: Tue,  6 Oct 2026 14:54:59 +0530
+Message-ID: <20261006092511.145776-1-sarthak.sharma@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3264; i=kees@kernel.org; h=from:subject; bh=croNj7wGZJutVq0MdlBIPVhcFuxS4L8MSQxkndGPUZM=; b=owGbwMvMwCVmps19z/KJym7G02pJDFlH9iZOsbhvGdjwZt/kH1+3q/4/WHJ8GWfDpJT5Ok/OC SW8kLR63FHKwiDGxSArpsgSZOce5+Lxtj3cfa4izBxWJpAhDFycAjCRXx6MDH0LL/dzTltYrfc+ 6GZ+x5LTld4lV7P9l/OHuu89cDfLoJbhn1ZvG9/Us2n/vislCfxZ7Lvh12nXul8nlY/8903zi5/ 8nwsA
-X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 94D2D20006
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 641D64000B
-X-Stat-Signature: 88zx5y7fgj46oehsy4emmgw3m45zwoxd
-X-HE-Tag: 1791278440-292970
-X-HE-Meta: U2FsdGVkX18XoB6Q5WMwJe0OzfUmDXItfwjF+CqGkEQrRef8K95A9sqHqOQR+NAU3fWRr/ybhRuUMjc2d3WcWDMmkggcQsZ7fEqsARF1OC5jGKgpA8uosg62ls72z54q/pC1p+c5oKoI/Mf8bMghvpdxmufV5qMBprofBNpp6yVGKzWCK5EdGoFp6zt6MyVS301nl/MemN+fztWmaRmBwqdNqxaqwRUocRbYRNyhjzwovENN0E5ag5qvh+Lz2wBLFm0eLT1o5hxniTt5rtI8amKmRjM3kGBa1GPhxb/1lkLZuKbbOgeR7noSY3PsQv3YcmAn31nMu5/jOikszj0kpvWhECqjberU1Yog2xGXMTs/YOwZCKeAlNn0jlWetPOzkGmEMtCvCqVHt6f0XaaVNz9Aw3TMN5etjnJNqwHRIjJa8hoVxtXrdshUeUUBwqrVu1/ThF5hH3Lin2p6L+G0WuZwqDAWmgFTVzJuHzQNswl+d4KjZNno0QsqlBtr471tv3DsGSO6d/255d+06CM0ig3+1NQB4vNV4pccFAamxqdOQy9v5MajH/71A8we/8gkQBKgMZAl2Qh1XQFoXWLS2+4dj1tF4YzpLr+pfanDYWDXbbZPXf4m7RWrJEs1aYJ+BBV6PUrAO3HPPqYgJiMtkTf0yD45FILuWEbUoXWDUhhpJIggy0dXcX6GpoAb3jUCkKlOjKTRFv7w6WgYo8D6p0h9Uw8BSeOykRKhA5naHoj7+b0MiPOBpuf4FH+79O0BD+hjbxKpzbfFF3VxFRRMhyKwHzLmUzajXVfSbb8bDJc1PscW/X2Q+ZSzDrPr+eyxD0Ip3oMXTih+K2l/htIrjJZTTjPwaGM1pGVTKTSjMNFzWrlNk4iQwIdvwbuuKoDBFJzqDHXUJAzVSMZS4XI7xpd9Sh6vculqH7TGlC3+e6A6Xa8PKkBQBkN9ZfxKujgoHmxDoAPlI/RFmQgPk5T
- H49HZhm7
- lcfzH+1I/l23b0oxrGUaozIrNuI6PwsxcVfQR6oPBy06tl7S/UDSyOgppN54HtFH8fSWVB2vtjQqpDKnPFCnkRQODrfgX8QGFBOOwrGD7qDg2gf+zhwObgj4iUDurdfOGfhOYRkkrQDNQG/VfqKJ0d2Yw0d8o4ngCOW9Dm4i2BvkEykIGA7lyCTc6YAbuO6urXsN0CdbEd+Ivuy+RjPSkQsVa7N3dswPMEUAysEUADAcpKzgNhXJXcTetRtS/LbP4jeo2N9xi+QlOctV+Nqx80YjSVjovKZrpbhiG0+62uncN0ETdn16zqsKodiBHAjzZpdQM
+X-Stat-Signature: ywi11czzhnoc48ayme7j494a8d9jgxcs
+X-HE-Tag: 1791278726-845169
+X-HE-Meta: U2FsdGVkX19aWy4bRY9RNgfrqrYyg4HIGZZm+roUnQ9XuDm744vJ1U607eAfy77+SNWVfcqSN02oCEPCFjC39M9ygpS3KZHq0SrKbBlCkwcHUN6vNzcwQMwbDsIyNAG8oOpI812RlkD9yJpsSTGAZLIVmtWAkjGJXmo5OUq6mLsbJwzYgwJJoYUPSqAr1GUHVzToHtN6f85123tEFpqNyVlb457bZR0ZYT5cqcwHqLpvLu2knGAZ0FiY8JK3d1BLyIG7lqg4eaZlDvWREdhujRBA8qwuDSSDIQBA8lOQABk3pdsCVn+9E9S/Ums8c68erkoZW9JqMtK7tv6tmbZumMSZ2ud0w7F7mmgYK4ZOdjHAWh4+pJBcv1qVxBA+gpgGsCDIY+HIx4/KHCk3ttXU23oLoGLM350x+Tn3eXvqP19Sh9FIVApY0zlhDZMr4mF+SKdQuWu5Xdz+XKkKtggEhdTsFw+tToSYwW9H6bOkvG+C0Zv2ELgYiCfLDw2Qai/K1Ti9HQFffgN35Zvz9JK0FeGpqP86YdEKjP5xXwIH5Xbw2WVkHh2b9sgOr9j5t0lV6iLC/pt8MeYhxXsjH+FTueMIOgTLXf5r+m2/tQebSIDnaGQZgfEMzBRsqecmKeiodICjw962W+6PzGWguBEFi6tfsPwpebHVimAY7Lr4A+14rzEffpW2cusa3ZHHUVTH+0fMmfCNyBfR5uzJ/LEfVCa832n4L8kJXsNNRM5lM37CVq9AK2PbbtJeZSgqz23stRmw4Y9SphspT6TU5PqLeICdpsEVCuUQeoWfPdl4aydqySa9nPrbiP5VSvFNE0Wj/JLjp9RRXvcBnd8zKvzJcSXpE+gmP+GLgC7GvFzR592fUt9kLuXIEtnOjVf2j6ocI8mfAcKv7pdaQ9i5cQwnQ3wFmdM4xz9E58hZy0qaW63fQ2lhxOuu0M2B8eqfKdprPjmNFRdKlSDLPi6zaID
+ HyEYmVnN
+ 6JwbYhZMdQj3wcCwzQehUeIBAaALsVseqhALcPvEGZv3zuB9rXLyVVkQV+Sj9anr1zgTdCAKVHgokyUA6fww83P7VZLpzVsKkp7924PdRFrIMBY7VbvICD4+0b7UMD0D58bza5MREj1xj9r0O1ujsLieoJ3HFSExNzqHDoW2o9KEmztHqmRSQNRH2g1e9YImqaKPbzTiigeR8uxPYXLwqMaY38/+gQDuXPonGuYkyhpD5lezT/gym9Ch17QWRccr6X5P7ETU8uBv8T09eauUp24scicyXniyMt4UtORyA5NK2GsNU6bqIHaUOeUhjW1hf9bso
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,81 +98,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pedro Falcato <pfalcato@suse.de>
+This series fixes correctness issues in mremap_test, simplifies its
+test infrastructure and strengthens validation of remapped mappings.
 
-SKB data area allocations (as done from alloc_skb()) use kmalloc().
-These allocations can be variably sized and their contents can be more
-or less controlled from userspace, which makes them useful for attackers
-that want to overwrite a use-after-free'd object from the same kmalloc slab
-(which often just requires the sizes to roughly match into the same kmalloc
-bucket). [0] is an easy example of an exploit that uses netlink skb
-allocation to target another similarly-sized accidentally freed object.
+Patches 1-3 remove unused command line handling, unnecessary cleanup
+checks and redundant errno handling. Patch 4 converts the test to use
+kselftest helpers and removes manual failure tracking.
 
-While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, these are
-probabilistic. Use the existing kmem buckets API to further isolate these
-allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=y.
+Patches 5-8 fix handling of unavailable userfaultfd support, unexpected
+mremap() successes, data-corruption failures and cleanup after mmap()
+failures. Patch 9 removes perf tests and timing infrastructure.
 
-AF_UNIX sets sk_allocation to GFP_KERNEL_ACCOUNT, and those skb data
-areas, the ones most worth isolating, stay in the set, where memcg
-charges them as it would in the general caches. GFP_DMA falls back to
-the general caches, being passed to an skb allocator only by rare
-devices.
+Patches 10 and 11 replace threshold-based random-data validation with
+sampled validation and a deterministic data pattern. Patch 12
+strengthens multi VMA validation by also checking the mapping state
+of holes after remapping.
 
-Link: https://github.com/google/security-research/blob/master/pocs/linux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
-Reviewed-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Kees Cook <kees@kernel.org>
+Changes in v2:
+- Add a first patch to remove command-line options
+- Add a second patch to remove munmap() checks from cleanup paths
+- Add a third patch to simplify errno handling
+- Drop the "correct multiple VMA range size" patch
+- Add an eighth patch to fix cleanup after target mmap() failures
+- Replace fully populating and validating large mappings with
+  populating and validating 10 pages each from the start, middle
+  and end
+- Extend multi VMA strengthening to userfaultfd multi VMA test
+- Fix minor formatting issues
+
+Previous versions:
+v1: https://lore.kernel.org/all/20260924050009.19974-1-sarthak.sharma@arm.com/
+
 ---
- net/core/skbuff.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+Sarthak Sharma (12):
+  selftests/mm: mremap_test: remove command line options
+  selftests/mm: mremap_test: drop munmap() checks from cleanup paths
+  selftests/mm: mremap_test: simplify errno handling
+  selftests/mm: mremap_test: use kselftest helpers
+  selftests/mm: mremap_test: skip test when userfaultfd is unavailable
+  selftests/mm: mremap_test: fail unexpected mremap successes
+  selftests/mm: mremap_test: fail on data corruption
+  selftests/mm: mremap_test: handle cleanup after mmap failures
+  selftests/mm: mremap_test: remove perf tests and timing
+  selftests/mm: mremap_test: replace validation threshold with sampled
+    checks
+  selftests/mm: mremap_test: replace random data with deterministic
+    pattern
+  selftests/mm: mremap_test: strengthen multi VMA validation
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 966af3beed94..6f6b5f4cb39f 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -586,6 +586,8 @@ struct sk_buff *napi_build_skb(void *data, unsigned int frag_size)
- }
- EXPORT_SYMBOL(napi_build_skb);
- 
-+static kmem_buckets *skb_data_buckets __ro_after_init;
-+
- static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
- {
- 	if (!gfp_pfmemalloc_allowed(flags))
-@@ -593,11 +595,12 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
- 	if (!obj_size)
- 		return kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
- 					     flags, node);
--	return kmalloc_node_track_caller(obj_size, flags, node);
-+	return kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
-+						    flags, node);
- }
- 
- /*
-- * kmalloc_reserve is a wrapper around kmalloc_node_track_caller that tells
-+ * kmalloc_reserve is a wrapper around a caller-tracked kmalloc that tells
-  * the caller if emergency pfmemalloc reserves are being used. If it is and
-  * the socket is later found to be SOCK_MEMALLOC then PFMEMALLOC reserves
-  * may be used. Otherwise, the packet data may be discarded until enough
-@@ -634,7 +637,7 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
- 	 * Try a regular allocation, when that fails and we're not entitled
- 	 * to the reserves, fail.
- 	 */
--	obj = kmalloc_node_track_caller(obj_size,
-+	obj = kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
- 					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
- 					node);
- 	if (likely(obj))
-@@ -5235,6 +5238,7 @@ void __init skb_init(void)
- 						0,
- 						SKB_SMALL_HEAD_HEADROOM,
- 						NULL);
-+	skb_data_buckets = kmem_buckets_create("skb_data", 0, INT_MAX);
- 	skb_extensions_init();
- }
- 
+ tools/testing/selftests/mm/mremap_test.c | 701 ++++++++++-------------
+ 1 file changed, 291 insertions(+), 410 deletions(-)
+
 -- 
-2.55.0
+2.53.0
 
 
