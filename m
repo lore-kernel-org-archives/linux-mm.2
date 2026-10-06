@@ -4,39 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96B65CA5FF0
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 09:21:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDB3DCA5FED
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 09:21:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E33FC6B009E; Tue,  6 Oct 2026 05:20:42 -0400 (EDT)
+	id 013C36B009B; Tue,  6 Oct 2026 05:20:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB8B56B009B; Tue,  6 Oct 2026 05:20:42 -0400 (EDT)
+	id F1C5F6B00A2; Tue,  6 Oct 2026 05:20:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCFB16B00A1; Tue,  6 Oct 2026 05:20:42 -0400 (EDT)
+	id D43B26B00A0; Tue,  6 Oct 2026 05:20:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A4AFA6B009B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A5F286B009E
 	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 05:20:42 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B41BA5ECB
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 22A50120182
 	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:20:42 +0000 (UTC)
-X-FDA: 85291656324.10.6FE69DC
+X-FDA: 85291656324.29.375F9F3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 58C681C0006
+	by imf17.hostedemail.com (Postfix) with ESMTP id 641D64000B
 	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 09:20:40 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IrxZAqAk;
-	spf=pass (imf18.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VVpLBxgf;
+	spf=pass (imf17.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1791278440;
-	b=zozkt/SES9637udBbUftZKAyF1B4O1uFbK5me23BZ/Jm0hi2CrhqfqtWAJ8/OL+TBqoXay
-	KUTopiBzycAXd+PF/6FTpwMGxTlAdQci6Rctl/zgJiQxIqR4nZQIEzIy20OEYDLHVxLwnF
-	J0XBdeiNyoGky2003bQ2qLbZp8fcQLM=
+	b=RH+S88/jupXG/fwkFd6bav+p4sKHZ89Mno1nlQYTnhFCOSEQhlbYzs+NpFWvvzeZaWUd3t
+	83yuXc19xlEM2TqWRJFEldaoBY3XiWWKHFd7ayZExsZa3iGpkrsRZbfMxT2ObSZ4nddCqX
+	WwlsfXOoJk6oMAUB/mMutk32+cR4bFc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IrxZAqAk;
-	spf=pass (imf18.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VVpLBxgf;
+	spf=pass (imf17.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1791278440;
@@ -44,62 +44,59 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pwKbDoq6iSAvWzodLVAwDaQk8venNDlb5LaSpx0zjmU=;
-	b=7Jg+b1GpUdBl3cA7g64T9+WJpmuju/L1UVwHTHW5DeCNPORtwpMuYSUkooe1CLwgNKQk0k
-	8kFLMlfdH1HbXgYo0FQ8kkIgNPfwwliRMB8K3aAfsel5y6Ymp8dEdROESXszG57J+W5BU0
-	bdxY+2/mbGaww+Zey7U+jHF9/+SEi7o=
+	bh=CnyrpAYa14sI6txd4i9BRZdPd5nnZg7VR0kQkLdWkQw=;
+	b=sFQ9oTlrcqeVfftS7ErybEEJohMByT/TBi4gU7laibiiQU8bEBIR3epPI5d4OR/VANA07i
+	RoXh+/a1KP4b1Lz+wJ68qRS1LybJrH0PbWOzymAc5PqrUlcKUcamFSOdCu0CrCeDNhBYJQ
+	1PTaxZdO0+nfOkrSbN6tNGrfYnZfVMo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9CEBD447C2;
+	by sea.source.kernel.org (Postfix) with ESMTP id AACB8447C4;
 	Tue,  6 Oct 2026 09:20:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2FE1F008A5;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888BE1F008A6;
 	Tue,  6 Oct 2026 09:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1791278436;
-	bh=pwKbDoq6iSAvWzodLVAwDaQk8venNDlb5LaSpx0zjmU=;
+	bh=CnyrpAYa14sI6txd4i9BRZdPd5nnZg7VR0kQkLdWkQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IrxZAqAkAnXAWdCx/BtUy1b63fNmD0zRoGFoBOtlw17uoMwWdPVRiHm1FTfe8nYY4
-	 vVex+OpWoX120ae5VMv7lJYX/CxgnUYIAhdL67tVbXZGzrG3N9aY/1wIh1HKIoO9WD
-	 hu4WEgLxxn1PHBBmiDcCDqiSMczxID/8n4FoakidgUw1Qkkl1U/4Ka8ulJg/A90RS7
-	 RUpxYJd1GNj3QN2ahG+1c49TKbexUAh26d2Js+Q7Dfp87LXF4xm1Lhh7kQ+90OehoS
-	 vONDkUCgJ9VXJ5CYYv9bPMT1CPqVQfZ6iJBcm57tFZ9loVRYAx0QvczbW07QVlK7+N
-	 JKaIi0raaXzXQ==
+	b=VVpLBxgfM0rONG8Wiwrrt+BhOMXh4zL2IuOALKVYginZxUX/sgl5lHJGPcHCzPhYb
+	 xyIfyzfGeLK/YZIAtGx2FM9tYy89UNeowwgeonbhVtB58jYPR2yraJiEpMbBWJSUcM
+	 uFhrZFhuZ+BXwXQaodLHmPNB+kvd1+oP7enMIKBsad3i0IVDBEDqE0GQGhCq1hJUnb
+	 D2+A7jGE4SpDgT1woYYm1nBOD+7fNCvcyKFOFfjDaaGHCXmx/RMcb3o2Rne/4ggJoC
+	 o06DCfwkWu0JNR7R3YwQ/R5QdgSp6E6dt2UoXzMLA5BsbnK2gc1kQpJJbKrFH4MlAc
+	 tQ1OaEdUcNw4w==
 From: Kees Cook <kees@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	linux-mm@kvack.org,
 	Pedro Falcato <pfalcato@suse.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	netdev@vger.kernel.org,
 	Kuniyuki Iwashima <kuniyu@google.com>,
 	linux-hardening@vger.kernel.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v6 7/8] mm/slab: Provide kmalloc type fallback for bucket allocations
-Date: Tue,  6 Oct 2026 02:20:33 -0700
-Message-ID: <20261006092035.166776-7-kees@kernel.org>
+Subject: [PATCH net-next v6 8/8] net: skb: isolate skb data area allocations into a separate bucket
+Date: Tue,  6 Oct 2026 02:20:34 -0700
+Message-ID: <20261006092035.166776-8-kees@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261006092030.got.500-kees@kernel.org>
 References: <20261006092030.got.500-kees@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6105; i=kees@kernel.org; h=from:subject; bh=dYx28s+IQ11OCGRHcWcMZU79ypXV2MF4t78CsqcAKhg=; b=owGbwMvMwCVmps19z/KJym7G02pJDFlH9iZuu9V5bNsHnpKqlo+9MiFL/ws+v7TyaSXvwtJ4v mr5iAN9HaUsDGJcDLJiiixBdu5xLh5v28Pd5yrCzGFlAhnCwMUpABOZvpvhn8GklrOLprGdZvjH mavMKCd3k3cql7TH/htOjenXJvW8LGH4Kyq7z44ztHwicxLjvzBphwRefr3Pnw+yhhT+WCZYwsT EDwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3264; i=kees@kernel.org; h=from:subject; bh=croNj7wGZJutVq0MdlBIPVhcFuxS4L8MSQxkndGPUZM=; b=owGbwMvMwCVmps19z/KJym7G02pJDFlH9iZOsbhvGdjwZt/kH1+3q/4/WHJ8GWfDpJT5Ok/OC SW8kLR63FHKwiDGxSArpsgSZOce5+Lxtj3cfa4izBxWJpAhDFycAjCRXx6MDH0LL/dzTltYrfc+ 6GZ+x5LTld4lV7P9l/OHuu89cDfLoJbhn1ZvG9/Us2n/vislCfxZ7Lvh12nXul8nlY/8903zi5/ 8nwsA
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 58C681C0006
 X-Rspam-User: 
-X-Stat-Signature: 55izi7d1idom3jgsbewhcgynee1gguqq
-X-HE-Tag: 1791278440-159700
-X-HE-Meta: U2FsdGVkX1/3Tm9YjqIShCMM7GDTbSy2j09qRnH3u36cKZQdA1MXeoDaV5jKVwXG3uBysxPod/9xV66gy2cxXYY5v/udr2sz5rT9xcA3fJMHiAdNU72dHkRokBrFI3dIrMb4YQwtZIvN31qVu0/bOTnf1TCvnnxSwXjmzRE4XF0YgR5z18pTAKKstIbOZ3yRu7/yxfPqHdtcRz6NXxfOv6uSg6oyr8IoAkzfPRXbsXWOsyNl+o0NrtE2DaSexO7w/P9uzXWcer5Gv9L0//8ntQSaXES4eQVoi6tsGO9WEIE0NF9OYM1+gV3rHt8jigMxPcKS4IeY20Mza+ViWJb0LAuqx3Dgq1XTA5vRfmm1tMXXOPCr8ptVV/xWubOG9WJZo96c7GOGDqDdXpiJ8tpUduyLmsRjX+qjsmfCaT0MgFhD0HcBYV1jalfKn4dFEz2tXogSalw9Rf8T/2mKzxjb6JUeF94dG9+BqIm8/aXbDGcMdm+Bfv/b2RMwXbpmE+FiAY4YFaUb6Xr+6n3PTae+4UpFM7s0o/uxbf2Zc8y14h+Aet9E48fYrLyZ3HGA0BwOmzupMSi0o2zJ/X6OAULGwB3dJhSuqixHqU1FaeegVa0jdgKJ5PsURS0RnxCIOBZdz7c0srIXHXz/UVOHnsIfw7Z98T/Mp+ckXvJKzFEOjoQwn1araYvQ/uJflwv+AXDoBNBWU026HBAIXqLdYOkbkjBPu3BfRHcKbb9xj3e3kpR88dbY4A7Mm67gWCnV14TEIine8miF6qkWpclfI/r6I7UqEXGZ8exRKOw+8a2MYiHrzujlW2quTG/nD593NCM6kFl3ZlHjLbTOlYHayC6dUE3Q5yYanCfdzaxhSt2YAnTkxBT0ZbgmVyOrghse89n5gtkQrYkoloprWNwm6Dnn4PPcABh9KZfODrw5tLn5olortwdy1+fCyzQqGSAWlpWBf3EIBpf/4wzKeqfSCPr
- 0HIY8xxi
- nYIOWUNLm2RXv4JH4Q4dikpZpJZem+aOqzFjhx0gV0eQwEufTnmDhc7intqsGxeETCZvKA6BcGQ3yUpNgTU/pnSg4NjWle3/ANELuJCpUAJUclzKTsrI+b40zBBrSZ4Zk1kN0h0BtEYWHheJNiWhiikkmn4hqvIIgWXUP9o8dipBrBJWFFndVZapBGR73hJV2kxmcXXjuBP0xk/mXQdeDYjpD+/9m9nIkFpUB/XyYY+OZ3EjqBeQPK5YqXFEtLq+zXmjV5fofDmj5/2A=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 641D64000B
+X-Stat-Signature: 88zx5y7fgj46oehsy4emmgw3m45zwoxd
+X-HE-Tag: 1791278440-292970
+X-HE-Meta: U2FsdGVkX18XoB6Q5WMwJe0OzfUmDXItfwjF+CqGkEQrRef8K95A9sqHqOQR+NAU3fWRr/ybhRuUMjc2d3WcWDMmkggcQsZ7fEqsARF1OC5jGKgpA8uosg62ls72z54q/pC1p+c5oKoI/Mf8bMghvpdxmufV5qMBprofBNpp6yVGKzWCK5EdGoFp6zt6MyVS301nl/MemN+fztWmaRmBwqdNqxaqwRUocRbYRNyhjzwovENN0E5ag5qvh+Lz2wBLFm0eLT1o5hxniTt5rtI8amKmRjM3kGBa1GPhxb/1lkLZuKbbOgeR7noSY3PsQv3YcmAn31nMu5/jOikszj0kpvWhECqjberU1Yog2xGXMTs/YOwZCKeAlNn0jlWetPOzkGmEMtCvCqVHt6f0XaaVNz9Aw3TMN5etjnJNqwHRIjJa8hoVxtXrdshUeUUBwqrVu1/ThF5hH3Lin2p6L+G0WuZwqDAWmgFTVzJuHzQNswl+d4KjZNno0QsqlBtr471tv3DsGSO6d/255d+06CM0ig3+1NQB4vNV4pccFAamxqdOQy9v5MajH/71A8we/8gkQBKgMZAl2Qh1XQFoXWLS2+4dj1tF4YzpLr+pfanDYWDXbbZPXf4m7RWrJEs1aYJ+BBV6PUrAO3HPPqYgJiMtkTf0yD45FILuWEbUoXWDUhhpJIggy0dXcX6GpoAb3jUCkKlOjKTRFv7w6WgYo8D6p0h9Uw8BSeOykRKhA5naHoj7+b0MiPOBpuf4FH+79O0BD+hjbxKpzbfFF3VxFRRMhyKwHzLmUzajXVfSbb8bDJc1PscW/X2Q+ZSzDrPr+eyxD0Ip3oMXTih+K2l/htIrjJZTTjPwaGM1pGVTKTSjMNFzWrlNk4iQwIdvwbuuKoDBFJzqDHXUJAzVSMZS4XI7xpd9Sh6vculqH7TGlC3+e6A6Xa8PKkBQBkN9ZfxKujgoHmxDoAPlI/RFmQgPk5T
+ H49HZhm7
+ lcfzH+1I/l23b0oxrGUaozIrNuI6PwsxcVfQR6oPBy06tl7S/UDSyOgppN54HtFH8fSWVB2vtjQqpDKnPFCnkRQODrfgX8QGFBOOwrGD7qDg2gf+zhwObgj4iUDurdfOGfhOYRkkrQDNQG/VfqKJ0d2Yw0d8o4ngCOW9Dm4i2BvkEykIGA7lyCTc6YAbuO6urXsN0CdbEd+Ivuy+RjPSkQsVa7N3dswPMEUAysEUADAcpKzgNhXJXcTetRtS/LbP4jeo2N9xi+QlOctV+Nqx80YjSVjovKZrpbhiG0+62uncN0ETdn16zqsKodiBHAjzZpdQM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,167 +104,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kmem_buckets_create() clones kmalloc_caches[KMALLOC_NORMAL].
-kmalloc_slab() figures out the kmalloc type the caller asks for, but
-then ignored it whenever a bucket set was in use, returning a normal
-cache regardless. That breaks an allocation that needs other pages: a
-GFP_DMA allocation would not get memory from ZONE_DMA, and a
-__GFP_RECLAIMABLE one would miss the reclaimable caches. None of the
-current users do this, so there is no problem, but it makes adding new
-users fragile. For example, skb data[1] needs to handle GFP_DMA (rarely).
+From: Pedro Falcato <pfalcato@suse.de>
 
-Send those allocations to the general caches instead, so nothing breaks
-and regular allocations remain isolated in the set. Accounted
-allocations stay in the set: memcg charges each object on its own, in
-any cache, so a bucket cache serves them as well as kmalloc-cg-* does.
+SKB data area allocations (as done from alloc_skb()) use kmalloc().
+These allocations can be variably sized and their contents can be more
+or less controlled from userspace, which makes them useful for attackers
+that want to overwrite a use-after-free'd object from the same kmalloc slab
+(which often just requires the sizes to roughly match into the same kmalloc
+bucket). [0] is an easy example of an exploit that uses netlink skb
+allocation to target another similarly-sized accidentally freed object.
 
-Built and tests pass with ARCH=x86_64 defconfig with GCC 16.2.0, with
-CONFIG_SLAB_BUCKETS as y and n, and with CONFIG_MEMCG as y, n, and y
-with "cgroup.memory=nokmem".
+While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, these are
+probabilistic. Use the existing kmem buckets API to further isolate these
+allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=y.
 
-Assisted-by: LLM
-Link: https://lore.kernel.org/all/04debe19-bbe8-4b5f-9668-753d1f97832d@redhat.com/ [1]
+AF_UNIX sets sk_allocation to GFP_KERNEL_ACCOUNT, and those skb data
+areas, the ones most worth isolating, stay in the set, where memcg
+charges them as it would in the general caches. GFP_DMA falls back to
+the general caches, being passed to an skb allocator only by rare
+devices.
+
+Link: https://github.com/google/security-research/blob/master/pocs/linux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
+Reviewed-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Kees Cook <kees@kernel.org>
 ---
- mm/slab.h              | 19 +++++++++++--
- lib/tests/slub_kunit.c | 63 ++++++++++++++++++++++++++++++++++++++++++
- mm/slab_common.c       |  5 ++++
- 3 files changed, 85 insertions(+), 2 deletions(-)
+ net/core/skbuff.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/mm/slab.h b/mm/slab.h
-index 8fd6835e4235..af39a4e47c9e 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -421,6 +421,22 @@ static inline unsigned int size_index_elem(unsigned int bytes)
- 	return (bytes - 1) / 8;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 966af3beed94..6f6b5f4cb39f 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -586,6 +586,8 @@ struct sk_buff *napi_build_skb(void *data, unsigned int frag_size)
+ }
+ EXPORT_SYMBOL(napi_build_skb);
+ 
++static kmem_buckets *skb_data_buckets __ro_after_init;
++
+ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
+ {
+ 	if (!gfp_pfmemalloc_allowed(flags))
+@@ -593,11 +595,12 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
+ 	if (!obj_size)
+ 		return kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
+ 					     flags, node);
+-	return kmalloc_node_track_caller(obj_size, flags, node);
++	return kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
++						    flags, node);
  }
  
-+/*
-+ * Which set of buckets to use for the given kmalloc_cache_type. A bucket set
-+ * mirrors the KMALLOC_NORMAL caches, and also serves accounted allocations:
-+ * memcg charges each object on its own, in any cache. Types that need
-+ * different pages (DMA, reclaimable) or no obj_exts fall back to the
-+ * general caches.
-+ */
-+static inline kmem_buckets *
-+kmalloc_choose_bucket(kmem_buckets *bucket, enum kmalloc_cache_type type)
-+{
-+	if (bucket && (type <= KMALLOC_PARTITION_END || type == KMALLOC_CGROUP))
-+		return bucket;
-+
-+	return &kmalloc_caches[type];
-+}
-+
  /*
-  * Find the kmem_cache structure that serves a given size of
-  * allocation
-@@ -438,8 +454,7 @@ kmalloc_slab(size_t size, kmem_buckets *b, gfp_t flags, kmalloc_token_t token,
- 	if (alloc_flags & SLAB_ALLOC_NO_OBJ_EXT)
- 		type = KMALLOC_NO_OBJ_EXT;
- 
--	if (!b)
--		b = &kmalloc_caches[type];
-+	b = kmalloc_choose_bucket(b, type);
- 	if (size <= 192)
- 		index = kmalloc_size_index[size_index_elem(size)];
- 	else
-diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
-index a2a15a49c5d7..1e6fcbbf8409 100644
---- a/lib/tests/slub_kunit.c
-+++ b/lib/tests/slub_kunit.c
-@@ -697,6 +697,68 @@ static void test_kmem_buckets_destroy(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, 2, slab_errors);
+- * kmalloc_reserve is a wrapper around kmalloc_node_track_caller that tells
++ * kmalloc_reserve is a wrapper around a caller-tracked kmalloc that tells
+  * the caller if emergency pfmemalloc reserves are being used. If it is and
+  * the socket is later found to be SOCK_MEMALLOC then PFMEMALLOC reserves
+  * may be used. Otherwise, the packet data may be discarded until enough
+@@ -634,7 +637,7 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
+ 	 * Try a regular allocation, when that fails and we're not entitled
+ 	 * to the reserves, fail.
+ 	 */
+-	obj = kmalloc_node_track_caller(obj_size,
++	obj = kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
+ 					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
+ 					node);
+ 	if (likely(obj))
+@@ -5235,6 +5238,7 @@ void __init skb_init(void)
+ 						0,
+ 						SKB_SMALL_HEAD_HEADROOM,
+ 						NULL);
++	skb_data_buckets = kmem_buckets_create("skb_data", 0, INT_MAX);
+ 	skb_extensions_init();
  }
  
-+/*
-+ * A bucket set mirrors the normal kmalloc caches, which can serve accounted
-+ * allocations too, so those stay in the set. An allocation that needs other
-+ * pages (DMA or reclaimable) has to come from the general caches. Check that
-+ * it does, rather than being served a cache that does not satisfy what the
-+ * flags asked for.
-+ */
-+static void test_kmem_buckets_type_fallback(struct kunit *test)
-+{
-+	struct kmem_cache *c;
-+	kmem_buckets *b;
-+	void *p;
-+
-+	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS))
-+		kunit_skip(test, "needs CONFIG_SLAB_BUCKETS");
-+
-+	b = kmem_buckets_create("test_buckets", 0, INT_MAX);
-+	KUNIT_ASSERT_BUCKETS_CREATED(test, b);
-+
-+	/* A plain allocation stays isolated in the bucket set. */
-+	p = kmem_buckets_alloc(b, 128, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, p);
-+	c = cache_of(p);
-+	kfree(p);
-+	KUNIT_ASSERT_NOT_NULL(test, c);
-+
-+	KUNIT_EXPECT_TRUE_MSG(test, strstarts(c->name, "test_buckets-"),
-+			      "expected a bucket cache, got %s", c->name);
-+
-+	/* One that needs ZONE_DMA cannot, so it falls back. */
-+	if (IS_ENABLED(CONFIG_ZONE_DMA)) {
-+		p = kmem_buckets_alloc(b, 128, GFP_KERNEL | GFP_DMA);
-+		KUNIT_ASSERT_NOT_NULL(test, p);
-+		c = cache_of(p);
-+		kfree(p);
-+		KUNIT_ASSERT_NOT_NULL(test, c);
-+
-+		KUNIT_EXPECT_TRUE_MSG(test, strstarts(c->name, "dma-kmalloc-"),
-+				      "expected a DMA cache, got %s", c->name);
-+	}
-+
-+	/* Nor can one that is reclaimable. */
-+	p = kmem_buckets_alloc(b, 128, GFP_KERNEL | __GFP_RECLAIMABLE);
-+	KUNIT_ASSERT_NOT_NULL(test, p);
-+	c = cache_of(p);
-+	kfree(p);
-+	KUNIT_ASSERT_NOT_NULL(test, c);
-+
-+	KUNIT_EXPECT_TRUE_MSG(test, strstarts(c->name, "kmalloc-rcl-"),
-+			      "expected a reclaimable cache, got %s", c->name);
-+
-+	/* An accounted allocation stays in the set; memcg charges it there. */
-+	p = kmem_buckets_alloc(b, 128, GFP_KERNEL | __GFP_ACCOUNT);
-+	KUNIT_ASSERT_NOT_NULL(test, p);
-+	c = cache_of(p);
-+	kfree(p);
-+	KUNIT_ASSERT_NOT_NULL(test, c);
-+
-+	KUNIT_EXPECT_TRUE_MSG(test, strstarts(c->name, "test_buckets-"),
-+			      "expected a bucket cache, got %s", c->name);
-+}
-+
- static struct kunit_case test_cases[] = {
- 	KUNIT_CASE(test_clobber_zone),
- 
-@@ -723,6 +785,7 @@ static struct kunit_case test_cases[] = {
- 	KUNIT_CASE(test_kmem_buckets_alignment),
- 	KUNIT_CASE(test_kmem_buckets_disabled),
- 	KUNIT_CASE(test_kmem_buckets_destroy),
-+	KUNIT_CASE(test_kmem_buckets_type_fallback),
- 	{}
- };
- 
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index fb1dd15953a7..6fa02b4ff775 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -420,6 +420,11 @@ static struct kmem_cache *kmem_buckets_cache __ro_after_init;
-  * @usersize: How many bytes, starting at @useroffset, may be copied
-  *		to/from userspace.
-  *
-+ * Accounted (__GFP_ACCOUNT) allocations are served by the set like any
-+ * other. Allocations that need DMA or reclaimable memory are served by the
-+ * general kmalloc caches instead, without the set's isolation or usercopy
-+ * region.
-+ *
-  * Context: Cannot be called within an interrupt, but can be interrupted.
-  *
-  * Return: a pointer to the cache on success, NULL on failure. When
 -- 
 2.55.0
 
