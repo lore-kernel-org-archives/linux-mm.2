@@ -4,139 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 972B6CA5FED
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 14:01:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E76A6CA5FF0
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 14:03:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 566856B0088; Tue,  6 Oct 2026 10:01:48 -0400 (EDT)
+	id 9AFC96B008C; Tue,  6 Oct 2026 10:02:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 517E86B008C; Tue,  6 Oct 2026 10:01:48 -0400 (EDT)
+	id 986666B0092; Tue,  6 Oct 2026 10:02:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 405C56B0092; Tue,  6 Oct 2026 10:01:48 -0400 (EDT)
+	id 875866B0093; Tue,  6 Oct 2026 10:02:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1ACD26B0088
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 10:01:48 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FAE86B008C
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 10:02:59 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 89B9240204
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 14:01:47 +0000 (UTC)
-X-FDA: 85292364654.24.03C5D60
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 86DC140005
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 14:01:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tA7xFXpQ;
-	spf=pass (imf07.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 39ABB1601DC
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 14:02:58 +0000 (UTC)
+X-FDA: 85292367636.24.B01965D
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012030.outbound.protection.outlook.com [52.101.53.30])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1138D40007
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 14:02:54 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=BXRUpDlx;
+	spf=pass (imf04.hostedemail.com: domain of DheerajKumar.Srivastava@amd.com designates 52.101.53.30 as permitted sender) smtp.mailfrom=DheerajKumar.Srivastava@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791295305;
-	b=ChGW2HZfpHJkOdJKc8FSUhiWnMkmu5DclK8qgfPwRUqv1oWkJbGOA2AYC9pvteIsvAEpmt
-	NcL8xti85Dm5bHIRvR6m7UoAX6H8SdXJAr+fFawSdT4+4rl2D/JVDlIIiuTA98OQnCEnhW
-	JikO3VyoFU2EHq2Pq5WobEnpybk6nkA=
+	t=1791295375;
+	b=wkeKyPHSifd+xZ9e/26879HNvUZBAvVOY2z9b4RQDM2njnhNulxHv1xFgD/xC1OL2XsN46
+	MRuu3ILJGHEiZUcKtDjhvtqaD/ucn1lBRQCVzthp9HUAI9E6LTIRgnZ3S3hUduZsTRGET5
+	39jw7eqAG0SFS2PMdesXx+jMLuQ+7ho=
 ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tA7xFXpQ;
-	spf=pass (imf07.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	imf04.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=BXRUpDlx;
+	spf=pass (imf04.hostedemail.com: domain of DheerajKumar.Srivastava@amd.com designates 52.101.53.30 as permitted sender) smtp.mailfrom=DheerajKumar.Srivastava@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791295305;
+	s=arc-20220608; t=1791295375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H80LEoa+Ed4z/bo92vNwYanr8Bxl+IJiscZmWaNEy4s=;
-	b=cN7ybgWgBD53IRaSH87j4sHoBeVZzjv6RTQTVbaXAZfKBydtTvLGY3pSXKDgutMcR0ZPtY
-	RvPQOuWi8obEQ/tcSC/wCO8CJ+JXb4Rfqddwz79maP1/xWV+bn0bnUQhcNUkgldgCPCLML
-	4h+jNl+miaNx26DwdtYouGPvkb8/miw=
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-885cf67963eso7422567b3.0
-        for <linux-mm@kvack.org>; Tue, 06 Oct 2026 07:01:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791295304; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WnVpp2shkTPPQu8vaPLN36aU0jYupZ67TTI3L83YsUEfCcZ6XRE1APz05BW1TZI8J5
-         QN5ZaYI/TroS/Cj17eliJWMWHmqzA8mAiZelDkSpvniTIMI3dXitRZf3jUs4yNvD+9tA
-         1f1K+AGj+jtu5aO6xmEJhJJq38W+tYi6AvDvdYcCG/evFEgSiQM4+Nl1YrRBWKJt6WWR
-         0OnMOGc9fTRzTrcWmG1x0d4RKK8YZj3tomgM6X8FaYb0JevkkvCpRfIIcdrE8LiNGBuH
-         dXSEdFWw9lNCqN07OdkQ3bWA0uF4A8OAeXB7CcppeJukeqLwFLeT3kh1xNUwiPa+/Fu5
-         kG1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=H80LEoa+Ed4z/bo92vNwYanr8Bxl+IJiscZmWaNEy4s=;
-        fh=lrprQ98bdp1sbguwXCkpMWL1slV4w6dA3ODk2udLLmE=;
-        b=KMwHbLoJ02a7iZFF9lxlE8g2xFWAACX6PCC40Usgpv1Ix/dkB/Vcw+d152kek/6cZo
-         FCJqyw8Vtl+Na1avL0xSP8WLrrwfPJBk/1Kj/TIzU6/34tTAhNuFISniK9YXTP0XM5lD
-         BbeJx+rvPS5BHzO32iEWnY0b9O9cs1h4W1SOr/WecfAX5NbaTgcg/XgpKPw6UJwCU/ej
-         lzDUmWD2xCVSwwwwbpUDvRfXdIjBGQQeYAIF8pdcQNdzA2cJ6wNjnflbZret/Rio0XmM
-         OSFZBpL4ah2GTiKEpCdrvk28FP8PDHz+bUbhLPJGzr9zX85HRRUPOk8Cc0aOFK0YejDK
-         vSNA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791295304; x=1791900104; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=H80LEoa+Ed4z/bo92vNwYanr8Bxl+IJiscZmWaNEy4s=;
-        b=tA7xFXpQ26MI4hpVm+3TEXtG8WKlgS02Z4su9+kAnPKfRMRVMUvLomnhUGoFuxFHv9
-         XlFNA5Vw+ayF4MtKX8dayPzmrNwdgEsEjHuVFEme2VGXZhK1ntpGNx/SAot5yUNMK/9Q
-         90JSSxfsx037cSFEZUgk2noV7G3Q4Pj7o+/4jd1Rr3lwIFDQNpr8IOm144LtV9VfHIIj
-         yZzgPKV/htv8PBn7MTWXbH1mK3Abt8bWPvzLBpYTvyFoAwP2ASrVUkHnfXz9KflHuyxA
-         zNkl6vXxcc8/tt93DkM4HdLDUTyosClReBSuFRwUM9GcsvgvRuFyqHaqQN6FpBZJuD22
-         A0UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791295304; x=1791900104;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=H80LEoa+Ed4z/bo92vNwYanr8Bxl+IJiscZmWaNEy4s=;
-        b=HvkYNly+QS9cYUCGmsNzE0qxoNYRDolPUgkkfuAQJ2vi4W6luSk8pc1P19k/RX0+zu
-         BcxdpLx5NeUYvbKEa2CYt+xnh3ypXEvh9KPxqxcstiGu1qylFiqqBjutGTP1iy1Ntyh9
-         5+S/hpgMI4+M9y1o4eFCejzVKYhJVlOQf4t9s60irg54CCQulstI5Lcs1+VQ537yuneV
-         53ag+Y6SYv0ndeJ/4fi1PUbP0YjzMzK/6vExRXmt7a4AqVQKysfrer5cCqKekExkwGxx
-         NxdEKwlLkh2CZ/GqbAM5Db11u4H3dSgE7vcKQLNJlj3FEAHUvuKIJcHokL+fhfYIM350
-         bKWw==
-X-Forwarded-Encrypted: i=1; AKwUvBxzGcQMBI+m7w/9LvI8OEpyTBuALLCZhcZlDeafyb6UymBXWcTYTHaVDgvmm8av+MdH9GIWGYhpUA==@kvack.org
-X-Gm-Message-State: AFq9FYIhewP7ewOSnE+BwA2h+yFIRs4jhwldfQoKQ+Xzp4wk2smi37sL
-	UPM3R4Da80k+9PrrzHspBM0UkMc/63H4leFrEWhN4DbNOh+NlAjiMqqSpAjgT0LlCHPllymuB4J
-	pst4GSM7qUlI3D4602XGuHJ9rco/Y84A=
-X-Gm-Gg: AYBFou0EpD+gyhR4HxgTdMRmafjqYKSAv7Zk94ush27whXBu1hrLd49053rrKC7Cfvr
-	c6l9k8PjLXqsd1JnEvKHo5qwb+CWKFrBqYdPV4cQ39ACAaWO6y7SW8mGgZM2TCD0+dzplgbRqi4
-	WGxEz/EcQCVfmomOoqb/tZlBKwhvKrO3vz5Z4qt2EwhMkybVqxP9pUJQ1kR8ncUW+4ksQplQ1f2
-	Dr61i9vDGfwWlr/NuWdIK+xFYnVD4ZVqln6CzwHvU5JULaZVXofqk8Xanfsp57+CgBKPzU57lMe
-	N4dOMCrIhaUgY2AiFgzxcQ62ZLKo+NvtvfRp/0zQ9GFexVh0OuNBotHY+lDl1QaEh2JXzKxmPzQ
-	ubNxHvS+yg+mJCWTlkujC1v8/YYjW6ELgF3u0wnmNkz+zwSEsyfAQ
-X-Received: by 2002:a05:690c:88f:b0:873:5c7b:c0f5 with SMTP id
- 00721157ae682-8b04f49907fmr7810607b3.45.1791295304055; Tue, 06 Oct 2026
- 07:01:44 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Gnc1DXH3z+94CkqZ0Vgycit0j0yjvcjP4WFvDeMMum4=;
+	b=k8Y8PZcblA9h1Mw+2fzcmRTwX/xL3xxdYWg67p1flvIBtfkLwD6yIJZZX7MACdP4z98ZF+
+	xqNHS8Idvyza3uikvSe9JU1zL7zXV2RP/hvUVnZjlnfZ0w1J38H/lGB3ZMPLGtcuGcsj0u
+	lJLqBGUxNHYKS3Ilr9szbRYrvauLSTQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hB/Nz5ekQpv8kMee66f6EbI0akPFJ1/e+gxQJgmfocsFAk3pzIBwx84Gs8JF+z4+3qP2hS5YZHJw1CNYeyRyC12tU5hC7FmOK+yQj20ntKDRWDwpitz35/KWrdsTDHwumKSmpYX26gw8VBI+V1BPG9VJayibPpdWaEbl3oZd/VuLCO+K3O4ILbvr4KvvJEg8XaKo9A+VKTWqhKymjGiUXq7zOKnIsn2gzTmDE92jYMHyKfxAYhYWivfGuCUY33UC/1/enA6w0IkDwX2nZJfYZ2s15jDr7mn2gg74ACLk7gGs6UhaPC+3OEnd4OYDsVBLkKIIXNGySZ2yN+FQo6GzEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Gnc1DXH3z+94CkqZ0Vgycit0j0yjvcjP4WFvDeMMum4=;
+ b=qKhG5YH9LnWcqlWo+lQo0UG/sJ2wzinuf3XmWGPVynUc3ESa32fhdneVlt6Rk1kG+KrVjKnnZVEOR2WOZU5Clgl4mFuuy3aLijZjVSg5uEqsY35LUEwSWC9/Ru+rlqLmipzaqr9RX/3hHJC5A1ownpgRQXGP1vLn/MH86W2P/8cqh+yH8bolv9aQsZhWbknyHR5Brp3GWLbrkokgFyHNMPbWInaJyr4bPK0hwCQC8YrovkpdPrqwix1ueGtKi69a9Rg7bYCSz7SDpYC9JUm7RS/w4NhaLszaoGDEygMyNBZ3+ZuGBbeHOKeHVnufWTafCeX6K26/h3N28/AI4JX6Kg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.dev smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Gnc1DXH3z+94CkqZ0Vgycit0j0yjvcjP4WFvDeMMum4=;
+ b=BXRUpDlxEYoFpNo7PU48O8g7hBorBB/KLqxb/BkOV8noDzbsm6OsDvkG45WIkdCh1e8NFOo/gKU6O+M+lEF7BzNetkuiBRCeVh+33ytrY38hAJ3nHuR6UVwF6EKS3fcr813ovOcYmF4oUmnYEgogycgaNlOMbpK5BDz0czrf1gI=
+Received: from BN9PR03CA0875.namprd03.prod.outlook.com (2603:10b6:408:13c::10)
+ by PH7PR12MB6441.namprd12.prod.outlook.com (2603:10b6:510:1fb::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Tue, 6 Oct
+ 2026 14:02:49 +0000
+Received: from BN1PEPF00004689.namprd05.prod.outlook.com
+ (2603:10b6:408:13c:cafe::45) by BN9PR03CA0875.outlook.office365.com
+ (2603:10b6:408:13c::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Tue, 6
+ Oct 2026 14:02:48 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BN1PEPF00004689.mail.protection.outlook.com (10.167.243.134) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.14 via Frontend Transport; Tue, 6 Oct 2026 14:02:48 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 6 Oct
+ 2026 09:02:47 -0500
+Received: from BLRDHSRIVAS.amd.com (10.180.168.240) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 6 Oct
+ 2026 09:02:41 -0500
+From: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+To: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>,
+	<akpm@linux-foundation.org>, <davidlohr@hp.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <dheerajkumar.srivastava@amd.com>, <Vasant.Hegde@amd.com>,
+	<bharata@amd.com>
+Subject: [PATCH] mm/hugetlb: use kvmalloc_array for hugetlb_fault_mutex_table
+Date: Tue, 6 Oct 2026 19:32:26 +0530
+Message-ID: <20261006140226.11684-1-dheerajkumar.srivastava@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20261003001555.3498357-1-joannelkoong@gmail.com> <gz7cxhldkfkinbzpx4goa6rhdqpzldpaenzhtfoxcztpzj5avw@hkzo4fbdbck3>
-In-Reply-To: <gz7cxhldkfkinbzpx4goa6rhdqpzldpaenzhtfoxcztpzj5avw@hkzo4fbdbck3>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Tue, 6 Oct 2026 16:01:28 +0200
-X-Gm-Features: AclHuK_uZOogQkMdxz27vAGUCfidPFeie1EwYBw8NyEpTx7XUT6D_HjCrQZ5F8w
-Message-ID: <CAJnrk1ZaYAy_81OVxZ74wF1EXF8j13giGdu_CD7Q3XLzX-XThQ@mail.gmail.com>
-Subject: Re: [PATCH v1 0/3] mm/readahead: avoid per-folio memcg reclaim
-To: Jan Kara <jack@suse.cz>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, shakeel.butt@linux.dev, 
-	roman.gushchin@linux.dev, willy@infradead.org, mhocko@suse.com, 
-	muchun.song@linux.dev, david@kernel.org, ljs@kernel.org, vbabka@kernel.org, 
-	liam@infradead.org, rppt@kernel.org, surenb@google.com, riel@surriel.com, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	"open list:BTRFS FILE SYSTEM" <linux-btrfs@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
+ (10.181.42.218)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00004689:EE_|PH7PR12MB6441:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8291b661-ca3c-45aa-f590-08df23b28122
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|82310400026|23010399003|1800799024|56012099006|10067099003|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	4MseebFX7g7hJ9zrRuv4HMshSYKCbok06F3AdhIrK5MmdHHQcheV5hrpUfFxsU5tcbmvgJKLjRqSa35KYoAdKmNskJdT2Bz/dh1wg+3wjKnn3PnG6uSLautJ1Ne3nBKqejMHPwZPHKx9YUiWZzZRePebHL3hrNzfW7Uhn0lhRxW0PSaH9H7X/P2lp7Eh+jE/2LtBTtgdA21aCN3gk4CszxFed3o42wk1AN5XnbrEqR0dDRZjm6MdPY4L93KGnnIbWGg1DbxRy5qvpzSMZIpg+7NSt0Jk1n1gIMPe7zH7sDlKqG86GDgnbSeYa0b6xcaSpzgQQHa7L16Ruc99mmnzfI/Hs249Yrm7YtnVJxKzx+YOqe/1lA+E1+C4ahin1V7wkkXHdVOTPI5NDybNf0VVGwdyujQvLJFU0PEkC33Dp5cTLSeTZZKRzewVGt315Bk3M6KAzjzJgX5EseIDRVlRN4IGI2hVadOvCJQegrL2MF9nLUaMUFXELJGCF0jUG3WJ/P1X9oFykcB98WYRY0IppsSPzTNYutGwz9shtGDBDRzuKdvYKUB3R8s0frI6BRuFaO8h20Q8UaBwrYjTyC1l268aMF9oDt88ZjCpAutUOPWHGa0ujvz1YEnolwIbnslTFrfnq5M+hjKYmvxHJm0i8E0T4HArqXrjCkQahX+AFbgSSwLxznfMjwt2Z1Nmg5mscBl3mkqAGuGG9OaD+7O+uw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(82310400026)(23010399003)(1800799024)(56012099006)(10067099003)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	gBDMMVQb6gY24cj77fcs8teYLmSaWIKgWBVjCIEWsgWTsJbVQUuv3EboAjaMoHKiSfPOEOy1elDBYLdcK/KysXmcpPIREyi1TiKMDkJLgureAiuKcc/yMd59heNx7DpFs3+5STycCA+BwPp6f66/1cV0My0RZusmX/7ppeYRmCLWoksvpYi6K2Bz/SqRRh7xGkOU7v7thVw0cvNsDG8eUg0lNp+WHFhCNEKPbqwfNKVMxeHF3L8QNxsSuEfugw9PRy8nzlZbajnzVh2K3Zw7jAexWB3yBhTp6BTg0ojmAhTTPK21TJ6AWYaro8X3hIH0P7dACcQrVyH4qXc60oJxdCyfRFADcOMilJlMa0zJC6DKTXBeO8m2X7LOaXj7TP5J8hhYz+0FlBCLZflMXf5C6ThDF2G2SpxkUnFEmPO9cGMETwLs7QMBO+sD9g6XwpIN
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 14:02:48.7132
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8291b661-ca3c-45aa-f590-08df23b28122
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00004689.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6441
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1138D40007
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 86DC140005
-X-Stat-Signature: itbxhami3td1b1kfwjkfc4mxzu98mhft
-X-HE-Tag: 1791295305-577968
-X-HE-Meta: U2FsdGVkX19qa1sz9n0H7agjrqFm/gfdudQzd7oe8ks5tWJb+7xD4qcHysOCMzPuM/JJSPXG3OBhhc4+tuzKGAc4vEQlCBzhwH23YxeslcXAXDi4YEonryRr43TRaOnqC+Voiorhd6p7RbrJQ3Be6YY+CjbUfNk4HNiBmDmD7A7cpbrEQa+P0MZP2iUcq7z7XiOCzpabJq8gbQlaiXAbipPFuww3N1OHgzSjMGE8CC1CpQ3mIM+2fIW9NOl2iGPkZkYT3WEscg3ZsbJt06z4OFpsD0thrvP6HAaWHVnxZxGaPeHgNbHJu+POvnzkkVNjjPYXpoCrdUWtImUodqJfU/vrfElVXoqW7GFVtE5I7uQDODZ97OrNsfbysYbINearp8DFRxJ1fGYiPGPeoEBWqgZ0l0CCOmodWlCjZctNUoVkF8DeJeYap9KH4fPa/AvZie/3B0n6GWkbbTO4RZS7vF1AWHF5fRaHyMJFLu/IfjRRB84N0rPkFWGZUZTBirPUk35YVDV4BV2U9FB2sOHWoL6vAIx5q9kQuIq+ZNebC4BWFCc45iJoNdtCvOgbk2NTjUsnz5OoRvqwi8/XM6R58dzFJfyKc6THyf1Jb/Y/bEPMmpEyJCvJRMpIslSdukbS/WDcscZGBIbA/wP5cWSgk/aBkHbFJ3+U2LLUW1cDkc5IFeyPwQzmoV8o4jnlp4uiS4eWozHzba8PP5Ju3W+uAn2GQ2FCxBWoRHpmiTdmrzWIQOtYT9p0/Ouz5m30Hjc0NJ5FoFnqNf6z0NnqcYiTFLxjE1eSatUuxgO7A7L8tqzv9wixW1IjQ4LTB6djSX7fGMxbNP5HjY7S/XGnrihNk1e4cvK9tn4U1LDMaJ9gqJUgbdidA3pgHm9zFJkVZIZduPFNQ3ESdVWfinmFKEfnDvf6kjZ6l78cSHlt7hHnW4/cKq3HCwUcbEfknOwEVaGtV/K18IU4nosXjEMussU
- 6tm+WJze
- dWVwNVN7TI+KPWXvYQ3dTotsixQ47Bpkp6KrwJPQtFbyVJy8g25F2r5jmVfMbsSfByOgKfDW6ABmUhT9RFZJGpp9wxaAP+fHdgY9waj8xNRUhudkoeheqGCun5jjQGWnlNqawXKO6U9nVO3BrVENoBybIYIpqz+szRWPr/acLy1SDUigjfWJSMpDJcLYeIdELo9fV92yCIiFtuR/L0Hahnb19tnxqoknPdL+TPUm/iewwV44HYAU1O7wIBRaa9+htvAcpQXJY1m5icz6+mNUEzaRde+GhNOTalo5ZgSYoGHr2QK3of2uYBBa7GGKBXsVLJrOy+lkRl2cgmxtqSLIhRLSd9Dhj51lbT/YH7AVliinSdPgwVo4zVW7R2MNEMKNxuGbqGamJ99C3URk1t0+7iG5zPrh3i/XrHL1QRVvXPxL2a9ViVQ0VB698YMtKv7CaXYYbbJFIKIOML7M=
+X-Stat-Signature: a1sb5phz6x54omkws6zom8smtmnshki9
+X-HE-Tag: 1791295374-72630
+X-HE-Meta: U2FsdGVkX1+F9io7rGKwSkc4Y4CHiUBauuDjNro20HfOXEVfFtK2R7hA0BqUbApmjn9kSiOvT5nFv2sh17nZ5TE2JYANFE5ruMswSAx4nBKyv9ZkwvXW9GGWnwHrjX7R+Cu7ZxXIMvyvku64X2y1yq807whTkgVUh+o5LYM9GIy0WzHEkFkbO5OoIXjr9d0A37jWaIDJyVImK1vum7EO5aTonMbKsaeXWE5DZNxkf6FuCGuhW4eR58/4mDuHo4IBTFbc9xHUV5rx2o5zVu8bdvXfPXo0HHjYoWwbKKUfygIGxmdxx82neaPX6zmyegvcAlTfZw9bpTzcWnHTC3rbfQF5CoeF42hqasuMSXYt0xn/O262bMJ3GbuAc/gHum2v7iJ4j26qGA7pBbSqWnn60M6pwt1GNuuXyhvMvKAXm54MYKpK/DfO2LvEqbfnhhcejZjsqUKL9L5UTMvJAboMFVyHsLcZSq5tHtJ16tSgra0scEaQU84BecdKUGetIzs1D3/XNHJ1wDO2cR1Ykqe0CJwrfqntQEGwXyg9WNK4R7wgVxy1qnvWmVrdZCpId3FpFi+VQOs72SrvHWijFVX2NCY6zNw3KTYiHzGRlMMF+BBDM4Z1Y+ax/zZnfBHtFX6ZlFeso1eAawcjoFsMjp6akvi7oXz5Ae9Wg1noo4a8M2VjfINlB9kajE/SC5F2o3zDGHHb84CTKw41zJPNNFBhj2oH6cgUUqQR1GEedWwT7YoyzfzmQLH0Cnnaq9BzOs0o3AD3Jm5+xPOEOyEB4C83ms1brMm06IQBtcPScoUgtyquBoPvfF5mxdAoZs4hk4Z1b0qkXfoNR/bNUrpqnwmQ3R+I0I3gQHf5WEK2B07AWNqyuJtHMbvApFFuVuZIlndtp1qKnjokr84UsaPOKCRBg7UMxgR4yzxkiqhsmYJZkKdNkXNasuVlI1/E89AvQDZGm4dXGmPQPF89+3KfNZ/
+ mcZy6bpJ
+ n1Egx+J6b0bVuvN8LjNUnixxMw8qUtcmDLm2LNdQgB6/1eQSIL8Z9V0apWhdRSEFF+pMCbdyH7VF2Y6A6jVBoOUZ8S34l1Fy8WuQlEiCKey56EnvOukmP9tC12gxRfw84HoAriXGlpv+xf+5521RSxSytJ8SHVDzTS/qdBgvGlaxav80V9Ct+MxSuJLgQATdwOGRWWz0N3CENnerPPgNyISmbOLVsvtrDIsz7l6SiHASkaXnIgMMkOihzJAupVvzdVX1iJ8EXYDoK3oc6OTZCKI6YHKbNJeVCmLet/FDXIKxrnWzX4m8YRb0MtaktO0viRNXNPqAzZa7VW39MWeYdmzdrD1pCxr3wPKT/SCNvGUIZ4/DWO6JVOWIf5Ws6YYPq4YN8Z6DcuEKgxLBsrMo+HyQW7vSNU8A2fDYNKXN665EoyroF5l3H36hHnfQ5NqgMbi2QiL04i9Vx74lYApLMaFhgMhmwLaUDCBrXI5RcgjRqqcZUmSbJoK0/Tx9mKtLUOwLUitX4tkoAlbeMXCntzMLk+LzQEcnG5DZcpVnDMSfHm5yWt7dFppT7lFcWAo9bUNlF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,158 +150,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jan!
+On systems/VMs with a large number of CPUs (e.g. 4096), hugetlb_init()
+computes num_fault_mutexes = roundup_pow_of_two(8 * num_possible_cpus())
+= 32768.  The subsequent kmalloc for the mutex table can exceed
+MAX_PAGE_ORDER when struct mutex is enlarged by debug options like
+CONFIG_DEBUG_MUTEXES and CONFIG_DEBUG_LOCK_ALLOC, resulting in:
 
-Thanks for taking a look at this.
+  WARNING: at __alloc_frozen_pages_noprof (order > MAX_PAGE_ORDER)
+  kernel BUG at mm/hugetlb.c (BUG_ON(!hugetlb_fault_mutex_table))
+  Kernel panic - not syncing: Fatal exception
 
-On Mon, Oct 5, 2026 at 2:27=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
->
-> Hello Joanne!
->
-> On Fri 02-10-26 17:15:52, Joanne Koong wrote:
-> > Readahead adds the folios in its window to the page cache one at a time=
-. Each
-> > folio is charged separately. When the memcg is at its limit, each one o=
-f those
-> > charges triggers reclaim. With many tasks faulting in the same cgroup, =
-the
-> > margin one reclaim pass frees gets consumed by the others, so the fault=
-ing
-> > tasks keep reclaiming, all to make room for speculative folios, and in =
-the
-> > worst case, reclaim livelocks.
-> >
-> > On Meta's fleet, this per-folio reclaim is a large cost. From fleet-wid=
-e CPU
-> > profiles at Meta:
-> >
-> >  - Page cache insertion (filemap_add_folio()) triggers about half of al=
-l
-> >    memcg limit reclaim CPU, more than anonymous faults, swap-in and
-> >    memory.high combined.
-> >
-> >  - 93% of that comes from mmap fault readahead: filemap_fault() ->
-> >    do_sync_mmap_readahead() -> page_cache_ra_unbounded() ->
-> >    filemap_add_folio() -> mem_cgroup_charge() -> try_charge_memcg() ->
-> >    try_to_free_mem_cgroup_pages().
-> >
-> >  - In filemap_add_folio(), 83% of the CPU is memcg reclaim while the pa=
-ge
-> >    cache insertion itself is 6%.
-> >
-> > Most of it comes from services whose worker cgroups run at their limit =
-while
-> > many threads fault in mmapped files, mostly on btrfs, which our hosts m=
-ount
-> > with compress-force=3Dzstd:3.
-> >
-> > This series adds readahead folios to the page cache without direct
-> > reclaim. When the memcg is at its limit, readahead reclaims for the res=
-t of
-> > its window all at once instead of once per folio, and tries a second ti=
-me if
-> > the window runs out of room again. Please note that this only applies t=
-o
-> > speculative readahead folios. For the folio a fault or read actually ne=
-eds to
-> > read in, it is still charged with the mapping's normal gfp mask (with t=
-he
-> > reclaim flag set), like before.
->
-> I cannot really comment on how much sense this makes from memcg POV (I'll
-> defer to people understanding that area better). When I'm reading your
-> problem description I'm wondering about one thing: Are the folios we are
-> faulting around really used in your workloads before they get reclaimed?
+Switch to kvmalloc_array() so the allocation falls back to vmalloc when
+the contiguous physical allocation is too large.  The table is only
+accessed by index, so virtual contiguity is sufficient.
 
-I ran some traces on two production hosts and am roughly seeing:
-* of the readahead folios that reclaim dropped during runs, ~66-78%
-had never been mapped
-* running a 60 second sample: mmap read-around accounts for ~86% of
-readahead on both hosts. 77% of the folios it adds are never mapped.
-Around 10-15% are faulted on directly and the rest are mapped by
-fault-around. mmap_miss skipped read-around for only ~2-4% of major
-faults. For faults that triggered read-around, mmap_miss was below 10
-for 74%-96% of them.
+Fixes: 8382d914ebf7 ("mm, hugetlb: improve page-fault scalability")
+Signed-off-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+---
+ mm/hugetlb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-This looks specific to mmap-readaround though. On these same hosts,
-I'm seeing much better utilization by buffered read readaheads (only
-~30% never accessed).
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index cea25773a6c9..f1b982595151 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4177,7 +4177,8 @@ static int __init hugetlb_init(void)
+ 	num_fault_mutexes = 1;
+ #endif
+ 	hugetlb_fault_mutex_table =
+-		kmalloc_objs(struct mutex, num_fault_mutexes);
++		kvmalloc_array(num_fault_mutexes,
++			       sizeof(*hugetlb_fault_mutex_table), GFP_KERNEL);
+ 	BUG_ON(!hugetlb_fault_mutex_table);
+ 
+ 	for (i = 0; i < num_fault_mutexes; i++)
+-- 
+2.25.1
 
-I think a big part of what's causing this is that btrfs by default
-sets ra_pages to at least 4M (in open_ctree() in fs/btrfs/disk-io.c).
-In do_sync_mmap_readahead(), I see "ra->size =3D ra->ra_pages;". So it
-looks like mmap uses this same value directly for how many pages to
-read-around (with 4M ra_pages, this is 1024 pages), even if the faults
-are random accesses. I think this also accounts for why mmap_miss is
-so low too, since with the readaround windows that large, most faults
-land on pages that are already in the page cache, and each of those
-minor faults count as up to 16 hits, while each major fault only adds
-one miss and happens a lot less frequently. With many processes
-mapping the same file, I think it makes the problem worse (eg each
-process has minor faults to map it to its page tables, but there was
-only 1 major fault to load it into the cache).
-(Adding the btrfs list to cc. Apologies for not doing this from the
-beginning. The full thread is at
-https://lore.kernel.org/linux-fsdevel/20261003001555.3498357-1-joannelkoong=
-@gmail.com/).
-
-Instead of having the mmap readaround size coupled 1:1 with ra_pages,
-do you think it makes sense to compute it differently? Like either
-having some sort of fixed cap (readaround never bigger than
-VM_READAHEAD_PAGES) or dynamically adapting the window where it starts
-small and grows if/when readaround folios get used and shrinking when
-they don't? I don't think this would degrade sequential mmap access
-(eg async readahead would ramp the window back up to ra_pages in a few
-steps once the fault hits the PG_readahead marker) and I think it
-could be beneficial in general too, as less pages need to get read in
-speculatively that wouldn't be used, which would also lead to less
-reclaim.
-
-> Because what I'd expect to happen in cases under heavy memory pressure is
-> that ra->mmap_miss would quickly grow over the limit (100) and we'd just
-> stop doing mmap readahead for the files. If the read-around pages aren't
-> getting used before being evicted, then the first natural thing would be =
-to
-> actually stop reading them in the first place :) The mmap_miss logic is
-> actually rather dumb so I wouldn't be surprised if it doesn't work in you=
-r
-> case...
-
-Do you think it'd be better to have mmap_miss count pages read vs
-pages used instead of counting misses and hits seen at fault time? I
-think the problem we're running into here at Meta which mmap_miss is
-not detecting is that there's lots of wasted pages that never reach a
-fault. It also seems to overcount hits, eg a single fault can subtract
-mmap_miss by up to 16 if there are nearby cached pages (which might
-have been cached by buffered reads, not mmap), even if those cached
-pages never actually get touched. And the same cached page can be
-counted as a hit several times, once for each process that minor
-faults it in. Or maybe there's some simple way to get the info from
-reclaim instead? Where if reclaim is evicting a readahead page that
-was never accessed, that's counted as a miss? imo that seems a lot
-more accurate as a signal though that also seems a lot more invasive,
-like needing a new page flag.
-
-As I understand it, both these improvements (detangling mmap
-readaround size from ra_pages and improving mmap_miss heuristics)
-would be complementary to this series rather than a replacement for
-the per-folio reclaim fix. Does this match your view?
-
->
-> The experiments you have conducted below indicate that if you effectively
-> disable readahead you get more page faults & smaller IO requests (expecte=
-d)
-> but for your realistic loads under memory pressure is that really an
-> overall performance loss?
-
-I haven't measured end-to-end performance for that on production loads
-but my suspicion is that losing read-around at the memcg limit
-wouldn't affect random-access workloads like these much, while it
-would for sequential readers.
-
-Thanks,
-Joanne
-
->
->                                                                 Honza
 
