@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6F21CA5FFC
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 16:02:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E14DCA5FFC
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 16:10:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 736316B0088; Tue,  6 Oct 2026 12:02:15 -0400 (EDT)
+	id 03FB16B0092; Tue,  6 Oct 2026 12:10:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70F646B008C; Tue,  6 Oct 2026 12:02:15 -0400 (EDT)
+	id F329B6B0093; Tue,  6 Oct 2026 12:10:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 624356B0092; Tue,  6 Oct 2026 12:02:15 -0400 (EDT)
+	id DFA5E6B0095; Tue,  6 Oct 2026 12:10:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F61D6B0088
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 12:02:15 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A7DD1A0257
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 16:02:14 +0000 (UTC)
-X-FDA: 85292668188.14.4EB2622
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012045.outbound.protection.outlook.com [52.101.53.45])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 84FA8A0007
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 16:02:09 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=Oq2T8Xsy;
-	spf=pass (imf15.hostedemail.com: domain of DheerajKumar.Srivastava@amd.com designates 52.101.53.45 as permitted sender) smtp.mailfrom=DheerajKumar.Srivastava@amd.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AE92D6B0092
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 12:10:06 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 147D11601F5
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 16:10:04 +0000 (UTC)
+X-FDA: 85292687928.02.F52761E
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010029.outbound.protection.outlook.com [52.101.46.29])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EAB1A140010
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 16:10:00 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=1Rdmp2TF;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of DheerajKumar.Srivastava@amd.com designates 52.101.46.29 as permitted sender) smtp.mailfrom=DheerajKumar.Srivastava@amd.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791303001;
+	b=z8QfyE0aSfQ5WyEyjKE4jAh1iVfjn2K67I9sf7bEBIVQ8wNbusSUFxciS9IM1o6Ih/0q7V
+	3Sen2hAuaf4IpgO2HnuXwye7AtJ/Hb3XP9IvwoPy/mfrqRTxZ3tGlOWFBryVwEDEzRkTTO
+	CzKVttPi4A4nsoXifawbgT4HMdiHYv8=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=1Rdmp2TF;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of DheerajKumar.Srivastava@amd.com designates 52.101.46.29 as permitted sender) smtp.mailfrom=DheerajKumar.Srivastava@amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791302529;
+	s=arc-20220608; t=1791303001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=d79TqB0Mh6GOENO1NfAmMDznzg6KUxg3Q2hO1HRZ0L4=;
-	b=LeUZkgT25JiMYfFLSpMeEmYHkSVTgba/2KqpYHF3XOLk8kHcPGpH4CFGkYzdzlmOFilWNM
-	f8mevPlER5dmrE5eM4KGWM1ChBCUD4EBWz95KvgkrLJbxUSvrMF1UhEkUoQlPCn+Kxbww9
-	tca69UeXqFAYNpEuz56EqW8OF2YNvIM=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791302529;
-	b=w9eUaugp0+jm7SVtIz3NVTSMaEpwH6EESLeb+kMDEMekdLUspfTh9EXDRTp4gos8wVp7Tk
-	atvFFlenYZK3uDxBXDAHKI/XHmHo2HVy7rw+BEqvz3Jzg8jMLhgUypAs/WJT6umsHwTO5R
-	rtdXjrOIar5443E5cDoAV3wIXY2fpN0=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=Oq2T8Xsy;
-	spf=pass (imf15.hostedemail.com: domain of DheerajKumar.Srivastava@amd.com designates 52.101.53.45 as permitted sender) smtp.mailfrom=DheerajKumar.Srivastava@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nA2NZW6KlB7vW3zwmThuYnEhQEnitc1FqIMQplJKEWg=;
+	b=Q897cMitP2MeV6kwxTVLsC7mP5zS+PdTytrgeAl/6YWdqcErADeieWBZ9tayM2+m3EuIey
+	+S7n5RLqJ+19BpHiYWK1n4gF/LhlBipVwchvKns6AKtvay9d8EeL+vcDxrptReeptgrtfy
+	+6hV0Qx4DSp68pzO0IkhD1NbvUsijz8=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gv1d7FriYnjuXRm/t9zHWANUEYJbArT4k1YshfX5MmjUYlfZJDxt3e1wVoyOsqX2rWCwErNhSmTflBJWOYzK9KI6gA10F4yPrf/C1z4a6e+DHzhmg+4Qmhzym/f/NuZpn3hW8TIwoMnnA6yvArrWuI/RoaH5X9Cpsj+lJXzI6GAGvvHxJyCXJxIq6bkVor42+P5LKXpLRYIs2qW3gdtJyQdx7NhjGsJsPm5JXLE2UYPX4ytigfMEIvb8lj/E4MkTyxxzC2gUfxOJ99FjfCs5UOs9Dp4j+iH//o79sjhawyJ8CuJvXyXG7SzlwZxshnh4xVe8LcIBHORwAleVCNvv2g==
+ b=R7AvLMsoAifK3Dlnl+S4KeHrwrnsKmtgiA8ATYVFJdCDVAB0x561PZzVnYGqkxJx/UCLR1H8VROoh8qEUNHt2BJ+tOYM2IHDLnbR2xGQ1hIpCRN/v0bL6Jpbg0ZCbiEn/JjdCfLqcdzYUXuVjY1yKEmWN2ul7MAgxt1XCoNbhfvsj4Xj1rBsfHPIb7IDBUGn7/4qXPMlPVi/Dg4AM1SmIapFqvD+nOyv8P72x7VbtraAS9vkKAxDIWBC7XUCY8HTKuLsu/2e/u2PpaPevblm8aRYdJ73hDK09F45EUZsiCwix6gK9cFklFy050/rIeaG6IIqdUe7ga16myAXokqSPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d79TqB0Mh6GOENO1NfAmMDznzg6KUxg3Q2hO1HRZ0L4=;
- b=SL+5poGXGSSpMSMy7Tpd9Z3cLuVubZ0aF446TLEOi4/QKDR4EEXkldc3fUFozm2e0g1oFQqjyXLXMt0vd9fTerwjWYoAsZJ6uTRi8OxgtnYbrgKl65G1oQMctbhl6o1q0KFlyWAcLRPKVdnQr4+kptAqRqjOntJhhzY1U2B9Y7CsrMOup1WwNIWdvAcfQhmYZFXdNxGuVUfFsvJYNXIq24Rb1AqSz7FAPNbjnfSQqkG0Z2Jms2TdMygOpvqxCUz40HABiO7JGPaHW7LhAn62SowqGh9nLC4oJVz+JnSM96x+WIcYzqlYUr1i+EYjcO9D4IdUQjGNAHmre0dME78DYg==
+ bh=nA2NZW6KlB7vW3zwmThuYnEhQEnitc1FqIMQplJKEWg=;
+ b=izEhO23fxoAMzNZcP+YM2XrMtIcVTzN4dq+V4DK9+AFATBuVvAUii07gxCMp0GfnyvC7pC1NbH3sn0w0F7SBcyY7nfotD9DnFOpaH7VDiaafIpnC9qy0pnmsMHnFowzcMJUsTtT6h7P+YDB02VhrOAZ9/Zfc9dHgWJYVkbz8yn6cAfVqkb6cZeGTe4zYJhbuWDPFIzApZxK6Xlx4/p590VyB3w3XWSdaoW5MCn7HzyNORZsPeOZ3ew88FVrjfj2RR5Ea9oKr2tvVKs3m3wLFtT/RPH6HflxHp5Kvx/wBT7HcDINgmB0CEi2Zb7kRIxTmXGCScJQvMKNpdgGoXhdzsg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=linux.dev smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d79TqB0Mh6GOENO1NfAmMDznzg6KUxg3Q2hO1HRZ0L4=;
- b=Oq2T8XsyqW0j75i6DvNMP343wVMX5HR84lTNWvwQtfXcD2iNtuvMw7AxTeoUV9Uk/Z51/nLcDb9CiK+n6RlPHBvszve+b01hpM8N3SZVqxkOO4X+fk2vetVPyUZjM5Svl+N8Z3w+FiySAVbAuF9slVfv2mhIlmTd0MtmD0hmeDw=
-Received: from PH8PR21CA0003.namprd21.prod.outlook.com (2603:10b6:510:2ce::14)
- by PH7PR12MB7937.namprd12.prod.outlook.com (2603:10b6:510:270::21) with
+ bh=nA2NZW6KlB7vW3zwmThuYnEhQEnitc1FqIMQplJKEWg=;
+ b=1Rdmp2TFFEJdFwGXCRBc4a7EzKs3akNtNFBLUyac+5TIWjTtdwTKf96x5m7HcgTDvMzVqFgI7tXyKIPy2SUBzuok+bIt7yHQUiqrvxhdtKNgXoEJi1k2IAYyTgHAiq0p4FVlh9oSofE1F3pmJf2X1CplS4CkBP6KrMp/DRFwiDk=
+Received: from DM6PR06CA0094.namprd06.prod.outlook.com (2603:10b6:5:336::27)
+ by DS6PR12MB534567.namprd12.prod.outlook.com (2603:10b6:8:498::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Tue, 6 Oct
- 2026 16:02:03 +0000
-Received: from CO1PEPF00012E63.namprd05.prod.outlook.com
- (2603:10b6:510:2ce:cafe::50) by PH8PR21CA0003.outlook.office365.com
- (2603:10b6:510:2ce::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Tue, 6
- Oct 2026 16:02:03 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Tue, 6 Oct
+ 2026 16:09:54 +0000
+Received: from BL6PEPF00022570.namprd02.prod.outlook.com
+ (2603:10b6:5:336:cafe::40) by DM6PR06CA0094.outlook.office365.com
+ (2603:10b6:5:336::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Tue, 6
+ Oct 2026 16:09:54 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -82,67 +83,66 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
 Received: from satlexmb08.amd.com (165.204.84.17) by
- CO1PEPF00012E63.mail.protection.outlook.com (10.167.249.72) with Microsoft
+ BL6PEPF00022570.mail.protection.outlook.com (10.167.249.38) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.496.14 via Frontend Transport; Tue, 6 Oct 2026 16:02:01 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ 15.21.496.14 via Frontend Transport; Tue, 6 Oct 2026 16:09:54 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 6 Oct
- 2026 11:02:00 -0500
-Received: from BLRDHSRIVAS.amd.com (10.180.168.240) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 6 Oct
- 2026 11:01:57 -0500
-From: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+ 2026 11:09:51 -0500
+Received: from [10.252.201.245] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Tue, 6 Oct 2026 11:09:49 -0500
+Message-ID: <023e73af-ebfd-4490-bf56-e91df10f7855@amd.com>
+Date: Tue, 6 Oct 2026 21:39:48 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/hugetlb: use kvmalloc_objs for
+ hugetlb_fault_mutex_table
 To: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>,
 	<akpm@linux-foundation.org>, <davidlohr@hp.com>, <linux-mm@kvack.org>,
 	<linux-kernel@vger.kernel.org>
-CC: <dheerajkumar.srivastava@amd.com>, <Vasant.Hegde@amd.com>,
-	<bharata@amd.com>
-Subject: [PATCH v2] mm/hugetlb: use kvmalloc_objs for hugetlb_fault_mutex_table
-Date: Tue, 6 Oct 2026 21:31:28 +0530
-Message-ID: <20261006160128.31447-1-dheerajkumar.srivastava@amd.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
- (10.181.42.218)
+CC: <Vasant.Hegde@amd.com>, <bharata@amd.com>
+References: <20261006160128.31447-1-dheerajkumar.srivastava@amd.com>
+Content-Language: en-US
+From: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+In-Reply-To: <20261006160128.31447-1-dheerajkumar.srivastava@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF00012E63:EE_|PH7PR12MB7937:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3256f084-e39c-42fa-b038-08df23c328bd
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022570:EE_|DS6PR12MB534567:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2577bc6-bc69-4c87-0d86-08df23c4426d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|376014|23010399003|10067099003|11063799006|56012099006|18002099003;
+	BCL:0;ARA:13230040|82310400026|23010399003|36860700016|1800799024|376014|10067099003|56012099006|18002099003|11063799006|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	+Z0WxXTGJ4OaP7hNgh5ciZXBPcmWnN8V572+K5D7kyNL3yppx8Z02WJDraUS4QzK/myC6buAUWQuBW0dYkZj6IpEbeef8vjXmY5Fecv4r9MwtnLhMZes3N99Sig/2vZOX0iu7V4qEHlwSsPcRFKWCKnfhWdy02e/SPtdxv6Heqt+I0znkRWQ+CBByRif7RJJ+IGCDH3onlmu+7xz+KzctpcfzmTymYmRhOpU3zxKI/iRnyblmYNuXSBgCX52a+wb8gpfx018VsYsXvAl27qU+shPBd0woY/vi8LQHHxooeB6YbJDwmMa31G6p9LdQiAYC5ReOV4IRnTyUcSKRKdiqTUjByTMypt9zAmmbie4wuJ1XNcsrPPRwXoE9JxqsKa4CJ1KD56TvEcwcsZg3yLFPhTYSlS7o1d3N08lw19YJPRRo6QcUO5dU0wJDjyZImcERExEgBGZgluk8YU6FWi8FW3Fylkg1KN1Ik+AUiVVCcQKtplKrktQN5L5NonGV8HBCzeDhhYAzLc+Eo+/rQNxWyYU4jrCw1tUay/hDiFYTg9XRN8c7yPcczfh7gOADPehee4+PCZWeK5eZ9yYn8idRtUvoUppyBzpM5hZvPk2LIjGFeD2DT2aYQjthry7Uwszi35Baq+qOSr3IaNxuLKR0MDkLC3oKsaub5MFAVKJnQ4aO2/llOnc/j4Uohp7KjEtC/pEzVXm4tYL91EO0NA4CQ==
+	knnqffqC+yVSbKMzx9fDDjGGjbFazaH0gRwd3Vv5/QXKwB5IjEXiqJWymrs2sjjQfEL88d6mIKLuOe6PqN3JuU2m6jrJ1bgsmJNmSysmTnRmfh8YFGrmgVpE7i2j1WD2RCBwDNYx6TDVXb2nXdAWCrQ3ocMrUpTXBDoZ+eP55nynDuoFrSI4IcPEwyKxcyvoW3Tg8BMLxmtKt9f+WM8ZThiBY4nRgZ2WgiQ33Ndwsge5LEqh6qAuSpzG3jKUiaKFpewG4QBualsfN3QufiOluHLOmbicU2e+3Jpr1Eicxq4jOsybg+o9u/2A5d5KfJMz9YnrmwKCl5gGQ0ReP2OG2+eKEmoF+S/KmDPOwjFQd8B9vpSeJ3cHD4/JWAkUC6Esxtg7HVU6Mi3KcwriTIk0cVBpUI+MpSc+4VtDTP1sKOt8cCAW19DaCuEbctmLEH5aMkJRlqwy+wWtSQhUMy3pmUr51Aa99kYNb6ZEpmeU7vxbIZhNAxLuKD3IIqWae1ZJt5M/Al4ZpXvLFt4lPhFprumCuLEIuCOo5ruFwczb9lIrgEqrP5ffXa72dPIqATW/Sfogs2JLaliOP9t1SqHeol+2g4+vv1zM4WyUAbQ7Sey4vrojJ5MBTziXXxXXHT6mrXvNaFO2JfaveEkOT7mGBusnOx4o0qrBuzG52SwV0pB0VkkiN1wBQkC6aX+FJjt0
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(23010399003)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(36860700016)(1800799024)(376014)(10067099003)(56012099006)(18002099003)(11063799006)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	NWBw7QC3AkMmGz6xqxGLiGyLX0FycHNzCmwVkLvxRrdAqi0sPX/eSEHv2qKS3b/tW4VS0S65Vr5/GHkddRSPp7S5fEnHhsxX4eFB9oA5p806MT3eQocq9tDAhUmgUSo7slL7NPqwLNKdZJNPprS76e667cVMdkxj2gK8jEzumHs3Dogs3KHqHvoCBoD0KwkoXwmcBiG+fDLRYj/9Afrv1FRHsmO22DdCbu47mbL1h8Tl25pdQkbN7jNryXnut1Y9Qc/AMvcCTBvJ7w+WxVRHvX8RyV/EdZOfsAibu4VC5EmOSF/BoSKwzohdi1axbfHfRQPeR9SRvodMCeIw0Pw3k714LiP3JSecaS5I6vPvH88E+zhOlplfcfZRXRUSccA5n6N1EPiYEleWJFOBKSFA+VSv1YUDwwGymTjMlIjYQ8ljRUhR5F7uwdVuZRU9uShQ
+	pdeeT8PR2oDyVhRFS+Z05M+5+yxfqOHBmFa2t3qqa9jhePcDHN4T4Hnv6RGuj4R2ipP2fa+APTwUkcjwHL0nqRkEf8iVpfTKWJ+tNFZ/Pgf3cCG5UFO7TwkE+plKGdjFSsHfl2oMcLYJKoQ7nL80K+i4oibHIN0xABcD1q67sGP57Nnn6f0nFeExF9uUBhydtI9L1fnred9FPGoPmJmltYOEAx+zIoWgf//CJcNX0pr7ebirMzoxB5E1lmglVIwksHjDKILMKJbd6Sv/wV4cKPMQcUxkNClcT1dq1nv3yA3Vx+RTlFZv7TzlWVPhVtsXr74LOvFmZxxGAGfBlPBfOsWj0XYlR0c9jAMZnb+ZC5bHf9QDGTQupnhmHnXv5p1Glgz4RqNY21N5D0YTDp9oWRRiZ7X6mMsfHRQzFMx99c7xLQkVb0kz1YapUaYMLFdP
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 16:02:01.8265
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 16:09:54.4457
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3256f084-e39c-42fa-b038-08df23c328bd
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2577bc6-bc69-4c87-0d86-08df23c4426d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF00012E63.namprd05.prod.outlook.com
+	BL6PEPF00022570.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7937
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 84FA8A0007
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR12MB534567
+X-Stat-Signature: 1b6akuayzgo9n16tpiod6rhh5i1uagfk
 X-Rspam-User: 
-X-Stat-Signature: 1dngtj4kniit6jueiafcncbqhzpsskcq
-X-HE-Tag: 1791302529-326851
-X-HE-Meta: U2FsdGVkX19kK9p2E7EBK1gUCLUjhdGdeSkcSIt+cipEAp/c0vJzzh44LkMPGdU/odH85kokq8/scmVxJ6abJSvLERb+5emXT2vFFIiQNa9inxptAlMt375ZMt8Q6O/BDb66lO6ettHMPZvnCUBBkIogYzC1HM2VGteild+eciT98VCX7CuzEzN1V8u20A5GgwuVP+zYphRJ60K+8d59+iZxH9ZOghWKuwif7qyfi3xNh0+5M9k74Roh3FzLYRjIeJrZrN708lW46OH9AgdgjeNY51hOdVdx6qC/kM+xjajv02nVorPbwFOYTmmqnLxBSeqvFQYtpkeLakEjNwHWF9xdarsYGtk/QlLDI8iAVie3zEb/rFC5/IDHzc0yEw4VALFNLnEbyC3+vAKtxndqtDhLxQllBLZiNr9OC1FxH0Jy5iS2Kgi9fOHv/OaVAxPrzZfkGPkrGonFK2UVbYGsIA8y+rMPtvkneHYeyZKKLWnJZQnmRkKHcLZb0dm63lUHSYXCFgz2p2A+Gr/nszAAr6vsCIpivkbTQHmN2eVaRXcIBcFMqNM0zuRiYZ9r8yzOsIkKC6mRuyiOI1qYHNhG5hpo92OdbQGQ4QHuuMzVb65aRESYQ3WzLf3LxbgPlpcWKHRmfF/e/yTqBgMtVGV0pcOCTOW5lczNKIQXgmSHrDXq1zVGxUVcFVsdq4SpsSLQQ7s5GfuJqq9iSPrZpiXfljm1tabc5RC0t0Ef4ZQrGvXxEbeRPs9AhxGQcsjRaYGhn+lvyDJsgbx6j5+Q7Cq+mFqjlr8ARpxSh7XrE4e8E0JtxZ3kxxhU+M0f5M2t4xN2XrApKccn3CqV+f7dNd4YNAoYdZql4Kk1CcFeBD/QHMSQ+gQkEaq0DuTxfrLHPmkVRYjdHt4qMbE65SoHgz6Ddihx0BcyXiTH1vLhLOkLkHzL3nEsMt1PRseUry5iwPNZK9e8mjAm+W8xNUJHSwY
- BoNzfPJF
- jpEhkcH9Wbxe5cpbUV62uBNAjHOPAMl77F9qlBZCTFqPeIsse7wl/r5s0f8m9UcQpF9dIFtAdAXb0OajNz2RibiBUQ1y9+IVOT2UcmnmbFWkCc517JbS9bvD2xosOqg5waCuicEZM40UZnkN99lMchJzaMDMpZG9IpszG6Tw2FUA4Zr1TLvt1m8IK8I63EfWxuCQVHQfCou2Pu9PtbZCr9mkpbROSA9b7wytEF4sDw9X10x13ZtGAdvVsqbgOASSpHnn7E/b42n6acpKtQEQftv0Z5JCXZ+Vvr79yyubTgUYumVbDKjMRlN9bt4khhpBPyrq3sKHqdGA3uyp/fKaH6IG4VtvB17Vpkzl92PZOzcedmwNUHBqX3Dye0+2CG/7ZHyAyF/UVY8neDBpc5c3a4BrpuWpOcDYHFX6JtlLN8VoK6D/Okc5X3CuJHMN8QQBwEABNpfeZtRL2SpSrQOizKe8vVKiWgXSrpRe6OYaHFpuikXhB+Gnu6khL9VKLNtLwt3x5tHXlnm9/XhLEQ5w5zN81JIwRduEAz3fIcSU7v9EMOoPjUxAza9mWZmWDmufS6ZWf
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EAB1A140010
+X-HE-Tag: 1791303000-954863
+X-HE-Meta: U2FsdGVkX1+dYQ7d1GYOVnfwbtK62oR56dknTakeCdVkq8FLENmX1OkOBH7YeYpFksfXsk+kVWxZEcjnqD5Atv7Wa/p8/vdz7EGvmF5Jj+pbLFoqqKkA6xZptiGXndHUZV0nAiPpnmwfrEjW4UjJKUrgrnz0sAncrCZNi7L2etnBF7g9H7/n9Hc988NqyvMvrUguDHLBgLjgFzdd22oEpb0LcoKPJ4tM60raAZURIC7sJuJS130hwgW32tAjwuBZbyC+rOvyYurfCwIwEOFAKpymFIwevbUbxAN8OFVCGFv5OZupMUxaNoC5yng9D7J3PRq8jNKus+gi/UScoTpsH4X1wmRNkl7yVwr9E2XMt0Ryf5RQUWrB0iedwiBPIl7MzvHb6F381Usgky6NYB/IFhnqkAzckCZMdWHGjayObLL3vEvx0p69EySQA4K3oCjx3eF0q0EsSFW081hhzKnfT42JIs8Hg2Bd10NN7ZgMFp4ZjRKNPmIhtk40kJ8yax5BHeRuyVdn1Vfphz3ranOupiuEds9+1udZyKCN/DbASbtd7BF2KfxOaumki95uAfc5WsrsuGqDgx7IM5eKIMtCMUuPkP0jc3mVNxiLla2n2GSROBIGih8MktXoIIiKTylYCHV6KAomMCQqzSV2mcHA32Y1Zrst8PdGoCUxsV9jJq3CNaLiBIsEpFv++5Uq3lDuuEHot9cmg3CD/VAs3RVayGKeZ8urXSRkixd+rdOJpqQ6AQC4PRlxpL1AbhKBKUMXcYyrlrA+RZKB8bd9689vadmz5J+X/0NMmdwPhBDWVi/EKUmCt9KYxZjPH5TlBTpQ/6gGgTKBswfn09MoKXdh/iu+Y0ykRRkUtQgyl2mKg4eJm81DhxUHH7miXmKXXBLQJEgnV3Nn6NS3LFgJog7PKr+nvoOtr0cjZpREhfdNX7IRrEj8LUFnquJarvjvZUc1++I34q9sAtj5YObFiLP
+ kHcXztpb
+ 89xPLI2vxOGVhZqV9VHho6Y8U7zTSzB7VN1KVzncJtEa9qkSoCSwK3zzvobBEYjtqksCBiGVQrXK5QaSyE3uzjHCXOUshl4TV9CRHQ9+mSsuFX5vGTEirKRUbNYKuc4f1GA1EGpP7gbop3Lms0LZ20QEFvAhPjYI3woK4mQMLGkTAC+a4esrLf08CFaJsX4XQMya8h/R/evI7/kNa1tWMZMXvVXidegMgDQ81nLLfL2vM99L0a5cW+QR1P0bYEZglfh0p05PiT8JExGjqUXoV90JBreuD87YfP/gRcy19gYnzEbc6FS9mA8xMLN+n6IIe4V6CEH3WT1cJjIH/sxYd9n57olTsRiNRDplA5OkYpA0Yly/JdYK0wdVYFCK2MES54UHhV+Ffj/iqMyW5XM0f4kLUHeDOULldslccaxkGd1B1c4zlmyLgMrrmB1V/UCnH3MkYO9aa7uhETuXftwoXeQGr791yjxcvuhCKh5uY/ShSVG2UeacunzrZocwYBlITvVsLJQeJ+ZXhEws=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,40 +150,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On systems/VMs with a large number of CPUs (e.g. 4096), hugetlb_init()
-computes num_fault_mutexes = roundup_pow_of_two(8 * num_possible_cpus())
-= 32768.  The subsequent kmalloc for the mutex table can exceed
-MAX_PAGE_ORDER when struct mutex is enlarged by debug options like
-CONFIG_DEBUG_MUTEXES and CONFIG_DEBUG_LOCK_ALLOC, resulting in:
+Hi all,
 
-  WARNING: at __alloc_frozen_pages_noprof (order > MAX_PAGE_ORDER)
-  kernel BUG at mm/hugetlb.c (BUG_ON(!hugetlb_fault_mutex_table))
-  Kernel panic - not syncing: Fatal exception
+On 10/6/2026 9:31 PM, Dheeraj Kumar Srivastava wrote:
+> On systems/VMs with a large number of CPUs (e.g. 4096), hugetlb_init()
+> computes num_fault_mutexes = roundup_pow_of_two(8 * num_possible_cpus())
+> = 32768.  The subsequent kmalloc for the mutex table can exceed
+> MAX_PAGE_ORDER when struct mutex is enlarged by debug options like
+> CONFIG_DEBUG_MUTEXES and CONFIG_DEBUG_LOCK_ALLOC, resulting in:
+> 
+>    WARNING: at __alloc_frozen_pages_noprof (order > MAX_PAGE_ORDER)
+>    kernel BUG at mm/hugetlb.c (BUG_ON(!hugetlb_fault_mutex_table))
+>    Kernel panic - not syncing: Fatal exception
+> 
+> Switch to kvmalloc_objs() so the allocation falls back to vmalloc when
+> the contiguous physical allocation is too large.  The table is only
+> accessed by index, so virtual contiguity is sufficient.
 
-Switch to kvmalloc_objs() so the allocation falls back to vmalloc when
-the contiguous physical allocation is too large.  The table is only
-accessed by index, so virtual contiguity is sufficient.
+Sorry, I forgot to include the "Changes since v1" change log.
 
-Fixes: 8382d914ebf7 ("mm, hugetlb: improve page-fault scalability")
-Signed-off-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
----
- mm/hugetlb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes since v1:
+-> Use kvmalloc_objs() instead of kvmalloc_array().
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index cea25773a6c9..6fc5c0bdb500 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4177,7 +4177,7 @@ static int __init hugetlb_init(void)
- 	num_fault_mutexes = 1;
- #endif
- 	hugetlb_fault_mutex_table =
--		kmalloc_objs(struct mutex, num_fault_mutexes);
-+		kvmalloc_objs(struct mutex, num_fault_mutexes);
- 	BUG_ON(!hugetlb_fault_mutex_table);
- 
- 	for (i = 0; i < num_fault_mutexes; i++)
--- 
-2.25.1
+Thanks
+Dheeraj
+
+> 
+> Fixes: 8382d914ebf7 ("mm, hugetlb: improve page-fault scalability")
+> Signed-off-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+> ---
+>   mm/hugetlb.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index cea25773a6c9..6fc5c0bdb500 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -4177,7 +4177,7 @@ static int __init hugetlb_init(void)
+>   	num_fault_mutexes = 1;
+>   #endif
+>   	hugetlb_fault_mutex_table =
+> -		kmalloc_objs(struct mutex, num_fault_mutexes);
+> +		kvmalloc_objs(struct mutex, num_fault_mutexes);
+>   	BUG_ON(!hugetlb_fault_mutex_table);
+>   
+>   	for (i = 0; i < num_fault_mutexes; i++)
 
 
