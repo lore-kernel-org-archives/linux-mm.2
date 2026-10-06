@@ -4,112 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91FE8CA5FFC
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 22:15:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 750EDCA5FFC
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 23:41:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3A6C6B0092; Tue,  6 Oct 2026 18:15:18 -0400 (EDT)
+	id 149C76B0088; Tue,  6 Oct 2026 19:41:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EB146B0093; Tue,  6 Oct 2026 18:15:18 -0400 (EDT)
+	id 0FB476B008C; Tue,  6 Oct 2026 19:41:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 903626B0095; Tue,  6 Oct 2026 18:15:18 -0400 (EDT)
+	id F2BB86B0092; Tue,  6 Oct 2026 19:41:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 644C86B0092
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 18:15:18 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F17BDA0322
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 22:15:17 +0000 (UTC)
-X-FDA: 85293608274.24.2F39AF6
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5111F1C000A
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 22:15:16 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=openai.com header.s=google header.b=Re4AwauS;
-	spf=pass (imf20.hostedemail.com: domain of kylebot@openai.com designates 209.85.161.53 as permitted sender) smtp.mailfrom=kylebot@openai.com;
-	dmarc=pass (policy=reject) header.from=openai.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C92096B0088
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 19:41:26 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 24FA714036B
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 23:41:26 +0000 (UTC)
+X-FDA: 85293825372.14.5202929
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5A4D32000B
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 23:41:24 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GwUFgC0m;
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791324916;
+	s=arc-20220608; t=1791330084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3b6Jf8//LXq1nt0lrU3uzCZiYGb3bLhSCGzIPeVAOUA=;
-	b=jHycICqzcmZa2qDfpy5kdKcgHlREej7R7onaq/KTAAMtGqXtlYmph12LScaTnkM2cMJUY2
-	VzIUkpfBQ0zm6jcxBrkaQN5thmQFqwy0xNz/CxBcqfugobb+l78ymKqzwCrinKsQ0E8qFQ
-	JWAbXwgdymkMpuKkjzy35iS/CuWLmsU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JXvhnbg1I/58qTdGiI2cyrqoYMogxu1PGhzM7iSho2U=;
+	b=THwXALZVQQozLkQX168jp9WJlxnlOluR0p5nSFLnbsssI8OENn4J3URVYR+Zedr5+KXPlk
+	FUsapK3llIO5dKTMDuG7opiH1DDqQye6V827LRX3E+9QFHvLgLQLe4GzY3hgfEuJGYKK27
+	R8Iinu2MlfOTJD1lWSJiDSIVpH0qVoY=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=openai.com header.s=google header.b=Re4AwauS;
-	spf=pass (imf20.hostedemail.com: domain of kylebot@openai.com designates 209.85.161.53 as permitted sender) smtp.mailfrom=kylebot@openai.com;
-	dmarc=pass (policy=reject) header.from=openai.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GwUFgC0m;
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791324916;
-	b=kMRuUhOnx9AUnFs8oYL0yQsPYRTxOD3hOHk9lCR/NpcjqTInJg2MVWFcl07sOJvU3w+3MT
-	iUulr6X5wkMFvjzh4NlXfiRHwn4mDnKEflfUcZMrK16ffyd9T3ODs4SQeuij8kh81iPSlN
-	+vyOtZMZi07NzOkSywDgt65uOK/8EWw=
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6d7e06dbcccso729802eaf.3
-        for <linux-mm@kvack.org>; Tue, 06 Oct 2026 15:15:15 -0700 (PDT)
+	t=1791330084;
+	b=EN2jRY4t1x66mdCHASmV0u4XM5uIoXyENEVooZVo0oG8W0Gfja2pD4S1dZDWBkn8cl1bHD
+	Axqc2MEsvDe/HZqZ7pkvhRtL+HP+dEO/KMerP8BpMfrdGJR7tA+S8cLrg+U43Xc8C7kfEn
+	Job8IuABAqOyHmP7ymw08OBR4KXwEKQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 95275600C8;
+	Tue,  6 Oct 2026 23:41:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC43A1F0089B;
+	Tue,  6 Oct 2026 23:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1791324915; x=1791929715; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3b6Jf8//LXq1nt0lrU3uzCZiYGb3bLhSCGzIPeVAOUA=;
-        b=Re4AwauS9ew/f5ctcxLYHKNLfmL7JhEg83qYawyinM42b3afvnkgpT3+AMTGVTM4zm
-         baDKd2xWAoDujqlansns4HjRigZsGr1CD0fvyubPEHkQv5ieoWVi8DtyFmUqtVfIqGkl
-         7QUMFqYADzueurNe5RqjWY6PqUqxMynV90Dac=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791324915; x=1791929715;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3b6Jf8//LXq1nt0lrU3uzCZiYGb3bLhSCGzIPeVAOUA=;
-        b=wgVjzjDN3PkPgiheeAhBOYZsa0ad7qUVzhSsXo+N54vY/boX0CZbfSfXn/GpSRFwMD
-         Voa8CKqB2iSZU3cBxKK04sblFzlyM3kVVFFPdY0xqo2/HQ2oLJQF2xlJKv141bufoVv2
-         Hq6ixUg/SfOSuEtw5IVTAT1rCigAtOXnGZUc0MCrRpSSr1bho7M7QQnFnCQwqVAjz8zG
-         pEO5yOuxQ7q2blzYifCQXPgei7Qf5v0PMJ5mfwYhPb6L+ysnUg4XCsMdVXVimOLBqOmR
-         6JAW+FHcfCEAiyJr2hfo1a+oFJQzyjmCLHpT34GJsk3RREIEKCsizJA8K30iW1QgeIOp
-         +Xtg==
-X-Gm-Message-State: AFuF++luCz0q9tlLs6Kbc7xXBt0lZQV5Do4HE4g8g1FfmEjc62PkbJ8F
-	eQPuLOdOQ8Lh1BCjtV0S5UPsfOq3y9GqPVsE3tXmJTtC4BvRbEdIQPVK2B5KvA1oGoqJemyIVaf
-	G6qNHX2A=
-X-Gm-Gg: AYBFou3xQqlJSThKSYpjuVZR52uqlAwIamvlmB76YUwLmvX6JuniM6NzLoIThY4PA+P
-	guOz5gWbI+qoX4iW72sCI94ssfQ/wyqZETNw9c84SF6tPTIS1RLCR07mi8fUSdRRBjTD4M/PrSQ
-	kkD+corr5yfAyBtR5ujNT59stIoY4YHmj0/0jN0FS7TzXDHQt78m6FUDyaW5Sia9166mqCn9fvD
-	JIm5bF8yP0r7hgvCU12uGVvXQ+RfBD2Mz7J3/by4homrZT4zcA31O/MMZ0M/LRWwHa9YkCyOkDx
-	wa++EUYC10vdG6/Ri3Mqvm6u1oclikFaxkitTKvKHgLrZoRC6rC+sbbGeWxYZcS0d1U8ZHI1xMG
-	oeOIuHka/dq/ptUSyKdYdpYYp0nobW6+hR+IBYKlmoLDwozd/8nCTTOSX1rNbyMXnas4YsRmYz6
-	HAEs+XraAz1mP1w6cx/O2r3X5UKlLE2Da8wI4nZHpv9jW116B3EJyJkjk5sqSXLpqHxiCLH+C6q
-	RiGtnmeE8WlFrzO3qdb5MTgVYqAccxzI/LxfdeO3WwFIVVMfaX19qQeZLiDBCLxEKLCqe0Y46x/
-	DbUkIP2/lQ==
-X-Received: by 2002:a05:6820:7090:10b0:6d9:8fed:b732 with SMTP id 006d021491bc7-6e7a8bb924dmr455388eaf.56.1791324915076;
-        Tue, 06 Oct 2026 15:15:15 -0700 (PDT)
-Received: from com-75606.corp.openai.org ([199.47.143.7])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a2571cab91sm565412fac.11.2026.10.06.15.15.13
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 06 Oct 2026 15:15:14 -0700 (PDT)
-From: Kyle Zeng <kylebot@openai.com>
-To: linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kees@kernel.org,
-	outbounddisclosures@openai.com,
-	Kyle Zeng <kylebot@openai.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] exec: snapshot the dentry name before setting task comm
-Date: Tue,  6 Oct 2026 15:15:11 -0700
-Message-ID: <20261006221511.35798-1-kylebot@openai.com>
-X-Mailer: git-send-email 2.55.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	d=linux-foundation.org; s=korg; t=1791330083;
+	bh=JXvhnbg1I/58qTdGiI2cyrqoYMogxu1PGhzM7iSho2U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GwUFgC0mmphjcQ9mxmU5/b7/WLV5YfdcDbfKNRu938VS57eYhZpNKwuT/HTCXs0QI
+	 oCguLae/sns7Yfa6IuPdv5ITN3FRMWvXjX8FpKINlwChpEmhBipkdlWVuON54bjayd
+	 /NNrdDucrYA8OvDxcyj27RKaIm6sgE4DkeKbpGNU=
+Date: Tue, 6 Oct 2026 16:41:22 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner
+ <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Harry Yoo
+ <harry@kernel.org>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan
+ Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ kernel-team@meta.com
+Subject: Re: [PATCH v2] mm: page_alloc: make defrag_mode retries follow the
+ promoted order
+Message-Id: <20261006164122.ea9a673b336b8ac74725c35c@linux-foundation.org>
+In-Reply-To: <20261006091815.897133-1-kirill@shutemov.name>
+References: <20261006091815.897133-1-kirill@shutemov.name>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5111F1C000A
+X-Rspamd-Queue-Id: 5A4D32000B
 X-Rspam-User: 
-X-Stat-Signature: 17cpo9eyg49uewy6jnsonauy1ofq3de5
-X-HE-Tag: 1791324916-367029
-X-HE-Meta: U2FsdGVkX1+kS6hV5KNl0MVvtb8yU+cSLoYFwCvz2biZnNz4ftA51yx+GcVZ8YQYSS9pznRC7EmbInLU6L71hoPUgGb3JVoXn6Ai6K7iQA+kX1ge23KkVlRX3vZ7xWQ5KIiGTUafoK7I9wYhxjVv3Ac9LMqVmAXfRJ0+l1dCmZm1qK9vi2L04FOn0QV8MdU8SsJ6fuQfiXQWb/2gNso7+9Y2cc1KtKElYTW0zT+00P+C9bRkmR32iL3QBUSEoqx8p+q04rtt+u7hPs/4Ln9aLc3ftVvGWgSyKwP2B/nfm+E1nnflWL3XGPvfnU+FZsaTnpXpocFUvYy8VyiuFZFRbId3/giH3/nTFMqlcFyyt9r/gSAew7eUDTrSTN4QK9nnN3usva29CxBedrk+hWqntzPYS9TOlp0B7JbVI4xL89zCiLM/chT2+ro0axY+B9y6QWCuCLmFoxnuCczNI97uPaaLRCTTbasy4/kNccRofXcZBQQH/zk9kiu//gGrmkcArYjFbU3fuHNOLJiVB9NekNUw9cZQ/UdXSCntTy4uY1zKobT+mRWAk7F3Pu4cXHu2p63BzVFaGxvIatwNndgTzpqxqfC/nHhoNNLenv65uP26Cs5ODbswmMAhfzNRr1FaE50kZpX8aJhGhbZ649hcH9PEf+VFRVVr84LZ1n+vp8B2nKQcrhmh4cwiBvJ8VAbDvXnIx1bcObABW0v3qGJBqmwZZereA543ISGSYafalsHoijFFYdDkb3Yb5fhk1DFxPjlYcC7KLO3FLKN5mCeM/IXArGjgRsKBKunkXk1G1uQbx8LbA0D0H9siyoEDf63Hc9AUCaorr9j62Y7haNadF25TJCLTlkG9DPGQyrnp2g4NuycqdhBCSbVGrcrzKnwnDGJJLoFW7R3TaLnI77ccxP7aHrdqbyk3zuyvUZ4+qsKYgP2CiJOfR++uy8jbpSSMJNnkbQFoNAR6erieEB0
- UDwQTrJk
- pfJL/+DCIBolTRFXpgVz5BR/qrRRpEHtDpXBE5/vd2AQQYd8TNrjIGRMLKoybEBlq9yCC7p+5dMIbow0DaS36CKk9eMTcvT+vDa9YZNhvFws+2XXm3WnSepA0MeMWdPGqlgIra5vzsXDOmAi34NCLwBSzFxm162UhjJi4CX8eA6t+Dvx/jVe1kuBIcm5AeQJCgX4XlSrrR+vRR/mhn89c/+S6WAAj1XNMu8UXAOv4XjzBIP7tTjXAaLJQBjzaKQad7QyhkkssmYaN+OSepqOgNilyHWOul4bE2n3lSK1d/NrJqwvkXCRx+q+F0+ztk8vE7dbMjawcghglvB6OryzO2oSQPQ==
+X-Stat-Signature: pqyrezjrntipo7zr3bod6kiezxrykq7g
+X-HE-Tag: 1791330084-956792
+X-HE-Meta: U2FsdGVkX1+6U6eom/Q4BgBDiLb2U4zigDg8+Mae1iUE2XMqrggaEcqZJJPPb5Y5U/j/fzvx+hGGvSdHXkjJvOkR1+mT3GYr+rWCWOjRlPvoTYPySEuhWBrOYisn67kN4bbX5x4/RQXU62Bsxfij+yB9KAFJUsNLgwUgpizGl2q32GsIkxSidtgMiM1WKnosQFdLBSl7Ij2SXprygfiWVfHZW4jVj17V2l3qq2MbFNc6WzEVHygiSumRQFpbECL2NhaC6bPkeIS+PXc5jrNUO7NHnU6H2JAWOsA+fC1pe9XJVgt6B56fusnz8B31v9sUaBiKffGLb9U4zzwVE7c13NoEJlQ589fL+PF+AZK7QxT3XDesAPzajrf4qrXjSq9NUVJgVqdHEAxZVgaoE30znq8NNwdeNbYHwxTwDemVTBuk1RqCKgx6NeXEWiFstE0Bp3y9pW+Lwl392ts6YfIrfQ9gwiwcj65JFCXS5aX5BOAMpEzyqVUHxbLB9LrXp5gkM8AvmfmHO6oxO4kLK2cR1KCFZ7okeaocXXn3jGwWtI2wDxqEqratABtTA/uiYMf+rx2Ht3BbgIV5GVTk7LYRtwH09KvGYgOnk3DHOTxwowrzLuwYWWjUgu775LbRnLqgPM3QqWgf2vVi+eRfjiCjDd5JqO8rhHOR7QdjRyFIOPIhHLfN1mJO4TtlZGvIbN3kNOP7rgwhgjqCbfLtPdGzJinURWFGULOzrZNq0wc1SdrtVoOc0xWavb3cpPSdlu1MjnQeUB8tessealze7UtDzvPKZy5mqQ68y4Vy0I51jHr74a3y83brSqhbxR1Dg+j2nJkdzszkrBZWG7ZecH+IPwJVSzQHjsh+P7vkzSyrdCsqKq69cq03p2aWLDn97YOxkYFS4afPCD4qQymy2v7AP76BIpkhi3xfIxqcFlYE5CbCYC6W2x3T7nEBoHS8tAFkGLtt/25NfZv6Ae1jfBG
+ BDS0GvQM
+ wJ5POkNq3PbHffb9Euiw7aGxBkof0tgGbKb5/L+7wegWyzG8V3dm5ju60Y9oOq/ZKybZp2CrdUUEgMTMKC/zUpkKNobhIJ4Cz5qPzuyoh6FtsMK2Rkli+w57cC3RKZUIX1EtsRxfd0BKDCHcQP6QjPeczrCwXzJqZyf8fstnfyDAUwnhNEBmo9hniALBdfaQxtALt/W/w2mxs78C9Q4+QdxGXGgXyqx2vqtjntneG1aad0rc314kf+T8hrB/iW4PuN/OcCyoASkXAaZOAY3+C/LipoH8WK7jPRf/TXnzZZj1gbFn4zbidunGYFkFfhfl8e4Fb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,65 +96,237 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For an empty execveat() pathname, begin_new_exec() passes a live dentry
-name to __set_task_comm(). RCU keeps the name allocation alive, but does
-not prevent a concurrent rename from changing an inline name.
+On Tue,  6 Oct 2026 10:18:13 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-__set_task_comm() measures the source before copying it. If a rename
-replaces a long inline name with a shorter one in between, the copy can
-include stale slab bytes after the new NUL. The subsequent padding starts
-at the old length, leaving those bytes in task->comm. An unprivileged
-task can observe the suffix through a count-only syscall tracepoint
-filter such as COMM ~ "*pattern*".
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> Since commit 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim
+> storm in defrag_mode"), direct reclaim and compaction for non-movable
+> requests under defrag_mode run at pageblock_order, to produce the whole
+> blocks that ALLOC_NOFRAGMENT needs. The retry decisions that follow
+> still use the request order. An order-0 request can therefore retry
+> indefinitely without ever reaching the ALLOC_NOFRAGMENT fallback:
+> 
+> ...
+> 
+> In a VM reproducer (32G, defrag_mode, inode churn under memory.low):
+> 
+>                                         before    after
+>     should_reclaim_retry() calls           63M     293k
+>     peak memory pressure (PSI some avg10)  99%      12%
+> 
+> File creation runs 5.7x faster.
 
-Take a dentry name snapshot before setting comm and release it afterwards.
-The snapshot retries concurrent renames and either copies the inline name
-or holds a reference to an immutable external name. This gives both the
-tracepoint and the length/copy sequence a stable source while preserving
-the selected executable and the existing comm truncation and padding.
+> Fixes: 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim storm in defrag_mode")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+> v2:
+>  - keep the compaction priority floor and the COMPACT_SUCCESS retry
+>    limit on the request order, so non-costly requests still escalate to
+>    SYNC_FULL before falling back (Harry Yoo, Johannes Weiner)
+>  - compute the promoted order once in __alloc_pages_slowpath() and pass
+>    it to direct reclaim, direct compaction and the retry helpers, instead
+>    of each of them deriving it (Harry Yoo)
 
-Fixes: 543841d18060 ("exec: fix up /proc/pid/comm in the execveat(AT_EMPTY_PATH) case")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-6-astra
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
----
- fs/exec.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+Thanks.  That's a fairly large update.  v2 diff is below.
 
-diff --git a/fs/exec.c b/fs/exec.c
-index 819643408e6d..34cf557a17f7 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1279,19 +1279,16 @@ int begin_new_exec(struct linux_binprm * bprm)
- 	 */
- 	if (bprm->comm_from_dentry) {
- 		struct file *comm_file = bprm_identity_file(bprm);
-+		struct name_snapshot name;
+Are we sure about cc:stable?  Or even 7.3-rcX?  It's a pretty big
+change.
+
+
+ mm/page_alloc.c |   62 +++++++++++++++++++++++++---------------------
+ 1 file changed, 34 insertions(+), 28 deletions(-)
+
+--- a/mm/page_alloc.c~a
++++ a/mm/page_alloc.c
+@@ -4139,8 +4139,9 @@ out:
+  * For those, promote the order of reclaim and compaction to help make
+  * blocks, instead of spinning in reclaim alone unproductively. Retry
+  * decisions based on the outcome of that work - reclaim progress and
+- * compaction results - must account for the promotion as well, see
+- * should_reclaim_retry() and should_compact_retry().
++ * compaction results - must account for the promotion as well, so
++ * __alloc_pages_slowpath() computes the promoted order once and passes
++ * it alongside the request order.
+  */
+ static inline unsigned int nofrag_promote_order(unsigned int order,
+ 						unsigned int alloc_flags,
+@@ -4162,8 +4163,9 @@ static inline unsigned int nofrag_promot
+ /* Try memory compaction for high-order allocations before reclaim */
+ static struct page *
+ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+-		unsigned int alloc_flags, const struct alloc_context *ac,
+-		enum compact_priority prio, enum compact_result *compact_result)
++		unsigned int compact_order, unsigned int alloc_flags,
++		const struct alloc_context *ac, enum compact_priority prio,
++		enum compact_result *compact_result)
+ {
+ 	struct page *page = NULL;
+ 	unsigned long pflags;
+@@ -4174,7 +4176,6 @@ __alloc_pages_direct_compact(gfp_t gfp_m
+ 		.order = order,
+ 		.page = NULL,
+ 	};
+-	unsigned int compact_order = nofrag_promote_order(order, alloc_flags, ac);
  
- 		/*
--		 * Hold RCU lock to keep the name from being freed behind our back.
--		 * Use acquire semantics to make sure the terminating NUL from
--		 * __d_alloc() is seen.
--		 *
--		 * Note, we're deliberately sloppy here. We don't need to care about
--		 * detecting a concurrent rename and just want a terminated name.
-+		 * __set_task_comm() measures the name before copying it. Keep
-+		 * a rename from shortening the name and exposing stale bytes
-+		 * in the inline name buffer.
+ 	if (!compact_order)
+ 		return NULL;
+@@ -4256,7 +4257,7 @@ __alloc_pages_direct_compact(gfp_t gfp_m
+ 
+ static inline bool
+ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
+-		     int alloc_flags,
++		     int compact_order, int alloc_flags,
+ 		     enum compact_result compact_result,
+ 		     enum compact_priority *compact_priority,
+ 		     int *compaction_retries)
+@@ -4266,10 +4267,7 @@ should_compact_retry(gfp_t gfp_mask, str
+ 	bool ret = false;
+ 	int retries = *compaction_retries;
+ 	enum compact_priority priority = *compact_priority;
+-	unsigned int compact_order;
+ 
+-	/* Check the compaction result at the order compaction ran at */
+-	compact_order = nofrag_promote_order(order, alloc_flags, ac);
+ 	if (!compact_order)
+ 		return false;
+ 
+@@ -4304,7 +4302,7 @@ should_compact_retry(gfp_t gfp_mask, str
+ 		 * need much more detailed feedback from compaction to
+ 		 * make a better decision.
  		 */
--		rcu_read_lock();
--		__set_task_comm(me, smp_load_acquire(&comm_file->f_path.dentry->d_name.name),
--				true);
--		rcu_read_unlock();
-+		take_dentry_name_snapshot(&name, comm_file->f_path.dentry);
-+		__set_task_comm(me, name.name.name, true);
-+		release_dentry_name_snapshot(&name);
- 	} else {
- 		__set_task_comm(me, kbasename(bprm->filename), true);
+-		if (compact_order > PAGE_ALLOC_COSTLY_ORDER)
++		if (order > PAGE_ALLOC_COSTLY_ORDER)
+ 			max_retries /= 4;
+ 
+ 		if (++(*compaction_retries) <= max_retries) {
+@@ -4316,7 +4314,7 @@ should_compact_retry(gfp_t gfp_mask, str
+ 	/*
+ 	 * Compaction failed. Retry with increasing priority.
+ 	 */
+-	min_priority = (compact_order > PAGE_ALLOC_COSTLY_ORDER) ?
++	min_priority = (order > PAGE_ALLOC_COSTLY_ORDER) ?
+ 			MIN_COMPACT_COSTLY_PRIORITY : MIN_COMPACT_PRIORITY;
+ 
+ 	if (*compact_priority > min_priority) {
+@@ -4331,8 +4329,9 @@ out:
+ #else
+ static inline struct page *
+ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+-		unsigned int alloc_flags, const struct alloc_context *ac,
+-		enum compact_priority prio, enum compact_result *compact_result)
++		unsigned int compact_order, unsigned int alloc_flags,
++		const struct alloc_context *ac, enum compact_priority prio,
++		enum compact_result *compact_result)
+ {
+ 	*compact_result = COMPACT_SKIPPED;
+ 	return NULL;
+@@ -4340,7 +4339,7 @@ __alloc_pages_direct_compact(gfp_t gfp_m
+ 
+ static inline bool
+ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
+-		     int alloc_flags,
++		     int compact_order, int alloc_flags,
+ 		     enum compact_result compact_result,
+ 		     enum compact_priority *compact_priority,
+ 		     int *compaction_retries)
+@@ -4479,13 +4478,12 @@ __perform_reclaim(gfp_t gfp_mask, unsign
+ /* The really slow allocator path where we enter direct reclaim */
+ static inline struct page *
+ __alloc_pages_direct_reclaim(gfp_t gfp_mask, unsigned int order,
+-		unsigned int alloc_flags, const struct alloc_context *ac,
+-		unsigned long *did_some_progress)
++		unsigned int reclaim_order, unsigned int alloc_flags,
++		const struct alloc_context *ac, unsigned long *did_some_progress)
+ {
+ 	struct page *page = NULL;
+ 	unsigned long pflags;
+ 	bool drained = false;
+-	unsigned int reclaim_order = nofrag_promote_order(order, alloc_flags, ac);
+ 
+ 	psi_memstall_enter(&pflags);
+ 	*did_some_progress = __perform_reclaim(gfp_mask, reclaim_order, ac);
+@@ -4651,8 +4649,9 @@ bool gfp_pfmemalloc_allowed(gfp_t gfp_ma
+  */
+ static inline bool
+ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
+-		     struct alloc_context *ac, int alloc_flags,
+-		     bool did_some_progress, int *no_progress_loops)
++		     unsigned int reclaim_order, struct alloc_context *ac,
++		     int alloc_flags, bool did_some_progress,
++		     int *no_progress_loops)
+ {
+ 	struct zone *zone;
+ 	struct zoneref *z;
+@@ -4671,7 +4670,7 @@ should_reclaim_retry(gfp_t gfp_mask, uns
+ 	 * whether the request itself could succeed after reclaim.
+ 	 */
+ 	if (did_some_progress && order <= PAGE_ALLOC_COSTLY_ORDER &&
+-	    nofrag_promote_order(order, alloc_flags, ac) == order)
++	    reclaim_order == order)
+ 		*no_progress_loops = 0;
+ 	else
+ 		(*no_progress_loops)++;
+@@ -4811,6 +4810,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, u
+ 	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
+ 	struct page *page = NULL;
+ 	unsigned int alloc_flags;
++	unsigned int reclaim_order;
+ 	unsigned long did_some_progress;
+ 	enum compact_priority compact_priority;
+ 	enum compact_result compact_result;
+@@ -4955,17 +4955,22 @@ retry:
+ 	/* If allocation has taken excessively long, warn about it */
+ 	check_alloc_stall_warn(gfp_mask, ac->nodemask, order, alloc_start_time);
+ 
++	/* The order reclaim and compaction work at, see nofrag_promote_order() */
++	reclaim_order = nofrag_promote_order(order, alloc_flags, ac);
++
+ 	/* Try direct reclaim and then allocating */
+ 	if (!compact_first) {
+-		page = __alloc_pages_direct_reclaim(gfp_mask, order, alloc_flags,
+-							ac, &did_some_progress);
++		page = __alloc_pages_direct_reclaim(gfp_mask, order, reclaim_order,
++						    alloc_flags, ac,
++						    &did_some_progress);
+ 		if (page)
+ 			goto got_pg;
  	}
-
-base-commit: fd179f8a05be3ccae366b9b96e176b51fbe54aab
--- 
-2.53.0
+ 
+ 	/* Try direct compaction and then allocating */
+-	page = __alloc_pages_direct_compact(gfp_mask, order, alloc_flags, ac,
+-					compact_priority, &compact_result);
++	page = __alloc_pages_direct_compact(gfp_mask, order, reclaim_order,
++					    alloc_flags, ac, compact_priority,
++					    &compact_result);
+ 	if (page)
+ 		goto got_pg;
+ 
+@@ -5017,8 +5022,9 @@ retry:
+ 	    check_retry_zonelist(zonelist_iter_cookie))
+ 		goto restart;
+ 
+-	if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
+-				 did_some_progress > 0, &no_progress_loops))
++	if (should_reclaim_retry(gfp_mask, order, reclaim_order, ac,
++				 alloc_flags, did_some_progress > 0,
++				 &no_progress_loops))
+ 		goto retry;
+ 
+ 	/*
+@@ -5028,8 +5034,8 @@ retry:
+ 	 * of free memory (see __compaction_suitable)
+ 	 */
+ 	if (did_some_progress > 0 && can_compact &&
+-	    should_compact_retry(gfp_mask, ac, order, alloc_flags,
+-				 compact_result, &compact_priority,
++	    should_compact_retry(gfp_mask, ac, order, reclaim_order,
++				 alloc_flags, compact_result, &compact_priority,
+ 				 &compaction_retries))
+ 		goto retry;
+ 
+_
 
 
