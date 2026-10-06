@@ -4,137 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79161CA5FFC
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 06:31:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3503CA5FFC
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Oct 2026 06:41:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 884066B0088; Tue,  6 Oct 2026 02:31:52 -0400 (EDT)
+	id C19BE6B0088; Tue,  6 Oct 2026 02:41:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 834DA6B008C; Tue,  6 Oct 2026 02:31:52 -0400 (EDT)
+	id BF1426B008C; Tue,  6 Oct 2026 02:41:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74A8F6B0092; Tue,  6 Oct 2026 02:31:52 -0400 (EDT)
+	id ABADD6B0092; Tue,  6 Oct 2026 02:41:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4895F6B0088
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 02:31:52 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C0FEC1A0563
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:31:51 +0000 (UTC)
-X-FDA: 85291230822.26.16D20EF
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D3B76180002
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:31:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Nxfj9Qcp;
-	spf=pass (imf16.hostedemail.com: domain of bgeffon@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=bgeffon@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791268309;
-	b=eIlXtmcOb8YBBOsOklanNv2bOjn6VKpfE0qoMAATl3//1i+cFOIwIfENvdtmYkIbtUaq2z
-	Ios5igs/5z/SGdSIcyac8yHVm+1BqaXKwYvqis9fYObccPpeRdYtoKn34K6nSkqQyDL9Xy
-	7BTxeOLHbpb4W8KsEVwPOvp8Lf3S6ys=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Nxfj9Qcp;
-	spf=pass (imf16.hostedemail.com: domain of bgeffon@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=bgeffon@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791268309;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 83A006B0088
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 02:41:28 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ECF53805B0
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:41:27 +0000 (UTC)
+X-FDA: 85291255014.06.56924BA
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3BB5080005
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 06:41:26 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WapF+qD2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791268886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T/qMNv6LWR2p5Dhoh0FprqlZAOF+nV46g7vnoxCUDTw=;
-	b=peXAQdDPEcF++LgYJAzGJHmZ4bBghqacWAXQfcBuRLqc5LToyID/M/ZmcXDmoIk/f//uAZ
-	Ym4RfZEBzHvGeRp7R6ZLERFbfMYD4SWAG1kcUVxN5tOTN/ilhgz9jdBDYSbEbH7wrU0mMr
-	78271dA4X0NOSrzqN3clkBUnhJlURsw=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5351f9dbfe0so86481cf.1
-        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 23:31:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791268309; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kf+G1dwn12aQcl9fDq+4V2+f8XS0N5VwBF0hY7xO5LEFQMieFLWQh4geVs+jmJadbU
-         j6QzpAKYTSyyK5owYnBVNOdY1Ywh9XKcSk+eUBKsbwaW1OufpqJxL/iPjE/Df2/7UOGc
-         kmr2429o20DIWnGAcnaX7XLPZc4habL1B76pDz8tySTW9nWQFT0Hl0uG4J+2XOv2am8N
-         kZzOSyey2PKupkQWJIguOL7LsWCXk6p+j0uZDvWi/GFG1VzNwHC7xBo7HStCYJammlZ/
-         Kf6SbP6zWMGO43kWPKJZ0o26vHSVnQv5VKegpbPJk/vyjj7Qhbaw5qaYUqKx011CJoUI
-         7K6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=T/qMNv6LWR2p5Dhoh0FprqlZAOF+nV46g7vnoxCUDTw=;
-        fh=jVL/nHwBMrCbZXz3gpche4yJe0pj3njfh36DQkxdN3w=;
-        b=EIF/S0gl68M+goSZPvxtENN6ucSovJs1RY/g2aZ1amxrxzkBdWFSzWzZOaNrzX/5ic
-         J643XKkxbrNlB2j9jU/2rr+XsEV3RFQvRtHK4KzPOUPeMhjQ3Ej4q/s4tdb+YRT5TdTi
-         7DowV+Ns89ZkUIqRr6lh4et4rtX0+YGmu/QhPoCZGXMAjjNyJNAEMlg7QrB4Xlyvf51w
-         b/j2lecZFy+69akLL9650cTf0iIp70l/mtg4TOXNO4eiPoEDMICsIrNoG6XKFc2IVOmF
-         5G76phROIOBTAH9lsTCzbBq2n/UkXBDXxMJe/q5N5a5kuQ0iUmNMTLFCENEXF24JxW4t
-         ZWSg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=uvuUL0ruNpfCRzWzTraH9ZiEVbkwKooQDWiuyseC2V4=;
+	b=sis+4sUzRQ4iAoEh9PSgkiPTZZ/HAPV6QN27WReOzUe4+dR89yaVB9jISRkQeHhSjlffFs
+	tGRM4yBx7EfPmj2MGyrjj8lBKPNbNASWWvpN6vtwgo37A9MnUgao1R7bZ94ZQCYM7y2zRx
+	W0HOlA38976S37/5ASrtK+0ngFxc3zU=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WapF+qD2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791268886;
+	b=jOfjC0PHpwaA6NHgc3p65g2AwSj6+3sqgIYOeON6EzLZ06475MIwB3ah/z/hH6Bxo2T48z
+	nRuRRzYcjoKZGjWyrAOumMBydyglXmCeBJsW00bmwNIrDACofyVc7bzQdmWb06wHO2ImGV
+	iwxIBvl3YjNhhtxeCjz7Ax1HMfoinQg=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48bbb06e746so1212944f8f.3
+        for <linux-mm@kvack.org>; Mon, 05 Oct 2026 23:41:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791268309; x=1791873109; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=T/qMNv6LWR2p5Dhoh0FprqlZAOF+nV46g7vnoxCUDTw=;
-        b=Nxfj9QcpIZD1UrdWxYMU1r0dkaqKmOe4c1zDH4wpRgAGnaVm5J+6+AOeRWStKjz+DH
-         YQvhwGS2wNs2cFUfSZMvjHVJJsGb32PWiAQiBLziVqD7c0hrkFjtdicNyCHbp9M2pBdJ
-         MFsGix3KcBQLfGlbNZBJX33+yKhilKlGGYfvrJkhDbQeP1tWdBqYzRg/85QRtIreJi5g
-         tc9fhBAlhCqjdnnfy6Z2mzrJ53RX8oLQohgDGg5ArAPhbyZW8UfUxoTcCxGMjADBRyPe
-         IIGLwGeqlCYEx6cqCi86TgdEGW02bIws24Dpz32Btjs0K3PMoTIPY5/dIapalbq6C8Tl
-         bOJA==
+        d=gmail.com; s=20251104; t=1791268885; x=1791873685; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uvuUL0ruNpfCRzWzTraH9ZiEVbkwKooQDWiuyseC2V4=;
+        b=WapF+qD2Ejk41W+6eHrZC/AzcHzSGoFWVqwGIU3gOz5494JrnYcipnDKR38gq3cYcf
+         FuvhMr8lR+DXqVFCbGDKY2x06L+JhbupUoKXOqgZoUXFD3D7vJnDKDwS4scoGFAaNsxG
+         n7x6VHuE4GTbHgOF34u13XoAuN9/rFUuQoFMn8pWHFz6NE2mgVtpMD3fOBp0DHy/001A
+         jjfljdpTaHdg5/uMpZIMjU3YjZ4ZLYB5Fmhg0BY9Doc+VzFshX/jZZO3v2ezUD9tpJgu
+         MpJFufKuwbPsPeJocOvC71VmsejvfT+ICmKHEpAFh93gJJryrPPeWNiZn+dGR4yU2SDq
+         Vqkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791268309; x=1791873109;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T/qMNv6LWR2p5Dhoh0FprqlZAOF+nV46g7vnoxCUDTw=;
-        b=vU8Y1XYGUk8SXxWeW+l1P6GXWZxBONjEoFtprLRxMZjD9GetUhs5TxLQhQrXDpUvpC
-         tlSj2ZJ+sXqytyQpeM5oBLhhsjmiEhHnbGqo1ziznEZP4iGqrKOmbdcxmwtnsEvjxlPk
-         /iO2SQ7X8eCoAvw33FthJSsPScPLUGj1lliWzptIdBP0ppn3Kq9PuNVHPAsQ2yOrAWcT
-         w4JGIc+/j3YejVQWX5KtRg2Ia+7qSPGm67/KZUhD+pzkzGXEqMFfo43BF6hiL3ZFlOYu
-         bJO5jqIZcXWqBYc/lRRL4cg+PhSNYo7IqqbCbIRRhXvkIrJVfTcRaPKE7ooJfces0DsN
-         JNuA==
-X-Forwarded-Encrypted: i=1; AKwUvByRd7NAawq6K8vpioGsBY6mxumODFVR4VpVGr+B6TYHKvPiQKuMIz1aFsMZrz4RmGICBwFAuZoqoA==@kvack.org
-X-Gm-Message-State: AFuF++lnilLqPPLr9ZtR0V8OnLVN/MExH33X41MN+HKPwwVVsVD/x7Go
-	Kf4E1UI72ntJrKeDGmLCG052FUGyc/78CNE2aP120v8v4XTDEX6B1KTpc7hh6CH0Vlc+XVHEWeI
-	B5sj4tqXlEsyBHvkiTVo7+6MAHbZhC6oeNkEQhmCX7s7DJIsbuakVP7QoQBc=
-X-Gm-Gg: AYBFou0M6yiQ0ewArtLHhfHgpXZr3FNJLNOQKw3hBkFzRwL9mig02odJDctUm+5gNeJ
-	dU9/2ObbkBWV2mCylowV1Dc7VkjgCvlieC9YKI7I2Y6wuTBjei8P23Z6OHyZUUxXbsoHeeO5ZuB
-	lrsyK1/tkWdQiboVsXB6x5jkXlvjx3QkZ+w70dgIHOydyH8YtzJzntuvx5VYmbAs+t1qxG0QM1c
-	NJ7eyTT7yQn+9NV8LV89MUW1haghv6EnhNoeCfgauqHEsSV8c+oC/re1rJJ60w6EWYIcuyeLsJw
-	6qaRFwmhwnCZdzbhkepWYLCtJamI+ADFhVn7lsXNEBMIuhPE+3IJUtegPfGeZEWoXnVoQ6j0Qj5
-	VYgXRlGHi9yCDFv1oIh1zXB10WS6o18DfQQk4mjmihVcTxcQ30O+lPvZ9bo8sKbZJ/iQYPvl5zP
-	W9qJygIYMPBDLfOl16kIdo3mnsCcw=
-X-Received: by 2002:a05:622a:60c:b0:531:34b9:2532 with SMTP id
- d75a77b69052e-53540678576mr9157571cf.4.1791268308385; Mon, 05 Oct 2026
- 23:31:48 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791268885; x=1791873685;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uvuUL0ruNpfCRzWzTraH9ZiEVbkwKooQDWiuyseC2V4=;
+        b=Abn9PxhUGi5dnhHLEBjzKE+jtMVLR6fMNed2O0huwtyyPAQK1UodUl4kCKX0zLU7gL
+         Lf3h/GlNBLoWeS8ZzGlmNwz8uH3hnavbXGZ0xvmOqfsS+pi5mJaZISR0pxGZ46NCh6Ri
+         sTz/cUy63TxQTuxvchLz//mGmFHnaHGcLzJb25SAlSherVyJ+RzMrMzCAV7JALCE7iUX
+         jKp0t6XEDWSzGsPUYFZgYB5IASMEY1oQ8Vs01MJAoboq4SeDuTiVsG6c5eTK29hc9xwF
+         Mnrk4rYIsj7jQ4CFk502ZsCJIv4W+VgdSV/pyFbTfRzn4G3qEQvEexJMCUjJiILQMyGo
+         N+Kw==
+X-Forwarded-Encrypted: i=1; AKwUvBw5WUo3OtmgSmzLve5pBBOc7HUAIjTmqyL5Za+tXUUKqFGfFa6KxjXBZ1wkYmYWI4UmUyctNDsxUQ==@kvack.org
+X-Gm-Message-State: AFq9FYJ5p6KnFJYQsL9BwjiQFPdsonZ+5GYCpvkup+4mTHcuf6UNhhWx
+	1dsmlpg0va6LY1TrCamkZ8ytumRAHPQ+A5Yn0YGJAa/0vH2oxVO3jHW3
+X-Gm-Gg: AYBFou1kGj+dB6Y5WxZnSDqsF9lH4Mhbk1vqpfAd/Qm8OPS6PDpwmkTlSc1+aepDEOG
+	tP8SA+gmi6PBBNr3dsIl0+cYAG14Li/4cdHqHaXL3OA6pWcxWp+HQyUeiBShb2chjMEi2P8aqNY
+	zx9djfwyIr9qI1Upeq8eFJysyVIKEHc+Df1baVaAkcAfUo4AEHMeVUIq9b7Sm+ewA1+55cRZj0z
+	chkFPnQosVAvAx3M0FZdVnn3oyqEW3zNdRfur/fQZNPlz9z/rxkp668UUUMKQ0LhUlphkTzhkF4
+	5qfoE6q1OTcMIK/Q5TUa0OxHcPm//7dr08JTFwKSSgjwsxlyyRbFBKdDf4JXq/JiYdAErsuQa20
+	qaK0Wubb+QgdEiVfjdAijpc+gh+/vV7oS39mIOqvjTCeVOOPApox/o0nIAqB1xKaGWsyNMu482n
+	XRCT7lBGlkJwQ7l+rjgnR3YTFvCg8x+1QRCK3fhzihC8fv9mRqbmo0yh0=
+X-Received: by 2002:a05:6000:4911:b0:48c:4272:86b2 with SMTP id ffacd0b85a97d-48c47fc924emr14855342f8f.11.1791268884519;
+        Mon, 05 Oct 2026 23:41:24 -0700 (PDT)
+Received: from nobara ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c6726238fsm4847856f8f.16.2026.10.05.23.41.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 23:41:23 -0700 (PDT)
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] selftests/mm: check MREMAP_DONTUNMAP mlock accounting
+Date: Tue,  6 Oct 2026 08:39:01 +0200
+Message-ID: <20261006064120.6796-1-azpijr@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-References: <20261005122036.718976-1-senozhatsky@chromium.org> <20261005122036.718976-8-senozhatsky@chromium.org>
-In-Reply-To: <20261005122036.718976-8-senozhatsky@chromium.org>
-From: Brian Geffon <bgeffon@google.com>
-Date: Tue, 6 Oct 2026 15:31:11 +0900
-X-Gm-Features: AclHuK8GDz4mlY-X1mZLOSHDZHkzlHRRhdhy6_5gaDfAVaftmiXzawHiqYiSonY
-Message-ID: <CADyq12wsysqxEy_7wms1TyHVXOvpmS88WoO2_N3_Cgnr9vF9Zw@mail.gmail.com>
-Subject: Re: [PATCH 07/10] zram: zstd: do not use kvzalloc() for zstd allocations
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
-	Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3BB5080005
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D3B76180002
-X-Stat-Signature: jnqpi48q9cixrn7kbbzs75ehf4n7851j
-X-HE-Tag: 1791268309-244458
-X-HE-Meta: U2FsdGVkX1/mK+IGwljNHetB74noTL/aAOY40JsoJO7bGoybE5AmVWycfCaMFCuuQYM63ccCgthHwBX0Kf9IGI5slf4aUqTtqreOzsJaYVzGfV4nfxVuHQoxGs4pqGG/aq+PEhy/mxFzAfnWg+JxIwFIz2UooPf0GT1AmVi5s27syaZg3Z2KUDP5VUXiRce946MW7/NnCJnW/q3hi6ThW3VfcSLonHX2dXjDIGqcF7fYuffEPmer9o9LtW8ZRWREfR48J8qj8RuPRxMyn3AA2+4Hcv0JyGrkpDI0C2GVTfyEB/AaCvnOAYbBta3Z3XCRm25DTev8nx9w+55V2EF2t6SyS8q+1p3eb8f/LKfPsGW2mAQCFSGDbVTBJDNnUWpH0r8X5iAICAZQ3QUJTkaXj+fbCEd7HUQrdNJmKzRTWMNZdteTFFCjT4730mq9l9xC+T+1jU5/isPVnLWarS1pTkLz4m0vH9cVvjpKvQ9Gd26Mhpsya0CIA/phw51v7ZEFzE8gIZg/A6VGVmu/M0r3S0dfnlH64n22d03lAdb2zC+NDcwm72cyJNwkUjnfmHPyuVd2F4jZyqjNTPn9QN501MDf6q7c7TKcp0kxtZtWwCRu2TRsYb3kHaA1o/o55XpgGmg2hCdBe8ieZOTJAdNEuPYlnq4rEHsfyIYGQQODTIaiwBMu7N5/r1B9iimrVNit8o3gNkS/67bEHBVhc52jS9AGXzkEexkgPwKFOocVjtKQuEEGNEIIthc6fEjHU1071fFdSY0kXu64oSwmo1ev6QEQ4JdbVmiJw/ujumnwhwYACRZv/ts40HzUMzNK4KfcLznFTnOavwOw2gnbRFFeUFn7YIAjqcpAOGNslfjwmfbY1RnIUkrqVOmHdHJQyeDTBW2gNfXnrTIMXDpUgB3I2EX1G1gMfDw7GbsGqmjVkwJiwZZ7rVB47FAX/jf/XYzSLda3t8aVPWwbg4j39sW
- ws1UaLSP
- zfoHAEWkX5eYT/kwu90vX4AwS3kchnheFhP6hP1anqdJS4fgDQQ4VCg9j/ndG4vWKL4puBfggx6btVsCUS3Sfg+7fTBb7jEH0b/c3HXrsffocs51F9MfyRVevmoBRf3z4onK10JsW2vMZLJ6E93lnEkgn1FhltOm4mqlxhcw6081LVUVQwxIaRdpyDtwqdOpXZoO2WHQNlnnp38eh7jwawYPUa3+43V1I/UJsaqt+GeIfe56BUwNheTYOuhTIFbYDSh4UawhrugBgqscl9JIrtTA7U8AWeqo4Rdb3
+X-Rspamd-Server: rspam12
+X-Stat-Signature: drkwpcp3yrfp5nijeqx99swdhhk15t5c
+X-HE-Tag: 1791268886-723454
+X-HE-Meta: U2FsdGVkX198HZ7i9TDuUJTYWi7ckyepmAB6hZnETd98Lw/yPYoYJ6ILh4bLGz7gvr9UzKeF/iS0/QZNKk8BnyGFGjlmU2YPNN/seNIbDKlPQH/5Rb3V0Y05WMO5tQIxwZ+CUA5eKShl2Kwbv4s4tL0IkXzI7LO+fBFWx2PPnK4rJgkqkbS3qxJGWqSChtKAtJAz2wR2dr2CKWi/sfY3FaqvORCSDxoF2URv2tpXfCWhPlrq6bgO+V/bRHrowPfYcrrF+fSJ74i0ab/VAcdCEiMHKBUgwQaKadJOO0k1wnvmjjW0hG19Gl6nVYE1hQfED9YBbPLot7h+Y3nJ9zUSuiiem89A1975sTR1+QbZrVUWxod09/ov+ackSIvcGzKmzgD02TcwGPWjIE2SuT8Y0L8GhnuQ5Qf5E/ciQext7V4lGGtLlLv/sAOjbfhLgJ8szh4QwchVRiuGzNMGfpnhL8vXYa4hUI0NvGwDtBro7r4BKALX0AW8zuz6+h39Kgw2DUSTWH8V69TzYxR1gQBIrGeFjWP9UyHaZcm9ohPulwIHcLYIMpnwTXKvsvgg+x06TT7FML8kZBBT9vufsx4AAjskI7GdwBp0ht/3p6F9wymF0cVc0OxG2VWITrQmU/Ckzx4aAQbCh8pNHo0uEqYYSET5sEGDlFJYMSz9H4VBKKNaSUnoxCZgOlaALFyBDy9au2o0BTiU8Pu54T/AAaMHzLeV3HxDTI7w1eCvrok9tMNLSNElnnnGMu0ZrCr/E66xELTrmEyaxkX3KPSEi0rVmXMuXkxtSAV+r/RIxaTF+NzQvJgmgACJ/viST2a6UuJCReUZLcXDD9aN1eVTY+DZGtIk6k6dkAbpJEEsm0yCrG/sx6gC4czxbW/fCBZmpj9+RjtTy9RkyQMNX3ojc3E52r8qzadYeut1WEDFimaNNnC2uCrST+rsluNOF4aA+a3EXH7Wvp65mbAvn6z4RBN
+ WCPP4ETu
+ ukXMbbRTznp21VKRvGwuvM+S//dR++Pn+e3qVmYzZPW2FRO/1n5XCDQIhN52McBqI0+6Onev7i59333Ql1qzQTRN7KQwhp0C0AbHgoXdGYtDp0ndblFLPPlKc5EuvZDPHKu5Q5uOpyQfLTCA7ltp4sLVA/N5Sx0Q8A06MJpDQgRzwI4CfOSwh7iU4uZLKpXdId68g4r15F2BrnWfCXgFM6YQ2xogfWgfMupuddDiFB5LN4PS2ZiZzr5Q+J1JeYkxy2ltYqGOnKKGT5CzfaKVRwOXrZzr8IMfNpIqhD9nrmX2aY1BPTthKCVUY4Rrd9EGger3h0Adw9Trpv/RRO2MJmlrwoEe6bjGV5uHH5KWauNdBd40KVa6c07Gwn3UdIeBJVIxSymAwvf1dzJp6VFh6ZauG3ibeFN5yHLj+rPmDd/8eVWB0SqbaK7+3Gk8EF1TDzKPd3G/wh/cuIyZ94xol8KvkVW7sGuJ3yKzeoENsKWG9dtI8ipH+SVtaBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,61 +124,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 5, 2026 at 9:21=E2=80=AFPM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> When a dictionary is configured, zstd allocates all of its memory (C/D
-> dictionaries, compression and decompression contexts and compression
-> workspaces) via zstd_custom_alloc().  zstd_custom_alloc() uses
-> kvzalloc(), which falls back to vmalloc() only when kmalloc() fails,
-> and kmalloc() rounds such sizes up to a power-of-two number of pages.
->
-> For example, on x86_64 with a 110K dictionary, switching from
-> kvzalloc() to __vmalloc() reduces allocations from:
-> - CDict (level 3):            512 KB -> 400 KB
-> - CDict (levels 12+):        2048 KB -> 1552 KB
-> - DCtx (per-CPU):             128 KB -> 96 KB
-> - CCtx workspace (level 3):   128 KB -> 84 KB (per-CPU)
-> - CCtx workspace (level 14+): 1024 KB -> 764 KB (per-CPU)
->
-> Use __vmalloc() for allocations larger than PAGE_SIZE (and kzalloc()
-> for smaller ones), which is also how zram allocates zstd workspaces
-> when no dictionary is configured.  zstd_custom_free() already uses
-> kvfree(), which handles both.
->
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+MREMAP_DONTUNMAP keeps the source VMA in place, but clears its mlock flags
+while setting them on the destination VMA.  The "mm/mremap: fix two issues
+with MREMAP_DONTUNMAP" series fixed two cases where this leaked
+mm->locked_vm:
 
-Acked-by: Brian Geffon <bgeffon@google.com>
+ - an unfaulted mlock-on-fault VMA moved behind itself self-merges, so the
+   single resulting VMA loses the flags without the accounting being
+   dropped;
 
-> ---
->  drivers/block/zram/backend_zstd.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/block/zram/backend_zstd.c b/drivers/block/zram/backe=
-nd_zstd.c
-> index b367049f131d..7a8b5ff186f2 100644
-> --- a/drivers/block/zram/backend_zstd.c
-> +++ b/drivers/block/zram/backend_zstd.c
-> @@ -26,10 +26,17 @@ struct zstd_params {
->  /*
->   * For C/D dictionaries we need to provide zstd with zstd_custom_mem,
->   * which zstd uses internally to allocate/free memory when needed.
-> + *
-> + * zstd allocations (C/D dictionaries and contexts) are large and
-> + * long-lived.  Don't use kvzalloc() for them: when enough physically
-> + * contiguous memory is available it serves them from kmalloc(), which
-> + * rounds them up to a power-of-two number of pages.
->   */
->  static void *zstd_custom_alloc(void *opaque, size_t size)
->  {
-> -       return kvzalloc(size, GFP_NOIO | __GFP_NOWARN);
-> +       if (size <=3D PAGE_SIZE)
-> +               return kzalloc(size, GFP_NOIO | __GFP_NOWARN);
-> +       return __vmalloc(size, GFP_NOIO | __GFP_NOWARN | __GFP_ZERO);
->  }
->
->  static void zstd_custom_free(void *opaque, void *address)
-> --
-> 2.56.0.rc1.315.gc6ed9934b7-goog
->
+ - a partial mremap() moves only part of the range, leaving the pages which
+   are not moved accounted as locked in a VMA whose flags were cleared.
+
+Add a test which mlock2()s a source mapping, moves all or part of it with
+MREMAP_DONTUNMAP, unmaps everything and checks that VmLck is back to its
+value from before, and run it for the self-merge case and for a partial
+move with and without MLOCK_ONFAULT.
+
+Verified on x86_64: the three cases fail on mm-unstable with the two fixes
+reverted and pass with them applied.
+
+Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+---
+v2:
+ - Reduce the churn (David): fold the three cases into one parameterised
+   test and drop the child process per case, comparing VmLck against its
+   value before each case instead.
+ - Use the file's BUG_ON() for setup failures and vm_util's
+   check_for_pattern() to read VmLck, call mlock2() directly.
+ - Verify against mm-unstable with the two fixes reverted rather than an
+   older -rc, now that the series is applied.
+
+ tools/testing/selftests/mm/mremap_dontunmap.c | 63 ++++++++++++++++++-
+ 1 file changed, 62 insertions(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/mm/mremap_dontunmap.c b/tools/testing/selftests/mm/mremap_dontunmap.c
+index 96ba537facf7..5ca33d9d42af 100644
+--- a/tools/testing/selftests/mm/mremap_dontunmap.c
++++ b/tools/testing/selftests/mm/mremap_dontunmap.c
+@@ -7,6 +7,7 @@
+  */
+ #define _GNU_SOURCE
+ #include <sys/mman.h>
++#include <sys/syscall.h>
+ #include <linux/mman.h>
+ #include <errno.h>
+ #include <stdio.h>
+@@ -15,6 +16,7 @@
+ #include <unistd.h>
+
+ #include "kselftest.h"
++#include "vm_util.h"
+
+ unsigned long page_size;
+ char *page_buffer;
+@@ -335,6 +337,62 @@ static void mremap_dontunmap_partial_mapping_overwrite(void)
+ 	ksft_test_result_pass("%s\n", __func__);
+ }
+
++/* VmLck from /proc/self/status, which is mm->locked_vm in kB. */
++static unsigned long locked_vm_kb(void)
++{
++	unsigned long kb;
++	char buf[256];
++	FILE *fp;
++
++	fp = fopen("/proc/self/status", "r");
++	BUG_ON(!fp, "unable to open /proc/self/status");
++	BUG_ON(!check_for_pattern(fp, "VmLck:", buf, sizeof(buf)) ||
++	       sscanf(buf, "VmLck: %lu kB", &kb) != 1, "unable to read VmLck");
++	fclose(fp);
++
++	return kb;
++}
++
++/*
++ * MREMAP_DONTUNMAP clears the mlock flags of the source VMA and sets them on
++ * the destination, and mm->locked_vm has to follow.  mlock2() a source of
++ * num_pages and move its first move_pages to gap pages past its end:
++ *
++ *  |------ source ------|... gap ...|-- dest --|
++ *
++ * then unmap everything and check that VmLck is back where it started.  With
++ * no gap the destination is adjacent to the source and could merge with it,
++ * otherwise the gap is left PROT_NONE so that it cannot.
++ */
++static void mremap_dontunmap_mlock(const char *desc, unsigned long num_pages,
++				   unsigned long move_pages, unsigned long gap,
++				   int mlock_flags)
++{
++	unsigned long size = (num_pages + gap + move_pages) * page_size;
++	unsigned long locked = locked_vm_kb();
++	void *source, *dest;
++
++	source = mmap(NULL, size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	BUG_ON(source == MAP_FAILED, "mmap");
++	BUG_ON(mprotect(source, num_pages * page_size,
++			PROT_READ | PROT_WRITE) == -1, "mprotect");
++	dest = source + (num_pages + gap) * page_size;
++
++	if (syscall(__NR_mlock2, source, num_pages * page_size, mlock_flags)) {
++		ksft_test_result_skip("%s: %s: mlock2: %s\n", __func__, desc,
++				      strerror(errno));
++		BUG_ON(munmap(source, size) == -1, "unable to unmap mappings");
++		return;
++	}
++
++	BUG_ON(mremap(source, move_pages * page_size, move_pages * page_size,
++		      MREMAP_DONTUNMAP | MREMAP_MAYMOVE | MREMAP_FIXED,
++		      dest) != dest, "mremap");
++
++	BUG_ON(munmap(source, size) == -1, "unable to unmap mappings");
++	ksft_test_result(locked_vm_kb() == locked, "%s: %s\n", __func__, desc);
++}
++
+ int main(void)
+ {
+ 	ksft_print_header();
+@@ -348,7 +406,7 @@ int main(void)
+ 		ksft_finished();
+ 	}
+
+-	ksft_set_plan(5);
++	ksft_set_plan(8);
+
+ 	// Keep a page sized buffer around for when we need it.
+ 	page_buffer =
+@@ -361,6 +419,9 @@ int main(void)
+ 	mremap_dontunmap_simple_fixed();
+ 	mremap_dontunmap_partial_mapping();
+ 	mremap_dontunmap_partial_mapping_overwrite();
++	mremap_dontunmap_mlock("onfault self-merge", 1, 1, 0, MLOCK_ONFAULT);
++	mremap_dontunmap_mlock("partial", 3, 2, 1, 0);
++	mremap_dontunmap_mlock("onfault partial", 3, 2, 1, MLOCK_ONFAULT);
+
+ 	BUG_ON(munmap(page_buffer, page_size) == -1,
+ 	       "unable to unmap page buffer");
+--
+2.55.0
+
 
