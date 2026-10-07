@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E719CA5FF1
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 11:42:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E8AFCA5FFC
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 11:42:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6EDF6B009E; Wed,  7 Oct 2026 07:42:13 -0400 (EDT)
+	id 1B7756B009F; Wed,  7 Oct 2026 07:42:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E387A6B00A2; Wed,  7 Oct 2026 07:42:13 -0400 (EDT)
+	id 1638F6B00A0; Wed,  7 Oct 2026 07:42:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE8D16B009E; Wed,  7 Oct 2026 07:42:13 -0400 (EDT)
+	id 001F16B00A1; Wed,  7 Oct 2026 07:42:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D7E36B009D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C65A76B009D
 	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 07:42:13 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0EB2A1201B9
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2C6BC1601C4
 	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 11:42:13 +0000 (UTC)
-X-FDA: 85295641746.26.97DCB1E
+X-FDA: 85295641746.12.7CDBFC5
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A159D100006
+	by imf12.hostedemail.com (Postfix) with ESMTP id A32D54000B
 	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 11:42:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=kVAmyLdG;
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=HndN3FPf;
 	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf14.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791373330;
-	b=xYiNZMe4Igm7nQ1EQzTwzNK/y2bB5Cwbkv2uM+dfAi7p5ZTMm7ohdtB1df8c3Zg9gB9zPu
-	AGg1UTI67dhThsjepm2dUY05RngP4F0M6a+sCNhyzSRdf2NcYPDY+c2Ey1RSnqYwahSCM0
-	B55Xdgy+KSAvjTggrkBfEnDs1J7KaYo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=kVAmyLdG;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf14.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+	spf=pass (imf12.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1791373330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EBKhH4DjM2gVSO1d+cytd22TCiZ2Y2ktqC3xv9BFUuI=;
-	b=DcHFHXkHtY/jVL18R0+o7eQWyBmeX0WpDFj74aSfxVNpJ55Zg0Yn6mDhsunYS4Wo8hbDel
-	w7lfuMtE9YcwIlGbrOWGt+gdENZFCGngq6hALpm0WLpYxTqUumA+clhfpy7j1R1cvgTi7D
-	2ZZewk8NXMkZL0Srodr8oSxmvSA9EgY=
+	bh=1LiOmrvlTfjWNHeBpGO5NZA+KzANzlXnyAx48w5onXo=;
+	b=RVobo2VrpYFq8WxJnP7RkF5GYAZcGjd5RIGhw46gIhoHbP8RgUVDLUnv5BZ69Jw/v6Gl/j
+	tgRw8gY6LDu/7dPgNZV4jvQm1tF1DVNknt3tE2u7rSCdFcmZWZG/dj26ClMJZIJQ1QXIre
+	meTiyNnSToDoohYFeKm1zYFGARRpI/I=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=HndN3FPf;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf12.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791373330;
+	b=iJnb6TknHXXufxlAXdyKcrWxt5GP0Kzguhyb/sF5X8CNVhE/wkPKMg9h+q7aSj2b/brUB6
+	/PROTbT1YMFkj1r+ZVWoskWriEP6Z26U2PvISoetM3h04hhAKcWDCWwgj/3zOQ6dy/VFCo
+	+eqx2ng45TyQeT4GMss1rxqr2dywUv0=
 Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697BZM6w2462975;
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697BZj7Z2463294;
 	Wed, 7 Oct 2026 11:42:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=EBKhH4DjM2gVSO1d+
-	cytd22TCiZ2Y2ktqC3xv9BFUuI=; b=kVAmyLdG83Pu1cLLnUxHeSZ28Zd0VHBhV
-	Hx+gISUroCN5r1JSK3dTi26uj+o3aAvvedTaMEFaDmzMT/SiM/UJNdMmOa1z/Zca
-	EijNbssx/JeEW+Em5dU5/UYuSMoD3oA2ts11LLnFMlbec6KTG5t/2QcjDixRVe9T
-	mFjaJ28WWCq5uB2na9fdteqQBHUq2l93792wG/YsBoSSbWVpBhwcpUB8amWEiC02
-	pQWMyil94wyWF1Z0Y4R7VnpzzP6aosdK+6r2oQw7l1/7+kqvt0JP+YYMtNxvYXC5
-	r+TVwC6aQk4+D01L2fSW4nSRGF8YE7P07CakA4tbE6m0diLlzkc4Q==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2s74w8c5-1
+	:mime-version:references:subject:to; s=pp1; bh=1LiOmrvlTfjWNHeBp
+	GO5NZA+KzANzlXnyAx48w5onXo=; b=HndN3FPf8RXcbff/1GB3yZ1FKD4Df0Jj7
+	fD/+aMpTeAVHvEX4fgTr90VS8wU9dtwkoV5xN8Opm5n9grjYBgd0dtFGAYs32nQ+
+	X02dNSb5JG0XX++QVkpR6BNP4V7F/n0j9HR/K2xVjXl6/YI9LbiusaoDayxmvkqF
+	3HEgGDLTJArR4Pt2GjEzZcqQJnTNlm4Vf03+eH8bTEL19RGsb4m5GHfOGUzkH27z
+	KcB1hFR6xrXkfS9gEkLuaBowDbFGokN3iV8g6M0gUq3Y58d+G0Qr1qDqb75PHaAE
+	APh/O618Pf0RRLo83jgDnaBceekxcheFbwo/bQrS2RnOMNRO8E/sw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2s74w8c4-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Wed, 07 Oct 2026 11:42:04 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697BWftC1841550;
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697BX72E1852621;
 	Wed, 7 Oct 2026 11:42:03 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h5a6dj8w3-1
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h3dhgxauf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 07 Oct 2026 11:42:03 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697BfxAg48759108
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697Bfxs328181036
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Wed, 7 Oct 2026 11:41:59 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4899B20040;
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 639FD2004D;
 	Wed,  7 Oct 2026 11:41:59 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 061ED2004B;
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 18FED20049;
 	Wed,  7 Oct 2026 11:41:59 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed,  7 Oct 2026 11:41:58 +0000 (GMT)
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Wed,  7 Oct 2026 11:41:59 +0000 (GMT)
 Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id 83FA41609A0; Wed, 07 Oct 2026 13:41:58 +0200 (CEST)
+	id 8BFD1160A17; Wed, 07 Oct 2026 13:41:58 +0200 (CEST)
 From: Alexander Gordeev <agordeev@linux.ibm.com>
 To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
         Heiko Carstens <hca@linux.ibm.com>,
@@ -96,9 +96,9 @@ To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
 Cc: Muhammad Usama Anjum <usama.anjum@arm.com>, linux-s390@vger.kernel.org,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         kasan-dev@googlegroups.com
-Subject: [PATCH v8 05/15] mm: convert PTE table entry to pte
-Date: Wed,  7 Oct 2026 13:41:48 +0200
-Message-ID: <4151437659f71c16a136c5be941bbb44d46e6dec.1791365932.git.agordeev@linux.ibm.com>
+Subject: [PATCH v8 09/15] xen: use hw_pte_t for PTE range callbacks
+Date: Wed,  7 Oct 2026 13:41:52 +0200
+Message-ID: <50a0425734a973b4432f754587621c71d5abd14f.1791365932.git.agordeev@linux.ibm.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1791365932.git.agordeev@linux.ibm.com>
 References: <cover.1791365932.git.agordeev@linux.ibm.com>
@@ -106,24 +106,24 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: pD1re0KzzLGd5F_2IemxmUT-8jK_GUOV
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX2jmGVpxiSLV9
- QrRp+/srHX64L80HKWDUWzNhG/sji91LO3sAaYX04/DY9T/MBEVCamiv4QcbJKK+lnQ8ikT5EWl
- a92+awAq84dlzBfKkBHq3IgcqjZ5n+g=
-X-Proofpoint-GUID: 2y9IoJKPKDxvlevesMlylT9_w6B09v2R
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX0KyoLrgdfzK+
- raNDizk6OLCmAO95wzipKommWJqKKeJM2YWQXrIQpgSBZ5585hJ6TOzH2pChNJxp3r/S37gYgDX
- LEQ9QeLCbJo6re+160wPjiBQOnfW3+kzpJpGXlXHztAsd1yEw3DxxammHBgOgeuCECdRX0/sjgc
- i9d2NutWlUD5C7ifcbhlIH6TvcLI/M9ZTQFMr2SvaQzNZy6FXgRc8msJCAzyuwCBY9aK39YWmrY
- VDxfuGvkIEfUYhzpJKbDUQOtKdpxAauq9hNOox04ufIBBrJtm/15RVUs+vmJVVQXHvHIJ7S3fpX
- Kn1LZpI1ZqlPJtlerKWrDdiDN62CR7nenW7C/wOSpPm7F72nWERcDcT4/IgMzlYP96d7zgZOiaX
- 8Cbjka6xAZ3Zpx/lSjdePtbu6C74bfh5HE7k8omkv8QxlkEY6vNB5l/WJcfAljDAbRLZrL1gmEB
- 9/c89ct37II0RBz1uZw==
-X-Authority-Analysis: v=2.4 cv=fM2sTpae c=1 sm=1 tr=0 ts=6ac6300d cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Proofpoint-ORIG-GUID: 29khGV0tqgVaj7j2p1ac_N_w6nKzZrc-
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX1+hlbpnBjlVB
+ iT13GyfVrrfT74HouY5VkD78x+F5kYiNlXBBZoJftxtJbDFltP8Yx3DdBte5wfMHPQg1BBg1Gu6
+ e5FCX7rB5Pmdg3WWpUMizm/kD6F2flw=
+X-Proofpoint-GUID: NZWHIrnsolE5RFvuKq9V-erZ0nRhquxZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX+qq6cPOmMC3E
+ EnvmsjIv06vjpvF/KVaEuzrbSk+qw3TnRWuIJ48BQZITz8qPahXIBvz/XxAIJXSdf99LHpC4wfT
+ 9f84NyDwAvm3gmx3euNzLchrGNYBCNQfhiGTcDJ7dKauc6ZCL6oDb4P3XpPXQQyXXF358c/xK6h
+ nKSOYRUzOPF7+x3dN5zcLqt2u9SGsaq5Kra2KnQDgXxdtFBDWmI3YmdsXMKtvnCuC75kHrgEbB3
+ M+FONX64lDPOttbcYi9h5CTvUzqLMd7KlRjspIegsr6eSx6WK55KcwRA4PsW6DSY+7atOssJ/yf
+ mQlw/jefP4PQ6cxLzfLq77T3CHz1WTCdP2/vMN/zaSNyGfPZEoCFERoxr/NCSl7onuj+p6WivaC
+ KNsjFRhUJVRsWFXbZEyrpnZIS7bFyml1IybGd+6+XGlHg7SfsOmnIRrPKbrypA3O2Bx8i7ZKwxT
+ z96siA1m1vJRgaatllg==
+X-Authority-Analysis: v=2.4 cv=fM2sTpae c=1 sm=1 tr=0 ts=6ac6300c cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=7CQSdrXTAAAA:8 a=o7zO94P2ADgDUaN7wBQA:9
- a=a-qgeE7W1pNrGK8U0ZQC:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=7CQSdrXTAAAA:8 a=iox4zFpeAAAA:8
+ a=PZL_jg6TPyYw_DeWY7AA:9 a=a-qgeE7W1pNrGK8U0ZQC:22 a=WzC6qhA0u3u7Ye7llzcV:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-10-07_04,2026-10-06_03,2025-10-01_01
@@ -132,14 +132,14 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  phishscore=0 adultscore=0 malwarescore=0 clxscore=1015 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070046
-X-Stat-Signature: 4h9xomd8i7s6oyc76uej16a5ru51dedu
+X-Rspamd-Queue-Id: A32D54000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A159D100006
-X-HE-Tag: 1791373330-653630
-X-HE-Meta: U2FsdGVkX1+B9iH8Hsd9uVcqH+uoL93y0x+mn+SzJRgMQAJYlBZ62gem7x+X5sPUVeDJpmfkELDrFnqmsmUL0E3dZvpP3ffndzOl1RsNa8QZ2cfrnuDlUdkaZr5/0KEW4lnESQHFsw6lrLmluA+X1YvVlsKS8j3g5MDCPzuX4fYzb0w9lG457B/NgM+eJHD44804Ud8jOZVcuD4kztAPR0y330rEbStHbif1jr38Zh2XeFk2HUuaL8b/l5L8pflnktAC4uPZYPp7mfLW5PmkwFhvbuM1ULXqCpaCEI8hqnm8GNXQzPh1d37pQBn00NEbbAaE8VNZJaTI7synVXiK63CFfZvxqMmgurXNQ3UcVj+on2DEmUM4FxxEYNVfNSWN8z8b+SJnJc6CNSoIP2uaP/4Kq+qnJKf2BqJ944SqePvHQ4iNLT6j/MOv/DMQIjCoxbkPYQguV1h2PA80t671ThTXPv2sloFw0ksVrpEWfLTrr0Ch+DSmugWXxv8m5MayglEvLuOXR5USO+MvaYMTMi3qvtjcve5zXa0dbPrGOAL+Reu6fdDwwXQANWaDVkmI5FP4vNKv/hoN9nz5DVLwv3tDrioC+cCtr33PUmMJF1X0ASXaKRGGBZaob/OpD/1RLY3LG0EnEXZDsJGs9WifiHafO4C7/T/USmoEYdPLSfnEetipasZ5ToLqMwo8OJMy1g9Fv8asBSn7xOJTKq5dG0oBHBW6hz8qNCBtCIYaScSM8SsG2Ak1JNjOoVbGeIHZ/vI9cnRrRZFYYhJdbC+y1mep7MNmjtCx3ZO6XKe0E+Oeb99v6m3YOFK+SVhaLL//53TALa5BMnpuHEtQA4/h2DGsYaoeYmkScXyEevChlsO1FjKaBYb980DYrEwpKSOptAB8se+4qczBexyl8SDwxCYDJPh6vpV2BIr/Vvi6E9SQYc1uW7oRFGhr4oFlGvT+pJnygvCTI04rVGn/ri1
- vONQF3HQ
- v/Dd6ueY+h9tkyEYHPH1zE/OPfpHSWDDkMH2dIQPyq++yaaEpN7JPIpnJoT5cLO2FsOslhOwUA7vvkW8MmecL/O6daa3rPhPJxu+SurUjtCIb413+P5N0QCBEME4dDdS2MrYNx7MRtj66kSQmxRVOOG2l4809uX9nlbubboxuh8KOjDclmN/OzF8nrUWDpBJhzWK8gWniSfEsDO+8f4InXATyO4dwG1M51uq8l2HqpKIU7HEjLb9s+q1fLe4ZhMYvSY5x1Mz9XszDEx6coPX5qfG8D9xf85ysoCwH/Tge1UvoHnfppqQHMcCTsT0fmWy1SCi4uqp//uNTkItotbhTc1MKMXSyLng3pqtE6NChyGVC5arrBO+pjuIxJbfiPgS8hNVXg7Yd21hzu89ZxHuMOqTTVA==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: t5zu9q18zb3onzgn1qnyowtk1r776zb9
+X-HE-Tag: 1791373330-217492
+X-HE-Meta: U2FsdGVkX187RNbq+U3dW3E+d3wc8Afr7tk6PzIc1AXNbdui5xgQzahkLOxzJnQSmJnDmZKnQkZczLUIpeeldcyE4kH1L5kIUzOc9vUPLtvuOVU1KQBeBvpk9h7yvBoftUwQ+fnPSZ1JtHqYAzABqtp4nIA81FoeWfeu8eg53hdXwp7WuRXrezvHSZjWzAruuJAs9sBp3YFt12TAB0wLyJQrJ0zgKWh9iZNTDxRWMwTudA0i0CQ6ssvGsWN/wrI52jqs7JBGi2Vq+iDflZtTtlufmJacOA1MXkDYZ1R8+3AsIjpg7Ppx2fMG8dJjajcWVdqbkKqvbZF4Y7N6oKF75+Z4u0afpgkSCLnSDs9rDDyVXLzSk/Kvs5Ft1tXPAie60wfnWEMij3McVGV2y+0k2Kb2exZoACyHpaMQvGK/Y16mFefDpKv1k4CE+hBpMeKMGDJF62H2BS3YTRbtAY98zi3I+RswKxY0FCvMcVsJTSUWPpaKjT0moHVHVQV0da/aDLLtT5tLBp8lB4efMJxKNSKcvhDYddTsBq6x2P9rGGMxC5KZCE1jeLHdILLn0jqXEMPMZ4fcd+9WF28tqBRz/HNSWYV5bM5X+OcO1wP6jDBmMvCNWLhkcxM/o2Ymi/WVdpUDLdlurYm5+1F0PcS4NxQoy4f5b6X7WtMBz0scYkHBqJF+5jK2Nzv/CQorTooJp3siDaYWR9EM8j9Sth4cQ9JEGZVMESZu1KTBaYquYQQ9grtZJyE271TpPLn9whuwGh6FaJfra4Tf9W+rZpfkCcpt2Q+djH9BIblLdYQU5vXIDSOM/B1o6rmg44ZBC16QdBfzyLtrnt/HXGph5G0UegMy0eiEhTsOi+noPU0VIyB01aJhdyAiMVSUp+QuCPSkv93HdXCoaiSvDM488UlyLNd5sUdQKfQAFFgUIhjSXQRltb3GU7I9fFtBFa/82tF6qR6+x+cGfPM4rq20pZa
+ yLK+KNyb
+ wZQK9Gh8BMQPODis6ImnywKkTrQLuadG5GsKkk92DKipfFQYf52XWqLTFNp8nRvvHQwfXKUbASzd2fwsoEPcUFjp9O/axRJDAhDB4GhP5Lcy70XEVNgxNglQAxzRqlQkLv/WLlwCOKAjsSE3iIMMa9magdUbeSHEAa9YVYJAHIlTbRxoE34aXVdr92izJZ2CsfDr4lEkK9z82fSJtKIZtWwiOJ7/BqcG80OqiyRcPZbyDvBB5ANYKjsSPvvkV9VjrbQOjytgCdiVlxnpZvk8dqZOnDxUo707R2FAb0/qXbFKeamDlfkaonnwDR0kGp1KzS8w2y0KfrkidkcRGRqiBmhAh3NvgCY6mv+3s0uRlVWfDyK/OecN+zqjpS9PbnonbahHv9+X6aeu46rhPkrjz9iQqELZb6VUa0+4CkkUvMYhMknU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,30 +149,90 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-The non-MMU stub receives hw_pte_t but returns a software PTE value. It
-has no attached PTE that requires ptep_get(), so convert only the stored
-entry through __pte_from_hw().
+Generic PTE range and remapping helpers now pass pointers to PTE table
+storage as hw_pte_t *. Update the Xen callbacks to match those interfaces=
+.
 
+Keep software PTE values as pte_t and continue to access them through the
+existing PTE helpers. This is required when Xen is built for an
+architecture that selects the distinct hw_pte_t wrapper.
+
+Reviewed-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
- include/linux/hugetlb.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/xen/gntdev.c               | 2 +-
+ drivers/xen/privcmd.c              | 2 +-
+ drivers/xen/xenbus/xenbus_client.c | 2 +-
+ drivers/xen/xlate_mmu.c            | 4 ++--
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index bc0b9c65aa1d..be31fcf93654 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -1283,7 +1283,8 @@ static inline pte_t huge_ptep_clear_flush(struct vm=
-_area_struct *vma,
- #ifdef CONFIG_MMU
- 	return ptep_get(ptep);
- #else
--	return *ptep;
-+	/* No attached PTE that requires ptep_get(). */
-+	return __pte_from_hw(*ptep);
- #endif
+diff --git a/drivers/xen/gntdev.c b/drivers/xen/gntdev.c
+index 1dcc4675580e..b013bcad99b5 100644
+--- a/drivers/xen/gntdev.c
++++ b/drivers/xen/gntdev.c
+@@ -301,7 +301,7 @@ void gntdev_put_map(struct gntdev_priv *priv, struct =
+gntdev_grant_map *map)
+=20
+ /* ------------------------------------------------------------------ */
+=20
+-static int find_grant_ptes(pte_t *pte, unsigned long addr, void *data)
++static int find_grant_ptes(hw_pte_t *pte, unsigned long addr, void *data=
+)
+ {
+ 	struct gntdev_grant_map *map =3D data;
+ 	unsigned int pgnr =3D (addr - map->pages_vm_start) >> PAGE_SHIFT;
+diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
+index 7cfc28f1bb86..e724cc053e26 100644
+--- a/drivers/xen/privcmd.c
++++ b/drivers/xen/privcmd.c
+@@ -1658,7 +1658,7 @@ static int privcmd_mmap(struct file *file, struct v=
+m_area_struct *vma)
+  * on a per pfn/pte basis. Mapping calls that fail with ENOENT
+  * can be then retried until success.
+  */
+-static int is_mapped_fn(pte_t *pte, unsigned long addr, void *data)
++static int is_mapped_fn(hw_pte_t *pte, unsigned long addr, void *data)
+ {
+ 	return pte_none(ptep_get(pte)) ? 0 : -EBUSY;
+ }
+diff --git a/drivers/xen/xenbus/xenbus_client.c b/drivers/xen/xenbus/xenb=
+us_client.c
+index 27682cb5e58a..387f97a55559 100644
+--- a/drivers/xen/xenbus/xenbus_client.c
++++ b/drivers/xen/xenbus/xenbus_client.c
+@@ -749,7 +749,7 @@ int xenbus_unmap_ring_vfree(struct xenbus_device *dev=
+, void *vaddr)
+ EXPORT_SYMBOL_GPL(xenbus_unmap_ring_vfree);
+=20
+ #ifdef CONFIG_XEN_PV
+-static int map_ring_apply(pte_t *pte, unsigned long addr, void *data)
++static int map_ring_apply(hw_pte_t *pte, unsigned long addr, void *data)
+ {
+ 	struct map_ring_valloc *info =3D data;
+=20
+diff --git a/drivers/xen/xlate_mmu.c b/drivers/xen/xlate_mmu.c
+index 8efd7b55223f..d7244f9f9a54 100644
+--- a/drivers/xen/xlate_mmu.c
++++ b/drivers/xen/xlate_mmu.c
+@@ -93,7 +93,7 @@ static void setup_hparams(unsigned long gfn, void *data=
+)
+ 	info->fgfn++;
  }
 =20
+-static int remap_pte_fn(pte_t *ptep, unsigned long addr, void *data)
++static int remap_pte_fn(hw_pte_t *ptep, unsigned long addr, void *data)
+ {
+ 	struct remap_data *info =3D data;
+ 	struct page *page =3D info->pages[info->index++];
+@@ -269,7 +269,7 @@ struct remap_pfn {
+ 	unsigned long i;
+ };
+=20
+-static int remap_pfn_fn(pte_t *ptep, unsigned long addr, void *data)
++static int remap_pfn_fn(hw_pte_t *ptep, unsigned long addr, void *data)
+ {
+ 	struct remap_pfn *r =3D data;
+ 	struct page *page =3D r->pages[r->i];
 --=20
 2.53.0
 
