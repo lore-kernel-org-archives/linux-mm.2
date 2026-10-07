@@ -4,134 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4C40CA5FFF
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 10:21:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DCA8CA5FFF
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 10:30:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F4146B0095; Wed,  7 Oct 2026 06:21:15 -0400 (EDT)
+	id 4D7026B008C; Wed,  7 Oct 2026 06:30:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A4CC6B0096; Wed,  7 Oct 2026 06:21:15 -0400 (EDT)
+	id 486D06B0092; Wed,  7 Oct 2026 06:30:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 894C26B0098; Wed,  7 Oct 2026 06:21:15 -0400 (EDT)
+	id 375876B0093; Wed,  7 Oct 2026 06:30:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D04F6B0095
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:21:15 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D2F1BA5B29
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:21:14 +0000 (UTC)
-X-FDA: 85295437668.03.6D02798
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 08661140004
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:21:12 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 10A106B008C
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:30:44 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 72B464018C
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:30:43 +0000 (UTC)
+X-FDA: 85295461566.14.BFA6405
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 324A7140002
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:30:41 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eZzP/FiX";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b="Ecf2W1/p";
+	dmarc=pass (policy=reject) header.from=mailbox.org;
+	spf=pass (imf26.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.171 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791369041;
+	b=XkFwNTlAfOYkNSDrZ5M2qgVHBwqgX6wHYMLwjGiTGkfthAXBette87PbHwnDvbFXStJMEx
+	7kdZWUTAlY0n7xKqutEw779VVgwPu/Xh1J5qNdwtksSw3n2r/AaGl8dvLOHcxSGF8FfyHM
+	HGozPC6tZUPha+zNs2cYXQZ380S31Zw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b="Ecf2W1/p";
+	dmarc=pass (policy=reject) header.from=mailbox.org;
+	spf=pass (imf26.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.171 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791368473;
+	s=arc-20220608; t=1791369041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TrfCVMmocMCDoVFt/WhSovNj4qLHgB/L5kDcrdtONbI=;
-	b=6PNqADFlYEsciA70kwmzO9GLuVHXsYZYcmNXLSfv80WRYUzoiLELsnnNlwpFgWsCeC4Yxy
-	/6b6TskQSHTI5kp3STrXsV8sNUObsyQ0pKqaKkW+lbw86O53Wc+53pj/NcKbwygpGI/T0r
-	cwh6w2yBoYNCSM/aH88dMNOq1QPEaB8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eZzP/FiX";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791368473;
-	b=0bF3ZuRp+rduBJ6+DPMXdB5Vkbcw/7vzsRCgxgeQgb6awS9Lp+U7niB3C+tcjIg6A2Rwjs
-	yvIQ47RMCOmiAjk9LFADUJ626fy3Gu3H555VSCoSWzaDgKgFgD9AMgAQSXqHQZv5xkralQ
-	WZEuyZQ20Rl0yl/dPhcoIEdVgA8Zg8M=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 49A3141A79;
-	Wed,  7 Oct 2026 10:21:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50351F0089B;
-	Wed,  7 Oct 2026 10:21:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791368472;
-	bh=TrfCVMmocMCDoVFt/WhSovNj4qLHgB/L5kDcrdtONbI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eZzP/FiXpy188K8IQ2+WkQkpDUrAXFrBdIPhBTbbAGJwGwd9olZnyzdNkyUTgLWmh
-	 ek0iEnqgREe+LIp+akXe0NuCFYrp2PO47S5j9UmLAp0qYMnLrfuPOyMtkBpDhw2c0y
-	 6U2EFSncINVVbDn3uLs6Wq8ExtSAJuA8BuQj/FBMOBYEuTdiLv0/hzQdERWOhijuEA
-	 NA79RbKR7u4PMZDkzIEbx6GJtQ1zADuLJ91DivfZ1k3AxxFnqOqF/tsKWOi+Pwfq4R
-	 mViyYNN2eCzTZ7maQmFciak7nJrz9p/WVydmyz+WfAzIbqyCES6HusgG2gs1SMDODs
-	 +OFceyZ926JqQ==
-Message-ID: <042c2846-c70b-415e-a3a5-0e69485d5c0b@kernel.org>
-Date: Wed, 7 Oct 2026 12:21:08 +0200
+	bh=8Qacvnr9+rdohiy2Wh/N/8ObAl8Kh5+mo0TjMl6VdFo=;
+	b=rwEB9v1uq1rlJFab+0EsownWfvPReqAQOgAWDmk9OJPMLTIy0ZSQGjN3pR0FewlFPwgC9M
+	6Ivz8j11518AjRfbgt87d7GzuJFmp3ytzUceMripSY76a9aBvxtZImwZg8cW7juyTZK4to
+	FFEEzdqyj9tiTaxPPHyWyQfTui4ZPd0=
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4j08XY6fTxzMlLx;
+	Wed, 07 Oct 2026 12:30:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1791369037;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8Qacvnr9+rdohiy2Wh/N/8ObAl8Kh5+mo0TjMl6VdFo=;
+	b=Ecf2W1/p6gXYnZ0aToASIXX/nhBCP9Ld2OBgnaX1tN4jhbl/WtGAEU5FMgTycWed4Q6eO6
+	504I9Exym3TEjaUWXIMyReR9KXdpfuxYyX3uvq4Z9/kXnlQm4iNeOEBtIkxfyurnG8xM/s
+	K14uYyTUIxO8ngD03YLYr9NPW6EEpGaAn7WxVEvkMzCk8Q3jo3qC6ver1eUsXYSpvHzucI
+	hGj9wEaPopSHQtNzgLhr5k7XlW2Zu1yoAZsXMyQpuHCVK4GUllNJ6gdRZYmhOfcbL3ceb4
+	4kQxVdNQahyfLoj9zoCOFYl8ABl+4r69+aGgiBDBJudzJnNyyXyHnwUjHGr+gQ==
+Message-ID: <311d97da9ba4b870ef03aa412586b751bc7da3f5.camel@mailbox.org>
+Subject: Re: [PATCH 1/3] Docs/admin-guide/mm/damon: Fix various typos
+From: Manuel Ebner <manuelebnerli@mailbox.org>
+To: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>, SJ Park
+ <sj@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	 <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	ahuang12@lenovo.com
+Date: Wed, 07 Oct 2026 12:30:33 +0200
+In-Reply-To: <20261006061549.627-2-adrianhuang0701@gmail.com>
+References: <20261006061549.627-1-adrianhuang0701@gmail.com>
+	 <20261006061549.627-2-adrianhuang0701@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/khugepaged: flush deferred unmaps before dropping a
- failed folio
-To: Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- outbounddisclosures@openai.com, stable@vger.kernel.org
-References: <20261007041001.43181-1-kylebot@openai.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261007041001.43181-1-kylebot@openai.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 08661140004
+X-MBO-RS-ID: 0e0d33099551aaf3e49
+X-MBO-RS-META: xas4d1k19jcabmc9ci34dwoejeb97b31
+X-Stat-Signature: ueeocdekoc8tkunf7w1r1bqyd44wcu1p
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 4pbysono6oqg38c77yookmjnrn9tsxod
-X-HE-Tag: 1791368472-720561
-X-HE-Meta: U2FsdGVkX18n0eUPcfGKybIgbfBKixCPIFaJ1D6QOGuUSxSnud17PcjIXU32nhvXolSz+6QYxcII/XPLDI2NFIJIoS9B1HmRdtwixEl5peCcSHQ+KtkCPdyncfnXr0lZglPTk9uFfjC2vEe/BXiASbcoVtQ4ZgGLCd4odHPh3upGoaeO1HFQusaVJugo6puUW+V6xbNNUq1RXaYRI2JG5eWXvyvya0J2ukVORfog4ntTwfHpjCuWVb4wa5vSiwpVIhuRlGqYjyvthy4jVB2Ss6XqpASlcvVuF4bn40BDHPcXmkpixvE6+PckpUDhlUzk+EPPgmAxeU4kMydNWK3EFs30rCc2Ff7wDYC0XSwZPP4YEAX3PuYWw/vm/qOk5qiNiaMsAEi+QylyZdXdgPuKw3ODGXSEkVsNQKtz9eaRksi/iMiCB0He6dd87qXb2OwoX0XHz/YJbA3v1TV1Vi8c5Zdhbi/xIZFuL9pzQf54wWzYVv5jYFyCQX0CeoUtQMrZk9o3EJU0/mYRodRvl3aQeLqPFyABB+Cl5wJk0CNbqIsfC1SCcBeH7qhahEyHePwmSE6ZAWHF8FzJxfLCYvNwBYK3qrYKPovWm1pn1ycJnMA72SNDlWiUJypuGVVluqgGACrjEebweErhEYhTqAgCohTm59pGqQnGr4VfnmTEj1NWcvDqpJpRM6zZ2Sgljhi2K9sFaPEM3I/oZVrROrFgrn9Eub7bO3COX7YDSb2giNVMKwLidVBJkoPAtMeFJxvcIaGD05jM33JIJQ0bC6K02DfGjXh5SeLyA1wCqsAclOGZ+WKcsYlGYACWjSEYbXcclzsHRtccYXfaPyyPLuQZw0GRxUk4kKzyqXS5Gszl3wTI6fQ/KPDmz2GGFsOkWJm+MgKotwloj9A7l015UqJ47nyypPWwkMROe1lfumJqcRUp9dCdl/XxH2XZPY4pKHAn1ZfwO3uEdIl9g5Z5xTr
- 5gxhrCM6
- 8LSzquhB3448pYBJYmmVLKu4s9ZJdHKt1euoD23R7ubYP1QZI+inWk7LWoH7xHghGda1rHyTTVZvpR2rA4ioFWUyBsyui56/Usp3tsTx2280nOxKTWzDGDrukHlvQRlJNGz9f8dYHX0qroURMLWYQF2PiFxX7WlAME6CgDXi2xiunDaXJ+e41LeDMTA4564ZnoCRM/bA88zkoouuOK8qpckoKTugUeY4Ajs2ROWq6o7Gbk73upeTV7JG7PGstofKWbm4O2CXPdMiMEFgfhSSyoIN8iPCXDSPNQTyOeKH6ydQllAM=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 324A7140002
+X-HE-Tag: 1791369041-224580
+X-HE-Meta: U2FsdGVkX18lDVTSus54u2rHPGLzOS9Jz2yhUjSwSGbCII1iwu/NisA1NEtq5po3eVkE8D6gwxxz2P9HNVOL3fAN99mW0iJ9ZlufUygQiB1cmZEKS2h/KxNzewXGYAJtBH0s3RUkUEwMs3syHspMnHZhb0JQZFUWSLaSTxwGTnbiw28I7IyHg/1jm5+FuAgZzHBWZvBpoUkgjN1DiWF5NqJz/Vyg73eJiQOmhM2/Hr3C0v61B5TmFVyTx3p5eNJHfUnJyTN9rsxNWD/bpkGuzTxAyAoF9t+T2N2+X2+FGLZ4mNmByrBXavy0darDsc7GyI2lGr20KIPiz60OT8QlOFeoM+rBhHfxBlOb1D3Q97WaGvWM4AH3EVwSegWed8C6CSAYcngO4pI7jrGyiQFD4KT4VBQ7bqAsLl0nzQTvhCQNEG8hYsWaJGPwv0Gb3EVtjPMQEdLDOY86TbufutpIhaoP/75rhf9gm4RXF5bC6ZSdseTB6LMiScWOHjeUQUJDTpq6mFxV4JvW5dORJP96hv3cqe92ECFjXeoE3r5wNXBZn/sca3Y8toca7vmfo+z7bpzJlkSlfIkEZ91QcvSt+6aDD0fx3fwtUNN2r4BC9+AChfSaBL33US8cSz5hQmsmlBFuur2pZEVBSolQN+d6qTocYxfTdSI8Iw5vHg2SIpThPYVRxUKNw9spy6PQCEIji/Bs+nibacRup5veHh+zDjjx00oOLn/gaBYMv02LNX2r7bayJUssRTmQeAg5Iu5noSL5PMrsSNka8p+qif4xWeGMrhiJpJGoDXW04hW7M7Ro6am7qrMZBE5CnjWykBG7p71my2h0i5eQmxUQ8JLefrhRLwE6ZO12JPRMA28tOIHvVzhmxwkomgu2HXhJ75FKBS9n+xvgTA4pNUH/5fqyzgXSU90G97VgTfrB5ENQ+6AftzQGTrL4yWwFtW6LGP+5Zso4LkZV3JiNe0HLjmb
+ I0k4QorY
+ g1akodkmjkgP7LvLVMLB64NYo/iHZzsMfEzzkB4bza5fx7ZO3PLhN7ABS7UlXWlSYwvSfcmFUqUx79ZkYDOAZmrYvcs1hh8aEu3yhyBRKs0pbg8XvbjnxfFlBk/iouzNVTQn7zYdhkSwZO/MtahY9pGMKQ+Tlg20DgMwijq7pKsCl7fkuT+oJiZgju2tzLkD5mCNAFqA4f26V816ofzB9gi0j5MbVo83HfqRDUr99PAqU6uSJLFalOeM7z9xJZgQ8ti1ZC4iBqPxcOP+pgfJDqdU+2+EIiZDe77JAM0hnQDLZLD8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,35 +101,237 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/7/26 06:10, Kyle Zeng wrote:
-> collapse_file() can fail its reference-count or dirty-folio check after
-> unmapping with TTU_BATCH_FLUSH.  Both paths put back the isolated folio,
-> then unlock it and drop the lookup reference before reaching the common
-> try_to_unmap_flush().
-> 
-> The page-cache reference does not keep the folio stable once the lock is
-> released.  Another collapse can replace and free it.  With its PTEs
-> already gone, that collapse cannot flush the first task's per-task TLB
-> batch, and retract_page_tables() skips short or unaligned VMAs.  A CPU
-> can therefore retain a user translation to the freed folio.  This has
-> been reproduced with unprivileged MADV_COLLAPSE on a memfd.
-> 
-> Flush at out_unlock while the lookup reference and folio lock are still
-> held.  The common flush continues to cover the accumulated pagelist on
-> both success and rollback, preserving batching on successful collapses.
-> 
-> Fixes: 6d9df8a5889c ("mm/thp: collapse_file() do try_to_unmap(TTU_BATCH_FLUSH)")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Hi Adrian,
+
+I have read your patch and the affected files. I have found
+a lot of issues, non in your patch.
+
+This got kinda big, so if you don't want add it to your series
+let me know, then I'll make a patch on top of yours.
+
+Thanks
+ Manuel=20
+
+On Tue, 2026-10-06 at 14:15 +0800, Adrian Huang (Lenovo) wrote:
+> Fix several spelling mistakes found while reading the DAMON
+> documentation:
+> =C2=A0 * trusworthy -> trustworthy
+> =C2=A0 * DAMON_RCLAIM -> DAMON_RECLAIM
+
+There's one more in in a comment in mm/damon/reclaim.c .
+
+> =C2=A0 * charget -> charge
+> =C2=A0 * hetmap -> heatmap
+> =C2=A0 * colun -> column
+> =C2=A0 * evelenth -> eleventh
+> =C2=A0 * idlee -> idle
+>=20
+> Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
 > ---
+> =C2=A0Documentation/admin-guide/mm/damon/lru_sort.rst | 2 +-
 
-LGTM
+ DAMON-based LRU-lists Sorting (DAMON_LRU_SORT) is a static kernel module t=
+hat
+-aimed to be used for proactive and lightweight data access pattern based
++aims to be ...
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+-situations including reclamation target pages selection under sudden memor=
+y
 
--- 
-Cheers,
++situations including reclamation of target pages selection under sudden me=
+mory
+ pressure.
 
-David
+-DAMON_LRU_SORT finds hot pages (pages of memory regions that showing acces=
+s
++DAMON_LRU_SORT finds hot pages (pages of memory regions that show access
+ rates that higher than a user-specified threshold) and cold pages (pages o=
+f
+ memory regions that showing no access for a time that longer than a
+
+-You can enable DAMON_LRU_SORT by setting the value of this parameter as ``=
+Y``.
+-Setting it as ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT cou=
+ld do
++You can enable DAMON_LRU_SORT by setting the value of this parameter to ``=
+Y``.
++Setting it to ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT cou=
+ld do
+
+-condition.  Refer to below descriptions for the watermarks parameter for t=
+his.
++condition.  Refer to below descriptions of the watermarks parameter for th=
+is.
+
+set as -> set to, a couple more times
+
+there is '(de)prioritization', '[de]prioritizations' and '[in]active' -> un=
+ify
+
+-interval 5 milliseconds in minimum, and 10 seconds in maximum.
++interval to 5 milliseconds in minimum, and to 10 seconds in maximum.
+
+-monitoring.  This can be used to set upper-bound of the monitoring overhea=
+d.
++monitoring.  This can be used to set the upper-bound of the monitoring ove=
+rhead.
+
+nr_lru_sort_tried_hot_regions
+-----------------------------
+
+-Number of hot memory regions that tried to be LRU-sorted.
++Number of hot memory regions that try to be LRU-sorted.
+
+bytes_lru_sort_tried_hot_regions
+--------------------------------
+
+-Total bytes of hot memory regions that tried to be LRU-sorted.
++Total bytes of hot memory regions that try to be LRU-sorted.
+
+nr_lru_sorted_hot_regions
+-------------------------
+
+-Number of hot memory regions that successfully be LRU-sorted.
++Number of hot memory regions that are successfull LRU-sorted.
+
+-Total bytes of hot memory regions that successfully be LRU-sorted.
++Total bytes of hot memory regions that are successfully LRU-sorted.
+
+
+> =C2=A0Documentation/admin-guide/mm/damon/reclaim.rst=C2=A0 | 4 ++--
+
+aimed -> aims x2
+
+-DAMON_RECLAIM finds memory regions that didn=E2=80=99t accessed for specif=
+ic
++DAMON_RECLAIM finds memory regions that weren't accessed for a specific
+
+-out memory regions that didn't accessed longer time first.  System
++out memory regions that weren't accessed longer time first.  System
+
+-automatically activated and deactivated with three memory pressure waterma=
+rks.
++automatically be activated and deactivated with three memory pressure wate=
+rmarks.
+
+
+Thanks again
+ Manuel=20
+
+> =C2=A0Documentation/admin-guide/mm/damon/start.rst=C2=A0=C2=A0=C2=A0 | 6 =
++++---
+> =C2=A0Documentation/admin-guide/mm/damon/stat.rst=C2=A0=C2=A0=C2=A0=C2=A0=
+ | 2 +-
+> =C2=A04 files changed, 7 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentat=
+ion/admin-guide/mm/damon/lru_sort.rst
+> index b93ca9b0853d..c3b688385681 100644
+> --- a/Documentation/admin-guide/mm/damon/lru_sort.rst
+> +++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+> @@ -7,7 +7,7 @@ DAMON-based LRU-lists Sorting
+> =C2=A0DAMON-based LRU-lists Sorting (DAMON_LRU_SORT) is a static kernel m=
+odule that
+> =C2=A0aimed to be used for proactive and lightweight data access pattern =
+based
+> =C2=A0(de)prioritization of pages on their LRU-lists for making LRU-lists=
+ a more
+> -trusworthy data access pattern source.
+> +trustworthy data access pattern source.
+> =C2=A0
+> =C2=A0Where Proactive LRU-lists Sorting is Required?
+> =C2=A0=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentati=
+on/admin-guide/mm/damon/reclaim.rst
+> index ec7e3e32b4ac..e4e2ffa52e26 100644
+> --- a/Documentation/admin-guide/mm/damon/reclaim.rst
+> +++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+> @@ -55,7 +55,7 @@ enabled
+> =C2=A0
+> =C2=A0Enable or disable DAMON_RECLAIM.
+> =C2=A0
+> -You can enable DAMON_RCLAIM by setting the value of this parameter as ``=
+Y``.
+> +You can enable DAMON_RECLAIM by setting the value of this parameter as `=
+`Y``.
+> =C2=A0Setting it as ``N`` disables DAMON_RECLAIM.=C2=A0 Note that DAMON_R=
+ECLAIM could do
+> =C2=A0no real monitoring and reclamation due to the watermarks-based acti=
+vation
+> =C2=A0condition.=C2=A0 Refer to below descriptions for the watermarks par=
+ameter for this.
+> @@ -125,7 +125,7 @@ quota_reset_interval_ms
+> =C2=A0
+> =C2=A0The time/size quota charge reset interval in milliseconds.
+> =C2=A0
+> -The charget reset interval for the quota of time (quota_ms) and size
+> +The charge reset interval for the quota of time (quota_ms) and size
+> =C2=A0(quota_sz).=C2=A0 That is, DAMON_RECLAIM does not try reclamation f=
+or more than
+> =C2=A0quota_ms milliseconds or quota_sz bytes within quota_reset_interval=
+_ms
+> =C2=A0milliseconds.
+> diff --git a/Documentation/admin-guide/mm/damon/start.rst b/Documentation=
+/admin-guide/mm/damon/start.rst
+> index ec8c34b2d32f..d98b0eb8e771 100644
+> --- a/Documentation/admin-guide/mm/damon/start.rst
+> +++ b/Documentation/admin-guide/mm/damon/start.rst
+> @@ -69,16 +69,16 @@ monitored access pattern of the process from DAMON an=
+d shows the pattern in a
+> =C2=A0human readable format.
+> =C2=A0
+> =C2=A0The first line of the output shows the relative access temperature =
+(hotness) of
+> -the regions in a single row hetmap format.=C2=A0 Each column on the heat=
+map
+> +the regions in a single row heatmap format.=C2=A0 Each column on the hea=
+tmap
+> =C2=A0represents regions of same size on the monitored virtual address sp=
+ace.=C2=A0 The
+> -position of the colun on the row and the number on the column represents=
+ the
+> +position of the column on the row and the number on the column represent=
+s the
+> =C2=A0relative location and access temperature of the region.=C2=A0 ``[..=
+.]`` means
+> =C2=A0unmapped huge regions on the virtual address spaces.=C2=A0 The seco=
+nd line shows
+> =C2=A0additional information for better understanding the heatmap.
+> =C2=A0
+> =C2=A0Each line of the output from the third line shows which virtual add=
+ress range
+> =C2=A0(``addr XX size XX``) of the process is how frequently (``access XX=
+ %``)
+> -accessed for how long time (``age XX``).=C2=A0 For example, the evelenth=
+ region of
+> +accessed for how long time (``age XX``).=C2=A0 For example, the eleventh=
+ region of
+> =C2=A0~9.5 MiB size is being most frequently accessed for last 3.7 second=
+s.=C2=A0 Finally,
+> =C2=A0the fourth command stops DAMON.
+> =C2=A0
+> diff --git a/Documentation/admin-guide/mm/damon/stat.rst b/Documentation/=
+admin-guide/mm/damon/stat.rst
+> index 46c5dd96aa2e..4a9db755a526 100644
+> --- a/Documentation/admin-guide/mm/damon/stat.rst
+> +++ b/Documentation/admin-guide/mm/damon/stat.rst
+> @@ -81,7 +81,7 @@ Per-byte idle time (milliseconds) percentiles of the sy=
+stem.
+> =C2=A0DAMON_STAT calculates how long each byte of the memory was not acce=
+ssed until
+> =C2=A0now (idle time), based on the current DAMON results snapshot.=C2=A0=
+ For regions
+> =C2=A0having access frequency (nr_accesses) larger than zero, how long th=
+e current
+> -access frequency level was kept multiplied by ``-1`` becomes the idlee t=
+ime of
+> +access frequency level was kept multiplied by ``-1`` becomes the idle ti=
+me of
+> =C2=A0every byte of the region.=C2=A0 If a region has zero access frequen=
+cy (nr_accesses),
+> =C2=A0how long the region was keeping the zero access frequency (age) bec=
+omes the
+> =C2=A0idle time of every byte of the region.=C2=A0 Then, DAMON_STAT expos=
+es the
 
