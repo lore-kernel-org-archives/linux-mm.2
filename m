@@ -4,86 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DF4FCA5FF1
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 06:55:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8D8FCA5FF1
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 07:09:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 519AC6B008C; Wed,  7 Oct 2026 02:55:47 -0400 (EDT)
+	id B9BB66B0088; Wed,  7 Oct 2026 03:09:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CA966B0095; Wed,  7 Oct 2026 02:55:47 -0400 (EDT)
+	id B4CC56B008C; Wed,  7 Oct 2026 03:09:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E0266B0096; Wed,  7 Oct 2026 02:55:47 -0400 (EDT)
+	id A3C596B0092; Wed,  7 Oct 2026 03:09:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 192906B008C
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 02:55:47 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9DDA780409
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:55:44 +0000 (UTC)
-X-FDA: 85294919808.24.E16C4A0
-Received: from mta0.migadu.com (out-61.mta0.migadu.com [91.218.175.61])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7F1C0140006
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:55:42 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=upkzkViQ;
-	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.61 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791356142;
-	b=zcUnFvv7Xx93jHPB0WBHWg0aQzDlyOSokx5+NuBoehIzwx6falzMZJkXCWmLEWjKaj0ERx
-	Lp/I+BLvX8j+pvITpPTRr6Qq3Z12+o7gWBtDwbKBFqiH7xYLqqsvnbF5tOns2oQ8yHdFDF
-	dixOdnBCYZLqmZ8ZMgiYw3jxThmdbQc=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=upkzkViQ;
-	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.61 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BD486B0088
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 03:09:29 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 634BAC03E2
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 07:09:28 +0000 (UTC)
+X-FDA: 85294954416.25.2B81415
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A58F5C0009
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 07:09:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sXIRdkp1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of okerixx@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=okerixx@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791356142;
+	s=arc-20220608; t=1791356966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qiiOx/JuFyugym69lApK4/HuiVutmdA0om2H1/BVpTA=;
-	b=IYrrbtb5mTiz6cD2P8b18uXqObuEgxvcTjEQ0lewdUd0qWyuWBe5l09Cdf8GNZiOBiwDeu
-	MbQFXd/MGXppiLOaN8IJ2Jt2qQYDrL9TSzKf8zLzdYNdTLyKhv1IM2BOnirDeadTafQ25h
-	9GTG9G0N8yPPmc3KxNaafrO+geDZO7U=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ToKfNOVp2qvFnEYXZ6nvsN9uzB66hA/JPYJkqLxPvZs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791356141; v=1; x=1791960941;
- b=upkzkViQXmYtdYcYGawtBOd4kYUxuHTmfdVWzlY6Hhc5SRa6cNKz5EXfDTsPm3M/W8KAGp1S
- BeIQQxkyvUGteVedy7lSehNqth2W/lHZX2aHkvH+Cwdh8FDOtMNsvEvPp9FiSTGJPnT9x8Ci8B3
- Jj2gkLg/tBxJ1C5jJi3juC5w=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id af8f4c7b60dce85b;
-	Wed, 07 Oct 2026 05:10:41 +0000
-X-Mizu-Trace-ID: af8f4c7b60dce85b
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Muchun Song <muchun.song@linux.dev>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v2] mm/hugetlb: use kvmalloc_objs for hugetlb_fault_mutex_table
-Date: Wed, 7 Oct 2026 07:10:08 +0200
-Message-Id: <5714BF9B-9FE3-41DC-A215-EEAAEBD7F9D3@linux.dev>
-References: <20261006160128.31447-1-dheerajkumar.srivastava@amd.com>
-Cc: osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org,
- davidlohr@hp.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Vasant.Hegde@amd.com, bharata@amd.com, dheerajkumar.srivastava@amd.com
-In-Reply-To: <20261006160128.31447-1-dheerajkumar.srivastava@amd.com>
-To: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
-X-Mailer: iPhone Mail (24A446)
-X-Stat-Signature: p1nfr88pdaada5fkf88x4ao8gqxkakae
-X-Rspamd-Queue-Id: 7F1C0140006
+	bh=5eSRBzmU2MRMq0BGowMkKhA8W3CkRs/G1NFefVR0TUQ=;
+	b=644QC868laPojv5mUvhDeRB8cOQTSdEsGZlnf1p/RtmQQ9ZhMW3qwzDEQmY1KcOZz389BE
+	MLxwiMGf7eu729xwLVdHd214jWbl/CIuWQ/mdLJBd5/9Lmn+4KY8fRoy0AurPQQw+TWdE6
+	rAzYQogoCBxkpB5C4GBRKlKcx6xA+yA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sXIRdkp1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of okerixx@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=okerixx@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791356966;
+	b=m05HpBvgmyvxsqj0cJQt+loI04x9jRiVVEnB2ppJh+Dx+2/XFithii5LPwCscrWjAJv0ph
+	tAPYqPQZEPIx4y9Ld7FC4ALcvz90cHfW8Xp99iEe7Ks3FMlzcc+Ixo8E7H0E98uaybAPGf
+	BEkKKBbRbSpHT6C0Ao4hLqGWW7CQJ7Q=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a0286c981dso33328155e9.2
+        for <linux-mm@kvack.org>; Wed, 07 Oct 2026 00:09:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791356965; x=1791961765; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5eSRBzmU2MRMq0BGowMkKhA8W3CkRs/G1NFefVR0TUQ=;
+        b=sXIRdkp1U2H5pEmAzvK7Y8Tl2dBB+jTfe3LyDcdQcpRe+rZbg/6odxSCCJBJzThKf7
+         N7IPC3Y+HjKXzIu28WQdlqNgjaLYNV9MnpoOYY3ZObMuLDnpJSSX780KpLHq/85oLxGk
+         heeSCF4nrHq1y6r7hxIz88qJiSMshWUGhSpxGh9nMX7JQPbgJik283FYX+zPdlN53L6v
+         Sd8K1taS59sQnA6IkM9Wr5r0qpchmTMAWeWkiISKescCII1GiV2nUgmcYcQMPSRl4Ewj
+         ONYKpUIodKhjwco5oMFchkjxPpf7xYWpDmpzXnrBZQXwLLhIvXNF5z0MLtyQsVyxRJmu
+         iwYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791356965; x=1791961765;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5eSRBzmU2MRMq0BGowMkKhA8W3CkRs/G1NFefVR0TUQ=;
+        b=sN1z5tB7Um/Oi6x4TT1+nE1ATuv+eZDlTLgebrZ7ffSl8GMsEAu5SmbJk3InrSJPc6
+         ZF2zJtk2rVpKdPovxbq5tQg0j9fCyi8a+Qu2kJN0cAWe6N5Iu0AvTN6Erq8DNbjVJqgh
+         LZF/WQzv0IhUFtOjxek++6aVBw1JLKI6IdC1DNfCd4FmSy7IKZZV/v0NhT6SmhS00G6u
+         yWbY8D0OUI+1HEdf+1sI5J+sNKIklTjrLfumiqlcRDN0/kKk02YIokOzhUd24kyLHcU/
+         D59A8xD8YQLMZY14RAKWBHjY3xEHf/eC8rChBXRIjd+jF9+j7c1ff+H/Gu3Lwn2c0//u
+         tNgQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxKapfsL3PPGPFGTIlhH/or4HHjlSeRx6Q8ZL1igEgolPoRMB7XTkOsTEORhs7SbLupZ8EbV3r3Yg==@kvack.org
+X-Gm-Message-State: AFuF++kmBFaPOPN5ggfJQyNSxWlCTq214onOTdoLvSOy9TPiC5eJUiNe
+	mvIOT92cckAG6XnP2PfPTnqFaGTKGix5v0Yjq3VrwlY5og0NAcuD0XmaZnh5uQ==
+X-Gm-Gg: AYBFou05sbb0UFWe+vvhY3aeq1aEbhldh5BFJVzPxcZIGIImFVniL8ChamDz3f3VXgb
+	TptQROIRUcIYAvhm/FW/ZwYJcjrndTUtqoUgdHsojPHp50Aa0qk+u4TCxjgTkYiI0k0t/eT3VID
+	mNTLN8WOQJCoP6g0Oy73XKIrbbEMabKdoE1VFmYlFINQmTfEzCDW44ZqC6N1fw/s6RIq8Z5H80S
+	qUHV8ZyexMEaz+ShPBBGyZ+h4iNVoaD1edFD6DfJwomtyhFXtm41U69twwOLz6RasNxshZrh7nt
+	u/8n13qjAVTbjWXU0Ssfm5fcpn2N2T8veqXNmYGwR6NwXJoI1pCI417Xtix4K65R9EujZ0HKw4f
+	nJ7bMKoriOCXZqGBlcvtqp9XamFUADcxqkp5tlAm/kpvTroHe4w/dtlKkOjA6K/k+6ALvogPO+W
+	qC4LxR6K9fqaMkXQW9ZmFK5Y4dCssok78LHE87bEGS9Kbcms9gsH6ZNZ7EpLxRCEDuXSAldLok+
+	YzMfeV4Dg==
+X-Received: by 2002:a05:600c:5254:b0:49f:c1a1:5222 with SMTP id 5b1f17b1804b1-4a180679d9dmr15726175e9.33.1791356963527;
+        Wed, 07 Oct 2026 00:09:23 -0700 (PDT)
+Received: from localhost.localdomain ([94.252.75.178])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4a178c5d8dfsm135912145e9.14.2026.10.07.00.09.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2026 00:09:22 -0700 (PDT)
+From: Oleg Keri <okerixx@gmail.com>
+To: Lorenzo Stoakes <ljs@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Oleg Keri <okerixx@gmail.com>
+Subject: [PATCH] mm/vma: clear vm_file before unmap on mmap hook failure
+Date: Wed,  7 Oct 2026 09:09:13 +0200
+Message-ID: <20261007070913.3923-1-okerixx@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-3-a1f052500fd7@kernel.org>
+References: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-3-a1f052500fd7@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: c876jgqdj694qqo3c9yew9kmkt4tc1hd
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791356142-941043
-X-HE-Meta: U2FsdGVkX18z2ffPNlPakNNxlL+WQj5mYzYMcLOm+FwhyWCrqu5zHQDWpD6v9xnHnAmkrG05flR1NkYkYMiC/IPefa7LOnl+lf+YHNAsgRWuMdPIWaqV3edm+kpISqDGHX/V1qPWfDLbhKv5iNZTvNLj9go0hWOYpO3tdOhvqQbCvPmkdc4/PBdr0dxEWad4yoV1WaEhpiuHp1bElSMrMb04WjgPiE2QF6iEM58AYzgVf0G8oZY6ahfw8+BCylAQy6ph/CW0LfDQ6eDXG0WVR2Ev17sFmEPUmADDnrFYnziPySfwYMtKw3j06ESAuThkmk+fXrHvpKSNepRovx/YZEAVK8ZmIB+UXZGnxvsHEpEmEY1ZSSLDAN4pHhFOWZJKjANDZ9FntQGynUQT3FOPdaAol1rASKYOY/H4PVUs/B4SRSOmpLhc2o1Eb2mo33lt9egLsYTiQlpV1PeEyQmU9G6LCn2Fou2aDjPDBlWjU1cA/ZBAq1jTgdS4TKQ198RqWtZtMX2JPopuOn7Vw/INlJufYnQayPG/iCo2/EGr9rXEg1ELRqrYJJjw8f1PLZnf7EPzMz26OaxJXMnu7KtKRvbZ4dYFF+Yz50XXmaviSLPBfY5LJrYH+eDtCZMijwC7l2epmsL0wnfa5vdsRfLSSCX81/8ih6lzjFf39FatVoc3leJ0ryDa/EAx6P2t1Dzyp5J2OPeWvpf9X4G3cgMN0weui0WynoLnVJFpJPjxmFDX4IKXsMnuBZjI+sDJhFz+vaeNII7K567w3tDyiuumwDNpeTAeUTSEQQ0ErfV1jDZfsqGhjBNhbl1g8FwasUzI5YJ4IK8Pob+A967FIkJSVtSFT5TA3wDF7lX6X18XxWV4yx0+fU6/NcLtnPjZG2HlX7MGphWzPhp9I0F+DS53r3bNOFMcLZ6A0PyAg4KIi68ZT8zIKNgX8PcTHC9XFHHPLkqiJQDzgzrQRsIp268
- BYgU/5TJ
- SVzgLcfaar7QbSKsu2UAMNukvAWtST59Oa2eO4AFk/IwafnZiPW+eJyHItyY5C+A4+PA52xauMFDE7noqoVuwq2TNBD7ymN7gT0HOCAVyUrZG8jrERQVBhsWel6lIDhQSVO+bbbp4lBertcb/KnQemXz0HAeDde5wQJ3qcuEbpLsLIIdPW9gxND09u4agFcydOfKZQ0ePkHYoIgNXrw0ppas2tVoG4ClwHhMWc1E1qdiNfN1pB6uHmSjENPAh3WFzf8fYnzkj529Bn9nBK107d/ypBKcRO6z3p9d7OwhQ6rN/nhS6c5uLFrDY6vDwEdTRHjD7Oje6mD2D/qLBNahMY/9ZY5Bp6kDny9cc2xn+C7FwjluH86QZVX1KZWdoFR3hOTF5rayKJDWdl6RpB0juSYtRKnd642TwAFtoomp+xdvxB5ctxfwliUu90rAHWWpiuGawJxX9ROkoYbnbyT4m2RJ4HA==
+X-Rspamd-Queue-Id: A58F5C0009
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791356966-553124
+X-HE-Meta: U2FsdGVkX19V4BnMReBq7SXKb/k2ZkSU2jpd2M1s/wDM04+/j5Z2MGse465NnurmeVGhC9kzfmE5AqLCM61EKNxfiw7NqZaOJSYXUWQKtnJR5hxoVX6SxL7jtezE2MAXL6raxD+Ibf4DgwGSwijgEJ4ruVstrVP8RLXNM+YbIMVUJizEHOxfud935v/ftUqnhDAtjnbkaBnjFcckPgcY9aeqGf+4xW+W5PynosZ2pRIwpIww6HbXXtciN/o5Bw2Z1Ni8Hr0k8XMU6bhiwbSdIvJkp5ohmnMjgM2CeWhj6ITrKQFylxFvcf2xVNCDYMmbROmqrKXNwyEkVOB1CaQqh6X0VJsNuoPHRLXUbvrpDFYLWgcRRMyfZMpezJKczR5eDpEdhdGle1nifWWT+biAK+/xcsTM3Tm/x3nUV4Fv5GvyyBfQN/eYBdQVfEBeMIo/p+u2opFP1nPTiVeODPZsDerjPTB6jYM9hZMM+1pxnNKIcE3pB6sThqvez4LzVtqDvRkjJRzKhVbY+rQ7aScwnvqohkR3zbHE2qEjsMwale5phfs5LUbOW8BocKAspGUsFGLV4F6dAJl5kuk2V3NqPgrioVdNushq1yafDgytKfrv8eUwsPbrgrt16PiVyAKtaxKijh+ybD6Ok4NG7zydjpDh1pY3Au0rABVQhrPhQmC4cuwWQJ7vByTpPgY95E0Cq1TjvnaBSWokrNMRlXstWGBscqYecxwqxgoXqYZ+RnwVQrwsH/4SV9gimpbj/OvKTezLuO2IkPiMoktJ92/89UrHI3BFXaNPUKYPFlwnAMDOZtypgeLslXavaVoBrP01bQCzyukUw89ZhaIxyESRmMXNaik9HmJiWsEI/niZGQWucAfdl+LgrppPhuOUSn4H0Pg8TX30f0OY3Nfe3tMO+jMrAnEj5fozXwUsexPNg936TtoM7M/OHGXMCy8cKW0vSGd1f6+k7L1sW9BcWEc
+ EHOyUDZD
+ JjaI52sYRnWzwkBgBbsRdAl6IlIUAu3D0GyzI31ZakztxmwYZMgZvuJ616qC0Ihe0OxEUKc/dR1c09G5cl/buZCbn4v0oVQojuVfy108df4fhrn6rjmlpQX39Ed6ViUHf6KwRS9H6TtsNX6eZYod12y2yT1Y/bx8IBu+yFYU3VpKADGvna2VW8kd3gopLQ80kFIFM0ROytiNgXUffSjNRppasxuMIxeotW3vRkhp5eHdDASgvlrlEH7gFAd6QAHtaJThSENnDPWANA3KCL4bL3n0h10xISKRu+ioeyGFBzHpyIrkd+liwKGf+wrfgj/qws0oqxoZB/oblOL7+ykpacMDS/bXibkYJkHti7ZfgQ5XmnT6DNze0DfQ9OoV6OnzzcG5a3kZTrFNM+gxiQaISqUFG9SKU6DT6GfP9hU9qEko08m0R5xhyMkTxIO76D7lvfMVHisiEG1HiKM4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,33 +124,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Since commit 2ceb21171dd9 ("mm: consistently validate VMA state after
+mmap[_prepare] hooks"), the mmap error path clears vma->vm_file only
+after unmap_region(), so free_pgtables() unlinks the never-linked VMA
+and drops i_mmap_writable. Once it goes negative, every later shared
+writable mmap of that file fails with -EPERM until reboot.
 
+Clear vm_file before unmap_region(), so that free_pgtables() does not
+unlink a VMA that was never linked to the file.
 
-> On Oct 6, 2026, at 18:02, Dheeraj Kumar Srivastava <dheerajkumar.srivastav=
-a@amd.com> wrote:
->=20
-> =EF=BB=BFOn systems/VMs with a large number of CPUs (e.g. 4096), hugetlb_i=
-nit()
-> computes num_fault_mutexes =3D roundup_pow_of_two(8 * num_possible_cpus())=
+Fixes: 2ceb21171dd9 ("mm: consistently validate VMA state after mmap[_prepare] hooks")
+Signed-off-by: Oleg Keri <okerixx@gmail.com>
+---
+Seen on next-20261006: one refused PCM mmap probe from alsa-lib left the
+device unmappable, so PipeWire could not play anything.
 
-> =3D 32768.  The subsequent kmalloc for the mutex table can exceed
-> MAX_PAGE_ORDER when struct mutex is enlarged by debug options like
-> CONFIG_DEBUG_MUTEXES and CONFIG_DEBUG_LOCK_ALLOC, resulting in:
->=20
->  WARNING: at __alloc_frozen_pages_noprof (order > MAX_PAGE_ORDER)
->  kernel BUG at mm/hugetlb.c (BUG_ON(!hugetlb_fault_mutex_table))
->  Kernel panic - not syncing: Fatal exception
->=20
-> Switch to kvmalloc_objs() so the allocation falls back to vmalloc when
-> the contiguous physical allocation is too large.  The table is only
-> accessed by index, so virtual contiguity is sufficient.
->=20
-> Fixes: 8382d914ebf7 ("mm, hugetlb: improve page-fault scalability")
-> Signed-off-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+ mm/vma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks for your fix.
+diff --git a/mm/vma.c b/mm/vma.c
+index dfa45c64222c..8d62da16e076 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2619,6 +2619,7 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+ 		UNMAP_STATE(unmap, vmi, vma, vma->vm_start, vma->vm_end,
+ 			    map->prev, map->next);
+ 
++		vma->vm_file = NULL;
+ 		vma_iter_set(vmi, vma->vm_end);
+ 		/* Undo any partial mapping done by a device driver. */
+ 		unmap_region(&unmap);
+@@ -2627,7 +2628,6 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+ 
+ 		if (map_same_file(map))
+ 			fput(map->vm_file);
+-		vma->vm_file = NULL;
+ 		return error;
+ 	}
+ 
+-- 
+2.55.0
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks=20=
 
