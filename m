@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BFFECA5FED
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 02:14:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2D34CA5FFF
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 02:14:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C5AA6B008C; Tue,  6 Oct 2026 22:14:18 -0400 (EDT)
+	id 6ABE46B0088; Tue,  6 Oct 2026 22:14:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A5796B0093; Tue,  6 Oct 2026 22:14:18 -0400 (EDT)
+	id 683236B0092; Tue,  6 Oct 2026 22:14:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D9676B0092; Tue,  6 Oct 2026 22:14:18 -0400 (EDT)
+	id 598686B0093; Tue,  6 Oct 2026 22:14:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 06A2A6B0088
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 22:14:17 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 609701C3071
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 02:14:16 +0000 (UTC)
-X-FDA: 85294210512.17.9FD40C0
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3606B6B0088
+	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 22:14:18 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BBC1B1A0304
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 02:14:17 +0000 (UTC)
+X-FDA: 85294210554.03.0FCB531
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf10.hostedemail.com (Postfix) with ESMTP id AE148C0002
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 02:14:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="IslIga Q";
-	spf=pass (imf10.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791339254;
-	b=zL5U2dkJFKQEAh5UuvtmdvhlPxgQBAvPjXbEa7rTjClkn4VhyYAhiHvTKMSXR+s8XPawz+
-	VgyRT2WXKgq5bwfUy8iNrZegpK08lfN6vQFTagTYLEhwOKJyBeiEagStBKRZai8cR9w189
-	PwI8br/9wvHu4OjxDbACTK5IUfNOge8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="IslIga Q";
-	spf=pass (imf10.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3BD70180002
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 02:14:16 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="kd5fSF l";
+	spf=pass (imf24.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791339254;
+	s=arc-20220608; t=1791339256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7tBfzHXIi89MaBvjTTf42y7BMLPv9LoC3Ff1kliJK8g=;
-	b=l1hX4XVAW59YEs56s7icjN8CpRa/yz3cQxp+1b1TAMBllm0MExUBiFhMruL4XdjUOOe3nk
-	lvs5y3hr60Oh35gc8GZrFxCcKgHhj5zExxGmhTtLZY4PAfzaZ32lKJxTIfCIRebabKwxCx
-	0vJsCYwkzu+j3kWPq2gcK/XeD9KalaQ=
+	bh=zf956o7Xb3ZAc7snjXqwGB/wRoNyeXb3dU6QTOPLSKg=;
+	b=CsfOky7rgHvOFYPjRTnCrWUieBYomepTiRfdlemDNpHELUzs+4SWpTcdARyEnDU5sMv5w7
+	5XjWRjXWqQabcFTlVviJL+ZaL3FNoBd2cNRNgg1/O/XBWqnOfJQ8a1MLRMtg8ESkUI4LcI
+	GZtjhutnIn3Snn8dmU8IdkNqNhG7u6Y=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="kd5fSF l";
+	spf=pass (imf24.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791339256;
+	b=hVNGutsMTEj35eRMmySfTq6AB1LBY9X5oLPGitR4Mol8p9GlLLwM+c1jCSdONK/62ovHpR
+	6IJj8E0bblinXFoWQH92TMifQSJwzwoKlfcf3f1uGo8Ao57hLiRJF7c3zzX57Lz9TZtclM
+	SIYPHCWUb1WR/uLn7Vrtu4rBNaIZY9I=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=7tBfzHXIi89MaBvjTTf42y7BMLPv9LoC3Ff1kliJK8g=; b=IslIga
-	Qs+odbzFKPcR0fw6DynpsbDDgD53St9fs6UBBaCmucilpEpIZ1ak/9mYAUPXiqcbbXCBLYZcnpm6Z
-	j8kpvio7JYY+avHxEfTdRHCxtkGtBFi4gj4UOd6d2PAqR9drKptzTfnAiJGKiaXdPFckOHPivTAEJ
-	hstKxOT41kcQFEd765WC7rrgpX3YAUyTnZ/ab+BQxpWB+s5KrJkjDI6uda3/xxi05d+29qI2qydEl
-	eZAOBSGuehmyiujY+FhL5D9ZIC8DrqQj9xKC89DOiMFsTCVxb29tgGkSHFtATvkmbZX7Bt3jvGBs6
-	H6qVaIdS+m4kT7h+Ao179RopBJvA==;
+	:Resent-Message-ID; bh=zf956o7Xb3ZAc7snjXqwGB/wRoNyeXb3dU6QTOPLSKg=; b=kd5fSF
+	l1Et4fuw0fA/NTiBHcgmHsADezDrKr41HJkv4gh4mFoTJaNVite5V94t24F00jvCE2bOUCrs7BDMV
+	qvdJt1HTbg58GOIvpC4j+CfpLTCg+uBbAvFYcT/O51TEaV/1UPEqHQ5qYdcTznuTTFAqFe6WYPN1M
+	dyjStLuG1fGrtrULibk6ffePjNy9DSnxdUOsrO9fPvIGyfChZr1HfaThA/+C92rUiiOKeoyovp6lf
+	9rP1wre5v0LanRQA4zwjyHPueBhS549qRt61dZaw5r7IIODlfa28gmukedY64P80IA2reU008BUbK
+	tVsaTISFiH1kj8CBIUqObIgBEi1A==;
 Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219] (helo=fangorn.surriel.com)
 	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.5)
 	(envelope-from <riel@surriel.com>)
-	id 1xEH9N-0000000B2cT-0AnC;
-	Wed, 07 Oct 2026 02:12:57 +0000
+	id 1xEH9M-0000000B2cT-45iF;
+	Wed, 07 Oct 2026 02:12:56 +0000
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -88,22 +88,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	linux-mm@kvack.org,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 4/5] mm/page_alloc: skip movable blocks during non-movable steals
-Date: Tue,  6 Oct 2026 22:12:49 -0400
-Message-ID: <20261007021250.1665929-5-riel@surriel.com>
+Subject: [RFC PATCH 2/5] mm/page_alloc: count a merged buddy's pages under the merged type
+Date: Tue,  6 Oct 2026 22:12:47 -0400
+Message-ID: <20261007021250.1665929-3-riel@surriel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261007021250.1665929-1-riel@surriel.com>
 References: <20261007021250.1665929-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AE148C0002
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3BD70180002
 X-Rspam-User: 
-X-Stat-Signature: mgn9sms8uxkt8owm8xg43iqpbid3cmce
-X-HE-Tag: 1791339254-99205
-X-HE-Meta: U2FsdGVkX1//1FqvZ6YnNViO3osmupb01rHiyO6+JTQ0Af+4AZY744XonEtKV3A0qzmmuapkEqL4xQOgzFIgTCRX2YiXQVmrN9qXWbjg2sihzjVXQb0bfYd1gPb7vaVK5jT6mhwPrOnukM2xb6rbirY+VYnbVyQXRl9/oByA8sbO2JDpk7XQsVUCNl70D56/qX3jM979ErnnZxulKaTUHSUFE5JM9h//Pe33bB1jn9XbBZ5JpyajfnBOiErh2s6AjZkSsb5ZLOd3bqjqXllsakET9WfgTrzwp7h/0/ZfLvbxqLiE59Th8ZnK57asoJsDGarFAE5PD7ZG8G5TDU8J983dLgM5AXCPwgit9mHxTtIAMPE+6lS0tkCr/8gRy827M6QydVTyWM3meeHb0ZZ0kZ8z177X3NJ1YRihJhFjhEcS9ABqZZpT8jcu9lbwun81Ta9m18UwcdC/DCXgSMQvoUbAtTpCV0802b9BV2VSTbEq/6lTi5YescmH44wu7ECIczl8Jo8FMT8oTn6yukUsk39hkYyxFpKxZSpG5hc3F7b0Gtc8Irsk/3DGiJIOwq2hXzP5B5yJjdJfGcU7u7Tt/53uIiZopbEVkilK2zbg/rsHYgvwiXvWg08yhQXbqroedngKT/QI7dk7QAkkvMLclmamr+tUbeEjYirPSZ7kUbDzIzhULz79GO6lIWuoTKifQWs1Sfc5RI64v5AZcYlIIH9he/n8uTcWacFO6FLjc5mg23uWcbCxXBC+S7LbyiNMjoOQzzA0eLB0EwgXxP1pzGxFb09vdfr8+/aUX/9wbbo2DOd1TQ9Cm7PLEtojfyeZET8QhCF7a6QKUrvAcdoXrRlgjuEdQ+PLQ6pHiEIiq6qC1K/2n65F7cDvVsw4FddQ8S5X4WZJjxmzTt67KOL0aqGWGAq5wRhhipzb8G8pwoC1mMK/yoggQAYFjUMDOvzUl1YCB/3zGgE38EDpEnf
- UHnIDXUL
- Iq0lmBNpMwkJKBWaegGVLlhLkOMZkLrAvFWB9xpltvomwercePzUzkfzYrNNTsWjTU3Un7Gb8vHRuZ1LslG6yOOY4hHb9t7jzjJK+NrL+Sb2b8nVBIQX+HTh0p71D/TpPqA7xxHEIHVeDypW0gaRzJXZCOmV0kWO9QMskVBeUNkTlHsms35DCR/T7rgmgZuIodcB+8NZ6MEtz2IRJS9w49DEFhWkSkjEzDQL5AlI+E35oPJioJVk+vV2p++wZxNLx3MQ15pUXLDqujhWGrPBwrLizmM6+74yzTU7oZkOUObI2QD90UEu2UGJFVqBJSn6DfVPzpy/Ko5l60pflDSd1r8puaD/YlDffRyiQz0YbM8pG1ROl0wyTjuwmBA==
+X-Stat-Signature: wz97m3eh9k8hkcbr1bf9t65y79jxjygk
+X-HE-Tag: 1791339256-342952
+X-HE-Meta: U2FsdGVkX18dOY3WBJCIteBYgCRIOK58TSJaCJXPcGZf8hA/ST+Lnv9LB2bG113mV7MuGAJSZxed/W6Lf2iEXELhyywdk6iEWM+gxarOCeEgBCTd3LSzJ72XdVboxLRBwnhw5DFZMmUEKl2iGMn1BFbFqdOc6joUu3h1rLhKGomspajnWorQHPAyrV50j4dwCKOpjfZen9XOaaEGbr2wlST6I370KVsmorCVFZpopp1xolhimetmEImwdP6zZ4sfnfF1IB5hoDSWPioCuWNHy7O3qkgSvVMSs3GPAsALrymbecaBqJ25AkfsvoVPv6E1ufXY3ZvD8rGyr3M0QyBOxulrFNTgy7ttgmieu/Wr0lgMn2UW3/2WU91A6oZtbPLuN48Nbakjfzf4qVCsVUs9fCZ16JGx2jC8rZyC/8bIasTsbin2PRZKf/SZHieOLXvtQfMhpu4Y3eeC9VZby1deLMANwqXWOLQbUSFhGzT20t+LsswMLS+h73YpY1BqGdSE2Y+/0+MLQNzs3+4v2NW45lBi/hYOkWIcg20ceRkc1E5VEbXE80IOIL3YhAya2r8U48rf2PB/yFeAbbjH5voOepo+IgIrdqVbY05/1hdUhXiHfX07qG2aH6705NXM5m15vQy4wsE4PkLe2sOenVW3UE0fekMqs/y20lovkgDzpKoJb87+cGx2bB65se2/mReeXPQMtRlmjFbHev5uu5DrYCJ8RSNlFBMXYyolHLl+v0CXZkOx/+xi55+6KTgOysrXq8NnzbaXcr6gZfj9qnLn33Ulykuzv/ZCfn2zLdEaRqT3WbNijBtDgr6PWSiIJ35Ez1jivdeOMie1Mx/7OnOSSGjYQSCnVEluUjGmZY+/Ur+IXm4wv3LyhIhPF2oZMQuHwf30FSF/a/gm2u1v7bjOP2nhJ+P1Uj8J8p1gV7Px3c/hmCS/ADq/SePaqS6T5YSWqiolsfBGSfXMwBggRL4
+ us91t3gA
+ rj5L33598FuWToOXAD9qRkiJpG397HGu/wOTPmbvmfW9ooBy+xkTmWHN1l+guInYZtAeCnEIh/6+9T2HqPbVFgRp2BliXDvDkhV9KDYOZIfX31z7XyA3a4T1se+S9xZWuk+0V5EnzFhRC2leAxoHAinZ+mr9htCqB2AJTx/qpZby6kvFFl6cqtEzcYme8Y4ZhxjoDNBK8Q3OC6oG844FlkGGwBToftBkc1IhMnj1IbxnqynGqJRqVj7G1LB/8z9nVAn9Ul2fUAYumKV1Z40lUPKj4f9y3HA/JCndhWrM8wz/ygmOfpWzfxuMQIwCHcYlifQBbulsuGuoTiCCB+9MqY6KUR8HQmW7PmeXbbHxvXBzTLpHHwV/MpF+CJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,81 +111,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__rmqueue_steal() hands a non-movable allocation pages from a
-movable pageblock and leaves the block's type alone. Those pages
-can never migrate, so the block reads movable to compaction while
-holding content compaction cannot move. On a 3 GB guest running
-ls -lR / and a 2.4 GB block device read against a fragmenter, a
-temporary counter found 2654, 5341 and 5272 such allocations in
-three boots.
+__free_one_page() merges a freed page with a free buddy of another
+mergeable type at pageblock order and above, and retypes the buddy to
+match. The buddy's pages stay counted under the old type: nothing moves
+them to the merged type in the free counts.
 
-__rmqueue_claim() runs first and would convert the block, but
-rmqueue_bulk() remembers the mode across its batch. Prevent
-those allocations from placing non-movable pages inside
-movable pageblocks by refusing __rmqueue_steal() for non-movable
-allocations in movable pageblocks.
+That is unobservable today. NR_FREE_PAGES does not separate types, so the
+missing move nets to zero there.  Any future per-type free count would
+undercount on a merge from the other side, and allocating the merged
+run later could wrap it.
 
-Movable is last in fallbacks[] for both non-movable types, so
-only a larger order is left to try; failing that, the steal
-returns NULL and the allocation will loop around to a claim,
-another zone, or reclaim.
-
-Keep the steal where mobility grouping is disabled, or where
-the block straddles a zone edge. A block that straddles zones
-cannot be claimed, because the allocator only holds the lock
-for one zone, which leaves stealing as the alloc path there.
-
-Movable allocations can steal, because kcompactd can always
-move those pages out of non-movable blocks later.
-
-Over three boots allocstall_normal runs 48 to 129 against 32 to
-134 on the base, and compact_stall 324 to 415 against 288 to 387.
-Neither direct reclaim nor compaction stalls rise beyond
-run-to-run spread.
+Move the buddy's pages to the merged type in the count too.
 
 Assisted-by: LLM
 Signed-off-by: Rik van Riel <riel@surriel.com>
 ---
- mm/page_alloc.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ mm/page_alloc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 9f1520506ae1d..16d3594d913a0 100644
+index 4658af97be010..ae38e25971559 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -2423,8 +2423,10 @@ __rmqueue_claim(struct zone *zone, int order, int start_migratetype,
- }
+@@ -993,6 +993,11 @@ static inline void __free_one_page(struct page *page,
+ 			account_freepages(zone, 1 << order, migratetype);
+ 		} else {
+ 			__del_page_from_free_list(buddy, zone, order, buddy_mt);
++			/* The buddy's free pages join the merged block's type. */
++			if (unlikely(buddy_mt != migratetype)) {
++				account_freepages(zone, -(1 << order), buddy_mt);
++				account_freepages(zone, 1 << order, migratetype);
++			}
+ 		}
  
- /*
-- * Try to steal a single page from some fallback migratetype. Leave the rest of
-- * the block as its current migratetype, potentially causing fragmentation.
-+ * Try to steal one page from a fallback type, leaving the rest of the block
-+ * unchanged and possibly fragmented. A non-movable allocation must not steal
-+ * from a movable block: without converting its type, the steal would leave
-+ * non-movable content under a movable type.
-  */
- static __always_inline struct page *
- __rmqueue_steal(struct zone *zone, int order, int start_migratetype)
-@@ -2444,6 +2446,19 @@ __rmqueue_steal(struct zone *zone, int order, int start_migratetype)
- 			continue;
- 
- 		page = get_page_from_free_area(area, fallback_mt);
-+
-+		/*
-+		 * Do not allow non-movable allocations in movable
-+		 * pageblocks; that could break compaction.
-+		 * Non-movable allocations should claim pageblocks, instead.
-+		 */
-+		if (!is_migrate_movable(start_migratetype) &&
-+		    is_migrate_movable(fallback_mt) &&
-+		    !page_group_by_mobility_disabled &&
-+		    zone_spans_pageblock(zone, page_to_pfn(page))) {
-+			continue;
-+		}
-+
- 		page_del_and_expand(zone, page, order, current_order, fallback_mt);
- 		trace_mm_page_alloc_extfrag(page, order, current_order,
- 					    start_migratetype, fallback_mt);
+ 		if (unlikely(buddy_mt != migratetype)) {
 -- 
 2.53.0-Meta
 
