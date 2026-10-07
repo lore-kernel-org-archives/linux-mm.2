@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 147B9CA6002
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 17:40:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E63BBCA5FFC
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 17:47:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C61A6B0088; Wed,  7 Oct 2026 13:40:25 -0400 (EDT)
+	id ABDE26B0092; Wed,  7 Oct 2026 13:47:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 976EB6B008C; Wed,  7 Oct 2026 13:40:25 -0400 (EDT)
+	id A6F596B0093; Wed,  7 Oct 2026 13:47:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88C956B0092; Wed,  7 Oct 2026 13:40:25 -0400 (EDT)
+	id 9835F6B0095; Wed,  7 Oct 2026 13:47:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6747E6B0088
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 13:40:25 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 12B80A0343
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 17:40:24 +0000 (UTC)
-X-FDA: 85296544368.17.528D989
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 776BF6B0092
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 13:47:23 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 089DEA74BC
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 17:47:23 +0000 (UTC)
+X-FDA: 85296561966.08.F01A0BC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6C30E14000E
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 17:40:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j8vwGyeh;
-	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6E22318000D
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 17:47:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EquxJzNs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791394822;
+	s=arc-20220608; t=1791395241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EkQUHitjzzlvo38RimBkUzV/B8Ac4BuALErE/4c4/Cs=;
-	b=lQNTN29/AWCKmCILsw2CrZwkKiM2PyAcPl0cWDKHF34PyrzhYR1TmZjp6L2EE12WzJXg2s
-	WyHLye15813o/i8lrGoutw5XLG4Oyp6sXjZDhgw6/hMSTIdxX3H1RFa9DBRtYuZkY5kDfj
-	QR3dm5FuBZs5LblPezVwG0ecSQHQ91A=
+	bh=hrN5jCbJ23KzWZs6wwkV2zHBbc7V4zUmP1BS2E476mc=;
+	b=SIBGHM03ZhxaFejr9jZXXdbQlRgWkJJcJ2rhkbHfne6QMSCGtiNN0EHk3WS1u9/N4jfMXv
+	Ge36HtnnTPR2b5/Rh5rC1Ic9G9cFkmV5geqORMPcHYZ5BTz1hK3YdCHBJrBqZzckXYiwiV
+	Drig6tUyAYh9SnehjY7R64ekQnnMZQ8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j8vwGyeh;
-	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EquxJzNs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791394822;
-	b=DUXYKTncsWuq5TzTWFcZggVlZ2rBHkg4h/kDw9LkkvMubBl9KYmA3U7qzzOtep2tU8FFGt
-	LLlviMok+1K1b4leU/3ISZ5fxGJK3DzBknSEEy7Ts/ls6juGgQeO0iBUvRyKjvnrizi05Q
-	rVukl1UhUIWmVW/3F1jJns3+MblmQlM=
+	t=1791395241;
+	b=kkrMF6H9UYK/SwCWgieIHYMGzNpkodNvxZnakh6WfmzQgkcPdi9Gg/cVjT6x8QEvFj1cOi
+	N8+Vxi6bhKBwBuW5gqSx4wE3Mm84Hxp/0BaMAWNSzXuG5YYdD5DDf0He0E5L4+n1J0udN5
+	8R6Ty8aw8eFRqQG0hSxtJKDOQgIw7J4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A3372601FD;
-	Wed,  7 Oct 2026 17:40:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C711F000FF;
-	Wed,  7 Oct 2026 17:40:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 31F4D601FD;
+	Wed,  7 Oct 2026 17:47:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CF61F000FF;
+	Wed,  7 Oct 2026 17:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791394821;
-	bh=EkQUHitjzzlvo38RimBkUzV/B8Ac4BuALErE/4c4/Cs=;
+	s=k20260515; t=1791395239;
+	bh=hrN5jCbJ23KzWZs6wwkV2zHBbc7V4zUmP1BS2E476mc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=j8vwGyeh15j/C0j3QdVat9KunBD+RZBNpMIIUY+FlzKCCyu795O//KntARQ6+o5T4
-	 IkjbWgfaRQd/I1N1B+SzruG6bYeeqoEJ2gxKfCuoGPoGGgXaslXXirvZk6nIYszTHm
-	 vb6IRag2XLh5KFH/N/NiOWvWcXN9DI7zdEAEK7rdYNVSfLOBAQMoF5B00A/gbEvTEx
-	 sAQLlwgNo9I/vj0ipvv59CFNMrdqSwDFt+Wqxj/EDFY2IsPXBCJ6OQhyrgv1wxAnGJ
-	 JqEIcQNSP/SlznuJKtRD7aiKITMofq3QEx4g5+lpdgks0+i1CZjhCQhg0d4QMSHqLa
-	 XGpvCiVJqOGbQ==
-Date: Wed, 7 Oct 2026 19:40:17 +0200
+	b=EquxJzNsDMw/0KeyNG4auMBMP0wP6kLplxNS0LhgoG8NQkbThad0GD4F+LIHwhjKQ
+	 lzhs7kZ8PLpagPgk0y1dQEr2sKoxFTF4VqcLYltNa+9zSNkt0qihVmYvm+T7RLeoJg
+	 0skBcNxgWndYoIykw748fEC/y2ZM0C+tGqWjJ4uN4Vo+bDlXfcJlVBUnTuJU++ujdI
+	 AWXgAEYuzlFNBO/4/LHlsFkVJjlNRPHpJWiyQc13ZMYSpJPnZIMPqrriMGpFzGpFXq
+	 GrlYjW1py4ss8EaIqhW5r6lIrFAFskZdX6ngh+EV5yo8Eo01UwhN8e8q8Pn2aEFvW+
+	 7v4SNSGFvSfOA==
+Date: Wed, 7 Oct 2026 19:47:14 +0200
 From: Harry Yoo <harry@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Muchun Song <muchun.song@linux.dev>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Alexei Starovoitov <ast@kernel.org>, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH 1/2] mm/slub: preserve no-lock freeing after memcg charge
- failure
-Message-ID: <asaAwg1KeZoEYd4K@thinkpad>
-References: <20261001044056.75079-1-kmehltretter@gmail.com>
- <20261001044056.75079-2-kmehltretter@gmail.com>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Hao Li <hao.li@linux.dev>, linux-mm@kvack.org, 
+	Roman Gushchin <roman.gushchin@linux.dev>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/slub: clamp slab_min_order to MAX_PAGE_ORDER
+Message-ID: <asaEdFRDdZlRdAc4@thinkpad>
+References: <20261007163403.1643768-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261001044056.75079-2-kmehltretter@gmail.com>
+In-Reply-To: <20261007163403.1643768-1-ekffu200098@gmail.com>
+X-Rspamd-Queue-Id: 6E22318000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6C30E14000E
-X-Stat-Signature: z7metnbnjkwxh6gn69rupq3p6m55uqg8
-X-HE-Tag: 1791394822-818540
-X-HE-Meta: U2FsdGVkX1/XC4AkQl3Yyel9Bw/OueaDwSHWU8sMHmo7xjr5A3JGxadv882AFtxmLiftKD4S+Xrz2yrvbsx3E3UKgikKxIdPhm3g+ljllJSL6p9qJ6tThH11FN3qQCyBgzmm4fjIF3xt1VkAnysJal4fyoxA1fxCTKPbBOA2mabuFiFxshgR6SJ9lAJvMM6vPesvVGuJGnGd3TgBZWtH6Qme5cP0O2fDNdq4FpMGgPLR+cWviJSWQjfrOU9pHcITnBo0ClxvwcmemJSp6g+bVZMMzvuR1C2+9gEfjwjhj3j55ReTUkrFhVK0z7qgz8HrNEKY45lp0Cj5xqZP+9pvW28Fl6SpbHQmA8xTXDHiDh3fpyhtlUd9nMjYdqGsGu0lBjjnI3SO8/LAZjh4VTrrUZlCHgRNwlZZXJthVGg4q4i7Ur9jEnUj8g0solGgYjogs1pRW0AbsUMVkmTuU1Y5E/y7IrIGj3qX3NI9c1uyrXqEqS7rZKqNOtg2k96jgjatuRA9Qo1PD96qQ4eebbSvlEZ2PWVCjnMADUeIj2nwm5IL1Vg2HImqGFWUlRJGCD634wMqtJ00TWXlWHmeOvnelsvxrEJ44eGGSQ5suizlOYra97ZK+C60noJ+HeaWH8aMEKb0AaJgwXpAhkXBaoqvxwRFVsq78SNbiV2jzti/IkkZ9disku9oVC2oo1Zml8X/dDBJgTVyU+7RQ8sdGiFgretDXMaEKXwUUs7ZOPIKvwP+lwhC1SjLHGDYedtMlSfq5HXiTNhNbzZKj+0YUUZ7GwBVOB51H7jKiQvTS49onrp1vsEL2YZ60qm9NjOc9VooNDUwQ4DnI+xjlhjUIzYwjuQ9/nn32OVUnlF5A4bOqyhI0BEn6s5oYwK8BUEQ/wbAv1RGRx+4A4C1hJ3bZHITW4YrifgktORPg0gqigkS4bF4MUaDbCpzCpI0kbxhFJyk3YmHdf8yN7jshkDAMjt
- EhvRRVht
- IgwZGpX8SW6NaMluHSOPxKebIMQcd03t+QEavvmYyw5jvHoTspvO4BbVXLkvWO7TXX3zc36gh2r7RmvB90a7WGCG0kzpUWfTIYuZQ/srZJK0C+7q1Yz49Fhyj8aqR+GHFadT/tbDMRumWA3q8UiHUcOkTt9RcayvoHvBk1tayzFCkViBk2j+MNLag3c9+VoSCj5UmMN91tjbzee4kC0sZHPYLfn52lQoPsXiiDwcOZ8rpwVq7soMUkjw/Kff22N2Grh0uL9DU2i37qZIcV4NtG6ndkQ==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: m6uun1ofm5z5sc9jey34zws33kwzjtap
+X-HE-Tag: 1791395241-287643
+X-HE-Meta: U2FsdGVkX1/JE3Uj2S3DpkVNvHdi7EuFsrupNEW1sH/lsX3lBFSzbLkLWkJg3jwYFSVVN4CAotxrL0guGg2CHK/L9u+cZzYfwF5SHIqj8/sq47qK15OmkFLjc8/GMcm8NmCjFWwd0OvcohH+oc2YyTcjMppdvEHjy5KS1AmEa4DhD9TGYdJwKbZxRyGwOEVA9wUnPOQKno//WbVibOY6pM7+4zsex89XKoLDPf1ywOgnbrLA0287xOW8v+aP1+d77BcPOZtkfhZE6F/hHYkhqgS4xhba86KI/WhC2eJ24WXuvZAyy5zk9+knxfr6EytGZWPFVGxXdsGWq8WPJrhMZCmXM/ub/bSuYmjxonlL0U0AEQp9g2LYozIIwnzge9PEgGIQ0ShIAqCBn2Gzg8MUSaPyJsOTflNj+ugZMWWfwcl54mT5NH93dsacMuLOBW86ERxE9FYQlZ/JQQIxbDep3xzOkdy7u0DaEEVYGdamXoKSBub6y31LnwIJtJf9CBKEwxb+ZDw/fZqps4E+TuxbTL7Tx2Ntra670Ad/1f8tN9T+ws61e7uIq0Tl9lJuseW5+C3gl0dJBRDX6u56v5/5ypd5M0Uwkd8XWU7twN55Jp9dUEebqVqK/JcyiTAT0TowSoSEKx0MZzhc+FVI5b95ecDlTNJ2MFMzqTUGYUNTP8rUaPyJ51topRmhFDe3f6k77cZsAT2xpfSCXaUvFoPqPKTO3XPYV6Fugx+XpYsmNghmY/InMqQZ/xji1bOParNVhtQnXpRG0lj6Kfdy8elKIWQbuoxCCVldYuzQ42iaxiihPQeOrqI5dYyRAwPzzWAAbkaI+ik2R4++gyxby76oG/cPNcssUR1uPSWwerrJrp25h1QLFneq+5MlMfHtYm/RkMFke7fI9/WsqFoHsi8g1ifRr7+7chW8rTMOguw389lLUukyyioQpMdjBgdaOrk+E/rcUtygTBQ3stH5Sl3
+ QwKgWbyy
+ eJSmqFxMbCzQo67JrKIEp7PzQAZV8Nd1vnse8pohamTHAaoxzvdvN8Qfxd4+J/jKmFV4ipiZPpKEELY2N6KKC1FZRPV6CV4RZ5eajgDQN4NWBqPxOgEmqTRpcclzwZSxlZgIvPUlK2VQdUFShD7QSwtkNJfAT2TvQRDpWJUjNaZ8fT2RhFIWQktyFPt1OYrfsc0CcKrTEyzj38jX4juAimSJGt0mxFuSvOI9sAOkiJN8jiuHKInLgP6eYLSops8wQNG1x5GFSHHCx2XRq+W7bKOwhnJiykhFrxLRC4zPy2ZoUGwIVwIrclNvHTzFWWRUHYaInf8nFi4ALYEPqBLnPIX+nww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,48 +92,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 01, 2026 at 06:40:55AM +0200, Karl Mehltretter wrote:
-> kmalloc_nolock() can obtain an object before its memcg
-> post-allocation charge fails.  For a single object,
-> memcg_slab_post_alloc_hook() rolls the allocation back through
-> memcg_alloc_abort_single().  That enters the regular SLUB free path,
-> which can take a sleeping list_lock on PREEMPT_RT even though the caller
-> selected a no-lock allocation.
+On Thu, Oct 08, 2026 at 01:34:02AM +0900, Sang-Heon Jeon wrote:
+> setup_slub_max_order() clamps slab_max_order to MAX_PAGE_ORDER, but
+> setup_slub_min_order() has no such clamp.
 > 
-> Use kfree_nolock() when the allocation flags disallow spinning.  This
-> keeps the SLUB object rollback on the no-lock free path.  The failed
-> allocation continues to return NULL.
+> The buddy allocator cannot allocate more than 2^MAX_PAGE_ORDER pages
+> at once, so slab_min_order above it makes no sense.
+> 
+> If slab_min_order is set above MAX_PAGE_ORDER, it can even panic at
+> boot or invoke undefined behavior in order_objects().
+> 
+> So clamp slab_min_order to MAX_PAGE_ORDER as well.
+> 
+> Fixes: 818cf5909701 ("slub: enforce MAX_ORDER")
 
-When this happens, the object is not charged by memcg.
+I think Fixes: should be the commit that introduced slub_min_order.
 
-The kernel should not invoke memcg_slab_free_hook() (called by
-kfree_nolock()) for a slab object that is not charged by memcg.
+> Cc: stable@vger.kernel.org
 
-> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+And no need for Cc: stable? It's been there for decades and people
+should realize the kernel parameter is broken when it doesn't boot.
+
+Otherwise looks good to me.
+
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 > ---
->  mm/slub.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> QEMU-based test results
+> 
+> - Booted with "slab_min_order=20"
+> 
+> 1) AS-IS (before fix)
+> [    0.094926] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+> [    0.097776] Kernel panic - not syncing: Creation of kmalloc slab kmem_cache_node size=64 failed. Reason -22
+> [    0.099542] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 7.2.0 #1 PREEMPT(undef) 
+> [    0.100903] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> [    0.102607] Call Trace:
+> [    0.103040]  <TASK>
+> [    0.103417]  vpanic+0x32a/0x4b0
+> [    0.103976]  panic+0x5e/0x60
+> [    0.104491]  create_boot_cache+0xe3/0xf0
+> [    0.105194]  kmem_cache_init+0x12d/0x410
+> [    0.105890]  ? mem_init+0x1fc/0x210
+> [    0.106521]  mm_core_init+0xba/0x140
+> [    0.107153]  start_kernel+0x441/0x8b0
+> [    0.107814]  x86_64_start_reservations+0x18/0x30
+> [    0.108638]  x86_64_start_kernel+0x10c/0x120
+> [    0.109401]  common_startup_64+0x13e/0x158
+> [    0.110145]  </TASK>
+> [    0.110584] ---[ end Kernel panic - not syncing: Creation of kmalloc slab kmem_cache_node size=64 failed. Reason -22 ]---
+> 
+> 2) TO-BE (after fix)
+> [    0.008976] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+> [    0.011366] SLUB: HWalign=64, Order=10-10, MinObjects=0, CPUs=4, Nodes=1
+> 
+> Also, I'm not sure about the Fixes commit. Please change it if you know
+> a better one.
+> 
+> ---
+>  mm/slub.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
 > diff --git a/mm/slub.c b/mm/slub.c
-> index 54ec125033571..a1f08338102e2 100644
+> index 1559cbace469..8400df7c222e 100644
 > --- a/mm/slub.c
 > +++ b/mm/slub.c
-> @@ -2519,7 +2519,10 @@ bool memcg_slab_post_alloc_hook(struct kmem_cache *s, gfp_t flags,
->  		return true;
+> @@ -8354,6 +8354,8 @@ static int __init setup_slub_min_order(const char *str, const struct kernel_para
+>  	if (ret)
+>  		return ret;
 >  
->  	if (likely(size == 1)) {
-> -		memcg_alloc_abort_single(s, *p);
-> +		if (alloc_flags_allow_spinning(ac->alloc_flags))
-> +			memcg_alloc_abort_single(s, *p);
-> +		else
-> +			kfree_nolock(*p);
->  		*p = NULL;
->  	} else {
->  		kmem_cache_free_bulk(s, size, p);
+> +	slub_min_order = min_t(unsigned int, slub_min_order, MAX_PAGE_ORDER);
+> +
+>  	if (slub_min_order > slub_max_order)
+>  		slub_max_order = slub_min_order;
+>  
+> 
+> base-commit: d755441b7672c74f29d1241ffdd2b067ecab1ca0
 > -- 
-> 2.53.0
+> 2.43.0
+> 
 
 -- 
 Cheers,
