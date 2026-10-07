@@ -4,82 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81C92CA5FF1
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 10:16:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4C40CA5FFF
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 10:21:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 508FF6B0088; Wed,  7 Oct 2026 06:16:26 -0400 (EDT)
+	id 9F4146B0095; Wed,  7 Oct 2026 06:21:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E0BF6B008C; Wed,  7 Oct 2026 06:16:26 -0400 (EDT)
+	id 9A4CC6B0096; Wed,  7 Oct 2026 06:21:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F7746B0095; Wed,  7 Oct 2026 06:16:26 -0400 (EDT)
+	id 894C26B0098; Wed,  7 Oct 2026 06:21:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 170EC6B0088
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:16:26 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D4FC1A0165
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:16:25 +0000 (UTC)
-X-FDA: 85295425530.13.B429333
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D04F6B0095
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:21:15 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D2F1BA5B29
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:21:14 +0000 (UTC)
+X-FDA: 85295437668.03.6D02798
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C0666160005
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:16:23 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f4meMJgd;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 08661140004
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:21:12 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eZzP/FiX";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791368183;
+	s=arc-20220608; t=1791368473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ESIyTeV5wm8brFdtF/p7rC/YImFfa4MobdYy15tnWH4=;
-	b=j3gGCy5ARie0NTSS1oCzNBD0cK1hWW9ym0VReHmfdptBSB22nRIAukf7Ci5SNXpWz6l0eP
-	8Tstvrk+lWmlBirsFlyzSlLQ9b5i37LGdaTXGXMfsfwxnsPRYEFN6sqmbI7HShyPLXeZF/
-	yAjYJ0X3USLQ+YeeMdigSH6a0eMjIQk=
+	bh=TrfCVMmocMCDoVFt/WhSovNj4qLHgB/L5kDcrdtONbI=;
+	b=6PNqADFlYEsciA70kwmzO9GLuVHXsYZYcmNXLSfv80WRYUzoiLELsnnNlwpFgWsCeC4Yxy
+	/6b6TskQSHTI5kp3STrXsV8sNUObsyQ0pKqaKkW+lbw86O53Wc+53pj/NcKbwygpGI/T0r
+	cwh6w2yBoYNCSM/aH88dMNOq1QPEaB8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f4meMJgd;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eZzP/FiX";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791368183;
-	b=5+NNW1UNu44wzDTz4cnRR1IVw+GxecRktTfDRUGh82nU8Df1rnO4hmuSmtWk5tQpyQtmXR
-	I5M6NWYXq4Bn/uHthC42fRGqELj7Mhvjvqo5a1GqaLsrxSCg19e3dDPAO7DTugdNcWxMPv
-	HHItWGoXOTlHi7UfseQRYQnAmhOh0GE=
+	t=1791368473;
+	b=0bF3ZuRp+rduBJ6+DPMXdB5Vkbcw/7vzsRCgxgeQgb6awS9Lp+U7niB3C+tcjIg6A2Rwjs
+	yvIQ47RMCOmiAjk9LFADUJ626fy3Gu3H555VSCoSWzaDgKgFgD9AMgAQSXqHQZv5xkralQ
+	WZEuyZQ20Rl0yl/dPhcoIEdVgA8Zg8M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0521443896;
-	Wed,  7 Oct 2026 10:16:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1101D1F0089B;
-	Wed,  7 Oct 2026 10:16:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 49A3141A79;
+	Wed,  7 Oct 2026 10:21:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50351F0089B;
+	Wed,  7 Oct 2026 10:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791368182;
-	bh=ESIyTeV5wm8brFdtF/p7rC/YImFfa4MobdYy15tnWH4=;
+	s=k20260515; t=1791368472;
+	bh=TrfCVMmocMCDoVFt/WhSovNj4qLHgB/L5kDcrdtONbI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=f4meMJgd4ttNeAqnos8kPXy5BxbqEVCRAG7MoJptyFvMCp9/5Gf50bRt+LOsxKH8v
-	 9ydNj6fXwfQZ8Do8udukd5QqgwPVv5s6TlXXyay4eG6xoJjQxc9QxkhC3uTxi5kamO
-	 72GQG6wjjeo0oMO6dxq62JNasJ9OhnOT2qausxqIv44y+5XNwRTCbRWuaRBrRl+aYR
-	 fgT1bYIhavBelsAAEIxdtkOsfaJ7LC39XCD7KAFE++UCNaIgtN1LTFVexZHh4I8Vn9
-	 ImzUskbC4mIxvbhhpSFw733Y+NwWuEOrFuuqba+BL3+vHVLwWzNjwp2rvJ90oH1jrF
-	 MpCb5MPi5dLTA==
-Message-ID: <022ec915-62ab-40d9-8705-90692e75acfb@kernel.org>
-Date: Wed, 7 Oct 2026 12:16:17 +0200
+	b=eZzP/FiXpy188K8IQ2+WkQkpDUrAXFrBdIPhBTbbAGJwGwd9olZnyzdNkyUTgLWmh
+	 ek0iEnqgREe+LIp+akXe0NuCFYrp2PO47S5j9UmLAp0qYMnLrfuPOyMtkBpDhw2c0y
+	 6U2EFSncINVVbDn3uLs6Wq8ExtSAJuA8BuQj/FBMOBYEuTdiLv0/hzQdERWOhijuEA
+	 NA79RbKR7u4PMZDkzIEbx6GJtQ1zADuLJ91DivfZ1k3AxxFnqOqF/tsKWOi+Pwfq4R
+	 mViyYNN2eCzTZ7maQmFciak7nJrz9p/WVydmyz+WfAzIbqyCES6HusgG2gs1SMDODs
+	 +OFceyZ926JqQ==
+Message-ID: <042c2846-c70b-415e-a3a5-0e69485d5c0b@kernel.org>
+Date: Wed, 7 Oct 2026 12:21:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] selftests/mm: hugetlb_madv_vs_map: fix TAP plan
- mismatches
-To: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Guillaume Morin <guillaume@morinfr.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Breno Leitao <leitao@debian.org>,
- Sarthak Sharma <sarthak.sharma@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261007092801.35649-1-jaeyeon.lee.dev@gmail.com>
+Subject: Re: [PATCH v2] mm/khugepaged: flush deferred unmaps before dropping a
+ failed folio
+To: Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ outbounddisclosures@openai.com, stable@vger.kernel.org
+References: <20261007041001.43181-1-kylebot@openai.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261007092801.35649-1-jaeyeon.lee.dev@gmail.com>
+In-Reply-To: <20261007041001.43181-1-kylebot@openai.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 08661140004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C0666160005
-X-Stat-Signature: pd4z61amra4jj1zhpzne6odkrtfi3qg6
-X-HE-Tag: 1791368183-511887
-X-HE-Meta: U2FsdGVkX1/ue2pvcpmrtJzU04db1k8BHatjj7q5sf37aK2lD6jOEGGFbE32XaRxBl6lGI2pbTaUu6w50677Z079R3ju9rFlcvImRYLHzWeUjPt0hEpMmtwW8mJlxviW4XnGev8RDNB8VwdmoCxIbhQAkKjtSJRPFj+OpNdD8SctEz5WbeD2nggQWC23CbDCtV/B5iwuXeBNWNsgIu09hFjxxp14g6F/i8uD3/xjY47FpERDm0orRvathCJG0UPFGHTtBkm/7comj2R1pg5mtraTr/lwyseeHZBYn4FNAvTtuzAqvgHCvp4/1/XLH3z17I/8FjOOkkD/zOKvw1z3GlRgg/N+vTT9cZi4HLY/GhO1inEjUVIRYUCrgMgwP+SGg17IruyWN23deNy5yZ6I83QaGxIdOZb6ncFI/+7i8/fJZH1LNLiQ3l7kjyASQZZck3+RXxRjkQ1Uo7/aQDVAHjuwuCLTHck85gz7NTlxI3kfbaFS/m53mETEU1yL4ak9X65Y0sVpDdxeXxrLA/EEurU+Z/M7JwDKtgEMEAqQd9TM1RKh4EwOr/XrywCA4vNkqhJAwgd2X1vUgtiHd/SJMlnYE+Z9WtTI8lQ0UPTz/ZHaaErtg8v9EfXlhMqq20cv/dbCjq/vYffYpHAzyDHLBA65cqk/728cAWOr5HUHG0qexqZDKc48m3LQLON8O2Cx3b4sRgs0LJCQNTgaJ/TPIgBMFcDByrjAxSo2vMMThcqxtG3gv0DQkAxo47XxyktpzBDrOp9JNHwyEYtiRA/uc2EaW6HJT0d3C58Rzdavth33/RdSjUrW1NxWSnV0/3nP0ujnt+NYCHH6Yhem+uUjnImqB7L3Kw0zD64qlixBH6JCkc/rw5PfpcFzP6fD5CDPzUEvVGQPrJSCm1HjyJYRa2Ntu55SgpWg6sjojPWUXaTvrMeRMCv1DoeQE7v6JuaKlAhV05gVxjLChtJt2rP
- E7jIxDw2
- FguVK58L6pdMD37oxhxcN+sJrnDX6DtwCxyopafLTFKjZoFZotTzIYVyrqmXj9UfT0SzNVS7W7nLKHBQUQMiAp1197tKt21QwzvRbrrm/ynULWLw9wh/7gS/y86CPJ/bG0wZPs2aepRtnGJ+gMI6KWhmJivZJ+63cFHW+YQYhDQH1rmzf1C7PDDy+VdXPFNDAUTjwy5CM0TdvHy0FI9xpRMoWh5Qjfs490Qxk6ODsDyxG/I0TysacwP4sx2v+KTBFiMOpuaO3N+he4UZChddCpHt7saChGf3+eReJ4q52pPloZVHOJKUEcpmZ0Esmw2fvo8GCTu6PEm+UbfGu9pkX5LZvEPNbFzXeUmiMR++kusZIHGTAr7udT8xvizhLsdCiR13dEnR/jwCVE/qejN3AwmSNjg==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 4pbysono6oqg38c77yookmjnrn9tsxod
+X-HE-Tag: 1791368472-720561
+X-HE-Meta: U2FsdGVkX18n0eUPcfGKybIgbfBKixCPIFaJ1D6QOGuUSxSnud17PcjIXU32nhvXolSz+6QYxcII/XPLDI2NFIJIoS9B1HmRdtwixEl5peCcSHQ+KtkCPdyncfnXr0lZglPTk9uFfjC2vEe/BXiASbcoVtQ4ZgGLCd4odHPh3upGoaeO1HFQusaVJugo6puUW+V6xbNNUq1RXaYRI2JG5eWXvyvya0J2ukVORfog4ntTwfHpjCuWVb4wa5vSiwpVIhuRlGqYjyvthy4jVB2Ss6XqpASlcvVuF4bn40BDHPcXmkpixvE6+PckpUDhlUzk+EPPgmAxeU4kMydNWK3EFs30rCc2Ff7wDYC0XSwZPP4YEAX3PuYWw/vm/qOk5qiNiaMsAEi+QylyZdXdgPuKw3ODGXSEkVsNQKtz9eaRksi/iMiCB0He6dd87qXb2OwoX0XHz/YJbA3v1TV1Vi8c5Zdhbi/xIZFuL9pzQf54wWzYVv5jYFyCQX0CeoUtQMrZk9o3EJU0/mYRodRvl3aQeLqPFyABB+Cl5wJk0CNbqIsfC1SCcBeH7qhahEyHePwmSE6ZAWHF8FzJxfLCYvNwBYK3qrYKPovWm1pn1ycJnMA72SNDlWiUJypuGVVluqgGACrjEebweErhEYhTqAgCohTm59pGqQnGr4VfnmTEj1NWcvDqpJpRM6zZ2Sgljhi2K9sFaPEM3I/oZVrROrFgrn9Eub7bO3COX7YDSb2giNVMKwLidVBJkoPAtMeFJxvcIaGD05jM33JIJQ0bC6K02DfGjXh5SeLyA1wCqsAclOGZ+WKcsYlGYACWjSEYbXcclzsHRtccYXfaPyyPLuQZw0GRxUk4kKzyqXS5Gszl3wTI6fQ/KPDmz2GGFsOkWJm+MgKotwloj9A7l015UqJ47nyypPWwkMROe1lfumJqcRUp9dCdl/XxH2XZPY4pKHAn1ZfwO3uEdIl9g5Z5xTr
+ 5gxhrCM6
+ 8LSzquhB3448pYBJYmmVLKu4s9ZJdHKt1euoD23R7ubYP1QZI+inWk7LWoH7xHghGda1rHyTTVZvpR2rA4ioFWUyBsyui56/Usp3tsTx2280nOxKTWzDGDrukHlvQRlJNGz9f8dYHX0qroURMLWYQF2PiFxX7WlAME6CgDXi2xiunDaXJ+e41LeDMTA4564ZnoCRM/bA88zkoouuOK8qpckoKTugUeY4Ajs2ROWq6o7Gbk73upeTV7JG7PGstofKWbm4O2CXPdMiMEFgfhSSyoIN8iPCXDSPNQTyOeKH6ydQllAM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,50 +139,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/7/26 11:28, Jaeyeon Lee wrote:
-> The plan was raised from 1 to 3, but the HugeTLB setup check that may
-> call ksft_exit_skip() still runs after ksft_set_plan(), so a setup
-> failure reports one result against a plan of 3. Move ksft_set_plan()
-> below the setup check.
+On 10/7/26 06:10, Kyle Zeng wrote:
+> collapse_file() can fail its reference-count or dirty-folio check after
+> unmapping with TTU_BATCH_FLUSH.  Both paths put back the isolated folio,
+> then unlock it and drop the lookup reference before reaching the common
+> try_to_unmap_flush().
 > 
-> Also, when the underflow check fails, or munmap() fails,
-> test_underflow() jumps to err_cleanup and exits without reporting the
-> remaining results. Report the munmap() failure as a test result and
-> skip the final HugePages_Rsvd check in err_cleanup, so these failure
-> paths report all 3 planned results.
+> The page-cache reference does not keep the folio stable once the lock is
+> released.  Another collapse can replace and free it.  With its PTEs
+> already gone, that collapse cannot flush the first task's per-task TLB
+> batch, and retract_page_tables() skips short or unaligned VMAs.  A CPU
+> can therefore retain a user translation to the freed folio.  This has
+> been reproduced with unprivileged MADV_COLLAPSE on a memfd.
 > 
-> Fixes: 827149aad495 ("selftests/mm: hugetlb_madv_vs_map: add underflow test")
+> Flush at out_unlock while the lookup reference and folio lock are still
+> held.  The common flush continues to cover the accumulated pagelist on
+> both success and rollback, preserving batching on successful collapses.
+> 
+> Fixes: 6d9df8a5889c ("mm/thp: collapse_file() do try_to_unmap(TTU_BATCH_FLUSH)")
+> Cc: stable@vger.kernel.org
 > Assisted-by: LLM
-> Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
 > ---
-> Changes in v2:
-> - Drop the duplicate ksft_perror() and report errno in
->   ksft_test_result_fail() (Sarthak Sharma).
-> 
->  tools/testing/selftests/mm/hugetlb_madv_vs_map.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-> index 1d111f42dd59..0f6afb834dbf 100644
-> --- a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-> +++ b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-> @@ -168,7 +168,7 @@ void test_underflow(void)
->  
->  	/* First unmap, this will close the vma */
->  	if (munmap(huge_ptr, mmap_size) != 0) {
-> -		ksft_perror("munmap failed");
-> +		ksft_test_result_fail("munmap failed: %s (%d)\n", strerror(errno), errno);
->  		goto err_cleanup;
->  	}
->  
-> @@ -203,18 +203,20 @@ void test_underflow(void)
->  	if (waitpid(pid, NULL, 0) <= 0)
->  		ksft_exit_fail_perror("waitpid failed");
->  
-> +	ksft_test_result_skip("HugePages_Rsvd check after child exit\n");
->  	ksft_exit_fail();
 
-That looks odd. SKIP + fail on the same path?
+LGTM
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
