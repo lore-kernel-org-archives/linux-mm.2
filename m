@@ -4,120 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE594CA5FF1
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 10:10:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDDA0CA5FFF
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 10:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 944376B0088; Wed,  7 Oct 2026 06:10:42 -0400 (EDT)
+	id F1F246B0092; Wed,  7 Oct 2026 06:14:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CDE46B008C; Wed,  7 Oct 2026 06:10:42 -0400 (EDT)
+	id EC9116B0093; Wed,  7 Oct 2026 06:14:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7966D6B0092; Wed,  7 Oct 2026 06:10:42 -0400 (EDT)
+	id DB8356B0095; Wed,  7 Oct 2026 06:14:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E23206B0088
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:10:41 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6450AC0177
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:10:41 +0000 (UTC)
-X-FDA: 85295411082.05.7CF65F2
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B6C461C0007
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:10:38 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="oMGUxy w";
-	spf=pass (imf18.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	by kanga.kvack.org (Postfix) with ESMTP id A85DE6B0092
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:14:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2A9FAC0170
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:14:45 +0000 (UTC)
+X-FDA: 85295421330.12.4341C43
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 72FB540004
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:14:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FB1Jj+4M;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791368083;
+	b=Hl0FBBoAAwCxcZVtfdn6dpji9zSOr5+VmSMDX1NHqEy8qJc7ZpFKosqRf3KS7dzrmz7LSe
+	maiQsUAvPglLWyO1pWFBEwl1HsvSgsZNssBmLB+wCZ3BVomVyuoI/RRX5+ZxJOeRr92z/A
+	0cHZo0zCq5h3/aTTqIPmkGJ585kuFVs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FB1Jj+4M;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791367838;
+	s=arc-20220608; t=1791368083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7e69kFUwkZGJvCU9G8Z+9oS71uNrW8NRzXwhyF1TWDw=;
-	b=OUlmzsfmI+1mAOj9zSNZSWnzS/NEtTq02WMrBjcvwGbxjdmp5FVjLT2xgRip549Jl6ABVh
-	csR00eDWBtoxx4DIdlKmAiMI9GTfk3m5RYylo3UBvZ9DyF3OhgAJeqY7PJhHIMJfcewK7V
-	4DsjR8sTfp9VPNCjNjavHqo/rUFf+3o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791367838;
-	b=4cYBH+4djIHVhMi78FZE5xdKeKTkgwToVNwBcyBJsgfbARaTN8lYwl07or8TwrC3Sh9S55
-	/3e76fW2EGJii8jd6P0MteQLBlcmAV8yE4d/qNX7v2F7UwK9uXF9kEor9OX5FUUpcKq0Cu
-	VJArRYifRJ+glCd1os4gSy1lUe8K3ZQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="oMGUxy w";
-	spf=pass (imf18.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=7e69kFUwkZGJvCU9G8Z+9oS71uNrW8NRzXwhyF1TWDw=; b=oMGUxy
-	wyLKL7FU/3mZQ2paX7J1caF6MGcfuGr0ryZoOJyqga/8K2AQNniwzYMTECAtjPD+oLE0cA5NYRvT4
-	5/DsFor5W4dFU/+N/7MSdYu2ZyqGc4yPYy0jW2VHANUM1f05mhwTS/dAWRVLaL0kzyKo0Z3H+0UcZ
-	ihNc1MipFUl+wabzzuJdRZjNx1fGPpXRyey2aagMz+4U6a9mwx3lK1I3wVmPGQOH2EHU85dpoERvq
-	JlcQ21X96iXCGBW6A8HLjsfYjchJ3Er8uZxz4Hux7JUEZoq2KdApudvEexZFs/vt5gKrbtP+LA7EW
-	U0CBadTtIzGSIk2jY4nEy0QxA4vQ==;
-Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1xEOZ1-0000000B68R-3Iey;
-	Wed, 07 Oct 2026 10:07:55 +0000
-Message-ID: <fca681e9e9af66c8bbc43a181409ef44a24d9250.camel@surriel.com>
+	bh=sN3INHehnuwIqDn1zYTsEcVzsGRL6CVhM7/fVLldTGM=;
+	b=m08ilGlG5tr/SH/Qa51BF9A7Oifg3ZxZ3t1g17GCOF9JRlwY7hVmVcMh5z8P0o19LUry3Y
+	+zkCYNc9Lay/p2gwfidsWfEAy66ov3YWhATRDERMiYkBR3U6HJv8AXFnSZcNF1CnCeJVc9
+	FuRdoqLFcPX+lNdoBWK6/AcUPPsmRkM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 03A24601FF;
+	Wed,  7 Oct 2026 10:14:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D93F1F0089C;
+	Wed,  7 Oct 2026 10:14:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791368082;
+	bh=sN3INHehnuwIqDn1zYTsEcVzsGRL6CVhM7/fVLldTGM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FB1Jj+4MqHujCz0zvS22SPjFGFSsrXDGCuzOjpgQtN013w5rV851tYy9C0wVlN06g
+	 lVn5pGnLwSETgHOitqZIdyTEUqJMMO3NsQP4bC41zsn3cel3w28KDQ9Cs2dV3B6EF7
+	 r0l1ehCejzQ7Ks/+s5Y3vKko92Y5IXQ3im5b9IDIOJtpIomIAMdUSONUYVbcUIko3w
+	 H3HQ46u6TcHOOKEdmv8ZjwYHfPgmTnGv66RuTTCXWdHaSO+/+JRVPbTBDfai8JgsV2
+	 cHXB8qFuVtQcG/bBwx5f6Oxpp6gP/dbtOnd507ief8+REiIGtByOhxqihIrCMcwhod
+	 6ncGqIcOqpxPA==
+Message-ID: <36599ffd-8f7c-43e4-8ea5-ddef02a77c08@kernel.org>
+Date: Wed, 7 Oct 2026 12:14:36 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/gup: batch PTE-mapped large folios in
  gup_fast_pte_range()
-From: Rik van Riel <riel@surriel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Yuan-Hao Hsu
-	 <aa9736195201@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+To: Rik van Riel <riel@surriel.com>, Yuan-Hao Hsu <aa9736195201@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
  Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
- liam@infradead.org, Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Aristeu Rozanski	 <aris@ruivo.org>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 	linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 07 Oct 2026 06:07:55 -0400
-In-Reply-To: <f8f6d553-d818-4cc6-a1a1-a9c9149a17e9@kernel.org>
+ liam@infradead.org, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Aristeu Rozanski <aris@ruivo.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260917083747.786-1-aa9736195201@gmail.com>
-	 <f8f6d553-d818-4cc6-a1a1-a9c9149a17e9@kernel.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
-MIME-Version: 1.0
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B6C461C0007
+ <f8f6d553-d818-4cc6-a1a1-a9c9149a17e9@kernel.org>
+ <fca681e9e9af66c8bbc43a181409ef44a24d9250.camel@surriel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <fca681e9e9af66c8bbc43a181409ef44a24d9250.camel@surriel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7u886knehyiy83q88z6wjk6gsgtb9nqh
+X-Rspamd-Queue-Id: 72FB540004
 X-Rspam-User: 
-X-Stat-Signature: sjps7jg8r4n4yzabnksszxpceui18hiu
-X-HE-Tag: 1791367838-7718
-X-HE-Meta: U2FsdGVkX1/xHWvsI78plB1QtFxi/5Bd42igyEhvZVoYC468zckXQjDvTYGQbLk1y0MSpgCdRAmuEsoXnr4eVJATrkj8kbIeWn5YpJ3uPm8SpAmxOMAkYZgbVG2jND2AjwfHKhZIGHNXOYWgLiIn7+gaYJsdfF5WB+hGpeZNLBAqzAQgbrfRdM1EWJO1jZZrgo29qNbVBG2luziL2rG6vJiyvHDuoJcpLr8/Ty6Y2q8vXOc6hkyxtzla74gvFVkXGuzOfd/ON9nBpoDDXBq4h1nPy6ibuOutV3BL391Wy/T58aBBZurPCAIwgWeQvjc4QNVCyFg2Z+nqARuG8DiP/WUevw10OHVI3EgcDuObnYbrGQ/jNXn3ChdUJQSziEBXjVcwF9XrHPaLfoTbGMGZLEb1OYxiO3EOpiv/K8DMrusg/xMauRFLP2WUMZBgN9CiTra/JeBHQiWrF5z2j2jfpLbUg/24p5RpJbP8Sp6sLiC6zMAbUfKyCRtmZhBOvBNlqw/92CFf7hHHWLg/KLCClqGGt3+2nd/ue0om9kaz/jDfUCI5yWMc4LXXdieeC1EVHKMMjrmkFatPgcALPIXr+5Fu28jJUzBQytJSCpTa4iRtMqENJMpcmHY9EWhZutOSM9/CBaBYphs+FoJdaqAgmtMk+/bKh26Q4lOHpQLszDUJdXV7Lx3+eTbaPypih4xiydmNcK0QSglExrRdKKABC48XuDSHEde72ONdh0jF+0OKnc8rZOjDsVBcUFIR57vDaiiaCgMp3A2CIwqffbUhuTCTjvXDLBNfk4xLzvhvtByxmjn2GsG7Vfy6+mD9GrfvkRv+UTq/kL6n6GEZm1uAHOQpfjhVzO9WyAFCT0gizCSd6jyjjqrQrPsJhfE62X2i6KDUtWtMumF7Y7V28ueGO0QJfqenZOnAiZKpVQv9j6WD4lNQslqWxOWhJhWoBSTgWc3Zvm7YLf2vPAjheek
- MwUxO+52
- lk12beSQNeu5RDgo7rEYUl2WkviyAePtrwmY/xAB/qM9UpQtxgYriJFDJ97Lfc+SzPIbJrCpqhvgf61pa9GQdjqNKCZLFYXqiNULGYITQUQjTxtoadHCkPYDifcTUkddFzylZMuGN3EMGcA2GhhE+7dCgZarZJj0Iz2RMXDxoX73Z9EEqqrAWwoc8gkDQdly/PXflJQQVSflHTmn6iVslcv2jCd1THUmWDJlM9Z7E0ocnYwt0+9+cXA5Y6y3vwBjwca9SLwQOhUKfjGkU45zQL/Jgon+BQZ/7ihSWSqYjZVXow9q7Dw9Z383T637yKQK4aoVt2TxOc6Jc8EE=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791368083-153530
+X-HE-Meta: U2FsdGVkX1/a+ZiXVhR+WE6ahglBrUL5UPr976UmrqT4vqhxUauwObgkFtprHU6mlxLXKOAp+6NfAVfNOyo1u6qUce5L/UJFgPGIur/Zg/FBymG53p6oTCXow/4rnGvGx6TB8KdJ2exo9snukHH+RzLUYL6qJnqQ+BVmPgaN5GVDOJhe4M6h5sgBAvzJBBGL6iD5QrYYHWDQSCWjbqfCMbQJJhxiv82LoS61rv4oFXXjdKrEtGw0p8KCYHUrcf1WCLay6/yjwHI1c8FHk4DQw63gM8yNE+NyVmz9JxKwC7qVCqr44rE77rM27Gz6aG9+QynSlhwgkgZRHueWR6HLWmlBywcJrdWsXpK5MPJo7mVH1NFPGB7pnt92ogUAGhtgV2a+Vs7Lw51jG/PHnKalaxlSptvq0WF+K3GVOg2PuqMFIPkh11rdzx0G8oKm125sWiGeCEk0NQonp2M21KNMSnNVfxT7vxl6EChVqTBMDuAB/JSeXK8U+/UOswUlus3rHKh6bTfEkHtJqPVrnu0H/r2A/WXmHYcPl8pZwyojewY9rYsaKgHCWxmP0uuYaesU8ZSKoPumk8RtS9F6ETQ40JZRCKHlFeQWDm9wHNTUXALuRPUL2WAoPzDRlzI5u3cyMtTyNOABa+eAuXMWdXsYEw7CqmqxTPU4KCzc9zNiwv/nP6owTuWuh4J4xg177MMoP6YgCpsJOx/wjCH6Y178Qmck6ucowCcFBpgzcYFNFUdD+2dkFdAxE5ahjzJc5APYjMp53teAZWTezfQ7pFEWIJRR4ftOjFAiqqzG2TOw0e3C0eQAzU2mF3PXxXxVaxcBFmMhle8r/q1dJ+ymTW1YKzpuizUid/2dp9yJqlimHSVHiokYQboRjG/4QLlW1wyrNVWaDtlLxqh0+B0YiCDwxNBvOotOUAhgpXgNpYzqVpL/f7fRyAN4xwoaIi31OnP4qiNHGWwLpEBqPPQZrEO
+ p8FWCknG
+ klJu5Giv21A1hrj5jmaxRiMvqrUAACW9sGTFLd8ZVQorytR5N7To60iZbj/cJMDmRQ/vNb1Q1VjtI82QLNKVvmheYkBQKk0pAVroHQgK06N57gNd7CxSgneWgIigz3Ei7AauZpzBl2w2IRHjPm4AdWXumphIEdApR+08XiN5l0Q36DGyNvmxTxSOSvXlFO5Wr1zy+qKgJGTEso8FwlBjirkBKkrHwA6pzD5muvYi9645FB2K9sJHEojILOOenRsMreT+niZbmCtQpg+I46A9HSbrmNwL0B4mvZxsC1d02XpjiBSymhnWn7+52OjkUmSI/lf80X7tEbxdOWP8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,46 +146,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-09-17 at 10:42 +0200, David Hildenbrand (Arm) wrote:
-> On 9/17/26 10:37, Yuan-Hao Hsu wrote:
-> > GUP-fast grabs a PTE-mapped large folio one page at a time.=C2=A0 Every
-> > PTE
-> > costs a try_grab_folio_fast() (a refcount cmpxchg, plus the
-> > pincount
-> > atomic, a full barrier and a node stat update for FOLL_PIN), a
-> > gup_fast_folio_allowed() and a folio_set_referenced(), so a 64 kB
-> > mTHP
-> > pays sixteen of each and a PTE-mapped 2 MB THP pays 512.=C2=A0 The PMD
-> > and
-> > PUD leaf paths already take the whole range with one
-> > try_grab_folio_fast() call, and the slow path is getting the same
-> > treatment for PTEs in Rik's follow_page_mask() series.
-> >=20
-> > IORING_REGISTER_BUFFERS of 1 GB, median of 15:
-> >=20
-> > =C2=A0 64 kB mTHP=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 6179/5998 us=C2=A0 ->=C2=A0 1599 us
-> > =C2=A0 1 MB mTHP=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 5790/5801 us=C2=A0 ->=C2=A0=C2=A0 893 us
-> > =C2=A0 4 kB pages=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 7173/6741 us=C2=A0 ->=C2=A0 6763 us
-> >=20
->=20
-> I think Rik was already working on this and sent some patches.
-> Anyhow, there is
-> quite some GUP review backlog I have t go through, so this will have
-> to wait.
+On 10/7/26 12:07, Rik van Riel wrote:
+> On Thu, 2026-09-17 at 10:42 +0200, David Hildenbrand (Arm) wrote:
+>> On 9/17/26 10:37, Yuan-Hao Hsu wrote:
+>>> GUP-fast grabs a PTE-mapped large folio one page at a time.  Every
+>>> PTE
+>>> costs a try_grab_folio_fast() (a refcount cmpxchg, plus the
+>>> pincount
+>>> atomic, a full barrier and a node stat update for FOLL_PIN), a
+>>> gup_fast_folio_allowed() and a folio_set_referenced(), so a 64 kB
+>>> mTHP
+>>> pays sixteen of each and a PTE-mapped 2 MB THP pays 512.  The PMD
+>>> and
+>>> PUD leaf paths already take the whole range with one
+>>> try_grab_folio_fast() call, and the slow path is getting the same
+>>> treatment for PTEs in Rik's follow_page_mask() series.
+>>>
+>>> IORING_REGISTER_BUFFERS of 1 GB, median of 15:
+>>>
+>>>   64 kB mTHP           6179/5998 us  ->  1599 us
+>>>   1 MB mTHP            5790/5801 us  ->   893 us
+>>>   4 kB pages           7173/6741 us  ->  6763 us
+>>>
+>>
+>> I think Rik was already working on this and sent some patches.
+>> Anyhow, there is
+>> quite some GUP review backlog I have t go through, so this will have
+>> to wait.
+> 
+> My patches are for the regular gup path, in
+> follow_pages_mask()
+> 
+> This is for the gup_fast path.
+> 
+> Unfortunately there is some nearly duplicated
+> code between them. Last I looked I did not
+> find any clear ways to merge them, but I
+> can take another look if you want.
 
-My patches are for the regular gup path, in
-follow_pages_mask()
+We'll likely have to keep it separate.
 
-This is for the gup_fast path.
+I looked at the patch here and it needs quite some work do do it cleanly. Too
+much for me to comment on this, so I'll likely end up doing it myself or
+delegate it to someone internally.
 
-Unfortunately there is some nearly duplicated
-code between them. Last I looked I did not
-find any clear ways to merge them, but I
-can take another look if you want.
+-- 
+Cheers,
 
---=20
-All Rights Reversed.
+David
 
