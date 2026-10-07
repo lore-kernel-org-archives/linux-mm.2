@@ -4,136 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F00ECA5FF1
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 06:52:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DF4FCA5FF1
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 06:55:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86EE66B0088; Wed,  7 Oct 2026 02:52:43 -0400 (EDT)
+	id 519AC6B008C; Wed,  7 Oct 2026 02:55:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 820E96B008C; Wed,  7 Oct 2026 02:52:43 -0400 (EDT)
+	id 4CA966B0095; Wed,  7 Oct 2026 02:55:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E7DB6B0095; Wed,  7 Oct 2026 02:52:43 -0400 (EDT)
+	id 3E0266B0096; Wed,  7 Oct 2026 02:55:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 43AA16B0088
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 02:52:43 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C37C8160475
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:52:42 +0000 (UTC)
-X-FDA: 85294912164.09.C224DD8
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D46D4A0002
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:52:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Q/7Hlr9V";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791355960;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 192906B008C
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 02:55:47 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9DDA780409
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:55:44 +0000 (UTC)
+X-FDA: 85294919808.24.E16C4A0
+Received: from mta0.migadu.com (out-61.mta0.migadu.com [91.218.175.61])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7F1C0140006
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:55:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=upkzkViQ;
+	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.61 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791356142;
+	b=zcUnFvv7Xx93jHPB0WBHWg0aQzDlyOSokx5+NuBoehIzwx6falzMZJkXCWmLEWjKaj0ERx
+	Lp/I+BLvX8j+pvITpPTRr6Qq3Z12+o7gWBtDwbKBFqiH7xYLqqsvnbF5tOns2oQ8yHdFDF
+	dixOdnBCYZLqmZ8ZMgiYw3jxThmdbQc=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=upkzkViQ;
+	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.61 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791356142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uYZ+FBTj4p2YuPmZrlm8klRINrPApDEDqaINJavTZWk=;
-	b=75GchonHX4TL9Qvr4mSJc2n+dmKELxAvVwVb+Ype+qBSk6nxCfLlWithFZTrptJ433tAMC
-	vNdawN0vrv875zVc2O3GIOm25cVt8D7H2AkzlqBYvbHW1rIIAs/DTHfNUBmf4utNhJJ3Wf
-	wCWU1Cu618lIIOSDdwek0BZFZg3exhc=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Q/7Hlr9V";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791355960;
-	b=ZZ8aHUlaxMJVS/lfsxIBoCfoBJhfcjZnJFk3tVGFXR0haixA7MXE+uai3ymW0bW3GeLXpX
-	wC5nEd2bwLfWQyLtdzZk93vhMyJv5ph5hAcaoox9V2KmvGVsrCEpN/jHGaKP6nFXgsl7QR
-	H/M0z4xxzy9PxcZVbrs4P4LMdIxI8rI=
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c2acc1e170cso220413466b.1
-        for <linux-mm@kvack.org>; Tue, 06 Oct 2026 23:52:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791355959; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cGGAH7Hqm/3NyfUV68VcMg43IFa6g/8QWND9+cSc8izRNJUnRxA2BWNez7eHcmoi2/
-         j/4aYE8Kd5VhAD5HcOjUrfasZOoYso/abeQl/rmKD9zK59N52Srz7azGDJ8oMWS6r6jV
-         qTD6Zs4X7hXnTTMVEyCN+rvyTrVpQIXawI3OBUu/7s+GHl23/h3fW7AoNLn/9i8nVb43
-         DC153i9H2CPV0DY5ne6OeVzbTPcOdthIOOdIieLsIKUSZjjiWbblAIM+K1+xP1Av1EZX
-         /GP+bmFiI5fn/OTu9Ih34MwvtdeeT1ynspQeGedgl/OurWm9hq5RWpWil5dM5Hmyq+YQ
-         hP6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uYZ+FBTj4p2YuPmZrlm8klRINrPApDEDqaINJavTZWk=;
-        fh=7hA4/DtOkRXrU+dD6PZgS5g/08x4uElnFZrA1GeomiA=;
-        b=jSrK4PDhLuN7hI/ngCw2YO1ZgfAWtWKiHILfmP2oe7AMqRUJUphyCw03Mvur5fDI1C
-         Ep1j+iGRrYZGAw+GD5mREMkYtslxxA2lCNnPJEv8sOQZlIcOl9x51U4NrsPxdT6aWYbO
-         Wfw7xyXDQEchrGB8ji80UwdOWaWljlDe0Z58jPsIjiqQv2WP2UftDBf1RIYD6XeP1sD3
-         imb0xt4a6klKSHp///Cm8BlnLWVAc5UB9tiknDqUo1gVII90kRejj6wFt+Cd5ljOTf82
-         vjmCFTri2ODbmnZXgJFvBivOH7oVxTlGP6JYiKiK/Hf+WJ+SnRE1c1mpWXofh4CAMu0y
-         YHaA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791355959; x=1791960759; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uYZ+FBTj4p2YuPmZrlm8klRINrPApDEDqaINJavTZWk=;
-        b=Q/7Hlr9VMhBX3gSDkF2/UuewANTI9i/UFagyh9oU+o/aiE5/2vTVsTez4iUAYW/szy
-         FljQPPMLr+lhzYLFNi1MeGq1wkTMCPfLkZlZHDSF17aztoaiUYphfd+hr6NaVhhpuXCl
-         WDY0H/FgK84rKr4bZfzonO/TSb+mVUeAY8+LyMDk/qhrvA9Xev4qO/dRjW+Mr/r+FAqs
-         16YHhN8H540zky4XRoC7OG1PoI0feWYbuTvx3EfcygCwIxDt9ineLpPVjpZa+1+6oYl6
-         mmSf9Lw1UqOrUbjliNpbl7LeUA/l+wccZagaCHCGiQfhgTKmUM+3ifOEWSIN+QTRiIRi
-         88Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791355959; x=1791960759;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uYZ+FBTj4p2YuPmZrlm8klRINrPApDEDqaINJavTZWk=;
-        b=U8s+tSr+g84BDyK8KiYtxPMUfcNZwHHjMczMgGmZHWKKtTkIJBTPqK90SyM1B+2RsX
-         RcAokvyGEe/ZbQwRGvDV5G7J8HwEPtNgjA1c5G5YWoYDEcRQ2sHZSB/FqR/VJ+1R2gPW
-         wSW9lL2ZCttt5OZymOw2OXL6M1u24RH1JiBQdjCaVgK7a7Cr9xDTPm6jJooTMcHxw6F9
-         /l6+pHutUYBPVC8IQmrYP3eKJWaCdsu7LX645w+0APv4b6lLGjiHlGecwONXJNPAkE7/
-         CXmSEvvusV0dT5OtMqctQZgsXNciQM4Sl0fQFaKqzsF3BPFmztqfw9e9V4ndsIxqtv7Y
-         AadA==
-X-Gm-Message-State: AFuF++nnrbA52DnuKt/e8wXVCkJz/u6HdCqeQxXXWrHpJrgkGzcPsEvk
-	rA2BVzd2bh5ZcbPy+YCMVHNaROBqWct/w/ShJwovKUDMy/33owvdA0bB4MuJNxWvXgFce2rXUgX
-	UuCAvhG4VNiCma23OBK0u9L/Z+1dyYPs=
-X-Gm-Gg: AYBFou0c3NgZFlE4DqtasyWPaf2rvry3mV+5MA1AisHqdUfcSL5qsXPjukmP8/hZrCI
-	9U4q/ORLHcJ9P4iKASEWv8G14i8v7Jz5NjD4GFyFnILDlUGQpI97psq3FhR9SUP9bYW9IBRwIhx
-	mjf6lHB9nevLm+poDQS4EWvMhmHOLB0K10Ewp/yGYoMi9MegICOn4nDuSevXlN+OLQ3pXS588Dc
-	V1rms0DxY8kiJqi7bMtqDMgeMkMC6wsZJoCYO7QpHoKtkVmAqfHYzToa+hGsKD7UMXK3AcH9YBH
-	UQqmN2upIMbEj5xIm3+iLlzqG4E0bc+IJ+M4sQn0HwrXRehE+tj1cIZW
-X-Received: by 2002:a17:907:7287:b0:c2e:2252:6ddb with SMTP id
- a640c23a62f3a-c317bdd9435mr113132166b.10.1791355958731; Tue, 06 Oct 2026
- 23:52:38 -0700 (PDT)
-MIME-Version: 1.0
-References: <20261003003136.750633-1-hebaoquan@kylinos.cn> <20261003003136.750633-6-hebaoquan@kylinos.cn>
-In-Reply-To: <20261003003136.750633-6-hebaoquan@kylinos.cn>
-From: KunWu Chan <kunwu.chan@gmail.com>
-Date: Wed, 7 Oct 2026 14:52:26 +0800
-X-Gm-Features: AclHuK-taMBfGgP6ilA4RKTlY22fCTFMUrc-YlRCy_S-xkzHcMNC6_ARSFLYr5o
-Message-ID: <CAN_Opa-1qu9q1wzKy65sBpHBfYHqF6GzxbS-hZx9R=a6-qW9dQ@mail.gmail.com>
-Subject: Re: [PATCH v4 05/14] mm, swap: add xswap grow trigger on cluster allocation
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
-	kasong@tencent.com, hannes@cmpxchg.org, nphamcs@gmail.com, baohua@kernel.org, 
-	youngjun.park@lge.com, yosry@kernel.org, shikemeng@huaweicloud.com, 
-	chengming.zhou@linux.dev, baoquan.he@linux.dev, david@kernel.org, 
-	linux-kernel@vger.kernel.org, klarasmodin@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+	bh=qiiOx/JuFyugym69lApK4/HuiVutmdA0om2H1/BVpTA=;
+	b=IYrrbtb5mTiz6cD2P8b18uXqObuEgxvcTjEQ0lewdUd0qWyuWBe5l09Cdf8GNZiOBiwDeu
+	MbQFXd/MGXppiLOaN8IJ2Jt2qQYDrL9TSzKf8zLzdYNdTLyKhv1IM2BOnirDeadTafQ25h
+	9GTG9G0N8yPPmc3KxNaafrO+geDZO7U=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=ToKfNOVp2qvFnEYXZ6nvsN9uzB66hA/JPYJkqLxPvZs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791356141; v=1; x=1791960941;
+ b=upkzkViQXmYtdYcYGawtBOd4kYUxuHTmfdVWzlY6Hhc5SRa6cNKz5EXfDTsPm3M/W8KAGp1S
+ BeIQQxkyvUGteVedy7lSehNqth2W/lHZX2aHkvH+Cwdh8FDOtMNsvEvPp9FiSTGJPnT9x8Ci8B3
+ Jj2gkLg/tBxJ1C5jJi3juC5w=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id af8f4c7b60dce85b;
+	Wed, 07 Oct 2026 05:10:41 +0000
+X-Mizu-Trace-ID: af8f4c7b60dce85b
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D46D4A0002
+From: Muchun Song <muchun.song@linux.dev>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH v2] mm/hugetlb: use kvmalloc_objs for hugetlb_fault_mutex_table
+Date: Wed, 7 Oct 2026 07:10:08 +0200
+Message-Id: <5714BF9B-9FE3-41DC-A215-EEAAEBD7F9D3@linux.dev>
+References: <20261006160128.31447-1-dheerajkumar.srivastava@amd.com>
+Cc: osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org,
+ davidlohr@hp.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vasant.Hegde@amd.com, bharata@amd.com, dheerajkumar.srivastava@amd.com
+In-Reply-To: <20261006160128.31447-1-dheerajkumar.srivastava@amd.com>
+To: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+X-Mailer: iPhone Mail (24A446)
+X-Stat-Signature: p1nfr88pdaada5fkf88x4ao8gqxkakae
+X-Rspamd-Queue-Id: 7F1C0140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 1dsndoci3kp6m6pm4ekqem3wt6i6rds4
-X-HE-Tag: 1791355960-852702
-X-HE-Meta: U2FsdGVkX19AUbmfzw01gjMyvOPfEwCXL3uALypjPAl+dpGXJ1cyIzIDHTi+BJ2hFeNEwNV60phAfqHJNQWjz81DdiCkpw+5SUwQ6VhNS2kCRjd8g4qZVzEAr17UY1rsghqhGtPv8qYdDz+wyWuj7HPxEO8fmEvRn+GHEpgaH4PD4UslXvCTTxbvJ6buNJyMf6gkSEQKUmY7cXWeo3rm+PYpOZOMVjMAZArRUKT4eff1lZgJrB/Kgfc1hqTZ2qrmm02SetyKx/mgYADeDzRbd/O3LdHKrPKktXwD2rRuluVusOJIeqQ6RfeMCvLRXu4txN6rejrzpUmB3O3woWGtujKym64jv3G0vrsKTGuLpwu+O1l0bUNu2p0iML+F5XgpcYOMjladoIGtPTw/vLRh/Hq99WEtZhrg+nc4CT4NXrP1hm+0UE7IBHykSefL5jZtAHWStblOxuiqPQmS4aJAMqHEsha4fZfUdcBjARD6Q8avPl2MT3mBOib2GqBXQTNjSygHqmhAwCo6cDmQPDWLK0z9BDY0e66tWMIao9edpwOxkEuAtWpibOoFVe/2SMgMkNdhcphFgjnlCRgZa3M89D/7+mGFvLzpjUxbg4qTx8Oaz7k4XRIYFFhs21vqtKpIoZ21OvbGWDnFGlVl/LUPmvIfpzr6wxiEqM9lgEyK9/+YBuKtFmftgmS/Pj+SoCt8gRJcqp0QyWKVQj89S8GiEjgKLL5fy9BKvd8oXuqtV8hTQPxCi0D6pd5q7EJAjrC4oH1UEvMvVMrIepaDJTQO8ciotg3QZvc94B+xw8XsP8A6/I4AbuOYfh9RCDGZyaYpEzrM53jUrC5CiZMbLJgCb16wgo0V/PpcF4vGpLFLU5N4IJ3apc3wUEkiL55pjJ8yYaIPVYyH/cQ7suJb3pimhrxYlfpSsUskUWAQm8e8xz2SkRl4eqEA9ZcZ/bKaGeobnmn1Cu+KteQXEacIcPW
- SIxAKwGM
- FAvsrc9Gx9R+losS311jpKHtD8Jk7eV/uB8P8f1sObrJ0DPtUJq+JzChijQumMrN+kHaTVcSLGTiyfBUudMLploIADArwlAI5IQsSZog0RPtIYaIdpgZkR6JkRN+tZCgHgBXW4jdqYqGHMFMbo9xLG9wJixHUA656vD9K5QjjosjGkK3WWLrZiplb5lCl8iBWjHAv2f906Yvmqh5+ULy8Frme3RUKtroIXgFvA4+upKugA+PWwmoim4Oa11Xwcgy3lkVYx7NMRffxDQm3EmhO6ZLGKLz93TQJ302RBbuxguGuWfz0/IudGrg6eNV9SbLMO4j3Vx/jHDxwVo+WTVBdarS1VWem7OIhPk1J5vcm6i/G6R3EqvKMJ57RvxykVnV3EO0LhCkjvc3RF419+YvpKmMi/yv/dNjU2wpA6fgW+eeWznH3q+QE5OC2CQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791356142-941043
+X-HE-Meta: U2FsdGVkX18z2ffPNlPakNNxlL+WQj5mYzYMcLOm+FwhyWCrqu5zHQDWpD6v9xnHnAmkrG05flR1NkYkYMiC/IPefa7LOnl+lf+YHNAsgRWuMdPIWaqV3edm+kpISqDGHX/V1qPWfDLbhKv5iNZTvNLj9go0hWOYpO3tdOhvqQbCvPmkdc4/PBdr0dxEWad4yoV1WaEhpiuHp1bElSMrMb04WjgPiE2QF6iEM58AYzgVf0G8oZY6ahfw8+BCylAQy6ph/CW0LfDQ6eDXG0WVR2Ev17sFmEPUmADDnrFYnziPySfwYMtKw3j06ESAuThkmk+fXrHvpKSNepRovx/YZEAVK8ZmIB+UXZGnxvsHEpEmEY1ZSSLDAN4pHhFOWZJKjANDZ9FntQGynUQT3FOPdaAol1rASKYOY/H4PVUs/B4SRSOmpLhc2o1Eb2mo33lt9egLsYTiQlpV1PeEyQmU9G6LCn2Fou2aDjPDBlWjU1cA/ZBAq1jTgdS4TKQ198RqWtZtMX2JPopuOn7Vw/INlJufYnQayPG/iCo2/EGr9rXEg1ELRqrYJJjw8f1PLZnf7EPzMz26OaxJXMnu7KtKRvbZ4dYFF+Yz50XXmaviSLPBfY5LJrYH+eDtCZMijwC7l2epmsL0wnfa5vdsRfLSSCX81/8ih6lzjFf39FatVoc3leJ0ryDa/EAx6P2t1Dzyp5J2OPeWvpf9X4G3cgMN0weui0WynoLnVJFpJPjxmFDX4IKXsMnuBZjI+sDJhFz+vaeNII7K567w3tDyiuumwDNpeTAeUTSEQQ0ErfV1jDZfsqGhjBNhbl1g8FwasUzI5YJ4IK8Pob+A967FIkJSVtSFT5TA3wDF7lX6X18XxWV4yx0+fU6/NcLtnPjZG2HlX7MGphWzPhp9I0F+DS53r3bNOFMcLZ6A0PyAg4KIi68ZT8zIKNgX8PcTHC9XFHHPLkqiJQDzgzrQRsIp268
+ BYgU/5TJ
+ SVzgLcfaar7QbSKsu2UAMNukvAWtST59Oa2eO4AFk/IwafnZiPW+eJyHItyY5C+A4+PA52xauMFDE7noqoVuwq2TNBD7ymN7gT0HOCAVyUrZG8jrERQVBhsWel6lIDhQSVO+bbbp4lBertcb/KnQemXz0HAeDde5wQJ3qcuEbpLsLIIdPW9gxND09u4agFcydOfKZQ0ePkHYoIgNXrw0ppas2tVoG4ClwHhMWc1E1qdiNfN1pB6uHmSjENPAh3WFzf8fYnzkj529Bn9nBK107d/ypBKcRO6z3p9d7OwhQ6rN/nhS6c5uLFrDY6vDwEdTRHjD7Oje6mD2D/qLBNahMY/9ZY5Bp6kDny9cc2xn+C7FwjluH86QZVX1KZWdoFR3hOTF5rayKJDWdl6RpB0juSYtRKnd642TwAFtoomp+xdvxB5ctxfwliUu90rAHWWpiuGawJxX9ROkoYbnbyT4m2RJ4HA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,197 +91,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 3, 2026 at 8:32=E2=80=AFAM Baoquan He <hebaoquan@kylinos.cn> wr=
-ote:
->
-> Grow the mapped range before it runs out rather than after, from
-> cluster_alloc_swap_entry().
->
-> Growing maps pages into the VM_SPARSE area and can sleep. Doing it from
-> the allocation that would otherwise have failed puts that sleep on the
-> swap-out path with nothing left to fall back on. Growing at 85% in use
-> instead leaves the allocation that pays for it a reserve to land in, and
-> leaves one grow's worth of room in front of the next.
->
-> The target is 65%: past the point where the shrink starts looking (50%)
-> and short of the point that triggers the next grow (85%), so a grow
-> cannot leave the range in a state the shrink would undo.
->
-> Since xswap is always SWP_SOLIDSTATE, global_cluster_lock is never
-> held on this path.
->
-> This makes the xswap cluster space grow transparently as swap usage
-> increases, without any userspace intervention.
->
-> The caller holds local_lock(&percpu_swap_cluster.lock) across the whole
-> slow path, so drop it around xswap_map_clusters() and take it again
-> afterwards; it only protects the per-cpu cluster cache, which this path
-> does not touch.
->
-> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> ---
->  mm/swapfile.c | 93 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 93 insertions(+)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 9c204e455ef9..45050f8a2ed8 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -70,6 +70,19 @@
->  #define XSWAP_GROW_CLUSTERS \
->         max_t(unsigned long, PAGE_SIZE / sizeof(struct swap_cluster_info)=
-, 16)
->
-> +/*
-> + * Grow and shrink thresholds, as a percentage of the mapped range in us=
-e.
-> + * Each one lands inside (SHRINK_WHEN, GROW_WHEN), so neither can leave =
-the
-> + * range in a state that wakes the other up.
-> + */
-> +#define XSWAP_SHRINK_WHEN      50
-> +#define XSWAP_SHRINK_UNTIL     70
-> +#define XSWAP_GROW_UNTIL       65
-> +#define XSWAP_GROW_WHEN                85
-> +#define XSWAP_GROW_CHUNKS      4
-> +
-> +static bool xswap_should_grow(struct swap_info_struct *si);
-> +static unsigned long xswap_grow(struct swap_info_struct *si);
->  static int xswap_map_clusters(struct swap_info_struct *si,
->                               unsigned long start_idx, unsigned long nr);
->  static void xswap_unmap_clusters(struct swap_info_struct *si,
-> @@ -1204,6 +1217,17 @@ static unsigned long cluster_alloc_swap_entry(stru=
-ct swap_info_struct *si,
->         if (order && !(si->flags & SWP_BLKDEV))
->                 return 0;
->
-> +#ifdef CONFIG_XSWAP
-> +       /*
-> +        * Top the range up early.  Every path below leaves through `done=
-`,
-> +        * so this has to come first; mapping pages can sleep, and doing =
-it
-> +        * from the allocation that would otherwise fail leaves nothing t=
-o
-> +        * fall back on.
-> +        */
-> +       if ((si->flags & SWP_XSWAP) && xswap_should_grow(si))
-> +               xswap_grow(si);
-> +#endif
-> +
->         if (!(si->flags & SWP_SOLIDSTATE)) {
->                 /* Serialize HDD SWAP allocation for each device. */
->                 spin_lock(&si->global_cluster_lock);
-> @@ -1280,6 +1304,12 @@ static unsigned long cluster_alloc_swap_entry(stru=
-ct swap_info_struct *si,
->                 if (found)
->                         goto done;
->         }
-> +
-> +#ifdef CONFIG_XSWAP
-> +       /* A concurrent free or grow may have added clusters; retry once.=
- */
-> +       if (!found && (si->flags & SWP_XSWAP))
-> +               found =3D alloc_swap_scan_list(si, &si->free_clusters, fo=
-lio, false);
-> +#endif
->  done:
->         if (!(si->flags & SWP_SOLIDSTATE))
->                 spin_unlock(&si->global_cluster_lock);
-> @@ -3909,6 +3939,69 @@ static int xswap_map_clusters(struct swap_info_str=
-uct *si,
->         return -ENOMEM;
->  }
->
-> +static bool xswap_should_grow(struct swap_info_struct *si)
-> +{
-> +       unsigned long mapped =3D READ_ONCE(si->nr_clusters_mapped);
-> +
-> +       if (mapped >=3D READ_ONCE(si->nr_clusters_max))
-> +               return false;
-> +
-> +       return swap_usage_in_pages(si) * 100 >=3D
-> +              mapped * SWAPFILE_CLUSTER * XSWAP_GROW_WHEN;
-> +}
-> +
-> +/*
-> + * Map more of the cluster_info array, up to GROW_UNTIL in use.  The cal=
-ler
-> + * holds percpu_swap_cluster.lock, which this drops while it sleeps.
-> + */
-> +static unsigned long xswap_grow(struct swap_info_struct *si)
-> +{
-> +       unsigned long mapped =3D READ_ONCE(si->nr_clusters_mapped);
-> +       unsigned long nr_new, want, i;
-> +       int ret;
-> +
-> +       /* The unmap below is paired with the caller's lock. */
-> +       lockdep_assert_held(&percpu_swap_cluster.lock);
-> +
-> +       want =3D DIV_ROUND_UP(swap_usage_in_pages(si) * 100,
-> +                           XSWAP_GROW_UNTIL * SWAPFILE_CLUSTER);
-> +       if (want <=3D mapped)
-> +               return 0;
-> +
-> +       nr_new =3D rounddown(want - mapped, XSWAP_GROW_CLUSTERS);
-> +       if (!nr_new)
-> +               nr_new =3D XSWAP_GROW_CLUSTERS;
-> +       if (nr_new > XSWAP_GROW_CHUNKS * XSWAP_GROW_CLUSTERS)
-> +               nr_new =3D XSWAP_GROW_CHUNKS * XSWAP_GROW_CLUSTERS;
-> +       nr_new =3D min(nr_new, READ_ONCE(si->nr_clusters_max) - mapped);
-> +
-> +       /*
-> +        * Mapping pages can sleep.  The lock only guards the per-cpu
-> +        * cluster cache, which this path does not touch.
-> +        */
-> +       local_unlock(&percpu_swap_cluster.lock);
-> +       ret =3D xswap_map_clusters(si, mapped, nr_new);
-> +       local_lock(&percpu_swap_cluster.lock);
-> +       if (ret)
-> +               return 0;
-> +
-> +       for (i =3D mapped; i < mapped + nr_new; i++) {
-> +               struct swap_cluster_info *ci =3D &si->cluster_info[i];
-> +
-> +               /*
-> +                * A concurrent grower may have taken these already;
-> +                * only add the off-list ones.
-> +                */
-> +               spin_lock(&ci->lock);
-> +               if (ci->flags =3D=3D CLUSTER_FLAG_NONE)
-> +                       move_cluster(si, ci, &si->free_clusters,
-> +                                    CLUSTER_FLAG_FREE);
-> +               spin_unlock(&ci->lock);
-> +       }
-> +
-> +       return nr_new;
-> +}
-> +
->  static void xswap_unmap_clusters(struct swap_info_struct *si,
->                                  unsigned long start_idx, unsigned long n=
-r)
->  {
-> --
-> 2.54.0
->
 
-Hi Baoquan,
 
-The 85% grow threshold gives the allocation path headroom before
-the currently mapped range is exhausted.
+> On Oct 6, 2026, at 18:02, Dheeraj Kumar Srivastava <dheerajkumar.srivastav=
+a@amd.com> wrote:
+>=20
+> =EF=BB=BFOn systems/VMs with a large number of CPUs (e.g. 4096), hugetlb_i=
+nit()
+> computes num_fault_mutexes =3D roundup_pow_of_two(8 * num_possible_cpus())=
 
-I also checked the lock scope in `xswap_grow()`. Dropping the
-per-CPU `local_lock` around `xswap_map_clusters()` is appropriate
-because the mapping operation may sleep, while this path does not
-access the per-CPU cluster cache.
+> =3D 32768.  The subsequent kmalloc for the mutex table can exceed
+> MAX_PAGE_ORDER when struct mutex is enlarged by debug options like
+> CONFIG_DEBUG_MUTEXES and CONFIG_DEBUG_LOCK_ALLOC, resulting in:
+>=20
+>  WARNING: at __alloc_frozen_pages_noprof (order > MAX_PAGE_ORDER)
+>  kernel BUG at mm/hugetlb.c (BUG_ON(!hugetlb_fault_mutex_table))
+>  Kernel panic - not syncing: Fatal exception
+>=20
+> Switch to kvmalloc_objs() so the allocation falls back to vmalloc when
+> the contiguous physical allocation is too large.  The table is only
+> accessed by index, so virtual contiguity is sufficient.
+>=20
+> Fixes: 8382d914ebf7 ("mm, hugetlb: improve page-fault scalability")
+> Signed-off-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
 
-`xswap_should_grow()` uses `READ_ONCE()` for
-`nr_clusters_mapped`, so a concurrent grow can make an allocation
-miss the grow check for one round. This is benign because a
-subsequent allocation will observe the updated mapped range.
+Thanks for your fix.
 
-Reviewed-by: Kunwu Chan <chentao@kylinos.cn>
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
-Thanks,
-Kunwu
+Thanks=20=
 
