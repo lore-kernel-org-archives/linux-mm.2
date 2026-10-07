@@ -4,98 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 200F1CA5FF1
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 09:47:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A3ACCA5FF1
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 10:03:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A02B6B0088; Wed,  7 Oct 2026 05:47:28 -0400 (EDT)
+	id 19D966B0088; Wed,  7 Oct 2026 06:03:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12AAC6B008C; Wed,  7 Oct 2026 05:47:28 -0400 (EDT)
+	id 147A36B008C; Wed,  7 Oct 2026 06:03:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F349B6B0092; Wed,  7 Oct 2026 05:47:27 -0400 (EDT)
+	id 035D96B0092; Wed,  7 Oct 2026 06:03:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C17B16B0088
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 05:47:27 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4070780160
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 09:47:27 +0000 (UTC)
-X-FDA: 85295352534.22.ED61B82
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 88A7E1C000A
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 09:47:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fai2JdxQ;
-	spf=pass (imf18.hostedemail.com: domain of cem@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cem@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D2D6D6B0088
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:03:35 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 69FEBA017A
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:03:35 +0000 (UTC)
+X-FDA: 85295393190.29.6E9BB7F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8E19AC0009
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:03:33 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YD4DUuKp;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791366445;
-	b=najlu0BAs+M53OdY8EDiANxT8nDG+JtAVYak12KghTudUMUCDRhHa/PBRXnHsxpIeNGmlL
-	+RdDMyLLlkLB3vWAlWuu8yx+TtYsCSw42JGfSifsKIWkO3ZOwxYyv2vrUYDpze0y9h0U/Q
-	izfTeGQsJK3sH1zNhpSr/C4I45P+neI=
+	t=1791367413;
+	b=RXlY5ZnNYFsP2pLzEdUEqXax9EZOC8oF6K+ZRCmVrITyM9J7CWRQLy0yiWJEuGW0DU1pme
+	DzBCSWaDURrZOL11boQATYISUotGhPtNV9rBUtVQ63hv+V9JTBYr2JCmiNAxa8UIrO5sMg
+	5tjPyzQ9kJgXQEx/i7j+wPV2mnkxypw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fai2JdxQ;
-	spf=pass (imf18.hostedemail.com: domain of cem@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cem@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YD4DUuKp;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791366445;
+	s=arc-20220608; t=1791367413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WKfTrq8VHIA+znChlNb3NuZ60B46dqCeKbF4f81115I=;
-	b=gHQhUwps4D/uW8aWHLE9ERk0w4APJnfGxn/uUHjn1HyCcuBEivWDzIFCQT1ot4pSJJMptN
-	jiZ83+c5iTK1shOl3XxsEydU7ZSghCC0AQfbA6dj/0F3k5QOWQS8SrHVjpTP8fIvaNuf9W
-	6qLtMH3nnb2n4US4hLE6Z6h4wL0+6hg=
+	bh=OLIMshKXGQUE5mhCFk2wkoVfuzjryi/zbuwbzKQ67JI=;
+	b=XWX6lQDX1i2WIO7PojIUHU9eid07fPjQDKwRxXlK1zPig2U/RC+saJyXOpmYTP+XdGcSot
+	jGpMskeO+kP0YAyeE7ywu9FJj9JnJLtV/6pfBEkmyif+OLgias9PIfR4blJybVoz2Hqi+n
+	ubbdUBIADJ9GbZ64tD866Xl+Rynpv7w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 748EC414F6;
-	Wed,  7 Oct 2026 09:47:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB331F0089B;
-	Wed,  7 Oct 2026 09:47:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 533CD60218;
+	Wed,  7 Oct 2026 10:03:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608461F0089B;
+	Wed,  7 Oct 2026 10:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791366444;
-	bh=WKfTrq8VHIA+znChlNb3NuZ60B46dqCeKbF4f81115I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fai2JdxQg2GTZDr/VvQZVCO9hLiWsjmsp3kCspc8fuKK4Idhvb8afxieuvkYwQyYm
-	 EROdJ2PNOewRKi2TlzftYwYAKyOzWDZOqcN/uIKMcnbgV4RmoSWKvkrrjXqOH103u4
-	 pkW/zLZZoKah5esAFQs3D/dVu6u2y5mvWBDTVdUYX8sUlAMw/6TGZqWNoZl9+0sMb5
-	 XRIYEsb8pFZMI07mxgwGXu32WJ+4ExSOAeE3Q6diCbSoyE+fYRs6OFJ8RwEG+2QP6M
-	 t5VGgOEOdwhnOdt+AfIzlhYUJpGyLhxBjp3rfpsYz8tJfVVrUI3imhuR0jMSWv7pUP
-	 MBSrx6oIQcWWw==
-Date: Wed, 7 Oct 2026 11:47:09 +0200
-From: Carlos Maiolino <cem@kernel.org>
-To: NeilBrown <neil@brown.name>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, 
-	Amir Goldstein <amir73il@gmail.com>, Kees Cook <kees@kernel.org>, 
-	Joel Granados <joel.granados@kernel.org>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Breno Leitao <leitao@debian.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Jan Harkes <jaharkes@cs.cmu.edu>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Namjae Jeon <linkinjeon@kernel.org>, 
-	Hyunchul Lee <hyc.lee@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-unionfs@vger.kernel.org, linux-um@lists.infradead.org, codalist@coda.cs.cmu.edu, 
-	coda@cs.cmu.edu, linux-mm@kvack.org, ntfs@lists.linux.dev, 
-	linux-xfs@vger.kernel.org
-Subject: Re: [PATCH 1/7] VFS/xfs/ntfs: drop parent lock across
- d_alloc_parallel() in d_add_ci()
-Message-ID: <asYVApB1jdBYj9tN@cronus.toxiclabs.cc>
-References: <20260929034158.1455429-1-neilb@ownmail.net>
- <20260929034158.1455429-2-neilb@ownmail.net>
+	s=k20260515; t=1791367412;
+	bh=OLIMshKXGQUE5mhCFk2wkoVfuzjryi/zbuwbzKQ67JI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=YD4DUuKpOvcHEqgusbYqalLXVEyUTc3Hw6tRbKpGd+uNiQY9XgdXqAj2zcvKjUszD
+	 I4dmbFqA2RFa13Vw8P9yZ9MejzkNV12at2Yk6g2gjCVmO1ZbT/jA1FIYO0dC1rcd57
+	 S3Rc7xv2EPjEgMTZE02qhgbdAu/tftK8sC/Y/hQLNo9wQ2Aox5Hx5qUX2JPRJabSJ+
+	 BMNjl7eYywp8Gq0bCab4sBCj/M/DP2sQFLn1dbHNZlmYvbetLGSY4yX+9o7MNYDsvO
+	 CeX/fXu6TRQpyEhF84d1F1zaD1rn8K+Y6HPeVqrI2tfEoh0Id/3S+yBifo3NaM5Pra
+	 qgLk/MJeHIK5g==
+Message-ID: <392ab85e-5a24-4d84-857c-bf7785f52490@kernel.org>
+Date: Wed, 7 Oct 2026 12:03:26 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260929034158.1455429-2-neilb@ownmail.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] selftests/mm: add tests for UFFDIO_MOVE of a
+ uffd-protected swap entry
+To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: peterx@redhat.com, surenb@google.com, aarcange@redhat.com,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, mhocko@suse.com,
+ shuah@kernel.org, kas@kernel.org
+References: <20261003103030.63380-3-donggeunyoo.kernel@gmail.com>
+ <4a24f7b1-65f7-4947-a325-7c9e9f642f2a@kernel.org>
+ <20261005115051.3950585-1-donggeunyoo.kernel@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261005115051.3950585-1-donggeunyoo.kernel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: sqjixgq49mukjo7gsgk8zpma7muuq97d
+X-Rspamd-Queue-Id: 8E19AC0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 88A7E1C000A
-X-Stat-Signature: sagjzxikw43gh6emtcyo6kjayji1tnk8
-X-HE-Tag: 1791366445-901197
-X-HE-Meta: U2FsdGVkX1+Rifr9xUy1v6q8gMu+Nxm+VcnNdNcjyF9RbgMUtqRgsa5HvgZB8Ik9PQHN5k+/uoxpf3jzlW95iy+DDg4tmx9LAj6r7AVJmtC6Q/T+aj2yMuDQM67tZgTDCUqMf9UhnAmtlwuOGmMqILkDP0hILbi8uSS9r5x4Jw01hN/z3SVhXr0azxP+RBs3ALlQ6kZ5OYa93yRTZTl1BAFo0uzoJcC5DFHmaWhwsCsxRlRNPVnnJOtktqvKCPAk9uWrrlswNolGEWbZ+UWjl4IiAPSjbWYZLXejZSPUoqKG3AZ9JgXW+G7vf7YQe2/xbZYrMtndxyQU/WGLPlCKikepxtkntyFiD16FF/rnS4ukJhuR7mdPwRRnrpkKRlL/Xr/q1doDSU3FyP1WJvoqDAUlMk1iCP/0X20o7NbVsHbcLrZM1ujK9/r5/Eg3b6nMqtKrxB+paA12x3Bz/swIEZrpcspPmLHcUTgZAMEUK7XbjYApQJL5y8Gkm8+v8kGHp6EkCCOxLLpE5k9PlhAcPSl4NpANNifq91zFLC0JflTOTG9vc29eUAUd9pOGbW7dHQAmE7NdXevzslLh1aYxxQT+YwknRj8n1j24xDPDGX+f9mGgGOrq8ZqW+wAyMK9aCIF21efWTj/NeEKaOVhKcbQgDCr1WPdY9iPhrEM/TRj9qB+E3Rv0Q5xGl0WPg85GtxJyIoPpXx0U9ZVv2rQAeS4YtQ5D4GMmdzqB9CI+4tb+zIIHQGwFpYut8iTBd3w+ymXAYC8h+4Sht18ybtf5//3E58t7PnYnBtBMU+BNrbJ/GA+dLp29WVWeq5q2Iz8Yuzv0S9Q7BsPeD8afJohetc4mfqB8qHbUFGL4Fe1pJNtA1QDVvUG1100zP7KBt9nlJ1n+RwtYJIRLcvyDZpgKNc4Zfo1sGnJYs24m50gSmzKLZWFaGUyECUU7Bfp+DPTMNh/mif99Jr0PgxXh3by
- 2bRjmbPO
- 2bShXwYjYUXPug6G+VOiAVkajZMr4qiI0Si5NDeDSRbk5Pj5kI/gTrOsL5GbvU+PpDdrvJU14HYsEK7dZPDdBqTJUjTQq9X2+WqfzBdUOAU24HH6T7QUkmJIkuSLOD11TF2GzIsl3wisXCsGYwXn0Pw5R2N3a+i84PlA+gYwC1G6qoE3hAhGmQN/nXTvneSkZzTOrpUY2aq/uZi3TaY47+igbcZnOPsPxI0P4iAGGVfb1z4kWxgrhSxY0t/3QNzhwVgxDahwKtq1tx3qhJFyGoER3BV3C2wjSkCI60duSGMTwpkAhrKBNGtYdqEEiYFxhl48reZZJ3ig1+iIodf3ojr6UtUIKFBkQIZ/E655jGo93klqRXUNwsbuOvxUkJHOYDzuA
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791367413-724696
+X-HE-Meta: U2FsdGVkX18uS78FFCoBmWbEzMjJ3FOyViLDa6wi02zor+QaxSQZpIDJjBOC+xQ6PJ3HX8jaiufzqtL6yGmmG4rb3vYDLafhmwcEmNi6GG5Q80xzv65UrrAAryUOYlNN1VhsiHBwLiYbZL3EPtdeYXdJhQA49Mv6AlROR53zuTkTXaVSiFm9BvsgoflKMY+srcRnxtBjxf738WGSkM3P0cnOEP27vA51N67iRoLD+XbSGN1I3O8CfsPY5oNcyIJG6uvQVBiwwRQxCLpwtmoqAHVTbRgrZxm4LleQlvpPxodDTiQrmYvY9g4QO/Lh6tyFPYDFpiWpnumDFB7QMY0RrH8kPGvHeka619brEQubgHOaA3IeiBXS17mo/NpTcaNrAedk2nWTuS0DgRiuNIOPp4LvcCSRYNmgKDKr2Zpf/Xtd7qlptqxtUVgnLqE6pjQ+VviGDniUTiqzklu2fzUFt4isc/0t0VCWHt/aO7uX8/TzxR5OyQgJmkidDluiA15Vvi5Qr7MH6r6a510Uc74tG40+K+bdb158w3ZDGtZPcSCshEenBBDs9nj7vKMyAPxSUWpLoHw8kml3o+Gf6CqjxU/4L1Qni6FPH88kBrW1D/37sJHYgLM0GFvv/vc9dNQaErtaE00wlxfWD5iaW0lA7+ewDotMubqb0J7lJV1RUHhCqIZQzHLu1F5rjt2IT2SuotfUQbufuLXJU9Vw/qyOmXB6M1ZUKLvFaueHKm42pSj783G2BS61n0L7zbqO3zH16ZYJe1URmNAkA84FvDF7RNHCxmVlHMNa1luqZfik/455ywJcdDk6nEVDdU9YBMU36pHf+ac7rfSArMMZa20gebVr0eJDrOR70ZJzniIeloqv2qAXLuiC88NTKosvQ/9hue5wHlXYs4hJ0PQHBtKXsA/XGOyOxWJ3Apvygb9RDdAnQz4MH5OjY54uj654zeTq9aHFUdMWlgRlqOz5dSm
+ kfns7v7Z
+ 3BTIKWSOkoV+z/6ZiCAMavJThguIzTEXxO5G4jIRC7TNlFdnvLYvAnSYoc86xPAUtT4kY2lfedqMgNt8sBaPJEnB4XqKvuTaEJvxuqaKhk9Fq2OqOgefCViTCrhHKBIy/pEdl+Ln8l/9/vfpevpKeLOo+9Gzmm4sjZU+b4rGpCTsv5X84+kbhjeh9uFYE6elnunbJ1QacS4AIKlAreJADZjKqxVqwkWlk1mKUgqg04+syvpp65ixXDGbV/5MPSSD7CP5SHT5VKJl2ZvZYeLKAHkwc0AXcHJO5N1qw7Vh+HZbs40MYHMEhrLgqHKx+wa9MxntFAIV1CQeXtwJQszDxetaPLuZcoUexesiMmwXr1xRBFamrmZa4vcjoFutlzXnc+jwDuEbpWWiM/8Ny5fLNAGEqNUrjDOr82EZqXZA0N+S6OtCmzEtjoL2tNg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,167 +142,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 01:36:01PM +1000, NeilBrown wrote:
-> From: NeilBrown <neil@brown.name>
+On 10/5/26 13:50, Donggeun Yoo wrote:
+> On Mon, 5 Oct 2026 12:43:48 +0200, David Hildenbrand (Arm) wrote:
+>> The CI complains as reply to this patch:
+>> ...
+>> ✗ userfaultfd(2) test failed:
+>> # not ok 43 minor-collapse on shmem
 > 
-> A proposed change will invert the lock ordering between
-> d_alloc_parallel() and inode_lock() on the parent.
-> When that happens it will not be safe to call d_alloc_parallel() while
-> holding the parent lock - even shared.
-> 
-> We don't need to keep the parent lock held when d_add_ci() is run - the
-> VFS doesn't need it as dentry is exclusively held due to
-> DCACHE_PAR_LOOKUP and the filesystem has finished its work.
-> 
-> So drop and reclaim the lock (shared or exclusive as determined by
-> LOOKUP_SHARED) to avoid future deadlock.
-> 
-> Signed-off-by: NeilBrown <neil@brown.name>
-> ---
+> Thanks for passing it on. I couldn't reproduce it here. Could you share
+> the full log of the failing run, or a link to it?
 
-XFS bits are really small, but anyway, if needed, feel free to add:
+I messed up, it was for another series :(
 
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Sorry! All looking good from the CI POV :)
 
->  Documentation/filesystems/porting.rst |  7 ++++++
->  fs/dcache.c                           | 32 +++++++++++++++++++++++----
->  fs/ntfs/namei.c                       |  2 +-
->  fs/xfs/xfs_iops.c                     |  2 +-
->  include/linux/dcache.h                |  3 ++-
->  5 files changed, 39 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/filesystems/porting.rst b/Documentation/filesystems/porting.rst
-> index 4e015f1bf1f8..f6a38bd9c68e 100644
-> --- a/Documentation/filesystems/porting.rst
-> +++ b/Documentation/filesystems/porting.rst
-> @@ -1409,3 +1409,10 @@ use only if you have no alternative.
->  The .create inode_operation no longer receives the 'excl' arg.  It must
->  always assume the file does not already exist.  If the filesystem needs
->  to be involved in non-exclusive create, it should provide atomic_open.
-> +
-> +---
-> +
-> +**mandatory**
-> +
-> +d_add_ci() must now be passed the flags arguemnt that was given to ->lookup
-> +
-> diff --git a/fs/dcache.c b/fs/dcache.c
-> index 83790c7a4dee..61e0896dc077 100644
-> --- a/fs/dcache.c
-> +++ b/fs/dcache.c
-> @@ -2383,6 +2383,7 @@ EXPORT_SYMBOL(d_obtain_root);
->   * @dentry: the negative dentry that was passed to the parent's lookup func
->   * @inode:  the inode case-insensitive lookup has found
->   * @name:   the case-exact name to be associated with the returned dentry
-> + * @lookup_flags: flags passed to ->lookup
->   *
->   * This is to avoid filling the dcache with case-insensitive names to the
->   * same inode, only the actual correct case is stored in the dcache for
-> @@ -2395,9 +2396,10 @@ EXPORT_SYMBOL(d_obtain_root);
->   * the exact case, and return the spliced entry.
->   */
->  struct dentry *d_add_ci(struct dentry *dentry, struct inode *inode,
-> -			struct qstr *name)
-> +			struct qstr *name, unsigned int lookup_flags)
->  {
->  	struct dentry *found, *res;
-> +	bool must_unlock = false;
->  
->  	/*
->  	 * First check if a dentry matching the name already exists,
-> @@ -2409,24 +2411,46 @@ struct dentry *d_add_ci(struct dentry *dentry, struct inode *inode,
->  		return found;
->  	}
->  	if (d_in_lookup(dentry)) {
-> +		/*
-> +		 * We are holding parent lock and so don't want to wait
-> +		 * for a d_in_lookup() dentry.  We can safely drop the
-> +		 * parent lock and reclaim it as we have exclusive
-> +		 * access to dentry as it is d_in_lookup() (so
-> +		 * ->d_parent is stable) and we are near the end
-> +		 * ->lookup() and will shortly drop the lock anyway.
-> +		 * We cannot retake the lock while the new dentry is in-lookup
-> +		 */
-> +		if (lookup_flags & LOOKUP_SHARED)
-> +			inode_unlock_shared(d_inode(dentry->d_parent));
-> +		else
-> +			inode_unlock(d_inode(dentry->d_parent));
-> +		must_unlock = true;
->  		found = d_alloc_parallel(dentry->d_parent, name);
->  		if (IS_ERR(found) || !d_in_lookup(found)) {
->  			iput(inode);
-> -			return found;
-> +			goto out_unlock;
->  		}
->  	} else {
->  		found = d_alloc(dentry->d_parent, name);
->  		if (!found) {
->  			iput(inode);
->  			return ERR_PTR(-ENOMEM);
-> -		} 
-> +		}
->  	}
->  	res = d_splice_alias(inode, found);
->  	if (res) {
->  		d_lookup_done(found);
->  		dput(found);
-> -		return res;
-> +		found = res;
->  	}
-> +	if (!must_unlock)
-> +		return found;
-> +out_unlock:
-> +	d_lookup_done(dentry);
-> +	if (lookup_flags & LOOKUP_SHARED)
-> +		inode_lock_shared(d_inode(dentry->d_parent));
-> +	else
-> +		inode_lock_nested(d_inode(dentry->d_parent), I_MUTEX_PARENT);
->  	return found;
->  }
->  EXPORT_SYMBOL(d_add_ci);
-> diff --git a/fs/ntfs/namei.c b/fs/ntfs/namei.c
-> index 7091b2496fac..61cfa4e16586 100644
-> --- a/fs/ntfs/namei.c
-> +++ b/fs/ntfs/namei.c
-> @@ -309,7 +309,7 @@ static struct dentry *ntfs_lookup(struct inode *dir_ino, struct dentry *dent,
->  		}
->  		nls_name.hash = full_name_hash(dent, nls_name.name, nls_name.len);
->  
-> -		dent = d_add_ci(dent, dent_inode, &nls_name);
-> +		dent = d_add_ci(dent, dent_inode, &nls_name, flags);
->  		kfree(nls_name.name);
->  		return dent;
->  
-> diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
-> index 4a3299abf774..fd480c0e4147 100644
-> --- a/fs/xfs/xfs_iops.c
-> +++ b/fs/xfs/xfs_iops.c
-> @@ -368,7 +368,7 @@ xfs_vn_ci_lookup(
->  	/* else case-insensitive match... */
->  	dname.name = ci_name.name;
->  	dname.len = ci_name.len;
-> -	dentry = d_add_ci(dentry, VFS_I(ip), &dname);
-> +	dentry = d_add_ci(dentry, VFS_I(ip), &dname, flags);
->  	kfree(ci_name.name);
->  	return dentry;
->  }
-> diff --git a/include/linux/dcache.h b/include/linux/dcache.h
-> index adf239f8205f..97d11f5e6a7b 100644
-> --- a/include/linux/dcache.h
-> +++ b/include/linux/dcache.h
-> @@ -267,7 +267,8 @@ struct dentry *d_duplicate(struct dentry *dentry);
->  /* weird procfs mess; *NOT* exported */
->  extern struct dentry * d_splice_alias_ops(struct inode *, struct dentry *,
->  					  const struct dentry_operations *);
-> -extern struct dentry * d_add_ci(struct dentry *, struct inode *, struct qstr *);
-> +extern struct dentry * d_add_ci(struct dentry *, struct inode *, struct qstr *,
-> +				unsigned int);
->  extern bool d_same_name(const struct dentry *dentry, const struct dentry *parent,
->  			const struct qstr *name);
->  extern struct dentry *d_find_any_alias(struct inode *inode);
-> 
-> base-commit: 3879f51857325da9bf3cfb073280257cd16ae067
-> -- 
-> 2.50.0.107.gf914562f5916.dirty
-> 
+-- 
+Cheers,
+
+David
 
