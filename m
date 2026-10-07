@@ -4,119 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA536CA5FFC
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 10:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68347CA5FFC
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 10:56:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A0516B0088; Wed,  7 Oct 2026 06:47:34 -0400 (EDT)
+	id 545FA6B0088; Wed,  7 Oct 2026 06:56:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 851206B008C; Wed,  7 Oct 2026 06:47:34 -0400 (EDT)
+	id 4DF636B008C; Wed,  7 Oct 2026 06:56:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 767A16B0092; Wed,  7 Oct 2026 06:47:34 -0400 (EDT)
+	id 3F5766B0092; Wed,  7 Oct 2026 06:56:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E6716B0088
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:47:34 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B6E5F140171
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:47:33 +0000 (UTC)
-X-FDA: 85295503986.27.4477BF1
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E801C14000A
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:47:31 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="ZFU0+l i";
-	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0BA236B0088
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:56:19 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4042C14019C
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:56:19 +0000 (UTC)
+X-FDA: 85295526078.03.777F9FC
+Received: from mta1.migadu.com (out-78.mta1.migadu.com [95.215.58.78])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C4E861C000A
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:56:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=flhXYIJJ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.78 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791370052;
-	b=AI6wlHf04fhOh0llUS3jYBPKv3Zr0TelTdD4v/VEVwox25vE3J5Fikk1QnH1DZokqHSWQ0
-	uwEH839tiWkgn6TxjrUkcoKkJPU+Ej+5kOL5r4UCPolbkwI0w8SCJNKFqr3URuTrqvviJM
-	i0gyRrNjU/ATGyzj9ZRtCGr5NkCyl7g=
+	t=1791370577;
+	b=u7iOE4X2p7wwryAogl6kNMBEGc2V9U5M0j+xHJMANvRvJYnp1kGTgdfY9BLgTKU3hbOLZd
+	4jGqFXiIs+vfcwJI0xI1OS8N2S82PLFsx0vbccNMbhYsjv7YVTJRbCQY5WrdMES9e+GQjJ
+	879r/iBvQ7VerDmC5wbvOBDXsplJvPI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="ZFU0+l i";
-	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=flhXYIJJ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.78 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791370052;
+	s=arc-20220608; t=1791370577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eHWw+UmZtYdvqxe4hUGh5SBBbAD7g60VuTJC0Vf5JM8=;
-	b=ngIitTSER2rdhmz7ZIV91roGdJvPq4sL+qBY4L2u6e7TSOVlhLruS2YYlDF0flz0hsdUGs
-	e5XSmaycNhhrm4AnGshtDGwYtK9hrRbQMqBXAzd41VWqs8yAqyJL/vFPuevO22Unyf7jh6
-	fnaaxjc3GOAKN0k0cHi5u4Rs6aE8BEc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=eHWw+UmZtYdvqxe4hUGh5SBBbAD7g60VuTJC0Vf5JM8=; b=ZFU0+l
-	i8Rtyg1iPkyPedc1z1baeYcAfaxOHKohenBGWw0OQFG6eHvnzFmHoaZyFuyjsXY/GQZiXjjZdSbcx
-	1bz56Xnn17VBuRB0BJHM5TH6mcFi3z6NMXdrdaAdJmEj0ttHXIB1FbmYgHGrg7qis12GCiUDVm0XY
-	78yJ7Gwmk0VMss/4DgyCrQ2Fjv+6XFwEFylNsNiYp+3GAvwAEnSc0a/DgYvMVpVMmNgrr8CJxfIGB
-	CMxHfYAQvEU5vukKRlpLFsXK0PmkYxiiGTlDn3SaF71h8QpRXe5MF5Vr5rv507DlBuAh6b4O7g6To
-	MQhODRmKczxDx8USwf0rmuPshdZA==;
-Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1xEPAz-0000000B6vR-0oEP;
-	Wed, 07 Oct 2026 10:47:09 +0000
-Message-ID: <7dd4ec994502233cdc09fe5c4369adc89168d738.camel@surriel.com>
-Subject: Re: [PATCH] mm/gup: batch PTE-mapped large folios in
- gup_fast_pte_range()
-From: Rik van Riel <riel@surriel.com>
-To: Yuan-Hao Hsu <aa9736195201@gmail.com>, Andrew Morton
-	 <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
- liam@infradead.org, Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Aristeu Rozanski	 <aris@ruivo.org>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 	linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 07 Oct 2026 06:47:06 -0400
-In-Reply-To: <20260917083747.786-1-aa9736195201@gmail.com>
-References: <20260917083747.786-1-aa9736195201@gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	bh=J/qBQt83kIhvqov9hrYq+lELOnrm57eT179QxEounn8=;
+	b=tC3KhVDF9KT6wJnxe5y6Ey4qJ+TzU6iGwcwE9g768DsG07GKRpQyADtA9BLeUYBoCEx2mC
+	od/s87AkyCu+CI3hUaprKVVOC5Qe25tnrtbhiW6OtaMg1LZfNtyy0oDpDF5lbHBDAt5xkm
+	YwrJfm0h5xWNlc/vNcfaEUNPbVvhj6A=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=GxCPlE57Cq/icBi/tQSzj1Ld7BdDAW/pW97e/uehP3s=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791370575; v=1; x=1791975375;
+ b=flhXYIJJkXhCfJmFDZobYSAR8JMjoqIeTErzUj59Z8BB1rYHeLIJfpnVvhxbSSDm25XYippy
+ +11zYotNAnNt7Yu5VNJoQx5Z+rFxpGZTjWyVU5D3lWVgw6v332Ohf2qwRLXmDTXsGVczAPNZEGo
+ +71rpL4/UBSb0uRjGDLlrox8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 23a8dc82b3a969ab;
+	Wed, 07 Oct 2026 10:56:14 +0000
+X-Mizu-Trace-ID: 23a8dc82b3a969ab
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <209aaa32-7763-42d8-83e0-470066c880dd@linux.dev>
+Date: Wed, 7 Oct 2026 12:56:10 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] mm: zswap: reduce request contention on loads
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, chengming.zhou@linux.dev,
+ dsterba@suse.com, hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, terrelln@fb.com, yosry@kernel.org, riel@surriel.com,
+ shakeel.butt@linux.dev, alex@ghiti.fr, senozhatsky@chromium.org,
+ kernel-team@meta.com
+References: <20261006002307.2669023-1-usama.arif@linux.dev>
+ <CAKEwX=N3ks2O-dCYPRif3NnHQckdVqLiPGRn03GkCuEE+FVgtQ@mail.gmail.com>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <CAKEwX=N3ks2O-dCYPRif3NnHQckdVqLiPGRn03GkCuEE+FVgtQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: wxotyaj4gfs9didqn7bzuz7iaq5fa74e
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E801C14000A
-X-Stat-Signature: ec1ckr1qdtazwegyqe9ys7b68e6aub6d
-X-HE-Tag: 1791370051-115794
-X-HE-Meta: U2FsdGVkX194yLmDAZ+cAtv3m9qrl921X302engdw1j8biiLG8pEyKZXtpOiPsQQuNsQk1O6Nnd6+BN+TmhoUOCre/QQOp4LNwE+Gg1cep4oCbK7T7w14BlLjiBnC0Nma2eSAOWdsGfLnCzNyInrbn7koeFFpY4ZyCo25ycMxINlifnhDhemltEBdD+7bL/FZAzr7ksttS1dE8uRsjr9Ai3/vX+H2tOFjqI/G0UCBMXEVCXK6sdsjjQuunbtRi6ttYgjMTer1wKyAupZPCdAW5kFcvPSnbE3Elw28pfJlz8vxwJEyh37G3E+F4eHyWNZfhojCkfv1rbnwMlIVUcNh0dur2y+518Dl41ZbobytEUDRuRAX8WFyXu1W91gf0bq0Oxm5CSBTBWRmlPAaPKBnxbLvzNYyuln3hW07VwecGXgXXPs4Ksn0i7I7xTuX3Ob5kU+LVDRz5fUr6l2JQo1Sf6l5cPMEBRZAntxUuAcPynkNSmb+KVD2ZPalzQSa0S6byxs0e42dOvjjEh7OmP0do2kW2APGtz7NIgQloPlrveWP0AtR1qC1hQqI7lIkq2oSGy5HusdBGDaHTu5oqt9VwNPz+o6vvvxP+Vp7pzWD0+cKTSqWCBR+gP1fpjUjLLyGTXFrjQir3gLXhKjFLlle5qN/tsbMd7jsUZ2zZbMItO8XisYSsY7ScB9f9ynJhZTHo996zOr4SxdEhpvwMkPap+A/InUky3SOYStxxUcsOlljHrzfYuiei5X5CKI88BJHy4hPJIKRnqXEHf8AZhSkyDhMg/eU4S7RUhfLalPmRrvzVACjM49GKjneqAxVO2f2QATszFrsYiI6JcQMLqUhR+F5iqzN9ytFqmApSFNyflSBnv0cryoqtvBR5sFdTHCwOHfsT9EAZ3VJEoZaVZQpJEaD1wsEJZZXtVg2O2aVPNG/h5rRKWESCpZMSS5MJZtZ0CJKYm9cwenibshDOM
- kPukkZ2h
- Bzoh1bpBfiz+XBuzKPjeyqUuBOMnVEvGdxbxxvwu45BD6GG1LqVmSw0xCrQaIRwHVrLNfanlAUKHnfg8nyJiBkGMFoxyy4sWGcTsJA7tWFf5imr4/mD+3IvuvpoDRC8Vo+VkiHggsuufOUHI472LrDrD47z9lfpRovZwVbJIQLjMXhpjJRgiSRKAmjzSe559/Qb/3PGip48dPY0t2OW/oD9Mp2Isx1B3gfusnERL1gX8C+F8lAc853g5Hu4b8zumT71fHv5h5Bt4Du+wQYoGaxqWMX7W+x7DWfTfzXgZRXsEb/63XCDXOK17SO6MWbccLFymegSTh/fI+m2GkPjEqRzz4rUguzOOII+IKMAh+yfwjeBCxRg66EXhXgNt1urpHRAyDza5B8eDcrLzv6z+kv6AA2j3xaYfwBTU/
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C4E861C000A
+X-HE-Tag: 1791370576-598440
+X-HE-Meta: U2FsdGVkX18oqftCd2h6DlCbMJbM5T8+agg8kw9qv6mHNHb8hN6d4H9A1TggNVwCcULJy76AdqKPaVkqBlY4wnAX5MbCUl0DigBdKxu5ydFsX6pAluTfRkLEeyIKWlapwdVqkRtXp74Th5RhI3aG7MNu/TBxzLtSwYFBDP/CzvOXbJ2QnG4cev7mSIp9Cu+bUVBII/NxAJwUMI4mgQQtyElvKSLL2GxfDGxXLdx0+7mS0OcfBbP2RyZKjM7RDpw3JYrgUOV8zuZu3tOw7mxBkXT7Me1+wZmZKiJcHiM0rlzh5jNOXUYgepxto8CnXiFza5V7TJS97jF1OKqLgEhnX7X6nQw24VdRQO5vyC5poxWU58nxdrP5uHg0r4Lmx4X+rbZNqrSJIXKItxCblXzN0Jr98+4UtsGR4bC9pYWFVkHw2K2rqDqhCysRsiqHNegRiJB8LnuAvU5loeQOyQx1rsr5m8D7AzYGt4LaRz69PYPw4CKMsL6mVdcLngXiTEA5eEOVNVIAP8UyK4NczLak+YdTK0OJf75BMyyB0aefUa2iGNyBtDG9vXLsO+uR89vSqwdggSic7gOvXHnsClRnXbclezFEnB/T0opwOW5+had8tzXgqkRYqVG8aHuoI/zT0DFCppBDOGsqZ+diu354PsF5lyf91w7LrGs5BISDEqfuiJrooNtrTs8HEIYhJoVOluqGW9N0Hi23VUY9h+UyUZ0ocK11ZZH0EHzTOblqsjDG34JGtWHb2Fj341SlTvfVy2FtNVGVvPnvh4yz2DjReiyYTGXjdB9xyoMN+0APKxNPFWWzQ6F6EyAL8yuErvbmV6o2d01an+gH3cV7ETr7L+oRrSVqBfOQcQEshlLqujzCi8fInhfBUdEbNS3UmfIKx1gKa3Cr2qIc9DG9Yfd8TzVXd32NodWnsfReU03XeYFpahMYmo6IaCS5R7szUsCtKTSXUYr9wplQRF9CIxP
+ KjeXc+Dw
+ iWIhRtLiF9v/1ppXBFgUq+rXwH3Uozmy6T7v28dGAb4/Wz6qlyYqH3Iy01Sz6mHHV+wW301uLMqQbxWt4lCl1Fcn87cI6Yje8xxkUtdY6Oxnpb0pdaItjxI+yYidN+FNH/gFinkeGlZumuQ9yfNf0aLj8wL/adUtinuv4wzTeyKBWdaManI+ZVbJ6wkQqBHzsc2ayfRGOI/Cmru+XrTEoRJXnVXtuko9BwICOS2EHGaVzWh8Ev+9KKrIu4FjCOIHVKTy9P28XFEaXvRjVEX775fNj2ltsx9OmoWZDl8gzrIL8+mJw+nqOphuHlg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,74 +95,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-09-17 at 16:37 +0800, Yuan-Hao Hsu wrote:
-> GUP-fast grabs a PTE-mapped large folio one page at a time.=C2=A0 Every
-> PTE
-> costs a try_grab_folio_fast() (a refcount cmpxchg, plus the pincount
-> atomic, a full barrier and a node stat update for FOLL_PIN), a
-> gup_fast_folio_allowed() and a folio_set_referenced(), so a 64 kB
-> mTHP
-> pays sixteen of each and a PTE-mapped 2 MB THP pays 512.=C2=A0 The PMD an=
-d
-> PUD leaf paths already take the whole range with one
-> try_grab_folio_fast() call, and the slow path is getting the same
-> treatment for PTEs in Rik's follow_page_mask() series.
->=20
 
-> fio O_DIRECT randread of a null_blk device (CPU bound) with the I/O
-> buffer in 64 kB mTHP, median of 15 five-second runs:
->=20
-> =C2=A0 bs=3D1M psync=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 126.2/125.6 GB/s=C2=A0 ->=C2=
-=A0 220.6 GB/s
-> =C2=A0 bs=3D1M io_uring, iodepth 16=C2=A0=C2=A0 71.2/71.6 GB/s=C2=A0=C2=
-=A0 ->=C2=A0 112.1 GB/s
-> =C2=A0 bs=3D64k io_uring, iodepth 16=C2=A0 50.2/50.7 GB/s=C2=A0=C2=A0 ->=
-=C2=A0=C2=A0 60.1 GB/s
->=20
-That's huge! Nice.
 
->=20
-> +static unsigned int gup_fast_pte_batch(struct folio *folio,
-> +		struct page *page, pmd_t pmd, pmd_t *pmdp, pte_t
-> *ptep,
-> +		pte_t pte, unsigned int flags, unsigned int max_nr,
-> +		struct page **pages)
-> +{
-> +	unsigned int nr, i;
-> +
-> +	if (max_nr =3D=3D 1)
-> +		return 1;
-> +
-> +	/*
-> +	 * The reference on @folio keeps folio_nr_pages() stable.=C2=A0
-> The PTEs
-> +	 * are read without the PTL, hence FPB_LOCKLESS.
-> +	 */
-> +	nr =3D folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr,
-> +				=C2=A0=C2=A0 FPB_RESPECT_WRITE |
-> FPB_LOCKLESS);
->=20
-...
-> +	if (try_grab_folio(folio, nr - 1, flags))
-> +		return 1;
->=20
+On 06/10/2026 11:35, Nhat Pham wrote:
+> On Tue, Oct 6, 2026 at 2:23 AM Usama Arif <usama.arif@linux.dev> wrote:
+>>
+>> Stores and loads share a per-CPU acomp request and mutex. A low-priority
+>> store can be preempted right after the compressor drops its stream
+>> lock, while it still holds the zswap mutex, and a higher-priority load
+>> on that CPU then waits for the store to run again. This follows the work
+>> from Sergey Senozhatsky's zram series which splits it for the same
+>> reason [1].
+>>
+>> Patch 1 gives compression and decompression separate requests, waits
+>> and mutexes, so loads no longer wait for stores, though they can still
+>> wait for each other. Patch 2 decompresses with an on-stack request when
+>> the algorithm is synchronous and needs no request context, which covers
+>> all in-tree software compressors, so those loads take no zswap lock.
+>> Asynchronous algorithms keep the per-CPU request and mutex. For software
+>> compressors the series allocates the same number of requests as before;
+>> each per-CPU context grows by 72 bytes, and the load path is about 270
+>> bytes deeper on x86-64.
+>>
+>> The series does not fix two related cases:
+>> - Stores still serialize on the compression mutex, so a high-priority
+>>   task that reclaims (direct reclaim, MADV_PAGEOUT) can still wait for
+>>   a preempted store.
+> 
+> Any reasons why we cannot tackle this too? Or just one at a time?
 
-Since this is lockless, the PTEs could change under
-us between when we walk them in folio_pte_batch_flags()
-and the batched try_grab_folio().
+Stores need more than a request. The compression mutex also protects
+the per-CPU PAGE_SIZE output buffer, which has to stay ours until
+zs_obj_write() copies it out, since zs_malloc() needs the compressed
+length first. Loads stopped using that buffer in e2c3b6b21c77f, so an
+on-stack request was enough for them, but the buffer is too big for
+the stack.
 
-Is that race condition safe, or do we need to re-check
-afterward that:
-1) the ptes still point at the same folio, and/or
-2) the folio still spans the entire range, and was
-   not split before we grabbed the refcount?
+> 
+>> - On PREEMPT_RT the codec stream locks are preemptible, so a load can
+>>   still wait for a preempted store inside the codec.
+> 
+> Acked.
+> 
+>>
+>> The numbers below are the slowest read per run, as a median (min-max)
+>> of 5 runs. Each run is 12 seconds in a zstd VM with lazy preemption,
+>> vm.page-cluster=0 and swap on /dev/ram0. With 1 vCPU, four nice +10
+>> workers page memory out and read it back while a nice 0 task spins. A
+>> nice -19 reader pages out its own buffer and measures how long each
+>> read of it takes. With 8 vCPUs there are 16 workers, 8 spinning tasks
+>> and 8 readers.
+>>
+>>               Before series (ms)      With series (ms)
+>>   1 vCPU      22.3 (21.6-22.6)        0.97 (0.72-1.4)
+>>   8 vCPUs     314 (97-2542)           7.0 (5.0-98)
+>>
+>> Reads over 10 ms fell from 26-35 per run to none with 1 vCPU, and from
+>> 3-18 per run to at most one with 8 vCPUs. The benchmark and test programs
+>> were written with the help of an LLM.
+> 
+> Great find, Usama!
 
-The equivalent changes to GUP do not need that check,
-because that all happens under the pte_lock:
+Thanks for the reviews!
 
-https://lore.kernel.org/all/20260811025157.1632867-1-riel@surriel.com/
 
---=20
-All Rights Reversed.
+
 
