@@ -4,124 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75CEDCA6007
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 09:28:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBDABCA5FF1
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 09:32:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 770D86B0092; Wed,  7 Oct 2026 05:28:14 -0400 (EDT)
+	id BE6C56B0088; Wed,  7 Oct 2026 05:32:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F9966B0093; Wed,  7 Oct 2026 05:28:14 -0400 (EDT)
+	id BBEA26B008C; Wed,  7 Oct 2026 05:32:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C1516B0095; Wed,  7 Oct 2026 05:28:14 -0400 (EDT)
+	id AFAF06B0093; Wed,  7 Oct 2026 05:32:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 301F26B0092
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 05:28:14 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9DE2B160166
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 09:28:13 +0000 (UTC)
-X-FDA: 85295304066.04.2772CB5
-Received: from mail-wm2-f6.google.com (mail-wm2-f6.google.com [74.125.225.134])
-	by imf24.hostedemail.com (Postfix) with ESMTP id ED793180009
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 09:28:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="qKwfi/J6";
-	spf=pass (imf24.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.134 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791365291;
-	b=yZEcN7jbbT9pJbTA38tuu0dhunyjXIeZsuDOP3fXGwBdhbNfh7f+VLQ14xs0hpz/K5F6k1
-	S1Y5RtorGjVK4T1iF2/loQ4UEJkQIvsGjYMUjNFV0KJljTMrJ5j+4BVMuSZUPzpFCA4p3i
-	D5D+PRsZIL6sVsab3j12gOITIGJnWaU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="qKwfi/J6";
-	spf=pass (imf24.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.134 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 844A56B0088
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 05:32:51 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04EC6A015A
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 09:32:50 +0000 (UTC)
+X-FDA: 85295315742.30.7173C84
+Received: from mta0.migadu.com (out-131.mta0.migadu.com [91.218.175.131])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E65DFA000B
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 09:32:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JhLCfMNa;
+	spf=pass (imf15.hostedemail.com: domain of pankaj.raghav@linux.dev designates 91.218.175.131 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791365291;
+	s=arc-20220608; t=1791365569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=aeP9LnNMW0XFzFwn1LZhyNEoudM26n+EG4TxrN/cfzc=;
-	b=x2wsK+BAOOhBIRlqXi+TVa4bXUcUjj9xD4yMQo9P33sQeOZ5rq4eehnizONzwZxWATNM/Z
-	jtYyIBIaA7/nO17dONfGbsCJRsghjwMNxM2z/WI1LBd++l67KqWlY+qlfYVhuqqLK/FZts
-	Pmf0gJC35ges/y2si3Jcije8DZLLL3s=
-Received: by mail-wm2-f6.google.com with SMTP id 5b1f17b1804b1-49b0dd21eb8so9189615e9.0
-        for <linux-mm@kvack.org>; Wed, 07 Oct 2026 02:28:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791365290; x=1791970090; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aeP9LnNMW0XFzFwn1LZhyNEoudM26n+EG4TxrN/cfzc=;
-        b=qKwfi/J6BL787essDNwnrfmLs+RczGG8xuvFK1VfIPGY+Nr+6qoS6JUG6rTOssV7JC
-         8rQhQE0D1Njyn2iwU4DuDMErlplx0iyR+H9+f25zINO1/6KflL+7dIw05+wnEmbki0CI
-         rgNsnYu0DJEUNQkl7q88sWYegEivQHefk0qcRFsYwV5Mp7ux/Ui0w7cGS040F/YYIOH5
-         JLAflD0z35F6UPTxxfaBPn+gYfpJBEbOuTP/itlUtbG6Sb2mh4P8LEb89BvLRmIgFBZ4
-         mu4Y3aTk6XtKFzkOcnbolg51ETGja3s5F+u724liVqtsZg1OUYutl9z6e3RSoW87X/i4
-         NkMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791365290; x=1791970090;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aeP9LnNMW0XFzFwn1LZhyNEoudM26n+EG4TxrN/cfzc=;
-        b=EvAjf0Wi89bNoatuugZdmIxzvuLR+/G2FASCbTMSjfRfa3EjUApAxBealeEBjGYycp
-         MA1wO/LhfxRZaq1phsS2Pjssnsux7PfdowWh0nBgskU4dPkHB5MMpt7w3V4munW30Il8
-         VE8osnq05duXF1Xwh0I9+FRM+tMfYa3GvvKMPMjF0Pb0inYO/cCHykTKFNfiFCeDLdCq
-         kncLbUVoDK4l9GdgXysdeKzOABUOeyj80QaQF7w+ZyfFAnWAT75gYymgAJWVmMKiUAn9
-         2TIRm/ryZxDGVpu/ntR88E0cJ8CrmSDeBIPyQJmxf3o+YBzmWvhFY2yJ4IZslKm14QVB
-         bmiA==
-X-Forwarded-Encrypted: i=1; AKwUvBwzuvPZDQvgxzgQhR76PwjhHyJ1cUgL2g7YDh2xWyAB0Zu2E8R5Or0BfjnDnJSGSwCMfhGBS+kcXw==@kvack.org
-X-Gm-Message-State: AFuF++mMRbFQ/TrN1LMqLBMgumtu8NHpeWZib5f/XdWqyb5laMbvGwao
-	RAsI1gTDZxTGLQ3KmMOGSMA5191RylsBwTM0iuVfE1SEJrOpQ9lC8xCT
-X-Gm-Gg: AYBFou2NY1gSPs22rlKquRRH7Vj/dZHPx89w5eO0yFCeodR8atrt588mBt4nAMM+I5O
-	fHrKj8jEVUE/17DRDrULOHF1wk6ojYs8V/AvAH2VitjlRZeROWCXIQpGlIcF8g7qejsJKeoBsl3
-	lBqmxMXlzL9BvHnnUGwz5xnr1Sc/tCaRd/KrJJmLMDP+Ntx3POAipS63ep6WDhgI+3DvvpBrGJg
-	qN6vryFs4mbdKjSQxjVuc3TZCujqQEADYxRkVA7oyy0K/f+YG/VCLnTtql0d2X3LlsTirSw3fLM
-	H/G0BzE2hCw4fWhmBRpz8JDWn3WVtN4ODhuIgZNiyOf1TsdEPYOC8qyxBBszaTj8MWxDqIAaBHK
-	4Lftb5c4ZYjzkxxatirhi9gCecL5imUZlkKS13c9VzmRCzYzh1pzdlh3zlVPart9Zke/1oOPClv
-	c2pcCf96KAAxKb+CgfN1ZwlUBnh3/Sc1+tdjZ7fjLurnVsyuTBnEzAUVeu69GQKL8Hq72Nz5Qgy
-	O4YyrBDeUkqd35XUloKRuoZXaDgCTnFh+0oE1SZYj0OJQfJlg/rXGYmyCyHTzNLG4o7QeZHiU8j
-	PdcSU3KB2PXc1iksX8qjR0xdK6byBMoS6w==
-X-Received: by 2002:a05:600c:1c0d:b0:4a0:1efa:c74c with SMTP id 5b1f17b1804b1-4a18043c6a5mr29814735e9.20.1791365290293;
-        Wed, 07 Oct 2026 02:28:10 -0700 (PDT)
-Received: from lima-kernel.telekom.ip (84-115-220-212.cable.dynamic.surfer.at. [84.115.220.212])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a17f557bcbsm81016035e9.9.2026.10.07.02.28.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 02:28:09 -0700 (PDT)
-From: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Guillaume Morin <guillaume@morinfr.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Sarthak Sharma <sarthak.sharma@arm.com>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-Subject: [PATCH v2] selftests/mm: hugetlb_madv_vs_map: fix TAP plan mismatches
-Date: Wed,  7 Oct 2026 11:28:01 +0200
-Message-ID: <20261007092801.35649-1-jaeyeon.lee.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PFaMuiKpPNp0Pyieos+Acm5B+wr1ERFeUv2RGXc7h1c=;
+	b=uV3tHqfvW80aznnR9aqWDv8hXMtflYMSiHNQXHlgjfCvP6c2PsKNibxJ1Z41wailTTA3th
+	Qg/E0UH4KO2wPecSyxcL4mtMjErP6/Dmzif1P8cj/6cAzPQ7J+OV2YDqFDGrHsmlq60naF
+	R7zklTBqDyI1RE0lP/BfXBCVgbnrUd4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791365569;
+	b=EXvdI+th0O/F4KWLTYK5hv6W0P8S8ap/tPkXc+Z8u+FI12JX8eqoCvZGVglnRPDoyoJkRa
+	RH7hylOe0LqFN8RGSnPlzm+y3YMlz0IT0yZmHVTto1Ir+ohAZ9w0HDd3uInlu3L59VrdfJ
+	Oo0C9MiRrWzYnFo40AZXcl7IRSWaLkY=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JhLCfMNa;
+	spf=pass (imf15.hostedemail.com: domain of pankaj.raghav@linux.dev designates 91.218.175.131 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Rp4xtoKq14kvi6mCZhjkc+uj21SFRhqayBCWLQcZ6pw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791365567; v=1; x=1791970367;
+ b=JhLCfMNapF4DoBIkAE4LhDJXI5yPnuHFADOEN9QFY7BoONhlUq620V4LkVAQ16vgHYCnka2P
+ cn8K6bzV0W/BL9Gpl46pi1xE5t+pIFrxt8wDReyOZ2C2h3PGefO6jrwOyDlmdWYMDsQsxFiY004
+ 4ovm1JQvoTm366DEAXwA58y0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f254123b51092fc3;
+	Wed, 07 Oct 2026 09:32:47 +0000
+X-Mizu-Trace-ID: f254123b51092fc3
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 7 Oct 2026 11:32:36 +0200
+From: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
+To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	"Darrick J . Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Ritesh Harjani <ritesh.list@gmail.com>, 
+	Zhang Yi <yi.zhang@huawei.com>, Christoph Hellwig <hch@lst.de>, 
+	Dave Chinner <dchinner@redhat.com>, Daniel Gomez <da.gomez@kernel.org>, Theodore Tso <tytso@mit.edu>, 
+	linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Andres Freund <andres@anarazel.de>, Dave Chinner <dgc@kernel.org>
+Subject: Re: [RFC PATCH v4 05/12] iomap: Add initial support for buffered
+ RWF_WRITETHROUGH
+Message-ID: <asYOJs4PYv326KNe@quentin>
+References: <cover.1790596383.git.ojaswin@linux.ibm.com>
+ <c76f9babf1b00f4574e37db156621edc6c078969.1790596383.git.ojaswin@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: isjo9csahwnnxoz7jmapmnoee85u83ku
-X-Rspamd-Queue-Id: ED793180009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c76f9babf1b00f4574e37db156621edc6c078969.1790596383.git.ojaswin@linux.ibm.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E65DFA000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791365291-98522
-X-HE-Meta: U2FsdGVkX1/K7vSdr7FN7o5URbDWV1SUFck3XWcUiDgPZaBUCEJ580oRrI9D+WWkeFupNT+34N9HxwMbV4dYMWP75NG+0BRkGcfXCC8MiGUlb4eEw+7Jlk5BwH2PPg009SNmKd+Qju2vLCslfbalwrOTLqNs0R6JlqXcsbta5LP26ArWHj0MQky6lW2BdTWrcceAiCbMcV/qVqo6U/b1oq/qb+8maVoe1kCFysX2mQcuM51BViClqVt7vbX9ZAfXskweBsSoSE8sccq0NOK18ITJ27OOkfNmaPvjVVBhyaOa9L/pnDNtRsf7+Rfvhf8cLPune6ozUcKtOELeYI80ceYAPqZf0gNmfzgZSdG3PNuhtXxB7zpnv3wee9vxmluzEIWE5sVgnvT+mlaZ2MKZzKit6G8T5XVoswcQC8AE+i3MtIkQike/jr5w7K9YxwGDemeFJQyMsNJQQFPrjkoWR2riKRTlmBPvHsrC7jJAhbNqemQfvQhOCBQvRpQTC6B9HrzQWAjZVfpMKP9JidCqb15kY4EPYCeJT29hw7RtPOS89/+v1jb77WJNwKcie2STTx1mg01oHFVBd+ciEIc2yMcugUXZ9i/1zQz7PPZPcGUp4x0RRmAdWNAx7sgFmzf0O8981qCHqmlgXmE1lhD2p2jVm3KybAopr7WFntPKnAioVcZ7KUpaivndiZsueKmPqJeoNA/1S9iHL39L1+vMx6HV3cfGG/ni9kKnQZgs42anecZuA9RuRwX8RuC4XkqND6+SCM06GvHEDwKiUDIG6sovfHU6KbtMu5LrwBuNICeP+HHsARvXBYTz2Pdx2vNRsi4fdULy6pquNf5lpkDFce7jXm9p6PH9cMdPAk1SQPzfWKJmuuVVeKmaRdfPDLFUIvK/pd/UVM3MhXod4Mdyn9nQ+RevxTOHlwNptP6/Jt82ksCHZgNNPfR53QFta/RfC0Gz5tvrBBC/WKY7k3D
- 3L2fpKfZ
- aION3osqEKjB9KyOPxUIgDGXLdsELX1/toTB9+KvBLhDCa4zfQSdd3rQDbut3bvMYz3MSzqCHbg/aQKKyIg949PXc4+i5iJrSpvZuRTRJ0sqOzxfPc0pIk6SRlI3Z1zPcsI9Rz9kw/6VDBd+qMui2JVvVRwYwDbJXpmuTYSIqBld1mq/b7LyWcemkKEAeCTRTuTuqbS923kkunYqTz3ELBFEN0VDmdwj3D5Vwl2bt2e5rCzgPqmRNyUoiCdV9+QJSVwNGVAD5cmOCUa/4olua1hFleaMMhQ0K+Zp7WJPSCF0WqnO2OOX75BnE5Nav4SKJ2YZYlfc9c+TMYcuTXho2OaBUqpoGBiKJD596ApcuFB5HbtpNQ9z7EDr3PHDBG7X4kVwgxFzW/HGEFec2Uxpos0VTjeJrYWdyw10nQh7vfXWLG6Os01QQ34anI6sa37wYwiCZg3sTXMWOGE1sWTM3A64VDkg3LL7i7L6ytmm3muGNBZQmo7eTjLwtk6vchH2ONqmysZ142zXByNKfVR9yKP8Fqg==
+X-Stat-Signature: 5gcnp8cjzfzed8dhdiduoqymwuzk96ja
+X-HE-Tag: 1791365568-588770
+X-HE-Meta: U2FsdGVkX19W1gsnWe3VU3h0j/2Wl3+RNBldSoGxmARhAbJYcuS9JrP2BttC8fOUnaRxNu97QajKNjvoV37lqHD+rLMCmPPFbziNwmgU0SWnOlMi80YsSVaBJcxmvGQw8qkqbwHBaFCgzHKxFcxT5OVT+ze4XyaHutDuKDHlZ3hIM4Xr2MQ2bpAlBsla2TEiaYcbrCqzEyUxA8ypzR/yxnp3++FQGDhrBcC7TE6CVUHyJP3plM61kb7bGuMFN40fyNkOThYpxo5knrEvdXB7CUtJyGXfhI+dvpwNFKSK1nqdftarJ+k1REejkl98h/mirquC7ChfOhrgRlWJZ5vXLO7PxoEod3mHLEf5jD9O8/FThU141ySacj/SbJUmAt/rafsHecoCZ/g/V+Vu90R/gUntTlN1IKAnmkkyR9BgORZNO3DYKCfWh2REmp544r7wo2XaSu0Aq783wksfIaUNakut6akJADSACQiK54fFSefJDxKYf6d4ulwtXFH14AOgdN9tsql77bNbt83w4CtLJTWIEwmiygGj95J/PJrcgZkNwXxudPRG5yrMUCXHbdksS7WI5KBvshOsPwcXnJhr0AS0P/4KyckA5rkfhjPyMqKh0yeDo+D+QWXqzauAiT3hDBS3vfzaFivAGh4k1KtFnAYkxRPJyVfGCc4iYwpMoHEy0SgmT721B+pqSaK1miqAMWOzmMqy1fLd0yGTzlHc6wknpJbOhztX5RL06A92BAyZHr8of9mcVZb50I8UrkhimBnn/6CJFVA6RAI4JkWppI1cIhn8CqbiDSibyTcjI3gXttr7T4H6EN1Kybn56Iopm60pJ9+1zo8nQ5HTN7DjJSE18a4YJZXLHyu3j2TKs65uCTkf8dyGdUfWZ7NdAoT0sEhHSkK3HnIWH9MOK5Vfo4G5bDtkmUdzgQYPgnOtu6ecXs1dGpdvYXs1pIVggnP2mouldNIL/n4vHbHz8SJ
+ bH+Oh246
+ hyua17tiehWs43M8Dcqfr1KLBObTuSrmC73FihDGLdQKdzHDzRQzG1Nl0XjpmJ9Y6cPVRQdt/7u8ueE5TpbgIB02mtxVkCETKSEy3SWl8KxAPHY910dkq6B5vNaUgwleaAZp25DbPbGSpGztuxkWRLt9/QPv8RApVcAm+C0gF2S/MyjinMLjn6p5vAxwBF0BQ1gQoL0SNqlvVMZw7J16UBtAgaDATgruh25vn/6NXWphlNMHw/WrDs2+PxRTFVqLuE4Lsa+jMSowgNFRStsAZzWh8vRiTpS5NQN6BZWGTcvoIRU4w4Jetcg3aHtU1mgy9oInBizUT5EVMiTa1ZhNoMHrPcgPkGyKiEjpiEHhipL9b1MDg4Y3mHaQoua36jUt1V+ZL3O0NFrgj5cI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,64 +96,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The plan was raised from 1 to 3, but the HugeTLB setup check that may
-call ksft_exit_skip() still runs after ksft_set_plan(), so a setup
-failure reports one result against a plan of 3. Move ksft_set_plan()
-below the setup check.
+One general comment, all your commit headers are starting with
+uppercase.
 
-Also, when the underflow check fails, or munmap() fails,
-test_underflow() jumps to err_cleanup and exits without reporting the
-remaining results. Report the munmap() failure as a test result and
-skip the final HugePages_Rsvd check in err_cleanup, so these failure
-paths report all 3 planned results.
+iomap: Add initial support for buffered RWF_WRITETHROUGH
 
-Fixes: 827149aad495 ("selftests/mm: hugetlb_madv_vs_map: add underflow test")
-Assisted-by: LLM
-Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
----
-Changes in v2:
-- Drop the duplicate ksft_perror() and report errno in
-  ksft_test_result_fail() (Sarthak Sharma).
+s/Add/add
 
- tools/testing/selftests/mm/hugetlb_madv_vs_map.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Overall this looks good to me. I will run some tests via fio. Do you
+have a branch with WRITETHROUGH by any chance?
 
-diff --git a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-index 1d111f42dd59..0f6afb834dbf 100644
---- a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-+++ b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-@@ -168,7 +168,7 @@ void test_underflow(void)
- 
- 	/* First unmap, this will close the vma */
- 	if (munmap(huge_ptr, mmap_size) != 0) {
--		ksft_perror("munmap failed");
-+		ksft_test_result_fail("munmap failed: %s (%d)\n", strerror(errno), errno);
- 		goto err_cleanup;
- 	}
- 
-@@ -203,18 +203,20 @@ void test_underflow(void)
- 	if (waitpid(pid, NULL, 0) <= 0)
- 		ksft_exit_fail_perror("waitpid failed");
- 
-+	ksft_test_result_skip("HugePages_Rsvd check after child exit\n");
- 	ksft_exit_fail();
- }
- 
- int main(void)
- {
- 	ksft_print_header();
--	ksft_set_plan(3);
- 
- 	if (!hugetlb_setup_default_exact(1))
- 		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
- 			       hugetlb_free_default_pages());
- 
-+	ksft_set_plan(3);
-+
- 	test_madv_vs_map();
- 	test_underflow();
- 
+On Mon, Sep 28, 2026 at 05:33:06PM +0530, Ojaswin Mujoo wrote:
+> +static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
+> +				   struct iomap_iter *iter, struct iov_iter *i,
+> +				   const struct iomap_writethrough_ops *wt_ops)
+> +
+> +{
+> +	ssize_t total_written = 0, pending = 0;
+> +	loff_t submit_start_pos;
+> +	int status = 0;
+> +	struct address_space *mapping = iter->inode->i_mapping;
+> +	size_t chunk = mapping_max_folio_size(mapping);
+> +	unsigned int bdp_flags = (iter->flags & IOMAP_NOWAIT) ? BDP_ASYNC : 0;
+> +	unsigned int bs = i_blocksize(iter->inode);
+> +
+> +	/* copied over based on how DIO handles these flags */
+> +	if (iter->iomap.type == IOMAP_UNWRITTEN)
+> +		wt_ctx->flags |= IOMAP_DIO_UNWRITTEN;
+> +	if (iter->iomap.flags & IOMAP_F_SHARED)
+> +		wt_ctx->flags |= IOMAP_DIO_COW;
+> +
+> +	if (!(iter->flags & IOMAP_WRITETHROUGH))
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * IOMAP_INLINE mappings have NULL bdev and would cause
+> +	 * iomap_sector() to dereference invalid memory. Reject them.
+> +	 */
+
+Nit:
+I noticed that gfs2 sets the bdev even for IOMAP_INLINE. A better
+filesystem agnostic comment might be something like this?
+
+/*
+ * Inline data lives in the inode's metadata buffer, so it cannot be
+ * written via a bio built from the folio.
+ */
+
+> +	if (iter->iomap.type == IOMAP_INLINE)
+> +		return -EINVAL;
+> +
+> +	do {
+> +		 * blocks in the bvec again.
+> +		 */
+> +		if (wt_ctx->nr_bvecs && prev_pos + prev_len > pos_aligned) {
+> +			size_t delta = prev_pos + prev_len - pos_aligned;
+> +
+> +			/* Everything already added to bvec, nothing to do */
+> +			if (delta >= len_aligned)
+> +				goto put_folio;
+> +
+> +			pos_aligned += delta;
+> +			off_aligned += delta;
+> +			len_aligned -= delta;
+> +		}
+> +
+> +		prev_pos = off_aligned;
+
+I think this is a mistake?
+prev_pos = pos_aligned; ?
+
+> +		prev_len = len_aligned;
+> +
+> +		iomap_folio_prepare_writethrough(folio, off_aligned,
+> +						 len_aligned);
+> +
+> +		if (!wt_ctx->nr_bvecs) {
+> +			wt_ctx->bio_pos = round_down(pos, bs);
+
+We could reuse pos_aligned variable here instead of recalculating?
+
+> +			submit_start_pos = pos;
+> +ssize_t iomap_file_writethrough_write(struct kiocb *iocb, struct iov_iter *i,
+> +				      const struct iomap_writethrough_ops *wt_ops,
+> +				      void *private)
+> +{
+> +	struct inode *inode = iocb->ki_filp->f_mapping->host;
+> +	struct iomap_iter iter = {
+> +		.inode		= inode,
+> +		.pos		= iocb->ki_pos,
+> +		.len		= iov_iter_count(i),
+> +		.flags		= IOMAP_WRITE | IOMAP_WRITETHROUGH,
+> +		.private	= private,
+> +	};
+> +	struct iomap_writethrough_ctx *wt_ctx;
+> +	unsigned int max_bvecs;
+> +	ssize_t ret;
+> +	struct blk_plug plug;
+> +	size_t min_folio_bytes = PAGE_SIZE
+> +				 << mapping_min_folio_order(inode->i_mapping);
+
+min_folio_nr_bytes could be used here.
+> +
+> +	/*
+> +	 * For now we don't support any other flag with WRITETHROUGH
+> +	 */
+> +	if (!(iocb->ki_flags & IOCB_WRITETHROUGH))
+> +		return -EINVAL;
+> +	if (iocb->ki_flags & (IOCB_DONTCACHE))
+> +		return -EINVAL;
+> +	if (iocb_is_dsync(iocb))
+> +		/* D_SYNC support not implemented yet */
+> +		return -EOPNOTSUPP;
+> +	if (!is_sync_kiocb(iocb))
+> +		/* aio support not implemented yet */
+> +		return -EOPNOTSUPP;
+> +
+
 -- 
-2.43.0
-
+Pankaj
 
