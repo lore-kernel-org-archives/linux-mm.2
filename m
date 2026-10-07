@@ -4,105 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B20FCA6002
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 22:40:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7818CA6009
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 22:59:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 146016B0096; Wed,  7 Oct 2026 18:40:19 -0400 (EDT)
+	id 822006B008A; Wed,  7 Oct 2026 18:59:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05AE56B0098; Wed,  7 Oct 2026 18:40:18 -0400 (EDT)
+	id 7D2A16B008C; Wed,  7 Oct 2026 18:59:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED9CB6B0099; Wed,  7 Oct 2026 18:40:18 -0400 (EDT)
+	id 6EAAA6B0092; Wed,  7 Oct 2026 18:59:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BC9826B0096
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 18:40:18 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 292701203BF
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 22:40:18 +0000 (UTC)
-X-FDA: 85297300116.17.14D2B4C
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5E76940003
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 22:40:16 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=g6qDpbw9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3S8rGag0KCFg0178I74A10F0J6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--abhishekbapat.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3S8rGag0KCFg0178I74A10F0J6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--abhishekbapat.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791412816;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jel1GtKvrryvSIBAQ3atkvcxRH+gBV+jXFIXOBoXOeg=;
-	b=NmNAMzICut7iNY9x1bofAcyXjUZT7xv/ZHZupLeP+BqOale4gZI0g/OZA3m9Erl1+0oM2X
-	XLVrw/ejs/my7jIKWxBO4O66SCiQljsA3r6KcXv4xJUTu/C05TV5LMmSS+1ot+ZDqBvPgn
-	kMzy19cEXeybjI9OO7QM60TnVeK8X2M=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=g6qDpbw9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3S8rGag0KCFg0178I74A10F0J6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--abhishekbapat.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3S8rGag0KCFg0178I74A10F0J6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--abhishekbapat.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 41C0C6B008A
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 18:59:48 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C4C47403C0
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 22:59:47 +0000 (UTC)
+X-FDA: 85297349214.04.794C4EB
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 80315C0003
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 22:59:44 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PpxkU0vE;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791412816;
-	b=0ogmNyqECtFjwu8NbyZykpuVAqzfrBCsP+me5qjzAPUYf87VEDcHpFsvw86nNM8ussPfs1
-	c2LBg3ZYjpJwc/TEoA8Ety1DYRs0GFubeYa0Q7C82TRLGZez2KKwspdcU5/Xfi0uKWLpeA
-	moVkwTD902jnBULMppZeB887Uq+wYiE=
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-351788121cfso578141eec.0
-        for <linux-mm@kvack.org>; Wed, 07 Oct 2026 15:40:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791412815; x=1792017615; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jel1GtKvrryvSIBAQ3atkvcxRH+gBV+jXFIXOBoXOeg=;
-        b=g6qDpbw9pyWbKmI1gii5cHQJlSGARmfUYqXqHcwkujuFFqPIJpr+I2YjMjlHWzuu9v
-         HRuHQkcEBeKJgXF2oUssMnp9Ng3r5sf701nSitM4ByzmYLtcvHrCJtHAjPdGg1dNJ1mk
-         x/xPPt73qXkdA1jU9QwT5ASzy/ylPHkJanhfZ6IulrHKbnpfWn0nixlLCP0EwGCN4WAo
-         5pMkT8xiuNx/XM5uJUnPUelRACO2GsaB19UgNQ2y8aIXNJi9wL8hf+fmlqVH/dh/OCz5
-         8b96+u0PZtEPWQQEMvvlVvMjCzZBxN5muEtJGnoCKOZucf/beYyphfLLMwzQrz1CoYf9
-         uijg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791412815; x=1792017615;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jel1GtKvrryvSIBAQ3atkvcxRH+gBV+jXFIXOBoXOeg=;
-        b=SInkj4LuZk0gc9poV3fpzsjuJ3YLNt/Y/flQ4C8SfCLOOq0BQyDyMMmGW3MdSlW9gc
-         K4u0eZ7X9P758XWKc6yIRhKiKgW4PLbxpVx3lpPnT2xhc1ybA6fMH4Pkcpd3HRu53fIY
-         q2w6iAao4jbMNEx90cd7u2qFWt05LVCb72p+n9BOWgUUdN11WUJUtXIYI4fa5CROudjE
-         jqMJ6F0Jaii5PYPowd/ezQoPkTUjGvz1ruFalQrRXnj96sIMtJ7W6DhOmkG6zwl9fNf0
-         N6gEIF/GYfjXQcBBfA1uhZ6ad4GOUo2fPTtab48CVcGur/dIPYzGW2rgm3uq8DJjnAmG
-         4Tjg==
-X-Forwarded-Encrypted: i=1; AKwUvByVlHDIkZQ6Kk0/u3OwAiq4sZ1F9ycviZgtLLrO7X5ud1lRSDG3lg/i5HT8Ka8UaY7gczl/DBk1Fg==@kvack.org
-X-Gm-Message-State: AFuF++k+FUDzK6CU2u4itKtcy7e8YSQENWHUtzvMH5H4nHtfT/6pSkU3
-	yz/HnwV660oyzQcfMKAk6y6SJR/4BeB6oBXJc4Yys+GnEx1hTBXNYxDqbQaZJtjUY+ByctANJD/
-	EATOziifkNAyhC0dbnk+jWPZhZAvu5zbrag==
-X-Received: from dygf10.prod.google.com ([2002:a05:7300:134a:b0:351:21f1:20ca])
- (user=abhishekbapat job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7301:1e84:b0:34b:c18d:c28e with SMTP id 5a478bee46e88-3515dd837bemr5875331eec.7.1791412811980;
- Wed, 07 Oct 2026 15:40:11 -0700 (PDT)
-Date: Wed,  7 Oct 2026 22:40:02 +0000
-In-Reply-To: <cover.1791410885.git.abhishekbapat@google.com>
-Mime-Version: 1.0
-References: <cover.1791410885.git.abhishekbapat@google.com>
-X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <ed2e9cb670af7d013aaf6585aea551587647f070.1791410886.git.abhishekbapat@google.com>
-Subject: [PATCH v2 4/4] alloc_tag: Add a test for trace state toggle and filtering
-From: Abhishek Bapat <abhishekbapat@google.com>
-To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, Abhishek Bapat <abhishekbapat@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: giybubjnzqzzspjwstpoa6zzhzhw54fj
+	t=1791413986;
+	b=PloJJ/NUbB74mhoyn7J25FjHPRPt2xlSKshagH/3v6DGXNgfZhwASHTOt3tYzlkysD61Zw
+	ttcXjInXlGK76rFqGGIFMUGkpnIq7Fz2w3qJVvIqExVxb6Pi/lpNW8gzhRGbYkKXeU35S3
+	l6o7D6fbzLg92E+zkXUTa+YARk18y+Q=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PpxkU0vE;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791413986;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=D1Ti37r3WJ8/qxZbkqTqQ3PPdd2GRoAw7AQ+w9AcAhc=;
+	b=spmBSNKP7kJinPXk2+72eD0aEtugROA7fuPiitQNYRlnHO9t5OupGPTveId5FHv579HN5l
+	jAQWSVPinwsuDZzaz4NZVtNgN4QP/7fHc3OQDysTvD7USxq5vdVt14PIs24FKz+pU8MwFx
+	T7vb4/c2KEORsjBZqqhbp6pxzcz48JE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791413985; x=1822949985;
+  h=date:from:to:cc:subject:message-id;
+  bh=KcgdW8Ymou+cnYDJZ8kTaOBfDPR7jywHPu5lecoNAiI=;
+  b=PpxkU0vECvQlEcXook+1cCRjdyIoZZsapyd91LStvquj3yfj9+nwMHw0
+   xYO3UO28Jt1VrTSviJNaNRJ+2/6xI/gifmZtd/1l8Idak2LZK4WyDwM7p
+   kfCT0smv/1EeocUjJMPd8KMRD+u2ycyRZE7c4uY2Wlc3r6HO6OmfSjH+w
+   QKiNTU6oxW2T2T5h9G9XVMpUXOoxLQbD190eaSPabSamWwdE2/2qgn/Al
+   /iaf05cr7LYcdYfvArBPD5uSbNewCz0+DWyxtWALrvjJDyAyc8FvnLpgc
+   HhzEzIZML0QBxUDYjmWG+I3VDRWDeQVKn7pQo9bwACOppeq8tbiQzopKQ
+   w==;
+X-CSE-ConnectionGUID: x0JS5B6kQUS4OA4c2T48YQ==
+X-CSE-MsgGUID: gpZ1WQFNR4WCLyGAVxig7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="297499"
+X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
+   d="scan'208";a="297499"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2026 15:59:43 -0700
+X-CSE-ConnectionGUID: i7TyAtWVTS6k8jdjKm/p4Q==
+X-CSE-MsgGUID: M13/o/euQh+TK6/UrC6d0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
+   d="scan'208";a="1667944"
+Received: from igk-lkp-server01.igk.intel.com (HELO d0de6c2a75a7) ([10.211.93.152])
+  by fmviesa012.fm.intel.com with ESMTP; 07 Oct 2026 15:59:41 -0700
+Received: from kbuild by d0de6c2a75a7 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xEabr-000000004Eb-2U7o;
+	Wed, 07 Oct 2026 22:59:39 +0000
+Date: Thu, 08 Oct 2026 00:59:25 +0200
+From: kernel test robot <lkp@intel.com>
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: include/linux/compiler_types.h:572:45: error: call to
+ '__compiletime_assert_431' declared with attribute error: BUILD_BUG_ON
+ failed: IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT)
+Message-ID: <202610080034.W7eXW61r-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 80315C0003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5E76940003
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791412816-906461
-X-HE-Meta: U2FsdGVkX1+2VCbngBoFWwO1wFVosc488rYxzXWZyxSZy7Wfrg1uG+pV3tJeC/VbVbhlx6RpZitHta/6fHZbKpBLbrCRCmRWQDE/k9tkY4W+XGSOJO5qvVTtEhoWegqSm0AdqXKc7+jDI5CCo9ekrHaVVMKyXKau5M8SJ87RCKzP/lncssHq7Bplc/BH0quw+idNQMgTih3lW39tzpwEQAAaK6B2RKzXZJiXAWAFkpHGZj9ASnrTTACSAZKG4BDlGc4GDMiqUzzs62AOxDxlNKdtKIjHOmiuQiUfTbyGHbx/6/t0bZKLkp/X2gGP9y08+x2Zbl2n+o5bgvdHnRFY17CVqR0w3+bkgZDDgwd6xuu8ytx+uEbwctALaCGfRoAZnbcAnqoFU4gNAXK9NovlA7pqlV7YU07qizlob9UJCHQTDYayR3q/vmk29pHDKEs/gNACW8a67Ba1RPQedPAVImpG5X1oPo3mJK7XuvGH0+ab3XbEoBHSmGPj0Z/A1ityNoveiqa01gHAQT2da4bj3F512B1wa3yu15pPDeU6lI9Wf0nsv33oyzKDef5atccWyTviow86498xTIDKgsiaTdEAWPeyxDrVFSEugmUkJh/tpj2GdrAoVzKHeHEpt8/03+QplK3Jofr6qjDORVr0PjI6KXbVaqIeHzdQqqxsjsRPSNWagqMvxmK5NbDYQVM4qBIiKkqHwW8fH5kJDwzPug5rbEFuV5ffiU8QC6V6lx5NgLC84Flg5/lODCj8b2o1kllq/BqdSuh9HBJZvJ7EDtu4Pvm/BaM7/HXhP8vrN6cXQMWy4foF/HBI5ME4txHe1OJ4KbyS17y6oO076p/tR1WiOAFDPn6Ur2VCqnp/sy57ugF+boBXipBgilXvIV/ZuzFieYrYDMZ8rcnIgQbHaPRAHoURf41XaTSED7jbf/N4Es1mx/cOrywBS5sgufEoJ0XrxcmcWxV0EFV7dw5
- Ak3ILwSF
- Ri29/kHV/dunNEgoCNqWeslJhOJKvzuUopucNTTv8vrAXaPvNcVFS68+DyZTKuxal5EEtj0hXiJVf0Go3bT+/lTHV6GndWg0XA1mLWnSOm6poF2ML2rECQ2KQd6bN96ePrSqOV6A3tYFvKdpFr5caHvkBqHPA+LZjlvnI0qaJokgXMFDCiGgbPxx/+BhpdcUNn0otd0rvPE9D78bd0bGaVdF7ODsnbQylsNvQrVHkVhV15Bn0vv0zVLykK42ufFluXzjUrDn9C+ob2X+OMiSsAZeXjbUCnlwmfGrpCQFzY1foJCJxhDNUdbefq46wk5ZfP+aBOCqRiDhs9lOtsB2gDMGlxMojwLjlMmeb/UO+ie/Wubsv2s425w2IFJmxNtKxjF+d+Sd5y7Yj6pFl+7+/EP3BXZfg0kRQivCqBGijpj9fWGLsGfNJRxNGzYZR4cJfRDyAExhB+JCUnIwakQAvyZbvXdT4zEhMekiLP8pNBnPJY8BcYWiDUng1GodnBsUidXUQfYuWfDLQUnXTc5JGJg8tU/RXCYyu0zMi692HBFZpo+wdoeBcf9/0l8GzTYCFeUbflQ09dH358ni2h3Pg9kzeuvWhz+ThO5yM3BUoiUGuSo3WMtt73OM2GN2gCMvLlt9XKaWeb8j7czfRJ7qSWkH5UfAnAaMkyPWDF+VbWrRbzuo=
+X-Stat-Signature: f5qo4dwxu7zah5ehjg9qk6e4oyrcigkf
+X-HE-Tag: 1791413984-858085
+X-HE-Meta: U2FsdGVkX1/IuLKRlo/wiN2oP7s81+NqBo2kcfDNqnngnHDtpYA/WTXrkVkSlvojC0r24hpZkUT6n9vJE0dRted6WCc2n1Pp+MXYwFUMdiqJ1t3nnYUplQcxsvg0oSlbhdlCKkzOgW/JSuWwHblW2QyRj3o0KAjGAI8UKJomaAs14EoOUpJZDjgJs68nQzYPAwxYXfn7BN4PZ1tANktI4mPCG8dEcsom+RD61xIhc4zdm3oOpCvE1V2U0iGj45F4UY0vW0cUQm/3+6rjVhOS58xGnHtsEkQXfvgkRzXQvIlSbq61eSi1yZRJs413U//cZHP6hZ4/PpxSHkP0ssuI7qCahyHe90pshq/3BKvva/d9g0pXt34yQyL5K+BYc0kEXpiEuuV672W4vR+ez3uR9k+LeofkoWlL9a07GZ2o7SQJ+a5B2liuv30zXBIqPgokTTpY0j4+7v19f0n2OtMrj94PDIf0sagEeAB6iATVBf1Fcyl2O+Q1Kiylt0rnreXBTbtxSGG7icT4w00yGB2cMAvL1gmu2NvMU+KvS+OdE0Sop7CA2O/EoVBGoSDCJcYMcJLUWZqrfYThoBVJUfv0RmDD/VuJDM39to5P2hA8/bT9OazvhubZU3/d7sAWL4S5VjUakAc/PXBXgvSnr9+3n4aG37YYV3wqGSjqoGHcFt/CB5Ks5RtLSlH9eqVsOnj5wX52iYg4O+HLxidMgnAg+zQiSga0wmuw9I6LslqcA7F8efYdKRq7xnaa76nSWAUYQuGAPmQa5RRK0H6uvxsNIQ8AFT8h38E+5A9PS5oj6CwbzT0JDOyKXB7Z0dV+mCAAebsQ01fhUJdhwYen/eRYzTidGq/OuHs2CafJNj5W8U6T/tQ6PEF1pUq3N/fim/jnL04/Jv8Mx3k3ALe6vTT4ZwuQyYgVv+Fy1krc6/gg2FD6GL7eoJ5I1n7cOBTXRl6/VGFlD9AvbzbCO/eknhU
+ uXVe1cZL
+ Yf5XoI6xfpLUVbWi7I1MLc4oHgijUPFsUpXNi7ucrxzFxXGixD6YJLv0rQpkvYrdo1cdAY1PiILsCSJ5eqP4bWXEEj7xs7BC+2cAuJxTfkUutZuSewSDWPoYQ81+z4rolKCskuLuU5PJtvza8hIlKRcc4foDToX7FD7Mr1vEJ63xap7nyu0nf2zzy+49IDQGlbQC2Axz6MWRY+xFgWiiIbpmQfr12+4u20C4TN9jN61/ZENZdRiDEWjD4phoxRuhgSRu/stFYW4B2UnjXMUV7cBkBKxCsNr0tLWGgDF5UKvJvHs3A6Tvph376Kh2SmEc55zYCBIDOsrPwxMWOCwdLGQWJKUXlyZ0Ggw5W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,187 +103,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Following the introduction of the ALLOCINFO_IOC_TOGGLE_TRACE IOCTL and
-ALLOCINFO_FILTER_MASK_TRACE_ON filters for selective memory allocation
-tracing, update the kselftests to validate this behaviour.
+Hi Miaohe,
 
-Introduce `test_tracing_toggle_and_filter`, which validates the
-architecture by:
-1. Dynamically flipping trace execution state for a designated allocation.
-2. Query the same tag again, and check that the returned tag reports the
-   new state in its `trace_on` field.
-3. Restore the tag's original trace state, also on failure, so the test
-   does not leave tracing changed on the system.
+FYI, the error/warning still remains.
 
-The test uses `dup_mm()` function name with the function filter in the
-IOCTL to run the above steps. If the `dup_mm()` tag is not found, the
-test is skipped.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   7b63ef2d55f24519e7e9e5f4d15dbea03f126e40
+commit: c090868f59ce888db838cf543d18f731d13ed498 Revert "hugetlb: make hugetlb depends on SYSFS or SYSCTL"
+date:   1 year, 1 month ago
+config: mips-randconfig-r2301-20261007 (https://download.01.org/0day-ci/archive/20261008/202610080034.W7eXW61r-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 13.4.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261008/202610080034.W7eXW61r-lkp@intel.com/reproduce)
 
-Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
----
- .../alloc_tag/allocinfo_ioctl_test.c          | 113 +++++++++++++++++-
- 1 file changed, 110 insertions(+), 3 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: c090868f59ce ("Revert "hugetlb: make hugetlb depends on SYSFS or SYSCTL"")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610080034.W7eXW61r-lkp@intel.com/
 
-diff --git a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-index 74fd64b2370c..eb52ca1a1dc4 100644
---- a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-+++ b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-@@ -48,6 +48,11 @@ static inline int __allocinfo_get_next(int dev_fd, struct allocinfo_tag_data *pa
- 	return ioctl(dev_fd, ALLOCINFO_IOC_GET_NEXT, params);
- }
- 
-+static inline int __allocinfo_toggle_trace(int dev_fd, struct allocinfo_toggle_traces *params)
-+{
-+	return ioctl(dev_fd, ALLOCINFO_IOC_TOGGLE_TRACE, params);
-+}
-+
- static bool match_entry(const struct allocinfo_tag_data *procfs_entry,
- 			const struct allocinfo_tag_data *tag_data,
- 			bool match_bytes, bool match_calls, bool match_lineno,
-@@ -289,6 +294,8 @@ static int run_filter_test(const struct allocinfo_filter *filter)
- 	return ret;
- }
- 
-+static const char *target_test_function = "dup_mm";
-+
- static int test_filename_filter(void)
- {
- 	struct allocinfo_filter filter;
-@@ -304,11 +311,10 @@ static int test_filename_filter(void)
- static int test_function_filter(void)
- {
- 	struct allocinfo_filter filter;
--	const char *target_function = "dup_mm";
- 
- 	memset(&filter, 0, sizeof(filter));
- 	filter.mask |= ALLOCINFO_FILTER_MASK_FUNCTION;
--	strncpy(filter.fields.function, target_function, ALLOCINFO_STR_SIZE);
-+	strncpy(filter.fields.function, target_test_function, ALLOCINFO_STR_SIZE);
- 
- 	return run_filter_test(&filter);
- }
-@@ -514,11 +520,106 @@ static int test_lineno_filter(void)
- 	return ret;
- }
- 
-+static enum ioctl_ret toggle_trace(struct allocinfo_tag *target_tag,
-+				   bool enable)
-+{
-+	int fd;
-+	struct allocinfo_toggle_traces toggle_params;
-+
-+	fd = open(ALLOCINFO_PROC, O_RDONLY);
-+	if (fd < 0) {
-+		ksft_print_msg("Failed to open " ALLOCINFO_PROC ": %s\n", strerror(errno));
-+		return IOCTL_FAILURE;
-+	}
-+
-+	memset(&toggle_params, 0, sizeof(toggle_params));
-+	toggle_params.filter.mask = ALLOCINFO_FILTER_MASK_MODNAME | ALLOCINFO_FILTER_MASK_FUNCTION |
-+				    ALLOCINFO_FILTER_MASK_FILENAME | ALLOCINFO_FILTER_MASK_LINENO;
-+	toggle_params.filter.fields = *target_tag;
-+	toggle_params.enable = enable;
-+
-+	if (__allocinfo_toggle_trace(fd, &toggle_params)) {
-+		close(fd);
-+		return IOCTL_FAILURE;
-+	}
-+
-+	close(fd);
-+	return IOCTL_SUCCESS;
-+}
-+
-+static int test_tracing_toggle_and_filter(void)
-+{
-+	struct allocinfo_filter filter = { 0 };
-+	enum ioctl_ret ioctl_status;
-+	int ret = KSFT_PASS;
-+	bool initial_state, target_state;
-+	struct allocinfo_tag target_tag;
-+	struct allocinfo_tag_data_vec *tags = calloc(1, sizeof(*tags));
-+
-+	if (!tags) {
-+		ksft_print_msg("Memory allocation failed.\n");
-+		return KSFT_FAIL;
-+	}
-+
-+	filter.mask |= ALLOCINFO_FILTER_MASK_FUNCTION;
-+	strncpy(filter.fields.function, target_test_function, ALLOCINFO_STR_SIZE);
-+
-+	ioctl_status = get_filtered_ioctl_entries(tags, &filter, 0);
-+	if (ioctl_status != IOCTL_SUCCESS || tags->count == 0) {
-+		ksft_print_msg("Could not retrieve IOCTL entries for %s\n", target_test_function);
-+		ret = KSFT_SKIP;
-+		goto exit;
-+	}
-+
-+	target_tag = tags->tag[0].tag;
-+	initial_state = tags->tag[0].counter.trace_on;
-+	target_state = !initial_state;
-+
-+	ioctl_status = toggle_trace(&target_tag, target_state);
-+	if (ioctl_status != IOCTL_SUCCESS) {
-+		ksft_print_msg("Failed to toggle tracing\n");
-+		ret = KSFT_FAIL;
-+		goto exit;
-+	}
-+
-+	filter.mask |= ALLOCINFO_FILTER_MASK_TRACE_ON;
-+	filter.tracing = target_state;
-+
-+	ioctl_status = get_filtered_ioctl_entries(tags, &filter, 0);
-+	if (ioctl_status != IOCTL_SUCCESS) {
-+		ksft_print_msg("Error retrieving IOCTL entries with trace filter.\n");
-+		ret = KSFT_FAIL;
-+		goto exit_revert;
-+	}
-+
-+	if (tags->count != 1) {
-+		ksft_print_msg("Expected exactly 1 entry, but got %llu\n", tags->count);
-+		ret = KSFT_FAIL;
-+		goto exit_revert;
-+	}
-+
-+	if (tags->tag[0].counter.trace_on != target_state) {
-+		ksft_print_msg("Entry returned by trace filter does not match target state\n");
-+		ret = KSFT_FAIL;
-+	}
-+
-+exit_revert:
-+	ioctl_status = toggle_trace(&target_tag, initial_state);
-+	if (ioctl_status != IOCTL_SUCCESS) {
-+		ksft_print_msg("Failed to revert tracing to initial state\n");
-+		ret = KSFT_FAIL;
-+	}
-+
-+exit:
-+	free(tags);
-+	return ret;
-+}
-+
- int main(int argc, char *argv[])
- {
- 	int ret;
- 
--	ksft_set_plan(4);
-+	ksft_set_plan(5);
- 
- 	ret = test_filename_filter();
- 	if (ret == KSFT_SKIP)
-@@ -526,6 +627,12 @@ int main(int argc, char *argv[])
- 	else
- 		ksft_test_result(ret == KSFT_PASS, "test_filename_filter\n");
- 
-+	ret = test_tracing_toggle_and_filter();
-+	if (ret == KSFT_SKIP)
-+		ksft_test_result_skip("Skipping test_tracing_toggle_and_filter\n");
-+	else
-+		ksft_test_result(ret == KSFT_PASS, "test_tracing_toggle_and_filter\n");
-+
- 	ret = test_function_filter();
- 	if (ret == KSFT_SKIP)
- 		ksft_test_result_skip("Skipping test_function_filter\n");
--- 
-2.56.0.385.gd3acb90ef8-goog
+All errors (new ones prefixed by >>):
 
+   In file included from <command-line>:
+   arch/mips/mm/init.c: In function 'arch_mm_preinit':
+>> include/linux/compiler_types.h:572:45: error: call to '__compiletime_assert_431' declared with attribute error: BUILD_BUG_ON failed: IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT)
+     572 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                                             ^
+   include/linux/compiler_types.h:553:25: note: in definition of macro '__compiletime_assert'
+     553 |                         prefix ## suffix();                             \
+         |                         ^~~~~~
+   include/linux/compiler_types.h:572:9: note: in expansion of macro '_compiletime_assert'
+     572 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:50:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+      50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+         |         ^~~~~~~~~~~~~~~~
+   arch/mips/mm/init.c:434:9: note: in expansion of macro 'BUILD_BUG_ON'
+     434 |         BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT));
+         |         ^~~~~~~~~~~~
+
+
+vim +/__compiletime_assert_431 +572 include/linux/compiler_types.h
+
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  558  
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  559  #define _compiletime_assert(condition, msg, prefix, suffix) \
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  560  	__compiletime_assert(condition, msg, prefix, suffix)
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  561  
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  562  /**
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  563   * compiletime_assert - break build and emit msg if condition is false
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  564   * @condition: a compile-time constant condition to check
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  565   * @msg:       a message to emit if condition is false
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  566   *
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  567   * In tradition of POSIX assert, this macro will break the build if the
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  568   * supplied condition is *false*, emitting the supplied error message if the
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  569   * compiler has support to do so.
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  570   */
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  571  #define compiletime_assert(condition, msg) \
+eb5c2d4b45e3d2d Will Deacon 2020-07-21 @572  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  573  
+
+:::::: The code at line 572 was first introduced by commit
+:::::: eb5c2d4b45e3d2d5d052ea6b8f1463976b1020d5 compiler.h: Move compiletime_assert() macros into compiler_types.h
+
+:::::: TO: Will Deacon <will@kernel.org>
+:::::: CC: Will Deacon <will@kernel.org>
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
