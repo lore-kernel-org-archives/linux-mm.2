@@ -4,94 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE1F5CA5FF1
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 13:50:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD68BCA5FF1
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 14:04:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E0276B0088; Wed,  7 Oct 2026 09:50:33 -0400 (EDT)
+	id 4631C6B008C; Wed,  7 Oct 2026 10:04:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 690D06B008C; Wed,  7 Oct 2026 09:50:33 -0400 (EDT)
+	id 413D06B0092; Wed,  7 Oct 2026 10:04:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A6AF6B0092; Wed,  7 Oct 2026 09:50:33 -0400 (EDT)
+	id 2DC466B0093; Wed,  7 Oct 2026 10:04:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 348CF6B0088
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 09:50:33 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C7F2880239
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 13:50:32 +0000 (UTC)
-X-FDA: 85295965104.27.515BB45
-Received: from mta0.migadu.com (out-165.mta0.migadu.com [91.218.175.165])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 94EE24000D
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 13:50:30 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KzrD+7k+;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.165 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 023786B008C
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:04:43 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 97F401A0245
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 14:04:43 +0000 (UTC)
+X-FDA: 85296000846.01.C1ECF58
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2CCCF140005
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 14:04:40 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Gl63wSnu;
+	spf=pass (imf09.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791381031;
+	s=arc-20220608; t=1791381881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pGJzaicDXcFiTzhE1TXYZiRofP6B5tO3fuFEa+krkzA=;
-	b=LTw9RoxEKZy7LDjPhYIv0Id/DXv4gssBjAYd7jfQYnrNbE231aRnFEcnTYyCMY4RwAF8nN
-	6l8/XO2nIaWnJhf2ScjHZaoQ3txJD9JExIdFIqHcz2hFc+lEUQElXxq1VElzFvssdtrPUm
-	EbS/JXM6NY+FdMy8Bmq99rwLN9xjblg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KzrD+7k+;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.165 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=d1yjiadCaFm4oqkKVvCsI8gTbCtsHibfKKqmZZFHvIc=;
+	b=hARv1qYgGObiC7Tjtm6r4WRr/J5a38F4Ni6dFlMfT9fIRqn49gIKlJluwPnAvU2cpN+jWp
+	3WGSm12AiLH1o4PAtz36d7A4d2NymBKL9RBF2HzvabEPq1G1/rGbSNnboBVKIyKtDmYvgr
+	PP+wbk2yxqjksk7C1cLLBqhti2PObT8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791381031;
-	b=i9i2M/pm9PCDALogatQqOiJ2gJlrlIqREUyd3AOIoxTI2iLJqXdq11JowSfgosNV50xaZd
-	x8jFIxTZqPwdbDirnvhsvFv9BMuuYTVhaSNBtVtAnrOUkfyXH3sFJBqpEVjtVk3675RFJ4
-	smzoDzgtZT4v/vBO9HXEd9/XzHEmQUY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=9uh3YtH2vzcWNChlP5JxXc/8qcNZiQgtmlGLwUVnUpM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791381028; v=1; x=1791985828;
- b=KzrD+7k+cGR/+ZK2b6WPEjfG25roXKg2RBwp3QeXmimK+kD8m/wD8i8eoeOy2Vv+KBeVFm4c
- mXVY/5agMvJ+Iw2/iErz4eE8fXt+ApuyazZqvr2yYXAkNMiCWD7YSJ7uLbYfeaZ8xdigpl42pMh
- 6gCgA6DzU0uFdQENtgfZCrow=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 2f3032bb5f9bba28;
-	Wed, 07 Oct 2026 13:50:27 +0000
-X-Mizu-Trace-ID: 2f3032bb5f9bba28
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH v3] mm/hugetlb: fix max-only subpool accounting on
- alloc_hugetlb_folio failure
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260428113037.88766-2-enderaoelyther@gmail.com>
-Date: Wed, 7 Oct 2026 15:50:12 +0200
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- mawupeng1@huawei.com,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B83FA5F4-740F-4CEF-B9C2-6ED51C893A92@linux.dev>
-References: <20260427145247.84157-2-enderaoelyther@gmail.com>
- <20260428030712.66256-2-enderaoelyther@gmail.com>
- <20260428113037.88766-2-enderaoelyther@gmail.com>
-To: Zhao Li <enderaoelyther@gmail.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 94EE24000D
+	t=1791381881;
+	b=kuWP8qmklEyDPvXuwBK9AixOIpaZXxQS2rqo9Z+NoBNbepif2OpnUPQ5wxCy+AQc4SGNbk
+	TMnbddar60yty7zQxQIVaXdTFuQlvFjqmL6Ha0zLBdIErZvtApalIq2M+Qk+WO39QKOka+
+	m3gk+e6mYZJ5A5l4/WSsFXVJsY0Q5jc=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Gl63wSnu;
+	spf=pass (imf09.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697BZdOI2259599;
+	Wed, 7 Oct 2026 14:04:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=d1yjiadCaFm4oqkKVvCsI8gTbCtsHi
+	bfKKqmZZFHvIc=; b=Gl63wSnu+bGPdNYFH2Z3U4JYIJK7yEPZH1t8UO1CSpD0PW
+	WMBP2lEHmtK8TTVB70vJxD8WJBhMIh9sMClXCkONI5nllWH077i4SDIjPRcmkd99
+	OHGkn1+8X/e/YxXaX41TC6oYLQP5eqRjAfW73rk0sk0ujagGv4NEwzoZbXmJVjbU
+	LtpjJNSwi0lzrw2aZxQVOxopjCH7emmyDiw5AYqJWbR3YsbcrHzs5Y4JdGinjdBf
+	POXcDUe7vReTMWsbOIImSIH8ac50UeENN9JOHAYBOOam3gWF6ArN132+xW0oIoTm
+	HGhq4emzu0lONOanb3vGDElqIxhHw+AwtV943VKw==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2q4jw8q2-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 14:04:23 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697BWcxq1810428;
+	Wed, 7 Oct 2026 14:04:23 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h58ek331h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 14:04:23 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697E4LUv45220104
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Oct 2026 14:04:21 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2F67020040;
+	Wed,  7 Oct 2026 14:04:21 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CBB622004B;
+	Wed,  7 Oct 2026 14:04:14 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.124.216.188])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  7 Oct 2026 14:04:14 +0000 (GMT)
+Date: Wed, 7 Oct 2026 19:34:29 +0530
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
+Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
+        "Darrick J . Wong" <djwong@kernel.org>,
+        Carlos Maiolino <cem@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>, Zhang Yi <yi.zhang@huawei.com>,
+        Christoph Hellwig <hch@lst.de>, Dave Chinner <dchinner@redhat.com>,
+        Daniel Gomez <da.gomez@kernel.org>, Theodore Tso <tytso@mit.edu>,
+        linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Andres Freund <andres@anarazel.de>,
+        Dave Chinner <dgc@kernel.org>
+Subject: Re: [RFC PATCH v4 05/12] iomap: Add initial support for buffered
+ RWF_WRITETHROUGH
+Message-ID: <asZQk_YX-9ofMPbO@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+References: <cover.1790596383.git.ojaswin@linux.ibm.com>
+ <c76f9babf1b00f4574e37db156621edc6c078969.1790596383.git.ojaswin@linux.ibm.com>
+ <asYOJs4PYv326KNe@quentin>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <asYOJs4PYv326KNe@quentin>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: 8UP0k0ykbTQxtf3RKvIFyv2pTeDeoQU8
+X-Proofpoint-GUID: A8Ph-_bRfhXlDSeNkkhQTSY5XglcXUlc
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA1NCBTYWx0ZWRfXy+nDHHDmMxHz
+ hhWN6A0kiHma/nDiI9hKj/oE5Gc9+WJdbVLtdApQB89DUGL49/yHM6mXeQt2ptmUQGx5nVBSwRW
+ jY5WKa6k6rvDFfLwvqP41UiHDdWlHww=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA1NCBTYWx0ZWRfX+yHevGnshdQ6
+ uRPqrF4XBFze+913qrw48G5EbQChaFN2z467BVuojreGUEflTis6zlpksKZ+4NudsVrpaupN5Bc
+ JmQKmEZmeBPecNMJl8t8jBHvsy5tdgCezh2+5sn4URxFlQ8Z1Is92LYX1LO4+wojqLfMeSB7Rth
+ e7pK/nB/7/L0JByHj9GzpMFGLhzjaztmTUpcCsIC3amXkb3SGsQvpkiVPQI3L1rEcLLfXq8w/Xr
+ UOdo+ERGSGyKqEfceafixfQEi0Ztp702revOileXXStlXpEahBvBf5IBpdb4+rCNq2L/6HP/abJ
+ xeLanVnstrG2FcKDnpewZ4OlwxCEM5I+crydR6Ly6bPZ6ndKGr0xuO/dz93Ayv3Lipq26Ym+eFA
+ YVDA9PDAp+ZrpJl+/iOc5v6CMWfQQGQuQQU9RzU34PLoCFwqT1t4b3ddqGsurR+tCR1PxohoSTG
+ FWhCIyMSlpyA/3+6GhQ==
+X-Authority-Analysis: v=2.4 cv=eYeo7LEH c=1 sm=1 tr=0 ts=6ac65168 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=NEAV23lmAAAA:8
+ a=Cl_7ivfH_JflWmaJJIsA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-07_04,2026-10-06_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1015
+ spamscore=0 malwarescore=0 priorityscore=1501 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070054
 X-Rspam-User: 
-X-Stat-Signature: 6t35xyjwh7cufe86ud6sw841emor35iu
-X-HE-Tag: 1791381030-381632
-X-HE-Meta: U2FsdGVkX18AnQLpALbN45JgMFX9zdPDRZjuac0luKOv2GebsMMV5V1r6lZLW1z2XcekTWRJ4PyZ4K1ihUNeFr+WFBawixgpBoknY0GiC+Nf+yC+XClEbKIeWWsBHjE3QtTENuGpqYM3EMP0UIjWB01rMbpjQmS53AcIt/B2l8WA6Q20lcxA0B0JDoJ34ZrdWrT4eg214+yF26sk9NjpBuX5JTTCp82RjN8pSnI/8KiXXLyzQJ46yCxuSm/hDrAkVsE8q+AViFcq7/keO+c+l853465HlySnt4fu6qNP+rBYXjhvxlXp4ZXzMUacc8OV5dGfxBEklPMHENI004h9IgWZDUItjCQL7C5FqMWW6gn1a8Mks62ac4KXbsC5VjWSLjLQ/4LOn4B6qEuKsnEkZE7kfU1+/vm+rR22gTbfoisH2xkEZ2aT8L5pvYM+TmYvBCnfafKVjYvodz40K53YX82UZPTx26RSn9f9kBC/UEUSEG36d1i/1H/cDMPANTEPZz1HmsWlFE8ROk54200dzK+xWxT53H+1cHXcetEyNgqm1r1gCcyWiGbkSPh7ZzflyUGA4Ge/j3IJWYHzGSNuYHANrvoo/EThJ3t/6JUrKFv3PlQ9WwiWiVebqx63c+taErr2EJfb1EgrOnsd7ttKIZLtHHPlW8K5H1X5E7YA8+fFb04YLl0cgCEswBBYV1/3gv73DJzf34SGl5REyguLs9uXlBdAsXQUNlN1Od/llSBoaVfU5SAWOvD4JE56UxNmPErrPoqbptReAryYlKv+/h20gzZK8z2fGz9dK+uq012ECLfigZyxK+v9f9VOlBJrW8E4MJk7g/ozejInyjdi7qqyd0g8GGeTfE75680fWNgCZaAxqvR0qj/5/Cd8LDnp1rdjL0n6rYRj0shdUo83HOiyCWzxr1wFKa0VfVTxztgp2Z+YhoaFrDuyz9ZSf87KjZBsRXX6CW/7m17dZBH
- 7eFS94qz
- qvMqp+xqzgTMdHlS5fd183R2ZCK4cob8smonvOS1b0aKMVeehCMl2oHzlAsYiAmgTkSOKRJHZ0tyWYL9xJb9591EVh8NyRfzB0jNCj/Fl+qC6d0oSS7IC8bzphcYB/1kCRPn0EgOoC2PIxLgmM9OZeaKOTyDfub/kuGRsKTS6fdADniTMg/cxHYDnp+awrq1xG0ixD7SYL7BVd7hPpyym+b7BO4vBGpcR5bRdlZ4dgUPSjj0RVAQi9VprXOPgNsk2fhz3KC0Pzgp8uGzfT5P7+5yG+7SKqF/jCIR+j2sTXzIKsvwPi+SVemLEMUsYyPynw9scaJw4wqe83LYMaLmfijmIUsKp/CpZwKcvFBdkxnHZ4nU=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2CCCF140005
+X-Stat-Signature: z4rxucew6sndrhjnm7n74uoihqj5rkb1
+X-HE-Tag: 1791381880-252411
+X-HE-Meta: U2FsdGVkX19+BBDGK2pZExgsi72Qn/C9vhRa+Kv5aAtr5BIeXNhPESsvYHb5aehEKeCvVxwqJ/z6Qi0RFeLw97ZIM3YafvuqikHT/0BvNCzG9yyPUbYLD1TMwoig+27fAQ7Wi/jYJhust9P7CW+3lEfnFNTpiBe+NuPe9NnB5OIszo2Pr7pTfnf5dKyUklK3pIrkEqmvtNHcUF3I52FXzaJJqTX22J6uK/QmIfvKzdFSQVGxnxwBx6fTzYh5ofxHto3uc+yL3e3iHS452idZ0LvWS8WvrxvoxVN3HxxEi9trPDVF4m4QZp1t4Ssp3uhzS2lqfl97ZuafKrmffVKKhoyeX4vE8zx1B5rQJNH4lsIJOGPngyeMXKapOZ3X1JlHWd4ZhMbg8ogafARCpfxvZKRGazvTiBr34kDQg80HYHaSVUCAJzUeelvinu7LVojfVlE7V3Y6eWJe1i1QKle32j0nY2yvh+7AdLxmWqBtDl0BEtrkITFrcYBeqSslaB6FiAbQKAcJEBtxFjkb5Pe86Dl6KVnHEqkwEATQI4G7Byg6p6ZWRqBgc4yj/d8YSyG//HP3buIF9lYose54/EmDqa+IGPokIWNPtDtIWTCp5yIzIJGEMo2psXD+URHHaNGos6ORdNLu6NybHEnnP18Uq5lV0hgHommtorz8D1Rjnq1Euvs5wfvmmQ1MJ+/QcrjmtCEJcaIqxiyZyjrhMNtCYusVCBbsFArltSIr3piq70jLjW5zGq4Up6a9wmU88KSRLe17oC/E0nsNHV9GGpsCduU7+E+75uH28TEi+qfEUT1z7Ri9N2ECs4J4z2GvLaEUTOsesUeQqFpb5PkUt+4BGCbuenGbK1n9tZT0kn3x+XJ+ZtE57gDGooazoaN22owhY7XW9N0ruOWGO9vLbfpO9bBsljtOKwU8eomTNUWAeNTGFJ8YuhiYtK4Ezc4T8ZCSQx7LnhkMrn1LdDwcO6/
+ KpZ8UeVQ
+ L3St7S0x6H3JuInIAYWN5Xg8Eqyu3cVuuaxCcX0gIq27Tf9L8u7dAEYz6VTCyDPOwYY7DNnTt1IuX1Dhk2CZYoYPy/z87KR1pRAN3ajnC+mSJleOiZ4Kb1VE9FemXhzg1YlPiGR2LvdaURW3hV+e0EOfFXvTtTt1FwVvfRhhC5CJlWXoqis2YmOXo11eHCIzsp/vpZUmClQqPAnt6gqS1m4+tMf8gTk+Gs2KD5SNcDcIW/emPepYuZsKaOqdAF0LdvRgkTOaRZXuh1P5SM3qwrYKxA4d1g9IU+jXbwvYUEsvv+FPKX5uoS0hNWsJuT+rfhOl/778JsRfHSx15g8jML/z4RfeybcQGtDxB1VWjs17SrDvW9uvOlJfGrwhFVltV84dM+vZVtcqsMFbgy8so0AHQLlcc99t0OKhdlAuZn/rveEo9Om37hoQm5EkKUnxmhCjfIogaedNYUePOmnRFBy9PAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,120 +152,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Oct 07, 2026 at 11:32:36AM +0200, Pankaj Raghav (Samsung) wrote:
+> One general comment, all your commit headers are starting with
+> uppercase.
+> 
+> iomap: Add initial support for buffered RWF_WRITETHROUGH
+> 
+> s/Add/add
 
+Hi Pankaj, thanks for the review. Sure I'll take care of this.
+> 
+> Overall this looks good to me. I will run some tests via fio. Do you
+> have a branch with WRITETHROUGH by any chance?
 
-> On Apr 28, 2026, at 13:30, Zhao Li <enderaoelyther@gmail.com> wrote:
->=20
-> alloc_hugetlb_folio() calls hugepage_subpool_get_pages() when map_chg
-> is set.  For a subpool with max_hpages !=3D -1, that bumps used_hpages
-> regardless of whether it returns gbl_chg =3D 0 (rsv slot consumed) or
-> gbl_chg > 0 (used_hpages slot only).  If the allocation later fails
-> before a folio is returned, the unwind must undo the used_hpages
-> bump.  The old cleanup only ran for !gbl_chg, leaking used_hpages on
-> the gbl_chg > 0 path.
->=20
-> For gbl_chg > 0 on max-only subpools (max_hpages !=3D -1, min_hpages
-> =3D=3D -1), hugepage_subpool_get_pages() took only a speculative
-> used_hpages slot.  Drop that slot directly under spool->lock.  In
-> that configuration hugepage_subpool_put_pages() cannot restore
-> rsv_hpages, so the direct decrement is the exact inverse and is
-> race-free against concurrent puts.  This matches the used_hpages-only
-> part of hugetlb_reserve_pages()'s out_put_pages cleanup, but
-> restricts it to the max-only case where no rsv_hpages restoration is
-> possible.
->=20
-> Mounts with min_hpages !=3D -1 are left unchanged for now.  v2's
-> approach (hugepage_subpool_put_pages() + h->resv_huge_pages++ to
-> back a restored rsv_hpages slot) double-counts global backing under
-> concurrent free_huge_folio() and creates phantom reservations under
-> concurrent hugetlb_unreserve_pages().  Safe cleanup of that quadrant
-> needs a coordinated fix across multiple call sites.
->=20
-> Reproduced on size=3D20M hugetlbfs with the faulting task in a hugetlb
-> cgroup whose limit is exceeded.  Vanilla leaks 6/8 hugepages of
-> subpool quota; this patch leaks 0/8.  Verified under QEMU.
->=20
-> Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for =
-subpool")
-> Cc: stable@vger.kernel.org # v6.15+
-> Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
-> ---
-> Changes in v3:
-> - Replace v2's hugepage_subpool_put_pages() + h->resv_huge_pages++ on
->  the gbl_chg > 0 branch with a direct used_hpages-- under spool->lock.
-> - Restrict the cleanup to (max_hpages !=3D -1, min_hpages =3D=3D -1) =
-where
->  the direct decrement is the exact inverse of the speculative bump.
->=20
-> Changes in v2:
-> - Skip the gbl_chg > 0 cleanup when max_hpages is unset.
-> - Add hugepage_subpool_put_pages() + h->resv_huge_pages++ on the
->  gbl_chg > 0 branch.
->=20
-> mm/hugetlb.c | 25 ++++++++++++++++++-------
-> 1 file changed, 18 insertions(+), 7 deletions(-)
->=20
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index f24bf49be047e..cfdeaf6394c5b 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3025,13 +3025,24 @@ struct folio *alloc_hugetlb_folio(struct =
-vm_area_struct *vma,
-> hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
->    h_cg);
-> out_subpool_put:
-> - 	/*
-> -	 * put page to subpool iff the quota of subpool's rsv_hpages is =
-used
-> -	 * during hugepage_subpool_get_pages.
-> -	 */
-> - 	if (map_chg && !gbl_chg) {
-> - 		gbl_reserve =3D hugepage_subpool_put_pages(spool, 1);
-> - 		hugetlb_acct_memory(h, -gbl_reserve);
-> + 	if (map_chg) {
-> + 		if (!gbl_chg) {
-> + 			/* Full inverse when subpool_get_pages() =
-consumed rsv_hpages. */
-> + 			gbl_reserve =3D =
-hugepage_subpool_put_pages(spool, 1);
-> +			hugetlb_acct_memory(h, -gbl_reserve);
-> + 		} else if (gbl_chg > 0 && spool && spool->min_hpages =3D=3D=
- -1 &&
+yes, I've this branch: 
+https://github.com/OjaswinM/xfstests/tree/iomap-buf-writethrough2
 
-The gbl_chg > 0 check can be dropped: negative values jump directly to
-out_end_reservation, while zero is handled by the preceding if =
-(!gbl_chg).
+The patches are a bit rough but it has writethrough support for fsx and
+fsstress so we can stress the feature.
 
-> +   			spool->max_hpages !=3D -1) {
-> + 			unsigned long flags;
-> +
-> + 			/*
-> +			 * For max-only subpools, subpool_get_pages() =
-took only a
-> +			 * speculative used_hpages slot. Drop that slot =
-directly.
-> +			 */
-> + 			spin_lock_irqsave(&spool->lock, flags);
-> + 			if (spool->used_hpages > 0)
-> + 				spool->used_hpages--;
-> + 			unlock_or_release_subpool(spool, flags);
+> 
+> On Mon, Sep 28, 2026 at 05:33:06PM +0530, Ojaswin Mujoo wrote:
+> > +static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
+> > +				   struct iomap_iter *iter, struct iov_iter *i,
+> > +				   const struct iomap_writethrough_ops *wt_ops)
+> > +
+> > +{
+> > +	ssize_t total_written = 0, pending = 0;
+> > +	loff_t submit_start_pos;
+> > +	int status = 0;
+> > +	struct address_space *mapping = iter->inode->i_mapping;
+> > +	size_t chunk = mapping_max_folio_size(mapping);
+> > +	unsigned int bdp_flags = (iter->flags & IOMAP_NOWAIT) ? BDP_ASYNC : 0;
+> > +	unsigned int bs = i_blocksize(iter->inode);
+> > +
+> > +	/* copied over based on how DIO handles these flags */
+> > +	if (iter->iomap.type == IOMAP_UNWRITTEN)
+> > +		wt_ctx->flags |= IOMAP_DIO_UNWRITTEN;
+> > +	if (iter->iomap.flags & IOMAP_F_SHARED)
+> > +		wt_ctx->flags |= IOMAP_DIO_COW;
+> > +
+> > +	if (!(iter->flags & IOMAP_WRITETHROUGH))
+> > +		return -EINVAL;
+> > +
+> > +	/*
+> > +	 * IOMAP_INLINE mappings have NULL bdev and would cause
+> > +	 * iomap_sector() to dereference invalid memory. Reject them.
+> > +	 */
+> 
+> Nit:
+> I noticed that gfs2 sets the bdev even for IOMAP_INLINE. A better
+> filesystem agnostic comment might be something like this?
+> 
+> /*
+>  * Inline data lives in the inode's metadata buffer, so it cannot be
+>  * written via a bio built from the folio.
+>  */
 
-Could we use hugepage_subpool_put_pages(spool, 1) here?
+Yes that sounds better, thanks.
+> 
+> > +	if (iter->iomap.type == IOMAP_INLINE)
+> > +		return -EINVAL;
+> > +
+> > +	do {
+> > +		 * blocks in the bvec again.
+> > +		 */
+> > +		if (wt_ctx->nr_bvecs && prev_pos + prev_len > pos_aligned) {
+> > +			size_t delta = prev_pos + prev_len - pos_aligned;
+> > +
+> > +			/* Everything already added to bvec, nothing to do */
+> > +			if (delta >= len_aligned)
+> > +				goto put_folio;
+> > +
+> > +			pos_aligned += delta;
+> > +			off_aligned += delta;
+> > +			len_aligned -= delta;
+> > +		}
+> > +
+> > +		prev_pos = off_aligned;
+> 
+> I think this is a mistake?
+> prev_pos = pos_aligned; ?
 
-With the max-only check in place, the helper cannot restore rsv_hpages, =
-so it already
-performs the required used_hpages decrement and subpool lifetime =
-handling under the
-appropriate lock.
+oh right, I guess I didn't hit this in my testing. Thanks, I'll fix it.
+> 
+> > +		prev_len = len_aligned;
+> > +
+> > +		iomap_folio_prepare_writethrough(folio, off_aligned,
+> > +						 len_aligned);
+> > +
+> > +		if (!wt_ctx->nr_bvecs) {
+> > +			wt_ctx->bio_pos = round_down(pos, bs);
+> 
+> We could reuse pos_aligned variable here instead of recalculating?
 
-Thanks,
-Muchun
+Yes, I will fix it.
+> 
+> > +			submit_start_pos = pos;
+> > +ssize_t iomap_file_writethrough_write(struct kiocb *iocb, struct iov_iter *i,
+> > +				      const struct iomap_writethrough_ops *wt_ops,
+> > +				      void *private)
+> > +{
+> > +	struct inode *inode = iocb->ki_filp->f_mapping->host;
+> > +	struct iomap_iter iter = {
+> > +		.inode		= inode,
+> > +		.pos		= iocb->ki_pos,
+> > +		.len		= iov_iter_count(i),
+> > +		.flags		= IOMAP_WRITE | IOMAP_WRITETHROUGH,
+> > +		.private	= private,
+> > +	};
+> > +	struct iomap_writethrough_ctx *wt_ctx;
+> > +	unsigned int max_bvecs;
+> > +	ssize_t ret;
+> > +	struct blk_plug plug;
+> > +	size_t min_folio_bytes = PAGE_SIZE
+> > +				 << mapping_min_folio_order(inode->i_mapping);
+> 
+> min_folio_nr_bytes could be used here.
 
-> + 		}
-> }
->=20
->=20
-> --
-> 2.50.1 (Apple Git-155)
+Noted.
 
+> > +
+> > +	/*
+> > +	 * For now we don't support any other flag with WRITETHROUGH
+> > +	 */
+> > +	if (!(iocb->ki_flags & IOCB_WRITETHROUGH))
+> > +		return -EINVAL;
+> > +	if (iocb->ki_flags & (IOCB_DONTCACHE))
+> > +		return -EINVAL;
+> > +	if (iocb_is_dsync(iocb))
+> > +		/* D_SYNC support not implemented yet */
+> > +		return -EOPNOTSUPP;
+> > +	if (!is_sync_kiocb(iocb))
+> > +		/* aio support not implemented yet */
+> > +		return -EOPNOTSUPP;
+> > +
+> 
+> -- 
+> Pankaj
 
