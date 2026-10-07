@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ACEDCA5FFC
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 17:18:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 147B9CA6002
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 17:40:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30B256B0092; Wed,  7 Oct 2026 13:18:05 -0400 (EDT)
+	id 9C61A6B0088; Wed,  7 Oct 2026 13:40:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BBEC6B0093; Wed,  7 Oct 2026 13:18:05 -0400 (EDT)
+	id 976EB6B008C; Wed,  7 Oct 2026 13:40:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D2106B0095; Wed,  7 Oct 2026 13:18:05 -0400 (EDT)
+	id 88C956B0092; Wed,  7 Oct 2026 13:40:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BC3036B0092
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 13:18:04 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4669AC02D2
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 17:18:04 +0000 (UTC)
-X-FDA: 85296488088.23.3377198
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6747E6B0088
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 13:40:25 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 12B80A0343
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 17:40:24 +0000 (UTC)
+X-FDA: 85296544368.17.528D989
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7D0D714000E
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 17:18:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nCoC4BTa;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791393482;
-	b=CNp50gUsa8jDxdKC4+wbkcVRmrPAZofZ1igw76dXr4duchnfvUly29y0eAAfmM73S3+dHJ
-	hl86sQAaTcfbeZFBKECppdeu+tngBwl/lpGUxxZuh5EqMf3LQSfpXzESe69wRI0NZrdGn0
-	p5XnMttc6MrWgBZPzmfdXVNkusi0Vrk=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nCoC4BTa;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6C30E14000E
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 17:40:22 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j8vwGyeh;
+	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791393482;
+	s=arc-20220608; t=1791394822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0LzZLCBZAwnFCQRD6C+T6iKIcbWqnM1Cc+hDqPL1/OQ=;
-	b=ADuZlUdGdyrmFM1XwKqrLDmNV5A5x7BwUJf5V3nAfokrg2+fD3VFja55exHV0jTOV1m+w3
-	6/acRaHeIt3fyGtVKwW9O075ExYs5B/LB3noFucmetXgTkb5gbUk4zobyGkt7nZk5CaKhk
-	q1d4yQ2qyKSHa8AxTba30GkykeXN1N8=
+	bh=EkQUHitjzzlvo38RimBkUzV/B8Ac4BuALErE/4c4/Cs=;
+	b=lQNTN29/AWCKmCILsw2CrZwkKiM2PyAcPl0cWDKHF34PyrzhYR1TmZjp6L2EE12WzJXg2s
+	WyHLye15813o/i8lrGoutw5XLG4Oyp6sXjZDhgw6/hMSTIdxX3H1RFa9DBRtYuZkY5kDfj
+	QR3dm5FuBZs5LblPezVwG0ecSQHQ91A=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j8vwGyeh;
+	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791394822;
+	b=DUXYKTncsWuq5TzTWFcZggVlZ2rBHkg4h/kDw9LkkvMubBl9KYmA3U7qzzOtep2tU8FFGt
+	LLlviMok+1K1b4leU/3ISZ5fxGJK3DzBknSEEy7Ts/ls6juGgQeO0iBUvRyKjvnrizi05Q
+	rVukl1UhUIWmVW/3F1jJns3+MblmQlM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DFD47601FD;
-	Wed,  7 Oct 2026 17:18:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5049E1F000FF;
-	Wed,  7 Oct 2026 17:18:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1791393481;
-	bh=0LzZLCBZAwnFCQRD6C+T6iKIcbWqnM1Cc+hDqPL1/OQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=nCoC4BTa7Y2Fwd6snmgAAdaRSpLP1XQB6onKnUBkDcFVGUmC+eV/z5mPHcPBhnEGd
-	 paof5LDn0411OEnunMdpowPIEh5CaexGFGMxncyrxmFbTuHwaIkpBfEzIuRX6RPa9s
-	 f7NndyKR0pQLEO1igol06p/bUx20z8f+fR0kusI8=
-Date: Wed, 7 Oct 2026 10:18:00 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Oleg Keri <okerixx@gmail.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/vma: clear vm_file before unmap on mmap hook failure
-Message-Id: <20261007101800.58d50b1b20a10738e630bfd5@linux-foundation.org>
-In-Reply-To: <20261007070913.3923-1-okerixx@gmail.com>
-References: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-3-a1f052500fd7@kernel.org>
-	<20261007070913.3923-1-okerixx@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by tor.source.kernel.org (Postfix) with ESMTP id A3372601FD;
+	Wed,  7 Oct 2026 17:40:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C711F000FF;
+	Wed,  7 Oct 2026 17:40:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791394821;
+	bh=EkQUHitjzzlvo38RimBkUzV/B8Ac4BuALErE/4c4/Cs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=j8vwGyeh15j/C0j3QdVat9KunBD+RZBNpMIIUY+FlzKCCyu795O//KntARQ6+o5T4
+	 IkjbWgfaRQd/I1N1B+SzruG6bYeeqoEJ2gxKfCuoGPoGGgXaslXXirvZk6nIYszTHm
+	 vb6IRag2XLh5KFH/N/NiOWvWcXN9DI7zdEAEK7rdYNVSfLOBAQMoF5B00A/gbEvTEx
+	 sAQLlwgNo9I/vj0ipvv59CFNMrdqSwDFt+Wqxj/EDFY2IsPXBCJ6OQhyrgv1wxAnGJ
+	 JqEIcQNSP/SlznuJKtRD7aiKITMofq3QEx4g5+lpdgks0+i1CZjhCQhg0d4QMSHqLa
+	 XGpvCiVJqOGbQ==
+Date: Wed, 7 Oct 2026 19:40:17 +0200
+From: Harry Yoo <harry@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Muchun Song <muchun.song@linux.dev>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Alexei Starovoitov <ast@kernel.org>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH 1/2] mm/slub: preserve no-lock freeing after memcg charge
+ failure
+Message-ID: <asaAwg1KeZoEYd4K@thinkpad>
+References: <20261001044056.75079-1-kmehltretter@gmail.com>
+ <20261001044056.75079-2-kmehltretter@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261001044056.75079-2-kmehltretter@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7D0D714000E
-X-Stat-Signature: euirrgpxzw3rg1kbrkrwyrcik4q7y3qm
-X-HE-Tag: 1791393482-584550
-X-HE-Meta: U2FsdGVkX1954Bh1OBLuIuidviAvK1eEwbEbavZ4qMJTu7GznzPDEQ0Q3eywgEPj4pGpYNWZW3kMCtGVqTJO+riZq5kOKr5ijbi74AFZQJbbzS66gOelJZ0m0fJrY2oVUPSAWre7vMN2wNqYa84xYLGzuBNSFFTtR1+B09+ZYtxewjrrX7Tkr6GIZOfTeFihYyDV6b8k8TTLz2K76sZePpL1BHxlWuWzohEZYOi/e31xgjyB80nCewZ6ZIInWWBAJZy6USvyCkLfoB9bzsnhEy257Bn/asNRdzCMeDYxJms0dAAKB9tC4zZW9GsvB+JWzh5CE+LSwtsm0a5D5QLUKih5TLNs1vgYeW+UwYnuvqaI3b3JZLHtacNM3sMOkjR5xHRywMAqvfztqPfUdxPn89is+jBn7gMUQLHgR0zFsp0oRRCq25fgH5Jybo42UI/ZnkTHZ2lY9Wu9jKddT44lNLV7RNszeBm6ERXyXUqipkNl4iQ/8y/E6bkKIyTVb5P2pF+Pbfj8JeNQS4LxS/e55OhIfjMNzlk9n90uN2Mh2rhM3QCqZnpRu6gULnrMYzBz/bGRJdFj+Cp6E60wflW4D9dGZEBmlzpAhOaBDfMxL8IZsz0wa7u9dER+P00NMlERQNv24qwGIEEaTcS+Bna8LhStYG80FwD/qLc4s8/G/S2IbGdzgv5pgeduLXaYUNx9/HoEgA+/1X7V8JyR+MH28T7HlB3diFHyZ5nN63pzDcZtcRA5ZgeI6rMDf4O8k4qdq9vBxE86G2yCzr/Fcc3Z9mbLGhrlEsdrvNGIM1ViUG4u7z0fafDPmynkSB5ikIBTcgwAo4lk5u/WLSVbceiN+bhdVQcz/VtX2Ek9DOq1bnMUInuXUqZOQ0i4skPOU5HbXRuZLVk3FkjxBS6+MIdeV8qOW3R13nPBBBAUxvgl+JgHcrPBSuk/b6KJCbvZK9ykPmUl9HSLdskYgIvMiwm
- DsoVvs9G
- XVJMlol6kG4vTAqjMWdsKax5a2jUm7oGiLa37r6GeAxMZkGoW3lNDr2xzMfgOj8wOtmoQA9WSRO8hKHYgKjm9jtnzCHjhh8YmTnUlUwtBRbdHMK1VqsZIiuyoH6p12U+HxjVHZgcjSUbPor/ZRvEEVjCEDzV0FfuXIEWYmvGDz2qe5ZeH3XqeATptsvv7Amkz0a0pNKD5GERoOcY4yD2sgS+SvMRt36UbL6LBa9EbXCWkr23J6yGlDrN3/weXvVY7h0lBRReL80vB3JpjZEGgAcrk78Da6ZsfMbwL0foCk9DASHYgoJjGPwYeEs93mQaW74UHxSg0cGyGLonP9bIQ1grWDf4GZFGzIYr34405iYl/MIFZ4SUmPJWWVlRirffzzhX9
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6C30E14000E
+X-Stat-Signature: z7metnbnjkwxh6gn69rupq3p6m55uqg8
+X-HE-Tag: 1791394822-818540
+X-HE-Meta: U2FsdGVkX1/XC4AkQl3Yyel9Bw/OueaDwSHWU8sMHmo7xjr5A3JGxadv882AFtxmLiftKD4S+Xrz2yrvbsx3E3UKgikKxIdPhm3g+ljllJSL6p9qJ6tThH11FN3qQCyBgzmm4fjIF3xt1VkAnysJal4fyoxA1fxCTKPbBOA2mabuFiFxshgR6SJ9lAJvMM6vPesvVGuJGnGd3TgBZWtH6Qme5cP0O2fDNdq4FpMGgPLR+cWviJSWQjfrOU9pHcITnBo0ClxvwcmemJSp6g+bVZMMzvuR1C2+9gEfjwjhj3j55ReTUkrFhVK0z7qgz8HrNEKY45lp0Cj5xqZP+9pvW28Fl6SpbHQmA8xTXDHiDh3fpyhtlUd9nMjYdqGsGu0lBjjnI3SO8/LAZjh4VTrrUZlCHgRNwlZZXJthVGg4q4i7Ur9jEnUj8g0solGgYjogs1pRW0AbsUMVkmTuU1Y5E/y7IrIGj3qX3NI9c1uyrXqEqS7rZKqNOtg2k96jgjatuRA9Qo1PD96qQ4eebbSvlEZ2PWVCjnMADUeIj2nwm5IL1Vg2HImqGFWUlRJGCD634wMqtJ00TWXlWHmeOvnelsvxrEJ44eGGSQ5suizlOYra97ZK+C60noJ+HeaWH8aMEKb0AaJgwXpAhkXBaoqvxwRFVsq78SNbiV2jzti/IkkZ9disku9oVC2oo1Zml8X/dDBJgTVyU+7RQ8sdGiFgretDXMaEKXwUUs7ZOPIKvwP+lwhC1SjLHGDYedtMlSfq5HXiTNhNbzZKj+0YUUZ7GwBVOB51H7jKiQvTS49onrp1vsEL2YZ60qm9NjOc9VooNDUwQ4DnI+xjlhjUIzYwjuQ9/nn32OVUnlF5A4bOqyhI0BEn6s5oYwK8BUEQ/wbAv1RGRx+4A4C1hJ3bZHITW4YrifgktORPg0gqigkS4bF4MUaDbCpzCpI0kbxhFJyk3YmHdf8yN7jshkDAMjt
+ EhvRRVht
+ IgwZGpX8SW6NaMluHSOPxKebIMQcd03t+QEavvmYyw5jvHoTspvO4BbVXLkvWO7TXX3zc36gh2r7RmvB90a7WGCG0kzpUWfTIYuZQ/srZJK0C+7q1Yz49Fhyj8aqR+GHFadT/tbDMRumWA3q8UiHUcOkTt9RcayvoHvBk1tayzFCkViBk2j+MNLag3c9+VoSCj5UmMN91tjbzee4kC0sZHPYLfn52lQoPsXiiDwcOZ8rpwVq7soMUkjw/Kff22N2Grh0uL9DU2i37qZIcV4NtG6ndkQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,27 +98,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  7 Oct 2026 09:09:13 +0200 Oleg Keri <okerixx@gmail.com> wrote:
-
-> Since commit 2ceb21171dd9 ("mm: consistently validate VMA state after
-> mmap[_prepare] hooks"), the mmap error path clears vma->vm_file only
-> after unmap_region(), so free_pgtables() unlinks the never-linked VMA
-> and drops i_mmap_writable. Once it goes negative, every later shared
-> writable mmap of that file fails with -EPERM until reboot.
+On Thu, Oct 01, 2026 at 06:40:55AM +0200, Karl Mehltretter wrote:
+> kmalloc_nolock() can obtain an object before its memcg
+> post-allocation charge fails.  For a single object,
+> memcg_slab_post_alloc_hook() rolls the allocation back through
+> memcg_alloc_abort_single().  That enters the regular SLUB free path,
+> which can take a sleeping list_lock on PREEMPT_RT even though the caller
+> selected a no-lock allocation.
 > 
-> Clear vm_file before unmap_region(), so that free_pgtables() does not
-> unlink a VMA that was never linked to the file.
+> Use kfree_nolock() when the allocation flags disallow spinning.  This
+> keeps the SLUB object rollback on the no-lock free path.  The failed
+> allocation continues to return NULL.
 
-Thanks.
+When this happens, the object is not charged by memcg.
 
-Sashiko thinks this fix might cause a null-deref:
-	https://sashiko.dev/#/patchset/20261007070913.3923-1-okerixx@gmail.com
+The kernel should not invoke memcg_slab_free_hook() (called by
+kfree_nolock()) for a slab object that is not charged by memcg.
 
-> Fixes: 2ceb21171dd9 ("mm: consistently validate VMA state after mmap[_prepare] hooks")
-> Signed-off-by: Oleg Keri <okerixx@gmail.com>
+> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 > ---
-> Seen on next-20261006: one refused PCM mmap probe from alsa-lib left the
-> device unmappable, so PipeWire could not play anything.
+>  mm/slub.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 54ec125033571..a1f08338102e2 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2519,7 +2519,10 @@ bool memcg_slab_post_alloc_hook(struct kmem_cache *s, gfp_t flags,
+>  		return true;
+>  
+>  	if (likely(size == 1)) {
+> -		memcg_alloc_abort_single(s, *p);
+> +		if (alloc_flags_allow_spinning(ac->alloc_flags))
+> +			memcg_alloc_abort_single(s, *p);
+> +		else
+> +			kfree_nolock(*p);
+>  		*p = NULL;
+>  	} else {
+>  		kmem_cache_free_bulk(s, size, p);
+> -- 
+> 2.53.0
 
-Not good.  I'll add a note against the suspect mm-unstable patch.
+-- 
+Cheers,
+Harry / Hyeonggon
 
