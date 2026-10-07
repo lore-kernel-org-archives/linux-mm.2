@@ -4,91 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB407CA6002
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 15:39:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1164FCA5FFC
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 15:49:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAA0D6B009D; Wed,  7 Oct 2026 11:39:30 -0400 (EDT)
+	id D5E906B0088; Wed,  7 Oct 2026 11:49:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5B006B009E; Wed,  7 Oct 2026 11:39:30 -0400 (EDT)
+	id D37546B008C; Wed,  7 Oct 2026 11:49:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D70ED6B009F; Wed,  7 Oct 2026 11:39:30 -0400 (EDT)
+	id C25446B0092; Wed,  7 Oct 2026 11:49:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B4FF96B009D
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 11:39:30 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DA7A11402A3
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 15:39:29 +0000 (UTC)
-X-FDA: 85296239658.23.0F0FD41
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1D6D1C000E
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 15:39:27 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	spf=pass (imf28.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FE8B6B0088
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 11:49:28 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D8CB2C0281
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 15:49:27 +0000 (UTC)
+X-FDA: 85296264774.22.11CAC9D
+Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8F45EC0007
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 15:49:25 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=s-joshi.in header.s=fm1 header.b="c NdDgE2";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=MxEQk+Mu;
+	spf=pass (imf22.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.139 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791387568;
-	b=GaOAac/hnTBoXueG65YB0yvbGVtw366iDmckY67qRSEN56s7+IvHj50buop+JXm9azW/Bs
-	Js2pbDfoObnoiH4prSePjQzWsx2jZpmXfjgx7w0WZm6ufaxR4Zz2jls4hhTUl5jJV2h9GM
-	C6yLmaGe7QxRxDwa/8uL0jdguwsMw0U=
+	t=1791388165;
+	b=vj4uBAQ1Oac/zyJo+Q7/T+LRGbBua9BJ9AnquvLFzF88Qn34Ew9rCJZ9dXsIh5e2HDrjZg
+	vanVXMiZoVYo3aSD9VAWt7oiJitkiTW9bKR5mvT1bohOgLxBj1Ga4LqbfD5WrKxyWBqUAc
+	119EypGwEvQK8VcLXOhPNUmjgz2A1no=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+	imf22.hostedemail.com;
+	dkim=pass header.d=s-joshi.in header.s=fm1 header.b="c NdDgE2";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=MxEQk+Mu;
+	spf=pass (imf22.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.139 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791387568;
+	s=arc-20220608; t=1791388165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=kibZIs3y8K//P7P1/93yA4/FKhGkeJBCSBIwXKZiWsI=;
-	b=PnXJEPghw/1UjRBJXSHmI3ch91uNc2NpQ0fxPS8+yV5XYxlpwQSsMC1A0HRvzwwX6p/6Rp
-	YJ67PdCh3Pm+PT58Ji16xK/NWm7PfgJbmh/c3SqJHSeAEkh/716g5Ujm5Rmb4JK1m787pw
-	kb4uP22KKZCgCvp9gEuQHUE8oYIIBZk=
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 99B603ED0B;
-	Wed,  7 Oct 2026 15:39:20 +0000 (UTC)
-From: Alexandre Ghiti <alex@ghiti.fr>
-To: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	yosry@kernel.org,
-	nphamcs@gmail.com
-Cc: shikemeng@huaweicloud.com,
-	baoquan.he@linux.dev,
-	youngjun.park@lge.com,
-	chengming.zhou@linux.dev,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kasong@tencent.com,
-	ryncsn@gmail.com,
-	chrisl@kernel.org,
-	baohua@kernel.org,
-	usama.arif@linux.dev,
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rAA0a4If2ZULLyjulfk+2NY5Alwb5J7HFWDXTowfvDc=;
+	b=3ntIf7VngsZG7v1DnPsPeqnWpWrxjdXu+6UYLLyVUpC3VjGGYNC84LJu8h38XzdEYPxP27
+	2PzBwI/ilgF8HcPZfNCS2KkgY5hUFSFpRUYEHSKw7Y4cUZAJmwNuw+yi9KcHurar3TZGHy
+	ln5d/kAUYZFwRGOLbu1oKGAZCJ+3z4A=
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailflow.phl.internal (Postfix) with ESMTP id 018FE13801CD
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 11:49:25 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Wed, 07 Oct 2026 11:49:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=s-joshi.in; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1791388164; x=
+	1791391764; bh=rAA0a4If2ZULLyjulfk+2NY5Alwb5J7HFWDXTowfvDc=; b=c
+	NdDgE2xjNRaJ9IDnzquHqy7rTkagbJVsxAiKGt0muVnNUWv+Ll7S7chJwKSUfJm+
+	6ZTVNJ9JPA79k3erjT8jj049ZJRvChSSyqtRj3itFSC3RTT1lzxjKxYGZpDknYZb
+	oRu8ItGpUrkvVI31KNo9C+opsO/hy1q6KnQcGb1Y+hwCb5D5E8/C9ziovNziSk8+
+	nYhE2WHawtcMqg5Ck2eSc7SQ+sZj8j0jCv+72BJj14mA8PpwJ+SpuXrBHBVYqTrH
+	8769Wbw1UmXFEwIONvQF3hkq5aZg0QOgHnVBlHpeLHrPlb1aVGKazYg9tc/hHrda
+	KRujsTVCF2eUVX67jNqyg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm2; t=1791388164; x=1791391764; bh=r
+	AA0a4If2ZULLyjulfk+2NY5Alwb5J7HFWDXTowfvDc=; b=MxEQk+MuZ8+yi2Tya
+	6DUZcS69novp6zjjC/9DP/Q45xJChKeOjv8Z2xEwql0Wv+rgPXeKBSfPXLH0hlk/
+	bTF1W3aUUTvs2W7bTvGkmZpi8ieqJlByi/Eccus4mX9XxERyivWU3kbN/7QWvzb4
+	BycjMVSVUy7mBtf6zp8QEQ6qoNxGjFyFEutYKUThdk1/aBQ3stBoTHxPR3axgxEj
+	PO5hkd2NUrLtL3s2MyYO5w5dXz8VuZpK4M2A0R4yMoRicB++KRd4XUY6LLeyJUaI
+	LyaZhZRTZbV6nCo22+6PJDjUbqJAdD+4l1dSu4kmO2/udtN7ZiWjOnxcePTutnEr
+	BoJQA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=s-joshi.in a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791388164; d=s-joshi.in;
+	mf=PHN1aGFhc0BzLWpvc2hpLmluPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:Q/TbRG2k6VA8IB9wMdabDnW4evHWcUs2H1kSg7JKhR+FZom
+	bQYK9t//fG2EStMhYKljZkwZkIa1atxjFMND/dDhPFEvGh/0zqW+S/roToNQTqgN
+	9QcHBOZSJnMDDNT1fJFNzgaX7gntLdN9usdDVyLb4bH3Qc5crsa6fAXJqRvJoaYq
+	6v/7NL6D3G2mOZQhw8DLTmc5J7ryectlX3tW+xwZ0aTZE5uO5EiQwJuDW/AJABw0
+	PpRCPWpKpJjUVPJ2wuyLdUPZV12elm5CtmbvNAGM14MIZonG1Ud9Ir/YuHUBkkpv
+	Z/OlrBjIfBFLphDnlDGe1kzuIvbqTfeA3jMDBOw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=11;
+	hn=cc,content-transfer-encoding,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:x5XYbiwxrWypdSPtOtM3/+vgHgxhWNxQYC4expaSDRk=:U4HmHSxVFFuQSU3OfTxOGyFo8y7V326X6U+5KdSx1MY=;
+X-ME-Sender: <xms:BGrGak3zxvPqph6AN2SDjb3hQwiZPgunUdsTW4wHXMDLbp7xVEjvvQ>
+    <xme:BGrGaoY1Nn_Cdnf_CNuJpVGA5uDNMaT17M-WNhwoa0tbRI4y3XTU1aErB0Kzzzgmd
+    sqW0Y9z510SmF169WhB5_UHRBjHHf4TDwJdNqRf6zLf932IrJgV4MM>
+X-ME-Received: <xmr:BGrGakL9KNBLqZ9TSRs25Ax8khOPKZFmcsKTqN0FTRG32OwJbw-taLvnPA>
+X-ME-Proxy-Cause: dmFkZTEBaUDDO6ngTf2qaoSnvem6liDvuhKl/9yQVpKqZxwy4l1eqKxf+EyLhO58G5o0Gk
+    FCVZ5dgt+2a+9WSMNk6P1NC/alZr9x3nei1HF3ulSpjUgDRWm3MOfiENnwy+bbJnNFqBv6
+    01JjNYluYE02hPPSGuQvtWjRl4n20jQ98HoA3X45Z/VIWCArdnL60YadLRBc+c9Y0G+ABZ
+    CKUZ3Lv3++BdVjZn1l3etwpTvSpv9G6XBVnQOcuLLi0b/OpnpZAFrIIuZDZQXHaaNKuDUo
+    8HvPsQHd4nffXMvs7XIOg/J6/2EI+tKqpbMZB4s1+BkZ0nB6uTNWeGWijEEeSu74c8NTIL
+    mqhMblWm3HHwz/CI8IgxXCOHsD0X/e1UnhLUebngiWpyQPQP98LawVvjVF+9gK3dDpxokY
+    cQRSpT1Cik1hTDVrC9Oj34vK0/jkFoOhFoOM5dN8gXeZhtmn6BBN5SkXjKfOvVG+plTlJx
+    wlmIJiyI5CBM+M8sh1qMPbA5TOi6meNRMRHH2kVhiJyuDoKaPxbikKUbAWe7ga33Ch3hvF
+    ezdJXZ09hgclHvd4ZiTIehqzpo5iB8dgCcvvW6DSkjw1ycsd+YlJBZ393CI3BjC93JC4gu
+    fSZD94awwy/+mvodZU+dvmfIHK10mw/Mzi9gxEFtDAN5715GDBMdKRF/C4XQ
+X-ME-Proxy: <xmx:BGrGavE_BblGMJfyq1mPKj4NkftCuFUDOkXMs4XStFCbrfzfeOVZ5Q>
+    <xmx:BGrGajs243zjH9EYNpNfDoPOXJJ5y_PwAzmKDL9agcrVBIjrCh9YPA>
+    <xmx:BGrGamsdqXYpcVjxZ52ImGLZ2-0oa3E-vrUOYhVxhHqZNVBgJdvUCA>
+    <xmx:BGrGapCEV0pbUTOo_JqKBXJhssx9UBH0iKKpg-_TL30lXrH4UxZnHw>
+    <xmx:BGrGaj-J3NeKTI4lJqde7w-G5geW2_UUZT8u3N3zFV2bc_xOE-A8COzf>
+Feedback-ID: ia9504abf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 7 Oct 2026 11:49:23 -0400 (EDT)
+From: Suhaas Joshi <suhaas@s-joshi.in>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v3] mm: bypass swap readahead for zswap
-Date: Wed,  7 Oct 2026 17:39:08 +0200
-Message-ID: <20261007153915.53429-1-alex@ghiti.fr>
+	suhaas@s-joshi.in
+Subject: [PATCH 1/2] mm/damon/core: Use only installed probe in damon_merge_two_regions()
+Date: Wed,  7 Oct 2026 21:18:45 +0530
+Message-ID: <20261007154851.45368-2-suhaas@s-joshi.in>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261007154851.45368-1-suhaas@s-joshi.in>
+References: <20261007154851.45368-1-suhaas@s-joshi.in>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Score: 0
-X-GND-Cause: dmFkZTFP1SzsGG2TRP1EL7olQ2wIwic2hq4WA8U6oUihmWJQO4j1F9rLVuRRtycUEZZaBDSZFV53dwDMuuWwSOQfNdf4qP1r6laiiFRDmdTchAuRwWz3vc4YWUjK0707CH1QJQYfWdvHwD4MzpNf0QDrjrKu0lOgyJn8ANugkG3Fa3GgJH0kj7LS642h912u7KumPMito6lyhOOd0f0A38S9GJ9AxkU93qpohN6UO8xLeAc4wmFv779PwYUzccha5lveTMhOLQwQxlpAA7Gcn6DMO0lQ/nRIL508SQWXMz5CKr0e0pXQJ7QGvyAWRGDvlXjZCHvh6xGCOPNVn361/5EDOMIMKE3DGtOr3WIL7JdsOC2BLBLV9bqKXAuHAUOHTFLuN4RpzZgrnR+HKDY7fVXZjmN+VNR76CtAgTCKx8WnUGr+f2JYUBDCgA40ZsC4caGUp528vR2lWQlTpWfiLteKawh9O4d2On8a/vFrfhRRRFOZKVZlU7U78ytcqnOW8HUtrTKAFr84A7eaOjp2nJhHvjVsszdYsL75x9+Plo4hF5o4wuGiI3Q0CqzGCuNN/QcfdYR5eVsBlpmjYGwpEKphAi4p/bc15hp0lgiCxicDeKhziMyXFfJKQK10SnmKL9h0dBaQShf7xi4RvB4vEewoDVXG5pGUo2Eo/fYggHP6oPLLaQ
-X-GND-State: clean
-X-Stat-Signature: qk7nrzdp19ifpp6173sjwf8o6nfh974x
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1D6D1C000E
-X-HE-Tag: 1791387567-643363
-X-HE-Meta: U2FsdGVkX1+sAUY3aUyPcHpqBps9TnzZyD/5XZGWxpITcvRHpwAGdqb+3GXGDZdHIYtL5S6ybyxR3g2/mZ34gKirDnqsu7ccHMWXwYjBqI7U1B33GDOx9cJGYNnX/RBCuyDuzLpFyaqoA1QLCN0oq5LJDN2rWKv07d6uAHdxJTRnv7QRvPfr0tk2SZP4rmEcwB3f03xDFLJ4mSN7qFu1ADKbLRAoGHZLamY1ISJhw7Hxu/rMH6K0wAcxBcaPqFtWhQtA1rov08+//G7IAbR8ORJbqow8Xm/q1lfV9J2mf+HfpXI0YaI9Ocgl5ixo+sUuGouzDI78TD/i44ExLIa5LLneEQA1ukwEydzo9EiFuB2TGnkeS/biTvhbuQO5Npj6oIoBidDtBbyDPWeGY+UHbXXfPUqefr5O+gOwzqQRo07qHDIVMSArEz6yim6Iz2zzSVoq4K3rhWgDJ5wGfLZ8H8hJYCCaC6gR+xUyQ4cxok+aWT98PzH0RC8kM5DNcjflkLpJPOevr7/ce1d9mZh5dovQhOXyM+813aU4r8dCYR6oIYOwM1FKHXoQxr1psid/WgQKnX40/Luw7pCSUrlg7XgNqesRZkDr8bHQrI6A5Jb6uaVwTt+uAKr/J8D4huobObo/o46f2iQv4V66iYu7ihU+UcjFMynlq5YNKywpciJqfdJSHlKRo4N0uMLKhFbqewhwAS+Lwo86B5zRjMMvdiZaT2cF31QJQyvwkY+9oP/2B2zouXQMsh8YJtWHn7q1xVGFrLmM/sj5IIhAP32LLOCt3+PtDPRp8heIVMK/ZSTGgHbgwLOli46tDOdk60nwhfVuZBg72hrDHKONkANVu2MFzA1j6osJxfvYKVVM/+bK65LbFwp6GGpzLCFLQftApkO3qJ9wVqE34qqsFR341SgK+w6Y/463b83QGhHMKW98J/icWByR2evcVOshCpnNT79AlMRq713JPfxqQoT
- IS4WcYck
- c9Np70yfH7HOWvcGf+M5mXZYVd77M6OlLeZPMhcVd9pLrcA6tz4GdBZSOBzhma9O9tuTY
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8F45EC0007
+X-Stat-Signature: 1gs1fr3e8ycxndwc77ah9wo1hcymfpk5
+X-HE-Tag: 1791388165-630080
+X-HE-Meta: U2FsdGVkX1+2G3YAvHAyB+Spams4uzp4WqX3cM+A6YF9TTV7ozpqoRH8Ehyjbx63omyKu9qXYcdGK+ywRqPITfKJRKuXSDOr/XC/uVBrTa2QP2YA7uPAPPPWYiNGhTOcPRH3O/ckqik0PF3ZCKRq20eULlfMuIcK9RdbvAfw00uTiiYqEYZKHHMhwccSvk0rziT7JqW1FDUOUXEndJlHWXJAeH0E2pgdqbtdsH5WiZU6+yu9ZbsxXxLoQI2N1g4SaowGlQqK1ZaHNL+riC/idRLySeqs84JQZ3UI98pRKlDVHcJvA4PGNRGy4V7iTDhhqDIiHiG0D+uPKEs69YHqFEx6z+eXfenOTj3F6IvTOEt0qMruybc8IysDvophRsM9ICUU1LgmM9C7riGZsPpAumPTuMTEYsDud0yJHn03EzAAoJMjGvPlmkNDx6KQTLDJmOggUu7syB+M4FeYrMa0FwvEj9y8jidU9c+XAm/W1aC05wLW3dPHTKTqn3Dd2ovIMPLJ7/mIFhqiX0l040qDBgrlDfZ3DM4nFYx9pT+7oyz0wYuAtaAecaxqxVrvGJvlBb4OdaWPYF2tlwB3C20Lp9eAMRc1d9PYB/CAS41QRetdSiQgsNCRHgMjkZDK1VtJnxEFezqoZtMZN15tM9A4QK74ETUOieLMGrYChcAuYFQCV+7UHN1GDjDUQLlDGW1GdinAeIZGf7KK+CiabuyZJrLdDkjKUemv20VvzJonqBQKVdKZeFJUmgGlfEY2ERLoDSfeXOGXd04MuV5hGIEy/hmT4EYOiXqoxhhaGtl51vmfn5ep/GvxNi01mhj2KAZXnkWYxNywS+ITEJAwWhMz7N8QMO3Ss7SZ48D97IeiyWFALLaX83qP0Oha1c5e18lB14gSVL/Cu3cNoq7+uoGK1ART62XyiaJrosRJtKuMA+WgOFgHlGZmsKOilt6CWRK5XkgHHAnB4e08HzClKEv
+ WDaVlKQ0
+ 8K5CE5eu8d0wh5PIZmcojVSZRSpHPZMQljMVPlkJU1bk6K/QAoyxXR7rCRTBYXL9h3v9sQuqxzHUZ67SkshWaZ/V2DkwqU3UTFf588Wb5qC5p6PLp8r9x6MPYQO0YQa4U4e+AkhUnFl5+uJ1sYT1SMZ8xMT4rHqSH32SvAY0YUC1EeW/kGpt8nl17rccRQ8LZdYDJFWFfZLc/Xbqag4ddOCTxiWn7FY5ZSXbVh7tvcptUqJYnN8LaKX6N/C8MasylLMD4bPonsfm69u/6/WvJQrGIvDx3fQNeX/ByODmya7ugRfHH8NjAQGrynfXPBm/gmYNgACZPEKeQTjmukSI8rmv2tjWnaxajQfNfD2dAiKABa/+ZNsR3OIz84j2qXxSvlBt8/4cfstr5sKf8arN4GeKpHRHXeuYuuAwbgreuRk/rHeZlFhTBkVPMU3JOxOVC1eiu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,183 +149,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
-device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahead.
+While merging 2 regions, we iterate over the entire probe_hits[] array,
+whose size is determined by the DAMON_MAX_PROBES macro. It is possible,
+however, that we have fewer probes installed than DAMON_MAX_PROBES. In such
+cases, we end up making redundant iterations. Therefore, to remedy this,
+iterate over the list of installed probes instead of iterating over the
+entire array. For doing this, start accepting a struct damon_ctx in
+damon_merge_two_regions(), and update calling functions to pass this
+argument.
 
-zswap is the same kind of in-memory, synchronous backend as zram, not a
-swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
-swapin_readahead().
+Update the damon_test_merge_two() test to use this new signature for
+damon_merge_two_regions() as well.
 
-Here are the results from bypassing readahead for zswap too: it was
-measured with a kernel build (make -j16) in a memcg, zswap=zstd, shrinker
-off, on Sapphire Rapids and 3 iterations.
-
-  768M memcg (sustained swap thrash):
-    metric                 mm-new    + bypass    delta
-    build time (s)          405.0       341.7    -15.6%
-    zswap-in (GB)            79.5        53.0     -33%
-    zswap-out (GB)          144.8       115.6     -20%
-    swap readahead (pages)  6.79M       0.45M     -93%
-    swap_ra hit (%)          72.1        89.9     +18pp
-
-  1G memcg (light pressure, build not memory-bound):
-    metric                 mm-new    + bypass    delta
-    build time (s)          177.7       176.0    ~same (no regression)
-    zswap-in (GB)            10.2         7.5     -26%
-    zswap-out (GB)           27.7        25.1      -9%
-    swap readahead (pages)  1.07M       0.08M     -93%
-    swap_ra hit (%)          68.6        87.2     +19pp
-
-Similar gains were observed on an AMD EPYC 7D13 host.
-
-The gain is from no longer prefetching pages that are pointless for an
-in-memory backend: readahead inflates anon residency and thrashes the
-page cache (file pages get evicted and re-read), lengthens each fault by
-synchronously (de)compressing a cluster of neighbours, and adds
-compression traffic when those extra pages are reclaimed.
-
-Bypassing swap readahead for zswap therefore makes sense.
-
-Suggested-by: Usama Arif <usama.arif@linux.dev>
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+Signed-off-by: Suhaas Joshi <suhaas@s-joshi.in>
 ---
-Changes in v3:
-- Go back to the RFC's single patch: readahead windows that mix zswap
-  and disk entries will be dealt with later, the priority is to merge the
-  zswap readahead bypass
-- Move the check into a swap helper, swap_entry_synchronous(), instead
-  of open-coding it in do_swap_page() (David)
-- Bail out early when zswap was never enabled or the tree is empty, so
-  disk-only systems pay a static branch (Kairui, Nhat)
-- Reuse zswap_is_present() rather than adding zswap_present_test()
-  (Yosry)
-- Rebase on mm-new
+ mm/damon/core.c             | 14 +++++++++-----
+ mm/damon/tests/core-kunit.h | 19 +++++++++++++++++--
+ 2 files changed, 26 insertions(+), 7 deletions(-)
 
-Changes in v2:
-- Keep readahead, but overlap the decompression of zswap neighbours with
-  the disk I/O of the window, and bypass it when the target needs no
-  disk I/O (Yosry, Nhat, Barry)
-
-v2: https://lore.kernel.org/all/20260722163536.773166-1-alex@ghiti.fr/
-RFC: https://lore.kernel.org/all/20260624075700.751467-1-alex@ghiti.fr/
-
- include/linux/zswap.h |  6 ++++++
- mm/memory.c           |  4 ++--
- mm/swap.h             | 25 +++++++++++++++++++++++++
- mm/zswap.c            |  5 ++++-
- 4 files changed, 37 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-index df6cafbe95dc..94746fb71bb6 100644
---- a/include/linux/zswap.h
-+++ b/include/linux/zswap.h
-@@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
- void zswap_folio_swapin(struct folio *folio);
- bool zswap_is_enabled(void);
- bool zswap_never_enabled(void);
-+bool zswap_is_present(swp_entry_t entry, unsigned int nr);
- #else
- 
- struct zswap_lruvec_state {};
-@@ -73,6 +74,11 @@ static inline bool zswap_never_enabled(void)
- 	return true;
- }
- 
-+static inline bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-+{
-+	return false;
-+}
-+
- #endif
- 
- #endif /* _LINUX_ZSWAP_H */
-diff --git a/mm/memory.c b/mm/memory.c
-index 330cde31bf8b..396bc71a265f 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5030,8 +5030,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 	if (folio)
- 		swap_update_readahead(folio, vma, vmf->address);
- 	if (!folio) {
--		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices */
--		if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
-+		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices and zswap */
-+		if (swap_entry_synchronous(si, entry))
- 			folio = swapin_sync(entry, GFP_HIGHUSER_MOVABLE,
- 					    thp_swapin_suitable_orders(vmf) | BIT(0),
- 					    vmf, NULL, 0);
-diff --git a/mm/swap.h b/mm/swap.h
-index d5bf21f517dc..b8181bd056ee 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -94,6 +94,7 @@ static inline int mem_cgroup_swappiness(const struct mem_cgroup *memcg)
- 
- #ifdef CONFIG_SWAP
- #include <linux/swapops.h> /* for swp_offset */
-+#include <linux/zswap.h> /* for zswap_is_present */
- #include <linux/blk_types.h> /* for bio_end_io_t */
- 
- static inline unsigned int swp_cluster_offset(swp_entry_t entry)
-@@ -336,6 +337,24 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_t flag, unsigned long orders,
- void swap_update_readahead(struct folio *folio, struct vm_area_struct *vma,
- 			   unsigned long addr);
- 
-+/**
-+ * swap_entry_synchronous - check if @entry is read synchronously
-+ * @si: the swap device of @entry
-+ * @entry: the swap entry
-+ *
-+ * SWP_SYNCHRONOUS_IO devices and zswap complete a read in the faulting
-+ * context, so swap readahead has no asynchronous I/O to overlap.
-+ *
-+ * Context: The caller must hold a reference on @si. The answer is a hint: the
-+ * entry can be written back from zswap or freed concurrently.
-+ */
-+static inline bool swap_entry_synchronous(struct swap_info_struct *si,
-+					  swp_entry_t entry)
-+{
-+	return data_race(si->flags & SWP_SYNCHRONOUS_IO) ||
-+	       zswap_is_present(entry, 1);
-+}
-+
- #else /* CONFIG_SWAP */
- 
- static inline struct swap_cluster_info *swap_cluster_get_and_lock(
-@@ -423,6 +442,12 @@ static inline void swap_update_readahead(struct folio *folio,
- {
- }
- 
-+static inline bool swap_entry_synchronous(struct swap_info_struct *si,
-+					  swp_entry_t entry)
-+{
-+	return false;
-+}
-+
- static inline int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- {
- 	return 0;
-diff --git a/mm/zswap.c b/mm/zswap.c
-index eb3494491410..1dcf77d5edae 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1605,12 +1605,15 @@ bool zswap_store(struct folio *folio)
-  * change under it.
-  * Return: true if at least one slot in the range is in zswap.
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 733025b36745..a3af5ee685e1 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3499,20 +3499,24 @@ static void damon_verify_merge_two_regions(
+ /*
+  * Merge two adjacent regions into one region
   */
--static bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-+bool zswap_is_present(swp_entry_t entry, unsigned int nr)
+-static void damon_merge_two_regions(struct damon_target *t,
+-		struct damon_region *l, struct damon_region *r)
++static void damon_merge_two_regions(struct damon_ctx *ctx, struct damon_target *t,
++				    struct damon_region *l, struct damon_region *r)
  {
- 	pgoff_t offset = swp_offset(entry);
- 	struct xarray *tree = swap_zswap_tree(entry);
- 	unsigned long index = offset;
+ 	unsigned long sz_l = damon_sz_region(l), sz_r = damon_sz_region(r);
+ 	int i;
++	struct damon_probe *p;
  
-+	if (zswap_never_enabled() || xa_empty(tree))
-+		return false;
+ 	l->nr_accesses = (l->nr_accesses * sz_l + r->nr_accesses * sz_r) /
+ 			(sz_l + sz_r);
+ 	l->age = (l->age * sz_l + r->age * sz_r) / (sz_l + sz_r);
+ 	l->ar.end = r->ar.end;
+-	/* todo: do this for only installed probes */
+-	for (i = 0; i < DAMON_MAX_PROBES; i++)
 +
- 	/*
- 	 * A pinned range is at most SWAPFILE_CLUSTER slots and is aligned to
- 	 * its own size, so one tree covers all of it and a single lookup is
++	i = 0;
++	damon_for_each_probe(p, ctx) {
+ 		l->probe_hits[i] = (l->probe_hits[i] * sz_l + r->probe_hits[i]
+ 				* sz_r) / (sz_l + sz_r);
++		++i;
++	}
+ 	damon_verify_merge_two_regions(l, r);
+ 	damon_destroy_region(r, t);
+ }
+@@ -3565,7 +3569,7 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
+ 			goto set_prev_continue;
+ 		if (damon_sz_region(prev) + damon_sz_region(r) > sz_limit)
+ 			goto set_prev_continue;
+-		damon_merge_two_regions(t, prev, r);
++		damon_merge_two_regions(ctx, t, prev, r);
+ 		continue;
+ set_prev_continue:
+ 		prev = r;
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index df84d9cc7d20..5ad89c1d9fc2 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -182,13 +182,27 @@ static void damon_test_merge_two(struct kunit *test)
+ {
+ 	struct damon_target *t;
+ 	struct damon_region *r, *r2, *r3;
++	struct damon_probe *p;
++	struct damon_ctx *ctx;
+ 	int i;
+ 
++	p = damon_new_probe();
++	if (!p)
++		kunit_skip(test, "probe alloc fail");
++	ctx = damon_new_ctx();
++	if (!ctx) {
++		damon_destroy_probe(p);
++		kunit_skip(test, "context alloc fail");
++	}
++	damon_add_probe(ctx, p);
+ 	t = damon_new_target();
+-	if (!t)
++	if (!t) {
++		damon_destroy_ctx(ctx);
+ 		kunit_skip(test, "target alloc fail");
++	}
+ 	r = damon_new_region(0, 100);
+ 	if (!r) {
++		damon_destroy_ctx(ctx);
+ 		damon_free_target(t);
+ 		kunit_skip(test, "region alloc fail");
+ 	}
+@@ -206,7 +220,7 @@ static void damon_test_merge_two(struct kunit *test)
+ 	r2->age = 21;
+ 	damon_add_region(r2, t);
+ 
+-	damon_merge_two_regions(t, r, r2);
++	damon_merge_two_regions(ctx, t, r, r2);
+ 	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+ 	KUNIT_EXPECT_EQ(test, r->ar.end, 300ul);
+ 	KUNIT_EXPECT_EQ(test, r->nr_accesses, 16u);
+@@ -220,6 +234,7 @@ static void damon_test_merge_two(struct kunit *test)
+ 	}
+ 	KUNIT_EXPECT_EQ(test, i, 1);
+ 
++	damon_destroy_ctx(ctx);
+ 	damon_free_target(t);
+ }
+ 
 -- 
-2.53.0-Meta
+2.55.0
 
 
