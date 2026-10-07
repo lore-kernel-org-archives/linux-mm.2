@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14787CA5FFC
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 11:42:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 014AACA5FFF
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 11:42:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72E816B0092; Wed,  7 Oct 2026 07:42:11 -0400 (EDT)
+	id 92FF76B0093; Wed,  7 Oct 2026 07:42:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B8786B0095; Wed,  7 Oct 2026 07:42:11 -0400 (EDT)
+	id 9024C6B0095; Wed,  7 Oct 2026 07:42:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ACB56B0096; Wed,  7 Oct 2026 07:42:11 -0400 (EDT)
+	id 7A2EF6B0098; Wed,  7 Oct 2026 07:42:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 324AF6B0092
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 560146B0093
 	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 07:42:11 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A1A5480191
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CA30CC01AF
 	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 11:42:10 +0000 (UTC)
-X-FDA: 85295641620.16.2E98166
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5A4EB120006
+X-FDA: 85295641620.27.8AF93E5
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5B2F3C0004
 	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 11:42:08 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="DCp/+WT0";
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf29.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791373328;
-	b=b9MKUArej60Db0sHd3stptKZnfCJU4lfnFMmMZRotMSHq+a3jiTC+wCgBgPvYuRioXx0lj
-	M8OQM9fW126A3QaS5Y5VBFyFvNUG1rLxwYA+IO+oW6TKOMuoKRuin6mGA0wNpN0TuAuMih
-	Wn2albPsH118iwtQL92UOXeEfp27cBc=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="DCp/+WT0";
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf29.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Zgvt3ctw;
+	spf=pass (imf22.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1791373328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=shJyOauKOOBD/H0U0v7hc/PsPoSiyL2m4TXWHyz9T1s=;
-	b=8ATvVr85lLKGzNEty/nlL0EDaMYFLpdpn9v3XWbYYkGQHL43vs2eeBeYGaSdJVP2TzsNF4
-	oRQqjg1PUt44GbTf1GXPSTphPtldonzsRksRKla/2xenhvHhy25ihwSYENyx5KFL9NGbDL
-	szDvDSBcGIA6D4Oe82sUdSe+iDNTVfY=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697BZhOS2259707;
+	bh=aqypqc+l/OqAfcEQC4OZjmmHbg7ldU+PpmJE6Skx8i4=;
+	b=WC5t79S5igfoHFB8d3tGPW4Hsd2HU/KcIYEqwHcYQ40DeT8KCni+YRqJ0Rzca6V/xgqvpz
+	pX0WLakYGLdibscuMj/Pt5NHkERwE6vrxTiXoB8z5HtvKbmyinIkB4vCkF35DdVkWQ2i+S
+	1zubtmAH2iaL1WHHzK5Aoog1j4weZME=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791373328;
+	b=Y2r9dl1bhNFlyexJKMOVe+k1tJkvDbUr6CLBONnLxSEb+qLHTfZeqcFXuMyDy04K5BkDk5
+	SzEui/H6jEJXvy8C9v+H1iJWZVVfeFba7KCW6bHeGUTOFr/gnF6jmQrN6m5Tbcu0QnN6L3
+	oTuE5yDYyhVf5lxSC5iM/bQuUP4XftE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Zgvt3ctw;
+	spf=pass (imf22.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697BZwUw597197;
 	Wed, 7 Oct 2026 11:42:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=shJyOauKOOBD/H0U0
-	v7hc/PsPoSiyL2m4TXWHyz9T1s=; b=DCp/+WT0k+2dvh47jrkFNOnToC2XdO5yG
-	NqFX5lNmluW4hnRjoX/oDW2ksGyxGyYFko6JYZToOk3zEzJZiarI3KcX/kRCES91
-	QJsd279KaMIJXyCDhzRGLsdJUHtSf3Oed/siVpB3tjJWjzR5afE26QGeRDgj11DL
-	NlaDAJ/WMJfXogdff2qwJGa5ojr6W5Znho98jKGUZbmp1pkNhMgJjGT/AJx4BsE8
-	AooLayOIvChuQMz3fJ+S1rJQtZJ3mcN1b060OwQ1wHJc7HbpnGzyLTkLIGA1z15E
-	6d09Ag8URq7mXzMc2oGZv9MryBlXcjuWHACcOB1G7z50vgfWt9zpw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2q4jvmbq-1
+	:mime-version:references:subject:to; s=pp1; bh=aqypqc+l/OqAfcEQC
+	4OZjmmHbg7ldU+PpmJE6Skx8i4=; b=Zgvt3ctwgw39rI6FDeb/+dsryMIWUsE1c
+	QZMYF9SyvJOZveo+bHhsHOmUBCXg8mUdXzyErX7sY5bxBMJlrO8UHQXCLlZZKO/c
+	3lm0C7hkT3Czi/m7MZyxPEXNXzUVYHHCQ3GTt6FTDoJjxlJKKhTpJVRWwXA8wRMu
+	DePhENtazvZVwpng2NHXn++qYhafCtvQKiscZ6h0zOhOFNLBmqU3jrK+YOH04/QF
+	c/0OufjiwJ9FPFI4xyFiScOBWycN2M2aDbvn71m/D6HoXyEh64IG0gmoHlBAXOBJ
+	zaTGaY3PkFhr4D17d1+ZPD3ce6blfmPQTInCW1d4iDpSjZ4EZBJWA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2scrn5kj-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 07 Oct 2026 11:42:04 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69782TKV1562417;
-	Wed, 7 Oct 2026 11:42:03 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h3cdvxfh1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 07 Oct 2026 11:42:03 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697BfxlR48759110
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697BWcPa1810428;
+	Wed, 7 Oct 2026 11:42:02 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h58ek2ka1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 11:42:02 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697BfxAC44106128
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Wed, 7 Oct 2026 11:41:59 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 98F5020040;
-	Wed,  7 Oct 2026 11:41:59 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5625520063;
-	Wed,  7 Oct 2026 11:41:59 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E8A1E2004D;
+	Wed,  7 Oct 2026 11:41:58 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9EC252004B;
+	Wed,  7 Oct 2026 11:41:58 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed,  7 Oct 2026 11:41:59 +0000 (GMT)
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Wed,  7 Oct 2026 11:41:58 +0000 (GMT)
 Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id 99253160B5C; Wed, 07 Oct 2026 13:41:58 +0200 (CEST)
+	id 7BDEB1608CE; Wed, 07 Oct 2026 13:41:58 +0200 (CEST)
 From: Alexander Gordeev <agordeev@linux.ibm.com>
 To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
         Heiko Carstens <hca@linux.ibm.com>,
@@ -96,9 +96,9 @@ To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
 Cc: Muhammad Usama Anjum <usama.anjum@arm.com>, linux-s390@vger.kernel.org,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         kasan-dev@googlegroups.com
-Subject: [PATCH v8 15/15] s390/mm: Lazy MMU mode sanitizer
-Date: Wed,  7 Oct 2026 13:41:58 +0200
-Message-ID: <1890ee88ced60e0d03d88e681b7e6dde6a6158fa.1791365932.git.agordeev@linux.ibm.com>
+Subject: [PATCH v8 02/15] mm: rename pointers to software PTE values as ptentp
+Date: Wed,  7 Oct 2026 13:41:45 +0200
+Message-ID: <76c38f9eea5132fe56aafffc68d5c499f423a705.1791365932.git.agordeev@linux.ibm.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1791365932.git.agordeev@linux.ibm.com>
 References: <cover.1791365932.git.agordeev@linux.ibm.com>
@@ -106,39 +106,40 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: gcCe8F3CQ5BCZYsIAkt8nvvQAh87lCOb
-X-Proofpoint-GUID: ZhGgR0h0gzeUPkR7w8xgqgrq71GTCE_W
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX2yDlotAE55ev
- Koli4pRdmy8NExpXmDPFt2mBOi89UIWyl6LTixPxnLHU2b7yjeSbZWgw9Krgack4yJqW9rPypkl
- Q2T2E5Y38Fd/keU9WhSWketmZ5RJzgo=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX6LcQRnfiB2Q8
- SiN0S//pA4DUcuKYAicXzk6Kc6YCJXL9rLaw2I5Z36fQrR2Bxbpy/5hULWW9ovj+y8hIFUFSxYQ
- qithfL9FiM+ca0cj6gFa4t+S3ebjAy2TyWvT3x5z+Fvi3CnCRczowSumBVMf/iAozgP+CamDQ3J
- yVOlpjw8cdLznaqJdT37l83Y5yS2Xr/a7fvOBw4v0YRdBJGjgveOKIvpmPW8Z2PHCXOrBP7j0Qr
- HFAgMwsMmKLLZMUkC1/uBsW6afu3BbSXNNSdPx2a2k8NDWE8X/xlqPe5vnUxUXigDhZo+zLXc2f
- snko2x/URfphXnGpuk3sBz/p4CAB61jlIn28UunVhpP8dws1TaBCOzhZBsABpVjT3n9Xf3o+vnv
- osOE/Vp1H1I5+N+0rXqBUznKzcURLQ3vuYA3FY4N/5fwthoiVOZMj9tFINKAc3Mbk96Ieypt8cI
- uNQJhDqV/qAXNxLOQFw==
-X-Authority-Analysis: v=2.4 cv=eYeo7LEH c=1 sm=1 tr=0 ts=6ac6300c cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX+fY+IgbOtwY4
+ OpWN2uLcMS28bfINiICBAFqzw8N2KoMRVI1O67Qa26y5BAPl3x7GBPqtQIjvtXWIE04fbCGeP1A
+ pmy4uXb33mlBk3VFxZ84h4LFFaKjGDc=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfXzkPi73YV188+
+ dawf8MKfaiyv2YWKW8lmnEV/r0RIh00DTVLSBVODNT8rHvC8wI0XPpv8ngVYpnPUcFy+pTr25Pj
+ 964jSF5Z9lkIPTt/liYP9RYKt6ZchYGR2uZGmWCTqLcjtj4CMr4uCOtL75UyBgJC1Y4fZerQHoH
+ E3Mm64xDcVo9yHMsDO7/oe+eRSIT+lNwI6bIZXJ5WNxe6R84pHEDvjPpP1CnHQtp6/NMhCKwb1e
+ c4RRw0MKWck4YNj4KW5OiVjMh45E9wKEJqRPOzh49dZZFGL6yCdYLv96f1ctS13XJA9TJca2HxM
+ lJyKKLGdVLbewxC68Xc/nDTNJx7wkZEx5Ll37Pw70I0HsQ9uAf8zN0uIDGMT7GB1xEF4Ms/qM30
+ EugUdkE2Q6nnbfjAvW9b5ZwNBKPp/CQNTK7yQrc47nirVLYn3D6aM0DBssWbonQKi8YfT3BmRQd
+ W+9bCKt4gXhjJr4NrSg==
+X-Proofpoint-GUID: Eue0-3r4Z0cAnjS8exp06yeH6pO9gDCl
+X-Proofpoint-ORIG-GUID: T9jWbWBEm7D-IWe0zqIMM0rFSjO0bvE7
+X-Authority-Analysis: v=2.4 cv=B7osQ+tM c=1 sm=1 tr=0 ts=6ac6300c cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=DuHJb5c9rUSq-GGRdagA:9
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=7CQSdrXTAAAA:8 a=VwQbUJbxAAAA:8
+ a=DykVs9dKbHxkzX7wQTQA:9 a=a-qgeE7W1pNrGK8U0ZQC:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-10-07_04,2026-10-06_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1015
- spamscore=0 malwarescore=0 priorityscore=1501 impostorscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 malwarescore=0 impostorscore=0 phishscore=0
+ clxscore=1015 spamscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070046
-X-Stat-Signature: tiup9j8skjnoutbmc1zcnxh8fqz4iq81
+X-Rspamd-Queue-Id: 5B2F3C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5A4EB120006
-X-HE-Tag: 1791373328-316281
-X-HE-Meta: U2FsdGVkX18LJPFTZCLcGFI3+YKzNV8R2iN9s3Z2u3+B0dEOF7qTmBiPBIbIJZ6WLT4Ryaid+o151S5Zru7GvtbAhL7fe42HjRK1elMQIrEw0FggMX1/NPPaDruOa2F8jYn9TqYKf9s/JvJ5Ur400+5Pn8MI8M2Lszkd8LzS7A9c1IcqIbJJNyZpVi+sqrk91Zly+g/NWhtzdmA8ClKdGXeernRR+I8ECRKpQylN/3mNv6BFAJrUZAAfGn73EQHEPX1qfHuoJ4lWFlnSDVo1T9a9fiKDPmF7TRpfvUxk0EBZoNpa2APTBCQMHpXTwhSKHarF+TJOmonOWreZ5cJ4jJIP3wUnqDcPU8R9U99nN+Hjh87lUxPfCPRP9PEcSqC02t+brn3ea/Tz0VxJNk3s9mVPFcbRD303NOG3nKoCmIv/WZv1ta8gLGCdgqbJ/8+wMUNJ/tj8aZgb+vWaY81n/WTidwv3aRLbWwH/9CQfjMeD8QDMZXxYPCtQl/WCb+EUY9f6/Zc2AfgsZi8QSji1LQWKKAkJE7oYPTJvOJpETTTZm5D77IRaFeDGCutjxuODC8uJwuu7ObHXnhV80jOcU5uEqqWbk21MdI746DKBGvQiav3tbMzeyWmSOUQTAOnhfUPxwpgVpl2YahU/Qbd0z0zr1c22xmbFf1dSMvEeLvBMPMeVv3tiyzZYlt9tVuAiU2C0fIBHXv8dbjnmDf6DcCnFf5YnY7yIVi8ftSO5xmYq/9fGUSGYUX1Rg7x1xmgzaP18U8dKpMPs7CnFFMGRZHrq0axGIsQfiAjkEChd5xjV7EiZbnWw2GGwrBuIkRjpSLT8rhVpzT2GBCl3dcL102MLxZ+7EUYwHASa6a9i7tycP4lrYHCmjNfHWJSapr/OooRCarKjiq+wABgas+xeVDTZXdvvkIwsBcjWuaezoMeYTzyynfGOZRQ7gDbp2xaMbChtvIpOQ4E8RQOpmdr
- ySlNCBT2
- 6dXD+MbKrxsf3s0Ou1TJi1H/4SKkmPaNEUP/oArjEm/lub8VcfzgzBlpV+V/xZBQeFfyfEruy88KyVDvmmm0QiDgbEKCJXoRu5nWktpNTIpZ3ApFmd1Br2Qv7rBTU/5w2CtSd6OmfMdHWIz5xTFua1eI262ApwBUFvSmgK43kydXsjrjGpEh59Ly9IO1JMzYqiCf48zVbIq/cumYotA+m9Vt/9BOhX9rRuoH0R5ogzUuxi3M0mD3HNcTgo+11ZGL3pGifdRUmELr/9pmWGSQ6/O1bGQ==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ujdjmqhpz8msy3ec73b1rgcixuj7yias
+X-HE-Tag: 1791373328-852000
+X-HE-Meta: U2FsdGVkX19kz1XyYOQgB5dT1gsMAevl2714BYx8+AhdepIXsnoCb7pUbHAuGSDY6VVsO1sk69hJHfQbbF22l0aHO5dCZ6gN5XZG+mJ13cAy+WqLfpMCP+TCQB+7BhproUUwCGOdYMeRWibfFhXw6SPfDYmkdaxVsw5qyQHpKmVH6ruu6PTHHF+WLhFpsYXNxGvpCQUn/FisHd50T8r34AFtmDujwfWU4fRca9j1ZTo26LyegCr41SG5d2RYMRFfE/ld2hwH8hLvpSlD40QDg5y7jeItx5mAwCEJLqFMhcuTow20JlN8jQTPvk76ybHl/GYkWXakp+1E4bG4u/osfBXrxdcxFXnbS2ikFuJ0eaZO2RBRvKDzXuAtwmPbo6YQPrzEUbYqeRhHZksgDVKS+xJNmaJ+QIizPHDv10ymAisAKKThPbBiL+xwfmqgtzNmsibbcUZevLjAY7Zz5m114EYQtlQAbV2QQcP8bCmX3XC6hR9+YDW6R08Jwx0ZQmhIfI+2LGwQN83yOK1T5NPMNPD4VOpzWaa2KNFV5oWSDwTKw+ur9P88ru1mreBGcKB4m4b4DnrkMVQCWq5oEAYZvqzsJr6mMX0t02ZKRez4Moxyu8lHlHPmqOeBpKPOS0T33LemXl8KS/0fF9YOkWAY3IUxl3k/oXU+WB5G4W+7YPxGe3Vb10urDuBq61PIdLr0Tq4tSyAxJ7Q7j2NIhywITjj7WQ7aHLjXVOTNiMkgkVRLnEDJ6Phl3Adj4mw8RAClkPaJvGZXdXzqtqqfSicFdqGuzprjyINGUY3suW0e4Xqpfn/q1QVmAjGuiJpNisZCqM5mmt433YgcmFHvara01mo+jY/muljouDn7NfBwYUg2VM80Ynl90CqrG9lamFy8o3jYEcU5qrU/oVMhkYyWGeqL5pzTmpkYAfXCtprHtptW8iIBhMxU4oc1hhfJZObR15/khgJJnLqjKMUA/+3
+ kqgGgVv1
+ DArt8u3FvmXdMny/PwcojIUE78tN5P+nW4rM+/Mt/QEyrvGL1OPN4kASS/DmffgsFaDT1TCIWXDNzwneJ87gJTM99T/Jh26fiXsAVUk2DtMaMmUVRCMeCyqlhZd6HPI4zGZ6IrHu5zbzb0rh4JMbsIhQXoJbT6lArsbqWjKUXXGc0h2aReCYs0mVYhMepZ8X9KgqE7rFU0dEIz9F5G8QAzAkJY9LtVkhYEGuXmWZ7jtfAnO4W+MNd+HhcK0GoPK2Gwlf/EqnvbXBcsr19AnjwB+a4o/uBKeFnydN8/M4p4ungzTMtksRDbjJpo2LMGQbuQKc3gv6j8a4782lC4BqgJZuvwKMiVZg+JHNzlp2sbkbGPr7dlGfhMCdEtXaWfw97tlIt8N0WjMdXfIyPblpR7UzRcPuwGt3ZXgFoBkv8QJlkbhE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,130 +147,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Detect PTE entries access in lazy MMU mode by means other
-than set_pte() and ptep_get() primitives, which would be
-a read hazard.
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-The access to kasan shadow memory from ptep_get_lockless()
-mistakenly hits invalid access in case a concurrent lazy
-MMU access to the same PTE is happening. To avoid that
-disable instrumentation for ptep_get_lockless() altogether.
+Some interfaces use pte_t * for a software PTE value rather than for an
+entry stored in a PTE table. These pointers must remain pte_t * when
+pointers to PTE table storage are converted to hw_pte_t *.
 
-Suggested-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Rename these parameters in the install_pte callback,
+write_protect_page(), and guard_install_set_pte() to ptentp. The later
+Coccinelle conversion skips pointers named ptentp, allowing it to convert
+the remaining PTE table pointers without changing these interfaces.
+
+Some functions already use ptentp for such pointers, including:
+- madvise_folio_pte_batch()
+- folio_pte_batch_flags()
+No need to rename them.
+
+This patch only renames parameters and makes no functional change.
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
- arch/s390/include/asm/pgtable.h |  6 ++++++
- arch/s390/mm/lazy_mmu.c         | 27 +++++++++++++++++++++++----
- 2 files changed, 29 insertions(+), 4 deletions(-)
+ include/linux/pagewalk.h | 2 +-
+ mm/ksm.c                 | 4 ++--
+ mm/madvise.c             | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgta=
-ble.h
-index decce76fac74..47f0adfc1029 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1063,6 +1063,12 @@ static inline void set_pte(hw_pte_t *ptep, pte_t p=
-te)
- 		__set_pte(ptep, pte);
+diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+index b41d7265c01b..c34d826c5e4a 100644
+--- a/include/linux/pagewalk.h
++++ b/include/linux/pagewalk.h
+@@ -89,7 +89,7 @@ struct mm_walk_ops {
+ 		       struct mm_walk *walk);
+ 	void (*post_vma)(struct mm_walk *walk);
+ 	int (*install_pte)(unsigned long addr, unsigned long next,
+-			   pte_t *ptep, struct mm_walk *walk);
++			   pte_t *ptentp, struct mm_walk *walk);
+ 	enum page_walk_lock walk_lock;
+ };
+=20
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 49d48d1e0998..892bf4a0d6e4 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -1291,7 +1291,7 @@ static u32 calc_checksum(struct page *page)
  }
 =20
-+#define ptep_get_lockless ptep_get_lockless
-+static inline __no_sanitize_address pte_t ptep_get_lockless(hw_pte_t *pt=
-ep)
-+{
-+	return __pte_from_hw(READ_ONCE(*ptep));
-+}
-+
- static inline pte_t __ptep_get(hw_pte_t *ptep)
+ static int write_protect_page(struct vm_area_struct *vma, struct folio *=
+folio,
+-			      pte_t *orig_pte)
++			      pte_t *ptentp)
  {
- 	return __pte_from_hw(READ_ONCE(*ptep));
-diff --git a/arch/s390/mm/lazy_mmu.c b/arch/s390/mm/lazy_mmu.c
-index 8c1a62f23736..e29afa081061 100644
---- a/arch/s390/mm/lazy_mmu.c
-+++ b/arch/s390/mm/lazy_mmu.c
-@@ -65,10 +65,13 @@ static int invalidate_pte_range(struct mm_struct *mm,=
- unsigned long addr,
- }
+ 	struct mm_struct *mm =3D vma->vm_mm;
+ 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, 0, 0);
+@@ -1370,7 +1370,7 @@ static int write_protect_page(struct vm_area_struct=
+ *vma, struct folio *folio,
 =20
- static void set_pte_range(struct mm_struct *mm, unsigned long addr,
--			  hw_pte_t *ptep, hw_pte_t *end, pte_t *cache)
-+			  hw_pte_t *start, hw_pte_t *end, pte_t *cache)
- {
--	int i, nr_ptes;
-+	int nr_ptes, nr_total =3D end - start;
-+	hw_pte_t *ptep =3D start;
-+	int i;
-=20
-+	kasan_unpoison_pte(start, nr_total);
- 	while (ptep < end) {
- 		nr_ptes =3D invalidate_pte_range(mm, addr, ptep, end);
-=20
-@@ -79,6 +82,7 @@ static void set_pte_range(struct mm_struct *mm, unsigne=
-d long addr,
-=20
- 		addr +=3D nr_ptes * PAGE_SIZE;
+ 		set_pte_at(mm, pvmw.address, pvmw.pte, entry);
  	}
-+	kasan_poison_pte(start, nr_total);
+-	*orig_pte =3D entry;
++	*ptentp =3D entry;
+ 	err =3D 0;
+=20
+ out_unlock:
+diff --git a/mm/madvise.c b/mm/madvise.c
+index eeee82cf2b3f..c2133b36b24a 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -1110,12 +1110,12 @@ static int guard_install_pte_entry(pte_t *pte, un=
+signed long addr,
  }
 =20
- static void enter_ipte_norange(void)
-@@ -98,6 +102,7 @@ static void enter_ipte_range(struct mm_struct *mm,
- 			     unsigned long addr, unsigned long end, hw_pte_t *pte)
+ static int guard_install_set_pte(unsigned long addr, unsigned long next,
+-				 pte_t *ptep, struct mm_walk *walk)
++				 pte_t *ptentp, struct mm_walk *walk)
  {
- 	struct ipte_range *range;
-+	unsigned int nr_ptes;
+ 	unsigned long *nr_pages =3D (unsigned long *)walk->private;
 =20
- 	if (!static_branch_likely(&lazy_mmu_enabled))
- 		return;
-@@ -116,6 +121,9 @@ static void enter_ipte_range(struct mm_struct *mm,
- 	range->base_end =3D end;
- 	range->base_pte =3D pte;
+ 	/* Simply install a PTE marker, this causes segfault on access. */
+-	*ptep =3D make_pte_marker(PTE_MARKER_GUARD);
++	*ptentp =3D make_pte_marker(PTE_MARKER_GUARD);
+ 	(*nr_pages)++;
 =20
-+	nr_ptes =3D (range->base_end - range->base_addr) / PAGE_SIZE;
-+	kasan_poison_pte(range->base_pte, nr_ptes);
-+
- 	local_bh_enable();
- }
-=20
-@@ -125,6 +133,7 @@ static void leave_ipte_range(void)
- 	pte_t *start_cache, *cache;
- 	hw_pte_t *ptep, *start;
- 	struct ipte_range *range;
-+	unsigned int nr_ptes;
- 	int start_idx;
-=20
- 	if (!static_branch_likely(&lazy_mmu_enabled))
-@@ -163,6 +172,9 @@ static void leave_ipte_range(void)
- 	range->end_pte =3D NULL;
-=20
- done:
-+	nr_ptes =3D (range->base_end - range->base_addr) / PAGE_SIZE;
-+	kasan_unpoison_pte(range->base_pte, nr_ptes);
-+
- 	range->mm =3D NULL;
- 	range->base_addr =3D 0;
- 	range->base_end =3D 0;
-@@ -244,10 +256,17 @@ static void __ipte_range_set_pte(struct ipte_range =
-*range, hw_pte_t *ptep, pte_t
- static pte_t __ipte_range_ptep_get(struct ipte_range *range, hw_pte_t *p=
-tep)
- {
- 	unsigned int idx =3D ptep - range->base_pte;
-+	pte_t pte;
-=20
- 	lockdep_assert_preemption_disabled();
--	if (pte_val(range->cache[idx]) =3D=3D PTE_POISON)
--		return __ptep_get(ptep);
-+	if (pte_val(range->cache[idx]) =3D=3D PTE_POISON) {
-+		kasan_unpoison_pte(ptep, 1);
-+		pte =3D __ptep_get(ptep);
-+		kasan_poison_pte(ptep, 1);
-+
-+		return pte;
-+	}
-+
- 	return range->cache[idx];
- }
-=20
+ 	return 0;
 --=20
 2.53.0
 
