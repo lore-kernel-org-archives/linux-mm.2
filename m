@@ -4,79 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75176CA5FFF
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 10:58:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8E18CA5FF1
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 11:01:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 820CC6B0092; Wed,  7 Oct 2026 06:58:36 -0400 (EDT)
+	id E87A86B0093; Wed,  7 Oct 2026 07:01:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CB426B0093; Wed,  7 Oct 2026 06:58:36 -0400 (EDT)
+	id E5F336B0095; Wed,  7 Oct 2026 07:01:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 691BE6B0095; Wed,  7 Oct 2026 06:58:36 -0400 (EDT)
+	id D76B26B0096; Wed,  7 Oct 2026 07:01:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 44A4E6B0092
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 06:58:36 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BCBD61A01B3
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:58:35 +0000 (UTC)
-X-FDA: 85295531790.14.A268F2E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E71AC20002
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 10:58:33 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ClavKX2Y;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A8B5B6B0093
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 07:01:30 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 186D3C0187
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 11:01:28 +0000 (UTC)
+X-FDA: 85295539056.29.8D59300
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4367E100003
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 11:01:26 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RyDAibe9;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791370714;
+	s=arc-20220608; t=1791370886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QsH2WQ9SDQqQQ5HhyQhB+EQpXO/5OEUEiipsXMuuiTg=;
-	b=q6epRFJJ6Z2NPDoBZe4HkuqkphI9DlHRCJWrzttirCuAlMLnZrWMgCUuxseclHTFAncRKr
-	ob020rjfQNVwruZAJhM2tnYKOA4M4vbfM7H+hgD56+Seon78X6FOcZzgcWdRvRW6J7i+0f
-	gRL3yN0JnlG2gbU48S5FYzpgR00dmDU=
+	bh=oj+jPv+W3w4mQ53IZPa0Z9z2WElXYSTGhTs8GSivQOQ=;
+	b=YdAosF2qhiPv70Supet0oS27Jx0yEzMfEW/12oeLDX5XVzrpUITRQ1hVqBaUky1JhfWSHW
+	lMGj1csoZxbIe+w/1Fxl8u7aLeUHiu/39/ViVGn3yk35YnUe8Z85VouW92x1F3Ygrkyk98
+	iq2bAFQw9MoAQdUubBbqoSqsZm9m3N8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791370714;
-	b=aj/SfkGE5t2jGpqWyi8tZWlsF91Q1fD0pF1P95E+dKVTw0Gp1dJXN45rbVr9ZtpAOFEqzy
-	aKqcS0ap+llqlWkH/tgFJpXSZIsrczPVUxH7mAwH0HzUshfaeYsQaA1MAFiiwtVKj5EYDU
-	AmcmJRep9Yk8tQbZBBUrzVykf42lZ14=
+	t=1791370886;
+	b=Kk5ZmYbA12N5aQoIl6GiL7cqpIgaxfhsd+evtYgTihgYDaZrk4aImg7P5isoDfVzWF79ln
+	9cC4JGBntnfoaxP6K4vRXQM/HZG2rxhNTgZJNa17tdj3T1Yewt+fjxx93oiZp163xKuSU2
+	K5MiFIihEZD2qMbE2qJzme1XAYutf/U=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ClavKX2Y;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RyDAibe9;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BFCC6438C4;
-	Wed,  7 Oct 2026 10:58:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5744B1F0089C;
-	Wed,  7 Oct 2026 10:58:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9E5A06021A;
+	Wed,  7 Oct 2026 11:01:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF84F1F0089B;
+	Wed,  7 Oct 2026 11:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791370712;
-	bh=QsH2WQ9SDQqQQ5HhyQhB+EQpXO/5OEUEiipsXMuuiTg=;
+	s=k20260515; t=1791370885;
+	bh=oj+jPv+W3w4mQ53IZPa0Z9z2WElXYSTGhTs8GSivQOQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ClavKX2Yh5C1NgfFlXnAGS9n2b7ylvpH2CPkf+F7/BcQWTKgLxoCWVWDgOL5edYb5
-	 60xjfocL0vskCdqhPyyZLRLTjkELQ+RSaP83s06muJYb5CX6PFh1Qr2qr8l5rHgdC0
-	 9wrx3/cmczbtxRoI5n4rOU/OMLNadMngtO9Mn6OyfCTsVeSPOFU7ADNnN9oCvCzeB+
-	 rzhu9aJKSVVkaEVX8Z2CGUAGFGGmup2j9BjGWBGmoirsKCrysLpnTaXRcINJKtGf13
-	 0F/5nDU00m2YnBy+oq+oH945efjM9sTQzQrkP7PaoAWzOKnfvV/Q/89hvr1YS6kT0D
-	 UMiCPFHhm7yrA==
-Message-ID: <f0af8a33-fb19-45ec-9a52-4bb8579867e9@kernel.org>
-Date: Wed, 7 Oct 2026 12:58:27 +0200
+	b=RyDAibe96Eq/7kf+TLq5bawmi37igOsg/UMj3h8nppbsBm4/0BO4DS9C2Kmn7qeq3
+	 crVliEz67Dwxbp9KPAmewYN2KaM+5HN7ehBeEKXZI74Xw84Djzhpd/ITtoOSeurzKB
+	 imskknXHsIhAMXD/TE5ljilnge8SW0Wh247bO3Ay4in9N2UkzDsYFGgHb8+ZWppYzh
+	 filExIkMvEToz8TregUkBzcU001evOU1KzpRqu5vrtMAbVHO+9I6FerFDmaUHxsOi/
+	 pcdYAXjNqgTu2kZsGVcs0lNsaffA54L13s20tpZzce4SVc/Eq0pYWzxFH5QuHIR+iK
+	 1sF4YNgtGwp/w==
+Message-ID: <69c33490-e5a3-4cf2-a5ed-d2bc8ed336d2@kernel.org>
+Date: Wed, 7 Oct 2026 13:01:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/gup: document unlocked invariant in
- fixup_user_fault
-To: =?UTF-8?B?Tmjhuq10IEFuaCBOZ3V54buFbiBEdXk=?= <neganhat@gmail.com>
-Cc: akpm@linux-foundation.org, jgg@ziepe.ca, jhubbard@nvidia.com,
- peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261004125601.c06953a6f0660df9859b0c2a@linux-foundation.org>
- <20261005093756.22709-1-neganhat@gmail.com>
- <645204ff-6c50-4ef3-9070-78ac602560b1@kernel.org>
- <CAFJkwZx9zmz2sxMyByFbYgfCi9zMN+iLxKrypKBCZY9NsLQz1g@mail.gmail.com>
+Subject: Re: [PATCH 1/1] riscv/mm: fix soft-dirty migration PMDs being treated
+ as present
+To: Lance Yang <lance.yang@linux.dev>
+Cc: pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+ akpm@linux-foundation.org, zhangchunyan@iscas.ac.cn, rppt@kernel.org,
+ kas@kernel.org, andrew+kernel@donnellan.id.au, rmclure@linux.ibm.com,
+ debug@rivosinc.com, baolin.wang@linux.alibaba.com, usama.arif@linux.dev,
+ wangruikang@iscas.ac.cn, namcao@linutronix.de,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ alexghiti@rivosinc.com, viro@zeniv.linux.org.uk, ajones@ventanamicro.com,
+ arnd@arndb.de, axelrasmussen@google.com, brauner@kernel.org,
+ conor.dooley@microchip.com, conor@kernel.org, jack@suse.cz,
+ liam@infradead.org, ljs@kernel.org, mhocko@suse.com,
+ paul.walmsley@sifive.com, peterx@redhat.com, robh@kernel.org,
+ surenb@google.com, vbabka@kernel.org, yuanchu@google.com,
+ stable@vger.kernel.org, pasha.tatashin@soleen.com, linux-mm@kvack.org,
+ me@ziyao.cc
+References: <fabd52b6-36a7-442e-9cfb-47a39e4ae3d6@kernel.org>
+ <20261005134641.5801-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAFJkwZx9zmz2sxMyByFbYgfCi9zMN+iLxKrypKBCZY9NsLQz1g@mail.gmail.com>
+In-Reply-To: <20261005134641.5801-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E71AC20002
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4367E100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: mzhjf6rykw14m9dp71gu4rca3cz796d1
-X-HE-Tag: 1791370713-228055
-X-HE-Meta: U2FsdGVkX1+3rxJZmaqw/q/TU6p/0k9J8Jr3sC9kDgWKr2ay4Cl8fs27DXoMf6WO04Qeb9zewRmrFwFBJtjCur88rvUKES6iJ80a8eTm7o/GfP4lQiJErhyhvNZXnuEaZ6RtbisM3s1Lw1NjIrNy7/n4De6P1BF9O3pT2yBzshV8q3MR56J0AhxH34MI0i5vqDIwmBzOiPzqdqYzyOQM/LpGlkS6ZGfm8niei8uInUZrM6TwiH4jieNSnB8Hg6ABb742N69P38PGVxTaFSU50iiz86EF4CZz9LrJ0mdPhKkXg/KrZ8VG9smdT/+a/dAuGm8+2GE4zvUQ7TnKfcuZZPj89nzWPptv17YlngoqHID9+TxsTVjaDfA4p+RgEda1ldJHUQ3LMYBb/hOUI4AhXT1NVfwCv3JcOmB5ZyE6Jjxtr2YWRk/ZehN0j1YI+YDDQudknIoHOHrA0G2wJY/JfmLaGgulN+euO9wGGCVW5iHGcjxLJrqZleLTqn2NGwuWL8Qw1+Quvh68wzxvgQNeSICgBDJuGvm9Y3GPCl9HHOYJD0KCoS54QLqa+XGKf5XwTSL7Nty3W1hi8B9628HmrBASPULTokKsBMk6gKD6bibu8oiR1Xr1YNSJvUjohCYXvT9rKg0JNuCU9WwLiZdAmfklron76tVqXQqlCJ3MIw0ipUxgsPpwkGucydigOBPvvQfDTZMs0HVTSshXs3hP0EYIr0Rgpa0ojvDqFL65fFCJeOiS0zHlxQiyj1Aok7XFMvV6YVxTS6zGGxPX12atQMSrT1CcK0marVOUIz4R6GNu4BaBHrZaOhlwqPoDZZf4TtCeYYs+R4NSEZba9fkfqpJNUx1FieNdEX99Cq+o4Yxo938LRxR52iCNuDtvGkOfWl37ON78uNi2MI/6VBcefMkjbpqw2SmiGXWDaMgvpAnQG53QoCdB2/Uu72J+I4HvYwKFTsjVFYGYiiCatBO
- UjMr3YV8
- qiRsWP657GIAE1UL3E0zte+12mAIvtSIONwTIoIUVKnC49eY8PIcBNUAXJxjQ9KjSqvBZfEksUWaIvbo0prTkpF/+02TRFUVD5ilGTe9BpkP1N4R0De7/ImkgDCmEskAff3ejZNZFooPE2aaFNib7+tCsK063whmwbN7JJzXP5fstrwKDhXMp8zv75h4EK/UZRywGnk+fa0oXHB0i/SeDZHh+A3HJLfZmXmnCJVRaDaO19OA+Q5vPEWISjZsWR7RvQsLg7Vm3yOCF/uPJrKlSkCT7dqP07S7VTTFb35+yCscsD2J/mPGRTcL+H6uwZOrCSCftH/4xl68uvDQ=
+X-Stat-Signature: aixgfzyd38td6jnduysmjmgaaq9iumsk
+X-HE-Tag: 1791370886-718527
+X-HE-Meta: U2FsdGVkX18MfzI7HVB+Wj/I7bTS5IYpOV6daDZlu+Dm/g/ZLts26nqMBdIR/cN/Etdxh8flqvuBMeYC/453nvkMbVbF4Lf1XLfI1iCLqwaJ5HLYLHWNModNpaSg4vLfG1TBztD6yp87yEfEA2vUbDZAH9BzU0ng9p/ty3QNuZnEEFsXn/FVxWwax9YBl2+8kv5tUj2CEv2Ff+sm2K0+nRQ+Niof5nl4cvSDbL6JNJVdQv4ENBGhEvqEQciSJ8nX1h6StKRDPBHKCUjGUkYaBPzQdBt3Ntz2zsDpVmbbCTz9/lgoagwpOhbyPQRgoy8TLpsJPm7rOXlqVf4EM28TIgOdnWYs9+oK1ADzBEmYIO0Bwfc0NrrzhcuIYU0lm7G2fMNYcdaNZJuhMsFVsP7CyGPDoAV6e+j4AutuorGta054A/dolePrS7TNQQPeZqsVkyM4RemZqRa6hQjMpG9d5qjj41K7YoXwWkEc4rsJRDtUtzh7P6b5AKUzi60eac4A34w4Uyr0pcz4g/bDLb6LxfKl9Pz7HvIeENoZnxjo5Mr6URnNKxDeBmUeqOWmR4GsawE1H2zmsz4qPYAQ332WA5k3hnXfmlxznh8oMyv9hvemXd+360OpJbzCzrICrUva4GNz1VUmt/oE7AZ24RgCBz9sKIuCNu83giZ6SnRj/iLG6g+u4dynmhig+NGf7XgRgErWrdKSPAUnud6/QJQTj3ryMlNLLNhNrBvryo5I6NvRAA9ptA28OhDQ2vaMYhcyIkfDW2ZuTM2lsLdtY0nVtTdjA6rgaT4ROaDpHCoq4m5gZoeal8T3Uk++dm8N9rfM8jrgBWqyMpMTefuQE8WD1PC26ZkJ59RdDCwkX0cKfkb9cPhdwv4/+5pJ8tK2Vc9tw5hm1jbbw6TT52Seqqf7WZhr4zByEVYL/eSotadtxUz2J35/o0WJQICkUdUOu6mIuiJj1HCxD80AQahomxX
+ +CdLRD0O
+ hT4uR687bTCsXLXllcrtgI+2sMGS7DaFOLTXVK6YL1tTqRs5tzSE3uzgz7Y7jfctHCrpUKcmuoaC+TX6hkxwrI31sIjurjcpHBZnlkT/YSUpEsz7RWzCp//p2KXUlV9J6afXVLAEBiRQwNqGil9rUEM2MegARcLB9Zp1A/TA66RdJlYaNzZ0s8JrwxXVWuyT+dml0VwGPagnkiWr6nDwelA7Ii5LXrCGRMchrqVGaGOM6ukUd6iu6N/d9CdWzEqhEZngUQYl6RCO371P4N9dB4MLASYQ21FOsnt38sZCIylB6UM+sYWsxsZWSMUW52KmzNudlrOeRJ+x5BaIlEivnfxcZ+EO0oGFg3/JNmoiNs6xgTQUlZY/La1q9PQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,32 +151,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/5/26 13:22, Nhật Anh Nguyễn Duy wrote:
-> Hi David,
+On 10/5/26 15:46, Lance Yang wrote:
+> 
+> On Mon, Oct 05, 2026 at 12:37:20PM +0200, David Hildenbrand (Arm) wrote:
+>> On 10/4/26 05:03, Lance Yang wrote:
+>>> RISC-V uses _PAGE_EXEC for swap soft-dirty tracking when
+>>> CONFIG_MEM_SOFT_DIRTY is enabled and Svrsw60t59b is available. That's
+>>> a problem for PMD migration entries, since pmd_present() also checks
+>>> _PAGE_LEAF (R/W/X) to recognize THPs with _PAGE_PRESENT temporarily
+>>> cleared during splitting.
+>>
+>> I'm curious: why do we have to set leaf indications for non-present things? The
+>> HW sure will ignore it, right?
+> 
+> Yeah, that surprised me too :) Still wrapping my head around the details
+> ...
+> 
+>> Is this a sw problem? Who needs that?
+> 
+> IIUC, it's for software during a PMD split.
+> 
+> __split_huge_pmd_locked() invalidates the huge PMD and flushes the TLB
+> before installing the PTE table. Software still needs pmd_present() and
+> pmd_trans_huge() to recognize the THP in between.
+> 
+> RISC-V clears V but keeps the R/W/X bits for that, so the entry is invalid
+> to hardware but still identifiable as a THP by software.
+> 
+> Hopefully I didn't miss something.
+
+I thought some change we performed to GUP-fast wouldn't require that anymore.
+But my memory is a bit vague ... :)
+
+> 
+>>>
+>>> When a soft-dirty THP is migrated, set_pmd_migration_entry() preserves
+>>> soft-dirty with pmd_swp_mksoft_dirty(), setting the X bit in the
+>>> migration PMD. Even with _PAGE_PRESENT clear, we end up treating a
+>>> migration PMD as a present THP! The fault handler skips
+>>> pmd_migration_entry_wait(), and a write fault can end up in
+>>> do_huge_pmd_wp_page(), where pmd_page() decodes the migration entry
+>>> as a mapped PFN.
+>>
+>> That sounds bad.
 > 
 
-Hi,
+[...]
 
-> Thanks for taking the time to review.
+> YES, looks a bit off ...
+>> That reduces the effective swap size (and PFN we can store). Could that be a
+>> problem?
 > 
-> My motivation came from running Smatch over fixup_user_fault(), which flagged
+> We don't need all 52 bits of the swap offset.
+> 
+> RV64 PFNs only need 44 bits for migration entries, and actual swap is
+> already limited to about 16 TiB per area with 4 KiB pages by
+> last_page (__u32) and swap_info_struct.max (unsigned int).
+> 
+> So there's room to reserve a bit without reducing the supported swap
+> size or PFN range.
+> 
+> CONFIG_MEM_SOFT_DIRTY is only available on RV64, so RV32 keeps its 20-bit
+> offset.
 
-just like the (at least) 2 previous reports. One from them from 2021 IIRC where
-Linus even rejected a code change.
-
-> the dereference as a potential NULL pointer issue. Because the relationship
-> between FAULT_FLAG_ALLOW_RETRY and the unlocked pointer is subtle when
-> first reading through the path, I initially misread it as an unguarded
-> dereference in v1.
-> 
-> When Andrew pointed out the invariant, I thought documenting it might help
-> future readers or newer contributors who hit the same static analysis warning.
-> 
-> If adding a comment isn't the right approach here, would you prefer leaving
-> the implicit contract as-is, or is an explicit runtime check (such as
-> VM_WARN_ON_ONCE) something more fitting?
-We want to silence smatch. Either fix smatch or find a reasonable way to stop it
-from reporting things that are simply not true.
+Good, can you spell that out in the patch description?
 
 -- 
 Cheers,
