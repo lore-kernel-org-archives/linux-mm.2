@@ -4,141 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A70ECA5FFC
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 12:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFCBDCA5FFC
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 13:01:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DF236B0092; Wed,  7 Oct 2026 08:24:33 -0400 (EDT)
+	id 6C5816B0088; Wed,  7 Oct 2026 09:01:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 690566B0093; Wed,  7 Oct 2026 08:24:33 -0400 (EDT)
+	id 685EB6B008C; Wed,  7 Oct 2026 09:01:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57ECC6B0095; Wed,  7 Oct 2026 08:24:33 -0400 (EDT)
+	id 59B816B0092; Wed,  7 Oct 2026 09:01:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2613C6B0092
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 08:24:33 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B15E81C1822
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 12:24:32 +0000 (UTC)
-X-FDA: 85295748384.14.CF07D36
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4C48414000C
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 12:24:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=hid6kEKE;
-	spf=pass (imf09.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2C2076B0088
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 09:01:41 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A5AB11C20C1
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 13:01:40 +0000 (UTC)
+X-FDA: 85295841960.20.4C214F9
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5B483180011
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 13:01:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="O FT+rR+";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=ALnO33wx;
+	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791375870;
-	b=b4uBj+IZRd9jzSBT6cYlkHxxVqODyb8jzpr52RfDMKG2c6GVBBHby6GzuexXRKJyX9ef0l
-	5OUCHnY4mDrn+y95g9p0Sy32K41k704aCgAOLtLHBBvJcH0bSlApBww2mXJppkPEVY6rTe
-	S2ED7O78jY2CR5J3kVbEEmt0bc8Mqf4=
+	t=1791378098;
+	b=QcYuQzZjW2BGlsYJnkQ5+8ANYucGWo6JS475oEh+qutc02wz01T6pWuOa9/sJ+buegPWK5
+	+xQRQEDy/nNdC4TQN2Xa4TO5/2l4QQ2wr2himm6OqZmkWJ93mzHvuZNLOy5phDyoRDN0W1
+	dVEfvXQIsqSKqZbeLxmwkrCbsywY60Q=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=hid6kEKE;
-	spf=pass (imf09.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="O FT+rR+";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=ALnO33wx;
+	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791375870;
+	s=arc-20220608; t=1791378098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pHHS2HD7Q+CA5JLyhpuDDHMaGA+EpDcZ9dD6ersRSjk=;
-	b=rn3sol3TN9+tR9jA8vNnTeHogSwHp272hUM3JO6bu+GpxWgBsR8Dc9HBOPO/cJbfKkN2+1
-	x8lnbZDfH1X5Dskz7Zzb6fakd9/16TAqxi4dujERvgHIREB33HWl47qUeCs+amoTH6pD66
-	N3ACsGuOMnMXk4lVIcsKl4BsO7YVQ2Y=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697BZQNt2375606;
-	Wed, 7 Oct 2026 11:42:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=pHHS2HD7Q+CA5JLyh
-	puDDHMaGA+EpDcZ9dD6ersRSjk=; b=hid6kEKE+VYi0aUX1UbXahSwKC8KhmYL5
-	+Ikws6ctuSDPnfjlHB8K5krdwBGH220p+QifHzsHjrO/s/izITQBFDV+2/8mYG0p
-	7nppRb6c7AhlnmJ09nYKRuVsRRCRPyGRk6KWUTFuZjvHNyMnLY48l2dEEIpZSWbj
-	imVF/LBWWEigLUZbtmzYv92gwjPVr+JzJrixXhMLkr4nMJdL2sUI/ovBY039vDXQ
-	gp3egTADOlAAd8dln/t6d+tEm6wcIddNoCLPM+sbMbqOL8RJwXZtiQLt9izcsOXu
-	wj4IORSwmAwsRwXYzkWIfrawaxIHtMfnd4pO2iCrdXK5w6u5iI7bQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2se5n55c-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 07 Oct 2026 11:42:04 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697BWf0h1841543;
-	Wed, 7 Oct 2026 11:42:03 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h5a6dj8w1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Oct 2026 11:42:03 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697BfxsC6619452
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 Oct 2026 11:41:59 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7E2772004F;
-	Wed,  7 Oct 2026 11:41:59 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2D98020040;
-	Wed,  7 Oct 2026 11:41:59 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed,  7 Oct 2026 11:41:59 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id 96E63160B43; Wed, 07 Oct 2026 13:41:58 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Muhammad Usama Anjum <usama.anjum@arm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com
-Subject: [PATCH v8 14/15] mm/kasan: Introduce helpers for lazy MMU mode sanitizer
-Date: Wed,  7 Oct 2026 13:41:57 +0200
-Message-ID: <e42d9f02ec1f8478a50fce424b95d0e7ff6a359f.1791365932.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1791365932.git.agordeev@linux.ibm.com>
-References: <cover.1791365932.git.agordeev@linux.ibm.com>
+	bh=LfyWAq2hiw63ziLXRgCl1FnUGuTYUXJNI/5k9KmmCgI=;
+	b=Mqq8+otcncr7BDkMhh0vRwMO9qq9zipo/jd7Cln6JVGGYFKMZzf3FFyQCtyHs14IFELrRZ
+	GrxirBL5yu/WdglvNaEBw134oYBSVEBsVaGxPKVrbcOI5MHVxNF207ci9oQxybVXWzK59O
+	x+wYwlkiCmoUoMA+rjGuIDwtsX4aQCQ=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 21E847A0267
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 09:01:37 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 07 Oct 2026 09:01:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1791378095; x=
+	1791464495; bh=LfyWAq2hiw63ziLXRgCl1FnUGuTYUXJNI/5k9KmmCgI=; b=O
+	FT+rR+mQ/p8l6KlOVpJc1V9f6iX6G9CvnxqlJJKTNKUq22keTPOkePKljlJPi5OP
+	HYYnEha2Px/6ghgg6vKx27SfaXPUNo3FNe3k4nvLEfH+qh6uQ2ZfZbHqnVTn2VAU
+	XDR4WpYH6N5JsXqt+CsKandENqWyxCbdlWmwbApWYZTBB4qdZGZYVcotAIQfEYMp
+	YUJyEHjyB/7mMvgjmrYDFwFBie+XSfSfR8X3tVkNs37l9Khwmnrtr9O+EcCgorle
+	VJYM1OTyjKHzr4BPJhZImk29t6TSlEMH7G5tpievEzaxTggdhIFudaAbJcP+fI1+
+	twEbG7PkdqWl8plwBGJ6Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1791378095; x=1791464495; bh=LfyWAq2hiw63ziLXRgCl1FnUGuTYUXJNI/5
+	k9KmmCgI=; b=ALnO33wxuA7li9y6LOWZcyR/M4aLNcHwQIMWCfQGo3oZg5gSXSz
+	jmODkS24D0yJ3BdSFp5rMhdjeGMdjsEx53KvqJXBTrCk+OuSazjdO/7NG62hy0KR
+	5YL5x1DakzKTjb65W9348AV54HqsHwVdZ3n3QU43i0djh9pU9S0kJewcwXhlqKH/
+	R64ji8JnNwpuAJ25j16pDBFIZjbk4Wx2lbSkgUZbQV+vLEn+ZnDSOlFiGtjkP+tG
+	pI8zQYRSdzLfkOiRNlmqb+HCQ/sir5Q5Zm5vj/KT+l0Wf486o3fGh9mbsJ/qFxd/
+	1OpSsKbb2WnA+inhwDte16/cD6ktlYJ1zhA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791378095; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm3:rsa-sha256:Fkbi4L8lA5vG1EhbbUgce3K9ONF+sbObIKmq3jConLd/PyY
+	iDb9Ui/5iiPve0GYS2ZqGxTJc75RsiDbpxX6FSABj0CDVtVXPSx9Rdlr7KNLwGrC
+	K24Z54yua570rSv4SOyjiQ05Ioy2BQLS7IkjI73TZXzDP81fOiOUFFsAqlD3yhQW
+	+Hl4IUUnlR7F4tXSJsmNcQnSBQE7RSlPGd16iPbloIsdzIB8hHYdePH05kD65pSg
+	UsH97HeW5GNoY6NLMpIf+/pJkm7CyekUlHakypWmaLWa8o38FWqyx/WrDzLaeGB2
+	n1xJExASKbM2+XfYt0UDtktKU7iri/y6S7lHcTQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:fTqP09/yrRsXlRFof8Z20HxbCUXgJOuxJBG4Pm3V3e8=:QUCxLO/LL8obTfMdSNVAjLHY2xg60URMy+9eXEgIuHI=;
+X-ME-Sender: <xms:rkLGapakT6OsXu-8CX1JPAX_u3zvNDqwgup8exgPzv9vIrESGkrtvw>
+    <xme:rkLGaoLLlZQKa7p3bKFiBf7hPRB1gE3jRf9TKLkoMdqSIBfKbnC5d9Cm-DAd6Wmm5
+    LYXbj3ppcCoiaVyRmtI-0B1vB-ja94kXhjJRHP3OjZrrwl7O-8WDh6B>
+X-ME-Received: <xmr:rkLGaqiY6BNY-rn00D70B5A6hBiJGrkB3rMKs3FFG0_l7A8mcONbmp77ctY>
+X-ME-Proxy-Cause: dmFkZTEB5LT5N/hKuLOxpT3FhmzKZiCnsyboT+IoHzaDb9BIyJrdfFbpyx5h8L275dF8PR
+    1gaqApSorCvJHpMZXRD92IT2iJigmNDxP+9aXeoSmFUv6wpCTIparKt+Bqx9VhivzdDX/F
+    5yHRu6j6zXCVbzVbREN5Q8QNxazUx0Q6WAgLeWJ5Euq8kTY2kl7A/9KM6FImB0mD2d2s9e
+    T5k3yp6GCmtgCgQ5ksHxAiYwscff1v8goq+9tmI479Bfbk4LLsV48UsxwGDpbozuNMM6k3
+    vsz5GRjY878MXDTcLlIG5Dfp9OLn+BMyVLs0z9D3hx47GSolY8VKtcvID8VIj1m+SSh5LQ
+    Y7W8dVwsmxChI/mKlxLp8FtSg5m+dpefBE+3kqD4/VWkP4bugBLMLNC9+0hGR1JxAeGIwj
+    +x3eiXsxRvm8ZWV+ZGagBg220DPSV21UbBlV7SQTiJGk57cfe+S5rOwNG9qDTNl4S3Oyjt
+    on/yIglD+lqCI7LeTGJqHFyyyBA9ZLVOvP1305ccb6UPCjlBDLvmDb7fILSYhYjfMhyHXe
+    E6q+q3djwvOIrt82RShlzk7NcyYgyrxGtCn4BobF03IuQ3LLrwqWqXgUj9jbUTA4oItN3l
+    tSlupDx6EprJ31sLSweI7kbSQPAdR+2fXwiTC0fG3pgHgMxuPGjDApFRDj5A
+X-ME-Proxy: <xmx:rkLGah_xotdxkGOPNQuxfTnIVuPnCR32_1--ay87zLM9xbgo5dt5Hw>
+    <xmx:rkLGaogvV-uiiYDX21dZLqyuNvH3iV9z1VQXLuxadsgHGZribGaVkw>
+    <xmx:rkLGahx2pov5mDTu7HwQc_lNgxFd-qcHdnJcUBJdA9C8oLpX6M56Gw>
+    <xmx:rkLGao-hkltAZ9Gt85bAc1zosbIoouDgA_Svh-QFD1ktiL9RqeS4Wg>
+    <xmx:r0LGauhyR_MnGD1brXLe4Ga9aPNE1amajtK6zbsMP2maHcgSaxxTsPLr>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 7 Oct 2026 09:01:34 -0400 (EDT)
+Date: Wed, 7 Oct 2026 14:01:33 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2] mm: page_alloc: make defrag_mode retries follow the
+ promoted order
+Message-ID: <asZCEttmL6VlMXKc@thinkstation>
+References: <20261006091815.897133-1-kirill@shutemov.name>
+ <20261006164122.ea9a673b336b8ac74725c35c@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX5DPD1vMEIRzd
- xleVCrHSsImUVSa9k8+U0VNhK6NPZ4rkedvwRN+pHGmVxse85mJThumaN735FZQ7qT+ZLwoW7Gv
- lMQezcdm0GX0Rr+40UeLZMYz0OG7Wjs=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX7g2X1iUGlT58
- qoF4bC6WFYXBZ9MVGwR7Pf5b2cTZiR08BPqu1ISG5mhomOu15rPA61t7AFAxvef2tBggMTl7U/L
- G3va4UQIxlb6J7zIR7zRzrYd3OwyvaC/6bM5yPlAkKc9gFNMzKeeatuVkwgWaz7Yv8XuvMZk5FA
- SpJy6eje6TISppIe276PGJ8Ik+QNlq19GHXhc4o77ZcoAeXMqJ1bREhgD6F9YL+gE/ZBEI4WaF0
- QYeFhaRABOMEJA0rqjEFHQ9YEjHl172hGhHOE3IfyVoXl+RpJYRsivy3QSn+96F0fzafgx+PgwJ
- eq5G0EB1bBEdP71UuonqU8soJz3Z26sMWYFy/rpiIpZPpMOqCHDiCPZ8zJP9b2SzXpYNbUTFeRd
- LyBl2WjC6/Nk/j+0TPaoSxEqbfdKhE0KZIeaRAdj0owYPBtSOvVCx8+plUOjRCKDZV5mLWxi1jz
- Bhf/XJvsIMWV1oplDRw==
-X-Proofpoint-GUID: Dicociyuch-2AgzrCM5waLHvo_mDtbuk
-X-Authority-Analysis: v=2.4 cv=UNRIjyfy c=1 sm=1 tr=0 ts=6ac6300c cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=bocLCBUijn_7D3B78osA:9
-X-Proofpoint-ORIG-GUID: ReRFxk3b6iDzlnLcBGQVeXTs5QFTGZJn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-07_04,2026-10-06_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0
- phishscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070046
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261006164122.ea9a673b336b8ac74725c35c@linux-foundation.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5B483180011
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4C48414000C
-X-Stat-Signature: ey7793c5u59nddd81893dxn33kni7fhk
-X-HE-Tag: 1791375870-165692
-X-HE-Meta: U2FsdGVkX180WILK1shS7HmWMCR0BB+GnCgUPeLpM2Fsl3MxdIAs+xYrKqZrcT8VuEGYdD6c66C3tIMZ0GM9P6u02ajdH5k76EHG6ard0GJygW1eQwaDJnxAz+RqEP0q44YvpOQWINbhx8AnXXHp7ZZgYJMA1U74WNfEGa3Bao3tFraiSp/9M/KhcjfYMJC7VXO5AbxDTmEl6UQR2ZhwrwDlKz/R5ANKdZmorcvz2Zt7CYPOPj1zOtgshPKlSeg70LVIPueRPv7jOIS5c1/+gmQPjeu7Sb0sczPFQBB8kmDV07LBv6K5STQBUiB3D+vAAZA+H3TG2fH9pen7s4Q74imxnbLYiOZ1aorwccMtAo+yQrhw6EhJxd0GkEV6Y/jFPqkijo/DCsYInvv0CfqSuOTGtH2+ojvvP5QSxUgt+/WPF3QgEkRYTgj4PQmqydpz55DlvMWPtDe/th/Qdo2oSCTmwq8LFQQfaPbkX6g2Cu6/8d+Z6GdehpHGF2mGtlc9kjfMRTIeuoh/UDV/YOwMSZcQARDmUevX8EYLsL3Duj0ScoBZRNzzax5Zkr8dPjwJ7OspJ3UIV4/VkjQw3Fa7EM9VqT1TqZUu66s6Ia2sdqJb/9FSTYtJDhUxiBsc7PzHUYfX29LWX37rdAXWC/tXYHdpuTW1XAzyfyqgyEd6y4IAfqPc15a1KYqS58NA0zlIbxjwCxl9WEMgKUBpxq3jmjQ5PB3Ka1sYdUvN8JzIzzsLf4VIiX1nZ9wWSpQpx3GPrCMm8jBA6iZj5cXKb4U3uHgR+nkR45mbRcuJSv+ph44TB27M1dCIWsYF4Xc0EiC+qkEcfQKxUGL/orGAGaWQOHgUyzHbyK+YPZtqA8QQ+80TQNcAMPvx3TshgBpC15FkEK960LCTiVlhQbjsotvErAjyws/+qg4HpYixH6GMZdmhoVglcrDNbW+olwbB3JRtKlE/DclKQw6KC1vY64m
- JkcKCbZG
- 1gl++9EIYxdkSGdOGdIaaE8gogQQ5e/EHkCB0jerAswS0GhLC7T/3PDakKF3puSdbtCAS8rOBYWhISZhXPIq0HGqCXqEA8FiJoXV1oo99+fABribJNaJ6mGo6CLyTg5OCbVwGH3OmYg0t4P1ckAD/7mEb+F8zDGZAeGQf4oFFCydefOp8FWhjarw+hmdzHBKxIvOiFX8y5qiCo1fXzbGOoHf2gwh0QFnOnIbxRDQH2MESTxG6EPa7RTO8XJvBzA/W9LLf/lvw6VnDTzGKc0YPts1O+R/o7sSZtrWchB0LCyxbKSrIB8l8hDFxFeJZYjqlaC9pq3vRu8HivT7quX8YT0jZvVjtqVLhu0NyfAPb4GkWBRdvXzNfY57Z8Q==
+X-Stat-Signature: 76kkqq1sx4xxdci1zug8q8sz9td9ncy4
+X-HE-Tag: 1791378098-326795
+X-HE-Meta: U2FsdGVkX1/ECCukl02hWpJOfo5gXoz5rfAr+RPvAu4GIolD1kqgSYf4vKd0MKp9fn+3qjfo7BkRDErOVSVCkGmIIYfoUVbPBOLwoFq8QGYSB/w+tWIDR7e/8GF8AjFtD+bsDJn7dh/0n1Qo8APkb6d3OLRwuYNpSJSZAByjfrorexu+FEqP5NMcxaUrbv2FMHiKB3st9tOhcMAA+cu58BAa+qKh6XMyDlCQiJ1Tr9xoVztH0sVT5nbkteUS476j2d2RF5Y2jdYfOv7EUPE9eSQuWz8XF40LCAL0+UAYLHN8kfi8H84vr1A5E+Q9qDWIdiblw8MkEmbD9Wi4OrsAv947sj179CXkK22XbEssYgqKy6liJcHIycJo2H0lSVLCuRfXKGl+HgNiK9Lg1MQs79Z9frswS7HXmwd14UrNj4yie7Yv4Carvy507+5BZCL04lqZGuIxACxB6BEb3ScF0tvWjHm1RWJak6Iha6Lq/T/2v8vkAzStJZdJBR1fCixWfcWQzRwm0rc1UKJQSg5Gwt9mNDSbxZxV556K+O3lteMH1gFNyr861CFUEHQdyFEWqxAvBn7P99YhRx6JwokzdIj9Rmyk27dIpzT95wy62gVLzJo85KDibWmEbaqFlLrKQZwxYbwe8CD8i+Liq9zGBFgdwKMY18SvKECPsjBHXJq8Rl+2riIna8aQ7rNhX2M44kyF+IAbEdjpLh0kkGKaDEK9KoMh7WC/FIRM/JlSoHGMll6G/qTnqc+vtKxyJzh12RbFMMN8SZR1ISvUz188vU39pjQJzrquaqN4pajv7Z1Qjd+/KAw+Mnll9970jlYtvvvgVHkTrZruTt16HP8mCZRwt/XrC/ryaHQE40x0Mf4S4a+iJECLmarFHLPnM3exXo3ouW303VqzXl9tRqcPdhtlqcxQ/Cq+OwF7+pGaFMwHHwgQGb8ZeSYVTBIAHmn/eqq8Q14qpOlSwqyLko3
+ 3NlVpoHj
+ FebBeMc92EO2T+/BF41EfoU/NSRWapP/CAnmCjAqgWYzIgtraLw2YhKODaiEm+54lcgeF6c0a6wcYb1YX7pOB/J/qTHsH9DeLvT72NzSwwEwPBv5gSZEGH1rWH2ONa6vXt1Z7qSDIxWT8Pz2QVYNzO3vvmDxBokhG5W6CiyJObNMifBjR5YviI2QSFF5KvTare7H4yv06vy+0bzi8gNLXU1j6JcfQ8BtQMadpHi3ecggbYD5/BiE62j2S4OEhgAXccYhpQ9WQv5LPop5DHym8BzdwyqEq/kpzpPdE0rHkcY0TwDFbRwMmMZQbSMkccs+kSGEtybaur0ef1FI2kXd9b+oNHtGMUYXlMUvGp4r8/w8MkHOfxgP59CacVr4x8xCFl+h7+1SYmHeSEkj6C8nmqLb1jmb/J0vgMGbNuGwTTcjIB8RxIwQ/BmGOWmkAup5kMZvX0eeCrwnCN9oweo/MQqbqDc4DE6hQIlsmS5mbUeClOVdwklHoGTuifAs8mtANBP4Vno+NiTEWD7niatkGWYJCW/zP+W3hSUqTaN1Y/bFQFJWk1QBhO5Iea+PqMkKoqiopgntK4TS7pms=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,147 +152,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Provide helpers that allow architectures implement
-illegitimate PTE direct accesses while the lazy MMU
-mode is enabled, such as:
+On Tue, Oct 06, 2026 at 04:41:22PM -0700, Andrew Morton wrote:
+> On Tue,  6 Oct 2026 10:18:13 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> 
+> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > 
+> > Since commit 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim
+> > storm in defrag_mode"), direct reclaim and compaction for non-movable
+> > requests under defrag_mode run at pageblock_order, to produce the whole
+> > blocks that ALLOC_NOFRAGMENT needs. The retry decisions that follow
+> > still use the request order. An order-0 request can therefore retry
+> > indefinitely without ever reaching the ALLOC_NOFRAGMENT fallback:
+> > 
+> > ...
+> > 
+> > In a VM reproducer (32G, defrag_mode, inode churn under memory.low):
+> > 
+> >                                         before    after
+> >     should_reclaim_retry() calls           63M     293k
+> >     peak memory pressure (PSI some avg10)  99%      12%
+> > 
+> > File creation runs 5.7x faster.
+> 
+> > Fixes: 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim storm in defrag_mode")
+> > Cc: stable@vger.kernel.org
+> > Assisted-by: LLM
+> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > ---
+> > v2:
+> >  - keep the compaction priority floor and the COMPACT_SUCCESS retry
+> >    limit on the request order, so non-costly requests still escalate to
+> >    SYNC_FULL before falling back (Harry Yoo, Johannes Weiner)
+> >  - compute the promoted order once in __alloc_pages_slowpath() and pass
+> >    it to direct reclaim, direct compaction and the retry helpers, instead
+> >    of each of them deriving it (Harry Yoo)
+> 
+> Thanks.  That's a fairly large update.  v2 diff is below.
+> 
+> Are we sure about cc:stable?  Or even 7.3-rcX?  It's a pretty big
+> change.
 
-	pte_t pte =3D *ptep;
-	*ptep =3D pte;
+I think defrag_mode is not widely used. Maybe only in Meta.
 
-By contrast, these would have to be:
+What about keeping cc:stable, but only submit it to Linus for v7.4-rc1?
 
-	pte_t pte =3D ptep_get(ptep);
-	set_pte(ptep, pte);
+By the time we would have the patch battle-tested in the fleet.
 
-The direct PTE accesses pose a real issue on s390.
-
-Suggested-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- include/linux/kasan.h     | 19 +++++++++++++++++--
- mm/kasan/common.c         | 14 ++++++++++++++
- mm/kasan/kasan.h          |  2 ++
- mm/kasan/report_generic.c |  3 +++
- 4 files changed, 36 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index ff41949c0ac0..01f710f03114 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -6,6 +6,7 @@
- #include <linux/kasan-enabled.h>
- #include <linux/kasan-tags.h>
- #include <linux/kernel.h>
-+#include <linux/pgtable.h>
- #include <linux/static_key.h>
- #include <linux/types.h>
-=20
-@@ -35,8 +36,6 @@ typedef unsigned int __bitwise kasan_vmalloc_flags_t;
-=20
- #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
-=20
--#include <linux/pgtable.h>
--
- /* Software KASAN implementations use shadow memory. */
-=20
- #ifdef CONFIG_KASAN_SW_TAGS
-@@ -134,6 +133,20 @@ static __always_inline void kasan_poison_slab(struct=
- slab *slab)
- 		__kasan_poison_slab(slab);
- }
-=20
-+void __kasan_poison_pte(hw_pte_t *pte, int nr);
-+static __always_inline void kasan_poison_pte(hw_pte_t *pte, int nr)
-+{
-+	if (kasan_enabled())
-+		__kasan_poison_pte(pte, nr);
-+}
-+
-+void __kasan_unpoison_pte(hw_pte_t *pte, int nr);
-+static __always_inline void kasan_unpoison_pte(hw_pte_t *pte, int nr)
-+{
-+	if (kasan_enabled())
-+		__kasan_unpoison_pte(pte, nr);
-+}
-+
- void __kasan_unpoison_new_object(struct kmem_cache *cache, void *object)=
-;
- /**
-  * kasan_unpoison_new_object - Temporarily unpoison a new slab object.
-@@ -414,6 +427,8 @@ static inline bool kasan_unpoison_pages(struct page *=
-page, unsigned int order,
- 	return false;
- }
- static inline void kasan_poison_slab(struct slab *slab) {}
-+static inline void kasan_poison_pte(hw_pte_t *pte, int nr) {}
-+static inline void kasan_unpoison_pte(hw_pte_t *pte, int nr) {}
- static inline void kasan_unpoison_new_object(struct kmem_cache *cache,
- 					void *object) {}
- static inline void kasan_poison_new_object(struct kmem_cache *cache,
-diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-index 7d21c4db68d2..f3cbbeb8ad0e 100644
---- a/mm/kasan/common.c
-+++ b/mm/kasan/common.c
-@@ -174,6 +174,20 @@ void __kasan_poison_slab(struct slab *slab)
- 		     KASAN_SLAB_REDZONE, false);
- }
-=20
-+void __kasan_poison_pte(hw_pte_t *pte, int nr)
-+{
-+	if (IS_ALIGNED(sizeof(*pte), KASAN_GRANULE_SIZE))
-+		kasan_poison(pte, sizeof(*pte) * nr, KASAN_LAZY_MMU_PTE, false);
-+}
-+EXPORT_SYMBOL_GPL(__kasan_poison_pte);
-+
-+void __kasan_unpoison_pte(hw_pte_t *pte, int nr)
-+{
-+	if (IS_ALIGNED(sizeof(*pte), KASAN_GRANULE_SIZE))
-+		kasan_unpoison(pte, sizeof(*pte) * nr, false);
-+}
-+EXPORT_SYMBOL_GPL(__kasan_unpoison_pte);
-+
- void __kasan_unpoison_new_object(struct kmem_cache *cache, void *object)
- {
- 	kasan_unpoison(object, cache->object_size, false);
-diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-index fc9169a54766..1a2d18cdb21d 100644
---- a/mm/kasan/kasan.h
-+++ b/mm/kasan/kasan.h
-@@ -144,12 +144,14 @@ static inline bool kasan_requires_meta(void)
- #define KASAN_PAGE_REDZONE	0xFE  /* redzone for kmalloc_large allocation=
- */
- #define KASAN_SLAB_REDZONE	0xFC  /* redzone for slab object */
- #define KASAN_SLAB_FREE		0xFB  /* freed slab object */
-+#define KASAN_LAZY_MMU_PTE	0xFD  /* direct pte access in lazy mmu mode *=
-/
- #define KASAN_VMALLOC_INVALID	0xF8  /* inaccessible space in vmap area *=
-/
- #else
- #define KASAN_PAGE_FREE		KASAN_TAG_INVALID
- #define KASAN_PAGE_REDZONE	KASAN_TAG_INVALID
- #define KASAN_SLAB_REDZONE	KASAN_TAG_INVALID
- #define KASAN_SLAB_FREE		KASAN_TAG_INVALID
-+#define KASAN_LAZY_MMU_PTE	KASAN_TAG_INVALID
- #define KASAN_VMALLOC_INVALID	KASAN_TAG_INVALID /* only used for SW_TAGS=
- */
- #endif
-=20
-diff --git a/mm/kasan/report_generic.c b/mm/kasan/report_generic.c
-index f5b8e37b3805..489d4a8d6902 100644
---- a/mm/kasan/report_generic.c
-+++ b/mm/kasan/report_generic.c
-@@ -113,6 +113,9 @@ static const char *get_shadow_bug_type(struct kasan_r=
-eport_info *info)
- 	case KASAN_SLAB_FREE_META:
- 		bug_type =3D "slab-use-after-free";
- 		break;
-+	case KASAN_LAZY_MMU_PTE:
-+		bug_type =3D "lazy-mmu-pte-access";
-+		break;
- 	case KASAN_ALLOCA_LEFT:
- 	case KASAN_ALLOCA_RIGHT:
- 		bug_type =3D "alloca-out-of-bounds";
---=20
-2.53.0
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
