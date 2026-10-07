@@ -4,116 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2C94CA6002
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 16:34:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ACFFCA5FFC
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 16:47:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF0A06B0092; Wed,  7 Oct 2026 12:34:46 -0400 (EDT)
+	id C96766B008C; Wed,  7 Oct 2026 12:47:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA1DE6B0093; Wed,  7 Oct 2026 12:34:46 -0400 (EDT)
+	id C76426B0093; Wed,  7 Oct 2026 12:47:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B908A6B0095; Wed,  7 Oct 2026 12:34:46 -0400 (EDT)
+	id B85476B0095; Wed,  7 Oct 2026 12:47:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 943D06B0092
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 12:34:46 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 90864402CF
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 16:34:44 +0000 (UTC)
-X-FDA: 85296378888.16.14E2DA2
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DF42240007
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 16:34:42 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CpuoXwVm;
-	spf=pass (imf11.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791390882;
-	b=YUgPN8RrgkDHFKmiJWtodLSGxc9LL4WyJH4I3GMrw2QObAp/jRqtIxNgFpya1ZRCZS/jVz
-	s6s2FIWLWwcHpiBCkCGiahS7UhR+dW9+h7Kxnn8C489sBcdX4E6B3r8cnTGqOt7pESeurB
-	NvXto7zNKPiGvcefwi1raGDvHItWN/w=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CpuoXwVm;
-	spf=pass (imf11.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791390882;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D3AA6B008C
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 12:47:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B352802FE
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 16:47:51 +0000 (UTC)
+X-FDA: 85296411942.13.5A6E871
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 96B321A0004
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 16:47:49 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jWcWDR3y;
+	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791391669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=8J1GOhzcY9UVBGRcW/Cw+AY4dE8xBdwM0W7qy7H4udM=;
-	b=WSlXPvPjRm0b28l2KHOfz/gKC17VT5NwAzrUi4ziJIRPnxMOxxi9w5HZCH+LEi0veOl3tH
-	srv0Z4LjplAW8m0X5RudYxjkWLLmSb/ZAQGA5mJxI8/WFlVg7Yw5BUHAX8PuJn1BLVXpPC
-	QXqbHTfyRlGmNbLHlKs9+6Ntjlj6FfU=
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3a02551822eso2072586a91.1
-        for <linux-mm@kvack.org>; Wed, 07 Oct 2026 09:34:42 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mUg8bGzuDc1hntbJS6/jkPP2umt4kBrIq8LnvLb+dZA=;
+	b=q8MEO737FkLqw2p79EmyQExIhfw05vqx5kU5enDzZspyNk35aEyD9XfHtSzLgQg8k7N1I/
+	bwFIV9rd3KiM3EeXoE3os71E6EhaW+O/mQ1CwzNmjGCgbmKNK8tUNq/QNvFEe2gy8mM6GN
+	mO+ChqpWDykQ/DBlB2wXqGHnMoqPr0U=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791391669;
+	b=f9yHBjJ3ln1d006l4ohWYi4nmYwphKMpaln4sPfzohD0QR3pm7AJrh8GIQlEAHivfZ/sPa
+	WpBhPSbBImMk8J8X3OyGEXOowi4ai9WwRcLp0h8n/ZQkeiP2NXMqbdaF2tsH4USS6ds6yt
+	RXF9c30HfQvLmq0L4YCSn6rrO/p1fwI=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jWcWDR3y;
+	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48b02a2359aso1921092f8f.0
+        for <linux-mm@kvack.org>; Wed, 07 Oct 2026 09:47:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791391668; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qBVUOZ/3IQnGK2G87/2AynAgAG2x+nPYCKxVG5STxC3Q5gkvGSVNtbzEFH8hdlpHhJ
+         ml13zmbkCyqGPDni71GNTDB98MCctUF6QoRGEw55cjYrUDf5u49aQNBFNBRHBu+2jDDS
+         mugNOogrBXHKUGqklLnNq1QLBhEE8f+SN+uorI4/jHwx47XJgPRjTavY2ZO4lPq/Q7Oz
+         QBf++lqCoq5TV+Bkb0ZVO0kf+AI1853K+YCEWbl/2cCAd8ZaUF1Mlcr3ordlicIcKyjy
+         lXZS243WGJWL0zyBdtkA2vxuGyK7IHn9Pg3sdich3vMBEBeYuKec7FvrzHsZc8BRZUjJ
+         9ghw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mUg8bGzuDc1hntbJS6/jkPP2umt4kBrIq8LnvLb+dZA=;
+        fh=5xtaoSAIvBS5k0Fh6pwhgK6nYKehekflfmaVHCY4PGA=;
+        b=Yh30Kf8eINBDoN8d8o45lXRLBABO+tkItlQ7UStHEKPHvgtDJu7ohTpruqnkhoAk6X
+         9IS2FotGLI3DSkAY6SOTePBX5IfA6SXlnLdQFZsx9x1RFhgSdnByLagTVHto98tVLa7D
+         YQvgcuTEoixrbBGCzvhJjeb+7HavgjPUp2CMi5uaPRLkMkkFEjGrdVQ3qgkgEUhVXzIu
+         VXZCvobZ7R/1a/etdbFxr4hD7Mwu3fGLryo2IFJplUKtHAemWvDl/4rsKt14zTJAcMux
+         5ZPrKMfZvxxUdEv6Vrfn4iM4+LZ787NIoVIaM0wG7eKtfdOgoY0s6DxmRmxTc9V1512c
+         kRYA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791390882; x=1791995682; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8J1GOhzcY9UVBGRcW/Cw+AY4dE8xBdwM0W7qy7H4udM=;
-        b=CpuoXwVmzn6pM4imMrqhbFjNX1Da1f1OR2YCVY0M1qmF5G6tEj/oAyPlCGan+Rz44z
-         8yPoIcSBJOHcfFd3OI+jyM2nSM4tR6m/WN8KyEBFPimxU1FFKKxJw+3GA0hzp5GIIKG5
-         iMWg2mfUj9jkJ2lN7WdJh0cGC7E3PmzxXiMsQu4nQFH4TcJTCkJeV7tjwYg07sYFuhqQ
-         2PPMD/hwmr9GT4Df7vy0CoUlvY0Ktvgbv8y8IDWo1i1r1EPL+h/P3AOTkTR7nlj90Xto
-         gacvYHFvE+RKI9sozs/K9xaeP1wHt+0R86XsCh0MoZvf33ea2fEnk6FyXHYIp3NgBqHH
-         WQUw==
+        d=gmail.com; s=20251104; t=1791391668; x=1791996468; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mUg8bGzuDc1hntbJS6/jkPP2umt4kBrIq8LnvLb+dZA=;
+        b=jWcWDR3yACQaDdZrmtqmx5xH4Cr/zgAV5cJFeApVNdi/UrDmwfWCzu9PRcSjJOCsEU
+         cTX/u0RlLWNdL9YUsBfSC/oroE3ZJA5fsGExCOqWVzy97F3u6++6kMDylXltMqNvk8Zv
+         N9YIiEISarm/WKvgYYWNHftFPKoJkqQy9PNe6t2nwWZG1Gqe/842p/VcyrVXEq7VGcyf
+         UOs8zIfpOz52nKgBwhOw03K9ZZvshucaIEhzGssY+0NVm3xzm1cXwjM/bo6dU3MAIlVO
+         AWTqDa2JejibJGnFz6Hb7vO+bwUCZXf6l+NqXUROU85liek2rTfieyEf9RpqCLksBk2m
+         WSGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791390882; x=1791995682;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8J1GOhzcY9UVBGRcW/Cw+AY4dE8xBdwM0W7qy7H4udM=;
-        b=iaWYjsvkwD/Zd16wEk5qH9ugFXBwID8+HbtwfYRotAvMiAieAS9Ga32IseiA79XtEG
-         XRtzr1to5Wz8KbsNEX99fSezNWHioUjJW8rU+zhzBUavJcmRDPhEuBvTJ7IKMKZe6kWG
-         NuEtyw+Ewe4rSIK87acm1qMiXYGXgfwBcbq6M6ibmTvuvx9hO5Xs9Rw8KKSMNlMd0CiS
-         vz1IgLAL9uZ33MPBGvIGZmQ86bekXoLG7fnfhXF32KzXcFBtBHu3cOCsdUDsRIfbq8nG
-         CgYMn7fzgktm3dusz+Uko1HiO8MNN4ZD+/PF+Hhvd6xQpm02bsXiBIBB0Kx8Hhd9YxWu
-         HYRQ==
-X-Forwarded-Encrypted: i=1; AKwUvBykbQ+t53lzn4if4CrMtGuf/HjSyzzI6PcInQrvEfdPnLu974u7Zsnj33llJCHnvjL7hzAat/pXUg==@kvack.org
-X-Gm-Message-State: AFq9FYJJDmJAUvlMZ7inJIIb9dXxdvdWRTvHabFExgsqBpzsN2ZccbXb
-	sM7ZpJxC4XE0i6BOsYZPPMpW95udlx60ieS/LViJgaGj2ArjFV46Ynd1
-X-Gm-Gg: AYBFou1orB80S1+kTERckBVRX3IjtAdahHHqw+BulIBJRscEXgapwCqWBDYVoxdoFlG
-	Ppccxhauu0miJcqzLz/laVohcClGMCWvPss9pQBnip7lKZRdQw1EQ4cigD1dDE8KUrlqICyABe0
-	hpTzJWP0o7o0wTuschdd/CfKryzZOHGOqhIkqhu/+VleziT13jpI+Z7Tt0q75mNKtr11D6eUUsZ
-	hGNeYSdy4cjTD/ursc0YZmXjz8lV0lDCW2VIg7iFJtJL37blnCtqQaLFFMloXEkyZaQIzalSFq0
-	sdJTSa2r2jpd8WZgwYeeRZ7GDo9W2vcDEFDUxVksi1+YcLtFh42ay8LLwODT82/w5tQ7rSSWk3a
-	Q/Cfd1/bPzXVGWGhFWAcHsitLaU6CKr0A2JoqryoUTd6xVMxwu9epUAJg4zSbCIoLQZBZYGxUtC
-	XWG3W5XY5atddnzxdKKrTwOW2AZ2L7RZwQkIvGSUnDsA+uEzX2O7lQw4rUbhZ1mBVZBOh2DZGao
-	jMfHaDud7RrGJ1HePbOOPoY
-X-Received: by 2002:a17:90b:48c7:b0:3a0:eec6:b065 with SMTP id 98e67ed59e1d1-3a8a0ba1c96mr1499640a91.13.1791390881599;
-        Wed, 07 Oct 2026 09:34:41 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a89dbc9297sm2713600a91.1.2026.10.07.09.34.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 09:34:41 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Harry Yoo <harry@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Hao Li <hao.li@linux.dev>,
-	linux-mm@kvack.org,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/slub: clamp slab_min_order to MAX_PAGE_ORDER
-Date: Thu,  8 Oct 2026 01:34:02 +0900
-Message-ID: <20261007163403.1643768-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20260707; t=1791391668; x=1791996468;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mUg8bGzuDc1hntbJS6/jkPP2umt4kBrIq8LnvLb+dZA=;
+        b=ojrE1YehkmlUHeR7UT3m63rBUQg5danJat39uRT33TjGaktHT6h782es3cXlR6pudJ
+         72ZW8+za9pBH3aRCAx4pvg9UT6feYpOacE9JZT281oaOS/HTeVDGq9NG02ztznw9jw7a
+         FmJNJO9L2YBhW8OmtQZa8HAJ3V7NMJWktsuppI7vBaVfBVw52TsOeiKStl+Z1w0a+gAM
+         3qN5yLnpopyC7xzePcbPt54ApQJq4a2a9SElso7UdHWE6TwoDkzv1FGqtd+ij2mpFrbV
+         gsmF5Dm9wnY0wNY9MF0oYLhRO4/o6XcGmHQ4fqxfiwCk8NoojONmj9uS5ardjtAwMqzg
+         muEQ==
+X-Forwarded-Encrypted: i=1; AKwUvByX1bH5MSvMGwbui0r4sBKygYxlSuPBPOsGSrZHvZ2Dq8AV4uhK+jahvTojm9WbUIAtZtmyeQoD4g==@kvack.org
+X-Gm-Message-State: AFq9FYJCbByMHcO3sfmWxJxRsVHlj1+jtGc+6cQp+CQu19NDTk6s/CiI
+	fhRBAOLQDzfII9Jg8D9trzi983BM4eQrnK9zWLxNt5DqprplcEPX4ewv97QEgpTetDa3QGunZF3
+	MgHzXCXXG4OJcqNpYGYZl3kWqYGOmM5g=
+X-Gm-Gg: AYBFou37cw89cABX7lNhY0sECdY9WVHuZtW6adv6sEwIXguzBg627KSf+mH6AQp0I4n
+	FouRpctg7J0H0KKMDaYNmzY4qs0dyi2X2uAP5U+6Z/ZPg3j9gNDlzqvB2qMDprv08JtJNNLzGV8
+	CF1w75ClvFR241JPyGboHdAvCUcscreM332IrXSGBx+YTK5WxPyTawGU66le35XCFJlyJ8t27WY
+	c1yq6duyOfvvTz3l1O640yi31IEfA321Vc6gWkEVOs6Pi1pZZ6lwdaFY8b0XKZmR1mHmx8FGF1n
+	zq64I+4hQqhzwNZaSKZ/a9JoC185XaBDNnJkKmiRsy50nzfTmBlinHZfdgMRrIgu9XpqWTJdC6Z
+	a/6pyasl3tvpS
+X-Received: by 2002:adf:f088:0:b0:488:5468:c23a with SMTP id
+ ffacd0b85a97d-48c7277b307mr5249685f8f.17.1791391667725; Wed, 07 Oct 2026
+ 09:47:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org> <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
+ <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org> <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
+ <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
+ <aqgMCIOFi0dKx_6L@fedora> <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
+ <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
+ <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com> <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
+In-Reply-To: <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 7 Oct 2026 18:47:34 +0200
+X-Gm-Features: AclHuK-gd21Gfnuh5UQqK7_tIu770TUyW0AwEOlzN_uNtFL1qi4hjnyF8DTH4ZQ
+Message-ID: <CAKEwX=N28g4T8mqniB-e+e57ie9D3Koaeq-EmV-TEk-u41FBPA@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Kairui Song <ryncsn@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
+	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 96B321A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DF42240007
-X-Stat-Signature: ky1sr6g3jq98zfhs89r6g4czbf9mhbsy
-X-HE-Tag: 1791390882-731934
-X-HE-Meta: U2FsdGVkX18iwxYo+zoyVFNfVRhiMTOsYclH5Y9aWOxnlYb+qBEpIJSLaKwRW3ztGuC5V9XIAxNBhPQ2yaVc0K072StGSVLGQner5eRtt8kplcMxuIQnWfHAXv3G9ZA77lwTCSixwG0RrBsBD7CcJSHdMHPDPluWYG6pBm1Llj4PiyTwYuvCpajvVLmrifMD/ktmkEVjQ3hCIRXtQXkN+wZNAEN6NzcphxynIVOQZ8SIBoD/dvFjM70mrtqzcBHFmeWiNbrB9TMgN+jTkwVHurG1rSa2vQOxUNvZiCVzdx8BLVQhOBN4i53ODy7zpCNEH0qikevyFqf+JZHEoaRNUocwLx8cjqDBn5YiSHxiroCJaTM43yPl8IjoDnoZfsQxRBoxCcAZCe9SNASu81ZEkQr+bs7AB2RwYUXFElaEPhrJ3bJNNDQJilBucNppna7uELiXX8zJm75Bv+tDeCU+CkvSXucPKoQny5qke8nVpyAZmgIyaKIe0jRhztL6YjnlJJvKuZEo/twrJ4CvGMWWCr1PN+RT4l9Jk+JaYyQrrEb2iG+OKvOk+dgdtL0ls839PyqP2p8dKNev8C/fj1aQ70CsK4PBN1Bty0pkZ1Ks9di+fWFv93vVzCQfhJVm1fEn/SBhBJ921POmYphM0ZloyCCfGVDrCkLjTbXMTnNiKVNYMSgX4JNyrcW3EG1cmu9GUC1kPOyMCrdudqoX0ok9XYH1VqcMniaUPmb/LQNhc55kMRbk3wYAl5kIU9ke4+Oisa6K0mnB3bdHgOCSCiHn3ZPX9ovcCqoTAGnzYbXmW9/Cz1wMyrZbBxlZCsvMsm3xCBnHXUA1v+7V30isDx0mG2nJbh0/v1PhahwYST04z/5Uv1yo1Oxk7JTWs9x/U0B8oZSFmFvgXzo8Pql4OYipy39DOA83v6ZfLDUHqjkDrYrd1Mn22DK83943TM53am1cCXSy/APCMTPBKbUKP70
- zG/iWpCJ
- vSd4oKk0tUpjM+aKNSjKDTzZg9/jAa2W39J6InJmIfPjwqZxfigP9DEJVo653FuM2py9ukqvXr+wD91nr9liZHi+ZSJSAsLNwaDdsnayBu2HbLkUz8M2o9aolEX8OMo1L6/Pldv2LyRzTfBPog5qY3z3RCitFDf/w20gXCbAnaKr4pPJwiCbxo9uhNKVWoWntMusR/auZTZVpOQmSqWtDVInt7y0wY5XPICCVA5sWvY/qiC/k+C7hhmCHV+uNxnxdtFiwl0QM0X2m8pvUz7qt/tLWh3eGypv9i+BYgigrIUrbNVt4E2HErI0EV5yUEoAbN8/He3OFoHnIoaQpQnS36ZaZHcOgIJ1kG1bscdfwYIl80f0kkwTyGiOOGjjnAbs7LZtW2FpFeCGXkgduwtPTiHF/w4A8fo9hw6+BUhnS/UBe0DUAm1U+Twt3H8uvFfqhyrjPKtatBC5ZXWgsrYfpHSIgI+t0Sw8sVC0r34YZYgMaEzU=
+X-Stat-Signature: q3615qrnrdoe8ds35y4kbro7qo8utte6
+X-HE-Tag: 1791391669-77385
+X-HE-Meta: U2FsdGVkX1+FP4nIivemCbtOptH/wSMq7v3+WcfJmBZZrC5yRebzR+JTFjeuqAnQjnRRvV7UNKY9VCu5W6vtqWL/uwUmZiKqFQZVTDyuDSvWJuHPf2lkA+N60jC4pWRnOPdT9cCY5PHcwPF05HoLNVKcriA2RgGN/6wvw97M1dcp2vlJzYYE8Gmbdwq/AMV/df6St9sye61EUhESWN2/DyCLiCBEGnZDR9qWuQgJ2edwK9lWLtCiVO4WlBw2xgWwz4FmCb+JtQs7UIQMFE2dD80jHQuH8MsrHFwrzgL7TQilDbwDtMfpJIUKg/KVbp7xwVcKV0I7FOKR+2J9lDET1jKcolusdETJhnzcN+So0HpU/p/ZTJnDiEVv8I7zswa0ex99mSvOybjL5PbZ3vK21CcrjigJFuO4AWrhB+kfKuAv69I3VArDUtmJim7SqT0Gl3qC31jDofvT//RQsPJJyF+bQkOB/mv7+eSwJaOncyok0lwHKza4dcBatd57sppxY1MakvQHbEHddZ4zkOi8tMSNHo972OyHf1Pi2hAUNMmr1jNuzpQ7kYakOtk+QEf2q49HlSuFpLWiMugxO62suWSkW4rUcwDdlO9OA5BnHw7H2EH7bxER4dbcFvm4yZqwUbcAWjM7HF5FUhGmYJN52vKMWz+TTaMTNg0uJBNsswJLCLX+2dxb7lA6fl0+7XCuHbbu6MKi6/f5dpsNXH/WuWCC7UjiA1FHq+0pfd+zr+mxoDDj9XiP/ql8dtIMkHo7UGoT0XYhyZORHD6VW6hoRp+xTC9TlCd71sP/PuTcvbdc3h36ucmVcSWHCBcGM61tjwW2ipcT35HwAqzSvNVT3s1vg5G4/itiArTkPG08H7CfTfplNDrC2vaEFbCYmTcFoTLnL1VNO5iU6Zh9ClfW6N0DFeCJufwW3ctb8MmsVMZSc8SSWsJ3v7XDJLgvavFXX62UBClRSxJ2QGTuzIt
+ dQza4beM
+ Sm+e73IHnN7DRj77MopuYRrGZ5cZq3EPG9k7l5bAfzmOQj1mzJ7MNvlbPTEmjHc2jgQCrAgTATLKfvGsGgytZj+/QzhjL2bXUNFhcDlAUyaEZKzPRzM4g15AuyhM5i/tItehqbdaJUZwS8Q8RTpOo+hOa74o51Gcp5uzNDD6lK1M6GIkWUzy2BVn1vrxhT59RDZCsCMFOK7Oe9VNykJiOY25NGs5DlEDToj9i2ld0IWebxWNuJ8cp8kKQ3ebJDRdpPU+fz+62Om4zfWdBcnWCxI1NH33Yhm0Dt8gD9F/fV0MhARkTx1P1b4hlkxRwtm2pdE8Em0aLpW68kdFl3PgUknDuXHG5cWGGowfPeEzqwggWfDErcEBX7XY14OalUbYHPl8SMLzkzQOK3A436wPeK2SSt8+qkVqTfDiDDfxYI8l0PIH4Toy1J1GgZuGacCVExC0u1qqCFqEeoYdJ7PP+zQaA1s3hkXwnkVMZkPSpRFpFFh7PhshbhUWYhZE7bRgr8dgYabgAeZS2eKHKF1tCs3C6jTy+Lxv5nqa9ylMt8e6JyutvVdSshBK6YYSlYrbtscRM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,72 +164,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-setup_slub_max_order() clamps slab_max_order to MAX_PAGE_ORDER, but
-setup_slub_min_order() has no such clamp.
+On Mon, Oct 5, 2026 at 2:19=E2=80=AFPM David Hildenbrand (Arm) <david@kerne=
+l.org> wrote:
+>
+> On 9/22/26 15:38, Chris Li wrote:
+> > On Mon, Sep 21, 2026 at 8:56=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> w=
+rote:
+> >>
+> >> On Fri, Sep 18, 2026 at 11:50=E2=80=AFPM Chris Li <chrisl@kernel.org> =
+wrote:
+> >>> No that time slot is too late for Asia developers. I don't think we
+> >>> should use that time slot for swap alignment.
+> >>>
+> >>> We should find a time slot more friendly to Asia.
+> >>
+> >> Any time slot would have that kind of problem. We're spread out across
+> >> the globe.
+> >>
+> >> Let's just use a standardized time slot we have for MM alignment sessi=
+ons.
+> >
+> > There are more swap maintainers in Asia than in the US + Europe, at
+> > least based on the maintainer file. Please be more inclusive. If the
+> > alignment is done without key stakeholders, it miss the point.
+> >
+> > Sigh, we can't even align on a time slot.
+> >
+> > In that case, let's keep discussing on the mailing list. At least it
+> > is accessible to every one.
+>
+> Looking at the mailing list, that approach doesn't seem to work.
+>
+> Finding a time slot that makes US, Europe and Asia happy is ... tricky.
+>
+> 1 AM is certainly unpleasant.
+>
+> US vs. Asia is also tricky, but doable.
+>
+> China 8AM vs. US West Coast 5PM?
+>
+> China 9AM vs. US West Coast 6PM?
+>
+> (Europe is 2AM vs. 3AM, who besides me from Europe would join?)
 
-The buddy allocator cannot allocate more than 2^MAX_PAGE_ORDER pages
-at once, so slab_min_order above it makes no sense.
+Thanks for suggesting the time slots, and for offering to stay up for it :)
 
-If slab_min_order is set above MAX_PAGE_ORDER, it can even panic at
-boot or invoke undefined behavior in order_objects().
+Either one is good for me. But there are folks in east coast who might
+wanna join (Johannes).
 
-So clamp slab_min_order to MAX_PAGE_ORDER as well.
+Johannes, do you have a preference? How about the first one?
 
-Fixes: 818cf5909701 ("slub: enforce MAX_ORDER")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
-QEMU-based test results
-
-- Booted with "slab_min_order=20"
-
-1) AS-IS (before fix)
-[    0.094926] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
-[    0.097776] Kernel panic - not syncing: Creation of kmalloc slab kmem_cache_node size=64 failed. Reason -22
-[    0.099542] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 7.2.0 #1 PREEMPT(undef) 
-[    0.100903] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[    0.102607] Call Trace:
-[    0.103040]  <TASK>
-[    0.103417]  vpanic+0x32a/0x4b0
-[    0.103976]  panic+0x5e/0x60
-[    0.104491]  create_boot_cache+0xe3/0xf0
-[    0.105194]  kmem_cache_init+0x12d/0x410
-[    0.105890]  ? mem_init+0x1fc/0x210
-[    0.106521]  mm_core_init+0xba/0x140
-[    0.107153]  start_kernel+0x441/0x8b0
-[    0.107814]  x86_64_start_reservations+0x18/0x30
-[    0.108638]  x86_64_start_kernel+0x10c/0x120
-[    0.109401]  common_startup_64+0x13e/0x158
-[    0.110145]  </TASK>
-[    0.110584] ---[ end Kernel panic - not syncing: Creation of kmalloc slab kmem_cache_node size=64 failed. Reason -22 ]---
-
-2) TO-BE (after fix)
-[    0.008976] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
-[    0.011366] SLUB: HWalign=64, Order=10-10, MinObjects=0, CPUs=4, Nodes=1
-
-Also, I'm not sure about the Fixes commit. Please change it if you know
-a better one.
-
----
- mm/slub.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 1559cbace469..8400df7c222e 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -8354,6 +8354,8 @@ static int __init setup_slub_min_order(const char *str, const struct kernel_para
- 	if (ret)
- 		return ret;
- 
-+	slub_min_order = min_t(unsigned int, slub_min_order, MAX_PAGE_ORDER);
-+
- 	if (slub_min_order > slub_max_order)
- 		slub_max_order = slub_min_order;
- 
-
-base-commit: d755441b7672c74f29d1241ffdd2b067ecab1ca0
--- 
-2.43.0
-
+And would next week work for everyone? Say on Wednesday?
 
