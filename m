@@ -4,88 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F407CA5FFF
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 02:42:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94FE5CA5FFF
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 04:10:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D6536B0088; Tue,  6 Oct 2026 22:41:59 -0400 (EDT)
+	id BC7626B0088; Wed,  7 Oct 2026 00:10:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 382506B008C; Tue,  6 Oct 2026 22:41:59 -0400 (EDT)
+	id B50D66B008C; Wed,  7 Oct 2026 00:10:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 297FD6B0092; Tue,  6 Oct 2026 22:41:59 -0400 (EDT)
+	id A18B96B0092; Wed,  7 Oct 2026 00:10:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0856C6B0088
-	for <linux-mm@kvack.org>; Tue,  6 Oct 2026 22:41:59 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 78487A0425
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 02:41:58 +0000 (UTC)
-X-FDA: 85294280316.06.4914A55
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 7ADF2C0004
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 02:41:56 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=aw1QVinr;
-	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A43A6B0088
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 00:10:40 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FE1C80408
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 04:10:39 +0000 (UTC)
+X-FDA: 85294503798.18.49B6302
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 90CEF120005
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 04:10:37 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=openai.com header.s=google header.b=S3CFPpXf;
+	spf=pass (imf29.hostedemail.com: domain of kylebot@openai.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=kylebot@openai.com;
+	dmarc=pass (policy=reject) header.from=openai.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791340916;
+	s=arc-20220608; t=1791346237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0eVl9lZHm9sVTf50aIP8REHCgGFCjCWE1HzF4LMsxFY=;
-	b=eDcWIPD5RKdl93W3pEw7H2FXzfWEBiE1Vth7AuyOU5a63I4iJfJ076abhGlhd9tWskoDhq
-	CzTPeCkP6DV0nkEF1ZWURXfTbtkLEYyICyBwWw5Cvlm7u7h/+NajL2tg4zD17mX4Glsf/s
-	4vkbrfalApTRORdWgo1p3G4mW7DA9XE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=MBRXZKUt5w8de+h8RL2geRZW1pbP7GywRMbabudOQ+U=;
+	b=SHOXDvmLxBCbVEssQf5mbRVsA/2A9XKw54Xlonz92oumPxzPHoTEgzuTWe1c1Jbej110l0
+	+CAyT+hYeLGcGzym0u/+aCXDSEYUzQ85GnboXTdSMnd/nH4fq6dfIrtW5JziW8fWv3Rpis
+	BkfGKHB8FAJJgKIQupbtw1bOKVI7qHw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=aw1QVinr;
-	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=openai.com header.s=google header.b=S3CFPpXf;
+	spf=pass (imf29.hostedemail.com: domain of kylebot@openai.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=kylebot@openai.com;
+	dmarc=pass (policy=reject) header.from=openai.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791340916;
-	b=uRnQtrJFTlQOAa0sjvjLRex9s1JjrmE0+Hjf2MzksJGwT2X5xdxPuEdKEsfPqCJSnTHLvf
-	kQH8jrCz3VTqE7NSpVYI6PJEdtMCkWlbbxlCax9XkEJuX1QXcrEVUu4baFHANvLV+f5GwV
-	ZUVc62zWY+Kl1mlrLjBOw3qJGpq//bQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 136BF152B;
-	Tue,  6 Oct 2026 19:41:52 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C0AB63F86F;
-	Tue,  6 Oct 2026 19:41:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791340915; bh=s760qSaiBVVuc/LlAknuKVghmlM0TMznspZHDm1DREY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aw1QVinr2aO2c2FZnGj7T7Kqjx9TOzGUooCiuw2agzb1q4f/FKMKf13h2fkYMtblQ
-	 MBrdedFXgG4ie9YnrLy1Nkc8/1quegvgmIIJkrQ5/A/44y3he0uM8VSA20x9PXwziZ
-	 PwAKmcDr6d3jYWiZhWfNFUOp2n0arCI2kMqgP0Ww=
-Date: Wed, 7 Oct 2026 08:11:52 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	kasan-dev@googlegroups.com
-Subject: Re: [PATCH V3 1/4] arm64/mm: Use pmdp_get() for PMD accesses
-Message-ID: <lqjq64vw6mlm27kp6ffms6auerj67avecc4ongedouumsrspjh@2f2eblm7wi4u>
-References: <20260924062214.1635078-1-anshuman.khandual@arm.com>
- <20260924062214.1635078-2-anshuman.khandual@arm.com>
- <asPCv5Icdm7Z9mWF@arm.com>
+	t=1791346237;
+	b=ZOQcL5tRhwlxqDXe5XsgBVB8Gz6cX/zzFqjuBifSsYkwth3uUmuDYlJjPhKX4fT+nYCQhO
+	4+mVunFgz0a5oz5UCTiuC5ghVTEHg5FkH7hGtKx9BlPVhrT25CEZAHl/Tha2ss/FsAecl1
+	pzlo8Iag/JWWMfuFVw/4n3PxAy56lzA=
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-82503732024so584307a34.3
+        for <linux-mm@kvack.org>; Tue, 06 Oct 2026 21:10:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1791346236; x=1791951036; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=MBRXZKUt5w8de+h8RL2geRZW1pbP7GywRMbabudOQ+U=;
+        b=S3CFPpXf4qlWBJD6O6lhUDVdRXNr4BXEbw5OL2vnO+nziX5Y0+6edeDBXmMPPQIK0w
+         RI8kjxODReiestNuhZNd6NqzATdiOny2ABNnoyke6/fFVUYCtEYn+Js10VGecEy1Kw4n
+         d9/3u0V5kxZw44J8BIYE5nc3rVvesGE6FJF7g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791346236; x=1791951036;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MBRXZKUt5w8de+h8RL2geRZW1pbP7GywRMbabudOQ+U=;
+        b=OECaofcAMkaJQxltB3WE/SoDRwdDfx9icCAQck9vgdhP+4z+4mrl6gzemiFpZZJYuB
+         YYC/qXO+rlgYXEJwegpRddob7pYrS80n1u7qMBWek9EHGu7ibYMQCASf79suHyrVDTnO
+         /XHd/EB9yJB12+9+i+EcKBWW//S+VoRkguc2TiMGDHg48cran9RJM4YCVW/6SdViALN5
+         Rww2lLOiZHjMd78lehoKMIjoe58t2JR/Pu+uZR3kCtpghFSeUKaUUrZMf76jjJQj/8ZY
+         x85o3dfCYvr/1KlYhC7lkXQw9Clbm0SjobUH2c75pVcr63Y9qPoTxKPljKpP6Ab90ntG
+         +MaA==
+X-Gm-Message-State: AFuF++kq0+n1GXhYvXWFxRyN6hgY2uAVLaJzTsDH34Aj2a7gFaGC58xk
+	j6GvbkaOK4vdiXgQfXq84RZa7020n6jr8NIhDWvvv/xR2JpIIKr3H3/TJk9RHnBh7rAC4ndsCXe
+	0tJQeEgHO7w==
+X-Gm-Gg: AYBFou3MfQhBw1hVwq6ZsYR/xXwIQdHJodNzBJDUESDwqZCGntfcW3howh74zoGdzzJ
+	ZpeQYiJP12FF9Ljvmz1p8EDadw57v5e9GKiOgeflAk8DJNGM/shWwoTvx1CDsAtPiInYuFrmKX9
+	Rd+KslFMMbSIY14WLMNMIQIR2wgwrJfTyafgizO/gBBcG3KkS3S7PrQdbE5+BWg+ZSuCHmrIvNh
+	xwb8MX+mp6PhBSOGS7p7dEA5f+wT5Y7h39EiymT07rENb9zX9ouXo4TRWdcvgwQiM4wYkAuU8NO
+	xYuuVx2W6wk0NLRoBH4yOrtonpFPZ3vgB8Iz6Ww8uI3Iyn/nDg3hbc8+XLkRwLxNg/9SDjQTXN4
+	4fOiqgLm0XSfQv8IWhya+GlLTDGvw1HQ7glIaMRjWEgN05xJ0j9+ZZbMzIkF+Vkrjd8/yx/7TXn
+	zv5y302d1MfnRJ7845mamQoJGXFgrLvCo/K6HP6JZ54XFAkDE/wEsnMymqYpf5G4ZG73bk0mbBk
+	ICfeRyeq7lubDg5bdX6Dt17VTucFh8zTOX+SV5EcA0ogbpwTyEnww6wQuxmPkpUCtvy0+OAf9g=
+X-Received: by 2002:a05:6830:6485:b0:81c:e3de:d194 with SMTP id 46e09a7af769-82acefa6e00mr2083117a34.10.1791346236482;
+        Tue, 06 Oct 2026 21:10:36 -0700 (PDT)
+Received: from com-75606.corp.openai.org ([199.47.143.7])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-82adcb187c8sm1864670a34.22.2026.10.06.21.10.35
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 06 Oct 2026 21:10:36 -0700 (PDT)
+From: Kyle Zeng <kylebot@openai.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	outbounddisclosures@openai.com,
+	Kyle Zeng <kylebot@openai.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm/khugepaged: flush deferred unmaps before dropping a failed folio
+Date: Tue,  6 Oct 2026 21:10:01 -0700
+Message-ID: <20261007041001.43181-1-kylebot@openai.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <asPCv5Icdm7Z9mWF@arm.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7ADF2C0004
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: pst4yiq354zf3h56u1bjb155ngrn5aj4
-X-HE-Tag: 1791340916-128094
-X-HE-Meta: U2FsdGVkX1/aGRUihKdS2Pp2WVamefZyPNgXjvpM44Uxbck8bVfZzm/Va1Zo7U3JAI0VopiuoKvWaa1ivUthCmM+3NfAJyOQdsJp19al5XSm9+wbE6N/HRwmfVsleuIc35DpoOVIp0a+1/qLGTALedWhP2Y+KIaeCsmh7foqbjmTvesGUC8WhoOHhxIvogD2Fhlu/QYc+8AMjSN13ArTz8agXlgvb2iA0dxMYlpHsfotoPLk2cnTVkLh7DiPftRjiZYqjsZhDuStAc3LWsWno2DMMKz/olutQ0f0mq34L01yKsHpMUPQxFOrRaKeD0qtBcJyDoXlsdCwtQ7F1PBP7AaX/CwvWe6Rtj0O9KrnP03oyHYaCyPxDrGjYq9tEO4lJNOhxLSOgW3P0mjrxEXTMFDFVu4eMFC/0XDDoRqclmiaxueUT8o2jL7AcCqlX/KMkX5o2Cfrc7IAamMbTSOzlIgrXlOItiTVh5TZjcMX2dyoKqip/Fg2Cu4vyuYVnPoHFTZ61K0TMtKoHbTsUMPWn0SrZ7MUqS5qtWfdF4/8JGlHi0c1Smqq2Cfk+SwZzDcbhikkf/oltyUYEURjHVHEpR/Uf5iF/855JwgV+WV/pdEk8tVDnaY+UIF4za6YfUmZPJ1aEhgnL7ylwMf94T4qDOp8t78QhNEJQ//AvYDJcQBslDRe1Vh8FdrLOSUhA4c/QGxQbiWjCnv/k45YjGrvSkK8bH+SxxNlV7LEoLgjY04IyXKaZCce4RgTm9UZ7EhkOVG6yMeLfUajuFo0xytlhqGaQUSH3DeYkdUpBZYk13X7mHGBrWFE17oWS56oqcrd8wZzMWiuKQHAVZqcb2BHkRNe03nSHImPcSzRNoK1eALTLezoUPEYsVi+Xlx5e9b5yWg8giCUi+AUfsHbxLmFXVNpr3dasMFmAt0nyXb2yirNEq7++CeQJLl+uI1RvP2OYO123jmYHje14f+f09S
- iqvHbi49
- ptAAM729oa3rzSjisVpmgdbYugVkWw1bqX9FYkqZsd+QCT8u0FXmNu2YURAH1ENf0A0Oi0F2e3UY82kJM4ejUij9w7BZx8ZBHoElVAZKptn9Om/vgymHxPOSiQtwXZz7GxaSg4yc+jRzNOS0kgzlUfxO0n0eovssLO9t/ZIcPZdXKp7G5m04fjdFjeE2DEHKodSe9EZa5ZlTsIZ0+d3BM3g76mxygEycOtgeWcXBWKNG21NzpFityWqbRJGji15qycfL5LZGCwlH7M7dkV6C25vfJbSXhOfFl/c5Y3/q5tm8GAbNMtwtvdpybLmR9/i5fX58ay0gT1aPFDWSq+MZO8a7LBb64VrF0pGsIlKPvopd1zhoPrXJm/OOZKlSY5Hz6EkobEjIW6i35oflkHNmcqjpyGA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 90CEF120005
+X-Stat-Signature: bom6x14td5pq65eytbx3c31gra6bc1wk
+X-HE-Tag: 1791346237-728092
+X-HE-Meta: U2FsdGVkX1+jkVDcunVhtDl8tV/NtsRAxL495AIFtjjZl6ZILbMvkKa0mt+ziiznRdp5doT/XLVBfOrwdZs21iqK8AJY1hNlNuTYaWHBPZN154lYW5ZMmxpK23rbjra7jixsa43Td4ycHybAMKMsnLKlH5tKLKHwpy7oC3Fjn/zg97VD8/i1iw2g+HOhcG8UjchexHsCQazJK877xExhLCkaDXvD7kda+TQ9ydQuPwbD7mlD5emm8x9VH9tDTt5YlTCv6e05pjllqvL+EqNmUk4BuKTU/k9BkIEi0/kvvNIy77KopFpeWIJu1zIlYWhle1kIgO3hShp3CAGV1I+fIEqnOVKZOwttbbhkuyo3yEo1sMToXI6LHt3Jsps6q5O8maN9423ruh6ZKtU3CiAl0KHBSsQAGQ0/E4z9om6u+SMdZmeguA/wxoQjihraX71tCQ6gwJYAsIGDIqrOarCRh/EdhNAi+KOHuMeNlUG9nn0SqtUyFsrPwh3VSh18LG4tTMuvwzmAx20A8tV96KMn+11qUmK7YoLyGZEXAwLsc+SSpFytaBqj65TooptQ8FaDOSqTP41EwObqg+I7MWiXl2ldbnKBw3cuD7iRmqQktI7rJ//qzuCl/8UX4kApFZdtsvI2F3DEditkLGJYNQM5dfkaomLZ/DOQbK61BC6q0A7pc3e5KzPc/SUdIXiB+SqvzKS/SE1TLPV6QgIHugxQ1c7rODkhrSGjo/SfqbtFTVELM+10Bclx+d1ZeeQYbT9vSoHlngsemXS7l0gA/E1rJdEAdjhRBmS0S9ORs/pEmM2S/LrPq8PkOdM/Mi3YqXOQ8fPJwvuzq/GO9yPcJ6NsuS8maFxFZN5PkSDQsjGlAXSPT9zB9X0vBo6Chgtrj9y5kWMraVdaN+QTVEvZwjJNEcxMuY+dD8LubIAXqCmlAC/SqsL0gvzkrHMRaFWN6Xf7i4a4Sp80KDWEJHkkf6B
+ SUYLjPnc
+ PkzHPp2sQ8ByJgHBue/3my0WxW4moKqb7U43Kg+NTjBFNX4VqX6ndqvf+AbltjYuDTHE5A+imMaVOxWax144NsaB4qU9q30EEOYDHD7UfCEcCDDgdLXX3yOqzdFaKpQVlPgenEhBS7vIY71+8Gefs9oltJU5RbIbp4W01p27ft1BSYpzYJ5/ROAv3K5TFtQ6CgH95nOzQdslwEAFu+mWjk8X3a29KCbrfXASnio6XKw2VZrIy9ZEuDlV2qyeBZhinYVEQFknTkxipG7y04+cYMNuj38shhWsQUyHYpVGykUhfu4x6zL5MQ9nvfVXHdASoVOMS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,57 +118,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 05, 2026 at 04:31:28PM +0100, Catalin Marinas wrote:
-> On Thu, Sep 24, 2026 at 11:52:11AM +0530, Anshuman Khandual wrote:
-> > diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> > index 763c5a411d64..9ad2d03e86ad 100644
-> > --- a/arch/arm64/include/asm/pgtable.h
-> > +++ b/arch/arm64/include/asm/pgtable.h
-> > @@ -84,6 +84,12 @@ static inline void arch_leave_lazy_mmu_mode(void)
-> >  	arch_flush_lazy_mmu_mode();
-> >  }
-> >  
-> > +#define pmdp_get pmdp_get
-> > +static inline pmd_t pmdp_get(pmd_t *pmdp)
-> > +{
-> > +	return READ_ONCE(*pmdp);
-> > +}
-> 
-> This is the same as the generic version. Does it need redefining?
+collapse_file() can fail its reference-count or dirty-folio check after
+unmapping with TTU_BATCH_FLUSH.  Both paths put back the isolated folio,
+then unlock it and drop the lookup reference before reaching the common
+try_to_unmap_flush().
 
-Without this pmdp_get() override, replacing READ_ONCE() in pmdp_test_and_clear_young()
-with pmdp_get() causes a build failure as pmpd_get() which is defined in the generic
-pgtable header is not visible from inside platform specific pgtable header, even with
-a forward declaration.
+The page-cache reference does not keep the folio stable once the lock is
+released.  Another collapse can replace and free it.  With its PTEs
+already gone, that collapse cannot flush the first task's per-task TLB
+batch, and retract_page_tables() skips short or unaligned VMAs.  A CPU
+can therefore retain a user translation to the freed folio.  This has
+been reproduced with unprivileged MADV_COLLAPSE on a memfd.
 
-Earlier had moved pmdp_test_and_clear_young() inside arch/arm64/mm/mmu.c to avoid the
-above described dependency problem. But then realised that pmdp_get() gets eventually
-overridden on arm64 platform for D128, why not just redefine here it now as standard
-READ_ONCE() to avoid the current build problem and the code movement.
+Flush at out_unlock while the lookup reference and folio lock are still
+held.  The common flush continues to cover the accumulated pagelist on
+both success and rollback, preserving batching on successful collapses.
 
-Please find some context here from earlier discussions during V2.
+Fixes: 6d9df8a5889c ("mm/thp: collapse_file() do try_to_unmap(TTU_BATCH_FLUSH)")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+---
+Changes in v2:
+- Use Assisted-by: LLM.
+- Explain that the common flush is a no-op after out_unlock flushes.
 
-https://lore.kernel.org/all/212067fe-1b16-4b87-87a7-4ce50847eb24@arm.com/
+ mm/khugepaged.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-> 
-> > +
-> >  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> >  #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
-> >  
-> > @@ -811,7 +817,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
-> >  }
-> >  
-> >  /* Find an entry in the third-level page table. */
-> > -#define pte_offset_phys(dir,addr)	(pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(pte_t))
-> > +#define pte_offset_phys(dir, addr)	(pmd_page_paddr(pmdp_get(dir)) + \
-> > +					 pte_index(addr) * sizeof(pte_t))
-> 
-> Why not make this change in the generic version?
-
-Could you please elaborate on this ? pte_offset_phys() is arm64 specific helper which
-is also local to this header file. AFAICT there is no generic version for this helper.
-
-> 
-> -- 
-> Catalin
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 75639298efc2..e1a5890818ad 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2478,6 +2478,11 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 		index += folio_nr_pages(folio);
+ 		continue;
+ out_unlock:
++		/*
++		 * The folio may have been unmapped with TTU_BATCH_FLUSH.
++		 * Flush before releasing the lock and our last reference.
++		 */
++		try_to_unmap_flush();
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 		goto xa_unlocked;
+@@ -2488,9 +2493,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ xa_unlocked:
+ 
+ 	/*
+-	 * If collapse is successful, flush must be done now before copying.
+-	 * If collapse is unsuccessful, does flush actually need to be done?
+-	 * Do it anyway, to clear the state.
++	 * Flush before copying the folios, or releasing them in rollback.
++	 * This is a no-op if out_unlock already flushed the batch.
+ 	 */
+ 	try_to_unmap_flush();
+ 
 
