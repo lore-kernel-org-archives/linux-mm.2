@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6BC4CA5FF1
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 12:22:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A70ECA5FFC
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Oct 2026 12:24:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCE546B0088; Wed,  7 Oct 2026 08:22:32 -0400 (EDT)
+	id 6DF236B0092; Wed,  7 Oct 2026 08:24:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7F246B008C; Wed,  7 Oct 2026 08:22:32 -0400 (EDT)
+	id 690566B0093; Wed,  7 Oct 2026 08:24:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6DE46B0092; Wed,  7 Oct 2026 08:22:32 -0400 (EDT)
+	id 57ECC6B0095; Wed,  7 Oct 2026 08:24:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 916E56B0088
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 08:22:32 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0C9D2140194
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 12:22:32 +0000 (UTC)
-X-FDA: 85295743344.21.7301BF3
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2613C6B0092
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 08:24:33 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B15E81C1822
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 12:24:32 +0000 (UTC)
+X-FDA: 85295748384.14.CF07D36
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 9A10018000D
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 12:22:29 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=M1QsRBXR;
-	spf=pass (imf06.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4C48414000C
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 12:24:30 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=hid6kEKE;
+	spf=pass (imf09.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791375870;
+	b=b4uBj+IZRd9jzSBT6cYlkHxxVqODyb8jzpr52RfDMKG2c6GVBBHby6GzuexXRKJyX9ef0l
+	5OUCHnY4mDrn+y95g9p0Sy32K41k704aCgAOLtLHBBvJcH0bSlApBww2mXJppkPEVY6rTe
+	S2ED7O78jY2CR5J3kVbEEmt0bc8Mqf4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=hid6kEKE;
+	spf=pass (imf09.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791375749;
+	s=arc-20220608; t=1791375870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=abX4Nq/5AyAFWdNBppfKO4gObdBOnRXbHlhnHB8IPa0=;
-	b=GizMutQFC7qbI0/NqSOPTXm1RsjOpoyntC/yQMGdsmFp1DSQW72SUjjL4YkFcNGvDrJ/Ct
-	YquQujEu3pcQF/j/6SBK1mJ0STx3Rp8uZtrAmusd9YtcDzI9qMB9eWELgjZjEb8osaww8t
-	0dS5TKk0/04JnXUck/MtUzDexim9qb4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=M1QsRBXR;
-	spf=pass (imf06.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791375749;
-	b=55iuCW37H/Q/7Kfn4sCHpF6+WP+77zleeGjskHp3svUpHfS/Ejms2P6AkZH3GEC3eQsN+V
-	7ywleHWeW4rBQPrQ/SVPJf1yqSYqKL+0QanPCWWzoXHnsqCeNvsOQS+KL2WPZ2YXu848GI
-	XvSZLZCe4mYA/eIzTWH0+MafufdDB9o=
+	bh=pHHS2HD7Q+CA5JLyhpuDDHMaGA+EpDcZ9dD6ersRSjk=;
+	b=rn3sol3TN9+tR9jA8vNnTeHogSwHp272hUM3JO6bu+GpxWgBsR8Dc9HBOPO/cJbfKkN2+1
+	x8lnbZDfH1X5Dskz7Zzb6fakd9/16TAqxi4dujERvgHIREB33HWl47qUeCs+amoTH6pD66
+	N3ACsGuOMnMXk4lVIcsKl4BsO7YVQ2Y=
 Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697BZQNv2375606;
-	Wed, 7 Oct 2026 11:42:07 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697BZQNt2375606;
+	Wed, 7 Oct 2026 11:42:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=abX4Nq/5AyAFWdNBp
-	pfKO4gObdBOnRXbHlhnHB8IPa0=; b=M1QsRBXRYXI3PNQ3dXQyQVASCeOkwYgEM
-	r5jpylwnhdNw6ri8TMUDp+xdHHyIEbE7f6+H49/nlW0VNoNJqZKHmCogepNchNLk
-	jdVgX3rtvB0jZJZR38UskIoIXVzIOhLMXl8snnhNIHVQ2q3ILg4A1fv7zHX7jPx0
-	9CjFP8BUmtDJWbEJoYjo8d0a92otZniOaQkrfK+l7I0j3Vbo6N6DxNtO3cOgHVch
-	KSzFFbiDakeueuJa0Jbe1tPscd/H0vrWJ+docbzrY0TCH7YHgj9L9ZGPAdqOyBda
-	JP0x20lHVPq48M4pSWn+nSDcWuymqz6sK4YiTLChurxqmjiRyk/bA==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2se5n55r-1
+	:mime-version:references:subject:to; s=pp1; bh=pHHS2HD7Q+CA5JLyh
+	puDDHMaGA+EpDcZ9dD6ersRSjk=; b=hid6kEKE+VYi0aUX1UbXahSwKC8KhmYL5
+	+Ikws6ctuSDPnfjlHB8K5krdwBGH220p+QifHzsHjrO/s/izITQBFDV+2/8mYG0p
+	7nppRb6c7AhlnmJ09nYKRuVsRRCRPyGRk6KWUTFuZjvHNyMnLY48l2dEEIpZSWbj
+	imVF/LBWWEigLUZbtmzYv92gwjPVr+JzJrixXhMLkr4nMJdL2sUI/ovBY039vDXQ
+	gp3egTADOlAAd8dln/t6d+tEm6wcIddNoCLPM+sbMbqOL8RJwXZtiQLt9izcsOXu
+	wj4IORSwmAwsRwXYzkWIfrawaxIHtMfnd4pO2iCrdXK5w6u5iI7bQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2se5n55c-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 07 Oct 2026 11:42:06 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69782RdI1562407;
-	Wed, 7 Oct 2026 11:42:05 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h3cdvxfh0-1
+	Wed, 07 Oct 2026 11:42:04 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697BWf0h1841543;
+	Wed, 7 Oct 2026 11:42:03 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h5a6dj8w1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 07 Oct 2026 11:42:03 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697BfxU837355960
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697BfxsC6619452
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Wed, 7 Oct 2026 11:41:59 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 612B320043;
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7E2772004F;
 	Wed,  7 Oct 2026 11:41:59 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1216E20063;
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2D98020040;
 	Wed,  7 Oct 2026 11:41:59 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
 	Wed,  7 Oct 2026 11:41:59 +0000 (GMT)
 Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id 87FB41609AF; Wed, 07 Oct 2026 13:41:58 +0200 (CEST)
+	id 96E63160B43; Wed, 07 Oct 2026 13:41:58 +0200 (CEST)
 From: Alexander Gordeev <agordeev@linux.ibm.com>
 To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
         Heiko Carstens <hca@linux.ibm.com>,
@@ -96,9 +96,9 @@ To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
 Cc: Muhammad Usama Anjum <usama.anjum@arm.com>, linux-s390@vger.kernel.org,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         kasan-dev@googlegroups.com
-Subject: [PATCH v8 07/15] mm/kasan: use hw_pte_t for the early shadow PTE table
-Date: Wed,  7 Oct 2026 13:41:50 +0200
-Message-ID: <e24977fba12bae1a05e8eda80c6bebab423ae5e1.1791365932.git.agordeev@linux.ibm.com>
+Subject: [PATCH v8 14/15] mm/kasan: Introduce helpers for lazy MMU mode sanitizer
+Date: Wed,  7 Oct 2026 13:41:57 +0200
+Message-ID: <e42d9f02ec1f8478a50fce424b95d0e7ff6a359f.1791365932.git.agordeev@linux.ibm.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1791365932.git.agordeev@linux.ibm.com>
 References: <cover.1791365932.git.agordeev@linux.ibm.com>
@@ -106,24 +106,23 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX1qYEKV7bKBha
- Z6vE427s5TOQaGNcAe02e2yRGioQ0XdpycGCtFbL7iv8DRIvqlCcWBFz4k9wTWPsbwb80mOx/xV
- 8FOgX7h5x+fMcaa3oPbEEff4Zs6QiRw=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX+jK91lYLDmjG
- 58/HvuoRRQ/CLPpSgaLnGza4i9FTqyeBXWg11ncIjV+f9fLtyvBW48IIZvtHtdlyL7MrGeehOk+
- zW8HNvLoJ6MYjkqUPfdnRpbhWZhIcoiKwbxYCELzHXV+UGjRJD7l76VbS1y+1fBEfbN1MgV3ytl
- pGKkRmKjSvNlmMUA++CJdD4Emj8mzY2yfDbCYXlH77kn4oTms1L58gB+dK9q2Ncp/CMzL+fNIJp
- nqVRW3go5AQ9ml3UbBHKElmnccj1TRlw509zKRB0PrkEHYLaH9cRDHOgjgS+eUPsB/6OY/MWdXl
- LAi7pRl6lCrtg4CaAz1/Gr0ndHoJ0lPkJn3YJ+JKS33o7X7qE/3YnP64qPcTYxsIOBbycWc0Z+I
- rvMSpDFmnkAZ38UlXyuEVC6Hx97fum6MEq+2FanWbn6xqZUr3xnmOgybx85e2CqhZ1sw/3BnqHm
- qcfmjBn+9SvTzXpFaNw==
-X-Proofpoint-GUID: s9S2W-A6tSAdq8XGy8mTE75XRUEWIcqI
-X-Authority-Analysis: v=2.4 cv=UNRIjyfy c=1 sm=1 tr=0 ts=6ac6300e cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX5DPD1vMEIRzd
+ xleVCrHSsImUVSa9k8+U0VNhK6NPZ4rkedvwRN+pHGmVxse85mJThumaN735FZQ7qT+ZLwoW7Gv
+ lMQezcdm0GX0Rr+40UeLZMYz0OG7Wjs=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA0NiBTYWx0ZWRfX7g2X1iUGlT58
+ qoF4bC6WFYXBZ9MVGwR7Pf5b2cTZiR08BPqu1ISG5mhomOu15rPA61t7AFAxvef2tBggMTl7U/L
+ G3va4UQIxlb6J7zIR7zRzrYd3OwyvaC/6bM5yPlAkKc9gFNMzKeeatuVkwgWaz7Yv8XuvMZk5FA
+ SpJy6eje6TISppIe276PGJ8Ik+QNlq19GHXhc4o77ZcoAeXMqJ1bREhgD6F9YL+gE/ZBEI4WaF0
+ QYeFhaRABOMEJA0rqjEFHQ9YEjHl172hGhHOE3IfyVoXl+RpJYRsivy3QSn+96F0fzafgx+PgwJ
+ eq5G0EB1bBEdP71UuonqU8soJz3Z26sMWYFy/rpiIpZPpMOqCHDiCPZ8zJP9b2SzXpYNbUTFeRd
+ LyBl2WjC6/Nk/j+0TPaoSxEqbfdKhE0KZIeaRAdj0owYPBtSOvVCx8+plUOjRCKDZV5mLWxi1jz
+ Bhf/XJvsIMWV1oplDRw==
+X-Proofpoint-GUID: Dicociyuch-2AgzrCM5waLHvo_mDtbuk
+X-Authority-Analysis: v=2.4 cv=UNRIjyfy c=1 sm=1 tr=0 ts=6ac6300c cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=7CQSdrXTAAAA:8 a=AO8vZCCDSQ0loUGPtsYA:9
- a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-ORIG-GUID: FN1Y3Ei1wDooguhmrQWKXB3qRV0x0tJS
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=bocLCBUijn_7D3B78osA:9
+X-Proofpoint-ORIG-GUID: ReRFxk3b6iDzlnLcBGQVeXTs5QFTGZJn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-10-07_04,2026-10-06_03,2025-10-01_01
@@ -133,13 +132,13 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070046
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9A10018000D
-X-Stat-Signature: jjh7cnsq4szor3f58fxuqeuimf7eq86z
-X-HE-Tag: 1791375749-763690
-X-HE-Meta: U2FsdGVkX1/MLLmWRAvrNe7k7OAfwes7sFlZtxn8h6iYhsroxwoqrjoPx7UvVSalHpSwUcd31g/ufKXewbBVPbuyKmmsD8rgvYn/db9g+av5mfQn3lZ3HjgV4ICBSz2aJ0lyXPoMlDXA+imjxJE4kWFuhMoS1yNjfhZwnuA66nwCfs+2hpmf2+FcbTlD12SF5bSRnNozjN8gg1pGf+X+15M4bKO4GHQk1g4B/7aBjLRRLLDLWRmBH56LJDtfgZROcb5VucjdVr3xXcieTICS47BRzPDhJGy3jLDsPJwMI3xjVm3iwTTzc/PCMGJ5pYhuNDpItFYped3esXKI60UMhsc1DwtOxvBN7VKUNfhEa+AIDGKFFnuhLFVcKnQD0p5pabcJed9Qgnjb246pAeRZ8h1MwkLhaGDWFIXkne3igx1ugVWU5xOw2Tfg5kX0lZM8t3eSaUMP2o3vjhpxEbjwe4sbAPeh8Pm4q6HuDrjbzeErjhwCnEY4HjgKOmou5LAw2uPwTMq8OggqrZXEaspBJY5GcXNDIOgq8czjrk1a6Od4d3NqmrLu8l6hjuS/hTnP4hGLf5MhXh2muqfimfLHI6cVk1HXR5BiTQlzVUqNZmSRPwgo8h+F0WdXDbLFux/IE32oXVMC16ph/pSyT+gLBpc5oEkwS5QWPtnsvk8RbmskRzYtFSqKbk8Sg9LK1OuPzyAX3mxJy8+5L1KdVziOty6o0zQW+lh2MIKTCjKhVXXBx/aP1bMkw5+IOffrbZbCq4+kw9RKsy+F3RK9plI3MQcBqjL0TzcaErQMCE+EKzipnF2okO7E4SBbBBTom5xV+hU7jG8IFXalB4DtmbDZz4j/ZDQPTrR7R9I89Osffm81WEMvP/LOdlTHSxngo2O3aKbPXf/2cT/DZwLzLGt3QGCORhjSTu8ovO/arcfuWFyQ2H+AyC6Cy7Cm4k4d4s1BG+ke490wyYNRubIHjpw
- TkHqkNG9
- Ew+jZ/Od9DoPT3kitX6GTjMNjORg5ZPt/0vR3+uRsfctNN79i0oP+5A3qZ5F3NnyrzEMKl8V4cpzFaC7hLudcgYCNZ7Bp9hJhPhkO8PUHzLRnQe+BDy7uqxGFSCfC0oXmqF30/kbSZ0xnLHklP36BnnfXOSFmBoIVkD8Aui6hFK15rR52WayY7D+1idfAjHMbl5i+sOzm5UGpAFxuhP8hcpJj8q+PQVnMMEzG5p28aMGuvpL73Ng5OPQ6K0xf01hSjRcTCwGL2yoOBpJktnCsT20cQvg9YdyP0gmIA+bd6Meir49AhCTI/wGwHb1HY9s4mFADBYOYTircj6+RyP2kIbuJkgrYYur4+utQPqN3RVhfo00=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4C48414000C
+X-Stat-Signature: ey7793c5u59nddd81893dxn33kni7fhk
+X-HE-Tag: 1791375870-165692
+X-HE-Meta: U2FsdGVkX180WILK1shS7HmWMCR0BB+GnCgUPeLpM2Fsl3MxdIAs+xYrKqZrcT8VuEGYdD6c66C3tIMZ0GM9P6u02ajdH5k76EHG6ard0GJygW1eQwaDJnxAz+RqEP0q44YvpOQWINbhx8AnXXHp7ZZgYJMA1U74WNfEGa3Bao3tFraiSp/9M/KhcjfYMJC7VXO5AbxDTmEl6UQR2ZhwrwDlKz/R5ANKdZmorcvz2Zt7CYPOPj1zOtgshPKlSeg70LVIPueRPv7jOIS5c1/+gmQPjeu7Sb0sczPFQBB8kmDV07LBv6K5STQBUiB3D+vAAZA+H3TG2fH9pen7s4Q74imxnbLYiOZ1aorwccMtAo+yQrhw6EhJxd0GkEV6Y/jFPqkijo/DCsYInvv0CfqSuOTGtH2+ojvvP5QSxUgt+/WPF3QgEkRYTgj4PQmqydpz55DlvMWPtDe/th/Qdo2oSCTmwq8LFQQfaPbkX6g2Cu6/8d+Z6GdehpHGF2mGtlc9kjfMRTIeuoh/UDV/YOwMSZcQARDmUevX8EYLsL3Duj0ScoBZRNzzax5Zkr8dPjwJ7OspJ3UIV4/VkjQw3Fa7EM9VqT1TqZUu66s6Ia2sdqJb/9FSTYtJDhUxiBsc7PzHUYfX29LWX37rdAXWC/tXYHdpuTW1XAzyfyqgyEd6y4IAfqPc15a1KYqS58NA0zlIbxjwCxl9WEMgKUBpxq3jmjQ5PB3Ka1sYdUvN8JzIzzsLf4VIiX1nZ9wWSpQpx3GPrCMm8jBA6iZj5cXKb4U3uHgR+nkR45mbRcuJSv+ph44TB27M1dCIWsYF4Xc0EiC+qkEcfQKxUGL/orGAGaWQOHgUyzHbyK+YPZtqA8QQ+80TQNcAMPvx3TshgBpC15FkEK960LCTiVlhQbjsotvErAjyws/+qg4HpYixH6GMZdmhoVglcrDNbW+olwbB3JRtKlE/DclKQw6KC1vY64m
+ JkcKCbZG
+ 1gl++9EIYxdkSGdOGdIaaE8gogQQ5e/EHkCB0jerAswS0GhLC7T/3PDakKF3puSdbtCAS8rOBYWhISZhXPIq0HGqCXqEA8FiJoXV1oo99+fABribJNaJ6mGo6CLyTg5OCbVwGH3OmYg0t4P1ckAD/7mEb+F8zDGZAeGQf4oFFCydefOp8FWhjarw+hmdzHBKxIvOiFX8y5qiCo1fXzbGOoHf2gwh0QFnOnIbxRDQH2MESTxG6EPa7RTO8XJvBzA/W9LLf/lvw6VnDTzGKc0YPts1O+R/o7sSZtrWchB0LCyxbKSrIB8l8hDFxFeJZYjqlaC9pq3vRu8HivT7quX8YT0jZvVjtqVLhu0NyfAPb4GkWBRdvXzNfY57Z8Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,68 +146,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
+Provide helpers that allow architectures implement
+illegitimate PTE direct accesses while the lazy MMU
+mode is enabled, such as:
 
-kasan_early_shadow_pte is a complete PTE table rather than a software
-PTE value. Declare and define its elements as hw_pte_t so the object uses
-the PTE table storage type.
+	pte_t pte =3D *ptep;
+	*ptep =3D pte;
 
-Read the first element through ptep_get(), which returns the software PTE
-value expected by note_page_pte(), instead of accessing hw_pte_t storage
-directly. This also uses the accessor selected by the architecture.
+By contrast, these would have to be:
 
-No architecture selects ARCH_HAS_HW_PTE_T at this point, so the storage
-representation remains unchanged.
+	pte_t pte =3D ptep_get(ptep);
+	set_pte(ptep, pte);
 
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+The direct PTE accesses pose a real issue on s390.
+
+Suggested-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 ---
- include/linux/kasan.h | 2 +-
- mm/kasan/init.c       | 2 +-
- mm/ptdump.c           | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ include/linux/kasan.h     | 19 +++++++++++++++++--
+ mm/kasan/common.c         | 14 ++++++++++++++
+ mm/kasan/kasan.h          |  2 ++
+ mm/kasan/report_generic.c |  3 +++
+ 4 files changed, 36 insertions(+), 2 deletions(-)
 
 diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index bf233bde68c7..ff41949c0ac0 100644
+index ff41949c0ac0..01f710f03114 100644
 --- a/include/linux/kasan.h
 +++ b/include/linux/kasan.h
-@@ -51,7 +51,7 @@ typedef unsigned int __bitwise kasan_vmalloc_flags_t;
- #endif
+@@ -6,6 +6,7 @@
+ #include <linux/kasan-enabled.h>
+ #include <linux/kasan-tags.h>
+ #include <linux/kernel.h>
++#include <linux/pgtable.h>
+ #include <linux/static_key.h>
+ #include <linux/types.h>
 =20
- extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
--extern pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE + PTE_HWTABLE_PTRS]=
+@@ -35,8 +36,6 @@ typedef unsigned int __bitwise kasan_vmalloc_flags_t;
+=20
+ #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+=20
+-#include <linux/pgtable.h>
+-
+ /* Software KASAN implementations use shadow memory. */
+=20
+ #ifdef CONFIG_KASAN_SW_TAGS
+@@ -134,6 +133,20 @@ static __always_inline void kasan_poison_slab(struct=
+ slab *slab)
+ 		__kasan_poison_slab(slab);
+ }
+=20
++void __kasan_poison_pte(hw_pte_t *pte, int nr);
++static __always_inline void kasan_poison_pte(hw_pte_t *pte, int nr)
++{
++	if (kasan_enabled())
++		__kasan_poison_pte(pte, nr);
++}
++
++void __kasan_unpoison_pte(hw_pte_t *pte, int nr);
++static __always_inline void kasan_unpoison_pte(hw_pte_t *pte, int nr)
++{
++	if (kasan_enabled())
++		__kasan_unpoison_pte(pte, nr);
++}
++
+ void __kasan_unpoison_new_object(struct kmem_cache *cache, void *object)=
 ;
-+extern hw_pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE + PTE_HWTABLE_PT=
-RS];
- extern pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD];
- extern pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD];
- extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
-diff --git a/mm/kasan/init.c b/mm/kasan/init.c
-index 30c5266eaf37..9bbc2a41d23f 100644
---- a/mm/kasan/init.c
-+++ b/mm/kasan/init.c
-@@ -64,7 +64,7 @@ static inline bool kasan_pmd_table(pud_t pud)
+ /**
+  * kasan_unpoison_new_object - Temporarily unpoison a new slab object.
+@@ -414,6 +427,8 @@ static inline bool kasan_unpoison_pages(struct page *=
+page, unsigned int order,
  	return false;
  }
- #endif
--pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE + PTE_HWTABLE_PTRS]
-+hw_pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE + PTE_HWTABLE_PTRS]
- 	__bss_pgtbl;
+ static inline void kasan_poison_slab(struct slab *slab) {}
++static inline void kasan_poison_pte(hw_pte_t *pte, int nr) {}
++static inline void kasan_unpoison_pte(hw_pte_t *pte, int nr) {}
+ static inline void kasan_unpoison_new_object(struct kmem_cache *cache,
+ 					void *object) {}
+ static inline void kasan_poison_new_object(struct kmem_cache *cache,
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index 7d21c4db68d2..f3cbbeb8ad0e 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -174,6 +174,20 @@ void __kasan_poison_slab(struct slab *slab)
+ 		     KASAN_SLAB_REDZONE, false);
+ }
 =20
- static inline bool kasan_pte_table(pmd_t pmd)
-diff --git a/mm/ptdump.c b/mm/ptdump.c
-index 376880071ca2..8f19f20be3c4 100644
---- a/mm/ptdump.c
-+++ b/mm/ptdump.c
-@@ -19,7 +19,7 @@ static inline int note_kasan_page_table(struct mm_walk =
-*walk,
++void __kasan_poison_pte(hw_pte_t *pte, int nr)
++{
++	if (IS_ALIGNED(sizeof(*pte), KASAN_GRANULE_SIZE))
++		kasan_poison(pte, sizeof(*pte) * nr, KASAN_LAZY_MMU_PTE, false);
++}
++EXPORT_SYMBOL_GPL(__kasan_poison_pte);
++
++void __kasan_unpoison_pte(hw_pte_t *pte, int nr)
++{
++	if (IS_ALIGNED(sizeof(*pte), KASAN_GRANULE_SIZE))
++		kasan_unpoison(pte, sizeof(*pte) * nr, false);
++}
++EXPORT_SYMBOL_GPL(__kasan_unpoison_pte);
++
+ void __kasan_unpoison_new_object(struct kmem_cache *cache, void *object)
  {
- 	struct ptdump_state *st =3D walk->private;
+ 	kasan_unpoison(object, cache->object_size, false);
+diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+index fc9169a54766..1a2d18cdb21d 100644
+--- a/mm/kasan/kasan.h
++++ b/mm/kasan/kasan.h
+@@ -144,12 +144,14 @@ static inline bool kasan_requires_meta(void)
+ #define KASAN_PAGE_REDZONE	0xFE  /* redzone for kmalloc_large allocation=
+ */
+ #define KASAN_SLAB_REDZONE	0xFC  /* redzone for slab object */
+ #define KASAN_SLAB_FREE		0xFB  /* freed slab object */
++#define KASAN_LAZY_MMU_PTE	0xFD  /* direct pte access in lazy mmu mode *=
+/
+ #define KASAN_VMALLOC_INVALID	0xF8  /* inaccessible space in vmap area *=
+/
+ #else
+ #define KASAN_PAGE_FREE		KASAN_TAG_INVALID
+ #define KASAN_PAGE_REDZONE	KASAN_TAG_INVALID
+ #define KASAN_SLAB_REDZONE	KASAN_TAG_INVALID
+ #define KASAN_SLAB_FREE		KASAN_TAG_INVALID
++#define KASAN_LAZY_MMU_PTE	KASAN_TAG_INVALID
+ #define KASAN_VMALLOC_INVALID	KASAN_TAG_INVALID /* only used for SW_TAGS=
+ */
+ #endif
 =20
--	st->note_page_pte(st, addr, kasan_early_shadow_pte[0]);
-+	st->note_page_pte(st, addr, ptep_get(kasan_early_shadow_pte));
-=20
- 	walk->action =3D ACTION_CONTINUE;
-=20
+diff --git a/mm/kasan/report_generic.c b/mm/kasan/report_generic.c
+index f5b8e37b3805..489d4a8d6902 100644
+--- a/mm/kasan/report_generic.c
++++ b/mm/kasan/report_generic.c
+@@ -113,6 +113,9 @@ static const char *get_shadow_bug_type(struct kasan_r=
+eport_info *info)
+ 	case KASAN_SLAB_FREE_META:
+ 		bug_type =3D "slab-use-after-free";
+ 		break;
++	case KASAN_LAZY_MMU_PTE:
++		bug_type =3D "lazy-mmu-pte-access";
++		break;
+ 	case KASAN_ALLOCA_LEFT:
+ 	case KASAN_ALLOCA_RIGHT:
+ 		bug_type =3D "alloca-out-of-bounds";
 --=20
 2.53.0
 
