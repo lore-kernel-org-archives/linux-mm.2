@@ -4,94 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C5FDCA600C
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 15:23:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E42A3CA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 15:24:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DC7B6B0095; Thu,  8 Oct 2026 11:23:10 -0400 (EDT)
+	id BFD856B0096; Thu,  8 Oct 2026 11:24:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B39C6B0096; Thu,  8 Oct 2026 11:23:10 -0400 (EDT)
+	id BAECD6B0098; Thu,  8 Oct 2026 11:24:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C9E56B0098; Thu,  8 Oct 2026 11:23:10 -0400 (EDT)
+	id AC4D46B0099; Thu,  8 Oct 2026 11:24:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 471EE6B0095
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:23:10 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 369DE1402EF
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:23:08 +0000 (UTC)
-X-FDA: 85299827256.08.4BE5538
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6CE22120011
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:23:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="dg/XcnNm";
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 8A86E6B0096
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:24:54 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21320A09F1
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:24:54 +0000 (UTC)
+X-FDA: 85299831708.16.98318F9
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 90D761A0004
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:24:51 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=Q+cFc2Bv;
+	spf=pass (imf19.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791473092;
+	b=5X7OD9W4fwwiPX1oW0X+vGLk7BdyZIaJZHF9AVQtVIlxJBy52YXL+2cGKuhldv5cP5O/zt
+	arMsSNh5rCJkylFyLDtDL8+CPKWEtgIsWjMjJLiRXZyIVhck+iVo51nWedw8zu+0YThHXq
+	w3ByTdRQbI5+hB/3CKxmYFayrscTMus=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=Q+cFc2Bv;
+	spf=pass (imf19.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791472986;
+	s=arc-20220608; t=1791473092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fktCSzXnzSArMXx2H5jz1jzKpq1XlCXEdiEKb6zN3UM=;
-	b=HI76Jo8IT6bNGDOlI+ehYT7gQ8gp/rH7hBuk8Q/ryxTpwTMO54shX7kLFz22/XQIRPZ4cL
-	GUwXpmI6FZcYpZ277EubfR41mTsa60QQR0n80bB4vv72aXVc0ni+4lU5ZNhZC433caqjaE
-	v3UCv/sjfKZW8RJssWen03xCCLiOUoE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791472986;
-	b=kemo2NjtDd/5B/UX47qm4Bgkm3MzmNOhKh9PF+/10JZX2cp7xQ3AZhN0fwItAmUsjCB4sx
-	lNPGTnJwSTtIR2Dyy1qjtnThvqyK969+k/ZDXnJiPHf7c+EiH1jmwEj+97xuXRKb08+ruT
-	3dODnpdX75vn8KW7ru+0Xo72eJgh/j4=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="dg/XcnNm";
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA26F601F9;
-	Thu,  8 Oct 2026 15:23:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F2B1F000FF;
-	Thu,  8 Oct 2026 15:23:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1791472985;
-	bh=fktCSzXnzSArMXx2H5jz1jzKpq1XlCXEdiEKb6zN3UM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dg/XcnNmNfHhYyVEaxqh1yGjfpJX4lpMY/htsYBegD+nxiyjtU8PvuCqjYodFdSKU
-	 wT9o1xD1Cf0qtnlbQdUruk0andtRTl0WVQ6Z/0U0IKR+ZOL5394V+GaIFktTEZrDuy
-	 8GmXQzFAMQm3xb0yqkQDT2nTrDRJe2rWlAH0+8mE=
-Date: Thu, 8 Oct 2026 08:23:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Ayush Ranjan <ayushr@modal.com>, Pedro Falcato <pfalcato@suse.de>, Hugh
- Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Baolin
- Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>,
- Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [BUG] shmem: FALLOC_FL_PUNCH_HOLE vs fault-around race corrupts
- page cache / rss counters
-Message-Id: <20261008082304.bc6f4bd6c80fe6432abd4fc5@linux-foundation.org>
-In-Reply-To: <fyswoh7wpxzlbnjjanggjd2jz6yispmeirhwjl3wzi57nacddb@bjkb6kxyfcal>
-References: <20260924061708.1645968-1-ayushr@modal.com>
-	<arTdLsBENhrpOyk-@pedro-suse.tail5790ac.ts.net>
-	<20260925053027.1998394-1-ayushr@modal.com>
-	<20260925065013.3682431-1-ayushr@modal.com>
-	<20261003033107.1488699-1-ayushr@modal.com>
-	<20261004222831.bdd648a2b406f02747dd9e40@linux-foundation.org>
-	<fyswoh7wpxzlbnjjanggjd2jz6yispmeirhwjl3wzi57nacddb@bjkb6kxyfcal>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6CE22120011
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:references:dkim-signature;
+	bh=axdWlSF8iVBum9thK6VZopslDZXT2NtsjnEhYF++jeE=;
+	b=3hEXjV4ql0bJG29lJjmtUgJjoGQBvnXAxFKB2Jfv8dFJTs/UYIsSxyC0+lxEDwxOqabSrl
+	M5CSlLQJxa1xf1twEszQ2qkwwRMhqaYXAV4WMd4Zydw1tMxtTTrbeObujL0CR2oY6xyNi5
+	g5BjSBsXt8Cg/5SNO5hMhqIJ2uWkZRI=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20261008152449euoutp012ea15825cc73032344637d08b5a70ef4~cl0iTT52h1734317343euoutp01y
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:24:49 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20261008152449euoutp012ea15825cc73032344637d08b5a70ef4~cl0iTT52h1734317343euoutp01y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1791473089;
+	bh=axdWlSF8iVBum9thK6VZopslDZXT2NtsjnEhYF++jeE=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=Q+cFc2BvfAM6hq8BNBVUUGEJpLtazPQXVAyigshd+9gBPaXqou6aJyXlWskX/fV9m
+	 NbT7TK0KANRA7mvHXcTSe7avEDlvsp0umXP08TMlD+4tsO0xOd8St9ZeroU+hWmLIh
+	 t2ZpTNyQruGKU8Zfgua74G+f7qBRuzR+kiVC2Lec=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20261008152449eucas1p29758be26c325084093c14cfa9b8b2d04~cl0iBiRnX2366123661eucas1p2o;
+	Thu,  8 Oct 2026 15:24:49 +0000 (GMT)
+Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20261008152448eusmtip229196db7cd15a42beeda51a2f89401c1~cl0hjR3uw3039130391eusmtip2O;
+	Thu,  8 Oct 2026 15:24:48 +0000 (GMT)
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+To: linux-mm@kvack.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Mike Rapoport
+	<rppt@kernel.org>, Rob Herring <robh@kernel.org>, Saravana Kannan
+	<saravanak@kernel.org>, Oreoluwa Babatunde
+	<oreoluwa.babatunde@oss.qualcomm.com>, Wandun <chenwandun1@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v2 0/2] of: reserved_mem: use dynamically allocated
+ reserved_mem array
+Date: Thu,  8 Oct 2026 17:23:59 +0200
+Message-ID: <20261008152403.766439-1-m.szyprowski@samsung.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20261008152449eucas1p29758be26c325084093c14cfa9b8b2d04
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20261008152449eucas1p29758be26c325084093c14cfa9b8b2d04
+X-EPHeader: CA
+X-CMS-RootMailID: 20261008152449eucas1p29758be26c325084093c14cfa9b8b2d04
+References: <CGME20261008152449eucas1p29758be26c325084093c14cfa9b8b2d04@eucas1p2.samsung.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 90D761A0004
 X-Rspam-User: 
-X-Stat-Signature: nnkprfu3udyiuexkh7u59e795ggsm7sf
-X-HE-Tag: 1791472986-619848
-X-HE-Meta: U2FsdGVkX1/9Aba9k13BQTQz+XSdk/7xII5YI6i1DtCpxZkuzMQD1wmpagMzFnlfvTZQOj0eQcj5xUpW0Mvkhni/fYq9PqhJ2psF86Wmb1r12V0c1hAQfINnkrfWbxo3vXDUNA/Tzm4pYtQ7p0D2S6xo93wNY2DqP3UNx000xH3V/h73MO4UO2Pef3I0c/Q0/JvprUbd+fq20toDAy9MOE/RQ61RoljWB8V3q7yLhrJvdAyDmfXuTkdYBGU1jCBZJ16oiK3I/OE3yJSusUKQuFXNFro5eEnyNkDMuZEMUIeTGKoFG1WnPKexV+mvxhYOI1fkLg6iXSY3QYFWmUat3ibOAmxWYo6nIl6/jkiVdIMTkeORBtp15unXL6kAQDEuD+QM0CBfeQYSi3pAwASp1VvfyVCCztYPjTfb3/VtMx7Bg/NljjJW0a+iA72zQeWlLCR7dmVP4xwwDQAMb6Dr3eFSITvxYuvR4BAxqCwA/bJjvOJwcc+pef5GDHeSQu/vMlGHBf+BVgNYnFig2c2HJ565JwMPPoEepfbD8GSeKgsx7e60XEmx4xV6S65jvNleqWSRM5mQBL5B/wYKRjjl6hQ3L9iN0bLqHiU3wyMxQrxB76Q3p+2qR4eHwN1plYeiytxm3qqWfnek4nXuN0FW5F0gMpQ14zl7aSx3cDY3BJqFLyYdKpTF51eoKaYvi+xXWw2n9LHTYkg8eOdx2Qg9w5XvrtIUZFENU4wA4Fv892w8OHzwqf0bAiUokihFISMZ/oVm+iLrKR6wLme16Q9G+fKZcNFiPn65MYTDYqJOIQB5vsNN0ifcUs+M7WkshsqpubF7rKyX2DwU5K7+UEspO4g4dz3mrjFv1qqtZMCbtGmVUhIfZ/xij2AcRpqJKyA6uH86UKPLSjKu0e4RarnadBmeJEY3d/qgLFuL7Sn0fG70gussOC5Blp/FhuvLxyAGQpr+o76w2Fb9yDwJOD+
- 4SQHhkCD
- azVxEzBuYB3Cv5DnQOYnY/Z1oxkQZ+XqIqyufWnjm606w+e/bfiFuENMbm5ENq++mFLZ0rqMQQfu/y46I0ze/yI1KCAsCrxaHR18GhWSmTdkt5+ELiB83EIlRrtSaLgAvZA99HblfdoEd+T85mFjOn5wNF5LUPqvHugOWjuoCmNPZXkhfZ+RWijHlU8lyFUGPZQoPm8/AQGaKNVRzdkOXl4Sp2BEr0lFWTxU2HTHYVpAMsyovCbKR+ateGQz521zry/gI7cNFLPJkI6HZgDCR1QycfsRQojJNKaK/dEu3wmJbl3jz2QUpmj+kQl/f2Cje6EdIk7WC6P+XVAz0RoipLLD4cXezwMNhpALz
+X-Stat-Signature: skrsekakqrkzsyoiw4rfambyanm5s7fw
+X-HE-Tag: 1791473091-44401
+X-HE-Meta: U2FsdGVkX18ML6o8mtoN19n1GD9Ce4C6Xc2r05RYwtGypiggBkoOT5SFr5FRNoF5PtlRSJ6XmDVk4SuaBtJoKmelkzj9zjrDXmQwf8++F90hGu8QkKia+GHGyK6MTGdXS9L8KMhLyJUi4IpOpENvOM6wDgKl3C8qiZAXCfcC5UohtCKneQqQUYgamsm0xJjSGm375pa45U38PeiQQ6tIYCR7F8uQwImeWaa6NJXd9QD5L5gjSTRZWy5U0zpiKzf9t1h6UjtKjaIcuPbIADDZqARxLWqG7L+fFigFjSo1bf3d8rwqwbexdEiPhXDKqWrJPg4X8XFSwDOUNUhxYYEA5VvXhVb+D8xfIjcrsvPMnw8kRLu1RQT3lawr7YOaP3GwuJftxxBDCGJM27WJDhFlFUM7eqHFrq9gvr3NmMZZoaOF3eg8HrQC2BmkMZqn4a5hvzdpgjhhLDnsZUVPqnLnKEPD1k62b6oD2vf+tHO4KBDiYvxYV7nrm8mwn7e8+jFb3DQRZLI5zWHfWTv8zsxP2ITkszQFIUWkZtTWaBRq1zyau7F21glR4T1Wq4hkCQOGab8KCFqVmv/4ZPpkgDa40CWYF22Jtpe9B9f4anvwcRgq6IAKkqDJGK7yQfkCXmKuoNYNvkWuzFPLHzVKVaYr08MqLMX0UyMT3EvslR43BCZXanXPWHorN0oOw4OO4QGBTvTJSfz+Jo/KhIfy8WZeeA6JCk3IEuxnSaofkvFYOfoyHej1j4VzEAQP451Kx0D4I2DkHlj96oMlevKPFK+5o+HdnhA6ZY3gR2TPVpwdADxY4zd7ftC0bIpaJC8+v7701PSr0vX8mbtOYfJXh3vT5OoOj/I2poazeBsWAOES/+1dsjNSKrXwX/Ccekm0hfS3MoOpq4cVsCP50pVzNAQegPC9XFhAHF3JSVGUoZjw7XvgtNpXTP1HeoBS5HJXhkIDs9wiGJeNsqSNvUud+xC
+ rJ+iVGgc
+ mbMHbKJXf183rF5h6PjJSx+6FYQPBrPNnSIx5O3zH0NrTQ8bG+lwpu9eCbcdKR9CpVrtVBGcFGxKA1QhPQ755WjmSQ98gMVpR/L6qi+s3d3iKkiYwcl61EiOPKsh/Yi+dxolNa0Y2+kdb50o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,78 +105,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 8 Oct 2026 11:24:43 +0200 Jan Kara <jack@suse.cz> wrote:
+Mike Rapoport suggested [1] how to properly use dynamically allocated
+arrays during early boot.
 
-> > From: Andrew Morton <akpm@linux-foundation.org>
-> > Subject: mm: shmem: serialize fault-around against hole punching
-> > Date: Sun Oct 4 09:05:31 PM PDT 2026
-> > 
-> > shmem uses filemap_map_pages() for fault-around.  Unlike shmem_fault(),
-> > filemap_map_pages() does not participate in shmem's fallocate exclusion
-> > protocol.
-> > 
-> > During a partial hole punch of a large shmem folio, the folio can be split
-> > and the resulting smaller folios can remain temporarily visible in the page
-> > cache while shmem_undo_range() restarts its walk.  Fault-around can then map
-> > one of those folios again before the hole-punch path removes it.
-> > 
-> > shmem_undo_range() may subsequently delete that folio from the page cache
-> > despite the new userspace mapping.  This can trigger "still mapped when
-> > deleted" warnings and leave stale mappings or inconsistent RSS/page-table
-> > accounting behind.
-> 
-> So this part of explanation is either incomplete or wrong in my opinion.
-> Yes, shmem_undo_range() calls truncate_inode_partial_folio() which can
-> split a large folio. Yes, filemap_map_pages() can map those pages back into
-> page tables. But how "shmem_undo_range() may subsequently delete that folio
-> from the page cache despite the new userspace mapping" happens is unclear
-> to me. After splitting a folio, shmem_undo_range() will restart and find the
-> newly split (and mapped) folios and calls truncate_inode_folio() to get rid
-> of them. Now truncate_inode_folio() calls truncate_cleanup_folio() which
-> does:
-> 
->         if (folio_mapped(folio))
->                 unmap_mapping_folio(folio);
-> 
-> so the mapping is reliably removed under folio lock. Can you perhaps push
-> your agents further to explain in more detail how this "still mapped when
-> deleted" happens in their opinion?
+Use this approach for reserved_mem array during early scan of the
+reserved regions. Having all the reserved regions in a single array
+removes the need of the two pass initialization introduced by commit
+8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory
+regions are processed"), so implement it to make the code simpler,
+easier to understand and ready for adding proper error checking.
 
-back to the drawing board...
+Tested on ARM32, ARM64 and RiscV64 based boards.
+
+[1] https://lore.kernel.org/all/asc6brs_g0ky0wOM@kernel.org/
 
 
-You're right.  I pushed this further and I no longer think the explanation
-in the changelog is sufficient.
+Best regards
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-filemap_map_pages() takes the folio lock, and shmem_undo_range() also locks
-the folio before truncating it.  truncate_inode_folio() then calls
-truncate_cleanup_folio() while that lock is held, and
-truncate_cleanup_folio() calls unmap_mapping_folio() before
-filemap_remove_folio().
 
-So if fault-around maps the folio first, truncation should subsequently
-unmap it.  If truncation gets the folio lock first, fault-around cannot map
-it before it is removed from the page cache.  I don't see a direct
-fault-around-only race which leaves the folio mapped at
-filemap_remove_folio().
+Changelog:
 
-The earlier fork/copy_page_range() theory did have a way around the folio
-lock, since copy_page_range() does not take it.  But Ayush's single-process
-reproducer rules that explanation out.
+v2:
+- removed superfluous ifdefs
 
-The strongest remaining clue is that the reproducer requires repeated
-partial splitting and aggressive khugepaged re-collapse, and the production
-splat was on an order-3 folio with nonzero mapcount.  That makes a
-split/re-collapse/rmap or mapcount problem look more likely than the simple
-fault-around race I described.
+v1: https://lore.kernel.org/all/20261008094125.3197971-1-m.szyprowski@samsung.com/
+- initial version
 
-So I don't think this patch is ready as-is.  It might suppress the problem by
-adding broader serialization, but that would not demonstrate that it fixes
-the underlying bug.
 
-A useful next step would be to instrument truncate_cleanup_folio(), e.g. warn
-immediately after unmap_mapping_folio() if folio_mapped() is still true.
-That should distinguish "unmap failed to remove an existing mapping" from
-"some path installed a new mapping afterwards", and narrow this down
-considerably.
+Patch summary:
+
+Marek Szyprowski (2):
+  of: reserved_mem: group allocation helpers together
+  of: reserved_mem: allocate and map the reserved_mem array early
+
+ drivers/of/fdt.c             |   3 -
+ drivers/of/of_private.h      |   2 -
+ drivers/of/of_reserved_mem.c | 455 +++++++++++++++--------------------
+ 3 files changed, 195 insertions(+), 265 deletions(-)
+
+-- 
+2.43.0
+
 
