@@ -4,137 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46C70CA600A
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 09:10:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F3BDCA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 09:20:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2BF86B008C; Thu,  8 Oct 2026 05:10:48 -0400 (EDT)
+	id 250A96B008A; Thu,  8 Oct 2026 05:20:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDBA26B0092; Thu,  8 Oct 2026 05:10:48 -0400 (EDT)
+	id 1B3C06B008C; Thu,  8 Oct 2026 05:20:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF1676B0093; Thu,  8 Oct 2026 05:10:48 -0400 (EDT)
+	id 054126B0092; Thu,  8 Oct 2026 05:20:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 748BC6B008C
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 05:10:48 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE1EF1A043C
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:10:47 +0000 (UTC)
-X-FDA: 85298888934.23.8EE1935
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf15.hostedemail.com (Postfix) with ESMTP id EC3CFA0007
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:10:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qZAeL4V2;
-	spf=pass (imf15.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791450645;
-	b=KTo2tw5FrS8hg1HqNbPi4Gu3h/Wf1XUGmTmq9egbIvaKdGkbShWqN6tMdMeJO/kgef5tDG
-	GiXcDFFqfi52adZ3LWd45NSTo3+KdIyVJMVs/sMcbjsucRWIPUN1Xhts2hlmcfO38UbjR/
-	ZNMQR7JeWidFALjbHzxcoHoGAKCm5RA=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qZAeL4V2;
-	spf=pass (imf15.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CC3DA6B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 05:20:27 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F615804EC
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:20:27 +0000 (UTC)
+X-FDA: 85298913294.02.D42989A
+Received: from MM0P280CU009.outbound.protection.outlook.com (mail-swedensouthazon11021120.outbound.protection.outlook.com [52.101.76.120])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 48CD6180002
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:20:24 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gaisler.com header.s=selector1 header.b=INuFnRN8;
+	spf=pass (imf06.hostedemail.com: domain of andreas.larsson@gaisler.com designates 52.101.76.120 as permitted sender) smtp.mailfrom=andreas.larsson@gaisler.com;
+	dmarc=pass (policy=none) header.from=gaisler.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791450645;
+	s=arc-20220608; t=1791451224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EVekyCoytYvsWEA/xawPaTKhkTfUsMDuQvQjTfILfOc=;
-	b=TKKIwzPqwJUdpaMQSJ365uixVslo/93jETkrRJ96VAjOHvtau2JHK5XVH41AA8UW/a9hvl
-	OEdnIqVkE+wHzye7hJY+EkdgwkCNr2np7bxJ/xr8CLIqvjnGOcMtwl1Eg9rbvWLedCFJas
-	FEb+RoX0LHRGNLoZA0Ftn0NY1kB2EqU=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a140e7405dso50048975e9.3
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 02:10:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791450645; cv=none;
-        d=google.com; s=arc-20260327;
-        b=tBZ88ZM4EispK0gLocnsXiY/gCfADLKDn+k5z6J92EUOa/z/YcxKsnZPFI6SC1F09D
-         w7wDbn0f4DMntDGFbtTc9MhFyiWLdMJWwLPxmQIv/P9ap7Nk+rS8rQZXvwGpxBNw2yBI
-         mZQXv+ON6kTDQrPivdtI9BM3zZWYJYZH2/c5AFXyp3UMttmFN2iwnrFXbq5gMynmVDBm
-         yopeTRBrUGm3FH+juKAC1+I+Ho7c47++U8ZCxMdJ0jtMRDYBVP3FTrIw1AUpDJptmOwq
-         3oyQ8QbSR/QV1DpxI0yitIZFvadFM70p08xC3d2TAqCl99t4tAXIaUzR5X6ulJjdnvAE
-         hhnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EVekyCoytYvsWEA/xawPaTKhkTfUsMDuQvQjTfILfOc=;
-        fh=7hA4/DtOkRXrU+dD6PZgS5g/08x4uElnFZrA1GeomiA=;
-        b=rt369hs74YVLidcT1xG7o33nAUb1hswJZsW399o0xEiAKS33Y94eKQKzcCsnaYgWK7
-         V+ES/nhGwH5NnoxFJysKGWBr2ZmGUG+c1xSdOPb/RnWkqTnn+0AR8ylPqLV7E4jburHV
-         SGb0j6TH+mnsKP8gcxpS3+grGTA66soTG012KtLyxyvxaBsEZnI6qzESsL2DLOBkPbPJ
-         qimzXo+LF6ZuOV47WENeyeBWFheB2fmaJxhq4nmLaf8BqB/cu1aBKmIDB0kitJVd3Fy9
-         159wBBCmJ2MZJaqcwMyBY5FzXJsJjumGjMaQtWHRMWOhLpvWSI3+y3QGeJnGSgPy0Fe1
-         tpJw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791450645; x=1792055445; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EVekyCoytYvsWEA/xawPaTKhkTfUsMDuQvQjTfILfOc=;
-        b=qZAeL4V2CPb1eMVnkXWh9xjUIq9kpp2ZQXOL+R2w4d4VGWDWLxYGA7yzxUxFvTy0CW
-         nTFLOOyl3HWdnFex1iCUHHFldwOxfiQ5/XUDJ/d2DxHGcM6nhpemgwtGwnX0HCmsH8/k
-         LJcTmfKt3mdnPopFH4zTXIb3eaxE1p7Lw+wkzcxG3nbhxyghOxWaYaLb4ttVD8Bpi6et
-         iwCGQ+dLvrIHgr8A6T1v1PS4Dk4rtM1peoRwj1r0WoxK5isaXTgVvUge0oYc5tyz4Z7k
-         i4Wu4CpjayMKammvzGlhULTcIq6Xbhvhy6q3D8HzeKcCvGMV3uEInjOH+UbRoeXQ8O3k
-         2H5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791450645; x=1792055445;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EVekyCoytYvsWEA/xawPaTKhkTfUsMDuQvQjTfILfOc=;
-        b=Dm+t/icLndq7CA+QlbVLQ2T3ZbW8Egq1/tGIqC50uzAan5XePIhIBvWTH4DGsaEc0x
-         HmeHdTXJnN7yEs8l6uynbK9rI+rbF0ObSc1H1eEOqS5OW3ExR9RlKEe1yKITBRq2YRz/
-         H+NhxMrYoep0+v2ZBnfhzaMAAbFEk8JP2XHM3Qx4wVR3eN7UHGNBwLrVYuHlN+Jn/rnI
-         ui9uUg5XIhw++VwnIscb1j37fi4+buaA+Dg0kyP3gkCd22UvSSz4HYppz5XV0Yw7n0j9
-         7Nqt9DukhI3S2pgIWJBMbwMf37vFDYceDzSGbe54Xps+Tmyqc0QiLnLXpk3+k1hfcLDo
-         LyEg==
-X-Gm-Message-State: AFuF++mcXTVMylT5O91/zxVLHjFkEet5b0sCOsZjW8vxS7fT+ZJ+K4eQ
-	EMFZM/hZmIeiwanfXpep/1pq6+FScwl5OT+x5NYkd3Z03PzfoZQOeOmy+OH1OVoXW3mWS4eC4oD
-	1eJ9vVagy3p60t9i5NxUbnrolw7GwR6hc92ngPMoDMQ==
-X-Gm-Gg: AYBFou3pVMWo1ELmeQDfeChfgRdum1K3SdXUOhcVw/3QSA278sNgSWBaO/a7ru2w5lf
-	02/XXiVZLk1Uy6xxgfIBJtG6VkNgnU0gDxEa/G2cKEqAZaXlGObLdzuMjA5KkXvBMsnl154Lfwa
-	R26YC/0EML2NKCmCbpGq/8OMcU/GY657i7g9W+hzyPLSmSXJRC0Hx/pCum2GhPT7ZDLevt+4FeK
-	bCNMONonJ5JDN7ocCzxBGN8L5axgUZj28CENVYsjUTty/q2xGJcUZ6JMYTUdaNN+RSPJiZUdetC
-	uyrQOOlqnwhTXy1luGHmjZ6lCcgKbyaZyVWY6JQ55WNgvgz/HMtdAqYB
-X-Received: by 2002:a05:600c:8211:b0:4a1:6f78:842f with SMTP id
- 5b1f17b1804b1-4a18041acfbmr82208975e9.11.1791450643778; Thu, 08 Oct 2026
- 02:10:43 -0700 (PDT)
+	bh=nChlZmlrvLWslmoho1/5aTc9r9JcLlsuI9ltEi1anog=;
+	b=uIxiEnPB77uK8rk0iyve/Qu0o1OWf4wErVo5A4xzRKmbXGAruvPy4P1EFXCsqz5VjvBL3I
+	mG16gu60VQwf6rYf5lggonVUQDlPyCvRdKzNTsTPL9g+/0IfLaTPCFIxKuIXR+1/Bwj4qw
+	gNhSfpov8nZxG/SESPtjyGLFHXdBo7c=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791451224;
+	b=5bUkt518XEuR+wk94LJ+3CznccD8G99uq15ftaBo4g5DaFbJmIWilgxMfnNlMj9pdpkHk4
+	NrulfY71mUm4grCLd1fjYY9lUJTCYJ1iF7B3pOOKKdZ8sqBLom7i3snMCvWW4OYpOr+e1A
+	G4adyZHb2gEeNSoYA1oU35mFCWS+vxk=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gaisler.com header.s=selector1 header.b=INuFnRN8;
+	spf=pass (imf06.hostedemail.com: domain of andreas.larsson@gaisler.com designates 52.101.76.120 as permitted sender) smtp.mailfrom=andreas.larsson@gaisler.com;
+	dmarc=pass (policy=none) header.from=gaisler.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wWYCaXyqJi4ZWPF6qGx6PPahhWGHET64lXKc47FBjG7p2ybmlaSw3rSqwcUE/w6495DBBi00Msx1Pad4CqMHlQlVM/qJIb43Q5vas6TnhUz2FdJfY3o6B2lwCryb05C+irQEX9CK9zOP4PCPwtgggpydvj9tiGz5gFS6IjMBwPI6bAh3/u5LsJOt+jF5jWza6nAnQNwx7cGLV5HlOz3lAZgm2cs+gOYRAbkzrFUX7971nLmSWo/Vtm1aZx2dKuksQVEeWsAvwcOHAAlC2BAH2vckuGtUVDeqtRen6KsZsXENvEjTjnymAkIWFVRdV6NxSVMk43cdlaX24bz4xvnycw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nChlZmlrvLWslmoho1/5aTc9r9JcLlsuI9ltEi1anog=;
+ b=EWlQpJR1KYsOvtPjPBUbxCi4oXSmjhItlg/0F5aiUdQvXqIqDoCkmDk8i9oy4P1UZrVAO50NbeQ2qOyuzNSviNYashd2A8Iio0MztmgBkxQtH8DrkGsak+6QUS5bTPwAObwhg6jYu7nAYFdphTRQNywuypUTYJT/jkCyrJ9wD715p9Nijg4YPW7QZCwJmjdD5lPzVTSrr5yeqR3JkVu02DcEbyuv9s+t7ECmIaAbzjrAq85WOSi50rlHBNq4tuWFkqH6xfbV3WD7KshbsfI9ufAaE4aHcWpvGYL5/aaP+AGRDHan8ZnF+AtHymELnX+JmRaqAwL9nnBZoN4FVLBWTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=gaisler.com; dmarc=pass action=none header.from=gaisler.com;
+ dkim=pass header.d=gaisler.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nChlZmlrvLWslmoho1/5aTc9r9JcLlsuI9ltEi1anog=;
+ b=INuFnRN8HZTZOmhztmeE+FWSg1C4ii9V9BgUPQhgDJ8RNd+LGyBWi29rZlGXHvH4Z0GZukAbrrEUd0nzmbqjHKg79DgHWjVgSQ0gc4YaqpMmpuSQB1UaoPfWU4gZjqGOATUuLN7KeBByoJkt4/4D6lM0ztbm/o5DPbwPmtuEgBaTMP0iptchQ/0h5NNjuKKvSwcf3Zc7zJKLoWCgKKhqaM0rYpC5qZi9c5buiMvfMK5GC5lkxReIkyvtUoaD2PFCY5fggNJ/0O0fl7QtbwSDi8zqAFCsedpUclVBHil2D/RLwqNrbjWzjN+WTGlLd8zLfiUjSYM5paTFCQs0O7ZJJA==
+Received: from MM0P280MB495062.SWEP280.PROD.OUTLOOK.COM (2603:10a6:190:2f::5)
+ by GVZP280MB1086.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:f5::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Thu, 8 Oct
+ 2026 09:20:17 +0000
+Received: from MM0P280MB495062.SWEP280.PROD.OUTLOOK.COM
+ ([fe80::1f13:f10:e16b:7939]) by MM0P280MB495062.SWEP280.PROD.OUTLOOK.COM
+ ([fe80::1f13:f10:e16b:7939%4]) with mapi id 15.21.0472.016; Thu, 8 Oct 2026
+ 09:20:17 +0000
+Message-ID: <c24fc419-7bee-4fe4-be12-9aa378d49af1@gaisler.com>
+Date: Thu, 8 Oct 2026 11:20:14 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 8/8] mm: Drop pxd_ERROR()
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+Cc: samuel.holland@sifive.com, David Hildenbrand <david@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20260831054331.625505-1-anshuman.khandual@arm.com>
+ <20260831054331.625505-9-anshuman.khandual@arm.com>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <20260831054331.625505-9-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BE1P281CA0084.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:78::11) To MM0P280MB495062.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:190:2f::5)
 MIME-Version: 1.0
-References: <20261003003136.750633-1-hebaoquan@kylinos.cn> <20261003003136.750633-9-hebaoquan@kylinos.cn>
-In-Reply-To: <20261003003136.750633-9-hebaoquan@kylinos.cn>
-From: KunWu Chan <kunwu.chan@gmail.com>
-Date: Thu, 8 Oct 2026 17:10:32 +0800
-X-Gm-Features: AclHuK8IQys48doaeIzJ4ioSb5lXI_GS92fTzf02uQErFmsCZ6PV2LE-OBf22GI
-Message-ID: <CAN_Opa_JCCd-+o5y9JXbzypPtYjTGvyvnOy7KmSUKHYtVab85w@mail.gmail.com>
-Subject: Re: [PATCH v4 08/14] mm, swap: defer xswap shrink to workqueue to
- avoid lock recursion
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
-	kasong@tencent.com, hannes@cmpxchg.org, nphamcs@gmail.com, baohua@kernel.org, 
-	youngjun.park@lge.com, yosry@kernel.org, shikemeng@huaweicloud.com, 
-	chengming.zhou@linux.dev, baoquan.he@linux.dev, david@kernel.org, 
-	linux-kernel@vger.kernel.org, klarasmodin@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MM0P280MB495062:EE_|GVZP280MB1086:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83646bf6-eeda-498e-e234-08df251d5e2c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|56012099006|4143699003|11063799006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	NC/qpKPoxiyUAIaFboaEX4yQJbeZ+vmHWvsqeQ5kGT8l7X9fcYqp9eBx5WDlxiVvR0L+48Kj8haTuGmN+ee23fz3oSbjQL0jDYSXa+8gvblI86UZZh4H3rc1iI63OnAtUl/Bc29s8THJfx5bFeLN0emAE2uZAHoMFHy90APywhP9Z8AjykGKVGL0t0c2nvMe3PsGovHxRyjauii+CaAg7FIwI2CS/HOCQfII4YJSPtE4I0SRp+V6w4RmvmGuzeCsqZSrWw82tVXGVw0nRXYEEjprr2bBi/k2erOTWX+ty2uFPb9NPtUYLqYJ9PHu+KDHk4Q/vhMUK3yGm+xZ+4lHwTIkrPlcoR9I3RrI4QZlUmJ2jnb0OByBCKTN6WeW3SPL7RUqYcLSHKhK7REebKrFE0KT0iexUictJu2Fnotxo5BB3aWPdM5djXsume4Uu/+LrZgrVePGx8jVXrq7s0fx3tDDa8Its7qN4Q+p0W/zrq+NcYe8ULVC7XRuOjK0vRn8IJYPzelV1nlbTqr5dOdn1l7Ngd1FRLzsM1A/gAKUICvJl7+yqtc729F6ZYuOPgHw3w2EZKjndGEXmpox7kfKl6X1HCrim3tkhks2tAZ3SktjZtPITkfZDdVBJ/FfT8XA3Aw4kbnTbKOULc4nRgbN9ElLoKLj3Wvavjhkq2aZS/c=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MM0P280MB495062.SWEP280.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(56012099006)(4143699003)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Qnc4WTMwaVBFYzJqcExMa05CL2Z6N2lPTHJIWHJ6RkNtSjQ4YTA2YWhOWHNP?=
+ =?utf-8?B?c3h4MGNyVWpGRXAxYkV5a0VycHRMZmJ4cENISm5EeHF6NFR4U0grNHpzVFNw?=
+ =?utf-8?B?SitEcWRXSExhV2gvMW5hZUQweld3N2JSdVEyZGRDckVZMXZ5SlNzSklhcmk5?=
+ =?utf-8?B?VEt1RHBCbXFKb0lDcVBwRXdFOHRDUTNqemh4TFExRnJhM0ZzTTR2N0JVYlZ1?=
+ =?utf-8?B?VlA1YXo4RHIrbFRpa2QxeFM0VWJwVzQ1WGlaQmdBTFhnK1VLaHllLzdqSFNL?=
+ =?utf-8?B?WE9BWUlhaHJKZkNPd0kvZ2U5TEZTUWZHOHVtMTduYW1wdUlaTTIxeFFmU3Qw?=
+ =?utf-8?B?QWxmQ1NNSHgraGRsb1pkbmVORHF2eDF0bUFWTjBiNXFzZDczRDZ5R2xqdFRR?=
+ =?utf-8?B?Kzhmc3ArU25pcDQyUEpkekh5RmxrVnV0TFVCajVUN2czMGc4UGFqZEx2SEpl?=
+ =?utf-8?B?NVVVcjBRaFoxb24wVmZrTVBOR2FoYnRaUFpZSmxXcnVvV2w5TzEzaVgzODNh?=
+ =?utf-8?B?eWdPV0J4ekp4bkVpdGUxY2RLYTRSWGZqSUlwVHNRdlFyMVEwNTZLcVQ3dlh4?=
+ =?utf-8?B?UGdtOGNwb2g0d2MwQ0Y3ajRUVWRMc1dIbnRsVTFpSTJtclZzNFFPc255cnhQ?=
+ =?utf-8?B?TU5abWFjbjBrS25UU01WMzhjdU9VZTZuVUpaQ2xBSHBSOWlGejFWK3RLaldG?=
+ =?utf-8?B?RkJERVNnbHJnWFZTUkxTVjBlVTJ1d1JNdmkwUWhROHZtMUM2dlJJeHQyRmdl?=
+ =?utf-8?B?UW5MU0cySjFHWUpkZ1RQSTA3SE82Rlczb1hqakhiVi80U3cxT2swK0t5OVcw?=
+ =?utf-8?B?UjkyekRsR0JuZTk3QWZuR0RwYjV1SUNUbnNwaFBOQjA1TEdKWFRRRTNNNyt0?=
+ =?utf-8?B?Y2YrTmZralIvNllYNG1aKzRONTJrZWYvTFFBbjg1S0lEcmZ3amo4UVMwWTZ6?=
+ =?utf-8?B?Sm1VZXc4aStLMWx4dE9PWElQZlg4eXhaRGMwcHlVWFlJNE53NXh2ejl3NVZH?=
+ =?utf-8?B?Y0dyaVc0bm9xVXpDV00ySWtnT1AzSElIQTJieHlKTys2a1ZpRDdUVElIKzBw?=
+ =?utf-8?B?Yk9sRWlTQTlKeUZpQUYydnIvazY3ZjVBYXkzZXdZWjAxRlYrYXAxKy9PU2gr?=
+ =?utf-8?B?UFo1U0hFSGRzUUZwYmFmalNmVTBrNHVmTmVSVVEwUGFxL0VlWHVCL3dIMFhN?=
+ =?utf-8?B?ajNyNDJwblBVbjRDR1dvVHpuNEx6VUk5MldTY0ptMEgrNUZVUlRCd3kzMlB6?=
+ =?utf-8?B?bnNBb1lya3pVd2g1YzJwVFpHNzUrRlJEVHdyMGg0dDBQck9zL0w0SGRjcC9S?=
+ =?utf-8?B?NHM3L0RyU3hIaWl6QnFzbEcwZ3NwWG1uc0FsOGg4citQTTFRTWdKdEdORi9R?=
+ =?utf-8?B?WEwySCtxUDBxYkRmMzhmNHVSVWR5SjgzeEt1WFN3U3lVKzdZY2k2UzBURmda?=
+ =?utf-8?B?YXUvTFo3c0EvTVNnR0dieTh2VzRrWGJCY0prTWc0Z04vWXpJbFFVcjZLc3hF?=
+ =?utf-8?B?WDRBbUFkbzBTMzMzcnIxTGlJTW9QOW1zVU5HSkc4NFNkLzczV3hYTUtzcjRY?=
+ =?utf-8?B?WitCZ1g3SzNjbXFONGNDWEcxWlUyR0piM2p6dThwQlREaXFzWDhoYlc5Unlk?=
+ =?utf-8?B?dWpjRk00c25DQW9ITEVTU0ZITDRJSm50MWZoeGNFRjlVZzlqZXBxVmIwbnFL?=
+ =?utf-8?B?bnRRakpsRC82V3R4ZzBRbGl0aEtBM1A0UlduY2xCUUp5Q05VVXNpNFgxM0tS?=
+ =?utf-8?B?U0loRGpFckpUUElXTkRSV01VV3hXN3F0QXBOMjRxWUJYY0V6QTdEZThMZDEv?=
+ =?utf-8?B?SU04Y0VqU21ydmNCS3VMOXNQK2psemZXRHk4UDZPOFpvcmV6eFlndi9ocm9v?=
+ =?utf-8?B?eXRVampFMmZvNVBQSCsxVGxkbXVCcENac0RGOXhnMldaVmhaelhlcXB0dnB3?=
+ =?utf-8?B?RFdack1RQVdGVU94RWxQQXBsdlNrd0pTRkVneVFVRXZybnM0ZUVLMHYyRDVC?=
+ =?utf-8?B?UkVKb0h2Qk13VVNiOXNkUWs1RHpKd2UvU2lRVlgvRnU5VlJ3ell6czZPN1Bk?=
+ =?utf-8?B?d2VHdDZVUTdaYWIrYkdmYXFmNktSQjhyNWVlRHNOZ2c3RTJyL3puSm40V2lQ?=
+ =?utf-8?B?RnJwQjhzRnp0bUZVeWx0bUxVN0E3NlJadU9oOGFDOGNRbFVjdzRxNjl4ek8v?=
+ =?utf-8?B?UzFka04xY01xUEV4TmRoc29xUEcydDM1Z05kNWhmMjl3OVhHTnJDUVJ5WGth?=
+ =?utf-8?B?cFFId1A1RHJEbitNS012U2x6NTcwM0gvbk9rekpFYVZZbG4zYS84elM5b2lY?=
+ =?utf-8?B?d3N0d0dNS3h1RWRYR0NLUmFaeVVVWlByVURvc3JuTFh1SHp2SkxtSVpGZUE5?=
+ =?utf-8?Q?yjjhfEohdeTOoAqE=3D?=
+X-OriginatorOrg: gaisler.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83646bf6-eeda-498e-e234-08df251d5e2c
+X-MS-Exchange-CrossTenant-AuthSource: MM0P280MB495062.SWEP280.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 09:20:17.5038
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 91fa4a59-2167-458a-8318-e45d80469d7e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5BZfB4EAaSFJ84qYftmRVMohK/eymk8QLHXJzzFm4elUHya77EOOlIY25xck2qu/+rvHfHMgpADg5257wP54q4lxf3y+8uFBxp0svqv6SU8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVZP280MB1086
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 48CD6180002
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EC3CFA0007
-X-Stat-Signature: 6a6xj3cxn811i9e7e9a35gbdxgop91mb
-X-HE-Tag: 1791450645-423301
-X-HE-Meta: U2FsdGVkX1+Ol/zRD8dHfxUKICxoiqGfrKTGJkJgUk3q8PyC07Fqoz+wAU3mgkz0YQVjKgv71F8YrdxDpUeZu8k5WupKoThgY7rVMzVn3/XgarqlSSAj8laxoPtEDTuLKJOZCFKhKknrTReRyP+DT+MK0eCK9RYrJ/rLwsVSRoVqTCpilrHAD/eIbgtrGwY7Wajuq9+zmTM5WuQsGT7P1aryvTdo457Abrv4rPP07og2oIyJ26PWUICujCGLq4EqbTA82GQyhMg4rGdLhZwJkQtFq0GKHgNP+ebUVgQOcZCxllV2amIxnLG2h+In/pbSJrThcduSo8ALC8YkPQyWzae/g8+jYhqhcGt/i3Oja+9A4VI3IYtRYaDAAnTAwEtTXy9X6lO9yVh07+8WQ3PluXb7xMuCtFkb6noLNxMWdGBkq2ZzMg8tDs7D/ESyNn1RTRCRggfRJi82cwiAWochfed/b0+J4+DN6d9BiI4SBvh1jv/HRQbBcvwwA0Hzw4pGw0ynzykvq+DfaTZf/mluD0xCI5IvXpNEITwO771ZhfRnJgZ9E08otUleBYdX53+az8W6Pje6TxyYzLsdo0B27QWLpSolUNAFN5pMYEFd+ffCoZ6QkmlFqf537X6aK4fWAJcPnS2f3kz1g0fBZQc+AuGRfeisT56wG0h5rxZMxP+kYkvaV7LiPbptVddo+vX3Q57l0rv9dtE5XuZP3amV7lrnfpGQZjTnAdVJV2tCDXE44ZAKw9npQBqHWLfUSDL4ISgUHeNrkmJDD/vfRe56gUZYhDqQ25HKF8+XE6qMK0OS6zIOm5ewhryIpiy9vznmSRWcy8S5RbduqZyG/SiMMsbSWp4Li641XCzs7qTbu6O+m9riWIMNJkmYp7jruHQyFZIDrvDw2VYpLfA2kcEQirRoLEFW5F7SAHauHSPUpZz7QRUSHFQt/gTs05BBoMtAulIN+/F3sy7y0Cet9Vw
- AAy7xV/s
- dVLdDUwRo745dqaccHTsQL1FO7ZKqAFlJT+9Mw+kcCMWPgs+KLs7FOfwIYrEYg7z43d/BEQSdLkam3z35a/zpPWXz42uRvA1HrHighnCeTPjCBKeyzLKsQ2f1OpXUJXQg4BkyS48LXJ7onh2WPioLXKB4xO0gnlBCWGo4NWN4m81vEiVnaZST54UhqwKK8huX9Dyp8VS42gXDgEUBTRIs34UQvG1jAk1wJYr7rju8ZWdpLgOxxqF8+xRCpy3nByHLlfZepCu7sJGfH15y9bPNooEcoS2Ew7fDrwLAMe0zikOyFgFAucrEGHbeciMg9Y7lW5uTxzObkRRdjIksW7uC+GmfTAHSr5v9raTZ45Ylzg8gpkVjlpL0cETMfRJ2Yi9BpfnwelfELmmiVTz9P4ScZnEaulOBwHWSbBNb/6FFOq/8b3caqF6PGk0gzQ==
+X-Stat-Signature: tdfy7egabix1rp9wcpypnahqppptw6kw
+X-HE-Tag: 1791451224-984174
+X-HE-Meta: U2FsdGVkX1+kaGwTSHzoOSgjU4ILP11uSkhxHdr2qSs9I6M+s0kBWjFUlLX5H2GMVL7KG9XxifZ9aJlikmE4MakMzJp0k6LWa/ly67QW8P3qH6S17JVIBFxLhsEQijrSxw/4IWSXZiguBgCQwk/b4YYRWVOn7NPr7yqGLZLC6mIcqZbJEyXfovM1AstSCCugPMBLxUPJDKA1IqUs8PE7/77SJVJMx8X1OfRo8UWhLB91q5D/C2mHnxNvkHNZsMjdReRej5j3hhLpe3ugaiNg/B4ofiFC1vLf1HJy2hlkgPJ1gwmO2xnHXVqygbF7ysRylanAH3AynZ4fWjkHJrFYO1onlaW8DYZQaN7W1VJzRNcVA0vIxbz6miyjOP/zPM5Uu+dxKp47TBQxFJh71h//XaOO4gNrXeS2aCKrvZxt1wn4bIljRTtohZqdRIkyTKh1YH7V0MIdk/szs3iXsnJSbcgpfBqQVamlkBYja3gZtkUSYm6TuRpH2XpBHCsu8lEcVRWuZqwBmekikeUedZFqvmKHBA8Pic9rsbvwq69w/2ZMDJGGOjMwmSxqSPTNlG7Pzvn6+UZFRQjGrA852OvBau0DWvf0H7l1ELPpP6Ndc11x8Z3u0i3LXbtJvHMz1e7mriCjsDLd8Uh13CD9tl0oz069R3aIx8RgqObmLt5pldNmefE0OxDrv/XAP8jPF/S7Zcq8TFxbBueAzLWOBho2UoqT/1UxXiNvKvL7bgbbVrtwn4KPUOx9asCZ5lbSEITi14syk9TQOgYDhF15pAOr6j7nKpl4H4e9qHrTc73H4Epo0BS3TEDa2m+9E6LG1BUJJyjSBuJeQCQsr+M7lklWsqLmG7rhJlckICRG583Leh8wZQZ5OoStB1RWdWLxTj3EiRWLOLvBTUTA8M6odWZmZn4UEYmGntTO2UWY8U/6iVhrZcfJyxfK3/cNtPLHndxjwPILO5dd59tm6dS21QT
+ 9RY9oPGG
+ dT5KIoYQqeUbc03Eo0EBxsLhSwaAbMUBe4rUImjH+WNDehmMBumgkFZ34qOdeZeYwLNay4rI5NLaZQcqkoJdj/GvEklXQfu18/MCARMd5dC1qVkBaJMhcRN8xcKwEkByB8cibTOo0I0x+AOs2dNhIFo3pZYySCEZtjbuR+9wBS9EhqAo/YWuD4oUseeZkZ4yN8DB16m69ZYDFbhlG2hkbo4NuMCyHjfnerCVIHKK9fWF2XiEuULosGBLuG94cf+PUtWSpeI2x9A0xgGRDPw/pAHRudffgyhg1Aqiow2gF/Scz0yE4jlYuc1XJbGzYfMrVMZ3hxkIVO4NJ6oiQzYUlLHuHuwdqW9KqpPzlFz6uBqyRjda7ZIVbxKoRJFI/i5paHHXp8803+wa8ylaQc6AKXE8eBpX0t1ksLSzYMEwe9YvmaLzcwnfa7JW8noIgLjDUFmkPih5knonTSXLJ/yKsvJUTSShbn260wWq/qCDt6lYhKe5VCnnbtNv1kiblgX72HYHQNKl8C8UuvXRwecmrNKqLuExCc9BFgOIxxjn5/zHeHzXqjdubhQ7QerNB6JUE7FNoicuWX6Vdq/6MMvMi93AXLlLotgknt3q0DN/x4Tox8lcmP3z1KRX3un7QkfKR0kHgOP7CzRQuc6E1if34XDpZszaR1xadHWixBU5lA6vFRJv0pHACaeO/pi6fh3cN96vP35UyPxhV8XTzhvfvDQAc/c2IDu0mH8agUwADFJmu8cBIm1gxCv2iFqahuO3KC/ANI/R5qTzV3cWzYMrkivabrfoJQ5wZeN6ZU39wAYqYPsPejdcIXxwSrl2dA/44R29tlzWyBo6iYu+TXMyTMRdSIySw8ajrcjVaFEoE0E1tXwdLE90sgnjhmR7325IbzM2yebtCW/lbibTtdRWYhkKhZjazpnJ/CSIhPpqcR3phIrYSllwYDmsLjQTE6/iY3f3jalDcMkEw1jacdHMef8CkXUVa
+ 8RhmPJU4
+ 2E//88IvSdrXt6UtUTOY5hgxhpkJsXuO4j3qwpZu1o0XzbDqFjkmiH6kW0PhNYO+R0peZKAv/2k4XOf3u3J+d4EWjqFyIP1S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,307 +189,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 3, 2026 at 8:32=E2=80=AFAM Baoquan He <hebaoquan@kylinos.cn> wr=
-ote:
->
-> __free_cluster() called xswap_try_shrink() while holding ci->lock, but
-> shrinking unmaps the backing pages and the subsequent unlock faults on
-> the unmapped address. Run the shrink via schedule_work() instead, so no
-> cluster lock is held. The work is only scheduled for xswap devices and
-> is cancelled on swapoff.
->
-> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> ---
->  include/linux/swap.h |   1 +
->  mm/swapfile.c        | 129 ++++++++++++++++++++++++++++++++-----------
->  2 files changed, 97 insertions(+), 33 deletions(-)
->
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 382a578140b5..12cdc00f78f9 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -246,6 +246,7 @@ struct swap_info_struct {
->         struct vm_struct        *cluster_vm;    /* VM_SPARSE area for clu=
-ster_info */
->         unsigned long           nr_clusters_max;/* total clusters in the =
-xswap address space */
->         unsigned long           nr_clusters_mapped; /* currently mapped c=
-luster count */
-> +       struct work_struct      xswap_shrink_work; /* deferred shrink tri=
-gger */
->         struct mutex            xswap_lock;     /* serialize map/unmap op=
-erations */
->  #endif
->         struct list_head free_clusters; /* free clusters list */
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 7c062e772f5b..49703731ffd5 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -727,7 +727,9 @@ static void __free_cluster(struct swap_info_struct *s=
-i, struct swap_cluster_info
->         move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
->         ci->order =3D 0;
->  #ifdef CONFIG_XSWAP
-> -       xswap_try_shrink(si);
-> +       /* Only xswap devices, and not while the device is being torn dow=
-n. */
-> +       if ((si->flags & SWP_XSWAP) && (si->flags & SWP_WRITEOK))
-> +               schedule_work(&si->xswap_shrink_work);
->  #endif
->  }
->
-> @@ -3334,6 +3336,7 @@ static void free_swap_cluster_info(struct swap_info=
-_struct *si)
->         if (si->flags & SWP_XSWAP) {
->                 unsigned long nr_mapped;
->
-> +               cancel_work_sync(&si->xswap_shrink_work);
->                 /*
->                  * Cluster 0 keeps the bad header slot, so it never empti=
-es
->                  * and __free_cluster() never frees its table.
-> @@ -3452,6 +3455,11 @@ SYSCALL_DEFINE1(swapoff, const char __user *, spec=
-ialfile)
->         spin_unlock(&p->lock);
->         spin_unlock(&swap_lock);
->
-> +#ifdef CONFIG_XSWAP
-> +       if (p->flags & SWP_XSWAP)
-> +               cancel_work_sync(&p->xswap_shrink_work);
-> +#endif
-> +
->         wait_for_allocation(p);
->
->         set_current_oom_origin();
-> @@ -4074,8 +4082,9 @@ static void xswap_unmap_range(struct swap_info_stru=
-ct *si,
->                 __free_page(pages[i]);
->  }
->
-> -static void xswap_unmap_clusters(struct swap_info_struct *si,
-> -                                unsigned long start_idx, unsigned long n=
-r)
-> +/* Caller must hold si->xswap_lock.  Cannot fail. */
-> +static void xswap_unmap_clusters_locked(struct swap_info_struct *si,
-> +                                       unsigned long start_idx, unsigned=
- long nr)
->  {
->         unsigned long start_addr =3D (unsigned long)si->cluster_info +
->                                    (size_t)start_idx * sizeof(struct swap=
-_cluster_info);
-> @@ -4087,11 +4096,9 @@ static void xswap_unmap_clusters(struct swap_info_=
-struct *si,
->         unsigned int noreclaim_flags;
->         unsigned long npages, idx;
->
-> -       mutex_lock(&si->xswap_lock);
+On 2026-08-31 07:43, Anshuman Khandual wrote:
+> There are no more users left for any pxd_ERROR() either in generic MM or in
+> the platform MM. Hence all these platform macros along with their generic
+> fallback could be dropped across the tree.
+> 
+> Cc: linux-alpha@vger.kernel.org
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-csky@vger.kernel.org
+> Cc: linux-hexagon@vger.kernel.org
+> Cc: loongarch@lists.linux.dev
+> Cc: linux-m68k@lists.linux-m68k.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-openrisc@vger.kernel.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: linux-um@lists.infradead.org
+> Cc: linux-arch@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+...>  /*
+>   * Encode/decode swap entries and swap PTEs. Swap PTEs are all PTEs that
+>   * are !pte_none() && !pte_present().
+> diff --git a/arch/sparc/include/asm/pgtable_32.h b/arch/sparc/include/asm/pgtable_32.h
+> index f89b1250661d..5a5f54a090f5 100644
+> --- a/arch/sparc/include/asm/pgtable_32.h
+> +++ b/arch/sparc/include/asm/pgtable_32.h
+> @@ -40,9 +40,6 @@ void load_mmu(void);
+>  unsigned long calc_highpages(void);
+>  unsigned long __init bootmem_init(unsigned long *pages_avail);
+>  
+> -#define pte_ERROR(e)   __builtin_trap()
+> -#define pmd_ERROR(e)   __builtin_trap()
+> -#define pgd_ERROR(e)   __builtin_trap()
+>  
+>  #define PTRS_PER_PTE    	64
+>  #define PTRS_PER_PMD    	64
+> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+> index 0837ebbc5dce..44d1333065a6 100644
+> --- a/arch/sparc/include/asm/pgtable_64.h
+> +++ b/arch/sparc/include/asm/pgtable_64.h
+> @@ -96,16 +96,6 @@ bool kern_addr_valid(unsigned long addr);
+>  #define PTRS_PER_PUD	(1UL << PUD_BITS)
+>  #define PTRS_PER_PGD	(1UL << PGDIR_BITS)
+>  
+> -#define pmd_ERROR(e)							\
+> -	pr_err("%s:%d: bad pmd %p(%016lx) seen at (%pS)\n",		\
+> -	       __FILE__, __LINE__, &(e), pmd_val(e), __builtin_return_address(0))
+> -#define pud_ERROR(e)							\
+> -	pr_err("%s:%d: bad pud %p(%016lx) seen at (%pS)\n",		\
+> -	       __FILE__, __LINE__, &(e), pud_val(e), __builtin_return_address(0))
+> -#define pgd_ERROR(e)							\
+> -	pr_err("%s:%d: bad pgd %p(%016lx) seen at (%pS)\n",		\
+> -	       __FILE__, __LINE__, &(e), pgd_val(e), __builtin_return_address(0))
 > -
->         if (vm_start >=3D vm_end) {
->                 WRITE_ONCE(si->nr_clusters_mapped, start_idx);
-> -               goto out_unlock;
-> +               return;
->         }
->
->         /*
-> @@ -4113,7 +4120,7 @@ static void xswap_unmap_clusters(struct swap_info_s=
-truct *si,
->                 xswap_unmap_range(si, vm_start, vm_end, pages, npages);
->                 kvfree(pages);
->                 WRITE_ONCE(si->nr_clusters_mapped, start_idx);
-> -               goto out_unlock;
-> +               return;
->         }
->
->         /* No memory for the array: unmap in bounded batches instead. */
-> @@ -4133,7 +4140,13 @@ static void xswap_unmap_clusters(struct swap_info_=
-struct *si,
->         }
->
->         WRITE_ONCE(si->nr_clusters_mapped, start_idx);
-> -out_unlock:
-> +}
-> +
-> +static void xswap_unmap_clusters(struct swap_info_struct *si,
-> +                                unsigned long start_idx, unsigned long n=
-r)
-> +{
-> +       mutex_lock(&si->xswap_lock);
-> +       xswap_unmap_clusters_locked(si, start_idx, nr);
->         mutex_unlock(&si->xswap_lock);
->  }
->
-> @@ -4157,6 +4170,16 @@ static int xswap_mapped_end(pte_t *pte, unsigned l=
-ong addr, void *data)
->  #define XSWAP_SHRINK_SLACK     XSWAP_GROW_CLUSTERS
->  #define XSWAP_SHRINK_MIN       (XSWAP_GROW_CLUSTERS * 8)
->
-> +static void xswap_shrink_work_fn(struct work_struct *work)
-> +{
-> +       struct swap_info_struct *si =3D container_of(work,
-> +                       struct swap_info_struct, xswap_shrink_work);
-> +
-> +       if (!(READ_ONCE(si->flags) & SWP_WRITEOK))
-> +               return;
-> +       xswap_try_shrink(si);
-> +}
-> +
->  /*
->   * Try to shrink the cluster_info tail: unmap contiguous free clusters
->   * at the end of the mapped range.
-> @@ -4164,14 +4187,20 @@ static int xswap_mapped_end(pte_t *pte, unsigned =
-long addr, void *data)
->  static void xswap_try_shrink(struct swap_info_struct *si)
->  {
->         struct swap_cluster_info *ci;
-> -       unsigned long nr_mapped, last, keep, idx;
-> +       unsigned long nr_mapped, nr_tail, keep, nr_unmap, start_idx, i;
->
->         if (!(si->flags & SWP_XSWAP))
->                 return;
->
-> +       mutex_lock(&si->xswap_lock);
-> +
-> +       /* A swapoff raced us and is about to walk this mapping. */
-> +       if (!(READ_ONCE(si->flags) & SWP_WRITEOK))
-> +               goto out_unlock;
-> +
->         nr_mapped =3D READ_ONCE(si->nr_clusters_mapped);
-> -       if (nr_mapped <=3D 1) /* keep cluster 0 */
-> -               return;
-> +       if (nr_mapped <=3D 1)     /* keep cluster 0 */
-> +               goto out_unlock;
->
->         /*
->          * Reclaim on our own, but only once the mapped range is at most
-> @@ -4181,40 +4210,73 @@ static void xswap_try_shrink(struct swap_info_str=
-uct *si)
->          */
->         if (swap_usage_in_pages(si) * 100 >
->             nr_mapped * SWAPFILE_CLUSTER * XSWAP_SHRINK_WHEN)
-> -               return;
-> +               goto out_unlock;
->
-> -       /* Find the last non-free cluster from the tail */
-> -       last =3D nr_mapped;
-> -       while (last > 1) {
-> -               idx =3D last - 1;
-> -               ci =3D &si->cluster_info[idx];
-> -               if (ci->count || ci->flags !=3D CLUSTER_FLAG_FREE)
-> +       /*
-> +        * Count the free clusters at the tail of the mapped range.  Scan=
-ned,
-> +        * not tracked: the count must be exact to size the unmap, and an
-> +        * incremental count falls behind on out-of-order frees.
-> +        */
-> +       nr_tail =3D 0;
-> +       while (nr_mapped - nr_tail > 1) {
-> +               ci =3D &si->cluster_info[nr_mapped - nr_tail - 1];
-> +               if (READ_ONCE(ci->count) ||
-> +                   READ_ONCE(ci->flags) !=3D CLUSTER_FLAG_FREE)
->                         break;
-> -               last =3D idx;
-> +               nr_tail++;
->         }
-> -
-> -       if (last =3D=3D nr_mapped)
-> -               return; /* nothing to shrink */
-> -
-> -       /* Below `last` has to stay mapped: the free ones in between are
-> -        * not part of the tail, and unmapping them orphans what is above=
-.
-> -        */
-> -       if (nr_mapped - last < XSWAP_SHRINK_SLACK + XSWAP_SHRINK_MIN)
-> -               return;
-> +       if (nr_tail < XSWAP_SHRINK_SLACK + XSWAP_SHRINK_MIN)
-> +               goto out_unlock;
->
->         /*
->          * Stop at SHRINK_UNTIL rather than at the end of the tail, or th=
-e
-> -        * range comes out full enough for the grow to be woken.
-> +        * range comes out full enough for the grow to be woken.  Below t=
-he
-> +        * tail everything stays mapped, and one chunk of tail with it.
->          */
->         keep =3D DIV_ROUND_UP(swap_usage_in_pages(si) * 100,
->                             XSWAP_SHRINK_UNTIL * SWAPFILE_CLUSTER);
-> -       if (keep < last + XSWAP_SHRINK_SLACK)
-> -               keep =3D last + XSWAP_SHRINK_SLACK;
-> +       if (keep < nr_mapped - nr_tail + XSWAP_SHRINK_SLACK)
-> +               keep =3D nr_mapped - nr_tail + XSWAP_SHRINK_SLACK;
->
->         if (nr_mapped < keep + XSWAP_SHRINK_MIN)
-> -               return;
-> +               goto out_unlock;
-> +
-> +       nr_unmap =3D rounddown(nr_mapped - keep, XSWAP_GROW_CLUSTERS);
-> +       if (!nr_unmap)
-> +               goto out_unlock;
-> +       start_idx =3D nr_mapped - nr_unmap;
-> +
-> +       /*
-> +        * Only shrink a run that reaches the mapped end; otherwise
-> +        * truncating nr_clusters_mapped would orphan the active tail.
-> +        */
-> +       spin_lock(&si->lock);
-> +       for (i =3D start_idx; i < nr_mapped; i++) {
-> +               ci =3D &si->cluster_info[i];
-> +               if (READ_ONCE(ci->flags) !=3D CLUSTER_FLAG_FREE)
-> +                       break;
-> +               if (!spin_trylock(&ci->lock)) {
-> +                       spin_unlock(&si->lock);
-> +                       goto out_unlock;
-> +               }
-> +               spin_unlock(&ci->lock);
-> +       }
-> +       if (i !=3D nr_mapped) {
-> +               spin_unlock(&si->lock);
-> +               goto out_unlock;
-> +       }
-> +
-> +       for (i =3D start_idx; i < nr_mapped; i++) {
-> +               ci =3D &si->cluster_info[i];
-> +               list_del_init(&ci->list);
-> +               WRITE_ONCE(ci->flags, CLUSTER_FLAG_NONE);
-> +       }
-> +       spin_unlock(&si->lock);
->
-> -       xswap_unmap_clusters(si, keep, nr_mapped - keep);
-> +       xswap_unmap_clusters_locked(si, start_idx, nr_unmap);
-> +
-> +out_unlock:
-> +       mutex_unlock(&si->xswap_lock);
->  }
->  #endif /* CONFIG_XSWAP */
->
-> @@ -4278,6 +4340,7 @@ static int setup_swap_clusters_info(struct swap_inf=
-o_struct *si,
->                         }
->                 }
->
-> +               INIT_WORK(&si->xswap_shrink_work, xswap_shrink_work_fn);
->                 return 0;
->
->  err_unmap:
-> --
-> 2.54.0
->
+>  #endif /* !(__ASSEMBLER__) */
 
-Hi Baoquan,
+Perhaps a bit of a pity to lose the printing of the address of the pxd
+that a number of architectures did before this series, but i have no
+strong opinion.
 
-While following the shrink path across these patches, I wanted to
-clarify the lifetime guarantee for the `cluster_info` backing pages.
+Acked-by: Andreas Larsson <andreas@gaisler.com> # sparc
 
-P07 flushes the per-CPU swap cluster cache and calls
-`synchronize_rcu()` before unmapping the tail. P09 clears
-`SWP_WRITEOK` and cancels the shrink work before proceeding with
-`wait_for_allocation()` and `try_to_unuse()`.
+Cheers,
+Andreas
 
-Could you clarify how the shrink path ensures that, before the tail
-is unmapped, no allocation-side reader can still access the tail or
-republish a stale per-CPU cache entry that points into it, and no
-swapoff-side walker can still access the unmapped range?
-
-Thanks,
-Kunwu
 
