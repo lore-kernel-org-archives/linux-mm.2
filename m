@@ -4,113 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A386CA6011
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 18:24:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32175CA600D
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 18:28:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B2786B008A; Thu,  8 Oct 2026 14:24:34 -0400 (EDT)
+	id 0398E6B008C; Thu,  8 Oct 2026 14:28:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3635F6B008C; Thu,  8 Oct 2026 14:24:34 -0400 (EDT)
+	id 00F266B0092; Thu,  8 Oct 2026 14:28:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A0F06B0092; Thu,  8 Oct 2026 14:24:34 -0400 (EDT)
+	id E40CC6B0093; Thu,  8 Oct 2026 14:28:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 07BA16B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 14:24:34 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9B858A7BB1
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 18:24:33 +0000 (UTC)
-X-FDA: 85300284426.12.18BB981
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 757A3100005
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 18:24:31 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=c+8EvEU1;
-	spf=pass (imf14.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BF2C36B008C
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 14:28:32 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 532ACC0461
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 18:28:32 +0000 (UTC)
+X-FDA: 85300294464.28.5E39010
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8723940006
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 18:28:30 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="PSPbu/7u";
+	spf=pass (imf07.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791483872;
+	s=arc-20220608; t=1791484110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ArtIe0J/YtHNeMIRmnR0Ro+s/jjV/sVKo94Bg+mHdOk=;
-	b=bn2e4wx3KwNohhx7AvmuZdzlE19OlQHG50tmrHEahL9BRXv5Eq2HH4u1mZz7S1swEJUTdS
-	/nVf0KieGLOsDrW7fonA+Lrq3TuRZjTQ/S/lGPvfitF/06A5Leb2f+I9XHK/0bFHs+iIU3
-	PayXuEpbQfZnVSDMlbylGjYwZZI8b9o=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xZEd1koy5JUNRs9RrhkiE6ort9fMSMjj77pbdlRj/T0=;
+	b=FjeKqvzx5IgS2feftBw/FKnYu4eXC/HmsM4ftvGtzr7X+rL5Vn6ihDhexVVRPJJXOHUimE
+	DOS08uGsYQfLOTnbAOaJ9NquroLJJLcxEsDrJfhfQqEu4RroO+Z7pOMcaJQloSh/8SleCS
+	zBevKLhoLJ37TgrT9EKEJbuEN/za0rY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791483872;
-	b=FezUrPDlyHNpBBAjEfCJBHCoQSMTHK26QksScW49sGH1gqR8RMy9GCMCbtR8ETjQ2l0FHf
-	aZxa2+TdcagaeHYncmWlyrbRr1pT3Y3qrOEL0f4jaD22Rv39Z3Ph2uUIXir0hMs6OHSDWO
-	2+cWZsrBHn3buR4MZ/6N2Qj4Vw5IFwY=
+	t=1791484110;
+	b=bhTf4l8hHxCN57zp+l/kNwWj/r0g7/7kxORpM/slyYWOS5AP/o+BHpR95DwPwfrTILe3ow
+	ZivtVvcFNHXWQefF3LmNSG2ExNflJlaVxS4iq1vV7zBUaMTMmGi9SdYtcIHywPMQhbeVzk
+	Zi2WRD3bO4B23K+LRNHtPhW3YVYVsLQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=c+8EvEU1;
-	spf=pass (imf14.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8D6C140E0481;
-	Thu,  8 Oct 2026 18:24:28 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id sNt0bsNe_ZJp; Thu,  8 Oct 2026 18:24:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1791483857; bh=ArtIe0J/YtHNeMIRmnR0Ro+s/jjV/sVKo94Bg+mHdOk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c+8EvEU16YMPCeKQ5i/icXx+OWIj8TWokrJ8eVHCV6XOUBlfACj8OFY3JBO9mshE9
-	 Yfsfs5t62zYmyTZJDIlwEm9OSjw04jQ6qivErFAHOhYSEpB/Kuzx6kACGa6wC/uoJk
-	 1AjWyeRSPyiX+kpdmYC7xPhga4NIIOOZ0SmMA4zqT/ouVQbMA1gHvShwasx1UT0f+M
-	 IrwsT2t5robKk71D4fkCYVUo+wSrfnz53+Grf6qAUkzFpnVAKTzSu43AlrMBNfLZlc
-	 TMBBwupTqB1vGLUJqRmVdsP3X24OPxjwoGZ315q1MNNzYVazWO/h5+ZxOnOUd611eL
-	 sTqq8hCpKWioAsUBJXyvNOh6SYPGhqgOAId+sXFW1dmMooVyqjcUykiM601ermDrMG
-	 O5aDKek9U5xL/uo9LJv6I8Plu0h7Yzf161HIfaUoATjtpIA6RPoxnmHLgCYE6LhUAq
-	 dn388REozKlRwmPhygPxvnIg5H0cbaPEX+6cr9w8OFrf81tlnlynAeuD1CYwohFkUU
-	 XNkTIZB7doKd6lhK6DFVgNSHNmpSmBeMHofhQH15ItNDiijgTgjdE3/ULYidRt+HL5
-	 7K9banhdUSv2r5zuc0kDqA16n+FzFzalHiKTq/juzAZfAWsizeYg5ymheA2CCC1uwt
-	 PvhDM9ERmaye6SWnI5Radwwk=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 364F540E00E5;
-	Thu,  8 Oct 2026 18:24:01 +0000 (UTC)
-Date: Thu, 8 Oct 2026 11:23:56 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-Cc: David Laight <david.laight.linux@gmail.com>,
-	Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	david@kernel.org, Mike Rapoport <rppt@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
-	luizcap@redhat.com, pbonzini@redhat.com,
-	Tal Zussman <tz2294@columbia.edu>,
-	Matt Fleming <matt@readmodwrite.com>
-Subject: Re: hunting memory corruption bug in 6.18.x
-Message-ID: <20261008182356.GBasffvDuTemTu1VUY@fat_crate.local>
-References: <ar1Xl7PE2rcoT9h3@pcnci.linuxbox.cz>
- <ar63St2LBfCdyhwj@pcnci.linuxbox.cz>
- <ar9yRqq6cBxHDWKA@gremlin>
- <ar/F6+OUzj8qQ8YC@pcnci.linuxbox.cz>
- <asAE3kLFDUx5v0Nw@gremlin>
- <asKdhWiJb3qXeopz@pcnci.linuxbox.cz>
- <bd8e9b01ad88cafb12da33331f32a1ce315f590b.camel@surriel.com>
- <20261005132113.43548696@pumpkin>
- <asP5xK4axiUk7jun@pcnci.linuxbox.cz>
- <aseMsMGpGPT/G548@pcnci.linuxbox.cz>
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="PSPbu/7u";
+	spf=pass (imf07.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-16079d54c17so2754664c88.0
+        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 11:28:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791484109; x=1792088909; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xZEd1koy5JUNRs9RrhkiE6ort9fMSMjj77pbdlRj/T0=;
+        b=PSPbu/7uPqoGHdaXmHIOPP59cBz6VmLuU1y9nao0zzL5bCeNpHJSdoJCDSWv8j2yjX
+         VSji2yhRnfy1+2YbCNW7x0XpjR0dLhzLNGAAKdeyjGfigEMnBpWJUoJhkCQNlJoC2q7k
+         iiYkzlICsWIQJRw63ZtHu3xLrIcra6IMn9ezEeoKJqLzSfBheWgIXXQmj3FcLbYgr6Mt
+         87AbYwjwB/YsAzVD6wFSS6jeNj1kRrIHNgLowAALh6niDsbBkLwQWCYhh+Lq61oaNbIn
+         F7gOII7rJN8KuvbiWxYqFFmZjlwrzr3D7j9ULlxABKJcMloHcCgmEsrr7BFXQQ06S339
+         2hfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791484109; x=1792088909;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xZEd1koy5JUNRs9RrhkiE6ort9fMSMjj77pbdlRj/T0=;
+        b=se4eGBnJ4em7sEXe/bsMFtuK6W/8AkmNSl3tEHzUGlPzILZ5E5gNRrLKC5oREMLY0v
+         MlNXlaJE9y6I018WKP6wHYry1ai5H1wlucGuBWInhOj5ksjZv53BBGvP39m32zY1O6ta
+         DUL4GpTMT70azAoM9/8jPjF5wsDfrsgZ3i8UH4yADTAasenV+bUvGJHA43phTnB/MWfi
+         tfvM604SXiHDW5rYAboerbzztyo4VGWxO/Qy2sSk4prr8+PjkpuaNc9AyjusGnDI5VQD
+         3vLRANJhRAHdSnwUXJOff38uWqUewyKsm6II1avYgm30DXy+zDzKCXjuEXe3Dy8lQCmg
+         7yXg==
+X-Forwarded-Encrypted: i=1; AKwUvBw+GXojiYMzgqJF10xX+2ZA/FEqsIveJqUuRDXYRE32T23XuujOwDWs2s/jG5F/h3KTNjjL6tjdCA==@kvack.org
+X-Gm-Message-State: AFuF++kAd3Ayt6k9fI/761VPljsqATFAsWNFZkZFgfisspL0zZo/be6v
+	96sBuAvnmJYHYTaM7qcQi31dvBR0ZtG5Y4r3FQwGxyZ9cvwQeOvFP/hG
+X-Gm-Gg: AYBFou1kzYIRWV0byFsHzuXp/uXlxA9BW2Qn7JEq/p7pZ/t7BQElv6jDjgbaeq5PlsL
+	nW9i3shjszqPfNWM1oMY8SY7wD+s0e69F9Ev+GtyEE2yIqA+DP/1IS0/8jTIs5JlgTeWv0Zwpwk
+	fVRt0KIrQmvq0K7ByNAPE8+ZmxyCTl+c1VxojpwJ9aRBYFtzQecRxH16xxp/wBQCzRW8fIQHdPR
+	3/wF0JqGLCu/DAO7vKlme8XlKz002th7GZXVyMJSAJw5jGUMO3qukBYBcYXoPuRAmTtBmdjFLQC
+	g/6SpwXjmUg8QEpJQsBsA1h9bzPpJX75e0aHmz+YFqgx9qogf97G3M4fIJlTxL6gaNbzGR+gIVJ
+	7W6p1HIOAFSuYm8QHnUkPyuUtK+l/Rt/0KIXnQftrTLw17nipV9LVtB+TSqefHJISafVxaLBYvq
+	Bv/ONJfo/KQDV2W9hFI0TZitPKx32qdfUREjh1As2hEq/QEADHbLwCo3n3jT45cFguDoF06+P3i
+	SG++jncHv4=
+X-Received: by 2002:a05:701b:4519:20b0:151:2068:e81f with SMTP id a92af1059eb24-162076c832amr7195694c88.27.1791484109046;
+        Thu, 08 Oct 2026 11:28:29 -0700 (PDT)
+Received: from penguin.lxd ([12.187.136.98])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a2d2db98sm57236c88.10.2026.10.08.11.28.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 11:28:28 -0700 (PDT)
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+To: hannes@cmpxchg.org,
+	yosry@kernel.org,
+	nphamcs@gmail.com,
+	chengming.zhou@linux.dev,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	linux-crypto@vger.kernel.org,
+	kanchanapsridhar2026@gmail.com,
+	linux-kernel@vger.kernel.org
+Cc: rientjes@google.com,
+	willy@infradead.org,
+	senozhatsky@chromium.org
+Subject: [PATCH v1 0/8] Batched zswap_store() with compression batching
+Date: Thu,  8 Oct 2026 11:28:06 -0700
+Message-Id: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aseMsMGpGPT/G548@pcnci.linuxbox.cz>
-X-Rspamd-Queue-Id: 757A3100005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8723940006
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Stat-Signature: aqwtqjtzeogjdk578axng1oaa4ijk11u
-X-HE-Tag: 1791483871-813774
-X-HE-Meta: U2FsdGVkX1+R72BkV5hjGnagdPbeKB6bZT5aXFDW8B65pTTCKkMXJRNqXzmwyaaUc5K9VYEbATgyw1d6YB3PBHiAYvza6S2RxvC6F/X0hKQZoVzCm8m9QcmqcVstZZKB6HPatqUKr/ZxkVWD7KorEpwwU3IANvI5eoLiK2gnUfn6vG7Ss9HmvNq84hfEoErMFrTA12snQ4WcBKf2NCbmEflnMBFA/ukDbCK/tW6cV4sLuO/mNsbxCSB+tTtdgSQGx1Fc9TZIz05gFeyCoQyWEirnLgIEfEGWKOxVX4Py9VnzTv39R+pdjWnFWkTtmYljkE/tSWs3JWYvnOFuB9sq0L2t+mqii859851q1phoOlhwHTakkI9X3wVqrr++e9Xw9J7JNvgPEASMo4Zw/yjMeFNxe2D/iLbDrQ87BKMw+ddOg5QdCewrty9cylJJRDxgw7hHyfx7af/nM5rBOEzeSpK1FoVrLt2gTlqatpxMQVgkKka6rM93mrzZuW230lHFLW4vFs3zUu5NjiEeOe+w0sPNuKxNl0CfscnznTsXZ/Xc+Aw10VRptaEpkTsZ3BKQ7MqMTaN9hxOhbEcluyhuudfr+A3+xXJal9fOx3eKfMN4TD7N4V6FSz+EEPjZrSw6JD3g9F5hyJBKSCTGBjoUOKlF5+9U+OZkYyL31oRcmF0FhtQDzK7WxvqyKWONBVZwa08mQrzzXQX9qvJExeu2GOSndbxpEn4szh4PjKiDjRauu2fOwtDB9wLz23scd8HgwH4Sgus1XUgHdtppJB1OTapsBwE/aIAMyHatsk0MxvlJkFLMch3bQz4uudtLAvOJtfShlQNjMQQKnsIQVp0uacU6MkSw+k/Ph5dePMF7x8PChp8DO5PKayuvc3KcdCkvC8/UxuCHuVX6EQNN3Lspckc2aCpQarwKgY092BPDnZ/LnMQbvw/jpO94GMG0RyVgng+nfKxv7iCJDE2N+cw
- 7Kl39NdA
- MBFVSrTX+doLqgXtoFFx/4T6TZrdRkSpXXFG6GB+7RPSghmoiSJnmUQWuw7dLo66tLZo5YtVvwfT2JMfi5e+drOZdUVHAXrdA98bP+R3nUfXN2mKEXFjSj9bnM5NQnAomNUwJqaDQrgTqTiWAd0ujM6+uOTdmjW2qcTBY53EsBj7Pc8By3wFxr+QyLC7UMDcxTZf1qBkRqjAgrug2GUVF3TzJld5mT57TqmcGsPjXUt14Ikv/ZVS7BDQ/3yOlD68wh0vnr0zV4/TbCNQmPBm5vDlPlKdIL56XOAudMIKyriYhERlbROkANqnz3xB367Cr+eveb2qUn2QrC+HRjCqIzwzMGlZiUGrZN929wTVz5u5dkNjLR45gueo2VA==
+X-Stat-Signature: 9k77u3qacocmymurf6un86gac9tgxkbq
+X-HE-Tag: 1791484110-374027
+X-HE-Meta: U2FsdGVkX19X961iZv9TgMzAtWnQjKgvDfL5mKPDOAJuI1AhZgaaouH4YKMcG8NVIYNUs+J7ZYQEkpkNZ7wwxDrCPFKfQeVBuZENYd16HCocRnSyTxn8D3ug0+8xZQftyt1DUOz8BM75P3bLa3kHhhegTpTGNR4hlrCSVYryP2i2CuFYK4EzsiFrS08OppkfGAQRonvzVZZxVYiEE56J9mny7BfZA38e1CE2v52Tde7HmpT1QdfZMWRN+D4ZY2+HMG6za/gSRj9SyoF2BZ1mMrLcF/YqO89P9L7NJ4+JPBZadRKOnFBlx2WK33EGU/fU3BU+tU1BEnbFe8udObb/NCzoIYGX1LH7pUyxCRNq08zkfQQf1s0zMKr2Pu4O2sP7pdVjhxo/t8pw0aaFwtgVl7u8FW33cEZdeCSlDxZQBcOUnLlpEjfn9xQ/DjJmgpcORBj/HsUzxH0Jcj+DiWtvkJaIDeNWO3S1yPi5EK/HXa9vv2zsqQbwdfLs544NsaDK/q2HjLvIQduQ4utmGNpObQP4fJlBFfA5/sIXRCk6qtQudNPCa7BPTGidKekVk5Lq1yxvGZF7ylggTaAG+GitlxWCXR4SxebH1pRI76TlbBa723z5jM+V8UdHMwChvuPQPY1D6nvyWb6bdxul6SehyvdCR/qlCGQdRtjRIftNikXDskG6ynnHWByPSVMUuP9imANI586tcWELXtsD4bLoSjH92dMd6l0792O64UquCpFBaobI0U8WSRFSbwJahM8MhswJIAjztXSXOZQ8jQNinP2rGTSGp3a7N+RGFP/omASmxbraNR2wiQBZ9dqyVdQYxKhrVWh9ct9fAQGSC2YrcLgzxQUIqMdgxz0nf5tjRTIx3lPiJUzPQ6xn6JD8IRb7Om6KCGMg4yUgexgrA3RfPzF7awMOz3HDnNWtNXp38dJoz3ZwFPjrnE/OTapdT8htWtQA1gl31LJuFM3T5Fp
+ MILa+guT
+ XsnRpW8Ll84Q9E0z6q7WxTbDYb9bt2Xd+pOBh3UE+/lyZ+tlJGxUf6mcDciUTpOqXjbvg+VES1cEfcrwIwmjqvcH4m40qc2cWqQLKpBg7PnVgY1qY8tt4z3KDD+8U2685YzbS4cqVZQsuN9tBORyeAmbDI7XGZirCFCEXtgUWHUaQETJd2wkN45aFzzyd2D8KkCUi8Fs6/IWviPfC1V0kg7EUU2GZ79r9sk6JDqOn1k+fAQW9dmvnlJqZRbiPRdqReWYLXfwnagMGUnNqJK+W/SU+7RLKRBDpLt49/WdqjGQ18MqdBZXF/h5JTtzG1mznZ9XUaJob3sawUA/z8I/dLQoumgt4ztQTPiWbcN+4iYzy4/ixg6Vf1NO/c1B7a4VHNI4n/4WaPOdqXTw3Z3y/GDWMXI6GUyxBeIiKvTMrN/uHBtXLWo2afUwvpKNYCDb2RZrIbdFS3BrNhwufkI9++4d2heA/m1ZBGR7AYc2NtchOBdv749Dr8lA4yK2SHvkYvnLzsv+AwBH3J9O0MBV2V+wDYp1uo5cnOYN4mp2HAZ69WQR06k/rUPIc4ZBOiFBW3xUyJRo8Wi4V8leWW10rthWd0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,91 +126,243 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 08, 2026 at 02:29:36PM +0200, Nikola Ciprich wrote:
-> [11402.940943] BUG: unable to handle page fault for address: ffffffff0c93001c
-> [11402.942273] #PF: supervisor read access in kernel mode
-> [11402.943629] #PF: error_code(0x0000) - not-present page
-> [11402.945025] PGD 6d6f83a067 P4D 6d6f83b067 PUD 0
-> [11402.946469] Oops: Oops: 0000 [#1] SMP NOPTI
-> [11402.947950] CPU: 23 UID: 0 PID: 704950 Comm: servercare-moni Kdump: loaded Tainted: G            E       6.18.55lb9.01 #1 PREEMPT(voluntary)
-> [11402.951254] Tainted: [E]=UNSIGNED_MODULE
-> [11402.952913] Hardware name: ASUSTeK COMPUTER INC. RS720A-E12-RS12/K14PP-D24 Series, BIOS 1201 08/25/2023
-> [11402.956569] RIP: 0010:__d_lookup_rcu+0x4d/0xe0
-> [11402.958452] Code: 48 8d 04 c2 f6 07 02 0f 85 a0 00 00 00 48 8b 10 48 89 d0 48 83 e0 fe 48 83 fa 01 77 0d e9 80 00 00 00 48 8b 00 48 85 c0 74 78 <44> 8b 58 fc 48 39 78 10 75 ee 48 83 78 08
+v1: Batched zswap_store() with compression batching
+===================================================
 
-What is that kernel?
+This series is a spin-off of "v14: zswap compression batching with optimized
+iaa_crypto driver" [1], and focuses on the generic crypto_acomp and zswap
+compression batching enablers. Resuming work on this series following a gap
+since v14 (January 2026). Please note that my email address and affiliation have
+changed from kanchana.p.sridhar@intel.com to kanchanapsridhar2026@gmail.com. I
+have retained the original Intel sign-offs on prior patches for historical
+attribution while signing off v1 of this series with my current address.
 
-6.18.55lb9.01
+To summarize the main contribution of this patch series: Batching is introduced
+in zswap_store() of large folios: we carve out a large folio into batches of
+ZSWAP_MAX_BATCH_SIZE (8 pages) for software compressors, and store each
+batch. Moving the fundamental operations that need to be happen to store a page
+to now work at the granularity of a batch offers opportunities to optimize them
+from these perspectives:
 
-The other machine has a 6.18.20lb9.03-something one.
+1) Utilize existing kernel API that minimize obtaining locks for bulk
+   operations, e.g. kmem_cache_alloc_bulk()/kmem_cache_free_bulk().
 
-How can I look at the vmlinux you're running and the sources?
+2) We keep the working set for each of the core store functionalities (alloc
+   entries, compress pages, store pages in zsmalloc) to be focused on a
+   batch, thereby minimizing cache evictions and benefiting from cache
+   locality.
 
-rIP points to:
+3) Along the lines of (1), the main zswap_compress() batching routine obtains
+   the acomp_ctx mutex lock once per batch, and releases it after it has
+   processed all pages in that batch.
 
-[11402.958452] Code: 48 8d 04 c2 f6 07 02 0f 85 a0 00 00 00 48 8b 10 48 89 d0 48 83 e0 fe 48 83 fa 01 77 0d e9 80 00 00 00 48 8b 00 48 85 c0 74 78 <44> 8b 58 fc 48 39 78 10 75 ee 48 83 78 08
-All code
-========
-   0:   48 8d 04 c2             lea    (%rdx,%rax,8),%rax
-   4:   f6 07 02                testb  $0x2,(%rdi)
-   7:   0f 85 a0 00 00 00       jne    0xad
-   d:   48 8b 10                mov    (%rax),%rdx
-  10:   48 89 d0                mov    %rdx,%rax
-  13:   48 83 e0 fe             and    $0xfffffffffffffffe,%rax
-  17:   48 83 fa 01             cmp    $0x1,%rdx
-  1b:   77 0d                   ja     0x2a
-  1d:   e9 80 00 00 00          jmp    0xa2
-  22:   48 8b 00                mov    (%rax),%rax
-  25:   48 85 c0                test   %rax,%rax
-  28:   74 78                   je     0xa2
-  2a:*  44 8b 58 fc             mov    -0x4(%rax),%r11d         <-- trapping instruction
-  2e:   48 39 78 10             cmp    %rdi,0x10(%rax)
-  32:   75 ee                   jne    0x22
-  34:   48                      rex.W
-  35:   83                      .byte 0x83
-  36:   78 08                   js     0x40
+4) Any zswap store functionality that works on a batch can potentially be
+   parallelized as a next step, to further improve performance.
 
-I need to be able to pinpoint it back to the source.
+Performance data: usemem with 60% over-commit:
+==============================================
+Validation was done with mm-unstable as of 10-3-2026 (Baseline) and with this
+patch series.
 
-I asked the last time:
+Testing was done on a Chromebook with a QEMU "vng" VM running in Crostini.
+    
+Chromebook Diagnostics reports:
+  Intel(R) Core(TM) Ultra 5 115U (10 CPUs, 4.200GHz)
+  RAM: 16GB
 
-"Just to rule out any other issues which got fixed in the meantime, can you try
-mainline Linux and see if you can reproduce your observation with it?
+vng setup:
+         Memory: 7G
+           Swap: 3G
+    Pinned CPUs: 4 (E-Cores: 4,5,6,7)
 
-If so, you could share your crash core along with debug kernels yadda yadda so
-that I can poke at it.
+zswap compressor:
+  ZSTD
 
-And before you do, make sure you have the latest BIOS and microcode installed on
-that machine.
+mTHP enabled:
+  64kB
 
-Also, where can I find full dmesg and /proc/cpuinfo from those machines which
-trigger this?"
+vm-scalability/usemem setup:
 
-But still nothing.
+  cgroup memory.high: 3G
+  4 usemem processes, each allocates 1200M anonymous memory, reads the
+  Silesia dataset [2] from a pre-fork-allocated buffer into the 1200M,
+  writes to each unsigned long in the 1200M, sleeps for 10 sec, then
+  frees the memory and exits.
 
-Imagine this issue has been fixed upstream but you don't have the fix in your
-kernels and we're basically chasing the same thing again...
+    usemem --read-silesia -w -O -b 1 -s 10 -n 4 1200M
 
-Sorry, but I have lost my debugging crystal ball which can help me guess what
-the machine does. :\
+ usemem metrics averaged across 10 iterations*:
+ ================================================
+ 
+ --------------------------------------------------------------------------
+                                          Baseline       Patch     Change
+                                       mm-unstable      series       with
+                                         10-3-2026          v1         v1  
+ --------------------------------------------------------------------------
+ Average Throughput (KB/s)                  11,794      17,810    +51.00%
+ Total Throughput (KB/s)                    47,179      71,242    +51.00%
+ Average Time to Free Memory (usecs)       490,973     294,920    -39.93%
+ Total Time to Free Memory (usecs)       1,963,892   1,179,682    -39.93%
+ --------------------------------------------------------------------------
+ * vmstats are as reported at the end of the 10th iteration:
 
-> so we now know this didn't fixed it. however I didn't have tlbi=ipi set, so I'll
-> now try this.
+ 64kB-alloc                                834,567     828,199     -0.76%
+ 64kB-zswpout                              700,138     743,697      6.22%
+ 64kB-swpout-fallback                       35,342      17,978    -49.13%
+ 64kB-swpout                                     0           0           
+ --------------------------------------------------------------------------
 
-That won't help either but if you wanna try it.
+ The speedup with zswap store batching of large folios has a propelling effect
+ on other parts of mm, especially, by enabling large folios to be swapped out
+ without splitting, as the data shows. This enables other mm components that are
+ optimized for large folios, such as munmap(), folio refcounts/mapcounts
+ updates, PTE invalidation upon freeing memory, zswap_invalidate(); which
+ benefit from xarray offsets/range continuity. As a result, subsequent large
+ folio swapouts are more likely to find contiguous swap slots, there are fewer
+ large folio splits during reclaim, more mTHP zswpouts and the cycle
+ continues. As the data demonstrates, this directly contributes to more memory
+ over-commit opportunity.
 
-> any ideas on this new info?
+Detailed usemem metrics/cgroup memory utilization/vmstats:
+==========================================================
 
-Yes, see above.
+ A) MAX zswap pool_total_size vmstats:
+ =====================================
+ This is a snapshot at the 10th iteration's peak zswap pool usage:
 
-Bottomline is: without sufficient debugging data and up-to-date hardware,
-there's not a lot I can do.
+ --------------------------------------------------------------------------
+                                    Baseline             Patch     Change
+                                 mm-unstable            series       with
+                                   10-3-2026                v1         v1  
+ --------------------------------------------------------------------------
+ pswpin                                    0                 0
+ pswpout                                   0                 0
+ thp_swpout                                0                 0
+ thp_swpout_fallback                       0                 0
+ swpin_zero                              594               548
+ swpout_zero                           1,062               864
+ zswpin                           10,603,882        11,070,673
+ zswpout                          16,594,356        16,509,201     -0.51%
+ zswpwb                                    0                 0           
+ nrswpin                                   0                 0           
+ nrswpout                                  0                 0           
+ pgmajfault                        1,460,360         1,470,092      0.67%
+ nr_free_pages                       897,249           908,935      1.30%
+ nr_free_pages_blocks                892,928           903,680      1.20%
+ 64kB-alloc                          831,788           825,556     -0.75%
+ 64kB-zswpout                        690,961           735,863      6.50%
+ 64kB-swpout                               0                 0           
+ 64kB-swpout-fallback                 32,982            16,545    -49.84%
+ 64kB-swpin                                0                 0           
+ zswap_pool_total_size         1,420,120,064     1,377,210,368     -3.02%
+ memory.current                3,390,189,568     3,299,569,664     -2.67%
+ memory.swap.current           3,221,221,376     3,221,221,376
+ --------------------------------------------------------------------------
 
-Thx.
+  B) STEADY STATE vmstats after usemem finishes:
+  ==============================================
+  This is a snapshot after the 10th iteration finishes:
+
+ --------------------------------------------------------------------------
+                                    Baseline             Patch     Change
+                                 mm-unstable            series       with
+                                   10-3-2026                v1         v1  
+ --------------------------------------------------------------------------
+ pswpin                                    0                 0 
+ pswpout                                   0                 0
+ thp_swpout                                0                 0
+ thp_swpout_fallback                       0                 0
+ swpin_zero                              594               548
+ swpout_zero                           1,062               949
+ zswpin                           11,526,695        11,963,729
+ zswpout                          17,293,120        17,219,911     -0.42%
+ zswpwb                                    0                 0           
+ nrswpin                                   0                 0           
+ nrswpout                                  0                 0           
+ pgmajfault                        1,591,298         1,596,095      0.30%
+ nr_free_pages                     1,752,789         1,753,264      0.03%
+ nr_free_pages_blocks              1,258,496         1,240,064     -1.46%
+ 64kB-alloc                          834,567           828,199     -0.76%
+ 64kB-zswpout                        700,138           743,697      6.22%
+ 64kB-swpout                               0                 0           
+ 64kB-swpout-fallback                 35,342            17,978    -49.13%
+ 64kB-swpin                                0                 0           
+ zswap_pool_total_size                     0                 0           
+ memory.current                      757,760           802,816      5.95%
+ memory.swap.current                       0                 0
+ --------------------------------------------------------------------------
+ zswap debugfs counters:                                      
+                                                              
+  pool_limit_hit                           0                 0
+  written_back_pages                       0                 0
+  reject_alloc_fail                        0                 0
+  reject_kmemcache_fail                    0                 0
+  reject_reclaim_fail                      0                 0
+  reject_compress_fail                     0                 0
+  reject_compress_poor                     0                 0
+  decompress_fail                          0                 0
+  stored_incompressible_pages              0                 0
+  stored_pages                             0                 0
+ --------------------------------------------------------------------------
+
+
+[1]: https://patchwork.kernel.org/project/linux-mm/cover/20260125033537.334628-1-kanchana.p.sridhar@intel.com/
+[2]: https://wanos.co/assets/silesia.tar
+
+
+Changes since [1]:
+==================
+1) Better cacheline placement of struct zswap_pool and struct zswap_entry
+   members for temporal memory access efficiency in zswap store/load hot paths,
+   while minimizing holes.
+
+2) Refactored the core compression batching functionality to a separate
+   __zswap_compress() function, which is called by zswap_compress(), as per
+   Nhat's and Yosry's comments. Hopefully this helps explain the outer "store
+   batching" zswap_compress() vis-a-vis the inner "compress batching"
+   __zswap_compress() distinction.
+
+3) The acomp_ctx is locked once and is passed to the routine that compresses a
+   batch, per the algorithm's batch-size. Similarly, the folio's node id and
+   writeback_enabled status are computed once and passed to the routines that
+   implement the different store functionalities, to save latency by avoid
+   localized recomputes of information that doesn't change.
+
+4) Moved the folio node id being stored in zswap_entry to a separate patch, per
+   Yosry's comment.
+
+5) Addressed the kunmap_local() issue flagged by Jixin He in the
+   IS_ERR_VALUE(handle) error path
+   (https://patchwork.kernel.org/comment/27095925) - thanks!
+
+6) Moved comments inline, per Yosry's suggestions.
+
+Thanks,
+Kanchana
+
+
+Kanchana P. Sridhar (8):
+  crypto: acomp - Define a unit_size in struct acomp_req to enable
+    batching. mm: zswap: Set the unit size for zswap to PAGE_SIZE.
+  crypto: acomp - Add bit to indicate segmentation support.
+  crypto: acomp - Add trivial segmentation wrapper.
+  crypto: acomp - Add API to get a compression algorithm's batch-size.
+  mm: zswap: Store the folio's node id in the zswap_entry.
+  mm: zswap: Store large folios in batches.
+  mm: zswap: Optimally place members of struct zswap_pool, struct
+    zswap_entry.
+  mm: zswap: Batched zswap_compress() for storing large folios in
+    batches.
+
+ crypto/acompress.c                  |  47 ++-
+ include/crypto/acompress.h          |  62 +++
+ include/crypto/algapi.h             |   5 +
+ include/crypto/internal/acompress.h |   8 +
+ include/linux/crypto.h              |   3 +
+ mm/zswap.c                          | 571 ++++++++++++++++++++--------
+ 6 files changed, 528 insertions(+), 168 deletions(-)
 
 -- 
-Regards/Gruss,
-    Boris.
+2.39.5
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
