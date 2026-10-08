@@ -4,101 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A12CCA600B
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 07:31:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E77E7CA600B
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 07:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 419EC6B0099; Thu,  8 Oct 2026 03:31:17 -0400 (EDT)
+	id F19016B009B; Thu,  8 Oct 2026 03:32:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CB2C6B009B; Thu,  8 Oct 2026 03:31:17 -0400 (EDT)
+	id EC98C6B009D; Thu,  8 Oct 2026 03:32:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BA6F6B009D; Thu,  8 Oct 2026 03:31:17 -0400 (EDT)
+	id DE0206B009E; Thu,  8 Oct 2026 03:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0986F6B0099
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:31:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92677A79D5
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:31:16 +0000 (UTC)
-X-FDA: 85298638152.07.2AC79C4
-Received: from mta1.migadu.com (out-29.mta1.migadu.com [95.215.58.29])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 77C2C80005
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:31:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ezwG4nhP;
-	spf=pass (imf02.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.29 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BA61A6B009B
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:32:22 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 299581A0498
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:32:22 +0000 (UTC)
+X-FDA: 85298640924.25.0957709
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5A60A40007
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:32:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=F+LI+bFp;
+	spf=pass (imf17.hostedemail.com: domain of shinnkka1@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=shinnkka1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791444674;
+	s=arc-20220608; t=1791444740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w5JY2b/LqTJLxFtNLoW9b7HKljP8catE0jGTQduKh9I=;
-	b=773UD5rSkzYwyECUs+dojQW6JzItU/UC0e9JqRwOdHI/zuIjNx8LG9MgMFHXmGiqXMM3D7
-	9AJnq8oDRMHUIc7+p+GOEe7kKbvw5buYjFDk7K1SnEcECWZpvFSPf+vs6UB6lPs69hmzoz
-	mpJK35bR2X8Q//pZYam4hT6u7oIoz0Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791444674;
-	b=iAwpai8gPRfZU14vnpZ/IDVi2kH+vHiB8+ISMR9oddn0Hg7/bSVfKFCyBx4Nn2HhDw3/Tk
-	KMoeZBOmz5YcisX6lPcb+EkKuS3ybiOKRLFoY2ucL/h2ZHrMAqb49dntwDuxZEv+EsYZad
-	b6UfPdbAY7v0ZptKu0QuXzhWYzZyauk=
+	bh=zotoUUd1Wxpr/Rqn7FDDFNQ8BsusfwhWR7TkmGa+070=;
+	b=76IVlLXdNAjR7mvU1cRkDVdtdzXA7B7iKLpOJQbLeujfI4xbj/8Y+3rv6IELk8Np4hek/c
+	zAjg2VIneQH6pFUA+dGgR7uO/qJo4CshZqGhrL07YMTEWGuZgbD25hcweon8aLHowHOtxw
+	xlrn7lW/KQv/RArVFdxLLFW04cIrurc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ezwG4nhP;
-	spf=pass (imf02.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.29 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=JEx2OLckwemutil/MN151E8aEqCJockn3ZT2A2YL1GI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791444669; v=1; x=1792049469;
- b=ezwG4nhPyNVkBBwhdSClSW+Wyjq0AnX2ZF77S+N7PIiHK1DGKk/nvPNh+GHQX47wWpc+8KV4
- 0AQtP/2bb0mil3X3PQbyjqk0+BGTJ0ixggS7qxUHQOpfEXRvrUkpMo0g/t24YO9pEAXq92b2m5j
- B8UMJAs3DtzXLurpE5z6X9ao=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0f9abccb4081472f;
-	Thu, 08 Oct 2026 07:31:07 +0000
-X-Mizu-Trace-ID: 0f9abccb4081472f
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <85b3725a-6dde-4a57-b303-4ae2b53b60a5@linux.dev>
-Date: Thu, 8 Oct 2026 15:30:49 +0800
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=F+LI+bFp;
+	spf=pass (imf17.hostedemail.com: domain of shinnkka1@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=shinnkka1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791444740;
+	b=ZEA+RzRoo9ZUVT9sbzDY53fprao4fM/A09dmDQPcZExN88Dh72Pxhui1mN6qLiplwkgvRl
+	JjMoz3oWGOX/ZWPX15x7cspHt5Be56a7fSYqGyWLH0Le6tZX1QLsu5EpDm5KOY6Hkzo6NF
+	/HNe0Jy9mXVFuIOawGO9xYXhzhKRu6g=
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3a6e6f80d64so116182a91.3
+        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 00:32:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791444739; x=1792049539; darn=kvack.org;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:content-type:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=zotoUUd1Wxpr/Rqn7FDDFNQ8BsusfwhWR7TkmGa+070=;
+        b=F+LI+bFpThxps+XZRqFt4+aB0DkOS+35QIsf/h8rxDDjcUHCCXOcE74o4H4x9wU41t
+         VKqNsmqBL/HR6/zl7zbBRkLPupjZv13UPGwVv0vl6tBYL1Ui2CnvPTILqFdD5nWz7djr
+         mkXzGLT6v+3O+Qo5xtlO2hxejKNrWD/oF2W0p0hfap3gMwS88lGuh1t++L6BZqRMx8Le
+         bJr93/PgAjMduWSBjrmJhfyVd92HsuE0HCOq8Q3YrVmF17EGgaau0NWZflYEiWtyqiKc
+         y0i+xEc8K9pnpqkovZOnJMGX7QwXBqO/IZSRwD5D0XECYfrq8uYDbPB8bS0HcB4svKex
+         2Eww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791444739; x=1792049539;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zotoUUd1Wxpr/Rqn7FDDFNQ8BsusfwhWR7TkmGa+070=;
+        b=Z5Iac9T7aialztBTdm/BezYowUYpvcmTrTHbNCEmgkNCsEhgLE2lhTkoQ1eoI0euxE
+         wV8sTnL55g9i1z8AveiCd+CMthGTp+WNx/EzfLPULuu5lRZMtTczK+cb3qlDu48NaMzx
+         CaqyNtWDbKkMmAhXZIaZ6+pPy+e9eK4l+Gy4FQrJJCkJEjnz3yLrQmWL3MnImT1fxgYf
+         gHukyNke0NJ2KbEm44jBbudPP8ywayZuOV06fy10P3v1UQOtokrPvbG85jQiWMX/657j
+         Fsi3QDSHEOcZdGgUdIsdg8R/Ek3eaAGimbrTSvQUIua3qw6NnD7pPZKeC5x+EnzrfNhD
+         lSTQ==
+X-Gm-Message-State: AFq9FYIVF8F9Dr4uRQNQQi0JD6u4aaZ0RKEr1lec61Z5HwA3eWFU/JTN
+	9a6bPXkKY/j2B83vg+Yw1QrCFISLxhHHMBB8tiqXy1M1b92khy82N0yS
+X-Gm-Gg: AYBFou30SD/M1BV13szm/KpDLeiL8wyREPoYOo//1vJIZYiDTuQ4SdwUdErpa42+a5L
+	v+JmjoKNYAgIQJWwWK9ehhlw7e2XAMkwJ58uYH7aGcH3cVprWs8aRUOvkhzs2kRn8cRw099ihOe
+	rRUXccdxL/F4tivofPCF5Zkjl2iMSY91+BLQCdQ+yrsqIlJGENRW7JRaQUjvrr9haHC8SGjVxau
+	1K+Ib0og9mPm5ZDRi1ReONTeMASNUqCaolMbd35kB3VAjir45U0KMMz54NMN4LLc/7tO4Shb6wJ
+	yl5LoMLnFkt1urTpGSJeVnBFNwitntisXCguoEA+HQYSZ8TCKsErnT5V6PNisHnW69jpsN7E0ZE
+	eHQ6mob2jz06JUzu6B79THPNDwHevi3GgU221/+mhzl5svdRVLieTlpFNZalO18fwHiMU3pe03N
+	ywlxzMMx77yCNanqRdPw2tlCQly4V8GkBIQvYSHimmsTGPW9GIPjeuY9MwfXWE1C8Lj6w4k2HO
+X-Received: by 2002:a17:90b:4ac7:b0:3a0:238b:db4d with SMTP id 98e67ed59e1d1-3aa9a3e94d8mr2513191a91.5.1791444739105;
+        Thu, 08 Oct 2026 00:32:19 -0700 (PDT)
+Received: from [10.141.37.220] ([138.199.21.232])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd0aa275221sm2596869a12.28.2026.10.08.00.32.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Oct 2026 00:32:18 -0700 (PDT)
+Content-Type: multipart/alternative;
+ boundary="------------RzhOZaR4eBGtIVCFfjlsXVhP"
+Message-ID: <3b42be0c-a417-4047-bd20-56c8c4d9e6be@gmail.com>
+Date: Thu, 8 Oct 2026 15:31:53 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 16/19] selftests/mm: add khugepaged race harness
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- Muhammad Usama Anjum <usama.anjum@arm.com>, Usama Arif
- <usama.arif@linux.dev>, "Nico Pache (Red Hat)" <nico.pache@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>,
- Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- Michal Hocko <mhocko@suse.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, kernel-team@meta.com
-References: <20260919002451.496763-1-kirill@shutemov.name>
- <20260919002451.496763-17-kirill@shutemov.name>
+Subject: Re: [PATCH] fs: Free any excess xarray nodes in clear_inode()
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ Rik van Riel <riel@surriel.com>, Zi Yan <ziy@nvidia.com>,
+ Jinjiang Tu <tujinjiang@huawei.com>, Dave Jones <davej@codemonkey.org.uk>,
+ stable@vger.kernel.org
+References: <20260623192850.1595958-1-willy@infradead.org>
 Content-Language: en-US
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <20260919002451.496763-17-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Chen Xiaokun <shinnkka1@gmail.com>
+In-Reply-To: <20260623192850.1595958-1-willy@infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 77C2C80005
-X-Stat-Signature: 13maowrtdh4s67i77yubhu5kwjm1ubka
-X-HE-Tag: 1791444674-872670
-X-HE-Meta: U2FsdGVkX1+btzFxgEV1zUi0Llen4Xj+NraJjyCP5og+VvwefcNC1no0eBj/yLY0+b9syZnS1B+No69l+56VRLoDb1Ie7j/qxSlqBFBlJXrLgI+KkWQ4OmyuOuFuR0uRYViPOqSuJTNXyo02Fh8zeFJlzFFNohnaBcsdAPDmUyo6szpSY/fNuh2IaTQebP2usL9NMXL5i0kNkpSo7Sz71wiAeqMh1zTMuaGzE1fdkyx5wbWsoFFQjQtpICrY+XbcwpxgVjNNi9pMyikfso6yYCG9N0fW6rdnmN1Q3EGRzqphJINtaIwahvwGs+mH38Lzluk1yxO5/Otl87zE15bGrMJo7Y9b8WcLXOPiZHeXCOu1AiXY2Zk44xqq+tBI3ap0b31du4k3bE56krMf0r4C1S6qyjsnRaaF06HcrMtuUcfC7B2JdQdVljSDlzwkdGprbgedJ6XnqoBwqBDRy5kVv2xbDC5laBuPEl9IZMV/yOyVfqPbrdRtZE4gV/nn06V5VGOwHknXcUoiZzw2T0YbSsA68Z01ZH7QWYidxJ3e/GpuwHjD0UfXZ/4z/g+jZALlCVdgAcGuyEnfxPYkYTtCtk4t/eWe/rmMo+PfGfbqz9I5qAi7tsxbz9NYj1eyoGxxU89+BhBjtgSvzjKV+Ms/hFDyW1LL+JYHGtWUSyMeko3yAbxQmQpdJHImVXnu1Rwqv5JZuxE3qsKGUOFmzAp36wa7SneZS95m0oRQOoaSuR6pfVNhZpNB08Ty2b1dTqwKFhHYxXnKRp4nidnd6LdYLvfTxma6SQdqgaNe1btcZHU6f+j4riqOH1Kx2PKMZ2aHPqwVKtbKGEXS2RhPecCotzo4IM+P3LyHIWQ1XqqmUACO26Qjl8esj3y8cLXOSGkkcQtiYbBI1qQHb0i5lr9BGkEaPGT76WrjDohTnGDwPggrMMJ2tgXPahuBthg5e99KzBixENVAGgUCVkyl14K
- a1uyLoqc
- ptg8skeiDNqBWr0tlUcggfi0URC8qWn9uRN7HW7SjsIx4SSkuOsoddnvKXXtuRgMCJCcw/RsNovUNgnGPwlO4GwrgjT4cO/Jwz5UIe3PYVemWqMfZla+BwC1SLeAdJ1+ZY6v1A9cfWsjaWzY7BisaCgJvjOfYXE4GGtuo7xBUUpXEV9NADfAbJHOiz40TflyYGD7pW1GhW+6IFI4Vvx2AXDcUzKzwvbdS3oAfi6aGwSwh5APe0QJDrv5quLVt61E/W2CdyfEW9Nld8NLikjmzSRR3tfZ8l61KoFzhFVAaBlI+uLA=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5A60A40007
+X-Stat-Signature: ppnpct5ayrf7a7i8ngsmdhmfq8h63z6g
+X-HE-Tag: 1791444740-507264
+X-HE-Meta: U2FsdGVkX18+dgigVoqd6KDqGsHjR6WjTitNWJOri4I/ayTZVL43xfGCZ8xN9mh2cytnMwuVksqzfXD2/za8latKjJp3jMxV8tIys/aQOGZyXhUOWIXNIbcs/3hoTqS95m2ydMi2Qz5LDaaqz2qJU+DjIhO7Zxco+LlJSf1Hf+g7kQUhjQSuGhAdzyfhPb0K5XcXf3+gBpvP8vJp6H0nQK/A4kzLWPffHm9orheWqQeEI63pdFiJ1N2jYvwWPQgzeovFkzlCFJCkMGnG5V25+qQUKFfuv0DLqLJimPyFhpdvtMhTd2xWrDd+jIN85BX3he1IFWfFpxSRTSp2loS0G6TMk7qKKulqvBrfXv0a70vNkrw0u2Wu8qWnWFLmv22IE2a1u6L1/cVpOlTcrwweLnANJ+G4zeHSyNe41sg4g4+2gqHaW9ZGPotH3KugvIbxL5SlRiORVi/sNHgqksZvz9RtRxegYBWnVEglHJq2UvEey0xz6MPR4oG9iQFhG7ULXnkmJ+Lx7iEwBSVdBNI+SRj8GvOe1szdtSZPNTJzYIFjnkIrRiAiqJtzZJIkYPNXVSu2gl5F2bc6euL/ltED9qnNyg6INjeTMgc9WNuGmB2wx3Jmp5TLTKDvs1JS56a5vfbL7rJ9KdOWkhQt1yxId71mHpYhQHkyYpcvDf/TYXtYZ3CirhCHTWCo+2IHdTiDrxqVR6H6zxALDJA4awVez4ahozHEMAxR0c4HsIJG4ZJSWENduXD9fnReA2A5cX2L/6/QrRXK32A+B2aL1gzSywLDXEH+SnYINkDDEASkTPI7ghwFMEwiMDTAs2ouHSlZ8BDFgXCo8txySAbXmsfUNPtrJkwAW/X4OBJ3LbICpQBftgJCu3i78+dToX211ZsOWYPMmw5Vr00QstQcQet8YeFmvON7dPGQql5lmMQW69TCvibozTlhIoNEVRPJmIuNORgxUzvgAxFJSKEu6tt
+ f0D5pZQC
+ KLSCz5l3oJPTZ6pBE0rsLZCffwoYv9cdLj/K9eBh6c1RW94MveHgGV1jQBIvblm0cVztgDKAyFuHsMvYpwP1KJhVFzhF7VvTFk/CB+6HLoM54zqB98V6T05LcBfKEsUfZQoAddCpf8Gl95TBfxxUd10lK390On+Sx4D3/9wl/GSoqWwrCvSVVsaNf4zjaGYvQPNydNYZ69kYtx4lW7rrpjA94AHyey+zUxl9gp/yce3p9Vr0RShRyCfvouPezGRC0+pqin7O3u3fw0G2b1ZNDuPeWslAOVH05fyfZSRjJB7oSkRSOT+pMgmI8l5M7J55l99I1ajZkbHZne+/g8trzRn+I5AomcmiAVSnSC3q9zNGC+Fx9psTCFEEhCVuKE/LWB5KQ7rg7jrX2RP7lXta54Vgmbw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,24 +122,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/19/26 8:24 AM, Kiryl Shutsemau wrote:
+This is a multi-part message in MIME format.
+--------------RzhOZaR4eBGtIVCFfjlsXVhP
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> +		} else {	/* madvise */
-> +			while (now_ms() < end_ms && !corrupted) {
-> +				for (i = 0; i < nr_shared_areas; i++) {
-> +					madvise(region + i * hpage_pmd_size,
-> +						hpage_pmd_size, MADV_COLLAPSE);
+> For many years we've had a hard to hit leak of xarray nodes.  Hugh
+> documented it well in commit 786b31121a2c.  Recently people and
+> syzbot have found ways to force it to happen with madvise.  Rather
+> than fix the leaks where they happen, just call xa_destroy() which
+> has the side-effect of cycling the i_pages lock.
 
-I got the following error when compiling it:
+Could this commit be considered for backporting to the supported stable
+kernels?
 
-khugepaged_race.c: In function ‘main’:
-khugepaged_race.c:506:23: error: ‘MADV_COLLAPSE’ undeclared (first use in this function); did you mean ‘MADV_COLD’?
-  506 |       hpage_pmd_size, MADV_COLLAPSE);
-      |                       ^~~~~~~~~~~~~
-      |                       MADV_COLD
-khugepaged_race.c:506:23: note: each undeclared identifier is reported only once for each function it appears in
-make: *** [../lib.mk:225: /data/code/mm/tools/testing/selftests/mm/khugepaged_race] Error 1
+Commit: ee3f01125010 ("fs: Free any excess xarray nodes in clear_inode()")
+
+The xarray node leak fixed by this commit is present in older stable
+kernels, and this fix should address the issue there as well.
 
 Thanks,
-Zenghui
+
+Chen
+
+--------------RzhOZaR4eBGtIVCFfjlsXVhP
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <blockquote type="cite"
+      cite="mid:20260623192850.1595958-1-willy@infradead.org">
+      <pre wrap="" class="moz-quote-pre">For many years we've had a hard to hit leak of xarray nodes.  Hugh
+documented it well in commit 786b31121a2c.  Recently people and
+syzbot have found ways to force it to happen with madvise.  Rather
+than fix the leaks where they happen, just call xa_destroy() which
+has the side-effect of cycling the i_pages lock.</pre>
+    </blockquote>
+    <p class="isSelectedEnd"><span>Could this commit be considered for
+        backporting to the supported stable</span><br>
+      <span>kernels?</span></p>
+    <p class="isSelectedEnd"><span>Commit: ee3f01125010 ("fs: Free any
+        excess xarray nodes in clear_inode()")</span></p>
+    <p class="isSelectedEnd"><span>The xarray node leak fixed by this
+        commit is present in older stable</span><br>
+      <span>kernels, and this fix should address the issue there as
+        well.</span></p>
+    <p><span>Thanks,</span></p>
+    <p><span>Chen</span></p>
+  </body>
+</html>
+
+--------------RzhOZaR4eBGtIVCFfjlsXVhP--
 
