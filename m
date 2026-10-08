@@ -4,104 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A628CA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 15:10:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48012CA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 15:20:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 097B26B008C; Thu,  8 Oct 2026 11:10:26 -0400 (EDT)
+	id F022A6B008A; Thu,  8 Oct 2026 11:20:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 049226B0092; Thu,  8 Oct 2026 11:10:26 -0400 (EDT)
+	id E8C056B008C; Thu,  8 Oct 2026 11:20:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA2C46B0093; Thu,  8 Oct 2026 11:10:25 -0400 (EDT)
+	id D548C6B0092; Thu,  8 Oct 2026 11:20:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CB4136B008C
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:10:25 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B3E436B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:20:18 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5AD5AA02EC
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:10:25 +0000 (UTC)
-X-FDA: 85299795210.20.3D6FEE4
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B1141A000E
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:10:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=oS54NXGn;
-	spf=pass (imf15.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40F49802DD
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:20:18 +0000 (UTC)
+X-FDA: 85299820116.20.7EB60AE
+Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 22E4FC0006
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:20:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=s-joshi.in header.s=fm1 header.b="R J+trGL";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=mJqmRJjn;
+	spf=pass (imf10.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.143 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791472223;
+	s=arc-20220608; t=1791472816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p/CEeLfN16W336hJkOodyM4bPanb1U8QuIH15EGrUS4=;
-	b=nYuCKSsvC6daeJNjcGdAEB8PgneUiM6I2NA8fvRgTceYXCHf53T+N9ubZIlVcWPZ8cZJ1N
-	Pe+bCJSAf0k9x2unIZp2jJehX6Ft1paw2tT1XinKyO8RFcI8eF5tP/Jg/4acn9rwUTp/tZ
-	RVFs+s9xDr+ZoX5Im7/7zxbPaNeg9Sk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791472223;
-	b=iXqzl9dyy+h3ZXJb+JJ0mE6Bty8i1nZmBM7z2r1CrT6Ed6dXkCSw/aUj4db7SGeMYDgQi2
-	IMgI9mGV5S1dFtr+5+m2W0+GQApSqtr5w3fg9nCrzw0q1FZfoqikrusPAMD29XdlqxAGET
-	4RE4ibroWsDcopBN64wanROguaFU12s=
+	bh=Ta9VTltlWRdF05/D8b/khNytMzX4AxfIKyly2vVwptM=;
+	b=53x7rnusVzWx+rlBp3T7AWTKtMss3H8Wh1V1SHG3cWasqeUwHi96KxgkHhZMyFe4yJJYt3
+	EI97SfdA4asSqtKgVY1RWvG84/bOzTp8k5JA8HP2ygSCqbWa+VwuTqrDT8v6DGwY1fgj1U
+	G8X2nIIBjfMdpmd545aO+EjM+Rb+g+s=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=oS54NXGn;
-	spf=pass (imf15.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20261008151020euoutp0220b133fd63f9b3bbdc21c169ebbde20a~cln4huxOw0356403564euoutp02R
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:10:20 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20261008151020euoutp0220b133fd63f9b3bbdc21c169ebbde20a~cln4huxOw0356403564euoutp02R
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1791472220;
-	bh=p/CEeLfN16W336hJkOodyM4bPanb1U8QuIH15EGrUS4=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=oS54NXGnWESg8OmQ/iUNSPpUcdmD5JSqstt22ooyjfcQZ6rgLbtMNDxWsDsHW4cRL
-	 ef7K/aHXJfROSsQ3wIhpsDNoLGTErxaTT7hzjtbGJFWAroxWeYh/ybkiMApF2lpYu4
-	 oeROedwov5Apmqc4S/mHJQLCPTBDtxRXgwajMLsM=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20261008151019eucas1p26347f907cbb12ee37552797103387753~cln4RSRBW3092530925eucas1p21;
-	Thu,  8 Oct 2026 15:10:19 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20261008151019eusmtip2cf77e50b80cb40ed87be766138851542~cln3sJP_H2632026320eusmtip20;
-	Thu,  8 Oct 2026 15:10:19 +0000 (GMT)
-Message-ID: <c1f42a7d-708c-4a6c-9925-9bb9806be958@samsung.com>
-Date: Thu, 8 Oct 2026 17:10:18 +0200
+	imf10.hostedemail.com;
+	dkim=pass header.d=s-joshi.in header.s=fm1 header.b="R J+trGL";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=mJqmRJjn;
+	spf=pass (imf10.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.143 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791472816;
+	b=L4lzV/kF8YCQr90tTcnzbpqLohJciXYvL6XnA3Mz7mAzUBNJkuLOCnO+FqL+C2lmv/5aqu
+	KF4CvPz+BIFuVgmIL0iryrcuinre63ZUUpUZQVjnrkSeqG+lIffAx+HRsvSx+WPvsnjyJX
+	BhUqspk8TcpfKh1DyrMMxR4lGEYGz3s=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.phl.internal (Postfix) with ESMTP id 8773413804B8
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:20:15 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 08 Oct 2026 11:20:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=s-joshi.in; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1791472815; x=
+	1791476415; bh=Ta9VTltlWRdF05/D8b/khNytMzX4AxfIKyly2vVwptM=; b=R
+	J+trGLFiHc173kC7Y1WekkcSfFYMjB2Kw3FAXstAkHS5IcebYuZpeOyTTmNU6o7G
+	qUnM2HSKTL9zUjozl5dG10KYoJwgcwYvNs/BwA/tlTexTr70fJN3fp7O3GtZW0Td
+	VmIF+SE6Z4zdKXJNLydYlRbCC+O5mbT9CJmAgFhbzbp3n25i1Abz/AfFJc76NiZg
+	KOVKrIHDnAOo8aJLT2v5Z6ME56xYGWPOIuqEkzEbVaoEWfN524j/W/3p2wBmDh+4
+	Plj0GsDclBXkbuCv0VplqP9Mc0q56YUKx5HdgEQhHvSiUqZg30IEyeszTMKRb+D8
+	U9umTXGu38CPZPqbJYHiw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm2; t=1791472815; x=1791476415; bh=T
+	a9VTltlWRdF05/D8b/khNytMzX4AxfIKyly2vVwptM=; b=mJqmRJjn+LkKdYB9o
+	1JHl/NWqScBzwIygC1qBFlZcM/dQfs6/LLNwGq3STaTr/A14pPlFMgWbmGOul3Z2
+	MD2C8C6YaIsV3Vllt9oWi//kDsP06zmf58IRAo2gtrwxv4BYdqgip7Mcsz6puW6f
+	v6vraqFJ2YcT4gkHCzItTKucIrZqW+abQCPpZ2gMd8c9VDp7lAvkU+R05K3SLhL+
+	j9gAdS3WG/l41gz3iSYZ6CR7RKoqX8e0fAanc4m1QxxGIPEAGyQiIRio0SsgetYO
+	iDzzVSzMad/JtjKkYtVJjmArd19Bg3aT3A6UPKCyhk9hrovmspemqnQOLCFEL1tm
+	sfMUw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=s-joshi.in a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791472815; d=s-joshi.in;
+	mf=PHN1aGFhc0BzLWpvc2hpLmluPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:GWKPHNJZbarAbJr4EkWVscpeE2pVo6b46+zEiaa3WZWY8tv
+	96ieKdQpi1+3hqFa0pXOFMcgweH7O6ek8i5uHq5nbKmLh2yIKOyhDPUUINScSaol
+	wLpi0Nv1ghmIi+tL5EsizMXAFqv8Sk3Fg0LU+RYE6mnOfxF5InqqI5Zo8BNC39AF
+	dX3pQc+XpZl7b6cWYDX3SAvYYKVStHN2S744ga0TsvL7oyNr4j4Xi9xh2Ehb6QS+
+	Jzmbgh1xMjlioLSM0yVnSamRcVrM1/EXeb58mYugKYXFZKDK5ebFR7DUYOsbdk2P
+	YscsDrotO1D+OqoO7K4GVOuRdmYfxux3HKPjScw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=11;
+	hn=cc,content-transfer-encoding,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:GjaHNlPQHdzpUjaVVm1nmoHkaMenMqF0aN9KzBEuPFg=:e7ERreKHiOOv9CSbIXDAbTuNf1BLAP6Jhju1J1ZFDKM=;
+X-ME-Sender: <xms:r7THappW6IywW8HuOcK6XZ_s_y0cLf8D_cBLBocUrXQ88uxtOuVyqQ>
+    <xme:r7THasWpYq15Lv5drFyHy5JRYDU7eq4ioTXjCPssCrnQGEDFfA3ZMmpJ6OFEc7j-M
+    ZD1YuCB1Wc620EZHhM9nwLKV5oJK9ZPfBGkBg66HftcXaJzfWYtg_Co>
+X-ME-Received: <xmr:r7THakYb2hba3agwsl6SGfbXcYDXjBeopfxrc7JxnQnB-RYAMBzuvoejYw>
+X-ME-Proxy-Cause: dmFkZTE7Rb351G0R8SPI91T2ULiEwlsWaSN0SYjxpqHcExmMqEBVpkcJrRJdtJYJv0xU9X
+    mb2RVMnxHNqAcNDo0PQgX8Lp9vq2778ObHCahwNLqEH9FxhpVir/PFIr7l2E9Hx6MFqLXZ
+    fARGPVZeIUqGpiI3+4b5Mm/xAFVjCcMzfzuwKfi06QinMULzduJn8C2+CQuL1rIP7yqnw4
+    6M0HZNMimgzR1Y6dUDEkpxDXLLw4pfZCCtmAls7/jI5s13b3FjAljq4c7HgfsbIf6lJK+Q
+    iztD5x0JRhOi0JS/SAvuePtt6oApHrxq0VRFSciMrMdopwAYZSijolYnG2EH+6Foxnf7IL
+    pyiMM/vZDikrJMxTNd/DOMWfp+R7EUZOiDsw3DHseoDDm25sWIkcyCtDPjsimSiyglO747
+    gt9tz/vy/YmFObIeEoegd9cwbeHJ8skPanrdTWlX3+I8EZf5Hp4HkwZldt+uIv1szF1zAO
+    ZAHkwe5PUpeIlPHhYasGMU9hkVYH1UCvt6FOHerscM3Uj55rRAp/+g1vu+SaEWoIwpaWAT
+    dyafXRlvg1+Q4PLkNAIViuJ8/4cPFxMJST6ni4jsSQ+LYCUX9hF3YtTv22wlhTJpqPCZvl
+    CvtxlLr09d/5bmQ2rGTrf2faDjrywWyH+vY88pEj2GSXJW6iPifDOeZR5OQg
+X-ME-Proxy: <xmx:r7THapfgM9pdLtjlCCC0Cjak3uzUmFgaaC2M7yYGSUIdWHkisy_hHA>
+    <xmx:r7THau2l7PQSk-d5yGK_olQMGcZOWbw187JOoy-HyrdWXPL4d9hhYQ>
+    <xmx:r7THagKPuvAFTYEtiqAsVAq4C6eoYSfOUcL-gLtifWbLgGVHTeLXOQ>
+    <xmx:r7THatFtT0HZkRmHpc8x3_5imTDX7O0VgI__wNHNP5NR22Us9TliIg>
+    <xmx:r7THav9wo9cNfVkSin9GLWmD2c59Xsi_KN3ya9T_Hivulgf_kuSFeN1k>
+Feedback-ID: ia9504abf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 8 Oct 2026 11:20:13 -0400 (EDT)
+From: Suhaas Joshi <suhaas@s-joshi.in>
+To: sj@kernel.org,
+	akpm@linux-foundation.org,
+	aethernet65535@gmail.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] mm/damon/core: Use only installed probe in damon_merge_two_regions()
+Date: Thu,  8 Oct 2026 20:49:25 +0530
+Message-ID: <20261008151944.113714-2-suhaas@s-joshi.in>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261008151944.113714-1-suhaas@s-joshi.in>
+References: <20261008151944.113714-1-suhaas@s-joshi.in>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 2/2] of: reserved_mem: allocate and map the reserved_mem
- array early
-To: Rob Herring <robh@kernel.org>
-Cc: linux-mm@kvack.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>, Saravana
-	Kannan <saravanak@kernel.org>, Oreoluwa Babatunde
-	<quic_obabatun@quicinc.com>, Wandun <chenwandun1@gmail.com>, Andrew Morton
-	<akpm@linux-foundation.org>
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20261008140515.GB183998-robh@kernel.org>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20261008151019eucas1p26347f907cbb12ee37552797103387753
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20261008094130eucas1p1120c66c914aa2b93fa3d7e6e494e7eea
-X-EPHeader: CA
-X-CMS-RootMailID: 20261008094130eucas1p1120c66c914aa2b93fa3d7e6e494e7eea
-References: <20261008094125.3197971-1-m.szyprowski@samsung.com>
-	<CGME20261008094130eucas1p1120c66c914aa2b93fa3d7e6e494e7eea@eucas1p1.samsung.com>
-	<20261008094125.3197971-3-m.szyprowski@samsung.com>
-	<20261008140515.GB183998-robh@kernel.org>
-X-Rspamd-Queue-Id: B1141A000E
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 22E4FC0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: booxerw8tnywpsq6c7t5rm8q9rdsdopf
-X-HE-Tag: 1791472222-66288
-X-HE-Meta: U2FsdGVkX182SjRAPYw3T/DgozQiv8qjE/LnT85yhrS18UfXL4V4mIkMNJ5s1EsaLygANiQ6Agb1j+Ks8VxFsL01dURsMK5DW/IPF91/R9EWp6q2bVnrQSIB4joOhwvqSiTyHPFXQ0Qjgsz678xss5PSxvZd/lo6x3fX03ZeO2dyAR5wwbYRUNcpNmNmP/k+65eJ9Ox9s21WqDLe8NmYQwQ/U53zM8XBPhMnt2OZBDcbpGJDjsRIRSh7PBp95125wspx27xwUcilW2RsGyrdK7MwdFjo7TiauriRokb8PlQg2M12MGD0savHmTg0ssAhoB4MkFZnhJzQ9VsBBk32sHffpuWb0u5ydSMEpnvvcXE2zTAGuZ9q4xUpb4+bNP63ZLR98l0pt8JIcjrVhEeKcTrJEByI3ZjPrFz8HzzkHKSStkmfYq7Az0n7eQaiOWV3smnEMPE5YxwHmZk0D+3y17xACwESqDd06b28C2WYuHifkgIuThjUzdMPtpXovduoQt0NJkGx7tZbuQfBaZ158ulisWHSrR3LYyCAr55ODwCkkgMpYvvcFSMSNtY2x33CWVKrrMnf5CP5rsMueTlBRoDuUlJ5RUBDAatPGNgvEufgegzSLjUMefnGT46ZU3QhaZyRaZtV8Rc9E+vbCZR1Lrm1Tzy1U7c9MTjTrU0/1d1TpYpBnnRtdNg7Q5ZKCTa2NXQ1uW8X6HL/ay8rSFsInslWuxdgFgtcUAhNqOFrbERWV56ZQUqdWzZkFH/cNSR1yTpoeC0TkTx6bxGlCYF/P2m6AXo/no5PkUv97ieTmK4FAGQt2r/SqXUfMEYeh7HE3e6CdpYxbxNxyblzkzWYwFdUuIabzJ7JMEqxqDt2k9wUeRNt18WOeb/GkGiLpyqZtwj2pULIIlcOwERRbK+qtCzMQpUz/E1sG0dMe8Fk3xYa06idokLLwY97Mxk6GkpWSUSdxf3QnRk4RRDbPqW
- v+qqMtsl
- gAOzYXkXuphkxt1qKQDBdmaFFWPDFFygOrzCe+Sb1E/MqvC2YsAYmyfDsl7s5bI9FvQp4c0LlwwdvGiYL+CAVBsFugmB2L1vcnewyzWXukhIAMQB936PSQ1Hw4GsDVRFFCyUYTDtrVxZY7tRIDVVF6cajNjtuhdT2GX/SwjVLSrWdOTo=
+X-Stat-Signature: twmfch5kwu4juruzya6gxipj64797cgq
+X-HE-Tag: 1791472815-168552
+X-HE-Meta: U2FsdGVkX1+cRIsRtRyCmQEBiYHKvjNXzNeGtweQ/P8oLr1O244D1XkQAHd8hGDz2Os1VvqRxsLnBZ93wT3II8C8rsR1lZHgVn24dawePalgpbvmjV+eopjqAGC4YJyCrZoc2td60OA+3DnowMqZJJY/RcP7kTOwEwYnn8UJOnRS/sCqhTfOMF2K8nrqe/oXxSLW8k9BQFsQlKJJFqscwVX5Q+dCRXo6TDLAck6bJ6rf9G3apGg3YCp4QFQWb+h5sSGBbIlEeeSEeXZTBpz1Jf5+cf4K2KHlX4xv4mMaRBbz9bjBLo/Qtp4nza32MosjheDnD8lKOvvD8s3KuAJOdKGtHrR+uKTWSPVvs8fvIo3W5TwD3IEPlJSP7Y9V5CGHc8TaeRluEqG94sUponFMujMQ9aNRDyNg9LXO+8LxV2e3kMGBafTn89+Y3DWJgsWVdHJCxZJlG8D0un7hThGLqKCFXdPbudt0OeBFQjKOfPhAEaHs0SsrwNsUEgwytfH1GiBzIC+sZ6o84CIhIjs6MbXGfZOS3pcX76I1uqn4a9pPMz60kERBwT59hVVicvpNFdojgax0b+zzJxzrBf6k2t5pXg1iYXaxpqn38vqg+GGA6JxmJsAz5vcGpEn0yXa6c/CejixQaKTNCCTBL+uWZRCMxdkzuvkAUZqzdJCysUNzIhxjDi3T46GFjlIPN3dO7GEK+UCmJvRtPvbRCLLYtp4uX61GX/MZ1uBNedL60WhicToG/3Hmckk9QSCp9UwCY05Tr2HKSmezJhCwonVMOvx/blXomKbpP19uGbazd2KW7d9F4WgaC3M7SebizrZ9ytwVVOpLFWF4gQ6MsUD7PK+xlil2TQRyjSiF+QXys2SVv3B0TZaxn6pzJOra6Ds9Nv7dBSZp/GbiY0woBEUdkyoprMS92LZkrZts7xzgXgz2gP1Jcjj04aB7KKvvtuHgSbtUt0JaHic/KMnd7Of
+ lLjtoKhc
+ jpiGyP9PqoRc0I/Qorz6J0VMAma50fKJo7daDe3t0mc4NEa8RuSsjjsA3dIRkj9B51ulsjZlaV3no+B7u0XVDDzXnM7+BO2lJq/Iucn8wnHdTJFA0XtpJIu3UcAnvvPpe+mnj+IObSOBJTcI1vU+jBxcgHMwq9mLMNtoFpHuLBjBVW+rUdTBZGSoLanj0N/+mTc/IKum50wfzIamlkTWhuC2TbC9d3lkmSISbkQXT59NtJ9DjzwwNbgaE0iG9OdsuCS+1UfsP6jfUleDlEs8hoo8gsK6XAHFE3MBmOrgyw9dbn6mpTE3Kng3EVe85wGtSrJ3z3jno3iOUrp7J4myS3DvCQaP6kTfsGoSvz3kHzLqcpBOKO9TiYA6K0M2nVjMu+d0PcNN8ds+zp0DDbm+ADCML5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,89 +149,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08.10.2026 16:05, Rob Herring wrote:
-> On Thu, Oct 08, 2026 at 11:41:23AM +0200, Marek Szyprowski wrote:
->> Get rid of the static, limited-size reserved_mem array and replace it
->> with array allocated by memblock_alloc_raw() and accessed through a
->> temporary early_memremap() mapping. Such mapping is needed for some
->> architectures (like ARM64), where linear map is not yet available during
->> early boot scan. Having a single, writeable array with all reserved
->> regions removes the need to perform two step initialization introduced
->> by commit 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved
->> memory regions are processed"), so all regions can be processed
->> directly during the early scan again.
->>
->> Suggested-by: Mike Rapoport <rppt@kernel.org>
->> Link: https://lore.kernel.org/all/asc6brs_g0ky0wOM@kernel.org/
->> Assisted-By: Claude Opus 5.5 <noreply@anthropic.com>
-> Assisted-by: LLM
->
-> is the new way...
->
->> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
->> ---
->>  drivers/of/fdt.c             |   3 -
->>  drivers/of/of_private.h      |   2 -
->>  drivers/of/of_reserved_mem.c | 251 ++++++++++++++---------------------
->>  3 files changed, 96 insertions(+), 160 deletions(-)
->>
->> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
->> index ecc923102622..a58efdcbac7f 100644
->> --- a/drivers/of/fdt.c
->> +++ b/drivers/of/fdt.c
->> @@ -1283,9 +1283,6 @@ void __init unflatten_device_tree(void)
->>  {
->>  	void *fdt = initial_boot_params;
->>  
->> -	/* Save the statically-placed regions in the reserved_mem array */
->> -	fdt_scan_reserved_mem_late();
->> -
->>  	/* Populate an empty root node when bootloader doesn't provide one */
->>  	if (!fdt) {
->>  		fdt = (void *) __dtb_empty_root_begin;
->> diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
->> index 0ae16da066e2..895f868b4cfa 100644
->> --- a/drivers/of/of_private.h
->> +++ b/drivers/of/of_private.h
->> @@ -9,7 +9,6 @@
->>   */
->>  
->>  #define FDT_ALIGN_SIZE 8
->> -#define MAX_RESERVED_REGIONS    64
->>  
->>  /**
->>   * struct alias_prop - Alias property in 'aliases' node
->> @@ -186,7 +185,6 @@ static inline struct device_node *__of_get_dma_parent(const struct device_node *
->>  #endif
->>  
->>  int fdt_scan_reserved_mem(void);
->> -void __init fdt_scan_reserved_mem_late(void);
->>  
->>  bool of_fdt_device_is_available(const void *blob, unsigned long node);
->>  
->> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
->> index 300fb236ab59..6a5e53243bb7 100644
->> --- a/drivers/of/of_reserved_mem.c
->> +++ b/drivers/of/of_reserved_mem.c
->> @@ -24,12 +24,14 @@
->>  #include <linux/slab.h>
->>  #include <linux/memblock.h>
->>  #include <linux/kmemleak.h>
->> +#ifdef CONFIG_GENERIC_EARLY_IOREMAP
->> +#include <asm/early_ioremap.h>
->> +#endif
-> These ifdefs are the only thing I don't like. early_ioremap.h is always 
-> in asm-generic, so do we need the ifdef here? Or does the arch have to 
-> do something to pick it up? I don't remember.
+While merging 2 regions, we iterate over the entire probe_hits[] array,
+whose size is determined by the DAMON_MAX_PROBES macro. However, it is
+possible that we have fewer probes installed than DAMON_MAX_PROBES. In such
+cases, we end up making redundant iterations. Therefore, to remedy this,
+iterate over the list of installed probes instead of iterating over the
+entire array. For doing this, start accepting a struct damon_ctx in
+damon_merge_two_regions(), and update calling functions to pass this
+argument.
 
-Those ifdefs seems to be some hallucinations I missed to fix. I will send v2 in a few
-minutes.
+Update the damon_test_merge_two() test to use this new signature for
+damon_merge_two_regions() as well.
 
-> ...
+Signed-off-by: Suhaas Joshi <suhaas@s-joshi.in>
+---
+ mm/damon/core.c             | 16 +++++++++++-----
+ mm/damon/tests/core-kunit.h | 20 ++++++++++++++++++--
+ 2 files changed, 29 insertions(+), 7 deletions(-)
 
-Best regards
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index b63e60ef8990..fc202f90991b 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3524,20 +3524,26 @@ static void damon_verify_merge_two_regions(
+ /*
+  * Merge two adjacent regions into one region
+  */
+-static void damon_merge_two_regions(struct damon_target *t,
+-		struct damon_region *l, struct damon_region *r)
++static void damon_merge_two_regions(struct damon_ctx *ctx,
++				    struct damon_target *t,
++				    struct damon_region *l,
++				    struct damon_region *r)
+ {
+ 	unsigned long sz_l = damon_sz_region(l), sz_r = damon_sz_region(r);
+ 	int i;
++	struct damon_probe *p;
+ 
+ 	l->nr_accesses = (l->nr_accesses * sz_l + r->nr_accesses * sz_r) /
+ 			(sz_l + sz_r);
+ 	l->age = (l->age * sz_l + r->age * sz_r) / (sz_l + sz_r);
+ 	l->ar.end = r->ar.end;
+-	/* todo: do this for only installed probes */
+-	for (i = 0; i < DAMON_MAX_PROBES; i++)
++
++	i = 0;
++	damon_for_each_probe(p, ctx) {
+ 		l->probe_hits[i] = (l->probe_hits[i] * sz_l + r->probe_hits[i]
+ 				* sz_r) / (sz_l + sz_r);
++		++i;
++	}
+ 	damon_verify_merge_two_regions(l, r);
+ 	damon_destroy_region(r, t);
+ }
+@@ -3590,7 +3596,7 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
+ 			goto set_prev_continue;
+ 		if (damon_sz_region(prev) + damon_sz_region(r) > sz_limit)
+ 			goto set_prev_continue;
+-		damon_merge_two_regions(t, prev, r);
++		damon_merge_two_regions(ctx, t, prev, r);
+ 		continue;
+ set_prev_continue:
+ 		prev = r;
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index ef146ca2ae8a..4e380c6c5eb2 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -182,13 +182,27 @@ static void damon_test_merge_two(struct kunit *test)
+ {
+ 	struct damon_target *t;
+ 	struct damon_region *r, *r2, *r3;
++	struct damon_probe *p;
++	struct damon_ctx *ctx;
+ 	int i;
+ 
++	p = damon_new_probe();
++	if (!p)
++		kunit_skip(test, "probe alloc fail");
++	ctx = damon_new_ctx();
++	if (!ctx) {
++		damon_destroy_probe(p);
++		kunit_skip(test, "context alloc fail");
++	}
++	damon_add_probe(ctx, p);
+ 	t = damon_new_target();
+-	if (!t)
++	if (!t) {
++		damon_destroy_ctx(ctx);
+ 		kunit_skip(test, "target alloc fail");
++	}
+ 	r = damon_new_region(0, 100);
+ 	if (!r) {
++		damon_destroy_ctx(ctx);
+ 		damon_free_target(t);
+ 		kunit_skip(test, "region alloc fail");
+ 	}
+@@ -198,6 +212,7 @@ static void damon_test_merge_two(struct kunit *test)
+ 	damon_add_region(r, t);
+ 	r2 = damon_new_region(100, 300);
+ 	if (!r2) {
++		damon_destroy_ctx(ctx);
+ 		damon_free_target(t);
+ 		kunit_skip(test, "second region alloc fail");
+ 	}
+@@ -206,7 +221,7 @@ static void damon_test_merge_two(struct kunit *test)
+ 	r2->age = 21;
+ 	damon_add_region(r2, t);
+ 
+-	damon_merge_two_regions(t, r, r2);
++	damon_merge_two_regions(ctx, t, r, r2);
+ 	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+ 	KUNIT_EXPECT_EQ(test, r->ar.end, 300ul);
+ 	KUNIT_EXPECT_EQ(test, r->nr_accesses, 16u);
+@@ -220,6 +235,7 @@ static void damon_test_merge_two(struct kunit *test)
+ 	}
+ 	KUNIT_EXPECT_EQ(test, i, 1);
+ 
++	damon_destroy_ctx(ctx);
+ 	damon_free_target(t);
+ }
+ 
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+2.55.0
 
 
