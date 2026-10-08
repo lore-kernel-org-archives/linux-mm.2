@@ -4,115 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1103DCC6B2E
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 05:19:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF631CC6B2F
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 05:21:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5B186B0088; Thu, 15 Oct 2026 01:19:05 -0400 (EDT)
+	id AC3786B008C; Thu, 15 Oct 2026 01:21:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0D2E6B008A; Thu, 15 Oct 2026 01:19:05 -0400 (EDT)
+	id A75CB6B0092; Thu, 15 Oct 2026 01:21:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D4256B008C; Thu, 15 Oct 2026 01:19:05 -0400 (EDT)
+	id 963CF6B0095; Thu, 15 Oct 2026 01:21:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B6D76B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 01:19:05 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CDC86408A3
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:19:04 +0000 (UTC)
-X-FDA: 85323706608.20.9CF18F7
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DC98240007
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:19:02 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=Hhb8U3Wx;
-	spf=pass (imf12.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 653756B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 01:21:33 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D3C0CA854F
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:21:32 +0000 (UTC)
+X-FDA: 85323712824.10.DC43A4C
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+	by imf02.hostedemail.com (Postfix) with ESMTP id CB88480009
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:21:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=s-joshi.in header.s=fm1 header.b=xCFK7NVg;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=XV0h6kJy;
+	spf=pass (imf02.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.147 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792041542;
+	s=arc-20220608; t=1792041690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aL42kwtpY9xz2nUxaLVspyn822mepZz266L04+MLaso=;
-	b=jNSbOM/gmQOfWa0ePt3emmiIaUqC3R9xopZbx3UmaK3xOV/Jgy3Z2MiG2YTpqYrQFQvpSH
-	hi3sm9zoRUrb2PB/We/cpiYsgNN7qHcbNtduKVRVL1pkZcERBEN2lFWB1s7By3mW+n3N1Z
-	PoEGsev3vqN8tBpWf9PG0ShoSDk6PTA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=Hhb8U3Wx;
-	spf=pass (imf12.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=plxy+DrT8Ze0nim79TR1yOEuPaMxj6VH3O713CTbSuw=;
+	b=o8RoHZi3O2cnC235GmanepcdJw6xAgHNBxlEEGW7nSFBstXq2gC4CWpr1p71Mh+eCeMtYT
+	2xrx7hrg/ijK9I6ckebUmkGXAQ2iRa+jF2fd4vYzPQnKh83DhNuKUWR+VQnwgkEn0CzpgZ
+	lRM33zLYxXauygwPN/ZFTdmrXYPQkGQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792041543;
-	b=PT+29tdt+BPIjNX7a6wKtiHXVE3EgmFaL6vdvL46w+tgHGgGxKsyadz3TplxrEYYlI7cZK
-	BSbDM3RgNh5lwrcTqYn3h1tkoiBeOt5oi96vcoGKbPh4g01hbIb3FFyyQgDCdVMtB5xPGp
-	Jo/35U8SiNGQNFnc5WjCqjeQBS68yPk=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2df8c28a0b1so22764385ad.1
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:19:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792041541; x=1792646341; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aL42kwtpY9xz2nUxaLVspyn822mepZz266L04+MLaso=;
-        b=Hhb8U3Wxn8IS7AsnA6obZ2DumyUCq01l9SkqMS+uQT13JtQppKwlLtkWjVb+qK9DUx
-         PlzADdbczsRr+CfVrDpsWa0Bl2Pz4wTM06y9QIn/9Nq/qdRq8M+pd2KuEGg7n7chT/Xf
-         sUDZLaq+H7hmPoTlfKWNSAhnMDwvnvqT7jp7E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792041541; x=1792646341;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aL42kwtpY9xz2nUxaLVspyn822mepZz266L04+MLaso=;
-        b=uwtYrUklsVwSHtExA0YwG+RvzZx8bL+HhHccOoHxwNHNrYrHOj2xzfgVWq7RFZFVu/
-         sx6FcDMBEsu4+bKzn/ICEN47OkbRaexS+jfjrAUR2B8LI5t6/a4AmddB8EIL7N0k7owf
-         FoXWf0N3AEWWPSmWOG3+eE6t+vSLQuuPenlCc39KPVhciLLJapgUFhoehXEXg+l2YvhL
-         xiX2R/n/b4Ipoth75wt5BJJ7zmjbtwwzo6X9mgWM3KCGECaMSq/gxGSydpIGd8i3HH9d
-         vGSVwdsxNvhVbIEjFAtBVW+oWcwmIT8RhavDiY6f3iyQilH9bSkJA6pFD1mb90JkURCx
-         QDxg==
-X-Forwarded-Encrypted: i=1; AKwUvBx8rvzfhB3WLpuOq4bsKl/GUjAo5uoISRhwMNrD8X3s1nlQ48mLz5pqgLXd1xtnm6dBShRVJj4FMg==@kvack.org
-X-Gm-Message-State: AFq9FYJ/91yeOoQQ7HVjnTYHQ2wVAaLrMX9cHdiVgRYwhHfKBGOqH13w
-	w88YfzpJ2/AbjItRjRDasbjdqBqvM+a5Yurb43r/5ZHt8QUiLNEFu7jxGsWUQqMLbw==
-X-Gm-Gg: AYBFou3ncdxwZ7+O027GgG0lm5ou6RRrH61+MY/Cnvf9XyJIVjJ9QhIrMYVTAqOzTLd
-	SVWBfrJsg/Y3toTvWg3a7k0oH4oCLbc2SBvrW29dyOFLlg2CSeZ6rdxBhuXkwkGZlMTdav36+v0
-	kETsHJeyBGqqdZyY7LLd6dQaLWfN1neAlwnU+BtDQIuSHVGaokDwdN8mMWBfYV1+8u0/FNR3YSV
-	onADaQWt1Nz3fmbnfCiasEHaQtO18PsXo62uScBrWvMX7nDjfeIAKSPmLh9RB+I4+KqnKlH1qnX
-	OYfQMmQTWwKN4SKATW5Sn+blcOtjqaHMZQeq7mcjBM4YPAR1VIJu60wrihoAlF8uVLfAI6J0WZE
-	Jlg/S67KkPUnSjAnR+doRXa1vlrBEJyDHNn9w/Fn1NX8XtUCUi/hVqQjrtcE164IFu3OuOftg9K
-	yDFWbI1+F+VQm2UaAg8yFbNZ5+IUjZq3HBt6vO5RhM2PhzApg5EzJ6m1scxWZJDctzojAt2bxmw
-	Vcd2dVVUDWCiiyEvZa7V7Mdf39UUDeIE+kRrZY=
-X-Received: by 2002:a17:902:e748:b0:2dd:c053:e669 with SMTP id d9443c01a7336-2e842ab7902mr153442525ad.47.1792041541599;
-        Wed, 14 Oct 2026 22:19:01 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:8455:7899:5a2e:26f8])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8421b1562sm77412345ad.34.2026.10.14.22.18.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 22:19:00 -0700 (PDT)
-Date: Thu, 15 Oct 2026 14:18:55 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Bo Zhang <zhangbo0325@gmail.com>, akpm@linux-foundation.org, 
-	bgeffon@google.com, minchan@kernel.org, richardycc@google.com, baohua@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 10/11] zram: use rw_semaphore for decompression streams
-Message-ID: <atBh9xfpOji_A7A_@google.com>
-References: <20261013035201.2809924-11-senozhatsky@chromium.org>
- <20261014153603.1365617-1-zhangbo56@xiaomi.com>
- <atAj9o5IgrAeiGiW@google.com>
- <atBAWZ3WZvat3UA1@google.com>
+	t=1792041690;
+	b=S3yCqnFeRm9Y+Q6fDORrQuWoOpYeqTma7uoLv8zElanWL6yjQhWRbj5qAnyx0DVwYh6GOn
+	ItzD6DQ4SK+DqPA8gnKKamnWZqUk7tWoT4GFMJU1yuzbL82sEz1mkgKvYRoPJ1mig2GODI
+	tAZNG4KVaIUF36k2cGOiL4b2R/OK9hw=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=s-joshi.in header.s=fm1 header.b=xCFK7NVg;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=XV0h6kJy;
+	spf=pass (imf02.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.147 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in;
+	dmarc=none
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 74235EC02A9
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:20:05 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Thu, 08 Oct 2026 11:20:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=s-joshi.in; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1791472805; x=1792336805; bh=plxy+DrT8Ze0nim79TR1y
+	OEuPaMxj6VH3O713CTbSuw=; b=xCFK7NVgs12YR5Os+1qjKUQTdSiWxqgeaTR7+
+	HdLBT2ynFVEJm65+tI5UpZUl6J0JMt6zSveTLT3+beQyDHidKSONCVRIB6X66D6e
+	nBisnKjkG+93qLtbVqS5f4PGuG50zhsBZx0wpewxgNYRa9A49UOwu4ZTgChOjBWt
+	eQwzyfjuRJUtAdbtFPWSwvOVwR+q8nkxiZLtmTwbmTLMlsNo8oK1JczusEyfiOvC
+	Nu94JXVh1cMHyT/Lfnq6geg9XdG9CAvtE1Cg6i8e0WDhc5x/5htdB4L3d6C9ewKp
+	xP7zCM+x743Aci9qlludrOMWnnYlkf1D8peD3C6PSkKoZvOnA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1791472805; x=1792336805; bh=plxy+DrT8Ze0nim79TR1yOEuPaMxj6VH3O7
+	13CTbSuw=; b=XV0h6kJyywuq4uTCPPT+vlRvFV2CWZJfS5hUIci9ETpt/Inwfoh
+	JdyoUH+orjCvLwrd9cOr+roDiYqw6AYuexLOJ47Enyc8OFbnMI4xbJubSQQ12YYC
+	8EQgHYj/Q1tyY88DGZOawPirgcOfCcuQLyUnz30qooL+d0/PVXJF9nCGKnf2sbnc
+	6fU6aAA4DTuLDKg6Y2d5T3eBsWqVUA4P9mE2YrkA5zoifdFaLGM3wAap8mvvn6JY
+	NIiZM6hGl/J0UspWfU/f+25+I7EqT7b6HUqmiriGIX81h/kP9WPJxBmuhyJp4bQv
+	qXZ7sWRZ4gz2+C6PrZX/0V3nr0hxZzqh0uQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=s-joshi.in a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791472805; d=s-joshi.in;
+	mf=PHN1aGFhc0BzLWpvc2hpLmluPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:PRQIdlCvZ92HXYuQ05Pe+mjUvAwRppfELo8o54j+3V5whLv
+	jSvlfd2ItjXA0FEY6EiVlkBNfE/u1+YpMknqOkP5bP5Oo8aCazv9jToQEQDpDhV8
+	ZerkBs6iR8hMxYWdDjGOHRTXSCzC30kS7F/NrPRzfS+3AZF8sYOAepLk704I7ldE
+	SGcXjUmQp4yvl3K6eQ3ugHwEZzDvMqCfR1XhlC/HxM3m0aDnENEvimQOBQIGeo67
+	+2Jt6Xd7e1kCBCg47kmGXpFufkkgaBZRGZk3OLKEe/tikC8pAZBQGQ3o7WI5VKLq
+	l3GOXHSEmkANahtJwwxG8H1tbBYq0rqn7mCn26A==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=9;
+	hn=cc,content-transfer-encoding,date,feedback-id,from,
+	message-id,mime-version,subject,to;
+Message-Instance: m=1; h=sha256:rf6ufOzkNZa7QhG4kTdpPLLyHMZLstPqQjFG7FSWTOc=:5syrNj/JLgLqlg7IRGXpYcJyk/HNi/mWCL7GsaEOynw=;
+X-ME-Sender: <xms:pLTHakvaYYI-n9-yyKB9pcZ3LPqDNpK-FwMA3RjbVNyLmkWVnnIQ5w>
+    <xme:pLTHaiLCnEOZoJ84DPrAJGjAF_N6eQn-KTPOCozUCoe8rakKYLMJVMcLmZOj6eijV
+    KCWrq4_XSB_JRMSXc828gbEbd5D_9H2RftZPkLWVKCkMNVH_H3iFRs_>
+X-ME-Received: <xmr:pLTHat8INlt6X0w19517Mx6gm20tn60O6Cbfw8JSQFy14iighyFvBdvl0g>
+X-ME-Proxy-Cause: dmFkZTGqxKJltKcxARJadtVktDBjtkTJW7gorgTB8Ld7pXgguWgs5hqg6/YGAbmf+3ndY6
+    LjqKDAI3EvH46oJqR0tWDuKjWnqcBAK55NEqWzEvzSxNjp+D3hNoffq1DonGlE89pCLzx7
+    fXzqKf8HtHttmd8QNutoRFIK6OEt2nz179BXmfB08wXw5RFnw+OX7Fuxqses2X8N7pM0MR
+    uix+e515sIDeirVi9i5sd9lgyNmtEz7/zoYfcBs4tM+ZskmEUvRGl4U1QHO9XkLYCMamWm
+    3NYpzIgBUJjx0iK2KXMvacFbQo+WueYCOphdPLzMH6GbuCPBxPTTQWkkPdp7XlpaUmN+Kg
+    fZmb6MQvaBT2/j3ANqZQpG7bX3bzTAz+HR674FVqrCnNETt7/fTIYJa6R2bmOeMn3xK86J
+    sNYywAhEtrC+AikraNY+CpaxZ7swDj4/y6WXHCfvw0IeAGAazvJ/krqsF/UlegqMvxZkCI
+    KB+WnPfo5WGXtdz/x/M80prHyqfZNxEuAy8aSCJlavWKyLvFqO5KU4Q7aYxSDmpzFaLF/m
+    qIuSNaP5vgZ+lygJWy5PY6YYKVreeTw8rQJv9fJvMDENRDnemN8OWF5jyduYZV4jf+SrN3
+    /24ZqrMN7P0km3ZBvU7n/ml8VJ5yRUd4TOwE5BChMTU4ral69GdY/sTnijEA
+X-ME-Proxy: <xmx:pLTHaryA20PcyxVoVyL1vFpbYtAlPaHyVAkXsfAhV0AIjiVWDGjIyw>
+    <xmx:pLTHaq4TSUMvs15Vy7RS-tkpV0k6gyPpshHqwnSQcNPruuw2gC9IrQ>
+    <xmx:pLTHai-wnORkuU6EUKfcDIWUbkOXXM7cI4rxXrHBSJQpkkpxgz1GUQ>
+    <xmx:pLTHavr74d05gvSYM-VsZ1efHAM_ybRZ2_lrBScrHQ-PMhOZF1Oe1Q>
+    <xmx:pbTHahihQO3qK4uVQ4gX6QAwMwfKoLQe4WrIpPZ9vOU_EzIwmY1xOOpA>
+Feedback-ID: ia9504abf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 8 Oct 2026 11:20:03 -0400 (EDT)
+From: Suhaas Joshi <suhaas@s-joshi.in>
+To: sj@kernel.org,
+	akpm@linux-foundation.org,
+	aethernet65535@gmail.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] mm/damon/core: Iterate over installed probes instead of DAMON_MAX_PROBES
+Date: Thu,  8 Oct 2026 20:49:24 +0530
+Message-ID: <20261008151944.113714-1-suhaas@s-joshi.in>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atBAWZ3WZvat3UA1@google.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: DC98240007
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CB88480009
 X-Rspam-User: 
-X-Stat-Signature: ygdkipighy6q9y5gfkmwaoubqfkpgqhd
-X-HE-Tag: 1792041542-908803
-X-HE-Meta: U2FsdGVkX1/r6gxKBxtDxrKR8GENfZWOB0pg2Ui17q2xTWDW6mROf6DeJFK/detckMtSCacXJVEZYgD+Izjp0LCWGeABpV7HVJIdDfviYREuCogjvyhMylAZ4bK/2+/aKBCekly6r8PZgLnj+CfY/oryAMgkBzzJX84qzHDpeyBSaoG2WFnoK1fy/45SYzRO5rwYxyHeBp0CO/uJub5hpZbCZN3wyrnYU42lNUrs+IcIwzMnRQZvcfqAgYgYIca+cCElbAo1dZJ+6H5tJkUxKwhSxt2aZMdRltsCA0VdBl0ABb+WWu0aTJavcJx4ga9RV8t3Gy7bof43mck9SaF+pFGeN60nGP0QFM+jTBmoTJInraqkEMo3Ap3RfM8YhmY3tewlEXCekWfoey4MCloZJKKxhrFz+917QxDecKqe0eOeqRA3KEKUg2uuRKt0rsg2k9Wilqdd8EZydphl/4fqUX8Xzh8fpgawELu3KeagXYF4MT7jKWuD0gUCz84ahCso298kLum+0Md3KIX1/T8BhJpsbaaDCvlqVHCzTODzaqPbC3iy3RkpUtBDL+/OVtaSrWjG6e9R255UkNiyM+Fun99FNkZ3CJh5Rz/tQloVkK5BZ57re+N69eRlAiJNVHAjaL52zOW26EbHTKCj9zRzF7DCs/LypbMaE69Lpn9oM83zylWOhgFf/USat9hx9Jmtn38wMvnEuw8EBkrd0/wp7aLCrjsITmOX88aR74l/JkO/sBQeh99KipZn3+5KGHofd8DY6xh4CY2urcwziZgcyJEzWhe+Tn7E2OV+EPxHGvpqLPTrd6IyuQKUbeTaz7SqTwXAeCy7mG5Mt1EubtDj4uNjWj4PcafdhBfkQ+6vKpP4gx/k29jSdrApMO73Y1lSY9V4BJRRu4PPtjCVg9nGtMBYBu1g8G49xUKHeeyAYeeqvGImkAH32Ow8anPAx0xcMojQBwbrAHDQRAjXrsk
- 64No5nHo
- wAUPwlzAvYPQQrJlTEPt+8IqfllEzYsNAv2k+xpUHnx4jyR70mWaEwBYwDptFvZzLfK7hiaAI/go8P+tFQsYQNeti8ArisMkQ21IN3Ks4snGutzWjCPYorhUw4OjJSEiOGn5rrxuJezm/t+4rkHRR6UJtFKIJ2seR2dJ29qD8SJmUlT32WgHeWKekVbmzTNywA5wAjYy+HOI25wDZfw686gUVJlxyoPtU7a1pbAsFGUvbPHXzTsHGK/ICDKCJ4pOjhS2AndPHD9ENkD56qv5i5ijoVQ1hJhlHEI9Pq94ma/hdhG2EfElgH+CgcBmfAsyW644DOGeeEd/tS01gmg/hCiOGGpEA+QOAirMVkhy8DQUdJfZRPqSYgt6ekY5ekYo9a7I3D8iGeuS5BmwME1HZpTrJIg==
+X-Stat-Signature: uebhq5jymoym75di4zaqo7r5xq3uiro7
+X-HE-Tag: 1792041690-234526
+X-HE-Meta: U2FsdGVkX19Zct6FqOMJZ8qtl6WAncSQ7X3m58KRvix2PJJJIVxI4EmXzrNABicVJnQ5q6sYcn105e3g0DX5gBK3N6rTSZ83uZ8TbpbCNpUaUqGIZ4juSEDYNyPfCazPLcXi+MVty7vxSMVn91czMvoTG+BR/ojHqe0M2ZJrlwxU+i9+MIvXQSpXrZjkp/cm+bROuBsT0qCdApEWjfKrT9/JKAw/pxkeLhcFeIWY2YrT2jaT8eyYdFQUDDIrs41f7hBslqrV062cftek7oIxwh2X+RD7J8Yk7Ul6haSZ9eQziiiG28+VjwkV6Jkk6K2I+DdVwCAmVRpk04LDHYC+7wpyugUlilSqly1k5GbE+FfM4cciP5UDijlAFs6JZkFARJT9DU5o9+/2IAl1ZKB5yey6OBbouN2hZJ3ys0GpjOSFa1wpufS8Ik1RUdTrO3Pad5P8PEGhdGkswiiY81yin3daUDh28sEffomyl30yh2dYtd0kD8ldlgRQUc4MVCcKI8VqIf5bWklvos4jadcZkXBBXTFHC8eohq8XDcHCIKol/JIaeesYrpL/eKJsZ2/aqSS1Jz8AfX8suk8TtEHU63CtuklCVxZP+XgbPtD0FOZFuPB8P/Nv6f9xdgR4jlOUhKCCIIQFHb1QHTOwfhQuK7TbMaH0mZe9wZg/A7xP4uGNh8M/JmAjaw7ANkiA9Tr8Jxg0RQa297A6UsRYphXDsHn/CQQByru/FTUTs2I3ds6/6sLQ6ocg7JVl0Za9iSE8MsKOVfn5xGIWQBLEVOaZjFxUNH2i2TXIct/SQFsP/ia7c9JDoImGui5u08/nJQ4vHI8R417K8Rdd6X2SNNYsUqhWPEbdzB/2GODkXXe0+4zv+zE3FHxtCzuYhb3OIQSnhoB3gQb6rUqtLeP66Y0n18qtMQaVvHKVB6B2MLnwihzoufu8ODW559ht2/DY9jdwwLh/orVCc/4y437pNKV
+ 7IHhCeRN
+ bO84RD8dPaNUuK6mORIxYN5yUqOH3oA/ecoOQCerZlbmNksESHfpeyHvwh7Kqc88rpN6meAPXqe7ip7ljK7t1c8+xWCxgMBCv3Ieb6xHSVR4HwrrQtk/xQRJredp+DzHfUfN1tX0Be3Ob/yrjl3XeO2G+ig15Jd1DeHt9l1LktX1Mvk4dsrgqc//dUv1nW4CxvUfjxnyekhwSV1wmp5qN5TcedusbvQljkBQf/BQhVT2aK349q3/uHFK0u6FUdsPI2lcgWIc0MU3UOP6QdEtwJbgfi3FmBwWMJ0Jc+A69rHAMZjlZsFonAasnU/vGjoZ82nDaRPSdVwJLHVz1IH9TLsOtmSqGYW5/qFYJ9KefqWyXIeIXzkHcctU9VpiED6aeKYqIDNnt6Q+awERgAqB87IBiKVZ8YkDL510dV7+yL7t2QToZU03cLdvFYucFehO947ki/LqqWq2aE/pQQfe4jGF5qk+ipO6A9ljrAPQJsAU3ODw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,138 +145,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/10/15 12:19), Sergey Senozhatsky wrote:
-> Or perhaps we can avoid vm_map/unmap.  A slightly different approach.
-> kmalloc on fast path + memcpy (zsmalloc objects are strictly less than
-> PAGE_SIZE bytes)
-> 
->    Run #0: 1,475k IOPS, avg 3.26 us, stdev 14.24 us, p99.99 24.45 us, max 5,617 us (5.62 ms)
->    Run #1: 1,472k IOPS, avg 3.27 us, stdev 15.35 us, p99.99 23.94 us, max 5,619 us (5.62 ms)
->    Run #2: 1,473k IOPS, avg 3.29 us, stdev 15.37 us, p99.99 24.45 us, max 7,190 us (7.19 ms)
+Hello,
 
-Just a better looking code (but same idea).
+This is v2 of a series [0] I sent earlier. Please find changelog below.
 
----
- drivers/block/zram/zcomp.c    | 47 +++++++++++++++++++++++++----------
- drivers/block/zram/zcomp.h    |  2 +-
- drivers/block/zram/zram_drv.c |  2 +-
- 3 files changed, 36 insertions(+), 15 deletions(-)
+There were two "todo: " items of the same nature in mm/damon/core.c. Both
+of these suggested that we should iterate over only installed probes while
+updating (last_)probe_hits[] during merging/splitting regions, instead of
+iterating over the entire array, which may have empty/unused indices.
 
-diff --git a/drivers/block/zram/zcomp.c b/drivers/block/zram/zcomp.c
-index 39d1f9384939..81f21bad787e 100644
---- a/drivers/block/zram/zcomp.c
-+++ b/drivers/block/zram/zcomp.c
-@@ -181,14 +181,13 @@ void zcomp_cstrm_put(struct zcomp_cstrm *zstrm)
- 	mutex_unlock(&zstrm->lock);
- }
- 
--bool zcomp_shared_decomp(struct zcomp *comp, struct scatterlist *sg)
-+bool zcomp_shared_decomp(struct zcomp *comp)
- {
- 	/*
- 	 * Shared decompression is only safe when the backend has no
--	 * mutable per-stream decompression context and the object is
--	 * contained within a single page (no ->local_copy bounce needed).
-+	 * mutable per-stream decompression context.
- 	 */
--	return !comp->ops->create_dctx && sg_is_last(sg);
-+	return !comp->ops->create_dctx;
- }
- 
- struct zcomp_dstrm *zcomp_dstrm_get(struct zcomp *comp,
-@@ -244,6 +243,15 @@ int zcomp_compress(struct zcomp *comp, struct zcomp_cstrm *zstrm,
- 	return ret;
- }
- 
-+static int zcomp_decompress_buf(struct zcomp *comp, struct zcomp_dstrm *zstrm,
-+				struct scatterlist *sg, void *buf,
-+				struct zcomp_req *req)
-+{
-+	sg_copy_to_buffer(sg, 2, buf, req->src_len);
-+	req->src = buf;
-+	return comp->ops->decompress(comp->params, &zstrm->ctx, req);
-+}
-+
- int zcomp_decompress(struct zcomp *comp, struct zcomp_dstrm *zstrm,
- 		     struct scatterlist *sg, unsigned int src_len, void *dst)
- {
-@@ -252,27 +260,40 @@ int zcomp_decompress(struct zcomp *comp, struct zcomp_dstrm *zstrm,
- 		.src_len = src_len,
- 		.dst_len = PAGE_SIZE,
- 	};
--	void *src = NULL;
-+	void *src;
- 	int ret;
- 
- 	might_sleep();
- 	lockdep_assert_held(&zstrm->lock);
--	if (!zcomp_shared_decomp(comp, sg))
-+	if (!zcomp_shared_decomp(comp))
- 		lockdep_assert_held(&zstrm->excl_lock);
- 
- 	if (sg_is_last(sg)) {
- 		/* the object is contained within one page, read it in-place */
- 		src = kmap_local_page(sg_page(sg));
- 		req.src = src + sg->offset;
--	} else {
--		/* the object spans two pages, linearize it into local copy */
--		sg_copy_to_buffer(sg, 2, zstrm->local_copy, src_len);
--		req.src = zstrm->local_copy;
-+		ret = comp->ops->decompress(comp->params, &zstrm->ctx, &req);
-+		kunmap_local(src);
-+		return ret;
- 	}
- 
--	ret = comp->ops->decompress(comp->params, &zstrm->ctx, &req);
--	if (src)
--		kunmap_local(src);
-+	/* exclusive mode already holds ->excl_lock */
-+	if (!zcomp_shared_decomp(comp))
-+		return zcomp_decompress_buf(comp, zstrm, sg, zstrm->local_copy,
-+					    &req);
-+
-+	/* shared mode: try a per-request bounce buffer first */
-+	src = kmalloc(src_len, GFP_NOWAIT | __GFP_NOWARN);
-+	if (src) {
-+		ret = zcomp_decompress_buf(comp, zstrm, sg, src, &req);
-+		kfree(src);
-+		return ret;
-+	}
-+
-+	/* fall back to ->local_copy serialized by ->excl_lock */
-+	mutex_lock(&zstrm->excl_lock);
-+	ret = zcomp_decompress_buf(comp, zstrm, sg, zstrm->local_copy, &req);
-+	mutex_unlock(&zstrm->excl_lock);
- 	return ret;
- }
- 
-diff --git a/drivers/block/zram/zcomp.h b/drivers/block/zram/zcomp.h
-index 924c4185abe9..6764818d2a9f 100644
---- a/drivers/block/zram/zcomp.h
-+++ b/drivers/block/zram/zcomp.h
-@@ -115,7 +115,7 @@ void zcomp_destroy(struct zcomp *comp);
- struct zcomp_cstrm *zcomp_cstrm_get(struct zcomp *comp);
- void zcomp_cstrm_put(struct zcomp_cstrm *zstrm);
- 
--bool zcomp_shared_decomp(struct zcomp *comp, struct scatterlist *sg);
-+bool zcomp_shared_decomp(struct zcomp *comp);
- struct zcomp_dstrm *zcomp_dstrm_get(struct zcomp *comp,
- 				    enum zcomp_dstrm_mode mode);
- void zcomp_dstrm_put(struct zcomp_dstrm *zstrm, enum zcomp_dstrm_mode mode);
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index ad244624d4a5..e608769bfad5 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2128,7 +2128,7 @@ static int read_compressed_page(struct zram *zram, struct page *page,
- 	prio = get_slot_comp_priority(zram, index);
- 
- 	zs_obj_read_sg_begin(zram->mem_pool, handle, sg, size);
--	if (zcomp_shared_decomp(zram->comps[prio], sg))
-+	if (zcomp_shared_decomp(zram->comps[prio]))
- 		mode = ZCOMP_DSTRM_SHARED;
- 
- 	zstrm = zcomp_dstrm_get(zram->comps[prio], mode);
+So this patch series does exactly that. It replaces the for-loop over
+[0, DAMON_MAX_PROBES) with a damon_for_each_probe() over the probe list of
+the context.
+
+These patches are based off mm-new. They pass all KUnit tests related to
+damon. I have boot tested (but nothing beyond) on qemu-x86_64. Please do
+let me know if I should do any specific tests and link the logs here.
+
+Changes v1 -> v2:
+1. simplified commit message of patch 1 (on Liew's suggestion)
+2. wrapped all lines at 80 characters (on SJ's suggestion)
+3. added comments for new argument in function (on SJ's suggestion)
+4. added damon_ctx_destroy() in r2 failure case in damon_test_merge_two()
+   (on SJ/Sashiko/Liew suggestion)
+[0] https://lore.kernel.org/damon/20261007154851.45368-1-suhaas@s-joshi.in/
+
+Regards
+Suhaas Joshi
+
+Suhaas Joshi (2):
+  mm/damon/core: Use only installed probe in damon_merge_two_regions()
+  mm/damon/core: Copy only installed probe in damon_split_region_at()
+
+ mm/damon/core.c             | 61 ++++++++++++++++++++-------------
+ mm/damon/tests/core-kunit.h | 68 +++++++++++++++++++++++++++++++------
+ 2 files changed, 95 insertions(+), 34 deletions(-)
+
+
+base-commit: de3c5f0e6ebc5e0885d99043e071320cbb6ffbde
 -- 
-2.56.0.385.gd3acb90ef8-goog
+2.55.0
 
 
