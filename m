@@ -4,120 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9619ECA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 09:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E24ECA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 09:39:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE7696B0093; Thu,  8 Oct 2026 05:27:03 -0400 (EDT)
+	id 447706B008A; Thu,  8 Oct 2026 05:39:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A99806B0095; Thu,  8 Oct 2026 05:27:03 -0400 (EDT)
+	id 3F9016B008C; Thu,  8 Oct 2026 05:39:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 987066B0096; Thu,  8 Oct 2026 05:27:03 -0400 (EDT)
+	id 2E6FF6B0092; Thu,  8 Oct 2026 05:39:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 76E1C6B0093
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 05:27:03 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7205EA0524
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:27:01 +0000 (UTC)
-X-FDA: 85298929842.12.9E6967D
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3A0EA160007
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:26:59 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="MLPhnO/F";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uURyrTv+;
-	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 09D686B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 05:39:42 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6B8C2C04E7
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:39:42 +0000 (UTC)
+X-FDA: 85298961804.09.358C6B3
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 771F0C0004
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:39:38 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=YQq5UsJq;
+	spf=pass (imf28.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791451619;
+	s=arc-20220608; t=1791452380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r9J/h37jwaSf9Oat6ZX0Xs/P9dCpzFnbCtqimX+FEfw=;
-	b=owzY2xUPok1J4jlss9FeiTNq6pLpopWemKubgMNkjEJoVVb/g1qyOpkWjdty766vm1VkaP
-	RqPCcIhD7f2UOwGrAXGLB/ZAo5Tgz67TDZFVcY6NNR8Bhu+4JStHoYjLrf3E8SYR/B6/Xk
-	1krCabqF9+euvEKTzKUjrdUvmtbGZco=
+	bh=4IJ4lYBRnOH1ELDqm8p1BYesqSHem4oJyVkCQ2OMYXU=;
+	b=vQ/axN+fKBQKwlAcpVpFdcGGTpcjxQzZtnezlsrHqj3dNdmXbD5REBqjOPPjKQkuAylwhU
+	EYzEaNGTS+22cxZx+viWbsKQMLcTzHhmW8tL9qjyfHLXVbNYCHu4FT6Kezo3WHZJipoy+e
+	xsFLpoRwEZKKreUA3r1mDOQZrKSC2YA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="MLPhnO/F";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uURyrTv+;
-	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=YQq5UsJq;
+	spf=pass (imf28.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791451619;
-	b=Y4ZYNw5P+h8uZ4RdfaBi6GYLPx7wuUOcY5HsUjewX9m26pRHeFZ+ySSZkOAcrLyvndzBLo
-	AlXcrVx++TSPeuuJLXnPeMT3AjaDZSUz4mcAHFYDYU6iPFmtUtVD9imufV6wM6Y/tIUKaJ
-	olO6SbXJA+xtiB3LFL78g3GWJcSwrwQ=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id F2C3A21BEB;
-	Thu,  8 Oct 2026 09:26:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1791451618; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r9J/h37jwaSf9Oat6ZX0Xs/P9dCpzFnbCtqimX+FEfw=;
-	b=MLPhnO/F8tjDHvGqA36wUv0eytwTHqgKlBiw4KGMMqcNaY1J/c+mzBcRZZyNlIS5ZD1fyD
-	qrnXZz998c/ts6+ki+/mhHP3p8bT1B452yp3zjFBxjbXAqbwaHIZbF9z8I4QQZuzZ22uxQ
-	CcSPFCQ2HxP7Jg3fWfL4DOqpj0hMh2Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1791451618;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r9J/h37jwaSf9Oat6ZX0Xs/P9dCpzFnbCtqimX+FEfw=;
-	b=uURyrTv+nWnbSIE+uqGeKv1pwgpzPX2ROnUeXYMrMUhG4NnG0iggh5LEM0BAVyoG2JdGB4
-	Y38bOEls0tLV0+BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CA4D313354;
-	Thu,  8 Oct 2026 09:26:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id FUxpKeFhx2rUfQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 08 Oct 2026 09:26:57 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 575EEA13FC; Thu, 08 Oct 2026 11:26:57 +0200 (CEST)
-Date: Thu, 8 Oct 2026 11:26:57 +0200
-From: Jan Kara <jack@suse.cz>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Ayush Ranjan <ayushr@modal.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, David Hildenbrand <david@kernel.org>, 
-	Gregory Price <gourry@gourry.net>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [BUG] shmem: FALLOC_FL_PUNCH_HOLE vs fault-around race corrupts
- page cache / rss counters
-Message-ID: <zlfk2ussq6ighnxxb2dl2nqhopposzyj45smrr6ztnthe6xcjy@uekwoodseblv>
-References: <20260924061708.1645968-1-ayushr@modal.com>
- <arTdLsBENhrpOyk-@pedro-suse.tail5790ac.ts.net>
- <20260925053027.1998394-1-ayushr@modal.com>
- <20260925065013.3682431-1-ayushr@modal.com>
- <20261003033107.1488699-1-ayushr@modal.com>
- <6aa5a165-3ba6-4974-b549-fed7318ead49@linux.alibaba.com>
+	t=1791452380;
+	b=URcDo683M+166gwp2H4jeuPNZv24W07KZyPyL+vLG3xZhGwDhzZsBLndX6CIGTYg/z8lX3
+	WPneBKTMrzK8f4Sp3LIpQcmrgM+jVflaleDM+LZBz3F/wQVOpB4PgYX82+vmZAShQPRUi3
+	j70lHdoYPksczT6MHKj4A17r+U2IIO0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1791452374; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=4IJ4lYBRnOH1ELDqm8p1BYesqSHem4oJyVkCQ2OMYXU=;
+	b=YQq5UsJqvLuF9cPvHB9ifkDEz4LR5bBIHweK63UYikOIe2SXUL8Eb4Cg2ytsIjoUuJ0nsOLcQMeh7EpHFOK/ZLB6cr6daCdgSRv5iBmzGuwi82MLY5Ck+01UHusPtsFwEJpWdKQ+aOWdu2fP7227suX3UXrKOjIp6qZe1SGDumQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R611e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XCNdeuW_1791452367;
+Received: from 30.178.85.189(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XCNdeuW_1791452367 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 08 Oct 2026 17:39:33 +0800
+Message-ID: <01f89ece-9d46-47f2-b660-d32ab5d32923@linux.alibaba.com>
+Date: Thu, 8 Oct 2026 17:39:26 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6aa5a165-3ba6-4974-b549-fed7318ead49@linux.alibaba.com>
-X-Spamd-Bar: /
-X-Rspamd-Pre-Result: action=no action;
-	module=Unknown lua;
-	unknown reason
-X-Rspamd-Action: no action
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/4] mm: memcontrol: drop kmemcg_id and use
+ mem_cgroup_id() for list_lru indexing
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Usama Arif <usama.arif@linux.dev>, Dave Chinner <david@fromorbit.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
+ Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Xunlei Pang <xlpang@linux.alibaba.com>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260910080722.3961351-1-qinyuntan@linux.alibaba.com>
+ <20260910080722.3961351-2-qinyuntan@linux.alibaba.com>
+ <CAMgjq7DkLi7aPLRyGv__f6NLPkRHY=0Fw0kLEdevnoTFpqsbzw@mail.gmail.com>
+From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+In-Reply-To: <CAMgjq7DkLi7aPLRyGv__f6NLPkRHY=0Fw0kLEdevnoTFpqsbzw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3A0EA160007
+X-Rspamd-Queue-Id: 771F0C0004
 X-Rspam-User: 
-X-Stat-Signature: jbb1d7kesmc961tcspwm8ynxouc533xj
-X-HE-Tag: 1791451619-395506
-X-HE-Meta: U2FsdGVkX189mIhImeskh5FW+4QxrbMEhZCTMo8xP+83PsthP/VX2Bbq12IzyoMb8FLa4zQuzatvzXgxYKJ5lI5snakp3bQlGUbcNwUFUmBcZfKpYXoiHFzsRxkjBle1OcVFXIn8QDOp8N/cm4m9yaXAqWH/qdjIX87GsUmdgtKmGMgqnjOtNmgW/iTaIQZ0gVzTewun8j2m6WBzODzFQkdbppb8y8tGiLhZoUKrdzG3WGEQUrFkZ3c9/zR8sJNLSsGKBNFFiKGLSZkpSx880iT94s9DhkdmI7RJlBfIyZlnDQpFbescpsJ6bThVXie+OYg3dJuDBz3ItJV4FoFG4obQYKn6yWRacvNurTlV5h5SBBfcl0IIyC8Lxd2sEx0pW8YOj6Q6mu6aQF2CG7xuLN/rAbs/+4mZDJcHxOPj/u2mM8LPXoYQQmAh+Ta5cFjkX/wD0nkQt1DWBKaP/hj6mlbDtFilJGT1ZrlQDa4d1CFDXWKwuNVCEIdqu7Gc80fT1sAu7t6a3581ga3D79jCvD6eqVfaA6nqB0IvMPlynTd6IpTOkOeUfAoNcv4nl7PbpxY4gSMYhpNg8zP2YemHiHUYPrLQEQPbm9dImMgUEmzD1mUva9RApKngamLyam8DRLrmeoRlWG4QN5LpnWGiP+ePTe4luAovl21Ynpj/dn5orVphNYffBRXNftjIrsJ/D07kdcOJI2vKTNd3AWPBz+94/jANXdP9gaJjul+vTLolysF6PJr7oUHfPAu7N/x2DDW60050KsgauLZMdb2+SZ2tNUB6bNzK+9JTykCvUIB6SZZCopJ+KnugYchrX8LnisnjSf6/VrBXzrdsAc3tJWg/lsKzgGQwFeq3D7L2JNva2s4rKLbkcMimtvPrkE3O7F25K93Km73SLuIDCY9hUPl1E0R1BS1UCMq+WHSf5XyBIFWHUALLahu3HKxktKl17HVvmLnuGr5ybOxRHsL
- Bw95I28b
- vytx5vbs2vFZ32g95niyyT4i5xa46wTb0QHvFV7DLh0BhdAchF8NctXZlvJU1GTQX5XRhEyxXp90nEEorclDi7tZ2yyjaF/opl6MpIln2GOVCo8L9M44bNahv0IJkNDhFq/Wph4APVMUeCT5+cfzkdsaJC2aO0rPwbks2q2a2mGocWlAety0IGT1ebzuKhaxc9C7OaajXzaJjdBnK4kzjMJ7oW/a8PNTOc8zQJ7kg7VAsNv49FRyVgkTmGMgI6E+8ncxNmYnHZm1Tn4v3tp5M8q4w6IiNmubSnwvBZ7rpQuy0PQq9LOA0uOHvQnjkj5SVWIma9E+npKHa3SZQtlt/6ZPXE3yG1vRzWjXou3LMgG9Fw68PziDgp9OWofWmYzDgvM2iW1+mxTs3Ddc=
+X-Stat-Signature: smbqb4c8ag4aip9418skopn6sxbxm1kb
+X-HE-Tag: 1791452378-564190
+X-HE-Meta: U2FsdGVkX19oedoGkbwaSJE1iE9dPMLTNwOgx1HyrRrhZ8S2EWRRy3sKBhH/1taGH8lnvZTjPWbxdSR0zLWape6fieyyCYIPy6tT8Rf8tqyt1BOEAPYG20/2RkiM3BViyCaMIidylS5e3do1Jlcn4vTVpt1Ow91uceLuZD3hMZufTVDlqp6kbw5zfTC5s9irICk2GYLpUaMBk0uWMwo+l8EvEaONvaTFZ8hdPDXtbFZJwWL1GtJfCzZWTnVDT36iNJ+2xC0WTnZTh0LifTYqQv1Vf0AFlxDZXdLILFTS8CF7L0QSKjWLczLHOIA/xGZS9AijAA3ygfBMJhPJmdCXVdzOSlLUV1LDJ2DOl+c3M7Iu5x0VvJV8Okg3XO2tYjIP26HydP4zK0fMpBzlgYoUBSxVAdbTUaCwmZt9B81XNqTywAwi6lN1Lu+4UUfaXWOfCfABOJsu49nCr/E/8xmGOsr0K1I5V8e2Y+BtcLcvgT3qvsZgeGOOeC4OCLVUEJu9T+Xbjr7617vw/8WFhIgEmPcHcvOEawvn352/XzUMukKz4kLLaj0gXco0m4VTCRPmmq7X26H2NJ7ApRECschFPaNADtDCOAoejANpH9hHo12JX20vK7k97N6JEyp9oSMaI0fYGFNoE8s2GdELqph6thHmTpI59xyJFglEnxSUHO8mRkccnCir0r4wcqI1Sr54K0/+7+a0EtPxMMnf19+hepKWN5fjTmZIenoEE+da7cVUVUMekJtJgnhThS/Y7Cc8eo/KpmGGNMUnm28BSoYwbnY8/PYAItf+WRwy9SKaHpQXoP1ADUYgOv9KyBHPZyQ7CMuW3GZF2SgsvjCWJz84oiF0LwIDyNzCHUWKOragg7MeAUwmubj+J7zL21sY9L0vHsSRUZ0mpR+MctjhYxUtf0oHAMvUURn3L5o4i3JQgfe79xISbpBiFI7U08LlxPjWq+0Vriz9HB0+oxVwjbc
+ Nkm5MX9r
+ /12F2q7aTrkUdqQYdFis46inxn6E4ARp0Nt8cp/mg5zilfVY52HWfSDg2B6yxY+cSYbz1OzazMQWJo+jgFIgnRXAuLXPPl8JSBJJlN60n3VgkQlpdPsuCXX5Nyy36kxpQC+W9FtMjfSCoiK/T/JrIpINO0EkyaBnONklwBiDslgvEdH9+S+9/oaMhgqjQHeTKXh9C/Gh1PLcwEbURyTwDcJX4erfzzmN6oF8FnOl7dX+bMUZbFS2CLcT15hiaAhE8A5N7joVVT40yRSET/Lvc//q5FW9hh3m3eskN9WE/NY+Ohqajn8TgLpDOT+2gRcsOP5GUDAVCTkj8xNl39SAHPOlHN5s2o0lKSnTWXBZOd9FLnxo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,33 +99,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 08-10-26 15:58:56, Baolin Wang wrote:
-> On 10/3/26 11:31 AM, Ayush Ranjan wrote:
-> > Hi all,
-> > 
-> > Gentle ping on this.
-> 
-> Sorry for the late reply due to my vacation.
-> 
-> The reproducer in my previous mail [1] triggers
-> > "Bad page cache ... still mapped when deleted" on 6.18.46 within a
-> > couple of minutes on a 128-CPU bare-metal box, with no fork() and no
-> > gVisor involved.
-> > 
-> > We continue to hit this in production at low frequency, so I am happy
-> > to test patches or collect more data if that would help.
-> 
-> Now I can reproduce this issue on my machine with the latest mm-unstable
-> branch, and I understand the race. I have confirmed that Andrew's patch can
-> fix it. You can try Andrew's patch.
 
-Great that you can reproduce and understand what's going on. Can you
-perhaps explain what I've asked in my reply to Andrew? I'm apparently
-missing something but I don't know what that is :). Thanks!
 
-								Honza
+On 9/27/26 4:29 AM, Kairui Song wrote:
+> 
+> Hi Qinyun
+> 
+> With this commit, my arm64 VM hangs at every boot with a
+> 100%-reproducible infinite loop in xas_find(), driven by
+> the dcache shrinker during the first remount of the root filesystem.
+> Reverting this fixes the issue:
+> 
+>    CPU: 2 UID: 0 PID: 579 Comm: mount Not tainted
+> 7.3.0-rc4.orig-00725-g09d9672a5d4f #33 PREEMPT(full)
+>    pc : xas_find+0x184/0x1c8
+>    lr : xas_find+0x6c/0x1c8
+>    Call trace:
+>     xas_find+0x184/0x1c8
+>     xa_find_after+0x88/0x120
+>     list_lru_walk_node+0xc0/0x2a0
+>     shrink_dcache_sb+0x80/0x130
+>     reconfigure_super+0xc0/0x1f8
+>     vfs_fsconfig_locked+0xa8/0x120
+>     __arm64_sys_fsconfig+0x280/0x33c
+> 
+> Just for reference, this also fixed it:
+> 
+> diff --git a/mm/list_lru.c b/mm/list_lru.c
+> index 7dbb6125cb1d..42c48c3b9235 100644
+> --- a/mm/list_lru.c
+> +++ b/mm/list_lru.c
+> @@ -427,13 +427,13 @@ unsigned long list_lru_walk_node(struct list_lru
+> *lru, int nid,
+>   unsigned long index;
+> 
+>   xa_for_each(&lru->xa, index, mlru) {
+> - rcu_read_lock();
+> - memcg = mem_cgroup_from_private_id(index);
+> - if (!memcg || !mem_cgroup_tryget(memcg)) {
+> - rcu_read_unlock();
+> + memcg = mem_cgroup_get_from_id(index);
+> + if (!memcg)
+>   continue;
+> - }
+> - rcu_read_unlock();
+>   isolated += __list_lru_walk_one(lru, nid, memcg,
+>   isolate, cb_arg,
+>   nr_to_walk, false);
+> 
+> ===
+> 
+> And BTW cgroup ID lookups seem much heavier, not sure about the
+> performance impact.
 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Hi Kairui,
+
+Thanks for tracking this down. I missed the reverse lookup in
+list_lru_walk_node() when switching to cgroup IDs. Your change fixes
+that mismatch.
+
+There is a catch with mem_cgroup_get_from_id(), though: it calls
+cgroup_get_from_id(), which only looks up cgroups visible in the
+current task's cgroup namespace. Here we need to walk all memcgs
+on the LRU, including those outside that namespace, so we need
+a lookup without that restriction.
+
+Thanks,
+Qinyun Tan
+
 
