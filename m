@@ -4,136 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A88B4CA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 15:07:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A628CA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 15:10:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7219C6B008A; Thu,  8 Oct 2026 11:07:00 -0400 (EDT)
+	id 097B26B008C; Thu,  8 Oct 2026 11:10:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D2376B008C; Thu,  8 Oct 2026 11:07:00 -0400 (EDT)
+	id 049226B0092; Thu,  8 Oct 2026 11:10:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C2DB6B0092; Thu,  8 Oct 2026 11:07:00 -0400 (EDT)
+	id EA2C46B0093; Thu,  8 Oct 2026 11:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3005D6B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:07:00 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A7B8FA02EC
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:06:59 +0000 (UTC)
-X-FDA: 85299786558.15.0444505
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B8E93C000C
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:06:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oKvr1YC5;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf10.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791472017;
+	by kanga.kvack.org (Postfix) with ESMTP id CB4136B008C
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:10:25 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5AD5AA02EC
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:10:25 +0000 (UTC)
+X-FDA: 85299795210.20.3D6FEE4
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B1141A000E
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:10:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=oS54NXGn;
+	spf=pass (imf15.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791472223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7nTNII3n3G87GHhdFtHT3hqd10T6INaV8G3FhaWt9A0=;
-	b=VrY35SaRbQycsrd6JdZEVg4RUGL/6AF79eZ74iSQG4wZtQcOKUuYkOD6mp9efqOzHnxTcn
-	Vj24vF/gkQuwXY1ULaxmZTYCohbvKjPfZxXrHxJHl7DiS5zr5sSrecdSfz/kBY5D06bKa0
-	uLPeSlSTEC1bBiZEK21WnhiheCDBn24=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oKvr1YC5;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf10.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791472017;
-	b=q5KqVszZl2J6ljNtsw/gQ/heWcxqV+frFC7ECJJn0fIol0d4d3sU4RzWYiJqPbqTwkIgVU
-	7/Yd0g+L+Yb7QsJ7VmGNxe/vbPUKaochdqcwcwm9NEgDT6A3L+DsjfcEfbn5wbxGL+RYOa
-	YXMLdvHTCFa4E9q9mwwBfSkM5/7+rc8=
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-6740e7ae219so2837496d50.1
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 08:06:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791472017; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fcJLhIGOZiiMKW5O/srcwNILhvvt1gaU4ZUPnf8fj0sD4cUJEWpYWpd+uJzW4feOdu
-         FGynpH+9tSZ7VrMoEHHWh2mVICftegVwkbrI+rP/woqEoY9FxEYNLL92QyzEs3ZKlzW7
-         8aUP8smsmyxbf1QQrLq1QCvTGMqjKIm6ACNqmuy9qsg/o3G7g46wgG/G7jgqKUs8S2B1
-         2VYndU6n3R/mZf6FHTs9eZoG04peD1MQh7opfeCLKvPxka7vs3cIKTqpWk+d5rUpyjCN
-         b/aCVZDXGZ4O+LElhVO4JSS8LGCpEt9T/3BRV+kap5et+BAe1ybtQMaY8FmxLpoEsosu
-         bLFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7nTNII3n3G87GHhdFtHT3hqd10T6INaV8G3FhaWt9A0=;
-        fh=3p+aCoaT7eRINQZxcHUagFNwvkKm60VbwPp74G8JZco=;
-        b=hJ2AcDUOU1MmKTumct42zFe+WzAfmogCB0fefeFrl1zuMmGXUNUEpPQi0svsmDE1ZQ
-         0ezCVA1OUIZQK0LRCcgDslE8aEp1ryi9jVCz+nGtGya+a2L/586KzR4Yt9Muhym++egi
-         cMUXEYN3W3zExiC527DOhZ2U+NuntpTwLN9ArgiejjwKAJct3sNc+GUjaKu43e7jRgF+
-         N5RcI+POzobdcvYkzLjVGLc175bleVvLoTtcHUgvEyTDrS4PqFqm3RN9JWPV7vQwioJB
-         aN42l1DrzUlR43VmYav0hwUYZaigEj0cJ8HmabrQLizOu/t+EzUk6sHhIc8aNkAIMy86
-         djdw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791472017; x=1792076817; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7nTNII3n3G87GHhdFtHT3hqd10T6INaV8G3FhaWt9A0=;
-        b=oKvr1YC5K6qoJY5BeNdXZeNO4HevKSty5jKZ/72rblWru/GHuJFTgjE9mYMxc+lGVU
-         1bOFbM46S2z4g1uOQmEk2X6RzuH8/KrWLSSvfnrZt8+4dH9C2GGuxLgHXVbSxD8Z7EhO
-         7/JrBQ3EekTc1w5HVLYO6QUQtFeftRalQV2Ar1d4EZeWbWfX2xxcBSUL7TdeWzmWCMQ1
-         JUUlPMJ/5zpc81n3VPCCQp2YHzmZWtbYhCOwFIfZ2XKAioRpPCzR08nkr65tiAvaZ3oR
-         tqeueNfttBvbB9d0wYb7J0tbCfDpAzvcPcNEELxttxc57GTwTYPxTtjRuAWmisrdr8Cc
-         eXCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791472017; x=1792076817;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7nTNII3n3G87GHhdFtHT3hqd10T6INaV8G3FhaWt9A0=;
-        b=bXchDhCi1uOJwIkyvwAka0u4mtY05no+gYWmZZaS4bjqqJPRZUTVm1NkzwPUl2T2vu
-         81zcJLxzLydr3W4UbdXVsmN6DyrkhF0WrEQnixldy54lXKP9giPksv73cLMctaFZ4Zje
-         xqdc9Ijj/OWrwogpH74BsmzrEiCtM5WFOuA4cX3cNH3/7iJw0UAKLSdt57qmzD+wERB8
-         6XVre5cIlApLscwJ87RHL5AN3tqvLiJol88yX/ra550DmUaqow49EQkdTD3E7v3l2mrE
-         qMU/vdmGIHtIIsEkxg6yFcPOdBsXHstLPZ8Xs3+eq1kZYeRhpZhQHaLyLqF/CZ6MvvVW
-         MGFw==
-X-Forwarded-Encrypted: i=1; AKwUvBzhoyaeU1GVyF8EPT6X9pE4UA858aPh6O+MfiQ+LeJjU63XqF+cM/M4FcVcEzk+qFu3+ESrMIvEdA==@kvack.org
-X-Gm-Message-State: AFq9FYJDdB8IeQGy2qd/dWu1XEm+/gwVX3A93MmN9uqMS9jsDixSK4SM
-	HupMblq8BTe5S6B0t05y182bbXy++Wn8cbqHmzGeVMS9Z5fDuRUm5Vs1TRYgaafBoV7cUCX5G+h
-	0GmWWL6VgNYfYL0yjUuRSzG8tswA1LjI=
-X-Gm-Gg: AYBFou1INUlZ+7NJFonTPGg/kHtntSHF7FlHHca6wZsl94Y1cygkRkojndXAN7UrzKW
-	CgTL0Rl4NOftHbWN3TpzyKJJOZ+6H+qWXyhBPF+BmxWEvthQE4etCkNJo/f6ij8irm6usxGTK15
-	/1HbWf2gdSIMnNxpiz6LxSXUcgih9mKiq5YV65MQsMQ9HyvElLwAK+atczdO3/GXJzH7dm0N9By
-	xeeR9VFzdyu6jXS33tWypj8msCb0YXcPxJwuOimeyto6Qm9I9ytbSVIsDh8wQBLSTg+FYHz/Zuq
-	jI9nlYSaYIsssBjKs4uPZAbSmJu4mR3hBG9/OmnzLsapL5mXze7DkT7t9m4IAL++ZTfSMIaVnjJ
-	obIKc84W7
-X-Received: by 2002:a05:690e:4199:b0:677:b923:dbd3 with SMTP id
- 956f58d0204a3-6790a49aef4mr1817579d50.154.1791472016554; Thu, 08 Oct 2026
- 08:06:56 -0700 (PDT)
+	bh=p/CEeLfN16W336hJkOodyM4bPanb1U8QuIH15EGrUS4=;
+	b=nYuCKSsvC6daeJNjcGdAEB8PgneUiM6I2NA8fvRgTceYXCHf53T+N9ubZIlVcWPZ8cZJ1N
+	Pe+bCJSAf0k9x2unIZp2jJehX6Ft1paw2tT1XinKyO8RFcI8eF5tP/Jg/4acn9rwUTp/tZ
+	RVFs+s9xDr+ZoX5Im7/7zxbPaNeg9Sk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791472223;
+	b=iXqzl9dyy+h3ZXJb+JJ0mE6Bty8i1nZmBM7z2r1CrT6Ed6dXkCSw/aUj4db7SGeMYDgQi2
+	IMgI9mGV5S1dFtr+5+m2W0+GQApSqtr5w3fg9nCrzw0q1FZfoqikrusPAMD29XdlqxAGET
+	4RE4ibroWsDcopBN64wanROguaFU12s=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=oS54NXGn;
+	spf=pass (imf15.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20261008151020euoutp0220b133fd63f9b3bbdc21c169ebbde20a~cln4huxOw0356403564euoutp02R
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:10:20 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20261008151020euoutp0220b133fd63f9b3bbdc21c169ebbde20a~cln4huxOw0356403564euoutp02R
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1791472220;
+	bh=p/CEeLfN16W336hJkOodyM4bPanb1U8QuIH15EGrUS4=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=oS54NXGnWESg8OmQ/iUNSPpUcdmD5JSqstt22ooyjfcQZ6rgLbtMNDxWsDsHW4cRL
+	 ef7K/aHXJfROSsQ3wIhpsDNoLGTErxaTT7hzjtbGJFWAroxWeYh/ybkiMApF2lpYu4
+	 oeROedwov5Apmqc4S/mHJQLCPTBDtxRXgwajMLsM=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20261008151019eucas1p26347f907cbb12ee37552797103387753~cln4RSRBW3092530925eucas1p21;
+	Thu,  8 Oct 2026 15:10:19 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20261008151019eusmtip2cf77e50b80cb40ed87be766138851542~cln3sJP_H2632026320eusmtip20;
+	Thu,  8 Oct 2026 15:10:19 +0000 (GMT)
+Message-ID: <c1f42a7d-708c-4a6c-9925-9bb9806be958@samsung.com>
+Date: Thu, 8 Oct 2026 17:10:18 +0200
 MIME-Version: 1.0
-References: <20261007163403.1643768-1-ekffu200098@gmail.com> <asaEdFRDdZlRdAc4@thinkpad>
-In-Reply-To: <asaEdFRDdZlRdAc4@thinkpad>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Fri, 9 Oct 2026 00:06:44 +0900
-X-Gm-Features: AclHuK8DoN5ENhoGGsqTh6mQAA4XecrayQgZajzaBuMSAutJnzs0JzwLoPXtW-M
-Message-ID: <CABFDxMHsn+Dj42GU0zk-HEfYOhoEs1c+UsmLMSjNSrWfUu4MsA@mail.gmail.com>
-Subject: Re: [PATCH] mm/slub: clamp slab_min_order to MAX_PAGE_ORDER
-To: Harry Yoo <harry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Hao Li <hao.li@linux.dev>, 
-	linux-mm@kvack.org, Roman Gushchin <roman.gushchin@linux.dev>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 2/2] of: reserved_mem: allocate and map the reserved_mem
+ array early
+To: Rob Herring <robh@kernel.org>
+Cc: linux-mm@kvack.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>, Saravana
+	Kannan <saravanak@kernel.org>, Oreoluwa Babatunde
+	<quic_obabatun@quicinc.com>, Wandun <chenwandun1@gmail.com>, Andrew Morton
+	<akpm@linux-foundation.org>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20261008140515.GB183998-robh@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20261008151019eucas1p26347f907cbb12ee37552797103387753
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20261008094130eucas1p1120c66c914aa2b93fa3d7e6e494e7eea
+X-EPHeader: CA
+X-CMS-RootMailID: 20261008094130eucas1p1120c66c914aa2b93fa3d7e6e494e7eea
+References: <20261008094125.3197971-1-m.szyprowski@samsung.com>
+	<CGME20261008094130eucas1p1120c66c914aa2b93fa3d7e6e494e7eea@eucas1p1.samsung.com>
+	<20261008094125.3197971-3-m.szyprowski@samsung.com>
+	<20261008140515.GB183998-robh@kernel.org>
+X-Rspamd-Queue-Id: B1141A000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B8E93C000C
-X-Stat-Signature: 8fkexq6xbieuirka9yatg4bpnkic4ae1
-X-HE-Tag: 1791472017-328761
-X-HE-Meta: U2FsdGVkX1/TH7Bv0F+qUvpLDxde/Koy1tXdcJDGk1PC8oo2XvJukMvfVhe2lwNw8qB2c9xvXRDqoXLVNSqM5vylLZoSayEd4OQ/UZdXYIwOIXNguqZaMhATVNMYlxOYn2nWhVzA1AMIscZMl95ySLei+/0CfxSXM5q/OPKPJFTnvaRJZo0F6RQ2WgP0Hle8buFDLKhgeQEpalO5WnpuMu/n5Pza46+GbC/FTPSNsYhGR5FT+o5dlh472yKZhr8oh+lODHwOp4iomD3K6MPy2pqQFY3JQnopegsy63n94ap11UGs+K0uWuvW6vU9JJqO7FvetfRApTuBgOQ1qV4kuKorG/yEEMHJp+G5kBMnxW92GjGjlBEESSYTiQqqKynaZU7RstYno6T6Ajimt8x5BThFfvL0zFD1zd+wxD2xDh7RNAvMGJrpAlmHbP/B9l15K3Kl7+6Q11PagSZDfzEkPTex90rQs8F8JQV1PPxPd5Jq/VhX1Y9JDBGN9uamcEv6wPai0hmtD/fTlHGAEtT3LsNoR7NIL2edW7MTBFXJOs7N+ju7Ahc+Wyl2aUV89JG7ogWy0SiPAV1Ayp+eHPyLbSOp9pq8GFkLanYJ8GrJBZumf8VYaHk7Ws0PCECQs9AmgX2Xy/3OlmmAGhzdyJgQdVrTEyklX6CLYfxN0lmWS1GEwWQP0HXatHtttWMXlFBmYE+slJIqgE3Nt3rq8emhN/RO/84NTkmijGc50lCzUhLzYqxjpoJQLW/iGOFCM1VgSXUwdu8j5q5dY8ZrpXfd6rpfmrUX2jj1agqAQCY6w1hsVfDAerGrRQVu0b+V0uLRRiKkHw9XB89kFg8C7jehl84gBIsbTkPIKj2DuiHsYbMGs8sY7HAJwamUzUc+6hmCZuaUFy8d1tWiUIN58wLegfdoP2tOoesxnZUO3mahTCRnb39nw4TB+IY1kQmerdkLsAZEZdWt7ysN4gBLk3G
- Q704XaBu
- 10eQiWJkE4pOeWXYmu2uMNXnq8foKq2WeWpltgNpnw3tn3Wsdwlej0yyaZpj4n4Q/ZyNAgdBC9IsTzmyZ43rAVYxUDG0OWHM+u98tKq3PTQulWfRMGcmirylfsgpc92cYI33TX9GibZdAoE41TBJhe+tbtU9C8d7R5NLAsbqj46xYVpPNGZudcdF6NYh4jmBa3QHwnotaBuvpMD8SjKoWUfOBLFS09FbUxLwKIE9bl/oN+D7bfBRPNzZ8JUXx5GYiQaCYBW+YTPTKQ0aXdoVJipRKn8Q5QwI+9v1qEhnsIR2cnuptcrOnoE8PhnPOyNR3rVf3sG9PQWkfoDhjNmuWJHOGbq1tjGlzgWKHI8uv4b1/iVtGPe5v3pVfeylV6FiqjKlB7N0kR+M5N5xTVVYOO1TOQlaRXSoPfpw7uXZdSAHJDWsaeFymHgzX7fG0Vs3NF+1hvptneGbRoqLXN2D99JEb+f66HImr0x6cCkJPqYRZBYkUBRIahU2t7g==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: booxerw8tnywpsq6c7t5rm8q9rdsdopf
+X-HE-Tag: 1791472222-66288
+X-HE-Meta: U2FsdGVkX182SjRAPYw3T/DgozQiv8qjE/LnT85yhrS18UfXL4V4mIkMNJ5s1EsaLygANiQ6Agb1j+Ks8VxFsL01dURsMK5DW/IPF91/R9EWp6q2bVnrQSIB4joOhwvqSiTyHPFXQ0Qjgsz678xss5PSxvZd/lo6x3fX03ZeO2dyAR5wwbYRUNcpNmNmP/k+65eJ9Ox9s21WqDLe8NmYQwQ/U53zM8XBPhMnt2OZBDcbpGJDjsRIRSh7PBp95125wspx27xwUcilW2RsGyrdK7MwdFjo7TiauriRokb8PlQg2M12MGD0savHmTg0ssAhoB4MkFZnhJzQ9VsBBk32sHffpuWb0u5ydSMEpnvvcXE2zTAGuZ9q4xUpb4+bNP63ZLR98l0pt8JIcjrVhEeKcTrJEByI3ZjPrFz8HzzkHKSStkmfYq7Az0n7eQaiOWV3smnEMPE5YxwHmZk0D+3y17xACwESqDd06b28C2WYuHifkgIuThjUzdMPtpXovduoQt0NJkGx7tZbuQfBaZ158ulisWHSrR3LYyCAr55ODwCkkgMpYvvcFSMSNtY2x33CWVKrrMnf5CP5rsMueTlBRoDuUlJ5RUBDAatPGNgvEufgegzSLjUMefnGT46ZU3QhaZyRaZtV8Rc9E+vbCZR1Lrm1Tzy1U7c9MTjTrU0/1d1TpYpBnnRtdNg7Q5ZKCTa2NXQ1uW8X6HL/ay8rSFsInslWuxdgFgtcUAhNqOFrbERWV56ZQUqdWzZkFH/cNSR1yTpoeC0TkTx6bxGlCYF/P2m6AXo/no5PkUv97ieTmK4FAGQt2r/SqXUfMEYeh7HE3e6CdpYxbxNxyblzkzWYwFdUuIabzJ7JMEqxqDt2k9wUeRNt18WOeb/GkGiLpyqZtwj2pULIIlcOwERRbK+qtCzMQpUz/E1sG0dMe8Fk3xYa06idokLLwY97Mxk6GkpWSUSdxf3QnRk4RRDbPqW
+ v+qqMtsl
+ gAOzYXkXuphkxt1qKQDBdmaFFWPDFFygOrzCe+Sb1E/MqvC2YsAYmyfDsl7s5bI9FvQp4c0LlwwdvGiYL+CAVBsFugmB2L1vcnewyzWXukhIAMQB936PSQ1Hw4GsDVRFFCyUYTDtrVxZY7tRIDVVF6cajNjtuhdT2GX/SwjVLSrWdOTo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,110 +109,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Harry
-
-2026=EB=85=84 10=EC=9B=94 8=EC=9D=BC (=EB=AA=A9) =EC=98=A4=EC=A0=84 2:47, H=
-arry Yoo <harry@kernel.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+On 08.10.2026 16:05, Rob Herring wrote:
+> On Thu, Oct 08, 2026 at 11:41:23AM +0200, Marek Szyprowski wrote:
+>> Get rid of the static, limited-size reserved_mem array and replace it
+>> with array allocated by memblock_alloc_raw() and accessed through a
+>> temporary early_memremap() mapping. Such mapping is needed for some
+>> architectures (like ARM64), where linear map is not yet available during
+>> early boot scan. Having a single, writeable array with all reserved
+>> regions removes the need to perform two step initialization introduced
+>> by commit 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved
+>> memory regions are processed"), so all regions can be processed
+>> directly during the early scan again.
+>>
+>> Suggested-by: Mike Rapoport <rppt@kernel.org>
+>> Link: https://lore.kernel.org/all/asc6brs_g0ky0wOM@kernel.org/
+>> Assisted-By: Claude Opus 5.5 <noreply@anthropic.com>
+> Assisted-by: LLM
 >
-> On Thu, Oct 08, 2026 at 01:34:02AM +0900, Sang-Heon Jeon wrote:
-> > setup_slub_max_order() clamps slab_max_order to MAX_PAGE_ORDER, but
-> > setup_slub_min_order() has no such clamp.
-> >
-> > The buddy allocator cannot allocate more than 2^MAX_PAGE_ORDER pages
-> > at once, so slab_min_order above it makes no sense.
-> >
-> > If slab_min_order is set above MAX_PAGE_ORDER, it can even panic at
-> > boot or invoke undefined behavior in order_objects().
-> >
-> > So clamp slab_min_order to MAX_PAGE_ORDER as well.
-> >
-> > Fixes: 818cf5909701 ("slub: enforce MAX_ORDER")
+> is the new way...
 >
-> I think Fixes: should be the commit that introduced slub_min_order.
+>> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>> ---
+>>  drivers/of/fdt.c             |   3 -
+>>  drivers/of/of_private.h      |   2 -
+>>  drivers/of/of_reserved_mem.c | 251 ++++++++++++++---------------------
+>>  3 files changed, 96 insertions(+), 160 deletions(-)
+>>
+>> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+>> index ecc923102622..a58efdcbac7f 100644
+>> --- a/drivers/of/fdt.c
+>> +++ b/drivers/of/fdt.c
+>> @@ -1283,9 +1283,6 @@ void __init unflatten_device_tree(void)
+>>  {
+>>  	void *fdt = initial_boot_params;
+>>  
+>> -	/* Save the statically-placed regions in the reserved_mem array */
+>> -	fdt_scan_reserved_mem_late();
+>> -
+>>  	/* Populate an empty root node when bootloader doesn't provide one */
+>>  	if (!fdt) {
+>>  		fdt = (void *) __dtb_empty_root_begin;
+>> diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
+>> index 0ae16da066e2..895f868b4cfa 100644
+>> --- a/drivers/of/of_private.h
+>> +++ b/drivers/of/of_private.h
+>> @@ -9,7 +9,6 @@
+>>   */
+>>  
+>>  #define FDT_ALIGN_SIZE 8
+>> -#define MAX_RESERVED_REGIONS    64
+>>  
+>>  /**
+>>   * struct alias_prop - Alias property in 'aliases' node
+>> @@ -186,7 +185,6 @@ static inline struct device_node *__of_get_dma_parent(const struct device_node *
+>>  #endif
+>>  
+>>  int fdt_scan_reserved_mem(void);
+>> -void __init fdt_scan_reserved_mem_late(void);
+>>  
+>>  bool of_fdt_device_is_available(const void *blob, unsigned long node);
+>>  
+>> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+>> index 300fb236ab59..6a5e53243bb7 100644
+>> --- a/drivers/of/of_reserved_mem.c
+>> +++ b/drivers/of/of_reserved_mem.c
+>> @@ -24,12 +24,14 @@
+>>  #include <linux/slab.h>
+>>  #include <linux/memblock.h>
+>>  #include <linux/kmemleak.h>
+>> +#ifdef CONFIG_GENERIC_EARLY_IOREMAP
+>> +#include <asm/early_ioremap.h>
+>> +#endif
+> These ifdefs are the only thing I don't like. early_ioremap.h is always 
+> in asm-generic, so do we need the ifdef here? Or does the arch have to 
+> do something to pick it up? I don't remember.
 
-Thanks for your guidance. I'll switch this to 81819f0fc828 ("SLUB core") in=
- v2.
+Those ifdefs seems to be some hallucinations I missed to fix. I will send v2 in a few
+minutes.
 
-> > Cc: stable@vger.kernel.org
->
-> And no need for Cc: stable? It's been there for decades and people
-> should realize the kernel parameter is broken when it doesn't boot.
+> ...
 
-Okay, I'll remove it in v2.
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-> Otherwise looks good to me.
-
-Thanks for the review :)
-
-> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> > ---
-> > QEMU-based test results
-> >
-> > - Booted with "slab_min_order=3D20"
-> >
-> > 1) AS-IS (before fix)
-> > [    0.094926] mem auto-init: stack:all(zero), heap alloc:off, heap fre=
-e:off
-> > [    0.097776] Kernel panic - not syncing: Creation of kmalloc slab kme=
-m_cache_node size=3D64 failed. Reason -22
-> > [    0.099542] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 7.2.0 #1 =
-PREEMPT(undef)
-> > [    0.100903] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), B=
-IOS 1.16.3-debian-1.16.3-2 04/01/2014
-> > [    0.102607] Call Trace:
-> > [    0.103040]  <TASK>
-> > [    0.103417]  vpanic+0x32a/0x4b0
-> > [    0.103976]  panic+0x5e/0x60
-> > [    0.104491]  create_boot_cache+0xe3/0xf0
-> > [    0.105194]  kmem_cache_init+0x12d/0x410
-> > [    0.105890]  ? mem_init+0x1fc/0x210
-> > [    0.106521]  mm_core_init+0xba/0x140
-> > [    0.107153]  start_kernel+0x441/0x8b0
-> > [    0.107814]  x86_64_start_reservations+0x18/0x30
-> > [    0.108638]  x86_64_start_kernel+0x10c/0x120
-> > [    0.109401]  common_startup_64+0x13e/0x158
-> > [    0.110145]  </TASK>
-> > [    0.110584] ---[ end Kernel panic - not syncing: Creation of kmalloc=
- slab kmem_cache_node size=3D64 failed. Reason -22 ]---
-> >
-> > 2) TO-BE (after fix)
-> > [    0.008976] mem auto-init: stack:all(zero), heap alloc:off, heap fre=
-e:off
-> > [    0.011366] SLUB: HWalign=3D64, Order=3D10-10, MinObjects=3D0, CPUs=
-=3D4, Nodes=3D1
-> >
-> > Also, I'm not sure about the Fixes commit. Please change it if you know
-> > a better one.
-> >
-> > ---
-> >  mm/slub.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 1559cbace469..8400df7c222e 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -8354,6 +8354,8 @@ static int __init setup_slub_min_order(const char=
- *str, const struct kernel_para
-> >       if (ret)
-> >               return ret;
-> >
-> > +     slub_min_order =3D min_t(unsigned int, slub_min_order, MAX_PAGE_O=
-RDER);
-> > +
-> >       if (slub_min_order > slub_max_order)
-> >               slub_max_order =3D slub_min_order;
-> >
-> >
-> > base-commit: d755441b7672c74f29d1241ffdd2b067ecab1ca0
-> > --
-> > 2.43.0
-> >
->
-> --
-> Cheers,
-> Harry / Hyeonggon
-
-Best regards,
-Sang-Heon Jeon
 
