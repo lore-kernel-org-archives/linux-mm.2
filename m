@@ -4,134 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67C6ACA600B
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 12:08:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 809E6CA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 12:09:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75E1B6B008A; Thu,  8 Oct 2026 08:08:28 -0400 (EDT)
+	id 784FA6B008C; Thu,  8 Oct 2026 08:09:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70D086B008C; Thu,  8 Oct 2026 08:08:28 -0400 (EDT)
+	id 70FAD6B0092; Thu,  8 Oct 2026 08:09:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FBDF6B0092; Thu,  8 Oct 2026 08:08:28 -0400 (EDT)
+	id 5D6BE6B0093; Thu,  8 Oct 2026 08:09:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D6E66B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 08:08:28 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF97480165
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 12:08:27 +0000 (UTC)
-X-FDA: 85299336654.01.F8CCF0E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 41F9D1C0002
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 12:08:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X2YG53XC;
-	spf=pass (imf21.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2F0E06B008C
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 08:09:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BDE80A5E34
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 12:09:17 +0000 (UTC)
+X-FDA: 85299338754.19.3072B40
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CF3F580015
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 12:09:15 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UpfrPTgk;
+	spf=pass (imf30.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791461305;
+	s=arc-20220608; t=1791461355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uI+XtiazTVe8pG8BiMyn92RVBJ4I25dozIom7amZQ6c=;
-	b=I5sAsUVDrS5rS8zOYqvu5upIzB01WIrwj5+OjzvdvzARE1HCUZeihFo4KAGZNt/RZyNyY7
-	qziaaVlcyEc3hql9nZ8Z7L1fn1G0iMruE7Q/M22eXOe4rLMJsg/2vT+sJGBdPreX54sqC9
-	obHM0MMNjebqDtMsAzG/XbHuJBp728Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791461305;
-	b=E+OQ3JlX0XqKkgGLmcLSSkOJfJ9qTLd5j6HLCG9Ue1/rzeYW7r/fE18wdEMdXYl+NcfnqM
-	G4MKnoCyDnnz3N0XJ+YXWnXUItxJPJmojEnxGDGExIjQgnCjzAlchI5xXfiQwfKD+Hla4w
-	xhoX9thQGKnMQaOGCZmZT/Mg7EKH9Bc=
+	bh=ZpMs8OejlQaJGDNhMC4YaKq4cxnZ0droSQ5wJkH/ueU=;
+	b=0TMeGVs0CQARXNivDw1yXBlGsbCezlAANNZCLuWGj7vdESi4HdGz5KbPDIXkjQP+TJJ2mE
+	j+NFtmQzYu9amLX1lakXGSmWrpTDJALEAbpzV1oi1jXmM85fbyEkN97+xHfB8aBr7I0VEw
+	RNjlmoblYZsOm06V/GdHIwG1Y3qlj5I=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X2YG53XC;
-	spf=pass (imf21.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791461304;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uI+XtiazTVe8pG8BiMyn92RVBJ4I25dozIom7amZQ6c=;
-	b=X2YG53XCYyeEs4yQMkEvweXSJbkY089Au97HI+scAtcN9JZCKwPUy65015jvCiBfTGUYnS
-	prfv4Ln2SJ49Di4QIrROcO3tlSi1F2y/A6smBrwHya6NQ/qEtTK+6eqQh+93ova+qRKZcS
-	+YDEY0UBGRV3Kzj7Y66KLnqT34XsFKY=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-416-m4LPJs62M5-ze3J-UiNnqg-1; Thu, 08 Oct 2026 08:08:21 -0400
-X-MC-Unique: m4LPJs62M5-ze3J-UiNnqg-1
-X-Mimecast-MFC-AGG-ID: m4LPJs62M5-ze3J-UiNnqg_1791461301
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-532f343a55bso85325861cf.3
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 05:08:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791461301; x=1792066101;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UpfrPTgk;
+	spf=pass (imf30.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791461355;
+	b=wi7ckxuUehdDxRXi2MK5Jk1eLN45le5RwMwVmCxoz4TAtgBS/oSTxFuCXIsWNTktkoGLvn
+	aoJgLghWSE1og4X2lGbscv8ObcCHo14Wunt+NfrAj1GJezDPmXAlPcKyzQjR1bcgLD8Bzr
+	qcihKnfzbMXATd1HXVQbkLXy3Et73AE=
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cc4aa18f9afso2475206a12.3
+        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 05:09:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791461354; x=1792066154; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uI+XtiazTVe8pG8BiMyn92RVBJ4I25dozIom7amZQ6c=;
-        b=BPPCQ0fplPqyiSosba3DYOMyXmmzFa7ykVXgDthtHPqm/TDC9iFnLqUai+EE/LfclY
-         LAKOlU4Y/dpXGZDhXYN/Q3Jm8Gg0JxtcIckZjSBSMwu7YCp54ViY3hDfwB/XfktC1YaU
-         IAd0YBD8lDaxpqNeEQBi8lrYKj4AASvs+mNqW93sL6wozVBgd5SM7/dXBro4TgIWEO20
-         te88lVotTJp16b11dcUDJkPfcCGmGNJPTZ4GV/z0KBzHoX22CvcgPoWc4ihIfS4m7PIe
-         80GOvjkK5JXXtCtn39dqG0PfddBBpiz3ORv+PE+GwsM1lhgESUCq1KHvV2th23RNG+QJ
-         zZpg==
-X-Forwarded-Encrypted: i=1; AKwUvBykaZZDwqBMVC5/ywxPxnkDRfSXBhJtTKX/pEMwutdSM1rZbQOEr24nDzEbA5jXRwXj/KxFO8ip9g==@kvack.org
-X-Gm-Message-State: AFuF++m3M8ggckg3EoMdUCGkTni46bFmzaSv6mqm9cEoa/ihDI+irXF1
-	S1wW/FsE0TFcE9makLnDPiyHRqH+t18UjedkbX+Nk7P5Udp+JDGXb33PBq8DgHzE9t9FG+XX5oq
-	/LvTkujeimBbuomdMvAc7BWfkYIxITg35M36J8xt/7gK6vJUofgEE
-X-Gm-Gg: AYBFou3eBIFQYzU7Y+u1UbnU70G3Gzsl0VAMmT968rg9Su0y55JWyZqtTwT/ZLcYmnu
-	7M4AfoZfdHmkOTcSlTow7QBuDbj1iN+AiMAsouI1o2ihRMGrMu46gkBcX2favO5Gp+aUa1imwpR
-	nt1sxohzXEynHnlRFyRN6waLTqSEOENNzM7h+xQIwlrziPdufuvF0t9oiU24slgxgHqpFg2qduz
-	+O+rdPyYYctXXx1FJUEcbaLGXggTi5fnkdKV1aRTcsYSgC96aCBmR1Ah8YtJwLUG4yCTqTwWAL4
-	VMQapt+0Xi5boMElqumG+V/BD2ojiUf7f/yQm946kp6tHaq4n5APhxZi+YZ5WmYrLjEsLr7M8i/
-	7dVM=
-X-Received: by 2002:a05:622a:508:b0:530:e1b1:eaeb with SMTP id d75a77b69052e-5357552d4bbmr98471471cf.21.1791461300675;
-        Thu, 08 Oct 2026 05:08:20 -0700 (PDT)
-X-Received: by 2002:a05:622a:508:b0:530:e1b1:eaeb with SMTP id d75a77b69052e-5357552d4bbmr98470711cf.21.1791461299930;
-        Thu, 08 Oct 2026 05:08:19 -0700 (PDT)
-Received: from [192.168.2.110] ([142.172.30.162])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91996d20ae5sm44432586d6.27.2026.10.08.05.08.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Oct 2026 05:08:19 -0700 (PDT)
-Message-ID: <4f7273ea-aec3-4a3e-8c83-927adfe6e17f@redhat.com>
-Date: Thu, 8 Oct 2026 08:08:18 -0400
+        bh=ZpMs8OejlQaJGDNhMC4YaKq4cxnZ0droSQ5wJkH/ueU=;
+        b=UpfrPTgkJlLkaxdjc/p2XqXXEQAIhVsL7NtrrZROFj8ZSOmk0uIHb8MnlORdC2XpYM
+         xKhB4Tb612iICsBvlUb6L0HxZcKQQ8D0Kb5GAmKUyNaF7TLFIDrFvFthpfomTJSWCRgS
+         VL3cGQrrtIVO6jWJXFJgmdB81ld/EUacGLGpZGvNj3wTwFd8W1LR0Yax76I5ei2XQ6z8
+         diCTX4Q74X1CU942K16e1i6ww3bD/OVq5xJwTwp9ckuJ7mLVEU7+pRYjiybSbLb3iSfX
+         G8gBLaDKTHop4wsif1fHLV1t31C30aSQ/J4mYEfy15CIHwc4zSp7PNSzStDo/F33sjpK
+         bMwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791461354; x=1792066154;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZpMs8OejlQaJGDNhMC4YaKq4cxnZ0droSQ5wJkH/ueU=;
+        b=ywCL8c6yRUOiEPwWPks3vPskNvUiqVK/LMUKRT4kGbirkdUXBnUPk3zOyjRWLGFIpL
+         gwQvYfDWJD7Az05nosjigj7IRqPbyRfMPAL6v0/zmdijrjexw79ZdgkUowJDKlJYp3i9
+         UPzPWoP6klJlHKqMTjEgcfZON/n9KyjYwdwL1qQcSh78BRHxu+BAznPHF/RSxoLb8QCM
+         m373d7J/smQxcjTjhMvaNdjI/LQ6gHfVywQBZBU5HNiIllc3oA0/UfhXo+M8V/3OrrNP
+         GlJ+MlzYUA4yL0TjEywFx7yqyMlNZehJdLq/grAifrGLqxMIlZZdRyLUiumq537Wfo3H
+         Ii4Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxR1DO6UpKDjn+m+78oCdOlUq98vNcDImlNAHJDql3MtRSPqxFhyGBWBR6m7E+PYU6QTkm0akTP9Q==@kvack.org
+X-Gm-Message-State: AFuF++mIKsFrGNZy0HmQj9FMqiykGI4UhEI8G6WiB5p/mjWIubjfi4Oa
+	CJ1hwViOEvUy8QrXHv+jI0GD6Z1/y9CQM2XFsFc9POKw8dU6HE1ORN0l
+X-Gm-Gg: AYBFou0L9700x41kAz3ZvwF/+VyQSD0jVhW0BKPdO0x5Z6YilwTQ+XbQkDvoxsAdBCJ
+	+jo48zlYl6W8AAudVhmDKrG0oNbr+hlYeCi28DwcSODbyL4oKiXqCEKrATGEEH85uY8naLmIaDH
+	IXbef6VlkYN+Ns7xj2hUu5b/2ZUaAczwzqa7Fuo3yMlPjXArnQEEeeY2/Gh+urtJVHZDJAIBMgn
+	h7CejC2xmtJfXmQdd1zMU6VXer5KOlpmUUBmDyj8Sk2yKiRVizyl6PkQkpkghUkkW7HI2h7+U7M
+	Kv3FlPlwO6LJ+wuXKA2Z8jXMc+6EHukf8SQkuB3y5ahSGuHkzaqAn6JnJso1nrMzYQJVGTJ79Ih
+	YSj1oCKclgWOksqnZkYibLbXTfBbHKIvF2H1XWaDbUsmbgouvAEM0wPn7Danzqrs0wak4HK7GNj
+	yphJmhHqyyEr1tAGwS5/WDWpjjblaY6dv+aP0uQsDZ3syu+u/VRZEBxTEllRYOyCaZULq+fdxlN
+	p+dFqw/qtX+/+wnkUQQvMKjcgsH7Z/MnGVD
+X-Received: by 2002:a05:6a21:6e84:b0:3de:5a86:9dca with SMTP id adf61e73a8af0-3e13401e966mr4271507637.19.1791461354483;
+        Thu, 08 Oct 2026 05:09:14 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2001:d08:1334:29ed:db11:2c4c:ee4f:606])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-892bb2a5440sm1480111b3a.31.2026.10.08.05.09.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 05:09:14 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	SJ Park <sj@kernel.org>
+Subject: Re: [RFC] mm/damon/damo: saving damon sysfs configuration
+Date: Thu,  8 Oct 2026 20:09:05 +0800
+Message-ID: <20261008120916.4612-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20260930100031.7338-1-aethernet65535@gmail.com>
+References: <20260930100031.7338-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 14/14] mm: thp: always enable mTHP support
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
- ziy@nvidia.com, lance.yang@linux.dev
-Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, hughd@google.com,
- dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
- dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
- dev.jain@arm.com, usama.arif@linux.dev
-References: <cover.1789695931.git.luizcap@redhat.com>
- <752f528f0fed5cdc9de12b54260b0495d4e5a6cb.1789695931.git.luizcap@redhat.com>
- <4db5fdee-4bca-43bf-8ded-2fd8808ac289@linux.alibaba.com>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <4db5fdee-4bca-43bf-8ded-2fd8808ac289@linux.alibaba.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: PMfjzknvKZLJ4FYhxpGePzpjhDiIAQMLduGn4CYfDnM_1791461301
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 41F9D1C0002
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CF3F580015
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: s6zkepiexuziopsmno9zyxnxorsrp8n9
-X-HE-Tag: 1791461305-680423
-X-HE-Meta: U2FsdGVkX19a18Rkx/l1bWA2Wta7I/7vuiWRrPY6nyS5DhCYH7ywJuYlJh13KAsjVmnh2EhPd/CME7EVvOEVsXWTFeR17LNXUzPGVIFEQLhhdAHpXyauIMqjBR1YaLDKBBqzlJkwqRdTfZCV60GscEBSMzvx6SwkCQyuHdiBWOPXV0BJOiXwTR6dA0m2Iz7TFl3Vg0t4JjSgzt5xXdlR8Zrg/PyLUh+RkI8QjBzJzSD6pn8C1iSHnYYZ8r6LsdCf6wWbU1z0KTHpbkc/MI49VGL3TjESk9EH5FfvnzGmMEi0SBXO6f3gsY6DSLsCCf1gz0jOSNnHdAXobDzTadu64FAcA7GCCrf3aU3QK3BlIJhPwGZ0JGa4xF9aOzUrSK4UpxqqqJEMpp7TSzwbceT1YJDtz6UMLEELKhAoYYEdWLsS0dml6IR+Ywtz6rZ6UDEoECCPbiIbWcbL+bWOzZ3g8Zqvfjqx7GtjWkK1WIFTQOH9tfanCt5ygdTHLoOKzejk3RixzELbAlA694SCowiOAhNcQ6jBvxwJjW5DdSrC0NmJYU3d87V5XhSmSoMLk70R4eQSd1IIX2YV/tQd6hLc33fXxZhmyzJoRA6/U+Jl8OH8sReRxh7PleKzyYPoFC6+O3F4hD/tlxfSJaqQJR5ruLwvb3GCgS+XWGDOmmPHdCXIBgOxurGLaGPjzJqetq3vhapYpe3fAyVwRWQZnQkCpx2UGSdjWybSjEnaBLlXQndo5rfMYNO8dszzR7FzoPbehBJI4wxBp8qRQlJQOm0dT5ke+p44fR1ak0b0d9rk99JX1qPPO9tiZ3TYxRaIiLQUvSgOulQ448/uZSBtD8YUir7ICP3u6zfJT9bHKeKwlFhlG8MAwuczHZLqBUE9cWOMSeQUMHSLeCp/EiPiZLQLIw6M8sh4qhu2u4ApbSvEvS25xrvqHqTx7YPLKJwvf1D3RV35hfEgRNx2teGhBNG
- QVd4aZsG
- YucvO5Rioy0x7ZrcXCkDafGAFiNdOhoSy8SntkbyorlxFVGr58KGTrsCpcuNYVPOITlvcUN4ndcIcoyTjEmfaxXdIyCaBjSenvwVQy8YYw9cY5tVkI5ysLUksoGKcl6e8B9MiLZKWYYbv2fzEo1hdXARMhHergOCG50SrnlGneNeEN5pyHwxUbk5fRh3BsCQ3+jqtGf3oqkmoF7xWuLt8fcxTjw6nKG9DfThGgKVUb9X0INiriZW8afOQSkKEWvCb+fEBlzMaSpIsXbJ/ICnekkUUZqlU375LsN05oVNRI7dEm3HcWebvLnSVquaQvBQ5tjfKjrJhzEDEfubE+NEXeRA2UXRkRaNpqmMa6jcKOxWmnNU=
+X-Stat-Signature: 5ptiq1nsgsnzkpnbapnmys9naxm38x11
+X-HE-Tag: 1791461355-950201
+X-HE-Meta: U2FsdGVkX1+zmawccClN8AF3Gw8Y6TwR/fBEk9eub4Ex6znHnve2KWFfe0EQE+9h/Vf2e6lji3FHHP2WzW+0XEoaEnYPREj7X2TTJNwMTxbcxtYPNcYApqmq6lhV/qUIE4av/oRYhk4gwodjs/+YFboTCKfOWzcFKxWlQ3kLJ8xdzbYrNrTQ3q/HxIMwebiCXwFs6g8j1HHxojHAvyc1hZ6jzgBaLtdEB12NIBZeuOigf1EjulX5av7YZ1GdINwOrnSsAJYw1SWoN7b005omTg31h1pdrvz2GFz2YEX8T3rlxke0i2exjC1TqD+vfKoHO18BeKAcf2RF6oUQjptZEfl2kLwTapezVHXzLlp3tX+JtH6SR+sYx0R+EU5VS1B7wt4x1UaMcbzUj3VmnGmnaO9ZnHpMqVuvcNwEytej3AypAuVa+TQOJyTP7mmSSdicYJ2zLzvQEuVXAx9DtY+zCYl0TG+GjbIcYWXuMvIoiBou9ohPHvScK92G7xrPEDNLQkpDVcR4Qmsl4mGO3hFG+JQoQPJqcKDOANijIrBpFhzoJxxlYZpr2MH/3oKreCNbLO8SRNnY2rQv/K6RJ6uTVyaUBrVWJGYXlWCiWBORz0HWG+zVfuJ9CyDqugHSDJU5DCAxkCFzgW7mg/FjifFvmt2aMHtMyy0xTu5RKo6umxBedvBkhUs21JA07XGHCLlGIen7Lg3+m3DWYUuCoYud3tA9rXcW+kWLX+sKwyRvIyKor8scnJtlqBHNmgOXqIB2AJrnrf/Q9RnVQm3cNte/BC350iNiOfkNGmndL6ePkFroXn4uPBfnvTmwCt7MJdmI2WyGW02jiZxyAKWIzZ4qY8A1FZgPdwspx+XGioXgqqqwRkrfuTTfkVhog6SCNKNJIdbvBZVOSweUCD7u1vSyy7oOcc/Yl16mbZ7pktTOYzzhS/4HaudniAFp53bIBaEGfUIVCv9kqwdWjRdI1sz
+ LlwizTtM
+ AVRQf+7nO4d1sb0gl6XunDVQ6h3jzdSQ5jnRDcTI3aJREtqUb+EwnMjCuzR0lVxqiTMyzGpdCwNfcYE2/CtE16c8Qk4rGdkKvFKR+sN9BmOb21vbf86Qv8dX0M2zorMTF3cn08uJGItXpzg0tAiJGG+NsubryxOJWeV6OAOw9CX5MzZ+362Bjk1LNpGWp7DYC+PEx6gQeloUIXAjZLAQogbN7PgIcPppbmastn1X54aXNlQBbcQeScRKn+4mLAznlJqTaI5udFnCrS6VhnCK3JSg8Jn4nRTQ5zwkRu5bV5OCAVapfEULvzdKmuey21bx920U0Eh/F3Mpugvd1t7O0r1lPdhW83rrMLV4sl3UnhvOoVYm4KbcUL+RUrkHRktg13ncrqILex2EXP4OpEyOPhSTW5keqBA4ReApMRsI71SjaG3IHqFkyHRunDpZ5MFI/rKAKdsJyUkbZlQ7FENNM6tnqEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,145 +119,232 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi SJ,
 
+Just a reminder, I think you might have missed the question I asked.
 
-On 10/7/26 10:07 PM, Baolin Wang wrote:
-> 
-> 
-> On 9/18/26 9:45 AM, Luiz Capitulino wrote:
->> If PMD-sized pages are not supported on an architecture (ie. the
->> arch implements arch_has_pmd_leaves() and it returns false) then the
->> current code disables all THP, including mTHP.
->>
->> This commit fixes this by allowing mTHP to be always enabled for all
->> archs. When PMD-sized pages are not supported, its sysfs entry won't be
->> created and their mapping will be disallowed at page-fault time.
->>
->> Similarly, this commit implements the following changes for shmem in
->> shmem_allowable_huge_orders():
->>
->>   - Drop the pgtable_has_pmd_leaves() check so that mTHP sizes are
->>     considered
->>   - Filter out PMD and PUD orders from allowable orders when
->>     PMD-sized pages are not supported by the CPU
->>
->> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->> ---
->>   mm/huge_memory.c | 25 ++++++++++++++++++++-----
->>   mm/shmem.c       | 14 +++++++++-----
->>   2 files changed, 29 insertions(+), 10 deletions(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index a06025b87e7c..a2d6de3ea988 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -189,6 +189,15 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->>       else
->>           supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
->> +    if (!pgtable_has_pmd_leaves()) {
->> +        /*
->> +         * If the CPU does not support PMD leaves, assume for
->> +         * now that it does not support PUD leaves and disable
->> +         * both folio orders.
->> +         */
->> +        supported_orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
->> +    }
->> +
->>       orders &= supported_orders;
->>       if (!orders)
->>           return 0;
->> @@ -196,7 +205,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->>       if (!vma->vm_mm)        /* vdso */
->>           return 0;
->> -    if (!pgtable_has_pmd_leaves() || vma_thp_disabled(vma, vm_flags, forced_collapse))
->> +    if (vma_thp_disabled(vma, vm_flags, forced_collapse))
->>           return 0;
->>       /* khugepaged doesn't collapse DAX vma, but page fault is fine. */
->> @@ -979,7 +988,7 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
->>        * disable all other sizes. powerpc's PMD_ORDER isn't a compile-time
->>        * constant so we have to do this here.
->>        */
->> -    if (!anon_orders_configured)
->> +    if (!anon_orders_configured && pgtable_has_pmd_leaves())
->>           huge_anon_orders_inherit = BIT(PMD_ORDER);
->>       *hugepage_kobj = kobject_create_and_add("transparent_hugepage", mm_kobj);
->> @@ -1001,6 +1010,15 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
->>       }
->>       orders = THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DEFAULT;
->> +    if (!pgtable_has_pmd_leaves()) {
->> +        /*
->> +         * If the CPU does not support PMD leaves, assume for
->> +         * now that it does not support PUD leaves and disable
->> +         * both folio orders.
->> +         */
->> +        orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
->> +    }
->> +
->>       order = highest_order(orders);
->>       while (orders) {
->>           thpsize = thpsize_create(order, *hugepage_kobj);
->> @@ -1091,9 +1109,6 @@ static int __init hugepage_init(void)
->>       int err;
->>       struct kobject *hugepage_kobj;
->> -    if (!pgtable_has_pmd_leaves())
->> -        return -EINVAL;
->> -
->>       /*
->>        * hugepages can't be allocated by the buddy allocator
->>        */
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index bc2de3a7c1ea..8c0f7e3efeeb 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -2046,11 +2046,14 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
->>       unsigned long mask = READ_ONCE(huge_shmem_orders_always);
->>       unsigned long within_size_orders = READ_ONCE(huge_shmem_orders_within_size);
->>       vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
->> -    unsigned int global_orders;
->> +    unsigned int global_orders, disabled_orders = 0;
->> -    if (!pgtable_has_pmd_leaves() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
->> +    if (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force))
->>           return 0;
->> +    if (!pgtable_has_pmd_leaves())
->> +        disabled_orders = BIT(PMD_ORDER);
->> +
->>       global_orders = shmem_huge_global_enabled(inode, index, write_end,
->>                             shmem_huge_force, vma, vm_flags);
->>       /*
->> @@ -2058,7 +2061,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
->>        * sysfs configs.
->>        */
->>       if (!vma || !vma_is_anon_shmem(vma) || shmem_huge_force)
->> -        return global_orders;
->> +        return global_orders & ~disabled_orders;
-> 
-> If you move the 'disabled_orders' filtering logic into shmem_huge_global_enabled(), as I mentioned in patch 8, then this change can be removed.
-> 
->>       /*
->>        * Following the 'deny' semantics of the top level, force the huge
->> @@ -2072,7 +2075,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
->>        * means non-PMD sized THP can not override 'huge' mount option now.
->>        */
->>       if (shmem_huge == SHMEM_HUGE_FORCE)
->> -        return READ_ONCE(huge_shmem_orders_inherit);
->> +        return READ_ONCE(huge_shmem_orders_inherit) & ~disabled_orders;
-> 
-> Since you've already disabled PMD-sized and PUD-sized orders for the 'shmem_enabled' interface in hugepage_init_sysfs(), this change can also be dropped.
-> 
->>       /* Allow mTHP that will be fully within i_size. */
->>       mask |= shmem_get_orders_within_size(inode, within_size_orders, index, 0);
->> @@ -2083,6 +2086,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
->>       if (global_orders > 0)
->>           mask |= READ_ONCE(huge_shmem_orders_inherit);
->> +    mask &= ~disabled_orders;
-> 
-> Ditto.
+On Wed, 30 Sep 2026 17:58:54 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-Yes, I'll look into implementing your suggestions for the next version.
-
+> On Tue, 29 Sep 2026 00:43:00 -0700 SJ Park <sj@kernel.org> wrote:
 > 
->>       return THP_ORDERS_ALL_FILE_DEFAULT & mask;
->>   }
+> > Hi Liew,
+> > 
+> > On Tue, 29 Sep 2026 03:13:06 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> > 
+> > > Hi SJ and Community,
+> > > 
+> > > I've noticed that damo [1] doesn't seem to have a feature for saving
+> > > DAMON SYSFS configuration.  I tried 'damo args damon', but it doesn't
+> > > save the DAMOS schemes information.
+> > 
+> > If so, it is a bug.  Could you share more details including how the issue can
+> > be reproduced?  Directly sending a PR should also be fine.
 > 
-
+> Yes, this can be reproduced easily.
+> 
+>     # make sure DAMON is started
+>     $ sudo ./damo args damon > damo_args_damon.json
+>     $ sudo ./damo report damon --json > damo_report_damon.json
+> 
+>     $ sudo ./damo stop
+> 
+>     $ sudo ./damo start --kdamonds damo_args_damon.json
+>     $ sudo ./damo report damon --json > damo_report_damon_after.json
+> 
+>     $ diff damo_report_damon.json damo_report_damon_after.json
+>     4c4
+>     <         "pid": "4959",
+>     ---
+>     >         "pid": "5582",
+>     16,17c16,17
+>     <                                 "start": "4,294,967,296",
+>     <                                 "end": "15,807,283,199"
+>     ---
+>     >                                 "start": "4,096",
+>     >                                 "end": "15,807,283,200"
+>     25c25
+>     <                     "ops_update_us": "1 m",
+>     ---
+>     >                     "ops_update_us": "1 s",
+>     46,159c46
+>     <                 "schemes": [
+>     <                     {
+>     <                         "action": "pageout",
+>     <                         "dests": [],
+>     <                         "access_pattern": {
+>     <                             "sz_bytes": {
+>     <                                 "min": "4.000 KiB",
+>     <                                 "max": "max"
+>     <                             },
+>     <                             "nr_accesses": {
+>     <                                 "min": "0 samples",
+>     <                                 "max": "0 samples"
+>     <                             },
+>     <                             "age": {
+>     <                                 "min": "60,000 aggr_intervals",
+>     <                                 "max": "18,446,744,073,709,551,615 aggr_intervals"
+>     <                             }
+>     <                         },
+>     <                         "apply_interval_us": "0 ns",
+>     <                         "quotas": {
+>     <                             "time_ms": "0 ns",
+>     <                             "sz_bytes": "16.000 MiB",
+>     <                             "reset_interval_ms": "1 s",
+>     <                             "fail_charge_num": "0",
+>     <                             "fail_charge_denom": "0",
+>     <                             "goals": [
+>     <                                 {
+>     <                                     "metric": "user_input",
+>     <                                     "nid": "0",
+>     <                                     "memcg_path": "",
+>     <                                     "target_value": "3,000",
+>     <                                     "current_value": "7,855"
+>     <                                 }
+>     <                             ],
+>     <                             "goal_tuner": "temporal\n",
+>     <                             "effective_sz_bytes": "0 B",
+>     <                             "weights": {
+>     <                                 "sz_permil": "0 %",
+>     <                                 "nr_accesses_permil": "0 %",
+>     <                                 "age_permil": "0 %"
+>     <                             }
+>     <                         },
+>     <                         "watermarks": {
+>     <                             "metric": "none",
+>     <                             "interval_us": "0 ns",
+>     <                             "high_permil": "0 %",
+>     <                             "mid_permil": "0 %",
+>     <                             "low_permil": "0 %"
+>     <                         },
+>     <                         "filters": [],
+>     <                         "stats": {
+>     <                             "nr_tried": "0",
+>     <                             "sz_tried": "0 B",
+>     <                             "nr_applied": "0",
+>     <                             "sz_applied": "0 B",
+>     <                             "sz_ops_filter_passed": "0 B",
+>     <                             "qt_exceeds": "19",
+>     <                             "nr_snapshots": "0",
+>     <                             "max_nr_snapshots": "0"
+>     <                         }
+>     <                     },
+>     <                     {
+>     <                         "action": "stat",
+>     <                         "dests": [],
+>     <                         "access_pattern": {
+>     <                             "sz_bytes": {
+>     <                                 "min": "0 B",
+>     <                                 "max": "max"
+>     <                             },
+>     <                             "nr_accesses": {
+>     <                                 "min": "0 samples",
+>     <                                 "max": "18,446,744,073,709,551,615 samples"
+>     <                             },
+>     <                             "age": {
+>     <                                 "min": "0 aggr_intervals",
+>     <                                 "max": "18,446,744,073,709,551,615 aggr_intervals"
+>     <                             }
+>     <                         },
+>     <                         "apply_interval_us": "0 ns",
+>     <                         "quotas": {
+>     <                             "time_ms": "0 ns",
+>     <                             "sz_bytes": "0 B",
+>     <                             "reset_interval_ms": "0 ns",
+>     <                             "fail_charge_num": "0",
+>     <                             "fail_charge_denom": "0",
+>     <                             "goals": [],
+>     <                             "goal_tuner": "consist\n",
+>     <                             "effective_sz_bytes": "0 B",
+>     <                             "weights": {
+>     <                                 "sz_permil": "0 %",
+>     <                                 "nr_accesses_permil": "0 %",
+>     <                                 "age_permil": "0 %"
+>     <                             }
+>     <                         },
+>     <                         "watermarks": {
+>     <                             "metric": "none",
+>     <                             "interval_us": "0 ns",
+>     <                             "high_permil": "0 %",
+>     <                             "mid_permil": "0 %",
+>     <                             "low_permil": "0 %"
+>     <                         },
+>     <                         "filters": [],
+>     <                         "stats": {
+>     <                             "nr_tried": "2,000",
+>     <                             "sz_tried": "1.801 TiB",
+>     <                             "nr_applied": "0",
+>     <                             "sz_applied": "0 B",
+>     <                             "sz_ops_filter_passed": "0 B",
+>     <                             "qt_exceeds": "0",
+>     <                             "nr_snapshots": "172",
+>     <                             "max_nr_snapshots": "0"
+>     <                         }
+>     <                     }
+>     <                 ]
+>     ---
+>     >                 "schemes": []
+> 
+> > 
+> > > 'damo report damon --json' provides
+> > > more detailed information, but its output cannot be read by 'damo start
+> > > --kdamonds'.
+> > 
+> > Maybe this is also an issue that we could fix.
+> 
+> In my opinion, this is not an issue, since there's no documentation
+> recommending we use the 'damo report damon --json' to generate
+> configuration for 'damo start --kdamonds'.
+> 
+> > 
+> > > 
+> > > I'd like to know if there is currently any way in damo to save the DAMON
+> > > SYSFS configuration that can be correctly read by 'damo start
+> > > --kdamonds'.  If not, would it be worth adding one?
+> > 
+> > I believe it would be useful.  Please feel free to send a PR.
+> > 
+> > Nonetheless, we added the json/yaml kdamonds config support mainly because
+> > there was no good way to flexibly configure kdamonds with the command line
+> > interface.  Now it is much more improved [1].
+> 
+> Thank you for clarifying this!
+> 
+> > 
+> > I'd recommend using the command line interface.  That is, you could copy your
+> > command line setup in a bash script and modify/reuse it.
+> > 
+> > Is there a use case that it cannot work or suboptimum?
+> 
+> No, CLI (Command Line Interface) do very convenience.  I can write my
+> configuration in CLI and it is very readable.  Thank you for letting me
+> know this feature!
+> 
+>     #!/bin/bash
+> 
+>     # update-damon-config.sh
+> 
+>     ./damo args damon \
+>     --kdamond --damon_ctx --ops paddr \
+>         --monitoring_intervals 5000 100000 1000000 \
+>         --damon_target --regions 4294967296-15807283199 \
+>         --damos_scheme --damos_action pageout \
+>             --damos_sz_region 4096 18446744073709551615 \
+>             --damos_access_rate 0 0 \
+>             --damos_age 600000000 18446744073709551615 \
+>             --damos_quota_goal user_input 3000 10000 \
+>             --damos_quota_goal_tuner temporal \
+>             --damos_quota_interval 1000 \
+>             --damos_quota_time 0 \
+>             --damos_quota_space 16777216 \
+>             --damos_quota_weights 0 0 0 \
+>     > config.json
+> 
+> > 
+> > [1] https://github.com/damonitor/damo/issues/3#issuecomment-5655965736
+> 
+> [...]
+> 
+> Best regards,
+> Rui Yan
+> 
 
