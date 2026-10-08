@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B63DDCA600C
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 19:08:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6D79CA6012
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 19:08:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38ED66B008A; Thu,  8 Oct 2026 15:08:36 -0400 (EDT)
+	id 474306B008C; Thu,  8 Oct 2026 15:08:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 366106B008C; Thu,  8 Oct 2026 15:08:36 -0400 (EDT)
+	id 402426B0095; Thu,  8 Oct 2026 15:08:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 255A86B0093; Thu,  8 Oct 2026 15:08:36 -0400 (EDT)
+	id 2CBA36B0092; Thu,  8 Oct 2026 15:08:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0259B6B008A
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 02BFB6B008C
 	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:08:35 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9AEE41C33A9
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 19:08:35 +0000 (UTC)
-X-FDA: 85300395390.12.A24BF0B
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E8D3F12039B
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 19:08:34 +0000 (UTC)
+X-FDA: 85300395348.08.5988742
 Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E113B4000C
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4A056100003
 	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 19:08:33 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SaY3GHOj;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3MOrHagkKCIEyfwzsxfmzlttlqj.htrqnsz2-rrp0fhp.twl@flex--tarunsahu.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3MOrHagkKCIEyfwzsxfmzlttlqj.htrqnsz2-rrp0fhp.twl@flex--tarunsahu.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791486513;
-	b=uWkAtbv6Pqknlw9Ls6/xEQRlEDMvmXyJ+EIXMXO/LBOOubgLz2lh1Mr95JJlbzAHMcjXD6
-	bk544KJntvPJPYkIbk9foSgzOdDuQygVzvWwW2DvskJJV19F5Gu0lcG3bap+qdF1L09aVc
-	aKdkRgySDAQJdRmZmMQeLknebX/Rfzo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SaY3GHOj;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3MOrHagkKCIEyfwzsxfmzlttlqj.htrqnsz2-rrp0fhp.twl@flex--tarunsahu.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3MOrHagkKCIEyfwzsxfmzlttlqj.htrqnsz2-rrp0fhp.twl@flex--tarunsahu.bounces.google.com
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=KJ0tBaQI;
+	spf=pass (imf05.hostedemail.com: domain of 3LurHagkKCH8wduxqvdkxjrrjoh.frpolqx0-ppnydfn.ruj@flex--tarunsahu.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3LurHagkKCH8wduxqvdkxjrrjoh.frpolqx0-ppnydfn.ruj@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1791486513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p7HbPFLbPRXHp9XhuAZ/3vm7gntFtncf0PzNuO46BI0=;
-	b=gvxcNnKqn2RQysB+GYxRJCXarIXdmyj4v79HYQPGB9Gg2HX5yMBIV3WG40qJYPVbTGarHS
-	jco2ymuDp7Hxy0nAGcRP3SC7qvxEG6E13OofFvAEn/RhYp9l7Qp0Sue/jwZwkPyaWn/jts
-	Uhu5Bt0NdE7J+9P5ExLjVbdqhUYnWoo=
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6a99c6e4d78so1358094a12.0
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=lziypnwRraIlsorF0VwfpRYSW789AnxqR1Fmirni4Xo=;
+	b=XYhXLgXS5fArJzPRS1znA8p4PPbMVdFxOHhMXhBQSOTdBDPdfqx1zR20IFRRlPZ2dRirLD
+	U7HnBqxFGSAzKRoEcnxSiDxz8eTnIuzDwVRYypcXPUqHJPakCdRYD2i35tlardbRviSkSg
+	8yVCgTFeGjd6JcaqNPqiTxGS6fQ0uJc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791486513;
+	b=WMC39axxCFiKlro5y/QAEpW4ptFyezIO9T5r88o+wJyOpmRYhqbDA6XlEeru/7Ggu/oahG
+	yz0Mfa8Ja41euLlAp8XXf0fGV8HdhB1++20RD077xQ2j0BCGF+qytSqVezexGAe/YADfnA
+	b8i78z/sLEkXoE4r0Fod45vJCiS6RDY=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=KJ0tBaQI;
+	spf=pass (imf05.hostedemail.com: domain of 3LurHagkKCH8wduxqvdkxjrrjoh.frpolqx0-ppnydfn.ruj@flex--tarunsahu.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3LurHagkKCH8wduxqvdkxjrrjoh.frpolqx0-ppnydfn.ruj@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6afbee3d268so5574015a12.3
         for <linux-mm@kvack.org>; Thu, 08 Oct 2026 12:08:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1791486512; x=1792091312; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p7HbPFLbPRXHp9XhuAZ/3vm7gntFtncf0PzNuO46BI0=;
-        b=SaY3GHOjDSuSS+koKeR3iR+QdswAWutXrelJBneCduGp46HV3jnY9tPzdh6DCgv7Sl
-         E6baP/SRE/DEIn24uiLioPGIYAinuKVxPh57Ks/fELGot+tdMK3bfF82i9+v9sUM7ezh
-         /rwa3egI5AyAGLzcl1v24e/a/ErgpSm7rM32ZXtsqzabaIJ0mA+UOQq78mZLCljR+TgB
-         dPgwS+1NrtJh/UYPR12Klt2nMQw3cGgoRelFHLZinD53EMVj2tNz/scnoYAgNoV3qoF7
-         Vb/SPuZ5V+PmRrucwCkdVfk3Z8EPU30PsLhyInRxFckAzWhopQt0ODWLyRRqgyZ1YC/n
-         VCCA==
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lziypnwRraIlsorF0VwfpRYSW789AnxqR1Fmirni4Xo=;
+        b=KJ0tBaQIXuQcDGsFto2VnIXiaoMA3IciycS2sDPpZxWEoppYErbX7f2kzMMi2kgnDx
+         ERM4nuxGN7FMSiS5emjgGHcRfv6jxYOV1Bhx9mD5OnPz+AiGPklWKvyG8gP07BWf0C75
+         4307kpao6xF67wttU6y2SJdZ2Aa/mq/XAObimEz2XWjSt0P1GyzWqNnOdSutvNDdLTL5
+         qOv7gWphLN0WbWR01Ho1O0Xy06GqBFIxfr98Acn9CeDolmL+LA1jM7/FvKXvIfmnSIOt
+         RCOOzfwsOmDbLQbPW5kLk61qxegHQdSy7lxtA78/odcn6GvxKb2iabugiabAn+G4vB3p
+         LR2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1791486512; x=1792091312;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=p7HbPFLbPRXHp9XhuAZ/3vm7gntFtncf0PzNuO46BI0=;
-        b=dLEH8/pJvtRaNS236qKOUxk3Z0wr/ZIhNF8ao+93din10ws27wLQ8IKeSaTARi3zln
-         r3IB3gdvY3afr5wQEbEelcihwivt0TYsDU0XfltOHRFKwD2CuYbT8ezli3vR3HA8euK1
-         aZRAz8kdlv3NTT0qjoqlBizj5Pw1yhtgypN2UIryvPkzk5rS8HPoKo0O8cM3GzP6MQvc
-         ZdfF3ERWzVhyiBj2Z3rUTGA+zPhEzktLMdHxhUic7VqRZkpC4eB9fSw8wsaNUqrpS+9l
-         FBBuURkfUyQryuSxDgUAnmJa6lgjjW2JE8v5dORub+GkUMn9uJBI4pnvCBi7xaZZ7J/4
-         Y6lw==
-X-Forwarded-Encrypted: i=1; AKwUvBy6WqakXAGFIS5/MU4xY39rVJn5UohkfQ8v/VsdXuy7y51B0VNR417Qzm74KVtL0y3uLKEuHn7AKg==@kvack.org
-X-Gm-Message-State: AFq9FYJi0vYY9BD36fEMQwYs8X/bk9pzzuO0qmAfRXlO+YT4jdSWdAkY
-	XJv6gaP49JntDZq+sxcOggfiHE74x5JZrUwZg3E0hilqQgOYTqGhFQjzp0xc1uGxMvehYMLdcJ6
-	xGNE7NkAexM4WfVPo+w==
-X-Received: from edbgy14.prod.google.com ([2002:a05:6402:5bce:b0:6ac:b91c:a379])
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lziypnwRraIlsorF0VwfpRYSW789AnxqR1Fmirni4Xo=;
+        b=G5OBj3vxU2W9mWWossM4uOST9ZQ3d4kqlTzR8Fv/nqAb05DGLGpZgOPN2ykRqMUGK8
+         W4FDE0aKlgVX2mDcn6HJv7qnzRqxn37TRXiW3m20JwXgGLxEd3yt9XSZrOdrrHTlpZjf
+         cIrcQ+HJZlBQztMIxMS1qJh8DTmLLyVlXngOztPBHHcmjuHlLjgH23amkOLa75w6UW5n
+         YPiF0wyY57whAn1rH6OfJKPrXlxoOWc/vcl46TfbT/YkXWX3UhBT1ceZo8F2pem+AotK
+         /oEtpQ6emKItzZmZ4I3Vn5K7dljltKo0I6HTkFLUO8acDPwqpg+aqGm4hLPkzsyoGJvB
+         ZtxQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwaoIhz+nJyyeyr5AWyHe4Zt4KC9beqGWidXvoWwUR0CZUergYreL8nxrboAZotGPRPj8bGfKt//g==@kvack.org
+X-Gm-Message-State: AFq9FYJYieM0dx2RBmrzGkjMmpD68qM05ANTn791v61KT30f1uymBI7A
+	84MQptCc8hc5yLrXatIBM30mJr9C6y29D9Bqrol3lf9/pjOFYynGx3WSdv0Ip0d/z9Z3V3BCabw
+	I0UlmGyvYL67WlVzTEQ==
+X-Received: from edl6-n2.prod.google.com ([2002:a05:6402:4246:20b0:6aa:e587:e1c1])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:50c9:b0:6af:a270:b2a7 with SMTP id 4fb4d7f45d1cf-6b0118ea2damr3315575a12.0.1791486512418;
- Thu, 08 Oct 2026 12:08:32 -0700 (PDT)
-Date: Thu,  8 Oct 2026 19:08:28 +0000
-In-Reply-To: <20261008190828.3221718-1-tarunsahu@google.com>
+ 2002:a05:6402:3211:b0:6aa:edb3:d687 with SMTP id 4fb4d7f45d1cf-6aff38f1e95mr6238564a12.15.1791486510254;
+ Thu, 08 Oct 2026 12:08:30 -0700 (PDT)
+Date: Thu,  8 Oct 2026 19:08:27 +0000
 Mime-Version: 1.0
-References: <20261008190828.3221718-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261008190828.3221718-2-tarunsahu@google.com>
-Subject: [PATCH v4 2/2] memblock: use binary search to locate candidate regions
+Message-ID: <20261008190828.3221718-1-tarunsahu@google.com>
+Subject: [PATCH v4 1/2] memblock: drop for_each_memblock_type() and open code
+ its users
 From: Tarun Sahu <tarunsahu@google.com>
 To: dmatlack@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Pratyush Yadav <pratyush@kernel.org>, 
@@ -96,14 +93,14 @@ To: dmatlack@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>,
 Cc: kexec@lists.infradead.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, Tarun Sahu <tarunsahu@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ni9f4dcno7tqurqhj1egwdpfap478et6
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E113B4000C
-X-HE-Tag: 1791486513-51123
-X-HE-Meta: U2FsdGVkX19nRDuu3mmqarTFbFXsQOfQMM1I6TA6Y6BrgUkoEj1DnQJXhTv+LUbTjZ3Xq0AfrjXF7yJS0e4StFxvojXil7oi2fptXaVPgc//y/ys5oo9Q4D/Tle8aW3sYUaJ5u0ePiVGQkNaenSEo4p0EJPmqdZgrJQcQ8/bXJ6hZtNpouaULRSfdJ7ose5D/lgNQHbNRApAk1QLM8wXFC6gCid5VvC0HTB1vzH5nkd9Hr1Yg+WdEF/U9MBxolDtS0p3rs0cLEW08mT2aGA5VaB0DhokMIua073OKMxDKw6zwIgV1sfRK0KhihdkZa0sMUrGTx8sxLqXF7Y/irpCxHXKp9X0kB9HVhyVar4w37K967Scsxs8n2spdlDrEQeTOes3jSQfydTa3G6mT+AAoZv1ESpBq2grp/woPe/lA0mLIl6eOt1vxuVsdm6tiUvTdjyfntf/w9ET7AuGv3dEggHlEC/yCXw8jh/gPauFEyUOwQbzlNSqJU5741Yzv0dhD5CiPOh8YaWOnBTTA85uVAMctXtXaFXFklSsjui0UjATns8U/YdLy5OgEfeFpi98pWnz64JdKC+CkACfl4O8g4XdFuzt99je0evSTGLUtnlLmA01RgSVq1TMv9WekxcTH1RLbtbWqmrLYZa+rNsFz+jhDef8xiHT1mSNOy4b4tim5Z3kSxisIxOO9/zZC3bHwyMF0TgQtVn3W76HvYzTeyRXZemeH+x6g5BDCsIz4JIPYT6F/Eind7fLuYvYx56mLf0AYwbMYvU1GjGmo3K/w09kqk5GlfZjpH06VWK5jfo6leJSszVrPSq5bNOxOHNkjoDoMf14DAYfndso821QnhAbt3iNaXQi4eUsizT/n80CrYlIwFoafxH5K9jm2A5XCvX3yyUnA4CICqXVNmQCdPxlTDczrYgB8qfFSCrx2/2jagz1YjkpVz8i3b9coFXLTwn4nBdoJWTjMEhtrMm
- lEg2gHt7
- JiojAqX0dCBNsg1gM2385K28pawsCUX5aaCDZ0wBVQiRhiYnkWGoR/mrFA5q49DBAl2CBOII4IlxMsUp3UzO/l5sI4V5SShNYSTqxTrnwhMnnOfDgrNSRQowG1LnjNbAoGM2H9rY+Liv0qXcMxUf+e+5f145CyHlgGgGMyf6/gHuHJ/xqGeGXjChdYlac1BS8F2OvkwLzGCZnjbIXPjru4AO3lX245ffrXNniBc+hJcDbo1G3dO+YrWpcmrVPQ7QGrT4ruwBttS7Rtjovqtus2zIQWQz/EYTfxK01lPMRnzLRH14uGIhydC9rrSHvWmQsuPe30zXA8XSR/ALyIY7sKl5PkJKbqICUAhvZ1zG1F3v2H5ZWYaOzbVFOyrVdLV/X9yRiXLrAccbkyePqqhPvBHmW5k/WHnV0g3m9RQQGAzd5E8Gc7OVZkN6EGf5C3S19GUU9DUVQfHCXaSg3rF75WULeHJ07YYt4EeqSd8iudGYLL4R+C5iVcswWnLHrrnRvXZkFIrJwvhzHvb3RVesFuoetRC+lkEpTvPBz8p5h3lABRGsZeiEZgZyeWe1VxERsSprmr4e0QPrSvkZ56ftbfhQkx+8QK4UVcNZpX+XCPPHdHnO95Ac7W/sI5w==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4A056100003
+X-Stat-Signature: xytbbifudr8edoyjz1aa3dmdp4d669wd
+X-HE-Tag: 1791486513-767878
+X-HE-Meta: U2FsdGVkX19L+boIzlOTWiyrP5zmxmKN45b4F6pLCzj/+hun7Mo2EEOxUk2k4Qde0SnCnUrV5LeNGRozOvg9LVIaNMXVIjVMSWpCzRAF/GlAwI0A68sU2xN9NpPiTnJEfjbO46azozwuZdf7eaAU0cI8yytJQgMUTxWBtgik1TSlx+AHoUvxziJpc0bZd/IrgTCsnHP2MzI1uSFdrkHeh24mPCjce/pdDFck99Hgywfogp0sPGvX9nAtxJUQose1bI6UPaooXaeo/Zm4BwNjPNTg/Y0++3L5dvpF2JFD72ETwVPmyILAwoeyeC9Uv4y4vv0V8+FenCLfkSecMxkvNFX8Lv5ArRIcZWQ1M24BsZuk7a1GQjGYSuKBZdoias2AG7e6X1f2YZ6gsl1iLI5pKbeEjGykK3pf6UdYlePYHlx1JCkHw/OSoyUFsBmQT+VluyX2rPC4lyhdRugWHBksWVX5TFras0jLg0bK3uXCk6De2W7uFT56Rpy+DT7rxusYMMsNp4FAuoyciT2nReb9V+bG3pCOX9SaSPEeJ6UDaG0P53U6uYvt+bAYpwU6w+94qFvnESxGeU249z/TflUtQGdZxYQM74GQ1DY94MnOP/PQ8RRHFMIliQBgIkJWoP+rupb7YpmXuWD9PQzLuUi+Fy7tgyoTMBw9lx+q1TiW3lU2vdYkHT06Pd0a3xHVwzrlUIyTp4u8PJ8hHQnU3Z+hnd4ei5vLcq4rZ/1rym9hCkK2hSdbCjVYzp0cN4rKuCDtyPENuw0PnvLnAFWdMzLOPLzWWBechBUFf68ZY5XevdQN5x4VpAp3wtEfJ3p40Wp9mcZWRELtsBry0zA76aXEpnEFsANi4KkRgCmUyt6e8PrlxczqFhs23EG+Fw0iHF6xtIiLlwjYCf7easZjFqfwfTVpCoIBFCpqyJsoh6Qxux96cN1aahwvTN24K0IX82mh4k8FVB+eeUISsS6kT2Y
+ 0JbVGZ93
+ 7/C/j6N7dN9bP+NMUxw1/tStkNM80momC6Jys/PW9gWFrPJFHRjuu2nyJbcWrAL+RfCvhLAOw1i33Hr6IFwPFJP85Bq0bJXmfE7obMIocpOiPq1WgM2g9+kHDHx7ZUxTDuuoEMqZkU5WQt4Fga1Tj2wPFpxsjuk3Gu7LNBTNDIv/jC/Pwu99SjSxfYhBsFo0efDhmbi87z00x/qpMxtBlteS6h+4xBR86r5E+gA//h+XsdQUeAJsS094va9L3q2bLk6AQLLUK024pbMgIjoF6QYFnUL/dmcRoZgQ0eBjnTmVTT8cc3fpdcb3LnckmfYWJq5k+owKWI7agwubmKNxH6vf78jAc+CiwONovbEWjF9hrkcCGlbt/orbXaoNdetx76HVTEqDR1R3EFYbXupRhTDk7InnjqAjC9zb0gWYAe4ocUAbbqJRkcLv3ybLCJh9tsrsOfi6e4VfuUBPnWKkz7VUorCqJjtYPLPRGnN54lVLbg5DZb4tvLUijUp6BpNSXuhBFH0dFLd7tng8DYrlj13MknD1vO7ysdhbv1PxdFNAnY7F4jWJ/2K00hAqutchir6vwUQubtgThaGv//AKPt5IRPAR9pibC38gFzYdXfoMCDtafw9PlxYi7NPv1bnmb4izS5CWQchNE1abPJlW/x19RWP5CTVHguZ+WmJGVHHovwLA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,106 +108,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use binary search (memblock_bsearch_start) in memblock_add_range() and
-memblock_isolate_range() to locate candidate regions instead of linearly
-scanning from index 0.
+for_each_memblock_type() always starts the iteration at index 0 and its
+body is a trivial 'for' loop, so it hides very little. It also gets in
+the way of iterating from an arbitrary index, which the next patch
+needs.
 
-Under heavy memory fragmentation (such as KHO page preservation registering
-hundreds of thousands of disjoint folios), scanning from index 0 on every
-insertion and isolation results in O(N^2) complexity, causing boot-time
-memory retrieval to take several minutes (~268s for 393k pages).
+Remove the macro and open code its three users: memblock_add_range(),
+memblock_isolate_range() and memblock_dump(). While at it, move the
+region pointer into the loop body scope.
 
-Using binary search reduces the candidate search complexity to O(log N)
-(from O(N)), cutting KHO memory retrieval time from ~268s to ~50ms.
+No functional change.
 
-memblock_search() open codes the same binary search, so reimplement it on
-top of the new helper.
-
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 ---
- mm/memblock.c | 45 +++++++++++++++++++++++++++++++--------------
- 1 file changed, 31 insertions(+), 14 deletions(-)
+ mm/memblock.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
 diff --git a/mm/memblock.c b/mm/memblock.c
-index 59dda7d085f3..614d0a55dd70 100644
+index f5aaa38cfa31..59dda7d085f3 100644
 --- a/mm/memblock.c
 +++ b/mm/memblock.c
-@@ -586,6 +586,29 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
- 	type->total_size += size;
- }
+@@ -155,11 +155,6 @@ struct memblock_type physmem = {
+  */
+ static __refdata struct memblock_type *memblock_memory = &memblock.memory;
  
-+/**
-+ * __memblock_search - Find the first region index where rend > base
-+ * @type: memblock type to search
-+ * @base: base physical address of the candidate range
-+ *
-+ * Returns the first region index that could potentially overlap @base.
-+ */
-+static int __init_memblock __memblock_search(struct memblock_type *type,
-+						  phys_addr_t base)
-+{
-+	int mid, low = 0;
-+	int high = type->cnt;
-+
-+	while (low < high) {
-+		mid = (low + high) / 2;
-+		if (type->regions[mid].base + type->regions[mid].size <= base)
-+			low = mid + 1;
-+		else
-+			high = mid;
-+	}
-+	return low;
-+}
-+
- /**
-  * memblock_add_range - add new memblock region
-  * @type: memblock type to add new region into
-@@ -644,8 +667,9 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
- 	 */
+-#define for_each_memblock_type(i, memblock_type, rgn)			\
+-	for (i = 0, rgn = &memblock_type->regions[0];			\
+-	     i < memblock_type->cnt;					\
+-	     i++, rgn = &memblock_type->regions[i])
+-
+ #define memblock_dbg(fmt, ...)						\
+ 	do {								\
+ 		if (memblock_debug)					\
+@@ -615,7 +610,6 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+ 	phys_addr_t obase = base;
+ 	phys_addr_t end = base + memblock_cap_size(base, &size);
+ 	int idx, nr_new, start_rgn = -1, end_rgn;
+-	struct memblock_region *rgn;
+ 
+ 	if (!size)
+ 		return 0;
+@@ -651,7 +645,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
  	base = obase;
  	nr_new = 0;
-+	idx = __memblock_search(type, base);
  
--	for (idx = 0; idx < type->cnt; idx++) {
-+	for (; idx < type->cnt; idx++) {
- 		struct memblock_region *rgn = &type->regions[idx];
+-	for_each_memblock_type(idx, type, rgn) {
++	for (idx = 0; idx < type->cnt; idx++) {
++		struct memblock_region *rgn = &type->regions[idx];
  		phys_addr_t rbase = rgn->base;
  		phys_addr_t rend = rbase + rgn->size;
-@@ -821,7 +845,9 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
+ 
+@@ -815,7 +810,6 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
+ {
+ 	phys_addr_t end = base + memblock_cap_size(base, &size);
+ 	int idx;
+-	struct memblock_region *rgn;
+ 
+ 	*start_rgn = *end_rgn = 0;
+ 
+@@ -827,7 +821,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
  		if (memblock_double_array(type, base, size) < 0)
  			return -ENOMEM;
  
--	for (idx = 0; idx < type->cnt; idx++) {
-+	idx = __memblock_search(type, base);
-+
-+	for (; idx < type->cnt; idx++) {
- 		struct memblock_region *rgn = &type->regions[idx];
+-	for_each_memblock_type(idx, type, rgn) {
++	for (idx = 0; idx < type->cnt; idx++) {
++		struct memblock_region *rgn = &type->regions[idx];
  		phys_addr_t rbase = rgn->base;
  		phys_addr_t rend = rbase + rgn->size;
-@@ -2062,19 +2088,10 @@ void __init memblock_mem_limit_remove_map(phys_addr_t limit)
  
- static int __init_memblock memblock_search(struct memblock_type *type, phys_addr_t addr)
- {
--	unsigned int left = 0, right = type->cnt;
--
--	do {
--		unsigned int mid = (right + left) / 2;
-+	int idx = __memblock_search(type, addr);
+@@ -2194,11 +2189,11 @@ static void __init_memblock memblock_dump(struct memblock_type *type)
+ 	phys_addr_t base, end, size;
+ 	enum memblock_flags flags;
+ 	int idx;
+-	struct memblock_region *rgn;
  
--		if (addr < type->regions[mid].base)
--			right = mid;
--		else if (addr >= (type->regions[mid].base +
--				  type->regions[mid].size))
--			left = mid + 1;
--		else
--			return mid;
--	} while (left < right);
-+	if (idx < type->cnt && addr >= type->regions[idx].base)
-+		return idx;
- 	return -1;
- }
+ 	pr_info(" %s.cnt  = 0x%lx\n", type->name, type->cnt);
  
+-	for_each_memblock_type(idx, type, rgn) {
++	for (idx = 0; idx < type->cnt; idx++) {
++		struct memblock_region *rgn = &type->regions[idx];
+ 		char nid_buf[32] = "";
+ 
+ 		base = rgn->base;
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
