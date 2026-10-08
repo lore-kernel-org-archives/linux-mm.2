@@ -4,96 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2A6BCA6016
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 21:25:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0453FCA6015
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 21:48:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A2026B008A; Thu,  8 Oct 2026 17:25:19 -0400 (EDT)
+	id 974D96B008A; Thu,  8 Oct 2026 17:48:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 579236B008C; Thu,  8 Oct 2026 17:25:19 -0400 (EDT)
+	id 925D66B008C; Thu,  8 Oct 2026 17:48:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 490246B0092; Thu,  8 Oct 2026 17:25:19 -0400 (EDT)
+	id 83BCD6B0092; Thu,  8 Oct 2026 17:48:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 299B86B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 17:25:19 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B4941140168
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 21:25:18 +0000 (UTC)
-X-FDA: 85300739916.11.6B4BB53
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0A01B1C0005
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 21:25:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZjJl/wo1";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 62CDB6B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 17:48:19 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 56F391A0198
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 21:48:18 +0000 (UTC)
+X-FDA: 85300797876.28.45D0D98
+Received: from mta0.migadu.com (out-234.mta0.migadu.com [91.218.175.234])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1D1DE20004
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 21:48:15 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xkSnrgLF;
+	spf=pass (imf31.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.234 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791494717;
+	s=arc-20220608; t=1791496096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=odDRkTcjbS423eFUVzRKgzpHhfm86iv3G3/SNcHY7is=;
-	b=teDPKixChn35D/ZbsxB6KjACQhuRCtFEq3UGszb/Hgb7hXukEKtJbS6P9doutt7POQpqlG
-	GGzxcTCgH/fYseYhqfsJk0IQP9tEDLU7bkT6npAfeQzTWwZJwk0ZSocu2l3+lFlEVQxLNf
-	P2E9fHdGbA2oG7DVUOpGf3tRZ+voibg=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZjJl/wo1";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	bh=i7zvavZgDX6AiohH2AmJnsY/6PzyHvVHjel8MaMFA8s=;
+	b=fWKtDvQL7upU2r4k1cVxjaxAQG9vHFXF4QEFwOI/Yz8JE8fT84y8XEQsykKH/QKsPK6cgN
+	1E5/Md2ksimRgZcpcr6bxrQpPLAglGaTtXzjW1B1mZe0fY4gzMdK/JJ7D/ACT8UjG87aoN
+	IspVs5tvSNnmq2ij916dSHvrcztzpg0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791494717;
-	b=nEQzH/iXhWyUU2N0/wkdqQNfdgUIb7ZEB/cJBgv9NlkttkwyyWq9j/Uwl3YVH7YzRv8RGi
-	qcUV0kGaqRInkXnylAsKCHtfRGLqkPbto6A/4py2m52M3SA6D9Uzx59CtDOCj0OZs8btI7
-	vWeYOe+JcpmofuOe+fVIFT8UilxkyYU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 089B8406EB;
-	Thu,  8 Oct 2026 21:25:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B5F1F000FF;
-	Thu,  8 Oct 2026 21:25:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791494715;
-	bh=odDRkTcjbS423eFUVzRKgzpHhfm86iv3G3/SNcHY7is=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZjJl/wo18DivxZod9Ph2FuLJmJ0Pe6BmpQB57sdezehMYyARbOEVU8OGYlasU7V/S
-	 0AT+zRfhasFu1NUWqERoTuQdlxiQP3IIeICSISEgSyXXl35VozAJVTNxB2bysN99vf
-	 JfipJu9WkWWRjdDZiddIe/cXmY43UZwTIiDZnEwIxtK2IGH0UoFZxfezn7ejJCJdq4
-	 QGd6BQqNjD2yQzAqk9ixMc4c11z/zcWVonaLCd7MlyrrU4sbCkmiHW5YBwRkvRDG8U
-	 qZmSxy/lRaMiD4+hT2CFnuTLIH1WH3eg5IzgqjHuPhhOOpSdCVlAbQNo7AT/fvx+ph
-	 VX7EkFoGAlt2g==
-Date: Thu, 8 Oct 2026 23:25:13 +0200
-From: Harry Yoo <harry@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Andrew Morton <akpm@linux-foundation.org>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Pedro Falcato <pfalcato@suse.de>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, Jason Xing <kerneljasonxing@gmail.com>, cgroups@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH net-next v6 0/8] net: skb: isolate skb data area
- allocations into a separate bucket
-Message-ID: <asgAh4mrr_yd622U@thinkpad>
-References: <20261006092030.got.500-kees@kernel.org>
+	t=1791496096;
+	b=XfZN7GIG6DD8hyYrSyrKJ/9334bZYbgL1hsePvS+NPJmKtStr7P/iWEZ3gh9jb4LrT17KB
+	0HAB/wPOlgRc068h5E3y9AlAozj/IjBlbXWqgcX6uRzmQrjdC+hcv0AytuhCvZKBe3IPkk
+	SLrE1SrKOum9c+709JzDv8j33rl5n6I=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xkSnrgLF;
+	spf=pass (imf31.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.234 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=JHSucTSg3QijIyFlRiljDu/KhLUuZiBG3coap6ISBt0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791496094; v=1; x=1792100894;
+ b=xkSnrgLF/dlsQEamjwaapG2CON4B1Vul0chudMCXr48T0B1DYxYi5112t+61hanWqqLcBiRl
+ Ntcfo/4UsCEC2WpdrOneHifKEpPnrOh6RVwMLRfjv1CiNvEIKzyPf4gF+6BjVQab5/WpXOUohtw
+ LDnAMeGBO703HZYExiav+loQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 871702971b78ecae;
+	Thu, 08 Oct 2026 21:48:14 +0000
+X-Mizu-Trace-ID: 871702971b78ecae
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <e139339c-1e55-438b-86bf-0960ad4029f1@linux.dev>
+Date: Thu, 8 Oct 2026 14:48:07 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261006092030.got.500-kees@kernel.org>
-X-Stat-Signature: to15bkc5gupzihsp9qky35yzt5ozttyz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/vma: keep the unlinked VMA off the file across
+ unmap on mmap hook failure
+To: Oleg Keri <okerixx@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf <bpf@vger.kernel.org>
+References: <20261007101800.58d50b1b20a10738e630bfd5@linux-foundation.org>
+ <20261007194708.2009-1-okerixx@gmail.com>
+Content-Language: en-US
+From: Ihor Solodrai <ihor.solodrai@linux.dev>
+In-Reply-To: <20261007194708.2009-1-okerixx@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1D1DE20004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0A01B1C0005
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791494716-288995
-X-HE-Meta: U2FsdGVkX1+481ihNdTXBwwMS1cBwmLQhELXIckF8WwZY5RpGqmhjIOLiOB0+m115pk++cCV01UaqXARf4EQ1gXjuOvrysVDQypp95pR/uKj0W6dCU5YB0qk0gbkxhdcZHqb+WdLwyjlyc4wTAzFnGJaXA0xoEZiA1/JkunJDcJ0t0W3qiwwdM1XkgzY49UQ7BWzKyIYfypYbDcpJZMqkt5bu/eqFR7yrRoVsNa9hQDrJXqS3tkYWONAgaAU4krnrbUtkVyeJLkySCfQTgu+V7f7JAa74SWTH28tdHNwkqQ2AUrhyFizcOQVVChbaEX8X3OR94m2gGHyli4Nqgj991eDsmDgqGQoKyh4P0DD+gkYkTZZQRM8XwHYlUEih7JbT5/auzOfs5sIu0Ql+jlv/Bc8qZs6gSKPppk6D1hWlJKyaab3yPL6bHqiv/0Wic3GKWCcJ38Y6ELsC/6kVm8Qu3WugaJiztsO4fYniAD/iqwR03VJwdnn1RvM9FHKupDTEk+S4/vWZkhdNs25iX8Yz0NIKCH9SrPihmwEQWqtbicarH6fr9WH4sSQLrm4z6S6hrmTqQBbSDFq/mJMxnlXOq6EfrTjX9a0bfQSJsfNi0jUQKyxgXtFKAMmIUf9H2dD9Kwgaw8ZLz+OIUhkuCKLwSUW/9YRstj11Vk3MGKLvioMVKjBqS80vkkA+koorFLfb8n6BIMEvaaDo6IEbnhRyWmBcVREKNuucsaH8TavJfhZVMcTwbqNZrbi39kLFDUlU9/0lVHR0Xher32C8VwRyIT0gi8KLEhWjuldKqlSmmNde0Axh2wW+Q1v7cLzhpm3u1uItFxqvPMbnwlU0pDLGwf9MiS8g6mi9pUElsCSoYs/PGWSLcZlTBprGVxAXWSMHxetnKpwjDJKKgXdVKla1NVUfHirSRixlHvW5RZd4KsdsnFlit1ok8tSHySG7yXYBfiE8KCD3dUIdOfmeHK
- kIPHumWp
- YCBgbwrIo2DrfY77mybDReiai+i29htXC3h2kVe1PHIkAobJtVcmX+s7uynDjBrIDh05p3nSqLa3YRQb01bzNXYQf1w2YHPdX5vXvlOe9pDLXjTSy6WwbXt8MZU3qxzFQlz2L0oaDUD+nbowwF+NeNlESDXv5Y2Jt4nFSqvVoFBPPcJqENGdtWnZztDGbYWs3gLY2J/rZkLrCoi9ImLFFrKqC8IBTycnL2JWWfncB1mxbE7A56eT0x+5gJaHTUVnITEJH
+X-Stat-Signature: gewzdpim94p3ihgxfmap55sgnhz17stx
+X-HE-Tag: 1791496095-967404
+X-HE-Meta: U2FsdGVkX1/hpq/Y+QCiAXg1KGInIrwJsXSQ2T//f+pcQS4I8L7sf0CKqdW2sZkzM6YBPLPB8R19AV6zxh+QApFWz9wCVWR7P6YkkOKLUXOJbosRInXiJfDnHbduPsb269Ebb5LbeOQmyP6+I9+wwtXoFzLu9zCtejKYEeCVLHXkDTr1b7fTIB/Fo65A/b8y5ejxC0JdUj87vEJznpoD/vpkfoKTJEb5uXvTc+bp2tYj1aIgkKYUDFZrEpwoR/lSVbOihIbYLAfFCJvAOVMyI48JPa8y+Z/+oiRBWmGwdgUcApZDGkaum+CSrDKghkDx/BDn+MaO0faeCKNYWrfsSeAzkbg6Sl10FE8y6FNJ76O5fQh+DyOMJYg0VZD8OTlFhNaTtKYB/tpdh79J+71meIM286EBvsfAAT0104jNeg91WbENwsupamsQXfvmKnCyWKbzvqiZWxvIAHuKbZYSzzx0Zi67c1dAmZaOIG3uxR6O5QG1UKg81GpfeG/oz+9nu5LmdK7jVHKRba2HcuLzCSgnmd5ph8+6Aquc6KvJ+ZK4IfIWGq2CrRv9zzAs/Bhai+ngZb48re0aKTxNy0fWFDXoCmLGHIq0XO9ORTlLNkCLNA7v/Z1Xbjf9kYz4ZPtfr1Xu7cimYfvD0MjCINzGlxVyWpA3TLNIIk/arTWcClPimXyXtMxwSJyuKS78wj27+SaesdGJeRovRKuwyIKpKVlxtn+eGgI8HLA60yFK0YEewNh9RRVmQrfFmx4R/muYXjjjk91rjpaSBxrcRgZWYjHvd0+grjMr4uosXrWWfNxp2GX4Hj9PNd/g7BAEaxCbW8AOr2rnL2SQHltfUAkpQ5r1txkhCh+VpQH8LBpRhxBfqIN5UqKPLiKQfbCF8bCwAhxzWda7LQXdrcDG4Z1271J2gjZEejmN17hRGL33dv9PytqMxebheoaZ3k9zsP/qo1tnK5jSDby6TrDDJFw
+ P0P99pJ4
+ RRZ6fKWH+H399LqA+D7ELFeca04azD7RK8g2Al8ChykzHGzB0eCP++V8yAuCpYOfHt2Pk6VmPgxRf5wwuqcppKB24z37/ptqttEnPtysfumfGylXrRHKixBv8atXo80/N4pnLN11gyCLSayJ5nYirSmVMjb7l+4zsH43OaE9R2n/Ob2cCINVmtbpxEfd5X5pV/6bnav5E7m2AA/08WcUyTwEKLtNUDSn4UguqjeB7HOm1K1rcSdTEsTuMdXdd+OncumrmUGSzGgZEifu3nnauC9E/LTQ4jrUMzKTEWf+iDaYJIxjKkrjEwOwuLD0+peylhses
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,72 +96,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 06, 2026 at 02:20:26AM -0700, Kees Cook wrote:
-> Hi!
-
-Hi Kees!
-
-Was hoping to say hi to you at LPC but I missed the chance ;)
-Maybe next time. Safe travels!
-
-Uh, my mailbox stopped working for a few days as I forgot to renew
-subscription. (Kiryl told me it's bouncing, thanks!) Hopefully I didn't
-miss too much...
-
-> This gets the buckets able to handle memcg (GFP_KERNEL_ACCOUNT) with
-> isolation (since it's common due to AF_UNIX),
-
-Cool!
-
-> and GFP_DMA with fall back
-> (since it's rare).
-
-> It gave me an excuse to build out bucket kunit tests
-> too, and that (and LLM review) found a couple other issues that needed
-> fixing too, including msg_msg allocations going uncharged to their memcg
-> when CONFIG_SLAB_BUCKETS=n (fixed in 2/8).
-
-Oh.
-
-> Harry, on your v4 question[1] about bucket users giving their own
-> alignment: I tried that in v5, but a set's allocations don't always
-> come from its own caches. With CONFIG_SLAB_BUCKETS=n, after a failed
-> kmem_buckets_create(), and for the DMA and reclaimable fallbacks, they
-> come from the general kmalloc caches, which can only give kmalloc()'s
-> alignment.
->
-> So v6 goes back to mirroring the kmalloc cache's alignment,
-
-I might be missing something, but why is that a problem?
-
-For kmem_buckets users, the reason* to specify alignment is because
-they might need less strict alignment than kmalloc.
-
-(*Perhaps it's nice to document that in the comment)
-
-However, because kmem_buckets can fall back to kmalloc on e.g. kernels
-w/o CONFIG_SLAB_BUCKETS, it should be fine to fall back. No?
-
-Creating kmem_buckets with more strict alignment than
-kmalloc doesn't make sense. 
-
-> and drops the ctor and flags arguments for the same reason.
-
-Uh, for ctor and flags, yes. We can't have them in kmem_buckets.
-
-> And the whole
-> exploration made me realize I had a completely wrong understanding of
-> how memcg worked. :P
+On 10/7/26 12:47 PM, Oleg Keri wrote:
+> Since commit 2ceb21171dd9 ("mm: consistently validate VMA state after
+> mmap[_prepare] hooks"), the mmap error path clears vma->vm_file only
+> after unmap_region(), so free_pgtables() unlinks the never-linked VMA
+> and drops i_mmap_writable. Once it goes negative, every later shared
+> writable mmap of that file fails with -EPERM until reboot.
 > 
-> The bulk of this is mm/slab, but the final patch is netdev, which Paolo
-> acked in v4, so I'm hoping this whole series can go via slab?
+> Clear vm_file across unmap_region() only, so that free_pgtables() does
+> not unlink a VMA that was never linked to the file, and restore it for
+> vma_close(): when the hook succeeded and the validation failed, the
+> driver's close() still runs and may use vma->vm_file.
+> 
+> Fixes: 2ceb21171dd9 ("mm: consistently validate VMA state after mmap[_prepare] hooks")
+> Signed-off-by: Oleg Keri <okerixx@gmail.com>
 
-Going thorough slab/for-next sounds reasonable to me once it gets
-some reviews.
+Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
 
-Vlastimil?
+BPF CI caught this bug on linux-next as well:
+https://github.com/kernel-patches/bpf/actions/runs/37736351874
 
--- 
-Cheers,
-Harry / Hyeonggon
+The patch fixes it:
+https://github.com/kernel-patches/bpf/actions/runs/37829434215
+
+
+> ---
+> v2: keep vm_file for vma_close(): with the hook succeeded and the
+> validation failed the driver's close() still runs. Reported by Sashiko
+> via Andrew.
+> 
+> Seen on next-20261006: one refused PCM mmap probe from alsa-lib left the
+> device unmappable, so PipeWire could not play anything.
+> 
+>  mm/vma.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/mm/vma.c b/mm/vma.c
+> index dfa45c64222c..531e4f53fdd7 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -2616,12 +2616,15 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+>  	map->vm_file = vma->vm_file;
+>  
+>  	if (error) {
+> +		struct file *file = vma->vm_file;
+>  		UNMAP_STATE(unmap, vmi, vma, vma->vm_start, vma->vm_end,
+>  			    map->prev, map->next);
+>  
+> +		vma->vm_file = NULL;
+>  		vma_iter_set(vmi, vma->vm_end);
+>  		/* Undo any partial mapping done by a device driver. */
+>  		unmap_region(&unmap);
+> +		vma->vm_file = file;
+>  		/* Only safe once unmapped. */
+>  		vma_close(vma);
+>  
+
 
