@@ -4,110 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D74DCA6002
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 01:12:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7113CA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 01:50:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5A946B008A; Wed,  7 Oct 2026 21:12:26 -0400 (EDT)
+	id 38DEB6B008A; Wed,  7 Oct 2026 21:50:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0C456B008C; Wed,  7 Oct 2026 21:12:26 -0400 (EDT)
+	id 366196B008C; Wed,  7 Oct 2026 21:50:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C22266B0092; Wed,  7 Oct 2026 21:12:26 -0400 (EDT)
+	id 27C636B0092; Wed,  7 Oct 2026 21:50:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 98CFE6B008A
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 21:12:26 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D1C412040E
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 01:12:26 +0000 (UTC)
-X-FDA: 85297683492.14.547CD2E
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6452140008
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 01:12:23 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jgycTBaf;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791421944;
-	b=78DV+xJ/hXTtTipBC35uxaamjOc6PJ8DEZzG1FK19JxYdbBwpX6TJ3eyOhnjXnmQ6cpKrS
-	kERGzbntO3gL+7vgpU6fb1CQfoEP/Kw5U7bYshYAnQN9eDk/nfrcL1wZ+iVZPewWV3Saog
-	eqOCAt7BpL18+W1TfGTzBRXC+bvHAYY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jgycTBaf;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ECC486B008A
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 21:50:17 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5ED9080458
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 01:50:17 +0000 (UTC)
+X-FDA: 85297778874.11.0DCDDF1
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E942E1C0005
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 01:50:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lcu90nEA;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791421944;
+	s=arc-20220608; t=1791424215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ma3Wpv/xFZ2DYFigamcqVz1quneqsnZuTQFwReuOHBw=;
-	b=lW2Sc2SACB9QBM+KvQQ8pGpUfBzQ3r+o3n1ZFjgAz3Aqb2L/okCvVncV2WnVbGZi25hVia
-	mb0++/qT9qY5Zf6Lvz2M0x9syvnUD7Wp8/xaXC3ela91aHTjazvi0mkw1hPq0WFr2WnjOi
-	q2pGNLX5tX0GEXu05LFG48RPXUTby28=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791421944; x=1822957944;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Z5ybaKWBPOL6QX0nuxqg9f/Zcrh90lwNVkVMjmF3vBo=;
-  b=jgycTBafwF5SR/EfTLGCcmxfOO3fcFi+lLqt0Uizprf9FO4d96KYOOav
-   MaZbGhjHhSGw1OL0wN6BDf2vCoBIcnR7pBlnL1+ZMYbAMOaL9mS4t+LI6
-   w3sEljqUB/IG1S1qw0IWbtTF2SeXY4F0BWrff6aAHYOmw7x6zFCdvudwC
-   7YkCMV7rkWdDGjWy7ZWwNtmy1nAUdX0tCoLOkupyyX/J41OnreY7MDSxR
-   Kgh2MFKVpAiV3IlZe6t/+v7kTMHUgAOgEELM5my50FyQURXdfUo03ZYWU
-   YIKJUlLjyGCriFt19h2GRQ05wdTWPGokFcXMAYaHViQ/Ke8W3H1tU7BC6
-   Q==;
-X-CSE-ConnectionGUID: y31q5iDnS9umMjVzIM9wug==
-X-CSE-MsgGUID: VjWEryz+RTGdjF4ujS9KKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="83120"
-X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
-   d="scan'208";a="83120"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2026 18:12:22 -0700
-X-CSE-ConnectionGUID: ZGn9PKkVQWa98h1ZNrPAwg==
-X-CSE-MsgGUID: cqNaiWUXTz6lTxb/IDpp+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
-   d="scan'208";a="285685618"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 07 Oct 2026 18:12:18 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xEcg9-000000003oW-3MzK;
-	Thu, 08 Oct 2026 01:12:13 +0000
-Date: Thu, 8 Oct 2026 09:11:19 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@arm.com>,
-	linux-s390@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v8 14/15] mm/kasan: Introduce helpers for lazy MMU mode
- sanitizer
-Message-ID: <202610080827.zfszZlVj-lkp@intel.com>
-References: <e42d9f02ec1f8478a50fce424b95d0e7ff6a359f.1791365932.git.agordeev@linux.ibm.com>
+	bh=zxvr0RhVyqkVNwZlzTLbBqT6dNG/BVYIaMV3U/7dCnQ=;
+	b=VtqwkrbiVwZTDc8CHW3uAlLm/+6ffDMSH4de5RZ5ZLGL+8TGd/TxNdn83giVlY7ifeVg0x
+	QK/Cm/j054tZWuQQgzmgtoWrYRkdH30SJyhA5nqB257kghjk8D14OGgVM4LSeiTcoTRWKP
+	Wautfo0hMXvB5qHIY2BDTFBVjQCt36c=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lcu90nEA;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791424215;
+	b=yj1bk5mqA6cekIZY9VWZ9/LU21LDDgemrwy0feyrd2+ZfwgEI/s5Kr2gJ/zxq5B4SufkIg
+	mvQCiOQDaRETOyF5Aojb5HCwonyXr9QjWS14J20Wwof0bXFIk8ynVqeO2QBVYDvQtfSyw3
+	KjmwjmlnKM9SYDcMBCAk1TrtYorqxZs=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1791424211; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=zxvr0RhVyqkVNwZlzTLbBqT6dNG/BVYIaMV3U/7dCnQ=;
+	b=lcu90nEA2d9uF2CR3K9U3f4L1oYvt70acnhZzdl7Dc9psbfgU0M6DbVtXW0LCeXhC513BSne0dySVHWNUpfkOYDR446tCxJ+FKuca5b3AuJ1Ygqd3PANCqMX0riUsnX39b90b18F5FML35x+Uh8HFOUQ4I72NtsNzIndUfdBlok=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XCIIuQW_1791424207;
+Received: from 30.74.144.149(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCIIuQW_1791424207 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 08 Oct 2026 09:50:09 +0800
+Message-ID: <a14c2287-8d7f-468d-b0d4-1d445d2be277@linux.alibaba.com>
+Date: Thu, 8 Oct 2026 09:50:06 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e42d9f02ec1f8478a50fce424b95d0e7ff6a359f.1791365932.git.agordeev@linux.ibm.com>
-X-Stat-Signature: pgnmw4n84nsxhk8zgsf5pxwtc4cqs8h5
-X-Rspamd-Queue-Id: 6452140008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 07/14] mm: shmem: allow THP support determination at
+ folio allocation time
+To: Luiz Capitulino <luizcap@redhat.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, ziy@nvidia.com, lance.yang@linux.dev
+Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
+ hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, hughd@google.com,
+ dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
+ dev.jain@arm.com, usama.arif@linux.dev
+References: <cover.1789695931.git.luizcap@redhat.com>
+ <f74ada750d1910f8ea7e55955eb0c330747b93d4.1789695931.git.luizcap@redhat.com>
+ <b63f546b-ee92-46c3-85bd-bc64dbaae367@kernel.org>
+ <0162d0f5-8e75-458b-a0a1-6071f46d4b35@redhat.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <0162d0f5-8e75-458b-a0a1-6071f46d4b35@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: djjwtxmm56bc3tkt6k978xg8ohmijssc
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791421943-42388
-X-HE-Meta: U2FsdGVkX18f14mPA2REGVoHeTpPM+aAzhp144WC1RZOBOBFtiuVnyJOEo6LW3e2/obhY2uGhS129MGvPE1yYTzltZJQ/pZfWE57YbpxTzx5apmc3ORXcEHCdq5xoRVQIbQGCw/9E784OS1KRz9q8phvY1daaUYP/hf0viEzqL9l0OgwbQBNQAD4r5NQGtI/eh8enveFmtYhkQCwZ1fMaiPWqYrl2aceXQwLzATVdPQzPktGTD8wZ/PaFMwhRfOPOTkcaKdULe01yMQ+uF2bNgKnTvMLU87pzI6PHHXuftlzRMNMK1ZDpgcOALL+lyr8fndi8SMNzjX9D9afu090ErPk0u9JLsWtDH7IdjReENoxA5VnDHj49/G3L7fmy8JHisqhclinNUu6Sv3wFPSOBMVwserNxIu8/aeyT5E6Q4L2gKGdIDaSk7aepFN1t0awz0bXML9fVXCU2IJrC4YbRDxZrDut04ylzAg2uxYHy74K20ksVSAeiRdWMsbckFc9YaYAiMU3BSnvVPxlfH3bsQxYg6Kq5GWFUpYgZrvYa+X7JZgzd4RnPDGdLwYavUUUxEiJ1oU7mBaRLqycPYWB7GUFmXMUwi9s4/ItIf4ynozlsqmRRYs4+YpIRgIm8lKQZG5n/pBg5O4ghFNORdi/PmD7z9MNwAmRN9WjVGSGvdt9/XR8zXrLVUtMcRIIMPb/su/shXAK+aNGEMvPX7cJtBUGrRDyKlAGfhm47+MoJUyWG44Qawg9kegGHalhU72LBseYm1hqFqUfnv+O5Qmc5XDFybJkC5/Tv2t0hK8YpI4qvDYljwogYGTcyojiCBu05DBWFg4pPh85pC/AU/4utjs+fZp8hWJh9juNASAFz38bs/grMt7+xXHMKW3gacyGjnOBIqr6Cv9I50FJ1oDaXdE6FXWa4Tz1WtMcmSAwDywxmLKCXpQopKnIk5//wk4X2PbpAOLr35Ztdhzi5xI
- z7qPnhIy
- DduCnwoKKq0C8XZ/VBN+DlhEoOgIOtqYLevNvND97G9yag/Whk6LsMH6RbaMv+NWynAmzuvqNueq4R/MHWpN9gqmckdg3mURdoy1mi8tIrnpxhVCEnzq7my0RSPuhshucNyjAOLIE/+OLEUJlElB4NV/9BUFs/6g7eu2SEyOIxlt7iRAwgzmezvWo8M2/ipReO1sjUgkbA8iC04Nn1qVwZnftb6nAajLzauEpFawbTIseUW221QyswxlNF9wDO2EoN7p9T1h30SQ+eW914OxGzUh3p3INS3msw64W7Qy3TFTb7JnNcrn2K3cV4TA47dFjoIghgtb3Mtk5Op0hJ+iRIIjQJSxNl8pBeAk9hFzAIi0A7zhS3DmPDh+cnnybjRlqfGEBX07YG63XMnA8Br03XptzT7vvsuSjzfOmg/9p9+V0Tg0OXLLdmYCTm7gXE3cJ76Q3PAmbgKzggdk=
+X-Rspamd-Queue-Id: E942E1C0005
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791424213-333495
+X-HE-Meta: U2FsdGVkX188AbEJ5c0byKs+NGfMfM4qWUkFT3x6WQEh/WS9gX4vb+Nm+o8Nc6GH3pZK8e/Thz524e+VDa77Xb0qmZVY6gVAgP5CijlgM31yDBseEOwiXnj51QtEKIKXil4Q3CItHvIM1GIT7NfhSrZNXqt61Hm3UTDCWO4FSqaIM36nbQDSelMfYVHG9PZ4SOwrtVety63jCtgCbD37OGKkSIVcixECUMMylHR6SlqbVlbueeqetO4XT61li+EHDgP1T+qhU7lUuBN8LyPEvtBiMMopyn5zdNYx8f4VsF6QPeZ///oXU800rkJsUapwTHKPqP0T7fUgQFdOTS4Zq6+iV9oohoCSM2uT9f8KOu750DgO19skdOvOr0A6BQP1Mwajk34msr2BZLR/Oq+db+WuKfLzIaDBRiQ5WTdKy/asfjuDk/GPU08Fr8HYGUr6wRqTLjMesBdU9HP8rxlpyIgWKP6m6KlOPWgRv1Ik7DyxduT+VL6B6QCGGSMpjJ0TYF+KqfVvCL47JVcrq6c7yWFPLEwaujL44fXBBytEWWL0GM176/XBusvz1aukisup/M2fdHIPO/jSif2hJbKDlPeQqlV1WEwI0VCXD1TJCwFC/qH8KLxt2XZlDtV/DGOvgUQa+aND7YajF3D1yWefwt451L3KQHbcpmgYAsfkI68ExVcps1cDz5WwKoqyQNqYnmY50l+d0Re1OhWG+N/YlvJsOhQicyyGDAlx9drElPGI+m9NVtSsOSDkiYPvUVS/fD2k1Lm3JzKD1PYN+KbeSbtg6sPuVYA/2dhy/JSJxQtgnSJ4b2TADwwfIKILqfRHajNrZj2AHsdJqUwIFzBH8WMBKqQdQMSHZWBUDUGitu4y4oSBgSZH8c8Nb9ngIznzeN5R3booCZF7WPPpvby/Dpat6oVBviJLUHFWrBhrC07dVskuzv7GY8Kh9olluU63DK4LvlheHxUoIAyZMVT
+ oeZ3NrgD
+ YoyfkJse9uhJ+KYvffA1+4gh88WLvzqRo8Ph4DVLVqS/Svtc8JEGtifxlBH/hPJNGv8ivTzb04xWzSoi9uRhdnP8dpONNmOactZGEHGohpnrHkCi5DjXZfCZ00FXttzRxc9aewHK6R//CWbfmx8lZQT+7LKSad+Ny63598Z/zu4tQFFJLItbPt8NIQwjGOqF/XiPcOmCYMDfcS1IrHyhQ3iEPuQe4ctLR4KVs0mBCUL5RTX/mQtdif+r8U5XcEJNNEBMZr14gkcSDL6SS8usQD1KClz6Mszj4mr+xn3RFcZq7sWzCwfdHdSHiDIXpeivHHAZAV45xyfv/4shH3veV0XS0aNBUBjX4/Hof
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,75 +97,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Alexander,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on linus/master]
-[also build test WARNING on v7.3-rc6]
-[cannot apply to akpm-mm/mm-everything s390/features kvms390/next next-20261006]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Gordeev/mm-introduce-hw_pte_t-for-PTE-table-storage/20261007-134144
-base:   linus/master
-patch link:    https://lore.kernel.org/r/e42d9f02ec1f8478a50fce424b95d0e7ff6a359f.1791365932.git.agordeev%40linux.ibm.com
-patch subject: [PATCH v8 14/15] mm/kasan: Introduce helpers for lazy MMU mode sanitizer
-config: mips-maltaup_xpa_defconfig (https://download.01.org/0day-ci/archive/20261008/202610080827.zfszZlVj-lkp@intel.com/config)
-compiler: mips-linux-gcc (GCC) 16.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261008/202610080827.zfszZlVj-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610080827.zfszZlVj-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from include/asm-generic/hardirq.h:17,
-                    from arch/mips/include/asm/hardirq.h:16,
-                    from include/linux/hardirq.h:11,
-                    from include/linux/interrupt.h:11,
-                    from arch/mips/include/asm/highmem.h:24,
-                    from arch/mips/include/asm/pgtable-32.h:22,
-                    from arch/mips/include/asm/pgtable.h:14,
-                    from include/linux/pgtable.h:6,
-                    from include/linux/kasan.h:9,
-                    from include/linux/slab.h:276,
-                    from include/linux/fs.h:45,
-                    from include/linux/compat.h:17,
-                    from arch/mips/kernel/asm-offsets.c:14:
-   include/linux/irq.h: In function 'irq_free_generic_chip':
-   include/linux/irq.h:1211:9: error: implicit declaration of function 'kfree' [-Wimplicit-function-declaration]
-    1211 |         kfree(gc);
-         |         ^~~~~
-   include/linux/slab.h: At top level:
->> include/linux/slab.h:595:6: warning: conflicting types for 'kfree'; have 'void(const void *)'
-     595 | void kfree(const void *objp);
-         |      ^~~~~
-   include/linux/irq.h:1211:9: note: previous implicit declaration of 'kfree' with type 'void(const void *)'
-    1211 |         kfree(gc);
-         |         ^~~~~
-   make[3]: *** [scripts/Makefile.build:185: arch/mips/kernel/asm-offsets.s] Error 1
-   make[3]: Target 'prepare' not remade because of errors.
-   make[2]: *** [Makefile:1425: prepare0] Error 2
-   make[2]: Target 'prepare' not remade because of errors.
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:248: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
 
 
-vim +595 include/linux/slab.h
+On 10/3/26 11:09 PM, Luiz Capitulino wrote:
+> 
+> 
+> On 10/2/26 3:23 PM, David Hildenbrand (Arm) wrote:
+>> On 9/18/26 03:45, Luiz Capitulino wrote:
+>>> In order to enable THP support in shmem today, besides the user
+>>> configuration required, the CPU must support PMD-sized pages. This
+>>> is the case because of the following has_transparent_hugepage()
+>>> usage:
+>>>
+>>> - shmem_parse_one() and shmem_parse_huge(): Check if THP is built-in and
+>>>    if the CPU supports PMD-sized pages
+>>>
+>>> - shmem_init(): Since the CONFIG_TRANSPARENT_HUGEPAGE guard is outside
+>>>    the code block calling has_transparent_hugepage(), the
+>>>    has_transparent_hugepage() call is exclusively checking if the CPU
+>>>    supports PMD-sized pages
+>>>
+>>> While it's necessary to check if CONFIG_TRANSPARENT_HUGEPAGE is enabled
+>>> in all cases, shmem can determine THP size support at folio allocation
+>>> time. Therefore, drop the has_transparent_hugepage() usage listed above
+>>> while keeping the CONFIG_TRANSPARENT_HUGEPAGE checks.
+>>>
+>>> Additionally, we need to check if PMD size order is supported in
+>>> shmem_getattr(). Use pgtable_has_pmd_leaves() for that.
+>>>
+>>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+>>> ---
+>>>   mm/shmem.c | 9 +++++----
+>>>   1 file changed, 5 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/mm/shmem.c b/mm/shmem.c
+>>> index 776dff8a848e..930657d05375 100644
+>>> --- a/mm/shmem.c
+>>> +++ b/mm/shmem.c
+>>> @@ -690,7 +690,7 @@ static int shmem_parse_huge(const char *str)
+>>>       else
+>>>           return -EINVAL;
+>>> -    if (!has_transparent_hugepage() &&
+>>> +    if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+>>>           huge != SHMEM_HUGE_NEVER && huge != SHMEM_HUGE_DENY)
+>>>           return -EINVAL;
+>>> @@ -1524,6 +1524,8 @@ static int shmem_getattr(struct mnt_idmap *idmap,
+>>>       generic_fillattr(idmap, request_mask, inode, stat);
+>>>       orders = shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0);
+>>
+>> I'm curious: why is that not handled inside 
+>> shmem_huge_global_enabled() ? If PMD
+>> order is impossible (well, okay, it is possible, but we simply cannot 
+>> map these
+>> things through PMDs), I would expect that we never list them as 
+>> "enabled".
+> 
+> Yes, you're right. What about renaming current 
+> shmem_huge_global_enabled() to
+> __shmem_huge_global_enabled() and then having:
+> 
+> static unsigned int shmem_huge_global_enabled(struct inode *inode, 
+> pgoff_t index,
+>                            loff_t write_end, bool shmem_huge_force,
+>                            struct vm_area_struct *vma,
+>                            vm_flags_t vm_flags)
+> {
+>      unsigned int orders;
+> 
+>      orders = __shmem_huge_global_enabled(inode, index, write_end,
+>                           shmem_huge_force, vma, vm_flags);
+>      if (!pgtable_has_pmd_leaves())
+>          orders &= ~BIT(PMD_ORDER);
+> 
+>      return orders;
+> }
+> 
+> Would this be acceptable?
 
-7bd230a26648ac Suren Baghdasaryan 2024-03-21  594  
-72d67229f522e3 Kees Cook          2021-11-05 @595  void kfree(const void *objp);
-af92793e52c3a9 Alexei Starovoitov 2025-09-08  596  void kfree_nolock(const void *objp);
-72d67229f522e3 Kees Cook          2021-11-05  597  void kfree_sensitive(const void *objp);
-05a940656e1eb2 Kees Cook          2022-09-23  598  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Not a fan of re-adding the wrapper. I think you could refer to the 
+changes to shmem_allowable_huge_orders() in patch 14 and filter out the 
+'disabled_orders' in shmem_huge_global_enabled() directly.
 
