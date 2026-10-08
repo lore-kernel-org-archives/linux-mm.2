@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 093A6CA600E
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 07:30:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D628ACA600A
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 07:31:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1A936B0095; Thu,  8 Oct 2026 03:30:57 -0400 (EDT)
+	id A83A96B0098; Thu,  8 Oct 2026 03:31:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCB056B0096; Thu,  8 Oct 2026 03:30:57 -0400 (EDT)
+	id A5A226B0099; Thu,  8 Oct 2026 03:31:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB9E86B0098; Thu,  8 Oct 2026 03:30:57 -0400 (EDT)
+	id 949BB6B009B; Thu,  8 Oct 2026 03:31:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D2AC6B0095
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:30:57 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 02CA81A049E
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:30:56 +0000 (UTC)
-X-FDA: 85298637354.01.E52BA96
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4EB1CC0004
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:30:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=YJqZMXjJ;
-	spf=pass (imf28.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791444655;
-	b=TCTe1BJQ0sGtGAQj4cdo+Lin2Hr6EBFxQRr5MIicht9KB20fxP8FIC52Lqgr7f1kCGCTh/
-	SQdxMRPaaX4lPdktZj2xZndZFwvHlRrDT3cGLjyFOsI3nosSwa8yOgRq33pngSZnWHviSs
-	/4OhQMGHJDpO+Np2UjTIJ3DlBEGN0mE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=YJqZMXjJ;
-	spf=pass (imf28.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 60F716B0098
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:31:05 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DDA0C404AD
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:31:04 +0000 (UTC)
+X-FDA: 85298637648.17.66AB838
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf29.hostedemail.com (Postfix) with ESMTP id AFC4E120005
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:31:02 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=LML32DLE;
+	spf=pass (imf29.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791444655;
+	s=arc-20220608; t=1791444663;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n0iL076pHUaLr+l14HbxfZqldd4j3905YwLicSMDih8=;
-	b=CJLumAU8eJdJl1b5I4C9P7lW5gK+vPzHxORfeJUn9iZGP7Ehook+lr2ozjmu9c4Ob5JF5o
-	twUuEYXb3zH4wBriNbdLKw43KGQGWcVj/Dw9KrPXPzPd55SF68SHSstIKezZqHnzwxQEAo
-	VU3Eeq1UJzIPoA7JkCeIRv8fVIH0huk=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cbedd5aece4so175689a12.0
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 00:30:55 -0700 (PDT)
+	bh=RvkPG82zfhFkpnOg0JOtNiptSg9vrvtxMEvoINVoQXE=;
+	b=vVlTdCz1Dqx8qe5OG3Waam3o/nLXBJ6WNuQq/h7F6Ay6STOvDejZq5Xp2mhmr/ZVDif+O3
+	wHKkyNkqmGrFZvzsGORCU525QyMd3AjKkEpU+UXIV7GC6DL1TfXggVa3ZVsAN7nv6vpWWD
+	38EsNWMO+MrnDOm12qrlKmVe8nu+zPU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791444663;
+	b=kWOpFbQN9wf7NfzqukaV8S8NxVmvRuM/MT0tPvzyApi89EYRjjkjM5h6bKyqAaw8yzvgMF
+	5Fa6/HHY/gvGaQLMC/EnCZ0qGOSRA2vbUOhp5yxfoPliy6/3eWVZNFY8VYpoF6Cc6GQ9/N
+	XpHwe+A6+kr69YMmFPLi2x9ku9agqqU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=LML32DLE;
+	spf=pass (imf29.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-39647aa9d52so318510a91.0
+        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 00:31:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1791444654; x=1792049454; darn=kvack.org;
+        d=bytedance.com; s=google; t=1791444661; x=1792049461; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=n0iL076pHUaLr+l14HbxfZqldd4j3905YwLicSMDih8=;
-        b=YJqZMXjJICrcCtocwTEfpYZ5U32JNuQzAS6QxWnzwF9PnDsbZ/CrtrmHmWpJqMmwWj
-         zwzP3HjX2CsJicLTrQWew0/NQIfejBOYEdmIe8g7LhbxF46EO0B2TBwUQ1wyQ20nGq4Y
-         rtpXlzL+nWcsNG1CTzCwkGb3osE4LM/GCEVdp7xWeZi/Bd8i5PwfWy4wEUgdPxna/OMB
-         ACjE7kyjXdii+KsgTmvx94OTF3RdWoZdx6BfHxhbaxNuWXb0EO1I7vX8yt62AwWZrBHe
-         IHsk975HUbLf0hJNQIdLJhnWgHod9wlWkT16wyql46y8ngHalgrX1n+wRZvUyGyZPuRZ
-         psMg==
+        bh=RvkPG82zfhFkpnOg0JOtNiptSg9vrvtxMEvoINVoQXE=;
+        b=LML32DLEaqnOWY1YevRrckTuxlCG0pVZ8o37oI8iGSaJ+rJVodGqgsthF3zCE7pnoo
+         A56/DCgYGoVOk8hY0ug2WyGPBHG8d8eJb7Hg+Q1gouuvD+YD/GtLk2UwDftMC8eZtw5o
+         +EGlJx/Sa7hVX3bvmvuhXvP/Eo4gl1obn0e2diO2xSQj7vTM/q0vM4lba7lFmyeyf6AO
+         4uexWLflM2mJuG57X/RHJhREvPdJ6X+I83dPgpH3opogj2IrATepOW0t3BsOW2yvuhwB
+         2zTiC7ltEubKnnddfh0d4zH6VRSuXpKKrFPomsRh1y2yc26wVrpmsl4mXQImZ59OvNZt
+         wGWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791444654; x=1792049454;
+        d=1e100.net; s=20260707; t=1791444661; x=1792049461;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=n0iL076pHUaLr+l14HbxfZqldd4j3905YwLicSMDih8=;
-        b=NUeXjWLPJvsTQoZrS8MU0jt3dAo04szsPkcS9Ddx/cw/zyCNJCt370uVIUyVJWVXNf
-         m0CDbuWC/4cTaxzAUxdK2WsczXNS6Dlgh+B4Og5ij8G67qU0Kjp3/PuLVCIshvDfDPdT
-         cyeSFzpu4rlHwiYHlykj4zkNBOdT4c3QDrpMHa5DjKkdoPTDFkvncc0rUbVh8gGoMOK4
-         q5PRkCvgXy4KRVAlVn8vqw5RpjTogyS4X6VCDVtq8okHBeNKXb7o8iOIdf/mV/ro6wZW
-         /v+AcjZvn75Y0vWf3eWFNbuhBt5LU7AOanp8nhxbeuQvoaFhqYZUZkGYm3RkDv1aUik+
-         0IKQ==
-X-Gm-Message-State: AFq9FYI49H2w16olT/PhizSgI7x0cXLj0ydKvxnH2i+GNPHEU2RF35VP
-	laXta532F1qx815rS1WfAapvyLB7P9AFhx8aRhGoWOQiqBcWa7UtkIrvwV/QR4ofJQM=
-X-Gm-Gg: AYBFou1poHw2wVkF7kuLTO0entoErtQnZB19hVF0I2xR0utV5aErDslI3YMes92Ol3q
-	DtCAiqJ0J3sWQeTW4PfDfrc1GImh4Clsh0r+4G3fWuoxMSI9ysFkY8sWzvSbwdV/1SbwwgsLqaF
-	PcrYLE8n9TRBE8V0t0SDGi+7U3QMjTHnl0HGYoDxkvHjk9rjUkloWRDwHNIirLqqcI5zaB+4exZ
-	79Kdv9GEd/UTrxM5edneBdKEsoHs2idhORinalRoLYSPQokdtwA4Sf6ORn3w6i02QZ7/XpBFaPG
-	OdDdOgEzaujdLr3ExdJV2crOTFuGokG0zTjkvGjet2hKs1moWepVlWmFA/nHpFXTRA/bL0PcnPH
-	quTQXxYCk1XzbYdKP8QleBMrU9kIfL8271qOF01F6TDDb5Uz4zxGkjeIdIAQGDxBFkMfiXhO27P
-	dtJe0sH9AfSZEQGFrJykhStd8sF1rUHTR8HAAD+9fI8NZ6sqwvTJNgbadStumafrNVHnIdfn5/h
-	jueL9jntu/Re7oi2KhA
-X-Received: by 2002:a17:90b:4a50:b0:39e:6c68:fd92 with SMTP id 98e67ed59e1d1-3aaed9a2992mr859363a91.39.1791444653999;
-        Thu, 08 Oct 2026 00:30:53 -0700 (PDT)
+        bh=RvkPG82zfhFkpnOg0JOtNiptSg9vrvtxMEvoINVoQXE=;
+        b=Sfu7QKgSZF+2/0y2zJ0+cX+EuML1dk44h4f6EZF/5t+x5XyONq1bBaIRnNNel9JuIx
+         Dq+lQEGbgFGXZzIs7Za0IPRf/UTOpFHT58DnPqtCM/iPuuljqdVYP7QiHTcXVgj3Uyrs
+         5Vvkoxld0K8OyMToCvZcw8wPgkE0IwcTLHYQR6OjY/FeoKSfOM4xBnwaJsaFVpL4zdru
+         I4j2WIzD7nZG+E4/WukH0Bfo9BDgPho/1t6rIaPVpQGhwV96tFxBbJxoMb6+rmxwW6P+
+         xxXmlg4//Qw3JOdBSJ5T+u4B3u2QQyerKFolp23nTJ/4OnL41deV/5F6pyVVYl41f53m
+         Zqbg==
+X-Gm-Message-State: AFq9FYJBsSh0I1UkjWSeWW4pV8Y2iSp5byjd2vY+B0714vUq/PCBG1iN
+	NTCPe9raehkFGs36ukMQBGAsYmQ3gGukBsh6hWGQ/ovxGJTDLgtEV9kJF5A63FyxL00qZrdR4ep
+	6+Hmn
+X-Gm-Gg: AYBFou0tHTgoC8Mrx9TJB2d2X/9gM1FaAS9qW+O7vlUwOFbiweBfxB5Ig2zvAn1dKzq
+	Q4iB6QHKm2C1lrLyUsnkxTT6ExClOrFV46e6QD7uiORxsZBRUpHXiKkyhy6ciICqO/NTFvQsaei
+	iaBn3SH57deQoYsnQMzVMp9qzJ6L4x3r326y7Z7wIJuY70ElsBh7hX2u4Olebg0FxLMsCZpF3M7
+	H5ZSSjEqdDQU/IImtrBIyS6bfK5/U0itneh5N0QglPX4sEu+ADxJw+WSXGfkvNFdIfer7PCkUiO
+	u5erPBWy+4klL8DVyqx2myZQvYyQwO38MIE2jXoSBD9FZXzTamnWPYT/nNdKdcN5JUchEXfLAZ7
+	aBiPHIXs5IoViK3wMAUfk2zdBSFpPpKBHrX8HzoYevQ8BbTzfw5Q9771AlEakMcIwBo8c3lCr8n
+	Nbz8Y0Rs+zagNZK+Xqp4rfKW1n5g6NDSEtDBbr3+4ZR6Es04B5QgqBChx0Viyzo2KrAlGDwM3kN
+	rpcachV5hfGmu2DK7M=
+X-Received: by 2002:a17:90a:610:b0:3a0:e568:ed63 with SMTP id 98e67ed59e1d1-3aadff48952mr575784a91.8.1791444661248;
+        Thu, 08 Oct 2026 00:31:01 -0700 (PDT)
 Received: from n232-176-004.byted.org ([36.110.163.99])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a8a438f25dsm3114715a91.2.2026.10.08.00.30.47
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a8a438f25dsm3114715a91.2.2026.10.08.00.30.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 00:30:53 -0700 (PDT)
+        Thu, 08 Oct 2026 00:31:00 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: akpm@linux-foundation.org
 Cc: linux-mm@kvack.org,
@@ -119,22 +120,22 @@ Cc: linux-mm@kvack.org,
 	apopple@nvidia.com,
 	linux-kernel@vger.kernel.org,
 	muchun.song@linux.dev
-Subject: [PATCH 3/4] riscv/mm: fix missing destructor for hotplug PUD tables
-Date: Thu,  8 Oct 2026 15:30:20 +0800
-Message-ID: <20261008073021.2512665-4-songmuchun@bytedance.com>
+Subject: [PATCH 4/4] arm64/mm: fix destructor for unconstructed hotplug page tables
+Date: Thu,  8 Oct 2026 15:30:21 +0800
+Message-ID: <20261008073021.2512665-5-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261008073021.2512665-1-songmuchun@bytedance.com>
 References: <20261008073021.2512665-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pc1ds7chfqcmejhup4kdrf71irkzb5im
-X-Rspamd-Queue-Id: 4EB1CC0004
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AFC4E120005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791444655-698945
-X-HE-Meta: U2FsdGVkX1+hOMa+HqPzfNHV8Otrr1ACHJe7enTWp3mEF6JtBBzuxKG8hfbgMxXDzgdWLqJ/zjbBLD5AKmSdnR6O8IJCbtyJXICPv3DXXG+8pXK6E8x0Mh72GiZMO6IoJ3chPmxHvEsF+/IB6feu7ajQt8W7tL38QhBCd6g0OriupW01SzTU1YJ+dF39+FQt/GqvrMK7DKF8wshF1hFhZ5/6gFlpCkQkZmZYspBNEcWYqtsfpB7ylwoSRrLkQ0Pg63FVkl1kABeRoAJUJ6IcoabNhQ8f1CMjXRmoEYVJGMohh0brNb1m5Cepou5VsiMh4XGJZHFJ+Omfw2EUpUSTdKvBsfORwC1z0cUrUk4mW/IbuFxVuA9UssXIbwIlwWRNXrnm+abwVGO8QZMy2VZQa/t60FZhDVka/ns+hggUU7HGgk2um+H1x9Uo2mGEQGDFUGPFjFjQ7DZEIEs6Mr6gElrDzjtLt0x9PtWTQHjgf8IHMSBWTwi2PG8t2wvpP2Z8jtWLs5rxy945YlcCYeg0Jfwa5HlZ4prS4xqvOyeclwLwb7br5fxkQPEf8fWQn/WxobifIDg4qgTL99u4OHOSPbT7zWuVDmi1X7iiqOmFsa9oJbiYzw3jq6fYTfvq821FTArp0YnASJ6nLycTPs5xwXT3sG/pFZgsBLHOKqA/b1Xq6nwS3yobW5WmBrqBrWduzZrwYobIsvBjk4jbzmx1qPqxd4RVHirMBQzhVjO7L7p5ruuvJPd22Eb372dbWqUmvGkx6NCDykvMwG2HEgAucIgzHgp7JDLMm4sjgeGR/xERS/UPrEzWuVIjwzq6D7gsboN+lHMlTKnBKRgCxTNF61uRiEcWU1BeGH/ZjJqQszvedXA8voEiMOi6Y1MgDKgjj14c4w0uyZYnRjwYuQeyiEywEZtzKt1z3yqTDijvYqtQIeYKw5e3UVEqUnb6R7Fuq5c5YcBTK0x90DaKVIh
- 4MjYc38L
- a6lbPW2CiBYDh9D6cLBV1K0eUUoV0U4LVRrlWdgvVfVbBbnFlj5sg322HgBYKrRNEO/9BOw22AoFuqXe2AvOGoqCmMQVIzXJ0cegRi0kmsGNccnSeg+3B2ZVpJeuxoWsXLSh5yj2eNPvlOl9kOYOkct3ocIlSMP3FylBF5sIxiKb7l3AjXM4b+cZ77fvuAcEOnh+VL2mIjwzFbe0PhRw37zycruVBWjl8lcnbeJugnBCfY3kNOBBelna0qX4uC7gYd3gurWmw9/WBsStPp61Sq0EntzDmOqdwoa8rwDJJHhzbY7zzCKVDD8kr1986h6zHsRtn9pQvI3ecUb4=
+X-Stat-Signature: txmkppsrgf9rgm356ppbdtcrmnh1tcr6
+X-HE-Tag: 1791444662-214722
+X-HE-Meta: U2FsdGVkX19/+4V76SqoRkZgqLD1FHzb6nM0CcI1kE7bO80VUKqC0mn7YQQPTUoxE8WR0pKjQVs5av4QhAB1B84xVmvxzmeAU+U4YSqxiZ3RD7BAiMv1DHGnx21plotNgM9UA+GNSS5oQWQMwxW33ondyoHR6+/i6P2iqcYmFshH5wCjbI5fpM3QZhNnnUUIbSJROjHSJ+RmEyAGTCLV4Ar3rUyuwjCwtGEHKV+tQkSCgnHdNOQTk1bfYan2IgcwrssvIx+Wu5kP0aobohsQeBintLUS/bTV4mmZ7xeMNLeM0z9bx+tDIPR5J+cpayyYVL8kb0KRRfl2b74auDrizmY1A63iy5NKpC3sj8X4aWOE2Efj1dUiMwyt//QxZZtA4GRrnDqzhfARtDFZ4+Xvi+5HPKoD7G7KjVbbHLi8nlpBQIS6iYxTs4bNr0k+C+ib4W0v8U8JV1h1auc211S5x7i9kwdGcgXQogAbpQxSQqiSjDQuQLACxK7zSWSbosO7mMbHMh3r8yv8UZ2Fps894XaCIcCCgVTTV88IYnwdTG24w5awckhAJ9zT5S7GES0lbCLxgDKt3Ng3R3CqcxqAC72hb/xNfa73fonxckMqZIoVnns47WSERz52QXSjEBSt6AUj63fQQn5IbLtv/rEbJI2VfEpMW1ibIfRFCZY2WAYYTW9i+D/RlMeROV0LhCtwN3JT7NWkV7svS20TEk4cTqlAqVznt2OH+fAcmH2e60evhUSOuhV7be/IFJwCoJ3LFdT5CJqbWdBLA17J8rOYH0lLd+UJ8Q7nC0mTG/qQzRG4/p/DvjNmqchHUYTfkYqPXL8WnhdXNootm3FhkgHmDE7w1Q3eLznztXC4f+SdVyWE3S2ZoXc9s2nTIVogVJldLju1968MRopybs7kNWFAWzEWG0o3yGrsDweYP0xz37IoQdN9ukiXqfbMhN8NHGUkgFwZUGjPaYXn4Dh2JUE
+ rxGZ18Xt
+ j/4SWAzpjJ/JDubqZqsKX3uv0/0nl70qjeY6yH+J1azd9m+1VwU+0pe6uV9/Z65eY1YDNDdGwy0GU54mohlLCOkTE8uQBY9x0L2+Y9tGQOgZaYDYZhN71dsreoNIIM43CmdKqWpiSFZAIndLkPk/5UvCgUNjeALQOujZ+tkDoxy5OD9QiP76Hs6p9qy473OdvJg7zwcJarTDnw8SVVhR1otcE3K/x3o/MqVsCPVuo8G5cbHq0zKBYlVojd5uOa1PhTyMu3LPFi1bV3SuH4tOiK7XcVc6CdXcQSfQLdJm/yMgkNoL5eSGK53z8Ue2+fuyzJsst0RogTkmu9+w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,37 +143,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 8472cc4503eb ("riscv: mm: call PUD/P4D ctor in special kernel
-pgtable alloc") made alloc_pud_late() run the PUD page-table constructor.
-However, free_pud_table() still frees non-reserved PUD tables directly
-without decrementing NR_PAGETABLE.
+Commit c594b83457cc ("arm64: mm: call pagetable dtor when freeing
+hot-removed page tables") made free_hotplug_pgtable_page()
+unconditionally run the page-table destructor. This matches page tables
+allocated by the arm64 mapping code, which runs the corresponding
+constructors.
 
-Free PUD tables through the common free_pagetable() helper so that
-constructor-backed tables run the matching destructor before being
-freed.
+However, arm64 also uses the generic sparse-vmemmap population code.
+Runtime intermediate page tables allocated by that code do not run a
+page-table constructor. Freeing one during memory hot-remove therefore
+runs a destructor without a matching constructor and corrupts
+NR_PAGETABLE accounting.
 
-Fixes: 8472cc4503eb ("riscv: mm: call PUD/P4D ctor in special kernel pgtable alloc")
+Use PageTable() to run the destructor only for page-table pages whose
+constructor initialized them. This keeps the arm64-created page-table
+lifecycle balanced while safely freeing constructor-free vmemmap tables.
+
+Fixes: c594b83457cc ("arm64: mm: call pagetable dtor when freeing hot-removed page tables")
 Cc: stable@vger.kernel.org
 Assisted-by: LLM
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 ---
- arch/riscv/mm/init.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/arm64/mm/mmu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 429a0b015ec1..62077539ee78 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -1540,10 +1540,7 @@ static void __meminit free_pud_table(pud_t *pud_start, p4d_t *p4d)
- 			return;
- 	}
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 7343ac9294f8..688b33095651 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1495,7 +1495,8 @@ static void free_hotplug_page_range(struct page *page, size_t size,
  
--	if (PageReserved(page))
--		free_reserved_page(page);
--	else
--		__free_pages(page, 0);
-+	free_pagetable(page);
- 	p4d_clear(p4d);
+ static void free_hotplug_pgtable_page(struct page *page)
+ {
+-	pagetable_dtor(page_ptdesc(page));
++	if (PageTable(page))
++		pagetable_dtor(page_ptdesc(page));
+ 	free_hotplug_page_range(page, PAGE_SIZE, NULL);
  }
  
 -- 
