@@ -4,109 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3A36CA600B
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 11:19:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D7BACA600B
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 11:22:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8ABB76B0092; Thu,  8 Oct 2026 07:19:15 -0400 (EDT)
+	id 5566B6B0093; Thu,  8 Oct 2026 07:22:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85C286B0093; Thu,  8 Oct 2026 07:19:15 -0400 (EDT)
+	id 507516B0095; Thu,  8 Oct 2026 07:22:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7997F6B0095; Thu,  8 Oct 2026 07:19:15 -0400 (EDT)
+	id 41D306B0096; Thu,  8 Oct 2026 07:22:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E7A96B0092
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:19:15 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E94EDA75C3
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:19:14 +0000 (UTC)
-X-FDA: 85299212628.12.3AA36EA
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 286086B0093
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:22:22 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AB272C0205
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:22:21 +0000 (UTC)
+X-FDA: 85299220482.04.09B3B4A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 213BF120006
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:19:12 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nC4yXMux;
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 299B140009
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:22:20 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O1Hp/Uhv";
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791458353;
+	s=arc-20220608; t=1791458540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NZcC7/xg5SS/eaNUvNNF7JTQ0EBiXnoG/PlgqRlweyg=;
-	b=QN00wkh02TENWWXp0++cnuZEOrKBWJGPMM8MSI2fYYeJKqofF62pUkMvATL+e3rdPvj/go
-	LpqbsKNXK9llxuHS6HeOGnR38awTaH488lOefbPBEG9RwmPMCxQAh11Vw9bDweCflfmBoU
-	o1Q2LAhr+FwKH0IRn0LMiY6a+YELxyc=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nC4yXMux;
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=03ckZm2pi2++eResCYDaZn7t99v+mDgxPpO0qsFG5T4=;
+	b=mIj0NkeInAfssmCw+7x4EMKI/6k8B37DBnld0aZglaGtncw/8sHwO1w9ybj27oqQb1nfIM
+	ccyWiq+PAfaeuU3tMDr15D+bllkeEkkAa3tDM07kMWpK63N4Z1LQWW/wFviTZPbIgFhNsJ
+	6X7oyj9yeiyv5+DzVGwuLdctmjRznvs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791458353;
-	b=nnVGtpFZ4fd2Vn1g6ZDaX+9DsvGbIfYiP3AUzUH83qJFoUWY1degfK0r0Xj6bQhM7vXkNR
-	+ybinlsb4YLjCYqqQW1YYHB/CQCX64R6LyGNvmhkvsOHi/P1BSZJMjLyzfbcoBeIGpMBwd
-	rcGWCji4I9nfv3hzMb10JDa54gGMG2k=
+	t=1791458540;
+	b=OW4TqdirzrWDkcOc1Ya/JWaxht4qiYcf0GBOpJhuAUnxNLeEYG0JpTY9LLN1uznj8NRolO
+	CrD5/sge4+VznKs+yLxLjAz5SSKUKr3GyBWmCeUIuxKnk328hVnTNRRq6eX5R7ftuj5HuG
+	rzcfLHce72v2vSnv9olxFcrSOFkDupo=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O1Hp/Uhv";
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 939B96025A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:19:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7E51F00899
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:19:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B32C6601F9;
+	Thu,  8 Oct 2026 11:22:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50C61F00893;
+	Thu,  8 Oct 2026 11:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791458352;
-	bh=NZcC7/xg5SS/eaNUvNNF7JTQ0EBiXnoG/PlgqRlweyg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=nC4yXMuxmMjU60Le+2fG+FqvSiQ7rKPZNcghMiB9i2JnmXYHvWr8CHGKo+cUg3eyC
-	 tyz9yAp6jv7crdC0S35QVoCksEC9JaXnDlY8BJ92Nf36FysG12iKwvFwx8xsakSXKy
-	 hHhua4yCU8H6sT3Xu229n9WyhY6PlU5iQcUSNzEwcKrCe/nMCecXfR8WB5n6dvNo6f
-	 h8epILmsasVrPcPpm7tSqZOm0INZWaRL80oyengNFl01gcPbbCiOhUsXqei+Xm4juT
-	 P43mQ9wQ4SqKMvX/hVwh7JPj7Cu8DxPF4NEFqi6yryVN3JWVxwD8OLfJSS7Q5cMgL0
-	 ipSoSLdzkMJ/g==
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-93e441e14a1so400835585a.2
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 04:19:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxTNzwunLbz0CYr6OabyOhAMi3UjyjNlfLFy+7AaXB8y4voc0aI1rlurfuGg4KYXFP4lwcRO9cPxg==@kvack.org
-X-Gm-Message-State: AFuF++lOWcsxJcDj8e2xumUZv8Zu2bQKAU2okASlIt+mDIW9y+YXxCSJ
-	r5aFLTs1wK1PtcpW3ynzAwzri6rwRbKuM7x0J9DQ4qKF38E9o2/5zsK9FXO9+c0Wzluxq6aVV2y
-	BESqjG5BTJy8cjW6wpluYBplnczo2R0A=
-X-Received: by 2002:a05:620a:4709:b0:939:761c:4f59 with SMTP id
- af79cd13be357-93e9b76c78amr924707585a.16.1791458351308; Thu, 08 Oct 2026
- 04:19:11 -0700 (PDT)
+	s=k20260515; t=1791458539;
+	bh=03ckZm2pi2++eResCYDaZn7t99v+mDgxPpO0qsFG5T4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=O1Hp/Uhv/joP8NbSyvph6SVo6Tnxzy5B5osUSyhezFS6yhfCAuqe5RsTowi1oAYJ4
+	 1ACZegfMaTSPZdrjXJgnIctJWh2KmQn/QivxGI1be5MH76jK3+wj6X5sehiPc8zZHw
+	 hZ1vS0sA24LesKAyKaw7zEMt+BA2uaj46j7cVYt16dPgzN0ISVlYSbVuzeCuZILx34
+	 njoJNaihYOgiHRML0AErlwYFA7uyrFz0j9e2E4ZbMb37lK1NePrts6oiVY3lXHp4qj
+	 JZ5CK5G1N2rzGnF6F+JPVcroh1yv794sh6PocCK9TL6SI7qZRCmCbyUiYQ0MmjC4Qe
+	 sKRSi6sf6DUgQ==
+From: SJ Park <sj@kernel.org>
+To: Enze Li <lienze@kylinos.cn>
+Cc: SJ Park <sj@kernel.org>,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@kernel.org,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	enze.li@gmx.com
+Subject: Re: [PATCH] mm/hugetlb_cma: remove two unused include files
+Date: Thu,  8 Oct 2026 04:22:14 -0700
+Message-ID: <20261008112215.43826-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261005142040.675204-1-lienze@kylinos.cn>
+References: 
 MIME-Version: 1.0
-References: <20261008070928.113530-1-hui.zhu@linux.dev>
-In-Reply-To: <20261008070928.113530-1-hui.zhu@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 8 Oct 2026 19:19:00 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wW=XXe6=1GucvA1pUSkhLCosJh+bc0-97cYGGWW=MtPw@mail.gmail.com>
-X-Gm-Features: AclHuK9Y4gxfKhBzGtl0K9V-EYLUU5MKewRW9HUXdq9571fi07WGLf_34qgAkY8
-Message-ID: <CAGsJ_4wW=XXe6=1GucvA1pUSkhLCosJh+bc0-97cYGGWW=MtPw@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v3] selftests/bpf: Add bpf_proactive_reclaim test
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Geliang Tang <geliang@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
-	Hui Zhu <zhuhui@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 213BF120006
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 299B140009
 X-Rspam-User: 
-X-Stat-Signature: mukrrkfdjq6muc4q6u3xatko7teaxea7
-X-HE-Tag: 1791458352-956333
-X-HE-Meta: U2FsdGVkX1/KPjaK3egWMEubUyJJfKfzyWrYrOZU8P6TU9mAmSwy4Tn3Qs9tV25IVc97wOjwLr/y6HSIZMi5vx54i4IOUKwYfD5mhqUU7ngBj++njCopaTq10S/YWsbLVbFc3PrjlSq6usEHaGkHHQXV6lOTEugyv1uLrZwlCtkJQKe/0SN8VE4wc0opSK83QlrTGTn5NgnpREn9ShVmM5O5CRU3SKc4R1+Gbd8ThwhrUjD2LmA0PflYM+GH1tkd0BF56WsyoqwcArm14Much0U+X8/HTGLds1kaa1/VFZnisHpkesqIT3yFhS0TW9cGv4Z3BQfCMTOzjGHjhRGO5HilmpK8QVMTx8C2odggAelKDEZKhHwhRYWSL+XLaAQLcVjyVbN28w7dq9bL1ovEk5juoS4Oy/PDIR3CsutXtrMEpgxrGqh2wl5dO8VDNt2GXBy4aRk8dpbyr375D3dA+jQdYUQ5nfr04CBlbTeWecDtSAsEJeASvlRpuzas0Z/Mr1mB7sIMjpy2Av4Nj0ZcEU47677fTd+aeljpIfvKdklYcneX+m4/7ZpUSlPHTj2VsFdrhzXXdve9LCkKOPWWx+N9x65/Copj1JZxEd31viym3Oqc9KfY2GR5EBYo0rcZd72VdO96ZhihAZciRhNc5cWc4wzSnk9O5DT8Vn/zRkeie/JSf7VNAQb8Sz63vQ/hLTYW22Ek96NpaeJyTFa9LiwO5mp66y7sqsqDdCGKN30N6Dl+BKjmjtXD83dmZjF9tWUOF+S8ZI3lOVCBbxsXsPccpp6OCc1f9ILCHFzBsyLthMT+yJC9pbSiNeavysM2G5XeVrCx8YSf4Zsyp1b+fiMoO0zZFxwFXRHpbqCEE9NHTjWTFUM/+wK1hAZ204wyG5ML7dPi/1RO1ElV+ahaaKt29IwYxvJl27SANqk0mFQrDoS0vVSJZ4GjCEZbgE/HoeX8QxhP0vIFTJbiy5h
- p7WSP5yX
- F2R8+N/KKcuAQR/BN3F8X7S2rZGeVIf6LwCamm/eokZB+pF+zzRqGkBeV4HJ5+JVF4qByMd1b6lDryxNpBCLdr6AzmtAVPpXOj/mw5YFom2gxGxDYjQ9Ac0I5T1LwnIPFrJyFXP+GbBryuqBzqFhz1RMl4WGdUdrz7H3ab0mw/G1B7IDJfGG+OSs2oBtd41sT/v7oI3AFQJrRJQVNxds8op7Vulp+fmV+Z248gFLxBKBDvKZtPaevACAy/XNCKvpQR0TPLiniNOBa+vzLegHRfnxguGgfk0d2HehGu+Se0lV3KLSL67ZqunB+DK6C6ZnEv71TNvRmNTCC4VJxNqHG7FMj7s9tsmi0k0WEXSzZPtu3NMgi3sBVkE3nZvUMRM6JKwUyrnaCYMVvZ/5HqFgn+6CmqtC2c7sgOSUxQWZ9eAtW5+g=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 57mj4npfiys8n35qbf3bimc51gqzmhsg
+X-HE-Tag: 1791458540-137276
+X-HE-Meta: U2FsdGVkX1+B48A99cij4EY37s3x2/jc4bua2EpK0FAyCe0GcBMjDmvCekvFmxz5ZV1hdIDpoMKjjugoAtmDla9sWNQiJ5UjuYoSJP7xl3YJYHNjQcvMsBpcejZIWOR5d8GZ3vYMXiQPXqOWXKc2cZDY5gvUV80iGOlEMRQaS51WxrsHLIRlej0mdJIS45JKeEoCDImL0A/ndC14W99Et1CLZEUe4DSujT+wvpYe5phjImKl1X7kooz577U+VF2v93lFEgLHNyFvLgvw5+oIWS+xoKIOzLccm3+lKpJAwK2Xl4lMoP0Nl1Ia7SiIymU+S5of8OAP2KHRJjADilxnpPcp1Dlx20uqmVHYk/uLNjFZnosCuOBC66QwQKgi1q1rOhmrVFAP//ADfaw0CVBbsG/r6gO37xYWSdahHm40rqJYaIuhlnoblVf8XAGOhCMSJ2+Or3W5GTERH0XC64k0Xj55Orfc9/VnA2k/Emuehq/32izHAbehJKJsvSWeq+MRPubZaUn8sQHgVs+T3GDLxexB1ZTDojjI50qnirxF4n/hg8G54EkA5XLRnb5jscoUWtKbWgCJS/OEp2v/mdrt/M9aFxvJZA4VI1knVwAlzXJORBV7Zl1pReuPu4f8hfxthJr/HCiqlkvjI93/B8JibQBTcZidvr03UtJupc2FmDFqUX8WcQ2E5pm0KSj53mp0yj9Xm97JeI9A8e4QHVBmycyVHj1pfBPFKqdMlawiWjKd9zB2fhb1j33GZQxzN4Lr08V4CeotRSm99Bnhk7dbIcsn0lkOpzQRtq7b5fGIYD9CVwUMCxvr1+Qn2EzbtlgVdWqUyQ3w5hfSGla1EEw7ah49zZwOVA+WOG7msvbSOM5aR9CPLqf+s4gMch3dXGO+yFxvqRk8dHgo4DVwx6x61udVGeOpuYkg/V3fLJC8RD9jHm0fQdWkDjxUZPsTm9+4rwp4XelwJfts/mURBU0
+ twN7gfaK
+ mcDrTFBMzd496BmsOqrp24swdhm9wrQETL+9stBeSxPkO1xWQjvcrYQBRT68Zgdj2xcEH8My20UtpzDLj7RgKPAz/3Wm3t3kto7qKxYdG6AtTYZIJHye2K6NvURRT8EIDiWcAdbiz20EqjxvXzgJGP4GRtFWlkUuuUCI2IBdU2EIxGTK+pNUMw2ccgVu8HRFmH4qJuGRbKpXZk3rpC75e6eYxyaiu3EyDUGdvcqFvta7UJUE0tKC3d9Ss6lsOqPpXY2xpaaUiM8xDB2V9KG3FdKCKV8vznhGLZBkT1GmngxLFtUH0gS/Uk/G2aw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,57 +95,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 8, 2026 at 3:10=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
->
-> From: Hui Zhu <zhuhui@kylinos.cn>
->
-> bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
-> unlike a write to memory.reclaim, does not retry until the goal is
-> reached.
->
-> Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
-> and check that the result is positive but well below the request: one
-> pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
-> 4K and 64K page kernels.
->
-> The test deliberately covers only the kfunc itself. A full example of
-> the intended asynchronous use, where a BPF program watches one cgroup's
-> workingset refaults and reclaims another one from bpf_wq callbacks, is
-> maintained out of tree at [1], released under GPLv2.
->
-> Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.=
-c
-> is not built at all.
->
-> [1] https://github.com/teawater/memcg-async-reclaim
->
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+On Mon,  5 Oct 2026 22:20:40 +0800 Enze Li <lienze@kylinos.cn> wrote:
+
+> hugetlb_cma.c includes <linux/mm_inline.h> and <asm/setup.h> but never
+> uses anything from them, so they can be dropped.
+
+Makes sense to me.
+
+> 
+> Found with clang-tidy (misc-include-cleaner).  This holds regardless of
+> config: the file's only #ifdef is CONFIG_NUMA, and it only touches memblock
+> helpers, so removing these is safe on all arches.
+> 
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
 [...]
-
-> +
-> +       /*
-> +        * Both candidate directories can be tmpfs (initramfs-based CI, f=
-or
-> +        * instance). That is an environment limitation, not a test failu=
-re.
-> +        */
-> +       dir =3D workload_dir();
-> +       if (!dir) {
-> +               test__skip();
-> +               return;
-> +       }
-> +
-> +       snprintf(data_file, sizeof(data_file),
-> +                "%s/memcg_proactive_reclaim_XXXXXX", dir);
-> +       data_fd =3D mkstemp(data_file);
-
-If we can't write to the directory, will `mkstemp()` fail?
-Should we check `access(dir, W_OK)` first?
-
-> +       if (!ASSERT_GE(data_fd, 0, "mkstemp"))
-> +               return;
-> +
-
-Best Regards
-Barry
 
