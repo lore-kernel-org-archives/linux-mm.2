@@ -4,100 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35F5ACA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 08:12:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E51A8CA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 08:16:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB72D6B008A; Thu,  8 Oct 2026 04:12:21 -0400 (EDT)
+	id AD9076B0092; Thu,  8 Oct 2026 04:16:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D66D66B008C; Thu,  8 Oct 2026 04:12:21 -0400 (EDT)
+	id A3BCA6B0093; Thu,  8 Oct 2026 04:16:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7DFB6B0092; Thu,  8 Oct 2026 04:12:21 -0400 (EDT)
+	id 903216B0095; Thu,  8 Oct 2026 04:16:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E1146B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 04:12:21 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B21A1404AB
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 08:12:21 +0000 (UTC)
-X-FDA: 85298741682.16.0A977FE
-Received: from mta1.migadu.com (out-15.mta1.migadu.com [95.215.58.15])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D63CA180003
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 08:12:18 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vWA+RxS2;
-	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.15 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 59C8C6B0092
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 04:16:55 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B8BF8A0506
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 08:16:54 +0000 (UTC)
+X-FDA: 85298753148.20.2C2EEF7
+Received: from mta1.migadu.com (out-101.mta1.migadu.com [95.215.58.101])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 967CD40006
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 08:16:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BkJY+0QS;
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.101 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791447413;
+	b=vAsNAB4UZ6K+Fpye2S0dhSSQAzhamQbVgVBov/7WrClCIst6Z+et/x3Bx8/iHVI6+OlsKQ
+	sZHEgL6hM5wd0NN2L0S6Ga4Zn8Df0NazCxJReb9DZ8d4765oSV+T7xXtll/lhzu33gPcbZ
+	FLl97LZlvWXwcfHoBLztPvaZ72UkbEs=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BkJY+0QS;
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.101 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791447139;
+	s=arc-20220608; t=1791447413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fQUt4iBa4Q2Qkd65C1KCtWnzMP+p/qieKpHfH2umKrw=;
-	b=K13p7RXoYT0wmk2Jv4emd8rolWZvRSSIGd0bkWSMTwyVJsTAMc8aj0Gk4M4DtvguaNdYm9
-	idlp63jkqj1uFjdWn4Uvw5wl4j8Ou6syv3Vh82UHC6C16yigkMI/Y3RDsfSndGSLx1n48X
-	++sB3co/0lpDPw53UmCj7Exp9ZjM59w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791447139;
-	b=d1cofw35xkObtQ/86ILaJUfoX9EWjjAvzLVx6/PffetKBuHTT0Q7Z15qSzc0EHsPxiL3P3
-	VXCS1p/7owThNXuc9IOv4bILWOcx5esGEStgeEfxTBy607hjRQx9wwhQwCUN7MP7dZ7W31
-	G5DAmSoxclHzq92NEMgBMWhW6wYwXTQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vWA+RxS2;
-	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.15 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=MHAPwba2bGTS8af5kSWYut1fycRyI5aoznVbcbDNoEY=;
+	b=wmezpQkuNtT9jWnnJwqyKIasUl+62Ea/Of9gVR3/AUdhSXmGn6jZrq8XurP4oqBd9EAkmq
+	Mvp0DSyFB9LBAaIHJju/GH5Ewu3hYqZf2sxmUpDUtzgS0WenoiYJguvZvYYYb2Omc8pzQC
+	oO/g+0N34WVvGaT48b2loFfSCi71i+s=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=PLvbKK8F/Bm5bhh9c08LKLirJfE5QGxiNc7t1L+MVUA=;
+DKIM-Signature: a=rsa-sha256; bh=MHAPwba2bGTS8af5kSWYut1fycRyI5aoznVbcbDNoEY=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791447137; v=1; x=1792051937;
- b=vWA+RxS2zeAYwJrl/QBJtmF6IaLB+kMyO61+dMRbeXGmiRTaJd0co5ibWcBsc7zvwWLdMCyc
- VQQv9ruCRXvqzB7vA9RBmX/jLXnnI7E4a2VOBx5RHHVcWu5ONJdn61SoQ7WuIuqjYX92slY4apz
- 2iLUPthszWYs1apmRNOKKMHw=
+ t=1791447411; v=1; x=1792052211;
+ b=BkJY+0QSb2PH8p++GP4mjbq/HTFXm3+f5i36xosvBRk3rKj/t6A+Zf9vTPO0ab3uN82FxXOs
+ 4FLjSIpaL/NTT7gDSHZCCHiXwebn3WT+VNicvpy/TSH/XW+Ggg3P7v01nSZjBj+rcvWnub7bOId
+ bpVdqVmv+ZmiprT5PjTWaEaQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 226010a611eb6f78;
-	Thu, 08 Oct 2026 08:12:17 +0000
-X-Mizu-Trace-ID: 226010a611eb6f78
+Received: by smtp.migadu.com with ESMTPS id 5d61374c685aff04;
+	Thu, 08 Oct 2026 08:16:50 +0000
+X-Mizu-Trace-ID: 5d61374c685aff04
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <896c2dc7-4787-4c22-90dc-a3cd607be6fa@linux.dev>
-Date: Thu, 8 Oct 2026 16:13:18 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 2/7] mm/vmalloc: undo partial mappings inside the
- mapping functions
-From: Hao Ge <hao.ge@linux.dev>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>,
- =Kent Overstreet <kent.overstreet@linux.dev>,
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>, Andrew Morton
- <akpm@linux-foundation.org>, Alexander Potapenko <glider@google.com>,
- Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-modules@vger.kernel.org, kasan-dev@googlegroups.com,
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-References: <20260929082014.160587-1-hao.ge@linux.dev>
- <20260929082014.160587-3-hao.ge@linux.dev> <arzgoe-bXAz1poAt@milan>
- <a15de109-a88a-49f8-80cc-7bf216d6954d@linux.dev>
-Content-Language: en-US
-In-Reply-To: <a15de109-a88a-49f8-80cc-7bf216d6954d@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D63CA180003
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH v3 6/6] mm/mm_init: add zone mismatch warning during page
+ init
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <asdKHy_xHHa0wJ65@kernel.org>
+Date: Thu, 8 Oct 2026 10:16:36 +0200
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Ritesh Harjani <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <3466BD00-1B0E-4F15-B104-88A22807ECD2@linux.dev>
+References: <20260929053231.66085-1-songmuchun@bytedance.com>
+ <20260929053231.66085-7-songmuchun@bytedance.com>
+ <ar5xbQsUpSQZg0wO@kernel.org>
+ <78D5D6AA-BE36-432C-B0F7-453F93DF18C0@linux.dev>
+ <ar9p39Y9SmlxvbA_@kernel.org>
+ <85941AA4-7E50-4AAE-BC05-0F443B21BE8B@linux.dev>
+ <ar_0GLYM6KsIH6tQ@kernel.org>
+ <D91CEA1E-6B79-434D-AF49-16C62C0FD095@linux.dev>
+ <asTS6OtxPMVshuIO@kernel.org>
+ <CF8ED1DC-9745-42D3-92F0-424A02385EC1@linux.dev>
+ <asdKHy_xHHa0wJ65@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: swizkoiqhou6ab1neqhwegaxobruhoqt
-X-HE-Tag: 1791447138-233602
-X-HE-Meta: U2FsdGVkX19lbXC0C2vAJ5fzB2mbJ9FR23LF/d+I8XJV4fq+uxgIFgR0ad05fuJ++CixEkwEE1XVfqT0npyCkI4F/9WNQyXchtyyh2jsXZjztme1Tim+hZirA97eq/wBtj76vGqxfy3dIR2O30U890C6xUvC+sk+3dhrAoYP5fFEfqw6cXWergXOnvjHUQkFDkhpoaJAraFYCA3mYaqBP0ZsrYp2BXEKEzbWrRp0RpId4w47LUXQ3D63UVYNBxeJjYYeJt5eAittMqK/FwMPwCZD/+ab1ExVACheIJUwHqcZzxW1HLRCwpGcfrZpRdPZ8m0gjwtvEf9cwXzmqOA4C0/ycvl/nxDDrwEGUCF78pDRjU95VZc7424pb/lFB3WlBkaHZERbKiRi+Q/5U/58+5S6x2aUV24FmfGxugFO5gKTIvvYFj5kx/sOKTNewzdYpIhrgM3Lrje2b2w67mHFLXfoAr6zR9XG9wGirph1b3iIKaThIkvJ9VG1SG/sT20NluOwLV1nAuvKKop+ozeVltjit7iZOFHaBqEOALYnAoF3UN7zCE6CrZPXzhJPF85cJcgfCS1uz7a0QqkcLXz6f9+VijpFHHMFJK2XHJ+C6O1gzVwRK9/+X8Zr0PWOFxjzS4D0DmwwRjZmi6tfwYsnBSHk8/rE1JKDwiy+vRvyAwK/9xN+YKBs9MV3mPfIijCKEv7Cj85xdfvxKcjj1cYDC5dn7HdHimzoAXOfa9Ks9COxN4mcCW40yg5Kp8s4RD4ev1yfVtybLugiMi8nHZ/7MnsLqxPOhYDLG3FOXWYiXnocozuekbfOR5XHUBIvUWcj5F39/xYjl6sq8/UyO7Djyv2jfxE3cdBGAYNCdBrRu91wxGx2mSEnrTs+nDvPnxeH7HoNZtXxnuMHy8vEHCLdXNR1G372c8P6RaRltYiZxZ2UDcbb+IpqQZ10Tm0fvb+lT9avORZNUVSnWMGEqUz
- dTaVDfYs
- ep88anIbd4zHQEjKKEwffivm10F0sbW5fnlEUGAhKM54YdDkgEEswSwAMA2eOeJcYX4T4fsN2J+PFnRztgLGECT99hbML0K1swfv+0wTupPsLp5J4akPRMlaPEM3XRbSDVvwxgSYrSBKTnvVdytKG3OK9PN8JKBML1oh/JCu/hKgcTy67sjWWOQTXA09c8GAvX11LLNS/UpyFKeDzv3+FLZMaxdFAqpJs8fSBPy1eSFvMYInyHZyfc7R0I8qAudzPyl7BriA8hm7eeuj7reZ2qKGErr3Bh0kYpLSTa//Gh4x1DuMQjn+pDqbUblAHPJV9mfFHoDc81Cf+KLqId9hjlqnVMUNP0mvo2Jz0xftfreMzUiY/SKKxydbb7z5qnNCMZAHH
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 967CD40006
+X-Stat-Signature: z6pz63ig6sp5bw159ir71cejirpojiap
+X-HE-Tag: 1791447412-882828
+X-HE-Meta: U2FsdGVkX18ihoVIRUtp2isEHpfDnGhfDQq/37F75oEfHcPetvPtZ3ls5+ZT9Yztp2gAn9Zk7bqCY21ZOHbyRy92Rpq4BNGUuPavNL0dOVoSTrxkkjVb17lAxnpsZGB9UHqFIXYJhRF9yvfpLRBD3ooK1sxigCxtQzhujkopYyG2IPfbpbzCpbevcyN6ykyj6+uR2hDWAJUqTOa6Sq8PoBBx0DM0zpVWbPJNRH7r+7VnN7OfIMfWNT3gQWtPY4Pz/qw2IT0Z16O5mvDP/mX1P6vwaZocq/D1T8KgS9ITrCMyuVCuEhjk952VIPv4sAGSo1XdPCrOg8yfwpwNaI/DlnR6DmKW4oDYnStxwE0WuvTz/YcZjg8BIpNB+I0RVw+hsGy1BiI1KQCzW1Ok5sE4/cvGdyFtm0cT2iYdIv5jGGLhN+YHsbKZXaauMbdTO5/sAf1/H1rCbP34Ta04/pzMB2hfgbKJEj4qD5++AUts69IEoFfcAAzZ+RFESAptsB5kyIAti3Z+bX9u7LH/T5SIS4/infFzvc2VXZe+TnZ41I3lrMHewmzqhGc0ThbNPPUz2L/24nTqcaNxfNLhu18R6fzZDCYYrGCwxygz9iO3zY9UDk05FgrgMR4HIwjWcweOVaZ5Pu5NFcWoqi8Mjpu3ny/F56j3JN9BHoVO/3UfczE+U6MoQKH1ISyGUdnv9fFUA1Wem/kFxMnETXBTlqGiRXsQrXyGJAVcBXZf/QO4wCDfyCon1Q4bTdnkl6Jf5u7V1BK4M5ezvdZovFxDweFN4VF7JM6xP1k1aOqmvb8FMEeBnULG1FkAU6YKYCIM9nGnskg/lphbddRkd6baJSWYyZ3H1cyn+/ISvci9IWeZ+GfUSwR5hNXCcXPYSEbOt0YaQgAmzJcxI1BRA9WzgzRzL3Hj14dvHF0BNW8nx4xQV/DCbS33+h2zm4Wp3XRTLsLp6w350oVaofMnoj7Y+ah
+ XRcXecI9
+ Iq6jbVQPJvmgo73QRWzQiorrDfF5FeLZ4czxf0aNVJkpNhYikh9xIzIZzkqWLnHCZUZwTRGbALtIZ4OcpwMBU987Qu7QHZJqwfLe85SOqlpl2b+4BY/kbiE5wCa1odGQAfCcififfWXEHEVWUbrQjDjN0n4G5MTV7Brwgb4xeHQnltHWK07crn6Z/Qfu7ZaB1mSMNea7aG/7BcLBnvHNEHRfC52jjLOIZ+WfRlxu1sRwnWTMNO0Q+TR7TBOHQGtvEZReZr3AeJAL4C9MMluNtjsq1L9yb57pOGXcPishOOF/1OMvuqmNC5bv8hWZWRg5awBH7BbMAEtbmgkpuSggSuKyzhvnHtxkqKaSi5C+oef9fdY0Uqj9BYoeiv5WmoCWxQhushE70OrGXsP8barp/joBpzZBHk9WQwWKj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,251 +120,129 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/10/8 14:53, Hao Ge wrote:
-> Hi Uladzislau
-> 
-> 
-> On 2026/9/30 18:12, Uladzislau Rezki wrote:
->> On Tue, Sep 29, 2026 at 04:20:09PM +0800, Hao Ge wrote:
->>> __vmap_pages_range_noflush() and friends can install some PTEs before
->>> failing and leave them mapped, and the kernel callers do not agree on
->>> who cleans them up. For example, pcpu_map_pages() and
->>> kmsan_ioremap_page_range() unmap the leftovers themselves, while
->>> vm_module_tags_populate() and the __GFP_NOFAIL retry loop in
->>> __vmalloc_area_node() relied on the mapping functions cleaning up and
->>> did not call anything like vunmap_range() themselves. When the same
->>> range is mapped again, the attempt hits the leftovers and fails, with
->>> BUG() in vmap_pte_range() for huge mappings.
->>>
->>> After discussing with Suren and Ulad, we decided the cleanup belongs
->>> to __vmap_pages_range_noflush() and friends, so the callers no longer
->>> need to unmap the partial mappings themselves. Each function now
->>> undoes the PTEs it installed itself.
->>>
->>> The rollback calls the low-level __vunmap_range_noflush(), it just
->>> clears the PTEs of the range it is given, which is all a rollback
->>> needs. It cannot use vunmap_range_noflush() because these mapping
->>> functions also map the KMSAN shadow and origin, and for a metadata
->>> range its hook would look up the metadata of the metadata, get 0
->>> and BUG() on addr >= end. The failed mappings were never accessed,
->>> no TLB flush needed.
->>>
->>> Fixes: 9376130c390a ("mm/vmalloc: add support for __GFP_NOFAIL")
->>> Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
->>> Reported-by: Sashiko <sashiko-bot@kernel.org>
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->>> ---
->>>  mm/kmsan/shadow.c |  4 ++++
->>>  mm/vmalloc.c      | 31 +++++++++++++++++++++++++++++--
->>>  2 files changed, 33 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
->>> index 0c88d89bf0d6..2166086d3dc3 100644
->>> --- a/mm/kmsan/shadow.c
->>> +++ b/mm/kmsan/shadow.c
->>> @@ -258,6 +258,10 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
->>>  					    o_pages, page_shift);
->>>  	kmsan_leave_runtime();
->>>  	if (mapped) {
->>> +		/* Undo the shadow mapping set up above. */
->>> +		kmsan_enter_runtime();
->>> +		__vunmap_range_noflush(shadow_start, shadow_end);
->>> +		kmsan_leave_runtime();
->>>  		err = mapped;
->>>  		goto ret;
->>>  	}
->>>
->> Can we just do that inside the vmalloc? For example in the
->> __vmap_pages_range_noflush() as entry function for all(?) helpers?
->> So we do not need do it manually?
->>
-> The hunk was for the failure path in kmsan_vmap_pages_range_noflush().
-> Shadow and origin are mapped there as two separate calls, and when                                                                   
-> the origin one fails the shadow is already up. __vmap_pages_range_noflush()                                                          
-> cannot do that undo, it only sees its own range.
-> 
-> kmsan_vmap_pages_range_noflush() has a single caller, so if we were to move this
-> logic into vmalloc, it would require some modifications as follows:
-> 
-> @@ -712,9 +724,14 @@ int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->         int ret = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
->                                                 page_shift, gfp_mask);
->  
-> +       if (!ret)
-> +               ret = __vmap_pages_range_noflush(addr, end, prot, pages,
-> +                                                page_shift);
-> +       /* Undo whatever was mapped before the failure. */
->         if (ret)
-> -               return ret;
-> -       return __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
-> +               kmsan_vunmap_range_noflush(addr, end);
-> +
-> +       return ret;
->  }
->
+> On Oct 8, 2026, at 09:45, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> On Tue, Oct 06, 2026 at 03:32:43PM +0200, Muchun Song wrote:
+>>> On Oct 6, 2026, at 12:52, Mike Rapoport <rppt@kernel.org> wrote:
+>>>=20
+>>> On Mon, Oct 05, 2026 at 06:27:52PM +0200, Muchun Song wrote:
+>>>>> On Oct 2, 2026, at 20:12, Mike Rapoport <rppt@kernel.org> wrote:
+>>>>>=20
+>>>>> On Fri, Oct 02, 2026 at 05:56:40PM +0800, Muchun Song wrote:
+>>>>>>> On Oct 2, 2026, at 16:22, Mike Rapoport <rppt@kernel.org> wrote:
+>>>>>>=20
+>>>>>>>>>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>>>>>>>>>> index 1650d6bc1211..bd02e8d06965 100644
+>>>>>>>>>> --- a/mm/mm_init.c
+>>>>>>>>>> +++ b/mm/mm_init.c
+>>>>>>>>>> @@ -609,6 +609,9 @@ void __meminit __init_single_page(struct =
+page *page, unsigned long pfn,
+>>>>>>>>>> if (!is_highmem_idx(zone))
+>>>>>>>>>> set_page_address(page, __va(pfn << PAGE_SHIFT));
+>>>>>>>>>> #endif
+>>>>>>>>>> + =
+VM_WARN_ON_ONCE(vmemmap_optimizable_order(pfn_to_section_compound_order(pf=
+n)) &&
+>>>>>>>>>> + page_zone_id(page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) =
+!=3D
+>>>>>>>>>> + page_zone_id(page));
+>>>>>>>>>=20
+>>>>>>>>> Hmm, page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES is =
+initialized a tad later
+>>>>>>>>> than page so it'll have stale data in the page->flags, won't =
+it?
+>>>>>>>>=20
+>>>>>>>> Lance is right. The shared tail struct pages are already =
+initialized by
+>>>>>>>> vmemmap_shared_tail_page() during vmemmap population, so =
+they're not stale.
+>>>>>>>> The head 64 struct pages are initialized later =E2=80=94 right =
+here, after vmemmap
+>>>>>>>> population.
+>>>>>>>=20
+>>>>>>> Still it looks out of place here, can this check be done in =
+sparse-vmemmap
+>>>>>>> somehow?
+>>>>>>=20
+>>>>>> The struct page entries of a vmemmap-optimizable compound page
+>>>>>> are currently initialized in two stages. During vmemmap
+>>>>>> population, the shared tail entries are initialized first. The
+>>>>>> retained head area=E2=80=94normally 64=E2=80=94is initialized =
+later through
+>>>>>> __init_single_page().
+>>>>>>=20
+>>>>>> This warning connects the two stages: while initializing the
+>>>>>> retained entries in the second stage, it verifies that their zone
+>>>>>> information is consistent with the shared entries initialized in
+>>>>>> the first stage. Therefore, the same check cannot be performed
+>>>>>> during vmemmap population.
+>>>>>>=20
+>>>>>> I am planning to first unify the HugeTLB and Device DAX
+>>>>>> compound-page initialization through a common helper [1]. Once =
+that
+>>>>>> work is complete, maybe it will be easy to move the =
+initialization
+>>>>>> of the retained head area into vmemmap population. With both the
+>>>>>> retained and shared entries initialized in the same stage, there
+>>>>>> will be no cross-stage inconsistency to check, and this warning
+>>>>>> can be removed.
+>>>>>>=20
+>>>>>> Would keeping the check here for now and removing it as part of
+>>>>>> that follow-up sound reasonable to you?
+>>>>>=20
+>>>>> While it feels really out of place in __init_single_page(), but =
+having it
+>>>>> memmap_init_range() close to the if that skips shared tail pages =
+makes
+>>>>> sense.
+>>>>>=20
+>>>>> What do you say?
+>>>>=20
+>>>> Sorry for the late reply because of traveling to LPC.
+>>>>=20
+>>>> Putting the check in memmap_init_range() would validate the
+>>>> invariant for the shared-tail range skipped there. It would
+>>>> not, however, cover all vmemmap-optimized initialization
+>>>> paths: optimized Device DAX bypasses memmap_init_range()
+>>>> when there is no altmap, and deferred boot-time HugeTLB
+>>>> initialization may also initialize retained entries
+>>>> elsewhere.
+>>>>=20
+>>>> If the intention is to validate only the skip in
+>>>> memmap_init_range(), moving it there makes sense. If we want
+>>>> the warning to cover both HugeTLB and Device DAX generally,
+>>>> it still needs to remain in __init_single_page() or be
+>>>> called from the individual initialization paths.
+>>>=20
+>>> Yeah, putting this into all the callers sucks too :(
+>>>=20
+>>> With all the callers,__init_single_page() is the right place for =
+this
+>>> check, but I think we can add a static inline in sparse.h, like e.g.
+>>>=20
+>>> vmemmap_optimization_verify_zone(page, pfn)
+>>>=20
+>>> to make it a bit nicer.
+>>=20
+>> Yeah, factoring this into a helper makes sense.
+>>=20
+>> Since it currently has only one caller, how about keeping it as a =
+local
+>> static inline in mm_init.c instead of putting it in sparse.h?
+>=20
+> Presuming we don't expect new callers any time soon let's put it just =
+above
+> __init_single_page().
 
-I'd rather put this logic inside kmsan_vmap_pages_range_noflush.
-This function should clean things up on its own, not depend on
-the caller to do it, just like kmsan_ioremap_page_range.
+Make sense.
 
-https://elixir.bootlin.com/linux/v7.3-rc5/source/mm/kmsan/hooks.c#L185
+Thanks,
+Muchun
 
-Uladzislau, WDYT?
+>=20
+> --=20
+> Sincerely yours,
+> Mike.
 
-Thanks
-Best Regards
-Hao
 
->>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>> index 859e6d2d57a3..9bbf75706627 100644
->>> --- a/mm/vmalloc.c
->>> +++ b/mm/vmalloc.c
->>> @@ -349,6 +349,10 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
->>>  	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
->>>  		arch_sync_kernel_mappings(start, end);
->>>  
->>> +	/* Undo the PTEs installed before the failure. */
->>> +	if (err)
->>> +		__vunmap_range_noflush(start, end);
->>> +
->>>  	return err;
->>>  }
->>>  
->>> @@ -363,6 +367,9 @@ int vmap_page_range(unsigned long addr, unsigned long end,
->>>  	if (!err)
->>>  		err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
->>>  					       ioremap_max_page_shift);
->>> +	if (err)
->>> +		__vunmap_range_noflush(addr, end);
->>> +
->>>  	return err;
->>>  }
->>>  
->>> @@ -667,6 +674,10 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
->>>  	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
->>>  		arch_sync_kernel_mappings(start, end);
->>>  
->>> +	/* Undo the PTEs installed before the failure. */
->>> +	if (err)
->>> +		__vunmap_range_noflush(start, end);
->>> +
->>>  	return err;
->>>  }
->>>  
->> The only one user of that function is __vmap_pages_range_noflush()
->> so we can cover both cases there small and huge path.
->>
->> Is that enough just to do unroll in the below:
->>
->> __vmap_pages_range_noflush()
->> vmap_page_range()
->>
->> functions? It will also fix NOFAIL case:
->>
-> 
-> I see. right, __vmap_pages_range_noflush() is just above the
-> actual page‑table mapping, so it's low‑level enough.
-> Thanks a lot for your prototype.
-> 
-> I'm tidying up the code and will post a REF patch afterwards.
-> 
-> Thanks
-> Best Regards
-> Hao
-> 
->> <snip>
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index 89c327a6ce7d..fa1f357ecf3f 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -359,10 +359,19 @@ int vmap_page_range(unsigned long addr, unsigned long end,
->>  
->>  	err = vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
->>  				 ioremap_max_page_shift);
->> +	if (err)
->> +		goto error_cleanup_range;
->> +
->>  	flush_cache_vmap(addr, end);
->> -	if (!err)
->> -		err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
->> +	err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
->>  					       ioremap_max_page_shift);
->> +	if (err)
->> +		goto error_cleanup_range;
->> +
->> +	return 0;
->> +
->> +error_cleanup_range:
->> +	__vunmap_range_noflush(addr, end);
->>  	return err;
->>  }
->>  
->> @@ -683,26 +692,35 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->>  		pgprot_t prot, struct page **pages, unsigned int page_shift)
->>  {
->>  	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
->> +	unsigned long start = addr;
->> +	int err;
->>  
->> -	WARN_ON(page_shift < PAGE_SHIFT);
->> -
->> -	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
->> -			page_shift == PAGE_SHIFT)
->> -		return vmap_small_pages_range_noflush(addr, end, prot, pages);
->> +	if (WARN_ON(addr >= end))
->> +		return -EINVAL;
->>  
->> -	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
->> -		int err;
->> +	if (WARN_ON(page_shift < PAGE_SHIFT))
->> +		return -EINVAL;
->>  
->> -		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
->> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
->> +		page_shift == PAGE_SHIFT) {
->> +		err = vmap_small_pages_range_noflush(addr, end, prot, pages);
->> +	} else {
->> +		for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
->> +			err = vmap_range_noflush(addr, addr + (1UL << page_shift),
->>  					page_to_phys(pages[i]), prot,
->>  					page_shift);
->> -		if (err)
->> -			return err;
->> +			if (err)
->> +				break;
->>  
->> -		addr += 1UL << page_shift;
->> +			addr += 1UL << page_shift;
->> +		}
->>  	}
->>  
->> -	return 0;
->> +	if (err)
->> +		__vunmap_range_noflush(start, end);
->> +
->> +	/* 0 on success. */
->> +	return err;
->>  }
->>  
->>  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->> @@ -714,7 +732,13 @@ int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->>  
->>  	if (ret)
->>  		return ret;
->> -	return __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
->> +
->> +	ret = __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
->> +	if (ret)
->> +		/* Cleanup KMSAN metadata. */
->> +		kmsan_vunmap_range_noflush(addr, end);
->> +
->> +	return ret;
->>  }
->>  
->>  static int __vmap_pages_range(unsigned long addr, unsigned long end,
->> <snip>
->>
->> --
->> Uladzislau Rezki
 
