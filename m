@@ -4,104 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E376CA600C
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 14:23:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDB1DCA600B
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 15:00:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC7DA6B008A; Thu,  8 Oct 2026 10:23:39 -0400 (EDT)
+	id 9872F6B008A; Thu,  8 Oct 2026 11:00:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9F476B008C; Thu,  8 Oct 2026 10:23:39 -0400 (EDT)
+	id 9376A6B008C; Thu,  8 Oct 2026 11:00:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98ECF6B0092; Thu,  8 Oct 2026 10:23:39 -0400 (EDT)
+	id 84D2F6B0092; Thu,  8 Oct 2026 11:00:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D4A56B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:23:39 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC49B1C23B9
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 14:23:38 +0000 (UTC)
-X-FDA: 85299677316.17.715C1A1
-Received: from mta0.migadu.com (out-133.mta0.migadu.com [91.218.175.133])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AA274A000E
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 14:23:36 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=st3VYWWY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.133 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 616386B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:00:51 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D39C8A030A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:00:50 +0000 (UTC)
+X-FDA: 85299771060.12.63B4BEA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id ED379140014
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:00:48 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GWLVhNs+;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791469417;
+	s=arc-20220608; t=1791471649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NzeckZ5X4eGZ9Ef9SP27DbpSKxHWMfwojQ4zbYA1SuQ=;
-	b=A82jpXG+tluU12JXRvG2OUB6BypWoLyoOfJKqhM3O1S2qBnJ2ohMLVAAkNJJn8yqmF75rk
-	tqbpbfjGSxioSbu+wgjbUHzqx8MBDFzyaLPKYglxKFzUJDhvamatHVbMMCTWZ7ARyjzFhV
-	6EzAgK5Hqn9SKauJUcEeHq1y0P+UdMI=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=st3VYWWY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.133 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+	bh=aswRrxvRLd9s8zPtStkeYzsIwlrO/oVXbFhq2BxeHcs=;
+	b=GFLIktzBdWZbn2xJ7C6bvP9+6xE+hUWYoA/3hlFlGYnAMWxBXTR3JARHhNXJbajuTheg/C
+	WSODJykusnpwyIEA591ZhWxdtnhXfqzyeBRJ1rRjIP/Cxnh9iT160BqdAT1BabYmWOgFUh
+	bA7SqCtI+6jI1WQ+LAKvrTqvPIygGk4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791469417;
-	b=5zrw1hMiAW/2MYMd6oI0ZvICltlmfYHUdwga5sJcWOrHJRylBc6eCmzZ4rTefKVSD+pzeu
-	zwrNPQoEH6WStfNjiVfN6vRgyQ4y9ItR6J6aCjMO2TJPhjFjBz5RQFBoxMGLWvY5IMXTEy
-	Vr8ukhtaHM14CFGHsyl45U/AUf9J+/E=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=CkwK7lSN43JMJXrHHY9Mep3RaMJmHfCj7Up6o6iDiTw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791469415; v=1; x=1792074215;
- b=st3VYWWYqkFmcA35F0khfrKTsP3SzeEuB1wnG7nJa6T8xB8lP0J4o2eq00vnqoON0iLbXRUW
- d/QWT0ix8kTVHqh3CPf7Zzvm5Gd+nYl7DVWNmAvuyJMDQJZ6s3KWyZTbvy2yDyp45F9n28pL91p
- YalHwUcej2OAjt1k5Wb8e80M=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b03a295ec336a66a;
-	Thu, 08 Oct 2026 14:23:34 +0000
-X-Mizu-Trace-ID: b03a295ec336a66a
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <248431ea-4bbf-4a48-a80e-72287ffbae22@linux.dev>
-Date: Thu, 8 Oct 2026 22:23:22 +0800
+	t=1791471649;
+	b=VXuoPYtfdueB49/7SH+/0bXe1nkFktcb+uRU5blwF5GjEHcB/SXZ/e4sBHRxjyW3YTcjeu
+	rP4GuDVckt3SIWD43Tdx3QOSsCMc1GtE9541d9rpLgwX0yL9E7vQXdG13p9Vor+toN1g/w
+	lOUQ5f9OtpdlZ6e9tTgdf1LHeI6FSDg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GWLVhNs+;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 53E4F601DB;
+	Thu,  8 Oct 2026 15:00:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E4D1F000FF;
+	Thu,  8 Oct 2026 15:00:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791471648;
+	bh=aswRrxvRLd9s8zPtStkeYzsIwlrO/oVXbFhq2BxeHcs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=GWLVhNs+5R0A1zVlWzA8DdOF+6uvIgOdLMNDiKNcADdERgRnmqxLD3nU5Z0eamev8
+	 SMGsOahpx0r2FU/+fXebfHa321tssU6zn20uVu35aPMoohR5oUYWA+01dhraJrylz8
+	 q01Q9IWo+4qrYmOVlOKhDkpOzjiottClwBD68dQn0jcS+Yi0F5h4/1+MgwN5exR60E
+	 A5DhTvKlCtUb7ipzqJCBNMLoEwvfCJGqxajVHyEQgXKlJuqDCvnY8VmKaudeZLWkHE
+	 sn+CWUFPDOenUer1sacHKYS+ARwmuRlFnGm0RXqByfTvLmSzyDbgl+Yk+rMeA8ak5P
+	 XU3YSqmZTiXLQ==
+From: SJ Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC] mm/damon/damo: saving damon sysfs configuration
+Date: Thu,  8 Oct 2026 08:00:43 -0700
+Message-ID: <20261008150043.46530-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261008134442.31243-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 16/19] selftests/mm: add khugepaged race harness
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- Usama Arif <usama.arif@linux.dev>,
- "Nico Pache (Red Hat)" <nico.pache@linux.dev>, Zi Yan <ziy@nvidia.com>,
- Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Hugh Dickins <hughd@google.com>, Lance Yang <lance.yang@linux.dev>,
- "Liam R. Howlett" <liam@infradead.org>, Michal Hocko <mhocko@suse.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, kernel-team@meta.com,
- Kiryl Shutsemau <kirill@shutemov.name>
-References: <20260919002451.496763-1-kirill@shutemov.name>
- <20260919002451.496763-17-kirill@shutemov.name>
- <85b3725a-6dde-4a57-b303-4ae2b53b60a5@linux.dev>
- <6e3c298f-9b93-43b2-840d-65c5ffa3bc36@arm.com>
-Content-Language: en-US
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <6e3c298f-9b93-43b2-840d-65c5ffa3bc36@arm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AA274A000E
+X-Rspamd-Queue-Id: ED379140014
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 75wia7687shwakh9o5o5zbsofg8wyah1
-X-HE-Tag: 1791469416-938884
-X-HE-Meta: U2FsdGVkX1+u2GPiHIK5WBmmE/FYwRxCmote+nGIPSTJfWefB/bePlcMwC3tjN1IiGhq+lJfFeLdxxyVkeajRGc/Z7DN1mqYnRaP6KQkSwx8faAN977xTV6dtYjxGfOhYLQJJmENJLfGxyct86J/E8wK+gVFIf7ccwO8hB700w0u/7Z0yLCAlKBlFNbT51INDrX1f/PCO0cqOFANnO+UR8RWeSqIcSDoDEUYHffMyT+i4WS5qXFed0PdVNm1qEpYMObEtQsb/zN3BNEHd+XBk+ReSFKM4euSQuFCFjJFQCEa024DC3P5qLAEC1nqzwwMt8NAr+eX0qMlxHp+KTZQfDR2U/wYlHGq11KV7RKCKDN1hPNrmeRM37rP27Vgb7M9lmWFaKDUg1hvq3IdH0/pTAsG/PDWIsMhmX+PcwCBFaKhcQuBihzFpihLTdR3MhYtTmaUaPgxxNLcVd/DgtcLnYtzfNXwew/XfhiADk+pKyjlob55M+ASmsk9X2YKU8WVjoA90oywXz25bIF5nhj1u58XMZJpTj6U7VuZdCjo+PYr0S4Laubxi8EUmDCsxKhHfTSSzzcaT7/RbN2rojf6EjjtObY302Cf26MMxgUXvYHtg4BXKh5P4GeEkpFQ82LEdVOGsPH/ciY5+fd1417t+YzARgcEzbxqjDElyWp5t2pFy0Ht+3mvOmhpXClT+LDMkI/gZi6DNw4s9GkKClHJ2zdxkhP8ogHAarvJCXpNVl0t4UC7cs8860Inhtar1kEC3hRZ8jTamGMtvdZnY3yyUiFqpAbGdsZlVr50nfjMCye62JGFKfFCdDZSwdLHeocjlrtaMaqgJd8nTx9GMXRB+ARuZj3tSfUBvOs6VXz0fAhqoq0eCA16FmY/NFbRQO49Ja+b3tCT3SL9AXFVtZuGqH2Y21edTBNrJCXfliUzoYGaXDz40HnDXTo6fZagixiS6K+xWiWrBjY9r7MuAQF
- M9h11f9y
- JY6x7kEL7CzSsEqXmucsNRtrD1vvgg3qlcLtqBZgAxsnehu9kPFEM/HDJOhCbJ2AyxKGN7rag68fORgibgCt2o7yzn3CSOm7aW3TBdSbgSddQKGYm00rD3zt3fm2lMcxbeL0ts5K+ekDH8uF2c8IIpUthiZiZORyAgjHVvJdpp3fdFl+EbP7JSntX6LP7ouEg+/J9R/7o969+N4Li4Z2Wbp0ZPqrAaqI9uBFE/8Rm8e/C2eu8YZo+9qroCv6gCen0E6OvrYZrtReHhHYlIk9bLjt0y9FaS76BEJrSVruL4TN+CWqT871M0I276Q==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: cpfcqmiu4tc38kmc5hmwg7if4p4w6sya
+X-HE-Tag: 1791471648-246896
+X-HE-Meta: U2FsdGVkX18JEpXVhWxdUe3vhuZ4DwLbg1YX9OLB6+e0OyKMMk4L2TeOwB30ePiOcyvlzBcIeANh5I/MdsryKQx2vUB6CX4O1e47gY92YjHAF+muwH0guwwml0NW27ZBGEDumfbd7Ma0S/s4Ul7jIFX8wT7hPQneUXWrn60T9tqJfkQpQ3Ug7V5YsLTv9SaMAyuT8Ya+MHvMSaxiR5jAGCTu8HNJXU973TYPG15HfikA2yb9eEg/VQzhk3HbMirHRvhtdxzFdU323yHZR5HUhR6MOF3usHHqg8tIMLc7QyihjyzXGN9gSCG0PS2hSz0upGwpT03t9LuUxKYw7IP1E8IwQTlmhr3ZQcYf39DKIoRRx/eo/EYwNYJGidXWk62sbaXfbIpY6Vnx/RWJhEcV1VAbOATdoLqJUf5t5tuE8riPsBynd6v5FNjyuwTV+nCKnObw8hpytyK/zeR/ArqUn/7lQkku483jMl4AQNfHQg2pTdI29EwtIZ/nc1LBcpMnr23V/aGu7CL5/qahA4T61gCMbKGaeBWxyCJnDH4xFHtFSyQFR2fL7MGMBMmpxq5E91Lq8KzEWmJSA/OHOn4rWIas1nDGLyaEbOdO6y4yiGGOwe8pDJ1zsIvpZgybNaqOsEi8+Z5DmISs16iB2nT7btlfZdQqelWWpCYnIB3rh2ycqGrdGoeX+8qJc3FXzR8erHPyRsUX2E0yv1WUVEc+4/bBVBabSw9wTqjMQbkuLMETQWGu38dAjfz/5tG1Pjvfb7cBlkYIT5gDfR4HO8KqiXwwgKtyg/HCPhauE2xRyqeM8hoPO4AoI5EIVzQo+2VohIyJsovukLc/VwQyOIdBM5mAiQ7fTaPpJN1sxtkFT+xbUq6zVEUtkNJXIVlDiKWRA2oqPAggoUX89Fxoxt4Oh9i2HX9O1Fecx901f5jY4rD3HTgjMhtmH0EJ75Tf1mw/BDEo+kG2iriHudr9WJd
+ XtjaNIQD
+ d5QMjrS3yH7eBHJ/j9nfzsgGOvpqZ+0f3prFVlL/isaRpU7Qnavo5VKeCgYVr0v1J8A+iPGLkm2c1r+OiEK4EGQOaihB9FFA3EXwLW3P7E7t4Vzeamvw2XeBtXznGyGty99vEbztQvqI6wXqt2skUrvOBk6xovtdKvr9jpGTAISgB46j9ZVxCiAcD9+tBmqcJAFeYl3AMY9tW+uEctijEdNXjzVkL2B2AFcnaKwpbI4k1NKb9pSwEWz4aowrFHbvMb832
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,34 +91,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/8/26 4:18 PM, Muhammad Usama Anjum wrote:
+On Thu,  8 Oct 2026 21:44:19 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-> On 08/10/2026 8:30 am, Zenghui Yu wrote:
-> > On 9/19/26 8:24 AM, Kiryl Shutsemau wrote:
-> >
-> > > +		} else {	/* madvise */
-> > > +			while (now_ms() < end_ms && !corrupted) {
-> > > +				for (i = 0; i < nr_shared_areas; i++) {
-> > > +					madvise(region + i * hpage_pmd_size,
-> > > +						hpage_pmd_size, MADV_COLLAPSE);
-> >
-> > I got the following error when compiling it:
-> >
-> > khugepaged_race.c: In function ‘main’:
-> > khugepaged_race.c:506:23: error: ‘MADV_COLLAPSE’ undeclared (first use in this function); did you mean ‘MADV_COLD’?
-> >   506 |       hpage_pmd_size, MADV_COLLAPSE);
-> >       |                       ^~~~~~~~~~~~~
-> >       |                       MADV_COLD
-> > khugepaged_race.c:506:23: note: each undeclared identifier is reported only once for each function it appears in
-> > make: *** [../lib.mk:225: /data/code/mm/tools/testing/selftests/mm/khugepaged_race] Error 1
+> On Thu, 08 Oct 2026 05:32:31 -0700 SJ Park <sj@kernel.org> wrote:
 > 
-> I've just tested with and without make headers on linux-next
-> which has this patch and I've not received such error.
+> > Hi Liew,
+> > 
+> > On Thu,  8 Oct 2026 20:09:05 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> > 
+> > > Hi SJ,
+> > > 
+> > > Just a reminder, I think you might have missed the question I asked.
+> > 
+> > Could you please clarify what is the question that is not yet answered?
 > 
-> If your system headers are old, running make headers can help.
+> It seems I forgot to ask the question, my apologies.
 
-I forgot to mention that this can be fixed like fd5295afae91.
+No worry!
+
+> 
+> I would like to ask: after reviewing the reproduction, do you still
+> think this is a real issue?  If so, I will start working on a fix.
+
+I'm not good at reading the diff in your previous reply.  It makes me difficult
+to understand what the issue is.  So I tried the commands on my system.
+
+'''
+$ sudo ./damo start
+$ sudo ./damo args damon > damo_args_damon.json
+$ sudo ./damo report damon --json > damo_report_damon.json
+$ sudo ./damo stop
+$ sudo ./damo start --kdamonds damo_args_damon.json
+$ sudo ./damo report damon --json > damo_report_damon_aftr.json
+$ diff -u damo_report_damon.json damo_report_damon_aftr.json
+--- damo_report_damon.json      2026-10-08 07:56:04.979178016 -0700
++++ damo_report_damon_aftr.json 2026-10-08 07:56:27.717941609 -0700
+@@ -1,7 +1,7 @@
+ [
+     {
+         "state": "on",
+-        "pid": "46402",
++        "pid": "46449",
+         "refresh_ms": 0,
+         "contexts": [
+             {
+'''
+
+And still it is unclear what is the problem.  Could I ask your elaboration?
+
 
 Thanks,
-Zenghui
+SJ
+
+[...]
 
