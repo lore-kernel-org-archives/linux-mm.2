@@ -4,109 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ECE2CA600B
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 10:33:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D520CA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 10:41:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B2F86B008A; Thu,  8 Oct 2026 06:33:05 -0400 (EDT)
+	id 704ED6B0092; Thu,  8 Oct 2026 06:41:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08AE76B008C; Thu,  8 Oct 2026 06:33:05 -0400 (EDT)
+	id 6DC9E6B0093; Thu,  8 Oct 2026 06:41:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE2696B0092; Thu,  8 Oct 2026 06:33:04 -0400 (EDT)
+	id 5F2106B0095; Thu,  8 Oct 2026 06:41:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C53AF6B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:33:04 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 46134801B3
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:33:04 +0000 (UTC)
-X-FDA: 85299096288.13.ED6FCAE
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1D441C0002
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:33:00 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=EaOyYSqC;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 379646B0092
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:41:02 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FFAEA0216
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:41:01 +0000 (UTC)
+X-FDA: 85299116322.22.DF0D165
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4DAF1180009
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:40:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="VU6/Wg9i";
+	spf=pass (imf16.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791455582;
+	s=arc-20220608; t=1791456059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jFzBjlRl37rBnopuLMN0Zcwz3n+NhiCU/75HLKOCL4E=;
-	b=nT7LGHIUAG1MXruSpTn3UewhUqd4wt503fUDlqir6s/fUA3cjriHXISIaw0QJ64ViF6PP5
-	BGlsDMKu/h9SLet8uoXmOCBM3nQsbLfn6XL7M4Ak4jukRk60E6Ji/GjUu+cJCCqT1k45oK
-	pPAAS84jPq/3oIzKeeQ52BbNyiFF5XQ=
+	bh=iOVAVdLWRpL18PaqCaCiNVQOBrQ2EgqTC57TyqXjPGs=;
+	b=0DmgOY/ukFCUG5NuiBvXCtHrKdllPyaym9QCHATWaT1XJMbdTyXQlM49/72YLGIt18t6Fe
+	UMMIxJ8fWOZC7kNZiidCRqfX9huuTemtVYPxkrvfxpSvcsQcOyL/HCt8ftpdas6xcJ+yPm
+	bsSbawGrpvixBECvIT5YBBBpXPFDWic=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791455582;
-	b=xP+kS2uTwSaK11M5wQcUVN+sXkJUNa7UQlkIZ0YxPinEWv3qjDDS1pX4yblZrIdO8T7o6s
-	YK2azAb4v5SZUnhJYuMKlwnsQJBgDGj7jKkP+VuGYPtGQiXu8A/GlNespkP2hI0fzmf9eT
-	ln0+uUd7JojiCFYlfxQ7ugsfdiDfvjg=
+	t=1791456059;
+	b=c+5QI1YPtwqEXa3Im8LKzexaF0ikxNQ0MLf0FezhP+8Dtn48WBa0gdr3RaOsKqIyLjqWR+
+	Aa90Q0ynbKL8j3L0C9l9aGBzkA+shPDgw6u2rblkBGcK5A+IoCPaMzS3eBQsKnXuTXqjIF
+	f+6IbhRi4uY3MQAyXatrBcXLJEydkjA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=EaOyYSqC;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791455581; x=1822991581;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=AI3ZBMAQ3eLWhZFlrVjzDdUZpkJemDx62honLkjULds=;
-  b=EaOyYSqCiXP5aflKju6O/h1rKvj18IFZw2vKMN2JrDO+8mWu6lXl38NQ
-   RILKfniYhS9g2+BovvaqM46MTle8ktrYavF2K3kAQJ/F2rkSj5GB0BEX3
-   z8m1b32Ym9h6vGDUsBmgYY1QD3TCB7LOu3/lEanbrt9cgS2t1vkRnPVzP
-   LoVX/24+pUH9m6AYHFEpd4uMSRcQ6l0eSMAMZ9m1cR9EcrLRUqj7y2v75
-   ffDgAyH9N5HlHYBJu0JwNzle0O81QbTKaRP7x6icwBO3jStCUF9DwO+WB
-   0PL3FAI4q+4mXwDrMX6u7qrWVI8D3gTKnmbQOc9R2kelr+VBISA5SnLMl
-   Q==;
-X-CSE-ConnectionGUID: k7c27CYXTJOApWguMTzzgg==
-X-CSE-MsgGUID: GxZTTIvuTLCP2pxmRjyx2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="132384"
-X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
-   d="scan'208";a="132384"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 03:33:00 -0700
-X-CSE-ConnectionGUID: 35EGeBEQTcuoO28zWBm4cg==
-X-CSE-MsgGUID: yOdSKP5kTbGY5nEnkjYrcg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
-   d="scan'208";a="1835115"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa012.fm.intel.com with ESMTP; 08 Oct 2026 03:32:57 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xElQj-000000004Hu-3mTD;
-	Thu, 08 Oct 2026 10:32:53 +0000
-Date: Thu, 8 Oct 2026 18:32:15 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@arm.com>,
-	linux-s390@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v8 11/15] s390: Distinguish hardware and software PTEs
-Message-ID: <202610081806.wcWlNqQf-lkp@intel.com>
-References: <c22ed0a2d9ff0f4fff69a17332a377c460d993dc.1791365932.git.agordeev@linux.ibm.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="VU6/Wg9i";
+	spf=pass (imf16.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so1368949a91.0
+        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 03:40:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791456058; x=1792060858; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iOVAVdLWRpL18PaqCaCiNVQOBrQ2EgqTC57TyqXjPGs=;
+        b=VU6/Wg9i0YGmF6CiUrc4jMdzQU/MFgS+Qm/2wKNQgC53fWxv7Df5ZDERydVllvZrK0
+         bzyznzwpeqhZQcMe23kV2q+CQ7r3c8xDVV+F6thTdDNDcrLXCLTLXx1HVJ8O7jfOYXhr
+         4A8+dveSTTO3KhBwd+mA0kvULjpT9azhA/GUyjjJ3zFpdAbqP420/zoETDsYnBWb7lsc
+         sZPttQbZlrcHKyNmoOToKsi9u8Xvl1O7R6m0jhyWrSskBWcDNeEE5aSKBnRz5it0UeGc
+         IWFjxSxwgHQilIB/E8v9tzEwyTCqQgQfgzwix8UhC4X5pRef5y22/wnYQ2hhepwhhYMG
+         zrjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791456058; x=1792060858;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iOVAVdLWRpL18PaqCaCiNVQOBrQ2EgqTC57TyqXjPGs=;
+        b=KxVSF7mPQWXPk/o6pS3ojv+R3GeHJ2qQFsynHZisxIyywLYXtejyxQXdyk55ygGPED
+         +qsO1pEGbKmc6JBowL56wBky2SMnQIDC9FjwuthRh5936d/20A+p+pvca9/0q9/H999J
+         jpi8OUyp2uUNv5WZnphc4g6I/7duh7t4XFbUwUG8ZDB4APcQv631XKfps86Bdf+XakZP
+         gmy/OJa+RO/CRjc1kE9/kGUeaLTpL15ZrmcgpwJDf6eZ1a7e5XaIiGI68ljrtm+Or/RO
+         qZP/+UUo4YT6nhhnHN8RckeA6DasVuQPdwe/XoikjRqFAiQ24Zp8sYVfRVDzyjUY1tgh
+         kKyw==
+X-Forwarded-Encrypted: i=1; AKwUvByrDNL8rTlx7HgLOlm3L10eb3J2VvdB6bGYnnVBJuPgWKwECkLf9tJ3Q/FSozOCJBFaVtQ6TXwCYg==@kvack.org
+X-Gm-Message-State: AFq9FYIQmpwjQIh9ghVg2ztJpfe0thuwjUeu5rHqcEOk0/TeIfO+JC6i
+	nyZiP7Mo1zvil+1pUu+xvR/dV1eoS7h9r29XzPccmG6jQ1xo1/rTqgzH
+X-Gm-Gg: AYBFou1oe+6Fy7S5wdUx6VPrt42YdEuq1OTERLbip1lduKTT8y0GUiyVmPuip1TvzKW
+	xFIQgH906l4qtkmchC7E/cj9XERcBTMuuIBdxLWMhwOch+h54EtzlTSoyzMC7U1DwItF0/YiomR
+	kQ2brwN7LaUmsY+ZL5QWvM55tGNBlvWDqQBxRRnj04dm1UpkR0akFopH2a6sheB42brDmkpwjAB
+	i0esayuo8DGWp7kJ/PWOJf8RTJbGk2hNBMyYSFtjZhlMS0vQ1OxuME0r6TCMdbdTkqlyLK28opj
+	/P98PXMiPi86DW0m4hzRbesZWXWHU3GmZ1jXa7VdlSB9rToB5ULPsrTQvrUqh727XhCC/GbWuA9
+	qhDAIC/PG5c3rtKIhVTwAz9XJCWQeXPz/QTkplOBwDaLUz6KrXwTJu4AqQ/op8jY0PPR728o//u
+	6WsVHuj+qJcSez2rnSowR28n2AYpwafkh6lto76OT1tKhj/tqIM7Bu5mnUo+eZ/41O1+LvbEMll
+	Lo1A7abBbx/A72XIW9gSWGfog==
+X-Received: by 2002:a17:90b:5887:b0:3a4:fe48:d418 with SMTP id 98e67ed59e1d1-3a8a0851582mr4004998a91.19.1791456057998;
+        Thu, 08 Oct 2026 03:40:57 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2001:d08:1334:29ed:db11:2c4c:ee4f:606])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a9f1a51bf3sm3831271a91.1.2026.10.08.03.40.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 03:40:57 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: suhaas@s-joshi.in
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	SJ Park <sj@kernel.org>,
+	Liew Rui Yan <aethernet65535@gmail.com>
+Subject: [PATCH 1/2] mm/damon/core: Use only installed probe in damon_merge_two_regions()
+Date: Thu,  8 Oct 2026 18:40:29 +0800
+Message-ID: <20261008104112.4763-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261007154851.45368-2-suhaas@s-joshi.in>
+References: <20261007154851.45368-2-suhaas@s-joshi.in>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c22ed0a2d9ff0f4fff69a17332a377c460d993dc.1791365932.git.agordeev@linux.ibm.com>
-X-Rspamd-Queue-Id: 1D441C0002
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4DAF1180009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: hs8jost3zhe95yjh1798db9nfu546f89
-X-HE-Tag: 1791455580-160038
-X-HE-Meta: U2FsdGVkX19s8F2AqjyEEmqFRWJ1I00DV6+ELwhWClAzrwMnwpsd6MxEWrfNcr8BmRD0kVAve6O1ANxbBiAAzjjUwFLMp6G5hmJ7iLlq6YUy8GnshVDlo+0pAkF8GLVd9A0Je2bbvqZcLNi+UtWOq0YSL1vgu/CjZnCn300zTeV4hnBQtrSHmq6wozlovav/3TsBPRNzME36BG+kCNfo6VEb/N22TTf7oQof0fV0IXRzeQtynMKY9UWhjIxSJiXso4mltGSiIO2OvkW4vOGe9n46VFHawpsI5pb9r4rUDA3sFvIDflrcGjURL0ngROJCV64KERNTPeWq0b6cCN03DVzTkQG8DKLGlhDcXkVSq45Jbx5WwIlJ8nP4ZuDqOVxaynpsjkDIfBbrwHkgXsF8piRR5CBOx9sehpD54n8A+NQxEJIzD6u0rkOtif2fSMftWyQ/FJLC4fcWeowzp+jM8Gdd28xA4mf1TDHOcaNVgJgRDI7OVPU6RVWjrMtDwyxWi3T9gW7LthoYpBVv8qtea7ryRg08IY4gR4ioFYOkTeOolmfkd6yNijKNHnJAsHvRIgFXnSxVe8QVJ14b3Qpn+eSxNjit/yv6SMSYYGee0+6z613CYtDQRWmoVbDXHNhsG6MYEZzicWCBH+ZlqWDpBzaXJixEse8G6W6F0oOL8oo25Jn0r4SmGWxje9r/fKK8PnhKSihIlu07en0sW1E6NdSNb+t8gs/HiucQOdLgBoL6I8LjnuAauktpCFNS4C98C7ku7C/AOczepUrSlmvBm6/8EeOk8Z/7yYmYeBjtvarZdrdxbgkuMseowgXYEwRCT0GfUVYAU4G+0vqotwM6unuT5S1Z+0D/A2y9iQILIUEWUZhA3B2XaDJ4Eglg/GLeLuPbbXV2MfeUhXrr62t8U5+4+zxc60vryDZWDu2EyVRHy5vwVG4a7JJe54+emK6tRG7VzFM0iU8iZAsOFh+
- 0Q+Phzh7
- uSlbrNfaogiACbXbfLU4sw3kc18str4oXQXTCHmvU+iigDQg2uWeG+iWEBHwsC+H7pWRoFGPEPlBuDAS0NqQZkW38iwYeio0HV7gMKktncET+epBiu/C3WAmbw9Mg1TbNnrtwV8v+GWdcy8U9OBgCxBqQJixkHsDbyUltBbi38fBy/yleZvy1GJW6seIAIMX9TE4yaqD5ar1TIEq5dYNO3E9CCq75nyLNocTEUrhQ2u1U6ewXF1Jfwl9mRD+YwbwtEw8JYTosLh5u0BxNQ3IhBaHL7khBgl9YiXEjz9dTg4gvJKWa8CPVw4E90u80hBq4sjBHzczygrLjgsHlLXbQkTOeftvFp25VqS81wnA+RE/JXYsg0jM48Iox3iG07ZZDAoqFNsNvGdGqS8Q+dFi8/yVrk5ibP7PVjQlv9D6B0AjkibOf921DzHTF8A3yY6k8CQgndGP5qSJqWZY=
+X-Stat-Signature: 9arr5u7cfuaconnwpys4k7aeq5neh44f
+X-HE-Tag: 1791456059-351680
+X-HE-Meta: U2FsdGVkX1+4bfp80i4feMLhp50tq9C05Hkmphj6e/Swt0LYjB6NuXcpRywr8k74drWMFcNub6+xY6FjVI/uSZEr3lfTfdZP7fyxoG22XJjm3+nq6OwLg4DkKlM7EnaVhX1GT/RgsbkottNUGXiApQbJnncssrOa+2a3Ya8en4vr24T/IIxy9WMSNU1KIH4AqSbVrKKpAcZz95VeJIG/sj0pK6TF2U/HLoNNdxiRfDm+Mb10HSFsRi2anOlxWzttL3CXt4LJEzAb7EgHvfYrx0cbSaZ1eG2ziiwtqxG3ZM+5PdhKT2ARYlzYsdPG58FTF+pFONG7llKaj7uMdXLVQjv6mZEvJ+2c5abAJ3tFw6jCGg27AWbOyQjhZzZKMquuIFgCwMAuxHN+ubujcnMR777Td5g9s0Jcjgv7iYaJWFHkfV1t4exfa5htwBVgzmlxsaXK1XDmzjkW8nwd2HjdezpDVznkZhsbYPfKioklwbeclIqDGqSDtvogb7+j4ip9YUtnvbN4J6Omru0KqVa0JBxNeLfKyWtu4WU5zFLoD49IhWRPkaKPGovILjqVf60sZOCYwhpEelDelGaInlYBb7E3L5HW8wvyi9Jhz1/KM4w0IIDuIhdqrpN2awrMCKZ0yO8oKtsEKN7CZ8X88OwX9HIgQqVmYUaSTktltcHzzs5waZ4I+C9a9L1IBuGmUp+RW9SmoAobvxl8PcudRu6RpJIr9Pn8V42ixCwDuzdwFa2cZPrIafyR2JoIpCwTtO4Wujqwt2QhYI2kttQooVjYls95s/MFoH960+jWlLtpgmI0Uol1PA6/D3ayCjisuUyTgu0/dfsOOhWnrgKMFqP/oawEbMQGrUQUKP/LPjXsvkh6QIsMvHdy48FlqJ6+k4Fd4yP7NcCkWpnoBCeFG4tcJaUT8f9HWn62NgMPncmQqNTMA1e7ET4U1RHM9eXq5qGkN+Dj8U+5VhGYHdKfW+/
+ pfOO1ctO
+ 7qD4EPd4Zz0Jnuhy79GZTFgN3imC6cz0oV4K32ytIbh5DGdcnEuybyIavU6yB0pRGq2+7vG/MUNIQ9eFzMo4vlCEQda4fec2t0t/rMMNCjNUVVu7lLRY6FpUHwNfpd9DSCe0OI+Te0Y93crudiwJisc2IOQsqnXBXmuH9h/pVAY0zbXiZDTkSwwfxbqd1nu3mwDSC25Pl0BJDq0ZpB4YMPkYaNxkzMe7DqsnaNISTNpT1LBpzhOReXethbMqQqlq1Pz60anbMRTkifOEC3m1tlExeYhkUqA4XGcCU+xI6MCOL2oyQJtVA8O2ZI/MOrU5PlTXpw17t9k/nV4mpOkounwX/vzCK1SPpX37QKwqvrX6xPesW9s/+24KvCmxCdmc8rExlZP4ZGYsiYXaIVTs211RJUGHfX2UieNOBbIQtyAQ+ldM9gTIB7WhhzdAxXhQEPTHtLPYpEcTVAXRk9Syxu9GOhY5ry/1o9GuvQ44mpmcMsmkBO16nWp+jXl8vc9ZWGB4NCLN551PcM8axsaIkBBeXX63U+Hn1gamV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,93 +122,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Alexander,
+Hi Suhaas,
 
-kernel test robot noticed the following build errors:
+Thank you for your patches series!
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v7.3-rc6]
-[cannot apply to akpm-mm/mm-everything s390/features kvms390/next next-20261006]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On Wed, 07 Oct 2026 21:18:45 +0530 Suhaas Joshi <suhaas@s-joshi.in> wrote:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Gordeev/mm-introduce-hw_pte_t-for-PTE-table-storage/20261007-134144
-base:   linus/master
-patch link:    https://lore.kernel.org/r/c22ed0a2d9ff0f4fff69a17332a377c460d993dc.1791365932.git.agordeev%40linux.ibm.com
-patch subject: [PATCH v8 11/15] s390: Distinguish hardware and software PTEs
-config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20261008/202610081806.wcWlNqQf-lkp@intel.com/config)
-compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 80cd965b6323b208519f8ab1d5ee86e4ea9862f4)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261008/202610081806.wcWlNqQf-lkp@intel.com/reproduce)
+> While merging 2 regions, we iterate over the entire probe_hits[] array,
+> whose size is determined by the DAMON_MAX_PROBES macro. It is possible,
+> however, that we have fewer probes installed than DAMON_MAX_PROBES. In such
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610081806.wcWlNqQf-lkp@intel.com/
+I find this a bit hard to read.  Could we change it to this?
 
-All errors (new ones prefixed by >>):
+    "However, it is possible that we have fewer probes installed than
+    DAMON_MAX_PROBES."
 
->> mm/damon/vaddr.c:303:45: error: incompatible pointer types passing 'pte_t *' to parameter of type 'hw_pte_t *' (aka 'struct __hw_pte_t *') [-Wincompatible-pointer-types]
-     303 |         *entry = huge_ptep_get_and_clear(mm, addr, pte, psize);
-         |                                                    ^~~
-   arch/s390/include/asm/hugetlb.h:34:40: note: passing argument to parameter 'ptep' here
-      34 |                                             unsigned long addr, hw_pte_t *ptep,
-         |                                                                           ^
-   mm/damon/vaddr.c:305:28: error: incompatible pointer types passing 'pte_t *' to parameter of type 'hw_pte_t *' (aka 'struct __hw_pte_t *') [-Wincompatible-pointer-types]
-     305 |         set_huge_pte_at(mm, addr, pte, *entry, psize);
-         |                                   ^~~
-   arch/s390/include/asm/hugetlb.h:22:18: note: passing argument to parameter 'ptep' here
-      22 |                      hw_pte_t *ptep, pte_t pte, unsigned long sz);
-         |                                ^
->> mm/damon/vaddr.c:318:40: error: incompatible pointer types passing 'hw_pte_t *' (aka 'struct __hw_pte_t *') to parameter of type 'pte_t *' [-Wincompatible-pointer-types]
-     318 |         referenced = damon_hugetlb_ptep_mkold(pte, mm, vma, addr, &entry);
-         |                                               ^~~
-   mm/damon/vaddr.c:296:45: note: passing argument to parameter 'pte' here
-     296 | static bool damon_hugetlb_ptep_mkold(pte_t *pte, struct mm_struct *mm,
-         |                                             ^
-   3 errors generated.
+> cases, we end up making redundant iterations. Therefore, to remedy this,
+> iterate over the list of installed probes instead of iterating over the
+> entire array. For doing this, start accepting a struct damon_ctx in
+> damon_merge_two_regions(), and update calling functions to pass this
+> argument.
+> 
+> Update the damon_test_merge_two() test to use this new signature for
+> damon_merge_two_regions() as well.
+> 
+> Signed-off-by: Suhaas Joshi <suhaas@s-joshi.in>
+> ---
+>  mm/damon/core.c             | 14 +++++++++-----
+>  mm/damon/tests/core-kunit.h | 19 +++++++++++++++++--
+>  2 files changed, 26 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 733025b36745..a3af5ee685e1 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -3499,20 +3499,24 @@ static void damon_verify_merge_two_regions(
+>  /*
+>   * Merge two adjacent regions into one region
+>   */
+> -static void damon_merge_two_regions(struct damon_target *t,
+> -		struct damon_region *l, struct damon_region *r)
+> +static void damon_merge_two_regions(struct damon_ctx *ctx, struct damon_target *t,
+> +				    struct damon_region *l, struct damon_region *r)
+>  {
+>  	unsigned long sz_l = damon_sz_region(l), sz_r = damon_sz_region(r);
+>  	int i;
+> +	struct damon_probe *p;
+>  
+>  	l->nr_accesses = (l->nr_accesses * sz_l + r->nr_accesses * sz_r) /
+>  			(sz_l + sz_r);
+>  	l->age = (l->age * sz_l + r->age * sz_r) / (sz_l + sz_r);
+>  	l->ar.end = r->ar.end;
+> -	/* todo: do this for only installed probes */
+> -	for (i = 0; i < DAMON_MAX_PROBES; i++)
+> +
+> +	i = 0;
+> +	damon_for_each_probe(p, ctx) {
+>  		l->probe_hits[i] = (l->probe_hits[i] * sz_l + r->probe_hits[i]
+>  				* sz_r) / (sz_l + sz_r);
+> +		++i;
+> +	}
+>  	damon_verify_merge_two_regions(l, r);
+>  	damon_destroy_region(r, t);
+>  }
+> @@ -3565,7 +3569,7 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
+>  			goto set_prev_continue;
+>  		if (damon_sz_region(prev) + damon_sz_region(r) > sz_limit)
+>  			goto set_prev_continue;
+> -		damon_merge_two_regions(t, prev, r);
+> +		damon_merge_two_regions(ctx, t, prev, r);
+>  		continue;
+>  set_prev_continue:
+>  		prev = r;
+> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> index df84d9cc7d20..5ad89c1d9fc2 100644
+> --- a/mm/damon/tests/core-kunit.h
+> +++ b/mm/damon/tests/core-kunit.h
+> @@ -182,13 +182,27 @@ static void damon_test_merge_two(struct kunit *test)
+>  {
+>  	struct damon_target *t;
+>  	struct damon_region *r, *r2, *r3;
+> +	struct damon_probe *p;
+> +	struct damon_ctx *ctx;
+>  	int i;
+>  
+> +	p = damon_new_probe();
+> +	if (!p)
+> +		kunit_skip(test, "probe alloc fail");
+> +	ctx = damon_new_ctx();
+> +	if (!ctx) {
+> +		damon_destroy_probe(p);
+> +		kunit_skip(test, "context alloc fail");
+> +	}
+> +	damon_add_probe(ctx, p);
+>  	t = damon_new_target();
+> -	if (!t)
+> +	if (!t) {
+> +		damon_destroy_ctx(ctx);
+>  		kunit_skip(test, "target alloc fail");
+> +	}
+>  	r = damon_new_region(0, 100);
+>  	if (!r) {
+> +		damon_destroy_ctx(ctx);
+>  		damon_free_target(t);
+>  		kunit_skip(test, "region alloc fail");
+>  	}
+> @@ -206,7 +220,7 @@ static void damon_test_merge_two(struct kunit *test)
+>  	r2->age = 21;
+>  	damon_add_region(r2, t);
+>  
+> -	damon_merge_two_regions(t, r, r2);
+> +	damon_merge_two_regions(ctx, t, r, r2);
+>  	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+>  	KUNIT_EXPECT_EQ(test, r->ar.end, 300ul);
+>  	KUNIT_EXPECT_EQ(test, r->nr_accesses, 16u);
+> @@ -220,6 +234,7 @@ static void damon_test_merge_two(struct kunit *test)
+>  	}
+>  	KUNIT_EXPECT_EQ(test, i, 1);
+>  
+> +	damon_destroy_ctx(ctx);
+>  	damon_free_target(t);
+>  }
+>  
+> -- 
+> 2.55.0
 
+Other than the commit message I just mentioned, and the issue reported
+[1] by Sashiko, LGTM.
 
-vim +303 mm/damon/vaddr.c
+Reviewed-by: Liew Rui Yan <aethernet65535@gmail.com>
 
-3f49584b262cf8 SeongJae Park        2021-09-07  294  
-49f4203aae06ba Baolin Wang          2022-01-14  295  #ifdef CONFIG_HUGETLB_PAGE
-39c0ceedd54557 SJ Park              2026-09-07  296  static bool damon_hugetlb_ptep_mkold(pte_t *pte, struct mm_struct *mm,
-39c0ceedd54557 SJ Park              2026-09-07  297  		struct vm_area_struct *vma, unsigned long addr, pte_t *entry)
-39c0ceedd54557 SJ Park              2026-09-07  298  {
-39c0ceedd54557 SJ Park              2026-09-07  299  	unsigned long psize = huge_page_size(hstate_vma(vma));
-39c0ceedd54557 SJ Park              2026-09-07  300  
-39c0ceedd54557 SJ Park              2026-09-07  301  	if (!pte_young(*entry))
-39c0ceedd54557 SJ Park              2026-09-07  302  		return false;
-39c0ceedd54557 SJ Park              2026-09-07 @303  	*entry = huge_ptep_get_and_clear(mm, addr, pte, psize);
-39c0ceedd54557 SJ Park              2026-09-07  304  	*entry = pte_mkold(*entry);
-39c0ceedd54557 SJ Park              2026-09-07  305  	set_huge_pte_at(mm, addr, pte, *entry, psize);
-39c0ceedd54557 SJ Park              2026-09-07  306  	return true;
-39c0ceedd54557 SJ Park              2026-09-07  307  }
-39c0ceedd54557 SJ Park              2026-09-07  308  
-6ecdfd6e16f5f4 Muhammad Usama Anjum 2026-10-07  309  static void damon_hugetlb_mkold(hw_pte_t *pte, struct mm_struct *mm,
-49f4203aae06ba Baolin Wang          2022-01-14  310  				struct vm_area_struct *vma, unsigned long addr)
-49f4203aae06ba Baolin Wang          2022-01-14  311  {
-49f4203aae06ba Baolin Wang          2022-01-14  312  	bool referenced = false;
-e6c0c03245b14d Christophe Leroy     2024-07-02  313  	pte_t entry = huge_ptep_get(mm, addr, pte);
-6b7cea90c82e10 Kefeng Wang          2022-12-30  314  	struct folio *folio = pfn_folio(pte_pfn(entry));
-49f4203aae06ba Baolin Wang          2022-01-14  315  
-6b7cea90c82e10 Kefeng Wang          2022-12-30  316  	folio_get(folio);
-49f4203aae06ba Baolin Wang          2022-01-14  317  
-39c0ceedd54557 SJ Park              2026-09-07 @318  	referenced = damon_hugetlb_ptep_mkold(pte, mm, vma, addr, &entry);
-49f4203aae06ba Baolin Wang          2022-01-14  319  	if (mmu_notifier_clear_young(mm, addr,
-49f4203aae06ba Baolin Wang          2022-01-14  320  				     addr + huge_page_size(hstate_vma(vma))))
-49f4203aae06ba Baolin Wang          2022-01-14  321  		referenced = true;
-49f4203aae06ba Baolin Wang          2022-01-14  322  
-49f4203aae06ba Baolin Wang          2022-01-14  323  	if (referenced)
-6b7cea90c82e10 Kefeng Wang          2022-12-30  324  		folio_set_young(folio);
-49f4203aae06ba Baolin Wang          2022-01-14  325  
-6b7cea90c82e10 Kefeng Wang          2022-12-30  326  	folio_set_idle(folio);
-6b7cea90c82e10 Kefeng Wang          2022-12-30  327  	folio_put(folio);
-49f4203aae06ba Baolin Wang          2022-01-14  328  }
-49f4203aae06ba Baolin Wang          2022-01-14  329  
+[1] https://lore.kernel.org/damon/sashiko-outbox-163177@kernel.org
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best regards,
+Rui Yan
 
