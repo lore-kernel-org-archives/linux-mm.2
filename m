@@ -4,108 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2D38CA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 07:10:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2987DCA600B
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 07:18:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F1D76B008A; Thu,  8 Oct 2026 03:10:14 -0400 (EDT)
+	id D9F706B008A; Thu,  8 Oct 2026 03:18:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A36D6B008C; Thu,  8 Oct 2026 03:10:14 -0400 (EDT)
+	id D50596B008C; Thu,  8 Oct 2026 03:18:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B92B6B0092; Thu,  8 Oct 2026 03:10:14 -0400 (EDT)
+	id C3F696B0092; Thu,  8 Oct 2026 03:18:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 08C3A6B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:10:13 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 04413804A9
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:10:11 +0000 (UTC)
-X-FDA: 85298585064.19.8C29A46
-Received: from mta0.migadu.com (out-104.mta0.migadu.com [91.218.175.104])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9148520002
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:10:08 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nNfVAN73;
-	spf=pass (imf31.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.104 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791443410;
-	b=MruqqBK4HpUcdzP+5Q18jNVuEjwQUWnj0aWeRMY99cM5d7DYrYqGQJYq2BH0M84pXCxCHB
-	AhKObouTqfmGgJFdLjf5FEWu2bRbhzmU/AWyvCmRu0OThV5luGoTs+5fXtJ+vvYU+Jo5Jt
-	X2iaYdZ3oB6EeDJC6bgCGJYtVoW17iU=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nNfVAN73;
-	spf=pass (imf31.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.104 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791443410;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9881B6B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:18:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 35CA1160488
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:18:32 +0000 (UTC)
+X-FDA: 85298606064.20.3C1BD4B
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 420D2C0008
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:18:30 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TLXyvmXo;
+	spf=pass (imf10.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.161.52 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791443910;
+	b=fThnDww+pm4fvvfh0xuuXG8iw/DbFhopqLL3SuWZ3pM7+u1OZCNp6aj3J85GIE4LtME40X
+	Tl+n0ytvVwcEpAmNvI2VT2Q2F0I2IswKsTkAI1ndFCQFwKIlHT0kczHsNlEqOQMp+n2+Xo
+	2PZngwfxu8PIVrfRwK0t75G/9YFqUDQ=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TLXyvmXo;
+	spf=pass (imf10.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.161.52 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791443910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=EU/7A6QpUnuFqzgxuxhYLWPUhZ05ShFVWCDE+KO/x8Q=;
-	b=B9jPBonBD7l5dsId/nehLecHVQgOD6zQYLlRM0rF0VgeBoLSZV/Jdu6PUsEuOrJfyjyl+V
-	1FKqNO+zP4RFjq9C4NIVaAm0lit6rrMpc4C5dxhQz0kdin5aN50XEMSNaP/nYPshfk0Nry
-	DgRZem/aOVekp3XfKV7xi0bun6CcIZ8=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=YntmXF+RyEpeQNyhd9YG+Hc6Sc4QDta4QnwxtcdIPHY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791443407; v=1; x=1792048207;
- b=nNfVAN739+hYX1f6Uvoggy40MGs9O80Q+uehWTdOabWm7j14cdLz5enum6S9OjNCbymRU02y
- 30mCcXBmgV1p995s0Ql2pZlrAkZMdVTXvXm0wbZO12t1Bo7/dA9yv5l6B3dG/6CoeW5FdXCb+3L
- VcgCTvWDhJBZPLsaGK1PzrAo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id bbda05475c7c12b7;
-	Thu, 08 Oct 2026 07:10:04 +0000
-X-Mizu-Trace-ID: bbda05475c7c12b7
-X-Migadu-Flow: FLOW_OUT
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Roman Gushchin <roman.gushchin@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Shuah Khan <shuah@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH bpf-next v3] selftests/bpf: Add bpf_proactive_reclaim test
-Date: Thu,  8 Oct 2026 15:09:27 +0800
-Message-ID: <20261008070928.113530-1-hui.zhu@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=70ywZ2AyEe7ncaX3K+b5VsGq7joUvo2qDjp4zFNieZQ=;
+	b=T+rKl1FQHF+i55joBqSIW+xdCMvma4N2NCyz+SONktayN3bk3fWH91/EsVVy/hR6Q/tcNf
+	agmx4wo0fVauN2VpUVvtRTB4aDqIowfODAWl8dU3xk1iz+EcTifvLvckgAKLmwfueYUm00
+	31oPEDkAeDmCebBCL5WZbDGgnnyv6hs=
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6df1eeb43feso1122592eaf.1
+        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 00:18:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791443909; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jF3G8F3XE4fr2VL4OVdt0JiNNkTWGz8nr+EN3yjxYli/mwMzipXYhnRe0z+6n7BgWI
+         PypRpFZOqcqxJx8lId7yjHt8naGR5gEE/F7PNZ5Pq7CsZzCvAJdIXz0245qYTs+w4Shf
+         gZEBlsSVt5FfjX3uOlt70cbPBPn9IHP9gQp60GRbO29ecH2hR3miT/LsOB7zuFCwXVNB
+         E6cMjUUnDZtagni5hxxORpkTRbZA6cclQApIerpZKiIEzmtU61FYpdQgEfs2/2gooOrS
+         yQ4knDorTOrICXNXZewEXa4I4jYci0Nkuzrl8AkQpvG8F3/Bg/i8fId9ErPcTiFFN65N
+         sQ2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=70ywZ2AyEe7ncaX3K+b5VsGq7joUvo2qDjp4zFNieZQ=;
+        fh=sxHHvApfv6JaquLnoX6x5Gd7RhnQhOViAjcX+2Kbxg0=;
+        b=H88d4CQqv8PN52zXr+SYx6/NJ9n2XmIffdf6NS0e+cO17coaH0dGY2Ztf+7o0G28sn
+         0AEH4o66fI40SW4fE5XIRQtJ6Vu9QKrDr1PHvoY581/eAYI1Abuo2HBvUP1N+VPpJFO4
+         inDw9zlUix3BYQrHkdgNlx+Ap8kYiz/hb9K3YMOq1WchAIaIKE0tNIntVDzeDJTu4bFN
+         W8s8pRQBNNg6FmpSw6SZ5x3v/T+fS42GwGnebXcM3+c+qkQF/ufVra68xF/TBkl48ECA
+         stqeqfghqv1SQsYgk/mTPC0DmNrjW7pOUi1xaaJ7+zeBs1RyRXZ9qY2S53VzjYda7EcJ
+         8vBQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791443909; x=1792048709; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=70ywZ2AyEe7ncaX3K+b5VsGq7joUvo2qDjp4zFNieZQ=;
+        b=TLXyvmXosy3/ugDnq/NGvI9bK4gM/zl9E26IMIWo7AEsWfmKmOHpPP7atnggSm23QV
+         N9M2CqmErDJq+iUxRXdF+8t7kKzmUefgk7SLhMAEA8ZLn0t0Wt8DKo0x83kXF5H437Qj
+         hDy3TagG/gVWZMrVh1JKIYafHYcM5/lTNFyTF3xho0TAuf9Z28qM0HeKpV+43PE4oDoH
+         +IACXZTCC2pjEgyYnfd9OfS/4I/fwkWgHX10hMsnFtvtbqhQ9sL5Hq/eY/MOR9vmZiOW
+         Ae/CBHpgnoHsdl3S9iu1oVG1g1U6ta5YpVFdUmYGuuCWwpYXSQ7bd1QtJ8AetSy/cxhx
+         Afew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791443909; x=1792048709;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=70ywZ2AyEe7ncaX3K+b5VsGq7joUvo2qDjp4zFNieZQ=;
+        b=P6dBEgKDfETJvopuEeox47fXQm12BEW/vaZo0fj+1RX4iGnD1p9oOdq/3WOJWAllLc
+         G/XbCV1AhHdwKGgF6fLTgT9ZVLJ3H+PDT70ju0BRKcUddLnIBexk8dm8A5xlDxSSJeOl
+         0n4bv++MPf8QO8KrJs6BhYwdn7caXdXiH88Je4/mba0cY0bJVDRl53ySb55wEdDTNr/C
+         ZF7rDnZ+gnmcz5kPBPA+YKMG1pX7he7qDXbA8QLiBPpCn+qpgSC/0Ud7BOzSF0byaUi9
+         yMj71ot8NODAXp9n/PFWbq6ylydf6PkR6/lqOjmM3zCNyN+Yt8muQtgHwzPiwLZW3Kt3
+         0uZw==
+X-Forwarded-Encrypted: i=1; AKwUvByJruQiB3TlX+UaQHuITzqRscQbUKvriLXogEMWWs+I3BOyBE+W4PGW4pD17Il7GyqAw0H7g14Ywg==@kvack.org
+X-Gm-Message-State: AFuF++nXc2puKU+xvj952b61UYflM7GdBAT2enPsFb9Tp6+TLTU4pIgs
+	0n/9Tb2kJ92Z9S7ROLYUytXLuYp+Wq4aY5E5uNP2CR6xRx335le/0NWCXoQu2YfmcjrZOSOEeSK
+	dxHWPKIANCIyH7SKg3fIw/+YPuvoJaJc=
+X-Gm-Gg: AYBFou11AEZFr3GB2LVf5tfZ1lEp7WQpyA7iVwHSC/Ag+6puvBFoVmEO7zG01S70XNl
+	82rnDr51zGVtCe3mcdoJJ9pf/aME/A5zeo9PUlFy2qcZWyCTvY/dn1Q9vWAVwFqBOKCSL+/oqL0
+	/0ofPHLSlWikpPsw6yu+035tB+E3hoT2UgWiz9WxPdmsWbeBhIpz1928yDiQ5s2lIplebIXYWzd
+	lnACaFS4jBe8X43tiNF/h6/w4uTeiRtPpCGBSPcOD4dv9CMQpjBnnUao3itmSQYqlY7mTpI3fDC
+	9tgiFAjai/eJlEPdvIN3wUOTu5arriYU3OeQCYMJVB8ePYnrMlHpOo5O18LY89MKJg==
+X-Received: by 2002:a05:6820:618:b0:6e4:1587:d2b9 with SMTP id
+ 006d021491bc7-6e7aaecda5cmr4190773eaf.35.1791443909157; Thu, 08 Oct 2026
+ 00:18:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9148520002
+References: <20260726212812.89266-1-shijujose2008@gmail.com>
+ <20260726212812.89266-2-shijujose2008@gmail.com> <20261005235021.GBasQ3vXTivT3NLbBq@fat_crate.local>
+ <asU7svV8g2Hb5DZl@hu-ashoraj-lv.qualcomm.com> <20261008030603.GAascImzt4cv8Gz49p@fat_crate.local>
+In-Reply-To: <20261008030603.GAascImzt4cv8Gz49p@fat_crate.local>
+From: Shiju Jose <shijujose2008@gmail.com>
+Date: Thu, 8 Oct 2026 08:18:14 +0100
+X-Gm-Features: AclHuK_Pa4PSN7Ovd8UjVYuZheIOrKSyX750Qa13rdRkYN_uBxTlt7ZeUcurB5c
+Message-ID: <CAG4KcRLhN9=6xeT4qfqKLFdukiZLUc7akGcWwXJUU1-qrfxTUQ@mail.gmail.com>
+Subject: Re: [PATCH v23 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature table
+To: Borislav Petkov <bp@alien8.de>
+Cc: Ashok Raj <ashok.raj@oss.qualcomm.com>, rafael@kernel.org, 
+	akpm@linux-foundation.org, rppt@kernel.org, dferguson@amperecomputing.com, 
+	linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org, 
+	Yazen.Ghannam@amd.com, mchehab@kernel.org, jic23@kernel.org, 
+	linuxarm@huawei.com, rientjes@google.com, jiaqiyan@google.com, 
+	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, naoya.horiguchi@nec.com, 
+	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com, 
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com, 
+	gthelen@google.com, wschwartz@amperecomputing.com, wbs@os.amperecomputing.com, 
+	nifan.cxl@gmail.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com, 
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com, 
+	wanghuiqiang@huawei.com, ashoraj@qti.qualcomm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: 9gzoiz1y11cxmppprczemify559d4ice
-X-HE-Tag: 1791443408-514236
-X-HE-Meta: U2FsdGVkX1/L/RDHEGyV2wBpddmGFVCZYCPrkkCniIRAVoow/p8IrhE9l8CpR1UKMhecvjSxCSCqrShpUlyP0656Qr61LM9MO/q/QueW4nvVrkcBPy1/hgug1JducMBuNVwXRDPE0ZvytMWNXFYI1Ew5hBmpuSnC2n/Ppl9bPepMdn/L3xuhsSuFT3CPDGurxIJSIiXQWx38ZKv3ddVsf/SsDb+yOZqeW94U25Oz1di2ah9Ze3IOxdKj2DuKI8+mAycssTkSUL+U2bMzRk3/58MPiJr0tLpVC/+dCCD0T4EMC/O5f+kDBFLd9P/KYny0MdsTMTHe+bx6S63niBUuhHUYFCc4GtgPoC/i2muCvNXuhX9HUYzEwvM+0QxAtt5GDnv/V9jJaWNEdJ63i5S6kn5nMZ2V7x38V04+xGM7aQCxLv/7iotMIyclc0Qp+M6Cl4cZ3UJR+s/35w8Ozt6ciPzC1c67ZrkYI6FxSSdbLNphiH1dD/dLiwlhw8mqmipnXOcHoMan/+Dmyens3H8zWk6WO3C0ezvakzRrOj2eBoWNq4LkbKsyF0XEdh1RjbIh6aGIKEujRwgrHdSLUwb1kSf6Dw+yXk1SJEbARGzcZDjt1nfrZtaMLcC6CkUdMVPDlViuERguV+5mPXiC2Y/59tk878e+EXJvKLGeHR5IVmM+S/Dx/mOHJ9xCylb8h2Wo548lvMbOQYDHqFQm5eI1g5w5VbkLoO3W7Hc4tdew9BdfC4uTRpXKk+8Bn5ARNCzqHATMOHTh9YPpQjTwG2Y7jIO/JXo4K8nTfXtWIsdr+8LkZmYaFy4MImI0JIGGbx/iKIDsc0yy0yILNDBc1gYjioBWgEIx7zXZzgviWaEGkCOr4K3l8ueRgS6faBk/QvT+xy/V6OjTapCcCCQd8t9ArXKBbAR4Sq9JracogdTrOTiD05PmLOgcRvxtDTQXU4Xu868FaROA9tZp7XO42PO
- HUeCQcTG
- 5oJSRgWrsu05QcywoG+b8OBqqbFgTL2aty2LsIT+uk8OBJ7r/6t1XbkcIZ3qFCFkotpATt7RL45jvF4EIGK7CLg965IpsaiDuqk8nMS4/84HXVvQqHh72azLuBtWWwOuDgPTUUUrzstnFgo141lDtkyrH+oCeEa4bdUGL7tJ+DoXX1VxboP+kNXi8YzqIqv7KW8enewls28XnHbNoMRP++iAC6FSCP/0uWbb4fwd2KSEoMLKj3RMwyXwf8vzBlB5DeRY7VLve0cAGNenUUHUl/0xH3R1TyfOxFrOINcMQ5i1Nos+r+VZ8Dds/OJvKV0y6k66M7plauu8Td491Ukdtj0sBff8V/k6Kjq2twJBK80GcfAWhKY3pMDceHA==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 420D2C0008
+X-Stat-Signature: tzwb7cjmik9fgawybfqa8zar6qaypf78
+X-HE-Tag: 1791443910-17734
+X-HE-Meta: U2FsdGVkX18g6r+PvxRMw2SoxrWtVjUkfv/2hpTKLYZTkXGHVQdpD33wbdAt1yziiM82yzV6N9QoMOiJrkqVza4T+DO+0pJp16SsErpOppKyx2gTAp8V1SgII+VPo0NZKRYdqnzAatQQQ2KoSg3bdBpZOCo+R6VDOvS7gtNrM7fpFG8qBxruV3NITxX08wBO131Wiz3sQMrXWGpnITIhNtAdqslLNv5WCJOK2swQInInvRG3kkm8sq5oMfdvtvBrq6OqtgQU6rglNvxDx66LhiyHpLRPhzeKjsU3YmtcKx3SdHMhk5okMXu0RVeD3DYgFz4PZkj0sMQNJ8/qADRUWGSBaatrYWYTettahzHyacrnsM2RelovUAASGbw5r3Cb4yYC1zJidUr7C3Jx19f1dZ940gAUFIhF2WhXkFyRukfW5W9K0K+Fc4NOD3UGqZjL+ksU3PVgZOpYnWzyjY4RMnArv6N07gothZhscm0wPMNZ2OXmPQWcW1NZ4EZjBa6ExdmqgmMz7P1Wb3cuB1yA611SRCRyrKl1y1aTSevn2RwlQQVv99RQ0VI1FHb02zyTIEbYekxJ2HDEcCjJ5mrPAPiifo/M+Nu4jxZf+o3+Nd3zqZsZ+KUFO+Du7GJBQGzs3mT+wutSZlHzpivoEh3p+hp+VxflMVmEpaSVb2cns2sqhvnmqvhSBH29yVVffQU26pYZvfzPuDcm6a7m3yCBokvCQE3ixTh5hVywdW4fsUS5vBD/ka8plx7T+evnM34VLMdsGBa4UnKqHz99QxnRkuEHJmknBIt6jStV1SWHRA9M515FPndU9YvyFQT0e6q1GEj0ZV2YrIxdXtfzJD5dHnBTdQBYaf89RAYmaUWn294y4n+P3W0PXFEL7LH10FghaC0hv0xKRz2+dmkqYsNs1sURkO2F4NNrzF058qtjri6vUEAfcg8bYINI7ZLfcdye/AEJn7Qk70f+ByMvLd2
+ Z1w2/aNE
+ Gm6pAxEZuw0nDCATYkrIT7m1mqrIPcOfueP4TfMWgL623bc4R/1WJt/gu5Ujjt4PKwy5zXd8m7c91cYpVuPwiw7cMmO5XgozUhp1flzG7mEklUC4CziWlM8O/Mq0if6/DuFg0Ua0M9qRCIOImGjpRnW5R9+MWw0wkRWo3WgRJ+iRAcqIGpHmZ6ZsbK6IA6DHVOqAQDVLF6ohi7aq0NNPWeaGTh37oDBjzbwAkVJ4JTc2MhPuyxlccPGb54yIUsi219urxjWmg3EkkUv+eJociasGwQUCep4JE9FbdFzb7ZjZDM0dLCAWOrJ6ED7klJ9ypkg7fIqhKm/T0amwpOyshLQVDXs270laWjOZpSy/YQrULkCi/ash9aV+xsR5ulyMFGzazh8uuBYUFIbDAV0qIK4SdckPbdxZHYEthPF9tLqT7WWCf6qYQSpSRkngD9tPoe2BErD89O6ATLOUENSMqmqKk0gJYW3sIvhH4arZkDb0eAcen07Qc5s968w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,232 +152,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+Hi Boris, Hi Ashok,
 
-bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
-unlike a write to memory.reclaim, does not retry until the goal is
-reached.
+Thanks Ashok for reporting this issue.
 
-Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
-and check that the result is positive but well below the request: one
-pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
-4K and 64K page kernels.
+I debug this. nows_txdone used to set before requesting the channel
+until v16 and was changed in v17
+following a review comment by claude.
+Found this issue occurs when txdone_poll set and  setting nows_txdone
+before requesting the channel, solved.
+In my test setup,  I missed this issue, because txdone_irq was set in
+pcc_mbox_probe()
+with the acpi pcct flag set to ACPI_PCCT_DOORBELL by the firmware.
 
-The test deliberately covers only the kfunc itself. A full example of
-the intended asynchronous use, where a BPF program watches one cgroup's
-workingset refaults and reclaims another one from bpf_wq callbacks, is
-maintained out of tree at [1], released under GPLv2.
+Thanks,
+Shiju
 
-Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.c
-is not built at all.
 
-[1] https://github.com/teawater/memcg-async-reclaim
-
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
-Changelog:
-v3:
-According to the comment of Barry, use write() + fsync() to charge the
-page cache instead of ftruncate() + read().
-According to the comment of AI, skip instead of fail when no regular
-filesystem is available for the workload file.
-v2:
-According to the comment of Alexei, remove the samples/bpf sample patch.
-Ship it out-of-tree as a standalone project.
-
- tools/testing/selftests/bpf/config            |   1 +
- .../bpf/prog_tests/memcg_proactive_reclaim.c  | 127 ++++++++++++++++++
- .../bpf/progs/memcg_proactive_reclaim.c       |  34 +++++
- 3 files changed, 162 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
- create mode 100644 tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-
-diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
-index 2b883b388f90..5621ef94ad7e 100644
---- a/tools/testing/selftests/bpf/config
-+++ b/tools/testing/selftests/bpf/config
-@@ -57,6 +57,7 @@ CONFIG_LIRC=y
- CONFIG_LIVEPATCH=y
- CONFIG_LWTUNNEL=y
- CONFIG_LWTUNNEL_BPF=y
-+CONFIG_MEMCG=y
- CONFIG_MODULE_SIG=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- CONFIG_MODULE_UNLOAD=y
-diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
-new file mode 100644
-index 000000000000..53426833366c
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
-@@ -0,0 +1,127 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <test_progs.h>
-+#include <limits.h>
-+#include <linux/magic.h>
-+#include <sys/statfs.h>
-+#include <unistd.h>
-+
-+#include "cgroup_helpers.h"
-+#include "memcg_proactive_reclaim.skel.h"
-+
-+#define CG_PATH "/memcg_proactive_reclaim"
-+
-+/*
-+ * Large enough that a single reclaim pass cannot come close to it, so that
-+ * "reclaimed less than was asked for" is not page-size noise: one pass is
-+ * capped at MEMCG_CHARGE_BATCH pages, which is 256 KiB on 4K pages but 4 MiB
-+ * on 64K pages.
-+ */
-+#define FILE_SIZE (32 * 1024 * 1024UL)
-+#define BUF_SIZE (64 * 1024)
-+
-+struct reclaim_args {
-+	__u64 cgroup_id;
-+	__u64 size;
-+};
-+
-+/*
-+ * The data file has to sit on a regular filesystem: tmpfs pages are charged
-+ * as shmem, so whether they can be reclaimed at all depends on swap being
-+ * available. /tmp is tmpfs on many systems, and test_progs is routinely run
-+ * from a tmpfs working directory, so both candidates need the check.
-+ */
-+static const char *workload_dir(void)
-+{
-+	static const char * const dirs[] = { "/tmp", "." };
-+	struct statfs st;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(dirs); i++)
-+		if (!statfs(dirs[i], &st) && st.f_type != TMPFS_MAGIC &&
-+		    st.f_type != RAMFS_MAGIC)
-+			return dirs[i];
-+
-+	return NULL;
-+}
-+
-+void test_memcg_proactive_reclaim(void)
-+{
-+	struct memcg_proactive_reclaim *skel = NULL;
-+	struct reclaim_args args = {};
-+
-+	LIBBPF_OPTS(bpf_test_run_opts, opts,
-+		    .ctx_in = &args,
-+		    .ctx_size_in = sizeof(args));
-+
-+	char data_file[PATH_MAX];
-+	static char buf[BUF_SIZE];
-+	__u64 cgroup_id;
-+	const char *dir;
-+	off_t off;
-+	int cg_fd = -1, data_fd = -1, err;
-+
-+	/*
-+	 * Both candidate directories can be tmpfs (initramfs-based CI, for
-+	 * instance). That is an environment limitation, not a test failure.
-+	 */
-+	dir = workload_dir();
-+	if (!dir) {
-+		test__skip();
-+		return;
-+	}
-+
-+	snprintf(data_file, sizeof(data_file),
-+		 "%s/memcg_proactive_reclaim_XXXXXX", dir);
-+	data_fd = mkstemp(data_file);
-+	if (!ASSERT_GE(data_fd, 0, "mkstemp"))
-+		return;
-+
-+	cg_fd = cgroup_setup_and_join(CG_PATH);
-+	if (!ASSERT_OK_FD(cg_fd, "cgroup_setup_and_join"))
-+		goto out;
-+
-+	cgroup_id = get_cgroup_id(CG_PATH);
-+	if (!ASSERT_GT(cgroup_id, 0, "get_cgroup_id"))
-+		goto out;
-+
-+	skel = memcg_proactive_reclaim__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto out;
-+
-+	/* Charge FILE_SIZE of clean page cache to the cgroup. */
-+	for (off = 0; off < (off_t)FILE_SIZE; off += sizeof(buf))
-+		if (!ASSERT_EQ(write(data_fd, buf, sizeof(buf)),
-+			       (ssize_t)sizeof(buf), "write"))
-+			goto out;
-+	if (!ASSERT_OK(fsync(data_fd), "fsync"))
-+		goto out;
-+
-+	args.cgroup_id = cgroup_id;
-+	args.size = FILE_SIZE;
-+	skel->bss->reclaimed = 0;
-+	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.memcg_proactive_reclaim),
-+				     &opts);
-+	if (!ASSERT_OK(err, "test_run"))
-+		goto out;
-+	if (!ASSERT_EQ(opts.retval, 0, "retval"))
-+		goto out;
-+
-+	/*
-+	 * A single call is a single bounded pass: it reclaims something, but
-+	 * stops well short of the requested size instead of retrying until the
-+	 * goal is reached the way a write to memory.reclaim does.
-+	 */
-+	ASSERT_GT(skel->bss->reclaimed, 0, "reclaimed");
-+	ASSERT_LT(skel->bss->reclaimed, (__s64)FILE_SIZE, "single pass");
-+
-+out:
-+	if (skel)
-+		memcg_proactive_reclaim__destroy(skel);
-+	if (cg_fd >= 0)
-+		close(cg_fd);
-+	if (data_fd >= 0) {
-+		close(data_fd);
-+		unlink(data_file);
-+	}
-+	cleanup_cgroup_environment();
-+}
-diff --git a/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-new file mode 100644
-index 000000000000..b551192526fc
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+
-+struct reclaim_args {
-+	__u64 cgroup_id;
-+	__u64 size;
-+};
-+
-+/* Signed, because bpf_test_run_opts.retval is a __u32. */
-+__s64 reclaimed;
-+
-+SEC("syscall")
-+int memcg_proactive_reclaim(struct reclaim_args *ctx)
-+{
-+	struct mem_cgroup *memcg;
-+	struct cgroup *cgrp;
-+
-+	cgrp = bpf_cgroup_from_id(ctx->cgroup_id);
-+	if (!cgrp)
-+		return 0;
-+
-+	memcg = bpf_get_mem_cgroup(&cgrp->self);
-+	if (memcg) {
-+		reclaimed = bpf_proactive_reclaim(memcg, ctx->size, -1);
-+		bpf_put_mem_cgroup(memcg);
-+	}
-+	bpf_cgroup_release(cgrp);
-+
-+	return 0;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.43.0
-
+On Thu, Oct 8, 2026 at 4:06=E2=80=AFAM Borislav Petkov <bp@alien8.de> wrote=
+:
+>
+> On Tue, Oct 06, 2026 at 11:19:30AM -0700, Ashok Raj wrote:
+> > > +static int register_pcc_channel(struct ras2_mem_ctx *ras2_ctx, int p=
+cc_id)
+> > > +{
+> > > +   struct pcc_mbox_chan *pcc_chan;
+> > > +   struct ras2_sspcc *sspcc;
+> > > +   int ret;
+> > > +
+> > > +   if (pcc_id < 0)
+> > > +           return -EINVAL;
+> > > +
+> > > +   sspcc =3D sspcc_get(pcc_id);
+> > > +   if (sspcc) {
+> > > +           ras2_ctx->sspcc     =3D sspcc;
+> > > +           ras2_ctx->comm_addr =3D sspcc->comm_addr;
+> > > +           ras2_ctx->dev       =3D sspcc->pcc_chan->mchan->mbox->dev=
+;
+> > > +           ras2_ctx->pcc_lock  =3D &sspcc->pcc_lock;
+> > > +
+> > > +           return 0;
+> > > +   }
+> > > +
+> > > +   sspcc =3D kzalloc(sizeof(*sspcc), GFP_KERNEL);
+> > > +   if (!sspcc)
+> > > +           return -ENOMEM;
+> > > +
+> >       __mbox_bind_client() reads knows_txdone at bind time to promote t=
+he
+> >       channel off MBOX_TXDONE_BY_POLL. It must be set before requesting=
+ the
+> >       channel, otherwise the channel stays on polling and mbox_client_t=
+xdone()
+> >       later hits the mailbox core's "Client can't run the TX ticker" gu=
+ard.
+> >
+> >       sspcc->mbox_client.knows_txdone =3D true;
+>
+> Yah, I can see that happening but I don't have the hw to even poke at thi=
+s.
+>
+> Shiju, what's up?
+>
+> --
+> Regards/Gruss,
+>     Boris.
+>
+> https://people.kernel.org/tglx/notes-about-netiquette
 
