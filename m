@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33935CA600A
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 08:08:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35F5ACA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 08:12:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC18D6B0095; Thu,  8 Oct 2026 04:08:56 -0400 (EDT)
+	id DB72D6B008A; Thu,  8 Oct 2026 04:12:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E988B6B0096; Thu,  8 Oct 2026 04:08:56 -0400 (EDT)
+	id D66D66B008C; Thu,  8 Oct 2026 04:12:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD5FC6B0098; Thu,  8 Oct 2026 04:08:56 -0400 (EDT)
+	id C7DFB6B0092; Thu,  8 Oct 2026 04:12:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BC5856B0095
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 04:08:56 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 255381204B1
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 08:08:56 +0000 (UTC)
-X-FDA: 85298733072.14.BB62B83
-Received: from mta0.migadu.com (out-109.mta0.migadu.com [91.218.175.109])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 632EF40007
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 08:08:52 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MYvdfg28;
-	spf=pass (imf01.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.109 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791446934;
-	b=Ms9umm0XJKQ1HQW/KL2yGLIgAoq2cF0Dwd7EF9kDZ7HJzc9ovjhCbkRqONQoAHE1gkgz3N
-	kPLuv6h4zg/76UH/P8zX2DNklL8RcbtoofFSuMxFZk6WMGwk8d0tNPSKb/wsofapAk2cA3
-	iGnJYndvQrPHP4tAEurbfruytr/u53U=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MYvdfg28;
-	spf=pass (imf01.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.109 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E1146B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 04:12:21 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B21A1404AB
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 08:12:21 +0000 (UTC)
+X-FDA: 85298741682.16.0A977FE
+Received: from mta1.migadu.com (out-15.mta1.migadu.com [95.215.58.15])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D63CA180003
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 08:12:18 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vWA+RxS2;
+	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.15 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791446934;
+	s=arc-20220608; t=1791447139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oVQ+hGoGiq8aJrNUXs9rHmf3/t1TtTgq6sE8od2xUuU=;
-	b=j1FGSoZm8wyBVR5uBj0LIExa/dgwXQs8EqDgEFkvxPpNuxSZZnAvMR/VPgD54ESqD7K323
-	o4B0fnH7ckkua7RyZbiz6zNkwHvDnzPgWe6zFxhS6lJCIU1K4ieB5JeoxcDixlm2LFgiPv
-	HcjBMQGGtLEG2nTt2+t2mQKHxZVwMjU=
+	bh=fQUt4iBa4Q2Qkd65C1KCtWnzMP+p/qieKpHfH2umKrw=;
+	b=K13p7RXoYT0wmk2Jv4emd8rolWZvRSSIGd0bkWSMTwyVJsTAMc8aj0Gk4M4DtvguaNdYm9
+	idlp63jkqj1uFjdWn4Uvw5wl4j8Ou6syv3Vh82UHC6C16yigkMI/Y3RDsfSndGSLx1n48X
+	++sB3co/0lpDPw53UmCj7Exp9ZjM59w=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791447139;
+	b=d1cofw35xkObtQ/86ILaJUfoX9EWjjAvzLVx6/PffetKBuHTT0Q7Z15qSzc0EHsPxiL3P3
+	VXCS1p/7owThNXuc9IOv4bILWOcx5esGEStgeEfxTBy607hjRQx9wwhQwCUN7MP7dZ7W31
+	G5DAmSoxclHzq92NEMgBMWhW6wYwXTQ=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vWA+RxS2;
+	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.15 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Yhnnial9CyXjQfMJe0x/bX884j72gzHkQhTCBK9VwN4=;
+DKIM-Signature: a=rsa-sha256; bh=PLvbKK8F/Bm5bhh9c08LKLirJfE5QGxiNc7t1L+MVUA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791446929; v=1; x=1792051729;
- b=MYvdfg28EDDZxHLrbIMD8LSFd2V6WESK+O+0i94XAs8hY0qrmW42FaDC2R3O58GV0LOKy/E7
- JIVlOecD3PJedK8YS74Vj7myc9+i3YqthNLrwXLvk6PLJOy3pJjfaNmDXnnpCui7qNxLZ7jGKls
- SHw9KB7EZpnzCMu6gFVQDLTw=
+ t=1791447137; v=1; x=1792051937;
+ b=vWA+RxS2zeAYwJrl/QBJtmF6IaLB+kMyO61+dMRbeXGmiRTaJd0co5ibWcBsc7zvwWLdMCyc
+ VQQv9ruCRXvqzB7vA9RBmX/jLXnnI7E4a2VOBx5RHHVcWu5ONJdn61SoQ7WuIuqjYX92slY4apz
+ 2iLUPthszWYs1apmRNOKKMHw=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ef9c66e098076910;
-	Thu, 08 Oct 2026 08:08:38 +0000
-X-Mizu-Trace-ID: ef9c66e098076910
+Received: by smtp.migadu.com with ESMTPS id 226010a611eb6f78;
+	Thu, 08 Oct 2026 08:12:17 +0000
+X-Mizu-Trace-ID: 226010a611eb6f78
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <f70fd2a2-cf46-4c25-babf-9382aed69730@linux.dev>
-Date: Thu, 8 Oct 2026 16:09:41 +0800
+Message-ID: <896c2dc7-4787-4c22-90dc-a3cd607be6fa@linux.dev>
+Date: Thu, 8 Oct 2026 16:13:18 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v11 2/7] mm/vmalloc: undo partial mappings inside the
@@ -71,7 +71,7 @@ Subject: Re: [PATCH v11 2/7] mm/vmalloc: undo partial mappings inside the
 From: Hao Ge <hao.ge@linux.dev>
 To: Uladzislau Rezki <urezki@gmail.com>
 Cc: Suren Baghdasaryan <surenb@google.com>,
- Kent Overstreet <kent.overstreet@linux.dev>,
+ =Kent Overstreet <kent.overstreet@linux.dev>,
  Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
  Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
  Aaron Tomlin <atomlin@atomlin.com>, Andrew Morton
@@ -90,14 +90,14 @@ Content-Language: en-US
 In-Reply-To: <a15de109-a88a-49f8-80cc-7bf216d6954d@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: sma1m6nb8ir1zfzqcmq9qt5jifpjb4xs
-X-Rspamd-Queue-Id: 632EF40007
+X-Rspamd-Queue-Id: D63CA180003
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791446932-603292
-X-HE-Meta: U2FsdGVkX18uqPltQljDiNJiCBgFLtlEuK2uJE6pz7PjLT6tmQyYnKKVOeEbrocMlYrbd3uuVokDZTJpcp+uudXnJjM9UbeyNS0uB5U11nL39LtrTtudalIpvLrr0iOIVk35b1gVQQSoCR/fLuoM9FQaW367lBNSxtOWFGvqW3de1+Y0SC6f4qpWlF2VCye9/RJY2r5/1LoDsQ1o6dNVm9e7BlcBIsb5tWWhF/zzAnedngQpJMqrSCTUY+qbopM60s25i193NRBhKh8Xle8uWXTfd5gE4lPIMsfHOVDnKfx/MKJ6Lc1xWsiGARC7pPFiJslj3VePnb/dqaOqrJV4/nHQ6HN4V49vTZOoDDD8UiIEyrtswzUI3bVTllTCoFo/0rDAcRZcM5oJR2rUvOU45WU1yw4IdgIIPDqZCx25Af7RpiaezVVKQRaqLMLwv8ojPRt4uhGZMF/Pex7uBKhSaMc/P103wX0J9gdyjkXFffO/OJ03vkUyEW4BnRqmGzK76gmL/4w/bvPw8/ZDELbx9peMCj2UySWi3YOshRrK8yRO2PNR/q0Q+++tQClIPjx5TNoWtPW96OAtnIyPQ/mBqW29MTLOygSC0T4dfXrKmYZ+xMxZiXAO/31sWuFeI6Sl7AKEfGUQS8fEPGFS8nAixA8obKCW8aNygDgMNCnoRfTYitbdgZLh7nY+oKY5EPQhI38kr/7Y+7GZ9qxVgWgffF2tovbtxrId5v9ofBjn60Pb3mrxFVXLL68OMNNsPHHpI9IZH8dEyKL10hOR4YvBX3hlLefv1Cor9Y+RqQ+Ng1ABGw5jyUPb0YrhA/sYFcJDSu9mUkJ2FZe5ev+TOlW8zihVfPwu273iM6VU0+aAImPYLJ2xX8hgqERjLUigoH7zbezObDL2ead/TPXEJwnPBEnhlcA6O9ECPhGUnvkp3fItpvrfbVJljLzhVqpwRKi2G+O4h9CBnp+9itIx9xd
- lCoLWzD/
- XFqOlzZ/Mt6lL/Z7WKJW97CIUIiZ422oLjWP0qGckl5gI9DIEHNVLZYZ6zqoqdYzto5bIwGub5YYXVYU/t/ltOwAHHyuAW1Phfm/6aHinDbF2DlfPAfF5uNJDqHWsUax3izdovIkilzCGygufF0SlYkq3P5OStWPQjd1wzJ1mgvrPMbqP5XvghW/AqQWbSGgXrxVfWIQzbDtYnpT5PUWPkdqdqoIdOlF05p1vcZmcZlcC+V3Gw00hDxI0WWnxL4c4fg85mqPYYQhV/o2z2IU3dsON6rKla8F0+n36+8WYqkiZW+lS/GigKrp9BQ95eYVjn+H90VPPXDYtMB0FzssSaLXBWCncfJdL7NoSq8Gh0iIDa+gSF0PrDx0gvOJZb2S2HrR5
+X-Rspamd-Server: rspam05
+X-Stat-Signature: swizkoiqhou6ab1neqhwegaxobruhoqt
+X-HE-Tag: 1791447138-233602
+X-HE-Meta: U2FsdGVkX19lbXC0C2vAJ5fzB2mbJ9FR23LF/d+I8XJV4fq+uxgIFgR0ad05fuJ++CixEkwEE1XVfqT0npyCkI4F/9WNQyXchtyyh2jsXZjztme1Tim+hZirA97eq/wBtj76vGqxfy3dIR2O30U890C6xUvC+sk+3dhrAoYP5fFEfqw6cXWergXOnvjHUQkFDkhpoaJAraFYCA3mYaqBP0ZsrYp2BXEKEzbWrRp0RpId4w47LUXQ3D63UVYNBxeJjYYeJt5eAittMqK/FwMPwCZD/+ab1ExVACheIJUwHqcZzxW1HLRCwpGcfrZpRdPZ8m0gjwtvEf9cwXzmqOA4C0/ycvl/nxDDrwEGUCF78pDRjU95VZc7424pb/lFB3WlBkaHZERbKiRi+Q/5U/58+5S6x2aUV24FmfGxugFO5gKTIvvYFj5kx/sOKTNewzdYpIhrgM3Lrje2b2w67mHFLXfoAr6zR9XG9wGirph1b3iIKaThIkvJ9VG1SG/sT20NluOwLV1nAuvKKop+ozeVltjit7iZOFHaBqEOALYnAoF3UN7zCE6CrZPXzhJPF85cJcgfCS1uz7a0QqkcLXz6f9+VijpFHHMFJK2XHJ+C6O1gzVwRK9/+X8Zr0PWOFxjzS4D0DmwwRjZmi6tfwYsnBSHk8/rE1JKDwiy+vRvyAwK/9xN+YKBs9MV3mPfIijCKEv7Cj85xdfvxKcjj1cYDC5dn7HdHimzoAXOfa9Ks9COxN4mcCW40yg5Kp8s4RD4ev1yfVtybLugiMi8nHZ/7MnsLqxPOhYDLG3FOXWYiXnocozuekbfOR5XHUBIvUWcj5F39/xYjl6sq8/UyO7Djyv2jfxE3cdBGAYNCdBrRu91wxGx2mSEnrTs+nDvPnxeH7HoNZtXxnuMHy8vEHCLdXNR1G372c8P6RaRltYiZxZ2UDcbb+IpqQZ10Tm0fvb+lT9avORZNUVSnWMGEqUz
+ dTaVDfYs
+ ep88anIbd4zHQEjKKEwffivm10F0sbW5fnlEUGAhKM54YdDkgEEswSwAMA2eOeJcYX4T4fsN2J+PFnRztgLGECT99hbML0K1swfv+0wTupPsLp5J4akPRMlaPEM3XRbSDVvwxgSYrSBKTnvVdytKG3OK9PN8JKBML1oh/JCu/hKgcTy67sjWWOQTXA09c8GAvX11LLNS/UpyFKeDzv3+FLZMaxdFAqpJs8fSBPy1eSFvMYInyHZyfc7R0I8qAudzPyl7BriA8hm7eeuj7reZ2qKGErr3Bh0kYpLSTa//Gh4x1DuMQjn+pDqbUblAHPJV9mfFHoDc81Cf+KLqId9hjlqnVMUNP0mvo2Jz0xftfreMzUiY/SKKxydbb7z5qnNCMZAHH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -191,14 +191,13 @@ On 2026/10/8 14:53, Hao Ge wrote:
 >  }
 >
 
-I'd rather put this logic inside kmsan_vmap_pages_range_noflush
-
-This function should clean things up on its own, not depend on the
-caller to do it, just like kmsan_ioremap_page_range.
+I'd rather put this logic inside kmsan_vmap_pages_range_noflush.
+This function should clean things up on its own, not depend on
+the caller to do it, just like kmsan_ioremap_page_range.
 
 https://elixir.bootlin.com/linux/v7.3-rc5/source/mm/kmsan/hooks.c#L185
 
-Uladzislau，WDYT?
+Uladzislau, WDYT?
 
 Thanks
 Best Regards
