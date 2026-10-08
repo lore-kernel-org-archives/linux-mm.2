@@ -4,138 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D628ACA600A
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 07:31:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A12CCA600B
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 07:31:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A83A96B0098; Thu,  8 Oct 2026 03:31:05 -0400 (EDT)
+	id 419EC6B0099; Thu,  8 Oct 2026 03:31:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5A226B0099; Thu,  8 Oct 2026 03:31:05 -0400 (EDT)
+	id 3CB2C6B009B; Thu,  8 Oct 2026 03:31:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 949BB6B009B; Thu,  8 Oct 2026 03:31:05 -0400 (EDT)
+	id 2BA6F6B009D; Thu,  8 Oct 2026 03:31:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 60F716B0098
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:31:05 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DDA0C404AD
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:31:04 +0000 (UTC)
-X-FDA: 85298637648.17.66AB838
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AFC4E120005
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:31:02 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=LML32DLE;
-	spf=pass (imf29.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0986F6B0099
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:31:17 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92677A79D5
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:31:16 +0000 (UTC)
+X-FDA: 85298638152.07.2AC79C4
+Received: from mta1.migadu.com (out-29.mta1.migadu.com [95.215.58.29])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 77C2C80005
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:31:14 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ezwG4nhP;
+	spf=pass (imf02.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.29 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791444663;
+	s=arc-20220608; t=1791444674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RvkPG82zfhFkpnOg0JOtNiptSg9vrvtxMEvoINVoQXE=;
-	b=vVlTdCz1Dqx8qe5OG3Waam3o/nLXBJ6WNuQq/h7F6Ay6STOvDejZq5Xp2mhmr/ZVDif+O3
-	wHKkyNkqmGrFZvzsGORCU525QyMd3AjKkEpU+UXIV7GC6DL1TfXggVa3ZVsAN7nv6vpWWD
-	38EsNWMO+MrnDOm12qrlKmVe8nu+zPU=
+	bh=w5JY2b/LqTJLxFtNLoW9b7HKljP8catE0jGTQduKh9I=;
+	b=773UD5rSkzYwyECUs+dojQW6JzItU/UC0e9JqRwOdHI/zuIjNx8LG9MgMFHXmGiqXMM3D7
+	9AJnq8oDRMHUIc7+p+GOEe7kKbvw5buYjFDk7K1SnEcECWZpvFSPf+vs6UB6lPs69hmzoz
+	mpJK35bR2X8Q//pZYam4hT6u7oIoz0Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791444663;
-	b=kWOpFbQN9wf7NfzqukaV8S8NxVmvRuM/MT0tPvzyApi89EYRjjkjM5h6bKyqAaw8yzvgMF
-	5Fa6/HHY/gvGaQLMC/EnCZ0qGOSRA2vbUOhp5yxfoPliy6/3eWVZNFY8VYpoF6Cc6GQ9/N
-	XpHwe+A6+kr69YMmFPLi2x9ku9agqqU=
+	t=1791444674;
+	b=iAwpai8gPRfZU14vnpZ/IDVi2kH+vHiB8+ISMR9oddn0Hg7/bSVfKFCyBx4Nn2HhDw3/Tk
+	KMoeZBOmz5YcisX6lPcb+EkKuS3ybiOKRLFoY2ucL/h2ZHrMAqb49dntwDuxZEv+EsYZad
+	b6UfPdbAY7v0ZptKu0QuXzhWYzZyauk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=LML32DLE;
-	spf=pass (imf29.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-39647aa9d52so318510a91.0
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 00:31:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1791444661; x=1792049461; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RvkPG82zfhFkpnOg0JOtNiptSg9vrvtxMEvoINVoQXE=;
-        b=LML32DLEaqnOWY1YevRrckTuxlCG0pVZ8o37oI8iGSaJ+rJVodGqgsthF3zCE7pnoo
-         A56/DCgYGoVOk8hY0ug2WyGPBHG8d8eJb7Hg+Q1gouuvD+YD/GtLk2UwDftMC8eZtw5o
-         +EGlJx/Sa7hVX3bvmvuhXvP/Eo4gl1obn0e2diO2xSQj7vTM/q0vM4lba7lFmyeyf6AO
-         4uexWLflM2mJuG57X/RHJhREvPdJ6X+I83dPgpH3opogj2IrATepOW0t3BsOW2yvuhwB
-         2zTiC7ltEubKnnddfh0d4zH6VRSuXpKKrFPomsRh1y2yc26wVrpmsl4mXQImZ59OvNZt
-         wGWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791444661; x=1792049461;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RvkPG82zfhFkpnOg0JOtNiptSg9vrvtxMEvoINVoQXE=;
-        b=Sfu7QKgSZF+2/0y2zJ0+cX+EuML1dk44h4f6EZF/5t+x5XyONq1bBaIRnNNel9JuIx
-         Dq+lQEGbgFGXZzIs7Za0IPRf/UTOpFHT58DnPqtCM/iPuuljqdVYP7QiHTcXVgj3Uyrs
-         5Vvkoxld0K8OyMToCvZcw8wPgkE0IwcTLHYQR6OjY/FeoKSfOM4xBnwaJsaFVpL4zdru
-         I4j2WIzD7nZG+E4/WukH0Bfo9BDgPho/1t6rIaPVpQGhwV96tFxBbJxoMb6+rmxwW6P+
-         xxXmlg4//Qw3JOdBSJ5T+u4B3u2QQyerKFolp23nTJ/4OnL41deV/5F6pyVVYl41f53m
-         Zqbg==
-X-Gm-Message-State: AFq9FYJBsSh0I1UkjWSeWW4pV8Y2iSp5byjd2vY+B0714vUq/PCBG1iN
-	NTCPe9raehkFGs36ukMQBGAsYmQ3gGukBsh6hWGQ/ovxGJTDLgtEV9kJF5A63FyxL00qZrdR4ep
-	6+Hmn
-X-Gm-Gg: AYBFou0tHTgoC8Mrx9TJB2d2X/9gM1FaAS9qW+O7vlUwOFbiweBfxB5Ig2zvAn1dKzq
-	Q4iB6QHKm2C1lrLyUsnkxTT6ExClOrFV46e6QD7uiORxsZBRUpHXiKkyhy6ciICqO/NTFvQsaei
-	iaBn3SH57deQoYsnQMzVMp9qzJ6L4x3r326y7Z7wIJuY70ElsBh7hX2u4Olebg0FxLMsCZpF3M7
-	H5ZSSjEqdDQU/IImtrBIyS6bfK5/U0itneh5N0QglPX4sEu+ADxJw+WSXGfkvNFdIfer7PCkUiO
-	u5erPBWy+4klL8DVyqx2myZQvYyQwO38MIE2jXoSBD9FZXzTamnWPYT/nNdKdcN5JUchEXfLAZ7
-	aBiPHIXs5IoViK3wMAUfk2zdBSFpPpKBHrX8HzoYevQ8BbTzfw5Q9771AlEakMcIwBo8c3lCr8n
-	Nbz8Y0Rs+zagNZK+Xqp4rfKW1n5g6NDSEtDBbr3+4ZR6Es04B5QgqBChx0Viyzo2KrAlGDwM3kN
-	rpcachV5hfGmu2DK7M=
-X-Received: by 2002:a17:90a:610:b0:3a0:e568:ed63 with SMTP id 98e67ed59e1d1-3aadff48952mr575784a91.8.1791444661248;
-        Thu, 08 Oct 2026 00:31:01 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.99])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a8a438f25dsm3114715a91.2.2026.10.08.00.30.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 00:31:00 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	david@kernel.org,
-	osalvador@suse.de,
-	dave.hansen@linux.intel.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	mark.rutland@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	linux-riscv@lists.infradead.org,
-	agordeev@linux.ibm.com,
-	kevin.brodsky@arm.com,
-	bjorn@rivosinc.com,
-	apopple@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	muchun.song@linux.dev
-Subject: [PATCH 4/4] arm64/mm: fix destructor for unconstructed hotplug page tables
-Date: Thu,  8 Oct 2026 15:30:21 +0800
-Message-ID: <20261008073021.2512665-5-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261008073021.2512665-1-songmuchun@bytedance.com>
-References: <20261008073021.2512665-1-songmuchun@bytedance.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ezwG4nhP;
+	spf=pass (imf02.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.29 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=JEx2OLckwemutil/MN151E8aEqCJockn3ZT2A2YL1GI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791444669; v=1; x=1792049469;
+ b=ezwG4nhPyNVkBBwhdSClSW+Wyjq0AnX2ZF77S+N7PIiHK1DGKk/nvPNh+GHQX47wWpc+8KV4
+ 0AQtP/2bb0mil3X3PQbyjqk0+BGTJ0ixggS7qxUHQOpfEXRvrUkpMo0g/t24YO9pEAXq92b2m5j
+ B8UMJAs3DtzXLurpE5z6X9ao=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0f9abccb4081472f;
+	Thu, 08 Oct 2026 07:31:07 +0000
+X-Mizu-Trace-ID: 0f9abccb4081472f
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <85b3725a-6dde-4a57-b303-4ae2b53b60a5@linux.dev>
+Date: Thu, 8 Oct 2026 15:30:49 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 16/19] selftests/mm: add khugepaged race harness
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Muhammad Usama Anjum <usama.anjum@arm.com>, Usama Arif
+ <usama.arif@linux.dev>, "Nico Pache (Red Hat)" <nico.pache@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, Barry Song <baohua@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>,
+ Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ Michal Hocko <mhocko@suse.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, kernel-team@meta.com
+References: <20260919002451.496763-1-kirill@shutemov.name>
+ <20260919002451.496763-17-kirill@shutemov.name>
+Content-Language: en-US
+From: Zenghui Yu <zenghui.yu@linux.dev>
+In-Reply-To: <20260919002451.496763-17-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AFC4E120005
 X-Rspam-User: 
-X-Stat-Signature: txmkppsrgf9rgm356ppbdtcrmnh1tcr6
-X-HE-Tag: 1791444662-214722
-X-HE-Meta: U2FsdGVkX19/+4V76SqoRkZgqLD1FHzb6nM0CcI1kE7bO80VUKqC0mn7YQQPTUoxE8WR0pKjQVs5av4QhAB1B84xVmvxzmeAU+U4YSqxiZ3RD7BAiMv1DHGnx21plotNgM9UA+GNSS5oQWQMwxW33ondyoHR6+/i6P2iqcYmFshH5wCjbI5fpM3QZhNnnUUIbSJROjHSJ+RmEyAGTCLV4Ar3rUyuwjCwtGEHKV+tQkSCgnHdNOQTk1bfYan2IgcwrssvIx+Wu5kP0aobohsQeBintLUS/bTV4mmZ7xeMNLeM0z9bx+tDIPR5J+cpayyYVL8kb0KRRfl2b74auDrizmY1A63iy5NKpC3sj8X4aWOE2Efj1dUiMwyt//QxZZtA4GRrnDqzhfARtDFZ4+Xvi+5HPKoD7G7KjVbbHLi8nlpBQIS6iYxTs4bNr0k+C+ib4W0v8U8JV1h1auc211S5x7i9kwdGcgXQogAbpQxSQqiSjDQuQLACxK7zSWSbosO7mMbHMh3r8yv8UZ2Fps894XaCIcCCgVTTV88IYnwdTG24w5awckhAJ9zT5S7GES0lbCLxgDKt3Ng3R3CqcxqAC72hb/xNfa73fonxckMqZIoVnns47WSERz52QXSjEBSt6AUj63fQQn5IbLtv/rEbJI2VfEpMW1ibIfRFCZY2WAYYTW9i+D/RlMeROV0LhCtwN3JT7NWkV7svS20TEk4cTqlAqVznt2OH+fAcmH2e60evhUSOuhV7be/IFJwCoJ3LFdT5CJqbWdBLA17J8rOYH0lLd+UJ8Q7nC0mTG/qQzRG4/p/DvjNmqchHUYTfkYqPXL8WnhdXNootm3FhkgHmDE7w1Q3eLznztXC4f+SdVyWE3S2ZoXc9s2nTIVogVJldLju1968MRopybs7kNWFAWzEWG0o3yGrsDweYP0xz37IoQdN9ukiXqfbMhN8NHGUkgFwZUGjPaYXn4Dh2JUE
- rxGZ18Xt
- j/4SWAzpjJ/JDubqZqsKX3uv0/0nl70qjeY6yH+J1azd9m+1VwU+0pe6uV9/Z65eY1YDNDdGwy0GU54mohlLCOkTE8uQBY9x0L2+Y9tGQOgZaYDYZhN71dsreoNIIM43CmdKqWpiSFZAIndLkPk/5UvCgUNjeALQOujZ+tkDoxy5OD9QiP76Hs6p9qy473OdvJg7zwcJarTDnw8SVVhR1otcE3K/x3o/MqVsCPVuo8G5cbHq0zKBYlVojd5uOa1PhTyMu3LPFi1bV3SuH4tOiK7XcVc6CdXcQSfQLdJm/yMgkNoL5eSGK53z8Ue2+fuyzJsst0RogTkmu9+w=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 77C2C80005
+X-Stat-Signature: 13maowrtdh4s67i77yubhu5kwjm1ubka
+X-HE-Tag: 1791444674-872670
+X-HE-Meta: U2FsdGVkX1+btzFxgEV1zUi0Llen4Xj+NraJjyCP5og+VvwefcNC1no0eBj/yLY0+b9syZnS1B+No69l+56VRLoDb1Ie7j/qxSlqBFBlJXrLgI+KkWQ4OmyuOuFuR0uRYViPOqSuJTNXyo02Fh8zeFJlzFFNohnaBcsdAPDmUyo6szpSY/fNuh2IaTQebP2usL9NMXL5i0kNkpSo7Sz71wiAeqMh1zTMuaGzE1fdkyx5wbWsoFFQjQtpICrY+XbcwpxgVjNNi9pMyikfso6yYCG9N0fW6rdnmN1Q3EGRzqphJINtaIwahvwGs+mH38Lzluk1yxO5/Otl87zE15bGrMJo7Y9b8WcLXOPiZHeXCOu1AiXY2Zk44xqq+tBI3ap0b31du4k3bE56krMf0r4C1S6qyjsnRaaF06HcrMtuUcfC7B2JdQdVljSDlzwkdGprbgedJ6XnqoBwqBDRy5kVv2xbDC5laBuPEl9IZMV/yOyVfqPbrdRtZE4gV/nn06V5VGOwHknXcUoiZzw2T0YbSsA68Z01ZH7QWYidxJ3e/GpuwHjD0UfXZ/4z/g+jZALlCVdgAcGuyEnfxPYkYTtCtk4t/eWe/rmMo+PfGfbqz9I5qAi7tsxbz9NYj1eyoGxxU89+BhBjtgSvzjKV+Ms/hFDyW1LL+JYHGtWUSyMeko3yAbxQmQpdJHImVXnu1Rwqv5JZuxE3qsKGUOFmzAp36wa7SneZS95m0oRQOoaSuR6pfVNhZpNB08Ty2b1dTqwKFhHYxXnKRp4nidnd6LdYLvfTxma6SQdqgaNe1btcZHU6f+j4riqOH1Kx2PKMZ2aHPqwVKtbKGEXS2RhPecCotzo4IM+P3LyHIWQ1XqqmUACO26Qjl8esj3y8cLXOSGkkcQtiYbBI1qQHb0i5lr9BGkEaPGT76WrjDohTnGDwPggrMMJ2tgXPahuBthg5e99KzBixENVAGgUCVkyl14K
+ a1uyLoqc
+ ptg8skeiDNqBWr0tlUcggfi0URC8qWn9uRN7HW7SjsIx4SSkuOsoddnvKXXtuRgMCJCcw/RsNovUNgnGPwlO4GwrgjT4cO/Jwz5UIe3PYVemWqMfZla+BwC1SLeAdJ1+ZY6v1A9cfWsjaWzY7BisaCgJvjOfYXE4GGtuo7xBUUpXEV9NADfAbJHOiz40TflyYGD7pW1GhW+6IFI4Vvx2AXDcUzKzwvbdS3oAfi6aGwSwh5APe0QJDrv5quLVt61E/W2CdyfEW9Nld8NLikjmzSRR3tfZ8l61KoFzhFVAaBlI+uLA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,45 +106,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit c594b83457cc ("arm64: mm: call pagetable dtor when freeing
-hot-removed page tables") made free_hotplug_pgtable_page()
-unconditionally run the page-table destructor. This matches page tables
-allocated by the arm64 mapping code, which runs the corresponding
-constructors.
+On 9/19/26 8:24 AM, Kiryl Shutsemau wrote:
 
-However, arm64 also uses the generic sparse-vmemmap population code.
-Runtime intermediate page tables allocated by that code do not run a
-page-table constructor. Freeing one during memory hot-remove therefore
-runs a destructor without a matching constructor and corrupts
-NR_PAGETABLE accounting.
+> +		} else {	/* madvise */
+> +			while (now_ms() < end_ms && !corrupted) {
+> +				for (i = 0; i < nr_shared_areas; i++) {
+> +					madvise(region + i * hpage_pmd_size,
+> +						hpage_pmd_size, MADV_COLLAPSE);
 
-Use PageTable() to run the destructor only for page-table pages whose
-constructor initialized them. This keeps the arm64-created page-table
-lifecycle balanced while safely freeing constructor-free vmemmap tables.
+I got the following error when compiling it:
 
-Fixes: c594b83457cc ("arm64: mm: call pagetable dtor when freeing hot-removed page tables")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- arch/arm64/mm/mmu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+khugepaged_race.c: In function ‘main’:
+khugepaged_race.c:506:23: error: ‘MADV_COLLAPSE’ undeclared (first use in this function); did you mean ‘MADV_COLD’?
+  506 |       hpage_pmd_size, MADV_COLLAPSE);
+      |                       ^~~~~~~~~~~~~
+      |                       MADV_COLD
+khugepaged_race.c:506:23: note: each undeclared identifier is reported only once for each function it appears in
+make: *** [../lib.mk:225: /data/code/mm/tools/testing/selftests/mm/khugepaged_race] Error 1
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 7343ac9294f8..688b33095651 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1495,7 +1495,8 @@ static void free_hotplug_page_range(struct page *page, size_t size,
- 
- static void free_hotplug_pgtable_page(struct page *page)
- {
--	pagetable_dtor(page_ptdesc(page));
-+	if (PageTable(page))
-+		pagetable_dtor(page_ptdesc(page));
- 	free_hotplug_page_range(page, PAGE_SIZE, NULL);
- }
- 
--- 
-2.54.0
-
+Thanks,
+Zenghui
 
