@@ -4,83 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35638CA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 06:20:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65DCDCA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 06:38:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 059F16B008A; Thu,  8 Oct 2026 02:20:23 -0400 (EDT)
+	id 33CF36B008A; Thu,  8 Oct 2026 02:38:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00A326B008C; Thu,  8 Oct 2026 02:20:22 -0400 (EDT)
+	id 2ED846B008C; Thu,  8 Oct 2026 02:38:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E634C6B0092; Thu,  8 Oct 2026 02:20:22 -0400 (EDT)
+	id 2039A6B0092; Thu,  8 Oct 2026 02:38:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BB6CB6B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 02:20:22 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2162A1204A3
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:20:22 +0000 (UTC)
-X-FDA: 85298459484.28.5BF89B2
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6BEAE1C000B
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:20:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Ke/Tbykm";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F056F6B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 02:38:47 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 78B011C3648
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:38:47 +0000 (UTC)
+X-FDA: 85298505894.25.590A69D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DF6ADA0006
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:38:45 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j38/YTG9";
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791440420;
+	s=arc-20220608; t=1791441525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WBjIFJjH1YSESX6XKsyH3s55ktCin3Q3Ic6wYond1xU=;
-	b=e4PX0sfsx/VKfYL34PcL8VRxmHYRAvTJv+adRHfHfqSZAU9XV7jgrZ9eZEep9s/ZILLpW7
-	zXPXMTTZ+owCUWjGNRn+a7I43vSvKqAawyyVCvw6tRQgc0T8M2meBkz8FtM5VWWI8rwIbz
-	hbq0e1KSLmkZabC5ovo+h0FyITVQcIM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Ke/Tbykm";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	bh=/RsqwdaewrKioDzHveOJKZewBC7grld6bvE/46a8ao4=;
+	b=g+I77yKrKgqXqjBRl91VXFfzPJH/6vmWMZMQBpqjgX1VKzMSY/Qn90TpawquCk/TZ/DD3O
+	ShgPFTm4478Yo9PP0R3eEq+ZMM4BKqLyw4PzVpWzJxn53iy+WCjzLSt5Lc+XyWKopv5qME
+	YbWV7zuhFDHZITue2/6LxPI8UpVws1k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791440420;
-	b=00FMSQx/OUFB4Y+aroJAM8kiMBrXQGhwkXGrwRVmx7ZU4fyqElaJix23iQrAJsEGEYsQiM
-	96Sa8d4HKLxjvywKo+injigh8AKBrJWyhtijZWHjKn1yZNWZnoxrjYCBHF3ahShfHCQt+H
-	jqKCa/8rhnOAJMqIm3Bi0tVhNyqX7Xo=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1791440413; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=WBjIFJjH1YSESX6XKsyH3s55ktCin3Q3Ic6wYond1xU=;
-	b=Ke/TbykmgbT+gud/+G2OUkea8+LhLcc0w6t4NzXXLvVJgqkOy70RxPsPyBAXimlHeIx9q4FfNWiBn9aPcfYybw6ixNGE6E3oeWCQdI1dDLRRZpVy5xbQ3RUhaOrTv13HKriVnjtd7X23y0C4Ev648eNDeO3UOqBEEs0IPIccWd8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0XCKvm76_1791440411;
-Received: from 30.74.144.149(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCKvm76_1791440411 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 08 Oct 2026 14:20:11 +0800
-Message-ID: <fb549f87-c6ca-43e2-be19-ef0bfbc5e085@linux.alibaba.com>
-Date: Thu, 8 Oct 2026 14:20:10 +0800
+	t=1791441525;
+	b=IgugLshA7f1cHfckvV4j6TdLBOLfZ0gpFQqOQ154Rt2+MwDb9Zyu+k1mmm7wYDawSo0C1E
+	WpxR72N8xn6oCdDT3zh1Wnc1SrCMMfqlG3xcHwG48ZrPVmoWmnsLgdIJqjx8bwqmt0nygC
+	FCwyvpiOw7oioqBfkr8SpfqsE899k+4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j38/YTG9";
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A4823601DB;
+	Thu,  8 Oct 2026 06:38:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100691F000FF;
+	Thu,  8 Oct 2026 06:38:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791441524;
+	bh=/RsqwdaewrKioDzHveOJKZewBC7grld6bvE/46a8ao4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=j38/YTG9lX9S2OLVXDrkb9B+8qcyyKaQeMspUhzgHXZ8OBa+qZnuSMP76709ZUhs+
+	 a2No4Xym2pRTE25zOa0YSWg1zIR0kv5unhOKYSL/1ewwvfOgo4NJsFKdKsz8awTWX4
+	 /6DtOBH0rcPuvqE9YaHNUMuGvM6gi5M72z4YFQzK+hsEcgkXstEWOdF23UpXTvDC1e
+	 rcXu6NMXbPo8akDEKg13ENAmZ4oJ4LGXJ/exQ0zvvwBHued3rbZO1rBc8wWJ/EeQCD
+	 ahpWpWePxF5W8jZpuc4bs15phLuYmjwyc3dTZ6oM5VUf+2nbrrXsgQSnnY9wHAOIMN
+	 OuVHTEGQbZ1dQ==
+Date: Thu, 8 Oct 2026 08:38:38 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Wandun <chenwandun1@gmail.com>, robh@kernel.org, saravanak@kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, akpm@linux-foundation.org
+Subject: Re: [PATCH v3 0/5] of: reserved_mem: several fixes about reserved
+ memory
+Message-ID: <asc6brs_g0ky0wOM@kernel.org>
+References: <20260920092852.614973-1-chenwandun1@gmail.com>
+ <arJA6fOMetzoBhDH@kernel.org>
+ <060fb694-ba1d-40e7-8a18-f32d5a4039ab@gmail.com>
+ <CGME20261003080438eucas1p2bdb68c248ecad088559285a4f736bfe5@eucas1p2.samsung.com>
+ <asC3DBvtlcO5AVsz@kernel.org>
+ <5dccea9b-a9e1-44f5-84d9-bc9efe04edee@samsung.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/khugepaged: flush deferred unmaps before dropping a
- failed folio
-To: Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- outbounddisclosures@openai.com, stable@vger.kernel.org
-References: <20261007041001.43181-1-kylebot@openai.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261007041001.43181-1-kylebot@openai.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6BEAE1C000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5dccea9b-a9e1-44f5-84d9-bc9efe04edee@samsung.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: d1e1eb16wfzgujjy7nh6a9b7oc43umq4
-X-HE-Tag: 1791440418-732001
-X-HE-Meta: U2FsdGVkX18GoLVkaluqfAfWSMnGMWvv7gg4mq43ou/+zTxXWxinEvGOndxayz+je7FLTeYxvr8cb8GGJUbxuRiYN0wtlFIU7+w/0e9auXh4NN96Gllyf9X6IE8GMUUL6wiO6bfGDOLk7pikBVlJ1N/zQ2f/U7Z7hjhNIrLA4jLUDhsUw5hKN4A+fdd24rpX0FjCwqW2UcfU0NBzYe4tu5bC6DCp7QCewwo/sKcY8R3XbMGt66pDFAyj8ex6O4S/PYyUnJhqe6xgBmXHxSzUc78wHP+i59EWBmOvpWO1H/Nv75Xg6LjXhdDO2Zvz7MydF6HcPEEB9vti+cKIA7M9MvpKga2qUIcAcX/Abz8R2kDbuUVtH226b1iuhgZc4a2wE/51sY4ppy5OpNPsWniAZqh9z6QOFfxhYWS8BjL7nWXlZAIgc3L06PVSwgzujpzWFiLdDRz/V3ypZtBBilqjf/RG6dn0aTggVPViGAq/jo8j5kAkAQ98hLFLxt6NNJoTlb4cRFMYG1gl25zhrz2LiiD8eeZTO9eEOrbww7ymM3Zrt7vQrODvrWh3xMVdbFOysdKSXIZMn+pvYIyE99jNPUQKhBrL6lPUxo+kjLCIKGiv9iC2PnIF0G5BhOZ+VUZ12WL/bYi9Pu+wXlPXx7qBAlfdPRxQGKgyEFhriM/4OjpjMy6QqE9+gUUlPschPg1pqAJ+CNJ21ttWXz/NMXwNQiyI/0cK3yLtEL7aUJ5bqMPJNEGOLA3qHpRRaXqGZNhPWd0ZQJvjj8DXfQ6s9lGQwn+gqwNw36KEKnr0au/wc9XX4r4ElDovwrsINUlnwbAn2K4hNQRKrDXdm6CZ6qGE2EmxzBe1WxzCDIFuqiarozqfTRdeeIJsLZxkJBydIULtMwhuVKZOYv1Tf5FCabSbm/JAJyAu34L462t5+y9+iJ9OOQ3rpoyNYxTX5iZ+SUPLgUaw1xekYyv5k2q4qJj
- KsIsl57V
- pUZAXt0DsoTHNCyN5nX5whUmNQcl5iJRMbCa/dD4vH/f2OgMwv94x6psnuy2w732zEfQdFJ/zhWk5cBVCxi0nYmmD+hYihGQ+GHQ6VQCfFXEWiFT5LmRYpf4MNI3BpyfUvcezRpnASZDq5MHniE3EGjSqUQg0Bc29hzQYDJgmsk+LaxqJ4apw6c5ukuRfaZIN+PZbeWUTdDZ+pi+T6OtZ6lkAygm07I3XqExbcRSaCxBrH9GLI+P+LVNtxcgCHcM851DUQPsCOC8MBzUJKj6EXBmT0OVY+95PVfFK2eodtUPzMy3DOuCzI0JLP3+E42fSKxJMdiBkYWmVR3/4dJui1LlrSyyZOKZYz4mb
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DF6ADA0006
+X-Stat-Signature: zumzzit36o599acrnqehp55rsw4ds41k
+X-HE-Tag: 1791441525-486333
+X-HE-Meta: U2FsdGVkX1/fcXKDb86FhKm+Q5ekN4rfGpDTybq+9H9v+oN0BBiMQY7GOwNW0amdC0xKlC+QAig+OV7uQexKpicvDAIFNLEnCGkYiq1C2emqGo5ecPdZ5+2DRkYEGBm63cEZR+2HJ2jJDPDggYkimbGWM0fyCKByKY1g4cD1kd9WCd6kqaSuK29Hs24keIXmjOyTDN0DobecAJmntfO7V2LcIx8kmzvXyPSaR5Xd6PKzwPfXQmOSBU4D1DqlJQ8PUc9/pFa12Ex7u+c/hGQL6GotlAlvIMJ/MsIpr6ComgfZGwcDOTISf1NCq4Ky2ge8Jh7/4UwRbveNoDGZA/nFsvzRTOGMD+ClIlmwBqzZfqBeUdgr/YTetK3XZOtAKn/bAd0PXEcUHsVVWskeK5ScNh6rHq+A5cbxE/QyYlvar6namdgD94qmpdkML7tVck+hgcXhEMLZUGXT7InrS1PAAdnHOCWA86L48g+JHVeG3q1HAADsf2Gtq7+AjhWxCZ4hmjl8Ke5IFyvprBml/XohdfOEKmyg7qVSC42X45PNKoKlzb5sQrSNPUcqI4vWFVfb3od7vjuGlOcP4W1bbyl3mXMhbpAyjPcJKpLT0L3luQ96L6B3goaI0tSlMqs9ux58EfjYHmXYP0y7eYOaUmkbANihQl9CKWFeAXNXDh11RGfwrRbP3r1zp84odXxmwZSAuqKulDQPUlYaqRpmqGxC6z6JMcnDGi94EALf449KaAjibHuTtxR6I/KGLBSLKsp7pGuUpMdkNIokkmYgoxOAJUY7Yqv0yTHdlYAO/4Mo4v1U3FB0qzhJ+zvFL3t2OwNvDG7y00Nu9tRkcFqR63Jy5+pfpxzlia3i7Jr4q/L1/MDQrSRfFNmWTyEjGyUeyEI0c8yKlhzSDD9ahojzNfNkhN48hXgda6DRMBuvwphmSIowNQuKkITO2geJR0izMUP74nYKu08gaiiQ1+ecGm2
+ 3FIV6UnB
+ km7EbN+LmD42kR5SZiPibPdJV4AN1Mg/RhVix6iMrHhxj1I4CNHExP3IxOzgOJnBC0yXqocR241dU9dmI65+LyfladiAegKve5xJp7+BdcqSUXB7A+QPZzWzoQm0J03YqqXnBsmPBZpwDbH9/10vcUxPmoRVlU6jFc9Tk7DGbhb3SrbPQOc0vrb59JSDCazaSckyW+H/dHmpQTboeSukpzIbXhLb4YGT2dFppFXBHOL3IOZJeUvqbCJH8lL1UjBO7pLLQG95GEzFQ22ukw4s1YzGeqcHl5uxfMiQWu02yl1OoADNVsjiT38rPtteAZTeRxUhPcWWskZaCx0ON5kjjzGMjsXObm1hL8uAmHghBjp1YEP0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,31 +97,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 10/7/26 12:10 PM, Kyle Zeng wrote:
-> collapse_file() can fail its reference-count or dirty-folio check after
-> unmapping with TTU_BATCH_FLUSH.  Both paths put back the isolated folio,
-> then unlock it and drop the lookup reference before reaching the common
-> try_to_unmap_flush().
+On Tue, Oct 06, 2026 at 03:26:21PM +0200, Marek Szyprowski wrote:
+> On 03.10.2026 10:04, Mike Rapoport wrote:
+> > On Tue, Sep 22, 2026 at 05:24:32PM +0800, Wandun wrote:
+> >>>> From: Wandun Chen <chenwandun@lixiang.com>
+> >>>>
+> >>>> This series fixes several error-handling issues in the reserved-memory
+> >>>> initialization paths.
+> >>>>
+> >>>> v2 --> v3:
+> >>>> 1. Rework the mechanism that checks in the late scan whether the early
+> >>>>    reservation succeeded (patches 3-5, suggested by Marek, thanks).
+> >>>>
+> >>>>    Patch 3 adds a new memblock flag MEMBLOCK_RSRV_RMEM, which is set when
+> >>>>    the early reservation of a static region succeeds and checked in the
+> >>>>    late scan.
+> >>> Can we keep this local to of_reserved_mem please?
+> >> Probably not. I do not see a way to keep this entirely local to
+> >> of_reserved_mem while handling the issue robustly.
+> >>
+> >> I previously implemented an approach in of_reserved_mem that records
+> >> static reserved-memory nodes whose early reservation failed in a local
+> >> array [1]. However, the early scan runs before paging_init(), so the array
+> >> cannot be dynamically expanded. If the number of failed nodes exceeds
+> >> the array size, some failures cannot be recorded and the issue remains,
+> >> and that is why Marek said "partial solution", although in practice
+> >> having that many failed nodes is unlikely.
+> > Even before paging_init() there is memblock_alloc().
 > 
-> The page-cache reference does not keep the folio stable once the lock is
-> released.  Another collapse can replace and free it.  With its PTEs
-> already gone, that collapse cannot flush the first task's per-task TLB
-> batch, and retract_page_tables() skips short or unaligned VMAs.  A CPU
-> can therefore retain a user translation to the freed folio.  This has
-> been reproduced with unprivileged MADV_COLLAPSE on a memfd.
-> 
-> Flush at out_unlock while the lookup reference and folio lock are still
-> held.  The common flush continues to cover the accumulated pagelist on
-> both success and rollback, preserving batching on successful collapses.
-> 
-> Fixes: 6d9df8a5889c ("mm/thp: collapse_file() do try_to_unmap(TTU_BATCH_FLUSH)")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> ---
+> One can call it, but such memory cannot be dereferenced/accessed for example
+> on ARM64, because it is not yet mapped in the linear map.
 
-Good catch. LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Can't we use early_memremap() for it?
+
+If there are many regions that need MEMBLOCK_RSRV_RMEM set, memblock will
+need to allocate memory. If that memory is still not mapped we'll end up
+with a crash in memblock.
+ 
+> >> To handle this robustly, the late scan needs a way to determine whether
+> >> the corresponding early reservation actually succeeded. Current approach
+> >> uses memblock to retain that state.
+> > I can't say I like the idea of keeping this state in memblock.
+> > This add flags and code to memblock to deal with corner cases of bad
+> > firmware that reports weird memory layouts, and once there is a flag in
+> > the common infrastructure, people tend to abuse it.
+> 
+> So far I found no better place to store the information about successful
+> region reservation.
+
+We can have reserve_failed_nodes larger than MAX_RESERVED_REGIONS, it's
+__initdata and anyway discarded after boot.
+
+But even a DT with more than 64 bad regions seems broken enough to WARN()
+and ignore remaining errors.
+
+> Best regards
+> -- 
+> Marek Szyprowski, PhD
+
+-- 
+Sincerely yours,
+Mike.
 
