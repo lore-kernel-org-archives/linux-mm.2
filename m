@@ -4,94 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E24ECA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 09:39:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE325CA600E
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 09:39:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 447706B008A; Thu,  8 Oct 2026 05:39:43 -0400 (EDT)
+	id E0CEE6B0092; Thu,  8 Oct 2026 05:39:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F9016B008C; Thu,  8 Oct 2026 05:39:43 -0400 (EDT)
+	id DBCCD6B0093; Thu,  8 Oct 2026 05:39:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E6FF6B0092; Thu,  8 Oct 2026 05:39:43 -0400 (EDT)
+	id CAB826B0095; Thu,  8 Oct 2026 05:39:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 09D686B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 05:39:42 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6B8C2C04E7
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:39:42 +0000 (UTC)
-X-FDA: 85298961804.09.358C6B3
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 771F0C0004
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:39:38 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=YQq5UsJq;
-	spf=pass (imf28.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A26226B0092
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 05:39:52 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 050A0404DD
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:39:51 +0000 (UTC)
+X-FDA: 85298962224.16.B289817
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 72D8740002
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:39:48 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=gqi0G9mb;
+	spf=none (imf27.hostedemail.com: domain of BATV+5ec9ac32e36676a6fdc4+8446+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+5ec9ac32e36676a6fdc4+8446+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791452389;
+	b=QllJVHp3KBS0wRX6pexFSs3MiWs9DCytApP9Xaa7bCCZyanF2b/M5ksQbTubWR657MBRkj
+	c9VnAiwWs048iTreyF2Ap0QC8lqV9zlp2wbz+hOM9qK2/YmHtQ9XphRH3YkUEmkJGuqoPL
+	2h0hwocb9qpMkQXbwTwHvg6YIvPACPE=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=gqi0G9mb;
+	spf=none (imf27.hostedemail.com: domain of BATV+5ec9ac32e36676a6fdc4+8446+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+5ec9ac32e36676a6fdc4+8446+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791452380;
+	s=arc-20220608; t=1791452389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4IJ4lYBRnOH1ELDqm8p1BYesqSHem4oJyVkCQ2OMYXU=;
-	b=vQ/axN+fKBQKwlAcpVpFdcGGTpcjxQzZtnezlsrHqj3dNdmXbD5REBqjOPPjKQkuAylwhU
-	EYzEaNGTS+22cxZx+viWbsKQMLcTzHhmW8tL9qjyfHLXVbNYCHu4FT6Kezo3WHZJipoy+e
-	xsFLpoRwEZKKreUA3r1mDOQZrKSC2YA=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=YQq5UsJq;
-	spf=pass (imf28.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791452380;
-	b=URcDo683M+166gwp2H4jeuPNZv24W07KZyPyL+vLG3xZhGwDhzZsBLndX6CIGTYg/z8lX3
-	WPneBKTMrzK8f4Sp3LIpQcmrgM+jVflaleDM+LZBz3F/wQVOpB4PgYX82+vmZAShQPRUi3
-	j70lHdoYPksczT6MHKj4A17r+U2IIO0=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1791452374; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=4IJ4lYBRnOH1ELDqm8p1BYesqSHem4oJyVkCQ2OMYXU=;
-	b=YQq5UsJqvLuF9cPvHB9ifkDEz4LR5bBIHweK63UYikOIe2SXUL8Eb4Cg2ytsIjoUuJ0nsOLcQMeh7EpHFOK/ZLB6cr6daCdgSRv5iBmzGuwi82MLY5Ck+01UHusPtsFwEJpWdKQ+aOWdu2fP7227suX3UXrKOjIp6qZe1SGDumQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R611e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XCNdeuW_1791452367;
-Received: from 30.178.85.189(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XCNdeuW_1791452367 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 08 Oct 2026 17:39:33 +0800
-Message-ID: <01f89ece-9d46-47f2-b660-d32ab5d32923@linux.alibaba.com>
-Date: Thu, 8 Oct 2026 17:39:26 +0800
+	bh=SXGH9Z2sKf9gd5EF+DR8x54cjdZ36U6rmco1+5f+14s=;
+	b=MeHX6ESeKMi2+CSMpF9rukU1FXzHHGoaM6r58hcUqfll8wdO27TrFQv7xz1PLXbFG1jrbD
+	7Zu1Rjbb88gmNj+56yQBp5HMwQ/hVZEutK68EoV7AP/2IabWWn9jTe0Fc9NGm/VtEChbh0
+	V1gegFz40lk8NMwCXleZt0CmaPMYABc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=SXGH9Z2sKf9gd5EF+DR8x54cjdZ36U6rmco1+5f+14s=; b=gqi0G9mbFX9h3tQxOi8M1kjNU+
+	lXE+9FcOKN08OhEE3n9BpzNpbCiWaTYNI4VDB6Xa7Pd5QDMSLRaIePjWCpZIRkoK7FScuRyGNDLZW
+	jL2s+38BefoFKe7l0mToh7TnkHe4zjvd+qvgCoC+Yp66yzEYe3LHes8ARn9dc5EMs1mwydCdWez49
+	qUqsIPJ0WaOAQnfLga0b+pZAr5/OahGUp9mgO44cN8p1VbqHNAt2QrG+GVxpt/4/er5i17xJd4eQE
+	hlrzq/aG/Wq9+Pv/m8y2cfp7SR3HEZPccQ38eGKAFRm+oLfhyJgc6ozF7fv/HD3tpapJLHKqbPlJN
+	l3Zq2pgg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xEkbH-000000041Hy-439N;
+	Thu, 08 Oct 2026 09:39:43 +0000
+Date: Thu, 8 Oct 2026 02:39:43 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Julian Sun <sunjunchao@bytedance.com>,
+	Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, willy@infradead.org, tj@kernel.org,
+	akpm@linux-foundation.org, Boris Burkov <boris@bur.io>
+Subject: Re: [PATCH v9 1/3] block: introduce bdev_flush_by_dev()
+Message-ID: <asdk330xyUL8xDyR@infradead.org>
+References: <20260925064444.3944820-2-sunjunchao@bytedance.com>
+ <arYaMbJUh6unvz_t@infradead.org>
+ <3w6vfwfkojmfqy2qs5j4q2s2366ajqiwmqf624lyn3odrv42v2@va2r7a6ngfz6>
+ <aroIAqoCNDBPlB2A@infradead.org>
+ <9e9c02fe-e94d-4f70-a21b-47b46bab2c3b@bytedance.com>
+ <5my3hyw54ej2tw24dqnacsy7xppywdjovvnwvrevmczsllzq7c@berxapmobgfa>
+ <asNfNHd-kcsI4B1S@infradead.org>
+ <bsb5vk2s3vyqglw6bv6pgpoqqvkho2p5kfnskfwfban5azi2vt@sceqd6t36yai>
+ <c4d76912-581f-4174-95a7-d0ecaae79d3d@bytedance.com>
+ <dzq3d5yosbsdeml4fdb3rpowxxnjau6edluw4xoewwwbv4hykg@ywkjm3xlbimv>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] mm: memcontrol: drop kmemcg_id and use
- mem_cgroup_id() for list_lru indexing
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Usama Arif <usama.arif@linux.dev>, Dave Chinner <david@fromorbit.com>,
- Qi Zheng <qi.zheng@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
- Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
- Xunlei Pang <xlpang@linux.alibaba.com>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260910080722.3961351-1-qinyuntan@linux.alibaba.com>
- <20260910080722.3961351-2-qinyuntan@linux.alibaba.com>
- <CAMgjq7DkLi7aPLRyGv__f6NLPkRHY=0Fw0kLEdevnoTFpqsbzw@mail.gmail.com>
-From: Qinyun Tan <qinyuntan@linux.alibaba.com>
-In-Reply-To: <CAMgjq7DkLi7aPLRyGv__f6NLPkRHY=0Fw0kLEdevnoTFpqsbzw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 771F0C0004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dzq3d5yosbsdeml4fdb3rpowxxnjau6edluw4xoewwwbv4hykg@ywkjm3xlbimv>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Stat-Signature: smbqb4c8ag4aip9418skopn6sxbxm1kb
-X-HE-Tag: 1791452378-564190
-X-HE-Meta: U2FsdGVkX19oedoGkbwaSJE1iE9dPMLTNwOgx1HyrRrhZ8S2EWRRy3sKBhH/1taGH8lnvZTjPWbxdSR0zLWape6fieyyCYIPy6tT8Rf8tqyt1BOEAPYG20/2RkiM3BViyCaMIidylS5e3do1Jlcn4vTVpt1Ow91uceLuZD3hMZufTVDlqp6kbw5zfTC5s9irICk2GYLpUaMBk0uWMwo+l8EvEaONvaTFZ8hdPDXtbFZJwWL1GtJfCzZWTnVDT36iNJ+2xC0WTnZTh0LifTYqQv1Vf0AFlxDZXdLILFTS8CF7L0QSKjWLczLHOIA/xGZS9AijAA3ygfBMJhPJmdCXVdzOSlLUV1LDJ2DOl+c3M7Iu5x0VvJV8Okg3XO2tYjIP26HydP4zK0fMpBzlgYoUBSxVAdbTUaCwmZt9B81XNqTywAwi6lN1Lu+4UUfaXWOfCfABOJsu49nCr/E/8xmGOsr0K1I5V8e2Y+BtcLcvgT3qvsZgeGOOeC4OCLVUEJu9T+Xbjr7617vw/8WFhIgEmPcHcvOEawvn352/XzUMukKz4kLLaj0gXco0m4VTCRPmmq7X26H2NJ7ApRECschFPaNADtDCOAoejANpH9hHo12JX20vK7k97N6JEyp9oSMaI0fYGFNoE8s2GdELqph6thHmTpI59xyJFglEnxSUHO8mRkccnCir0r4wcqI1Sr54K0/+7+a0EtPxMMnf19+hepKWN5fjTmZIenoEE+da7cVUVUMekJtJgnhThS/Y7Cc8eo/KpmGGNMUnm28BSoYwbnY8/PYAItf+WRwy9SKaHpQXoP1ADUYgOv9KyBHPZyQ7CMuW3GZF2SgsvjCWJz84oiF0LwIDyNzCHUWKOragg7MeAUwmubj+J7zL21sY9L0vHsSRUZ0mpR+MctjhYxUtf0oHAMvUURn3L5o4i3JQgfe79xISbpBiFI7U08LlxPjWq+0Vriz9HB0+oxVwjbc
- Nkm5MX9r
- /12F2q7aTrkUdqQYdFis46inxn6E4ARp0Nt8cp/mg5zilfVY52HWfSDg2B6yxY+cSYbz1OzazMQWJo+jgFIgnRXAuLXPPl8JSBJJlN60n3VgkQlpdPsuCXX5Nyy36kxpQC+W9FtMjfSCoiK/T/JrIpINO0EkyaBnONklwBiDslgvEdH9+S+9/oaMhgqjQHeTKXh9C/Gh1PLcwEbURyTwDcJX4erfzzmN6oF8FnOl7dX+bMUZbFS2CLcT15hiaAhE8A5N7joVVT40yRSET/Lvc//q5FW9hh3m3eskN9WE/NY+Ohqajn8TgLpDOT+2gRcsOP5GUDAVCTkj8xNl39SAHPOlHN5s2o0lKSnTWXBZOd9FLnxo=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 72D8740002
+X-Stat-Signature: sjgye7ndpdm9yutstzyqbyaiupw475w5
+X-HE-Tag: 1791452388-972934
+X-HE-Meta: U2FsdGVkX18b3utDuN3j5tLvPjbj75xTpi9VPqg644+gCFrUTJlN9EFCQMVukO4ecvH4iy8huu8osRXmRKWzY9CTWPukFYxu7B5kKVoYy6BAxxEtdH2pIw+jsCQ+HGskchYFsWNvQHV3ozTtnPYNxMsCaInYWNAfq7nYfuJ1QvG6Wo2gU1WQeGWMzG8WE7+QHh4CwtVopEsutjQYo3Ggo6rkpGKNypIqHL65QNGTIh0IZl+jn8sVQNFEj/l9tgws2TMWgXFZqiLuiaFLF6I3ep24tLMAMox9mPFTiCdB9qXUKN7wj37uG+oNGQkUOw47ZdON1huu3x/RhMYVOOlM0m1B8lt5CTMgVbbzzJk/uED0hMkZYSmeChF0Hndeh7TBFyG/oC+KCqd+hr9AZd3wwwsJ1bgqEhRFBOXEf2g8XbC655ZAiBNpIv27T6yVD7m8fL85QIyQcqQCJAUpgbVnly4X4rIBRJZvg/9pOV8hl2BIDXQMzChzfb6iwcLMtfg7DU8/ANwE8p87pLzV8RaVK0fiHPh+Sjr0ZHILe9XOmkbZ5D8T7V3xTm77V7tGM4s///knRoG+O1yM6h8zTkKKRNPS7P1f8Elp0mJnhxV5SajjrquWqRLzrsYN5HEOTntdpWNGoeQswXIHWo79mBarZQcBBFg/r4ixoUZGamYCne3yCsP8JSw2zqBs7ZpGIUjUet+tKltZg+ji6PLF1QwMi6SGOJrPIkFPVcJgSkIdJ2M2AzU11lx7AdFJXBpNntH5qfYh4V6tvB5I6/+1jievf9becOaYSmjl+mhKAHe6/WMHr32EDCSvEUgaH0GNt0brQdQa/YL0QfnkRGIjLD6u1KbYa1fzG/FgGkYZjvfybE45xblh+Bub/d8MRfrTVHmZGG6r2cVKuHXa1Ov2rWfL8/cX4X505zic4vcFsnfZhnEmZojISiCcS5E9DRjA3+8LUVMty1wmFQA82hevmEx
+ rqr+ipWN
+ FoQGSPgwNRXATH1F9pM28z7/dKdTo9L/QrgX2AU7oK+bOpLOESPJQYXbvALdp4JrnSmjdSdlk5O9H5bKnivjzNLxXWZ/4AbEKoxHMKl30z3V0FvNOATJyiYsOsq9JVbuOT1Ymt+lceLlousYZTAP4oQyWWQ5u5ihtYJUjoEBrbtiFn/ZKx8hyfeDByjDMXYuFMKziKSMSnb8krYuKac5WU6BiM9vG6knXbPIiWlybcctTzw/lWj+CQqs4Yp6reB3/G7jfuNK6IZ8oHvIoT1Wqxy+fhqB+kUj00h387NXln9Ao3vyZS2yfHvjQnRoDqbME/4SCPgt/OVK6wCoTTiKNFqwL54jvihMO+otGU73cRJGD/5iA7Atscbnu/IDTDgpJ38xnPVlHvHDVaNOLUnF8mI9X5S/iY4bwOAiMHEfiUiHZ8ddDCLccI4Wf9T3r4aDbfdoE3RUjSO2WStFm8mfXQvkZLANrsya2THzBD13DtKhLt5+T705zm3JIYCa935cNyrftwt4L1wXECmOA1DRyN+qrdLVzx4VsA44us7Q4O7pDK8/5FJqjPDbPutkq0X5f5nx2fgFJnbtIpA8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,72 +103,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Oct 08, 2026 at 10:51:08AM +0200, Jan Kara wrote:
+> In principle, the mechanism looks good to me but I'd place it in
+> fs_bdev_file_open_by_dev() & fs_bdev_file_release() so that all block
+> device based filesystems are handled. ext4 is the most used filesystem that
+> has this problem with bdev memcg accounting but in principle exactly the
+> same problem happens for other filesystems using buffer heads so I'd prefer
+> handling it in the generic code instead of fixing them one-by-one as people
+> complain...
 
-
-On 9/27/26 4:29 AM, Kairui Song wrote:
-> 
-> Hi Qinyun
-> 
-> With this commit, my arm64 VM hangs at every boot with a
-> 100%-reproducible infinite loop in xas_find(), driven by
-> the dcache shrinker during the first remount of the root filesystem.
-> Reverting this fixes the issue:
-> 
->    CPU: 2 UID: 0 PID: 579 Comm: mount Not tainted
-> 7.3.0-rc4.orig-00725-g09d9672a5d4f #33 PREEMPT(full)
->    pc : xas_find+0x184/0x1c8
->    lr : xas_find+0x6c/0x1c8
->    Call trace:
->     xas_find+0x184/0x1c8
->     xa_find_after+0x88/0x120
->     list_lru_walk_node+0xc0/0x2a0
->     shrink_dcache_sb+0x80/0x130
->     reconfigure_super+0xc0/0x1f8
->     vfs_fsconfig_locked+0xa8/0x120
->     __arm64_sys_fsconfig+0x280/0x33c
-> 
-> Just for reference, this also fixed it:
-> 
-> diff --git a/mm/list_lru.c b/mm/list_lru.c
-> index 7dbb6125cb1d..42c48c3b9235 100644
-> --- a/mm/list_lru.c
-> +++ b/mm/list_lru.c
-> @@ -427,13 +427,13 @@ unsigned long list_lru_walk_node(struct list_lru
-> *lru, int nid,
->   unsigned long index;
-> 
->   xa_for_each(&lru->xa, index, mlru) {
-> - rcu_read_lock();
-> - memcg = mem_cgroup_from_private_id(index);
-> - if (!memcg || !mem_cgroup_tryget(memcg)) {
-> - rcu_read_unlock();
-> + memcg = mem_cgroup_get_from_id(index);
-> + if (!memcg)
->   continue;
-> - }
-> - rcu_read_unlock();
->   isolated += __list_lru_walk_one(lru, nid, memcg,
->   isolate, cb_arg,
->   nr_to_walk, false);
-> 
-> ===
-> 
-> And BTW cgroup ID lookups seem much heavier, not sure about the
-> performance impact.
-
-Hi Kairui,
-
-Thanks for tracking this down. I missed the reverse lookup in
-list_lru_walk_node() when switching to cgroup IDs. Your change fixes
-that mismatch.
-
-There is a catch with mem_cgroup_get_from_id(), though: it calls
-cgroup_get_from_id(), which only looks up cgroups visible in the
-current task's cgroup namespace. Here we need to walk all memcgs
-on the LRU, including those outside that namespace, so we need
-a lookup without that restriction.
-
-Thanks,
-Qinyun Tan
+Yes, this should be in the common code.
 
 
