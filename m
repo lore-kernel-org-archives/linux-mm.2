@@ -4,114 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5331CCA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 03:07:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E161CA6004
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 03:16:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 224336B008A; Wed,  7 Oct 2026 23:07:03 -0400 (EDT)
+	id AC16C6B008A; Wed,  7 Oct 2026 23:16:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D6286B008C; Wed,  7 Oct 2026 23:07:03 -0400 (EDT)
+	id A99FC6B008C; Wed,  7 Oct 2026 23:16:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C3436B0092; Wed,  7 Oct 2026 23:07:03 -0400 (EDT)
+	id 9AF546B0092; Wed,  7 Oct 2026 23:16:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DBB996B008A
-	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 23:07:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7240740458
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:07:01 +0000 (UTC)
-X-FDA: 85297972242.11.AFD7AD4
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 40D3640004
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:06:59 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DD756B008A
+	for <linux-mm@kvack.org>; Wed,  7 Oct 2026 23:16:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E1D45A7703
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:16:46 +0000 (UTC)
+X-FDA: 85297996812.16.A2AAAD1
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2760C40009
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:16:42 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=MTvM4QRE;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf04.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791428819;
-	b=iim3S/ISYVsCqhLvjPRuXbi6zlwLzWOWwUZWKsWLZ9RRso4zlomwCC7NQT8VD7uW35iZTz
-	kGrleyKgKxPSDvAmh85kEanZZDHNlcOQbJ0r7TJqIBGtNEnKQ/nvc0vWDiuXwZfgzNXVTi
-	LrXcR4rdSOYbr+OY+u4u2mgoY6m2l+Q=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=MTvM4QRE;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf04.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lJdtan7X;
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791428819;
+	s=arc-20220608; t=1791429405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cyhM1nUNozz0bBiV0uhM/z9n5mfCAa1GSAZkjkT7ZwA=;
-	b=C1z71uIm3nRUwYrFIwynnbReXW1QDk0MIicsidDbF4MyF9yfGGUnQ8tq+vpvpx1Gc38Khe
-	SbNHrN3BEryJL3GEA6u+JCvq2VH2k0mREQ9Cqf0jMIju5UOXzDMDoZ/xK90i7AIn7fLLsT
-	PzB3rFYWPiHUPAWnQb84G8hIWC/TSx0=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BE0B840E00E5;
-	Thu,  8 Oct 2026 03:06:54 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id mgqvtUb_NHYt; Thu,  8 Oct 2026 03:06:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1791428804; bh=cyhM1nUNozz0bBiV0uhM/z9n5mfCAa1GSAZkjkT7ZwA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MTvM4QRENWPPyXa1ccOMqG0xWEftwSJsaexQPCdfxBkXP7aZz3Em5whU2pQk5U3et
-	 G+uyGfmeEELkGkv+0ctFdA81yHntZDUoz4GPNiRNbGWn5VIaI7rw28qh8cX08XPtY0
-	 m3V+1VmUS2w/Ua3WMxQzU38Kc6eCVUT1YCfM7qq+Uq2x45slABOTqqLuA+FNRdHTMg
-	 gOfTMGMnSd+YlKNdxUoyIdYWOWwKGJOBMLiVSZAzhO3EZTFBHKOFduhuvZhHzIywWv
-	 aK3/lZ3bo5qaaeSkaegusJbhR+Ij2ZdbsRvOEB5Exrbwlnt1WhZgmrWgGAgVDQg7Rh
-	 p8LBRs2ECOzNSXNfJGtnTqEmy2XqWiUglM1iHXsNTo/T7LcVABevxKWAXggygRJUN8
-	 WndUwCBiS7EvIW77HYvqxGuTi1tPhLBGCuBkVCDzEskMRaviNtXGckj9unOsth17KZ
-	 DsjhwknwklTzWaCtfOR9k1uvCQgcJ/QuBCfEsSDJGuycQ2GeLCPG+31za9DrnM3r9Y
-	 9OI5AdS0SYsRO1sUZnE6vX3sk2Q/a9iu2TtHC/326UTNyOvlUSoHNclJf0WEkMcfYp
-	 uQtJUSOhCCCJIlpg8tKX4tYXYfBgAxG8kVbecegnZmJI+es8vUz6myXMDT3AgzcbqQ
-	 JVbpZWFtomeYaCZJInqDT6xs=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C1C9940E021A;
-	Thu,  8 Oct 2026 03:06:06 +0000 (UTC)
-Date: Wed, 7 Oct 2026 20:06:03 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Ashok Raj <ashok.raj@oss.qualcomm.com>
-Cc: shijujose2008@gmail.com, rafael@kernel.org, akpm@linux-foundation.org,
-	rppt@kernel.org, dferguson@amperecomputing.com,
-	linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, tony.luck@intel.com,
-	lenb@kernel.org, Yazen.Ghannam@amd.com, mchehab@kernel.org,
-	jic23@kernel.org, linuxarm@huawei.com, rientjes@google.com,
-	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
-	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
-	duenwen@google.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, wbs@os.amperecomputing.com,
-	nifan.cxl@gmail.com, tanxiaofei@huawei.com,
-	prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
-	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
-	ashoraj@qti.qualcomm.com
-Subject: Re: [PATCH v23 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
- table
-Message-ID: <20261008030603.GAascImzt4cv8Gz49p@fat_crate.local>
-References: <20260726212812.89266-1-shijujose2008@gmail.com>
- <20260726212812.89266-2-shijujose2008@gmail.com>
- <20261005235021.GBasQ3vXTivT3NLbBq@fat_crate.local>
- <asU7svV8g2Hb5DZl@hu-ashoraj-lv.qualcomm.com>
+	bh=gYC58sdTkm8+Fm/Mk5bZ1bqmLj44HUBXCl/MsXafSqk=;
+	b=jePly2c+tYl3/2ByleQBGp2WtSPKl7AYypr650W38vGU33J8WxwPHqO+DFH6lnTmbS8ant
+	XrV6iQrU7Yd3WXRrWY6/wG6/tx8C2qnbBm6CrT/RyJkdpy0N3bH3ISDuT5Egk2YZgcBKpj
+	as8VBd+N4swZchNrTVEhvTYiQQokIdQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lJdtan7X;
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791429405;
+	b=NoMlSGQE8J6kVwEtYM1BPHswduPfCvKk4nk6zUw4PK3JDnSA8HgFDjYoPgpJgujmZPRuW+
+	RrrDKujAk9hEN7dAMMX9U/doAWcmmW6WrxHos5KqNwDJkakOPiR1wwI3Y7W9dmrXIhF9yr
+	+88V25M8bN4lfl+NGTm3p3UuloBB4/8=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1791429399; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=gYC58sdTkm8+Fm/Mk5bZ1bqmLj44HUBXCl/MsXafSqk=;
+	b=lJdtan7XmHluQ+X9XUxobhhyzSdYhlvrnkkODs43A2Of3w2E95HGNsdeASz9/MDjFzAEEEAH1UFkyMROieLFPO8F5ws9G81r9JB7Guw4rL4R+O3gARq8wA9DLCU46crwE902lqKpupWlINPHK9Du6zdv6ieivOGgYYJbjkK8A38=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0XCJIB-._1791429397;
+Received: from 30.74.144.149(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCJIB-._1791429397 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 08 Oct 2026 11:16:38 +0800
+Message-ID: <b1aaff8f-c4b1-4c2c-939e-7051e7f9b6b8@linux.alibaba.com>
+Date: Thu, 8 Oct 2026 11:16:36 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <asU7svV8g2Hb5DZl@hu-ashoraj-lv.qualcomm.com>
-X-Stat-Signature: ade5tmooh3h1f7e67zyg3bky8dhxxyny
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Make swapoff interruptible when unusing mms/shmem
+To: Chris Down <chris@chrisdown.name>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ Ying Huang <huang.ying.caritas@gmail.com>,
+ Kelley Nielsen <kelleynnn@gmail.com>,
+ Vineeth Pillai <vineeth@bitbyteword.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <ar2YlFYjYUZ49ZA5@chrisdown.name>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <ar2YlFYjYUZ49ZA5@chrisdown.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 40D3640004
-X-HE-Tag: 1791428819-234511
-X-HE-Meta: U2FsdGVkX1/4AgEZQLcK9PrizaW0KBxoZwHrxjm8lQmFxpdOTxyNI7L4khywpwIqfwo/FJeep6j1cASU3PFB8r5lA9GG2nYGN1Mw8DVIo9xHLL7DEFShmQ+BmZM2Zaah53yog+Vm2JVL1d/0Lw2FqocDjAdWwfSNRmgxbXaiXMkWrDJtnsqsXu/Pl9BsNLjNo2q4c0K22qm3fss+X8nDVUms28vmxFmmC1CxITb3U1/Bg9zOCnN2lozBPqnwWUbzpYrjPWbwCvz+NuNZmNATFKu2s77gtpGfHm9PHPzlEVowwX08Ajjzi1Cu8brcdV/BrU04QsEtez5FGQms1MXphuza9RN4so5H0dlaMmcgfCuFwfP80Mh2PwXPIYEKQ7u9Ftj6maPl6TZCN6+W6SxIBrAGf3PrZFfqso0s703E0QL/Z3REHWIZrUAWnC27CW8R2W/Qwb07YNUBSwUlC+6VRUjiY+uxxTJib3pJAT6IafRXRoSH7iSQFf9r6ZmXYvbbjmhILrjXeHds96aYGD3yEy+ubwYgbZ2V82N2a7Nm/YsKD0NIxO+jkwwOvoswwYy1L8O6OlZ6gkY+2XlpYaqqJafipSP+/Cn9kLHdELxEIoCwwizj7YBNRIfRnz0vAqeELfVbA+eUyrfezm/PVTI+sVhIcHPmUQ+qUErBhoWpYWX+9kKPlTprkMqToJt8GmPtBvgFPWlhRtnaJLGGGNaVigNSMwwJr+sVk/E1Wf27PtO6FNDa7Ou6qNwRHE/89MFMfP8AVpB8ms0FqbnozhixaxAIr5FZ6V66bG+BgRKoD/RJgc3FV7VbETFsxlEJvZKsBSBnir1PKiwFbBe171uyBy1ualzt6nuKXCH+pnaoFu489/guH7GWZI6LJY1Wx+DKFSm4kZIJalXHFMvneq77UK+uzlrx0fjKHMVE+m7yOxKoMJAnkaFvGBhvyQ521YTC+ti3rA4NYuPelpgSfTw
- Y/yWPEwe
- nsn80BB3JNVtr1ZbxbiuKJIF5IftenkfOTh/rBR1O249kp8+JPc5f9MzL1u5DMw6lrZGfEBnZS7ffWvCb1HtbbMi9LxgEuhghkEKfIw8pQu8xzOAiKRyScGz17mWQh8i/PXtPjskMl1MB8qkjXojmjCKS/6qgBNQoRc9Z7bg37/9RMhOg+pbnjFSxiTQ6LRiQAl3+VJTtYGAOo3HrXONbDJVU3eneS4Pqt025tdmL6XbE7vJA5Rlx3ras5Wx6M07t1TEwLV5feBpS3bogdN+qvLcjhEm5EemoRBhjxs9or0zRuTGRU29FlDKoSbo0rJ9O0UiaHkeEW2/+Ie1w1mD45VdDGF+VUlxEQu1KjYQ50rT+JU/dmX/xSlNYvg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2760C40009
+X-Stat-Signature: zmo8wjmiq3nzqkuro99he9bqq9ry3kw6
+X-HE-Tag: 1791429402-750624
+X-HE-Meta: U2FsdGVkX18FJimHWZwG7Ho4IAAr2Mhw7jq9HVF3BslUux6+eialtJx+hNHgp8u4HlvOL6GlrZgndBbZ0pZH7bMPyXtIGc6kKmHOYoOvcpUsBryxMbdHMu9wcB7K/LaoONVjlXncLVvVCGDDociv0M/T9Hg3LjJWoaGXJ/CvX1rgXuJv/RRdOZz1Gq+UKyBbJXgsZv5TkJkeTgFXa1fBDIoA0FpwTWPaF9MqNHhVRqweYUchYC5/Zrp81sHs62pf3hd2RNAs7Jg+BKbo1gC/znn54W0ENFj4rhtinAG+xbHkBoA5lFPdqzabGww0Q5GgAlGhJSieFY/mSd/pVK1bzaXmxOBmtA0cD/Ruij4CszuTk4c8xlixmRag++LutewNXAqI14zthITMmvgGeJl2AihfUxWLttRJscFTL95ryJJi5Zxwg6vAC13wiwvS54iljHkfXfIyQxRi2TJO804KSgpb3YPEQpu8tBL8pztZxm89s9VldGFoYzzP+CHbcuf+hg5RxoGJ0YDN7bnoa9EDOK7fwUbw44tEso+i8awZsfj0gaEw3gJR/51+zKfyCBukZzauY55ZHbbGFFzW5/KJloth7+lsEF3ahVwHjB+x6QvWhFuoPM99saRMQ/lxIx+OIX6ndpcjRbNlzI3nvlPC/j+f+iean47ePIA3wpfSe6huSEa6gwwRtcnBCpNj7Gcj9dG9PDd3mzyF9UlaaDI9+ijP6yqNR1uIf5D8KhXNrz12JKMszwIpkGJVR+se+OB0zztMPdIerjqlUAAAKwW1IcaiPMnOzpp/LTyVbGAzU1KhZV8wavWpIYekibgIojj+epIoSUSCPG9VmA5OVWPnBdV2859KgDerNAQpkr4PS38EROKC5uDQ6gdQHvEk+ehoo5xQBLAWwdE1Lzsvjlo6O5Gz3vNfG6x7U2c2HeX3EGQ5H8iMj7cZbARNHfzDTw8+XnyIendVLg2kjEVUPDr
+ conyk0wb
+ wqrYBH5vR6UFtbfAVOyiXksZJ25c9Y7fbZvu/9RkBpz16RjiSkc2lbvUXaCchB1cJZvuRamCrKTWEDNY58PotTkMUJeDmRGVbyBEgtOG6jqXVOkI2w+K2FL7IlMvoztWA/uYpjyoDcdwiyiqUSJGn6ew9z2UF822aF2zjVnaMJeS6gBsIYyQtpWgTx+z/dqORPXfjh/ulC8lyplFpT2d4t2PGByDRCvdm2RRBQf/k2w1soHYuY4bp/JqbQPFz2p0AScsAfRqvkgTqcWnMHxcIGffpEkUXDG5/Y+2A4SgL7YyeFEoNIdmHvYixrJq51kbb39ePdC5FTrdSXhmtEVipLRV8Gtgc2NTO4TuhWiGonSl3JqXE7ezzdYYVAZq45smAZ0SbH4ju68/8iN5icHAZioCCxMZi9ICCDt/WvOgFf0mZpPiPyCkFJlDxtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,44 +93,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 06, 2026 at 11:19:30AM -0700, Ashok Raj wrote:
-> > +static int register_pcc_channel(struct ras2_mem_ctx *ras2_ctx, int pcc_id)
-> > +{
-> > +	struct pcc_mbox_chan *pcc_chan;
-> > +	struct ras2_sspcc *sspcc;
-> > +	int ret;
-> > +
-> > +	if (pcc_id < 0)
-> > +		return -EINVAL;
-> > +
-> > +	sspcc = sspcc_get(pcc_id);
-> > +	if (sspcc) {
-> > +		ras2_ctx->sspcc	    = sspcc;
-> > +		ras2_ctx->comm_addr = sspcc->comm_addr;
-> > +		ras2_ctx->dev	    = sspcc->pcc_chan->mchan->mbox->dev;
-> > +		ras2_ctx->pcc_lock  = &sspcc->pcc_lock;
-> > +
-> > +		return 0;
-> > +	}
-> > +
-> > +	sspcc = kzalloc(sizeof(*sspcc), GFP_KERNEL);
-> > +	if (!sspcc)
-> > +		return -ENOMEM;
-> > +
-> 	__mbox_bind_client() reads knows_txdone at bind time to promote the
-> 	channel off MBOX_TXDONE_BY_POLL. It must be set before requesting the
-> 	channel, otherwise the channel stays on polling and mbox_client_txdone()
-> 	later hits the mailbox core's "Client can't run the TX ticker" guard.
+
+
+On 10/1/26 7:17 AM, Chris Down wrote:
+> try_to_unuse() only checks for a pending signal between mms, and
+> shmem_unuse() doesn't check at all. That means that once swapoff gets to
+> a process or a shmem file with a lot swapped out, nothing can interrupt
+> it until every last page of it has been read back in.
 > 
-> 	sspcc->mbox_client.knows_txdone = true;
+> Just as one example of where this can concretely show up, freezing tasks
+> for suspend or hibernation has to wait for swapoff to notice the
+> freezer's fake signal, and gives up after freeze_timeout_msecs (20
+> seconds by default).
+> 
+> Here's a facetious example where one swaps out 2GiB of one process to a
+> swap file on ext4, starts swapoff, and half a second later tries to
+> freeze with pm_test=freezer. Writing to /sys/power/state then fails with
+> EBUSY and this in dmesg:
+> 
+>      Freezing user space processes failed after 20.003 seconds (1 tasks refusing to freeze, wq_busy=0):
+>      task:swapoff         state:D stack:0     pid:3175  tgid:3175  ppid:2955   task_flags:0x400100 flags:0x00000419
+>      Call trace:
+>       [...]
+>       io_schedule+0x44/0x70
+>       folio_wait_bit_common+0x1ec/0x3d0
+>       __folio_lock+0x24/0x40
+>       unuse_pte_range+0x2d0/0x348
+>       unuse_vma+0x158/0x248
+>       unuse_mm+0xfc/0x150
+>       try_to_unuse+0x104/0x3f8
+>       __do_sys_swapoff+0x220/0x5d8
+>       [...]
+> 
+> The same goes for anything else that wants swapoff to stop, like an
+> admin hitting ^C in a panic, of course.
+> 
+> Prior to commit b56a2d8af914 ("mm: rid swapoff of quadratic complexity")
+> try_to_unuse() was driven by find_next_to_unuse() which checks for a
+> signal before every entry, so let's restore that behaviour.
+> 
+> Just as an example of the improvements, here's how long freezing takes
+> in the same test while swapoff is happening on my computer:
+> 
+>                        before                  after
+>      400MiB anon       8.925s                  0.028s
+>      400MiB shmem      1.639s                  0.003s
+>      2GiB anon         failed after 20.003s    0.011s
+> 
+> Fixes: b56a2d8af914 ("mm: rid swapoff of quadratic complexity")
+> Signed-off-by: Chris Down <chris@chrisdown.name>
+> ---
 
-Yah, I can see that happening but I don't have the hw to even poke at this.
+Make sense to me. But ...
 
-Shiju, what's up?
+>   mm/shmem.c    | 4 ++++
+>   mm/swapfile.c | 2 ++
+>   2 files changed, 6 insertions(+)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index ae08cff4500c..72c8a61db76f 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1742,6 +1742,10 @@ static int shmem_unuse_inode(struct inode *inode, unsigned int type)
+>   		if (ret < 0)
+>   			break;
+>   
+> +		if (signal_pending(current)) {
+> +			ret = -EINTR;
+> +			break;
+> +		}
+>   		start = indices[folio_batch_count(&fbatch) - 1];
+>   	} while (true);
+>   
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 254ce86fa923..c3288910b3e3 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -2689,6 +2689,8 @@ static inline int unuse_pmd_range(struct vm_area_struct *vma, pud_t *pud,
+>   	pmd = pmd_offset(pud, addr);
+>   	do {
+>   		cond_resched();
+> +		if (signal_pending(current))
+> +			return -EINTR;
 
--- 
-Regards/Gruss,
-    Boris.
+Should we return -ERESTARTSYS instead based on the similar issue 
+discussed in the following patch?
 
-https://people.kernel.org/tglx/notes-about-netiquette
+https://lore.kernel.org/all/20260720044103.905191-1-richardycc@google.com/
+
+>   		next = pmd_addr_end(addr, end);
+>   		ret = unuse_pte_range(vma, pmd, addr, next, type);
+>   		if (ret)
+> 
+> base-commit: 2ddb90ee544ae97215afc4698dc223293997cc43
+
 
