@@ -4,145 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87936CA600D
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 17:58:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A386CA6011
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 18:24:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F8576B008A; Thu,  8 Oct 2026 13:58:35 -0400 (EDT)
+	id 3B2786B008A; Thu,  8 Oct 2026 14:24:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A8AD6B008C; Thu,  8 Oct 2026 13:58:35 -0400 (EDT)
+	id 3635F6B008C; Thu,  8 Oct 2026 14:24:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 297A46B0092; Thu,  8 Oct 2026 13:58:35 -0400 (EDT)
+	id 2A0F06B0092; Thu,  8 Oct 2026 14:24:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EA0C46B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 13:58:34 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 71DD7A0358
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 17:58:34 +0000 (UTC)
-X-FDA: 85300218948.24.F84A84E
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 76653140003
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 17:58:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ekGQBH9e;
-	spf=pass (imf23.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791482312;
-	b=UpRvOU5tzP0VykzELNEc2COIv5tHCxM2n0MVAaBYkca87cZTVUSw0EBpj5BhobrgCefaXw
-	aylfPRooMaL2OToZOpPmgJnZ1Xrz0vc+wJZ8ZvZKLpcUbK4XYIv3vlKAsaHQddfCQgAR5H
-	eInBvN5Dcr+hs9M6OGbt1oU+mGeEW68=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ekGQBH9e;
-	spf=pass (imf23.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791482312;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 07BA16B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 14:24:34 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9B858A7BB1
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 18:24:33 +0000 (UTC)
+X-FDA: 85300284426.12.18BB981
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 757A3100005
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 18:24:31 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=c+8EvEU1;
+	spf=pass (imf14.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791483872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t87G03YJP+Jtnvd/a8HSoKeiu6kRlnnSEIlqeg1Cd6Q=;
-	b=7Qx6S3G3YoE11BCLixifNpyZK91JZqQbqth7wg71VgBPVD57anFl9RbH8E1QtN583CvzUH
-	3Kqv5S9k/I43vZto7eslr/KTF948hi6//1J1YcRcT7SAq3X1cY6fSfxciqrIzk6NJkopQt
-	7MmLd8lNDaZI4voUzzHTiHx1Vmckmdk=
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-8244537ab76so1683337a34.2
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 10:58:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791482311; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LUxUmITjJREQ+egOFWOQS8Q4h1JlRn2cPPIQRnlVwSu0IWiJgHS40vVryULCQssyZ3
-         nxZlzKOTSWGTRM8gfYljmHMNB9Q5J/Plx/SzQBYjZcSoVfAV9FSj+3Zvww5k8N95l6zr
-         mCxY5rMadpnsnF/6q0ebgTVj5y9uCU7WRNixbw1hv9UzNBKhnch9jVlDWf6tLUgEoG3x
-         qMpMPFzA7SeaEfzhGwcz83aXCcShgdEUEyK5RnyL/JCqc4tY+5E8oyb8aPPLneO8deV2
-         DviARTBgi5ssDVDsvDahWsc9moQfoXq9aZVZt0dtdp/ljEyiS5CvTtLiv6u9smDN28pn
-         XK5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=t87G03YJP+Jtnvd/a8HSoKeiu6kRlnnSEIlqeg1Cd6Q=;
-        fh=ls6VcMm2ZUIeiB1rTSkQy74K1betVRrzlCQ705PWAzA=;
-        b=UL3sh3HtPquN9k6WI+z6aQCchWIvYKJeEYYMCVJZn3aD+R5Q0Cy9KN9nV92GNQvQMq
-         0mRZZRInFizgsP7Rz+Q7ol0aLgy5o7RwafXHPHYchQjxXpw/hKQfkUGeWn0m+tAK/mKU
-         HpRd23sTZcicJKj3tnk74yW7LEMUoM1Enq+XHsglxktipCTHrk/hS9LdALyxTYzMaKmw
-         7i1Tt1v0oDonJ6YdKYoFHeQ7QV1TONmNlptQLlfKmXBKDNqVPScKnMVvpL5uvA+n99IA
-         /2hXeF1NZIHN/SHJ4CpTlR7B+DI5ZTI6P6Vw+GSa6JvCfacuxzrosZnv01yIlT9av+zE
-         xbQg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791482311; x=1792087111; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=t87G03YJP+Jtnvd/a8HSoKeiu6kRlnnSEIlqeg1Cd6Q=;
-        b=ekGQBH9euZQW7roJHVUTz78IZH5BMW+575ULZsfu8rzZcbwfUBNGEQSXXha3ln6ADp
-         b8EzU98q2RXr8vF78d8UHlU5u0N3G1vd8mH1uxIP0oU1dCReElKvbXqQKk0ZlWE4qQMr
-         x9SOmxKkB71GqM52R9GRERr6fRMBEc/B2ScEO7g2Oi3C1zesNKJ8ubN+HXoGEqDWsz0q
-         7jxcOg17CD1G3p17Zcck7yjw1jrQyvvLKx7ENMtuxEpa8Pex6Pr+THcJqlVkelBCZyJJ
-         ifUCwrJ6jvv7rApZD7iCS7ZHtDAdzPUbpeC/91bzc1yQXc0nrIhvDZ5sjJN+fEDvAXHW
-         ZuIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791482311; x=1792087111;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=t87G03YJP+Jtnvd/a8HSoKeiu6kRlnnSEIlqeg1Cd6Q=;
-        b=uVaPPmOLkLGD/IYkKT1cHFd598T6Jfv6l1NDTjzQBd67BFdUCDkbi9MVo5NI2palJe
-         Lwag0TdPhfyap2lRt95MafCDmjX8IisxNutEWKylyP02dTVouVNmPNG4RV6Ld0qK5Wdr
-         9FU8hf6xwlvM1F96muiuCOEDbB8SpBK65JKFNUwtBfu6apec5G2OIMs1mvAENRb4KkIR
-         OU7aOyi4NVgQQmNefKAkUkLLh3k3HgjM1N4Xcvit5Zdd6VwypS2DoULah1huYTTYv8XW
-         j9Xfb0TuLCDcPlBdv7NYmCVBC8IxgNsHY8C6myBzqvKoTjE/4oDO0/tuzfWjAdIQz0LM
-         JvWw==
-X-Forwarded-Encrypted: i=1; AKwUvBxcZc5bwz+zMU9HxYPMR6nNPAmT8tn/ijoqorHJAdq6KOrOdZzFX4bKgB3zlfnP4cZfW9dF2YC9Qw==@kvack.org
-X-Gm-Message-State: AFuF++lVCOavraO5DP4wSajW94RlVkP2XOhcZtzi7Ai1OeP26hI+NXf2
-	qzETARRHgZjAJ8QFoPV4HiKxWLencXier5RyZ+U5ZfPUz7XxBLM4OJBi14YaHRMRT8VEqD7Jafy
-	JB6UXSyHK7t2BEYvDRnfef/YzQhdI0Kw=
-X-Gm-Gg: AYBFou1cVlTmY3fpdjQuZOxIZoPuoCpBNBkBxMHC2Vd1xouW44B17nM9K2VBUpuHed+
-	NBzJGnE89rdEh3Zr5nxztb7dQTYqzWtPxZNv4gcaCSsodpuKJBj8jNdEAmHKI0owDfgb73nwsNF
-	gXGxls9UdIGRwcgBbq+HQtVmwDLCWNx8AVAUeCOsMAaG/fJ7ICwYwg5Yh3WQ+D7EziRgXRTuG8L
-	waViDw2H9nTAwHh6qXIrx7ZVjkGvd7X8HxhHAlKSpWuG2JONc/bHefKfV4OnYjLx9Qy+o7/kAcL
-	Qdo3RHh1qdm2DgPOf3qN1uDSdxac2jrmhu3Znvq9EYDIDKPwAgSUh7U=
-X-Received: by 2002:a05:6830:6ad8:b0:804:d4b0:a36 with SMTP id
- 46e09a7af769-82ad06ca857mr5680753a34.27.1791482311350; Thu, 08 Oct 2026
- 10:58:31 -0700 (PDT)
+	bh=ArtIe0J/YtHNeMIRmnR0Ro+s/jjV/sVKo94Bg+mHdOk=;
+	b=bn2e4wx3KwNohhx7AvmuZdzlE19OlQHG50tmrHEahL9BRXv5Eq2HH4u1mZz7S1swEJUTdS
+	/nVf0KieGLOsDrW7fonA+Lrq3TuRZjTQ/S/lGPvfitF/06A5Leb2f+I9XHK/0bFHs+iIU3
+	PayXuEpbQfZnVSDMlbylGjYwZZI8b9o=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791483872;
+	b=FezUrPDlyHNpBBAjEfCJBHCoQSMTHK26QksScW49sGH1gqR8RMy9GCMCbtR8ETjQ2l0FHf
+	aZxa2+TdcagaeHYncmWlyrbRr1pT3Y3qrOEL0f4jaD22Rv39Z3Ph2uUIXir0hMs6OHSDWO
+	2+cWZsrBHn3buR4MZ/6N2Qj4Vw5IFwY=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=c+8EvEU1;
+	spf=pass (imf14.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8D6C140E0481;
+	Thu,  8 Oct 2026 18:24:28 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id sNt0bsNe_ZJp; Thu,  8 Oct 2026 18:24:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1791483857; bh=ArtIe0J/YtHNeMIRmnR0Ro+s/jjV/sVKo94Bg+mHdOk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c+8EvEU16YMPCeKQ5i/icXx+OWIj8TWokrJ8eVHCV6XOUBlfACj8OFY3JBO9mshE9
+	 Yfsfs5t62zYmyTZJDIlwEm9OSjw04jQ6qivErFAHOhYSEpB/Kuzx6kACGa6wC/uoJk
+	 1AjWyeRSPyiX+kpdmYC7xPhga4NIIOOZ0SmMA4zqT/ouVQbMA1gHvShwasx1UT0f+M
+	 IrwsT2t5robKk71D4fkCYVUo+wSrfnz53+Grf6qAUkzFpnVAKTzSu43AlrMBNfLZlc
+	 TMBBwupTqB1vGLUJqRmVdsP3X24OPxjwoGZ315q1MNNzYVazWO/h5+ZxOnOUd611eL
+	 sTqq8hCpKWioAsUBJXyvNOh6SYPGhqgOAId+sXFW1dmMooVyqjcUykiM601ermDrMG
+	 O5aDKek9U5xL/uo9LJv6I8Plu0h7Yzf161HIfaUoATjtpIA6RPoxnmHLgCYE6LhUAq
+	 dn388REozKlRwmPhygPxvnIg5H0cbaPEX+6cr9w8OFrf81tlnlynAeuD1CYwohFkUU
+	 XNkTIZB7doKd6lhK6DFVgNSHNmpSmBeMHofhQH15ItNDiijgTgjdE3/ULYidRt+HL5
+	 7K9banhdUSv2r5zuc0kDqA16n+FzFzalHiKTq/juzAZfAWsizeYg5ymheA2CCC1uwt
+	 PvhDM9ERmaye6SWnI5Radwwk=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 364F540E00E5;
+	Thu,  8 Oct 2026 18:24:01 +0000 (UTC)
+Date: Thu, 8 Oct 2026 11:23:56 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
+Cc: David Laight <david.laight.linux@gmail.com>,
+	Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	david@kernel.org, Mike Rapoport <rppt@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
+	luizcap@redhat.com, pbonzini@redhat.com,
+	Tal Zussman <tz2294@columbia.edu>,
+	Matt Fleming <matt@readmodwrite.com>
+Subject: Re: hunting memory corruption bug in 6.18.x
+Message-ID: <20261008182356.GBasffvDuTemTu1VUY@fat_crate.local>
+References: <ar1Xl7PE2rcoT9h3@pcnci.linuxbox.cz>
+ <ar63St2LBfCdyhwj@pcnci.linuxbox.cz>
+ <ar9yRqq6cBxHDWKA@gremlin>
+ <ar/F6+OUzj8qQ8YC@pcnci.linuxbox.cz>
+ <asAE3kLFDUx5v0Nw@gremlin>
+ <asKdhWiJb3qXeopz@pcnci.linuxbox.cz>
+ <bd8e9b01ad88cafb12da33331f32a1ce315f590b.camel@surriel.com>
+ <20261005132113.43548696@pumpkin>
+ <asP5xK4axiUk7jun@pcnci.linuxbox.cz>
+ <aseMsMGpGPT/G548@pcnci.linuxbox.cz>
 MIME-Version: 1.0
-References: <20260726212812.89266-1-shijujose2008@gmail.com> <ac2a8f1c-295e-4791-b233-cc8549430e07@oss.qualcomm.com>
-In-Reply-To: <ac2a8f1c-295e-4791-b233-cc8549430e07@oss.qualcomm.com>
-From: Shiju Jose <shijujose2008@gmail.com>
-Date: Thu, 8 Oct 2026 18:58:18 +0100
-X-Gm-Features: AclHuK8_IR-ipfDqjHPYRkAYBCIcO3XOLSiPBhuHH-voREme2zuF2x6jh8EHKeg
-Message-ID: <CAG4KcRLk3FdV1uKHhiTtr8uAuEB+Z=rBnrHgzPwPxQRsLyo-CA@mail.gmail.com>
-Subject: Re: [PATCH v23 0/2] ACPI: Add support for ACPI RAS2 feature table
-To: Sathvika Vasireddy <sathvika.vasireddy@oss.qualcomm.com>
-Cc: rafael@kernel.org, bp@alien8.de, akpm@linux-foundation.org, 
-	rppt@kernel.org, dferguson@amperecomputing.com, linux-edac@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	tony.luck@intel.com, lenb@kernel.org, Yazen.Ghannam@amd.com, 
-	mchehab@kernel.org, ashok.raj@oss.qualcomm.com, jic23@kernel.org, 
-	linuxarm@huawei.com, rientjes@google.com, jiaqiyan@google.com, 
-	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, naoya.horiguchi@nec.com, 
-	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com, 
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com, 
-	gthelen@google.com, wschwartz@amperecomputing.com, wbs@os.amperecomputing.com, 
-	nifan.cxl@gmail.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com, 
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com, 
-	wanghuiqiang@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aseMsMGpGPT/G548@pcnci.linuxbox.cz>
+X-Rspamd-Queue-Id: 757A3100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 76653140003
-X-Stat-Signature: eitcc4jhgh1k3oo4kpum3txoen5kx518
-X-HE-Tag: 1791482312-82735
-X-HE-Meta: U2FsdGVkX194BXE1gD9SwQkFzdDxjINepXuUMktWjGXWZWxgK1C1ivHh65+I4U8Z2Xezd9a3ZjZvqBPoks+aikobfpFmG1myj63nNsPGVvgsaoDx4GjrXVsO11d4tGLRgiOJqYfiMze7znpVZB9nqEocqdLGFZeWg+2bybuNou5P16eQfI012oACRZ98L8lNDppsllzn/rxB/A9PAz1QJHIzvrKP/FVAeaZ8ajuR9h+w5fHb/yoKLu1H5CmthcLd/4CyyXFXdKNuP++25av75ZHdLdj0JAsvMybrf0f9rH16V/pOd5YoJRNADy77rc2XarktXVzLlTmAgd87+uwuFK+GQ3dUk0BZSKcQxIRBAYTOCrMtUnBMXFcejwW+mez59NKrvhjf8JK1FFx4CXiYRJAM9gXT2rTeGIH56nr2VaaT3mW0m+/OASsyYEFn6MEroqU+BhP7lxj+1cIj1J/u3Fe7Bgw2GZe/C1KIUC/GdjIkxkzLZBHhnw2Skj7HveEMOHMOu6dewagFwWZt6x/G67tGG/P8fDnBoBc4XBuE8+0SwbBl86vGgcWqMxCHcWUZEg98lWWMQSwYCuy7L6gVo1vitWhv3wQn8KnPxS7UIbMXHEZEIlDOx2mho4jfH5WTCp46Q0pUT9xbMuZw3utThpMEn0TgcMupdGUwR0JQITXlFNAyop2R1Vl72JjCbUsbvqdoNvQGOC3eZqZBm5NI2B267V195UDPrqCm1HV1KJhCBVda86GkGrELHads8vqiLD3IxKbPBbYzHepwKRnTkynht0WJz2yUeaQV1V2BxjtaKgmdKaEn2HdX0JSCaZdEBa/QW8piaJxhZSgNkBQxDKowe8ZhDWkqv8S9llnmllNOwfPeHi68hJlwaoMNWqmPyi1mUSHTrYsNjKWDlL3BHekK8eTZ4RM8esrNv2Lr+BYV7mQP+jtLNlMz8X3DGPoGoMx3C+6UEWm2ByA39eg
- mZ9VlsZC
- oDXi3LFqcH6icNIJyjlRun4xbmNYn3ZMITGxyAnW4PeRYny30QSS55C7wNqwfjbxkGO2gBj0fuv2nK2MA9cxt+kf9T32gE+iN9bo8jgTZ4JhOcdLPSLmUosp1Qyr58AjohiEw3hoKoRcxzbEwYKZuaWJiE9S1iq7HiTJN0864Xr+9kgwwjfyYZJ1ZIXys3uuZwXptj50xaKg5B9i+gB6Y+dv3XF783ChQAjxZFsnjZtrb82JUwy5LI/SjxsNaR+LOEuwJVnzVgUkxeAaEdbOLz3CZ343laH2ipT9TKj+rwMFa0F2MPvVRyY0uNt2gOyRcB+6j+LtGgzsEvbDWdV0H/ENUy7MIJyIGzBbGWXlJ6Yc1fUeURWyZucX7ebwJip72+YVN1Jb10NjWvnPLfO2rwGiPFb2Fl2Wlco7QeDeZygSqJHLd5JYSY31gYet/ixB5tP18eTBmTcglHXnqLamXcfnNKBWD5t+vEuOIU08tOxwxdgS3c1Ik8Zneq0++cBGUfmO2VipHCjD9S9RPL3iwvthrlNT8HRPOp2smc4wuswunwSADN5Oc0hV+Og==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: aqwtqjtzeogjdk578axng1oaa4ijk11u
+X-HE-Tag: 1791483871-813774
+X-HE-Meta: U2FsdGVkX1+R72BkV5hjGnagdPbeKB6bZT5aXFDW8B65pTTCKkMXJRNqXzmwyaaUc5K9VYEbATgyw1d6YB3PBHiAYvza6S2RxvC6F/X0hKQZoVzCm8m9QcmqcVstZZKB6HPatqUKr/ZxkVWD7KorEpwwU3IANvI5eoLiK2gnUfn6vG7Ss9HmvNq84hfEoErMFrTA12snQ4WcBKf2NCbmEflnMBFA/ukDbCK/tW6cV4sLuO/mNsbxCSB+tTtdgSQGx1Fc9TZIz05gFeyCoQyWEirnLgIEfEGWKOxVX4Py9VnzTv39R+pdjWnFWkTtmYljkE/tSWs3JWYvnOFuB9sq0L2t+mqii859851q1phoOlhwHTakkI9X3wVqrr++e9Xw9J7JNvgPEASMo4Zw/yjMeFNxe2D/iLbDrQ87BKMw+ddOg5QdCewrty9cylJJRDxgw7hHyfx7af/nM5rBOEzeSpK1FoVrLt2gTlqatpxMQVgkKka6rM93mrzZuW230lHFLW4vFs3zUu5NjiEeOe+w0sPNuKxNl0CfscnznTsXZ/Xc+Aw10VRptaEpkTsZ3BKQ7MqMTaN9hxOhbEcluyhuudfr+A3+xXJal9fOx3eKfMN4TD7N4V6FSz+EEPjZrSw6JD3g9F5hyJBKSCTGBjoUOKlF5+9U+OZkYyL31oRcmF0FhtQDzK7WxvqyKWONBVZwa08mQrzzXQX9qvJExeu2GOSndbxpEn4szh4PjKiDjRauu2fOwtDB9wLz23scd8HgwH4Sgus1XUgHdtppJB1OTapsBwE/aIAMyHatsk0MxvlJkFLMch3bQz4uudtLAvOJtfShlQNjMQQKnsIQVp0uacU6MkSw+k/Ph5dePMF7x8PChp8DO5PKayuvc3KcdCkvC8/UxuCHuVX6EQNN3Lspckc2aCpQarwKgY092BPDnZ/LnMQbvw/jpO94GMG0RyVgng+nfKxv7iCJDE2N+cw
+ 7Kl39NdA
+ MBFVSrTX+doLqgXtoFFx/4T6TZrdRkSpXXFG6GB+7RPSghmoiSJnmUQWuw7dLo66tLZo5YtVvwfT2JMfi5e+drOZdUVHAXrdA98bP+R3nUfXN2mKEXFjSj9bnM5NQnAomNUwJqaDQrgTqTiWAd0ujM6+uOTdmjW2qcTBY53EsBj7Pc8By3wFxr+QyLC7UMDcxTZf1qBkRqjAgrug2GUVF3TzJld5mT57TqmcGsPjXUt14Ikv/ZVS7BDQ/3yOlD68wh0vnr0zV4/TbCNQmPBm5vDlPlKdIL56XOAudMIKyriYhERlbROkANqnz3xB367Cr+eveb2qUn2QrC+HRjCqIzwzMGlZiUGrZN929wTVz5u5dkNjLR45gueo2VA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,94 +118,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Sathvika,
+On Thu, Oct 08, 2026 at 02:29:36PM +0200, Nikola Ciprich wrote:
+> [11402.940943] BUG: unable to handle page fault for address: ffffffff0c93001c
+> [11402.942273] #PF: supervisor read access in kernel mode
+> [11402.943629] #PF: error_code(0x0000) - not-present page
+> [11402.945025] PGD 6d6f83a067 P4D 6d6f83b067 PUD 0
+> [11402.946469] Oops: Oops: 0000 [#1] SMP NOPTI
+> [11402.947950] CPU: 23 UID: 0 PID: 704950 Comm: servercare-moni Kdump: loaded Tainted: G            E       6.18.55lb9.01 #1 PREEMPT(voluntary)
+> [11402.951254] Tainted: [E]=UNSIGNED_MODULE
+> [11402.952913] Hardware name: ASUSTeK COMPUTER INC. RS720A-E12-RS12/K14PP-D24 Series, BIOS 1201 08/25/2023
+> [11402.956569] RIP: 0010:__d_lookup_rcu+0x4d/0xe0
+> [11402.958452] Code: 48 8d 04 c2 f6 07 02 0f 85 a0 00 00 00 48 8b 10 48 89 d0 48 83 e0 fe 48 83 fa 01 77 0d e9 80 00 00 00 48 8b 00 48 85 c0 74 78 <44> 8b 58 fc 48 39 78 10 75 ee 48 83 78 08
 
-Thanks for verifying and confirming.
+What is that kernel?
 
-Hi Boris,
+6.18.55lb9.01
 
-Can you merge this change or Do you want me to send another version
-with the change?
+The other machine has a 6.18.20lb9.03-something one.
 
-Thanks,
-Shiju
+How can I look at the vmlinux you're running and the sources?
 
+rIP points to:
 
-On Thu, Oct 8, 2026 at 8:38=E2=80=AFAM Sathvika Vasireddy
-<sathvika.vasireddy@oss.qualcomm.com> wrote:
->
-> Hi Shiju,
->
-> On 27-07-2026 02:58, shijujose2008@gmail.com wrote:
-> > From: Shiju Jose <shijujose2008@gmail.com>
-> >
-> > Add support for ACPI RAS2 feature table (RAS2) defined in the
-> > ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
-> > scrubbing feature.
-> >
-> > ACPI RAS2 patches were part of the EDAC series [1].
-> >
-> > The code is based on linux.git v7.2-rc2 [2].
-> >
-> > 1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@h=
-uawei.com/
-> > 2. https://github.com/torvalds/linux.git
-> >
->
-> [snip]
->
-> > Shiju Jose (2):
-> >    ACPI:RAS2: Add driver for the ACPI RAS2 feature table
-> >    ras: mem: Add ACPI RAS2 memory driver
-> >
-> >   Documentation/ABI/testing/sysfs-edac-scrub |  20 +-
-> >   Documentation/edac/scrub.rst               |  70 +++
-> >   drivers/acpi/Kconfig                       |  11 +
-> >   drivers/acpi/Makefile                      |   1 +
-> >   drivers/acpi/bus.c                         |   3 +
-> >   drivers/acpi/ras2.c                        | 509 +++++++++++++++++
-> >   drivers/edac/scrub.c                       |  12 +
-> >   drivers/ras/Kconfig                        |  13 +
-> >   drivers/ras/Makefile                       |   1 +
-> >   drivers/ras/acpi_ras2.c                    | 624 ++++++++++++++++++++=
-+
-> >   include/acpi/ras2.h                        |  86 +++
-> >   include/linux/edac.h                       |   4 +
-> >   12 files changed, 1349 insertions(+), 5 deletions(-)
-> >   create mode 100644 drivers/acpi/ras2.c
-> >   create mode 100644 drivers/ras/acpi_ras2.c
-> >   create mode 100644 include/acpi/ras2.h
-> >
->
-> I applied the v23 RAS2 series on top of Linux v7.2-rc2 and tested it.
->
-> Verified ACPI RAS2 and PCCT discovery, PCC mailbox registration, EDAC
-> scrub device creation, scrub capability sysfs attributes, background
-> scrub control, and demand scrub operations.
->
-> I also reproduced the PCC TX ticker issue reported during Ashok's review
-> of patch 1/2 and confirmed that the proposed fix (initializing
-> mbox_client.knows_txdone before pcc_mbox_request_channel()) resolves it.
->
-> Without the proposed fix:
->
->    # d=3D/sys/bus/edac/devices/acpi_ras_mem0/scrub0
->    # echo 0x8000000000 > $d/addr
->    # echo 0x1000000 > $d/size
->    # echo 1 > $d/enable_demand
->
->    [125.577700] PCCT PCCT: Client can't run the TX ticker
->    [125.577704] PCCT PCCT: Client can't run the TX ticker
->
-> After applying the proposed fix and repeating the same test, the PCC TX
-> ticker error was no longer observed.
->
-> Based on the above testing of the complete v23 series together with the
-> proposed PCC fix, feel free to add:
->
-> Tested-by: Sathvika Vasireddy <sathvika.vasireddy@oss.qualcomm.com>
->
-> Thanks,
-> Sathvika
->
+[11402.958452] Code: 48 8d 04 c2 f6 07 02 0f 85 a0 00 00 00 48 8b 10 48 89 d0 48 83 e0 fe 48 83 fa 01 77 0d e9 80 00 00 00 48 8b 00 48 85 c0 74 78 <44> 8b 58 fc 48 39 78 10 75 ee 48 83 78 08
+All code
+========
+   0:   48 8d 04 c2             lea    (%rdx,%rax,8),%rax
+   4:   f6 07 02                testb  $0x2,(%rdi)
+   7:   0f 85 a0 00 00 00       jne    0xad
+   d:   48 8b 10                mov    (%rax),%rdx
+  10:   48 89 d0                mov    %rdx,%rax
+  13:   48 83 e0 fe             and    $0xfffffffffffffffe,%rax
+  17:   48 83 fa 01             cmp    $0x1,%rdx
+  1b:   77 0d                   ja     0x2a
+  1d:   e9 80 00 00 00          jmp    0xa2
+  22:   48 8b 00                mov    (%rax),%rax
+  25:   48 85 c0                test   %rax,%rax
+  28:   74 78                   je     0xa2
+  2a:*  44 8b 58 fc             mov    -0x4(%rax),%r11d         <-- trapping instruction
+  2e:   48 39 78 10             cmp    %rdi,0x10(%rax)
+  32:   75 ee                   jne    0x22
+  34:   48                      rex.W
+  35:   83                      .byte 0x83
+  36:   78 08                   js     0x40
+
+I need to be able to pinpoint it back to the source.
+
+I asked the last time:
+
+"Just to rule out any other issues which got fixed in the meantime, can you try
+mainline Linux and see if you can reproduce your observation with it?
+
+If so, you could share your crash core along with debug kernels yadda yadda so
+that I can poke at it.
+
+And before you do, make sure you have the latest BIOS and microcode installed on
+that machine.
+
+Also, where can I find full dmesg and /proc/cpuinfo from those machines which
+trigger this?"
+
+But still nothing.
+
+Imagine this issue has been fixed upstream but you don't have the fix in your
+kernels and we're basically chasing the same thing again...
+
+Sorry, but I have lost my debugging crystal ball which can help me guess what
+the machine does. :\
+
+> so we now know this didn't fixed it. however I didn't have tlbi=ipi set, so I'll
+> now try this.
+
+That won't help either but if you wanna try it.
+
+> any ideas on this new info?
+
+Yes, see above.
+
+Bottomline is: without sufficient debugging data and up-to-date hardware,
+there's not a lot I can do.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
