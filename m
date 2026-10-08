@@ -4,119 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4911CA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 07:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37030CA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 07:44:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF15E6B0092; Thu,  8 Oct 2026 03:41:19 -0400 (EDT)
+	id 2ADD26B008A; Thu,  8 Oct 2026 03:44:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA2606B0096; Thu,  8 Oct 2026 03:41:19 -0400 (EDT)
+	id 283A46B008C; Thu,  8 Oct 2026 03:44:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C90886B00A2; Thu,  8 Oct 2026 03:41:19 -0400 (EDT)
+	id 173CB6B00A2; Thu,  8 Oct 2026 03:44:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A1C956B0092
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:41:19 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 34A64404B1
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:41:19 +0000 (UTC)
-X-FDA: 85298663478.30.51BE56E
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 65E754000A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:41:17 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="V/saYvQs";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of shinnkka1@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=shinnkka1@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791445277;
-	b=MHrZyM1vp+PeAFzPOHjl+SJsee0v53s2gET1Zo3PMKxP5qJTWJZsY3vUhE61t8My80Oz86
-	VIsIL1lMUGfSxY/sOa0dEvv5m5WekhEeAh9RKyt1k5ymvsO6rfWDh4Nv1E/avQL1/oAcL1
-	Utz6Nw3shtbjxv6ijvrGeQtaZhuRSio=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="V/saYvQs";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of shinnkka1@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=shinnkka1@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id EFAE46B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 03:44:14 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E522404B4
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:44:14 +0000 (UTC)
+X-FDA: 85298670828.15.1C1A48D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 71D4D40002
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:44:12 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LEYr7SLy;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of dhowells@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791445277;
+	s=arc-20220608; t=1791445452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=awqJUJaCqrMD3ZNJk51KVYqwLY/lICB+bok90TEZ8y0=;
-	b=L0+XsFnY1OxGkHhHG5l+ebZVwY9+OcnzrEPexz6vG5/aOYO7u5tpA5duz8MaSKfyL7a4ip
-	SnJfmAEct0eZ1+Ul74JkFIOy2MyNDYnjLgnrBua0tSYHJJ2wKZbt9YoDXSuJg8I8eouDR0
-	AWSrTg7MSEG26qT0bM/jUkMM5Znvou4=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ddb35cf9a4so996795ad.3
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 00:41:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791445276; x=1792050076; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=awqJUJaCqrMD3ZNJk51KVYqwLY/lICB+bok90TEZ8y0=;
-        b=V/saYvQskia1AzJTUd1QrmL88nf4W0vOLhLKv4nsKaPhm0fZBTNibFQMgxxLd134ae
-         O9bkBmsxjSszbEWuDqorGWR4hEyAApG4Z2NIrsBTRX9YKUy1nAPeUlRHafDjcuVJU5IL
-         tVt+y4T38o3HGpQFztBSbamh1OQQvR3RCJBcsDPuH0E9SpkEKpdHRPlWac0Uia/7uyq0
-         t4WmutZZPiGo/kxe2zPncX+kAyU5A4BpcY4fJtPqFPofF/U8qyVyOmWm01mFg1Zt3vSw
-         LVto3l2I97QYg/oshy4lU662pfEeI5prt4uxnuGIhFWSB8wZWHTUZ/qYbn03M4QcxZyJ
-         4i1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791445276; x=1792050076;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=awqJUJaCqrMD3ZNJk51KVYqwLY/lICB+bok90TEZ8y0=;
-        b=M2G417Z/SGEht77bV5FlR96VCRYm+OyhXHOTOt2ccq8k2n3f78vk0UidVbu4TIR47G
-         onQ4RNK7XSwu/5PAbr4wWI6VI21RkPnNHdAzTVILHpv4D9n5X59igKyVTByH7DvDZWQO
-         7UIXZULntpBbmiADWUV5hng9VFSu6eENPNDins7mv34Ym5QLxlFEkGzhTtMgQFSGF9xx
-         tOndXhz1pSPGn/XPjWpxY4BIRD4WpbaCM+lO4dpZRuAAOuOw8ZghwKMI6xbXfBmIZo+1
-         7GzB9TDV1lIjUTnRpLrUDUkjeYzJEw+dfMKaw+CJ8uAR0XIO5z5IG1mz0YJmjmdzH8aP
-         Ib0A==
-X-Gm-Message-State: AFq9FYKs6rKzOM5sqTeiR0m+7O0gv2rAhFMoB7vzsUfJn1yfYSoVbuLe
-	XX6Y7XigHOElzZNLuqhKvhCleTF1b3nHkIPSH3pi4uK0OBs2LPJRt2ie
-X-Gm-Gg: AYBFou21Mm+ervieDEOvfyBlNfH0Mr8FErxZkf6XpjvFk0AkiyVclxIqry0w9DHBl98
-	PvD7hW38QsSyyKw2f2XnBW3/dR717ENYGKi2s7hX+j/JKT42pQw2MdZydydEDmzJFK7DfxPRCIZ
-	zNPsVMNanp13aIOofPkerkgE/Tch0I0DEtiYC+UT/6tcJYy3OEM7V0FYlGv/NQ17hGvNuTeN89F
-	MRa/z2BtFcpw+YWp4p+29wWWnOMEGSXxNapzUf6tqS9D5qEpQHEgVNtG5vKDbYbrCCwYUf92A7k
-	f4rUp/27fD2p9W+ez12RTnU5s8EAFaMiUotMtveZtnULL1y1+61aEw7f+5ktkoh6jcE19UxmTPD
-	bpC0W0MoM4RuUe7K0XoM6ZNdOAxDfXAvyIPn3TSUtpcWk124b+WF17Whyv7DmtyR91qE2XvYQUB
-	9AhQJ37rtkcasKY/QrPGS4MKrdxngZhmlDKBOt6zNvItw6Rj/CGnEVUzIY0FkeW4SlGSn0DluM
-X-Received: by 2002:a17:903:244f:b0:2e2:d09f:d772 with SMTP id d9443c01a7336-2e7f4b3054amr24019215ad.0.1791445276129;
-        Thu, 08 Oct 2026 00:41:16 -0700 (PDT)
-Received: from [10.141.37.220] ([138.199.21.232])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e6046feacdsm20589545ad.18.2026.10.08.00.41.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Oct 2026 00:41:15 -0700 (PDT)
-Message-ID: <5048a2c0-8e55-429f-bb1e-4b888a728579@gmail.com>
-Date: Thu, 8 Oct 2026 15:41:10 +0800
+	bh=qex3q47o/llFp5icyZaFvcldeQl44QEXS98v350pNx0=;
+	b=DCkyk7hcqTIaQHxiIFsU4/CQtQzKmW3aWQMGQbF1ehJhb6P234tVXbpR8yWd2g3l+zTLx0
+	cFXPrR6wjq9cwIjlQ3u8/PQn56VKQ+P/K+Mbb9VOdDjUMTBlD9XS8snAODpQ/I7qdNq36b
+	6pmA8di46Ms9Cl0nJFEbPtWmU2jOE2I=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LEYr7SLy;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of dhowells@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791445452;
+	b=4OrKyKERXP9D+cbn4BSJSc50h+V3MIhzvG8AfAFsL7bxWxHO8V8EQtMz3P7nIuBmtjTkFw
+	jbYO4Ze9w/t+PBRdBen2Hh42Kh8HuNyeRLNnFT31kgBPeQZyW/gjj7ZF2wIOF2mJi0n27s
+	xmcArWQTTk/8F3MM1JGy5P+tfPTtTYA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791445451;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qex3q47o/llFp5icyZaFvcldeQl44QEXS98v350pNx0=;
+	b=LEYr7SLyatgxa+rLRCu+p9UFY6Pr6MuAQ2Q8tIEVDyX0S3g+Uup1g/SObTloDuDSHyZvsH
+	vR+dTukQnSQjZPilfhKxAI31b9JArjXwz1L7Fs57NVQQS8Y7OFjyaB+PdSvtq61oe/vnQD
+	FqqwocoLAs6vwD3XDWi2lBM89F15+3o=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-16vGR1_fOq-m-BIuCSPT3g-1; Thu,
+ 08 Oct 2026 03:44:08 -0400
+X-MC-Unique: 16vGR1_fOq-m-BIuCSPT3g-1
+X-Mimecast-MFC-AGG-ID: 16vGR1_fOq-m-BIuCSPT3g_1791445446
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 26CC51955DD4;
+	Thu,  8 Oct 2026 07:44:05 +0000 (UTC)
+Received: from warthog.com (unknown [10.44.32.90])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F29A11956086;
+	Thu,  8 Oct 2026 07:43:58 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v15 1/8] mm: Make readahead store folio count in readahead_control
+Date: Thu,  8 Oct 2026 08:43:37 +0100
+Message-ID: <20261008074346.936909-2-dhowells@redhat.com>
+In-Reply-To: <20261008074346.936909-1-dhowells@redhat.com>
+References: <20261008074346.936909-1-dhowells@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs: Free any excess xarray nodes in clear_inode()
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- Rik van Riel <riel@surriel.com>, Zi Yan <ziy@nvidia.com>,
- Jinjiang Tu <tujinjiang@huawei.com>, Dave Jones <davej@codemonkey.org.uk>,
- stable@vger.kernel.org
-References: <20260623192850.1595958-1-willy@infradead.org>
-Content-Language: en-US
-From: shinka <shinnkka1@gmail.com>
-In-Reply-To: <20260623192850.1595958-1-willy@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6pojrkgdx1fgipqp9h7yjt5y3smhfyo9
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: ZAD8r0vNosZ5T3sG8Ut-v7coJ3aeJgRV7gvyv0zwuqI_1791445446
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Queue-Id: 71D4D40002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 65E754000A
-X-HE-Tag: 1791445277-156223
-X-HE-Meta: U2FsdGVkX1/eRp0KGLI71ZOF++QanCrh186VC1A8E+F85sSWiED/W3CeVS/Rr9iEYidFBKLFbxPBJCJRDP+SCP8UMRDmX2sf/gdr/b+Losi4s8Hy7ygqFQfip8mU/tWGrtLi9ZH8jcYuzLJMQRstvIVLjTGN3IQQNMiYEFljEkb+uQIyytEi/6niA0zpJBq42guYi7fPqC0Z3kt7YSwVguMoN5sWetZnucPXVPi6uUNDSSoCstV58Q8oB/lCx0YYwfvEBSESeho0ospu/XSeiHkDJxvPT/JuBlP7BXrY1Fuq8oIyRa4fctr5z47g8+1BsMB3P6aM+kE0XjzjFHM84OX24TOC5IgvqCZC+7zXEsFBYwB4L+gEh/MjpkhSKRXyf6y0rpezTOxMLZgP2kLHKmcpsuxVVFL9nfyazt/F2geYYlYN6QPmxnSivffIZgeKe9gCO6lW1hVL3AEx7WmVzasVv7NoAmdFq977t9XULGQcFUsa+kv01oMEkWkqALQGKHaw2FgAj1wETI0XrdsO4tcYcGMybqwn0GSeiXJUMsNV4wWvnI/9n202x/47BmGc273Gav2i+AkEazw+4zQQRAJfBOqsh2qAZqP1HZAprOJCv/sJBdY/Ip/CZE2RihII48r4c6VtfUx6qD/mgxUBThk2I7sfGsD/FZcd+r9bmPduLHig+0LfcDRauga01OvYuMBaR5z9D+QJF8bdWydCiZltYieRobwuNUPGgesh/eDq5cAnezFb2/SLFlIauLXughX4pfGF/waD30RS3e3RNIva4BFBNEr0mrKWPNOKkPZTiB5h4lkvyjTjUGjVwccGp07DLydgxF1V91mbTn1jKS8tLRAG4Th4Qpjl9dP1nphkcESWMkykNq7imjzlSwirgIUGRYPkmceEXonQ1SdER6+fKin0yfy8aX0zlHdPG7rbHZlv2myGTngFeintfDNLOyoIGAsxyMDN2IyGkTM
- QdQ3EfPM
- 6bxYBuKImOqG/PtwQ81gB0CcoXElPHoU1I97fls9xqu9PqIxsgZ5qmjVXuWK5Jw8CIEBMnzUPBpqawiAGc3Yp7Doqg2eV8CiJ8vinXFWnNmsM9rka8KV/CkEDGqiOjqn/daB8tycDxBbjMHdsrCzSGZKzfmda07guFSTavGnKBh76vficusf1/H8MhLgK8deSW2mjAlZhlqwJAu8HCHxn6iesGadICEPNCIkl9mYgxGyTjOYYfu6mcnZuXRWvHPpYCI7q7h9XQaRTa3HyP2mTF5tLrqMfhvlWrvwVp4AuhitbETMqcbA/PNFx51vQh9F7EnWYIefH/Cq3+RqbbFF5cKj1NMfsx7BuBkuKOL++0jS4Fsw=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: tyr5aymzmhx8e1m1mtsowf6hdnjmywe5
+X-HE-Tag: 1791445452-770590
+X-HE-Meta: U2FsdGVkX1/ePClEJXXF2Za0o5AB2DpFKb2RHAkMVpFqSVZcjqxCbYItDC85BQp02Y9m3Ipn3tV/vmUrVY3kcXMa8bTsP+yroyIKTFnOW018nxlojnVLpoaT+jkfNaaUamDMaOVgvAAH0JtBUzrXMPvk0V+kUzxtrwBpbOYXyJyyWDESTN20/B/iIywdc0hZVzATJGNIJd+pDi0GYNbh/XxE7TVlfsgfBFriCgfWqMnbgUlT/zD5vCC1PMIOYBX5FRGvBhbrLHjvWFHa4WQOm/WzQzk9jo1znciivWjt2T+SHZzqYr7rIwKj+bxN7YrXMuvLcAOc3EcrbySplAMQaKaMejW20AFOcQqchGdOyTsS2HGomhViLgIXWBrXDg/j/eJ8Wd3qAtsxQbrdpKCd+VvVlA5kSxXoF3K/I+Zy78CouAkCU9V4y61aG90TxFihd1TUwgu6yrF/BJy412RX40jHftfCeirpV/9DakCVZJRhoyM3xcle0+/Sm6Mb+NrTWrKuBDGqRQpZQpNARRTJD/toNClg/dtrl6vGW1zOkVZ9FZbVYt9EA2bRNFG4rLUUwJhyykCdby3Nqto0xLYvWmMzri4PYabPn1YQnMRTp9fpbfmC/svwjH3yGxefwvVvaBWc9xDA//OTQMy9GMcQtx3KidErAm2dUvKTzetubx2CyStcPiBRQ5zJFt+xkaRrgaEUvwqon62Al5qjPssTluQoYaeKK2YYJH/6o8M4QdeKVXzgSC+7FHAyKuMlbXE2NpajkDsS49Jkii/s5NIYsbPqQvFkdCi+Iy5jBjaySiyR+2iYatzCrKptpodVfV8OY0N4GIZqre8/76S6p/+itjqR/BEGnhhCsd4Xoa2MJ4Ezk0UBA6cTEzGyPwipmlvpsi0eaQTRnqq6Mwtdm/OIMd/LN9+ekQfnczATf2PXawBCsjOPlkvPrtAtcNYg0Gsp+A47EJTIe4x/z19oz+C
+ FGYUwnNx
+ vlTi79UmVAb0qzr4tbO/efk7dHlyo5gzRiVsLEJOoJ385suyWSnW9ynGTmyQXmY0rQXaEVNuV+XVBgkof99TKValB6a/MOuqeJpziHmYdLzuIjs8muX6Z31LH4mEYfo3Qn5pQ3zT9wZ5jEcaYO5gBib9lMDzVX88o6b12aoF46KTfAWLdQWAODR7f2Ona/RWT9TTT5CIDk7wtNIlTAaccXpbmGEdJXj3ldRZP2ATVPM2Ymc1gSnp3i72q5Rg3NXg/+vUpIk/2xoEjjwUeU0L6WPJRIqKT8kFcs+vorWyI59Ak1gWPwrIHzqNMuIDiSQAvk8MAaMwr0byXrV6eiN3fPrf2FxGrI5nT3iWfMkI0D9cqRGDFVsqWmL+rjaJn5H5qsyKUhZkwQNc3yU/uRaR5hdVBA9M1bZN5Gvb3hUNSaXNsh3/midqKnEJ3L+gHwkD8d/L4CrgMJtpiOJed7HC9i7V4Iwrp5rpEkccocD21nl0BUFuLCVIcF+LoDk1umQRTOPXrQxUq8xIjBkcsCm5yQq+o2MmN8KcjrhMft6BOdFtx/1qQ6Q8yxTPc8nPzuKy/TRv6e82y4/hpGfjDiZjbaMuwWTSSmYzvme2eZXykdjX+gxQswl9h8JKFvOjk9BGz2a1jMn6+bBRqz0kLrSdkbn7EwH1fA7M0HBfAC2XWNLd52m2m+KKxlcQzwsVwW6EJ6ws6EceO1aLch5M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,22 +121,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> For many years we've had a hard to hit leak of xarray nodes.  Hugh
-> documented it well in commit 786b31121a2c.  Recently people and
-> syzbot have found ways to force it to happen with madvise.  Rather
-> than fix the leaks where they happen, just call xa_destroy() which
-> has the side-effect of cycling the i_pages lock.
+Make readahead store folio count in readahead_control so that the
+filesystem can know in advance how many folios it needs to keep track of.
 
-Could this commit be considered for backporting to the supported stable
-kernels?
+This is cleared by read_pages() in case it is called from a loop.
 
-Commit: ee3f01125010 ("fs: Free any excess xarray nodes in clear_inode()")
+The count is accessed by the filesystem with readahead_folio_count().
 
-The xarray node leak fixed by this commit is present in older stable
-kernels, and this fix should address the issue there as well.
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ include/linux/pagemap.h | 10 ++++++++++
+ mm/readahead.c          |  5 +++++
+ 2 files changed, 15 insertions(+)
 
-Thanks,
-
-Chen
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 0adfa6605653..b7154b81d0d7 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1411,6 +1411,7 @@ struct readahead_control {
+ 	struct file_ra_state *ra;
+ /* private: use the readahead_* accessors instead */
+ 	pgoff_t _index;
++	unsigned int _nr_folios;
+ 	unsigned int _nr_pages;
+ 	unsigned int _batch_count;
+ 	bool dropbehind;
+@@ -1590,6 +1591,15 @@ static inline size_t readahead_batch_length(const struct readahead_control *rac)
+ 	return rac->_batch_count * PAGE_SIZE;
+ }
+ 
++/**
++ * readahead_folio_count - Get the number of folios in this readahead request.
++ * @rac: The readahead request.
++ */
++static inline unsigned int readahead_folio_count(const struct readahead_control *rac)
++{
++	return rac->_nr_folios;
++}
++
+ static inline unsigned long dir_pages(const struct inode *inode)
+ {
+ 	return (unsigned long)(inode->i_size + PAGE_SIZE - 1) >>
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 6e5563290287..196542fb1c93 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -188,6 +188,7 @@ static void read_pages(struct readahead_control *rac)
+ 	if (unlikely(rac->_workingset))
+ 		psi_memstall_leave(&rac->_pflags);
+ 	rac->_workingset = false;
++	rac->_nr_folios = 0;
+ 
+ 	BUG_ON(readahead_count(rac));
+ }
+@@ -303,6 +304,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 		if (i == mark)
+ 			folio_set_readahead(folio);
+ 		ractl->_workingset |= folio_test_workingset(folio);
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		i += min_nrpages;
+ 	}
+@@ -473,6 +475,7 @@ static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
+ 		return err;
+ 	}
+ 
++	ractl->_nr_folios++;
+ 	ractl->_nr_pages += 1UL << order;
+ 	ractl->_workingset |= folio_test_workingset(folio);
+ 	return 0;
+@@ -822,6 +825,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		ractl->_index = folio->index;
+ 	}
+@@ -851,6 +855,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		if (ra) {
+ 			ra->size += min_nrpages;
 
 
