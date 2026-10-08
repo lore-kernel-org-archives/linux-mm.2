@@ -4,92 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65DCDCA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 06:38:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8C99CA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 06:52:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33CF36B008A; Thu,  8 Oct 2026 02:38:48 -0400 (EDT)
+	id 8B12B6B008A; Thu,  8 Oct 2026 02:52:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2ED846B008C; Thu,  8 Oct 2026 02:38:48 -0400 (EDT)
+	id 862136B008C; Thu,  8 Oct 2026 02:52:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2039A6B0092; Thu,  8 Oct 2026 02:38:48 -0400 (EDT)
+	id 756B36B0092; Thu,  8 Oct 2026 02:52:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F056F6B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 02:38:47 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 78B011C3648
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:38:47 +0000 (UTC)
-X-FDA: 85298505894.25.590A69D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DF6ADA0006
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:38:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j38/YTG9";
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 515626B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 02:52:45 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C621AA04D9
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:52:44 +0000 (UTC)
+X-FDA: 85298541048.20.4228FCA
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf17.hostedemail.com (Postfix) with ESMTP id F0A3040009
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:52:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TXWhngC8;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791441525;
+	s=arc-20220608; t=1791442363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/RsqwdaewrKioDzHveOJKZewBC7grld6bvE/46a8ao4=;
-	b=g+I77yKrKgqXqjBRl91VXFfzPJH/6vmWMZMQBpqjgX1VKzMSY/Qn90TpawquCk/TZ/DD3O
-	ShgPFTm4478Yo9PP0R3eEq+ZMM4BKqLyw4PzVpWzJxn53iy+WCjzLSt5Lc+XyWKopv5qME
-	YbWV7zuhFDHZITue2/6LxPI8UpVws1k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791441525;
-	b=IgugLshA7f1cHfckvV4j6TdLBOLfZ0gpFQqOQ154Rt2+MwDb9Zyu+k1mmm7wYDawSo0C1E
-	WpxR72N8xn6oCdDT3zh1Wnc1SrCMMfqlG3xcHwG48ZrPVmoWmnsLgdIJqjx8bwqmt0nygC
-	FCwyvpiOw7oioqBfkr8SpfqsE899k+4=
+	bh=KFlD45V+rHQdBusfn6VlwYaqiad05DvAgkXkaaZjCzQ=;
+	b=8qHsJ+rgSqlvtQXMHHh1tFZkWF9IUaD0HCfhdk5vj5YqQJSOJ9779SjsptaIn302r0gEqU
+	dzLKEqtV2aMRSlk3Y0uwtB4Hhw9r8QZKqsxNgcaqIo6bu0e41YJAv2KCjW0TK9z56yh91v
+	eaLgk62XTPMi3w0CAXDiy5OqPqbB4Vc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j38/YTG9";
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A4823601DB;
-	Thu,  8 Oct 2026 06:38:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100691F000FF;
-	Thu,  8 Oct 2026 06:38:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791441524;
-	bh=/RsqwdaewrKioDzHveOJKZewBC7grld6bvE/46a8ao4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=j38/YTG9lX9S2OLVXDrkb9B+8qcyyKaQeMspUhzgHXZ8OBa+qZnuSMP76709ZUhs+
-	 a2No4Xym2pRTE25zOa0YSWg1zIR0kv5unhOKYSL/1ewwvfOgo4NJsFKdKsz8awTWX4
-	 /6DtOBH0rcPuvqE9YaHNUMuGvM6gi5M72z4YFQzK+hsEcgkXstEWOdF23UpXTvDC1e
-	 rcXu6NMXbPo8akDEKg13ENAmZ4oJ4LGXJ/exQ0zvvwBHued3rbZO1rBc8wWJ/EeQCD
-	 ahpWpWePxF5W8jZpuc4bs15phLuYmjwyc3dTZ6oM5VUf+2nbrrXsgQSnnY9wHAOIMN
-	 OuVHTEGQbZ1dQ==
-Date: Thu, 8 Oct 2026 08:38:38 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Wandun <chenwandun1@gmail.com>, robh@kernel.org, saravanak@kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, akpm@linux-foundation.org
-Subject: Re: [PATCH v3 0/5] of: reserved_mem: several fixes about reserved
- memory
-Message-ID: <asc6brs_g0ky0wOM@kernel.org>
-References: <20260920092852.614973-1-chenwandun1@gmail.com>
- <arJA6fOMetzoBhDH@kernel.org>
- <060fb694-ba1d-40e7-8a18-f32d5a4039ab@gmail.com>
- <CGME20261003080438eucas1p2bdb68c248ecad088559285a4f736bfe5@eucas1p2.samsung.com>
- <asC3DBvtlcO5AVsz@kernel.org>
- <5dccea9b-a9e1-44f5-84d9-bc9efe04edee@samsung.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TXWhngC8;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791442363;
+	b=xnPp7OZ/58c5lnKgwCBLjVxG2h1d/8j5on1E06DNuGaSIb9TsdFojCuVx+s8amyJRNMNuM
+	z3w0bRO+VR95FiGaXHy/NCd2yggwT3lTDQkB1HBrMw2ECjkx+dsZjYn42h3QKAgkz50OV0
+	uizN2SDMweRCa+MKFlDKBifSnwJsnbo=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1791442358; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=KFlD45V+rHQdBusfn6VlwYaqiad05DvAgkXkaaZjCzQ=;
+	b=TXWhngC87E6PriZ+nnVspkwLG2D4XUshjw0Eq6G68fwqxVyhpqsLHdsblVKHReyBL+1S1VL8+NcGMyJepHR0cFjNVwtNCncU0biqR71B9g2+LTfVRd6Ezt2yHPFpfPywHC7CcC5Ckdvu8byqKVnsl3DXbb4uWLmX5u7ZGp4tczs=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XCLlNM9_1791442356;
+Received: from 30.74.144.149(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCLlNM9_1791442356 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 08 Oct 2026 14:52:36 +0800
+Message-ID: <088f991f-429f-49e0-be11-548a77e8d44e@linux.alibaba.com>
+Date: Thu, 8 Oct 2026 14:52:35 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5dccea9b-a9e1-44f5-84d9-bc9efe04edee@samsung.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm/mglru: Avoid reclaiming kept folios during
+ retrying missed rotated folios
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu.xie@google.com,
+ weixugc@google.com, baoquan.he@linux.dev, chenridong@xiaomi.com,
+ Yu Zhao <yuzhao@google.com>, Bo Zhang <zhangbo56@xiaomi.com>
+References: <20261003054216.9155-1-baohua@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261003054216.9155-1-baohua@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: F0A3040009
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DF6ADA0006
-X-Stat-Signature: zumzzit36o599acrnqehp55rsw4ds41k
-X-HE-Tag: 1791441525-486333
-X-HE-Meta: U2FsdGVkX1/fcXKDb86FhKm+Q5ekN4rfGpDTybq+9H9v+oN0BBiMQY7GOwNW0amdC0xKlC+QAig+OV7uQexKpicvDAIFNLEnCGkYiq1C2emqGo5ecPdZ5+2DRkYEGBm63cEZR+2HJ2jJDPDggYkimbGWM0fyCKByKY1g4cD1kd9WCd6kqaSuK29Hs24keIXmjOyTDN0DobecAJmntfO7V2LcIx8kmzvXyPSaR5Xd6PKzwPfXQmOSBU4D1DqlJQ8PUc9/pFa12Ex7u+c/hGQL6GotlAlvIMJ/MsIpr6ComgfZGwcDOTISf1NCq4Ky2ge8Jh7/4UwRbveNoDGZA/nFsvzRTOGMD+ClIlmwBqzZfqBeUdgr/YTetK3XZOtAKn/bAd0PXEcUHsVVWskeK5ScNh6rHq+A5cbxE/QyYlvar6namdgD94qmpdkML7tVck+hgcXhEMLZUGXT7InrS1PAAdnHOCWA86L48g+JHVeG3q1HAADsf2Gtq7+AjhWxCZ4hmjl8Ke5IFyvprBml/XohdfOEKmyg7qVSC42X45PNKoKlzb5sQrSNPUcqI4vWFVfb3od7vjuGlOcP4W1bbyl3mXMhbpAyjPcJKpLT0L3luQ96L6B3goaI0tSlMqs9ux58EfjYHmXYP0y7eYOaUmkbANihQl9CKWFeAXNXDh11RGfwrRbP3r1zp84odXxmwZSAuqKulDQPUlYaqRpmqGxC6z6JMcnDGi94EALf449KaAjibHuTtxR6I/KGLBSLKsp7pGuUpMdkNIokkmYgoxOAJUY7Yqv0yTHdlYAO/4Mo4v1U3FB0qzhJ+zvFL3t2OwNvDG7y00Nu9tRkcFqR63Jy5+pfpxzlia3i7Jr4q/L1/MDQrSRfFNmWTyEjGyUeyEI0c8yKlhzSDD9ahojzNfNkhN48hXgda6DRMBuvwphmSIowNQuKkITO2geJR0izMUP74nYKu08gaiiQ1+ecGm2
- 3FIV6UnB
- km7EbN+LmD42kR5SZiPibPdJV4AN1Mg/RhVix6iMrHhxj1I4CNHExP3IxOzgOJnBC0yXqocR241dU9dmI65+LyfladiAegKve5xJp7+BdcqSUXB7A+QPZzWzoQm0J03YqqXnBsmPBZpwDbH9/10vcUxPmoRVlU6jFc9Tk7DGbhb3SrbPQOc0vrb59JSDCazaSckyW+H/dHmpQTboeSukpzIbXhLb4YGT2dFppFXBHOL3IOZJeUvqbCJH8lL1UjBO7pLLQG95GEzFQ22ukw4s1YzGeqcHl5uxfMiQWu02yl1OoADNVsjiT38rPtteAZTeRxUhPcWWskZaCx0ON5kjjzGMjsXObm1hL8uAmHghBjp1YEP0=
+X-Stat-Signature: tfbu5cjyrckmcr1d3sit83w8e93i8a76
+X-HE-Tag: 1791442360-844619
+X-HE-Meta: U2FsdGVkX19X2R2HISzzADwt9fPmfciUL/EpPjguGi3ZN7W4mifjELdT6DKVrlTjtumBwhaxg8dIOVbjymH6NhMLTcl6YRaSRXWTO9sPMI1AxziE3LyGlKFAvJMJgP13xt05KL9+gJ1IxdUfTkEIZxJRYl39lNq4UUVAwNNFXfOl9poepDiRz/6Jhc3Y1zn3HXCJv3Oa1ZNpfLau0WawDeYgSAM0m6Wxo8+HnNFpoeYxd9kAn5c2L51cxSHQHih/bYpU1a8vm8g37cDMHusyU42b0jGXRyE8ogqF0DrL+VGdG5YmZ1vpQ/l7L+6749VsQm9cBjNzfM5+YKRklP6kll2WnbSBNqPWskcjUmpL41vcPj/+Q9RpULIxjH1QdciBzwUchP05TG09ZRDK5Q5aiyEOU2jxHkS0Unfv+BnWl9+EuwTw1z2kuemFN4lRkWsxNZcC14u/P50heOubwQcMAUUgH5/yJGMWX4EcAA8PGWX8Ekhs0R8XGoc92Zu2H2eqjU4Cnc+7szxYrCUeZhiwGq6GniiNLdgPNJjWK4OJc3pkUtJ4hHWYiDYVuWnSiZRQw/HYY5+UDCVESN2pGeays0qPMrFNybInENqhmOXF76/AZGyY+LV71ZswOVBQBvIiEKph9zJ1Kg+4Kbjf9e570GSvEjh+BPbPXBXE5CeoGeET+/a60w8cLK9OLtBtwwQ3AQQAsPFGgqEPmR8k/JIOzB9GvZL4loECGYhRfMESPARcZCc0DUoeMhkjaqCUAE8EDRPS5AcHFnAx8NRk1fBg11Kpy9nlUMj+w5pYGeY8PJGknWNntb0nuRAlXADwpWEezzVcqjl+FBdpRYJDsLfj+h/6yqgXid+MZ5bH0CmyJyx+K2HwBmiOtlWzzIubfagepBxXhcn3mmeVOZwD38mVXNpLTIPtdQ2k1eUJ8chgUGBhjy4Sdi6i2naH6UsPp/z4qfNp6gOSFIOuVEBHNcw
+ kNBiKIXW
+ js0Wlw3BNSMG+bZlnZcboO5z6Lls4PK7eVkLpaWIrEAKlqNcYFHlwbchdKWs2nFs8XarU9dspwK/+lhzUAMgnMT9BFcjQUbXuSmCayqdjBDbJmO4eipdAsh3YV8Jx4FRUuVhs5Dk8q3EV7BnlpcuCz8g7Xm/Eo9zjIb3TLCLC5yvEr8H0LrEenXnKPeRdYM9cUoc+RHu4EvjPHZ12fW041YFb0MYHFnRqrYsj1Lsn4keaYqjqQp2EgbFX8VUPbsyI7V2qm4JnBchR81ZzijiJovU1BjzjGwVXje3GN8rz1/izTumvNVFrBHkYUPOIzoD2bQEAyWXKsTlWan4c13shV+qoWg+sS8Jar9zoUQJbyOb+f7cw1A8CtNSgAfBcXjIdJXEs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,65 +89,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 06, 2026 at 03:26:21PM +0200, Marek Szyprowski wrote:
-> On 03.10.2026 10:04, Mike Rapoport wrote:
-> > On Tue, Sep 22, 2026 at 05:24:32PM +0800, Wandun wrote:
-> >>>> From: Wandun Chen <chenwandun@lixiang.com>
-> >>>>
-> >>>> This series fixes several error-handling issues in the reserved-memory
-> >>>> initialization paths.
-> >>>>
-> >>>> v2 --> v3:
-> >>>> 1. Rework the mechanism that checks in the late scan whether the early
-> >>>>    reservation succeeded (patches 3-5, suggested by Marek, thanks).
-> >>>>
-> >>>>    Patch 3 adds a new memblock flag MEMBLOCK_RSRV_RMEM, which is set when
-> >>>>    the early reservation of a static region succeeds and checked in the
-> >>>>    late scan.
-> >>> Can we keep this local to of_reserved_mem please?
-> >> Probably not. I do not see a way to keep this entirely local to
-> >> of_reserved_mem while handling the issue robustly.
-> >>
-> >> I previously implemented an approach in of_reserved_mem that records
-> >> static reserved-memory nodes whose early reservation failed in a local
-> >> array [1]. However, the early scan runs before paging_init(), so the array
-> >> cannot be dynamically expanded. If the number of failed nodes exceeds
-> >> the array size, some failures cannot be recorded and the issue remains,
-> >> and that is why Marek said "partial solution", although in practice
-> >> having that many failed nodes is unlikely.
-> > Even before paging_init() there is memblock_alloc().
+Hi Barry,
+
+On 10/3/26 1:42 PM, Barry Song (Xiaomi) wrote:
+> Since commit 4d5d14a01e2c ("mm/mglru: rework workingset protection"),
+> `folio_test_referenced()` was accidentally removed when checking for
+> missed rotated folios. As a result, kept folios without an active set
+> could be added to the retry list and eventually reclaimed.
 > 
-> One can call it, but such memory cannot be dereferenced/accessed for example
-> on ARM64, because it is not yet mapped in the linear map.
-
-Can't we use early_memremap() for it?
-
-If there are many regions that need MEMBLOCK_RSRV_RMEM set, memblock will
-need to allocate memory. If that memory is still not mapped we'll end up
-with a crash in memblock.
- 
-> >> To handle this robustly, the late scan needs a way to determine whether
-> >> the corresponding early reservation actually succeeded. Current approach
-> >> uses memblock to retain that state.
-> > I can't say I like the idea of keeping this state in memblock.
-> > This add flags and code to memblock to deal with corner cases of bad
-> > firmware that reports weird memory layouts, and once there is a flag in
-> > the common infrastructure, people tend to abuse it.
+> The impact should be very small, as we have the `folio_mapped(folio)`
+> check before retrying. Kept folios won't have `try_to_unmap()` called,
+> so this is really only applicable to folios that are unmapped by users
+> after `folio_referenced()` has been called.
 > 
-> So far I found no better place to store the information about successful
-> region reservation.
+> I'm not sure if anyone else has seen any issues with this. Sending an
+> RFC to check whether it is worth fixing.
+> 
+> Fixes: 4d5d14a01e2c ("mm/mglru: rework workingset protection")
+> Cc: Yu Zhao <yuzhao@google.com>
+> Reported-by: Bo Zhang <zhangbo56@xiaomi.com>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> ---
+>   mm/vmscan.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 91295070ca33..6a931b576b7d 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -994,8 +994,10 @@ static enum folio_references folio_check_references(struct folio *folio,
+>   		return FOLIOREF_KEEP;
+>   
+>   	if (lru_gen_enabled() && !lru_gen_switching()) {
+> -		if (!referenced_ptes)
+> +		if (!referenced_ptes) {
+> +			folio_clear_referenced(folio);
+>   			return FOLIOREF_RECLAIM;
+> +		}
 
-We can have reserve_failed_nodes larger than MAX_RESERVED_REGIONS, it's
-__initdata and anyway discarded after boot.
+I've also been investigating the issue of referenced folios being 
+reclaimed recently. The background is that classical LRU will return 
+FOLIOREF_KEEP for folios accessed once via page table, giving the 
+accessed folio another chance.
 
-But even a DT with more than 64 bad regions seems broken enough to WARN()
-and ignore remaining errors.
+However, for MGLRU, if the folio's pagetable access has already been 
+consumed by aging or lru_gen_look_around(), referenced_ptes may be 0 at 
+that point, leading to reclaiming folios that were accessed via page 
+table, which could cause more refaults (I don't have data yet).
 
-> Best regards
-> -- 
-> Marek Szyprowski, PhD
+But it's not easy to maintain logic consistent with classical LRU, 
+because we cannot distinguish whether this one access count comes from 
+page table or file descriptors (for anonymous pages, it can be 
+distinguished). I'm not sure if Kairui's MGLRU-FG patchset helps with 
+this case (I haven't looked at it carefully yet).
 
--- 
-Sincerely yours,
-Mike.
+Perhaps at least for anonymous pages, if the referenced flag is set, we 
+should return FOLIOREF_KEEP to give it another scan chance.
+
+>   		return lru_gen_set_refs(folio, &vma_flags) ? FOLIOREF_ACTIVATE : FOLIOREF_KEEP;
+>   	}
+> @@ -5110,7 +5112,8 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   			continue;
+>   
+>   		/* retry folios that may have missed folio_rotate_reclaimable() */
+> -		if (!skip_retry && !folio_test_active(folio) && !folio_mapped(folio) &&
+> +		if (!skip_retry && !folio_test_active(folio) &&
+> +		    !folio_test_referenced(folio) && !folio_mapped(folio) &&
+
+This part makes sense to me.
+
+>   		    !folio_test_dirty(folio) && !folio_test_writeback(folio)) {
+>   			list_move(&folio->lru, &clean);
+>   			continue;
+
 
