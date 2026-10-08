@@ -4,84 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8C99CA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 06:52:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3B8BCA600B
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 06:53:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B12B6B008A; Thu,  8 Oct 2026 02:52:45 -0400 (EDT)
+	id 1FD696B0092; Thu,  8 Oct 2026 02:53:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 862136B008C; Thu,  8 Oct 2026 02:52:45 -0400 (EDT)
+	id 1ACE66B0093; Thu,  8 Oct 2026 02:53:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 756B36B0092; Thu,  8 Oct 2026 02:52:45 -0400 (EDT)
+	id 09BDD6B0095; Thu,  8 Oct 2026 02:53:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 515626B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 02:52:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C621AA04D9
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:52:44 +0000 (UTC)
-X-FDA: 85298541048.20.4228FCA
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf17.hostedemail.com (Postfix) with ESMTP id F0A3040009
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:52:40 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TXWhngC8;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D1CC46B0092
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 02:53:42 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 57BC714045A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:53:41 +0000 (UTC)
+X-FDA: 85298543442.30.D4A4872
+Received: from mta0.migadu.com (out-61.mta0.migadu.com [91.218.175.61])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3192E140003
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:53:38 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=doZeMxEJ;
+	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.61 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791442363;
+	s=arc-20220608; t=1791442419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KFlD45V+rHQdBusfn6VlwYaqiad05DvAgkXkaaZjCzQ=;
-	b=8qHsJ+rgSqlvtQXMHHh1tFZkWF9IUaD0HCfhdk5vj5YqQJSOJ9779SjsptaIn302r0gEqU
-	dzLKEqtV2aMRSlk3Y0uwtB4Hhw9r8QZKqsxNgcaqIo6bu0e41YJAv2KCjW0TK9z56yh91v
-	eaLgk62XTPMi3w0CAXDiy5OqPqbB4Vc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TXWhngC8;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	bh=BQHtkXh+0UhVMHQN2LEq96qme9/f7JJhPZSacUj/svY=;
+	b=haBSIEqUcURZruc5/Fg0SjjOaziZXY/blGdOHjaNdodtiH50AgvRo0A/zf+AoNg7jnKyAP
+	6pQ0nSmRWng+s9Ay3kmYJoFJ1LwLKwdtvbW4hXBGQEgCoQPFYM2qq26vV9q/MPcbxdTJhI
+	dMKgOy/fINxJiS8ZBdA/GnBOIi9osCk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791442363;
-	b=xnPp7OZ/58c5lnKgwCBLjVxG2h1d/8j5on1E06DNuGaSIb9TsdFojCuVx+s8amyJRNMNuM
-	z3w0bRO+VR95FiGaXHy/NCd2yggwT3lTDQkB1HBrMw2ECjkx+dsZjYn42h3QKAgkz50OV0
-	uizN2SDMweRCa+MKFlDKBifSnwJsnbo=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1791442358; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=KFlD45V+rHQdBusfn6VlwYaqiad05DvAgkXkaaZjCzQ=;
-	b=TXWhngC87E6PriZ+nnVspkwLG2D4XUshjw0Eq6G68fwqxVyhpqsLHdsblVKHReyBL+1S1VL8+NcGMyJepHR0cFjNVwtNCncU0biqR71B9g2+LTfVRd6Ezt2yHPFpfPywHC7CcC5Ckdvu8byqKVnsl3DXbb4uWLmX5u7ZGp4tczs=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XCLlNM9_1791442356;
-Received: from 30.74.144.149(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCLlNM9_1791442356 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 08 Oct 2026 14:52:36 +0800
-Message-ID: <088f991f-429f-49e0-be11-548a77e8d44e@linux.alibaba.com>
-Date: Thu, 8 Oct 2026 14:52:35 +0800
+	t=1791442419;
+	b=kcrz1rq7d9X8MCa5x+timZFeGU08Ej99LzFkHV3vWcGNIhcp67n28ZARTjrGGSIxnK3mhf
+	9KhPTOBU3X1SHiyK/jIBs02poW0iAit/ZEMzKg2yQFfY8FMKPtb0qxkzol8z0P5eZfc+kO
+	1yzL7qN3N+j6jmF7TO5WDdTEKajOF+A=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=doZeMxEJ;
+	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.61 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=z2ehbjfdNRtNjl3Xf1WKPjKRNxEhnPWPrzzFO6wlB48=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791442417; v=1; x=1792047217;
+ b=doZeMxEJq3M+Ribv2UYlLjcTVwQgdFjMVCQzcDrgX3Dciuiw3O8QBBGF0nAo/LmK3tP/sqju
+ 5k7nSQyOFcb80Vi9qYbxjUFwTZLdpXqOpB4+Yl/C/EVBu/VclVMWpxHmVUr7ui2zPjRS4+VM4OS
+ 57orGijM8Pa/T8FwfbpKL5K8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 8493ebbdacfda9ac;
+	Thu, 08 Oct 2026 06:53:37 +0000
+X-Mizu-Trace-ID: 8493ebbdacfda9ac
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <a15de109-a88a-49f8-80cc-7bf216d6954d@linux.dev>
+Date: Thu, 8 Oct 2026 14:53:02 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm/mglru: Avoid reclaiming kept folios during
- retrying missed rotated folios
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu.xie@google.com,
- weixugc@google.com, baoquan.he@linux.dev, chenridong@xiaomi.com,
- Yu Zhao <yuzhao@google.com>, Bo Zhang <zhangbo56@xiaomi.com>
-References: <20261003054216.9155-1-baohua@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261003054216.9155-1-baohua@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: F0A3040009
+Subject: Re: [PATCH v11 2/7] mm/vmalloc: undo partial mappings inside the
+ mapping functions
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ =Kent Overstreet <kent.overstreet@linux.dev>,
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Alexander Potapenko <glider@google.com>,
+ Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-modules@vger.kernel.org, kasan-dev@googlegroups.com,
+ Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+References: <20260929082014.160587-1-hao.ge@linux.dev>
+ <20260929082014.160587-3-hao.ge@linux.dev> <arzgoe-bXAz1poAt@milan>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <arzgoe-bXAz1poAt@milan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: tfbu5cjyrckmcr1d3sit83w8e93i8a76
-X-HE-Tag: 1791442360-844619
-X-HE-Meta: U2FsdGVkX19X2R2HISzzADwt9fPmfciUL/EpPjguGi3ZN7W4mifjELdT6DKVrlTjtumBwhaxg8dIOVbjymH6NhMLTcl6YRaSRXWTO9sPMI1AxziE3LyGlKFAvJMJgP13xt05KL9+gJ1IxdUfTkEIZxJRYl39lNq4UUVAwNNFXfOl9poepDiRz/6Jhc3Y1zn3HXCJv3Oa1ZNpfLau0WawDeYgSAM0m6Wxo8+HnNFpoeYxd9kAn5c2L51cxSHQHih/bYpU1a8vm8g37cDMHusyU42b0jGXRyE8ogqF0DrL+VGdG5YmZ1vpQ/l7L+6749VsQm9cBjNzfM5+YKRklP6kll2WnbSBNqPWskcjUmpL41vcPj/+Q9RpULIxjH1QdciBzwUchP05TG09ZRDK5Q5aiyEOU2jxHkS0Unfv+BnWl9+EuwTw1z2kuemFN4lRkWsxNZcC14u/P50heOubwQcMAUUgH5/yJGMWX4EcAA8PGWX8Ekhs0R8XGoc92Zu2H2eqjU4Cnc+7szxYrCUeZhiwGq6GniiNLdgPNJjWK4OJc3pkUtJ4hHWYiDYVuWnSiZRQw/HYY5+UDCVESN2pGeays0qPMrFNybInENqhmOXF76/AZGyY+LV71ZswOVBQBvIiEKph9zJ1Kg+4Kbjf9e570GSvEjh+BPbPXBXE5CeoGeET+/a60w8cLK9OLtBtwwQ3AQQAsPFGgqEPmR8k/JIOzB9GvZL4loECGYhRfMESPARcZCc0DUoeMhkjaqCUAE8EDRPS5AcHFnAx8NRk1fBg11Kpy9nlUMj+w5pYGeY8PJGknWNntb0nuRAlXADwpWEezzVcqjl+FBdpRYJDsLfj+h/6yqgXid+MZ5bH0CmyJyx+K2HwBmiOtlWzzIubfagepBxXhcn3mmeVOZwD38mVXNpLTIPtdQ2k1eUJ8chgUGBhjy4Sdi6i2naH6UsPp/z4qfNp6gOSFIOuVEBHNcw
- kNBiKIXW
- js0Wlw3BNSMG+bZlnZcboO5z6Lls4PK7eVkLpaWIrEAKlqNcYFHlwbchdKWs2nFs8XarU9dspwK/+lhzUAMgnMT9BFcjQUbXuSmCayqdjBDbJmO4eipdAsh3YV8Jx4FRUuVhs5Dk8q3EV7BnlpcuCz8g7Xm/Eo9zjIb3TLCLC5yvEr8H0LrEenXnKPeRdYM9cUoc+RHu4EvjPHZ12fW041YFb0MYHFnRqrYsj1Lsn4keaYqjqQp2EgbFX8VUPbsyI7V2qm4JnBchR81ZzijiJovU1BjzjGwVXje3GN8rz1/izTumvNVFrBHkYUPOIzoD2bQEAyWXKsTlWan4c13shV+qoWg+sS8Jar9zoUQJbyOb+f7cw1A8CtNSgAfBcXjIdJXEs
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3192E140003
+X-Stat-Signature: ucjyu11c7rqba7xtg5ga66eundymcxrk
+X-HE-Tag: 1791442418-224922
+X-HE-Meta: U2FsdGVkX1+ZW+wtUjTbhSgE29zj1kFq3Ctc8xlZKBGtnwX4TSiTekl4XTh7kUfXDZuTn+kEvPdA5A31WTEjtowoAarqOXZuY7kAHu7WKMZHB/EJj7yUsjMeA1MIrzFvArtmsFhQXlb5XVZNW+Dc/UJQjowSZYbeodooz/zeHNEXxEmXV0Gl5517Je1NUREcyjpszHp0iMBAruwpkFRwsfVTmjiHCQp0iTrcIm3bFmyVnufMIYbdZh4O3FputU4ldxOiLY/MgZQn0NT1qxf7/wkbNgq7rWh3WGfl49ro1cwvk0ovFcYNYvF129Oxhf0doO9jrW6M+r/gVROjWoBxrNVXlTTVJoyT998hfIKzN7kO0cFneWK4uvtYJyQcMiXyA6nBp5DzkJ61i/QVIerEXKOqXf6o9H2CBJKPzmhLBJLpxNYG2Dx2OgKt7xBFCZhD3dYtqq69lyrtNLVyVSVtLTwovWorCnivXTBESj+sXzGtfTTKWlwStWRhqTyhyg6tYvCAXL7l9u0iyOKSA8oIqZiUXMwy3K4xHAldzkWoPmna0odcn4p04q9Y+/lb1rS56t5ap9JmFL2C9tq1jxUqfHyhsHbjYWrNwiRQDG47MZ532hyfYMEvNHeDNUNgvSTMDzCOQK2l/bD0EUXhHY9ldq6BoKTD3MLDXP/Y0M0hKmk7P0VHed9czEN2sq20hfwJpYv3NT8Z/MOoMYDVhA1ccBNiYIz8TjXRXTmwHzR4QCaEBm+1MbqVRzTz1UmOY9TBiRTZfjpJ1gguukcjpZ9IJhVtu/Ww9s3+PjuXz3Dv11GnIen9cJ8DwReVpuCN8vUH3P1xGdDHWL9GeODLTH1EkKzVR4279F043zMRBLERe+Vu7QD96/87m6BrzUdroVg30HdZzxGjGmQ9KGVHJu3KHL0Goni94W4McS6fAzdO/mkxK6FxeNB/jCDLAO/6cjUC8qehk8FRyu/tr75PCQ+
+ SSmfqv7h
+ m/yWGLoqyBpAYiwcR5U+DdKi+fc3ElZsxx9bfdylnhwAOaoQcAkQBv/AvjmU+MbP8J1EF0XBinfpvpdlGVNRYk0pXFiPPwe1k2JBEnAXe8HGoN6JStJGn8fgGDvF5p+iRarzQAc8mG7OkWkqwwYW8plwM0FV1gbPCZOu+P9lIl6u0jvV0gdFevixjKcZItS3kUbDdtSjMem/S4m+F4+sxW+BE7cjX+CJ9t3Tgb3BfS9rgJUhhuk69t1gppCDAE0Qa9lzu4PqroQ/RuKry5ROi1pVcoSrZkfRrUsaRuI/M71R8cgboWsz0ozeuIstz6IDKzhvGDhrwkxGNwTY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,77 +104,237 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Barry,
+Hi Uladzislau
 
-On 10/3/26 1:42 PM, Barry Song (Xiaomi) wrote:
-> Since commit 4d5d14a01e2c ("mm/mglru: rework workingset protection"),
-> `folio_test_referenced()` was accidentally removed when checking for
-> missed rotated folios. As a result, kept folios without an active set
-> could be added to the retry list and eventually reclaimed.
+
+On 2026/9/30 18:12, Uladzislau Rezki wrote:
+> On Tue, Sep 29, 2026 at 04:20:09PM +0800, Hao Ge wrote:
+>> __vmap_pages_range_noflush() and friends can install some PTEs before
+>> failing and leave them mapped, and the kernel callers do not agree on
+>> who cleans them up. For example, pcpu_map_pages() and
+>> kmsan_ioremap_page_range() unmap the leftovers themselves, while
+>> vm_module_tags_populate() and the __GFP_NOFAIL retry loop in
+>> __vmalloc_area_node() relied on the mapping functions cleaning up and
+>> did not call anything like vunmap_range() themselves. When the same
+>> range is mapped again, the attempt hits the leftovers and fails, with
+>> BUG() in vmap_pte_range() for huge mappings.
+>>
+>> After discussing with Suren and Ulad, we decided the cleanup belongs
+>> to __vmap_pages_range_noflush() and friends, so the callers no longer
+>> need to unmap the partial mappings themselves. Each function now
+>> undoes the PTEs it installed itself.
+>>
+>> The rollback calls the low-level __vunmap_range_noflush(), it just
+>> clears the PTEs of the range it is given, which is all a rollback
+>> needs. It cannot use vunmap_range_noflush() because these mapping
+>> functions also map the KMSAN shadow and origin, and for a metadata
+>> range its hook would look up the metadata of the metadata, get 0
+>> and BUG() on addr >= end. The failed mappings were never accessed,
+>> no TLB flush needed.
+>>
+>> Fixes: 9376130c390a ("mm/vmalloc: add support for __GFP_NOFAIL")
+>> Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>> ---
+>>  mm/kmsan/shadow.c |  4 ++++
+>>  mm/vmalloc.c      | 31 +++++++++++++++++++++++++++++--
+>>  2 files changed, 33 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
+>> index 0c88d89bf0d6..2166086d3dc3 100644
+>> --- a/mm/kmsan/shadow.c
+>> +++ b/mm/kmsan/shadow.c
+>> @@ -258,6 +258,10 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
+>>  					    o_pages, page_shift);
+>>  	kmsan_leave_runtime();
+>>  	if (mapped) {
+>> +		/* Undo the shadow mapping set up above. */
+>> +		kmsan_enter_runtime();
+>> +		__vunmap_range_noflush(shadow_start, shadow_end);
+>> +		kmsan_leave_runtime();
+>>  		err = mapped;
+>>  		goto ret;
+>>  	}
+>>
+> Can we just do that inside the vmalloc? For example in the
+> __vmap_pages_range_noflush() as entry function for all(?) helpers?
+> So we do not need do it manually?
+>
+The hunk was for the failure path in kmsan_vmap_pages_range_noflush().
+Shadow and origin are mapped there as two separate calls, and when                                                                   
+the origin one fails the shadow is already up. __vmap_pages_range_noflush()                                                          
+cannot do that undo, it only sees its own range.
+
+kmsan_vmap_pages_range_noflush() has a single caller, so if we were to move this
+logic into vmalloc, it would require some modifications as follows:
+
+@@ -712,9 +724,14 @@ int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+        int ret = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
+                                                page_shift, gfp_mask);
+ 
++       if (!ret)
++               ret = __vmap_pages_range_noflush(addr, end, prot, pages,
++                                                page_shift);
++       /* Undo whatever was mapped before the failure. */
+        if (ret)
+-               return ret;
+-       return __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
++               kmsan_vunmap_range_noflush(addr, end);
++
++       return ret;
+ }
+
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index 859e6d2d57a3..9bbf75706627 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -349,6 +349,10 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
+>>  	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+>>  		arch_sync_kernel_mappings(start, end);
+>>  
+>> +	/* Undo the PTEs installed before the failure. */
+>> +	if (err)
+>> +		__vunmap_range_noflush(start, end);
+>> +
+>>  	return err;
+>>  }
+>>  
+>> @@ -363,6 +367,9 @@ int vmap_page_range(unsigned long addr, unsigned long end,
+>>  	if (!err)
+>>  		err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
+>>  					       ioremap_max_page_shift);
+>> +	if (err)
+>> +		__vunmap_range_noflush(addr, end);
+>> +
+>>  	return err;
+>>  }
+>>  
+>> @@ -667,6 +674,10 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+>>  	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+>>  		arch_sync_kernel_mappings(start, end);
+>>  
+>> +	/* Undo the PTEs installed before the failure. */
+>> +	if (err)
+>> +		__vunmap_range_noflush(start, end);
+>> +
+>>  	return err;
+>>  }
+>>  
+> The only one user of that function is __vmap_pages_range_noflush()
+> so we can cover both cases there small and huge path.
 > 
-> The impact should be very small, as we have the `folio_mapped(folio)`
-> check before retrying. Kept folios won't have `try_to_unmap()` called,
-> so this is really only applicable to folios that are unmapped by users
-> after `folio_referenced()` has been called.
+> Is that enough just to do unroll in the below:
 > 
-> I'm not sure if anyone else has seen any issues with this. Sending an
-> RFC to check whether it is worth fixing.
+> __vmap_pages_range_noflush()
+> vmap_page_range()
 > 
-> Fixes: 4d5d14a01e2c ("mm/mglru: rework workingset protection")
-> Cc: Yu Zhao <yuzhao@google.com>
-> Reported-by: Bo Zhang <zhangbo56@xiaomi.com>
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> ---
->   mm/vmscan.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 91295070ca33..6a931b576b7d 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -994,8 +994,10 @@ static enum folio_references folio_check_references(struct folio *folio,
->   		return FOLIOREF_KEEP;
->   
->   	if (lru_gen_enabled() && !lru_gen_switching()) {
-> -		if (!referenced_ptes)
-> +		if (!referenced_ptes) {
-> +			folio_clear_referenced(folio);
->   			return FOLIOREF_RECLAIM;
+> functions? It will also fix NOFAIL case:
+>
+
+I see. right, __vmap_pages_range_noflush() is just above the
+actual page‑table mapping, so it's low‑level enough.
+Thanks a lot for your prototype.
+
+I'm tidying up the code and will post a REF patch afterwards.
+
+Thanks
+Best Regards
+Hao
+
+> <snip>
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 89c327a6ce7d..fa1f357ecf3f 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -359,10 +359,19 @@ int vmap_page_range(unsigned long addr, unsigned long end,
+>  
+>  	err = vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
+>  				 ioremap_max_page_shift);
+> +	if (err)
+> +		goto error_cleanup_range;
+> +
+>  	flush_cache_vmap(addr, end);
+> -	if (!err)
+> -		err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
+> +	err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
+>  					       ioremap_max_page_shift);
+> +	if (err)
+> +		goto error_cleanup_range;
+> +
+> +	return 0;
+> +
+> +error_cleanup_range:
+> +	__vunmap_range_noflush(addr, end);
+>  	return err;
+>  }
+>  
+> @@ -683,26 +692,35 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+>  		pgprot_t prot, struct page **pages, unsigned int page_shift)
+>  {
+>  	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
+> +	unsigned long start = addr;
+> +	int err;
+>  
+> -	WARN_ON(page_shift < PAGE_SHIFT);
+> -
+> -	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
+> -			page_shift == PAGE_SHIFT)
+> -		return vmap_small_pages_range_noflush(addr, end, prot, pages);
+> +	if (WARN_ON(addr >= end))
+> +		return -EINVAL;
+>  
+> -	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
+> -		int err;
+> +	if (WARN_ON(page_shift < PAGE_SHIFT))
+> +		return -EINVAL;
+>  
+> -		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
+> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
+> +		page_shift == PAGE_SHIFT) {
+> +		err = vmap_small_pages_range_noflush(addr, end, prot, pages);
+> +	} else {
+> +		for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
+> +			err = vmap_range_noflush(addr, addr + (1UL << page_shift),
+>  					page_to_phys(pages[i]), prot,
+>  					page_shift);
+> -		if (err)
+> -			return err;
+> +			if (err)
+> +				break;
+>  
+> -		addr += 1UL << page_shift;
+> +			addr += 1UL << page_shift;
 > +		}
-
-I've also been investigating the issue of referenced folios being 
-reclaimed recently. The background is that classical LRU will return 
-FOLIOREF_KEEP for folios accessed once via page table, giving the 
-accessed folio another chance.
-
-However, for MGLRU, if the folio's pagetable access has already been 
-consumed by aging or lru_gen_look_around(), referenced_ptes may be 0 at 
-that point, leading to reclaiming folios that were accessed via page 
-table, which could cause more refaults (I don't have data yet).
-
-But it's not easy to maintain logic consistent with classical LRU, 
-because we cannot distinguish whether this one access count comes from 
-page table or file descriptors (for anonymous pages, it can be 
-distinguished). I'm not sure if Kairui's MGLRU-FG patchset helps with 
-this case (I haven't looked at it carefully yet).
-
-Perhaps at least for anonymous pages, if the referenced flag is set, we 
-should return FOLIOREF_KEEP to give it another scan chance.
-
->   		return lru_gen_set_refs(folio, &vma_flags) ? FOLIOREF_ACTIVATE : FOLIOREF_KEEP;
->   	}
-> @@ -5110,7 +5112,8 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   			continue;
->   
->   		/* retry folios that may have missed folio_rotate_reclaimable() */
-> -		if (!skip_retry && !folio_test_active(folio) && !folio_mapped(folio) &&
-> +		if (!skip_retry && !folio_test_active(folio) &&
-> +		    !folio_test_referenced(folio) && !folio_mapped(folio) &&
-
-This part makes sense to me.
-
->   		    !folio_test_dirty(folio) && !folio_test_writeback(folio)) {
->   			list_move(&folio->lru, &clean);
->   			continue;
-
+>  	}
+>  
+> -	return 0;
+> +	if (err)
+> +		__vunmap_range_noflush(start, end);
+> +
+> +	/* 0 on success. */
+> +	return err;
+>  }
+>  
+>  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+> @@ -714,7 +732,13 @@ int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+>  
+>  	if (ret)
+>  		return ret;
+> -	return __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
+> +
+> +	ret = __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
+> +	if (ret)
+> +		/* Cleanup KMSAN metadata. */
+> +		kmsan_vunmap_range_noflush(addr, end);
+> +
+> +	return ret;
+>  }
+>  
+>  static int __vmap_pages_range(unsigned long addr, unsigned long end,
+> <snip>
+> 
+> --
+> Uladzislau Rezki
 
