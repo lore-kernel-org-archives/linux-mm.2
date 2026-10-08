@@ -4,92 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B47CA600E
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 10:03:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABC7CCA600E
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 10:04:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AC476B008A; Thu,  8 Oct 2026 06:03:47 -0400 (EDT)
+	id C65AB6B008C; Thu,  8 Oct 2026 06:04:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5363B6B008C; Thu,  8 Oct 2026 06:03:47 -0400 (EDT)
+	id BEEE86B0092; Thu,  8 Oct 2026 06:04:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FDA06B0092; Thu,  8 Oct 2026 06:03:47 -0400 (EDT)
+	id B04F16B0093; Thu,  8 Oct 2026 06:04:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A0546B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:03:47 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A3A551C3109
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:03:46 +0000 (UTC)
-X-FDA: 85299022452.22.F73C564
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 192ED20006
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:03:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hpqj7e9p;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 85B156B008C
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:04:34 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EE60F1604E3
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:04:33 +0000 (UTC)
+X-FDA: 85299024426.24.0C0BE03
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0D33C1A0005
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:04:31 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791453872;
+	b=j8LEKrAJ9eLtxE3jTfQkWbBZE+xmedJbAyvn5RDDNJHaETEkn0a89aySwAIZnvMBS/CHez
+	CcYCifGV0mcLWunyE4EvQ3qXnQUkiPeEnVJyfK9vm4WqxCAIob2Fs54S6IuNdQGhFAP3Wl
+	1RGVRqSGyFdJekbGU6tnJjt+0iKQgWk=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791453825;
+	s=arc-20220608; t=1791453872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hpUiMVYggDHC60dcd+5OU1osGuMwZpbWqR6frOfrR9k=;
-	b=FS1ladc62R096EXdFGXKRnyTiPE/+uudC0gCWfHhBQGWoDtB718y7pqjlX8KnLr8mpLDlT
-	pfy+FAs/af+/SNPDinYgMI9FVZH15eL/czRnEpLmeXb0BtFlBD7QPKdQnSot25Uoat/zEf
-	+z6nkexC1FDciduP+A1YEeMfwW1CYJ0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hpqj7e9p;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791453825;
-	b=y6JcvS7X4qhLy9WMZaicr+276YvGCgTkS5XZmx3aOsxWGzSaBhZV0hAspB54IkCKgtLlmC
-	fzo6LnguDrdij6nP1vd3zHXjlqu9O5CxdAi9TgdZFP2ni1kwR8/W+WVq0cMIElZ9krUfsp
-	lD3GEtE567JxQqW2FKpDP8ioQEEKvRY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E75A2414EF;
-	Thu,  8 Oct 2026 10:03:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9888C1F00893;
-	Thu,  8 Oct 2026 10:03:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791453823;
-	bh=hpUiMVYggDHC60dcd+5OU1osGuMwZpbWqR6frOfrR9k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hpqj7e9paR3mLUgx+I9fl3recU/uXrRAyWLlziTybAbQAZv3w4wLaBb349DuynC9F
-	 gpU0/ybWFt+MegvClIbMPIlw+5jwM835m4w4fgQLQo9mCFIWLglqVGCAKfkWNs4tT4
-	 BgdItEHFcwTpVS6UDVKECTXb3fzziR2cBA2x3BAkCipd5RIfqfIHQZ0ev1deRk1NS5
-	 aL4aIq4+KdrP5LitbApMC6W75iQC/uHL1CsV5g07gKFQVd6EBMnCgOGxPhJ3lMvBV1
-	 uq4rLCfDywOjVRNNzN1t7ij7pcko4oyb08JxMc8sd3gLXcgeh0BiwQDl3UoB85Yf27
-	 mEYh1YaM0IdWg==
-Date: Thu, 8 Oct 2026 12:03:38 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: tarunsahu@google.com
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>, dmatlack@google.com,
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-	dev.jain@arm.com, Pratyush Yadav <pratyush@kernel.org>,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v3 2/2] memblock: use binary search to locate candidate
- regions
-Message-ID: <asdqetdGMXGhtiBh@kernel.org>
-References: <20260926092448.4090401-1-tarunsahu@google.com>
- <20260926092448.4090401-2-tarunsahu@google.com>
- <asC1FwHVHOhBHDGK@kernel.org>
- <9huzy0c9siyn.fsf@tarunix.c.googlers.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=SPYzrbasOBn6GBXNXbxi/l1WIooFib07Dz6Lvtf/L78=;
+	b=36cif/99wtaB0PVjE3giR4IIQqBR8JP/+oeFvu19bLZVYqnjd7gpZ7rJLRhR6pQA8W2H6B
+	R13VK4qtWc7dwPJP3RxHSTokh8rdVs7oG2vk1cO8T9qboSqHUT3Vx3i7eoscOxH4aP5oA+
+	4Wus+WPMC94ykgykieSNsHR7h/qJspc=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 346F668AFE; Thu,  8 Oct 2026 12:04:26 +0200 (CEST)
+Date: Thu, 8 Oct 2026 12:04:25 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Alexandre Ghiti <alex@ghiti.fr>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Christoph Hellwig <hch@lst.de>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH 0/2] mm/zswap: batch the writeback IO
+Message-ID: <20261008100425.GA11357@lst.de>
+References: <20261007153507.50715-1-alex@ghiti.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9huzy0c9siyn.fsf@tarunix.c.googlers.com>
+In-Reply-To: <20261007153507.50715-1-alex@ghiti.fr>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Stat-Signature: 68ip1cwypej6hkwgiy1rjgqw6mtyer3j
+X-Rspamd-Queue-Id: 0D33C1A0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 192ED20006
-X-Stat-Signature: jmejbmckg5fzws4umb5dd58j8b9ijxm4
-X-HE-Tag: 1791453824-371923
-X-HE-Meta: U2FsdGVkX1+68pE6Yf5+mgQ69IoImOIp82K8jwRBaf4iBoCEImPKHSy0guc+rV9kK2Q/Cnv2BVdBF7QmEkSR/hLe+NK/iuLWZFKprKcJH1rsOAKg5mUndENNtSWmFgSLkHS47ffiDc+3T4RWZWDUV7NqnoEqwCYBWeQhsUmy57S0JJKITL5KB8DbjQlRXf5dFfgx52uukLQT8RNPJaRT8Q8uWAVM8KxT+qqlxGVDLM7dMJAv8JW8SWYm9DVre/N3+6qcF217lReFS+4MneKEEZ51tG1S5x29G9N7zsYox4iKe9nRL34Ix/+vbLd7KC2113UNO6p6/1AlnZOA8Dp5cglekRmxOGvfYpt54Ffg6DQj097uwml2jnQcavP1dlfuwsLc4XPQvVmGOfcZ2HCyAqrH1VYsKDnVeUknL9XAI+X3v9CFPD8VNHYqPvRVcQOCgstbr00NzYqUPexpzbep/4OiTo7cT0etQ1+70zRnWxkKu+UHk11CBLEi/xUWQ6PZikyenaCB38QGxPYyidW/e/AOrau1NaSsFf2ql67LAWBrL/KIXRbFLhOVx7DuyoBwvRe442kaZD5g71YfPu7ryz4yIOzU/3IwM8h2YXX5Rg0M6LVlujmLNYh+7Zr8uvZocOzQf91DjIvEjL+cKcQbtCAqmqNJBmnVbQxaB2KdzQJfk/X7Td0ff35Xjs6AHB6LvO1EHTtel74V/QXdiWVPUTYaLJtZ0VeFC1eOYr8vpBUCPwStovh9ajs03aZV57Nv2R+2xHkNpKsnIKKLcJtDpjXbepAkFumifQGU2uhaJ5lB5k8h7qYnHvrJ6kjY0jvks2qWNqQs8fqD6iWBL9OJ9XBCtcErTUEKRjOFYTEm6U1SMuNIMI0iEUJYsPDGBJmqbrTifdaML7uchKi8CCrUqzwQ1NSU0++WTnF36+ezspgQQ6Uyk795M5g4OjSvVEzXhAzAspX4UojHVpeyivm
- yqPjhxUJ
- CO/yVbW5BwEpuGMPuPmHZPvbiuvfMRJKe4zwdnblZptxC4Wm0n6o7WKkZF47v02ZliFRv1XxpJyOl66AA59kLcKop5N2xzO1QvN54APWch5v00AYW+Smhgfr4SW9nQo6n9FejZbU4RPTVTx39PEktDCOs0O+Hqu7JN8JmJYz0msNJdx5Q+X4+zWL0j9Bu9hdEKJYjoY2mRrKrRK08CNuJJGs+iFm8EUFkIHWReN0oBzD6fj1FOSbiq//O+AeUIcuv7vUhmBDuUDNGK+h9cto2FKm3MQrJltSaJjuOcVGzpXjCkmE=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791453871-815845
+X-HE-Meta: U2FsdGVkX190OftJaWO7hpBHqxStdcQrp8hjJVOT/iWsfBKldGlEinJBZcEAVKK6zvRN66f/0R6kG8HqOGmUsU1HYaJprOo65rR67a6Z7bkqihgMRhLrF6xhHkVgdYKtdzZHyHrSs9ESEgRs293QG7rHTzuY5plHL9zM6lvGaPCkROMoh8dKU7C82ONAxBp0r/wNvH5AT00/OerrdpEdHOsVdr1wlrWbWM3AyLnsCU1Hfjwhh/YI5+hlJRhDFNpGrQ2UnExKiPc3DPmwgnLiQGOIFSGokBOCpdh9Bq9lY91j2np9wSZRly/jQISECGRmki0eC6TW3ZJ74xRVgU+THnLiXbbP/RFoXEwZBIgiAebuG9W3qEeh1gkjNojhr3X/Ioy9FeeR4eo0D9xvjVEiUQTShy0n6eDQWMTwHxkbB3ddPzK1r2u6dpg8nk8AyUNbgz+H3hQF7mGNDiPOugksSPCusFnsbk6nannXdMNdJaaF/JXvXPXMtCJfbgIZJ3FfaC5SJqkDvLBYpdQkRQrdXZyUtNI00nJkXhXmZ5yF1cu8Nf5mE6Ot3ZwxsZWJDS1HkGGeAaN7+JSaIOK5Wa78jPqXGa+Io+FJ6X1GpJFcNtZRMv7vl6NpuijgIC7B7UrjyyiVxKReayM5Ugv6qfZA77VaW4tXkQrQmDhKr/WTLukA7Dd9QRp8ZCCg4K64gykA5VIjda4nTpNbV+v1rWx2gr4G5u7opOndGWZPXLlgoDL8/FXHi4Jai3b4E2PMe9fzmLtloUA3+jY/CkTakFxxzIbeCeqmP/UkTjHIxVZMi59DINugQn5Fofu6g5lblZr8M9hifJUlwws/mq1/JEC37Kha2arXv6ETQ1BaQU/iINb9CfI6XRyXKpZYWPg6mmxTXYa7M+jkAZccYqZXLTWorx3dSUKEo5kw75MGucM+06HVGPAw5nTyhHH6mQh+sVmMQ4JuT3OcsxI491GU4Mc
+ LSscx4PJ
+ P3rwiyC1nfLfJQhcNXAQWjKWZXKN/91gQWRR7HJ/DIbI5h1BlqI8ZP4YvDD/8oPq7/zJT0k02NXr2iT2bfL+mlvfUGsORuySP7TG5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,27 +83,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 07, 2026 at 02:06:56PM +0000, tarunsahu@google.com wrote:
-> Mike Rapoport <rppt@kernel.org> writes:
->
-> >> +{
-> >> +	int mid, low = 0;
-> >> +	int high = type->cnt;
-> >> +
-> >> +	if (type->cnt && base >= type->regions[type->cnt - 1].base +
-> >> +				 type->regions[type->cnt - 1].size)
-> >> +		return type->cnt;
-> >
-> > Using local variables would make it more readable IMHO.
-> 
-> removing this as per next comment. Let me know what you think? Should we
-> keep this optimization or not.
+On Wed, Oct 07, 2026 at 05:34:42PM +0200, Alexandre Ghiti wrote:
+> Since commit 8f29aa226f82 ("mm/swap: introduce struct swap_io_ctx"),
+> reclaim merges the swap writes of folios with consecutive slots into a
+> single bio, but zswap writeback still issues one IO per entry. Patch 1
+> makes each zswap LRU walk batch its writeback IO. Patch 2 plugs the
+> walk, so that the block layer can merge what the batch cannot.
 
-Yeah, that's fine :)
- 
-> ~Tarun
+No a zswap expert, but from the high-level perspective this looks
+great.
 
--- 
-Sincerely yours,
-Mike.
 
