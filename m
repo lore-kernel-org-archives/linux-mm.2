@@ -4,114 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09DFBCA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 13:44:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31273CA600C
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 14:05:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 945106B008A; Thu,  8 Oct 2026 09:44:30 -0400 (EDT)
+	id E75716B008A; Thu,  8 Oct 2026 10:05:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F58E6B008C; Thu,  8 Oct 2026 09:44:30 -0400 (EDT)
+	id E27BF6B008C; Thu,  8 Oct 2026 10:05:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80BB16B0092; Thu,  8 Oct 2026 09:44:30 -0400 (EDT)
+	id D3C276B0092; Thu,  8 Oct 2026 10:05:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 535FB6B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:44:30 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A81E7140280
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 13:44:29 +0000 (UTC)
-X-FDA: 85299578658.27.33EF6A2
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E02E12000B
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 13:44:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ApFXPy7Q;
-	spf=pass (imf13.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791467067;
-	b=KL3dLA/aWvKf1yeDHO7pqaLxW04Q85AbOH5pK+FI0UetuYXN7+7U3KIIiG69gvDa3uy36d
-	TMDdRMUeRpZFxomPumHgESrGUUmiY++j1yXP5QHUJm3DU59hBWFsoQr60JNSFL6qW9T+ce
-	it7qbLWCSevibZPmrOCz7Dj3G3ucXiE=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ApFXPy7Q;
-	spf=pass (imf13.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EF4A6B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:05:20 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D0D0A02FF
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 14:05:19 +0000 (UTC)
+X-FDA: 85299631158.28.CFAA4E0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id DEFF41A0003
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 14:05:17 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0vKNlzI;
+	spf=pass (imf19.hostedemail.com: domain of robh@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=robh@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791467067;
+	s=arc-20220608; t=1791468317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M4rMUcFNA7Kug8b24L/ljfYv2etiGrFoCHCGWctjsHo=;
-	b=kDuzLM9Pr1X6UoH2OYLzbMTls1EC/MlLWMHhoTo7gm+3MFQAD8FVEsZlIU4/C/ngzKTlK8
-	p6jnvcQ6cnDDuqlGjPDnlvHb5sOxP1lkTPSeU4gKLo+WGNRSJLYwwuDHPtRhirekcnDtyd
-	zf9ErulERdsqpHDNMaipWXYMzCFChNI=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e831e86ebfso600265ad.1
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 06:44:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791467067; x=1792071867; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=M4rMUcFNA7Kug8b24L/ljfYv2etiGrFoCHCGWctjsHo=;
-        b=ApFXPy7Q6IYJ4MSWoT7hOYG1j+LCkhRz7DLW4Ptkog2ASHbZflpVID3sBQ7rjBO8yr
-         gL4ngt30OhjZeAAKt5zT6jDIMCs5RqTgkIDBp4J1qUFlgQ7M4bKBnMwxYLAwNHgW1oqv
-         qmEmmR+AVHb11gSrjlImmXUEkaTD6oRcv/0GdaO5/itkUWImHKIMnW/QxapliJjcCSwh
-         rwO9bRQKhjphpadGJ64HuTF7k4TPEScbeoYEXnfmhBmF+/bIlCQn9O0zSk4ImQU2pDRl
-         0bXZHIGBW44X2GkmHLhhypMzIb1PfJx/7tm1L/GuVVtH79ItupYr0RsFIrruGlh+Urgj
-         uk2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791467067; x=1792071867;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=M4rMUcFNA7Kug8b24L/ljfYv2etiGrFoCHCGWctjsHo=;
-        b=XlgMggJU031rv2bO/nTIz6iIzlbCxdQmICAPelXbEXTTYBuYzBCl7cn+x5J/heGLik
-         D9ZwuxwhUCDT/TdWqjpDg0enaobhqey9Vws3rzpUdDlZIj/9xq2xG/UKy3in5LL8BaNj
-         3nSeLIi+TDLxX3HGkk2KFSC2cCY3atrwAm/Y+BFlhsx510vFkl1UG+s99h9ak92858Lh
-         F1dR6Es5uo3GWXiwHfLPu8K9E0YoHFAmh4nk5cHZx5pWIJA1Jlsz2pe+seG+mzCjGCAV
-         o0JqvvBnQu9kE2m9pOUAQCkIQrMyO/mJFnQJZdr9oUwM4xRV1yyR00AkRuFmvIoVlWXq
-         LSVg==
-X-Forwarded-Encrypted: i=1; AKwUvBwjUsDBE4zsW7LR6PBxL2+vRJX6KOfjgChwgsWIU3grVV1EkP5DMPEH4Vjr78yqwr7oqiWinJVlwg==@kvack.org
-X-Gm-Message-State: AFq9FYKI9ucJOfZNetnHvFsKLczTAw9oCjxuArYnI3iHwq2JCKRnHGri
-	dRtQtm8RFDbQX0i9ZaAWBqyF1FTsTJH4pS8T7wXpFlfkEsu5UQDQEWFf
-X-Gm-Gg: AYBFou2to9UBNCpJ3hEnaX1bykqakNdlyYdm10O02V8f2AUPt5fQnohvkSHZpvCAL/r
-	2jFPcFHwbNmGxyH4q00H0KUAJ4oiq5FRfVzkw/5ao7Kpw7i7UHI2/vD3I3oXfdbBYV6QIJtDvXw
-	SK3CseyPydHXj4lgjbaHo0hVoGTmjnY+7Qn6esu2zfqD0W4zQTVZdHn9JXigXu1aDMT6Dc7cB4M
-	sWhnTmB2M3mC3ks8x6t0vdOY8XKZ9+Xx7I7sQjeuHHdX7X137RmiqvG25H5Ic1wnUdKHCRnW4bd
-	CDEXLAO7iIEa1Ak9DOKIj7pOnv+ZIcFKzZOj/uYwh72NAeLjzZnz4KIf6BodrlRK63An8B2un+v
-	abKZLgbYtYX/fYQPGlfiLmuQWfAyQnxzeCZNUuous+BbprHKWIVtLZhaxGPLbTS2YiUB9jDZ72l
-	hr+P0OmZDxrPwQCWh4gNrxx00VP5oZfYX0M9zq3VT+q9kL+waoualq+COe9wPQTuMltCBF5yHEy
-	mt7cJW24BBpxbTfylTC5fiboQ==
-X-Received: by 2002:a17:903:1a6f:b0:2dd:ad74:ac2c with SMTP id d9443c01a7336-2e6004e3b3amr50094555ad.30.1791467066545;
-        Thu, 08 Oct 2026 06:44:26 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2001:d08:1334:29ed:db11:2c4c:ee4f:606])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e604720215sm25363195ad.34.2026.10.08.06.44.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 06:44:26 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Liew Rui Yan <aethernet65535@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC] mm/damon/damo: saving damon sysfs configuration
-Date: Thu,  8 Oct 2026 21:44:19 +0800
-Message-ID: <20261008134442.31243-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261008123231.45171-1-sj@kernel.org>
-References: <20261008123231.45171-1-sj@kernel.org>
+	bh=M069Iw3bXdsC/3DZgadjO0BbzRw+5tuAHetlY3tELmE=;
+	b=0pi6mtz41h4eljMnun6tQkCVfYdc0tXiAvCsIoQNo2CSQ1Xfs/PSzBEDh8LSc1t1xsmuQ7
+	y8HEx+RL5+tMkzlzO7raYK/wbCHrCAPy32fRCSDL+S6TygsVVI9SN63qBeOaXdLnxVBc9q
+	kyvk1I451IugdGleih3YiHof0+/tGSU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791468317;
+	b=cMtxCXYLTm+W1VbfHXfEIMsy9pXSjtmrgwaR8coq8BQgSmjFM1bwn6q1Gu3eBlg5fRkjBy
+	TtHQnTHk6liKMJiK2+n0GbutXhzw0PyK9d6XcBrqORG+TS5CUPtcX79AH/UxVofubS6yPc
+	3naJXDhiJqIpyJItBkbpmJk843/h7mU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0vKNlzI;
+	spf=pass (imf19.hostedemail.com: domain of robh@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=robh@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 84F4A601DB;
+	Thu,  8 Oct 2026 14:05:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A1A1F000FF;
+	Thu,  8 Oct 2026 14:05:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791468316;
+	bh=M069Iw3bXdsC/3DZgadjO0BbzRw+5tuAHetlY3tELmE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=I0vKNlzIbSpIXeaVg9TodK8mLrShglenOa//I6LaHYDz3kU1ir8IZGKTZZ3+iKdr5
+	 uAyilIT2FXIA0A1WLwjQB88BDj4lFlNkw17wf54WrpH/PNvOg1Pjy6gLhxFvnELX9Y
+	 RkLJ8m/VF1ZPG7Flv4Zj6aMAG3YsUK0XWtVdelVv02rlfP1IQMnJVoJlmK8+PvPr27
+	 24YjJd5gFtcnGCmpiN52eSRDBfwAtXFg2+1opFXOiGwKcC2jAlzKozlJTc2CuiHL8C
+	 CJOUZLK2w0dIQoEuPsCUkq3NQUcLNIT9wNFiqdO90vxbTvTihALPhCjdTmw8EW9WjB
+	 dOdNWM6O6ZFrg==
+Date: Thu, 8 Oct 2026 09:05:15 -0500
+From: Rob Herring <robh@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-mm@kvack.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
+	Wandun <chenwandun1@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 2/2] of: reserved_mem: allocate and map the reserved_mem
+ array early
+Message-ID: <20261008140515.GB183998-robh@kernel.org>
+References: <20261008094125.3197971-1-m.szyprowski@samsung.com>
+ <CGME20261008094130eucas1p1120c66c914aa2b93fa3d7e6e494e7eea@eucas1p1.samsung.com>
+ <20261008094125.3197971-3-m.szyprowski@samsung.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E02E12000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261008094125.3197971-3-m.szyprowski@samsung.com>
 X-Rspam-User: 
-X-Stat-Signature: b5ge33fe85otwnrj81uogysyr6xxgjue
-X-HE-Tag: 1791467067-442586
-X-HE-Meta: U2FsdGVkX1/O7NIbnvn9cNqcrLVEnSKphzMY/PtLBC9BSy7xI37kbdMu7wrBVQXOArnL0Y8nVWg/JIW67wdK4FU+5bQovR8GOm8TjKXSbMyDF0SIpQdi3IMyj/rGpvmq2wnno3LkQGwyfHET0h4GZHRu0a9uB5PPxsT1PDOwByNflRBNo4y/z3pgF5W+EfCNOrL1bcN/XImTrPFO6tEk9myYKS0Zhp+wYaZrrv6AD8YSxK6XvtWtStvpdhoSyylxyeLMjUmRVSulAFVYWtbya5JLn5M/ZE261STOICU9ImAA05hotazTnGbUtTcpWWDBjPfk8HTaWHeh17l/1JBZHQmUyctoPNRKxyZ/ym/t5x0JI5h0I9cAzA25fU+86NgokmcQrD7xtnLT845+fZ2f6GQF6ll3GwK4peGBVKRPvfmNgYXJag7cZVrwDsrMAomW+HIvIapeuMsaIErqZ+ptlTN6cXnVi+uIlccDiwo83GHI45+OC0+15yiXgLO9CpXa6Yf9/+aqC0ZxdtDSSQOEo8TteQSAkqd9D85UjYtIrT7sCp/tBxs2abseTUTt2YxMdeJjLAlfEVoclrqZmHXZiNBXPaeFF0gl0xCdDc1DlNLlO5tPbyHZl/YRj7EoNsWPlNVxNUK9K2LbhYgpuKJSoUYIcunRYxUXBu8zK5pyewAyhAKf0sIkrDrS2iM+RoPcYj0jeU8Z32CtlG/fHYT+VHzihdhcS8xjXGdteFQHo4vey7LO+Ks6Py1eQO/HY7THPCKdu7a1sen+UpYwHEpVcz6th9PJXzPwHKh+w+bqGjliyq7/PuV6TGq3VAFO5L5mIO3b37YYU7lTrcv3KBsxY3zSOAwyBoYM2bTmlQVEHgFSNSOn7uE2KhzN0+Hum4U1bQ9yk4O13KBWDcqHL9uMXfMyjpBMiJfQQFFCI0vsgy47HZQQxdEVp8gaFF+ACoqtJ65Il+Kkt9ntx9Xeokb
- lEVZyBzG
- 2KnitvrpcB/GWH6O2nK9jJOQUcDBr80W+Q9yMUrRgSrfwLXGyfZcVtN4Ozic3Nzs2UOZ9aNaoUAPmhR4/UoMfOt34FAlhYAhrNdPSwnYnlI7H+wcCQoAcnbG0h8CVmLlrfnV15TX3RiJw6gAM/lwsfZ/g3mVj3lB3yQbG66bKwT9NoY4VfM3U5ZPFxQYvCRlrswaAmtln5WHBFW1hLocQvHJfLdismvy5G/0CWt57iXqIVagn2F/lAUAu/+CaPBzfyjjFYxavJ1f01/u9xSULdEBewIFEtYroGm8hxKN2QPgPEmA31yKx1bhOnoLLQypfl1hAhCq2bNjPQTtiJVE+cuwEq7w2r1RPGTbZnvvPJMDNBcutTBOWR/ynDZY67VS9MjyqnDGj/g1gxX9m8rInNuTEFhK0XVkmmWOYuPt7BgcIO/ie6q11aKTsyNcgigg9TRpZ
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DEFF41A0003
+X-Stat-Signature: q53jh6zb9hm9c4u4r5yhnnmehktpf1bg
+X-HE-Tag: 1791468317-999316
+X-HE-Meta: U2FsdGVkX198zt2L9J5b2/O5J9RKpFdURzoYJK8lIZcILGxfCZ3j83Wrm+6IFMIE84EYl2/3E9t0c3dNaWJs8E/VZUisNU/iBED+VzuEhcLlzCXhObz3jl5YcbXuUVZ/XGDM2DEhrVUtnBl/W2Hz/VUKyBBN3n577etNmCrAbeL4vfRJ5oscCI4CQjrBeVpWe+8mUDFrf6rt7KEEfbb4EcJPrY16GOqb4jKJDMzZRUJMCysED/A1e/oEE3FabtCOFHfPPgWcwTDpdsyDdzRyFzdKavY03ZpqsHa2g9cenbdjp3aREnXXYncD5c3emNUMqwaO8XeG8IVKi1X5qdh83FV6fcUFvcG6Lv5kfqoGUWTvXVx+USRiFbYe55f0GVq016oMttzp3C9+88WIQ76pQVkjsX1jzA3X6nl0+PfeKTTK52p3VkWg+WT41WzzqOY1dCxZgjrvCtINeFSG7RvLszGXNG/PdecRjIIZSmUwfziVaqvk4iUavKtEWM9WU9VxAf19A1MNwQ08Sv8LfszidIYOS8UMYFDCeZQTo6xEYQpOq+MFjjhB7y16inJRhRt09I4Ik5AUCgl5kf4YPlLSUod3M5dGoRvnaHDn0NA2kXqHR/8PWQbFv5AiInw/hj6U7Ats+XSuYB1w4imVfTxUTSJS4a1eRvlZHFICM8Z6LfOLJrlypgLs18p2IPHHiZezusCqUluzep6P9zNPY9QUEoJN7seokSZrNaFrvxYmMAvl9jBbaSBCbZe9lCLeCQv/dnTzs3VS/FTBcXWdTAgP3CB76kVMz8/6ri0jskk8udsqgMbwUH6hDZdbSQkxVdse6n8575zh5/1UIyKqWaipCmUOTFU5quYIJPC+8rbUISarrDekjVVLHnLHlhOZeX9TBEWDT3L3FPplTwvXmoZF2A/TMX+eih3OjTCMHsnLgvPVQL1FsGnvAEZqeuVYBmaIZif+xzSd7CZshx5osqa
+ Z/VQCzRK
+ ACpQQyHQvdMv0c01A08QrDTOKjlKadsfBCWhHeumFpXBRZXljE65ROYSQ7N3BCjxCq/TZQxpDskTdgaqNyN7X67FKNP1hh00JGzZ6hmr3nOrtvllwXD+YLtXeTfcIVCC2iyy91cnTzLQgQzQj30mDrXDgvqMjAYz8fbuRj65S5l3sS2oWfv/uCGLoYZ6jVbyF+2dJrhvNJYp/riCm1WkeHzocp31sLwSl3tgNCTI0ErFWH5Iq12HTTOHuVfNMoRr3GH/lSDsa2KBMWz4A/hggPG6NQEbeYH25YOsqjWC/r9HlZl5eu3yvWjRAJotwkv1kAdx300qiS14W963/tWxwctxSOjFDaM6donJLUd0zlrhsmI/V1hFRkX8hIh5iPptr8V6pu2bEyLWY2LYQWwDlSLProQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,25 +97,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 08 Oct 2026 05:32:31 -0700 SJ Park <sj@kernel.org> wrote:
-
-> Hi Liew,
+On Thu, Oct 08, 2026 at 11:41:23AM +0200, Marek Szyprowski wrote:
+> Get rid of the static, limited-size reserved_mem array and replace it
+> with array allocated by memblock_alloc_raw() and accessed through a
+> temporary early_memremap() mapping. Such mapping is needed for some
+> architectures (like ARM64), where linear map is not yet available during
+> early boot scan. Having a single, writeable array with all reserved
+> regions removes the need to perform two step initialization introduced
+> by commit 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved
+> memory regions are processed"), so all regions can be processed
+> directly during the early scan again.
 > 
-> On Thu,  8 Oct 2026 20:09:05 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> Suggested-by: Mike Rapoport <rppt@kernel.org>
+> Link: https://lore.kernel.org/all/asc6brs_g0ky0wOM@kernel.org/
+> Assisted-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+Assisted-by: LLM
+
+is the new way...
+
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> ---
+>  drivers/of/fdt.c             |   3 -
+>  drivers/of/of_private.h      |   2 -
+>  drivers/of/of_reserved_mem.c | 251 ++++++++++++++---------------------
+>  3 files changed, 96 insertions(+), 160 deletions(-)
 > 
-> > Hi SJ,
-> > 
-> > Just a reminder, I think you might have missed the question I asked.
-> 
-> Could you please clarify what is the question that is not yet answered?
+> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+> index ecc923102622..a58efdcbac7f 100644
+> --- a/drivers/of/fdt.c
+> +++ b/drivers/of/fdt.c
+> @@ -1283,9 +1283,6 @@ void __init unflatten_device_tree(void)
+>  {
+>  	void *fdt = initial_boot_params;
+>  
+> -	/* Save the statically-placed regions in the reserved_mem array */
+> -	fdt_scan_reserved_mem_late();
+> -
+>  	/* Populate an empty root node when bootloader doesn't provide one */
+>  	if (!fdt) {
+>  		fdt = (void *) __dtb_empty_root_begin;
+> diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
+> index 0ae16da066e2..895f868b4cfa 100644
+> --- a/drivers/of/of_private.h
+> +++ b/drivers/of/of_private.h
+> @@ -9,7 +9,6 @@
+>   */
+>  
+>  #define FDT_ALIGN_SIZE 8
+> -#define MAX_RESERVED_REGIONS    64
+>  
+>  /**
+>   * struct alias_prop - Alias property in 'aliases' node
+> @@ -186,7 +185,6 @@ static inline struct device_node *__of_get_dma_parent(const struct device_node *
+>  #endif
+>  
+>  int fdt_scan_reserved_mem(void);
+> -void __init fdt_scan_reserved_mem_late(void);
+>  
+>  bool of_fdt_device_is_available(const void *blob, unsigned long node);
+>  
+> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+> index 300fb236ab59..6a5e53243bb7 100644
+> --- a/drivers/of/of_reserved_mem.c
+> +++ b/drivers/of/of_reserved_mem.c
+> @@ -24,12 +24,14 @@
+>  #include <linux/slab.h>
+>  #include <linux/memblock.h>
+>  #include <linux/kmemleak.h>
+> +#ifdef CONFIG_GENERIC_EARLY_IOREMAP
+> +#include <asm/early_ioremap.h>
+> +#endif
 
-It seems I forgot to ask the question, my apologies.
+These ifdefs are the only thing I don't like. early_ioremap.h is always 
+in asm-generic, so do we need the ifdef here? Or does the arch have to 
+do something to pick it up? I don't remember.
 
-I would like to ask: after reviewing the reproduction, do you still
-think this is a real issue?  If so, I will start working on a fix.
+>  
+>  #include "of_private.h"
+>  
+> -static struct reserved_mem reserved_mem_array[MAX_RESERVED_REGIONS] __initdata;
+> -static struct reserved_mem *reserved_mem __refdata = reserved_mem_array;
+> -static int total_reserved_mem_cnt = MAX_RESERVED_REGIONS;
+> +static struct reserved_mem *reserved_mem __refdata;
+> +static int total_reserved_mem_cnt;
+>  static int reserved_mem_count;
+>  
+>  static int __init early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
+> @@ -59,56 +61,48 @@ static int __init early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
+>  }
+>  
+>  /*
+> - * alloc_reserved_mem_array() - allocate memory for the reserved_mem
+> - * array using memblock
+> + * reserved_mem_array_map() - make the freshly allocated reserved_mem array
+> + * accessible during early boot
+>   *
+> - * This function is used to allocate memory for the reserved_mem
+> - * array according to the total number of reserved memory regions
+> - * defined in the DT.
+> - * After the new array is allocated, the information stored in
+> - * the initial static array is copied over to this new array and
+> - * the new array is used from this point on.
+> + * On some architectures (i.e. arm64) the linear mapping is not yet usable when
+> + * the reserved memory regions are scanned, so the array has to be accessed
+> + * through a temporary early mapping.
+>   */
+> -static int __init alloc_reserved_mem_array(void)
+> +static struct reserved_mem * __init reserved_mem_array_map(struct reserved_mem *array,
+> +							   size_t size)
+>  {
+> -	struct reserved_mem *new_array;
+> -	size_t alloc_size, copy_size, memset_size;
+> -	int ret;
+> +#ifdef CONFIG_GENERIC_EARLY_IOREMAP
 
-[...]
+This could at least be:
 
-Best regards,
-Rui Yan
+if (IS_ENABLED(CONFIG_GENERIC_EARLY_IOREMAP))
+	return early_memremap(__pa(array), size);
+else
+	return array;
+
+Assuming the header can always be included...
+
+> +	return early_memremap(__pa(array), size);
+> +#else
+> +	return array;
+> +#endif
+> +}
 
