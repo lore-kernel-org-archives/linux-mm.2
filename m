@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D7BACA600B
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 11:22:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F50ECA600B
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 11:30:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5566B6B0093; Thu,  8 Oct 2026 07:22:22 -0400 (EDT)
+	id 05CF06B008A; Thu,  8 Oct 2026 07:30:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 507516B0095; Thu,  8 Oct 2026 07:22:22 -0400 (EDT)
+	id 00D416B008C; Thu,  8 Oct 2026 07:30:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41D306B0096; Thu,  8 Oct 2026 07:22:22 -0400 (EDT)
+	id E8C566B0092; Thu,  8 Oct 2026 07:30:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 286086B0093
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:22:22 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AB272C0205
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:22:21 +0000 (UTC)
-X-FDA: 85299220482.04.09B3B4A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 299B140009
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:22:20 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O1Hp/Uhv";
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C19316B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 07:30:28 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55C8FA020B
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:30:28 +0000 (UTC)
+X-FDA: 85299240936.23.F38A56C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A6E2F180009
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:30:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F8Hz1Y/S";
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791458540;
+	s=arc-20220608; t=1791459026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=03ckZm2pi2++eResCYDaZn7t99v+mDgxPpO0qsFG5T4=;
-	b=mIj0NkeInAfssmCw+7x4EMKI/6k8B37DBnld0aZglaGtncw/8sHwO1w9ybj27oqQb1nfIM
-	ccyWiq+PAfaeuU3tMDr15D+bllkeEkkAa3tDM07kMWpK63N4Z1LQWW/wFviTZPbIgFhNsJ
-	6X7oyj9yeiyv5+DzVGwuLdctmjRznvs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791458540;
-	b=OW4TqdirzrWDkcOc1Ya/JWaxht4qiYcf0GBOpJhuAUnxNLeEYG0JpTY9LLN1uznj8NRolO
-	CrD5/sge4+VznKs+yLxLjAz5SSKUKr3GyBWmCeUIuxKnk328hVnTNRRq6eX5R7ftuj5HuG
-	rzcfLHce72v2vSnv9olxFcrSOFkDupo=
+	bh=JyZEXCsrjIRssFr/XscNfX4V4CetnsdggN0Nwhan5is=;
+	b=06aVvTIQ0i+A1bAfpZfu1Y8CpXuc6ejLImMmKUOp2N/fZch4qU7jd7J8fCP8TWn3qfIrhW
+	PHWFmdY/y2Cni9WdRtv0eUYmR9O0LmZMFa0d+Qp5cOwJysI/P+QHGZP33f6ThL1vF/zMLN
+	ynqDq1wKcv3uUDUpbW0mv1LDtOP6HOI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O1Hp/Uhv";
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F8Hz1Y/S";
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791459026;
+	b=Anpg/FUN6YYF5W7abtdKAxCPlWO1mZ/EyRd8slua2K7CvLR/YXUS+Ac5vIodEcGHKv5Nbm
+	S9NCFXkg8RcVxpgVUhYJz+cWBRpVZhLWJNKeyoysq4sH5fW9573PnDSIxcPHhNjR0rC9Sb
+	zHePyWnAqDnKxM+jImHxb6jXrcMTX6w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B32C6601F9;
-	Thu,  8 Oct 2026 11:22:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50C61F00893;
-	Thu,  8 Oct 2026 11:22:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CBB4243CE9;
+	Thu,  8 Oct 2026 11:30:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFAD1F000FF;
+	Thu,  8 Oct 2026 11:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791458539;
-	bh=03ckZm2pi2++eResCYDaZn7t99v+mDgxPpO0qsFG5T4=;
+	s=k20260515; t=1791459025;
+	bh=JyZEXCsrjIRssFr/XscNfX4V4CetnsdggN0Nwhan5is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O1Hp/Uhv/joP8NbSyvph6SVo6Tnxzy5B5osUSyhezFS6yhfCAuqe5RsTowi1oAYJ4
-	 1ACZegfMaTSPZdrjXJgnIctJWh2KmQn/QivxGI1be5MH76jK3+wj6X5sehiPc8zZHw
-	 hZ1vS0sA24LesKAyKaw7zEMt+BA2uaj46j7cVYt16dPgzN0ISVlYSbVuzeCuZILx34
-	 njoJNaihYOgiHRML0AErlwYFA7uyrFz0j9e2E4ZbMb37lK1NePrts6oiVY3lXHp4qj
-	 JZ5CK5G1N2rzGnF6F+JPVcroh1yv794sh6PocCK9TL6SI7qZRCmCbyUiYQ0MmjC4Qe
-	 sKRSi6sf6DUgQ==
+	b=F8Hz1Y/SBwi1BdY46Ig3T8lYjqv1KCqjC+yNvHC4mkiyTe0couKTWG8QhjbId/Tk9
+	 4yHtOuzVeAeJvZ/TwL9NCXxEIWaRpZvfVAcZRF/ROXeDbV3enliR1RFa58tAjt3Sbz
+	 9vQWB/zFLBYwOnBE9/UbOSDRSdqeiTiFIhJfcI9OQwiXqawVQJ4zxuzjKXvUrLkFob
+	 yDnbvkuO3YM5XOezquzGDbIQF+RmvEn5wGMP7/71m/fsnQVwJQfqSqnp3wl52R+G4G
+	 3MfVPEWQqHUkERgYl2d0qXWM9COxJNDCrd2sG8e0og68G/84fu0zsbJ/o6sOnPCh7W
+	 rtiAO/oC0T5Ng==
 From: SJ Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
+To: Randy Dunlap <rdunlap@infradead.org>
 Cc: SJ Park <sj@kernel.org>,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	enze.li@gmx.com
-Subject: Re: [PATCH] mm/hugetlb_cma: remove two unused include files
-Date: Thu,  8 Oct 2026 04:22:14 -0700
-Message-ID: <20261008112215.43826-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-doc@vger.kernel.org,
+	Mike Rapoport <rppt@kernel.org>,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] docs: kernel-parameters: adjust reserve_mem build option
+Date: Thu,  8 Oct 2026 04:30:20 -0700
+Message-ID: <20261008113021.44149-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261005142040.675204-1-lienze@kylinos.cn>
+In-Reply-To: <20261003213457.96408-1-rdunlap@infradead.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 299B140009
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A6E2F180009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 57mj4npfiys8n35qbf3bimc51gqzmhsg
-X-HE-Tag: 1791458540-137276
-X-HE-Meta: U2FsdGVkX1+B48A99cij4EY37s3x2/jc4bua2EpK0FAyCe0GcBMjDmvCekvFmxz5ZV1hdIDpoMKjjugoAtmDla9sWNQiJ5UjuYoSJP7xl3YJYHNjQcvMsBpcejZIWOR5d8GZ3vYMXiQPXqOWXKc2cZDY5gvUV80iGOlEMRQaS51WxrsHLIRlej0mdJIS45JKeEoCDImL0A/ndC14W99Et1CLZEUe4DSujT+wvpYe5phjImKl1X7kooz577U+VF2v93lFEgLHNyFvLgvw5+oIWS+xoKIOzLccm3+lKpJAwK2Xl4lMoP0Nl1Ia7SiIymU+S5of8OAP2KHRJjADilxnpPcp1Dlx20uqmVHYk/uLNjFZnosCuOBC66QwQKgi1q1rOhmrVFAP//ADfaw0CVBbsG/r6gO37xYWSdahHm40rqJYaIuhlnoblVf8XAGOhCMSJ2+Or3W5GTERH0XC64k0Xj55Orfc9/VnA2k/Emuehq/32izHAbehJKJsvSWeq+MRPubZaUn8sQHgVs+T3GDLxexB1ZTDojjI50qnirxF4n/hg8G54EkA5XLRnb5jscoUWtKbWgCJS/OEp2v/mdrt/M9aFxvJZA4VI1knVwAlzXJORBV7Zl1pReuPu4f8hfxthJr/HCiqlkvjI93/B8JibQBTcZidvr03UtJupc2FmDFqUX8WcQ2E5pm0KSj53mp0yj9Xm97JeI9A8e4QHVBmycyVHj1pfBPFKqdMlawiWjKd9zB2fhb1j33GZQxzN4Lr08V4CeotRSm99Bnhk7dbIcsn0lkOpzQRtq7b5fGIYD9CVwUMCxvr1+Qn2EzbtlgVdWqUyQ3w5hfSGla1EEw7ah49zZwOVA+WOG7msvbSOM5aR9CPLqf+s4gMch3dXGO+yFxvqRk8dHgo4DVwx6x61udVGeOpuYkg/V3fLJC8RD9jHm0fQdWkDjxUZPsTm9+4rwp4XelwJfts/mURBU0
- twN7gfaK
- mcDrTFBMzd496BmsOqrp24swdhm9wrQETL+9stBeSxPkO1xWQjvcrYQBRT68Zgdj2xcEH8My20UtpzDLj7RgKPAz/3Wm3t3kto7qKxYdG6AtTYZIJHye2K6NvURRT8EIDiWcAdbiz20EqjxvXzgJGP4GRtFWlkUuuUCI2IBdU2EIxGTK+pNUMw2ccgVu8HRFmH4qJuGRbKpXZk3rpC75e6eYxyaiu3EyDUGdvcqFvta7UJUE0tKC3d9Ss6lsOqPpXY2xpaaUiM8xDB2V9KG3FdKCKV8vznhGLZBkT1GmngxLFtUH0gS/Uk/G2aw==
+X-Stat-Signature: y93qaijwwfb51kk9jbhham1ht9shb1jz
+X-HE-Tag: 1791459026-329552
+X-HE-Meta: U2FsdGVkX19mrHpNXEtXq3RRdJATiapI9d20OjqgWkGotSjUJcknmP9hBFoIW6Sft2mpLr43D5mywfOIawqgbFXzRUKOcv49K/st3GT1gvs5W2EnmPHvJQNzUYLg2Nkf8HZPnXV9J/9rXtWOV3wsMJ7qHVnVgIrrApiclckwusKeyRzaMDdzemhr4FB4S8XqPqQ9Nra5BRSZZzQ3YRkshQBh0DjlcQEgJ5FPMIUUa9R/mVGWxFxEzZA9ZIT4+zK/0dR9DM0V67KNf/mEz/c+NjrvZ+Uhf0r31sCO23eRIQYmL4WeaK5PsnVIb6nscs+1n0tMMc9PH/kiZAylN/ZkikIplc1EyZH5JwFKrJ/268keT31WQyHv4EkA/ltgVL2GoKJ6hWngr+If0KECn/6ZiIsWFZy0qbHlveyboCabiQ1fW0+QbuTdFnHJ/5WBBS7lT7358D1Z8uvK8nEJEpjZZIeU/rsicEA2qFSxGWVHwduvp4OffgOm4W6do86cgz6YOXfgI/S591BK9trmOpaRSeym254iH7bWQhKAUpbRv3/JZ1gr04mRO+1RllZoYN5GwzjrlYaS0bwb4h2o0CBv6TYiMxg5dRvpM4Rd+2X45Q6p/vUjcxYUrkqzLZJNdjJLV46wqEEyJM9KTAlLL4inh0Z7O8wEjXNHTmViPQna8fSWtMCg5+ivlyoUJbCrO98L+2TxgSOMcxy3XwiVry2MSXnXMEHz/PdcpdT5tgrxGaF0/rLbGfD7Ux3fnOrRIj8GiWEoZOr2GLm5gGQbQ4rNyS7U9+DJxd+UpQEi8LP5iPhSadrpu3nl0wt5KRNrG1xlg1YNVaErFo89L1fdxSJRaB3mGJYWrIbHb8HcHKCuJnkvlrRa0DhsyRcVeEFBK9kfj21KhJYmBCFzIYdktUeamIWkA1U634341kddus7tyx4VzDFDAmCXWF2mmGtsSbOuEo13lxzdn+wKeCMfG/9
+ ShLiXwTG
+ NbplObbiupeRaVKFniVL1muDqN7dyy78wQd8TK4do4uduEPMDD9ruTOT1MkcPP5YyNdOFSAp8SyqcYrA+XHIopcsykDqGUbfcAm59T/N23Nj4A3qMRbFE7nVv1Y4oOq9qMSqXtFkKj4cdElpcFNF42JA168/U+WunBZ0oqP+PSSMxA2qdq3U+XbiwkLLjAE96BoZ4OsN0j+NYvHk/v5JuC0ntEm/I9nq7J9RJOUt/nltkDMlzssixdhfIPbYz4StTGdIPM5xFjQwVrFKAs+/RVYzgwnfDiiJSnD2t0Ci5d4pP3xTiGF2nMtFcDzJVy8e6VYZ1USa9IE+AZrAlSld1uVjegA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,21 +95,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  5 Oct 2026 22:20:40 +0800 Enze Li <lienze@kylinos.cn> wrote:
+On Sat,  3 Oct 2026 14:34:57 -0700 Randy Dunlap <rdunlap@infradead.org> wrote:
 
-> hugetlb_cma.c includes <linux/mm_inline.h> and <asm/setup.h> but never
-> uses anything from them, so they can be dropped.
-
-Makes sense to me.
-
+> "[RAM]" means that the command line option is applicable when
+> "RAM disk support is enabled." However, the reserve_mem command line
+> option is not related to RAM disk support, so modify its build option
+> relevance to "[MM]" instead.
 > 
-> Found with clang-tidy (misc-include-cleaner).  This holds regardless of
-> config: the file's only #ifdef is CONFIG_NUMA, and it only touches memblock
-> helpers, so removing these is safe on all arches.
-> 
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 
-Reviewed-by: SJ Park <sj@kernel.org>
+Acked-by: SJ Park <sj@kernel.org>
 
 
 Thanks,
