@@ -4,103 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6D79CA6012
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 19:08:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED6CFCA6012
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 19:12:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 474306B008C; Thu,  8 Oct 2026 15:08:36 -0400 (EDT)
+	id A73C86B0095; Thu,  8 Oct 2026 15:12:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 402426B0095; Thu,  8 Oct 2026 15:08:36 -0400 (EDT)
+	id 9FD5C6B0096; Thu,  8 Oct 2026 15:12:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CBA36B0092; Thu,  8 Oct 2026 15:08:36 -0400 (EDT)
+	id 8EBFD6B0098; Thu,  8 Oct 2026 15:12:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 02BFB6B008C
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:08:35 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E8D3F12039B
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 19:08:34 +0000 (UTC)
-X-FDA: 85300395348.08.5988742
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4A056100003
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 19:08:33 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KJ0tBaQI;
-	spf=pass (imf05.hostedemail.com: domain of 3LurHagkKCH8wduxqvdkxjrrjoh.frpolqx0-ppnydfn.ruj@flex--tarunsahu.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3LurHagkKCH8wduxqvdkxjrrjoh.frpolqx0-ppnydfn.ruj@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C33C6B0095
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:12:44 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B68CA7D1D
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 19:12:43 +0000 (UTC)
+X-FDA: 85300405806.06.83A602C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id DC99B40008
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 19:12:41 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PnKRpahR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791486513;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=lziypnwRraIlsorF0VwfpRYSW789AnxqR1Fmirni4Xo=;
-	b=XYhXLgXS5fArJzPRS1znA8p4PPbMVdFxOHhMXhBQSOTdBDPdfqx1zR20IFRRlPZ2dRirLD
-	U7HnBqxFGSAzKRoEcnxSiDxz8eTnIuzDwVRYypcXPUqHJPakCdRYD2i35tlardbRviSkSg
-	8yVCgTFeGjd6JcaqNPqiTxGS6fQ0uJc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791486513;
-	b=WMC39axxCFiKlro5y/QAEpW4ptFyezIO9T5r88o+wJyOpmRYhqbDA6XlEeru/7Ggu/oahG
-	yz0Mfa8Ja41euLlAp8XXf0fGV8HdhB1++20RD077xQ2j0BCGF+qytSqVezexGAe/YADfnA
-	b8i78z/sLEkXoE4r0Fod45vJCiS6RDY=
+	s=arc-20220608; t=1791486762;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=imD318uYbaR4I8GkThDrvvtTnqtl46+qes0QsXa8DAo=;
+	b=I5L1R2FgmckdRYlUFc4H/2LUqTtYRuiaNcOW/Uqx3zpQ8bKKRdkDBFfsEnkh9ahHZOf+Yb
+	m1yv0ePceEzS/w7b5wPXV3d0oLYLb1hxfudY9Y9cS0aVKSW/MOJftcUeg4WDEWrxQiH1Dt
+	G9/KcaZj5OCaef9YFg+l3ovTORQ8/6Q=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KJ0tBaQI;
-	spf=pass (imf05.hostedemail.com: domain of 3LurHagkKCH8wduxqvdkxjrrjoh.frpolqx0-ppnydfn.ruj@flex--tarunsahu.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3LurHagkKCH8wduxqvdkxjrrjoh.frpolqx0-ppnydfn.ruj@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6afbee3d268so5574015a12.3
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 12:08:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791486512; x=1792091312; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lziypnwRraIlsorF0VwfpRYSW789AnxqR1Fmirni4Xo=;
-        b=KJ0tBaQIXuQcDGsFto2VnIXiaoMA3IciycS2sDPpZxWEoppYErbX7f2kzMMi2kgnDx
-         ERM4nuxGN7FMSiS5emjgGHcRfv6jxYOV1Bhx9mD5OnPz+AiGPklWKvyG8gP07BWf0C75
-         4307kpao6xF67wttU6y2SJdZ2Aa/mq/XAObimEz2XWjSt0P1GyzWqNnOdSutvNDdLTL5
-         qOv7gWphLN0WbWR01Ho1O0Xy06GqBFIxfr98Acn9CeDolmL+LA1jM7/FvKXvIfmnSIOt
-         RCOOzfwsOmDbLQbPW5kLk61qxegHQdSy7lxtA78/odcn6GvxKb2iabugiabAn+G4vB3p
-         LR2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791486512; x=1792091312;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lziypnwRraIlsorF0VwfpRYSW789AnxqR1Fmirni4Xo=;
-        b=G5OBj3vxU2W9mWWossM4uOST9ZQ3d4kqlTzR8Fv/nqAb05DGLGpZgOPN2ykRqMUGK8
-         W4FDE0aKlgVX2mDcn6HJv7qnzRqxn37TRXiW3m20JwXgGLxEd3yt9XSZrOdrrHTlpZjf
-         cIrcQ+HJZlBQztMIxMS1qJh8DTmLLyVlXngOztPBHHcmjuHlLjgH23amkOLa75w6UW5n
-         YPiF0wyY57whAn1rH6OfJKPrXlxoOWc/vcl46TfbT/YkXWX3UhBT1ceZo8F2pem+AotK
-         /oEtpQ6emKItzZmZ4I3Vn5K7dljltKo0I6HTkFLUO8acDPwqpg+aqGm4hLPkzsyoGJvB
-         ZtxQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwaoIhz+nJyyeyr5AWyHe4Zt4KC9beqGWidXvoWwUR0CZUergYreL8nxrboAZotGPRPj8bGfKt//g==@kvack.org
-X-Gm-Message-State: AFq9FYJYieM0dx2RBmrzGkjMmpD68qM05ANTn791v61KT30f1uymBI7A
-	84MQptCc8hc5yLrXatIBM30mJr9C6y29D9Bqrol3lf9/pjOFYynGx3WSdv0Ip0d/z9Z3V3BCabw
-	I0UlmGyvYL67WlVzTEQ==
-X-Received: from edl6-n2.prod.google.com ([2002:a05:6402:4246:20b0:6aa:e587:e1c1])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:3211:b0:6aa:edb3:d687 with SMTP id 4fb4d7f45d1cf-6aff38f1e95mr6238564a12.15.1791486510254;
- Thu, 08 Oct 2026 12:08:30 -0700 (PDT)
-Date: Thu,  8 Oct 2026 19:08:27 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261008190828.3221718-1-tarunsahu@google.com>
-Subject: [PATCH v4 1/2] memblock: drop for_each_memblock_type() and open code
- its users
-From: Tarun Sahu <tarunsahu@google.com>
-To: dmatlack@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pratyush Yadav <pratyush@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Tarun Sahu <tarunsahu@google.com>
-Content-Type: text/plain; charset="UTF-8"
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PnKRpahR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791486762;
+	b=45oWRchBOAc+KUtJHP/q5V8/7Xxf4dhLmXAWsf11PWP9pFVSkZsE++56FhO/iK0hppOJ5B
+	v9dfRcK8DA95UDTppGWpwubiLVQiNbG6y+6KkoEZ4jLpn1KO8heCm6lQri+4Se72VLAfMB
+	L5m1VWRGn/nUlakfCfymsxgY8SUBlVU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 52418413A5;
+	Thu,  8 Oct 2026 19:12:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78B21F000FF;
+	Thu,  8 Oct 2026 19:12:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791486760;
+	bh=imD318uYbaR4I8GkThDrvvtTnqtl46+qes0QsXa8DAo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PnKRpahRAs+fCtPQqncrSuQSpAwUK3VFsokdhvscClzl2W+rCLWdn+MQfKgjpJm5z
+	 e5B29u7tHEzbtCCN5Gg9E937UIKqJtUjNs5lPBa8N3UIgn38tPpINJHT1wnGzunjRL
+	 QF1DOUumYsRMStJDTuSK5uKzqspKyN/3Ory2AKsVoauj5uvAPwidSGEDxYTZ9UxtH9
+	 bfp2OTL6sN2qZX2NrIRiHCyPT1lu2QlVosFVqcW43mkAAWvuhzsDrXX41RdVku2Ltx
+	 sUQfuwqyHCsDFzxcTMTQDkLl9oi9UXyRdpYpIosHfUgBqhTjHZO5+D+AphwNLm48aM
+	 569ZCvB0szQfA==
+Message-ID: <sashiko-outbox-164503@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 1/2] memblock: drop for_each_memblock_type() and open
+ code its users
+Reply-To: sashiko-reviews@lists.linux.dev
+To: dmatlack@google.com, "Tarun Sahu" <tarunsahu@google.com>, "Pratyush
+ Yadav" <pratyush@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Pasha
+ Tatashin" <pasha.tatashin@soleen.com>, "Andrew Morton" <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261008190828.3221718-1-tarunsahu@google.com>
+References: <20261008190828.3221718-1-tarunsahu@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 08 Oct 2026 19:12:39 +0000
+X-Stat-Signature: dsdj7oce8k3u8q7nndydrezdxkwjtfyx
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4A056100003
-X-Stat-Signature: xytbbifudr8edoyjz1aa3dmdp4d669wd
-X-HE-Tag: 1791486513-767878
-X-HE-Meta: U2FsdGVkX19L+boIzlOTWiyrP5zmxmKN45b4F6pLCzj/+hun7Mo2EEOxUk2k4Qde0SnCnUrV5LeNGRozOvg9LVIaNMXVIjVMSWpCzRAF/GlAwI0A68sU2xN9NpPiTnJEfjbO46azozwuZdf7eaAU0cI8yytJQgMUTxWBtgik1TSlx+AHoUvxziJpc0bZd/IrgTCsnHP2MzI1uSFdrkHeh24mPCjce/pdDFck99Hgywfogp0sPGvX9nAtxJUQose1bI6UPaooXaeo/Zm4BwNjPNTg/Y0++3L5dvpF2JFD72ETwVPmyILAwoeyeC9Uv4y4vv0V8+FenCLfkSecMxkvNFX8Lv5ArRIcZWQ1M24BsZuk7a1GQjGYSuKBZdoias2AG7e6X1f2YZ6gsl1iLI5pKbeEjGykK3pf6UdYlePYHlx1JCkHw/OSoyUFsBmQT+VluyX2rPC4lyhdRugWHBksWVX5TFras0jLg0bK3uXCk6De2W7uFT56Rpy+DT7rxusYMMsNp4FAuoyciT2nReb9V+bG3pCOX9SaSPEeJ6UDaG0P53U6uYvt+bAYpwU6w+94qFvnESxGeU249z/TflUtQGdZxYQM74GQ1DY94MnOP/PQ8RRHFMIliQBgIkJWoP+rupb7YpmXuWD9PQzLuUi+Fy7tgyoTMBw9lx+q1TiW3lU2vdYkHT06Pd0a3xHVwzrlUIyTp4u8PJ8hHQnU3Z+hnd4ei5vLcq4rZ/1rym9hCkK2hSdbCjVYzp0cN4rKuCDtyPENuw0PnvLnAFWdMzLOPLzWWBechBUFf68ZY5XevdQN5x4VpAp3wtEfJ3p40Wp9mcZWRELtsBry0zA76aXEpnEFsANi4KkRgCmUyt6e8PrlxczqFhs23EG+Fw0iHF6xtIiLlwjYCf7easZjFqfwfTVpCoIBFCpqyJsoh6Qxux96cN1aahwvTN24K0IX82mh4k8FVB+eeUISsS6kT2Y
- 0JbVGZ93
- 7/C/j6N7dN9bP+NMUxw1/tStkNM80momC6Jys/PW9gWFrPJFHRjuu2nyJbcWrAL+RfCvhLAOw1i33Hr6IFwPFJP85Bq0bJXmfE7obMIocpOiPq1WgM2g9+kHDHx7ZUxTDuuoEMqZkU5WQt4Fga1Tj2wPFpxsjuk3Gu7LNBTNDIv/jC/Pwu99SjSxfYhBsFo0efDhmbi87z00x/qpMxtBlteS6h+4xBR86r5E+gA//h+XsdQUeAJsS094va9L3q2bLk6AQLLUK024pbMgIjoF6QYFnUL/dmcRoZgQ0eBjnTmVTT8cc3fpdcb3LnckmfYWJq5k+owKWI7agwubmKNxH6vf78jAc+CiwONovbEWjF9hrkcCGlbt/orbXaoNdetx76HVTEqDR1R3EFYbXupRhTDk7InnjqAjC9zb0gWYAe4ocUAbbqJRkcLv3ybLCJh9tsrsOfi6e4VfuUBPnWKkz7VUorCqJjtYPLPRGnN54lVLbg5DZb4tvLUijUp6BpNSXuhBFH0dFLd7tng8DYrlj13MknD1vO7ysdhbv1PxdFNAnY7F4jWJ/2K00hAqutchir6vwUQubtgThaGv//AKPt5IRPAR9pibC38gFzYdXfoMCDtafw9PlxYi7NPv1bnmb4izS5CWQchNE1abPJlW/x19RWP5CTVHguZ+WmJGVHHovwLA=
+X-Rspamd-Queue-Id: DC99B40008
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791486761-562681
+X-HE-Meta: U2FsdGVkX187iXC3PmJkvSUb6OqYUcKY5c93Kt8EhRMglKBreYMaoj9CbYY25oVyhcIRAv0FytfZznD5Cuhzq/qS886ZxcvDoBgkEKkvGABuI8vAeI6L3N3xGbPdfLBCkMiFFmq+WIqecA6XbPCxoU4gdoenGwvL7dA3NzLVjPZNRZeSA3xK6N9COJAXhII2hDISyZRkN2ep/BTitr37DbNFEjijX2JAo1tDIrXXqptK/NJknY9xct/rqf/7n6WjyHuxzeeqK5mg66wx5F+kSMHBTQLnwlrlviAvFLJ4+qnS6cTlYMTj4O2z0tAJb8TYEt1LLXPNmc1mUC+xyRaZGl0q9DldHjNQnNRCwuXDC6rrqM2jIGFZ8dXbbej4T6ClSpULUT/MQuTPNJf9w0a653uXOpVdfK/tWoRkDzilwF4+/JQok2oas58bHqQwwFPiLoM5DilAz+/H8R//thpT3Ai9vl93FaMBTVyrEkz1TixtPLRt5JEhBISivET1NkfFBiR9NG5016tW3WA6eyrICjDgs7h+W6aGebpS+oXfBdhj/Y6esBQICMQpUHO43ulfO/dc+fiw2ki9ExWuyYaQKeXX03+cIFmTBOVe2pLR5xV8TA4RFBY36XAPLOpMlWIm6fRsBhLP+ZlrQaGXFqi63PWw4rn0VWb844MgIAtjJT3gLoKKeWH4wp8VvOV79SHDrFU6IwYYBnTWfQrZcSQp5THBrx5O504Ey2h2FQaqln7m79zcOUX5SyPPI+ho18VoJtPk8JRSFWt0MypC4ehobZ5uv4vzr47ekvDtpUosRWsQ1KdbCY566rNOK1L7z73kVS27N7+o9FDP0XBTvPt2wd5Ih58LlaE1wsGr4utXB637JYrhsrto5rfjtUrk4xk4hAs4k5CM3Ed5ffgSm/skdryTKD6mX05zS3nToZbTR5FfAPCwhxxuz/o+X6fS7IlKi9TRM2yJQNMUssvFQb4
+ ARWlh7gC
+ 32vqR1F/mcqvL1hl/BGf0HHuzVhNBf5/oyg60pb4YbX0b9PycnVydMCEmi+jj0nS88AC9d5Z+1JLV2Iyr3DFXq92FbJPLylMp/EGnnfBuOED5P9S0fLDQ7pTaMpjL8XI8kB34FP1uN7cUzbqmtJj0EM7xzPauI6mE2sbtHmFTpK9cNIVJrYR1j+mTq14veiRtKiFIv/0BfjfcjtWVjXXs1hwwPyYd/6p7aYQxUaUT3E85s67V4t21DHJTXvo27mneVuakaA7Ec48j+qjx3EQTWd/pnGrSVr4mwV8mMsuc7rzqW06H5VcTZr00wLTunhXqyKNu7R/lUkz7KB6PD4qbd6NQ5cgTHq8P5M9eEusUFNU7LlZeaM0wa2dyALGX5C1edo3SFmWi2OD90P/CCKIQar4Fj2zVQBrlyifl3TjCo5kO6sRbryufePaXj5Ji5l8aPcfs/oR4rtfiZIb9Eqzo4YKpsrmFcN9BLqrpRW5aOM/lSSXcrvPJBSVjuN8w8KudQybH8xVifgtSS0qn7qgs9n7vBTFO6kl5HNEjt3hNKaL6z/X+TQOMpBT+IusWKQnTj/FdVwQJ2LvNz4TgYb/5gCWw7syg3zEHPRuVf2SALyUCb8EtAwVXV3CJWhfbNqsJv65obUwRfYFEMxvdX66nDzkTGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,90 +92,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-for_each_memblock_type() always starts the iteration at index 0 and its
-body is a trivial 'for' loop, so it hides very little. It also gets in
-the way of iterating from an arbitrary index, which the next patch
-needs.
+> for_each_memblock_type() always starts the iteration at index 0 and its
+> body is a trivial 'for' loop, so it hides very little. It also gets in
+> the way of iterating from an arbitrary index, which the next patch
+> needs.
+>=20
+> Remove the macro and open code its three users: memblock_add_range(),
+> memblock_isolate_range() and memblock_dump(). While at it, move the
+> region pointer into the loop body scope.
+>=20
+> No functional change.
+>=20
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 
-Remove the macro and open code its three users: memblock_add_range(),
-memblock_isolate_range() and memblock_dump(). While at it, move the
-region pointer into the loop body scope.
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-No functional change.
-
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
----
- mm/memblock.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
-
-diff --git a/mm/memblock.c b/mm/memblock.c
-index f5aaa38cfa31..59dda7d085f3 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -155,11 +155,6 @@ struct memblock_type physmem = {
-  */
- static __refdata struct memblock_type *memblock_memory = &memblock.memory;
- 
--#define for_each_memblock_type(i, memblock_type, rgn)			\
--	for (i = 0, rgn = &memblock_type->regions[0];			\
--	     i < memblock_type->cnt;					\
--	     i++, rgn = &memblock_type->regions[i])
--
- #define memblock_dbg(fmt, ...)						\
- 	do {								\
- 		if (memblock_debug)					\
-@@ -615,7 +610,6 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
- 	phys_addr_t obase = base;
- 	phys_addr_t end = base + memblock_cap_size(base, &size);
- 	int idx, nr_new, start_rgn = -1, end_rgn;
--	struct memblock_region *rgn;
- 
- 	if (!size)
- 		return 0;
-@@ -651,7 +645,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
- 	base = obase;
- 	nr_new = 0;
- 
--	for_each_memblock_type(idx, type, rgn) {
-+	for (idx = 0; idx < type->cnt; idx++) {
-+		struct memblock_region *rgn = &type->regions[idx];
- 		phys_addr_t rbase = rgn->base;
- 		phys_addr_t rend = rbase + rgn->size;
- 
-@@ -815,7 +810,6 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
- {
- 	phys_addr_t end = base + memblock_cap_size(base, &size);
- 	int idx;
--	struct memblock_region *rgn;
- 
- 	*start_rgn = *end_rgn = 0;
- 
-@@ -827,7 +821,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
- 		if (memblock_double_array(type, base, size) < 0)
- 			return -ENOMEM;
- 
--	for_each_memblock_type(idx, type, rgn) {
-+	for (idx = 0; idx < type->cnt; idx++) {
-+		struct memblock_region *rgn = &type->regions[idx];
- 		phys_addr_t rbase = rgn->base;
- 		phys_addr_t rend = rbase + rgn->size;
- 
-@@ -2194,11 +2189,11 @@ static void __init_memblock memblock_dump(struct memblock_type *type)
- 	phys_addr_t base, end, size;
- 	enum memblock_flags flags;
- 	int idx;
--	struct memblock_region *rgn;
- 
- 	pr_info(" %s.cnt  = 0x%lx\n", type->name, type->cnt);
- 
--	for_each_memblock_type(idx, type, rgn) {
-+	for (idx = 0; idx < type->cnt; idx++) {
-+		struct memblock_region *rgn = &type->regions[idx];
- 		char nid_buf[32] = "";
- 
- 		base = rgn->base;
--- 
-2.56.0.385.gd3acb90ef8-goog
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008190828.3221=
+718-1-tarunsahu@google.com?part=3D1
 
 
