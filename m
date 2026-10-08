@@ -4,112 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE1D4CA600E
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 20:49:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2A6BCA6016
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 21:25:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44D596B008A; Thu,  8 Oct 2026 16:49:26 -0400 (EDT)
+	id 5A2026B008A; Thu,  8 Oct 2026 17:25:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FE3F6B008C; Thu,  8 Oct 2026 16:49:26 -0400 (EDT)
+	id 579236B008C; Thu,  8 Oct 2026 17:25:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 314836B0092; Thu,  8 Oct 2026 16:49:26 -0400 (EDT)
+	id 490246B0092; Thu,  8 Oct 2026 17:25:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 099126B008A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 16:49:26 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7DE2EA5327
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 20:49:25 +0000 (UTC)
-X-FDA: 85300649490.01.1F1CFAC
-Received: from gwu.lbox.cz (gwu.lbox.cz [62.245.111.132])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9B16A1C000A
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 20:49:22 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 299B86B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 17:25:19 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B4941140168
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 21:25:18 +0000 (UTC)
+X-FDA: 85300739916.11.6B4BB53
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0A01B1C0005
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 21:25:16 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linuxbox.cz header.s=default header.b="1Kq06F/s";
-	spf=pass (imf18.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz;
-	dmarc=pass (policy=none) header.from=linuxbox.cz
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZjJl/wo1";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791492563;
+	s=arc-20220608; t=1791494717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tgy7JHtkftQQHsCh5M1j6zKdCKO5xE0MW5AcTqqIuws=;
-	b=R1PYymeOOFd0WQx+iHEjiGncDcwAbXMsknWmEyFe5hj5Fb088J2QYPPuMKzspfPS/mPLty
-	P82D7tLpYZMZu3eytmcwBzNte8CiDpaL70kF+gCGawlKPbrsxbazME2KAI7CXqlWojr36K
-	OP57bunA3J5jed6EIR119GPlnFp+Wos=
+	bh=odDRkTcjbS423eFUVzRKgzpHhfm86iv3G3/SNcHY7is=;
+	b=teDPKixChn35D/ZbsxB6KjACQhuRCtFEq3UGszb/Hgb7hXukEKtJbS6P9doutt7POQpqlG
+	GGzxcTCgH/fYseYhqfsJk0IQP9tEDLU7bkT6npAfeQzTWwZJwk0ZSocu2l3+lFlEVQxLNf
+	P2E9fHdGbA2oG7DVUOpGf3tRZ+voibg=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=linuxbox.cz header.s=default header.b="1Kq06F/s";
-	spf=pass (imf18.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz;
-	dmarc=pass (policy=none) header.from=linuxbox.cz
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZjJl/wo1";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791492563;
-	b=ZOPG0LkgHsV9U7lsvya71Ex2P1yAb3jt8ZZNkfJpPq6qfuVWuKMOEIGN2VBXPR9pBo4z5Q
-	s0t+mQ1U9WXtG0/ldlGUvFnJhUn4yI9s0z+9kTFfOZg2V8BZQ3qBNB68wmLnotaBaEYkmT
-	kHno9KpATyBbeatfvN3F1mDs53hXXdM=
-Received: from linuxbox.linuxbox.cz (linuxbox.linuxbox.cz [10.76.66.10])
-	by gwu.lbox.cz (Sendmail) with ESMTPS id 698KmrLM388540
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 8 Oct 2026 22:48:53 +0200
-DKIM-Filter: OpenDKIM Filter v2.11.0 gwu.lbox.cz 698KmrLM388540
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxbox.cz;
-	s=default; t=1791492534;
-	bh=Tgy7JHtkftQQHsCh5M1j6zKdCKO5xE0MW5AcTqqIuws=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1Kq06F/sYFjFDtOZMno+svrWGCL0fiB10fmGoC6qn+v4OqtweiWK8jSX5B3A1BQ+F
-	 j6E7mLfWVOpCSMXshzm2/JigXZwMgOhJu01Mnr8hamVBjCd8oSp09Eapc0rtZhma+1
-	 1l7BE9P1x27IBAHakZt+SS4Vdq5qTYjuaO567n7o=
-Received: from pcnci.linuxbox.cz (pcnci.linuxbox.cz [10.76.3.14])
-	by linuxbox.linuxbox.cz (Sendmail) with ESMTPS id 698KmqCx013982
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 8 Oct 2026 22:48:52 +0200
-Received: from pcnci.linuxbox.cz (localhost [127.0.0.1])
-	by pcnci.linuxbox.cz (8.18.1/8.15.2) with ESMTPS id 698Kmfxl2543877
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 8 Oct 2026 22:48:48 +0200
-Date: Thu, 8 Oct 2026 22:48:41 +0200
-From: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-To: Borislav Petkov <bp@alien8.de>
-Cc: David Laight <david.laight.linux@gmail.com>,
-        Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        david@kernel.org, Mike Rapoport <rppt@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
-        luizcap@redhat.com, pbonzini@redhat.com,
-        Tal Zussman <tz2294@columbia.edu>,
-        Matt Fleming <matt@readmodwrite.com>,
-        Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-Subject: Re: hunting memory corruption bug in 6.18.x
-Message-ID: <asgBn1VadUOpWFpZ@pcnci.linuxbox.cz>
-References: <ar63St2LBfCdyhwj@pcnci.linuxbox.cz>
- <ar9yRqq6cBxHDWKA@gremlin>
- <ar/F6+OUzj8qQ8YC@pcnci.linuxbox.cz>
- <asAE3kLFDUx5v0Nw@gremlin>
- <asKdhWiJb3qXeopz@pcnci.linuxbox.cz>
- <bd8e9b01ad88cafb12da33331f32a1ce315f590b.camel@surriel.com>
- <20261005132113.43548696@pumpkin>
- <asP5xK4axiUk7jun@pcnci.linuxbox.cz>
- <aseMsMGpGPT/G548@pcnci.linuxbox.cz>
- <20261008182356.GBasffvDuTemTu1VUY@fat_crate.local>
+	t=1791494717;
+	b=nEQzH/iXhWyUU2N0/wkdqQNfdgUIb7ZEB/cJBgv9NlkttkwyyWq9j/Uwl3YVH7YzRv8RGi
+	qcUV0kGaqRInkXnylAsKCHtfRGLqkPbto6A/4py2m52M3SA6D9Uzx59CtDOCj0OZs8btI7
+	vWeYOe+JcpmofuOe+fVIFT8UilxkyYU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 089B8406EB;
+	Thu,  8 Oct 2026 21:25:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B5F1F000FF;
+	Thu,  8 Oct 2026 21:25:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791494715;
+	bh=odDRkTcjbS423eFUVzRKgzpHhfm86iv3G3/SNcHY7is=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZjJl/wo18DivxZod9Ph2FuLJmJ0Pe6BmpQB57sdezehMYyARbOEVU8OGYlasU7V/S
+	 0AT+zRfhasFu1NUWqERoTuQdlxiQP3IIeICSISEgSyXXl35VozAJVTNxB2bysN99vf
+	 JfipJu9WkWWRjdDZiddIe/cXmY43UZwTIiDZnEwIxtK2IGH0UoFZxfezn7ejJCJdq4
+	 QGd6BQqNjD2yQzAqk9ixMc4c11z/zcWVonaLCd7MlyrrU4sbCkmiHW5YBwRkvRDG8U
+	 qZmSxy/lRaMiD4+hT2CFnuTLIH1WH3eg5IzgqjHuPhhOOpSdCVlAbQNo7AT/fvx+ph
+	 VX7EkFoGAlt2g==
+Date: Thu, 8 Oct 2026 23:25:13 +0200
+From: Harry Yoo <harry@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Andrew Morton <akpm@linux-foundation.org>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Pedro Falcato <pfalcato@suse.de>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, Jason Xing <kerneljasonxing@gmail.com>, cgroups@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH net-next v6 0/8] net: skb: isolate skb data area
+ allocations into a separate bucket
+Message-ID: <asgAh4mrr_yd622U@thinkpad>
+References: <20261006092030.got.500-kees@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261008182356.GBasffvDuTemTu1VUY@fat_crate.local>
-X-Scanned-By: MIMEDefang 3.7.1 on 10.76.66.3
-X-Scanned-By: MIMEDefang v3.7.1/SpamAssassin v4.000002 on lbxovapx9 (nik)
-X-Scanned-By: MIMEDefang 2.86 on 10.76.66.10
-X-Antivirus: on lbxovapx9 by Antivirus 
-X-Milter-Copy-Status: O
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9B16A1C000A
+In-Reply-To: <20261006092030.got.500-kees@kernel.org>
+X-Stat-Signature: to15bkc5gupzihsp9qky35yzt5ozttyz
 X-Rspam-User: 
-X-Stat-Signature: g1z5fkbw5w73ugiu3guo5ucsefmq78sx
-X-HE-Tag: 1791492562-696598
-X-HE-Meta: U2FsdGVkX19XdnJxbS5uAe/qu7WwDaZgg9IfhPdAvGqh7KGLA4NT8RYHdJ69f79cKFqEXeIxRgYj1oPnynRAoDpfdqmfClmf+AQM6IuQlo8nXBDKqC5gdarxsbz3NE19tTKF5ThFZrZGUfaKYkGilrnx5s/yMPbp3BHNenfeeDulu8ffm0eS4Ce+v7nbxp5huk1/engRTPMA5YmdeKkN5PScDWYTytmiHrvqek6VTZghK2oveL5lcou7/sbWvSPgVxxPcJXQgFM01PIIQJm3sKix9gW4v+eoaCP9g6ksWvoPr475d74+VB6FS74otOQ8Xdd4BSkhxT+FCFXPXYsQ7SQ8WLJZx2yEhxvD0PHBiqySmUgdAS73rkyVDhU1rdF1Q/sTJ9pizxz9wAeqUI/PrMQlnnPyznjSW536JhMNlkWzLtIMakYp2YJv6bhFrnyjVX55gV0rBAnUv/uAxLmBMx/qcKiQahJgnY1OifFE4Bo/oT2sQg4nI0cCLze23PTF+wSQhZ35RfLhEV74b+ZVUn48nR455GySz1tCwt9zDhF744yAJ4w0HG8p7Osv5Ul7tEmhBTw1cJVcvdi7TQb0eC7HCSoGUoEmJcmF4BvmkE3HrFPP/THqLl6o6McJXsw0D4pLg1s88EJ8q/xAONJWY7zLuMw+nshu7uZS7SwYlAogoQLTdn3x4BkCIKisFTGwH6St6VX+HR69HHNwUjm1wOLRNy2ajl2XDZv/p1G2lHDyUtrtjY+kh8yCZbpDClUcLBWUeWaK3r65gl/hFHE+Lw68LIq5nnaQsauVQq9RzzVHHmWLY8mYKkpJz39iP9KsMCwfXAzB95CA6dHbpGrXyK1tGU+d9kDJ4iUwJu6evA8hWu2y8PxXjh8RVprLwigA27gkVGG+w+gO1uT8ko/8zuZhX9gqnW+svHvzcsMHkxj9JVx00TQstzB/cUAvl9TF2D2GjUisOgFDe3MZ399
- V1/m7fvv
- CfiTnasT1I8AcTYpYJfOBEfEJ/hy7/x6M0s/FPXXZ4wqx7ky/wLHf+R87TQK5Bwm7gDyP+KJb17fHk7zfvFxxhYmLe+GmLB8N9Gc3ZFW9McdOqRJRMTjUw4AMmmaQOHC4dnYOe9T+k0oTQR+hLT3eiQNgxOAsRgrr4bwZnKfekhKvrX3k0Xsr4aNx4TDL8L97jHjIDEqN4CzsY2SGBKGcd40DG/ECjAksFFx3YYvLb0+WbLsGht5dbvnzY6GNlO8jkXuGjBE05YB69zjY4UmU+tzh6cKW4yUFOqeK5szhh/KU1Qdl9PqV+hSy+WLn/D4RwC+1n82+MpaYvqGmXeij+n0PJcWRnQ04AZ1gxoJam4xaXoadFmQhbTvPcaS0qwGOBVgCzz5Adwkce4RpTzuBOBopMA==
+X-Rspamd-Queue-Id: 0A01B1C0005
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791494716-288995
+X-HE-Meta: U2FsdGVkX1+481ihNdTXBwwMS1cBwmLQhELXIckF8WwZY5RpGqmhjIOLiOB0+m115pk++cCV01UaqXARf4EQ1gXjuOvrysVDQypp95pR/uKj0W6dCU5YB0qk0gbkxhdcZHqb+WdLwyjlyc4wTAzFnGJaXA0xoEZiA1/JkunJDcJ0t0W3qiwwdM1XkgzY49UQ7BWzKyIYfypYbDcpJZMqkt5bu/eqFR7yrRoVsNa9hQDrJXqS3tkYWONAgaAU4krnrbUtkVyeJLkySCfQTgu+V7f7JAa74SWTH28tdHNwkqQ2AUrhyFizcOQVVChbaEX8X3OR94m2gGHyli4Nqgj991eDsmDgqGQoKyh4P0DD+gkYkTZZQRM8XwHYlUEih7JbT5/auzOfs5sIu0Ql+jlv/Bc8qZs6gSKPppk6D1hWlJKyaab3yPL6bHqiv/0Wic3GKWCcJ38Y6ELsC/6kVm8Qu3WugaJiztsO4fYniAD/iqwR03VJwdnn1RvM9FHKupDTEk+S4/vWZkhdNs25iX8Yz0NIKCH9SrPihmwEQWqtbicarH6fr9WH4sSQLrm4z6S6hrmTqQBbSDFq/mJMxnlXOq6EfrTjX9a0bfQSJsfNi0jUQKyxgXtFKAMmIUf9H2dD9Kwgaw8ZLz+OIUhkuCKLwSUW/9YRstj11Vk3MGKLvioMVKjBqS80vkkA+koorFLfb8n6BIMEvaaDo6IEbnhRyWmBcVREKNuucsaH8TavJfhZVMcTwbqNZrbi39kLFDUlU9/0lVHR0Xher32C8VwRyIT0gi8KLEhWjuldKqlSmmNde0Axh2wW+Q1v7cLzhpm3u1uItFxqvPMbnwlU0pDLGwf9MiS8g6mi9pUElsCSoYs/PGWSLcZlTBprGVxAXWSMHxetnKpwjDJKKgXdVKla1NVUfHirSRixlHvW5RZd4KsdsnFlit1ok8tSHySG7yXYBfiE8KCD3dUIdOfmeHK
+ kIPHumWp
+ YCBgbwrIo2DrfY77mybDReiai+i29htXC3h2kVe1PHIkAobJtVcmX+s7uynDjBrIDh05p3nSqLa3YRQb01bzNXYQf1w2YHPdX5vXvlOe9pDLXjTSy6WwbXt8MZU3qxzFQlz2L0oaDUD+nbowwF+NeNlESDXv5Y2Jt4nFSqvVoFBPPcJqENGdtWnZztDGbYWs3gLY2J/rZkLrCoi9ImLFFrKqC8IBTycnL2JWWfncB1mxbE7A56eT0x+5gJaHTUVnITEJH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,135 +101,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> 
-> What is that kernel?
-> 
-> 6.18.55lb9.01
-basically it is vanilla 6.18 + 6.18.55 + few mostly insignificant patches.
-if you're willing to take a look, I tried to upload all important stuff here:
+On Tue, Oct 06, 2026 at 02:20:26AM -0700, Kees Cook wrote:
+> Hi!
 
-https://storage.linuxbox.cz/index.php/s/6rcp8oWCGzAqPEY
+Hi Kees!
 
-sorry for not making this available sooner, it completely slipped my mind
+Was hoping to say hi to you at LPC but I missed the chance ;)
+Maybe next time. Safe travels!
 
-description of files:
+Uh, my mailbox stopped working for a few days as I forgot to renew
+subscription. (Kiryl told me it's bouncing, thanks!) Hopefully I didn't
+miss too much...
 
-linux-6.18.55-lb9.01.tar.xz - patched sources tarball
-patches.tar.gz - tarball of patches applied to source, including description txt
- (stable patch-6.18.55 is not included)
-kernel-6.18.55-config - .config for this release
-rpm/... - kernel, kernel-vmlinux etc binaries in RPM format, if this is OK for you
+> This gets the buckets able to handle memcg (GFP_KERNEL_ACCOUNT) with
+> isolation (since it's common due to AF_UNIX),
 
-vmcore-dmesg.txt - kdump-dmesg, unfortunately the box got fenced before
-being able to dump vmcore binary, I have to tweak this
+Cool!
 
-lscpu.txt - lscpu output
+> and GFP_DMA with fall back
+> (since it's rare).
 
-if you prefer src.rpm, please let me know.
+> It gave me an excuse to build out bucket kunit tests
+> too, and that (and LLM review) found a couple other issues that needed
+> fixing too, including msg_msg allocations going uncharged to their memcg
+> when CONFIG_SLAB_BUCKETS=n (fixed in 2/8).
 
-> 
-> The other machine has a 6.18.20lb9.03-something one.
-> 
-> How can I look at the vmlinux you're running and the sources?
-> 
-> rIP points to:
-> 
-> [11402.958452] Code: 48 8d 04 c2 f6 07 02 0f 85 a0 00 00 00 48 8b 10 48 89 d0 48 83 e0 fe 48 83 fa 01 77 0d e9 80 00 00 00 48 8b 00 48 85 c0 74 78 <44> 8b 58 fc 48 39 78 10 75 ee 48 83 78 08
-> All code
-> ========
->    0:   48 8d 04 c2             lea    (%rdx,%rax,8),%rax
->    4:   f6 07 02                testb  $0x2,(%rdi)
->    7:   0f 85 a0 00 00 00       jne    0xad
->    d:   48 8b 10                mov    (%rax),%rdx
->   10:   48 89 d0                mov    %rdx,%rax
->   13:   48 83 e0 fe             and    $0xfffffffffffffffe,%rax
->   17:   48 83 fa 01             cmp    $0x1,%rdx
->   1b:   77 0d                   ja     0x2a
->   1d:   e9 80 00 00 00          jmp    0xa2
->   22:   48 8b 00                mov    (%rax),%rax
->   25:   48 85 c0                test   %rax,%rax
->   28:   74 78                   je     0xa2
->   2a:*  44 8b 58 fc             mov    -0x4(%rax),%r11d         <-- trapping instruction
->   2e:   48 39 78 10             cmp    %rdi,0x10(%rax)
->   32:   75 ee                   jne    0x22
->   34:   48                      rex.W
->   35:   83                      .byte 0x83
->   36:   78 08                   js     0x40
-> 
-> I need to be able to pinpoint it back to the source.
-> 
-> I asked the last time:
-> 
-> "Just to rule out any other issues which got fixed in the meantime, can you try
-> mainline Linux and see if you can reproduce your observation with it?
-despite every effort, I wasn't able to reproduce this in lab and I couldn't easily
-just upgrade customer production boxes to latest mainline...
+Oh.
 
-however since we got the crash today on our own cluster node, I guess I can upgrade
-at least some nodes of it to 7.2.x (possibly even 7.3-rc6 if necessary). but telling
-whether it is ok after doing that is quite hard - we have tens of boxes running various
-6.18 releases for months without issue. so I'm afraid the only info I'll be able
-to get from this will be the problem is not fixed yet in case I get crash with latest kernel
+> Harry, on your v4 question[1] about bucket users giving their own
+> alignment: I tried that in v5, but a set's allocations don't always
+> come from its own caches. With CONFIG_SLAB_BUCKETS=n, after a failed
+> kmem_buckets_create(), and for the DMA and reclaimable fallbacks, they
+> come from the general kmalloc caches, which can only give kmalloc()'s
+> alignment.
+>
+> So v6 goes back to mirroring the kmalloc cache's alignment,
 
+I might be missing something, but why is that a problem?
 
-> 
-> If so, you could share your crash core along with debug kernels yadda yadda so
-> that I can poke at it.
-> 
-> And before you do, make sure you have the latest BIOS and microcode installed on
-> that machine.
-OK
+For kmem_buckets users, the reason* to specify alignment is because
+they might need less strict alignment than kmalloc.
 
-> 
-> Also, where can I find full dmesg and /proc/cpuinfo from those machines which
-> trigger this?"
-I'll collect this from those older crashes as well and upload.
+(*Perhaps it's nice to document that in the comment)
 
-> 
-> But still nothing.
-> 
-> Imagine this issue has been fixed upstream but you don't have the fix in your
-> kernels and we're basically chasing the same thing again...
-I understand. That's why my initial question was whether this may be some known
-problem for which the fixes just didn't get backported to LTS kernels yet.
+However, because kmem_buckets can fall back to kmalloc on e.g. kernels
+w/o CONFIG_SLAB_BUCKETS, it should be fine to fall back. No?
 
+Creating kmem_buckets with more strict alignment than
+kmalloc doesn't make sense. 
 
-> 
-> Sorry, but I have lost my debugging crystal ball which can help me guess what
-> the machine does. :\
-> 
-> > so we now know this didn't fixed it. however I didn't have tlbi=ipi set, so I'll
-> > now try this.
-> 
-> That won't help either but if you wanna try it.
-> 
-> > any ideas on this new info?
-> 
-> Yes, see above.
-> 
-> Bottomline is: without sufficient debugging data and up-to-date hardware,
-> there's not a lot I can do.
-if the uploaded sources etc are of any help to you, I'll be grateful if you look
-at them as well.. what else comes to my mind, if the full vmcore from one of previous
-crashes including sources, debuginfo etc would be interesting for anyone, I can
-either make it available for download as well (which I'll do anyways), or I can
-prepare debugging VM where it all will be prepared including crash tool / gdb / whatever
-can be of any use and allow access to it (supposing I'll get public part of SSH key),
-just let me know if this makes sense..
+> and drops the ctor and flags arguments for the same reason.
 
-thanks
+Uh, for ctor and flags, yes. We can't have them in kmem_buckets.
 
-BR
+> And the whole
+> exploration made me realize I had a completely wrong understanding of
+> how memcg worked. :P
+> 
+> The bulk of this is mm/slab, but the final patch is netdev, which Paolo
+> acked in v4, so I'm hoping this whole series can go via slab?
 
-nik
-> 
-> Thx.
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
-> 
+Going thorough slab/for-next sounds reasonable to me once it gets
+some reviews.
 
+Vlastimil?
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
