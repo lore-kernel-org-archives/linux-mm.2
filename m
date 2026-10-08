@@ -4,119 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D4D0CA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 12:01:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67C6ACA600B
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 12:08:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26CBA6B008C; Thu,  8 Oct 2026 08:01:09 -0400 (EDT)
+	id 75E1B6B008A; Thu,  8 Oct 2026 08:08:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2436A6B0096; Thu,  8 Oct 2026 08:01:09 -0400 (EDT)
+	id 70D086B008C; Thu,  8 Oct 2026 08:08:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 132996B0098; Thu,  8 Oct 2026 08:01:09 -0400 (EDT)
+	id 5FBDF6B0092; Thu,  8 Oct 2026 08:08:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DD8906B008C
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 08:01:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 722D0120210
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 12:01:08 +0000 (UTC)
-X-FDA: 85299318216.12.D4A253B
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 99A4618000E
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 12:01:06 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZrEUx41W;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D6E66B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 08:08:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF97480165
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 12:08:27 +0000 (UTC)
+X-FDA: 85299336654.01.F8CCF0E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 41F9D1C0002
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 12:08:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X2YG53XC;
+	spf=pass (imf21.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791460866;
+	s=arc-20220608; t=1791461305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=sFAvEonzWsVz+E/ulC/KEIrSh4b/OG6L9cxESlyjugs=;
-	b=aIZjdE/KzPhQR3mMESvL3SMOwlo0ordUzfm42+h69wlQFQnmBEwLGCjDQjrrIq3yvVT2VQ
-	sRrR8HxIqSqxXQNUgfm1Vp/kvTeaebsWQ5u77PuIcnTjZ5KVSsDjUvpfqVB9LHMqTgydBD
-	7bp8ePzIX7ZoaA859KspRmS6tZVhZxI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZrEUx41W;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uI+XtiazTVe8pG8BiMyn92RVBJ4I25dozIom7amZQ6c=;
+	b=I5sAsUVDrS5rS8zOYqvu5upIzB01WIrwj5+OjzvdvzARE1HCUZeihFo4KAGZNt/RZyNyY7
+	qziaaVlcyEc3hql9nZ8Z7L1fn1G0iMruE7Q/M22eXOe4rLMJsg/2vT+sJGBdPreX54sqC9
+	obHM0MMNjebqDtMsAzG/XbHuJBp728Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791460866;
-	b=1D3ThXZORWkJcM+m3PGB8i7LhcxgzxqUd2yt+RE8tw6a/yPbFnpFld1HuUeFZSPl2O2CaD
-	WuEJde4JnsmYIrxCO5YRAEXuNSvxg7sGcM6TRzXuOiZRcqyHEDDVSxS9tGW2QOTqRwmpxU
-	1miaP30l5Wy3p2ZUjeu8O/2MVNzyCoc=
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3a49623b865so3202102a91.0
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 05:01:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791460865; x=1792065665; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sFAvEonzWsVz+E/ulC/KEIrSh4b/OG6L9cxESlyjugs=;
-        b=ZrEUx41WqysdutcaTWrqZCeG6/e58JmbxqUu3z0wIjomng12335noY6QCOm2jYTaue
-         tOFbziCXf/Zqnesv7J0uJrBJqXJDIL5NhT9EzwI0QgnnVuOuPZIw/K0tJ+oBKeOJEPyF
-         qbT0lHz1Z6R0KYwfmTB+2wRFc5jNRmpzFXt/Zza0lEVoHUbB7H4j2lED+nE759GljUSp
-         nlkQw++RzGzHMld4M3yThoUc8bFmpKYQOsXS1YmlD5Yo+gQwr0YOGkgT1TcMD0gW8A81
-         u8WHNFfl9wpzCzJxXIQDDt4VLS7FnQhwM26NaVSj7cjns9lqucRsjF5IK7JflhJ6bxRP
-         MbKg==
+	t=1791461305;
+	b=E+OQ3JlX0XqKkgGLmcLSSkOJfJ9qTLd5j6HLCG9Ue1/rzeYW7r/fE18wdEMdXYl+NcfnqM
+	G4MKnoCyDnnz3N0XJ+YXWnXUItxJPJmojEnxGDGExIjQgnCjzAlchI5xXfiQwfKD+Hla4w
+	xhoX9thQGKnMQaOGCZmZT/Mg7EKH9Bc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X2YG53XC;
+	spf=pass (imf21.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791461304;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uI+XtiazTVe8pG8BiMyn92RVBJ4I25dozIom7amZQ6c=;
+	b=X2YG53XCYyeEs4yQMkEvweXSJbkY089Au97HI+scAtcN9JZCKwPUy65015jvCiBfTGUYnS
+	prfv4Ln2SJ49Di4QIrROcO3tlSi1F2y/A6smBrwHya6NQ/qEtTK+6eqQh+93ova+qRKZcS
+	+YDEY0UBGRV3Kzj7Y66KLnqT34XsFKY=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-416-m4LPJs62M5-ze3J-UiNnqg-1; Thu, 08 Oct 2026 08:08:21 -0400
+X-MC-Unique: m4LPJs62M5-ze3J-UiNnqg-1
+X-Mimecast-MFC-AGG-ID: m4LPJs62M5-ze3J-UiNnqg_1791461301
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-532f343a55bso85325861cf.3
+        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 05:08:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791460865; x=1792065665;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1791461301; x=1792066101;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=sFAvEonzWsVz+E/ulC/KEIrSh4b/OG6L9cxESlyjugs=;
-        b=KYcIhqDNEWpU6sNX+/AHMPzclTfwUOtUohPTLVvDop6RB04GOkt7LL5+knEyhKxkE0
-         ZboxBkVOgWLOdJwwRntbuulV0TKqvqAfKOIZdL90KgdmyE0Ac+EnSnMLGzTQZhZhLV+s
-         Gpyl6V48+nkcWj8LGibFBb0NVpxBgU3viIM7RcdMqrFVQzMhaGktyZi8zPEZ/pkG347U
-         JoHGkkDlB3ZhxNQqu2d/UwM+rXgybibfwWJa1RtJ/gGXhk3T+Ly5TzYifllgHZONex2e
-         k1n5BgP/mnDSpWKq4aW0W/vSj5Gsi/jJL/GsnJ8NcMqlTbs6wttHQYaNumFdGeTR4yjz
-         YyPw==
-X-Forwarded-Encrypted: i=1; AKwUvBz7tbUDlNfTmLS+grfeTe6Hkms53SQ7FsRfHtZdBH99gzoSkdOdjD9yri6kbtlFISlkoyK52xcb0Q==@kvack.org
-X-Gm-Message-State: AFq9FYLcgfmZeZLYbcvUqwPXxrxlC/i0Cuu4SzU3TWNsshUTVa8FDayw
-	awLsHM9Eal38KM2iOWrW8vxOPT1nFDnvtslGg8YH5mpQzSiddV7gXzKVyCXw6T2zUUEVGQ==
-X-Gm-Gg: AYBFou2K7+HTvsrTf0S9AovusQNUsPoNDxAOYPFEGIO6Mb/8Wcp70Yy+zDdhY2oSjlw
-	P+yvZDCjxtQHauVuINd5hlepeKaO8y+nM4MWRIG2KbzwdR4I/WYHNcOVt9ohEe0PlP5fa8kgBov
-	79omckFFcDug11qrGQgT6+C7+cdVyg7vLfrG4qAoADJZXKdyAY7ZGFX45uZjiQmyJtqtCfelrFl
-	IW2wLoCGSwtJZW3IvA6MwwMPeLD3ZaJp76EDiHYr9OyYTgIWowDr7JVg2szBl0QHN5pOMPIiZgx
-	MbMb4pqnbyWELqQ+2Bs1gXjIT6B5ZPFzvJ1G1YTtPeb3N5+vlstWpVsbluDkcekKgBakCV8KVeV
-	k7NPnJ3Uf4OYsBbf2ScKtjoxTfJHrTlWI1aNn9DYrG4FEdnuKwsY+woKvpA+jSc149vdpBZVNd9
-	XBvTU8eFePpY3itGDmOY38lAmX2ueB5SnFkIbskISMOSpgowi3b2erB7U3VQFuP8prp8/V24J0m
-	Bz7454vgLZc/WxTcA==
-X-Received: by 2002:a17:90b:28d0:b0:3a8:768d:70e4 with SMTP id 98e67ed59e1d1-3a8a1b59a17mr4486706a91.17.1791460865210;
-        Thu, 08 Oct 2026 05:01:05 -0700 (PDT)
-Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a9ff817537sm3901580a91.8.2026.10.08.05.01.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 05:01:04 -0700 (PDT)
-From: Bo Zhang <zhangbo0325@gmail.com>
-To: akpm@linux-foundation.org,
-	hannes@cmpxchg.org
-Cc: kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	david@kernel.org,
-	mhocko@kernel.org,
-	ljs@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	zhangbo56@xiaomi.com
-Subject: [RFC PATCH] mm: vmscan: avoid over-reclaim in classic LRU direct reclaim path
-Date: Thu,  8 Oct 2026 20:00:56 +0800
-Message-Id: <20261008120056.575272-1-zhangbo0325@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        bh=uI+XtiazTVe8pG8BiMyn92RVBJ4I25dozIom7amZQ6c=;
+        b=BPPCQ0fplPqyiSosba3DYOMyXmmzFa7ykVXgDthtHPqm/TDC9iFnLqUai+EE/LfclY
+         LAKOlU4Y/dpXGZDhXYN/Q3Jm8Gg0JxtcIckZjSBSMwu7YCp54ViY3hDfwB/XfktC1YaU
+         IAd0YBD8lDaxpqNeEQBi8lrYKj4AASvs+mNqW93sL6wozVBgd5SM7/dXBro4TgIWEO20
+         te88lVotTJp16b11dcUDJkPfcCGmGNJPTZ4GV/z0KBzHoX22CvcgPoWc4ihIfS4m7PIe
+         80GOvjkK5JXXtCtn39dqG0PfddBBpiz3ORv+PE+GwsM1lhgESUCq1KHvV2th23RNG+QJ
+         zZpg==
+X-Forwarded-Encrypted: i=1; AKwUvBykaZZDwqBMVC5/ywxPxnkDRfSXBhJtTKX/pEMwutdSM1rZbQOEr24nDzEbA5jXRwXj/KxFO8ip9g==@kvack.org
+X-Gm-Message-State: AFuF++m3M8ggckg3EoMdUCGkTni46bFmzaSv6mqm9cEoa/ihDI+irXF1
+	S1wW/FsE0TFcE9makLnDPiyHRqH+t18UjedkbX+Nk7P5Udp+JDGXb33PBq8DgHzE9t9FG+XX5oq
+	/LvTkujeimBbuomdMvAc7BWfkYIxITg35M36J8xt/7gK6vJUofgEE
+X-Gm-Gg: AYBFou3eBIFQYzU7Y+u1UbnU70G3Gzsl0VAMmT968rg9Su0y55JWyZqtTwT/ZLcYmnu
+	7M4AfoZfdHmkOTcSlTow7QBuDbj1iN+AiMAsouI1o2ihRMGrMu46gkBcX2favO5Gp+aUa1imwpR
+	nt1sxohzXEynHnlRFyRN6waLTqSEOENNzM7h+xQIwlrziPdufuvF0t9oiU24slgxgHqpFg2qduz
+	+O+rdPyYYctXXx1FJUEcbaLGXggTi5fnkdKV1aRTcsYSgC96aCBmR1Ah8YtJwLUG4yCTqTwWAL4
+	VMQapt+0Xi5boMElqumG+V/BD2ojiUf7f/yQm946kp6tHaq4n5APhxZi+YZ5WmYrLjEsLr7M8i/
+	7dVM=
+X-Received: by 2002:a05:622a:508:b0:530:e1b1:eaeb with SMTP id d75a77b69052e-5357552d4bbmr98471471cf.21.1791461300675;
+        Thu, 08 Oct 2026 05:08:20 -0700 (PDT)
+X-Received: by 2002:a05:622a:508:b0:530:e1b1:eaeb with SMTP id d75a77b69052e-5357552d4bbmr98470711cf.21.1791461299930;
+        Thu, 08 Oct 2026 05:08:19 -0700 (PDT)
+Received: from [192.168.2.110] ([142.172.30.162])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91996d20ae5sm44432586d6.27.2026.10.08.05.08.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Oct 2026 05:08:19 -0700 (PDT)
+Message-ID: <4f7273ea-aec3-4a3e-8c83-927adfe6e17f@redhat.com>
+Date: Thu, 8 Oct 2026 08:08:18 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ir77zqebudn9sftx81jca6rzn59rcmhy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 14/14] mm: thp: always enable mTHP support
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
+ ziy@nvidia.com, lance.yang@linux.dev
+Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
+ hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, hughd@google.com,
+ dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
+ dev.jain@arm.com, usama.arif@linux.dev
+References: <cover.1789695931.git.luizcap@redhat.com>
+ <752f528f0fed5cdc9de12b54260b0495d4e5a6cb.1789695931.git.luizcap@redhat.com>
+ <4db5fdee-4bca-43bf-8ded-2fd8808ac289@linux.alibaba.com>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <4db5fdee-4bca-43bf-8ded-2fd8808ac289@linux.alibaba.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: PMfjzknvKZLJ4FYhxpGePzpjhDiIAQMLduGn4CYfDnM_1791461301
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 41F9D1C0002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 99A4618000E
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791460866-948964
-X-HE-Meta: U2FsdGVkX1/Nj/sNFC1V0WHHpOy9RNVOluPGg37p9GG/ZksbXKJVzwFc0xCUn9bppyeculgtXHq76D1kGDiZhvYADOnXdmP7idUFhix6qbnPBGshHaMbU79+EHGKrhr384YIdI2hkWhTMK63aEoBDLgH5oAxNljJOh66aCB82l3wyUl5yApz1EMxigKihDwdeaFJykJH7Nvt/Ho9W1koW5vzC2bp3S774YGYEUCjwcUtqjPFoX3a5y2XuJZf0ST19p21SinPc/e0aDL4a8gUs3kWJpM5BsThb0OFCocxM6d+IRZqIZ7oGvTtr8FDmtwKo1smzjvjyXg0MhoZ/JVBi1q4NhkSuAnMiSQ+n14vny5uhuTg1Pf1kceGKy7zdgLODJBY7FlNa7SvLECZWanr5e817CdKY8i7lxGCYqt+BxpM308c3cBusEC5pIWIZUslXfqYSlYePPLTXUBTkqS+yGApugNC/4rdTZFLJqFoOKO58wDct/kxwBfy/c/Swj/OimjzcrL6Cm3xAN/czFNfjUb5S8IeULxFpSSavVtz9jfZWTFA5x2Jojj4xk5oq0g2UDcJcVYzqZVaRtcdLhZRjpCf/cBwoUT+BwHx2Xh9EkXBZUJfpun63X04xnnyxey2hjvKcM4m7WfBxSGLpN7GnX7UWs1S3tdxh2Ogrxk5VzCJ1ugmCxrwR/dImF80oahYYan5TQp5Q1UswzvcSDWt/p5Y2uwwiNDe169vuTSOVjGq6TmW9KqXXESDApRYt8m8I28aN2hvDARr996itplXDPfFF49/g3pQDea1TjGYU9g4qB0zZA7/F1Y4TE9Zb/EGG4aUbXwjYjwIYPWLjcwKnpZBiXl6L2zelHW8lKNawwVCQ8hh593QehPf+qdrAe4jj1GkVRx0JJx5IGsYeJKwFbITGRi4uCJyOnXHWY+KDnfkDF/TZNYpJI7a+W8B2oUjwfalGrw4EdpdNGXu3ES
- /gDEDEG+
- i27YtW0c9IYr8nc/WmZNFh+MCPImpy09VHoW5GGEEB6kopXHre50U+Co5ylIqtvh5mqFMbWWZxg7qYOZbfbNaOwHV9dEWKgewux9XXJPR2S/XDPZJ51CsK71v9Hxp3cu1QvUbYAI/sjt4ZjvutRoI5e/WU8qBnWKY97dRQNhTWaO6fK7QvB5lzF5LJKMN1mf46hdW87Qr7aYJOM+uaoGiBe+bMeHLqCv15XVMkrOcqWJLfTvMk+XUrqsoTcintleXSNdDAqP7tJLKZ8f7GaRnPngap+u3HfLvH8n6R9l4y3aRcSDkWYo6FoAaHNxuf+1rZn7d7MgZOE2wQt3lCJJp8+zfy2d0hdBVl/MybnI05L61m4wAyvxKCdK6bVLbY/fHpmEjaaNa4Bl/aq87THzLlEbj9iQBYaBLj4Hp
+X-Rspamd-Server: rspam05
+X-Stat-Signature: s6zkepiexuziopsmno9zyxnxorsrp8n9
+X-HE-Tag: 1791461305-680423
+X-HE-Meta: U2FsdGVkX19a18Rkx/l1bWA2Wta7I/7vuiWRrPY6nyS5DhCYH7ywJuYlJh13KAsjVmnh2EhPd/CME7EVvOEVsXWTFeR17LNXUzPGVIFEQLhhdAHpXyauIMqjBR1YaLDKBBqzlJkwqRdTfZCV60GscEBSMzvx6SwkCQyuHdiBWOPXV0BJOiXwTR6dA0m2Iz7TFl3Vg0t4JjSgzt5xXdlR8Zrg/PyLUh+RkI8QjBzJzSD6pn8C1iSHnYYZ8r6LsdCf6wWbU1z0KTHpbkc/MI49VGL3TjESk9EH5FfvnzGmMEi0SBXO6f3gsY6DSLsCCf1gz0jOSNnHdAXobDzTadu64FAcA7GCCrf3aU3QK3BlIJhPwGZ0JGa4xF9aOzUrSK4UpxqqqJEMpp7TSzwbceT1YJDtz6UMLEELKhAoYYEdWLsS0dml6IR+Ywtz6rZ6UDEoECCPbiIbWcbL+bWOzZ3g8Zqvfjqx7GtjWkK1WIFTQOH9tfanCt5ygdTHLoOKzejk3RixzELbAlA694SCowiOAhNcQ6jBvxwJjW5DdSrC0NmJYU3d87V5XhSmSoMLk70R4eQSd1IIX2YV/tQd6hLc33fXxZhmyzJoRA6/U+Jl8OH8sReRxh7PleKzyYPoFC6+O3F4hD/tlxfSJaqQJR5ruLwvb3GCgS+XWGDOmmPHdCXIBgOxurGLaGPjzJqetq3vhapYpe3fAyVwRWQZnQkCpx2UGSdjWybSjEnaBLlXQndo5rfMYNO8dszzR7FzoPbehBJI4wxBp8qRQlJQOm0dT5ke+p44fR1ak0b0d9rk99JX1qPPO9tiZ3TYxRaIiLQUvSgOulQ448/uZSBtD8YUir7ICP3u6zfJT9bHKeKwlFhlG8MAwuczHZLqBUE9cWOMSeQUMHSLeCp/EiPiZLQLIw6M8sh4qhu2u4ApbSvEvS25xrvqHqTx7YPLKJwvf1D3RV35hfEgRNx2teGhBNG
+ QVd4aZsG
+ YucvO5Rioy0x7ZrcXCkDafGAFiNdOhoSy8SntkbyorlxFVGr58KGTrsCpcuNYVPOITlvcUN4ndcIcoyTjEmfaxXdIyCaBjSenvwVQy8YYw9cY5tVkI5ysLUksoGKcl6e8B9MiLZKWYYbv2fzEo1hdXARMhHergOCG50SrnlGneNeEN5pyHwxUbk5fRh3BsCQ3+jqtGf3oqkmoF7xWuLt8fcxTjw6nKG9DfThGgKVUb9X0INiriZW8afOQSkKEWvCb+fEBlzMaSpIsXbJ/ICnekkUUZqlU375LsN05oVNRI7dEm3HcWebvLnSVquaQvBQ5tjfKjrJhzEDEfubE+NEXeRA2UXRkRaNpqmMa6jcKOxWmnNU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,116 +139,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Bo Zhang <zhangbo56@xiaomi.com>
 
-On production Android devices, direct reclaim is a frequent source of
-unpredictable, large latency spikes. A direct reclaim request typically
-asks for only nr_to_reclaim = SWAP_CLUSTER_MAX (32) pages, and in the
-common case completes in well under a millisecond. But the classic LRU
-path has no reliable "goal met" check, so under memory pressure a single
-reclaim can scan tens of thousands of pages and free hundreds to
-thousands - far beyond the 32 requested - before returning.
 
-Pooling the 20 slowest direct-reclaim events, before this patch the
-worst case scanned 130,079 pages and reclaimed 1,635, and the average
-scanned 37,955 pages and reclaimed 881.
+On 10/7/26 10:07 PM, Baolin Wang wrote:
+> 
+> 
+> On 9/18/26 9:45 AM, Luiz Capitulino wrote:
+>> If PMD-sized pages are not supported on an architecture (ie. the
+>> arch implements arch_has_pmd_leaves() and it returns false) then the
+>> current code disables all THP, including mTHP.
+>>
+>> This commit fixes this by allowing mTHP to be always enabled for all
+>> archs. When PMD-sized pages are not supported, its sysfs entry won't be
+>> created and their mapping will be disallowed at page-fault time.
+>>
+>> Similarly, this commit implements the following changes for shmem in
+>> shmem_allowable_huge_orders():
+>>
+>>   - Drop the pgtable_has_pmd_leaves() check so that mTHP sizes are
+>>     considered
+>>   - Filter out PMD and PUD orders from allowable orders when
+>>     PMD-sized pages are not supported by the CPU
+>>
+>> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+>> ---
+>>   mm/huge_memory.c | 25 ++++++++++++++++++++-----
+>>   mm/shmem.c       | 14 +++++++++-----
+>>   2 files changed, 29 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index a06025b87e7c..a2d6de3ea988 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -189,6 +189,15 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>>       else
+>>           supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
+>> +    if (!pgtable_has_pmd_leaves()) {
+>> +        /*
+>> +         * If the CPU does not support PMD leaves, assume for
+>> +         * now that it does not support PUD leaves and disable
+>> +         * both folio orders.
+>> +         */
+>> +        supported_orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
+>> +    }
+>> +
+>>       orders &= supported_orders;
+>>       if (!orders)
+>>           return 0;
+>> @@ -196,7 +205,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>>       if (!vma->vm_mm)        /* vdso */
+>>           return 0;
+>> -    if (!pgtable_has_pmd_leaves() || vma_thp_disabled(vma, vm_flags, forced_collapse))
+>> +    if (vma_thp_disabled(vma, vm_flags, forced_collapse))
+>>           return 0;
+>>       /* khugepaged doesn't collapse DAX vma, but page fault is fine. */
+>> @@ -979,7 +988,7 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
+>>        * disable all other sizes. powerpc's PMD_ORDER isn't a compile-time
+>>        * constant so we have to do this here.
+>>        */
+>> -    if (!anon_orders_configured)
+>> +    if (!anon_orders_configured && pgtable_has_pmd_leaves())
+>>           huge_anon_orders_inherit = BIT(PMD_ORDER);
+>>       *hugepage_kobj = kobject_create_and_add("transparent_hugepage", mm_kobj);
+>> @@ -1001,6 +1010,15 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
+>>       }
+>>       orders = THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DEFAULT;
+>> +    if (!pgtable_has_pmd_leaves()) {
+>> +        /*
+>> +         * If the CPU does not support PMD leaves, assume for
+>> +         * now that it does not support PUD leaves and disable
+>> +         * both folio orders.
+>> +         */
+>> +        orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
+>> +    }
+>> +
+>>       order = highest_order(orders);
+>>       while (orders) {
+>>           thpsize = thpsize_create(order, *hugepage_kobj);
+>> @@ -1091,9 +1109,6 @@ static int __init hugepage_init(void)
+>>       int err;
+>>       struct kobject *hugepage_kobj;
+>> -    if (!pgtable_has_pmd_leaves())
+>> -        return -EINVAL;
+>> -
+>>       /*
+>>        * hugepages can't be allocated by the buddy allocator
+>>        */
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index bc2de3a7c1ea..8c0f7e3efeeb 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -2046,11 +2046,14 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>>       unsigned long mask = READ_ONCE(huge_shmem_orders_always);
+>>       unsigned long within_size_orders = READ_ONCE(huge_shmem_orders_within_size);
+>>       vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
+>> -    unsigned int global_orders;
+>> +    unsigned int global_orders, disabled_orders = 0;
+>> -    if (!pgtable_has_pmd_leaves() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
+>> +    if (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force))
+>>           return 0;
+>> +    if (!pgtable_has_pmd_leaves())
+>> +        disabled_orders = BIT(PMD_ORDER);
+>> +
+>>       global_orders = shmem_huge_global_enabled(inode, index, write_end,
+>>                             shmem_huge_force, vma, vm_flags);
+>>       /*
+>> @@ -2058,7 +2061,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>>        * sysfs configs.
+>>        */
+>>       if (!vma || !vma_is_anon_shmem(vma) || shmem_huge_force)
+>> -        return global_orders;
+>> +        return global_orders & ~disabled_orders;
+> 
+> If you move the 'disabled_orders' filtering logic into shmem_huge_global_enabled(), as I mentioned in patch 8, then this change can be removed.
+> 
+>>       /*
+>>        * Following the 'deny' semantics of the top level, force the huge
+>> @@ -2072,7 +2075,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>>        * means non-PMD sized THP can not override 'huge' mount option now.
+>>        */
+>>       if (shmem_huge == SHMEM_HUGE_FORCE)
+>> -        return READ_ONCE(huge_shmem_orders_inherit);
+>> +        return READ_ONCE(huge_shmem_orders_inherit) & ~disabled_orders;
+> 
+> Since you've already disabled PMD-sized and PUD-sized orders for the 'shmem_enabled' interface in hugepage_init_sysfs(), this change can also be dropped.
+> 
+>>       /* Allow mTHP that will be fully within i_size. */
+>>       mask |= shmem_get_orders_within_size(inode, within_size_orders, index, 0);
+>> @@ -2083,6 +2086,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>>       if (global_orders > 0)
+>>           mask |= READ_ONCE(huge_shmem_orders_inherit);
+>> +    mask &= ~disabled_orders;
+> 
+> Ditto.
 
-The root cause is over-reclaim: the classic LRU path keeps scanning well
-past its target in two ways:
+Yes, I'll look into implementing your suggestions for the next version.
 
-1. shrink_lruvec() does not stop as soon as nr_to_reclaim is met; it
-   keeps scanning the remaining LRU batches, over-reclaiming past the
-   target.
-
-2. shrink_node_memcgs() only breaks early on a partial walk. When the
-   initial partial walk misses nr_to_reclaim, do_try_to_free_pages()
-   retries with a full walk, which has no "goal met" check and shrinks
-   every memcg in the tree even after the target is satisfied.
-
-Add an early exit to shrink_lruvec() and shrink_node_memcgs(), and the
-matching check to should_continue_reclaim(), all keyed on
-
-    sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order))
-
-The compact_gap() term keeps correctness for high-order reclaim, where
-nr_to_reclaim alone may be too small to free a block of the requested
-order; MGLRU's should_abort_scan() uses the same threshold. Using it in
-all three places keeps the retry decision consistent with where reclaim
-actually stops.
-
-After this patch, over the same 20 slowest events the worst case scans
-45,593 pages and reclaims 57, and the average scans 6,399 pages and
-reclaims 38 - reclaim now stays close to the requested target instead
-of running far past it. Removing this over-reclaim greatly reduces the
-direct-reclaim tail latency, which significantly cuts the jank caused by
-direct reclaim on interactive workloads.
-
-Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
----
- mm/vmscan.c | 35 +++++++++++++++++++++++++++++++++--
- 1 file changed, 33 insertions(+), 2 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 91295070ca33..b1efbd2a9bb6 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -6236,6 +6236,18 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 
- 		cond_resched_tasks_rcu_qs();
- 
-+		/*
-+		 * For high-order allocations, nr_to_reclaim may be smaller
-+		 * than what is needed to make a block of the requested order
-+		 * available for compaction. When memory is plentiful, keep
-+		 * reclaiming until at least compact_gap() pages have been
-+		 * freed so the target order can actually be satisfied.
-+		 */
-+		if (!cgroup_reclaim(sc) &&
-+		    sc->nr_reclaimed + nr_reclaimed >=
-+		    max(nr_to_reclaim, compact_gap(sc->order)))
-+			break;
-+
- 		if (nr_reclaimed < nr_to_reclaim || proportional_reclaim)
- 			continue;
- 
-@@ -6345,6 +6357,16 @@ static inline bool should_continue_reclaim(struct pglist_data *pgdat,
- 	if (!nr_reclaimed)
- 		return false;
- 
-+	/*
-+	 * Stop once the overall reclaim goal is met, using the same
-+	 * max(nr_to_reclaim, compact_gap()) threshold as the early exits
-+	 * in shrink_lruvec() and shrink_node_memcgs(), so the retry
-+	 * decision here stays consistent with where reclaim actually
-+	 * stops.
-+	 */
-+	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
-+		return false;
-+
- 	/* If compaction would go ahead or the allocation would succeed, stop */
- 	for_each_managed_zone_pgdat(zone, pgdat, z, sc->reclaim_idx) {
- 		unsigned long watermark = min_wmark_pages(zone);
-@@ -6442,8 +6464,17 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
- 				   sc->nr_scanned - scanned,
- 				   sc->nr_reclaimed - reclaimed);
- 
--		/* If partial walks are allowed, bail once goal is reached */
--		if (partial && sc->nr_reclaimed >= sc->nr_to_reclaim) {
-+		/*
-+		 * Break loop once the overall reclaim goal is met. For
-+		 * high-order allocations nr_to_reclaim may be too small to
-+		 * free a block of the requested order, so when memory is
-+		 * plentiful keep going until at least compact_gap() pages
-+		 * have been reclaimed. This applies to both partial and full
-+		 * walks: a full walk is only a means to reach the goal, not a
-+		 * requirement to visit every memcg.
-+		 */
-+		if (sc->nr_reclaimed >= max(sc->nr_to_reclaim,
-+					    compact_gap(sc->order))) {
- 			mem_cgroup_iter_break(target_memcg, memcg);
- 			break;
- 		}
--- 
-2.34.1
+> 
+>>       return THP_ORDERS_ALL_FILE_DEFAULT & mask;
+>>   }
+> 
 
 
