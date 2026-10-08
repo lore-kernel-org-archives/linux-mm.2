@@ -4,144 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C84BCA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 15:20:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45972CA6007
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 15:21:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27F8A6B008C; Thu,  8 Oct 2026 11:20:26 -0400 (EDT)
+	id 58EF06B0093; Thu,  8 Oct 2026 11:21:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 230476B0092; Thu,  8 Oct 2026 11:20:26 -0400 (EDT)
+	id 53F4C6B0095; Thu,  8 Oct 2026 11:21:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D0D46B0093; Thu,  8 Oct 2026 11:20:26 -0400 (EDT)
+	id 408736B0096; Thu,  8 Oct 2026 11:21:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DBA706B008C
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:20:25 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5C0D41A02C6
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:20:25 +0000 (UTC)
-X-FDA: 85299820410.27.601F5B9
-Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0129240007
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:20:22 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=s-joshi.in header.s=fm1 header.b="x lvcfMK";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="kGQc/1bM";
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.143 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 108316B0093
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:21:41 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 89D60802EA
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:21:41 +0000 (UTC)
+X-FDA: 85299823602.21.1F6ACB5
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E0E1540008
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 15:21:38 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WNgjz59h;
+	spf=pass (imf11.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791472823;
+	s=arc-20220608; t=1791472899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6rh0PqVWjs0+3QPQMIsutYwuCznqT4PXGPb0xZDsJpE=;
-	b=mFBFoeeuH+5RouckRRQDXwPZP9XKSIrw6LKWCUYYrNNZYhueP7bB53TXq9o2OCXo+uElTy
-	2YNyWiHSjwE+6a9wR/wjOG7sUKkfRreNCHhps98KmUNWdBA37H0L+u8tI+LDACAL1Rofc7
-	wxUnVDyBALdECgsXdmNfcKMLrsN2nDY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=s-joshi.in header.s=fm1 header.b="x lvcfMK";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="kGQc/1bM";
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.143 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in
+	bh=wmjLf9j2hHqinrUmyzGbBn+BDgUpf5J0siLjt0z0GbU=;
+	b=A8c2Y86/M/SAN0o+cHX6IDy8SQjkuXiBp0WWZ8fFSDxQHKYMf06K4ugfdhCgdjLbG6OZjW
+	qOLhzvA1DORrvOwf9/u30a1BSBiGDjSiU9GWMetO44KTxu75FIGv6IKpol7RzHpC/d1oZH
+	+mZs3yyr0Nbk0onx7ZjbWNjxLpB+KRc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791472823;
-	b=NhyC6C9vLC6dPlisTN4GFYHKNna3KOB61gedEWCu48ZFrFC9yeOD/bDC0LWpBoIoB/Gz0q
-	YLgesAyrJqpvnW0T85xlGO7ynqD2ezQ+mxL7cgMivc9woP1ypi07OrbuGGse2EVhs4I2ne
-	dk6At5HsnkLVUy/CYRBhJoO5wUKm3K4=
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.phl.internal (Postfix) with ESMTP id 914BA13804BB
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:20:22 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Thu, 08 Oct 2026 11:20:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=s-joshi.in; h=cc
-	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1791472822; x=
-	1791476422; bh=6rh0PqVWjs0+3QPQMIsutYwuCznqT4PXGPb0xZDsJpE=; b=x
-	lvcfMKitJZHnPNpiQfvIyP24F5yexE7hMZap5xmiKvjGQhtdGfJRQBoa/+uERG4I
-	dc1Q17C4BL60a+Hn1TR9Xug+efDTRYDvZut4mfKFqGEPVbRro8rIJJSJ7A774fgL
-	ytzLdUS6ocTJePMgNejrJ4+DuxHUNkGQOKAB2xyzwdG7M33r9QllSFAMbXAw9mj+
-	e82Uj7EVllIVd0mHVTUACNQ2MRaffvzoLEshDUXVEmlUWwo/YbMAqMtoW2LgQO4N
-	Pfwgu/MvviG4Tyh1N+/wGfJUovg41NnSAjmptrH258xXYtKT2mnFL3re0/PIAFNz
-	YYMbFrSfrandYa6TawbLg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1791472822; x=1791476422; bh=6
-	rh0PqVWjs0+3QPQMIsutYwuCznqT4PXGPb0xZDsJpE=; b=kGQc/1bMCbpo70ZQZ
-	fA2+tqcYoscREmF8gPvEj9CN8ArdMrHWUrhm/aybZSjmRNfbPuI6vJqw6PZtergZ
-	7rOrorrIbswLcc3NoZe7VhEg1q14VqVlzn6KPhPHRL/PXu3LuMjpeJYqZAovG+KI
-	94H7jrsU1z6y6OBsvxncvnjDplf+Ijj6/ElA1xyRsxatlgdwq3DU/uR+Y0oH68iH
-	zjt2Wzb/z4700fxpd/48TTMNoZtPN92QJmRdrsY5gNKLOr11pv3QvwZLVZWCtV3R
-	gMW8pfHAunXOpVE08zSMvrfguMJtDsMmYgZcJ8/zC9ONE0zeuBYNuRO0iggCglMO
-	RSX8Q==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=sign d=s-joshi.in a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1791472822; d=s-joshi.in;
-	mf=PHN1aGFhc0BzLWpvc2hpLmluPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:G9GBZHGljBRaUm299/vJPP6bnhSwkbVy0wVGQE9xKOLwLOT
-	2+xFgXIBrF40sRTKO3AXJ4SbXqeJPgxCOOLWx7C5SqXDceC6NdaCjXDIEKHBCUe6
-	fU0VYzDvURh1hxQx1pbKz0aJ8XWgeikZ+86Bk/JCTFeGR6ggvVK5rnGhEmoROgVa
-	fx+NqCZuwctLhNxfy7vlmVauG8hr66k98Oc/n/LCf90bcjv/wfpyBEwaGEp67rEn
-	XSbIy2OgikhmijH8VwmG45InoKz4E3+1Kngf8OwLoatXI8nc9m0Yap8a2sIWcGIJ
-	o9mfamvz8QucIhyl77g461P5uDBkutuYek92lZQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=mi-m=1; hc=11;
-	hn=cc,content-transfer-encoding,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:JeRmy8VpZusi9wmRgncbH9C467D+OtBW9yCkQ9h/Fns=:IoXp3bc9DZ6vOZyETGFaTgR+fn73FxzVEKJ3+lh6sYo=;
-X-ME-Sender: <xms:trTHahFjuyM4Qn5VjolxHqmCC5DxVLLS5PCpKMuVQt9rDLXEkP1tYA>
-    <xme:trTHanDiJTKbkN144286Wm3_4h1xHtBiuZdWnb7I5-18espCOx2T6oi1vap9jbvK5
-    5PUcjS4oIhrDlspJLgf1Wt0k2_GFW8sh1pXXPXMc_ArrHd01Jf-leY>
-X-ME-Received: <xmr:trTHahXehooAFvBTLy5WRNxzxI0ypAzAX6BZ_YzSDw2YwUqvTr-IMOV_KA>
-X-ME-Proxy-Cause: dmFkZTGw4cW8duv08kIWxjs2BGgtMj2MekkbWQhuS1Zs18hlYVZkN74okfKvstA3KgUHWH
-    4N26/mEHeyoAFvLEGksFN2P/9LzpeSKDBoZl32N4i98jXFmW5ClE1C54fQE/JsBcktI5jL
-    OTo65tOem1jMStbTw36olCRqaGUqenGAppO4hwb4Cj4cPy2vvoWsZVRqFvwYRlrTMaA5Rk
-    7froXThWs/CyGiAM791wkT/UbCRUphTzxOeeWTdkBLopMeqg9QAbh/GnQrl4LqCr502gDG
-    gdWiqBrjcjXtMGan0VmqcqXBEmKdXofYhI/JY96TmrSraTYOyAeVBUNJqCVgc7btTYnJZJ
-    KPKiggFQ32R462zmuTG8HqmkKjVhxQ12CBkyFkZku+iVo80nuX6UjsB5DfoxpUKETLUz5B
-    0YHtpw1aDUD01QThzd1RojLvZWll6Wb2UC6jD1hY7+T2cAebrSdjhpmDPX1Rxxu0daieTy
-    hkI0jpO7MlS3dQPgVx3I7RRSLFRtBuCDXZgc26Y+iBHy0iO9Iib179sEDCDqzX5MHsi0XZ
-    B6BiaIdTg4kVWVqlZr+mN+xQ5QLKOJZoaRc5YJ69lVM7UGrbD4sZ0/W7PuwIJ6H1NJsP+f
-    oOhnqg5cj4Cd4Hphl+UyE0LhallTsvtoekyauWfLadK3bMcMJEBacNQvj2cg
-X-ME-Proxy: <xmx:trTHarrMnGpz4I5x20aWdysTOylVk0ZCQeHuEpvd6Okt7l-xQ32_iQ>
-    <xmx:trTHatSiBMC0ZQpHLc5sB_C_w5sMiG1N0AOjwlZ9pRUzWu5ToaCNFQ>
-    <xmx:trTHal3HHG4F9iSfYehXqmsS2dE6RnelT_qV9cNv4lmL-ZMdks0XlA>
-    <xmx:trTHapAup8BgtogEVUfb9WWhg0PiHnJU3nScYe77mJAv-cnwyUEfrw>
-    <xmx:trTHajZWRyywf0dSHyOQ5tEs10FybVE0W6Jd8RA4abideOK7MqI53vKp>
-Feedback-ID: ia9504abf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 8 Oct 2026 11:20:21 -0400 (EDT)
-From: Suhaas Joshi <suhaas@s-joshi.in>
-To: sj@kernel.org,
-	akpm@linux-foundation.org,
-	aethernet65535@gmail.com
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] mm/damon/core: Copy only installed probe in damon_split_region_at()
-Date: Thu,  8 Oct 2026 20:49:26 +0530
-Message-ID: <20261008151944.113714-3-suhaas@s-joshi.in>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261008151944.113714-1-suhaas@s-joshi.in>
-References: <20261008151944.113714-1-suhaas@s-joshi.in>
+	t=1791472899;
+	b=1Rvb3uQqngi0UwqFM1X5nJRgBkLgJPncJr/dfddSKnXYjD1aO0PYkASriqUzufNxjufxXI
+	/MfrtKJRCWHxF41iCO5h2JJq9X7K2mlVF+Al39GXUN36b53aq8/4/Imvi8Jsxo5sghhPCa
+	wT/8ITfsicZDDzoWxJ7I1fwogocU228=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WNgjz59h;
+	spf=pass (imf11.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791472898;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wmjLf9j2hHqinrUmyzGbBn+BDgUpf5J0siLjt0z0GbU=;
+	b=WNgjz59hKdTrSET19lwOCOsiK6Sk9e6brEwTHJ83aMLVxfJZc6ejka49r35/NNDN0Hq9yV
+	picJlpfnmrczLVFysxj32kkYfzoAasDAATYRE23tA6+wnjBDSTuYMfhtH9sRwBDidqDWuY
+	HPKLO7ODTGy41S2r3HH3Jib1mdBvTxU=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-261-B8TlMgUDOd-wrMceCxqytw-1; Thu, 8 Oct 2026 15:21:34 +0000
+X-MC-Unique: B8TlMgUDOd-wrMceCxqytw-1
+X-Mimecast-MFC-AGG-ID: B8TlMgUDOd-wrMceCxqytw_1791472893
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-3a650355e31so32925541fa.2
+        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 08:21:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791472893; x=1792077693;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wmjLf9j2hHqinrUmyzGbBn+BDgUpf5J0siLjt0z0GbU=;
+        b=pYx0CMsgD+HBLvHTzUB7sPIHlX8G8f9ilKzHICZZdv3BcIUtqduP0ilTQjSQZCIV7v
+         js3GwskL76SyRoYS/bwQ/QrfS1XcE4FFwjiUBG3w/T5MeWTJv9evatRmex1BGVuEFoRM
+         RCmh9MAS36Nyoju8BPm6JBIvpbHMzzBKYLBr7Ztj1O7m3+pgP7s0OjjwIMUiaWIB6Dnn
+         JefpS/fxrB8yM3DpY+GIuIeqmUVoFlCVXTyaTDCByhLKViyF76U0HuzJ/c3/goVoQNK6
+         3mA72pLbjt5jXSl2oJ9nhYIeEKPRQonEQkQJoTB9lpUSL+3HSK9Ga5b+DHdLbMuBK2r/
+         uCeQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy1bZmU4Gh++yVreHXHfkyBit2JlsXdnaC4K3Ui2Q6hJPbW28SCCrP6Y+M5SXfMbXy7yVuKWcJgLA==@kvack.org
+X-Gm-Message-State: AFq9FYJFNP/wi4aOMVRbObWain5Bc6goM6svJAm0WcvaE/aWOAFo+nwZ
+	ntJFfR4PwihfWy5GoAnIPNofabzHsVSwwgcp/pktL0akeme/DPvZGzLWn6KFj8KfbCxxV3vGZaH
+	57k8+tIBE8ZyHxPWBdD1l9HRPjqWTi3wLB38R+9cRg+hYTZ2pbomD
+X-Gm-Gg: AYBFou2ChNN7IGisN4KTiE09BpX3YHXBcIeRI113qcAL63f3pDqG8/vsVem69QA6bDF
+	JAxKSwJcKrvvro5+f3mg057zy+shZGmtcPMfRHw5i6bLhe1iFpFGocdtdP6qFjNzQcSA1h7m6B5
+	GAFU/zFYCnxpltqyn1jy+h6008xl+12jlzPjl94doa6tpWz057vljK71IEp7hNjqVDyAzNngzUu
+	TVJhaqMQYsUEmo2WL4FvFJPD916oLDFdrCG2rr00Hz0MtHweeq+1X22wIYYvolkFTVJ7AWhyunj
+	m5xW1cHLApCkb567keQG3rjKH7qmT0L9jLENYEc39AlB+k8W23F22uEAcqQsfH5t+dXcrM4fA3C
+	wfmM=
+X-Received: by 2002:a05:651c:50d:b0:3a6:6769:c8f3 with SMTP id 38308e7fff4ca-3a9a2c9bc8cmr14195361fa.17.1791472892536;
+        Thu, 08 Oct 2026 08:21:32 -0700 (PDT)
+X-Received: by 2002:a05:651c:50d:b0:3a6:6769:c8f3 with SMTP id 38308e7fff4ca-3a9a2c9bc8cmr14195021fa.17.1791472891759;
+        Thu, 08 Oct 2026 08:21:31 -0700 (PDT)
+Received: from [192.168.2.110] ([142.172.30.162])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a9c13e6f68sm144431fa.10.2026.10.08.08.21.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Oct 2026 08:21:31 -0700 (PDT)
+Message-ID: <52773d68-2ea2-4393-9adb-b71ddc00c6d6@redhat.com>
+Date: Thu, 8 Oct 2026 11:21:24 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yxuzq8uxiw8ccy7a3tdg5ikud3j1qk49
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 00/30] mm: PMD-level swap entries for anonymous THPs
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
+ linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
+ kernel-team@meta.com
+References: <20261002095503.3585565-1-usama.arif@linux.dev>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <20261002095503.3585565-1-usama.arif@linux.dev>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: RSthBOjqgFpJEBtbp_Wz6sBvf9h13784Y9BxknQBmq8_1791472893
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E0E1540008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0129240007
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791472822-135605
-X-HE-Meta: U2FsdGVkX1/4hhScpPQ3mmp43VPluMUYgct0zzdNW9XhZ6b0lNhF/c2gxnR7q0REOPybniskrJjZtt3uC6UszqwABTGJPhP9vpcMDLUmOvqQ7j0WncXnFCWh3MsdMIP76b2Stbc08wldgjFFnD7zbcNBZ+p0KN6mPeXB0jGUip4gokN1gpYUYAn+xfNjwKQ2BGiEQMXx3gdsO3nztBZTUG32qie/wkQANYx3OO7wUvDJY9zIma2PrQsRhSqN2TcZvAJ1/rhgMEm/6rZfTg0MczvTQcJ/CNtKU9HRDlTYzMSUU1tI7l5WatSFXWEVeHWHBSjAmDnm0CIBOsUCPIZbI4TIcEjOQXsfW9wk5pt5bJtwSn+BhU45QmXZr+l5d3TRo655f9sekPqX3RWf7330rIEnX2cYOlVzrzYsYkEX0iujyc2vUSv3c4KtcfXQtsP0FFhilsn4j3siWyO+PEaB4AkYHL51SzmbfshREpgIHrCPQgARUnC2rfcZ87bqAwL5WXm4a/FiJMmKTaJ0OrYSDwTjO5zHfiLws+CCoUy1lzNoIijdhoIJlMIMtzqKik3InmmpTT1RTSvPEXWwoSToPn7qXhPyPv2gc/TiCR9grpn04TmAkc/O6HT3aUIjqJN+kmEhleuFw+LX/yIT3DE/s3qjIaOCjZt1O94mbFHzOFgqfgPQz1rPXXJ1F7MeABDlEv0yRX8Gvh0VZM4IGzGmIwVLuhffAhlbPgMOV00p41DISi0Q2YxmcoiDMsPw6wPRurZ68hyYHRLM4rd4FKxP463sYgtK3nmTvcoCRg1vsCGHfpcCR6VX6EpBBjtg2a9g1ALWqKQv98xeuw0NkoIvtpxFtLmWVHKVylSVh0TjvivTGEZpgIC0wV5QUiiGRFdQXWsFkj6pKWyAIRRI0znyAIJXCKeBhkvXUmjJN/3Qxdksz7uetoSPEjqDnKP04VAs+UnBHdzfxCpQEZbX4MO
- OKaWfskS
- 6xpCgwHVyNkIU0lHURLkn000b/+EPYN6vYCtvD8jgisybXF/A2VlXmVeL2fSD1liRtJu07n1X4YVsz0HrR5G4ADB+/EjqsjNcFBilkzV5supwoGdc4HigQ9l9HsGz56HLHmIvzng+r6mboyP7Wi9j5LO3zbNsV3EBUfPbdVd3HxKU/D5tGWuNfKN74ZYhMR1uDsriG87E5WKk85LD4eBL0yyZnmDMeaYj0u2awkvgXPX3JY2s0FHB6ftzlg+C17nAD5kP3dwBtCDXTwPn0b4zmV6zhJBkLtyNNouc3HeWPEKnPYUkEyslM2Bb97UQx2kuGJlG6CuPn79P1ZM1VEyZpLhicjB+qa17HzrFXshEZ77kAeYr0LlE6AJthaTJiJccMisq0d14HiAMxi2xOlieTjMbIg==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 7u7mmijrigxmtwyxfo9ot74xw3dy7k1o
+X-HE-Tag: 1791472898-744162
+X-HE-Meta: U2FsdGVkX1/1zWphpL8fjkwywG/dydz3aQDgenUy4w3Q37uaY1F1J4ZieCAaBGli+Q5WHmL2UA3aUq4rl37DNGhOzQXUcjXKC9KkiBdHB3YERtfFYRRzdts0B5J07AdlMz3j30IFT20Qyos/H+kt491Ii7tDRxLeUjEK+xVnHbTzaQmY/1zcP6bSKdanHnEgZiD6vDBMDanWOl3lA33LFuJSY6pJrpKsFRD78tS/ZiG8cd8sCAoV/T8zBySmHotO+YEiTwJnAJios7zBfbYPCFch7U/+2cNphgdS9xy449k+WBtgjQvzLxSs+oBnH3JhAqRteijO4p9dT0yfwxJ+ODRJsofC00T8MHEtQGJ/kDhv0NZjhRvyuxUAZg3izSADAgvFLJTu7DOyZvfpwk2xBAne13YPv+bH1eDg1k6kWJUK22M96ECxW4KDw3eTam5T6HtIuFI8rfnWtAepR05szQssL4B2TfCoiSrBVPFlO1gtLgRL+EDm5IccIiSPi6HCAtEmG00M7W23lh+BoV1K42OHfL6ND0lNdWAX6Ry1jgXH40EVA4YLZZqzYg3wLcCPaUOplHL+z46LVeSvI/n1Ai8r7E/bIDdKoZkc+mq9IdnoFjLERA1luoUjp+xmzDQZYNLBVnXfu6WQUm/QjZEo2p1iviqhdP61Afje0uIMDUoX8KHSV8uaG179TVO+CTzb7yEXSJNJqAx2XqlbGUvQzv0N8XBvwYJL7J8Jn78nI9WU91dAhAbJ4ZKwKY2n9KiEY1Z9OQMamD6SSv8G8I3vcgv9J6QPjK0HdNh47bHmtBjzSPimsUT1uzhECzGk4LDzPtR+ScI+ylMlBt6ml0JByWf28JwUaebOG/LUU7GQPyA/VSr338g6vI+5FpHlrQCZUQCCjCdFs+A961eJz6Kl2Vvbh9C17tNd9+v26fItHPE8czZQ44ZC37maLbZG0/sRyxpUwaBQMAqFLLkyFF6
+ jxr7UfB0
+ A6kl8mV1W1x1AdhhQNNDrOFsGtK15PdCycIyotN9eJ/+LKID7H6upBTCjE+AY4RNeYun3+QuPGdYkqKRD6Vea5q0XXKc40a8EQfPiMcxRIi1uYiO5HzzfZ9wWQpAA39hfSZGTNhk5vhcMyoFHh6tESKEon3UBF0rYBjfgnuIL0r1nixW5QvtyTnh5fgntC3WYn2kTQprWK2PYRbyP+ZXvxFSof7bdi1C0NQ8IMYxy/RwlXJFbl/e9PIVYxOmS+92aRd/Uxor0cy4X1bWYukjQYVjw8oQQ994y6CIQrEgWTkq98dNwn1aEeR/rbxZ+XtnLgcqVmS1e/TkJIMGQO6xkAejZFZ0CAPgxPBPK3qHfs7GGpT8dV6awFj9NxeM0p3KByZPx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,305 +140,457 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In damon_split_region_at(), we copy the entire probe_hits[] and
-last_probe_hits[] arrays of DAMON_MAX_PROBES size. However it is possible
-that the number of probes installed is less than DAMON_MAX_PROBES, in which
-case one or more iterations is/are redundant. To remedy this, iterate over
-only as many times as the number of installed probes. To do so, accept a
-struct damon_ctx pointer in damon_split_region_at(), and update all
-invocations of the function to pass the new argument.
 
-Also update damon_test_split_at() and damos_test_filter_out() in
-core-kunit.h to supply a context to function paths that call
-damon_split_region_at().
 
-Signed-off-by: Suhaas Joshi <suhaas@s-joshi.in>
----
- mm/damon/core.c             | 45 +++++++++++++++++++---------------
- mm/damon/tests/core-kunit.h | 48 ++++++++++++++++++++++++++++++-------
- 2 files changed, 66 insertions(+), 27 deletions(-)
+On 10/2/26 5:52 AM, Usama Arif wrote:
+> When reclaim swaps out a PMD-mapped anonymous THP today, the PMD is
+> split into HPAGE_PMD_NR PTE-level swap entries via TTU_SPLIT_HUGE_PMD
+> before unmap.  This series introduces a PMD-level swap entry so the
+> huge mapping can survive the swap round-trip and do_huge_pmd_swap_page()
+> can restore the PMD mapping directly on swap-in, without waiting for
+> khugepaged to collapse the range later.
+> 
+> The PMD swap entry is a compact page-table encoding for HPAGE_PMD_NR
+> consecutive swap slots.  swap_map accounting remains per-slot and is
+> unchanged.  Importantly, a PMD swap entry does not promise that the swap
+> cache always contains one PMD-sized folio.  While the cache is empty or
+> contains one PMD-sized folio, PMD-level handling can proceed.  Once the
+> cache has split/per-slot state, users either inspect the individual
+> slots directly (mincore) or split the PMD swap entry and retry through
+> the PTE path (fault, swapoff, MADV_WILLNEED, UFFDIO_MOVE).  MADV_FREE
+> does not consult the cache at all: it frees a whole PMD swap entry in
+> place and only splits when the advised range covers part of the PMD.
+> Likewise, if any slot is still backed by zswap's per-page
+> store, PMD-order swap-in consumers split and let the PTE path load the
+> range page by page; an all-on-disk range can still be read back as one
+> PMD-sized folio.
+> 
+> The series is ordered so every consumer can handle PMD swap entries
+> before the swap-out producer starts installing them.  The swap-out patch
+> is the last functional change.
+> 
+> Performance:
+> 
+>    Measured with vm-scalability's case-swap-w-seq benchmark [1].  Four
+>    pinned workers repeatedly write a 6 GiB anonymous working set on a
+>    4 vCPU / 4 GiB guest, forcing the set out to swap and back in.  Swap
+>    is an 8 GiB NOCOW raw virtio device (cache=none, aio=native), zswap is
+>    disabled, and THP enabled/defrag are both "always".  The numbers below
+>    are medians of five interleaved runs per kernel after one warm-up run:
+> 
+>    Metric                          Baseline     Patched      Change
+>    Aggregate throughput            584.3 MiB/s  2408.9 MiB/s +312.2% (4.12x)
+>    Elapsed time                    85.43 s      20.72 s      -75.7%
+>    Major faults                    1,814,699    228,466      -87.4%
+>    Swap I/O rate                   1.02 GiB/s   4.10 GiB/s   +303.9%
+> 
+>    This is a swap-intensive synthetic workload, so it mostly demonstrates
+>    the reduction in swap-fault and page-table overhead from preserving
+>    PMD mappings.  I don't want to use sythetic workloads to show benefits
+>    of the series. IMHO, the main advantage comes from long-running
+>    workloads I expect the bigger win to come from fewer TLB misses,
+>    less khugepaged work, and less kernel churn from larger folios, although
+>    I have not found a benchmark that captures that well.  PMD swap entries
+>    also move us closer to eliminating page-table deposits for anonymous THPs,
+>    which would provide memory savings.
+> 
+> Sashiko reviews on intermediate patches:
+> 
+>    Because the swap-out producer is the last functional patch, the
+>    consumer code added by the patches before it is unreachable at the
+>    point it is introduced.  Every previous sashiko review has reported
+>    that code as broken on the basis of a state it cannot yet be in; the
+>    series is ordered this way deliberately.  See [2].
+> 
+> Notes on zswap:
+> 
+>    Native PMD-order zswap load/store is intentionally left for a follow-up.
+>    Alexandre Ghiti is currently working on this.
+>    This series can still preserve PMD swap entries while zswap is enabled:
+>    zswap stores the THP as order-0 entries, and PMD-order swap-in
+>    consumers split any range that has zswap entries before reading it.  If
+>    zswap has written the whole range back to disk, or the swap cache still
+>    contains one PMD-sized folio, PMD-level handling can proceed.
+> 
+> Testing:
+> 
+>    The 17 pmd_swap selftests pass on x86_64 with zswap both disabled and
+>    enabled.  PMD_SWAP_DEVICE was the sole active swap device, so the
+>    swapoff test ran in both configurations.  Note that with zswap enabled
+>    the range may legitimately come back through the PTE fallback, so those
+>    runs skip the PMD-restoration assertions and say so in the log; the
+>    zswap-disabled run is the one that proves PMD restoration.
+> 
+>    hmm-tests was run with CONFIG_DEBUG_VM=y and panic_on_warn=1, both on
+>    this series and on the base commit: identical results either way
+>    (pass:35 fail:3 skip:40).  The three failures are O_TMPFILE on the
+>    test VM's 9p /tmp, not kernel behaviour, and the THP paths
+>    (migrate_anon_huge_*, migrate_partial_unmap_fault,
+>    benchmark_thp_migration) pass.
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index fc202f90991b..9e5a19c2a19d 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2051,8 +2051,8 @@ static unsigned long damon_region_sz_limit(struct damon_ctx *ctx)
- 	return sz;
- }
- 
--static int damon_split_region_at(struct damon_target *t,
--				  struct damon_region *r, unsigned long sz_r);
-+static int damon_split_region_at(struct damon_ctx *ctx, struct damon_target *t,
-+				 struct damon_region *r, unsigned long sz_r);
- 
- /*
-  * damon_apply_min_nr_regions() - Make effect of min_nr_regions parameter.
-@@ -2077,7 +2077,7 @@ static unsigned long damon_apply_min_nr_regions(struct damon_ctx *ctx)
- 	damon_for_each_target(t, ctx) {
- 		damon_for_each_region_safe(r, next, t) {
- 			while (damon_sz_region(r) > max_region_sz) {
--				if (damon_split_region_at(t, r, max_region_sz))
-+				if (damon_split_region_at(ctx, t, r, max_region_sz))
- 					goto out;
- 				r = damon_next_region(r);
- 			}
-@@ -2474,6 +2474,7 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
- /*
-  * damos_skip_charged_region() - Check if the given region or starting part of
-  * it is already charged for the DAMOS quota.
-+ * @ctx: The pointer to the context.
-  * @t:	The target of the region.
-  * @rp:	The pointer to the region.
-  * @s:	The scheme to be applied.
-@@ -2496,9 +2497,10 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
-  *
-  * Return: true if the region should be skipped, false otherwise.
-  */
--static bool damos_skip_charged_region(struct damon_target *t,
--		struct damon_region *r, struct damos *s,
--		unsigned long min_region_sz)
-+static bool damos_skip_charged_region(struct damon_ctx *ctx,
-+				      struct damon_target *t,
-+				      struct damon_region *r, struct damos *s,
-+				      unsigned long min_region_sz)
- {
- 	struct damos_quota *quota = &s->quota;
- 	unsigned long sz_to_skip;
-@@ -2525,7 +2527,7 @@ static bool damos_skip_charged_region(struct damon_target *t,
- 				}
- 				sz_to_skip = min_region_sz;
- 			}
--			damon_split_region_at(t, r, sz_to_skip);
-+			damon_split_region_at(ctx, t, r, sz_to_skip);
- 			skip = true;
- 		}
- 	}
-@@ -2583,12 +2585,12 @@ static bool damos_filter_match(struct damon_ctx *ctx, struct damon_target *t,
- 		}
- 		/* start before the range and overlap */
- 		if (r->ar.start < start) {
--			damon_split_region_at(t, r, start - r->ar.start);
-+			damon_split_region_at(ctx, t, r, start - r->ar.start);
- 			matched = false;
- 			break;
- 		}
- 		/* start inside the range */
--		damon_split_region_at(t, r, end - r->ar.start);
-+		damon_split_region_at(ctx, t, r, end - r->ar.start);
- 		matched = true;
- 		break;
- 	case DAMOS_FILTER_TYPE_PROBE_HITS_WSUM:
-@@ -2781,7 +2783,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
- 					c->min_region_sz);
- 			if (!sz)
- 				goto update_stat;
--			if (damon_split_region_at(t, r, sz))
-+			if (damon_split_region_at(c, t, r, sz))
- 				goto update_stat;
- 		}
- 		if (damos_core_filter_out(c, t, r, s))
-@@ -2828,7 +2830,7 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
- 		if (damos_quota_is_full(quota, c->min_region_sz))
- 			continue;
- 
--		if (damos_skip_charged_region(t, r, s, c->min_region_sz))
-+		if (damos_skip_charged_region(c, t, r, s, c->min_region_sz))
- 			continue;
- 
- 		if (s->max_nr_snapshots &&
-@@ -3666,15 +3668,18 @@ static void damon_verify_split_region_at(struct damon_region *r,
- /*
-  * Split a region in two
-  *
-+ * ctx		pointer to the region's context
-  * r		the region to be split
-  * sz_r		size of the first sub-region that will be made
-  *
-  * Return: 0 on success, negative error code otherwise.
-  */
--static int damon_split_region_at(struct damon_target *t,
--				  struct damon_region *r, unsigned long sz_r)
-+static int damon_split_region_at(struct damon_ctx *ctx, struct damon_target *t,
-+				 struct damon_region *r, unsigned long sz_r)
- {
- 	struct damon_region *new;
-+	struct damon_probe *p;
-+	int i;
- 
- 	damon_verify_split_region_at(r, sz_r);
- 	new = damon_new_region(r->ar.start + sz_r, r->ar.end);
-@@ -3686,11 +3691,13 @@ static int damon_split_region_at(struct damon_target *t,
- 	new->age = r->age;
- 	new->last_nr_accesses = r->last_nr_accesses;
- 	new->nr_accesses = r->nr_accesses;
--	/* todo: do this for only installed probes */
--	memcpy(new->probe_hits, r->probe_hits, sizeof(r->probe_hits));
--	memcpy(new->last_probe_hits, r->last_probe_hits,
--			sizeof(r->last_probe_hits));
- 
-+	i = 0;
-+	damon_for_each_probe(p, ctx) {
-+		new->probe_hits[i] = r->probe_hits[i];
-+		new->last_probe_hits[i] = r->last_probe_hits[i];
-+		++i;
-+	}
- 	damon_insert_region(new, r, damon_next_region(r), t);
- 	return 0;
- }
-@@ -3719,7 +3726,7 @@ static void damon_split_regions_of(struct damon_ctx *ctx,
- 			if (sz_sub == 0 || sz_sub >= sz_region)
- 				continue;
- 
--			damon_split_region_at(t, r, sz_sub);
-+			damon_split_region_at(ctx, t, r, sz_sub);
- 			sz_region = sz_sub;
- 		}
- 	}
-@@ -3751,7 +3758,7 @@ static void damon_split_some_regions(struct damon_ctx *ctx,
- 			if (sz_sub == 0 || sz_sub >= sz_region)
- 				continue;
- 
--			damon_split_region_at(t, r, sz_sub);
-+			damon_split_region_at(ctx, t, r, sz_sub);
- 		}
- 	}
- }
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 4e380c6c5eb2..b942598e8dc2 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -141,12 +141,26 @@ static void damon_test_split_at(struct kunit *test)
- {
- 	struct damon_target *t;
- 	struct damon_region *r, *r_new;
-+	struct damon_ctx *ctx;
-+	struct damon_probe *p;
- 
-+	p = damon_new_probe();
-+	if (!p)
-+		kunit_skip(test, "probe alloc fail");
-+	ctx = damon_new_ctx();
-+	if (!ctx) {
-+		damon_destroy_probe(p);
-+		kunit_skip(test, "context alloc fail");
-+	}
-+	damon_add_probe(ctx, p);
- 	t = damon_new_target();
--	if (!t)
-+	if (!t) {
-+		damon_destroy_ctx(ctx);
- 		kunit_skip(test, "target alloc fail");
-+	}
- 	r = damon_new_region(0, 100);
- 	if (!r) {
-+		damon_destroy_ctx(ctx);
- 		damon_free_target(t);
- 		kunit_skip(test, "region alloc fail");
- 	}
-@@ -156,7 +170,7 @@ static void damon_test_split_at(struct kunit *test)
- 	r->last_probe_hits[0] = 3;
- 	r->age = 10;
- 	damon_add_region(r, t);
--	damon_split_region_at(t, r, 25);
-+	damon_split_region_at(ctx, t, r, 25);
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 2);
- 	if (damon_nr_regions(t) != 2)
- 		goto out;
-@@ -176,6 +190,7 @@ static void damon_test_split_at(struct kunit *test)
- 
- out:
- 	damon_free_target(t);
-+	damon_destroy_ctx(ctx);
- }
- 
- static void damon_test_merge_two(struct kunit *test)
-@@ -1799,19 +1814,35 @@ static void damos_test_filter_out(struct kunit *test)
- 	struct damon_target *t;
- 	struct damon_region *r, *r2;
- 	struct damos_filter *f;
-+	struct damon_ctx *ctx;
-+	struct damon_probe *p;
-+
-+	p = damon_new_probe();
-+	if (!p)
-+		kunit_skip(test, "probe alloc fail");
-+	ctx = damon_new_ctx();
-+	if (!ctx) {
-+		damon_destroy_probe(p);
-+		kunit_skip(test, "context alloc fail");
-+	}
-+	damon_add_probe(ctx, p);
- 
- 	f = damos_new_filter(DAMOS_FILTER_TYPE_ADDR, true, false);
--	if (!f)
-+	if (!f) {
-+		damon_destroy_ctx(ctx);
- 		kunit_skip(test, "filter alloc fail");
-+	}
- 	f->addr_range = (struct damon_addr_range){.start = 2, .end = 6};
- 
- 	t = damon_new_target();
- 	if (!t) {
-+		damon_destroy_ctx(ctx);
- 		damos_destroy_filter(f);
- 		kunit_skip(test, "target alloc fail");
- 	}
- 	r = damon_new_region(3, 5);
- 	if (!r) {
-+		damon_destroy_ctx(ctx);
- 		damos_destroy_filter(f);
- 		damon_free_target(t);
- 		kunit_skip(test, "region alloc fail");
-@@ -1819,27 +1850,27 @@ static void damos_test_filter_out(struct kunit *test)
- 	damon_add_region(r, t);
- 
- 	/* region in the range */
--	KUNIT_EXPECT_TRUE(test, damos_filter_match(NULL, t, r, f, 1));
-+	KUNIT_EXPECT_TRUE(test, damos_filter_match(ctx, t, r, f, 1));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region before the range */
- 	r->ar.start = 1;
- 	r->ar.end = 2;
- 	KUNIT_EXPECT_FALSE(test,
--			damos_filter_match(NULL, t, r, f, 1));
-+			damos_filter_match(ctx, t, r, f, 1));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region after the range */
- 	r->ar.start = 6;
- 	r->ar.end = 8;
- 	KUNIT_EXPECT_FALSE(test,
--			damos_filter_match(NULL, t, r, f, 1));
-+			damos_filter_match(ctx, t, r, f, 1));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region started before the range */
- 	r->ar.start = 1;
- 	r->ar.end = 4;
--	KUNIT_EXPECT_FALSE(test, damos_filter_match(NULL, t, r, f, 1));
-+	KUNIT_EXPECT_FALSE(test, damos_filter_match(ctx, t, r, f, 1));
- 	/* filter should have split the region */
- 	KUNIT_EXPECT_EQ(test, r->ar.start, 1);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, 2);
-@@ -1855,7 +1886,7 @@ static void damos_test_filter_out(struct kunit *test)
- 	r->ar.start = 2;
- 	r->ar.end = 8;
- 	KUNIT_EXPECT_TRUE(test,
--			damos_filter_match(NULL, t, r, f, 1));
-+			damos_filter_match(ctx, t, r, f, 1));
- 	/* filter should have split the region */
- 	KUNIT_EXPECT_EQ(test, r->ar.start, 2);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, 6);
-@@ -1868,6 +1899,7 @@ static void damos_test_filter_out(struct kunit *test)
- 	damon_destroy_region(r2, t);
- 
- out:
-+	damon_destroy_ctx(ctx);
- 	damon_free_target(t);
- 	damos_free_filter(f);
- }
--- 
-2.55.0
+I ran the MM kselftests, including pmd_swap with PMD_SWAP_DEVICE set, on
+x86-64 and s390 (both are KVM guests). Both passed. I may test more if
+I have the cycles once this reaches the MM tree (maybe running the
+kselftests on other archs or a stress test), but for now:
+
+Tested-by: Luiz Capitulino <luizcap@redhat.com>
+
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git/tree/case-swap-w-seq
+> [2] https://lore.kernel.org/all/282ef982-3e48-4283-9155-73a33fc1c4e8@linux.dev/
+> 
+> v7 -> v8: https://lore.kernel.org/all/20260914122950.3283997-1-usama.arif@linux.dev/
+> - Cover letter: add the case-swap-w-seq performance results. (Andrew Morton)
+> - Patches 2-8: reword the opening paragraph as "Prepare for ..." instead of
+>    referring to a later patch. (David Hildenbrand)
+> - Patch 4 (powerpc): move the PMD exclusive helpers next to the soft-dirty
+>    PMD helpers and express them the same way, as pte_pmd()/pmd_pte()
+>    wrappers over the PTE helpers. (David Hildenbrand)
+> - Patch 6 (s390): drop the comment above the helpers, keep the explanation
+>    in the RSTE swap layout above __SWP_OFFSET_MASK_RSTE, and move the
+>    helpers into the existing CONFIG_ARCH_HAS_PMD_SOFTLEAVES block above
+>    pmd_swp_soft_dirty(). (David Hildenbrand)
+> - Patch 7 (x86): add static_assert(_PAGE_SWP_EXCLUSIVE != _PAGE_PSE) so a
+>    32-bit build that ever selects ARCH_HAS_PMD_SOFTLEAVES fails to compile
+>    rather than producing pmd_present() swap entries. (Kiryl Shutsemau)
+> - Patch 10: rename the flag to to_migration_entries, use two-tab
+>    continuation indentation, reword the split comment, turn the comment on
+>    split_pmd_to_migration_entries() into kerneldoc, and fold the
+>    try_to_migrate_one() call onto one line.  Also drop that helper's
+>    pmd_trans_huge() || pmd_is_valid_softleaf() test, which was both too loose
+>    and silently skipped the split, in favour of a VM_WARN_ON_ONCE() at the top
+>    of __split_huge_pmd_locked() asserting that to_migration_entries implies a
+>    present or device-private PMD. (David Hildenbrand)
+> - Patch 11: drop the VM_WARN_ON_ONCE()/force and its comment from the swap
+>    decode arm - 10/29 now asserts the to_migration_entries contract at the top
+>    of __split_huge_pmd_locked() instead - and build the replacement PTEs by
+>    advancing pte_next_swp_offset() rather than rebuilding each entry, which
+>    hoists the soft-dirty/uffd/exclusive tests out of the loop. (David
+>    Hildenbrand).
+> - Patch 12 (new): split the swap-side changes out of the fork patch, so the
+>    swap-entry range duplication gets its own patch for the swap maintainers.
+>    Keeps the single-slot names as inline wrappers so existing callers are
+>    untouched. (David Hildenbrand)
+> - Patch 13 (fork): report a failed swap dup as -EIO and let copy_pmd_range()
+>    own the GFP_KERNEL retry, as the PTE path does, dropping the open-coded
+>    retry loop; move the mm counter update into each entry-type arm. (David
+>    Hildenbrand)
+> - Patch 16 (smaps): smaps_account_swap() takes nr_pages rather than a byte
+>    size, and the local is called swapcount. (David Hildenbrand)
+> - No other functional change.  All twelve sashiko findings on v7 were
+>    analysed and none are defects of this series.
+> 
+> v6 -> v7: https://lore.kernel.org/all/20260818131202.494754-1-usama.arif@linux.dev/
+> - Rebase onto akpm/mm-new at baa8de2f3448 and adapt to the new
+>    get_swap_device() contract and linear_anon_page_index().  The series grows
+>    from 12 to 29 patches.
+> - Patch 1: code unchanged; reword the commit message and collect review tags.
+> - Patches 2-9: split the six architecture helpers from generic detection and
+>    add debug_vm_pgtable coverage.  Use the s390 RSTE exclusive bit, make the
+>    x86 helper return bool, clear all PMD swap overlay bits before softleaf
+>    decoding, and add the architecture maintainers to Cc.
+> - Patches 10-11: add a preparatory no-functional-change cleanup of the
+>    migration-splitting API and keep the PMD swap split separate.
+> - Patch 12: reject a multi-slot duplication range that crosses a swap-cluster
+>    boundary.
+> - Patch 13: drop the zswap_load() change, now upstream as 1a904e0d3c43, and
+>    check for zswap after swap-cache insertion while all slots are pinned.
+> - Patch 14: scan every subpage for hardware poison, discard a failed or newly
+>    allocated unmapped PMD-sized folio before PTE fallback, and recheck the PMD
+>    before splitting it.
+> - Patches 15-23: split the non-present PMD walkers by subsystem.  Add the
+>    guard-advice patch so MADV_GUARD_INSTALL/REMOVE leaves PMD swap entries
+>    whole; the other split patches preserve v6 behaviour.
+> - Patch 24: honour the current THP policy, discard a failed PMD-sized folio,
+>    and recheck the PMD before PTE fallback.
+> - Patch 25: do not split after cached-folio revalidation loses a race; retry
+>    so a restored present THP remains whole.
+> - Patches 26-27: separate the independent PTE-batching hardware-poison fix,
+>    scan subpages directly, and discard failed or never-mapped PMD-sized folios
+>    before PTE retry instead of making the whole range fail with SIGBUS.
+> - Patch 28: keep the normal swap-out path unchanged, but make failed producer
+>    preconditions warn and return -EBUSY rather than BUG or return -EINVAL.
+> - Patch 29: grow the selftests from 16 to 17, adding
+>    swapin_sync/cache-residency coverage and more robust feature, fallback,
+>    privilege, data-integrity, and swap-device-priority handling.
+> 
+> v5 -> v6: https://lore.kernel.org/all/20260722152043.2273289-1-usama.arif@linux.dev/
+> - Add patch 1 to rename pmd_to_softleaf_folio() to
+>    pmd_softleaf_to_folio().  No functional change. (Dev Jain)
+> - Patch 2: warn when pmd_softleaf_to_folio() is given a non-PFN
+>    softleaf rather than silently returning NULL. (Dev Jain)
+> - Patch 4: bound the fork extend-table fallback to one retry, re-read
+>    the PMD under its lock, normalize unrecoverable copy_huge_pmd() errors
+>    to -ENOMEM so copy_pmd_range() cannot clear and leak the source swap
+>    PMD, and drop a redundant thp_migration_supported() gate.
+> - Patch 5: check multi-page swap-cache insertions for zswap-backed slots
+>    in __swap_cache_add_check() under the cluster lock, both before
+>    allocation and before insertion, and reject mixed zswap/disk state
+>    with -EBUSY. (Yosry Ahmed, Nhat Pham)
+> - Patch 6: on a failed non-uptodate PMD-order read, remove the large
+>    folio from swap cache before splitting so order-0
+>    fallback retries individual slots rather than poisoning the whole
+>    2 MiB range; retain hardware-poisoned folios for per-subpage handling.
+> - Patch 7: make HMM snapshot mode report a PMD swap entry as non-resident,
+>    matching PTE swap entries, rather than HMM_PFN_ERROR.  Drop redundant
+>    thp_migration_supported() gates and simplify non-present PMD handling.
+> - Patch 8: factor PMD MADV_WILLNEED prefetch into
+>    swapin_pmd_swap_entry(), split and retry through PTEs after any
+>    PMD-order swapin failure, and replace the racy folio_test_locked()
+>    plus folio_lock() sequence with folio_trylock().
+> - Patch 9: guard PMD-swap UFFDIO_MOVE code with CONFIG_THP_SWAP, clarify
+>    RWP marker propagation, and reject a PMD swap entry at the destination
+>    with -EEXIST so UFFDIO_MOVE cannot loop forever on -EAGAIN.
+> - Patch 10: honor current THP/VMA policy before PMD-order swap-in, recheck
+>    that the PMD is still the original swap entry before splitting for PTE
+>    fallback, and provide the CONFIG_TRANSPARENT_HUGEPAGE wp_huge_pmd()
+>    declaration/stub needed by THP=n builds.
+> - Patch 11: make an invalid set_pmd_swap_entry() walk context warn and
+>    return -EINVAL instead of falsely reporting success and corrupting the
+>    MM_ANONPAGES/MM_SWAPENTS accounting, and add an exact PMD-size folio
+>    precondition check. (Luiz Capitulino)
+> - Patch 12: use /proc/swaps for prerequisite detection, check
+>    MADV_HUGEPAGE, and distinguish an environment that cannot allocate a
+>    PMD THP (SKIP) from a swap-out validation failure (FAIL).  Add
+>    partial-mprotect and partial-munmap split coverage.  Strengthen
+>    munmap/MADV_FREE VmSwap accounting, pagemap slot-offset checks, and
+>    mprotect/mremap swapped-state checks; force mremap to move, check
+>    munmap()'s return, and mark the UFFDIO_MOVE destination MADV_HUGEPAGE
+>    before asserting PMD restoration.  Move common setup and cleanup into
+>    one fixture, merge the swapoff fixture, remove the redundant cycles
+>    test, and make the data pattern differ between base pages so the split
+>    tests can detect incorrect slot ordering.  Order fork-COW so the parent
+>    writes while the child still holds the untouched shared swap entry.
+>    (Luiz Capitulino)
+> - Clarify commit messages throughout.  Retain TTU_SPLIT_HUGE_PMD after
+>    prototyping its removal: removing it here requires an extra rmap walk
+>    and broadens the series beyond PMD swap entries. (Matthew Wilcox)
+> - Rebase onto akpm/mm-new from 15 August (4b65683fd25f).
+> 
+> v4 -> v5: https://lore.kernel.org/all/20260713133613.2707815-1-usama.arif@linux.dev/
+> - Commit message improvements for almost all patches (Yosry for zswap patch)
+> - Patch 1: make pmd_to_softleaf_folio() reject softleaf entries that do
+>    not encode a PFN, so a PMD swap offset is never interpreted as one.
+>    PMD swap entries remain valid softleaf entries for classification.
+>    (sashiko)
+> - Patch 2: use the existing pmd_swp_uffd() helper and force freeze=false
+>    for PMD swap entries, which have no struct page for the migration-entry
+>    freeze path. (sashiko)
+> - Patch 3: document that the caller's page-table or swap-cache reference
+>    pins every source slot while a partial PMD-sized duplication is rolled
+>    back.  Keep the pre-existing PTE fork retry behavior outside this
+>    series. (sashiko)
+> - Patch 5: split to the PTE path rather than mapping a PMD-sized folio
+>    containing a hardware-poisoned subpage, and restore PAGE_NONE when
+>    swapoff restores a UFFD marker in an RWP VMA. (sashiko)
+> - Patch 6: account SwapPss for a PMD swap entry one slot at a time because
+>    the slots can have different swap reference counts.
+> - Patch 7: if PMD-order MADV_WILLNEED encounters newly populated per-page
+>    zswap state, revalidate and remove the failed clean PMD-sized cache
+>    folio before retrying through PTEs.
+> - Patch 8: mark a moved PMD swap entry for UFFD when the UFFDIO_MOVE
+>    destination VMA is RWP-registered. (sashiko)
+> - Patch 9: restore PAGE_NONE for UFFD RWP swap-in, preserve the original
+>    write-fault state through swap-slot release and COW handling, remove
+>    the unnecessary LRU drain, and prevent PTE batching from mapping a
+>    poisoned subpage. (sashiko)
+> - Patch 10: add and document thp_swpout_pmd, which counts PMD mappings
+>    replaced by PMD-level swap entries rather than swapped folios.
+> - Patch 11: register pmd_swap with the default mm selftest runner, preserve
+>    errno across UFFDIO_MOVE cleanup, check swapoff residency before the
+>    first memory access, add a parent-side write and verification to the
+>    fork+COW test, and add RWP regression coverage for swap-in, UFFDIO_MOVE,
+>    and swapoff. (sashiko)
+> - Keep do_huge_pmd_swap_page() in patch 9.  Patches 6 and 7 only add
+>    consumers; patch 10 remains the first producer, so no PMD swap entry
+>    can reach those paths before the fault handler is present. (sashiko)
+> - Rebase onto latest akpm/mm-new from 22 July (5e0603ba185a)
+> 
+> v3 -> v4: https://lore.kernel.org/all/20260703173903.3789516-1-usama.arif@linux.dev/
+> - Patch 1: guard the new arch-specific pmd_swp_mkexclusive /
+>    pmd_swp_exclusive / pmd_swp_clear_exclusive helpers on arm64,
+>    loongarch, powerpc, riscv, s390, and x86 with
+>    CONFIG_ARCH_HAS_PMD_SOFTLEAVES, matching the pattern already
+>    used for pmd_swp_soft_dirty.  Also fixes the redefinition-vs-
+>    generic-fallback build errors kernel test robot reported on
+>    i386-allnoconfig-bpf and riscv-allnoconfig-bpf, and rewraps
+>    the patch 1 commit message paragraphs to ~75 columns.
+>    (sashiko, kernel test robot, Usama Arif)
+> - Patch 2: switch the trailing folio_remove_rmap_pmd() gate in
+>    __split_huge_pmd_locked() from *pmd to old_pmd, old_pmd retains
+>    the original present-or-non-present classification for every
+>    branch above. (sashiko)
+> - Patch 3: teach swap_retry_table_alloc() (and the underlying
+>    swap_extend_table_alloc()) to accept an nr parameter and scan
+>    every slot in [ci_off, ci_off + nr) before committing an
+>    extend-table allocation.  (sashiko)
+> - Patch 4: rename zswap_range_has_entry() to zswap_is_present() so
+>    the same helper serves both single-slot (nr=1) and range queries,
+>    and switch the implementation from XA_STATE + xas_find() to
+>    xa_find(), which handles RCU locking and internal-retry markers
+>    itself.  Rename the callers in patches 5, 7, 9. (Yosry)
+> - Patch 9: refuse to map a swap-cache folio in do_huge_pmd_swap_page()
+>    when folio_contain_hwpoisoned_page() reports a poisoned subpage;
+>    split the PMD swap entry so do_swap_page() can return
+>    VM_FAULT_HWPOISON per subpage instead of the PMD handler mapping
+>    the corrupted memory as one THP.  Mirrors the PageHWPoison check
+>    the PTE swap-in path already performs. (sashiko)
+> - Patch 9: note explicitly in the commit message that PMD-order
+>    swap-in deliberately skips the order-0 readahead paths, order-0
+>    readahead would populate per-page swap-cache state and force the
+>    PMD swap entry to split before the fault could finish. (Kairui)
+> - Patch 10: move mm_prepare_for_swap_entries() into
+>    set_pmd_swap_entry() between folio_dup_swap() and set_pmd_at()
+>    so this mm is on init_mm.mmlist before any swap PMD referencing
+>    slots with a non-zero swap_map becomes visible.  Matches the PTE
+>    swap-out ordering. (sashiko)
+> - rebase onto latest akpm/mm-new (61cccb8363fcc282d4ae0555b8739dd227f5ad0b)
+> 
+> 
+> v2 -> v3: https://lore.kernel.org/all/20260602142537.198755-1-usama.arif@linux.dev/
+> - Clarified the PMD swap entry rule: it is a compact encoding for
+>    HPAGE_PMD_NR swap slots, not a guarantee that swap cache always has
+>    one PMD-sized folio. (Lance Yang)
+> - Swapoff, fault, MADV_WILLNEED, and UFFDIO_MOVE now classify the
+>    whole PMD swap-cache range and split/retry through the PTE path for
+>    split/per-slot cache state. (Lance Yang)
+> - mincore handles PMD swap entries without assuming one lookup covers
+>    a split swap-cache range. (Lance Yang)
+> - UFFDIO_MOVE rechecks all HPAGE_PMD_NR slots before moving an empty
+>    PMD swap-cache range, avoiding stale rmap metadata for per-slot
+>    cached folios.
+> - Added a standalone zswap prerequisite patch from Alexandre that
+>    distinguishes all-on-disk large-folio ranges from ranges with
+>    per-page zswap entries.
+> - Replaced the global zswap-ever-enabled policy with per-range zswap
+>    checks: PMD swap entries can still be installed while zswap is
+>    enabled, and PMD-order swap-in consumers split when the range has
+>    per-page zswap state.
+> - Added a mincore selftest and updated MADV_WILLNEED coverage so the
+>    test checks that the PMD swap entry remains in place until first
+>    touch.  Total pmd_swap coverage is now 14 tests.
+> 
+> 
+> v1 -> v2: https://lore.kernel.org/all/20260427100553.2754667-1-usama.arif@linux.dev/
+> - Patch 1: convert two additional softleaf_to_pmd() callers that
+>    landed in mm-unstable since v1 (mm/debug_vm_pgtable.c,
+>    mm/migrate_device.c) (Dev)
+> - Patch 2: rename helper ensure_on_mmlist() to
+>    mm_prepare_for_swap_entries() to better describe its purpose
+>    (David)
+> - Patch 3: drop VM_WARN_ON_ONCE(!pmd_is_migration_entry) as
+>    Dev posted it as a separate patch.
+> - Patch 5 (new): move softleaf_to_folio() inside the device-private
+>    branch in migrate_vma_collect_pmd(); same class of fix as patch 4
+>    but for the migrate-device PMD walker.
+> - Patch 6 (new): rename CONFIG_ARCH_ENABLE_THP_MIGRATION to
+>    CONFIG_ARCH_HAS_PMD_SOFTLEAVES so the gate that now drives
+>    swap-entry support too is named for what it actually controls
+>    (PMD softleaf entries), not just migration. (Dev)
+> - Patch 7: add the missing pmd_swp_exclusive / mkexclusive /
+>    clear_exclusive helpers for powerpc.
+> - Patches 10 and 14: use upstream swapin_sync() (bundles
+>    swap_cache_alloc_folio + swap_read_folio + the -EEXIST race
+>    retry) instead of the bespoke swapin_alloc_pmd_folio() helper
+>    from v1; do_swap_page and shmem_swapin_folio use the same
+>    helper (Kairui)
+> - Patch 10: construct a stack vm_fault for the swapoff swap-in so
+>    the allocator can resolve a mempolicy, mirroring how the PTE
+>    swapoff path (unuse_pte_range) already does it.
+> - Patch 11: extend coverage to check_pmd_state() in khugepaged so a
+>    swapped-out PMD-mapped THP is treated as SCAN_PMD_MAPPED (matches
+>    the existing migration-entry handling). Route PMD swap entries in the
+>    pmd_trans_huge_lock() branch of mincore_pte_range() through
+>    mincore_pmd_swap() so a swapped-out PMD-mapped THP isn't reported as
+>    resident.
+> - Patch 12 (new): handle PMD swap entries in MADV_WILLNEED via
+>    swapin_sync(BIT(HPAGE_PMD_ORDER)); a naive order-0 read-ahead
+>    would force the subsequent fault to split.
+> - Patch 13: refuse UFFDIO_MOVE with -EBUSY if the swap-cache folio
+>    was split between swap-out and the move, matching
+>    move_pages_pte()'s rejection of large folios; otherwise only one
+>    of the 512 anon-rmaps would be re-anchored to dst_vma.
+> - Patch 16: alloc_fill_swap_thp() now uses the existing
+>    mmap_pmd_aligned() helper so tests don't flake/skip based on VA
+>    placement; new MADV_WILLNEED test that watches the PMD-order
+>    mTHP swpin counter; swapoff test restructured to use the
+>    kselftest_harness ASSERT cleanup blocks (no double swapoff, no
+>    verify-after-munmap).
+> - Collected Acks and Reviews
+> 
+> Usama Arif (30):
+>    mm: rename pmd_to_softleaf_folio() to pmd_softleaf_to_folio()
+>    arm64: mm: add PMD swap-exclusive helpers
+>    loongarch: mm: add PMD swap-exclusive helpers
+>    powerpc: mm: add PMD swap-exclusive helpers
+>    riscv: mm: add PMD swap-exclusive helpers
+>    s390: mm: add PMD swap-exclusive helpers
+>    x86: mm: add PMD swap-exclusive helpers
+>    mm: recognize PMD swap entries in the softleaf layer
+>    mm/debug_vm_pgtable: test PMD swap-exclusive helpers
+>    mm: make PMD migration-entry splitting explicit
+>    mm: split PMD swap entries into PTE swap entries
+>    mm/swap: allow duplicating a range of swap entries
+>    mm: handle PMD swap entries in fork path
+>    mm: zswap: reject high-order swap cache allocations backed by zswap
+>    mm: swap in PMD swap entries as whole THPs during swapoff
+>    fs/proc: account PMD swap entries in smaps
+>    mm: handle soft-dirty and uffd-wp on PMD swap entries
+>    mm/hmm: fault PMD swap entries on demand
+>    mm: free PMD swap entries in zap_huge_pmd()
+>    mm/madvise: free PMD swap entries with MADV_FREE
+>    mm/madvise: skip PMD swap entries for MADV_COLD and MADV_PAGEOUT
+>    mm/madvise: keep PMD swap entries whole for MADV_GUARD_INSTALL/REMOVE
+>    mm/mincore: report PMD swap-cache residency
+>    mm/khugepaged: treat PMD swap entries as mapped THPs
+>    mm: handle PMD swap entries in MADV_WILLNEED
+>    mm: handle PMD swap entries in UFFDIO_MOVE
+>    mm: don't PTE-batch a swap-in over a hardware-poisoned subpage
+>    mm: handle PMD swap entry faults on swap-in
+>    mm: install PMD swap entries on swap-out
+>    selftests/mm: add PMD swap entry tests
+> 
+>   Documentation/admin-guide/mm/transhuge.rst   |   5 +
+>   arch/arm64/include/asm/pgtable.h             |   6 +
+>   arch/loongarch/include/asm/pgtable.h         |  19 +
+>   arch/powerpc/include/asm/book3s/64/pgtable.h |   6 +
+>   arch/riscv/include/asm/pgtable.h             |  15 +
+>   arch/s390/include/asm/pgtable.h              |  20 +-
+>   arch/x86/include/asm/pgtable.h               |  20 +
+>   fs/proc/task_mmu.c                           |  45 +-
+>   include/linux/huge_mm.h                      |  40 +-
+>   include/linux/leafops.h                      |  44 +-
+>   include/linux/pgtable.h                      |  17 +
+>   include/linux/swap.h                         |  12 +-
+>   include/linux/vm_event_item.h                |   1 +
+>   include/linux/zswap.h                        |   6 +
+>   mm/debug_vm_pgtable.c                        |  40 +
+>   mm/hmm.c                                     |  11 +-
+>   mm/huge_memory.c                             | 714 +++++++++++--
+>   mm/internal.h                                |  58 ++
+>   mm/khugepaged.c                              |   6 +
+>   mm/madvise.c                                 | 169 +++-
+>   mm/memory.c                                  |  65 +-
+>   mm/migrate_device.c                          |   7 +-
+>   mm/mincore.c                                 |  47 +-
+>   mm/mprotect.c                                |   2 +-
+>   mm/rmap.c                                    |  27 +-
+>   mm/swap.h                                    |  30 +-
+>   mm/swap_state.c                              |  83 +-
+>   mm/swapfile.c                                | 245 ++++-
+>   mm/userfaultfd.c                             |  14 +
+>   mm/vmscan.c                                  |   9 +-
+>   mm/vmstat.c                                  |   1 +
+>   mm/zswap.c                                   |  12 +-
+>   tools/testing/selftests/mm/Makefile          |   2 +
+>   tools/testing/selftests/mm/ksft_pmd_swap.sh  |   4 +
+>   tools/testing/selftests/mm/pmd_swap.c        | 989 +++++++++++++++++++
+>   tools/testing/selftests/mm/run_vmtests.sh    |   4 +
+>   tools/testing/selftests/mm/vm_util.c         |  24 +
+>   tools/testing/selftests/mm/vm_util.h         |   2 +
+>   38 files changed, 2630 insertions(+), 191 deletions(-)
+>   create mode 100755 tools/testing/selftests/mm/ksft_pmd_swap.sh
+>   create mode 100644 tools/testing/selftests/mm/pmd_swap.c
+> 
 
 
