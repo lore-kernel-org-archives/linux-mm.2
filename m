@@ -4,117 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A32E0CA600B
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 10:45:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C63CFCA600E
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 10:50:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3B596B0096; Thu,  8 Oct 2026 06:45:03 -0400 (EDT)
+	id DF42F6B008A; Thu,  8 Oct 2026 06:50:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC50B6B0098; Thu,  8 Oct 2026 06:45:03 -0400 (EDT)
+	id DA4846B0092; Thu,  8 Oct 2026 06:50:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB5616B0099; Thu,  8 Oct 2026 06:45:03 -0400 (EDT)
+	id C6C756B0093; Thu,  8 Oct 2026 06:50:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 769136B0096
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:45:03 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 734991401E6
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:45:01 +0000 (UTC)
-X-FDA: 85299126402.07.0EC172B
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9DE3FC0002
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:44:59 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YpOBNcBD;
-	spf=pass (imf22.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791456299;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F4B46B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 06:50:41 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4B89240233
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:50:41 +0000 (UTC)
+X-FDA: 85299140682.27.85D6336
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012021.outbound.protection.outlook.com [52.101.66.21])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6D60A140009
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 10:50:38 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.s=selector1-NXP1-onmicrosoft-com header.b=idgwcCOp;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=none) header.from=nxp.com;
+	spf=pass (imf26.hostedemail.com: domain of peng.fan@oss.nxp.com designates 52.101.66.21 as permitted sender) smtp.mailfrom=peng.fan@oss.nxp.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791456638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dH+v/ufGOq7i0ts93hi9MHjSRomJDT2cVjr72NMJIW0=;
-	b=qTVNndwfDEqI5x536FrKfgOfW39VLl3W8M86/BnRIWwXk7R7x/6+e/BwSZINC+Thjja4Ny
-	HVvEsjW3Jj59MIbbo+PJh33KD5BJb5M7bgv/0OJA6M1GW058edrktoiEuQUkQwpuSmFikL
-	ELkGUqVAECepwYhWn6tkIGu+2YP3KaM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791456299;
-	b=C43iuTm06Iikvenej2XPEQp6DG2B5mhyty0xCaXbYlWDGQjN+ob6IcrU2+GC2VqS5Gr2TF
-	NtuSgc7W2PHvFZgew45DydaOF+ULtx1MgQpetM5IonIqXcqoxAnMroPgDdxbGo8/4SyPZ2
-	G8PzmKJgbnfYdy1AGH6LeszmJxfV9ek=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YpOBNcBD;
-	spf=pass (imf22.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cc1cb472b76so1250378a12.0
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 03:44:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791456298; x=1792061098; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dH+v/ufGOq7i0ts93hi9MHjSRomJDT2cVjr72NMJIW0=;
-        b=YpOBNcBDRYuEWDQl3Tiq3K7khtylu+Ya3lxLkOoHgyAkXpCu7Obgvlewmb7cXcuRoU
-         0Jb0qfvP1CY9FXpXL8b5m7ROm05vO+u9/mIeHT6tZdYClbU/rARLk8uAE/iYEOW0vBIK
-         6LweFtuXUAOMyT7xh8ZCf8vdCEBmJamNKTvxxoMqKHNjeSistHfs6sozlbc1SPthb031
-         eajFQ3JarUtsj/Jf/wLV/8gKpefz4sBX+2KVDkqZR1dhmmppsXe21XXxs5eLPWiw+5cQ
-         e/z1uprOzmZrEfh8PYAIhI9zefEWoT3Qdf7CdyWIlRtc0KY+qxiBFY3f3QtJLznpiS8O
-         b6Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791456298; x=1792061098;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dH+v/ufGOq7i0ts93hi9MHjSRomJDT2cVjr72NMJIW0=;
-        b=Qm8dryo5DPTfryQjfETlPSQFms6mylfVe3YXUfzpZsP3YtfDYE0NTtUgXOHAmZSttD
-         wT9+9+cRw+Z4cpPVd/LP+HjOWDwdZv8LTDQ2+fee0xawPh7JXxkQkcqYDELz0povRyuZ
-         oxZezbGhRuyMs4rjlwMOa91dZPW6YV+jq4jDI/sH1L4usrEyyN3U00D6mghaSUhmmknh
-         qWEmqfKAx9Z+isRkDyLzKn2+XoEWtXbDz0Z1E3SqJPXLp/DnHgYyznKLlw80/Tz8RKG8
-         /+gIIdUd/YD0nSlZWi0yJgrGEeFLespRu9SoTZlMTGDu4QKDX+yo06KMO0toziBi+4KS
-         XX8w==
-X-Forwarded-Encrypted: i=1; AKwUvBwCNGM0aeloc1+s+7iEf0LsizHCcvul5rdgxFVVP1yQnvd0rOKbjpBuTZbPrUtn10gvlwCDoo2zkw==@kvack.org
-X-Gm-Message-State: AFq9FYK0e/ynadIWcxM+2I3FnhEGxB/oj5WkgLqpG1n+O6A1qVYj/QGL
-	ko030/OW1h7SvFemUfHco9JY+1hP6azh7kViIsBLogbjJACZ+HrKi1AX
-X-Gm-Gg: AYBFou1rU2zKtAkUEj+AAbbtV0E4IE/3OAYN02VQZbauEJN0RTxB7TqdQxgjC1z8IdM
-	iRKVooKazbT9Cw8+P8Am4lifnzRsKYCtZTPAWzXgKVVAErEg3HjZ5Xzg6eqmzayCMp9lMFsPAPw
-	BYqCwosdDSZ6kNgmcqTxKjt4y5qrB4xE2YCDCYeaRMjF2PezgJVL5vnne0PFXZIGOE2blEfh4mg
-	CZc30hOzWmk91vS7qIfRF8/nZbuoifDSI7cjHeOc3G4bHFnLHhEfcSmkIiVO8vphlPvCE8lWi/x
-	i2OBJGdGtnybDCSpk4QIMYkmAa0GOs/sMGQOmTv2H0YK1pRPDMKBEc3wJBDWOcW2d9V3KBbv8Wm
-	rtLkuQ0lm91QO28WhYYrB7M/SsGMaUXuoWf/a8fpGCwFbUG8l1q2uNVuYiKgHZKGLdKXX14yyEu
-	YvU1ynXC8J5GyQ7lUmlbdRF/THSCEwTF+wi/M/80oW3wn4e54OmSAiZhKjN2+WbvatiDVw6GrjP
-	su1junQH0jQD21B9Uq9hJ+cAw==
-X-Received: by 2002:a17:90b:4fc5:b0:3a6:dc2f:f07f with SMTP id 98e67ed59e1d1-3a8a1982a7fmr4554157a91.10.1791456298338;
-        Thu, 08 Oct 2026 03:44:58 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2001:d08:1334:29ed:db11:2c4c:ee4f:606])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a9ff848f9csm3616656a91.9.2026.10.08.03.44.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 03:44:57 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: suhaas@s-joshi.in
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	SJ Park <sj@kernel.org>,
-	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [PATCH 2/2] mm/damon/core: Copy only installed probe in damon_split_region_at()
-Date: Thu,  8 Oct 2026 18:44:45 +0800
-Message-ID: <20261008104511.5290-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261007154851.45368-3-suhaas@s-joshi.in>
-References: <20261007154851.45368-3-suhaas@s-joshi.in>
+	bh=MeIhYu3/AGJfVVAw1V4fBUih+F1wZBNu8ihRQj5kdaM=;
+	b=kKWUl7x7KpvcTygvlrbyAdP8CJrlY5kZmKXks1OZ6rNu310zYc6qRzhZSl1alfugSFk+Kp
+	HQI2vdaMpUytvItdlg5r+RlofDlhhsGy0Ypy9NhU3Sjw1nwhvZZtaCWvvxxFqTKoO7vatA
+	9zzr0ZYVSmVdvzwpJ/j+NfnDtaTcCJ0=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.s=selector1-NXP1-onmicrosoft-com header.b=idgwcCOp;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=none) header.from=nxp.com;
+	spf=pass (imf26.hostedemail.com: domain of peng.fan@oss.nxp.com designates 52.101.66.21 as permitted sender) smtp.mailfrom=peng.fan@oss.nxp.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791456638;
+	b=QujTHp3FZ41XUTM+UVf8qK2/QUqL42FCxfI/8bJmh71eyEuWh9i2K7e82Oiq/jCc/L6KoC
+	6iapvjj0tdmnRBUQFS6VfKbzjVbIH/BrU1LDxB+FAbMESMD5o6+tuozjIrotP3QFyijOVO
+	rafQLinYO2veEKIkTeF9n1DQ1u7PRNA=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RBxeC7xosA8U9wF38A2G8xT+DxxmY+W1DWb2A+9oCwSAFX7ZVyuJ/+ucbVAvsfDwOGKqCOBf0SWudHeL0lK9pgD5E0YTvaXhZBJfc3zXJNu//48D9ANnDUxlREo30ENLqxFDTQHiVkN5+NDx+bIxqk2JHQ5q+0TARaxVY2VmB3hsKOWw+ktcWy3mom1bQ+Vl74Ts2oZ5iSir8mVKKbjjIKYzdpzruxSRH2I2+7XB621jy5n8V//duOQ1CzkGT+YSGm9bhUzb4rpRxbHccffuzwHf3Qw9tD2KllhjG/thzywgjNePlT/JYkoYkOevtygyheF8ld1Vsh74UbIu3gTAxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MeIhYu3/AGJfVVAw1V4fBUih+F1wZBNu8ihRQj5kdaM=;
+ b=Ge4mDPYi2XU/EaEZ1aoDw3K1q7hUXZp5cnWaC7XEkFJKiZJgqm5sAe7kjF+wULDrkMXTtOaCUaxzOgKw7SqclCkgzE4ed1Eh+crauCaxRP3FZV34vDaXE61ZbWeOPwNnmLxCgarudnrpFMK7eKw/4MGvfmgiwzHqEiwESJ2VhBr+5BxW9V18SidrTdod1oX3peG/62Sarnv8G5m0RMWb4kxC3bhd4zX2zg+njTMWJ/pGbm2Jqq1MuKS9md8ylvjP4TrzGmQV7CHK0xsZVGovtIpnnWXq2tw5VKU0pyovzETlGjuUR0fPMWwpcH5JP8PguTzA5N4bmU+No7rKjMX2AQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MeIhYu3/AGJfVVAw1V4fBUih+F1wZBNu8ihRQj5kdaM=;
+ b=idgwcCOpUQOuvf7RDCV3NMIsKdPhC9TLH/4U6uQ24nKu3Z8krkLjFfjIL4D1K8W54oHzYKqCzneojVHoLQzLF/mnhY0grQm8POoCRG59nWVELHAOiTIqXJPF2gbSmtkesBCc3eNiG4soZqYNYJnzhqLDHP+SLDsm/dz7YCmKXvy7tim/TNeqly1Gk8iI21RTw/NoybAUIyxG0ErVt0S92Waq+mbYGsP3en6d/rHkrWOs54nU0sfj32Ck4NnP6bo411PGpwH2SlsCaZvVaAf9/VEU6zq+dHLKn1HGspt6RWD4A2JkdFw05iN7SRDnBJ/CyNLvIxuhYTwfm6brFMfpCw==
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
+ by AM9PR04MB7585.eurprd04.prod.outlook.com (2603:10a6:20b:280::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Thu, 8 Oct
+ 2026 10:50:35 +0000
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0496.010; Thu, 8 Oct 2026
+ 10:50:35 +0000
+Date: Thu, 8 Oct 2026 18:55:07 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Michael Reeves <michael.reeves077@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+	maple-tree@lists.infradead.org, asahi@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 2/2] regmap: Drop map lock during cache init and exit
+Message-ID: <asd2iyVAnwBG7zVw@shlinux89>
+References: <20261006-regcache-lifecycle-submit-v3-0-37bdd82fd47c@gmail.com>
+ <20261006-regcache-lifecycle-submit-v3-2-37bdd82fd47c@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261006-regcache-lifecycle-submit-v3-2-37bdd82fd47c@gmail.com>
+X-ClientProxiedBy: SI1PR02CA0055.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::16) To AM8PR04MB7874.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24d::9)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9DE3FC0002
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|AM9PR04MB7585:EE_
+X-MS-Office365-Filtering-Correlation-Id: 886cb679-2215-4d5b-b187-08df2529fb25
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|19092799006|56012099006|4143699003|11063799006|10067099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	kAm+rAvEWzWiIGLSGpz4CJiamH5vUpvJqGh0HEFREluevDfVYIw1WBwnAitkRapKcwC4bp2hQeYZqgX+NJJRTI9RFB9PTdOCoGv9crsVLgl1RmgqJ0vwU/zdMLRRX83Kz5kdUqA9iwi+SN6wlCClOSCi9SVt6wuOKSwLC24F+PgtcSIDF11tbRDcvjUwVQe+DMIV9OE3dFref2mtJ0AXPeymIbd+Cy2nq0q9weW+GCgb5GS5rtcslER3hRBwwQAsILogsSaCOH63Txl9jiQIj/4zFN0HQWAiFaQdG2B3Q7sav+M3QYfbPuQE8KDDRpBnwixqb01SPjOsJjINmoUCnqLAq7NxX5tenos3TU9qLzunMBz8nL8+QjLIwO50M72umNXZZqPotDH/BRac9kqtXvESTX9Dtbp6wmWEslpMJlDoLnnaiExBPiDvqhh/vJ5IkDXVAkPxwGks3bB0nInTa62qsskRw4tSpYHpa5mGv9z/lgtLwH92uBRIVtgHEQjozet4XIroxOebaAOIFmwpi1iLxsKn3q+jJvmN4XJUZyBETtPlLE3UZyl558Rujal+9Gj9U3SRuABE8rkuMVl3eNlg4gVYjaJsWK5O2JwRwvMscBwz4c9htdCT7o6sAIEgsIaSWcDLAYzggxPxpPWJJ1OczFt625QU9/uljLqRFiw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(19092799006)(56012099006)(4143699003)(11063799006)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?evj4l8YpwL+1L9jmaRU06BwvyEaQRF5LI2CkTsCxVAMZgezxm4d7pF9/A343?=
+ =?us-ascii?Q?JyX8uyFnXpNBm1x0EEzH0m30yMM+/5VJ9eiEugGiWlT1ihUs9VUjWiq+jsaI?=
+ =?us-ascii?Q?ivZNf6imGx53s/Oa1SduRNs/cqbjyTv/+hyIkF7gVR6edmpJmQItmvmD97fJ?=
+ =?us-ascii?Q?MtF3z34/wryLy8LR5fwlXmPF9JRDvovag3phaAIUL3m3+w+Y9nv0stC935KG?=
+ =?us-ascii?Q?v4nBjM8K7m2j5Z+GeiUupKMgJdhc0hNGq5bOhcEO6fJCp4UQOS6T5ENOv6mZ?=
+ =?us-ascii?Q?XYQKp0sQXfQ95IvNXpsyR5ua8WSE3rsPop58MlZudOWXt2a37+j9KgY0xBBZ?=
+ =?us-ascii?Q?8+hM5xpftSyvstsZNcbllf4YKz6n1QronLr+s4UfA3iQmkq5Sd9zFCOBGdOS?=
+ =?us-ascii?Q?UBuY4epTADY6Mtwpx3OSziTBOtx6V1FvY8wLBeBRpR2IVHv3AgZMSp18chOJ?=
+ =?us-ascii?Q?sw+pSjuD3lxqK24YuE4jBM3u6AorQPok1d9+hhphRzn1wHnQrhrZKNXCZVtE?=
+ =?us-ascii?Q?jvI3bSZyWI7+in1Ohnm1xL9Y2yJEKjCm4UvLkUwqgV8Txws6lviuFnsYvJed?=
+ =?us-ascii?Q?XxxjcqCkauk9X8AcFuTygJMI07IsIIfG76E9VUFScJkC5y7G3lot7CJ/Bdnp?=
+ =?us-ascii?Q?K6qoKI5/6gK9w7Nw3Jvy23y8AQ6XCVQVa/lc18IYoP31d1FbdBY25mB3kqPt?=
+ =?us-ascii?Q?UaZCVmkMfQVTta1VLSzgIIaTNIVFi9IY+M29Y0lyPzlQob6SMofoe4o1LnYZ?=
+ =?us-ascii?Q?Lbi+EN4nbiqhT5n7eeQ13I8I3WPI44NlBafDDFV5huxlmviKuEz6UPvTrp6C?=
+ =?us-ascii?Q?lTqkeDE14/oK+BlYVwqYoqR4HR6+1KhlsNzrb1jOF25tzIUSiWJ5LTNxTKsV?=
+ =?us-ascii?Q?0LAyN9dHPwaRl5dDfIwRPFr1EELyq1sCXMQUeNzi9X2pqghfO76Id/Vn6mL0?=
+ =?us-ascii?Q?SDTha8Wv8tj5yS0/cad06RAAMuxrLAeXBacbhMWD41yHHBfB1V8uWjwQY3xc?=
+ =?us-ascii?Q?KyckMhpA3OH8th0aDM8jkUAXdCXLwnrGlS6E22zjjOFp+7sjLl98To8E+6hH?=
+ =?us-ascii?Q?WY3E21tnIfmYx/TDBkjXFei6FJ3hPlLVskBE6BqzAtT6nVzM1n6H1PmSiH/Q?=
+ =?us-ascii?Q?U9d7Jv93XqcOlbghDma/0HmY/9cHW8UvAZHltbybWbnLEQ3nVkv7TW5AsW6Y?=
+ =?us-ascii?Q?4zfcibyWVGI4jiiF8lobk8Hcis3uRluZ7D1674YQ5qc/6aST7jUCFXvA8z9M?=
+ =?us-ascii?Q?ykYA2/mpKWF+HvZdYjA5joTe0k3DmKUssE/uWjWxGEf4zhW/wwaGZItH/Xyv?=
+ =?us-ascii?Q?CLXTu0003evJAxntogLnD+qZVk34xJ36RucxrxGQ2YQAJT6CZouSHc/E4mFh?=
+ =?us-ascii?Q?K5hTPMnwOocYt6wzPFQFzVemDD6txivBGeIDMzQWdAwUqzRQnWr8Xa59lZUZ?=
+ =?us-ascii?Q?NYwW/M6A6vqyJLLyRpfE4vCPr9Jt2LS7Uf+YfDHOU17VcOBRoiA5nhp2WTbO?=
+ =?us-ascii?Q?uKK3LZz3FKng3ef10L2eAfGp/AL9Akv6vW/9BmCoMluOmK91zA5n+HzMgGfY?=
+ =?us-ascii?Q?WbKZJ2mv2Wy5GJsV8R9X20DFkCqkjQVmfGiTHk5MNTZTBjwxgEIyPelNHOiq?=
+ =?us-ascii?Q?9TFAQHbS07gygrtyIPCLM933MEs06L482dC1rtQTSmmTzQNP701hIrNhu6PZ?=
+ =?us-ascii?Q?laC0MxcAIPrVu63eylrrzBPu4NuDq/FRVv+Vwq7Dr1NVnNE/ZPQdBC7M3f6o?=
+ =?us-ascii?Q?nZZawofjKeAjbJcNSU4uWWsXNKn6qLnPtf/V+xzHjLbVWPzqPN12?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 886cb679-2215-4d5b-b187-08df2529fb25
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 10:50:35.0494
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hz/7ViEqWu3OX7YpUl+LSsb9atOZilc6CL7nrx9dzKLlFjtCbmwCH2l19MWD01+8pRqyjud1XQk1RPbwP0QstLUvfi087XDj+oWgVM9zVMX7woT8c6bzTLSbvbJfXTNx
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7585
+X-Rspamd-Queue-Id: 6D60A140009
 X-Rspam-User: 
-X-Stat-Signature: u66ayj5o756d8n5yb4mfuk47yqtt4jqr
-X-HE-Tag: 1791456299-983462
-X-HE-Meta: U2FsdGVkX18XncizDJb0XxDNj6GHrWX7R2J4GKJJSq31LYqhMs9Xsa0VSTZbf6aO5GySxWTbATni78UE3nWsIAoUxf9lR6AleycFOy7tKILilMkogc6d34/GTlSzHCMPQg8P4YAZg/ujQFyfK4dm+KtAdYN/GYGJzIHFpdFenXOR3CIhitj231yi3uYqg92GcNAP5/3/AVJAAL4eXHS6PrCwBQm2UtozhqCpdpVNMtPS/EbASyTdrQauHpAdA1fGHW9MZkFe3vLFRYw5KeI/AXgTZb6a9W2jg/zC0T72Cnus5XFujm9Mb2UXi4fb/K7R18/VKBlLxwIyS8w/flH+RJeEYK2lsT/f/+oK3QUl3oEiBTkS7INqdbGiV6UYE1eTH2u6/+zL2Y/h6/c6hxeVtEGVpgoJuDgUJD6hPQSMwgQjJ3norJBLzcuLh7FobcvC/uFx38tesNRBDgUHrXQ55S8/6Zl7WA6G9NZkTM/nDvCGT2m4m/Th65tpuiJI6mN9DqZHCIwe8IaR7356RfdTIAZVVwIgel2opSvdfv9799UKsFhtT+zxCtrexgCmCv/6JZ7BMhDkxZXaY3WnEU87gE1UMNMwwD0xns6u35lzy+dwSguOv2DGNiWgb7H6CGRyLpMZo3Quaukwej/l/3OENlNzCiy8fGqSdTyHOrniTGdCJvhmA3Rwq7K5aK5+6dgDvZ6N5Ga+4Xnreb+3Dz3B+pVlPRcuFnrqnc61DBXfngb8VqZbyNoqU+kp+qLizlaV2zmP3Ie37ZOfH1hVVsXykId7eAVFJoicRBUD/vU9EPIQJPci/0DdYr3xkXag5rlNcF1KHORmhZrjdjitNPMr5BNxtrHqGZB6VIPK462H4ZE553N1IkTL6bE2ZvS7qJOSeZmTodzWUTIIoSE8gDV8Vq0j1LAKTJK9tvDT0O5fzelI/+nKTN7n1KKd4Nw6E7WDQWA8t7qruZ/qvTigm1P
- jI5zziMW
- lxUw8yiV9CAzTQkZ71sH8q8ItlDkugFNOvlp+8LkNU9GMk64ohSst7/2BP+9zD9DwT0iQMkPqOr2xCwaQCnHXu09EUMrsA2+inzGnCugJrIzSPup5StS7eTCQr6LdeeavRXMaYO7xFt1P3u6RaS9FLMAjRk3xHEuZuPrUhG53bd+py4ur7+6biClnpB4khSsikyt93HVcAEl4pLORvUZXxaGZ7jsGlrDldVcC15Qxid09qhlecUdX/kghCyCcovDhU2sFE8DvxspTOmZ3AEgijLaQmEJZtP/wT86fQ1ok+ZtBJTTDGYY+J6mb4GEabqt7KEee3tUYE/M64Rg2zxF6q1jDrDzNbLc2kXUgjY7bdfn1hC4b5eFYw7E23Y6FUZbCxPf34Sy5puYSqjtQyr4lqwvbQUNKr0OyFZkrTKxUMWkoDyKpc9VJ06uBrUDl7UNEVqa5rQdwR0IpSMoFbR5rA4YDug==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 4doo51po39dph6g4ciaqzku91tuz1nak
+X-HE-Tag: 1791456638-301059
+X-HE-Meta: U2FsdGVkX1+KQsiZqJ44o0HB0UCyPYIlQIekVxyWn5K8CY/IR5Cw1SDDOz+wbiL3meIZ1P+7zXuvepBiJ1LStQnNJl6gksB5Q/ncX4hG0W9re1zMisEGcymExMkJpewcZ++418H5Tdt6abxYytQihbb4n6SB5oi/kkCoJ5IbbMVSk1DE1xT/dq6kj60I2YxcInmzidWqKOcrFRdL8V7swDEwdinEZ3kOUQOvuN9APCXJQEaogD6esN+M6NGzdNz0Xc1IfRS0lk0jkrH9n8Nn7mQ8yEwcFd8oBC8lKswPnlZ2A0//roCE9VQ5Yh7Qs5bX213Zm5LRPY3FLk4v5qJQf2TQwRT8ApHCaxZc7JqltpUc4dUKkNKQFdUEGNlKxyqaVpStisSyXdaHcsn1f6dlv5qgwnFQ8+LcK9cKMgUYDxyCIR8HoPdukhAz3r1APkAV5PZwaVk0eJXeHvL9627SM9Rfsl/Z6CVpyAL/PThPXn+TvlC+juObMFta05omfO2qMRe6SdlFw7hffTEcuUHjB+KEzjt/kO5aBcEOR2B2fZ4hVdDz1joXEmBN2xrkbH+e7a3/0PxgDplOruo1bzzvQY+vS8/8nuwJv9Qg+J7IOO9KNqN+/ii/Kr8Qw5srAh5zz/wYHHqspkZRPHxxzIn8rHqhoLUSGoKOPAraQmfz/xhwrhQO2fF+GPH/Q7Idh43cPUrlu/Xi6bi5wjwxX7uEODNou1PdNDnvC6cTLptP4iH1Ah8jaaC+DUj3xvFT0+ignq9YuwflJkoU9d2kPL3O3nmzvDVx2oSygW9oy942S7cvFUJ5hHGNodUUv0xO/JEhBm3t62dp/0u6o45gCR9Sv85u606nYL72wf+Qy/IFBEu0BZslnogmkJuEgu5W+apSzdsNZ/eb88OAxAQuLdSPxUQh7iIbM36aCTw26q6eKbY64zWfeZtJJ6zwuqNsdC34GfuToSnLl9fN6BKGsiq
+ WmtRpYbs
+ Yr5r2233M4OGh32zhIo8y4LCjLhzrBpftCw79/7Pe1TV75GQVR2B2fYEgoGT7vFpOmfGtg2tjeIDD+iPwdbPgl/UMRh+C+shzkG1lP9wFGaitxz0JZvpIG/d3RLiFQ+mYODa0kv2POPB0y3PWkUq+2ApKY/mTv4HPUdyb4PJ8JvU9JzkRlvrHFE97xIAhpRxhP/we0Y7nIT8piFMftLEPCxEND+/pQb6vdCaWio0DGOzjgxABBMJRm9vRjHy5nBvail1DwOz1sRjpY7iDtnHlx3a9w+j6W5eeUcnfzguLxVLSDXHQ4O5GUp/B19zJPwt9JZD7MGj4gEZFnN8i7Z9h1OE1WI4Y39FoOzYTnrYGOAoQ6K4UiSkvYOYUU97TZAgDDzVgHrrxGDo0PryB9SZMWx4I0NJUUmi/lskzaT9jg80MyNIqVFNRkIAEYYd0bKogs20DrYtPSxEA+OU1MWNrxNvM68B46IyYaEkVqUfT5bQ6tzDsGnAJQKdnJ51e2FrBmwu7vXfPVC9PDa0LPI6YUjtmgENRJfP91QM7Rim/vD0k/VMDkkuYTvviknRyP5tbfQ81MBhZTiN8PRhHURsq+axzSnEHw/4AF2GeoGk7j8B6kArUbOxB6D+wBF2YsOSFzelcGz5+2PSWwHgIlOJKOy76hcc5t9GGyhItgUvSwDD24RLrEw1ObuEiu6a6pN1200kHkmFQoa5ZrAgqoZGCkMndB63riyFIJA4U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,298 +166,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 07 Oct 2026 21:18:46 +0530 Suhaas Joshi <suhaas@s-joshi.in> wrote:
+On Tue, Oct 06, 2026 at 06:03:16PM +1100, Michael Reeves wrote:
+>On systems with CONFIG_PROVE_RAW_LOCK_NESTING enabled, Apple GPIO probe
+>triggers an "Invalid wait context" lockdep warning.
+>
+>The driver uses a regmap with a raw spinlock and REGCACHE_FLAT. During
+>regcache_init(), regcache_flat_init() allocates memory while holding the
+>raw spinlock. The memory allocator can acquire a non-raw spinlock, which
+>causes an invalid raw-to-non-raw lock nesting error. The abbreviated call
+>chain is:
+>
+>  apple_gpio_pinctrl_probe
+>    regcache_init
+>      regcache_flat_init
+>        __kmalloc_noprof
+>          __pcs_replace_empty_main
+>            refill_objects
+>              _raw_spin_lock_irqsave
+>
+>Cache allocation occurs before the regmap is published, cache destruction
+>occurs after users have stopped accessing it, and regmap_reinit_cache()
+>requires callers to prevent concurrent access. Remove the outer map lock
+>from cache initialization and destruction. Keep it for cache population
+>and normal register access.
+>
+>The Maple cache still uses its internal spinlock during teardown. That
+>lock can also be acquired from hard IRQ context during register access.
+>Add Maple-state irqsave helpers and use them during teardown to preserve
+>the lock's IRQ-safe lockdep state.
+>
+>Fixes: fd4ebc07b4df ("regmap: Hold the regmap lock when allocating and freeing the cache")
+>Suggested-by: Mark Brown <broonie@kernel.org>
+>Suggested-by: Liam R. Howlett <liam@infradead.org>
+>Signed-off-by: Michael Reeves <michael.reeves077@gmail.com>
 
-> In damon_split_region_at(), we copy the entire probe_hits[] and
-> last_probe_hits[] arrays of DAMON_MAX_PROBES size. However it is possible
-> that the number of probes installed is less than DAMON_MAX_PROBES, in which
-> case one or more iterations is/are redundant. To remedy this, iterate over
-> only as many times as the number of installed probes. To do so, accept a
-> struct damon_ctx pointer in damon_split_region_at(), and update all
-> invocations of the function to pass the new argument.
-> 
-> Also update damon_test_split_at() and damos_test_filter_out() in
-> core-kunit.h to supply a context to function paths that call
-> damon_split_region_at().
-> 
-> Signed-off-by: Suhaas Joshi <suhaas@s-joshi.in>
-> ---
->  mm/damon/core.c             | 42 +++++++++++++++++---------------
->  mm/damon/tests/core-kunit.h | 48 ++++++++++++++++++++++++++++++-------
->  2 files changed, 63 insertions(+), 27 deletions(-)
-> 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index a3af5ee685e1..025df4d19e20 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2049,8 +2049,8 @@ static unsigned long damon_region_sz_limit(struct damon_ctx *ctx)
->  	return sz;
->  }
->  
-> -static int damon_split_region_at(struct damon_target *t,
-> -				  struct damon_region *r, unsigned long sz_r);
-> +static int damon_split_region_at(struct damon_ctx *ctx, struct damon_target *t,
-> +				 struct damon_region *r, unsigned long sz_r);
->  
->  /*
->   * damon_apply_min_nr_regions() - Make effect of min_nr_regions parameter.
-> @@ -2075,7 +2075,7 @@ static unsigned long damon_apply_min_nr_regions(struct damon_ctx *ctx)
->  	damon_for_each_target(t, ctx) {
->  		damon_for_each_region_safe(r, next, t) {
->  			while (damon_sz_region(r) > max_region_sz) {
-> -				if (damon_split_region_at(t, r, max_region_sz))
-> +				if (damon_split_region_at(ctx, t, r, max_region_sz))
->  					goto out;
->  				r = damon_next_region(r);
->  			}
-> @@ -2494,9 +2494,9 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
->   *
->   * Return: true if the region should be skipped, false otherwise.
->   */
-> -static bool damos_skip_charged_region(struct damon_target *t,
-> -		struct damon_region *r, struct damos *s,
-> -		unsigned long min_region_sz)
-> +static bool damos_skip_charged_region(struct damon_ctx *ctx, struct damon_target *t,
-> +				      struct damon_region *r, struct damos *s,
-> +				      unsigned long min_region_sz)
->  {
->  	struct damos_quota *quota = &s->quota;
->  	unsigned long sz_to_skip;
-> @@ -2523,7 +2523,7 @@ static bool damos_skip_charged_region(struct damon_target *t,
->  				}
->  				sz_to_skip = min_region_sz;
->  			}
-> -			damon_split_region_at(t, r, sz_to_skip);
-> +			damon_split_region_at(ctx, t, r, sz_to_skip);
->  			skip = true;
->  		}
->  	}
-> @@ -2581,12 +2581,12 @@ static bool damos_filter_match(struct damon_ctx *ctx, struct damon_target *t,
->  		}
->  		/* start before the range and overlap */
->  		if (r->ar.start < start) {
-> -			damon_split_region_at(t, r, start - r->ar.start);
-> +			damon_split_region_at(ctx, t, r, start - r->ar.start);
->  			matched = false;
->  			break;
->  		}
->  		/* start inside the range */
-> -		damon_split_region_at(t, r, end - r->ar.start);
-> +		damon_split_region_at(ctx, t, r, end - r->ar.start);
->  		matched = true;
->  		break;
->  	case DAMOS_FILTER_TYPE_PROBE_HITS_WSUM:
-> @@ -2779,7 +2779,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
->  					c->min_region_sz);
->  			if (!sz)
->  				goto update_stat;
-> -			if (damon_split_region_at(t, r, sz))
-> +			if (damon_split_region_at(c, t, r, sz))
->  				goto update_stat;
->  		}
->  		if (damos_core_filter_out(c, t, r, s))
-> @@ -2826,7 +2826,7 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
->  		if (damos_quota_is_full(quota, c->min_region_sz))
->  			continue;
->  
-> -		if (damos_skip_charged_region(t, r, s, c->min_region_sz))
-> +		if (damos_skip_charged_region(c, t, r, s, c->min_region_sz))
->  			continue;
->  
->  		if (s->max_nr_snapshots &&
-> @@ -3643,10 +3643,12 @@ static void damon_verify_split_region_at(struct damon_region *r,
->   *
->   * Return: 0 on success, negative error code otherwise.
->   */
-> -static int damon_split_region_at(struct damon_target *t,
-> -				  struct damon_region *r, unsigned long sz_r)
-> +static int damon_split_region_at(struct damon_ctx *ctx, struct damon_target *t,
-> +				 struct damon_region *r, unsigned long sz_r)
->  {
->  	struct damon_region *new;
-> +	struct damon_probe *p;
-> +	int i;
->  
->  	damon_verify_split_region_at(r, sz_r);
->  	new = damon_new_region(r->ar.start + sz_r, r->ar.end);
-> @@ -3658,11 +3660,13 @@ static int damon_split_region_at(struct damon_target *t,
->  	new->age = r->age;
->  	new->last_nr_accesses = r->last_nr_accesses;
->  	new->nr_accesses = r->nr_accesses;
-> -	/* todo: do this for only installed probes */
-> -	memcpy(new->probe_hits, r->probe_hits, sizeof(r->probe_hits));
-> -	memcpy(new->last_probe_hits, r->last_probe_hits,
-> -			sizeof(r->last_probe_hits));
->  
-> +	i = 0;
-> +	damon_for_each_probe(p, ctx) {
-> +		new->probe_hits[i] = r->probe_hits[i];
-> +		new->last_probe_hits[i] = r->last_probe_hits[i];
-> +		++i;
-> +	}
->  	damon_insert_region(new, r, damon_next_region(r), t);
->  	return 0;
->  }
-> @@ -3691,7 +3695,7 @@ static void damon_split_regions_of(struct damon_ctx *ctx,
->  			if (sz_sub == 0 || sz_sub >= sz_region)
->  				continue;
->  
-> -			damon_split_region_at(t, r, sz_sub);
-> +			damon_split_region_at(ctx, t, r, sz_sub);
->  			sz_region = sz_sub;
->  		}
->  	}
-> @@ -3723,7 +3727,7 @@ static void damon_split_some_regions(struct damon_ctx *ctx,
->  			if (sz_sub == 0 || sz_sub >= sz_region)
->  				continue;
->  
-> -			damon_split_region_at(t, r, sz_sub);
-> +			damon_split_region_at(ctx, t, r, sz_sub);
->  		}
->  	}
->  }
-> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-> index 5ad89c1d9fc2..e02604c7e0bc 100644
-> --- a/mm/damon/tests/core-kunit.h
-> +++ b/mm/damon/tests/core-kunit.h
-> @@ -141,12 +141,26 @@ static void damon_test_split_at(struct kunit *test)
->  {
->  	struct damon_target *t;
->  	struct damon_region *r, *r_new;
-> +	struct damon_ctx *ctx;
-> +	struct damon_probe *p;
->  
-> +	p = damon_new_probe();
-> +	if (!p)
-> +		kunit_skip(test, "probe alloc fail");
-> +	ctx = damon_new_ctx();
-> +	if (!ctx) {
-> +		damon_destroy_probe(p);
-> +		kunit_skip(test, "context alloc fail");
-> +	}
-> +	damon_add_probe(ctx, p);
->  	t = damon_new_target();
-> -	if (!t)
-> +	if (!t) {
-> +		damon_destroy_ctx(ctx);
->  		kunit_skip(test, "target alloc fail");
-> +	}
->  	r = damon_new_region(0, 100);
->  	if (!r) {
-> +		damon_destroy_ctx(ctx);
->  		damon_free_target(t);
->  		kunit_skip(test, "region alloc fail");
->  	}
-> @@ -156,7 +170,7 @@ static void damon_test_split_at(struct kunit *test)
->  	r->last_probe_hits[0] = 3;
->  	r->age = 10;
->  	damon_add_region(r, t);
-> -	damon_split_region_at(t, r, 25);
-> +	damon_split_region_at(ctx, t, r, 25);
->  	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 2);
->  	if (damon_nr_regions(t) != 2)
->  		goto out;
-> @@ -176,6 +190,7 @@ static void damon_test_split_at(struct kunit *test)
->  
->  out:
->  	damon_free_target(t);
-> +	damon_destroy_ctx(ctx);
->  }
->  
->  static void damon_test_merge_two(struct kunit *test)
-> @@ -1648,19 +1663,35 @@ static void damos_test_filter_out(struct kunit *test)
->  	struct damon_target *t;
->  	struct damon_region *r, *r2;
->  	struct damos_filter *f;
-> +	struct damon_ctx *ctx;
-> +	struct damon_probe *p;
-> +
-> +	p = damon_new_probe();
-> +	if (!p)
-> +		kunit_skip(test, "probe alloc fail");
-> +	ctx = damon_new_ctx();
-> +	if (!ctx) {
-> +		damon_destroy_probe(p);
-> +		kunit_skip(test, "context alloc fail");
-> +	}
-> +	damon_add_probe(ctx, p);
->  
->  	f = damos_new_filter(DAMOS_FILTER_TYPE_ADDR, true, false);
-> -	if (!f)
-> +	if (!f) {
-> +		damon_destroy_ctx(ctx);
->  		kunit_skip(test, "filter alloc fail");
-> +	}
->  	f->addr_range = (struct damon_addr_range){.start = 2, .end = 6};
->  
->  	t = damon_new_target();
->  	if (!t) {
-> +		damon_destroy_ctx(ctx);
->  		damos_destroy_filter(f);
->  		kunit_skip(test, "target alloc fail");
->  	}
->  	r = damon_new_region(3, 5);
->  	if (!r) {
-> +		damon_destroy_ctx(ctx);
->  		damos_destroy_filter(f);
->  		damon_free_target(t);
->  		kunit_skip(test, "region alloc fail");
-> @@ -1668,27 +1699,27 @@ static void damos_test_filter_out(struct kunit *test)
->  	damon_add_region(r, t);
->  
->  	/* region in the range */
-> -	KUNIT_EXPECT_TRUE(test, damos_filter_match(NULL, t, r, f, 1));
-> +	KUNIT_EXPECT_TRUE(test, damos_filter_match(ctx, t, r, f, 1));
->  	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
->  
->  	/* region before the range */
->  	r->ar.start = 1;
->  	r->ar.end = 2;
->  	KUNIT_EXPECT_FALSE(test,
-> -			damos_filter_match(NULL, t, r, f, 1));
-> +			damos_filter_match(ctx, t, r, f, 1));
->  	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
->  
->  	/* region after the range */
->  	r->ar.start = 6;
->  	r->ar.end = 8;
->  	KUNIT_EXPECT_FALSE(test,
-> -			damos_filter_match(NULL, t, r, f, 1));
-> +			damos_filter_match(ctx, t, r, f, 1));
->  	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
->  
->  	/* region started before the range */
->  	r->ar.start = 1;
->  	r->ar.end = 4;
-> -	KUNIT_EXPECT_FALSE(test, damos_filter_match(NULL, t, r, f, 1));
-> +	KUNIT_EXPECT_FALSE(test, damos_filter_match(ctx, t, r, f, 1));
->  	/* filter should have split the region */
->  	KUNIT_EXPECT_EQ(test, r->ar.start, 1);
->  	KUNIT_EXPECT_EQ(test, r->ar.end, 2);
-> @@ -1704,7 +1735,7 @@ static void damos_test_filter_out(struct kunit *test)
->  	r->ar.start = 2;
->  	r->ar.end = 8;
->  	KUNIT_EXPECT_TRUE(test,
-> -			damos_filter_match(NULL, t, r, f, 1));
-> +			damos_filter_match(ctx, t, r, f, 1));
->  	/* filter should have split the region */
->  	KUNIT_EXPECT_EQ(test, r->ar.start, 2);
->  	KUNIT_EXPECT_EQ(test, r->ar.end, 6);
-> @@ -1717,6 +1748,7 @@ static void damos_test_filter_out(struct kunit *test)
->  	damon_destroy_region(r2, t);
->  
->  out:
-> +	damon_destroy_ctx(ctx);
->  	damon_free_target(t);
->  	damos_free_filter(f);
->  }
-> -- 
-> 2.55.0
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
 
-Thank you for your patches!  LGTM.
+BTW: patch [1]
+     "regcache: extract locked helpers to replace open-coded lock/unlock pairs"
+     has been accepted into Mark's regmap for-7.4 branch. So there will be conflicts(:
 
-Reviewed-by: Liew Rui Yan <aethernet65535@gmail.com>
+[1] https://lore.kernel.org/all/20261002-regmap-lock-2nd-v2-1-e172b0501c52@nxp.com/
 
-Best regards,
-Rui Yan
+Regards
+Peng.
 
