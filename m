@@ -4,105 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C49E0CA6007
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 09:43:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 386FACA600E
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Oct 2026 09:56:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B05846B009B; Thu,  8 Oct 2026 05:43:15 -0400 (EDT)
+	id 1F6196B008A; Thu,  8 Oct 2026 05:56:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8E5E6B009D; Thu,  8 Oct 2026 05:43:15 -0400 (EDT)
+	id 1A6906B008C; Thu,  8 Oct 2026 05:56:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97EF26B009E; Thu,  8 Oct 2026 05:43:15 -0400 (EDT)
+	id 095E96B0098; Thu,  8 Oct 2026 05:56:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7426D6B009B
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 05:43:15 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E71CC1404D1
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:43:14 +0000 (UTC)
-X-FDA: 85298970708.11.B76706E
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8E330100003
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:43:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=PbgH3VY5;
-	spf=pass (imf14.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DD9A26B008A
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 05:56:33 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4BC6EA051E
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:56:33 +0000 (UTC)
+X-FDA: 85299004266.18.9D1D009
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7330EA0006
+	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:56:30 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="g9fC/RVr";
+	spf=pass (imf15.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791452592;
+	s=arc-20220608; t=1791453391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nJNnHPGG4mNQooWPuJ2KoNzlsArMHoPuRSotZ7wNxxI=;
-	b=vcRuR93nAb4APFEMlFf2uDaYeRBMOAb40gsA6X5360scMqqyXsO4t/z0xIIWc6pwIPWaj6
-	n4V6uo8Dvp7rboLfssTaJo7K7HC2zi/WJf6q64ifBO58dPtYpltk0zRfhwvadDv/Krj4Zf
-	F12AhEOVSAVGtSEXON/TikYsT+s+lXQ=
+	bh=1c2mwR8cYOL6Ygo+f93Zr8TE7ypOMqMWTVG83TPWuJk=;
+	b=QKMSrEF91eNL/jWSBe7sEGBmfwFqMgtepsHbvCq5KRoVI/LIZFF84LopE5CUkjYQ3lRSCo
+	hA1E9dKPSKLtMJVjT4a+6cYO4mXezzGSgiK4+d2rwFg/ysvADyiWrbh9nG4m592cT/FtIH
+	ruWTSPzH3Jn2jRn/0mvF2rl0PkE7MPg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=PbgH3VY5;
-	spf=pass (imf14.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="g9fC/RVr";
+	spf=pass (imf15.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791452592;
-	b=A2NtILEQNu5bw+b0yufMzwuDnon6Z89Own9f/odOAll9WtE70QorrB9cgRV+lB30RuOlst
-	eBqDfuviIy3czg1ZmFng9WdYC4e7uX66HqkJz+qTgA+fOvU/0Y4H5ZYWV9UqrXkJZC9+Xq
-	z86+MJdW8fhX0lHXOkhpEhJxZzcda48=
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20261008094311euoutp028ec7cb1d130d6d302681fcb497c4fa03~chKPwIctN2642326423euoutp02p
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 09:43:11 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20261008094311euoutp028ec7cb1d130d6d302681fcb497c4fa03~chKPwIctN2642326423euoutp02p
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1791452591;
-	bh=nJNnHPGG4mNQooWPuJ2KoNzlsArMHoPuRSotZ7wNxxI=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=PbgH3VY5H2lL1x3cW1EYzRMsvXBfnGZD66HPLDIegw38L8M/Ylhmpg0gnsFxXzm12
-	 rXoJE1UUssw/hNOLBLOVEna1pFXZnwlpFoCFFYrzfy+1UpkiLGMWksbKaG4In8YiGQ
-	 fs97ketcN/775lV7DxP2TVq9KZ/k2Xat6DOpVv+Q=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20261008094311eucas1p1d640b4ffd81730e0ee429aef7e8412b4~chKPgpifp2015020150eucas1p1J;
-	Thu,  8 Oct 2026 09:43:11 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20261008094310eusmtip1d8898c71d330dd4bbb9e00e90ce133cc~chKOulU4o1455814558eusmtip1R;
-	Thu,  8 Oct 2026 09:43:10 +0000 (GMT)
-Message-ID: <1813f0d0-1e0d-4cec-8132-cf1f8731a8e6@samsung.com>
-Date: Thu, 8 Oct 2026 11:43:09 +0200
+	t=1791453391;
+	b=Nj22vBL92/CoWASPEP5dLDxsR5OrDR/6AcXYPWiNtIP/eh3OS1cFtL9QbkXxZrl4m4277A
+	0cwgq4uQTB0r3HoEgHE7e1vAfmgP9RQcylW9xAcQ3P2nKS2dSimwDxJj4NM1oqNPXCe074
+	o/ybMTr3zW7ddRvFYGVFzgjDWe1RbTE=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1791453387; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=1c2mwR8cYOL6Ygo+f93Zr8TE7ypOMqMWTVG83TPWuJk=;
+	b=g9fC/RVrCE3TmzDiiOeo4Fn1zK21Ex0aEyL4TlqHPXlMT1hj+WxQYB06xQsFCPv/C1ZB8WU2bfpyQN+QGaIrxff8KbqalZixj0+GZ0ttsZzzyp2EoMbkhAEAF6JMHXPf63XSRxftjUzJTYrv5C6H6iXAGf+Kc+xo3Z0lpZfZsO0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XCO8HAT_1791453384;
+Received: from 30.178.85.189(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XCO8HAT_1791453384 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 08 Oct 2026 17:56:26 +0800
+Message-ID: <776ea9bf-88db-44d5-a80e-eaa958294bab@linux.alibaba.com>
+Date: Thu, 8 Oct 2026 17:56:23 +0800
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v3 0/5] of: reserved_mem: several fixes about reserved
- memory
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Wandun <chenwandun1@gmail.com>, robh@kernel.org, saravanak@kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, akpm@linux-foundation.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <asc6brs_g0ky0wOM@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] mm: memcontrol: drop kmemcg_id and use the memcg
+ ID for list_lru indexing
+To: Gregory Price <gourry@gourry.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Usama Arif <usama.arif@linux.dev>, Dave Chinner <david@fromorbit.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
+ Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Xunlei Pang <xlpang@linux.alibaba.com>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260907110111.2286932-1-qinyuntan@linux.alibaba.com>
+ <20260907110111.2286932-2-qinyuntan@linux.alibaba.com>
+ <arNK64PxTXbVEhis@gourry-fedora-PF4VCD3F>
+From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+In-Reply-To: <arNK64PxTXbVEhis@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20261008094311eucas1p1d640b4ffd81730e0ee429aef7e8412b4
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20261003080438eucas1p2bdb68c248ecad088559285a4f736bfe5
-X-EPHeader: CA
-X-CMS-RootMailID: 20261003080438eucas1p2bdb68c248ecad088559285a4f736bfe5
-References: <20260920092852.614973-1-chenwandun1@gmail.com>
-	<arJA6fOMetzoBhDH@kernel.org>
-	<060fb694-ba1d-40e7-8a18-f32d5a4039ab@gmail.com>
-	<CGME20261003080438eucas1p2bdb68c248ecad088559285a4f736bfe5@eucas1p2.samsung.com>
-	<asC3DBvtlcO5AVsz@kernel.org>
-	<5dccea9b-a9e1-44f5-84d9-bc9efe04edee@samsung.com>
-	<asc6brs_g0ky0wOM@kernel.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8E330100003
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7330EA0006
 X-Rspam-User: 
-X-Stat-Signature: 5mgzsiknjbiauwdpq19tqrtmtr1rdjxc
-X-HE-Tag: 1791452592-923817
-X-HE-Meta: U2FsdGVkX1+s1XQW+Q6m9ml2YWAoRJEM8oxsXCczj7u2stFqVOyAV7XbFRnDymBQEUa2AXk8jpdf8lh9IntxRQnih2ZTzwlpW7xEDrMJGq1zCUJ6+d8wdeI0qXhT2MIQ3RncRVigwtGSQNmLjAZr3Xi+7tWylhkWB8XHiL9hf//VMKHEHo3piqFJ2bVgCtVjBeQrMmSV6HldC1H7xQynj/TbqsUSJtOMCPLs4X+HLHq7XcOD2jpw57aoF7SIgU8Rxt+Jb/1nIk4qGoLbAfm0+T9yQxhaG8leWGOmu8obLldJAnrGuc1VJgc2i2Ag5xD5Q/htmWN7RqgjKnJmyMNGIsJnX4IpXAKjz/HQ1VMwTx5oQozHZDMG0yu7+yjVLahCOAsD8xuIeW9sc07Q/KYaD9yCpfJgVAWPydF3wxXY47B7kX7cguCu6jf1ESPtRr+X2GjKOq9DpKl/eWPbZ8NlsAjZYEs/E76wUfMbWwCZvO0hEuRP5hxiAb4eevIzmyihrrGT3uDM5pB7NoArTIy5ydfB2poIvP+DP71jjz3mIp7nUnnQS7o6RXJzvOU1gjCnY8n65NJS+TBQqam3VILr0un3R3jeIOSi71vsEYRJYf5N1CkIB7dm0DqngQxS4ZxcCiNbkRnvO2INpQLDYCl5HR+MgQm1w+ro/sxqu+mC7kmjgx248Rw+JhLbareLSUT1shs4WKS85XPADogIxjXUQQEWGbMUejsaXVPMlbvb0K7LeH/JWRmu1eaEZuzLeVc2Xz6m1UEi5roH/9b3Ao9SvtScRqCb5RvgUJvlYOVCAq5T2odzTIe9dw6LzJ2syG1oXdNZqdQa3rOPeBjdyGjVDqpNfdOfwrwIAguqe6zoGietKjjudifgsnVorQ77nu3NmqkCsm1uHmsdvZlj4HnFi0YiT2BIy/yT9nrXsuqWr5LEcjP2q/f/RVijK/rjMrdvi8/5NMlDDgTfEBafMBs
- +Y3rrqgp
- AEe6anCp39dAxhuHbJdO58IAtQUT7lfd/EWrJIOpdRlL85u1pB8bMkParc1Epwi0lVlmrnX0CTDi2NYPj9c++J8m31cCF8Y5FnnPxl38Q1SayIYtis9KrliigNJy1mXzV8NTrY3ulILJFJNDylsmvIGdc+SF9iu20jf9w64vVbLQFggQ=
+X-Stat-Signature: 3dje33e98ayziezp11phy3kfm5bu4gx7
+X-HE-Tag: 1791453390-23565
+X-HE-Meta: U2FsdGVkX18K5fJkgRwXxkJT3I2aJ3/6cPht1CjBNnyLat4ivCokHPk6aV0lB/Ef1yOWqc9BmFlq8vW/ZZYAkcbOOQb+QjTVJp8a4bgrQdCu7gM9RiIeHwHbEGvlvB7aK0fbINreOcUttJHb9LrMI1USQOrEefhQ37IDQVu7I9uJhWVxa4Y95/OtlUbIGByFywcXrX+Ta4K1aM0TtaLqXwr0zV+IJX2f6+kPFSwr6a+rkv2ONrJGYAB8gFh0NABfeiPxrX0xlKc9ZGUufQhY5ln+UPWVAyiHScO7WPa+Ks4I+Q/hoYV2AE/LS0Mlx5WTRGTb3tLdBcziUJwPV9cinq94kYkKCgoYX4L+tgtoku+JUaHgQ9Il3Y2jwEifeorMNfFqco7hqtWTRhYSet0g+fUiVaPUa7S/T0uAbbKekW+Zvly+yKR7lmtuitkKAQ/kqgBw0xBDshpoaaycdUol4b/JYWiojJYtp5xOT7IjVTpOae3t+61qlzcIlXPqrPge4zuXRHv3y7wqrwr5BMovtagULb73rXAvggyY1tJZ2kOA6QAssRSjzJGrpxIm1NALgowCtA6IYQLWRSdH74UMbegm4lJ0WF7tEyPe95ST086vV9qIfiMWQMMl19HFEzcoudw0A7BrdVOOB2MHutEtf2z8qWKMjpEhVwSJWh5ZkVGFm4d4C+ry3+GgvC6NsUHpwYELgTo8HoxfVHWaqdskfeDIkdK7mlaRKWd8cYy7a6+AbY+ggry1c3HYEG9T1nn7tMNQGKzeQepYq3QjjuiFx4Qks2bw1Ja2cGv7eRLFE5KbnrIPNFM4yJYztp5n5xlVzGSmAGUimtcQHJ9siZwvk9/jvnpCiQhYi8xsSOv8qR8yvbCcHcY8mxM5X043t86E56XsL52EnH4BQR+kGZlKwo5ix7I0VMIsorLkzy33pvVhWyqBgi/vQrhJxsE3R+SkeE845NqxYnOpnwb2gTQ
+ bdxzm0KQ
+ Zi0LIVraZSi71YDdy21GQQmAai7FPO67VuD2j0Gl+TlEjz7h6DWUEHJxxesgzTKLx0bdWFVnEJt3mtbqQwX8gFwZUwVb9cTT0a94c3ZfwuXA1PhkqHULzdBE5/LSNLmwQanUbtP/s59GVHSzgESHomNBZV0iXqYEenl4ihs1yw/NDs2PcQBU3/M+OUJBl2yxcKkhi29Q3DbotMKQw4FK11DWAG/NtlyUBKb22HM+lTLrY2dG/2+uzwlbF8ZqHzCekU6luGBTgr4wrwZFFtAWTtjwr4fDU9dFDzzVlnotL7aCJMTUN/XVsOnBCaTDEhpTxLxVKmjJa7CrNlZKwrLZfH0w3+QC50eulO7FK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,53 +99,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08.10.2026 08:38, Mike Rapoport wrote:
-> On Tue, Oct 06, 2026 at 03:26:21PM +0200, Marek Szyprowski wrote:
->> On 03.10.2026 10:04, Mike Rapoport wrote:
->>> On Tue, Sep 22, 2026 at 05:24:32PM +0800, Wandun wrote:
->>>>>> From: Wandun Chen <chenwandun@lixiang.com>
->>>>>>
->>>>>> This series fixes several error-handling issues in the reserved-memory
->>>>>> initialization paths.
->>>>>>
->>>>>> v2 --> v3:
->>>>>> 1. Rework the mechanism that checks in the late scan whether the early
->>>>>>    reservation succeeded (patches 3-5, suggested by Marek, thanks).
->>>>>>
->>>>>>    Patch 3 adds a new memblock flag MEMBLOCK_RSRV_RMEM, which is set when
->>>>>>    the early reservation of a static region succeeds and checked in the
->>>>>>    late scan.
->>>>> Can we keep this local to of_reserved_mem please?
->>>> Probably not. I do not see a way to keep this entirely local to
->>>> of_reserved_mem while handling the issue robustly.
->>>>
->>>> I previously implemented an approach in of_reserved_mem that records
->>>> static reserved-memory nodes whose early reservation failed in a local
->>>> array [1]. However, the early scan runs before paging_init(), so the array
->>>> cannot be dynamically expanded. If the number of failed nodes exceeds
->>>> the array size, some failures cannot be recorded and the issue remains,
->>>> and that is why Marek said "partial solution", although in practice
->>>> having that many failed nodes is unlikely.
->>> Even before paging_init() there is memblock_alloc().
->> One can call it, but such memory cannot be dereferenced/accessed for example
->> on ARM64, because it is not yet mapped in the linear map.
-> Can't we use early_memremap() for it?
+Hi, Gregory
 
-I didn't know that this is a valid, allowed use case for early_memremap(). If so, then
-this is definitely the best approach, as it also removes the horrible two pass
-initialization introduced by commit 8a6e02d0c00e ("of: reserved_mem: Restructure how
-the reserved memory regions are processed").
+On 9/23/26 11:45 AM, Gregory Price wrote:
+> On Mon, Sep 07, 2026 at 07:01:08PM +0800, Qinyun Tan wrote:
+>> kmemcg_id is a copy of the memcg ID assigned in memcg_online_kmem(),
+>> and is only used as the list_lru xarray index.  With
+>> cgroup.memory=nokmem the assignment never happens, so every memcg
+>> resolves to the per-node lists.  The next patch needs the index to
+>> work under nokmem as well, so drop the copy and use the memcg ID.
+>>
+>> The ID works just as well as the copy did: root and NULL still
+>> return -1 and use the per-node lists, and the ID is only released
+>> after the list_lru reparenting, so a stale or recycled ID can never
+>> reach a live list_lru entry.
+>>
+>> The early return of memcg_offline_kmem() under nokmem is dropped as
+>> well, so the reparenting also covers lrus that stay memcg aware
+>> without kmem accounting.
+>>
+>> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+> 
+> This breaks an assert in memcg_struct_check - i think you want to drop
+> this line as well
+> 
+> ---
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 5d7a26c91610..fcba9eb55659 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -5886,8 +5886,6 @@ static void __init memcg_struct_check(void)
+>  				      private_id_objcg);
+>  	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
+>  				      private_id);
+> -	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
+> -				      kmemcg_id);
+>  	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
+>  				      oom_group);
+>  
 
-I've backed such refactor with LLM and it looks very promising:
+Good catch, thanks!  I missed the layout assertion when removing the
+field.
 
-https://lore.kernel.org/all/20261008094125.3197971-1-m.szyprowski@samsung.com/
+Andrew spotted the same issue in v3 as well.  I will fold the fix in
+when I send out the next revision.
 
-
-It works fine on ARM, ARM64 and RiscV64. :)
-
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+Thanks for taking a look at the series!
+ 
+Qinyun Tan
 
