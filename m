@@ -4,184 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46D89CA9EBB
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 21:56:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E96DCA9EBB
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 22:46:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 017706B0092; Fri,  9 Oct 2026 17:56:13 -0400 (EDT)
+	id 028FD6B008A; Fri,  9 Oct 2026 18:46:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F031B6B0096; Fri,  9 Oct 2026 17:56:12 -0400 (EDT)
+	id F14786B008C; Fri,  9 Oct 2026 18:46:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA4166B0098; Fri,  9 Oct 2026 17:56:12 -0400 (EDT)
+	id E026A6B0095; Fri,  9 Oct 2026 18:46:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A77FE6B0092
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:56:12 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 33CC6A0545
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 21:56:12 +0000 (UTC)
-X-FDA: 85304446584.18.BA0825A
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022116.outbound.protection.outlook.com [52.101.101.116])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 365781C0004
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 21:56:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=l3QQTq4n;
-	spf=pass (imf18.hostedemail.com: domain of gary@garyguo.net designates 52.101.101.116 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791582969;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B38ED6B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:46:42 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3913480336
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 22:46:42 +0000 (UTC)
+X-FDA: 85304573844.20.71DB016
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 84CD2C0003
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 22:46:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fGjFZBkL;
+	spf=pass (imf10.hostedemail.com: domain of rientjes@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791586000;
+	b=LsPMh3/48iZTrPqD9eVdV+AjC23E4nZuSc9Rl30qTtiBKdvNAGqgAHD4u0hcByrrWEgYcc
+	k+j/2Hy5ZD4LYfRm4PvxCqFWoHhw6Z4lZUXflfcL+tqjkDbA36tmBgge54x+mWxnhS+gws
+	LzWVs1SsAG+M/ZJWvvkHJwaTo8rvwWs=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fGjFZBkL;
+	spf=pass (imf10.hostedemail.com: domain of rientjes@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791586000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dh4YcTw8JbaNUhW/j/fMV1f/mSLIk4EOiM7Jyoi4eX4=;
-	b=1+xWSRiu/WpueptGO+kbnisvtPpR5hWGzczrCLtf4gT2/F4ILn3jFe7cZ6geAs1gTRFpRP
-	esvBsfGyF6HhPVKfkzQTMOI4NuyDg1uMerXW/5Qm4Kc2yR74B7/49w+OXxARTchN2tAnOq
-	e1zl8Xlq1o0iyooOnKtzYdWoq6dtzcw=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791582969;
-	b=fqnqwJpYve8AvrCwdT0ogzmVix2HInkycQABq17961UBRLuNlECQ8+RKhsLYr+DuRqGbXE
-	lThNeiPVD+a5ySS9lzbOcZRTmGfRFkQeIaMYLNDJB2At6G/yuvhyP9fJLmYVfC9WG9E1uB
-	9V4Vnr7NCMc+hstDLfJDXmAciOYjFG0=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=l3QQTq4n;
-	spf=pass (imf18.hostedemail.com: domain of gary@garyguo.net designates 52.101.101.116 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r8r67xD0daZ8TM+DWhGJeiL33ih0z+9yYaMDB0o1WI6tal9xOZ1PuffYoh1VSO4nrYI+9bhlWlpxdbNKSgCt3jmLjHa87o2oQPiTcOy6UE8xR2L5gT5tJt+B448lm308yR8OtoW3zpAV9RrPNd5nRQlHdiMJTfxHhJM4bHoceo2t65dfLadEVG7+s0zrfOaAesW5j+m9VmGaPB0mEOMn9KqZOLiOesyCupASgcETJ0oJwNgSk5r2Ajr9WaGmDRxFj+L6BEmUV1kfO/7BXb9lG2oB99p05LKsGsNs1ne1wn4cTe8K0yarTMUOXNbDhCZIkA/zxOdAmnEcw8UqytKgdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Dh4YcTw8JbaNUhW/j/fMV1f/mSLIk4EOiM7Jyoi4eX4=;
- b=sjcFxc6oDathWllHCk3/f+KnNCV63KmB0s8a/HsvLuTVSbE5vpUC93sCLLoQeAfvesqa7i2GchN9CvU7IMSJ77e9qiYvzt6TsgyQC7zkOMMcWyUkJxezgw8lWRqBUi+F4sqNUfe68PpQ1VhDrhY+RMK4OJHwhv43Z3gPuRCCUanH0csFqJa2MbrpY6tskvNlW1k0QHZnWSZ0rBkAOWie65DIS/azhCb1vaRL/+Br8IHvlVzatQpB+djq9WkMRF+k4Kh2FoZl7eAGIgHp1ZXVaaA7jb8UYI84rOqm4GMknk3Yjdln2jNCwGGv3CEWj/7ueRLur2OqkIxAtcCs3tCWjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Dh4YcTw8JbaNUhW/j/fMV1f/mSLIk4EOiM7Jyoi4eX4=;
- b=l3QQTq4nvoEmPKX0BYeFNJWQ2l5DkKIm9v1hFZDTm2aFphuhOt8aI/kv7LY96f74P5K5tG9aAdSRZG/CoQblPOP0n/YsFi4XyfErEHouXllj82hzlatDShy3YCvPNelmoSqAsmAIZ7RmzS8qGp2ydV8oXjOrakjN3ZnnMTc8iyA=
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by CWLP265MB6184.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:182::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.18; Fri, 9 Oct
- 2026 21:56:02 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0496.015; Fri, 9 Oct 2026
- 21:56:02 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 09 Oct 2026 22:55:58 +0100
-Message-Id: <DM0N5L0LG9P0.6IFXMJX60P92@garyguo.net>
-To: "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>, "Paul E .
- McKenney" <paulmck@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Sebastian Andrzej Siewior"
- <bigeasy@linutronix.de>, "Will Deacon" <will@kernel.org>, "Peter Zijlstra"
- <peterz@infradead.org>, "Alan Stern" <stern@rowland.harvard.edu>, "John
- Stultz" <jstultz@google.com>, "Frederic Weisbecker" <frederic@kernel.org>,
- "Joel Fernandes" <joel@joelfernandes.org>, "Josh Triplett"
- <josh@joshtriplett.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Steven
- Rostedt" <rostedt@goodmis.org>, "Lai Jiangshan" <jiangshanlai@gmail.com>,
- "Zqiang" <qiang.zhang1211@gmail.com>, "Ingo Molnar" <mingo@redhat.com>,
- "Waiman Long" <longman@redhat.com>, "Mark Rutland" <mark.rutland@arm.com>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Vlastimil Babka" <vbabka@suse.cz>,
- <maged.michael@gmail.com>, "Mateusz Guzik" <mjguzik@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, <rcu@vger.kernel.org>, <linux-mm@kvack.org>,
- <lkmm@lists.linux.dev>, "Nikita Popov" <github@npopov.com>,
- <llvm@lists.linux.dev>, "Lian Wang" <lianux.mm@gmail.com>, "Kunwu Chan"
- <kunwu.chan@gmail.com>
-Subject: Re: [PATCH hazptr v2 2/4] ptreq.h: Introduce ptr_eq() to preserve
- address dependency
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.22.0
-References: <20261009182142.6311-1-mathieu.desnoyers@efficios.com>
- <20261009182142.6311-3-mathieu.desnoyers@efficios.com>
-In-Reply-To: <20261009182142.6311-3-mathieu.desnoyers@efficios.com>
-X-ClientProxiedBy: LO4P123CA0537.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:2c5::17) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=z+EiZ+T8dkX6MNnL1h4wdxZ3B6URBkx58GDr4lvpDVM=;
+	b=Mzf5aP/2ViIiWoOpluT+rW6PC9+x3hi+Vj72LAoSu/mYf3sA2y+XG4MFbTBE+iduAyseGp
+	mOPuN63a8iS9W5+wzrO3FKyc0E/AvGj8m7HfXgeO+B8XNeR9KOZbwjISM1XE9g4hqwvC/M
+	2u2dOsum6zsvXuXInDRMckeNGzboegA=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so5345ad.1
+        for <linux-mm@kvack.org>; Fri, 09 Oct 2026 15:46:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791585999; x=1792190799; darn=kvack.org;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=z+EiZ+T8dkX6MNnL1h4wdxZ3B6URBkx58GDr4lvpDVM=;
+        b=fGjFZBkL4ixDkTUXS6sPsmCGVe4i1T0Vce9QXdYNXNBFYWcWjnPNeHmLR/nHotcKWf
+         x3A5A1iXAQirrltYc/VROi60I8aSe8Y/pnpqNKhlvajkjbL5Addc0QmHCtf8Nfhs2apX
+         agFO3ldBxow9McjriAfYfpMZh/IAkisv+YCvQf7Z30GnRbnqMZmGf574wCWQnPzvx18Y
+         edMo9GqxhJrjIu0K2I1YUHKiy/Dp6pBas/ZBwhZhxW32dCcsN2ZlnwUFov5pa+Zf/JJH
+         joHT3dMucEZZsp/iZT2Lwy2nqBFM/NYoi7ZphVAFA84VUG71bZeDsCLXS143baYjmAkc
+         LZpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791585999; x=1792190799;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=z+EiZ+T8dkX6MNnL1h4wdxZ3B6URBkx58GDr4lvpDVM=;
+        b=o4d+mOYAJd4nM3w8/nRkjVG2n9bNO53eqN5yU1guwxIN/m9YWecM/pc/RpRCL7bFSK
+         Y+n+imIkWy+Sr1BxUQzymvjV3eN7Rt+oqzbbM/5W03VmRHVrO1meN87MTdj4mcp1M4e3
+         B+gnxpPFl0Qp79EBr+sDzXbmwoiivqafrEXmw5dMifewdxS3KADGf9hfMH2qIzzrFvM+
+         MkuzDewHW1cpRxDuSc4McWQ28601kG+ky41nCbXu+/w8svMmYXjNebJDGFmhr+qitIll
+         LLt0AiroqyVU6TT+S5jDGuqSFSVmeosCIrMSS6fQiPSCy6X9/+obeQfFpAyG09z2/L+t
+         Lh3Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzvw5re8B4tIPWHt4Zm90X5Gv0XdbjVpVccnEqtiVOW0/Mj7DeSeVrXg4iMgwhUwjjB1aNM085hCw==@kvack.org
+X-Gm-Message-State: AFq9FYIWrdgaIrb67GSi9w8YQTohxBLm3cjq2Q7slU0e8+32YferNVDp
+	Jn3zwFtRSIjMGFQaCxLYBW23Y5Je8XvKR7ILlbG1GOM4VPKFMqfpzuzqz6F/R4F7Tg==
+X-Gm-Gg: AYBFou0itzf5JqApCTiZw2PrYyBjfXg0/bgp4pO5YKoteaPpYC8XNHCgIuOW9+I0S2d
+	eKaf0XxkmVApKV4xiPrr1DzYnXbZ9lB2NzVf5LALUq8OeoSx961mcHeGkilclFKXxzJs54g0f0u
+	zChz3CpHqakIhzMN1dYQzG3JHcbbPK6pVfRmNZglQR4D5VwHhifbTeM/daAISYBurx3F8XNtVq+
+	KSag+RAxK6vH3gHZEOPBqP+Dqw/Ok3+Zarmz6q0jxuAZJrvSdrDVbpt3FWSdgjBS8ZDWyuoPuLq
+	NniyRnGtT+G7mcX1Enmnp3KcurJ/sQvLxp4cCrENpyiyKfF0QXc5+ti118NDUpuDT9tXemif/Qv
+	4kI50KU6+PlIbqVqNeXPhzukoZFyHOroxmzY6pxGKLwUakItiHEjAFev+p+2U/KOB0xvOoM+rbR
+	X9VX7wcvwCrDZp/tq4qzzqwRcFSgMSsL/TjmntovO5st4Mxdj6sdOQOQO+uWNOQsYVfO0slr/Wj
+	w6UV1c5UYTydogKvfGvA5F+TYcBHE9ArKnu9Bgb+DVotoSJ47KlDcX90zrOwUP7jYn9RYHbbaAV
+	bk0WfmEac3XRh0ejlHi6rHrYnx5KQPujd0KiwOweorO1SvbeqAhIqVJZxI8EMpJGRldZ3k9EHYf
+	Zm8Hp1MU=
+X-Received: by 2002:a17:903:1a2f:b0:2d5:c090:3810 with SMTP id d9443c01a7336-2e87b1611e7mr478225ad.2.1791585998636;
+        Fri, 09 Oct 2026 15:46:38 -0700 (PDT)
+Received: from [2a00:79e0:2eb4:9:7802:e7b9:d594:8bbc] ([2a00:79e0:2eb4:9:7802:e7b9:d594:8bbc])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab55e41eefsm3674314a91.10.2026.10.09.15.46.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 15:46:38 -0700 (PDT)
+Date: Fri, 9 Oct 2026 15:46:36 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+    "David Hildenbrand (Arm)" <david@kernel.org>
+cc: Christoph Lameter <cl@gentwo.org>, Vlastimil Babka <vbabka@kernel.org>, 
+    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+    Sarthak Sharma <sarthak.sharma@arm.com>, linux-mm@kvack.org, 
+    linux-kernel@vger.kernel.org
+Subject: [patch v5] mm: vmstat_kunit: add synthetic benchmark for mm stats
+Message-ID: <920ba123-077e-c42d-ebdf-a5effccf2073@google.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB6184:EE_
-X-MS-Office365-Filtering-Correlation-Id: 19e20ae1-a5e7-4a6a-233b-08df26501c54
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|56012099006|4143699003|10067099003|18002099003|22082099003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	xwRm4U2dhMOkdXaI1PH9ZFAjLsSJ3Y/kmQk49jKfxIZHut9asaA+uBsDwEoEHZz5uQSXQSkNLKW/JWbBONVxzRvOXP93wNcTeXojRO8h8h1vwn3qGf09Emsqo2vbxFHwgQMhJImNHQ6SE+HCQRNHkyx8IUSq19LmOjmYfVih8YbCzA7W1JAq4xfu+c+SWPYId/wvmUsDlZgGhPhHBNll+R4lwJpDkp/bFK7Cp6A8aMBmDVstnZVjz1h4PWz5KeHem4pE2igNHqHuTf0q8elKI/w+XyFVEN//QiU+eF48ftywP8SSW4bd3dFqzUyrTnI6ijclQ7shwOUQD+3BiPGKQnnmuwO2rhsXPagJFwoptea5kl0RhT5fmaSdsX4QSspqmI/iLKynzA8iBfbCOJ8cm/G0rByZ0g2PIrGvin/KAJmUqJQ//ZP0bjhWFnk7FlGw4Mi6lXWyK+XMzLv88UGxaTDE5p7dYoF68e4UfWqfVncAdDE+MOD56EpDHfgQf9w0p1EFFbAH4vdg7/xezveHUe/G5gZGtI3FEYHnCuG9Z+A9LlsbRAC33SdjVz/FC7aP0ZLyf/0OD5PHR+avCkoQzajCQ7+XTz6TcdMnKGmwpV3HszXop/VJ2s5biGKyCfdF092L2ZL0bR0qtfopECchMqbutBxX0FkP9mTZyVmS8Yg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003)(6133799003)(3023799007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SGE2V0toT05mL1FRWnY3TlFYTE1UcCswdGV3blhlSE5KSWFELzRmUE8vOGlZ?=
- =?utf-8?B?L0tBR3p4cWI5ZXd2bnhQV0c4VFlNamRXb0FMWFJVWDFJYUMyWE9rM3BrRjd6?=
- =?utf-8?B?QW9aclMzUXliaTM3NSt6TEZJazJZSXd4ZjNBcGcydXdKa1hVUnYzKzZBZlJU?=
- =?utf-8?B?YnVZbDFMVVk3QVlmbzNqT2E3THJNb3FVMTlNUkJoUW1NYkV5R1Z1WXdsNFV2?=
- =?utf-8?B?OEZDQit0OEhlRGRxRDlVekYvQ1c0bGFwRzFYUEVZK0pnQm5SQnMrVDhYZ2Nq?=
- =?utf-8?B?ZDJSNUg2MXB6cUxBZytPWVByclpXSVN6WTBHSjM1ZTlEaCs0WUFYVzZ3OVkx?=
- =?utf-8?B?ck1hVGRtNWxqNVVmZHJiSk16RTY5SERmNGxRMnJ5WGxPSDhCcmZQWDFpTWZt?=
- =?utf-8?B?Y0lubXMyYWMvSi9BSzdkUCtEL2NqMVpVdzg1YytFemdvdWJFZGJYbVZWN3pD?=
- =?utf-8?B?NXFDVzg1aXBiTUwwaS9sNUFJa21WSW1TSVVReldrZEhwYzl0R0lFb3JoaExv?=
- =?utf-8?B?VVVsM3NQYmo5NFo0Tjgwa0daRkc4NEdReFNFcUtFSDVJK253bEk1VkNIZ2lV?=
- =?utf-8?B?SmgzNFJJTG5ReGdjZithdEQvNnU0blF5cUxibllvS0ZPKzhpazVXeU4rK0xN?=
- =?utf-8?B?NHdMcS9COTJWcGc0djQrOVBuTWZiOHY5emNDWTc1ei83OU1PbXg5a1UyV1Zo?=
- =?utf-8?B?cTNjTzVpZTE0Q05UMVIraFFMYXZZNU9tcCs5ZVh5SityL3JJM3R1bFE2dXpY?=
- =?utf-8?B?VjM1a2g4bzV2NWQwYzdQN0kyVldTVVY5aC9LZ2Y0ZXRNdVF3QUNwVWFCc3Fu?=
- =?utf-8?B?T1JhOUI5TmdLclR1Yk5LQWdrWG1tTkRYT05QWExVLzAwYTdGTzVEelVjajVF?=
- =?utf-8?B?alJQMU9XMFhCMmJQOW5ITGdtR1I1dDd0ODVjS3VaZDVjdWdSWUJXdkdvQmJw?=
- =?utf-8?B?bVZnZjFQTjBZcmdpTnNIYzc4MUJTZmgxYVBURmNrckk1MU0yQmE3TFFOSGJG?=
- =?utf-8?B?cDdwSU1sUldVK3ZDZFArSW1MOFVXMXVqMFVmaFA0UVJiYzVmcElOSDhFaG52?=
- =?utf-8?B?clFENFRMYW55NlhRYmNLZWlzQ1NUZStlakg4dEhBYW5ZNFllbWprYkZEaUM4?=
- =?utf-8?B?NzBKK1J3Vk9kVEhETmxObFRtUHY1TXFuVy9oV1RYUExIVVVpUEdnNDRLKzE4?=
- =?utf-8?B?NTBybzdyZlNZaFg2bUE3dityVENLNTc1b2xqQUpwSStnSUZCdVpGRHZaZy9C?=
- =?utf-8?B?emluell4Z2RHSWJzMHA1LzZOclNvZkQ2blBscHl3WHlNVkcyU1RYbHI4KzFU?=
- =?utf-8?B?cUJDNnJMUnlYQ29ES0x1SGo5cGFRRk1nOGRkOHJYZCtNNXRQZXVvQ2g0R3RI?=
- =?utf-8?B?WkJOWG9BcjJuUkV4VEVrZVE3QUJybEkrVGQydXhoZnM5SE9KT2xDS3VCMHp0?=
- =?utf-8?B?Q2FZK1VLdldPQlVJYXBpSGovb1JaOXB4VTNuTjBDSkNUcENQN0hSd05zUkNS?=
- =?utf-8?B?d2YveEE5QW42Si96Yy9GRTZLQTAzV0hOWlhlNk5GbDRVRFY2aEtCc2huWE9j?=
- =?utf-8?B?U045aVJWU3Z0dlRNaGowSTFXNjJoVUN5SGJqWXVnejBOZU9QMENzQS96YUVx?=
- =?utf-8?B?ZXFXMzM4UGdsc3p2cWEzcU1acldhZlRIRmx1b2NseTd2TlMremxvcGxhOE9P?=
- =?utf-8?B?ZWlzSlBTbFhWVzdCenpnRkM2b25razdEcDRQV05SSnVRd3d6YzNhUStMMllq?=
- =?utf-8?B?ZWZlZFcwVDNpTDdGU2xaWmNzNFk0THZNUXFYOWF6a3VhTURlazRkUnhtekhh?=
- =?utf-8?B?aHJlUjk1Q3pURXlKbDJnamFCZEEwNkhZenU5bXAxTTFhUFRydVVHV2NTTC93?=
- =?utf-8?B?MVRwOXJZMS9McUZUS3o4ZEhRSUJScnphZ09TRkprNWVud0o4T2tUUlUzcGZy?=
- =?utf-8?B?RXdtdmRtUVBVTzV5dWZoMU43eG9mZlJiaXFyMjR6ZE12ZFhmZnV4N1E5Mmhr?=
- =?utf-8?B?NUh5RUNxOGt4L1M2V04wNTNDbDNaeGhUWmRLbG1jdkh1aVk1OGRkWmtiWTc0?=
- =?utf-8?B?S01OakE1Q0ZQMW5ZQ1RzYlowZkloT3BDeG1lS1c5OWRhZTd0SmFXbTZXVFhq?=
- =?utf-8?B?Lzd3UGRvbWkyZHBwd0J0TENHOGpOaHh6SVV4WGZFS0U4NlNoK01KVkM2K0xn?=
- =?utf-8?B?VjRLRlF0Tm9GZWVMYkZGZEN4S3J5WThMbVVFWHBtUnlwVkpkb21lM1NzRWtK?=
- =?utf-8?B?MWtOb0s0Ny96MnQ5S05WL0FYb29ZRVY0MTRlTU5nc1E1UWpTSGovdlZrYVQ2?=
- =?utf-8?Q?yFXglUqAtC/Fw4k48N?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19e20ae1-a5e7-4a6a-233b-08df26501c54
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2026 21:56:02.5485
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HFPUYYWwsv3nCiaJRAowTMwdXGNnG/Z3HxTRRavqlevQcYKyZKE8lzO/CVtPc7vo+FvNXvC9cqo788ERUJHiNg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6184
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 84CD2C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 365781C0004
-X-Stat-Signature: nfymg13c5ua46ur6r394uh6ky1hszidm
-X-HE-Tag: 1791582969-8296
-X-HE-Meta: U2FsdGVkX19dut899wLuikWV1GGcxc70NKOeAfEOD7OJZrziAtTp2f/9klT/vlShd/9yukMoB1ggoM16JYu6ClWmXuxY0nxspqWhBzI/5DFFb7uLPqZAhoNalcgqbbvKdjYUf8n6EGEVqSdYV5IiRuHPbb6GpXEQGK6XFDlcJniOgpPd3cYxGjxLXBEk7zfhzlr558B98ugJVPNNwSQEs3H6SNvDSUVwsgAgr8XL6J0NmN2nOEQPy55S3i9J3D3gNRrBj2+gnseRT9aSE3lYFHDEBfsbCYXsOE+GJ3vsEMfzliKtV2rukOfYs9bz+ejFSpcc8JU8NcG1g0eORs2CspgOWdLJfzWs7D8r/btdgzme57PZvmMY5CD361gRlAiNkloFCvM9CQl9LvQghBgEsvr67TQ0TaS9rN6s0aQGnwE5pf4m8pNtdUyM6T0+KDqyasM3cU1z6zaZHvA7RLOxLcchYN1oV5HZ+K3G9B9l/LQW+2Dj0969j2Yw6Ppcl1JqW05UtkLHcRK4T7+uzW5LP0m96dFsZxd9h5i6Ai67cJ2X3dT4uS1i25KpYxhS/9ZE38qk9f1By7+MejRVqnGdO8wCXdxN4Cddt0RrhzmYMmLA1bC0mbAZyHv0BCRnUNE2kjIbj4wCLD3BNU4YbmzfFNV02/gFjZyyZGY9Jdb+PLuOhCMIrfKVBrcpdYEuN5WY3zJjGjkfQ+IiE43VcrLa+q/13R2sXbZjToQcKlFKl90VfRMHXgVmUnE04namnYYtDcv+n7XYiswjQAFSbcBYOWyx6iPrP4DCWLCx1TGPVk9g+i3dYlUjg1qfnqHiWXNyxKBMW6AYsqiPQVK66tucuPp9uuZvTLf3RqtPqdqQBio1BPuE3l6WxuJXNsZMkTLLKNTXece5ewiDsnp918hwV4AyVBU8W7FiIDtUVdIO9QZrOpx6bmtjui5voLUpNx8YWENQHR+ze01n5pFFck8
- BrYscP8s
- lIgT6+5q8X5K5RLTpDbvRoeub0zESwrBA6o8DL5dqdvjsAP7CdmwwokQvX5S7BAaeovUI7N8Dc6Ip8nmpT24oDDy1yuRSxZ3tta2h3OdZIx/Nh8EsOEbTtBNQxvSwQBqWKY5SBPcjL06LYvpQUww993FApug9aLg8WW5U3IfotOc9p2WzNYIDx/MdBVf90qK9D3T4kAqVa0XTfoRPtXUcOzIFRqcL/pKJwTjZkUN0X//XZosioVH7CX74TXkRfZRcd61au9P3FXaVBJhtqOdS5jJCA+7GA03zN3/r44bHYRIup7iaVyhhYwCo1Ogt99UeVhl00w1pQOQwiUcxZcWlq+1WLY+hq+VuiULBhvRi+ppTwlvv66TgwohRk4gkmoNrQAR0t3D1wz31+rnAvzxY6dLEo03/8HvdYzE1sMjpfcJ8ldwqdkr6y6owp3EZiT4We5iCbf6EsXBCIo/v25Ds6wgTxwsjrq0r1s2tGSP4lq0UsUOCW2EXwXq1vO4CH7C5FIFIzmUQ/AL3XGXsfwJYADPSI5KQZUfK4BtfaNfISL8q8zquwvjC3vP24CzHLotz+1GS9xsqr/WO/vAAw2RreOh4wktIXPNrve9ZuI3YlFybLCkd8hz9gwyRrm2Riyp9iXqzwipuGY5bHVtDpS0q/sMd0lDykIL8pUoQZwHb44IgQU2JQkTCaxSDZYGH/GGOlasjjFzOfL/0nHM4YalpwF0yi7P4ptN5usYpuxnNR3L2TCky9iwS0tlVTBdqLKXMy/jOiT0UGO9tCyBOj69Nbbe2d7DZOQ3XL2ghrYp0yOAo4Nj7ryxbl7iEp7DMyBeHKwHQ7tf2lEf7C/lhoCkDxUSjo5dd1VQIyNi3CNsNCMoIAHQC4Eimf4tOwKpKphQTnziTC4OWLdlWdpn7LHmuO+tnoxufUmj5KuJk4raguJuhBP50Dj//vpb3y6ELt6PH6IlLwIaRm+hHULGxTV2KLfxDSXGR
- 8dMs01gq
- iX65NllnNl/D+jDU5gh5HS+PxontHvkpwQXtu+hjfsGoyMPoyirrRw6KYOIUsW62VyVE3ozXdVFyOsuSG1yXUdKSsrKcKGXFfWUypfOHx67qGX4e2LmHMrmhmbBTL2/4F65X2+tKvF9ACb8CeBWvInVMOdAIIj3/pfjaZ5RxvdWZdLYzAl9i6WgCCg9MYZmbtD/OFQM1I/0ROY7mWX0+Fw5QAm1dzFJPG9KQejF8hhgNn9ALpBMMHGDLlsq2ClZUxCJWMejNsL0=
+X-Stat-Signature: q8zhyreb8qpdmzeh6atksp7fyrhk1rg3
+X-HE-Tag: 1791586000-870788
+X-HE-Meta: U2FsdGVkX194ZKQ/EMqeBXpxl5GUghM+NX5sjkonxzQYb6UCciipbTCvaR2HJIysx4hXPtiEmjDns2UAWOA8piIaVFIFXkSkQ/MYnvBOEwB7NPE4F/hLbtFnJ96IwRxo1hYMHUadJ2kh1+ly0YuIHlSc4ow/pOL6H+AsBr0eZSZgoKO0Prgd/4Kk47bk+QstVUAB5cCSOKgsTCtXqIqyl1Ml3qT3GqN1h81B7SDzteNt1geFyRbvlXlPwSbQ6nwC2fcgdGm2NfD/i/0G4vhayDXJB891meVa8qM5k3fMlSmsCKXkG/N1d/qhzL/CfZkGzxhxj9vikmoJ+A7CiAB75Xn5AEnWJ7SBpPekvBQQ4CD0MP9FVSaZ10iQGtxwtakBfC3uGZax1coTpOw+XOXOVXzuounV6xCygG9zLXJXFmRcalOzAirwnvrMxEGvx6r/CH2bQjr+nigB2bxZtFViZUg/QswGzjATPGf2dECYNGLeBaM4r4rcHHcCrvYm1eNnMH2BXzV5JvKmvXHscs+OV33xJa7BObd0jUc9Tjd1sjotIpI/R2zxU+AI6ZsEI8pkmJI5AyjTgiL8c2XjlCvdCp/cRck9fSiSeOTcykf9Amh1PzYh+2WK19RIxJkwkBaFQkq3Gu6h/PSOOaHP9f77DMAwK3GIjGGS4em91wnL+ii/2goUY3e6QGNXCoy/4Rohl7EQLzjOTOBH9oSokG87LCFT4mBa+HI4woQdmVNo6GcFysfMzQc4N6T71iqZfesmuGl9dXjSyjVVuIGmr3HT3DRzK7A3PStZSAIPiYH5d/4XoyRMzxDXqfMGfZOmj53FNYPZ4sxvA6Ng6ibUkxIQp6yAc7E+QrNWnO2VOvrzpLXfKT9iC1xbzj8MK3KC7uFjIcOgctk0RDCGyHtMGuu8YcqxC2si4ymrVvgquye6J/osGJIfSRA2QEDwNbCAcYH6aeyzBZ8Ah5/qHRRIjxQ
+ FklckPs7
+ TpHjq05U5EiRRH0WVlmqf3IjMSZGBq5mMmd5HD/UqGcPtxDMaBhWWL5ToPlQde0kZyBhIL2+chPsGIHND1guD8nFqQKTwVnFijZccIWEmMwSHEsBTHoo3CqVocsslK5VgGkaNht2eX8S8a2xtnKIfcFFCPxwcypoayTAGigjfedG2R7LFOj13VdsQeeXKEo6ifPRhWbAsNzL2H/GJhsjQX42GYF/UVgMJiWTGF9yMB/js6gtEKCfZiTOs8SGBJOh/dZH9jjqYlVUjXAQRD9pcNJh9ins/Zsio3PeIQEpyS7vEOmtz+c0NNfLRzHJKdrn7CjCZQhJ9L46yPsVj7t90D+PqI1/g4NdaAC7LuUvCmDJiYjU0OgyQbruwl4qem9OOtGHRUNpUNEYaWdqbEUr26CTxltavw1m4NwjiKHaVwgONPBC/CiEHg4YgyYwNY5WlqaU1imHUykLzf1MqkK4LoUf3VA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,190 +118,266 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Oct 9, 2026 at 7:21 PM BST, Mathieu Desnoyers wrote:
-> Compiler CSE and SSA GVN optimizations can cause the address dependency
-> of addresses returned by rcu_dereference to be lost when comparing those
-> pointers with either constants or previously loaded pointers.
->
-> Introduce ptr_eq() to compare two addresses while preserving the address
-> dependencies for later use of the address. It should be used when
-> comparing an address returned by rcu_dereference().
->
-> This is needed to prevent the compiler CSE and SSA GVN optimizations
-> from using @a (or @b) in places where the source refers to @b (or @a)
-> based on the fact that after the comparison, the two are known to be
-> equal, which does not preserve address dependencies and allows the
-> following misordering speculations:
->
-> - If @b is a constant, the compiler can issue the loads which depend
->   on @a before loading @a.
-> - If @b is a register populated by a prior load, weakly-ordered
->   CPUs can speculate loads which depend on @a before loading @a.
->
-> The same logic applies with @a and @b swapped.
->
-> The header "linux/ptreq.h" is the expected include target. It
-> contains the documentation of the ptr_eq() API.
->
-> An architecture specific implementation of the pointer comparison
-> can be implemented by each architecture as asm/ptreq.h. The x86
-> implementation is provided initially. If no implementation header is
-> present for the architecture, an arch-agnostic fallback based on
-> OPTIMIZER_HIDE_VAR is included from asm-generic.
->
-> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Cc: "Paul E. McKenney" <paulmck@kernel.org>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Boqun Feng <boqun.feng@gmail.com>
-> Cc: Alan Stern <stern@rowland.harvard.edu>
-> Cc: John Stultz <jstultz@google.com>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> Cc: Boqun Feng <boqun.feng@gmail.com>
-> Cc: Frederic Weisbecker <frederic@kernel.org>
-> Cc: Joel Fernandes <joel@joelfernandes.org>
-> Cc: Josh Triplett <josh@joshtriplett.org>
-> Cc: Uladzislau Rezki <urezki@gmail.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-> Cc: Zqiang <qiang.zhang1211@gmail.com>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Waiman Long <longman@redhat.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: maged.michael@gmail.com
-> Cc: Mateusz Guzik <mjguzik@gmail.com>
-> Cc: Gary Guo <gary@garyguo.net>
-> Cc: rcu@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: lkmm@lists.linux.dev
-> Cc: Nikita Popov <github@npopov.com>
-> Cc: llvm@lists.linux.dev
-> Cc: Lian Wang <lianux.mm@gmail.com>
-> Cc: Kunwu Chan <kunwu.chan@gmail.com>
-> ---
-> Changes since v1:
-> - Move to linux/ptreq.h, implement x86-specific comparison
->   and asm-generic header (fallback).
->
-> Changes since v0:
-> - Include feedback from Alan Stern.
-> ---
->  arch/x86/include/asm/ptreq.h | 16 +++++++++
->  include/asm-generic/Kbuild   |  1 +
->  include/asm-generic/ptreq.h  | 16 +++++++++
+From: Christoph Lameter <cl@gentwo.org>
 
-I agree with Boqun that this should be ptr_eq. There is no need to save tha=
-t
-character :)
+Add a synthetic benchmark that can be used to measure performance of MM
+statistics.  This is used to analyze any improvements or regressions in
+functions that are frequently used in hot code paths.
 
->  include/linux/ptreq.h        | 63 ++++++++++++++++++++++++++++++++++++
->  4 files changed, 96 insertions(+)
->  create mode 100644 arch/x86/include/asm/ptreq.h
->  create mode 100644 include/asm-generic/ptreq.h
->  create mode 100644 include/linux/ptreq.h
->
-> diff --git a/arch/x86/include/asm/ptreq.h b/arch/x86/include/asm/ptreq.h
-> new file mode 100644
-> index 000000000000..593b45f80451
-> --- /dev/null
-> +++ b/arch/x86/include/asm/ptreq.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _ASM_X86_PTREQ_H
-> +#define _ASM_X86_PTREQ_H
-> +
-> +#include <linux/types.h>
-> +#include <asm/asm.h>
-> +
-> +static __always_inline
-> +bool ptr_eq(const volatile void *a, const volatile void *b)
-> +{
-> +	bool ret;
-> +	asm(__ASM_SIZE(cmp) " %1,%2" : "=3D@ccz" (ret) : "r" (a), "r" (b));
-> +	return ret;
-> +}
-> +
-> +#endif	/* _ASM_X86_PTREQ_H */
-> diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
-> index 2bc00c67dc54..e1d95dea09d5 100644
-> --- a/include/asm-generic/Kbuild
-> +++ b/include/asm-generic/Kbuild
-> @@ -47,6 +47,7 @@ mandatory-y +=3D percpu.h
->  mandatory-y +=3D percpu_types.h
->  mandatory-y +=3D pgalloc.h
->  mandatory-y +=3D preempt.h
-> +mandatory-y +=3D ptreq.h
->  mandatory-y +=3D rqspinlock.h
->  mandatory-y +=3D runtime-const.h
->  mandatory-y +=3D rwonce.h
-> diff --git a/include/asm-generic/ptreq.h b/include/asm-generic/ptreq.h
-> new file mode 100644
-> index 000000000000..db5a88628b1e
-> --- /dev/null
-> +++ b/include/asm-generic/ptreq.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __ASM_GENERIC_PTREQ_H
-> +#define __ASM_GENERIC_PTREQ_H
-> +
-> +#include <linux/types.h>
-> +#include <linux/compiler.h>
-> +
-> +static __always_inline
-> +bool ptr_eq(const volatile void *a, const volatile void *b)
+This is the first of three tests that measure the execution times of
+critical MM functions anticipated to be used by developers to measure the
+impact of any core changes that would end up causing workload performance
+issues.  Vmstats are embedded into MM hotpaths, so any regression can
+cause performance and scalability impact for users.  Google has carried
+these tests internally and kept them updated since Christoph posted them
+back in 2009 for this purpose.
 
-I suppose this is `const volatile` to take advantage of implicit conversion=
- that
-adds cv-qualifiers to be added implicitly. Might worth a mention in somewhe=
-re
-(commit message maybe) because I was confused for a second on why this need=
-s
-to be volatile.
+This can also be used to detect regressions over time, from kernel
+version to kernel version, independent of development use cases.
 
-> +{
-> +	OPTIMIZER_HIDE_VAR(a);
-> +	OPTIMIZER_HIDE_VAR(b);
-> +	return a =3D=3D b;
-> +}
+The test is run by KUnit or doing modprobe vmstat_kunit directly.
 
-One thought on inline assembly. For RISC-V, branching with comparison is a
-single instruction, but there's no instruction for obtaining the boolean fo=
-r
-a =3D=3D b.
+Sample output:
+ KTAP version 1
+ 1..1
+ KTAP version 1
+ # Subtest: vmstat
+ # module: vmstat_kunit
+      1..3
+      # vmstat_test_inc_dec_zone_page_state: 10000 ops: inc_zone_page_state -> 8 cycles (4 ns/op), dec_zone_page_state -> 9 cycles (4 ns/op)
+      ok 1 vmstat_test_inc_dec_zone_page_state
+      # vmstat_test_interleaved_zone_page_state: 10000 ops: inc/dec pair -> 17 cycles (8 ns/op)
+      ok 2 vmstat_test_interleaved_zone_page_state
+      # vmstat_test_count_vm_event: 10000 ops: count_vm_event -> 4 cycles (2 ns/op)
+      ok 3 vmstat_test_count_vm_event
+ # vmstat: pass:3 fail:0 skip:0 total:3
+ # Totals: pass:3 fail:0 skip:0 total:3
+ ok 1 vmstat
 
-One option is to do
+Assisted-by: Gemini:gemini-3.8-flash
+Signed-off-by: Christoph Lameter <cl@gentwo.org>
+Signed-off-by: David Rientjes <rientjes@google.com>
+---
+v5:
+ - added dependency on CONFIG_VM_EVENT_COUNTERS
+ - expanded commit description
 
-    static __always_inline
-    bool ptr_eq_likely(const volatile void *a, const volatile void *b) {
-        asm goto ("bne %0, %1, %l2" : : "r" (a), "r" (b) :: not_eq);
-        return true;
-    not_eq:
-        return likely(false);
-    }
+Once we're happy with this change, I'll apply the same treatment to the
+proposed pgalloc and slab tests.
 
-and then the optimizer can turn a ptr_eq call + a branch to a single
-instruction. This, however, would require likely + unlikely variants.
+ MAINTAINERS             |   1 +
+ mm/Kconfig              |  12 +++
+ mm/Makefile             |   1 +
+ mm/tests/vmstat_kunit.c | 157 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 171 insertions(+)
+ create mode 100644 mm/tests/vmstat_kunit.c
 
-Alternatively, we can just not have all the complexity, and just emit one e=
-xtra
-instruction:
-
-    static __always_inline
-    bool ptr_eq(const volatile void *a, const volatile void *b) {
-        unsigned long diff;
-        asm("xor %0, %1, %2" : "=3Dr" (diff) : "r" (a), "r" (b));
-        return diff =3D=3D 0;
-    }
-
-Thoughts?
-
-Best,
-Gary
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f53047aa8d3c..ab65720521a5 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17164,6 +17164,7 @@ F:	mm/ptdump.c
+ F:	mm/sparse-vmemmap.c
+ F:	mm/sparse.c
+ F:	mm/sparse.h
++F:	mm/tests/vmstat_kunit.c
+ F:	mm/util.c
+ F:	mm/vmpressure.c
+ F:	mm/vmstat.c
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 604c58199acb..85817820f867 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1511,6 +1511,18 @@ config LAZY_MMU_MODE_KUNIT_TEST
+ 
+ 	  If unsure, say N.
+ 
++config VMSTAT_KUNIT_TEST
++	tristate "KUnit test for VM statistics" if !KUNIT_ALL_TESTS
++	depends on VM_EVENT_COUNTERS
++	depends on KUNIT
++	default KUNIT_ALL_TESTS
++	help
++	  Enable this option to test and benchmark the performance of VM
++	  statistics updates (zone page state and VM event counters), which
++	  are used frequently in hot memory management code paths.
++
++	  If unsure, say N.
++
+ source "mm/damon/Kconfig"
+ 
+ endmenu
+diff --git a/mm/Makefile b/mm/Makefile
+index e7245cb88c66..3d4f2c43b8d3 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -147,4 +147,5 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
+ obj-$(CONFIG_EXECMEM) += execmem.o
+ obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+ obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
++obj-$(CONFIG_VMSTAT_KUNIT_TEST) += tests/vmstat_kunit.o
+ obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
+diff --git a/mm/tests/vmstat_kunit.c b/mm/tests/vmstat_kunit.c
+new file mode 100644
+index 000000000000..899c957091d1
+--- /dev/null
++++ b/mm/tests/vmstat_kunit.c
+@@ -0,0 +1,157 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * KUnit synthetic performance benchmark for VM statistics.
++ *
++ * (C) 2009 Linux Foundation, Christoph Lameter <cl@gentwo.org>
++ * (C) 2026 Google LLC, David Rientjes <rientjes@google.com>
++ */
++#include <kunit/test.h>
++#include <linux/mm.h>
++#include <linux/vmstat.h>
++#include <linux/timex.h>
++#include <linux/ktime.h>
++#include <linux/math64.h>
++
++#define TEST_COUNT 10000
++
++static void vmstat_test_free_page(void *arg)
++{
++	__free_page((struct page *)arg);
++}
++
++/*
++ * Test 1: Sequential inc_zone_page_state() followed by dec_zone_page_state().
++ * Net change to zone counters is 0.
++ */
++static void vmstat_test_inc_dec_zone_page_state(struct kunit *test)
++{
++	struct page *page;
++	cycles_t time1, time2, time;
++	u64 t1_ns, t2_ns;
++	u64 inc_cycles, dec_cycles;
++	u64 inc_ns, dec_ns;
++	unsigned int i;
++
++	page = alloc_page(GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, page);
++	KUNIT_ASSERT_EQ(test, kunit_add_action_or_reset(test, vmstat_test_free_page, page), 0);
++
++	/* Benchmark inc_zone_page_state() */
++	time1 = get_cycles();
++	t1_ns = ktime_get_ns();
++	for (i = 0; i < TEST_COUNT; i++)
++		inc_zone_page_state(page, NR_MLOCK);
++	t2_ns = ktime_get_ns();
++	time2 = get_cycles();
++
++	time = time2 - time1;
++	inc_cycles = div_u64(time, TEST_COUNT);
++	inc_ns = div_u64(t2_ns - t1_ns, TEST_COUNT);
++
++	/* Benchmark dec_zone_page_state() */
++	time1 = get_cycles();
++	t1_ns = ktime_get_ns();
++	for (i = 0; i < TEST_COUNT; i++)
++		dec_zone_page_state(page, NR_MLOCK);
++	t2_ns = ktime_get_ns();
++	time2 = get_cycles();
++
++	time = time2 - time1;
++	dec_cycles = div_u64(time, TEST_COUNT);
++	dec_ns = div_u64(t2_ns - t1_ns, TEST_COUNT);
++
++	if (inc_cycles || dec_cycles)
++		kunit_info(test, "%u ops: inc_zone_page_state -> %llu cycles (%llu ns/op), dec_zone_page_state -> %llu cycles (%llu ns/op)\n",
++			   TEST_COUNT, inc_cycles, inc_ns, dec_cycles, dec_ns);
++	else
++		kunit_info(test, "%u ops: inc_zone_page_state -> %llu ns/op, dec_zone_page_state -> %llu ns/op\n",
++			   TEST_COUNT, inc_ns, dec_ns);
++}
++
++/*
++ * Test 2: Paired inc_zone_page_state() and dec_zone_page_state().
++ * Net change to zone counters is 0.
++ */
++static void vmstat_test_interleaved_zone_page_state(struct kunit *test)
++{
++	struct page *page;
++	cycles_t time1, time2, time;
++	u64 t1_ns, t2_ns;
++	u64 avg_cycles, avg_ns;
++	unsigned int i;
++
++	page = alloc_page(GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, page);
++	KUNIT_ASSERT_EQ(test, kunit_add_action_or_reset(test, vmstat_test_free_page, page), 0);
++
++	time1 = get_cycles();
++	t1_ns = ktime_get_ns();
++	for (i = 0; i < TEST_COUNT; i++) {
++		inc_zone_page_state(page, NR_MLOCK);
++		dec_zone_page_state(page, NR_MLOCK);
++	}
++	t2_ns = ktime_get_ns();
++	time2 = get_cycles();
++
++	time = time2 - time1;
++	avg_cycles = div_u64(time, TEST_COUNT);
++	avg_ns = div_u64(t2_ns - t1_ns, TEST_COUNT);
++
++	if (avg_cycles)
++		kunit_info(test, "%u ops: inc/dec pair -> %llu cycles (%llu ns/op)\n",
++			   TEST_COUNT, avg_cycles, avg_ns);
++	else
++		kunit_info(test, "%u ops: inc/dec pair -> %llu ns/op\n",
++			   TEST_COUNT, avg_ns);
++}
++
++/*
++ * Test 3: count_vm_event() benchmark.
++ * Restores counter balance with count_vm_events(item, -TEST_COUNT).
++ */
++static void vmstat_test_count_vm_event(struct kunit *test)
++{
++	cycles_t time1, time2, time;
++	u64 t1_ns, t2_ns;
++	u64 avg_cycles, avg_ns;
++	unsigned int i;
++
++	time1 = get_cycles();
++	t1_ns = ktime_get_ns();
++	for (i = 0; i < TEST_COUNT; i++)
++		count_vm_event(SLABS_SCANNED);
++	t2_ns = ktime_get_ns();
++	time2 = get_cycles();
++
++	/* Restore balance */
++	count_vm_events(SLABS_SCANNED, -TEST_COUNT);
++
++	time = time2 - time1;
++	avg_cycles = div_u64(time, TEST_COUNT);
++	avg_ns = div_u64(t2_ns - t1_ns, TEST_COUNT);
++
++	if (avg_cycles)
++		kunit_info(test, "%u ops: count_vm_event -> %llu cycles (%llu ns/op)\n",
++			   TEST_COUNT, avg_cycles, avg_ns);
++	else
++		kunit_info(test, "%u ops: count_vm_event -> %llu ns/op\n",
++			   TEST_COUNT, avg_ns);
++}
++
++static struct kunit_case vmstat_test_cases[] = {
++	KUNIT_CASE(vmstat_test_inc_dec_zone_page_state),
++	KUNIT_CASE(vmstat_test_interleaved_zone_page_state),
++	KUNIT_CASE(vmstat_test_count_vm_event),
++	{}
++};
++
++static struct kunit_suite vmstat_test_suite = {
++	.name = "vmstat",
++	.test_cases = vmstat_test_cases,
++};
++kunit_test_suite(vmstat_test_suite);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Christoph Lameter <cl@gentwo.org>");
++MODULE_AUTHOR("David Rientjes <rientjes@google.com>");
++MODULE_DESCRIPTION("KUnit benchmark test for VM statistics");
 
