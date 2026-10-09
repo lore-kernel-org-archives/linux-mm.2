@@ -4,120 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DEE8CA601D
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 14:52:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A65ECA6019
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 15:07:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AF456B008A; Fri,  9 Oct 2026 10:52:45 -0400 (EDT)
+	id C0A276B008A; Fri,  9 Oct 2026 11:07:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 539436B008C; Fri,  9 Oct 2026 10:52:45 -0400 (EDT)
+	id BBB796B008C; Fri,  9 Oct 2026 11:07:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DC846B0092; Fri,  9 Oct 2026 10:52:45 -0400 (EDT)
+	id AAA896B0092; Fri,  9 Oct 2026 11:07:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CF7F6B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:52:45 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 827B16B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:07:23 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8727516043C
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:52:43 +0000 (UTC)
-X-FDA: 85303379406.07.6529979
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 89956140007
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:52:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=DXubZqbr;
-	spf=pass (imf09.hostedemail.com: domain of daniel.almeida@collabora.com designates 165.173.182.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791557561;
-	b=UfXYq4ttJ6AJikkTb7YxGFYmwflhqr+A5Vme7y1Q6qpbXV4sI9TOpbZuyCfUVJ1EGYnqH8
-	XC7PrqvD88gUC7Wxn4Ykd1uClvbJqVVxATweRBWec1J/tfT8YV6cjAt39AToqCKEQTbbbA
-	+y0Xp5VQB0qEcMygj25ac9pXT75k/sE=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=DXubZqbr;
-	spf=pass (imf09.hostedemail.com: domain of daniel.almeida@collabora.com designates 165.173.182.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791557561;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0EEBF1C3BF4
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 15:07:23 +0000 (UTC)
+X-FDA: 85303416366.07.1F7F5E2
+Received: from mta1.migadu.com (out-134.mta1.migadu.com [95.215.58.134])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B79DF140003
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 15:07:20 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=i+ZYF2zv;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.134 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791558441;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EiLsH5UA/UAiT8EVhaZCRrPJfE6J/JG41Rfbvq9F6Jk=;
-	b=36YhG8Ovi6GVlp0ouJ7Y5BLZAxYw/EvM+RUODpqMecKSYtJa590qgDeoTQzKEhIGrh1P9R
-	VQSvtzMeSKZf8Dj0SAtm8sRvTItM9PxtM6rcYC45A+GukWtjMTb5EilbzSYLwFDhNqM/6p
-	OMwmglm0HcmylZkk9nCp3oASndAG/VA=
-ARC-Seal: i=1; a=rsa-sha256; t=1791557553; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Z+z6z0ksLMfonBhun8oeR7/DSVjnafMXHhyl6IGgTwbRwCHnhp4BxXnVi0JOquxAiGVhvgSetsOJfNXjSOGyxQxsJ1l7YmzXWPSjANhra8npyQu/nDGCS69CQxB63sDlvdzUpatOQvOTnzVtZa3yy6ZVBGGMGgeKbD8SH5s2QY8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1791557553; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=EiLsH5UA/UAiT8EVhaZCRrPJfE6J/JG41Rfbvq9F6Jk=; 
-	b=dVa8fOIknUAnhPupZPxBXcpw5NN+mrT2WN9dy/0/Pq7lV7P2TdSl7GEv4K0QXIgk8szcH/LHspkdsvFugW//uRfkatqjxx2IEYG+QEOB9HVsMT/mkPldckPULk3kYovkyFcwbq6xhw6GP71fr5DWIlecO0yilkgEV2/kDnbBrkE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791557553;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=EiLsH5UA/UAiT8EVhaZCRrPJfE6J/JG41Rfbvq9F6Jk=;
-	b=DXubZqbrnPnNjo75oU8CUkmCxU5WEW7U137kdql6G/TvUin3a9mIBQ01dcF3Jyvw
-	zXysVlnWfi8tPmxV4UWfqAX/MVUX5EZDadwk0cr8eOCfVfNdEDysgtm0r1IimXErtue
-	NKF66Fi2yzMoVjB3dE+xlGimuCzQ1UfNdYeaXsPI=
-Received: by smtp.zohomail.com with SMTPS id 1791557552056367.49141307442665;
-	Fri, 9 Oct 2026 07:52:32 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: Re: [PATCH v3 08/11] drm/tyr: add BO-related ioctls
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260929-tyr-ioctls-v3-8-26955fb111d5@kylinos.cn>
-Date: Fri, 9 Oct 2026 11:52:12 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Lyude Paul <lyude@redhat.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>,
- rust-for-linux@vger.kernel.org,
- linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org,
- driver-core@lists.linux.dev,
- Alvin Sun <alvin.sun@linux.dev>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <419B635B-1C89-4004-98CB-9127875CA043@collabora.com>
-References: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
- <20260929-tyr-ioctls-v3-8-26955fb111d5@kylinos.cn>
-To: sunke@kylinos.cn
-X-Mailer: Apple Mail (2.3901.100.1.1.11)
-X-ZohoMailClient: External
-X-Stat-Signature: 7i85y9b8q18moyfmfndmzgu9ensox9e8
-X-Rspamd-Queue-Id: 89956140007
+	bh=eWBqf6ojxCNQCKuDFh1m9VyRonME7UrxoPwKh1HJPXc=;
+	b=sysRREEK61BIUM2AVsK2CF1P8M2ghHtGLc5ZnogbkiB9QwMgWa4YP3R2WyTit3ys2cdLC/
+	641/eLYLZ34X96dS60PxJmnhUQ3pAYNhULZVxkzh3Axs8dCcHQt/l321u7gqkr2r9EHmmi
+	oES1WfbpQkwBHZFr3lcEegWzyu7PVKE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=i+ZYF2zv;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.134 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791558441;
+	b=DVpq30Q529xaAheDPEbpfTUIFGLHuJjcAXYySIVXcTruRRJskYxIkbTGbJ9etDXTnhALHu
+	RaZ2OZynlGnAFw5B2xrhHMezrLWAqhwKcC26qiGHCqf/sDSPJ3bqcu2QYikbaXGe6V9DlY
+	DdFsff8tXZGW/BicTUcnyqyM3kpNMfE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=2q4HFbJwewXeqyQtO6Fho3xQ9TR3Tl8vkll4qv6dMzY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791558439; v=1; x=1792163239;
+ b=i+ZYF2zvZesYiTVc9Icd8XX0d3P+C4sTkXMn9ejOK5yaeg0mupaKB3gq7xQytllhBF3JYC7Q
+ QBmxnKea4rvU+9a+W1X0xAiF0Gj4RWuUOWqSNgM2ra+VxayYkesmLki2hv6dJ+0CzZh/wlzYmBn
+ XAvmMo2qFNRztdcJXyCNrpZk=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 3c44e9004eab4323;
+	Fri, 09 Oct 2026 15:07:18 +0000
+X-Mizu-Trace-ID: 3c44e9004eab4323
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <3465c889-de07-48b7-b6b4-7fc8dcac4e67@linux.dev>
+Date: Fri, 9 Oct 2026 16:07:17 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: zswap: use separate compression and decompression
+ requests
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, chengming.zhou@linux.dev,
+ dsterba@suse.com, hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, nphamcs@gmail.com, terrelln@fb.com, riel@surriel.com,
+ shakeel.butt@linux.dev, alex@ghiti.fr, senozhatsky@chromium.org,
+ kernel-team@meta.com
+References: <20261006002307.2669023-1-usama.arif@linux.dev>
+ <20261006002307.2669023-2-usama.arif@linux.dev>
+ <CAO9r8zPm4B1_wtAUMeSR9PQ5ja+kJz14Ub7MCuJit_NSH2DQsQ@mail.gmail.com>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <CAO9r8zPm4B1_wtAUMeSR9PQ5ja+kJz14Ub7MCuJit_NSH2DQsQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B79DF140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791557561-823354
-X-HE-Meta: U2FsdGVkX1/sL1BDkEyalKNPV+w4FlwqqtCdqo/Pdndrb75UbLqLgdjBl+bqUi86P9pXS/5g6xv9VNAX16ZHMwyOnf1wuwv/O2YthASjb/xk9G5wQVrv51pjjyagkWbYDtEJuRDVRkKAcjgcqqG46fvqMWYb//+dUWGy9KYLi88+VFozLU0XRj8M2WYp60zXtgtmRzxEuqd/irFsheaiEd3yu2ok2bySURTNnE46JdaRSk9ZymsYRyFPbaedxOR0QYxdLeZLZ97ZPxSLS1uRslPqosjDoCGpDnQDVvf2aZ/xWOiDqrbvaXOtquB2Eg+ajxf6OkQGDuBo64Fa6pNJSGvtaCVGa+oH9oC2Fpwcg/kiopkEyXtMOjhff6ByL3qTYfBHewjYyP3YIMyO0PQLoBkosEqDuQ+nwG77h+ndRTIvT9RiqVW1pYRc5HawG6YIYxDmJO/Tbw3hbk2s2Sb0aaPxMJX58cPgm9DEEEM/ta/Q1NZjaTB1AVT1wjRU2f5OfgqFR9esQyRCOsPLqi8sP9jysakUBe83Pt98fqpAdo4veAYAhA450+ME8amfPZfGFWYmtfsUoZkLgk1hTAyWoe88aARusdOs50QPXixmniYpqspvfh+Jn9clEvpKpicrNyVnu0gXucEKCvLArOhvmYTrxfEha5EKOeGsK5ODWKknKAK1ibzrawHIIVPQEM+rOqj9xEfeUqsa42TagonH/tOAeu69RvAASXEld/xAOdshpErka1oVX9JVdzq/TRUxgJx5U4+BZQXHhN6Wb4bjiFoaMSiLXpQ7dTFA1Y5m01bqGM6IA8Ctt2qLkLAmLk7BAgiPn3lMPpUW5xAxKqKGdR4VC1KGJ5DTs18Xd0fI7pfIcAzZHMu5XyrVdFgl+1jiQH62n82Zjc08tG34TXDNzeJpr5DeCtbkklGCIn/3kyFJn2KllyLuXzmWimlDNxGzbUTcAblUSfXdwIG3gFI
- VK5JFpDU
- bSW1AYZ4C444pM980QCpe6atX5M2lSAO1IYtX/lyRKgKc1G6nBatCYlKhU5bZwcEzp1JCWutbpbn43DqEh0OvUSPTEN+M3NqSvJZq3oHs3Yl5xcxofoUu9p5KWcOpRBfKb6XbE3FgLzS2NwQpIOTE3Y/KuI7CB8lr1WIoGroDTKOJ2QpZWhpxa6UEjblSi7wu3wGXL+qINU1mlWcFFjdT24X/wAImo+gkEL5nl/4+2Aj1pBSLA+S2d5eOiibplvkBlNx+iR2EVQp4pUYRfL1IuWgAz/l0K2HMjT8uCilHf5AZY7s9Gb2xbHsPCPd9nthlV+vvuz5mwiwFvIM4KoAreBpP+QlIs6Dcn7I23SUkHPgKAdiIMzrseP6vW9Xly4HzhhVCeUYG6FFsNy5cJqcLrCv622KIAfoa9/sU
+X-Stat-Signature: s3ah81pkmzu7oymbmwd8hjifhnkhowoj
+X-HE-Tag: 1791558440-540527
+X-HE-Meta: U2FsdGVkX19WJwALA+kSW8nsXxbmYaXoj47Rjzpgox1559hECbT/mmiCjZcQCjVxgZI5uJvSnO9kx6V8PmFyBEvE1wf3zK1f7j5rPegTZjQ1nrJegwPfwciV+uL6SFnv0xUIemhyg5i2H0ytDNbdN0J5ApS22beo5xwHrxyy7cbSj4QKnzEBVGpufAhJVVKi/qNegvkirAclrByx99zEIVXufrgssZObTdsgN8OPcv2GE4jK90mzZnXz9Z0aa4xoEcPqF1vRptaS5ss5clPfgsUl/4p3JT+05ox+H8EfF6n2eVmy1IaHc7UPcISOTFpCgfLN7AkGj5eRzccb3RZAloD4EpQnFNEA8Wjn3RmYrg4ZJCGV7Fuu6g7tYffMThJ/CHf4Yhe7Vb1WNJyqZx3rfcvFIbVYtuHJRW5w9mXGwYu9bciG43IgKypzJo+VDcDnv3Ap25GhBa8B3C8vFRDprruhHvQf1K0BiV7FoXVnz3dfPaa9i7IzEQNH01LT6nGj+sSqVv6f8P+/OPB4kxfFKad4TqJ72X0J9e3EKpYESKX7TIkIQhqkCT5R0vh1aJP3J50nrca1lABpnkb5m1oyWBiTjjR2LxPaSE3rd2TJnxUci7CJ96pz3YPyghrOwBII2Y5VUge8ItOvEZ/VIZ6HZJN9rz4wc4qPN1ErJ8Nx7CPTynWZls20yU64roQEwj06pOJ9xH13yM0qhTeoAsUM2CcA92ooM3m0ZyiVS4TzlBp6SuiPbUkQPuhH5VqZB5kWq0606f0Z5W/Ol1kNDP9GfDihLuxWdfIINNXsfO6dGflnpoVegZRUQJVjFG/3SNZ7j36JUtCXoz7K+oM/WGQ8ZJKCL4lLls27wQDJZwNtfIP16s9uwxSghwO3lGtKy3p9QazyfeVPJMUakV5faQsponfSPxTemsFOqcCW6UYUHJ+ylucOee5Rv1bFIeQnBZBfnxisfQWn7AYrOIw5lfp
+ BgUmeQ/U
+ 4v5iwMk++LcxD1Syt/ifX8oDdELoGroAipQdkYloF7LxHMbYriBV53GW6iylBiVQgOKToW4XhW+kkwoiXyeQ2A/R9F9UZgYc7aeT4DSbDu8VEU1giovfWhsLqTSGIXg2jgJmfKkOBMmOqHqK0EgvylKWy9F4m4juXnk2xXiUZl8DutN1cIaPhA/YOtNVntFmIYtvmNwy/UBUqbHxdfXKnF6ONwJK/wpka7Ha5hLq4lqemL4/ODxCu++C1Z6JlMmmELMgVcEeyGMvoeERvQp2vZOonPRXsAiCN/0QnD/D5LzJZAphHVzPU/LcDpeJT8wogl5W6i910s3LjUOswywgvgzWXXHo/1pRxizue
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,112 +97,252 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Alvin,
-
-Same comment about dev_err vs dev_dbg.
-
-> On 28 Sep 2026, at 23:15, Ke Sun via B4 Relay =
-<devnull+sunke.kylinos.cn@kernel.org> wrote:
->=20
-> From: Alvin Sun <alvin.sun@linux.dev>
->=20
-> Implement BO_CREATE and BO_MMAP_OFFSET so userspace can allocate GPU
-> buffers and obtain a DRM mmap offset for the generic mmap path.
-> BO_CREATE page-aligns the requested size; BO_MMAP_OFFSET rejects
-> NO_MMAP objects, which must never be CPU-mapped.
->=20
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> ---
-> drivers/gpu/drm/tyr/driver.rs |  2 ++
-> drivers/gpu/drm/tyr/file.rs   | 73 =
-+++++++++++++++++++++++++++++++++++++++++++
-> drivers/gpu/drm/tyr/gem.rs    |  8 ++++-
-> 3 files changed, 82 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/tyr/driver.rs =
-b/drivers/gpu/drm/tyr/driver.rs
-> index 9a7f147935e29..8baf88aee96ad 100644
-> --- a/drivers/gpu/drm/tyr/driver.rs
-> +++ b/drivers/gpu/drm/tyr/driver.rs
-> @@ -224,6 +224,8 @@ impl drm::Driver for TyrDrmDriver {
->         (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, =
-ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
->         (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, =
-TyrDrmFileData::vm_bind),
->         (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, =
-ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
-> +        (PANTHOR_BO_CREATE, drm_panthor_bo_create, =
-ioctl::RENDER_ALLOW, TyrDrmFileData::bo_create),
-> +        (PANTHOR_BO_MMAP_OFFSET, drm_panthor_bo_mmap_offset, =
-ioctl::RENDER_ALLOW, TyrDrmFileData::bo_mmap_offset),
->     }
-> }
->=20
-> diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-> index 2c037b136406c..e98eb0a46877f 100644
-> --- a/drivers/gpu/drm/tyr/file.rs
-> +++ b/drivers/gpu/drm/tyr/file.rs
-> @@ -248,6 +248,79 @@ pub(crate) fn vm_get_state(
->             Ok(0)
->         })
->     }
-> +
-> +    pub(crate) fn bo_create(
-> +        ddev: &TyrDrmDevice<Registered>,
-> +        _reg_data: &TyrDrmRegistrationData<'_>,
-> +        bocreate: &mut uapi::drm_panthor_bo_create,
-> +        file: &TyrDrmFile,
-> +    ) -> Result<u32> {
-> +        if bocreate.size =3D=3D 0
-> +            || bocreate.pad !=3D 0
-> +            || bocreate.flags & =
-!uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP !=3D 0
-> +        {
-> +            dev_err!(
-> +                ddev.as_ref(),
-> +                "Invalid BO_CREATE params: size=3D{}, pad=3D{}, =
-flags=3D{:#x}\n",
-> +                bocreate.size,
-> +                bocreate.pad,
-> +                bocreate.flags
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        if bocreate.exclusive_vm_id !=3D 0 {
-> +            dev_err!(ddev.as_ref(), "BO_CREATE: exclusive_vm_id not =
-supported\n");
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let size =3D usize::try_from(bocreate.size).map_err(|_| {
-> +            dev_err!(
-> +                ddev.as_ref(),
-> +                "BO_CREATE size {:#x} too large\n",
-> +                bocreate.size
-> +            );
-> +            EINVAL
-> +        })?;
-> +        let bo =3D crate::gem::new_object(ddev, size, =
-bocreate.flags)?;
-> +        bocreate.handle =3D bo.create_handle(file)?;
-> +        bocreate.size =3D bo.size() as u64;
-
-Why is the sg_table() call only added later? As it stands, this patch
-introduces a silent (and extremely confusing) issue.
-
-I=E2=80=99d prefer if the call were to be here instead. You can just =
-call it
-unconditionally for now. IIUC it is harmless for coherent systems
-and in any case, we only support non-coherent systems atm.
 
 
+On 07/10/2026 23:01, Yosry Ahmed wrote:
+> On Mon, Oct 5, 2026 at 5:23 PM Usama Arif <usama.arif@linux.dev> wrote:
+>>
+>> Stores and loads serialize on the same per-CPU acomp request and mutex.
+>> A low-priority store can be preempted as soon as the compressor drops
+>> its stream lock, while it still holds the mutex. A higher-priority load
+>> on that CPU then waits until the store runs again, which can take a
+>> long time when other tasks are runnable.
+>>
+>> Give compression and decompression their own request, completion wait
+>> and mutex. Since commit e2c3b6b21c77f ("mm: zswap: use SG list
+>> decompression APIs from zsmalloc"), the per-CPU buffer is only used for
+>> compression. The two requests can share the per-CPU transform: no
+>> in-tree implementation modifies transform state while (de)compressing,
+>> and shared codec state has its own locking.
 
-With the changes above:
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Hello Yosry!
 
-=E2=80=94 Daniel
+Thanks for the reviews!
 
+> 
+> I am a bit uncomfortable with this. If future changes modify the
+> transform state while (de)compressing, it may result in nasty bugs.
+
+Independent acomp requests can share a transform. UBIFS already uses its
+shared compr->cc for compression and decompression without caller
+serialization. IPComp also submits per-packet requests on a shared
+transform, and EROFS allows concurrent decompression on one transform.
+
+Drivers synchronize their shared state internally. For example, HiSilicon
+protects its transform-owned request bitmap with req_lock. Unsynchronized
+shared state would break those existing callers too. Separate compression
+and decompression transforms would still leave concurrent stack
+decompressions sharing a transform.
+
+
+> 
+> As for the buffer, I would also prefer some protection, but I feel
+> less strongly about this. For example, we can put it inside
+> zswap_acomp_req and not initialize it for the decompression request.
+> Alternatively, we can have an intermediary struct that contains
+> zswap_acomp_req + buffer, and use that for the compression request.
+
+
+Done for next revision. Added zswap_comp_ctx containing the compression
+request and output buffer. Allocation, use and cleanup now go through that
+context. The compression mutex protects the buffer until zs_obj_write()
+finishes, and decompression has no buffer member.
+
+> 
+>> Loads can still wait for
+>> each other on the decompression mutex, and stores still serialize on
+>> the compression mutex.
+>>
+>> This follows the proposal from Sergey Senozhatsky for the same split
+>> for zram [1].
+>>
+>> [1] https://lore.kernel.org/all/20261005122036.718976-10-senozhatsky@chromium.org/
+>>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>> ---
+>>  mm/zswap.c | 89 +++++++++++++++++++++++++++++++-----------------------
+>>  1 file changed, 52 insertions(+), 37 deletions(-)
+>>
+>> diff --git a/mm/zswap.c b/mm/zswap.c
+>> index ae19e301fced7..54187b1ef751d 100644
+>> --- a/mm/zswap.c
+>> +++ b/mm/zswap.c
+>> @@ -137,14 +137,20 @@ bool zswap_never_enabled(void)
+>>  * data structures
+>>  **********************************/
+>>
+>> -struct crypto_acomp_ctx {
+>> -       struct crypto_acomp *acomp;
+>> +struct zswap_acomp_req {
+>>         struct acomp_req *req;
+>>         struct crypto_wait wait;
+>> -       u8 *buffer;
+>>         struct mutex mutex;
+>>  };
+>>
+>> +/* Separate requests, so that decompression does not wait for compression. */
+>> +struct crypto_acomp_ctx {
+>> +       struct crypto_acomp *acomp;
+>> +       struct zswap_acomp_req comp;
+>> +       struct zswap_acomp_req decomp;
+>> +       u8 *buffer;
+>> +};
+>> +
+>>  /*
+>>   * The lock ordering is zswap_tree.lock -> zswap_pool.lru_lock.
+>>   * The only case where lru_lock is not acquired while holding tree.lock is
+>> @@ -270,14 +276,10 @@ static void acomp_ctx_free(struct crypto_acomp_ctx *acomp_ctx)
+>>         if (!acomp_ctx)
+>>                 return;
+>>
+>> -       /*
+>> -        * If there was an error in allocating @acomp_ctx->req, it
+>> -        * would be set to NULL.
+>> -        */
+>> -       if (acomp_ctx->req)
+>> -               acomp_request_free(acomp_ctx->req);
+>> -
+>> -       acomp_ctx->req = NULL;
+>> +       acomp_request_free(acomp_ctx->comp.req);
+>> +       acomp_ctx->comp.req = NULL;
+>> +       acomp_request_free(acomp_ctx->decomp.req);
+>> +       acomp_ctx->decomp.req = NULL;
+>>
+>>         /*
+>>          * We have to handle both cases here: an error pointer return from
+>> @@ -796,6 +798,28 @@ static void zswap_entry_free(struct zswap_entry *entry)
+>>  /*********************************
+>>  * compressed storage functions
+>>  **********************************/
+>> +static int zswap_acomp_req_init(struct zswap_acomp_req *areq,
+>> +                               struct crypto_acomp *acomp)
+>> +{
+>> +       /* acomp_request_alloc() returns NULL in case of an error. */
+>> +       areq->req = acomp_request_alloc(acomp);
+>> +       if (!areq->req)
+>> +               return -ENOMEM;
+>> +
+>> +       crypto_init_wait(&areq->wait);
+>> +
+>> +       /*
+>> +        * if the backend of acomp is async zip, crypto_req_done() will wakeup
+>> +        * crypto_wait_req(); if the backend of acomp is scomp, the callback
+>> +        * won't be called, crypto_wait_req() will return without blocking.
+>> +        */
+>> +       acomp_request_set_callback(areq->req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+>> +                                  crypto_req_done, &areq->wait);
+>> +
+>> +       mutex_init(&areq->mutex);
+>> +       return 0;
+>> +}
+>> +
+>>  static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+>>  {
+>>         struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
+>> @@ -827,25 +851,13 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+>>                 goto fail;
+>>         }
+>>
+>> -       /* acomp_request_alloc() returns NULL in case of an error. */
+>> -       acomp_ctx->req = acomp_request_alloc(acomp_ctx->acomp);
+>> -       if (!acomp_ctx->req) {
+>> +       if (zswap_acomp_req_init(&acomp_ctx->comp, acomp_ctx->acomp) ||
+>> +           zswap_acomp_req_init(&acomp_ctx->decomp, acomp_ctx->acomp)) {
+>>                 pr_err("could not alloc crypto acomp_request %s\n",
+>>                        pool->tfm_name);
+>>                 goto fail;
+>>         }
+>>
+>> -       crypto_init_wait(&acomp_ctx->wait);
+>> -
+>> -       /*
+>> -        * if the backend of acomp is async zip, crypto_req_done() will wakeup
+>> -        * crypto_wait_req(); if the backend of acomp is scomp, the callback
+>> -        * won't be called, crypto_wait_req() will return without blocking.
+>> -        */
+>> -       acomp_request_set_callback(acomp_ctx->req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+>> -                                  crypto_req_done, &acomp_ctx->wait);
+>> -
+>> -       mutex_init(&acomp_ctx->mutex);
+>>         return 0;
+>>
+>>  fail:
+>> @@ -866,14 +878,15 @@ static bool zswap_compress(struct folio *folio, long index,
+>>         bool mapped = false;
+>>
+>>         acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
+>> -       mutex_lock(&acomp_ctx->mutex);
+>> +       mutex_lock(&acomp_ctx->comp.mutex);
+>>
+>>         dst = acomp_ctx->buffer;
+>>         sg_init_table(&input, 1);
+>>         sg_set_folio(&input, folio, PAGE_SIZE, index * PAGE_SIZE);
+>>
+>>         sg_init_one(&output, dst, PAGE_SIZE);
+>> -       acomp_request_set_params(acomp_ctx->req, &input, &output, PAGE_SIZE, dlen);
+>> +       acomp_request_set_params(acomp_ctx->comp.req, &input, &output,
+>> +                                PAGE_SIZE, dlen);
+>>
+>>         /*
+>>          * it maybe looks a little bit silly that we send an asynchronous request,
+>> @@ -885,10 +898,12 @@ static bool zswap_compress(struct folio *folio, long index,
+>>          * existing method to send the second page before the first page is done
+>>          * in one thread doing zswap.
+>>          * but in different threads running on different cpu, we have different
+>> -        * acomp instance, so multiple threads can do (de)compression in parallel.
+>> +        * acomp instance, and compression and decompression use separate
+>> +        * requests, so multiple threads can do (de)compression in parallel.
+>>          */
+>> -       comp_ret = crypto_wait_req(crypto_acomp_compress(acomp_ctx->req), &acomp_ctx->wait);
+>> -       dlen = acomp_ctx->req->dlen;
+>> +       comp_ret = crypto_wait_req(crypto_acomp_compress(acomp_ctx->comp.req),
+>> +                                  &acomp_ctx->comp.wait);
+>> +       dlen = acomp_ctx->comp.req->dlen;
+>>
+>>         /*
+>>          * If a page cannot be compressed into a size smaller than PAGE_SIZE,
+>> @@ -932,7 +947,7 @@ static bool zswap_compress(struct folio *folio, long index,
+>>         else if (alloc_ret)
+>>                 zswap_reject_alloc_fail++;
+>>
+>> -       mutex_unlock(&acomp_ctx->mutex);
+>> +       mutex_unlock(&acomp_ctx->comp.mutex);
+>>         return comp_ret == 0 && alloc_ret == 0;
+>>  }
+>>
+>> @@ -948,7 +963,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>>                 return false;
+>>
+>>         acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
+>> -       mutex_lock(&acomp_ctx->mutex);
+>> +       mutex_lock(&acomp_ctx->decomp.mutex);
+>>         zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
+>>
+>>         /* zswap entries of length PAGE_SIZE are not compressed. */
+>> @@ -965,15 +980,15 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>>         } else {
+>>                 sg_init_table(&output, 1);
+>>                 sg_set_folio(&output, folio, PAGE_SIZE, 0);
+>> -               acomp_request_set_params(acomp_ctx->req, input, &output,
+>> +               acomp_request_set_params(acomp_ctx->decomp.req, input, &output,
+>>                                          entry->length, PAGE_SIZE);
+>> -               ret = crypto_acomp_decompress(acomp_ctx->req);
+>> -               ret = crypto_wait_req(ret, &acomp_ctx->wait);
+>> -               dlen = acomp_ctx->req->dlen;
+>> +               ret = crypto_acomp_decompress(acomp_ctx->decomp.req);
+>> +               ret = crypto_wait_req(ret, &acomp_ctx->decomp.wait);
+>> +               dlen = acomp_ctx->decomp.req->dlen;
+>>         }
+>>
+>>         zs_obj_read_sg_end(pool->zs_pool, entry->handle);
+>> -       mutex_unlock(&acomp_ctx->mutex);
+>> +       mutex_unlock(&acomp_ctx->decomp.mutex);
+>>
+>>         if (!ret && dlen == PAGE_SIZE)
+>>                 return true;
+>> --
+>> 2.53.0-Meta
+>>
 
 
