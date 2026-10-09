@@ -4,130 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9EABCA6012
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 10:04:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 978F5CA6019
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 10:12:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 628CF6B008A; Fri,  9 Oct 2026 06:04:40 -0400 (EDT)
+	id 5E9B86B0092; Fri,  9 Oct 2026 06:12:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DA8C6B008C; Fri,  9 Oct 2026 06:04:40 -0400 (EDT)
+	id 59A646B0093; Fri,  9 Oct 2026 06:12:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C84C6B0092; Fri,  9 Oct 2026 06:04:40 -0400 (EDT)
+	id 4B03D6B0095; Fri,  9 Oct 2026 06:12:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 210F76B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:04:40 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A47FF1A031B
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:04:39 +0000 (UTC)
-X-FDA: 85302653478.28.8159323
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D454C40007
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:04:37 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="L3x/XJnx";
-	spf=pass (imf17.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2270A6B0092
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:12:19 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 992621C306F
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:12:18 +0000 (UTC)
+X-FDA: 85302672756.18.622B4D5
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf31.hostedemail.com (Postfix) with ESMTP id C052C20005
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:12:15 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=B87EFUsA;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791540277;
+	s=arc-20220608; t=1791540737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WCfrYFQWaB6ljrpcA5mB+GvPCr6ztXX1INv06kJj6BA=;
-	b=ChMa8rQk+YY4yemigdAcnDwsObUkTWL6RfJ1K8RVs4msk288xQcGLZdzlY51r/CZccuwdV
-	k4cRCqb2GdAo62so1ud1Qt4y/J85iG7O78pkVdyYB2HfClE0Jmd/HGfORYY1J4DO8kv9ey
-	dEW2VhGc6t9Rah9UJNgUNWF9ipBmCVk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=zBSbv2B6IsoFMLLUq2oPWczzDmUPwVCu6gZEUUWAPbU=;
+	b=MTYYsVDD29FERPU806Jyv0gy8XUzqE3TmWVOb06ERUSIHGm2bUJ7qSSMXG2XJP336F8WyO
+	YwOd9poqIY/2Qo2t2FgRc/MbHlK+gx7/R7LtzcWN4agSxGkJ8Gre2P9Lfjvq6i33bAOynB
+	w+yh7o7lbULcA6tcdz6SXaUzPPto/M0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="L3x/XJnx";
-	spf=pass (imf17.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=B87EFUsA;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791540277;
-	b=VHO19tWqnzAEdKX1/vaPX7YWcnr0h7/dnfVBVz25ABt4KK2NZfIsH1Ka8srdw3lthuJP9a
-	SoxEbwk5Ba27FlrwQRuEaDgagVSOLW8q+7JVvpti6wZ2iSy9iy2V1NkZ1kdgIiuJoiLbpx
-	+nWLntPl50THidnvoucoSV64bS4vvpA=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48c4649b35bso5907703f8f.3
-        for <linux-mm@kvack.org>; Fri, 09 Oct 2026 03:04:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791540276; x=1792145076; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WCfrYFQWaB6ljrpcA5mB+GvPCr6ztXX1INv06kJj6BA=;
-        b=L3x/XJnxNmLzYkurDB1eyIgNgRtmqiXRVl7Z0xOaMeABpvLsRNgNZBQdgvX7NTAlaM
-         sv/T4Np6SO0KaslTYhAj/iOLIMk/VN1L706ik3AoCBw61L18t+JysqJPsfXES0Ensw0C
-         GtWUzdIfVX6udnAMvhDWpxD6cLsUOl9LtKGUU44d0i+Bb9NEwkr9/Z1ZoPA5uup7sfvO
-         o0vRnWqLOqv2XepjABugo0MPpyzI03kG/Ccc1KHFn/s1y4c49RtOvLPXh89swUwaOgMT
-         en12jSQzVVSZeSAMjlZO+dDWl/l0MMeVB146rxxMiFcJolm5PVrHw4Kxf3fca2Wtp0N/
-         UUow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791540276; x=1792145076;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WCfrYFQWaB6ljrpcA5mB+GvPCr6ztXX1INv06kJj6BA=;
-        b=fyMMLfayN2LLVi8CnYWK0KDL6n1KyWFXe56mVLbWLOyKnSDRdfKUBhlC5hdR8a6Kou
-         lhpncsJ+BYSjitZzFeQGYZjIuYA3EHLZEuPbmYbl4rfV66HxzGWfR0GYBrU3VkCUX2mN
-         A/CqZ/QgQcFHtItwjwrwSoRWV31IViCSrEeFhE1H2dAUOF81QrHjoa90FkwZvYyAgfuy
-         JKijHd4w1KslP2iFKrbcVXRb0e275QV8flQ7HJQCdoFZrWbp0VvTHdLbwxus/WnuaqcN
-         wWoOnm5ARqqHYC+3law+QPW0ZhJ0sbCOxMoQd9G8523puBVPu/2ORFEIOCA9BQX2ADlW
-         QvTg==
-X-Forwarded-Encrypted: i=1; AKwUvBzJzti8ECLJd0N+WBRDWLc1LWIjeMn+f6pI6dv72fhaKucqjgoJlQqiusgKKRZwSsO7a5IlvkZzQw==@kvack.org
-X-Gm-Message-State: AFuF++mBic9jwzSUB0Ub/bY+rwK0RAkkcDHLOuEDcFguOXDbRwfEMRX2
-	xJZXqgTt6a5INhtdl0HKzdKQjDnFFhXGF7Gi7G7u5X9fPR7rwFVEcCj2
-X-Gm-Gg: AYBFou1Ct0gLnW/AVy0mhAL/802Ta5bcMJKXtWWPnHnyLLEiIhocAdvL0rLrI147Yw+
-	iIra5qlD6Hyx7H2y0ocHF3PYwMB0RtlIwES2Id9uqcWlXvHYR2C8CqNWjMBDXHQ6Fb2aF7/GjGk
-	MUCKA//+zU3EP8fijkK58JItPEg4Ko/evgjjsmQBkXQaw7PzQUVhqwju9YmT+zrgh0OMaokfjj8
-	7hbZ3rj2fwm7VAfHH5qWVuZ+I8yWOKhBsf16XSKn1SbcMtdERvrU/xgnAkJfmuoQZ+xETj3SbMN
-	nHTWHoMDl0ujMhYXjKEoYYMz1wpO6hAkp1CqYRjuHWLjx8LnrFpQj/CiplNiU5618q2JALhg9QG
-	YDLnLuOUvAehXCnI0SGxfN53Jx2U7y7Kflq7q44a02uXNiXG5zErfn+Y7+tYbOFYd1bkfF92740
-	/KFDWrsaLVSDj0mS5+0DOHw8ozam+YCxvu1Za+PlNOkumgfPyZMwA2xJS0LcOdOQ+gx64YwSw6K
-	TZegGBikrx2ti6wrAZ1TEkFaons7CZK6MTSI6yVDEFeqOWWEpT+JGbx+XwWu1Sl7mtpbNwGx/H0
-	SMZ3miVFhE4e/MvZNSOu7clNPqEiZ8ZQ8NB7SKGixF8UScqFKxjQB4mWCtSUR7h0rcKa4xva8pD
-	P8vSzWyhbL5q3mVg=
-X-Received: by 2002:a05:600c:3f16:b0:4a0:2150:55fb with SMTP id 5b1f17b1804b1-4a18e44395bmr24842945e9.4.1791540276044;
-        Fri, 09 Oct 2026 03:04:36 -0700 (PDT)
-Received: from unknown748F3CBA5068 (dynamic-2a02-3100-a128-aa01-297a-7094-853e-a20c.310.pool.telefonica.de. [2a02:3100:a128:aa01:297a:7094:853e:a20c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bf2caf4sm53382635e9.10.2026.10.09.03.04.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 03:04:35 -0700 (PDT)
-Date: Fri, 9 Oct 2026 12:04:33 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Harry Yoo <harry@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Stevens <stevensd@google.com>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Shuah Khan <shuah@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/3] locking, mm: Add atomic allocator trylocks on
- RT
-Message-ID: <asi6Kj3TcCd6HAM5@gmail.com>
-References: <20261005070625.8871-1-kmehltretter@gmail.com>
- <asZ8jmWNoGk5tYce@thinkpad>
+	t=1791540737;
+	b=DpNjOWBTmg5EF0rumG4WCHC+Cx0MzqdVXC4jw+zGmt1z5vtL8OpsJgcgzmxi/WOKvPvXeD
+	LJ0uY8jOc30SEZH/bU7ETKaoXntv0ehJcKI0PMPiUlRf8rH5dlaFLi8kpYxUG3o8SxGjwe
+	8t86qO+Fz/WdHd9YOTt8vteKYvlWIsc=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1791540733; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=zBSbv2B6IsoFMLLUq2oPWczzDmUPwVCu6gZEUUWAPbU=;
+	b=B87EFUsAFPor30siFVbvjY8khhf8OwDsonfUR/PTmX+U4DOP1bZLkqFsw7I0xZKqopOxUUvW6CsutcybXgbnXTCfT5eXWsiW+S/N9T9IjlU/wCt7Qj78/ibVktN2jpRleGg14CESofruy7gg95KKDrblPFTMMJYPmWA/Y+rYfZc=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R661e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0XCT5qzQ_1791540731;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCT5qzQ_1791540731 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 09 Oct 2026 18:12:11 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org
+Cc: ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	qi.zheng@linux.dev,
+	jack@suse.cz,
+	pfalcato@suse.de,
+	ayushr@modal.com,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm: memory: fix truncation removing mapped folios
+Date: Fri,  9 Oct 2026 18:12:03 +0800
+Message-ID: <0d2a1809fa1cfc22ad3df26ec28b2d30e5cdf3bd.1791540483.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <asZ8jmWNoGk5tYce@thinkpad>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C052C20005
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D454C40007
-X-Stat-Signature: zuqip9c65jo8is18zp9krqp1nmgxs4n8
-X-HE-Tag: 1791540277-361456
-X-HE-Meta: U2FsdGVkX18YLUGH7x2KOoX90HUBLDhgf5MYoxYRShLjKSF7XpEVfZzujZ/Qjx0z1SkdMjhBT5/tbX4in/xbG8towCSXdXietCMeWHKIYlmVCKlYG8GwY5wY3z3W/stY76pnIZDwAeIimItMhsobRaOVvHr/VSCI0y/WWWLOC1E+0CjhKIj4NkXMLU6Qfn/QRnnPPTo75Bfq/ClQ6usmbcPiT6UqUGFtknBh/V/OlWuQfqJ9NPwEmvGNCrLI7SqOXvKFdsc6H0+Nrsc9IaTTR4i6157S3VT5jCcxXYPCE+wVoQlClrL+eF5bcDA7Chk+qWDqDu72Cq8+tWGYH2MHHolaH8Zf9C13FfeuC7MAMXbKLPvH4Ugc1Buj75SNptU/A4vL+1920SepWj9mWjiLxXl3nGFbAJfc1ckYiB88zmDJGmVbBIEjatJT0MsIxSNBTxvG+V9Srt/uvxnt62U8Jf5L7M6FpQPBwO/9Bh5ZxBvZEys+Es7/JzTGV+UIb+38KiB/4T7ItgJTB/u4R93QZ2Dx1/yv0cMGNRnZFMnizp1E+v3uNEGji+BLUSEWKXOT5X+54dRhtjq6fAhHzYEllGQKCu+dJLLM8j12XCt92M5+WE57Mj8dsxVKAencqDbcWXLOCQw1or4ysD11QfDdVGaAU4sRoc/gyFqaarpqSQi7iMA9VyxuJ4G3BZNYh+h8QyNDMHtU/WHBZa4GlfAEyl3MS8+qCUACMNNF1k/suxejXNsCzl01IoFVrEcwJDoPBYYlw0aG3d8bSsc6f3JRkKpwFkM068wus5o7sCPAqKAC3uuqLcJnLeBgz+Yvr19qntvckdF/LL+HcthcYZf9ioy6B1ALnAHKMhhtxBlEExHuwpwREn2kW9GoDHroLsDcN798qKpl3lhs8UQuMRw8tBhkkGAf4aCALq4FFn1fGgsqDiNa0MwL5gIsIsWqm0LCAOpqmaovSXrDH6MRUdB
- w/fO0mVH
- tzg2T1Aig/ZNuBeRZFL9lRElmvIO1rhY4Eyy3JU40HuTJge7U/09ZkbmzhEH8PYXnPvuxFnHcqjZ/aseqeucjr8T0ztDZ5V2AspVsj45vSnmgXBzmZI1O5r/IvDcyU70r09WuMP4/mmqXaKMr94EGxvLm9L/1xNccUuuLxRRt2GYVvbPoQBkl1CBpWy07fm/IJFoeZaHAZ6oq7v0QI5KKvF47+r7uV8lNxp9e9rLIk2akieuy1V1dOBd1QKyNfUWOtl3OJZSwGiLW82dTGhzpf4hFVghmNOQrfs34GMZKNsk2UUI0GdU31GlOtQosPh7kE0eWZcqcqNkSHps8tjdS//UwPU9DWorganWS69+Kf9y+WeIPh1LdfmlfG0VO9wmi2f8L2ASX9yM6StOPX3RSDlkfmtMUGBP4EKFLd2ihL6adPuTmS4Wl/BXa0POI2ScUPIGzPAWcBCmxvvg=
+X-Stat-Signature: n8mw33ag86ycppx7dexbwoo3ct3k7zt6
+X-HE-Tag: 1791540735-279518
+X-HE-Meta: U2FsdGVkX18qFGF1OVjmElWaKvZZYq92PQNE/ctlq2dJCZHHEh9LB8AXD5KPI4/DZGBEN2pe/jac+Gu/Wga1nOoMR+nQlXnS71S+Xy7Ric7iqPGUT9UBaP1t5sUnt8Qk6J6YSBV6ttKltNL5Bi+5Dt957gZ6kX9TFtJBjlxDRGwt4VhGTvrzqzpbr9QhP45toxWJ02VLghVCni+4vA9lTyIqHLrB02/N0PqppiiG9Eqw2IRMKhaYJDSYTetPiB+8SV/24Xm45h7wzdvZ7qFuup7tBuVTTVoEv1SMFjMp5pYH7q2PPd7gYNq0ysA9BGWYFjfSfu8ZQlserfSxUlqCgQrs3Wj6lP89S9HCtsfAth5YXwwS7PhT+cNthFgo9ZaDxS2MqZ7I3DLcI6R2uMHb1w2HlZ2LUeoLNF3Ozooe8ApkZrRKAiYdkFTwDFm3RaRFNDV+1mRYsg2unZuwt9UeN/+7cJw5qNAH3h3azcjjYJaz/roKcBQbKd5vF8KN1eSQ3SndCcV2VxHckAgYp3fr8rC+J9L13SgasMZHUyx2iSnmKEjrvbUG5AWO3hwJVMSeJJHOKP0mrsvtAWJkymr7ygPPAy7zGkm6A1dVVRX02K637rpSctW9VSb3a1yq2YDd7Ner3l1DB3Drx4YtL8GFHCQsc6Ah/UBQS8Sm19mVbQvcA1yAQlRFc41M42Xz8iVJ/LuZEhHR+2aCQ2cFOlAsCROiEkQMJfVXYaCU254DRMAvW0svZQxBM4mVDcT7tNhdJl/Gh2GE1P91n5iV+PZpX/iHEcO2t6rkCGPT+3Cl4bEcmJNJFBtTS9UpdlLuhr9n88euF2vHmkNqmkwpzxrVYerMjU8eln/6Q8dNDuwX/1CzzWTOi+887aOOrx0MQA1TvVc8/lWrAKih8cDH/4WB0sp10en8HHUOUBkW7cKUE2z9qXrs4CYcOde4hdnTdlhUNZsTvRn17J/n75R67A7
+ +pLrKSBI
+ vwFDm39Jiltzo6ks5K9p90nmUoMu5+8pfrN3Bs7bAsRIxt9zgrpaFI4/uBhgkwIPZbCOHpbp1qMw7hVBG6zf09z30KbZHy0Skaf3FB0Vgg3Qbs3H2dsBHS4GFVisHyVKMdR8HKOOhnAsoIaGP97o5HMdP5+6AWBJypGlYwId7KAMAFKsiPAsBIzDGEyGLnLFzRgQMIrD29MeNmIP6LzqFXRC+l98V5OlNg7UsEhEc3sMBA9fVB7tSg/wipl2k5SzbzAEWnYt+SllemoYCoEnKAUjXBt830iVcVoWdv6PZhJH+MSYPGtfRWzGhhX6YmtpRwqf/bACnm65xlSP1gxmETlv+SA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,57 +94,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 07, 2026 at 07:15:29PM +0100, Harry Yoo wrote:
-> > This RFC instead adds an atomic owner state for bounded PREEMPT_RT spinlock
-> > trylocks. Atomic acquisition succeeds only from the completely free state.
-> 
-> Please don't skip discussion stage and jump into submitting a very
-> intrusive change across locking and mm, assisted by LLM? :/
-> 
-> I don't think attempts to tackle this problem will make progress without
-> discussing and getting buy-in from (PREEMPT_RT) locking folks.
-> 
+Ayush reported an issue that shmem/tmpfs folios are still mapped when
+truncating them on production:
+"
+BUG: Bad page cache in process ...  pfn:...
+page dumped because: still mapped when deleted
+"
 
-Sorry, I should have followed up on the additional v1 replies before
-posting this v2.
+I reproduced the issue with Ayush's reproducer [1] with the latest mm-unstable
+branch, and I got the following crash info. From the dump message, we can
+see that truncate_inode_folio() is really trying to remove mapped folios,
+which is incorrect.
 
-On the alternatives in [1], Alexei [2] preferred detecting
-scheduler-lock contexts and returning NULL. He confirmed that NULL
-returns are allowed, rejected restoring the local-storage allocator, and
-raised the RT unlock/wakeup objection.
+"
+[  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1
+index:0x3880 pfn:0x191647
+[  189.171995] memcg:ffff0000cc073d40
+[  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
+[  189.172006] flags: 0x17fffef0002022d(locked|referenced|uptodate|lru|
+workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
+.......
+[  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
+[  189.172026] ------------[ cut here ]------------
+[  189.172027] kernel BUG at mm/filemap.c:155!
+[  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+.......
+[  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded Tainted:
+7.3.0-rc4+ #277 PREEMPT(lazy)
+.......
+[  189.183986] Call trace:
+[  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
+[  189.184391]  __filemap_remove_folio+0x34/0x160
+[  189.184633]  filemap_remove_folio+0x4c/0xb0
+[  189.184859]  truncate_inode_folio+0x34/0x58
+[  189.185087]  shmem_undo_range+0x220/0x658
+[  189.185308]  shmem_fallocate+0x2f0/0x470
+[  189.185527]  vfs_fallocate+0x128/0x328
+......
+[  189.187078]  el0t_64_sync+0x184/0x188
+"
 
-I initially tried that detection, tracking pi_lock, rtmutex wait_lock
-and rq locks. With RT, lockdep and slab_debug enabled, task-storage
-allocation under an independently held hrtimer base lock reported this
-cycle:
+After analysis, I believe the race exists between truncation and MADV_DONTNEED,
+and shmem's ->map_pages() merely makes the issue easier to reproduce. Since
+MADV_DONTNEED synchronously releases the pagetable page before calling
+tlb_flush_rmaps(), this could cause another thread's truncation to skip
+zap_pte_range() (due to pmd is none) but still observe the folio's mapcount
+as non-zero. A possible race scenario is as follows:
 
-  hrtimer_bases.lock -> rtmutex wait_lock -> pi_lock -> rq->__lock
-    -> hrtimer_bases.lock
+CPU 0                           CPU 1
+shmem_fallocate                 madvise_dontneed_single_vma
+  unmap_mapping_range            .......
+  ......
+  (filemap_map_pages() remap folios)
+				  zap_pte_range
+  truncate_inode_folio		    zap_empty_pte_table(pmd clear)
+    unmap_mapping_folio
+    ......
+      zap_pmd_range (saw pmd none, skip)
 
-I don't know whether my changes introduced or exposed the dependency.
-The timer lock was not covered by that guard. This was a lockdep warning
-and the workload completed.
+  filemap_remove_folio
+    BUG_ON(folio_mapped)
+                                    tlb_flush_rmaps(remove rmaps)
 
-I then tried atomic ownership in v2 to avoid that unlock path, at
-the cost of IRQ-disabled spinning without PI boosting of the owner.
+To fix this issue, we should move the pmd clear operation (via zap_empty_pte_table())
+to after tlb_flush_rmaps() and add a smp_wmb() memory barrier, so that when
+we find a pmd_none() while unmapping a folio without holding the PTL, the
+folio's mappings are guaranteed to have been removed via tlb_flush_rmaps().
 
-One possible interpretation of "raw_local_trylock_t" would be preserving
-the non-RT local_trylock semantics on RT for short per-CPU cache
-operations, with allocation failing when it needs an rtmutex-backed
-fallback.
+[1] https://lore.kernel.org/all/20260925065013.3682431-1-ayushr@modal.com/
+Reported-by: Ayush Ranjan <ayushr@modal.com>
+Closes: https://lore.kernel.org/all/20260924061708.1645968-1-ayushr@modal.com/
+Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+ mm/memory.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-Would that be worth exploring? Sebastian suggested
-consolidating the existing local-lock variants first. What should that
-cover?
+diff --git a/mm/memory.c b/mm/memory.c
+index 1f5d5f7d39cd..0272217ad7b0 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+ 		}
+ 	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
+ 
++	add_mm_rss_vec(mm, rss);
++	lazy_mmu_mode_disable();
++
++	/* Do the actual TLB flush before dropping ptl */
++	if (force_flush) {
++		tlb_flush_mmu_tlbonly(tlb);
++		tlb_flush_rmaps(tlb, vma);
++	}
++
+ 	/*
+ 	 * Fast path: try to hold the pmd lock and unmap the PTE page.
+ 	 *
+@@ -2044,16 +2053,10 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+ 	 * to ensure they are still none, thereby preventing the pte entries
+ 	 * from being repopulated by another thread.
+ 	 */
+-	if (can_reclaim_pt && direct_reclaim && addr == end)
++	if (can_reclaim_pt && direct_reclaim && addr == end) {
++		/* rmap changes need to be observed before e.g PTEs get zapped. */
++		smp_wmb();
+ 		direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
+-
+-	add_mm_rss_vec(mm, rss);
+-	lazy_mmu_mode_disable();
+-
+-	/* Do the actual TLB flush before dropping ptl */
+-	if (force_flush) {
+-		tlb_flush_mmu_tlbonly(tlb);
+-		tlb_flush_rmaps(tlb, vma);
+ 	}
+ 	pte_unmap_unlock(start_pte, ptl);
+ 
+-- 
+2.47.3
 
-For arena user faults, backing-page allocation failure returns
-VM_FAULT_SIGSEGV on the RFC base. next-20261007 preallocates outside the
-raw lock. Failed fallback allocation returns VM_FAULT_SIGBUS. If
-restricting that fallback increases fault failures, is that acceptable?
-
-Thanks,
-Karl
-
-[1] https://lore.kernel.org/r/arIY0wMQjCCsqidI@gmail.com
-[2] https://lore.kernel.org/r/DLO3RV3IQUOV.21BNLF4QS9T4W@gmail.com
 
