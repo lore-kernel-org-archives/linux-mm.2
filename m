@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9F72CA9EBD
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 18:08:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED353CA601F
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 18:08:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0C496B00AB; Fri,  9 Oct 2026 14:08:30 -0400 (EDT)
+	id 0FEC26B00AC; Fri,  9 Oct 2026 14:08:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBCD26B00AC; Fri,  9 Oct 2026 14:08:30 -0400 (EDT)
+	id 0B0E86B00AD; Fri,  9 Oct 2026 14:08:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5ED66B00AD; Fri,  9 Oct 2026 14:08:30 -0400 (EDT)
+	id EB9B56B00AE; Fri,  9 Oct 2026 14:08:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F90F6B00AB
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:08:30 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1A282A7EE0
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:08:30 +0000 (UTC)
-X-FDA: 85303872780.04.0A5EAE2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4D53C140005
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:08:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nRzxNI+s;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C962A6B00AC
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:08:51 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5A779120494
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:08:51 +0000 (UTC)
+X-FDA: 85303873662.10.0D2A85B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9731820009
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:08:49 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RG79TTsX;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791569329;
+	b=ShC1ZTVR6QDIjT7D7QEZ0Oyekv5jiex44dsNFh+zY5UZhrx5Td8nCzGJl4R4womFtPwvsN
+	J2SHYPjQ2XX2PEP4XtXDrEArBzGLyW+hYobGwMlDLBImQP2s2JRhLU1hVvCRbypthyJFxI
+	oobb94mW78Tn4SIrwfGFendiW4tKXSs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RG79TTsX;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791569308;
+	s=arc-20220608; t=1791569329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KHIf8B2iI8fiNQJo3dAJ4TwVu9iIvLIuOzKYifaGOuw=;
-	b=2/HwjUdWngMXEkITT0BGAExHk5Hdfa8jeW5cBW+BaMfg9SQD8cA2xg2Hary3PwNX8CCuh6
-	5xxSok0AkksV60RM017K06yaas8HYpecC3xXXwEx3hTWHAVbSuH4xzB/wtG0Bom7d+/+OR
-	PJEWAVWXwHQ0qplhO3Rc9OOqsziWqO8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791569308;
-	b=on1zjaUZ8Kkt8VXUyn3ykamfbF95QZHP7h0vYgSg3vSOt54lam0hq9SqL8NgMVfyRVai/A
-	KdfOZDlnDe2r0PCjD5GMvIsk+YtZ1ksLhvNjaVI0Scjuc+QoQqAnFqrgGjICAm2gViogeX
-	i1IPr/6djCmq+r22ycADTP7978bR9No=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nRzxNI+s;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=GMtIN+4F9Qb+gUfI9aB/QG5XlGE+8TEC3chxVq3fBvM=;
+	b=Rqe8ojY5EvzE05KBA3eVQY95xj4VDe4Xr60+ZA4tatCnskCrrnnPbAT7YmHaOk5g43znE8
+	Llc2Wp55CRHpw0H4rdve3Y7Nv8GWuE3tL80XJ2deXBEcDWVeQ9a/s6GSqm8jZw18guJu/N
+	dXrL/WMrLdRiZb1t+QHREUioXuctwlE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 65CB342EA3;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B0406020C;
+	Fri,  9 Oct 2026 18:08:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8321F00904;
 	Fri,  9 Oct 2026 18:08:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2351F00893;
-	Fri,  9 Oct 2026 18:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791569307;
-	bh=KHIf8B2iI8fiNQJo3dAJ4TwVu9iIvLIuOzKYifaGOuw=;
+	s=k20260515; t=1791569328;
+	bh=GMtIN+4F9Qb+gUfI9aB/QG5XlGE+8TEC3chxVq3fBvM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=nRzxNI+sutDN8f09nDjKkkSVYLIVFA1KBxmkta60GSU2jmmn5Fr0ShIPbnGo2JAMc
-	 FmGDoODwUQcfMnKXfnagv0XMuf2pSfBX3rbgSB8n8d0mFfgqXTtttbU61wBS0hv64I
-	 HR1cerfNHUGT3EFUpSCcwyg1l/etfg6QCuenzcdkbGVaqZTg3kumDLWZu3xboiHhHX
-	 GcxzBPdky67tnM0dYnDp6x+S5wL8vR6r/38MNmp6RwBWNN5oL9z7qKP+Q2E0EY2K1v
-	 fJvsHQy++SIJCIpufn4IECyZpabC0v3S4H6zNL11g4j1/iEebgcLFpzeN4uETr2urt
-	 jgrO9D370hMTA==
+	b=RG79TTsXtdLFNVIBfTJxF8oLuu+5m7NNZ56wCA57RHrAz6MJ75qyRN5mJCOUUkxgy
+	 jbQOyUlzFyiMdDEA2YJb3Gql3kIAq7ri83iTnPxD/rXsuPjDaBsoPHcv+Mcg5yy3pp
+	 i/dFx9+dZsKRNmJJH08I/jbObL4QYF4o7512qtve4lYqt+/aSzrla2xDuoWgUrcQd6
+	 iRMdACfI86yBKKzR8mB0HRM2q53Cqod73gMqGUu1nLR7rtBem1EMO6HDkuF6kKdWQ2
+	 22d8wFTLnY9rHOopat/hNlZpNZNWdxLCE3OpqHg9FemWhtsVIFlDrXcsgeljQBpPTU
+	 RQ/zjA1a4Aa0Q==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Fri, 09 Oct 2026 19:04:05 +0100
-Subject: [PATCH v5 11/38] selinux: reject writable opens of policy file,
- drop mmap shared/write check
+Date: Fri, 09 Oct 2026 19:04:06 +0100
+Subject: [PATCH v5 12/38] ALSA: pcm: use vm_insert_page() to map PCM status
+ page
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-11-923b70125b1e@kernel.org>
+Message-Id: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-12-923b70125b1e@kernel.org>
 References: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-0-923b70125b1e@kernel.org>
 In-Reply-To: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-0-923b70125b1e@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -154,30 +154,31 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
  linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
  fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>, 
- Bert Karwatzki <spasswolf@web.de>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+ Bert Karwatzki <spasswolf@web.de>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+ Takashi Iwai <tiwai@suse.de>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1977; i=ljs@kernel.org;
- h=from:subject:message-id; bh=htC5Vt0G+OXzRx+Moje1Xpkb4xzW02xQsc9pTlrK3z8=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJO6syyLlwm5qqqxW+4hq3BtOXz0qpbk8pMXuT1zn705
- Ox2edZNHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZjIqlaG/+55/uKCLuaNFyZO
- b/ZR3qyvebb6133fTwaTWJS8T93+soqRYcdKk1dXz7/gfes4jXtH2iq5VQJ2myUlgicr1T20/Wq
- bywsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2824; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=9ugH4FT9/gtznAktS44gGpUEq4pOXZMJ2VeeFOF3Z44=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJO6sySeVmdcf50TK0o57eC76+W2Sh5z/RiXMolLlTIH
+ P9ap+N8RykLgxgXg6yYIsvzL+L7g0TC5nVe8HeDmcPKBDKEgYtTACYidZiR4fA3i8qOls98hQcu
+ H06vOvDwtH/CO9GL7PNKo3hz2qW2ODMyXCuZGnQj6OVy3Yii6daF179XuJrLFc0O9ej9Zvxy2/9
+ XPAA=
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Queue-Id: 4D53C140005
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9731820009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: dcjr6841yx6bajkjkqtzqrj7oth4zket
-X-HE-Tag: 1791569308-956651
-X-HE-Meta: U2FsdGVkX18G/quZukgV0nH0Gg2TolvxVJP6ZedAagszk9gFrpw8Bsd/byUL2Oy1P5p172HOAZmVVtaXJrZ6SnV0lVEYzao43Xqwb7qn9qTAaRYZoIb6HasfglFDbnHacAaM4SKBVfpw2+IFcoszelFMwLnbwte1vKqqnX9DH/6cVeXihT/VDgbtGPx9Hg4+M71ZkERQU42IqaLTCSjlE0QUpaPhh2dmGs3k3x3O2AgUNETiT1k878kKQLuWcMhgXUZOYdUMwukaAYjEwESw/x5t28qi2FTOp4kHcuAzzQqpAYXQKH7gGEGNOESrFKHYdsaiQ9wkxjhiEpyPCukJ0cCwCF8wbqI8F6v1lzno9orr3kvUqh2Shk49hu73FMQqcbTD+YME6z54vEdWzTN2HKa9FEy2rP6/cNFOY1t6Q9AtLz+aTib7403mgmoMXVlLFoJMDZun3lX051WuIQsONDzEVt45QkczNrKignu3sFnFgQEL1O/U0en1f183MnckqDIoUYgMk9PGO3xcB1g2YoPszbNi4gBudQkuBwnuehI8QNa/OUrGnQsh/SyXfiGFuABTeWnV6d7TdL9OrVUz5NnAgu30fU9ltFW1KCZc/a7zPp3a1DH2Ect1Yin+bUJkdv5rFSvhYpCva1g11/VWE1mqEzp/v4EHRL8CbMy2hY9+H6Li0yDOBGfchyq6XOSfxuPoeuIaEYc8b8acALK27IKVzkNTUdte8MJVih2ZF0Qujw9se3rHvysMf/EtVkJ2+hqaJR10kz+Hf89nzssv2FbQIt4PkN6CIdSz+vb34j/bvbqoq8u6oaoRpcTuBa3gnfPXaRgCyCtVUIdwzco4rBhPabBMb0KHvW9AD3X5kb35Z/VZQozHVgR8c8KlhncbQtqlIvYWPkkCCjXvxx32zP3DbGpambyKHmsucZtB/Q2u4Muy8iA+mU2bWXK1mdIioUEDjfDLkSgXtKkNL6x
- 5qQbEigu
- RYSoRe0B06WjGj9IKebDxvXi+ckTj/Qsu/kbyLskAwrQOcvVt3Cqr9Bz9P1gu1KsxuffaGmVZIA9Z0z9ER5JMwt7YmIWlvBh4tP7ZIfwh36Vy5STB6yigDKjkassduu4iMpeNh97qV3DUT1Z0Y670HY8elCT/AoEi2bEFeEGeOmU/MyufutUCUBq1AVaJBH5kP5FrSPYhbNEowYTxFdcBh54nsgJ27FWboFECQ/M5XLiXfyT1aCT2Z8hoXy7zlseQL8Z1I90mXRD73L3QqWqJbKkq22ksKtoRPxP5V1BHTQi7V3iRXUFuHsulSezfJntfzs8G0M6PK00TVR9PuTgoNH3Q1XF9LZIgYOMeNCmkxAj5qfMxIxX2vN/iWV50he182bDXfNfztGHagD8yWl5AH+Cz5kZ8wOSpgnCQuylZYbBzAAE1+EQreouOPcDcKQO9i/k0pp+15ouQS9yetcCkSC1QeL++EkQ7+Qjaobpy/F25r7EjI8fAEfrph3GLU34MVOyeKL0b/sVcsAHxlP7Dvi1A78NvhM3Sy6mUWKVjth0PsTaaiyZF6AObgCxReP7BBd38ssUl9f3Vf+flQ3Zp2G2ONTUgvOEGIXJ5CTIeC1BsfHnG2uvZHsbhavihzpeo+3LXRxbaehclpgpZ86sj356v/2FV4gIJ1/E5BkJgoudeJ5JfVmVhJ31J5M2ImowhxcytO9wSUEAZnqpaUOgAKXZZsq8TjAOtk2qtrBWabwS4FTh4YT6RvAKLmKgVYW3Qj+2XU6+VPjbBNDnVsrXbOlDUbvwppma7BTJd8RVHbuArzDXF1cLDxxWDtC+fHwe2ox2EjTqcRy3rZLH4DsrfTd/GSB+XDB3TOl2fv9z5xpRw+wxtuhK6xvuF6aH2cCVuhkiD3HBz1cb73yUjbdB+HrI7Qufqvnd8mvHRqOU7m3kNqX38XuB2W0CqwFM2Ybv5UhRspCslDVukBWXNXls20UCbJZmI
- tLvAreUD
- bpMRpLnEAiwmKNWMw9ytm5Gb5wFmQ7OAiwZ6FkOoDbhqREvr0JnYeXbcC/dERH3KQ+TI/zZiadASF9ko+ROa3s/Qlw4QvuseMCdmlo8gbEqDwChw9ccCrXapVCpHQHxInbTD6u2kBXVRHvyy8mKt5VsjHKI8VgERQLFIPetj4rCfTw9CGUjAeik0I4O4joGGpS1e8SSsVY4AZxEUFEjFFA9w2HMksQJDeTAHSAsPwRcKy8NK0oeqVXWzkHTvKAxv14nWn94h1v/O4n/YWtDD+q/B6AKZfzHmDQM/FElqnDsezY6Bd212IfZnu+Po8rbqZ9TtBDyErC/7k310VYtYy/RZCzqzFUSIMtm7/wbgIW9A45c9ItfFonAVB8jp0WmCclPcWDnN++IRl10Wron6zr2kCzSRe49Tax0+iELXcRDIDANWU0zh0t5tkqvdZdEuXpr9ogsfye6HkhVM7eA/4aVTy/BMyfMr9YrVwB3EqiwCR6hsjKgRGYtoiYVam+6o4MaYnZk11PwBx69sVbcH3goP2/MqkETwtwdRPDPs3B5BdhU0Dlo8hgenPY30uZqDJm6Ca3K0c6vn3SITNzIb3w3qEzM7P+R3wNTI5lRVXtfrftj41D4NmD2kOaXSY/d+Fd9Y59eSaVjdRfjYeoLgTfOb5qSQSJOwBqQmZA+rTbyll9rqv8F6YStq9JGYadcc65iEFQg/azew0z8cpWIwN/vtsFv33Jl3Y+SzL3txHfLtjAMcx9fcGy0t9nsYeeeZ9eVt00js1LXCTo7o95CeUDUbeYinC8S09JUFHGRyXSGdmmdhOCmyrYvi1PZn958AkLu6Jc5uzrz9lay3xrN3ajQkSeT7T+pPUhGrf8/KClHHMjUPzw4X3N7slJA4G2GlTLzdQmWCR9O0MPIR36QJETL4DEcGzjEMgqqRLGmSsFwxfCJRIbOHppm1LCj23qh+98pjkNpMlCuStiLIUzwRodye5dw08
- +oT+saxG
- duG2oAZmFWzzcUPqCF0rWWjnRoCrFJRQy9oCL+ZH5EbiJpH20oa0z1xW1Gs1BDZK8H5GNNaLES2H+weS874uoghjCNiTwjrDKZws75Z1itCzrXSIZcHR3FS3Y2Sn89qdy+kHQ9RGBXWwn7gzwE8E+8JdpjjpnuIIR7uuAOlhkBgg5sNnIeXZfVAiNAOkvzBDp/AeXufvc6/EtUF7Sdn3DpfzkCLBuyzd34a2++CH6kMWPOxODu/4w5OVwsIAA40W3tJWMQ0TpNLvQYTbzXBNwNirnRSlxerzP3JynUR3eTg0MRP1Cqevv1hkME6s0gyo4fmvcPum94r8yhp3Oji8v8EnMqQ+4c9Cf00ZWh9LBNYz9WBr1J6t6GD/bPgqEbCqvT0FdToJAqG0juXQ33PHRJXN8amxq5s8REGk9nfpYArNk5PAIBhWi4cdkmZH+HppHi0IJjuAhPgf3WlZAeIkrCDlHeksWofd/9daW/2tOl8C+bW7sZUGBZXK6Rta0z0c+/dllH8O8HyfaV6DLsuhz9/lVtzLbmt7fGw7VLb7UA0mnFcNArSahDpUrgMowyLNCBuWad8XNg3GAutO91sYgvskmfPsURrXrr/V9vBt+9QKgwt+6wIrpKlquo8D1PJXCLnCHHrrh04qOD2q5jWK4rdaqFyM3EnJfqG2l/VNya6IzUeaWmfx06hBeFsmVD6JKDNl/ENY2vX4vHb2CfIenGpIooAWKbQ553fe5XVgKqSOJTlOgURCYfKh9PcxhnIVqQu4DiWLVCSmPjXpSsIg7mW8jtbauO5HtX00hPbju/EnvD2VKdt5ROcOIX4rL9p4nqT0PSv3nHddJcJ1BF9g8sWhW9G5Ctqva1MsS3YDnHtCsjOdvKV0TVRtTateNcHS5YUbD18SY/VmNjFAJgG4aBmGwUjBbpqjDA4f69rG/L+XqYXER4UdTIcnbnDcVsY73V6mdmhZi2MnukvQu1jF3MUcCVO0s
- hWC8IQ/t
- mFi0UFwu+mvtVIOw0KFcpEitnCsK/z1YymXSVcisXi75Mr/AqGWLV8hRs91ijfkMcq/eGDfSAapWAeUwD8qxvqkkSfTTlgg4FOmH+HVeOvi84icRM+Ie0OcaUCBZCHif15M7A5N0MLyMrVPMIMUQ2JWZIri2PHRvd52/syUBPza9gutDgD73ll5u77bLCNOeAD2ChyD4Nhe2Nh+sH45DV6ZGlh2G0XQnHQ5/7lMThla2RU7SHyMlp/bhsrfBI7Uv6v9efED1cOCofTdR1p53kQoLs04nLz/1+kQPzDwqmHQkdnaUToE6pgyH3PN5yEsPO4ORO5qe7q1cu5OvSo4qtW4jmKIzg3cOK13YNr5/rD9Yhxs+k8fhjTTMMN99zSc3++MNigH+ICVHOWlGApZriZ
+X-Stat-Signature: nbi37hh6jyr9bpjk4ddyu8rdiy4s83oo
+X-HE-Tag: 1791569329-715534
+X-HE-Meta: U2FsdGVkX1/k9jCHpKo8LnMT2mg7DOKSrTTh3WSt77rGIgJjhfiesGs/bwZZJ3D9/QPWfNDiy+Xu28ovo8wVAZ9rgfru07ENGNjRXEvAQpSYJxim26b65856er8aqoqi5V6IdSKtE65MClfs0hE3SYriiCAUodSYHcXkA5PBS+U5c3sOgKhYvWSCBvbOQnTMMgQinrZQyaGZv5yDQyvZJ5FonlR9pRfS30BYPd8LCo5pRrWq3vXDG3dlStnA2eWqNQxDLK8rX5aSPBha2mUUVhs2FTpt8lkw1BeqoaL+3ufcSgARw+G3UofYPsHpBTnQu0PktdGwsakuf8pvld+x5Fr62+LwcY6rg70jyU+GdyLyWFi+PzQbIrndnb+w5iik59V/gvc3fPxN29y0cPu+hLemfriF9mDF8rpXHBAYjCNPdTO+XG6czVGX7YmUeKrRMnwGAHBm/KwZY0hMdtO52rxomT8vxm9eV6kADaLvZknDOJuG3g5TPCyrCtqSIxDnbyFY97H7fp5P9Sr7stixe+TixqgbOuU+J9kg+PepZs1acE1QQ8mII9O2x10I7tRdsrq+Af9TfE5uELc4tRawIqqCN9Zk1Rm5Jp3IfaOEki3VgRmZA9C5E15m8p34DbVfxQdIsYkW2q871Dr0KFiewvdGrTQ1OUtLkkZgKdMcWCXFIYkcKG7cQR+O/RxuVdRR0vO/cmEUNzUNvyCRpwy5ll+6GJDvMIU1ivdj2T1gLtntLuPnQXfFQB3pAr/aNNUM1Y/IeCPTO8kq0nONXZh+ZBRftnUJXVXOM8tAWkBUzCCD/jQweGhEeMTYl6IHxPaFolVCKqX/S2b2IuGRIsb9WMVmDAceOoqz+WPWm0jIBKMBI9xJpxquqav5ylbvSJb6djWCfvYs1NuXwrjWiJBqHDhjRL6giGtWA/Z/wscSuqjTeyMQNKKOU5/iu6YlUxjScIgz9oMsgkhKzBpS7u6
+ vZkIbKhD
+ Ywo4J6wXpu1FT+NEG3Ym1c+wRn8MqP/2N1aebsrfw9sFmkGNd+6Kt739bvLci2kUUe4aw7F/+WGUl7BjqIqMzI1aOzpRUp56TyXXs/G5Zj8Z2Z3hA+clflYeue013JE1MuTsbNwzHWqBiCqlfT90VpbPmAqbPmXG2G9P07mvRn+FR9kv4mugtmT1RJ5v7/NL9zy3kbT+U1vDUxuJjzVIop2yAZdx3b/jiN9NgHe6HRw1KYkI06y4J6fggiio4PQ3wqMMHkGSAo2fuU5tjfBZHOiyeGB91vDnKRZZ2F71fVpTe0zbfdPYiVRGP0XG75l6qpGdBqYDIIRapgJrFW7AjPR6ataQXDcLugAVJFHgoX3E//+eF1V+7/zeYA9mTOYn7jjeX0KSdM874kaZq3vz124y1K7k3QOUQcUg1qgUl2WYX8Ncg15m71QKRgMstZR8glPzuHKaLeIzfNry6Dnzv/27UCpRnwKLYrmJFaKfe8nF0K5eLwyLBVt9xiHKfapxAUKJLpfaz+HYBn+085i6KkcaedQGtNqVft2PJmR2wqDz4AALXAQFx/UiEeO7rMteCj+11N7WM2X1YWX0ngV+2DPY4mzKho80dhXPR0A234Rn27NDMrzHgA/9k14D1ltYz6BIyfe+UNxO1g9AY4NLJTAWp1WpM2n7QGIXpW6XDep8x7nzXbvTQlAvVbXHsBTOdx4sHn3+4PefaouleZEki4EP/q3DuI0pt74Ne1709/bh0HMv9nHs6kwEfLQMpsNXmYxlhXogd2u0V4TTGA7fbzZJi/DjfINLF3MB3AQsc6Gs9DbAevrp4J/w8s/vVy94k2ua3Xn1lAo7StrTsQhPfcWBYVaM+2PQ8docea25tU2tLoCClD449B7BZJ86DDid8c3cjD1ii/TSdRkBgdjsms34xRdK5POyUfR/3aUV81+O7JHb/hpWkIew8arcl0CWS1FA28zrZQHvbkTbR8peduBJRavZ5
+ b3rZH/+I
+ 7oitniYSvCZigWdQFmYmXtM76YMdV5W2ZJs/1yxt480qa7Ext0abFDVCiq0ZQkP3CWki+aYurJHfanmdnBIfTsmC/Rkd38UhSwLw9cyve8TEX8T+8TXIHmNJSXsUZAlwXSv+r9Er4DtmE1+q8P904B7fnbRH1OTMf4FUX9LPzeF7KINMC7uEan4nuqaeewgUKqrJPcWcax38RSOQNdjVqG9SmIU9nvZF30xpQDycMCvvuo+TCinvpCtay76DDJUwvLGaXHBzPPto8FRcV93A0iHIh9d9Rgd+r1d4YPJ6RKBL05JSBaEzgq7MqClY1JKDu9iNcUWSrYOqwV2mrKNBWqdP5XQ5CG1scNA5gMvKc6Evf218oYBdCe8OQP/2uikDrpMSPLnEbcpLDT8ffhw6vu26VOxll9QMJre3Gp0M19mwcwexPVzdAqvL6RUoKvtxiptAtlQyahcFydKJUeo1bexqXrNCrSMBNqzlS4CdMoHrxmK5MHTi0p38O/iLmcYPNte5dTgVth8uhOHKESamCWAHZOliJ1bpc1ROzMPnE88qnPf7Rmyr15pqC72kFFA8lcckLpqlmG+LIp1A64LbKrSCR+9In8qGsEkVg4sFpljLkrnJrwcvsQ+JfmqPuEOC9vSfajXgHn4TMys1XpYXuOIIEE+b1cVA2OrtJLGcn49gpm0jFnNtA8MqIxwkIpWmDOAE9hb1kYHA43byQY1AaydvBmwp+oMJ09QZYw2vtymQpIb+bFHx+eGEa8VIjrTR33fwCMbTuCBD9rh9QOsZ6c5mPGnX9P4hUsVVcFmeQ2Igo0l3Oo7QKXHXvViyjn0TxPi+T45rNVdrN82b6fdhunvEN4gXYuHl8TnuaJHN3tCJSPjrAGbB9GXj23lglRS1AUb8uMc5UdITKM5X7AE0+b94sbTM47r8Gs5Hk5wre25FouIpw95/FnIE/vhO+vmftgZyd2xEgVNUgFOw/Gw83iRSv6UyW
+ 0fdSszqI
+ SZJCKDUQNbFoYBqn/XtmD7QGY2Q+wNB4Pu8vqVxHSRQsO4SalsX558YFfr31fx/Dscgn2MUg254Hr5bpivf9ohOwBtJfq8NcydbuayuJJU8bCaZQ1pTUvXJF16fR5Cjv0N0vGjJwIcFeDQLbulrAi0cVMNOTIpwcsnUV1zIPfLfqadi6O3Gmgtqhe0LkyMIj0rA3fSUgGEiwIlyUJm0wHKcpttiOpUHD3d1LS9rEdddFoSjMv5fciJuGiuGoZMU1BwOuUVUJO9fKeWwe+RQDMP4F1ZDi6P8Xwjlb34jUazzv4tS9gQa/WTJDd5NMed/UwIKiX5z67pkIlaaiGddtE9BIjVOIcqys47ZTjJy0sYYvE15WhZzLL3amXf8ll580UmzvZ8kQWgkEyMGelrqojPQRExvpayOwUX0f57DaAcMvZYmz4PPfwcuHt+Ll6uKqveIYqKICJvJhEYWLwSVe4CuNWTkekF284ScsgxVW4sMpbOaM7/6ioCWJtLZEwCMdYygGJRKcCXXH/KxXcTej0UEms2sSqhgAIxw5yX8t1mkT8Gy+nU0UBGU5XeBwS95kUjnJ253ZINUnu+O7NAaTxJb40AYp2O6z385pQzjFqk+OJnA7o1qbPxsPp6RPXP8GHp6A7k0TLAFXFRtjX6XHRORuaLRAA/IFWPJXSlTPwybMi2bGs/U/TgSNtqOrW8STvt+FrDTd0+d0dGWFZTSx+sxkZkUp2n5mVtbWeSOyM/cM1l7defsE+wgVnO5q480iMgmKAUpXh9VQ65CPJqsAo/NIEmMwQi3bSl1C9Z5iuCDwRX+jOM15CSx5heH46gmwtcjNTMrb1KzBGiuSxm5mQe/B8b4D9NpzDrPIKRwYCU9tSH2BvQ8PGfH6+A415hYj5yiiSsNnMYaDii4Lz3m90w+CKA+UFkrjG6TwSrb8d6ZHJef/YYWIPouAwt3CpGo/+2G/cnEQPgP0zOJBhrwFWT//GwDXI
+ IQ/uXBtE
+ 9mc4/pnvrDVpLEeGxW0ClGF2t5lliq7V2sXzVXuhoxuYmrRADMMteBuy4X1irhTE2/s23aasp0r8o+aFyYOYbjnOOMfGYjwDxW0Z0vKGsfBOjiXdjnBnyUO/cq77e/JDBEVbQ/UTbGjegRfBp1SlgGJEV6V1TBzt/+ZYFFtrTpfwKXEBzXyoT9FFcxqaAYJKZ8agmefZGdzkfuoq5GocDfrxSMO944go/CPddY3ANyco3oMWe6D5VdV91hcz6jZ0YKLkPlmztUb1jVGE6hbA0PqOpOwD/4cWpMMYHw9rDDUoKcRk+6V3J0Kh33z7kVpAPEERXfC43w0CwgrpfjwF/iBnUJaC21jV+xg41SQB+IBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -185,57 +186,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The policy file has no write method and is exposed read-only (S_IRUGO in
-selinux_files[]), yet sel_open_policy() performs no open mode check, so a
-CAP_DAC_OVERRIDE caller can open it O_RDWR. Reject FMODE_WRITE at open, as
-kernfs does.
+There's no need to keep a fault handler around for this, instead map on
+mmap.
 
-The file can then never be mapped with FMODE_WRITE, so do_mmap() always
-clears VM_MAYWRITE and VM_SHARED for MAP_SHARED mappings and the VM_SHARED
-check in sel_mmap_policy() cannot be reached. Remove it.
+While we're here, rename area to vma to be consistent.
 
-This also stops sel_mmap_policy() clearing VM_MAYWRITE on a mapping that is
-neither a PFN map nor a mixed map, ahead of the core enforcing that only
-such mappings may do so.
+This correctly makes the mapping a mixed map mapping.
 
-Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
+This works towards establishing the invariant that only PFN mapped or mixed
+map mappings may clear the VM_MAYWRITE flag. The status page mapping clears
+VM_MAYWRITE, so it must not be mm-managed; the control page mapping remains
+writable and is left fault-based.
+
+The assumption is made that the struct pcm_mmap_status structure is at most
+a page in size, which is asserted as a build bug.
+
+This is safe to assume, as the size of the structure is 56 bytes at most.
+
+Acked-by: Takashi Iwai <tiwai@suse.de>
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- security/selinux/selinuxfs.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ sound/core/pcm_native.c | 38 +++++++++++++-------------------------
+ 1 file changed, 13 insertions(+), 25 deletions(-)
 
-diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-index c7d91476971c..545a6f89f9e7 100644
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -340,6 +340,9 @@ static int sel_open_policy(struct inode *inode, struct file *filp)
- 	struct policy_load_memory *plm = NULL;
- 	int rc;
- 
-+	if (filp->f_mode & FMODE_WRITE)
-+		return -EACCES;
-+
- 	rc = avc_has_perm(current_sid(), SECINITSID_SECURITY,
- 			  SECCLASS_SECURITY, SECURITY__READ_POLICY, NULL);
- 	if (rc)
-@@ -424,14 +427,6 @@ static const struct vm_operations_struct sel_mmap_policy_ops = {
- 
- static int sel_mmap_policy(struct file *filp, struct vm_area_struct *vma)
+diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
+index 62324282fcae..c98fb3df14f3 100644
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -3760,39 +3760,27 @@ static __poll_t snd_pcm_poll(struct file *file, poll_table *wait)
+ /*
+  * mmap status record
+  */
+-static vm_fault_t snd_pcm_mmap_status_fault(struct vm_fault *vmf)
++static int snd_pcm_mmap_status(struct snd_pcm_substream *substream, struct file *file,
++			       struct vm_area_struct *vma)
  {
--	if (vma->vm_flags & VM_SHARED) {
--		/* do not allow mprotect to make mapping writable */
--		vm_flags_clear(vma, VM_MAYWRITE);
--
--		if (vma->vm_flags & VM_WRITE)
--			return -EACCES;
--	}
--
- 	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
- 	vma->vm_ops = &sel_mmap_policy_ops;
+-	struct snd_pcm_substream *substream = vmf->vma->vm_private_data;
++	const unsigned long size = vma->vm_end - vma->vm_start;
+ 	struct snd_pcm_runtime *runtime;
+-	
+-	if (substream == NULL)
+-		return VM_FAULT_SIGBUS;
+-	runtime = substream->runtime;
+-	vmf->page = virt_to_page(runtime->status);
+-	get_page(vmf->page);
+-	return 0;
+-}
++	struct page *page;
  
+-static const struct vm_operations_struct snd_pcm_vm_ops_status =
+-{
+-	.fault =	snd_pcm_mmap_status_fault,
+-};
++	BUILD_BUG_ON(sizeof(struct snd_pcm_mmap_status) > PAGE_SIZE);
+ 
+-static int snd_pcm_mmap_status(struct snd_pcm_substream *substream, struct file *file,
+-			       struct vm_area_struct *area)
+-{
+-	long size;
+-	if (!(area->vm_flags & VM_READ))
++	if (!(vma->vm_flags & VM_READ))
+ 		return -EINVAL;
+-	size = area->vm_end - area->vm_start;
+-	if (size != PAGE_ALIGN(sizeof(struct snd_pcm_mmap_status)))
++	if (size != PAGE_SIZE)
+ 		return -EINVAL;
+-	area->vm_ops = &snd_pcm_vm_ops_status;
+-	area->vm_private_data = substream;
+-	vm_flags_mod(area, VM_DONTEXPAND | VM_DONTDUMP,
++
++	vm_flags_mod(vma, VM_DONTEXPAND | VM_DONTDUMP,
+ 		     VM_WRITE | VM_MAYWRITE);
++	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
+ 
+-	return 0;
++	runtime = substream->runtime;
++	page = virt_to_page(runtime->status);
++	return vm_insert_page(vma, vma->vm_start, page);
+ }
+ 
+ /*
 
 -- 
 2.55.0
