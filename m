@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E9BACA601D
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 16:26:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B81B6CA601D
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 16:27:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0655B6B008A; Fri,  9 Oct 2026 12:26:52 -0400 (EDT)
+	id 546466B008C; Fri,  9 Oct 2026 12:27:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03D796B008C; Fri,  9 Oct 2026 12:26:51 -0400 (EDT)
+	id 51E206B0092; Fri,  9 Oct 2026 12:27:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E95116B0092; Fri,  9 Oct 2026 12:26:51 -0400 (EDT)
+	id 45D206B0093; Fri,  9 Oct 2026 12:27:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C8C326B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 12:26:51 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D4E761A0232
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:26:50 +0000 (UTC)
-X-FDA: 85303616580.14.71DC7DA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2FC41180007
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:26:49 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=exb8hAae;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 257796B008C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 12:27:11 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BBD6B160468
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:27:10 +0000 (UTC)
+X-FDA: 85303617420.02.EE575C2
+Received: from mta1.migadu.com (out-202.mta1.migadu.com [95.215.58.202])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E369D4000A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:27:06 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fFJt5But;
+	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.202 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791563209;
+	s=arc-20220608; t=1791563228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P1NQHWvgiocrQrohPdZ3lILWGC/DaP8S52W3+7hraoY=;
-	b=M53UHO1nIxGUSCnsp2M5xw0hqEtPM8VFNS0qz2sZ6ZT7psYi3si0uH0RjMf7wyT6Hizw02
-	S+yrUhjuE/vd3r+wPPpGf623fR5I1tD9gUX7WHvHvy93iydFUuAhwKM9sJBpNfcxuVG1Tw
-	v4L9rYVgMAsTfpFaYH75VlrXtK0iUL8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=exb8hAae;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=+XmVIXcevzCKIMw2kPiuGNxesWcbtj3AUfqtfxxDJSw=;
+	b=0BtDr4WhhDS2doiJcxZzdd8pSKcyMS3HJFZieK5vB4sfeJqhHi40uyg3sgHRZOP65GiRw0
+	Jm7U3nYloDyzuczGpbn5BPi4LUtPYgO+Kemybd1rnloWlu0eaW9sMA7pPenm/4Jo5AYuvo
+	HGDbDrLmeR91YxYz/Zcgm7qB3yfdT5I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791563209;
-	b=vdc3RdHOtZYwDHMyxCWH/A8rZvtM/hmt3cqlOLPoqLiiyT4IYRp4Lzg1y6qi54HPsenh80
-	gkfyHU3GwQv7UhmnpY1hR6kyFFxy9r04ByuZx3FxiX4qNntUfrgW4AcR2e15wy1gY1T90s
-	io3gQ6eKKVq0WgVIxtdAhoPRzcTpUy8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BDCD942E0B;
-	Fri,  9 Oct 2026 16:26:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A93D1F000FF;
-	Fri,  9 Oct 2026 16:26:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791563207;
-	bh=P1NQHWvgiocrQrohPdZ3lILWGC/DaP8S52W3+7hraoY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=exb8hAaeBUkFUrpnnUkhqLQ5zgFgMWnN/rYINMuBzDs1GNM4i9JO2MPVFhuXRhFo0
-	 bqz3igmYBv7ZBuRWS/kvuYQ5ffUaHTPuDsrkHE/UxTZ8gJOgIGsoInf5FsQ/UB7y3A
-	 g6CVRHuOO5bxRC/opNlTJ4l+8W+7F8avwelRbJO07mkTvjpRefiI3V10A1GVbXs3Go
-	 XiKBGRBT0rS5eYl1YAt1D6JtcC8KFP/8pAvYu+y+q/bNxjXRUhITPA1EQMMGGJt/eI
-	 lisapvQarlC5G9y4IP9ryxp+vI8vfLGLmBHwRi5eyGkWEwhSa/zfu2VmAVl2fAr/CB
-	 DWas7S1aHp1/A==
-Date: Fri, 9 Oct 2026 18:26:36 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Wandun <chenwandun1@gmail.com>
-Cc: robh@kernel.org, baoquan.he@linux.dev, m.szyprowski@samsung.com,
-	catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com,
-	chenhuacai@kernel.org, kernel@xen0n.name, pjw@kernel.org,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	saravanak@kernel.org, akpm@linux-foundation.org,
-	pasha.tatashin@soleen.com, pratyush@kernel.org,
-	ruirui.yang@linux.dev, robin.murphy@arm.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, iommu@lists.linux.dev
-Subject: Re: [PATCH v7 0/9] kdump: reduce vmcore size and capture time
-Message-ID: <askVvEPHyrhpF8aw@kernel.org>
-References: <20260922084256.1515554-1-chenwandun1@gmail.com>
- <ar9ogXc12cLjziHS@kernel.org>
- <80af60db-8c39-461c-a488-3dfee990bce8@gmail.com>
+	t=1791563228;
+	b=k2N0/OUH5iwPKhi/t6jC+6jb6535lFN02PTFJs76LGkYAzHXMFTn2vKlKmC87sZbdMBbEW
+	x/feNBpgrfySUIiKLsrWGzp051bzNHNQ1HkCSRGkVvqI0v6wdIVetnF1aD3QU1CnF7LeqC
+	JfEkNmvala/bhDTKgG+Zj+H8TXT7pfY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fFJt5But;
+	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.202 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=3+ISbXvxNBs6+/hE67lzmNGr70P9/qRzm+LaAlqac3U=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791563223; v=1; x=1792168023;
+ b=fFJt5ButOHfCAjmIVQ/GOHQrojiSPTPUfGPnFb84/0o2sEo2GUpzfNexZgS9MQBVaEbXAn4y
+ buWa0yo8PtFm3NmLDaxd67Ql3tdFx+FH6r357Ftn/DtF8RiBBv5b7mp6s6SHStgkfGxoSHvstQ6
+ WFDj44i07hwAOrGMXJ34oXdI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7b24a70362aefd2a;
+	Fri, 09 Oct 2026 16:27:03 +0000
+X-Mizu-Trace-ID: 7b24a70362aefd2a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <b11ab591-3839-4486-b4fe-77922addbc31@linux.dev>
+Date: Fri, 9 Oct 2026 17:26:56 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <80af60db-8c39-461c-a488-3dfee990bce8@gmail.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2FC41180007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: zswap: use separate compression and decompression
+ requests
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, chengming.zhou@linux.dev,
+ dsterba@suse.com, hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, nphamcs@gmail.com, terrelln@fb.com, yosry@kernel.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kernel-team@meta.com
+References: <20261006002307.2669023-1-usama.arif@linux.dev>
+ <20261006002307.2669023-2-usama.arif@linux.dev> <asiUXpjrE61TLMxQ@google.com>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <asiUXpjrE61TLMxQ@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E369D4000A
 X-Rspam-User: 
-X-Stat-Signature: yfgy465fzmh3nahxd7f5o4x7d9obhaoh
-X-HE-Tag: 1791563209-141480
-X-HE-Meta: U2FsdGVkX1+BC89CLagXFRVHs/uEyP+cto03PpYc/lEAEmj9V8zDBZ4ekuSAN1GRW9mLPsxNkfULyAl0OkbK4oP1Jf7KOI7tGZUNOp3rqGmM1uFhWBaU5i+l5fEz8W3afVclTau0+wXvXfhfILXAhYHaizJQbYnGSu8rSn1Z7Hlu+aKgLXHqGi00L+IGcQUnszmCeNfW52V41i2sVnlgk00BQ44De9Kvl5KQLp3p11Ffrvhkzpe4FaDnUOVohJeS5ypwXOQETDasI+UwcibfZcNSsNB3E1whlkofCogODWdijzvmHHnRiEDYXQvL+plX2eD5rJeAmQ0mBAXcj+mfS9YEZObbvuX0uWj6JMVUdVgNF630oPMWQqw325vOrlW0S6SghZsTmd48K0OqcLvu/x9WfaKXG4MCLdmtcUgXTMhafLDMVmSZw25EfO+HTFsxF0WL9357SQSegWK8EBRwmxrdAdn/Ln5fJtyyLhEL9RHMGYdTZIs9rNXMX+Rh7iw8FT48QNBZkzImZ02oYU17AzxdjiG9w4JUDHgF+FMUCaFrmDDur4MmGQGIpxBXr48R0DhHGOTPQsec1RUFpdQGVNFVn7XJFvo1xBd0N/dz7rj0TDtBqWs8SGCLMPfZ6Znh/2OOzyKLlfNCNf+KrW8W2RonRndybSKRqc7DSlQrWvdYtnz0Qq8GuZQUZHXyx/E0Ir4BOI3HHPfDYKAaUgTIJbW8qwTvv0R8+S9wGriTZgbsoLBJXhjjeD2tFwU/xHv+JhLuQ1UcZI9J9M/ud9gWicV7yqCXKeYbucA1ePjpGfYft8kwTylEM7Pl8Woe/o2DRyMEfw5jGvWpM0n+q7FmeJu0L24V29sPF/+c5abIk/MTNEGu1rz/nFvkUXKVjgOlVxIvt8nOOnfKZNEaXzUhDI8YlEJmjYr6PC9Cfbr8x71dwmfd6mLhTkpMRZnyYw7J+ryyp4Gf5G04NDecZ22
- WoOmezYk
- 6cn6AFVrXBOA7Alhk/kVSuKQyTjkgg5am+66X3lmrWka2YYzciO84yviRgBRhDfcJ7n6HG+rgO5xLlnsBbKu6DkxUSa5nPSSBnjfmsB3SqZKwxTZRlWiF8uBXiAVuZ9mzoBDekAn4qsRl35FBQdE9Kt3SDwBRNbxnUffxqwr8strI0eS7r8Av5Gzchj2s7Fbf2m67X+AlWTE7t7JUEGkJi18DS6FRLgODxQnUeJGWTYG2pOHg+h+LFFWsVUORW4p6/5abzvqu0GBZTf86YcWjulopR7Bm84OUsya6NJLf5Jt+l/7/B5HXz2ssSjHxNEdAzGmkJ4xTTXtfT0QhiEjgzibuz9iC2abzFUb2
+X-Rspamd-Server: rspam05
+X-Stat-Signature: pwqhq5h3oezxewozy9u4f84iewpgjyw9
+X-HE-Tag: 1791563226-196152
+X-HE-Meta: U2FsdGVkX1/ufh8PyhQ26mSIhVUptyPNYvEND5lKUzhXa0dEg02mc25gSNtOokEJYL8N/L1pkVkc7nN5V3Dswp6sXhyS4sT92o8wdAsACSXxav84iRHPAtKXp9MD6GV4MGzjDOdL3RUaow9O8s/IsBMa0hL9ANj7gWGkOajgRsGhTcazaARIQYw6hScwiDXCZ3V/fy6H+AHFhxR9zMteE8XyJLtNwF46Swgq0VT29PVeLljp3io8RCgGcKjBfJ3olHN9UJXZc1nOt+w2rrsthgfNyO68+4C4qMJSVxOIY9QUxbpZ2K8j56dhsIBYeTa+woDoRcIvheifwG7+lS4BwR0qRoSDFlf9Ww4XqpSJG4qvfgbzzuAZnwXfAfjvII61lmjN7EdPCOrXa0viM3w42IVfINLWnc3W/yRSlWSsUlW1J/Cc2oAjb8OrddB/vhbMAFIHqxkEWkvD6XrpKuwDMvq9UIOKAaQNMF7bNDbYOcEMX0rBuToi0u/6dVJYD9O3YHwIyH/PEpjP3gj9oOnXm8eyAB1nGhVmF/2tCqZ0/sEKNMMjH5tkgPFhsSAeTOYbfjQxQ68KMVdItlI/TS2CIMx9LSd14mcPCi3NzBJPRVTKVPCtapuLUzvXYfQG4RGX3B9ZwrxUs3Yrmbd1M7Py4p+6fSr7nyiCtT91s3SYNKIsHVJfBrN3nU+El6jTCPtSiWfKqWtvR01JBO8VTXhBeGLhKwJtdtaEcTMBnNW5HiYxBJB8ZcoFoBaiAyL1hCPyuAQSagO3+RuRWEV+MrRqATMJi15TQytxeW7XsjxW0W+BX+VW/rNaD+jUJoNadarUmyRStMYOE7+TjzsbcBBUczqZEo8Y3po86YwgHd1hA4g08OcWVX9q22RRvMX/dBDoHxxXoRpmX0HA9uQFWOhgpoSZt+k7g32RpR6uIGJYRXQyX8aEDSdOGCcGyK5an2pEXRS9mWbO7TAMBLRULxC
+ 0k4aHuO1
+ odQ8iKjL2kRBEJwgsStEQS6XNEkSjrGghPk03ObaFMJyhi4YQMbb9fWff5AtJH6CI5rbljiFBsTcJ8mwWAqhSkp8QCMLnWngqKuJ+1K6FZJtrekNkBDRchg641c9b9nMZWGWNsIVuKwl8EAFnpayyhYJP6hUfcspmVi4RhYs88N76rRUG1OazdzxO98+0nR+0ClV+0fNHp66eW17OE2/vSCFKt1cH5JPCWq3dbnqbNw14v6YlFVGImrg3IKc2qHRD9zHoyU6Qr6cRwl7pVMmt/JGiqQUh/6QLfbpc5tbSsn/75ddaIWm9CikSH4Uan7sZnwO3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,75 +95,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 09, 2026 at 11:04:47AM +0800, Wandun wrote:
-> On 10/2/26 16:17, Mike Rapoport wrote:
-> > Hi Wandun,
-> > 
-> > On Tue, Sep 22, 2026 at 04:42:47PM +0800, Wandun Chen wrote:
-> >> From: Wandun Chen <chenwandun@lixiang.com>
-> >>
-> >> On SoCs that carve out large firmware-owned reserved memory (GPU,
-> >> camera ISP, ...), kdump currently dumps those carveouts as part of
-> >> system RAM even though their contents are firmware state that is not
-> >> useful for kernel crash analysis.
-> >>
-> >> This series introduces a MEMBLOCK_NODUMP flag in memblock to filter
-> >> reserved memory on DT-based architectures (arm64, riscv, loongarch).
-> >> Reserved regions are marked MEMBLOCK_NODUMP by default so kdump omits
-> >> them; reusable CMA regions are different because their pages are handed
-> >> back to the buddy allocator and may carry crash-relevant data.
-> >>
-> >> ACPI systems already filter reserved memory out of the vmcore through
-> >> their existing path; only DT-based systems currently fail to filter these
-> >> regions, which is what this series addresses. The flag lives in memblock
-> >> itself rather than in a DT-only structure, so both ACPI and DT systems
-> >> can benefit from it (suggested by Rob, thanks).
-> > 
-> Hi Mike,
-> 
-> Thanks for the review.
-> 
-> > Can you elaborate how ACPI systems filter their reserved memory?
-> 
-> In the EFI memory map, firmware carveouts are reported with the type
-> EFI_RESERVED_TYPE. This type of memory gets the nomap flag set in
-> memblock.memory (is_usable_memory() returns false in reserve_regions()
-> and mark these regions with nomap flag), during prepare_elf_headers(),
-> for_each_mem_range() filters out these nomap regions. Therefore, the
-> memory reserved on ACPI based systems will not be dumped into the vmcore.
-> 
-> I will add these description in next version.
-> 
-> > With your patches, the memblock flag becomes a part of DT-only
-> > infrastructure, so that claim that both ACPI and DT benefit from it does
-> > not hold, doesn't it?
-> 
-> You are right, the wording was misleading. Let me clarify what I meant.
-> 
-> In this series only DT marks regions as MEMBLOCK_NODUMP:
-> /reserved-memory and /memreserve/ entries are tagged in the OF
-> paths (of_reserved_mem.c, fdt.c). ACPI does not set the flag and
-> keeps filtering its reserved memory through the existing path, as
-> described above.
-> 
-> 
-> What I intended to convey is that the flag itself lives in memblock
-> rather than on the DT-only struct reserved_mem, so it is available
-> for reuse. If an ACPI system ever needed to exclude a firmware-owned
-> region from the vmcore, it could mark that region with MEMBLOCK_NODUMP
-> the same way DT does, instead of having to invent a parallel mechanism.
-> That is a future option, not something this series enables for ACPI
-> today.
 
-So, EFI uses NOMAP for the same purpose, right?
-Why when we need a new memblock flag then?
- 
-> Also will update these description in next verison.
-> 
-> Best regards,
-> Wandun
 
--- 
-Sincerely yours,
-Mike.
+On 09/10/2026 09:16, Sergey Senozhatsky wrote:
+> On (26/10/05 17:22), Usama Arif wrote:
+>> Stores and loads serialize on the same per-CPU acomp request and mutex.
+>> A low-priority store can be preempted as soon as the compressor drops
+>> its stream lock, while it still holds the mutex. A higher-priority load
+>> on that CPU then waits until the store runs again, which can take a
+>> long time when other tasks are runnable.
+>>
+>> Give compression and decompression their own request, completion wait
+>> and mutex. Since commit e2c3b6b21c77f ("mm: zswap: use SG list
+>> decompression APIs from zsmalloc"), the per-CPU buffer is only used for
+>> compression. The two requests can share the per-CPU transform: no
+>> in-tree implementation modifies transform state while (de)compressing,
+>> and shared codec state has its own locking. Loads can still wait for
+>> each other on the decompression mutex, and stores still serialize on
+>> the compression mutex.
+>>
+>> This follows the proposal from Sergey Senozhatsky for the same split
+>> for zram [1].
+> 
+> Greetings zswap peeps,
+
+Hello!
+
+
+> We pushed things a little further for even more gains [1]
+
+:)
+
+Thanks for the inital patches!
+
+
+> 
+> Catch me if you can ;P
+> 
+> [1] https://lore.kernel.org/all/20261009071157.3730698-12-senozhatsky@chromium.org
+
+I think it wont help zstd, right? It would help stateless decompressors like
+lz4 I think.
+
+We could that as a followup to the series for zswap.
 
