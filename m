@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39177CA9EBB
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 20:48:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B396CA9EBB
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 20:54:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 050DB6B0099; Fri,  9 Oct 2026 16:48:11 -0400 (EDT)
+	id 7D8CD6B008C; Fri,  9 Oct 2026 16:54:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 002176B009B; Fri,  9 Oct 2026 16:48:10 -0400 (EDT)
+	id 78A1C6B0092; Fri,  9 Oct 2026 16:54:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0C276B009D; Fri,  9 Oct 2026 16:48:10 -0400 (EDT)
+	id 6513C6B0095; Fri,  9 Oct 2026 16:54:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BFF716B0099
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:48:10 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3FD7F40166
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:48:10 +0000 (UTC)
-X-FDA: 85304275140.16.68DA981
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 295BB2000A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:48:06 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Vs8ylNiF;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 38AC76B008C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:54:11 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 45A211C394B
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:54:09 +0000 (UTC)
+X-FDA: 85304290218.12.0C93469
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AFAE8C0002
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:54:05 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="Bq5o/Re0";
+	spf=pass (imf22.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791578888;
+	s=arc-20220608; t=1791579247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yx2WnKvEdS11l9IWSE6fv38e21+5iBA2wfNbqaEuCjE=;
-	b=sELQyFy2me+lHZ/NY+2aWu71e8XOZLaBOP+9Qg8k4buOtam00JLJpMqarzF4IgbJTtTBTl
-	6K1FrE0bxvbmmAeKaR2PW8kmSr3yBWiJXSQFBwZxNLrmegkpo8B1y9EfZKD6A1zbEtmJot
-	bfWnfKRPzByOyxkkgiJUGkwh3QpyDmU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Vs8ylNiF;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	bh=Q6n6u+AjYHZQm6Rh+FNl/nInGnvdYxE69vaLWbYX1iM=;
+	b=dswWbuZr3WXfzlw0MsAbojpeYDHMnIVBIWykICOZFh8USXyiesch13qi6dzmlUMYrwxni/
+	dqb+5VqAja4EQmPEITkxdaPKHXYG8Q/47C5A1TWtx0I2AKzIs1P1AWQxzmLm6BnEG12/zB
+	n9B+an2XFhdj4ZMrfF8zVESUllCvQKo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791578888;
-	b=BReSLiEJ1PY/aoYtI9HETBxmON7TINrII5NKNzM8HO4JVbsiQwcT7K6xIv0FvR37BrT1Qj
-	Y6sKPbRJzKsa/JVP4fuRr+Dosil9/45YvmoGnc3iFTtDMkKpVLPLHAuZqFULxAN2Rzuki4
-	QRH4D12GdJr70i2oXs5YbFc8JXYkF0w=
+	t=1791579247;
+	b=yHBOoV94099F16wwe+TpbsE3AFQZWbF9JXRX75qDblwTS7Zrh8BSPOaUHWXdnludZ7QY2n
+	M0APB1bCQ+OMlwmdeLbpUXqLrzyl63JlKZ+A8EAxvo7wCjb8BInmH33khNfoZXHIRk5yHs
+	VGAApHyrd4ZXT5PkQ1TxMVBQ+zXqxg4=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="Bq5o/Re0";
+	spf=pass (imf22.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791578887; x=1823114887;
+  t=1791579247; x=1823115247;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=Yx2WnKvEdS11l9IWSE6fv38e21+5iBA2wfNbqaEuCjE=;
-  b=Vs8ylNiFdXjmbPJ7Ii+oPfbi7Jo7TefvBmPHTzFZH5v48IWwnkrrC++A
-   s0QKkX+WN3vy6l4KzAIMgvsRLZ7xS8S5SmqLXyg5Oz2HzA0wUjkFfz5Wz
-   xcy2A3RyIAYWxLJFUY/REQe2zPjdqajTHwFWwO6mj2AD0a7GTuf6pjqhF
-   zCkR2nlSWUxNPoVNXGllcp2nY3akXHFsp8mMXfBpCsTSFLfgAZkrUsXIh
-   +O/MtCv3QaV88u4WDlcuZ1iHxkPQn6BW9DuqU/SsxiP1yyyKy24WjbEle
-   aP9saHNNKWOUULTvCDA7C/MaVEsqKNX/bULs/yuG8Jbmg8kS+q7fu7QY+
-   g==;
-X-CSE-ConnectionGUID: COqtl2a8SOS1hf6DNIUyjg==
-X-CSE-MsgGUID: rV3WdBjeT1SrIeZNsklpFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="277917"
+  bh=fgRH35rAuwoizyE2+gu+S5LdhmVsIiCJBTDh5HoaPno=;
+  b=Bq5o/Re0dHET/rClEY+sRDEm631x1uqM+gLgROEdKDy/UVTRLF+/Nlx3
+   nIJCCF0gVqNHhGSLhrM8ku51Ysg5TLHPf7rMyzv4VflQF1ThCRqvYJKz9
+   iOnYeEDadkdjMX0aMCUJZ9bNaGLFJ4mwI5pPe6rtpIBS1on0HFhkWFhbv
+   trDjhQu9vPLEDqUVGBOWwJWmk4dyUBEeu75Q7XowX3nWTbPYJqkVBeca+
+   M2My/3FiKTyvGeC8wOKsTJtIXj9Fyt6gXf7+2oOKpbd8N3rQnI3xRMt0c
+   rQ0e8y5t8f1f7kIc8XNyYxZYAUFJOGc6XfLQDtWsFhuZZwhaT7brzJBCC
+   A==;
+X-CSE-ConnectionGUID: Ksbs5/mfRhqLluTCtpCNsA==
+X-CSE-MsgGUID: wLlr1XaIQIaiT0f/Dozm/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="394183"
 X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="277917"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 13:48:05 -0700
-X-CSE-ConnectionGUID: 2m33Y0liQmGGAODzyZB35A==
-X-CSE-MsgGUID: qiLxGGcPSTazmWfte8OiKQ==
+   d="scan'208";a="394183"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 13:54:05 -0700
+X-CSE-ConnectionGUID: ODAsJhCnT+6lgKOO/0TUvg==
+X-CSE-MsgGUID: Eg6tPTM3Qn6fnZyd6dbigw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="722194"
+   d="scan'208";a="752675"
 Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.109.84]) ([10.125.109.84])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 13:48:05 -0700
-Message-ID: <b62aa96d-6c83-476c-bc28-7c2057702063@intel.com>
-Date: Fri, 9 Oct 2026 13:48:04 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 13:54:02 -0700
+Message-ID: <bd47fc12-f1cf-4994-8b42-45fc68944072@intel.com>
+Date: Fri, 9 Oct 2026 13:54:02 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] mm: Fix page-table teardown during memory hot-remove
+Subject: Re: [PATCH 1/4] x86/mm: fix missing pgtable destructor for vmemmap
+ tables
 To: Muchun Song <songmuchun@bytedance.com>, akpm@linux-foundation.org
 Cc: linux-mm@kvack.org, stable@vger.kernel.org, david@kernel.org,
  osalvador@suse.de, dave.hansen@linux.intel.com, luto@kernel.org,
@@ -92,6 +93,7 @@ Cc: linux-mm@kvack.org, stable@vger.kernel.org, david@kernel.org,
  kevin.brodsky@arm.com, bjorn@rivosinc.com, apopple@nvidia.com,
  linux-kernel@vger.kernel.org, muchun.song@linux.dev
 References: <20261008073021.2512665-1-songmuchun@bytedance.com>
+ <20261008073021.2512665-2-songmuchun@bytedance.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -137,17 +139,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20261008073021.2512665-1-songmuchun@bytedance.com>
+In-Reply-To: <20261008073021.2512665-2-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: n6rcnain8ns4w6zeyst4kyrwce6ysrj4
+X-Rspamd-Queue-Id: AFAE8C0002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 295BB2000A
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791578886-710540
-X-HE-Meta: U2FsdGVkX1/AoNVxh1lM/zaD9KdJhVED0JC8J/zWAZMSbWhVDI7xQQRIDFx8S8jFdXFCnSE34pD+qJcCks7g4uFhnrmxzo7t1q1aJfMicuSgP9wu+/EvvlB3OWTmweC3pet1CzvdLAe8V18CJNIzGQXBdYw5RGE1kVbdklpns51r3bnmbUzX5qR1Zl+nWzfoftIyfr36IO5sgjXeRUkzP3XLexud/iEhaf6KtovQyNbtu44WPl7if6HBcDOMv59qWUmfXl2H6IPO09LrGvusn5sOqBL1R1iOpZAwbQrzO9tyHNJRVKF+oUSeTA5loF0XrfAlVCnKloVAe9EMy4VkguBjM4b/WocyNr/J+GNv22x3k/l1+VzNZXI6SSa72dq1ah/vQD7tWXHVclIHOJETYj6FolsWLtmyG7gX0Yy1TQfePXkoyNAjtHMe8fCVLKIyJ6QwXkcW1yYkHiyEdHvgDEjGE5dhgT2be6B9ZtR57nnjKW54TT0StHLg9vhmBeGm3Ize4cNeK6ChcJYDTTF2c6YkYVNpFAv/sjJTMT1slHKzmLwUj+S7prhUIUmh+9xefpPVEQSozohnE9iM8Bry3a0dbtKFL3fMsi0HgQvR7pQRIT6MMAiJhKKFdw55ALU97t3nsBKSHeM8wxZdsIFxv0oA40TzzGIMF5rl8x+RaDy+OwwarFQedKXsPDyw6MFZP8VzeVXQfEEJeU40VuuF+7CB3a7FLyoN0YAIQqoxAvBcxXvVNUQ+u5pGZuxI9NZrpezWqcwNJ2ZpjNwbbLb90c8ORk33ZP6Z6w3IVgaxJFgR2lgHW/EQpGg9+keb7o7J6Syppx11e7RlOqREwMEg56Tu1ECZblnJUuVymLzSkri8B0aweGz/mIN9E7IITb0JeS6HznPFUKYPK6V7HsJ9TtGqRU3nskxkOtFZvGaGmnjYwSOGUcfHibW0VQdnUhS16/XpSfadr16zHVRaNya
- fE/4tWNL
- 3voZhCFnRNy9EbFK24hMS1LjcgANqGjuGjPDicq1iaTmvZNSMbzelp8qFp9RLPjVdGi0kNkWiaqPTyF4b0mpgNG7ESxzL+ZB0ZQUkiLxnsvimZt5zBI8RzfAYAZuCrzg6mwF2jxBPUPkh9XmJExCBjGva5KXPuRO2xEwvnTytn29ObjHhvugYhNO/RzlsdbpjCPmWECVQBO8bvbA=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: f5zbg6goxhgarjtmbr4jjmxoe17m37gd
+X-HE-Tag: 1791579245-263511
+X-HE-Meta: U2FsdGVkX18Vg4caI4T7Ehe4CfZR+3NZx2TtUbJ1mPP7Ej1sa1Z9xMROfGMHlv5ESVzF2GtP4PHzeeL8rC+DAi29g7EMUVsrR+dH0veJN5hFUvdpMReTk093qEzCmO7XCQ5fmd/TLRrLDLYL8dSV5pUuDfUrDWgMxOIxYbXW+uzTO2g0J3UZGGradpaSXw5/UzyGhanBJAccc5UzuhhN67E1eL9Sapz5y4Jk3M+Z0le7uHztvSgHc0oBNxNi6MtDa5D2cfgdmXv2fRARaNv2MCYuQ3Qu5uaOz5sLAl2WvqF7eyVXOdKcBCCTS+iXobmn+cJbzBuSF+D/yqBD+/qzOZ+4ocN02tf5NSiABzvIxWdWFQk7nAoc26kN83HoD0evNKr2f3+bSg3sAWbRZK8k4Ks8tDIrVWJsFcHXf4EkbKj7x5H9CNHpRpKhTjlN5wbvQWXBdp4sTiuyaoyvo1X+eOdOU3l0OHuZdhfRpt5bNczqZ1iDR2LxPov1zfU4i3qNV+insJjpJvuakC/Xm7GXOfAxAD9y6S5G3/AN/HalMfdg83BFkMM4TsIsiFzFf2IClVDk0ovI7Lo/mDRZeyiIsKF2gfuHW1KMZUlAUDidanm2GZFxrtyzsXGLH2x30PjMC+yGmA5c2zZy1vnWf+IOdm8akPsT4cXpZGKMcjNkcrb/n9teKr1Q4kA1YJmC+SJkVkrt7uoaiFhM3BMWkHInSJHfrHmiqoQCuwTSF5LhZcN9teWF4uSqbCswXfzi2SuAqUIJ7m4Xk5TIq3Q7+F0qPLgRzfXU8oFKTKofbyihIkZcm8i9AN3eMUzXcOXSfIAu2GQP93qYnGzN4QlUsTdz9iutBPSEXjVlIYzpAHg/6KuYUaqVt3qlLSGr/XkBsgL8iF2dThOdsnBsayBokiv84W5XEAHa5k2AL/n1H0b/4AL9U4lHWQGheg27TUK7UoosInV9w6M2Oq3gC5XQrT6
+ dZ45LPwU
+ ee4bxiRHh8L7PILQgxsrFpcFxk9uqtXc1bxpWQWzuF0ckjVLSkbDHSwQYvcqVYdfcv2QoMtFqp3LE9sZiAmeFviNIkQx22t3azc5AYBHgQ6zlWJJrfphdqtmNVlOWNveiYiDLsZ+xYALQjk1zkxeniTFywjhFLx37CiigHRF11uopLd/SAI0p0JChZnaJQU/rYe1Usp1CgAbmGM8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,10 +158,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 10/8/26 00:30, Muchun Song wrote:
-> This series is limited to bug fixes for the existing teardown paths.
+> Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
+> pte_alloc_one_kernel() runs the page-table constructor for kernel PTE
+> tables.
+> 
+> HugeTLB vmemmap optimization uses pte_alloc_one_kernel() when splitting
+> a PMD. Restoring the vmemmap backing pages does not collapse the PTE
+> table, so a later memory hot-remove eventually frees that table through
+> free_pagetable(). That path currently calls pagetable_free() directly
+> without decrementing NR_PAGETABLE.
+> 
+> Use PageTable() to identify constructor-backed tables and run the
+> matching destructor before freeing them. Keep reserved and
+> constructor-free tables on their existing paths. This also prepares
+> vmemmap teardown for generic runtime allocations through the normal
+> pgalloc helpers.
 
-Why is this a series? Why not send the architectures independently? Is
-there some dependency where they all need to be applied at once? What do
-you want done with this series? Are you expecting it to be merged via
-the mm path or the individual arch maintainers?
+Could you please take some time and trim the bits out of this changelog
+that the LLM inserted but that are not super relevant? For instance, I'm
+not sure what the first paragraph is trying to say. It is apparently
+missing some context.
+
+FWIW, I really don't like the LLM changelogs on their own. They almost
+inevitably need human editing to make them usable. I really, really
+expect humans that are sending x86 patches to spend some human
+brainpower on them. In fact, I expect folks with:
+
+	Assisted-by: LLM
+
+to be sending _impeccable_ changelogs in v1 because their LLM saved them
+so much time that they can spend gobs on their changelogs. More than
+ever. ;)
+
+Oh, and it's an x86 crime that we have:
+
+	free_pagetable()
+and
+	pagetable_free()
+
+Any work that makes that coherent would be much appreciated.
 
