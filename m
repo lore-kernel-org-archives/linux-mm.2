@@ -4,89 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC33BCA601D
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 17:00:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07F0CCA601D
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 17:01:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B04696B008C; Fri,  9 Oct 2026 13:00:36 -0400 (EDT)
+	id 07DF26B0088; Fri,  9 Oct 2026 13:01:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8E5E6B0098; Fri,  9 Oct 2026 13:00:36 -0400 (EDT)
+	id 02E696B008A; Fri,  9 Oct 2026 13:01:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 955726B009B; Fri,  9 Oct 2026 13:00:36 -0400 (EDT)
+	id E5FC76B0099; Fri,  9 Oct 2026 13:01:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F6746B0098
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:00:36 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DD1B91402CB
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:00:35 +0000 (UTC)
-X-FDA: 85303701630.22.A92EEE3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0AAA740004
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:00:33 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PPBVQNEj;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791565234;
-	b=08nJblgmnAlIl55sn74Ba+sOSirhEYaphyyAcj8U7sC7rn3OVcckzi6WgM4ItjyhrT5slh
-	izrq2143l/bveVP69bPn7GvPXbwwg/B0KAcn7rKGaU3fcWqi4JXmT0QyseNzWCp6Zi8rw+
-	e+PE9U0BKmo2GQsyU+j7kZSoNMI5Fmg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PPBVQNEj;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BA03B6B0088
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:01:19 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4BF80160484
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:01:19 +0000 (UTC)
+X-FDA: 85303703478.26.F698468
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0D98DC0016
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:01:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OKCsDWz3;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7ihvZr9z;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=d91JU66W;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KcOgOphY;
+	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791565234;
+	s=arc-20220608; t=1791565277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ztyPoTsXQl2erL+nCDtIS3iAw5yK7s2FnhInIimetvY=;
-	b=vV3zW7plVS3thaMQm/z1cwqBpjznVqWaCsMRYb3xzJhVN9lkQOQjP6Ix9OCk7L1XoEjYLj
-	4wdBQIsOTtgZHbRxYdI4Y3B41yghSdYEMKP9AO5vOiNcSV0mhHsdaj/wOSuVQ67EmlTrqD
-	c7vBKx0cWXBnfEd43v06vlyEmr8uSpQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D36F640801;
-	Fri,  9 Oct 2026 17:00:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8111C1F000FF;
-	Fri,  9 Oct 2026 17:00:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791565232;
-	bh=ztyPoTsXQl2erL+nCDtIS3iAw5yK7s2FnhInIimetvY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PPBVQNEjP1rpUk9athtUmv4P1WtB+86fpqSx6AnywR1TtsvYSJIFmJNxilRtHzu6e
-	 fgQGXdRphhqRFLklVel6bYh6mpHunUliifxVYCBs+HAUBYHYMjbeas8wPR7ZsqJ/3V
-	 7eFLqmJrb3o9bIyTjWzS5gtRj6YMUZSvkE1FTp1cIJPG7/2eAxipl58T6kYTuHqYw2
-	 2aBWnqsCTriH0YTTyg9I5ATGBuVPFuG24npRcRxXy98EkvFS1hFqVdgoAMTbL1XWu1
-	 ovV5WYF1EZtOHQLIlkOfsX/4VWk9KildRnDpshHtld1h/Kh1TJND71W4Folv/iGj2x
-	 isfpdlTkTKlyQ==
-Date: Fri, 9 Oct 2026 19:00:26 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Tarun Sahu <tarunsahu@google.com>
-Cc: dmatlack@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] memblock: use binary search to locate candidate
- regions
-Message-ID: <askdqgzm2Cbeo3SB@kernel.org>
-References: <20261008190828.3221718-1-tarunsahu@google.com>
- <20261008190828.3221718-2-tarunsahu@google.com>
+	bh=vW0Z2YAuAu+y8eIrdsV6xo/3lhL0j96EwTJkuyKSiGc=;
+	b=PxsodDFcChD9QWOUy8VBf5H/nAla9bFt0iyh9I7GI+X+KYK7K6ByoQQpQRefqTQDRKArhl
+	HI5sL/bf4iC6fv2cGBriNnhWX0PXkH5YYMNxA97Z2gDrQQvmBTUANbqEGb0iFHddcT3kOr
+	TFbaXnJ7dmyL6NGs/2qbfVN6vX52+f0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791565277;
+	b=mDbtn98pNUJ0FL2aEq1V4Y1pGT3cX9O/jcWm+pLg4VtnZNFSNIBMwP7j6EujCjvJ7f71bX
+	TUo31A+ytef1DbOTVameBVN7NBTp0/OsgYKPvNd0aqrHJzj/Ta+z6uUKktviY7XSEWVAWy
+	IIfftZ0s/O5N4rQVx1kBe+4iL+AwVwg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OKCsDWz3;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7ihvZr9z;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=d91JU66W;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KcOgOphY;
+	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8AA341F38F;
+	Fri,  9 Oct 2026 17:01:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791565275; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vW0Z2YAuAu+y8eIrdsV6xo/3lhL0j96EwTJkuyKSiGc=;
+	b=OKCsDWz3wZV/8UaBe+UwL8bAGZn28d4+ndjd2+913xamP3KKFqiOuRWdmQOSPqjhHfKe1I
+	8XxN95oMrOeYsTgm0GwbCfgFaHvuD22uAsam9qRnIwsdvs27dSVq7eEZRxEuJqvPAqZB3T
+	LJAWbkl+4VWbApHIGCmK0vfoBAbZf9c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791565275;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vW0Z2YAuAu+y8eIrdsV6xo/3lhL0j96EwTJkuyKSiGc=;
+	b=7ihvZr9zEtieha8PAh591N/iiz0shJn69GqfbBgcXSetCQHxVkUGU++BFLHFBhEsheaJ7/
+	ShMpCIES+yjXZcBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791565274; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vW0Z2YAuAu+y8eIrdsV6xo/3lhL0j96EwTJkuyKSiGc=;
+	b=d91JU66WRMzXd7zRM6eggu3mIm+JqAdqCRcNy0PkpaQYmeQLLxs4IEEjC2/apuUrMzv54n
+	85kZJh8uFRuPwnRPCl3o9SpCW4zLZG5oOeznc4uogR9B0shOyP0rnFgWPzUDoS42oQ00j5
+	spzO3QAnbRdxiwddAGDD+Bz5u4Ehbkc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791565274;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vW0Z2YAuAu+y8eIrdsV6xo/3lhL0j96EwTJkuyKSiGc=;
+	b=KcOgOphYjoBpLH5XvcGPKwluCvsx/EtxvBd50Y30X38vBcdx9NA46So2xq9bLLEhZ/kRZY
+	PDiBDxf9xLeCgnCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 761371326D;
+	Fri,  9 Oct 2026 17:01:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +KsMEdkdyWouRAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 09 Oct 2026 17:01:13 +0000
+Date: Fri, 9 Oct 2026 18:01:11 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, akpm@linux-foundation.org, 
+	david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz, 
+	ayushr@modal.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: memory: fix truncation removing mapped folios
+Message-ID: <askdZgd5P986OSMx@pedro-suse.tail5790ac.ts.net>
+References: <0d2a1809fa1cfc22ad3df26ec28b2d30e5cdf3bd.1791540483.git.baolin.wang@linux.alibaba.com>
+ <asjXJZap53yJWMYi@gremlin>
+ <asjr2zCp1BVtfpTV@pedro-suse.tail5790ac.ts.net>
+ <62e0ce97-1016-4f82-af38-7703c8cffefa@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261008190828.3221718-2-tarunsahu@google.com>
+In-Reply-To: <62e0ce97-1016-4f82-af38-7703c8cffefa@linux.alibaba.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0D98DC0016
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0AAA740004
-X-Stat-Signature: tm6czth3t337ezx1xqr3dks7wokpyb8a
-X-HE-Tag: 1791565233-312124
-X-HE-Meta: U2FsdGVkX1/xEBekSy/qlD0S1OuwFywHbAMewjRBtWDvUSYc2O11FrkiQWEa/JtrIi+fGoKdAZ+rYr3QJI0PjNSEvLvD+TLU4X/riPaVy41upMyEKADLQe63HLu0hqHElid0Jy9EzOm8zHR/cWtRWPDmnJxbr+8GXZwgYiEe+uBQHmMfwxvdINGxGeUdW47LKhDRl4BTNsGxfIJVJ15vFXx9wvWSCMXHbeHVr3FOT01q2GgPNp3X4G0b/L84I1M+jYPvLNZwBtlNjMTX+j5QDK+eToHcmJgUAF78CZJd52qCRwyZfSmsoGeDHe3RjEeMbv4OnR9eKmELlIe3fOgblqjxaVhzOfRuOEDY7xMLWDBKclaQx0LZmQxxeFlip5AkQXAmE1t/O7/TJp5WH6dTbGrov1yumKyYwssDfBt6uBfjgbLSrj85CG0B+5qSPPMPGUxvb1BjoeElbZloHFUBS4tpoBdUZCwtreuaRY225LlFbrMP2Sbyd7ZGaa/FCnIqLXeaP8hdUT0NRIoon2lIMUcmFnGv+wYQAi+ODzH1Y5WNcaljr5Fx0B0jSG4qUhfQmQ+6g/o9o6rIo20hV1pwcbS5cVJr6KOdUZxGuJluDORW5n/BVRENl6bRFq1JkYrQ1bbFQ1M93+658IqyXpHJu4Z9nwdezMx9wzm5uPT4f5EGFCqjABwz3pV8NAWHkkP7WJjGMtCPS5qTH3VmKQBduZy4dyGEul/FBpccadwcYI4m4tA2/vw+CFiRs5A/q2Eny/SwzEgYVg0SYWIN+QSulwj+T1xKsP8RjVxnK4jfMCMSFgV/Vho9nl6xNjco7z6FymZ/+eSDFD3xN1Wh9T5T2YixO26XKAvQuRWaxl4n2cIyPg5YaQrJ6sMGsUT11V4OpnFBZUV8kLOQ69T0wNwC+xWi+gnfqRo/4+qnEj9qai5GN/PvAnfeajk+5Ry6Vbc3q7wtQEfPNkR5Lx3/r0I
- bilj818Q
- 3qczlF1h9fBLHENrJkYHB1YGJE+8n7+Bs5J+ZNQij7OFLfaQmiTEgRqPdgft/QCzd2WfdOJGJWDc4nq6Yaa/HamPUhDc4+nQjSZZz8DFkARuPYTkrp+YuJwSmfIjAnUAMCrblnPFqRKjTV+QX7WPFxJGwzlG06mkjzHxBTsXDHmo+0866gugdH8G/k8DNtPS0HGtGKmHAH1KRhr7ANnny1M7XBWu8pOdpmMYgJJ0FaHfWDJM5lqY1hKL/9Q3nSZRLLdP0GKoldyD3vT8RFkgV+dUgqtVRVitgZ2ZvFhUC9HPlONw=
+X-Stat-Signature: w8rog3tycj8hbwqy4p1ujoijzomg4xbw
+X-HE-Tag: 1791565276-295817
+X-HE-Meta: U2FsdGVkX1+pMeRMGo4VyxgejyAQzqQK16ccdUTvZg6nmDDa/vbgAtHAb2GnR6P3awuloQN1H/eVNlCL1TNucwgZO1VzAZwmNpYYyYuswqXpRrrWNwi+wOVooQv+VcCQrNR7COqr0ECSX3Jti/CH/4maDXqZE62zmIrYCSY1J3zZ27pg8pRmZ8F/60I7qDi9iet59XkKi7OgzjmzRA6mcCCjGprlVGrOq72O0chmc3TF2/wEV2gOp7HctQ0LDX8j2HjUuRo7NqGn57sOdbTvVkN8xKHYOzbXlL5vN27/L0pqNJ1JtEbAfw97U/01YpT5nVI56LSE1tbPWxnjMpeTeZuO7kJM4/tj3onma2S2mGhm+E+RWEQKBo1P8VQCVWjccNKPR2Fs5fZ9u53eTCK0mC3k62FkTERqHORoo89rY1WJoUVkN5ClwJBlb2rKRznUQG0az+j8VEPya1JlllBMs8ZXeoBI2eqphImjQ+2/LUEOsafC+77yZs2HqC/GW8Zce25Yexe9J3tFHkyRSUb+ONGeGM3iZR3ctFHIjstlk2PxIIH4WrpgDSPTmhw3q6GqxuFGZjwMEbSIDoBRqQ9uijdPMDg2Dr/GNMM5P/yoVTIUKacXVGr4YZ4LSVl59XVLsM/+d/NNP7ceV7zw6cYxzjsgLvb0mbobf+9tMxNHDiPy2qXRKJNEbrpWAgwkN9vhdri9WByGk0MFjumeSATr+l1EDMVirNxEErz88KM8KCS8pl3Hyk2PdC54+KDYeDZ0/k+TDYt6irynKSo1r3WaGbQ0cRQpzMlxWAhfgKMXHEOx2X6FctUQ39uUozFauU1JzBWnBNFZ+27SFtnr7NE6f3p5wjnN5NFvDpOaZemmregyZa0ZMygMyNWEbXWLdmIP2r6VUISDAryJIVektplS4MogOnl2FyJoF80edizC03I7jmDcku3NA2vG7IFv0wyusKvN+bqc4BFh/xbH6Rt
+ zZmTWLLc
+ DU7U7U/JtV+PGXWObGS3CrKL7RJk/5MhVrCLMIAeJoYJz/p0pY+IXBdXpqJF5jJiItdxnK3JwWrnOQlvaCF9SyG03wqiuDFWazK/kWHHEv6chqJPfNq/7g5eNAn1Xh1HaQHOKdECKwQ5Aron3JvOf39DFlfI1v0+owJwF2pebha58utyqQos/wRB0Aw7Qc/Y3ealOP128VCWmhDPgTRP6ul+MONoyWTPU28yarPSBcxz7UaWlA/dE0TCEoDm+1s6647uQU9DA1Nrqcpman0Vd3knUrnvDV74A9GKZPbcbz8NI9lUaDbGeKBVAROXvIYGrkXrsreP4vHxZl+tPOmTsOicfvc0a7BtXDtnF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,131 +134,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 08, 2026 at 07:08:28PM +0000, Tarun Sahu wrote:
-> Use binary search (memblock_bsearch_start) in memblock_add_range() and
-
-The function name is __memblock_search now and I think you can drop it
-altogether :)
-
-> memblock_isolate_range() to locate candidate regions instead of linearly
-> scanning from index 0.
+On Fri, Oct 09, 2026 at 09:53:55PM +0800, Baolin Wang wrote:
 > 
-> Under heavy memory fragmentation (such as KHO page preservation registering
-
-Comma instead of open parenthesis feels better to me.
-
-> hundreds of thousands of disjoint folios), scanning from index 0 on every
-> insertion and isolation results in O(N^2) complexity, causing boot-time
-> memory retrieval to take several minutes (~268s for 393k pages).
 > 
-> Using binary search reduces the candidate search complexity to O(log N)
-> (from O(N)), cutting KHO memory retrieval time from ~268s to ~50ms.
+> On 10/9/26 9:36 PM, Pedro Falcato wrote:
+> > On Fri, Oct 09, 2026 at 01:00:52PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > > On Fri, Oct 09, 2026 at 06:12:03PM +0800, Baolin Wang wrote:
+> > > > diff --git a/mm/memory.c b/mm/memory.c
+> > > > index 1f5d5f7d39cd..0272217ad7b0 100644
+> > > > --- a/mm/memory.c
+> > > > +++ b/mm/memory.c
+> > > 
+> > > > @@ -2044,16 +2053,10 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+> > > >   	 * to ensure they are still none, thereby preventing the pte entries
+> > > >   	 * from being repopulated by another thread.
+> > > >   	 */
+> > > > -	if (can_reclaim_pt && direct_reclaim && addr == end)
+> > > > +	if (can_reclaim_pt && direct_reclaim && addr == end) {
+> > > > +		/* rmap changes need to be observed before e.g PTEs get zapped. */
+> > > > +		smp_wmb();
+> > > 
+> > > What does this pair with? You should always say what in the comment.
+> > 
+> > Yep, this is missing a rmb to pair with. The diff I posted at
+> > https://lore.kernel.org/linux-mm/asigKktcrSY80A_2@pedro-suse.tail5790ac.ts.net/
+> > had one in zap_pmd_range(), which admittedly isn't the greatest. I'm not sure if
+> > there's a better way to do this.
 > 
-> memblock_search() open codes the same binary search, so reimplement it on
-> top of the new helper.
+> I don't think we need an rmb to pair with. This is because the
+> folio_mapped() check in __filemap_remove_folio() cannot be reordered
+> (guarded by spinlock) with the pmd_none() check in zap_pmd_range().
+
+Why? spin_lock has ACQUIRE semantics, which are one-way permeable. Earlier
+loads and stores do not necessarily happen-before anything after the ACQUIRE.
+Unless you mean something else.
+
 > 
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-> ---
->  mm/memblock.c | 45 +++++++++++++++++++++++++++++++--------------
->  1 file changed, 31 insertions(+), 14 deletions(-)
+> We just need to guarantee that when we find a pmd_none(), the removal of the
+> folio's mapping (via tlb_flush_rmaps()) is already observed.
 > 
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 59dda7d085f3..614d0a55dd70 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -586,6 +586,29 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
->  	type->total_size += size;
->  }
->  
-> +/**
-> + * __memblock_search - Find the first region index where rend > base
-> + * @type: memblock type to search
-> + * @base: base physical address of the candidate range
-> + *
-> + * Returns the first region index that could potentially overlap @base.
-
-Return: for proper kernel-doc format AFAIR
-
-> + */
-> +static int __init_memblock __memblock_search(struct memblock_type *type,
-> +						  phys_addr_t base)
-> +{
-> +	int mid, low = 0;
-> +	int high = type->cnt;
-> +
-> +	while (low < high) {
-> +		mid = (low + high) / 2;
-> +		if (type->regions[mid].base + type->regions[mid].size <= base)
-> +			low = mid + 1;
-> +		else
-> +			high = mid;
-> +	}
-> +	return low;
-> +}
-> +
->  /**
->   * memblock_add_range - add new memblock region
->   * @type: memblock type to add new region into
-> @@ -644,8 +667,9 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
->  	 */
->  	base = obase;
->  	nr_new = 0;
-> +	idx = __memblock_search(type, base);
->  
-> -	for (idx = 0; idx < type->cnt; idx++) {
-> +	for (; idx < type->cnt; idx++) {
-
-
-	for (idx = __memblock_search(type, base); ...
-
->  		struct memblock_region *rgn = &type->regions[idx];
->  		phys_addr_t rbase = rgn->base;
->  		phys_addr_t rend = rbase + rgn->size;
-> @@ -821,7 +845,9 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
->  		if (memblock_double_array(type, base, size) < 0)
->  			return -ENOMEM;
->  
-> -	for (idx = 0; idx < type->cnt; idx++) {
-> +	idx = __memblock_search(type, base);
-> +
-> +	for (; idx < type->cnt; idx++) {
-
-Same here or even
-
-	for (int idx = __memblock_search(type, base); ...
-
->  		struct memblock_region *rgn = &type->regions[idx];
->  		phys_addr_t rbase = rgn->base;
->  		phys_addr_t rend = rbase + rgn->size;
-> @@ -2062,19 +2088,10 @@ void __init memblock_mem_limit_remove_map(phys_addr_t limit)
->  
->  static int __init_memblock memblock_search(struct memblock_type *type, phys_addr_t addr)
->  {
-> -	unsigned int left = 0, right = type->cnt;
-> -
-> -	do {
-> -		unsigned int mid = (right + left) / 2;
-> +	int idx = __memblock_search(type, addr);
->  
-> -		if (addr < type->regions[mid].base)
-> -			right = mid;
-> -		else if (addr >= (type->regions[mid].base +
-> -				  type->regions[mid].size))
-> -			left = mid + 1;
-> -		else
-> -			return mid;
-> -	} while (left < right);
-> +	if (idx < type->cnt && addr >= type->regions[idx].base)
-> +		return idx;
->  	return -1;
->  }
->  
-> -- 
-> 2.56.0.385.gd3acb90ef8-goog
 > 
+> > > rmb/wmb are generally not needed vs. acquire/release. Are you sure a wmb is
+> > > right here?
+> > 
+> > I don't think that works, because __folio_remove_rmap has a ton of stuff going
+> > on, some implying full ordering, others not. Plus you'd need to switch the pmd
+> > dereference to something like an smp_load_acquire().
+> 
+> Agree.
 
 -- 
-Sincerely yours,
-Mike.
+Pedro
 
