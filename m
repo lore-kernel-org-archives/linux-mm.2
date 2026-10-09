@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D06D8CA601D
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 16:55:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0642CCA9EBE
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 16:55:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8624A6B008C; Fri,  9 Oct 2026 12:55:28 -0400 (EDT)
+	id 4E00F6B0092; Fri,  9 Oct 2026 12:55:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83A626B0092; Fri,  9 Oct 2026 12:55:28 -0400 (EDT)
+	id 4B7CB6B0096; Fri,  9 Oct 2026 12:55:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 752656B0095; Fri,  9 Oct 2026 12:55:28 -0400 (EDT)
+	id 3F9F26B0092; Fri,  9 Oct 2026 12:55:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 55A726B008C
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 12:55:28 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BFC03140439
+	by kanga.kvack.org (Postfix) with ESMTP id 1953E6B0092
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 12:55:29 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B4DAAA7FBE
 	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:55:27 +0000 (UTC)
-X-FDA: 85303688694.08.62D09BE
+X-FDA: 85303688694.04.DF31DD9
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf31.hostedemail.com (Postfix) with ESMTP id A863520008
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:55:25 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=oauoRI4N;
-	spf=pass (imf31.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id B7A0A140004
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:55:24 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Hk9gKhlv;
+	spf=pass (imf23.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791564926;
+	b=IJErJyIWX2Z9FnqON8x4RWYJglQk0ga3XhLmejTaIfL93KDFYvpJnUif5cvUYuTvr7vc/J
+	x02N+6tOPJ2rYOcCLWJ+zYJKmbUhTv68/IdRyEuCVD6dp38TuY/ahzjVy4rr3F3FW5xjSm
+	XFAY6kGg+bBZEvLVcRUCKLnsK7TYNco=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Hk9gKhlv;
+	spf=pass (imf23.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1791564926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AoLrYIs+uZdnBcxRlyRMY7u3KNMZ1TUqsOhaCJEqHdM=;
-	b=WFyVxLXxYLyy472pq+VU9ZZ1qHUQ6eb4PWyu+zIdwsmIzgTJdttapHgKr8qniS4aMPJrca
-	tBClwAzoweU4eTSRBb+mLp5e6D3+dr0/qDPPHRT80X+LmsI1fmh5ykfnRb7Hs4+jF+Yvr1
-	8rU8IZ+YxcPLUMCqJtuHuPpXiuVoKAk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=oauoRI4N;
-	spf=pass (imf31.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791564926;
-	b=drR/GyQZsPGY7Oz/lkX0XfzC9goalTLFJIii0ix098PUFaYtlzx1tC4dEuxZOqChjyvABi
-	5shzyoHDB+cjWquk/0ZXkHKgzkgJxPk92dwaBN9A8b/hTBiwTWlKJ8gx+EemTWqzx9/Dng
-	GhThYw7x3W/rWLQuOtZkTHk92kfVj6s=
+	 in-reply-to:references:dkim-signature;
+	bh=sJ0QLUJbB8GL4J29eH2wQvGHtd7BOI8S/MTobEfkKmI=;
+	b=OYdwQ+zFzM7Rcq1GxIbCIYBZAoRUBKt82uZDgrPeFWYukcWDSlo4oh4CgYldMsuuSbg7iF
+	5csGi3s50PrlPF/rJ2YNMhGviC6jrCEonFgPwdxFL8gnAZcc8a9ufqVbjzFiNoJnXEIBXW
+	F7pPIYp5mIceV138ExGEXGZaLfqj/+E=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=AoLrYIs+uZdnBcxRlyRMY7u3KNMZ1TUqsOhaCJEqHdM=; b=oauoRI4N0hhJxGmx/jikCQ+6RJ
-	0tOLYEl6b843Y7DFsLazkL2DjCN3vT9ak4F69LEkTo15dOob88O/CFWluL+BFs8KT6BeOscx+r5zw
-	IkEozsyEbY5wQdBaIxWWMx9IFMIBXu0fs3Pr/w6IC63wDs+rSeWma8QxnzeLJiRx2Tp3jFco4TeQf
-	pIbLFvDLx3OWK8vbyV4/qqn8HBd4GfWHB/AFNmXpBP6kj6G014rvblWrG/u41xCOoUI0ygugQP/77
-	Pe9ieImqhuVNjOpukHaz35eOnAmatNtq5A3eJDWh0HEEYt4VKuwkk8nXYKe2mWU+so998q3AKmIIP
-	I9Va/BMg==;
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=sJ0QLUJbB8GL4J29eH2wQvGHtd7BOI8S/MTobEfkKmI=; b=Hk9gKhlv3kRasCsAQqRe9ihI/A
+	tihmh+XcPPf5skvCU90zcg+vVoJCXAi/QawwTRCUO23Knxcym7+M3kx9zsxEhWQ0jqv5t15tIUWUT
+	veqipLMPv61Z6I3c7Q95qO+NPL/fsIumgTzWL7ay9SUgkb8WNLw9Nq5k8PV94su4Vkdknj27czkxY
+	nZTpB9XG1L9KYjD/28X6niwBR03olcMrpDbUXFOxsZ7avSspDS61xr3TBhywQlRO5ebzJw1tQP/ud
+	uzWpr6ijEyUZmoBuSbvJJhL4avWYadCkzj29/odoaKNEgGnJC8dCKP7ACkkiTykKJMK8mEmHaa6AI
+	gPpzB1cw==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xFDsP-0000000GDDf-27Tf;
-	Fri, 09 Oct 2026 16:55:21 +0000
+	id 1xFDsN-0000000GDDG-25Wb;
+	Fri, 09 Oct 2026 16:55:19 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org
@@ -68,22 +68,20 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Daniel Palmer <daniel@thingy.jp>,
 	Tal Zussman <tz2294@columbia.edu>,
 	Lorenzo Stoakes <ljs@kernel.org>
-Subject: [RFC PATCH 2/2] mm: Remove add_to_page_cache_lru()
-Date: Fri,  9 Oct 2026 17:55:12 +0100
-Message-ID: <20261009165518.3863950-3-willy@infradead.org>
+Subject: [RFC PATCH 0/2] Removing add_to_page_cache_lru()
+Date: Fri,  9 Oct 2026 17:55:10 +0100
+Message-ID: <20261009165518.3863950-1-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261009165518.3863950-1-willy@infradead.org>
-References: <20261009165518.3863950-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A863520008
+X-Stat-Signature: turk1s9ep9sfmu4gcgg5acbmpzfz7m15
+X-Rspamd-Queue-Id: B7A0A140004
 X-Rspam-User: 
-X-Stat-Signature: t6mj64jxpqozm383bdz6yxmjuk9dwm38
-X-HE-Tag: 1791564925-97322
-X-HE-Meta: U2FsdGVkX1+hrL0Y3phLO7v98P6BceooZ0+o4BnO5O1fAd0qWvkDECLKhMOm0qZH0dlLeScy/ZJGzKdkbhVYLqnP4odP6aJmG1fJkjFhRyPh3XpcrtRNeSetGdNSJpMefO3li4Ihp/n2meRk1UOaRIHbVPiXpy0AGw66AGZW3VPyDYCaglpH9SGKYHvDWKgBCOAGJvUGUOj2jq7mrM3aGMB4E/NK8FRzfmK/jobjysIBWfE296ZC01mw30hnDr9Rg2jRphaUGEPndbAt5x6c3cCshDn4HlmK3gFE/u2lc1ad+nl3gaptCN4s2zoK07fxirKrCfQN2XJ7GlgBSU4DAqCaO2FrswhmXoDDTjYmOnJJ7JUrxQ7j2SsUk1lopLBnx2VZ/Xw9QCh4RdT2/FqxIWld4NSXOAHyrpTLk+eSoTMLC3NCVZAL1IFdSJ0ZuzncWiY/2nHSmkbVsoarKMl386jRInhHO2bpCrufDq7SfT+Rzt9YyyqONT1IUx8c2AOaFupqxG9dU2gKhI1WUGiPzcfLdGn3+mggKv4gC/F0edHnQtEHYuYRkU9vdIn5Pn/DtFB8kGBykMxVy1CeQra81xwIoaSA3oGvX7NyFPiU63lez3qL5fUxxX/Knsu1ZTd2qyXCND5xAmp/TGsNOCo1Z6K4Z2P3XpEZFvwx9GG0ugEfP7UgYyEVaKY9iruu5rp8esOtDuGwbt7n32yaX5xcudDTASN9RjN2rYA6oJf00CBm3bt4K+H0Un7D0jifEGMY7w0C4eMaURmE/ixmh5A0oAr4tDtgrIgx9ccaeUe1fyXlzRyRR0U4738uE3JW2NfrZ469CLfzpQD4lq8MtPmFk26xlx5XXKagk2fFeSSxawHAKaurkQz48kmsjy0h1Q6zEMFCJnlVk0yHjgtaWBhU+WRc+ObsvNStbxK+a8gESz10H76UlBD0QDxSa1vyUUvApduBmva4uUTnz39t1dh
- XRWydZ2k
- to8E+ic75vzPdnX0LKJFby678aiDNLAjCse78GLyMhNxDWACDgaVRg/f0Zr7O0krUHpcgi77GHBb2vNN2aU9GayhEkkKVwabTImfH7SJ1QeuVYxWglgXyZCLIINHbGcx0Zi8lkeQaVpdtPvM8VkTb6/+0yjMe5RBAv5mXCBaRcil3DBHB5HZ9HDZ2bkP50X4LPjZCQvhClKawoOJu7/a+Z/8aDDp8jpT4AovvjbuHFV5vrvu19gznq/6TLqsgWKxr3HmBjzG9rJZBqKC0CDhpDKTfNO3NipwjJtRi/wsBmyRh7C0=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791564924-759850
+X-HE-Meta: U2FsdGVkX19/aKoZT/CKoEL2rSxn40udWXJXPg7hxfZoS2zego/6qlHuyZarxhNZpbh/6YY926sZuCqEkLoOUHdPg1bjZOY+tIQVliOG3vQHoy0X607I0gDPj/IEjt1eXrc11B+Jf1NMfMCXtFsxSNMxpOSOFRj4SeyGQ19y5ERw7gBERN7pQGCaNpxlFg3aB1VAFMleMVfzfcWoa4Y1sJR7KpTaNeb9I1B9dK7oNWDUakLXmUYVIWhW2JAFFznarnEkJ66MOXl7TXx2xVsou1ow/Oh87d2vaituy9JuHE3OJIgyEUuhSm1Wot5bZuD6FwfBtLRbdalNRAbaSaYSt9a8XXfAwJjH57JM2hkiTwspRbqj9fdYRXHZAO3skg/GTpv5LWwBH5iknf16jf+kVRlUYYe1+6NZp4dlVmNl0E8NiDRe1lq0MScRufoeB7KFN84rz9+HDxk41cc0v6Aymad0c4kJa/gBgsgms4uscvkYBiol8P0An3YinWB2vNIDEz7UdPOzCYfxDPezxaesAt/AJzIxlOxp8AgrUXzfPvBoSFDebaAzsRQTM+6KmMPhTcMU+mUCbmE43v5FecKnm7lqPIs2Y3B5P+ePCZyW/FJdPw172s9m8IUx8c/duJMSLs076pIYKMh3CAfnq2tjSXRqo1jwvTQX6dZ7EThk+da2hXo+pn195KQaEOnXE7GbezT2PA3+VesmHBkJLduWQMRaTC6YhGAWBw29XR+kEIpgbWA/a43okmpJywwzi4p2pgBqyYiIF7pdsPSb+bVXXXTgEsHrp4AJWbKE6VAkHdVexi2yvvm6q49BbpA2LaaMCSod+vRIXtkWSTRNS1CWLjA1zT2C77lGXbYYEp640E29+6kn0YOZEpGx2k14fGdSYmAI1BG936xcLbCMMCbJplGwF+QMff9YWp9tKqJqFgFQGyd5ekbaFwtl9j5xsqrG1D5+kbMpEdzMAUG9PzO
+ SuXX1tbR
+ iK3Vz2b4qLe6yzCysAkYnGXxGdBoZ+Ps6YgWI98EW9M8MyPgBbkux5jhbU8fiUPiL077B0w9NU2nlDQoDIGmrCCRO+bf7sjoB6eUI1MNdbOGqD6lrUhPLCxJEpzhZabck2MABSYV6xE3A1hU3IVmSD67tbl0NtJlLQ9uAde3tMuIg+zDL5g1BDfCaEg229WBLR9E3Fed1eu5HJZVA6hW4g3ibQCF5+p6298raj9vMvpQJNXs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,45 +89,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This compatibility function has no callers left; delete it.
+If the build bots actually test NOMMU, they'll blow up on this.
+I'm looking for human feedback on how best to proceed with removing
+the last user of add_to_page_cache_lru().  Assuming that ramfs-nommu is
+a useful tool to have around (and Daniel recently sent a patch to it,
+so that seems like a good assumption).
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- include/linux/pagemap.h | 2 --
- mm/folio-compat.c       | 7 -------
- 2 files changed, 9 deletions(-)
+Since there's no MMU, if we want to be able to mmap a file, we have to
+allocate all the memory for the file contiguously.  Right now, we do
+that by allocating a high-order, non-compound page, calling split_page()
+and adding the resulting pages to the page cache one at a time.
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 0adfa6605653..42a4354352ca 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -1343,8 +1343,6 @@ size_t fault_in_subpage_writeable(char __user *uaddr, size_t size);
- size_t fault_in_safe_writeable(const char __user *uaddr, size_t size);
- size_t fault_in_readable(const char __user *uaddr, size_t size);
- 
--int add_to_page_cache_lru(struct page *page, struct address_space *mapping,
--		pgoff_t index, gfp_t gfp);
- int filemap_add_folio(struct address_space *mapping, struct folio *folio,
- 		pgoff_t index, gfp_t gfp);
- void filemap_remove_folio(struct folio *folio);
-diff --git a/mm/folio-compat.c b/mm/folio-compat.c
-index 6212fdd6761a..054d76ff0917 100644
---- a/mm/folio-compat.c
-+++ b/mm/folio-compat.c
-@@ -67,13 +67,6 @@ bool redirty_page_for_writepage(struct writeback_control *wbc,
- }
- EXPORT_SYMBOL(redirty_page_for_writepage);
- 
--int add_to_page_cache_lru(struct page *page, struct address_space *mapping,
--		pgoff_t index, gfp_t gfp)
--{
--	return filemap_add_folio(mapping, page_folio(page), index, gfp);
--}
--EXPORT_SYMBOL(add_to_page_cache_lru);
--
- noinline
- struct page *pagecache_get_page(struct address_space *mapping, pgoff_t index,
- 		fgf_t fgp_flags, gfp_t gfp)
+This patch uses folio_split() instead.  This uses the generic
+huge_memory code which will happily drop the pages which are past i_size.
+Unfortunately, we currently have to select TRANSPARENT_HUGEPAGE on NOMMU
+which feels really weird.
+
+I have a patch to add CONFIG_LARGE_FOLIO, selected by TRANSPARENT_HUGEPAGE
+and HUGETLBFS_PAGE, but it's buried in the hugetlb-hwpoisn patch series.
+And it doesn't actually split apart the large folio code from the
+THP code.  But it'd be a start, and we could finish that work off later.
+
+What do people think?  Is that the right path forward?
+
+Matthew Wilcox (Oracle) (2):
+  ramfs: Use filemap_add_folio() on nommu systems
+  mm: Remove add_to_page_cache_lru()
+
+ fs/ramfs/file-nommu.c   | 53 +++++++++++++----------------------------
+ include/linux/pagemap.h |  2 --
+ mm/folio-compat.c       |  7 ------
+ 3 files changed, 17 insertions(+), 45 deletions(-)
+
 -- 
 2.47.3
 
