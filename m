@@ -4,152 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B396CA9EBB
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 20:54:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A68B7CA9EBB
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 20:55:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D8CD6B008C; Fri,  9 Oct 2026 16:54:11 -0400 (EDT)
+	id 960026B0095; Fri,  9 Oct 2026 16:55:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78A1C6B0092; Fri,  9 Oct 2026 16:54:11 -0400 (EDT)
+	id 9107B6B0096; Fri,  9 Oct 2026 16:55:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6513C6B0095; Fri,  9 Oct 2026 16:54:11 -0400 (EDT)
+	id 7FFAA6B0098; Fri,  9 Oct 2026 16:55:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 38AC76B008C
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:54:11 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 45A211C394B
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:54:09 +0000 (UTC)
-X-FDA: 85304290218.12.0C93469
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AFAE8C0002
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:54:05 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Bq5o/Re0";
-	spf=pass (imf22.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 58CFA6B0095
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:55:15 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EDD561C394B
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:55:14 +0000 (UTC)
+X-FDA: 85304292948.18.34C3CEE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2040B100002
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:55:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MyI9u/to";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791579247;
+	s=arc-20220608; t=1791579313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q6n6u+AjYHZQm6Rh+FNl/nInGnvdYxE69vaLWbYX1iM=;
-	b=dswWbuZr3WXfzlw0MsAbojpeYDHMnIVBIWykICOZFh8USXyiesch13qi6dzmlUMYrwxni/
-	dqb+5VqAja4EQmPEITkxdaPKHXYG8Q/47C5A1TWtx0I2AKzIs1P1AWQxzmLm6BnEG12/zB
-	n9B+an2XFhdj4ZMrfF8zVESUllCvQKo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791579247;
-	b=yHBOoV94099F16wwe+TpbsE3AFQZWbF9JXRX75qDblwTS7Zrh8BSPOaUHWXdnludZ7QY2n
-	M0APB1bCQ+OMlwmdeLbpUXqLrzyl63JlKZ+A8EAxvo7wCjb8BInmH33khNfoZXHIRk5yHs
-	VGAApHyrd4ZXT5PkQ1TxMVBQ+zXqxg4=
+	bh=9Bvt+Xsa7sXVl1fng5tFEayRF5yMEOd/Tzvn8BVb9qI=;
+	b=UEVXKZOrIdJ/lQ56XbGwpnQUCCw48+KCD81YPeadFtQJFKQVERRDPBw3w9d4ith4FrPYX+
+	j8LqZwueS2soC62pZmBziBeFV3Qos/2Z8Hc4DtgPvA8nlyttGRot1eaKPIL7Wvhv6qq4/d
+	aqE6Bbs5OwrOkHexAHRkZfYWoWmU3VM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Bq5o/Re0";
-	spf=pass (imf22.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791579247; x=1823115247;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=fgRH35rAuwoizyE2+gu+S5LdhmVsIiCJBTDh5HoaPno=;
-  b=Bq5o/Re0dHET/rClEY+sRDEm631x1uqM+gLgROEdKDy/UVTRLF+/Nlx3
-   nIJCCF0gVqNHhGSLhrM8ku51Ysg5TLHPf7rMyzv4VflQF1ThCRqvYJKz9
-   iOnYeEDadkdjMX0aMCUJZ9bNaGLFJ4mwI5pPe6rtpIBS1on0HFhkWFhbv
-   trDjhQu9vPLEDqUVGBOWwJWmk4dyUBEeu75Q7XowX3nWTbPYJqkVBeca+
-   M2My/3FiKTyvGeC8wOKsTJtIXj9Fyt6gXf7+2oOKpbd8N3rQnI3xRMt0c
-   rQ0e8y5t8f1f7kIc8XNyYxZYAUFJOGc6XfLQDtWsFhuZZwhaT7brzJBCC
-   A==;
-X-CSE-ConnectionGUID: Ksbs5/mfRhqLluTCtpCNsA==
-X-CSE-MsgGUID: wLlr1XaIQIaiT0f/Dozm/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="394183"
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="394183"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 13:54:05 -0700
-X-CSE-ConnectionGUID: ODAsJhCnT+6lgKOO/0TUvg==
-X-CSE-MsgGUID: Eg6tPTM3Qn6fnZyd6dbigw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="752675"
-Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.109.84]) ([10.125.109.84])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 13:54:02 -0700
-Message-ID: <bd47fc12-f1cf-4994-8b42-45fc68944072@intel.com>
-Date: Fri, 9 Oct 2026 13:54:02 -0700
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MyI9u/to";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791579313;
+	b=12OGfBGpzcv7HY834N4DFWjWpIf8K4i3lXMBXH/9BkZEOqI0B/oZSQZYcOm7EBkeyt2XcA
+	ZPDi//C27fRxSxGI1twzk+ixV8Ix7vObhdQpFUt2nAldlJNJftYtF2WdA++I76R7KPEXRQ
+	ioMAxmpy+SnryAKKwaTLfj3bnGfV0wY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 03B3143C2C;
+	Fri,  9 Oct 2026 20:55:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893391F000FF;
+	Fri,  9 Oct 2026 20:55:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791579311;
+	bh=9Bvt+Xsa7sXVl1fng5tFEayRF5yMEOd/Tzvn8BVb9qI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=MyI9u/to/xTOcMPWlUQbiGOT3v8o/iNOpYRWNH4gz7+sgcbhLJ947FpiF8oINFqwH
+	 p/9Nd7nkxASalFk2NWrnH17gHaF/A+JVAAXBThFQZQDMbzRMqEVk3AfYq67TfSa2vV
+	 WVPtLY+fDREnfFuJQsAiQBGXf4tWaQu5z7y6bcJTNg/nGjjlVv7f3LMDAFXuaOlvTD
+	 l0J4iLDoFFE1Ar50jDUljIkEjZ3EOLkOjaV21XNDQwWenew+l5CtZs4xeV+ZgH3UJ/
+	 3CEbRx9e87dzk0y/W4a7lua24GyPC/5+EMLiohjsazE0f53jKThEPmVAnKmV3agU+I
+	 9SDkknHP/+QyA==
+Message-ID: <df588805-6f97-4ef6-a64f-39222669bf3a@kernel.org>
+Date: Fri, 9 Oct 2026 22:55:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] x86/mm: fix missing pgtable destructor for vmemmap
- tables
-To: Muchun Song <songmuchun@bytedance.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, stable@vger.kernel.org, david@kernel.org,
- osalvador@suse.de, dave.hansen@linux.intel.com, luto@kernel.org,
- peterz@infradead.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
- x86@kernel.org, hpa@zytor.com, catalin.marinas@arm.com, will@kernel.org,
- mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, pjw@kernel.org,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
- linux-riscv@lists.infradead.org, agordeev@linux.ibm.com,
- kevin.brodsky@arm.com, bjorn@rivosinc.com, apopple@nvidia.com,
- linux-kernel@vger.kernel.org, muchun.song@linux.dev
-References: <20261008073021.2512665-1-songmuchun@bytedance.com>
- <20261008073021.2512665-2-songmuchun@bytedance.com>
-From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [RFC PATCH 0/6] mm: pass alloc_flags through folio, filemap, and
+ bulk allocators
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
+ willy@infradead.org, vbabka@kernel.org, brendan.jackman@linux.dev
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ kernel-team@meta.com, jack@suse.cz, akpm@linux-foundation.org,
+ ziy@nvidia.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ ying.huang@linux.alibaba.com, surenb@google.com, mhocko@suse.com,
+ hannes@cmpxchg.org
+References: <20260923211041.3127588-1-gourry@gourry.net>
+ <asdTptfeLkuypU8t@gourry-fedora-PF4VCD3F>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20261008073021.2512665-2-songmuchun@bytedance.com>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <asdTptfeLkuypU8t@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AFAE8C0002
+X-Stat-Signature: 757598rdb5mgbohd8s5fdu53eyayifkh
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: f5zbg6goxhgarjtmbr4jjmxoe17m37gd
-X-HE-Tag: 1791579245-263511
-X-HE-Meta: U2FsdGVkX18Vg4caI4T7Ehe4CfZR+3NZx2TtUbJ1mPP7Ej1sa1Z9xMROfGMHlv5ESVzF2GtP4PHzeeL8rC+DAi29g7EMUVsrR+dH0veJN5hFUvdpMReTk093qEzCmO7XCQ5fmd/TLRrLDLYL8dSV5pUuDfUrDWgMxOIxYbXW+uzTO2g0J3UZGGradpaSXw5/UzyGhanBJAccc5UzuhhN67E1eL9Sapz5y4Jk3M+Z0le7uHztvSgHc0oBNxNi6MtDa5D2cfgdmXv2fRARaNv2MCYuQ3Qu5uaOz5sLAl2WvqF7eyVXOdKcBCCTS+iXobmn+cJbzBuSF+D/yqBD+/qzOZ+4ocN02tf5NSiABzvIxWdWFQk7nAoc26kN83HoD0evNKr2f3+bSg3sAWbRZK8k4Ks8tDIrVWJsFcHXf4EkbKj7x5H9CNHpRpKhTjlN5wbvQWXBdp4sTiuyaoyvo1X+eOdOU3l0OHuZdhfRpt5bNczqZ1iDR2LxPov1zfU4i3qNV+insJjpJvuakC/Xm7GXOfAxAD9y6S5G3/AN/HalMfdg83BFkMM4TsIsiFzFf2IClVDk0ovI7Lo/mDRZeyiIsKF2gfuHW1KMZUlAUDidanm2GZFxrtyzsXGLH2x30PjMC+yGmA5c2zZy1vnWf+IOdm8akPsT4cXpZGKMcjNkcrb/n9teKr1Q4kA1YJmC+SJkVkrt7uoaiFhM3BMWkHInSJHfrHmiqoQCuwTSF5LhZcN9teWF4uSqbCswXfzi2SuAqUIJ7m4Xk5TIq3Q7+F0qPLgRzfXU8oFKTKofbyihIkZcm8i9AN3eMUzXcOXSfIAu2GQP93qYnGzN4QlUsTdz9iutBPSEXjVlIYzpAHg/6KuYUaqVt3qlLSGr/XkBsgL8iF2dThOdsnBsayBokiv84W5XEAHa5k2AL/n1H0b/4AL9U4lHWQGheg27TUK7UoosInV9w6M2Oq3gC5XQrT6
- dZ45LPwU
- ee4bxiRHh8L7PILQgxsrFpcFxk9uqtXc1bxpWQWzuF0ckjVLSkbDHSwQYvcqVYdfcv2QoMtFqp3LE9sZiAmeFviNIkQx22t3azc5AYBHgQ6zlWJJrfphdqtmNVlOWNveiYiDLsZ+xYALQjk1zkxeniTFywjhFLx37CiigHRF11uopLd/SAI0p0JChZnaJQU/rYe1Usp1CgAbmGM8=
+X-Rspamd-Queue-Id: 2040B100002
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791579313-264678
+X-HE-Meta: U2FsdGVkX1/k3LV1mIrbniwZ4rRzQFtQvLV/PHU57WDLDi4BDq2qD+SpLVYYKTiaKsv0VpXNCulyXF3BY60poDyW9A6V2dsvyxmLFoL/BLXQt/pSDJM8f6SjzBb9mc4HWOBZYXDsLthISvF62kW/lTyyIW5f0swvcJeCC9Z5jDOVQmmOPJ2JzPEw8sgXV+e76qV3zMAKV/Wn46E3Tsas54WVhwmMP9uMQ+JvgRMp4hb+YUFH/e405MrqlAizx3sdtpLIlCKTxNPxz0XJUEUvDo3yd/GokCzEh+eFU+KFHYRzJX8KhUl3ZOYo6/1pDGxFLsnyfScwz+v2b2xlUWvdXYAHyVyVpvAVojl02Pt1B7Olkw9PeQkqpy7n3YWC7ATXJZ34IJBHz5w6oeeUTFKCgC2RMgSB368JMtmVa18Cz+wLaKH+WLBnjJDjAesMq7bV42OH8cC9AR6G8a+9uLV1aWUb1z5nO2PigrMDxPNMlxO3gzfrQHAiIvFuKL/q1+QYIuS/+WKhRzjHrWh+sXo4UXVyL+ezg7/us0z+j8Sn7DeIhy1g6/w7nelhbx9fLOhXjUp7aPPl1VUwnif3SP6ubGvb/hlMGy7QbZkVnV4E/HiUhQ7aGYVwsZmFsCaHxLj8Nf68dV86GvwVVpQNUwLDFrFy2OTHEdOfKReeuk8hgHUGXFMrbZhjkUBjoC2oMfKQyVfrdSxfjR6cFLH2aE7sWzLo0k+C/RC7qAWfYvsi7jqp0LlCWBQaTcXEMBUk9V5Wy3/f3jH6YjIpu5V36swvcJ4REZIiW9i1uPoNz9NXIflrKovMpg0uZ2v24XQtEWWZetrprKvvZ5T5Lwa774D3HtDziEsAlB1wISuwmlrGXvg5k1x43E225kclA49BLblsM5HrBM1hfLfwS/7w6tziLU+FPscuBFTd0B6UYZNa8BFXriWWU8RLQMHOqcstpaPmGXqofk1Xl1LQHpYXcru
+ T+S40ldr
+ 3cvszMc9map5CPdnvdet4/SU9wu/2m529I3M5Lq6pD6Rq3sunPD0rGtlVDkOYOBKpolHGaTllaNGw9luJLrtzeQGCGaaAYkirxHM4iu80fStsjgeGg4hGB62huxAZjaKJoHTO9KugwAr7N+9WzvhClgcw5XEjhONbGlzQ4k3LSMaiQIF6ytzFDQkckgkfVAC6eYS7xCFw2dMW0kqMnzfv7TeX6V84udBKViQyXPijr0rK1+em3DKviXwYrzEb0kmAdop5ALRhAi/PWaMbSDsY+jiFfsUW+bk8bO1d6RluuYSGozsaICmic+1l44TK31fWcTT0apvJtbCTnsfbFLeqMwzSde2XI9FbgzG07xojTqMIlvdI232XerT1jsd4oLRvFMmn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,44 +143,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/8/26 00:30, Muchun Song wrote:
-> Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
-> pte_alloc_one_kernel() runs the page-table constructor for kernel PTE
-> tables.
+On 10/8/26 11:10, Gregory Price wrote:
+> On Wed, Sep 23, 2026 at 05:10:34PM -0400, Gregory Price wrote:
+>> This six-patch series first separates allocator behavior flags from
+>> the bulk allocator fast-path flags and shares their validation and
+>> preparation. It then passes alloc_flags through the MM-internal folio,
+>> NUMA policy, filemap, and bulk helpers.
 > 
-> HugeTLB vmemmap optimization uses pte_alloc_one_kernel() when splitting
-> a PMD. Restoring the vmemmap backing pages does not collapse the PTE
-> table, so a later memory hot-remove eventually frees that table through
-> free_pagetable(). That path currently calls pagetable_free() directly
-> without decrementing NR_PAGETABLE.
+> I had various discussions this week regarding ALLOC_ZONELIST_PRIVATE and
+> ALLOC_UNMAPPED, and whether adding alloc_flags to the APIs is a good/bad
+> idea and what the alternatives are.  I'd like to summarize the notes
+> here and try to find a way forward.
 > 
-> Use PageTable() to identify constructor-backed tables and run the
-> matching destructor before freeing them. Keep reserved and
-> constructor-free tables on their existing paths. This also prepares
-> vmemmap teardown for generic runtime allocations through the normal
-> pgalloc helpers.
+> recommendations that were made:
+> 
+> 1) re-use unused GFP flags
+>    #define __GFP_X  __GFP_DMA
+>    or simply delete/replace __GFP_DMA
 
-Could you please take some time and trim the bits out of this changelog
-that the LLM inserted but that are not super relevant? For instance, I'm
-not sure what the first paragraph is trying to say. It is apparently
-missing some context.
+If so, I think the latter,
 
-FWIW, I really don't like the LLM changelogs on their own. They almost
-inevitably need human editing to make them usable. I really, really
-expect humans that are sending x86 patches to spend some human
-brainpower on them. In fact, I expect folks with:
+> 
+>    There presently are no truly unused GFP flags, though there may be
+>    some users who can be shuffled around if we are willing to add
+>    functions.
 
-	Assisted-by: LLM
+I once had patches to convert __GFP_SKIP_ZERO and __GFP_SKIP_KASAN to alloc
+flags instead. Nobody outside core-mm should be setting these, ever.
 
-to be sending _impeccable_ changelogs in v1 because their LLM saved them
-so much time that they can spend gobs on their changelogs. More than
-ever. ;)
+> 
+> 2) alias 2+ incompatible GFP flags to make a new one
+>    #define GFP_A (__GFP_NORETRY | __GFP_RETRY_MAYFAIL)
+>    #define GFP_B (__GFP_NORETRY | __GFP_NOFAIL)
+>    #define GFP_C (__GFP_NOFAIL | __GFP_RETRY_MAYFAIL)
+>    #define GFP_X (__GFP_DMA | __GFP_DMA32)
+>    #define GFP_Y (__GFP_DMA | __GFP_HIGHMEM)
+>    #define GFP_Z (__GFP_DMA32 | __GFP_HIGHMEM)
+> 
+>    These are all nonsensical combinations.
+> 
+>    Downside: We should probably just forbid these, otherwise the function
+>    contract just ends up being confusing - i.e. (__GFP_DMA | __GFP_DMA32)
+>    should just warn / return NULL.
+> 
 
-Oh, and it's an x86 crime that we have:
+Not a fan of this.
 
-	free_pagetable()
-and
-	pagetable_free()
+> 
+> 3) expose alloc_flags as mm-internal only flags (this series)
+>    in addition - convert some GFP flags to ALLOC flags
+> 
+>    In 99% of callers they would simply add ALLOC_DEFAULT (0).
+> 
+>    The upside - it seems like there are 2-3 GFP flags that may be
+>    good candidates for conversion to alloc flags:
+>      __GFP_WRITE
+>      __GFP_ZEROTAGS
+>      __GFP_SKIP_ZERO
 
-Any work that makes that coherent would be much appreciated.
+Yes, as mentioned above that was my plan.
+
+> 
+>    And the zone/zonelist selectors seem like candidates to free up GFP
+>    flags by turning them into internal-only flags and giving drivers
+>    some kind of explicit API, e.g.:
+>      __GFP_DMA/__GFP_DMA32 -> dma_alloc(...) -> intenal ALLOC_DMA|32
+> 
+>    I considered whether __GFP_THISNODE should actually be broken up,
+>    as it actually means two things (don't oom, use thisnode zonelist)
+>    Something like:
+>      ALLOC_NO_OOM
+>      ALLOC_THISNODE_ZONELIST  (or keep __GFP_THISNODE)
+> 
+>    The downside is yet another flag interface in the page allocator.
+>    Note: This is basically 1/2 way done, this series finishes it.
+
+I do agree that two sets of flags is suboptimal, but likely more flexible. I
+guess an alloc_flags only interface is not easily possible ...
+
+I do wonder whether it should be:
+
+	typedef int __bitwise alloc_flags_t;
+
+instead of "unsigned int alloc_flags".
+
+... while at it
+
+-- 
+Cheers,
+
+David
 
