@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35A26CA6019
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 10:14:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F29AECA6012
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 10:41:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DBE06B0093; Fri,  9 Oct 2026 06:14:17 -0400 (EDT)
+	id 9A41E6B008A; Fri,  9 Oct 2026 06:41:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B3746B0095; Fri,  9 Oct 2026 06:14:17 -0400 (EDT)
+	id 92E0B6B008C; Fri,  9 Oct 2026 06:41:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F0D76B0096; Fri,  9 Oct 2026 06:14:17 -0400 (EDT)
+	id 7F5A56B0092; Fri,  9 Oct 2026 06:41:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 19E4C6B0093
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:14:17 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99A24120314
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:14:11 +0000 (UTC)
-X-FDA: 85302677502.25.168CF36
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1561D1A0002
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:14:07 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=byaqqJyX;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791540849;
-	b=xutMNoMqSMEJKD9ycb98bq7QJ3nXNt5qKB8ZU5r4C83EtqV7hKJo/lyA4N7UzryR20EAF6
-	A/P7YFfdSfMymz282Y2OFeQM2DhqzTBEQ8dVvdKOLFlyZWijI0lWOniX6mKL1GoHskJ/qh
-	+J7vqzs5AstBApLcUPdaHOp+7GVY7Z4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=byaqqJyX;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A2946B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:41:27 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2BDF51402F8
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:41:26 +0000 (UTC)
+X-FDA: 85302746172.12.57F96DC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 718F6120006
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:41:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IV5Cnyl5;
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791540849;
+	s=arc-20220608; t=1791542484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mu/ZQABM8qhqcMl44qsHwngC77x8JwfLP3WIFCwDal8=;
-	b=iSuVnCVZf/xhd2jyWm11fACeA7+65HSoDudFyglhOPoYPlDNrGCdRQaJ8BxcqSWT5MuRzS
-	rQWWxwjbAYPWfB7sxQ49tFIONeKzbUBWExqsKnJ1NoBaOI/mndcOzhq6mzWjQN8PsVt1WJ
-	JBbLRZEOxrmLZy87LSvK44fY+FoxKec=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1791540845; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
-	bh=Mu/ZQABM8qhqcMl44qsHwngC77x8JwfLP3WIFCwDal8=;
-	b=byaqqJyX2qUr863wX7TDc5QUNiBw1GRY3Yw26kLEldx6Js/Srvq+nnJPG/qKTLXGfEyYur+NN3wkD+3C1FycmjhRx8sApLt4PXYXPLHEO7DmedfQoiRqW3JHP/BEPTUBuctrBjdo4tE+bXoj7d3n5kIABXTtgTsL5LYZLxhN0kg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R381e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0XCT5rY._1791540843;
-Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCT5rY._1791540843 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 09 Oct 2026 18:14:04 +0800
-Message-ID: <639389d5-5048-4145-bcbf-c4b2d57e86e8@linux.alibaba.com>
-Date: Fri, 9 Oct 2026 18:14:03 +0800
+	bh=Cwq24PEweYCKQcmw9+hoELtVfG6aGbF+TPjmWZlfZpI=;
+	b=AL+1EhBa4/ZaEwCVXGdfgzOxQCYUB7j/9YM+TZGcZZSveZt5mtX4A1yd5q8d78ZzL1hz0X
+	4pWEqYHdFllV42icfYVPgY9/V11CXO09eGqPfVrPJ0ArR7C+Neqg7LmTtLzK6OsPl1jvyb
+	hD0bmeY/nUYJEqq3mMMXYXGdZjnuTF0=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IV5Cnyl5;
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791542484;
+	b=bISutopcTe2RP0xVeyPgCY9BUc/jTU3Xb9wrPt96Rm0GuFXT8cxE67MeQjUZX+/C89qOKD
+	toY+iPSqfobls04u8pUQRctMhq9XAm2jmyLuLk7AG7pQuL3TNnVbotiC7ZnPNfKQ5NVuVQ
+	nxMDIf8hG+CKugCG7KAgyF7dldThaMg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 62E8B43D48;
+	Fri,  9 Oct 2026 10:41:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3481F000FF;
+	Fri,  9 Oct 2026 10:41:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791542483;
+	bh=Cwq24PEweYCKQcmw9+hoELtVfG6aGbF+TPjmWZlfZpI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IV5Cnyl5YFpcOs667zXq5fhHBaTQashWb6uHeGtr2M11Sr7S5Bwj+NP6bYcCRvLoR
+	 qjrlQmB4MakZGLjjIQTL5bhfgIAde7TYI71gW7w9fUKqeuBPYrV51P5xGsv/yivrHj
+	 QMgLK02INHg4xwKaz0kdwszFeUiajgE3C0c/4xo4Xvu18GzeBnWJNyTtyDXNAVma8c
+	 ZAFMnIYpMvF6Qo6UFRk4YuuBnT4v+WHMhPgX5PtC9qE/IOr8uuHfYoXR6BPwAlfYsk
+	 8//DF1vpgExx3ANficCPgw2BdWvqcvOEPF6/4G8J+6IY5hG5j251V47G30Ygsy7APi
+	 +8mJ4AlF520HQ==
+Date: Fri, 9 Oct 2026 12:41:18 +0200
+From: Harry Yoo <harry@kernel.org>
+To: kernel test robot <yi1.lai@intel.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-mm@kvack.org, 
+	Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
+	Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [harry:b4/sheaf-size-round-up] [mm/slab]  ddf56dfc79:
+ will-it-scale.per_process_ops 54.5% improvement
+Message-ID: <asi-kgXfHJt6Gjp0@thinkpad>
+References: <202610091451.beda4ec3-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] shmem: FALLOC_FL_PUNCH_HOLE vs fault-around race corrupts
- page cache / rss counters
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
- Ayush Ranjan <ayushr@modal.com>, Hugh Dickins <hughd@google.com>,
- Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@kernel.org>,
- Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260924061708.1645968-1-ayushr@modal.com>
- <arTdLsBENhrpOyk-@pedro-suse.tail5790ac.ts.net>
- <20260925053027.1998394-1-ayushr@modal.com>
- <20260925065013.3682431-1-ayushr@modal.com>
- <20261003033107.1488699-1-ayushr@modal.com>
- <20261004222831.bdd648a2b406f02747dd9e40@linux-foundation.org>
- <fyswoh7wpxzlbnjjanggjd2jz6yispmeirhwjl3wzi57nacddb@bjkb6kxyfcal>
- <fbb046b9-be48-42d8-96b3-7e554484b625@linux.alibaba.com>
- <asigKktcrSY80A_2@pedro-suse.tail5790ac.ts.net>
- <5ebaba53-b2de-490e-a14c-c49bbb4337ad@linux.alibaba.com>
-In-Reply-To: <5ebaba53-b2de-490e-a14c-c49bbb4337ad@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1561D1A0002
+In-Reply-To: <202610091451.beda4ec3-lkp@intel.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 718F6120006
 X-Rspam-User: 
-X-Stat-Signature: fs4fy6gokw1djw6kozhhd63odargpcm8
-X-HE-Tag: 1791540847-800826
-X-HE-Meta: U2FsdGVkX1934wTuISenL3Kmk3pKCHg5/UvWRHPIPU0jLWJz8B2mh80Nc0xOc4NfzweNUnVA1QSjvSkfWmHqwBwkOap2gddc8sJxZ8BPzZbYTciKwxhEjxM88lCDkMWou3kJsnIV3SkVVaVjJLjE3H1W2AQwpXGYVECurprGAJu2WqQQMzLuXZMSMNKoboLpDyBJ/UUm+P+S063GTaONeT/SsYB4PvyLoP46xzc23kLWRzQmiqQkOQmNIxuYY7m5qdXbPTNnnU8wbuuydxoqBS0Pyox1eP6/srFDmNt8zeWmzB5SK+R/Zgh5fvZU5DlwSg8neTnd/OEYgMVIzWCQdRlvH0LVaGDECqjlaGeRTyM4JrtNEJkSlP3Z7MQFOekPgTEFGZhCmLxz6cQq6BmPPBpH9LuPnnKgTNZp2iUpfF3Ebk/YN/Fah3RVUBafRXTq/ECrgkHpeYaHYMbWTLHfGVp9ByhVPQ0KFXdOQdkzCzt8M6nCayCzsNo6hRcuzKsuCWM7ZKNeBnTHSaI5coAnOSwFzc4zRwlla/9fvVh6BlXifAg0MasZ/8uucfPjOlh10kG0QoOoR2fm8FHEhn9kNMTV6+lB8dL/a5T8ePSJRrnQrsKClZiBpG/L71ukijbGzwicYWzSgKDjZwYD0auXwuEeY6tyWVy6J1wO12F6ThuLJe+/Yj+STHYIO1xW2NnOp3eF9yinwXDYzlLG3ETDvUo9spo7Cgg4q4TipMdHmu1yDZlitAH9NuUUO9ZikOG93ALzmARRP6F2UIm0VA/+nPqjRsRJueoWoj0ePO72Pl3o+FatmopplpZ5FkXHwOBRx1C9hUI98hlDfxL3o8TV4uZtr1opFwQYXEXMLVak8Y3oshHNgCnE3H0wPNNFyQ2UWws9a89e6FoYuxCDatNS+FAkJYuOn/vVRg1ZfFqMkCvgyOlO1zhEad80IcYiox4QquWIe4gbg19Qh59Y3Ni
- A3Syrqj7
- PjPejojs3mfIB6JH7Gv+WtuKj9Mil72JKRyAlRg6tkZB78j4vwJrxs/X26/LgxYDxqbZXJodMP2ViCOkwwKN16KNHb5DKNPJhq1gv9D7uXOOT3z0CJAm975nP6gFCuSByZX10N7dk3yyOok5OMzU+lapukawkulWGPTEHzPKsrEeGajNmwFZRb2B0XuM/6qzBw+YarJZbKPK7CZjtqEGRvTpGCI5SuORV6P61FMghZJgDmYHrCdcuW6ie6HnoAk2+0aaynY/jjwKOkdc4gjlbsnjGjZnaTIWt9QmphmPHeLelzVtFsM/ZlOzC7oFtGS7QUKGRn4Td4ejbp6ckx/vmkRU+8V79ymq/4RPiZugIn9SwQLtg4AwnH+FrtVj/6RHRP8o5iJpVy+McWqC0TYHHsLEALRc+cGb2TgRdOMWsAVrrGeW0qvBgqK6cnOChxlFzuVn8C5/pfkjJdJEp7hTkak7gqe0yy4vNTC0PRAbzwrHZuXZDl4e7/oZ2hFyARU4agj8fZIJePiCX38g=
+X-Stat-Signature: 18t9e1uiestoxaqq1ewuzt51am3uyk1p
+X-HE-Tag: 1791542484-245680
+X-HE-Meta: U2FsdGVkX1+I0rSPI/UlQM5aahwpadQEOGrLQz4Ow8WDcIgfNYy5F4g8lMHmPlMqCytp2zBzz0bZEElxbWVh6yMaPTlHGNmxkc2ri8H2q2kmS1Hi4bbv6LXm40DKRt/w9ZxS5GW2SenGRvHT26nUb39moU/hi6yKVvEWfXQwji2jg2QpQWqJi49U8wEuba5jmt2Yx123RfQeBiCrqg4U5RcpjJFAdB0n0EVx3eKx2xTmkiYasbym7zHzomvs9pDCxJdENvu1v3QV/QEMUPsX+pcrLbHgbw2NKxOy1WOhU2Xi9EPnyUDHjtbkANN9oGpe7gLet4qKkut2ZA4CSQZp4KEXF9jsjljH8JTZt8MhFygabAdylVl9YsIYfqx8j+Ue9n4qts+A1ol9crrhMLliROzzERt8XjDh4zSyFayseVzzGgAAkelrqLK062wPSkpGDoHVQyBJnxRCzvKi7s2l24URUEffn3CrwFwgPEwBYaVrsxCkvOi6rHVLtPYMZZkEd6nrREj/YKYcu4bLXk/FannlPFfNuSWXYGSqdyv112boyxU6xaTMikOGOsOJ06So7lZKpcrzjjbmO7aq5t9SDKLMl7mgT56RNATSamIa/zqJMXAKRFXVNvniX9OQTpihmya6T3xTUXjr5XzaEo5kfq0oxpEcczo7xX1lXGOMcQKrtDDaNgA3CroZQwaYRTPV/7U1ZQISAIIjKnJKqcRETvpsxciUp5jtxwOfc+0ynzg5h/1BaXa72LXQKy7y5nSw7pJ0Os4cixZ7BDvjqe6s6Ef8tu7Yr+43xW7NaxQfodL7hj/4XOX/lokfucnznc6o1h7MDpS92XeNrQ6VIdoXRdzEEJrZ4P9azs4t1zYrgT4v8MCyRfM6sLqDzgNjrDOFFi4VyF+nZ+LxULx3dBVTARzYrx6AOVDfWlP6fS+DPaXERNwg28552oJshuHUtPydpc6pb87QBG/T1gd6aJD
+ SyE4+cex
+ 7x+1mlGYTZ38NwaJwKjz2p0763qbjo/4JEcsf+tq1rXNYUb1cft/lbEXuCm3rCTR7lQOGGOUKSRjDebeq5jnKGtxuQMc1UwYzrtSm0SGdz/+mQtLX8zcMYYw61JI0KCY+y6WaY3PwNzjvAgamxBjwUk2t4LkAD8kykuAGSjYvaG3E43fJ3dz57eflYPLprllbpEte1+Eb+Ad24lLqoRklSgtKr6PSeYnBtn67mMfNKmXFwYgu+9gx7So3X6wVuTB/TyWu10YRE//ADZUTPCd/4GcP+oyM/nfdx+viNwbJyNWVkpc4RTPv6qQ/WbHza+9Ncw8oOFkx1LasQ0naPNfV8eAJBMgiQGwUJTDoU/owArCrEFLbhA2DWFxOS3rogU9IJRNNjmxBZDqVT7rIKwoN23cW5ODE3GZnWcwE6BFU0vfhxF2AKYUpfKno0lV/oikpAgzfiK/lyx0uzOg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,236 +98,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+[ +Cc slab, maple tree folks, ... and Suren :D ]
 
-
-On 10/9/26 5:20 PM, Baolin Wang wrote:
+On Fri, Oct 09, 2026 at 02:39:02PM +0800, kernel test robot wrote:
 > 
 > 
-> On 10/9/26 4:41 PM, Pedro Falcato wrote:
->> On Fri, Oct 09, 2026 at 02:46:18PM +0800, Baolin Wang wrote:
->>>
->>>
->>> On 10/8/26 5:24 PM, Jan Kara wrote:
->>>> On Sun 04-10-26 22:28:31, Andrew Morton wrote:
->>>>> On Sat,  3 Oct 2026 03:31:03 +0000 Ayush Ranjan <ayushr@modal.com> 
->>>>> wrote:
->>>>>> Gentle ping on this. The reproducer in my previous mail [1] triggers
->>>>>> "Bad page cache ... still mapped when deleted" on 6.18.46 within a
->>>>>> couple of minutes on a 128-CPU bare-metal box, with no fork() and no
->>>>>> gVisor involved.
->>>>>>
->>>>>> We continue to hit this in production at low frequency, so I am happy
->>>>>> to test patches or collect more data if that would help.
->>>>>>
->>>>>
->>>>> fwiw I made gpt and gemini argue about this for a while and ended up
->>>>> with the below.
->>>>
->>>> Worth a try I guess. Let's see :)
->>>>
->>>>> From: Andrew Morton <akpm@linux-foundation.org>
->>>>> Subject: mm: shmem: serialize fault-around against hole punching
->>>>> Date: Sun Oct 4 09:05:31 PM PDT 2026
->>>>>
->>>>> shmem uses filemap_map_pages() for fault-around.  Unlike 
->>>>> shmem_fault(),
->>>>> filemap_map_pages() does not participate in shmem's fallocate 
->>>>> exclusion
->>>>> protocol.
->>>>>
->>>>> During a partial hole punch of a large shmem folio, the folio can 
->>>>> be split
->>>>> and the resulting smaller folios can remain temporarily visible in 
->>>>> the page
->>>>> cache while shmem_undo_range() restarts its walk.  Fault-around can 
->>>>> then map
->>>>> one of those folios again before the hole-punch path removes it.
->>>>>
->>>>> shmem_undo_range() may subsequently delete that folio from the page 
->>>>> cache
->>>>> despite the new userspace mapping.  This can trigger "still mapped 
->>>>> when
->>>>> deleted" warnings and leave stale mappings or inconsistent RSS/ 
->>>>> page-table
->>>>> accounting behind.
->>>>
->>>> So this part of explanation is either incomplete or wrong in my 
->>>> opinion.
->>>> Yes, shmem_undo_range() calls truncate_inode_partial_folio() which can
->>>> split a large folio. Yes, filemap_map_pages() can map those pages 
->>>> back into
->>>> page tables. But how "shmem_undo_range() may subsequently delete 
->>>> that folio
->>>> from the page cache despite the new userspace mapping" happens is 
->>>> unclear
->>>> to me. After splitting a folio, shmem_undo_range() will restart and 
->>>> find the
->>>> newly split (and mapped) folios and calls truncate_inode_folio() to 
->>>> get rid
->>>> of them. Now truncate_inode_folio() calls truncate_cleanup_folio() 
->>>> which
->>>> does:
->>>>
->>>>           if (folio_mapped(folio))
->>>>                   unmap_mapping_folio(folio);
->>>>
->>>> so the mapping is reliably removed under folio lock. Can you perhaps 
->>>> push
->>>> your agents further to explain in more detail how this "still mapped 
->>>> when
->>>> deleted" happens in their opinion?
->>>
->>> Good point and I think you are right.
->>>
->>> Yesterday I quickly reproduced the issue with Ayush's reproducer, and 
->>> I got
->>> the following crash info. From the dump message, we can see that
->>> truncate_inode_folio() is really trying to remove mapped folios, 
->>> which is
->>> incorrect.
->>>
->>> I also quickly tried Andrew's patch, and the issue no longer 
->>> reproduces, so
->>> I initially thought that was the root cause. But after your reminder, 
->>> I now
->>> believe Andrew's patch merely workaround the issue rather than fixing 
->>> the
->>> actual root cause.
->>>
->>> Today I'm going to re-analyze the race with the reproducer (thanks 
->>> Ayush).
->>>
->>> After analysis, I believe the race exists between truncation and
->>> MADV_DONTNEED, and shmem's fault_around() merely makes the issue 
->>> easier to
->>> reproduce. Since MADV_DONTNEED synchronously releases the pagetable page
->>> before calling tlb_flush_rmaps(), this could cause another thread's
->>> truncation to skip zap_pte_range() but still observe the folio's 
->>> mapcount as
->>> non-zero. A possible race scenario is as follows:
->>>
->>> CPU 0                CPU 1
->>>                 madvise_dontneed_single_vma
->>> shmem_fallocate            ......
->>>    ......              zap_pte_range
->>>    truncate_inode_folio            zap_empty_pte_table(pmd clear)
->>>      unmap_mapping_folio
->>>      ......
->>>        zap_pmd_range(saw pmd none)
->>>      filemap_remove_folio
->>>         BUG_ON(folio_mapped)
->>>                     tlb_flush_rmaps
->>
->> Thanks for the investigation!
->>
->> So, I think I understand the problem (rmap walks race PTE zapping, 
->> which no
->> longer serializes on the PTE lock), but I don't understand your 
->> solution at
->> all.
->>>
->>> Based on the above race analysis, I made the following fix that uses 
->>> the PMD
->>> lock synchronously to prevent this race, and the issue no longer 
->>> reproduces.
->>> I will clean it up and send out a formal patch.
->>>
->>> diff --git a/mm/memory.c b/mm/memory.c
->>> index 6a8e7772b8d6..2039ada99b64 100644
->>> --- a/mm/memory.c
->>> +++ b/mm/memory.c
->>> @@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct 
->>> mmu_gather
->>> *tlb,
->>>                  }
->>>          } while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
->>>
->>> +       add_mm_rss_vec(mm, rss);
->>> +       lazy_mmu_mode_disable();
->>> +
->>> +       /* Do the actual TLB flush before dropping ptl */
->>> +       if (force_flush) {
->>> +               tlb_flush_mmu_tlbonly(tlb);
->>> +               tlb_flush_rmaps(tlb, vma);
->>> +       }
->>> +
->>>          /*
->>>           * Fast path: try to hold the pmd lock and unmap the PTE page.
->>>           *
->>> @@ -2046,15 +2055,6 @@ static unsigned long zap_pte_range(struct 
->>> mmu_gather
->>> *tlb,
->>>           */
->>>          if (can_reclaim_pt && direct_reclaim && addr == end)
->>>                  direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, 
->>> &pmdval);
->>> -
->>> -       add_mm_rss_vec(mm, rss);
->>> -       lazy_mmu_mode_disable();
->>> -
->>> -       /* Do the actual TLB flush before dropping ptl */
->>> -       if (force_flush) {
->>> -               tlb_flush_mmu_tlbonly(tlb);
->>> -               tlb_flush_rmaps(tlb, vma);
->>> -       }
->>>          pte_unmap_unlock(start_pte, ptl);
->>
->> Namely, why moving this hunk of code up there makes any difference.
->> I suppose it's subtly changing memory order, but it's not immediate
->> in any way why this is correct.
->>
->> What you really need (I think) is a happens-before relationship between
->> the rmap changes and the PMD zapping. Something like:
->>
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 330cde31bf8b..17cdd48fff27 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -2108,6 +2108,13 @@ static inline unsigned long 
->> zap_pmd_range(struct mmu_gather *tlb,
->>                          sync_with_folio_pmd_zap(tlb->mm, pmd);
->>                  }
->>                  if (pmd_none(*pmd)) {
->> +                       /*
->> +                        * Pairs with tlb_flush_rmaps() in PTE zapping.
->> +                        * Possibly skipping a page table (due to PTE 
->> zapping)
->> +                        * needs to enforce ordering between the rmap 
->> changes
->> +                        * and the PMD getting cleared.
->> +                        */
->> +                       smp_rmb();
->>                          addr = next;
->>                          continue;
->>                  }
->> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
->> index 9f353f0e2ef4..47b25c42bf77 100644
->> --- a/mm/mmu_gather.c
->> +++ b/mm/mmu_gather.c
->> @@ -89,6 +89,10 @@ void tlb_flush_rmaps(struct mmu_gather *tlb, struct 
->> vm_area_struct *vma)
->>          tlb_flush_rmap_batch(&tlb->local, vma);
->>          if (tlb->active != &tlb->local)
->>                  tlb_flush_rmap_batch(tlb->active, vma);
->> +       /*
->> +        * rmap changes need to be observed before e.g PTEs get zapped.
->> +        */
->> +       smp_wmb();
->>          tlb->delayed_rmap = 0;
->>   }
->>   #endif
->>
->> On top of your diff. Where the smp_wmb() is perhaps not required: I 
->> suppose TLB flushing
->> works as a sort of memory barrier itself on most/all architectures.
->> Either way, we have to document and fix expectations around this code.
+> Hello,
+
+Hi, thanks for reporting!
+
+> kernel test robot noticed a 54.5% improvement of will-it-scale.per_process_ops on:
+
+May I ask if there's data on slab memory usage for this experiment?
+
+Performance improvement is nice, but only when we know what's
+the tradeoff (memory usage).
+
+I think diff on Slab:, SReclaimable:, SUnreclaim: in /proc/meminfo,
+and in addition to that, ideally diff on per-cache slab memory usage
+(from slabtop or /proc/slabinfo) during the experiment would be nice
+to have to make a decision :-)
+
+> commit: ddf56dfc79f5734d7b3aa8ba81f195d52b3e5823 ("mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity")
+> https://git.kernel.org/cgit/linux/kernel/git/harry/linux.git b4/sheaf-size-round-up
+
+https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git/commit/?h=b4/sheaf-size-round-up
+
+Oh, this is a b4 branch that I pushed but did not submit to mailing list
+yet because I wasn't didn't measure its implication on memory usage.
+
+The patch removes under-utilized 244 bytes per sheaf on maple_node cache
+by not skipping "rounding up to the next kmalloc size" step for explicit
+sheaf capacity.
+
+Copying and pasting the patch here:
+> mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity
+>
+> calculate_sheaf_capacity() calculates the size of struct slab_sheaf from
+> the capacity, rounds it up to the next kmalloc bucket size, and then
+> recalculates the capacity from the rounded-up size so that no memory
+> is wasted within the bucket.
 > 
-> Agree, I don't think we need smp_wmb() here. Moreover, 
-> zap_empty_pte_table() will call the pmd lock/unlock, which already 
-> indicates a memory barrier.
+> However, when the user explicitly specifies args->sheaf_capacity and it
+> is larger than the capacity calculated by the heuristic, this round up
+> step is skipped.
+> 
+> This wastes memory for maple_node cache. Its object_size is 256 bytes,
+> so the capacity calculated from the heuristic is 26. Rounding up
+> increases the sheaf size from 2 + 26 * 8 = 240 bytes to 256 bytes
+> (kmalloc-256), yielding a capacity of 28.
+> 
+> But since the maple tree cache explicitly specifies a capacity of 32,
+> the final capacity becomes 32 without any round up, and the sheaf size
+> becomes 32 + 32 * 8 = 288 bytes, which is allocated from kmalloc-512.
+> In other words, 512 - 288 = 224 bytes are wasted per sheaf.
+>
+> Move the round up step after max(capacity, args->sheaf_capacity) so
+> that it is also applied to explicitly specified capacities. With this
+> change, the round up behavior becomes consistent and the sheaf capacity
+> of maple_node becomes 60 and does not waste memory anymore.
 
-After more thinking, I think we still need an smp_wmb(). Please review 
-my new fix patch. Thanks.
+It does it increase memory usage for sheaves because it's reusing wasted
+memory, but it could end up more memory being used as each sheaf
+now caches more objects.
 
-https://lore.kernel.org/all/0d2a1809fa1cfc22ad3df26ec28b2d30e5cdf3bd.1791540483.git.baolin.wang@linux.alibaba.com/
+> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+> ---
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index f9b56cb439e709..4fa551bf02cd64 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -7895,17 +7895,19 @@ static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
+>  	else
+>  		capacity = 60;
+>  
+> -	/* Increment capacity to make sheaf exactly a kmalloc size bucket */
+> -	size = struct_size_t(struct slab_sheaf, objects, capacity);
+> -	size = kmalloc_size_roundup(size);
+> -	capacity = (size - struct_size_t(struct slab_sheaf, objects, 0)) / sizeof(void *);
+> -
+>  	/*
+>  	 * Respect an explicit request for capacity that's typically motivated by
+>  	 * expected maximum size of kmem_cache_prefill_sheaf() to not end up
+>  	 * using low-performance oversize sheaves
+>  	 */
+> -	return max(capacity, args->sheaf_capacity);
+> +	capacity = max(capacity, args->sheaf_capacity);
+> +
+> +	/* Increment capacity to make sheaf exactly a kmalloc size bucket */
+> +	size = struct_size_t(struct slab_sheaf, objects, capacity);
+> +	size = kmalloc_size_roundup(size);
+> +	capacity = (size - struct_size_t(struct slab_sheaf, objects, 0)) / sizeof(void *);
+> +
+> +	return capacity;
+>  }
+>  
+>  /*
+
+[-------<8 end of the patch-------]
+
+> testcase: will-it-scale
+> config: x86_64-rhel-9.4
+> compiler: gcc-14
+> test machine: 256 threads 2 sockets GENUINE INTEL(R) XEON(R) (Sierra Forest) with 128G memory
+> parameters:
+> 
+> 	nr_task: 100%
+> 	mode: process
+> 	test: brk2
+> 	cpufreq_governor: performance
+> 
+> 
+> Details are as below:
+> -------------------------------------------------------------------------------------------------->
+> 
+> 
+> The kernel config and materials to reproduce are available at:
+> https://download.01.org/0day-ci/archive/20261009/202610091451.beda4ec3-lkp@intel.com
+> 
+> =========================================================================================
+> compiler/cpufreq_governor/kconfig/mode/nr_task/rootfs/tbox_group/test/testcase:
+>   gcc-14/performance/x86_64-rhel-9.4/process/100%/debian-13-x86_64-20250902.cgz/lkp-srf-2sp1/brk2/will-it-scale
+> 
+> commit: 
+>   675a745c61 ("EDITME: cover title for sheaf-size-round-up")
+>   ddf56dfc79 ("mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity")
+> 
+> 675a745c6113e420 ddf56dfc79f5734d7b3aa8ba81f 
+> ---------------- --------------------------- 
+>          %stddev     %change         %stddev
+>              \          |                \  
+>   70440501           +54.5%  1.089e+08        will-it-scale.256.processes
+>       0.30 �  3%     +35.9%       0.41 �  8%  will-it-scale.256.processes_idle
+>     275157           +54.5%     425248        will-it-scale.per_process_ops
+>   70440501           +54.5%  1.089e+08        will-it-scale.workload
+> 
+> 
+> Disclaimer:
+> Results have been estimated based on internal Intel analysis and are provided
+> for informational purposes only. Any difference in system hardware or software
+> design or configuration may affect actual performance.
+> 
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
 
