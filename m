@@ -4,87 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FCA1CA6019
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 14:25:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC6D0CA6015
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 14:26:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F3486B009D; Fri,  9 Oct 2026 10:25:14 -0400 (EDT)
+	id BBE5B6B0092; Fri,  9 Oct 2026 10:26:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A3D36B009E; Fri,  9 Oct 2026 10:25:14 -0400 (EDT)
+	id B963C6B009F; Fri,  9 Oct 2026 10:26:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E1AD6B009F; Fri,  9 Oct 2026 10:25:14 -0400 (EDT)
+	id A8B416B0092; Fri,  9 Oct 2026 10:26:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A35A6B009D
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:25:14 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8F15D1C3ABA
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:25:13 +0000 (UTC)
-X-FDA: 85303310106.14.AF3BB49
-Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8EBD74000A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:25:11 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=karaolidis.com header.s=protonmail3 header.b=fi35R3+t;
-	spf=pass (imf07.hostedemail.com: domain of nick@karaolidis.com designates 79.135.106.113 as permitted sender) smtp.mailfrom=nick@karaolidis.com;
-	dmarc=pass (policy=quarantine) header.from=karaolidis.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791555912;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8259E6B0092
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:26:47 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 978F81203E8
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:26:46 +0000 (UTC)
+X-FDA: 85303314012.10.C5C272A
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A3D59C0009
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:26:44 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=YcE87iNS;
+	spf=pass (imf28.hostedemail.com: domain of daniel.almeida@collabora.com designates 165.173.180.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791556004;
+	b=6Vp2DvrsznpnhTRGeGxmdmkpYk4bn6N/zaeG/Bu+RNSDSX+izosXzouWudL71PZbnnkLTW
+	J6XYmIN65wbRMb/3/ABQFt3ZU1CD+xiP92CECQKjG8t0o5B4ZqoYEu6mnfwzcu50JA02G/
+	WDjJHisePv5Ki/LNMV6e7fyLaKdiyu8=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=YcE87iNS;
+	spf=pass (imf28.hostedemail.com: domain of daniel.almeida@collabora.com designates 165.173.180.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791556004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=0ry/qEt4RcAqTFIzYK3t8eJQNo0m/0+YmGFQ1p2ujng=;
-	b=6lmkhGufzFoLC5m+NSXuzAGZTwf9A6VgDBvb2Txl4t4w0QPXM3nbZk+JT7TkU3zPqq5Q+/
-	lC4VrReF1yn6xl20snE0C4KB7DCMkvRBLhplckrWa2aEYPPUsh8FCJfHc/rb3BDrt6SoyP
-	FG7EFX2JOlw3+UxVo7QkSNkhQSy8BpU=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=karaolidis.com header.s=protonmail3 header.b=fi35R3+t;
-	spf=pass (imf07.hostedemail.com: domain of nick@karaolidis.com designates 79.135.106.113 as permitted sender) smtp.mailfrom=nick@karaolidis.com;
-	dmarc=pass (policy=quarantine) header.from=karaolidis.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791555912;
-	b=X09cpyN3bNUdMf/Dj5idWYlYl4MEQkSYCxuGhaEMv0amAWBxcUfVr533EssEDMS0m9lBHx
-	kd684sQxI/SXHX0DPjJEBt7i+SFjcuaEnouaPiqhtkpd0h1mHqho/km9fY3ZTJx95YMlUU
-	vHYwRaOJjL1otf08gh4R11f8J6vLru0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=karaolidis.com;
-	s=protonmail3; t=1791555909; x=1791815109;
-	bh=0ry/qEt4RcAqTFIzYK3t8eJQNo0m/0+YmGFQ1p2ujng=;
-	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=fi35R3+teJ1yCUX4Dbv3ad1OWvzyqTT73ihrUmXQewn40TRhfezIhW1OhzCpipLj3
-	 5KtC6dNbbLpoiTLtPCehZp09NBIPvhoRPAaL+tpOEL9W0IEsD6Vjqjes/Mv/CrWkAh
-	 znMUR1iSjqwKCJxzreVY75b9DXAZqXbrWwHNLF8ztgVG7hyhExCIwsMQszmePZ3J5h
-	 eiWdwa1xtDc6yIJGVmLn3w0N8hXewm/qLKjU9JSjY/JvseZtzYX+q2rT3lJb7ZtEES
-	 vhfwlxJqcwKZmPDP3akkWGilZW2ketrY7frK+Sr3+8pWn6fwAl6y76LGWJquW26wB+
-	 FSoyhUpCStcBg==
-X-Pm-Submission-Id: 4j1Tf961fLz2SdVd
-From: Nikolaos Karaolidis <nick@karaolidis.com>
-To: Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Jan Kara <jack@suse.cz>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Nikolaos Karaolidis <nick@karaolidis.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] fs: don't lose inodes that another LRU walker is isolating
-Date: Fri,  9 Oct 2026 14:24:31 +0000
-Message-ID: <20261009142431.713875-1-nick@karaolidis.com>
-X-Mailer: git-send-email 2.55.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8EBD74000A
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gxWCSlibUcjBFAFiXJUyGxqXSZ9QJBB0cw/YBhKRUoA=;
+	b=x+67ym7jvDxkTEK8g2aL7b2spUE2VZ4Ag7ZzkzSwz4bNBE+er0y5kxE9UOyAYilsSMmt8x
+	hGEX0600rlK02+pzsAOejz44kMkICSEYSYHw7E+U6+LFWVskGpTfdhdCw2J2uOJpbb+ak8
+	0i6ophDZZwwmIa0lJcrsoGlgpK1K5QU=
+ARC-Seal: i=1; a=rsa-sha256; t=1791555993; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=dBZkp5Twe6upjrDeahwfmMMf6SZsdkvvuBGuZc/tJAxKlYvl+hFf8X/3qeSzkHQ2c5V0SvxZasCUQzsihzbOaxGbfpqYxgUyiEB150jfccDhvmq1txyfWPSVTaUwW8SizmbNROo1IcNilN528uV4DUGueX/1PhTUGRpum91YYEg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1791555993; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=gxWCSlibUcjBFAFiXJUyGxqXSZ9QJBB0cw/YBhKRUoA=; 
+	b=Qd+lCKrL3H7XcXSK9bG1COVJCnfrQN4nu20agVINopo5rdfaTUV3WlVO4CN/MldMvwpnWDg90P52kI2eu0CdR0Fvy72PD55CC5pLp8M7AYV2Uiluxcmx3K89iZqzE3Qgs8w69gc/5CNbZ0SSAU7INBXZ9Or4ACdvRLTSATXvT58=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791555993;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=gxWCSlibUcjBFAFiXJUyGxqXSZ9QJBB0cw/YBhKRUoA=;
+	b=YcE87iNSJx7kkyAUaSZ3oWYWkBXicUCZhb6cgpKGTc/+5rONc/ZUbDhdKdlATZu5
+	YHlnuhBzVFSn1s4SsGntDngeKi8zf833GfbG+LPfSBEfY9O4nNp1f0QkXBf8mHI2xMO
+	b4JgVsxH0c2xCV6Hc90bu0gVzPTtCKATJz3SzrK8=
+Received: by smtp.zohomail.com with SMTPS id 1791555990345422.0007315319667;
+	Fri, 9 Oct 2026 07:26:30 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [PATCH v3 05/11] drm/tyr: add user and MCU VM specifications
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260929-tyr-ioctls-v3-5-26955fb111d5@kylinos.cn>
+Date: Fri, 9 Oct 2026 11:26:10 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Lyude Paul <lyude@redhat.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ rust-for-linux@vger.kernel.org,
+ linux-mm@kvack.org,
+ dri-devel@lists.freedesktop.org,
+ driver-core@lists.linux.dev,
+ Alvin Sun <alvin.sun@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <DCB87F1B-30EC-4EE8-A8AA-32D3DA978833@collabora.com>
+References: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
+ <20260929-tyr-ioctls-v3-5-26955fb111d5@kylinos.cn>
+To: sunke@kylinos.cn
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-ZohoMailClient: External
+X-Stat-Signature: 3p6zw37rcefh89idquz68fz4rzgbaf4w
+X-Rspamd-Queue-Id: A3D59C0009
 X-Rspam-User: 
-X-Stat-Signature: jqqup6nyb4exudms4hyk4yqdqcm3qdj3
-X-HE-Tag: 1791555911-560422
-X-HE-Meta: U2FsdGVkX1+RmtN7JF12haOHUYbhNcGBOQ0huVvmuEgE6D6mPuiFv4TktUtsrLWxOG1tsjXCN2TYB4x99z7WliDEMIyKZdMwrYvgmQdJdr62M8bJB9RahrZ0jVS8W2oJfP/Y5DJqScYadKmCmies9mVl3WU3scWMB09Qp/qmns3rQA/RZcVZ3/0LoX0dULlKorN6mmKFW2L2aLtMEijc8DvvkG2qM7WXcFsMTlAD5+AuP3oOk8eUCSrW7UGd+N1hjgVvxlOtWZOKL3j8Kc/lpsDsjUpcPQ2bZivfOay6tJblvYhogy60y8z3dLyhLZa8enM3RAdlq3+3+j/Mdji/834y1OgN4OKLvnqSiBNFdrg4ogLpuV5Z8UvjfXUjqG6tJEmIo0ard7S6wW5dBMd5xOWH+zaEWnEXTU5LDpm9Em2zowsDceMAKtJBUB5taNeYvD/QmgdKumeziUDeNSeEAFBbLefS4npWRkirBma74I1+fnUmjuUTLU1YrHUieyQWiw4eewfbYs0dliFXfjl4ILq6o9BftkgRZ66zKQXKnd8PO9rMyL8k/o1jC9wGy4nwDzG201fg06HmIIAVj01V+nwIv1YMqTy3/FznrPhoabx8wEvtzHRtdmvb+vPWneYY+LuWpMFOq3JaesXRwAinnfvuFoFt3k5RitNJQKacu8LZPUeWuQ5gkS/IDZkIOuI6zby64eVhcBuwB4wjmDmnrgTwE3gzTX8yMM/9BH/ujnwJsF5nl+qVpRcGkKUtnAOmHOv3vdCCpwJ5bV3XvnIjZvi9eRpx9wcLFw+CJKCwIziWwG/K/puPTVaZqKue4xYFY47aGh38lq1BU2FufG/4j4W8M53YkpFYw8Z+RIHqBSZ69ZSHMW9B4B4Psq4vRxP6czaP3vhkA4U2CwPsFnFRabUB/8FE86/OnHaMTkrmJCve7SzNpgUmYIZtRfSY6On3QopZTdGRSxzHx+SbhnV
- Kcwm1jO7
- okjhc25MHfO+iyNrCCLV966ua/9f0cN/Ng2kJ4HlOMT04xVnXQvuB5vtOFP6Z59UCXDXKfap6L+kBZCtHO/1mQnA4k9acLqJLkmy94cR44gWxR1TaujFP1lQoD/c9UJ5ouml14A02T0ExeFx0bPGGrdPAV6wB3lJ6fLJz2OscAoDEh00tTEtCOIkGgqrrKk+TYqv5+UicwvtMf5pBxDMAx/wUFA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791556004-78663
+X-HE-Meta: U2FsdGVkX1/GGr3Ze4uYOZXtX4w8fHVgSmyUOqhJJsk0dkd5KJe6WYPxNF876lj6Oz6CMgk3xkAYZzIz2JOE8pyWkbeyQnsAgKBCy7378YgfpGuDM9FV2xMoR9VFXbbULnuZMIdBK6c6IFEq9N06CU6dRucKIO+BUdP05Ii/wX8CWXiNqujWZ8cQ8YqgXJcr2XaCCtUUJJRT7JNwEJoM6fVL8vtudzT6pjdAxVT5g3fRxd5yQD+GLuun6ol1MvqMGrqrUxW6+6ltANvbHOIHambrKB/gO9XQBjACsFRPqi+Md1R1sGlKMaDa9hTy+GLYKo/+o30XytscZ7H1OKvFRpAXNvBSwq6EYE+TZljzhEjxaww44GuN/gqzqSEdjdCciG1TpL4Z+i59uMtDwokVb4ZpxrJxUtRImNjz9XaISx3fDDNpKyRgBD1xDIAm63DffE2BFGVoB5dYczAoYvwkYvJYpuRf55z37mCwm8Y+rOadRI4iM4kzw0ytDeBQh/FTQVaOUUJlq+pCFv1bXoDvMoqcJpfs/dI449bg528/mfsqrUosnlvWIypfRvoUS58XAmou/uO8XvZ5p3cwxY//ruD+LOhVNYVPsUW5qujQSj5h0oDt6RG/p6XGdCiXwlXTLrxWlXRKTUAVNExEZ/dCuEubxwHV4YeVajBjITpGjBXuBYWPQRIlPjUA3venuZAFSko8wHr+Geht+VsjOL+6LIDwaiF7H3UBvM/4HCtSMdQwGvvLwfTV09AGmvxeTmNHmPVc5oacWSxqMyF6QCKqqa8qWUh0PXpYsyjoGPwn+O9VFO4t8ZJB3Xs6LKF5L4r6pX+vAwJ8nhThg0HZ0uE4gU2xp0OzlZjMmayNPd04bSAe8rioWcd3+bFnaDjq2Hm+trsC7eWxhqzF7lWsM8zMyDM4RI/tTcZb/QPo62PvD1kF4nf1luXj+oMiPn5z/+BWZdlaet6VwOuP4aRvJQd
+ tI25fIBv
+ Nku4D1VloiVGK2oxx0S225tK2qpnNOqXakCihqCxoetuk14rDPen7j7mnZoIa3tL9yQPiHM7WSir7j/FVGhk883pj3BcEwiEebzQ8UnsjDJdrPyx/8cHrbyngOA1wdzt07B7fXIS5a2auuZGQvewxZtwdWARcbZksOfiNY47KDuXMulXOF8UQ+ntEkaNrr9Wp5UzQuIyshj331w5VuYY8Mq1jZDnolaS/VLNJyc6GJ3cYNojQ2T4rCqUYNMmhUikk52AvnE7CBRt/o8phtyxQ7uX3CcReqUWk1Ksdc+a1Brh9RbJLNdXBMAkunhU5w17Ehwmqci9NnVdQ2WFcgWx2YA8nRKy97bO8/ZdDUs9qUV19plYU7fCd7wCSsgU6t9e95VVVVmeSGOQRr6viSszvOQvxvvzPcCV9SzfZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,96 +125,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When inode_lru_isolate() finds an unused inode that still has page
-cache, it sets I_LRU_ISOLATING, drops i_lock and the list_lru lock,
-invalidates the page cache, clears the flag again and returns
-LRU_RETRY so that the restarted walk can free the inode.
 
-Another walker of the same list can reach the inode in that window.
-It sees a non-zero i_state and takes the inode off the LRU, as it
-would an inode that is in use. Page cache deletion requeues the inode
-once the mapping is shrinkable, so this is harmless if it happens
-before the last deletion. If it happens after, nothing puts the inode
-back: it stays in memory, unused, clean and without page cache, out
-of reach of the shrinker and of drop_caches, until it is looked up
-again or the filesystem is unmounted.
 
-Before commit 2a0629834cd8 ("vfs: Don't evict inode under the inode
-lru traversing context") the pin was an i_count reference, and the
-final iput() put the inode back on the LRU.
+> On 28 Sep 2026, at 23:15, Ke Sun via B4 Relay =
+<devnull+sunke.kylinos.cn@kernel.org> wrote:
+>=20
+> From: Alvin Sun <alvin.sun@linux.dev>
+>=20
+> The MCU and user VMs need different VA layouts. Give each a dedicated
+> constructor: new_for_fw() builds the kernel-only 4G layout, while
+> new_for_user() splits the address space by task_size or a =
+user-provided
+> size, rejecting oversized requests rather than clamping. The resulting
+> user range is what VM_CREATE reports back as user_va_range.
+>=20
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+> ---
+> drivers/gpu/drm/tyr/fw.rs |  19 +++---
+> drivers/gpu/drm/tyr/vm.rs | 170 =
+++++++++++++++++++++++++++++++++++++++++++----
+> 2 files changed, 164 insertions(+), 25 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
+> index 7edb5eff17077..d790b54e373e6 100644
+> --- a/drivers/gpu/drm/tyr/fw.rs
+> +++ b/drivers/gpu/drm/tyr/fw.rs
+> @@ -52,7 +52,6 @@
+>         KernelBoVaAlloc, //
+>     },
+>     gpu::GpuInfo,
+> -
+>     mmu::Mmu,
+>     regs::{
+>         gpu_control::{
+> @@ -223,10 +222,10 @@ pub(crate) fn new(
+>         mmu: ArcBorrow<'_, Mmu<'drm>>,
+>         gpu_info: &GpuInfo,
+>     ) -> Result<Firmware<'drm>> {
+> -        let vm =3D Vm::new(dev, ddev, mmu, gpu_info)?;
+> +        let vm =3D Vm::new_for_fw(dev, ddev, mmu, gpu_info)?;
+>         vm.activate()?;
+>=20
+> -        let result =3D (|| {
+> +        let sections =3D (|| -> Result<KVec<Section<'drm>>> {
+>             let (fw, parsed_sections) =3D Self::load(dev, ddev, =
+gpu_info)?;
+>             let mut sections =3D KVec::new();
+>             for parsed in parsed_sections {
+> @@ -256,18 +255,18 @@ pub(crate) fn new(
+>                 sections.push(Section { data, mem }, GFP_KERNEL)?;
+>             }
+>=20
+> -            Ok(Firmware {
+> -                iomem,
+> -                vm: vm.clone(),
+> -                sections,
+> -            })
+> +            Ok(sections)
+>         })();
+>=20
+> -        if result.is_err() {
+> +        if sections.is_err() {
+>             vm.kill();
+>         }
+>=20
+> -        result
+> +        Ok(Firmware {
+> +            iomem,
+> +            vm,
+> +            sections: sections?,
+> +        })
+>     }
+>=20
+>     pub(crate) fn boot(&self) -> Result {
+> diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+> index a2857820570cf..625ec7e95790f 100644
+> --- a/drivers/gpu/drm/tyr/vm.rs
+> +++ b/drivers/gpu/drm/tyr/vm.rs
+> @@ -8,6 +8,7 @@
+> //! mapped into hardware address space (AS) slots for GPU execution.
+>=20
+> use core::marker::PhantomData;
+> +use core::num::NonZeroU64;
+> use core::ops::Range;
+>=20
+> use kernel::{
+> @@ -44,6 +45,8 @@
+>     new_mutex,
+>     prelude::*,
+>     sizes::{
+> +        LargeSizeConstants,
+> +        SizeConstants,
+>         SZ_1G,
+>         SZ_2M,
+>         SZ_4K, //
+> @@ -159,6 +162,103 @@ fn try_from(value: u32) -> Result<Self, =
+Self::Error> {
+>     }
+> }
+>=20
+> +/// User VA size request for a user VM.
+> +pub(crate) enum UserVaRequest {
+> +    /// Split based on `task_size()` and the GPU VA range.
+> +    Auto,
+> +    /// Caller-specified size; construction guarantees `> 0`.
+> +    Fixed(NonZeroU64),
+> +}
+> +
+> +impl UserVaRequest {
+> +    /// UAPI boundary normalization: `0` -> [`Auto`](Self::Auto).
+> +    #[expect(dead_code)]
+> +    pub(crate) fn from_uapi(v: u64) -> Self {
+> +        match NonZeroU64::new(v) {
+> +            Some(size) =3D> Self::Fixed(size),
+> +            None =3D> Self::Auto,
+> +        }
+> +    }
+> +}
+> +
+> +/// Final user/kernel VA layout for a VM.
+> +pub(crate) struct VmLayout {
+> +    /// Full GPU VA range covered by this VM.
+> +    pub(crate) full: Range<u64>,
+> +    /// User-accessible VA range. Empty for MCU VMs.
+> +    pub(crate) user: Range<u64>,
+> +}
+> +
+> +impl VmLayout {
+> +    /// Kernel VA range, reserved for future kernel object =
+allocation.
+> +    #[expect(dead_code)]
+> +    pub(crate) fn kernel(&self) -> Range<u64> {
+> +        self.user.end..self.full.end
+> +    }
+> +
+> +    /// Compute a user/kernel split for a user VM from the full GPU =
+VA range and
+> +    /// a user request.
+> +    pub(crate) fn compute(full: Range<u64>, req: UserVaRequest) -> =
+Result<Self> {
+> +        // Minimum VA space reserved for kernel objects (heaps, ring =
+buffers, ...).
+> +        const MIN_KERNEL_VA: u64 =3D u64::SZ_256M;
+> +
+> +        if full.end <=3D MIN_KERNEL_VA {
+> +            pr_err!(
+> +                "Invalid VA range {:#x}..{:#x}, kernel VA min =
+required: >{:#x}\n",
+> +                full.start,
+> +                full.end,
+> +                MIN_KERNEL_VA
+> +            );
 
-Skip inodes that are being isolated and leave them to the walker that
-pinned them, which restarts its walk once it has unpinned them.
+This pr_err seems to be removed in patch 7.
 
-The window is reached by any unused inode with page cache on
-CONFIG_HIGHMEM kernels, and otherwise by inodes whose page cache is a
-single shadow entry at index 0. On an i386 HIGHMEM guest, eight
-concurrent "echo 2 > /proc/sys/vm/drop_caches" over 2000 freshly read
-one-page ext4 files leave roughly 400 of the inodes off the LRU per
-round; on x86_64, with the files' pages first evicted through
-memory.reclaim, 3 to 4 per round. With this patch, none in either case.
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        let user_max =3D full.end - MIN_KERNEL_VA;
+> +
+> +        let user_end =3D match req {
+> +            UserVaRequest::Fixed(v) =3D> {
+> +                let user_size =3D v.get();
+> +                if user_size > user_max {
+> +                    pr_err!(
+> +                        "Requested user VA range {:#x} exceeds =
+maximum {:#x}\n",
+> +                        user_size,
+> +                        user_max
+> +                    );
 
-Fixes: 2a0629834cd8 ("vfs: Don't evict inode under the inode lru traversing context")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Nikolaos Karaolidis <nick@karaolidis.com>
----
+Same here. In this case, just don=E2=80=99t add them in this patch to =
+begin with.
 
-Found while working on reclaim of inodes pinned by page cache in
-ZONE_MOVABLE.
+> +                    return Err(EINVAL);
+> +                }
+> +                user_size
+> +            }
+> +            UserVaRequest::Auto =3D> {
+> +                let task_size =3D current!().mm().map(|mm| =
+mm.task_size());
+> +                let candidate =3D match task_size {
+> +                    // `task_size()` returns usize; widen to u64 for =
+the comparison.
+> +                    Some(t) if (t as u64) < full.end =3D> t as u64,
+> +                    None | Some(_) =3D> {
+> +                        // If the range exceeds 4G, split it in two =
+so CPU and
+> +                        // GPU share the same addresses (SVM).
+> +                        if full.end > u64::SZ_4G {
+> +                            full.end / 2
+> +                        } else {
+> +                            user_max
+> +                        }
+> +                    }
+> +                };
+> +                candidate.min(user_max)
+> +            }
+> +        };
+> +
+> +        let delta =3D full.end - user_end;
+> +        // Pick a kernel VA range that's a power of two, to have a =
+clear split.
+> +        let kernel_va_range =3D 1u64 << delta.ilog2();
+> +        let kernel_va_start =3D full.end - kernel_va_range;
+> +        let full_start =3D full.start;
+> +
+> +        Ok(Self {
+> +            full,
+> +            user: full_start..kernel_va_start,
+> +        })
+> +    }
+> +}
+> +
 
-Tested on master af32da41b032 (v7.3-rc6-232) in QEMU/KVM with a small
-stress program: mount an ext4 image, read 2000 one-page files, run 8
-concurrent "echo 2 > /proc/sys/vm/drop_caches", drop caches again
-single-threaded (2, then 1, then 2), and count the filesystem's inodes
-still in memory via how many the umount frees:
 
-  i386 HIGHMEM:      ~390 of 2000 lost per round without the patch
-                     (3 runs x 20 rounds), 0 with it
-  x86_64, pages evicted through memory.reclaim first (single shadow
-  entry left):       ~4 per round without, 0 with
-  x86_64 with KASAN, PROVE_LOCKING, DEBUG_VM, DEBUG_LIST:
-                     6109 lost in 50 rounds without, 0 with, no splats
+With the changes above,
 
-The reproducer is a single C file run as init; I can post it if useful.
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-I went with skipping the inode rather than requeueing it on unpin
-(which would be closer to what the final iput() did before
-2a0629834cd8) because it avoids the remove/re-add and leaves the inode
-where the pinning walker finds it again. Happy to switch if preferred.
-
-Jan, this applies cleanly before or after "fs: Basic infrastructure for
-offloading inode reclaim" (v2 3/5); happy to rebase onto that series if
-you'd rather take it there.
-
-For stable: 6.18 and older need inode->i_state instead of
-inode_state_read(). I have only tested master.
-
-An LLM was used to check the analysis against the code, write the
-reproducer and draft the changelog; I have reviewed all of it.
-
- fs/inode.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/fs/inode.c b/fs/inode.c
-index a9d37be390a1..74dfc379b377 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -942,6 +942,12 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
- 	if (!spin_trylock(&inode->i_lock))
- 		return LRU_SKIP;
-
-+	/* Another walker is dropping its page cache, leave it to that one */
-+	if (inode_state_read(inode) & I_LRU_ISOLATING) {
-+		spin_unlock(&inode->i_lock);
-+		return LRU_SKIP;
-+	}
-+
- 	/*
- 	 * Inodes can get referenced, redirtied, or repopulated while
- 	 * they're already on the LRU, and this can make them
-
-base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
---
-2.55.0
 
