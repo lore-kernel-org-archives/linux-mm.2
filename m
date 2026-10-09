@@ -4,83 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86C03CA6015
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 13:48:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB72FCA6015
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 13:50:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 499E36B008A; Fri,  9 Oct 2026 09:48:24 -0400 (EDT)
+	id 90AC66B0092; Fri,  9 Oct 2026 09:50:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44B2A6B008C; Fri,  9 Oct 2026 09:48:24 -0400 (EDT)
+	id 894C96B0093; Fri,  9 Oct 2026 09:50:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 361266B0092; Fri,  9 Oct 2026 09:48:24 -0400 (EDT)
+	id 7A98E6B0095; Fri,  9 Oct 2026 09:50:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 108DD6B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 09:48:24 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9A4D2120394
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:48:23 +0000 (UTC)
-X-FDA: 85303217286.12.F44510C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 196F720005
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:48:21 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 582E26B0092
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 09:50:06 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C85941403BE
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:50:05 +0000 (UTC)
+X-FDA: 85303221570.18.BFB56C4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 30E2620005
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:50:04 +0000 (UTC)
 Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NB+Z9d1L;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jaOtYbWS;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791553702;
+	s=arc-20220608; t=1791553804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ypDeMeZJLPxwre6yz/nCLAL+PwcGfFDDWHXhzCOWxEo=;
-	b=cW5AYn9MbgsmzNgxJRH3comGkHAWGL/EkosqH1vIRn6TxJnkLuyZjku21Uq/Zp9CvMaCRf
-	HdBAAC5mxq/+EfS75hpTRS5b2SNOLGP/Or+NSavotNlypruRtBYYfdV8cm2H+XlzLo0dvV
-	i8sfcHz5dOG9f2YpqfIdDw9yRnGLkag=
+	bh=H071Su+4anOlMSS+gUVM0N4jNV+NkmKss72WEdIivlQ=;
+	b=Dhh4Vy9RKQMKqR7j/kW5eiTy+I8UQSYilRiXcPZ8uEL91I0NWGgYVFvH3chP45G0pHqY46
+	C7dVyDQGBfuQ+6B44cvK+0iU32rBWj+45Ikto9c2vwmu8s50YU8gkNgN7TfM6wDELjlttu
+	66i4Yo0Udu+iIp7Rh3bBReVBme8p/aY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791553804;
+	b=Wz+P3W5NtFVHSgAd5qdgUcsNqB04SAwSTRW5PrrRJP1nmnErSMjymAU2qpFAD2sT8r2g3l
+	y7D82RXhk+y0Fm85j3nMM3s0ziqXXbUxBY6gADnyhT1v7vpHDH6Ec8C110KS5FMs9w3fAm
+	7KW7Hmb8JtwPxgVil1ZunAq/GDxQbTg=
 ARC-Authentication-Results: i=1;
 	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NB+Z9d1L;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791553702;
-	b=ePotqpk/sxkGIo3AykxO2ys5EOfwOuDIaisLZYtrE+BqK6FhOXtGS7WmTUDTLqwXIad5AT
-	bl9jUrIDnB2D8/ydRzqT86XGwgpKF0DF+HZZ+Bh1qnyIeEkt9PtyfovRlNi1xoXCptZfin
-	0h/hOgsZ3U7mQhHndP0QoUz2unzIYns=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jaOtYbWS;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4EC9660A55;
-	Fri,  9 Oct 2026 13:48:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A1E1F000FF;
-	Fri,  9 Oct 2026 13:48:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 117C240837;
+	Fri,  9 Oct 2026 13:50:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F33C1F000FF;
+	Fri,  9 Oct 2026 13:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791553701;
-	bh=ypDeMeZJLPxwre6yz/nCLAL+PwcGfFDDWHXhzCOWxEo=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=NB+Z9d1LZuVZWRBPyQGsHHAAScPkvF/MiEXoj7IGJHVlow15ypjOTorNMeqgogBGp
-	 fZCBw1s+pyvGzqSjdTORcWrmWP2nCsTSkbeXMAHlC2uOeSdjYVpAq5hDhUwTG0uzlC
-	 ZIxhiIJiXWf3qGBpiIxPy7mkY2m1592Vd8NAbbkRN7HTL1JXN4CQzRCR05Gi1W4RzU
-	 l6hpwW13gxnAZM3iWiqDnZJOsVfjIeaJK3dm2BUgg4zDXc8T/mQlE/ZM2Tsy2b/RXU
-	 nJAZFCf6oLMOfyKVVOcLDxgVyUe/m64q9HzBg6+dvhVzYRuiyk67XNwSYr1dU9++va
-	 CQgImH3htHvNg==
-Content-Type: multipart/mixed; boundary="===============7130068563077650387=="
+	s=k20260515; t=1791553803;
+	bh=H071Su+4anOlMSS+gUVM0N4jNV+NkmKss72WEdIivlQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=jaOtYbWSMeWlKVzUtj/mC5JhGw/eRRP8P9KPZ7ycsQyvrSjSKPXPjSB28iY/uOAUf
+	 RYAAC5Ao9A2ivu5JD+w8dayx1zgxO3ZY8oaz7hD3DHp7MiR18Cu4k6WQNcpvsrnci1
+	 kEpw7YRjqoD52RKePcVL5DnorfevK0IhATdk0sQhMWn1ixlgnvdBpguXKGP5OTtCTG
+	 QWh0BrB2T5L/v3HtdgH9PGy4Rd78axftTQNIlk3QCSj3i88YE/NIgE3+U2zE3TOcso
+	 TLOmT454SYB0b+9WxhiOOQW+NwyJoTGnv9zdum6CZFx8qdT5lh21Ti2gxPvTBg9CBX
+	 HS0FZSbklCKtQ==
+From: SJ Park <sj@kernel.org>
+To: stable@vger.kernel.org
+Cc: damon@lists.linux.dev,
+	SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 6.6.y v3 0/2] mm/damon/core: fix last region handling of damos_skip_charged_regions()
+Date: Fri,  9 Oct 2026 06:49:47 -0700
+Message-ID: <20261009134949.11507-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2026092948-moonrise-persecute-3597@gregkh>
+References: <2026092948-moonrise-persecute-3597@gregkh>
 MIME-Version: 1.0
-Message-Id: <d095fa11023a62ea9585d55d6bc25e390944508d5b00bae0a1913176e830d086@mail.kernel.org>
-In-Reply-To: <20261009112308.240769-7-zhen.ni@easystack.cn>
-References: <20261009112308.240769-7-zhen.ni@easystack.cn>
-Subject: Re: [PATCH 6/6] selftests/bpf: add tests for the page_owner bpf_iter target
-From: bot+bpf-ci@kernel.org
-To: zhen.ni@easystack.cn,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,akpm@linux-foundation.org,vbabka@kernel.org,surenb@google.com,mhocko@suse.com,brendan.jackman@linux.dev,hannes@cmpxchg.org,ziy@nvidia.com,shuah@kernel.org
-Cc: bpf@vger.kernel.org,linux-mm@kvack.org,linux-kselftest@vger.kernel.org,linux-kernel@vger.kernel.org,zhen.ni@easystack.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Fri,  9 Oct 2026 13:48:18 +0000 (UTC)
-X-Stat-Signature: e47ci5ny94wdhgb7otogtrc3o6q4ns7x
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 30E2620005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 196F720005
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791553701-445375
-X-HE-Meta: U2FsdGVkX1+07fRd4wOduotYmO0fefIrGZF8jZTDo3v+5op6e5gf7BRGNqd/PjgDvBg6jPLq4JNhfAH0ujDTwM5yRaA2oy0ble60FjVImD6d0x7Z+OVGkdDAV7mMnMrVbAow8sJxOGGOm1ReaL7B2LhNfWyrSpRWvSCOgG6pW+tFFiXFgwFpiGnJe3KgT2+64mFR2hy525Y7Six+duGvfhiQQ6ZKt07rwwSnZb076WelF7McyqBI4qGrzwEQIT4zchQ+45XaaK0EUZM1QYwrfdTBUSF7lPFjsLHR45jAfj/Ul0yiNBGOZ48CXNmSn91fHlLZcYI4/WVYbKM9ZDtAtXBfoiuMjJSXNPGlw3OFbRbS8sOkrkBR1eHRa5iCAvQ8eicyaRspIgDJ6+lRW/SkWrGRnfk5IvwFu983SzI4WZTzb23yAUezisZYLyxLw1WCTRGS/kzkZvy8rMnmNlCRIvM29cpejipsH14sM3X05Qb8YlJm8+0nEuPsjq4jkY5v/E/A5lpYmEyLaMBd2H/DG/KJzkaBYnLShSAPp5GK8okxGz/zosK81WfLlAV34wjU+Be+KXqDKw/SvIUg3iIhQC5DMYBOVlw8Po88EgkRAvqcenVhN6eKdewbklMVTvmoJ+KmQpUCq05Jxt0VoKONEuP7c41Xz5WVBfWS3CCpF53SP+eUrLYrw7LWpTDhYrCgeNqWPcPWOX8mCPvbmPcOMjFLf0f3BL5bhkaOHc86f2Q4b6rLJlkWUHUmCtbL2vGjCsQuLmMneeXDd4PErUXGKHnnJHCVKd8XnV1kIoybkYQhaaj/O/BHCYpO5VcZUtMW5iwNEq2rsqduQG1cWon8gGeviMHNmcjstKe+DFaa+kgNSB9MmvSFY2nDD5pD3H03a10qoRD/Or2ySyDnx5moOCSnt69dreYOjQ+qWyj8gCbuUxfeohjd//u8Et4fMumD4xIST0583KKhKc6zMks
- AbbDTn8e
- xlbfy5dPPk0+3OaEjmAZj/gt2knw8BygSh4s496ZMeQGBLW+j+wwOn8z3+CfmpZhWDw0NBgRNs9YK+PSFKFhuXJCCNKF4wcR4o5qqjTm5I6dJ18ubQv4qQPkPfpqtdZjyyG0MomEvGpebIrxfvWa9sverWfhzs0KB9IGFBMkKzZ6lNfLM5lLAW/kVhwj6ttpJaPwpabE5NONgNS0rCjNVoiM8KKZjVDb04m1OHk+U3IdJBJ5DnRdel00li8b3/bmZMSZpvfC0x5tlR8lur2E7h61wAX+EvgwHjY9RRhZNewqKwvYjPdsfyXzp77CpuXs4u8MGSSQ87r+xQoSTsteRpBtgVHPK4berML62h4V9gfQAFGknGnGy3CuIvukYFq7z5Yzp+A1N36OItXlpYEM+gX26vDv812lwX8TeyJa9WtRbLg+fFHBS4PAPfHffOTqEfXzwEPhX7Q5jBqqsGVwWJv1CJEQXK1UmICFWVGCAjncMc1ko+4QZhVa1ix1qxDo5WPqCQScne7VfnYaYkYmWu8LlGXW17yKRBGXB
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ggj94uuhkw14sirh4t6az3wwbjhk5bhe
+X-HE-Tag: 1791553804-769135
+X-HE-Meta: U2FsdGVkX1+x5/Jt/zywdrS3aDQTPuF1wCMb5rp2NCwGlQUOU/c2poI3gku4Eq1a0a0IRN7EG78+OziC2dLDqGDuMCv6zhy9YLHIvrtgR+BFZqJbw6TaJAIajQqNKexENhV+vV5WSZcvOqOZmPWD3oLhAyflbMqAEaNM1iTNzD5KiOi91sEmrWc21j4rBN8pgq5yzt6s3nMIIbvWlm0DNWOE3rFIRSLbTBqtmrSu8/3V6ftk3WyWiBhS5PXZYIkHrNYdfBuI+/Xu25gbd3TNn+RZ0B2pTjSw/Q7Gp108HxR/8SstHVbpDZ7yXsbGmeC3kOgBDyCI3w4B6BtDfWh7qMdezYMKDnTa6pjd+BaqDJji+e/NghybVwJrHUEvLz/mquVzcKcJW0b7nzEdDR+Ov/NVarmGL1NswCR1SuTUp5uG+GIm6CYipZf3+ZHnf5ylNX/+UthaaBjlTpW6TmbSp/bJFgwnpOVpnJ+dYurBCgXPyA4e+C9TqYCqAoVnQ2G+KVCHOWBoNSsvNYjvehRiQZwsUKZ9fUvox/GDW3frPpn/4L3CTeN02rIksx68hwGpmGnExUV9fHvBw1gsVKlHxLUmw4fb/n0cfxBk0jRcbTA67ZTw9o5KsMYxDjWkAEdJ1vgwBHhv0Cz5WbaWcYTA0l5cCHHWJpSxrkNmiSN1/FsfOrp83TTX9rP/St3wk0jMRV3WF4tC5AQRzn0mqpl9yRXydtxKYYLh9PUz2kuu3Quw9UsG/GOyUm3DhN6gLMxYq2dYtcg/oXwInZrQ2FgK4YziXuuHZFfIIafAEEr2fWEQoVHKnM7r0BLUf1nLhSkP/t21RW73gBUHwD2GpT5c5uYK2mhLlD/tfi9JBUmV2De3QznxS6TIWte6yn2WWNqRatmH3yoboRzFh91wsAr4XDGCXlDBcXSnsFv3Tx8UgNz9PQMwlHZy4+/+zsVegQ3CRemHwfnZS2xe54WVqX3
+ nuZ6heBo
+ 7ApoQL0eWQrUKYDZ8fT3JIkyM0nuB6fG5z1wI66i6l/5XnyKCrNZ8qUrySTFZZOdiBqyKCrsFH56cUIXaeL0FeDTtE/dzk/9OWvgY2YG6J9lc7AZKqkKPOJIELOrI+JHUjZPMMYyACWPjd5XylChxITfm3AcX7p9akUI5yqD4+FHh5LpLUJgP6W07sftEKfryqS52O2/2u+uQ3Oi1HYeLrSfw78Smv4kfsBQ47H9KSPSOJZ0zeA90k8IZh+uMK1ufJ05/6+8AZMxrok6ZxhUYdH7vPdstVMnxSV1zyDEy1EZEy+s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,212 +93,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============7130068563077650387==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Patch 1 is a dependency of patch 2.  Without it, patch 2 introduces
+out-of-bounds memory access bug that was found by Sashiko.  Patch 2
+fixes a bug that categorized to be backported to stable@.
 
-> selftests/bpf: add tests for the page_owner bpf_iter target
+Changes from v2
+- v2: https://lore.kernel.org/20260930101853.58786-1-sj@kernel.org
+- Fix out-of-bounds memory access bug by adding patch 1.
+Changes from v1
+- v1: https://lore.kernel.org/20260930093707.48739-1-sj@kernel.org
+- Add missed damon_sz_region(r) <= min_region_sz case change.
 
-TL;DR:
-- Selftest BPF program may fail to build, breaking test_progs, if
-  CONFIG_PAGE_OWNER types are missing from vmlinux.h
-- Iterator read errors (e.g. -EAGAIN) silently end the test as a pass
-- Skip gives no reason
+Liew Rui Yan (1):
+  mm/damon/core: fix unconditionally skip last region
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/page_owner_iter.c b/tools/testing/selftests/bpf/prog_tests/page_owner_iter.c
-> new file mode 100644
-> index 000000000000..a621712272bc
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/prog_tests/page_owner_iter.c
-> @@ -0,0 +1,173 @@
+SeongJae Park (1):
+  mm/damon/core: do non-safe region walk on kdamond_apply_schemes()
 
-[ ... ]
-
-> +/* Count link_fd output lines; -1 on error. */
-> +static long iter_record_count(int link_fd)
-> +{
-
-[ ... ]
-
-> +	f = fdopen(iter_fd, "r");
-> +	if (!f) {
-> +		close(iter_fd);
-> +		return -1;
-> +	}
-> +	while (getline(&line, &len, f) > 0)
-> +		count++;
-> +	err = ferror(f);
-> +	free(line);
-> +	fclose(f);
-> +	return err ? -1 : count;
-> +}
-
-[ ... ]
-
-> +void serial_test_page_owner_iter(void)
-> +{
-
-[ ... ]
-
-> +	if (!page_owner_available()) {
-> +		test__skip();
-> +		return;
-> +	}
-
-A subsystem pattern flags this as potentially concerning: a test that skips
-silently, with no message.
-
-test__skip() takes no message and nothing is printed before it, so the
-result is a bare skip.  The page_owner file only exists with
-CONFIG_PAGE_OWNER=y, page_owner=on on the kernel command line, and debugfs
-mounted, so someone reading the output cannot tell which of these was
-missing.
-
-Other prog_tests print the reason before skipping, for example in
-bpf_iter.c:
-
-    printf("%s:SKIP:no __builtin_btf_type_id\n", __func__);
-    test__skip();
-
-Could this print why it skipped, for example that page_owner debugfs is
-unavailable and needs CONFIG_PAGE_OWNER plus page_owner=on?
-
-That said, test_progs still reports the test as skipped in its summary, and
-many existing prog_tests call test__skip() without a message, so only the
-reason is missing here.
-
-> +
-> +	skel = bpf_iter_page_owner__open_and_load();
-> +	if (!ASSERT_OK_PTR(skel, "bpf_iter_page_owner__open_and_load"))
-> +		return;
-> +
-> +	/* --- seq file iterator: unfiltered run --- */
-> +	skel->bss->filter_en = 0;
-> +
-> +	if (!ASSERT_OK(bpf_iter_page_owner__attach(skel), "skel_attach"))
-> +		goto destroy;
-> +
-> +	link_fd = bpf_link__fd(skel->links.dump_page_owner);
-> +	iter_count = iter_record_count(link_fd);
-> +	if (iter_count < 0)
-> +		goto destroy;
-
-If reading the iterator fails, can this test still report success without
-running any of its checks?
-
-iter_record_count() only records an assertion failure when bpf_iter_create()
-fails.  When fdopen() fails, or when getline() stops on a read error so that
-ferror(f) is set, it quietly returns -1.
-
-The two callers in serial_test_page_owner_iter(), the unfiltered pass here
-and the pid-filtered pass below, then do:
-
-    if (iter_count < 0)
-        goto destroy;
-
-Neither calls ASSERT_*() or test__fail(), so test_progs marks the test as
-OK and skips the unfiltered, filtered, open-coded and memcg checks.
-
-read() on a BPF iterator fd can fail with real errors from bpf_seq_read():
-an ERR_PTR returned by the target's start()/next(), -E2BIG, -ENOMEM, or
--EAGAIN.
-
-The -EAGAIN case looks like a likely trigger in the pid-filtered pass.
-There dump_page_owner() returns 0 without printing for every page that does
-not belong to the test's pid, and bpf_seq_read() returns -EAGAIN once
-num_objs reaches MAX_ITER_OBJECTS (1000000) while offs == 0:
-
-    if (num_objs >= MAX_ITER_OBJECTS) {
-        if (offs == 0) {
-            err = -EAGAIN;
-            ...
-
-So on a machine where more than about 1M consecutive iterated pages do not
-belong to the test process, the filtered pass would end in a silent pass.
-
-Should these error paths fail the test, for example with ASSERT_OK_PTR() on
-the FILE * and an assertion on ferror()?  Should -EAGAIN be retried rather
-than treated as an error?
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/bpf/progs/bpf_iter_page_owner.c b/tools/testing/selftests/bpf/progs/bpf_iter_page_owner.c
-> new file mode 100644
-> index 000000000000..fada6a314a15
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/progs/bpf_iter_page_owner.c
-> @@ -0,0 +1,161 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/* Copyright (c) 2026 */
-> +
-> +#include <vmlinux.h>
-> +#include <bpf/bpf_helpers.h>
-
-[ ... ]
-
-> +SEC("syscall")
-> +int scan_open_coded(const void *ctx)
-> +{
-> +	struct bpf_iter_page_owner it;
-> +	struct page_owner_scan *scan;
-
-Does this program build against the kernels the BPF selftests are normally
-built and run on?
-
-The program needs several types from vmlinux.h: struct bpf_iter_page_owner
-(declared as a stack variable here), struct page_owner_scan, struct
-memcg_info, struct bpf_iter__page_owner, and struct page_owner (dereferenced
-as po->pid and po->comm in dump_page_owner()).
-
-struct page_owner is defined only in mm/page_owner.c, which is built only
-when CONFIG_PAGE_OWNER=y (obj-$(CONFIG_PAGE_OWNER) += page_owner.o in
-mm/Makefile).  The new iterator and kfunc types live in the page_owner code
-added by the earlier patches in this series, so they are in BTF only when
-CONFIG_PAGE_OWNER is enabled too.
-
-CONFIG_PAGE_OWNER is default n (mm/Kconfig.debug), and none of
-tools/testing/selftests/bpf/config, config.vm or config.<arch> enables it.
-This patch does not touch those files either.
-
-The selftests build compiles every progs/*.c unconditionally:
-
-    Makefile.skel:
-    BPF_SRCS := $(notdir $(wildcard progs/*.c))
-    BPF_OBJS := $(patsubst %.c,$(RDIR)/%.bpf.o,$(BPF_SRCS))
-
-    Makefile:
-    $(OUTPUT)/test_progs: $(RUNNER_PREREQS) $(BPF_OBJS) $(ALL_SKELS) FORCE
-
-vmlinux.h is generated from the VMLINUX_BTF of the kernel under test.  On a
-kernel built from the selftests config, this declaration fails with an
-incomplete-type error:
-
-    struct bpf_iter_page_owner it;
-
-and ctx->po / po->pid fail the same way.  That would fail the whole
-test_progs build, not just this test.
-
-In the tree this patch was checked against, the earlier page_owner patches
-are not present either, so the file cannot compile there at all.
-
-The runtime check in page_owner_available() cannot help, because the
-failure happens at build time.
-
-Should CONFIG_PAGE_OWNER=y (plus its DEBUG_KERNEL dependency) be added to
-tools/testing/selftests/bpf/config?  Or should the program use local type
-definitions with core relocations (___local flavors plus
-bpf_core_type_exists()) so it still compiles when the types are missing?
-
-Also, pageowner_init() creates /sys/kernel/debug/page_owner only when booted
-with page_owner=on.  Without that parameter the test will always skip on
-test machines, even after the config is fixed.
+ mm/damon/core.c | 45 ++++++++++++++++++++++++---------------------
+ 1 file changed, 24 insertions(+), 21 deletions(-)
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/37933988642
---===============7130068563077650387==--
+base-commit: ae7bc7c9b4336d7a8fb4bcfe0a6d8c925bde3ce9
+-- 
+2.47.3
 
