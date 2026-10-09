@@ -4,103 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B17CCA5FED
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 08:41:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30D8BCA5FED
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 08:45:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BB016B008A; Fri,  9 Oct 2026 04:41:28 -0400 (EDT)
+	id 4D4606B008C; Fri,  9 Oct 2026 04:45:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36C696B008C; Fri,  9 Oct 2026 04:41:28 -0400 (EDT)
+	id 485926B0092; Fri,  9 Oct 2026 04:45:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25C736B0092; Fri,  9 Oct 2026 04:41:28 -0400 (EDT)
+	id 374706B0093; Fri,  9 Oct 2026 04:45:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EEC6C6B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 04:41:27 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 94AA4A6653
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:41:27 +0000 (UTC)
-X-FDA: 85302443814.23.C71F603
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6428DC0002
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:41:25 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791535285;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 042F56B008C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 04:45:47 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7057E1A02CB
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:45:47 +0000 (UTC)
+X-FDA: 85302454734.09.D92BC35
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012018.outbound.protection.outlook.com [40.107.200.18])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4CB33180003
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:45:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=amd.com header.s=selector1 header.b=yJAp0iYy;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf24.hostedemail.com: domain of Ankit.Soni@amd.com designates 40.107.200.18 as permitted sender) smtp.mailfrom=Ankit.Soni@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791535544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lY/UkVyO7TlE8Pkq8dBJi8n2CXg92CJMf1OzgLUi588=;
-	b=rWOA7NF82D03M0Zh8QAXX+HBuEJFCAumwvEd80LSpnWdUFee5nRbLZSx93Kbah9dEnIxcZ
-	TG727dBvq3TcwmWora3/qyo3PgVr2oHvFvPLPUCDz3uvxyRGcMCucCLhWyz/xA5emb+zEd
-	CiUQtG3OSUaegXREO97nMa9KLtOEs1w=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791535285;
-	b=7aoKzSaDinUrLmv4C2dpd1K4n5pfoeGc0R2ID1fsMPZoVeBwN4P6ZpO8HZpnxd0eDUum84
-	PPsWNvTUwkRSMfOMjyb/6hPMHdnALUxyaToF1XjdwdGhpgad99amrfeW1W9Fi2WIKAdYVt
-	esTqMBpoOJyTqflbkb5JCqGLkbqvZc0=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DDF9C21BB2;
-	Fri,  9 Oct 2026 08:41:23 +0000 (UTC)
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 010E11326D;
-	Fri,  9 Oct 2026 08:41:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id C4YwMLKoyGpkJgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 09 Oct 2026 08:41:22 +0000
-Date: Fri, 9 Oct 2026 09:41:21 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Ayush Ranjan <ayushr@modal.com>, Hugh Dickins <hughd@google.com>, 
-	Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@kernel.org>, 
-	Gregory Price <gourry@gourry.net>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [BUG] shmem: FALLOC_FL_PUNCH_HOLE vs fault-around race corrupts
- page cache / rss counters
-Message-ID: <asigKktcrSY80A_2@pedro-suse.tail5790ac.ts.net>
-References: <20260924061708.1645968-1-ayushr@modal.com>
- <arTdLsBENhrpOyk-@pedro-suse.tail5790ac.ts.net>
- <20260925053027.1998394-1-ayushr@modal.com>
- <20260925065013.3682431-1-ayushr@modal.com>
- <20261003033107.1488699-1-ayushr@modal.com>
- <20261004222831.bdd648a2b406f02747dd9e40@linux-foundation.org>
- <fyswoh7wpxzlbnjjanggjd2jz6yispmeirhwjl3wzi57nacddb@bjkb6kxyfcal>
- <fbb046b9-be48-42d8-96b3-7e554484b625@linux.alibaba.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dGeKSl4NP/KJbFRK2+HAi1MLCn6L4/DRxpJfWWY0uSg=;
+	b=a7fd0SBE5mEhnbRhJu/JmWbnGGcF3XHdsmpEcaKdjybBXo0+e/beu3+u87XxA2oC5WPfG4
+	b1a0RekPlZxaN4KKzcMmh5MXgZHq4aceKDcYPwV+nXPao/mwyUYvZ3waxb5kmvnNid7Sgz
+	NckK7qrhuED3EGmMuxePJ/QVgAYzWik=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=amd.com header.s=selector1 header.b=yJAp0iYy;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf24.hostedemail.com: domain of Ankit.Soni@amd.com designates 40.107.200.18 as permitted sender) smtp.mailfrom=Ankit.Soni@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1791535544;
+	b=YjQolo2Dx6yHLLkw0B6+YOiDO/NoT91gTJgT06V9Bl4XAX3Vfwxw28t0TW8BgbaYwL0Qcw
+	OSD28ZOO1Ce2gLtNBT+t5IEuU7wYKzZxYd/6hQ8rp53Y77r5aF2oqP/e3FuvnGebZAFlWh
+	L1CWBKo3UypIM0JFc9DnIDCkIVNNC0k=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zIpy4kNx1Q+Qb1/BlR4cdSKFSR9RapNONnu4Ro9ZxtYVM5zFRoDpeotKtbjmZuD/u07cTDHKJB6VBPggp+bOqUR/rOzuJkBWovCkqQ4t1+masG3gGUITs4OpzY+GTlFLUoAPSbz+AggH4XK4L9U2GgTVQrJZuoRbHjttKRUXeM6OV8gbbIWpqw9XffYa/NMSNhXAPmzOfPTlJp6C4MnGRx6PWP0J5rrpdMjcsIf0u4J4oJ+LWk6K5wuJUan93mX/VXWudnoxpAxbyL+9t/+oM36OK9WDja9bvL8lHldVkB+LglJfGlxGjM2l52G6EhyGRHxDsSkrezUvLJ9lk4SyjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QEDZZmGEAkrUqIMkP/5M35srJzyIy2g+lh9zMllMYb8=;
+ b=FwSrEKc+E5QXzVJuobw+68cjnMwTjKvShXsCDgSfTr4J35wo5S3NRso77r6RvJGtj8fFXTPy1NpKQ94qj/u+3CGk9Xv3lkQm/agsi5x2SNUlSfWiFslGhOcpxrn6HIWfF4sJfzveqkHGQ+hFB+/q9g6ztbNLzgpNX9uRbqCcpYF2CPL4IwFNfA2VF4maVJDGoXNcgFtvfHWRyK3rlxMLs4UYpBJo40BUAiHulTdP+hCGulbVTBeYPVZHEM48vsGmX/Lto61X9ZfA5Mm6bLuNfAWmWWUzD1AsClIkOSNhog5oQfKaJFDfageHVh2GsVylrYuoojikE4YFmz5GAQ0FSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=8bytes.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QEDZZmGEAkrUqIMkP/5M35srJzyIy2g+lh9zMllMYb8=;
+ b=yJAp0iYy1XzfjuSxtl8wBrsea9DPKP9ZW7Z2rZaMlSSe2HSbRRBy6grvt5EYCqaoabr6LBGZ1VJ7gTRnVcOGZNA6LdlyRwX2w7sLyt2lX2y9uOVcRpmNut+VG4q6YWOpBtN325pTPagHap+WI12rc62Vs/CcknyjRan3mH3hpMM=
+Received: from CH2PR10CA0016.namprd10.prod.outlook.com (2603:10b6:610:4c::26)
+ by CYYPR12MB8869.namprd12.prod.outlook.com (2603:10b6:930:bf::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Fri, 9 Oct
+ 2026 08:45:38 +0000
+Received: from LV8PEPF0000005A.namprd02.prod.outlook.com
+ (2603:10b6:610:4c:cafe::74) by CH2PR10CA0016.outlook.office365.com
+ (2603:10b6:610:4c::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Fri, 9
+ Oct 2026 08:45:38 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ LV8PEPF0000005A.mail.protection.outlook.com (10.167.245.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.14 via Frontend Transport; Fri, 9 Oct 2026 08:45:38 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Fri, 9 Oct
+ 2026 03:45:33 -0500
+Received: from amd.com (10.180.168.240) by satlexmb08.amd.com (10.181.42.217)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49 via Frontend
+ Transport; Fri, 9 Oct 2026 03:45:29 -0500
+Date: Fri, 9 Oct 2026 08:45:29 +0000
+From: Ankit Soni <Ankit.Soni@amd.com>
+To: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>, Rik van Riel
+	<riel@surriel.com>
+CC: <linux-kernel@vger.kernel.org>, <kernel-team@meta.com>, <will@kernel.org>,
+	<robin.murphy@arm.com>, <iommu@lists.linux.dev>, <liam@infradead.org>,
+	<maple-tree@lists.infradead.org>, <linux-mm@kvack.org>,
+	<ashok.raj@oss.qualcomm.com>, <jgg@ziepe.ca>, <kyle@mcmartin.ca>
+Subject: Re: [PATCH v5 0/3] iommu/iova: convert from rbtree to maple tree
+Message-ID: <mcki6p5d6u7ofhiucoz6vi3jdldzmc7yv7n3ppoiwdjbwuriji@e2ezt37ga6i7>
+References: <20260818152505.1057922-1-riel@surriel.com>
+ <arUZwesREX05SZ0J@8bytes.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
-In-Reply-To: <fbb046b9-be48-42d8-96b3-7e554484b625@linux.alibaba.com>
-X-Rspamd-Pre-Result: action=no action;
-	module=Unknown lua;
-	unknown reason
-X-Rspamd-Pre-Result: action=no action;
-	module=Unknown lua;
-	unknown reason
-X-Rspamd-Queue-Id: 6428DC0002
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <arUZwesREX05SZ0J@8bytes.org>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PEPF0000005A:EE_|CYYPR12MB8869:EE_
+X-MS-Office365-Filtering-Correlation-Id: 34581e92-94de-4ef0-81fd-08df25e1b17a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|1800799024|376014|82310400026|7416014|18002099003|22082099003|56012099006|4143699003|10067099003|11063799006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	m8I8gh1igZVoR9Cr4T2fqwG6D76WUii+rE7+b1667WRI8POnHaMUfja86J+s0/ld63rNUdriIapR6+HTGsEy5j3/CwQTfSIqG1KysHQWVJzaoiJkFwo/9GuQMAwiig2VXuJZLgqnLtDnwHSrc9/sSRxb4EzWogihFCRzS32NlgpiNYcSDk2izjJlaknOYrWbzyXITmsxJg/rzm3IlBQZRkAwdGmepl9f+3PdJNyf6mpCYE5RT/HtRioAxq9gBCrt+zh1wiiU8Isms6KNbjuCQo+/cUGDx35dBXzjdaU2WvO4XVU8YUY6OUpT9cVswDJf31oGzlbOi1XxWVGOVkwh24gZEl/fsrQzpQhesKqFLEkHcMM9m6LyPM2tvpq+Wr9z2YPUfa/k00YWodsNLw7bibx1/1UsynZXjjtBShermgw5FQwADRzriirGv9tyJJ4tvVNaMkwfqjPD2Lnl6UYkMeFjTUjSv7+vo/93+EYqTZX7sloNU48vwWMrwlO2/UX4zbEI8kRdwUMxoBPPy9EhewpzduLgvprRHbw49GNhx/fr+XP/kqmcRGrJ46kZXpyHNSC7Fj9zl7IL4pVG4oz8aDfAOJYQ+ela9/huWbR4TPinSssVSohxg5KJ6m7nDQk+pE6CoB275hoRsocIO0Len+U5aS4HrHTvQ27nomiJHOGg3tEIhdobQENLXnQsGFMic4a6stPXTrkR963d6E8JCg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(1800799024)(376014)(82310400026)(7416014)(18002099003)(22082099003)(56012099006)(4143699003)(10067099003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	trPC7N5tb80dn6n7hNF4degu86iyb3+mA9+YeOFZeUWgJ6R85tfTcxDq7IOdlfH6qHbY0esppLMTuDE8X5tPXAmYJHCfRpXzRSkOOycjDboTKoFibQe6pNeA6RcG2/q8qX0Y4eAZDkccn3FIHIvYIfn1gum0ER0DCUR4s+1J7rI4P1+1SMG/Eii4i5FmsB9X++m5nI0R4+a1odA9B5IyriGY8tBNfxiFd2Oe+jCNZMsUO0EIGyWrPN4U7RBMUI4iWy8UKRD+ilylBOHYBBpcqMyXALp6qpAV51l/9kfwRmgKht8I9niqYA8p8zCtiOsCltAMHGD8PLGX89c5KP9ce4RI9c0aRoqFVKAzrzMHdAmduBH2j0eDNWZjL95HOdLGSjtcjNq1x4VmzaHxdps8ddLGnQEMoQB9G0zggxvtb/aQ1GrglKXI8h5jjSv5t5vT
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2026 08:45:38.4933
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 34581e92-94de-4ef0-81fd-08df25e1b17a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	LV8PEPF0000005A.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8869
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4CB33180003
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: r9ryccqwc7uhxk5uhumpdcfobmjq6oag
-X-HE-Tag: 1791535285-64786
-X-HE-Meta: U2FsdGVkX1/bLqKFBqaWSH4iw1tOPdXMv9pYznfd3vK80UmiOH1AwEnj56coyzdJ3bf8C+ZV6AyWNC8JmsIRtJRPfj3qnQOmroD/rfLoBHoHkBcE3Oe4KGj+S2E6eZf/gjL405a3Nb/yMZiwhRlL6phseKAWncuI1lGmLVcDipYhKBmyrTLaDbXipj9WOI5qWSysWmYOmYHt5Ri5ZztjRj/fSwkkq1kAAdabb6d5y0GNnm/L9SrlHRzKR3cypidaRGxDcX7ObIcPUYf7hD7QWcA9+yQvtQmXp4vSgTmCgxMFfQgFecUeHGSg/4t58UPioUyE86JdVvrFwmnGiF3il3JvTU5jp/DutIdE3YYiBUr7EcNf5U0LAUXA/boTn98X/NVeEYhH5LhKuAYW8MVVJ1WWq1h3pHL8jNpxP1UrPRFkNDTRhcehmkeiadjvM+UdXz4ouGRMBO2NRCiwMTnMW4upumecP9zX9Ph1hK9Mls7LtvIDCGr64BZxXQh87BgyccDnlYSQ7jD5iH4WDieugvV8/odnErM43WdPNNypbm25kCW9gVWI/KsxRjA6koutnfFFH9uncc+OXhQi7Mvvzz8Bnv5fCw5BYTq/VAOvQdWdR3qZ1K/JDN2KzIBfeKKn12p5uyA+1qeUafiFK40wKtsg+K6WhMOOi4+nPj04vRQpQWzGN2rx9toTB1U7j2vUSIQoPEvblE7sUfgxlVmoqeX9OzOh/hxQzUUfMlv3F3oRX3wMjRJdzhmiD9RGhCpPQNGGDSQzF8LmvCAX3vxpT6YiJkySXuSaVvjVCzD0RnikYu/wKSklHmxoEYmV7H4AcYpJ9QaXLrGloGKKARHHXSSt8yI+DIXO8PWTt6l/b4NBlD5whWtnpuJMfWkCKNSWbY6vWM9TOiYbhBiMbaqm2lsjEuz3pHOyxKQ2WPD9OTsdNIg8Z9wdLlFX1XgNBWL2EnPOueGPQwYesowFXpN
- 13VVTIsc
- I/3084BA3Vg+fuU4V4JBVeWQ1a5ItPItli8OMu3jVB9TTGWkVR5MGxvYM1tFfUk2DngH6y6gu7etKNNc8nsIqkROdF8OeaT+BVFQyayYL7gja/IhMOpNHpTaFFdcxqLjzs0PyHcpW5ZKClGLcT77r4dMMrg7gmvfLVcJyNsHrzyobtdIQMIzhWSD5VY3kYIy+9+wEVHba2/aw509sMv1dN5LE30hT60lCN/9Q3ZL2bNJUOpBeUfls5YuWGJQjkCXoPn4uBdBiWPEiz7cA71wYr71j6OGUEg2pOY3zb7RufU5T0e4=
+X-Stat-Signature: 7dcb5j4cwft4t5c9yhk8g91d6wc5r39r
+X-HE-Tag: 1791535544-753803
+X-HE-Meta: U2FsdGVkX18JxLq71T82DN5N0HI8g9iF7lvqdxJsPx5oiP/7OoMepxIZ44a+5wA05c4N0EgltSyN3lOeXAid8msbVuF9w8lIWCmQqGZxQAQsRN33LBGgvgqMPVYqXvHqAn3L9V2sDAD4Ss4v0NvQEoQxFfk0gc6LiN9BLKTx/QhPeuWWmDQks6HhdABgzfzrBrZV/pCUG0PhmeESZ9Hd3TMI4RSXVqvmzDZcEQbDZtHatRF60GWrBiAFL4FTsIym+z4m7VuBj5ouaVT2KuezNaj+Qjq9TpNggCnCEG90AoWWbz6tYIJPXHj2g+wfy1yT5dm0UgfgLIlJ+LtfTWYkQ35WSzsuINsMiGEUiAgF8a7JFTXPO5gnfU2ZthdD5gZuQv2FxER1ZVwdCeOn53bPR6e2qXvJAPFdLP7gOyxIgvzntlD+q+/efswgK5VraJv1BsE9L2zDjed7nf//6HtePs/MuQH6cNNUg//k/vZ6tZQsgdnsfVaQD00A5cMTxyoQ95Jkaun0LK36oRtVd3c4b5cShKF2l2GHS+n0TkkSf8iW/1xNbVqq0cbm3nMaFsdrXoaAecXpGlUWLWDw7mmTofKgNnbVmnhIKKeOjo1TkZFO7tSRqR5Q8v5ZAOacqEeqCBMkrUUxSr5Pxa9JrThvUn0P9eeMB2Og0oqmlKl8cdPaZjCl3Vrr8bn/a6Gcpdw8uDUKtj5cymyVIYXc3EcEnTVt9y+T2ayfu4q70cwXrUPPIxi1G9wPIw7RwsIi17HCZMGP25JppQVsr18gW9JH99HYL0WLVtwd/+zXIRwaETnTrOQusiTOUqTWUin7s6znapc7RR7AlDSDzlZWgk7eMl+hCVNQPHenypwB8WNTuBvyQoS/HVG+6/Frn9JwCgaPKdoGDGV8n00SVVCw3HE7wePgFYgLsiWqdJquesRGpkJq8l6DhJMf73jRonZMNWc9wBL3r517Q0BDFq1xmJj
+ oqcBPMNv
+ UyU8ERMYwNUtTZkmJUogLJWwILlVLZ+V1q+dWCb0NKl7IeJcmyC3cMDup1yNIKwyKs/djp7EruXWdr+loqgSmAowcTX1XUbJMBfx70N3D/oNl9EGXPIIafpSLRYaTwTujFCKKHArT0zx9TAh0Hs/5bTWUjqrJdl7lECAH/GNGc6C5LiBndZ3YA2m08Ok3A0h5yYLHcjsOuvj8BN+aUjirK8DQ8d6ZoVVMaylHrAUW/FpNLBjE5/xgl6C/+f946ul19fV6T1ewD3pyRLhA7pHBeghLj0R82Qgl8Sy2RewyrqYQV6iqtOsMGGH45mhlqzBR3DGi6Qpz1c28nHBvA+8cc0weUlc4Q/hqeDDMOP546n0xJZ5cu+PtAa+38QiskUqz2G019EjePb0b3sHHZ2lddDGHmd0Q9dqWkBwqOjwDkMun3KkigzY7LDrXsxjSdaDf+56W44R2kagAxlJps0aPl/JgpFuBRcWnbdtjLjWb5o6Q0j3SdtBXj8RFJq72WbaNFvjoj7iHkgTPk0xIcocroNQddfJ4MNs2z8dJ1IKXNi2q6CJnihIP+GsXu5gcoFQdjX6p8YRTSvcg0ajySMZnpEZ6ug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,197 +152,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 09, 2026 at 02:46:18PM +0800, Baolin Wang wrote:
+On Thu, Sep 24, 2026 at 02:52:45PM +0200, Jörg Rödel wrote:
+> Hi Rik,
 > 
-> 
-> On 10/8/26 5:24 PM, Jan Kara wrote:
-> > On Sun 04-10-26 22:28:31, Andrew Morton wrote:
-> > > On Sat,  3 Oct 2026 03:31:03 +0000 Ayush Ranjan <ayushr@modal.com> wrote:
-> > > > Gentle ping on this. The reproducer in my previous mail [1] triggers
-> > > > "Bad page cache ... still mapped when deleted" on 6.18.46 within a
-> > > > couple of minutes on a 128-CPU bare-metal box, with no fork() and no
-> > > > gVisor involved.
-> > > > 
-> > > > We continue to hit this in production at low frequency, so I am happy
-> > > > to test patches or collect more data if that would help.
-> > > > 
-> > > 
-> > > fwiw I made gpt and gemini argue about this for a while and ended up
-> > > with the below.
+> On Tue, Aug 18, 2026 at 11:25:00AM -0400, Rik van Riel wrote:
+> > Occasionally production workloads at Meta run into the linear search in
+> > alloc_iova() in ways that cause real issues. For example, when enough
+> > CPUs at a time fall into the linear search trap, systems have been known
+> > to get stuck for so long that it causes soft lockups.
 > > 
-> > Worth a try I guess. Let's see :)
+> > This series indexes the iova ranges in a maple tree instead. Its gap
+> > search makes alloc_iova() O(log n).
+> 
+> Thanks for working on this, I really love the idea and more efficient
+> allocation complexity. For long-term maintainability a few things need to be
+> sorted out, though.
+> 
+> First, I will ask AMDs IOMMU driver team to do some performance and regression
+> tests with this series.
+> 
+> > struct iova loses its rb_node and shrinks from 40 to 16 bytes.
+> > The maple tree keeps its nodes outside the entries, so total memory
+> > use ends up about the same as before.
 > > 
-> > > From: Andrew Morton <akpm@linux-foundation.org>
-> > > Subject: mm: shmem: serialize fault-around against hole punching
-> > > Date: Sun Oct 4 09:05:31 PM PDT 2026
-> > > 
-> > > shmem uses filemap_map_pages() for fault-around.  Unlike shmem_fault(),
-> > > filemap_map_pages() does not participate in shmem's fallocate exclusion
-> > > protocol.
-> > > 
-> > > During a partial hole punch of a large shmem folio, the folio can be split
-> > > and the resulting smaller folios can remain temporarily visible in the page
-> > > cache while shmem_undo_range() restarts its walk.  Fault-around can then map
-> > > one of those folios again before the hole-punch path removes it.
-> > > 
-> > > shmem_undo_range() may subsequently delete that folio from the page cache
-> > > despite the new userspace mapping.  This can trigger "still mapped when
-> > > deleted" warnings and leave stale mappings or inconsistent RSS/page-table
-> > > accounting behind.
+> > Patch 2 handles the one thing the maple tree does that an rbtree does
+> > not: erasing an entry can result in the need to rebalance a tree, and
+> > allocation of maple tree nodes.
 > > 
-> > So this part of explanation is either incomplete or wrong in my opinion.
-> > Yes, shmem_undo_range() calls truncate_inode_partial_folio() which can
-> > split a large folio. Yes, filemap_map_pages() can map those pages back into
-> > page tables. But how "shmem_undo_range() may subsequently delete that folio
-> > from the page cache despite the new userspace mapping" happens is unclear
-> > to me. After splitting a folio, shmem_undo_range() will restart and find the
-> > newly split (and mapped) folios and calls truncate_inode_folio() to get rid
-> > of them. Now truncate_inode_folio() calls truncate_cleanup_folio() which
-> > does:
+> > iovas are freed from atomic context, and GFP_ATOMIC allocations mean
+> > the erase can fail. When it does, the entry is marked IOVA_DEFERRED
+> > in place and the struct iova is freed. The marker keeps the range
+> > reserved until iova_drain_deferred() retries the erase.
 > > 
-> >          if (folio_mapped(folio))
-> >                  unmap_mapping_folio(folio);
+> > Ashok Raj asked on v4 whether the marker store can fail in turn, since
+> > the WARN_ON_ONCE there reads like error handling for a case the comment
+> > claims cannot happen.
 > > 
-> > so the mapping is reliably removed under folio lock. Can you perhaps push
-> > your agents further to explain in more detail how this "still mapped when
-> > deleted" happens in their opinion?
+> > Code examination shows that, with the current maple tree code, the
+> > IOVA_DEFERRED maple tree store will never result in an allocation,
+> > and cannot fail. This series adds a test case which allows us to verify
+> > that maple tree property continues to be true.
+> > 
+> > Only a corrupted tree, one no longer holding the iova at its own range,
+> > can reach a store type that allocates. The WARN_ON_ONCE is more of an
+> > assertion than a recovery path.
 > 
-> Good point and I think you are right.
+> This is a lot for the interface contract between the IOVA code and the Maple
+> tree. We need a way to test and enforce that the maple tree implementation
+> adheres to the requirements of the IOMMU code going forward. You mention that
+> there is a test included, not sure if it covers all expectations this code has
+> (especially when the expectations are different from the ones in core MM code).
 > 
-> Yesterday I quickly reproduced the issue with Ayush's reproducer, and I got
-> the following crash info. From the dump message, we can see that
-> truncate_inode_folio() is really trying to remove mapped folios, which is
-> incorrect.
+> The last thing we want is regressions in one of the IOMMU-layers core
+> componentents because of changes to core MM code.
 > 
-> I also quickly tried Andrew's patch, and the issue no longer reproduces, so
-> I initially thought that was the root cause. But after your reminder, I now
-> believe Andrew's patch merely workaround the issue rather than fixing the
-> actual root cause.
 > 
-> Today I'm going to re-analyze the race with the reproducer (thanks Ayush).
-> 
-> After analysis, I believe the race exists between truncation and
-> MADV_DONTNEED, and shmem's fault_around() merely makes the issue easier to
-> reproduce. Since MADV_DONTNEED synchronously releases the pagetable page
-> before calling tlb_flush_rmaps(), this could cause another thread's
-> truncation to skip zap_pte_range() but still observe the folio's mapcount as
-> non-zero. A possible race scenario is as follows:
-> 
-> CPU 0				CPU 1
-> 				madvise_dontneed_single_vma
-> shmem_fallocate			......
->   ......			  zap_pte_range
->   truncate_inode_folio		    zap_empty_pte_table(pmd clear)		
->     unmap_mapping_folio		
->     ......
->       zap_pmd_range(saw pmd none)
->     filemap_remove_folio
->        BUG_ON(folio_mapped)
-> 				    tlb_flush_rmaps
+> -Joerg
 
-Thanks for the investigation!
+Hi Rik and Joerg,
 
-So, I think I understand the problem (rmap walks race PTE zapping, which no
-longer serializes on the PTE lock), but I don't understand your solution at
-all.
-> 
-> Based on the above race analysis, I made the following fix that uses the PMD
-> lock synchronously to prevent this race, and the issue no longer reproduces.
-> I will clean it up and send out a formal patch.
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 6a8e7772b8d6..2039ada99b64 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct mmu_gather
-> *tlb,
->                 }
->         } while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
-> 
-> +       add_mm_rss_vec(mm, rss);
-> +       lazy_mmu_mode_disable();
-> +
-> +       /* Do the actual TLB flush before dropping ptl */
-> +       if (force_flush) {
-> +               tlb_flush_mmu_tlbonly(tlb);
-> +               tlb_flush_rmaps(tlb, vma);
-> +       }
-> +
->         /*
->          * Fast path: try to hold the pmd lock and unmap the PTE page.
->          *
-> @@ -2046,15 +2055,6 @@ static unsigned long zap_pte_range(struct mmu_gather
-> *tlb,
->          */
->         if (can_reclaim_pt && direct_reclaim && addr == end)
->                 direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
-> -
-> -       add_mm_rss_vec(mm, rss);
-> -       lazy_mmu_mode_disable();
-> -
-> -       /* Do the actual TLB flush before dropping ptl */
-> -       if (force_flush) {
-> -               tlb_flush_mmu_tlbonly(tlb);
-> -               tlb_flush_rmaps(tlb, vma);
-> -       }
->         pte_unmap_unlock(start_pte, ptl);
+I tested this series on two AMD EPYC systems with real NVMe devices
+through the AMD IOMMU driver. Base is v7.2-rc7-104 (ad8d485e6658),
+patched is base plus your three patches. I booted base twice on each
+system to get a noise floor. The first table pools both boots; the later
+two show the first boot, and I only call a difference real where the
+second boot agreed.
 
-Namely, why moving this hunk of code up there makes any difference.
-I suppose it's subtly changing memory order, but it's not immediate
-in any way why this is correct.
+  system 1: EPYC 9996, 2 sockets, 1024 CPUs, 4 NUMA nodes,  1 NVMe
+  system 2: EPYC 9965, 2 sockets,  512 CPUs, 2 NUMA nodes, 12 NVMe
 
-What you really need (I think) is a happens-before relationship between
-the rmap changes and the PMD zapping. Something like:
+Tests
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 330cde31bf8b..17cdd48fff27 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2108,6 +2108,13 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
-                        sync_with_folio_pmd_zap(tlb->mm, pmd);
-                }
-                if (pmd_none(*pmd)) {
-+                       /*
-+                        * Pairs with tlb_flush_rmaps() in PTE zapping.
-+                        * Possibly skipping a page table (due to PTE zapping)
-+                        * needs to enforce ordering between the rmap changes
-+                        * and the PMD getting cleared.
-+                        */
-+                       smp_rmb();
-                        addr = next;
-                        continue;
-                }
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 9f353f0e2ef4..47b25c42bf77 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -89,6 +89,10 @@ void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma)
-        tlb_flush_rmap_batch(&tlb->local, vma);
-        if (tlb->active != &tlb->local)
-                tlb_flush_rmap_batch(tlb->active, vma);
-+       /*
-+        * rmap changes need to be observed before e.g PTEs get zapped.
-+        */
-+       smp_wmb();
-        tlb->delayed_rmap = 0;
- }
- #endif
+  1. dma_map_benchmark, the upstream selftest, varying thread count
+  2. a depth sweep, varying tree depth on its own at 16 threads
+  3. memory at scale, 12 NVMes holding 12.58M live IOVAs
+  4. fio across the 12 NVMes
+  
+1. dma_map_benchmark
 
-On top of your diff. Where the smp_wmb() is perhaps not required: I suppose TLB flushing
-works as a sort of memory barrier itself on most/all architectures.
-Either way, we have to document and fix expectations around this code.
+It reaches alloc_iova() as long as the granule is above the 128 KiB that
+the per-CPU IOVA cache serves. At granule 64 pages the live set is one
+mapping per thread, so the thread count is also the tree depth. Strict
+mode, min-max over all runs, EPYC 9996:
 
-> 
->         /*
-> @@ -2103,7 +2103,6 @@ static inline unsigned long zap_pmd_range(struct
-> mmu_gather *tlb,
->                         }
->                         /* fall through */
->                 } else if (details && details->single_folio &&
-> -                          folio_test_pmd_mappable(details->single_folio) &&
+  threads    base             patched
+  1          0.2 us           0.4-0.5 us
+  16         0.8-2.0 us       1.4-3.4 us
+  128        1.8-226 us       1.7-18.6 us
+  512        1,772-2,926 us   4-1,387 us
+  1,024      5,532-7,431 us   2,480-2,954 us
 
-Why?
+At one thread the maple tree costs about 2x, and the ranges do not
+overlap, so that cost is real. At 512 and 1,024 threads they do not
+overlap the other way and the series is 2-3x faster. In between they
+overlap and I would not call either kernel ahead.
 
--- 
-Pedro
+2. Depth sweep
+
+dma_map_benchmark unmaps immediately, so the only way it grows the tree
+is by adding threads, which also adds lock contention. To vary depth on
+its own I used a small driver: real dma_map_single() on an NVMe, N live
+mappings per thread, replacing one at random each iteration so the tree
+stays N deep and fragmented. Fixed at 16 threads, strict mode:
+
+  live IOVAs      EPYC 9996            EPYC 9965
+  in the tree     base     patched     base      patched
+  16              1.39 us  1.13 us       930 ns   777 ns
+  1,024           94.5 us  19.1 us      58.6 us   14.8 us
+  8,192            206 us  31.1 us       132 us   20.7 us
+  65,536          1.95 ms  34.8 us      1.25 ms   26.5 us
+  524,288         17.6 ms  42.0 us      15.6 ms   28.7 us
+  1,048,576       66.9 ms  47.7 us      99.8 ms   33.7 us
+
+The live set grows 65,536x down that table; base grows 48,000x with it,
+the series 40x. Tearing the full set back down takes the same time on
+both kernels, 3.42 s against 3.42 s on system 2 and 5.4 s against 5.2 s
+on system 1. That phase is hardware invalidation, so the gap above is
+tree time and not device time.
+
+In lazy mode the series is slower to build a tree from empty, on both
+systems: at 16 live IOVAs 26 us against 54 us on system 1, and 15 us
+against 27 us on system 2. It is still slower at 1,024 live on both, and
+at 8,192 live on system 1. Base itself varies a lot in lazy mode, so I
+cannot give a clean size where the cost ends.
+
+3. Memory at scale
+
+One device cannot hold enough live IOVAs to clear the noise, so this is
+the 12-NVMe system: twelve independent trees of 1,048,576 entries,
+12,582,912 live in total, no allocation failures. Peak slab, three runs:
+
+  live IOVAs    base          patched
+  98,304        1007-1011 MB   982-1082 MB
+  786,432       1053-1055 MB  1045-1070 MB
+  12,582,912    1861-1864 MB  1610-1622 MB
+
+On the first two rows the run-to-run spread is as large as any gap
+between the kernels, so I draw no conclusion there, which matches what
+your cover letter says. The last is clear of it: patched is 239-254 MB
+lower, 72 bytes per live IOVA against 48. The gain is capped by the
+maple nodes, 1.47M of 256 bytes at 12.58M live.
+
+4. fio
+
+No change in IOPS, bandwidth or any latency percentile, in either mode.
+Block I/O cannot reach this allocator: NVMe clamps its transfer size to
+dma_opt_mapping_size(), 128 KiB here, which is exactly the largest size
+the per-CPU IOVA cache serves. A kprobe counted 805 of 12,367,841 maps
+getting as far as alloc_iova().
+
+Summary:
+
+alloc_iova() is O(log n) in practice, on two CPUs and by two independent
+tools. The series costs about 2x on a near-empty tree and wins by orders
+of magnitude on a deep one, which is the trade you describe. Memory is
+the same within noise below 786k live IOVAs and a third less at 12.58M. 
+The costs are confined to microbenchmarks on near-empty trees, No regression
+in any real workload.
+
+Tested-by: Ankit Soni <Ankit.Soni@amd.com>
+
+Thanks,
+Ankit
+
+
 
