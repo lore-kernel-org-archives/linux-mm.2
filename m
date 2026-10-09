@@ -4,109 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF87CA6012
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 07:30:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A78BECA5FED
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 07:44:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB2046B008A; Fri,  9 Oct 2026 03:30:31 -0400 (EDT)
+	id 5E9F86B008C; Fri,  9 Oct 2026 03:43:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E34B26B0092; Fri,  9 Oct 2026 03:30:31 -0400 (EDT)
+	id 5C2926B0093; Fri,  9 Oct 2026 03:43:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFC636B009D; Fri,  9 Oct 2026 03:30:31 -0400 (EDT)
+	id 4FF666B0095; Fri,  9 Oct 2026 03:43:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A8A266B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 03:30:31 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A0841C026B
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:30:29 +0000 (UTC)
-X-FDA: 85302264978.26.4608454
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 98F89140010
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:30:27 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JwIUDr3s;
-	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 26D556B008C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 03:43:59 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B7765A798D
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:43:58 +0000 (UTC)
+X-FDA: 85302298956.17.5B22B10
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2F893180009
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:43:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gwklBata;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791531027;
+	s=arc-20220608; t=1791531837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VYDZY2uGKu33vKOyYd6NW2GKWHjdqDv69Ge3kjWDmHg=;
-	b=7K7F6rn1BveRFt9gIj5p7XwYHKji1pBdrJKCTQTLZNAhMaoEO+U60lYADy4CkmBGtSZssF
-	s0eWAk+/Si+FQLuq2WvGTkLA9ktFxVjlXOQrfec/WmmYLjhGmebVpuVOEASTdiRwxV/zpq
-	GQaXmgMo33GwO9qNfMY4BHsAaKZBe+M=
+	bh=vrj+nhypUG08L0LQQg/weWxoS5B/DorI7msAivdz5r4=;
+	b=28+0gRhd8hm3Skp3FwDj0ias3We2Zq3O/r4XvafdMnRcNvkMPmwhi78vrP131+l0snPAqr
+	RawT8XlAiacxRxmCyxYmizntNeSMpWA5KTKY/AgpfgX2/lugEE1TPTnqvV17rDOFGdNGrT
+	UU9bV73FNLUlr+8EraL4ybns9avbDxQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791531027;
-	b=eRaO8uzPHIg58DU55QdgJIwh0kHW/PFredwhF8WVhOAe6QeyhkqhkJut93dYnwpdYnRbSd
-	Ujbk14N22ZxSRVu89mgl/uxeRUyFdwG0aVFmAiZx7tVJx7ThMdfn8/KEz+w4s+iWDcCdE8
-	HD/JaucRAlmguYv5YdlZOY63UlgISWI=
+	t=1791531837;
+	b=l35RP1Rz2zfrJWUhU8/yHx/WQtKmtqzbS9mctHq4x4IFdeayGYxAVVEWP+2eC0bLLpzoOC
+	XjDNDziyDT57UmnwmrbImoNKAbsjZz916m1UudC+mLTozQSaLgNh+QJhWF33i/+HOwGOjP
+	FUqveA14ehNT9dedyTI8v5NCucAWMU0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JwIUDr3s;
-	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gwklBata;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC39D43ADE
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:30:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43E71F00898
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:30:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 03781602C3;
+	Fri,  9 Oct 2026 07:43:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3101F00893;
+	Fri,  9 Oct 2026 07:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791531026;
-	bh=VYDZY2uGKu33vKOyYd6NW2GKWHjdqDv69Ge3kjWDmHg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=JwIUDr3s/MfSM7kcKnUID52hZC5kSpTTuEkc+3ww3rh3REqeBLTEOlZBf7UExohXk
-	 +ijBF1puacoxRVPWtk0LaU/94rCUSoT5K3cvAilB+Zz0MHDfI/Yo28jkhr2a6cRlDp
-	 V42CMcttMu55r75vyi06asWkSVicuIkNE5b+hm6t2i+9L+HUK3/9o28y1FwlHhl+dg
-	 u2FOqySJdm4iM+LdE+eyTYYNTnfmMi2tYlsNDVfxeYuj+uBbxR7Q+kNVfkGmOGYRw3
-	 +plZLYhbBRrMmbUfgBO2bGQohQRCbUuHjMNyoS/p8rlHGES0lkj/bs9zM8LUcLizOr
-	 7/kwdUfQ5x4MA==
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-93e5f819884so413045785a.2
-        for <linux-mm@kvack.org>; Fri, 09 Oct 2026 00:30:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxcyH6nGa/KJy5pEUVnemDw8euVQuod7UqRIQzEIHM6vCbfmp8luetqLthTrp/cDt/TlGeXzHMZDw==@kvack.org
-X-Gm-Message-State: AFuF++npmnadZ5laJ7eDP3M0yFfkb4LVHOcfCqm+21SljfebF4TCHKDR
-	QHX4B8oKIe0Ae8aPN8g6uPbXyD0AbuXum2DgdrtoL72qL64M0Izd1YnpUVa4rw+esoUmSw9opEe
-	sN8jqYo67ajUofc4SRQhS0pKfBcwlmwg=
-X-Received: by 2002:a05:620a:a416:20b0:93e:c12c:9b76 with SMTP id
- af79cd13be357-93ec12c9f3cmr30877285a.81.1791531025574; Fri, 09 Oct 2026
- 00:30:25 -0700 (PDT)
+	s=k20260515; t=1791531835;
+	bh=vrj+nhypUG08L0LQQg/weWxoS5B/DorI7msAivdz5r4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gwklBata4izVqdnVUPTJdgYIIsv8m03v60Hc+bMKD8+zpMaEnf8Yh8YDnirz6DcnS
+	 L/+gLFuj1V1AQSivhZN/XcFQkIJlA7VweNG1lchxo0slVwPTtkhHlcKKwCj2pxSf1B
+	 w5eLrgV2SK/isxSwfgEyYXEDeaXK0EMaPeguxTCYGPh+x4orL86omnezAdibluxnzZ
+	 0/eIHOmCJYta0REGuZ54YSkc26p7OVIWdEK/3U8lY1txZXIvADbR+Eam7vnVuYK7P+
+	 hM53XYqQzBD43q0DgRgeVSkSu4wrs4tWgEWrrscS7pVK6ZwmLPf7gO87jtiYekszij
+	 u2/FKsV2OMNtw==
+From: SJ Park <sj@kernel.org>
+To: Suhaas Joshi <suhaas@s-joshi.in>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm/damon/core: Use only installed probe in damon_merge_two_regions()
+Date: Fri,  9 Oct 2026 00:43:49 -0700
+Message-ID: <20261009074349.40812-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261008151944.113714-2-suhaas@s-joshi.in>
+References: 
 MIME-Version: 1.0
-References: <20261009062637.176005-1-hui.zhu@linux.dev>
-In-Reply-To: <20261009062637.176005-1-hui.zhu@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 9 Oct 2026 15:30:14 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xYGDXMKjbcnkvZAVf3GEd_bnjdJY=84dfyak=rmQVA1Q@mail.gmail.com>
-X-Gm-Features: AclHuK-MFYBp2Fx57JVqeSVV6ggA-SIdiDol7zrPg6odH2nr65hN0ZFPuJg2TWo
-Message-ID: <CAGsJ_4xYGDXMKjbcnkvZAVf3GEd_bnjdJY=84dfyak=rmQVA1Q@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v4] selftests/bpf: Add bpf_proactive_reclaim test
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Geliang Tang <geliang@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
-	Hui Zhu <zhuhui@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2F893180009
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 98F89140010
-X-Stat-Signature: yosassapkb9bo8dnhhj69zwhb1yohg87
-X-HE-Tag: 1791531027-3732
-X-HE-Meta: U2FsdGVkX1/vqg5k6Rk0JjBo81N645P3KiSFuOc+u9829VVFk/cFNdfv2Dg1LwaR7GQgZ6kxEuoI2ZMMbtbARptj/LxSP0ulTnIkD861CIGy5Cg8cHNkPH7zYMNZa1WdBBrnInTWjtQTGP7y9heQFlyLvwWdlGM9Ksl89NNhDux7YdWFsXzIWl64bf1rYFL67NxXNFCnhfCIuqoFC43yJK+B32X7b7dnpBJwDzxas5rdsiX6SXlfZ7dTxyyB7MGT19I/ARHAHnNkPwSgfh4uPCTzWJVt5UKcRVVdarAzDs4ZzINk09YSzVyYzgLTfNQM5nIzxJWz3fUhqIYZQK2Q0zj8l0dowdGYlxZzS1DtA8XYHbJBPXdtm7cS9CIO/M5xGgR9meDZK58sXIkqpkcpAvwv0ej0bKTiGw1CZQ7AEXVPHe3bm7tdKX+2wM4n2x04lUOFjkdSAtnJN5OdIBl3+fUQiRfdKuLIVJUfKflLQOg+5nHi7ho/Ga0PiAXQQrU5XDNGdiAGv4epH+q0F0nXv1yeLXqlw09rjfdXqjfkqMGkZeK8GGEVa3WbeDvfFwcIj3eJn5ofON9vbR9YvLc6H4UELFP49bwB12e+xf1wliiZopJxb7+cwwl7g7+4n4GBKEVmfrc6wNtblr5wcn/PhdIofaoopS1yGKbFKfioNJx9wUhZTPRhCr0lrhULFdKEEpwzcidfMWMCxdbNpf8JTfIuC9F4VfySMClWi6Cbu/8BfOUP5bXMCct9FF0QxjzSkO+epX8QixRgM+cRJVj0AoT3kPKH7qutY8kw7kflwQ8X6DfOh84XnI/3jfJzoSqL55O94SwQ5RuC5KN32igwdFwfQuKMoAiJ68EilpeOZ9qnZg5lHW0kv0LwPo2Cd/K5hG/w+VIGSvK0gU2d2mug1BJg/MFO9T0XBsu5AF/U4yQ5UtFEK/1FowqzhiA2fUJTOcK3yBYekeOWUzRgzz+
- 8ZO+5Huk
- XaxtNkH63ItXEZLhz4fL9Y3suIs6gYiU5n2viU26BZyEgwyt5yNKujjl2H4TaiJUbW1bn5kckkbrByNrdgvBrNFnq/JF/kqKBajDY+qA7svJJso4viAELiE1nz44veKUJqd5B3cgqoxrtJYNZLmAYPoCD+CPtdxmbZSR4cBEmcOfnzdncF3/h9PEgET8jsX/PonqxB4qGIei8VkDIyjF438LHj7LERFWrvmG35/+sM/emexA0NUS6wedTOjSgk5oUrS0eG6byJk+XHJoDhon07gGvadX6Cs/HApEx1ryjO7mneN2OXsrX58G3VeJ91iSMttE35kxJccnyLL6p3ONFY5qmagd4ss8PmCvB5tHxiScNXGNyBLMBRjFx2CjGoeEEmNBR+l7jHfLK8jGfiZQ+xU9rB2qkFti4H9lY12fO6fjbpjkIRxrD5w9MvLVYi+VaCTkbjOf9lFr2dEc=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: uiowzrp4eyityhzjth8eyhhfpcqzocd5
+X-HE-Tag: 1791531837-130117
+X-HE-Meta: U2FsdGVkX1+P30ZWX4tUPwvi0pNKHSZiLnJadUGqY4u9LpVj5U/dM8icW3YsI/pabbqnBqu0MHicTNiB50dHpPXleVMlH6AX3mVYDKnu8B+eXPmIQa9pwPnIT7wDRhhrMySHuUmjIUHRbsZ817QycfPLNd2hNhnEo5aHlKtdPTlY4DbhvzFNPkU8SHmdxlgJti4zo68sdkxloYVYb2Duzb0g6ro+ezhvXaHHqz+HkO817ZWB0e2RNXD6YPv5j1ZLQuubni6bkn45k3hqa080kHZmA7fR1aLF53plggTa3fmfzpcaeZNOIvo2n45kjwDEx2ihZzFwGLrww3ST35Y/EaujxJrV+/UQmLcavgRdycjh3KLZEuO//gJmyCNz4ZitpI9HPL7syXpB+lfoN/9UtTtM0wBFgWiJ/noPR7Nj2YwxAqfxJLd5F9dUVjinfFlPyYRq6v+k3906CocMCjwbNdSs4fBoCKQ2gm7NdtAGWMgL8x0heyR+DN5BqNuN/xkbv+6BYdE3agJG1DaOO/9GlMyKMIjUyfQI4rn/buZpPw+NR4RXwKtjirrQLtcsVOqdKk2syxEAxpFblZL/H7knQRr8nMOWzyec5FBqnOOQKk9+HGa4VHKA2ky0PuLSHyMOUNcC0TpPIRzBJSS6ztEuXLJ4ggxeSP+T/qYkr+xaApqXqy8ICfXNCDzhAuxMPLVvx9TFjORvl898IgntOX2ijwp3cuK9UA7HeFAY8pnfyDTVZT+8Evsq7Zc53SFKL7rh0ieFL3AtRumru4BTJ5NUw1ptW79S2klaqsc8Tm/pG9dLnmPrwNysOIQHTYG4EoylMCBtAU/JqpFdcTu2BgyjMw4utSJ79wvErDdlUpHF1c5ybcJ6QSYryQsNosG7nU0EEMWso/N4OM7hgwRupz2H/8hfeEld3+ZOhK9/oZduigi4HTY1JXx5UE2/YM3EaAOKq5aB7eohnVDkm9eTGij
+ fqI14nrZ
+ tUcabdeHFjvdu/FzgtHjtY09JgWpvHyAMBlEZwQx4tzsK2aPRvCZt44vSWV051X858GoteITAyBNGmNcvuSTCA2muwbB7r0+51P7qqriXZkVjGzpIowcNc4GxcUVEgVTKpWICSOSAf2fuSXsz05Lt+k0tiynsrqAaCjZExtF8Tf7tQo7c3Z5k3ZcsXIPlowNVZq6+aY6alwe+5UMKtN0pjTLXanXzRMAziCFCVwxHeh++ojA5YW+HSif0D3m3TUNTvSrA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,33 +94,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 9, 2026 at 2:27=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
->
-> From: Hui Zhu <zhuhui@kylinos.cn>
->
-> bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
-> unlike a write to memory.reclaim, does not retry until the goal is
-> reached.
->
-> Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
-> and check that the result is positive but well below the request: one
-> pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
-> 4K and 64K page kernels.
->
-> The test deliberately covers only the kfunc itself. A full example of
-> the intended asynchronous use, where a BPF program watches one cgroup's
-> workingset refaults and reclaims another one from bpf_wq callbacks, is
-> maintained out of tree at [1], released under GPLv2.
->
-> Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.=
-c
-> is not built at all.
->
-> [1] https://github.com/teawater/memcg-async-reclaim
->
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+Hello Suhaas,
 
-Thanks very much!
+On Thu,  8 Oct 2026 20:49:25 +0530 Suhaas Joshi <suhaas@s-joshi.in> wrote:
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+> While merging 2 regions, we iterate over the entire probe_hits[] array,
+> whose size is determined by the DAMON_MAX_PROBES macro. However, it is
+> possible that we have fewer probes installed than DAMON_MAX_PROBES. In such
+> cases, we end up making redundant iterations. Therefore, to remedy this,
+> iterate over the list of installed probes instead of iterating over the
+> entire array. For doing this, start accepting a struct damon_ctx in
+> damon_merge_two_regions(), and update calling functions to pass this
+> argument.
+> 
+> Update the damon_test_merge_two() test to use this new signature for
+> damon_merge_two_regions() as well.
+> 
+> Signed-off-by: Suhaas Joshi <suhaas@s-joshi.in>
+> ---
+>  mm/damon/core.c             | 16 +++++++++++-----
+>  mm/damon/tests/core-kunit.h | 20 ++++++++++++++++++--
+>  2 files changed, 29 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index b63e60ef8990..fc202f90991b 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -3524,20 +3524,26 @@ static void damon_verify_merge_two_regions(
+>  /*
+>   * Merge two adjacent regions into one region
+>   */
+> -static void damon_merge_two_regions(struct damon_target *t,
+> -		struct damon_region *l, struct damon_region *r)
+> +static void damon_merge_two_regions(struct damon_ctx *ctx,
+> +				    struct damon_target *t,
+> +				    struct damon_region *l,
+> +				    struct damon_region *r)
+
+Please use two tabs for indentation of the second and next lines of function
+parameters.  For example:
+
+'''
+@@ -3739,8 +3739,9 @@ static noinline_for_stack void kdamond_apply_schemes(struct damon_ctx *c)
+ }
+
+ #ifdef CONFIG_DAMON_DEBUG_SANITY
+-static void damon_verify_merge_two_regions(
+-               struct damon_region *l, struct damon_region *r)
++static void damon_verify_merge_two_regions(struct damon_ctx *ctx,
++               struct damon_target *t, struct damon_region *l,
++               struct damon_region *r)
+ {
+        /* damon_merge_two_regions() may created incorrect left region */
+        WARN_ONCE(l->ar.start >= l->ar.end, "l: %lu-%lu, r: %lu-%lu\n",
+'''
+
+>  {
+>  	unsigned long sz_l = damon_sz_region(l), sz_r = damon_sz_region(r);
+>  	int i;
+> +	struct damon_probe *p;
+>  
+>  	l->nr_accesses = (l->nr_accesses * sz_l + r->nr_accesses * sz_r) /
+>  			(sz_l + sz_r);
+>  	l->age = (l->age * sz_l + r->age * sz_r) / (sz_l + sz_r);
+>  	l->ar.end = r->ar.end;
+> -	/* todo: do this for only installed probes */
+> -	for (i = 0; i < DAMON_MAX_PROBES; i++)
+> +
+> +	i = 0;
+> +	damon_for_each_probe(p, ctx) {
+>  		l->probe_hits[i] = (l->probe_hits[i] * sz_l + r->probe_hits[i]
+>  				* sz_r) / (sz_l + sz_r);
+> +		++i;
+> +	}
+>  	damon_verify_merge_two_regions(l, r);
+>  	damon_destroy_region(r, t);
+>  }
+> @@ -3590,7 +3596,7 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
+>  			goto set_prev_continue;
+>  		if (damon_sz_region(prev) + damon_sz_region(r) > sz_limit)
+>  			goto set_prev_continue;
+> -		damon_merge_two_regions(t, prev, r);
+> +		damon_merge_two_regions(ctx, t, prev, r);
+>  		continue;
+>  set_prev_continue:
+>  		prev = r;
+> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> index ef146ca2ae8a..4e380c6c5eb2 100644
+> --- a/mm/damon/tests/core-kunit.h
+> +++ b/mm/damon/tests/core-kunit.h
+> @@ -182,13 +182,27 @@ static void damon_test_merge_two(struct kunit *test)
+>  {
+>  	struct damon_target *t;
+>  	struct damon_region *r, *r2, *r3;
+> +	struct damon_probe *p;
+> +	struct damon_ctx *ctx;
+>  	int i;
+>  
+> +	p = damon_new_probe();
+> +	if (!p)
+> +		kunit_skip(test, "probe alloc fail");
+> +	ctx = damon_new_ctx();
+> +	if (!ctx) {
+> +		damon_destroy_probe(p);
+> +		kunit_skip(test, "context alloc fail");
+> +	}
+> +	damon_add_probe(ctx, p);
+>  	t = damon_new_target();
+> -	if (!t)
+> +	if (!t) {
+> +		damon_destroy_ctx(ctx);
+>  		kunit_skip(test, "target alloc fail");
+> +	}
+>  	r = damon_new_region(0, 100);
+>  	if (!r) {
+> +		damon_destroy_ctx(ctx);
+>  		damon_free_target(t);
+>  		kunit_skip(test, "region alloc fail");
+>  	}
+> @@ -198,6 +212,7 @@ static void damon_test_merge_two(struct kunit *test)
+>  	damon_add_region(r, t);
+>  	r2 = damon_new_region(100, 300);
+>  	if (!r2) {
+> +		damon_destroy_ctx(ctx);
+>  		damon_free_target(t);
+>  		kunit_skip(test, "second region alloc fail");
+>  	}
+> @@ -206,7 +221,7 @@ static void damon_test_merge_two(struct kunit *test)
+>  	r2->age = 21;
+>  	damon_add_region(r2, t);
+
+Let's allocate and setup 'ctx' and 'p' here.  That will reduce alloc failure
+handling code.  Also add 't' to 'ctx'.  That will let us to remove
+damon_free_target() call from the final cleanup.
+
+>  
+> -	damon_merge_two_regions(t, r, r2);
+> +	damon_merge_two_regions(ctx, t, r, r2);
+>  	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+>  	KUNIT_EXPECT_EQ(test, r->ar.end, 300ul);
+>  	KUNIT_EXPECT_EQ(test, r->nr_accesses, 16u);
+> @@ -220,6 +235,7 @@ static void damon_test_merge_two(struct kunit *test)
+>  	}
+>  	KUNIT_EXPECT_EQ(test, i, 1);
+>  
+> +	damon_destroy_ctx(ctx);
+>  	damon_free_target(t);
+>  }
+>  
+> -- 
+> 2.55.0
+
+Thanks,
+SJ
 
