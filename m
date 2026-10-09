@@ -4,39 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CBEFCA6019
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:23:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB541CA6018
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:23:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11CAB6B0098; Fri,  9 Oct 2026 07:23:37 -0400 (EDT)
+	id 20C206B0092; Fri,  9 Oct 2026 07:23:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 056EF6B0092; Fri,  9 Oct 2026 07:23:36 -0400 (EDT)
+	id 11AF66B0093; Fri,  9 Oct 2026 07:23:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E646E6B0096; Fri,  9 Oct 2026 07:23:36 -0400 (EDT)
+	id F23FB6B0095; Fri,  9 Oct 2026 07:23:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A934A6B0095
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C33B26B0093
 	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:23:36 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 34B7CA0328
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5384E160348
 	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:23:36 +0000 (UTC)
-X-FDA: 85302852432.24.06A6334
-Received: from mail-m82121.xmail.ntesmail.com (mail-m82121.xmail.ntesmail.com [156.224.82.121])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2BE8120009
+X-FDA: 85302852432.08.ED54D47
+Received: from mail-m1602365228.xmail.ntesmail.com (mail-m1602365228.xmail.ntesmail.com [160.236.52.28])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 30B3640007
 	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:23:32 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
+Authentication-Results: imf04.hostedemail.com;
 	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.121 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	spf=pass (imf04.hostedemail.com: domain of zhen.ni@easystack.cn designates 160.236.52.28 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
 	dmarc=pass (policy=none) header.from=easystack.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1791545014;
-	b=M3mDySSrWqslOLb987XzpXU9tvcTfpV9xN+8ikwo9AYSwknnnzCBvQiNJ55uM0BRhlggM5
-	hE0WBF5IgydaVX/ljsEzJRnQaz9uxd/7aGyj/ulMKd8hbsOER0adSMnEQRxvDfFfakeX3X
-	/5exkwZ4D3ttOKmDlpVCV/U3OZhfd60=
+	b=4bPWDpenrKHL1PMfp0z2q84g8xhyg/cfn7rTcp0QJoCZaa8aKEdAFyTC+OnbrArD9UagUQ
+	R59g/v3GEj3a7+fVGr4MVmYEaaGibKI468u57hdyS8dUfejHTR4es2QHLiekAgGJzPAB7L
+	d7E/b/r9TWsSmuC5la7Albdb2bEgXRE=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
+	imf04.hostedemail.com;
 	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.121 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	spf=pass (imf04.hostedemail.com: domain of zhen.ni@easystack.cn designates 160.236.52.28 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
 	dmarc=pass (policy=none) header.from=easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1791545014;
@@ -44,13 +44,13 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mHyZJD3kWA1WFKJ92q3MpsWUhlPd0c3yS7XRL/IdjYw=;
-	b=L0c4tSNEYu2Fw2EcBsWEfts8n7Oo+NRteu5ZOMXJGgu+dP3makYo/99mfS120JqFU9Ya7e
-	Ps40mjKbajvCN38unKkD/8wEzmsPtP2V0Q1icRAXsePSAddP07H9wdd+1rxEf/YPNK8GP9
-	4T3i+O+FW09AoQn3qUoK1eu4wYgeRUU=
+	bh=FUL5e6XiDo/8g1xJlmWxbsgduTWJpPh850hBY8iI+Gg=;
+	b=5W3vpGv7nU97eYlHnN5et+JRja6I0+u/hIgO1lzrPfGJPqQcNnNUh5VOMeOLg3SMPaQHJV
+	uQK9Hbfw4h5WV+2u43qBJ6VotYjbMB0QHxSVneelv3FMub66rKZHKBNB6GaENVb/wfS3iA
+	u3bMY1edHAlUdAEvVmfWvORw2TyLiVU=
 Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1fe2901a0;
-	Fri, 9 Oct 2026 19:23:27 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1fe2901a1;
+	Fri, 9 Oct 2026 19:23:28 +0800 (GMT+08:00)
 From: Zhen Ni <zhen.ni@easystack.cn>
 To: ast@kernel.org,
 	daniel@iogearbox.net,
@@ -76,28 +76,28 @@ Cc: bpf@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH 2/6] mm/page_owner: add bpf_iter target "page_owner"
-Date: Fri,  9 Oct 2026 19:23:04 +0800
-Message-Id: <20261009112308.240769-3-zhen.ni@easystack.cn>
+Subject: [PATCH 3/6] mm/page_owner: add open-coded page_owner iterator
+Date: Fri,  9 Oct 2026 19:23:05 +0800
+Message-Id: <20261009112308.240769-4-zhen.ni@easystack.cn>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20261009112308.240769-1-zhen.ni@easystack.cn>
 References: <20261009112308.240769-1-zhen.ni@easystack.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa120675c160229kunmd33b3e054cb27e
+X-HM-Tid: 0aa12067610e0229kunmd33b3e054cb283
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTx5KVhlDT0wYTE5DHklNSFYVFA
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaSBhNVh4aSEtKHUIZTUtLHVYVFA
 	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
 	lPT09IVUpLS1VKQktLWQY+
-X-Stat-Signature: pdgcj56taq1yw3wz7nwn5j7yroto5yts
-X-Rspamd-Queue-Id: 2BE8120009
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 30B3640007
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791545012-882199
-X-HE-Meta: U2FsdGVkX18QAm+VTqgr+8Xi6PZOERJWWnJFBX581vZc976zsua1dOHIxm2BS90R5O/VvShUZ7ij+Vlf7JIZcRR6m5aNX7sWCQMpFekL0K4qZm2yTxTLEgXCTXrfCMTpb7mW+KNcAc39VCvmnwv98akIH35GdlXhrXXcrotZEDT1XUvNReWv5BGp/0wvV9AKc0sdwaCnrLDMx7AMOyWIBXAwstrBEIyXEdahi/Z65e1+UzlfsuVzomPSdGb4a4kzLPOvI/W947rh8Q3iyZiWPxFQZ07YYPRymplb9ywybb90i5tjbAhdMq0VY19la+BdYtlxh0J2tAn1uHh+F9R8lIZAGN1AY613TO2V2jDNQYG6JWdrrJWbAgXImUT+cwXg8yiRjf5qOQgVlK+rU2bP+jcWcRy5NItMF/z/1/Drp+FGwp2MnMklUbIFmyrZk5l7Cr1nXnMleH22fSVs5NB89ImYSJJJFZAlRg4gxbnKGWZN7qZJc6xhZ8y8tnspyYaUPpX7Sm3JdoLsqrD8Rhd6eCPbzHS9jQhBAAOaDVtLlNhPNAEEuDJF6j1kU3KRFZzq1pMtQ6Bxyo7LR3+7lulnW2gfT1KIRmKIkNrCdltD9b3MvFmfZY3Gdy5/sJJDdEEi3sgiNVf3VClYlY/daWbqGi3RC0tOLHeFi0lSjIEu2qPnZp97ca9oxWQcgOw992O8PPanq15bc/oO5rhQ7k6yfDstjq6Dzuap/kf9KQBEN+edA/flaqzCPYDUlYjKB7JDBSBVuHQbE13ZgOrRI/PMOv7J7US/aRksE7Q5tL97Qg4sRu4JBqXrNHpVnfPhllGwHO9XZ/isEZPNyDm9rENukU/uSoGD/2MmiP/MEyps2ELBZKH4qpNQKJfW6CqyVulB2QzJsPidPnm1MCgGWpOqR7nQIXE0QhRL8Zmo66Gzgv6V/SqRGeap9FqHEO/56orLXiOgEPbvh0RnB+j57B8
- QBanuy5P
- h1sqkQAyXSzz05ND6V6vBDyJh6Qo/E8/z9KjIynWitCjf6VFrlXPo5KA+vLB3QaYbYd/ohYN37OGk5+qtFSDU4Ai9eZixemkBlj3+yXgvVY5qsjBazPSH+zuLyyNzy5GtK2EBQuJxurORs7SxXkmj8tvtmQ==
+X-Stat-Signature: qag7kskbyan7npxxkaaf8jkuek79bsag
+X-HE-Tag: 1791545012-481625
+X-HE-Meta: U2FsdGVkX18ID3nomavYNCob0+diW6u4vYL0r1o9c0olSYfaiYNfHReeDsd9VVMz67bSNPVAGY6tF2tVWIiwGV5zltp1kni2EQJnt4DEiNtwGuoJ6z3eOiCI106fxvkA54Ke0bhyQwNfzYEeZDwGEWrRzF6HVBpwJaQwHG1mMBYRlIHm3Ln/z6EJyMNDix/mP8kzb7afMHe+GQhXmdiQD3y7ERndViApSaBFntUZVFFRxEsZKffxY0LctDL5x6xls+ASvOYAiEbrvxrELDEI6pjCV/D37O8szm/slkSVOD5V5y4Ir86hZwFtCL4XdYnTSZu6F3KxwbKwbNME1sJK+e7iO8wYedn7nSt2VBwdbTg76hkY5sWAm/Ddiu1hy7RP+kc2/Hh2bqQ3JeGS9PwXKgfm03Afk+cS4boMh+ZhgBF+EhALPUotMGX9e0U7Fxl97tf3O+9m0yoB3kvoFabrWcb5PSuqKIvbID5NYfblQ6aKZ3OsWYFbUTCH03QUhwOIMze0ZnISxNfb6G4RO0AeXCTJDtC7HEX6KVX3z/hIc2x2kqmLi4t7xogWx40puY0wBtyJPBj9Dz+sNFGOX3g9iGUCWDrjNZ8ddNZu0V/O/+mZpyMdLXr1z5J4ts5OI+NeiKG4EIjjgN66ItPeKZ2fmbX9LCtB8wqmvAyyajwdSMxr4C+40vJGwn7VzuByZGgArqd2lQNnevikOVrTQ9ieEZGu3po/N5q2qv2HnVdEUmTWCsP94/N6YcPQgsJasXtumN8vHQiO5hLAfGgUzN+An4Aa7tpHiv+MghkidWHVlz/IWsaLP+Ju97T3TQFnw/LiMrzwSvQJaa9UKnN7aLe75nk1Nzyd1pfpmOVREZe0xrKyvrHUy+MxPTFbTEPqBa+1EKIobb1H6/TBgqgahluEzIksdazjejdaFVNPuXXkAVs4Okv2RRJWmtCtETLuxqkxqpm03A3kd3r+x3kxS2F
+ v5wTizC+
+ dmUxGzhMgPStN9rjD61bMUH5c3AQSBwBiLoaimvzMsij4m2UnJveuXOW/Xdm35T7wRcqAN/98iCf9Da/0uQUH/leq8LfGkI+Xa2H3pyjiiYDUq4I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,293 +105,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Register a bpf_iter target "page_owner" that walks the pages eligible
-for page_owner output, with the same eligibility rules as the
-/sys/kernel/debug/page_owner read path.
+Add an open-coded bpf_iter over the pages eligible for page_owner
+output, reusing page_owner_next_eligible().
 
-For each eligible page the attached BPF program receives the pfn, the
-page and the page_owner record, and can freely filter and format output.
+A sleepable BPF program drives it with
+bpf_iter_page_owner_new()/next()/destroy(); each next() returns the
+page_owner_scan. po_snap is copied inside the page_ext RCU window, so
+the program needs no RCU section when it reads it.
 
-The po_snap record in the scan cursor is taken inside the page_ext
-RCU window and handed to the BPF program as a copy, so no RCU window
-is needed at consumption time. Torn reads remain possible if the
-record is concurrently updated while it is copied, but this is the
-same best-effort behavior as the read path has always had.
-
-The target is registered from pageowner_init() when both
-CONFIG_PAGE_OWNER and CONFIG_BPF_SYSCALL are enabled; a registration
-failure only disables the bpf_iter target.
-
-Userspace tools such as bpftrace can attach to this target like any
-other bpf_iter. For example, to count pages owned by init (pid 1):
-
-    bpftrace -e 'iter:page_owner / ctx->po->pid == 1 / { @ = count(); }'
+Also add bpf_page_owner_stack_snprint(), which renders the stack trace
+for a stack_depot handle into a caller-provided buffer.
 
 Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
 ---
- mm/Makefile          |   3 ++
- mm/page_owner.c      |  33 +++---------
- mm/page_owner.h      |  48 ++++++++++++++++++
- mm/page_owner_iter.c | 116 +++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 174 insertions(+), 26 deletions(-)
- create mode 100644 mm/page_owner.h
- create mode 100644 mm/page_owner_iter.c
+ kernel/bpf/helpers.c |  6 +++++
+ mm/page_owner_iter.c | 52 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 58 insertions(+)
 
-diff --git a/mm/Makefile b/mm/Makefile
-index e7245cb88c66..d7307b5a964c 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -115,6 +115,9 @@ obj-$(CONFIG_DEBUG_KMEMLEAK) += kmemleak.o
- obj-$(CONFIG_DEBUG_RODATA_TEST) += rodata_test.o
- obj-$(CONFIG_DEBUG_VM_PGTABLE) += debug_vm_pgtable.o
- obj-$(CONFIG_PAGE_OWNER) += page_owner.o
-+ifdef CONFIG_BPF_SYSCALL
-+obj-$(CONFIG_PAGE_OWNER) += page_owner_iter.o
-+endif
- obj-$(CONFIG_MEMORY_ISOLATION) += page_isolation.o
- obj-$(CONFIG_ZSMALLOC)	+= zsmalloc.o
- obj-$(CONFIG_GENERIC_EARLY_IOREMAP) += early_ioremap.o
-diff --git a/mm/page_owner.c b/mm/page_owner.c
-index bafe474f3360..eb420803a434 100644
---- a/mm/page_owner.c
-+++ b/mm/page_owner.c
-@@ -14,6 +14,7 @@
- #include <linux/sched/clock.h>
- 
- #include "page_alloc.h"
-+#include "page_owner.h"
- 
- /*
-  * TODO: teach PAGE_OWNER_STACK_DEPTH (__dump_page_owner and save_stack)
-@@ -21,31 +22,6 @@
-  */
- #define PAGE_OWNER_STACK_DEPTH (16)
- 
--struct page_owner {
--	unsigned short order;
--	short last_migrate_reason;
--	gfp_t gfp_mask;
--	depot_stack_handle_t handle;
--	depot_stack_handle_t free_handle;
--	u64 ts_nsec;
--	u64 free_ts_nsec;
--	char comm[TASK_COMM_LEN];
--	pid_t pid;
--	pid_t tgid;
--	pid_t free_pid;
--	pid_t free_tgid;
--};
--
--/*
-- * Cursor and per-page result of page_owner_next_eligible().
-- */
--struct page_owner_scan {
--	/* resume point */
--	unsigned long pfn;
--	struct page *page;
--	struct page_owner po_snap;
--};
--
- struct stack {
- 	struct stack_record *stack_record;
- 	struct stack *next;
-@@ -741,7 +717,7 @@ void __dump_page_owner(const struct page *page)
-  * must advance scan->pfn past the hit before calling again to resume
-  * the scan.
-  */
--static bool page_owner_next_eligible(struct page_owner_scan *scan)
-+bool page_owner_next_eligible(struct page_owner_scan *scan)
- {
- 	unsigned long pfn = scan->pfn;
- 
-@@ -1196,6 +1172,11 @@ static int __init pageowner_init(void)
- 			    &stack_fops);
- 	debugfs_create_file("count_threshold", 0600, dir, NULL,
- 			    &threshold_fops);
-+
-+#ifdef CONFIG_BPF_SYSCALL
-+	if (page_owner_iter_register())
-+		pr_warn("page_owner: failed to register bpf_iter target\n");
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 712dca5a2c5b..23a2d2d71f4d 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -4946,6 +4946,12 @@ BTF_ID_FLAGS(func, bpf_iter_dmabuf_new, KF_ITER_NEW | KF_SLEEPABLE)
+ BTF_ID_FLAGS(func, bpf_iter_dmabuf_next, KF_ITER_NEXT | KF_RET_NULL | KF_SLEEPABLE)
+ BTF_ID_FLAGS(func, bpf_iter_dmabuf_destroy, KF_ITER_DESTROY | KF_SLEEPABLE)
+ #endif
++#ifdef CONFIG_PAGE_OWNER
++BTF_ID_FLAGS(func, bpf_iter_page_owner_new, KF_ITER_NEW | KF_SLEEPABLE)
++BTF_ID_FLAGS(func, bpf_iter_page_owner_next, KF_ITER_NEXT | KF_RET_NULL | KF_SLEEPABLE)
++BTF_ID_FLAGS(func, bpf_iter_page_owner_destroy, KF_ITER_DESTROY | KF_SLEEPABLE)
++BTF_ID_FLAGS(func, bpf_page_owner_stack_snprint, KF_SLEEPABLE)
 +#endif
- 	return 0;
- }
- late_initcall(pageowner_init)
-diff --git a/mm/page_owner.h b/mm/page_owner.h
-new file mode 100644
-index 000000000000..fda83be69275
---- /dev/null
-+++ b/mm/page_owner.h
-@@ -0,0 +1,48 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * mm/ internal page_owner and page_owner_iter declarations
-+ */
-+
-+#ifndef __MM_PAGE_OWNER_H
-+#define __MM_PAGE_OWNER_H
-+
-+#include <linux/page_ext.h>
-+#include <linux/sched.h>
-+#include <linux/stackdepot.h>
-+
-+/*
-+ * mm/page_owner.c
-+ */
-+struct page_owner {
-+	unsigned short order;
-+	short last_migrate_reason;
-+	gfp_t gfp_mask;
-+	depot_stack_handle_t handle;
-+	depot_stack_handle_t free_handle;
-+	u64 ts_nsec;
-+	u64 free_ts_nsec;
-+	char comm[TASK_COMM_LEN];
-+	pid_t pid;
-+	pid_t tgid;
-+	pid_t free_pid;
-+	pid_t free_tgid;
-+};
-+
-+/*
-+ * Cursor and per-page result of page_owner_next_eligible().
-+ */
-+struct page_owner_scan {
-+	/* resume point */
-+	unsigned long pfn;
-+	struct page *page;
-+	struct page_owner po_snap;
-+};
-+
-+bool page_owner_next_eligible(struct page_owner_scan *scan);
-+
-+/*
-+ * mm/page_owner_iter.c
-+ */
-+int page_owner_iter_register(void);
-+
-+#endif /* __MM_PAGE_OWNER_H */
+ BTF_ID_FLAGS(func, __bpf_trap)
+ BTF_ID_FLAGS(func, bpf_strcmp, KF_PERFMON);
+ BTF_ID_FLAGS(func, bpf_strcasecmp, KF_PERFMON);
 diff --git a/mm/page_owner_iter.c b/mm/page_owner_iter.c
-new file mode 100644
-index 000000000000..33dc9dcd59de
---- /dev/null
+index 33dc9dcd59de..80693d417407 100644
+--- a/mm/page_owner_iter.c
 +++ b/mm/page_owner_iter.c
-@@ -0,0 +1,116 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/bpf.h>
-+#include <linux/btf_ids.h>
-+#include <linux/memblock.h>
-+#include <linux/mm.h>
-+#include <linux/seq_file.h>
+@@ -4,6 +4,7 @@
+ #include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/seq_file.h>
++#include <linux/stackdepot.h>
+ 
+ #include "page_owner.h"
+ 
+@@ -114,3 +115,54 @@ int page_owner_iter_register(void)
+ 
+ 	return bpf_iter_reg_target(&page_owner_iter_reg_info);
+ }
 +
-+#include "page_owner.h"
++/* opaque to BPF programs */
++struct bpf_iter_page_owner {
++	__u64 __opaque[16];
++} __attribute__((aligned(8)));
 +
-+struct bpf_iter__page_owner {
-+	__bpf_md_ptr(struct bpf_iter_meta *, meta);
-+	__bpf_md_ptr(struct page *, page);
-+	__bpf_md_ptr(struct page_owner *, po);
-+	u64 pfn;
-+};
++struct bpf_iter_page_owner_kern {
++	struct page_owner_scan scan;
++} __attribute__((aligned(8)));
 +
-+DEFINE_BPF_ITER_FUNC(page_owner, struct bpf_iter_meta *meta,
-+		     struct page *page, struct page_owner *po, u64 pfn)
++__bpf_kfunc_start_defs();
 +
-+static void *page_owner_seq_start(struct seq_file *seq, loff_t *posp)
++__bpf_kfunc int bpf_iter_page_owner_new(struct bpf_iter_page_owner *it)
 +{
-+	struct page_owner_scan *scan = seq->private;
++	struct bpf_iter_page_owner_kern *kit = (void *)it;
 +
-+	if (*posp == 0)
-+		scan->pfn = min_low_pfn;
-+	else
-+		scan->pfn++;
++	BUILD_BUG_ON(sizeof(*kit) > sizeof(*it));
++	BUILD_BUG_ON(__alignof__(*kit) != __alignof__(*it));
 +
-+	if (!page_owner_next_eligible(scan))
++	kit->scan.pfn = min_low_pfn;
++	kit->scan.page = NULL;
++	return 0;
++}
++
++__bpf_kfunc struct page_owner_scan *
++bpf_iter_page_owner_next(struct bpf_iter_page_owner *it)
++{
++	struct bpf_iter_page_owner_kern *kit = (void *)it;
++
++	cond_resched();
++
++	if (kit->scan.page)
++		kit->scan.pfn++;
++
++	if (!page_owner_next_eligible(&kit->scan))
 +		return NULL;
-+	return scan->page;
++
++	return &kit->scan;
 +}
 +
-+static void *page_owner_seq_next(struct seq_file *seq, void *v, loff_t *posp)
-+{
-+	struct page_owner_scan *scan = seq->private;
-+
-+	++*posp;
-+	scan->pfn++;
-+	if (!page_owner_next_eligible(scan))
-+		return NULL;
-+
-+	return scan->page;
-+}
-+
-+static void page_owner_seq_stop(struct seq_file *seq, void *v)
++__bpf_kfunc void bpf_iter_page_owner_destroy(struct bpf_iter_page_owner *it)
 +{
 +}
 +
-+static int page_owner_prog_seq_show(struct bpf_prog *prog,
-+				    struct bpf_iter_meta *meta, void *v)
++__bpf_kfunc int bpf_page_owner_stack_snprint(depot_stack_handle_t handle,
++					     char *buf, u32 buf_size)
 +{
-+	struct page_owner_scan *scan = meta->seq->private;
-+	struct bpf_iter__page_owner ctx;
-+
-+	/* @po: hit-time snapshot, no RCU window needed. */
-+	ctx.meta = meta;
-+	ctx.page = (struct page *)v;
-+	ctx.po = &scan->po_snap;
-+	ctx.pfn = scan->pfn;
-+
-+	return bpf_iter_run_prog(prog, &ctx);
++	return stack_depot_snprint(handle, buf, buf_size, 0);
 +}
 +
-+static int page_owner_seq_show(struct seq_file *seq, void *v)
-+{
-+	struct bpf_iter_meta meta;
-+	struct bpf_prog *prog;
-+
-+	meta.seq = seq;
-+	prog = bpf_iter_get_info(&meta, false);
-+	if (!prog)
-+		return 0;
-+
-+	return page_owner_prog_seq_show(prog, &meta, v);
-+}
-+
-+static const struct seq_operations page_owner_iter_seq_ops = {
-+	.start	= page_owner_seq_start,
-+	.next	= page_owner_seq_next,
-+	.stop	= page_owner_seq_stop,
-+	.show	= page_owner_seq_show,
-+};
-+
-+static const struct bpf_iter_seq_info page_owner_iter_seq_info = {
-+	.seq_ops		= &page_owner_iter_seq_ops,
-+	.init_seq_private	= NULL,
-+	.fini_seq_private	= NULL,
-+	.seq_priv_size		= sizeof(struct page_owner_scan),
-+};
-+
-+static struct bpf_iter_reg page_owner_iter_reg_info = {
-+	.target			= "page_owner",
-+	.ctx_arg_info_size	= 2,
-+	.ctx_arg_info		= {
-+		{ offsetof(struct bpf_iter__page_owner, page),
-+		  PTR_TO_BTF_ID_OR_NULL },
-+		{ offsetof(struct bpf_iter__page_owner, po),
-+		  PTR_TO_BTF_ID_OR_NULL },
-+	},
-+	.seq_info		= &page_owner_iter_seq_info,
-+};
-+
-+BTF_ID_LIST(page_owner_btf_ids)
-+BTF_ID(struct, page)
-+BTF_ID(struct, page_owner)
-+
-+int page_owner_iter_register(void)
-+{
-+	page_owner_iter_reg_info.ctx_arg_info[0].btf_id =
-+		page_owner_btf_ids[0];
-+	page_owner_iter_reg_info.ctx_arg_info[1].btf_id =
-+		page_owner_btf_ids[1];
-+
-+	return bpf_iter_reg_target(&page_owner_iter_reg_info);
-+}
++__bpf_kfunc_end_defs();
 -- 
 2.20.1
 
