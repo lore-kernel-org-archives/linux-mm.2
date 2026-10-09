@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0A20CA6018
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:23:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEED1CA6019
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:24:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B079B6B0095; Fri,  9 Oct 2026 07:23:39 -0400 (EDT)
+	id 69A236B009B; Fri,  9 Oct 2026 07:23:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8FEE6B0096; Fri,  9 Oct 2026 07:23:39 -0400 (EDT)
+	id 5FCEA6B0099; Fri,  9 Oct 2026 07:23:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 909906B0099; Fri,  9 Oct 2026 07:23:39 -0400 (EDT)
+	id 4C4AE6B009B; Fri,  9 Oct 2026 07:23:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4978D6B0095
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:23:39 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC5A2A7C90
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:23:38 +0000 (UTC)
-X-FDA: 85302852516.11.4025609
-Received: from mail-m1602365230.xmail.ntesmail.com (mail-m1602365230.xmail.ntesmail.com [160.236.52.30])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1E101140003
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:23:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C0666B0096
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:23:41 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9D273A031F
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:23:40 +0000 (UTC)
+X-FDA: 85302852600.01.1C84F2F
+Received: from mail-m1602365216.xmail.ntesmail.com (mail-m1602365216.xmail.ntesmail.com [160.236.52.16])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 06E801C000B
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:23:37 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
 	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of zhen.ni@easystack.cn designates 160.236.52.30 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791545016;
-	b=6MTL6C2BXLozw+sqtrCGGVcsCKKyIie0MBFRy5suThj2AFq+UYrCYh0o+InShvO7trEEf4
-	OwFaFwaTyCI2BsjvbzNOUFe8104Pfhn1vC/LSK8T9loZCMN4F3301RnaPVf+KN8WGvOyd+
-	y65huNmGCFSTdVtREsTzdUGjJLlhqBY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of zhen.ni@easystack.cn designates 160.236.52.30 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	spf=pass (imf21.hostedemail.com: domain of zhen.ni@easystack.cn designates 160.236.52.16 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
 	dmarc=pass (policy=none) header.from=easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791545016;
+	s=arc-20220608; t=1791545019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wNJEnuFlOmSJiR8Uv8mSBLfPf8DLIR+q09fIC/ErFKw=;
-	b=Rw9OYLSif1nHMzRHYsAGV87cK0GW+pADdiwvzc9+N6h062cBhjK5tTXz5+aRyNznjL3/nz
-	UULVrFXNolWABi+BE7p2QEyjUvZz7GpFSwnYHmL6aQbcvWPWSrOws1wqKsnJIZ2UPfHRDW
-	oCGSjPbLOHX4wuECftkFLR1XbkKxLqc=
+	bh=/CXQboH7cXpaTmyoa7p4XMmUav+OfEXgXdikTuFLliU=;
+	b=n0gimE+dPzwkMjg8gGgWAsaOFP932HuTJYco4WQMs59yaE1dnWugjuWp1saISsmtJvxos3
+	VUjv9NS6xeB9iHmHPYy85b9pXUcciT8pCn0Pjst6w6xNVQrCJ36lBGE9eKqKdV7+SXc6CN
+	L0NOLT6TKly1hTAGmirQGIjWrSeD9jE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791545019;
+	b=WqIvTGLQ+mjxjgPTNz8VbnsE3a87CTHvdytznz9sfpm+hhVnvBEZ8I9iHOhMExrRUzBtaQ
+	3PA3UCo0nSxQRUcxU+dMBqO+g68grN4GE1e6Z29gfJRb4XQFdalVW/ycY2N1IuSXQhpc7I
+	Jj7T4kf1NDU/sx00HDF+g2681FBgiPw=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of zhen.ni@easystack.cn designates 160.236.52.16 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
 Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1fe2901a6;
-	Fri, 9 Oct 2026 19:23:31 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1fe2901a8;
+	Fri, 9 Oct 2026 19:23:32 +0800 (GMT+08:00)
 From: Zhen Ni <zhen.ni@easystack.cn>
 To: ast@kernel.org,
 	daniel@iogearbox.net,
@@ -76,28 +76,28 @@ Cc: bpf@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH 5/6] mm/page_owner: add bpf_page_owner_get_memcg_info() kfunc
-Date: Fri,  9 Oct 2026 19:23:07 +0800
-Message-Id: <20261009112308.240769-6-zhen.ni@easystack.cn>
+Subject: [PATCH 6/6] selftests/bpf: add tests for the page_owner bpf_iter target
+Date: Fri,  9 Oct 2026 19:23:08 +0800
+Message-Id: <20261009112308.240769-7-zhen.ni@easystack.cn>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20261009112308.240769-1-zhen.ni@easystack.cn>
 References: <20261009112308.240769-1-zhen.ni@easystack.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa120676b9a0229kunmd33b3e054cb28e
+X-HM-Tid: 0aa12067716e0229kunmd33b3e054cb292
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCShlKVklJTE8aHhpJT0JIQlYVFA
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCQx8fVktPGE5JGR9KQhkZH1YVFA
 	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
 	lPT09IVUpLS1VKQktLWQY+
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 06E801C000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1E101140003
-X-Stat-Signature: g4yhoo9i9efk5ry5bwdaqtkqyotrcfsk
-X-HE-Tag: 1791545015-293758
-X-HE-Meta: U2FsdGVkX1/TpV+SmLot+/ROTsMQWrYa5Ae1/Pb3Uo84GaFxXY2ImkCWvpT1eoZmpmKLJE3MihMuMVyrW39oMuVgLneyuhdIa6eWQqzae8oFov5Efr8NPbNxOBm7TPKueIZ45ZAvvGaJjOHYJEd1/yCqgKYrF2X8zfP/00SWWy/EkkCh9UOsO7IBUsSYvh1tA8TrY7ujN1xyb0XKtibf4w6BR5uIcbqnDPleT18DSCLZwneNV2IDHWUsmuZOrwppGVbaBp+9FkwDWSX2wPDDrD9eIX9wZcbj6Gc8bX3Wswk3Spf9MXXsQg3J0/ef2rzR3HwdV8vSHZZtNXmkFl/b9smfUQV1I/gxrXI5amX1kaBNSEbKQUYCeGxaWJrpFCNad6ZXD7L1MDO4EE0Axn6i1WxL5kKrPjQwYsS8YZydH77DVIlgFlLkBQiafSXpB0QTlejO47pslwEqf5uGiIbfa1EDj9TDWTgdSyjsSIKb6r+QZhDX7xt0nTQgccVq3i6n+vxTVk8XgAitRc4owC5q7H/1lRqzZucwamF+mlSydPgp5ykZH1Lt9PoSpraE5lO2PvPXp2LOE6g1LdwRybLIgSr76F1yDkx0lbNkBLV8l9Z7TBXVYT/9uZu5/88hcUKj0mSrrLn8nsvPQafYsGLSkfpaN3546q8FRLxf4Nc/uVenOj1vzjImeWgvOn/PDbC2XeE28VSbivGWlWgLuDRG+vT+soECDjbgEMkeexd7RojR5OfVhwHLwGiT/55KCs+TpyUb01u8l9AQA6ny+5Xx2VMiosgS9lKJecdplHPwP/998vOlZDcv52kQjIKycmpkJEsbIznvlBuopPs/bGI3JNyE6vmWBwHQJUDN2sU1ktbw6QUHcQ4GkepdyxMlHtG2unzUQVs7TjRzZYzVV80LUfETqjawKJ0hFz2JCeJD8Lgzuk6A/BA77kZ7fvK12mx7TZFBM45BAB+gtqwVjm7
- 1+uwGm7M
- VPB+btDzQyl4dcyHkTnkCrYWmd2Sr2lmW7z4myQU2lnz4I/3hNXN/z6ADGTsFxpcFwrq/jWcrw+jDaOLNuBRDdYEBPTeJcBFn10WrS3hLb5pqq1s=
+X-Stat-Signature: mxga8y8ag94js3618pdt7i1ct6kxansb
+X-HE-Tag: 1791545017-715632
+X-HE-Meta: U2FsdGVkX1+QcoHBEEajQh8HRljCB4+kWmWZz3ovkl4O/Y2z6OyextsVcnbaxEDsKrNyX5tKKRSPrCqtgWLZqvIojdUnDscX0EX7bhx8/XQ9EGuicfgHi6LI9CVDdok8ublYq983lmIJaV4VTDtzx1r6ZLjywzRQ7PqI/Tsz9delU/T9AlEyNCn4EQppStK8C4hoAvr9W++EcPesfPc/cbOVKy0nBezQZ6Paj+YPHQxkuTFOQSK6lSu6F103TBVMhnlv8F1J31nRoMLZJfXmTFv7rU6S7eWPBfUvpHkxI4UFEzu4y/SzMhIs9suvK2MhqBeaVcj7tn7adACq+NzWsgrRhr/ix2Un7w4FXgzOnC8hf4RFHE+m8E8EGugfV2HxtMi92p8g0U9WHWsBap21Vap27fc+ICd6NdHc5J4XP1D0bqFyGw1008R0MR39Ym4k+W/oVgq8WzcaDl+Q0HiG8ee78R/vkZy6fosbk3wttvLK0KPaq79gKdsbd6mQlXwzRBmCICz+ynP/O7zW819durNiBU5lHq1bT701DuIjoX++D0l36Y+Jr3kwYLLObEQ/OBYINUmpgLPC0XN05s7zEb3+F8Aozi/tPc2pmd1zTjPytlXOK2ky6v9AFyj7KTbbZcMSSlm7ZkHE+UFmzhoYT5ITOVP/ft8KfhkUqZetbO46k+9H6o7T/CCsuuLr5/DiVqzyKfxMR9rgZiUqX6393repGMf0+YV1vGlowXo7D1HdORkLiJcETyLT9pj/y2dYNDJnirzpK1VGNK9mMMBUDWU/Z86EiqE5z4v7I0BvCrRlQiRIpf+tbMnO38/k0o9L+bvrEExxq10eDLFIxVKgGPyOLmLujiU2/8/N0AvcLzG/f+dxDqhYAYhY2xj7nFQqEqfRXNhsdNFGLhZkpeSTB/r0cWKcYhkJIKTKLDdUNeZpJLRwlYW/WHhTIt9iOgl5X3GNZXFR5MOdvhUnLnm
+ L1J5LfNy
+ lpRVqDt1oTJ5JYRQGPunW3dUwwp3LkjifWu34GghHPPN4k8p4hXgUKDUTF3lPHI4JKjy+o0XE/oYzYo+11rCQ66HwvqS/QQpyo6MdxrWwmAlgJQk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,232 +105,372 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Expose per-page memcg information to BPF programs, so that a bpf_iter
-over page_owner can aggregate and filter allocations by memcg.
-Attributing an allocation to a specific cgroup needs its full cgroup
-path, not just the memcg name.
+Add a sleepable BPF program and a userspace runner covering the seq_file
+and open-coded page_owner iterators and the get_nid, stack_snprint and
+get_memcg_info kfuncs. The test checks:
 
-Split memcg info collection out of print_page_owner_memcg() into
-get_page_memcg_info(), which fills struct memcg_info and, when given
-a caller-provided buffer, writes the full cgroup path via
-cgroup_path(). print_page_owner_memcg() now consumes the struct;
-this introduces no functional change to the debugfs output.
+  - seq_file walk, unfiltered and pid-filtered: records read back from
+    the iterator fd match the lines the program printed.
+  - open-coded iterator parity with the seq path.
+  - the kfuncs' contracts: valid nid per page, a non-empty stack
+    trace, and memcg classification.
 
-The helper takes a single READ_ONCE snapshot within one RCU read-side
-critical section, so the flags and cgroup path reflect a consistent
-view of the page. cgroup_path() returns the path relative to the
-cgroup hierarchy root, so memcg attribution works on both cgroup v1
-and v2.
+Skipped when debugfs page_owner is unavailable.
 
 Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
 ---
- kernel/bpf/helpers.c |  1 +
- mm/page_owner.c      | 85 ++++++++++++++++++++++++++++++++++----------
- mm/page_owner.h      |  9 +++++
- mm/page_owner_iter.c |  7 ++++
- 4 files changed, 83 insertions(+), 19 deletions(-)
+ .../bpf/prog_tests/page_owner_iter.c          | 173 ++++++++++++++++++
+ .../selftests/bpf/progs/bpf_iter_page_owner.c | 161 ++++++++++++++++
+ 2 files changed, 334 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/page_owner_iter.c
+ create mode 100644 tools/testing/selftests/bpf/progs/bpf_iter_page_owner.c
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 3e8afd19a1f4..b07a4dc46b58 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -4952,6 +4952,7 @@ BTF_ID_FLAGS(func, bpf_iter_page_owner_next, KF_ITER_NEXT | KF_RET_NULL | KF_SLE
- BTF_ID_FLAGS(func, bpf_iter_page_owner_destroy, KF_ITER_DESTROY | KF_SLEEPABLE)
- BTF_ID_FLAGS(func, bpf_page_owner_stack_snprint, KF_SLEEPABLE)
- BTF_ID_FLAGS(func, bpf_page_owner_get_nid, KF_SLEEPABLE)
-+BTF_ID_FLAGS(func, bpf_page_owner_get_memcg_info, KF_SLEEPABLE)
- #endif
- BTF_ID_FLAGS(func, __bpf_trap)
- BTF_ID_FLAGS(func, bpf_strcmp, KF_PERFMON);
-diff --git a/mm/page_owner.c b/mm/page_owner.c
-index 43a722678acc..ad503422b0c4 100644
---- a/mm/page_owner.c
-+++ b/mm/page_owner.c
-@@ -538,16 +538,22 @@ void pagetypeinfo_showmixedcount_print(struct seq_file *m,
- 
- #ifdef CONFIG_MEMCG
- /*
-- * Looking for memcg information and print it out
-+ * Collect memcg information of @page into @info; when @buf and a
-+ * nonzero @size are given, also copy the full cgroup path of the
-+ * charged memcg into @buf.
-+ *
-+ * Return: 0 if @page is charged to an attributable memcg; -ENODATA
-+ * otherwise.
-  */
--static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
--					 struct page *page)
-+int get_page_memcg_info(struct page *page, struct memcg_info *info,
-+			char *buf, int size)
- {
- 	unsigned long memcg_data;
- 	struct obj_cgroup *objcg;
- 	struct mem_cgroup *memcg;
--	bool online;
--	char name[80];
-+	int ret = -ENODATA;
+diff --git a/tools/testing/selftests/bpf/prog_tests/page_owner_iter.c b/tools/testing/selftests/bpf/prog_tests/page_owner_iter.c
+new file mode 100644
+index 000000000000..a621712272bc
+--- /dev/null
++++ b/tools/testing/selftests/bpf/prog_tests/page_owner_iter.c
+@@ -0,0 +1,173 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2026 */
 +
-+	*info = (struct memcg_info){};
- 
- 	rcu_read_lock();
- 	memcg_data = READ_ONCE(page->memcg_data);
-@@ -555,31 +561,68 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
- 		goto out_unlock;
- 
- 	if (memcg_data & MEMCG_DATA_OBJEXTS) {
--		ret += scnprintf(kbuf + ret, count - ret,
--				"Slab cache page\n");
-+		info->is_slab = true;
- 		goto out_unlock;
- 	}
- 
- 	objcg = (void *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
--	memcg = objcg ? obj_cgroup_memcg(objcg) : NULL;
-+	if (!objcg)
-+		goto out_unlock;
++#include <test_progs.h>
++#include "bpf_iter_page_owner.skel.h"
 +
-+	memcg = obj_cgroup_memcg(objcg);
- 	if (!memcg)
- 		goto out_unlock;
- 
--	online = css_is_online(&memcg->css);
--	cgroup_name(memcg->css.cgroup, name, sizeof(name));
--	ret += scnprintf(kbuf + ret, count - ret,
--			"Charged %sto %smemcg %s\n",
--			(memcg_data & MEMCG_DATA_KMEM) ? "(via objcg) " : "",
--			online ? "" : "offline ",
--			name);
-+	info->is_kmem = (memcg_data & MEMCG_DATA_KMEM) != 0;
-+	info->is_online = css_is_online(&memcg->css);
-+	cgroup_name(memcg->css.cgroup, info->name, sizeof(info->name));
++#define DEBUGFS_PAGE_OWNER	"/sys/kernel/debug/page_owner"
 +
-+	if (buf && size)
-+		cgroup_path(memcg->css.cgroup, buf, size);
-+	ret = 0;
- out_unlock:
- 	rcu_read_unlock();
- 
-+	if (ret < 0 && buf && size)
-+		buf[0] = '\0';
++static bool page_owner_available(void)
++{
++	return access(DEBUGFS_PAGE_OWNER, R_OK) == 0;
++}
 +
-+	return ret;
++/* Count link_fd output lines; -1 on error. */
++static long iter_record_count(int link_fd)
++{
++	char *line = NULL;
++	size_t len = 0;
++	long count = 0;
++	int iter_fd, err;
++	FILE *f;
++
++	iter_fd = bpf_iter_create(link_fd);
++	if (!ASSERT_GE(iter_fd, 0, "bpf_iter_create"))
++		return -1;
++
++	f = fdopen(iter_fd, "r");
++	if (!f) {
++		close(iter_fd);
++		return -1;
++	}
++	while (getline(&line, &len, f) > 0)
++		count++;
++	err = ferror(f);
++	free(line);
++	fclose(f);
++	return err ? -1 : count;
++}
++
++/* Validate bpf_page_owner_get_memcg_info() results from the open-coded run. */
++static void check_memcg_skel(struct bpf_iter_page_owner *skel)
++{
++	fprintf(stderr,
++		"memcg: seen=%u charged=%u online=%u nodata=%u notsup=%u bad=%u first='%s' name='%s' flags=%u\n",
++		skel->bss->memcg_seen, skel->bss->memcg_charged,
++		skel->bss->memcg_online, skel->bss->memcg_nodata,
++		skel->bss->memcg_notsup, skel->bss->memcg_bad,
++		skel->bss->memcg_first_path, skel->bss->memcg_first_name,
++		skel->bss->memcg_first_flags);
++
++	if (!ASSERT_GT(skel->bss->memcg_seen, 0, "memcg_seen_gt_0"))
++		return;
++
++	/* all -EOPNOTSUPP: CONFIG_MEMCG is off */
++	if (skel->bss->memcg_notsup == skel->bss->memcg_seen) {
++		ASSERT_EQ(skel->bss->memcg_bad, 0, "memcg_stub_invariants");
++		return;
++	}
++
++	if (!ASSERT_EQ(skel->bss->memcg_bad, 0, "memcg_kfunc_invariants"))
++		return;
++
++	/* Every call is either charged or nodata */
++	if (!ASSERT_EQ(skel->bss->memcg_charged + skel->bss->memcg_nodata,
++		       skel->bss->memcg_seen, "memcg_ret_classified"))
++		return;
++
++	if (!skel->bss->memcg_first_saved)
++		return;
++
++	if (!ASSERT_EQ(skel->bss->memcg_first_path[0], '/',
++		       "memcg_first_path_abs"))
++		return;
++
++	if (skel->bss->memcg_first_name[0])
++		ASSERT_OK_PTR(strstr(skel->bss->memcg_first_path,
++				    skel->bss->memcg_first_name),
++			      "memcg_name_in_path");
++}
++
++void serial_test_page_owner_iter(void)
++{
++	struct bpf_iter_page_owner *skel = NULL;
++	LIBBPF_OPTS(bpf_test_run_opts, opts);
++	long iter_count, unfiltered_count, oc_diff, pid;
++	unsigned int printed_before;
++	int link_fd, prog_fd;
++
++	if (!page_owner_available()) {
++		test__skip();
++		return;
++	}
++
++	skel = bpf_iter_page_owner__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "bpf_iter_page_owner__open_and_load"))
++		return;
++
++	/* --- seq file iterator: unfiltered run --- */
++	skel->bss->filter_en = 0;
++
++	if (!ASSERT_OK(bpf_iter_page_owner__attach(skel), "skel_attach"))
++		goto destroy;
++
++	link_fd = bpf_link__fd(skel->links.dump_page_owner);
++	iter_count = iter_record_count(link_fd);
++	if (iter_count < 0)
++		goto destroy;
++	unfiltered_count = iter_count;
++
++	fprintf(stderr, "iter_count=%ld printed_lines=%u total_seen=%u\n",
++		iter_count, skel->bss->printed_lines, skel->bss->total_seen);
++
++	ASSERT_GT(iter_count, 0, "unfiltered_lines_gt_0");
++
++	ASSERT_EQ((long)skel->bss->printed_lines, iter_count,
++		  "lines_match_printed");
++
++	/* unfiltered: every visited page is printed, so the two must match */
++	ASSERT_EQ(skel->bss->total_seen, skel->bss->printed_lines,
++		  "unfiltered_all_printed");
++
++	/* --- seq file iterator: pid-filtered run --- */
++	pid = getpid();
++	skel->bss->filter_en = 1;
++	skel->bss->filter_pid = (pid_t)pid;
++
++	/* printed_lines is cumulative across runs: compare the delta */
++	printed_before = skel->bss->printed_lines;
++	iter_count = iter_record_count(link_fd);
++	if (iter_count < 0)
++		goto destroy;
++
++	fprintf(stderr,
++		"pid=%ld iter_count=%ld printed_delta=%u\n",
++		pid, iter_count, skel->bss->printed_lines - printed_before);
++
++	ASSERT_GT(iter_count, 0, "filtered_lines_gt_0");
++	ASSERT_EQ(skel->bss->printed_lines - printed_before, iter_count,
++		  "filtered_printed_match");
++
++	/* --- open-coded iterator parity --- */
++	prog_fd = bpf_program__fd(skel->progs.scan_open_coded);
++
++	ASSERT_OK(bpf_prog_test_run_opts(prog_fd, &opts), "prog_test_run");
++	fprintf(stderr,
++		"open_coded_seen=%u nid_seen=%u first_nid=%d "
++		"stack_bytes=%u stack=[\n%s]\n",
++		skel->bss->open_coded_seen, skel->bss->nid_seen,
++		skel->data->first_nid, skel->bss->stack_bytes,
++		skel->bss->stack_text);
++
++	/* same eligibility as the seq path: counts must be close */
++	ASSERT_GT(skel->bss->open_coded_seen, 0, "oc_seen_gt_0");
++	oc_diff = (long)skel->bss->open_coded_seen - unfiltered_count;
++	if (oc_diff < 0)
++		oc_diff = -oc_diff;
++	ASSERT_LE(oc_diff, unfiltered_count / 100 + 64,
++		  "oc_seen_close_to_iter");
++
++	/* the nid kfunc returned a valid node for every page */
++	ASSERT_EQ(skel->bss->nid_seen, skel->bss->open_coded_seen,
++		  "nid_valid_all");
++	ASSERT_GE(skel->data->first_nid, 0, "first_nid_valid");
++
++	ASSERT_GT(skel->bss->stack_bytes, 0, "stack_snprint_ok");
++	ASSERT_OK_PTR(strstr(skel->bss->stack_text, "+0x"), "stack_frames");
++	ASSERT_OK_PTR(strchr(skel->bss->stack_text, '\n'), "stack_lines");
++
++	check_memcg_skel(skel);
++
++destroy:
++	bpf_iter_page_owner__destroy(skel);
++}
+diff --git a/tools/testing/selftests/bpf/progs/bpf_iter_page_owner.c b/tools/testing/selftests/bpf/progs/bpf_iter_page_owner.c
+new file mode 100644
+index 000000000000..fada6a314a15
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/bpf_iter_page_owner.c
+@@ -0,0 +1,161 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2026 */
++
++#include <vmlinux.h>
++#include <bpf/bpf_helpers.h>
++
++char _license[] SEC("license") = "GPL";
++
++__u32 filter_en;
++__u32 filter_pid;
++__u32 total_seen;
++__u32 printed_lines;
++
++__u32 open_coded_seen;
++__u32 nid_seen;
++__s32 first_nid = -1;
++char stack_text[2048];
++__u32 stack_bytes;
++
++__u32 memcg_seen;
++__u32 memcg_charged;
++__u32 memcg_online;
++__u32 memcg_nodata;
++__u32 memcg_notsup;
++__u32 memcg_bad;
++__u32 memcg_first_saved;
++__u32 memcg_first_flags;	/* bit0 is_online, bit1 is_kmem */
++__u32 memcg_first_path_len;
++char memcg_pathbuf[4096];
++char memcg_first_path[4096];
++char memcg_first_name[80];
++
++#define MEMCG_ENODATA 61
++#define MEMCG_EOPNOTSUPP 95
++
++#define MEMCG_F_ONLINE	(1 << 0)
++#define MEMCG_F_OBJCG	(1 << 1)
++
++extern int bpf_iter_page_owner_new(struct bpf_iter_page_owner *it) __ksym;
++extern struct page_owner_scan *
++bpf_iter_page_owner_next(struct bpf_iter_page_owner *it) __ksym;
++extern void bpf_iter_page_owner_destroy(struct bpf_iter_page_owner *it) __ksym;
++extern int bpf_page_owner_stack_snprint(depot_stack_handle_t handle,
++					char *buf, u32 buf_size) __ksym;
++extern int bpf_page_owner_get_nid(struct page_owner_scan *scan) __ksym;
++extern int bpf_page_owner_get_memcg_info(struct page_owner_scan *scan,
++					 struct memcg_info *info,
++					 char *buf, u32 size) __ksym;
++
++static __u32 copy_str(char *dst, const char *src, const __u32 max)
++{
++	__u32 i = 0;
++
++	while (i + 1 < max && src[i]) {
++		dst[i] = src[i];
++		i++;
++	}
++	dst[i] = '\0';
++	return i;
 +}
 +
 +/*
-+ * Print memcg information from memcg_info
++ * Exercise bpf_page_owner_get_memcg_info() until 32 pages charged to an
++ * ONLINE memcg have been seen, checking its per-return contract:
++ *  - 0:          buf holds an absolute cgroup path;
++ *  - -ENODATA:   buf was NUL-terminated;
++ *  - -EOPNOTSUPP: counted (CONFIG_MEMCG is off);
++ *
++ * The first online charged sample is saved for userspace to print and
++ * cross-check (name vs basename of path).
 + */
-+static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
-+					 const struct memcg_info *info)
++static void check_memcg(struct page_owner_scan *scan)
 +{
-+	if (!info)
-+		return ret;
++	static struct memcg_info info;
++	int err;
 +
-+	if (info->is_slab)
-+		ret += scnprintf(kbuf + ret, count - ret,
-+				"Slab cache page\n");
++	err = bpf_page_owner_get_memcg_info(scan, &info, memcg_pathbuf,
++					    sizeof(memcg_pathbuf));
++	memcg_seen++;
 +
-+	if (info->name[0])
-+		ret += scnprintf(kbuf + ret, count - ret,
-+				"Charged %sto %smemcg %s\n",
-+				info->is_kmem ? "(via objcg) " : "",
-+				info->is_online ? "" : "offline ",
-+				info->name);
++	if (err == 0) {
++		memcg_charged++;
 +
- 	return ret;
- }
- #else
-+int get_page_memcg_info(struct page *page, struct memcg_info *info,
-+			char *buf, int size)
-+{
-+	*info = (struct memcg_info){};
-+	if (buf && size)
-+		buf[0] = '\0';
-+	return -EOPNOTSUPP;
++		if (memcg_pathbuf[0] != '/') {
++			memcg_bad++;
++			return;
++		}
++
++		if (!info.is_online)
++			return;
++		memcg_online++;
++
++		/* keep the first online sample for userspace */
++		if (!memcg_first_saved) {
++			memcg_first_path_len = copy_str(memcg_first_path,
++							memcg_pathbuf,
++							sizeof(memcg_first_path));
++			copy_str(memcg_first_name, info.name,
++				 sizeof(memcg_first_name));
++			memcg_first_flags = MEMCG_F_ONLINE |
++					    (info.is_kmem ? MEMCG_F_OBJCG : 0);
++			memcg_first_saved = 1;
++		}
++	} else if (err == -MEMCG_ENODATA) {
++		memcg_nodata++;
++		if (memcg_pathbuf[0] != '\0')
++			memcg_bad++;
++	} else if (err == -MEMCG_EOPNOTSUPP) {
++		memcg_notsup++;
++		if (memcg_pathbuf[0] != '\0')
++			memcg_bad++;
++	} else {
++		memcg_bad++;
++	}
 +}
 +
- static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
--					 struct page *page)
-+					 const struct memcg_info *info)
- {
- 	return ret;
- }
-@@ -589,7 +632,8 @@ static ssize_t
- print_page_owner(char __user *buf, size_t count, unsigned long pfn,
- 		struct page *page, struct page_owner *page_owner,
- 		depot_stack_handle_t handle,
--		struct page_owner_filter_state *state)
-+		struct page_owner_filter_state *state,
-+		const struct memcg_info *memcg_info)
- {
- 	int ret, pageblock_mt, page_mt;
- 	char *kbuf;
-@@ -639,7 +683,7 @@ print_page_owner(char __user *buf, size_t count, unsigned long pfn,
- 			migrate_reason_names[page_owner->last_migrate_reason]);
- 	}
- 
--	ret = print_page_owner_memcg(kbuf, count, ret, page);
-+	ret = print_page_owner_memcg(kbuf, count, ret, memcg_info);
- 
- 	ret += snprintf(kbuf + ret, count - ret, "\n");
- 	if (ret >= count)
-@@ -810,6 +854,7 @@ static ssize_t
- read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- {
- 	struct page_owner_scan scan;
-+	struct memcg_info memcg_info;
- 	struct page_owner_filter_state *state = file->private_data;
- 
- 	if (!static_branch_unlikely(&page_owner_inited))
-@@ -832,8 +877,10 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 		/* Record the next PFN to read in the file offset */
- 		*ppos = scan.pfn + 1;
- 
-+		get_page_memcg_info(scan.page, &memcg_info, NULL, 0);
- 		return print_page_owner(buf, count, scan.pfn, scan.page,
--				&scan.po_snap, scan.po_snap.handle, state);
-+				&scan.po_snap, scan.po_snap.handle, state,
-+				&memcg_info);
- skip_continue:
- 		scan.pfn++;
- 		cond_resched();
-diff --git a/mm/page_owner.h b/mm/page_owner.h
-index c57859d18dc3..e74fc664d9b1 100644
---- a/mm/page_owner.h
-+++ b/mm/page_owner.h
-@@ -38,8 +38,17 @@ struct page_owner_scan {
- 	struct page_owner po_snap;
- };
- 
-+struct memcg_info {
-+	char name[80];
-+	bool is_slab;
-+	bool is_kmem;
-+	bool is_online;
-+};
-+
- bool page_owner_next_eligible(struct page_owner_scan *scan);
- int page_owner_get_nid(struct page *page);
-+int get_page_memcg_info(struct page *page, struct memcg_info *info,
-+			char *buf, int size);
- 
- /*
-  * mm/page_owner_iter.c
-diff --git a/mm/page_owner_iter.c b/mm/page_owner_iter.c
-index 907517a29144..e7a8ca1e90e8 100644
---- a/mm/page_owner_iter.c
-+++ b/mm/page_owner_iter.c
-@@ -170,4 +170,11 @@ __bpf_kfunc int bpf_page_owner_get_nid(struct page_owner_scan *scan)
- 	return page_owner_get_nid(scan->page);
- }
- 
-+__bpf_kfunc int bpf_page_owner_get_memcg_info(struct page_owner_scan *scan,
-+					      struct memcg_info *info,
-+					      char *buf, u32 size)
++SEC("syscall")
++int scan_open_coded(const void *ctx)
 +{
-+	return get_page_memcg_info(scan->page, info, buf, size);
++	struct bpf_iter_page_owner it;
++	struct page_owner_scan *scan;
++
++	bpf_iter_page_owner_new(&it);
++
++	while ((scan = bpf_iter_page_owner_next(&it))) {
++		open_coded_seen++;
++		if (bpf_page_owner_get_nid(scan) >= 0)
++			nid_seen++;
++		if (memcg_online < 32)
++			check_memcg(scan);
++		/* grab the stack of the 100th page for userspace to check */
++		if (open_coded_seen == 100) {
++			first_nid = bpf_page_owner_get_nid(scan);
++			if (scan->po_snap.handle)
++				stack_bytes = bpf_page_owner_stack_snprint(
++					scan->po_snap.handle,
++					stack_text, sizeof(stack_text));
++		}
++	}
++	bpf_iter_page_owner_destroy(&it);
++	return 0;
 +}
 +
- __bpf_kfunc_end_defs();
++SEC("iter/page_owner")
++int dump_page_owner(struct bpf_iter__page_owner *ctx)
++{
++	struct page_owner *po = ctx->po;
++
++	if (!po)
++		return 0;
++
++	total_seen++;
++
++	if (filter_en && po->pid != (pid_t)filter_pid)
++		return 0;
++
++	BPF_SEQ_PRINTF(ctx->meta->seq, "pfn %llu pid %d comm %s\n",
++		       ctx->pfn, po->pid, po->comm);
++	printed_lines++;
++	return 0;
++}
 -- 
 2.20.1
 
