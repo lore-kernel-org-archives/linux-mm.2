@@ -4,105 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97687CA6012
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 06:36:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FAF2CA5FED
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 06:36:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 936ED6B00A0; Fri,  9 Oct 2026 02:36:13 -0400 (EDT)
+	id 985E16B00A1; Fri,  9 Oct 2026 02:36:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E7326B00A2; Fri,  9 Oct 2026 02:36:13 -0400 (EDT)
+	id 95D336B00A2; Fri,  9 Oct 2026 02:36:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D6516B00A1; Fri,  9 Oct 2026 02:36:13 -0400 (EDT)
+	id 899D56B00A3; Fri,  9 Oct 2026 02:36:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5154F6B009F
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 02:36:13 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BD90840252
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:36:12 +0000 (UTC)
-X-FDA: 85302128184.23.6D66F22
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3B7EE40003
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:36:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="adm/PXte";
-	spf=pass (imf27.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791527771;
-	b=0JOAH56NIqEmnoWq3tf4EYvApkgid8zknOaDZCt0SGrMerQLgJPq5mTTLfdspA5FRb8Edq
-	7DDHqaDdQYiBj76C27J/BskPr+6jE1jQO51WHcBk0UtCqPR+bZLwYKtiWzIMYAcK3vlCCq
-	oaust4ZIyvrMna9bTeEmvgPb7ZpZOMg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="adm/PXte";
-	spf=pass (imf27.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6195B6B00A1
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 02:36:18 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3158C0266
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:36:17 +0000 (UTC)
+X-FDA: 85302128394.21.9B7783D
+Received: from mta1.migadu.com (out-150.mta1.migadu.com [95.215.58.150])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 42D6140005
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:36:14 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wUF7oPFp;
+	spf=pass (imf17.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.150 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791527771;
+	s=arc-20220608; t=1791527774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gDpTPyFrfxPK/Uf/lFR6lzmG1KtMFb1k0z6iyA57/Qk=;
-	b=VTChfge1AdyBy6EBXzViz+pMPY+HN1QXlCJ9OFJur9rdaM8VmqAIUagrpkqcAzllyMjSFL
-	5viZ/T/P/opQUcts3YZAu30cKIOeFZUieW0qxetM1N1cymFVIJR5uAJPncEes1YqVAF6Wy
-	2EKj+IBDr36/sBpzHVVJ4sPs1roE9Y0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3458741824;
-	Fri,  9 Oct 2026 06:36:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7D51F000FF;
-	Fri,  9 Oct 2026 06:36:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791527770;
-	bh=gDpTPyFrfxPK/Uf/lFR6lzmG1KtMFb1k0z6iyA57/Qk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=adm/PXteCoY9Ji6saNhj4L6Dqguia+KG2/3Nr+/ar0UHgfEYUz2BGq6wjJLDGi6F3
-	 liU8vicxy2gTOqC4yZ0W5OeGkkJJC0uPn5qOX1/HqutbBsxs3TigwAPxmIwOJzmQ6t
-	 nJ9Sn5WzLPXhkmfTQBgZ7He7WVdlb0idBiQIE27jcKbGTZ9QE5yYOtgsUds+hBZGoK
-	 bGoPuCSWqujD6cXwPoHslFO++VzLMCWxK29x5mF0jrnvRXkWgGGVihOsEr+E4lhcXg
-	 76j+4XTX5LIPQ0B539LHeDrjQVMAD9e+yoPSzyE0uAxVqGBjuhgxQ2a9XcsGNk7BLn
-	 iGbpxQ869yG5w==
-Date: Thu, 8 Oct 2026 23:36:09 -0700
-From: Kees Cook <kees@kernel.org>
-To: Harry Yoo <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	bh=gwbIZGd5qls122noWJbSBAeZAIWZFmcFvm7JGqAUwiY=;
+	b=fqCVLFiqhxZtBQIDYrvNcQFSF3VduQJpj5QN/AMPxOPVwF0djGPl3D7p3PK6cOcFBHYviD
+	AqjfiT2yXOiFBZ8BaM6dNh+a+0kaRpzWAXKvH+mCTrgTGsS2DJ2vRcIMEVHHVA60KKN14I
+	xDgh+G5MuRp/QjlLeGHlUCKUIza0MF8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791527774;
+	b=yN4WQ+/TMrHswmN/LT1dCcwczyz7Q0hzGLpUqC4hUa7iZnA13AmKt1Fd9Nyk2ZBnw00Wws
+	9r+/kDNVOCztbHA4NE1PEcf0mdhBH6YDNM3k7PSNH1lcrXB7hlcEBbqJfi1ffrwud6J//X
+	1g/qSbH5Rck3HLab6pLoMw+/cxSbRaw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wUF7oPFp;
+	spf=pass (imf17.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.150 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Uktr6zhQvbp9EzuGh+m96ZQeOR2JVBFEMc1HzncifB8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791527772; v=1; x=1792132572;
+ b=wUF7oPFpMxyb4WpP6gRGR2ODKxA4RCeg9jwOTOi6WMPnkH9gp2nR2OHzxf9yxdUUVabYWj8T
+ PChLgYuIGSQchfZkTY2JDVX9K9fuaNFisFm791z5P7daE186kchH8FQWO/v5ojfRpcdcXl4knpn
+ YqmqF3/ASrow1ab8I4TUVW9A=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 540e04d12dbe99da;
+	Fri, 09 Oct 2026 06:36:12 +0000
+X-Mizu-Trace-ID: 540e04d12dbe99da
+X-Migadu-Flow: FLOW_OUT
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>, cgroups@vger.kernel.org,
-	netdev@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH net-next v6 0/8] net: skb: isolate skb data area
- allocations into a separate bucket
-Message-ID: <202610082331.853F0CBBA@keescook>
-References: <20261006092030.got.500-kees@kernel.org>
- <asgAh4mrr_yd622U@thinkpad>
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Uladzislau Rezki <urezki@gmail.com>
+Cc: Hao Ge <hao.ge@linux.dev>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 3/4] powerpc: drop redundant unmaps of failed vmap mappings
+Date: Fri,  9 Oct 2026 14:36:18 +0800
+Message-Id: <20261009063619.112313-4-hao.ge@linux.dev>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261009063619.112313-1-hao.ge@linux.dev>
+References: <20261009063619.112313-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <asgAh4mrr_yd622U@thinkpad>
-X-Stat-Signature: xcir9daxhmdjoncs7c4i66xd9wo856ph
-X-Rspamd-Queue-Id: 3B7EE40003
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791527771-810254
-X-HE-Meta: U2FsdGVkX19FBGGs7n6K/Pm9bvmskAwNIAk2Rc9p9wIwNgIxy3D6bnSTPoh11QB2at7eP+lI/MuA1wAr8Q5l3wNwvO4EAsXd42fTAEQiC8EmRSibdcGjM/GL8krbegKTxBDBSyanUPfqo1eOhjCp1vp8Qac6zr2fKvIQYBu1kfO3PngCKKH0p+OBZI/OWoSzvdyxPVdAaHXwx3yq2uaFBaJaJ3IXE73K0lp2jpMZD6YsmdK98oj9lU8tYVw8lgi7BrS/cl0abNxu7GlDqFTxPx1dSoCRo/zW4IHO/Who1CU+IjHd+yCdFeoN9vjVFlS4N6FDM6ktEpoxSmMPuk0MMlztzOlAVmfZ1Dvs+2LfSjvUOkQr6XtQr5buxFhOlZbV7wd72yqPWjfsKDEiSmmgWAQTyd7b+XuP9ZR5Ctuz/dcuL86vjMUZOK5hsHz8PalcBCel/13qZfcfVAF4QNUwW458Vr3GxxiZq4dBY/3fUFn5zy3OVZd1f488E0HvnYkRJQ6Z0g+oN6cP2wHhw8D7iAOJs4/YeAuYnxSeBg0h05gkwtwTQ2zy2pA6XclJ0JbcZlVICJatRsudwDexIuzn6/O+XjOwF9Vnxqzi4mvpjlDAMPdpzqiCm/DK4mKYufd0DFs2m+starl4YkJpl0LRaIpoy7CozJ942xBAdJS/1xV2b/KT1RjH30hJub9rIUyk0Y9iypRC6DoDMOIvgEfVJOGoNdnKJwqNvK7ptt4jFLm7B7t2Qxfj5h0EC6nX95+W+e2D/SrdlEKbgfhUykn1fVE/uUkE8fFmm1bSUHmMV9piam1q09+tJI9eguTDm8/9hOKOn303ZyZRKcxHbJhlzWzuEPatOKkCbPLA+HEXPpFC+0BWrVcw8HLyrkAC/sch1vODdai9hpGTnrd/vycxLJVfFulItllou6tgm7JpebPfOC4R9OI7qjHQ86Nft9XvNARu7PBflLi/BTNhGmT
- tL3UlCLb
- ONzvcpdFmxEfehp+l/ojjTj12/KX9MZ7L+4my+RV2ZjMZuMnvO+gzocj9Q/QU+FH+veH1W/R3jHxZ73TUWHq37UsCfW7/sEKRAHsbd6QoJHdTocmHa70oTWlPzVaTAhHLtfHnlXKHf54p25caPkGiZ+p7aXO58kOrWD/ic9CUSmdBoHsr/uVKw/g4z1VakHlL4lyINcKRbYmvyvIYNR1GdElaT19vQUPi5HuJVtUK0gk/0LJA8WHrehwuQfqYQ6x15l1i
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 42D6140005
+X-Stat-Signature: u5zw9pfyz3skmsa9oc3kw76ykqs9uzsi
+X-HE-Tag: 1791527774-304979
+X-HE-Meta: U2FsdGVkX1+rJk61VTkmzMX+HuHNuCIVyAcjABSQj3os/3tA1nKjeC1Kl+ry03F2UE+sovpEuqaODScqg/VvIKJLZ3IDXLDptkRuSw04MFqeEBNUqowg06EqyPxu0hbZwEsR4x8q3m4m5FjI2LlpA3DaRiBIWk5iFkgxRf31cXf5MAz3Y43lXE6Mc4WKQfS6IQIle8jf5rKViGjXXNQt9PgVgHlJxIh5aXEwM72JrfwYcYtdOAgMthY2frw0AkxtYw3A7UD6L5AaY6LBdxtpgvXPNuWnjeGKxnYYMQMDDI4Bbvhy18SbJN+RqCMgaERWLGuI/5Zg44h4ah82fFmsIVXuYu4mzQhC7KA204nKB9EDXKYv1h5EUBm8zSmV6zwLXaZeTyor2rIkWwWOrIQ3RmCtW/4g12E4/UpBBo4MgJ6AHCige2wITdy/DeErkMCc326Smv3q/ejlVN3xeRJn8mczSuM+F2MO1sFNuYBAs7xAV60r2u6M2ds67J93QpwMGq/G331NfEXey3ewX5waGJ02+q0foxAZ25Bu3agBJbI//VgNxcwlKXCzGVg1gJZuYYJqhu4f9uspQHS+jhGXxmDqxobQOPPzT0llnyAdRo0ufbEMF2AZL6E3M3hDAxX4GcT81qNphUbwTDpnxtU0u+6Lz/daNvbhflecdB7UpPzisXGBKei5SAG7x7xC4icHnQiQYXGP5gTdg8kjFudUFe2I0tQzTcACyXZ3UEhfZBlAufsZo97QYNGKuvX5/1KplmnhHd3DJJ1xgWrldUV5DFaONMa3MhoBwXm4aQLrAL88s3LMlf7wWV7CaPTvNcmTD/lS7+j+gEBjXNv6Rds2AP+nGL8lxNA1b4LTZ0KX5Y98eq8pM7bacZn8AcFR+Ozx0B8677UjhyKu2G2gLWCP0NYj5PZYuhAhCTlh90FCXK85awcBaO9LXtA2tGxaLhBfz4VFqASbrEeqvXt3IXo
+ FlKpy+Sv
+ bjNvzcMdI8kHjq6F3UZKExQrjTywCE8F7h1m/4j7iBCPG4a3Sl/XsGCGAs1ezQnGNnNghnva1XOLra/f61aYHhvC/IzfteeDDavc+BH4V0OyER5n192fbMyz+TFCC1NPs2dRqMTr39wayFlDmt51aW3gUVOFRPDA1IEAv6wxvPyZof/U5SCeqoiBo2zVyqzX+QAobvaq09/TZsMHzc9e/xLsz6C2nW83/almN+uJr5Vul+PaPYvnnU4IKawUpGJD3BWlbioyn3fUNvadmk/dLmw8QpuIEPyGm5ORxeQE9mW66J3M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,48 +105,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 08, 2026 at 11:25:13PM +0200, Harry Yoo wrote:
-> On Tue, Oct 06, 2026 at 02:20:26AM -0700, Kees Cook wrote:
-> > Hi!
-> 
-> Hi Kees!
-> 
-> Was hoping to say hi to you at LPC but I missed the chance ;)
-> Maybe next time. Safe travels!
+vmap_page_range() and ioremap_page_range() clear the PTEs they
+installed when they fail, so the vunmap_range() in remap_isa_base()
+and ioremap_phb() has nothing left to remove.
 
-Hi! Yes, I kept trying to find you and Vlastimil but it never worked out.
-LPC is a non-stop hallway track usually. :) I will try again next year!
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+ arch/powerpc/kernel/isa-bridge.c | 5 ++---
+ arch/powerpc/kernel/pci_64.c     | 4 +---
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
-> > So v6 goes back to mirroring the kmalloc cache's alignment,
-> 
-> I might be missing something, but why is that a problem?
-> 
-> For kmem_buckets users, the reason* to specify alignment is because
-> they might need less strict alignment than kmalloc.
-> 
-> (*Perhaps it's nice to document that in the comment)
-> 
-> However, because kmem_buckets can fall back to kmalloc on e.g. kernels
-> w/o CONFIG_SLAB_BUCKETS, it should be fine to fall back. No?
-> 
-> Creating kmem_buckets with more strict alignment than
-> kmalloc doesn't make sense. 
-> 
-> > and drops the ctor and flags arguments for the same reason.
-> 
-> Uh, for ctor and flags, yes. We can't have them in kmem_buckets.
-
-Yeah, and given that these two, I'd just prefer to keep it a direct
-mirror for alignment too and not allow for any configurability here:
-they are supposed to be direct stand-ins for the general cache.
-
-> Going thorough slab/for-next sounds reasonable to me once it gets
-> some reviews.
-
-Thanks!
-
--Kees
-
+diff --git a/arch/powerpc/kernel/isa-bridge.c b/arch/powerpc/kernel/isa-bridge.c
+index 5c064485197a..93029d85e6ea 100644
+--- a/arch/powerpc/kernel/isa-bridge.c
++++ b/arch/powerpc/kernel/isa-bridge.c
+@@ -46,9 +46,8 @@ static void remap_isa_base(phys_addr_t pa, unsigned long size)
+ 	WARN_ON_ONCE(size & ~PAGE_MASK);
+ 
+ 	if (slab_is_available()) {
+-		if (vmap_page_range(ISA_IO_BASE, ISA_IO_BASE + size, pa,
+-				    pgprot_noncached(PAGE_KERNEL)))
+-			vunmap_range(ISA_IO_BASE, ISA_IO_BASE + size);
++		vmap_page_range(ISA_IO_BASE, ISA_IO_BASE + size, pa,
++				pgprot_noncached(PAGE_KERNEL));
+ 	} else {
+ 		early_ioremap_range(ISA_IO_BASE, pa, size,
+ 				pgprot_noncached(PAGE_KERNEL));
+diff --git a/arch/powerpc/kernel/pci_64.c b/arch/powerpc/kernel/pci_64.c
+index e27342ef128b..f74269636d5e 100644
+--- a/arch/powerpc/kernel/pci_64.c
++++ b/arch/powerpc/kernel/pci_64.c
+@@ -139,10 +139,8 @@ void __iomem *ioremap_phb(phys_addr_t paddr, unsigned long size)
+ 
+ 	addr = (unsigned long)area->addr;
+ 	if (ioremap_page_range(addr, addr + size, paddr,
+-			pgprot_noncached(PAGE_KERNEL))) {
+-		vunmap_range(addr, addr + size);
++			pgprot_noncached(PAGE_KERNEL)))
+ 		return NULL;
+-	}
+ 
+ 	return (void __iomem *)addr;
+ }
 -- 
-Kees Cook
+2.25.1
+
 
