@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50732CA6018
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:31:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41B7CCA601E
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:52:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FC116B0096; Fri,  9 Oct 2026 07:31:40 -0400 (EDT)
+	id 154CD6B008A; Fri,  9 Oct 2026 07:52:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D3616B00A3; Fri,  9 Oct 2026 07:31:40 -0400 (EDT)
+	id 105FF6B008C; Fri,  9 Oct 2026 07:52:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 411366B00A4; Fri,  9 Oct 2026 07:31:40 -0400 (EDT)
+	id 01AD56B0092; Fri,  9 Oct 2026 07:52:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C7C86B0096
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:31:40 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8EF72C0332
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:31:39 +0000 (UTC)
-X-FDA: 85302872718.28.0BB318B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D352E6B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:52:51 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 575B280365
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:52:51 +0000 (UTC)
+X-FDA: 85302926142.18.65DE918
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 09ECBA0012
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:31:37 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nGmJi/3W";
+	by imf23.hostedemail.com (Postfix) with ESMTP id C4DA0140006
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:52:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EmmMOlTu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791546769;
+	b=j725IOEBMFdxTBMC9b7CqQz/+LqpfZlFMb192SS4Z+JhEZtS03rywfSmlBcKy7FJokzWhv
+	CcbXf1KuUaNEGwY0H9rqKACDW3YTxc4BRXR0s0CPtVORL1ByNpaaCnEj3TZHwBm0mtp4It
+	YNqrEpaqy6+94f45b9FsqJ0WmHRjZ/A=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EmmMOlTu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791545498;
+	s=arc-20220608; t=1791546769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TDFEYy/Q/xEYECc94YNGYpg4Q/2TeXJxyRpR1xMyR2s=;
-	b=uU3Z/27cg9GDhHJd6cpIgYqUfHnYZ5YI57eUeLV4gcNhOYfrs2h+LUMGNMKKjWUHWxUhvx
-	/7ODaVat4y/f/VVduld7V0TPBu2Jp2sq37BLLOxZMOGmxNCUcx36do8p9YAxNZ2AF0z3Br
-	wgxEkA3VJK6gZishGNXLXA5d+pLQzGs=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nGmJi/3W";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791545498;
-	b=CwntCP06JWF/m10/uWuCi/NUf9YgU3CzF8ljdcteEs4djLP2Ta/V8IPwAaCoaQBwLrCK/t
-	FLsYr8gjLWG9Ovwl60C8V6/Jmr9H2c7piJLgwUeqkbcNOL4tlGuQ6Bq6/6EnM16YG1DB+B
-	ytCCiIO3k6brUQbPGqqX17sGkhpSwSM=
+	bh=MPaxLapLIH/2EyNGK1S6Kb5H2+5cvD20ZEOmkko0hkA=;
+	b=gV48kzOyqmjKhKkPRrBGW4okIKxYShXPDyJ4aBkCn/OKe6dyOPqms2Rejo1FcqpwqSECiD
+	Ts4PvKp2Ie50KVnZ8fg9KrxtEBal+/2Svb2NGYx+yud/WRKjLSyEX+PQp5vGdBitMzmSlS
+	8Zr1la5OBf8bl4NQHjA3ZvShQ+ErNnM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BC14660DBD;
-	Fri,  9 Oct 2026 11:31:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45301F000FF;
-	Fri,  9 Oct 2026 11:31:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3D53660DBD;
+	Fri,  9 Oct 2026 11:52:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D24A1F000FF;
+	Fri,  9 Oct 2026 11:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791545496;
-	bh=TDFEYy/Q/xEYECc94YNGYpg4Q/2TeXJxyRpR1xMyR2s=;
+	s=k20260515; t=1791546768;
+	bh=MPaxLapLIH/2EyNGK1S6Kb5H2+5cvD20ZEOmkko0hkA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nGmJi/3WdIz7DcgX/GzMzaKt92xgA+x5e3sBci9m0VGBd/McpS1+zBtQtpexkXfqf
-	 2wwDbDcF4Njq7OWB+Re+dEgCoqLHwLHyluOv5vx78XvCULP8LQYXWXKtIcTsk5nUVM
-	 aSlrq+CrpoCriHIbaxYmPRq1g4gV7DIpLKoZe2xTI4wPsIOc0DYlMt59n8TziUK99z
-	 n2BxSleErFa5kIaXl5M1uuTqD2VNRgaebUU3I5yFNMpWt6t/OG+ihrwnq/41zK3X7r
-	 euuZabEg7p1XBGUVufxdtvrFJAQD2Yz1nxGOo+lcPzizOBE2yuW+Q+/RwwxDnfiOS9
-	 8AyLe1iNvrsDg==
-Date: Fri, 9 Oct 2026 12:31:31 +0100
+	b=EmmMOlTuplEeuow4t4xT6vfDJs++UDA+9Iy3DZRwR/KKje4t4byk3Is7Wuf7f9y0i
+	 AhQfbE2HtbpAby4CLjECGQjpZUOqavTotVpsRRPVQmkKj2Q53FauYRAvjcpwcMvpSn
+	 f0pp1MR/dxefBD0cDo7mkpkQIID03DjVhXDxJwt3lxy6n0RsjioFcvXPPVgdEFSrlp
+	 aQ1zsm2o63O3JSFtdNCUCJ79fA4aN61tex2rnJ+6uF7BZ62Xb4BqsVgDOVM7q8JG9i
+	 KX3TU1JnBAax+VugXLxZxKa1fD+Jy+AMbxaLmniuXMCmlanA21ucKPi7HbeOsXbk2M
+	 w1E7vTentQszg==
+Date: Fri, 9 Oct 2026 12:52:43 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Ihor Solodrai <ihor.solodrai@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, bpf <bpf@vger.kernel.org>
-Subject: Re: [PATCH v2] mm/vma: keep the unlinked VMA off the file across
- unmap on mmap hook failure
-Message-ID: <asjQQF_Ok1TZPm1M@gremlin>
-References: <20261007101800.58d50b1b20a10738e630bfd5@linux-foundation.org>
- <20261007194708.2009-1-okerixx@gmail.com>
- <e139339c-1e55-438b-86bf-0960ad4029f1@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Li Zhe <lizhe.67@bytedance.com>, 
+	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>, akpm@linux-foundation.org, muchun.song@linux.dev, 
+	osalvador@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/hugetlb: avoid recursive i_mmap_rwsem in PMD sharing
+Message-ID: <asjVUa6XBZ8ti-0_@gremlin>
+References: <20260930064308.58159-1-lizhe.67@bytedance.com>
+ <arzVaC2IYkqSb0_U@gmail.com>
+ <9a7c026e-f5f2-40e0-84aa-919c988cc136@bytedance.com>
+ <2b4571c5-8e51-4c91-9d88-11929f200875@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e139339c-1e55-438b-86bf-0960ad4029f1@linux.dev>
-X-Stat-Signature: 4qa4e147j5w8e4amjkd85s459g4zukxj
+In-Reply-To: <2b4571c5-8e51-4c91-9d88-11929f200875@kernel.org>
+X-Stat-Signature: mdao8jof4in6hejhwk1o9q7kbyt5gk71
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 09ECBA0012
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791545497-467685
-X-HE-Meta: U2FsdGVkX1/PTxUwUaJW21bZDNwz130fJrlAvqvM0ix3ZzWflW8SrccHPObW+dxHlROHVAf6QVSKhFOJKiM8iuinIDF8z+/O6SYJt21WjsqeCxByFwlHcx3J6W9UfCIt1SMq6mG2YDKCJjcKjMP76MivXWlG2/LEo4O5iJhx6MnMDo78FKMwn5OT02bxlsvm1BlzFBV32cn2lHGu0SVKN01wanPweQptGE8RjsR8YrRpJiE6NanNdPkYzxYr9rR8A/KtpSk4nZ/lcqGX98Uk5RGGLw+CAPU+1WLemjUB71I29h6h2mByGEKojGyK4YsOeistZhVnGa1i+UmMeGdhnJlHs2D8W7tA9o+nVr9a/56M9Ar0congkrrtZpdvLtCSog3P0VX7da9XxJzjrawhiq2iF/zNcYk/ijvaz3Pp5OiyEKeMofJcDOEw92ajUdneOTwa7pSZSxv/iuKHgzwZF+dpNb0vdgYA8b9zWPWoovpVeZ3507lRSAYHmnbtymepxn6SF7lcGs22LM9DfCf2lfQwjAoaGtrq5THYvUyh6pEKv5Gmd+WkrQ8dGaWDifZpq0mTUG5v7cOhwfekiPzLheZYzpytlpF10gNC9QvaDqY2++gzRJV1An8wrZliMPlVxtctB+3B3zBsxAPEXZGIZUwNjKjDwqNZz8iBnLOioWogDnSKJTiltUG3CKo5e4H0NIumsZvQXsreoLFPTIbmd2fOlu1BPjqDjkCigGtfXOOTAueWEn/H6lHeiMKDIea752xsV6vG4v6rg1X7WYNdKlyYORjwwpIc5lN3AtkVImirErQLg4Cq03Ael7DXspTa++43bYnRQmTCIa9DfoJNAw5ic4HqFlAUT4uwwMMqbv+8IXE0zZRh597OMzJQGNicuqFFwKT3aNlGltCw7b4RpaVCwWnXEqA7Vp1PfCBALo0vJPxBQzQMBCa6tnPLHnQdHQxdUO4xWqH1H2iFRrL
- 7TrMktm2
- kgKZwS7LSuJN0UpGYcwlu2IrBEdOEty+FQnEshwZYjC4e7B69n4kHlm9a16x9AsuUnRizpizt7R/Hl0ejq1eOfNf70UlICWZOyBuyZRreoWp5hUBXVW1MQLn/MsBFin8eF7bKvASH6QcKZTE0Pk0s17v4IqG+Mtaoe5eLfq1w2a9RA1mmRIxLit69wtCZGTr5/7pgF/rvemET3e6U08k1QbuhAX1Lyl8sdZ0PQF1y7tR596UTei1/gM07Q8nFB8DZWSMgBsGOcb36kcAOoMvVKYcEQw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C4DA0140006
+X-HE-Tag: 1791546769-812527
+X-HE-Meta: U2FsdGVkX1+vEcXLGbqVf47EsF50UVmDV8OfkH+8PbSqytPDSEEWsSHmGIfop3m/6nE9T6X5bpMJ2I2vnR3hatqNosH4WaWdhm2HnZJ0yOgK4rGbrqV6WxXjaZzuRxYsbrPPEOSa6z15oEPEPCN3fgCMxNdIDRH7s/X551bhwwZMbDqZogZJFCBsTD2QMWLKYpe6UQW3b8ijT+Fdap3nGtBYdFRsXhuQ+OKXYp0Ht29wxHMNBfZgb/wmue6IsDETs77WFMJ/xhc+sOSqp+bTC1p2YGbvrkx07kYHkDSpjcWJLTkwdbkViav7ijNT5UqDo1wu8+uVNhrmMFdLzftvy5/mQV1XoldWsCqSzepmfgkQR7IN0t/CgtTqOm5LSQO+GNpXk91UBiosAPLBc8RhNdgco86KbU9gZ35VjFSI3hQayQljXvQ8DuMwUXC/A+ctZC4yrobkB1f43HqO+f3X0b3FN+UavVhG3qtrcv+vaY6I37CegtygdNANCVim43vWQayajdbJR1QFZ4v0EZK33mu538bH+fQE/sHO0oMc/7V70M9y6yI9y4uk1VqfhcoZFFnPbr/JDwBf//ELlVUrCIa4kGqtD38kKUFW7xQYK8GgKpK/ovZE9GAdYPsrkU5nscy996gOkDjwCyrCXqvdxbMSWinycgxLxDeRxeAsLwcwAp2SnDKF4GhLapLpdP2Kv/fgoPD459HqwxyygMsyi6kqqvcYp6z5ysX+oX5qCf2HfS5Lb1tBgLtmqgRYcJwY79JtL8M3a73oBBcOJf8YDiXZcDonAEwfAun5z+PQo7ZF8kUt2jSwoIrmmrTKwbgvbT+9ZBkblxhtQ03ys+rXDtInY1lXhb3nr7RRN1bWhZL2kTTIa/G9Nif9ATJpb29w1hOmZsx+N5nInIQTDEq8fA5tvCEBRt5PMvTpVcM7RAE5fCALLe5/s1SdtFnfOPwgRvDLGorbnzPSgjewlRY
+ onQjwvyw
+ oeh9fU8i1fyKiPW8NVDQUjaZwVud4++7SnGOwG3cjZOIAvrDYzVyXumvaVRl101OjYdqU9ukJ2HiAVJgfQqFs5PSwc5LDSQ2xlA2Ow+/0Ahd4jNlyuqpmvEAZ9MaxELW/XkcmgimlSKUT7qggiqr1xjYm4I2Ov2eMQTtHf54ji6Ytjs3hwZHO8daXArPZFgbGf0P69aJvwrO2Z1pzGCcku/k+iIm45EPmAdJHDCxv8IQRn2iF/GqLDcvD3gLqJHTNBBIl/7CkIsuhzFJ4noJLV69yZqJrXzLDfrSIjro4sG7J8nA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,16 +94,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
--cc slopper
+On Mon, Oct 05, 2026 at 11:25:01AM +0200, David Hildenbrand (Arm) wrote:
+> > David mentioned that Oscar was planning to send a proper fix for this
+> > issue, so I will wait for that patch instead of moving forward with this
+> > trylock fallback approach.
+> @Lorenzo, if Oscar is too busy, I guess we can paste the overall idea for the
+> fix here as well (publicly)?
 
-On Thu, Oct 08, 2026 at 02:48:07PM -0700, Ihor Solodrai wrote:
-> BPF CI caught this bug on linux-next as well:
-> https://github.com/kernel-patches/bpf/actions/runs/37736351874
-
-Nice that it caught it!
-
-Is there a way to automatically notify patch author that when it happens? Does
-it bisect, etc. or just green/red?
+Yeah I don't see why not! I don't think there's anything that needs to be
+private here.
 
 --
 Cheers, Lorenzo
