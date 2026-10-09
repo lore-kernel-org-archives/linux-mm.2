@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E0FCA6019
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 14:29:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D627CA6015
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 14:36:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C7266B009F; Fri,  9 Oct 2026 10:29:00 -0400 (EDT)
+	id 47EDB6B008A; Fri,  9 Oct 2026 10:36:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99E826B00A0; Fri,  9 Oct 2026 10:29:00 -0400 (EDT)
+	id 455EF6B008C; Fri,  9 Oct 2026 10:36:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DBB56B00A1; Fri,  9 Oct 2026 10:29:00 -0400 (EDT)
+	id 36C486B0093; Fri,  9 Oct 2026 10:36:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E8A76B009F
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:29:00 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2A3EE1A0416
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:28:59 +0000 (UTC)
-X-FDA: 85303319598.27.8DC5A00
-Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 39116180003
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:28:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=W3TNU13c;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 15B3F6B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:36:47 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8FC73120435
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:36:41 +0000 (UTC)
+X-FDA: 85303339002.20.0156DD6
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A67D0120003
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:36:39 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=GC2wHIce;
 	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf16.hostedemail.com: domain of daniel.almeida@collabora.com designates 165.173.180.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
+	spf=pass (imf29.hostedemail.com: domain of daniel.almeida@collabora.com designates 165.173.182.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791556137;
+	s=arc-20220608; t=1791556599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zVbWP16VRMrWp/DvVtxAnr3TU+v7W0tYlq0ED/T4l0U=;
-	b=cBojAyM/IoOPSvNvd58pjbbmRuy/xH/Cpb1SjEjhaNkBq30+0QhoItIEm6oqtWiR0Ay+Aa
-	zShAUH8WP0+idsLlF5bH0RxrdoXODryqg4QY8ozlgIEk0tBvmir46pX7+4d3hIfeNP58DI
-	v0Ky1cu/QVPSwSXC+Zp+P4rhG7BTGEE=
+	bh=g4UUnYhHV7ucZE6mbImtigGPnQ4SPA1INEgqC2/4t4M=;
+	b=mo/HQWeqqeOcyvbfV0+gouHopCChs7qRWrknhEAnGEJZLqSGHhcA/kxxDuO18lptoxxGVc
+	h8t3v1piiSnV5ttIa818+8cgXN3KQTvd8uEnk/GJTN/fECErExHrONjLl1nCJcNaYkc+3X
+	MCkgJ17dXI2y7BtRzSgu5WJL6yIATDk=
 ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=W3TNU13c;
+	imf29.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=GC2wHIce;
 	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf16.hostedemail.com: domain of daniel.almeida@collabora.com designates 165.173.180.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
+	spf=pass (imf29.hostedemail.com: domain of daniel.almeida@collabora.com designates 165.173.182.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791556137;
-	b=uVJ+6JrYQlzdBmf8QjNMmhdBup04CjzpkylX7+xCZDb/A3Z3xRtTTeITdT91bwOIUBzfNo
-	BKbm6kQ7TRgxH5HtdDNoqq6hU+dzWg3Rv31d9fYjkEkZLsOGVAbwuQy6BfXZKB4ZXsUTUI
-	x7jf/N5z1M00Yyv/39Mdsdp7LwCFPxc=
-ARC-Seal: i=1; a=rsa-sha256; t=1791556129; cv=none; 
+	t=1791556599;
+	b=EkpfvNIb7UqNc5BqM/AHaiOzCWleFwmvcXoWyC9iocwsnLDRkHvibGQ6o1MY7B50xeTB9Y
+	WiUojWdg8Vg11pkjp59Mdr9OVzKmUceYLF6zKt6Dm6V5nMMfwu9f2xegh5a5MrXTM2zHKb
+	dbChk8CbDDETgYNqTJYOFd811NDBwCI=
+ARC-Seal: i=1; a=rsa-sha256; t=1791556590; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=fEpcfuCdyTuAeNVDN5w3gTdg4iVSczsygLIQjzPSzP2cQiuZBlRjpPBYY11ebxXvTfdmaVyb4KDAcDpv443k7DkPjdlZCbprA4YXWoNnt9F+Cdgh9hqmup+dHCgrWJz8uLkRsNsjIYboC18oaEhjmkf4BAiWcwqwmwv+TbdPGxA=
+	b=nXhJggP73UHG7VkWulp5vqTh3BP6i7wGtgpkYOKUPOM+U/DzbpruJR/ymLbV6W5A7VrGFJFePxlIrWKqsm5DAyOZXN0BtWbeOMX3QdQCsEWJWHImyT2Or4aWCPWTAvgvht+8O/RHlrtpjIoqWECUU/UmN5eHIImEHr+UT2Mssvs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1791556129; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=zVbWP16VRMrWp/DvVtxAnr3TU+v7W0tYlq0ED/T4l0U=; 
-	b=csy4qDpmoMmAT/bHWKkhtnFb16J1DpyFESqr/Yc9HJ68+x549k8mWsSMUx/FW+9c93e9qASItOCLZmrhoN8qZEdp+YDebB/M14jpjBW0EhLLXCQEht0vmQSfgVsheiV5b+f/VQ3SOE/onJ3sPh9jas1GziXPc7mrjt37Sa+bkVA=
+	t=1791556590; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=g4UUnYhHV7ucZE6mbImtigGPnQ4SPA1INEgqC2/4t4M=; 
+	b=BJP+s4ZrZgogIh2zHi2NnR8WAU/Lxq8QPu82ysdraYJBDRFlVTb2vRNZiklQ+ZsXrsr0XLmr1RdM+s7WLlaZNgpQM7JjqlxqDHgrgcTISm3Do4LCvFz0fAoCqjI2/n5/DRWXJO3zaRMjj4ynbkYjCMmJ/WDbI7LVNbHnHEy1I+E=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791556129;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791556590;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=zVbWP16VRMrWp/DvVtxAnr3TU+v7W0tYlq0ED/T4l0U=;
-	b=W3TNU13cRQ1sXBYnikNHNpwESMYtfMCVCptTvukXjQopCaVz30kYiRXXJwSxKmWt
-	a8dRgoGRAb866GgHV73oe93zM/xKV3cXEK73TfAOIR5IW2Mw35SlQVBtsJKV6XRXN2z
-	FluNH19L8taDBquVPfhF/o56pqbKYYIpOhc02YRU=
-Received: by smtp.zohomail.com with SMTPS id 1791556126179586.2419855994772;
-	Fri, 9 Oct 2026 07:28:46 -0700 (PDT)
+	bh=g4UUnYhHV7ucZE6mbImtigGPnQ4SPA1INEgqC2/4t4M=;
+	b=GC2wHIceWth6rBpgcOPzsl3yXK8F1YE5FnWs6ql6bagW8xh78+g7XtzA2VHQ+OIG
+	35EfNElXdnDKSUeIvHcbg+KHV2qcZ0ILHmQUxTkv1HMT7AbOg6E4R6CAf1Zf5yfMlcv
+	95+X5YbZersRMSj1tN6KPn77cl1Bz2t8PZkVGJAg=
+Received: by smtp.zohomail.com with SMTPS id 1791556588006355.21426914343954;
+	Fri, 9 Oct 2026 07:36:28 -0700 (PDT)
 Content-Type: text/plain;
-	charset=us-ascii
+	charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: Re: [PATCH v3 06/11] drm/tyr: add BO creation and lookup helpers
+Subject: Re: [PATCH v3 07/11] drm/tyr: add VM-related ioctls
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260929-tyr-ioctls-v3-6-26955fb111d5@kylinos.cn>
-Date: Fri, 9 Oct 2026 11:28:29 -0300
+In-Reply-To: <20260929-tyr-ioctls-v3-7-26955fb111d5@kylinos.cn>
+Date: Fri, 9 Oct 2026 11:36:08 -0300
 Cc: Miguel Ojeda <ojeda@kernel.org>,
  Boqun Feng <boqun@kernel.org>,
  Gary Guo <gary@garyguo.net>,
@@ -104,20 +104,20 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
  driver-core@lists.linux.dev,
  Alvin Sun <alvin.sun@linux.dev>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <84ADA150-9E7B-4EF9-ABD0-377E9746E293@collabora.com>
+Message-Id: <D57A468E-4256-40EC-99BB-43B931E0D4BB@collabora.com>
 References: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
- <20260929-tyr-ioctls-v3-6-26955fb111d5@kylinos.cn>
+ <20260929-tyr-ioctls-v3-7-26955fb111d5@kylinos.cn>
 To: sunke@kylinos.cn
 X-Mailer: Apple Mail (2.3901.100.1.1.11)
 X-ZohoMailClient: External
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 39116180003
+X-Rspamd-Queue-Id: A67D0120003
 X-Rspam-User: 
-X-Stat-Signature: od9ydpy9sax7bwrgzfmi5q3ktn4sqzpo
-X-HE-Tag: 1791556137-315481
-X-HE-Meta: U2FsdGVkX18OONa2cyHofhPIeUemJjI5xecEx+l0rT99xY8ZPBByRRGDCUbnvmmTXqhg325bZe3L+Kk48bsaEJqmybN0C/F2Sxc7BchbPVv7Q2Y4FT5tOYxuJIJekGk7L8U6BRBrwkTIPcqtcWRBt3hhoebS9MqBAob9QWYhRvY6FBpgpXFZqtLFNlC9qawdz22VSuY+1hulA0HL1VI+M4xxNfuqGaCJlQsdbunSOuno20pdA0cpcXsoS5+NjHKfHqjz6w5qZ7B3+Aqj04UEYyFfM23LKeHbSi4qAYzo4/kwDezr4Jb+tOJSSbATgGbJPqjKWY1FLF6BaD5QpW27Ifs2u+TfA+nlgmTxQLnzH5+35kC6v4K3vS/QXpyAaKAR/+O35gNwRqi4KvCxZszaF5NxBH+N4IBidbd+z4doKpA4wsr81DHIPYlxFBz353bJjM6Gg5y6a7VOGM7rnz+/VAWwwU1fKgPWUd/RhGD1PuD9h1Uoz5tOrJBntNRAQ8MNyt6UcImaL33K9B9C+FiyCgdlmf/iYY9539NmrLhEbagywCpWIUQV/8iE7kRaxgmyFiEhzfpwF+1rVnXXs4MDhQtBIg9VUsHoXX9sEL6R5/qgBri1nnP0He5YAkfWv/D8YZ6mARNKsEtLVvAV79TFCcZ3eQ+B/QuZYt17cp50vSX1YA7NR2IWxgKWlkhHgP0rZg5SE0nIWGJ7PJTob7QoxUSkdA/T2fro+BGpBVkKY5t2CUwzoNjWPsMI/l2elgTqTfgVdUQEdcwj+tr9ZEh0B/99X0JXUtGYAxvvL7DsLPYzolxFEuysOB6LFO6QK9l5fXJUzEb01w8YWOaThRVV2uyrzcqXcbMx5baYI3bJ+Z3kzs0cD+K5F6arG0zxBgqwM2D5gPlSsAS/qkGKvk+yNIB+DNIFabyJGo2cA/vdb8Jttr47NHSaVU+Hrj1X14hRxYwahda5Sd1TYHEM7gV
- BWsw6U9h
- HR8YlPMa0b8MISqIpemCmvhnZ6UhZz9ok60ds0OssSSPnCbVcBcTw5+rd60g+uyUHxvaxS1K9QE6om7gyStxDtKdRXv6xkoMTUqnUAUNP7imPB63ZlzwFZkgK1doyTOBrhMGF36qpdo9bAxgc2AupkzF7CJI+ZVbh7F5L5q8CFXrEjMgemgK7g2NDIsm2OogZUF0osPLFLTq0gsLNWA434AEeFAlEZSCaiAwCISpTOgNG/xs7Q7ul4p61+4Sjc/j4eHpzJtEG2f2QYuGYfkOXRZJCdyAGDz7inP8+500Q28nHU5INWyEJsABit2ruZ+8Y2rB21HR7mE1D8n8QFVs7p0HmTCH8bYeHYFu1EB1+a/HdJym3XMVQCzQi8EDYY74XivLKszvDGmeonRjtfoihjsJCKaNbxGUbXcmc
+X-Stat-Signature: n77cnrks8sz7bkah8w8urso68bnp9d55
+X-HE-Tag: 1791556599-267275
+X-HE-Meta: U2FsdGVkX19optyega7Chp4n6wRf8/1ZP74Gf5Lm9gpQBhexB0WByjebd5aJrBjFjylpOk8vhkFXaPpIBry9QwTM4pWQgjqsOsjdlBOeflMOOibYFRbCSDN1NdwePJrxZ78zUUiRqyHblqmMboCld3a7kG/E9uU5mx64kIqgX4FVuVoBDhpl/mWn2L4VnCLVLU9qaAIJGQMOrAZxineSTLueEBFU7Ml1D+uhzSPzZLaLS4IYkJiQrinLS6MCp68maqm4AbjXkf/ZKQ0LCPsZThxvhHvzWtQXPcJjXZPHRkQgrrSLumYvIfKIOwnFYkzU5cApMbcEZhwSA6stpaQtTj9553LDk2DR+E85GpnI2XjJ4SRUz8C/NVWnpjoNXTApfODAvs8iJSx1PnwMcoEImAnkA1bexhzcLXlR1v8IgLySqaeD0ggK+XWHchh2x6UpX4IXoUl4QFxd6wVE5treGuQX0NwWWlpphJcYNHF/pH8bsphZRSCkFl0Lc4cLtUVPzSFgsolIM+jETegur1T2iq5yo1rSoRaClXTzc4yrn1Tb1YCp7Wgy8GSFxsmWgx0CDufN4gebjVpe7Ym2kkIm2BSlcvbkyiW9Q6rmtS75+8mzeeU4IQWH3Uy8sL1pu2fDCq0fvmtMwE3bjpIDjX0Y2EJASFDUDHBzBGFankPVXrd6ea7TVa00pRjc4ZpJTJCMIB3v/DB5Btmsqz3Jf9eMeDv8dF/YVaOZePq8ke7t8G3tA9fVqXLgHrMBMbY3jREPxit98tD8F7RCZIdjPusCPgfo8IqvbpFrWvSqK2tNKtltey9P7WvdvgvVW8eat/InNV0z9zteV/bwIS2KOU3Yj5vpa0yjbcxN+cuCprUd7bWKNGTABxc7FVS/DIaTsHqionpe7SQ3pvi5PlZs0nwGC18yPLAT6cQFrli0NPwGnpc/yjW9SPeJiWgAX0okQnGAy2F/i2bBITxU33CLgdv
+ KrhltmGS
+ b8wDVdz6JzaZ/SS7jJyoyqUTmOCTNuBHm3g0CAcYv02V2Ca/cgI/b33M3wu9d1Txen+qBF089BARZ4M0u2KKhd/ZK8LWqxCHmc/UAPhnjUSZsfNSdP79kwugUQCt8iOuDO4gJES/9jNZewXkwuTGRmEL4hINN9R0EkAZnteHVndo06XiZjHIre5sOwRd/TC7YeyqLCRO5H32gUGf1gvQOJEyRk3o1g4WBnIcL0gm/dfQ56EUVt60AxzuWBszM2bdRicVbgQSQo/qfZAlxOmgc6/VDiaAh8bPwsQFG2TrzyApWTtj4UbfNN7TJRxKVxz9gt5mJ7SR1uq14Jw6zyID4jg7vng4JhSS12nTw+w3cdFkmler8MFJsTVZGZ+LYhB6tJUntDR4inFLdfTEvZ5+aScWg+s0UW1nyo/tzW6bCHipznts=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,92 +125,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Alvin,
 
+> +
+> +    pub(crate) fn vm_destroy(
+> +        ddev: &TyrDrmDevice<Registered>,
+> +        _reg_data: &TyrDrmRegistrationData<'_>,
+> +        vmdestroy: &mut uapi::drm_panthor_vm_destroy,
+> +        file: &TyrDrmFile,
+> +    ) -> Result<u32> {
+> +        if vmdestroy.pad !=3D 0 {
+> +            dev_err!(
+> +                ddev.as_ref(),
+> +                "Invalid VM destroy pad: {:#x}\n",
+> +                vmdestroy.pad
+> +            );
 
-> On 28 Sep 2026, at 23:15, Ke Sun via B4 Relay =
-<devnull+sunke.kylinos.cn@kernel.org> wrote:
->=20
-> From: Alvin Sun <alvin.sun@linux.dev>
->=20
-> Add helpers for the BO ioctls: new_object() creates a GEM object with
-> the size aligned up to PAGE_SIZE, and lookup_handle() resolves a =
-handle
-> for a DRM file.
->=20
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> ---
-> drivers/gpu/drm/tyr/gem.rs | 31 ++++++++++++++++++++++++++++++-
-> 1 file changed, 30 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-> index 3bf3787f5c3fd..0e0989a48678f 100644
-> --- a/drivers/gpu/drm/tyr/gem.rs
-> +++ b/drivers/gpu/drm/tyr/gem.rs
-> @@ -9,8 +9,10 @@
-> use kernel::{
->     drm::gem::{
->         self,
-> -        shmem, //
-> +        shmem,
-> +        BaseObject, //
->     },
-> +    page::PAGE_SIZE,
->     prelude::*,
->     sync::{
->         aref::ARef,
-> @@ -23,6 +25,7 @@
->         TyrDrmDevice,
->         TyrDrmDriver, //
->     },
-> +    file::TyrDrmFile,
->     vm::{
->         Vm,
->         VmMapFlags, //
-> @@ -53,6 +56,32 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: =
-BoCreateArgs) -> impl PinInit<Se
-> /// Type alias for Tyr GEM buffer objects.
-> pub(crate) type Bo =3D gem::shmem::Object<BoData>;
->=20
-> +/// Create a new GEM buffer object.
-> +#[expect(dead_code)]
-> +pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: =
-u32) -> Result<ARef<Bo>> {
-> +    if size =3D=3D 0 {
-> +        return Err(EINVAL);
+For invalid userspace arguments, let=E2=80=99s try to use dev_dbg =
+instead.
+
+Same for other places.
+
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        let ret: Result<u32, Error> =3D file.inner_with(|pfile| {
+> +            let vm =3D pfile.vm_pool.remove(vmdestroy.id)?;
+> +            vm.kill();
+> +            Ok(0)
+> +        });
+> +        ret
 > +    }
 > +
-> +    let aligned_size =3D =
-size.checked_next_multiple_of(PAGE_SIZE).ok_or(EINVAL)?;
+> +    pub(crate) fn vm_bind(
+> +        ddev: &TyrDrmDevice<Registered>,
+> +        _reg_data: &TyrDrmRegistrationData<'_>,
+> +        vmbind: &mut uapi::drm_panthor_vm_bind,
+> +        file: &TyrDrmFile,
+> +    ) -> Result<u32> {
+> +        let async_flag =3D =
+uapi::drm_panthor_vm_bind_flags_DRM_PANTHOR_VM_BIND_ASYNC;
 > +
-> +    Bo::new(
-> +        ddev,
-> +        aligned_size,
-> +        shmem::ObjectConfig {
-> +            map_wc: true,
-> +            parent_resv_obj: None,
-> +        },
-> +        BoCreateArgs { flags },
-> +    )
-> +}
+> +        if vmbind.flags & !async_flag !=3D 0 {
+> +            dev_err!(
+> +                ddev.as_ref(),
+> +                "Invalid VM_BIND flags: {:#x}\n",
+> +                vmbind.flags
+> +            );
+> +            return Err(EINVAL);
+> +        }
 > +
-> +/// Look up a GEM object by handle for a DRM file.
-> +#[expect(dead_code)]
-> +pub(crate) fn lookup_handle(file: &TyrDrmFile, handle: u32) -> =
-Result<ARef<Bo>> {
-> +    Bo::lookup_handle(file, handle)
-> +}
-> +
-> /// Creates a dummy GEM object to serve as the root of a GPUVM.
-> pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> =
-Result<ARef<Bo>> {
->     let bo =3D Bo::new(
->=20
-> --=20
-> 2.43.0
->=20
->=20
->=20
+> +        if vmbind.flags & async_flag !=3D 0 {
+> +            dev_err!(ddev.as_ref(), "Async VM_BIND not supported\n");
+> +            return Err(ENOTSUPP);
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+IIRC ioctls should not return this, but EOPNOTSUPP instead.
 
+
+
+With the changes above,
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
 
