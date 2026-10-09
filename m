@@ -4,100 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4E1BCA6018
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:29:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3185ACA6018
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:30:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E94C06B00A1; Fri,  9 Oct 2026 07:29:17 -0400 (EDT)
+	id 323846B008C; Fri,  9 Oct 2026 07:30:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E45106B00A2; Fri,  9 Oct 2026 07:29:17 -0400 (EDT)
+	id 2FB326B0096; Fri,  9 Oct 2026 07:30:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5AEC6B00A3; Fri,  9 Oct 2026 07:29:17 -0400 (EDT)
+	id 238E56B00A3; Fri,  9 Oct 2026 07:30:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AC86B6B00A1
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:29:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4A27D1C3736
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:29:17 +0000 (UTC)
-X-FDA: 85302866754.07.5384ECF
-Received: from mta0.migadu.com (out-238.mta0.migadu.com [91.218.175.238])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1ABBB1C0006
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:29:14 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oIAtzHD+;
-	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.238 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 024B06B008C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:30:01 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9CFBA16033F
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:30:00 +0000 (UTC)
+X-FDA: 85302868560.11.26E3D6A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0FC54140003
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:29:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l/1GGXq9";
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791545355;
+	s=arc-20220608; t=1791545399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3lZQEAXM5d3JKKOLgek0em0QcuT2R31gaDHkaPER77k=;
-	b=1NKw1YivxcK37XdKMSGcy8ec/xYQXKlj0k+jDOGTqgSJWRgWDeMz+Nqz0C4Gw+tguU2CNx
-	dJdwlH6UuU3yN6a50ExYsWvZUcmeflQCzfQHo7w8hV99QNmCZovaZNVCzDrW3aiC42hKk1
-	DFCNgO2P3gZEdz/TRaRsm94qfa7eB+0=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oIAtzHD+;
-	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.238 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=iy4q9fYuwuvIGKCe7XdYXqcAN5Dor83AEgknEF3WNOU=;
+	b=f6J7XXTvrvC0aoeZq497cTSo1PX3vOOdlR415QX04foA8UB4kmGnOomByOM5Ru/a6zj+Aa
+	HOTH3/5Vee9oIpTAlB8e3zjOjLfBcyVIE/2Lt3LDQdhvmXR1w0H+pjY8BTe+qiXys7AVK1
+	1OgyqJBB5ixRXlPoS0tRxFZb3R5o8GI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791545355;
-	b=YTsrjw7HKq3sRLd7DyYsqrkwfi7WCsP6p5XHxNsbsjonN3Gc4StsOCVLpQzpzxFypRuCqT
-	MUgpRLcXr1xjGkibbYufvyeZfSgfKcPUpMKGrPMphYb8E6uSp1iJGX9Q6OW0xtz/bBCc7T
-	R0Pub71hdWDogkjSkG45+udqxMkRIcs=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=9x2VgaCQqq1qe9Sd3mI+ji7pCRHxHu0WOqvf+sHVC10=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791545353; v=1; x=1792150153;
- b=oIAtzHD+uyGDbZl2cSPP5H6EUsoC6yqhf1U++gKNvFIMGOyKEhJClrLnVuvCY793VrA007Y7
- 5eas06fDn2HdlS0g6su4jxWsW63kqxYajDnrDpvqWf1nPUNL8H5v6V5Vf43MWNRIQPhU9aYyojF
- tf6q36X2dohhfQoMuRkM9n0E=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 13a9e522eed7582a;
-	Fri, 09 Oct 2026 11:29:13 +0000
-X-Mizu-Trace-ID: 13a9e522eed7582a
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <839d13ef-8ca3-4e58-9bd0-84137f2d6866@linux.dev>
-Date: Fri, 9 Oct 2026 19:30:21 +0800
+	t=1791545399;
+	b=F1UoRB7AuqNkArhPOnyPXo8lZKYFHs/ceFGWpfMHx71Ifzb9W2A/X+MuV+2YAu3omNrvKi
+	c72hshXTAFqgEfCcMUmQJ2tdhy19VhWX2lq8OZCP7AKSEL/VNfHd2ADnT++moHIV3rGGWb
+	nFO+83jU7xXQLBNZu/wAULZg0cli5Gw=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l/1GGXq9";
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7DAD560DC4;
+	Fri,  9 Oct 2026 11:29:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FFA1F000FF;
+	Fri,  9 Oct 2026 11:29:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791545398;
+	bh=iy4q9fYuwuvIGKCe7XdYXqcAN5Dor83AEgknEF3WNOU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=l/1GGXq9dDWhsGGVSPhOO0j4/mw3Fcd5071LUIq/IIdK0wJT15ls9ds0Udc1xXMKi
+	 XIh5scCsG346Ny3fe1h2GLqz3D9Y7njVvsPyhr2pp55bL+/nQuHIfGAujMqjlEM54Y
+	 t2FgLiTDlsitTB7WuAxcr3E13mX6FCVLbcvFiV6KnCSPl/9qHSq5VqC1MrV4kK5I/i
+	 0HbeMsYWg5OHjmcYS+WHFjm0AeJGcrKTrd+TKxUBXzFCPOkkeuVVKDTnn8ymYLF2Ry
+	 hAxvmSWbA2ss0+r1lySgr9l66xA+OuwohuEyuDKU3xxWg2ZFgQ5v7ZGh9+BjwsxJTV
+	 g4kTv1QcinbHg==
+Date: Fri, 9 Oct 2026 12:29:53 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R . Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/vma: keep the unlinked VMA off the file across
+ unmap on mmap hook failure
+Message-ID: <asjP0A-59EN2xSsh@gremlin>
+References: <20261007101800.58d50b1b20a10738e630bfd5@linux-foundation.org>
+ <20261007194708.2009-1-okerixx@gmail.com>
+ <20261007145329.dd944233d7986bc0f5b2d63c@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 0/7] alloc_tag and module codetag section fixes
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>,
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>, Alexander Potapenko <glider@google.com>,
- Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
- kasan-dev@googlegroups.com
-References: <20260929082014.160587-1-hao.ge@linux.dev>
- <20260929134401.a1a385ff4369661f879b5d2f@linux-foundation.org>
- <CAJuCfpFRW3uNUW_VrjpOfLwS1LBHqGEpqK3yBTPSpGOORY5jiQ@mail.gmail.com>
- <fc4f3d08-393f-43ed-934b-e7e1ba6d0137@linux.dev>
- <CAJuCfpGAZUcQnursYh=rvp+EzckvDmXX_KveJvEuyjzzG=9mww@mail.gmail.com>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpGAZUcQnursYh=rvp+EzckvDmXX_KveJvEuyjzzG=9mww@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 1ABBB1C0006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261007145329.dd944233d7986bc0f5b2d63c@linux-foundation.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0FC54140003
 X-Rspam-User: 
-X-Stat-Signature: pt61uxqss61ai3dnyzbbegpfa9s3hwiq
-X-HE-Tag: 1791545354-126993
-X-HE-Meta: U2FsdGVkX1+OT2xBY8dghsC3pVheId6zlmZhrUc7PG9i9d4NMVB24vucypq9G4oNos+atbRzjPXtikUuShY5PQmNW+Rkt9K1KZHhcfvVc9lKTT2UtDeS/hGX5pxmallq4VajjMd9LECgHwP8nSP8s38NzizuKKoyl/QrX1Nu6y0w8RteQ7uL+gyIP9jdsja7Jjxw4+puPsEIuJXKwuTwKecGpH08t+w5UMgUl6cp91bbfrvF9b4feuCU22oJqpz1UN8luAJksF8MxYD6mMYipEWFPj9Q12+ypl29ZHouU7ftExH/TVP2Pp0xroEupHtgYBbwBwT7YM0V0F1E+Nt3gwzgrBMrXsD3VujAFlwNaZ2nnDQK7Q6+PMwdHFsuZxaKeTTT3pRzVbarbo+COPQJF7je8BAUcHjOD/5AdC4e/6kVTQbn/EQ2YHXI6LoOvK0D1NNSUW3IFrOV2bodIYqSqByQR3Mgp3Lu8ovUlN1i2v0EIpYOWeovu/cDrrR5dVsR5kwePqbFK8Z/OmarFdt9QJibA3btw3pGUP0Mg/7+YWXkycYApR+NyGG0aVrDKHOKlrOFw3bE7s4UjUfYzWngRjGJQJO+lqibwOaPnGITenaHL473lwiRJeLz5lS82obfSm6if/a0JwUMYZkVfNMSE6nJGJkSCCsNvNDH067wwB/oNXpiJODyIzsKYoUvFkYsqGOGd1frf/NsrnKQW6Lr+soHmjN4W0ckhgyx5fO/MOv3BqCpEQ9MUeWKmzzzdeuk8v42LMREvECF3A7hc3WUBqodqVt7RMksWCFxP8x8T5WuSa1iFEeVGA1+N4tMjbXyTtPLyiEqgvQwL/yf/+L56QyixrLPwWsNQuChZqRS89jCcrhz2ipvIzE7zn6I3IxIGUEf/N1u2Hd5FXnAesNJJi6UQr6hIWLZSdSHFQitfvlGl/0qvwDokwUFt5Mv1k9gYWiJjx9MNH4NEF9h+nM
- iepd1zpl
- 9LnC240ftHYcY82y3zfH1XYj26eibU+zthNFg4XXg2IK54GaMl4C9NID12VicoPNOpxVV6iXRwUH9JdXIkrileMJ6JKwo9CoJaGqQvtcJnXwhEChIUVx2Wu1TH5JC/h/e8yQBx0vXJUgwYjmQh5l3GjqzwHm+VM3gy2l5qeXJUKgpr1l1m5MuDTRqrsiG/awupHSKfw4sYhQ0HS+URfO93Z4BGNESK8Y1ilCwm9yrTtEwY0CVQye55xp7x6srm5FeZNU6o73pQujtpqCX3pHxmPzcWs/ZOEmECeshx23PVkfwBR0SxQyJnrZcBdYLfZm59Yowr2lY6qe8L1l+WQsbXP2Ac7zQiVAHl0Y9AvEJ1GQ7iAY+8MXw4WQ13AF31o5NcXU5lVoeh/s4HXkAfcUTdc7hn5k3seEHFkLsh/CapzjKbN6gXy1qWFSuMmh18tsHgxw6TqSnTOw5fwCRXv9495fnFV1H52iLpTKnHz/VCQHfCOw=
+X-Stat-Signature: fgtgzej46gn7zfjmxkohmx8bs4gxcgay
+X-HE-Tag: 1791545398-905706
+X-HE-Meta: U2FsdGVkX1++f2u+gd8bah4J7Pgo6wBsiwj//psnEcBfd+1j73id3G3M3h3U5O3pBhd3zGqeUs5eMt4x1keUAccR/Kf9EekEcDG3sj5JSrXVf/Ta1d3bQ9MZtTqIKJub96lUoors49vvXOkU45RCQ3E9sdqHE/YIHGus1cwV3eQ5aA6KCZu9LJJbwFHUnMcdwKUKUA+6+dxkIq0DayOQcM4cN4RH4wYcVutMt/v5SQFj4OAHc9zNf3kPclKyyOUYDI3+vy1BcLOqXQVlJQfq1HOMw5FP3tEhR1lk0okRJhcqGbA+WvYgAex5KFDx5I/fDHCpmRctahNsSEEypt10kjTYINCei8n1wvXgDgColC00N4DZ9wqkhKktSP1lkF526JHPE4H7y26Hi+6U/g16o4DtpWWIHDiVt8B+oW50kfemBolkfMcARDF5gDAIcSUQPVcnxS+CUdb1dw/BPt7OF8oSoMtgJVoNjtMWmuMeEBgwmANkohD97YN9b8vKWSSMSi3gAJUAzg6qu2JHpdnfD7LMJsclqxQKinHEZh0Wpo9nKZm27q48k902/nEHhAaEIdNLjFWeOZZmWoA4i8p+Fe9pHwQ3R4EZKQULIxxDYtdEwJi1zYrwe6TsppKuaXyhhiKVZRyXTMzzPf6m1Lj+dcuVABrlHGvSetEIEBzTJHAmK2c2fjN8tWKQn6ofLFkCQ9+AMLPbLUYMuccS2itP52RNlGDCu3l2WgWkQo7Tz9KR2LjKlueFlk8bS1Jh3J1CHbT6Zh6Ea7BNLGh87Y5IIweG+NBlFzFknv9LVh8kAcLhkG13kuF8Xzk0AVFIJziQK6FncU6bmrVYHv5eqYffJanKR0Edv6lSOvwxFri4HFP0sKF+Cwtcfs9njCyRoemFUvK5gpMLgytEnf8+HT50dvViVKy/TKAg5W4t4YN7GYQDWCUqzT+zaxHZRQaNUDTbOe6d2QcSWOOxUUg13m8
+ 7olb7cTJ
+ 6NwwYl9GgjOvegk8F0y6Y4jjCOtFxO2HwfZAE0xFCpvokfrddtNzFfACc/PCtmU5yScWGT8VcsChg4HxkgC+opvchx7ARFbGRlr9lT836hq98TsGqZfOu40H8AKKWzyYvDIvbrnplZQXcS27FXy6JBxPvKZK/wY3WmZ0X1bFR4a4OOBwBt0FCeqMiUXnxX/byvnxgU5cULkLb7uRiN7LL3df0ltDFiM6bztKuehmQdGoluPcF//e40ikcCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,109 +94,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren
+-cc slopper.
 
-On 2026/10/5 02:37, Suren Baghdasaryan wrote:
-> On Wed, Sep 30, 2026 at 5:25 AM Hao Ge <hao.ge@linux.dev> wrote:
->>
->> Hi Suren and Andrew
->>
->>
->> On 2026/9/30 10:39, Suren Baghdasaryan wrote:
->>> On Tue, Sep 29, 2026 at 8:44 PM Andrew Morton <akpm@linux-foundation.org> wrote:
->>>>
->>>> On Tue, 29 Sep 2026 16:20:07 +0800 Hao Ge <hao.ge@linux.dev> wrote:
->>>>
->>>>> With profiling toggled off, the overflow check in
->>>>> reserve_module_tags() did not run, a module could load with more
->>>>> tags than the page flags can address, and re-enabling profiling
->>>>> then silently corrupted /proc/allocinfo. On overflow the fix shuts
->>>>> profiling down, releases the reservation and returns -EAGAIN, and
->>>>> the codetag section lands as regular module data in the same load,
->>>>> so the module loads without profiling.
->>>>>
->>>>> Review of the earlier series by Sashiko turned up more problems.
->>>>>
->>>>> One is a race. layout_sections() and move_module() both asked
->>>>> codetag_needs_module_section() where a codetag section goes, and
->>>>> mem_profiling_support can change between the two calls, for instance
->>>>> when another module load overflows the tag index and shuts profiling
->>>>> down. move_module() then copied the codetag section to offset 0 of
->>>>> its regular destination and clobbered the first section placed in
->>>>> that region.
->>>>>
->>>>> v7 reworks where codetag sections are allocated, on a prototype by
->>>>> Petr Pavlu [1]. The allocation runs before layout_sections() and the
->>>>> placement is decided in one step, so nothing re-asks the question
->>>>> and the race is gone. The retry is gone too, on -EAGAIN the section
->>>>> is laid out as regular module data right in the same load.
->>>>
->>>> Thanks.
->>>>
->>>> Seven patches, all cc:stable.  Why is a backport proposed?
->>>> Documentation/process/stable-kernel-rules.rst gives guidelines - does
->>>> this series meet them?  Does Suren have thoughts?
->>
->> Thanks, I've just gone through this carefully.
->>
->>>
->>> I think vmalloc fix in patch#2 should be posted separately and clearly
->>> quialifies for backporting as if fixes issues Hao found at [1].
->>
->> Agreed. Patch #2 was added to this patch series because vm_module_tags_populate
->> suffers from the same issue. If we want to be more conservative, I'd prefer to keep
->> vm_module_tags_populate as it was in V10:
->> https://lore.kernel.org/all/20260915070001.113559-3-hao.ge@linux.dev/
-> 
-> I disagree with this approach. That means we are introducing an extra
-> code inside vm_module_tags_populate() only to clean it up later.
-> Instead please post Patch #2 separately. That posting should have your
-> current patch that changes vmap_pages_xxx() to clean up on failure,
-> followed by patch(es) which remove unnecessary cleanup that some
-> functions currently perform by themselves. This patchset should
-> definitely be tagged for stable.
+Ack on there being a problem, will respin with correct fix.
 
-You are right. Sorry for the confusion - my earlier deviation came
-from not fully understanding the rules for getting patches into the
-stable trees.
-
-> Once that patchset is accepted, the rest of your current patchset
-> fixing alloc_tags can be posted with correct assumption that
-> vmap_pages_range() cleans up its partial mapping when it fails.
-> 
-> I know this sequence will take longer to upstream but I think it's the
-> right way to go.
-
-Make sense. Thanks for your continued support.
-
-Best Regards
-Hao
-
-> 
->>
->> Then we can submit a fix for __GFP_NOFAIL retry loop in __vmalloc_area_node() as a hotfix together
->> with our new patch #2. While at it, we can also check if there are any unnecessary calls to
->> vunmap_range family functions that can be cleaned up now that patch #2 is applied.
->>
->>
->>>
->>> The rest are also bug fixes but their size is concerning. I'll review
->>> them first before advising on which ones should be backported. Some
->>> fixes address issues that happen very rarely and if a fix is too
->>> complex it might make sense to leave it be or fix it some other way
->>> with less churn. Please give me a couple of days to review them. With
->>> the upcoming LPC I'm trying to multiplex between several projects.
->>
->> Thanks, sorry for all the hassle on you folks.
->>
->> Thanks
->> Best Regards
->> Hao
->>
->>>
->>> [1] https://lore.kernel.org/all/b8005c24-ecac-45c4-840a-fd282f9693b5@linux.dev/
->>>
->>>>
->>>> Also, Sashiko has been busy again:
->>>>         https://sashiko.dev/#/patchset/20260929082014.160587-1-hao.ge@linux.dev
+--
+Cheers, Lorenzo
 
