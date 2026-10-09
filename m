@@ -4,168 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7095CCA6015
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 06:22:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA74DCA6015
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 06:27:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48A8A6B008A; Fri,  9 Oct 2026 02:22:43 -0400 (EDT)
+	id BBD636B0095; Fri,  9 Oct 2026 02:27:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43B306B0093; Fri,  9 Oct 2026 02:22:43 -0400 (EDT)
+	id B47996B0096; Fri,  9 Oct 2026 02:27:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3512C6B0095; Fri,  9 Oct 2026 02:22:43 -0400 (EDT)
+	id A10226B0098; Fri,  9 Oct 2026 02:27:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D07D6B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 02:22:43 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 99F36140229
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:22:42 +0000 (UTC)
-X-FDA: 85302094164.24.BC3F3AF
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1B14740002
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:22:39 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=BVxSNA9E;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf01.hostedemail.com: domain of "prvs=87421dbcea=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=87421dbcea=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791526960;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C76D6B0095
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 02:27:03 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E1FB61C292E
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:27:02 +0000 (UTC)
+X-FDA: 85302105084.30.AC7CFF5
+Received: from mta1.migadu.com (out-191.mta1.migadu.com [95.215.58.191])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2DB21C0002
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:26:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="LMklH/zs";
+	spf=pass (imf22.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.191 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791527221;
+	b=7Tgs+1/vlCvMzAOCYRNHdlLSim7NgP0QNpokyDGfEWc/0Gvj4/SD5t+zRxhA55S1f1Vc2v
+	2FVq+Wj4qaxP4yuhmhuI4fDTo1qWpw9+C5LHOMpmzloTFwMJVlcyeYSSywA6qWvEhKXyXD
+	j1ZD6YouGC5hoU0lkwbP+CJelAVHSWs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="LMklH/zs";
+	spf=pass (imf22.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.191 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791527221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xrUTSyKtAgDV97zqjefAwYojktkvjwSj6eMRr4iTKmc=;
-	b=l+vTeWB+8m5deXr1BI0aPnZwv7HjbQnzC3MyBG5HAQuYRsac97wVMIQVEcNlq63W8XGtt0
-	fPB+91AF7sU35kAK2CVog02nCwNMSbbg7LxstHahN+msK1mN3hXFLqCJ0ttF2lsdzAnBiG
-	BANHz5jVrLbUdf4MdDwzWrp6BQhO50w=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=BVxSNA9E;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf01.hostedemail.com: domain of "prvs=87421dbcea=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=87421dbcea=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1791526960;
-	b=aErM9mY/uhVZCBwYUxis80EH9Xmiutp3HxFxGhURP0AAoSxTQwovFGduG/Z9CE2oh0Xgtx
-	GF+HW/AcoVgeeqpT1z9lNe06xvXPkoXWLcewIKHcFf0O8IXS76eQ2yGeCgORDA9oTztKOs
-	JOBvaOZMMNI/2MbsWQr3xbPOX2/DLaA=
-Received: from pps.filterd (m0528007.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6993Ikc91466651
-	for <linux-mm@kvack.org>; Thu, 8 Oct 2026 23:22:39 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=xrUTSyKtAgDV97zqjefAwYojktkvjwSj6eMRr
-	4iTKmc=; b=BVxSNA9ENcWBzNnRptdK+cNy15VcM8QiGxhNxBVmCF5Bj7sm72HzR
-	rQQ2FStXdG9W7lFYFsa6RN2RLe+/clIP0YWjq/IgUovEqaEduUZjgjTD+WqM8Ssa
-	kmpRGhYoLbv4yAUffhGkDawKdfnQLK3YlhFTB4edFW6xtj5rVuu77pCiTiZTpyB0
-	JztefpvE8noI/sHnhS/MWGCDvmyj4+1hXXEixjEHPWBlMQc/mDcIUTKw7fGyNRya
-	Fa9Y1Jsf5FeDeF+jtLuvMuWFI37seTHdrgujE8nVMvwjbF+8n/FEmc2ouLLOF8SB
-	nRrl3VRVwuh2EXxtDZNZHttS8zVqAj/5g==
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4h6pr99dhq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Thu, 08 Oct 2026 23:22:38 -0700 (PDT)
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c2e8c76334fso483629666b.1
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 23:22:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791526957; cv=none;
-        d=google.com; s=arc-20260327;
-        b=spjPIekCIpyVay33kF5WZKiCGecJxtfeHkwcvulDvZ8FwOsKk4C5JGGFn/Wcf4FixM
-         PF/p7D0rmYTS3DT5A1rfpAAVbiNC/pQzAXegyu58iXorX02kZwZwrEKQPf+PLXxe/4v2
-         HSHtmEeAnAjvTMYVXYJ/b55qXnB4CBPogjIMRYe2HJT8wM8XHn9GmpNfXrov84QaugI/
-         09QdvusDRSqdqnxnZhT47BBCUvK7wAxG9+WDqI9laitsYwgQs1uMdzeNjrRTkK6QkxYk
-         f9OP5xDyyDrrOE/B8xcps92DoMBltVBe9Bcsvd24hDZsM93jJc5H+r7kkI8rUWCRpfxP
-         X7Kg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=MDAPJbo8bAyD4SNPtt3cKmDaYLJkrQPEK8cHU6m22o8=;
-        fh=i7Wg0gGR/mbOo2qmi781A9KBYcr2mLaH7b0bLQvpGTM=;
-        b=dizziJXn48E1YxPmlcJtpUV4G/fw7KA3HrSEWaChKOFlqGT8hWgXtjTFzVtPhADuOX
-         yusG6LTKM8KLBWHWJmo5gAumoNEhTUAD8YYEC/Fu37K4W2r03tb2D8BHN5joaQme8022
-         SPC8oks0XfXlxbh9bjsXTMhTsMc2CVHk2a+oAA4JGBuuQ3UAM8hFwJi/zyCfLQCXEL9G
-         SzLtdv1HOVzkqOz+jWsqjhseDkKkxWVnCy5HEcaBcnLkDxeF5oZLcuqIjrneDUJh4bPD
-         jbePgfGEfxhlWbEHO/jrutQ6DhXrVFmXDDLCsSgOQWZFw2RuWlsrLHXu2bC13JtPGjEB
-         Hl4A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791526957; x=1792131757;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MDAPJbo8bAyD4SNPtt3cKmDaYLJkrQPEK8cHU6m22o8=;
-        b=AatKVTCnjgXILhr/2ARJn4gxnzdlxVCrphhCtqpC/gBK3y7G9bTlYbrgez2xNUtMQi
-         h+M0ax9hIibrb24147/R34haJjtg530L2n1jGKcThhtd5tXDoFkc9CF3RTVBGu2inAyz
-         2c+E3sBoL2/2eCAO0Mq9IQWRAWyiZipGZmlDL/2in12NSRKX9i8OYUDbyzYH84vpzlq5
-         nt6Tdaxp0gcITKjn9N69YJPkMzRK+A+VWoSpVmWGHqFInExYHQQTpwLT6ae23hufI6rm
-         ovcma9YNCD3lY16BaNgCms10BJVKSNYfDmH6vv0FWBDQ25n4mMnc0dRbqQClVp7nHUVy
-         /dzg==
-X-Forwarded-Encrypted: i=1; AKwUvBxwGKwY8p+wKvIhd2B12TQW3dx5QdOh3XQ95jjFGxOS0qHvIth947DBq00dKsKeXKvjbJqMlwN+jQ==@kvack.org
-X-Gm-Message-State: AFq9FYJndeUd81/zbHmsnB2fZDLBWYV5JY1b9UpWTI0psCX6MEET0ZOo
-	wG0Xd2yKKAF56qGRbRXbmPvDgyySb45V3ECZBkm2R2hL46Ac5iAP79MCKbv2ud1Har7P29bruFZ
-	67UGmO78MTCfzjaUp1gq08LxaWsxwvx1tXA0BlPRcUx9nEGOQzLPB6ry8LVPtpcD9++ryfhNouy
-	8FYo57/yX0EjFNzUszveMUHYF+eA==
-X-Gm-Gg: AYBFou2vrE6wDLXeQVP3iOpxYDSrFlqeD+wdHvLJPLqszb+pbIVULu5BGM/LtR1qDyQ
-	40b21YuH5QmB9PLvE3hy7xXvWBrRhcKP8DZOksR4x/nvvsOAmFsiJB5kGMcfVJ1o7gGEYtJh255
-	87X+xadOuQcSC11D8ja7RhQi9+lAq9m0Y982JB0Pj5y4LG+A2ZUhKyYdnFq1dYgin1hqxUlweiC
-	nFa+x6PgSWN/03fVg==
-X-Received: by 2002:a17:907:c298:b0:c2d:cf0e:49e9 with SMTP id a640c23a62f3a-c31a9ff494dmr71955566b.15.1791526957233;
-        Thu, 08 Oct 2026 23:22:37 -0700 (PDT)
-X-Received: by 2002:a17:907:c298:b0:c2d:cf0e:49e9 with SMTP id
- a640c23a62f3a-c31a9ff494dmr71952466b.15.1791526956831; Thu, 08 Oct 2026
- 23:22:36 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=apcmRrGzK3XVBQMYfRJ0fuA0WTOWax2NDYRN1z9fqzA=;
+	b=1XwzSlXeL3iosxq6I5x+tqvmbmVKAcdzJgCHD9vgZLu44HmnWWTek//znjyb2Ye2+mQPWg
+	S7algUWlOek3mKieEJDPB0nl4Ggzo5x9GLHloKQ1UlapZj6gDevkKfEzDAm2cH7SOQnbxG
+	WMPsk4QKTuMPGujpPK/dUPxPVxY87bc=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4J2Oujq0h9Tdxh5Fs82Gko1VDMQdbho/Ty/hsMPCfKU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791527217; v=1; x=1792132017;
+ b=LMklH/zs2AewPti66CHbdlRmVAfSRS9XoIxpBqCNyNjEm0KeJhGzLORrXNop/6mC9xmqkFYD
+ WeTydWE+U/YYzx4aMIOVjASDXFg4jX5hYj0ZS+4j3FLwRQ/kOzqjleyuBVewuxxJ0Q+y0wwwyi0
+ O1VPy1bn91hpCpuY8buxvy1M=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 04d29327fff06515;
+	Fri, 09 Oct 2026 06:26:57 +0000
+X-Mizu-Trace-ID: 04d29327fff06515
+X-Migadu-Flow: FLOW_OUT
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Roman Gushchin <roman.gushchin@linux.dev>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Shuah Khan <shuah@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Barry Song <baohua@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH bpf-next v4] selftests/bpf: Add bpf_proactive_reclaim test
+Date: Fri,  9 Oct 2026 14:26:37 +0800
+Message-ID: <20261009062637.176005-1-hui.zhu@linux.dev>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20261007153915.53429-1-alex@ghiti.fr> <CAGsJ_4xyzgUH4uhKqpD7PTVuOzdsAkYgowsyn5iT1LHWiaYqqw@mail.gmail.com>
-In-Reply-To: <CAGsJ_4xyzgUH4uhKqpD7PTVuOzdsAkYgowsyn5iT1LHWiaYqqw@mail.gmail.com>
-From: Alexandre Ghiti <alexghiti@meta.com>
-Date: Fri, 9 Oct 2026 08:22:25 +0200
-X-Gm-Features: AclHuK8gPOgXXx1_x49eCX24hRCcO1E5atvyhBXA0_dq3WEte7PYf1e43nP0Pwo
-Message-ID: <CAEmasaWQm6DPqAhmW_z=kuR+3LDWJ=h+yM0hAs+ryNoFQd6qmg@mail.gmail.com>
-Subject: Re: [PATCH v3] mm: bypass swap readahead for zswap
-To: Barry Song <baohua@kernel.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org,
-        hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com,
-        shikemeng@huaweicloud.com, baoquan.he@linux.dev, youngjun.park@lge.com,
-        chengming.zhou@linux.dev, david@kernel.org, ljs@kernel.org,
-        liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
-        surenb@google.com, mhocko@suse.com, kasong@tencent.com,
-        ryncsn@gmail.com, chrisl@kernel.org, usama.arif@linux.dev,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Authority-Analysis: v=2.4 cv=d55gWhjE c=1 sm=1 tr=0 ts=6ac8882e cx=c_pps
- a=edIAN7ErZTGbxav20d8A7Q==:117 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=4h92JMTCafKA-fb_NiOh:22
- a=VwQbUJbxAAAA:8 a=vvh9Qk1aVFpNxidmG9UA:9 a=QEXdDO2ut3YA:10
- a=nIuFr-8touD1a-RngYHT:22
-X-Proofpoint-GUID: FC_NVtDFfxFwkxRNb6e39GU4zyGWyMDD
-X-Proofpoint-ORIG-GUID: FC_NVtDFfxFwkxRNb6e39GU4zyGWyMDD
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA5MDAyNCBTYWx0ZWRfXzB4KLmzS1Mrv
- H2b7stywrzvYHOp4kxCMLONx+DUyJuH3hkMtUzBxuZDPQw+8kvRNrAUUANA1CXei7P/D+qmcMjL
- sh7YILk6N4SoOamxFCTJjnQjPwhgx4U=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA5MDAyNCBTYWx0ZWRfX8gxRkQKaUUR9
- /uRFSieh5/8Mx2QSYuTAo5t6r4Cl4jQ5ldradibnNpczcgTUOvi/C0Nl9iRtTySqiUvouOlMWA4
- tLplg9jRF/hVhpSKzfFEynSk0M1TYZ6uvCPbpKOm7a8QTrBGwzqA0NS03CbMLoxxtsHoMYXlD5F
- 8Bu2sJRq7U+xZ4OPEfOhwmLZlenEIYVPobTlu/gpBa6nB/NVTggR1Jw1vxke2qgBVOAVf1DRz4q
- 119kyDel6Q2+CACV8JxSMFCkrFdr49WT7tWX2KeVJCJQrR3yltgsMSl7i85MXT0NptWrXV8kQEc
- tUDMs+5o7OfVxOcW0T4NNv7w3VzMKppcK58VMaloeu3oJ+jGRcrXGTAf8FcV+7Cl9DitGvahOK/
- jZ0umjw0vOzDOKkCPK7DN/QN5DX4/5M1mgFn0Aj3c65oW1CUGaowPhg/QAq7FPl+CtCPE81WeQd
- j1r8DZytmeAKmW98jrw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-09_02,2026-10-08_01,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1B14740002
-X-Stat-Signature: peoq98ty4b33po5orprcz8sd9c5mkpoj
-X-HE-Tag: 1791526959-154541
-X-HE-Meta: U2FsdGVkX1+DDBkyQdnwg7Zcd4PKGr3KGEyvFAMiM4olgsPOIi9vcJgESosU+Y6IUWUAnTLjaJ5S7IU7kPRMVxjmRcjsP2l3MMDCyMshFm4QFcgE+tKF/qfXb1bfDLkJb2Yx2DAD8ZVPv+6JFZXFH6oKvxY9k33hHTU19f+3AOYr91p3XgnhBuWCQWrMx05hVnQLpDcmzWC+nH89OIZEwsAvt6tztHyWsITpTFpNx5XwT9dyr8GmnK3TLMArKCGVIf+4YzDa0oAhA0dx1s88SZv++YFEBIDjSFae78t9RC1oIRO2MlLBOJeO/X5ZyAgh6Km1QrUt/Ut6tHew106FkQ66VwKrAxUZcIBFX19BsrHz9AE3i9Ozi8IRpWMi7SyfS3tJiCQy5S+DJyrS7QYgAk4vlViOtGhdQnl9RID3DOobtWSSVILABXIi1i6mgh3kwBSEqUkWEn/MuMlkbSOqlyxIjzDdjVvPmIWqf1Z+p7Y0RgyM8wMhmSPcEv2kmdfw6/2L7LVJeYAzsz3QUi5XoNZXH1LgNT+MsDIC6aiT51APRRfqLbhCy1Qu63HxgUhWcnxDRHs1kjs57sDWOVdkOct0j+5gpw7VB/21psruM7Ag+1zKZ7MUeIUA1t99xHxwaRq6N9EPA9lzBohLClqqja4Au/BjKJ/QqcxMPk3O+aGPRkzgH2/kzWR/muH9fIGf7wrXelpTgs0jbGhMIuCYqJiaIzZhV5qf2GsISWVXHZn8XcFNmYihRhCm8+PN/OTsa1FHno3wPLz5aNNfi5c5asciO+jJRb7oYg+My4d6LLXTv5OvEb6RZzfwFNa3h0r/2Mi/OBPirctCEyrdBSLONRyzPUPxdRzqGzsffQXrEwj25pIiGLClFkQK61HQcH9NtYFnphqjCgQIU5HetuIj4wB77XWiFkQk74wu2AFDsa1DQL9qAVb3u3L/ZYCo/kZuP1Yj7O6GhdjMPsIXWtt
- gB6ghyXL
- 8SrHKPaBFdfj9a3oPCRqj8NuppxCUxm2yFOUUs6sOTHDHIL5NpLsqsFI+/1sBgaf2lD3AztV4I4LpJW5FLKphjuTgA8C6Cdq01j+d++XKmthWqXBYsPW4bPE8ajI8mihMQbhePD4zrvkJMVUe9AqpDso1e3RWOjARLouQgWm1ySzXqVEIXWj5nfE+ex+HiVWyvk5fa8FxI/QDl6McPpWp2oDqZt5sJ5+V+AfzjyTZz+7SJ0DQF+zA0mGqkW31C+5D+8ID0ly485/nSurzNf5UHnOoD1GhiIN41y9NS+5xgBhIqgevva3UAvM8D+A2CiOjD3rofsL5Ufumjt0dt6ZQTpfV1rKMcTpKdNjgL5Ub3sQsm1rx8N+A3GqpGa8Wj/vJc7p4k0HTPnqe4SzNwuDwahlTRo6cYU1UdL9CGrVDvcDiO71ENIrRLNS7aWtkmw4xSTju64cwEYDUldemp1IV+RwdSM88ekhiWigkRrTJGrQQJSBDoyKYOa6/01o8En8XzoYTsbqhDTP8AMRMvgvkoWPqKS6kliWj0tk5Q5gTWaJOkksfFwewWrqtuPp1TO9IIuPbRszZB4aGCeAzFhV7f57Ya+/naFpc6tkFgLZBqH5qFh0QRjCRVkr5lQ==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2DB21C0002
+X-Stat-Signature: u75b4zkj9kxk1wsyg6961sabdcc5n1m3
+X-HE-Tag: 1791527218-177665
+X-HE-Meta: U2FsdGVkX18QtKZtmyN5nTePo7Tai3HTRQAgrQz8V0/ceZxqFMeoR3w8d5+zEaFdbPLjqvjqWxIhqsCTjBvqBw9Wx9/cKxny6mubAgrYn/+graYVrd8h3R5PiSzlCz6ISHzitQhOXWFS9GKlEHKderdXupQgqTd2bIT0X2wRHNJ2rF4gffypVrvszbM8gVY9rCX1fe8LEt8QEKfTyvt0PPrZPGq+B0lrd0nBLDhPBM9I8kHRrk0+LOhqiPUrxKSWvflooJX+DRrkMFIeoig1WcGWdi878Me6B52yJY04JSa82H8vz174biz2XjrPNUT98AJyaSCGRwZeJTsY+HHiXa5rYbLMknEit07LLetexSM9L2gyM9Z39OqUf8IRYzxQxdlsSD+iV9dRiozEQLYdbrWja8RWJ2fuk/eCnaru3C7Q2U/cNHg02j3T5vQAwHhHBFaPmctyYSjL/DLVNghjUxAzXqC7F+qwGDSLbLrtZdVbe4jht+p8s5r+aAlwMHP5tepwaHGlCNbujF878hTsrRoucIRfm1gOklNJo2CQsP4Uei0rL36MhvDjHONkubRZCb8yQB7moRbLErwckwS8jC2pHhauCndrHvisVaj/KkjORjaRlz9ZY/WirH2IC6z3UcpaT+ye7niQfXi6E/XLHgREak5gyNGEmdAXUJvy1M49gCF0oJhKNRQQtzCCuR4Kc18sfe7q2Sa28EehLOrBOlqh9fOzdkG+0mVQOrn6LxrnR/seW7amIR8zKfo3WOOzyaSwLI8l5G/+HcaIm1kmROgoTvQwpYJcKbiPB9vjXvktU+A6u07R7AmA0ZDbjRiR8TSgf+dJtA9ORPC7rSGpTu25Lz8M4emc/duiWFbyVRaf/CLmfmtbc2uwnNVY/IC/VatM+NocEn/8D1YyeoeMTGFsj8+9ypBvZ6eDDz4kopwGqCG9JNx+fMFqLG/5m1268ND/+e8zYGmDZmsm8U8
+ WYQobpR/
+ fZgJY26jPhBaHFqxeQVfTcWH8jjvg/cUQXULXGAVUIzqiajhGujlXAdvGYjMMHxs+OvKjiFTIlwVHKHblNXSUYKbfkjAq3iqNOENW8n3Rju0/L5fk0m0/iNpAen/kQCg0IaATxTg1jVkJbBHwHM4eErc09/1cPJ/5ckMSxKvvlHnadQ6pk5aPWo+6OENYXjTkJMILk5EJBzWvo0C1uchJKx1EZBOOmtmkNLFCX1ql/CkzhuZYCP6eQ/ixgimq2jIMe58QwNmNEoqAi9lLdhKWyNPW5KNZ+uzQh06IWkGD5ErjJtZS/QAppsHLry8aG4KSdw5LrQ8J3o83wiKQSw6kewFQ8QD4ScQRy7b3JhdAtJ1Hj7ftCpQvQYHENg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,95 +113,238 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Barry,
+From: Hui Zhu <zhuhui@kylinos.cn>
 
+bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
+unlike a write to memory.reclaim, does not retry until the goal is
+reached.
 
-On Wed, Oct 7, 2026 at 11:05=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
-e:
->
-> >
-> On Wed, Oct 7, 2026 at 11:39=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> w=
-rote:
-> >
-> > Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
-> > device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahea=
-d.
-> >
-> > zswap is the same kind of in-memory, synchronous backend as zram, not a
-> > swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
-> > swapin_readahead().
-> >
-> > Here are the results from bypassing readahead for zswap too: it was
-> > measured with a kernel build (make -j16) in a memcg, zswap=3Dzstd, shri=
-nker
-> > off, on Sapphire Rapids and 3 iterations.
-> >
-> >   768M memcg (sustained swap thrash):
-> >     metric                 mm-new    + bypass    delta
-> >     build time (s)          405.0       341.7    -15.6%
-> >     zswap-in (GB)            79.5        53.0     -33%
-> >     zswap-out (GB)          144.8       115.6     -20%
-> >     swap readahead (pages)  6.79M       0.45M     -93%
-> >     swap_ra hit (%)          72.1        89.9     +18pp
-> >
-> >   1G memcg (light pressure, build not memory-bound):
-> >     metric                 mm-new    + bypass    delta
-> >     build time (s)          177.7       176.0    ~same (no regression)
-> >     zswap-in (GB)            10.2         7.5     -26%
-> >     zswap-out (GB)           27.7        25.1      -9%
-> >     swap readahead (pages)  1.07M       0.08M     -93%
-> >     swap_ra hit (%)          68.6        87.2     +19pp
->
-> Hi Alexandre,
->
-> I assume your configuration is as below?
->
-> / # cat /proc/sys/vm/page-cluster
-> 3
-> / # cat /sys/kernel/mm/swap/vma_ra_enabled
-> true
+Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
+and check that the result is positive but well below the request: one
+pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
+4K and 64K page kernels.
 
-Yes
+The test deliberately covers only the kfunc itself. A full example of
+the intended asynchronous use, where a BPF program watches one cgroup's
+workingset refaults and reclaims another one from bpf_wq callbacks, is
+maintained out of tree at [1], released under GPLv2.
 
->
-> I am curious whether setting `/proc/sys/vm/page-cluster` to either 0
-> or 1 would result in the same performance gain on a zswap-enabled
-> system?
+Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.c
+is not built at all.
 
-I'll test and report back here.
+[1] https://github.com/teawater/memcg-async-reclaim
 
->
-> >
-> > Similar gains were observed on an AMD EPYC 7D13 host.
-> >
-> > The gain is from no longer prefetching pages that are pointless for an
-> > in-memory backend: readahead inflates anon residency and thrashes the
-> > page cache (file pages get evicted and re-read), lengthens each fault by
-> > synchronously (de)compressing a cluster of neighbours, and adds
-> > compression traffic when those extra pages are reclaimed.
-> >
-> > Bypassing swap readahead for zswap therefore makes sense.
-> >
->
-> The change makes sense to me. I am just curious whether setting those
-> configurations would result in the same performance gain.
->
-> Maybe you can mention the `page-cluster` configuration in the changelog
-> as well.
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+Changelog:
+v4:
+According to the comment of Barry, test skips instead of failing on a
+read-only mount.
+v3:
+According to the comment of Barry, use write() + fsync() to charge the
+page cache instead of ftruncate() + read().
+According to the comment of AI, skip instead of fail when no regular
+filesystem is available for the workload file.
+v2:
+According to the comment of Alexei, remove the samples/bpf sample patch.
+Ship it out-of-tree as a standalone project.
 
-Sure, I'll do that.
+ tools/testing/selftests/bpf/config            |   1 +
+ .../bpf/prog_tests/memcg_proactive_reclaim.c  | 130 ++++++++++++++++++
+ .../bpf/progs/memcg_proactive_reclaim.c       |  34 +++++
+ 3 files changed, 165 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
+ create mode 100644 tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
 
->
-> > Suggested-by: Usama Arif <usama.arif@linux.dev>
-> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> > ---
->
-> Reviewed-by: Barry Song <baohua@kernel.org>
->
-> This is RC6 now. You probably need to respin it after the new RC1.
->
+diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
+index 2b883b388f90..5621ef94ad7e 100644
+--- a/tools/testing/selftests/bpf/config
++++ b/tools/testing/selftests/bpf/config
+@@ -57,6 +57,7 @@ CONFIG_LIRC=y
+ CONFIG_LIVEPATCH=y
+ CONFIG_LWTUNNEL=y
+ CONFIG_LWTUNNEL_BPF=y
++CONFIG_MEMCG=y
+ CONFIG_MODULE_SIG=y
+ CONFIG_MODULE_SRCVERSION_ALL=y
+ CONFIG_MODULE_UNLOAD=y
+diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
+new file mode 100644
+index 000000000000..c22dcfabe856
+--- /dev/null
++++ b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
+@@ -0,0 +1,130 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <test_progs.h>
++#include <limits.h>
++#include <linux/magic.h>
++#include <sys/statfs.h>
++#include <unistd.h>
++
++#include "cgroup_helpers.h"
++#include "memcg_proactive_reclaim.skel.h"
++
++#define CG_PATH "/memcg_proactive_reclaim"
++
++/*
++ * Large enough that a single reclaim pass cannot come close to it, so that
++ * "reclaimed less than was asked for" is not page-size noise: one pass is
++ * capped at MEMCG_CHARGE_BATCH pages, which is 256 KiB on 4K pages but 4 MiB
++ * on 64K pages.
++ */
++#define FILE_SIZE (32 * 1024 * 1024UL)
++#define BUF_SIZE (64 * 1024)
++
++struct reclaim_args {
++	__u64 cgroup_id;
++	__u64 size;
++};
++
++/*
++ * The data file has to sit on a writable regular filesystem: tmpfs pages are
++ * charged as shmem, so whether they can be reclaimed at all depends on swap
++ * being available, and a read-only mount cannot host the file at all (EROFS
++ * applies to root too). /tmp is tmpfs on many systems, and test_progs is
++ * routinely run from a tmpfs working directory, so both candidates need the
++ * check.
++ */
++static const char *workload_dir(void)
++{
++	static const char * const dirs[] = { "/tmp", "." };
++	struct statfs st;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(dirs); i++)
++		if (!statfs(dirs[i], &st) && st.f_type != TMPFS_MAGIC &&
++		    st.f_type != RAMFS_MAGIC && !access(dirs[i], W_OK))
++			return dirs[i];
++
++	return NULL;
++}
++
++void test_memcg_proactive_reclaim(void)
++{
++	struct memcg_proactive_reclaim *skel = NULL;
++	struct reclaim_args args = {};
++
++	LIBBPF_OPTS(bpf_test_run_opts, opts,
++		    .ctx_in = &args,
++		    .ctx_size_in = sizeof(args));
++
++	char data_file[PATH_MAX];
++	static char buf[BUF_SIZE];
++	__u64 cgroup_id;
++	const char *dir;
++	off_t off;
++	int cg_fd = -1, data_fd = -1, err;
++
++	/*
++	 * Both candidate directories can be unusable: tmpfs (initramfs-based
++	 * CI, for instance) or a read-only mount. That is an environment
++	 * limitation, not a test failure.
++	 */
++	dir = workload_dir();
++	if (!dir) {
++		test__skip();
++		return;
++	}
++
++	snprintf(data_file, sizeof(data_file),
++		 "%s/memcg_proactive_reclaim_XXXXXX", dir);
++	data_fd = mkstemp(data_file);
++	if (!ASSERT_GE(data_fd, 0, "mkstemp"))
++		return;
++
++	cg_fd = cgroup_setup_and_join(CG_PATH);
++	if (!ASSERT_OK_FD(cg_fd, "cgroup_setup_and_join"))
++		goto out;
++
++	cgroup_id = get_cgroup_id(CG_PATH);
++	if (!ASSERT_GT(cgroup_id, 0, "get_cgroup_id"))
++		goto out;
++
++	skel = memcg_proactive_reclaim__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "open_and_load"))
++		goto out;
++
++	/* Charge FILE_SIZE of clean page cache to the cgroup. */
++	for (off = 0; off < (off_t)FILE_SIZE; off += sizeof(buf))
++		if (!ASSERT_EQ(write(data_fd, buf, sizeof(buf)),
++			       (ssize_t)sizeof(buf), "write"))
++			goto out;
++	if (!ASSERT_OK(fsync(data_fd), "fsync"))
++		goto out;
++
++	args.cgroup_id = cgroup_id;
++	args.size = FILE_SIZE;
++	skel->bss->reclaimed = 0;
++	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.memcg_proactive_reclaim),
++				     &opts);
++	if (!ASSERT_OK(err, "test_run"))
++		goto out;
++	if (!ASSERT_EQ(opts.retval, 0, "retval"))
++		goto out;
++
++	/*
++	 * A single call is a single bounded pass: it reclaims something, but
++	 * stops well short of the requested size instead of retrying until the
++	 * goal is reached the way a write to memory.reclaim does.
++	 */
++	ASSERT_GT(skel->bss->reclaimed, 0, "reclaimed");
++	ASSERT_LT(skel->bss->reclaimed, (__s64)FILE_SIZE, "single pass");
++
++out:
++	if (skel)
++		memcg_proactive_reclaim__destroy(skel);
++	if (cg_fd >= 0)
++		close(cg_fd);
++	if (data_fd >= 0) {
++		close(data_fd);
++		unlink(data_file);
++	}
++	cleanup_cgroup_environment();
++}
+diff --git a/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
+new file mode 100644
+index 000000000000..b551192526fc
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include "vmlinux.h"
++#include <bpf/bpf_helpers.h>
++
++struct reclaim_args {
++	__u64 cgroup_id;
++	__u64 size;
++};
++
++/* Signed, because bpf_test_run_opts.retval is a __u32. */
++__s64 reclaimed;
++
++SEC("syscall")
++int memcg_proactive_reclaim(struct reclaim_args *ctx)
++{
++	struct mem_cgroup *memcg;
++	struct cgroup *cgrp;
++
++	cgrp = bpf_cgroup_from_id(ctx->cgroup_id);
++	if (!cgrp)
++		return 0;
++
++	memcg = bpf_get_mem_cgroup(&cgrp->self);
++	if (memcg) {
++		reclaimed = bpf_proactive_reclaim(memcg, ctx->size, -1);
++		bpf_put_mem_cgroup(memcg);
++	}
++	bpf_cgroup_release(cgrp);
++
++	return 0;
++}
++
++char _license[] SEC("license") = "GPL";
+-- 
+2.43.0
 
-Thanks Barry!
-
-Alex
 
