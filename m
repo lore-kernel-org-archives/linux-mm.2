@@ -4,94 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6421CA6019
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:04:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88AF7CA6019
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:16:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA5066B008A; Fri,  9 Oct 2026 07:03:59 -0400 (EDT)
+	id 5EE786B008A; Fri,  9 Oct 2026 07:16:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2EB36B008C; Fri,  9 Oct 2026 07:03:59 -0400 (EDT)
+	id 59F9C6B008C; Fri,  9 Oct 2026 07:16:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1FE86B0092; Fri,  9 Oct 2026 07:03:59 -0400 (EDT)
+	id 4B5676B0092; Fri,  9 Oct 2026 07:16:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D7926B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:03:59 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DC2EFA7C66
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:03:58 +0000 (UTC)
-X-FDA: 85302802956.29.06409EF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 46093180006
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:03:57 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HXtBu0RT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 20B206B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:16:04 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 874CA160320
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:16:03 +0000 (UTC)
+X-FDA: 85302833406.05.87CCF1E
+Received: from mta0.migadu.com (out-67.mta0.migadu.com [91.218.175.67])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 44665180008
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:16:01 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IBZkN+lX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791544561;
+	b=PpfhbjU6IonbkNr2Uy0jx7K4EcZxuIXW8LmDAGSZk3ot7mlOPYyeo/CLbLnyJT52ZiDtTw
+	wMpaJYWS4puoAhu+6OCtnX6pmluobFNDYT4f1bV7MiUxwq5IrcNNysEbjNMxp84rGMq2qR
+	lCBWmFxCGkpUVilliSm3NN94ZdgICXY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IBZkN+lX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791543837;
+	s=arc-20220608; t=1791544561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o4mVTD0NTqB9D7Gs5A6eFeOnRu4d7xcFVmW/D5Mtxo8=;
-	b=sZ5oZDqDZ6P1m9tEuE0z19TL+fKLKnMVnI65VvS7NNvdXYoVO8/97dPVyU1MKU6+ywYVxX
-	mIXYk1TDand3U4ICfGSa83rHWqzCcOUw6LJc9ar6JhTuBcuNwHpmYHYE9+zTzBBSO6nPmm
-	H8ebWTfWulWCm3RvTkvfFEq8f7I/Oow=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HXtBu0RT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791543837;
-	b=f8xV3MyyfjJYathfrKqicYHMaZFmmZcJhnj0yR2Vpr1gUDtDzVe3XOdu2gAkiymIxxVzhA
-	JM311oxGpU8kfTRZvHHoD40Tu+Gp9z5ilmTngzvhd66VBZsiOFKp6fal1cQ6gfujotJgxq
-	HlkH5CLxCm6GdVcw21s/21PUrGP+Ox0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0A42F60DC2;
-	Fri,  9 Oct 2026 11:03:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400341F000FF;
-	Fri,  9 Oct 2026 11:03:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791543835;
-	bh=o4mVTD0NTqB9D7Gs5A6eFeOnRu4d7xcFVmW/D5Mtxo8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HXtBu0RToAts+Aarg/9eCHojiplI8SRWAbjZJ6AzKBdxw0FKyNvaKXojId2Nkjqww
-	 t1ASGTPG2Y07P6986jcR6c3eTgzGuL+YOiIfDKKGcdRlGLJ2RBI7qGbvU10yvOlvmU
-	 pYD6V4Vx8/j2m2xJU7i77Wq0cNDoCBUv2swu++strIRjoqi3bH8gxmgiPAZDEukJaS
-	 hzyigALZCBtHoIiqHQfLQ2epmRM/lFsg70SWMAGAcUjVLfJGLUnA7N1tDhlRPwIu54
-	 qajrwZQM+pH18Bv3X1rr2USxdSJT5+mXmMmMArjxj7+uelh3AMReqU9q1ArVGfffSS
-	 zHQHc2ZMn6yXw==
-Date: Fri, 9 Oct 2026 13:03:45 +0200
-From: Harry Yoo <harry@kernel.org>
-To: kernel test robot <yi1.lai@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-mm@kvack.org, 
-	Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
-	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [harry:b4/sheaf-size-round-up] [mm/slab]  ddf56dfc79:
- will-it-scale.per_process_ops 54.5% improvement
-Message-ID: <asjIHAeuL1ilE4sn@thinkpad>
-References: <202610091451.beda4ec3-lkp@intel.com>
- <asi-kgXfHJt6Gjp0@thinkpad>
+	bh=iwv1BWmAu896MWLG+64UqZ2zg+kLXlIFqA3EzK8LKFg=;
+	b=WaOhZrS9YQ1K+SAHv5VBmx0tRjk9DrxKDwyGhKrqGgb+AkhxbZ/j82Q8Pb5jYsuuAGFYFn
+	CvXv0cg2Dz0AQIq7+lKc/1t9CVUkbO3Qodp8BfSTsihbN5uwGCMDdUsGX0H3rO0eCQnV7d
+	IwCWitfzYy7tihal40DHebcKvoeFh/0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4KiuDAG3gm65cIQ2mqPJSAHpZO66H8hjIEiCXFAoNYM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791544559; v=1; x=1792149359;
+ b=IBZkN+lXJtyzzq+HboWEf+pTEmDUHg2mr1J5B0m6Gb40yLOVWgGdhjHg+iFBwA2YXAhJ330P
+ 6Qwst0ZcwCqwInWNkUASo0zF+lp0YoVSSZtdVwYAgWDjotzsZRv9Q4zZw9hbm5Cn/jzsgp0vtL6
+ QfGuKs//YCttNVBhKevKeZPQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 50b57414bfeda855;
+	Fri, 09 Oct 2026 11:15:47 +0000
+X-Mizu-Trace-ID: 50b57414bfeda855
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <fc32fbb9-9db2-40f1-88fc-c087927a1eb8@linux.dev>
+Date: Fri, 9 Oct 2026 19:16:53 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 7/7] alloc_tag: fix the /proc/allocinfo lifecycle
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>,
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Alexander Potapenko <glider@google.com>,
+ Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+ kasan-dev@googlegroups.com, Sashiko <sashiko-bot@kernel.org>,
+ stable@vger.kernel.org
+References: <20260929082014.160587-1-hao.ge@linux.dev>
+ <20260929082014.160587-8-hao.ge@linux.dev>
+ <CAJuCfpEwrdOKQmt9_=J4Qawtg48AUuwwbc2Lp-1oWiNbKO_UVw@mail.gmail.com>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <CAJuCfpEwrdOKQmt9_=J4Qawtg48AUuwwbc2Lp-1oWiNbKO_UVw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <asi-kgXfHJt6Gjp0@thinkpad>
-X-Stat-Signature: 84ofumx7q3p6jry5dnmea59ay5moe85j
+X-Stat-Signature: wefs4t5b57menmte1urco9xpx6yy83ts
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 46093180006
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791543837-924467
-X-HE-Meta: U2FsdGVkX19SmlKWgIZtJ7Y0QCY/JzKx3cI0PyVEefFXxnlPhxeRa2zPEs5br8wxB9/ef73gLzfzzHejTL2oZomOw9E1sKdGE5b04ritMvr6+GeW5RzZPbjqT82nOX29TH2CPdRU3sVxAMH5aHl3VHk9NDoMqk8lyVvS0EDu2EZz3TnMmtfUibDp13FMaUwiZ/VBEvlaGw4Hv59EmDF887oxK4k0pHlBkWjliZoRfU8E0soYIwr77FEEtOpAVS/uALRD6k9pZiBf4OvLx1TCfCXMwVHeZDNAd8FPDznybfqRiohcPGHEEkzxuIgQAMzTU9r3w54HEolcYuPN1cHMJrokumEhPScHjDBOmU/XU1LrP7FTjzyh/R+R9HIZJwu9nL5bScJBQXRP/qYqrXHXN9IAnJBIkGGZYZu9IAkkaM0mnZZ2Lru4PZzVAR+QFjkmiSZ1zUIoM82ZOrXAYqK8wdSD0jzqbpHBuHLwwolYWLPEneE2o+TYXFuysJXpfw2hcqGcCodCpex0WqL66/oveNyGtYsImYgqA5RV4Dqvuv0XdiVyvY7YUBAxWjXm1r4OEyHyVokwsj48//qmXgQfo4ZZeaDVT95lV3pi5HoS7QwhTo5q3T5s8TVfZIHGytl8t87ZxbPI0ZPylREuxlYg9bMemDyITbetvsgzMwo2JpBLVMH80yK6neuTkrHFzXXbXvd8FpTQ9eXLgiOKn1GLES6OXnrlYKcC3g1KZAe8ZA6lgzXa506cxvVoHkllabr7JcuwV6qbWHAFdfOPbuFIUK3LDRVvmoXyqqgYA6fe+PwoBQEtWpHbo31zDCJp0wd0bLIA6yVGiKdKgmYbABnmI0qysQgiA+oIuxfjNul5NoYE0Mr/xNUhFg6gzb0320u/X/zTJQMDcGHkEl1S11/5HB7A5j9H27Tk/GuaDlZriGdPpaNgSmOeOMBNHL/XJUXyZS4ty8HNq2USdtVwVY6
- AmBm6kpn
- 51A+W44OlYuooDr5IUOFxSbQyltMFQftOtzbs8qqroeEn9UbTAovekzX5K1qXMUB0c61yJsTgSegc9fClW1xDJlNWAOHbstCq9S/UwZ+Lt0ytaIWAXme0WAvO0XEATrHecDmOGUJE0Dn3oX3r41skK089zVPPez2vo3J+6r5gwz7ya2Kz01hRVGbYLr0oQurzRCV/J9+2wHOAzn0Cmi/LhuSQu/tueGVUhEclpyyK+/9w/C3ETUt9ivxcz0J73z8FVjB9zMLCmgyMijEkYct9grCs6EwNKW5ttoVlUsqYiBE/OFqehMfquD+vrS6qxcdVNWch0ZPssgf/UhG8iU2ytRG/DvTP3ObPLe8LrK12SnfbwPxaM+f85Q8wGHU2lPsy832IQSn/kAnsBtl9g6sd3RedzgB1q142/wC0xwTkGPpf5gCuAY8x3cP+IXmtcJ3LbU2H73PWmDCEJ9Q=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 44665180008
+X-HE-Tag: 1791544561-413533
+X-HE-Meta: U2FsdGVkX1+YHCKwm2Jx8gosvVOIKR2Iz6xZ54ZsgQRnFtV4W29T3OYxciCpUHTBq8IHu4kHZ4eHBhfVNl5PI2oaB2Amro//SbKshxbqMf4YmGFZfGBJt4sz2xeQ3VZOCZ3cN0DUbGwR9BWE0Wf8uJPd5XD7oWvn44O/mKG/m4ychbBMQmUFh1MTITp97oueGTt5Jo3UlSrc9fd0u/CgrPwAfV9arv8F6wvS28uNJISAF/vXEvesuJ8471hLgrFUf9o9sOTsWJs0pnZrwwaHHWJPFstMQH1M0Zfzpp6jbnIIuNMMka1uX9otKX1t8y6ofGkHT8yE8LrJNa6vnSeq0KXFSdmMke3NcOluZ6uJz9tGk9DYcCq6I0UoheYwkIiRJh9wMaea0Ldha7UzZ3433bWSgaJINcI4v23dCE5gQA0N4GE9vHUyYOlyCbZJpYpmHxkCF/cx/BkqojRsgiDrZBVo+Vz+mQFSfm6DkH8CaMM2Kre2TGl2N8PzJxcYznn8m3689l35ka7XiTrJLC10EMRCdDGj/K/B/ZOfWDZjc8B8y6zel7ts5ofLi+1fksHcnXvEMsP4vxCr9oGsylFZ+T2PTqYc1ENCt/4u9SN2uCLW3/+5EqS/HJ46c09OErGMZDGkud9sHiax0f7sQ9tcrFrUQUL/7WO6fsW1xpSsmxoGC17e/NfRs/N9X4zqLPxLKV9GpEkix3kiHjU3wGoaUEYGUV5t5sdL8lafjWe7V2KS+Vz8XwhiY8KL2nAhlxLm2SQJ/1KTcne3dPxfhpilMZ5OXiYdsn9C2zXIeGrQPoAir3McR1i3dW/+ya3cCVdBg2jcSW7RWTyEHXLP2jW3BJ5tml/vWPds9y2iaxfxKQapA4quFgSpqsjUZ3mICN28TYVZ39oP/XTuc2WnmkEcwdzHiof4MxMa/uRovwCA73NbInQ51/3KO22mv2/HeXg2w08+k25o72c85V86Fwq
+ TZmoC4nK
+ vGCnMuCpErmqQHVp9negyU6L4qjqp/UGYWSyunezP4pQ/Gaw4YpWRsNcjsxTogC6YzDrxLYKdjFLr4OPayYq346SZ+VmU5v422ESaSdjkFY0e4UNEm9T+VMAcJKVA3dwq18iPJDI/PkRzjFhpDu23Ul1ghjzsJPojZzv6yRlCt7BRey7t0PY7HQuu31qbaqHwVI3JWXYrX/yZMfDBVw3A4xd5a+mBH5V2KdmOFiJ7ktE2fdjS+3alxVihhY3ZiPzNZntTc2fbuVivnNZREqoOWOG2cwt/sVCOugizohvNMSLQmD968qMR5wY6wgopo/jNVtPtjcu11aWJcCt7f9fznnkqfgV6JnFBtwrSTFhGpwcnw4XUBvPM8ZgtBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,163 +104,264 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Oh, Vlastimil mentioned (off-list) that the performance should be
-re-evaluated on top of Hao Li's recent performance improvement [1].
+Hi Suren
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/mm/slab.git/commit/?id=1b87ea06a34b213e45e3e0c4effd5043f15046ed
 
-Ideally should be rebased and re-evaluated on top of
-slab/for-next.... :P
+On 2026/10/5 02:23, Suren Baghdasaryan wrote:
+> On Tue, Sep 29, 2026 at 10:20â€¯AM Hao Ge <hao.ge@linux.dev> wrote:
+>>
+>> shutdown_mem_profiling() calls remove_proc_entry() from
+>> reserve_module_tags(), which runs under mod_lock held for write.
+>> remove_proc_entry() waits for readers, and a reader takes mod_lock for
+>> read in allocinfo_start():
+>>
+>>   CPU0 (insmod)                      CPU1 (read /proc/allocinfo)
+>>   ----------------                   ----------------------------
+>>   reserve_module_tags()
+>>     down_write(&mod_lock)  [held]
+>>                                      use_pde()            [in_use++]
+>>                                      allocinfo_start()
+>>                                        down_read(&mod_lock)  <- blocks
+>>     shutdown_mem_profiling()
+>>       remove_proc_entry()
+>>         wait for in_use == 0         <- blocks
+>>
+>> Move remove_proc_entry() to a workqueue.
+>>
+>> The deferred removal also affects alloc_tag_init(). The file is
+>> created before the type, so on a failure it is still there with
+>> alloc_tag_cttype NULL or an error pointer, and a reader panics in
+>> allocinfo_start(). Create the file at the end of alloc_tag_init()
+>> instead, a failed init leaves nothing behind.
+>>
+>> If proc_create() fails, the codetag type and the module tags memory
+>> leak. Call codetag_unregister_type() and free the memory.
+>>
+>> alloc_tag_cttype can now be freed at runtime. alloc_tag_top_users()
+>> reads it from __show_mem() without locks, read the pointer under
+>> rcu_read_lock() and take mod_lock before dropping the RCU lock, the
+>> type stays alive until then. The only caller never sleeps, drop the
+>> can_sleep argument.
+>>
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>> ---
+>>  include/linux/alloc_tag.h |  2 +-
+>>  include/linux/codetag.h   |  2 ++
+>>  lib/codetag.c             | 26 ++++++++++++++++++++
+>>  mm/alloc_tag.c            | 52 +++++++++++++++++++++++++++------------
+>>  mm/show_mem.c             |  2 +-
+>>  5 files changed, 66 insertions(+), 18 deletions(-)
+>>
+>> diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+>> index 7f2d80a59792..852dc10c00ee 100644
+>> --- a/include/linux/alloc_tag.h
+>> +++ b/include/linux/alloc_tag.h
+>> @@ -81,7 +81,7 @@ struct codetag_bytes {
+>>         s64 bytes;
+>>  };
+>>
+>> -size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sleep);
+>> +size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count);
+>>
+>>  static inline struct alloc_tag *ct_to_alloc_tag(struct codetag *ct)
+>>  {
+>> diff --git a/include/linux/codetag.h b/include/linux/codetag.h
+>> index a25a085c2df1..0c4e0337b474 100644
+>> --- a/include/linux/codetag.h
+>> +++ b/include/linux/codetag.h
+>> @@ -87,6 +87,8 @@ void codetag_to_text(struct seq_buf *out, struct codetag *ct);
+>>  struct codetag_type *
+>>  codetag_register_type(const struct codetag_type_desc *desc);
+>>
+>> +void codetag_unregister_type(struct codetag_type *cttype);
+>> +
+>>  #if defined(CONFIG_CODE_TAGGING) && defined(CONFIG_MODULES)
+>>
+>>  bool codetag_needs_module_section(struct module *mod, const char *name,
+>> diff --git a/lib/codetag.c b/lib/codetag.c
+>> index a0b600720afc..46d0904b08b3 100644
+>> --- a/lib/codetag.c
+>> +++ b/lib/codetag.c
+>> @@ -429,3 +429,29 @@ codetag_register_type(const struct codetag_type_desc *desc)
+>>
+>>         return cttype;
+>>  }
+>> +
+>> +/**
+>> + * codetag_unregister_type - unregister a codetag type
+>> + * @cttype: the codetag type to unregister
+>> + *
+>> + * Undo codetag_register_type() and free @cttype. The caller must make
+>> + * sure no lockless reader still uses @cttype, e.g. clear the pointer
+>> + * to it and wait for an RCU grace period first.
+>> + */
+>> +void __init codetag_unregister_type(struct codetag_type *cttype)
+>> +{
+>> +       struct codetag_module *cmod;
+>> +       unsigned long id, tmp;
+>> +
+>> +       mutex_lock(&codetag_lock);
+>> +       list_del(&cttype->link);
+>> +       mutex_unlock(&codetag_lock);
+>> +
+>> +       down_write(&cttype->mod_lock);
+>> +       idr_for_each_entry_ul(&cttype->mod_idr, cmod, tmp, id)
+>> +               kfree(cmod);
+>> +       idr_destroy(&cttype->mod_idr);
+>> +       up_write(&cttype->mod_lock);
+>> +
+>> +       kfree(cttype);
+>> +}
+>> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+>> index ba8a651769e3..b9af5fe5bba2 100644
+>> --- a/mm/alloc_tag.c
+>> +++ b/mm/alloc_tag.c
+>> @@ -15,6 +15,7 @@
+>>  #include <linux/seq_file.h>
+>>  #include <linux/string_choices.h>
+>>  #include <linux/vmalloc.h>
+>> +#include <linux/workqueue.h>
+>>  #include <linux/kmemleak.h>
+>>  #include <uapi/linux/alloc_tag.h>
+>>
+>> @@ -484,22 +485,28 @@ static const struct proc_ops allocinfo_proc_ops = {
+>>  #endif
+>>  };
+>>
+>> -size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sleep)
+>> +size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count)
+>>  {
+>>         struct codetag_iterator iter;
+>> +       struct codetag_type *cttype;
+>>         struct codetag *ct;
+>>         struct codetag_bytes n;
+>>         unsigned int i, nr = 0;
+>> +       bool locked;
+>>
+>> -       if (IS_ERR_OR_NULL(alloc_tag_cttype))
+>> +       rcu_read_lock();
+>> +       cttype = READ_ONCE(alloc_tag_cttype);
+> 
+> Code looks correct to me but if you are changing alloc_tag_cttype to
+> be accessed under RCU, then you should declare it as __rcu and use
+> rcu_assign_pointer()/rcu_access_pointer()/rcu_dereference()/rcu_dereference_protected().
 
-On Fri, Oct 09, 2026 at 12:41:21PM +0200, Harry Yoo wrote:
-> [ +Cc slab, maple tree folks, ... and Suren :D ]
-> 
-> On Fri, Oct 09, 2026 at 02:39:02PM +0800, kernel test robot wrote:
-> > 
-> > 
-> > Hello,
-> 
-> Hi, thanks for reporting!
-> 
-> > kernel test robot noticed a 54.5% improvement of will-it-scale.per_process_ops on:
-> 
-> May I ask if there's data on slab memory usage for this experiment?
-> 
-> Performance improvement is nice, but only when we know what's
-> the tradeoff (memory usage).
-> 
-> I think diff on Slab:, SReclaimable:, SUnreclaim: in /proc/meminfo,
-> and in addition to that, ideally diff on per-cache slab memory usage
-> (from slabtop or /proc/slabinfo) during the experiment would be nice
-> to have to make a decision :-)
-> 
-> > commit: ddf56dfc79f5734d7b3aa8ba81f195d52b3e5823 ("mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity")
-> > https://git.kernel.org/cgit/linux/kernel/git/harry/linux.git b4/sheaf-size-round-up
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git/commit/?h=b4/sheaf-size-round-up
-> 
-> Oh, this is a b4 branch that I pushed but did not submit to mailing list
-> yet because I wasn't didn't measure its implication on memory usage.
-> 
-> The patch removes under-utilized 244 bytes per sheaf on maple_node cache
-> by not skipping "rounding up to the next kmalloc size" step for explicit
-> sheaf capacity.
-> 
-> Copying and pasting the patch here:
-> > mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity
-> >
-> > calculate_sheaf_capacity() calculates the size of struct slab_sheaf from
-> > the capacity, rounds it up to the next kmalloc bucket size, and then
-> > recalculates the capacity from the rounded-up size so that no memory
-> > is wasted within the bucket.
-> > 
-> > However, when the user explicitly specifies args->sheaf_capacity and it
-> > is larger than the capacity calculated by the heuristic, this round up
-> > step is skipped.
-> > 
-> > This wastes memory for maple_node cache. Its object_size is 256 bytes,
-> > so the capacity calculated from the heuristic is 26. Rounding up
-> > increases the sheaf size from 2 + 26 * 8 = 240 bytes to 256 bytes
-> > (kmalloc-256), yielding a capacity of 28.
-> > 
-> > But since the maple tree cache explicitly specifies a capacity of 32,
-> > the final capacity becomes 32 without any round up, and the sheaf size
-> > becomes 32 + 32 * 8 = 288 bytes, which is allocated from kmalloc-512.
-> > In other words, 512 - 288 = 224 bytes are wasted per sheaf.
-> >
-> > Move the round up step after max(capacity, args->sheaf_capacity) so
-> > that it is also applied to explicitly specified capacities. With this
-> > change, the round up behavior becomes consistent and the sheaf capacity
-> > of maple_node becomes 60 and does not waste memory anymore.
-> 
-> It does it increase memory usage for sheaves because it's reusing wasted
-> memory, but it could end up more memory being used as each sheaf
-> now caches more objects.
-> 
-> > Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
-> > ---
-> > 
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index f9b56cb439e709..4fa551bf02cd64 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -7895,17 +7895,19 @@ static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
-> >  	else
-> >  		capacity = 60;
-> >  
-> > -	/* Increment capacity to make sheaf exactly a kmalloc size bucket */
-> > -	size = struct_size_t(struct slab_sheaf, objects, capacity);
-> > -	size = kmalloc_size_roundup(size);
-> > -	capacity = (size - struct_size_t(struct slab_sheaf, objects, 0)) / sizeof(void *);
-> > -
-> >  	/*
-> >  	 * Respect an explicit request for capacity that's typically motivated by
-> >  	 * expected maximum size of kmem_cache_prefill_sheaf() to not end up
-> >  	 * using low-performance oversize sheaves
-> >  	 */
-> > -	return max(capacity, args->sheaf_capacity);
-> > +	capacity = max(capacity, args->sheaf_capacity);
-> > +
-> > +	/* Increment capacity to make sheaf exactly a kmalloc size bucket */
-> > +	size = struct_size_t(struct slab_sheaf, objects, capacity);
-> > +	size = kmalloc_size_roundup(size);
-> > +	capacity = (size - struct_size_t(struct slab_sheaf, objects, 0)) / sizeof(void *);
-> > +
-> > +	return capacity;
-> >  }
-> >  
-> >  /*
-> 
-> [-------<8 end of the patch-------]
-> 
-> > testcase: will-it-scale
-> > config: x86_64-rhel-9.4
-> > compiler: gcc-14
-> > test machine: 256 threads 2 sockets GENUINE INTEL(R) XEON(R) (Sierra Forest) with 128G memory
-> > parameters:
-> > 
-> > 	nr_task: 100%
-> > 	mode: process
-> > 	test: brk2
-> > 	cpufreq_governor: performance
-> > 
-> > 
-> > Details are as below:
-> > -------------------------------------------------------------------------------------------------->
-> > 
-> > 
-> > The kernel config and materials to reproduce are available at:
-> > https://download.01.org/0day-ci/archive/20261009/202610091451.beda4ec3-lkp@intel.com
-> > 
-> > =========================================================================================
-> > compiler/cpufreq_governor/kconfig/mode/nr_task/rootfs/tbox_group/test/testcase:
-> >   gcc-14/performance/x86_64-rhel-9.4/process/100%/debian-13-x86_64-20250902.cgz/lkp-srf-2sp1/brk2/will-it-scale
-> > 
-> > commit: 
-> >   675a745c61 ("EDITME: cover title for sheaf-size-round-up")
-> >   ddf56dfc79 ("mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity")
-> > 
-> > 675a745c6113e420 ddf56dfc79f5734d7b3aa8ba81f 
-> > ---------------- --------------------------- 
-> >          %stddev     %change         %stddev
-> >              \          |                \  
-> >   70440501           +54.5%  1.089e+08        will-it-scale.256.processes
-> >       0.30 ±  3%     +35.9%       0.41 ±  8%  will-it-scale.256.processes_idle
-> >     275157           +54.5%     425248        will-it-scale.per_process_ops
-> >   70440501           +54.5%  1.089e+08        will-it-scale.workload
-> > 
-> > 
-> > Disclaimer:
-> > Results have been estimated based on internal Intel analysis and are provided
-> > for informational purposes only. Any difference in system hardware or software
-> > design or configuration may affect actual performance.
-> > 
-> > 
-> > -- 
-> > 0-DAY CI Kernel Test Service
-> > https://github.com/intel/lkp-tests/wiki
+Yes. I missed that. Will fix in the next version.
 
--- 
-Cheers,
-Harry / Hyeonggon
+Thanks
+Best Regards
+Hao
+
+> 
+>> +       if (IS_ERR_OR_NULL(cttype)) {
+>> +               rcu_read_unlock();
+>>                 return 0;
+>> +       }
+>>
+>> -       if (can_sleep)
+>> -               codetag_lock_module_list(alloc_tag_cttype);
+>> -       else if (!codetag_trylock_module_list(alloc_tag_cttype))
+>> +       locked = codetag_trylock_module_list(cttype);
+>> +       rcu_read_unlock();
+>> +       if (!locked)
+>>                 return 0;
+>>
+>> -       iter = codetag_get_ct_iter(alloc_tag_cttype);
+>> +       iter = codetag_get_ct_iter(cttype);
+>>         while ((ct = codetag_next_ct(&iter))) {
+>>                 struct alloc_tag_counters counter = alloc_tag_read(ct_to_alloc_tag(ct));
+>>
+>> @@ -520,7 +527,7 @@ size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sl
+>>                 }
+>>         }
+>>
+>> -       codetag_unlock_module_list(alloc_tag_cttype);
+>> +       codetag_unlock_module_list(cttype);
+>>
+>>         return nr;
+>>  }
+>> @@ -591,6 +598,13 @@ void pgalloc_tag_swap(struct folio *new, struct folio *old)
+>>         put_page_tag_ref(handle_new);
+>>  }
+>>
+>> +static void remove_allocinfo_file(struct work_struct *work)
+>> +{
+>> +       remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
+>> +}
+>> +
+>> +static DECLARE_WORK(remove_allocinfo_work, remove_allocinfo_file);
+>> +
+>>  static void shutdown_mem_profiling(bool remove_file)
+>>  {
+>>         if (mem_alloc_profiling_enabled())
+>> @@ -600,7 +614,7 @@ static void shutdown_mem_profiling(bool remove_file)
+>>                 return;
+>>
+>>         if (remove_file)
+>> -               remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
+>> +               schedule_work(&remove_allocinfo_work);
+>>         mem_profiling_support = false;
+>>  }
+>>
+>> @@ -1351,16 +1365,10 @@ static int __init alloc_tag_init(void)
+>>                 return 0;
+>>         }
+>>
+>> -       if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_proc_ops)) {
+>> -               pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME);
+>> -               shutdown_mem_profiling(false);
+>> -               return -ENOMEM;
+>> -       }
+>> -
+>>         res = alloc_mod_tags_mem();
+>>         if (res) {
+>>                 pr_err("Failed to reserve address space for module tags, errno = %d\n", res);
+>> -               shutdown_mem_profiling(true);
+>> +               shutdown_mem_profiling(false);
+>>                 return res;
+>>         }
+>>
+>> @@ -1368,10 +1376,22 @@ static int __init alloc_tag_init(void)
+>>         if (IS_ERR(alloc_tag_cttype)) {
+>>                 pr_err("Allocation tags registration failed, errno = %pe\n", alloc_tag_cttype);
+>>                 free_mod_tags_mem();
+>> -               shutdown_mem_profiling(true);
+>> +               shutdown_mem_profiling(false);
+>>                 return PTR_ERR(alloc_tag_cttype);
+>>         }
+>>
+>> +       if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_proc_ops)) {
+>> +               struct codetag_type *cttype = alloc_tag_cttype;
+>> +
+>> +               pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME);
+>> +               shutdown_mem_profiling(false);
+>> +               WRITE_ONCE(alloc_tag_cttype, NULL);
+>> +               synchronize_rcu();
+>> +               codetag_unregister_type(cttype);
+>> +               free_mod_tags_mem();
+>> +               return -ENOMEM;
+>> +       }
+>> +
+>>         return 0;
+>>  }
+>>  module_init(alloc_tag_init);
+>> diff --git a/mm/show_mem.c b/mm/show_mem.c
+>> index b938cbcd774a..a2e710404a48 100644
+>> --- a/mm/show_mem.c
+>> +++ b/mm/show_mem.c
+>> @@ -439,7 +439,7 @@ void __show_mem(unsigned int filter, const nodemask_t *nodemask,
+>>                 struct codetag_bytes tags[10];
+>>                 size_t i, nr;
+>>
+>> -               nr = alloc_tag_top_users(tags, ARRAY_SIZE(tags), false);
+>> +               nr = alloc_tag_top_users(tags, ARRAY_SIZE(tags));
+>>                 if (nr) {
+>>                         pr_notice("Memory allocations (profiling is currently turned %s):\n",
+>>                                 mem_alloc_profiling_enabled() ? "on" : "off");
+>> --
+>> 2.25.1
+>>
 
