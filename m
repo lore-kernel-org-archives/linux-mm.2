@@ -4,80 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E74E2CA601E
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 18:01:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC45ACA601F
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 18:02:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC5436B0088; Fri,  9 Oct 2026 14:01:03 -0400 (EDT)
+	id BEFA36B008C; Fri,  9 Oct 2026 14:02:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7D036B008A; Fri,  9 Oct 2026 14:01:03 -0400 (EDT)
+	id BC6716B0092; Fri,  9 Oct 2026 14:02:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A65136B008C; Fri,  9 Oct 2026 14:01:03 -0400 (EDT)
+	id B042A6B0095; Fri,  9 Oct 2026 14:02:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7892D6B0088
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:01:03 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6D11E1404BD
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:01:01 +0000 (UTC)
-X-FDA: 85303853922.28.1A09AFA
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 85B796B008C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:02:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0FEC8120487
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:02:13 +0000 (UTC)
+X-FDA: 85303856946.22.250A3D3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 53C83140009
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:00:59 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TpnCNeDk;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3890340011
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:02:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQdv6piH;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791568859;
+	s=arc-20220608; t=1791568931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UAqgduf0BQOvueONoyBqpc3wCA4v82uCh+xQrLLFBpI=;
-	b=0n1/FEommquXKVaQPyPvC1Aq9GuEHssgoqUklfE/I1GW0Cj9TY2Aw8+FEgEFNtDtZRP10P
-	TkraIQBDwnoIagMymxdV0PrXymhK68MNW1g1R9cZ53vlkQ9dV9Z5Nt/0neSvJynTqm+8UT
-	LAJ6/PfpguzYpsPmKCH1XRhu2gdlLC4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791568859;
-	b=V5FxcSCTcFCZtA4xBJNw2P1k7RtE62wrs4bOjjwtOYJY23Z0dpnEzWBBlzhBg+a2U9QR36
-	aqtbzX3UBnhZcjnhFAPoFJZ/eGXwX97gmvrJS15NU3R70UEbKSpmVg6ULSGoRfW2ugF/Xf
-	0yLuq7CnubM4C1TS3BG41EmEEDT8KN8=
+	bh=wDWkmzd5nGEabTYsK9qXPAue2kHd6b5xJpST40Nb+MY=;
+	b=Q58UYeiEdZMO5Ur9lMa8Gmbxj33Sx25D5FkPWN6CnryK9RPWlMLKyMAZk+/QCk60ulkdMn
+	3A9HsX2KlyXqfbs3k5DpuE854Vm1tGeIO++CoL+fSa3rPQrI6enEAwPt+k/dgUvnpu0Fy3
+	id02JH80q65qt+lcNCiUwamgd/sNSDc=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TpnCNeDk;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQdv6piH;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791568931;
+	b=iYwdqB2k0LkHJmWzHhseMw0R6b3tnLfDEvaWwTJcLc8UCD1AU/bJToDKuKdyNk2Zi9xWOH
+	4Tj2462v4TFotLfvlD8xYKdba+qE5URza+OJ2tcnLoiTL1Ymqgbscw5HoPR3kpc/hEGRu7
+	3vPsZb87olS/OY53wOQ4nBGBWwCdLRs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AD3B26020C;
-	Fri,  9 Oct 2026 18:00:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79C41F00893;
-	Fri,  9 Oct 2026 18:00:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C45416020C;
+	Fri,  9 Oct 2026 18:02:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7861F000FF;
+	Fri,  9 Oct 2026 18:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791568858;
-	bh=UAqgduf0BQOvueONoyBqpc3wCA4v82uCh+xQrLLFBpI=;
+	s=k20260515; t=1791568930;
+	bh=wDWkmzd5nGEabTYsK9qXPAue2kHd6b5xJpST40Nb+MY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TpnCNeDkFmKf8caNwk0vroIg025H+aS+gYvM6CtupjAtLu+gXm/BExjdya8nvjpWB
-	 t+ckV8jBREMsltwvhamM2VNB7rNhmEodT7Be0ZnXinw6l8X+JH67BSNgGcub1ombmp
-	 hbW8neetl2m2yRHXCi0UYPIgnzZrPGpoe6/dKcQ5mbRxaJM3PhMEi9/PxFHwJMdabN
-	 yVSH39t/34uF1d1e2fhRIiZqz3hfHe8nPVbCCa6eo/Ua1aHszkZGqI10ZzHw9KKAD/
-	 h9FyFTGX4r4NpQ07MmS2w1RJVj4hw8e+PSnpFz8D5L1qB/XaOvfoxipGgMNwxaayDq
-	 37G8bUkgklBRA==
-Message-ID: <54b5a63d-34fc-4bd8-beaf-19673c8b6ad7@kernel.org>
-Date: Fri, 9 Oct 2026 20:00:51 +0200
+	b=mQdv6piHpP+kD36q4PZDoaT/P1azfp3irtTHkLwfATddsmdYCprwSoojI5BWHhu1S
+	 bboeZ1nqGo3t2hHH9LvlgkeLrP0Wko/sKNjCj6rZpn73RlQsry7sRLOQ5ATj518Ti5
+	 5G27ok2ROt/CuVLuPxe7/UcV7MRtjG42+zDH2FCJiShojX1InDH/ICe72/qw4jizkg
+	 oZ497fJ4AiXalCamiRWSZAzJOe5PSKuVUD5DP6ryCbh4N0lC/zwVSPrZmiSATPT4Ue
+	 LeUo0QmkIcGLDec3Vwv4TaLvVpR41Sncp5b65c9Y7suLfrJAcNph7tJ/8sA8xPpwsh
+	 hLwpmu5n3CWDA==
+Message-ID: <ec0072e0-0fba-41e2-948e-a89ae3bfde38@kernel.org>
+Date: Fri, 9 Oct 2026 20:02:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: avoid transient none PMDs during lazyfree
- reclaim
-To: Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, stable@vger.kernel.org
-References: <20261009165214.40212-2-kylebot@openai.com>
+Subject: Re: [PATCH v2] mm/hugetlb: move hugetlb_sysfs_initialized into
+ hugetlb_register_all_nodes()
+To: Enze Li <lienze@kylinos.cn>, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, enze.li@gmx.com
+References: <20261009142010.552614-1-lienze@kylinos.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261009165214.40212-2-kylebot@openai.com>
+In-Reply-To: <20261009142010.552614-1-lienze@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 53C83140009
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3890340011
 X-Rspam-User: 
-X-Stat-Signature: f1po53fw3dc89nmibkdbrgqn3a94grzi
-X-HE-Tag: 1791568859-529018
-X-HE-Meta: U2FsdGVkX19B3KslqJgC2/CvwyLwY99KHLXEJRzW0b4fbF3V3zrOnwnacHeGW5uvQRB8pMqEQ9aQnXne16DF75p0JPXTsG4PjAadnvXP/koB1GHhjoVudcKaz9yfLkaxGmIGuTab67PzYA4zC8KjexvhHMxJDgk87PtGGa8SsnoLgJjuXelEUCClQ6MVx0H81nongcRii4dJ0tD+hH5wrNaY+h2PAnejFreLP2KpzpQIId2QPfodqPAr5xbej6a/0jCejTpra5u3QpiBHcdsOReoE8dFDoDtJRdnBl4DmZK+dyXItPAfN2HFizyt9iUR+KnHzC0VLk0FV/L7VK8a4B91mWcxWIgMJyxDTUcbQbXp3svZFrI0plV/MWT4kn2mGAoeLuaCMYgDWF1K2X7O2aArTZX4ptFj6/nRnjDmnn+OMibhlltSzIsfZC7TB145GxRxK91cuTL8WGO1sg0ysI+Rn+cETph3i5edU5mtkzE8me6IpGcxI49a8uABicOHU/8UxwbpjvzrJVBCcVfOS0kJDw756QHHJ0BF7ORi8Lk7HQFP5EEWkZdflsaFdDIj+DFEucQTtGHa9I8y2IcNm0cDmpTO8nRCMI7XympUSVxUkW3Tgs4jXgwzouCRtyKiy2ccPZQwXne459njZTKlfHzvf7ydDQ5t5dHyQAdcQZyDBOPqFxVQpNqeyXUz/6Iz+f/lba7CASca38z99MmZyXohZrrKDtHg0aJuE1/v1M47LPZUavorhGe3g4iTM7tXCOXy7vy9Fyip5/xw+T2+rdAYwH4ldSpYwa9GUxyGgOjMxDMhozkPofnfy8TdJj/PauNpHbg7OCSp36hpZBTny0RDxmx1SL36eReutwxQhqm+2AFlbgZYnp/+HQ7eeSUKVZQdzOLj39SaZNO9/xusAraE4EUMD1n7aXz66GnP03tfw/w1+KWWIkgWdUTebqU77cYeVo6Zt3U1ZlHjW8T
- 9fDl35AA
- 01fowY/L5CymOwARTngDMlZ3jO47mlm3hjq4ujySwAqQ13+QpbXD1QLgvN5vVsy3EamiUiUzYNq8FezumfQQiEp2lFn6gGTSieYpfA5F39YffZzIFPCUnCxaqcEvmxYo3BVyPDdgKuShYgj31M6g4Dcai8nZ+FWwn4QNm/TcvLNxciYbsGk9jcQLabKLBKMrkeo63kNMGmjomwYgLmN5TkB7gB/OjG+DUQ68bzdFd89lkJ3WX2NdfL+hn8VyoGD2cxvVneCsPVu+37Aka/SuSJGev1ueDBimVHqx63oFEPHYB/qUElsuKn6jXAYHIi453nl99w6Ta2wl5BO5OJT51eNiA2se2sdCGDONp
+X-Stat-Signature: gufksqa5qhnbwgseja4rtysabdfb3u6d
+X-HE-Tag: 1791568931-300113
+X-HE-Meta: U2FsdGVkX1+5YPo9EVqu1aj0/7+MWRb8VPQLjHUbTuyOT+zNF/7PuIWhlvOllZLebvHj1jjksLnrBYcUcoz/wbNBqVNyOBH8kaLoIoxsM7IhCb8aSrJiRRtlipWl6cwpwbNisqyJVMuKYNqgatgRfhjS+kcqLy/P+agahoBM2cYfb9Ib2gXO1eeRvpmByy/UVyIvNqMlggUmct0HKfZg4jUdUH8ctGQKb6nOpXv+2YgVdMFurEEt5vLkDejy0gCLmUjV8X4q6TXOVMNRBdonA4sdmB2Om3Foiqtlms/rnQVCUSENciVrofDrYt1ES7htOTDzWIYcRCIR09264S1+9K2r2ZcZJzJirYKsxB9gUgZHnkS57DmqM4zx5PfiBkfHW7Wg4V6KEvRmZugcg8zijFJaS/Ji6Cx8TcdPCXcE3iKqkGfVc98EOh9fQ5F8mP6Vo2d8h5Au7svXRpRPfnHXoWyTmQUOVVPjOTSejjdpAiFCeWwFT7l0CxqdhV9F9MfavCzDs5VicfyYIuUmeAmlMKv7CZKEOf/w2fDXX8GDw0KKsjJx/hEaV/aKZOJaY20AZrzH5YCxFQjk5W8xusMFnS+huNcZPQ6PbIs+q3sg1FHXST7NSwH3ptUoykgp3+D+VlrbbcdrZbfjKqcCBOGQ1ykywc4poXU2JotyyzRX9RvBLKRYI/yFMlk0VxbCx2iSQvsX6QzEWGTf1FP0dvteMRZM49TEFCQgMQuhSQqYfSXJnE+RDofnUVxJtikanQB9F3oAi/r9vo2sVcRbvCA+17S+f1CatN5JnDhDdzYq1rEJWwJ9dQq8D1dEBS8e9pKJeLNmfESXhn0Fa4V3m4ZbHmGnnyquyJCPVEJQPigICVyFFm88aWjWjVDiXBlb3Nx29usSiRdWha3T6mjhK8df4O9wF5yzdx9wZMkC+p/IfSZ7FP/h1C/fpnxWsFXtgzuOCzGjxrZP71TwgrwIOAq
+ bVmv+YpP
+ x1tLdIpRPqLJP06Hgu9CxX2HlmqK5t8VZG8oo/ZNY3rU0K4JGouV59JbsSTBlCZGPrmmZjrlYdmp1rlmhH7GU2vpVk1LJMC3b4J0W7Du+DGd/2aazBBDxi/cPqkj7GmbVsWh4mfQPX1KYrby9a+3cL5WkbunThA7mqH9orExC1XCu6RQvBUBsG4nCalYKWrZM/F/cwC1ylSZccckHqtgrfCoi4CJZQRA3usSPP7bvOcWEh2oRAdkB3aHjTZLxH4AEPaVz/wafs/k++8ZcsjnljKGtxGPGQLR5rUE1xA8q+gZzzkdjZgWHskiulb7DaWPhEouf15LombZ2DFU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,78 +138,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/9/26 18:52, Kyle Zeng wrote:
-> __discard_anon_folio_pmd_locked() clears and flushes a huge PMD before
-> checking whether the folio can be discarded. If the folio was redirtied
-> or has unexpected references, it restores the original PMD. Reclaim holds
-> the PMD lock and the anon_vma read lock, but not the owning mmap_lock.
+On 10/9/26 16:20, Enze Li wrote:
+> hugetlb_sysfs_init() guards the "hugetlb_sysfs_initialized = true"
+> assignment with an #ifdef CONFIG_NUMA block, while the following
+> hugetlb_register_all_nodes() call is left unguarded and relies on the empty
+> !CONFIG_NUMA stub.
 > 
-> Both zap_pmd_range() and mremap's get_old_pmd() can skip a none PMD
-> without taking its lock. A concurrent munmap() or whole-VMA
-> MREMAP_DONTUNMAP can therefore miss the PMD and later unlink the source
-> VMA from its anon_vma, leaving a restored mapping behind. The anon_vma
-> write lock taken by unlink_anon_vmas() waits for reclaim to finish, but
-> does not repeat the skipped page-table walk. Once the remaining VMA
-> links are removed, the folio's positive mapcount no longer guarantees a
-> live anon_vma. Racing lazyfree reclaim against MREMAP_DONTUNMAP as an
-> unprivileged user reproduces a KASAN use-after-free in
-> folio_lock_anon_vma_read().
+> Move the assignment into the NUMA version of hugetlb_register_all_nodes(),
+> before it registers the online nodes, so the #ifdef in hugetlb_sysfs_init()
+> can go away.  Keep the !CONFIG_NUMA stub, so the call site is unconditional
+> in both configurations.
 > 
-> Use pmdp_invalidate() to keep a recognizable, non-none huge PMD while
-> the discard can still fail. Concurrent unmap and move operations then
-> have to synchronize on the PMD lock instead of skipping the mapping.
-> Clear the invalidated PMD only after the dirty and reference checks have
-> succeeded, before removing the rmap and withdrawing the deposited page
-> table. The full invalidation retains the TLB flush required for the
-> dirty and GUP-fast checks.
-> 
-> Fixes: 735ecdfaf4e8 ("mm/vmscan: avoid split lazyfree THP during shrink_folio_list()")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Codex:gpt-6-astra
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> Suggested-by: Muchun Song <muchun.song@linux.dev>
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
 > ---
->  mm/huge_memory.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 1e5d68acf62a..20262195385a 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3569,11 +3569,17 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
->  		return false;
->  	}
->  
-> -	orig_pmd = pmdp_huge_clear_flush(vma, addr, pmdp);
-> +	/*
-> +	 * The discard may fail, so keep the PMD non-none until we're
-> +	 * committed to discarding it. Otherwise, concurrent munmap() or
-> +	 * mremap() can skip the PMD without taking the PTL and later unlink
-> +	 * the VMA from its anon_vma despite a restored mapping.
-> +	 */
-
-You can drop the entire comment. This is what we should do in most cases where
-the mapping might be restored/changed, for example, in set_pmd_migration_entry().
-
-> +	orig_pmd = pmdp_invalidate(vma, addr, pmdp);
->  
->  	/*
->  	 * Syncing against concurrent GUP-fast:
-> -	 * - clear PMD; barrier; read refcount
-> +	 * - invalidate PMD; barrier; read refcount
->  	 * - inc refcount; barrier; read PMD
->  	 */
->  	smp_mb();
-> @@ -3607,6 +3613,7 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
->  		return false;
->  	}
->  
-> +	pmdp_huge_get_and_clear(mm, addr, pmdp);
->  	folio_remove_rmap_pmd(folio, pmd_page(orig_pmd), vma);
->  	zap_deposited_table(mm, pmdp);
->  	add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
-
-
-Thanks!
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
