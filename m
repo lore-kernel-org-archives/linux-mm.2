@@ -4,133 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC45ACA601F
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 18:02:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C9CECA601F
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 18:04:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEFA36B008C; Fri,  9 Oct 2026 14:02:13 -0400 (EDT)
+	id 451FF6B0092; Fri,  9 Oct 2026 14:04:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC6716B0092; Fri,  9 Oct 2026 14:02:13 -0400 (EDT)
+	id 3DCDF6B0095; Fri,  9 Oct 2026 14:04:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B042A6B0095; Fri,  9 Oct 2026 14:02:13 -0400 (EDT)
+	id 256A96B0096; Fri,  9 Oct 2026 14:04:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 85B796B008C
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:02:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0FEC8120487
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:02:13 +0000 (UTC)
-X-FDA: 85303856946.22.250A3D3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3890340011
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:02:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQdv6piH;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id E246D6B0092
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:04:40 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F3A012049B
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:04:40 +0000 (UTC)
+X-FDA: 85303863120.11.7A2952B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6A3CA4000B
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:04:38 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qad3KSrd;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791569078;
+	b=H0JZoIUXVe1WjI+9o/XmCabmPM4Si9fhA/6rWPfmTmSelbcAW08E7hOAlI8O1DaIDTUQKl
+	eEecfw3/xvOuTY17RdkTdVaYkSbY5+7PncyQj89WWdlEbOyvJtSjYrZL+ffFWBz9Tsx6P/
+	Q4qQW6tUB4qIgOfLBw2pvGQdaamRtCU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qad3KSrd;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791568931;
+	s=arc-20220608; t=1791569078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wDWkmzd5nGEabTYsK9qXPAue2kHd6b5xJpST40Nb+MY=;
-	b=Q58UYeiEdZMO5Ur9lMa8Gmbxj33Sx25D5FkPWN6CnryK9RPWlMLKyMAZk+/QCk60ulkdMn
-	3A9HsX2KlyXqfbs3k5DpuE854Vm1tGeIO++CoL+fSa3rPQrI6enEAwPt+k/dgUvnpu0Fy3
-	id02JH80q65qt+lcNCiUwamgd/sNSDc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQdv6piH;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791568931;
-	b=iYwdqB2k0LkHJmWzHhseMw0R6b3tnLfDEvaWwTJcLc8UCD1AU/bJToDKuKdyNk2Zi9xWOH
-	4Tj2462v4TFotLfvlD8xYKdba+qE5URza+OJ2tcnLoiTL1Ymqgbscw5HoPR3kpc/hEGRu7
-	3vPsZb87olS/OY53wOQ4nBGBWwCdLRs=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=SHbPL8zAhY1EPDigTnWul0MzUeZXzl8KtpG/s8AqHXY=;
+	b=Y4TPGHrTZjedcwVf21YdtHcLEpWRVS1DtA78mh/BsiiP4Q+4p58V150m6ptmPQ2YLaPAT6
+	AC1uatMagfGJJv6RsBtrHc0MU1QlgJuQsyWvkd9NNtpR8uLZlTIiylHvUZueMjHyzmhIFH
+	CQDedG/OPS9A2QJlQ1HYvysTiSC3GPI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C45416020C;
-	Fri,  9 Oct 2026 18:02:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7861F000FF;
-	Fri,  9 Oct 2026 18:02:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0B9B843A14;
+	Fri,  9 Oct 2026 18:04:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D731F000FF;
+	Fri,  9 Oct 2026 18:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791568930;
-	bh=wDWkmzd5nGEabTYsK9qXPAue2kHd6b5xJpST40Nb+MY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mQdv6piHpP+kD36q4PZDoaT/P1azfp3irtTHkLwfATddsmdYCprwSoojI5BWHhu1S
-	 bboeZ1nqGo3t2hHH9LvlgkeLrP0Wko/sKNjCj6rZpn73RlQsry7sRLOQ5ATj518Ti5
-	 5G27ok2ROt/CuVLuPxe7/UcV7MRtjG42+zDH2FCJiShojX1InDH/ICe72/qw4jizkg
-	 oZ497fJ4AiXalCamiRWSZAzJOe5PSKuVUD5DP6ryCbh4N0lC/zwVSPrZmiSATPT4Ue
-	 LeUo0QmkIcGLDec3Vwv4TaLvVpR41Sncp5b65c9Y7suLfrJAcNph7tJ/8sA8xPpwsh
-	 hLwpmu5n3CWDA==
-Message-ID: <ec0072e0-0fba-41e2-948e-a89ae3bfde38@kernel.org>
-Date: Fri, 9 Oct 2026 20:02:04 +0200
+	s=k20260515; t=1791569076;
+	bh=SHbPL8zAhY1EPDigTnWul0MzUeZXzl8KtpG/s8AqHXY=;
+	h=From:Subject:Date:To:Cc;
+	b=Qad3KSrddBgXnQWBK0Lx2JvuXuUvt6cFnQA7ziRLUO7kybnH5xcjHLqxLIjnOMaae
+	 vIQcFH7oS6EG/qkp0/aK8LoTXMFgmhjy8SLC9NLnfIJA2cfdZuTMiR8PyUCOAQbXT1
+	 SizGfxN5Cy1MC+n11o8cFtpHAJG50xLWg2Tr2mMYCFNV6/fB5HU0wOp/rJnC886Ulz
+	 N9BwAObrLZTs86EmJo66Ak0JXK1F4SkrFaqzUctVqRC6UlARTGESabx4ECJvmNMtDi
+	 o/hVI7HkK3JlHS0y5DTpLbGC5XZp7HJYNWyCNIRpIaQmIjHHWfFRcBBc6/R0RQAT2A
+	 AS2nq+aY71VAg==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH v5 00/38] mm: make VMA flag semantics explicit, eliminate
+ VM_SPECIAL
+Date: Fri, 09 Oct 2026 19:03:54 +0100
+Message-Id: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-0-923b70125b1e@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/hugetlb: move hugetlb_sysfs_initialized into
- hugetlb_register_all_nodes()
-To: Enze Li <lienze@kylinos.cn>, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, enze.li@gmx.com
-References: <20261009142010.552614-1-lienze@kylinos.cn>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261009142010.552614-1-lienze@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3890340011
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XQTW7DIBAF4KtErEsFAwQ7q96j6mIMg0Mb/whS1
+ Cjy3YsTqUqVhZdPevreaK4sU4qU2WF3ZYlKzHEaazAvO+aOOPbEo6+ZgYC9sCB5p/kw4MznRDM
+ m4mVAHk7Y84xjDBcOUggNxgeDyKpSeyH+3BbeP+45f3ef5M4ruzaOMZ+ndLmdUOTau6+1otlcK
+ 5IL7tEF2TpHAN3bF6WRTq9T6tk6V+ABlHobhApa39pGkjdqL59A9QjabVBVUJtG+QZBdQ6fQP0
+ H1tepbVBXEGUQBowQwdt/4LIsv+zINubUAQAA
+X-Change-ID: 20260721-b4-mmap-prepare-vma-flag-sanify-2100425df5aa
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+ Paul Moore <paul@paul-moore.com>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
+ Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+ Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Janosch Frank <frankja@linux.ibm.com>, 
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Michal Hocko <mhocko@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, 
+ Xu Xin <xu.xin@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+ linux-rdma@vger.kernel.org, selinux@vger.kernel.org, 
+ linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+ linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
+ fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>, 
+ Bert Karwatzki <spasswolf@web.de>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+ Takashi Iwai <tiwai@suse.de>, Emil Tsalapatis <emil@etsalapatis.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13909; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=n4V9rL2hXS1EHjEQMTlg867FNgqGNKwt46gTB6wkitI=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJO6kydo702/Ib2xh9+HSqmfsVCNscPR/U77Ut0rj9xh
+ SnxoOn3jlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEzEUJ2R4eZn3ZoPJ+4KpZV/
+ zIlJktF97JTUnWozvY7fWIl3JdsSR0aGw3Ec7V0VV6v3Wah8KNselbo8wS/c8P0f3eQCy6s2bXW
+ cAA==
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Stat-Signature: s7zajf1763kydqupfdwswjd5c1aw38r6
+X-Rspamd-Queue-Id: 6A3CA4000B
 X-Rspam-User: 
-X-Stat-Signature: gufksqa5qhnbwgseja4rtysabdfb3u6d
-X-HE-Tag: 1791568931-300113
-X-HE-Meta: U2FsdGVkX1+5YPo9EVqu1aj0/7+MWRb8VPQLjHUbTuyOT+zNF/7PuIWhlvOllZLebvHj1jjksLnrBYcUcoz/wbNBqVNyOBH8kaLoIoxsM7IhCb8aSrJiRRtlipWl6cwpwbNisqyJVMuKYNqgatgRfhjS+kcqLy/P+agahoBM2cYfb9Ib2gXO1eeRvpmByy/UVyIvNqMlggUmct0HKfZg4jUdUH8ctGQKb6nOpXv+2YgVdMFurEEt5vLkDejy0gCLmUjV8X4q6TXOVMNRBdonA4sdmB2Om3Foiqtlms/rnQVCUSENciVrofDrYt1ES7htOTDzWIYcRCIR09264S1+9K2r2ZcZJzJirYKsxB9gUgZHnkS57DmqM4zx5PfiBkfHW7Wg4V6KEvRmZugcg8zijFJaS/Ji6Cx8TcdPCXcE3iKqkGfVc98EOh9fQ5F8mP6Vo2d8h5Au7svXRpRPfnHXoWyTmQUOVVPjOTSejjdpAiFCeWwFT7l0CxqdhV9F9MfavCzDs5VicfyYIuUmeAmlMKv7CZKEOf/w2fDXX8GDw0KKsjJx/hEaV/aKZOJaY20AZrzH5YCxFQjk5W8xusMFnS+huNcZPQ6PbIs+q3sg1FHXST7NSwH3ptUoykgp3+D+VlrbbcdrZbfjKqcCBOGQ1ykywc4poXU2JotyyzRX9RvBLKRYI/yFMlk0VxbCx2iSQvsX6QzEWGTf1FP0dvteMRZM49TEFCQgMQuhSQqYfSXJnE+RDofnUVxJtikanQB9F3oAi/r9vo2sVcRbvCA+17S+f1CatN5JnDhDdzYq1rEJWwJ9dQq8D1dEBS8e9pKJeLNmfESXhn0Fa4V3m4ZbHmGnnyquyJCPVEJQPigICVyFFm88aWjWjVDiXBlb3Nx29usSiRdWha3T6mjhK8df4O9wF5yzdx9wZMkC+p/IfSZ7FP/h1C/fpnxWsFXtgzuOCzGjxrZP71TwgrwIOAq
- bVmv+YpP
- x1tLdIpRPqLJP06Hgu9CxX2HlmqK5t8VZG8oo/ZNY3rU0K4JGouV59JbsSTBlCZGPrmmZjrlYdmp1rlmhH7GU2vpVk1LJMC3b4J0W7Du+DGd/2aazBBDxi/cPqkj7GmbVsWh4mfQPX1KYrby9a+3cL5WkbunThA7mqH9orExC1XCu6RQvBUBsG4nCalYKWrZM/F/cwC1ylSZccckHqtgrfCoi4CJZQRA3usSPP7bvOcWEh2oRAdkB3aHjTZLxH4AEPaVz/wafs/k++8ZcsjnljKGtxGPGQLR5rUE1xA8q+gZzzkdjZgWHskiulb7DaWPhEouf15LombZ2DFU=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791569078-38573
+X-HE-Meta: U2FsdGVkX1+pO4ZNhIQ3wAwVxEUaOvG5WR9Tzk6n9d50JRcTw9qwuPsIjUVnG/f6sxkW/HSCPJpWCxR4xHT7NiPh+Q8CJEW+MUrrfKOvd5pshawplB+94uZZG8LOJohwajobwMU1P9ZKYQXvvq5dxFIqpwhKhAODfqyq70JvmGM76awrgLqxd9m+BQ6HpZGvht/HiqkwLQRD2G9TI9TFb6BtM7EXvPMWB1Z4ah8j3l5dGC8BJU24Xv2TUL5Xf/9/wRn4M8RJh+HScZvm1kPlEDoqt6bRNt1r82iCdc0RWRIIMgmHv5vUnrFRB8l+WtOJdfWvIBN2v1cSy+cxinHiE1ZoH5d4KbvL0RVnjxDYLSZxaUxAjeHn54woOk96NgTRn5yA61D6kEfeBBVG0bn+gdtGG1lk/MSC671qkZslqARPuY0MIfjXV986uyMwo9CYz8p0TOm2FpjT6R3a3ckJzDup8ACCS+RE/auT9bn78bcs3oL4qQ/XPbHCUCOWKjyy0ApH1k4HPPipVqPnXKM6lIrhTb1WtlDEst4JzISa8uUD5EgTGT29fev9xgqdVeR4kg7QPux65lwEKQsdACTmKseg5Otv4CzCUFgqUCGSAF9nSHc3M6G0/I/mjjK0K2Nj5Ty4uNJL21zohWchTQKXrJEfEFNc17lPf1dd9CVIL40f7So6uFrBJF56bP67khzrSeIWVnNuiD9jEo2JIHTeGlxTVS9FOMWk/IKzUmdwgQw53tQhSTbDqarSZIy36D2Bmsml/6Unm+thXgZ4AAcnZqpgQwsKW0MLEwu7CAJW22acfY36g72gPLxzUmmMMMNr+1AtLgenVaJ0Abufm9YM8hP9mc2UdOJUlKNxIVrYKCmrT3C95lDX6jYlUeGPZrF0cV69DIZEZoiick2xpqFM6IzFVnlwxtMrrQ9QwC1gSriinjvUbXaQmVzW7yARNTiCR8PYJoFtsRxrMBdexp2
+ TVxcndZA
+ TfOvxVSHmsLk4mUUEre8Ay3j5F73yGPLn+37z7QGThTl+jBm4eOZMc9xyTfq76EomS2hBuBgkJX06+EJYrpG3NI0/PS9L9A2Y8/phCQzmjkGo5Ilzz3gX0QIwDc3WOfkaX4cE8mIJfyZkEXGUS7gDSQVChBIF93dUuLnNeuZ6v7Rwv8fLweGpyy9hG3/v6NRWeBb1Bpm6HFB6SGh9Xm0t0krYHsUyqYJjZxLemAbH4hZvZCj/s+Ie0Ky4zK1Yxipcflx/j7Lx+XtHbXwT/nC3RlLCVDqwGiaOPuNCVKtS3H7H0cgfG27Q8wBqNJ+ZZz+LnISelPO6PatXt1sbAIItiKvNDS0bpRXrzHKF1dDelYFeO56GowFRnXb1DILFgxucCf13OqrSaSyzD4E2bhyxOm1D/V8Rcd0GwUkzj5xFJuFS9oW984ZsnLxQMbICGipc+gHFrJ8Q0BiwxF92YHjjObBBgaDb2jnanYI5F+1UXetTpIGt04HWPSk6X7b3dn/RydWn+RlJJvoroOaBCJiSreYgGfgdm2by5xyIsEMnNhxqPHzTMTCTbu6reRLFMsL8IIjS5xM08rZVsamodvqJ5tgyVyZAed5Oh/bopI/GUruyWOF4FwLgft0NhizldlYGCYR8eDAzMKSUDRZARHRFYQ2f5pZbDavoPraDE9lk2FGkCD0iXP+4krPApiIvElDyrDV7cUYBprKNJwd8MWSz/C0DmX+L6z+8X4kmADPEk07X9N6NTWkHGhYAhqWAj9J/Cj6O2wTCQ1jM1F2RMq41vInPJs7mIeJa6bbSLCcOI+t51S3XDsJnjjZSjFQ9QDRVmtvD7xI/R0qudj5mZbRBmRFbk3Nqzf6uM4y5ar+cxm3LabLsRHMg0mfcVYY+D9ptFzciZQtl1rnkrjykBruwhI1xX3R7J/sbZwwVmWG0JqKWEwUw1EoFW+GYQ1emb79QieViFmgPZeP1TU0h3M4/ALKzBnyn
+ 57CY7kSq
+ OAhsxh0QKpzmIIInLdnXRMU+GWnBJn1l6V5jaa0ulG0wuJ55SVKFsdH/1kZjXk6l3gVJUDqJUqiKzIBdqANIKzLH6kBRtGzVezadVu81rM9tsSix35ZBVq4nx6MBweHnK7Dr31SOMV2STC1Vbrd1QiXtM6b/WNVOUvIrAfrDe/l5y+lRKmtYk6VurB7mX8y7wlDXJg2poc8mGdwEJT/x2yFbI76J4HYQvn4/2f63MT8eai33eGZYXIahh9g9cIsi8xhKteMkFmc+GRIIrhNOVwwyhDxL5qcE1MCsFGRbt6PLoQgVtdtlmQfZKa2R5VU7JP9rJXlqE3yFiR+ccemsdK8g/FrTgR4FBiKq5UgIh8evCUkDPM8Wcn9YxRy5IUGsYPnCDT7kpcPw0T+ZM7Ub4mdh9/3fBwJyDFOXwIpMLWRzLmYIseebv5B8ouSHguADd6ov6XKSVMHlucMqWvI8hsNoQm4of10PAXbm+jN9RxALuyjOMsV34UJGMeHFBd8bhX6dhp1HrwsPrwRoknLeGhWj+OOLIYm1wVLHEXoPbK8r5yXeJKt80XU8DNbwW3GISGg81CcZFF4IqSn+sabP43fLv9p8OvWGgLmZWWxm9/m6I3GDOlH+TeidldTsEQvyVaCZ0EqrDaamYWGtqW7xOjfZdcjKesX0RprD+xdHjXPBO10dZkCj8501GiC86if+ti7D+X39QMPfvz4vgTa1uknsJBPrX1KWkTuP11Bl4ynwF8KGu01mvbCekFzmZo06wn9/7nbUz+iFcLizfSrbbBgsc9FyIKUjmB46RrLVQfYM/NzBRisYXuvbXIBloXsmrlbOi6DCmAbKCbMmruC9QYlTzaw4Knc4ltJNyra8J+MGO4T38cPWDlyvdLEozBdw1UZN+KNVY5xkq+01f2sKNPR81fSm+sSdPh0RSj7w16AgarFVB5tWTZEOK7gAzHLgQCTh6Ve1OBhYsBt2+GoGitoMv6/Xp
+ ZduT0bzj
+ bxSQDqQBAjo+0aet1GIcxa40/36j6p3eU9hH1y6QqI3s4g9HS5yRbtFTJBvL5inWWt5jJq34FqB8KTO+Xn40QKc/g2SlSm3t9hZI8eqUcy7FdbWwr6NsE3DJRduPJLGuTFWcUu1J6ruZLQRlUSPfHpnYjHjAQ/yichsWftIWdPHkuA9pwFO+s+BUg075x1or8lzbxGB+gzhQEnQ4sWSoUrAv246beZcuWTCJmAVUssEsdJbd+1qPIza8X7uLi+6/aOGVjQUb9sxSmtL/9y/A4NkptEsV5BtyVI3xGQebwWtqDSsHfTs8JpBIhBj9UXLaprkZbD0KehVxAV47Wb4J4wZ7yn6XIgPE+yABpDWhpkug/I42c9Nzr7OPAVzMrk9X5DcgILqIDtTY5CmFnS06uXp3xynO9mWx9GRr9aflT/4RgGqxiDJ0FHiO0S3rxYJz9g0KZFDpze0vEvqf9CynjOfxPG/ZEMWLGyM550c6V2+yGaY0tCfYWGhz2BijJhwWlL94RP7e30cQA8tTm3z5BKl2jfJKxoS/CNYeXnccQ0Bieq8UyjrYfUgH9bq880tY/sNNZyDbqVxl9G/6osKH40d90z8t6bgSQnAEzdbXaEsvckfwecmVy2StON1Y6zEIcT/wzM63kpSz4k9N9s4dqzttXoWgGFM5uscsdLwEbINuVJSmk3hKf+P4D50+Ijc2xeddc94tqFS8n59Tjnw1xHMYJP4cR0H1TbmeuFTH2RVswJzsKfFF5kYQ75p5S8GWnwrPloTGq7e+mOIuJrQJEk1RWwWkgblcfy5EBA31yZhwhb1z6jFBE3JAHBQINm9RSPuxxxRS3mOkwGe1Ky5km2bfrdOkN0JZ0N90nEEfe6F/jF1WHk0x06hPHkuCuDQhq/rf1Ikdyhgk87H29fHLwjVtuAiAzvxo64AX5e49AmgVPdj1NtMNPhNkv9gXBLcVvYM2NXRhLqM/8mi2+4YB4ODlk0ekQ
+ 5HYxmpw2
+ UcBH9wKBhAWMBWYZeRMuiaGWNNCMh1lISaiB8wThIHLUW7d2Zb/PCcXryBkPv/E5tCam+zApElbMXpeYvPm+fcoaSONq86Z89X+7f52mfujM0YSHXEDcgaNV3VMvLKZTnYmrtM++7sIyI9Leg+Bgf5G7Kkx6lvUzJIQDhX2gXDDR+uQj+mebPEXBD6e3v9eA6m+B4SM8dol8z+tLMsy6JAMg0wGtZfxSOlGzCANO4SWBHBFCplFAdMB85fWZ9fAjHlDNCRawo0NqcLVvrBneLK9F5tSG9ByuhLCn6gQXttvA7M+qEZP69AhGMDiNOIc+OsOPjIjxy8WfdCkenGzZ//
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,25 +189,276 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/9/26 16:20, Enze Li wrote:
-> hugetlb_sysfs_init() guards the "hugetlb_sysfs_initialized = true"
-> assignment with an #ifdef CONFIG_NUMA block, while the following
-> hugetlb_register_all_nodes() call is left unguarded and relies on the empty
-> !CONFIG_NUMA stub.
-> 
-> Move the assignment into the NUMA version of hugetlb_register_all_nodes(),
-> before it registers the online nodes, so the #ifdef in hugetlb_sysfs_init()
-> can go away.  Keep the !CONFIG_NUMA stub, so the call site is unconditional
-> in both configurations.
-> 
-> Suggested-by: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
-> ---
+The VM_SPECIAL / VMA_SPECIAL_FLAGS mask conflates several unrelated
+properties:
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+* Is this managed by core mm, or by a driver mapping MMIO, kernel-allocated
+  pages, or even ordinary pages itself?
+* Can it be expanded or merged?
+* Is this a 'weird' case like mlock where migration might race and we
+  'have' to set invalid flags to notify?
+* Is it another 'weird' case where we just want to stop GUP from touching
+  it?
 
--- 
+Driver writers have often been confused about this, and who can blame them?
+
+It also interacts badly with the eternal edgecase known as hugetlb - which
+sets VMA_DONTEXPAND_BIT but doesn't also want to be treated like a
+'special' flag.
+
+Another issue is that we cannot make sensible assumptions about flag
+use. It's not possible to assume VMA_IO_BIT means iommu because drivers
+abuse it and mlock abuses it.
+
+Special is also an overloaded term in mm. VDSO and VVAR mappings are also
+called 'special' but they're special in a... special way.
+
+Sometimes things are called special that are a subset of
+VMA_SPECIAL_FLAGS (VMA_PFNMAP_BIT and VMA_MIXEDMAP_BIT for instance when it
+comes to zapping or vm_normal_folio()).
+
+There's a specific kind of special for THP too, which considers
+PFN map, mixed map 'special' but DAX not.
+
+It's all rather a mess.
+
+This series brings some order to things by both limiting what drivers can
+do with VMA flags and switching to using predicates that describe
+behaviour, not arbitrary flags.
+
+It establishes the invariant that mm-managed mappings may neither set
+VMA_IO_BIT nor clear VMA_MAYWRITE_BIT in an mmap hook, enforcing this by
+validating VMA state after every mmap and mmap_prepare hook.
+
+It updates usbmon and sg to mmap_prepare in order to do so, adding a new
+mmap action for mapping discontiguous kernel pages, and has hfi1 and the
+ALSA PCM status page map their pages eagerly instead.
+
+It also establishes the invariant that VMA_MIXEDMAP_BIT be set when mapping
+kernel memory, something that is usually the case but happens not to be for
+some users - specifically defio, cmt_speech, uprobes and the bpf arena, all
+of which are updated to do the right thing.
+
+It replaces VM_SPECIAL and arbitrary flag tests with predicates that say
+what is actually being tested:
+
+     vma_is_mm_managed()   Are the VMA's contents established and managed
+                           by core mm, rather than a driver or other kernel
+                           component?
+
+      vma_is_mm_backed()   Is the VMA backed by memory core mm itself
+                           faults in and keeps, rather than a driver or
+                           device?
+
+  vma_is_fixed_mapping()   Is the VMA not permitted to be expanded or
+                           merged?
+
+         vma_can_merge()   Can the VMA be merged with a compatible
+                           neighbour?
+
+Remaining raw VMA_IO_BIT, VMA_PFNMAP_BIT and VMA_MIXEDMAP_BIT tests
+scattered across mm are converted to predicates where they express one, and
+left as explicit flag tests where they do not.
+
+And also the opportunity is taken to eliminate THP's vma_is_special_huge()
+which was an existing source of confusion.
+
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+v5:
+* Applied tags (thanks everybody!)
+* Updated 3/38 to fix a bug in __mmap_new_file_vma() by zapping + closing
+  the VMA before setting vma->vm_file NULL to avoid an i_mmap_writable
+  imbalance. A repro was tested before/after and confirmed fixed.
+* Updated 7/38 to make __map_kernel_pages_prepare() use
+  mmap_assert_write_locked() rather than the weird
+  assert-on-mmap_read_trylock() pattern, as per Suren.
+* Also update vm_insert_page(), vm_insert_pages() to fix the same pattern
+  and to use the new VMA API, and converted a BUG_ON to a
+  VM_WARN_ON_ONCE().
+
+v4:
+* Pulled what was 2/40 out of the series to send as a fix instead, as per
+  Suren.
+* Updated 1/38 to rename put_map() to map_put_vm_file(), as per Suren and
+  Liam.
+* Updated 3/38 (was 4/40) to perform the vma_close() after unmapping the
+  range as per Gregory.
+* Updated 3/38 (was 4/40) to rename prev_* to orig_* in the mmap hook
+  validation code, as per Suren.
+* Updated 4/38 (was 5/40) to clarify that the mergeable-VMA action check
+  runs after mmap_action_prepare(), as per Zi.
+* Updated 7/38 (was 8/40) to have discontig_kernel_map_page_range() map
+  only the pages which fit in the VMA, consistent with
+  discontig_kernel_map_page(), as per Suren and Zi.
+* Updated 7/38 (was 8/40) to unmap and close the VMA when an mmap action
+  fails under the mmap_prepare compatibility layer, so state is correctly
+  released there too, as per Lance.
+* Updated 8/38 (was 9/40) to document this, as per Zi.
+* Updated 14/38 (was 15/40) to replace vma[_flags]_is_kernel_owned() with
+  its inverse, vma[_flags]_is_mm_managed() and reword accordingly
+  throughout, as per David.
+* Updated 22/38 (was 23/40) to add a clarifying comment, as per Zi.
+* Updated 23/38 (was 24/40) to test VMA_LOCKED_MASK before draining the
+  mlock batch in try_to_unmap_one() and try_to_migrate_one(), as per Lance.
+* Updated 30/38 (was 31/40) to rename vma[_flags]_is_persistent() to
+  vma[_flags]_is_mm_backed() and reword its documentation around what backs
+  the mapping rather than persistence, as per David.
+* Updated 31/38 (was 32/40) to make the code more succinct in
+  vma_move_compatible(), as per David.
+* Dropped what was 40/40, vma[_flags]_can_gup(), as per David.
+https://lore.kernel.org/r/20261003-b4-mmap-prepare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org
+
+v3:
+* Fixed up bug in patch 1 as reported by Mike - have to delay setting
+  map->vma_flags until after action prepare, though map->vm_file needs to
+  be set before for correct reference count management.
+* Updated 4/40 to add a symmetric vm_end check as well as vm_start in case
+  of a dangerously insane driver, as per Sashiko.
+* Updated 8/40 to check if a driver did something REALLY stupid like having
+  a NULL discontig_kernel_page_ops ptr, as per Sashiko.
+* Updated 15/40 to trivially synchronise userland test comments.
+* Updated 17/40 to correctly duplicate code to the userland VMA tests as
+  per Sashiko.
+https://lore.kernel.org/r/20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org
+
+v2:
+* Rebased on mm-unstable.
+* Introduced new patch to fix various mmap_prepare and file interactions
+  that weren't quite right as per Sashiko. None impact anything upstream
+  yet so it doesn't need to be a fix.
+* Restore vma->vm_start if an mmap hook has moved it before tearing the
+  VMA down, so we unmap the range we established rather than the one the
+  hook invented, as per Sashiko.
+* Reject a discontiguous kernel page batch of zero pages rather than
+  looping forever, and bound batches by the pages remaining in the VMA,
+  as per Sashiko.
+* Add the missing map_kernel_discontig member to the userland VMA tests'
+  copy of struct mmap_action as per Sashiko.
+* Set VM_DONTEXPAND on hfi1's RCV_HDRQ, RCV_EGRBUF and RTAIL mappings, as
+  dma_mmap_coherent() doesn't on the IOMMU-DMA path, as per Sashiko.
+* Recompute vma->vm_page_prot in snd_pcm_mmap_status() after clearing
+  VM_WRITE, as vm_insert_page() uses it immediately rather than at fault
+  time, as per Sashiko.
+* munlock_vma_folio() now tests VMA_LOCKED_MASK so an unmap racing the
+  mlock walk still munlocks folios the walk has already counted, as per
+  Sashiko.
+https://lore.kernel.org/r/20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org
+
+v1:
+https://lore.kernel.org/r/20260908-b4-mmap-prepare-vma-flag-sanify-v1-0-dacf19cce22b@kernel.org
+
+---
+Lorenzo Stoakes (ARM) (38):
+      mm/vma: fix mmap_prepare file handling, remove file_doesnt_need_get
+      mm/vma: introduce and use vma_[flags_]can_merge()
+      mm: consistently validate VMA state after mmap[_prepare] hooks
+      mm/vma: ensure mmap_prepare doesn't set actions on a mergeable vma
+      mm: make map_kernel_pages_[prepare,complete] internal and unexported
+      mm/vma: tidy up map kernel pages enum values
+      mm: add mmap action for discontiguous kernel page mapping
+      docs: filesystems: update mmap_prepare docs for discontig kernel pgs
+      drivers/usb/mon: update to use mmap_prepare + map kernel pages
+      infiniband: update hfi1 to use remap_vmalloc_range()
+      selinux: reject writable opens of policy file, drop mmap shared/write check
+      ALSA: pcm: use vm_insert_page() to map PCM status page
+      bpf: arena: mark arena_map_mmap() mappings VM_MIXEDMAP
+      mm/vma: add vma[_flags]_is_mm_managed() predicates
+      mm/vma: only allow mmap to clear VMA_MAYWRITE_BIT if not mm-managed
+      mm/vma: add and use vma_[flags]_is_fixed_mapping
+      scsi: sg: convert mmap hook to mmap_prepare and rework
+      fbdev: defio: assert FBINFO_VIRTFB, drop VM_IO, add VM_MIXEDMAP
+      HSI: cmt_speech: convert mmap hook to mmap_prepare, refactor
+      mm/gup: error out early on !VMA_MAYREAD_BIT VMAs
+      uprobes: remove VM_IO, set VM_MIXEDMAP for mapped kernel pages
+      mm/mlock: clear VMA_LOCKED_MASK over mmap callback
+      mm/mlock: eliminate weird VMA_IO_BIT abuse and simplify
+      mm/vma: enforce that mm-managed mappings may not set VMA_IO_BIT
+      mm: remove VMA_IO_BIT check in vma[_flags]_is_mm_managed()
+      mm: remove hugetlb_inline.h
+      mm: rename is_vm_hugetlb_page() to vma_is_hugetlb()
+      mm: drop some redundant checks around hugetlb VMAs
+      mm/madvise: update is_valid_guard_vma() to use vma_can_merge()
+      mm/vma: introduce vma[_flags]_is_mm_backed()
+      mm/uffd: use predicates for userfaultfd checks
+      mm/madvise: use predicates for madvise(..., MADV_DOFORK)
+      mm: eliminate VMA_SPECIAL_FLAGS usage when hugetlb explicitly tested
+      mm: eliminate VMA_SPECIAL_FLAGS check in lru_gen_look_around()
+      mm: avoid use of VMA_SPECIAL_FLAGS in migrate_vma_setup()
+      mm: eliminate VM_SPECIAL, VMA_SPECIAL_FLAGS
+      fuse: dax: do not set VM_MIXEDMAP
+      mm/huge_memory: remove vma_is_special_huge()
+
+ Documentation/filesystems/mmap_prepare.rst |  81 ++++++++++
+ arch/arm64/kvm/mmu.c                       |   4 +-
+ arch/powerpc/mm/book3s64/radix_tlb.c       |   6 +-
+ arch/powerpc/mm/nohash/e500_hugetlbpage.c  |   2 +-
+ arch/powerpc/mm/nohash/tlb.c               |   2 +-
+ arch/riscv/kvm/mmu.c                       |   2 +-
+ arch/riscv/mm/tlbflush.c                   |   2 +-
+ arch/s390/mm/gmap_helpers.c                |   6 +-
+ arch/sparc/mm/init_64.c                    |   2 +-
+ arch/x86/kernel/uprobes.c                  |   2 +-
+ drivers/gpu/drm/drm_gpusvm.c               |   5 +-
+ drivers/hsi/clients/cmt_speech.c           |  33 ++--
+ drivers/infiniband/hw/hfi1/file_ops.c      |  83 +++-------
+ drivers/scsi/sg.c                          | 115 ++++++-------
+ drivers/usb/mon/mon_bin.c                  |  82 ++++++----
+ drivers/video/fbdev/core/fb_defio.c        |   6 +-
+ drivers/video/fbdev/ssd1307fb.c            |   2 +
+ fs/coredump.c                              |   2 +-
+ fs/fuse/dax.c                              |   2 +-
+ fs/hugetlbfs/inode.c                       |   2 +-
+ fs/proc/task_mmu.c                         |   8 +-
+ include/asm-generic/tlb.h                  |   4 +-
+ include/linux/hugetlb.h                    |   5 +-
+ include/linux/hugetlb_inline.h             |  28 ----
+ include/linux/mm.h                         | 240 +++++++++++++++++++++++++--
+ include/linux/mm_types.h                   |  50 +++++-
+ include/linux/pagemap.h                    |   1 -
+ include/linux/rmap.h                       |   2 +-
+ include/linux/userfaultfd_k.h              |   1 -
+ kernel/bpf/arena.c                         |   3 +-
+ kernel/events/core.c                       |   2 +-
+ kernel/events/uprobes.c                    |   4 +-
+ kernel/sched/fair.c                        |   3 +-
+ mm/folio.c                                 |   2 +-
+ mm/gup.c                                   |   8 +-
+ mm/huge_memory.c                           |  31 ++--
+ mm/hugetlb.c                               |  14 +-
+ mm/internal.h                              |  80 +++++----
+ mm/ksm.c                                   |   4 +-
+ mm/madvise.c                               |  28 ++--
+ mm/memory.c                                | 147 ++++++++++++++---
+ mm/mempolicy.c                             |   2 +-
+ mm/migrate_device.c                        |  12 +-
+ mm/mlock.c                                 |  51 +++---
+ mm/mmap.c                                  |   2 +-
+ mm/mmu_gather.c                            |   2 +-
+ mm/mprotect.c                              |   5 +-
+ mm/mremap.c                                |  11 +-
+ mm/page_vma_mapped.c                       |   4 +-
+ mm/pagewalk.c                              |   2 +-
+ mm/rmap.c                                  |   8 +-
+ mm/swapfile.c                              |   2 +-
+ mm/userfaultfd.c                           |  43 ++---
+ mm/util.c                                  |  49 ++++--
+ mm/vma.c                                   | 250 ++++++++++++++++++++++-------
+ mm/vma.h                                   |  31 +++-
+ mm/vma_internal.h                          |   1 -
+ mm/vmscan.c                                |   9 +-
+ security/selinux/selinuxfs.c               |  11 +-
+ sound/core/pcm_native.c                    |  38 ++---
+ tools/testing/vma/include/dup.h            |  80 +++++++--
+ tools/testing/vma/include/stubs.h          |   6 +-
+ tools/testing/vma/tests/merge.c            |  10 +-
+ 63 files changed, 1164 insertions(+), 571 deletions(-)
+---
+base-commit: 6b41451631cabf9ea3b384c2a099088e1598f963
+change-id: 20260721-b4-mmap-prepare-vma-flag-sanify-2100425df5aa
+
 Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-David
 
