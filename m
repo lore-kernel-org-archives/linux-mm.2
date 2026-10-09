@@ -4,106 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9214ACA6019
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 13:18:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74F4BCA601E
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 13:36:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65F1C6B008A; Fri,  9 Oct 2026 09:18:03 -0400 (EDT)
+	id 60A986B008A; Fri,  9 Oct 2026 09:36:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60FA96B008C; Fri,  9 Oct 2026 09:18:03 -0400 (EDT)
+	id 5BC2F6B008C; Fri,  9 Oct 2026 09:36:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 525C06B0092; Fri,  9 Oct 2026 09:18:03 -0400 (EDT)
+	id 4D1906B0092; Fri,  9 Oct 2026 09:36:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 32D1B6B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 09:18:03 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 49D9EA0386
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:18:02 +0000 (UTC)
-X-FDA: 85303140804.22.1211F62
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 77DCB1C000E
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:17:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	spf=pass (imf18.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C37F6B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 09:36:18 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 95B081A0399
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:36:17 +0000 (UTC)
+X-FDA: 85303186794.07.7F81999
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7CA53100008
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:36:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791551880;
+	s=arc-20220608; t=1791552975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yKhIa2BxIE9CwmVR3h+hBy0tZfLELToBXYzMXQVHbuA=;
-	b=SBtYFvxl2Qt8F3O4DJyzx0R0Z7ZsUPRY1nTk0OnGz0fBICshNAd0w6tIE4OwIomgq2XO0S
-	xEgSfPZ4eDlBYGvqHArFpRY+E1J+Uj4fbolTtvkVZlpL5G/obYNk8nAKEgd2FPAiY8Tj9P
-	sgTrTyJ1Xms8l9IokCElEzTM4SgB9Rw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+	bh=67m2j5dcHdzu0e0ViIgD+29dFq5iDPJ6CCKVZnKskqk=;
+	b=c45PUMw9oUH1zimkxZU7uyb3LF4kmyz3HO0mjAZTqp7lM7e8XInSt7Tmngx3z4V7M7xHnk
+	ZGp7vQ8vyjOwyQQLJ9tbLtkzT5Djr5DCKdl2x0Ubya88CAHxVbTiu9NxjsKief6sISkwXu
+	cd2S+v4r1asExIcgEeZXYKCtyDWe1fY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791551880;
-	b=xM3yLJN4fOh6eWdjJpvI+vuSvqP0Frojh4JaQX/jSOXhz17OVmJgOmNcFQnRmtbKxfBnD1
-	XN/qpx/cEcZY+S+WjBCurZHnwxgGVjUzp0Li0t+8km2qXw3TZZ6eU0e6OmVnOzZ+wR0983
-	AIH+jUP9+QiLoTrWkmnVAfi0/hC6i4M=
-X-UUID: d060c5aac3e311f19a56ed5b684f684d-20261009
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_7B, HR_CTT_TXT
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_LANG
-	HR_MAILER_MTBG, HR_SJ_EXCLAMATION, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
-	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS
-	HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED
-	IP_LOWREP, SRC_LOWREP, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
-	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:ff4cd9fe-8e8d-4a47-ada7-5a8d274110d7,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:ff4cd9fe-8e8d-4a47-ada7-5a8d274110d7,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:a8148f165c59302f2387d8b6976bcccf,BulkI
-	D:2610092051192DZE6Y7F,BulkQuantity:2,SF:17|19|64|66|78|80|81|82|83|102|12
-	7|841|865|898,TC:nil,Content:0|15|50|99,EDM:-3,IP:-2,URL:0,File:nil,RT:nil
-	,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BR
-	R:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: d060c5aac3e311f19a56ed5b684f684d-20261009
-X-User: lienze@kylinos.cn
-Received: from [192.168.3.106] [(111.193.136.161)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 1412359089; Fri, 09 Oct 2026 21:17:44 +0800
-Message-ID: <51f3b5a9-9d1d-4075-8cfe-18ff4a912524@kylinos.cn>
-Date: Fri, 9 Oct 2026 21:17:40 +0800
+	t=1791552975;
+	b=lXCmfW0OP8+6BWoryRGqHuJ01Ayd5evh/js+TdZUxzjJ+7HDlY/qAMK9pXteRvwMGCrJfT
+	DG/j3g2/Yw9ZpdsJ3e2EsYDRz6x7nXwckRIGkrIfmhaTkJbnJJvYQh2e3wRQyPSp39rrpL
+	u69SDz7YRpYJxvgmOEO45gB+eYARnns=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1B73B1F7D1;
+	Fri,  9 Oct 2026 13:36:14 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0C97D1326D;
+	Fri,  9 Oct 2026 13:36:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id P8nmNMztyGoIaQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 09 Oct 2026 13:36:12 +0000
+Date: Fri, 9 Oct 2026 14:36:11 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org, 
+	david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz, 
+	ayushr@modal.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: memory: fix truncation removing mapped folios
+Message-ID: <asjr2zCp1BVtfpTV@pedro-suse.tail5790ac.ts.net>
+References: <0d2a1809fa1cfc22ad3df26ec28b2d30e5cdf3bd.1791540483.git.baolin.wang@linux.alibaba.com>
+ <asjXJZap53yJWMYi@gremlin>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: drop the empty register_all_nodes() stub on
- !NUMA
-To: Muchun Song <muchun.song@linux.dev>
-Cc: osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org,
- linux-mm@kvack.org, enze.li@gmx.com, lienze@kylinos.cn
-References: <20261009092832.393778-1-lienze@kylinos.cn>
- <286A8A23-C420-4393-ACFB-361CA14BE316@linux.dev>
-Content-Language: en-US
-From: Enze Li <lienze@kylinos.cn>
-In-Reply-To: <286A8A23-C420-4393-ACFB-361CA14BE316@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: jy7ssf8dfmmnypmimpq8my4c8o5cwwfb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <asjXJZap53yJWMYi@gremlin>
+X-Rspamd-Pre-Result: action=no action;
+	module=Unknown lua;
+	unknown reason
+X-Spamd-Bar: /
+X-Rspamd-Pre-Result: action=no action;
+	module=Unknown lua;
+	unknown reason
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7CA53100008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 77DCB1C000E
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791551876-708720
-X-HE-Meta: U2FsdGVkX1+oIiJoMUMBp6LAeQ0s21iUXw2OzBExW3SPjzfJqtmBkeAhJoQ6jY51ym8S1sJsc1vX10jT5tr/YZ8ZLSYOd6OSGeC04HlKP5wdRcKc7ucQUgtqyYXG1STazR8uVhtIxeByNRa377/PRBzGXQZdTpxqAX2YQYr6AQaZiD1FVy8wiSZVcK0GaEt3mV5nPoJ6Z33WgR1j0VXdqz0hhAWRL641geLjbpB9A01FypnPkWn2J7C2JpC1sJjykKASALS2HAVnAkQxVSazq9VsyKWDbkxICVSYvIimVunjF5gGdc+ZmduKe7Go5hG7JU54u51QuGcQeEczAJWZYJrhvtlAttnsgQi3Ka78vgk78Ro5sI2a2i5atRPI/fXzHlmVJ+lIbFrPzEY1WiJJHWInnGsJ3LKTlnZ081LiMRv3OrYUU9ZbaNMTVD6G6y3hXXxeOPQuvMYCjo4a8VlNbAlj8X5Wkaw1woSCcsPdfFxhN6VzbJA2aD2NsMcbSw7IbF1ol3fpBkguSfIMBf5dHcb14kVa70MDMsYVJ3y+bqe+01StyoCUQOc/l0jRZaoAMKOfcmsnA3r3ai8Vme6cnu536k4qlu6ZGo4XSrGGd0DFcBS+OYI6ucCWVWZkcjyn2WlG2JfPSsxqICJlfM0W446EXsgS2tQqvLAuc+SHSoAGbhRjQoFDO35qzVUvWDQza4oCmSyu/g5INE56XVJJ/efItj22frISMbNkTqp/nIZssDRQe9LjAhCPSPHn9xq/UcVYgfT9v/gzXtEZcYtlO81WrMp2Q+NpD/X05AuHOj8EJmhcNXC4wpdZfVmeOoMzbybIMG4scQkz37tXtNB53Nqj2NaKSwoYMhM357QAtk2BAZwssNVhfUBhDSyE78AqfP7j5ogqYPncwQID8Wxk841N64FmlSMwZLxVD701nF2/mvJ2bxdtbrw6vl2I9x91oEyM5bLT6lTC3FhjPSj
- MRsTPIe+
- 2CI43+6+ahdvP5X3oP1ErXnTk63y48L0CN71Rk/JAa7tD0Kc4Q/ofGiq83nmS8iTwt5JXZDctOC8qkIEzamfcP8vBln3/Srkia90kzHOPtEHHqjPUby1nY/jKisy/MGrkUyN+D/ugvRi8oTk=
+X-Stat-Signature: 85hfr17qqu63ujaqmeg8h4fmoo5shjmz
+X-HE-Tag: 1791552975-791077
+X-HE-Meta: U2FsdGVkX1+zO6PrlDF4m0Nn2K3hShigni1zRiyYVfvttPit4KRHtuXN1Zr7fzelzN3cOG8htvOn9H9N1O3/nZzt3ua984raxJIw3hwGRDG580frdnoTJfA1HSzFjRx7FOYp8hHJ521z0l8wKIrmu5+uMiuBRayK22431Z1gDPubQ7QQkfSI1gBE6fZmZtSlVA9XNM3fHdvgf9wotxS0ldA47XYIhpW4f26b2DVRjiBHgC8gho+KaTzAfmB9o2L0MpWjSrTrfDJ1lac51cByqbUCHit0Gb3qSaikIM2vgyVgjQl53EStAcUgfThgFeNuzsJGTWNE2RUuOU8z1bjGi4NGytt5/5wcK4NrhVM88lTO99J+n6c3YnjIe+vEriys9aF2feHZGO1zZ04MBAxmNnWbeiY6H1HGM6BARtS2mZBlneI30wr/W/VtLg1k8zr8TMAp2axmB8kBjE6asByOH6xVPuH477GjPmxfZ8obtd0bbbBdPgqDPXdb8/mIJgm0YQC68EOcaaa+mzXZxDSbFHyasBN70pTpqezkCk4BBxGPXEYzsJjcUaSAs/QUx40lGJEkBX41oXrdamu+EiJJh7YX2Vyy1E296xMLpMZ86ite50EEo8DXFumMPWLkHMgLDnkpOQmaepmICxC2Q1aqfkrqj9MZWosGtWTkZdOaWT47l8BqEAatjaZP5tqc0TLgKwPRHPBa+aWfYhMGClDycRvh1b+icVr2/mfZ+v8+T85d4pGovSEJs9z/Q1j6/7r2ueg67K2e6TpwljzhvqvfW0yvhotPRj1JSt52UajvJeu8t+kToa2xvWsaUf88+NYuyP4uO/9kHtgHm0hCbIHNjbIHqSUHQLA4iD2hvL71Tr0dTEHUTmm3lGLkbP+eSDaZvrI0i3IRQqJA5dcOvxNxbczVuuq16p7tSJS7FSXld2acmFLMH008pdwLuEn+SN/UmHNQmPzwA02+jI9wU9m
+ NTlypiHm
+ xu26dg70Gj83X03abutt+QphQuJnlrEbo+hCpLAFdwbAUYBe1idAdMjheBPtwU+LBf0eSb2sCQqLd+IXBTloeVCs0idQuAWGSibVUaFx+T+Dj79EstyI7Tt1xc++0TWx0ZynBppeikJSCPmRsn1s13JvCHz6bJ53cHUNmt+xNmxiqY8vs+S3Ybd+uRrM3eD0igS7M/cQwk4iamPtJK/EKjXvn8g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,53 +102,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Muchun,
-
-On 2026/10/9 20:50, Muchun Song wrote:
+On Fri, Oct 09, 2026 at 01:00:52PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Fri, Oct 09, 2026 at 06:12:03PM +0800, Baolin Wang wrote:
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 1f5d5f7d39cd..0272217ad7b0 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
 > 
+> > @@ -2044,16 +2053,10 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+> >  	 * to ensure they are still none, thereby preventing the pte entries
+> >  	 * from being repopulated by another thread.
+> >  	 */
+> > -	if (can_reclaim_pt && direct_reclaim && addr == end)
+> > +	if (can_reclaim_pt && direct_reclaim && addr == end) {
+> > +		/* rmap changes need to be observed before e.g PTEs get zapped. */
+> > +		smp_wmb();
 > 
->> On Oct 9, 2026, at 17:28, Enze Li <lienze@kylinos.cn> wrote:
->>
->> The only call site is in hugetlb_sysfs_init() and only matters with NUMA.
->> Drop the empty !NUMA stub and move the call under the CONFIG_NUMA ifdef
->> instead, keeping all NUMA-only setup together.
->>
->> Signed-off-by: Enze Li <lienze@kylinos.cn>
->> ---
->> mm/hugetlb_sysfs.c | 4 +---
->> 1 file changed, 1 insertion(+), 3 deletions(-)
->>
->> diff --git a/mm/hugetlb_sysfs.c b/mm/hugetlb_sysfs.c
->> index 326a54b4d991..de439b3b7f01 100644
->> --- a/mm/hugetlb_sysfs.c
->> +++ b/mm/hugetlb_sysfs.c
->> @@ -475,8 +475,6 @@ static struct hstate *kobj_to_node_hstate(struct kobject *kobj, int *nidp)
->> return NULL;
->> }
->>
->> -static void hugetlb_register_all_nodes(void) { }
->> -
->> #endif
->>
->> void __init hugetlb_sysfs_init(void)
->> @@ -497,6 +495,6 @@ void __init hugetlb_sysfs_init(void)
->>
->> #ifdef CONFIG_NUMA
->> 	hugetlb_sysfs_initialized = true;
->> -#endif
->> 	hugetlb_register_all_nodes();
->> +#endif
+> What does this pair with? You should always say what in the comment.
+
+Yep, this is missing a rmb to pair with. The diff I posted at
+https://lore.kernel.org/linux-mm/asigKktcrSY80A_2@pedro-suse.tail5790ac.ts.net/
+had one in zap_pmd_range(), which admittedly isn't the greatest. I'm not sure if
+there's a better way to do this.
+
 > 
-> Actually, I'd prefer to keep the stub myself. But that extra
-> "#ifdef CONFIG_NUMA" is really annoying. Why can't we move
-> "hugetlb_sysfs_initialized = true" into hugetlb_register_all_nodes()?
-> Then we could get rid of the "#ifdef CONFIG_NUMA" here.
+> rmb/wmb are generally not needed vs. acquire/release. Are you sure a wmb is
+> right here?
 
-Okay, will move it into hugetlb_register_all_nodes() and keep the stub
-in v2.
+I don't think that works, because __folio_remove_rmap has a ton of stuff going
+on, some implying full ordering, others not. Plus you'd need to switch the pmd
+dereference to something like an smp_load_acquire().
 
-Best Regards,
-Enze
-
-<...>
+-- 
+Pedro
 
