@@ -4,109 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F6DACA5FED
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 05:20:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 165C1CA6015
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 05:42:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 460F46B0093; Fri,  9 Oct 2026 01:20:40 -0400 (EDT)
+	id DDDA26B008A; Fri,  9 Oct 2026 01:42:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 437E16B0095; Fri,  9 Oct 2026 01:20:40 -0400 (EDT)
+	id DB3676B008C; Fri,  9 Oct 2026 01:42:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3787F6B0096; Fri,  9 Oct 2026 01:20:40 -0400 (EDT)
+	id CC97E6B0092; Fri,  9 Oct 2026 01:42:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1290D6B0093
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 01:20:40 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 744C2120147
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 05:20:39 +0000 (UTC)
-X-FDA: 85301937798.13.F9FD71E
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BDB50C0002
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 05:20:36 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A5E0E6B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 01:42:56 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 26CDB1A026C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 05:42:56 +0000 (UTC)
+X-FDA: 85301993952.25.A1BB2B1
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11022098.outbound.protection.outlook.com [52.101.126.98])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1B8BCC0002
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 05:42:52 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Itjqv9VF;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791523237;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6vODWK2FmAv73Y5nOIKYDdXa7CANO+32pzRQ/FnUVPY=;
-	b=dONg1x9SuKU7VRUkJG3i4Jn9Hx3oaSnIcZlLlq7q2+H5ov1BgvJNQFYHlxdOPSRzX+0i9J
-	0gikI+BYRJww1YmEbBscPcg2w5f9f0P7L4m3nQf/oqgqAKcEr78V1+PNbiKORdTGQT7HE/
-	vvMmkvn2nkaBCA4MKCJaARge1XPCcjA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791523237;
-	b=TRlhlI8romjgPwpja5tRTdkQZaEo4eBgF3tu2lQZ4f0I41XNHNhl5X64Avia+2wmXtm26A
-	kk+ldLj2MeTWS1ex44x7gYTvAlNyExgy0Lo8bIcLj047W/j9XrNPpffvk9BBL/GUArTesm
-	Wqx/FOgJWoQRbN+V1G80UKKO6ARfm0g=
-ARC-Authentication-Results: i=1;
+	dkim=pass header.d=woodstock.ac.in header.s=selector1 header.b=JOa1fwej;
+	spf=pass (imf10.hostedemail.com: domain of ArnavGoel@woodstock.ac.in designates 52.101.126.98 as permitted sender) smtp.mailfrom=ArnavGoel@woodstock.ac.in;
+	dmarc=pass (policy=none) header.from=woodstock.ac.in;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791524573;
+	b=qeXAoWPkKHAEvFLvSgm1Yx7rsY8VmM9L9oS91HuSRkf5GHCygy+7PbxnbM63FLcVSntIAp
+	dqLDtW9YAg1kStTmZQkuXohu6aOWYs+5XpfdfonSV8YfSVZZG74TlK1MImQBFFSer5Z06n
+	Ly+O9rUOvPRtaK8cKpOdLdM7dMKPkhU=
+ARC-Authentication-Results: i=2;
 	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Itjqv9VF;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791523237; x=1823059237;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xhtmVVGd5YK/g4pvEYSi0j/h86N+dnT8EWTbUFDzkeA=;
-  b=Itjqv9VFmCN0devpkdACubP5en9ld7KXCoZZes9dq+FX271y5ni5u8aH
-   Q86gUHfKLi6aCH5ndoYuaeQsGwRn0D66/uY7u3uM1IoKNESorsqlw6wNe
-   MnSvp4mO2bfnR7gg9NwU+IxcUnaBua1DS924bNmnulZMQq9b5biLKzIUZ
-   SGFLNl88xCgUMuvHFpOG8nyaSj+S0aEwFfZBiFiat7/rnKTgYTWMU/J0C
-   LG2CA8F5tfQIJ6YlGDDuitBtBmeEHdL5iTs0EVyBsApD85ecTwoYRxboF
-   Z0c1qizqmGK1jJ3Gn5CvY7GRPt5N7eqjT4UbLI5BnkdhgX9dKF7wR/lpQ
-   w==;
-X-CSE-ConnectionGUID: ilNqg45aSt+MT5SZEoww2w==
-X-CSE-MsgGUID: xJs35XODRzeFEDT6AoM8Tw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="324345"
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="324345"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 22:20:36 -0700
-X-CSE-ConnectionGUID: ypCTQnOlQrOVDUGGrwXC4w==
-X-CSE-MsgGUID: vaDae3PmR6CFJTkuE9r9ng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="181330"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 08 Oct 2026 22:20:33 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xF31y-000000005Ls-23w3;
-	Fri, 09 Oct 2026 05:20:30 +0000
-Date: Fri, 9 Oct 2026 13:20:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marek Szyprowski <m.szyprowski@samsung.com>, linux-mm@kvack.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Mike Rapoport <rppt@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>,
-	Wandun <chenwandun1@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 2/2] of: reserved_mem: allocate and map the
- reserved_mem array early
-Message-ID: <202610091317.jGUqplBp-lkp@intel.com>
-References: <20261008152403.766439-3-m.szyprowski@samsung.com>
+	dkim=pass header.d=woodstock.ac.in header.s=selector1 header.b=JOa1fwej;
+	spf=pass (imf10.hostedemail.com: domain of ArnavGoel@woodstock.ac.in designates 52.101.126.98 as permitted sender) smtp.mailfrom=ArnavGoel@woodstock.ac.in;
+	dmarc=pass (policy=none) header.from=woodstock.ac.in;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791524573;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4T9n+TuFzQ3a24pyk5neDH+rVO8SDllYQlEaMxkXCIQ=;
+	b=QcupSzs3XXOZ+Vs6rjS87+XiH7b43mwjsmDHXj4srOS4moXlAW8p1UhJSWR1A0y+FpnoT6
+	rHPSgl8oghOYxsZtT2v08VKGjgGrcGRHALDRXJdReEi31wJ839jX0oCgnenL7QemtI2ikc
+	9pMQX0PzlkxuV4DtWEK1FFvZ7hpmutw=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tgdaPr/gTeBUvv1xIDQ3sYts3OB1/WKr1A+ffpO63KUQHm0jGGTudqE8N0fF3AckoKOi87mcJje3GX1dFH2NodtQClJHQH8m9caOQ2stvDhdNTym391O3ZGNeKVBgK4Cri9OakUSpuxKdBasNr79rduV+MKl+8epevZby/WPS3vRFxo+xkCPVsNfN0t8zYxU7OLD9r6skr3MjnGxH8eFF6CeztbNBdoS5H/rYgZFSdG1BGRipEAxwAtJVNDBlgBisqmT0E1lhV/n1pAg5SgP1CVoWFLOvKDH7J754AgscLI0Cdj1k3Io+pIc1CChzJml1myEbuuz0urFWA7gDk2KcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4T9n+TuFzQ3a24pyk5neDH+rVO8SDllYQlEaMxkXCIQ=;
+ b=y5dVPzUuiBqVUn3fb5Ah/WfH2McI2Dj1oQlNqq5X3W6J58GAOVb1G2CfcxI5cka5/lnSxnoku7cAzLVLdx/vN69X/vYRccBWdxNL2Up2ywXx06a+QRRuCU8eJZ0D6FoEZ/gpHaVXwME0dd5Sjnq93JkVUIgP3n7W460o0DutgO7VamMrHP+nuVg7PwY60VyzFKGeoZRdoNDvGOImLBMRoH8bZG/84IoK6j5WLr/d1VCty1Nljt6LPjXE2++JqbgDSg3gOsgXFIbsJ2peZynQIx4WNAgX53RvV8fpw3yg0mz9NjW7gKRq1RZBrummQ8vDX84D1O8gF5yfPFPjdhIm1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=woodstock.ac.in; dmarc=pass action=none
+ header.from=woodstock.ac.in; dkim=pass header.d=woodstock.ac.in; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=woodstock.ac.in;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4T9n+TuFzQ3a24pyk5neDH+rVO8SDllYQlEaMxkXCIQ=;
+ b=JOa1fwejh0HwZicv1RvZdXKGmMBUZbl9t3fZZMnldNJjpgpte2nvXnxDhAej0hVHN+MAa0DP/S3QFkPBdJajFTmsQoQNeRA2qaN4fC/sKaijPgi0CdN37EHPn/zyzMoOV91sMmDDaegIhYiPBmy6Xb6GCa1Z4aUrVMsnnxgmqQk=
+Received: from SI6PR06MB7474.apcprd06.prod.outlook.com (2603:1096:4:240::6) by
+ TYZPR06MB6637.apcprd06.prod.outlook.com (2603:1096:400:451::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.16; Fri, 9 Oct 2026 05:42:42 +0000
+Received: from SI6PR06MB7474.apcprd06.prod.outlook.com
+ ([fe80::462f:2fd9:3fe0:e419]) by SI6PR06MB7474.apcprd06.prod.outlook.com
+ ([fe80::462f:2fd9:3fe0:e419%6]) with mapi id 15.21.0496.015; Fri, 9 Oct 2026
+ 05:42:42 +0000
+From: Arnav Goel <ArnavGoel@woodstock.ac.in>
+To: "damon@lists.linux.dev" <damon@lists.linux.dev>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>
+Subject: =?iso-8859-4?Q?Research_use_of_D=C0MOS_Linear_B_texts?=
+Thread-Topic: =?iso-8859-4?Q?Research_use_of_D=C0MOS_Linear_B_texts?=
+Thread-Index: AQHdV7DKRdZZDRN+8k6ecTpK9QeUDw==
+Date: Fri, 9 Oct 2026 05:42:41 +0000
+Message-ID:
+ <SI6PR06MB74745E4D61CF3341BF6958CEE7922@SI6PR06MB7474.apcprd06.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-reactions: allow
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SI6PR06MB7474:EE_|TYZPR06MB6637:EE_
+x-ms-office365-filtering-correlation-id: 49d32832-0527-45fd-1ef9-08df25c822f9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|786006|366016|41320700013|1800799024|376014|38070700021|10067099003|56012099006|18002099003|8096899003;
+x-microsoft-antispam-message-info:
+ P2UjCeOUiHoO1hJpGqBBbsXswWDfzRnohZzgDHo5Rav0tUXo0DmIqd71WBmrT34esb7ne3Oc32FTFs0cQhPnFosEgInzCdO/c17i4Kgo2r7sqGbykfb+5n0rXrjkEWgLiWfK26YTOityvaXEZRUsoS/oAB5ostO944V7zyte0nNoR5O1gO4VrcoNvrpNT3Pf87xYJmqJXLxoojC2qMXKmzMIMELTwfX7P63zHHLsC/fH8d1+IyIp0mwf8qHLTGmO0dYWgSRvajI49AoqZ2eC4MA2VVZ5dqdRx8CdY5YyOcztN302DTSOKG/dzslI6ydBFkvMrPhIkI38vAKUbL+GTU6raJeAIgD5VR8HFa1DGV8kQcY1bPJ2FBJSKSIib263quIIvumt5VMZptwHOXaHlVDFFN9yKoL6fQPg9qS5c3q03RkoQYx8+H3fELsjfd29GHZ40FStCKgo36Fr8VN7OeMt9HJlRvRYY8rjFH0dmQUk4CrTAa/wzjpN4Y8l8pKJifUvVyeMAvK7YDl7ynuATduDb6m56XD1lo7EVWS5+uwDiOSShmd2X4SZj6D+64pZtauo+63/+ATMS65xjntAnPKWlchWSIg749V89OaNk6z/Xi0i5OsK5ZYTT7q1HY86hVKMjA+Xq7xmsO5440mdAgx4jUNhMnJw1MTlmvoAySUrRM/dhBYuE08nS1h/U8FWwgZYVfScmz+On1hCzXqHiw==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI6PR06MB7474.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(786006)(366016)(41320700013)(1800799024)(376014)(38070700021)(10067099003)(56012099006)(18002099003)(8096899003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-4?Q?bfSnFKYE/aPIffXt3I9id2D5mUraK6xWJHW6waz/sUx1L7dhvIRF3tbi9T?=
+ =?iso-8859-4?Q?WTSjcFcGo6gNg4qbsNPFJDaHCSwxNb3v7D4bt9cVd6G/UCMRTm/Eq3IZsK?=
+ =?iso-8859-4?Q?v20oJ3mlRSsNQm9r1Oas48M+ofTQL+wNu8lyrBRblMuHV3KtGjTTUi4Bl7?=
+ =?iso-8859-4?Q?m7+iWMIE1uYBsmTQNRNVd35FIHYBSl0bA6p0jXHM1/TGK4gT06FEbOBbYv?=
+ =?iso-8859-4?Q?YOtnHvcKTTXEoePYJLrU+w4E52LG1jN0bgL+R4nKak46dgZrKXu4lRLmKJ?=
+ =?iso-8859-4?Q?TjFXHwGbR//kIQcuWVpxwJ7kE0f5/AY8zwMt4unyokby1QjXqfuT/X+Mr2?=
+ =?iso-8859-4?Q?UmYqqD6aqaeC8fJOrjomFBQwk/igWKq6YH+E/N7yvrG0jVVwFtJs99uGDR?=
+ =?iso-8859-4?Q?cxhiGAp6MSxrQX+b+gaGIO67Yv2lZTaM9D1SUz3aIrn5xvnjBCX68zzLgE?=
+ =?iso-8859-4?Q?88tDsMCh4fLLzz1oR4D+eK5cKIlYq4xGkkMHaoXwu8zgu/lc6ZQLa408kv?=
+ =?iso-8859-4?Q?1EVfVsikvhMOpeAoPM2k8ztquqahlLygf514y+LwGUJizqrxQo2WkmWc1v?=
+ =?iso-8859-4?Q?9IBoCTZNtMG9Dj/y6otRDtJVMoNm1yck4MTVWDJpLXhZU12TH/tl8pqggd?=
+ =?iso-8859-4?Q?iaX8pOR0Q1nyesTedDWWmr/yqnuiUyNkaCwWu1X/JRWK3V6K66d52fEiy6?=
+ =?iso-8859-4?Q?JlVLqqkv+x4oB1NLH9FvuRdIL79AwcfjoelVZRzwcve4vhC0oMupDlMKcN?=
+ =?iso-8859-4?Q?GN+oIduvgAwzWRkMvYaOUFEyPGbd0QUn05TWHLxr8dh+tPeIxDuFFNh04l?=
+ =?iso-8859-4?Q?hQ9rD2k8Tpq3XBMimuksPLpit1Ss0coZSeAuVx7pK5st4BiwgWk3s6Jja8?=
+ =?iso-8859-4?Q?jNNsQr+LHDlOJyxapdHyn+LriKUJH90OY3y/UGAY7ld5Z4qqsthdYQoVFL?=
+ =?iso-8859-4?Q?ng/i4dUb4gnabjbsqMq1RjrTq11MXQsSWqd7pOdEqsgkDB/LHdQWEuhHdv?=
+ =?iso-8859-4?Q?GqAykfYID6s2hxdXyCXW+/3jD69h4/e2oea8hI64jAVsA4zf8ICvD+xbIj?=
+ =?iso-8859-4?Q?TdkL9QIjlRwc8F32YhaSvDzbHiFyBz0pVs7STsUYi6+Z4ukloglpfSV5GL?=
+ =?iso-8859-4?Q?LrdZD4tyGF05gnfnOQmOtzc0KEMc/gHMsIwk/Cex00ZnHFfV+glUMl6KGv?=
+ =?iso-8859-4?Q?zOyOTYicY2fXi7T1utyc+Lfi6pB5r9pdVDDCvTE9+mtiN/p34qu/MfcMHC?=
+ =?iso-8859-4?Q?FvdmvIccqrayDYe1SiWho3fFHqVtKEBmQXCPjd0cjy0zlcvy4hki5xe7NO?=
+ =?iso-8859-4?Q?EINkH1MdqjWmkBrMUmBS0LbQPaUC9jNISBc+/DDN4gOM8F8ZUm9eGt3wK1?=
+ =?iso-8859-4?Q?C4r1f/aLOytgdmIjmZPmXYBf3j7Ru+P4GbhTafB4Hb1pzqRGLrzQBIqFMa?=
+ =?iso-8859-4?Q?8nvFNRzJsFMyjgb/1DzDLwbbXXMFNyKMkz7Kcl4e7iCU4qCmfRLr1Sa0Zg?=
+ =?iso-8859-4?Q?8I2xMoI5D0ViuPa/P7UHjLHLS5Zq9BRQVv1/GWupkBtNB26hUVjCP1lo2X?=
+ =?iso-8859-4?Q?34NJRW2115rPwwkZYBQdxD/5BqHSxe1TnGW+EeVBAhTJaOjFdlkxF45bfe?=
+ =?iso-8859-4?Q?0cxNj17m/yl7g8CCGWRc0XRr1DW2aRLVEZhRAYh60XXWb1nkX6xekiVbnq?=
+ =?iso-8859-4?Q?mnUCfBziFR/7sIVqs/wgwxxObaT+UxuPD5QwLY3klxtejTBf4b1TMcNWhd?=
+ =?iso-8859-4?Q?U7xQrNnPx2hqfyvLO3aoUt4MhFYHXWb6tkPDp2+rJDq6Gu7lOJUNW8r/xZ?=
+ =?iso-8859-4?Q?ij2GvqSgeSYSIgyQU51uZvw5qmj2/Xs=3D?=
+Content-Type: multipart/alternative;
+	boundary="_000_SI6PR06MB74745E4D61CF3341BF6958CEE7922SI6PR06MB7474apcp_"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261008152403.766439-3-m.szyprowski@samsung.com>
-X-Rspamd-Queue-Id: BDB50C0002
+X-OriginatorOrg: woodstock.ac.in
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SI6PR06MB7474.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 49d32832-0527-45fd-1ef9-08df25c822f9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2026 05:42:41.9988
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: cdd2e0d2-9335-4caa-8251-199d64196287
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: GkEQFklQmJs//Ey4MOMSe92lMchiYGENlkg+LMzkayJ6SEzhxtNRgM3z9ECJWaVPjIx5BDpnNRkGEbqYzoj71sVuq4iMlmA5tLtxriduxvo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB6637
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 4doaynf7rer84fptrmbxustcpb4qw8y9
-X-HE-Tag: 1791523236-522968
-X-HE-Meta: U2FsdGVkX1/MogkvsAyIWb0IUlz2fydPcebAsVjTsIx/CYjENlqee7pt0U1zNkskjrdOvFIbVhXXqloBw3IAY6RF+AjywSkFVSMaiFCTOLXXQTSR1Sg6NGHSieFQvoRL6h7il08OcsgfAQWofKx+TnETvApciS8SuHJHIDlmtDrm2GEMW+BB+ONWmuwVqcBAG+b+RMJ9eKFa1II0LAwOTZjdiua4Ajd4wOd/Xk18az8jls6E3vAu1jSirFtp9HECmkgs5jskgr+34Syh7cYK4nkoejhkFsE4Dda+tViJZASgmtSson7SU8GB0582wDwrngYzoWyIfbt5Hqw+eqfS7iUyJkn6TjUGBBZXGnsMnBsWiRk2ZQX9RoP8zAyhZrhIQlnRy64RD3jf6mEKBvmDby9NEqgS1MKPdFzXZXi9ubCdVZusWhBa6FoKRiGlLNEEksZJSGr4rQ4qXjVRCBt7Ud3T2jd5zFWtGjpSzeN2m2kLcZ+dv+txpf+sTOYPFpUs3srGT0KIPDKnDS99IxX2GWOvWn5zKq91VcnAULiw53ebQ9F+6PuXuNqP8LcqhhD4RkhY2VNGqbtn51L5XDLcJeGdOmWQNSPaiE8snSA+uO6mMzW+ESBBBgwiaa2ysUqPVJwlCP7srFBNRxHmIsKoEkxlFXCL7/ewSgcgDlB09alMMBkag5D4dUBJHALnBEVpRd06d5/bl0sXQaC4tZ809reeBZIR600aJZr2LwlQthl+apAdgfWFvMIPTis9232xgkCuStx4a0yIi76Wp85IkrI352Mu5a8QwyVm1H28aDl+kpt1Oo4e04T7YCHKbtwp1y++JP+UFOhZ8rePAhSIBmGH3YJnc/xp5i44gaB+wYBhLcsiMFSQfwP+5BGPQIhGUJHwDm/YIBdiK1RzPrs2A52o5rch2AyZfxaJIK7Z2iZCiAN6GEjkvca2Fk9pvn/h/dM1YloHyLRT54d/Vt/
- 6qPFG3Z1
- ynPTG0bZQLODaaqVzRADc/i23G6CPpPk1qfHvORg1paFgeq/Vi4ZESFWB50M6xZBjc5cz6bi+znbU0cor0yVjC0n9x7cl5ZLNTltURDyAYeF40C0Ne2uKuOzJCH4d00iLaJcUyRdzYMTRRUhqWGqEgz6jUYX4rlVJpc8RE/lkTs8yFlCEalaUhUq4AYHT+XT+j/FdSgYSaMKX2Byg/CTl8ZLxFkMdweGhN55KBiT+zkcnjKsDDkPLKiz9uPvgvHrAFb/gbvYcP3rgSgYYHxuwGuNvHKUw1NZ+48yi9aggXG9o6PDWU9O3txRDx006C2OIKfwKZZ8dei66GzRRnDFc+sQqZtxecjhDTIad8CLCidWirAi2DrVfGGiFu/u2dKGORgzV78gGpqBj3FcbF91F1segARapwdlvjJiw3ksmglG53twlz2TyagE1017NHqUmnXoFVBfzDf8VHltdBkXDHe4aPQ==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1B8BCC0002
+X-Stat-Signature: a5fg7g36rtayun1rdd1j6zqobmirt93z
+X-HE-Tag: 1791524572-566284
+X-HE-Meta: U2FsdGVkX1+KpnAQB28Io+x0p+yyBXXHD8UyLVyH1OXPEadqKpD3+FZpbxXB0w1EslqJ007RmLOihzSQAr0M0JY1W1fmHIz9R41UA0L2Ro/s/PBpWMZrUUJsMIoWbGPuPdNHWzh/48zm/uB82OmvV8NLW2VTlF2106Ll9fjwdZ+sxTGTg6WhDSHnxmT7mWrL//u+BEtsPVvAbnGbwgQYQLhyZBOBvLGFWAEYs0BXIM0ztRnBYrnfOi7QYkODKoO431IYEyzN/q/v67daIGtITNNrWBidssJU+TgDugH8itnxKeFTQtyLUH+UpqaPnM32xasiy+2ZCmj43zrnd8H7c1dN1ghAmxlGW7GwkzwCBgCATDvBwNiCfCXiwfu+1LxQKspHPMfJ0Gy1+YV00XHRoaR7g1jHQWmWg/u+HkACUnwf7Yadb2GaUlcuGBRYC7A+VunMeyK6AnzlqbD3404J1xCP7XmYZcsdkEB0Vofm05Gdc/b4KD82ugNLDlnEE1wfWaQZ2BtNnn5ApKjVCJOhv1nbgcK4PQq36wA1O49i197Y4P1hZ3lL3xC98SZXOjWsWWfrqH1oCB1aatbUdwpNjk6L2L6HK8qkkY0oT6gzpAkxr1YnPT0o/8Uv5GA2rNAjdBdPROIYsfYzMzKZYY4OTXS++q/jXfmojSSdRF8ejb7zJPW9kToZcOdriNPjfWxJmT8Z8o+MftB1omRiSyLGtyLs6zUgVMGpnExyT1c3p1yp/zNGo4VEthbUbHhyQxiesIpAxj5WTv3RKNg1PIPf+PikH0BU7QHma7HdU6XiPoXxSJWyY5Zz/TjviFCaQ+Xk3PqSAtK3RD6yMS9iheg1JiPYzZaQ78Sf9DkiPju/40YCOQ/To4NnkoZnP7wYWJ8kQr4i1iM+bBykQOZhQa1c5UOcOjWWG+dJ/xgCG1WKSzb8KNhaf9ITewPJVPX4dYVI0as0CCnjnCsmgKlRbuj
+ FI+N5zZb
+ YrgdtHyd8QiDZSdt50QbqGYD3ujIq5buGsX5+GvkBGnv9AtZt84bpPZJXJaiS4Y4Fh8NzVqjOlVkjtph3F4omElgtCMmAVcJvHTCgfWCnMGGfDXU+yYoR8c/CqRWbjnr0tIxz0EsFQqGIQxf/OUmPp/WL7G+bFTky0CT3ZKWHmFHwbf/0JgI6wceEX0hsP9N2HCcOyh5AsBYIrOzDBPE6SvOR/Mlz4cSDj7Cu3V0wgD4jmb722Fnx+e2dKlfre3RlMGiK7PUdVgYGNpc0g7csKU1lh6V1akIm4muy4eKe4sMusrA0B8vUyoRQmXkix4s6qpDHkHToKryLjbvwdiwup8IcmanDm1SRnH+kpw1Vs4HhgHaaqfeGaizWgRmKGtFxP5uz4TYQZ9CBhmV8VILJ/Osilx/csls32/GwFk84ZBEz8LpFiUx/BErEnEet2N0KBLZzQ34CsMFy0Z9pvyrOoQ0jaqt6dX9GtWFvTWCy/6xLq5C16nd3F/NiFptIf0QAYcqoE36I4XnYs4gSCQUWIwbS8x4Wu7mNtfDLZdi4LiGjPQlFNSvd6SwrHoHBTw6ZRVaN4AywxN1zSO6UZXJIkHPQQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,58 +159,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Marek,
+--_000_SI6PR06MB74745E4D61CF3341BF6958CEE7922SI6PR06MB7474apcp_
+Content-Type: text/plain; charset="iso-8859-4"
+Content-Transfer-Encoding: quoted-printable
 
-kernel test robot noticed the following build errors:
+Dear D=C0MOS team,
 
-[auto build test ERROR on robh/for-next]
-[also build test ERROR on linus/master v7.3-rc6 next-20261008]
-[cannot apply to linux-review/Marek-Szyprowski/of-reserved_mem-group-allocation-helpers-together/20261008-114122]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I am a high school student in India building a benchmark that tests deciphe=
+rment methods on short-text corpora. Linear B would be an ideal real-world =
+check, since its texts are short and its language is known.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marek-Szyprowski/of-reserved_mem-group-allocation-helpers-together/20261008-172400
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20261008152403.766439-3-m.szyprowski%40samsung.com
-patch subject: [PATCH v2 2/2] of: reserved_mem: allocate and map the reserved_mem array early
-config: csky-allnoconfig (https://download.01.org/0day-ci/archive/20261009/202610091317.jGUqplBp-lkp@intel.com/config)
-compiler: csky-linux-gcc (GCC) 16.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261009/202610091317.jGUqplBp-lkp@intel.com/reproduce)
+I understand D=C0MOS is available under CC BY-NC-SA 4.0. Is there a way to =
+export the transliterated texts in bulk for non-commercial research use? I =
+would cite D=C0MOS fully and not redistribute the data beyond what the lice=
+nce allows.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610091317.jGUqplBp-lkp@intel.com/
+Best regards,
+Arnav Goel
+IB Diploma student
 
-All errors (new ones prefixed by >>):
-
->> drivers/of/of_reserved_mem.c:27:10: fatal error: asm/early_ioremap.h: No such file or directory
-      27 | #include <asm/early_ioremap.h>
-         |          ^~~~~~~~~~~~~~~~~~~~~
-   compilation terminated.
+Woodstock School, India
 
 
-vim +27 drivers/of/of_reserved_mem.c
 
-    13	
-    14	#include <linux/err.h>
-    15	#include <linux/ioport.h>
-    16	#include <linux/libfdt.h>
-    17	#include <linux/of.h>
-    18	#include <linux/of_fdt.h>
-    19	#include <linux/of_platform.h>
-    20	#include <linux/mm.h>
-    21	#include <linux/sizes.h>
-    22	#include <linux/of_reserved_mem.h>
-    23	#include <linux/sort.h>
-    24	#include <linux/slab.h>
-    25	#include <linux/memblock.h>
-    26	#include <linux/kmemleak.h>
-  > 27	#include <asm/early_ioremap.h>
-    28	
+--_000_SI6PR06MB74745E4D61CF3341BF6958CEE7922SI6PR06MB7474apcp_
+Content-Type: text/html; charset="iso-8859-4"
+Content-Transfer-Encoding: quoted-printable
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+4">
+</head>
+<body>
+<p style=3D"direction: ltr; text-align: left; text-indent: 0px; text-transf=
+orm: none;">
+<span style=3D"font-family: Aptos, Arial, Helvetica, sans-serif; font-size:=
+ 12pt; color: rgb(0, 0, 0);">Dear D=C0MOS team,</span></p>
+<p style=3D"direction: ltr; text-align: left; text-indent: 0px; text-transf=
+orm: none;">
+<span style=3D"font-family: Aptos, Arial, Helvetica, sans-serif; font-size:=
+ 12pt; color: rgb(0, 0, 0);">I am a high school student in India building a=
+ benchmark that tests decipherment methods on short-text corpora. Linear B =
+would be an ideal real-world check,
+ since its texts are short and its language is known.</span></p>
+<p style=3D"direction: ltr; text-align: left; text-indent: 0px; text-transf=
+orm: none;">
+<span style=3D"font-family: Aptos, Arial, Helvetica, sans-serif; font-size:=
+ 12pt; color: rgb(0, 0, 0);">I understand D=C0MOS is available under CC BY-=
+NC-SA 4.0. Is there a way to export the transliterated texts in bulk for no=
+n-commercial research use? I would cite
+ D=C0MOS fully and not redistribute the data beyond what the licence allows=
+.</span></p>
+<p style=3D"direction: ltr; text-align: left; text-indent: 0px; text-transf=
+orm: none;">
+<span style=3D"font-family: Aptos, Arial, Helvetica, sans-serif; font-size:=
+ 12pt; color: rgb(0, 0, 0);">Best regards,<br>
+Arnav Goel<br>
+IB Diploma student</span></p>
+<p style=3D"direction: ltr; text-align: left; text-indent: 0px; text-transf=
+orm: none;">
+<span style=3D"font-family: Aptos, Arial, Helvetica, sans-serif; font-size:=
+ 12pt; color: rgb(0, 0, 0);">Woodstock School, India</span></p>
+<div style=3D"direction: ltr; font-family: Aptos, Arial, Helvetica, sans-se=
+rif; font-size: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<div style=3D"direction: ltr; font-family: Aptos, Arial, Helvetica, sans-se=
+rif; font-size: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+</body>
+</html>
+
+--_000_SI6PR06MB74745E4D61CF3341BF6958CEE7922SI6PR06MB7474apcp_--
 
