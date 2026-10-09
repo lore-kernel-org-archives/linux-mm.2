@@ -4,136 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F85DCA5FED
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 06:37:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70CC7CA5FED
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 06:39:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 876326B0092; Fri,  9 Oct 2026 02:37:13 -0400 (EDT)
+	id 2AF8E6B0096; Fri,  9 Oct 2026 02:39:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84D9C6B00A6; Fri,  9 Oct 2026 02:37:13 -0400 (EDT)
+	id 25EC26B00A9; Fri,  9 Oct 2026 02:39:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 762F96B00A7; Fri,  9 Oct 2026 02:37:13 -0400 (EDT)
+	id 1748C6B00AA; Fri,  9 Oct 2026 02:39:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 56E7B6B00A6
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 02:37:13 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E55FB14018C
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:37:12 +0000 (UTC)
-X-FDA: 85302130704.14.4B9412B
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0F296A0004
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:37:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OxYM66ao;
-	spf=pass (imf25.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791527831;
+	by kanga.kvack.org (Postfix) with ESMTP id E53ED6B0096
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 02:39:10 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 58F49140225
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:39:10 +0000 (UTC)
+X-FDA: 85302135660.24.6CC697A
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 95AFDC0003
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:39:07 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QeYxkIlO;
+	spf=pass (imf10.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791527948;
+	b=SaI+3lGWRXE1uch4pRd5Q5JOsUgo0S4m9udzT7F157EGG3+9Tr25IpkVjEeviQa6tpsQC1
+	zU6Fpqt3wRg1CMsOCdwQ/IP/jmET9wtQd3iBI1SKvvUy3i5n6vaFWnT10X9u5cIO8lTGzD
+	ujgOTcEej0BT/RWkLQaHZe0Kk4vVKxg=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QeYxkIlO;
+	spf=pass (imf10.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791527948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EvP1SWOpOajfYwpFnq5wtxRsl5w4aXBljAw9HkukLSA=;
-	b=deAAA6E39/gkQ7R14iF0k7gCmxZe9+l6TZM5IEZx5LpKtui/7YE6r3m/g3SaZOhyOul3Y6
-	ysDQ+S3FFpDl/t5OTGOHzNIgHRdfHc03uE42yt07wADX/dXbY4w19ZaIkl3hN03UiRR8/T
-	r17SgOML6a1ZWvxkVTgYj2CgjDg1ZTM=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791527831;
-	b=JrmG/MZgkVzGOVvVH/r7pUeBxkc2D1UemiPs40dpsKWdd8K/fdxLPrta5VBd5DyCLNSb2c
-	T/X7RTSBAWg7XreOjJ8BxcB3J+++LoQbJAL6+IQsGs7HDHlqeL0UA2JX/MTJWCJrCo93OJ
-	5l3FMtOytyA4/bRQD2iTl+IohMN9oSw=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OxYM66ao;
-	spf=pass (imf25.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48afcd7ba9bso2178349f8f.3
-        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 23:37:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791527830; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ULPE1fAr5LQ5VPkpX/Ua6Qi1Iwc4A8QY1D+Y9cZeXDeeHBKAd5akZ3Ggb59ssRat8C
-         qKnJp2usVBsuTyt/uUz+8X5dSQeYUYHeMsADSuMGeIFt4naZSF2B7PZBlnxmgRWV8Ry6
-         wdow2M4wnjm3vQKyA2SkYwfD8YACBOHLITuZtMxRlnP4RBD0o9nduEMEu+qBonxmZRpE
-         lBHaLG8gNZB6TLzC2HBd40ZZ4f9bk+bj7/1wn4yawa7URv7E/tI3qjgzYFu216Pfw7iV
-         3VBm+SW6AOgBUfe0gewcz8Ni0D3cnEYMnQN4vmiqsfByAa4715zJl33NdYbx3u1vBpCE
-         HyeQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EvP1SWOpOajfYwpFnq5wtxRsl5w4aXBljAw9HkukLSA=;
-        fh=bcEPE3CR+OddF51KqqJLDSZk7qQvv/ijtX/Tm5dhCBg=;
-        b=FJCGphW8mOPIpNjy33Nm7qpdpxqkAIhcm0abFLAWpkhAGtNZgK0/X/wo8XEiuXRCqO
-         1bVOIyg+1EhmMIWkxUaXNZ5Y3NfHpmUkBLP3+S2eZ4+cqIVaX928MMFjieacEKlRqq+M
-         MMwwoVkR5w8wM9xUP+DaUdEG8IdTrWuCCfRk+mhFmVLmP6XnYj45jZn8xEbN6CnG4a8V
-         EySvdA9CLBr09DHoxrA/3eAx8r9yA2zeKZCX4iLNOhHaEBf04wRUuMbuW6/vSPXujmLv
-         0IGK1ywRfX9llB0W5z339brwJdMKDiKnoNnfjK39sbJfAexGSuwOnIYMB4b0+o7bVWgq
-         O2SA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791527830; x=1792132630; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EvP1SWOpOajfYwpFnq5wtxRsl5w4aXBljAw9HkukLSA=;
-        b=OxYM66aoRBJQK9vCqJImMyJhRJBV148Zq7QDDmEXFZAyLZ/G+/hdz86EIGBeON0aia
-         LvmLwgVliptzIU6mcsSCdu+7XgB+J5HVERa9eV+T7g0C0qsptdwr5pwgHmRwg/pttI51
-         zlCV6Z+AsptgJFiFJR9PAtI+1r0aPB08R+GU/MO6iBX5kkZGi4uF9C5UZXZ8x5Fz81Af
-         +7PXN1qL+7W/BwKE+6c0kOa+vuukANwgjjHXE/9pIrfEBc0acMQ41/st7AWjsWWyg35m
-         E5fH3kYmef2dxfEeqfLkvXkbf06TB7pnGrDltH7woI3CeabziiSvxns//uyqfFPKA5mo
-         TCqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791527830; x=1792132630;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EvP1SWOpOajfYwpFnq5wtxRsl5w4aXBljAw9HkukLSA=;
-        b=Uivfl6XqXGbCzJu5A0LLP/xDpDhLJZaJjyheV+XSYe5ATFziU3k81wH4W3pOkGH+zc
-         WPiNen2R1pDurTeDQgzOwXXn18lt1dBJHCOwWCYhTYeR2b3L6z8siDXUEo5tBZQk/mVJ
-         AbZwBFXAQUy1Mxut/Zd76qNlAiQAOvohKcj32EIuMI65svfdpWorQK2/w33bUaEJ5b+8
-         iXjlaU4BjIec4jjceySSWg/Bvq3/tFX7WhU53XjwcMU9xoVBjVkYCL9qeIOCd9kQ/tlr
-         M5YWzjsVa+Yd8frVXub2HlvWuIg1WSPkWWY/CDpYtUVZZayV6vIpjseUoP9LAOYBNI37
-         mtUA==
-X-Gm-Message-State: AFq9FYIlTxoK/imXP16+Fgg2D/bUabM3d2TBIJF/Yolq+XkDzEg7GHAS
-	LPwUsGIwUSfnsXEsJ0Dsadl8uiYOPuNk+XdmXrrZ0il5wgkuwYsAZMzitSDMl6F2Zcn9lBrUeyb
-	YcjJzQAo+gFhS2WQmu0RoS3FduQ0IljY=
-X-Gm-Gg: AYBFou2Sl8943ZKVjUmbIZlZTaDIhJd0NpWB4EeMHm32ZFJF5KfCqQIsZsbRDr/4+NH
-	EGrrWG6AnPnj0is6X/trmKkAVKWu8yMAVKJYF4GpsaB99mJik9JdVnvnZEhp8UfQaEMLtJ0VU+k
-	kg6fRr9b2Jr2HZkDhrVkkJw8NQUm/EZZwhrqPkBQcpA7qVCkEbcdVSGlb3CacQKSs5UyPN5Yzd8
-	lxKChqPj8CXG5X6z87h/vcFfsW+Q4xyYi8PbUAHy41i9LGIdCztwCweHH0JLWHROM9pi9JiItZW
-	bhijpQG2YOxkbD0dl/pVCmYLBGidKsNrhlvbMaA8t6mmR71Ag9mIWW9J+iHu/DZYNHSxMn8uVq9
-	hq/1Qk12R9iDY
-X-Received: by 2002:a05:6000:4681:b0:48c:7386:af18 with SMTP id
- ffacd0b85a97d-48dba784c65mr1075334f8f.8.1791527829623; Thu, 08 Oct 2026
- 23:37:09 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=/tyiYdORXs+D696ENEjSrqbDlAtPluXUTBdOIdd6qN0=;
+	b=7wS2ypScw17UoIuS3pqR31LzZZXEj2DGy3Bboi7FN5eeu5OyhRiaA9JdPbHIPEAybdSrLD
+	mLm7IV1MzpifWYyNa5j/vBphFHB97pmNecSApWI6VcsdWgTvrcBYm8KMrGNXH2N3wTbaG/
+	zIEs+UFbJ6xCAdCsTtFM52I467BVJy0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791527947; x=1823063947;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=HyCYDcwd4p7v9CaOr/TI8WqjAnbtu3SXQcxglqX3xRY=;
+  b=QeYxkIlOiPRy5NtDHxUCv1g+2RCtIylmLam3j5mne1+WrXbDOYTQ18zm
+   S6WUcfPxbmJUzTNae77h6BY77pAXPE6+H4hEJ1q2nHhP4fBz4j87RKmRh
+   nOivf3BGNN7P4R1P4+GfSuAulK9y3D0ECFOnMCFvWk2DfwJ7NZUtrGCNK
+   9DqRPMLSuHEmX9vMdap5NAhkdVevYAkTYUUGuuUMLEa/JNxeYK1JE7faU
+   EODLGoarOd7UgKL8igjq87ntGRiu782409Eb41pJBp/fF44y4+Ekupnkl
+   Eo58hN2utr/lomTtQGOaS6nzlpxjNr5tgcTpiLgPvlA5aombCOja648q3
+   A==;
+X-CSE-ConnectionGUID: 8F/CL3tDTSGSzq7HBaNoKQ==
+X-CSE-MsgGUID: l2uzhsGsS4eGejfIyL0ZCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="201179"
+X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
+   d="scan'208";a="201179"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 23:39:06 -0700
+X-CSE-ConnectionGUID: Tpg1035cT+e4bln+P7KYGQ==
+X-CSE-MsgGUID: bqsZdNQwSJi7cq+Du3SAZw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
+   d="scan'208";a="244059"
+Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 23:39:06 -0700
+Date: Fri, 9 Oct 2026 14:39:02 +0800
+From: kernel test robot <yi1.lai@intel.com>
+To: Harry Yoo <harry@kernel.org>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-mm@kvack.org,
+	yi1.lai@intel.com
+Subject: [harry:b4/sheaf-size-round-up] [mm/slab]  ddf56dfc79:
+ will-it-scale.per_process_ops 54.5% improvement
+Message-ID: <202610091451.beda4ec3-lkp@intel.com>
 MIME-Version: 1.0
-References: <20261007153507.50715-1-alex@ghiti.fr> <20261007153507.50715-3-alex@ghiti.fr>
-In-Reply-To: <20261007153507.50715-3-alex@ghiti.fr>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 9 Oct 2026 08:36:58 +0200
-X-Gm-Features: AclHuK9vvbQEcKxc8F9ncIiH-4LY2ASnROXyq_1dok4ogbPPfoegotvRhFcR0BI
-Message-ID: <CAKEwX=PZZi0r4AgSWXW=4S1SDmLQ+pSAKHUuCB=rXRSsZxJqKw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm/zswap: plug the writeback IO of an LRU walk
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Christoph Hellwig <hch@lst.de>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0F296A0004
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 95AFDC0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 1n1tujypqqaj6qqeysyye6chbfao9gd6
-X-HE-Tag: 1791527830-162415
-X-HE-Meta: U2FsdGVkX1++w3tA0/0ad4ytWAc+32B5NwPzwNz5FUurTAOQGKBkDh/o7XYD1Ay7KQfTHX6VPQbttp/nIXLsAGONmSMsGwcy6T3u/Qd0KILLqgJKN1FnAmSlaquAB15jLDDd0Vn/XVLrpDmeRlzZub8/OoQlF+7596M2yAEdXod+ydky68ZiIg2Ywm9wzFwPM2FdqflC57GoLklpJm3tmTIq+54uHed2e8fEWLzXdU/EDbJmqoxkI6vpS93BEj/JNJulMP+8JXnb4uZP86b7vYKtB7STkOOOwJnUwVr422YxJZEFM1yIJXuqm7aPzRdvfUlS3D6hdF/Am8xjTH00kAJkD0K+4hXJnTwDHJMr6lxtd3Mi7xoDEy8coLctNwDaKvGA4ZP+lzEBXz0qNMLGtRSZrZGkLvCq9hGULjPlCOPBiLvfl3ph+CinbNnmk1ZRvmZ89qiVdFas26czEQByGTkSr5JrX4gmgxVqDZrOIeb+USR91oR8hcAMqllON9fVuAPbvRtrs3Bt5xNR9X6sNgR5krbh6jO4x7VQqQDJsw6J+q0e4o+c+u3FLXVInomY5iHJkROrRwFRfSE2elkce/FajJgMDf3vJvTHgj9gK3jgQrofEi9zp+OC54wsGAYLxmFpgOzagVJ8TQQ5E32fRvgXpCLFWbrGobsT/kCL1vwpYvA0XQtY/beAD8ZstrakOzJKVk6QrwiibeXTHOr7NrMuDK+Bp4dtikZz1nnE/PC5GouZG1+L5Pi6/ks7e7wA/v/+f4LLyK+jSZ2vRfLVI02cEAbxsB1xRsIs9gX65NCcmhXWCJdVYIV1zn1WrG42uE4VmkhROiq2nTw+q2Yh43YOlsbCwfGQjD3lfsRC77u02AoR78Vshivrn7ndjbJLKN2e7676JdMzFD+jBlI3LF7HSEFozuv/SGdf7HrcjwKJG1FAj7a69dPpk10iVA8xAxo/WeIN+q+sZKoeYIS
- K1Uxn/S3
- CvmJs5+uJiR7RtsO4NLjhneKnsOuh6cTi0viG1z6gSVwkx8faJ2oCrV2f4ovTHNWWbGzxWgfuuxYsiUhvbVuG1tQFht2W5SYlyH28h12te+Vyo1vVG70uXRDBseoJLB/ZOIXGQ6b/S2imG/9FQRb6pZs51OjkamYtvY27Pvp8CVvtKDBrWfGlaJBlUsleZvCxhFOFqIYKHM380IFD2z7Hi87cAlJqE6fkhnB6VGhcBgwYty0vIFDhFvH53mStR4v6j45HZbCAMR6PKvQWmBcinhNtwrZWH0paoZvwqGv8+j4f25fab5Hr+CnQffJy68BGE+EiQCOi2+sanBkwHYL1RM+50NQ6ZUunKzA6JTyU5M0P8QlMSt1SvE4elYTsfn06CotVfghGsvGwE8Vht5bTKJkKPIAxJLvfO/KGmlyyqFzNB5s=
+X-Stat-Signature: btpwc8rmt7auwku5jkhr6ee6g6f1muyf
+X-HE-Tag: 1791527947-236846
+X-HE-Meta: U2FsdGVkX1+PsVeykndjZUBW361AMEy3zsWaTsDLlneSzmXHWRiJzcAGpUx47yKlqZQnNlCKEZoL8OuQZt3j5gqlIIABUZn8m2PQGKQZSpMD1LZkp9CEjVqPP84rCSNzaeimmQy2zm12uZdwU9YdLT45gH0hfvHZLAB0SofQR8Jy8KUn1S/LPncCRNPitxVaaftAkOCGIpNSzvlyXklmfNj4dCp/kcv0uq8Ip5HvGWjflzT3e4afHcXC1E2ao1EpQMm0RB4KBowg0og+eemgYA1IsxRXHWrqQnLP49ppCmsY/lBL7iC+uczfl8ueQ8A0MzZ70oywxdvGYs1vJndxL1AsKBDHTyVsf+bScNI0BK/lvczsoY3O5Ei5uC5bcSYyiQwYvO8TbPtFYNncG/Yk12d6mb7jCBrOEJzLoSnuu5m6A4TKLsTs7gcahvgIltyOAg0RWdDi+iPzI+IcPf9kuDWL9bbnmwgyQkBBvrvffI7w/5Vb9wseCXp22NOwlML7pJOjwsBUosaXOUAukP6Wh68ecp2s+dPMKFphw8r+A3KDH2qGhwI76TcJBwdW/5V79pBAgMl5xl0OGi1nNK4daTxZiD7Sp8IShvaei/TuPZC+qRn2sz8AKL5yjIv4l+ASu0eHtJH2NMHerDP5bsJ7mPQAPO9HtS1AmVtPM3pCVT2rV+eqlcs6G+EpdIlitJ/xCbHzv2qwFL+qVxPUTc6Km4vDWcVHOcPy9IpXZRE49Zv87JIfuJMy80xxSZQVSglNKgmxW6NiWgNSb/NNmanfbxFt5J6y4oeVkw193fYhwm7D3de+CqBNhW3A5zXftmtqk4DwkMgR/CxFu6r0l7fWFTHaygywBFDcb+PIbykVHRGAKOrz070a+C+OQ7IIzregN4Og3NJTheWl3zKk6eVwKokVSO8NYmgFMnRnnu+kyi0Yk1K6EB91PTpFF/eZiZxMnG/mHzG8QzfxzJe27mE
+ RoFrZ4fN
+ NKJk9O+Ye3rJA/t6Glxho5pvonZhzkmYZhB8l+ZPB7dhGs9weWGwHm5yc4Ij3JWD5E3Oma8fITaa+pgrOXaONW3js2/IdvVtTYTBCDhd6IIa8kqx3PWCApQa4ukEC6dOy4XFBpt9n+C2dHSVSmER4T6fuhdE1d6vovYMWbzDwbCNZRLs8ZoOLaG53Z0HvyyNrPtsS5MBOvEc6OAxYMqJo1v+CC/KuXKIjyKyl6oYYDFgBOqI2Lcig1hrcS/MaCdaPMjBH5OqqDcCF3XrV/PIHO5kJOmC74FLd8Qfg8BQVSaLYpAlHyGUheGY5G9odv8wSM55WkPmOxxQwLSgIvGDdELBjI5gKFbIHmb+M3MODeQrqpfhjQDHCdGEgxhEwfUKvNDFw4+jPcXrUONk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,43 +102,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 7, 2026 at 5:37=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> wrot=
-e:
->
-> zswap writeback only appends an entry to the pending bio when its slot
-> directly follows the previous one, and submits the pending bio
-> otherwise.
->
-> Plug the LRU walk so that the block layer can merge what the batch
-> cannot.
->
-> Kernel build (defconfig, -j4) in a 600M memory.max cgroup with the zswap
-> shrinker enabled, swapping to an NVMe partition with iocost enabled. It
-> runs alone, and next to a sibling fio random writer with 10 times its
-> io.weight so that iocost throttles it. Mean +- stddev, counters from the
-> build's cgroup:
->
-> Alone:
->
->                                 unplugged       plugged
->   build time (s)                1061 +- 2     1057 +- 2   -0.4%
->   write requests (k)            622 +- 34     579 +- 21   -6.8%
->   pages per write request    1.30 +- 0.02  1.36 +- 0.05   +4.9%
->   iocost debt (s)             14.0 +- 2.5   11.0 +- 1.7   -21.6%
->   iocost wait (s)              7.7 +- 1.8    7.1 +- 1.1   -7.9%
->   IO full pressure (s)        18.3 +- 1.4   17.5 +- 1.3   -4.5%
->
-> Next to the writer:
->
->                                 unplugged       plugged
->   build time (s)               2188 +- 45    2104 +- 75   -3.8%
->   write requests (k)            594 +- 21     567 +- 24   -4.6%
->   pages per write request    1.30 +- 0.01  1.35 +- 0.02   +3.6%
->   iocost debt (s)               648 +- 22     645 +- 29   -0.5%
->   iocost wait (s)               624 +- 23     633 +- 29   +1.5%
->   IO full pressure (s)          615 +- 31     550 +- 44   -10.6%
->
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 
-Acked-by: Nhat Pham <nphamcs@gmail.com>
+
+Hello,
+
+kernel test robot noticed a 54.5% improvement of will-it-scale.per_process_ops on:
+
+
+commit: ddf56dfc79f5734d7b3aa8ba81f195d52b3e5823 ("mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity")
+https://git.kernel.org/cgit/linux/kernel/git/harry/linux.git b4/sheaf-size-round-up
+
+testcase: will-it-scale
+config: x86_64-rhel-9.4
+compiler: gcc-14
+test machine: 256 threads 2 sockets GENUINE INTEL(R) XEON(R) (Sierra Forest) with 128G memory
+parameters:
+
+	nr_task: 100%
+	mode: process
+	test: brk2
+	cpufreq_governor: performance
+
+
+Details are as below:
+-------------------------------------------------------------------------------------------------->
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20261009/202610091451.beda4ec3-lkp@intel.com
+
+=========================================================================================
+compiler/cpufreq_governor/kconfig/mode/nr_task/rootfs/tbox_group/test/testcase:
+  gcc-14/performance/x86_64-rhel-9.4/process/100%/debian-13-x86_64-20250902.cgz/lkp-srf-2sp1/brk2/will-it-scale
+
+commit: 
+  675a745c61 ("EDITME: cover title for sheaf-size-round-up")
+  ddf56dfc79 ("mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity")
+
+675a745c6113e420 ddf56dfc79f5734d7b3aa8ba81f 
+---------------- --------------------------- 
+         %stddev     %change         %stddev
+             \          |                \  
+  70440501           +54.5%  1.089e+08        will-it-scale.256.processes
+      0.30 ±  3%     +35.9%       0.41 ±  8%  will-it-scale.256.processes_idle
+    275157           +54.5%     425248        will-it-scale.per_process_ops
+  70440501           +54.5%  1.089e+08        will-it-scale.workload
+
+
+Disclaimer:
+Results have been estimated based on internal Intel analysis and are provided
+for informational purposes only. Any difference in system hardware or software
+design or configuration may affect actual performance.
+
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
