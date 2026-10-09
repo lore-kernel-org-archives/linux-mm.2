@@ -4,119 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22E5ECA601D
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 16:52:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D06D8CA601D
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 16:55:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D17706B0088; Fri,  9 Oct 2026 12:52:26 -0400 (EDT)
+	id 8624A6B008C; Fri,  9 Oct 2026 12:55:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC8246B008A; Fri,  9 Oct 2026 12:52:26 -0400 (EDT)
+	id 83A626B0092; Fri,  9 Oct 2026 12:55:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDE086B008C; Fri,  9 Oct 2026 12:52:26 -0400 (EDT)
+	id 752656B0095; Fri,  9 Oct 2026 12:55:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 992546B0088
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 12:52:26 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 356CCA7FB7
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:52:26 +0000 (UTC)
-X-FDA: 85303681092.02.181040C
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 76A018000F
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:52:24 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=openai.com header.s=google header.b=dre6hgMV;
-	spf=pass (imf02.hostedemail.com: domain of kylebot@openai.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=kylebot@openai.com;
-	dmarc=pass (policy=reject) header.from=openai.com
+	by kanga.kvack.org (Postfix) with ESMTP id 55A726B008C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 12:55:28 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BFC03140439
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:55:27 +0000 (UTC)
+X-FDA: 85303688694.08.62D09BE
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf31.hostedemail.com (Postfix) with ESMTP id A863520008
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:55:25 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=oauoRI4N;
+	spf=pass (imf31.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791564744;
+	s=arc-20220608; t=1791564926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=wxK6siBxaUgXXbS1nQNHxY8dGyGEnMxba3O+XHHDkK4=;
-	b=PIWBV+sban3sJADv8xpr6TEQ/ZpNVijTwGSXshlBxQP8HFRVyTmdUy78dkrYNFLUrrQa6K
-	zBYT/W9gtmMa+Hw0pgkav/YCf0wVtPcdwAf/mor70X12OR4+0iOTW96l9AmWbs9eEOaSNH
-	CYBDIHfBFUSAqdCzDh6rdK/3jAh6F3M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791564744;
-	b=DphtX9HMWWL8MxIAqHlKU0aDWbYeV0VbO52f2qegGCL13uFWD8L0lwtqKo1Gw1MCqMJbGQ
-	hlwHxxqMxNAt+6noFUfnQBtaSbTUF+6ameis61F6aot6IKAm0s2pIUhmYvTq96qm6UwD+X
-	iifYKiKGXY49DjJ2W2gKVZPpgd/Ch1w=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AoLrYIs+uZdnBcxRlyRMY7u3KNMZ1TUqsOhaCJEqHdM=;
+	b=WFyVxLXxYLyy472pq+VU9ZZ1qHUQ6eb4PWyu+zIdwsmIzgTJdttapHgKr8qniS4aMPJrca
+	tBClwAzoweU4eTSRBb+mLp5e6D3+dr0/qDPPHRT80X+LmsI1fmh5ykfnRb7Hs4+jF+Yvr1
+	8rU8IZ+YxcPLUMCqJtuHuPpXiuVoKAk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=openai.com header.s=google header.b=dre6hgMV;
-	spf=pass (imf02.hostedemail.com: domain of kylebot@openai.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=kylebot@openai.com;
-	dmarc=pass (policy=reject) header.from=openai.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-825572e6701so1521a34.2
-        for <linux-mm@kvack.org>; Fri, 09 Oct 2026 09:52:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1791564743; x=1792169543; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wxK6siBxaUgXXbS1nQNHxY8dGyGEnMxba3O+XHHDkK4=;
-        b=dre6hgMV5H8sQKkmAQVBpEXpXHCjk9lQ0F59pCyoj7X5gkHSoWcdJy77ymy/+wB3Tx
-         cMD/6X2810rmBrlrr0AdfHzoAAionsQbMRqALMqGDZqSKQlf+ABusxlH7HdRkDVm1D3D
-         BNlAkO/sl8Vq1bXvMfZThF/GnoB06jX/IFUes=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791564743; x=1792169543;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wxK6siBxaUgXXbS1nQNHxY8dGyGEnMxba3O+XHHDkK4=;
-        b=WY/OFs65yL674kEUQbWqVntAMC5Bm141Y8Mu/40mrNDIc6vi3HMSsZxXDuahSPUslD
-         9nWeYPe673tlj8dSoQYxYoWxPfE8IGx5YLZOqRhE5h55JQai6AnprKDMoKhQLC6nhOfp
-         ry/ifUiFbCXWTxPHxkERZJsUA4sJFsQATFFPm/Z6YSx3UthDyYNZp3NqbVu7A6soYcxx
-         CMe1T9afcj2BEhhgiGIjzFEBpW47PGo2sykeMMUkHPOAZigBwBW6xiXHi3x4KM0d45eT
-         ECTA16UViVNou/kBRvmguQELEXuxp+xZ2lLnkNYPrItdk+q+mQoxsLIpi/k9x0o2t5wG
-         B+6Q==
-X-Gm-Message-State: AFuF++nGLsQZ4FlYbzqmsNgRGZFPP1EbyX30Q7hLHHa+MiQtXz5xRS46
-	xiujSnI0Uf8jGqc5ielsOewzPozkhFpFndF5VPuC3Ev/WpcLbM2zQULqUuYiqAAHnzTXbAJSsb6
-	H9+trSrI=
-X-Gm-Gg: AYBFou2Pp1+UYAjWa/54X7x20r5JYhFkcngKf/1kJRjTz2EWRL8QeZNHpMgE1cCG/ek
-	MtHUg7EtEXtYZ1j4gshbO5MPaJrSXRm7Dtj/2GUuf/0sZI1z51CLLlCZjvra+NxVBdJwgSRFRec
-	lL1tu/R7qJqWVQ/qreJl33wtevIv/N+NYQ71c0gDd90W1K/MaN5bjP6rEUFv7Iw7sFnngMgxoqx
-	NEy4ssQJ/3yrt4TsSQXy1uqUzNPfDdigLwhVsjeJarm3ZnadvCY/wgs2W8vKHr/4bnceSJE3in0
-	DzumtJ0kaB9YYkVkBEY0RHUKMCH+0DdR6KAS+KOGE8lKGZQj+UFKBUwOOYrUXuwnJw2QUdk1T1c
-	G//I7Q9f+8BWJD0MtNbMVB8h67x7FBjBdHNNekyBmNT2gFSZDF4IponjgSpRvENmbZf8JL3QBPJ
-	cVI3rhnWvsD52cS8DD1POfQR3u4U/9MdEqyh1KA8chtyUS0qysa1WN+usF5ZUl9Ewf+S+zyouCM
-	+yfd+tdsW1v5+yZix/0eH5H7Lr1xNcKVcDFtRZqV0blI7+35rBw/qAnXfyBCHsiX5Fz6pUyRoQ=
-X-Received: by 2002:a05:6830:6d29:b0:805:9b38:6f7c with SMTP id 46e09a7af769-8309797cc66mr1926179a34.29.1791564743382;
-        Fri, 09 Oct 2026 09:52:23 -0700 (PDT)
-Received: from com-75606.corp.openai.org ([199.47.143.7])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-83039a3e016sm2174263a34.17.2026.10.09.09.52.21
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 09 Oct 2026 09:52:23 -0700 (PDT)
-From: Kyle Zeng <kylebot@openai.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Kyle Zeng <kylebot@openai.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/huge_memory: avoid transient none PMDs during lazyfree reclaim
-Date: Fri,  9 Oct 2026 09:52:15 -0700
-Message-ID: <20261009165214.40212-2-kylebot@openai.com>
-X-Mailer: git-send-email 2.55.0
+	imf31.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=oauoRI4N;
+	spf=pass (imf31.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791564926;
+	b=drR/GyQZsPGY7Oz/lkX0XfzC9goalTLFJIii0ix098PUFaYtlzx1tC4dEuxZOqChjyvABi
+	5shzyoHDB+cjWquk/0ZXkHKgzkgJxPk92dwaBN9A8b/hTBiwTWlKJ8gx+EemTWqzx9/Dng
+	GhThYw7x3W/rWLQuOtZkTHk92kfVj6s=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=AoLrYIs+uZdnBcxRlyRMY7u3KNMZ1TUqsOhaCJEqHdM=; b=oauoRI4N0hhJxGmx/jikCQ+6RJ
+	0tOLYEl6b843Y7DFsLazkL2DjCN3vT9ak4F69LEkTo15dOob88O/CFWluL+BFs8KT6BeOscx+r5zw
+	IkEozsyEbY5wQdBaIxWWMx9IFMIBXu0fs3Pr/w6IC63wDs+rSeWma8QxnzeLJiRx2Tp3jFco4TeQf
+	pIbLFvDLx3OWK8vbyV4/qqn8HBd4GfWHB/AFNmXpBP6kj6G014rvblWrG/u41xCOoUI0ygugQP/77
+	Pe9ieImqhuVNjOpukHaz35eOnAmatNtq5A3eJDWh0HEEYt4VKuwkk8nXYKe2mWU+so998q3AKmIIP
+	I9Va/BMg==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xFDsP-0000000GDDf-27Tf;
+	Fri, 09 Oct 2026 16:55:21 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Daniel Palmer <daniel@thingy.jp>,
+	Tal Zussman <tz2294@columbia.edu>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Subject: [RFC PATCH 2/2] mm: Remove add_to_page_cache_lru()
+Date: Fri,  9 Oct 2026 17:55:12 +0100
+Message-ID: <20261009165518.3863950-3-willy@infradead.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261009165518.3863950-1-willy@infradead.org>
+References: <20261009165518.3863950-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A863520008
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 76A018000F
-X-Stat-Signature: ctu6d3fwq7yr55cf46ax6o9c9f9wefom
-X-HE-Tag: 1791564744-827631
-X-HE-Meta: U2FsdGVkX18WNYfSzbJFpYYcgomwt3CDSWAcSo+sObp78kOfnf7yA+N7MbTx947O3Ng8I4iFMkU1sMWHtqHGaHg4Z/8hK+yuajNX9h5vXugzvveucr/98V+dbK8xRUZ18ekDi0fLb63WaAbuwMEpg+47KPj0eM2aDB7WrKycUY5kgFrqRX/Vwr32vnupQvTUNw5gqp2Jo6C3FserjObWQlvwtyhB4/10TvTwUcPWT32WoA1I2b2JbapuY8tT2fzr46EMYcIyt383Nj+gjmxHjNryu39gYQs/mgdYTFObF/76RITBTyo9m3ElotlqO6KrFgc/7JMpCvqMoIoirnvVrzYdwqTEUAo7hTZ7jlFjbNzIUsdaLEBcPuMi3t+2WU/QZwLSWcLQZaCV+lEC+OdlFByiHbk74qK6inDUom/WdL+w53GqjwhKCkAIg9EUXsEEprom1XT6PqpF2WXhERdYMBEQdkidP13kqMXdcmGrhYxJQcvBdFLCOO4d8/vSbN6pE4epWYLaCNwMcJ/Hxgy4vn3TWcuAJsEnFb3vEq42KJrv24s53VMIdEF7WE2agSISFze3zXtEumaT0a7bhcZ6URIYNdGbtFj0eYxOlsI+Gii83VP2jHhRd43MdFXlOqT5R0yYibjUiPtoWfjemyWanagn7yEGTgUCpwu+yCMk9tOkZhmK2vpZP1EUXLdvyDeLLFhAWUwEW5VodjOGihYdiQl8WPKfGzPVyeqJNoXl+Jln3uHT0SWddSOWaIgDRVuOtNVG/VYmxipBdJFgTEJ8iPkHt0vje9yDEB112e7biz0uvMBcCYekom0tAhiWDjAN3bAtTEt4o+RaAW/DpNTFh/HJTx1ylPK2N9g2Lxp4aSYNthnyEFmxPwzhjfDm9j5xHANTwzK0AIMPJVBulZ+CjOdWjUj+2Lz7SJ9gU+F9Hrala78/Mwx3qOCJsZKtw/+nmBa/b++kjfVMbTsdblI
- Dqkp6d8K
- Z4rgDdQ5QapzPhge1YKRH89IO/VrSdD+DFDJFdU1CTkv0apQdJkOwNYeMnhPXoPYRA+fP92stVU1pFny1szyQVTMX6QkmRQkcVKp0vmrS+FHDZVyNE8cYvTsM9gvN/YcaHhYJSKPtHqPO4pk92flS3sqoaqXZVXkWpFtKGasIIX/BWTu0CmoA0Adrac5t4SOW1sMMYmKhTWwGWeHz/EocXyC2EOdd5j6Q/BF4Pso29ZXpK5J62BL5PvkbO1tw2EEsdOE3tbvljxiJDqaVXsl/EZoznG3GtvgmuIbIcEp0a5CnBEADP4Kao0Ew/bcVTs1Z9WcXQdzCEQZa+u/PR3tLOXMvDqT2FGBmr8r08x/ohg1v/ZA=
+X-Stat-Signature: t6mj64jxpqozm383bdz6yxmjuk9dwm38
+X-HE-Tag: 1791564925-97322
+X-HE-Meta: U2FsdGVkX1+hrL0Y3phLO7v98P6BceooZ0+o4BnO5O1fAd0qWvkDECLKhMOm0qZH0dlLeScy/ZJGzKdkbhVYLqnP4odP6aJmG1fJkjFhRyPh3XpcrtRNeSetGdNSJpMefO3li4Ihp/n2meRk1UOaRIHbVPiXpy0AGw66AGZW3VPyDYCaglpH9SGKYHvDWKgBCOAGJvUGUOj2jq7mrM3aGMB4E/NK8FRzfmK/jobjysIBWfE296ZC01mw30hnDr9Rg2jRphaUGEPndbAt5x6c3cCshDn4HlmK3gFE/u2lc1ad+nl3gaptCN4s2zoK07fxirKrCfQN2XJ7GlgBSU4DAqCaO2FrswhmXoDDTjYmOnJJ7JUrxQ7j2SsUk1lopLBnx2VZ/Xw9QCh4RdT2/FqxIWld4NSXOAHyrpTLk+eSoTMLC3NCVZAL1IFdSJ0ZuzncWiY/2nHSmkbVsoarKMl386jRInhHO2bpCrufDq7SfT+Rzt9YyyqONT1IUx8c2AOaFupqxG9dU2gKhI1WUGiPzcfLdGn3+mggKv4gC/F0edHnQtEHYuYRkU9vdIn5Pn/DtFB8kGBykMxVy1CeQra81xwIoaSA3oGvX7NyFPiU63lez3qL5fUxxX/Knsu1ZTd2qyXCND5xAmp/TGsNOCo1Z6K4Z2P3XpEZFvwx9GG0ugEfP7UgYyEVaKY9iruu5rp8esOtDuGwbt7n32yaX5xcudDTASN9RjN2rYA6oJf00CBm3bt4K+H0Un7D0jifEGMY7w0C4eMaURmE/ixmh5A0oAr4tDtgrIgx9ccaeUe1fyXlzRyRR0U4738uE3JW2NfrZ469CLfzpQD4lq8MtPmFk26xlx5XXKagk2fFeSSxawHAKaurkQz48kmsjy0h1Q6zEMFCJnlVk0yHjgtaWBhU+WRc+ObsvNStbxK+a8gESz10H76UlBD0QDxSa1vyUUvApduBmva4uUTnz39t1dh
+ XRWydZ2k
+ to8E+ic75vzPdnX0LKJFby678aiDNLAjCse78GLyMhNxDWACDgaVRg/f0Zr7O0krUHpcgi77GHBb2vNN2aU9GayhEkkKVwabTImfH7SJ1QeuVYxWglgXyZCLIINHbGcx0Zi8lkeQaVpdtPvM8VkTb6/+0yjMe5RBAv5mXCBaRcil3DBHB5HZ9HDZ2bkP50X4LPjZCQvhClKawoOJu7/a+Z/8aDDp8jpT4AovvjbuHFV5vrvu19gznq/6TLqsgWKxr3HmBjzG9rJZBqKC0CDhpDKTfNO3NipwjJtRi/wsBmyRh7C0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,68 +91,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__discard_anon_folio_pmd_locked() clears and flushes a huge PMD before
-checking whether the folio can be discarded. If the folio was redirtied
-or has unexpected references, it restores the original PMD. Reclaim holds
-the PMD lock and the anon_vma read lock, but not the owning mmap_lock.
+This compatibility function has no callers left; delete it.
 
-Both zap_pmd_range() and mremap's get_old_pmd() can skip a none PMD
-without taking its lock. A concurrent munmap() or whole-VMA
-MREMAP_DONTUNMAP can therefore miss the PMD and later unlink the source
-VMA from its anon_vma, leaving a restored mapping behind. The anon_vma
-write lock taken by unlink_anon_vmas() waits for reclaim to finish, but
-does not repeat the skipped page-table walk. Once the remaining VMA
-links are removed, the folio's positive mapcount no longer guarantees a
-live anon_vma. Racing lazyfree reclaim against MREMAP_DONTUNMAP as an
-unprivileged user reproduces a KASAN use-after-free in
-folio_lock_anon_vma_read().
-
-Use pmdp_invalidate() to keep a recognizable, non-none huge PMD while
-the discard can still fail. Concurrent unmap and move operations then
-have to synchronize on the PMD lock instead of skipping the mapping.
-Clear the invalidated PMD only after the dirty and reference checks have
-succeeded, before removing the rmap and withdrawing the deposited page
-table. The full invalidation retains the TLB flush required for the
-dirty and GUP-fast checks.
-
-Fixes: 735ecdfaf4e8 ("mm/vmscan: avoid split lazyfree THP during shrink_folio_list()")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-6-astra
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- mm/huge_memory.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ include/linux/pagemap.h | 2 --
+ mm/folio-compat.c       | 7 -------
+ 2 files changed, 9 deletions(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 1e5d68acf62a..20262195385a 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3569,11 +3569,17 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
- 		return false;
- 	}
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 0adfa6605653..42a4354352ca 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1343,8 +1343,6 @@ size_t fault_in_subpage_writeable(char __user *uaddr, size_t size);
+ size_t fault_in_safe_writeable(const char __user *uaddr, size_t size);
+ size_t fault_in_readable(const char __user *uaddr, size_t size);
  
--	orig_pmd = pmdp_huge_clear_flush(vma, addr, pmdp);
-+	/*
-+	 * The discard may fail, so keep the PMD non-none until we're
-+	 * committed to discarding it. Otherwise, concurrent munmap() or
-+	 * mremap() can skip the PMD without taking the PTL and later unlink
-+	 * the VMA from its anon_vma despite a restored mapping.
-+	 */
-+	orig_pmd = pmdp_invalidate(vma, addr, pmdp);
+-int add_to_page_cache_lru(struct page *page, struct address_space *mapping,
+-		pgoff_t index, gfp_t gfp);
+ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
+ 		pgoff_t index, gfp_t gfp);
+ void filemap_remove_folio(struct folio *folio);
+diff --git a/mm/folio-compat.c b/mm/folio-compat.c
+index 6212fdd6761a..054d76ff0917 100644
+--- a/mm/folio-compat.c
++++ b/mm/folio-compat.c
+@@ -67,13 +67,6 @@ bool redirty_page_for_writepage(struct writeback_control *wbc,
+ }
+ EXPORT_SYMBOL(redirty_page_for_writepage);
  
- 	/*
- 	 * Syncing against concurrent GUP-fast:
--	 * - clear PMD; barrier; read refcount
-+	 * - invalidate PMD; barrier; read refcount
- 	 * - inc refcount; barrier; read PMD
- 	 */
- 	smp_mb();
-@@ -3607,6 +3613,7 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
- 		return false;
- 	}
- 
-+	pmdp_huge_get_and_clear(mm, addr, pmdp);
- 	folio_remove_rmap_pmd(folio, pmd_page(orig_pmd), vma);
- 	zap_deposited_table(mm, pmdp);
- 	add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
+-int add_to_page_cache_lru(struct page *page, struct address_space *mapping,
+-		pgoff_t index, gfp_t gfp)
+-{
+-	return filemap_add_folio(mapping, page_folio(page), index, gfp);
+-}
+-EXPORT_SYMBOL(add_to_page_cache_lru);
+-
+ noinline
+ struct page *pagecache_get_page(struct address_space *mapping, pgoff_t index,
+ 		fgf_t fgp_flags, gfp_t gfp)
+-- 
+2.47.3
+
 
