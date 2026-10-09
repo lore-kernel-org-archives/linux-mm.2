@@ -4,131 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7725CA9EBB
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 20:16:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 995A7CA9EBB
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 20:24:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 465E86B0088; Fri,  9 Oct 2026 16:16:37 -0400 (EDT)
+	id 555C46B008C; Fri,  9 Oct 2026 16:24:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4358C6B008A; Fri,  9 Oct 2026 16:16:37 -0400 (EDT)
+	id 52DC76B0092; Fri,  9 Oct 2026 16:24:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34B866B008C; Fri,  9 Oct 2026 16:16:37 -0400 (EDT)
+	id 443126B0095; Fri,  9 Oct 2026 16:24:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F1A396B0088
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:16:36 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69066C0201
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:16:36 +0000 (UTC)
-X-FDA: 85304195592.02.691F274
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D4AB48000F
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:16:33 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bXLkQn63;
-	spf=pass (imf30.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 139336B008C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:24:05 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A47961C3CBE
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:24:04 +0000 (UTC)
+X-FDA: 85304214408.20.8212236
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C2B4FC000E
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:24:02 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Eqg3X0hc;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791576994;
+	s=arc-20220608; t=1791577442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=06oOQhiRccqg5uPYKG9qboYKXJc4u6UZT5IOyGCRZqw=;
-	b=MhqygHjqGut1+rMojCw0rOOUjk7gVcegEWiwsS9AIBLa4S4hZJTrOpvHE1ylXVr+0hauBH
-	FbF8Wj8d+CKEYiH8TRxAfkvhDKMjXW6/CWbEMXx7GK68TKxqGtE96xGXXJpEJqOAAlq/Xx
-	VBY8Fe5DoQVh9umKBDVutirol5Vbt3Y=
+	bh=wCWQOptUF8jyyHqMADNE6+YL1lMNmRc+Jp6ycI/TeyM=;
+	b=rgOFNCxS/agHb6BcvoijwksxvIUa7XGnwGYT277Y7QFCEfAcMadVKbdZO6PzbaX9XDVrgp
+	rNq6SqZeuXRYz5pg0ufs8e6jL7htGhtAq8WpKmCltwyF82FYJ7BBKbalAE5RtEydNhCKAd
+	QQnPlL0Pvh+Mo1IvWw+igU/gKi2RnEg=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bXLkQn63;
-	spf=pass (imf30.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Eqg3X0hc;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791576994;
-	b=Wi3YYJ+oMJA3PFLv+iqn54yAqYQgLMHC6PTpmsp4y0VVKHuEXwwbYpC+Omk3CEOZ+mN8yu
-	H72Xdkhq3fu8ZvfSpq5Xpf7KOc8ZuGkdPxuG/CJKjiJBcVGZaJHy1+FMIeczS3NszIwqUQ
-	0Zf5OUVxXnHMN6e90V3mBjKBDmurR7k=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791576993;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=06oOQhiRccqg5uPYKG9qboYKXJc4u6UZT5IOyGCRZqw=;
-	b=bXLkQn63cZIwFcHM9D1aJvMpgIiWyN8oxpUCx5KaWTANEYeKcxxv7xXDdQ+PL8tFpjRs+Q
-	sy0nrtyL/zKNps6GOLSavfkHikOzciBlmWtYJ5XlI130Nw9EtfzCNWHfGNw5A/gMPGHCXk
-	WHVXKsDbipnAflPsDk3MskvTYDw5N/U=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-264-8qQgJA_gMTm4sFGjz3B7PA-1; Fri, 9 Oct 2026 20:16:32 +0000
-X-MC-Unique: 8qQgJA_gMTm4sFGjz3B7PA-1
-X-Mimecast-MFC-AGG-ID: 8qQgJA_gMTm4sFGjz3B7PA_1791576991
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93be1861d2dso7759385a.3
-        for <linux-mm@kvack.org>; Fri, 09 Oct 2026 13:16:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791576991; x=1792181791;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=06oOQhiRccqg5uPYKG9qboYKXJc4u6UZT5IOyGCRZqw=;
-        b=aA7zaIY53Uw/8lFx7rz86vyOAd7aVLCPOJDLWMp6Mxd1kW8dj4GnCvdatp8Jwa5mJz
-         6AT00hz61ZzQMJF3s3Lc8iGNk7uWlfm3HySK1m1boNMJFtq+Adgsyi43N5gHzyOsbtcu
-         o1GrKx4XPxnDlK1ugjKgctWC/NbhGxsH0mJUVdzIgY2FxLZblyNL3qdm9yTboFUcEAVw
-         U8+yQDR3p+HLoSxju4KTWeCToN8kteClbYINxFkHeBjmZezHDoLEawMZP6SmbqMaA7dc
-         aJbDsCeHHFiCkWup8srnUfyo9pSpZVdzC/wOEDk4S5JBTJ5AAWsZzP9rG3GfUK/amfPx
-         k1zQ==
-X-Forwarded-Encrypted: i=1; AKwUvByjn26g0sveA5mspBbbi1zaAf87tojEagOZNzXabQJM3Qs6raGSPEflSG/jfGmI9KcI+HmY71KX0g==@kvack.org
-X-Gm-Message-State: AFuF++l1sRgFiKOjFP4bWKjLnfJgOqHmR/hB2KlmCvip0ezjLy5fUqcL
-	Wz7wx6SawqmhBrvfG3onyf9LxInNger8umyZo/BheLVn2IzO+7VKRwEIhPTnvo+Ujb9exwjGZxZ
-	cpIGKpZCQRjWdEjy8Kk7uyk+z5927M+7IsyfGv778Sbuco8oomgrI
-X-Gm-Gg: AYBFou1d6dxbZOpQ+zph1FypvRslTmzgRwHZM6PfJQ1X22AfyhUrjytI5TKbI2prLDv
-	sNjzL2ImG4BBhU0XXIY+TqCT0jm7Qtw8h8MQfcD/yunTDdhwAQQaDTTelVCf92ysawpE/R/Prw2
-	OAk+grU7CesVjKW583wrwAqv6ejY/wVp4R/0ujBEGPnQAn6mIDDjLa1G3z3HOzcz8pxhb2lFYct
-	YANxyK3QAMyefT3wEIrPgHmV4ZIL04YRxPz+7e0Wwi3NdWHqp+Z6LgzqTQMChGyK/0s6VOyhHpv
-	nCAc6lzcpjWmW0DINS4hPefSKkodmog3bNhikaeJTDuAywkYEAN7HcU4HWkQptuH34gAl5xuaE7
-	j+TM=
-X-Received: by 2002:a05:620a:1793:b0:93e:c12c:440a with SMTP id af79cd13be357-93ec12c48f5mr367251485a.70.1791576991388;
-        Fri, 09 Oct 2026 13:16:31 -0700 (PDT)
-X-Received: by 2002:a05:620a:1793:b0:93e:c12c:440a with SMTP id af79cd13be357-93ec12c48f5mr367246085a.70.1791576990896;
-        Fri, 09 Oct 2026 13:16:30 -0700 (PDT)
-Received: from [192.168.2.110] ([142.172.30.162])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93eb98cd599sm266356485a.39.2026.10.09.13.16.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Oct 2026 13:16:30 -0700 (PDT)
-Message-ID: <e7c7e8df-b1e7-4796-baef-ca5d7676688a@redhat.com>
-Date: Fri, 9 Oct 2026 16:16:29 -0400
+	t=1791577442;
+	b=ev159aDlT4DhneRfCxaZzSphyjpCMBqarsXpU4/9nsc2Xo+qDU2oFrDlnZK0mveJILng+v
+	Ep+8A5W+0DDRnFJU6IHM2tyrXgRgQ3jwTtK4+770UlfCMAywswg0vg4QieEwzEWPcTAuzc
+	sHANVF2CIw6P+5jcDhVEmls/D+S4Mls=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B2D74199C;
+	Fri,  9 Oct 2026 20:24:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7791F000FF;
+	Fri,  9 Oct 2026 20:23:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791577441;
+	bh=wCWQOptUF8jyyHqMADNE6+YL1lMNmRc+Jp6ycI/TeyM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Eqg3X0hcDl6uYeqx8paTuM4ul5j58X9NkSbvaiUbh3DZbjI0Nli2t1c3p5CYydvYp
+	 GDWlI5RahfJcXnkDAle0s7tUtplBeedzgpEenX+zpQKqsmpDoXBEnL1Q6gCyTcXlXk
+	 qmpadTTJJzn274+83PezcoAmemAEG7p/CrhOAX1wdmTkYh1vE28FxAsYTao5iGjey8
+	 PORlHEJYdkAvMbd0JnRh9Ihn1PiKLYt13216sIw08UVYTI1s82l1YEK7Ty1Pa1UOM7
+	 m6LVY7j437q4llZ8qLyElsoxfS9LmDc/1BGrHJkDLO1twn0ICCLRSmrnHzwWcruEDt
+	 2lgN73spZM5aA==
+Message-ID: <8db35dc0-eb06-42e4-90f9-534522e810e1@kernel.org>
+Date: Fri, 9 Oct 2026 22:23:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86: remove the BIOS memory corruption check feature
-To: Thorsten Blum <blum@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>, x86@kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- corbet@lwn.net, hpa@zytor.com, "David Hildenbrand (Red Hat)"
- <david@kernel.org>, Mike Rapoport <rppt@kernel.org>
-References: <9e1a161e-9246-41d1-9651-ffa85b1bc99b@redhat.com>
- <asktOXVRiXNOTcqH@kernel.org>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <asktOXVRiXNOTcqH@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 4G-zMBsw_Ln7Emmtg0LOZXsJjfaDysPydDG5JmepSMo_1791576991
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH] mm/huge_memory: avoid transient none PMDs during lazyfree
+ reclaim
+To: Zi Yan <ziy@nvidia.com>, Kyle Zeng <kylebot@openai.com>,
+ linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, stable@vger.kernel.org
+References: <20261009165214.40212-2-kylebot@openai.com>
+ <DM0II2QHWWS1.2RXEJXC8S0101@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <DM0II2QHWWS1.2RXEJXC8S0101@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C2B4FC000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D4AB48000F
-X-Stat-Signature: y8rix9n1fwhs8xjjk5a5nqpgad5x4uai
-X-HE-Tag: 1791576993-642540
-X-HE-Meta: U2FsdGVkX1/lpw1zmaK/yu+HtbTJTL0qzs+9XMJyccT5M7Qhljzilej14VpsBYoJH7j/P/6vsngyZMdqYsYStVe5CY5BFJNYh67/4LcIUkXSv63O85A1QtPtDp7Roe0GfnlfZZhZxLbwZ4AlemVkzn5X8jrMYn4lnCt3u0xsj9seSWh2J8rPZAhiwhQl9rOG/ED+Xa0Yj+hiLJDNY6NP2n9V81EmhhupkFVh7c6Q5Rzv8n2dOokrJPyAC5Ee5Lx4KJpD/dG2t9phtHWIZcjoyOVF74GbjalYeD3WU8A67GpHtre7q+jc51S4S6/7qVeMpcH2GgbhdkILuHMf1YSij5Gdv6sFpkfyoBq2KjQPNr8Fgta15IMIM1oHxcurSIueXQtwFpPJytWFcbyGc4BxotPo9EpEGYdwp155AtDLEwiLfMMQohtQuui4wv7aCLgRMvtylp2fh44oHjcyYZ43aHBeWM79Ui/92E5L/dNEIzs6tXhS8fWJ9zz8+I+teDnSBUdprH+J2iBf6z/r+l8nMjRi/O4LqgTW2LZlmrdj38p63D5DQB959K4Q/gH8+cXTu9MeIQJH8IUNzynswR71glzbjGcM5fDOkXXZ/T/L0Z/24yZx3+9YJQ4gvkt8AJaQNj3wneI3ylvVFw0bVRyj79sVlJYfLV0RWU7ECXeoIJnEWqC9Lb8XwB1sZ5J8TNeIMhKoq1aJK3eA+6XpztMVluipKUVi2W+r4+IUxL/ki2DFRG2Srd0NSces39Q6IHawNQPXzg0TCGtm4qZiSj2SvFB7fUasSm0MSDRxtO3z3pNbPs+q8xWLtgNeSvgliZlVZyq7b2PHJXQg+56gOn8Bq8DM1QyxFCyvJUMAtAH92brHFkcTj92HGC43m4aiYUXaq4q4rkGmSjpEmQ5/XtRjNuL2s0yhKJensFbIUDGd0paCmKw+GLjTpEpgCOdAeL/BuHRKLGbb8fXemwbDnyB
- qTnV95q8
- 6NhiPlxDxo8uBmDZgkoa0L/2FCdhEFFR+cMt0ahJXYRBe/X1R5gjTRlEHCbY3FcTE61cpnyTIinbR5VxdE5cTMzYkpIH0zayrdGkwQ/B2ab1jBFn74QnETk1kcq1h+CRctYnrjjUdYK1pf0s7TqT3l9XYv6/Vjs7O/ku5Ea4K205OnqEO5NczAT/JgBkMRCfHru3WQBr4tmOJMizJu+nD9UOafiGfUCAi8x+98g9gfGJuIzck1TvD4rsUMakBC3rSHk6hxog7srbz6dBQQ5VAVuuT/LH4bnO9aHXlWWyEFYPULnzMG8EnJqGe9etFZux1EW686tIB0Sl56Sw1Sx1Q8hKeBwGmmJJ7GdYiwQMkUMybHSY=
+X-Stat-Signature: f1xrhwnu7wss1mipuhngqoompc66t6p4
+X-HE-Tag: 1791577442-46169
+X-HE-Meta: U2FsdGVkX1/wkewge2C3AisrvOem8pRE2fxhVqJzFcnggbtqu9nf8Al612sdiMEye36WRxlPCzyw+PCQxirA7tg4vVfgmVqMWapAUMnNVsZ4m50rPFQgeqmEmEQcFn5lHun8Ji1/oeEk/ICdB6Ef0zFZWcdFKUAqEksx04a/Ym7JAf6gphYloc27bGK3qeDP5c9Qc1S1290XBo0fXpHz98OOcpytT+Qv81pwB6ozlNwE6aTVkI3bvVKN5kzBREhVI+h+XHV/oA9PmQ9/0OB96wOhYE3UEAUJfsjW1xsi95jOm18H8HpqsNVRztU/QqDj3crMeAtMRO4zByuqGJZgGonVJRCMIcD2lumWiknDEnYc/cFBOEC4EfiU+A+4RRUs9rq64Ljkqn9CeolTnbv6BUaRORpdcvFyA815OtmMOOXzCQxvXAXUFEMkCjQ89jHT8flWfVlDzLwgbYDrFDY9SRAgvlw38YSu9c2tSx151InPGMo2CjMfgn28k0Jx/xXbKsFxM2LMW16/yGkMw8IQ+DsiHsT7NkJNk8tzEfkRKZJuvHCGDq8fN1aCypnCAyROnM/XAmy/arqsugM97c4XZxpz00bgjUzZIkGHRLZUN26N6o71iVgUBqw6CN1734y2ErpBOMotzOl9CESPj/3GJoK/4oHrsFdkhzJgIzN8BCoXTMxgQtUtx1//o+sClhvq3bDIJzpylX7hR+2Bd1bAPfKQkx5KQOnqEO+00pIqWDkvRMWJFiONI9A7q3x1LXzzsz1N1gnLOlawaTAoIOAwzPCfnA4JDQNLCYzB78z4D+thle3oSmTdteKJDwHgRWD0ryDchiws3JshurHDHuZJvaybaqqdiMECG/GcaknBLVE3RwZ0cwU4N1uqABOsnWnfDUN3QBc9JguYmTt8xYV3sQtg/vcHvIOydF4QQtk8zZ63bysImgssAa8QJQHNcogE/gLwqblIpYC6358KBA2
+ RYFR4B7l
+ X4y8qXtE2Ej4hswyt5Gq08Xiwj9qsXhuWMbEn/zyBKNsShumMF8jgiT4dtRw3Td8eMBBuqMBCRh/BLemjr666LrwIbaDiEacvkLWYSPEpGShh/pvgr9qVbw7H6adX7xntYf5FLoSuFe9NItxRrIRYwxPraqf4fv+5ULFGUktkVreCXKQRg9t7TVPVK9Qe7Fax7eAHMFKNXaj6tMMbCJVVRIAIdr2EVCNo9nZjAL7VLgwtFEaaQsc1AuM3MSDS1Uqcv8e17iWRAlHhjOKPWef5ZS6xAUknPFaELgI8rj3E6+c8S2qWUHjHPn6IrXiW13JG58u8IUE7UI88YCx2o4bIbKKKbJURkICCOF/Z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,70 +144,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 10/9/26 2:06 PM, Thorsten Blum wrote:
-> On Mon, Jul 20, 2026 at 04:41:05PM -0400, Luiz Capitulino wrote:
->> By default, the BIOS memory corruption check works by reserving the
->> first 64 KiB physical area from memblock, zeroing it and then scanning it
->> periodically.
+On 10/9/26 20:17, Zi Yan wrote:
+> On Fri Oct 9, 2026 at 12:52 PM EDT, Kyle Zeng wrote:
+>> __discard_anon_folio_pmd_locked() clears and flushes a huge PMD before
+>> checking whether the folio can be discarded. If the folio was redirtied
+>> or has unexpected references, it restores the original PMD. Reclaim holds
+>> the PMD lock and the anon_vma read lock, but not the owning mmap_lock.
 >>
->> However, this functionality has been broken since v5.13 by two commits:
+>> Both zap_pmd_range() and mremap's get_old_pmd() can skip a none PMD
+>> without taking its lock. A concurrent munmap() or whole-VMA
+>> MREMAP_DONTUNMAP can therefore miss the PMD and later unlink the source
+>> VMA from its anon_vma, leaving a restored mapping behind. The anon_vma
+>> write lock taken by unlink_anon_vmas() waits for reclaim to finish, but
+>> does not repeat the skipped page-table walk. Once the remaining VMA
+>> links are removed, the folio's positive mapcount no longer guarantees a
+>> live anon_vma. Racing lazyfree reclaim against MREMAP_DONTUNMAP as an
+>> unprivileged user reproduces a KASAN use-after-free in
+>> folio_lock_anon_vma_read().
 >>
->> - Commit a799c2bd29d1 ("x86/setup: Consolidate early memory reservations").
->>    Moved trim_low_memory_range() into early_reserve_memory(), which runs
->>    earlier in setup_arch(), causing the first 64 KiB to be reserved (when
->>    CONFIG_X86_RESERVE_LOW=64) before setup_bios_corruption_check() runs
+>> Use pmdp_invalidate() to keep a recognizable, non-none huge PMD while
+>> the discard can still fail. Concurrent unmap and move operations then
+>> have to synchronize on the PMD lock instead of skipping the mapping.
+>> Clear the invalidated PMD only after the dirty and reference checks have
+>> succeeded, before removing the rmap and withdrawing the deposited page
+>> table. The full invalidation retains the TLB flush required for the
+>> dirty and GUP-fast checks.
 >>
->> - Commit f1d4d47c5851 ("x86/setup: Always reserve the first 1M of RAM").
->>    Hardcodes the reservation of the first 64 KiB early in
->>    early_reserve_memory()
->>
->> It might be possible to get this feature to work by allowing
->> setup_bios_corruption_check() to run first, but it's just not worth it
->> given that the kernel will never access this memory area anyways.
->>
->> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+>> Fixes: 735ecdfaf4e8 ("mm/vmscan: avoid split lazyfree THP during shrink_folio_list()")
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: Codex:gpt-6-astra
+>> Signed-off-by: Kyle Zeng <kylebot@openai.com>
 >> ---
+>>  mm/huge_memory.c | 11 +++++++++--
+>>  1 file changed, 9 insertions(+), 2 deletions(-)
 >>
->> Changelog
->> =========
->>
->> v2
->> - Rebase against latest Linus tree (v7.2-rc4)
->> - Improve changelog
->>
->>   .../admin-guide/kernel-parameters.txt         |  23 ---
->>   arch/x86/Kconfig                              |  30 ---
->>   arch/x86/configs/i386_defconfig               |   1 -
->>   arch/x86/configs/x86_64_defconfig             |   1 -
->>   arch/x86/include/asm/bios_ebda.h              |  17 --
->>   arch/x86/include/asm/setup.h                  |   1 -
->>   arch/x86/kernel/Makefile                      |   2 -
->>   arch/x86/kernel/check.c                       | 187 ------------------
->>   arch/x86/kernel/setup.c                       |   4 -
->>   9 files changed, 266 deletions(-)
->>   delete mode 100644 arch/x86/kernel/check.c
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 1e5d68acf62a..20262195385a 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -3569,11 +3569,17 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
+>>  		return false;
+>>  	}
+>>  
+>> -	orig_pmd = pmdp_huge_clear_flush(vma, addr, pmdp);
+>> +	/*
+>> +	 * The discard may fail, so keep the PMD non-none until we're
+>> +	 * committed to discarding it. Otherwise, concurrent munmap() or
+>> +	 * mremap() can skip the PMD without taking the PTL and later unlink
+>> +	 * the VMA from its anon_vma despite a restored mapping.
+>> +	 */
+>> +	orig_pmd = pmdp_invalidate(vma, addr, pmdp);
 > 
-> Hi Luiz,
-
-Hey,
-
-> v2 no longer applies to mainline - are you planning to rebase it for v3?
-
-If we plan to merge it, I can :)
-
-> Regarding the changelog: did you consider that the check is only broken
-> for the default size? Booting with
+> There are some gaps we need to close before getting this fix in:
 > 
->    memory_corruption_check=1 memory_corruption_check_size=256K
-> 
-> still works and I get:
-> 
->    check: Scanning 1 areas for low memory corruption
->    check: Scanning for low memory corruption every 60 seconds
+> 1. GUP-fast cannot follow the invalidated PMD: riscv and LoongArch need
+> pmd_access_permitted() that requires _PAGE_PRESENT; s390's
+> pmdp_invalidate() needs a change.
 
-Yes, but IIRC this won't reserve the first 64K and my understanding
-is that checking the first 64K was the main point of the feature.
+Ugh. We really need pmdp_invalidate() to have reasonable semantics. This whole
+PMD locking is a mess :(
 
+> 
+> 2. sparc64's thp_pte_count can be imbalanced with this change (based on
+> Lance's offlist feedback).
+
+Ack.
+
+> 
+> In addition, powerpc has a page table check issue similr to riscv, where riscv
+> fixed it with commit 9f4a88b8d01a6. This is not related to this issue
+> but discovered along with the investigation.
+
+Zi, do you have the capacity to take over this patch?
+
+-- 
+Cheers,
+
+David
 
