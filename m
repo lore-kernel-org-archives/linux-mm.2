@@ -4,90 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D6ECCA6015
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 13:50:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B16CA6019
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 13:54:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F9246B0096; Fri,  9 Oct 2026 09:50:11 -0400 (EDT)
+	id 801376B0099; Fri,  9 Oct 2026 09:54:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 783286B0099; Fri,  9 Oct 2026 09:50:11 -0400 (EDT)
+	id 7B0E56B009B; Fri,  9 Oct 2026 09:54:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 623126B0098; Fri,  9 Oct 2026 09:50:11 -0400 (EDT)
+	id 6C6866B009D; Fri,  9 Oct 2026 09:54:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A62C6B0095
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 09:50:11 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BBBC8C0390
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:50:10 +0000 (UTC)
-X-FDA: 85303221780.28.0DD5E2F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1033F20009
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:50:08 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D1256B0099
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 09:54:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 95EC1803AF
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:54:11 +0000 (UTC)
+X-FDA: 85303231902.12.1AEA1EA
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf31.hostedemail.com (Postfix) with ESMTP id C2EC020005
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:54:04 +0000 (UTC)
 Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=POPZCRVT;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791553809;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NGYamTbhyF8fPIDsPezdQjUGd6YDkrBY2lo9+2JMLnM=;
-	b=KxmaPHEE9hCGHCnRTq4PY87dDlJF6PPWW4sHWOtI+1zIbEZysyOpZuJMd9s/3tfHapHgCe
-	Ct7cP5z8r9t6sZBLLNuicfk3Nei6jxPOVCtlhtSBU1vTJ0oQ77SoarNbQWrytyCRHqsVUG
-	EXBRourB4OCoQtMFW7sWf2NACQSZ950=
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=EDXiZDX7;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791553809;
-	b=bl45HyiPKjBXAh/xLfsklfqYvmJeCYgTF5rwFvlouejAYDBRadz3DG44FaCqNQYl2zmQ2K
-	YljowlpiHwAgF9x6/qbXqChZ3V2j/FN2771CN8xUvX7VXaGhr4u3RVZCWGUWXelqthBnVY
-	0D3OOnTMgWyYOwIpQ9i+CdpbGn7NiXk=
+	t=1791554050;
+	b=Igtk7UtKkCyXBPz7TZym1FUgGvxzjQMu/8jlswkn9WnGaxf3y7VvRhTaCppSY5WrV48U7G
+	bd3d8MuwgCn54+ys+hml9a4GU1huuB57x5FkOyPFFYFQhFqjnDvAJmm1Ewd9llfewRPhoa
+	25dcqEjPUE9lj993fV0C0+5uA4vAkTE=
 ARC-Authentication-Results: i=1;
 	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=POPZCRVT;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D875844011;
-	Fri,  9 Oct 2026 13:50:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4190F1F000FF;
-	Fri,  9 Oct 2026 13:50:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791553806;
-	bh=NGYamTbhyF8fPIDsPezdQjUGd6YDkrBY2lo9+2JMLnM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=POPZCRVTopIVD6QueeAp/dbl/2w0eQjppiua1Xgapd3r3bYqxeOThVbyppGzpk+Ua
-	 FdxU9T/jq3b0gprHOqC08n2+VSwbkSBFDcXCv/mm8c9ZF9Zaq1use1gra0+sx/neEK
-	 9mZuxnkBuRKpHgwau3IiHViu0chKTSycGzEVW5YYuTfNPfGXSkD5q+YON8/dPfypzD
-	 YA7884+MinfTyzde+PG6yLPhO9XUZXFjPbF6uRZiXKo+1j+jGn3CemPeBGvzRjbkJ0
-	 Fno1psmye9lcBTBlPAMduLnRV7SnTFfNAT3v7CMc+eWrQEHmxsHMSOZ8B33jWPfSCl
-	 7ld4as1g2mg4A==
-From: SJ Park <sj@kernel.org>
-To: stable@vger.kernel.org
-Cc: damon@lists.linux.dev,
-	Liew Rui Yan <aethernet65535@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	SeongJae Park <sj@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 6.6.y v3 2/2] mm/damon/core: fix unconditionally skip last region
-Date: Fri,  9 Oct 2026 06:49:49 -0700
-Message-ID: <20261009134949.11507-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261009134949.11507-1-sj@kernel.org>
-References: <2026092948-moonrise-persecute-3597@gregkh>
- <20261009134949.11507-1-sj@kernel.org>
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=EDXiZDX7;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791554050;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=71p5uQAWJGojknJOSBYU8KuAs5ErvcQvTNDLjcQGm74=;
+	b=LZp7nitmY1VpVzh0F0OXZgoYYJovmMM8PsyDghX4Ta3iu7DIDrSXFhib7+tNl4/MvE4pXF
+	4HWY2aQUT1sQJtX186+obW8U+/sroOloBkHIT5OIYXL4c0RorS0MYmvvcbadj2Hf1FI+aJ
+	ai5HlHd6jbuE+XpPxoQWpg/0EX4jp90=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1791554039; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=71p5uQAWJGojknJOSBYU8KuAs5ErvcQvTNDLjcQGm74=;
+	b=EDXiZDX7+fWEtsOKVSWrY4lgWVt2eC+RjfYSDbYUa6P7A75wOtaN9iC8fFsFKDb6GgpGiMgadgvCWOPxRqE9Y7+xP259EhkKZPS6Li1C/OQq4REJ3eJMXqAR3v9Iy4BlneZK1Sl7uxHC2pT/fYmyMoOV7aaiQSXja0eH4tXpqcE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XCTcWz3_1791554036;
+Received: from 30.42.72.158(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCTcWz3_1791554036 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 09 Oct 2026 21:53:57 +0800
+Message-ID: <62e0ce97-1016-4f82-af38-7703c8cffefa@linux.alibaba.com>
+Date: Fri, 9 Oct 2026 21:53:55 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: memory: fix truncation removing mapped folios
+To: Pedro Falcato <pfalcato@suse.de>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ qi.zheng@linux.dev, jack@suse.cz, ayushr@modal.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <0d2a1809fa1cfc22ad3df26ec28b2d30e5cdf3bd.1791540483.git.baolin.wang@linux.alibaba.com>
+ <asjXJZap53yJWMYi@gremlin> <asjr2zCp1BVtfpTV@pedro-suse.tail5790ac.ts.net>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <asjr2zCp1BVtfpTV@pedro-suse.tail5790ac.ts.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: so7rq7qimtufwcf93tftgpw4iyxw5hx4
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1033F20009
-X-Stat-Signature: bsis9odyzwj1f8ep1ehk7iwgaj7ce53j
-X-HE-Tag: 1791553808-346672
-X-HE-Meta: U2FsdGVkX1+HyAkAD99piYau4SO1JRcmCwghd8VSpSgnCZa5rYa0ae9REsL15F7g9LIFJdw4jZrgLgfl3LS7aobS5DNraI7hQ/G6cjIGs4Y9eZR1HMpqiCF72QwCk8R8GlRQgufARXt/yTbvaq71hzciXolsQVuD2VHhADVakfnwG/h0QuMQ8RlX2xepBO2AXUQS6R/I1vrK7+jKcad87P/xCptkjFKgdaqhLpJX9o1JS/ePTJinAgRli6bx+3dY6W4csUK7+fTwHGkk/LhbRhbVULjSodBOW0XPafaRsI5S57VkItl4V2ZMhz+OQ/hS+5RYuo5izizVvUEX1wr4JwTIZGTzUQ7SE1J2vSF46onPAvqOgESFtx4Do+L9uf1UdHklHbUp76MJyOV3ZIblh0gVeevtA8w1eUz132b6QW2QosjO3l8zRAdkbOvURTh4ej2iSqZq7uXT3E85vRBCyv4I2aN/WuwjekLjYswk9kf/c9Pqzi52tj6E4D12p/VDPChAV7AYeXaRXxVzwbfML6Ln+eqQauFEjgTySr2FKf/KtcUbLP+a457EqqsPZQDoe+AT7tnGSZN3dGQI6DXsgGISPnRcmDGNk3L+vdo8QxEUbaT46nMFif2mI/hh9kRJPh7jx8bbq4Dgezns1/jW3HFahroWPsG1IY3to6pMH/puvipgxxJIS73HLq61uOGf6kS92NwAwHA+sIlvt3S5PsnDgCWM4o8HVIIrpgKGurIlf8EtvmZCilsUiPvpasuGKDf2p1G2rnkuJqDnCdFI6erttHxNCNiB6IJCP3wVeznIVHCFpBJPbaeGPd+t2JjH35s8KtiG99fvQLRAQe4/+aqqql4o1jx3aSWPF6UIzOL5TfjhSa5C1/+vT+anNxLJZ4IAGcc7sIQDX+ZhuyGZpT0koTB7TLg/7ipgrnHYcxRJ6SNH6NPK3YXT1I1liAR/t1463garEXqvmhpZ39T
- dKCgigzs
- 9UZmZLVo5lnF00U9lmWxS9gYWFrtwsv0g63BDE1fgVn9DrX7TNbhnmGoPftc5dHJ4pa/4OFFYBB7wFFcsbRN57fXXn1DVNofWtGSoEROU7oc9VXpLD8VqpsN8XgrjosVaX8r6bxIQlsIVBdjZtoELcQnSa0IgGWpmuxlk+pPIZM7rJnWwdvI9/MYIdLgbSdvQXPQkzAo8jPiCMhmKcbhYhzu1vyw8ffJ8VYynDzBEus7axQ03wbhCMRHBP2C7HBqJidBH1tI0wrr3u5jDjSuw5FCxZfb0NCk8Msj1tTF+lRDPH08kUGBVDF8jRg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C2EC020005
+X-HE-Tag: 1791554044-168243
+X-HE-Meta: U2FsdGVkX1/ODUEWEN288D96xuwbcvj0+IL8nBJ80J7Sng6tVDRRAcgBkj15kA/jUwZyGIXuZF6/+XaAHubYQ91GIr5kPlmIzy2x5c5R5RwkKzBjs8Kd42FUVDfpHO/K6A4yDX9/v5WTS+Q2651euWH85Q8lt/9MOfoLA+GBCAlwA9AhXpHzH4hrgemsjiCafi6y883TYVTvNXSWhYe+wPmeWdEnRGVUHD6deJ9iO+xnD8QH57WhHC16Ctk4EaltggyoyBBVTriOoqcIGN+pWwQ6X94mAddU7t051NJaBZwl73dEunxVnxFrH8FREWPhm64q49QVAdywTuHHRBWeCtS3j6ulcgWcnIea7scdjCqIK5gRN3Q0+0k/zNRkmIpv3KYC1hUokdAb0rqS2PZEHcudZjz5S1Nkc0p8IdJZ1G8vQ0PLcByo7uTD8issGUk2vcuPNFt8TN4eZpqSZXxaGQplphGTKRquHtLsNUSy+KDnUiIvwM2xN6i+iewnz81V9eXM8NUZCPQLqryL5riq/TsOkX0A18i71QJQXA1yYvYVHV48mMBN+dSR9DlUNCkH6Yr8LHY31z7VPATZqXmsz+F1ShQpfYegrn7SfmRHAkmNRDLkqu7CVd6XPcIB2WrfZ4X00MeCh3/LiFaySExqD2YvCT/SkK2SBRV9ij+f3YO8s38KXXufKmXauwUEjQ0UyOlWsMzVU6z8Nhv5/+R1CYSS2dCZRYHe+/GYhgxiuYa7pLVSx4dl+F5lH13Wpbo7q9zHBzMabIsVBt8oBKXw/9yWqesk/prxvOFFa7cdW9O+E1VbEgjcOduEvX6x/WQqxvcgnmLc8Bg66H4V+WKLBfwJylio/FcX3chE3AgWCJDXNPwctMCB4gjNIXR+pCcTZVtL7G6OMpjgLSJbSn3lG07/DUtrW1DStbtt0PC5dMFBcQae8/bcEg2gx0l1M0jjiIoyQegX+FonqMDbtN3
+ klm83prv
+ nULYKhEsALeSJ4ZHAAhIKpZ5ozxP6AULxq4R29aFuqyPQH6bxrr8FSuO6t0okj4YBxTLsm+gq0XaYMcoxRdP6BzxMa2RLKbWZAKTDFPcA7dMC+eFPn8xrtn8/pdbPteLMq4WUs5GppzAziWVc8f5Bv5tJK3z3aJkcwNHE1TXuogd40jURzSH3xOS2xzkEFiZ9M/gWm13SiSIk0bPTTnDPT3sAzLc/ovjG5rK8qV9AcnzLsmDDYCo46HRdsl8iXhE+4oV2wxT6U3hzjtjpaVTJzC65HQNYrtEPNssMqhV1Qd8g9ndIHJgWlw0GnGd/8ug/9nmL8WaeqZaD5BRDOIEogojcKOLjjz2ROMK8mqBu7yHlljjJf9AoesqlrDGEurmNO43m0wFoc2tLTV+zuo2Vps8Q/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,101 +89,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Liew Rui Yan <aethernet65535@gmail.com>
 
-Once quota set, the charge_{target,addr}_from unconditionally skips and
-resets at the last region of the tracked target, so the last region can be
-skipped even when it has not been processed.
 
-Example:
+On 10/9/26 9:36 PM, Pedro Falcato wrote:
+> On Fri, Oct 09, 2026 at 01:00:52PM +0100, Lorenzo Stoakes (ARM) wrote:
+>> On Fri, Oct 09, 2026 at 06:12:03PM +0800, Baolin Wang wrote:
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index 1f5d5f7d39cd..0272217ad7b0 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>
+>>> @@ -2044,16 +2053,10 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+>>>   	 * to ensure they are still none, thereby preventing the pte entries
+>>>   	 * from being repopulated by another thread.
+>>>   	 */
+>>> -	if (can_reclaim_pt && direct_reclaim && addr == end)
+>>> +	if (can_reclaim_pt && direct_reclaim && addr == end) {
+>>> +		/* rmap changes need to be observed before e.g PTEs get zapped. */
+>>> +		smp_wmb();
+>>
+>> What does this pair with? You should always say what in the comment.
+> 
+> Yep, this is missing a rmb to pair with. The diff I posted at
+> https://lore.kernel.org/linux-mm/asigKktcrSY80A_2@pedro-suse.tail5790ac.ts.net/
+> had one in zap_pmd_range(), which admittedly isn't the greatest. I'm not sure if
+> there's a better way to do this.
 
-    1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
-    2. Quota is configured to process only 100 bytes per window.
-    3. Window 1: Processes R1 (0-100).  Quota is full.  charge_{target,
-       addr}_from is saved at (Target, 100).
-    4. Window 2: The loop reaches R2.  Because R2 is
-       damon_last_region(t), the old code unconditionally returns true,
-       skipping R2 entirely and resetting the charge_{target,addr}_from.
+I don't think we need an rmb to pair with. This is because the 
+folio_mapped() check in __filemap_remove_folio() cannot be reordered 
+(guarded by spinlock) with the pmd_none() check in zap_pmd_range().
 
-    Result: R2 is permanently skipped even though it has never been
-    processed.
+We just need to guarantee that when we find a pmd_none(), the removal of 
+the folio's mapping (via tlb_flush_rmaps()) is already observed.
 
-However, it is important to note that this is a very minor issue.  This is
-because it is triggered only when the previous window saved/kept
-charge_{target,addr}_from, and in the next window, all regions except the
-last region were skipped by damos_skip_charged_region().
 
-Fix this by only resetting the charge_{target,addr}_from when last region
-is reached, only skipping when it is applied or cannot split.
+>> rmb/wmb are generally not needed vs. acquire/release. Are you sure a wmb is
+>> right here?
+> 
+> I don't think that works, because __folio_remove_rmap has a ton of stuff going
+> on, some implying full ordering, others not. Plus you'd need to switch the pmd
+> dereference to something like an smp_load_acquire().
 
-Link: https://lore.kernel.org/20260908134739.96919-1-sj@kernel.org
-Fixes: 50585192bc2e ("mm/damon/schemes: skip already charged targets and regions")
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: <stable@vger.kernel.org> # v5.16.x
-(cherry picked from commit b3723b596b548c837a766aae3553c14a7b15af2b)
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/core.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index c86cac855b9b..c459eae4bbae 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -884,36 +884,39 @@ static bool damos_skip_charged_region(struct damon_target *t,
- {
- 	struct damos_quota *quota = &s->quota;
- 	unsigned long sz_to_skip;
-+	bool skip = false;
- 
- 	/* Skip previously charged regions */
- 	if (quota->charge_target_from) {
- 		if (t != quota->charge_target_from)
- 			return true;
--		if (r == damon_last_region(t)) {
--			quota->charge_target_from = NULL;
--			quota->charge_addr_from = 0;
--			return true;
--		}
- 		if (quota->charge_addr_from &&
--				r->ar.end <= quota->charge_addr_from)
--			return true;
-+				r->ar.end <= quota->charge_addr_from) {
-+			skip = true;
-+			goto out;
-+		}
- 
- 		if (quota->charge_addr_from && r->ar.start <
- 				quota->charge_addr_from) {
- 			sz_to_skip = ALIGN_DOWN(quota->charge_addr_from -
- 					r->ar.start, DAMON_MIN_REGION);
- 			if (!sz_to_skip) {
--				if (damon_sz_region(r) <= DAMON_MIN_REGION)
--					return true;
-+				if (damon_sz_region(r) <= DAMON_MIN_REGION) {
-+					skip = true;
-+					goto out;
-+				}
- 				sz_to_skip = DAMON_MIN_REGION;
- 			}
- 			damon_split_region_at(t, r, sz_to_skip);
--			return true;
-+			skip = true;
- 		}
-+	}
-+out:
-+	if (r == damon_last_region(t)) {
- 		quota->charge_target_from = NULL;
- 		quota->charge_addr_from = 0;
- 	}
--	return false;
-+	return skip;
- }
- 
- static void damos_update_stat(struct damos *s,
--- 
-2.47.3
+Agree.
 
