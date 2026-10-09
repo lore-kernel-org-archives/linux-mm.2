@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E3C1CA9EBD
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 18:10:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A90DCA9EBD
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 18:10:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 806EF6B00B0; Fri,  9 Oct 2026 14:10:15 -0400 (EDT)
+	id 3C19C6B00B2; Fri,  9 Oct 2026 14:10:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B71E6B00B1; Fri,  9 Oct 2026 14:10:15 -0400 (EDT)
+	id 371E06B00B3; Fri,  9 Oct 2026 14:10:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 682086B00B2; Fri,  9 Oct 2026 14:10:15 -0400 (EDT)
+	id 23B0E6B00B4; Fri,  9 Oct 2026 14:10:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 40EAD6B00B0
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:10:15 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D6C7FA7F95
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:10:14 +0000 (UTC)
-X-FDA: 85303877148.27.766D463
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D6812140002
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:10:12 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=epLJv9WT;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id F327E6B00B2
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:10:35 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7CBA8804B8
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:10:35 +0000 (UTC)
+X-FDA: 85303878030.01.F8488D9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B52BB180007
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 18:10:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oqpUmEHM;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791569433;
+	b=cHHjYGdfq6+AF3PGiqwcayNYXqUBTmtoRyXnQkNTBfAiYbYrXlF9ysOrlNazcfAJxhY67c
+	ct/udn9vbvIqhdfP/XdliG2JMivrAjKESCzqrluPs0TWd4LwohxHrmCNygjkRY7RmrIMm9
+	TEjaqoAQGucTUXNXq8cyRjXq+Op23to=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oqpUmEHM;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791569413;
+	s=arc-20220608; t=1791569433;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qiSoCUmsNQBqgv+Na0/FnZGGuoj/B8dSRuNq2EKkroA=;
-	b=kVvB8kjivthqP9ORKdjyaAhmhsElprKV1vV9wfL2zTh6W8rpU6Tt13jr9YHMUhvbsrNSEn
-	roLrYeqvm+UvzOHiLGvc+js2D9RMa3xEdf8T3NeBkVC8PXTWJ+Mvsj0d7rOCWpsMa3c5Fg
-	k9dYI83GOjrudCJXzNajr9uBTmQlW5Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791569413;
-	b=Ll+Bcb9JFTbUMXRvMAU1ZQe4PqqSS6VdH1Gx4ozQX4ap8dbg8Pc9etdD8r8hi8RviHMcGV
-	gN5OR7bPnl2IZDZFFm0f4BCnsAApATeYD/XtpkIWT7XPIJOSFpyW3umwNYFZK2AkoNwpvd
-	Hy6ne6I4rGOIJU6s3Ct6kkcmcdqp/1M=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=epLJv9WT;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=ytmLoC3zHdwZxCxWy26b8X7pqcm/Lj2djuN1AI4Dw0A=;
+	b=c1beS7GFKZlFPb0V2firf9h8mIRxL9rUvsQ/hx3WUpN0uM8/qXLf/hDjnZVB2xLxlFKC18
+	nWzND2KMQmZsRH1pxMaYszoA8rrIKaq+RQlctYusdUGbGHc88hWZ2wBUcoqRbDYU377/wp
+	9mzayXDrdh+cu7ymafeXrInaVzF0h8U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2994B42EA3;
+	by tor.source.kernel.org (Postfix) with ESMTP id 341AE60DA8;
+	Fri,  9 Oct 2026 18:10:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676291F00899;
 	Fri,  9 Oct 2026 18:10:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FE91F000FF;
-	Fri,  9 Oct 2026 18:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791569412;
-	bh=qiSoCUmsNQBqgv+Na0/FnZGGuoj/B8dSRuNq2EKkroA=;
+	s=k20260515; t=1791569432;
+	bh=ytmLoC3zHdwZxCxWy26b8X7pqcm/Lj2djuN1AI4Dw0A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=epLJv9WTwKe3AO7evq2V0hTj+mFl2PEhzz7iXe03X3tckoHrl2NPJjp0PwSl88kKJ
-	 V3eBpEJT6KURop63xVxVs0hcEZHSYtM2rWl9SLBlvOojzIHzkPAoC6E/xozeIC0RDr
-	 AR7sRxvRrS0OoHjClM1G305sw78nbBLyXW5XLd00YLTbLOujAe3ZNnWsYFKRBooa2I
-	 7Z1eOtUDoD+/TgFdiCnBVY4da0gp6/u6uLkPuQjvlgFYLCEnYJvX2azT8z+orMBTdt
-	 6kOSoTmydSKnlRfPRBhRf9HvpsLKIuqKAO+NWeB+Tfo4I8M8VE+ghj5A4uKV+5StCV
-	 TZXtGcSY3Aybg==
+	b=oqpUmEHM2z/wvmmgp2MRRX+GRvaOCWjV5ii6gbgoGkcP3lf550eL/rHRvYtLwRVRg
+	 ZJMUScuAxtIuMMdTd0/rulTohZO+IJpphLyqqqkuRExULVGQPbSlIhiHC/WxZpQ4KG
+	 fQh81tHtSR4NOHTEA4EDrNMFYFIFFbqZ2qQD9VidjqYV6Py02HvXoQcYIWihcamcRu
+	 KsyHgQuQxyNr6YkiB5k/fnqBzdl/oz22gM4MzVcUF2tjxBA/a5BznF8UgObWl3n4px
+	 ou/xRPUciNnG82Yno1GmwVHXPEBP3ceRKVW1FTIGI0NL/tr1c2S0qjp2XAwDzl03Hm
+	 vkQeHpFglq1Fw==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Fri, 09 Oct 2026 19:04:10 +0100
-Subject: [PATCH v5 16/38] mm/vma: add and use vma_[flags]_is_fixed_mapping
+Date: Fri, 09 Oct 2026 19:04:11 +0100
+Subject: [PATCH v5 17/38] scsi: sg: convert mmap hook to mmap_prepare and
+ rework
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-16-923b70125b1e@kernel.org>
+Message-Id: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-17-923b70125b1e@kernel.org>
 References: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-0-923b70125b1e@kernel.org>
 In-Reply-To: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-0-923b70125b1e@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -155,28 +156,28 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>, 
  Bert Karwatzki <spasswolf@web.de>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6606; i=ljs@kernel.org;
- h=from:subject:message-id; bh=XHbx1xk1AxlDqSLWuIPx3vl/78XIH5S7J03fK9yiFxY=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJO6sxWYds4hVNx7X+r6e+3+r7KP+MhM11g8Tdla8snn
- w2ubX92qKOUhUGMi0FWTJHl+Rfx/UEiYfM6L/i7wcxhZQIZwsDFKQAT4b7HyDCBZ7JG1TEz0U8e
- zk98zrlf4vKyNgv/0862qXhl+6tfGYYMfwWYl851OCtVXueqV3Uzri495rbvwtgWC43guvyDqR3
- F7AA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5990; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=a3PfLNgLx1GbuXFw7DoxzYfKOvfjucxXwlN8dVffozI=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJO6szuCDXk3+0XoqX8cm3eY+4PvK0fuS8crYx+uu/js
+ 12HPhw41lHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJ7N7MyNDwQny18urz1t8X
+ SthXznvXf2jRaYbrAhxn1T5bNGTOnp3GyHB6dTbfvV/zD0+YUXnj2VcG2QVaUkYOkn/fnP/7P61
+ trg8DAA==
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D6812140002
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B52BB180007
 X-Rspam-User: 
-X-Stat-Signature: 6spedqeypaexsmepetq48wxhz8oik5q9
-X-HE-Tag: 1791569412-659483
-X-HE-Meta: U2FsdGVkX19uZf8MBROkKQM+GQkLc9Qwl470+xqfNru3hX4TUUCZFbU3Ln4IOFLJa1ijlTCvZRiM0+uZd/6PoSF9biyVYerbnekT5imo4JofvnvwQdgIl6FU0epUNS5x7tzwqmOCS4SbvLHYASVPWMsNhciVUEwG4ykaFck6n6PI3GUSGvWw1eBFMUy7q43cl+x+y2+SF6PGLNnHELwP2pywqKWhMacowqkkTARrh4UeB7hz3S9nkXsZlBb38ziAYN5aBFFZ02WksvzMGA7XvmFPfSfj79xD/v2u2fGtVA06ZyE6zZpmEwzd3kpDDiB+BTO5wENR/qz2vCfdyx/hJS20vfYaadKecWRb0rjmFc3UUFNlLbG+HDX5mnF6YeoGBQm8ZOP3XAiutl0ewpnHe+DquHo+qRTQetxrpqJDCrpgBdodOJZAES4z35uSLfLWsj4grcuqEG6Ph4CQnE9WJYfmAR4/jIXqi4slaI0dF3HZZCIymfDQgzBcKwA97RSKKPvsGlaNUOjQZIwa7rGsfs7PriFByHE/4g9iqSDe2xmTwUJZk0AOWH9p3sEmNFlYYKoyL7CPQcxhLySWqjI5IpRmrConQKTq5GR+YGIfe0Q120fHngJzwcrmpkv7Ra11wLHNTedqhgfZ05M8laIto/p9b8I9LTulTb9gcKfBNcya/wCe4yWfL0NVSlPaPsFSdPZKO22sUBB6MHgVaHjLcHySOm8KelHiSkEnbxWTgbVjXGKHDZJ96gTAXKj93kAVrlMMVR/7PVcmvklYHVYoEljH3d3u9aERguGo8MFex6MkeXCr7/dLq9llCREKM1jXfh6rCVG4u0ZYpTelXIisl/gq2m8eJ8ARvc+/EGOqV7BLWHIqwHj1+tLTYnBj/ZGHjKbMyx0u7bFs0OKOWBOLf+AdaVUT5WYVi+DrGeniz8chgPlsEHRMNWgqwZuNXMyhtjc6dtxeB+0DXBFI3GP
- bKfsiUK9
- FEDdW+giWd0+ZC0OiKIHZEL9b3qGOd+fNYOyQ2pTDEZT+1C3jMqcu+OACCpGVMbx7Ycp7YrszrVqCAHyClQFSXqYe5U770QAUcPRkAFOkDtHuDhtF6C99kZpLs8TZ8C8kIxrDiYwovz3G0D4a6GXbxpD6o7iRKvDrxEWCn0FauqpLUOEOp+/vm/Y0aXLx6KxVldGWt48Zdl8gDaX5WeZ5k8llLVxU+3vYSyY9/+lszGcNSR/CHNdlHOgibhY6GK36AKSro0PxLn9tNXIvon4S8HjCQFjfVzY5KUmugkc6zpyZ/Qb3THTKAs8go5X+ekxWI1rN6AhZSQ1B7HF92Jt6NlJC8pvMqaT/dmxxTTwMYODIrdiKFSfDAid8EID+aCAdSaz0J2ZTsnm8FUFJI2ALPUxF1EsAc3aKeFS2+QrPO4rinNCEJtNd1SWSkY9Ts8UrwZjjl3GptaMFvmpQtQXjwIw2vF0sqljlxVQrof0gLUMEKZY9nUP6PUNxCiION36CuTogyCWytX9ipYy/izSM2tBUBX96XlOaVcSeHDiYd2uvHDt/HeytvfOhIM+I3fbI2Vws4N9oJXPWjxFeExjMdvXlJbmoVTXrU1Wmh8eIpN3IQLJEcL1h++8G8KFdmv4rBVChAmMalTg97AYwiiCjQ3P9zimaqPd1AkzACXPGideUOZwYp5jwSs9ELW1JJG5yBrxIjcYzuWwBJo5CClVZjxVuQrZD96r8TSSs3Rp5pa8v9cnpu5B+rMYPMG9rVPvXm5eltGUZSkUzgK3vVwujaHOarFA+h3wJpMijOKrK6BYNs9cZwtJI+wI0Se+5wYWnHROp3QwcKbsB1K2P1bjORh+z5TRnfR42WKgd4sthxTdi2o4qKfCHi2qyD/OSUDtO01AA5jMk3mSeMwG7lj3F6ONiIbFRYtdCpcfRfLEM0I9BMt0LmPcGJrOADXg1ogg55ER+Eptm2pzWu62QcrhOIOtMCoih
- XFIv9uWg
- sjcD7FXz/DjNvBEKX3RT5tFDptwXOoWwN5IznYfCSO748GHGlxbDxZa+frxjNbQnfeQIGUbWFP7YKzM1pe5wbyIdzBOoow/Un01B8ir27nsgdDLAhy6g03WSL2nEN5aW0Ih1YbQxivhX82I9WffSOjo40PV7bgTvLFcxAwSTBzZWsFVdZvz8D77Q6LuPMd1O1tpgekgxfH9aiWrzKD7ksU6cjKeKayW8W7NpumN79kWGJP88bO4yZGw/gQJm+ay3yX/6cEQA5LkN6EBzUBrp4oBUz8eIzk6uj15p5WnGu1e9qqj+nBB/54bLbVRrdPkrmYk+EucJFPtzz8xvW2NQeWhfpf44hmrdwUWmLFQCTreax3KwHUMAQV5TaIe1pg9MJEm829FaYZgT02eqklhRtl7UrSN+ns8i8EGJtKp4uPIWTPxm4oNwGAuktOwJQHF0V4IHOGfxfjtAzVgx5kkol5cPQL4d0pUGQrt7ub17KiiHEhe/TD3DaqNDBInKaGRUe33DdaXjyzv0fe/WiUBL9I5p23Lke4YnAymeqcMFtH3bB6cxDGHkY7GzZ4WDHYWkcgLjenBucoioOqABKIxeIumppymc74mM6WhiArrITSdKfVzrB0lyjmKkJbg2nl2T8hkPyMbkWRgH2QYjjNEmfwQH7PCbAFPOOioN0ktYKv21rUPqS745WtPKSppu/QldGywQB63nzaJ6XRfjgu2v1VnewUMs9EDTZV4ogjsE3Ui9D0f6zHIgvwBe+FdMftM/zEtOgQaCU4ETEMaG2NgUfM2xY8vNqm+j0KPliMdvG2+QSq76e2k5wRkednL5FGwaVxP8W2a5Y7CX83QxBG0qXBmbm6kRNk3tn4mG1NzgEqJoEZgOlA/gI+uI0OJEq8/v3q5mqc7mZgvre8g3x4D+TJf7K7KiqUQgAN0asR1ukqZlss0+4b1bNI3m3hiBBZaXR7h4GCh64excoSRFcdka1aje0QlQ1
- I1fyzbiw
- g5Rl3TPlMWpvSVrpSCAmUlqRd8vRbbFu3V1oa3VM5aJfBJ4LyH6VodL/UGVNOtf6ou924F8/gNKyeIvsf0yOYBsfPArszBBpctsaLm1xxPo0NinA14ibDlTCRVuAIUj8ilwC7PbLmzjEFBDRHGPfG71fFzFz6n7jwAni0MEsiqFmR0g/NtBHNlmDT9mu4e2w7r3yPCfSymqc1hCPOptUN6tDkVDBWZjAPdsVU2OIyBhSpWS339hn1l+Yf/3+d5CW5V+q+22VCENiNcQ/og7S4f3W9E+l13Byb3cjpKwwYfSEpy9pDbE/+j4wK2qcwS91z727lEs1v4FS9zuvz8bR5tSi+tPsoFTaqsIf6wWMqgZCyOox+W/NYhKa1XEiu2hu+OacZxT4awxrOP/TIW5GYo+u9J78fnSWXn49vXUpuBktpYGjFrmrAwcRm2p7/lTaaUv4SeoYIZL/zzilkcj4km0KPDi6+fQihlqOSEjRvS8cjIeUWNoqKuRihL3eiV8qJM0iDzUuFkWN3OBnGoxmCx9J7XgTn0nyVxEAOZVs37IeedJA2lfv3JbgPaT5jkUWkN6vbU/NS/6KsBNHD5P8/aq5C5tF/jvQPB115wXxFBamwBAX/nO/4+Lxz29GOWW4uCbWSXY7/7qL0CKGtqb3WLQVU9rCqgZfwfdA9wH3J02VANNcUhDA4IDBw8yNzFO1QnYY7cUuSgRgr8Lw5kH0nndQDnZjimbT2haqc2IP4PTfFkJc+XMuvrY1dqDMuPCqg/Enu0ayJkJKsNQrOzDrpsA1kn5QV0kEwP1baTHFiQ0IUYsywl8zjT8GYB2JDsr2KGoQ72wr3tTCKEa3WQE8J3XYy3mNw5rYr+4VMm87QyS9m3mxsSALYwYjDLDLJjnchYuGEncXbua8/uSjrlpWXQpf4sef2VZxjYBEQuXocOIkXpb5phBxjjQOcCca1V9j9tcLz4E4zJakL7OXRWQta5HCsCoFS
- ui96OBY3
- IK8N3FOAjRGzKbyj1Xb6wQcAo06+r9jkZL9hUoDItxp3KXluLf/7fs6xrXXwOGu6M2hESWPk9NsIY5WTXk0w6FdzeK7C72zks7iKzVSj0a9K5kDt/8spUWJXlwQ6/fVv6qu4aZMdDGxyfGHtzzEOadWFtjVFlI7tZTSrmuX/adWPZ8VVxg2lvvIA14vwpJxDpIUwmNVp136FR0SmIgPXUSKEuqL9G+VlLqaONN//pB01uo4qmTdmGD7+GqvG9rlPiCfGcpstPAF8qmwY65xpv1bEehLOlEZHYkGwJgREGYOHbz6hG8ZExud3abljdc9Hw43M7Zeu+oFdf+aZNqspKJYr0pUL12QAHfoZFGW53IVqwC4gpoqLewUDVAUJ2jQsIhu27YslV6rA==
+X-Stat-Signature: 5ftfjy75npuqfzb1rrt3zfm1rifgahb7
+X-HE-Tag: 1791569433-544560
+X-HE-Meta: U2FsdGVkX1/IXZyArFzU/OADZxf8JiSMBMcG+6RvTTpZ+gcTOgifHz5YDZOVI9Wm1XChRWk+QJml7rEHpHL/FdUsXBG/ISRYnD33jHl2KKfloEC0ejHVCzzkQvvcKbyuIeMACw1vf7j72LCGyvnTSyzmlzsK8TQP4QBMpwhmXT1GDWWSd2FmLsWsTuq2cLE29zTfIoVIn/x6BVtR0ZZQb4MDIi+66m2pgkl7EtDY5GlOHKp2HjxOtq3sM5CCvthyvO8MMBuD0WR2yyuflEs7Wdj3j+PiepufzcR10i7yjxh7xPpEEGfZxE1ehl33OoADLd7vsi2KzpDQsjUehl7OEsu5cD9jheuJmlfYC7tpzgrjx5prWzF8OgLcEar1UJFddQHxG/SyeN20PqLYo9C0ZqYXZ7/grJ5FzbpoQnN1SZuKuKIZ2yrwdteLuYaIgUXgtbG5iOgB1/k9/tkFdD9Zo+klOsKUoAJDmIRF7JtSK+U/Ke+2fqsukm97o02x7irqiJkLyCugKyQyBJy8TozcSMRlxKkTI1Vz3C0R6sJyP9YNv2SKnsLer+lJMokxBpLYfgWq/Q5R7LrB+H/4c7+LcKzBslUIiF8LqgTUkx+kMyQPonOsrQnppqs/E8TQjYsJ7ULuQtzCS9Iq5ZklOm9WK8UG7NIw63G5aplK4phHxEycUnnrChIFklY3t/lZ3LTaauQBB6oLlsH6tAYFI3VwzpEOyrywFl1w+KwbO6DXcITxJ4vcUIcxZ3Oexwsn12n8PuKtf1zrYr1S2TrzaUZL51lP7AHTBjlJvv5X2gN0kNvkBPkuj+/fI9xGMsbUad4JZ8M6Lbkfs7OomTZpX5pogBAs/+gx2y5flzmrtxSwsEIy1srP1iPPj61qO5T7y4NqGQnp4F4uTBdUPUDhi+pJV/KLZ2RUx2mYBpsulEABGoW1CYs6tUJcjj6GhK3cY8OvFfXAugIIVQ1O2rqawtV
+ vlpF63Yr
+ AR8RJrtZvExS+amJICvPWtWgCRsdd8icDgVZAWUaGEHLh82ORdK8uaOyLrcy/gu0zJOD21Wv0A595WOzaTZNd97A8Gx2e2rjp7pqxraiyop03GJyNdYxPvwmIHnn64dMRH4ZyibMpF8GwvZCjXr26AodViPyIQkEFjqp5ReVz09ZcQDFX9b8aBn1bN66nppNfxHOZvoFYQfRw2S6j3NoVDAqeQUOVGJ8RB2680hU8p9S7HRxac4SQkTRvZ9hWqlUyyTl9foZBner6lrhbncmA3HKFzuIXtrBi/6wPZvHbhIJ2YRTkYEffFc4Wv3bnS+HaRaswWHugqXbYurbQXP0iuqIS+CP3K2Na14FoWxE/r5zlFJCuVKUftU7hQneHDuM+KHWpeixyNe0trbbiasciGef4dj+mV920PCb/ononwb+oEqa0q+/ZQSCNTUIMc2dCJoGzQd0veIQyvkWFPVkoSfG5Vo8YRbIMJHeiVv1fK+o/ewq78rLg8d7aALiVj2/7G3ug5f6+kmO2fXqS90rWo9MmbS5GvY3mw2V7riTpTROHhVzmPHdFTXRlya94Dt44ovb/Zr2lpDz6G3QWfWoNYkPOTxoJ9dz97FR02SBVqEqMYkgK8Ni/HUUcAlWA/Zr3IrWsi8qxjBQe6yyGOuX/pis9nrchsZeKdjPf04TwQ586WyRdOZvq+P8iXPjo6JuzZSR6OPquouJVoved+MrXu2yd5W3FvvDmdmn13RjnbhRltIH59tHiBxB37HvAlOzAXgoTwezMj02v/LV+U29+7w3MrcD0L0+V/yUexQrYXH0DLeCBBE3AiTFFqtkCfyP6fO7g2VeovYRBXH6IZsJ1iPt0gJbbxPpqs8I0ZKHcGvpXZOA59onmOwhDwX8ehFH3fQz57vtfdQx1UA4n/POHrtXv7L4t+2fCOMGBCe5Re3sElcUMeAaQBKL42drwx8a0wMQ5BNScT3AgGqLDwEbl9i3wRfYp
+ AEa+NUvG
+ gIFCkVjjbjKzmrmHldnbrSBmnpl2jydUNKLEU2YspTNNyOvXq1fxPCkgBwoh3dwv7bmgdesT/vX687Z/R79QnjFWGeuvojTwf+erDzza8HCVxqGORcznfQB6ehEOV9Z9Fdf39gO3RDgUFLRX6oFNpfjmUMletLtVSbBrwvgDe6j0gt9sWc4vavFJ6EP20o6CY/7gfuWsEnc6h+jRl89R8UaiD4WaFOoCSdTyqXzc6amGLFqfhROX9LEmgbNrehM4XPYCigBFWtzQGclzC3cjxtSOZ+D4v9AsT1JHiNHf2KiHbJ/tbObuO8ScygLEbEmdm6RXJsmUkx1maNFIjfCq7l6JWWVE6sQpzXB3FKZUCT4u24Wk3L+wmghnMSDxfnJmGmGnsOLXk2iGQT/nY0LZYObX7KyDKTvfNJCTIqG0BSjtdQpxHNwzovhNRRqfB/1CZg3eSeVVukTT6Ekl7dbAu8Nf005+oPOntp0w1lqrryB4EkfUc43iAIOjvQiQiHDoBzzx3Fl9pH1luTI1q3dncwOnVjJ/ENqgxzzpk2oviP2FNw9SZmw7U41gBzc/rozI63P2c74x2nYg89PY2++8yjFdLXZD24vo2pEE5mZsEbG3KWPy9ZKFoPEmwJv0FhbOq1V6P1xslxL8hFNghKjralNWktTHOxLyHs/dpk9y/utNtLzHUSgwfi33nDghnfhC6I7gG27ykB5QDAdHPhzdeFzVeKQxL5RIodPuH8RxpxsAEyv3ThCT0VTVgEyn5+Yu4qWNVPFAeUUJMaJKuZbI8xXjVIc3GmHn9YpEKUvoPTEgiFwY9TYHx1OFB6eSozHEXgI8oGeJSDaUeNphq+rHWLhaf/a401et4vj+F1ueXD5wthlqfuO0imJeyDwECgEikRkUNZnAaDkryd4Jj9uIJ2oG+5FCv4QWxJKAgO+uw89PH86xpyJ2G0PwmYKa50QYUsKycH8h2S2GaU+VitZX4H9qJjYRd
+ KUjQEzYd
+ 6pFlVJFLo+x5h8oBqcgARAwOYlltik/qpI7/R4uX/dato9ewURUdzPOn8QwU1Cqp98TRteu/shQ8TcqO2RP3+X65jPp87KJPS+ooHe2yxgFhe16ve216tkL+U9Ub2O74gk1pGVq3fwwnkQY/3BkCyNkmRl6Keq+fY1aRSRZPkusLm6GedldMvj8vQWYUJ2AyYc9nms6ZPt9DDL82/2rISzYKeQAK1jcXHR4FpHJxbegZI8Mvtp5eUZEJx97jHJcRMEqra9JbHdgLPGlX7VfLWhBHVCa9XhSHmFWYPiWWDtGFaOl6dyIwSTpQqC6RvKs9DuKtwzNnZsVRoYyiXp9k+5V9UCN85W9yrtpj3FMLlNtzssACKeTJMtfM8l0Z7Kf/Eb53OCFZGzKb5RudnBQ735mvV5MbGGfZHHyunsASR1ansOIe28NsvzmZbe4BFgMuGdlCiZm2oQYTj8d3aG+aUYXOTH0xLEh/jE0NXhyVpmZBMNpnfVezeqwGW9Pup5dU7bLQXOudeTE6/zX2oCkpOAA045+sVPkdfWEIoLFZkZsWENeY84rwaJm/1FcbicpxB2IZZLh8KvgGpLTOwo9owl2GlFx06HOljIbSv6p3OAseOYbwyDfz6r9oZdryhwRQOQKDvM7RF9WiuWJxjzfKt6spWcwmJ5pWVT53YY0yEvz4czIHUMz0kfFqAgw5scZUP61T/pgOdwiFAOX3iX/7eSC3acB8z0W6bsz4xaCxDxQ0aSu8fu0iUem1bomG/90V7NWyC+g/m/5jn6O4my88tmy/xjSu9VBkpqJAdNueIwaxEs2HayW/41PC18llTYfHnXkOCO2ltbhf/LvoR7cqC+0FuI/2PKAtrSOwml9AkByKBAngM3DWNgF0B8OHl0CrOSnOR1VrIA++3rAWP2Pbu4P2muasXdmPj8yQVKEVo5iUK3Nv1m9HVMmK2uTsYytzuU9xoEvLOyXrG2ht/bsxg6Np2RVwd
+ M8NWBwX2
+ ++MlSdPXDYrauhXWJGpWOK+bC2SWqCs3zR+RaxM117lUyUPxw4JrWJLzKKwinjxxsmOqfX7InXdn+DgRre65OhgLmcBcV3LkUQ4xpIeAEgyAdP9TzwGfJizFMYpIP7RSlQK8xW5Id5ytu6rNRVdTbZL9RghfIvvmJoVMKg6D2TSbrb9EtXoV1AtY9ZGql7yu3xyP88xgyaV45jNRRyFLkAA1ddPRLSZPJJWVDNY+Bk8jB+7MVyNjNwAYQGTotBDWFJd9zaVHHiAapJ6HykYiiVwV0Qni2tleqeeoqxTG0r0QH3uF1OCQXR+7j+BkdnCUvptUUwN4dxo0l8TEHrEbz1wYVODt0qEvkCmm1sknQIwQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -184,186 +185,189 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This determines whether a VMA cannot be expanded or merged because what
-they mapped was determined to be a set size at mmap time.
+Move from the deprecated mmap hook to the new mmap_prepare hook.
 
-This typically refers to mappings not managed by core mm, however
-VMA_DONTEXPAND_BIT
-is not reliably set alongside VMA_PFNMAP_BIT or VMA_MIXEDMAP_BIT, so we
-must explicitly test for this for now.
+We are mapping kernel pages here, so use the discontiguous kernel mapping
+mmap action to do so.
 
-We also explicitly test for VMA_PFNMAP_BIT as VMA_DONTEXPAND_BIT may not be
-set for VMA_PFNMAP_BIT's despite the one implying the other.
+Unwind the rather confusing loop and instead map as many pages as we can at
+one time.
 
-Use this predicate in vma_flags_can_merge() and in check_prep_vma() in the
-mremap logic testing to see if mremap() can expand the VMA. The criteria
-for khugepaged and MADV_COLLAPSE eligibility in
-__thp_vma_allowable_orders() are precisely those for mergeability, so use
-vma_can_merge() there (with an expanded comment).
+Note that we do not need to pay attention to rsv_schp->k_use_sg here, as
+the pages are populated for the length of the buffer at
+rsv_schp->page_order granularity as compound pages.
 
-This obviates the need for the VM_NO_KHUGEPAGED mask, so remove it.
+The discontiguous kernel page mapping logic handles the compound pages for
+us.
 
-Hugetlb VMAs remain excluded from khugepaged as hugetlbfs always sets
-VMA_DONTEXPAND_BIT.
+sfp->mmap_called keeps the buffer stable for us. As before it is never
+cleared, so a failed mmap also leaves it set.
 
-Also update the userland VMA tests to reflect the change.
+We also remove some useless vma, vma->vm_file NULL checks - these will
+always be non-NULL if you reached the mmap hook logic.
 
-No functional change intended.
+We retain log output for consistency, but change what's output on page
+mapping to indicate that sg_discontig_get() does the work now.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+Note that we drop the VMA_IO_BIT flag for the VMA here. It was never
+necessary as we invoke alloc_pages() which gives us refcounted folios that
+are fine for GUP to access (VMA_IO_BIT would prevent that).
+
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- include/linux/mm.h              | 39 +++++++++++++++++++++++++++++++++++----
- mm/huge_memory.c                | 11 +++++++----
- mm/mremap.c                     |  5 ++---
- tools/testing/vma/include/dup.h | 16 +++++++++++++++-
- 4 files changed, 59 insertions(+), 12 deletions(-)
+ drivers/scsi/sg.c | 115 ++++++++++++++++++++++++------------------------------
+ 1 file changed, 51 insertions(+), 64 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 83953757735a..6b5f06cd174a 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -600,9 +600,6 @@ enum {
- #define VMA_REMAP_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_PFNMAP_BIT,	\
- 				     VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT)
- 
--/* This mask prevents VMA from being scanned with khugepaged */
--#define VM_NO_KHUGEPAGED (VM_SPECIAL | VM_HUGETLB)
--
- /* This mask defines which mm->def_flags a process can inherit its parent */
- #define VM_INIT_DEF_MASK	VM_NOHUGEPAGE
- 
-@@ -1647,6 +1644,40 @@ static inline bool vma_is_mm_managed(const struct vm_area_struct *vma)
- 	return vma_flags_is_mm_managed(&vma->flags);
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index 5408f002e6c0..3f9e08725602 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -1212,85 +1212,72 @@ sg_fasync(int fd, struct file *filp, int mode)
+ 	return fasync_helper(fd, filp, mode, &sfp->async_qp);
  }
  
-+/**
-+ * vma_flags_is_fixed_mapping() - Do the specified VMA flags indicate that this
-+ * is a fixed mapping that cannot be expanded or merged?
-+ * @flags: The VMA flags to test.
-+ *
-+ * Fixed mappings are those whose size is set at the point of mmap (for
-+ * instance, a mapping of a fixed range of memory established by a driver),
-+ * and thus cannot be expanded or merged.
-+ *
-+ * Returns: true if the flags indicate a fixed mapping.
-+ */
-+static inline bool vma_flags_is_fixed_mapping(const vma_flags_t *flags)
-+{
-+	/*
-+	 * VMA_PFNMAP_BIT should imply VMA_DONTEXPAND_BIT, but some callers set
-+	 * only the former.
-+	 */
-+	return vma_flags_test_any(flags, VMA_PFNMAP_BIT, VMA_DONTEXPAND_BIT);
+-static vm_fault_t
+-sg_vma_fault(struct vm_fault *vmf)
++static int sg_discontig_init(void *vm_private_data, void **private)
+ {
+-	struct vm_area_struct *vma = vmf->vma;
+-	Sg_fd *sfp;
+-	unsigned long offset, len, sa;
+-	Sg_scatter_hold *rsv_schp;
+-	int k, length;
+-
+-	if ((NULL == vma) || (!(sfp = (Sg_fd *) vma->vm_private_data)))
+-		return VM_FAULT_SIGBUS;
+-	rsv_schp = &sfp->reserve;
+-	offset = vmf->pgoff << PAGE_SHIFT;
+-	if (offset >= rsv_schp->bufflen)
+-		return VM_FAULT_SIGBUS;
+-	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sfp->parentdp,
+-				      "sg_vma_fault: offset=%lu, scatg=%d\n",
+-				      offset, rsv_schp->k_use_sg));
+-	sa = vma->vm_start;
+-	length = 1 << (PAGE_SHIFT + rsv_schp->page_order);
+-	for (k = 0; k < rsv_schp->k_use_sg && sa < vma->vm_end; k++) {
+-		len = vma->vm_end - sa;
+-		len = (len < length) ? len : length;
+-		if (offset < len) {
+-			struct page *page = rsv_schp->pages[k] + (offset >> PAGE_SHIFT);
+-			get_page(page);	/* increment page count */
+-			vmf->page = page;
+-			return 0; /* success */
+-		}
+-		sa += len;
+-		offset -= len;
++	const unsigned long req_sz = (unsigned long)*private;
++	Sg_fd *sfp = vm_private_data;
++	Sg_scatter_hold *rsv_schp = &sfp->reserve;
++	int err = 0;
++
++	mutex_lock(&sfp->f_mutex);
++	if (req_sz > rsv_schp->bufflen) {
++		err = -ENOMEM;	/* cannot map more than reserved buffer */
++		goto out;
++	}
++	sfp->mmap_called = 1; /* Prevents changes to buffer size. */
++out:
++	mutex_unlock(&sfp->f_mutex);
++	return err;
 +}
 +
-+/**
-+ * vma_is_fixed_mapping() - Is this VMA a fixed mapping that cannot be
-+ * expanded or merged?
-+ * @vma: The VMA to test.
-+ *
-+ * See vma_flags_is_fixed_mapping() for a description of this property.
-+ *
-+ * Returns: true if the VMA maps a fixed mapping.
-+ */
-+static inline bool vma_is_fixed_mapping(const struct vm_area_struct *vma)
++static int
++sg_discontig_get(struct discontig_kernel_page_state *state)
 +{
-+	return vma_flags_is_fixed_mapping(&vma->flags);
-+}
++	Sg_fd *sfp = state->vm_private_data;
++	Sg_scatter_hold *rsv_schp = &sfp->reserve;
++	const unsigned int order = rsv_schp->page_order;
++	const pgoff_t nr_pages = state->nr_pages_mapped;
 +
- /**
-  * vma_flags_can_merge() - Do the specified VMA flags permit the VMA to be
-  * merged with another?
-@@ -1668,7 +1699,7 @@ static inline bool vma_flags_can_merge(const vma_flags_t *flags)
- 	if (!vma_flags_is_mm_managed(flags))
- 		return false;
- 	/* VMA explicitly marked as being unmergeable. */
--	if (vma_flags_test(flags, VMA_DONTEXPAND_BIT))
-+	if (vma_flags_is_fixed_mapping(flags))
- 		return false;
- 
- 	return true;
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 4cd917f77f3f..87e8bf8029ab 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -212,11 +212,14 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 		return in_pf ? orders : 0;
- 
- 	/*
--	 * khugepaged special VMA and hugetlb VMA.
--	 * Must be checked after dax since some dax mappings may have
--	 * VM_MIXEDMAP set.
-+	 * khugepaged moves data from VMAs once collapsed, after they have been
-+	 * faulted in, relying on refaulting for file-backed memory.
-+	 *
-+	 * Mappings not managed by core mm cannot be reliably reconstructed from
-+	 * page faults, and fixed mappings (including hugetlb) may well be
-+	 * mm-managed - precisely the mappings which cannot be merged.
- 	 */
--	if (!in_pf && !smaps && (vm_flags & VM_NO_KHUGEPAGED))
-+	if (!in_pf && !smaps && !vma_can_merge(vma))
- 		return 0;
- 
- 	/*
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 7c368440fafe..ed19b47c2caf 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -1788,8 +1788,7 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
- 		return -EINVAL;
++	if (nr_pages >= (rsv_schp->bufflen >> PAGE_SHIFT)) {
++		discontig_kernel_map_abort(state);
++		return 0;
  	}
  
--	if ((vrm->flags & MREMAP_DONTUNMAP) &&
--	    vma_test_any(vma, VMA_DONTEXPAND_BIT, VMA_PFNMAP_BIT))
-+	if ((vrm->flags & MREMAP_DONTUNMAP) && vma_is_fixed_mapping(vma))
- 		return -EINVAL;
- 
- 	/*
-@@ -1827,7 +1826,7 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
- 	if (pgoff + (new_len >> PAGE_SHIFT) < pgoff)
- 		return -EINVAL;
- 
--	if (vma_test_any(vma, VMA_DONTEXPAND_BIT, VMA_PFNMAP_BIT))
-+	if (vma_is_fixed_mapping(vma))
- 		return -EFAULT;
- 
- 	if (!mlock_future_ok(mm, vma_test(vma, VMA_LOCKED_BIT), vrm->delta))
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 89c645a6ad60..442ea9eb098d 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -1676,6 +1676,20 @@ static inline bool vma_is_mm_managed(const struct vm_area_struct *vma)
- 	return vma_flags_is_mm_managed(&vma->flags);
+-	return VM_FAULT_SIGBUS;
++	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sfp->parentdp,
++				      "%s: offset=%lu, scatg=%d\n", __func__,
++				      nr_pages << PAGE_SHIFT, rsv_schp->k_use_sg));
++
++	discontig_kernel_map_page(state, rsv_schp->pages[nr_pages >> order]);
++	return 0;
  }
  
-+static inline bool vma_flags_is_fixed_mapping(const vma_flags_t *flags)
-+{
-+	/*
-+	 * VMA_PFNMAP_BIT should imply VMA_DONTEXPAND_BIT, but some callers set
-+	 * only the former.
-+	 */
-+	return vma_flags_test_any(flags, VMA_PFNMAP_BIT, VMA_DONTEXPAND_BIT);
-+}
-+
-+static inline bool vma_is_fixed_mapping(const struct vm_area_struct *vma)
-+{
-+	return vma_flags_is_fixed_mapping(&vma->flags);
-+}
-+
- static inline bool vma_flags_can_merge(const vma_flags_t *flags)
- {
- 	/*
-@@ -1691,7 +1705,7 @@ static inline bool vma_flags_can_merge(const vma_flags_t *flags)
- 	if (!vma_flags_is_mm_managed(flags))
- 		return false;
- 	/* VMA explicitly marked as being unmergeable. */
--	if (vma_flags_test(flags, VMA_DONTEXPAND_BIT))
-+	if (vma_flags_is_fixed_mapping(flags))
- 		return false;
+-static const struct vm_operations_struct sg_mmap_vm_ops = {
+-	.fault = sg_vma_fault,
++static const struct discontig_kernel_page_ops sg_discontig_ops = {
++	.init = sg_discontig_init,
++	.get = sg_discontig_get,
+ };
  
- 	return true;
+ static int
+-sg_mmap(struct file *filp, struct vm_area_struct *vma)
++sg_mmap_prepare(struct vm_area_desc *desc)
+ {
+-	Sg_fd *sfp;
+-	unsigned long req_sz, len, sa;
+-	Sg_scatter_hold *rsv_schp;
+-	int k, length;
+-	int ret = 0;
++	Sg_fd *sfp = desc->file->private_data;
++	const unsigned long req_sz = vma_desc_size(desc);
+ 
+-	if ((!filp) || (!vma) || (!(sfp = (Sg_fd *) filp->private_data)))
++	if (!sfp)
+ 		return -ENXIO;
+-	req_sz = vma->vm_end - vma->vm_start;
++
+ 	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sfp->parentdp,
+ 				      "sg_mmap starting, vm_start=%p, len=%d\n",
+-				      (void *) vma->vm_start, (int) req_sz));
+-	if (vma->vm_pgoff)
++				      (void *) desc->start, (int) req_sz));
++
++	if (desc->pgoff)
+ 		return -EINVAL;	/* want no offset */
+-	rsv_schp = &sfp->reserve;
+-	mutex_lock(&sfp->f_mutex);
+-	if (req_sz > rsv_schp->bufflen) {
+-		ret = -ENOMEM;	/* cannot map more than reserved buffer */
+-		goto out;
+-	}
+ 
+-	sa = vma->vm_start;
+-	length = 1 << (PAGE_SHIFT + rsv_schp->page_order);
+-	for (k = 0; k < rsv_schp->k_use_sg && sa < vma->vm_end; k++) {
+-		len = vma->vm_end - sa;
+-		len = (len < length) ? len : length;
+-		sa += len;
+-	}
++	vma_desc_set_flags(desc, VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT);
++	desc->private_data = sfp;
+ 
+-	sfp->mmap_called = 1;
+-	vm_flags_set(vma, VM_IO | VM_DONTEXPAND | VM_DONTDUMP);
+-	vma->vm_private_data = sfp;
+-	vma->vm_ops = &sg_mmap_vm_ops;
+-out:
+-	mutex_unlock(&sfp->f_mutex);
+-	return ret;
++	mmap_action_map_discontig_kernel_pages(desc, (void *)req_sz,
++					       &sg_discontig_ops);
++	return 0;
+ }
+ 
+ static void
+@@ -1415,7 +1402,7 @@ static const struct file_operations sg_fops = {
+ 	.unlocked_ioctl = sg_ioctl,
+ 	.compat_ioctl = compat_ptr_ioctl,
+ 	.open = sg_open,
+-	.mmap = sg_mmap,
++	.mmap_prepare = sg_mmap_prepare,
+ 	.release = sg_release,
+ 	.fasync = sg_fasync,
+ };
 
 -- 
 2.55.0
