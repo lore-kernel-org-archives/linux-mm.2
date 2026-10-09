@@ -4,123 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6771CCA601E
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 14:23:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FCA1CA6019
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 14:25:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21B9C6B0099; Fri,  9 Oct 2026 10:23:38 -0400 (EDT)
+	id 3F3486B009D; Fri,  9 Oct 2026 10:25:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CC326B009B; Fri,  9 Oct 2026 10:23:38 -0400 (EDT)
+	id 3A3D36B009E; Fri,  9 Oct 2026 10:25:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BB5E6B009D; Fri,  9 Oct 2026 10:23:38 -0400 (EDT)
+	id 2E1AD6B009F; Fri,  9 Oct 2026 10:25:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D2E946B0099
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:23:37 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 49C63A7E3D
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:23:37 +0000 (UTC)
-X-FDA: 85303306074.29.2733BAC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3E07E8000F
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:23:35 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RTMGPW6R;
-	spf=pass (imf02.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A35A6B009D
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:25:14 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8F15D1C3ABA
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:25:13 +0000 (UTC)
+X-FDA: 85303310106.14.AF3BB49
+Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8EBD74000A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:25:11 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=karaolidis.com header.s=protonmail3 header.b=fi35R3+t;
+	spf=pass (imf07.hostedemail.com: domain of nick@karaolidis.com designates 79.135.106.113 as permitted sender) smtp.mailfrom=nick@karaolidis.com;
+	dmarc=pass (policy=quarantine) header.from=karaolidis.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791555815;
+	s=arc-20220608; t=1791555912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zPximgPYOjlnCBCEig1+vZE6bEGZG5a82BOf6YtVY4o=;
-	b=o8bYXQlR7WDReE6IKAyJOljisKu3wS2o3+hJbf+MyHGnp/IYm18CR/2LvNCcjSVUrot2Fs
-	PMNgxpxU80XKyyxFJa4WUSJJCZf8nqv4s5ZgdwWsVME1z1QdH5huUtqTW/+QyiPkpjYfcj
-	hV4J9EPGB209iJI6bwUnwbolbteTVBY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=0ry/qEt4RcAqTFIzYK3t8eJQNo0m/0+YmGFQ1p2ujng=;
+	b=6lmkhGufzFoLC5m+NSXuzAGZTwf9A6VgDBvb2Txl4t4w0QPXM3nbZk+JT7TkU3zPqq5Q+/
+	lC4VrReF1yn6xl20snE0C4KB7DCMkvRBLhplckrWa2aEYPPUsh8FCJfHc/rb3BDrt6SoyP
+	FG7EFX2JOlw3+UxVo7QkSNkhQSy8BpU=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RTMGPW6R;
-	spf=pass (imf02.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=karaolidis.com header.s=protonmail3 header.b=fi35R3+t;
+	spf=pass (imf07.hostedemail.com: domain of nick@karaolidis.com designates 79.135.106.113 as permitted sender) smtp.mailfrom=nick@karaolidis.com;
+	dmarc=pass (policy=quarantine) header.from=karaolidis.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791555815;
-	b=fYIayiNb/B3Q/Ps0byyNeXl+VRChxdMSlvKazTx6XFTNDFwQ+eaSdVF2lyfNlodWuRb8ie
-	a7XoZNDNPg6ll+YwK9klyN3XWtMHCfvy8P7+Fy5bmQiqgI8Tm/RhR/PGXQH6y/wLrfrGBC
-	5KwtTPrh6j9RcGOzV/l9HDOZN5bi3Ak=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 66CE6443E1;
-	Fri,  9 Oct 2026 14:23:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CC31F00898;
-	Fri,  9 Oct 2026 14:23:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791555814;
-	bh=zPximgPYOjlnCBCEig1+vZE6bEGZG5a82BOf6YtVY4o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RTMGPW6Rf6jdy8aKKQGd83rIgqGX9ybuYlrgS+P/krAulZaM/2lpkjFFP2wToYlIe
-	 dGerEFluEqbmRf6AT4D8AzffOq/ct5j7B5d8a8Rsz1SNrdGIyccEfyxVa4bVwaQXC9
-	 F6QpnOYnz9rNWD537Xt+jKrNzaBnqtG+/Iqpf8WuyI515i9qLpWKCBbFpMLeDImyZu
-	 RuO4UQWVA7rwVykMRdxArVjt4GCilkbKpU7HWGRqUPoHsX4oDSjyP2S/tUIRFbNyuG
-	 IjAr9yvfN5QeubvXCvPfBkmNtqjEsIIkvgnogJnXIYfUpMD2y2DZ8TWzEq4huTpPR7
-	 rZI/KCsULASew==
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.ams.internal (Postfix) with ESMTP id E84CB198003A;
-	Fri,  9 Oct 2026 10:23:26 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Fri, 09 Oct 2026 10:23:31 -0400
-X-ME-Sender: <xms:3vjIak5OfMatuMjarmix0UGXN9ymKCh7KNBSxpIeGyRvRDbxPYUFaQ>
-    <xme:3vjIajlLi65LZnGk3miWEo-WjVfhYvQPK5SxsxT1FTkhW6pZHoYYtuHKhgoTQYG24
-    Eqcm9vDXImwPiVjahIUJQjDleP4Ph8Hhdy0-Qog36u-4kLdnxACrRg>
-X-ME-Received: <xmr:3vjIargk_6s28Rg8sHa_MatlAM745MGgF8lHvjBk9D429RWzwS2XtQEEJXk>
-X-ME-Proxy-Cause: dmFkZTGO+g2zX1FiOhy8heZwWXTAz6Uw5TzxGJTmOuPIKGRaFAZhdrZAa5U7NDL1Brz9IB
-    qzfwrM+86at4iyZba1Y1MmLORr8YwJmYmkQg/zLXkc0jHlVc8E9gxrnVvqLlQ7pOzrtq07
-    Q18eInU1fNpsV0pno0Nn2WfvNFjpIc0H/FmNRVToRXNau5ypP/DrC04ygf07Al3LlsNzqP
-    rYUg4t+AJ14euEZAud0Eqbty+KzUsFTLCCYsBe19xXI3axeQGkFauh20UKs0+0DYBXXfvc
-    UUc0Ld2G8pWFta2rG3CBnvSHOxJwb7DC5URbyyyAQgUPdjnon9NEu31HqU4S0/g4U1sBh7
-    4b6fAmlbDW0OF2ApsFt7nmRBK4DudgGVCTYx8WCa9Qthu0WDZGlcRb0PFp/pjGnlpEVddG
-    3hS2xcsa+RSzRvaGsths2eiHzNr/ULe2y5+CQVGRC9RJamEJ448EE8TKOvMJRL9mGbjyLd
-    XiV/u3Ha10+NkI0m+PxmCutsZ2tjzAsCxOlUQ3VKAd6aBbM2lJz/7UF6TZlAX8pLOO3vgd
-    10jgXY0epXeynoieydnUPC6PtH7FV3/b9mL/2IE6HHHTlqSILETiYoJYQC9kD/8EWV9FZb
-    xtOEnu1G+eMtCGPu161eqRouSKMyyb04lmLLuybaDHmEjl0hShtDiIDWIkNg
-X-ME-Proxy: <xmx:3vjIahjVsBtyc936QCJzoCo7GG3N8WYZea2VQim_Bq9sfVojVVwqgw>
-    <xmx:3vjIavV3kR7ZYZBaFT6UKjVJq1KDzi7goKo7pmS0iRFcMqMIKCpLqg>
-    <xmx:3vjIav17DzBbrYPRTwErbq6gHDEkMjcvQqQtENqeQacN8CwVB8LcOA>
-    <xmx:3vjIahRpFhGjxziaVH8O-4n2ZWNYv_9RcNNWpINFxGPRjAL-C-KWGA>
-    <xmx:3vjIasDRvBq0p7trqMof6sH5LYJwF8dj_zIxSyPSo6cqmtjjcIDHHsM2>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 9 Oct 2026 10:23:25 -0400 (EDT)
-Date: Fri, 9 Oct 2026 15:23:24 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: Re: [PATCH v5 2/3] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT
- macro
-Message-ID: <asj4dT2Q__SlKhgr@thinkstation>
-References: <20261009-fix_hpage_macro-v5-0-54378ae45add@arm.com>
- <20261009-fix_hpage_macro-v5-2-54378ae45add@arm.com>
+	t=1791555912;
+	b=X09cpyN3bNUdMf/Dj5idWYlYl4MEQkSYCxuGhaEMv0amAWBxcUfVr533EssEDMS0m9lBHx
+	kd684sQxI/SXHX0DPjJEBt7i+SFjcuaEnouaPiqhtkpd0h1mHqho/km9fY3ZTJx95YMlUU
+	vHYwRaOJjL1otf08gh4R11f8J6vLru0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=karaolidis.com;
+	s=protonmail3; t=1791555909; x=1791815109;
+	bh=0ry/qEt4RcAqTFIzYK3t8eJQNo0m/0+YmGFQ1p2ujng=;
+	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
+	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=fi35R3+teJ1yCUX4Dbv3ad1OWvzyqTT73ihrUmXQewn40TRhfezIhW1OhzCpipLj3
+	 5KtC6dNbbLpoiTLtPCehZp09NBIPvhoRPAaL+tpOEL9W0IEsD6Vjqjes/Mv/CrWkAh
+	 znMUR1iSjqwKCJxzreVY75b9DXAZqXbrWwHNLF8ztgVG7hyhExCIwsMQszmePZ3J5h
+	 eiWdwa1xtDc6yIJGVmLn3w0N8hXewm/qLKjU9JSjY/JvseZtzYX+q2rT3lJb7ZtEES
+	 vhfwlxJqcwKZmPDP3akkWGilZW2ketrY7frK+Sr3+8pWn6fwAl6y76LGWJquW26wB+
+	 FSoyhUpCStcBg==
+X-Pm-Submission-Id: 4j1Tf961fLz2SdVd
+From: Nikolaos Karaolidis <nick@karaolidis.com>
+To: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Jan Kara <jack@suse.cz>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Nikolaos Karaolidis <nick@karaolidis.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] fs: don't lose inodes that another LRU walker is isolating
+Date: Fri,  9 Oct 2026 14:24:31 +0000
+Message-ID: <20261009142431.713875-1-nick@karaolidis.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261009-fix_hpage_macro-v5-2-54378ae45add@arm.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3E07E8000F
+X-Rspamd-Queue-Id: 8EBD74000A
 X-Rspam-User: 
-X-Stat-Signature: oy36f57kwm4jip5n53ymwerrpeyhchs3
-X-HE-Tag: 1791555815-793659
-X-HE-Meta: U2FsdGVkX18uhbvrXvYxATtwn/nZzf9SMeERvb3Og0osdyB9mIhK4mIPllgFCiJp8/AYkyGk7g1nqP2IBy4a7ZLPSnbuL95ZvxB2IleLgn5Z3WKX3+5FPOFH8QPlOChN2jIdD60ChBvvIgfj7WZo0zi6E5K22RMSiuQ0pUj6BED5E1hhYv7qfW/uEFf+8MsfLA4eMLZT4Y3SLXvVTGEIHXyNFZEZa1VlEK2P64nnpZLAR1o8cTZLURancQkK4V9tibMOAyt8RpIt1ulOunT0t7rYzL4IcAsAh4imgQHQFDPmHVtetgrS6zSJyRPGiBmOkZY8qKWVlNCtxvleH/4sb7M8WHc6vEWfEf90rXRH98fBkV8Ebj4Lh+LIDdxn/cgTkJR1JEJKrI154jgFV576iYDvlmxSomuHYxTuaFp1UpzD0r5Ywu6fnXRRGHsGj6fLgPuHkT8F8ng/DZBMEwA4aidagWgdaBWr+sL7oe+0ImVAgmMMU3WyxUG64X5wfu4HapgFTgcSjNYfT5tcmE4a7vpQw77qpUiMQYf5SCRHSXp9Mk2PzpS/6wWuUCy2iDHyLfI4hPJt+paO42IApVNBaKUJyf0qM1De8CxvHT12XKtAPbcNQgfH/YB4bqaGMlZjgysTqhbggEKJmP7z+MMCNvQ3zbMEyMIkscQTsVaBG2sBcDFp+ZCCYP2LxC38uMvpgktusIZt8+4CUmKTLhHiKfL5LDydiBEWWbzmaatuXn7Qf7AGkoXYefjqAlkNo36583TTfnS4l7S+LKNlsnjQTaN0i8fKOa6q1exxhFp4anqY2w6T/P85ICcrgLxs3hOm3wmgmcYdZ/IITevM78Qxnp+W01F4u/hqWfVa30HraiQqRs9ZRFH9Cp+k9xYTTBioHZg9/wU+jcVy+njVOW5AqSQiVTQfG03st4uVTXA3juaHwKSExH1zLwKNxU2tsJDKHhaOQzkyWd03pVxmwer
- yyo/t6zZ
- aClfUwecYR7z2vcY7sLs0CzK42lFIS3qncOhDzfNrrQpyZpuq0KyQafhHAA7/jlwV+q5rmS+oyY3Fh2ruqXrcX4zlt06Syh9n02vvzcxuyYHlOEsRRNKDqRZWidYFMt6HSqkJV0l/PM777QyziNNLZZS8ojLek/FYQEVl5DY3FyiFPzMQMlLF3Z21XCE706O/xppGjj4NgStYVu3VDRxKayDzBsi1DUtcW7999CZ6XJNJmxprHJ4ufBOR8LL58D6J6IWWktrexZ4KapDqHjk7Dn/bA9qZzL4cqdF6Iy13Ua12Z747XwjgGJyIehGNYT8AGTKo6IQLuib/dgg=
+X-Stat-Signature: jqqup6nyb4exudms4hyk4yqdqcm3qdj3
+X-HE-Tag: 1791555911-560422
+X-HE-Meta: U2FsdGVkX1+RmtN7JF12haOHUYbhNcGBOQ0huVvmuEgE6D6mPuiFv4TktUtsrLWxOG1tsjXCN2TYB4x99z7WliDEMIyKZdMwrYvgmQdJdr62M8bJB9RahrZ0jVS8W2oJfP/Y5DJqScYadKmCmies9mVl3WU3scWMB09Qp/qmns3rQA/RZcVZ3/0LoX0dULlKorN6mmKFW2L2aLtMEijc8DvvkG2qM7WXcFsMTlAD5+AuP3oOk8eUCSrW7UGd+N1hjgVvxlOtWZOKL3j8Kc/lpsDsjUpcPQ2bZivfOay6tJblvYhogy60y8z3dLyhLZa8enM3RAdlq3+3+j/Mdji/834y1OgN4OKLvnqSiBNFdrg4ogLpuV5Z8UvjfXUjqG6tJEmIo0ard7S6wW5dBMd5xOWH+zaEWnEXTU5LDpm9Em2zowsDceMAKtJBUB5taNeYvD/QmgdKumeziUDeNSeEAFBbLefS4npWRkirBma74I1+fnUmjuUTLU1YrHUieyQWiw4eewfbYs0dliFXfjl4ILq6o9BftkgRZ66zKQXKnd8PO9rMyL8k/o1jC9wGy4nwDzG201fg06HmIIAVj01V+nwIv1YMqTy3/FznrPhoabx8wEvtzHRtdmvb+vPWneYY+LuWpMFOq3JaesXRwAinnfvuFoFt3k5RitNJQKacu8LZPUeWuQ5gkS/IDZkIOuI6zby64eVhcBuwB4wjmDmnrgTwE3gzTX8yMM/9BH/ujnwJsF5nl+qVpRcGkKUtnAOmHOv3vdCCpwJ5bV3XvnIjZvi9eRpx9wcLFw+CJKCwIziWwG/K/puPTVaZqKue4xYFY47aGh38lq1BU2FufG/4j4W8M53YkpFYw8Z+RIHqBSZ69ZSHMW9B4B4Psq4vRxP6czaP3vhkA4U2CwPsFnFRabUB/8FE86/OnHaMTkrmJCve7SzNpgUmYIZtRfSY6On3QopZTdGRSxzHx+SbhnV
+ Kcwm1jO7
+ okjhc25MHfO+iyNrCCLV966ua/9f0cN/Ng2kJ4HlOMT04xVnXQvuB5vtOFP6Z59UCXDXKfap6L+kBZCtHO/1mQnA4k9acLqJLkmy94cR44gWxR1TaujFP1lQoD/c9UJ5ouml14A02T0ExeFx0bPGGrdPAV6wB3lJ6fLJz2OscAoDEh00tTEtCOIkGgqrrKk+TYqv5+UicwvtMf5pBxDMAx/wUFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,23 +92,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 09, 2026 at 02:27:33AM +0100, Yeoreum Yun wrote:
-> +uint64_t pmd_pshift(void)
-> +{
-> +	if (__pmd_pshift != -1ull)
-> +		return __pmd_pshift;
-> +
-> +	if (__pmd_psize != -1ull)
-> +		__pmd_psize = pmd_psize();
+When inode_lru_isolate() finds an unused inode that still has page
+cache, it sets I_LRU_ISOLATING, drops i_lock and the list_lru lock,
+invalidates the page cache, clears the flag again and returns
+LRU_RETRY so that the restarted walk can free the inode.
 
-Sashiko pointed that this check is inverted.
+Another walker of the same list can reach the inode in that window.
+It sees a non-zero i_state and takes the inode off the LRU, as it
+would an inode that is in use. Page cache deletion requeues the inode
+once the mapping is shrinkable, so this is harmless if it happens
+before the last deletion. If it happens after, nothing puts the inode
+back: it stays in memory, unused, clean and without page cache, out
+of reach of the shrinker and of drop_caches, until it is looked up
+again or the filesystem is unmounted.
 
-> +
-> +	__pmd_pshift = (__pmd_psize > 0) ? ffsl(__pmd_psize) - 1 : 0;
-> +
-> +	return __pmd_pshift;
->  }
+Before commit 2a0629834cd8 ("vfs: Don't evict inode under the inode
+lru traversing context") the pin was an i_count reference, and the
+final iput() put the inode back on the LRU.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Skip inodes that are being isolated and leave them to the walker that
+pinned them, which restarts its walk once it has unpinned them.
+
+The window is reached by any unused inode with page cache on
+CONFIG_HIGHMEM kernels, and otherwise by inodes whose page cache is a
+single shadow entry at index 0. On an i386 HIGHMEM guest, eight
+concurrent "echo 2 > /proc/sys/vm/drop_caches" over 2000 freshly read
+one-page ext4 files leave roughly 400 of the inodes off the LRU per
+round; on x86_64, with the files' pages first evicted through
+memory.reclaim, 3 to 4 per round. With this patch, none in either case.
+
+Fixes: 2a0629834cd8 ("vfs: Don't evict inode under the inode lru traversing context")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Nikolaos Karaolidis <nick@karaolidis.com>
+---
+
+Found while working on reclaim of inodes pinned by page cache in
+ZONE_MOVABLE.
+
+Tested on master af32da41b032 (v7.3-rc6-232) in QEMU/KVM with a small
+stress program: mount an ext4 image, read 2000 one-page files, run 8
+concurrent "echo 2 > /proc/sys/vm/drop_caches", drop caches again
+single-threaded (2, then 1, then 2), and count the filesystem's inodes
+still in memory via how many the umount frees:
+
+  i386 HIGHMEM:      ~390 of 2000 lost per round without the patch
+                     (3 runs x 20 rounds), 0 with it
+  x86_64, pages evicted through memory.reclaim first (single shadow
+  entry left):       ~4 per round without, 0 with
+  x86_64 with KASAN, PROVE_LOCKING, DEBUG_VM, DEBUG_LIST:
+                     6109 lost in 50 rounds without, 0 with, no splats
+
+The reproducer is a single C file run as init; I can post it if useful.
+
+I went with skipping the inode rather than requeueing it on unpin
+(which would be closer to what the final iput() did before
+2a0629834cd8) because it avoids the remove/re-add and leaves the inode
+where the pinning walker finds it again. Happy to switch if preferred.
+
+Jan, this applies cleanly before or after "fs: Basic infrastructure for
+offloading inode reclaim" (v2 3/5); happy to rebase onto that series if
+you'd rather take it there.
+
+For stable: 6.18 and older need inode->i_state instead of
+inode_state_read(). I have only tested master.
+
+An LLM was used to check the analysis against the code, write the
+reproducer and draft the changelog; I have reviewed all of it.
+
+ fs/inode.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/fs/inode.c b/fs/inode.c
+index a9d37be390a1..74dfc379b377 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -942,6 +942,12 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
+ 	if (!spin_trylock(&inode->i_lock))
+ 		return LRU_SKIP;
+
++	/* Another walker is dropping its page cache, leave it to that one */
++	if (inode_state_read(inode) & I_LRU_ISOLATING) {
++		spin_unlock(&inode->i_lock);
++		return LRU_SKIP;
++	}
++
+ 	/*
+ 	 * Inodes can get referenced, redirtied, or repopulated while
+ 	 * they're already on the LRU, and this can make them
+
+base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
+--
+2.55.0
 
