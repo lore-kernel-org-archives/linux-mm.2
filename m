@@ -4,75 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 212C8CA6019
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 13:50:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D6ECCA6015
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 13:50:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1693C6B0093; Fri,  9 Oct 2026 09:50:08 -0400 (EDT)
+	id 7F9246B0096; Fri,  9 Oct 2026 09:50:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CC036B0095; Fri,  9 Oct 2026 09:50:08 -0400 (EDT)
+	id 783286B0099; Fri,  9 Oct 2026 09:50:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED5A06B0096; Fri,  9 Oct 2026 09:50:07 -0400 (EDT)
+	id 623126B0098; Fri,  9 Oct 2026 09:50:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C04136B0093
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 09:50:07 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 25A09A03A5
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:50:07 +0000 (UTC)
-X-FDA: 85303221654.29.33557D9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 82C48A000B
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:50:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=idEqz+PT;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A62C6B0095
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 09:50:11 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BBBC8C0390
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:50:10 +0000 (UTC)
+X-FDA: 85303221780.28.0DD5E2F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1033F20009
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:50:08 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=POPZCRVT;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791553805;
+	s=arc-20220608; t=1791553809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BvoaN2WowxsRE7K+3VcTpzbAyQjGWsLbE5vPj3uvImw=;
-	b=OQhgp2toGAFNk2fxB7iANYLG8gcmFLDYYiBeehKofuHxe6HlxW8PBLKb7VG1BI3OC1ySkY
-	VtQWyOXqFV+C14S62TCSYmob67WoBbrYRLxjA54swttJjXe0Z+mA6ZW6P98iDtZ9r6qNsF
-	kxHdCptVbzfa/W2IL/isC6bjcS0w0Yg=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=idEqz+PT;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=NGYamTbhyF8fPIDsPezdQjUGd6YDkrBY2lo9+2JMLnM=;
+	b=KxmaPHEE9hCGHCnRTq4PY87dDlJF6PPWW4sHWOtI+1zIbEZysyOpZuJMd9s/3tfHapHgCe
+	Ct7cP5z8r9t6sZBLLNuicfk3Nei6jxPOVCtlhtSBU1vTJ0oQ77SoarNbQWrytyCRHqsVUG
+	EXBRourB4OCoQtMFW7sWf2NACQSZ950=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791553805;
-	b=2pXsMMK0TcO8XoAGCioK68B1ynlcy1dhdmv/MuBKEDsA0mtQp8dF+sBOSD6iM25gbHbz8x
-	Ymf5qtrciXRLnwKnyp70qoyM3+CJWH+a1LKTy9jVF7tuX9j9X+Ye1GejtH9+M3aNW5eiwe
-	5Ee/Hvpayt7BeKcp59GfflMMSG33UEE=
+	t=1791553809;
+	b=bl45HyiPKjBXAh/xLfsklfqYvmJeCYgTF5rwFvlouejAYDBRadz3DG44FaCqNQYl2zmQ2K
+	YljowlpiHwAgF9x6/qbXqChZ3V2j/FN2771CN8xUvX7VXaGhr4u3RVZCWGUWXelqthBnVY
+	0D3OOnTMgWyYOwIpQ9i+CdpbGn7NiXk=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=POPZCRVT;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1DB0360DC1;
+	by sea.source.kernel.org (Postfix) with ESMTP id D875844011;
+	Fri,  9 Oct 2026 13:50:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4190F1F000FF;
 	Fri,  9 Oct 2026 13:50:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC9F1F00893;
-	Fri,  9 Oct 2026 13:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791553804;
-	bh=BvoaN2WowxsRE7K+3VcTpzbAyQjGWsLbE5vPj3uvImw=;
+	s=k20260515; t=1791553806;
+	bh=NGYamTbhyF8fPIDsPezdQjUGd6YDkrBY2lo9+2JMLnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=idEqz+PTh3o4YFh33xybLTkBPxha8umZ33l48sRfAN04sktAgU2LJDqKHnXMYRi1f
-	 IIbml+KWNQIQjrc/LA8nd3XDx0trVFs8viE2VRzVerLAQFlmU43WMHX02xIh9B186T
-	 vVUv09XNJXZm4F1qnK1pm7NW2Sl+XgMC6yzRMZNpSXc2NcjEgyhdu9dMGOlPBGUE8q
-	 Ttk03fI8jNRcEe3LWpEfGsaBisTUHwC5BrdnVPi0nz7oswQnp3KsHd2iLFkHjrVt8I
-	 Q+kdHQD17/hjxpnsfBIgCh7zGz/YgGmj6Y57mO7qm6ZEHRlbZpAUhOPz0sjLNxFyFV
-	 jr0EBV8h4bSRA==
+	b=POPZCRVTopIVD6QueeAp/dbl/2w0eQjppiua1Xgapd3r3bYqxeOThVbyppGzpk+Ua
+	 FdxU9T/jq3b0gprHOqC08n2+VSwbkSBFDcXCv/mm8c9ZF9Zaq1use1gra0+sx/neEK
+	 9mZuxnkBuRKpHgwau3IiHViu0chKTSycGzEVW5YYuTfNPfGXSkD5q+YON8/dPfypzD
+	 YA7884+MinfTyzde+PG6yLPhO9XUZXFjPbF6uRZiXKo+1j+jGn3CemPeBGvzRjbkJ0
+	 Fno1psmye9lcBTBlPAMduLnRV7SnTFfNAT3v7CMc+eWrQEHmxsHMSOZ8B33jWPfSCl
+	 7ld4as1g2mg4A==
 From: SJ Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: damon@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
+	Liew Rui Yan <aethernet65535@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 6.6.y v3 1/2] mm/damon/core: do non-safe region walk on kdamond_apply_schemes()
-Date: Fri,  9 Oct 2026 06:49:48 -0700
-Message-ID: <20261009134949.11507-2-sj@kernel.org>
+Subject: [PATCH 6.6.y v3 2/2] mm/damon/core: fix unconditionally skip last region
+Date: Fri,  9 Oct 2026 06:49:49 -0700
+Message-ID: <20261009134949.11507-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261009134949.11507-1-sj@kernel.org>
 References: <2026092948-moonrise-persecute-3597@gregkh>
@@ -80,13 +81,13 @@ References: <2026092948-moonrise-persecute-3597@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 82C48A000B
-X-Stat-Signature: mcjj669qgdmoh7z1q97fejtsapr479od
-X-HE-Tag: 1791553805-593282
-X-HE-Meta: U2FsdGVkX1+L+voW+ovj6dk/Vu22MRisoMqByR/SQHf6KXXCreTvwXrbPm89J0Obt4XCaler5egtfvD9LtSFhjCU0vYbtxWCmDuKR/NFjwrWKWnJCRnTp2jRewZRrBijOBsN+a/6+rTP3r6m4pyFpBmiTfYezjbKfen+fLrylEOaDKqzPW8t6D90Ae8mGk8BCBw2hiyf1qltd7AluwtY8H0Eim0ssaxNNgcgVyquoWhCPyxX/RcdoXhnKC6kKX2M8koL8mO+qLxDHYlD57m0f7ESFMErmhe0nW7ZTSuX2YI4GTmghjVQxCM1WMT0fx66tPBjuIZZ9Pj8dMOuiQALHNdovu7yPv/+iOF1BVBCMcV1mnEkLT1tpDYlvO6ot8xlbRCmxh6Ko1+GEtb7ySImjAK9tPV+mDccFdBlfgJymMOb3fW8UtNda6RHT9j5jjg2Pl+4Byr7J9QA7C04OQxvGi/VFfOXrxZqhcB/fGKGse3yYEEbevMWBLVuuvAcKvpauvOyVF8/xIlgdR7f/ZIvsVA8TMD2szona/iqFR97ZB+F289ecz1r9BjnmyErhjvSTfsyN/Im3KqjZkokKQn2J/vEeXSzhHoEdysAPM1FU5geHCGWXeWfhFQJpVP7otEu3WtvIBdYUrkgvUc9il7ejY4fnVq3TLywwm3AB6cE1vuNerONmNdMTESEw3vX14RHHbyWRAVNnO/bc4RS5j40AN7Pb1sQXiHl5nhvhNmKIigyrSV/PxB+6AiYE4DVIfTXWbL6aZ99LBokirBJIm/PtSjvZOVqyOM9aD0Sz96O57FiwW8meF3Hax1h+o6g9zaE+nffAjVYj0LjW/cJkdGRK0BmtoI5Z7HgaH52+scA5xnrQsfx6oCAUjdWfrB6JRjDrA0M1fV/frd9xd8QnIY3hoKFPokmsjbXAmdRHWyihpYU2nYMUyjmOgHTKg6fZrFLR6NbbJz3ndX3ACXF9Ep
- gCpTUua0
- +HC+ioqSCrJ4lmLnJ9MSv5G7/XLnaNHTzNDVFCe+pKTWbjAn0MUWExne+sInElDtBK+eVzwSCcV/tCWFg49xC2zrt56fiwgN1TTZoYu0+3zpLYa8iac0YBC379lKze9Eyx+L8HaQqe9EZ6lb5tfb6KbMO9SCWEw/Ky1eMdFkXhQeE657X0mRx8aJ6pFWidHRxo2DOv/3Rf0Ci5DHnT4rrpYArEfd/PPdRe0BrHPejQ9tAP+NEkL9UbyKmBdAkPctryJD94++mpFUKSQVepcwoaxXbPtKO/cAAbRubBTnsSEZE+EocmO0k6Uv9ASB6rfnWJeREp7ryAMSqupeaeAlvwV7nOA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1033F20009
+X-Stat-Signature: bsis9odyzwj1f8ep1ehk7iwgaj7ce53j
+X-HE-Tag: 1791553808-346672
+X-HE-Meta: U2FsdGVkX1+HyAkAD99piYau4SO1JRcmCwghd8VSpSgnCZa5rYa0ae9REsL15F7g9LIFJdw4jZrgLgfl3LS7aobS5DNraI7hQ/G6cjIGs4Y9eZR1HMpqiCF72QwCk8R8GlRQgufARXt/yTbvaq71hzciXolsQVuD2VHhADVakfnwG/h0QuMQ8RlX2xepBO2AXUQS6R/I1vrK7+jKcad87P/xCptkjFKgdaqhLpJX9o1JS/ePTJinAgRli6bx+3dY6W4csUK7+fTwHGkk/LhbRhbVULjSodBOW0XPafaRsI5S57VkItl4V2ZMhz+OQ/hS+5RYuo5izizVvUEX1wr4JwTIZGTzUQ7SE1J2vSF46onPAvqOgESFtx4Do+L9uf1UdHklHbUp76MJyOV3ZIblh0gVeevtA8w1eUz132b6QW2QosjO3l8zRAdkbOvURTh4ej2iSqZq7uXT3E85vRBCyv4I2aN/WuwjekLjYswk9kf/c9Pqzi52tj6E4D12p/VDPChAV7AYeXaRXxVzwbfML6Ln+eqQauFEjgTySr2FKf/KtcUbLP+a457EqqsPZQDoe+AT7tnGSZN3dGQI6DXsgGISPnRcmDGNk3L+vdo8QxEUbaT46nMFif2mI/hh9kRJPh7jx8bbq4Dgezns1/jW3HFahroWPsG1IY3to6pMH/puvipgxxJIS73HLq61uOGf6kS92NwAwHA+sIlvt3S5PsnDgCWM4o8HVIIrpgKGurIlf8EtvmZCilsUiPvpasuGKDf2p1G2rnkuJqDnCdFI6erttHxNCNiB6IJCP3wVeznIVHCFpBJPbaeGPd+t2JjH35s8KtiG99fvQLRAQe4/+aqqql4o1jx3aSWPF6UIzOL5TfjhSa5C1/+vT+anNxLJZ4IAGcc7sIQDX+ZhuyGZpT0koTB7TLg/7ipgrnHYcxRJ6SNH6NPK3YXT1I1liAR/t1463garEXqvmhpZ39T
+ dKCgigzs
+ 9UZmZLVo5lnF00U9lmWxS9gYWFrtwsv0g63BDE1fgVn9DrX7TNbhnmGoPftc5dHJ4pa/4OFFYBB7wFFcsbRN57fXXn1DVNofWtGSoEROU7oc9VXpLD8VqpsN8XgrjosVaX8r6bxIQlsIVBdjZtoELcQnSa0IgGWpmuxlk+pPIZM7rJnWwdvI9/MYIdLgbSdvQXPQkzAo8jPiCMhmKcbhYhzu1vyw8ffJ8VYynDzBEus7axQ03wbhCMRHBP2C7HBqJidBH1tI0wrr3u5jDjSuw5FCxZfb0NCk8Msj1tTF+lRDPH08kUGBVDF8jRg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,101 +95,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: SeongJae Park <sj@kernel.org>
+From: Liew Rui Yan <aethernet65535@gmail.com>
 
-kdamond_apply_schemes() is using damon_for_each_region_safe(), which is
-safe for deallocation of the region inside the loop.  However, the loop
-internal logic does not deallocate regions.  Hence it is only wasting the
-next pointer.  Also, it causes a problem.
+Once quota set, the charge_{target,addr}_from unconditionally skips and
+resets at the last region of the tracked target, so the last region can be
+skipped even when it has not been processed.
 
-When an address filter is applied, and there is a region that intersects
-with the filter, the filter splits the region on the filter boundary.  The
-intention is to let DAMOS apply action to only filtered-in address ranges.
-However, it is using damon_for_each_region_safe(), which sets the next
-region before the execution of the iteration.  Hence, the region that
-split and now will be next to the previous region, is simply ignored.  As
-a result, DAMOS applies the action to target regions bit slower than
-expected, when the address filter is used.  Shouldn't be a big problem but
-definitely better to be fixed.  damos_skip_charged_region() was working
-around the issue using a double pointer hack.
+Example:
 
-Use damon_for_each_region(), which is safe for this use case.  And drop
-the work around in damos_skip_charged_region().
+    1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
+    2. Quota is configured to process only 100 bytes per window.
+    3. Window 1: Processes R1 (0-100).  Quota is full.  charge_{target,
+       addr}_from is saved at (Target, 100).
+    4. Window 2: The loop reaches R2.  Because R2 is
+       damon_last_region(t), the old code unconditionally returns true,
+       skipping R2 entirely and resetting the charge_{target,addr}_from.
 
-Link: https://lkml.kernel.org/r/20260227170623.95384-3-sj@kernel.org
-Signed-off-by: SeongJae Park <sj@kernel.org>
+    Result: R2 is permanently skipped even though it has never been
+    processed.
+
+However, it is important to note that this is a very minor issue.  This is
+because it is triggered only when the previous window saved/kept
+charge_{target,addr}_from, and in the next window, all regions except the
+last region were skipped by damos_skip_charged_region().
+
+Fix this by only resetting the charge_{target,addr}_from when last region
+is reached, only skipping when it is applied or cannot split.
+
+Link: https://lore.kernel.org/20260908134739.96919-1-sj@kernel.org
+Fixes: 50585192bc2e ("mm/damon/schemes: skip already charged targets and regions")
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+Reviewed-by: SJ Park <sj@kernel.org>
+Signed-off-by: SJ Park <sj@kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 1745ccbd2907db2bdaa843e4abccde4fdaccbe5d)
+Cc: <stable@vger.kernel.org> # v5.16.x
+(cherry picked from commit b3723b596b548c837a766aae3553c14a7b15af2b)
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ mm/damon/core.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index fe91b296f4c6..c86cac855b9b 100644
+index c86cac855b9b..c459eae4bbae 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -871,16 +871,17 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_target *t,
-  * This function checks if a given region should be skipped or not for the
-  * reason.  If only the starting part of the region has previously charged,
-  * this function splits the region into two so that the second one covers the
-- * area that not charged in the previous charge widnow and saves the second
-- * region in *rp and returns false, so that the caller can apply DAMON action
-- * to the second one.
-+ * area that not charged in the previous charge widnow, and return true.  The
-+ * caller can see the second one on the next iteration of the region walk.
-+ * Note that this means the caller should use damon_for_each_region() instead
-+ * of damon_for_each_region_safe().  If damon_for_each_region_safe() is used,
-+ * the second region will just be ignored.
-  *
-- * Return: true if the region should be entirely skipped, false otherwise.
-+ * Return: true if the region should be skipped, false otherwise.
-  */
- static bool damos_skip_charged_region(struct damon_target *t,
--		struct damon_region **rp, struct damos *s)
-+		struct damon_region *r, struct damos *s)
+@@ -884,36 +884,39 @@ static bool damos_skip_charged_region(struct damon_target *t,
  {
--	struct damon_region *r = *rp;
  	struct damos_quota *quota = &s->quota;
  	unsigned long sz_to_skip;
++	bool skip = false;
  
-@@ -907,8 +908,7 @@ static bool damos_skip_charged_region(struct damon_target *t,
+ 	/* Skip previously charged regions */
+ 	if (quota->charge_target_from) {
+ 		if (t != quota->charge_target_from)
+ 			return true;
+-		if (r == damon_last_region(t)) {
+-			quota->charge_target_from = NULL;
+-			quota->charge_addr_from = 0;
+-			return true;
+-		}
+ 		if (quota->charge_addr_from &&
+-				r->ar.end <= quota->charge_addr_from)
+-			return true;
++				r->ar.end <= quota->charge_addr_from) {
++			skip = true;
++			goto out;
++		}
+ 
+ 		if (quota->charge_addr_from && r->ar.start <
+ 				quota->charge_addr_from) {
+ 			sz_to_skip = ALIGN_DOWN(quota->charge_addr_from -
+ 					r->ar.start, DAMON_MIN_REGION);
+ 			if (!sz_to_skip) {
+-				if (damon_sz_region(r) <= DAMON_MIN_REGION)
+-					return true;
++				if (damon_sz_region(r) <= DAMON_MIN_REGION) {
++					skip = true;
++					goto out;
++				}
  				sz_to_skip = DAMON_MIN_REGION;
  			}
  			damon_split_region_at(t, r, sz_to_skip);
--			r = damon_next_region(r);
--			*rp = r;
-+			return true;
+-			return true;
++			skip = true;
  		}
++	}
++out:
++	if (r == damon_last_region(t)) {
  		quota->charge_target_from = NULL;
  		quota->charge_addr_from = 0;
-@@ -1045,7 +1045,7 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
- 		if (quota->esz && quota->charged_sz >= quota->esz)
- 			continue;
- 
--		if (damos_skip_charged_region(t, &r, s))
-+		if (damos_skip_charged_region(t, r, s))
- 			continue;
- 
- 		if (!damos_valid_target(c, t, r, s))
-@@ -1134,7 +1134,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- static void kdamond_apply_schemes(struct damon_ctx *c)
- {
- 	struct damon_target *t;
--	struct damon_region *r, *next_r;
-+	struct damon_region *r;
- 	struct damos *s;
- 	unsigned long sample_interval = c->attrs.sample_interval ?
- 		c->attrs.sample_interval : 1;
-@@ -1156,7 +1156,7 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
- 		return;
- 
- 	damon_for_each_target(t, c) {
--		damon_for_each_region_safe(r, next_r, t)
-+		damon_for_each_region(r, t)
- 			damon_do_apply_schemes(c, t, r);
  	}
+-	return false;
++	return skip;
+ }
  
+ static void damos_update_stat(struct damos *s,
 -- 
 2.47.3
 
