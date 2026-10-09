@@ -4,118 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91060CA9EBB
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 20:31:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B470CA9EBB
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 20:33:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E89656B009B; Fri,  9 Oct 2026 16:30:56 -0400 (EDT)
+	id 0AC176B0092; Fri,  9 Oct 2026 16:33:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E39EA6B009D; Fri,  9 Oct 2026 16:30:56 -0400 (EDT)
+	id 05D8A6B00A0; Fri,  9 Oct 2026 16:33:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D29306B009E; Fri,  9 Oct 2026 16:30:56 -0400 (EDT)
+	id E8D9E6B00A1; Fri,  9 Oct 2026 16:33:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A70946B009B
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:30:56 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id A9BBF6B0092
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:33:36 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 308CBA8035
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:30:56 +0000 (UTC)
-X-FDA: 85304231712.17.C5E17D5
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EF6EE80011
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:30:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZLNlV5rG;
-	spf=pass (imf02.hostedemail.com: domain of ehab.ababneh@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=ehab.ababneh@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3D7C880501
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:33:36 +0000 (UTC)
+X-FDA: 85304238432.17.F176466
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6AC0740002
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:33:34 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P9fDb5c8;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791577854;
-	b=q49mORPGFV50zTyecwHbek0TK0Np44HO3hNDuQrnnAhhlCYOPPkydhJNl2in57iW0Ekzm9
-	9lAPny0nwTHD5us45qxnYier+zfgI9ARWseOSW+qepCicKoe7QhPnxyO045EzUexTQ47iu
-	NS25jjijaoL5/Kd5Ddz0LOlKodCIpRU=
+	t=1791578014;
+	b=opwa9w68eHVLA7S0q2X34iq/HwH2+k3tMxkSxbz/xqgs2VJ7z3R+mQmNyhddjMJgp1loMP
+	qE/HDwxuvlbtxWf5dPGXGh8LB0BtOTs/81hXYKgvWqhX4HFUUBpuB04uLMqUVwi4perLf5
+	mApSMlEYeWNQ+N8hbT+Tmim6i7UwcGw=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZLNlV5rG;
-	spf=pass (imf02.hostedemail.com: domain of ehab.ababneh@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=ehab.ababneh@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P9fDb5c8;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791577854;
+	s=arc-20220608; t=1791578014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WODW0p6GsbEKy/nakv5plADd7FbhJuhpE8HmmcgmUp8=;
-	b=kxMjm8TQyutEUCkm1QQY/ChpekD3afM/SMWw0JIKeTEm6ieTYvGFfWL/kDjRPnujHn0CpN
-	RMLYTE1GLtIT6+Enlm8C753wWXjLRWxFMMGmuuhfVxf7INfi9MydHgAxUtl2HeoMonGyrl
-	kCXl+vo6weoDPIe4S1n+50KFNrFX//k=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791577854; x=1823113854;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=2saYmihXk4D+WDUzsfdgdw4WIv25gjM4R9HleabuRsc=;
-  b=ZLNlV5rGLPP0uLdw1GVBJDr8012WWdoryucx4Ezkzj/tJmCM/X9T75GD
-   4Tch7kVz04F3sZEo3Rf3weAL/dKDA7spaEIowqINLQXg2kBGRe7apSbpe
-   lrI9iTSEviFkCF54rmk0zhJ1iG1sv1TOKbMkLaYCO1RouHRvgXSjHGjwv
-   l9dH51EahEKMpvCwj/OpG/QNFAd6wJgRxxVV9krXVJfw+GGNfR/QJ0SZE
-   aIJQvwQYQ08VObbST95xAtn8Znlr9dEJjxyDCvHc+7pvdXY9P9JORZgMJ
-   2KiPwfe+0pNEm8RakTKQubTpqrTYJECbjtG95pQnpfjBVqTRz4futQsYU
-   g==;
-X-CSE-ConnectionGUID: MEibHognT4SiY+L/KFNvng==
-X-CSE-MsgGUID: jMDYtj7YR5SlWLe07waxAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="284606"
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="284606"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 13:30:53 -0700
-X-CSE-ConnectionGUID: MrsSyLoKRm2Bl/uDAFMiUg==
-X-CSE-MsgGUID: VtdBHi3UQluX76iKLi18gg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="2193215"
-Received: from jf.intel.com ([10.165.154.102])
-  by fmviesa012.fm.intel.com with ESMTP; 09 Oct 2026 13:30:52 -0700
-From: Ehab Ababneh <ehab.ababneh@intel.com>
-To: ziy@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: buddy.lumpkin@oracle.com,
-	akpm@linux-foundation.org,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	Ehab Ababneh <ehab.ababneh@intel.com>
-Subject: [RFC PATCH v2 5/5] mm/vmscan: scale hopeless threshold for kswapd workers
-Date: Fri,  9 Oct 2026 13:33:04 -0700
-Message-ID: <ee792198db686d202c311e05c61cf5f45fcd8d86.1791577417.git.ehab.ababneh@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1791577417.git.ehab.ababneh@intel.com>
-References: <SJ1PR11MB6105E073723CFEEE8C8EDBF48C832@SJ1PR11MB6105.namprd11.prod.outlook.com> <cover.1791577417.git.ehab.ababneh@intel.com>
+	bh=aWnreVv1JvFvXL8LlcobuwrybBro3mW0bQFXS2LDkB4=;
+	b=xE2nf+VkkJB9oNvCShHWKe1J5REK4QCPvI3O5W7F1dOniQo99jczYT6pCMYp+8s1oiZ7Cb
+	yeK2MdszFAlGHwA5JGtOOERzecbS+Xlbqp8ZbVsE6e5Pc2Ct1LCfYSpjQNHxxvIu361pg2
+	StL0cNHYHpxz4yGSq/XUTTmYjgHkUUU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7DA9943CF0;
+	Fri,  9 Oct 2026 20:33:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283441F000FF;
+	Fri,  9 Oct 2026 20:33:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791578013;
+	bh=aWnreVv1JvFvXL8LlcobuwrybBro3mW0bQFXS2LDkB4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=P9fDb5c8ZUCK3G53nUPYeOnWZCMIcbM8vk2VHvX+l5bTeZrPxUZYFohbmHv1zWTmk
+	 rX8S/tqjSEJygh17j0tdYOZL6sixizg8ly6+jfDc30Uei5aM7j/KKapi783xnm8Nyf
+	 dfWajST1ImDGiI62Q01/eIjJlTWpkUvQeye8+60Pktoi86SouECmyeL5hDKVb5QMni
+	 M/rHUeeuSao6t1O8LZP5dxIhkBc9fDi7ufELFg+EqUJ4BBZqwl/7Du0VnLsI4o/bB+
+	 3ckEdI09l3Td6rLBM8liiWkSc2kS05mnBiW9shA6tF5qqGJYMGDqXhVwoYRYfOW7+F
+	 wDhJVM9gZ+qRg==
+Message-ID: <b8769c67-1683-4d84-94c9-916c305dafc0@kernel.org>
+Date: Fri, 9 Oct 2026 22:33:23 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kjn31tsxikwxc3iytxn7wscyy7zspzmf
-X-Rspamd-Queue-Id: EF6EE80011
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] x86/mm: fix missing pgtable destructor for vmemmap
+ tables
+To: Muchun Song <songmuchun@bytedance.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, stable@vger.kernel.org, osalvador@suse.de,
+ dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, catalin.marinas@arm.com, will@kernel.org,
+ mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, pjw@kernel.org,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+ linux-riscv@lists.infradead.org, agordeev@linux.ibm.com,
+ kevin.brodsky@arm.com, bjorn@rivosinc.com, apopple@nvidia.com,
+ linux-kernel@vger.kernel.org, muchun.song@linux.dev
+References: <20261008073021.2512665-1-songmuchun@bytedance.com>
+ <20261008073021.2512665-2-songmuchun@bytedance.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261008073021.2512665-2-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: qi7rfpccrzryyzxcfedbzujjyxrdbyun
+X-Rspamd-Queue-Id: 6AC0740002
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1791577853-907875
-X-HE-Meta: U2FsdGVkX18Ev9HDkbejXInfEvGeAIfvBOsq9Jh99XjoJyj9SG4SZTRMD3wXOgjN+d4zFFtrM9D4lGE+oIjRFBuBsLc9aSOZeE+QdLNAojLrtrc9PghxUIYEcqRbv7U3R3VtrchVAvn8TBeRiDCiR/XkuFJB+ZXNN6Uept9/CAyJ6D9S5BhIPSBELINGUajMjEX8R8PR8lV1iznm5qZuGNIefd3rJrXH9jr2SNnBaa4Hs0Xyx9PXgr/v+J5EGS4WGXZa3kiTLofu2JWAIiqJv9YHEueetKKStFHJOWye6xhXP62gUg5ZcgeajLx+GtVZtBo6iHYfHYBYGgLVPGisnZRR0R/DkjyCaXzxrGmkBlLIaikxgLQpIBIgsOKOJfsne7YS0tndwej+oT9fM71G5TuaxSL8hF+0TWw49Dn/Rp7WYZQxbGK6KLQm96QRkTst4znn0azfX64Eu7iFmYDFJuVd3zny31ooffQEkV1kFE990UoJoLEYK5ZxVcrxEdh+J1+4+8GbPnLCT4/08phB4lyD3QXcEQxd4b7/9vwh3yM/UPWUmIJ166SECENEfOUFfe7va5wunzuo4psfSKprZejAVH92BjpoX6A3hJKkAmYi+/rGmZeQ5lgU92q9tScyxaJ9M/MM7JzI2Dnkr5oVY2RJL40Ud8VxYQd84stlERLOTbujBcjEcDbvwJimV0lGMDzI1rMCXkh111APAUQ0QPYP28aZOXyYESRHWR1c4ukIuQCQ2pjrRCYLOfhVUo/PNf3rstQTrZ3+65Dkive4zWInNnNLO2YDPC7Rn5lOn1Y7jvqdcNQFnNe3x4ZHASRhrfXhM4ii8MYN14l7Fnl56SibuCotkeVYK8oTwj8+OhZVG+/KolgahR1o94u2+Po8ySU1HpuTvDtgFIvTR2bsIWEBq7FnwXdw/Ym+bHHk5uYDU9dyp0PvCpR15yeOqjQMVsqtHBrVNva076COOUC
- 4SxqF5EJ
- PMgzNvhEk3AbdQJ02Vb/xFkHcyOKWkZfqwtkB1Z7/Mnk0i8SZ9C4cbDmYAEfY0COYb8QTPMfKNEoMpJNOprIoPQs8hEMSMuYx4wKMwqC/1ZIs06j1onXQKQCan6RfjbyrMCkOaWDyoDmaWzYg/5W9DBLszNROWn5a99dnaov/tQuNM1mSg/PG/rf+Lw==
+X-HE-Tag: 1791578014-33440
+X-HE-Meta: U2FsdGVkX1/k0uJymDQr8Z1oXTdWLrB6H0UToLEVEYEpeeaDwmKmazaFpREGwwbbqZIPNsIhZayOoPLkY42BLqo4ONyHrN4+aGrLJjqECLPjcR6InSPTf9B2amixh5LrO+hXHFvwg0IEZLh7R0UqaGZOAv2hee+MRzudbD7zf9lwvNV//7Y2uU4bFN5k8T4U3gFpPSzbiZiJps6J+vEv81Y52NArgY+CkyXhaaE6jteVVl5gVp3yDnnkNWKoYhAbCwbmOSHmCxBp7lfxCaxGQwLdIrtyzor0Uisa+F5u/KhlryNS3+IsyYVkDX6mxA6bpkgxTKchL9Xn/T7yZgXfvcgivZdJHzl3yTld1HYiFxBrOG3N0eOkDoKUfcyJe41eAymn2ibASOBfNPWew1WC8R4QsuynMwjZ7KPlIqYQAnJOijw9BAz7LNP4/PAgAewai+28k//MKVdXdhMLfoUK/Hq8nTmuuVsytBncwqJf1pgAUgls1/evDJo7KoOkujO0WEnG095Uhp5WwiF8mtV9kWwFtG8bWvkOovMIJZH7D54FQ2cfF7+QdqPLB82pOq78v/UGmxXowkwjcN2HoFD8mfwyEVqM9wf2pF7ESMfhg33SVUWJGwiqWLbGkSroyHhNiTnZqF9ZpN+HPQPfFaa7VsPqyrqJwBF+g5QmJti2WB2ApNHfO1PLWAT/btmPpQEffzjmCJN9DsHpPF8XsEfVAgVkccRkYWbbV53XfiJa/wOjCBxFshfPA38/I+bjRkghlEuDTjCHE8vzu1Ou1Z+GHGIXJHNrpKqDagLHqNcO/OerbaseaAdbkJzZEdAP6nQwmgWx2aFd1RlehMdtEfr880fPtipGd9F+BtAeQBmDOU/Wy8y7y5MNCskKWxlXqlnQ/Bbk6+rYp6sAsHR6yOjU4f6qnYGbXnb+mFo53ZLH8WLMqRYNrnY1uacNHs91XZ5LKHzBrvLFzx9jMMpgix/
+ CIuIMoeV
+ 5EzBJzXRA8n1bunIR4Ef0cOX+V/DryBzL/Ia7+ode9jdXGpvWuPVdZoJMGzB+EuUXKHaBXXcXjixxY4bsVhETJj9/osXqqiEs6I+DxQcVuZ+0fIwG0zmkiNzZpfLnrXH63Hx6M5hVQfGTypJOUJz0ZduhOmWeQwGRwK7yPdWV8Q5/x8BZl0H1w8Ij77wkbGc44kg/0ToYfE9yN0OHqbGmSG8g2vs8hl9uz0kNe2KdKC3/QL1f362J/xNI6O4txKt1n1dIZeJscwn5Prilticr0K3uxDXvjAgGajcKIou/BvxuESB+1TLAjuAmDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,34 +146,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The per-node failure counter advances once per worker balance pass
-that makes no reclaim progress. With multiple kswapd workers, it can
-reach MAX_RECLAIM_RETRIES while others are still reclaiming, marking
-the node hopeless prematurely.
+On 10/8/26 09:30, Muchun Song wrote:
+> Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
+> pte_alloc_one_kernel() runs the page-table constructor for kernel PTE
+> tables.
+> 
+> HugeTLB vmemmap optimization uses pte_alloc_one_kernel() when splitting
+> a PMD. Restoring the vmemmap backing pages does not collapse the PTE
+> table, so a later memory hot-remove eventually frees that table through
+> free_pagetable(). That path currently calls pagetable_free() directly
+> without decrementing NR_PAGETABLE.
+> 
+> Use PageTable() to identify constructor-backed tables and run the
+> matching destructor before freeing them. Keep reserved and
+> constructor-free tables on their existing paths. This also prepares
+> vmemmap teardown for generic runtime allocations through the normal
+> pgalloc helpers.
+> 
+> Fixes: 49f599666420 ("mm: call ctor/dtor for kernel PTEs")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>  arch/x86/mm/init_64.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index 70e682180291..a3ea627157ab 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -1003,6 +1003,8 @@ static void __meminit free_pagetable(struct page *page)
+>  {
+>  	if (PageReserved(page))
+>  		free_reserved_page(page);
+> +	else if (PageTable(page))
+> +		pagetable_dtor_free(page_ptdesc(page));
+>  	else
+>  		pagetable_free(page_ptdesc(page));
+>  }
 
-Scale the threshold by the active kswapd worker count so each worker
-keeps the existing retry budget.
+pagetable_free() will do ptdesc_test_kernel(pt) -> pagetable_free_kernel(pt) ->
+pagetable_dtor_free().
 
-Signed-off-by: Ehab Ababneh <ehab.ababneh@intel.com>
----
- mm/vmscan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 9e051aac2203..61d46a376eb9 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -7940,7 +7940,8 @@ void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
- 
- bool kswapd_test_hopeless(pg_data_t *pgdat)
- {
--	return atomic_read(&pgdat->kswapd_failures) >= MAX_RECLAIM_RETRIES;
-+	return atomic_read(&pgdat->kswapd_failures) >=
-+		MAX_RECLAIM_RETRIES * READ_ONCE(current_kswapds_per_node);
- }
- 
- #ifdef CONFIG_HIBERNATION
+IIUC, pte_alloc_one_kernel() will set ptdesc_set_kernel(ptdesc);
+
 -- 
-2.43.0
+Cheers,
 
+David
 
