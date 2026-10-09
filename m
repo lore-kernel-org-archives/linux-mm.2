@@ -4,108 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA74DCA6015
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 06:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFC8BCA5FED
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 06:34:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBD636B0095; Fri,  9 Oct 2026 02:27:03 -0400 (EDT)
+	id ABBAE6B008A; Fri,  9 Oct 2026 02:34:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B47996B0096; Fri,  9 Oct 2026 02:27:03 -0400 (EDT)
+	id A6C946B0093; Fri,  9 Oct 2026 02:34:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A10226B0098; Fri,  9 Oct 2026 02:27:03 -0400 (EDT)
+	id 9834D6B0098; Fri,  9 Oct 2026 02:34:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C76D6B0095
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 02:27:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E1FB61C292E
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:27:02 +0000 (UTC)
-X-FDA: 85302105084.30.AC7CFF5
-Received: from mta1.migadu.com (out-191.mta1.migadu.com [95.215.58.191])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2DB21C0002
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:26:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="LMklH/zs";
-	spf=pass (imf22.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.191 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791527221;
-	b=7Tgs+1/vlCvMzAOCYRNHdlLSim7NgP0QNpokyDGfEWc/0Gvj4/SD5t+zRxhA55S1f1Vc2v
-	2FVq+Wj4qaxP4yuhmhuI4fDTo1qWpw9+C5LHOMpmzloTFwMJVlcyeYSSywA6qWvEhKXyXD
-	j1ZD6YouGC5hoU0lkwbP+CJelAVHSWs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="LMklH/zs";
-	spf=pass (imf22.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.191 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791527221;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 609E06B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 02:34:56 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D17FE80286
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:34:55 +0000 (UTC)
+X-FDA: 85302124950.04.24A7E79
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 003081A0004
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:34:53 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=a7pgdIw6;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791527694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=apcmRrGzK3XVBQMYfRJ0fuA0WTOWax2NDYRN1z9fqzA=;
-	b=1XwzSlXeL3iosxq6I5x+tqvmbmVKAcdzJgCHD9vgZLu44HmnWWTek//znjyb2Ye2+mQPWg
-	S7algUWlOek3mKieEJDPB0nl4Ggzo5x9GLHloKQ1UlapZj6gDevkKfEzDAm2cH7SOQnbxG
-	WMPsk4QKTuMPGujpPK/dUPxPVxY87bc=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=4J2Oujq0h9Tdxh5Fs82Gko1VDMQdbho/Ty/hsMPCfKU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791527217; v=1; x=1792132017;
- b=LMklH/zs2AewPti66CHbdlRmVAfSRS9XoIxpBqCNyNjEm0KeJhGzLORrXNop/6mC9xmqkFYD
- WeTydWE+U/YYzx4aMIOVjASDXFg4jX5hYj0ZS+4j3FLwRQ/kOzqjleyuBVewuxxJ0Q+y0wwwyi0
- O1VPy1bn91hpCpuY8buxvy1M=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 04d29327fff06515;
-	Fri, 09 Oct 2026 06:26:57 +0000
-X-Mizu-Trace-ID: 04d29327fff06515
-X-Migadu-Flow: FLOW_OUT
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Roman Gushchin <roman.gushchin@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Shuah Khan <shuah@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH bpf-next v4] selftests/bpf: Add bpf_proactive_reclaim test
-Date: Fri,  9 Oct 2026 14:26:37 +0800
-Message-ID: <20261009062637.176005-1-hui.zhu@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=g/FPgtZeMX9AGe2HbHCGRW/KD//MP8quxuz9bO2dJ3o=;
+	b=zGN/5jCtBvnAPEn7fXpUhMWuH5/iqpLSUHL5BPcaTZDnDEXJYzCUU32ks5Wn27BlYyJp7l
+	+CzVvHw5Int5CGJhRl5OBi0bDrFhTLAsSqQA8FY1kmtg5tuPc/Y+ZQr4hN8QW4HmcKofyL
+	dOIwvtA5CJUTKrYx0ZVtIzd+kQ4XjJI=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=a7pgdIw6;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791527694;
+	b=QnT7WHGmezAwBjabPMcV3C3JaP6/jZitTQfXf5pWms0hscu7fSV91P6epncK/8tbQGWmJJ
+	SYekDVrSINf7574N17YuOorampV6DyR4keKSDEtirmkxN+HaTCDnmPhhE3WoB6c6MvI45a
+	cuccm3+NllC/+nk5SyANC829YDGCpGQ=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a0213948d3so23289935e9.2
+        for <linux-mm@kvack.org>; Thu, 08 Oct 2026 23:34:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791527692; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AXlq6q2JNp9A9w8SOygcLv1W2wmVMbCZ1PbZGRrvUdKDojc+k4hcy2JQtsALUs+Qae
+         cMMReqYdFG7XvCJl8sNGCUL4FzvIlPhjlgf5vBtncHDlGGCgbDgjEAZMLYSrkM+JT3tI
+         xh1k2pKjEkjNoL34W0GhVNAntXluiiXf6e0ChplV1ZDtIdJrKVBCsEYbct2LD9+BQMG5
+         ZVViQzl2cUMOK+HO8lkUVZd2b12CYp/QrnMcjYe2r084wMWyvWu2MY/AC+i8YDTi10hg
+         qE5boJKKm+eoLKkWujdUxOx1fpESkaVbqC/pMRU8SSp2W5NwhYyYOrCHy8sO217RMOLL
+         A3lQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=g/FPgtZeMX9AGe2HbHCGRW/KD//MP8quxuz9bO2dJ3o=;
+        fh=bcEPE3CR+OddF51KqqJLDSZk7qQvv/ijtX/Tm5dhCBg=;
+        b=fYdZka0LGs6dcdoVFD/RkkII5/VjKEkY6MnPTtX4lqbFwnHaliJivSY4ehxd/eLGZq
+         gmPNzIec5R/4DChDqPT/D0WeqInXnjCiWmQn+WPjOOJL71+tZzwgjW9oRxZ0xESKITQS
+         vrxghv8v/BDgzr2qXrtSkTZZsjXjwrlD50cVq6iUEjN10otre3oDNfV/AZa1igZbUbKd
+         cQRTSO3YCyyqC5zBQgrMQqs8oAzvxwjYNeojmO438jdL8YlfqUbXxoSXk/YC4GrfZPc4
+         3eXIb+tFOIKb7iF46WlyBmmxaaECzo9sV21e/r9O7SlPzREYcPQlBCL6/ppkN/z4roMY
+         4o8Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791527692; x=1792132492; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=g/FPgtZeMX9AGe2HbHCGRW/KD//MP8quxuz9bO2dJ3o=;
+        b=a7pgdIw6zWXiSo3jjilm4mGh/ifApXTMJLyXLFxY74UrgUa4RfRbG0uxCYosmTvK3I
+         UIh2d5LmpKap2Kxzz4sp7ptXezSZxb0Ojghz9fhpYcTu3KOFKPIbmfmBwaaKmKmMKrGe
+         Xmb15IEv0YkXFXm4BsdSYNJyT1goms0GDWLYY7DbyE74Mdh5K6O5bYd46+Na6ojF/dL1
+         DhVjy/GBgdWR4NKGzMTlxstnrom4x9tNtrPjbtFtB2BJo0EFbcwSbrhc4NE+H9q+tvB8
+         MTDEmP2E6ZnipCQx50tV6JjyywtFZvfkaAhc8c71Ea9TIFGafCBsLatnMEsPN1yOaS07
+         vJMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791527692; x=1792132492;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=g/FPgtZeMX9AGe2HbHCGRW/KD//MP8quxuz9bO2dJ3o=;
+        b=Hbzlcdz6rmkOI3p+sUCT9ytB6rNZY9oyJxzAUrREVBKNUl7tVsYvUmqN5rIwn4uVcM
+         3Gu1lZDpHH+MfPOxake7aB6ikocuVRDqg9OEribZrnIWG+L3UNBvg7urMwfmF2cMqsu4
+         QPqJoYq/omdKqfZ6eqNJ3RkbpWnpzj3f8GGbAcVZ3r8aFoIwGBWggkQdijF3AfYjFx9P
+         m1sjjW29jVFW6vy8uYdTPnfI1V7uZNIMSDvTNR9TunCuhAvbXsBi6esBY5zhJB1J5Y2h
+         Vg+megdXDCzcU7irh8jg7jAj8ZOB3cJYfG88IoTVJ94tArP+wZR0Hhdi7nhLyOsQTeZQ
+         4PsA==
+X-Gm-Message-State: AFuF++kWj+RIQPJBHUMh9xg/CplWtQwNlbP7GMnYRGvjukqMYlEn/jFD
+	2uC16ei9rPYS/Zt+UjNBuYyw90bi1d5/ikhCvBXi4jzEP2h+aaKdCSpa9/rgZdgkPPzeOccW5bb
+	7Fn/Xs4uNkj7fU2ZbdXJKluLBs3L8TkY=
+X-Gm-Gg: AYBFou3su1+tl1NIk9uc9lNxwkFm2+06199RToZ2xxE7wcIjlO6l7Ub/FRpKNC/qXyV
+	yONFTOYvl8vc1mDX0OWjnzg4CJeFTfIgTZruasRZazq+zAvnnKw6FUbxEEwNIIi922uiuJYbHon
+	jgTIhBfC5yXI1pO690OmxrcjHIwRRdJ9cny5dG/WnPuIyfsS9ekIt/VWftTERuCA3ughTGYOKPv
+	+mETzs4rzxh7WsoWp/Gn/u5hS98fY2Z/P+Cz9RSzVrdfNNXYUO8AyoZjbDbe8cYBJokUzQiKsQg
+	87m1c7rtXipS8ZJ1iKoGm353mFukO8W/XBQ7StjWDuzjIyXd9cTUFWZTYV31OTx6ri0rS1yz4fy
+	SLbPFuUSEiLx6
+X-Received: by 2002:a05:600c:3ba5:b0:4a1:70d4:c69 with SMTP id
+ 5b1f17b1804b1-4a18e4c03bbmr15672005e9.28.1791527692297; Thu, 08 Oct 2026
+ 23:34:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261007153507.50715-1-alex@ghiti.fr> <20261007153507.50715-2-alex@ghiti.fr>
+In-Reply-To: <20261007153507.50715-2-alex@ghiti.fr>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 9 Oct 2026 08:34:39 +0200
+X-Gm-Features: AclHuK99dJ221d2Hn3wf-Vc20XRBPV9xr32gHo7d1FVChelU5vepJjOhair59mU
+Message-ID: <CAKEwX=Mr=9hbGo+L+2418auHhA8EUAQAKYxNhXOXP0UZ_vHAtw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm/zswap: batch the writeback IO of consecutive entries
+To: Alexandre Ghiti <alex@ghiti.fr>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Yosry Ahmed <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Christoph Hellwig <hch@lst.de>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 003081A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2DB21C0002
-X-Stat-Signature: u75b4zkj9kxk1wsyg6961sabdcc5n1m3
-X-HE-Tag: 1791527218-177665
-X-HE-Meta: U2FsdGVkX18QtKZtmyN5nTePo7Tai3HTRQAgrQz8V0/ceZxqFMeoR3w8d5+zEaFdbPLjqvjqWxIhqsCTjBvqBw9Wx9/cKxny6mubAgrYn/+graYVrd8h3R5PiSzlCz6ISHzitQhOXWFS9GKlEHKderdXupQgqTd2bIT0X2wRHNJ2rF4gffypVrvszbM8gVY9rCX1fe8LEt8QEKfTyvt0PPrZPGq+B0lrd0nBLDhPBM9I8kHRrk0+LOhqiPUrxKSWvflooJX+DRrkMFIeoig1WcGWdi878Me6B52yJY04JSa82H8vz174biz2XjrPNUT98AJyaSCGRwZeJTsY+HHiXa5rYbLMknEit07LLetexSM9L2gyM9Z39OqUf8IRYzxQxdlsSD+iV9dRiozEQLYdbrWja8RWJ2fuk/eCnaru3C7Q2U/cNHg02j3T5vQAwHhHBFaPmctyYSjL/DLVNghjUxAzXqC7F+qwGDSLbLrtZdVbe4jht+p8s5r+aAlwMHP5tepwaHGlCNbujF878hTsrRoucIRfm1gOklNJo2CQsP4Uei0rL36MhvDjHONkubRZCb8yQB7moRbLErwckwS8jC2pHhauCndrHvisVaj/KkjORjaRlz9ZY/WirH2IC6z3UcpaT+ye7niQfXi6E/XLHgREak5gyNGEmdAXUJvy1M49gCF0oJhKNRQQtzCCuR4Kc18sfe7q2Sa28EehLOrBOlqh9fOzdkG+0mVQOrn6LxrnR/seW7amIR8zKfo3WOOzyaSwLI8l5G/+HcaIm1kmROgoTvQwpYJcKbiPB9vjXvktU+A6u07R7AmA0ZDbjRiR8TSgf+dJtA9ORPC7rSGpTu25Lz8M4emc/duiWFbyVRaf/CLmfmtbc2uwnNVY/IC/VatM+NocEn/8D1YyeoeMTGFsj8+9ypBvZ6eDDz4kopwGqCG9JNx+fMFqLG/5m1268ND/+e8zYGmDZmsm8U8
- WYQobpR/
- fZgJY26jPhBaHFqxeQVfTcWH8jjvg/cUQXULXGAVUIzqiajhGujlXAdvGYjMMHxs+OvKjiFTIlwVHKHblNXSUYKbfkjAq3iqNOENW8n3Rju0/L5fk0m0/iNpAen/kQCg0IaATxTg1jVkJbBHwHM4eErc09/1cPJ/5ckMSxKvvlHnadQ6pk5aPWo+6OENYXjTkJMILk5EJBzWvo0C1uchJKx1EZBOOmtmkNLFCX1ql/CkzhuZYCP6eQ/ixgimq2jIMe58QwNmNEoqAi9lLdhKWyNPW5KNZ+uzQh06IWkGD5ErjJtZS/QAppsHLry8aG4KSdw5LrQ8J3o83wiKQSw6kewFQ8QD4ScQRy7b3JhdAtJ1Hj7ftCpQvQYHENg==
+X-Stat-Signature: 9iykxzyugkeiqmc6yq1p8818j7d49xdy
+X-HE-Tag: 1791527693-231701
+X-HE-Meta: U2FsdGVkX1/1sXqXI0wK1YYPwEzE4tAk+ieBybzUgyNRdg828PKlwgFNQlLK57pXrJQQXvGbUUqtQrdCCo6LAle07vzR3+Lh7Gui69ZiFxY/RcCDQs4KcRX19J46C0UxaO1cdCXP1/ocW1x6iZ+Gh51nvEl+PxfvWrLyWh1GuQOlQYaG8qRKHdw6QIo5TKZgXFjaXQpMfB/esofQyIHcw9l1ZBlmCgPagR1Si3o1xQJ9vp0W3zLBICui2HPhwEY6xSnupYjADHfwt6Y+tasNqX7Asa4g+EXMN/0wLXn9jRkdgJP3l8TpUUzRM4mPzIjziEdAPVcrljJNC3wvKnekPUs3wcVpUL/q+VqA4xSWPtdte5gKG7rpBEpw7q1+32vH1lTVi8V782I2XhylDWlJk5xd9KLuPsPZc+INf49C9rz2yNR6WRpojqEk2w6ciu4CV3Rv7xseQ1YUW/Ar5BDX7JYsgQup7Yby3irwfxfzN/rjB+9bUQmKXiAJQa727DC/P6tCfXmFVtBjWPAaAwzLhAn9VCuuxQR7WCkn1wttCP4xb8tegu7sC2Sc+Sx3O/+cdRRlViA/mfRnw9NlGSfAJw5iZHrzb1klgDhaOz9BG5PCKdIdO01Kea7bjynokeAdijdlndFi7DDye3yp75kPENE4voCgWY2HuQ/O1skYvHTYyE5Cips47FwbUaCQBMlYWI128fbdDEB/wUiymfL74jqn0yf6Iv+NDNq6lVBGfUxLlc2bs4VLW7vTvWegtMlYDoW67HAWh2Y4nDgcmQiNpv5/4UuKXy1M8WIdnTaLAVaWeETCPCIq2r8h6jVxlYhchBEU/ic8cEW3c7lliVJbrMcaVasHz0Vk7IMZfsvpiK7aYi7sPqRRvVvf4HbS+9g+pYGSccXtTrXVSNvsmqsy8TRM31c7N4wqhIDDxSrNiV/223yPaD/w5cvpOlnSfZ2ches1f7i1TyrL+CVer6C
+ PKO5UDh5
+ dtn179LyMnzFfsc5FEc1auL9cjee77QicNF2tkZgMuaq72DszV7sNgpwcm10Wgry3kS8WEgZI2SKUuYu4Vi5gtfAfhS9ar6YqsZvIlzjG9TIMhS/Pz355re+4Xr+Lz6iarGtzuUcNbOyhAwASOcZDbBz5AiqtxBCDrzJ/WEgedh5gcdtm4fj1ss0IkUknzz4od6bbkBfEU52UA1oFRw24uicc3jdt10vMKW4MkPcd4Rbkip0+E5pBsAhD/mUXZHdOwu8vumq1jhO1/OEOzmtary+FODD4kjTSCSIfrzzoHbGVozMZYJNr4DpnGI5RyjrVBYHjGoJkXURbMisPAOuY2pvJLQGei2jCrUjFZhtWzSmyse4fxft1kojOo8IznQ23F2pzI+MnyFpUGyZvvrNzqaWpmVFA/dPGlVr4d8rUckR2Y1M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,238 +141,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+On Wed, Oct 7, 2026 at 5:36=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> wrot=
+e:
+>
+> Commit 8f29aa226f82 ("mm/swap: introduce struct swap_io_ctx") introduced =
+a
+> simple way to batch the swap writes of folios with consecutive slots into=
+ a
+> single bio. zswap writeback does not use it: zswap_writeback_entry()
+> submits a context of its own for every entry, so every entry written back
+> becomes its own IO.
+>
+> So let the two functions that walk the zswap LRU, zswap_shrinker_scan()
+> and shrink_memcg(), own the context and submit it once the walk is done.
+>
+> Kernel build (defconfig, -j4) in a 600M memory.max cgroup with the zswap
+> shrinker enabled, swapping to an NVMe partition with iocost enabled. It
+> runs alone, and next to a sibling fio random writer with 10 times its
+> io.weight so that iocost throttles it. Mean +- stddev, counters from the
+> build's cgroup:
 
-bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
-unlike a write to memory.reclaim, does not retry until the goal is
-reached.
+Number looks good to me!
 
-Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
-and check that the result is positive but well below the request: one
-pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
-4K and 64K page kernels.
+>
+> Alone:
+>
+>                                 unbatched       batched
+>   build time (s)                1066 +- 9     1061 +- 2   -0.5%
+>   write requests (k)            748 +- 47     596 +- 26   -20.4%
+>   pages per write request    1.07 +- 0.01  1.30 +- 0.01   +21.2%
+>   iocost debt (s)             15.0 +- 2.7   12.1 +- 1.2   -19.5%
+>   iocost wait (s)              7.5 +- 1.2    7.2 +- 1.1   -3.6%
+>   IO full pressure (s)        19.0 +- 1.8   18.2 +- 0.9   -4.2%
+>
+> Next to the writer:
+>
+>                                 unbatched       batched
+>   build time (s)               2269 +- 50    2203 +- 62   -2.9%
+>   write requests (k)            714 +- 31     605 +- 24   -15.2%
+>   pages per write request    1.08 +- 0.00  1.30 +- 0.02   +20.3%
 
-The test deliberately covers only the kfunc itself. A full example of
-the intended asynchronous use, where a BPF program watches one cgroup's
-workingset refaults and reclaims another one from bpf_wq callbacks, is
-maintained out of tree at [1], released under GPLv2.
+The improvement is pretty big, but still only 1.3 :(
 
-Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.c
-is not built at all.
+Is this because writeback entries are not contiguous in physical swap
+space? Physical swap allocation algorithm has a bias for allocating
+contiguous slots, but by writeback time we might have already punched
+a bunch of holes (refaults etc.).
 
-[1] https://github.com/teawater/memcg-async-reclaim
+Ironically, vswap might help a bit here, because we defer physical
+swap space allocation to right before writeback time... But who knows
+:/
 
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
-Changelog:
-v4:
-According to the comment of Barry, test skips instead of failing on a
-read-only mount.
-v3:
-According to the comment of Barry, use write() + fsync() to charge the
-page cache instead of ftruncate() + read().
-According to the comment of AI, skip instead of fail when no regular
-filesystem is available for the workload file.
-v2:
-According to the comment of Alexei, remove the samples/bpf sample patch.
-Ship it out-of-tree as a standalone project.
+Anyway, I'll take the 20% :)
 
- tools/testing/selftests/bpf/config            |   1 +
- .../bpf/prog_tests/memcg_proactive_reclaim.c  | 130 ++++++++++++++++++
- .../bpf/progs/memcg_proactive_reclaim.c       |  34 +++++
- 3 files changed, 165 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
- create mode 100644 tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
+>   iocost debt (s)               685 +- 25     646 +- 26   -5.7%
+>   iocost wait (s)               655 +- 26     632 +- 23   -3.6%
+>   IO full pressure (s)          655 +- 31     624 +- 30   -4.7%
+>
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 
-diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
-index 2b883b388f90..5621ef94ad7e 100644
---- a/tools/testing/selftests/bpf/config
-+++ b/tools/testing/selftests/bpf/config
-@@ -57,6 +57,7 @@ CONFIG_LIRC=y
- CONFIG_LIVEPATCH=y
- CONFIG_LWTUNNEL=y
- CONFIG_LWTUNNEL_BPF=y
-+CONFIG_MEMCG=y
- CONFIG_MODULE_SIG=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- CONFIG_MODULE_UNLOAD=y
-diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
-new file mode 100644
-index 000000000000..c22dcfabe856
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
-@@ -0,0 +1,130 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <test_progs.h>
-+#include <limits.h>
-+#include <linux/magic.h>
-+#include <sys/statfs.h>
-+#include <unistd.h>
-+
-+#include "cgroup_helpers.h"
-+#include "memcg_proactive_reclaim.skel.h"
-+
-+#define CG_PATH "/memcg_proactive_reclaim"
-+
-+/*
-+ * Large enough that a single reclaim pass cannot come close to it, so that
-+ * "reclaimed less than was asked for" is not page-size noise: one pass is
-+ * capped at MEMCG_CHARGE_BATCH pages, which is 256 KiB on 4K pages but 4 MiB
-+ * on 64K pages.
-+ */
-+#define FILE_SIZE (32 * 1024 * 1024UL)
-+#define BUF_SIZE (64 * 1024)
-+
-+struct reclaim_args {
-+	__u64 cgroup_id;
-+	__u64 size;
-+};
-+
-+/*
-+ * The data file has to sit on a writable regular filesystem: tmpfs pages are
-+ * charged as shmem, so whether they can be reclaimed at all depends on swap
-+ * being available, and a read-only mount cannot host the file at all (EROFS
-+ * applies to root too). /tmp is tmpfs on many systems, and test_progs is
-+ * routinely run from a tmpfs working directory, so both candidates need the
-+ * check.
-+ */
-+static const char *workload_dir(void)
-+{
-+	static const char * const dirs[] = { "/tmp", "." };
-+	struct statfs st;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(dirs); i++)
-+		if (!statfs(dirs[i], &st) && st.f_type != TMPFS_MAGIC &&
-+		    st.f_type != RAMFS_MAGIC && !access(dirs[i], W_OK))
-+			return dirs[i];
-+
-+	return NULL;
-+}
-+
-+void test_memcg_proactive_reclaim(void)
-+{
-+	struct memcg_proactive_reclaim *skel = NULL;
-+	struct reclaim_args args = {};
-+
-+	LIBBPF_OPTS(bpf_test_run_opts, opts,
-+		    .ctx_in = &args,
-+		    .ctx_size_in = sizeof(args));
-+
-+	char data_file[PATH_MAX];
-+	static char buf[BUF_SIZE];
-+	__u64 cgroup_id;
-+	const char *dir;
-+	off_t off;
-+	int cg_fd = -1, data_fd = -1, err;
-+
-+	/*
-+	 * Both candidate directories can be unusable: tmpfs (initramfs-based
-+	 * CI, for instance) or a read-only mount. That is an environment
-+	 * limitation, not a test failure.
-+	 */
-+	dir = workload_dir();
-+	if (!dir) {
-+		test__skip();
-+		return;
-+	}
-+
-+	snprintf(data_file, sizeof(data_file),
-+		 "%s/memcg_proactive_reclaim_XXXXXX", dir);
-+	data_fd = mkstemp(data_file);
-+	if (!ASSERT_GE(data_fd, 0, "mkstemp"))
-+		return;
-+
-+	cg_fd = cgroup_setup_and_join(CG_PATH);
-+	if (!ASSERT_OK_FD(cg_fd, "cgroup_setup_and_join"))
-+		goto out;
-+
-+	cgroup_id = get_cgroup_id(CG_PATH);
-+	if (!ASSERT_GT(cgroup_id, 0, "get_cgroup_id"))
-+		goto out;
-+
-+	skel = memcg_proactive_reclaim__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto out;
-+
-+	/* Charge FILE_SIZE of clean page cache to the cgroup. */
-+	for (off = 0; off < (off_t)FILE_SIZE; off += sizeof(buf))
-+		if (!ASSERT_EQ(write(data_fd, buf, sizeof(buf)),
-+			       (ssize_t)sizeof(buf), "write"))
-+			goto out;
-+	if (!ASSERT_OK(fsync(data_fd), "fsync"))
-+		goto out;
-+
-+	args.cgroup_id = cgroup_id;
-+	args.size = FILE_SIZE;
-+	skel->bss->reclaimed = 0;
-+	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.memcg_proactive_reclaim),
-+				     &opts);
-+	if (!ASSERT_OK(err, "test_run"))
-+		goto out;
-+	if (!ASSERT_EQ(opts.retval, 0, "retval"))
-+		goto out;
-+
-+	/*
-+	 * A single call is a single bounded pass: it reclaims something, but
-+	 * stops well short of the requested size instead of retrying until the
-+	 * goal is reached the way a write to memory.reclaim does.
-+	 */
-+	ASSERT_GT(skel->bss->reclaimed, 0, "reclaimed");
-+	ASSERT_LT(skel->bss->reclaimed, (__s64)FILE_SIZE, "single pass");
-+
-+out:
-+	if (skel)
-+		memcg_proactive_reclaim__destroy(skel);
-+	if (cg_fd >= 0)
-+		close(cg_fd);
-+	if (data_fd >= 0) {
-+		close(data_fd);
-+		unlink(data_file);
-+	}
-+	cleanup_cgroup_environment();
-+}
-diff --git a/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-new file mode 100644
-index 000000000000..b551192526fc
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+
-+struct reclaim_args {
-+	__u64 cgroup_id;
-+	__u64 size;
-+};
-+
-+/* Signed, because bpf_test_run_opts.retval is a __u32. */
-+__s64 reclaimed;
-+
-+SEC("syscall")
-+int memcg_proactive_reclaim(struct reclaim_args *ctx)
-+{
-+	struct mem_cgroup *memcg;
-+	struct cgroup *cgrp;
-+
-+	cgrp = bpf_cgroup_from_id(ctx->cgroup_id);
-+	if (!cgrp)
-+		return 0;
-+
-+	memcg = bpf_get_mem_cgroup(&cgrp->self);
-+	if (memcg) {
-+		reclaimed = bpf_proactive_reclaim(memcg, ctx->size, -1);
-+		bpf_put_mem_cgroup(memcg);
-+	}
-+	bpf_cgroup_release(cgrp);
-+
-+	return 0;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.43.0
+Looks good to me FWIW:
 
+Acked-by: Nhat Pham <nphamcs@gmail.com>
 
