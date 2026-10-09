@@ -4,99 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88AF7CA6019
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:16:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6125CA6018
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:23:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EE786B008A; Fri,  9 Oct 2026 07:16:04 -0400 (EDT)
+	id A46166B008A; Fri,  9 Oct 2026 07:23:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59F9C6B008C; Fri,  9 Oct 2026 07:16:04 -0400 (EDT)
+	id 9F4D26B0093; Fri,  9 Oct 2026 07:23:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B5676B0092; Fri,  9 Oct 2026 07:16:04 -0400 (EDT)
+	id 8C3306B008A; Fri,  9 Oct 2026 07:23:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 20B206B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:16:04 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 620686B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:23:36 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 874CA160320
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:16:03 +0000 (UTC)
-X-FDA: 85302833406.05.87CCF1E
-Received: from mta0.migadu.com (out-67.mta0.migadu.com [91.218.175.67])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 44665180008
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:16:01 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IBZkN+lX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791544561;
-	b=PpfhbjU6IonbkNr2Uy0jx7K4EcZxuIXW8LmDAGSZk3ot7mlOPYyeo/CLbLnyJT52ZiDtTw
-	wMpaJYWS4puoAhu+6OCtnX6pmluobFNDYT4f1bV7MiUxwq5IrcNNysEbjNMxp84rGMq2qR
-	lCBWmFxCGkpUVilliSm3NN94ZdgICXY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IBZkN+lX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF86F1A0342
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:23:35 +0000 (UTC)
+X-FDA: 85302852390.05.A1EF59E
+Received: from mail-m1602365214.xmail.ntesmail.com (mail-m1602365214.xmail.ntesmail.com [160.236.52.14])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4DC42100005
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:23:32 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of zhen.ni@easystack.cn designates 160.236.52.14 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791544561;
+	s=arc-20220608; t=1791545014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iwv1BWmAu896MWLG+64UqZ2zg+kLXlIFqA3EzK8LKFg=;
-	b=WaOhZrS9YQ1K+SAHv5VBmx0tRjk9DrxKDwyGhKrqGgb+AkhxbZ/j82Q8Pb5jYsuuAGFYFn
-	CvXv0cg2Dz0AQIq7+lKc/1t9CVUkbO3Qodp8BfSTsihbN5uwGCMDdUsGX0H3rO0eCQnV7d
-	IwCWitfzYy7tihal40DHebcKvoeFh/0=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=4KiuDAG3gm65cIQ2mqPJSAHpZO66H8hjIEiCXFAoNYM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791544559; v=1; x=1792149359;
- b=IBZkN+lXJtyzzq+HboWEf+pTEmDUHg2mr1J5B0m6Gb40yLOVWgGdhjHg+iFBwA2YXAhJ330P
- 6Qwst0ZcwCqwInWNkUASo0zF+lp0YoVSSZtdVwYAgWDjotzsZRv9Q4zZw9hbm5Cn/jzsgp0vtL6
- QfGuKs//YCttNVBhKevKeZPQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 50b57414bfeda855;
-	Fri, 09 Oct 2026 11:15:47 +0000
-X-Mizu-Trace-ID: 50b57414bfeda855
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <fc32fbb9-9db2-40f1-88fc-c087927a1eb8@linux.dev>
-Date: Fri, 9 Oct 2026 19:16:53 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=+fgvajKwulQLcEFMFGzDFOAsp6rq+o9X9a1q1pwb3AU=;
+	b=zOYVBqyYimYGm+pbhLgAsZaQuMfAfYrQOE5S9YDIqxzR82kc8wGCRbf1U2tlb9K0sff/E2
+	m8MBHwgF+sDhlc0FELlvbTBaIiz1W+TN7vj1M+rYmp4RZw6kk8OwjBrFdc04z6syx/zvEZ
+	bCdWKI1h1OyJh2DaRnH+89Ab1kn5yZg=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of zhen.ni@easystack.cn designates 160.236.52.14 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791545014;
+	b=amYaYHoSYUN6c64C4PqJ2W2W1L4HPCgoQ0S6KD3bQKzKyBDx8vJ3VetH9h1ZaaGFixTkol
+	e8NkX/RJjGso3eLN634WElpBKa2bCwZQeBn8Qf5V33YcH0NWzbpWiZfrh48mKE27GZyLdC
+	j+aKm/X2hPIqXlLv+hEAD25HWxEJLaI=
+Received: from localhost.localdomain (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1fe29019d;
+	Fri, 9 Oct 2026 19:23:24 +0800 (GMT+08:00)
+From: Zhen Ni <zhen.ni@easystack.cn>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	shuah@kernel.org
+Cc: bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zhen Ni <zhen.ni@easystack.cn>
+Subject: [PATCH 0/6] mm/page_owner: add bpf_iter and kfuncs
+Date: Fri,  9 Oct 2026 19:23:02 +0800
+Message-Id: <20261009112308.240769-1-zhen.ni@easystack.cn>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 7/7] alloc_tag: fix the /proc/allocinfo lifecycle
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>, Andrew Morton
- <akpm@linux-foundation.org>, Alexander Potapenko <glider@google.com>,
- Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
- kasan-dev@googlegroups.com, Sashiko <sashiko-bot@kernel.org>,
- stable@vger.kernel.org
-References: <20260929082014.160587-1-hao.ge@linux.dev>
- <20260929082014.160587-8-hao.ge@linux.dev>
- <CAJuCfpEwrdOKQmt9_=J4Qawtg48AUuwwbc2Lp-1oWiNbKO_UVw@mail.gmail.com>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpEwrdOKQmt9_=J4Qawtg48AUuwwbc2Lp-1oWiNbKO_UVw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wefs4t5b57menmte1urco9xpx6yy83ts
+X-HM-Tid: 0aa1206750320229kunmd33b3e054cb272
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCTE5OVh1NSBgaTh0eQhhOQ1YVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
+	lPT09IVUpLS1VKQktLWQY+
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 44665180008
-X-HE-Tag: 1791544561-413533
-X-HE-Meta: U2FsdGVkX1+YHCKwm2Jx8gosvVOIKR2Iz6xZ54ZsgQRnFtV4W29T3OYxciCpUHTBq8IHu4kHZ4eHBhfVNl5PI2oaB2Amro//SbKshxbqMf4YmGFZfGBJt4sz2xeQ3VZOCZ3cN0DUbGwR9BWE0Wf8uJPd5XD7oWvn44O/mKG/m4ychbBMQmUFh1MTITp97oueGTt5Jo3UlSrc9fd0u/CgrPwAfV9arv8F6wvS28uNJISAF/vXEvesuJ8471hLgrFUf9o9sOTsWJs0pnZrwwaHHWJPFstMQH1M0Zfzpp6jbnIIuNMMka1uX9otKX1t8y6ofGkHT8yE8LrJNa6vnSeq0KXFSdmMke3NcOluZ6uJz9tGk9DYcCq6I0UoheYwkIiRJh9wMaea0Ldha7UzZ3433bWSgaJINcI4v23dCE5gQA0N4GE9vHUyYOlyCbZJpYpmHxkCF/cx/BkqojRsgiDrZBVo+Vz+mQFSfm6DkH8CaMM2Kre2TGl2N8PzJxcYznn8m3689l35ka7XiTrJLC10EMRCdDGj/K/B/ZOfWDZjc8B8y6zel7ts5ofLi+1fksHcnXvEMsP4vxCr9oGsylFZ+T2PTqYc1ENCt/4u9SN2uCLW3/+5EqS/HJ46c09OErGMZDGkud9sHiax0f7sQ9tcrFrUQUL/7WO6fsW1xpSsmxoGC17e/NfRs/N9X4zqLPxLKV9GpEkix3kiHjU3wGoaUEYGUV5t5sdL8lafjWe7V2KS+Vz8XwhiY8KL2nAhlxLm2SQJ/1KTcne3dPxfhpilMZ5OXiYdsn9C2zXIeGrQPoAir3McR1i3dW/+ya3cCVdBg2jcSW7RWTyEHXLP2jW3BJ5tml/vWPds9y2iaxfxKQapA4quFgSpqsjUZ3mICN28TYVZ39oP/XTuc2WnmkEcwdzHiof4MxMa/uRovwCA73NbInQ51/3KO22mv2/HeXg2w08+k25o72c85V86Fwq
- TZmoC4nK
- vGCnMuCpErmqQHVp9negyU6L4qjqp/UGYWSyunezP4pQ/Gaw4YpWRsNcjsxTogC6YzDrxLYKdjFLr4OPayYq346SZ+VmU5v422ESaSdjkFY0e4UNEm9T+VMAcJKVA3dwq18iPJDI/PkRzjFhpDu23Ul1ghjzsJPojZzv6yRlCt7BRey7t0PY7HQuu31qbaqHwVI3JWXYrX/yZMfDBVw3A4xd5a+mBH5V2KdmOFiJ7ktE2fdjS+3alxVihhY3ZiPzNZntTc2fbuVivnNZREqoOWOG2cwt/sVCOugizohvNMSLQmD968qMR5wY6wgopo/jNVtPtjcu11aWJcCt7f9fznnkqfgV6JnFBtwrSTFhGpwcnw4XUBvPM8ZgtBQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4DC42100005
+X-Stat-Signature: m8qw68uuddsoffaqpr3irgnxbhhz1xa8
+X-HE-Tag: 1791545012-533684
+X-HE-Meta: U2FsdGVkX194qMOje8IZzq73lXOdlBOc4H3RY+aXkDcsC47gNZP7DVRsRjOBo1dmiy3IrOugV/kGD3EOLLGQ873pyYQhR5UjDSJ0U12VK91ok5ujhk6nkZzLA28At18+Nhic/f1RkAMRzNxR+GA/jdPhthnrpeS7FHKqAtg9fntVBvFJa9/cYYAagBgfwtOkl5hmP/NtDe9T9UDbQdSi+OwX5bWPY3NXteSUyhHvcZ70enHGvPxrtj80kzCO99OZfPbu1nQVMSEmJJVPKpzsOlon/xyohwTh5dQqJVW1hw+EuavU6T2/ItEeEIv2+bhDKwg2RVAXdqR+9LnYqdx0MbzN8c90nc/svO1HdOLLWmkKoJaoAZ17/0hk+T1ZMqKDdJPa7YkcxgjJlT/3pDP496ItpLFKlfH3FFR+Fin0aoGZx4/GHhw5Ig40ttPl2yaRzb66oKTDjxSYLFuoJNIK49MPHi8o9TT8kgywfr18zg+pt08MeZVBRlX0WiBBiztY9lARStRwRGLomnsKVTMEV0SDV70FNoC+hXz5dpi3YttDZrHriJLvWmAVgbl3gKd50fHI51br5uHaw5QnpQWpf1ZPB5SdE3A88yGln7lWsfCFez2pC1JV1xwz4eT+ZQsKeZhIzRSDMjn5Ojc+XSP0zeXwqn5c4Tryh8ud47TsRyjJhJzAV+SwJP5afTbA+aJmqpIyazgIO1v/YnL/z+hnP4dzl4uHpdk+2Cr54jAJjYUZ6MSbPqpAHsGmlQLE62kmEkXyNzuDNxjfcZJkzoFy1bFBbBFu6+iF1XHLBHAW+smqvxjvN1DCBWM1GlGojhjD74AHJtvjJIR3O+DX3Fa7sdb6I1+Oks+bbQ8y5+qnBdNm8xxcg86zAZn2TKywa6OGi3CwBcQLSzfZFy1xUKw4jqmhO9ZgJKOajbLgDVKxxz8JE3JeIuO9VA9G3zsdBOr7uAYb5lPJVZ3Ksc56oRE
+ KhEZRL/V
+ vYee6urBZ6qtSpuD9710VMj4ARb4ofI5q3zDy7yKvjSLsqhHyER8Cku4WGNdFL/jCgrkg7PVLWY+pQfFN5SWhRnNEe5nr8Ac5B+aPvG+kw+oL+N4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,264 +102,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren
+Hi all,
 
+Introduction
+============
 
-On 2026/10/5 02:23, Suren Baghdasaryan wrote:
-> On Tue, Sep 29, 2026 at 10:20 AM Hao Ge <hao.ge@linux.dev> wrote:
->>
->> shutdown_mem_profiling() calls remove_proc_entry() from
->> reserve_module_tags(), which runs under mod_lock held for write.
->> remove_proc_entry() waits for readers, and a reader takes mod_lock for
->> read in allocinfo_start():
->>
->>   CPU0 (insmod)                      CPU1 (read /proc/allocinfo)
->>   ----------------                   ----------------------------
->>   reserve_module_tags()
->>     down_write(&mod_lock)  [held]
->>                                      use_pde()            [in_use++]
->>                                      allocinfo_start()
->>                                        down_read(&mod_lock)  <- blocks
->>     shutdown_mem_profiling()
->>       remove_proc_entry()
->>         wait for in_use == 0         <- blocks
->>
->> Move remove_proc_entry() to a workqueue.
->>
->> The deferred removal also affects alloc_tag_init(). The file is
->> created before the type, so on a failure it is still there with
->> alloc_tag_cttype NULL or an error pointer, and a reader panics in
->> allocinfo_start(). Create the file at the end of alloc_tag_init()
->> instead, a failed init leaves nothing behind.
->>
->> If proc_create() fails, the codetag type and the module tags memory
->> leak. Call codetag_unregister_type() and free the memory.
->>
->> alloc_tag_cttype can now be freed at runtime. alloc_tag_top_users()
->> reads it from __show_mem() without locks, read the pointer under
->> rcu_read_lock() and take mod_lock before dropping the RCU lock, the
->> type stays alive until then. The only caller never sleeps, drop the
->> can_sleep argument.
->>
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->> ---
->>  include/linux/alloc_tag.h |  2 +-
->>  include/linux/codetag.h   |  2 ++
->>  lib/codetag.c             | 26 ++++++++++++++++++++
->>  mm/alloc_tag.c            | 52 +++++++++++++++++++++++++++------------
->>  mm/show_mem.c             |  2 +-
->>  5 files changed, 66 insertions(+), 18 deletions(-)
->>
->> diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
->> index 7f2d80a59792..852dc10c00ee 100644
->> --- a/include/linux/alloc_tag.h
->> +++ b/include/linux/alloc_tag.h
->> @@ -81,7 +81,7 @@ struct codetag_bytes {
->>         s64 bytes;
->>  };
->>
->> -size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sleep);
->> +size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count);
->>
->>  static inline struct alloc_tag *ct_to_alloc_tag(struct codetag *ct)
->>  {
->> diff --git a/include/linux/codetag.h b/include/linux/codetag.h
->> index a25a085c2df1..0c4e0337b474 100644
->> --- a/include/linux/codetag.h
->> +++ b/include/linux/codetag.h
->> @@ -87,6 +87,8 @@ void codetag_to_text(struct seq_buf *out, struct codetag *ct);
->>  struct codetag_type *
->>  codetag_register_type(const struct codetag_type_desc *desc);
->>
->> +void codetag_unregister_type(struct codetag_type *cttype);
->> +
->>  #if defined(CONFIG_CODE_TAGGING) && defined(CONFIG_MODULES)
->>
->>  bool codetag_needs_module_section(struct module *mod, const char *name,
->> diff --git a/lib/codetag.c b/lib/codetag.c
->> index a0b600720afc..46d0904b08b3 100644
->> --- a/lib/codetag.c
->> +++ b/lib/codetag.c
->> @@ -429,3 +429,29 @@ codetag_register_type(const struct codetag_type_desc *desc)
->>
->>         return cttype;
->>  }
->> +
->> +/**
->> + * codetag_unregister_type - unregister a codetag type
->> + * @cttype: the codetag type to unregister
->> + *
->> + * Undo codetag_register_type() and free @cttype. The caller must make
->> + * sure no lockless reader still uses @cttype, e.g. clear the pointer
->> + * to it and wait for an RCU grace period first.
->> + */
->> +void __init codetag_unregister_type(struct codetag_type *cttype)
->> +{
->> +       struct codetag_module *cmod;
->> +       unsigned long id, tmp;
->> +
->> +       mutex_lock(&codetag_lock);
->> +       list_del(&cttype->link);
->> +       mutex_unlock(&codetag_lock);
->> +
->> +       down_write(&cttype->mod_lock);
->> +       idr_for_each_entry_ul(&cttype->mod_idr, cmod, tmp, id)
->> +               kfree(cmod);
->> +       idr_destroy(&cttype->mod_idr);
->> +       up_write(&cttype->mod_lock);
->> +
->> +       kfree(cttype);
->> +}
->> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
->> index ba8a651769e3..b9af5fe5bba2 100644
->> --- a/mm/alloc_tag.c
->> +++ b/mm/alloc_tag.c
->> @@ -15,6 +15,7 @@
->>  #include <linux/seq_file.h>
->>  #include <linux/string_choices.h>
->>  #include <linux/vmalloc.h>
->> +#include <linux/workqueue.h>
->>  #include <linux/kmemleak.h>
->>  #include <uapi/linux/alloc_tag.h>
->>
->> @@ -484,22 +485,28 @@ static const struct proc_ops allocinfo_proc_ops = {
->>  #endif
->>  };
->>
->> -size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sleep)
->> +size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count)
->>  {
->>         struct codetag_iterator iter;
->> +       struct codetag_type *cttype;
->>         struct codetag *ct;
->>         struct codetag_bytes n;
->>         unsigned int i, nr = 0;
->> +       bool locked;
->>
->> -       if (IS_ERR_OR_NULL(alloc_tag_cttype))
->> +       rcu_read_lock();
->> +       cttype = READ_ONCE(alloc_tag_cttype);
-> 
-> Code looks correct to me but if you are changing alloc_tag_cttype to
-> be accessed under RCU, then you should declare it as __rcu and use
-> rcu_assign_pointer()/rcu_access_pointer()/rcu_dereference()/rcu_dereference_protected().
+page_owner records who allocated every page and is a core memory-debug
+facility, but it currently reaches userspace as the debugfs flat dump:
+slicing allocations by pid, comm, NUMA node, cgroup or stack, etc.,
+means streaming and parsing the entire file in userspace, which is
+expensive on large hosts and hard to query live.
 
-Yes. I missed that. Will fix in the next version.
+Exposing the same walk to eBPF lets a program filter and aggregate in
+the kernel and surface only the records it cares about. This series
+adds that access as a seq_file bpf_iter target and an open-coded
+iterator.
 
-Thanks
-Best Regards
-Hao
+Implementation
+==============
 
-> 
->> +       if (IS_ERR_OR_NULL(cttype)) {
->> +               rcu_read_unlock();
->>                 return 0;
->> +       }
->>
->> -       if (can_sleep)
->> -               codetag_lock_module_list(alloc_tag_cttype);
->> -       else if (!codetag_trylock_module_list(alloc_tag_cttype))
->> +       locked = codetag_trylock_module_list(cttype);
->> +       rcu_read_unlock();
->> +       if (!locked)
->>                 return 0;
->>
->> -       iter = codetag_get_ct_iter(alloc_tag_cttype);
->> +       iter = codetag_get_ct_iter(cttype);
->>         while ((ct = codetag_next_ct(&iter))) {
->>                 struct alloc_tag_counters counter = alloc_tag_read(ct_to_alloc_tag(ct));
->>
->> @@ -520,7 +527,7 @@ size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sl
->>                 }
->>         }
->>
->> -       codetag_unlock_module_list(alloc_tag_cttype);
->> +       codetag_unlock_module_list(cttype);
->>
->>         return nr;
->>  }
->> @@ -591,6 +598,13 @@ void pgalloc_tag_swap(struct folio *new, struct folio *old)
->>         put_page_tag_ref(handle_new);
->>  }
->>
->> +static void remove_allocinfo_file(struct work_struct *work)
->> +{
->> +       remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
->> +}
->> +
->> +static DECLARE_WORK(remove_allocinfo_work, remove_allocinfo_file);
->> +
->>  static void shutdown_mem_profiling(bool remove_file)
->>  {
->>         if (mem_alloc_profiling_enabled())
->> @@ -600,7 +614,7 @@ static void shutdown_mem_profiling(bool remove_file)
->>                 return;
->>
->>         if (remove_file)
->> -               remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
->> +               schedule_work(&remove_allocinfo_work);
->>         mem_profiling_support = false;
->>  }
->>
->> @@ -1351,16 +1365,10 @@ static int __init alloc_tag_init(void)
->>                 return 0;
->>         }
->>
->> -       if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_proc_ops)) {
->> -               pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME);
->> -               shutdown_mem_profiling(false);
->> -               return -ENOMEM;
->> -       }
->> -
->>         res = alloc_mod_tags_mem();
->>         if (res) {
->>                 pr_err("Failed to reserve address space for module tags, errno = %d\n", res);
->> -               shutdown_mem_profiling(true);
->> +               shutdown_mem_profiling(false);
->>                 return res;
->>         }
->>
->> @@ -1368,10 +1376,22 @@ static int __init alloc_tag_init(void)
->>         if (IS_ERR(alloc_tag_cttype)) {
->>                 pr_err("Allocation tags registration failed, errno = %pe\n", alloc_tag_cttype);
->>                 free_mod_tags_mem();
->> -               shutdown_mem_profiling(true);
->> +               shutdown_mem_profiling(false);
->>                 return PTR_ERR(alloc_tag_cttype);
->>         }
->>
->> +       if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_proc_ops)) {
->> +               struct codetag_type *cttype = alloc_tag_cttype;
->> +
->> +               pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME);
->> +               shutdown_mem_profiling(false);
->> +               WRITE_ONCE(alloc_tag_cttype, NULL);
->> +               synchronize_rcu();
->> +               codetag_unregister_type(cttype);
->> +               free_mod_tags_mem();
->> +               return -ENOMEM;
->> +       }
->> +
->>         return 0;
->>  }
->>  module_init(alloc_tag_init);
->> diff --git a/mm/show_mem.c b/mm/show_mem.c
->> index b938cbcd774a..a2e710404a48 100644
->> --- a/mm/show_mem.c
->> +++ b/mm/show_mem.c
->> @@ -439,7 +439,7 @@ void __show_mem(unsigned int filter, const nodemask_t *nodemask,
->>                 struct codetag_bytes tags[10];
->>                 size_t i, nr;
->>
->> -               nr = alloc_tag_top_users(tags, ARRAY_SIZE(tags), false);
->> +               nr = alloc_tag_top_users(tags, ARRAY_SIZE(tags));
->>                 if (nr) {
->>                         pr_notice("Memory allocations (profiling is currently turned %s):\n",
->>                                 mem_alloc_profiling_enabled() ? "on" : "off");
->> --
->> 2.25.1
->>
+The page walk is factored into page_owner_next_eligible(), shared by
+the read path and the iterators so eligibility stays identical. Three
+kfuncs expose information that a BPF program cannot decode from the
+snapshot alone: the NUMA node, per-page memcg info including the full
+cgroup path, and the stack trace behind a stack_depot handle. Each
+record is snapshotted under the page_ext RCU lock, so consumers read
+a consistent copy.
+
+Testing
+=======
+
+The selftest exercises the seq_file and open-coded iterators, and
+validates the get_nid, stack_snprint and get_memcg_info kfuncs.
+
+Zhen Ni (6):
+  mm/page_owner: extract page_owner_next_eligible() from read loop
+  mm/page_owner: add bpf_iter target "page_owner"
+  mm/page_owner: add open-coded page_owner iterator
+  mm/page_owner: add bpf_page_owner_get_nid() kfunc
+  mm/page_owner: add bpf_page_owner_get_memcg_info() kfunc
+  selftests/bpf: add tests for the page_owner bpf_iter target
+
+ kernel/bpf/helpers.c                          |   8 +
+ mm/Makefile                                   |   3 +
+ mm/page_owner.c                               | 219 +++++++++++-------
+ mm/page_owner.h                               |  58 +++++
+ mm/page_owner_iter.c                          | 180 ++++++++++++++
+ .../bpf/prog_tests/page_owner_iter.c          | 173 ++++++++++++++
+ .../selftests/bpf/progs/bpf_iter_page_owner.c | 161 +++++++++++++
+ 7 files changed, 722 insertions(+), 80 deletions(-)
+ create mode 100644 mm/page_owner.h
+ create mode 100644 mm/page_owner_iter.c
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/page_owner_iter.c
+ create mode 100644 tools/testing/selftests/bpf/progs/bpf_iter_page_owner.c
+
+-- 
+2.20.1
+
 
