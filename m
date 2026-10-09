@@ -4,154 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 165C1CA6015
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 05:42:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08601CA5FED
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 06:09:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDDA26B008A; Fri,  9 Oct 2026 01:42:56 -0400 (EDT)
+	id ED0A86B008A; Fri,  9 Oct 2026 02:09:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB3676B008C; Fri,  9 Oct 2026 01:42:56 -0400 (EDT)
+	id E82216B008C; Fri,  9 Oct 2026 02:09:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC97E6B0092; Fri,  9 Oct 2026 01:42:56 -0400 (EDT)
+	id D983C6B0092; Fri,  9 Oct 2026 02:09:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A5E0E6B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 01:42:56 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 26CDB1A026C
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 05:42:56 +0000 (UTC)
-X-FDA: 85301993952.25.A1BB2B1
-Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11022098.outbound.protection.outlook.com [52.101.126.98])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1B8BCC0002
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 05:42:52 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=woodstock.ac.in header.s=selector1 header.b=JOa1fwej;
-	spf=pass (imf10.hostedemail.com: domain of ArnavGoel@woodstock.ac.in designates 52.101.126.98 as permitted sender) smtp.mailfrom=ArnavGoel@woodstock.ac.in;
-	dmarc=pass (policy=none) header.from=woodstock.ac.in;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791524573;
-	b=qeXAoWPkKHAEvFLvSgm1Yx7rsY8VmM9L9oS91HuSRkf5GHCygy+7PbxnbM63FLcVSntIAp
-	dqLDtW9YAg1kStTmZQkuXohu6aOWYs+5XpfdfonSV8YfSVZZG74TlK1MImQBFFSer5Z06n
-	Ly+O9rUOvPRtaK8cKpOdLdM7dMKPkhU=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=woodstock.ac.in header.s=selector1 header.b=JOa1fwej;
-	spf=pass (imf10.hostedemail.com: domain of ArnavGoel@woodstock.ac.in designates 52.101.126.98 as permitted sender) smtp.mailfrom=ArnavGoel@woodstock.ac.in;
-	dmarc=pass (policy=none) header.from=woodstock.ac.in;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791524573;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B165E6B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 02:09:38 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4E41140263
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:09:37 +0000 (UTC)
+X-FDA: 85302061194.09.5D66465
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4165020004
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:09:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HWkN5Krl;
+	spf=pass (imf03.hostedemail.com: domain of bjorn@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bjorn@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791526176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=4T9n+TuFzQ3a24pyk5neDH+rVO8SDllYQlEaMxkXCIQ=;
-	b=QcupSzs3XXOZ+Vs6rjS87+XiH7b43mwjsmDHXj4srOS4moXlAW8p1UhJSWR1A0y+FpnoT6
-	rHPSgl8oghOYxsZtT2v08VKGjgGrcGRHALDRXJdReEi31wJ839jX0oCgnenL7QemtI2ikc
-	9pMQX0PzlkxuV4DtWEK1FFvZ7hpmutw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tgdaPr/gTeBUvv1xIDQ3sYts3OB1/WKr1A+ffpO63KUQHm0jGGTudqE8N0fF3AckoKOi87mcJje3GX1dFH2NodtQClJHQH8m9caOQ2stvDhdNTym391O3ZGNeKVBgK4Cri9OakUSpuxKdBasNr79rduV+MKl+8epevZby/WPS3vRFxo+xkCPVsNfN0t8zYxU7OLD9r6skr3MjnGxH8eFF6CeztbNBdoS5H/rYgZFSdG1BGRipEAxwAtJVNDBlgBisqmT0E1lhV/n1pAg5SgP1CVoWFLOvKDH7J754AgscLI0Cdj1k3Io+pIc1CChzJml1myEbuuz0urFWA7gDk2KcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4T9n+TuFzQ3a24pyk5neDH+rVO8SDllYQlEaMxkXCIQ=;
- b=y5dVPzUuiBqVUn3fb5Ah/WfH2McI2Dj1oQlNqq5X3W6J58GAOVb1G2CfcxI5cka5/lnSxnoku7cAzLVLdx/vN69X/vYRccBWdxNL2Up2ywXx06a+QRRuCU8eJZ0D6FoEZ/gpHaVXwME0dd5Sjnq93JkVUIgP3n7W460o0DutgO7VamMrHP+nuVg7PwY60VyzFKGeoZRdoNDvGOImLBMRoH8bZG/84IoK6j5WLr/d1VCty1Nljt6LPjXE2++JqbgDSg3gOsgXFIbsJ2peZynQIx4WNAgX53RvV8fpw3yg0mz9NjW7gKRq1RZBrummQ8vDX84D1O8gF5yfPFPjdhIm1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=woodstock.ac.in; dmarc=pass action=none
- header.from=woodstock.ac.in; dkim=pass header.d=woodstock.ac.in; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=woodstock.ac.in;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4T9n+TuFzQ3a24pyk5neDH+rVO8SDllYQlEaMxkXCIQ=;
- b=JOa1fwejh0HwZicv1RvZdXKGmMBUZbl9t3fZZMnldNJjpgpte2nvXnxDhAej0hVHN+MAa0DP/S3QFkPBdJajFTmsQoQNeRA2qaN4fC/sKaijPgi0CdN37EHPn/zyzMoOV91sMmDDaegIhYiPBmy6Xb6GCa1Z4aUrVMsnnxgmqQk=
-Received: from SI6PR06MB7474.apcprd06.prod.outlook.com (2603:1096:4:240::6) by
- TYZPR06MB6637.apcprd06.prod.outlook.com (2603:1096:400:451::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.496.16; Fri, 9 Oct 2026 05:42:42 +0000
-Received: from SI6PR06MB7474.apcprd06.prod.outlook.com
- ([fe80::462f:2fd9:3fe0:e419]) by SI6PR06MB7474.apcprd06.prod.outlook.com
- ([fe80::462f:2fd9:3fe0:e419%6]) with mapi id 15.21.0496.015; Fri, 9 Oct 2026
- 05:42:42 +0000
-From: Arnav Goel <ArnavGoel@woodstock.ac.in>
-To: "damon@lists.linux.dev" <damon@lists.linux.dev>, "linux-mm@kvack.org"
-	<linux-mm@kvack.org>
-Subject: =?iso-8859-4?Q?Research_use_of_D=C0MOS_Linear_B_texts?=
-Thread-Topic: =?iso-8859-4?Q?Research_use_of_D=C0MOS_Linear_B_texts?=
-Thread-Index: AQHdV7DKRdZZDRN+8k6ecTpK9QeUDw==
-Date: Fri, 9 Oct 2026 05:42:41 +0000
-Message-ID:
- <SI6PR06MB74745E4D61CF3341BF6958CEE7922@SI6PR06MB7474.apcprd06.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-reactions: allow
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SI6PR06MB7474:EE_|TYZPR06MB6637:EE_
-x-ms-office365-filtering-correlation-id: 49d32832-0527-45fd-1ef9-08df25c822f9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|786006|366016|41320700013|1800799024|376014|38070700021|10067099003|56012099006|18002099003|8096899003;
-x-microsoft-antispam-message-info:
- P2UjCeOUiHoO1hJpGqBBbsXswWDfzRnohZzgDHo5Rav0tUXo0DmIqd71WBmrT34esb7ne3Oc32FTFs0cQhPnFosEgInzCdO/c17i4Kgo2r7sqGbykfb+5n0rXrjkEWgLiWfK26YTOityvaXEZRUsoS/oAB5ostO944V7zyte0nNoR5O1gO4VrcoNvrpNT3Pf87xYJmqJXLxoojC2qMXKmzMIMELTwfX7P63zHHLsC/fH8d1+IyIp0mwf8qHLTGmO0dYWgSRvajI49AoqZ2eC4MA2VVZ5dqdRx8CdY5YyOcztN302DTSOKG/dzslI6ydBFkvMrPhIkI38vAKUbL+GTU6raJeAIgD5VR8HFa1DGV8kQcY1bPJ2FBJSKSIib263quIIvumt5VMZptwHOXaHlVDFFN9yKoL6fQPg9qS5c3q03RkoQYx8+H3fELsjfd29GHZ40FStCKgo36Fr8VN7OeMt9HJlRvRYY8rjFH0dmQUk4CrTAa/wzjpN4Y8l8pKJifUvVyeMAvK7YDl7ynuATduDb6m56XD1lo7EVWS5+uwDiOSShmd2X4SZj6D+64pZtauo+63/+ATMS65xjntAnPKWlchWSIg749V89OaNk6z/Xi0i5OsK5ZYTT7q1HY86hVKMjA+Xq7xmsO5440mdAgx4jUNhMnJw1MTlmvoAySUrRM/dhBYuE08nS1h/U8FWwgZYVfScmz+On1hCzXqHiw==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI6PR06MB7474.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(786006)(366016)(41320700013)(1800799024)(376014)(38070700021)(10067099003)(56012099006)(18002099003)(8096899003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-4?Q?bfSnFKYE/aPIffXt3I9id2D5mUraK6xWJHW6waz/sUx1L7dhvIRF3tbi9T?=
- =?iso-8859-4?Q?WTSjcFcGo6gNg4qbsNPFJDaHCSwxNb3v7D4bt9cVd6G/UCMRTm/Eq3IZsK?=
- =?iso-8859-4?Q?v20oJ3mlRSsNQm9r1Oas48M+ofTQL+wNu8lyrBRblMuHV3KtGjTTUi4Bl7?=
- =?iso-8859-4?Q?m7+iWMIE1uYBsmTQNRNVd35FIHYBSl0bA6p0jXHM1/TGK4gT06FEbOBbYv?=
- =?iso-8859-4?Q?YOtnHvcKTTXEoePYJLrU+w4E52LG1jN0bgL+R4nKak46dgZrKXu4lRLmKJ?=
- =?iso-8859-4?Q?TjFXHwGbR//kIQcuWVpxwJ7kE0f5/AY8zwMt4unyokby1QjXqfuT/X+Mr2?=
- =?iso-8859-4?Q?UmYqqD6aqaeC8fJOrjomFBQwk/igWKq6YH+E/N7yvrG0jVVwFtJs99uGDR?=
- =?iso-8859-4?Q?cxhiGAp6MSxrQX+b+gaGIO67Yv2lZTaM9D1SUz3aIrn5xvnjBCX68zzLgE?=
- =?iso-8859-4?Q?88tDsMCh4fLLzz1oR4D+eK5cKIlYq4xGkkMHaoXwu8zgu/lc6ZQLa408kv?=
- =?iso-8859-4?Q?1EVfVsikvhMOpeAoPM2k8ztquqahlLygf514y+LwGUJizqrxQo2WkmWc1v?=
- =?iso-8859-4?Q?9IBoCTZNtMG9Dj/y6otRDtJVMoNm1yck4MTVWDJpLXhZU12TH/tl8pqggd?=
- =?iso-8859-4?Q?iaX8pOR0Q1nyesTedDWWmr/yqnuiUyNkaCwWu1X/JRWK3V6K66d52fEiy6?=
- =?iso-8859-4?Q?JlVLqqkv+x4oB1NLH9FvuRdIL79AwcfjoelVZRzwcve4vhC0oMupDlMKcN?=
- =?iso-8859-4?Q?GN+oIduvgAwzWRkMvYaOUFEyPGbd0QUn05TWHLxr8dh+tPeIxDuFFNh04l?=
- =?iso-8859-4?Q?hQ9rD2k8Tpq3XBMimuksPLpit1Ss0coZSeAuVx7pK5st4BiwgWk3s6Jja8?=
- =?iso-8859-4?Q?jNNsQr+LHDlOJyxapdHyn+LriKUJH90OY3y/UGAY7ld5Z4qqsthdYQoVFL?=
- =?iso-8859-4?Q?ng/i4dUb4gnabjbsqMq1RjrTq11MXQsSWqd7pOdEqsgkDB/LHdQWEuhHdv?=
- =?iso-8859-4?Q?GqAykfYID6s2hxdXyCXW+/3jD69h4/e2oea8hI64jAVsA4zf8ICvD+xbIj?=
- =?iso-8859-4?Q?TdkL9QIjlRwc8F32YhaSvDzbHiFyBz0pVs7STsUYi6+Z4ukloglpfSV5GL?=
- =?iso-8859-4?Q?LrdZD4tyGF05gnfnOQmOtzc0KEMc/gHMsIwk/Cex00ZnHFfV+glUMl6KGv?=
- =?iso-8859-4?Q?zOyOTYicY2fXi7T1utyc+Lfi6pB5r9pdVDDCvTE9+mtiN/p34qu/MfcMHC?=
- =?iso-8859-4?Q?FvdmvIccqrayDYe1SiWho3fFHqVtKEBmQXCPjd0cjy0zlcvy4hki5xe7NO?=
- =?iso-8859-4?Q?EINkH1MdqjWmkBrMUmBS0LbQPaUC9jNISBc+/DDN4gOM8F8ZUm9eGt3wK1?=
- =?iso-8859-4?Q?C4r1f/aLOytgdmIjmZPmXYBf3j7Ru+P4GbhTafB4Hb1pzqRGLrzQBIqFMa?=
- =?iso-8859-4?Q?8nvFNRzJsFMyjgb/1DzDLwbbXXMFNyKMkz7Kcl4e7iCU4qCmfRLr1Sa0Zg?=
- =?iso-8859-4?Q?8I2xMoI5D0ViuPa/P7UHjLHLS5Zq9BRQVv1/GWupkBtNB26hUVjCP1lo2X?=
- =?iso-8859-4?Q?34NJRW2115rPwwkZYBQdxD/5BqHSxe1TnGW+EeVBAhTJaOjFdlkxF45bfe?=
- =?iso-8859-4?Q?0cxNj17m/yl7g8CCGWRc0XRr1DW2aRLVEZhRAYh60XXWb1nkX6xekiVbnq?=
- =?iso-8859-4?Q?mnUCfBziFR/7sIVqs/wgwxxObaT+UxuPD5QwLY3klxtejTBf4b1TMcNWhd?=
- =?iso-8859-4?Q?U7xQrNnPx2hqfyvLO3aoUt4MhFYHXWb6tkPDp2+rJDq6Gu7lOJUNW8r/xZ?=
- =?iso-8859-4?Q?ij2GvqSgeSYSIgyQU51uZvw5qmj2/Xs=3D?=
-Content-Type: multipart/alternative;
-	boundary="_000_SI6PR06MB74745E4D61CF3341BF6958CEE7922SI6PR06MB7474apcp_"
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HaXEEt+6oUYTgk3yLziOOP26vbiRye4IPhhc+D5Un/s=;
+	b=roqEGAyo+sY9tYP8F4I/175qG9pPhveqOLkZy/Cxli79mEjJAJ3l7CtlrDMU1d74X8oTOq
+	n9OieP1scRQfGg9jycmzoT9Fn5liIYvdrMkh3pDAnblIyCnAVdCFu0BamwPTMxryogniMD
+	0OgCh9QtvP6ON+UgRHWx4/oS0Nhc+jg=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HWkN5Krl;
+	spf=pass (imf03.hostedemail.com: domain of bjorn@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bjorn@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791526176;
+	b=WrGlZ5OfAcA4+lY5LZvgL7lRmMBhqkFVqRhikY2mGsZDace2be7nQSqFq4w7AIFAp6tWNi
+	OIjH38PEq6MSWyEDGpk2L1hSnF/S8r9NjwnvV/sgxGH2s+lc93HVTE18jkJhmVFy7TYkLU
+	1wmXjdP+ZImKg6Lqpu/G3LA9IG289cQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 879AA602C3;
+	Fri,  9 Oct 2026 06:09:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7FE1F000FF;
+	Fri,  9 Oct 2026 06:09:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791526175;
+	bh=HaXEEt+6oUYTgk3yLziOOP26vbiRye4IPhhc+D5Un/s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=HWkN5KrlKIk6OWt38SO9fMGwArGXNLm8Sc0PCX7ZgeMYOylWuJpHNU8t2FYDltQLn
+	 2hKVTP6VzNHCqHXVINEqZTs/LUesNwkJVsuSfNVRWiSG6EM+asdu7XUYpBPEPDbhyg
+	 xxL2L457nAJjsnW9ul382bkmFZlkcJ0BfutYNMatFDZqAAKt4pPj7uICuTiy4ojVEP
+	 ugz5q4KFQCUm7kDaKATbRD/9S7WIDuKfPfrxc0hLnTMVOL+lI7sBSP7t1MeAxfaysa
+	 lqZ9eoh+QQZamGuMRiYovi7Gku403d6K2cuOnrn5lClA+St/Yv/3lziXSu4nT82KA4
+	 ZsIxQ2m9QprXw==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, stable@vger.kernel.org, david@kernel.org,
+ osalvador@suse.de, dave.hansen@linux.intel.com, luto@kernel.org,
+ peterz@infradead.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ x86@kernel.org, hpa@zytor.com, catalin.marinas@arm.com, will@kernel.org,
+ mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org,
+ pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+ linux-riscv@lists.infradead.org, agordeev@linux.ibm.com,
+ kevin.brodsky@arm.com, bjorn@rivosinc.com, apopple@nvidia.com,
+ linux-kernel@vger.kernel.org, muchun.song@linux.dev
+Subject: Re: [PATCH 2/4] riscv/mm: fix hotplug page-table destructor handling
+In-Reply-To: <20261008073021.2512665-3-songmuchun@bytedance.com>
+References: <20261008073021.2512665-1-songmuchun@bytedance.com>
+ <20261008073021.2512665-3-songmuchun@bytedance.com>
+Date: Fri, 09 Oct 2026 08:09:31 +0200
+Message-ID: <87jynrs8v8.fsf@all.your.base.are.belong.to.us>
 MIME-Version: 1.0
-X-OriginatorOrg: woodstock.ac.in
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SI6PR06MB7474.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49d32832-0527-45fd-1ef9-08df25c822f9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2026 05:42:41.9988
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: cdd2e0d2-9335-4caa-8251-199d64196287
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: GkEQFklQmJs//Ey4MOMSe92lMchiYGENlkg+LMzkayJ6SEzhxtNRgM3z9ECJWaVPjIx5BDpnNRkGEbqYzoj71sVuq4iMlmA5tLtxriduxvo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB6637
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4165020004
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1B8BCC0002
-X-Stat-Signature: a5fg7g36rtayun1rdd1j6zqobmirt93z
-X-HE-Tag: 1791524572-566284
-X-HE-Meta: U2FsdGVkX1+KpnAQB28Io+x0p+yyBXXHD8UyLVyH1OXPEadqKpD3+FZpbxXB0w1EslqJ007RmLOihzSQAr0M0JY1W1fmHIz9R41UA0L2Ro/s/PBpWMZrUUJsMIoWbGPuPdNHWzh/48zm/uB82OmvV8NLW2VTlF2106Ll9fjwdZ+sxTGTg6WhDSHnxmT7mWrL//u+BEtsPVvAbnGbwgQYQLhyZBOBvLGFWAEYs0BXIM0ztRnBYrnfOi7QYkODKoO431IYEyzN/q/v67daIGtITNNrWBidssJU+TgDugH8itnxKeFTQtyLUH+UpqaPnM32xasiy+2ZCmj43zrnd8H7c1dN1ghAmxlGW7GwkzwCBgCATDvBwNiCfCXiwfu+1LxQKspHPMfJ0Gy1+YV00XHRoaR7g1jHQWmWg/u+HkACUnwf7Yadb2GaUlcuGBRYC7A+VunMeyK6AnzlqbD3404J1xCP7XmYZcsdkEB0Vofm05Gdc/b4KD82ugNLDlnEE1wfWaQZ2BtNnn5ApKjVCJOhv1nbgcK4PQq36wA1O49i197Y4P1hZ3lL3xC98SZXOjWsWWfrqH1oCB1aatbUdwpNjk6L2L6HK8qkkY0oT6gzpAkxr1YnPT0o/8Uv5GA2rNAjdBdPROIYsfYzMzKZYY4OTXS++q/jXfmojSSdRF8ejb7zJPW9kToZcOdriNPjfWxJmT8Z8o+MftB1omRiSyLGtyLs6zUgVMGpnExyT1c3p1yp/zNGo4VEthbUbHhyQxiesIpAxj5WTv3RKNg1PIPf+PikH0BU7QHma7HdU6XiPoXxSJWyY5Zz/TjviFCaQ+Xk3PqSAtK3RD6yMS9iheg1JiPYzZaQ78Sf9DkiPju/40YCOQ/To4NnkoZnP7wYWJ8kQr4i1iM+bBykQOZhQa1c5UOcOjWWG+dJ/xgCG1WKSzb8KNhaf9ITewPJVPX4dYVI0as0CCnjnCsmgKlRbuj
- FI+N5zZb
- YrgdtHyd8QiDZSdt50QbqGYD3ujIq5buGsX5+GvkBGnv9AtZt84bpPZJXJaiS4Y4Fh8NzVqjOlVkjtph3F4omElgtCMmAVcJvHTCgfWCnMGGfDXU+yYoR8c/CqRWbjnr0tIxz0EsFQqGIQxf/OUmPp/WL7G+bFTky0CT3ZKWHmFHwbf/0JgI6wceEX0hsP9N2HCcOyh5AsBYIrOzDBPE6SvOR/Mlz4cSDj7Cu3V0wgD4jmb722Fnx+e2dKlfre3RlMGiK7PUdVgYGNpc0g7csKU1lh6V1akIm4muy4eKe4sMusrA0B8vUyoRQmXkix4s6qpDHkHToKryLjbvwdiwup8IcmanDm1SRnH+kpw1Vs4HhgHaaqfeGaizWgRmKGtFxP5uz4TYQZ9CBhmV8VILJ/Osilx/csls32/GwFk84ZBEz8LpFiUx/BErEnEet2N0KBLZzQ34CsMFy0Z9pvyrOoQ0jaqt6dX9GtWFvTWCy/6xLq5C16nd3F/NiFptIf0QAYcqoE36I4XnYs4gSCQUWIwbS8x4Wu7mNtfDLZdi4LiGjPQlFNSvd6SwrHoHBTw6ZRVaN4AywxN1zSO6UZXJIkHPQQg==
+X-Stat-Signature: ukmpcfqmwmeysoumbxesx84idwu7dmrn
+X-HE-Tag: 1791526176-964676
+X-HE-Meta: U2FsdGVkX1+MV93XrgD7w8Cs6NU5t7J3tf/NTMrzZcIs/xx4n9Ih36a4JmXVNhnCGDIit8gbgntbpT1p7BLbywaOaOsU4Ux6IT6V6FF6jWIq8NMf0aCQwCE8zkm/rjoWnxAX+IQo5+n8wid4WenNWcEuQLcnOjpST9Sj75KqxBGcZzRZLztlkyK1eGKqLD1yxbPqirw6sgZsDW/Q586Rx7xXPwXWWEyF2Fi1Q0ORDlTxVpRlMlgG3SrkncnMwJ/Hz+aB1VgJ2LNWYFfFI5camzjGtFwu0ePhCJgtbOyTfpn6cE3Cd5gPPjQnao1MWPveEvaVNH8TsCaMeBG+l0Ew/p1et9CxoFKzOKwqnHDqk7x9a6EefhvxAPgXzg6UeDmXSm6bBPTyJaltyoOWtAvwMoPVaPOYOhJt9zT8Xk5r1GjAQgccQ6Kpu5nUaLASxh+oJQMity7Q+i7UNhCp12pEFPEXxGvI6+Q/sRfoKvgq/yWhaYRs0iH7OLTCY+HY+W1oXaysFvosRj5quVAM5x3JKi59TujieZIbbKHCNBKUdLH2ZOId8D9iM8w6d+aV1YJ0rieB3tIm4IX6c8PAipvfjtSiH+lOoCLfxXFXCSz36tC5SG+lu/5G3QzvW7+Myr4NPd5vKGI4AHBQZLweI922baRbW8f1CQLUv4eeUMg4nVgRGQdmgOrGnApuAHRDEdWG/T4cA0c4IXcftFaYL9S54fpJZM25vIZKMH/0wY7fyA35rOLEZPGOxyB2cTYXu/Mj2I4HRzouT8o7Fgs6IIeY3u8bQOjhhkwPJdvpPnMrmd1MhJkXTHxBTk7JoN2mKtLRbGhA78XAOL+1wVw8O8SSDTvr/YBFyP4/JyC9l2Zz7XSqzOpWH7TQF/bpJe1py/YDIfjSlZ72xpBS3f+H20gEU6qioKv7XKNbTsZCz6HOBnSA+EjxHNs15cz18TZsIq8J9BCazW7oJz5a0dSnhUU
+ Jd5lhJv5
+ CQpOn2tK3et15J2M1sSqEIefehS/4tzW/3jG+qBpOGW9A2PVwkK326XC0J+LHLzp4IpxxKYtHFwXfhNOCEi2m7HvOUvx5yVFNuWrwUDXdgx54/n2yxxH1aaI5y5fHGjkN0pmD3pbCz73yDn8Jy3uT20/SXJm7FpKKi1d3kd8aNZaHwoJYomKb5WA5zvZM0RBGSYuMVaGoMeN0EAtkK2C4u846Ivlh+YSX2EtGp9SDAIfaeBNf+kMJTKTtJRCMRTrHCq5QYk0w7C9UuIA+dn27lZBKts0efvCoLfBZGcQ247Gn/kHCxwQUK+BrG9L6OWiKtvayHtrRwld6XLI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,78 +99,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---_000_SI6PR06MB74745E4D61CF3341BF6958CEE7922SI6PR06MB7474apcp_
-Content-Type: text/plain; charset="iso-8859-4"
-Content-Transfer-Encoding: quoted-printable
+Muchun Song <songmuchun@bytedance.com> writes:
 
-Dear D=C0MOS team,
+> RISC-V uses the same memory-hotplug teardown code for the linear map and
+> vmemmap, although their page-table pages are not always allocated in the
+> same way. Late linear-map allocations run page-table constructors, while
+> vmemmap and early allocations may provide constructor-free pages.
+>
+> The PTE path unconditionally runs the destructor, which is wrong for
+> constructor-free vmemmap tables. The PMD path avoids that problem by
+> using is_vmemmap as a proxy for constructor state, but that assumption
+> will no longer hold once runtime vmemmap allocations use the normal
+> pgalloc helpers.
+>
+> Page-table constructors record their state in PG_table. Centralize
+> page-table freeing and use PageTable() to decide whether the destructor
+> is required. Keep reserved and constructor-free pages on their existing
+> freeing paths.
+>
+> Fixes: c75a74f4ba19 ("riscv: mm: Add memory hotplugging support")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>  arch/riscv/mm/init.c | 29 ++++++++++++++---------------
+>  1 file changed, 14 insertions(+), 15 deletions(-)
+>
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index 857f9a55039c..429a0b015ec1 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -1486,10 +1486,19 @@ struct execmem_info __init *execmem_arch_setup(vo=
+id)
+>  #endif /* CONFIG_EXECMEM */
+>=20=20
+>  #ifdef CONFIG_MEMORY_HOTPLUG
+> +static void __meminit free_pagetable(struct page *page)
+> +{
+> +	if (PageReserved(page))
+> +		free_reserved_page(page);
+> +	else if (PageTable(page))
+> +		pagetable_dtor_free(page_ptdesc(page));
+> +	else
+> +		pagetable_free(page_ptdesc(page));
+> +}
 
-I am a high school student in India building a benchmark that tests deciphe=
-rment methods on short-text corpora. Linear B would be an ideal real-world =
-check, since its texts are short and its language is known.
+Is PageReserved() enought to determine if there's no dtor to run? On
+rv64 your code is correct, but maybe for robustness?
 
-I understand D=C0MOS is available under CC BY-NC-SA 4.0. Is there a way to =
-export the transliterated texts in bulk for non-commercial research use? I =
-would cite D=C0MOS fully and not redistribute the data beyond what the lice=
-nce allows.
-
-Best regards,
-Arnav Goel
-IB Diploma student
-
-Woodstock School, India
+  | if (PageTable(page))
+  |         pagetable_dtor(page_ptdesc(page));
+  |=20
+  | if (PageReserved(page))
+  |         free_reserved_page(page);
+  | else
+  |         pagetable_free(page_ptdesc(page));
 
 
-
---_000_SI6PR06MB74745E4D61CF3341BF6958CEE7922SI6PR06MB7474apcp_
-Content-Type: text/html; charset="iso-8859-4"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-4">
-</head>
-<body>
-<p style=3D"direction: ltr; text-align: left; text-indent: 0px; text-transf=
-orm: none;">
-<span style=3D"font-family: Aptos, Arial, Helvetica, sans-serif; font-size:=
- 12pt; color: rgb(0, 0, 0);">Dear D=C0MOS team,</span></p>
-<p style=3D"direction: ltr; text-align: left; text-indent: 0px; text-transf=
-orm: none;">
-<span style=3D"font-family: Aptos, Arial, Helvetica, sans-serif; font-size:=
- 12pt; color: rgb(0, 0, 0);">I am a high school student in India building a=
- benchmark that tests decipherment methods on short-text corpora. Linear B =
-would be an ideal real-world check,
- since its texts are short and its language is known.</span></p>
-<p style=3D"direction: ltr; text-align: left; text-indent: 0px; text-transf=
-orm: none;">
-<span style=3D"font-family: Aptos, Arial, Helvetica, sans-serif; font-size:=
- 12pt; color: rgb(0, 0, 0);">I understand D=C0MOS is available under CC BY-=
-NC-SA 4.0. Is there a way to export the transliterated texts in bulk for no=
-n-commercial research use? I would cite
- D=C0MOS fully and not redistribute the data beyond what the licence allows=
-.</span></p>
-<p style=3D"direction: ltr; text-align: left; text-indent: 0px; text-transf=
-orm: none;">
-<span style=3D"font-family: Aptos, Arial, Helvetica, sans-serif; font-size:=
- 12pt; color: rgb(0, 0, 0);">Best regards,<br>
-Arnav Goel<br>
-IB Diploma student</span></p>
-<p style=3D"direction: ltr; text-align: left; text-indent: 0px; text-transf=
-orm: none;">
-<span style=3D"font-family: Aptos, Arial, Helvetica, sans-serif; font-size:=
- 12pt; color: rgb(0, 0, 0);">Woodstock School, India</span></p>
-<div style=3D"direction: ltr; font-family: Aptos, Arial, Helvetica, sans-se=
-rif; font-size: 12pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div style=3D"direction: ltr; font-family: Aptos, Arial, Helvetica, sans-se=
-rif; font-size: 12pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-</body>
-</html>
-
---_000_SI6PR06MB74745E4D61CF3341BF6958CEE7922SI6PR06MB7474apcp_--
+Bj=C3=B6rn
 
