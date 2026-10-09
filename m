@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 343A6CA9EBB
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 20:43:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA310CA601E
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 20:44:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E4FF6B0088; Fri,  9 Oct 2026 16:43:15 -0400 (EDT)
+	id 023EE6B008A; Fri,  9 Oct 2026 16:44:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BE1D6B008A; Fri,  9 Oct 2026 16:43:15 -0400 (EDT)
+	id F163F6B008C; Fri,  9 Oct 2026 16:44:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F15AC6B008C; Fri,  9 Oct 2026 16:43:14 -0400 (EDT)
+	id E2D0D6B0095; Fri,  9 Oct 2026 16:44:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BAA466B0088
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:43:14 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 48A5BC04EB
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:43:14 +0000 (UTC)
-X-FDA: 85304262708.25.88B0CDA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B92E36B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 16:44:26 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4337380506
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:44:26 +0000 (UTC)
+X-FDA: 85304265732.04.DC02E19
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8DA111C0004
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:43:12 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SP23AZs/";
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8758780008
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:44:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y58b6cPM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791578592;
-	b=THYrxsNoLNCQhidU6Zk33hGvv2w+fifPESkGqJgIrdBGHQMnO7yoNbEe0IAHUEOzTUSeIG
-	XI1SuzVv6AV0iWmqCeDVt8rlExy3bR22INu4oNPqEZnz1ToyVvFY72lGUtKcQOaFHMTZoF
-	bIqMsggCrnkUu2uTFv3w1nwm5KQGIeA=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SP23AZs/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791578592;
+	s=arc-20220608; t=1791578664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JxCU4kgy6yuLL3vMKMbNFEILfGTC3AEpOEg/HFNIu60=;
-	b=rU695Y3buTKdDheIPm9SrRUxnkCjOgNqr20uqsMRaTsdK9h1aELshGR2j1ri2ktg1vvdEf
-	+8jAUDAXtIXAGFXJpz/g5ZvYaoE+boVZvOyLWNRzRcbhhjmah8lPahWUWkk6pbayt5uGXv
-	1tFfIBUmpXPEbgING4p/s91FFJZ5+WI=
+	bh=4ok5atQOO1xLnZqvIcvpZUo24bgiy5hkUKsL64Z4m34=;
+	b=oy7cetIgSBYD4gRNABa2gbGMbRmfxWD5Uz23+nldbhCuybmtspr9FxDvn3EoCOKU0LVWKk
+	5DCT1YDtoIdF/xOM6eNpQ4p6o4pEXAt6JGqsimRFuaZH7dV///ys69GX6pUChTuTHW6vpt
+	0pFvvVxke4yFcOSlfzuE80ZjdDWrhbw=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y58b6cPM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791578664;
+	b=LdjayUnIiPJKLGylkAPW723posx6fuwMmyYPqqWlzk9ljGfQQK6nKQ8QDVFvmyLm8qSnD5
+	oU7APV+ZgA2/MkqUFIQGb9p5ztXpfKlg73SXRzfbNP9t/AdxA/V58+Z+hWocRBiR5ss+x8
+	6YO9l1zx5KAhsPyGJOp+FkmikmK8nkE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1995060202;
-	Fri,  9 Oct 2026 20:43:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA6F1F000FF;
-	Fri,  9 Oct 2026 20:43:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0ABBE60202;
+	Fri,  9 Oct 2026 20:44:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423C61F000FF;
+	Fri,  9 Oct 2026 20:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791578591;
-	bh=JxCU4kgy6yuLL3vMKMbNFEILfGTC3AEpOEg/HFNIu60=;
+	s=k20260515; t=1791578663;
+	bh=4ok5atQOO1xLnZqvIcvpZUo24bgiy5hkUKsL64Z4m34=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SP23AZs/ZMLS1F7HAiY5z7X5nF2RAOysCWRarEHnTfxNiZ6ItX8IcZVYkiT3Xyrzw
-	 Ts27Z3REnfSbgPcmeCHEvXQfI5R0zszY/WgI7oNDs5Uuk4RtQelzpmDtOVb/O1mgbC
-	 ESJ+fGuVP07bnVnyI4wWN+oqUM/udZKJQpOIxZ7jC0KEakCwnj/veq68QxurhH1xPa
-	 x4QNtZRPeZ9Z9OSE+fx43CSrHusaCl/LHAxjU2JLx+s5fnC628xxa9yw0FVkBWzqfI
-	 F/V/SeQf2YozHcliqBqzshsNtBivlYnNq0VSVj9gwdZur95pXceUhTxA42KBjet0PE
-	 DuKW2pGkIo/aQ==
-Message-ID: <d47bdf83-1db4-4601-a516-7e23488ea9cf@kernel.org>
-Date: Fri, 9 Oct 2026 22:43:02 +0200
+	b=Y58b6cPMVo8J2OhRDndnK6601iFosf6b+BWTdqJuf5TJgY13o+V1z2ytjetxDbLvX
+	 cM8AS5OrOQi3t/QGgRVc/f0+K51FqRS/JpG/w1NpWGy15QzStMqQjuGtVNOA5eHpdH
+	 Ik/79viha99pjTJ2h+Fuk3sYEN9AgebCFUCGMkNer0Ui1eMD4wTKRsgl6JA4RHOe3w
+	 viW6yVFbBp5us5+6/Yt6lMrUkmBi0bOVfPiJXTKvUwKd9qYLdPziUuhCfhgKpfMGet
+	 VhMVV2+RAPJgLUyDBaUpXR6DeyuHyg++GYOtcy1nMuBBZOJ8Rj9jn9C7okb1+Q57c8
+	 A05H/8TzZFXxA==
+Message-ID: <d68cb3de-e471-4ce8-8c6d-c7260d79ec1e@kernel.org>
+Date: Fri, 9 Oct 2026 22:44:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] arm64/mm: fix destructor for unconstructed hotplug
- page tables
-To: Muchun Song <songmuchun@bytedance.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, stable@vger.kernel.org, osalvador@suse.de,
- dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, catalin.marinas@arm.com, will@kernel.org,
- mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, pjw@kernel.org,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
- linux-riscv@lists.infradead.org, agordeev@linux.ibm.com,
- kevin.brodsky@arm.com, bjorn@rivosinc.com, apopple@nvidia.com,
- linux-kernel@vger.kernel.org, muchun.song@linux.dev
-References: <20261008073021.2512665-1-songmuchun@bytedance.com>
- <20261008073021.2512665-5-songmuchun@bytedance.com>
+Subject: Re: [PATCH] mm/huge_memory: avoid transient none PMDs during lazyfree
+ reclaim
+To: Zi Yan <ziy@nvidia.com>
+Cc: Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, stable@vger.kernel.org
+References: <20261009165214.40212-2-kylebot@openai.com>
+ <DM0II2QHWWS1.2RXEJXC8S0101@nvidia.com>
+ <8db35dc0-eb06-42e4-90f9-534522e810e1@kernel.org>
+ <55765FF3-18D7-424C-984D-81C316F323E1@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261008073021.2512665-5-songmuchun@bytedance.com>
+In-Reply-To: <55765FF3-18D7-424C-984D-81C316F323E1@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: kqikjunx1oq4puhsuncgtpywb4gkkrcy
+X-Rspamd-Queue-Id: 8758780008
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8DA111C0004
-X-HE-Tag: 1791578592-734998
-X-HE-Meta: U2FsdGVkX1/LLzmtW4SBMRaEbsVuyugvT2UtzHOV37YW4P2pS/KGiI1KOrUQDm2Xa2P3YKCSMc5vGWif8FBDdD5I9RNojcbkENTKpTVo24TuSUl23bxs3gMJ5vv+La1jooz5Cr4g2as79k+yY19tFdIs0TcujdZiIQJ5a/8OvIyzz4tWPndpz4qDpc/dcWTa9dvVSXZcBL3TFEa+coo9F3JLqCsIBhfZj0D817nz71hrHHd8L9Chf2RuAGrKBJZ6P2VDi2oMxN8RG4X2TtHCOZYM6xL+inPo6alsJ9jvwiOrIVB9ZX6TFSzaT9kweVuvY75t6tnNfUnQOkCPYFPpVAJfZ7hlG6LQmCljckygVJbSktJhSJqvMyjwXl6ZNBOdFvgoOQIXAiJ3WuicjHWDAPWCQ56YmpYP/XD+14A/pS6nvW+QLBRJSIHyebxfon9OjpAZCmEfbx5caCNzy1Zpgv9Vf6gfAAIwaR7DSvdUVfumzGZOYdAktxGi1/ySv39JjjsbPC8JFRTRCUmWpvOslEn72N46ZBsl3vpRK0BaK7p9bExQjRtcrlAfeQhVAZp0bAuZvNePkxS0fewcf8yiizUqUO9L2fxIYersZT/5ygIDuFM38u+aeZMYH8EIEht3FjS6WNeNB8qOk+Ux9eHU5C6hSNH8v+CInJ7JQOJaqwecZXrMvOgJ9iKvvhcV9+hekv217V8vK8yrFB0gBYFpOeqLoZINiOPmXGgKyLLQ0kPj+gAbVpm8iO3If85Vq+yMtIayhh+mWWO6WbywjGz7CoMxjHYhbV4IpKAezp5VtE9A9t1HZ7DjWN75DlvAlmL14uHZHzk/dIwLrLJYSypiSFRnngKmbPzO8F/GWwHYAyMUcmuBft3LBnqIa/m9RBZUb6tJLl79utGmqQjJjm+l0YrR62Kf7Oka5qqGfFDFQpelkhjUzJYNxsVkpwiguskJu1D/4z2oOrddX2HpdH0
- 0g0x8OSp
- NvQMHsrPS5UlK5fXL/ELhwjogdo0oiufK8XexW3HuAsyJJerkc48Za8SbIuStT5h+ea/D1+PIrsoX/aIvgQIXv+eHTeyV5yLxNEo3q9ChkC+lnwMqMvlkxSrzf5y8vlfH8C+zC+v7rnIJqk0l6PSbXCUoUpzj4CNQuHVk1Ab4SZ4pJExzv9DUAbI/qijyyaClj86SrxXUba5onduYHC7o+ZMPYc5HyG1CHRJ2/+uo5/E+Cj4TfdBjBnzqLMxVLBg++KbMzqeDOIZ0Wllm4gzg8tLGLh74w+rZoi2nz5UJFFt36nzZZcWnZSmlKg==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 7rmdris9tt3xon4pjfhj6ddykby4hymq
+X-HE-Tag: 1791578664-729030
+X-HE-Meta: U2FsdGVkX19AKeJZP3Qg0+tPW3zCSqJc3V1o+bURWuUW7QyFVlzwNhpZVOkroRv5KOPac2WT2LcYkyey7IERA6Z2jPsetU/QE2uLCeXWEG0mw7rBQhzcajgHzvfLEZCQ8nwQZSmBvqeve1ZyrTXoaBYmZNq/jjcT1ME4OjZ9UBHQnIp0RfX6W75+HFLwhxzzvNCvsF8aMONFpGcuc90F9v17LD7SCYwS8jvmHWQLu/KISVyq1Xpbgk/mwtIrRhvYfCukRDRD3VlIwjribZcx1dEYmByjsAvtpTaaJqwfTVS6kZZTeK+iKPsDWtEmH3mXwWl+Fjftv9s78bMi73RIu1k+0upDa8MhcTHxqSPV1fWbjgHRqxMmmPke5Cdvkeq34ZQkxJ/GrDJtL+nQK6Cfj114n7wET5EK0IhuWZ0b+W4gOVs/3D/0pk+jhu6P460U2tq4Jhm4K5nd+t1VOHb1xiHNO5vA4H28eZSObnkHvniN3LpOigSzTN/7C+ji6cSb4zg6y7KVNMoLsIIDp2ru+6ZzuplRV1GK32fiSU/qqJIcj+ZzswdMbZ3SGkAVT1j89DNiXATcPe3/cdsW7sRNhZ1rjurFS9pOiDPkAuRXDbp4FRfO9vwX6meqOHPbY76GoHgIHU5zMD5srwDHW5CEI3Jgd9ahuahcJn2eOHVWpXrLZ+MQVkTdPbdWdKoM4G9YbNscPY53OvcSD3PCpQKVjwMw2AW15n2jhFW67RKpz6yzqgvmqC7k6vGzpwIG4dGYCCTNQAOYH4ru0mat+OXf5gQt/m92/wIrQLYnmadT+HFkPKexs8NcPfnfxFEJunYBIV6STXOcEj+XwUZQ4fprtJ94fYezhptmm5PwEfzKoZiaB2cJVJAu+FEQbe7hwToMNmjamyvDbq4lk1nZisZpPWW9bwwnxBgNkpy4ONqp4o8XHcbFmmbgBb5e0ZUtn+vO8zQ3XReGhrpRb9Qr0xf
+ ClUKoDYh
+ xmzALOp7JdfjROY38SMgZW2e9KJiuo5PV8ti1jPhPAnqEiv3EuyZE/P+IRQTeokuNPfZmw84w4sAMaYDq2LvzBPqqkQlmkdgxfWmZ83AmYkc3k3Y6QC2DSogbloHpsA5ijroPxsstyM1AqweJmolw7hBEhSNDE7nAu1Yez6wdT675VNMt6zsFaDSL5hBdmZlmOUaIo2izIXs74UIeP4nrSnH/tPLChHr3voa2Awbm+PSLFJpz8UsvS8U9JZm8XdugHlVv8EeQIBLJvBqh2TQ6Jy0FqckUZBC8gy+/p/L7XZ6XlRoIcHHb4d8MIA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,52 +146,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/8/26 09:30, Muchun Song wrote:
-> Commit c594b83457cc ("arm64: mm: call pagetable dtor when freeing
-> hot-removed page tables") made free_hotplug_pgtable_page()
-> unconditionally run the page-table destructor. This matches page tables
-> allocated by the arm64 mapping code, which runs the corresponding
-> constructors.
+On 10/9/26 22:27, Zi Yan wrote:
+> On 9 Oct 2026, at 16:23, David Hildenbrand (Arm) wrote:
 > 
-> However, arm64 also uses the generic sparse-vmemmap population code.
-> Runtime intermediate page tables allocated by that code do not run a
-> page-table constructor.
-
-Why do we have that inconsistency? It seems to cause pain :)
-
-> Freeing one during memory hot-remove therefore
-> runs a destructor without a matching constructor and corrupts
-> NR_PAGETABLE accounting.
+>> On 10/9/26 20:17, Zi Yan wrote:
+>>>
+>>> There are some gaps we need to close before getting this fix in:
+>>>
+>>> 1. GUP-fast cannot follow the invalidated PMD: riscv and LoongArch need
+>>> pmd_access_permitted() that requires _PAGE_PRESENT; s390's
+>>> pmdp_invalidate() needs a change.
+>>
+>> Ugh. We really need pmdp_invalidate() to have reasonable semantics. This whole
+>> PMD locking is a mess :(
+>>
+>>>
+>>> 2. sparc64's thp_pte_count can be imbalanced with this change (based on
+>>> Lance's offlist feedback).
+>>
+>> Ack.
+>>
+>>>
+>>> In addition, powerpc has a page table check issue similr to riscv, where riscv
+>>> fixed it with commit 9f4a88b8d01a6. This is not related to this issue
+>>> but discovered along with the investigation.
+>>
+>> Zi, do you have the capacity to take over this patch?
 > 
-> Use PageTable() to run the destructor only for page-table pages whose
-> constructor initialized them. This keeps the arm64-created page-table
-> lifecycle balanced while safely freeing constructor-free vmemmap tables.
+> Yes, I can take over it. My plan is to send a series including
+> patches for 1 and this patch as is. powerpc fix can be a separate one.
 > 
-> Fixes: c594b83457cc ("arm64: mm: call pagetable dtor when freeing hot-removed page tables")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
->  arch/arm64/mm/mmu.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 7343ac9294f8..688b33095651 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -1495,7 +1495,8 @@ static void free_hotplug_page_range(struct page *page, size_t size,
->  
->  static void free_hotplug_pgtable_page(struct page *page)
->  {
-> -	pagetable_dtor(page_ptdesc(page));
-> +	if (PageTable(page))
-> +		pagetable_dtor(page_ptdesc(page));
->  	free_hotplug_page_range(page, PAGE_SIZE, NULL);
+> Best Regards,
+> Yan, Zi
 
-That results in a __free_pages() for  ones allocated by sparse-vmemmap
-population code. Are we sure that's the right thing to do?
-
-This is all so inconsistent and confusing :(
+If we need a quick stable fix we could temporarily disable the whole thing until
+it is fixed, just a thought.
 
 -- 
 Cheers,
