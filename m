@@ -4,129 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07F0CCA601D
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 17:01:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20AF9CA601D
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 17:02:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07DF26B0088; Fri,  9 Oct 2026 13:01:20 -0400 (EDT)
+	id 11D4E6B0088; Fri,  9 Oct 2026 13:02:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02E696B008A; Fri,  9 Oct 2026 13:01:19 -0400 (EDT)
+	id 0CE4E6B008A; Fri,  9 Oct 2026 13:02:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5FC76B0099; Fri,  9 Oct 2026 13:01:19 -0400 (EDT)
+	id ED8D86B0096; Fri,  9 Oct 2026 13:02:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BA03B6B0088
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:01:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4BF80160484
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:01:19 +0000 (UTC)
-X-FDA: 85303703478.26.F698468
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0D98DC0016
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:01:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OKCsDWz3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7ihvZr9z;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=d91JU66W;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KcOgOphY;
-	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CD3206B0088
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:02:51 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5D88A1A043C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:02:51 +0000 (UTC)
+X-FDA: 85303707342.12.8B6AEDC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B4C344000C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:02:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Myx2bn74;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791565369;
+	b=gw5DaXVkp+l+HJLXUytalRkcxAI78Vw3mQo9USZ6KrhTX6UNWILvCybD6PSulYPKirylGW
+	po/orclhSDMHfBvSLya/NGo+76BBUKil2VcJ5CAXYT1aVa5qyicTRlZIFWt0JEcVv0xtqh
+	Q7ySBT0jqVzdednhF0OPL49txNOHIjk=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Myx2bn74;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791565277;
+	s=arc-20220608; t=1791565369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vW0Z2YAuAu+y8eIrdsV6xo/3lhL0j96EwTJkuyKSiGc=;
-	b=PxsodDFcChD9QWOUy8VBf5H/nAla9bFt0iyh9I7GI+X+KYK7K6ByoQQpQRefqTQDRKArhl
-	HI5sL/bf4iC6fv2cGBriNnhWX0PXkH5YYMNxA97Z2gDrQQvmBTUANbqEGb0iFHddcT3kOr
-	TFbaXnJ7dmyL6NGs/2qbfVN6vX52+f0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791565277;
-	b=mDbtn98pNUJ0FL2aEq1V4Y1pGT3cX9O/jcWm+pLg4VtnZNFSNIBMwP7j6EujCjvJ7f71bX
-	TUo31A+ytef1DbOTVameBVN7NBTp0/OsgYKPvNd0aqrHJzj/Ta+z6uUKktviY7XSEWVAWy
-	IIfftZ0s/O5N4rQVx1kBe+4iL+AwVwg=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OKCsDWz3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7ihvZr9z;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=d91JU66W;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KcOgOphY;
-	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8AA341F38F;
-	Fri,  9 Oct 2026 17:01:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791565275; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vW0Z2YAuAu+y8eIrdsV6xo/3lhL0j96EwTJkuyKSiGc=;
-	b=OKCsDWz3wZV/8UaBe+UwL8bAGZn28d4+ndjd2+913xamP3KKFqiOuRWdmQOSPqjhHfKe1I
-	8XxN95oMrOeYsTgm0GwbCfgFaHvuD22uAsam9qRnIwsdvs27dSVq7eEZRxEuJqvPAqZB3T
-	LJAWbkl+4VWbApHIGCmK0vfoBAbZf9c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791565275;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vW0Z2YAuAu+y8eIrdsV6xo/3lhL0j96EwTJkuyKSiGc=;
-	b=7ihvZr9zEtieha8PAh591N/iiz0shJn69GqfbBgcXSetCQHxVkUGU++BFLHFBhEsheaJ7/
-	ShMpCIES+yjXZcBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791565274; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vW0Z2YAuAu+y8eIrdsV6xo/3lhL0j96EwTJkuyKSiGc=;
-	b=d91JU66WRMzXd7zRM6eggu3mIm+JqAdqCRcNy0PkpaQYmeQLLxs4IEEjC2/apuUrMzv54n
-	85kZJh8uFRuPwnRPCl3o9SpCW4zLZG5oOeznc4uogR9B0shOyP0rnFgWPzUDoS42oQ00j5
-	spzO3QAnbRdxiwddAGDD+Bz5u4Ehbkc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791565274;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vW0Z2YAuAu+y8eIrdsV6xo/3lhL0j96EwTJkuyKSiGc=;
-	b=KcOgOphYjoBpLH5XvcGPKwluCvsx/EtxvBd50Y30X38vBcdx9NA46So2xq9bLLEhZ/kRZY
-	PDiBDxf9xLeCgnCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 761371326D;
-	Fri,  9 Oct 2026 17:01:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +KsMEdkdyWouRAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 09 Oct 2026 17:01:13 +0000
-Date: Fri, 9 Oct 2026 18:01:11 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, akpm@linux-foundation.org, 
-	david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz, 
-	ayushr@modal.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: memory: fix truncation removing mapped folios
-Message-ID: <askdZgd5P986OSMx@pedro-suse.tail5790ac.ts.net>
-References: <0d2a1809fa1cfc22ad3df26ec28b2d30e5cdf3bd.1791540483.git.baolin.wang@linux.alibaba.com>
- <asjXJZap53yJWMYi@gremlin>
- <asjr2zCp1BVtfpTV@pedro-suse.tail5790ac.ts.net>
- <62e0ce97-1016-4f82-af38-7703c8cffefa@linux.alibaba.com>
+	bh=iltjMudktSKE0S1aNS7P4FmpXghrJyhu3qRFPuHuB7w=;
+	b=xigEGUkbHLuxxe1DaV4bzPIHOJwN2ZjtFJQCmxw+mUeprwFpLahd0pSFb4qLVDntgrtLat
+	P/+Zd5Ew/Ss/kv7gh6/Vzimmhgq5PSPdInm2D+D7k/1DPi/Dk4c5iDClgnx21RLzxxHA8B
+	OwAyfXoHypfsztsBNxuNaJgkrylXBPA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 02A4943856;
+	Fri,  9 Oct 2026 17:02:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB371F000FF;
+	Fri,  9 Oct 2026 17:02:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791565368;
+	bh=iltjMudktSKE0S1aNS7P4FmpXghrJyhu3qRFPuHuB7w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Myx2bn74+CsGe4sqlIoDeAr2FIBxitw6YYY5cf1fOeSsoLVf0DMU868xrHnLdckDk
+	 SEwaCRhAhlp91jqlvRxC0o8GY2X6i7SoQ7V2a85+BfDoNSHsiYNFc/mAc8ZkbQ8m0q
+	 RcT/VJ85hP450jqxyz8+DJJPbsyilif4e1uIapHpH15EIxIM92Y/clfpnnvBJQe7ZH
+	 BkC0Ao7TWzPrXciX/52QH6HsmsKnsaoF3R+sFr4U1R7VxY9A/2JU6Y/P9fOAgQFREL
+	 7OSyoMEbjKV+/WC42yi+AT1fv/wXaQePKHtNzOuIvbhpNOFwVtPTfuZXo3hEcqw7H1
+	 4WZITcxY8fzkw==
+Date: Fri, 9 Oct 2026 19:02:38 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: Re: [PATCH v5 1/3] kselftest: mm: rename read_pmd_pagesize() to
+ pmd_psize()
+Message-ID: <askeLm-15RSm6zE2@kernel.org>
+References: <20261009-fix_hpage_macro-v5-0-54378ae45add@arm.com>
+ <20261009-fix_hpage_macro-v5-1-54378ae45add@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <62e0ce97-1016-4f82-af38-7703c8cffefa@linux.alibaba.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0D98DC0016
+In-Reply-To: <20261009-fix_hpage_macro-v5-1-54378ae45add@arm.com>
 X-Rspam-User: 
-X-Stat-Signature: w8rog3tycj8hbwqy4p1ujoijzomg4xbw
-X-HE-Tag: 1791565276-295817
-X-HE-Meta: U2FsdGVkX1+pMeRMGo4VyxgejyAQzqQK16ccdUTvZg6nmDDa/vbgAtHAb2GnR6P3awuloQN1H/eVNlCL1TNucwgZO1VzAZwmNpYYyYuswqXpRrrWNwi+wOVooQv+VcCQrNR7COqr0ECSX3Jti/CH/4maDXqZE62zmIrYCSY1J3zZ27pg8pRmZ8F/60I7qDi9iet59XkKi7OgzjmzRA6mcCCjGprlVGrOq72O0chmc3TF2/wEV2gOp7HctQ0LDX8j2HjUuRo7NqGn57sOdbTvVkN8xKHYOzbXlL5vN27/L0pqNJ1JtEbAfw97U/01YpT5nVI56LSE1tbPWxnjMpeTeZuO7kJM4/tj3onma2S2mGhm+E+RWEQKBo1P8VQCVWjccNKPR2Fs5fZ9u53eTCK0mC3k62FkTERqHORoo89rY1WJoUVkN5ClwJBlb2rKRznUQG0az+j8VEPya1JlllBMs8ZXeoBI2eqphImjQ+2/LUEOsafC+77yZs2HqC/GW8Zce25Yexe9J3tFHkyRSUb+ONGeGM3iZR3ctFHIjstlk2PxIIH4WrpgDSPTmhw3q6GqxuFGZjwMEbSIDoBRqQ9uijdPMDg2Dr/GNMM5P/yoVTIUKacXVGr4YZ4LSVl59XVLsM/+d/NNP7ceV7zw6cYxzjsgLvb0mbobf+9tMxNHDiPy2qXRKJNEbrpWAgwkN9vhdri9WByGk0MFjumeSATr+l1EDMVirNxEErz88KM8KCS8pl3Hyk2PdC54+KDYeDZ0/k+TDYt6irynKSo1r3WaGbQ0cRQpzMlxWAhfgKMXHEOx2X6FctUQ39uUozFauU1JzBWnBNFZ+27SFtnr7NE6f3p5wjnN5NFvDpOaZemmregyZa0ZMygMyNWEbXWLdmIP2r6VUISDAryJIVektplS4MogOnl2FyJoF80edizC03I7jmDcku3NA2vG7IFv0wyusKvN+bqc4BFh/xbH6Rt
- zZmTWLLc
- DU7U7U/JtV+PGXWObGS3CrKL7RJk/5MhVrCLMIAeJoYJz/p0pY+IXBdXpqJF5jJiItdxnK3JwWrnOQlvaCF9SyG03wqiuDFWazK/kWHHEv6chqJPfNq/7g5eNAn1Xh1HaQHOKdECKwQ5Aron3JvOf39DFlfI1v0+owJwF2pebha58utyqQos/wRB0Aw7Qc/Y3ealOP128VCWmhDPgTRP6ul+MONoyWTPU28yarPSBcxz7UaWlA/dE0TCEoDm+1s6647uQU9DA1Nrqcpman0Vd3knUrnvDV74A9GKZPbcbz8NI9lUaDbGeKBVAROXvIYGrkXrsreP4vHxZl+tPOmTsOicfvc0a7BtXDtnF
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B4C344000C
+X-Stat-Signature: atoir81w7es3ooyoxjp5d4hni8qkskp9
+X-HE-Tag: 1791565369-931420
+X-HE-Meta: U2FsdGVkX192/0W/wxATElkt0HNg9lPVq5EqKNySd+/vLUjg7R7rcEuu6cdiegAixwOg7cLe7lB0+tzxmE7hocMg18PR4UQ945EH0iglmcbmpBJxlkP0MdUc5A9trB4R7ql2tzJuXX9m3twnqYNqN2/EoIMq7E9OGl/YC3GaEA01EOnlcxtdYhzEx9ObI8ucH8HSJq21JFI3WPwENb0qXv+h/cNccDxG17mHzY3qhBAbW4cXO4ezP8ho5MDLmMw3vxS/0I4zwZCIvF3xau/ZAUIapmK8bpw/qAvYkpAvBqQlLaz/JWLlZIj/CUdfgzlk+L/QzaQtJpgPXxF1WkBzrPF1f4kKDDKaT2OAoIH9ctL5myBgMEj9GOvwVvgwClErHQsa4vv6pUEym6q48IlvSNuo8UI/G+MCcZYYxXBNuw8xnb9tVkOSCgA2ZXv+ONpv1kKgmPSX5cSkVGiKyud58p6dSyWA+0/lkidhqhYQHz2/tg4syQUwsZIZU6umazWQO38lzTA4o92puz4GlXp4L02SWeOXGx6mb25Z9Ik8Uwzid1zCyp1DMD3pH8qeS+qIYrkpyZnKg8MxiCAvjyG1CviXtfyTpcJ2BRxxCX9QmR7n6diObVbM1I2fBy43EAnfzflM+9hiR1K5smqYL+GLF2X49QQ/lVMVB80IglGMxTcnkjOe6HWKy6f6E5FAAh9k1f3bNQS55DxZanUMmi6Q0y2hGHYBkbpFybJIOG6H2q8GY+gRYuUGMs3JyvVPOJV1DtyN+1fvQ3+mMsmgHjc5WQnxBYKrRDr53Nm9zzeCqkJU4z5ftvs/8/JyAx8vHWLfUaPOsSnhVWqWgDUsBwK/i71XVlfcerpNDjkgO1uk8hW9izolvIiilxVL6YzeWpFL/DzTygaf7T7GZ1neaCaDu/UJZFEZwYye6tEaqOvVpBfUDiGnWxJQZYV8LgNuzgErVLAUwu/GhmfVoe+93ya
+ txqd8hut
+ FJgGeT6cIHb6gDiNxOkI446NaQWNyXb0uAnXpk3zl1nPi7dROef24Lw46CLfJ43OeUUicbhkWp79ikvZ8+0KLcus2Gv4Ldng5M+/MY9BarXasHbMh2njtQRBlg7dl0yN2SM4YgjKgy1vdEs0xXArsnwW86eIF+wm8T9cAI4YSJ8mUvxhrOX9TG42yyRsf9Lnle5lcr10zL+UEI321HPsiGDSPeizAu5FnVcZ4dMGNi136zrRPM0gbujXKNwCsXufAYN5A/zwVBRCSepwkI/zXJxBb/O5tFGAvuWAM5bp5Inrfxfhxzu4lbIB6/5RJXlFWGyOJlmmztSdjeGk1z4f3BanfDhkOqVkSvvoIoXNp+0Hs910lI2ZFTKxWJRazve2llQB1CD6v0lHXmAoCdju+IC6gJk/lmX0dtXXb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,55 +106,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 09, 2026 at 09:53:55PM +0800, Baolin Wang wrote:
+On Fri, Oct 09, 2026 at 02:27:32AM +0100, Yeoreum Yun wrote:
+> For consistency with psize(), rename read_pmd_pagesize() to
+> pmd_psize(). There is no functional change.
 > 
-> 
-> On 10/9/26 9:36 PM, Pedro Falcato wrote:
-> > On Fri, Oct 09, 2026 at 01:00:52PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > > On Fri, Oct 09, 2026 at 06:12:03PM +0800, Baolin Wang wrote:
-> > > > diff --git a/mm/memory.c b/mm/memory.c
-> > > > index 1f5d5f7d39cd..0272217ad7b0 100644
-> > > > --- a/mm/memory.c
-> > > > +++ b/mm/memory.c
-> > > 
-> > > > @@ -2044,16 +2053,10 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
-> > > >   	 * to ensure they are still none, thereby preventing the pte entries
-> > > >   	 * from being repopulated by another thread.
-> > > >   	 */
-> > > > -	if (can_reclaim_pt && direct_reclaim && addr == end)
-> > > > +	if (can_reclaim_pt && direct_reclaim && addr == end) {
-> > > > +		/* rmap changes need to be observed before e.g PTEs get zapped. */
-> > > > +		smp_wmb();
-> > > 
-> > > What does this pair with? You should always say what in the comment.
-> > 
-> > Yep, this is missing a rmb to pair with. The diff I posted at
-> > https://lore.kernel.org/linux-mm/asigKktcrSY80A_2@pedro-suse.tail5790ac.ts.net/
-> > had one in zap_pmd_range(), which admittedly isn't the greatest. I'm not sure if
-> > there's a better way to do this.
-> 
-> I don't think we need an rmb to pair with. This is because the
-> folio_mapped() check in __filemap_remove_folio() cannot be reordered
-> (guarded by spinlock) with the pmd_none() check in zap_pmd_range().
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 
-Why? spin_lock has ACQUIRE semantics, which are one-way permeable. Earlier
-loads and stores do not necessarily happen-before anything after the ACQUIRE.
-Unless you mean something else.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> 
-> We just need to guarantee that when we find a pmd_none(), the removal of the
-> folio's mapping (via tlb_flush_rmaps()) is already observed.
-> 
-> 
-> > > rmb/wmb are generally not needed vs. acquire/release. Are you sure a wmb is
-> > > right here?
-> > 
-> > I don't think that works, because __folio_remove_rmap has a ton of stuff going
-> > on, some implying full ordering, others not. Plus you'd need to switch the pmd
-> > dereference to something like an smp_load_acquire().
-> 
-> Agree.
+> ---
+>  tools/testing/selftests/mm/cow.c                   |  2 +-
+>  tools/testing/selftests/mm/folio_split_race_test.c |  2 +-
+>  tools/testing/selftests/mm/hmm-tests.c             | 22 +++++++++++-----------
+>  tools/testing/selftests/mm/khugepaged.c            |  2 +-
+>  tools/testing/selftests/mm/khugepaged_race.c       |  2 +-
+>  tools/testing/selftests/mm/khugepaged_sync_check.c |  2 +-
+>  tools/testing/selftests/mm/migration.c             |  4 ++--
+>  tools/testing/selftests/mm/mkdirty.c               |  2 +-
+>  tools/testing/selftests/mm/pagemap_ioctl.c         |  2 +-
+>  tools/testing/selftests/mm/prctl_thp_disable.c     |  4 ++--
+>  tools/testing/selftests/mm/process_madv.c          |  2 +-
+>  tools/testing/selftests/mm/soft-dirty.c            |  2 +-
+>  tools/testing/selftests/mm/split_huge_page_test.c  |  2 +-
+>  tools/testing/selftests/mm/uffd-common.c           |  6 +++---
+>  tools/testing/selftests/mm/uffd-unit-tests.c       |  8 ++++----
+>  tools/testing/selftests/mm/uffd-wp-mremap.c        |  2 +-
+>  tools/testing/selftests/mm/vm_util.c               |  4 ++--
+>  tools/testing/selftests/mm/vm_util.h               |  2 +-
+>  18 files changed, 36 insertions(+), 36 deletions(-)
 
 -- 
-Pedro
+Sincerely yours,
+Mike.
 
