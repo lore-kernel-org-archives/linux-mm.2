@@ -4,101 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20AF9CA601D
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 17:02:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B9F1CA601E
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 17:04:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11D4E6B0088; Fri,  9 Oct 2026 13:02:52 -0400 (EDT)
+	id 517EF6B0092; Fri,  9 Oct 2026 13:04:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CE4E6B008A; Fri,  9 Oct 2026 13:02:52 -0400 (EDT)
+	id 4EF5A6B0096; Fri,  9 Oct 2026 13:04:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED8D86B0096; Fri,  9 Oct 2026 13:02:51 -0400 (EDT)
+	id 42C526B0099; Fri,  9 Oct 2026 13:04:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CD3206B0088
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:02:51 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5D88A1A043C
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:02:51 +0000 (UTC)
-X-FDA: 85303707342.12.8B6AEDC
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 187E16B0092
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 13:04:32 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9463B80497
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:04:31 +0000 (UTC)
+X-FDA: 85303711542.11.EC83627
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B4C344000C
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:02:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Myx2bn74;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791565369;
-	b=gw5DaXVkp+l+HJLXUytalRkcxAI78Vw3mQo9USZ6KrhTX6UNWILvCybD6PSulYPKirylGW
-	po/orclhSDMHfBvSLya/NGo+76BBUKil2VcJ5CAXYT1aVa5qyicTRlZIFWt0JEcVv0xtqh
-	Q7ySBT0jqVzdednhF0OPL49txNOHIjk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Myx2bn74;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id EEE1E80007
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:04:29 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IjXcxo5s;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791565369;
+	s=arc-20220608; t=1791565470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iltjMudktSKE0S1aNS7P4FmpXghrJyhu3qRFPuHuB7w=;
-	b=xigEGUkbHLuxxe1DaV4bzPIHOJwN2ZjtFJQCmxw+mUeprwFpLahd0pSFb4qLVDntgrtLat
-	P/+Zd5Ew/Ss/kv7gh6/Vzimmhgq5PSPdInm2D+D7k/1DPi/Dk4c5iDClgnx21RLzxxHA8B
-	OwAyfXoHypfsztsBNxuNaJgkrylXBPA=
+	bh=pRBwxZ/pTxp7drinmbnO6WjD0YWUO9pajIRsaCkGJRY=;
+	b=ACW/g1pasLzU/kSDD8qj5ZsSFqUaqFpN4amrRCINutjrGbO3FUcbtl1QmpuLuUF7hQEDYi
+	i8Yvt4AAfjpM17blrFXhflZ3P92jUa1mFi4hMOq204ycgthtxO1XPIlScGutZ2MKGQhGUz
+	wDDVrI6zkU0q9fFMw4h1TbKDWNrTY+A=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791565470;
+	b=Ards586CyAVQODvKz04d/Cjrp26FDdYRr54+rapEMer9lEPQGY2R6YCIMcDd5q6d0c/mFo
+	BbmPGmSYsnvsDUI3PiY3Yi/u/4LuWG8+jJ7ubltXLo6fWB3nimid5aykennIj+KzE3DI8L
+	qdQ9U3ADD6s2MYdgb76FQzroYyxpzLA=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IjXcxo5s;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02A4943856;
-	Fri,  9 Oct 2026 17:02:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB371F000FF;
-	Fri,  9 Oct 2026 17:02:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2854A43B04;
+	Fri,  9 Oct 2026 17:04:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439AD1F000FF;
+	Fri,  9 Oct 2026 17:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791565368;
-	bh=iltjMudktSKE0S1aNS7P4FmpXghrJyhu3qRFPuHuB7w=;
+	s=k20260515; t=1791565469;
+	bh=pRBwxZ/pTxp7drinmbnO6WjD0YWUO9pajIRsaCkGJRY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Myx2bn74+CsGe4sqlIoDeAr2FIBxitw6YYY5cf1fOeSsoLVf0DMU868xrHnLdckDk
-	 SEwaCRhAhlp91jqlvRxC0o8GY2X6i7SoQ7V2a85+BfDoNSHsiYNFc/mAc8ZkbQ8m0q
-	 RcT/VJ85hP450jqxyz8+DJJPbsyilif4e1uIapHpH15EIxIM92Y/clfpnnvBJQe7ZH
-	 BkC0Ao7TWzPrXciX/52QH6HsmsKnsaoF3R+sFr4U1R7VxY9A/2JU6Y/P9fOAgQFREL
-	 7OSyoMEbjKV+/WC42yi+AT1fv/wXaQePKHtNzOuIvbhpNOFwVtPTfuZXo3hEcqw7H1
-	 4WZITcxY8fzkw==
-Date: Fri, 9 Oct 2026 19:02:38 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: Re: [PATCH v5 1/3] kselftest: mm: rename read_pmd_pagesize() to
- pmd_psize()
-Message-ID: <askeLm-15RSm6zE2@kernel.org>
-References: <20261009-fix_hpage_macro-v5-0-54378ae45add@arm.com>
- <20261009-fix_hpage_macro-v5-1-54378ae45add@arm.com>
+	b=IjXcxo5sLrTtBSJR7EkoJWJY77e88/FBq0xaObIkJ8gytFU4tpsY9YddZpjtiCGsd
+	 Yv8M15lrCBIrHMaI2fHrUx/MTCbn9RQSd+EyRFZBscjksdk+j08F1zjcIzxZwi8XEX
+	 1u+bMyBVUYF8xZLnHLuBWOhtUQ6gcltcfnPFaBFZHrUMA29WW9OLeD7kA9nJ18LluF
+	 LQpQpcea6IU0UlyakE/wazbfHT9e+xq4ueFy7q8OcrHkwJbD194frgQQN2+uHH1rhx
+	 iPEuGPyeVBHFEVlu5Tz4J1GYor8Qb5ysDSQuQNPlAubMgFFo5EC8mMYSvX4v58SYnm
+	 sWKyZYzFSEH0A==
+Date: Fri, 9 Oct 2026 18:04:24 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Ihor Solodrai <ihor.solodrai@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, bpf <bpf@vger.kernel.org>
+Subject: Re: [PATCH v2] mm/vma: keep the unlinked VMA off the file across
+ unmap on mmap hook failure
+Message-ID: <askcyeoKgKb6771N@gremlin>
+References: <20261007101800.58d50b1b20a10738e630bfd5@linux-foundation.org>
+ <20261007194708.2009-1-okerixx@gmail.com>
+ <e139339c-1e55-438b-86bf-0960ad4029f1@linux.dev>
+ <asjQQF_Ok1TZPm1M@gremlin>
+ <271f7ba8-df38-4c8f-b59d-68b52ee998e9@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261009-fix_hpage_macro-v5-1-54378ae45add@arm.com>
+In-Reply-To: <271f7ba8-df38-4c8f-b59d-68b52ee998e9@linux.dev>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EEE1E80007
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B4C344000C
-X-Stat-Signature: atoir81w7es3ooyoxjp5d4hni8qkskp9
-X-HE-Tag: 1791565369-931420
-X-HE-Meta: U2FsdGVkX192/0W/wxATElkt0HNg9lPVq5EqKNySd+/vLUjg7R7rcEuu6cdiegAixwOg7cLe7lB0+tzxmE7hocMg18PR4UQ945EH0iglmcbmpBJxlkP0MdUc5A9trB4R7ql2tzJuXX9m3twnqYNqN2/EoIMq7E9OGl/YC3GaEA01EOnlcxtdYhzEx9ObI8ucH8HSJq21JFI3WPwENb0qXv+h/cNccDxG17mHzY3qhBAbW4cXO4ezP8ho5MDLmMw3vxS/0I4zwZCIvF3xau/ZAUIapmK8bpw/qAvYkpAvBqQlLaz/JWLlZIj/CUdfgzlk+L/QzaQtJpgPXxF1WkBzrPF1f4kKDDKaT2OAoIH9ctL5myBgMEj9GOvwVvgwClErHQsa4vv6pUEym6q48IlvSNuo8UI/G+MCcZYYxXBNuw8xnb9tVkOSCgA2ZXv+ONpv1kKgmPSX5cSkVGiKyud58p6dSyWA+0/lkidhqhYQHz2/tg4syQUwsZIZU6umazWQO38lzTA4o92puz4GlXp4L02SWeOXGx6mb25Z9Ik8Uwzid1zCyp1DMD3pH8qeS+qIYrkpyZnKg8MxiCAvjyG1CviXtfyTpcJ2BRxxCX9QmR7n6diObVbM1I2fBy43EAnfzflM+9hiR1K5smqYL+GLF2X49QQ/lVMVB80IglGMxTcnkjOe6HWKy6f6E5FAAh9k1f3bNQS55DxZanUMmi6Q0y2hGHYBkbpFybJIOG6H2q8GY+gRYuUGMs3JyvVPOJV1DtyN+1fvQ3+mMsmgHjc5WQnxBYKrRDr53Nm9zzeCqkJU4z5ftvs/8/JyAx8vHWLfUaPOsSnhVWqWgDUsBwK/i71XVlfcerpNDjkgO1uk8hW9izolvIiilxVL6YzeWpFL/DzTygaf7T7GZ1neaCaDu/UJZFEZwYye6tEaqOvVpBfUDiGnWxJQZYV8LgNuzgErVLAUwu/GhmfVoe+93ya
- txqd8hut
- FJgGeT6cIHb6gDiNxOkI446NaQWNyXb0uAnXpk3zl1nPi7dROef24Lw46CLfJ43OeUUicbhkWp79ikvZ8+0KLcus2Gv4Ldng5M+/MY9BarXasHbMh2njtQRBlg7dl0yN2SM4YgjKgy1vdEs0xXArsnwW86eIF+wm8T9cAI4YSJ8mUvxhrOX9TG42yyRsf9Lnle5lcr10zL+UEI321HPsiGDSPeizAu5FnVcZ4dMGNi136zrRPM0gbujXKNwCsXufAYN5A/zwVBRCSepwkI/zXJxBb/O5tFGAvuWAM5bp5Inrfxfhxzu4lbIB6/5RJXlFWGyOJlmmztSdjeGk1z4f3BanfDhkOqVkSvvoIoXNp+0Hs910lI2ZFTKxWJRazve2llQB1CD6v0lHXmAoCdju+IC6gJk/lmX0dtXXb
+X-Stat-Signature: qont3uds9m4st1rzmf1k8euswp74xtfg
+X-HE-Tag: 1791565469-481106
+X-HE-Meta: U2FsdGVkX19DhKdQfnx3W/VnVvfXoVYNDDd18ivVacPYw5TqrzENu1VZetIQPM0fxeWtIIDzJAoo4ixGBTF/HfZJxVM7/0I7SVOO8ZxBZpMCw+qW/Ol0bAFWR3JSFb6s7Vx5HKqW2A2MbFFabGhkTLftggVkrcBZzeBVpvLuU7ET0EpLASvVH4C+nlyIeh7wjwdv3S29VyxwyqPp8/0AL/yK7wu0Pk1Nzi+7sNhlzoqTQgMb7uA3sIkz8Y6GxXckccJapky2NAvvjRWLBPCeW7jQGZj1qsyc1MA2hgmOsc4mxywxL02wI26EmZqo9T8/4Z5krMT9UJN7x0i7fob28wmRehxtygpsyyfIpTAgGUENRyg+9iSXMVuY72l3/dQZ9tWVqc70oK0IUf+/mByOwxe3GqREmKZFbAD32vN9IuzE1I2N7JHT+9pFHTzl8Gk5Az59IUNE/CberECTFF4q/I0Fq3mAl0gJ4vHugUOMgytNFVCIQCcrYR+Lzz4SjSiX79CTOb6rAN0IwcHbpuf/Te/6jf0794pmiB+M4GYMg1r90cw1NY9tnEDxvclUfBhTE1N/ufGiD8xG5bg13XvT6Law6amVx4TuRkEo1yj0Pw0xmG1oRy5Wy6SZAgVOJwLbCzGv0PymtbxvTkizRclsHQJktM+t+1UV0p+J27FIKof7bClstGtevEdLptVwiu7jMhaeCNg1U80hH3ho0+BUpLiJYDIASY8jupDuqd/cc8W92B6N76XnW6iKVUzSal5dd9tFa0AZHxqEhv4P2XeCHt3uZk4wNL2xgELXtcC2zMSjBeBdi4qyzPW6cJTAz+g5Ta0pHETWdEG9C90NxYCTi2hGf08e+xGrjscWmepphh3TrdfEY5rKYkqDJ7Qjj9wnNIOlwEJMu2TIn7CiErXaMFSw+O01W2DFq9UK4oLmS3fIKq9ngWm0Sk+twyAPEUwl5rzNT9I/LYzr5IQaeKo
+ pSX21U3i
+ UOFE6q6RIxunlqS4UCsn9VoSEawr/pzmKHzvHVImHhGcPoG3Jdddxm8ExwYrlaVRgEtIlUqB+45cScxGMg43am7q/2lVW0sar08JGZTa2kB6d1r6aAEfOq/1mJQ2gqjFcEGEgRUH0zbiD20qRqF3fTJcjZyoJ7aboRaMuAttwnanLar0barqToq8SPJ2EPBxqzMM5Uo+7j5B8KR/vRE1S7lpqKIRJPUBXrvT+KfJbrgKfSpwC41rrIAIlp1K/VxYj5pmsSivR9g7BDfPGiq6hYr/CrA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,40 +97,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 09, 2026 at 02:27:32AM +0100, Yeoreum Yun wrote:
-> For consistency with psize(), rename read_pmd_pagesize() to
-> pmd_psize(). There is no functional change.
-> 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+On Fri, Oct 09, 2026 at 09:38:56AM -0700, Ihor Solodrai wrote:
+> On 2026-10-09 4:31 a.m., Lorenzo Stoakes (ARM) wrote:
+> > -cc slopper
+> >
+> > On Thu, Oct 08, 2026 at 02:48:07PM -0700, Ihor Solodrai wrote:
+> > > BPF CI caught this bug on linux-next as well:
+> > > https://github.com/kernel-patches/bpf/actions/runs/37736351874
+> >
+> > Nice that it caught it!
+> >
+> > Is there a way to automatically notify patch author that when it happens? Does
+> > it bisect, etc. or just green/red?
+>
+> For linux-next it's just green/red now.
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+That's still nice! We have something similar in mm. I think possibly
+inspired by you guys :)
 
-> ---
->  tools/testing/selftests/mm/cow.c                   |  2 +-
->  tools/testing/selftests/mm/folio_split_race_test.c |  2 +-
->  tools/testing/selftests/mm/hmm-tests.c             | 22 +++++++++++-----------
->  tools/testing/selftests/mm/khugepaged.c            |  2 +-
->  tools/testing/selftests/mm/khugepaged_race.c       |  2 +-
->  tools/testing/selftests/mm/khugepaged_sync_check.c |  2 +-
->  tools/testing/selftests/mm/migration.c             |  4 ++--
->  tools/testing/selftests/mm/mkdirty.c               |  2 +-
->  tools/testing/selftests/mm/pagemap_ioctl.c         |  2 +-
->  tools/testing/selftests/mm/prctl_thp_disable.c     |  4 ++--
->  tools/testing/selftests/mm/process_madv.c          |  2 +-
->  tools/testing/selftests/mm/soft-dirty.c            |  2 +-
->  tools/testing/selftests/mm/split_huge_page_test.c  |  2 +-
->  tools/testing/selftests/mm/uffd-common.c           |  6 +++---
->  tools/testing/selftests/mm/uffd-unit-tests.c       |  8 ++++----
->  tools/testing/selftests/mm/uffd-wp-mremap.c        |  2 +-
->  tools/testing/selftests/mm/vm_util.c               |  4 ++--
->  tools/testing/selftests/mm/vm_util.h               |  2 +-
->  18 files changed, 36 insertions(+), 36 deletions(-)
+>
+> We've added it to have an "upstream merge will break bpf" signal,
+> because it happened regularly.
+>
+> For bpf list we run on every incoming patch, so regressions are detected
+> quickly. Not feasible to do that for *every* upstream patch, we'd need
+> much more compute.
+>
+> An auto-bisection is something I thought about, but never got to it.
+> These days with LLMs this may be easier to set up though.
 
--- 
-Sincerely yours,
-Mike.
+yeah that'd be awesome, but obviously a nice-to-have!
+
+--
+Cheers, Lorenzo
 
