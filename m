@@ -4,100 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FC9ECA5FED
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 08:23:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B17CCA5FED
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 08:41:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A50C26B0093; Fri,  9 Oct 2026 04:22:59 -0400 (EDT)
+	id 3BB016B008A; Fri,  9 Oct 2026 04:41:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A27DB6B0095; Fri,  9 Oct 2026 04:22:59 -0400 (EDT)
+	id 36C696B008C; Fri,  9 Oct 2026 04:41:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9654D6B0096; Fri,  9 Oct 2026 04:22:59 -0400 (EDT)
+	id 25C736B0092; Fri,  9 Oct 2026 04:41:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 702C06B0093
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 04:22:59 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF40C402A5
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:22:58 +0000 (UTC)
-X-FDA: 85302397236.17.A1069E4
-Received: from mta0.migadu.com (out-120.mta0.migadu.com [91.218.175.120])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 27D1318000A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:22:54 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lzAQwm46;
-	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.120 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EEC6C6B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 04:41:27 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 94AA4A6653
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:41:27 +0000 (UTC)
+X-FDA: 85302443814.23.C71F603
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6428DC0002
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:41:25 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791534177;
+	s=arc-20220608; t=1791535285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oPKfmQ01IpavpOUMHMCz4tLEVNdQIFdmn1JVvwShTRI=;
-	b=xj0u/uV9MFg27Ok5Gr3PKMvOe+gjuJxLUy515OhqXrmS597EUOcvvz9KO5uKNndqENq3tb
-	i+q7eOmRlxLF+quBvcDxUPJ1IXoViQL2EbSqMJNwqQa/lqpiz1pQiNUio9Z8LbHX9U6g5t
-	WV9OsA14beP26S8/PQLUmt+b0hGEZ8w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791534177;
-	b=BZjr6081EL+ie+d9i+1C7XPdWPWMziAT2rkN97ZHGstsebHfeSBTus8Tq76OoXloGsEd00
-	txnm9pJH/E5NmTm+yl7kvU9IAcQmX7nLeHaz7DqILQAwmJF0HV8jh0bjni9IsGpq3QEkfq
-	1YiggDZ+7pH+SvtztRBodYRxdR/xVjg=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lY/UkVyO7TlE8Pkq8dBJi8n2CXg92CJMf1OzgLUi588=;
+	b=rWOA7NF82D03M0Zh8QAXX+HBuEJFCAumwvEd80LSpnWdUFee5nRbLZSx93Kbah9dEnIxcZ
+	TG727dBvq3TcwmWora3/qyo3PgVr2oHvFvPLPUCDz3uvxyRGcMCucCLhWyz/xA5emb+zEd
+	CiUQtG3OSUaegXREO97nMa9KLtOEs1w=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lzAQwm46;
-	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.120 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=c5aDOqijhnGPpwPCmjSXCbIeHPczQrKsPxgMJv3hKPQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791534172; v=1; x=1792138972;
- b=lzAQwm46m7c4MXznCJpzzcM+m+QYqY79uC477fKHXPozG/TetRQTbA0vJOMxchj/3j05PAjF
- eK75Cgrlpo1SdPkaa8te5lVHheGmwx9rCxDtBMg0d6q3B93sF6D3ZgXNWsJO5YwYrEHbCwqcuFe
- 4quKoBYkubaynDJbtZkWlveo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 23e08e172bfdef72;
-	Fri, 09 Oct 2026 08:22:52 +0000
-X-Mizu-Trace-ID: 23e08e172bfdef72
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <baa5ac6e-e7ea-496b-bea7-a3790d277d73@linux.dev>
-Date: Fri, 9 Oct 2026 16:23:53 +0800
+	imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791535285;
+	b=7aoKzSaDinUrLmv4C2dpd1K4n5pfoeGc0R2ID1fsMPZoVeBwN4P6ZpO8HZpnxd0eDUum84
+	PPsWNvTUwkRSMfOMjyb/6hPMHdnALUxyaToF1XjdwdGhpgad99amrfeW1W9Fi2WIKAdYVt
+	esTqMBpoOJyTqflbkb5JCqGLkbqvZc0=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DDF9C21BB2;
+	Fri,  9 Oct 2026 08:41:23 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 010E11326D;
+	Fri,  9 Oct 2026 08:41:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id C4YwMLKoyGpkJgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 09 Oct 2026 08:41:22 +0000
+Date: Fri, 9 Oct 2026 09:41:21 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	Ayush Ranjan <ayushr@modal.com>, Hugh Dickins <hughd@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@kernel.org>, 
+	Gregory Price <gourry@gourry.net>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [BUG] shmem: FALLOC_FL_PUNCH_HOLE vs fault-around race corrupts
+ page cache / rss counters
+Message-ID: <asigKktcrSY80A_2@pedro-suse.tail5790ac.ts.net>
+References: <20260924061708.1645968-1-ayushr@modal.com>
+ <arTdLsBENhrpOyk-@pedro-suse.tail5790ac.ts.net>
+ <20260925053027.1998394-1-ayushr@modal.com>
+ <20260925065013.3682431-1-ayushr@modal.com>
+ <20261003033107.1488699-1-ayushr@modal.com>
+ <20261004222831.bdd648a2b406f02747dd9e40@linux-foundation.org>
+ <fyswoh7wpxzlbnjjanggjd2jz6yispmeirhwjl3wzi57nacddb@bjkb6kxyfcal>
+ <fbb046b9-be48-42d8-96b3-7e554484b625@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 2/7] mm/vmalloc: undo partial mappings inside the
- mapping functions
-To: Suren Baghdasaryan <surenb@google.com>,
- Uladzislau Rezki <urezki@gmail.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>, Andrew Morton
- <akpm@linux-foundation.org>, Alexander Potapenko <glider@google.com>,
- Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-modules@vger.kernel.org, kasan-dev@googlegroups.com,
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-References: <20260929082014.160587-1-hao.ge@linux.dev>
- <20260929082014.160587-3-hao.ge@linux.dev> <arzgoe-bXAz1poAt@milan>
- <CAJuCfpHavrwaJ2T6daHnJc+r=9khBwrv_zOp8s3Cwi347SHXRw@mail.gmail.com>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpHavrwaJ2T6daHnJc+r=9khBwrv_zOp8s3Cwi347SHXRw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 27D1318000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fbb046b9-be48-42d8-96b3-7e554484b625@linux.alibaba.com>
+X-Rspamd-Pre-Result: action=no action;
+	module=Unknown lua;
+	unknown reason
+X-Rspamd-Pre-Result: action=no action;
+	module=Unknown lua;
+	unknown reason
+X-Rspamd-Queue-Id: 6428DC0002
 X-Rspam-User: 
-X-Stat-Signature: xjt3r345gp9g6azjots8esduqzxyarpy
-X-HE-Tag: 1791534174-66189
-X-HE-Meta: U2FsdGVkX1/BMZvqrJ+D/Ep+Ni18nulcgUmQieFjWbVorAFzaMMxbAfpiAVN6eaQdgT4vKIyXPbWJwev3kvbmZO89cwWW1O4mxOyKd4QrBchLGJNnoPJzdk84Rno/JDvVhh/rtsERAh8JwrTEITJvkZyspDsin1eg4yCOEwC8buukispwrF2JsJMDIZ0NbOznVC+KuDZLhRzNyETk6Hey7E/9tUhhPuibIm7UGgg4dCEFYNcFlKLTiUJ34Jp1CFgIGgf4o8sEB8Zdu6ifyKESanGMYxRa6nedwXCdlS717K/e+1uQ3qjU2nFEYGKr8PQg2jXzfay9bRPMo9K7CxMg+ub9A1931Oc92K0tf5mtlw6GoY1fAjwGr/Lcr6HCu5lyE4Bq26QI3xfrrVRe92XGYp/pGo0JCbsVUKeTyA3Sbqb7241JEgUaQcJOa/J1bVD/kj8aCPkeZKAS1epgrmtOz8pRAYVV8vCEJ9YhnUjQcigraWGjFAregXFbXaphi5pd+2sYFpJpZHXOAPTgsG6T6JW8xQqaRXZZxlaGZs2+6vN79ryS40zl9D84DOgXstTDJ+bhEIRcotP3nXFuLtYQsD35dRLzW/gS/5+9T2EAEG/UKTollSwWUM4l4dlceK1UzwjXaceCRtkzqTy3QGdyN+LAfzjcFeD+t3M1LZmBSCfrv1/GjBwBDU+S+OwpoH9GeCHe9vUvV6Eesagn1Ah3OJ5UZMHm/l+8Oeor0/cfdNfO7h5TJRrlDSnY3xZTiJLX1piDEfQi22eICeJpB4gQVNIbvBYrZKUSdomfYEBN04FX97y3pU9IIRYJSbJSUq3VEPlYUHw4xsoMLLDwS6h/OzPFty6PYdcbcpPTEHPzHN07XpKS69raE1i1OV+KpYhENLbS67sQsxEHpVim6lLMTsKw1NonBCmLdfuzOd0aucL4NAmVDXf0nzzOkzroD04I5nW21wFgiyWzXPy6xv
- Tnbh2Z13
- CIThibhwmeMg9Ujr4ND+SL8a+Uc/66ebebanLJpg8nM1oSfzb5vs8vhXsAl72zea+E4Ub4/Ytq2AFYYN4+t+BW1tjXsgPvaoNHt3o5P1tZ805itTaXyI7MSCw4eHZ4aYEDxDMk97achvxhZe0SexxM4KWbip93jClUJ7gImgkqndVz3LRgxaZ6IsmOrlsgP5tylF2p7e3OQ8LXtr0x+jesXaOS/YN/2Os41CgAeZnl3XVF6rCGKDIfbFs0nCXJ7B3CcwDH+hXTXZL0GbasULIpcRxCurAB9H771tCk1ixRQtiGJEiwY5Vm127+RTUXwby7erK7LbHzww+T30n8fMQbAd74DoK4UPhjYEv
+X-Rspamd-Server: rspam12
+X-Stat-Signature: r9ryccqwc7uhxk5uhumpdcfobmjq6oag
+X-HE-Tag: 1791535285-64786
+X-HE-Meta: U2FsdGVkX1/bLqKFBqaWSH4iw1tOPdXMv9pYznfd3vK80UmiOH1AwEnj56coyzdJ3bf8C+ZV6AyWNC8JmsIRtJRPfj3qnQOmroD/rfLoBHoHkBcE3Oe4KGj+S2E6eZf/gjL405a3Nb/yMZiwhRlL6phseKAWncuI1lGmLVcDipYhKBmyrTLaDbXipj9WOI5qWSysWmYOmYHt5Ri5ZztjRj/fSwkkq1kAAdabb6d5y0GNnm/L9SrlHRzKR3cypidaRGxDcX7ObIcPUYf7hD7QWcA9+yQvtQmXp4vSgTmCgxMFfQgFecUeHGSg/4t58UPioUyE86JdVvrFwmnGiF3il3JvTU5jp/DutIdE3YYiBUr7EcNf5U0LAUXA/boTn98X/NVeEYhH5LhKuAYW8MVVJ1WWq1h3pHL8jNpxP1UrPRFkNDTRhcehmkeiadjvM+UdXz4ouGRMBO2NRCiwMTnMW4upumecP9zX9Ph1hK9Mls7LtvIDCGr64BZxXQh87BgyccDnlYSQ7jD5iH4WDieugvV8/odnErM43WdPNNypbm25kCW9gVWI/KsxRjA6koutnfFFH9uncc+OXhQi7Mvvzz8Bnv5fCw5BYTq/VAOvQdWdR3qZ1K/JDN2KzIBfeKKn12p5uyA+1qeUafiFK40wKtsg+K6WhMOOi4+nPj04vRQpQWzGN2rx9toTB1U7j2vUSIQoPEvblE7sUfgxlVmoqeX9OzOh/hxQzUUfMlv3F3oRX3wMjRJdzhmiD9RGhCpPQNGGDSQzF8LmvCAX3vxpT6YiJkySXuSaVvjVCzD0RnikYu/wKSklHmxoEYmV7H4AcYpJ9QaXLrGloGKKARHHXSSt8yI+DIXO8PWTt6l/b4NBlD5whWtnpuJMfWkCKNSWbY6vWM9TOiYbhBiMbaqm2lsjEuz3pHOyxKQ2WPD9OTsdNIg8Z9wdLlFX1XgNBWL2EnPOueGPQwYesowFXpN
+ 13VVTIsc
+ I/3084BA3Vg+fuU4V4JBVeWQ1a5ItPItli8OMu3jVB9TTGWkVR5MGxvYM1tFfUk2DngH6y6gu7etKNNc8nsIqkROdF8OeaT+BVFQyayYL7gja/IhMOpNHpTaFFdcxqLjzs0PyHcpW5ZKClGLcT77r4dMMrg7gmvfLVcJyNsHrzyobtdIQMIzhWSD5VY3kYIy+9+wEVHba2/aw509sMv1dN5LE30hT60lCN/9Q3ZL2bNJUOpBeUfls5YuWGJQjkCXoPn4uBdBiWPEiz7cA71wYr71j6OGUEg2pOY3zb7RufU5T0e4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,228 +108,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren 
-
-On 2026/10/5 01:42, Suren Baghdasaryan wrote:
-> On Wed, Sep 30, 2026 at 12:12 PM Uladzislau Rezki <urezki@gmail.com> wrote:
->>
->> On Tue, Sep 29, 2026 at 04:20:09PM +0800, Hao Ge wrote:
->>> __vmap_pages_range_noflush() and friends can install some PTEs before
->>> failing and leave them mapped, and the kernel callers do not agree on
->>> who cleans them up. For example, pcpu_map_pages() and
->>> kmsan_ioremap_page_range() unmap the leftovers themselves, while
->>> vm_module_tags_populate() and the __GFP_NOFAIL retry loop in
->>> __vmalloc_area_node() relied on the mapping functions cleaning up and
->>> did not call anything like vunmap_range() themselves. When the same
->>> range is mapped again, the attempt hits the leftovers and fails, with
->>> BUG() in vmap_pte_range() for huge mappings.
->>>
->>> After discussing with Suren and Ulad, we decided the cleanup belongs
->>> to __vmap_pages_range_noflush() and friends, so the callers no longer
->>> need to unmap the partial mappings themselves. Each function now
->>> undoes the PTEs it installed itself.
->>>
->>> The rollback calls the low-level __vunmap_range_noflush(), it just
->>> clears the PTEs of the range it is given, which is all a rollback
->>> needs. It cannot use vunmap_range_noflush() because these mapping
->>> functions also map the KMSAN shadow and origin, and for a metadata
->>> range its hook would look up the metadata of the metadata, get 0
->>> and BUG() on addr >= end. The failed mappings were never accessed,
->>> no TLB flush needed.
->>>
->>> Fixes: 9376130c390a ("mm/vmalloc: add support for __GFP_NOFAIL")
->>> Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
+On Fri, Oct 09, 2026 at 02:46:18PM +0800, Baolin Wang wrote:
 > 
-> I don't think this fixes 0f9b685626da. I mean it fixes it but
-> indirectly. That patch expects vmap_pages_range() to undo the mappings
-> when it fails, which is a reasonable assumption. By fixing
-> vmap_pages_xxx we fix all its users, including
-> vm_module_tags_populate(). So, it indirectly fixes several callers but
-> when adding a Fixes tag we do not list all patches we indirectly fix.
->
-
-Got it, learned something new here. I used to think we had to add a Fixes tag
-so stable folks know which branches to backport to.
-I went back and re-read Documentation/process/stable-kernel-rules.rst, and turns out
-that's not how it works.
-
-Both Fixes tags should be removed then. At the end of the day we're just normalizing the API;
-those other commits are merely beneficiaries of this change.
-
-Thanks for your patient guidance.
-
-Best Regards
-Hao
-
->>> Reported-by: Sashiko <sashiko-bot@kernel.org>
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->>> ---
->>>  mm/kmsan/shadow.c |  4 ++++
->>>  mm/vmalloc.c      | 31 +++++++++++++++++++++++++++++--
->>>  2 files changed, 33 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
->>> index 0c88d89bf0d6..2166086d3dc3 100644
->>> --- a/mm/kmsan/shadow.c
->>> +++ b/mm/kmsan/shadow.c
->>> @@ -258,6 +258,10 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
->>>                                           o_pages, page_shift);
->>>       kmsan_leave_runtime();
->>>       if (mapped) {
->>> +             /* Undo the shadow mapping set up above. */
->>> +             kmsan_enter_runtime();
->>> +             __vunmap_range_noflush(shadow_start, shadow_end);
->>> +             kmsan_leave_runtime();
->>>               err = mapped;
->>>               goto ret;
->>>       }
->>>
->> Can we just do that inside the vmalloc? For example in the
->> __vmap_pages_range_noflush() as entry function for all(?) helpers?
->> So we do not need do it manually?
 > 
-> Agree, that would be better.
+> On 10/8/26 5:24 PM, Jan Kara wrote:
+> > On Sun 04-10-26 22:28:31, Andrew Morton wrote:
+> > > On Sat,  3 Oct 2026 03:31:03 +0000 Ayush Ranjan <ayushr@modal.com> wrote:
+> > > > Gentle ping on this. The reproducer in my previous mail [1] triggers
+> > > > "Bad page cache ... still mapped when deleted" on 6.18.46 within a
+> > > > couple of minutes on a 128-CPU bare-metal box, with no fork() and no
+> > > > gVisor involved.
+> > > > 
+> > > > We continue to hit this in production at low frequency, so I am happy
+> > > > to test patches or collect more data if that would help.
+> > > > 
+> > > 
+> > > fwiw I made gpt and gemini argue about this for a while and ended up
+> > > with the below.
+> > 
+> > Worth a try I guess. Let's see :)
+> > 
+> > > From: Andrew Morton <akpm@linux-foundation.org>
+> > > Subject: mm: shmem: serialize fault-around against hole punching
+> > > Date: Sun Oct 4 09:05:31 PM PDT 2026
+> > > 
+> > > shmem uses filemap_map_pages() for fault-around.  Unlike shmem_fault(),
+> > > filemap_map_pages() does not participate in shmem's fallocate exclusion
+> > > protocol.
+> > > 
+> > > During a partial hole punch of a large shmem folio, the folio can be split
+> > > and the resulting smaller folios can remain temporarily visible in the page
+> > > cache while shmem_undo_range() restarts its walk.  Fault-around can then map
+> > > one of those folios again before the hole-punch path removes it.
+> > > 
+> > > shmem_undo_range() may subsequently delete that folio from the page cache
+> > > despite the new userspace mapping.  This can trigger "still mapped when
+> > > deleted" warnings and leave stale mappings or inconsistent RSS/page-table
+> > > accounting behind.
+> > 
+> > So this part of explanation is either incomplete or wrong in my opinion.
+> > Yes, shmem_undo_range() calls truncate_inode_partial_folio() which can
+> > split a large folio. Yes, filemap_map_pages() can map those pages back into
+> > page tables. But how "shmem_undo_range() may subsequently delete that folio
+> > from the page cache despite the new userspace mapping" happens is unclear
+> > to me. After splitting a folio, shmem_undo_range() will restart and find the
+> > newly split (and mapped) folios and calls truncate_inode_folio() to get rid
+> > of them. Now truncate_inode_folio() calls truncate_cleanup_folio() which
+> > does:
+> > 
+> >          if (folio_mapped(folio))
+> >                  unmap_mapping_folio(folio);
+> > 
+> > so the mapping is reliably removed under folio lock. Can you perhaps push
+> > your agents further to explain in more detail how this "still mapped when
+> > deleted" happens in their opinion?
 > 
->>
->>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>> index 859e6d2d57a3..9bbf75706627 100644
->>> --- a/mm/vmalloc.c
->>> +++ b/mm/vmalloc.c
->>> @@ -349,6 +349,10 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
->>>       if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
->>>               arch_sync_kernel_mappings(start, end);
->>>
->>> +     /* Undo the PTEs installed before the failure. */
->>> +     if (err)
->>> +             __vunmap_range_noflush(start, end);
->>> +
->>>       return err;
->>>  }
->>>
->>> @@ -363,6 +367,9 @@ int vmap_page_range(unsigned long addr, unsigned long end,
->>>       if (!err)
->>>               err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
->>>                                              ioremap_max_page_shift);
->>> +     if (err)
->>> +             __vunmap_range_noflush(addr, end);
->>> +
->>>       return err;
->>>  }
->>>
->>> @@ -667,6 +674,10 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
->>>       if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
->>>               arch_sync_kernel_mappings(start, end);
->>>
->>> +     /* Undo the PTEs installed before the failure. */
->>> +     if (err)
->>> +             __vunmap_range_noflush(start, end);
->>> +
->>>       return err;
->>>  }
->>>
->> The only one user of that function is __vmap_pages_range_noflush()
->> so we can cover both cases there small and huge path.
->>
->> Is that enough just to do unroll in the below:
->>
->> __vmap_pages_range_noflush()
->> vmap_page_range()
->>
->> functions? It will also fix NOFAIL case:
->>
->> <snip>
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index 89c327a6ce7d..fa1f357ecf3f 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -359,10 +359,19 @@ int vmap_page_range(unsigned long addr, unsigned long end,
->>
->>         err = vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
->>                                  ioremap_max_page_shift);
->> +       if (err)
->> +               goto error_cleanup_range;
->> +
->>         flush_cache_vmap(addr, end);
->> -       if (!err)
->> -               err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
->> +       err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
->>                                                ioremap_max_page_shift);
->> +       if (err)
->> +               goto error_cleanup_range;
->> +
->> +       return 0;
->> +
->> +error_cleanup_range:
->> +       __vunmap_range_noflush(addr, end);
->>         return err;
->>  }
->>
->> @@ -683,26 +692,35 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->>                 pgprot_t prot, struct page **pages, unsigned int page_shift)
->>  {
->>         unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
->> +       unsigned long start = addr;
->> +       int err;
->>
->> -       WARN_ON(page_shift < PAGE_SHIFT);
->> -
->> -       if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
->> -                       page_shift == PAGE_SHIFT)
->> -               return vmap_small_pages_range_noflush(addr, end, prot, pages);
->> +       if (WARN_ON(addr >= end))
->> +               return -EINVAL;
->>
->> -       for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
->> -               int err;
->> +       if (WARN_ON(page_shift < PAGE_SHIFT))
->> +               return -EINVAL;
->>
->> -               err = vmap_range_noflush(addr, addr + (1UL << page_shift),
->> +       if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
->> +               page_shift == PAGE_SHIFT) {
->> +               err = vmap_small_pages_range_noflush(addr, end, prot, pages);
->> +       } else {
->> +               for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
->> +                       err = vmap_range_noflush(addr, addr + (1UL << page_shift),
->>                                         page_to_phys(pages[i]), prot,
->>                                         page_shift);
->> -               if (err)
->> -                       return err;
->> +                       if (err)
->> +                               break;
->>
->> -               addr += 1UL << page_shift;
->> +                       addr += 1UL << page_shift;
->> +               }
->>         }
->>
->> -       return 0;
->> +       if (err)
->> +               __vunmap_range_noflush(start, end);
->> +
->> +       /* 0 on success. */
->> +       return err;
->>  }
->>
->>  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->> @@ -714,7 +732,13 @@ int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->>
->>         if (ret)
->>                 return ret;
->> -       return __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
->> +
->> +       ret = __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
->> +       if (ret)
->> +               /* Cleanup KMSAN metadata. */
->> +               kmsan_vunmap_range_noflush(addr, end);
->> +
->> +       return ret;
->>  }
->>
->>  static int __vmap_pages_range(unsigned long addr, unsigned long end,
->> <snip>
->>
->> --
->> Uladzislau Rezki
+> Good point and I think you are right.
+> 
+> Yesterday I quickly reproduced the issue with Ayush's reproducer, and I got
+> the following crash info. From the dump message, we can see that
+> truncate_inode_folio() is really trying to remove mapped folios, which is
+> incorrect.
+> 
+> I also quickly tried Andrew's patch, and the issue no longer reproduces, so
+> I initially thought that was the root cause. But after your reminder, I now
+> believe Andrew's patch merely workaround the issue rather than fixing the
+> actual root cause.
+> 
+> Today I'm going to re-analyze the race with the reproducer (thanks Ayush).
+> 
+> After analysis, I believe the race exists between truncation and
+> MADV_DONTNEED, and shmem's fault_around() merely makes the issue easier to
+> reproduce. Since MADV_DONTNEED synchronously releases the pagetable page
+> before calling tlb_flush_rmaps(), this could cause another thread's
+> truncation to skip zap_pte_range() but still observe the folio's mapcount as
+> non-zero. A possible race scenario is as follows:
+> 
+> CPU 0				CPU 1
+> 				madvise_dontneed_single_vma
+> shmem_fallocate			......
+>   ......			  zap_pte_range
+>   truncate_inode_folio		    zap_empty_pte_table(pmd clear)		
+>     unmap_mapping_folio		
+>     ......
+>       zap_pmd_range(saw pmd none)
+>     filemap_remove_folio
+>        BUG_ON(folio_mapped)
+> 				    tlb_flush_rmaps
+
+Thanks for the investigation!
+
+So, I think I understand the problem (rmap walks race PTE zapping, which no
+longer serializes on the PTE lock), but I don't understand your solution at
+all.
+> 
+> Based on the above race analysis, I made the following fix that uses the PMD
+> lock synchronously to prevent this race, and the issue no longer reproduces.
+> I will clean it up and send out a formal patch.
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 6a8e7772b8d6..2039ada99b64 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct mmu_gather
+> *tlb,
+>                 }
+>         } while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
+> 
+> +       add_mm_rss_vec(mm, rss);
+> +       lazy_mmu_mode_disable();
+> +
+> +       /* Do the actual TLB flush before dropping ptl */
+> +       if (force_flush) {
+> +               tlb_flush_mmu_tlbonly(tlb);
+> +               tlb_flush_rmaps(tlb, vma);
+> +       }
+> +
+>         /*
+>          * Fast path: try to hold the pmd lock and unmap the PTE page.
+>          *
+> @@ -2046,15 +2055,6 @@ static unsigned long zap_pte_range(struct mmu_gather
+> *tlb,
+>          */
+>         if (can_reclaim_pt && direct_reclaim && addr == end)
+>                 direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
+> -
+> -       add_mm_rss_vec(mm, rss);
+> -       lazy_mmu_mode_disable();
+> -
+> -       /* Do the actual TLB flush before dropping ptl */
+> -       if (force_flush) {
+> -               tlb_flush_mmu_tlbonly(tlb);
+> -               tlb_flush_rmaps(tlb, vma);
+> -       }
+>         pte_unmap_unlock(start_pte, ptl);
+
+Namely, why moving this hunk of code up there makes any difference.
+I suppose it's subtly changing memory order, but it's not immediate
+in any way why this is correct.
+
+What you really need (I think) is a happens-before relationship between
+the rmap changes and the PMD zapping. Something like:
+
+diff --git a/mm/memory.c b/mm/memory.c
+index 330cde31bf8b..17cdd48fff27 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2108,6 +2108,13 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
+                        sync_with_folio_pmd_zap(tlb->mm, pmd);
+                }
+                if (pmd_none(*pmd)) {
++                       /*
++                        * Pairs with tlb_flush_rmaps() in PTE zapping.
++                        * Possibly skipping a page table (due to PTE zapping)
++                        * needs to enforce ordering between the rmap changes
++                        * and the PMD getting cleared.
++                        */
++                       smp_rmb();
+                        addr = next;
+                        continue;
+                }
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index 9f353f0e2ef4..47b25c42bf77 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -89,6 +89,10 @@ void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma)
+        tlb_flush_rmap_batch(&tlb->local, vma);
+        if (tlb->active != &tlb->local)
+                tlb_flush_rmap_batch(tlb->active, vma);
++       /*
++        * rmap changes need to be observed before e.g PTEs get zapped.
++        */
++       smp_wmb();
+        tlb->delayed_rmap = 0;
+ }
+ #endif
+
+On top of your diff. Where the smp_wmb() is perhaps not required: I suppose TLB flushing
+works as a sort of memory barrier itself on most/all architectures.
+Either way, we have to document and fix expectations around this code.
+
+> 
+>         /*
+> @@ -2103,7 +2103,6 @@ static inline unsigned long zap_pmd_range(struct
+> mmu_gather *tlb,
+>                         }
+>                         /* fall through */
+>                 } else if (details && details->single_folio &&
+> -                          folio_test_pmd_mappable(details->single_folio) &&
+
+Why?
+
+-- 
+Pedro
 
