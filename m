@@ -4,114 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA95ECA6019
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 14:15:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E33B2CA6019
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 14:20:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A70A06B008A; Fri,  9 Oct 2026 10:15:11 -0400 (EDT)
+	id BDAD16B0092; Fri,  9 Oct 2026 10:20:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A21BA6B008C; Fri,  9 Oct 2026 10:15:11 -0400 (EDT)
+	id B8C646B0093; Fri,  9 Oct 2026 10:20:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 910936B0092; Fri,  9 Oct 2026 10:15:11 -0400 (EDT)
+	id AA1C76B0095; Fri,  9 Oct 2026 10:20:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7080B6B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:15:11 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 029941603B7
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:15:10 +0000 (UTC)
-X-FDA: 85303284822.28.37AEE1A
-Received: from mta1.migadu.com (out-38.mta1.migadu.com [95.215.58.38])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CF54B40011
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:15:08 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=j8NTeppk;
-	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.38 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 825976B0092
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:20:41 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 813E91403CD
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:20:40 +0000 (UTC)
+X-FDA: 85303298640.06.2778DB3
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C14BD8000F
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:20:36 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	spf=pass (imf30.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791555638;
+	b=brj+P20rG4yiH21w1cHqPOeJQ6n5aAS/g3yhXQBWmpTvb5wJAOcjkMLeQjAU+kcbLsBLK2
+	9CB7lBB4Ysrcu0/eLruOkF8asf5L3KG7sM+++G1PMyZW6cuU2YjsWhDK1ddzV8SD3/doSo
+	UcWshkAarZf8foS2blXvGj1fP+TXMN0=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791555309;
+	s=arc-20220608; t=1791555638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w5cuFqIfMY4J2ULv+vaz8/5FjRBSv9rJHt5s66GC9Lo=;
-	b=ZH4Ca6B2OXSHnbsOQiVqSyYqKilvyN0iGMsaRF77h623fWlWlLvORCCQ+VLHGSWU2ApU93
-	7z/rqDBvavCdvH0fnhO9RlLEZm+TOy/KNdukkb2pABge6iaZN5Xu22zI2bsTuCItJzBV23
-	8wlapPjUzrSCMX3X0DS1a35R1Kl5Wzg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791555309;
-	b=XoSHpRZBEfvbYnhJB0y2DmrfnAUPro2p7sPzpLaepgeByzO5y5F0oNhUdsY7KGAlTcXNip
-	ypBxpO4Q9zKUkSe77yOw/EfD+a6qo66bwGCcX1dnVRFBzIw8CMda1QP4vV4xoUfcuX7WrW
-	oy7gCN6jhwP8vTu4PSOvryBN7r8nM6w=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=j8NTeppk;
-	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.38 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=D7hfrm3qIlI4+AhECxlB2fjvQpfx6eid9hhS+USFrjU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791555306; v=1; x=1792160106;
- b=j8NTeppkVXGfC8IhWAZ+0uNt2krpxfFy33/z/lBbjk4Iovqn5lLkJ69MNhmRam47hpDvVo4r
- ClMmjS19pVnfiXmbSCvpyMaDhp/psc5s8psLKxXq8Urx6grXRx/HF0dW+KrncM1RNDSzcrVJ6c2
- Keq9+GOQmKeQeNLLEldjIsEM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id d5fd037bf9b86533;
-	Fri, 09 Oct 2026 14:15:05 +0000
-X-Mizu-Trace-ID: d5fd037bf9b86533
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 2/4] riscv/mm: fix hotplug page-table destructor handling
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <87jynrs8v8.fsf@all.your.base.are.belong.to.us>
-Date: Fri, 9 Oct 2026 22:14:40 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- akpm@linux-foundation.org,
- linux-mm@kvack.org,
- stable@vger.kernel.org,
- david@kernel.org,
- osalvador@suse.de,
- dave.hansen@linux.intel.com,
- luto@kernel.org,
- peterz@infradead.org,
- tglx@kernel.org,
- mingo@redhat.com,
- bp@alien8.de,
- x86@kernel.org,
- hpa@zytor.com,
- catalin.marinas@arm.com,
- will@kernel.org,
- mark.rutland@arm.com,
- linux-arm-kernel@lists.infradead.org,
- pjw@kernel.org,
- palmer@dabbelt.com,
- aou@eecs.berkeley.edu,
- alex@ghiti.fr,
- linux-riscv@lists.infradead.org,
- agordeev@linux.ibm.com,
- kevin.brodsky@arm.com,
- bjorn@rivosinc.com,
- apopple@nvidia.com,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <0E3A4E15-38DA-400D-95F2-01FFBB36304B@linux.dev>
-References: <20261008073021.2512665-1-songmuchun@bytedance.com>
- <20261008073021.2512665-3-songmuchun@bytedance.com>
- <87jynrs8v8.fsf@all.your.base.are.belong.to.us>
-To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CF54B40011
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=hH7I8gtb1e1zz61Br1Ir9AOK4GDElaDHov+FK2EDCIk=;
+	b=PEV/mPWZ8NvFPdK15nMjEz98/Y0xtv2rZ4JWucx9m1qe6T6OxJ2E8HK6iegJSxGxStWQcn
+	yjNT8n8T2itMGc8UsC/1zFW6TglG02VvoSGZLYknifnjJmzDIVFRbPPOu/oe+jMS1izcJJ
+	FrS1AaQNWLCGq16xKsZZ+lwjgLjgT4Y=
+X-UUID: 91c6cab6c3ec11f19a56ed5b684f684d-20261009
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_LOWREP, SRC_LOWREP
+	SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS
+	DKIM_NOPASS, DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF
+	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:bca760ea-43ff-4cb0-9df1-58c3382393ec,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.19,REQID:bca760ea-43ff-4cb0-9df1-58c3382393ec,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:7db8b62,CLOUDID:a7107ce9e167de322dd354e3cae3a928,BulkI
+	D:261009222027IEVFJTE7,BulkQuantity:0,SF:17|19|38|66|78|102|127|865|898,TC
+	:nil,Content:0|15|50|99,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil
+	,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 91c6cab6c3ec11f19a56ed5b684f684d-20261009
+X-User: lienze@kylinos.cn
+Received: from ubuntu.. [(111.193.136.161)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 101760413; Fri, 09 Oct 2026 22:20:25 +0800
+From: Enze Li <lienze@kylinos.cn>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@kernel.org,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	enze.li@gmx.com,
+	Enze Li <lienze@kylinos.cn>
+Subject: [PATCH v2] mm/hugetlb: move hugetlb_sysfs_initialized into hugetlb_register_all_nodes()
+Date: Fri,  9 Oct 2026 22:20:10 +0800
+Message-ID: <20261009142010.552614-1-lienze@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ebbwkkcwkms87qrs1icznu7t1qzy7u7y
+X-Rspamd-Queue-Id: C14BD8000F
 X-Rspam-User: 
-X-Stat-Signature: rrjz7ih4jzxrccm77fxsckknxrkciqfk
-X-HE-Tag: 1791555308-48597
-X-HE-Meta: U2FsdGVkX1+csMCmzOWSbmS7+KfepZ8mtRu2DfWsGJJPrunJxtASo5a0NxlPdiq5yuU7l1BJqJ3DO7zO2MDb6qB5gbpJFW2/Kq2wlAaHTGN41laPtpQr5sATJ9KmfY6fpv5tgtKMKxJkruEPhIt0XmufgmHVyXvuab/sjzkAOzcC5DUYWTAth6MG1ByuqMVChi8SnLqPDZ1BdawgkRhFvXeE6BWr+QoWjByp/laECg0jAgeffCop0zc0BGLn3mVJPKbB4/slAEmTJ3DzhGjqbwgJVqiD2laQtxcANx4qTWrSLuO3xwRL5GMIKrAWDBLZ2C3jj2OitWtYAOy3TpsiDu1wvebmz6A4shloQLg5CVqdkkwsLx//9+sdzcIrFwjOc4FK7nHYUi70miziOHUnuMxDgx40yfbuWysb2lTjRrcKjcuGQ3Oc9QvO6zizMDWUz5fVJpyNc26BuNUYpzpORrCTmhEEoA1uqZCoDpbAjXTjIPh9noENVd+Zv6/MgWDLES47RgW8ahmIoN3HYhZKWcmymJA45iWBK+fhNi2unDmAE9ec2xsSxBRbyKHkOfXWGO1Bc0SdEB9oIN/oshyLs6o/py+vVqxi5dAGuhL43qS3sVsZuPIBYdGxk9BQZP/CrtAzL9iAl9unklScIK9PiJQ7z3r3dt4egJwBSfifV5D4umBfgOElnCG3o/FwSzCxBVtEarHhBPo/3RVG5Gri+HTm4mGu8gYYyDhIDrHNVRMI7P1aC1s9VMBj1btr+GNmDjPXwsLvmqeSj78jwu0mCEHOnebxbGW5BtkJiWurXfGC9F1ZGFvFLZAV/5yxLG3QKbsXEELUltqEQtUreZ2zxa0E11FwRgqJ1UAqlCjo4R16ynFEnTlPsDA2gWopW9PE+XVOrzk9BIKDmXc0ruu4awYBmNeieKtmZTl2IhGDXqMzKNkjkj0JKk9r5pCMs0MBTM+Nw0/c53qmjhHWMAk
- 3vcv1GMM
- rdnNdXXbOuw3Y8zLmiF30IbIOz2XNcQjJ+f4FivzexHeKZt8w9oAHKWSbuvqHi6VngjBjng35HR7mJGQxjSCgygJPKk6daKD1WExR3dIVDEvs1DyKJfas4Nvz7Qnj9ZBk1f8Rf8ixqmVep+AeksTMGniNPBXke8+DKz87PM6afYB6Z7OYIAxcarNXFKHdLzY/iMjdx3KCLeeS4yn7tQnuPT7MSc0BCZnoiLO2/lAMBiBG+kaFeQsU5JXf+GfNicd1TMhL+QYLc75/s2VXvpeUkP7Il5CENCGP4V9dCLjaHUxYX9Ic+MFhkB3QEA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791555636-45394
+X-HE-Meta: U2FsdGVkX1/6OQUmgvDBx3Pgtpildl9hXArFxu2cwAVdRVWONb0CTL0VwN6S6FOQMNyNteBV/Jbk7gcISS51Zhpub8M6SxtCOGp/tdHkw0N5DdFWIFXH5a2KtV84xCiKJG/GjGFpu4g8RoqzCUzKQxKBjjtKxkRnt12nhyJGQHj4bqwxI8s1TdIZ1KQZhrh29X3pgRbORsbwjknRwCmqLvImkBW+bO1Y0QjbYC3uZWlFz49FS56rIp/tcaea/vh0gogzuL/+WW4akXPSWHfwzzAklUb0z2vAbNqyTOJJxxlYRF/y9+zX96QA3Tmz7FxieBhCB1njeC+zc5XM5K5cibSYb9zeVEDtoUiHNC3xDseAJUhvE3tOwWWi0P5Gr9g01rXmubaV1VucWDzRoaAKnuMfszKjUIMXMXGEEVQCIIa5AGZeiL7HXU1oy48b9ijRrtTN7NFprybOMDDVpwrSqMNvdU9+dM4Gd68vS8Utxlu2U19QH55j44fp8Fdh3jzldGP5J1v/OcyeuCiY8ZWLTTLYrF5Pt8gkMzn1dMCV3maKLuhfa8tLoOTtT0rFNOBP8SgqwgAiSZ569RX46ykhoVMnWY5afS7FBw4+vR3m7YZXDTj8POF0GYhSfhkAFld/qmHLzPHGYkYM/CKUD+pJZaV3+6pZFCipWozTpmGkbmhXhaH1iCYe9EVxE+w/Vz1eL3M915OgYHScNGqGh1Hl+Fx7jGvJ0MqpC2S2MivF6jVVhnYw1MJa8ltwRsJeV0d/cgW63ht0lHRqq58/rLtrGW3b7epRJuErO+xKR8V/Tl3Gmaz2z4ou5YTe9nRDLSCKyPd824TEznVkEhfcfmkliV4FJ713hI2teiUwr0nPkqSq3cAj5U4/4k4iLRtpEJRLmKdet6VKABt8AGlFaZPczJVF1/0mJeLfFy0z96jbFcQQaef829fwK90sV+fI+j3Nbao+NwLwSPTpApoU8OQ
+ e8FWmKvE
+ 75OQfQvoT8fBenfoKXynVA1rpSsjkWUXOfRE/8tyeuBtwtdg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,83 +105,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+hugetlb_sysfs_init() guards the "hugetlb_sysfs_initialized = true"
+assignment with an #ifdef CONFIG_NUMA block, while the following
+hugetlb_register_all_nodes() call is left unguarded and relies on the empty
+!CONFIG_NUMA stub.
 
+Move the assignment into the NUMA version of hugetlb_register_all_nodes(),
+before it registers the online nodes, so the #ifdef in hugetlb_sysfs_init()
+can go away.  Keep the !CONFIG_NUMA stub, so the call site is unconditional
+in both configurations.
 
-> On Oct 9, 2026, at 14:09, Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org> =
-wrote:
->=20
-> Muchun Song <songmuchun@bytedance.com> writes:
->=20
->> RISC-V uses the same memory-hotplug teardown code for the linear map =
-and
->> vmemmap, although their page-table pages are not always allocated in =
-the
->> same way. Late linear-map allocations run page-table constructors, =
-while
->> vmemmap and early allocations may provide constructor-free pages.
->>=20
->> The PTE path unconditionally runs the destructor, which is wrong for
->> constructor-free vmemmap tables. The PMD path avoids that problem by
->> using is_vmemmap as a proxy for constructor state, but that =
-assumption
->> will no longer hold once runtime vmemmap allocations use the normal
->> pgalloc helpers.
->>=20
->> Page-table constructors record their state in PG_table. Centralize
->> page-table freeing and use PageTable() to decide whether the =
-destructor
->> is required. Keep reserved and constructor-free pages on their =
-existing
->> freeing paths.
->>=20
->> Fixes: c75a74f4ba19 ("riscv: mm: Add memory hotplugging support")
->> Cc: stable@vger.kernel.org
->> Assisted-by: LLM
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->> arch/riscv/mm/init.c | 29 ++++++++++++++---------------
->> 1 file changed, 14 insertions(+), 15 deletions(-)
->>=20
->> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
->> index 857f9a55039c..429a0b015ec1 100644
->> --- a/arch/riscv/mm/init.c
->> +++ b/arch/riscv/mm/init.c
->> @@ -1486,10 +1486,19 @@ struct execmem_info __init =
-*execmem_arch_setup(void)
->> #endif /* CONFIG_EXECMEM */
->>=20
->> #ifdef CONFIG_MEMORY_HOTPLUG
->> +static void __meminit free_pagetable(struct page *page)
->> +{
->> + 	if (PageReserved(page))
->> + 		free_reserved_page(page);
->> + 	else if (PageTable(page))
->> + 		pagetable_dtor_free(page_ptdesc(page));
->> + 	else
->> + 		pagetable_free(page_ptdesc(page));
->> +}
->=20
-> Is PageReserved() enought to determine if there's no dtor to run? On
+Suggested-by: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+---
+v2:
+  - Keep the !CONFIG_NUMA stub and move "hugetlb_sysfs_initialized = true"
+    into hugetlb_register_all_nodes() instead, so the #ifdef in
+    hugetlb_sysfs_init() can be dropped, as suggested by Muchun Song.
 
-Yes.
+ mm/hugetlb_sysfs.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-> rv64 your code is correct, but maybe for robustness?
->=20
->  | if (PageTable(page))
->  |         pagetable_dtor(page_ptdesc(page));
->  |=20
->  | if (PageReserved(page))
->  |         free_reserved_page(page);
->  | else
->  |         pagetable_free(page_ptdesc(page));
+diff --git a/mm/hugetlb_sysfs.c b/mm/hugetlb_sysfs.c
+index 326a54b4d991..c89e4c847575 100644
+--- a/mm/hugetlb_sysfs.c
++++ b/mm/hugetlb_sysfs.c
+@@ -462,6 +462,8 @@ static void __init hugetlb_register_all_nodes(void)
+ {
+ 	int nid;
+ 
++	hugetlb_sysfs_initialized = true;
++
+ 	for_each_online_node(nid)
+ 		hugetlb_register_node(node_devices[nid]);
+ }
+@@ -495,8 +497,5 @@ void __init hugetlb_sysfs_init(void)
+ 			pr_err("HugeTLB: Unable to add hstate %s\n", h->name);
+ 	}
+ 
+-#ifdef CONFIG_NUMA
+-	hugetlb_sysfs_initialized = true;
+-#endif
+ 	hugetlb_register_all_nodes();
+ }
 
-his looks good to me as well. I'll change it in the next version. =
-Thanks!
-
-Muchun
-
->=20
->=20
-> Bj=C3=B6rn
+base-commit: 8b38ed9ab5b09c8ba168cbcc49524e9b380ee5c4
+-- 
+2.56.0
 
 
