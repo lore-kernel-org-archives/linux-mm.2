@@ -4,91 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82539CA6012
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 06:46:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60365CA5FED
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 06:47:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74EFC6B008A; Fri,  9 Oct 2026 02:46:31 -0400 (EDT)
+	id 7026C6B008C; Fri,  9 Oct 2026 02:47:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 726B56B008C; Fri,  9 Oct 2026 02:46:31 -0400 (EDT)
+	id 6D97F6B0093; Fri,  9 Oct 2026 02:47:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63C6C6B0093; Fri,  9 Oct 2026 02:46:31 -0400 (EDT)
+	id 5C95B6B0095; Fri,  9 Oct 2026 02:47:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 37CA16B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 02:46:31 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE0F5A76BB
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:46:30 +0000 (UTC)
-X-FDA: 85302154140.06.83DA4EA
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4EDB440004
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:46:25 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XBj7kGru;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791528388;
-	b=rEiIbmTbj9voKl8l4aMzZxLJWJbN5hGOvl20Z78sQyN0VzkZHigpS5UVcvfRqIEFGZSD8c
-	E/TSlZSaSYElm2Ie0BASKIBX/edboXXEpOuiBEG64/COaF2zjr8HgTsfIzX2tj6MvISxET
-	8AlhNDVqW4/ri4tZ+i1QCIk81t5ZNj8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XBj7kGru;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 323096B008C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 02:47:03 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9DCC71C2721
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:47:02 +0000 (UTC)
+X-FDA: 85302155484.08.E61BE10
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0C1A220006
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:46:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IxGUEkQZ;
+	spf=pass (imf03.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791528388;
+	s=arc-20220608; t=1791528420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LoVx2R5PChUvqrXRet/NFBqBIchEhynSZ3ARypBye7Q=;
-	b=ZFVLyg97qedS2iPySbAro2YIkZnt1WEpO3s/dcpmItEnjPEe04H3C8f04jux2DWmkRHfsz
-	7/VsYWrsoJ4pRg8QrDQ7ClLKIDvPixpsELXQZIKInV3+kgA79giZt0r4hMh4E3MBKBgah4
-	tuRhuYopxvN6Z2giyH48+pv/enO62AQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1791528383; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=LoVx2R5PChUvqrXRet/NFBqBIchEhynSZ3ARypBye7Q=;
-	b=XBj7kGruvtqMWd0hY7PAI/cGk4YLBAJd0s0cVBEhGhTKZqARCEbG8RXTz8xGfLLghKfyOcIEFdmxV5k7xqf4m1flCp/wyVDZ03ZhKje8lPRAtZPFkls86bGwYAWg6JFERGpO3gLwKMcdye7YKimAiXfGcQ9HyP3cxI8gAUePIpc=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R331e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0XCSZjHs_1791528378;
-Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCSZjHs_1791528378 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 09 Oct 2026 14:46:19 +0800
-Message-ID: <fbb046b9-be48-42d8-96b3-7e554484b625@linux.alibaba.com>
-Date: Fri, 9 Oct 2026 14:46:18 +0800
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=EDoi2zeGSoCCP4PR7jZxDJ9dlHobjbr1BAN3l4O7S5s=;
+	b=D/Ja+TvxiTQbxOL+uI5cQT0GAhVELY6nvc/7FxKO99bnYunNKTi/bvJSuVBxIwhaskmqHy
+	VzfnKNFLTfQZOxdFzOEr7HIVnI4l59tzYgIyyQ+XfxWLsyJN3Q/qsRmxuV9N7Vk/bSmPsn
+	kDRo7GlzXVLhFchmUX/M0jErVS24VI4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IxGUEkQZ;
+	spf=pass (imf03.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791528420;
+	b=2ZAHwxU/h4in+DEz1dixKG5SpcqSEv0SFQnjI0UsVZqJ5xlqNZlAhV/XpoTCq1RFCwzjA5
+	oDwf7H67FhGIMSpQVr9ow8PSWZhTZsSTB+FIZyqjzWP3aZrTK/sXwdpZsWyhLib3+uLnOk
+	sqyDWKM6MspRFcZvTxew1qBBS5/oj5o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791528420; x=1823064420;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=OV1RtSHRUR+p3unHrNMGAioLnCcUOrOo/GFrRLcJj1E=;
+  b=IxGUEkQZDJDxYt00xENYleQoNhQc5p07AtbRC/bKJ3Dq9LQq1TlKnWAP
+   IdW3DnznoGudxVfc4wfVJY0AXpwN2EosFIAH6e4E3Ok67Bnw5wrDIbGcj
+   TqyCGAKn8uz+JCgtpfCTw94+87F6lSESV29mcqMPiPEw8qZmVRP/wxOcn
+   BYxWpPvxMozbrNakQ+drNs8TAaT7HeUYvENxBds7Enl+uw2sROZfwNJJt
+   IBSdM1+/+rawKKQ3ehxOg7VpcbMwpndnPmL0RSjQPTeW6DLHPijHNVnwP
+   vYTeX5SByQ4hEzGXO2Uiug/uN2klI9GpvN6uLiXS/hvMK4SCE9u1V7uxO
+   w==;
+X-CSE-ConnectionGUID: mzXzEIcCSFyDuJnhUREt7Q==
+X-CSE-MsgGUID: 5jgSH1g8Qmu4G9vYbZDuwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="326053"
+X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
+   d="scan'208";a="326053"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 23:46:58 -0700
+X-CSE-ConnectionGUID: 2UBBvTA4SomBEUvsnjbmbg==
+X-CSE-MsgGUID: PZRFGWHdSYqq260r7G/Rsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
+   d="scan'208";a="2060061"
+Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 23:46:54 -0700
+Date: Fri, 9 Oct 2026 14:46:51 +0800
+From: kernel test robot <yi1.lai@intel.com>
+To: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Qinyun Tan <qinyuntan@linux.alibaba.com>, linux-mm@kvack.org,
+	yi1.lai@intel.com
+Subject: [linux-next:master] [mm]  b9b1861d4f:
+ WARNING:possible_circular_locking_dependency_detected
+Message-ID: <202610091403.d1d8080b-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] shmem: FALLOC_FL_PUNCH_HOLE vs fault-around race corrupts
- page cache / rss counters
-To: Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Ayush Ranjan <ayushr@modal.com>, Pedro Falcato <pfalcato@suse.de>,
- Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>,
- David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260924061708.1645968-1-ayushr@modal.com>
- <arTdLsBENhrpOyk-@pedro-suse.tail5790ac.ts.net>
- <20260925053027.1998394-1-ayushr@modal.com>
- <20260925065013.3682431-1-ayushr@modal.com>
- <20261003033107.1488699-1-ayushr@modal.com>
- <20261004222831.bdd648a2b406f02747dd9e40@linux-foundation.org>
- <fyswoh7wpxzlbnjjanggjd2jz6yispmeirhwjl3wzi57nacddb@bjkb6kxyfcal>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <fyswoh7wpxzlbnjjanggjd2jz6yispmeirhwjl3wzi57nacddb@bjkb6kxyfcal>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4EDB440004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0C1A220006
 X-Rspam-User: 
-X-Stat-Signature: mfo5x1s48xde5fbdqogbnshxntpfxghr
-X-HE-Tag: 1791528385-684553
-X-HE-Meta: U2FsdGVkX187xlOJGbu8p4dP6zlQVN/h8FL9Si0owwK9pSr5k97CyVA8cRZq0YVQuJPa/ROjiiFrmAjCNPN+hmfpXomgxhDvh2wnv52YUGm0o24tJO/jGLj7563McyVKJUvDoxDxja0uBh/WOTLinTZW/f17Rv5qRoiw8FK9lMgmwkoRczaYPvNMcuRUwyiTZBQS1eoBCLbcMRzPSkVxm3MKuBeeZazSkzAUwCMZGE4sdPMeAkdeDfg9rwheGWDkZy9WzTIAs6cPPIS1OxKgmZUTvtjCTcARlLZweFX7jmLnwDupNU09ruCNBpoDC0DeSzx0+SH2+pN0UGsMFQ0+nYvGCCdu3JNW4SnBBealqwTG46EXOtiNsEz84Z27eEGbdl8z92CT7New/ML4vLsZudQY0c4nzwfVZLT60cNN+02JhLalLhzcYEF/t3/irDyQEfy6EgVPYMR0l6ygkOBkdlko/zkWi8BhfYXpwB1IFwc9qSZuYSdMKo4mrmxea6hsp9DUx9jnLUIptHZK/v35CQ3iBXArPvY2hNnWSuidAjyg6KjKVQwGMOuH+18VvCsU80alTFgLYCxe6mWKi6HCkaKeVN+Ib1lyhia3ILgrV/SauZBbTLdMciI6z2AAAOVjU9+ahPTZ6xCexl4T2crJQIMwnG1LP40AuJtHH3wkqfK62k6Q82AYE6rVAt7o3W/3KDV801BYc4SgUc07nIaXjjd9DcMfMwkR6jU5SgG0xOF92ScC8L+ZL50rLt4Lt0FFMkSWb5XXtTAb0OVnoNHxwnooj56g5VDTpG4gn+5MUtpAIDUA/exa4dBPqkrk+HBY1r2g8wPdk0UQKDr6k3zHbdHd2IBMgd/OQ5NbWlJ27Tv6DAJpSK0upJJazqcLvDMEXfAwmCZD54TZR0ASoM5UeQWZunLm8XSHLQLewQjZUYej1xtssuSjqn495w2hjoW8ZVB3ghrjDv+SVZa9eyi
- YVDjoMin
- MrbyFDam2VklKoQhaXVTLC1ex1F3u0GldelactAzuhwtQiOHNCu+vkp9t908tgZY0jH9AgWD4OxjTAQKBY5hNk/9G8mRQZS5eHc0edSC6vfy3FpUw2tU01KS/cRvrcrxIWHzp17tLMdUTqHiGjlTKKYQYsl8CnHtLyUXTVcpUmwdfgstqGssZW1QrVA1OmkoYp3C1Aqib88fyjniuOJltwX/8qBqf4g4XhtZbaE8cUKydK7aDPq1wGHp38Gd5pe76QDUVnApGNz3zNRDBEdah9zt7juDZC04TrtnbnTkR9O4U4azj/FRgyrYfStFDBY2BZfDFvD+V0lREED0I4D0aRH+E7A1vECR/o9PI05FMY9AmvnqmdFvM+e8xIh098COXRw6kPCUmlMNLKcZW0Aygn6HQ+F8RIu4FoAI249T7NSuw9VrCCp0J5uaCcjDxIjzMwr/37Ij2URVFojHFz5s/2EXPxIQPOTaO1y6J
+X-Stat-Signature: 3tm5f15oq9gdsy1f1fqeh49ocwiatztq
+X-HE-Tag: 1791528419-920964
+X-HE-Meta: U2FsdGVkX19OgpttiXIW3i56Y4QCNOdIFUJ/uWzZEweVcxXF8cQHUKXIsRfytkHzWOh/SYXOHGpUvJhLJ0GtLHc5Gep8MtV6sKPhK4f9L6K5gZfXD0QI7bMdZXldeNOgd+AgOOecKm1b5qTuiTAXw3Ty3JPOpOHJUesFWfZZhULLXzz9xOfPQ7tl5N+6bYPT1ypmnbPaE1wS1g5fuV2syFmVvmkYsWWaSQF2vp8SFHOGWT3TfKFeXPawfKExIliK3MMi6+aXPTlB9XdM9Q4BknBZdgJlXlO/ficwv2H2vOcW4hsYJyFyapnrUIV8Njc1cKl7y3bZY8JlwOYaIz+tAhU/fmE327E0WHxJ0MUMqWhr9ohjCs5OC8R44KOX9WFv+kA4lxmFh4yJ20JzCkO7JkicxgxmrJFJ5fmeEglKvHknrporWnxFIV2lrLzTnICActk+k7uKPxb2tzxo+1Na8M1S0mKQin/wMZ8ex5OYBgiChXuu43ZBBqy1OH9OiyK7wOZD9ZlzA19A9x5uUW8FUn4GXpKrJ6cv8inO3zQOiZz5y1TtMoqBqKRC0wTRj/LGS698NRQjBB7Ir5idqKY48/cnyb/MEcIIEhPFW8b5Bqm1/dvk5HdVG2Pt6BULlnRx/5J+lA9CciP5zLpqhIgdQX7saI9OZvVXnJleVHVJ13c23vz6Xv5ZsLJPHvjJNfbIGkP1wSKdLu857+dn4QQtw6k1oUQa4lhofFHzXqw6LlHx1+Epmg2lGCEiJ/yPLt5xzbZHFzv7p89XYlkgPTPOC6cDj17N9+OLgeXgK9DFfVXT4PAjyNdKKAV0zaRadqOlmFafzix9yrthW6aR+/Gx4HOPymNu5ynod7TPLF7gniw73wVog0irakgFOVhLl64JlA85PYMKtKBiRV+c2GMzxnr4/CPupwmfEFpypeS1AL2PLFqg6QD9Xtg3nhZVnX3NA0V98cypjZGmZ4Mc4s/
+ SVKM0m9W
+ pWXrpZ19vKRL02CzNljoiBF2aE0KCEfamEqCUbYgGvUYQ+rdlsljztrdBk38Fo/iG9ScQ4fZmv/nOlss4S1hZcc0bubGpEyeMFQ0k6S567K4V5dVvRkzJRZJ6i7rSY6MaJeGI7TXyFx8iYrqo0PKiH58BQVzp4O5EQuPeg9UkMNGPvev1ntR1thpngATRuWMRdWcjQqnrgG23mkajpxMptQOMKgkwK9Z4Vgfml4UpWE0sWW4hEEtLTcaKNEsIT3eDrKHs+J6Bwj7Ht9i0+lnDmMKrqI/Y8owM/925a4I6dKp27OVOXtZtAxsFeSndotAmxt6UUofHsjCTSIfBeTb3TXXW8ROLnzTOrCStRsL5KXlgEln4jsDG6Ol66w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,184 +112,217 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 10/8/26 5:24 PM, Jan Kara wrote:
-> On Sun 04-10-26 22:28:31, Andrew Morton wrote:
->> On Sat,  3 Oct 2026 03:31:03 +0000 Ayush Ranjan <ayushr@modal.com> wrote:
->>> Gentle ping on this. The reproducer in my previous mail [1] triggers
->>> "Bad page cache ... still mapped when deleted" on 6.18.46 within a
->>> couple of minutes on a 128-CPU bare-metal box, with no fork() and no
->>> gVisor involved.
->>>
->>> We continue to hit this in production at low frequency, so I am happy
->>> to test patches or collect more data if that would help.
->>>
->>
->> fwiw I made gpt and gemini argue about this for a while and ended up
->> with the below.
-> 
-> Worth a try I guess. Let's see :)
-> 
->> From: Andrew Morton <akpm@linux-foundation.org>
->> Subject: mm: shmem: serialize fault-around against hole punching
->> Date: Sun Oct 4 09:05:31 PM PDT 2026
->>
->> shmem uses filemap_map_pages() for fault-around.  Unlike shmem_fault(),
->> filemap_map_pages() does not participate in shmem's fallocate exclusion
->> protocol.
->>
->> During a partial hole punch of a large shmem folio, the folio can be split
->> and the resulting smaller folios can remain temporarily visible in the page
->> cache while shmem_undo_range() restarts its walk.  Fault-around can then map
->> one of those folios again before the hole-punch path removes it.
->>
->> shmem_undo_range() may subsequently delete that folio from the page cache
->> despite the new userspace mapping.  This can trigger "still mapped when
->> deleted" warnings and leave stale mappings or inconsistent RSS/page-table
->> accounting behind.
-> 
-> So this part of explanation is either incomplete or wrong in my opinion.
-> Yes, shmem_undo_range() calls truncate_inode_partial_folio() which can
-> split a large folio. Yes, filemap_map_pages() can map those pages back into
-> page tables. But how "shmem_undo_range() may subsequently delete that folio
-> from the page cache despite the new userspace mapping" happens is unclear
-> to me. After splitting a folio, shmem_undo_range() will restart and find the
-> newly split (and mapped) folios and calls truncate_inode_folio() to get rid
-> of them. Now truncate_inode_folio() calls truncate_cleanup_folio() which
-> does:
-> 
->          if (folio_mapped(folio))
->                  unmap_mapping_folio(folio);
-> 
-> so the mapping is reliably removed under folio lock. Can you perhaps push
-> your agents further to explain in more detail how this "still mapped when
-> deleted" happens in their opinion?
+Hello,
 
-Good point and I think you are right.
+kernel test robot noticed "WARNING:possible_circular_locking_dependency_detected" on:
 
-Yesterday I quickly reproduced the issue with Ayush's reproducer, and I 
-got the following crash info. From the dump message, we can see that 
-truncate_inode_folio() is really trying to remove mapped folios, which 
-is incorrect.
+commit: b9b1861d4f7ae63b15228c744d504a86ab48a5a2 ("mm: shmem: make unused huge shrinker memcg aware") https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
 
-I also quickly tried Andrew's patch, and the issue no longer reproduces, 
-so I initially thought that was the root cause. But after your reminder, 
-I now believe Andrew's patch merely workaround the issue rather than 
-fixing the actual root cause.
+[test failed on linux-next/master f5f84daefcd92d7a630066635ecea1433ed5eac7]
 
-Today I'm going to re-analyze the race with the reproducer (thanks Ayush).
+in testcase: boot
 
-After analysis, I believe the race exists between truncation and 
-MADV_DONTNEED, and shmem's fault_around() merely makes the issue easier 
-to reproduce. Since MADV_DONTNEED synchronously releases the pagetable 
-page before calling tlb_flush_rmaps(), this could cause another thread's 
-truncation to skip zap_pte_range() but still observe the folio's 
-mapcount as non-zero. A possible race scenario is as follows:
+config: i386-randconfig-053-20260902
+compiler: clang-22
+test machine: qemu-system-i386 -enable-kvm -cpu SandyBridge -smp 4 -m 4G
 
-CPU 0				CPU 1
-				madvise_dontneed_single_vma
-shmem_fallocate			......
-   ......			  zap_pte_range
-   truncate_inode_folio		    zap_empty_pte_table(pmd clear)		
-     unmap_mapping_folio		
-     ......
-       zap_pmd_range(saw pmd none)
-     filemap_remove_folio
-        BUG_ON(folio_mapped)
-				    tlb_flush_rmaps
+(please refer to attached dmesg/kmsg for entire log/backtrace)
 
-Based on the above race analysis, I made the following fix that uses the 
-PMD lock synchronously to prevent this race, and the issue no longer 
-reproduces. I will clean it up and send out a formal patch.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <yi1.lai@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202610091403.d1d8080b-lkp@intel.com
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 6a8e7772b8d6..2039ada99b64 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct 
-mmu_gather *tlb,
-                 }
-         } while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
+[   64.638596][  T203] ======================================================
+[   64.643742][  T203] WARNING: possible circular locking dependency detected
+[   64.649127][  T203] 7.3.0-rc4+ #1 Not tainted
+[   64.652392][  T203] ------------------------------------------------------
+[   64.657842][  T203] systemd-udevd/203 is trying to acquire lock:
+[   64.663589][  T203] f5835900 (&sb->s_type->i_lock_key){+.+.}-{3:3}, at: igrab+0x44/0xc0
+[   64.669221][  T203]
+[   64.669221][  T203] but task is already holding lock:
+[   64.669221][  T203]
+[   64.669221][  T203] but task is already holding lock:
+[   64.669221][  T203]
+[   64.669221][  T203] but task is already holding lock:
+[   64.674183][  T203] f5c5a61c (&l->lock){+.+.}-{3:3}, at: __list_lru_walk_one+0x55/0x180
+[   64.679737][  T203]
+[   64.679737][  T203] which lock already depends on the new lock.
+[   64.679737][  T203]
+[   64.679737][  T203] which lock already depends on the new lock.
+[   64.679737][  T203]
+[   64.679737][  T203] which lock already depends on the new lock.
+[   64.679737][  T203]
+[   64.686427][  T203]
+[   64.686427][  T203] the existing dependency chain (in reverse order) is:
+[   64.686427][  T203]
+[   64.686427][  T203] the existing dependency chain (in reverse order) is:
+[   64.686427][  T203]
+[   64.686427][  T203] the existing dependency chain (in reverse order) is:
+[   64.691963][  T203]
+[   64.691963][  T203] -> #2 (&l->lock){+.+.}-{3:3}:
+[   64.691963][  T203]
+[   64.691963][  T203] -> #2 (&l->lock){+.+.}-{3:3}:
+[   64.691963][  T203]
+[   64.691963][  T203] -> #2 (&l->lock){+.+.}-{3:3}:
+[   64.695874][  T203]        _raw_spin_lock+0x26/0x40
+[   64.699072][  T203]        list_lru_add_obj+0x3c/0xc0
+[   64.702561][  T203]        d_lru_add+0x40/0x80
+[   64.705640][  T203]        fast_dput+0x1c7/0x200
+[   64.708794][  T203]        dput+0x25/0x40
+[   64.711603][  T203]        pick_link+0x1ed/0x340
+[   64.714612][  T203]        step_into_slowpath+0x1af/0x200
+[   64.718143][  T203]        path_lookupat+0x109/0x1c0
+[   64.721512][  T203]        filename_lookup+0xc1/0x200
+[   64.725044][  T203]        user_path_at+0x2f/0xc0
+[   64.728522][  T203]        __ia32_sys_mount+0x134/0x1c0
+[   64.732025][  T203]        ia32_sys_call+0x39/0x14c0
+[   64.735800][  T203]        __do_fast_syscall_32+0x16c/0x340
+[   64.740069][  T203]        do_fast_syscall_32+0x28/0x80
+[   64.743715][  T203]        do_SYSENTER_32+0x12/0x40
+[   64.747337][  T203]        entry_SYSENTER_32+0x98/0xfd
+[   64.750971][  T203]
+[   64.750971][  T203] -> #1 (&lockref->lock){+.+.}-{3:3}:
+[   64.750971][  T203]
+[   64.750971][  T203] -> #1 (&lockref->lock){+.+.}-{3:3}:
+[   64.750971][  T203]
+[   64.750971][  T203] -> #1 (&lockref->lock){+.+.}-{3:3}:
+[   64.756528][  T203]        _raw_spin_lock+0x26/0x40
+[   64.760072][  T203]        d_instantiate+0x34/0x80
+[   64.763562][  T203]        d_make_root+0x29/0x40
+[   64.766867][  T203]        shmem_fill_super+0x292/0x340
+[   64.770617][  T203]        get_tree_nodev+0x3e/0x80
+[   64.774112][  T203]        shmem_get_tree+0x12/0x40
+[   64.777728][  T203]        vfs_get_tree+0x1e/0xc0
+[   64.781170][  T203]        vfs_kern_mount+0x6e/0xc0
+[   64.784747][  T203]        kern_mount+0x16/0x40
+[   64.787998][  T203]        shmem_init+0x26/0x100
+[   64.791525][  T203]        mnt_init+0xfd/0x140
+[   64.794594][  T203]        vfs_caches_init+0x26/0x40
+[   64.798341][  T203]        start_kernel+0x2df/0x380
+[   64.801707][  T203]        i386_start_kernel+0xc5/0x100
+[   64.805611][  T203]        startup_32_smp+0x151/0x160
+[   64.809276][  T203]
+[   64.809276][  T203] -> #0 (&sb->s_type->i_lock_key){+.+.}-{3:3}:
+[   64.809276][  T203]
+[   64.809276][  T203] -> #0 (&sb->s_type->i_lock_key){+.+.}-{3:3}:
+[   64.809276][  T203]
+[   64.809276][  T203] -> #0 (&sb->s_type->i_lock_key){+.+.}-{3:3}:
+[   64.815036][  T203]        __lock_acquire+0x1851/0x2a40
+[   64.818649][  T203]        lock_acquire+0x96/0x200
+[   64.821879][  T203]        _raw_spin_lock+0x26/0x40
+[   64.825139][  T203]        igrab+0x44/0xc0
+[   64.828067][  T203]        shmem_unused_huge_isolate+0x2e/0xc0
+[   64.832099][  T203]        __list_lru_walk_one+0x98/0x180
+[   64.835960][  T203]        list_lru_walk_node+0x1b/0x40
+[   64.839660][  T203]        shmem_unused_huge_shrink+0x62/0x500
+[   64.843880][  T203]        shmem_alloc_and_add_folio+0x1b8/0x480
+[   64.847901][  T203]        shmem_get_folio_gfp+0x1af/0x880
+[   64.851755][  T203]        shmem_write_begin+0x5c/0x100
+[   64.855571][  T203]        generic_perform_write+0xc1/0x340
+[   64.859545][  T203]        shmem_file_write_iter+0x5f/0x80
+[   64.863719][  T203]        vfs_write+0x263/0x340
+[   64.867230][  T203]        ksys_write+0x6a/0x100
+[   64.870798][  T203]        __ia32_sys_write+0x18/0x40
+[   64.874740][  T203]        ia32_sys_call+0x1365/0x14c0
+[   64.878135][  T203]        __do_fast_syscall_32+0x16c/0x340
+[   64.881546][  T203]        do_fast_syscall_32+0x28/0x80
+[   64.885606][  T203]        do_SYSENTER_32+0x12/0x40
+[   64.889087][  T203]        entry_SYSENTER_32+0x98/0xfd
+[   64.892908][  T203]
+[   64.892908][  T203] other info that might help us debug this:
+[   64.892908][  T203]
+[   64.892908][  T203] other info that might help us debug this:
+[   64.892908][  T203]
+[   64.892908][  T203] other info that might help us debug this:
+[   64.892908][  T203]
+[   64.900253][  T203] Chain exists of:
+[   64.900253][  T203]   &sb->s_type->i_lock_key --> &lockref->lock --> &l->lock
+[   64.900253][  T203]
+[   64.900253][  T203] Chain exists of:
+[   64.900253][  T203]   &sb->s_type->i_lock_key --> &lockref->lock --> &l->lock
+[   64.900253][  T203]
+[   64.900253][  T203] Chain exists of:
+[   64.900253][  T203]   &sb->s_type->i_lock_key --> &lockref->lock --> &l->lock
+[   64.900253][  T203]
+[   64.909551][  T203]  Possible unsafe locking scenario:
+[   64.909551][  T203]
+[   64.909551][  T203]  Possible unsafe locking scenario:
+[   64.909551][  T203]
+[   64.909551][  T203]  Possible unsafe locking scenario:
+[   64.909551][  T203]
+[   64.915049][  T203]        CPU0                    CPU1
+[   64.918939][  T203]        ----                    ----
+[   64.922808][  T203]   lock(&l->lock);
+[   64.925634][  T203]                                lock(&lockref->lock);
+[   64.930586][  T203]                                lock(&l->lock);
+[   64.934913][  T203]   lock(&sb->s_type->i_lock_key);
+[   64.938686][  T203]
+[   64.938686][  T203]  *** DEADLOCK ***
+[   64.938686][  T203]
+[   64.938686][  T203]  *** DEADLOCK ***
+[   64.938686][  T203]
+[   64.938686][  T203]  *** DEADLOCK ***
+[   64.938686][  T203]
+[   64.944491][  T203] locks held by systemd-udevd/203: 4, last CPU#0:
+[   64.949046][  T203]  #0: f5c50a6c (sb_writers#6){.+.+}-{0:0}, at: vfs_write+0xb7/0x340
+[   64.954944][  T203]  #1: f5655658 (&sb->s_type->i_mutex_key#13){+.+.}-{4:4}, at: shmem_file_write_iter+0x28/0x80
+[   64.962274][  T203]  #2: f5c5a61c (&l->lock){+.+.}-{3:3}, at: __list_lru_walk_one+0x55/0x180
+[   64.968148][  T203]  #3: f5835810 (&info->lock){+.+.}-{3:3}, at: shmem_unused_huge_isolate+0x1f/0xc0
+[   64.974409][  T203]
+[   64.974409][  T203] stack backtrace:
+[   64.974409][  T203]
+[   64.974409][  T203] stack backtrace:
+[   64.974409][  T203]
+[   64.974409][  T203] stack backtrace:
+[   64.978786][  T203] CPU: 0 UID: 0 PID: 203 Comm: systemd-udevd Not tainted 7.3.0-rc4+ #1 PREEMPT  2f9698b0cc81084abb5f3c5754f76765d21e2bf0
+[   64.987668][  T203] Call Trace:
+[   64.990012][  T203]  __dump_stack+0x18/0x40
+[   64.993281][  T203]  dump_stack_lvl+0x20/0x40
+[   64.996699][  T203]  dump_stack+0xd/0x12
+[   64.999644][  T203]  print_circular_bug+0x2bf/0x300
+[   65.003228][  T203]  check_noncircular+0xd7/0x100
+[   65.006753][  T203]  __lock_acquire+0x1851/0x2a40
+[   65.009733][  T203]  ? _raw_spin_unlock_irqrestore+0x20/0x80
+[   65.013953][  T203]  lock_acquire+0x96/0x200
+[   65.017236][  T203]  ? igrab+0x44/0xc0
+[   65.020072][  T203]  _raw_spin_lock+0x26/0x40
+[   65.023308][  T203]  ? igrab+0x44/0xc0
+[   65.025972][  T203]  igrab+0x44/0xc0
+[   65.028647][  T203]  shmem_unused_huge_isolate+0x2e/0xc0
+[   65.032472][  T203]  __list_lru_walk_one+0x98/0x180
+[   65.035619][  T203]  ? shmem_unused_huge_shrink+0x500/0x500
+[   65.039875][  T203]  list_lru_walk_node+0x1b/0x40
+[   65.043576][  T203]  ? shmem_unused_huge_shrink+0x500/0x500
+[   65.047582][  T203]  shmem_unused_huge_shrink+0x62/0x500
+[   65.051774][  T203]  ? shmem_inode_acct_blocks+0x218/0x280
+[   65.055593][  T203]  shmem_alloc_and_add_folio+0x1b8/0x480
+[   65.059093][  T203]  shmem_get_folio_gfp+0x1af/0x880
+[   65.062996][  T203]  shmem_write_begin+0x5c/0x100
+[   65.066769][  T203]  generic_perform_write+0xc1/0x340
+[   65.070595][  T203]  shmem_file_write_iter+0x5f/0x80
+[   65.074058][  T203]  vfs_write+0x263/0x340
+[   65.077047][  T203]  ? shmem_file_read_iter+0x400/0x400
+[   65.081058][  T203]  ksys_write+0x6a/0x100
+[   65.084028][  T203]  __ia32_sys_write+0x18/0x40
+[   65.087227][  T203]  ia32_sys_call+0x1365/0x14c0
+[   65.090769][  T203]  __do_fast_syscall_32+0x16c/0x340
+[   65.094701][  T203]  ? do_fast_syscall_32+0x28/0x80
+[   65.098687][  T203]  do_fast_syscall_32+0x28/0x80
+[   65.102284][  T203]  do_SYSENTER_32+0x12/0x40
+[   65.105857][  T203]  entry_SYSENTER_32+0x98/0xfd
+[   65.109406][  T203] EIP: 0xa7fbbc4c
+[   65.112302][  T203] Code: c0 74 05 c1 e9 0c 89 08 31 c0 5e 5d 31 c9 31 d2 c3 90 90 90 90 90 90 90 90 90 90 90 90 90 8d 76 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 58 b8
+[   65.127608][  T203] EAX: ffffffda EBX: 00000010 ECX: 0238cb60 EDX: 00000023
+[   65.133201][  T203] ESI: 00000023 EDI: 0238cb60 EBP: 0238a5e0 ESP: afef94f0
+[   65.138647][  T203] DS: 007b ES: 007b FS: 0000 GS: 0033 SS: 007b EFLAGS: 00200246
 
-+       add_mm_rss_vec(mm, rss);
-+       lazy_mmu_mode_disable();
-+
-+       /* Do the actual TLB flush before dropping ptl */
-+       if (force_flush) {
-+               tlb_flush_mmu_tlbonly(tlb);
-+               tlb_flush_rmaps(tlb, vma);
-+       }
-+
-         /*
-          * Fast path: try to hold the pmd lock and unmap the PTE page.
-          *
-@@ -2046,15 +2055,6 @@ static unsigned long zap_pte_range(struct 
-mmu_gather *tlb,
-          */
-         if (can_reclaim_pt && direct_reclaim && addr == end)
-                 direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, 
-&pmdval);
--
--       add_mm_rss_vec(mm, rss);
--       lazy_mmu_mode_disable();
--
--       /* Do the actual TLB flush before dropping ptl */
--       if (force_flush) {
--               tlb_flush_mmu_tlbonly(tlb);
--               tlb_flush_rmaps(tlb, vma);
--       }
-         pte_unmap_unlock(start_pte, ptl);
 
-         /*
-@@ -2103,7 +2103,6 @@ static inline unsigned long zap_pmd_range(struct 
-mmu_gather *tlb,
-                         }
-                         /* fall through */
-                 } else if (details && details->single_folio &&
--                          folio_test_pmd_mappable(details->single_folio) &&
-                            next - addr == HPAGE_PMD_SIZE && 
-pmd_none(*pmd)) {
-                         sync_with_folio_pmd_zap(tlb->mm, pmd);
-                 }
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20261009/202610091403.d1d8080b-lkp@intel.com
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
-[  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1 
-index:0x3880 pfn:0x191647
-[  189.171995] memcg:ffff0000cc073d40
-[  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
-[  189.172006] flags: 
-0x17fffef0002022d(locked|referenced|uptodate|lru|workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
-[  189.172013] raw: 017fffef0002022d fffffdffccec85c8 fffffdffc6b8e508 
-ffff0000cd2ab6c0
-[  189.172015] raw: 0000000000003880 0000000000000000 0000000300000000 
-ffff0000cc073d40
-[  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
-[  189.172026] ------------[ cut here ]------------
-[  189.172027] kernel BUG at mm/filemap.c:155!
-[  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-.......
-[  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded 
-Tainted: G            E       7.3.0-rc4+ #277 PREEMPT(lazy)
-[  189.178320] Tainted: [E]=UNSIGNED_MODULE
-.......
-[  189.179339] pc : filemap_unaccount_folio+0xf0/0x1e8
-[  189.179619] lr : filemap_unaccount_folio+0xf0/0x1e8
-.......
-[  189.183986] Call trace:
-[  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
-[  189.184391]  __filemap_remove_folio+0x34/0x160
-[  189.184633]  filemap_remove_folio+0x4c/0xb0
-[  189.184859]  truncate_inode_folio+0x34/0x58
-[  189.185087]  shmem_undo_range+0x220/0x658
-[  189.185308]  shmem_fallocate+0x2f0/0x470
-[  189.185527]  vfs_fallocate+0x128/0x328
-[  189.185764]  __arm64_sys_fallocate+0x50/0xa0
-[  189.185999]  invoke_syscall+0x58/0x118
-[  189.186210]  el0_svc_common.constprop.0+0xbc/0xe8
-[  189.186470]  do_el0_svc+0x20/0x30
-[  189.186653]  el0_svc+0x3c/0x198
-[  189.186843]  el0t_64_sync_handler+0x98/0xe0
-[  189.187078]  el0t_64_sync+0x184/0x188
-[  189.187622] SMP: stopping secondary CPUs
-[  189.200152] Starting crashdump kernel...
-[  189.200388] Bye!
 
