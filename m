@@ -4,93 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F29AECA6012
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 10:41:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95E02CA6019
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 10:46:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A41E6B008A; Fri,  9 Oct 2026 06:41:27 -0400 (EDT)
+	id 62BA66B008C; Fri,  9 Oct 2026 06:46:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92E0B6B008C; Fri,  9 Oct 2026 06:41:27 -0400 (EDT)
+	id 5DC416B0092; Fri,  9 Oct 2026 06:46:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F5A56B0092; Fri,  9 Oct 2026 06:41:27 -0400 (EDT)
+	id 4CAD86B0093; Fri,  9 Oct 2026 06:46:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A2946B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:41:27 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2BDF51402F8
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:41:26 +0000 (UTC)
-X-FDA: 85302746172.12.57F96DC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 718F6120006
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:41:24 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IV5Cnyl5;
-	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 20C306B008C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 06:46:09 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9FCBFC015F
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:46:08 +0000 (UTC)
+X-FDA: 85302758016.25.713D144
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 844554000A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:46:06 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791542484;
+	s=arc-20220608; t=1791542766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cwq24PEweYCKQcmw9+hoELtVfG6aGbF+TPjmWZlfZpI=;
-	b=AL+1EhBa4/ZaEwCVXGdfgzOxQCYUB7j/9YM+TZGcZZSveZt5mtX4A1yd5q8d78ZzL1hz0X
-	4pWEqYHdFllV42icfYVPgY9/V11CXO09eGqPfVrPJ0ArR7C+Neqg7LmTtLzK6OsPl1jvyb
-	hD0bmeY/nUYJEqq3mMMXYXGdZjnuTF0=
+	 in-reply-to:in-reply-to:references:references;
+	bh=4G1ZQyZGjXPyKeZrRB3z99WagOOKrPbnI4HKfEsJM6E=;
+	b=19LGTA5Y+TIQusSrgo74qk1GOr7gRtbNrwYvTMNfskq2qyFOEEHcWeCvnCSpuRlnDxSsPY
+	eNw77Z+vnpAzu2KHysYOiqTn6+pcN+6Xm9MiA9s+WiLw823cvmhDeqw1wvfPwcwyYmgJcW
+	nwxkMl8A7HWE2/R81mVt8gleTrOOFjM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IV5Cnyl5;
-	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791542484;
-	b=bISutopcTe2RP0xVeyPgCY9BUc/jTU3Xb9wrPt96Rm0GuFXT8cxE67MeQjUZX+/C89qOKD
-	toY+iPSqfobls04u8pUQRctMhq9XAm2jmyLuLk7AG7pQuL3TNnVbotiC7ZnPNfKQ5NVuVQ
-	nxMDIf8hG+CKugCG7KAgyF7dldThaMg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 62E8B43D48;
-	Fri,  9 Oct 2026 10:41:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3481F000FF;
-	Fri,  9 Oct 2026 10:41:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791542483;
-	bh=Cwq24PEweYCKQcmw9+hoELtVfG6aGbF+TPjmWZlfZpI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IV5Cnyl5YFpcOs667zXq5fhHBaTQashWb6uHeGtr2M11Sr7S5Bwj+NP6bYcCRvLoR
-	 qjrlQmB4MakZGLjjIQTL5bhfgIAde7TYI71gW7w9fUKqeuBPYrV51P5xGsv/yivrHj
-	 QMgLK02INHg4xwKaz0kdwszFeUiajgE3C0c/4xo4Xvu18GzeBnWJNyTtyDXNAVma8c
-	 ZAFMnIYpMvF6Qo6UFRk4YuuBnT4v+WHMhPgX5PtC9qE/IOr8uuHfYoXR6BPwAlfYsk
-	 8//DF1vpgExx3ANficCPgw2BdWvqcvOEPF6/4G8J+6IY5hG5j251V47G30Ygsy7APi
-	 +8mJ4AlF520HQ==
-Date: Fri, 9 Oct 2026 12:41:18 +0200
-From: Harry Yoo <harry@kernel.org>
-To: kernel test robot <yi1.lai@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-mm@kvack.org, 
-	Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
-	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [harry:b4/sheaf-size-round-up] [mm/slab]  ddf56dfc79:
- will-it-scale.per_process_ops 54.5% improvement
-Message-ID: <asi-kgXfHJt6Gjp0@thinkpad>
-References: <202610091451.beda4ec3-lkp@intel.com>
+	t=1791542766;
+	b=7QkPpiTPPWf9UyVTHmpSl398jRvUTzBQd64cX1luZhLdFGSkJ6RB/+0Ola0na2VmAAcokC
+	9mBYthj3qbRHWYbtOGMOVR/+ZMLLRKtxLh9izZYEnKSlffIsbNm3hao7lDSUExddIR6yPQ
+	0V79iajFsDl4mgRTn6jW261vxvFekdE=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 308D61F7CB;
+	Fri,  9 Oct 2026 10:46:05 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 240871326D;
+	Fri,  9 Oct 2026 10:46:04 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CvXVMuvFyGp4LgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 09 Oct 2026 10:46:04 +0000
+Date: Fri, 9 Oct 2026 11:46:02 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org
+Subject: Re: THP placement BoF at LPC 2026
+Message-ID: <asjDTxAfUSGm0obS@pedro-suse.tail5790ac.ts.net>
+References: <arZ5-VB0xkq-dJzG@pedro-suse.tail5790ac.ts.net>
+ <CAAa6QmRt+4w9U_R8B5s+uOmS3DsFhc5JfucGcgz7D96pNDrwGA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <202610091451.beda4ec3-lkp@intel.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 718F6120006
+In-Reply-To: <CAAa6QmRt+4w9U_R8B5s+uOmS3DsFhc5JfucGcgz7D96pNDrwGA@mail.gmail.com>
+X-Rspamd-Pre-Result: action=no action;
+	module=Unknown lua;
+	unknown reason
+X-Spamd-Bar: /
+X-Rspamd-Pre-Result: action=no action;
+	module=Unknown lua;
+	unknown reason
+X-Rspamd-Action: no action
+X-Stat-Signature: 3917c4dgkmn3ncbbce6hxino8y77jpu9
 X-Rspam-User: 
-X-Stat-Signature: 18t9e1uiestoxaqq1ewuzt51am3uyk1p
-X-HE-Tag: 1791542484-245680
-X-HE-Meta: U2FsdGVkX1+I0rSPI/UlQM5aahwpadQEOGrLQz4Ow8WDcIgfNYy5F4g8lMHmPlMqCytp2zBzz0bZEElxbWVh6yMaPTlHGNmxkc2ri8H2q2kmS1Hi4bbv6LXm40DKRt/w9ZxS5GW2SenGRvHT26nUb39moU/hi6yKVvEWfXQwji2jg2QpQWqJi49U8wEuba5jmt2Yx123RfQeBiCrqg4U5RcpjJFAdB0n0EVx3eKx2xTmkiYasbym7zHzomvs9pDCxJdENvu1v3QV/QEMUPsX+pcrLbHgbw2NKxOy1WOhU2Xi9EPnyUDHjtbkANN9oGpe7gLet4qKkut2ZA4CSQZp4KEXF9jsjljH8JTZt8MhFygabAdylVl9YsIYfqx8j+Ue9n4qts+A1ol9crrhMLliROzzERt8XjDh4zSyFayseVzzGgAAkelrqLK062wPSkpGDoHVQyBJnxRCzvKi7s2l24URUEffn3CrwFwgPEwBYaVrsxCkvOi6rHVLtPYMZZkEd6nrREj/YKYcu4bLXk/FannlPFfNuSWXYGSqdyv112boyxU6xaTMikOGOsOJ06So7lZKpcrzjjbmO7aq5t9SDKLMl7mgT56RNATSamIa/zqJMXAKRFXVNvniX9OQTpihmya6T3xTUXjr5XzaEo5kfq0oxpEcczo7xX1lXGOMcQKrtDDaNgA3CroZQwaYRTPV/7U1ZQISAIIjKnJKqcRETvpsxciUp5jtxwOfc+0ynzg5h/1BaXa72LXQKy7y5nSw7pJ0Os4cixZ7BDvjqe6s6Ef8tu7Yr+43xW7NaxQfodL7hj/4XOX/lokfucnznc6o1h7MDpS92XeNrQ6VIdoXRdzEEJrZ4P9azs4t1zYrgT4v8MCyRfM6sLqDzgNjrDOFFi4VyF+nZ+LxULx3dBVTARzYrx6AOVDfWlP6fS+DPaXERNwg28552oJshuHUtPydpc6pb87QBG/T1gd6aJD
- SyE4+cex
- 7x+1mlGYTZ38NwaJwKjz2p0763qbjo/4JEcsf+tq1rXNYUb1cft/lbEXuCm3rCTR7lQOGGOUKSRjDebeq5jnKGtxuQMc1UwYzrtSm0SGdz/+mQtLX8zcMYYw61JI0KCY+y6WaY3PwNzjvAgamxBjwUk2t4LkAD8kykuAGSjYvaG3E43fJ3dz57eflYPLprllbpEte1+Eb+Ad24lLqoRklSgtKr6PSeYnBtn67mMfNKmXFwYgu+9gx7So3X6wVuTB/TyWu10YRE//ADZUTPCd/4GcP+oyM/nfdx+viNwbJyNWVkpc4RTPv6qQ/WbHza+9Ncw8oOFkx1LasQ0naPNfV8eAJBMgiQGwUJTDoU/owArCrEFLbhA2DWFxOS3rogU9IJRNNjmxBZDqVT7rIKwoN23cW5ODE3GZnWcwE6BFU0vfhxF2AKYUpfKno0lV/oikpAgzfiK/lyx0uzOg=
+X-Rspamd-Queue-Id: 844554000A
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791542766-411684
+X-HE-Meta: U2FsdGVkX18q4desrUDjpXJOVSlyo8tPKaL030DLSzaz4D7K2kYQOTlcQAKzKv7cNbS1YZcVESgLacbpM+PY/pOeH0GsuyyiTOjiwNhdbbwtCErkAZWP4R4vkbyIqQcd7GlScnHaPGPcmPGbRtS3uLFiqMNR0IicifxFaTVdA/8KPtqUJBYl0vRTXzwsK96UtB5yn3MWpXBoqdgXkKlmqoxTEznO2z0sXByP6fD93xmKkEsdaXKkwNvQmd5yWzMSJyIhJ9o8Q7BCj2bmsrz9hgof4SdEdfY5pkt13uyndVyIaApxp9NJTynhe7hUbN53ystksEnyg5Klze0jiYhSWFmjvyXtAOBQzTGFZl4mAgnrc4F94O+oM+NCo8mFbbFYJhjgDkWxXWSgtwvl1My/P/YZGC+vARMx7STqOkPwDEJziHowODokKCKrVq+7pC2VUm8PPuhLEw0CCQgq5K2aNi5/MIhwSj51M76W46hpgGFVXK0gXD9oeg0gCX0X0o3cO8SNsyvmOrwiYVhz69m4OwZD4BEXD+DXImxRHcFH7WOb+/crVYnebW94PA4QFN1H9hu1AvdHRMGRWJvGixMZcwMlUaf4bLwj7mCH1VWYr5eua0c4TyXZu1iwQ18lDb2vjesoVi8k+NGGW7x5OnmRT/ZcQoMGmlgxEVW0YRzBsbRkdbCLkLo5qUUfM/zX7ZipYQV9w5MsNgwRrIqsrgX2t3Hl3HiG7nq3GsCfqZ8UZCz/YODpPhTm6Q9IX4YuGokXbI9O0tBLF14B8LMMq09LtJvQWhm4yBpQFMTs8ffk77zHHJbgk+vv/kjig42XvfixiUB7vck4TzkYGbfzuvqXVcYai1sMv+1ffr71SCYcszoWDL8nFI72a3zZsbWwnvibyx8h8nsWGh/4P4dj09u45LK94vGRklAlrkaIDrWsO1U/OS3cw/ia2DMEDVsFNLJU6MYrTwEyBBUTbEYepJh
+ 4iD/pzoU
+ FwkIw+J48WpbVeluparcmdO8NNF5TspyH3x69g/R9zNwsVFUp3yEuZpCfbHafCjX+oRN+Tf8wpo9+2eUJeOg/JmWNYzhkSSdnnAF0A3hPkNPksavYtk07AlPpTvGv/3iPJH/hdp4oYvGrBG/ra63tdJMN+s8gJqpDflls6guL5OPvoFZsweGt8e5GOVA1nZXOLjqeAmxrSO+K3Pzq/NSSEM3OZ/cK835RojBD+f7DbjMcMSAvaS7svK5OKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,150 +105,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[ +Cc slab, maple tree folks, ... and Suren :D ]
+On Tue, Oct 06, 2026 at 08:23:44AM -0700, Zach O'Keefe wrote:
+> On Fri, Sep 25, 2026 at 6:57â€¯AM Pedro Falcato <pfalcato@suse.de> wrote:
+> >
+> > Hi folks,
+> >
+> > we will be holding a BoF about all things THP (but more focused on fixing
+> > placement/not-automagic-THP issues) at Plumbers 2026.
+> >
+> > Session link: https://lpc.events/event/20/contributions/2452/
+> >
+> > The point of the session is to build upon the latest THP discussion at LSFMM,
+> > and build upon the latest problems that have been raised over the last few
+> > month, to get somewhere meaningful.
+> >
+> > I added a bunch of probably relevant people - it would be great to see you
+> > there! and anyone else that may want to join of course :)
+> 
+> Thanks Pedro.
+> 
+> It seems there were some AV issues, so remote attendees couldn't see
+> or hear the talk.
+> 
+> Perhaps someone who attended in-person would be so kind as to
+> summarize the discussion here, so we can continue the conversation?
 
-On Fri, Oct 09, 2026 at 02:39:02PM +0800, kernel test robot wrote:
-> 
-> 
-> Hello,
+Hi Zach, Zi!
 
-Hi, thanks for reporting!
+Just got home yesterday, here are my (editorial) notes:
+1) mapping 2MB THPs in ptes initially
+ - tough ask for lots of folks
+ - problems:
+  - might take too long to get a THP
+  - problematic for short workloads
+   - my counterpoint: i've done some testing with kernel builds (lots of short-running processes)
+and THP is mostly noise in measurements.
+  - non-obvious how to store the 2MB folio
+    - maybe hang it off the ptdesc?
+    - can also just PTE-map the whole thing and do deferred collapse on that
+     - but that's basically khugepaged's whole shtick
+ - could be possible to carefully map THPs until you have some confidence
+   the task is using them effectively (some sort of THP slow start)
+2) there's only one accessed bit, one dirty bit in the folio
+ - this leads to hard reclaim, and write amplification for anon memory
+ - could perhaps use more memory on large folios for this stuff
+   - 64-bit field could be enough?
+3) can we use hardware metrics for it?
+ - maybe, but sometimes they have overhead.
+ - unfortunate that hardware vendors do not supply us with more A bits
+  - could the 128-bit arm64 ptes work for this?
+ - AMD IBS could work but does it have a performance penalty?
+  - Intel PEBS definitely does.
+4) splitting off a VMA for MADV_HUGEPAGE VM_HUGEPAGE is silly
+ - could perhaps have a parallel maple tree with these hints
+ - my thoughts: wondering if it can be made extensible for other
+hints/metadata. or if the performance penalty of needing an extra maple
+tree lookup is measurable.
+5) THP shrinker is a bit silly
+ - in no way does "scanning for zeroes" actually indicate if the data is cold
+   or not, if you ever wrote to that page
+ - Per Usama & Kiryl, Meta used to have quite a lot of issues with this until
+they fixed the userspace malloc
+   - i think that's a tough ask with a lot of setup
+ - some mallocs actually write malloc headers all over the memory chunks, so
+   the zero page shrinker fails then and there
+  - and on free() you'd need to zero memory, or at least issue a madvise()
+    to the kernel
+6) MADV_HUGEPAGE has no size hint
+ - what do users expect? unclear, they ask for "huge"
+ - problem exists for ARM64 16k and 64k page sizes
+ - I floated around the idea of defaulting to 2/4MB-ish sizes instead of
+giving out PMD-sized chunks
+  - ARM64 can do 2MB huge pages with mTHP on 16k and 64k page
+    size configurations
+  - or have userspace give hints through madvise?
+   - I don't like it, neither did anyone else
+ - overall I didn't understand if there was a positive reaction to this or not
+7) BPF was floated around as some sort of funny-piÃ±ata
+ - it could certainly make things more flexible, but definitely less transparent
 
-> kernel test robot noticed a 54.5% improvement of will-it-scale.per_process_ops on:
+I hope I didn't forget anything important. I'm definitely not nearly as good as
+Jon at writing ;)
 
-May I ask if there's data on slab memory usage for this experiment?
+I'm not entirely sure on the way forward for many of these questions. I am
+vaguely planning on at least attempting the PTE-mapped solution, if nothing so
+I can rule it out as a possible way forward.
 
-Performance improvement is nice, but only when we know what's
-the tradeoff (memory usage).
-
-I think diff on Slab:, SReclaimable:, SUnreclaim: in /proc/meminfo,
-and in addition to that, ideally diff on per-cache slab memory usage
-(from slabtop or /proc/slabinfo) during the experiment would be nice
-to have to make a decision :-)
-
-> commit: ddf56dfc79f5734d7b3aa8ba81f195d52b3e5823 ("mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity")
-> https://git.kernel.org/cgit/linux/kernel/git/harry/linux.git b4/sheaf-size-round-up
-
-https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git/commit/?h=b4/sheaf-size-round-up
-
-Oh, this is a b4 branch that I pushed but did not submit to mailing list
-yet because I wasn't didn't measure its implication on memory usage.
-
-The patch removes under-utilized 244 bytes per sheaf on maple_node cache
-by not skipping "rounding up to the next kmalloc size" step for explicit
-sheaf capacity.
-
-Copying and pasting the patch here:
-> mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity
->
-> calculate_sheaf_capacity() calculates the size of struct slab_sheaf from
-> the capacity, rounds it up to the next kmalloc bucket size, and then
-> recalculates the capacity from the rounded-up size so that no memory
-> is wasted within the bucket.
-> 
-> However, when the user explicitly specifies args->sheaf_capacity and it
-> is larger than the capacity calculated by the heuristic, this round up
-> step is skipped.
-> 
-> This wastes memory for maple_node cache. Its object_size is 256 bytes,
-> so the capacity calculated from the heuristic is 26. Rounding up
-> increases the sheaf size from 2 + 26 * 8 = 240 bytes to 256 bytes
-> (kmalloc-256), yielding a capacity of 28.
-> 
-> But since the maple tree cache explicitly specifies a capacity of 32,
-> the final capacity becomes 32 without any round up, and the sheaf size
-> becomes 32 + 32 * 8 = 288 bytes, which is allocated from kmalloc-512.
-> In other words, 512 - 288 = 224 bytes are wasted per sheaf.
->
-> Move the round up step after max(capacity, args->sheaf_capacity) so
-> that it is also applied to explicitly specified capacities. With this
-> change, the round up behavior becomes consistent and the sheaf capacity
-> of maple_node becomes 60 and does not waste memory anymore.
-
-It does it increase memory usage for sheaves because it's reusing wasted
-memory, but it could end up more memory being used as each sheaf
-now caches more objects.
-
-> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
-> ---
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index f9b56cb439e709..4fa551bf02cd64 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -7895,17 +7895,19 @@ static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
->  	else
->  		capacity = 60;
->  
-> -	/* Increment capacity to make sheaf exactly a kmalloc size bucket */
-> -	size = struct_size_t(struct slab_sheaf, objects, capacity);
-> -	size = kmalloc_size_roundup(size);
-> -	capacity = (size - struct_size_t(struct slab_sheaf, objects, 0)) / sizeof(void *);
-> -
->  	/*
->  	 * Respect an explicit request for capacity that's typically motivated by
->  	 * expected maximum size of kmem_cache_prefill_sheaf() to not end up
->  	 * using low-performance oversize sheaves
->  	 */
-> -	return max(capacity, args->sheaf_capacity);
-> +	capacity = max(capacity, args->sheaf_capacity);
-> +
-> +	/* Increment capacity to make sheaf exactly a kmalloc size bucket */
-> +	size = struct_size_t(struct slab_sheaf, objects, capacity);
-> +	size = kmalloc_size_roundup(size);
-> +	capacity = (size - struct_size_t(struct slab_sheaf, objects, 0)) / sizeof(void *);
-> +
-> +	return capacity;
->  }
->  
->  /*
-
-[-------<8 end of the patch-------]
-
-> testcase: will-it-scale
-> config: x86_64-rhel-9.4
-> compiler: gcc-14
-> test machine: 256 threads 2 sockets GENUINE INTEL(R) XEON(R) (Sierra Forest) with 128G memory
-> parameters:
-> 
-> 	nr_task: 100%
-> 	mode: process
-> 	test: brk2
-> 	cpufreq_governor: performance
-> 
-> 
-> Details are as below:
-> -------------------------------------------------------------------------------------------------->
-> 
-> 
-> The kernel config and materials to reproduce are available at:
-> https://download.01.org/0day-ci/archive/20261009/202610091451.beda4ec3-lkp@intel.com
-> 
-> =========================================================================================
-> compiler/cpufreq_governor/kconfig/mode/nr_task/rootfs/tbox_group/test/testcase:
->   gcc-14/performance/x86_64-rhel-9.4/process/100%/debian-13-x86_64-20250902.cgz/lkp-srf-2sp1/brk2/will-it-scale
-> 
-> commit: 
->   675a745c61 ("EDITME: cover title for sheaf-size-round-up")
->   ddf56dfc79 ("mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity")
-> 
-> 675a745c6113e420 ddf56dfc79f5734d7b3aa8ba81f 
-> ---------------- --------------------------- 
->          %stddev     %change         %stddev
->              \          |                \  
->   70440501           +54.5%  1.089e+08        will-it-scale.256.processes
->       0.30 ±  3%     +35.9%       0.41 ±  8%  will-it-scale.256.processes_idle
->     275157           +54.5%     425248        will-it-scale.per_process_ops
->   70440501           +54.5%  1.089e+08        will-it-scale.workload
-> 
-> 
-> Disclaimer:
-> Results have been estimated based on internal Intel analysis and are provided
-> for informational purposes only. Any difference in system hardware or software
-> design or configuration may affect actual performance.
-> 
-> 
-> -- 
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+-- 
+Pedro
 
