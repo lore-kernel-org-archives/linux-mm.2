@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4E35CA9EBB
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 21:46:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42734CA9EBE
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 21:46:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECC996B008A; Fri,  9 Oct 2026 17:46:48 -0400 (EDT)
+	id A37CE6B008C; Fri,  9 Oct 2026 17:46:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA3FA6B008C; Fri,  9 Oct 2026 17:46:48 -0400 (EDT)
+	id 9E98F6B0092; Fri,  9 Oct 2026 17:46:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D93466B0092; Fri,  9 Oct 2026 17:46:48 -0400 (EDT)
+	id 8B09D6B0095; Fri,  9 Oct 2026 17:46:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AB0356B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:46:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 27F5FA8041
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 60B286B008C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 17:46:49 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D68B716048F
 	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 21:46:48 +0000 (UTC)
-X-FDA: 85304422896.28.33CC0C2
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6303F140002
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 21:46:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IMEfSqIg;
-	spf=pass (imf23.hostedemail.com: domain of 3xGDJagYKCAkt3wr73pxxpun.lxvurw36-vvt4jlt.x0p@flex--kuniyu.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=3xGDJagYKCAkt3wr73pxxpun.lxvurw36-vvt4jlt.x0p@flex--kuniyu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+X-FDA: 85304422896.14.940D703
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2AE1320007
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 21:46:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CxZ+SOaq;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of 3xWDJagYKCAou4xs84qyyqvo.mywvsx47-wwu5kmu.y1q@flex--kuniyu.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3xWDJagYKCAou4xs84qyyqvo.mywvsx47-wwu5kmu.y1q@flex--kuniyu.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791582407;
+	b=2VaqYDgbf/k5E7PzUSk/ykRJus+gJPJbju35CaRyrnAPin7xPx2Cyg8NTGM+t4C7Byew/j
+	Va5K+k+6wmAuZjiohNHkPET82B9+/QCaox+BXK/HLRvS576Ijo41R6ovL4zDqYbc/kOUBp
+	33JZpkByostR6044qTiiopC7n4PzO8w=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CxZ+SOaq;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of 3xWDJagYKCAou4xs84qyyqvo.mywvsx47-wwu5kmu.y1q@flex--kuniyu.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3xWDJagYKCAou4xs84qyyqvo.mywvsx47-wwu5kmu.y1q@flex--kuniyu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791582406;
+	s=arc-20220608; t=1791582407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U7SX932DFxQl+q9e3enjijEP57mjh6GyMpzU86JEIxk=;
-	b=aW0PMtLgpBRdNcAhtK215eHDAMgDk+rBS8dXI55ZlTDsfJrX3Lq0GeEdnbWIKqPbfrzwuV
-	eqPlthhA5FhPE9EqhHghsSvNvMq0HzaBJeTVfzI2CpvC9tr0FDc2DkNIwP8WoiAbQkIPr6
-	BiWT5WlotTxW2BFUH3JRkzjWsjenVvM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791582406;
-	b=HaAd3VO/Nca6ieV+9bsKVyJkv9A9Bbv48QFjX3M8lrFRtWutXOzgIhhU0h5VgW8ZY1nFdg
-	+WVKReXA6LitWAGpsMDIoPtmpA5gpczBBcGX4bmtWuFIHmFCf1NtPEz6fiCf4H4FT/ehoE
-	CUEk8NCf7pOrxy6d1YtWPnJI6P/XL+Y=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IMEfSqIg;
-	spf=pass (imf23.hostedemail.com: domain of 3xGDJagYKCAkt3wr73pxxpun.lxvurw36-vvt4jlt.x0p@flex--kuniyu.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=3xGDJagYKCAkt3wr73pxxpun.lxvurw36-vvt4jlt.x0p@flex--kuniyu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e5cb9d39c0so1174955ad.1
+	bh=8bttx2p1LF4ymQzhEXtCtn+deAYuzqXkmR7IkqHZP+g=;
+	b=A8W6Ty8Z4HTAgRZZEmW2GgxPLUZPLU2qvYa6QSrGIsn1P0aRgmTpHYC/Hd9RZ/mioU2k1r
+	jBAHL3bCtxP3UUPpmzAJE1NSACIRKfn6wEjWjmntWplSJUvJBDENsR1SQnC6jbi3fp6H89
+	0Ld3AgkyWy8KdH28RiVYQ0uE83CqTzw=
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3a8af172664so79455a91.0
         for <linux-mm@kvack.org>; Fri, 09 Oct 2026 14:46:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791582405; x=1792187205; darn=kvack.org;
+        d=google.com; s=20251104; t=1791582406; x=1792187206; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=U7SX932DFxQl+q9e3enjijEP57mjh6GyMpzU86JEIxk=;
-        b=IMEfSqIg2MJMthDlqYv7pwW6BkKYqceXfkt3T/c8qITY3/0dYFA4RG3cNtNEDBGJna
-         mqF2sCftgD1b5aosp4GbzW5zdQKFeP/0AOy398+hefYVjsSx04geBF0A0diadcQReuQU
-         vjPAg1R9XwhE2Jfv672HpLyEDyUMhsKG12/kjNm700pMzyFxqy28f7Rcc8BMrvrZIVD0
-         d49VJatDmLST0oQtW3CgqV+xaa06DOb6soS/zI/Qo7Vs7fduii3fEVvXTtDf9xxj05z8
-         vHL6yMFj0ouJD/tX/aM9Vq4WhlO79cJgiJB1pSik4yuqRDUNvIn3X/46bwF8kwu0+eSk
-         L97Q==
+        bh=8bttx2p1LF4ymQzhEXtCtn+deAYuzqXkmR7IkqHZP+g=;
+        b=CxZ+SOaqEmFBSv7uq6UKaeKVpOVfzb++CbLrrlIMCKv3tbvlB25tYAu4hf21AZBjL7
+         JbYO8AY7XNZ5ygMVjLEseedQJdgpKtXwxuts7ppwuq/ii8uimQa18m/v2XItG+zO5qzn
+         2wpLr2EIo2N1a8RGLTGF9I+ZkgkMheRJto/7CSVvUK3s3NrfFhopZJlrQB2pby2zUlEr
+         hmcM614sjJhsR1hmWVRnYUgbMbi5f5qw42u4GkVdgR3rMUmDrofIkTApWRgma7ieTg4C
+         BK0LLnoOtBRdD8RR5nRnrMSNtfJTsCl0uN1WEf5L7OCbPOQWF5ZZ1Y+nAQ+Mojc1HWTm
+         IRKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791582405; x=1792187205;
+        d=1e100.net; s=20260707; t=1791582406; x=1792187206;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=U7SX932DFxQl+q9e3enjijEP57mjh6GyMpzU86JEIxk=;
-        b=wSyuFx9Fg3aKsctplS9nXmyDbQucf4vj2dGmNXEKHIFU7W+x7tWXUjlkKmL7tIGnrF
-         vdt2KaRypdYRIIHZbBMugRRJnXkgZuIYol3QjNqbyCSRIFS2mN3XzdqyE6dMz9TofVFd
-         B6LGqClSC1k3OKaoYIX1pxLnLXAgf6bhvP06DgjdmLOerLlsKWj6Q+gSXywcP/5i7t5Z
-         TmJW0DwmfH4kLNk1kLvNCLxhsfrIz+qZUiKzX84taWvX416m7zUOV3HFBv0Esd/s5QcT
-         16Nd1i+6preKYq/gQWEEZvDjc2KXggFAv+V8Dx4pSSrkd7TWGj5yoAlBY8fidnLjoMTp
-         IWjA==
-X-Forwarded-Encrypted: i=1; AKwUvBx+6xR9RLzCww+KqWGOvIFwWc6Acj5SqXNYsD82GiWMqdSLgWb+Rrq4i4FTERhzQA1+gJ8uofbziw==@kvack.org
-X-Gm-Message-State: AFq9FYL1xwOFPEyUg3i4kXeCGx7WaLaWrvno8mwEXaHCBnGwSpG9nm+0
-	xypRmQnjz+ZnyGcCppLUCYI43JsHjbqHMA0YElTdGexFS2IstE3e9HfnL+sDQlZhdoecNPWYBAP
-	FyzVEKQ==
-X-Received: from plhl12.prod.google.com ([2002:a17:903:120c:b0:2df:b611:4b15])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ebc9:b0:2dd:b52d:e83e
- with SMTP id d9443c01a7336-2e842aadf63mr27729175ad.19.1791582404959; Fri, 09
- Oct 2026 14:46:44 -0700 (PDT)
-Date: Fri,  9 Oct 2026 21:46:25 +0000
+        bh=8bttx2p1LF4ymQzhEXtCtn+deAYuzqXkmR7IkqHZP+g=;
+        b=q6Vr4mZVZY0jk6SCxIsPsi6OXvEi4gc86SurnXVV5HUwgWSlwG0IWfAAM1fg/1wUCO
+         8zCbWzU45LYaseuEpSUipE9cDeILFZ0NRnqqGemlzB6A3pJvV79NGSKqoM3TphBGsviP
+         rPsodLpsaLfZsubHHW+OZjaIVsEzeagdn5x1p0YCKtnoWYAmWUZn8vwjfQ0+XykSW0nk
+         7JHtlcNyMaddc2AogIPMGN6dVXSnip0xkv603EMcqMPzdT6dhkzdR3bJydrzf5jY+n0C
+         y3TUxXwf6ONB6Xhejmoct1/Cu4Qq/EhS52XdbbfZj3wJxshhVtc2RhZlc6/vd34B4F0t
+         JdoQ==
+X-Forwarded-Encrypted: i=1; AKwUvBya529vunh8U5ee4V59vt2gwnZkhUFlST7ltFR+B3l1vPZpsahKYzLc85p56aMgYTDIUqLePOTaJw==@kvack.org
+X-Gm-Message-State: AFq9FYKyXzJtGENnO/pJHERF+FosWUzZer/ybDUbwObYIQ399893phsb
+	KQfTv0kNgjwVJBWQISkCa6ZhV0jlGB+Tzsny39rlnDo60wnXbzKlfVaqxRQ95V8Ke1QrfI5sqCT
+	HnqHEAg==
+X-Received: from pgmt20.prod.google.com ([2002:a63:2254:0:b0:cc7:e5e0:1b43])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2784:b0:3ab:9cb:b5a5
+ with SMTP id 98e67ed59e1d1-3ab3a74739dmr2829199a91.18.1791582405705; Fri, 09
+ Oct 2026 14:46:45 -0700 (PDT)
+Date: Fri,  9 Oct 2026 21:46:26 +0000
 In-Reply-To: <20261009214639.2878857-1-kuniyu@google.com>
 Mime-Version: 1.0
 References: <20261009214639.2878857-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261009214639.2878857-2-kuniyu@google.com>
-Subject: [PATCH 1/2] mm/kasan: Detect double-free involving kfree_rcu_sheaf().
+Message-ID: <20261009214639.2878857-3-kuniyu@google.com>
+Subject: [PATCH 2/2] mm/kasan/kunit: Add double-free tests involving kfree_rcu_sheaf().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>
@@ -98,14 +98,14 @@ Cc: Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.
 	Roman Gushchin <roman.gushchin@linux.dev>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
 	Kuniyuki Iwashima <kuniyu@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 6303F140002
+X-Stat-Signature: xwrb7t4o53tgjt4t5mjwn9croof77wt9
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 5noijfea5s5pizbcz1457hbpsrqbapii
-X-HE-Tag: 1791582406-185555
-X-HE-Meta: U2FsdGVkX1/MPGnofOTQiInuAWV2aQypNHZpbqIg5ae6equb/UO/bkmgX+bdgJpILQAYmmpDtszfQtZlsNSNp1Dq2riAG/AsFaKwteY4O3cPmGfqDFeOySGcWIhd0BbkidVW8cUJTNxnYoWdERcS4mjTeKjH17w7Xsz1voytI3FQGIEBIBe7oaSr4TGT7d82UCDHOmNp66m3ptgQlH6zpK8X8wXtCHgZX/kvSHlUekRylrUoeNK3HTZBh7P4w5/61Zzoyc0dQimcu8FQd10tpU/Cmjz55DjrqqoiVg2Ys/PZz55NGXWkE2u0rhJ1zgr/Sjabcpr66/C/V/axOiE3FocemovdaCjKqACXSCwrdrt5Mhb83i6nUIDsRytLhsfTXkaSzLlv/iAaHwne4oCma/MEv3TJESmrqGBKYuIuwBfS1jRuiv2uEOMgjkYdxImhUsKBNDUQCitv7ELxF8KBywbGNa5CMzNvqyvW29G0yeRwKlgsd6VFLFlFhn6Y3lA/fPI9ZPM5U+WYJ/5QLkbLzMTvRumRrjEWp+g2oDt8w516G81J8BHY2MQ3t40vYjKObeRK1hZQaMN0laCoBH/gVTYDvm45dKlPMmeQUYY2+tnutn2uF66Cd3/fAfXGXCaax5VsLCWTn6DSktwpG5TQTmNTTjvB3aO8HUOWLO27XVUbmRez3/WO0A5PKTCENhTGNvHC0z0HQayqt1oiP8EsiWUTHE8VtlOhuBIoe2x5FfNbVcYWEnJtf/z+gjFP30YL67Cwz0tQOoPk1mOfsRbJRlTCsbPwWFwSm0t/avq8a+45PSI6tjidZXXCXv3zOFw3SeWpZhm9hbVfdomnWVq904G6nZ1ExsDPmDX/Paelu2Jumzn2PVUZvvBCOFPKmutuT6qkWzq6gamsrNtZYj4CXqq+dzmisYZeXIZmfDJQmNrJ9cI1y/pDBklfFYSQe6Of068aaNoDwFlNY2GsuDm
- Kpi2k+MT
- H3UWRBIryTAH38dzGKW9a3kb8SQjhECEQEmStNRMre/31tn7PHsK7CWeQ6BSFJKoNWhAb2E0OyoWCfaLdAVCyWDM5ddshydxep51bR6tZleBZL7Qpt3n062DbC8pZQ5XllDHxGfLiPCqo8DKC7l7LAGk2nmmpjaMi0cIYradQaqYLzq5LJrq0aWWqF2mkRFTmVlZzzE2lcE34etNNw965xVEcJG6Z/G/0+RxHft6o/B5PBBt5toCpKUmTvX1A7nmzgfWShLrCJyn67umAAviYK6Vre3nur+e8S7MI43bsa1OuQadtx2nwKoa2hSbhWkwYClgY6KGzSUP7A8b8q/cAyKPeVvzyhLqczE0VlLpAUfEAckPfUZ8e1m/cQL5rLpQ/IPrmwNFvfkd9CsOF2o3qwmzcHLcVt+ryxKd8jaOFU1ouWgvsdVfxERa7MfRqmuPEF4GgKlg31oyy43La+yg1S1fTW0RLKm3O5vdksCIVmK/JBIkUJsjDRLTEATkDkSANp/w8wGGMaNOOD+594Fw8EPvWcUdnkadSK2EUbvdSPzktWoDDzV71CHLsyqYKdub5ItTCogubQAyVliZgoCioK7j67lAn4gQ05gHIR+FmMsctAaYau6xBKgDHuAB1KpEQ7AZw9bNK8rIvH+jRaO5peZ0wazHe/gndCgPXpuGKVK7/6ga5OGLETppNZg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2AE1320007
+X-HE-Tag: 1791582406-515877
+X-HE-Meta: U2FsdGVkX18m2y2+S+EzPxNGkLgHAIXdlvpgK1ofPd61vl+fCt3eKqiBhxN2I9bM8KAbRy3lma4ca8wtkn2N3Qpa9al7pKv2aQL7/cxzIcWtGZBB2+WTVSAs5baFRQ1I5ru7HEAeaVJwchWi3yaryXiv1OvGDLG86SliDpCnqmfAG+z7Pru6Axaf5a+BCAGOKhZ/LQBH6TOFBloQFX1CCGuWfgbxpjj/U9QIix/yxL7ED+9F1Sg0C98/w6DMcykNxOiuiqVuZ3eODyRY+vzZS9I/JsqvGEnz+536JR4pk+/0fWdx8d8kLdfDmBJXQHWqKENn5NJBA1tYDoedCLvVUmypVdgs73dLMCUxwjYn1/sf/PUJ75WbdBaHdvr4yqcDE5DsMWVEfv5irfdUNncZt6zzHOjXA0vxnr104g6XuQXiKpDbKbw1hykCCr1X/sh/3u4G/lWqhG5uGbMwHB5XTt2zYGRB75Bf3DbyejoL/+t6TrXOetxjHPnGiM2o2GbUNtwRonti6l/CO1K9OFFvDcFt4LGEWDuwUf8LvNIuQY/bzYMJ0nFRSZEIoQq2gCNKohQMtBcoTLqrSTZ9yrb2NJ8Q1MV7Y8rBPJTFZbOQDEgPSe+hWqw1McOSjpHTL7LXKcS442qO4b7LnJcrQoRvMnt0mCCG/OdsdPJp0w4Frnb/Wdv4eBlHYqCgemB+LTrJ9nVI1X3gLkA4WFx/d1ApVS/YHeLdD34Ay9p5KNcobKH9bQcA0K4e0XNDaZA+xSivmYMsVpJPBpV89LuYma2oRqXEAWDgnOhkpaCLna9c6XziZV4VfoK5OWsBz19KoXHYIOKhNVPiNqLejC4Impoq8qh0HVQSnBrVaCALUFtOEzV/vHKkzEityXUvvV2uzLTheP5tL/Je9/7R48Qna/6MLdeWxKshI/0f92PaLvwAfu+6gHrI8rdIkBxwX4y+dDEOdbCYnlsTgOCqB4p41B/
+ zK8Ize5M
+ DOzxMzFB6NOTiwptcndcTkcInXwdxDacPOJaV15UTKPH3HM0kVDWsXwjxWi00Rr1PSrLCl90469/Mm6UQlu7JMsMeo7p0Qc23Zfs99P4o5qhfSEnqXWJcgpt5KRUJ/Tl/T63eokvrG1pZF/fLG/MfidV0L+UoCXWzrkCjuloIPMXgxykpymP755pGKu3U81QdkCuwUbMwPv8hvPE9O+zUVLSHorVGqXnK/wgAbngw6CjPEBxwUqUMpgkVOwm5SMk1GnqlYQtO65ymO78IoNH9W/MRfxqL4cvHLpOn34AWQ79qonC+AKfHe36E+FdvAHg6LOpMYzAOvnPlI40qtHIAuMlc6i6eiT4KJ9y+gbjJHYG13jbWzMbMnt4MkqO0Xae7ogxDR45DhwwL71bY8smHrkuLnjw2sqWjc9zJ3vchh7qJm3nv60hNOhowYkVjKPy0DZ9Vygwziw8lsgrwo6Mb8tum8bsgTpOexhMQ7J/1p44v7Gw9hpJY02KUQozVpEDeq4ru2Bv8N5TmOe4VYdZKa1yKhaQTbNTNOyJyIxtCnFnk4QRnNEuktXw21JxoEaE/yeTHVx0U2AR0IoAIXKnUzeizGfaoA6C/j2FA/nZVMc9zeJU7uSt1LeMVq38zunMiBZrVTvssyp7OvWRuH5jCZoU/nJmepKlKvnwV/GLKF/8T5+pBHn46AS8wr0rFkonNY2yIXB8bJWfa9/4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,325 +113,251 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot reported a weird use-after-free splat. [0]
+The new test cases verify that KASAN immediately detects all
+three combinations of double-free involving kfree_rcu_sheaf():
 
-In the report, an object in the kmalloc-64 cache was freed via
-rcu_free_sheaf() while it was still in use, even though the
-object should always be freed with kfree() (in xfrm_hash_free()),
-implying that the object was a victim of a double-free involving
-kfree_rcu() somewhere else.
+  1. kmem_cache_free() -> kfree_rcu()
+  2. kfree_rcu()       -> kmem_cache_free()
+  3. kfree_rcu()       -> kfree_rcu()
 
-When kvfree_call_rcu() frees an object via kfree_rcu_sheaf() and
-queues it into pcs->rcu_free, debug facilities are skipped, e.g.,
-kasan_slab_pre_free(), kasan_record_aux_stack(),
-debug_rcu_head_queue(), etc.
+Each test also evicts the object from the KASAN quarantine and
+reallocates it as a victim object before flushing the RCU sheaf
+to ensure the live victim object is not poisoned by the rejected
+double-free.
 
-As a result, KASAN cannot detect the double-free at the call site.
+Without the patch, all tests fail to detect the 2nd free, and
+the victim is poisoned:
 
-If the object is still in the KASAN quarantine when the sheaf is
-flushed, KASAN can detect the double-free in rcu_free_sheaf(), but
-with no trace of the suspect.
+  # kmem_cache_double_free_rcu_1: EXPECTATION FAILED at mm/kasan/kasan_test_c.c:1096
+  KASAN failure expected in "kfree_rcu(p, rcu)", but none occurred
+  ... <splat below is logged here>
+  # kmem_cache_double_free_rcu_1: EXPECTATION FAILED at mm/kasan/kasan_test_c.c:1156
+  Expected (<...snipped READ_ONCE()...>&(victim->i)); }) == 42, but
+      <...snipped READ_ONCE()...>victim->i == 117729280 (0x7046800)
 
-Worse yet, once the object is evicted from the quarantine and
-reallocated before the sheaf is flushed, rcu_free_sheaf() silently
-poisons the live object, resulting in a false-positive use-after-free
-report on the new user.
+  # kasan: pass:0 fail:3 skip:0 total:3
+  # Totals: pass:0 fail:3 skip:0 total:3
+  not ok 1 kasan
 
-If __kfree_rcu_sheaf() simply calls kasan_slab_pre_free(), we
-can detect the second kfree_rcu(), but only while the object is
-poisoned in the KASAN quarantine after the first free:
+In all cases, KASAN logs a false-positive use-after-free splat at
+READ_ONCE(victim->i), and it has no information about the suspect;
+the two stack traces ("Call Trace:" and "Allocated by") are of the
+live victim, and "Freed by" is of the RCU task.
 
-  kfree()     --(poisoned)--------------------> kfree_rcu()
-  kfree_rcu() -> rcu_free_sheaf() -(poisoned)-> kfree_rcu()
+  BUG: KASAN: slab-use-after-free in __kmem_cache_double_free_rcu+0x9ee/0xaf0
+  Read of size 4 at addr ffff8881076c2938 by task kunit_try_catch/513
+  ...
+  Freed by task 0:
+   ...
+   __rcu_free_sheaf_prepare+0xf6/0x240
+   rcu_free_sheaf_nobarn+0x31/0xe0
+   rcu_core+0x75e/0x16b0
 
-An object queued in pcs->rcu_free remains unpoisoned until the
-sheaf becomes full and rcu_free_sheaf() runs after the RCU
-grace period, so a subsequent kfree_rcu() or kfree() before
-rcu_free_sheaf() cannot be detected by shadow bytes alone:
+With the patch, all tests can detect the 2nd free immediately and
+prevent the victim from being poisoned:
 
-  kfree_rcu() -(unpoisoned)-> kfree_rcu() -> rcu_free_sheaf() (too late!)
-  kfree_rcu() -(unpoisoned)-> kfree()     -> rcu_free_sheaf() (too late!)
+  # kasan: pass:3 fail:0 skip:0 total:3
+  # Totals: pass:3 fail:0 skip:0 total:3
+  ok 1 kasan
 
-These cases can be detected if we call debug_rcu_head_queue()
-before kfree_rcu_sheaf(), but ODEBUG splat only shows the second
-free.
+All the stack traces point to the same object for double-free,
+and the two free traces are shown in "Call Trace:" and "Freed by"
+(or "Last potentially related work creation:" in the 2nd/3rd test
+cases).
 
-To detect these cases with KASAN, we just need a 1-bit flag
-to indicate the state, which can reuse an unused bit in struct
-kasan_track.pid. (PID_MAX_LIMIT is 1<<22)
+  BUG: KASAN: double-free in kvfree_call_rcu+0xb6/0x3c0
+  Free of addr ffff888108495938 by task kunit_try_catch/511
+  ...
+  Call Trace:
+   <TASK>
+   ...
+   check_slab_allocation+0x10d/0x120
+   __kfree_rcu_sheaf+0x1c/0x2d0
+   kvfree_call_rcu+0xb6/0x3c0
+   __kmem_cache_double_free_rcu+0x310/0xaf0
 
-The bit is marked along with recording the stack trace when
-deferring slab frees in kfree_rcu_sheaf() and checked in
-check_slab_allocation() so that any double-free pattern above
-can be detected immediately.
+  Allocated by task 511:
+   ...
+   kmem_cache_alloc_noprof+0x14f/0x3c0
+   __kmem_cache_double_free_rcu+0x152/0xaf0
 
-Link: https://lore.kernel.org/all/6ac959ee.70ed5d86.2ac85.007d.GAE@google.com/ #[0]
+  Freed by task 511:
+   ...
+   kmem_cache_free+0x14f/0x3c0
+   __kmem_cache_double_free_rcu+0x2c6/0xaf0
+
+Notably, in the 2nd/3rd test cases, we can detect the 2nd free
+before the object is poisoned:
+
+  Memory state around the buggy address:
+   ffff888106dc7800: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+   ffff888106dc7880: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  >ffff888106dc7900: fc fc fc fc fc fc fc 00 00 00 fc fc fc fc fc fc
+                                          ^
+  ...
+      ok 2 kmem_cache_double_free_rcu_2
+
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- include/linux/kasan.h | 13 +++++++++----
- mm/kasan/common.c     | 13 ++++++++-----
- mm/kasan/generic.c    | 14 +++++++++++++-
- mm/kasan/kasan.h      | 34 +++++++++++++++++++++++++++++++++-
- mm/slub.c             | 13 ++++++++++---
- 5 files changed, 73 insertions(+), 14 deletions(-)
+ mm/kasan/kasan_test_c.c | 131 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 131 insertions(+)
 
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index bf233bde68c7..3a43e3d2658e 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -180,7 +180,7 @@ static __always_inline void * __must_check kasan_init_slab_obj(
+diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
+index b9e167ed5be3..60d25eb7cb01 100644
+--- a/mm/kasan/kasan_test_c.c
++++ b/mm/kasan/kasan_test_c.c
+@@ -30,6 +30,7 @@
+ #include <asm/page.h>
+ 
+ #include "kasan.h"
++#include "../slab.h"
+ 
+ #define OOB_TAG_OFF (IS_ENABLED(CONFIG_KASAN_GENERIC) ? 0 : KASAN_GRANULE_SIZE)
+ 
+@@ -1070,6 +1071,131 @@ static void kmem_cache_double_free(struct kunit *test)
+ 	kmem_cache_destroy(cache);
  }
  
- bool __kasan_slab_pre_free(struct kmem_cache *s, void *object,
--			unsigned long ip);
-+			   unsigned long ip, bool after_rcu_delay);
- /**
-  * kasan_slab_pre_free - Check whether freeing a slab object is safe.
-  * @object: Object to be freed.
-@@ -193,10 +193,12 @@ bool __kasan_slab_pre_free(struct kmem_cache *s, void *object,
-  * @Return true if freeing the object is unsafe; false otherwise.
-  */
- static __always_inline bool kasan_slab_pre_free(struct kmem_cache *s,
--						void *object)
-+						void *object,
-+						bool after_rcu_delay)
- {
- 	if (kasan_enabled())
--		return __kasan_slab_pre_free(s, object, _RET_IP_);
-+		return __kasan_slab_pre_free(s, object, _RET_IP_,
-+					     after_rcu_delay);
- 	return false;
- }
- 
-@@ -424,7 +426,8 @@ static inline void *kasan_init_slab_obj(struct kmem_cache *cache,
- 	return (void *)object;
- }
- 
--static inline bool kasan_slab_pre_free(struct kmem_cache *s, void *object)
-+static inline bool kasan_slab_pre_free(struct kmem_cache *s, void *object,
-+				       bool after_rcu_delay)
- {
- 	return false;
- }
-@@ -495,6 +498,7 @@ void kasan_cache_create(struct kmem_cache *cache, unsigned int *size,
- void kasan_cache_shrink(struct kmem_cache *cache);
- void kasan_cache_shutdown(struct kmem_cache *cache);
- void kasan_record_aux_stack(void *ptr);
-+void kasan_record_aux_stack_rcu(void *ptr);
- 
- #else /* CONFIG_KASAN_GENERIC */
- 
-@@ -512,6 +516,7 @@ static inline void kasan_cache_create(struct kmem_cache *cache,
- static inline void kasan_cache_shrink(struct kmem_cache *cache) {}
- static inline void kasan_cache_shutdown(struct kmem_cache *cache) {}
- static inline void kasan_record_aux_stack(void *ptr) {}
-+static inline void kasan_record_aux_stack_rcu(void *ptr) {}
- 
- #endif /* CONFIG_KASAN_GENERIC */
- 
-diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-index 7d21c4db68d2..4187606a88cf 100644
---- a/mm/kasan/common.c
-+++ b/mm/kasan/common.c
-@@ -68,6 +68,7 @@ void kasan_set_track(struct kasan_track *track, depot_stack_handle_t stack)
- 	track->timestamp = ts_nsec >> 9;
- #endif /* CONFIG_KASAN_EXTRA_INFO */
- 	track->pid = current->pid;
-+	track->rcu_free = 0;
- 	track->stack = stack;
- }
- 
-@@ -231,7 +232,7 @@ void * __must_check __kasan_init_slab_obj(struct kmem_cache *cache,
- 
- /* Returns true when freeing the object is not safe. */
- static bool check_slab_allocation(struct kmem_cache *cache, void *object,
--				  unsigned long ip)
-+				  unsigned long ip, bool after_rcu_delay)
- {
- 	void *tagged_object = object;
- 
-@@ -242,7 +243,8 @@ static bool check_slab_allocation(struct kmem_cache *cache, void *object,
- 		return true;
- 	}
- 
--	if (!kasan_byte_accessible(tagged_object)) {
-+	if (!kasan_byte_accessible(tagged_object) ||
-+	    kasan_check_rcu_free(cache, object, after_rcu_delay)) {
- 		kasan_report_invalid_free(tagged_object, ip, KASAN_REPORT_DOUBLE_FREE);
- 		return true;
- 	}
-@@ -259,17 +261,18 @@ static inline void poison_slab_object(struct kmem_cache *cache, void *object,
- 
- 	kasan_poison(object, round_up(cache->object_size, KASAN_GRANULE_SIZE),
- 			KASAN_SLAB_FREE, init);
-+	kasan_clear_rcu_free(cache, object);
- 
- 	if (kasan_stack_collection_enabled())
- 		kasan_save_free_info(cache, tagged_object);
- }
- 
- bool __kasan_slab_pre_free(struct kmem_cache *cache, void *object,
--				unsigned long ip)
-+			   unsigned long ip, bool after_rcu_delay)
- {
- 	if (is_kfence_address(object))
- 		return false;
--	return check_slab_allocation(cache, object, ip);
-+	return check_slab_allocation(cache, object, ip, after_rcu_delay);
- }
- 
- bool __kasan_slab_free(struct kmem_cache *cache, void *object, bool init,
-@@ -544,7 +547,7 @@ bool __kasan_mempool_poison_object(void *ptr, unsigned long ip)
- 
- 	slab = page_slab(page);
- 
--	if (check_slab_allocation(slab->slab_cache, ptr, ip))
-+	if (check_slab_allocation(slab->slab_cache, ptr, ip, false))
- 		return false;
- 
- 	poison_slab_object(slab->slab_cache, ptr, false);
-diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
-index 2b8e73f5f6a7..07636ffe1626 100644
---- a/mm/kasan/generic.c
-+++ b/mm/kasan/generic.c
-@@ -536,7 +536,7 @@ size_t kasan_metadata_size(struct kmem_cache *cache, bool in_object)
-  * This function avoids dynamic memory allocations and thus can be called from
-  * contexts that do not allow allocating memory.
-  */
--void kasan_record_aux_stack(void *addr)
-+static void __kasan_record_aux_stack(void *addr, bool rcu_free)
- {
- 	struct slab *slab = kasan_addr_to_slab(addr);
- 	struct kmem_cache *cache;
-@@ -552,10 +552,22 @@ void kasan_record_aux_stack(void *addr)
- 	if (!alloc_meta)
- 		return;
- 
-+	if (rcu_free)
-+		alloc_meta->alloc_track.rcu_free = 1;
- 	alloc_meta->aux_stack[1] = alloc_meta->aux_stack[0];
- 	alloc_meta->aux_stack[0] = kasan_save_stack(0, 0);
- }
- 
-+void kasan_record_aux_stack(void *addr)
++#ifndef MODULE
++static void __kmem_cache_double_free_rcu(struct kunit *test, int mode)
 +{
-+	__kasan_record_aux_stack(addr, false);
-+}
++	struct kasan_rcu_info *p, *victim = NULL, **objs;
++	struct kmem_cache *cache;
++	int i, n = 0;
 +
-+void kasan_record_aux_stack_rcu(void *addr)
-+{
-+	__kasan_record_aux_stack(addr, true);
-+}
++	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_GENERIC);
 +
- void kasan_save_alloc_info(struct kmem_cache *cache, void *object, gfp_t flags)
- {
- 	struct kasan_alloc_meta *alloc_meta;
-diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-index fc9169a54766..43d608899544 100644
---- a/mm/kasan/kasan.h
-+++ b/mm/kasan/kasan.h
-@@ -191,7 +191,10 @@ static inline bool kasan_requires_meta(void)
- #define KASAN_STACK_DEPTH 64
- 
- struct kasan_track {
--	u32 pid;
-+#define KASAN_PID_BITS const_ilog2(PID_MAX_LIMIT)
-+	u32 pid:KASAN_PID_BITS;
-+	u32 rcu_free:1;
-+	u32 unused:32 - (KASAN_PID_BITS + 1);
- 	depot_stack_handle_t stack;
- #ifdef CONFIG_KASAN_EXTRA_INFO
- 	u64 cpu:20;
-@@ -390,8 +393,37 @@ struct kasan_alloc_meta *kasan_get_alloc_meta(struct kmem_cache *cache,
- struct kasan_free_meta *kasan_get_free_meta(struct kmem_cache *cache,
- 						const void *object);
- void kasan_init_object_meta(struct kmem_cache *cache, const void *object);
++	cache = kmem_cache_create("test_cache", sizeof(*p), 0, SLAB_NO_MERGE,
++				  NULL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, cache);
 +
-+static inline bool kasan_check_rcu_free(struct kmem_cache *cache,
-+					const void *object,
-+					bool after_rcu_delay)
-+{
-+	struct kasan_alloc_meta *alloc_meta;
++	if (!cache->sheaf_capacity) {
++		kmem_cache_destroy(cache);
++		kunit_skip(test, "Test requires sheaves");
++	}
 +
-+	alloc_meta = kasan_get_alloc_meta(cache, object);
-+	if (!alloc_meta)
-+		return false;
-+
-+	return alloc_meta->alloc_track.rcu_free != after_rcu_delay;
-+}
-+
-+static inline void kasan_clear_rcu_free(struct kmem_cache *cache,
-+					const void *object)
-+{
-+	struct kasan_alloc_meta *alloc_meta;
-+
-+	alloc_meta = kasan_get_alloc_meta(cache, object);
-+	if (alloc_meta)
-+		alloc_meta->alloc_track.rcu_free = 0;
-+}
- #else
- static inline void kasan_init_object_meta(struct kmem_cache *cache, const void *object) { }
-+static inline bool kasan_check_rcu_free(struct kmem_cache *cache, const void *object,
-+					bool after_rcu_delay)
-+{
-+	return false;
-+}
-+static inline void kasan_clear_rcu_free(struct kmem_cache *cache, const void *object) { }
- #endif
- 
- depot_stack_handle_t kasan_save_stack(gfp_t flags, depot_flags_t depot_flags);
-diff --git a/mm/slub.c b/mm/slub.c
-index 544cff39762c..8a08ca73d76b 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2690,7 +2690,7 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
- 	 * Give KASAN a chance to notice an invalid free operation before we
- 	 * modify the object.
- 	 */
--	if (kasan_slab_pre_free(s, x))
-+	if (kasan_slab_pre_free(s, x, after_rcu_delay))
- 		return false;
- 
- #ifdef CONFIG_SLUB_RCU_DEBUG
-@@ -2706,7 +2706,7 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
- 			 * We have to do this manually because the rcu_head is
- 			 * not located inside the object.
- 			 */
--			kasan_record_aux_stack(x);
-+			kasan_record_aux_stack_rcu(x);
- 
- 			delayed_free->object = x;
- 			call_rcu(&delayed_free->head, slab_free_after_rcu_debug);
-@@ -6177,6 +6177,12 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
- 	}
- 
- do_free:
-+	if (unlikely(kasan_slab_pre_free(s, obj, false))) {
-+		local_unlock(&s->cpu_sheaves->lock);
++	objs = kunit_kcalloc(test, cache->sheaf_capacity * 2, sizeof(*objs),
++			     GFP_KERNEL);
++	if (!objs) {
++		kunit_err(test, "Allocation failed: %s\n", __func__);
 +		goto out;
 +	}
 +
-+	kasan_record_aux_stack_rcu(obj);
- 
- 	rcu_sheaf = pcs->rcu_free;
- 
-@@ -6217,6 +6223,7 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
- 	local_unlock(&s->cpu_sheaves->lock);
- 
- 	stat(s, FREE_RCU_SHEAF);
++	p = kmem_cache_alloc(cache, GFP_KERNEL);
++	if (!p) {
++		kunit_err(test, "Allocation failed: %s\n", __func__);
++		goto out;
++	}
++
++	switch (mode) {
++	case 1:
++		kmem_cache_free(cache, p);
++		/* p is already in quarantine. */
++		KUNIT_EXPECT_KASAN_FAIL(test, kfree_rcu(p, rcu));
++		break;
++	case 2:
++		/* The actual free order is inverse. */
++		kfree_rcu(p, rcu);
++		KUNIT_EXPECT_KASAN_FAIL(test, kmem_cache_free(cache, p));
++
++		/* Move p to quarantine if kmem_cache_free() was rejected. */
++		if (kasan_byte_accessible(p))
++			kvfree_rcu_barrier_on_cache(cache);
++		break;
++	case 3:
++		migrate_disable();
++		kfree_rcu(p, rcu);
++
++		for (i = 0; i < cache->sheaf_capacity - 1; i++) {
++			objs[i] = kmem_cache_alloc(cache, GFP_KERNEL);
++			kfree_rcu(objs[i], rcu);
++		}
++
++		KUNIT_EXPECT_KASAN_FAIL(test, kfree_rcu(p, rcu));
++		migrate_enable();
++
++		/*
++		 * Move the 1st full sheaf to quarantine, keeping the
++		 * 2nd in pcs->rcu_free.
++		 */
++		rcu_barrier();
++		break;
++	}
++
++	/*
++	 * Evict p from quarantine and reallocate it as a live victim object
++	 * before the RCU sheaf is flushed.
++	 */
++	kasan_quarantine_remove_cache(cache);
++
++	for (i = 0; i < cache->sheaf_capacity * 2; i++) {
++		objs[n] = kmem_cache_alloc(cache, GFP_KERNEL);
++		if (!objs[n])
++			break;
++		if (objs[n] == p) {
++			victim = objs[n];
++			break;
++		}
++		n++;
++	}
++
++	for (i = 0; i < n; i++)
++		kmem_cache_free(cache, objs[i]);
++
++	KUNIT_EXPECT_PTR_EQ(test, victim, p);
++	if (victim != p)
++		goto out;
++
++	WRITE_ONCE(victim->i, 42);
++
++	/*
++	 * If kfree_rcu() failed to reject the double-free above,
++	 * flushing the RCU sheaf will silently poison the live
++	 * victim and cause a false-positive UAF on victim->i.
++	 */
++	kvfree_rcu_barrier_on_cache(cache);
++	KUNIT_EXPECT_EQ(test, READ_ONCE(victim->i), 42);
++
++	if (!READ_ONCE(test_status.report_found))
++		kmem_cache_free(cache, victim);
 +out:
- 	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
- 		lock_map_release(&kfree_rcu_sheaf_map);
- 	return true;
-@@ -6850,7 +6857,7 @@ void kfree_nolock(const void *object)
- 	 *  -> kfree_nolock() -> kasan_report_invalid_free() on the same CPU
- 	 * is double buggy and deserves to deadlock.
- 	 */
--	if (kasan_slab_pre_free(s, x))
-+	if (kasan_slab_pre_free(s, x, false))
- 		return;
- 	/*
- 	 * memcg, kasan_slab_pre_free are done for 'x'.
++	kmem_cache_destroy(cache);
++}
++
++static void kmem_cache_double_free_rcu_1(struct kunit *test)
++{
++	/* kmem_cache_free() -> kfree_rcu() */
++	__kmem_cache_double_free_rcu(test, 1);
++}
++
++static void kmem_cache_double_free_rcu_2(struct kunit *test)
++{
++	/* kfree_rcu() -> kmem_cache_free() */
++	__kmem_cache_double_free_rcu(test, 2);
++}
++
++static void kmem_cache_double_free_rcu_3(struct kunit *test)
++{
++	/* kfree_rcu() -> kfree_rcu() */
++	__kmem_cache_double_free_rcu(test, 3);
++}
++#endif
++
+ static void kmem_cache_invalid_free(struct kunit *test)
+ {
+ 	char *p;
+@@ -2239,6 +2365,11 @@ static struct kunit_case kasan_kunit_test_cases[] = {
+ 	KUNIT_CASE(kfree_via_phys),
+ 	KUNIT_CASE(kmem_cache_oob),
+ 	KUNIT_CASE(kmem_cache_double_free),
++#ifndef MODULE
++	KUNIT_CASE(kmem_cache_double_free_rcu_1),
++	KUNIT_CASE(kmem_cache_double_free_rcu_2),
++	KUNIT_CASE(kmem_cache_double_free_rcu_3),
++#endif
+ 	KUNIT_CASE(kmem_cache_invalid_free),
+ 	KUNIT_CASE(kmem_cache_rcu_uaf),
+ 	KUNIT_CASE(kmem_cache_rcu_reuse),
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
