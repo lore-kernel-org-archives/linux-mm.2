@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93F06CA601E
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 11:57:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60E34CA601E
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 12:01:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72B7F6B0092; Fri,  9 Oct 2026 07:57:08 -0400 (EDT)
+	id 50DAB6B0095; Fri,  9 Oct 2026 08:01:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DBBE6B0093; Fri,  9 Oct 2026 07:57:08 -0400 (EDT)
+	id 4E4A86B0096; Fri,  9 Oct 2026 08:01:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F14A6B0095; Fri,  9 Oct 2026 07:57:08 -0400 (EDT)
+	id 3FA8D6B0098; Fri,  9 Oct 2026 08:01:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CF0C6B0092
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 07:57:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BCADC1C345E
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:57:07 +0000 (UTC)
-X-FDA: 85302936894.12.C76FD17
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2A78B40006
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 11:57:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QH3fiBTo;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 23B9C6B0095
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:01:02 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AB0311C37C3
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 12:01:01 +0000 (UTC)
+X-FDA: 85302946722.11.6D064CA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id EF2901C000F
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 12:00:59 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WM8sWNy+;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791547026;
+	s=arc-20220608; t=1791547260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=48jLovzU9sDOmARCH/bhpsr7OGGaWHZHCuYj5YOTiJM=;
-	b=559eMmvoXv8UcLZagmL4ygIGLZRJ4RlB4D6TylvTvzLTZvjc9kq0ylLTEZVjqfppSJlJfq
-	Jx/gyWutXg1raHh5RiSMK8CqaDDxdcv9qrbfmMB9u8eBRRJxRdW1JTF1nhpvQefUTCm888
-	HAhhDYqEzKxUQ3BJx0WYgZMF+ttGwqg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791547026;
-	b=E18WbffTvx6y7Uze92/m2AhzMtw8/xXPvUYEYWuT7UsCRSrmCa/YwnhsL7MrOKkZfPRApu
-	6XmKR384yIYfIJO0C+lQusEo7wkF9qmjTChrLCgRIA6JUYOEOCQB+GdhpRbrNa2S2DtQMf
-	NQ92FZ84eTNYzhFNo3fhlZndo5mhm8s=
+	bh=PtDg7zGOUdMGLv/ZahPOgjjgj8LdOaLD/DRMIGrkAVY=;
+	b=fmviOFyqxCZzTJ0HmuVVCF7HWNnFw/tZElkWqYR6c5cDrdWoQx2g98aw+FWf0Uy4B22uZ6
+	WVWDHrOfi8bV0c7IV9IyvcpVShamUHKpf3IJUAirR5UHZyX/2fG5eoChpuqsvw/BZFx7Z7
+	rYW/5MA45jNT/VMqxRTLY9gyVoE6mV4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QH3fiBTo;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WM8sWNy+;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791547260;
+	b=ulkUhl1IQrRBzEI2Sx1m6b3XeY2jW/KG13wYA6EsKk9ttvqHoApXRteG9435KawlcEw6mH
+	kSPXkFi1Ip3pdQdLWC/ta6g6H6l2z4cYkKp2TAflvXl5+UEcyYoLdjuwSSB4gmy9YtVaE9
+	B3Co14vwc/VyEKWL28E2Ss1PZPg78rU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A6F7860534;
-	Fri,  9 Oct 2026 11:57:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 399A51F000FF;
-	Fri,  9 Oct 2026 11:56:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D7DC240454;
+	Fri,  9 Oct 2026 12:00:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF821F000FF;
+	Fri,  9 Oct 2026 12:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791547025;
-	bh=48jLovzU9sDOmARCH/bhpsr7OGGaWHZHCuYj5YOTiJM=;
+	s=k20260515; t=1791547258;
+	bh=PtDg7zGOUdMGLv/ZahPOgjjgj8LdOaLD/DRMIGrkAVY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QH3fiBToKGh2utYkFO6TLH5i8kObVvKBj6ZhRijieTlGZO3XsIs9Q1/n+IKqEZK4N
-	 qKne7nLlSx+/5pAdPjCx7AREXyMAv8vTNFWaCzBWaLMzwfiKlXjAHUUjT6OsQAUkmn
-	 v7VAdfGlLG0x0NsRrER1auFt31TZ2H9/YSJXFuXbyZMXTEnjD4spdwIMRDGSCVwCsS
-	 jAnZziYtSxMGNME0FJRT1rRPgLdSGb/XnoKvQCW7xr0T7WD8UQ7Q+0GDXW9JjlZ+3R
-	 p9ZQu7BJf0EtHwkhIIqzddqA+DSU15q0Oyftd6reKmDjj8vX3W5bEpMRkNdY1hGLH+
-	 ooL/QkyMoUpbg==
-Date: Fri, 9 Oct 2026 12:56:57 +0100
+	b=WM8sWNy+t/arfWSPsWRfTo7XmQhCgArwkS2Tc0vcFBAHtCEVSBQx05PqE8cKbCUB2
+	 9KlAxBbJAMhG6YjFPas0TiXTYnEsCR/gplgrCn574V2HuRRIc7ZuJqDShLXNO+wfDh
+	 c09VAoR7Ovm+PLntCBtUIDjzMy//IXKHrPw22nVVRi6q6UdJd+bzmBaU6KidkqZi2x
+	 Lx6/6kFrhAJ2zDW874gAimMrfnAr3/D9d2zXDQKNbp5qLgCAJzk6qD/pgbZpl+WbyS
+	 ctq9FUBYpbyfNrD7vY6DUeF2Fsb+kjFw5kaim5GSKtDm2c3s4EMQFoKqgfzVElbBbk
+	 EHLHxVpsan3iQ==
+Date: Fri, 9 Oct 2026 13:00:52 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: rppt@kernel.org, peterz@infradead.org, akpm@linux-foundation.org, 
-	david@kernel.org, mingo@redhat.com, acme@kernel.org, namhyung@kernel.org, 
-	linux-mm@kvack.org, linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org, 4ncienth@gmail.com, 
-	alexander.motin@truenas.com, caleb.stjohn@truenas.com, ameer.hamza@truenas.com
-Subject: Re: [REGRESSION] secretmem: SIGBUS on memfd_secret() pages while
- perf record runs
-Message-ID: <asjWUyFVbq4fhfLu@gremlin>
-References: <20261002175651.811343-1-ameer.hamza@truenas.com>
- <2026-10-04-1-daily-reply-0001-secretmem-requeue@kernel.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	qi.zheng@linux.dev, jack@suse.cz, pfalcato@suse.de, ayushr@modal.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: memory: fix truncation removing mapped folios
+Message-ID: <asjXJZap53yJWMYi@gremlin>
+References: <0d2a1809fa1cfc22ad3df26ec28b2d30e5cdf3bd.1791540483.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2026-10-04-1-daily-reply-0001-secretmem-requeue@kernel.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2A78B40006
+In-Reply-To: <0d2a1809fa1cfc22ad3df26ec28b2d30e5cdf3bd.1791540483.git.baolin.wang@linux.alibaba.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EF2901C000F
 X-Rspam-User: 
-X-Stat-Signature: 585u1g1ai6iygqdurn8as7z38wuzi864
-X-HE-Tag: 1791547026-135514
-X-HE-Meta: U2FsdGVkX19EVoM1zC35KlcOsYhY+r0n7go2UrxGA3Jb/aIU/ao92VUVq0o5nWUGsK6YvsgjKv9b6Qn2PMKuSiuz77M0YceR4xtOa0tUxCYXhQ98JiDOV/ZGFHr76+JEyWbdVsNnJsObcrJrYnBvReB1kItpUJ6yUJbiFPaEL2mqqIhBnYMlMngjYDoJ2IG+zJwfyzR4qRjXvKVwLls6toEnPqJxUPgOM0SHGqCaHhU8djQW4KKq6qBVnNLU0VFyWpWdodQYECH9oDLzB/vqvab1aEb+NqcjRSvuud4AIvEwKYTANb0ZO+rj45QRMk0fUHtkoSa2NVMUAfwcXGclxJGHL8W2qzNaFdHnV0uMwMSWlZRIzYcPlCgCCOLNg3F5dmAe6/kP1XnstJNk25RGj+fa9ik4xauFwFdPcoZzrmIqzxVk+YxQdTSH9LxxhDVLQoyI2WFN8vLBUWo+qC4N+Jn9vKXHc9dm/JsK5ZXPdzOA621WxNVKI42kqMWQ/iAH0gUcJCiH0seXPSg8tpsgoArtQk4fH/C+Zp1MxPlUf//N+yWKu1GiDkER/bnubz21VV/iFYhCyusicz5sdD424aLcFiQNbWbCR87LjnFKy2JAIrZObxgG4ojqIyOd7wxYyTZ6OGQhH68iZhqtvsPBQOV9LoNMShD/x3SSasjTAfxdJOfHJWXYkcA/sW8r2z57BssYk+BIeO3o0k/ILLDwvieoxmqNJK3LZ5+b4PgMBo1O0EUyWlIJyAezxNU7wCGpYhnqdjN9l/mOf5RXTmpD3c3wRg+/9DPxzQsQb5IkC0eV5vZCkNbOwinKnmdc3lHXvsdA4mKU6t6khPFKpgRXv4VtC6+x2NdOWapU7bTctLay7+YZOh2krLF0Ty5Azq7HwajOZcgdal/gC9vZnLwpcZp/8AQvs2i9T85AE+BwE6Gj3aEPo7TI0ZX9YseHSgFghAPYIrG5TR8RT22mgcG
- O0JjlQH4
- a5ov3Etj6fB1Kf1Vu/4yjaiez6nPlhuytrHnXDVy1ZQ+hy60u5l2cW3P+JO+4C3X7UNHPf/7G1g841Ayi26bWVIkmNf6ppHZNROzX9Rj5qpFsQSoeC/v/BRMOlAHF6toSEjecTKjHASzd8vGoKKdcucfZzMnmERG5kWWQgkVEU69rbYRA05GEMI8SLVhgGqxgO4cBxFTXJ+9xTtDjUNu/AIRj7ABdYMc7SmpwNuNZCTFQoQybBz6wJGHlSmzQOF/C6+xBPrvNUoJWfHMAWIH0k3AwoZ3bmLvW3P3e0wtFr0GE7jPPsXHMpmePsmYORBtr1n/Jb2H+wIsr21aiwAa+aOoyKcl3IY//w4O1lQWNe4gL9449d5vwWFzZeA==
+X-Stat-Signature: 6woebrkp6uurfd1hmygiuiep3bqg7urc
+X-HE-Tag: 1791547259-323978
+X-HE-Meta: U2FsdGVkX1+4sna7jf2a4jThy8M5XbRUoZsdH7COLeeHszmrdnGcmIcQBYV4bzWN8kSQJrxMf6vguQso8GLGWi4obTTzuZf6Av0rmM9BDnNS73z1zHDh9WHUIVdwk3EZoyA1srgjx8FDY83mtjX/zjQGMZoAKW1atzxeg1meTQRPrAVcYtw1/LSMScojhZk8SA3clg85IdHpN91W35ESNcl0NLnKB+HTLwodZ9+g8T3O9iMhTEy/PpD22xqQgowezqGYT2q87t/bsoaTx9ZseYBgnTToGYcTxUF5uohIM6WMoNKw+Z9708N5fut9CRJEESYQiGvpCk+OsrkQr4D91dnfCsQ+4PZ8FUZQDMXwfwoVrLJLjspp21H6xXEyMtJ/9tCmPOJDMEM3R/vj1z5gUgWomJ+AHFriB0Vfm9s54UGMq+ZN1nZbPIsWVuDQlGcrjQpKYmw+Z/rjfIb6U9B3LhMrAK4ryETDg/LIMv2jAnwnfvS+x9DL1LQjJmS0TNSEBhSG+JCQyCl6C1IRr3a2vNMzE0DNGfLfS2qzZKWU4EJols9Jgf51IxQFXwebO8gJlr3/J0SSG3DiR8IGmYaR262oMZuHmKv9bUXZpUo2bnCzmDwHhHFIVgmYtgXlT59s39I91fs0SOa2q67CQWY/EWO3l8l9XrVjfF3+fDMVfgzQsGNYBzG1Idgo6ViigBZ3oLVS5wdszuG5NBGfCV/NpNC+Krvm6kw7vLjpWoopaI/Z9/4PE35NTNlU3BZQfAw0RLxGl59t7IyzWDG560tUzXxz71iUTRDmTyrdquNm5og/Oyif5BUouu0z9A+Kgcs7fi9zfoCOxoEYtYENddtrDDwMArkHXXUYm+UhumJ0gmfeOP4vbQLJZ+vWr/c4TabejjYpttrI++2WEjjFzb9irI9p53jZ7ws2EC67osLHrqXiO6pJrwjOQnOfOkAywQ7qLdAzW80fcIpLu/VL8fg
+ sIYDkUeP
+ 0FAFvz4U8RslSbQ0vLcwySw8Qmozs9n8MK0ip0iTkesWPyK+SmbOvl4rzNUaP0BtulUjTgXMKBPP9MxYw40ftkJoH9LQ19VGKLKtQSooCGkRLKE001+rmrNm8nzPRuXDK6ev07BBGwWP+pAeQhSOggqvIwYMwhe4uddGn4f8dDlwn4czaNEloxQoACbe161sXC7tPDi6HYrWvu7uEBrVWvyCPSLNoLHxQkIoHPTbDoNFcKzFd/wU434nTxz6dQcDQR5ie
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,22 +92,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 04, 2026 at 12:29:39PM -0400, Sasha Levin wrote:
-> > Since commit 97d34aa65c29 ("mm/secretmem: properly account locked
-> > pages"), in v7.3-rc2 and the 6.18.52 and 7.2.5 backports, touching a
-> > memfd_secret() page for the first time fails with SIGBUS while the
-> > same user is running perf record, and read() into such a page fails
-> > with EFAULT.
->
-> Re-queued the secretmem accounting fix for 6.12, 6.6 and 6.1, per Lorenzo.
-> The perf fix will be needed on these trees once it lands.
+On Fri, Oct 09, 2026 at 06:12:03PM +0800, Baolin Wang wrote:
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 1f5d5f7d39cd..0272217ad7b0 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
 
-Thanks!
+> @@ -2044,16 +2053,10 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+>  	 * to ensure they are still none, thereby preventing the pte entries
+>  	 * from being repopulated by another thread.
+>  	 */
+> -	if (can_reclaim_pt && direct_reclaim && addr == end)
+> +	if (can_reclaim_pt && direct_reclaim && addr == end) {
+> +		/* rmap changes need to be observed before e.g PTEs get zapped. */
+> +		smp_wmb();
 
-Perf fix sent at [0], LPC will be slowing everybody down though I expect!
+What does this pair with? You should always say what in the comment.
+
+rmb/wmb are generally not needed vs. acquire/release. Are you sure a wmb is
+right here?
 
 --
 Cheers, Lorenzo
-
-[0]:https://lore.kernel.org/all/20261003-perf-locked-vm-fix-v1-1-d214dcaf0d76@kernel.org/
 
