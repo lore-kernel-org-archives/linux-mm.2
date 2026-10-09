@@ -4,125 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD161CA6019
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 14:21:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D540CA6015
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 14:22:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96BBD6B0093; Fri,  9 Oct 2026 10:21:56 -0400 (EDT)
+	id 351C46B0096; Fri,  9 Oct 2026 10:22:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 943176B0095; Fri,  9 Oct 2026 10:21:56 -0400 (EDT)
+	id 3294C6B0098; Fri,  9 Oct 2026 10:22:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8599B6B0096; Fri,  9 Oct 2026 10:21:56 -0400 (EDT)
+	id 23F6E6B0099; Fri,  9 Oct 2026 10:22:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FF406B0093
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:21:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDB081603E5
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:21:55 +0000 (UTC)
-X-FDA: 85303301790.23.F4047AC
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 274221C0003
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:21:53 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mhJTBliL;
-	spf=pass (imf21.hostedemail.com: domain of martin.ankerl@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=martin.ankerl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791555714;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 07A946B0096
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 10:22:07 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EDBA51A03EC
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:22:05 +0000 (UTC)
+X-FDA: 85303302210.26.48E1E68
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4D5B018000B
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 14:22:04 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J0VPT2ge;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791555724;
+	b=gD6NRZcqvld+tSdURgYUyFPso2F9u/nhsRFcdlzNhNzN+/VnAi1Lb1AU5FAcc1JGxtW8yq
+	7PF5whlIGZRPKH/W3QtRlb6eWAVxxoOTpqwcHP7Y1XoL5btkVlUXS9jaKp1AueiRPappAX
+	cfSRTFRU545YwqoGMpymSSSAU/VI5YE=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J0VPT2ge;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791555724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=R5SiVnaUQQN34hVlYPHW4REpkY55paPFDk59rozrL+o=;
-	b=YlivkSRmqymZZ8ZYB6DvicPcVel+7/GE+/g/Lgf2sNcQ2RlUiiN9w6NHO97E/EsdbTxMXB
-	GCel+VO/OnlbMeUUwzr15Tl3aWMZ7v3dUJA8BTJqT/PGIuwrbCHalUqwfmltnlKsbWqOVi
-	pHKvL5C6d5liE7dmhZaAbSI7GKTIJ78=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791555714;
-	b=Ll2MHHLucxQl6VCumF/ppy+YLY3/iH0V1lfEWzt8yNne6H89Npfb3MBu1JHgNFbB3g1q/s
-	8BYqe9KrFeM8++8+lPByvgpe+d25ftwaWYrF9XcycjB3G3pZJ0yX6g3bX+mC4VsgbDHQKW
-	OA3k6Ub1l+kEerqo66zsXmioDsP6Bm8=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mhJTBliL;
-	spf=pass (imf21.hostedemail.com: domain of martin.ankerl@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=martin.ankerl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6b16824c0fcso2301207a12.3
-        for <linux-mm@kvack.org>; Fri, 09 Oct 2026 07:21:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791555713; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Lyv8Yx8Mwz2dJQEvW6JZWBzdSBj4IrkAoGyHfRCdlFIU2tqqNQGjkGme/3IW+o8zds
-         hdXtWSOOcgup3tcLdLmDut906JXNSGfYQRJBG8cecXwwcSfPv2NlFtgsLu9ap8xpzVmC
-         3xqtmvS7Bvty95Id9OlU/1Oh9R+V3vkmC+T7tltlG0ejWc60nBIHw5nRuKXwOtov58Ek
-         BUcsBaA3cCk9phowVsGX10knloXM52l8F4dSUMSEPaqCD62qQ/7uwKYvuiKIFa52ElxQ
-         tkPGj8brQOvuWpZRwG4i4b6brAYP5wM6Uy51ALqVwnWEQkmnkojld16f+jkt/zTn5BXQ
-         KcAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=R5SiVnaUQQN34hVlYPHW4REpkY55paPFDk59rozrL+o=;
-        fh=ZSrbkV6aFmezOvxFllge0sGAhLu32ECZXbMnUC6Kpr0=;
-        b=TsK5Z87wzBPUkQlZalqpOg/oRIZn4nkUVkZqyxqoO8JCyfdW9InNvvwKC1kNMBJgk4
-         tbHTsA6fzXxqPXMmzN3wpa11qd8l7zFdksScWle0iQIIGCnDAq0ruYeFGk36KmTCeDkQ
-         TS9Gfs5pasR1FegVfDso4xevlzLS+1Sm8MUpx7mgqLroDpQ7jemoHepcUWOBWPlkZnVK
-         S95bYTeozMWCGErInh7NxgoLHTg6ZuBF4fSyvH7EV6lKAKLCJt9bsKOvn4Wx2LR6owyJ
-         03UXqaIF9jSETlfG2OhJBNh4aH8beIBPDmbyZw5uUnrVVE9+8uY68iF7XhUcMDeGeM5U
-         GNeQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791555713; x=1792160513; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=R5SiVnaUQQN34hVlYPHW4REpkY55paPFDk59rozrL+o=;
-        b=mhJTBliL8SCOfko9dYrOoScgbairyJRVVo8VOSUHRItGSk/bihC1Zg7vJU9HMvXQ7E
-         nvX5RnDw8vtDb5bo0JeQxdZXPcXTCv/QXczIhk1ujpRKH6Vr4N8B7zDAa7KJDNYx/IjR
-         3LXU2n13CnIb6vUeCmIP8P9z7mdZBSwOQlD1zqAVDR7cXPHARD4Lbo3xwiAHpc9pshDY
-         J179kjfpKo/5N+4GokoSUZBtCgKEta0ZkD0Sa0d46uAxRA7X3PCd6uS6CHU187tL6aPt
-         xghyJckC0TayAbLBr1Tg18T4FpvjFrn6Uqh4I3tQ5AIWqk8QoBU9PNtA9vjiWHAla1p1
-         Gr4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791555713; x=1792160513;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=R5SiVnaUQQN34hVlYPHW4REpkY55paPFDk59rozrL+o=;
-        b=p5OURQ7MGAk9Qf7aUeWW10/YPVyAMlsZrZj5GAMnthVpkmXY+QsV/sVxdyvpUCkEHG
-         rjkw8lTG2KzMHcgFIqnWoxlzTWlXyPU59HuwLG9Me6By6K6Kjjr+qWViZM6e+W/llf85
-         zkxFFKNl5lrvNhNLQHT92fZMWC8Y/K9qWZB4zhV0BRg1ybXZWdLpmfDfQ5sPDRgPr4V1
-         8PwzdzFQW43ihWDLErXE9RMFj847IhIHNpP3ikmRnepa+JG96S+krPKCKjj/H9Ak2ppa
-         hFXn6Hi7Vw5Ye+J1/j6CK9rUczp8Ix/Sd7Y/w7IXlm8mi3i3I53TXyuzoeQdaiKBxQ7Y
-         P4bA==
-X-Gm-Message-State: AFq9FYJBKbtUYKoYcOaDs2hVQkN3YvFwJXfuaE4qACsQsPtjEVcXTfMi
-	cc7t9Cz7PZWHJmvIrBwhiFUXHzyOU5/sUWSmdER6aCcBOAM7ewqAC/UgRFU7ghExSlBEilaDK0X
-	bTfwlprgpMT5Ic7zhtd/jn4ZivufsfH8=
-X-Gm-Gg: AYBFou0QmOTVH7hvIwQgkq3wSP5ML7nbbVWeyGPzjdTjDo2B9ixm2Cf561jXvSqc1zg
-	31Sooq5Gl787VFmldy6jhb6UcaTF/ozc496LNbm+2AJbRKSNbYtIaTrIsAPx4slCP58wRJnJh19
-	+250LtwOGWkmaQq9TgPA9vhE+kPxqHdFCYtOPphik7AKg4H76Aufnxb3Ki5NKMJZ3PPz9QM5wEU
-	OUBLGqg/RE/1KFXSvnNBEF6zQ9PcqUpSiA/YAwshF88oTzY9L9+N7YQ8TggvLB3+phZzJh8xF3W
-	3ciqvSkzLgLv4yVzjaaBwEKwTx7R4UUwOLj5JMm9IrhQf7kQ1FszjRuq3EhxWLhwqGIMM3Ii
-X-Received: by 2002:a05:6402:254e:b0:6aa:b39e:f794 with SMTP id
- 4fb4d7f45d1cf-6b17c28fedemr1748598a12.42.1791555712392; Fri, 09 Oct 2026
- 07:21:52 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zBnO3x40NIzVOgWJRZVkADybTZas0fGVJZTACvz2ApI=;
+	b=vFes1D+QykPunc4Rf4w/fSDPmRxvLbiGv7PGM9ASSFxKtcDDaCLe8TW7we7viNx7zqwvpA
+	eiNuS3qhp+durTXwYSGvH33iIjkmpW+T7qVWhv8/5RXlF8+n6BOYod4jq1RNdv9lJ6OgLw
+	g0t7d8cfkH3JnxmrrdPCxq8fLadqo/A=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 75B1B40978;
+	Fri,  9 Oct 2026 14:22:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C6D1F00893;
+	Fri,  9 Oct 2026 14:22:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791555723;
+	bh=zBnO3x40NIzVOgWJRZVkADybTZas0fGVJZTACvz2ApI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=J0VPT2geg9nK4PxvkGdJPDu1Ax2DB4cYIOYa0LlOk5CNt47gcJXXwVes5he9zpyMb
+	 fdcj3kb6IcAbic2YTs83/uVmj2sIRXVbOmtG8+qjWDvrGYZu/sbGQm6GszWj4esD0s
+	 ZnSZiOSAhpQTGTKtFvJaG0gsTUFnzqpG1rQRrNwzwTmF3KnNL7oakXb+GkJpQ354HY
+	 uVOsd+bTqrzZ8V/WvNG4TSwgcA028JmqpUSzBnupx7vRy+L1mbvoarx0ECPbxOsUGD
+	 sOm77pYYA2gkT4AvO7UMrqNENyeR2dpGpbfEWb1ic+Qze5UmCZxXqlaWxyuiaGFBNQ
+	 ZDrR6oUHQOsYg==
+Date: Fri, 9 Oct 2026 16:22:01 +0200
+From: Harry Yoo <harry@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, Pedro Falcato <pfalcato@suse.de>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v6 2/8] ipc, msg: Account msg_msg allocations
+ with GFP_KERNEL_ACCOUNT again
+Message-ID: <asjhg2e4-WSeKuXd@thinkpad>
+References: <20261006092030.got.500-kees@kernel.org>
+ <20261006092035.166776-2-kees@kernel.org>
 MIME-Version: 1.0
-From: Martin Leitner-Ankerl <martin.ankerl@gmail.com>
-Date: Fri, 9 Oct 2026 16:21:40 +0200
-X-Gm-Features: AclHuK-62QwvTT56LJQI5jAhTvpHHwM53Qctdf4WmrpYFSOHVx_FT6G7Rry0i7g
-Message-ID: <CAAFOosa2WLf--T17cujJu5CUsN12NNjgTitOvno2LY7jAr1gfw@mail.gmail.com>
-Subject: [RFC] seqlz: a compressor for zram, between lz4 and zstd
-To: Sergey Senozhatsky <senozhatsky@chromium.org>, Minchan Kim <minchan@kernel.org>
-Cc: linux-mm@kvack.org, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 274221C0003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261006092035.166776-2-kees@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4D5B018000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: wnqbtoyqnqrpbsmr4sygrxegofts8jyj
-X-HE-Tag: 1791555713-981396
-X-HE-Meta: U2FsdGVkX1/xpt35Qyloc99Gqz+ADZH7Av4lUFPkd+qo0n1miOjBQDviHpbVd1mZa24qMP048fIDcBS7qeOIsUDTipaJQSPsfZHTR1AFDQDhROMHpCcONtOlJHZVik3mGWx1uae7PXzdJUXvaZKUwGL9D94+t7XzvVKWAAYGfygmPBwGVPQeoKenEcDhCNLwXg5KS0J1Ph2W8rOJyJnOiL2HNKBkkYuccozPJMTcqUt9zN4hm4OOE23y9Mcw/O/cQ7w0P72ryoIpGBDSZX1LCNZVQOkwLbwIPkxqxs7umf8LKwb21fZ9AwT/CrhjSgPm5apZE2qPJn9LeGA9HpaTboDjkUi6FpBtgazomJdQ3F89fyBeeCddINpS953P1aYhttEQDWJqVFWFRzn4MJ1UqO25X21pCutTi6o47jp1XZ6Df5SLI1jE3lFGJDD8ut82Sbf5hmpDDfAZ4lR+Se+tjSc5oBpMqmqdWv2dXZUXTGkByNDFubvlNq2gzJbsH/yK7jZNCkTZ3sKTqRtO7D6MP4Lbk0e3LASyByVLPwlT164i3neAuBGvFG9V9hdj6641ocvzGJBZ7ZmGLFPBSlc1G4xF8Z318goTjCb9vExW8HiMIxi5QLn1THH9RtDaqB2GLThb9RWzl+iCUTqF0JBH9v7pNa/TXhs2Xbjdhu2SUwpxavk9rbRbZtxavi6s5bphmHofug0r1nCZwEddnFvvM0sfJM7nQPwFV6PC0kApqROYT1tdpRK4Z7m/AzjNItHSRelvrML3nFD5EtfT+lXd5w+1EG1GNJFZ+3G1VAgQCer4bejHnW42wW++keWQjIkDLvBo+WTa352NgNOVcpWd5d+t/EN/ToNI5jUGyQJ3rEZLGRbyO5NwurSMQ2zhJYwKahP22putW7q49yixXYG4+u32GsxjwFunTvWOfd2JaO6tL8gMGdp5PKmoMn9ReIU7qkJ/yVsSYkPzDpp5sJq
- lwJ2vp3U
- UVuuik5hdKt1yltqyeLE9lcjrFjOm1MGpeYa9SmUUDipivLDVSY4eSvBZtqrecVGitx6RHW393pE8lOBkSKBO3TtnUq0TUcOIAHEts8JBClsL0AoJBmjmJVg1nhNe37urVzui6pV8MvwoIW9xlbslFUZLRe7MhXKMSfGGP61z0aS+GpopqMc6sXBMNZL49FiHnegpF3n38EjNLz5GYe+tI7Jj2RxSrt4ifoGWd0qqWI8/OUbcRNQhObBIaQm6ffxQ7/c61ok4j7W+Ay9XhWfQIdfwiGkEpC7YX6kuaQ3Ce07DI6F3wJEpBX4vZLybMMoUF0HIagm1Cqxd/NjPCOfG3Vn3yaKz28VXNBNXYOJkgnPrFKJRZ9evGVcSUhZc/V/+OXdULtSQNiRPBWv+epSgDwC2uilsrP+KNQkHOuZpa3QACSCMjWsmNhsyo/RuHTLa0OxWFmi/bSp1ZkLYz0FliiTZIA==
+X-Stat-Signature: jcqs1fbboom3tmtzxdfognxyz9q4ongt
+X-HE-Tag: 1791555724-910400
+X-HE-Meta: U2FsdGVkX19lNu/MSYVwLnGKnDwRxtdyZRsDwLZ9qQC5MUSgT0RBMfSCRuHbGfOPyvvJwkOr7nI0VvlSBlT5A0OdRztYGlSAhgLiUh0lL6jn5my5dCc8e+kGfQmED/vEtC5+7Vc9RmGoc6OEKBCDA64wntCVl5Pwn4sZA19zlwKwnnBc6glCHmEKAX5vmsYU9ilF/6nXAKOxIfmBiX9kdRIK1U+AAwWcmYoT0oqxP6Xt4Q0QTMV08N8CHCCN3mpwGK1PoE1uYMiYgMqzNsUEng42xYVvkk/mTK99EdcUEZ56xk6E4t5DwBRA24i7V0Nt/XOmjaV0JxBialpgJ4ZWqXISb11B+z8VA2VzIOCiVK7675LzPxXCmRMo6omcHzWVyRSlqfX7770G1pepG+JeEUa8qOHF0fEZiWtLriS5JYKGtsuAoYaJJGnr+oPz0UREe/7Pq64OLCx8mYZ06NgVtHvHOMrSmSC4sOXGAOtCdFzlFDmqU0lDQWbs8Qr/kTpOu/lWEBV7EvkD15K6ogYX3hmPEtvRfyMWURwhGUTlHSUYBlA87Wjxu/hK4Ea/i9uZghYHthi6vTXHX02ISZnR9j1Sh0h6OTOvdOKk1fhuy81MPDWit9S0O+OI6dS6rHRDvnVlkyeHecl245kwWzlQErj6J1MKTd8GRvQ6HgmTO+H80meQkqJaOj+dCW+rLtCMwVRfiJrEzFneV5DpbIjftXaKONQK3Gm9g/cIfxg9gzU6N1XdTXEMXrbFeTfmcIt0nUB1vsOSQo0KKB/jcX+MdUpzYSH3urpCPdz423YEWtbuKjFDDxmDJQ5ADLJWVYYR2ihph9smwcgWExtGexm6LnuLplw8EpO0Lstd/G5XI5q0qvmW2wxsKJzaBmr7arvO2D1zDGaiMH1rzNKBV1hYZzelRpJTUXEApwi0WMW0NwWts0Yp63w0m3DRO45P1Q7Ow8dkTtw5MMOL5ciEx0+
+ gHz79068
+ LLxK31ING902yx3FJYAR5CBSqP4NMXPemJyVtTrdsTuofU6FwGM0LeOe5Vc58RROq3T0aIQKAHMNGd4YlXlTDfXaRGAZQ0aXzWQbJttOkNGLlIE1WnnNMaXTeytp9xfRxfMEKw912nd9q3BpzyF+2e4jfN8ZJq7um8zXf71Qw3C3ABVmfqAbvjvqzI068uUsk2ENP17r7oE7nOfTKRB2uMG9m7lI3+GlS/zvKnXZQZMKwod9J1aZweY4Uz6NxznIzbCZ37YLdW8szxvfjfQ6DxXknXcOtIemhcpBagLkiWiICLWNHKKVEM/gCH5ylOmSDnF6n
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,62 +97,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Sergey, Minchan,
+On Tue, Oct 06, 2026 at 02:20:28AM -0700, Kees Cook wrote:
+> Since commit 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for
+> alloc_msg()"), alloc_msg() allocates with GFP_KERNEL, and a msg_msg is
+> accounted only through SLAB_ACCOUNT on its bucket caches.
 
-I wrote a compressor only for zram's pages, as a personal project of
-mine. Before I send patches I'd like to know if you would consider a new
-algorithm for zram at all. Much of the code was written with an AI
-coding assistant, with me deciding the design and checking the results.
+> With
+> CONFIG_SLAB_BUCKETS=n, kmem_buckets_create() creates no caches and
+> kmem_buckets_alloc() is a GFP_KERNEL kmalloc() from the general caches,
+> which do not account it; the same happens when kmem_buckets_create()
+> fails. Either way, the allocation is not charged to the sender's memory
+> cgroup.
 
-seqlz stores pages almost as small as zstd and swaps them in close to
-lz4. On a Xiaomi Mi 9T with its own Linux 4.14, seqlz as a module,
-20 000 pages from the phone's zram, the whole page fault per page:
+Ouch, now I see what's gone wrong here... 
+The fix for this bug should be Cc: stable IMHO.
+Allowing to escape memcg charging is not good.
 
-          bytes/page   swap-in warm, A76 / A55   swap-out, A76 / A55
-  lz4        1300          5.3 / 16.2 us        10.3 /  31.2 us
-  lzo        1216          6.4 / 17.4           11.2 /  33.9
-  zstd 3      898         16.9 / 47.5           34.7 / 133
-  seqlz       935          6.0 / 17.9           12.4 /  38.8
+> Allocate with GFP_KERNEL_ACCOUNT again, as before that commit. Memcg
+> charges such an allocation in whichever cache serves it, so drop the
+> SLAB_ACCOUNT, which no longer adds anything.
 
-So 28% fewer bytes than lz4 and 4% more than zstd. Swap-in is 11% to
-13% slower than lz4 warm and 17% to 25% cold, swap-out 20% to 24%
-slower. With 25 apps launched in turn, 1.5 GiB locked away and the same
-disksize for all, seqlz had 3 cold launches in 3 runs, lz4 24 and zstd
-6. With the disksize scaled so that each algorithm gets the same RAM,
-lz4 had 54 cold launches in 3 runs and seqlz none.
+Hmm in the long term we don't want allowing __GFP_ACCOUNT allocations
+that are served from slab caches without SLAB_ACCOUNT, as this wastes
+memory.
 
-It is LZ with Huffman coding, but with static tables that are part of
-the format, so a page carries no tables. It needs less work memory per
-CPU than lz4. The format is written down, and a second decoder written
-from that description alone was fuzzed against the real one for over a
-billion inputs without a difference.
+See: https://lore.kernel.org/linux-mm/20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org
 
-The backend works on your series of 5th October, "zram: redesign zcomp
-and rework backends", applied to mm-unstable at fb0fbeb37, and on
-mainline without it (986c24e0fe44). Under KASAN and lockdep it swapped
-12.7 million pages on the tree with your series, and 34.9 million on
-mainline with UBSan too, preempt=full and lazy, no report and no page
-that came back different. The zram selftests pass, and there are KUnit
-tests.
+And now I see the initial kmem_buckets design did not sufficiently
+tackle the question "How this should work when kmem_buckets falls back
+to kmalloc?"
 
-What I don't know yet: the phone numbers are from 4.14 only, I have no
-rooted phone with a current kernel. With 16 KiB pages seqlz needs more
-work memory per CPU than lz4.
+I suppose the kmem_buckets' abstraction should not be too tightly
+coupled with kmalloc caches. Creating a kmem_buckets should be
+conceptually equivalent to creating a set of caches with speicifc
+slab flags, size, align, useroffset/size. (for variable size allocation).
 
-My questions:
+When it falls back to kmalloc, kmem_buckets itself should provide a
+compatibility layer when falling back to kmalloc.
+(Okay, allowing ctor is completely broken, but other attributes are fine)
 
-1. Would you consider a new algorithm for zram, next to lz4, lzo-rle
-   and zstd?
-2. You wrote in March that zcomp will move to the acomp API [1], and
-   your series of October reworks zcomp instead. Should seqlz come as a
-   zram backend on top of that series, or as an acomp algorithm?
-3. What would you want to see measured to decide?
+...I don't agree with the idea that "since kmem_buckets can fall back to
+kmalloc, kmem_buckets can only have the same requirements as kmalloc
+(slab flags, alignment, etc.)".
 
-The code, the format and all measurements are at
-https://github.com/martinus/quetschn
+By that logic, shouldn't we give up specifying useroffset and usersize
+too? :-)
 
-Thanks,
-Martin
+> Build tested ARCH=x86_64 defconfig with GCC 16.2.0, with
+> CONFIG_SLAB_BUCKETS as y and n.
+> 
+> Fixes: 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for alloc_msg()")
+>
+> Assisted-by: LLM
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+>  ipc/msgutil.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/ipc/msgutil.c b/ipc/msgutil.c
+> index e28f0cecb2ec..1ba8e59cb255 100644
+> --- a/ipc/msgutil.c
+> +++ b/ipc/msgutil.c
+> @@ -43,7 +43,7 @@ static kmem_buckets *msg_buckets __ro_after_init;
+>  
+>  static int __init init_msg_buckets(void)
+>  {
+> -	msg_buckets = kmem_buckets_create("msg_msg", SLAB_ACCOUNT,
+> +	msg_buckets = kmem_buckets_create("msg_msg", 0,
+>  					  sizeof(struct msg_msg),
+>  					  DATALEN_MSG, NULL);
+>  
+> @@ -58,7 +58,8 @@ static struct msg_msg *alloc_msg(size_t len)
+>  	size_t alen;
+>  
+>  	alen = min(len, DATALEN_MSG);
+> -	msg = kmem_buckets_alloc(msg_buckets, sizeof(*msg) + alen, GFP_KERNEL);
+> +	msg = kmem_buckets_alloc(msg_buckets, sizeof(*msg) + alen,
+> +				 GFP_KERNEL_ACCOUNT);
+>  	if (msg == NULL)
+>  		return NULL;
 
-[1] https://lore.kernel.org/r/aa9tz-EIh7kOF3RM@google.com
+-- 
+Cheers,
+Harry / Hyeonggon
 
