@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE7D4CA5FED
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 08:18:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 543EDCA5FED
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 08:22:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C43D96B008A; Fri,  9 Oct 2026 04:18:25 -0400 (EDT)
+	id 56C8B6B0092; Fri,  9 Oct 2026 04:22:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF4AC6B008C; Fri,  9 Oct 2026 04:18:25 -0400 (EDT)
+	id 51E6C6B0093; Fri,  9 Oct 2026 04:22:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0A7B6B0092; Fri,  9 Oct 2026 04:18:25 -0400 (EDT)
+	id 433886B0095; Fri,  9 Oct 2026 04:22:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CA066B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 04:18:25 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1BA611A02AE
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:18:25 +0000 (UTC)
-X-FDA: 85302385770.23.2BDEAF9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 654BC40008
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:18:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qh2aiK8f;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 24A006B0092
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 04:22:02 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B6DB6A0296
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:22:01 +0000 (UTC)
+X-FDA: 85302394842.24.5E794C2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1CB8E20007
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 08:21:59 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OeLhcx33;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791533903;
+	s=arc-20220608; t=1791534120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QHhA7f6V65XQBZlA+M5P12SyKfroOAmYrTWgXRy7NBM=;
-	b=oGVLWi/17HBZSuPQNczlIV5zD+zcR3fqEWtAzAJ9N7c7SNZCtt0EehHUAIg0LwvPjZSrg7
-	ySS4OmmUMWX9S3jY/7g1Nnp5WJL/0uKMnzmEvsMtIQMemGBICCNbIYqe4JORgX9nThYCjy
-	Hs5fLU99R0Ko2lHjJMgJwtjvSGYjDKA=
+	bh=XR909C3Pjd+KOHrf5jL2WUTMt/jvGOVLkbFPbLw6Xoc=;
+	b=NYUO3Mq8Co1EsbhzNrr8SCWEgiKZTNLn029f62xwoJbzfNl6Y5epLd3W2xnY1P0OQGAWUW
+	3yu5E7gAJxMYjQw/HOB+HGWO3w7FmElBfl9dzBzziBa5Mz068vXKam/LPzDh2HVFcT88ix
+	JNOSXcSYfVTlzFkrT4XdmMa/RpaSanc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791533903;
-	b=hBj11yTD3i3TQsF0DsJvO3cSjGQtwPGwNW95TpQ5b4njCJF7YSNa5YLzJZipXw9NiZAs4o
-	BSG6NKfsBZFe0amh9A9bcoWhNekV7bjy25sRj3uC+XqTXp/muqaNw+Hl3aU28aPi437vT7
-	4ySk/AyzFPUZp/zjHVClFcgecC+NoAQ=
+	t=1791534120;
+	b=26iSZM7cFDejfCVpvzJsmO8PEMT5lw4Yt61XKBzQLCgntKci7FPWqoLznJYlqXubdHfFPX
+	rAMA6E2BmERtXv1sc2Ua5qfZKG2+sKDlXKl2pV3xGAf1yQvFS3+EpnWEi8Rz8SNNX9AdqZ
+	/eaykjewC+3Z6+LljgLTq4/xtr4TUQ4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qh2aiK8f;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OeLhcx33;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 91409436E7;
-	Fri,  9 Oct 2026 08:18:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7AFF1F000FF;
-	Fri,  9 Oct 2026 08:18:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 823B8601F9;
+	Fri,  9 Oct 2026 08:21:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C921F000FF;
+	Fri,  9 Oct 2026 08:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791533902;
-	bh=QHhA7f6V65XQBZlA+M5P12SyKfroOAmYrTWgXRy7NBM=;
+	s=k20260515; t=1791534119;
+	bh=XR909C3Pjd+KOHrf5jL2WUTMt/jvGOVLkbFPbLw6Xoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Qh2aiK8feprPn0+LiLNLX+i4kAHkS5xWpbXECCGTLaCQubPIBLGNCSEZ8GTYqlR7z
-	 6RxLRLtNYj2IZN5XSK5+ydKgKnx64u+6OoX9zNsiTIXarxVBFBjulBkrEEGh3sUDQh
-	 pSOwEbXQTGeOxMwqWxRIhUMI+cF3OLRdNI2W+zAGnEgkWAMN/R7Ad/uVhaAfAyvHbC
-	 jKv3La3n39rIrTxv3eEN6013Zdk+Zg7TokL1rf52VXCOnU7qT/qFjtu3Duueppr/AW
-	 0CFxzepM1S7vloIDvueeVgOhcQFI328iRnKa3/6zBIz1n1TOr5WtGK38RNniyWySgG
-	 ybl07iXhcYWxQ==
+	b=OeLhcx33IW8mAy3QVGFv1zIRvGO0PRTJw79Sho141cXlFv4eOc5XRS2BpsQ98vgch
+	 Tuwvp//eA2nS+vyzXnKO713iSPJBxx9behcXXYwaBia4Z0XT5ucnDIqiYs3NP9J4DM
+	 769mLUjlyk8vgVnquToil1r3INpFAimFlw1haA7TgVRW0ffIgxrBaNsDeGxeeC3heJ
+	 2DOBo5/jgfRxZhf54Cm21T4uoDgj0zoZc9H9nOvcgz3uPux5BhYtKgHvYTj5bKzcyh
+	 KN/JKYUr0V0RsIQcQsIdIFCgZtmyUN7PtvU4/MWeUwSD5RKN9+WTQ0Jzk1U+4zFlin
+	 0uufXWcHcfSdA==
 From: SJ Park <sj@kernel.org>
-To: Manuel Ebner <manuelebnerli@mailbox.org>
+To: kernel test robot <lkp@intel.com>
 Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>,
+	Suhaas Joshi <suhaas@s-joshi.in>,
+	akpm@linux-foundation.org,
+	aethernet65535@gmail.com,
+	oe-kbuild-all@lists.linux.dev,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon: fix typo and grammar
-Date: Fri,  9 Oct 2026 01:18:16 -0700
-Message-ID: <20261009081816.41705-1-sj@kernel.org>
+Subject: Re: [PATCH v2 2/2] mm/damon/core: Copy only installed probe in damon_split_region_at()
+Date: Fri,  9 Oct 2026 01:21:54 -0700
+Message-ID: <20261009082154.42336-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261008162010.4010682-2-manuelebnerli@mailbox.org>
+In-Reply-To: <202610091039.fhMXCn7d-lkp@intel.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 654BC40008
+X-Rspamd-Queue-Id: 1CB8E20007
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Stat-Signature: 81udc455t5a9qahs8sbw4ufws8tx6zrm
-X-HE-Tag: 1791533903-478819
-X-HE-Meta: U2FsdGVkX1+PK0QbQARmTyry1GZyfznUUolb11JXHxnUeIIKeHKuwlbbbSR8/9VPOhbJHf0/Uh6VFG71naJamhV3+R3OjGVmqwc3EkgMUyEUrNvq9vaqhVWDEttnjQbixhjiqUD8QURZ7SotEkN/c7mp1rQM9YFO+OPeU9F1rquCiWLfE7imxU5/g/PiKltQM4VXTsQrB4ga+sFtaI7pSbnJ74KlvN/ng9KgcqRnqWtyS7h9oQGxJwPt0/SpDcX9biNSTAYrzj+TmVx1VHh/7hkgPFV2fCE9Jqajzu9ztRfoo17Q0X5c1EpONRx1/Dm3bRRU+qvLefTUPhUl5z4/U2+L11o7wBef/ytPa1E7wuTe3t2lgD2mTT71YuIy2H8/he0sY1yi2Qmea+D7S2/T+ECCp699sc+6GtEX+5RzT2rFAw2xRKXN2bUXa5KRGraHkP0sFbY2yM2NpaL0gOLSRSMYn9ukkOtws8XAH50ykTjmrbwjH57YGlZ4g+fYO1/GmVsNMdwM4jua+VrXl33Uuywmu0P5oqbr0HFtr6HaNhAmgXRMvQh/dzPRRoOSFMK6Cwmp2OyvK2g3h4Td50Sl27OIXhS62e9Ikw8s/QjKlicisgS53lfwV6JGf0DUbokLJEDj+tZ6B5ZVOO7MMHEzaESwnbpnmEe5Su1WfkDc57TRj1UvRMau2v24YHy8Z+vlv9U/0lmZxJPVVGienyaED9Hv+9c5Tu9I63vAcsbrosLPqxz0H40T4ja14N1ZUneB/Eawy9tLs6qeN0uF9MS82LSBQedzCahxyYxl//tmRxhWLH6GZFuD3/gpInMwnwK62LHym6wXiFiz7/eEgs764XuR4kIb6ldc3Zzrz2HOOA50pcdgZ1OhgO3WfRkR26zsfFrSurfx8dN/av/ElMJ0Mr1ASwa3wTBHqoimHNnD31avC49R2AM+95TMoxTGjC2Sae77nTGIwlOrs81YfGe
- skvMJlVi
- 1M7MzztnDrDLa2vy4GrVj3+g3yQNIxezQjSVikSjFP78iJCeqFU+QE4OQ+y0NmJHICXNQAgccqS/Wn3W7Yq5qitNRniLhhhG3Bp9OoMyYst445ZTpr/4CUUijN2lsoL2WNDxzmoKOE6VEh9HxLQBXfSmucBRR6jQww6kz+37L1A5xvKBJxUiCOZwreXyNIrRxhrVhT7EhhPqVjNUcljlJP155MZxXjyPe/Ixo96hMQZYo7MsCoowHweuSXqPTkwlDFr679ROOt7ahZMDXhul3Wd0tef+UQG2GrHL12icNxmRd/ddhVJvWtovnR8dk7i2jLE+YzqePIHxsxED/B1Cmgym7Og==
+X-Stat-Signature: k676kdqwidrmyrdfxocwodq7kws6rdnf
+X-HE-Tag: 1791534119-207970
+X-HE-Meta: U2FsdGVkX19G+YL/UhePQetiTb5lwZiBR6iaFF3nk5HbEcLEv+C6UkMt4TIuSYWpccdRDljYOMZ6NgZEcoZXO98qjnRPAXWRFF2YLBeuW71L0L40pxzo5pdr/dWzecyDg3jxgTAfCqibLvB+U/Y/3IkpGciTTtxFByTQ7KVf2NaVqUCR85APH/B0Gki2MGpUDflaLui5aF3qGMXcq+C5bBhnXj/y5+BEl7uMTsADxktOECvLsXvI5sIPKdT388sKQZ3EKpgugP9cvxPgPnuSk6njT5PmHLsaT376T7qSdFQp2vJvruALH79IubvLP39Y+hymm3IouVsbIEXF3mquYidTkqnETKE2Q52i0iq4/D8RQPKtLsNTHz5Qrnp5dUANWgRS8/Wi6DN9bedsR5NkMEYAf8rvSNvptLUM686sLp7iccvz7lcz9ESzU++9uOSCQ5e1eF2NaVwW5ydfZAmO/PfOVKkpUFuubAsIOIkoYmnGoE8Pe3Cb+lE6Rly+JV9lnJZyRsAY1IM1InxKa7yI8zjSJqrp2CVMszlLV2xQCxhgSjVBLYf7PVX6bIfn3UV8GjDY2fPs7zWJvjvOzd6mQXlvXZ+T5tEodqAv+9JvOEb8QgDRK/hRTuYnl2Q7I5PTNvvofiXM48JAjFVc9GAtKxOJ6G2neFepT/OHbQpRjQg/PKn4ipeHhA5sR6zRDD75eLyUKECnLTrDJ2YzUphxTuK6N8kbiwHj1E/PyQNDt+OtHsofBdkrqmS7oDf6gwROrbEdRJfvGwtC2vCCJvHUi27/NzJmrsj/Z3U01VYLb/qR12Qdxbve32XXNw30zCTHDGc9UQL5jTHZwjOyIqXQv0BfV5Z275j2M5SjExdb77WrRuzLeaf4HCX7J1UU0tkGYvN6en4HsWiZ0rF7CleG9dNjYDQBQUPTscm3VwKnfck9c4JRiSeawzi8B4PWZ5WfFfcVi+KcLtefnd0DMUY
+ taqsveDh
+ h60JBuxCxbAVUd9VYDwyoLNoP21xu48WT16AZAlW9NygeoCng0XFLKwRI5aExTxDRIt/idlbPOQHde+aYEdRqYVSPZ8JMr9ZK58dO3Ttm8kUzydlEqOAlskNr6swesalIMXW7/zn31T7CagOnl1go2CExwY0UxuDyv4vu3mrLF8ueS1hIEhh6yEBcR6r/UO03voqqy4PxyAhRkq84woR9l1qKwWE4DnwtlZglr6Lca7GAjRvvVkc4wyxJdm0A6D0f2Z3oP5WQeHaTuWo8XH/8/C3LIpLqVBVMJY2ddQo/UAJQjzxpERFTbugEnA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,41 +96,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Manuel,
+Hi Suhaas,
 
+On Fri, 9 Oct 2026 10:40:07 +0800 kernel test robot <lkp@intel.com> wrote:
 
-Let's use "mm/damon/reclaim:" as the subject prefix.
-
-On Thu,  8 Oct 2026 18:20:10 +0200 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
-
-> DAMON_RCLAIM -> DAMON_RECLAIM
-> set as -> set to
+> Hi Suhaas,
 > 
-> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
-> CC: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
+> kernel test robot noticed the following build errors:
 
-Other than the subject prefix,
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-> ---
-> I hope I got the right git-tree. somehow there's 'damon/next'
-> and 'damon/next/damon/next'
-> The other patches will take a couple more days.
-
-mm-new is the recommended baseline for now.  It might change in future.  Please
-refer to this document [1] for more details.
-
-I applied  this patch to damon/next [1] tree after changing the subject prefix
-to what I suggested.  We are now quite close to next merge window.  It may
-better to focus on making mm.git more stabilized and therefore ready for the
-next merge window, rather than adding more changes that are not really urgent.
-I understand this series is not really urgent.  Hence, Andrew might not add
-this patch until next -rc1 release.  In the case, I will request adding this to
-mm.git after next -rc1 release.  So, no action from your side is needed for
-now.  Let me know if you think this is really  urgent.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+Could you please check if this is a real problem of your patch?
 
 
 Thanks,
