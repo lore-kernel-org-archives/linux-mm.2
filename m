@@ -4,98 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B677CA6004
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 03:19:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7648CA6017
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 03:43:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7AFF6B009B; Fri,  9 Oct 2026 23:19:03 -0400 (EDT)
+	id B9DDF6B008A; Fri,  9 Oct 2026 23:43:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2B996B009D; Fri,  9 Oct 2026 23:19:03 -0400 (EDT)
+	id B4DE46B008C; Fri,  9 Oct 2026 23:43:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D43726B009E; Fri,  9 Oct 2026 23:19:03 -0400 (EDT)
+	id A3DEC6B0095; Fri,  9 Oct 2026 23:43:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B0BF46B009B
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:19:03 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 59A31160731
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:19:02 +0000 (UTC)
-X-FDA: 85305260124.09.EC48E73
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B8F8B140006
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:19:00 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jVmjNQFt;
-	spf=pass (imf09.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8456C6B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:43:47 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1EA75A8393
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:43:47 +0000 (UTC)
+X-FDA: 85305322494.23.B062601
+Received: from mta1.migadu.com (out-23.mta1.migadu.com [95.215.58.23])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D837140004
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:43:44 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="knhHF/JD";
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.23 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791602340;
+	s=arc-20220608; t=1791603825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mvErx1WWrmavZpAWawNx/SxSWFSIPpRG5LFKnvSw2A0=;
-	b=SGx2CQADXFKocrsBkU5KBkcjWLsJhNK4QqDDOgMjo5n4gsgK2zeLDBD+JY6lWhD+uSwkP3
-	g03YN+ziQt3V9YZ9E2ElPCIUbIVeLO9/I7TICN3wSHPs07nBuvCa/R8Zej4yIWP/xuLOF6
-	c/i/olp8O9VsczK2koxizXExJzwREmM=
+	bh=RPMsSbn+X287AkmXHu+Myu3LsKJD6Xma5zbMLCbaM+Y=;
+	b=RDxF9uR/RsqhXfz9DkGk9NzXOs9wBM/Z7r9a6ms4obNWIgwXWR89xRax1U8O8/3V4GE9Nf
+	1Ms4y2olv6u9UdEoXZQPbRz0jI4EGuKMgvhiohiaL/3Tj6EESDOHwdcB9ZRI6veg+P95MH
+	nf4s33vDmv0IQilTGAllHQdqfY3xHOk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791602340;
-	b=jjiyBGELa1ckZXtZfsNWzo2uHMUzD+EScjM0SOdigRcgtblHermqRVW3FXXMEhuUUrofTY
-	8ezGxcOHEroq83fyBsyweAqj1SZmvnTv08kefnjJ9nhjObX3m4MBH3TKG9jC1xQIIqQjJo
-	lR+ixOE2XMbsdxz1kTZ9is+2cG0T1hs=
+	t=1791603825;
+	b=HytAR2gwqKZBKELoqPQYekYMLbdExwNKEITAfmTsQOaGCuKunkOiYvZm2/UFRFUqDBkOXq
+	L3YmSSikMFPlYMKW4euhRBR3Y5+yIVB7DlLBUsTnM3h72D02JX7MDzvEaBBklEOdJRwLbi
+	3jV0iM95aFjt89k5qFxg1FdgfcfYrE8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jVmjNQFt;
-	spf=pass (imf09.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0BBC560DCB;
-	Sat, 10 Oct 2026 03:19:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42761F000FF;
-	Sat, 10 Oct 2026 03:18:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791602339;
-	bh=mvErx1WWrmavZpAWawNx/SxSWFSIPpRG5LFKnvSw2A0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jVmjNQFtVai+W7WXC+h3kBaL0yjWXjUQJYTf2QnXM6D3GAH9/NAhARUSIpFOV0ocz
-	 ldAQ277Wo7iqm+PAjlF23ZdAK1uixhqlEROEG4z6b13Dftr/BL+rzd6RoAuKK5qweZ
-	 CUe5/3NsUdVjpRG/ava7nnO58ZC5r8ewUiFIB+xTaOUcmHx1krhNwlHvU6+KWDQplT
-	 RA1laodn+A61NsVE/vx1EED1Ew5/AINNnK9pSkEWxhOllREjl9+3cxE6oRP+GKBfdc
-	 Jj9BT6Foz6Is5IHwk76OmFoK50H788A3TiXNzSJGWK9kt+ceeBVH3TG0EOeu4FAfwo
-	 j8pwAY4y1zMdw==
-Date: Fri, 9 Oct 2026 20:18:59 -0700
-From: Kees Cook <kees@kernel.org>
-To: Harry Yoo <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, Pedro Falcato <pfalcato@suse.de>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 2/8] ipc, msg: Account msg_msg allocations
- with GFP_KERNEL_ACCOUNT again
-Message-ID: <202610092014.AAB20B81@keescook>
-References: <20261006092030.got.500-kees@kernel.org>
- <20261006092035.166776-2-kees@kernel.org>
- <asjhg2e4-WSeKuXd@thinkpad>
- <ask5kpMS4mpI8Api@thinkpad>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ask5kpMS4mpI8Api@thinkpad>
-X-Rspamd-Queue-Id: B8F8B140006
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="knhHF/JD";
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.23 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=e2Gg2A0pOiUOVFvGVHWV6wr7kkqR+muGcjituStXuzA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791603823; v=1; x=1792208623;
+ b=knhHF/JDy9lkKxtZQnxgn3u7UyjAyvUOTckxSbLlK7a1iULv3C7sntUsb9k9jijBoEqjPsVM
+ glo48k56/pu9rwM90gWWg3q6OH00dLjyEQldwtk9MV10cDWKYN/Fz1G82iksnDzUo8iWdJ3p3Nw
+ lAciycb8CyOb7GiowS9UrO94=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 14bbb4f2a2970250;
+	Sat, 10 Oct 2026 03:43:43 +0000
+X-Mizu-Trace-ID: 14bbb4f2a2970250
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH 4/4] arm64/mm: fix destructor for unconstructed hotplug
+ page tables
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <d47bdf83-1db4-4601-a516-7e23488ea9cf@kernel.org>
+Date: Sat, 10 Oct 2026 11:43:23 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ akpm@linux-foundation.org,
+ linux-mm@kvack.org,
+ stable@vger.kernel.org,
+ osalvador@suse.de,
+ dave.hansen@linux.intel.com,
+ luto@kernel.org,
+ peterz@infradead.org,
+ tglx@kernel.org,
+ mingo@redhat.com,
+ bp@alien8.de,
+ x86@kernel.org,
+ hpa@zytor.com,
+ catalin.marinas@arm.com,
+ will@kernel.org,
+ mark.rutland@arm.com,
+ linux-arm-kernel@lists.infradead.org,
+ pjw@kernel.org,
+ palmer@dabbelt.com,
+ aou@eecs.berkeley.edu,
+ alex@ghiti.fr,
+ linux-riscv@lists.infradead.org,
+ agordeev@linux.ibm.com,
+ kevin.brodsky@arm.com,
+ bjorn@rivosinc.com,
+ apopple@nvidia.com,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <DDFF90A3-86D7-42D6-844A-5D29A44BAB4D@linux.dev>
+References: <20261008073021.2512665-1-songmuchun@bytedance.com>
+ <20261008073021.2512665-5-songmuchun@bytedance.com>
+ <d47bdf83-1db4-4601-a516-7e23488ea9cf@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D837140004
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: djx13q3twanfp86xnun9zmtbuqzioenc
-X-HE-Tag: 1791602340-803935
-X-HE-Meta: U2FsdGVkX1/a3QdZVAxJJcZ9eCAN8aG5Y6Ocuk/toAlA4ZBCCEtNj2H5mOzWXazAJsDwYxv3QF5MmTUD33ijovcOsXgWtbHrjUYw2zPp9LvIVbQFVvF9sDXVG0Y1TFl1kJzAAx3Sn8m3LBY9gaR45l2fqtMM/BqkNOKJS9VTCBeHkgIYvQ3Ojr0wtQJxuteyEKHpr+n9k9oaXFvin3ACbao/1O7befc+xIp4JZUiMq2gXpTsPGaRnE8lgeSYwn1Xrn3vuHn6mXTTqlbSLGaVJd8EN/kQ1fAT2nuhavWAPbwNdHOmvAKNU8S0+kHWO/ddl7KI7Sig2IufynSNYdN8+0k3Uzi+ar2G+pa3/WFF1/kO0B7xYe9D5wz6AFxN+jVfpIYum5ruHWfs5oiuTHUSxSOPHVit/mjm3VOtCQ9hkECMQFwFWuoLxzpYLogGLfbaN+/JoHaz4HbkpkZTM5PmEBnSOFxYl4FLd/nrGiygUwYiRGhTxRn4r+I8oZzcb3JBwtxMzdhOmqH/pfao1oGVcXv6LyT6QbTT+lgSS/B6MoTXnTir0b94l40mSq9AcejqHAEWj7ETylo8FkktcToBC2+Y9o7wji4ssjUQl6oR6+IeB1ZoZP3tnGGVu2BqL8vwaSD1iYJ+WHK1NX+v9Kx8ErqXbwOdSRfpyASXAI+xDTm+fKP8E1QvSg5yJJyJEcT5zWp4uYtbUkejVz8GCRzbDEYNRTdbgXQp6jTY/WTjUhE+mFPHKPD087mNUvnvzvyNoGKbwH4PgGwRINXu2woJZ/yTxvWKeqdN7Xff97c3lqRVR/tLiU+QYEt8M5Qdnfbh0gcyU9wh557rbkXNTmrIICXuak/NvL/HN8Ep8xlzB8WmeE+ZrNzqiJsdyZiwo+UqiCdpe6R5JUZC0ptBC3oTON6SCSx7VlhNBV8mzSE/Wc8R2xpm8DOI/LEOTqm/Ydm0AYnvHKCuO1neFQd4VoD
- Fd0XO7Db
- r2I8OK9VHqbjIDq4pMBwQA+INd/rUs55itOEiF1McL0PuAK6nyhDZZnZ/zgQdYIvZd7++n5wWxejwA4tf3FTyFjMVa+637egsFrNDER4OY84woSZRkc1idu19cJkm5XyLr7RBDLrgOskoXgUkRVLTIeXRxcyimhx2zhsxlmSOoX6ShnkrCkO/HB7sy5y5MnhqNB0AN89TUwxxAmitPfQ+4ZrZyWuTFvzOfFfhxcjYxSHkflI9E/Hn1dS6bGJ5LL+8uhsNSj1KNQhBWETCNOhznv67WlLk2TfhW/ia7zUYLwojrO4=
+X-Stat-Signature: 7muktugcy18kgsky6cx8g8sohx37xkys
+X-HE-Tag: 1791603824-847699
+X-HE-Meta: U2FsdGVkX1/MuMp1H8fO1s+AIyuJ2YpGyAsvvF9gBivqMVOPZC8jwnvYQhBvyIIVwOUVXMtRAIelJmiOavK+kjH5Q6Tl4AGfGfzFQaEtMbhgPWN9V/eMUNqEnPLOaVSdZfQ4ELXwkKYRTN42m54XDdquxd2xEh2Pf/w4V/FIEbByzv92usGb9BppGSA01TV0MAracpiQ3URHxcXqvedCVvRMkbIq0d6xZ5Fr4cD71cULdg/EhXp5+hkgJacq+QisGNcVcip9iFskTXm7l075m7l/DcAHoLAy6hgiHa6ahN7vfBPU/RrPwhbQMqp7ek+gg0AP4DU24T283gh7lbOfHoz1Kp2942aFtZTSjS7ztMLDA2UP4td7LdqPN7eRUe0aVFV6M4bVV3RK7zhc5Vv5fXo2/lP3OHkl/OURkcri3FoW0qFVZTokP+uUkqAv1/qbMNbuGOpzD6Uk6Q34vXrVHQHE2cbAhE2GZXmlBHfpplcs/a3mYSq1ZFnH5LNW01A0wl/ifM7O+T+/3Umb2e4bsLsdBabL9Z8wPOd2uLiyAWteCglmZymWE7ZLx6c9nrZvS4WFlRqx5tRmoly6bwQTzCPwnqr1M7ULKAKu0QWv1IUEVofMfd6v+fUbWA8RpmRY110VDjX2K/KYWLd+StCSqTD/Wpde3LkiMU54/STquXY5xsxQiVt1U3PHw4QjV27fUVlEohk7onrspeuG5+pwvYMRc+FXkRkPb7JSceJ0zjQzzh9Tx7sJ2nJpgr1hT5EjJWImO0AftJmw3WmhBImVNpSK8ilHbBX/R3lqTa+1u6DaDKFEorbOl3wIR/K+sXLRomIVG1r529vuG9kSgPAVfqLe9nAevF9TTBIMBX6qWToBqWIyw1htZWstlRjpWYsuuPkPATxaFJTeQxhVGzabgKJQ4R617ofWf5HdIrIWQSLAZ2tBABq0yPOqlKapTpHWFUBBcf6NVvDiJOMWi0O
+ i+rxIwfg
+ NF6a6Ozn6h0a90KIF4Gawx6HKLhmawG1mpzbBn5AKA4Rwd1iuVh3rOlVu8sIQlmjzyosIHehoKYOcJhVIWTATcepEBhzH/Zp2E5XUHqXv2s500lUBbr9LUAPL4y3nPqyFD0JHEDW1p7J4kwNBKxJjQu+mG1uTL09r2xvHLCnaK9YT2decb8nPgqq+wfqdwOarWBm2klAR7/sG2wEtD8RH7A8gE5/upRxQYBswN1YIFJCXzEwFZxhTq9nlCZocp5JBeItjh54gxLB9zJB0hCHjog750keWd2Dw4Rqh6Z7WxXCo3nmnDEzy1vcQQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,71 +119,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 09, 2026 at 09:39:48PM +0200, Harry Yoo wrote:
-> On Fri, Oct 09, 2026 at 04:22:03PM +0200, Harry Yoo wrote:
-> > And now I see the initial kmem_buckets design did not sufficiently
-> > tackle the question "How this should work when kmem_buckets falls back
-> > to kmalloc?"
-> > 
-> > I suppose the kmem_buckets' abstraction should not be too tightly
-> > coupled with kmalloc caches. Creating a kmem_buckets should be
-> > conceptually equivalent to creating a set of caches with speicifc
-> > slab flags, size, align, useroffset/size. (for variable size allocation).
-> 
-> Just to clarify... I have a few concerns on this area.
-> 
-> 1. Complexity.
-> 
-> It's very counter-intuitive to understand how it works when
-> SLAB_BUCKETS is not compiled. My brain cannot easily process two
-> different implementations w/ and w/o SLAB_BUCKETS.
-> 
-> A "compatibility layer" allows us to assume certain expectations
-> and ignore all implementation details when SLAB_BUCKETS is not compiled.
 
-I'd rather make kmem_buckets not have a SLAB_BUCKETS option. :)
 
-> 2. Making kmem_buckets tightly coupled with kmalloc's implementation
->    details is not reasonable.
-> 
-> Let's say, at some point we make SLAB_BUCKETS always enabled and drop
-> the config option. Then all kmem_buckets users will now have certain
-> assumptions inherted from kmalloc (e.g. alignment), which is not
-> reasonable.
+> On Oct 10, 2026, at 04:43, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 10/8/26 09:30, Muchun Song wrote:
+>> Commit c594b83457cc ("arm64: mm: call pagetable dtor when freeing
+>> hot-removed page tables") made free_hotplug_pgtable_page()
+>> unconditionally run the page-table destructor. This matches page =
+tables
+>> allocated by the arm64 mapping code, which runs the corresponding
+>> constructors.
+>>=20
+>> However, arm64 also uses the generic sparse-vmemmap population code.
+>> Runtime intermediate page tables allocated by that code do not run a
+>> page-table constructor.
+>=20
+> Why do we have that inconsistency? It seems to cause pain :)
 
-Until it's always enabled, I don't see a reasonable way to separate
-those assumptions.
+Ha, yeah, it's a bit painful :)
 
-> 3. __GFP_ACCOUNT and __GFP_DMA should be applied to all allocations
-> in the slab cache. For kmalloc, these flags are only used to select
-> the kmalloc cache (which has equivalent SLAB_* flags for __GFP_ACCOUNT
-> or __GFP_DMA) to serve the allocation.
-> 
-> Specifying it on individual allocations (rather than as SLAB_ flags)
-> makes it easy to break the assumption.
+I think it's because the arch folks didn't realize that vmemmap =
+population
+does not run a page-table constructor.
 
-As in, you don't want a "pass-through" mode for __GFP_DMA?
+But the inconsistency is temporary =E2=80=94 I deliberately kept it so =
+the bug fixes
+are easier to backport. After those fixes land, I'll follow up with the
+unified series, which will make vmemmap population run a page-table
+constructor.
 
-It's a lot of overhead for __GFP_DMA to have multiple providers, so I'd
-rather allow kmem_buckets to allow pass-through (perhaps explicitly
-opt-in) where then the other options (e.g. alignment) must match the
-general kmalloc caches so that pass-through is consistent.
+>=20
+>> Freeing one during memory hot-remove therefore
+>> runs a destructor without a matching constructor and corrupts
+>> NR_PAGETABLE accounting.
+>>=20
+>> Use PageTable() to run the destructor only for page-table pages whose
+>> constructor initialized them. This keeps the arm64-created page-table
+>> lifecycle balanced while safely freeing constructor-free vmemmap =
+tables.
+>>=20
+>> Fixes: c594b83457cc ("arm64: mm: call pagetable dtor when freeing =
+hot-removed page tables")
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: LLM
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> arch/arm64/mm/mmu.c | 3 ++-
+>> 1 file changed, 2 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>> index 7343ac9294f8..688b33095651 100644
+>> --- a/arch/arm64/mm/mmu.c
+>> +++ b/arch/arm64/mm/mmu.c
+>> @@ -1495,7 +1495,8 @@ static void free_hotplug_page_range(struct page =
+*page, size_t size,
+>>=20
+>> static void free_hotplug_pgtable_page(struct page *page)
+>> {
+>> - 	pagetable_dtor(page_ptdesc(page));
+>> + 	if (PageTable(page))
+>> + 		pagetable_dtor(page_ptdesc(page));
+>> 	free_hotplug_page_range(page, PAGE_SIZE, NULL);
+>=20
+> That results in a __free_pages() for  ones allocated by sparse-vmemmap
+> population code. Are we sure that's the right thing to do?
 
-> > When it falls back to kmalloc, kmem_buckets itself should provide a
-> > compatibility layer when falling back to kmalloc.
-> 
-> For example, calculate_sizes() converts certain SLAB_* flags into
-> GFP flags (s->allocflags) for allocation. We can have a similar
-> logic when falling back to kmalloc.
-> 
-> Though current implementation does not allow this and requires
-> some rework.
+Good point. free_hotplug_pgtable_page() is used to free intermediate
+page-table pages, so pagetable_free() is the more appropriate interface
+here.
 
-I think the current series does everything correctly in the sense that
-nothing is allowing for mismatched fallbacks/passthrus. We could iterate
-from there once we have a need for this where a non-kmalloc-alignment is
-wanted, etc?
+>=20
+> This is all so inconsistent and confusing :(
 
--- 
-Kees Cook
+Yeah, so I'm working on removing these inconsistencies.
+
+Thanks,
+Muchun
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
+
+
 
