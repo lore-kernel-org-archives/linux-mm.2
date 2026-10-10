@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95636CA9EC1
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 16:21:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7601DCA9EC1
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 16:21:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60BF46B008C; Sat, 10 Oct 2026 12:21:16 -0400 (EDT)
+	id 7454E6B0092; Sat, 10 Oct 2026 12:21:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E3056B0092; Sat, 10 Oct 2026 12:21:16 -0400 (EDT)
+	id 71BF66B0096; Sat, 10 Oct 2026 12:21:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AA876B0095; Sat, 10 Oct 2026 12:21:16 -0400 (EDT)
+	id 611F56B0092; Sat, 10 Oct 2026 12:21:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 23C446B008C
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 12:21:16 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0402EA05B8
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 16:21:14 +0000 (UTC)
-X-FDA: 85307231310.30.60594B8
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 440911C0005
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 16:21:13 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=L7QCkBlb;
-	spf=pass (imf21.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F7A66B0092
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 12:21:27 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 557A0A820A
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 16:21:26 +0000 (UTC)
+X-FDA: 85307231772.24.F5EB05E
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 94165160006
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 16:21:24 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="MmR/HjuV";
+	spf=pass (imf08.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791649273;
+	s=arc-20220608; t=1791649284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HD3NcIDPdwUreYfDUge++wJHXhKnRmGfEpR/CtJof+E=;
-	b=lves4Uz1fcuMavDJKxq67YAmAg1zvTN86MaHwNSXfY3gPZdhFJsthYh+VHo5T0sUueKez4
-	hrppoOiKyV+JpnmrrCP/8BfhZat7g10jnMiLLqo9BvX2rE0J/Hju/Y6Riatw3A5ddab493
-	JX0oLu2wJTRB/HKCznBqZS6fh/GjOgk=
+	bh=JK7tMUimMJdBOEqaL9WlBjYAfUfZHviVsycPcwxmo+U=;
+	b=kFbsMvPE+HX/2P2/WDJYxRhlFk0pQcyVN/YlY579uanc3fm0hlmJseowobV+wxzwtQ7X/e
+	gnU7pM8LOKKOdMWnpvHN6BByDdXHn7mQuQVPDVBXoyIOEMZBe6Ag385Vb+NiqkMfOL+smm
+	pEUbWlRseH4Y8YYv8wz8xxK6r2COvJE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791649273;
-	b=XvP7WULZQILviDaIrQkW6JC6wnCepE5ycj801DNFWFB3jV/kjKfN7YqpDm+IClnlhR0giY
-	vTA93/PLBoJNPIuzJXNXPZvHvYbl6qeQqcR1780TRbTzOP69H8YIjUHF3Wb7Fx/K9mo8Qj
-	BapB3EHmGNKjdO5/NGFHnG5j5b6B7N4=
+	t=1791649284;
+	b=GpSix0WxiejCe0n/HUTvw3SgheTCPidtofeUttVwTHpqom1NDpO5NxuyLM6l3JM+fy5cJc
+	mGjQ7fdE1UQr6AEXuVbsrA9+62Btai907BcGF4JI9sgUh+RWf+2yTS747Kyf2Rx7UaZwYB
+	rfgcpADY1V/fOfJgFwprZ3oe0w+Bprk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=L7QCkBlb;
-	spf=pass (imf21.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="MmR/HjuV";
+	spf=pass (imf08.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-16ad92569b5so611905c88.1
-        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:21:12 -0700 (PDT)
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1419d3416ceso1159788c88.0
+        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:21:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791649272; x=1792254072; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1791649283; x=1792254083; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HD3NcIDPdwUreYfDUge++wJHXhKnRmGfEpR/CtJof+E=;
-        b=L7QCkBlb9cCsO+k1w+DLildJ7ituaG7Hz7xxA465/IQ/2rOArYI2R/3AI1YzKcI/mN
-         BVN40DHUkU0S2ac6E8gQ7FQlKprMtVattX5WUbeMx2VOMXPKDlD+xyLxQjKfZtKGHZiQ
-         FgUjL3N9hfDP/eNR6MKtIkMiCTmBXADuzA0+q/qHUA+KkelWBjZhiOY57soOXGmP9JKM
-         53+DwSJ1UttT+J1EG16J5PFQ1haM+wOCJQebx6YDinFZVtIzoiZPBaUCxFHKiTRNQLIp
-         x629xvJVwJ71LqSWQI/EaxLop1hRi5G/ZbmrWN8BGZgMezYB+K5qUJkgCVqa5TGYUJD/
-         +08A==
+        bh=JK7tMUimMJdBOEqaL9WlBjYAfUfZHviVsycPcwxmo+U=;
+        b=MmR/HjuV2RAa1kiLiWcv0jzAG97qs5wWXbKyskGSwH8CnhGt83pT89uQrCZAgRgJXQ
+         mHevMYrRGOKDIXE9Dz5DSF/HeNyAueirMebpqi6LVhWConNLGlccN749ra7JZHBwRoIZ
+         7z17qm42X1jZY6g+ATR8KAtmLI1LwZAMNNc9wnOLdV2A74KkVCGzZ3S8PfTtBCmTKne7
+         y7wrhb02lIgxtEctBCNREGv0m5sBdzx6Rgx75Z5gJeHnNfeOtvkLWFmDLoun+LVSyJO8
+         zlDZGEdRQyZfcMPqzWrBOtYwMQFSnStCTJQyePZVhNBeEGAjldNDfrK74U5AYATYWKqJ
+         Nz1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791649272; x=1792254072;
+        d=1e100.net; s=20260707; t=1791649283; x=1792254083;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HD3NcIDPdwUreYfDUge++wJHXhKnRmGfEpR/CtJof+E=;
-        b=UcBXG8U2Id6hl1EnclGOGVmBtQDtRO8BnYsk0Ue/vAj6m4rQsv/9CqzyNL0A9cio7O
-         Lfm4dtofAF7wVfnQRTUYrXGOnHU0nVtr1C3L/axhDRzt3qgdGt4J+oMrLg2Vyo9ydbUm
-         dvmJ1D0Z3d+WmI2js6PN7k4Z8esKKBGsrAygBHWLZwFr+/iMA/YECn11nacIEKZdN+TQ
-         AAgt1fF9cuX+sLGgg94pNWtYQsdxyDmumkjBy5EuJy+43BTnxSmaoM38LOulnJlAQdPY
-         ZBGYL23G3ZbxyOpnEyLfrjdoQS1EQvY/eBnXswtEYHBlRHA6vBp7we37nvMJG6H+03qr
-         gPEg==
-X-Forwarded-Encrypted: i=1; AKwUvBwAjzMJU5hAAs42JeXAmSDAlh2E4VOb35nfZQ9t1f/qXVtz0lPsrwsFlXt+mnp+cEdkIrlXz4bq0g==@kvack.org
-X-Gm-Message-State: AFq9FYJXuvwYDyx1kw5A36wsjg5kKpBQV6xHtTRq+EoxRrZRKVMxszuS
-	R3qBSIslWDEwXd2trd2Y/61CanlOy7VXglHq/Sdd+nJmK5IG5Yjnnf4F
-X-Gm-Gg: AYBFou1JZ1yj2lrUtKfsB4YQ/DEVEUlLt7UVvm3PemJ0WbyDZBgsmosBSwCopr45z/J
-	eBdP8GmGkhHGHkVo7fDb2GJpgt8tqMVWGSfNqjTeHyf3xSfDQ5NyqAhumsERhTok9MjoIr6Zrq2
-	5PgzvOpn6wPkapR3Px7b/tw9li/s5I01+EaaYb5E5Z9mP8oH2wBcxFpKFPgnCDz4eh3kqw7Ly3W
-	/BNPBzrsJ5fs5YmnpGzzlN535Xl2nfvpYLGhPbkUgKU3g+BKkxJFvmIXkSvdVtrTkB84HvWpA8B
-	+g+YSAQmNPIuwDIU4SO+DxKOnfnWXNK9NCOTUCUPZUNjVewM960OWUZf+tY+orSGOOE7vj9vk3Y
-	MIhT8NorTCDSfPDXheWn1ZYN52Nz/vmDFcDWAac3516lmVqG7N2Dyhk4nbprPBQcfPuk2jqH3H7
-	GjpEd87yE5oeAD2Hi5zwKvbcFNpMZFiDBwwEzPoWWX5jyKq6KIRBqRU28c0ZcyeivPYYNZoWuaV
-	NER3sh5o1s4oaCDT/v9XpXjkyHq
-X-Received: by 2002:a05:7022:7f04:b0:13d:974:a2c6 with SMTP id a92af1059eb24-16a5ad07499mr5876271c88.7.1791649271910;
-        Sat, 10 Oct 2026 09:21:11 -0700 (PDT)
+        bh=JK7tMUimMJdBOEqaL9WlBjYAfUfZHviVsycPcwxmo+U=;
+        b=C17iNOZeaN/UcnA2tUwITvDFWrGKyFpOV6+JNs/DFrc96kuABenyqeBE41MDdHxnoQ
+         hblhgyBwWbK6VVa21ha7/cZ9K8ENDCfPkjxCni/0nzsrPxlVm3+f+aDcy7fWIEspwwtR
+         BXJHRNClh34J1kKozrCA9RujBNUd0HylYQcmYzyQVeWp589pC2Dchnv2S9XRjik/5GLd
+         Irml9L+SfFIhZL4vG6vr5xaITrIdHz4aVMRgaeX48xdvsYC+TXxuD2fwNHXutzwQJJsu
+         k0nXujQHbjF/0aevmkoDIIN0gVETQz5UIl7wEFMqveM3RTFDbYw0J4xjxPwU3TFaZipv
+         R/mA==
+X-Forwarded-Encrypted: i=1; AKwUvByzfWSwn4hG8j6A72jIrHtB1HnmoKPnzff5s/zhTo7WwoTqz1BuZsmNRUo9OVYz3tRinQHwbl1XwA==@kvack.org
+X-Gm-Message-State: AFq9FYIU1S3HlZuCsKo0FjTcU4P/04YYY9Gua6KGoziaOpYHKbTX1Vmk
+	GvMxnATIE9S+7yHncS8UQSX/vrNIVDgWub/9f8IxHEDUqf1+5s7Vjj8Z
+X-Gm-Gg: AYBFou2P+cB0hz7XYELQrPbYm6cea40j8Uj7WFDZxP5kNTZ72CXqDj1mwQsTTp67Etf
+	wHRdxC+fr47q2HBTShV9Qz0eJgJyJmRzhnKc6dPA7EbyH5ZUGiYAdDw+Ud7cWfYAusptyGjLGaQ
+	ElV7sNTanOe/Zk0uUtDc2DABwMZPamIuNG/D3bc/ECQqkCkD3ciY94jiA7QTDyVUF3bywjGxNoT
+	89tKF66L/cL7d7NYHpHmF6H2NUL32fMgs3AU0EiCvGc+9stJLdZ4mqDlbdmX+99z5J+q8Z3QWF8
+	Vtg8HWoKzSlP7w+viPtWuwjjMMW+HRkfpoIrcfdMc00SjNIHpM4Kv2Aiud0i6FTXNbte9uOXgM0
+	vr7gYjRLo022YwnrL0SDdVcFOk/DXnQE7eUNsDXNwKktteiGcclQl/nTOBjx//UDYioLQxm03aA
+	KP3F3dNK0YumfhYnrlQPKt+PQvUtWyVgk43udjjTN+RzO3wea4zkQYbK15wHfoFMAOFyDpZ/zsQ
+	+oQckeunEtPU1zMHg==
+X-Received: by 2002:a05:701b:4502:10b0:143:50a0:56d6 with SMTP id a92af1059eb24-16a5faa6991mr6411962c88.7.1791649283242;
+        Sat, 10 Oct 2026 09:21:23 -0700 (PDT)
 Received: from acer-nitro-anv15-41.. ([115.96.176.39])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a3f6186fsm15778622c88.14.2026.10.10.09.21.02
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a3f6186fsm15778622c88.14.2026.10.10.09.21.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 09:21:11 -0700 (PDT)
+        Sat, 10 Oct 2026 09:21:22 -0700 (PDT)
 From: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
 To: Davidlohr Bueso <dave@stgolabs.net>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -119,22 +119,22 @@ Cc: Ira Weiny <iweiny@kernel.org>,
 	Kiryl Shutsemau <kas@kernel.org>,
 	Harry Yoo <harry@kernel.org>,
 	Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-Subject: [RFC PATCH 1/5] cxl/mbox: Add Get Poison List snapshot support
-Date: Sat, 10 Oct 2026 21:50:09 +0530
-Message-ID: <20261010162017.62506-2-shaikhkamal2012@gmail.com>
+Subject: [RFC PATCH 2/5] cxl/region: Factor decoder poison-list retrieval
+Date: Sat, 10 Oct 2026 21:50:10 +0530
+Message-ID: <20261010162017.62506-3-shaikhkamal2012@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
 References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 440911C0005
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 94165160006
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 3ubtgrfcb1e4m9jiz7oyeror9m3t6qif
-X-HE-Tag: 1791649273-62153
-X-HE-Meta: U2FsdGVkX19nPdTHoOUqDB0MPntujF4N+JNMpQ4LTXAHMGrulmNX8eriqZmZl8c0x0+xt1e3Bppu1/f1MDQb6QrsRyBWs0v7safsqDCBAr9dlu3N5FwnNEMwPOOtPYtyolJLG3+VHJ7jFw8aqgBRjFDwnoa9aOtdPoEIL3bn8IOvXJ2B5G/S5JGkvyYjKf0+UtWkxN8zbJsnrM44NvBm78uy0E6iXmblx1QoqAK+mor6zdHRrWfhTz37K2PjVkA1FYJPcrdtGPy/oAF3QX0iJVv4Jmf/4lxUxVf4+cfjvKAOMdT+0ev6doi9HJUCm0cQ+RsTWOGunQCzww/oeQfPWKMzjPB4UH+CdHqOhCM2NDUWu53d4zMoFVM2eONtLNGxINWiFERXpgPXZCkOxazobD3qDDh0JY82epUqtUbRiqvPeYf9GB3nW9lmsyA7D7NxNe6SwhSPxT3Oe19/MH2b6zZfSqXR+KG6h5ZXENnnGMFJYjFoYuxFHE1p2X70JMMmCSOjHCV2F0TbYqGJKBrx8HcJhU6nKn7EtC/mo/Qxw1p2Wu4JSuf1233yoZvhCfoM5WDEmDSHwSnOnMs4D+fJvZwiTpRbfZojgCDlzVjLFuxR8szgC42I//SLtYVXbbmXaRpZzBYc4hTCsrwBkqybop8swM8QxX9RwXPIR8OWKFuPOm17bZFB8+2FOW6PX8PKOOY7jUVhyZy9z/tPzZHBv33cXFcc6moccVzQQRlZqCgJEaTNZDwnZ3cEF0qfShUWIskfc1NTCCwHq6dzRvjIh/G1O5uQz6mHchYf/dCp4H0bq6z1Qo6jqNu+zfNkfNBzcGGRBrNga7Px7AXsslTtzcRTYxAogfDRXEsOccTgECmXkRUMbj7q1cU8sX/nP2TllzobP2J4OxkOOVLAy1PiQlJfcJbB4787UV+lxbZwjZXTGWvQlPnZ1iv9K0e5eA3oY2q6rc1uxqy0OHMDF/m
- AVm0NYBt
- StGxYfqAHMZ8Iw+k9t9cCnr6bxCmASKqu4CNpP7cGe5iBjDb9iSknipIQH8e3Y4mfRVj3ACczoA+4whHeYDtDYlC6IDsB16+SZAXEopige2oW523W3AVscvmZx7JgYLqCI8A6tJYnftnWpRD5rSXC2iwaxVVNNYKqe2pavplwCXqyn60yONiU1vLChv2wEHZ7UcW7HciF2r4VBBPs4PmSs22HsncHm4TtqtS1ZoTuHsxYaXNxmsQCHQpGEoavS+KIPeZeNoZZ2bqL1NuVT7dWU+A8bnH1/+UXPNKb1bjslpQbRfQvpAaD3m/wSZ/dDlJ3iRNQKGIYyveRJr0mv6Zk6gHQyfkf3POWYWzMZuJcSqQqlPANA7y6fR45sNh0N3uGMDdi6jsZObGY1OF8fkWP6lv305oiOwxI4bX4tmmoZoMaKT8Mou2YhMq5N/fnUzemg6j/cQWnONm7vhAW8tHW6jNP1ARUxLzpRSsolrpRppw2wAI=
+X-Stat-Signature: 819fxmz31x83hg9mtt19k15gtuftkh95
+X-HE-Tag: 1791649284-792193
+X-HE-Meta: U2FsdGVkX180wuE51Eqc5DgfLUTZuiOCTN2Kd4ZWS3FhDbfIVnqALxz3VM4T7pHgu6EjKmN9LrcSQhb3I1iQj9PlZMi2QH9uqnGhfJNB36nEGodwHIuMEy5aHP1Ef06t9XLWnlx0jOb0egKpQkcPWaAVQTeME8ySivZGrp2Id/6OCf7lGty5hJuXNCURdADzqqRC1KzYMRyTXUr+fushZsQLGzz1xS/bX67KqRZvRBjggs3dfRk/6whjKnXZ9z0dC8nt3JkVcRnIA7EeF3uY/KkZS0FhLXV5bZ+GrwD6D53YaLUqLrYsrzIFpFMH0pyYnEzkT4hWEyyBjRYhbApY65MNo9vxAJWY21401IXdnHsvncFCID6rziIHgfgtynMcMWoMNX1cB8whOava83VLFIscWK0+AYBFESi/cemv+LHbTANPlD9995UxpC1W8LJOdAXxYDZLfzyoyoiCF5ZxTRLKWGt0min/CqSdtUcWQO7K10Jlc6bL9BX5RjO/fQiJvdx/MYTXr4vN7HWwqGlxoYNS+uV/i3DhihNnO5ozALHCWNmPPd/57p1E6NTlnQMJu0evcw8GI6M5R1BjnSNpn2JQPLQWhvCO1OQB4NjLNqhwpKgeLxWvJHqTjHGfzEfoeI+hEmv62syv3j03k+7qU8XB06JEuYitbEPpQF3utlSsZfaMTcGO8Qm1N41LnU1TUbJ1HeHFhRjhn5QKSBw70nSUo0izCjYODFcqFSV0Ymoz6klvoq8kBSqclgEXkVboEuuLBcSUGgLuObu+AETnhwLx8t5AblbkqHuaQ4BUYFLdAb4qiTZ5S3qICC5bqgMjLlnIq3J+6eSO8k06R6/kVufSm9R9x7LO3suZ032byPpa/Mw8AXozTmwLkRrQS+ToJ9fgEWlmNGIqDO9Q68rMfFXw+CPKTCd7oglhcMoC4+z2PW2FAsVmMqwBbMrYMp005VozwHXTwQFDvBJUErn
+ caBb0P3M
+ 49pee4dK0XKgesmrJBF4rIPMiypb0tcJeZ0pQxo7TdbrbQ1v8eB5OOt1IHc+F4fk5QRDjEAegsgdtZZgMUrKg76OxjnrMDDYU4YdwoCFxDFpXw+A67eWun/7s5sUJlUtg97VvyY4BKRA69jRYjDIhE06JSZxujMo+1WUyeLB3ZduI1pz+A3vJO+rnq6L3AHS+o/1S23TSUXsIk/f5kruBp6EcjFeFqT82+Gk6V0egVvX7ue9cVZ6zgCx4nVt94z++xqi6si6HdfyoVKfAGwjkp8YpAHHmSNA4nZq53vLMXP2gz6/SP0+vhNuKF5hD2el9mR7/7Y1dIZhvpaJglY443TLxDuLU9GDlCG4rz4qKINWn+9BM7x196A5nrByMfUAPBo9VFG78e7I9X2nhVdjVnWb6nG5KTKHeJfSN2ut84ewdcL+avRRDmM3kD4YdKt9D+X/yDM7pKRIzr2dVVcqEO2K0zHdy6Le/07tgjBOsNtBYR2Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,242 +142,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-cxl_mem_get_poison() uses a device-owned output buffer for each Get
-Poison List response. It traces the records before issuing the next
-command, which overwrites that buffer when the device sets the More
-Media Error Records flag. A caller therefore cannot inspect the complete
-set of collected records after the function returns.
+poison_by_decoder() performs two different operations: it queries an
+unmapped DPA gap preceding an endpoint decoder, then queries the DPA
+resource assigned to that decoder and its region.
 
-Add a caller-owned snapshot and copy each validated mailbox response
-into it. Preserve device overflow and scan-in-progress status, and
-indicate when the host stops collection before retrieving all available
-records.
-
-Keep cxl_mem_get_poison() as the existing trace-only wrapper so its
-current callers, including trigger_poison_list, retain their behavior.
+Factor the second operation into cxl_get_poison_by_decoder(). Give the
+helper an optional snapshot so a later region-probe caller can retain
+records from exactly one mapped decoder. Keep the existing endpoint
+walk, skipped-DPA queries, partition-tail queries, -EFAULT handling, and
+trace behavior unchanged.
 
 Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
 ---
- drivers/cxl/core/mbox.c | 137 ++++++++++++++++++++++++++++++++++++++--
- drivers/cxl/cxlmem.h    |  25 ++++++++
- 2 files changed, 156 insertions(+), 6 deletions(-)
+ drivers/cxl/core/region.c | 41 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 36 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-index 55828a836c01..2752b46ffee2 100644
---- a/drivers/cxl/core/mbox.c
-+++ b/drivers/cxl/core/mbox.c
-@@ -1376,14 +1376,91 @@ int cxl_set_timestamp(struct cxl_memdev_state *mds)
- }
- EXPORT_SYMBOL_NS_GPL(cxl_set_timestamp, "CXL");
- 
--int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
--		       struct cxl_region *cxlr)
-+int cxl_poison_snapshot_init(struct cxl_memdev *cxlmd,
-+			     struct cxl_poison_snapshot *snapshot)
-+{
-+	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
-+	u32 capacity = mds->poison.max_errors;
-+
-+	if (!snapshot)
-+		return -EINVAL;
-+	memset(snapshot, 0, sizeof(*snapshot));
-+
-+	if (!test_bit(CXL_POISON_ENABLED_LIST, mds->poison.enabled_cmds))
-+		return -EOPNOTSUPP;
-+
-+	if (!capacity)
-+		return -EPROTO;
-+
-+	snapshot->records = kvmalloc_array(mds->poison.max_errors,
-+					   sizeof(*snapshot->records),
-+					   GFP_KERNEL);
-+	if (!snapshot->records)
-+		return -ENOMEM;
-+
-+	snapshot->capacity = capacity;
-+
-+	return 0;
-+}
-+
-+void cxl_poison_snapshot_destroy(struct cxl_poison_snapshot *snapshot)
-+{
-+	if (!snapshot)
-+		return;
-+
-+	kvfree(snapshot->records);
-+	memset(snapshot, 0, sizeof(*snapshot));
-+}
-+
-+static int cxl_poison_snapshot_append(struct cxl_poison_snapshot *snapshot,
-+				      struct cxl_poison_record *records,
-+				      u32 count)
-+{
-+	u32 available;
-+
-+	/*
-+	 * Existing cxl_mem_get_poison() callers request tracing only and
-+	 * pass no snapshot.
-+	 */
-+
-+	if (!snapshot)
-+		return 0;
-+
-+	if (!snapshot->records)
-+		return -EINVAL;
-+
-+	if (snapshot->nr_records > snapshot->capacity)
-+		return -EOVERFLOW;
-+
-+	if (!count)
-+		return 0;
-+
-+	if (!records)
-+		return -EINVAL;
-+
-+	available = snapshot->capacity - snapshot->nr_records;
-+	if (count > available) {
-+		snapshot->truncated = true;
-+		return -ENOSPC;
-+	}
-+
-+	memcpy(&snapshot->records[snapshot->nr_records], records,
-+	       count * sizeof(*records));
-+	snapshot->nr_records += count;
-+
-+	return 0;
-+}
-+
-+static int cxl_mem_get_poison_common(struct cxl_memdev *cxlmd, u64 offset,
-+				     u64 len, struct cxl_region *cxlr,
-+				     struct cxl_poison_snapshot *snapshot)
- {
- 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
- 	struct cxl_mailbox *cxl_mbox = &cxlmd->cxlds->cxl_mbox;
- 	struct cxl_mbox_poison_out *po;
- 	struct cxl_mbox_poison_in pi;
--	int nr_records = 0;
-+	u32 nr_records = 0;
-+	u32 count;
- 	int rc;
- 
- 	ACQUIRE(mutex_intr, lock)(&mds->poison.mutex);
-@@ -1408,29 +1485,77 @@ int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
- 		if (rc)
- 			break;
- 
--		if (!le16_to_cpu(po->count)) {
-+		count = le16_to_cpu(po->count);
-+		if (!count) {
- 			dev_dbg(&cxlmd->dev, "Poison empty payload!\n");
-+
-+			if (po->flags & CXL_POISON_FLAG_MORE) {
-+				if (snapshot)
-+					snapshot->truncated = true;
-+				rc = -EPROTO;
-+			}
-+
-+			break;
-+		}
-+
-+		if (struct_size(po, record, count) > mbox_cmd.size_out) {
-+			dev_err(&cxlmd->dev,
-+				"invalid poison record count: %u\n", count);
-+			rc = -EPROTO;
- 			break;
- 		}
- 
--		for (int i = 0; i < le16_to_cpu(po->count); i++)
-+		for (u32 i = 0; i < count; i++)
- 			trace_cxl_poison(cxlmd, cxlr, &po->record[i],
- 					 po->flags, po->overflow_ts,
- 					 CXL_POISON_TRACE_LIST);
- 
-+		if (snapshot && (po->flags & CXL_POISON_FLAG_OVERFLOW)) {
-+			snapshot->device_flags |= CXL_POISON_FLAG_OVERFLOW;
-+			snapshot->overflow_ts = le64_to_cpu(po->overflow_ts);
-+		}
-+
-+		if (snapshot && (po->flags & CXL_POISON_FLAG_SCANNING))
-+			snapshot->device_flags |= CXL_POISON_FLAG_SCANNING;
-+
-+		rc = cxl_poison_snapshot_append(snapshot, po->record, count);
-+		if (rc)
-+			break;
-+
- 		/* Protect against an uncleared _FLAG_MORE */
--		nr_records = nr_records + le16_to_cpu(po->count);
-+		nr_records += count;
- 		if (nr_records >= mds->poison.max_errors) {
- 			dev_dbg(&cxlmd->dev, "Max Error Records reached: %d\n",
- 				nr_records);
-+			if (snapshot && (po->flags & CXL_POISON_FLAG_MORE))
-+				snapshot->truncated = true;
-+
- 			break;
- 		}
- 	} while (po->flags & CXL_POISON_FLAG_MORE);
- 
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index 75b8092e6dc2..c72524923b38 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -2940,6 +2940,40 @@ static int cxl_get_poison_unmapped(struct cxl_memdev *cxlmd,
  	return rc;
  }
-+
-+int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
-+		       struct cxl_region *cxlr)
-+{
-+	return cxl_mem_get_poison_common(cxlmd, offset, len, cxlr, NULL);
-+}
- EXPORT_SYMBOL_NS_GPL(cxl_mem_get_poison, "CXL");
  
-+int cxl_mem_get_poison_snapshot(struct cxl_memdev *cxlmd, u64 offset, u64 len,
-+				struct cxl_region *cxlr,
-+				struct cxl_poison_snapshot *snapshot)
-+{
-+	if (!snapshot || !snapshot->records || !snapshot->capacity)
-+		return -EINVAL;
-+
-+	if (snapshot->nr_records > snapshot->capacity)
-+		return -EOVERFLOW;
-+
-+	return cxl_mem_get_poison_common(cxlmd, offset, len, cxlr, snapshot);
-+}
- static void free_poison_buf(void *buf)
- {
- 	kvfree(buf);
-diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-index c401e3a1af06..1d6f8d958bd2 100644
---- a/drivers/cxl/cxlmem.h
-+++ b/drivers/cxl/cxlmem.h
-@@ -812,6 +812,31 @@ int cxl_set_timestamp(struct cxl_memdev_state *mds);
- int cxl_poison_state_init(struct cxl_memdev_state *mds);
- int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
- 		       struct cxl_region *cxlr);
-+
-+/**
-+ * struct cxl_poison_snapshot - Aggregate Get Poison List result
-+ * @records: Copied Media Error Records from all mailbox responses
-+ * @nr_records: Number of valid records stored in @records
-+ * @capacity: Maximum number of records that @records can hold
-+ * @overflow_ts: Timestamp associated with a reported device overflow
-+ * @device_flags: Persistent device status observed during collection
-+ * @truncated: Host stopped before collecting all available records
-+ */
-+struct cxl_poison_snapshot {
-+	struct cxl_poison_record *records;
-+	u32 nr_records;
-+	u32 capacity;
-+	u64 overflow_ts;
-+	u8 device_flags;
-+	bool truncated;
++enum cxl_poison_query_policy {
++	CXL_POISON_QUERY_DIAGNOSTIC,
++	CXL_POISON_QUERY_PREONLINE,
 +};
 +
-+int cxl_poison_snapshot_init(struct cxl_memdev *cxlmd,
-+			     struct cxl_poison_snapshot *snapshot);
-+void cxl_poison_snapshot_destroy(struct cxl_poison_snapshot *snapshot);
-+int cxl_mem_get_poison_snapshot(struct cxl_memdev *cxlmd, u64 offset, u64 len,
-+				struct cxl_region *cxlr,
-+				struct cxl_poison_snapshot *snapshot);
- int cxl_trigger_poison_list(struct cxl_memdev *cxlmd);
- int cxl_inject_poison(struct cxl_memdev *cxlmd, u64 dpa);
- int cxl_clear_poison(struct cxl_memdev *cxlmd, u64 dpa);
++static int cxl_get_poison_by_decoder(struct cxl_endpoint_decoder *cxled,
++				     struct cxl_poison_snapshot *snapshot,
++				     enum cxl_poison_query_policy policy)
++{
++	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
++	struct cxl_dev_state *cxlds = cxlmd->cxlds;
++	enum cxl_partition_mode mode;
++	u64 offset, length;
++	int rc;
++
++	if (!cxled->dpa_res)
++		return 0;
++
++	mode = cxlds->part[cxled->part].mode;
++	offset = cxled->dpa_res->start;
++	length = resource_size(cxled->dpa_res);
++	if (snapshot)
++		rc = cxl_mem_get_poison_snapshot(cxlmd, offset, length,
++						 cxled->cxld.region, snapshot);
++	else
++		rc = cxl_mem_get_poison(cxlmd, offset, length,
++					cxled->cxld.region);
++
++	if (rc == -EFAULT && mode == CXL_PARTMODE_RAM &&
++	    policy == CXL_POISON_QUERY_DIAGNOSTIC)
++		rc = 0;
++	return rc;
++}
++
+ static int poison_by_decoder(struct device *dev, void *arg)
+ {
+ 	struct cxl_poison_context *ctx = arg;
+@@ -2971,11 +3005,8 @@ static int poison_by_decoder(struct device *dev, void *arg)
+ 			return rc;
+ 	}
+ 
+-	offset = cxled->dpa_res->start;
+-	length = cxled->dpa_res->end - offset + 1;
+-	rc = cxl_mem_get_poison(cxlmd, offset, length, cxled->cxld.region);
+-	if (rc == -EFAULT && mode == CXL_PARTMODE_RAM)
+-		rc = 0;
++	rc = cxl_get_poison_by_decoder(cxled, NULL,
++				       CXL_POISON_QUERY_DIAGNOSTIC);
+ 	if (rc)
+ 		return rc;
+ 
 -- 
 2.43.0
 
