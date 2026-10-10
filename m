@@ -4,85 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42DF7CA9ECA
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 22:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F064FCA9ECA
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 22:49:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 303036B008C; Sat, 10 Oct 2026 18:41:08 -0400 (EDT)
+	id B27DA6B0088; Sat, 10 Oct 2026 18:49:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B4196B0092; Sat, 10 Oct 2026 18:41:08 -0400 (EDT)
+	id AD99D6B008A; Sat, 10 Oct 2026 18:49:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CA226B0095; Sat, 10 Oct 2026 18:41:08 -0400 (EDT)
+	id 9C9506B0095; Sat, 10 Oct 2026 18:49:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED2B46B008C
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 18:41:07 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0E02160583
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 22:41:05 +0000 (UTC)
-X-FDA: 85308188490.01.1179699
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D7F66B0088
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 18:49:27 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E2C94140527
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 22:49:26 +0000 (UTC)
+X-FDA: 85308209532.08.4ED24A4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6277220008
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 22:41:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0QT7R7+T;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3D637A0003
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 22:49:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=cCKvVcGN;
 	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791672064;
+	s=arc-20220608; t=1791672565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pgR2xZdk6X5oV3TG2BzN7g/AX5fGjkbf+4nm1DsKlzA=;
-	b=d7EJXmr/kJWGFIwoGwL2ZnS8CsRBIf/c+hNmbaTWEhUH0Incp8XsWJMQpXZVTODXBPybcK
-	xIkvx9ysEmN6o82AzO0CFtlukvAwxYXkYeloSk3TWMpDlRNSU1ko2UBlx/KoTrF+i7FOjf
-	cTd7ArNOksSKl8qwGxn/nyUEigDSq4E=
+	bh=jPS6JmRVMqShWeHdFYFwBFA3RIGj7GQ7jqcXY+ZDXOs=;
+	b=lhrCu3nu6Y6/DN9CRhci5G6eddO2CzVnSaqxcrXOWSWfYyNm0FXGBFCQTM+DpV20koeO3i
+	WHF1ylO/2fG11+wNmg+vxhurwixPYceQI78dkOSwud2Lk/tDczoBOzPbXRCPF2YRtKbhvM
+	btPx0za9++EQzVAR2PGGuANNgzyhUjM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0QT7R7+T;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=cCKvVcGN;
 	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791672064;
-	b=ThrwnAfbgm5uHLfiAV1EqIwrvOtL1z672WR7gDyIkc9yGDWRfaX3EsydXiPteM5e+VWeqQ
-	4n5c2LwIKCttRIlU5+hmqyTyWPhhEpWfTzD/yCcNoHOqHavQqSnvWVwVA4LEOcR6Lj7V/e
-	2eCG4SiY9FYjQFLbAeY905pfgdQHb+o=
+	t=1791672565;
+	b=E07JH3cJGFgiJ2tuV6rT7zhHkd9/tAwjms0x2NFpZ369WFvE7ekhfiYS0aHyQCp04xGbx5
+	VwGOHxZWMWurRNdlNI1CJT9j1mWcu3vjZsSl3Phu0olxydm977aNAy3/eZ47Y+gl8UkWan
+	HcBZU+WQzuSuOCcXFDQfloMuXRKw9Z0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EFE56600AA;
-	Sat, 10 Oct 2026 22:41:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDAA1F000FF;
-	Sat, 10 Oct 2026 22:41:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B0D1600E2;
+	Sat, 10 Oct 2026 22:49:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95A61F000FF;
+	Sat, 10 Oct 2026 22:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1791672063;
-	bh=pgR2xZdk6X5oV3TG2BzN7g/AX5fGjkbf+4nm1DsKlzA=;
+	d=linux-foundation.org; s=korg; t=1791672564;
+	bh=jPS6JmRVMqShWeHdFYFwBFA3RIGj7GQ7jqcXY+ZDXOs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=0QT7R7+TEIVPJnDuKf4am6S750uSMDkdS9X+01iyYHcdTPkGhkwexCLnDFhwYzn88
-	 5N/4vnM0693/b1SFbbQ/zgbNbXVPysZx0X+KCol4fmgxEP86nXNOjQYokCiPURTpE6
-	 brgE/fR82tEQ7zKNmtrlvCTkUeS3jRhO8J2ALjSE=
-Date: Sat, 10 Oct 2026 15:41:03 -0700
+	b=cCKvVcGNc+90nm8E9Z2ocQr0PJEM0cEkTWElHOJVfgP86fmSKvHvwMdlskZpEeeP1
+	 KFoRYy18Ef80YtLtvaVFC3LlmUEIh0wTzMMm43s9NpjOL+NTXwpt8D3PGv8KoiDATy
+	 w+caLivHqYdlKmqVfBfFhIoxu95yqs+f9h6x/t7w=
+Date: Sat, 10 Oct 2026 15:49:23 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Enze Li <lienze@kylinos.cn>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
- linux-mm@kvack.org, enze.li@gmx.com
-Subject: Re: [PATCH v2] mm/hugetlb: move hugetlb_sysfs_initialized into
- hugetlb_register_all_nodes()
-Message-Id: <20261010154103.917270fbab7b73ff28d24d9c@linux-foundation.org>
-In-Reply-To: <20261009142010.552614-1-lienze@kylinos.cn>
-References: <20261009142010.552614-1-lienze@kylinos.cn>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner
+ <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Harry Yoo
+ <harry@kernel.org>, Usama Arif <usama.arif@linux.dev>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
+ promoted order
+Message-Id: <20261010154923.998e04e42093ffe6c7c205ee@linux-foundation.org>
+In-Reply-To: <20261009125503.126202-1-kas@kernel.org>
+References: <20261009125503.126202-1-kas@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xfz8upf4kimk5s97c14de167qbfta5tp
+X-Rspamd-Queue-Id: 3D637A0003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6277220008
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791672064-945390
-X-HE-Meta: U2FsdGVkX195hlXpBPDLrueXRGaFUP/dNGzuGJuKoRyF8Jc+dWi/fRrFYNlfqTvQLRsd6ArTO2nV1dP4qgum1ZOFMJyybi96sxD+QgFrttfz+IyUW2mirSesld0M4109xWzeMAygdDVvSfUz/NShmppiOX2ckX9MPCVy0EjOs0d7y6HEEqrWB+a6dl9YldNeCnm0nF5/rxCRT5PHL81u9uVI1rZHhyMx1HtF2SCwvLaDyq0+EVpzFqFUwp7BFs8stBfqLy8p0HdlYHIE6bxftGHzd/jrSOA6Rh6g6zhVWcxamDirfExXjnBq/2rJoF99z9oZmjwZAz6SSJ6210zOlcES0Akl02K1++Q95C8Zu7Bn5FFoOsKFQkh7c7+KXbV2/llK7YVnDSGPdhkFOzpGAFymncH3EDy2iQrtn5u6m8yAyEKf57NxkqBEgpxuD5hBiQy0+BjOy3A2W8Zi6YooyyajfyKTCDaRHPbgWVgoTNWBHOK6/NKrivMXpX3AB+Yytx4F0uwJH0cSy34Ut/kMirmXLq8UE/GE08o0KJy90JlMymY6hP23PRuXYl4S6YnftFi6PBLohDKsKhIO3UdTjNOqeysPzyZy1r4PkpWSctJPxUwdBjakPE0vEsLCgukXPg91HfCMSbW2lX3fv5DrYT+jx0xomkpJlQZln+Tcsn0lWbJ4/GW8qeLYj29Wo0VbZk4s50eLtLnYABqbjIfl0mUc6TkQurGmV76yGO4YtI8kytyKz0GHz1LTtSF9szw05Ylf3C07Ruzw3LqBpr9SlcQIt+0FyML+LB9QrvYLaWS/QlP5CdMpjN1KVv2ZQFkTymPk6+iVoTVB4O4BdPBz9b7no5W+7SxC4X1N5g9to/udfZC2BeKguw5A+eqFyPnOce2RnL6VIYs61aj7Lm+Faju3VmofDCUlnYySWmtS8Ia1yk+tgzPh96zlNTLBYd+MVzJ7TM8aRgFv1nkDbtj
- Vsymd9Cw
- oVDNnTziYKYViV5FrOTUkkSlIYsl6e1YWuemMeamx9ZdQlGdQFkEn06lkYcelYj7N4lxv80EXpgajWsp3xNNo84Ug5Os4bTS6dyui6qicsQcjgo+1ssbYOC8GVeC0j18NYPN3hZ+ghoD3qwrPEQ1jtsk0m1FgkZVF9+hgqxZqHIx7Fh4HWjzuFaLIyBeuT+7J3TicztsMLHiASVdWLGi4bQbva/TcWjbnocrjYumMAWrr3gOKGR7VcxankXp1BKVA6AFtPoTK0LfDmbqXcSTFZcP7pQRIYTLw4KfFiFWlmg6+RFM=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: noeytrz3qz868qb44puaxxsczuh7mi71
+X-HE-Tag: 1791672565-908490
+X-HE-Meta: U2FsdGVkX1/wX3dX3p2NIwPgauqz0VEWgWkU7M0IwYalKVhsfn4ipAy71XrOlrxcNdlQQBluSJLR7XqdYmm/j+3yQE9bcw8KAnNMalddQeN/OESHuxPuSXBdfGaj9UGsRzdTgSzdHb0F9Pvv98TGqgHX4t59zB/jqzBrMDxeI5au89vIjm7IZ1WUOpP+eZTJuqa2jwUIPHUMe9WOTBE7XsVg1xCPT85wv/3unsbkjJGKSOrgOxwubCyl707D2TXpi2FGFUyrsbFCyVadLf7x1Y/TL/E62uigHlfn15ptsJq1V/Rc0dHnmaTBmYl4kqIIyodd5R0bvvKVsXh+YPjzB85D/NrLl7BVmvr8JE1fTeya10ngi6UkLQfS7zTRU+aCo5ybeD8pqJ4/gbNqXJ4qll/kMPpv3SEoJIjjcJNdIUkxS4oAq+8sys6YMStrqhWdwkzzoldKI4fXA7RXbYpVdSNKtlDq9SacFapQznz/j4wnqmo7T0m/JJHIToArJedVTS8Qj7NuIv9reu0TibkD1BgH8H9sS/F026EQ4HH4AdPb6voiW1nlWsTgc/WTuvOX5zgYlfvXgn3PmyJuAxwk5EGwO5qbOtKa0wxGPFzSTIqD33Ti0MNPrqQzMPdFJT8IeW8V8FEeFTlFCMOktZaAvbaJnG9vCPQJJ0EFShSLHqHU0wxx/fbiew0wfzCME/UQ4GJCa6p6snrR8p8tGLlB+f+iZ3OIFALAegWRO6h5BZUo8+YGl3SxmgAJq797KoGgh4v1LnEMiupT+KR+m58ZUTXkmf/hdI0aKAvO7cIzMYpceL60HF4CzZMCdrJUDsygWq/zKJgeDQAozktzN86t/87OFamKKltxSFTm2bownh+sp5giKdk9K+Yg5MvAuIj69RICF1RYCqiStk4yAR4Yr3ENkwoXXpePIbSrJhQFtDsQfIbLZPC4nvJFMdo2E9j6pHodRi5cPL7eog8/kJZ
+ qpwzN/9k
+ Zj89emAtJV9rH8OJBDQxQlP5jEYdnSghQxwGy0cZxh9OlgBUwEfk6xO3skKzBLM9Nq0fXFWYrnvXMA2AWWMPRlhfDUfjoQtlfXgPZHQ/PBxu+gifhAfGnvqogmfBpMrh+DdqmdUcvgq4UrhLoV21cfOyavI9MdX4RCBua5ZzWqpHTFJY3mWfV/lqga6vmP0wlxCOKeDoLYyrwoZyOR/FzILRDcwzYZHAzENcb1Xk0XLi4UhmEZBuTnh07jtIHIDZia3Ta84iiaxDUl7Wmo1pStoMi3xC8p22zxyALuximOzlrJ9DUbiOJSPLnycWVp6Og92tyvQqYVVPvQ5NmNydV/Y1OrW1yK087VJgSpiNQHnDTDY9b1q79EoLPBjpOR5LEYbQP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,25 +95,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  9 Oct 2026 22:20:10 +0800 Enze Li <lienze@kylinos.cn> wrote:
+On Fri,  9 Oct 2026 13:55:02 +0100 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
 
-> hugetlb_sysfs_init() guards the "hugetlb_sysfs_initialized = true"
-> assignment with an #ifdef CONFIG_NUMA block, while the following
-> hugetlb_register_all_nodes() call is left unguarded and relies on the empty
-> !CONFIG_NUMA stub.
+> Since commit 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim
+> storm in defrag_mode"), direct reclaim and compaction for non-movable
+> requests under defrag_mode run at pageblock_order, to produce the whole
+> blocks that ALLOC_NOFRAGMENT needs. The retry decisions that follow
+> still use the request order. An order-0 request can therefore retry
+> indefinitely without ever reaching the ALLOC_NOFRAGMENT fallback:
 > 
-> Move the assignment into the NUMA version of hugetlb_register_all_nodes(),
-> before it registers the online nodes, so the #ifdef in hugetlb_sysfs_init()
-> can go away.  Keep the !CONFIG_NUMA stub, so the call site is unconditional
-> in both configurations.
+> ...
+> 
+> When a promoted request takes the fallback, reset the retry counters,
+> so that the fallback attempt gets a full retry budget before the OOM
+> killer is considered. A request whose reclaim was not promoted spent
+> its budget on the request itself and keeps its counters, as Usama Arif
+> pointed out.
 
-Thanks.
+Thanks, I updated mm-unstable to this version.
 
-What's missing here is "why".  What effect does this have.
+> v3:
+>  - reset the retry counters at the fallback only for requests whose
+>    reclaim was promoted; a movable request already spent its budget on
+>    itself (Usama Arif)
 
-$LLM tells me
+hannes's concerns/questions at
+https://lore.kernel.org/20261006081050.GA234057@cmpxchg.org weren't
+fully addressed?  I'll add a note and await followup.
 
-	No functional change; its an #ifdef cleanup.
+Here's how v3 altered mm.git:
 
-which I shall add to the changelog.
+ mm/page_alloc.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+--- a/mm/page_alloc.c~mm-page_alloc-make-defrag_mode-retries-follow-the-promoted-order-v3
++++ a/mm/page_alloc.c
+@@ -5030,14 +5030,17 @@ retry:
+ 		goto retry;
+ 
+ 	/*
+-	 * Reclaim/compaction failed to prevent the fallback. The retry
+-	 * budget was spent on making blocks, not on the request itself;
+-	 * give the fallback a fresh one before considering OOM.
++	 * Reclaim/compaction failed to prevent the fallback. A promoted
++	 * request spent its retry budget on making blocks, not on the
++	 * request itself; give its fallback a fresh one before
++	 * considering OOM.
+ 	 */
+ 	if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT)) {
+ 		alloc_flags &= ~ALLOC_NOFRAGMENT;
+-		no_progress_loops = 0;
+-		compaction_retries = 0;
++		if (reclaim_order != order) {
++			no_progress_loops = 0;
++			compaction_retries = 0;
++		}
+ 		goto retry;
+ 	}
+ 
+_
+
 
