@@ -4,83 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAF72CA9EBE
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 14:11:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BDA4CA6017
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 14:26:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C5016B0088; Sat, 10 Oct 2026 10:11:25 -0400 (EDT)
+	id 164196B0088; Sat, 10 Oct 2026 10:26:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 675DB6B008A; Sat, 10 Oct 2026 10:11:25 -0400 (EDT)
+	id 0EE286B008A; Sat, 10 Oct 2026 10:26:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58B4F6B008C; Sat, 10 Oct 2026 10:11:25 -0400 (EDT)
+	id EF6976B008C; Sat, 10 Oct 2026 10:26:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 35CC56B0088
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 10:11:25 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B705EA0775
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 14:11:24 +0000 (UTC)
-X-FDA: 85306904088.11.105AB80
-Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8B0D918000E
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 14:11:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=TCKkzR2e;
-	spf=pass (imf06.hostedemail.com: domain of liuxiang.277@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=liuxiang.277@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791641483;
-	b=0c/C/k7nIVecMl1SrRGQrKf6CEjoq8Z2c/saBsOBtY3BtvG7s3yxF5AKgF8y9JaVJY8SE/
-	DGmgxvhr9etfrAM4RpEeh5+rw4eH+9tltbMcF7/GC+VpdlJY7V1mGD3VO9AAlLeUUTG38d
-	kbm/BGqyOJa2cAgZ3z8+RXvBLHpBkH0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=TCKkzR2e;
-	spf=pass (imf06.hostedemail.com: domain of liuxiang.277@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=liuxiang.277@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C97A46B0088
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 10:26:38 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4CF0D1A08E0
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 14:26:38 +0000 (UTC)
+X-FDA: 85306942476.14.8DC32D9
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 68EC8140003
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 14:26:36 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=pIXuXE5N;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791641483;
+	s=arc-20220608; t=1791642396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=gAw1yoBwYrHHnkQw1kW2SvtZr9cN7fK/HvMTNhkkolI=;
-	b=d/Aqzg1NNIQzbOnrwov/jNUQOdl3tIagE3/PP6gLeJai+iRcqtcEzTBhepsrHJSKEA1lSq
-	JwCBggi/WxwXY9Ej5inNNUcLy6y9VyTMizxx9QkDoFZViOvHXgvsoycULTZRuZXpIfeW+B
-	JCwmM+KDle68imh4yqnCEp6wJLPMIY0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1791641474; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=gAw1yoBwYrHHnkQw1kW2SvtZr9cN7fK/HvMTNhkkolI=;
- b=TCKkzR2ec0XhBi0BNCn922OyderqdsJwXK7+IhdtG1imTXwtfNbHAJX7XIonnSE54sQUP9
- F2fKYhl6+Xmu2NEde2KiNGAzqKKxLU6xxrWwaC+XP3Wy87fFXdMZoSZd7SHgbCMTciSIA2
- XZAxrE4wqNJZin3EQsLvftDx7bU5vwrG6wzaHm4XNmF/royW8EfJbDhUORZWVI1ryHwAjB
- azCC37lWhXHb/X6b1CsdWfsQpFZDqYmcw08KdN+3m5cA0l8T72bj7z5KUlaw/FqesJ53DZ
- LGqIUsvO4BuhwtvMgWXbWIh1/oW4MqnnFr6FNnmsNAq7LivZamhAqsKOMOiK7Q==
-X-Mailer: git-send-email 2.20.1
-Content-Transfer-Encoding: 7bit
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, 
-	<kasong@tencent.com>, <mhocko@kernel.org>, <hannes@cmpxchg.org>, 
-	<baohua@kernel.org>, <zhangbo56@xiaomi.com>, 
-	"Xiang Liu" <liuxiang.277@bytedance.com>
-Subject: [RFC PATCH] mm: vmscan: avoid anon scanning for GFP_NOIO with low swapcache in MGLRU
-Date: Sat, 10 Oct 2026 22:10:57 +0800
-To: <akpm@linux-foundation.org>
-Mime-Version: 1.0
-X-Original-From: Xiang Liu <liuxiang.277@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-From: "Xiang Liu" <liuxiang.277@bytedance.com>
-Message-Id: <20261010141057.599595-1-liuxiang.277@bytedance.com>
-X-Lms-Return-Path: <lba+26aca4780+f8d92c+kvack.org+liuxiang.277@bytedance.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8B0D918000E
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Sud4Kk2KOGUwm2j68I0efec0mWQp36Kh5Z34rJLtTPs=;
+	b=lz39v3pla7o1xviz0pvM4V//LgBrwnynBgjgCa4Qfu5omiB85Qv8n9iHjrD2FaLRNyxw+q
+	YaToycJQScvxiSfnPIIGdoVRhCp7ZR90sGTAbsB/pXnPOR2kNZzGD8paiq77x0XquyyUCh
+	vr7Xx5/AGOgKhP7x/4E7ogvx9on2pYk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791642396;
+	b=u0551E1oKfXapYmCBEHm6ONp9ZiHaFYEWDm9paqKBAvynSsqtuKGFgml13R3fQbpfz4Gv8
+	f7mtIrT6xgJmLBgcojagmcx/k6Yt7G9CFIvsIkeJeiCsqO7YOwS9vzW+/Wx4sccLxjxlDq
+	XHTu9UCRf6gphVxzmJS4AHYWdPOSrjo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=pIXuXE5N;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5337fb43c16so7039111cf.3
+        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 07:26:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1791642395; x=1792247195; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Sud4Kk2KOGUwm2j68I0efec0mWQp36Kh5Z34rJLtTPs=;
+        b=pIXuXE5NaNheLwnrzoJ+nFIK65XJmh0fHp5hJFxchdWtUlUy6EXPhff4yp3YqTLj5r
+         GTLwbGUmpIz+Ut1kCsRCxHGG81mJNqCCcyBVUOBNT6XdzBlR+FR4RLgv1M51PmAI2wOG
+         k87xlnO3AD72MWmdbJNPzQ7bl/qEOqLMNEbGtjqYdlSIkkqW+tsUKL78LKK44K4KR53g
+         vR+HS7n9pC79Vzpa58lriiI+Dk2Ywu5ML+fzywEqEN3ZCxZVEFBPbR3PCJj0Gw7Xc+W3
+         4BLw+6vHci7yCYddxTAtdGEsorOCi3RWoImVdPhCfvN6cCw6ccY33EcKWjtzpXShN73C
+         NI5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791642395; x=1792247195;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Sud4Kk2KOGUwm2j68I0efec0mWQp36Kh5Z34rJLtTPs=;
+        b=vfwuAzgL0JVK326Ubh4q6C1AeAufGGhSCeuoCDWYBooK+F4eZgtbXIFHaawZ0sFYZf
+         5FQmxhWWwDSeCayNavknTWtuo69E96SxBWJcZqXR6N/mQlUJJ02kAUx7fF6EovaNITp3
+         F7QrPqhC79vLPXEMMTzByPnZhkBJWfCiiCpkzL2h2H9g4mKiXpWGQCZ5ITtFrVa6CI5x
+         JOCj0TpXtqGudpGHMm1ClxvCdlaSz3xWX6TOolvNb0BESe7kP3JdipxlZQrfOU17yKgi
+         Qz4sqEsG/wxWHtoZn2k0qsUrXmQvCnWfM0Z04YQlcBq4UAblV9vquDSYaCGXmTiBtODU
+         n2bw==
+X-Forwarded-Encrypted: i=1; AKwUvBwqJ/qnUttRCJwAobntT26lsDxOxnYLgfeVrmPOZ1R4mAfoeDoTWP2xDbqh/op4FxwnNQiU1/Sz7Q==@kvack.org
+X-Gm-Message-State: AFq9FYL/6WHbOI965ZuzDml9NvWJyuvocbNwIx+SvfNS4f5XulNkI4JL
+	JKBoafN5u89pVXhJEJA+hokdgfrcfgmerlYXSYIUHcwBt5LnmE8OWceqIaTdBq0twOs=
+X-Gm-Gg: AYBFou0gU3gC/LUpaRUrZ8quyqKjgjRdVPE4sysMEoOIxdDKlSbpiVtfHcs7lhRuu39
+	TtPD5DHQ/btscYL3ePLRWaPjlXEen0FeDupi/u68HfeyTrJBQVSi/9uXK82CKe7M7Eyj20G8FKE
+	VxKjAFaXqjhP27L0t+a2zSsAZoaLKAHRuHbUmE/FfNqz9KwEcv3Tq2zlJy2/JyR0v8TZYSRrTR5
+	uZOwt24GqzbdVrPOFnodh96nwjttD8NqBnpafRPBRo+XD4npMBIkozoGiL2TSnbwpPmdA9avilH
+	XeTOPqmUcfxlhnq7KN+1FZcTXZZY5Xx69QTcSof3g/Fkv0agc1rEG9vvjRbJ75C93XPlYyVOyxX
+	AFiixiydjx9w5AH8C8cNLmzS9C9xuk8toJbwHg3jD+FWtvkbI0/YB5uR2RzkfcRVYI7oZf6O5SB
+	sZqwhRnZcf6bA+cPZ3e51ZX6m2g6Q6mzz3Az+h0x1hTsgdFfcZO8tvGtKDaQ6EzQPY8WdYTlk1L
+	biyiGP5XLBz+7Zq24fDDdyzHVARzBmRi21emEbvtxthmn6wvcDVGDM=
+X-Received: by 2002:a05:622a:4d93:b0:534:b7d1:cd1c with SMTP id d75a77b69052e-5359f498f75mr87118251cf.8.1791642395448;
+        Sat, 10 Oct 2026 07:26:35 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5359b79a186sm41486481cf.20.2026.10.10.07.26.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Oct 2026 07:26:35 -0700 (PDT)
+Date: Sat, 10 Oct 2026 10:26:33 -0400
+From: Gregory Price <gourry@gourry.net>
+To: albin_yang@163.com
+Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, 
+	david@kernel.org, vbabka@kernel.org, jannh@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, albinwyang@tencent.com
+Subject: Re: [PATCH] mm/madvise: add cond_resched() in THP branch of
+ madvise_cold_or_pageout_pte_range()
+Message-ID: <aspKmWIrOzNjiP-t@gourry-fedora-PF4VCD3F>
+References: <20261010024042.4070048-1-albin_yang@163.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261010024042.4070048-1-albin_yang@163.com>
+X-Rspamd-Queue-Id: 68EC8140003
 X-Rspam-User: 
-X-Stat-Signature: j1t5mg1mp1uuo8jotccufg4xgrj43cwy
-X-HE-Tag: 1791641480-608487
-X-HE-Meta: U2FsdGVkX1/0Gi304yAbPfajIGeUtE1IqtkMJDK8z6wFQDQn0yGouX/+ebNpBne23FVwLHiuUZ2D+/jwwobVMjK1e7DnIA3C7TxLPLObN5/m0MxJR8GGlbKmxM0tJ/kN6y3I2thpUwIlCZPH83AcEToAVpUkJqbP0sgOWstBGzm6BnP5E38watzATQqT2SKtA4iD7ZgYz/UIxO29JEP1qgzGolIRexG7CS+yIBmv+eBSswcsMrTQ9IJhdRZPtw1d84r5A2HiuLBX5ig2wWVarnhIhVSjvikEf4r6FZnsukPsnPyJ9XLVHf31SD11Ax5vZsMSCQVzTCHKWhH2lxKUemATUy195Q0ebLV75BC/Fh5lPxvp6Gr/buPBj7N1n1PUXdzVj35pHy9paEDtm/jixy7PNr6J/QS5BBGbwAUv15bQ1m6UcyIg8j4MJSA+HpejKws1z7Z0Cg67CUE9mFgBwV7j0DYKbk8KT/9a8ehhKrPrTork5ilk0x7kGDX3Y2dz+wzRvlgc+sqUZ9vVf/eA1/tWtQdipSfgJdAUJucYrZ5d6y4MUdksvVcrQfrhlGY4ngBfplYf9Q8NI/FssCnlDTooDQmpomEvioJu4bjbs7GwhpYUJml07hrjcQzqoxE2k4/XiJ4a6LVHdk2QO67XCajQnW8tFzzJgZGcCwBbzEAZV+APSK5wOXHG4akmSPdSQxaYZKHbkBwwnnzGrJI3oZwI322y6OPfvUaLOb2Ogp8S7gDpr3Z5Tphn0XbgVT/RQGeNqqNEvNWyXTKAGSuWCsjO0ir8dBdevDPkQtc/M58SdBsYMBXzb4gn9aLW+WhBs/uU+/HWJkxq36nZPF/em5SAOMnv3CGyWy+uA/FMF32N84K4Lap3cYAXCsOIr2uG12gahuxfnvo3c+n9IljgwnAAYVlezwhVbzYOufj2LzVXo/y0hbUGsj1t8YZjTSnM9wK+/ZDu+zGK5R/vSdL
- SEMsWsWu
- 2NAqHcPlQUNGbSp2DsOmfezABGfZwKmUuByGrQO+xjk54XSOFfhqPlbhnB/KlUhv9bpKDhfF6mQmmBPY9fvxLpkl3acBFdg0NHFPPGez2exEd9IjKe1FJnKID1D7Jz1NFLTBcmbzhS18ql67uXaDBj2U70Ja/vYo7xHNe9sM0bLzrpEEg1QChMwW3itYxN/wX7HwGqWpFSSpfGCNukbUjmW3cMzhpB4Lz6Oxn2yFpPMeVNoe+0jaHgrL//eq8poKdy5N3u2kyfZB+8xwKr79D5njFd/aIpddlHMMePFKBCrxVbl4duOOIH2VEV8ZhjcIEj3ESr/TJlkUGyKKYyBUFmySgx4+uaKIvTXcJCGRWn7h0BMem33j3mfjsC33k+9h+XIaYWGbBXzJRi1saLggc2OVJFmt17LvpWO428ZNmmrEt+D4=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: d9u4zedo6u645ernxet55ahqs8s6m1cz
+X-HE-Tag: 1791642396-548188
+X-HE-Meta: U2FsdGVkX1+d7XD82vZpf2JbiKL39UAS1I5Rz5Wk+k203e0dy2h19R/G4vZ0TYaBXOFP3cVdCh7Nsw7EEVXFlMv/+lsHcXZB9Ylixze6vfsZ/7XcOdcB32b/lcT2ACUxJgrvzAR7H7RbNeNYhUqDPgF29cHA4YhtBncHrXK7JzeYYozz3oqApIrMqraLR5g3AmNtPgXuqUOArYMb4gKONquYSObEbd2C7qJ+noRW22/SGZ2HbiTjAFYR6OCdM2G8adCZKq5q1G/mIl7IcHMh3WmXbHyXzVgansvYms1vShFNt1enyeirVqDDMexrpifbMpQS0NVTYFxKeiJCWxAafMzpMPi26za/s0vzhPCgnAK6OtUGxenGEe2iyecAGHKaj67JrIva+nBrb2HLP9g1qCZM2noRXM34Sl8kT5iOCWosjzCCLdC2IZx24whN2BJPoXNxz2Jaji9Exg3P+3iP1JUOyRVNG4aEp9wOH43cu8ZOjTbfnjhbztLUhXn7RZ086d4YysnlSz5WIQ4XKJtLUHy4ccscLUc9Oug/0gzg6CdmU2ycmQkg+u1c+xp7VupmKf9IhiENDjZOINKKzV3qSUqygiPgpWFQCl7wQ7IGqkMMb4rhY92KLqZhdgWYT3amiYhBxO0ussTi7eZ23ICGLj/uGtWRzL/pWaou2O1JXaw6w3Iv9suYKnlwBgSRm16tb/e5v4cIZa9IdaJUfqeJdFjdxohR6tsPG8KrfaoNd2npjVDshix/IIdTQE6BqAQKXE4Fbjd0mHrkE2fhP/PzYrpthq3XjO5QvwC+sECH8ZUePeWHtwYtunZSzvrS0zhHy1tOreN7LY/+3T2YdYoRDuQJflD8qm6JfP0xtHfJjMlrv3bAtfiE8pkHZjRiOKk8lEjFqQOLyzsd5/SzX2Tlxf6+zOMFWS0cicnC0Hceb1976tFbvytZRPSBClO5PUWxkXKsq1SXXs/3U/QhWTF
+ 7dLq+7KG
+ QpGzmxi2eZcxi5JrJ6YDMusUebTBXLw4Rui6uVxBD6Te123G1Gt/UP3HayEv2FhNLJAbSZzCK5Kr28zGfzPNAqf9rdrpGX+gOz+0cVbLDbrQPPd654NCk8y7GZH4nh4UD4ErkPb4WuFZULCHP7ThTIzAcQ+AVG763DEeKT8eYdwRQfsXQwnKdBCf1oFDmZkngZsF3XkQiCVzqFtMoTOxZ2p/hA1cLmeAwfHSwccwa5Td9ZNVw8Woagz4MiaKHou2QvgPm7hNN/tksl8n3FQT4lqHy5rNZPD8/iKlanAheIIZopUaJao3+V4nQqIlQLdiPEnjdGxF6NkkAAZXcnulGXxI5c4246aJgJEUUW2CEq2HOZYPCT8CAYf+Hl1IOWxQ/hj++2scgcEph2idIwfNIcLoab55DwTE1gdzcwT5f7bhs8YrSQrLX8gqIQEKhynf3sXApKNTIf12xM261OiPHqpqoOS9BxBlQ8F73jyx+JDanx/XqHEu8UmEKSwblzpxzc4fl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,150 +121,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Bo Zhang's GFP_NOIO patch [1] addressed anonymous scanning with low
-swapcache in the traditional LRU and left MGLRU as a TODO. This patch
-addresses that remaining case.
+On Sat, Oct 10, 2026 at 10:40:42AM +0800, albin_yang@163.com wrote:
+> From: Wei Yang <albinwyang@tencent.com>
+> 
+> Crash log:
+>   watchdog: BUG: soft lockup - CPU#63 stuck for 23s! [stress-ng-vm:1665914]
+>   ...
+>   Call trace:
+>   pmdp_invalidate+0x48/0x68
+>   madvise_cold_or_pageout_pte_range+0x84c/0xb00
+>   walk_pmd_range.isra.0+0x1ac/0x3b0
+>   walk_pud_range+0x120/0x190
+>   walk_pgd_range+0x170/0x1b8
+>   __walk_page_range+0x184/0x198
+>   walk_page_range_vma+0x94/0x128
+>   madvise_cold+0xd8/0x198
+>   madvise_vma_behavior+0x234/0x638
+>   madvise_walk_vmas.constprop.0+0xdc/0x210
+>   madvise_do_behavior+0xa8/0x328
+>   do_madvise+0xd8/0x140
+>   __arm64_sys_madvise+0x2c/0xe0
+> 
+> Signed-off-by: Wei Yang <albinwyang@tencent.com>
+> ---
+>  mm/madvise.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index eeee82cf2b3f..0755e6d99757 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -450,6 +450,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+>  		spin_unlock(ptl);
+>  		if (pageout)
+>  			reclaim_pages(&folio_list);
+> +		cond_resched();
+>  		return 0;
+>  	}
+> 
 
-Under GFP_NOIO, anonymous folios requiring swap IO cannot be reclaimed.
-When very few anonymous folios are already in swapcache, scanning anon
-can spend substantial time isolating and processing folios with little
-reclaim progress.
+This same improvement came naturally from refactoring the entire
+function into a proper pagewalk structure:
 
-Apply the existing can_reclaim_anon_pages() check to MGLRU.
-lruvec_is_sizable() excludes unavailable anon from its size estimate.
-In try_to_shrink_lruvec(), file-only scan_swappiness is passed to
-get_nr_to_scan(), should_run_aging() and evict_folios().
+https://lore.kernel.org/linux-mm/20260922235830.2350770-10-gourry@gourry.net/
 
-The tradeoff is synchronous aging. With four anon generations and two
-file generations, advancing max_seq can require moving the oldest anon
-folios to the next generation. This patch accepts that cost to avoid
-low-yield anonymous scanning. It keeps the original swappiness in
-try_to_inc_max_seq(), avoiding additional use of the inc_min_seq()
-single-type shortcut that advances min_seq without processing the
-oldest folios and can cause cold/hot inversions.
+this function is really nasty.
 
-Tested against the mm-unstable base-commit below using dm-verity
-hash-block reads through dm-bufio, with unchanged NOIO allocation flags.
-
-Allocation time spans alloc_buffer() entry to return with valid buffer
-and data. Reclaim time is the time spent in try_to_free_pages() within
-that allocation. Eviction and aging are the time spent in evict_folios()
-and try_to_inc_max_seq() within that reclaim.
-
-1. NOIO allocations under memory pressure
-
-The workload triggered NOIO reclaim during dm-verity reads, with
-generations allowed to evolve naturally. The table reports median
-times for successful allocations that entered direct reclaim.
-
-Time (ms, median)            Baseline  Patched
-===========================  ========  =======
-Successful alloc_buffer()     181.196    0.465
-Direct reclaim                181.185    0.131
-Eviction within reclaim       179.147    0.091
-
-2. Synchronous-aging cost
-
-Prepared four anon generations and two file generations, with zero
-swapcache and pages in the oldest file generation. The tests varied
-the oldest anon population to compare baseline eviction with patched
-synchronous aging.
-
-Each row reports a successful alloc_buffer() call and its reclaim
-costs. Oldest anon is the measured population of the oldest generation.
-
-Kernel    Oldest anon  Allocation   Reclaim  Eviction    Aging
-                (MiB)        (ms)      (ms)      (ms)     (ms)
-========  ===========  ==========  ========  ========  =======
-Baseline     1755.266     131.704   131.699   127.985    1.672
-Patched      1840.422      38.316    38.311     0.307   37.785
-Baseline     4835.418     681.796   681.766   675.477    4.382
-Patched      4813.180      91.161    91.140     0.450   90.407
-Baseline     8941.582    1474.245  1474.202  1469.084    0.488
-Patched      9012.660     143.748   143.709     1.026  142.341
-Baseline    13104.676    1098.372  1098.354  1087.976    2.307
-Patched     13046.621     139.450   139.390     1.083  137.954
-Baseline    17187.043    2694.909  2694.902  2686.470    0.784
-Patched     17124.902     209.240   209.233     0.638  208.270
-
-Across these tested sizes, synchronous aging was substantially cheaper
-than baseline eviction, and successful allocation time decreased.
-
-[1]
-https://patchew.org/linux/20260908062649.1045883-1-zhangbo56@xiaomi.com/
-
-Signed-off-by: Xiang Liu <liuxiang.277@bytedance.com>
----
- mm/vmscan.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 29b31446fc11..550c16cad9f9 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -379,13 +379,6 @@ static inline bool reclaimable_anon_is_low(struct mem_cgroup *memcg,
- 	if (!sc || (sc->gfp_mask & __GFP_IO))
- 		return false;
- 
--	/*
--	 * FIXME: MGLRU doesn't fully respect can_reclaim_anon_pages() for the
--	 * scanning type, so only apply this to the traditional LRU for now.
--	 */
--	if (lru_gen_enabled())
--		return false;
--
- 	if (memcg) {
- 		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
- 
-@@ -4357,6 +4350,13 @@ static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
- 	unsigned long total;
- 	int swappiness = get_swappiness(lruvec, sc);
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-+	int nid = lruvec_pgdat(lruvec)->node_id;
-+
-+	if (swappiness && !can_reclaim_anon_pages(memcg, nid, sc)) {
-+		if (swappiness == SWAPPINESS_ANON_ONLY)
-+			return false;
-+		swappiness = MIN_SWAPPINESS;
-+	}
- 
- 	total = lruvec_evictable_size(lruvec, swappiness);
- 
-@@ -5246,8 +5246,14 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 	long nr_batch, nr_to_scan;
- 	int swappiness = get_swappiness(lruvec, sc);
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-+	int scan_swappiness = swappiness;
-+
-+	/* Restrict scanning without changing the policy used for aging. */
-+	if (swappiness && swappiness != SWAPPINESS_ANON_ONLY &&
-+	    !can_reclaim_anon_pages(memcg, lruvec_pgdat(lruvec)->node_id, sc))
-+		scan_swappiness = MIN_SWAPPINESS;
- 
--	nr_to_scan = get_nr_to_scan(lruvec, sc, memcg, swappiness);
-+	nr_to_scan = get_nr_to_scan(lruvec, sc, memcg, scan_swappiness);
- 	while (nr_to_scan > 0) {
- 		int delta;
- 		DEFINE_MAX_SEQ(lruvec);
-@@ -5257,14 +5263,14 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 			break;
- 		}
- 
--		if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
-+		if (should_run_aging(lruvec, max_seq, sc, scan_swappiness)) {
- 			if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
- 				need_rotate = true;
- 			should_age = true;
- 		}
- 
- 		nr_batch = min(nr_to_scan, MIN_LRU_BATCH);
--		delta = evict_folios(nr_batch, lruvec, sc, swappiness);
-+		delta = evict_folios(nr_batch, lruvec, sc, scan_swappiness);
- 		if (!delta)
- 			break;
- 
-
-base-commit: 55ff3dc8fced48c98667c19769c55103a23eabce
--- 
-2.20.1
+~Gregory
 
