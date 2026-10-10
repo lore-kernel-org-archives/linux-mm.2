@@ -4,122 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1047BCA6017
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 05:32:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC26CA9EBE
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 06:38:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A91BA6B008A; Sat, 10 Oct 2026 01:32:22 -0400 (EDT)
+	id A9ADA6B008A; Sat, 10 Oct 2026 02:38:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A69AB6B008C; Sat, 10 Oct 2026 01:32:22 -0400 (EDT)
+	id A4B706B008C; Sat, 10 Oct 2026 02:38:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95A9B6B0095; Sat, 10 Oct 2026 01:32:22 -0400 (EDT)
+	id 93A0E6B0095; Sat, 10 Oct 2026 02:38:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D6B86B008A
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 01:32:22 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DAB5A1A0786
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 05:32:21 +0000 (UTC)
-X-FDA: 85305596082.09.1DD4649
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C705620008
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 05:32:19 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=Gp26fZgk;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf03.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 62C4D6B008A
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:38:13 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5A2E9A07A0
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 06:38:12 +0000 (UTC)
+X-FDA: 85305762024.26.E9ECCD2
+Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 97439140002
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 06:38:08 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=jB9Fyvqd;
+	spf=pass (imf26.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791610340;
+	s=arc-20220608; t=1791614289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gw/kyRb+I+cQspkN55V5Tk4wVCFmcxk3xrSp2odCCKw=;
-	b=3uR5mp5+XTWTq6sQtC0EcFu0nVO4fdiFS0bQ5zp17yji1kg3qKVGtHF6UoBXFeTIcdOMm5
-	4hFKuVU4jZe24NEpWmqvliw6Pb+A5Ua35pB1BMVYl3Wo5SyEy8BPSsNyqON8+oSn9HpS9B
-	W6Nj3F4YMgmW+XYpbVcCKDmXB6XeGf8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=Gp26fZgk;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf03.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+	bh=gEZ9kNVs3FLih4w7q04wSSL1EKEuCKqTB4w9IOg1y2w=;
+	b=7dm1I1dQc/pgATR8w66OD+byX91yV3PGARe2gTKNgF7R0OPfq7nMeTFqg+mq6WuLGikDIA
+	6mBKqburS0qlPV+XcD0uddVd/uU+aCJxpOAXARkhTt1qeY8v1eQVbokX1r4z2xaeTk0uJz
+	8WNvyopIzx8IVZ1JQLIGl1NEWV+utd0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791610340;
-	b=hKCybkO4qIZBFvFLNelExTeDpSekAClJCeGqT6dmBnrhB/QaaP9T9PilNblMUB8QbAFo0Y
-	KUBXU31BjvvTE1ACMfmLaXk2SC6NR5iqGNCHR2K1yZ+FUjLEUdaKZIoMAAKnGVgmzN6Dtt
-	nMSmzNTucEMJsiK+qsCrBbUM4/P2XN8=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6644840E015B;
-	Sat, 10 Oct 2026 05:32:15 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id evsV9KfxQqa6; Sat, 10 Oct 2026 05:32:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1791610324; bh=Gw/kyRb+I+cQspkN55V5Tk4wVCFmcxk3xrSp2odCCKw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Gp26fZgkP+/9ZZz1XSoWZdRaBjjCRjOdLXr3z65wIq0yyJg5xr6wE6RjXiMV7d5HT
-	 /0jMreLhA20VOLERGtpfHKx5vZJeBA3sVGQtuvgy9t6xT/XbLx7hSQ7afTb8pbDpJs
-	 q4bDISG/lM95NTq60p20NxutmMYxDnkkf4Ny/0Z1/GXBu8czrEM6ABU9DB8Fo6YagG
-	 Jkxy024LZicrA/Xub//Q3cb0LRp4ESxb/GAbRXW0FOwuMsHfyuU9vXyu02SSB+aSh+
-	 OY1Fd9QNevBkNLYynJcylL2JRZI/q98QpAzAFkMTQS1uM9/jnEZmVL5mIIXnlRyguP
-	 6wwhJpVi2rAuNPuQmqP0kF59Vp+cPG/pTDC+Pd2RiYw8ApKmC+PjavtFrw8C5XfJHs
-	 XVBgbmAmBkdFNN2RB9iq0H7d2E4D6/dELTD1KX8a9e9zZfMDhugKZmNm88Q6QD+EA8
-	 VCHL+TrUad9EXtIO8YW0Mn+nzrN363/8A++Ri925AMuv1Z77ZRKCivduSHELyjEh84
-	 83vmnNnChEPuSxA3ylYCMd0ZbMB3GNoiSKYgiZ22db3umb+BKSloCUV9ugl4UKV4w/
-	 6KPf9EvuJobcqtWYAjNeH/RAjyXIKHskBK2/T85lCZ9tFw+FVnreWWUc+HPOVRxdtb
-	 zUd2RGq7m5VxBPkKpZihx+aI=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C19A940E0481;
-	Sat, 10 Oct 2026 05:31:25 +0000 (UTC)
-Date: Fri, 9 Oct 2026 22:31:22 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Sathvika Vasireddy <sathvika.vasireddy@oss.qualcomm.com>
-Cc: Shiju Jose <shijujose2008@gmail.com>,
-	Ashok Raj <ashok.raj@oss.qualcomm.com>, rafael@kernel.org,
-	akpm@linux-foundation.org, rppt@kernel.org,
-	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
-	Yazen.Ghannam@amd.com, mchehab@kernel.org, jic23@kernel.org,
-	linuxarm@huawei.com, rientjes@google.com, jiaqiyan@google.com,
-	Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
-	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
-	duenwen@google.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, wbs@os.amperecomputing.com,
-	nifan.cxl@gmail.com, tanxiaofei@huawei.com,
-	prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
-	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
-	ashoraj@qti.qualcomm.com
-Subject: Re: [PATCH v23 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
- table
-Message-ID: <20261010053122.GBasnNqq7PmQojCDaz@fat_crate.local>
-References: <20260726212812.89266-1-shijujose2008@gmail.com>
- <20260726212812.89266-2-shijujose2008@gmail.com>
- <20261005235021.GBasQ3vXTivT3NLbBq@fat_crate.local>
- <asU7svV8g2Hb5DZl@hu-ashoraj-lv.qualcomm.com>
- <20261008030603.GAascImzt4cv8Gz49p@fat_crate.local>
- <CAG4KcRLhN9=6xeT4qfqKLFdukiZLUc7akGcWwXJUU1-qrfxTUQ@mail.gmail.com>
- <20261008174114.GAasfVutvsmAk8JGsD@fat_crate.local>
- <CAG4KcRLx69BK+aw+exUzPe+BW8exFM2LLvN9pEr-+1BoGVhFXg@mail.gmail.com>
- <20261010002159.GCasmFJy2F_2S22d4Y@fat_crate.local>
- <47c79d45-3545-4f06-b26d-000d8f3e9a4a@oss.qualcomm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <47c79d45-3545-4f06-b26d-000d8f3e9a4a@oss.qualcomm.com>
-X-Stat-Signature: uibehy4q94sqecjaufdropnrmkpabjsw
+	t=1791614289;
+	b=cCfzj/cI/nX7303sQMBqRO3pVpdTJ0Bc5WtxgvNRANWlbOXzTPIwZ41iS4PeW/1157BsDZ
+	qBrUAKAA6Yt9e4y7GVLJHf7kTY0Y3evsPjbAq93ZNXaiIh+7v+zakrF0IO0azEcQ0HjjWx
+	2xekW7d7kR89MB6ioY9EohCD/RKlm28=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=jB9Fyvqd;
+	spf=pass (imf26.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1791614283; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=gEZ9kNVs3FLih4w7q04wSSL1EKEuCKqTB4w9IOg1y2w=;
+ b=jB9Fyvqd6RqyhpSdW85SivXeemIVq79I9saxVi3UJu53GQ0pI96qZ777rOu7u9uzdrZznE
+ /PxzxZ0GLwuK24xoS0HRbWV4zyCdN13vf1MTeZNUaU8wbR2iLOuGBYmumL2YYx7o1DWHPi
+ 4R9mteazauYa5Rr5peZLWU4M212GWJtJHL23L0ikiuq0tx5jHdQXrQa0Bu1q2hA0TPhMvg
+ TivyHRv18083Gh0Vzxbe6wfYAGNXvhNRICVezdcb8RmQfbCN4ahLrnIQvFmKAo1SpYZZd3
+ 9fk6EwY7YUirQ3G6ccTlGFqdu3Ba4Okxw1SvlgcD6+U6IpvcXh7YOdzIrINhKw==
+References: <20260930064308.58159-1-lizhe.67@bytedance.com> <arzVaC2IYkqSb0_U@gmail.com> <9a7c026e-f5f2-40e0-84aa-919c988cc136@bytedance.com> <2b4571c5-8e51-4c91-9d88-11929f200875@kernel.org> <asjVUa6XBZ8ti-0_@gremlin> <70ea8ee6-6fc5-4209-8cee-362da37f5035@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+User-Agent: Mozilla Thunderbird
+Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <70ea8ee6-6fc5-4209-8cee-362da37f5035@kernel.org>
+Date: Sat, 10 Oct 2026 14:37:46 +0800
+Message-Id: <ab1577d2-a9ce-41db-a632-8e25652dab31@bytedance.com>
+X-Lms-Return-Path: <lba+26ac9dd49+98d4cb+kvack.org+lizhe.67@bytedance.com>
+Cc: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
+	<akpm@linux-foundation.org>, <muchun.song@linux.dev>, 
+	<osalvador@suse.de>, <linux-mm@kvack.org>, 
+	<linux-kernel@vger.kernel.org>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Subject: Re: [PATCH] mm/hugetlb: avoid recursive i_mmap_rwsem in PMD sharing
+To: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Mime-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C705620008
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791610339-456422
-X-HE-Meta: U2FsdGVkX1+e47+dCXO/wau35Os+EBHvp/rKBlwsknPpr6yXMugZovIpn0K2WiitOfrJROkaUtmCFUCkpVbKQY9SlRFGLjjN3uwVR51Qxej7g/XpZSgX98pW1IiP+/FoPskUmO7K0qT63am8GpAu7XH2o6E4JXazIjq2NKKyW1BXHuVffeSu9llk4EpHD/IP1gKRDWCgu8oHq3b/S2W74cV7LeOyunMceKsU7fZW/z51Y1KUjrhrW9y6WR5yF6VcYylOW5ZnLLXXxc0wTZlclKztCOYIKS+2oIaXRvXt8iS3MhVZBRqnSdrB42MUpPNZ7MAIx/mqfEpUKDRbdIPx1e+HNfn/iGfsp0eKKA+RVkQccPMZ4UxUDX3KULSzbLX26lRFNxMaCc1PHZ4kUIa4b79so3UjxXalfpV2uCAO6v7L5zOSJFzrDkvoZYf4OubnprUkck1TfkFStq5Oj8PW4sgavTavjukaQloSg/py+9T1gef7zbVfPpP0kqNoei2nXo/2zDjDlXA7Dy+oJQINlSjmJQHSpwNnY9nOGAXEdK6RGGKu/HtnkAtF58yvEWd34pnq42lTjV+o3HCXOYe7EIiNQct4R1gh6/00Bnn5IrrDpiJjRaQy5Hg47GndBzvE2qi2yWDsAFmXdddz4tYB4+TfMZS8sMGJeq0haYKlmYyF3vTTruYd290eGGnPphH1teGrzLCHKF0XtnCzHlJor02b//q0+Bfcufk66fNVVuBqjndK9DuDMpoOV/fdPpwqXFUGTgquP7UeYbEEFFWZF+8IyClG7CpOjQi+ZvQMIpeYZvW2L3I5OROxOvL5NniFXjqX+tSRc27nnxBcx/X8GJkCKWJ0BnM5tP9K+q7XYeUmyU3gClxOcNAOpWksxy+jFSYXWB3hc/p4Y1WPD0ebbafqkHIJgy4pxEdOcYJNFKC+8RLKN6lmT7jBWFcIYpg5sOcNItrn9oqslID4qRr
- Z+30VNOJ
- YXbpD/s4bdkYwWveV+yG20NzzaHD62EWQ3xvWUb1eCx8+x1+Cr14UuAXPHG1Fl3STaEE5i5CZEe/L9M/583PMTFiqPBU+CiCPGt6R6NWX7pU/3AGVJk1PWOErgmj7ZkQtRbYSytOzhhEdW6VqgNCVJxIuy/s9LE3Cg6Mrv6gGkZNV06KIO4EuvwUJlf0WOnKit/20i+7Mz+6Pm1cTcJZukRJGm/jxAVAAmSU2MbyHo1q0d/CiGrZRqpUj8zEb4Smgi3XAz0QRMaBpRr05dEjxPJ/YzcjxmLGx6o0b8N8GguVZmo1FPDot4z5ZjK0m7QhHgeqhSv90Dvw1iqhIGYAa6O6xc4E7FmQhQdhEsvnjYbs+fyV4BMu7yjb5xxxrHP94bYK6xMmtOImEEts=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 97439140002
+X-Stat-Signature: 116ziz9ke7dc353ixcaeykm1gsoe34xy
+X-HE-Tag: 1791614288-150293
+X-HE-Meta: U2FsdGVkX18UMZaSFCqmiYVV3eqzdi/4sFpSt0e+hKQYJ6u1Iw9D37Mbxf6vKmebERi9SMJrd+z6Cdx+m7baJQ7wmhsserQJ3K44k2rlYfBGcOQKMWsykiq6xhZokBvfU5IybVXhPZIdjgYYCB+DaJ2nVSyjB+59BFpCzotM7pV45UH04fzAWt+US145PTRv9Gnd253DxGE/UxuE9qhgFCbCPnscNAjjfTgW1BUtUVMb5Eg1+noihPZVexhTFc1JCtzUW/beBamI5Dp2ziZrzit2sBaBMfQ8j574sSrYAp27L8zrrH8bhEjJ9M6HggL/oH+oAT0FVDBpbgsAZFdd1uPBDuyTS8sk8gGQC8eb6HPI6x0SuIhRVR2uZxUqPTSny065q7lSCorrz10NbsV9Ct4bxt3UYdFyFt1K9zTfIXmECgzPDP1BHS9NGeFBcD+k6jXmEYnQ1unIPiW5p5L2E0PiVT8lc4m1ULtAA/22wTKKwd4Ph75ieUlYX1qgWixqgzQfk2l04fkFkiKL+okWj+rDkrUNLSdmD3Da/3Z6kXHhHS4k5ZIuLg5rtAd1BlGH5EIrP0d+NFnFebn/s/mMFJOkl1fhHJdl3dSB8nOGkBTcpibM32ZQfi5arOarrXneW/c8jmmFhmy8xdUDqRZ0hMrapipC4JmEGune0CVcxslyafZtgj7yQwsZQRwirC1/e71ijlM8MrjTtGRnVVec9WqRpr+ZlpB0VwkMzvLWiJ3xqt+BLo1cJV/5PlHZR79LNG9XE8is13nH0UWS30fGjef0n5F/XfF0lCHkYBcx3qGmXx1Y6PzySVgzsBu8TofPt0YxpGaVCSvHsSZexRkdTAX0eVR6f1yM4yH1OgR34bfKqVmo223fCau4jqdpG42lRj+jp07G9gwPxyTPWD1fWU29YeagupjHREEH0zvSNGGhlEo+H0FXZu6ZvSHbpmEc83xQziZ06r+FpeUw1a2
+ JAvO/fS0
+ 1uLV7qaMhcT8tn+NpuiOQ4kIBFKG7x5O3KQyrMNGAZpcHNKotu55o25tqbBg7Bk6XtKKcEALOIEBMnkEpZ9suaC0SuLaipuYbIKuD7TaIbehXns7vylsDKqRT5rtPNwxjHuDdAVn+2afS85LufVuUWGy06ceha4hbpEKNILX7rM33xZsapc3bTPN113SwwYIn6cohIZ7EcByfniRIp2vi128Gf/Mvr5hPkCxCqTd9KpJOt/vPslhkKDWo5sZI06cXjxzbl0H2tpK/QXH3JQBU7HEDy+2HhhnjxwQGI9yCMQYzcGmkgoXgCH1oCqZIRPJ/9O9yoKkF3mh7NmoOSa2QK8mn/sG/qiKejNlR0ba/4gYt10umudv7EszRnpF5YmUR8gWJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,17 +92,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 10, 2026 at 10:25:22AM +0530, Sathvika Vasireddy wrote:
-> The tests passed with the new version, and no issues were observed.
-> 
-> For this series, feel free to add:
-> Tested-by: Sathvika Vasireddy <sathvika.vasireddy@oss.qualcomm.com>
+On 10/10/26 2:05 AM, David Hildenbrand (Arm) wrote:
+> On 10/9/26 13:52, Lorenzo Stoakes (ARM) wrote:
+>> On Mon, Oct 05, 2026 at 11:25:01AM +0200, David Hildenbrand (Arm) wrote:
+>>>> David mentioned that Oscar was planning to send a proper fix for this
+>>>> issue, so I will wait for that patch instead of moving forward with this
+>>>> trylock fallback approach.
+>>> @Lorenzo, if Oscar is too busy, I guess we can paste the overall idea for the
+>>> fix here as well (publicly)?
+>> Yeah I don't see why not! I don't think there's anything that needs to be
+>> private here.
+> Li, see below, can you work with the below?
 
-Thanks.
 
--- 
-Regards/Gruss,
-    Boris.
+Thanks for the patch. I tested it with my original mremap reproducer, and
+I can no longer reproduce the hung task.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+I also checked the hugetlb_change_protection() / uffd-wp path Jose
+mentioned. That path can reach hugetlb_change_protection() and
+huge_pte_alloc(), but it does not enter huge_pmd_share(), because
+VM_UFFD_WP makes want_pmd_share() return false via
+uffd_disable_huge_pmd_share().
+
+My understanding of your patch is that we preallocate the destination
+hugetlb page tables before taking the mapping's i_mmap_rwsem in write
+mode. Then, while holding i_mmap_rwsem, we only walk the preallocated
+destination PTEs and move the source huge PTEs over. This avoids calling
+huge_pte_alloc(), and therefore huge_pmd_share(), while already holding
+i_mmap_rwsem for write.
+
+Does that match your intended direction? If so, I will go through the
+details and make sure there are no issues, then send a v2 based on this
+approach.
+
+Thanks,
+Zhe
+
+>
+>
+> ----8<----
+>  From 9e1c0676ea6c9cbcabf91cd8badf81a9d88fd3ef Mon Sep 17 00:00:00 2001
+> From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+> Date: Wed, 29 Jul 2026 18:33:08 +0100
+> Subject: [PATCH] fix
+>
+> ---
+>   mm/hugetlb.c | 103 +++++++++++++++++++++++++++++++++++++++------------
+>   1 file changed, 79 insertions(+), 24 deletions(-)
+>
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index e93c4d2456aa..88ff2c4ad483 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -5077,6 +5077,79 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
+>   	spin_unlock(dst_ptl);
+>   }
+>
+> +/* Returns last address processed */
+> +static unsigned long prealloc_or_move_page_tables(struct vm_area_struct *vma,
+> +		struct vm_area_struct *new_vma, unsigned long old_addr,
+> +		unsigned long new_addr, unsigned long len, unsigned long sz,
+> +		unsigned long last_addr_mask, struct mmu_gather *tlb,
+> +		bool is_prealloc)
+> +{
+> +	unsigned long old_end = old_addr + len;
+> +	struct hstate *h = hstate_vma(vma);
+> +	struct mm_struct *mm = vma->vm_mm;
+> +	pte_t *src_pte, *dst_pte;
+> +
+> +	hugetlb_vma_assert_locked(vma);
+> +
+> +	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
+> +		src_pte = hugetlb_walk(vma, old_addr, sz);
+> +		if (!src_pte) {
+> +			old_addr |= last_addr_mask;
+> +			new_addr |= last_addr_mask;
+> +			continue;
+> +		}
+> +		if (huge_pte_none(huge_ptep_get(mm, old_addr, src_pte)))
+> +			continue;
+> +
+> +		if (is_prealloc) {
+> +			if (!huge_pte_alloc(mm, new_vma, new_addr, sz))
+> +				break;
+> +			continue;
+> +		}
+> +
+> +		if (huge_pmd_unshare(tlb, vma, old_addr, src_pte)) {
+> +			old_addr |= last_addr_mask;
+> +			new_addr |= last_addr_mask;
+> +			continue;
+> +		}
+> +
+> +		dst_pte = hugetlb_walk(new_vma, new_addr, sz);
+> +		if (!dst_pte)
+> +			break;
+> +
+> +		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
+> +		tlb_remove_huge_tlb_entry(h, tlb, src_pte, old_addr);
+> +	}
+> +
+> +	return old_addr;
+> +}
+> +
+> +/* Returns true if preallocation succeeded across range, otherwise false. */
+> +static bool prealloc_hugetlb_page_tables(struct vm_area_struct *vma,
+> +		struct vm_area_struct *new_vma, unsigned long old_addr,
+> +		unsigned long new_addr, unsigned long len, unsigned long sz,
+> +		unsigned long last_addr_mask)
+> +{
+> +	unsigned long old_end = old_addr + len;
+> +	unsigned long addr_end;
+> +
+> +	addr_end = prealloc_or_move_page_tables(vma, new_vma, old_addr, new_addr,
+> +			len, sz, last_addr_mask, NULL, /*is_prealloc=*/true);
+> +
+> +	return addr_end >= old_end;
+> +}
+> +
+> +/* Returns last processed address. */
+> +static unsigned long __move_hugetlb_page_tables(struct vm_area_struct *vma,
+> +		struct vm_area_struct *new_vma, unsigned long old_addr,
+> +		unsigned long new_addr, unsigned long len, unsigned long sz,
+> +		unsigned long last_addr_mask, struct mmu_gather *tlb)
+> +{
+> +	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+> +	return prealloc_or_move_page_tables(vma, new_vma, old_addr, new_addr,
+> +			len, sz, last_addr_mask, tlb, /*is_prealloc=*/false);
+> +}
+> +
+>   int move_hugetlb_page_tables(struct vm_area_struct *vma,
+>   			     struct vm_area_struct *new_vma,
+>   			     unsigned long old_addr, unsigned long new_addr,
+> @@ -5088,9 +5161,9 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+>   	struct mm_struct *mm = vma->vm_mm;
+>   	unsigned long old_end = old_addr + len;
+>   	unsigned long last_addr_mask;
+> -	pte_t *src_pte, *dst_pte;
+>   	struct mmu_notifier_range range;
+>   	struct mmu_gather tlb;
+> +	bool preallocated;
+>
+>   	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, old_addr,
+>   				old_end);
+> @@ -5106,30 +5179,12 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+>   	last_addr_mask = hugetlb_mask_last_page(h);
+>   	/* Prevent race with file truncation */
+>   	hugetlb_vma_lock_write(vma);
+> +	preallocated = prealloc_hugetlb_page_tables(vma, new_vma, old_addr,
+> +			new_addr, len, sz, last_addr_mask);
+>   	i_mmap_lock_write(mapping);
+> -	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
+> -		src_pte = hugetlb_walk(vma, old_addr, sz);
+> -		if (!src_pte) {
+> -			old_addr |= last_addr_mask;
+> -			new_addr |= last_addr_mask;
+> -			continue;
+> -		}
+> -		if (huge_pte_none(huge_ptep_get(mm, old_addr, src_pte)))
+> -			continue;
+> -
+> -		if (huge_pmd_unshare(&tlb, vma, old_addr, src_pte)) {
+> -			old_addr |= last_addr_mask;
+> -			new_addr |= last_addr_mask;
+> -			continue;
+> -		}
+> -
+> -		dst_pte = huge_pte_alloc(mm, new_vma, new_addr, sz);
+> -		if (!dst_pte)
+> -			break;
+> -
+> -		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
+> -		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
+> -	}
+> +	if (preallocated)
+> +		old_addr = __move_hugetlb_page_tables(vma, new_vma, old_addr,
+> +			new_addr, len, sz, last_addr_mask, &tlb);
+>
+>   	tlb_flush_mmu_tlbonly(&tlb);
+>   	huge_pmd_unshare_flush(&tlb, vma);
+> --
+> 2.55.0
 
