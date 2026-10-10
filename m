@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4CE9CA9EBB
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 02:28:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9CAACA9EBB
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 02:41:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89E126B008A; Fri,  9 Oct 2026 22:28:25 -0400 (EDT)
+	id BEA426B008A; Fri,  9 Oct 2026 22:41:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 853686B008C; Fri,  9 Oct 2026 22:28:25 -0400 (EDT)
+	id B9A6C6B008C; Fri,  9 Oct 2026 22:41:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 766696B0095; Fri,  9 Oct 2026 22:28:25 -0400 (EDT)
+	id AB0676B0095; Fri,  9 Oct 2026 22:41:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 48AEB6B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 22:28:25 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BED36B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 22:41:29 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C6F2640726
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:28:24 +0000 (UTC)
-X-FDA: 85305132528.16.D33FF7D
-Received: from mta0.migadu.com (out-37.mta0.migadu.com [91.218.175.37])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8F41E1C0005
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:28:22 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sL10LDRK;
-	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.37 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C545A06ED
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:41:28 +0000 (UTC)
+X-FDA: 85305165456.16.7770CD1
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7E84E40003
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:41:25 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=K9Z8LsAK;
+	spf=pass (imf27.hostedemail.com: domain of albin_yang@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=albin_yang@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791599303;
-	b=VNCee7hdMbrJz7dnxujMH+cxFJEV4AtOhPPU2h4L25p0Ct6oUT5/yUIQz7tp9mflUA5icG
-	gRfqg5whrOPWZF/ILBcxwAKAuff0wC3fiXi4dV5krsK+Mmd3OCCUAohQQmkQ4wXjXtF3kH
-	h+6aaxT5GlJzwcd45QG4tHnQTGaiWLo=
+	t=1791600086;
+	b=ohSHkAcwqDbbvJfaO3oOdtzvXxGpet5P7kzJlPl/A6sWLI6U8YsmE2V4xeKGZMfoCQAqqQ
+	3kGACso0aiLflNQhZJs2JS7G7pGNVYe+A0g/yOnPLHkulAfApcjQaZGOM3vBDJTl6MkUMQ
+	ugl8r4GPNdroPngUoZOTWu9vqXTB1Gc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sL10LDRK;
-	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.37 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf27.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=K9Z8LsAK;
+	spf=pass (imf27.hostedemail.com: domain of albin_yang@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=albin_yang@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791599303;
+	s=arc-20220608; t=1791600086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X1iCmf+DztuofC3HQ3EbJguh8N7md3mHD7lnU7/7Q0E=;
-	b=cq51+p5jRCuHVZ1VvDSDuZOnXDwXzFUD9EJKPScixQhlCHOxKu109lsEL7JDyQsvRpntaU
-	Bp8cgXyK0EtJWc+G1bUYIwnZSYqxlTD9TgrVlZdrCl2yBDTQpsChbNVPLYW2YqXnwS7R1V
-	oED8jT5Z8J1OE4TxpAJJgKOB8Oi/BRE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=urJSlmWLmOnQ+/BmKriYgMubc8WR+Lejmxapcnw2+94=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791599299; v=1; x=1792204099;
- b=sL10LDRKcHejZyQIyETDMoBzjubpk1/6dYH5dPLw5KgpbvatKglQIRv6K4R3xnzuo0SZ57Ov
- O2LKuM9SPJFAHS5b0l7Q62x5TwddqJDG2i128vL0Y/66XPqfRQIdTbZqoEoDVgprF16lqrFWLch
- S+MpROm9Em3sZ9458WNUrAhg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9ec6e0e12739ee80;
-	Sat, 10 Oct 2026 02:28:19 +0000
-X-Mizu-Trace-ID: 9ec6e0e12739ee80
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <0d2f9386-fe3f-4714-8204-9d6c710ac09d@linux.dev>
-Date: Sat, 10 Oct 2026 10:28:11 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=IuppudWlzPNdUG29j/pvz4NISV5lfrtSEL30qww+9r8=;
+	b=iKmytACRshUBmEeX1HATH3kycm+//4f2LytkN1myBCgHD2Lmpppdanc47q6Tvu2jQbQp4a
+	XMi36joIhnXHuKUK24EVQ4cod91iZ4vXg/9qA17epIK8eSbXtGe9Ut+Gy174dio+wT3Yaf
+	Bc3scg8A22g9xI5EsMgjcQggMGatA8Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Iu
+	ppudWlzPNdUG29j/pvz4NISV5lfrtSEL30qww+9r8=; b=K9Z8LsAKfojwsrNXaT
+	eFa4/Yv2HD697ySbGv8vdh1+TucpFf20MIc4aPChDUZN3XN+z/f6/Qwvc/RfFEWv
+	037yg0Q6gDv7EKUHa+XxHNOaQJIQnpvgx2i/dWRzhoEfDjV++w/TsmhPRqijTrNb
+	gr9XoRhXQCrJPLs5+yBPVMxuI=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD3v3uupclqOD5oDQ--.45093S2;
+	Sat, 10 Oct 2026 10:40:47 +0800 (CST)
+From: albin_yang@163.com
+To: akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	david@kernel.org
+Cc: vbabka@kernel.org,
+	jannh@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	albin_yang@163.com,
+	albinwyang@tencent.com
+Subject: [PATCH] mm/madvise: add cond_resched() in THP branch of madvise_cold_or_pageout_pte_range()
+Date: Sat, 10 Oct 2026 10:40:42 +0800
+Message-ID: <20261010024042.4070048-1-albin_yang@163.com>
+X-Mailer: git-send-email 2.43.7
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/rmap: don't discard lazyfree THPs at PMD level
-Content-Language: en-US
-To: Zi Yan <ziy@nvidia.com>
-Cc: stable@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Harry Yoo <harry@kernel.org>, Kyle Zeng <kylebot@openai.com>,
- Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
- David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Andrew Morton <akpm@linux-foundation.org>
-References: <20261009-lazyfree-stable-fix-v1-1-70997958ef8d@nvidia.com>
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20261009-lazyfree-stable-fix-v1-1-70997958ef8d@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3p77i9fp3xize6fh93fcxnsm9rshhmqt
-X-Rspamd-Queue-Id: 8F41E1C0005
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3v3uupclqOD5oDQ--.45093S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJw43JrykGr4kJryfXFWkWFg_yoW5GFyxpa
+	98Kay7tr4UXrs8XFWxuFWkZFyjvw4fKrZ7XFWkJrZ8AFsxJr1aqr4akay8KF4UGws3t3sx
+	ZFWjg343Z3Wqvw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRd-BZUUUUU=
+X-CM-SenderInfo: pdoex0xb1d0wi6rwjhhfrp/xtbC8A+hRGrJpa+uHgAA3D
+X-Stat-Signature: gisgc7n775u87yrmtks9kr1dtyqyzchg
+X-Rspamd-Queue-Id: 7E84E40003
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1791599302-92062
-X-HE-Meta: U2FsdGVkX18637YIIb3v+ibblxHIBQ8BzYExwqS9bbM6auh7tNWaX4y2Wic1SNEyq2yBU1ae/CLmLT+CQuzVoOnN/3rc/LfI4N0QIgT2omrZXwVpFLlO5BHYGHzesq4dZKWz4K/ZA1gHwhc5Sgnm1Rd59MR6h+CPhjueHeP61bwrusEIqKNLkJDDEGpP7juQq9iABa+fP2RupsNvkZ/f0lYR9u/AqVJHddfWAPyLdlcfuLUbh74ET0Rj/iseXqiA/Zy+6k71DyVqQKJw8JNw6Urn6vpe74iE7Enu4PzSqZt428H1Ng3wTsV686roqhLUSPLJ0WFlrWGALqN77w3N2KsvPXq+31+XVc2fLaLZy76xTzTtG6A5rudyMXqxAV97Ll0FRSvnwRgn65HZ18w8zfvxCQnzPQTm19av5Rgs74fO81tb+ZZTzrHDTy3quoDa3CLhg8FpApbcUSTd4i1Y/IEu5CXHhKIH2xxfqSAkRcSTccNFQ1AY32vJCC5BQftO59F/zxJhSEW0jX54UZRJiErCDpewh4/1DCXOc9f9uRUBvT6SlhRDbSlBmZIutODJRmvVNcjRRoQOkmT7Xrf16vZeeT93HVC5dZPKt1AEgmgyOT4pp1kYnYUMnKgdDEuUDgx6Q0EezkNj905MkQloF9gT4IT6aEOFYzKAu+Dd77T0i77dRCYlFGO8NP6Kfa8QWO1lhNDJBWWEcdrgCHu+/8ElkAtyA54Hb1reZMuLvclL3M4+83okV2f8+WyplIZjxUNsk6XhU9A/jiiAdunGGuVPdI91P4XRKUUIvYY3MMSlDNTSnWtvTxvc4Yy99N4M29MlJq0rmh48nek5PLQw+insB5Jkv6gYh3uh9R18wbnlu/qsGsQUHTv0xpjtRwCd4ZZzAGXJIsQHnFNIeSnSjSBUEP5ZdyVARs6oYaCZBykjmBFbyyJc0dijM7RbJOQxrd23pRN8tNNDihc4VZZ
- rPNpHjrc
- ZEPwDskmSZxJM7uzDO7PYjsVYZ9OaFNWijxfYG1d/h6Tli9Tss8kclL1het9kNBvwd+IGcWkBCyLKYqCbh1N5Zr3d4B1qP6+Nnkw3tvRcOhC3H5k56KwVCZuMpd6nfG0dg1/fxj3mgC+nW3FrBytyxtYHusAr0GcLdt16rVYo4+8RoLENSQ0H6//BUiuOraZaZL6o1W9IVASWBx6l9KStMdfDGAMCh9KzHQXsBkPNG/cmSOSVX9MviND1Tf5sbCOl8KLRcu+uaD32EfsIbCQWK7pEwfOJdE7YiyLQzPj846NuECn1kVpBOho6mgFgH2gsnvwT3IixQqyuf7JoIbo9ANl5WcmqKSSQkSuN
+X-HE-Tag: 1791600085-550240
+X-HE-Meta: U2FsdGVkX1914hBIiMVLh9zTHTeBnRBSWklghTVDdYFojQY1ILDIlUGc2ly821RGdT4H4iJsVQHZRMFG7wy9CPK2jjR2SoCpUYsN8I+kUdjgpcEiLA2DVvpkN3JKWSqSwr4gR/hRHv4IMJ9Vl3HBLhUZdST5PO94DR2ZNR1hzS2ZSQiBvABgkFB9d27IOEvzYGeoZjsvguDs3Fu9k2SErhMoaHKCra7cBWbylScfgG/KD3Z00d29rovy7FmcDu/31LBdLQZtB3tjh1shK6kBFggDEIvamur8wOHsjXjYc1TbSX5Rdt6vwfR9vz8JsaEa/3Cp5sx4C46QGbFaa1XxNSoyxjUM7b8i+4In54Gply9rVMEQeWAIN3kwp/LEqwLS2A7A5M0tdJX9DwLnuWStf0n2td4gmbR/2iR7bcIgcPd7+5t7fRValMJoM5xdLlCUuDO2v+gUNHA40sN/0gQI2je81EkzUM96kxmxhzkuGFIGkrEPKMkGEg8QHcrziE4q5VaZ0l1nC3V5TqED/tAs6DzeY40WnQtBamXK/TTzD15vGZJTdlucQssQzruvUEV94fYVNg35x4XTneyiD/6mEZa0GdAqIy+Lb6+0bDTL6BvYZQXHnf+fqL/cCKcLIQAex/uyhZ3hg930F41ENEKCMJmY49Wt7BwktmM5iHaDKTRTntWaH4VuAE5SMa4gB+HDG9y/Q+oaP7l9GapSYJhKQ3RJ/HeUnbjkmaTyAbP5RhZjAyoa9xva8igu/QE4chn6MQa9gU/4f4o3NOXP8SCXM/GtLPIwZZSAOO12nW321wEoL+KxOnz+iUIiglwwvP0jz3JvPvbCfcogZGBRQRS/zP5MOXsSrhaSquBf5memsmbuQLmGcrxLBlWgja89IDTHPE8t4/JgMf0+zPX6q5mAbl4CosoDAn2elDgWlwx6Qu0zF9JXpmZfwwThrNuSGP62s/2vvl34WZztcAmcR4o
+ AvAKOBwV
+ mtL3UdBXqoW3Kt0UZTIfkrO7yPAE4zOYYl1NH2wGAo7cIcFw31e2kT1wci5rSoyz4ZHyY19i5PbLPDT3p+7WlaW7CBJjItHL3+sV5s6BPsJuRU/idtzkHCMS6IGODT3e1P228IHehD5/8AU54Wf8nWcBJQcIIBDk2IXlmCOAiSt8ND8gpZ2069+cTtOsRs6ynpPGbaCSjz1swTm+Q8ZbEvWCnvRoQKJ59EtAvgUR+mf3sQ7i+AxD2QRxYMDfdaGEyz+D8dHeYzWVwA870juVlb5pHLWk+gpQgH+nptvBNkp+QVifGgvJz+MvGRu8KuVw7eLxRNGO5kAFrf/c3MyzalncNHrScBBJILYPwMvFowG9cg1Sx/2yDp7w8H79FMRZDjh9EpMou2vbQ6XE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,30 +95,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Wei Yang <albinwyang@tencent.com>
 
+During stress testing with stress-ng on a 256-CPU system, a softlockup
+was observed when madvise(MADV_COLD) was called on a 31GB memory region
+backed by transparent hugepages. The region contains 15935 THP PMD
+entries, and the softlockup was triggered after 14485 of them had been
+processed.
 
-On 2026/10/10 10:08, Zi Yan wrote:
-> __discard_anon_folio_pmd_locked() clears a lazyfree THP PMD before it knows
-> whether the folio can be discarded, and restores it if the folio was
-> redirtied or has extra references. A concurrent munmap() or
-> MREMAP_DONTUNMAP skips the temporary none PMD and unlinks the VMA from its
-> anon_vma, so the folio stays mapped after the anon_vma is freed and a later
-> rmap walk uses the freed anon_vma.
-> 
-> Using an invalidated PMD instead of a cleared one requires additional arch
-> code fixes. Instead, disable the PMD level discard of lazyfree THPs, as
-> before commit 735ecdfaf4e8 ("mm/vmscan: avoid split lazyfree THP during
-> shrink_folio_list()").
-> 
-> Fixes: 735ecdfaf4e8 ("mm/vmscan: avoid split lazyfree THP during shrink_folio_list()")
-> Reported-by: Kyle Zeng <kylebot@openai.com>
-> Closes: https://lore.kernel.org/r/20261009165214.40212-2-kylebot@openai.com
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
+The THP branch of madvise_cold_or_pageout_pte_range() has no scheduling
+point. walk_pmd_range() invokes it once per 2MB PMD entry with no
+cond_resched() anywhere in the loop. Each iteration calls
+pmdp_invalidate() which issues a synchronous TLB shootdown (dsb ish)
+waiting for all CPUs to acknowledge. This operation can be
+time-consuming under heavy system load, causing the accumulated time
+across all PMD entries to exceed the softlockup threshold (20s) and
+panic when softlockup_panic=1. On a CONFIG_PREEMPT_NONE=y kernel, there
+is no other opportunity to reschedule during this entire traversal.
 
-LGTM!
+The regular PTE path already has an unconditional cond_resched() at the
+function tail (introduced by commit 9c276cc65a58 ("mm: introduce
+MADV_COLD") and commit 1a4e58cce84e ("mm: introduce MADV_PAGEOUT") when
+MADV_COLD and MADV_PAGEOUT were first introduced) and a conditional one
+inside the loop (commit b2f557a21bc8 ("mm/madvise: add cond_resched()
+in madvise_cold_or_pageout_pte_range()")). The THP branch never
+received equivalent treatment.
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Fix by adding cond_resched() at the huge_unlock exit path after
+spin_unlock(ptl) and reclaim_pages(), which is the single exit point
+for all goto paths in the THP branch.
+
+Crash log:
+  watchdog: BUG: soft lockup - CPU#63 stuck for 23s! [stress-ng-vm:1665914]
+  ...
+  Call trace:
+  pmdp_invalidate+0x48/0x68
+  madvise_cold_or_pageout_pte_range+0x84c/0xb00
+  walk_pmd_range.isra.0+0x1ac/0x3b0
+  walk_pud_range+0x120/0x190
+  walk_pgd_range+0x170/0x1b8
+  __walk_page_range+0x184/0x198
+  walk_page_range_vma+0x94/0x128
+  madvise_cold+0xd8/0x198
+  madvise_vma_behavior+0x234/0x638
+  madvise_walk_vmas.constprop.0+0xdc/0x210
+  madvise_do_behavior+0xa8/0x328
+  do_madvise+0xd8/0x140
+  __arm64_sys_madvise+0x2c/0xe0
+
+Signed-off-by: Wei Yang <albinwyang@tencent.com>
+---
+ mm/madvise.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/madvise.c b/mm/madvise.c
+index eeee82cf2b3f..0755e6d99757 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -450,6 +450,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 		spin_unlock(ptl);
+ 		if (pageout)
+ 			reclaim_pages(&folio_list);
++		cond_resched();
+ 		return 0;
+ 	}
+ 
+-- 
+2.43.5
+
 
