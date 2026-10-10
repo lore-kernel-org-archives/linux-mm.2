@@ -4,76 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F4ACA9EBB
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 03:00:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91674CA9EBB
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 03:00:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94E056B009D; Fri,  9 Oct 2026 23:00:03 -0400 (EDT)
+	id 88C496B008A; Fri,  9 Oct 2026 23:00:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 924826B009E; Fri,  9 Oct 2026 23:00:03 -0400 (EDT)
+	id 8636C6B008C; Fri,  9 Oct 2026 23:00:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8625A6B009F; Fri,  9 Oct 2026 23:00:03 -0400 (EDT)
+	id 779E16B009E; Fri,  9 Oct 2026 23:00:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B7DF6B009D
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:00:03 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E85B8A06F5
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:00:02 +0000 (UTC)
-X-FDA: 85305212244.06.E375494
-Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2C4161C0005
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:59:58 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 599836B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:00:52 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 54A701206E2
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:00:51 +0000 (UTC)
+X-FDA: 85305214302.16.5B54725
+Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [118.143.206.90])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 571CF1C0007
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:00:47 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
-	spf=pass (imf18.hostedemail.com: domain of liyifan21@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=liyifan21@xiaomi.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791601201;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=OQNG/phTTm96ATF0tafvn2UEonxEcGDzvpU6HVn7jkc=;
-	b=21U8pwBej4braRaFzR727k89lHOK8x7tABkjbP/nPTLqQmNmotsPnoLDOKrHC+AD7eSjRq
-	a4QGq4osfE2E7Vqe9LduLIEKKvYCK/brp8OU7MT6XYcaVKP/CnR5anxKqvNxjcAnSaVXWC
-	TbL6mD1/lG831wrX16uVUucpLSQRO+4=
+	spf=pass (imf18.hostedemail.com: domain of liyifan21@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=liyifan21@xiaomi.com;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791601249;
+	b=VPPbfNApOVnvQrFs37TUNzlQn9Zt+LCNWxX0jIhTGPWBbubKIFK4ie34S1ONHd8D3vSX6J
+	aQNUV+xNHzAdkuoIXnQAsE/Q17uN5sZDG8foRhDtHGRH5gH53f5mDt5NCNFbsDmfp+Jinh
+	rRLFszCplFEDx+IrABY6bOk1dkKCdH0=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
-	spf=pass (imf18.hostedemail.com: domain of liyifan21@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=liyifan21@xiaomi.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791601201;
-	b=sgd1dPqUrR+/2ytNJJg4QnTWSRp0tx3IasOhIZojWqFBn9WGs9fpWrEh6AqN2lRPS8e5GM
-	cemNPt3/eS5Vf8Tv+Mr1Wx/adJCeiRl697TEzBmugJKKWdMWuzL5qLY9bh8tcZFuC7wt9g
-	iriCh/6VEjMq5/mIymRDZFYytz82BM8=
-X-CSE-ConnectionGUID: OJS8ygc0S+aTURbj4RhksA==
-X-CSE-MsgGUID: aixXHEIASciLg0f986Qj+A==
+	spf=pass (imf18.hostedemail.com: domain of liyifan21@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=liyifan21@xiaomi.com;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791601249;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BImwAha5DCIAY6hyiEeQJuW6kCcRx7fiHQQK2KsLK/E=;
+	b=Z3Shtbx9F5NG26UxCsZtokMCTdZ2z1XNRB1G1ntbbbWpSlNw5Yi7+GGAssFIK7qx8Day5W
+	gac4lLIlMfQdyWG8V2Z5j5MLMR7y8OkqnJ6g6PpoVpjEB55eCusHEWoF+EtFwhb84KCSnm
+	6Hahw5VRVCo/qbSPv7wkIFxRJbeqIN8=
+X-CSE-ConnectionGUID: w+RxoyOnS+uT4AFwvlQEJw==
+X-CSE-MsgGUID: rogxv7D+S7q6K7N6t81i4Q==
 X-IronPort-AV: E=Sophos;i="6.27,149,1786982400"; 
-   d="scan'208";a="191389071"
+   d="scan'208";a="165154808"
 From: Yifan Li <liyifan21@xiaomi.com>
 To: <akpm@linux-foundation.org>, <david@kernel.org>
 CC: <linux-mm@kvack.org>, <linux-fsdevel@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, Yifan Li <liyifan21@xiaomi.com>
-Subject: [RFC PATCH 0/1] mm: page_frag: account page_frag pages in vmstat and meminfo
-Date: Sat, 10 Oct 2026 10:59:39 +0800
-Message-ID: <20261010025941.1253-1-liyifan21@xiaomi.com>
+Subject: [RFC PATCH 1/1] mm: page_frag: account page_frag pages in vmstat and meminfo
+Date: Sat, 10 Oct 2026 10:59:40 +0800
+Message-ID: <20261010025941.1253-2-liyifan21@xiaomi.com>
 X-Mailer: git-send-email 2.46.0.windows.1
+In-Reply-To: <20261010025941.1253-1-liyifan21@xiaomi.com>
+References: <20261010025941.1253-1-liyifan21@xiaomi.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
 X-Originating-IP: [10.237.8.164]
 X-ClientProxiedBy: BJ-MBX02.mioffice.cn (10.237.8.122) To YZ-MBX01.mioffice.cn
  (10.237.88.121)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2C4161C0005
+X-Stat-Signature: 8pghyfgsa1qzk5qrmsotccjejathpuji
+X-Rspamd-Queue-Id: 571CF1C0007
 X-Rspam-User: 
-X-Stat-Signature: 5ds5upa1p5mpjr48me5i7fjyhs6z568r
-X-HE-Tag: 1791601198-944374
-X-HE-Meta: U2FsdGVkX18a43PFRfw4tRlEWex2U5ctLwkn4APNXLTQN1pPnwPnmzVWkNBa0PA1mIAr8x/PiFWc3ksVMhHtfgCKEjYK4NOvioFpwng3mP3zvCK9+4mLfjxMmTNajieAuQ7sSl5VIf00B1sAPWCfCBPCrI5RMfHMgsJxLp/fiymV7FqhJNZ8kV8LTiVyWY+4Ev6DNLAQQnQgqDsdWoEaD9aRFguPFYoqaXigGnkhVne2x3GeMvBpA4umeWF39UNdzuaLhH/Ecn8jukv4UMCIDo8uFHr8S5H2LlvhCu3RXJp5XjWynQrrfKOzKLNo/iL1TF0Pm8vPkqs5JzLU+YXVKjjXk0TIb8PibPmae0NFPL1EUquRGGes1NAXvhYSjtWs24Rc6fmdMb+6WVviPKvR42KJ4RsHDqoHxY4bZ/zt4xpcZEBof3y52PLLaGba0eha2lB34Fm4pWQJ/i5sz/FSguilUhObMYeogouh2yXI1Db2WMmIsPspRy3grLlEl9b3grgPRS2LCzoU/gypB8EP1yvSIuHXD0K2LoMIXI2Kq/KIsJEIRuP+bifzyWYBBdL8AuW4ZjClpRgE9im2DF1Noo6i7UET4Kxcz2E6V5F4WgCvV7HB6TjwGFBT2A2lVlLzZZ8mQJzhipGJiWpYmICVStwfqkDOLORA5rBrFjQosImGBvDNKzCoDkHv8SADqG3kRbzkLFfmDMjeON0IDYfmHoYSE/Fu+914+w+mZDfyWJyR1mwV35zdnvMg7ofWTy9Rcn123gJIx0rr4LBbNrVbmzYE8eXTuy1rCc3qnZPPbknJLEzJ6DguENxb2ofgMPOFCdTHEzxoyXkgEso/y8K+PoPviRYvp4T3enJiQmQAZOgvPM2U9Xnmq+cLIKQ4xpzceK2jOFr+ZZdQEO+KUB02W0EO/I0yOiZ4Nhk5NmaOfWeevmJhrvEpfv011zWhTtEUMh9/KMsDBwCizdAjKp/
- AJBhlvx7
- d5Agk1qrHy7HWkXe0SnqDY4xSRwtfjzk2WJtnOkx26ZSj/qd7YyC5uskSvNYpDICfdSdifFQVMPr4boWAwcXcej6e3YTTk29pQMCVGJ/WOv4STp1VH2pyPIHDIEN2ZSfAK8pahyGLrkZpBhQ1OgeDvkiltQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791601247-747060
+X-HE-Meta: U2FsdGVkX1+x10jXd6q+t8yHTX4xptR5DZfAKYRAKMEO5HsL5GgEvfgt9N0ztqMJYeC7GHTaiqJ/yZxBzejGdwqFWyVRQ7tQhqMFOv9vJQr9OAVDPpm4VQN7/TTNUMl8dOgZdO+zQOq9lgTN58tD0QESLzT16t9C+Web3galtwvdsI7lug45Zb9Powz7rQdHtG1sBhCEdpxvwbCBuIiSoJAFSirYUqt3JbEXSaU+T/5zJrAPe18XxlUmp9XiiTSMX8vnXjkzYIWOOK7xqefI1adXfERunv+/xRAIM1yX72wVYfIwytUfONoirjcW/Ps6YDEpEoch+Qo9Ic1G1zyk9RgPBH2Hdlk/6C5TI0j34ia4msDdigmEHFdDOQH9vmQrAlsQkcVXGvk03bxiCK2sx6hZmdKq/AA1zwCPHGuCk3cBHqgNeSWgMPQdMwfrsEpHnXsJB/VUs+kt4hnktixA1SnplxIwgWkE2U6A+hayrzoAG32TP/AjgwMPr/owT5KmS08IXcmFifVprX6yPrWiG2TYp3vlRe2HeLPmRALHTVga8aLw4QhTeUpOGII+Siqxd733O0Fe3v3WwIo0YaIbzmQz40saF+m4Z/Bz15jc+oRfmIX2ZwrL0EUdtm4Yl+wmuFzISJSvrXJQUqqww6yN9xdcmDxJx8m3KmVZ6A3UVNEHj8V5CZD+ZSIAmPo6kfelfsqVAqpoKIx37xYu+8S3MgXEyQYl+/8n1dKx7IgL3/iK9Cc9D7odKnVgULtNkmi0eTyTsd9HrCmoZau/HHRLTsmvS4QHoQEuLruNgIIZCpXNFYkMvD3/RULg4cXGIIh8knQA4CxOak8i940oTrIqXstXvRlVlwF3VFZtBne9zcEnbe22TuEn60IxIMkBgL9IbMYVzlAospootgaE2r0/pt2uW7/0tguFZiusgNdSo9S1f61E/zLpJ4w74rblGRu/5oqpPLR73b+V0xhaH6y
+ 2iBzngnt
+ 7pJZsQRB/g+U5PEOjeokjpdJ7dppyekpvnjwthxmzjzmKWoWX0q5K0cTLAN/yEgKAvWJsez+1j+dHyNDqP0FrBMzvae85dPYc1jyvWE9CcSzfrS3CMNNpDcRZUjeSe33+cANkwBnajSf8voNDcqivEGlE0m02DwpYgvxQ4Mkj6ZA0G7Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -81,59 +84,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an RFC.
+The page_frag allocator backs sk_buff->head and the frags portion of
+skb_shared_info for the network stack and NIC drivers, but pages
+obtained from it are not accounted by any memory statistics counter.
+Unlike slab (NR_SLAB_*) or page_pool, page_frag pages are invisible
+to tools that derive "LostRAM =3D MemTotal - (sum of accounted memory)",
+which inflates LostRAM and makes memory diagnosis misleading.
 
-Pages held by the page_frag cache are not accounted by any memory
-statistics counter, so on systems that derive "LostRAM" as MemTotal
-minus the sum of accounted memory they inflate LostRAM and lead to
-misleading "leak" conclusions, even though the memory is legitimately
-used by the network path.
+Pages enter the cache through a single entry point,
+__page_frag_cache_refill(), so account them there.  Decrement when the
+cache page is freed via __page_frag_cache_drain() and page_frag_free().
 
-The page_frag allocator (page_frag_alloc / napi_alloc_frag /
-netdev_alloc_frag) backs sk_buff->head and the frags portion of
-skb_shared_info.  Unlike slab (NR_SLAB_*) or page_pool, page_frag
-pages have no counter.  A preliminary measurement on a 4K-page
-arm64 Android device shows 14432 kB (3608 pages) of page_frag
-pages already in use at boot, and the memory footprint grows
-larger under heavy load (e.g. sustained traffic through the
-virtio_net / tun receive paths).
+Expose the counter, in pages, as "nr_page_frag" in /proc/vmstat and
+"PageFrag" in /proc/meminfo so that page_frag memory is classified
+instead of being counted as LostRAM.
 
-Patch 1/1 adds an NR_PAGE_FRAG node counter and exposes it as
-nr_page_frag in /proc/vmstat and PageFrag in /proc/meminfo.  Pages
-enter the cache through a single entry point
-__page_frag_cache_refill(), so the increment side is complete; the
-decrements sit on the paths that free the cache page.
+Known limitation: a cache page handed over to an skb frags array is
+released via put_page() (kfree_skb -> __skb_frag_unref ->
+put_netmem -> put_page), bypassing page_frag_free(), so the counter
+can over-count under network load.  Covering that open release path
+requires marking the page and accounting at the common free path;
+that will be posted separately for discussion.
 
-The remaining gap is on the release side, which is open: a cache page
-handed to an skb frags array (skb_add_rx_frag() /
-skb_fill_page_desc(), without an extra get_page) is freed via
-put_page() (kfree_skb -> __skb_frag_unref -> put_netmem -> put_page),
-bypassing page_frag_free(), so the counter can over-count under
-network load.
+Verified on an arm64 Android device with 4K pages: at boot, PageFrag
+in /proc/meminfo reports 14432 kB, consistent with nr_page_frag
+(3608 pages) in /proc/vmstat.
 
-Closing that needs the page to carry a marker checked at the common
-free path, e.g. either
-
-  1. a page flag: PAGEFLAG(PageFrag, page_frag, PF_HEAD), accounted
-     and cleared in __free_pages_prepare(); or
-
-  2. a page type: PGTY_page_frag reusing _mapcount, accounted in
-     free_frozen_pages() (requires that page_frag pages are never
-     mapped into userspace; true for the current RX paths).
-
-With either variant, the per-path decrements of patch 1/1 would go
-away and only the increment would remain.  Which variant fits
-mainline better?
-
-Yifan Li (1):
-  mm: page_frag: account page_frag pages in vmstat and meminfo
-
+Signed-off-by: Yifan Li <liyifan21@xiaomi.com>
+---
  fs/proc/meminfo.c      |  1 +
  include/linux/mmzone.h |  1 +
  mm/page_frag_cache.c   | 14 ++++++++++++--
  mm/vmstat.c            |  1 +
  4 files changed, 15 insertions(+), 2 deletions(-)
 
+diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
+index b2813ff13..73241c3a3 100644
+--- a/fs/proc/meminfo.c
++++ b/fs/proc/meminfo.c
+@@ -108,6 +108,7 @@ static int meminfo_proc_show(struct seq_file *m, void *=
+v)
+        show_val_kb(m, "Slab:           ", sreclaimable + sunreclaim);
+        show_val_kb(m, "SReclaimable:   ", sreclaimable);
+        show_val_kb(m, "SUnreclaim:     ", sunreclaim);
++       show_val_kb(m, "PageFrag:       ", global_node_page_state(NR_PAGE_F=
+RAG));
+        seq_printf(m, "KernelStack:    %8lu kB\n",
+                   global_node_page_state(NR_KERNEL_STACK_KB));
+ #ifdef CONFIG_SHADOW_CALL_STACK
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 94f9c3ff5..636f6ecb7 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -333,6 +333,7 @@ enum node_stat_item {
+        NR_KERNEL_FILE_PAGES,
+        NR_GPU_ACTIVE,  /* Pages assigned to GPU objects */
+        NR_GPU_RECLAIM, /* Pages in shrinkable GPU pools */
++       NR_PAGE_FRAG,
+        NR_VM_NODE_STAT_ITEMS
+ };
+
+diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
+index e63efe78b..4f768093c 100644
+--- a/mm/page_frag_cache.c
++++ b/mm/page_frag_cache.c
+@@ -18,6 +18,7 @@
+ #include <linux/init.h>
+ #include <linux/mm.h>
+ #include <linux/page_frag_cache.h>
++#include <linux/vmstat.h>
+ #include "page_alloc.h"
+
+ static unsigned long encoded_page_create(struct page *page, unsigned int o=
+rder,
+@@ -67,6 +68,9 @@ static struct page *__page_frag_cache_refill(struct page_=
+frag_cache *nc,
+        nc->encoded_page =3D page ?
+                encoded_page_create(page, order, page_is_pfmemalloc(page)) =
+: 0;
+
++       if (page)
++               mod_node_page_state(page_pgdat(page), NR_PAGE_FRAG,
++                                   1L << order);
+        return page;
+ }
+
+@@ -85,8 +89,11 @@ void __page_frag_cache_drain(struct page *page, unsigned=
+ int count)
+ {
+        VM_BUG_ON_PAGE(page_ref_count(page) =3D=3D 0, page);
+
+-       if (page_ref_sub_and_test(page, count))
++       if (page_ref_sub_and_test(page, count)) {
++               mod_node_page_state(page_pgdat(page), NR_PAGE_FRAG,
++                                    -(1L << compound_order(page)));
+                free_frozen_pages(page, compound_order(page));
++       }
+ }
+ EXPORT_SYMBOL(__page_frag_cache_drain);
+
+@@ -165,7 +172,10 @@ void page_frag_free(void *addr)
+ {
+        struct page *page =3D virt_to_head_page(addr);
+
+-       if (unlikely(put_page_testzero(page)))
++       if (unlikely(put_page_testzero(page))) {
++               mod_node_page_state(page_pgdat(page), NR_PAGE_FRAG,
++                                    -(1L << compound_order(page)));
+                free_frozen_pages(page, compound_order(page));
++       }
+ }
+ EXPORT_SYMBOL(page_frag_free);
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index cb5771453..883137cb6 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1311,6 +1311,7 @@ const char * const vmstat_text[] =3D {
+        [I(NR_KERNEL_FILE_PAGES)]               =3D "nr_kernel_file_pages",
+        [I(NR_GPU_ACTIVE)]                      =3D "nr_gpu_active",
+        [I(NR_GPU_RECLAIM)]                     =3D "nr_gpu_reclaim",
++       [I(NR_PAGE_FRAG)]                       =3D "nr_page_frag",
+ #undef I
+
+        /* system-wide enum vm_stat_item counters */
 --
 2.46.0.windows.1
 
