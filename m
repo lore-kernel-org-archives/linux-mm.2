@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8942ECA6004
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 03:44:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7F1ECA6017
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 03:50:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75A286B0095; Fri,  9 Oct 2026 23:44:47 -0400 (EDT)
+	id 5B7026B0098; Fri,  9 Oct 2026 23:50:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70AAA6B0096; Fri,  9 Oct 2026 23:44:47 -0400 (EDT)
+	id 58E926B0099; Fri,  9 Oct 2026 23:50:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61FF56B0098; Fri,  9 Oct 2026 23:44:47 -0400 (EDT)
+	id 4CB996B009B; Fri,  9 Oct 2026 23:50:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 426286B0095
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:44:47 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C526AC072A
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:44:46 +0000 (UTC)
-X-FDA: 85305324972.16.F1E1A0F
-Received: from mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A5F12120004
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:44:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLC1yd49;
-	spf=pass (imf29.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 319A46B0098
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:50:42 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9458EC0737
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:50:41 +0000 (UTC)
+X-FDA: 85305339882.09.CFD1E00
+Received: from mta1.migadu.com (out-137.mta1.migadu.com [95.215.58.137])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8241CC0002
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:50:39 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oXXbzJ4J;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.137 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791604239;
+	b=gqA7QJvs0S2wJKZydnYIynRGJBuxUXcd+/cgryJL/tJef9qGos+g0eC45exil/8688PVfR
+	GH4RqIUYPdKuflftC3MD1zmFZe7vAz5Klt0sYIbigd/4qyF5tmR+JSD1r0Z2/BHsCbPfTl
+	hiMCIpHN+GeFJBb8YeBCIMQ/gffMxoo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oXXbzJ4J;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.137 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791603885;
+	s=arc-20220608; t=1791604239;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M9jIPl6+yPgGMdnU4k2Tdgn8WLjevkl4iMb4e9aDeR0=;
-	b=vjdE630b8FpTR18peVJQvuZQW85Z1t4xk1nQdi5hUGmvDNYpzX+V2nV315TQ5ih1y2CWna
-	/99eqAXU56IVgjuh8hTIBm92nRwpzwH+EQU759vZ+cVNgxsJ8RTgaVUvPzPt5amY3bFLii
-	IZAflndp4TQ+x1DteyqJQVI4vwDGP8w=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLC1yd49;
-	spf=pass (imf29.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791603885;
-	b=qK1vx3cetv0ZBL2VcPjmIos1AF87Iqg/ZSo+Yk6jCsqxcPcL0JNHph8R4w8g/hfVJeTmA6
-	GTSqRqhbifekNtoYm1ZHj1LiC1fOJ2Xu6TWfMEV3bq7CVW7EJIfQVoHDeuXR3UaFEnYZ5m
-	l8BnvW4BFJwmLAKSiZOxQ1BV/Z8JNfQ=
+	bh=RiOsm0VLiWvZ3CXjkpAdill8SJJnyR3xUUM9KZWiffY=;
+	b=xFvkTZXC/03hpNCg2gAx8kvh36JLt7I+I/ZfMHlr2yL10vsmpaisZHB6GcgUz+mBsanlnF
+	UUjwrkMawynPoHGT0fP/4eZQAc+MxBXDRhYJNM70D03C6vWmPuawmpOwIPPgFNqrDhJxb/
+	RrJF1azO3KLeks0X6ljzLXeJMjLQSmk=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=0fo0QMf0rjH7MV2/iuitzfDF1YtJ7sax/S4uxQhGa9o=;
+DKIM-Signature: a=rsa-sha256; bh=ejj+1mQ7GORhSID6jODIShDthWwWtiPSHyMLfZ3/AqU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791603883; v=1; x=1792208683;
- b=ZLC1yd49raPT2YE6fJK39fORSvmhoQ+qRo6TIfUNdICyeTRbOIPSyf7weuspuE38vRpSN4gb
- p6+0ej03LOD1jJNcm2KNzO7FGkozS57yvKefcmGG1STBSvbFYc8ZxVErWpNN3aCs/mFJRy4WJMv
- XBuUAQiDHwREqPS/v3U3almI=
+ t=1791604238; v=1; x=1792209038;
+ b=oXXbzJ4JEVIIlXmLSFRm9OK+stur3MstaTSM8R7gazaCRKIGrKwCfpn8L2p7Dj5L16p8FS71
+ p+ORylMMHzgTMoR/YNm9X2+lSyxkj632ly8gHzZ2g0ei1Jyxvu/lJPvz/2amZ+UA2nLFH41br1x
+ pIxXRgA80hDqODcHgG5tXZrI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 468dd143d2755872;
-	Sat, 10 Oct 2026 03:44:43 +0000
-X-Mizu-Trace-ID: 468dd143d2755872
+Received: by smtp.migadu.com with ESMTPS id 9484aa877343ee44;
+	Sat, 10 Oct 2026 03:50:15 +0000
+X-Mizu-Trace-ID: 9484aa877343ee44
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
@@ -68,8 +68,8 @@ Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
 Subject: Re: [PATCH 1/4] x86/mm: fix missing pgtable destructor for vmemmap
  tables
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <1a0f51d9-7931-45a3-ab36-e0642c199a37@kernel.org>
-Date: Sat, 10 Oct 2026 11:44:26 +0800
+In-Reply-To: <39ae6c48-7fcc-41d5-bfaf-fe626071861e@kernel.org>
+Date: Sat, 10 Oct 2026 11:49:57 +0800
 Cc: Muchun Song <songmuchun@bytedance.com>,
  akpm@linux-foundation.org,
  linux-mm@kvack.org,
@@ -98,21 +98,21 @@ Cc: Muchun Song <songmuchun@bytedance.com>,
  apopple@nvidia.com,
  linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <062E1067-B11D-4BF7-A2BA-C71B599A805C@linux.dev>
+Message-Id: <98481914-D123-4F58-97FA-C2F34469D34C@linux.dev>
 References: <20261008073021.2512665-1-songmuchun@bytedance.com>
  <20261008073021.2512665-2-songmuchun@bytedance.com>
- <ECC604FF-E74D-43B1-9105-A6683EEDE558@linux.dev>
- <1a0f51d9-7931-45a3-ab36-e0642c199a37@kernel.org>
+ <b8769c67-1683-4d84-94c9-916c305dafc0@kernel.org>
+ <39ae6c48-7fcc-41d5-bfaf-fe626071861e@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Stat-Signature: mnyfn588g9dqw1gbiomcz47c1yk8kt46
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A5F12120004
-X-Stat-Signature: ndp8mg35nczd7tpwhzi6itoiw55ged4c
-X-HE-Tag: 1791603884-69462
-X-HE-Meta: U2FsdGVkX1+dDGYAgTL9AZiGnRSKQ980FMFFl88pAIso9H1N/B2EVQxckqiVPaISa4DkWAG/qLEpNhME4sqILWR8m+SKVWhA0Z0Zjk8LIyY/1GGEfveG1u8wGedwcfbvtGxwUrWzpNTWxBIrfmJFv17MLP/DfKpLWp1l97n3rh1oaGLg3d1Om9whV8/3f7tsUC9mgkPWhHD0bU5LbQPR+td0aX2Yq12TQq7nd6jC7Jk3hsUHij+WON7NsfcsoDnu7QyKeUakJcoOpL0sJki2Doz+bOhQK0fAWIwNvMgqfNSFqxwlpvdztVyMvcemboo5+p0A4PTF4L+qWEYFibSjqK8ipIR3Pu8Fx1abOVUqAHKR1kRvfgJFJ7TuD2VXZqMb4hbUCuC6bUICaxh3x9QJgTsyHrHMf+P1fpuVQemSc5j8kH4SfyVQ6EpKMRfrT0UshRrGhd8sO1mphsz++vqRIQE175YmFjLxjOQxwgDDOxV1PUMG2wTuBgsq/lhupXi1Upqyg9XEAaaEk+RLeZrRWkAWjVTlv/N8/8fGxAoSltGKsHfBPHG5Agp9B0sBR94ww87Bpi6q4hVXfgngpygSf85OXVsjir8ec9uX+UYYhBoTOL7Q4v5FAOmKY8Dog/FF8fpumfi+nfKagzPbdG3ebQIRaY7PgMbSYT/ZolmXidEYtO8WaH9cLibBGEaC2DVTW9z7mBLYkXimJmxW+PTf+IIpfLl8g7q1bAniy2nMasr38xmP+bb2yPBb707qXajwu4xSjBfXc6hXbitD16oKcmfw0Pw8IaBlruSEF8ltfli2Aa0j9ftuPSXym6JZqL/WyY8F2jxn0bd28HiEAzK9jUhLM7mCBJ6HB4COmGGDPIpSqsj9Wdn1ZUm0hbQgYvrPddpCqvb2vQOI11eyCgDw7oWiGu2RxHNtW48FPjOhuxR+Fb9MxOCig6PvKXPgkbZ9M03moVWKKWLO3HeiQan
- V8naE5/3
- magOYq5azXKeS1/pscutww/2JMO9QpHqRUSwrCLRZbP5qU8zWOQ6a2151z6X4I3kztvGeC933jxv7O3Bu/qf7wOteOdzZqq5luLaeiWgz/TFc0lBeHgbO5VY2IWz0UhCoelu2C/9lMl9nAf/0rODbNMnS+9iIQb91exbHRZHlYuQ2Q+YerpCUdBNyCNq0JiUBsT8K8Tlcy9sLqoMnIBuv75tW4cMsd4h0rmmJBryoozFfoIP88n/v6sfR09wSAsMQJyGSTnGXfflascD42/AKsarekQ5xmNEjCeMYhaSVTgFPXHMJMhqtuuKSi8W+fZYMTsnO
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8241CC0002
+X-HE-Tag: 1791604239-96779
+X-HE-Meta: U2FsdGVkX1/t6KOJqW64BsXH3LnoX3EPIhst4Lw4BxfhNaSst4pI3KPbC6KM7D5hiHfnczJJ4tVUgMJ3ICL4HzJ/K9eKsojGhx7KT02gMcS+oMzZertE36UYflL7tuX31hlro9mvlgHuXoLphWHoLkVvYMIPDGDsz2BZLylcR0Q06cdUisDcR0KjcdMp6CU3YicPyl4VRPuuvYWmHTz7f9heQXuxOszTzLq7/wpXrD1DBlsHn2CqidITO/CEKMDegGc8KA01v9F40oribjyt3SMM5dSZ/dVUlQcYt2Mw0aSwUwNjkh2VoiDaVrgWL3jo9Fl/qK48mmJFUqlckP3sAaPZE+RdqZBU/JiCxRB9j4c68qEbumDXCnn8g+7Nq2GzcaPelsIB7akBQXCxRo8BmDxdkEOTYlgNmFnmfZBfkHZDEh+bErqhwyesBirJT0X4tajQNU0WNeKwz4JS1rMR1nVm/lG4sxM8kVAMto94//xV8gCDDOiqbbk7hkDdSOl+8+gR8bu2nbn3B95EFxRoz1Qguh1bpV9S0Xd/SteyPGhgc+PyHJPsOGfs5a0WI3aaXqQ5sFwnjL0zbJqgs8XYE+tr6At0Pw+P4wdWOmo2HHqaj5IKyRZztLrEfsKTdcRuDz7Y07G2UluwIc0wXNCHtHnH+y7uQPbs5rhGVAXhZ7Dr2Xb3XXecFafwBC3vklB+oJ6BwY0ELLoBEH7sMtYgPQ34NXVOtx1alINx52k6XpommoBQmkkeaG/8IKtCO4n0++in/zoAwPp7aHb24Z8IJRn+26p3yRJS2gWtIqa02j4uXwLJJKgELm8RnYD6bCHGQsjgZCsnavQd7V9A5YLp0CAbi67iWiR4mPu9+Q4SU+di2gvPGwvQQwU+AjNS0kv6P7QVQZD1gtSKib+GO7VV+aaHgBwzpZsGBjDd8rDrBfAL807+I5P+bDrHV/U0fJ1b9/nunA0zWBFzCjRvko/
+ BFaypvep
+ bFVx2Eywb0TxVb9VDHbwwZfvtDBu35L1XniS/qNuHG+3hi44dgljyZgfsmM/jomUVAIRcniF0dC/p9WXCV+7NmQ/1R2JsRjm0JzjXtfy+ajDI+0fqPnNA0pnMHIscpspISwFEgYpbWTXLQLmIZ4Rk9m41S/ae6a/CjJaaT2xRRN6gatijOqoH9g1yaG0NfhcbgiwvXmnVLJOpChJdkV7gobNJkCwznyvVDUd41Vcnlk1Jqy35FyFHIEsTk3pu12h/5as/6M6SftCsHfoYACTtORQkYndZNtC4frkrR+GJRZBJI1CnNUl8ZncpVg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,15 +122,11 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Oct 10, 2026, at 04:29, David Hildenbrand (Arm) <david@kernel.org> =
+> On Oct 10, 2026, at 04:36, David Hildenbrand (Arm) <david@kernel.org> =
 wrote:
 >=20
-> On 10/8/26 10:32, Muchun Song wrote:
->>=20
->>=20
->>> On Oct 8, 2026, at 09:30, Muchun Song <songmuchun@bytedance.com> =
-wrote:
->>>=20
+> On 10/9/26 22:33, David Hildenbrand (Arm) wrote:
+>> On 10/8/26 09:30, Muchun Song wrote:
 >>> Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
 >>> pte_alloc_one_kernel() runs the page-table constructor for kernel =
 PTE
@@ -168,23 +164,22 @@ page *page)
 >>> {
 >>> 	if (PageReserved(page))
 >>> 		free_reserved_page(page);
->>> +  	else if (PageTable(page))
->>> +  		pagetable_dtor_free(page_ptdesc(page));
+>>> + 	else if (PageTable(page))
+>>> + 		pagetable_dtor_free(page_ptdesc(page));
+>>> 	else
+>>> 		pagetable_free(page_ptdesc(page));
+>>> }
 >>=20
->> Sashiko mentioned that kernel page table pages and vmemmap pages are
->> freed to the buddy allocator before their parent entries are cleared
->> and before the TLB is flushed, creating a dangling pointer window.
->>=20
->> That's a a real but pre-existing issue, I will not fix that in this
->> series.
+>> pagetable_free() will do ptdesc_test_kernel(pt) -> =
+pagetable_free_kernel(pt) ->
+>> pagetable_dtor_free().
 >=20
-> Memory is getting removed, concurrent access to directmap+vmemmap is =
-not
-> expected unless BUG I think. That should make this less critical I =
-think ...
-> (except speculation? not sure if that applies)
+> Ah, behavior depends on CONFIG_ASYNC_KERNEL_PGTABLE_FREE$ ...
+>=20
+> Why not do the right thing in pagetable_free() instead?
 
-Agree. So, I will ignore this.
+Good point. More easy to this issue on different architecture. I'll fix
+pagetable_free next version.
 
 Thanks,
 Muchun
