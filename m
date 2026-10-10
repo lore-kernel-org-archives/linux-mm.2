@@ -4,126 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEF93CA9EBB
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 02:59:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F4ACA9EBB
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 03:00:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F96E6B0099; Fri,  9 Oct 2026 22:59:40 -0400 (EDT)
+	id 94E056B009D; Fri,  9 Oct 2026 23:00:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D1656B009B; Fri,  9 Oct 2026 22:59:40 -0400 (EDT)
+	id 924826B009E; Fri,  9 Oct 2026 23:00:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EAF76B009D; Fri,  9 Oct 2026 22:59:40 -0400 (EDT)
+	id 8625A6B009F; Fri,  9 Oct 2026 23:00:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E3A026B0099
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 22:59:39 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6F91F80704
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:59:39 +0000 (UTC)
-X-FDA: 85305211278.19.02D6379
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F1A13120004
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:59:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Ll9asCl7;
-	spf=pass (imf29.hostedemail.com: domain of yi1.lai@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791601177;
-	b=ESH3DG2MA/J+w2UdsJQh9lPbmne2d6zVxueB0ZiqPN4nOiyIfoMDXEQAv8CMKBw1mBqFgQ
-	E0rNSglml9u/ZU5XJ3eEOjZfdG/+/P42NsbVICh7aJP1DPe9cc1PecO1lEh1HGE8J2PXLY
-	I/X5GuDEGXnyuANwhye5Y/lwo/kJfCI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Ll9asCl7;
-	spf=pass (imf29.hostedemail.com: domain of yi1.lai@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B7DF6B009D
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:00:03 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E85B8A06F5
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:00:02 +0000 (UTC)
+X-FDA: 85305212244.06.E375494
+Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2C4161C0005
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:59:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf18.hostedemail.com: domain of liyifan21@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=liyifan21@xiaomi.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791601177;
+	s=arc-20220608; t=1791601201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=dNztIAkT027bgLvG/VQPdxghtem94iH2j1PE9vpwbWk=;
-	b=ALodl/tTn81Fvc0I7xuy31tyZ3pGhNfjLzh8SGiRXoNj/o9lVDvMtwnqpEeXk1DC8jrYii
-	Mfcra/R1uE0gxzhjPND3aTOFRIwNL9rpAZiyuNWvjCC42TvK+BW/dFnlP2WVtMvWA+hujS
-	vepKbH5MzTAY0eL81oc13P8uON45YQQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791601177; x=1823137177;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=Lmzi9xD+MtFDsvia7u2Hw0Yuu44BmeRtKvAQ5SQT7cY=;
-  b=Ll9asCl7J9FeNzw4ss6mw9sOis9ptCgIt/ckN2vz+/t/l+bgNb+E1kza
-   zOiMIoG52kzx62AwzrzpdjyE3vmU3yGM23vV6GKeiulf3wITwF/0tedvR
-   Fif3uCqUeBu4Sgy3R932Djjwxw6zl8ltzPAg5gtTz0KLiDHBFMx7zpjoV
-   BSmLZ7lsQscWUQmF4HX5UD4+kzEb/SZR19kotWv6UxVJr22JLa8rcnioa
-   nF9dWVKdUgOZmKGBuXkZAWFR57R4i9+5vOq+atPFZMjv92/ak4qapfn59
-   mWqQrYYmcYsNNcDHzhiiDGdyz70QPj0EMUDh65771yFlmgg/QIhkN7ft0
-   w==;
-X-CSE-ConnectionGUID: iILG23w+QuaImLRiVtTsDg==
-X-CSE-MsgGUID: zwR5Y4oBRbmSdKOXX81zXg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="297250"
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="297250"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 19:59:36 -0700
-X-CSE-ConnectionGUID: D0WT4WvpRAWa+I2cCRGTnA==
-X-CSE-MsgGUID: 5I+VBCSRRdyWLhvWpsksMw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="541414"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 19:59:27 -0700
-Date: Sat, 10 Oct 2026 10:59:24 +0800
-From: kernel test robot <yi1.lai@intel.com>
-To: Luigi Rizzo <lrizzo@google.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, netdev@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
-	Luigi Rizzo <lrizzo@google.com>, yi1.lai@intel.com
-Subject: Re: [RFC: DMA_PMD 02/22] iommu/dma: add DMA_PMD pool lifecycle and
- page recycle hook
-Message-ID: <202610101013.706708d0-lkp@intel.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=OQNG/phTTm96ATF0tafvn2UEonxEcGDzvpU6HVn7jkc=;
+	b=21U8pwBej4braRaFzR727k89lHOK8x7tABkjbP/nPTLqQmNmotsPnoLDOKrHC+AD7eSjRq
+	a4QGq4osfE2E7Vqe9LduLIEKKvYCK/brp8OU7MT6XYcaVKP/CnR5anxKqvNxjcAnSaVXWC
+	TbL6mD1/lG831wrX16uVUucpLSQRO+4=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf18.hostedemail.com: domain of liyifan21@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=liyifan21@xiaomi.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791601201;
+	b=sgd1dPqUrR+/2ytNJJg4QnTWSRp0tx3IasOhIZojWqFBn9WGs9fpWrEh6AqN2lRPS8e5GM
+	cemNPt3/eS5Vf8Tv+Mr1Wx/adJCeiRl697TEzBmugJKKWdMWuzL5qLY9bh8tcZFuC7wt9g
+	iriCh/6VEjMq5/mIymRDZFYytz82BM8=
+X-CSE-ConnectionGUID: OJS8ygc0S+aTURbj4RhksA==
+X-CSE-MsgGUID: aixXHEIASciLg0f986Qj+A==
+X-IronPort-AV: E=Sophos;i="6.27,149,1786982400"; 
+   d="scan'208";a="191389071"
+From: Yifan Li <liyifan21@xiaomi.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>
+CC: <linux-mm@kvack.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Yifan Li <liyifan21@xiaomi.com>
+Subject: [RFC PATCH 0/1] mm: page_frag: account page_frag pages in vmstat and meminfo
+Date: Sat, 10 Oct 2026 10:59:39 +0800
+Message-ID: <20261010025941.1253-1-liyifan21@xiaomi.com>
+X-Mailer: git-send-email 2.46.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261003212241.3432303-3-lrizzo@google.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F1A13120004
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [10.237.8.164]
+X-ClientProxiedBy: BJ-MBX02.mioffice.cn (10.237.8.122) To YZ-MBX01.mioffice.cn
+ (10.237.88.121)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2C4161C0005
 X-Rspam-User: 
-X-Stat-Signature: 4gcu1pngggd3utse7pfnij7gtbrwqe6q
-X-HE-Tag: 1791601176-653226
-X-HE-Meta: U2FsdGVkX1+UmPlb0V6pvdgExl9t7QispUs7n5z4K3SZiCRZMOcv+kdvzY4h10iM0sLFSL//+JXFOHHgkfCNUodHI6zOAQJeJyDHoGR08Z4iH4dakYDUwo4af2eIweVBod7zlLOdbFxUBl3N6rHUdJ2nkaQS/AbdPVZbKJ2FfMbU9on5oq1tM7RO9G0U8yKVuoxvfOZeLJxWfdaR0Ys+XVzx9j/sTsmgljZcGiVMuqBJC+e3q22ImFo70vNilF+/YslD+8vehqa234ppUV3XWWr1oRtQeWfTBld7aQZuAAUm1vff+d1gBs4cvdo2PkIv0J3qp5jkX9fUlm5HdVpRUrIxmRXChNxWQ36yo1dOSM1zSEJLCuWwThZ2m3jXIuyml2VagGTK7L9o9mkZRkgzk2CKSsgoZf1olujqeTe9HmmliogB87MZtNWL3Tm0DklQv1DAXks+BqO5o0gjCFbbKIsbROQngnJ2puSYQ3sy4k2Xzr8WE53z0S4Fgz2AT6174q53tORdp783KwACfFqIfsXxz1/mKvjyo2fq8LpkcvhGJYMBJ+uVVFpYYGSTpY+Df36NG2LfhALjigcKSxAQCTeMe/MwuAugYheL8hbZf4Ez1Rkfi5A0olkV5ffmTDjNaaUmkdTFBEh6hKhkmFqjhZ32CQd3J5D6LLL+TjXOAoA+z0BijXKPxPShspsvL9KelvzEuX3X1gYLNW75v2+1sOJOeRLxODWPVXDP1o6oUOyQaWGmd4MOhxEQwzpKpjVE8EpmLgdwltf645RiKx3IhN+9Lr9XLi5pvU4Hu0+LgvBcOEzmtvFBZGNkWq5IdNHqt8la4NJT+ob+NK1fKNalx+Yqxt+vTYqFin80gF2qciLIco2ADwQXOgj+0/GaQr3Qiz9tNFy6i1LPdsrjo3sV/rfFxQBtOvef0TOQGwxnXuM8NoLlUoabg0WI1C6mqt4DggFHdNmHqjijHVPSA74
- VWCP4k1d
- zrJtVmQp2hOt6XRHQLv6IFj3WS0o0/044IgX0jqxzaoMUl5O5mmZN+q9tnuucPd54HmFVMv8ksC5IqfTv9mmjzygu7QEU9qh36Z6qHIaxR2ceq+GzZgQOFq0lOo2SjG1hvDQQ3wNvwR+K3II2lLRvJAl8WbKYJCYDupmxYLiIGLQna0m3TaWzYNE5xpmYPH1d75kMKngqflcpDrD853BKGL1uwkZDYS0apQbRYrg2m/xsYNwowvS+eOnAUdiw/NL0rIMK3amtD0HKpO4auatNJe1IYciX0Dg3MFJxpvy2EbEWB37+PwGsJNOm8jwDylBxO32LBoo/BSwmSiFCZULyuN32LVu/KLYmUne9cU2D6WEmFQ/7Q+JcIsiJ0xbB3QWOuF6kjGoEnOzFzegAF6/x9fAmPwDayDh7lj6IpeWenKAu3nQtsRFu1sEU407B4Mlkj5ePphj428Y95e8/PIF0iB/LsqN7vIx7SsW7
+X-Stat-Signature: 5ds5upa1p5mpjr48me5i7fjyhs6z568r
+X-HE-Tag: 1791601198-944374
+X-HE-Meta: U2FsdGVkX18a43PFRfw4tRlEWex2U5ctLwkn4APNXLTQN1pPnwPnmzVWkNBa0PA1mIAr8x/PiFWc3ksVMhHtfgCKEjYK4NOvioFpwng3mP3zvCK9+4mLfjxMmTNajieAuQ7sSl5VIf00B1sAPWCfCBPCrI5RMfHMgsJxLp/fiymV7FqhJNZ8kV8LTiVyWY+4Ev6DNLAQQnQgqDsdWoEaD9aRFguPFYoqaXigGnkhVne2x3GeMvBpA4umeWF39UNdzuaLhH/Ecn8jukv4UMCIDo8uFHr8S5H2LlvhCu3RXJp5XjWynQrrfKOzKLNo/iL1TF0Pm8vPkqs5JzLU+YXVKjjXk0TIb8PibPmae0NFPL1EUquRGGes1NAXvhYSjtWs24Rc6fmdMb+6WVviPKvR42KJ4RsHDqoHxY4bZ/zt4xpcZEBof3y52PLLaGba0eha2lB34Fm4pWQJ/i5sz/FSguilUhObMYeogouh2yXI1Db2WMmIsPspRy3grLlEl9b3grgPRS2LCzoU/gypB8EP1yvSIuHXD0K2LoMIXI2Kq/KIsJEIRuP+bifzyWYBBdL8AuW4ZjClpRgE9im2DF1Noo6i7UET4Kxcz2E6V5F4WgCvV7HB6TjwGFBT2A2lVlLzZZ8mQJzhipGJiWpYmICVStwfqkDOLORA5rBrFjQosImGBvDNKzCoDkHv8SADqG3kRbzkLFfmDMjeON0IDYfmHoYSE/Fu+914+w+mZDfyWJyR1mwV35zdnvMg7ofWTy9Rcn123gJIx0rr4LBbNrVbmzYE8eXTuy1rCc3qnZPPbknJLEzJ6DguENxb2ofgMPOFCdTHEzxoyXkgEso/y8K+PoPviRYvp4T3enJiQmQAZOgvPM2U9Xnmq+cLIKQ4xpzceK2jOFr+ZZdQEO+KUB02W0EO/I0yOiZ4Nhk5NmaOfWeevmJhrvEpfv011zWhTtEUMh9/KMsDBwCizdAjKp/
+ AJBhlvx7
+ d5Agk1qrHy7HWkXe0SnqDY4xSRwtfjzk2WJtnOkx26ZSj/qd7YyC5uskSvNYpDICfdSdifFQVMPr4boWAwcXcej6e3YTTk29pQMCVGJ/WOv4STp1VH2pyPIHDIEN2ZSfAK8pahyGLrkZpBhQ1OgeDvkiltQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,113 +81,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is an RFC.
 
-Hello,
+Pages held by the page_frag cache are not accounted by any memory
+statistics counter, so on systems that derive "LostRAM" as MemTotal
+minus the sum of accounted memory they inflate LostRAM and lead to
+misleading "leak" conclusions, even though the memory is legitimately
+used by the network path.
 
-kernel test robot noticed "WARNING:at_kernel/workqueue.c:#alloc_workqueue_va" on:
+The page_frag allocator (page_frag_alloc / napi_alloc_frag /
+netdev_alloc_frag) backs sk_buff->head and the frags portion of
+skb_shared_info.  Unlike slab (NR_SLAB_*) or page_pool, page_frag
+pages have no counter.  A preliminary measurement on a 4K-page
+arm64 Android device shows 14432 kB (3608 pages) of page_frag
+pages already in use at boot, and the memory footprint grows
+larger under heavy load (e.g. sustained traffic through the
+virtio_net / tun receive paths).
 
-commit: 3311715530328ddf9249e312fa817c89b767fde9 ("[RFC: DMA_PMD 02/22] iommu/dma: add DMA_PMD pool lifecycle and page recycle hook")
-url: https://github.com/intel-lab-lkp/linux/commits/Luigi-Rizzo/iommu-dma-introduce-CONFIG_DMA_PMD-and-metadata-table/20261003-212220
-base: https://git.kernel.org/cgit/linux/kernel/git/akpm/mm.git mm-everything patch link: https://lore.kernel.org/all/20261003212241.3432303-3-lrizzo@google.com/
-patch subject: [RFC: DMA_PMD 02/22] iommu/dma: add DMA_PMD pool lifecycle and page recycle hook
+Patch 1/1 adds an NR_PAGE_FRAG node counter and exposes it as
+nr_page_frag in /proc/vmstat and PageFrag in /proc/meminfo.  Pages
+enter the cache through a single entry point
+__page_frag_cache_refill(), so the increment side is complete; the
+decrements sit on the paths that free the cache page.
 
-in testcase: boot
+The remaining gap is on the release side, which is open: a cache page
+handed to an skb frags array (skb_add_rx_frag() /
+skb_fill_page_desc(), without an extra get_page) is freed via
+put_page() (kfree_skb -> __skb_frag_unref -> put_netmem -> put_page),
+bypassing page_frag_free(), so the counter can over-count under
+network load.
 
-config: x86_64-rhel-9.4-rust
-compiler: clang-22
-test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 4 -m 16G
+Closing that needs the page to carry a marker checked at the common
+free path, e.g. either
 
-(please refer to attached dmesg/kmsg for entire log/backtrace)
+  1. a page flag: PAGEFLAG(PageFrag, page_frag, PF_HEAD), accounted
+     and cleared in __free_pages_prepare(); or
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <yi1.lai@intel.com>
-| Closes: https://lore.kernel.org/oe-lkp/202610101013.706708d0-lkp@intel.com
+  2. a page type: PGTY_page_frag reusing _mapcount, accounted in
+     free_frozen_pages() (requires that page_frag pages are never
+     mapped into userspace; true for the current RX paths).
 
+With either variant, the per-path decrements of patch 1/1 would go
+away and only the increment would remain.  Which variant fits
+mainline better?
 
-[    0.966875][    T1] ------------[ cut here ]------------
-[    0.972831][    T1] workqueue: dma_pmd is using neither WQ_PERCPU or WQ_UNBOUND. Setting WQ_PERCPU.
-[    0.978823][    T1] WARNING: kernel/workqueue.c:5939 at alloc_workqueue_va+0x75a/0x7c0, CPU#3: swapper/0/1
-[    0.983827][    T1] Modules linked in:
-[    0.985221][    T1] CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.3.0-rc5+ #1 PREEMPT(lazy)
-[    0.988734][    T1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[    0.991819][    T1] RIP: 0010:alloc_workqueue_va (workqueue.c:5938)
-[    0.993522][    T1] Code: 00 08 00 00 e8 40 08 f0 ff e9 cb f9 ff ff 0f 0b e9 cd fe ff ff 0f 0b e9 c6 fe ff ff 48 8d 3d 66 07 18 02 49 8d b6 b8 00 00 00 <67> 48 0f b9 3a 41 81 cc 00 01 00 00 e9 75 f9 ff ff 48 8d 3d 57 07
-All code
-========
-   0:	00 08                	add    %cl,(%rax)
-   2:	00 00                	add    %al,(%rax)
-   4:	e8 40 08 f0 ff       	call   0xfffffffffff00849
-   9:	e9 cb f9 ff ff       	jmp    0xfffffffffffff9d9
-   e:	0f 0b                	ud2
-  10:	e9 cd fe ff ff       	jmp    0xfffffffffffffee2
-  15:	0f 0b                	ud2
-  17:	e9 c6 fe ff ff       	jmp    0xfffffffffffffee2
-  1c:	48 8d 3d 66 07 18 02 	lea    0x2180766(%rip),%rdi        # 0x2180789
-  23:	49 8d b6 b8 00 00 00 	lea    0xb8(%r14),%rsi
-  2a:*	67 48 0f b9 3a       	ud1    (%edx),%rdi		<-- trapping instruction
-  2f:	41 81 cc 00 01 00 00 	or     $0x100,%r12d
-  36:	e9 75 f9 ff ff       	jmp    0xfffffffffffff9b0
-  3b:	48                   	rex.W
-  3c:	8d                   	.byte 0x8d
-  3d:	3d                   	.byte 0x3d
-  3e:	57                   	push   %rdi
-  3f:	07                   	(bad)
+Yifan Li (1):
+  mm: page_frag: account page_frag pages in vmstat and meminfo
 
-Code starting with the faulting instruction ===========================================
-   0:	67 48 0f b9 3a       	ud1    (%edx),%rdi
-   5:	41 81 cc 00 01 00 00 	or     $0x100,%r12d
-   c:	e9 75 f9 ff ff       	jmp    0xfffffffffffff986
-  11:	48                   	rex.W
-  12:	8d                   	.byte 0x8d
-  13:	3d                   	.byte 0x3d
-  14:	57                   	push   %rdi
-  15:	07                   	(bad)
-[    0.999820][    T1] RSP: 0000:ffffcb9d00013a90 EFLAGS: 00010246
-[    1.001542][    T1] RAX: 0000000000000000 RBX: ffff8b7380b46400 RCX: 33ebeeb162fc7d00
-[    1.004550][    T1] RDX: 0000000000000007 RSI: ffff8b7380b464b8 RDI: ffffffff8e484980
-[    1.006818][    T1] RBP: 0000000000000000 R08: 00000000646d705f R09: 000000000000000f
-[    1.008790][    T1] R10: ffff8b7381cec680 R11: ffffffff8ea6ca80 R12: 0000000000000008
-[    1.011630][    T1] R13: ffffffff8da42c29 R14: ffff8b7380b46400 R15: ffffcb9d00013b10
-[    1.013818][    T1] FS:  0000000000000000(0000) GS:ffff8b7721089000(0000) knlGS:0000000000000000
-[    1.016639][    T1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    1.018818][    T1] CR2: 0000000000000000 CR3: 00000003e4e20000 CR4: 00000000000406f0
-[    1.021819][    T1] Call Trace:
-[    1.022829][    T1]  <TASK>
-[    1.023829][    T1]  ? iommu_dma_forcedac_setup (dma-iommu.c:?)
-[    1.025515][    T1]  alloc_workqueue_noprof (workqueue.c:6049)
-[    1.026818][    T1]  ? blake2s_update (crypto/blake2s.c:131)
-[    1.028234][    T1]  ? intel_cleanup_irq_remapping (irq_remapping.c:?)
-[    1.029818][    T1]  dma_pmd_init (iommu/dma-pmd-pool.c:373)
-[    1.031195][    T1]  do_one_initcall (main.c:1358)
-[    1.032833][    T1]  ? get_random_u32 (char/random.c:396 char/random.c:541)
-[    1.033826][    T1]  ? __get_random_u32_below (char/random.c:555)
-[    1.036270][    T1]  ? alloc_from_new_slab (linux/spinlock.h:425 slub.c:4519)
-[    1.037829][    T1]  ? refill_objects (slub.c:7424)
-[    1.038818][    T1]  ? irqentry_exit (linux/irq-entry-common.h:539)
-[    1.040264][    T1]  ? asm_sysvec_apic_timer_interrupt (x86/include/asm/idtentry.h:674)
-[    1.045448][    T1]  ? parameq (params.c:91 params.c:99)
-[    1.046722][    T1]  ? parameq (linux/fortify-string.h:218 params.c:99)
-[    1.051786][    T1]  ? do_initcall_level (linux/srcutree.h:?)
-[    1.054571][    T1]  ? parse_args (params.c:153)
-[    1.056827][    T1]  do_initcall_level (main.c:1420)
-[    1.058834][    T1]  do_initcalls (main.c:1436)
-[    1.060827][    T1]  kernel_init_freeable (main.c:1671)
-[    1.063560][    T1]  ? rest_init (main.c:?)
-[    1.065827][    T1]  kernel_init (main.c:1561)
-[    1.067786][    T1]  ret_from_fork (x86/kernel/process.c:158)
-[    1.069828][    T1]  ? rest_init (main.c:?)
-[    1.072821][    T1]  ret_from_fork_asm (x86/entry/entry_64.S:245)
-[    1.074826][    T1]  </TASK>
-[    1.076251][    T1] ---[ end trace 0000000000000000 ]---
-
-
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20261010/202610101013.706708d0-lkp@intel.com
-
+ fs/proc/meminfo.c      |  1 +
+ include/linux/mmzone.h |  1 +
+ mm/page_frag_cache.c   | 14 ++++++++++++--
+ mm/vmstat.c            |  1 +
+ 4 files changed, 15 insertions(+), 2 deletions(-)
 
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.46.0.windows.1
 
-
+#/******=B1=BE=D3=CA=BC=FE=BC=B0=C6=E4=B8=BD=BC=FE=BA=AC=D3=D0=D0=A1=C3=D7=
+=B9=AB=CB=BE=B5=C4=B1=A3=C3=DC=D0=C5=CF=A2=A3=AC=BD=F6=CF=DE=D3=DA=B7=A2=CB=
+=CD=B8=F8=C9=CF=C3=E6=B5=D8=D6=B7=D6=D0=C1=D0=B3=F6=B5=C4=B8=F6=C8=CB=BB=F2=
+=C8=BA=D7=E9=A1=A3=BD=FB=D6=B9=C8=CE=BA=CE=C6=E4=CB=FB=C8=CB=D2=D4=C8=CE=BA=
+=CE=D0=CE=CA=BD=CA=B9=D3=C3=A3=A8=B0=FC=C0=A8=B5=AB=B2=BB=CF=DE=D3=DA=C8=AB=
+=B2=BF=BB=F2=B2=BF=B7=D6=B5=D8=D0=B9=C2=B6=A1=A2=B8=B4=D6=C6=A1=A2=BB=F2=C9=
+=A2=B7=A2=A3=A9=B1=BE=D3=CA=BC=FE=D6=D0=B5=C4=D0=C5=CF=A2=A1=A3=C8=E7=B9=FB=
+=C4=FA=B4=ED=CA=D5=C1=CB=B1=BE=D3=CA=BC=FE=A3=AC=C7=EB=C4=FA=C1=A2=BC=B4=B5=
+=E7=BB=B0=BB=F2=D3=CA=BC=FE=CD=A8=D6=AA=B7=A2=BC=FE=C8=CB=B2=A2=C9=BE=B3=FD=
+=B1=BE=D3=CA=BC=FE=A3=A1 This e-mail and its attachments contain confidenti=
+al information from XIAOMI, which is intended only for the person or entity=
+ whose address is listed above. Any use of the information contained herein=
+ in any way (including, but not limited to, total or partial disclosure, re=
+production, or dissemination) by persons other than the intended recipient(=
+s) is prohibited. If you receive this e-mail in error, please notify the se=
+nder by phone or email immediately and delete it!******/#
 
