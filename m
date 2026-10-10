@@ -4,99 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2ECECA9EBE
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 15:21:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2964ACA9EC1
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 15:36:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 378246B0088; Sat, 10 Oct 2026 11:21:55 -0400 (EDT)
+	id B83B56B0088; Sat, 10 Oct 2026 11:36:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3288A6B008A; Sat, 10 Oct 2026 11:21:55 -0400 (EDT)
+	id B35116B008A; Sat, 10 Oct 2026 11:36:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 217CE6B008C; Sat, 10 Oct 2026 11:21:55 -0400 (EDT)
+	id A22466B008C; Sat, 10 Oct 2026 11:36:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F02406B0088
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 11:21:54 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8461C07A9
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 15:21:52 +0000 (UTC)
-X-FDA: 85307081664.17.99B8AA3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C2960160002
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 15:21:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YlB0RSQ3;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 73BDA6B0088
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 11:36:23 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED39E405E0
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 15:36:22 +0000 (UTC)
+X-FDA: 85307118204.09.98B08DC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C4257100007
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 15:36:20 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JnpKtl1z;
+	spf=pass (imf14.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791646581;
+	b=iRXCWIu2tpRw1lbhH/uHnJfeJhDuEMC4HvYDnntfUGeVSsPU6WT7GowD925rT8wqeMUs1X
+	ghgmguN4+U2X3ue8ooHRVQctrKL0lvAhgvwU+9rW3Rsr1y2sXGJxH4+vfDO/H02we8Wcl6
+	x1APUtlrE/uGsjomZrzAzr2CYL4GHYs=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JnpKtl1z;
+	spf=pass (imf14.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791645710;
+	s=arc-20220608; t=1791646581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yVCmy9f7/nhqwyBbb2KH2ql3dyJAUCcc/ty4MtIkyWo=;
-	b=53gt++G/Vom7vmWkcGoe8fTPBqOMqt5LwwqNPtAl9A6IsX7BfJBTYUvKSsSt3R0+RCeYMl
-	C1c+Cezik8iEL0QSUvFI2VFno91MlnZ5vEQ6MNwiPXQC/zZ71T6gkSkSl0J8wKQCxu+snv
-	Sp4hwtOC4cJCN4dmHqlq6RasW4fuDFk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YlB0RSQ3;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791645710;
-	b=rzqquLXynoccl5RaRVNXzHlBiv04JALkAog9JTUHkx8jUKrXNXHSuRvS4B0OOUk5aB0gKa
-	m7qxFqfK03f3YlxAuW9V5G9ls43fQuiK6K4Ia2+845ZiRDIbDsnXj8wF4a1VhjaB2S/bme
-	E5uxXrPZqdgEkCXRsjkIO0eoMyT7yvk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 32E5940211
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 15:21:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DE91F000FF
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 15:21:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791645709;
-	bh=yVCmy9f7/nhqwyBbb2KH2ql3dyJAUCcc/ty4MtIkyWo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=YlB0RSQ3x+gZj5g/WlN0RgpHfeKcGT3gLqu7dDCpw9gSTwInhzU1f2IvXyoXMKLCo
-	 PKtu3fyWVh27ULs5aSie21QlUtI2JOAv6y8ayKRwEfU/x71Vbx/mAb3mEeyVg324uk
-	 ovMu/HY+FZfJ3dTpZCSD17qm/DeejYEL92l+CvQNBiSNYZdRDD8aRtxA2ljC162HWk
-	 BhFn3IzdFM/xgzce21WiopqFiRgaNL8Iveuh9LFLbUneMOvaLGC5h9wdtSRVGN4TfC
-	 C9Jf3tYKwSYQPvqgZubjghS2CSwK3e2EChm88lGZzIujOnEacw26DiHwuSJu4hyS0m
-	 +YgHRgWAWz0lg==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93e635220b9so44902185a.2
-        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:21:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByHRmh27mhlcNyqe3u0UCUFRoprcv3mC2J9x+lBnBVCu4TNsc0dUQJLUXFwa4puiW+zOBZdZBr/8g==@kvack.org
-X-Gm-Message-State: AFq9FYLVaXZ2CDojFUhyqle1uobQFSKspqOcfBad4zmb+vF5EFOcfxtY
-	bNj2cLjDbLlN4vSoOO3yU1Qp5em1WTyjIX8ZZv/TVOlzaslT4W22YS1mJeXilTPnDpuyoFwmC2p
-	IvxdPgGWrqpMCKzoBFSuuFIjJDtjrrO8=
-X-Received: by 2002:a05:620a:3728:b0:93e:c12c:f119 with SMTP id
- af79cd13be357-93ec12d0576mr764364185a.69.1791645708337; Sat, 10 Oct 2026
- 08:21:48 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Pq5FjxO/hkjNCAD7oK5Rp/29NdzYWJFKEWa0cRXpaC8=;
+	b=T2SRbqEMEUVifCPPawsLSQRWycuEGOta7Gv5OVNA4YAM8PGzD07HCy0cHqAr3fuJ71nKf/
+	Ydy3nre9/Y5cRHYiJq2g1BpFkpCXDKh3fJ3l5EO1fplWIzzWmNpJUDJCriAMZwUj4A8W9v
+	u+qQC69gZGEsWe6fmwO/iVmc8rzHDJo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791646580;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Pq5FjxO/hkjNCAD7oK5Rp/29NdzYWJFKEWa0cRXpaC8=;
+	b=JnpKtl1zH1bmA/bOIgnZznJSU4glqnCc0kIGxXqtw1D7Iby85JR16vFkVMYXjNmPOWblXG
+	oKWU0DcphfzDwPrxxS++aVxVsAcBv0P493JR7cnD2m/kcWcJNbuZytXkej+DgQvvRmXyim
+	pjr88i35fcCGR6tpVka947SeBI230Yg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-306-yCcSzwzVMb2LkUj1dszBRA-1; Sat,
+ 10 Oct 2026 15:36:16 +0000
+X-MC-Unique: yCcSzwzVMb2LkUj1dszBRA-1
+X-Mimecast-MFC-AGG-ID: yCcSzwzVMb2LkUj1dszBRA_1791646574
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1021C1955F7E;
+	Sat, 10 Oct 2026 15:36:14 +0000 (UTC)
+Received: from lcapitul-thinkpadt14gen3.rmtcaqc.csb (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7DAD018004D4;
+	Sat, 10 Oct 2026 15:36:10 +0000 (UTC)
+From: Luiz Capitulino <luizcap@redhat.com>
+To: x86@kernel.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	corbet@lwn.net,
+	rppt@kernel.org,
+	blum@kernel.org,
+	david@kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3] x86/corruption-check: Remove the BIOS memory corruption check feature
+Date: Sat, 10 Oct 2026 11:36:04 -0400
+Message-ID: <20261010153604.1885381-1-luizcap@redhat.com>
 MIME-Version: 1.0
-References: <20261010141057.599595-1-liuxiang.277@bytedance.com>
-In-Reply-To: <20261010141057.599595-1-liuxiang.277@bytedance.com>
-From: Barry Song <baohua@kernel.org>
-Date: Sat, 10 Oct 2026 23:21:34 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xxawPzb7MpmdNm9u-fgge3w49n-Cu026BpKYAUZZf=pA@mail.gmail.com>
-X-Gm-Features: AclHuK_An0Bs4sFN1u3GsKjmLeNq_6Cs8GACRNMMJL2VZeVjvrz0jj-Knms2-Cs
-Message-ID: <CAGsJ_4xxawPzb7MpmdNm9u-fgge3w49n-Cu026BpKYAUZZf=pA@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm: vmscan: avoid anon scanning for GFP_NOIO with low
- swapcache in MGLRU
-To: Xiang Liu <liuxiang.277@bytedance.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kasong@tencent.com, mhocko@kernel.org, 
-	hannes@cmpxchg.org, zhangbo56@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: o-vdZZ1hVCF4E5LPp4cu741AEzSn8n7uh6ezFEPukvw_1791646574
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C2960160002
-X-Stat-Signature: d6mrc59tojdwdnbmr4dqrxqn4x7r4fkm
-X-HE-Tag: 1791645710-78542
-X-HE-Meta: U2FsdGVkX185po4OwTV68c9RwpZ2KmadNUYHd95vsy12EOj5XK/pKuy8Q81MGOdzLZpEdpQmo2d0lxCv9UVJtTgAnzNqeYkS6GjvEP23+acJ36RDfi94/pDde3YcLwZ/i1T1/UQwEWNcot4y0KVtHFQX9HmV2zuVnSjbr1BslY99PMw5sPfg60vVg/tk247tLR2O5hakV2adCJGxdmwZp/yoOrzMAU3MVIlM+fo271hOXQn56Dx5Ib2QDjdKsy1zqiHX7i8WQ7nYj8S6pfdbeAA/W3Fm0DqaBDl7myyii9gCeDD3NSV11iL2TJZLksQxW4uBLQOyGqAzxygvcylI9Gcc/A7OEMo9Mig7+eJDp5jCK3sm9qkEQ55Koq2vkXo/xbLK96yyWVbhPh7ng08U8yz5t2HVDmBPFPzsAKvEFnxJRQe99YnLF2jia8Lh0RDL+/0M8JiVfE3R8Wn56E31d46uO8fqYCWSqjx/ErObuSCux/MI5LfsK0tj/Gsend2GuZRTgD/z+GW46ZITevMizRcRa7+UiGDcc5tIudJJsmY8U/vHXc+LU11UY2L965qx9o+E5pPzEpANSBQ8RC94O+O/jdfm/Q9YT42QAmiSkX/HYO7V/4Mkc2n7XSCv/+zTiXX/8+EQ19DHO6UIWwlMOckkuTTva/dlZRpfZKykc96fmRfzHxyis8sSJGNg+oFTlZJU64i2enS2m9h3gt6iKsBMWEgtztxH5iU4e38kLN1hmu1UcaHemuEHdPzsdcqawoLx61r5Fbtviwnid6IZ3kI1j1aDsQxpRzHriCkspCEHcfAwy3+zoNmTleNJK2Uv9Fe3JzljWl4+Hom5ilLGtn6MsJOi9L0+s3qLTnaErzXBdAlJ32Grx6GiDVwV7K0tbBsIp7LUWqnEDth1TK5VC6ILTalvvYRYl7Se018dqYpn1BE9djIqajB+RKwJus9sZbIxaibX/SLuVnC718A
- kC64G7/U
- jy5/UxEG7Lpjsb8xLCrZzQz5xASDMaNVQ7gTxG+hRqKRzHNpOG0XVWgETgiKHpX5+mCJ1LLAJwo1jX+KoM98rLVnu36hLQydJsmjZXFl8lTwVUyNAtJOxlExbKi+H2quONXTLDnQq0IY5spY7Ror7ahXuN7BAYB33wxyzPe5/mIAEge+7YKs5au6NemW5nktJ0Rae8bL3Ubj9ATPxJBmwT7c6/tCivngci4uoOhGIYT7IiY7ZFsZpBLcE1i2uqpPZ40rNyQXbvqoU5sNMP/BFiEaLcWpMEkNSamEEKH+D5XmJDQiWhDYSdCUemitA3mB+V3aTk3fH4ZS55YbR6KNyLMNV3vlrUuLPeO4VnnplLjwr6m9lBrNU03QF9o9/surX8YHFv609/jn5oSFVM6oh5yIIvRWUjGid6NuLVF451dtjpChd7kyBXGU938oRrYN7lJKUxPurvcbSGDvdjD+SFzw9Ag==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C4257100007
+X-Stat-Signature: 48ukb944icguo5wjx8e7b8gxk3s7k9sf
+X-HE-Tag: 1791646580-321241
+X-HE-Meta: U2FsdGVkX19K7P0z8H2/dBnTLGH81L/f2/2UE0cWDNctPgL+KsHZLp6Snaf3AB68KwXjBUCwLPy+ZHgTwqPcy2i9PimRpXrKuI455vvRkE6JbvdXCfzLKqLFAxzSZuL+7ZrBM0huHA4n6OjtKBQusGFgbpCvuWwcRPMLcO5e4hs//XEJzUxlIj23nJkapCK26bvV/aJmE26ebRMbiIZQl9bA3NdY1e4wx0IGxG9z50nKpFFD4T1t3LFNps3k5r76Q8NmMhsHEgEjTJSwlQJefdi348mB/OlCYQrfOle71goN9bTFqAA/2dqTqN6MDIN9IDPxPb58bCuo4cGTVs0f6Ffd/4tgSHWOGuTjpcQami1ua61IaDHwM2u7VGoinfcJBZC5qrtaBWi65gYNVXwQLOgXtFHSKhzBNCfqNm5fKUhn8AaX4jJkBr66r2x76oEXRbZLZyE357xF4SH7hU5sHUs01mXbVXK8Yambz8HqhyaZ+N76IdVhRUS6LRqDLgH+GavvnYRl1d1/ZKAen5BGlPLCqpcnOxZTm7BKkF1lSckMeNvdM1eATSqgxv6gyCQn/WoqVsoyKGcElk1Ync31P8xZ2EEs0AlP78OOIr3Crqb0L9cVBlVtne4hfrNrXxakf1Wg0qsZSqLF5BlS3IHYiGh9eOg5ykNfVheITcQTgyOErbL7qG5WBUzh1G1jvrsARg6frYsxHecdnDTKGSO5MspQmZm2HUwbOBgIGJzqAKXvwvNIFHTfUKvqmYh3vmrBwlkpZbK8tYikD7RRictk7GW7m+404fwQyREQdtdKGNG7BJeplu7anRAxQf1dwZ8IUtJH1kLdSOLDMdqjT3K8YjBDEbqcZp8Z9tqyuXt0H++l4oFxrgErgDXNo5uau9EA0EKhAcOVv1RAt6Wy/wTEyw9gUnfEow30E9fekqQ5IFrUh8vkFHXCYEdyJ+vpzApDmmz4Op4IF8QNMTrvP0T
+ /uA08h64
+ 6XEIbBkFGLiOdlfJqzcyoiQS7Kj1/riDEe37fJeI1ZsqDTsztVMHqCatekFqsK5uhwEF1XcO9meXPkNbywZWJwqYtCedz7xQ7OCSQPRMz8YAKnIwUgZLRS7wNi4pPmbvcnfL8TwCdJZXCPawjoeFFyHQIBh2PE7+UtqbPuUrQCdevbB3BqKBeLRhmAguKWrHFpw1zjUM4uHYlbdlmDMIoYrKScYRE0Bvc1xRF4EP/H4WBro7fGrZgYuV6t1e2ajfXOWfLAwwKPToMN4K+KQ7f7SATfrKr+QyG3ysrJ0Sw9g3Oh5+Kho2g5gUDo3X8CQnFUE+hOJE9hywmnYF9uoZYIxcnuaYjHFej2IYO2gHpMO7LH/7XWZDJe0Y/d9T5XCZfbSbqrSoQJEuqa3zHmmiTkm2ekg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,150 +111,421 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 10, 2026 at 10:11=E2=80=AFPM Xiang Liu <liuxiang.277@bytedance.=
-com> wrote:
->
-> Bo Zhang's GFP_NOIO patch [1] addressed anonymous scanning with low
-> swapcache in the traditional LRU and left MGLRU as a TODO. This patch
-> addresses that remaining case.
->
-> Under GFP_NOIO, anonymous folios requiring swap IO cannot be reclaimed.
-> When very few anonymous folios are already in swapcache, scanning anon
-> can spend substantial time isolating and processing folios with little
-> reclaim progress.
->
-> Apply the existing can_reclaim_anon_pages() check to MGLRU.
-> lruvec_is_sizable() excludes unavailable anon from its size estimate.
-> In try_to_shrink_lruvec(), file-only scan_swappiness is passed to
-> get_nr_to_scan(), should_run_aging() and evict_folios().
->
-> The tradeoff is synchronous aging. With four anon generations and two
-> file generations, advancing max_seq can require moving the oldest anon
-> folios to the next generation. This patch accepts that cost to avoid
-> low-yield anonymous scanning. It keeps the original swappiness in
-> try_to_inc_max_seq(), avoiding additional use of the inc_min_seq()
-> single-type shortcut that advances min_seq without processing the
-> oldest folios and can cause cold/hot inversions.
->
-> Tested against the mm-unstable base-commit below using dm-verity
-> hash-block reads through dm-bufio, with unchanged NOIO allocation flags.
->
-> Allocation time spans alloc_buffer() entry to return with valid buffer
-> and data. Reclaim time is the time spent in try_to_free_pages() within
-> that allocation. Eviction and aging are the time spent in evict_folios()
-> and try_to_inc_max_seq() within that reclaim.
->
-> 1. NOIO allocations under memory pressure
->
-> The workload triggered NOIO reclaim during dm-verity reads, with
-> generations allowed to evolve naturally. The table reports median
-> times for successful allocations that entered direct reclaim.
->
-> Time (ms, median)            Baseline  Patched
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D
-> Successful alloc_buffer()     181.196    0.465
-> Direct reclaim                181.185    0.131
-> Eviction within reclaim       179.147    0.091
->
-> 2. Synchronous-aging cost
->
-> Prepared four anon generations and two file generations, with zero
-> swapcache and pages in the oldest file generation. The tests varied
-> the oldest anon population to compare baseline eviction with patched
-> synchronous aging.
->
-> Each row reports a successful alloc_buffer() call and its reclaim
-> costs. Oldest anon is the measured population of the oldest generation.
->
-> Kernel    Oldest anon  Allocation   Reclaim  Eviction    Aging
->                 (MiB)        (ms)      (ms)      (ms)     (ms)
-> =3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D  =3D=
-=3D=3D=3D=3D=3D=3D
-> Baseline     1755.266     131.704   131.699   127.985    1.672
-> Patched      1840.422      38.316    38.311     0.307   37.785
-> Baseline     4835.418     681.796   681.766   675.477    4.382
-> Patched      4813.180      91.161    91.140     0.450   90.407
-> Baseline     8941.582    1474.245  1474.202  1469.084    0.488
-> Patched      9012.660     143.748   143.709     1.026  142.341
-> Baseline    13104.676    1098.372  1098.354  1087.976    2.307
-> Patched     13046.621     139.450   139.390     1.083  137.954
-> Baseline    17187.043    2694.909  2694.902  2686.470    0.784
-> Patched     17124.902     209.240   209.233     0.638  208.270
->
-> Across these tested sizes, synchronous aging was substantially cheaper
-> than baseline eviction, and successful allocation time decreased.
->
-> [1]
-> https://patchew.org/linux/20260908062649.1045883-1-zhangbo56@xiaomi.com/
->
-> Signed-off-by: Xiang Liu <liuxiang.277@bytedance.com>
-> ---
->  mm/vmscan.c | 26 ++++++++++++++++----------
->  1 file changed, 16 insertions(+), 10 deletions(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 29b31446fc11..550c16cad9f9 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -379,13 +379,6 @@ static inline bool reclaimable_anon_is_low(struct me=
-m_cgroup *memcg,
->         if (!sc || (sc->gfp_mask & __GFP_IO))
->                 return false;
->
-> -       /*
-> -        * FIXME: MGLRU doesn't fully respect can_reclaim_anon_pages() fo=
-r the
-> -        * scanning type, so only apply this to the traditional LRU for n=
-ow.
-> -        */
-> -       if (lru_gen_enabled())
-> -               return false;
-> -
->         if (memcg) {
->                 struct lruvec *lruvec =3D mem_cgroup_lruvec(memcg, pgdat)=
-;
->
-> @@ -4357,6 +4350,13 @@ static bool lruvec_is_sizable(struct lruvec *lruve=
-c, struct scan_control *sc)
->         unsigned long total;
->         int swappiness =3D get_swappiness(lruvec, sc);
->         struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> +       int nid =3D lruvec_pgdat(lruvec)->node_id;
-> +
-> +       if (swappiness && !can_reclaim_anon_pages(memcg, nid, sc)) {
-> +               if (swappiness =3D=3D SWAPPINESS_ANON_ONLY)
-> +                       return false;
-> +               swappiness =3D MIN_SWAPPINESS;
-> +       }
+By default, the BIOS memory corruption check works by reserving the
+first 64 KiB physical area from memblock, zeroing it and then scanning it
+periodically.
 
-Hi Xiang,
+However, this functionality has been broken in its default configuration
+since v5.13 by two commits:
 
-Thanks for your patch.
+- Commit a799c2bd29d1 ("x86/setup: Consolidate early memory reservations").
+  Moved trim_low_memory_range() into early_reserve_memory(), which runs
+  earlier in setup_arch(), causing the first 64 KiB to be reserved (when
+  CONFIG_X86_RESERVE_LOW=64) before setup_bios_corruption_check() runs
 
-I'm not a fan of this fix, as setting
-scan_swappiness =3D MIN_SWAPPINESS will force a cold/hot
-inversion for anonymous folios.
+- Commit f1d4d47c5851 ("x86/setup: Always reserve the first 1M of RAM").
+  Hardcodes the reservation of the first 64 KiB early in
+  early_reserve_memory()
 
-static bool inc_min_seq(struct lruvec *lruvec, int type, int
-swappiness)
-{
-        ...
+It might be possible to get the default case to work by allowing
+setup_bios_corruption_check() to run first, but it's just not worth it
+given that the kernel will never access the first 64 KiB area anyway.
 
-        /* For file type, skip the check if swappiness is anon only */
-        if (type && (swappiness =3D=3D SWAPPINESS_ANON_ONLY))
-                goto done;
+Lastly, note that it's possible to get the corruption check to work with
+a different region by passing memory_corruption_check_size=. However,
+the main goal of the feature was to check the first 64 KiB. Besides,
+the region picked will be almost random as setup_bios_corruption_check()
+will pick a region by size.
 
-        /* For anon type, skip the check if swappiness is zero (file
-only) */
-        if (!type && !swappiness)
-                goto done;
-        ...
-}
+Acked-by: H. Peter Anvin <hpa@zytor.com>
+Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+---
 
-We should try to avoid this.
+Notes:
+  - Posting late in the cycle, but this is not urgent
+  - v2 was mangled by my MUA and did not apply, the diff is unchanged
 
-Best Regards
-Barry
+v3
+  - Updated changelog to emphasize that the default configuration is broken
+    (Thorsten)
+  - Improved subject prefix
+  - Resending on top of latest Linus tree
+
+v2
+  - Rebased against latest Linus tree (v7.2-rc4)
+  - Improved changelog
+
+ .../admin-guide/kernel-parameters.txt         |  23 ---
+ arch/x86/Kconfig                              |  30 ---
+ arch/x86/configs/i386_defconfig               |   1 -
+ arch/x86/configs/x86_64_defconfig             |   1 -
+ arch/x86/include/asm/bios_ebda.h              |  17 --
+ arch/x86/include/asm/setup.h                  |   1 -
+ arch/x86/kernel/Makefile                      |   2 -
+ arch/x86/kernel/check.c                       | 187 ------------------
+ arch/x86/kernel/setup.c                       |   4 -
+ 9 files changed, 266 deletions(-)
+ delete mode 100644 arch/x86/kernel/check.c
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index e75344f4e0cd..a7f7667d307d 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3984,29 +3984,6 @@ Kernel parameters
+ 			specified as e820 types, e.g., 1 = RAM, 2 = reserved,
+ 			3 = ACPI, 12 = PRAM.
+ 
+-	memory_corruption_check=0/1 [X86,EARLY]
+-			Some BIOSes seem to corrupt the first 64k of
+-			memory when doing things like suspend/resume.
+-			Setting this option will scan the memory
+-			looking for corruption.  Enabling this will
+-			both detect corruption and prevent the kernel
+-			from using the memory being corrupted.
+-			However, it's intended as a diagnostic tool; if
+-			repeatable BIOS-originated corruption always
+-			affects the same memory, you can use memmap=
+-			to prevent the kernel from using that memory.
+-
+-	memory_corruption_check_size=size [X86,EARLY]
+-			By default it checks for corruption in the low
+-			64k, making this memory unavailable for normal
+-			use.  Use this parameter to scan for
+-			corruption in more or less memory.
+-
+-	memory_corruption_check_period=seconds [X86,EARLY]
+-			By default it checks for corruption every 60
+-			seconds.  Use this parameter to check at some
+-			other rate.  0 disables periodic checking.
+-
+ 	memory_hotplug.memmap_on_memory
+ 			[KNL,X86,ARM] Boolean flag to enable this feature.
+ 			Format: {on | off (default)}
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 15fd9ec5ecac..4ae227dd29d0 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1605,36 +1605,6 @@ config X86_PMEM_LEGACY
+ 
+ 	  Say Y if unsure.
+ 
+-config X86_CHECK_BIOS_CORRUPTION
+-	bool "Check for low memory corruption"
+-	help
+-	  Periodically check for memory corruption in low memory, which
+-	  is suspected to be caused by BIOS.  Even when enabled in the
+-	  configuration, it is disabled at runtime.  Enable it by
+-	  setting "memory_corruption_check=1" on the kernel command
+-	  line.  By default it scans the low 64k of memory every 60
+-	  seconds; see the memory_corruption_check_size and
+-	  memory_corruption_check_period parameters in
+-	  Documentation/admin-guide/kernel-parameters.rst to adjust this.
+-
+-	  When enabled with the default parameters, this option has
+-	  almost no overhead, as it reserves a relatively small amount
+-	  of memory and scans it infrequently.  It both detects corruption
+-	  and prevents it from affecting the running system.
+-
+-	  It is, however, intended as a diagnostic tool; if repeatable
+-	  BIOS-originated corruption always affects the same memory,
+-	  you can use memmap= to prevent the kernel from using that
+-	  memory.
+-
+-config X86_BOOTPARAM_MEMORY_CORRUPTION_CHECK
+-	bool "Set the default setting of memory_corruption_check"
+-	depends on X86_CHECK_BIOS_CORRUPTION
+-	default y
+-	help
+-	  Set whether the default state of memory_corruption_check is
+-	  on or off.
+-
+ config MTRR
+ 	def_bool y
+ 	prompt "MTRR (Memory Type Range Register) support" if EXPERT
+diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
+index 79fa38ca954d..848c2d924668 100644
+--- a/arch/x86/configs/i386_defconfig
++++ b/arch/x86/configs/i386_defconfig
+@@ -36,7 +36,6 @@ CONFIG_PARAVIRT=y
+ CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS=y
+ CONFIG_X86_MSR=y
+ CONFIG_X86_CPUID=y
+-CONFIG_X86_CHECK_BIOS_CORRUPTION=y
+ # CONFIG_MTRR_SANITIZER is not set
+ CONFIG_EFI=y
+ CONFIG_EFI_STUB=y
+diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
+index 269f7d808be4..e05d67f708cb 100644
+--- a/arch/x86/configs/x86_64_defconfig
++++ b/arch/x86/configs/x86_64_defconfig
+@@ -35,7 +35,6 @@ CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS=y
+ CONFIG_X86_MSR=y
+ CONFIG_X86_CPUID=y
+ CONFIG_NUMA=y
+-CONFIG_X86_CHECK_BIOS_CORRUPTION=y
+ # CONFIG_MTRR_SANITIZER is not set
+ CONFIG_EFI=y
+ CONFIG_EFI_STUB=y
+diff --git a/arch/x86/include/asm/bios_ebda.h b/arch/x86/include/asm/bios_ebda.h
+index 4d5a17e2febe..2f441fd9ebf8 100644
+--- a/arch/x86/include/asm/bios_ebda.h
++++ b/arch/x86/include/asm/bios_ebda.h
+@@ -20,21 +20,4 @@ static inline unsigned int get_bios_ebda(void)
+ 
+ void reserve_bios_regions(void);
+ 
+-#ifdef CONFIG_X86_CHECK_BIOS_CORRUPTION
+-/*
+- * This is obviously not a great place for this, but we want to be
+- * able to scatter it around anywhere in the kernel.
+- */
+-void check_for_bios_corruption(void);
+-void start_periodic_check_for_corruption(void);
+-#else
+-static inline void check_for_bios_corruption(void)
+-{
+-}
+-
+-static inline void start_periodic_check_for_corruption(void)
+-{
+-}
+-#endif
+-
+ #endif /* _ASM_X86_BIOS_EBDA_H */
+diff --git a/arch/x86/include/asm/setup.h b/arch/x86/include/asm/setup.h
+index 895d09faaf83..cd042752e6ce 100644
+--- a/arch/x86/include/asm/setup.h
++++ b/arch/x86/include/asm/setup.h
+@@ -42,7 +42,6 @@ static inline void vsmp_init(void) { }
+ 
+ struct pt_regs;
+ 
+-void setup_bios_corruption_check(void);
+ void early_platform_quirks(void);
+ 
+ extern unsigned long saved_video_mode;
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index 31f46fd00527..702536938433 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -149,8 +149,6 @@ obj-$(CONFIG_JAILHOUSE_GUEST)	+= jailhouse.o
+ obj-$(CONFIG_EISA)		+= eisa.o
+ obj-$(CONFIG_PCSPKR_PLATFORM)	+= pcspeaker.o
+ 
+-obj-$(CONFIG_X86_CHECK_BIOS_CORRUPTION) += check.o
+-
+ obj-$(CONFIG_OF)			+= devicetree.o
+ obj-$(CONFIG_UPROBES)			+= uprobes.o
+ 
+diff --git a/arch/x86/kernel/check.c b/arch/x86/kernel/check.c
+deleted file mode 100644
+index 5136e6818da8..000000000000
+--- a/arch/x86/kernel/check.c
++++ /dev/null
+@@ -1,187 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+-
+-#include <linux/init.h>
+-#include <linux/sched.h>
+-#include <linux/kthread.h>
+-#include <linux/workqueue.h>
+-#include <linux/memblock.h>
+-
+-#include <asm/proto.h>
+-#include <asm/setup.h>
+-
+-/*
+- * Some BIOSes seem to corrupt the low 64k of memory during events
+- * like suspend/resume and unplugging an HDMI cable.  Reserve all
+- * remaining free memory in that area and fill it with a distinct
+- * pattern.
+- */
+-#define MAX_SCAN_AREAS	8
+-
+-static int __read_mostly memory_corruption_check = -1;
+-
+-static unsigned __read_mostly corruption_check_size = 64*1024;
+-static unsigned __read_mostly corruption_check_period = 60; /* seconds */
+-
+-static struct scan_area {
+-	u64 addr;
+-	u64 size;
+-} scan_areas[MAX_SCAN_AREAS];
+-static int num_scan_areas;
+-
+-static __init int set_corruption_check(char *arg)
+-{
+-	ssize_t ret;
+-	unsigned long val;
+-
+-	if (!arg) {
+-		pr_err("memory_corruption_check config string not provided\n");
+-		return -EINVAL;
+-	}
+-
+-	ret = kstrtoul(arg, 10, &val);
+-	if (ret)
+-		return ret;
+-
+-	memory_corruption_check = val;
+-
+-	return 0;
+-}
+-early_param("memory_corruption_check", set_corruption_check);
+-
+-static __init int set_corruption_check_period(char *arg)
+-{
+-	ssize_t ret;
+-	unsigned long val;
+-
+-	if (!arg) {
+-		pr_err("memory_corruption_check_period config string not provided\n");
+-		return -EINVAL;
+-	}
+-
+-	ret = kstrtoul(arg, 10, &val);
+-	if (ret)
+-		return ret;
+-
+-	corruption_check_period = val;
+-	return 0;
+-}
+-early_param("memory_corruption_check_period", set_corruption_check_period);
+-
+-static __init int set_corruption_check_size(char *arg)
+-{
+-	char *end;
+-	unsigned size;
+-
+-	if (!arg) {
+-		pr_err("memory_corruption_check_size config string not provided\n");
+-		return -EINVAL;
+-	}
+-
+-	size = memparse(arg, &end);
+-
+-	if (*end == '\0')
+-		corruption_check_size = size;
+-
+-	return (size == corruption_check_size) ? 0 : -EINVAL;
+-}
+-early_param("memory_corruption_check_size", set_corruption_check_size);
+-
+-
+-void __init setup_bios_corruption_check(void)
+-{
+-	phys_addr_t start, end;
+-	u64 i;
+-
+-	if (memory_corruption_check == -1) {
+-		memory_corruption_check =
+-#ifdef CONFIG_X86_BOOTPARAM_MEMORY_CORRUPTION_CHECK
+-			1
+-#else
+-			0
+-#endif
+-			;
+-	}
+-
+-	if (corruption_check_size == 0)
+-		memory_corruption_check = 0;
+-
+-	if (!memory_corruption_check)
+-		return;
+-
+-	corruption_check_size = round_up(corruption_check_size, PAGE_SIZE);
+-
+-	for_each_free_mem_range(i, NUMA_NO_NODE, MEMBLOCK_NONE, &start, &end,
+-				NULL) {
+-		start = clamp_t(phys_addr_t, round_up(start, PAGE_SIZE),
+-				PAGE_SIZE, corruption_check_size);
+-		end = clamp_t(phys_addr_t, round_down(end, PAGE_SIZE),
+-			      PAGE_SIZE, corruption_check_size);
+-		if (start >= end)
+-			continue;
+-
+-		memblock_reserve(start, end - start);
+-		scan_areas[num_scan_areas].addr = start;
+-		scan_areas[num_scan_areas].size = end - start;
+-
+-		/* Assume we've already mapped this early memory */
+-		memset(__va(start), 0, end - start);
+-
+-		if (++num_scan_areas >= MAX_SCAN_AREAS)
+-			break;
+-	}
+-
+-	if (num_scan_areas)
+-		pr_info("Scanning %d areas for low memory corruption\n", num_scan_areas);
+-}
+-
+-
+-static void check_for_bios_corruption(void)
+-{
+-	int i;
+-	int corruption = 0;
+-
+-	if (!memory_corruption_check)
+-		return;
+-
+-	for (i = 0; i < num_scan_areas; i++) {
+-		unsigned long *addr = __va(scan_areas[i].addr);
+-		unsigned long size = scan_areas[i].size;
+-
+-		for (; size; addr++, size -= sizeof(unsigned long)) {
+-			if (!*addr)
+-				continue;
+-			pr_err("Corrupted low memory at %p (%lx phys) = %08lx\n", addr, __pa(addr), *addr);
+-			corruption = 1;
+-			*addr = 0;
+-		}
+-	}
+-
+-	WARN_ONCE(corruption, KERN_ERR "Memory corruption detected in low memory\n");
+-}
+-
+-static void check_corruption(struct work_struct *dummy);
+-static DECLARE_DELAYED_WORK(bios_check_work, check_corruption);
+-
+-static void check_corruption(struct work_struct *dummy)
+-{
+-	check_for_bios_corruption();
+-	schedule_delayed_work(&bios_check_work,
+-		round_jiffies_relative(corruption_check_period*HZ));
+-}
+-
+-static int start_periodic_check_for_corruption(void)
+-{
+-	if (!num_scan_areas || !memory_corruption_check || corruption_check_period == 0)
+-		return 0;
+-
+-	pr_info("Scanning for low memory corruption every %d seconds\n", corruption_check_period);
+-
+-	/* First time we run the checks right away */
+-	schedule_delayed_work(&bios_check_work, 0);
+-
+-	return 0;
+-}
+-device_initcall(start_periodic_check_for_corruption);
+-
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index cda6adb9f69c..c579c010ae54 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1108,10 +1108,6 @@ void __init setup_arch(char **cmdline_p)
+ 	/* preallocate 4k for mptable mpc */
+ 	e820__memblock_alloc_reserved_mpc_new();
+ 
+-#ifdef CONFIG_X86_CHECK_BIOS_CORRUPTION
+-	setup_bios_corruption_check();
+-#endif
+-
+ #ifdef CONFIG_X86_32
+ 	printk(KERN_DEBUG "initial memory mapped: [mem 0x00000000-%#010lx]\n",
+ 			(max_pfn_mapped<<PAGE_SHIFT) - 1);
+-- 
+2.55.0
+
 
