@@ -4,110 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 942D5CA6004
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 03:10:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71EFCCA9EBE
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 03:14:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51B8E6B008A; Fri,  9 Oct 2026 23:10:50 -0400 (EDT)
+	id 598676B008C; Fri,  9 Oct 2026 23:14:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CC8B6B008C; Fri,  9 Oct 2026 23:10:50 -0400 (EDT)
+	id 548926B0095; Fri,  9 Oct 2026 23:14:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36D9E6B0095; Fri,  9 Oct 2026 23:10:50 -0400 (EDT)
+	id 410436B0096; Fri,  9 Oct 2026 23:14:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F106A6B008C
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:10:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5CDB71A06E6
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:10:49 +0000 (UTC)
-X-FDA: 85305239418.10.CB39E0E
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AB324C0003
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:10:46 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gHGcEDFt;
-	spf=pass (imf22.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1703E6B008C
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:14:24 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F307C16072A
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:14:22 +0000 (UTC)
+X-FDA: 85305248364.15.5A9E667
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 525F740005
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:14:21 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Oc1T4x/g";
+	spf=pass (imf17.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791601847;
-	b=66Ljt/SXrjtdoQ3MGu88/PceV76sQFjHyGmtSdX/z4GE5uxzhzWNARnpUQw6Vf+9CgkwoO
-	omAAGPPdAHVL9aRPVDwEl/TAt+ofyUQ85eJbCadXSfwD/mquP92t1aGweUxwf9nZ251P0I
-	A5mEBiCvoiW5d+d+jcYFFzu2ys57FI8=
+	t=1791602061;
+	b=bEEw7yxgTmE+1m86Q0bmMXtPg9XGtXwcfukrNGhR854/JlkSdM/j3QwmmlJkA3Ax5Erbqu
+	9ZMdv07ZxxwzzXFPfqD4yu6SnrhUN7I3dAMGV82f2C+4PynM9o6elLjnM+ZTVUDAk8X/16
+	84lu4+CuQWhtcQgwM0nJSsOnp1tFKrg=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gHGcEDFt;
-	spf=pass (imf22.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Oc1T4x/g";
+	spf=pass (imf17.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791601847;
+	s=arc-20220608; t=1791602061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nBo3sJEODtnP3NVCGB9iUPQRQxcPlnbM5JA6/Xcx3pA=;
-	b=R67e6pTMrWNw4JFipu93c2CKt0ohZhl7LEKKnqsNd1ZkB1ItgdVI1viE7/WNUJqMeQiUgX
-	5qO816szhiFA1B4FYucIyC8qrhwMp0dkucTqd3+nCr+PY8uCroZJRQo4h8oLvd/4Q0KYvo
-	rR+doJXzvVrjqyq4PFrZbkiDTWN0PQk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791601847; x=1823137847;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=bVpuCD+EEZtnTq1oyDHFaTpdSs9eU79YhNwzhyjvIh4=;
-  b=gHGcEDFtEVOke+uiRM7ZBZf4yME3kBUWjOD+8/z79g1JWFX1oz5amoOF
-   mC5Pq8TWjCfy06XOYYLWMyfgOASLyjxF732oVd9FoZb5XJHTIoOgpAhLQ
-   oOAvw83i28AWJH2q77IQOJLgbNqTu6Dkao9Zue7cMH5v6/GQ3RazoPv48
-   bX6Ahtqe6VE43ajdasB075r0dHb36chuidxQimqRocSKCzQIj85/FSDnI
-   LjdKsFKx6EP7dS47iDg7zRpDt965gr4XwBKt4+ixjUNX8CuYEyLgj2KXj
-   7tmfQ5GC8sCYqHkKEmfb8dh+BstuSxhH7qpkJYiLGGXR0iA9IP9B1DYi6
-   A==;
-X-CSE-ConnectionGUID: t1W52NnPSP+RIIuDJ2dcDg==
-X-CSE-MsgGUID: o0QOrzx2Rx+24s6DGhay9w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="289235"
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="289235"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 20:10:46 -0700
-X-CSE-ConnectionGUID: l/p3fCV8TeqJxJx4GcL7bw==
-X-CSE-MsgGUID: 91kFolfjSxi5/SIbMZm+Ng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="2283965"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 20:10:41 -0700
-Date: Sat, 10 Oct 2026 11:10:38 +0800
-From: kernel test rebot <yi1.lai@intel.com>
+	bh=yx/JVeS1tmYz5AP+LsJLVcBiKsmoT3twRZPPXFAPFaI=;
+	b=HlnoAHKovaREUYhkXEgqP3K6XRPmTsCOc13v5QVNXHGNuAG2LP0VYQFZviiXZ0C9zB8D1h
+	aFcg1jCT7dLwrMKEbmh6lUZECg9xT/2nOblxBtPXYO0zgY6+ztLo854UJ9K2lqc77/Cj74
+	PNjRtVrOf0to7f8jpL2DsBKkH2MCFkY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 85712401D2;
+	Sat, 10 Oct 2026 03:14:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B551F000FF;
+	Sat, 10 Oct 2026 03:14:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791602060;
+	bh=yx/JVeS1tmYz5AP+LsJLVcBiKsmoT3twRZPPXFAPFaI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Oc1T4x/g5lQjaBIT/nueAYeZavtGP25+leC8be+gNguhGbZjR6bQbufUOCFqkGJse
+	 fZfUGdwCrIvpkUvDT/bELtH+vWc7VCf8BIbqu3Y0DyABc/Yxaz4t0+VeFClAM5baES
+	 PEo323XO8rYESGmi6Y2zH0mJ5kJHZrUfPOO9FAz1cjpGA/0gM0AagD/iwfcZxxgbby
+	 OBTJyyRUkt884jgmmXoGZRJsXiiM+/SzsSRQ68LVNndJ02kfx9gF9dOaGpNqRkEJua
+	 41Hov7gvPXLYJMP6HGMp+vHU0iagrg8j2hCnI+lEhujPCNEIQEfQxNbauTe9p+WZRJ
+	 /73/mYX4wJAEw==
+Date: Fri, 9 Oct 2026 20:14:20 -0700
+From: Kees Cook <kees@kernel.org>
 To: Harry Yoo <harry@kernel.org>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-mm@kvack.org,
-	Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>,
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	maple-tree@lists.infradead.org,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [harry:b4/sheaf-size-round-up] [mm/slab]  ddf56dfc79:
- will-it-scale.per_process_ops 54.5% improvement
-Message-ID: <asmsrokhdpPbongD@ly-workstation>
-References: <202610091451.beda4ec3-lkp@intel.com>
- <asi-kgXfHJt6Gjp0@thinkpad>
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, Pedro Falcato <pfalcato@suse.de>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v6 2/8] ipc, msg: Account msg_msg allocations
+ with GFP_KERNEL_ACCOUNT again
+Message-ID: <202610092010.934197B@keescook>
+References: <20261006092030.got.500-kees@kernel.org>
+ <20261006092035.166776-2-kees@kernel.org>
+ <asjhg2e4-WSeKuXd@thinkpad>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <asi-kgXfHJt6Gjp0@thinkpad>
+In-Reply-To: <asjhg2e4-WSeKuXd@thinkpad>
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: AB324C0003
-X-Stat-Signature: dnypuj1sumo3twwdre4cs5wbqc5n7xqs
-X-HE-Tag: 1791601846-156603
-X-HE-Meta: U2FsdGVkX1+yJVptRh9TG4ZVr1yxtKvqUY1NYdiRslyo4PSxOaPxSgPUtX62Ws3wAu2OvVTsDJ39r/TFn9moQ7Aq+VkpthwyW+HwigkTf4pVRoK9wixU3GS+FvKUgTUYV1VoaoBIPk8GzmAAr3/xdEqbNYfpoDOirV4shb8oA3I9rKBY4C3yF8i+NDmM3ct9jogm+PlfKgQ9YvGl4Nd51d8+OC2eL9lORucklyBLYgFGTq67PeL7bRuTmhG6M3Fzpv1E1CabNHugEHCq18nrNsa4aBWqXC3r2FymRKUGj4bn4npLnKKCNTD2qy11spjw7uutFTH/tS2jVG6Z2+Qy4+arjSELXK/jXuo/ZE3zkeav0+ZE3Fv2perqRgsnzhv6bN31UvNxOoImm3I+3sAVuoz27gpZi+zgFDap32cyD07+J3ADoY9HHaipMCNxA1UbRU0jOiadHc+VLq+WFmpBwT+SDJ37EYgaqJg1BRKO91l+jWw783DyK0XyEhd6IdrYxV6Uxj1eoJk6lABIVFg8P0BPvx8nIg9By3WlsSq2npcOfvH7ohTXTi4p9rpBUJ3BJ8rHp+xiKvp1Uh8YVAoBgnRDWrgiGnTudXPGnTJdPpPnGOb1amNgfzscuWyjHS1BQnGai21hEQ/n2OtWFzn+qmVHFSdN/IhGP2Z6sJWkPRZTPLiHLenC2qgk20oNtslWiYwzHnh8i8DF4SJpUvLn7C99+H/k4XIGWjFO8a62t6MA5udUwlLFaJquN+6/BS/w61gGNKkQznG9CT4aiQos1lX6tH1m44OSyKpnWO4e2inD635/8wmIWMeGfGnKgGH0dN36ymAhHqhwyuoMaMDFxIH5MbjtCwFbVmqlLdxCES88TKQH5PDRXQPtWxP0Tcz1Kw3iujdFn6wBh9aFIkM6B2NCq/A1FBaqCRAKbZvz7Xvam51A9erQOIbh8onKbIOObshmUsR79ZcAzeRZUYs
- rN0RWTlI
- dk05Pk3d2lHaAx6o9iN6JD/zmZJGbMGt6TTN4wts/l1JwYec5UsoWfc4zGZaJlTxgbEsA9540JXTz0InktR+EfEWI0TdPm/Q87ZZkTWMVDtgfwfI9txmb1y8qT+Dos5RwUXO8EWT2fUt6zdyd9g9QjP9WkttLk6B6jgzo74q6uNOt4ce9uYqgV5Cg+aupmEVXNglp26suurW2EcX7DwzWZjdKi5Gfz2R+YnwPdR9x42ZBiModqIciQZFzs2wO80wlGCz2zeIHAuqeXX3fhvENI9S/2MB2Kss6axDD5by6yQR7i9UKxpiaRXKOpJmb2PQWVJAlFaP6M7pY1DLh6YjPqlZtcyejvH2GbJRQyBu28KOX5+0yPapbYVAIZ8rIIR6tStm6uF+YP80KSXY=
+X-Rspamd-Queue-Id: 525F740005
+X-Stat-Signature: epr4n49hr8q1d65mzfcun7rsbxmkrj5o
+X-HE-Tag: 1791602061-282954
+X-HE-Meta: U2FsdGVkX1983e5hC/nonp3S6CFYiFFM0RRXM1fBouMc4Ujgse5DeKYkTMgz/t29rzXVYHA4LA5gAng0Ik2b+n0rVi2WZOLM3xITnPnzwPoaOtiLox9AoKvFYjV+Cja2bW9W+Gg7H7QodJzKzAheeXD8TOSr3Ngf4E8ECAXsWEWPv7o0VjYxaMb4+6AFwW2kOsghi84UtFyTdKZiDsYfZeWrCdBZqbqtoWR3GWPMkYFGA+O7o2Qb7YRItKPhg90vCl1IIX5zDMxUFssgFGhX3MS9ZnW5q+lDajsXXd7ozDiGQIi2NoWVCaCdwrIdrtwhjkIOWEyoyhCRFDaC2pNl1J3cnga0JmWI6HRGTf+Xl7LigIS8gm09MMWJA9IAk3c921sG/uEOTlwjLYL0Fbao35Z7XeWhr8z+KYmlWA9tGkW3SkdNOUDw+YwDcroW5owN4snOgrS8wcdZyckdanEXXY4/Y3vGm1JszwurZWPD4UCtXRAcCGl+vZ2czuHGlsXWaA+n4D9J/zRsSRS+7Y22zUhfnjOpuCQ2Vh3TeAi5uiIE52o3HrHTdLkwvnG5YbWRJz5/eZSjw6IfJIK9Cw0BsoiknzzimLRgFIsMVnNtCh5BU/kqADEDhpJXSuEcmNZrGHelArqO+mtgWFnh320+atGRYxGbP6XDDLVF1DTVB7bGFQyAcvvbEN3MxyZ4NQ/9rgVY82uaT8zB2F8KRb8rWImPIbz0kfX7ltfuroKZ9Pqmaa3RGttkZIAoDiSExLl5xn5hfS+rpLn3BxXTgJok+r2vRHnKBjeSTL7L8mWjQBpn6j3ZIg/APnNVsrks45LT6kUkR+PqB1ekH0q+gM1uqZ70xjjBZbKD5WMkWxNDfzLPnSEmmJjNdt6xuBidSPvhPKLpllKJdWlFhHmOxR6I0RN7klYGrd1QmPSosCY1PH+UDBcKNjM5U+JDACT1QSe21ZJaULq4h0FWyiRcXkJ
+ m+8s9WXu
+ KE+HD8hR+C+vUq96dp9VU9lB8DrWYBHuBsJ+zpFjrVOcrP1qTZ9C81CpH92TIqlbIfmPjQ01jpQf5JfK6XDHAEGTW69lV/vsnX9pdANw01A5WFgAzfz6Fq6omw9PEeDCKeFvx8U0BeF2GfqVehTAHm3CvcfqJv9s1Wk/L/EEVZwCtVzHHEwKB1rZuGsaSqQbl0KODdLItZzIvpivVWzfhUUp82MzQ9OYwjRo5OxvlyCu1aAIyniAhVlX8WB/5MZNdUyzErrL85nkqv4G/qruyIr2N1fPDmhrN6xKwm+GcUWP66aIygz2GOlzoo77cj8sPuuA8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,161 +102,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 09, 2026 at 12:41:18PM +0200, Harry Yoo wrote:
-> [ +Cc slab, maple tree folks, ... and Suren :D ]
+On Fri, Oct 09, 2026 at 04:22:01PM +0200, Harry Yoo wrote:
+> On Tue, Oct 06, 2026 at 02:20:28AM -0700, Kees Cook wrote:
+> > Since commit 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for
+> > alloc_msg()"), alloc_msg() allocates with GFP_KERNEL, and a msg_msg is
+> > accounted only through SLAB_ACCOUNT on its bucket caches.
 > 
-> On Fri, Oct 09, 2026 at 02:39:02PM +0800, kernel test robot wrote:
-> > 
-> > 
-> > Hello,
+> > With
+> > CONFIG_SLAB_BUCKETS=n, kmem_buckets_create() creates no caches and
+> > kmem_buckets_alloc() is a GFP_KERNEL kmalloc() from the general caches,
+> > which do not account it; the same happens when kmem_buckets_create()
+> > fails. Either way, the allocation is not charged to the sender's memory
+> > cgroup.
 > 
-> Hi, thanks for reporting!
-> 
-> > kernel test robot noticed a 54.5% improvement of will-it-scale.per_process_ops on:
-> 
-> May I ask if there's data on slab memory usage for this experiment?
-> 
-> Performance improvement is nice, but only when we know what's
-> the tradeoff (memory usage).
-> 
-> I think diff on Slab:, SReclaimable:, SUnreclaim: in /proc/meminfo,
-> and in addition to that, ideally diff on per-cache slab memory usage
-> (from slabtop or /proc/slabinfo) during the experiment would be nice
-> to have to make a decision :-)
+> Ouch, now I see what's gone wrong here... 
+> The fix for this bug should be Cc: stable IMHO.
+> Allowing to escape memcg charging is not good.
 
-From the full results already collected:
+Anything with Fixes: will end up in stable, so I just leave off the
+stable CC these days.
 
-meminfo.Slab: +37.9% (979712 → 1350738 KB)
-meminfo.SUnreclaim: +46.2% (806254 → 1178980 KB)
+> > Allocate with GFP_KERNEL_ACCOUNT again, as before that commit. Memcg
+> > charges such an allocation in whichever cache serves it, so drop the
+> > SLAB_ACCOUNT, which no longer adds anything.
+> 
+> Hmm in the long term we don't want allowing __GFP_ACCOUNT allocations
+> that are served from slab caches without SLAB_ACCOUNT, as this wastes
+> memory.
+> 
+> See: https://lore.kernel.org/linux-mm/20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org
 
-Note these are system-wide, not pure per-object overhead. We don't
-currently have a slabinfo snapshot isolating the maple_node cache
-specifically.
+This is how I thought things worked, so my original version of this
+series kept separate caches. (I can return to that too, but it doesn't
+seem to be needed today?)
 
+> And now I see the initial kmem_buckets design did not sufficiently
+> tackle the question "How this should work when kmem_buckets falls back
+> to kmalloc?"
+
+Right. We could just make kmem_buckets non-optional, too? Then they
+could have all the caller personalization they need.
+
+> I suppose the kmem_buckets' abstraction should not be too tightly
+> coupled with kmalloc caches. Creating a kmem_buckets should be
+> conceptually equivalent to creating a set of caches with speicifc
+> slab flags, size, align, useroffset/size. (for variable size allocation).
+
+In my mind, the general kmalloc caches are just a specific instance of a
+kmem_buckets...
+
+> When it falls back to kmalloc, kmem_buckets itself should provide a
+> compatibility layer when falling back to kmalloc.
+
+IMO, it'd just be better to make kmem_buckets not NEED a compat layer...
+
+> (Okay, allowing ctor is completely broken, but other attributes are fine)
 > 
-> > commit: ddf56dfc79f5734d7b3aa8ba81f195d52b3e5823 ("mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity")
-> > https://git.kernel.org/cgit/linux/kernel/git/harry/linux.git b4/sheaf-size-round-up
+> ...I don't agree with the idea that "since kmem_buckets can fall back to
+> kmalloc, kmem_buckets can only have the same requirements as kmalloc
+> (slab flags, alignment, etc.)".
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git/commit/?h=b4/sheaf-size-round-up
-> 
-> Oh, this is a b4 branch that I pushed but did not submit to mailing list
-> yet because I wasn't didn't measure its implication on memory usage.
-> 
-> The patch removes under-utilized 244 bytes per sheaf on maple_node cache
-> by not skipping "rounding up to the next kmalloc size" step for explicit
-> sheaf capacity.
-> 
-> Copying and pasting the patch here:
-> > mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity
-> >
-> > calculate_sheaf_capacity() calculates the size of struct slab_sheaf from
-> > the capacity, rounds it up to the next kmalloc bucket size, and then
-> > recalculates the capacity from the rounded-up size so that no memory
-> > is wasted within the bucket.
-> > 
-> > However, when the user explicitly specifies args->sheaf_capacity and it
-> > is larger than the capacity calculated by the heuristic, this round up
-> > step is skipped.
-> > 
-> > This wastes memory for maple_node cache. Its object_size is 256 bytes,
-> > so the capacity calculated from the heuristic is 26. Rounding up
-> > increases the sheaf size from 2 + 26 * 8 = 240 bytes to 256 bytes
-> > (kmalloc-256), yielding a capacity of 28.
-> > 
-> > But since the maple tree cache explicitly specifies a capacity of 32,
-> > the final capacity becomes 32 without any round up, and the sheaf size
-> > becomes 32 + 32 * 8 = 288 bytes, which is allocated from kmalloc-512.
-> > In other words, 512 - 288 = 224 bytes are wasted per sheaf.
-> >
-> > Move the round up step after max(capacity, args->sheaf_capacity) so
-> > that it is also applied to explicitly specified capacities. With this
-> > change, the round up behavior becomes consistent and the sheaf capacity
-> > of maple_node becomes 60 and does not waste memory anymore.
-> 
-> It does it increase memory usage for sheaves because it's reusing wasted
-> memory, but it could end up more memory being used as each sheaf
-> now caches more objects.
-> 
-> > Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
-> > ---
-> > 
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index f9b56cb439e709..4fa551bf02cd64 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -7895,17 +7895,19 @@ static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
-> >  	else
-> >  		capacity = 60;
-> >  
-> > -	/* Increment capacity to make sheaf exactly a kmalloc size bucket */
-> > -	size = struct_size_t(struct slab_sheaf, objects, capacity);
-> > -	size = kmalloc_size_roundup(size);
-> > -	capacity = (size - struct_size_t(struct slab_sheaf, objects, 0)) / sizeof(void *);
-> > -
-> >  	/*
-> >  	 * Respect an explicit request for capacity that's typically motivated by
-> >  	 * expected maximum size of kmem_cache_prefill_sheaf() to not end up
-> >  	 * using low-performance oversize sheaves
-> >  	 */
-> > -	return max(capacity, args->sheaf_capacity);
-> > +	capacity = max(capacity, args->sheaf_capacity);
-> > +
-> > +	/* Increment capacity to make sheaf exactly a kmalloc size bucket */
-> > +	size = struct_size_t(struct slab_sheaf, objects, capacity);
-> > +	size = kmalloc_size_roundup(size);
-> > +	capacity = (size - struct_size_t(struct slab_sheaf, objects, 0)) / sizeof(void *);
-> > +
-> > +	return capacity;
-> >  }
-> >  
-> >  /*
-> 
-> [-------<8 end of the patch-------]
-> 
-> > testcase: will-it-scale
-> > config: x86_64-rhel-9.4
-> > compiler: gcc-14
-> > test machine: 256 threads 2 sockets GENUINE INTEL(R) XEON(R) (Sierra Forest) with 128G memory
-> > parameters:
-> > 
-> > 	nr_task: 100%
-> > 	mode: process
-> > 	test: brk2
-> > 	cpufreq_governor: performance
-> > 
-> > 
-> > Details are as below:
-> > -------------------------------------------------------------------------------------------------->
-> > 
-> > 
-> > The kernel config and materials to reproduce are available at:
-> > https://download.01.org/0day-ci/archive/20261009/202610091451.beda4ec3-lkp@intel.com
-> > 
-> > =========================================================================================
-> > compiler/cpufreq_governor/kconfig/mode/nr_task/rootfs/tbox_group/test/testcase:
-> >   gcc-14/performance/x86_64-rhel-9.4/process/100%/debian-13-x86_64-20250902.cgz/lkp-srf-2sp1/brk2/will-it-scale
-> > 
-> > commit: 
-> >   675a745c61 ("EDITME: cover title for sheaf-size-round-up")
-> >   ddf56dfc79 ("mm/slab: round up sheaf size to kmalloc size for explicit sheaf_capacity")
-> > 
-> > 675a745c6113e420 ddf56dfc79f5734d7b3aa8ba81f 
-> > ---------------- --------------------------- 
-> >          %stddev     %change         %stddev
-> >              \          |                \  
-> >   70440501           +54.5%  1.089e+08        will-it-scale.256.processes
-> >       0.30 ±  3%     +35.9%       0.41 ±  8%  will-it-scale.256.processes_idle
-> >     275157           +54.5%     425248        will-it-scale.per_process_ops
-> >   70440501           +54.5%  1.089e+08        will-it-scale.workload
-> > 
-> > 
-> > Disclaimer:
-> > Results have been estimated based on internal Intel analysis and are provided
-> > for informational purposes only. Any difference in system hardware or software
-> > design or configuration may affect actual performance.
-> > 
-> > 
-> > -- 
-> > 0-DAY CI Kernel Test Service
-> > https://github.com/intel/lkp-tests/wiki
+> By that logic, shouldn't we give up specifying useroffset and usersize
+> too? :-)
+
+Yup, but I kept that since only the hardening guarantees change under
+that condition -- nothing operationally depends on useroffset/size.
+
+-Kees
+
+-- 
+Kees Cook
 
