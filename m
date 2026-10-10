@@ -4,113 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 475BDCA6017
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 09:42:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA1B4CA9EBE
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 09:58:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 393346B0092; Sat, 10 Oct 2026 05:42:42 -0400 (EDT)
+	id 8430B6B0088; Sat, 10 Oct 2026 05:58:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 369E06B0095; Sat, 10 Oct 2026 05:42:42 -0400 (EDT)
+	id 81AF46B008A; Sat, 10 Oct 2026 05:58:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25C5A6B0096; Sat, 10 Oct 2026 05:42:42 -0400 (EDT)
+	id 7304D6B008C; Sat, 10 Oct 2026 05:58:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED6C96B0092
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 05:42:41 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7CF7E16042A
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:42:41 +0000 (UTC)
-X-FDA: 85306226922.06.262278B
-Received: from mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5FF2DC0006
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:42:39 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JH8jotTN;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 536BB6B0088
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 05:58:26 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D0D0EA84A8
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:58:25 +0000 (UTC)
+X-FDA: 85306266570.09.34E8D58
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3A6DD80007
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:58:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OoWXNSPm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791626304;
+	b=3BvaaduP3kdWZIyI53sjbVEiUIYAzdCC6uPUNjV2B1SF/Kt7VwkJqPbohBsPfPZvI24wXY
+	stBBbZQwjbFLu8jboE2tHaumqeIhV2OXCmntO4e4JOD72YeAiNqaYAHhGFvRRBuriQmabI
+	9ckAc3yb+vNAKPSdU0wNmTG/jiczEAI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OoWXNSPm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791625359;
+	s=arc-20220608; t=1791626304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7B7TgaAJNDdxFCAT6n7BBRtHLR7fn0ke7ZNiMxn4Uls=;
-	b=8ldG7u39gXKpP2EvWMj1XL4zK/9WElIm/bxzY9f2B5SUIf4FvrYrF3i5OPykFy/jUJwva9
-	M6WGwNZNPCN6RC7c05maBiw+MS5QfChLmc+AXfnXmz1RilLQT7tIW7hq7VFwxAHWG0Bv9s
-	m/Epq7oIMth93diapglXHLN1DH/cD2Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791625359;
-	b=JFKSFYo/k0VquSnSDdbqCjgO+E+46aapCgl62qvlhReJN3xQ2EXeBIMOMiRnu9hO0pEKyk
-	m0cMeE6Y9lDgxKWOh9paTCAbP6Wj+7bsNgirPwk7bs01jpHDLqWeM0a5e6i8Jut4RX8zj5
-	rxDNtGm43dAoaDWZZurzx8aWUTKxYMQ=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JH8jotTN;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=AYKq4I4pt+XRaSTHkcogaEaoukmbVRkhJcniZ//zAgg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791625354; v=1; x=1792230154;
- b=JH8jotTN8PT2QTxlydeHuspWguhlCpn278sbtRghB5i4vNMAe9BAO5Kq9FRX5oqjZh57Q0nT
- 8AwiglyrzCqiKsk7JUCVj6dAM0o9QayTCan01lqCItUOxWJTt6c00vrxz3b4jmd/tGz0xJTlanD
- m5UtxLQ80OZPYWhA7IlqSYos=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 57f0757703d8e229;
-	Sat, 10 Oct 2026 09:42:34 +0000
-X-Mizu-Trace-ID: 57f0757703d8e229
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 0/4] mm: Fix page-table teardown during memory hot-remove
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <b62aa96d-6c83-476c-bc28-7c2057702063@intel.com>
-Date: Sat, 10 Oct 2026 17:42:18 +0800
+	bh=QvnkvLtda/rMoARtnwYn7sNzYphFVMCDdG5HrVdsEsE=;
+	b=2DFPEhtGh9t4xnIHpm22Ymvu/A2WnFS6vVWZxCITxhcbxsMBqFYx4IemJIGEmOadzqM1Aw
+	66IilgTBRRRcyh+fS/bSk+BCx+HLo05cvp2AoNCMKc5A5oeMUelpoCwkqa228/1jV6/UNG
+	L4JpJ2Hpd7ghxxgMGJUsaT5cStAKa4s=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 24314437AC;
+	Sat, 10 Oct 2026 09:58:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC8E1F000FF;
+	Sat, 10 Oct 2026 09:58:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791626303;
+	bh=QvnkvLtda/rMoARtnwYn7sNzYphFVMCDdG5HrVdsEsE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OoWXNSPmC7aomO/qL5FrCOYGUk0MjGnEvvS67qACxOjUNH3ibjhLX9Nq8BunMAM6c
+	 IpWgnn8nCsJZgc1iisSfTDUBg+w2Er0od02JE3A3L0EAIEX54dJ8fuA5zs8T6HZ4eP
+	 5dDZGQ2UUR//Gvmrw/NEj+hNEqrz8bZF9GcWzdi1RTYvMCKvfcIfs+FqsVfpvQOCNL
+	 NtHwWMNR/aZ5rvbXyDlyzO11KP1B4lLEJjdzgGk0AULtyAL3vCw/DNt8WqIifzhadY
+	 jkBh+EOgJKQnOp6G2LdCynMkuT/rfkdntoC8zzVFbIIz3hLEWCfz/BLBfnPsPNmytU
+	 uo+NxkfMgn4FQ==
+Date: Sat, 10 Oct 2026 11:58:15 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
 Cc: Muchun Song <songmuchun@bytedance.com>,
- akpm@linux-foundation.org,
- linux-mm@kvack.org,
- stable@vger.kernel.org,
- david@kernel.org,
- osalvador@suse.de,
- dave.hansen@linux.intel.com,
- luto@kernel.org,
- peterz@infradead.org,
- tglx@kernel.org,
- mingo@redhat.com,
- bp@alien8.de,
- x86@kernel.org,
- hpa@zytor.com,
- catalin.marinas@arm.com,
- will@kernel.org,
- mark.rutland@arm.com,
- linux-arm-kernel@lists.infradead.org,
- pjw@kernel.org,
- palmer@dabbelt.com,
- aou@eecs.berkeley.edu,
- alex@ghiti.fr,
- linux-riscv@lists.infradead.org,
- agordeev@linux.ibm.com,
- kevin.brodsky@arm.com,
- bjorn@rivosinc.com,
- apopple@nvidia.com,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <D9A15D57-0640-45AC-B404-13982B4A20B1@linux.dev>
-References: <20261008073021.2512665-1-songmuchun@bytedance.com>
- <b62aa96d-6c83-476c-bc28-7c2057702063@intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Queue-Id: 5FF2DC0006
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Lance Yang <lance.yang@linux.dev>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 6/6] mm/mm_init: add zone mismatch warning during page
+ init
+Message-ID: <asoMN5F-3qvaW5w0@kernel.org>
+References: <20261010075755.83339-1-songmuchun@bytedance.com>
+ <20261010075755.83339-7-songmuchun@bytedance.com>
+ <434B0573-BF18-4413-9BDF-C5873CC13206@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <434B0573-BF18-4413-9BDF-C5873CC13206@linux.dev>
+X-Stat-Signature: d447yy3r7hpiwz4kbjfbwhzsh6jk7gdd
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: mef1k47p4wfk5i4jm3iuxqnanckcc9aa
-X-HE-Tag: 1791625359-951698
-X-HE-Meta: U2FsdGVkX1+nmQJwO4E2FX7/wvT3Rvmd+PdK5UOgjk4Tks1Mc5Zmo7LsuwUiEKhA7QObfSU5NINOZ6kw7tDhXdh9WIU+zwRjVYTeu8W+swHMBgzlzbR+k+ZyCrRBX3RD0M++StOloki56SZKSJNZwQbv8A73oiW5pM996LzTRql3ifcG0WcudJ6MhtUocIegLjwKV8KmgiFke0EdG2MN3YZWhbDuoimGvdA4IIszOfem1UWJHuewNpHTcZr8LwgYlv0s52p50Oiwxby6Xmpoq7LtZbCP3eZkKbSGecnWpHFKmSkjR0o1HctojsTON8OZB2/AzbXPCxSZXw1mvuVbajSI/Ujy9CZeZcCede+MLrb2owzqKiVWoTNOymtmfjCi2y4pbOV3xD5kPN9zvE6ZibVrTskvq7PP9XWhiqCStUuMmhEehECTfk0+s/bjgwQkN4bZUVg5/iuRcuJwBRIVieZpW/nJlLsa1vDfjTFAsCNZwk1Nq/UdU4gpS2Wd0s3VaNpazoeDYd6lzDDGQAqwtCy53Zpwqr0OJ3ckRefMdUOMEWCkNA9lsjw+z3hF3V3dngExpRijFaJcQQd1qYC4sOX8Fqmau3iX8iXZG3HE/6Nh4rLs8JSsR/e29y5++Y7bT0K8jTzBF2DTWnaVOXUWfRw8MS1nhzuz+RBDE4b6/aTym1lfFUhISCA7LKhriHKI2cfT9mgulQ4SDXVHyiUb52WMLVC7AzShYpswwN0qERzsznUDV+ENF/XXvTffhxHeiixoP10E4PLJI0LauLzEnTR1cQTnAIzN0UGksBFx3BrNoQQ4VMfKwkGfE7f+FIZFRkQ0CS/ExGE3tn1zQf/0/r9mqaUdDW6MbURQJD7OXdee5oQEbyY0EoLbRHt6Db2jzwk7ht3MYPtq7ooXSL2rok1aRqxRI+nyxTuGvKuq1JFeIwaXZ7BcHX9thrGz4/p3we8vm4JWA/9+gAcQBP9
- jK/sUVfL
- PLYZM1pvjeuzcFQDw0VAq9Zfn+OIU0gNIMKWa+O+fl7wAAs0rWM5oUGovmuKKvyvPcLKT1CnJpeYpw6HP9yqkajZgrv+4gjyelXB8mFdRhU4zfwx3LNa0AaxTJvU2EzZYfNqRamzfnojS1LtZH7pnLW/Juca1t6HcmFF1RwAtiwQ1KmtSuisVie+vPlmIRS6Lypx2O5Zp5xoSrWm5md7sNZfjuSAOHjhlfqQcqOrSY3C+YN9DLFJnK06qa+uIi7dhEEYj37/ldEeGjOxuHPfhWkzgSdLVk4/bYEGR
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3A6DD80007
+X-HE-Tag: 1791626304-835224
+X-HE-Meta: U2FsdGVkX19+5LRn1qLaevF+1FUHrlSC7iZ6sqLvFzYK7o4dGSx/n+kR+KZ4om0ci83xORQJavG5X2YGsC/7FRvx0EpcHapR0sCQhc5qa0fN+6pgxj10eHn/Ql+c31BdEDGcroOq5+Xetr5RVOWaWnQyXr5M9WVSn8RumMGpHhlyz7dKmFP4VxPlhgT+YZ62Lmkeh2FFBIVNRzgpD4f01XGNXN7dTLgid2Yw6b4PwegCrbwUX3z8lyB7Oa/bcWhUjv3TC+bKBnUl8eSQM3i3duEXktSNag5NucNWxTxBXuclERwq2qR8d8YxAtUW5J+un1QopwRyNuZU1zGvPRAww4Zl/cqrS6UYrQtlTkiqYGwqAb3MIOgxlZhXH0DngOa94IAwNVQhMehBv7l0GKfYsBD0STFv/8kToaX/NdG87UjxTAv74zKRcIpf5KwcVwf7IyDXi4f/Vvml6thT5zFXJwwoxr0+xHeDWe3SL+lBktNTJfllBXgfWw2/WsnsV4cOuSHfOT/rlKchx/qjB+A0SsCRiT5ffiLnHMiuveziWcGkx9usEdvYG36V3LnivBjUTbTSsKZRusumvBoNV8G2OWQwDhJ9KojeWBXiNP74iWwHF5nZkMEgUf3dYxDZ5j/X7QhBj5244LhwQg+KYbvgr+omId5cUU9D0dPc0DSfD1wP8U3MePOZkRlM2gOvF9DjAXhRIhCJjCCsbME7tGFkeCu/E0syBwqh8zPzUjGP1wnpmnS3WKB3m6Qpo2bxz4SuuEwZunjp0XTVHjF3GPtMpcVg2E4rCcbZGOQpddkZ/BIvqacPygv01ur8sHygEhkbXtN8m0eJLP2N5ncChzTEjHji3uIt6PQsCQSp3SkD6sCoX0ySTiEMemUxF6FR1M39ywbkhIsqPb0zHT3qIGfddfGavUdE3/RsNOlqFscLhiH+KkxQG1vpCzM8cJ48phS/QvwP/rNA1ysp7sMlCZw
+ 43BrPLkf
+ gjddPKegWvtwqAMssAsTQ2h+WyQKDsZu8gbmwPbDPIPJmhM0LVgLbZjYYZGxHCaYvvOuZBHClWZJ/55zlqKDwEdTsaA2BHRlNrWsyr8j47tJ1yAVsCxLw7CmO/s25Tx/sqgd+w0lbAlx+LC7MJuKqSQMb9tg1oX7k5YRxIp8ANWfiQwvJguYYGxHGrCuEHJo6HOck2yFdpypi8fd7A+AQAWmaWhOdAp5YdS8Eb4wU3F5tQTh86QsYkMJNWlNFTpCDQeD5xIoIp3XBJp2j3codvEICAJ+y61RIbmAS3gm9KICudIE0L0O6wmONPA5rmqSJOWqX0+q1DWMe1AxUPsXp/vffVinUw5J+Qx9tq7zojihBxN8H64TGJR24hSsZxi2ND6yiOHCqMv9PfzV/a3FC1OlbqvZht4BYghVKWLWmQ2cKAVDm9bBVTi43spe/EADcpl8Q5Ff0LK8nhj2JatmQ29Shvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,32 +107,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-> On Oct 10, 2026, at 04:48, Dave Hansen <dave.hansen@intel.com> wrote:
+On Sat, Oct 10, 2026 at 05:32:59PM +0800, Muchun Song wrote:
 > 
-> On 10/8/26 00:30, Muchun Song wrote:
->> This series is limited to bug fixes for the existing teardown paths.
 > 
-> Why is this a series? Why not send the architectures independently? Is
-> there some dependency where they all need to be applied at once? What do
-> you want done with this series? Are you expecting it to be merged via
-> the mm path or the individual arch maintainers?
+> > On Oct 10, 2026, at 15:57, Muchun Song <songmuchun@bytedance.com> wrote:
+> > 
+> > For vmemmap-optimized sections, tail struct pages may be backed by
+> > shared vmemmap pages. Those shared pages must carry the same page zone
+> > ID as the struct pages initialized for the section.
+> > 
+> > Warn in __init_single_page() if the shared tail page has a different
+> > page_zone_id(), which would indicate inconsistent initialization.
+> 
+> Please ignore Sashiko's report [1], both are false positive. It didn't
+> realize that shared vmemmap pages are initialized early before __init_single_page().
 
-You're right that there is no strict dependency across all three
-architectures in v1.
+I didn't realize it too when I read this first :)
+ 
+How about a short comment above vmemmap_optimization_verify_zone()?
 
-I grouped them because they address the same page-table
-constructor/destructor imbalance exposed during memory hot-remove, but
-that alone does not require them to be applied as one series.
+> [1] https://sashiko.dev/#/patchset/20261010075755.83339-1-songmuchun%40bytedance.com?part=6
+> 
+> Thanks.
 
-For v2, I will move the common destructor handling into
-pagetable_free() as suggested by David. The RISC-V and arm64 fixes will
-then depend on that common MM change, so I plan to keep them in one
-series and have it go through the MM tree, with review or acks from
-the relevant architecture maintainers.
-
-Thanks,
-Muchun
-
+-- 
+Sincerely yours,
+Mike.
 
