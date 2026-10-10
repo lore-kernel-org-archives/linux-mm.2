@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F075BCA6017
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 08:43:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA816CA9EBE
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 08:48:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A01306B0088; Sat, 10 Oct 2026 04:43:47 -0400 (EDT)
+	id AF3106B008C; Sat, 10 Oct 2026 04:48:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B2696B008A; Sat, 10 Oct 2026 04:43:47 -0400 (EDT)
+	id ACA7A6B0092; Sat, 10 Oct 2026 04:48:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C8106B008C; Sat, 10 Oct 2026 04:43:47 -0400 (EDT)
+	id 9E1966B0095; Sat, 10 Oct 2026 04:48:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 63CEC6B0088
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 04:43:47 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E2B1A80682
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:43:46 +0000 (UTC)
-X-FDA: 85306078452.11.C426BE0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5F1B5100003
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:43:45 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gjJGCDC+;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791621825;
-	b=z06JSl90NIjDaYMOUZaIOFKa62k3683FaaI0FZiVabgd+1+NnBgNhIpgB/6v5pXv8UalGC
-	N3np9tcW8jTSPMjLfUqkc0ufgCmtrQ66xaRpYCe2AtbfidAwrI/MFHWP273U22CB2DhE+a
-	XW60kiuGzpx3qlGPsO63Hrj6T1lLXNE=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gjJGCDC+;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F12D6B008C
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 04:48:07 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E8A8440594
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:48:04 +0000 (UTC)
+X-FDA: 85306089288.24.F3805B7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4647CA0007
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:48:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a+QntHaB;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791621825;
+	s=arc-20220608; t=1791622083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EMhRMdEboRulS299sQmhaXW+YI7ZYoe1z6XHEW4vJjs=;
-	b=4zrrTbag9bnNEXzJVN6SW21VUTKr+rwJzwQFav+JFejEpmDlR43Ehzye+gT8fpNA3JyfEN
-	flQBSv+Idryh1v0z6fzF31/j0RjuH0qchFKxiT3MvYhbvZ1XvjhBWtz6uPcI7NJUizyQ72
-	0YoYJkyAHiDxztOpQtm3eeJpuCrWHzY=
+	bh=9aAKNdFlAWIBUhCteIbdgam8eQs/tWYWWSOa0TvAgNk=;
+	b=x+D0QRWW6PxTiZEWXowl9RyV/SCUZUEDbfA6HCRkO1V23b9GxHekTlvsp4dxlUKV63lvTI
+	wrpZ5SHSu/UTQ37eLIcrynjkvBsabTPRr/3T478Su5NzCFnGz+5nrsQDgzPuEYhLRrc2R4
+	epb1qpPmQvIcC9+f4htocYFnd6QKBCc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791622083;
+	b=ENU/zmtp/GU4r98e+DnYUljpVgvYrJqcDkqWEpj3BQZw1xDr+37+TL2+3SPg8MaAJp52TW
+	FMDBMlCu8td6TUYQo05YOf5Zl2mp9UuAurINbQHU5UeujYMvFKOqIXP8D0271T68SnyJPc
+	Y/P6XjgxhjcFixeUHaTq9+NsbTXWQUU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a+QntHaB;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 85DBE60120;
-	Sat, 10 Oct 2026 08:43:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5161F000FF;
-	Sat, 10 Oct 2026 08:43:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4704143F5E;
+	Sat, 10 Oct 2026 08:48:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D321F000FF;
+	Sat, 10 Oct 2026 08:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791621824;
-	bh=EMhRMdEboRulS299sQmhaXW+YI7ZYoe1z6XHEW4vJjs=;
+	s=k20260515; t=1791622082;
+	bh=9aAKNdFlAWIBUhCteIbdgam8eQs/tWYWWSOa0TvAgNk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gjJGCDC+KFlQQ26bxZqDLXuKbl4aNueNBLvuMQMHUN4tKQ0Ex3Ln42ZwAoFIzAPhW
-	 4n4luK6SIuM55oNlIsJpZApLqeE2TcNDmj4froU2AjsK2W0MfdHtxRKsZbuLyGEhnX
-	 czgWTxN73f/MgPDW8s24C0QrAl37lsiYNUj/m8LXdd5+OhLL8P7eUCdXlTir4zjR/4
-	 3G8vXsxdlEo9OJKIS0nL8mr+1S4xUHANWrW4NdhdvZo3BcyyovSeBrZAkVJx0QEFNe
-	 Q2xtPUfHiVmAES+sUYYsLsnH/jsVgcxjYijX4aOkIZNR+jDTVqPHrlfovDe3tAClzu
-	 2CHSoRoF4KnIw==
-Date: Sat, 10 Oct 2026 10:43:32 +0200
+	b=a+QntHaBhv0z8VDbqJJkqrAwEbrFgBRg9/Xdm5ENmSUmHKoLcSJ8FMMZ1gUr4vKt2
+	 kGmnMkcNDCeDjoev+XtP9mnEW/W3AbTtLQlms8kGI99KHAiN8gB4Ms0D0wlymWzpY3
+	 A9bZ3rVrc8o9I5DkUPZn69Dq+TWk/7MmKxXr0QQB+04WP/nEaGg0ZWk5RR+xz+Bss8
+	 7j/ghcFbgoFQw9puG4IAQz8wyGEuft4Vd85CchZXZtPtCYMZJC3Cw2LlLaQBeKgVQW
+	 LkWEQNOgeGNWM1wyUpEfoQkQoV3dm7cHU5Fl9S+m6qv4N2Kw4TOV+2TKCNPET8VLZ9
+	 VReZAo7MXRnpw==
+Date: Sat, 10 Oct 2026 10:47:52 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: David Matlack <dmatlack@google.com>
 Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
@@ -88,23 +88,23 @@ Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
 	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v9 01/13] PCI: liveupdate: Set up FLB handler for the PCI
- core
-Message-ID: <asn6tKL72RXItqMD@kernel.org>
+Subject: Re: [PATCH v9 03/13] PCI: liveupdate: Track incoming preserved PCI
+ devices
+Message-ID: <asn7uP123pDkdkSm@kernel.org>
 References: <20260918200640.887030-1-dmatlack@google.com>
- <20260918200640.887030-2-dmatlack@google.com>
+ <20260918200640.887030-4-dmatlack@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260918200640.887030-2-dmatlack@google.com>
+In-Reply-To: <20260918200640.887030-4-dmatlack@google.com>
+X-Rspamd-Queue-Id: 4647CA0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5F1B5100003
-X-Stat-Signature: 9zf93wdieq4iripsm5dxuwci67p8jjq6
-X-HE-Tag: 1791621825-82490
-X-HE-Meta: U2FsdGVkX1/pZR9D48syVRATPeLZxb1yYTHynTNhrB0/necfdTHtuFHFU2jQ+hpo4FmF6h58aHlM5zz/bp7IaFe6Z5qxWRiEImYJYLLWl0+rXyfNYYOtObqIJiSvuUM6ksocDS2wvwbWlwD+CEWH319uipcH9gDUFt0ROA4ucGBUZlK795d83iSX4lfrIvy5/D2Bc0f1q8iPUr8gIHIQCPB6RcqLoZiT65nOYABVIVS63tQXxmNdJyFrJ2jZCys3X4E5jMzs8ilTnua+eIw+ZkI4po9emywzWmz/vTZ5/vYokfbMzNci0K7inT6dxRn/gplmptDXcOg6WGTHBPDRSRtZdRn1BWvIVJiwzdOCV2CYlK1Ky7SXacoFuYp1uhxhn+UMyAWoQ8D1CmrBon9ydZcvP2NTB48AiACFlDDeGQfZB77Xf4rqAriQBhaknhy/dzF9m4OdToi8oAQboCK7DjOSgEFYmxtlHVrk9IwLmOeRYmTQ6VrDpVPQP7hlsmuuG+i0F4jFw+BUapML2w2Iqjqmt6z8YqpJJ6L+X01Bo9gbUo3GyeTlfwTZWwbTKPnCmvf3HjnIC30pXkRB74zhEYndtp/OV6B/+erFU0bUCJYm691QUUBQfukXHIgm0rknIS4EmGThOrWzBJXPRTo26Ug1PSadkyfu/0mW+s2JQbaE8ggP51fubLq85UDv/cawq/xe4i36Tx34SLvGRpx4UeAkqiA0RsBEKybUXiuZPcCWg8ilcyEaYfy3SgdzBVQnLA6Aj8ASRY5yZkwCLWZSzrspMk0PKVHbMFFi+a07Q0k49mdJpiMADAWwzxyv6Fk1OLfUsPvNeGCKRS6hszwMlBfZw7c4A0Z2oINkBhQFooN5TfU07J/GwTsaAPb+CG4pCRXW5fVpsBAso6/tKyxc4mFtDRQMH8kkLrVd0l6J5zCl17aGYb2PwxIhGqq0zU60GGV5fxgBCHEIG2Kk41q
- ouFjcI0j
- 9e5oWjiuaVgwfcXUgAQPALlJUD5xTD3957VOo56G2lmp59YC7xIcjXsRw/yPkLHh+qsZpUNIhb9aRc2CSXkOqVCsztvtL/j5lKlYBW0sszJa6AtG+/ApsEkTugqzQVtCx2upfUcVe/oDzvEn89x1VAYcYrT5euEgvzrrMP0EIkRkXb3dN5QNIFz295oshkBicge5SiEbMFbHd+87CocCBQaVX6Q4JVDSu82f/rPuV15MwZX7uo9fF3U7LBi4yoObGnkD/AvfZZyUGvM6xLuRuksC10r1ni+TJ7Yjljb1hkI7/VhQrd4ioZB6jSw==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: rotk6ysf6z6fsi5mbya63543ry461dm8
+X-HE-Tag: 1791622083-837352
+X-HE-Meta: U2FsdGVkX19oVVPyCUIGp2IZp0FIZF4P+CWuh/+mgkSbQkpT0MQQzr+TbZKltdIjhARpQtepM/gYPMrUf9ULENroXdCNzhlhe5PfVcRl8yOwTmSxqB+RnoB3Bi8RvuuJfDsC1rtS8trIwzamKSg3MDEqNcDXsjyO6P+eXrJRuZTQeqp3U9CZvp/hGSfmuGUFBt/bOVS5Iws4j28fVZ28cSS5hsVkWllUEWaj6SfQp4SUdTAmORnVGhkbCcGE5c7LIkP3+2aMMRk+mPfE2tnGDoq0aHQb4ymiuMg8/k7DEs0fquRppfa1AIxL0L5uoCaXmx2ySk9goKDapJHDEPBDTtWfJ/qjuV4+TRsfvc2FL2/jx2NJO3JEX8XpyaDDrWQNMg+LkSSC5jEldev+qSi7vXf88lSluL4/J5QLtHc+Niifxvqf5skR8xYMET+ErZPeE5cM/AT+kEDsT3F0zbEV9NlyXqLjXdXUCBOFYXLEH6XJq62ii97LoNlyweJWFKiSNEN/Ekbw6TjIla+HljA6deC0AVmTxPUYomHBOME7hKAEf/2ARj3FGjTYMSfqL5negrOFrDolHwcUFM8nxjowKfwRW7p/LqaLHpie6bL1H+/oFcQDAC2OmK8j3l54hEhYa3plHPgy9KVuKYVerLgHqZqMThN8VE7Gu6Q/Om69ufAzZYqww7b/TTKSrZ0sC6MjvtZl+Bzm2IkjAWpeyYWr2av22g7mfjK+0vp2V2HOfx9pJ9/pQC+5/x5Jl6hmj8IV3w28frBh/qvgp7habuWa9UT43NfMU7/6EHIDM2xr6rKWgBsjC0md1QUJkHd+Eml1keh/5YooYXV2M2lR5sZD7c3tFti6RoHa2x1wRpJBtAXVsUuIW4FTLqux+NDocXu1ZPEGd87wWoOPLb1hnUnjL+MZIjsQa/o4AWXR+NOHK6OjY9t1ZEMez+0ImeE5B1rogibxVHiUIDx+Bp/9Qij
+ r0KMXXvl
+ rlwfcpQoNJ6ksU6qXOEjjybKq+i+MZOpHan3XxC0miS5Rpl645p0PDhncwWz3/yHhbBHO7A1FGJT+6SeFslHtXcwCw+F9PwvjDJ7yTVue6Kz67w6kFH/pE3vj9vQsh8XfCmXnSsbbwnI4aG1G4TxJ88J8w9JGRbm8HfVnYzCKt2hwxxx/9qabUh7ml5k3dwEYIi+IZ2mtO2m8YQjWl9Y7qYVFt/6++rD9QcuGmdyMRtlYuS7O1R3j+mTSb9LI5P7JAWT6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,121 +114,36 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi David,
 
-On Fri, Sep 18, 2026 at 08:06:27PM +0000, David Matlack wrote:
-> Set up a File-Lifecycle-Bound (FLB) handler so that the PCI core can
-> preserve its own state across a Live Update kexec.
+On Fri, Sep 18, 2026 at 08:06:29PM +0000, David Matlack wrote:
+> During PCI enumeration, the previous kernel might have passed state about
+> devices that were preserved across kexec. The PCI core needs to fetch
+> this state to identify which devices are "incoming" and require special
+> handling.
 > 
-> Preserving a PCI device across kexec requires preserving two independent
-> sets of state:
-> 
->  - Driver state, e.g. everything vfio-pci needs so that userspace can
->    keep using the device in the new kernel. The driver preserves this
->    itself and the PCI core is not involved.
-> 
->  - PCI core state, e.g. which devices are preserved, so that the new
->    kernel knows not to disturb them while they are still running and
->    doing DMA. That is what this commit adds, serialized into struct
->    pci_ser.
- 
-...
-
-> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> new file mode 100644
-> index 000000000000..66dbee0bd3cf
-> --- /dev/null
-> +++ b/drivers/pci/liveupdate.c
-> @@ -0,0 +1,206 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +/*
-> + * Copyright (c) 2026, Google LLC.
-> + * David Matlack <dmatlack@google.com>
-> + */
-> +
-> +/**
-> + * DOC: PCI Live Update
-> + *
-> + * The PCI subsystem participates in the Live Update process to enable drivers
-> + * to preserve their PCI devices across kexec.
-> + *
-> + * Preserving a device requires preserving two independent sets of state: the
-> + * driver's own state, which the driver preserves with no involvement from the
-> + * PCI core, and the PCI core's state about the device, which the next kernel
-> + * needs so that enumeration does not disturb a device that is still running.
-> + * This file implements the latter.
-
-This does not look good in html docs :(
-
-> + *
-> + * :ref:`FLB <flb>` Data
-> + * =====================
-> + *
-> + * Userspace decides which devices are preserved, using :ref:`LUO <luo>` file
-> + * preservation: a driver exposes a file that represents a single PCI device,
-> + * and userspace preserves the device with
-> + * ``ioctl(LIVEUPDATE_SESSION_PRESERVE_FD)`` on that file. Binding preservation
-> + * to a file gives it proper lifecycle management, e.g. the preservation is
-> + * undone if userspace cancels it or goes away. How a driver exposes that file
-> + * is up to the driver and invisible to the PCI core (vfio-pci variant drivers,
-> + * the first intended use-case, use their per-device cdev).
-> + *
-> + * LUO only knows that a file was preserved; it does not know that the file
-> + * represents a PCI device. Drivers therefore register their
-> + * struct liveupdate_file_handler with the PCI core:
-> + *
-> + *  * ``pci_liveupdate_register_flb(driver_file_handler)``
-> + *  * ``pci_liveupdate_unregister_flb(driver_file_handler)``
-> + *
-> + * LUO then refcounts the PCI core's FLB against the files preserved by that
-
-Please spell out reference count
-
-> + * handler, and that refcount drives the lifetime of struct pci_ser:
-
-           and here too  ^
-
-> + * pci_flb_preserve() allocates and preserves it when the first file is
-> + * preserved, and pci_flb_unpreserve() frees it when the last file is
-> + * unpreserved. In the next kernel, pci_flb_retrieve() hands the PCI core the
-> + * struct pci_ser built by the previous kernel, whenever the PCI core asks for
-> + * it (e.g. during enumeration), and pci_flb_finish() frees it once the PCI
-> + * core is done with it.
+> Add pci_liveupdate_setup_device() which is called during device setup
+> to fetch the serialized state (struct pci_ser) from the Live Update
+> Orchestrator. The first time this happens, pci_flb_retrieve() will run
+> and convert the array of pci_dev_ser structs into an xarray so that it
+> can be looked up efficiently.
 
 ...
 
-> diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
-> new file mode 100644
-> index 000000000000..4096e3cd3324
-> --- /dev/null
-> +++ b/include/linux/kho/abi/pci.h
-> @@ -0,0 +1,65 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +
-> +/*
-> + * Copyright (c) 2026, Google LLC.
-> + * David Matlack <dmatlack@google.com>
-> + */
-> +
-> +#ifndef _LINUX_KHO_ABI_PCI_H
-> +#define _LINUX_KHO_ABI_PCI_H
-> +
-> +#include <linux/bug.h>
-> +#include <linux/compiler.h>
-> +#include <linux/types.h>
-> +
-> +/**
-> + * DOC: PCI File-Lifecycle Bound (FLB) Live Update ABI
-> + *
-> + * This header defines the ABI for preserving core PCI state across kexec using
+> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+> index 3781e2b5f095..8af20f558086 100644
+> --- a/drivers/pci/Kconfig
+> +++ b/drivers/pci/Kconfig
+> @@ -273,7 +273,7 @@ config VGA_ARB_MAX_GPUS
+>  
+>  config PCI_LIVEUPDATE
+>  	bool "PCI Live Update Support"
+> -	depends on PCI && LIVEUPDATE
+> +	depends on PCI && LIVEUPDATE && 64BIT
 
-This does not look nice in html docs either :(
+This could have been there from the first patch, no? :)
 
-> + * Live Update File-Lifecycle Bound (FLB) data.
-> + *
-> + * This interface is a contract. Any modification to any of the serialization
-> + * structs defined here constitutes a breaking change. Such changes require
-> + * incrementing the version number in the PCI_LUO_FLB_VERSION number.
-> + */
+>  	help
+>  	  Enable PCI core support for preserving PCI devices across Live
+>  	  Update. This, in combination with support in a device's driver,
 
 -- 
 Sincerely yours,
