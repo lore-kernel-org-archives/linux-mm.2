@@ -4,104 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3BF2CA9ECA
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 23:34:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26B7CCA9ECA
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 23:50:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B09926B0088; Sat, 10 Oct 2026 19:34:02 -0400 (EDT)
+	id DC1926B0088; Sat, 10 Oct 2026 19:50:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABB316B008A; Sat, 10 Oct 2026 19:34:02 -0400 (EDT)
+	id D98816B008A; Sat, 10 Oct 2026 19:50:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D0B96B008C; Sat, 10 Oct 2026 19:34:02 -0400 (EDT)
+	id CD5EB6B008C; Sat, 10 Oct 2026 19:50:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A68E6B0088
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 19:34:02 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A8E666B0088
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 19:50:05 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E122312059A
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 23:34:01 +0000 (UTC)
-X-FDA: 85308321882.18.582B473
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DCDF440008
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 23:33:59 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=outgoing.csail.mit.edu header.s=test20231205 header.b=unithV+W;
-	spf=pass (imf07.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791675240;
-	b=ErurKFysEryJxzpypzpVliPeSag03fMWSIeOUkceSZ5bjbpozf4Ya3OjpMX61y1hO0s0fT
-	vfqFSxrCJz4XtKyG/npEhOefYgAmJ36JgUQxzUtgqs3vl/lA/cNrOHJWyeLCZUBcexX2rc
-	R5fnKRJyZwHEdpNdJwGLcBTqBEnpJKA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=outgoing.csail.mit.edu header.s=test20231205 header.b=unithV+W;
-	spf=pass (imf07.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0061580683
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 23:50:04 +0000 (UTC)
+X-FDA: 85308362370.18.2B0B219
+Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 215CC180008
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 23:50:03 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791675240;
+	s=arc-20220608; t=1791676203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XUJnoizHqRjV2lEHRvMaIyHFuZqZCjH0FTOcKYJEFGU=;
-	b=cYBUCgs48KALxjQWeaX/Naw6+iuc61plmiNpb6xOwpYmPj3pf5Iz0vk7w/L17kjfsNg+Me
-	AqR1J6fD+nsv/oYrwQ9V9eL+OnL0Y/kEcR+eAOR6FIEPzM58zVyL4TVtX5I3RKkgNKYoY/
-	YEQTp2KwWCH3ohFxUvZRgM4D7q0v33g=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=outgoing.csail.mit.edu; s=test20231205; h=Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=XUJnoizHqRjV2lEHRvMaIyHFuZqZCjH0FTOcKYJEFGU=; t=1791675239; x=1792539239; 
-	b=unithV+WsGxCsYAZVk6xw0G80mgpZCJzEhCGmFHAei2KGlWHOSDCxt5tPgdLShRtmUyBO1WujP2
-	v+MI8o4w9RuwJeZrY+YnJ/DGw5CTdbJI6sUaW+yfWkdiGY6k/wiWP954g9UsLxdLD2vLTMH5T4jbK
-	i9e3rqbVl8rClYCxHg9Xgq+aXjf/5ak6FpbFHU9docCdEJpe0YStUs3g0UrvXU0TkeUeK1SmtBwu/
-	JWB7tI3Y1LJRGz5Iq+YEWY0jxxH3byPanXvVf+PdS4mNqDmpr5cduJz7eMalSjIUoX6X8KgbkCuy3
-	2sRYdsW5dx6A/rj+kM9cv8tv+v4JLN4p7a4A==;
-Received: from mail-dl1-f44.google.com ([74.125.82.44])
-	by outgoing2021.csail.mit.edu with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.95)
-	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xFgZj-007q4w-3H
-	for linux-mm@kvack.org;
-	Sat, 10 Oct 2026 19:33:59 -0400
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-15dd124bbe7so1725562c88.1
-        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 16:33:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwmuKRhRfEUe63WdTS8MB+gX5qjcnoELyq73I7LGQ6NPweTQNx7JVk0BK9MV/QYoN/Qz+txNDUFTw==@kvack.org
-X-Gm-Message-State: AFq9FYLWeCPgIieGMkbGXe/DmYT9ef8H03a+XFdNaig+KTv0oYJXwn+o
-	NTA8EiMKVHidIagVmfwEx9Wx78ysmkTyEaKlv1XnepYVNlT9TYoFrS9Zkd192LR2ReRrGw6KiI9
-	VIvrVn66ToIcriyr7+4ndaK14gYeSzOo=
-X-Received: by 2002:a05:701b:241a:b0:164:475f:1a07 with SMTP id
- a92af1059eb24-16a55f1e60bmr7781779c88.1.1791675237998; Sat, 10 Oct 2026
- 16:33:57 -0700 (PDT)
+	bh=9FL9cUDrGCp+qMK51gHAgC2YfEkxaRRY5xGgvKcAOg8=;
+	b=yST1mbCIM2FErFl7o9/UO0RwDguUFUm5MjVZAIINL1II2221kwSndi5u0NoUQ3tvQNvMTr
+	fShMr/n3dP27UEvgUZjnSjolKmVIOjIGLIufZjYQBhzS7NkMDSemaOYSuNxNKISm63zvfK
+	FDM8PuGX23qXK+RWt1dU7alxlR36K0M=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791676203;
+	b=JIvH7Ir4HiMnRC9c5P88x2BMNZHi9C93wDRuTMIo2ILoVZgyTn4SNVZ+xoSUYSjXgu86ts
+	Lby5wuEyKQbzEBn7JUEx0arTp/5n5j1JIlIztGQwMtBaNbkwEntQSlKpst1fQPa1IqEuDc
+	fdBHW7tHxhfD1JFWLMKjLHpdO72nPW4=
+Received: from omf18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 28FEC405D0;
+	Sat, 10 Oct 2026 23:50:01 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf18.hostedemail.com (Postfix) with ESMTPA id 72D0E2E;
+	Sat, 10 Oct 2026 23:49:57 +0000 (UTC)
+Date: Sat, 10 Oct 2026 19:49:56 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, Shuah
+ Khan <shuah@kernel.org>, willy@infradead.org,
+ mathieu.desnoyers@efficios.com, David Laight
+ <david.laight.linux@gmail.com>, Linus Torvalds
+ <torvalds@linux-foundation.org>, akpm@linux-foundation.org, Yafang Shao
+ <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, arnaldo.melo@gmail.com,
+ Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
+ kernel-dev@igalia.com, linux-mm@kvack.org, linux-api@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 2/6] treewide: Replace memcpy(..., current->comm)
+ with copy_task_comm()
+Message-ID: <20261010194956.6933a224@226.227.38.69.naturalwireless.com>
+In-Reply-To: <20260911-tonyk-long_name-v7-2-34e1ee1564ae@igalia.com>
+References: <20260911-tonyk-long_name-v7-0-34e1ee1564ae@igalia.com>
+	<20260911-tonyk-long_name-v7-2-34e1ee1564ae@igalia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20261009051857.758182-1-nickolai@csail.mit.edu> <20261010162558.62abcd2ec967b009d0cb3bbb@linux-foundation.org>
-In-Reply-To: <20261010162558.62abcd2ec967b009d0cb3bbb@linux-foundation.org>
-From: Nickolai Zeldovich <nickolai@csail.mit.edu>
-Date: Sat, 10 Oct 2026 19:33:46 -0400
-X-Gmail-Original-Message-ID: <CADGQE7G-PAiJ2W8uhFO_-e9GGtEPey=drfSqLfWdxXDys3mJNg@mail.gmail.com>
-X-Gm-Features: AclHuK8NTVPdGlZpNuys5-JYOCzxE3B81f4B5GgR965MyMgqHe7NumhALMGGqqk
-Message-ID: <CADGQE7G-PAiJ2W8uhFO_-e9GGtEPey=drfSqLfWdxXDys3mJNg@mail.gmail.com>
-Subject: Re: [PATCH] lib/plist: fix plist_requeue() shortcut inserting the
- node at the list head
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	I Hsin Cheng <richard120310@gmail.com>, Ching-Chun Huang <jserv@ccns.ncku.edu.tw>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18aOPZdFzzPMcDV2LVtTbVyS5dgw9MYz/Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=9FL9cUDrGCp+qMK51gHAgC2YfEkxaRRY5xGgvKcAOg8=; b=fl3Kqq1YKaNwUAT2ewO8D37Si2di3QECApP5IKx/xRtmhETBuCicqagOGEnk+MxahX4DFkIqvyz8yqB67h0zwH4P22/9Vi1IuZcDU/dtRio5piddu4fOn5o03+m43fJKGd81NA1c5LhgtCasezWRD/U9fEFzq3MK/tDnWg/sTYo=
+X-HE-Meta: U2FsdGVkX1+wsc8QC0fHf+UbyellR29lm+C/KUyXjDtET6zrwfqebiXgzyo/sWYepWg2KpG+BTsYJk02OhpsGn4BTl4DliD/wdCa9XSreOsKru+DcKWBaONbFqgieOYFdI2oT39c+PV9V41OCZ/dMEoU08PGbiPorkytl1K8CGxM1DYQsC254CddrjZqAEwbiZzlervoin6exIeoOFRpo/hjcurftnLW9pfWsTI40jjI5+b+rzPHeWovsyysHMHa5zPKRZQAUyf+0pFS3nBhrCccXGlj6WeqArb54058yQTNmxkTKPUBxJxgxh/w8GhJ0hMSiIy6Q56ViV1LF2wOONf7t92dbrtZu19QjOQL9/72CCQdRf+ZPmF8IWOTxbXB3vjho2ch9QBw/LxRUSzlQsRSMXqVg74rXjY7ue0LozwwmaBRBdUNkAsJSYFW/t8HUlXpzdV1m6S84TsuiicAPw==
+X-HE-Tag-Orig: 1791676197-585340
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 215CC180008
+X-Stat-Signature: us5mpmssduqj1be3mbmjhfoyx6euk8qh
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DCDF440008
-X-Stat-Signature: 7tffauct19ydk53k4s7tb1j7jkm67xik
-X-HE-Tag: 1791675239-981679
-X-HE-Meta: U2FsdGVkX18+uutf6XFVY8P7vQqZ3t3wxh3hxufdDa+oZbJRDxcOk5zKk5ZoBMZk15fH/VDZhMosLYYjoCcNg71oKKMrEZiSF/J6lFPV0+mCOXTHkeElBfQ2rcw2RBbO85nClsdW5gLCmZI8ly6u3BEK3s+eUTbA6q02gdSbyyJkd0E/mFlXrpYnb8NeiBbHnZw7Bb7wC1D1sw8lWjqe3kUjzp+OYjLqnz0rqtDrZT9jsWyZ0k3MOTwqrOdbhPfjVGETec+hT1lx+1arEEevRkJ/hJOBz/ivtjTGlmyHoXTN/NHXRSB3OtURTExcTeECGADFMsSQotaH0iSmDEWwrTwjeVpozN5W+TdGB7hP/kb6Cs7EUfxUfxXsE+Cxghuoun7y9vW7rz+tS7Ar6gIODoenIDTWTi9/IlPjKu0glaxmrAKdhcYVaGu13H/ybhXmJ0siLIfCqeDu2t72PrmSl2DuzxzpOHpksTeDX1AYrjBWbKatK6aotmAEc8VatUlMb0anSx/sdZm6tj50v4h2ELigtcCLQhfCOBl7+MfKC4Ix/CBM7WphtoXYHS0qHoValZW5xD1cpBbyly/c618yLQQzkWixnqZVoCYG+PX7fwlV8/tJEhAMz+TVIxZVWkHn5TDRhJ0POrzNtnP3dgBrPZ4E7P1TL/uo85f7OEzcn3bOAktjclaJrMhetk9ScDjWIzR2HI0a7YjQTaeiuuHBtDhgkW3fKuuUKIyqv+bREmnd2/uenHTLtq739Yza86ixp/s1Ot5hQpz/pKoB/29jC/HnMgO2h6Dfkm7TeKP5RNt6KtZkXij9sAGXsdvot8/OFG4wG8JeG+d1WBZ07JlNXEnU0Qo/QjDb4epHsm0ay7SQAy9SGhNNnNWkGK1rs1ZQCwvBXeWvtWXmzP0gVdSxISkanFcW7PaHINr5y6oD6mFOtOxHXjVQsHMJIgmCEyPo/C1cxREeM4xuhlAX27i
- M78kg6J3
- Si0fm98WptCIMx2WipUJ4+A9xKc10xKFTTy58aj61JkhVkuw0Mz1pvXRC0N/fncZcTIZ9B7dHWjr2hwZITYgxrtBT2b6aKUNi0O4mag/DSDMFUZpNWxgykhIIjT+t9g421wZtzsJJ9NkL0x/9T48ZPOEx0Jko0DsUwLhbseSFtkY50fRfm5IjHyntnoGyyKr1ilNnJWUGstq6NuPUAa4eJAwZawVjqcFMwMKMKfrW6TNl51EABRw0n6//GEpqfSaIbHOT16gg7VsbAqEXMyqZ2HPkbqIz0zhbUrGgartbitnVjo+RYBeZdPf8enWrufZyZsKQq3vhmAmdO/f4Rf+G+P4xFEBvi+tBsFewTP6rRuPB70OgOpFrFdM2iARNYwHvkmJFJmlP4/evBfrbykfZtCULz887OeUc/3RrQHyuQjg0sKCpwaCxKIIfEqhKPfSVc1DN9YAcp/uuCKs=
+X-HE-Tag: 1791676202-576624
+X-HE-Meta: U2FsdGVkX185RbG73h2f/maBXpR4l9WpEsvPR0HTdEmGra4thT8Z8PlMBJB8uS9fQBeSBNMjIf54fg8munlnDCUDVr1JYlBp4yY5Mx2dY0OaiHRXaLpJNlScdD/XlZlPjVPBwTwluN+ZG+Hl/zctt71bXp/2crN4syoutOA1GSYEnzr8Fa/6mpmMthk28b5VMBIT2HVy8EN8G6WYgFT/vUsl/XOeEtaB3C5ZULD1Za9QPc8oA930sxMjnXbwOhbxLJEovl5PJe1uCRPBiV5MuuWfkTWOkyQw4S2ZbFfpgxggBOo8NcPyoYZDFHtaE0QGvEgaQIi5QKw2+0rR7jOqhXjWTeqFIH4Ke59GYv86P8J+StX3+vLMK/O+6vHHFcm5MD8Hvep39ldNf5sbLVqh74wr0/19HTxJDwc3RDvEmi1jeICvOUHlF7kb5M5EAn0n1JBi/x9Ie/sbJVTNe8sVXfkJehWPzzDgjvvbZdAt+6vQfzpejvqdvXYRei2cue5EsBilbv4c6XrtMB8XgNXRdpRDniDOTDmy3nsEcIjbz7b6XPdz0EPzKQPgEJstYQ2xTWkg6ALlwHaEXDGk+peONn/DbYeJgn7eOzNRM3Czz7qat4XRcgLxlp7m14YErc5b7UiYv3z4exBxnATtasOAvN4R6Y86rPND96T6RidMKEEqKoGaNRgioqVgf1j1lnf2e7OlAkkn9v925Mq8BkM3IGU3gp6dOff2VBtBt6KWjFK3w2uaIpIGsg3wcBePo8JI/efWXupecawDLagV4lsd0z2EuGezZIoyjLhrvPKoTILblPmudEErDFGCah9IWqLWqtFaO8TQGr2KXWeTOWOUe5Fuq5rmm449Fvf7alfImyEHlw/2kKX40X8JLTtcQZKzAENsMdHYJ9vMh1uSvhuMo2rC20q5LFXzxYhY83LYcBbn+pSUsipraZCznUwA2pPmZjMWTeht9xluK4WBMWd
+ 7h7tXLwz
+ 9uKMs/WZ5S3iCS+XTT8MJA/zfknX6AUXL0El+u8g3k+I75vept5q2dVGB4wWIqbBk4XvQVai+lKX5pB/NAwa0E7Hbzx6lsCyT3zXxIfQk6VTHq6uDuopS6oX9l04XYOiALsYwXmMnMZGe403oK9uDZ7W8Eg2JV2GklEGJs91XmzPUE3tANs0O1HKpQwda+D7nTkSjx+W6jS0G2KieLkHsKd0SLNMzkeMbc2184aDpxLes95UPfow3D8fLT993EIVkRLrQIoKja03FCvy0O6EBq+HtPRX30g9wv0plGhLJQquTm/QTIVDuukh/aeAmkZesF0PEDsTLUxlAgOLM4w845ZWiYSYlkB4W6Toj1+aCY4xy/Kk8/IBTLrf/qg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,20 +94,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 10, 2026 at 7:26=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
-> I recently queued a fix for this problem from Alex:
->         https://lore.kernel.org/20260903222456.1881786-1-handyhandyman.ad=
-am@gmail.com
->
-> The two patches are rather different.  Please review Alex's change and
-> and let us know of any alterations/improvements which you see.
+On Fri, 11 Sep 2026 22:23:59 -0300
+Andr=C3=A9 Almeida <andrealmeid@igalia.com> wrote:
 
-This patch is equivalent; I don't see any reason to prefer my fix
-(except for the test case that might be helpful in catching
-regressions).
+> In order to increase the size of current->comm[] and to avoid breaking any
+> existing code, replace memcpy() with copy_task_comm(). This new function
+> makes sure that the copy is NUL terminated. This is crucial given that the
+> source buffer might be larger than the destination buffer and could
+> truncate the NUL character out of it.
+>=20
+> Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
 
-Thanks,
+Acked-by: Steven Rostedt <rostedt@goodmis.org>
 
-Nickolai.
+-- Steve
 
