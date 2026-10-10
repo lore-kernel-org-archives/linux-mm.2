@@ -4,96 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4774ACA6017
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 03:17:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B677CA6004
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 03:19:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17FC96B0096; Fri,  9 Oct 2026 23:17:58 -0400 (EDT)
+	id E7AFF6B009B; Fri,  9 Oct 2026 23:19:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 131556B0098; Fri,  9 Oct 2026 23:17:58 -0400 (EDT)
+	id E2B996B009D; Fri,  9 Oct 2026 23:19:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 046066B009B; Fri,  9 Oct 2026 23:17:57 -0400 (EDT)
+	id D43726B009E; Fri,  9 Oct 2026 23:19:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CA4226B0096
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:17:57 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3666816072F
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:17:57 +0000 (UTC)
-X-FDA: 85305257394.11.CFC1625
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2C7E2180003
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:17:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=gY0VFKM3;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf06.hostedemail.com: domain of chengzhihao1@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=chengzhihao1@huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id B0BF46B009B
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:19:03 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 59A31160731
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:19:02 +0000 (UTC)
+X-FDA: 85305260124.09.EC48E73
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B8F8B140006
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:19:00 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jVmjNQFt;
+	spf=pass (imf09.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791602275;
+	s=arc-20220608; t=1791602340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f/Ss9u7ffm+Ms/aS7WwUlqIogB4GvdVPTjeht4umbEc=;
-	b=E8kL4aR/JzwHya/VOW8Q16Q9GYFEM5DHvs8n/5XXJ39i3WjyrFgmhthPO6yRHpabar8LvQ
-	Zux+b+Nch3pQCemiklYmIomJ3aGH5yQ9cBVd88rPYh6s+mlom3NdtgGVXJ+8uIH2lj2KCC
-	McAWtR8358vmzbx7PR7ObJKDOp1H5No=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=gY0VFKM3;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf06.hostedemail.com: domain of chengzhihao1@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=chengzhihao1@huawei.com
+	bh=mvErx1WWrmavZpAWawNx/SxSWFSIPpRG5LFKnvSw2A0=;
+	b=SGx2CQADXFKocrsBkU5KBkcjWLsJhNK4QqDDOgMjo5n4gsgK2zeLDBD+JY6lWhD+uSwkP3
+	g03YN+ziQt3V9YZ9E2ElPCIUbIVeLO9/I7TICN3wSHPs07nBuvCa/R8Zej4yIWP/xuLOF6
+	c/i/olp8O9VsczK2koxizXExJzwREmM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791602275;
-	b=LaEfR4geLJSm8SYKMO2jYhZYiBsJgkL5M0Weh/VEbxapzhfVvhvfQR8zxpRGJESjYCwtYl
-	eICn2dh755hhiqjg9dkCRw3k4/YH2VnAL7CuyY2RPq44M8Ao8sWdqUlfrQqNSVCf3H574e
-	kEPhIPqF/5JMv/Q3xmzfooq3kEvdpTE=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=f/Ss9u7ffm+Ms/aS7WwUlqIogB4GvdVPTjeht4umbEc=;
-	b=gY0VFKM3coh0tcV+ulsYg4AicFqE9u5p5h83kZbsVbIQMpVvThTXxGRqPkrfbpLjyb5R3tVTG
-	gAxAOmcQOhwcbRfhcqGuaqVmK1bHYGjIsh+C3jes7E+BycvsGkvxHF7xzeo5ASH9TcE+NSejIbX
-	rlMQUkeOVbLxP83KDhQamYU=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4j1pWb6xDTz1prN4;
-	Sat, 10 Oct 2026 11:05:31 +0800 (CST)
-Received: from whupemo200011.china.huawei.com (unknown [7.152.185.179])
-	by mail.maildlp.com (Postfix) with ESMTPS id 20AA84057F;
-	Sat, 10 Oct 2026 11:17:49 +0800 (CST)
-Received: from [10.174.178.46] (10.174.178.46) by
- whupemo200011.china.huawei.com (7.152.185.179) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sat, 10 Oct 2026 11:17:47 +0800
-Subject: Re: [PATCH] fs: don't lose inodes that another LRU walker is
- isolating
-To: Nikolaos Karaolidis <nick@karaolidis.com>, Christian Brauner
-	<brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>
-CC: Jan Kara <jack@suse.cz>, Mateusz Guzik <mjguzik@gmail.com>,
-	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20261009142431.713875-1-nick@karaolidis.com>
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-Message-ID: <a2f5f4f7-b1ec-bf23-d990-aebbdf6de177@huawei.com>
-Date: Sat, 10 Oct 2026 11:17:46 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+	t=1791602340;
+	b=jjiyBGELa1ckZXtZfsNWzo2uHMUzD+EScjM0SOdigRcgtblHermqRVW3FXXMEhuUUrofTY
+	8ezGxcOHEroq83fyBsyweAqj1SZmvnTv08kefnjJ9nhjObX3m4MBH3TKG9jC1xQIIqQjJo
+	lR+ixOE2XMbsdxz1kTZ9is+2cG0T1hs=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jVmjNQFt;
+	spf=pass (imf09.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0BBC560DCB;
+	Sat, 10 Oct 2026 03:19:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42761F000FF;
+	Sat, 10 Oct 2026 03:18:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791602339;
+	bh=mvErx1WWrmavZpAWawNx/SxSWFSIPpRG5LFKnvSw2A0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jVmjNQFtVai+W7WXC+h3kBaL0yjWXjUQJYTf2QnXM6D3GAH9/NAhARUSIpFOV0ocz
+	 ldAQ277Wo7iqm+PAjlF23ZdAK1uixhqlEROEG4z6b13Dftr/BL+rzd6RoAuKK5qweZ
+	 CUe5/3NsUdVjpRG/ava7nnO58ZC5r8ewUiFIB+xTaOUcmHx1krhNwlHvU6+KWDQplT
+	 RA1laodn+A61NsVE/vx1EED1Ew5/AINNnK9pSkEWxhOllREjl9+3cxE6oRP+GKBfdc
+	 Jj9BT6Foz6Is5IHwk76OmFoK50H788A3TiXNzSJGWK9kt+ceeBVH3TG0EOeu4FAfwo
+	 j8pwAY4y1zMdw==
+Date: Fri, 9 Oct 2026 20:18:59 -0700
+From: Kees Cook <kees@kernel.org>
+To: Harry Yoo <harry@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, Pedro Falcato <pfalcato@suse.de>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v6 2/8] ipc, msg: Account msg_msg allocations
+ with GFP_KERNEL_ACCOUNT again
+Message-ID: <202610092014.AAB20B81@keescook>
+References: <20261006092030.got.500-kees@kernel.org>
+ <20261006092035.166776-2-kees@kernel.org>
+ <asjhg2e4-WSeKuXd@thinkpad>
+ <ask5kpMS4mpI8Api@thinkpad>
 MIME-Version: 1.0
-In-Reply-To: <20261009142431.713875-1-nick@karaolidis.com>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.46]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- whupemo200011.china.huawei.com (7.152.185.179)
-X-Rspamd-Queue-Id: 2C7E2180003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ask5kpMS4mpI8Api@thinkpad>
+X-Rspamd-Queue-Id: B8F8B140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: d9sfo5344kprxhn7h8n7uk51zt5xsr6t
-X-HE-Tag: 1791602272-960493
-X-HE-Meta: U2FsdGVkX191XQ3bmMQr1eTpK/GYp8wj1jMpmSs6RXDoWQX7PI3sUGiDe2ratqtApOFrwuZpWY+iV1tYkQaPXENDUVPVN5veYdkzEi077DLhclZXO0/SfeZLW7cUHWPxo8AQR1DypnTf64vGcyoYnaOUggy5Tmm/0SHBlwDNbtIHOh2NUhG0jpSl+cwVoO3fybMDyummURE5304u88URzyZX7yGIofE59ICfgCE38EUml7DBZ1ZMr39Oet1xxrg7m9ruy3tvL2qwVNJCgxQerpRHRuC1Cbwdqn3sGHX4QlGo00TCCiOqUtaj1s4mNfTPipBFEi6CgjRZeBUFHZuZs+EWEl2ok19dK6rwtjcctNDRqx2Wi7SLE3R+bnTLNosVZqquz1y0H3ayu35OBIt3+/WXNYz8eLPit54qY5+yzkKFKZSSCSkSfTR/nDC8aO7VzU35YrIuzKZWhV2Cw2NwSfTKUOaINlOefgtT5XqrYC/+9pKtv+nmgYhWPUOv1cmMuP77j9jR2fi47bPoX73V+D47zTnnZ0yPzkeUYyCr4FfdRcEXgwIz0RMYhuuTgur3zMrsbhgy+peJKuM6YJv+MbLqFdcKF/OmC+Z4y7cMEU6bVgBpmehmelFcSVenenjFny7MRX9RE5Sh5cC0cyjunnbHzlKsoZq8Hcw3E2imDsYi70QasHIF0aKo0DsTCMpGo9zTHo5DAIQUpjn7/oaM2u6dUq0aqdONBLdHvmoJXkSqMVE0HfvyOkUyhZnH4P2C3g7t1AkYuzMdKDwzrJS/j5zCGtHvetebtRjluh+FC5v+gouGVPg5YDEN7jYtzs+jYOPKf7enepQ23yV8lIeG8xncHXhc0mprObm8ZmzBfer5Z4t6JA8fpmXKfq1aRW+nYqNYYydW4NhqerfVbtCoRuael7CcHjTKhTnmsTGRt4sTMMYiIJKu6hHbLk++9q/1bbc2QxXDY3EJkDbNHNn
- z4HphNC5
- zQjvgicrrFvDYzTGbVWytM/Mpf2wpxQP/60Dy6rhJ4KPatkWme92CrvTyI0HnkUmVCYI/QXvDXEeVb+ks3i/yInlxlBfbRPlk0ofHrIGSAjv73YPcgPStjaaKCtDQKO8rCTzYQb0QjfUOhmFjIt5noBSRoDcqy18Ay+B9PlWPhajdeF9+8W297IV3EiS7Kadf1/vPNCT5WH35SlFOTbyGhCUKQFjfe5BYIvGik+D7uRaS7Bw9wRBoFUZ+ABDrSDSE+O5jENmKfeStnEa/fPh0OnJJ9GszLRBbu4p+2rPvpezBDxjFAmfGhDS+vl4lMND9teYQGEvNJYGYBAqxMJAfoKbxu+6Hi/nmi6zeAIyXqytWs1xt3kFnP2dnwlnzq6n16EmNoZm6vrbkdeFiP2eCIOhnCQ==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: djx13q3twanfp86xnun9zmtbuqzioenc
+X-HE-Tag: 1791602340-803935
+X-HE-Meta: U2FsdGVkX1/a3QdZVAxJJcZ9eCAN8aG5Y6Ocuk/toAlA4ZBCCEtNj2H5mOzWXazAJsDwYxv3QF5MmTUD33ijovcOsXgWtbHrjUYw2zPp9LvIVbQFVvF9sDXVG0Y1TFl1kJzAAx3Sn8m3LBY9gaR45l2fqtMM/BqkNOKJS9VTCBeHkgIYvQ3Ojr0wtQJxuteyEKHpr+n9k9oaXFvin3ACbao/1O7befc+xIp4JZUiMq2gXpTsPGaRnE8lgeSYwn1Xrn3vuHn6mXTTqlbSLGaVJd8EN/kQ1fAT2nuhavWAPbwNdHOmvAKNU8S0+kHWO/ddl7KI7Sig2IufynSNYdN8+0k3Uzi+ar2G+pa3/WFF1/kO0B7xYe9D5wz6AFxN+jVfpIYum5ruHWfs5oiuTHUSxSOPHVit/mjm3VOtCQ9hkECMQFwFWuoLxzpYLogGLfbaN+/JoHaz4HbkpkZTM5PmEBnSOFxYl4FLd/nrGiygUwYiRGhTxRn4r+I8oZzcb3JBwtxMzdhOmqH/pfao1oGVcXv6LyT6QbTT+lgSS/B6MoTXnTir0b94l40mSq9AcejqHAEWj7ETylo8FkktcToBC2+Y9o7wji4ssjUQl6oR6+IeB1ZoZP3tnGGVu2BqL8vwaSD1iYJ+WHK1NX+v9Kx8ErqXbwOdSRfpyASXAI+xDTm+fKP8E1QvSg5yJJyJEcT5zWp4uYtbUkejVz8GCRzbDEYNRTdbgXQp6jTY/WTjUhE+mFPHKPD087mNUvnvzvyNoGKbwH4PgGwRINXu2woJZ/yTxvWKeqdN7Xff97c3lqRVR/tLiU+QYEt8M5Qdnfbh0gcyU9wh557rbkXNTmrIICXuak/NvL/HN8Ep8xlzB8WmeE+ZrNzqiJsdyZiwo+UqiCdpe6R5JUZC0ptBC3oTON6SCSx7VlhNBV8mzSE/Wc8R2xpm8DOI/LEOTqm/Ydm0AYnvHKCuO1neFQd4VoD
+ Fd0XO7Db
+ r2I8OK9VHqbjIDq4pMBwQA+INd/rUs55itOEiF1McL0PuAK6nyhDZZnZ/zgQdYIvZd7++n5wWxejwA4tf3FTyFjMVa+637egsFrNDER4OY84woSZRkc1idu19cJkm5XyLr7RBDLrgOskoXgUkRVLTIeXRxcyimhx2zhsxlmSOoX6ShnkrCkO/HB7sy5y5MnhqNB0AN89TUwxxAmitPfQ+4ZrZyWuTFvzOfFfhxcjYxSHkflI9E/Hn1dS6bGJ5LL+8uhsNSj1KNQhBWETCNOhznv67WlLk2TfhW/ia7zUYLwojrO4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,103 +103,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ÔÚ 2026/10/9 22:24, Nikolaos Karaolidis Ð´µÀ:
-> When inode_lru_isolate() finds an unused inode that still has page
-> cache, it sets I_LRU_ISOLATING, drops i_lock and the list_lru lock,
-> invalidates the page cache, clears the flag again and returns
-> LRU_RETRY so that the restarted walk can free the inode.
+On Fri, Oct 09, 2026 at 09:39:48PM +0200, Harry Yoo wrote:
+> On Fri, Oct 09, 2026 at 04:22:03PM +0200, Harry Yoo wrote:
+> > And now I see the initial kmem_buckets design did not sufficiently
+> > tackle the question "How this should work when kmem_buckets falls back
+> > to kmalloc?"
+> > 
+> > I suppose the kmem_buckets' abstraction should not be too tightly
+> > coupled with kmalloc caches. Creating a kmem_buckets should be
+> > conceptually equivalent to creating a set of caches with speicifc
+> > slab flags, size, align, useroffset/size. (for variable size allocation).
 > 
-> Another walker of the same list can reach the inode in that window.
-> It sees a non-zero i_state and takes the inode off the LRU, as it
-> would an inode that is in use. Page cache deletion requeues the inode
-> once the mapping is shrinkable, so this is harmless if it happens
-> before the last deletion. If it happens after, nothing puts the inode
-> back: it stays in memory, unused, clean and without page cache, out
-> of reach of the shrinker and of drop_caches, until it is looked up
-> again or the filesystem is unmounted.
+> Just to clarify... I have a few concerns on this area.
 > 
-> Before commit 2a0629834cd8 ("vfs: Don't evict inode under the inode
-> lru traversing context") the pin was an i_count reference, and the
-> final iput() put the inode back on the LRU.
+> 1. Complexity.
 > 
-> Skip inodes that are being isolated and leave them to the walker that
-> pinned them, which restarts its walk once it has unpinned them.
+> It's very counter-intuitive to understand how it works when
+> SLAB_BUCKETS is not compiled. My brain cannot easily process two
+> different implementations w/ and w/o SLAB_BUCKETS.
 > 
-> The window is reached by any unused inode with page cache on
-> CONFIG_HIGHMEM kernels, and otherwise by inodes whose page cache is a
-> single shadow entry at index 0. On an i386 HIGHMEM guest, eight
-> concurrent "echo 2 > /proc/sys/vm/drop_caches" over 2000 freshly read
-> one-page ext4 files leave roughly 400 of the inodes off the LRU per
-> round; on x86_64, with the files' pages first evicted through
-> memory.reclaim, 3 to 4 per round. With this patch, none in either case.
-> 
-> Fixes: 2a0629834cd8 ("vfs: Don't evict inode under the inode lru traversing context")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Nikolaos Karaolidis <nick@karaolidis.com>
-> ---
-> 
-> Found while working on reclaim of inodes pinned by page cache in
-> ZONE_MOVABLE.
-> 
-> Tested on master af32da41b032 (v7.3-rc6-232) in QEMU/KVM with a small
-> stress program: mount an ext4 image, read 2000 one-page files, run 8
-> concurrent "echo 2 > /proc/sys/vm/drop_caches", drop caches again
-> single-threaded (2, then 1, then 2), and count the filesystem's inodes
-> still in memory via how many the umount frees:
-> 
->    i386 HIGHMEM:      ~390 of 2000 lost per round without the patch
->                       (3 runs x 20 rounds), 0 with it
->    x86_64, pages evicted through memory.reclaim first (single shadow
->    entry left):       ~4 per round without, 0 with
->    x86_64 with KASAN, PROVE_LOCKING, DEBUG_VM, DEBUG_LIST:
->                       6109 lost in 50 rounds without, 0 with, no splats
-> 
-> The reproducer is a single C file run as init; I can post it if useful.
-> 
-> I went with skipping the inode rather than requeueing it on unpin
-> (which would be closer to what the final iput() did before
-> 2a0629834cd8) because it avoids the remove/re-add and leaves the inode
-> where the pinning walker finds it again. Happy to switch if preferred.
-> 
-> Jan, this applies cleanly before or after "fs: Basic infrastructure for
-> offloading inode reclaim" (v2 3/5); happy to rebase onto that series if
-> you'd rather take it there.
-> 
-> For stable: 6.18 and older need inode->i_state instead of
-> inode_state_read(). I have only tested master.
-> 
-> An LLM was used to check the analysis against the code, write the
-> reproducer and draft the changelog; I have reviewed all of it.
-> 
->   fs/inode.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-Good catch.
+> A "compatibility layer" allows us to assume certain expectations
+> and ignore all implementation details when SLAB_BUCKETS is not compiled.
 
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-> diff --git a/fs/inode.c b/fs/inode.c
-> index a9d37be390a1..74dfc379b377 100644
-> --- a/fs/inode.c
-> +++ b/fs/inode.c
-> @@ -942,6 +942,12 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
->   	if (!spin_trylock(&inode->i_lock))
->   		return LRU_SKIP;
-> 
-> +	/* Another walker is dropping its page cache, leave it to that one */
-> +	if (inode_state_read(inode) & I_LRU_ISOLATING) {
-> +		spin_unlock(&inode->i_lock);
-> +		return LRU_SKIP;
-> +	}
-> +
->   	/*
->   	 * Inodes can get referenced, redirtied, or repopulated while
->   	 * they're already on the LRU, and this can make them
-> 
-> base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
-> --
-> 2.55.0
-> .
-> 
+I'd rather make kmem_buckets not have a SLAB_BUCKETS option. :)
 
+> 2. Making kmem_buckets tightly coupled with kmalloc's implementation
+>    details is not reasonable.
+> 
+> Let's say, at some point we make SLAB_BUCKETS always enabled and drop
+> the config option. Then all kmem_buckets users will now have certain
+> assumptions inherted from kmalloc (e.g. alignment), which is not
+> reasonable.
+
+Until it's always enabled, I don't see a reasonable way to separate
+those assumptions.
+
+> 3. __GFP_ACCOUNT and __GFP_DMA should be applied to all allocations
+> in the slab cache. For kmalloc, these flags are only used to select
+> the kmalloc cache (which has equivalent SLAB_* flags for __GFP_ACCOUNT
+> or __GFP_DMA) to serve the allocation.
+> 
+> Specifying it on individual allocations (rather than as SLAB_ flags)
+> makes it easy to break the assumption.
+
+As in, you don't want a "pass-through" mode for __GFP_DMA?
+
+It's a lot of overhead for __GFP_DMA to have multiple providers, so I'd
+rather allow kmem_buckets to allow pass-through (perhaps explicitly
+opt-in) where then the other options (e.g. alignment) must match the
+general kmalloc caches so that pass-through is consistent.
+
+> > When it falls back to kmalloc, kmem_buckets itself should provide a
+> > compatibility layer when falling back to kmalloc.
+> 
+> For example, calculate_sizes() converts certain SLAB_* flags into
+> GFP flags (s->allocflags) for allocation. We can have a similar
+> logic when falling back to kmalloc.
+> 
+> Though current implementation does not allow this and requires
+> some rework.
+
+I think the current series does everything correctly in the sense that
+nothing is allowing for mismatched fallbacks/passthrus. We could iterate
+from there once we have a need for this where a non-kmalloc-alignment is
+wanted, etc?
+
+-- 
+Kees Cook
 
