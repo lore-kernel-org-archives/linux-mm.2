@@ -4,109 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31703CA9EBB
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 02:09:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86324CA9EBB
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 02:11:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23A266B0098; Fri,  9 Oct 2026 22:09:43 -0400 (EDT)
+	id 4D4A96B009B; Fri,  9 Oct 2026 22:11:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C3AD6B0099; Fri,  9 Oct 2026 22:09:43 -0400 (EDT)
+	id 4AC376B009D; Fri,  9 Oct 2026 22:11:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B2886B009B; Fri,  9 Oct 2026 22:09:43 -0400 (EDT)
+	id 376E76B009E; Fri,  9 Oct 2026 22:11:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D19216B0098
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 22:09:42 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6484F40708
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:09:42 +0000 (UTC)
-X-FDA: 85305085404.28.252B196
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-	by imf28.hostedemail.com (Postfix) with ESMTP id ABB82C0007
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:09:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=openai.com header.s=google header.b="e3sjz/Kf";
-	dmarc=pass (policy=reject) header.from=openai.com;
-	spf=pass (imf28.hostedemail.com: domain of kylebot@openai.com designates 209.85.210.51 as permitted sender) smtp.mailfrom=kylebot@openai.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791598180;
-	b=e5nzFZBipHstluQa6tzNBg1ZjTtGm4LPmRUhkv5S3gQJ8fVDVDzmYuhZ7R8VBX53fygCCs
-	9aGMWwonPwvKBGyixGWdiHe2Oejii8WdrrzDLouedQvwGd3SjzSmI/Uwf8hV+UyRQexVUl
-	P20+H5a7r0av3rgFL+8F6qpLjEZoB9c=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=openai.com header.s=google header.b="e3sjz/Kf";
-	dmarc=pass (policy=reject) header.from=openai.com;
-	spf=pass (imf28.hostedemail.com: domain of kylebot@openai.com designates 209.85.210.51 as permitted sender) smtp.mailfrom=kylebot@openai.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 079726B009B
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 22:11:09 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7178F806D5
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:11:09 +0000 (UTC)
+X-FDA: 85305089058.18.9C929A1
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3274220002
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:11:05 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	spf=pass (imf31.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791598180;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=uD8coseHJ8cbO2psrmuf1ZffJ2GQja8vTBxGB69y3bI=;
-	b=H3O0ft0uYpHfXL+MJMaGHNIwNFGSUAq7F8+CCR3Ak5dvEl9VvXW/Q+XbbgjrdqAtek0Vum
-	s6RseaZ0uPUu8ZyWsKb1SpAZDZ/W4zisalLRYegheJI3B8y7U6wF8KKHpL3JnWEJzzBQkt
-	e+/17qMOMwx8hEyxJirhefepYx9gjA4=
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-82395ae2ea8so294246a34.1
-        for <linux-mm@kvack.org>; Fri, 09 Oct 2026 19:09:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1791598179; x=1792202979; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uD8coseHJ8cbO2psrmuf1ZffJ2GQja8vTBxGB69y3bI=;
-        b=e3sjz/KfZr23KFiy7KXXKJc1qY7dztlTRCYBuGwfhZVhbquy2tAgo57dO5oAXV3LBx
-         x00oWZjQfvYwXrIEh1MeHSkWuYnlqCKVxXQJkPfnpZEQpnmQFmZkMu1VZTe+zXRFSpZ8
-         xgNDT3IGMIwtjMlvN+hfJjwr+CM2d8CyzVueY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791598179; x=1792202979;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uD8coseHJ8cbO2psrmuf1ZffJ2GQja8vTBxGB69y3bI=;
-        b=inqIiDf1BO8s29PKt3B4kLACkfAAtO/V1Htymg63oqHHv04paE7y+JuvFj0tZhZOXa
-         OGAJVfCoh8BvRRJLeHUfVtbb4nk74THrWrvV2SlN6ZX03uxiuUIiHzP5sg/PnDdF9fnY
-         9anNTW06t7Cj8788kuY4VkNKyzIXTtpaGa0cjtWt3KhLgigiDEcE8jI/5lJzlH6/CMcu
-         r01l9C83S1EECTTDeBE3mcTrhLdCxGG38GEpY9SRtVgX+0M+rWpKyIeBDu0MIZtKREsE
-         gkdl18VUffp6B1+bTO7wR+qEZjtmeXuUtpc9/9DD8Z802WTWLumq8YYBxiFVyE2kxOkA
-         7atg==
-X-Gm-Message-State: AFq9FYIuVctTj4GSukPWHBgd2Bq3TcQiS/TM1gwjNl+3y5+MdbbsU81H
-	5A96aA+ePq9Cn5SURJ5EIihbRp5S2SreO/KzqrNnipuWzuTrKH3dZpG0bcl6Bx2kel8=
-X-Gm-Gg: AYBFou0oFgJpeIVSskCPeXbZ+BtENDzUjK4JrkLfX9H3eZ0x6/Dj8ZNVC5bGCHP18Wa
-	Qb6BUOwouaOkTolmMpMXLRsUk4IBe+UzRDFUkNBH9Q/2tnIgzJitmTHkZx+qP+FsGZ+xhiAdiNt
-	9ddCWyyDjs3dijtR9umE8GrXJb4wjPKVn58GTL4fx5/Ozpg+v1PqQy40p4ULaQnxVvSz50bx6xN
-	Y/2d5UmesalGBswwD4gIAcMzJcLnVvyThL/iVTHKr5kzlVTXhUj3h/WydOliNxGRpOgOZsKj92w
-	EHeWv5onQM0FfMDWvKCnA7ECWp6y88cG5ccrHPf7MWnIiHBLM9jf5sLPkYHwrZBUZfRrJipfG2u
-	pXqkJDK81f8bynnUvIjBUcVgF3t4ULmFM26RjR4gCbk5QItIGqZUXapM0bDItVP+sw1gi2Q2PQ7
-	nf7WGjQWia8FfF9zfC9PIcBG2ZFxx5tmaSUPc8WCBT8zDBhptWvnVl8aW6XswASdSPi6KKjT8LH
-	XrwCwvmy/OD0PXtuLknvA4WCprO0pTxY4SQ8r80dsQiWnkvZoJhz4rKeIJHmg7UDE0i+tJadVQ=
-X-Received: by 2002:a05:6830:6816:b0:806:1e7:4167 with SMTP id 46e09a7af769-83095843911mr3366701a34.13.1791598179659;
-        Fri, 09 Oct 2026 19:09:39 -0700 (PDT)
-Received: from com-75606.corp.openai.org ([199.47.143.7])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8303a515aa9sm3580257a34.25.2026.10.09.19.09.38
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 09 Oct 2026 19:09:39 -0700 (PDT)
-From: Kyle Zeng <kylebot@openai.com>
-To: linux-fsdevel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Matthew Wilcox <willy@infradead.org>,
-	Kyle Zeng <kylebot@openai.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] xarray: initialize the offset of new root nodes
-Date: Fri,  9 Oct 2026 19:09:34 -0700
-Message-ID: <20261010020933.83051-2-kylebot@openai.com>
-X-Mailer: git-send-email 2.55.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ju8fpuc6izm7cqj85zx9tq59pj4k7ama
+	s=arc-20220608; t=1791598267;
+	h=from:from:sender:reply-to:subject:subject:date:date:message-id:to:to:
+	 cc:cc:mime-version:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=En1ryKdt7KydxQo58i3vejglp8ezmRsPuj457Z5z6uo=;
+	b=AvaOA5Nu+JfdzZHB3uAjqzm93is14zQkOg4EqiUXUAD9JCNAAbY0hYlhCVATRgAag/zXtQ
+	OHgMUvhdTfi25FJZeXr1Y3mSE9qoEk2+yQQXE4JAztzXqfutma6b9as0/H9VlbM7kBKImW
+	QJ+jezHlQPLQkpCqw8aePbOXJTZLrgI=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791598267;
+	b=bMxaCwnF9JV+VzXZdcq+YPWjJGKDuD+wkpJr+7uH9VEILvV6gRVOP9J7d4j/a52C0gbeTQ
+	3wr+crOXJRWOVphK+7fpmRqaKPCLy8gzKdpbBGHODOAI8oSGfcHFZhiV1YWAiKAhOdigOp
+	Swhjq/VG5DawxwYbF+yI+5EU1ajdFIU=
+X-UUID: d3f94612c44f11f19a56ed5b684f684d-20261010
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_MISS, HR_CTT_MISS
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG
+	HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN
+	HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME, IP_TRUSTED
+	SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED
+	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, UD_TRUSTED, CIE_BAD
+	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_C_CI, GTI_FG_IT
+	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:c4742f08-679e-42b4-9639-0b99e2b3fa2f,IP:20,
+	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-5
+X-CID-INFO: VERSION:1.3.19,REQID:c4742f08-679e-42b4-9639-0b99e2b3fa2f,IP:20,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:7db8b62,CLOUDID:e05d1955835369e02df995000c9e29a7,BulkI
+	D:261009193225U7GYPBLZ,BulkQuantity:8,SF:10|66|78|102|127|136|841|850|865|
+	898,TC:nil,Content:0|15|50|99,EDM:-3|-100,IP:-2,URL:1,File:nil,RT:nil,Bulk
+	:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,B
+	RE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_ULS,TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: d3f94612c44f11f19a56ed5b684f684d-20261010
+X-User: duanchenghao@kylinos.cn
+Received: from localhost [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <duanchenghao@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 205743036; Sat, 10 Oct 2026 10:10:56 +0800
+Date: Sat, 10 Oct 2026 10:10:53 +0800
+From: Chenghao Duan <duanchenghao@kylinos.cn>
+To: luca.boccassi@gmail.com
+Cc: jianghaoran@kylinos.cn,
+    avagin@openvz.org,
+    linux-mm@kvack.org,
+    kexec@lists.infradead.org,
+    linux-kernel@vger.kernel.org,
+    systemd-devel@lists.freedesktop.org,
+    duanchenghao@kylinos.cn
+Subject: Question about obtaining LUO session FD for non-systemd-managed service
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3274220002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: ABB82C0007
-X-HE-Tag: 1791598180-937710
-X-HE-Meta: U2FsdGVkX1/3lDBGQWN19kWXzBXMl1pkN4pKfyTgo0H4MpZbpGZqdnFbUyEpxEHQ2JgoZFKBtU/jF9RZWLWiI8Eb5+DjSpxVNGOv5pAq1A5y/KTdKFQ8Doi61jWBkVWf9YF5mRi+iXm5BszzkiBPT1KSVBw4vBq1DWqTW5+S4DR+uAMRP0IAJ5plF2ODW+CNHHWZEhPOMqOQAEWjhxIFQglNhCdZUuwjaf9d0cTr4MZrDJFKThechX7+Pr/67zvovXdMfe1r0MXFqNKI3HMR8ONKU4F9e1gTJuhuqpXhSbNGVmPEefv/SArU+Nqg2LZ9c9d4HwXeNqBlaGcXhw/nUB1fzXSU5of6CtPNEGlKjQakZE6CcqXmylUjCOTEOG8plJXl2FK+hg14fo1odTxRr3+dvZoNhsXz9zRxDeVp4dpA59Ne76XB6qIHuqXGHIaL226PH9LwHZfOPXluXOox3kexIXyxUryFRUndhiEIGuJrgk/ALawIQKF+fh/Sl3wB+eT6onJBgv84hAHO2PGk4wzxas1UlTSHhTxwX0m3ElNTCBiKl+rqqq6KMozKUzRDX5dld637tjHitjnJI6/2udEFMqQbQYOHusNPcCPxUr/CBkh8jlVy16cLnHnq1yldKz+aYtiMtHVaq5TmdVgCl8yRtpBoZrv0xakTO3SOrrINugaCn/FfpwlmnimtPygNjUdsrPBAHOeuzbQIIV+B8Aav4eisJuJg1su6uw2C0rB/Fs8kBM+8WegEfruWZ8y1CJy7lgl+oz03FNp8+dneIc7N680/4w72bsWGXZbgTP3kpmGgWSyyvYX1CJG7uUAcp18IZ9RNWqbY2lEAYwKypy04yoWGaCkpZQbUYBIrxNZpFZEE1m+XhllVBTweB4H20iWs7yL3nn82CdVTKLVK1eVaxhXWYxqdDVwxUzWqduPVLjpHj052vGLhxDLWlhu4mzf03fKBLHf8Xr6Zqaf
- tvjPcnJB
- uaDexEyogho+sBuL84+B+4uN2EAEPoaSDG91WICWw/8tTYFDVISFkEld2CDctRZHIM/M5hssn9ElUqpMB8naKGLZ6dO9y8gaJLcepfEZZrClwgux9SUEnGxo/X3SMaovrzRXJI0Fm4EkREkCB0N4lLdGb3BZeTai3bws75HIBK34eDT6YhWx2NoPDnojuNpKNbV0Ptlj4G3JZBNTmHAMIR8cXKm4yNBNWXNc4OFQk/K9nIJlIbW7LSLhoGUpVaawGVRzPJr5UHiDrJe0olBr3Lm8Y9xKjm3xNV5EQyQNA3NpzBwr4bbFD/vRbfw==
+X-Stat-Signature: s66pukyyye96uaxnenqsmczq7i64w55s
+X-HE-Tag: 1791598265-739394
+X-HE-Meta: U2FsdGVkX1880XjlDtGsdrWOnCt5CKTXP8+iUDA0SjLHnE5ENBtUQeVjpINnGzDw4Smy9nARObrcbLe5cUu9dWgUG9jgYyrly6sRnnrpZSXkAg1EbmudtiDrl+UhNnOjYWL1T+QouRHB+fC97Ecj0PwJPfcI07DhAUdQBhGNniiuFHZFb3zBP1b/wWfghqdiYQvOM3xGof+SIeqZvBnlD+1w5o+5Zu8EuL0Jjwkoa9l6FcFL5n48RAmmcU9boU1sKpUH2pTHSbdbwM1sA1/XUZS9a2M9OGjK4GfkEcSqc4qUHmLJOqA/B54gkymosRjA46mcrhLyhWP0hHkBYToqL+LtTwNCuVrVkUwpprhoQo08KBSObQZVVwQhp6xCxwXosLJlDyCWzT+E9LAScIl8aNPdGksh79Q04Pq3ZW69Lr4Cw/mKCOW49kW9RRD8IgtySRGGia3Fm8ZzjCjYBCvuBwEtrkiMqpfA0BYmfOBuSAtyZmSOh8HXcmZIL5IWWIAqNcaCNGDpFiYSYuKNRzZCSJrZ220W+gmaBbPH6WARSLROvPjHdd6OKZuWauK3arlWy3QaBTXNUY6vKnaBW/1RkXkwIaBYaYduxpGEQqsdufsunvs+g/CAASkTwGoX7j2eJ8nt+7uJwi++SvTiaeWpTd2B74MGAAQecpcejadpRC/WrFIuUbVoVHiSRZ8V7H7jVbfqh7+pC+O3TL+yNv3Bo2ex8VQKY5n9YE6POaOwyYJ+6F/GglqOTjzZvbKQz96rWEKwj7qHLr2PxqX+6/isNqoAcymTD7RtHGYmeBU+k+3cteKw24gz1ZZQALToVD0e8klX4iz13wV8KgbgthAMQg4QkkbeItT4RqjDzJKiUN7pUIMejELx5OZ9yA1zLABaCRzSU4OXN8gMaL0W8a22k4Z9CbCu5u4YCofz2pxgkZBhZqwWwYQCYGs7I/wIay7FFcVD0ONUY0P62TEqJU0
+ Ci/0R/zd
+ FoK7e4GcZmQULRWPFGZA7g0B6HHJAPAnZOntLDNGvwPmzKEq64GdZgmqGhiWbwmcw9OC0NpkfP8GrVIYQ0IsUkbfJO3iyCGYl/nMSMY4YuEYCDsYAzCz3YjLEWaAy6/MLPSO/x53mInH64tTFxOo5dZDx6OuVh51udK6EATj8Qq2NpRM+TAyStDlwt9s9PxwKG7zvQ6XS3cwM4LhNF7qdCCfBKCPQui7RZ5YO6kgyiFa/vUv/LFMMbY6j4KugyCMO2WuI4Tef2PXaRO5POyI0RUzgxGPAmnrZRPc8+mS482Dmi0dW3efVFdpNYw==
+Message-Id: <20261010021110.079726B009B@kanga.kvack.org>
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,46 +103,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-xas_alloc() only initializes node->offset when the node has a parent.
-The shared radix-tree node cache clears slots and marks on reuse, but
-leaves the old offset intact.  A new root can therefore retain the
-nonzero offset of a former child.
+Hi Luca,
 
-Lockless iterators read a node's offset before loading its parent.
-If xas_expand() grows the tree between those reads, the iterator can
-combine the stale offset with the newly published parent and descend
-into the wrong subtree while retaining the original xa_index.  Even
-xas_reload() can accept the resulting entry when the offsets within
-the two subtrees coincide.  Page-cache callers rely on that check to
-validate the folio they found.
+I watched your excellent presentation from the LPC conference in Prague.
 
-Initialize every new root's offset to zero before publishing it.  The
-offset sampled by a reader will then still be correct if the root is
-made a child by expansion.  Non-root nodes retain their existing
-initialization, and shrinking only promotes a child from slot zero.
-This fixes the forward, reverse and marked walkers at their common
-source, without changing the iterator or page-cache APIs.
+I have a question I’d like to consult with you.
 
-Fixes: 58d6ea3085f2 ("xarray: Add XArray unconditional store operations")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-6-astra
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
----
- lib/xarray.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I am currently working on the `memfd_luo` feature in CRIU. My goal is to
+leverage the LUO capability to store checkpoint images inside memfds.
+After a kexec reboot, the image data will be retrieved directly from
+memory instead of from disk.
 
-diff --git a/lib/xarray.c b/lib/xarray.c
-index bfe7bef80f34..509d7e4157bd 100644
---- a/lib/xarray.c
-+++ b/lib/xarray.c
-@@ -382,8 +382,8 @@ static void *xas_alloc(struct xa_state *xas, unsigned int shift)
- 		}
- 	}
- 
-+	node->offset = parent ? xas->xa_offset : 0;
- 	if (parent) {
--		node->offset = xas->xa_offset;
- 		parent->count++;
- 		XA_NODE_BUG_ON(node, parent->count > XA_CHUNK_SIZE);
- 		xas_update(xas, parent);
+Here is my pull request on the CRIU GitHub repository:
+https://github.com/checkpoint-restore/criu/pull/3152
+
+In the PR discussion, avagin suggested using systemd as the CRIU daemon
+to centrally manage LUO sessions and access to `/dev/liveupdate`. I have
+watched your talk and read parts of the systemd source code.
+
+From my understanding, systemd currently provides a unit‑based solution
+where child processes can inherit LUO session file descriptors. However,
+this approach requires the target service to run as a child of a systemd
+unit. As far as I know, CRIU does not run as a systemd‑managed service.
+
+So my question is: for services such as CRIU that are **not systemd‑managed
+child services**, how can they obtain LUO‑session‑related file descriptors
+managed by systemd?
+
+Thank you very much for reading this email. My knowledge of systemd is still
+limited, so please feel free to correct me if I have misunderstood anything.
+
+Thanks & best regards,
+Chenghao Duan <duanchenghao@kylinos.cn>
+
+
 
