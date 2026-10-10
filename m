@@ -4,120 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DB12CA9EC1
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 20:39:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48F10CA6017
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 20:42:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC74C6B0088; Sat, 10 Oct 2026 16:39:15 -0400 (EDT)
+	id 139016B008C; Sat, 10 Oct 2026 16:42:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E77C86B008A; Sat, 10 Oct 2026 16:39:15 -0400 (EDT)
+	id 111806B0092; Sat, 10 Oct 2026 16:42:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D66FC6B008C; Sat, 10 Oct 2026 16:39:15 -0400 (EDT)
+	id 04F8F6B0095; Sat, 10 Oct 2026 16:42:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B23CB6B0088
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 16:39:15 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C550C071D
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 20:39:15 +0000 (UTC)
-X-FDA: 85307881470.01.9CBF5AC
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 84220180002
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 20:39:13 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BIlFURbt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791664753;
-	b=MA0cMIq1//Usp8DjP3z+vzW6blcEdfJP/ReeeQlHJMiyixrqrP1n0nQFdLTuZ2GUzgxxnv
-	LAknnyV/kKrPL1zWzh627iDX/UxhijVk2aF9msqUt/loLT/yyi0jyYM9KGfb0XUXQB95OL
-	1JNCNWAuoP9DyYMJbshgUZZZo2pSf/4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BIlFURbt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D54886B008C
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 16:42:26 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 606141402DC
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 20:42:26 +0000 (UTC)
+X-FDA: 85307889492.11.719373F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 99745C0004
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 20:42:24 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RmLqUv8s;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791664753;
+	s=arc-20220608; t=1791664944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=JNuMer0adZ1K0ed6Vf60DHY2owT/YxK/mEmjSJifHAw=;
-	b=IkpdNPRduqL/HJXhksk0OAkoloYS35vjzO9H+Z0m6Eyev/VaSJTvU+iRzPWLXml/W9PMPg
-	7T1tseWk64pztvqTaa+qOOurR9VbR9LZH6aEPuTDkhqyJeSTtHN/xF0d0DjW2NHV6muZC+
-	oQ8bbp2vzOOEZGZRlWnw/hgsqsPmr2Q=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a1880e1bf1so7122415e9.1
-        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 13:39:13 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KaeVwRqfGMljaxW8Ah6Cx9zT6uiRBSSC1dP0zE7Q/ko=;
+	b=yW4Lmaze5YgGbMWjZnqX/GaCea4hKcfvLM9l3imlkY2Pqr1BxDqZpjYH1gSwiJd83Ys77Y
+	Xsx6hOfWDFq2JNGd2nnTTDVCt/XiPHpvTgZPtyFK7Qj7JEEpdimXI7BlZYYAVrBmbCKv6Z
+	BhqnveYTnvh3/YsMAK7bMtx/AxVvFYU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791664944;
+	b=qSxeNdOv/RoF/OYU9lLADFfl3wD/A6EOsg8Z0XNBXLxqqLVslOlHxl0Ee8YxW2YqJsSlvD
+	9Ufadlgx2IwnmWf/zLYk5caTU0NGtz2jKxX1TKltYZnELPeu0QFFlUw87y6TKFdxTWwxdi
+	o2Co5jIpSuSUpInWO7cgUGyfGMzJfcI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RmLqUv8s;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D5CDB602CC;
+	Sat, 10 Oct 2026 20:42:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A691F000FF;
+	Sat, 10 Oct 2026 20:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791664752; x=1792269552; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JNuMer0adZ1K0ed6Vf60DHY2owT/YxK/mEmjSJifHAw=;
-        b=BIlFURbtM8PcbSAdJWnBo3P9EVTj0nk+mBhyHs4ekw21MPsXq2Q/37qmUtuaDYpl8g
-         y/J1HWQcMsIaT5CaA4tTk2Qic3gp0P9rqbJs9ShDndtUyq1vWQ/wzRZQoyOy6mnPV/A0
-         5Ujvn26/QjDj7/kW2/oB0nFvWXPZhlkZ5zjwUdNaFi+biocDqqUTpY53Q99TXV9Z53PA
-         JLFuvjYK4PRLXH23RlhSB1zQuAA4WoGSLBbkLfoxxV7347SHOcfabq0kKh3yUU7jwTsN
-         F1pAz9i7KyxfV1eQIe/St/KT07b76KQzrU187buN1yJWLSKZALdj9z+yG+O/Ni3UF4CV
-         JF+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791664752; x=1792269552;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JNuMer0adZ1K0ed6Vf60DHY2owT/YxK/mEmjSJifHAw=;
-        b=xup0wLc3UUFvMHiI9ptJfdDu00Jk0b0t7Nx6iOfzuHpEhPTQyv5OGY6Bj9YJDMyy2U
-         ZA9vuhGuh4Pn1CCDwzpHsfeti1kqzOX+K5W9EEkZYbhPA6Vuu0IzNXx6rB+3lsd5CDR4
-         OTgUnzdKTpvolX7Tw8mFTJDxDj8My1pNKZWCdH6r2NCGyeVtXI91FdYQ+fhTQcbDhxh1
-         ha6aVh+M280JQ/HFBejqcmjVgdMTAkxQ57UF6anRyDKGVr0Es30al04hBRypI6zZAdQS
-         JyCGu6+mBClwvhQGPuUXlp4OlPvER3K4ow6Pu7l7y5j8Tlc016IvuemC6MHffffEZFJ1
-         9rsA==
-X-Forwarded-Encrypted: i=1; AKwUvBwDbQTjlkpy7QD8jHGgZooEB1cGiEo+qjN6qPWJPYtKTzfySeKx62t7v13rbjS4E+hRF81DRGPAOg==@kvack.org
-X-Gm-Message-State: AFq9FYJzd2qq3ILvXLT2AUTVW08TYtVPlVi8zJIRb6bud18ekaLilEWL
-	zHxEWjbiRm7f8lGouPBHU5Yn7NfvZxB2WS/RId8AfvGm5GMy+ZpcY5s0
-X-Gm-Gg: AYBFou1xLPKA0j7SoCWOE0vS5WyehxO/S4VQKoKljKQtp3eLbxUAKQtVeost9sJcEJ/
-	h5xwjbJhd/0Guh9tlpa6GMBDKPjDOLEqx9PJ24Ceg+t0OiNvj/4X4opI3/6CNKVrPur1sIR56yJ
-	FZ/x+gczgvizrQxY/7+eWU/9iLCUjbjPIbkxNbpI9YKTzbSt709GwyPX7lhceiIQNjNXnClGjmb
-	pghMqfjuTBrrqbxP1VyIobFjTI+2rVI5XqhAZZA/POya+sZHQHygzWzRf8JE1L9l+42ANyjgoyZ
-	77+WsuDThavXY3FVnLUfH4Lizd/kONM+OLj/hcSPQ+lw6y2fKlujyRne6TDPOCT1/6Yn8VQje5A
-	TfUxaRLrFB6nVUeUMAlUAPzR8i7vXkK3klMw1TvSmGME8IBlyhH5/k2z/yAv9Z1hUYrdteC8nci
-	iw1aNW2pzy2dQVZ8kO3US8pgM5bNNukF3WvDGDMHA5eREww5naTOtmdRotv6nokAsSThVk4L+h4
-	LovDBJCwrsuu18gDZlL0XcbJRccfPZBadpIQRw5UdKZBDoK42v50csD1KhFPlMXJJVcJaJ9vKml
-	0HC0dPSoSUBrZ640FpeWZI7cg+/Hs1Xs8MytCQ6wFhXKTOxQaezk/fR5mwA/GYnoQOWlOGohzF4
-	=
-X-Received: by 2002:a05:600c:4709:b0:4a1:7baa:7303 with SMTP id 5b1f17b1804b1-4a18e4a5237mr105971385e9.7.1791664751688;
-        Sat, 10 Oct 2026 13:39:11 -0700 (PDT)
-Received: from imx93-evk.localdomain (dynamic-2a02-3100-9d3f-0d01-48c7-5d76-0ec6-9dac.310.pool.telefonica.de. [2a02:3100:9d3f:d01:48c7:5d76:ec6:9dac])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18be96549sm217808145e9.6.2026.10.10.13.39.10
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 10 Oct 2026 13:39:11 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shengming Hu <hu.shengming@zte.com.cn>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/slub: initialize the free pointer of the bootstrap kmem_cache_node
-Date: Sat, 10 Oct 2026 22:39:06 +0200
-Message-Id: <20261010203906.93156-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bqdfh9ycq89gsfxbwpunzxz6yuuwcra1
+	d=linux-foundation.org; s=korg; t=1791664943;
+	bh=KaeVwRqfGMljaxW8Ah6Cx9zT6uiRBSSC1dP0zE7Q/ko=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=RmLqUv8syW5KCaLrBRHaqB+hdxZmebnLFbyFQcAzsE8K8GyM/v72kmzM2p52+uyUk
+	 JY4X3rsdpU0z8m/Mytez5hAFfN73+lJQkTAJ2ZdwOIQwtDH7dUz67d2wNhBrUxR1xC
+	 zb3jPxE5vNJ3UNmy+gKrU8kH2wFXF/E3KA17J4EE=
+Date: Sat, 10 Oct 2026 13:42:22 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Mike Rapoport
+ <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <chleroy@kernel.org>, Ritesh Harjani <ritesh.list@gmail.com>, Shrikanth
+ Hegde <sshegde@linux.ibm.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>, Lance Yang
+ <lance.yang@linux.dev>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev
+Subject: Re: [PATCH v4 0/6] mm: Unify device DAX and HugeTLB vmemmap
+ population paths
+Message-Id: <20261010134222.b6fdcb20d8fec5aaceab66ec@linux-foundation.org>
+In-Reply-To: <20261010075755.83339-1-songmuchun@bytedance.com>
+References: <20261010075755.83339-1-songmuchun@bytedance.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 99745C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 84220180002
-X-HE-Tag: 1791664753-331463
-X-HE-Meta: U2FsdGVkX1+vGxubuRFq4z9Xm5tRAWFKUpyhDor3wQF+PFrqCoEclQocbsJBVfnjojKZyrkqAqwt74j/VV1cEFDbfRKnr50+h5VNLdUvlgqK7icSU44FJl5/GDfCD3CsXWQkjofMHJXFwZR3pnxzYjz16lbJ7W8pjMHzDUYcpLN8oUkJzRgAs4G+kRWyDMKUIOoy1p4y+SAnaQprqSCBZGSnLeMIwTtD7X9lfQMtY/0GAsjXryShalc12kOC1FDwmnlQogHtz67TU6Cgndxubvs9SzEXAUezxyz9tge8L36ujDTe2cXsyUhy6mbezslU335gmWcjIzP4CPeA743E5v+OMFC+Z9RwJSNRD09a3j/8dJ8oLnK/xg0VkQkXOmCkJinT+3QXM9i9WD7yEdFvDvMoKfB+Nck4U74ab1q5pTJK24bQ7aJ7537X7Jl3Wt7XHfMpcsr/KOJ7I6KbphIU6HvGOV4I4WB6CRR9ASkxgTDUudQx+LLbUMAL1SB80S8pvxPlrGviMHOmHz4+mw1LYHu2aI2fEdtLN/Y4oB1W6UGV2+m28yJe2ABWap84n9/2fcXviToarSN0dxdY5xdVO6jRBUt1u5yVWJMogYVwe5eI48P4ltDBfYs7JNfxa7feALlvNYYXsQq83zN49Wy1vikGzo4aVuz76mofKtjhqsx5jLuNWZ73nPM/xXatlaUVwvKx4Sn2m8wT9NHnyouYMslDUMGsDadpPRSMzSev3sB0MhvceaAAn/czWBB6YJW3acEslyZpAhygQGc/pJ/ef79hfl50jvikmGiFq20Mx8iEQFAFXxUWQwOXl+JDPOA228TnNQ+hy6MqxUQk5SuTCG6KJG1PUYwXKxdefaHqK+LwS7RVFwJupvnlSGqIscuPk0+7R14OCT6Fo02tt/YrhFvHq+ILxUu1i4sBgi8rXAgU4X+deXg4bonH1fxmdpnZSXkwqImEZ8G0QF4yJtt
- bkGHOBmb
- 8MCex2sN88Mo1RRLQW6Z4pmpLkYUHJApw5ByA5IQgndudqppTn6XEyxlXJyVcp1aXBvF+qvt6YZ4LaEbCvYo8OHbqKrEKtU+qzkNn0hbUTT9umV/FdI5StIbCLiqLRe32HqwvWyVwk1xA38OObuitueixGoLDzCnk3jszj+f2kLFtlltW7KomBjcHmE5O77ketoECeAN272xwhpxOF3+lPG9rPHi8sbwUZ7zwYoK8rzXbY2T1FhNjSBzrPBP/DpIemn84aAEtzJQbW5/osUmLrvkmmFRfPNbs3robAN+mqmhCTMd+sXjDLm3YX3x4YFjOn3Pva9RFe76Q4dbMhWQIG5QvUsFx/H8ViJmVun2r2uXa0AA0L8MLCeDSlxBH8iRM97xuCR01SwI7jmHowA7ZOJPhrBMPQJIgKlnZpKtjEIKFgNJF8/I2XelIyQlsaydzum2EWafLpGcFEsjhP9OQvVj3Bg==
+X-Stat-Signature: 8wx81rfzxg7qameeoepjbrmhrc3k9umr
+X-HE-Tag: 1791664944-609422
+X-HE-Meta: U2FsdGVkX1/VBkRI0a6XRzuE3v71chEFbgBUM8oVN3N7ieGmxpCIpo6JUObAmynAD9msMhtUbXoXUDro7TD+SrjQUI4rRLeOHDa6XCGoavBPcKcW0NXZECxqpPj+twjQ6Jn2GU8d8i2hehTN2o38v9PuW8C0gespcv0sXedvFNioHCR6tCGbS+nyf8ZDC3kTPk+h3xdnMi/BFY8GTT5/wJzrRwsDOippE4qywB74tWscAvKX54LalUXxEetQKKrx2h0en1/IiMEA1v2BhHMkXOj0mmiMTBJ3yLChMwyyOdrc3npinHKR/M6BZ3uq21MR42vWNGG6rWeLRD6XswVScJLveO3IDYrdbYoVEtmvcnfFlJt0BZZCjQN00rZAxEewNR0br3c3vBzj5IZs/l0aNchfuqJ2J8CukVfZCoQIcHlxasNJcCsANVyWToxVFIKqHNcr6h4v4fF9ycRH5oWaBqZLMn4wI570YYuI9G2aOkqLulpMDna4SpAKoqzox5r552JkV0k/Hu+yDv6Zo4qyVhzdiMubaGcg/zoWtUpsbGJ9LD/kgpIogZ1CSk4dny50+oQE0y4NJDXvTpq+FWfEpOH9N3HgGBbIiJTC6m2K3c5J6L1BHST/Ba9NurCk2ORCvZw7lgnJzxUOFtmYLrxZz2XmcF1+sYRlSejpSya6ToLNnL89g2/zQ8mIM8wOFhcC9fZmzXzWPJRqKt9vSVvJBQKpRB3FH1iVkwS8UvnrFMrW9ILAgYdYCDzNvts/aKTnTrIZ9N4qIBnrdogonB/55961xT18aQXAwTbcsk0G4dJwYQvdrnkvNzUTcxeTNgrQ+f/DY1Q1GYge4785R48DC38CtJEqXjNHE99g+uHzL9IanMcVFN4grtBNaZ6glELNuw73q07NGNdkaaAvfD94VYdsA1Z+5L68bjIaMfjkG6TJxtZq8S/8Hr1bIi8cQ/Zts5OxvG/ALww6l6ihJ6c
+ KYg88DU2
+ PAAty/3WnTcucAvZeepvXfNIF594E1ZYfn9IHgnkXKgHky6/yro63YaWqlwdCwD8Q5njF6Ih+lcQzbeqQnls82gO5pdXB8pmnvFVtf9b6cqs9BqwZecmQxSwCDtoixYvGOixxehVrY7g2Nm7m8pLF/YVCWnYSMOmYPHKrHHHWJY9ReWwEr1drU+tQa+jU47Nypo8R5Ed66hb5MAkhCeq1F6bVUYthgSwVHxGaMcmQD4UmtwGP/DkxxSmttQTSqUODMyI6Gu1dZNl8WN/04gjbr4/qI1jnNZ8WiLF8cmsJyJVn5suDebL2JHjO6+7KihEEYcLxbLptDZzKo5ieZUQ5EH3OtoGlbRW9lDtx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,45 +98,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With slub_debug=FZPU, validating kmem_cache_node reports
+On Sat, 10 Oct 2026 15:57:49 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
 
-  BUG kmem_cache_node (Not tainted): Freepointer corrupt
-  Object 0xffff888000140040 @offset=64 fp=0x5a5a5a5a5a5a5a5a
+> This v4 is based on mm-new commit d5207c6d152c, which contains v6 of
+> "mm: Switch device DAX to section-based vmemmap optimization" [1].
+> 
+> This series is split out from the earlier, larger series "mm: Generalize
+> HVO for HugeTLB and device DAX" [2]. While the parent series generalizes
+> vmemmap optimization across HugeTLB and device DAX, this subset addresses
+> a single, self-contained step: unifying their vmemmap population paths.
+> 
+> After the preceding Device DAX conversion, both HugeTLB and Device DAX
+> describe optimized vmemmap mappings through memory-section metadata and
+> use per-zone shared tail vmemmap pages. The generic code, however, still
+> carries a Device DAX-specific population flag and compound-page population
+> path, along with arguments and helpers needed only by that path.
+> 
+> This series first removes VMEMMAP_POPULATE_DAX and moves selection and
+> reference handling for the shared tail page into the common vmemmap
+> population path. It then removes the generic Device DAX-specific
+> compound-page population path and routes section vmemmap population
+> through vmemmap_populate(). The powerpc radix path continues to use its
+> architecture-specific compound-page population implementation for
+> optimizable sections.
+> 
+> The remaining patches remove the unused ptpfn argument, open-code
+> vmemmap_populate_address() now that no caller needs its returned PTE, and
+> add a warning for inconsistent zone initialization of shared tail vmemmap
+> pages.
+> 
+> This is the fourth smaller step toward the broader HVO generalization.
+> After this series, HugeTLB and Device DAX use the same population model
+> instead of parallel generic paths, while powerpc keeps its
+> architecture-specific implementation.
 
-and taints the kernel. Poisoning places the bootstrap object's free
-pointer outside the object, where check_object() checks it even while
-allocated.
+Thanks, I've updated mm-unstable to this version, including the -fix.
 
-early_kmem_cache_node_alloc() previously took this object from a
-freelist with an initialized pointer. It now takes it from the slab
-iterator and builds the freelist only for the remaining objects,
-leaving its pointer filled with POISON_INUSE.
+> v4:
+> - Rebase onto mm-new commit d5207c6d152c, which contains v6 of the Device
+>   DAX section-based vmemmap series.
+> - Factor the zone mismatch check into a local helper as suggested by Mike
+>   Rapoport.
+> - Collect Reviewed-by tags from Lance Yang.
 
-Initialize the bootstrap object's free pointer to NULL.
+Here's how v4 altered mm.git:
 
-Fixes: dc795d4c0282 ("mm/slub: defer freelist construction until after bulk allocation from a new slab")
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
-QEMU x86_64 and custom QEMU SH7785LCR model, slub_debug=FZPU:
-validation reports "Freepointer corrupt" before the fix, clean after.
 
- mm/slub.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/mm_init.c |   17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 54ec125033571..9a20aa820bb0f 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -7777,6 +7777,7 @@ static void early_kmem_cache_node_alloc(int node)
+--- a/mm/mm_init.c~b
++++ a/mm/mm_init.c
+@@ -593,6 +593,15 @@ out:
+ 	node_states[N_MEMORY] = saved_node_state;
+ }
  
- 	n = next_slab_obj(kmem_cache_node, &iter);
- 	BUG_ON(!n);
-+	set_freepointer(kmem_cache_node, n, NULL);
++static inline void vmemmap_optimization_verify_zone(struct page *page)
++{
++	const unsigned int order = pfn_to_section_compound_order(page_to_pfn(page));
++
++	VM_WARN_ON_ONCE(vmemmap_optimizable_order(order) &&
++			page_zone_id(page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) !=
++			page_zone_id(page));
++}
++
+ void __meminit __init_single_page(struct page *page, unsigned long pfn,
+ 				unsigned long zone, int nid)
+ {
+@@ -609,9 +618,11 @@ void __meminit __init_single_page(struct
+ 	if (!is_highmem_idx(zone))
+ 		set_page_address(page, __va(pfn << PAGE_SHIFT));
+ #endif
+-	VM_WARN_ON_ONCE(vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)) &&
+-			page_zone_id(page + VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) !=
+-			page_zone_id(page));
++	/*
++	 * Shared tail struct pages are initialized during vmemmap population,
++	 * before retained struct pages reach here.
++	 */
++	vmemmap_optimization_verify_zone(page);
+ }
  
- 	slab->inuse = 1;
- 	build_slab_freelist(kmem_cache_node, slab, &iter);
--- 
-2.53.0
+ #ifdef CONFIG_NUMA
+_
 
 
