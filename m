@@ -4,81 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39C4FCA9EBE
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 13:22:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8852ACA6017
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 13:23:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C3666B0088; Sat, 10 Oct 2026 09:22:23 -0400 (EDT)
+	id 35ECA6B008C; Sat, 10 Oct 2026 09:23:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0269D6B008A; Sat, 10 Oct 2026 09:22:22 -0400 (EDT)
+	id 30FA66B0092; Sat, 10 Oct 2026 09:23:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0BC66B008C; Sat, 10 Oct 2026 09:22:22 -0400 (EDT)
+	id 1B1D46B0095; Sat, 10 Oct 2026 09:23:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B46986B0088
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:22:22 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B3AB2A8386
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 13:22:21 +0000 (UTC)
-X-FDA: 85306780482.09.C9A4A17
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0255320007
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 13:22:19 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MQj5ABtR;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CF61E6B008C
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:23:40 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 40244C0869
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 13:23:40 +0000 (UTC)
+X-FDA: 85306783800.20.EB59950
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 699DA180008
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 13:23:38 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P0fW5fFj;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791638540;
+	s=arc-20220608; t=1791638618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XdlOeBzyuzL+cZQfBPFE/L33JfcDEYwdnatQB2L4s2Q=;
-	b=cmRm+ubykbNTaUUZbLhVwhdBxAAwi0OaGA6l21Zb2LziwpVSlS3TkDVaxHgcJHOT1v+YXE
-	+sV4a/7yo4xugZtBITBerm5TM/54iRTYEUjs/5i0B9lo1ECkjoYNwiv4wIJ/k60rcR7aep
-	C/KsrWI0qdqJzbgN+xtQ1NLvxXs6ldU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791638540;
-	b=EMvUaV4yWjOBAf4Vlz5m1NULjT7b5CIIUKnRGTbcLRdlDBaSfzj7S0v8LdbXSzK+CiHw11
-	BIzJ6jNB69zYlHIDh4TG0YHKLyzhivEVkLHb1e8Y5uYwA15p8HlDsTosN8V2RLd8GntrZW
-	4lSBTTGHI/UB4ah8wBGSMUch4xPWzow=
+	bh=jSn1IK04TkZcZee9zhz9sEIPssSjp24H+zQ/sP34SBE=;
+	b=Qd3qw9gd2Bo6bSqxqnDxnDSgswHYO90CZ9G7EQs5G6QCkTApSe0vpUvyztSquw9lSHPfI3
+	CH3uJYN3jbk47QCEg3/3+TSshYGCgJdw6b4hgyYRe4eJoUJv3JJeMVPJ/AklnN2FvnQS2h
+	ODG++RkEgfBKLHi6wxYWcRsISaRdWbw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MQj5ABtR;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P0fW5fFj;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791638618;
+	b=mUzvC2IHxYrhtuC19aBPT5FBdwbsHmSrJlaGZ6SSkD04jDA8dRGbfbzHFSJxdnbPgCFa1t
+	WCa7uF9kb0otS7ROiGJOBQSh9+mnatzuB/ZogbkR++hhzNIjtR2HuMhJIqI1lUz2s3r2mE
+	PTReCbJxrfMYSGCd1REw064MVy1Q+q4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A51DD600D4;
-	Sat, 10 Oct 2026 13:22:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411E41F000FF;
-	Sat, 10 Oct 2026 13:22:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 39128402B6;
+	Sat, 10 Oct 2026 13:23:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6622A1F000FF;
+	Sat, 10 Oct 2026 13:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791638538;
-	bh=XdlOeBzyuzL+cZQfBPFE/L33JfcDEYwdnatQB2L4s2Q=;
+	s=k20260515; t=1791638617;
+	bh=jSn1IK04TkZcZee9zhz9sEIPssSjp24H+zQ/sP34SBE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MQj5ABtRRkRCBwUU24t/deVILPIJDNLcFf6yVEQQrVCzquJCgzHGFb8kez8EYGzHK
-	 fNGk8fT79Wo4U11UdmF7pYk8BLZwIHh9hYQdbQqb/+wHKSgdoEfM8DftQIIvHDaBs7
-	 4p+wNxwXBBzc7TsNSdPKBV7RaUqn9Uo0WyOeYlV18jmS+IUIonc/pxhK/LllTckl66
-	 MDRJbHA4yVBsgm1KOuVeIo8yl06wr6AQRQMBOfXxrvIoXspMXYu70a6gNocjpwq4Q6
-	 U0ZTUfWqrtolEfbT8DB6we3tyfaiXY2QYHM/A718Ff4xLMceOO3tA/DwxZxc2YKiaV
-	 dMNbpnGALRq1Q==
-Message-ID: <ba74de67-a687-4ccb-830a-ed018d4f66ee@kernel.org>
-Date: Sat, 10 Oct 2026 15:18:52 +0200
+	b=P0fW5fFjAF5qEShD2FDUvhRLrpwuYauXz7mH0/BSGcs1DeAv1GtmOVVG/2URH7Nil
+	 Wp7IYW+Wv03cB9LfWZcRjNFYz0kCgtVvJncN3ac2E9G0ZIkIOdvjPHjh3vg52WlgNo
+	 5Wlw/ejL90a14q4Vviu2IAatKuQrY5GO0AR9xa2hVWWg5/UwMnYgO3AgB+jB+lW+Vc
+	 CzV6C9D/37DcbFx8Guens1jLZhndt+gROqpJ0cPyfu1x5sKaz92g9XWah1cqwpx6Wx
+	 F5ZvDMs8i/Le+rGQB1xi9V8X65teOuzLFUWnMdc/8rWz+9kJ58E5S9pgQZHGzWWwFC
+	 EZyVOU+A0eHzg==
+Message-ID: <5d20f9b8-9085-49df-87df-05f29f1496a1@kernel.org>
+Date: Sat, 10 Oct 2026 14:27:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: avoid recursive i_mmap_rwsem in PMD sharing
-To: Li Zhe <lizhe.67@bytedance.com>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- akpm@linux-foundation.org, muchun.song@linux.dev, osalvador@suse.de,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260930064308.58159-1-lizhe.67@bytedance.com>
- <arzVaC2IYkqSb0_U@gmail.com>
- <9a7c026e-f5f2-40e0-84aa-919c988cc136@bytedance.com>
- <2b4571c5-8e51-4c91-9d88-11929f200875@kernel.org> <asjVUa6XBZ8ti-0_@gremlin>
- <70ea8ee6-6fc5-4209-8cee-362da37f5035@kernel.org>
- <ab1577d2-a9ce-41db-a632-8e25652dab31@bytedance.com>
+Subject: Re: [PATCH 2/4] riscv/mm: fix hotplug page-table destructor handling
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, stable@vger.kernel.org, osalvador@suse.de,
+ dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, catalin.marinas@arm.com, will@kernel.org,
+ mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, pjw@kernel.org,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+ linux-riscv@lists.infradead.org, agordeev@linux.ibm.com,
+ kevin.brodsky@arm.com, bjorn@rivosinc.com, apopple@nvidia.com,
+ linux-kernel@vger.kernel.org
+References: <20261008073021.2512665-1-songmuchun@bytedance.com>
+ <20261008073021.2512665-3-songmuchun@bytedance.com>
+ <664510b2-3510-499f-aab5-ceddfcc82581@kernel.org>
+ <F7FC1A28-A34E-4FE3-A6E8-92D842FFA0A8@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ab1577d2-a9ce-41db-a632-8e25652dab31@bytedance.com>
+In-Reply-To: <F7FC1A28-A34E-4FE3-A6E8-92D842FFA0A8@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0255320007
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 699DA180008
 X-Rspam-User: 
-X-Stat-Signature: nup56rkuc864ua9jw88iyq5sw8yj53fc
-X-HE-Tag: 1791638539-457050
-X-HE-Meta: U2FsdGVkX18rBVzgWWU4sWEsUyMlix3wgn/CtDLaobN0mIGXIZrImZZrwfz9NItYeV8Ora0al3ddeLi4zpfHb+JpNPLIdUrRfeOFvk9TdfJRcp/zfPKElUzWefslasjkP0V3oEcyVfAbplyMsOQusiYGHQzQrt3NOSPSXkqTC0U7RS4JdFZyDgA6qaLhbM3G5rAtmBvrk13sjCuh0qUCDZr2g1LnL4HaOiRofdJpKlDMCnuXG4oDm+VRhuRSFZWwCcjlV00OLio5A/yBNTfCP5RuToW9REHFS1QLACNy3iloGBVJJzzxi/1AGBL1jRUi8UOk3TU83evEwhQmLqnMsDwCU/wz9TohSyesbDjwTp/5MnRHWeewZEEBaoOXc1yMcbDcRe9O1PS92k9vFs82tYDoOCJGP18XFIdS9IMevSelpleI02lld/qlEb2X8F/gvaO4HpPj6LGenGQYF25CfOc+GXZDURVD/krd8SsPhmyhP9BKV1AKk6P05QuBIot9sB6t0r7xBLv3Sms5B4whbJAbIFqQJskis60jxsRxWDono6W+EgHERP64eA2eN96W3NliRQPZzlpqdvtjo6+CIUxRNlMZr3mJUcNXXXms0WZgnMmiAIYhnLStn/Z5hMshDxBvjfX9Ockg8H9jOoftQ5Gus+VQRtP7GvRfqzeTfk6j3QsdRBHxnJ3IiSQ+sbxcfM2K5E4ebrlpEZxuOrA6GoGw4b1VdyHlAEvYDjRSmPnoPKkcDmkyWNRVVZQ27SPiLKbZ5MSEx5PcZr6ocnn1J/s0hHU/S8HiEo4+sZCayVENzTiLXyENxOr+oLXt2jqAx77DRIBpfIzsggKYjEgB3fd6Xb5QtVXLbxdV6cFriF6SkZuH2ScNgvSvWFd+u9ATn4IAyHbIRTFNe4fgvb/uZFAwpaDGgC+NUNuhjVHbEcTBFWnNlfqn7QyNL6d9ktF/niUMUciTI9orQANde3S
- 7lChMqC/
- goIgvIpcA+7BcycmqAG+NrOolFMJ7IyVCsfWirwTugFwBIL+lXfsl7fZKhNcuMWPONHT6vbI/fY/RZ3shDxTzwWr9EULI4RA7+5CYQVDIhEXypeJWjW0eQwKASZMEBQmvner6oHddtv3v20h+ItTqyQubFwjcYSEdql8O5KcB4HZkq1mLnJ+KqTfTM7df7FPS/5aWOukQuoLU/55j15X4UVBaDw7EmbRbRc5Ga8JeR3XbIzrcNU0+34bcudRuGaPV0GF5AmrkrPHCCxaRpyOlIibEyxcw+6oWDsrtiv63N88YrLE3i8io7YHmlw==
+X-Stat-Signature: x3x57u4wwputse39daphzu4m6azg46yn
+X-HE-Tag: 1791638618-299147
+X-HE-Meta: U2FsdGVkX19D76OkIG8N3B4Q1gVn2LnVSzMeD9Zj1/FedhWqSNKdeLKypYUFXNVmXIiIA7r4O6wUTjFnavyPw7x6WJEZe3TTbAUQ63g2drzwMQmGBVOjlBv6NeXCPLbGtRr1W+reegbbAncprvyPtsIi9t7eFad0aP/eEoWl1PzBI7ESYuOiyMHoI+K5clEtrXFdHuoboMI83/SjcOSt9c3XBZdUhxyXxCIXv2JvU/lShJ8Qtt8REG+Ev1cALJEJqCxNm9a6A0EnUSU4fVwMvBfXAS29W6Lpkf6iM+k9lVtXXgjyFEeZnITBGei3SDdkUZ0f/SJs6DJIWxU1B/FEMFT0KYK66KUIFJ12c8h+ivtWQvAJX9VAOihPfP2RGIN0uPCfEBgg6x9JN6E+0OF7IJi9ChbxA62wwYlQgRNsr/vRVgeDgVSzyz02qX4PMPyB43AB9qjnLl6DD3hyAghCswVAmhQV6dqhEIYe0Xdp/J7dqfqScAp6IMgr9+2yb+AQWbjON4ybn7LSE0iYcKFUhVftRT4hgcRh8+tr/qdMxfQocuZiFRYU5tyd9nhTJ5pNuq/OogozpA6e9AEfHbSmJc9MQLV43/phVesZWa4b8xjX8LP1vYzX2rJUgeJCepMvC8E/gv4vgc2vdSPtQBciAQOsyh9MuBlzZN4gp6+TFmQ4j0y+Z9KDZ0iPIms8MGS+3epCP/5c6Zgb3VSMpq7EiKyxzYisUGXkPvtPl2BcqnQVXYyiEh5TXPAvguXdUnqa7o1USJufvhertgzkz9v2yqx2lLq7ptgWuhbAjmYXuVMBaGTl5G3fMUatYD8WzCp5kDLxEvtsg0rr/J+zPlPSNDAbkkjz9yhCtvChAHu7M+pHDC4trTpyXbWXiCdFsmKaFqMaZ3S+BJa3UwrPNK27+WrLSGUgrhMEFT7WvQuuGsAcKGXTe4zzVzmq/U2byHWKi4MlM7GctK1YGade7Y1
+ zyTqlqZJ
+ m4FKMKScYZja3s3wda7cevDAwYnSjG/L3KESFC0o/O5M2w9hXhnQEzhgTFbgkMrk2zymh90TwFdjalBStXQmC6+Eji37tZk/bKJBljgHaMn08zWy64aORUvrsCRvYULATyylN8yyOq5MAR3qcav4HvgC3UZvl5YMd61ks/H/rFu/W/eKCPzOJYPNuLYLeO1ZoO0TG/nkJcBQcYtTWmx+FI3nkLqQv8witUsm8cLVwiMx9bWqvMAnKGTRr8RawVf4sEA9iW2tUyvOpaaSpcXeSJ8HewxSHiLTkllq4yK0fx6DOEa1zjEnIP/sVcg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,37 +148,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/10/26 08:37, Li Zhe wrote:
-> On 10/10/26 2:05 AM, David Hildenbrand (Arm) wrote:
->> On 10/9/26 13:52, Lorenzo Stoakes (ARM) wrote:
->>> Yeah I don't see why not! I don't think there's anything that needs to be
->>> private here.
->> Li, see below, can you work with the below?
+On 10/10/26 04:58, Muchun Song wrote:
 > 
 > 
-> Thanks for the patch. I tested it with my original mremap reproducer, and
-> I can no longer reproduce the hung task.
+>> On Oct 10, 2026, at 04:37, David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> On 10/8/26 09:30, Muchun Song wrote:
+>>> RISC-V uses the same memory-hotplug teardown code for the linear map and
+>>> vmemmap, although their page-table pages are not always allocated in the
+>>> same way. Late linear-map allocations run page-table constructors, while
+>>> vmemmap and early allocations may provide constructor-free pages.
+>>>
+>>> The PTE path unconditionally runs the destructor, which is wrong for
+>>> constructor-free vmemmap tables. The PMD path avoids that problem by
+>>> using is_vmemmap as a proxy for constructor state, but that assumption
+>>> will no longer hold once runtime vmemmap allocations use the normal
+>>> pgalloc helpers.
+>>>
+>>> Page-table constructors record their state in PG_table. Centralize
+>>> page-table freeing and use PageTable() to decide whether the destructor
+>>> is required. Keep reserved and constructor-free pages on their existing
+>>> freeing paths.
+>>>
+>>> Fixes: c75a74f4ba19 ("riscv: mm: Add memory hotplugging support")
+>>> Cc: stable@vger.kernel.org
+>>> Assisted-by: LLM
+>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>>> ---
+>>> arch/riscv/mm/init.c | 29 ++++++++++++++---------------
+>>> 1 file changed, 14 insertions(+), 15 deletions(-)
+>>>
+>>> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+>>> index 857f9a55039c..429a0b015ec1 100644
+>>> --- a/arch/riscv/mm/init.c
+>>> +++ b/arch/riscv/mm/init.c
+>>> @@ -1486,10 +1486,19 @@ struct execmem_info __init *execmem_arch_setup(void)
+>>> #endif /* CONFIG_EXECMEM */
+>>>
+>>> #ifdef CONFIG_MEMORY_HOTPLUG
+>>> +static void __meminit free_pagetable(struct page *page)
+>>> +{
+>>> + 	if (PageReserved(page))
+>>> + 		free_reserved_page(page);
+>>> + 	else if (PageTable(page))
+>>> + 		pagetable_dtor_free(page_ptdesc(page));
+>>> + 	else
+>>> + 		pagetable_free(page_ptdesc(page));
+>>
+>> Similar thought, can't we detect that in pagetable_free() somehow and avoid
+>> requiring callers to handle that?
 > 
-> I also checked the hugetlb_change_protection() / uffd-wp path Jose
-> mentioned. That path can reach hugetlb_change_protection() and
-> huge_pte_alloc(), but it does not enter huge_pmd_share(), because
-> VM_UFFD_WP makes want_pmd_share() return false via
-> uffd_disable_huge_pmd_share().
-> 
-> My understanding of your patch is that we preallocate the destination
-> hugetlb page tables before taking the mapping's i_mmap_rwsem in write
-> mode. Then, while holding i_mmap_rwsem, we only walk the preallocated
-> destination PTEs and move the source huge PTEs over. This avoids calling
-> huge_pte_alloc(), and therefore huge_pmd_share(), while already holding
-> i_mmap_rwsem for write.
-> 
-> Does that match your intended direction? If so, I will go through the
-> details and make sure there are no issues, then send a v2 based on this
-> approach.
+> I think we can, then pagetable_dtor_free() can be removed because pagetable_free
+> can handle the case of pagetable_dtor_free.
 
-Yes, please. make sure to keep Lorenzo's SOB/authorship. If you perform
-modifications (patch/commit message) add your co-developed-by + SOB when sending
-it out.
+That sounds much cleaner :)
 
 -- 
 Cheers,
