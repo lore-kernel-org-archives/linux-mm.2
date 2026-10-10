@@ -4,93 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6AA9CA9EBE
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 10:01:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E450CA9EBE
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 10:15:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7DDD6B008A; Sat, 10 Oct 2026 06:01:35 -0400 (EDT)
+	id 30BAE6B0088; Sat, 10 Oct 2026 06:14:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2EEA6B008C; Sat, 10 Oct 2026 06:01:35 -0400 (EDT)
+	id 2BB8A6B008A; Sat, 10 Oct 2026 06:14:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6BC36B0092; Sat, 10 Oct 2026 06:01:35 -0400 (EDT)
+	id 1AB226B008C; Sat, 10 Oct 2026 06:14:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 82A316B008A
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 06:01:35 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9220F1207C4
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 10:01:34 +0000 (UTC)
-X-FDA: 85306274508.30.709D2DD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id ED58C1C000A
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 10:01:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CXv0u/LL";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791626493;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D70286B0088
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 06:14:58 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5BF6116084B
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 10:14:58 +0000 (UTC)
+X-FDA: 85306308276.03.F9F3CE0
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 662FEC0003
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 10:14:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e4i7GkoI;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf10.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791627296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yxghfkk9ZcOzzHrH4POV+dHpr3b3+ZDhOKp5XX6zWMA=;
-	b=mUO9V2MCkO0QxKdR0z5Qc9O3+Ufv9++WQ08s3S9yrcYoHI4aKDfKWLPq+Npq5KoyJaFX/9
-	8pLeA583s88la+uMI33mbG54dDfRbnBKJ7lwV4uMtb9HHIHTac4t34U0g1SrzAwFiIxvJ9
-	nK9JiUMGrs5CAWFFwWNpOZusO9KbiJ0=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CXv0u/LL";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791626493;
-	b=aMtxGkWHDna2sNeLk9KxsKLuHH8YR2ZgTDEDR0eA0JVUvejzACWQi9FT0A/bHmGbK40XSp
-	Qat+UZK9VSHF0dCxSsnnwg0B7/SHoMxAXGg739nkKvyHbDJjUHeTFUonWQU4s+ptlS8h/w
-	vxragz/ftBZXtXNfQ8UiP6+YOAP/KSU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 294B441883;
-	Sat, 10 Oct 2026 10:01:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3A51F000FF;
-	Sat, 10 Oct 2026 10:01:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791626492;
-	bh=yxghfkk9ZcOzzHrH4POV+dHpr3b3+ZDhOKp5XX6zWMA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CXv0u/LLebHMF6g/2GK3TvCGBelT7PPH0HIRnflCf6AZ0lVwkZgTWwxvuQI+s9qMo
-	 ft7jV7D8Qxva2ItzH/MkbLDHDEbO0hANLYn5fxEXZ55ukUHdB0mGreeyNQb0gRBVoX
-	 GvDcmGzAlIjOGHFlErUh2IZlaV8eljjni7igTE2vwGw9kUGtTtHVU7D7lYZifyzzve
-	 4z5Diw9TikIM7l4mmswNF7YEcDdBlTEZfcWirr61J0mPjYl9O4asyE/fZMh9ABnACS
-	 hQuaEnLI0zSjN74PdduIr5wdHA9UxKRrDlhcwOf6tR/zJArMSWXwVbnieyTVkKv2i+
-	 bB5D41vN0Gm3w==
-Date: Sat, 10 Oct 2026 12:01:26 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, linux-mm@kvack.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Saravana Kannan <saravanak@kernel.org>,
-	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
-	Wandun <chenwandun1@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 2/2] of: reserved_mem: allocate and map the reserved_mem
- array early
-Message-ID: <asoM9sKML-7BIEOY@kernel.org>
-References: <20261008094125.3197971-1-m.szyprowski@samsung.com>
- <CGME20261008094130eucas1p1120c66c914aa2b93fa3d7e6e494e7eea@eucas1p1.samsung.com>
- <20261008094125.3197971-3-m.szyprowski@samsung.com>
- <20261008140515.GB183998-robh@kernel.org>
+	bh=4ZCwz3KK4ioGo2sblpjh0J8bdLeG8IsOrV/Z4ACQP54=;
+	b=OIVbgXWcbiWGClNdX/cDjo7WBHah95FLAIdChuSvu+nZBWl/wIU+YX9Bduk4N/sGZISQO8
+	Af1kEUNVLGsogUs8Wv1RpeH4QGJ6WVxTmnefrP/OIUVf3V4XtKi6ims13zZSiI8nhAWhjN
+	w+lTpm2TunQF7Ff2vuhBolkl+mWzvOE=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e4i7GkoI;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf10.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791627296;
+	b=jLGqy6r8jbDvYDrD9tZzIQj3WRRtgxXGIOpkP0mtt2wvktkXORR7Z/w1Ee2umTIv18AGKv
+	KJUn4L0Hdu0c+QFAsGMawkdr+/13gOFcomD+5iayTRU1SIpiMWa/l7irnIbrmw/gb7hZiJ
+	9VnEurC1S6tjd7gW04PAJ7ivjj1RSjU=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48c4d99c32bso444801f8f.1
+        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 03:14:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791627295; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qRg83WK2gdOquYGpryX9wfmozzJNz2ZAnoFwDgBzoOC0M7H2uYxc7rjl28dAjJbO/e
+         nYGuaTWgb2AeWD6tfij/bmee8HpmNY+uFuGph1Bg53vGboW8qjoJyUh4PEYmRVSKwGE/
+         t1deRfE4ZnaNZ+v+XqFzfZ0cIUlneLerbGm2+vr9eTIYThd8pOREgqXqxqNcHy6NTxs1
+         6ecqm8LGm8aW7aPDcWCsxyN0RKf0BmLf1446vHYHecldvg0c5Xz7AB9mgDXwkAEM1N59
+         SAedUC0PQuQceYgt9g4lrU7Gb8pxzc5j5pcNNsjLt4XU12NIkGbsHhMgxFus1FkJoSAb
+         ea8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4ZCwz3KK4ioGo2sblpjh0J8bdLeG8IsOrV/Z4ACQP54=;
+        fh=QION21sHmRYdriDPunFAWhtR8Bnv1GVv4LG8ZWJIEeU=;
+        b=eczfEK90+0vF+XrImsHblw3eGRUHQEU8bkSz5SJpGHbTID4mNtEJyWdgVIClm9suPa
+         3e9Sg0CyN9EB1OEH9tp1EcOcmyJA0etQYQHQ0MBXK0rCPEo+u+pAegsFIUBcCPVqvR9g
+         kRB5qPeMjjThsE9j4mAHuQ19bIrEUTez4V4kqfBGI/U9L73h06xRl7FdxDYJxdci3Nji
+         xwuPKM/vRkCL1qByGnLVcyGexgUCkMKP1U8vC0EMIH1CRW7g/waVAI8GH9LXIf4s/Rpx
+         Gz1G8sQBFRHR04Jn25WwD2rnMq481alOM7fDnzvcNc+ALgq5SoaqSjzZQDh++7hBYSxm
+         ngow==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791627295; x=1792232095; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4ZCwz3KK4ioGo2sblpjh0J8bdLeG8IsOrV/Z4ACQP54=;
+        b=e4i7GkoI1NTx9dkxDrrYDMc1CULZzZq+8dMXXrzi/oQtZim9TBwuLvSbbvg/uiEzKb
+         CP7IE7irU4vokkRLvDGYHz0g6vDQGsrSkqcRtb68pUM+WZWFSextR508yFVbhUiYmt/0
+         tC066ogL4RIUPG74acpdy1CaR+tiFEB5R12oLnUJ9ernVvc3cwzLPjUdMARZG8JkEPVu
+         IkeSuBqc0oIwvrdy+chxSkQhkNLREfeFvBEF2qMUrCS88Yoh/CvrFbKjnMgjb7fQ0DJ6
+         CUNxvNcx6ohDFlidygbzCt2bSZ+34rLlcEI4noVoCaB6IK0K4JvBjOlyh0G5fSD1a7jG
+         871A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791627295; x=1792232095;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4ZCwz3KK4ioGo2sblpjh0J8bdLeG8IsOrV/Z4ACQP54=;
+        b=DyMZdHxc4ZK7lAoyBceUFVlap7lF5k+Wm/9QtAWZ0Dfy5IpK+1TsCAkAdkimTpHdyK
+         HpdKStpu17H7mB9NtPezHnSIja3ikr1bwTbVyu3zjZbT9exLNRc7Q6SeacFH2mheQiaG
+         4uet4yD8ukA9u3hMpqrudNLze4mBxmjzK3bUnSeRHSVkrUphOlozIc1OozqlLJVl4UHc
+         Xini3J2aIxk1BjoHXv9bONvABD6Wp4c+bg7Ua8e8w0dxmlZsBybiBvVsUTtko0jCXW04
+         OdqrgI9hxvn9SIeQ1vZYNzoQQW32DRV3rbWvaXAM4MR0zh7fys5jDTsJ/hAagc4ooqqn
+         36uw==
+X-Forwarded-Encrypted: i=1; AKwUvBxnN7NHH58pVYRMkOHNROLRj6a3NFkF0FlWo5cQ3fgJTE6EEqKUwTOyHCVVcbdHmSkM2ejWBzSYhg==@kvack.org
+X-Gm-Message-State: AFq9FYIWK9g1HBx6bcCylHNb4TpLxxLPhS+wy/nDqh8KU3/pDG1W5b16
+	DP70bfN4gwt6/eZr5Jx7OtvK4umws6ETsanZR/nbtHL3ntt83+o8TT6TiBEeZ8Zu2pXC2c1MNKU
+	1rS+LDOPLxSKclqqjlETM2on/BYrt1rg=
+X-Gm-Gg: AYBFou2j2y9D6Gzp9iNfNSQWcYms7wDlA1Q8NS6wacnv0Bk0zIlfIbd3b8MRxklA/QT
+	tdA7+c7czdFMf6R3HJi+HtF6j6b/K5qy6FmE5iaoyJLSVBX8D5Xcf2PxUzXT9JnC52eB1SD/3Vi
+	RbPMEIef1EwXUD/+DMtRzheTVsViHJ9KYXCNHn/jpArpErr8M5zIwkjKATJNCW2dz3s7wW4zQEd
+	4yGzDyeVI9ecuCkBPXKcPhQ1TgmwDjJ2cR7HjCkGsOHjHqnfzHEcAquxdbJ118PbDhFsuBZTPRJ
+	rRZ6l+HOL5L+wm9PbkpVsVTPrN1K4iiV02w4PbPVYUioJ0uVWbMOvW9fz3W4HhNJeXYQGD7Ns/R
+	7AkhIfq+HoFA=
+X-Received: by 2002:a05:6000:4917:b0:48c:7302:96ea with SMTP id
+ ffacd0b85a97d-48dbace4edemr8358190f8f.51.1791627294664; Sat, 10 Oct 2026
+ 03:14:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261008140515.GB183998-robh@kernel.org>
-X-Stat-Signature: 5kqay1g334obc8jja5iejhh11zmhwgct
+References: <20261009163146.83112-1-usama.arif@linux.dev> <20261009163146.83112-2-usama.arif@linux.dev>
+In-Reply-To: <20261009163146.83112-2-usama.arif@linux.dev>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Sat, 10 Oct 2026 12:14:42 +0200
+X-Gm-Features: AclHuK8eHrKrxCU2Kz0-csCBZga-KHX89XLvw82csYCAbhZVbUsSPi6LOzolr2M
+Message-ID: <CAKEwX=NFGr9hwavYof=zGtZ-nXGcWWsxnt6xQE_F5D1ZO1MnBA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] mm: zswap: use separate compression and
+ decompression requests
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, chengming.zhou@linux.dev, dsterba@suse.com, 
+	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	terrelln@fb.com, yosry@kernel.org, riel@surriel.com, shakeel.butt@linux.dev, 
+	alex@ghiti.fr, senozhatsky@chromium.org, 
+	Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net, 
+	linux-crypto@vger.kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ED58C1C000A
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791626492-87612
-X-HE-Meta: U2FsdGVkX18CyXPV5J1lTRwceoAjiPWgJmU9ya/5Wv0zgBNxUOfi78uKSpuL0c1cBvdT4BEXkekCGhs+sDsfcVsTPKXXN2dKAI6a8s+k9fNu9/uPD4QguXLldLgpz0k46ooYFGYhqRbqOzURgG8eTV+vWtITePgE5UEriAkQzSskFMfMKUg5IPLijDft0fl/JFv5XolEO7T8D580WvNPE3zPJceyc8XOnRgJqCvkoNMEIsl3WA7cEeQE+vjG9BxkzcWAguVbYpJFBxTEsIYkldC4fj2bsYZm9ojIBdkYwtm6QgSYKrpkpRLFIYCEmK+tH+vEqnNCXt1xMKyty31wUBj1Re1U9Nwhgb3FH3klAuhOH3gi8fuB6yUSbl+KQ5SmF3Kge3YWSTIc5gsuPnKf7HxTUF8+aQpjpDtiPJNCixDuCL98+91ocLrgPdfguUBkuzFJtdpWwtBTPZKZ+b2+6vEV5YMhiT0+iQpxM8OGxUCFHmOEmdizs7QUZ9cugE3G459im+jXGXWETB2I5//V3Pchmb38ZO/lIkTF4Y6cuc/7vtYEal4mUeJlUAIkWA1JXHCf8lrt7qXeJWHimEuFCODKsMeWmh4KHkFpxnaFEK6Qe30SzWRqczNvY4+31TeDiehwwJ9yTzoFrTIaK/R+pM/aDAvbN/aTLig1ZMrUcTs9UVnbiFx3ctQcG/gjD+PUEwPyD/Yj9IHsoo6CzM2HD4xIAfA7FiOrXDB+oSHSTeND+ta42c7PhgpSz+6X1aSy/sveyZEkePwxbVb/52ndWqHakc+ZWpliylZEJBCPUmdg5psgHiBS0KlJro8TaK3XjqvY4yKLQxmnAYkBEmBl0rIrWXukZwgLX6HYX7Fa8ZmI/v/GamVsjDa+fksdku19izrUaCMizZvk/pH0+QhAQj/EHHxYIXvVX/0Wt8V7E3CJJ83MgC3T+kKLaj3YRzZnrQRmHi8uD+09OCgMtcl
- AteL+3YU
- JGFIZrnN4eqe2+myK8kAR0qCWehQD6xPsE31vNXXsYLLfJpJC8vaJu4f7/MAALYhCkaiuEmlEcw0yUHwH+vVEomOqiiplohggsFvgRacQnUY45/Ui1iACenoXGVnvmeOmnHZXTqSHWaiV6VwgbAEGbauZMvtu+hOdXFXiLv33FxPq0GCMLDxjTIS4xF/wnfGacmv6rGaiGE9sfnQT20nYlDe3g0b8vjNb7eet7a7wZoj2Th/a9eW4uNGfbiiTPjwUzMt/Ovogc/XbOh3tBiQIzJkLOnQ0/FTElR4IuQ4t7Wsk46UggSPQHhB/obpbz4Hqh9tQegx5USWq/8ZKIdQGzbIU6zyR6OoV3UAsndXNigcuI3zsKFHVe9qhWPjIfoG/WCxofdKvOmWbfoKK8kPWoPpw8A==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 662FEC0003
+X-Stat-Signature: o59zo3g9r75t6sjtxnoy3rd8e7jhydxq
+X-HE-Tag: 1791627296-788363
+X-HE-Meta: U2FsdGVkX181cBugkl9xj6MAG9LsmmU/uJuq2NoSSJ3bBFnvYYVy2FkOACOcpR83TtoNUIoDBL0XFZZy+31BvdntEs3gbpAnvY8hF2DO5OrAf2mqfN7UlsWA6jXsx22545XSdgUEQBV8wOvgilxK4gKGEjyQBqqfL7qWe+0Hl4s/eN1Z+QaW2cQoODvSfsIsm44MC+d4K1nk3ALBoxsvsGn2SH4Pp0aRaj0mi738F8v2lNzAPdtyw3hce3Ral6nYfZgutGUiwPVWgtutKyW6mEp6lXLjo+OF3Eb9PNOWkZH8cCuIAn1aP8nNh0YjoRY9jZNBAG9rNQrQDE0kRag48N3C4R41eR8t3INJUoTZJfcFcRlV6gueeqCOFRH414BK7hdSrUF4ebhnZOGWUwHKThVj49/O64RgOXOmmSEZn1b0nTYVI+uhuS7NDwbhe6jFWITVgG/mfIZLUruf8kcz4b+A3zwGwTSpfhqVHnzJPXy1KZw+Zn7bsrS2aQu/oSs1i3fHzk2qSVe1lFNgY3fbKHGqa1cNXUJtxjSzq0Fz3IW1oZ1JECq2UXGS8nIPH5+pPxGj9IqlNIH9Zx3oGBf15+Ux7ZAZg68qlqWVcl91UUYlkzr0aNLMriJaJkFJYe/+VJNTyL93lfFBTAITLcHkqt4Jw5VSSmMo1F5SVl5rB9NR2uzf/s7x9ANOXdtDIWNAZ8hPM/go1BVEloKaP+hrzjlSp5O+AnNYcOjN9TMY/cRgyXivvZhXCz6hEzegBMnViiUyBfk1BTVoWAWi4gTgpWKLEmW0235T1O9A2aZI0S118AqpMr5hZ9Yz7ixLh0ACFplRT/fg+5yU7SNP6wAevMRm9bPwsp8P8ZQkQ62ksKe2PT/z9NYB5YUI3DxSDBYPn5+fnZ7J9IrDa51U1qhjEmNj3TOezr8F+Ln6oSfHKFKrFggbyfrx5DeXbNVVxPU/VyuajQOmcFePgY/S26D
+ yygDVugQ
+ IZzFtdKQVrkFipnZ43H4tZBiJsoD1y8aSloGHq478qQlWAtgX0rSmp6aR7X+dLmt5LaG5tXHLd8u+c86J8Bo0R1rILD88k/NzB82KoFZVg94YdGkhps55JkpUrfj0Rpddexf4mlvMdffEeR7TyV5HJPjn37+zouUA5klle1EL6D+ix+xSjPseUMrKrZj6Skj2k6W1SpkFZCN3V6iT9xLCKzSDqXpBYki6U6UaThmSLIytsvXrl61jeMuxbUJ9R8llQ8tx1JNW73YALL5hT/ipwnnNCBuuC67PD10CiHhELlDHqhgWPc18w4HUsAimSITtPPlmzTo6i9Vjz+BzzkYXLVidfYrMrfQpaJlz5CgfUoCLgw8U0+yuMK8kLXE9VjNw98Rnt2RVN62gs+hhJatbI3qA3stgqlpBX2WHUVIa0OGMzLrECNv+qlQj0ui5pYmChoEcDO5ZN5MiYXqPXgl0we3Y6YdtprGkm24Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,38 +145,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 08, 2026 at 09:05:15AM -0500, Rob Herring wrote:
-> On Thu, Oct 08, 2026 at 11:41:23AM +0200, Marek Szyprowski wrote:
-> > Get rid of the static, limited-size reserved_mem array and replace it
-> > with array allocated by memblock_alloc_raw() and accessed through a
-> > temporary early_memremap() mapping. Such mapping is needed for some
-> > architectures (like ARM64), where linear map is not yet available during
-> > early boot scan. Having a single, writeable array with all reserved
-> > regions removes the need to perform two step initialization introduced
-> > by commit 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved
-> > memory regions are processed"), so all regions can be processed
-> > directly during the early scan again.
-> > 
-> > Suggested-by: Mike Rapoport <rppt@kernel.org>
-> > Link: https://lore.kernel.org/all/asc6brs_g0ky0wOM@kernel.org/
-> > Assisted-By: Claude Opus 5.5 <noreply@anthropic.com>
-> 
-> Assisted-by: LLM
-> 
-> is the new way...
+On Fri, Oct 9, 2026 at 6:31=E2=80=AFPM Usama Arif <usama.arif@linux.dev> wr=
+ote:
+>
+> Stores and loads serialize on the same per-CPU acomp request and mutex.
+> A low-priority store can be preempted as soon as the compressor drops
+> its stream lock, while it still holds the mutex. A higher-priority load
+> on that CPU then waits until the store runs again, which can take a
+> long time when other tasks are runnable.
+>
+> Give compression and decompression their own request, completion wait
+> and mutex. Since commit e2c3b6b21c77f ("mm: zswap: use SG list
+> decompression APIs from zsmalloc"), the per-CPU buffer is only used for
+> compression, so group it with the compression request. Independent
+> requests can share the per-CPU transform; the codecs and drivers
+> synchronize their shared state internally. Loads can still wait for
+> each other on the decompression mutex, and stores still serialize on
+> the compression mutex.
+>
+> acomp_request_free() ignores NULL requests, so drop the check in
+> acomp_ctx_free().
+>
+> This follows the proposal from Sergey Senozhatsky for the same split
+> for zram [1].
+>
+> [1] https://lore.kernel.org/all/20261005122036.718976-10-senozhatsky@chro=
+mium.org/
+>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-Probably not any more :)
+Acked-by: Nhat Pham <nphamcs@gmail.com>
 
-https://lore.kernel.org/all/20261009083137.3-1-sashal@kernel.org/
- 
-> > Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> > ---
-> >  drivers/of/fdt.c             |   3 -
-> >  drivers/of/of_private.h      |   2 -
-> >  drivers/of/of_reserved_mem.c | 251 ++++++++++++++---------------------
-> >  3 files changed, 96 insertions(+), 160 deletions(-)
+Herbert, does this also look good to you?
 
--- 
-Sincerely yours,
-Mike.
+> ---
+>  mm/zswap.c | 108 +++++++++++++++++++++++++++++++----------------------
+>  1 file changed, 64 insertions(+), 44 deletions(-)
+> +       if (zswap_acomp_req_init(&acomp_ctx->comp.areq, acomp_ctx->acomp)=
+ ||
+> +           zswap_acomp_req_init(&acomp_ctx->decomp, acomp_ctx->acomp)) {
+
+This really breaks my brain...
 
