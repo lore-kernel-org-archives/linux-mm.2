@@ -4,105 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0798DCA6017
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 08:37:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F075BCA6017
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 08:43:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 033076B008A; Sat, 10 Oct 2026 04:37:59 -0400 (EDT)
+	id A01306B0088; Sat, 10 Oct 2026 04:43:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F264D6B008C; Sat, 10 Oct 2026 04:37:58 -0400 (EDT)
+	id 9B2696B008A; Sat, 10 Oct 2026 04:43:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3C0E6B0092; Sat, 10 Oct 2026 04:37:58 -0400 (EDT)
+	id 8C8106B008C; Sat, 10 Oct 2026 04:43:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C32B56B008A
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 04:37:58 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9EB65C07FE
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:37:57 +0000 (UTC)
-X-FDA: 85306063794.18.0D4429D
-Received: from mta1.migadu.com (out-169.mta1.migadu.com [95.215.58.169])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EB91540006
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:37:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="QBA7G/g8";
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.169 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 63CEC6B0088
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 04:43:47 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E2B1A80682
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:43:46 +0000 (UTC)
+X-FDA: 85306078452.11.C426BE0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5F1B5100003
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:43:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gjJGCDC+;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791621825;
+	b=z06JSl90NIjDaYMOUZaIOFKa62k3683FaaI0FZiVabgd+1+NnBgNhIpgB/6v5pXv8UalGC
+	N3np9tcW8jTSPMjLfUqkc0ufgCmtrQ66xaRpYCe2AtbfidAwrI/MFHWP273U22CB2DhE+a
+	XW60kiuGzpx3qlGPsO63Hrj6T1lLXNE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gjJGCDC+;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791621475;
+	s=arc-20220608; t=1791621825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+PRO4n3F+OyGen9J5HY+faBhF6ZEkZwsHa88ihF2mE0=;
-	b=lyKqxZ3uqsTBlPhEeA37CnEhhV81SFtatkp76lvyC36Phry20ghx2J+69VDy8sFwavvE4y
-	xSX++tXPVa9Yi6WTAKTJ0a2uC/+OOYAlRm/AxutzmUEaToLNjVeOPYfH9zOspadGD57LC3
-	cr+UdJylms6/wO5io51ZEinridVu1AQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791621475;
-	b=IzNw3NSV4brBFFmf4KTg/h0PxqGBzcTMjDh+plZppcHry1+qj5BAngx27hDscc6tKUHbTM
-	YTSO+aq9tK/M1TCWlitTamGDRVTCdbJ5CojseIZZQzCUJxHPIPx20lC0WI8KpQtxlNTaPo
-	BhBE614jgdN3kL9it3IFGhaOol7DjKc=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="QBA7G/g8";
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.169 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=+PRO4n3F+OyGen9J5HY+faBhF6ZEkZwsHa88ihF2mE0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791621472; v=1; x=1792226272;
- b=QBA7G/g8sj2aYCkQ/RrD4TBG3enwlM+9wuP8ceggjgLRHL+yuZGvT8v9XkQ09Vou5kbLFuPe
- eb7prH1fGSWih6UfTArfuOJevMeCkymOpNIFhdYM/D22cAkgVDsG1mr+XZJM5OVPmiPGxFvWHoj
- 1zfdabbJKhtVYlFfGxS7mzpM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 15e719b1ad28d653;
-	Sat, 10 Oct 2026 08:37:51 +0000
-X-Mizu-Trace-ID: 15e719b1ad28d653
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH v4 3/6] mm/sparse-vmemmap: drop Device DAX-specific
- population path
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261010075755.83339-4-songmuchun@bytedance.com>
-Date: Sat, 10 Oct 2026 16:37:35 +0800
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Mike Rapoport <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Ritesh Harjani <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Qi Zheng <qi.zheng@linux.dev>,
- Lance Yang <lance.yang@linux.dev>,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <42099448-FB7B-4885-9DE3-DBB6C96B88FF@linux.dev>
-References: <20261010075755.83339-1-songmuchun@bytedance.com>
- <20261010075755.83339-4-songmuchun@bytedance.com>
-To: Muchun Song <songmuchun@bytedance.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Queue-Id: EB91540006
+	bh=EMhRMdEboRulS299sQmhaXW+YI7ZYoe1z6XHEW4vJjs=;
+	b=4zrrTbag9bnNEXzJVN6SW21VUTKr+rwJzwQFav+JFejEpmDlR43Ehzye+gT8fpNA3JyfEN
+	flQBSv+Idryh1v0z6fzF31/j0RjuH0qchFKxiT3MvYhbvZ1XvjhBWtz6uPcI7NJUizyQ72
+	0YoYJkyAHiDxztOpQtm3eeJpuCrWHzY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 85DBE60120;
+	Sat, 10 Oct 2026 08:43:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5161F000FF;
+	Sat, 10 Oct 2026 08:43:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791621824;
+	bh=EMhRMdEboRulS299sQmhaXW+YI7ZYoe1z6XHEW4vJjs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gjJGCDC+KFlQQ26bxZqDLXuKbl4aNueNBLvuMQMHUN4tKQ0Ex3Ln42ZwAoFIzAPhW
+	 4n4luK6SIuM55oNlIsJpZApLqeE2TcNDmj4froU2AjsK2W0MfdHtxRKsZbuLyGEhnX
+	 czgWTxN73f/MgPDW8s24C0QrAl37lsiYNUj/m8LXdd5+OhLL8P7eUCdXlTir4zjR/4
+	 3G8vXsxdlEo9OJKIS0nL8mr+1S4xUHANWrW4NdhdvZo3BcyyovSeBrZAkVJx0QEFNe
+	 Q2xtPUfHiVmAES+sUYYsLsnH/jsVgcxjYijX4aOkIZNR+jDTVqPHrlfovDe3tAClzu
+	 2CHSoRoF4KnIw==
+Date: Sat, 10 Oct 2026 10:43:32 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v9 01/13] PCI: liveupdate: Set up FLB handler for the PCI
+ core
+Message-ID: <asn6tKL72RXItqMD@kernel.org>
+References: <20260918200640.887030-1-dmatlack@google.com>
+ <20260918200640.887030-2-dmatlack@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918200640.887030-2-dmatlack@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 38epeowjpxedus83r7o85ymthkr6utxj
-X-HE-Tag: 1791621473-301115
-X-HE-Meta: U2FsdGVkX18ukDRzPGLo66PpRmYCcM3A0T53HExRWxjj+ooLP7aachDxBnCfxK/JYwDsYkKIGDcmlu8x72zKVBcBHNPZ10reyx0Z9bWjfYL6SbcoMl+LqnQ1pW+orFM4IQAxqZixArU9YDBOqnSAzgrBba1COQ/Jnnsmy5sEQHeM+KOQULzlCX9CvIlRRUuZ30RHqRHBsFty3Y6lCvK1Ghwr0G87fPxloO5MBcezKz4iEGRhbh6jKme44TlIuho/YEAItMu2N5MIlJVEIdW9It+sJZUiu2wCRgAZgxIN9mEOXTjdnk7cISsMcLtnkE8sLTqAyTNX8/E0yrwqoe92JZnD1+Xr8nsqEQ+J36VnSwbZ+0QttFraL2M7MYE1gSGWkcDHKXhrfT3c3Kp8ZGiwq1R7mGIJYAhvNJponA24XKEi10xg3m/x02d0F/qPlVjjGATCOwzLx7I/NCKoAB17VpCvBZgOrY0qm1wDIw6Le4qdF5qS6UHZIWCKdbsP9rOb5z5l5oVhJBC9yzbh8WDc+n9jjY4JozyDEQem44TWvI3BjycFzyIwsShorki5In28Vd6VbY9E+YNDkpPIuGKCRfzcxJXdRLzOIc/qBCVnj4MidoqSMh7znt4fImAn53e/MJ94++UqSWi8WOsDoxM627lIaCKtjgElW676T59Qk66x5PfDXyKzGF7IYjcuMD2Y8t9jzCllpe29b/tX1sByeydid5FioQpAihQpdf0DG36dLsqusq8FZYe3ojrdBk8aLbBhOg0EmKCF18K7ukgXpsxR9SkVq8dBSdjoFihfEW4IjHa05Lo/7GILsZ0yJJ07Q7pmDYolNzRBqEqBdabkRpnvcQAjClvts34OeT6W6PGA9AhXMY7ZrIuhcu/wRoAsa50gLs3peZsIQE3wOkH2I6UphmeHMG1OMOfRMQC+uZjADvDTzeJaewApd0BJK3YhAm7ft3Ls4Mat+ltG8JZ
- CjFoNu98
- xwoty1/bEp79fo7ijRBUhrnwBIyQnlsxJIXi2tI3t42OEgrysLruT9rCOHc97Xo6GNBM1pbcY2pkWQiVF8PZnLZENPDjyf3u65GjKzIO1/ebxUGMj8lhJEh5tuhMie8vWiWxksnAgQDzxKYwjlKse22tByNA4j1+JxRrN3/cMRvGViORtKIGyaecqfX1MkScduwrm6+4HJrkoU2j3DxZrNYnvX0aTlr8WcbpH+jnNLNDY4R/l7xw2d70Cl6SPsICK2fj0TmJcpv3lOrwHmZl6FGTZjG7c40VJ0brVSfI8/uR9flWzyVxvv2zCWvqB7rdwPxqXdcz5epmVgyxD7ZA+Zli+JkBzvJu+FRZnTYO0lpszpwJqO+htQvnT/cLGVfumaS+v8u+ZqfapEcDfSxGY/6ve/BpoxL94uHPYgU88xHDTmNbaCm1TS/Bhq2E8+GH/bHqb
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5F1B5100003
+X-Stat-Signature: 9zf93wdieq4iripsm5dxuwci67p8jjq6
+X-HE-Tag: 1791621825-82490
+X-HE-Meta: U2FsdGVkX1/pZR9D48syVRATPeLZxb1yYTHynTNhrB0/necfdTHtuFHFU2jQ+hpo4FmF6h58aHlM5zz/bp7IaFe6Z5qxWRiEImYJYLLWl0+rXyfNYYOtObqIJiSvuUM6ksocDS2wvwbWlwD+CEWH319uipcH9gDUFt0ROA4ucGBUZlK795d83iSX4lfrIvy5/D2Bc0f1q8iPUr8gIHIQCPB6RcqLoZiT65nOYABVIVS63tQXxmNdJyFrJ2jZCys3X4E5jMzs8ilTnua+eIw+ZkI4po9emywzWmz/vTZ5/vYokfbMzNci0K7inT6dxRn/gplmptDXcOg6WGTHBPDRSRtZdRn1BWvIVJiwzdOCV2CYlK1Ky7SXacoFuYp1uhxhn+UMyAWoQ8D1CmrBon9ydZcvP2NTB48AiACFlDDeGQfZB77Xf4rqAriQBhaknhy/dzF9m4OdToi8oAQboCK7DjOSgEFYmxtlHVrk9IwLmOeRYmTQ6VrDpVPQP7hlsmuuG+i0F4jFw+BUapML2w2Iqjqmt6z8YqpJJ6L+X01Bo9gbUo3GyeTlfwTZWwbTKPnCmvf3HjnIC30pXkRB74zhEYndtp/OV6B/+erFU0bUCJYm691QUUBQfukXHIgm0rknIS4EmGThOrWzBJXPRTo26Ug1PSadkyfu/0mW+s2JQbaE8ggP51fubLq85UDv/cawq/xe4i36Tx34SLvGRpx4UeAkqiA0RsBEKybUXiuZPcCWg8ilcyEaYfy3SgdzBVQnLA6Aj8ASRY5yZkwCLWZSzrspMk0PKVHbMFFi+a07Q0k49mdJpiMADAWwzxyv6Fk1OLfUsPvNeGCKRS6hszwMlBfZw7c4A0Z2oINkBhQFooN5TfU07J/GwTsaAPb+CG4pCRXW5fVpsBAso6/tKyxc4mFtDRQMH8kkLrVd0l6J5zCl17aGYb2PwxIhGqq0zU60GGV5fxgBCHEIG2Kk41q
+ ouFjcI0j
+ 9e5oWjiuaVgwfcXUgAQPALlJUD5xTD3957VOo56G2lmp59YC7xIcjXsRw/yPkLHh+qsZpUNIhb9aRc2CSXkOqVCsztvtL/j5lKlYBW0sszJa6AtG+/ApsEkTugqzQVtCx2upfUcVe/oDzvEn89x1VAYcYrT5euEgvzrrMP0EIkRkXb3dN5QNIFz295oshkBicge5SiEbMFbHd+87CocCBQaVX6Q4JVDSu82f/rPuV15MwZX7uo9fF3U7LBi4yoObGnkD/AvfZZyUGvM6xLuRuksC10r1ni+TJ7Yjljb1hkI7/VhQrd4ioZB6jSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,34 +112,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi David,
 
+On Fri, Sep 18, 2026 at 08:06:27PM +0000, David Matlack wrote:
+> Set up a File-Lifecycle-Bound (FLB) handler so that the PCI core can
+> preserve its own state across a Live Update kexec.
+> 
+> Preserving a PCI device across kexec requires preserving two independent
+> sets of state:
+> 
+>  - Driver state, e.g. everything vfio-pci needs so that userspace can
+>    keep using the device in the new kernel. The driver preserves this
+>    itself and the PCI core is not involved.
+> 
+>  - PCI core state, e.g. which devices are preserved, so that the new
+>    kernel knows not to disturb them while they are still running and
+>    doing DMA. That is what this commit adds, serialized into struct
+>    pci_ser.
+ 
+...
 
-> On Oct 10, 2026, at 15:57, Muchun Song <songmuchun@bytedance.com> =
-wrote:
->=20
-> The common vmemmap path selects the shared page for optimized mappings
-> itself, so Device DAX no longer needs =
-vmemmap_populate_compound_pages()
-> to find a shared tail page and pass its backing PFN through the =
-generic
-> population helpers.
->=20
-> Remove the Device DAX-specific population path and let section memmap
-> population always use vmemmap_populate(). The powerpc retains an
-> architecture-specific compound-page implementation, so select it =
-directly
-> from radix__vmemmap_populate() for optimizable sections.
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> new file mode 100644
+> index 000000000000..66dbee0bd3cf
+> --- /dev/null
+> +++ b/drivers/pci/liveupdate.c
+> @@ -0,0 +1,206 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Copyright (c) 2026, Google LLC.
+> + * David Matlack <dmatlack@google.com>
+> + */
+> +
+> +/**
+> + * DOC: PCI Live Update
+> + *
+> + * The PCI subsystem participates in the Live Update process to enable drivers
+> + * to preserve their PCI devices across kexec.
+> + *
+> + * Preserving a device requires preserving two independent sets of state: the
+> + * driver's own state, which the driver preserves with no involvement from the
+> + * PCI core, and the PCI core's state about the device, which the next kernel
+> + * needs so that enumeration does not disturb a device that is still running.
+> + * This file implements the latter.
 
-Regarding the issue mentioned by Sashiko [1], it does exist, but it
-was not introduced by this series. I have already fixed it in another
-series [2], but it has not been merged yet.
+This does not look good in html docs :(
 
-[1] =
-https://sashiko.dev/#/patchset/20261010075755.83339-1-songmuchun%40bytedan=
-ce.com?part=3D3
-[2] =
-https://lore.kernel.org/all/20260924025035.1265035-1-songmuchun@bytedance.=
-com/
+> + *
+> + * :ref:`FLB <flb>` Data
+> + * =====================
+> + *
+> + * Userspace decides which devices are preserved, using :ref:`LUO <luo>` file
+> + * preservation: a driver exposes a file that represents a single PCI device,
+> + * and userspace preserves the device with
+> + * ``ioctl(LIVEUPDATE_SESSION_PRESERVE_FD)`` on that file. Binding preservation
+> + * to a file gives it proper lifecycle management, e.g. the preservation is
+> + * undone if userspace cancels it or goes away. How a driver exposes that file
+> + * is up to the driver and invisible to the PCI core (vfio-pci variant drivers,
+> + * the first intended use-case, use their per-device cdev).
+> + *
+> + * LUO only knows that a file was preserved; it does not know that the file
+> + * represents a PCI device. Drivers therefore register their
+> + * struct liveupdate_file_handler with the PCI core:
+> + *
+> + *  * ``pci_liveupdate_register_flb(driver_file_handler)``
+> + *  * ``pci_liveupdate_unregister_flb(driver_file_handler)``
+> + *
+> + * LUO then refcounts the PCI core's FLB against the files preserved by that
 
-Thanks.=
+Please spell out reference count
+
+> + * handler, and that refcount drives the lifetime of struct pci_ser:
+
+           and here too  ^
+
+> + * pci_flb_preserve() allocates and preserves it when the first file is
+> + * preserved, and pci_flb_unpreserve() frees it when the last file is
+> + * unpreserved. In the next kernel, pci_flb_retrieve() hands the PCI core the
+> + * struct pci_ser built by the previous kernel, whenever the PCI core asks for
+> + * it (e.g. during enumeration), and pci_flb_finish() frees it once the PCI
+> + * core is done with it.
+
+...
+
+> diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
+> new file mode 100644
+> index 000000000000..4096e3cd3324
+> --- /dev/null
+> +++ b/include/linux/kho/abi/pci.h
+> @@ -0,0 +1,65 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +/*
+> + * Copyright (c) 2026, Google LLC.
+> + * David Matlack <dmatlack@google.com>
+> + */
+> +
+> +#ifndef _LINUX_KHO_ABI_PCI_H
+> +#define _LINUX_KHO_ABI_PCI_H
+> +
+> +#include <linux/bug.h>
+> +#include <linux/compiler.h>
+> +#include <linux/types.h>
+> +
+> +/**
+> + * DOC: PCI File-Lifecycle Bound (FLB) Live Update ABI
+> + *
+> + * This header defines the ABI for preserving core PCI state across kexec using
+
+This does not look nice in html docs either :(
+
+> + * Live Update File-Lifecycle Bound (FLB) data.
+> + *
+> + * This interface is a contract. Any modification to any of the serialization
+> + * structs defined here constitutes a breaking change. Such changes require
+> + * incrementing the version number in the PCI_LUO_FLB_VERSION number.
+> + */
+
+-- 
+Sincerely yours,
+Mike.
 
