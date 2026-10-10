@@ -4,150 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26970CA9EBE
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 08:22:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AC39CA9EBE
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 08:36:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F31E16B0092; Sat, 10 Oct 2026 04:22:40 -0400 (EDT)
+	id 5AEE46B0088; Sat, 10 Oct 2026 04:36:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0A636B0095; Sat, 10 Oct 2026 04:22:40 -0400 (EDT)
+	id 5862F6B008A; Sat, 10 Oct 2026 04:36:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF94A6B0096; Sat, 10 Oct 2026 04:22:40 -0400 (EDT)
+	id 4C1FB6B008C; Sat, 10 Oct 2026 04:36:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BBF7C6B0092
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 04:22:40 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E4C3C07F6
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:22:40 +0000 (UTC)
-X-FDA: 85306025280.10.94F8E2E
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 51F64A0002
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:22:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=M7ZZ2JJo;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791620558;
-	b=w4LmaAk6rQmBmxEQIjf9iBdOLz4JfP+fMLyXVcl+xnlBCVXtFRjBAYoWxxtHFdJ9dAU7uO
-	sWGF8iZlkGKqTflGK8hRB3tvu2APdONnLVTy5XN4OUnRTeWu/gZDSzu5aYg6Fj7GD3KMt0
-	pCR81wvy1B1Ey38QympJWXRsMGxxMzw=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=M7ZZ2JJo;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791620558;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 250236B0088
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 04:36:08 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B282816081A
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:36:07 +0000 (UTC)
+X-FDA: 85306059174.30.48CBEFC
+Received: from mta0.migadu.com (out-61.mta0.migadu.com [91.218.175.61])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 56EF640003
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:36:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GedrZ0qo;
+	spf=pass (imf12.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.61 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791621365;
+	b=MJzj6DIOhgJM3MVC0SaAX0hDxZdMBzyeQ78p5FhY7lk6WMY/aDLVcKfu/N8ZszTGwW32e9
+	Xlr1jSmc0f3a1ihSGPjSEabKUgzCw0z4AzcM7MK/+C78weXO3ZbxUKh7+9A90uYWxbdXZb
+	qFaMEyV16I1fZknqzUhQLz8Smlh59iE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GedrZ0qo;
+	spf=pass (imf12.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.61 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791621365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=leU69vU0901atm4DuawOU09rDiJ7Q9eEEaM1dv12Nfc=;
-	b=dANyMiOEd5jDiLtS7ulZnYkVZcOC3EAFGrFTLw5gBf7ZPXBPBbePTJUQtJSohxnlSpQP0x
-	j7xTh/6MtxrJugbBjUuNFoDsENcuUYsNgLOm6D45qf+1FGGtLoFDTR61q6T04+doBQayzh
-	j6WeUVJRmNMQpOJtV/UlIZ+PbmaV/xQ=
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-82395ae2ea8so402730a34.1
-        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 01:22:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791620557; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PnZ+RX/Lbb9FniRXUn45QIY/lc7t0nEuBm3PzXriv18h7SjHUXBkkoxqmQeczzr2jV
-         y2RGNYa6W+tRzj+kYMKVk+n6FrVuGL5313q+i+wI84JLQ5nDHGYRpojGIrFrrM9N7P83
-         a1sYn+PhGZ2TsTlgu16HzYkjoSi2wUf4Yga0fOjAF4w0h4cbwV3JHo7O/S2a9+UvkxYY
-         4SmHN1e+mSlJjxvvkJPJkPbKpsakDlqUGeoVyDVBS/mPFSVmj8el10iwr9hw9Up80opX
-         tzT00wamGQWHd9g5CdpmwnTYHCUocGNkabnfmGPE36JEKYB67l4EzGk+2BqW5Pjdp5pf
-         vR2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=leU69vU0901atm4DuawOU09rDiJ7Q9eEEaM1dv12Nfc=;
-        fh=iAoUxRnrNme+y0WAokTPa9OTA9OwHJ6XcuVmpDTTeiQ=;
-        b=oFKd0kzCkOg3U/LwKk6mRRfCI+WAC/cZqe45bWUAHvVaCrAmNH97uYYEgVXWpKV456
-         LejpVBVOb4cFbDFqG9W7aLWysBCzrz62/n0k5z8IazVlWZ+7fTOctUegfwfUn1i3nNB6
-         Ep4EdlH0BjWt01i1LhEwVuLycvtO9QeD0D53TdcZRWtRZYTstoYDQdShCIuMx7zcwgum
-         7T8SJOI6o8YEZcwzvtxOVXsx7JlNqij8qRU/hxRUY3bxxXeY2C0aepzalPpYoMC/Udip
-         Mh71GrI0QC2qZY14fBr2WaLSH/EL7TNxG86Fpwv/bB4oIexwSzAq/HsoHXyNdeC30MlM
-         yfvw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791620557; x=1792225357; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=leU69vU0901atm4DuawOU09rDiJ7Q9eEEaM1dv12Nfc=;
-        b=M7ZZ2JJoWo++NX2mz5S2PDrU/kTEhWkUQVSk48QOVTYApZYSK+2Q4e/4iSozrXgVPB
-         1S8sk07AmsXPw0xxXCr4qj4hMcxDXi7T9SmgGWo68JVLWQAFiIuUmPVwBoqHaz/i2kh1
-         UmTZ1plunsBWI5Gc12GX7xjMo/EJF+nh26Qh28CAgbmVLUA2XgRQX3sy9VFVV2hYkYaj
-         wg2v8aPc1ulv5/pj/GJKiHtSZYJguH8LSaKScjSqoWTlQYYxSIG6i7bh8SxUOQmHBya6
-         XP3ltTkpBF9lcl/yL0SiuCiGISU9dgDPfKMyiS6G1SNzxVtt2QlQSxGtEhCo+7RHg8mo
-         Ok+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791620557; x=1792225357;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=leU69vU0901atm4DuawOU09rDiJ7Q9eEEaM1dv12Nfc=;
-        b=nBXG2iS04Yjj3BCYOh46/BvpOBKPdTpD1DrEhjJ4AqfqvBwSjj/Dixjga9BlM4zld+
-         nry+z6Mkea7HHXeTPfuxftWMG+7H59nzKk4ZahARyrOJPCJKe/nURsb7eA/FfjTZPxNE
-         Hy1jHCVZKGtqSfyIe+4f7u5bpbGUhYHOU/kiBnDBcepUwcmSALAdLnNun0475gcUsKA6
-         OyhxmoJ2Ftf6nVCCgOU1vixkwW/s3/3Fk2CU77fXA+vhOzTHAhL40qeEf2ZImr6Yd5AQ
-         yqI+QDAIcp7SYnn+lZCYV3c4Hh55XPYZygRztuG/qn5eJkDSCdrFDsYIUTUV40jSVqbl
-         cfpQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwRkt2/KJk+RaVh/DmAQoYjwcGmb3McAgt2g1kZdKZwM5YySRFYYaH+IItpMQzSGmhtew98JpI0mA==@kvack.org
-X-Gm-Message-State: AFq9FYLpcfLRLG2u5OqLoE+uud2t9aNVgmskWwY4HUSWGvsap8XhA6qt
-	ZbgHzeJ9aht/mWC7HLr9DRusAg09StxeAC0GQQ1/Ml3S8zmka5tZ/iyEIj/QyBrzYqVBsAs1KFd
-	A10qQ8DY9rf11pqwy83jukwFaKP5PVFY=
-X-Gm-Gg: AYBFou0y7p/AgWcM9BS1U9VtZCw9AYVJpOUxGR4YjiR1uWnoB3bUuhn7oDtFprn+DFH
-	leCxrjMnmkYar7sWKKUJMGQy/fqfVatX1iXgNNbY/cpNyIUUqUI4I5HtWudaQzVHiXo2vziRPGC
-	KURe7gbfayJwPFzAjzJ9XwUFAf1ZdETuu3340+O1TKcR5FGzRJuzsLrUh2TTwwel9I4PVBvUT78
-	OD0/1xlMtRCQ82fa6Ndi5OWUzX0I+sZfVh9HTsZXB8KFK7OQ3SFvVrpCin4Wthocp+oNLu05viS
-	NoXnk3IYw+o33XqQgVmUXGlL13Jn3xOXGTyc2M9k1mpECOCmza6t8y4=
-X-Received: by 2002:a05:6820:1f12:b0:6cd:3fbd:1d6d with SMTP id
- 006d021491bc7-6ef137a1e02mr2955151eaf.87.1791620557289; Sat, 10 Oct 2026
- 01:22:37 -0700 (PDT)
+	bh=P3b7lykj9555dzpik0CL5J8bkR3CCZMYWde74uzni1o=;
+	b=GLjIPD/95/5uMfRAy3kmtV10+d90Vt9iTC1iH6vkg4t9JiylgCAcM1sSQF/5JUBMK8dCX1
+	VVDh+5WYAhOyjJkluf3XjU2ze1ZtR+HOvwLNzTJLQk7LPhrJGqmKK2Sq6JmZND1ojrcGYd
+	L12Vme2UfsOc/u5mikKDklB3193zrFs=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=/RC+izwEEYy8ZXvE6WOHCJ7ZNBYqaR8RFs6URHqTudY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791621363; v=1; x=1792226163;
+ b=GedrZ0qoPV7WD3EYE661u5OPJwvgyiOKYyTTetYQDCIYrEQJAmWjG86J2Ccyn27cx8B/qK+S
+ 5QZUPWr1POkSxmS5F5xSQWVrZPtWWml34ngb9g2w+Wk5Oc1FzgNpVe1dUho9lSuSYcwDcGQoRP1
+ q0S2Wp/1ic5OBfC9uwfokt5w=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 765dd94070c37712;
+	Sat, 10 Oct 2026 08:36:03 +0000
+X-Mizu-Trace-ID: 765dd94070c37712
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <331b4e40-8d0c-4333-b2b6-b81e4c4b2e17@linux.dev>
+Date: Sat, 10 Oct 2026 16:35:53 +0800
 MIME-Version: 1.0
-References: <20260726212812.89266-1-shijujose2008@gmail.com>
- <20260726212812.89266-2-shijujose2008@gmail.com> <20261005235021.GBasQ3vXTivT3NLbBq@fat_crate.local>
- <asU7svV8g2Hb5DZl@hu-ashoraj-lv.qualcomm.com> <20261008030603.GAascImzt4cv8Gz49p@fat_crate.local>
- <CAG4KcRLhN9=6xeT4qfqKLFdukiZLUc7akGcWwXJUU1-qrfxTUQ@mail.gmail.com>
- <20261008174114.GAasfVutvsmAk8JGsD@fat_crate.local> <CAG4KcRLx69BK+aw+exUzPe+BW8exFM2LLvN9pEr-+1BoGVhFXg@mail.gmail.com>
- <20261010002159.GCasmFJy2F_2S22d4Y@fat_crate.local>
-In-Reply-To: <20261010002159.GCasmFJy2F_2S22d4Y@fat_crate.local>
-From: Shiju Jose <shijujose2008@gmail.com>
-Date: Sat, 10 Oct 2026 09:22:26 +0100
-X-Gm-Features: AclHuK9LcUUipyZ8Cr0mybpgES3o6Alw16f-sgFH5JuXkDfTNuU5e-v-mN4o-0Q
-Message-ID: <CAG4KcR+xR8twgQdNABptYZDXXC3BUMNN=-7twEzRTOiz=VngUQ@mail.gmail.com>
-Subject: Re: [PATCH v23 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature table
-To: Borislav Petkov <bp@alien8.de>
-Cc: Ashok Raj <ashok.raj@oss.qualcomm.com>, rafael@kernel.org, 
-	akpm@linux-foundation.org, rppt@kernel.org, dferguson@amperecomputing.com, 
-	linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org, 
-	Yazen.Ghannam@amd.com, mchehab@kernel.org, jic23@kernel.org, 
-	linuxarm@huawei.com, rientjes@google.com, jiaqiyan@google.com, 
-	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, naoya.horiguchi@nec.com, 
-	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com, 
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com, 
-	gthelen@google.com, wschwartz@amperecomputing.com, wbs@os.amperecomputing.com, 
-	nifan.cxl@gmail.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com, 
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com, 
-	wanghuiqiang@huawei.com, ashoraj@qti.qualcomm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 63da96fxek41qtibfqpwjy9jk9znsipt
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/compaction: skip folios containing hwpoisoned
+ pages
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Yuanhe Shu <xiangzao@linux.alibaba.com>, akpm@linux-foundation.org
+Cc: vbabka@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+ ziy@nvidia.com, ying.huang@linux.alibaba.com, wangkefeng.wang@huawei.com,
+ tujinjiang@huawei.com, mgorman@techsingularity.net, chengkaitao@kylinos.cn,
+ muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260928105805.1215770-1-xiangzao@linux.alibaba.com>
+ <20260928105805.1215770-2-xiangzao@linux.alibaba.com>
+ <99cbd960-439d-4672-aba9-6b49697db8b3@kernel.org>
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+In-Reply-To: <99cbd960-439d-4672-aba9-6b49697db8b3@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 56EF640003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 51F64A0002
-X-HE-Tag: 1791620558-102807
-X-HE-Meta: U2FsdGVkX19FcnTRojRfoeMtPNoMIxH/WQtHo1VVfKGhQ6BsPEyjVDR+xe7d6ULOukN4bmWJszfTlROvMtIpcNJx3ndYVRA9HvpHedtLUbw5lJ1tDR0dxTWnvqBJcaeMVQBAl91UkuczLlqOQrgKYSKeJTfEgnaFi5xCsOvn9NXtnQFSFM32SUtdWbCqKZOCKDikqjljqH/03mnsQDvRmxmcLiekKSIqT+MzUrGt/fVnTzdYFoeXDt4iBY8miPzRq6AZJOgygz4g22CgvTOtvl5FII5txGHrMvhX5De2sKGLJsdugXbio8BiMPYfVf4BiLn1/0ca/fN+cCRGaumu1QW+EjkdWWWN1mezcVnrLEGKe7IC+k/3SaPDOKk4hiYlt/zyLvdOt2rF0t9A6O15tORYs/IBsKTB2RwomJ724syCsxeM7IMMLf2xmdgMwScvzEb5ZG9JIY34vWwp1JbYsBFN0iGp1g8YqMuIn9nPFt9kpdgN/qg2hVhxF15e7iicIpkOjLNlvx8Bw+JfOUpxwlZuSw4EoSKWOlYOuZJofHxLx7oOlHRuelGzSUPBXX3ZXM7D7pe+LyxLF4VzA4+ZRzIL9s1IVXrPq+657fh0WnmSF5XL51PYjYNhqDfdhE5H/ZXtC1KxnvJF9uMVKA2ZCmbULxPdHLIUMICUi4G2/EHwphCtGDHA7qiiUVvhKbz0tGDWSIFcwDWmFG6Rqsdn1GzI81HjRtp2H5Lb3P+JRNpWU3AsHn8EayNQzy02II273kY8bIEKdPPjVEFGkDgOOrf9wf767Rg+atg/BG3K7z8dDKkyU5ec4HfG/u9DBZoOwwtOrsnOpNMbL9E/CxYOSVPsDMTx61Wf/dsQeHQek8vkVgvAj0bht2VKDoELn8arRA7T+CDXYwXjYbaMRzSO+kDMYYqO6M5xjGd+rykqJ0ZbbVuQPyLG96ofUrvgRxMpHS0LFSOeg6yWDcCY2T+
- ETZfrwHM
- TNgcNVw1HPgxTsG4Tah1VQ9fkyhfo8tm7hx9+1fxEYy8WK/IDzsNCdgbwHhzyjMEQP8QXSmzkoc0KoZmCg9iKuX8qrbbMdDWPvJiepvlpaiUuTTVzFwgHbfJ1sqEuROdUyprNNnphUentXgoydkAsBkIoKjI/sIZTq/Xrcfmg7iSAhky4PISFMI1rvErVMvFXnoxOXPqVfutatRUHLtr0iTHo65x8Uxgx/gjZ41nKyrr2u7CHG8vwd/86aERG39X7lU/8k6h8unb4xt0FsTyn7wxGxK4y+gBklwM9lqh9nDJcmSQh2kEVBJM4Gj8sE5Z/Ox3tqXqk9LAEvCLHfzHCrt8MeYnnUUl9O+PVcDaSmX+fH2RpkB913T6aKR8kolWbQUzQFBSmb+q6VKxczYWNmyLpVYhXlPk4EAoomlOUBRB6u1Yo44J8TTaX0jemDsDbze8zPLclLmR5d0/0EqapIWNO+cSwkdIyHGmRuyt8k95p3yiPC6ZNRv4ykBHqWEWrs2bkv2iguOloiw5hPzXDdu5zqA==
+X-Stat-Signature: h8pqdo9eopdybg3orsw6rfcimeoif9ks
+X-HE-Tag: 1791621365-991194
+X-HE-Meta: U2FsdGVkX1/4hOl40kOXxvgEuahFK4ac0RSVCoc+l1INwNeI5T0jcbblYrRtrwKRpIqq7dfL5zuYDZCetr5xW4vSPL+XwVQZI3c3RGuo/SeNhF9jKMRfdSbhZyIeAsUR6lDgSCQhh/qSWhG5uncYFuKkwp6S01JBlnZm7gaEATmBUPia4hPmDwwrmgROuZBrlk0LoP9BrN8GlnN7qODfP2J+vjGBzv+bDGfdCzDLDRtlsXBf1G6yFI371ucv0PMQluV7s6P6l+AtRPsEa3T6rpUIUYiZBMu+dIlSqkRPdpsS+v2IfmQsDQm1DFHTHXnftWpZlxvu/9hm9sP2vjK8uAJvT6TyYHEolAHG6FHoh5A8NWxzDACgd4glzTz6S8+mrMdR+oJUWCXj49vp26L7Ay6LjOWlRlSqz2W9nvJnT6o+IrPTyWHeFhrjbgMI6KRIAAljbyMyy0Cg665aQRXKnf6BDRGH/nhuP5UaT4+0AMsLj2l9Yy+B4nia/GDIqCxLCN254J4MCVnlz6MgSYKMcC+h0QhSgfkvfX1vRxIV1Yj4p7vPZXtFfu2Edn8cZ2iAy70vER37jd3CjiBEU/yRJaht2kZOZeVDX+X+WuTa1FeKJCIXgt0SgO3x8dd3Zata7hkTbNYOwTys/ETZQ53dg2oAee8DCJLffN+4AXehQSz4jHFVWVLCMiqiRqhLV20i3O48IbVSZC5csJCeKm23hTUkWBfDja1Oa34ZAng/yZ6Vd/7QkOEEkE1678ps9ZMmxhTnrfe1Oxt/sTMBRFoCV29K88Kx0QnvHxQUeejn4EXNmcRzeA71FLYwbi6KMW4LPeLFmb5Zu8CgpPlEWZ5eat4nhp9W4pEPqEwP0e1FHbiVQWZTO6NI5kmalu+5TFWetYAmuF8SUx1F/xy8fCrPs8E5GNcTPDJVj3LM28QVRdakaD0IvTCeZVyGLDra+ygQesB/fuy7oYOd32WtPtW
+ 5JiPJVYB
+ Z7zoNYnhSI5TyWoZ/TJCnc5yGgSQuWygerd4A8Y85fkYr1cMXXK4u600nzYVbIl4QDE1XSKVC9bZizEtRh+NTeE12HrjVKBukjhcfUG3CfeEZ7ibpKmZ6NPaM3NggLd+GC6RC7iT38F8Q5uzDEw/XV3TeVr9s03YVAHWce/JBSbY93+JFGEcdb36WP8RMIdDDTOAXnVWNyh91SkDMCpjkgGy7jg15oGa27slTDSgdgu7qswMa8i7WVuWjqyRSgzKn0RIFqZpeOuwx2kY+KKAm+rG1IJ0gV4oJrzOblY6pnBWa3I0Ihf6nPY8jNOUuwRXbQWvgS/XceZ3Vr4wson04G5SyWZq2LX2O8+/l6ZIKsE6APGy4YETdED+RDC2ZeLgvll8jWU0gzZDiNII0BY+A6YT1ntX+pB5GMl6n8LO97Fi/V6o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,81 +96,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 10, 2026 at 1:22=E2=80=AFAM Borislav Petkov <bp@alien8.de> wrot=
-e:
->
-> On Thu, Oct 08, 2026 at 07:50:07PM +0100, Shiju Jose wrote:
-> > Sorry. I meant the issue occurred when setting the PCC signalling mode
-> > as polling for the RAS2 PCC
-> > (In include/acpi/actbl2.h struct acpi_table_pcct: flags).
->
-> Ok, did this:
->
-> diff --git a/drivers/acpi/ras2.c b/drivers/acpi/ras2.c
-> index 24514e2b99e9..c214e40355f4 100644
-> --- a/drivers/acpi/ras2.c
-> +++ b/drivers/acpi/ras2.c
-> @@ -304,6 +304,13 @@ static int register_pcc_channel(struct ras2_mem_ctx =
-*ras2_ctx, int pcc_id)
->         if (!sspcc)
->                 return -ENOMEM;
->
-> +       /*
-> +        * Make sure the binding to the mailbox channel switches to expli=
-cit
-> +        * ACKs so that ras2_send_pcc_cmd() can issue the ACK packet with
-> +        * mbox_client_txdone().
-> +        */
-> +       sspcc->mbox_client.knows_txdone =3D true;
-> +
->         pcc_chan =3D pcc_mbox_request_channel(&sspcc->mbox_client, pcc_id=
-);
->         if (IS_ERR(pcc_chan)) {
->                 ret =3D PTR_ERR(pcc_chan);
-> @@ -327,8 +334,6 @@ static int register_pcc_channel(struct ras2_mem_ctx *=
-ras2_ctx, int pcc_id)
->         sspcc->pcc_mrtt         =3D pcc_chan->min_turnaround_time;
->         sspcc->pcc_mpar         =3D pcc_chan->max_access_rate;
->
-> -       sspcc->mbox_client.knows_txdone =3D true;
-> -
->         mutex_init(&sspcc->pcc_lock);
->         kref_init(&sspcc->kref);
->
-> ---
->
-> Here's the new version, pls run it:
 
-Thanks Boris.
 
-The new version tested fine in my test setup as well.
+在 2026/9/28 20:12, David Hildenbrand (Arm) 写道:
+> On 9/28/26 12:58, Yuanhe Shu wrote:
+>> memory_failure() sets PG_hwpoison on the error page before it manages
+>> to pin the folio via get_hwpoison_page().  Compaction running on
+>> another CPU can isolate that same folio in the meantime, so
+>> HWPoisonHandlable() then fails on !PageLRU(), the retry loop in
+>> get_any_page() exhausts itself and memory_failure() gives up with
+>> MF_IGNORED - while compaction still has the folio on its
+>> migratepages list, flagged PG_hwpoison.
+>>
+>> Nothing stops compaction from migrating such a folio afterwards.
+>> The corrupted data is copied into a fresh folio that carries no
+>> poison marker, and no hwpoison PTE entry is installed on the way
+>> back: the userspace mapping is silently redirected to the corrupted
+>> copy and no SIGBUS is ever delivered.
+>>
+>> Note that a large folio with a PG_hwpoisoned subpage can also sit on
+>> the LRU without any race at all, via the THP-split-failure path of
+>> memory_failure() (kill_procs_now() + MF_MSG_UNSPLIT_THP).  Guarding
+>> compaction is therefore needed regardless of how the race in
+>> memory_failure() itself might be addressed.
+>>
+>> folio_mc_copy() does not close this hole: it only detects corruption
+>> at copy time and only where ARCH_HAS_COPY_MC is implemented (x86_64
+>> and PPC64; elsewhere copy_mc_highpage() degrades to a plain copy).
+> 
+> Then they should implement it.
+> 
+>> Software-injected poison - what MADV_HWPOISON and the hwpoison-inject
+>> interface produce, and what tests and fuzzers exercise - never traps
+>> during the copy on any architecture.  
+> 
+> And these are debug interfaces, why do we care?
+> 
+>> An isolation-time check avoids
+>> the migration entirely, on all architectures and for both real and
+>> simulated poison.
+> 
+> It's racy. See the link below.
 
-Thanks,
-Shiju
+Could we recheck PG_hwpoison on the source page after folio_mc_copy()
+completes, but before the mapping is transferred, and abort migration
+if the flag is set? This would prevent PG_hwpoison from being lost
+after migration.
 
->
-> From fb7d2f51280072c266441b645c81258553f1c968 Mon Sep 17 00:00:00 2001
-> From: Shiju Jose <shijujose2008@gmail.com>
-> Date: Sun, 26 Jul 2026 22:28:11 +0100
-> Subject: [PATCH] ACPI:RAS2: Add a driver for the ACPI RAS2 feature table
->
-> The ACPI 6.5 Specification, section 5.2.21, defines a RAS2 feature table
-> (RAS2). Add a driver supporting that RAS2 feature table and which provide=
-s
-> interfaces for platform RAS features, e.g., for HW-based memory scrubbing=
-, and
-> logical to PA translation service. RAS2 uses PCC channel subspace for
-> communicating with the ACPI compliant HW platform.
->
-[...]
-> +#endif /* _ACPI_RAS2_H */
-> --
-> 2.53.0
->
->
-> --
-> Regards/Gruss,
->     Boris.
->
-> https://people.kernel.org/tglx/notes-about-netiquette
+Completely closing the race window by modifying the arch-specific
+copy_mc_to_kernel() implementation would presumably also require
+corresponding hardware and architectural capabilities, which does
+not seem very practical.
+
+>> The check itself is two flag tests on the head page (PG_hwpoison
+>> and the folio-level has_hwpoisoned marker), not a walk over
+>> subpages.
+>>
+>> Neither page reclaim nor memory hotplug lets such a folio be
+>> copied into a fresh one: reclaim unmaps the poisoned order-0 page,
+>> and skips the hwpoisoned large folios it cannot safely unmap, in
+>> shrink_folio_list()
+>> commit 1b0449544c64 ("mm/vmscan: don't try to reclaim hwpoison folio")
+>> commit 9f1e8cd0b7c4 ("mm/vmscan: fix hwpoisoned large folio handling in shrink_folio_list")
+>> while memory hotplug refuses to migrate them in do_migrate_range()
+>> commit 5f5ee52d4f58 ("mm/hwpoison: introduce folio_contain_hwpoisoned_page() helper").
+>> Skip them in compaction as well, for the same reason reclaim settled
+>> on skipping: the UCE is rare and a race with compaction is rarer
+>> still, so skipping is enough, and a later memory_failure() will
+>> handle the folio if the UCE is triggered again - while a migrated
+>> folio would silently propagate the corruption instead.
+>>
+>> Deterministic validation on v7.3-rc4-75-g62f4c998b297: order-4
+>> mTHP folios were brought into the stable "large, on LRU,
+>> PG_hwpoisoned subpage" state by pinning a sibling subpage with
+>> vmsplice and injecting MADV_HWPOISON on another subpage, which
+>> makes memory_failure() take the THP-split-failure path; after
+>> triggering compaction, /proc/kpageflags shows which poisoned
+>> folios moved.  The unpatched kernel migrated 16/16 poisoned
+>> folios and 16/16 clean controls in the same pageblocks; with
+>> this patch, 0/16 poisoned folios were migrated while their
+>> controls still migrated 16/16.
+> 
+> 
+> Was any of this written by an LLM?
+> 
+>>
+>> Soft offline is not affected: it only sets the poison marker after
+>> its own migration has succeeded.
+>>
+>> Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+>> ---
+>>  mm/compaction.c | 8 ++++++++
+>>  1 file changed, 8 insertions(+)
+>>
+>> diff --git a/mm/compaction.c b/mm/compaction.c
+>> index a049415512c6..491adcbc5313 100644
+>> --- a/mm/compaction.c
+>> +++ b/mm/compaction.c
+>> @@ -1093,6 +1093,14 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+>>  		if (unlikely(!folio))
+>>  			goto isolate_fail;
+>>  
+>> +		/*
+>> +		 * Migrating would copy the corrupted data into a fresh
+>> +		 * folio with no poison marker; skip, as memory hotplug
+>> +		 * refuses to migrate such folios for the same reason.
+>> +		 */
+>> +		if (folio_contain_hwpoisoned_page(folio))
+>> +			goto isolate_fail_put;
+>> +
+>>  		/*
+>>  		 * Migration will fail if an anonymous page is pinned in memory,
+>>  		 * so avoid taking lru_lock and isolating it unnecessarily in an
+> 
+> See
+> 
+> https://lore.kernel.org/linux-mm/20260707090136.52904-1-kaitao.cheng@linux.dev/
+> 
+
+-- 
+Thanks
+Kaitao Cheng
+
 
