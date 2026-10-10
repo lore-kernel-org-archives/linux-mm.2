@@ -4,105 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46B6BCA9EBE
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 09:33:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCE8DCA6017
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 09:41:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F6346B0088; Sat, 10 Oct 2026 05:33:21 -0400 (EDT)
+	id CDF8D6B008C; Sat, 10 Oct 2026 05:41:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37E596B0092; Sat, 10 Oct 2026 05:33:21 -0400 (EDT)
+	id CB7886B0092; Sat, 10 Oct 2026 05:41:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2471E6B0095; Sat, 10 Oct 2026 05:33:21 -0400 (EDT)
+	id BCCE46B0095; Sat, 10 Oct 2026 05:41:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 047AC6B0088
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 05:33:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C02D160811
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:33:20 +0000 (UTC)
-X-FDA: 85306203360.02.D42FC57
-Received: from mta1.migadu.com (out-99.mta1.migadu.com [95.215.58.99])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 919A4120003
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:33:18 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OyPnlKQX;
-	spf=pass (imf29.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.99 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 904E16B008C
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 05:41:54 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1F703805CB
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:41:54 +0000 (UTC)
+X-FDA: 85306224948.18.FC39578
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 68E6F20009
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:41:52 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=W593tBr+;
+	spf=pass (imf13.hostedemail.com: domain of kanishkasolanki456s@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=kanishkasolanki456s@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791625312;
+	b=Psu0hsCrK4YbffGoqxVTaNruUbeA5hu3nRmOEaD4xPvYf4J8sJV/m41B4PJT4eu3NBEIy6
+	Wzkb9md5nt/rCTNS12GGOrgeOsC3CizDhyPunkbDncLmBJS8mJ7tYgXQgSjdve301f/+Q0
+	FG9I9o8CpfJiKJk1awSopL05h2aTFyI=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=W593tBr+;
+	spf=pass (imf13.hostedemail.com: domain of kanishkasolanki456s@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=kanishkasolanki456s@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791624798;
+	s=arc-20220608; t=1791625312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PJo4tkODSAwLEOEkEK57eCbPFUflApjAg2dMJ+9QYw8=;
-	b=OudCpkppHgL8Nb1Q/hg67HL7eTjin+KvbMTOVxGpyU0uP0ataPH6hIpOMweaqx3IG1kCSD
-	68+w8ZdmW+SWf4P1DrXujvhZ7QXij0V8cnurGPzdqPpNhWIVwGu1VvBF7xA4QGbNqSoTMF
-	djxRFKIpIXA4tuYAqeavngNakXGHWKs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791624798;
-	b=A4E0LIT7TxyBZyJNKez/UPzPJ4ew7bin45kkm2TaFWHac2CrW9YES92qbir5typTG9zHMv
-	cSzoZl9N3afcmFkFIIhtVG5en3Ui1ObizxVBscy9Sioe+bNb064ZKocIIiP2Cc9ViyThQY
-	daqOo7PWd1cb56KKpoq+do/sn6tkDFM=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OyPnlKQX;
-	spf=pass (imf29.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.99 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=PJo4tkODSAwLEOEkEK57eCbPFUflApjAg2dMJ+9QYw8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791624797; v=1; x=1792229597;
- b=OyPnlKQXDU0GjsJLx16l/N7aNyV8TV32uB9UZukrSCGkeF5RGj1NCuGGupG39RNppVPtQ5oN
- koTlLvsrJdtPj2rdeTmh+Tkf1ycbtOZ/cj0LLQ3sQemFmRfdKOU0jgiJ613ClP4P1Y1fShzIAWH
- IWs1Ig2eykQZ8GcgtKNfDXvc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ae1b224da00926d1;
-	Sat, 10 Oct 2026 09:33:16 +0000
-X-Mizu-Trace-ID: ae1b224da00926d1
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH v4 6/6] mm/mm_init: add zone mismatch warning during page
- init
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261010075755.83339-7-songmuchun@bytedance.com>
-Date: Sat, 10 Oct 2026 17:32:59 +0800
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Mike Rapoport <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Ritesh Harjani <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Qi Zheng <qi.zheng@linux.dev>,
- Lance Yang <lance.yang@linux.dev>,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <434B0573-BF18-4413-9BDF-C5873CC13206@linux.dev>
-References: <20261010075755.83339-1-songmuchun@bytedance.com>
- <20261010075755.83339-7-songmuchun@bytedance.com>
-To: Muchun Song <songmuchun@bytedance.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=NDFNhU8esL7rlE9mU0Mv+uA5ZLgqKd4fX2GtWZW3Ak0=;
+	b=QLFl7FaLFGFLwoNzOXmx8UXJ6qmiNDZFfg8tgSlyCTf+5pGxbh8+ugVH/TLPpDh815AkkT
+	rdcq3ZqRHnNW9w0Fr/DrcrlPxAldFDiCpf/SD944W26QQ5UPW79bOd8aKWWM4VW8NRtZKF
+	ilGSgRtWbT/2rY9hvQSLv+k5Dm8zgKc=
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-35834f72d94so705329eec.0
+        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:41:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791625311; x=1792230111; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NDFNhU8esL7rlE9mU0Mv+uA5ZLgqKd4fX2GtWZW3Ak0=;
+        b=W593tBr+iMHFDDP077qdKHqmsvyxLR39vEAFxnWd/HXZlqQJVmwHFNOU8cLpCWQs1E
+         5dFTaUbEPd70EYc6D/JJszQnzUpUjp9q0Sh53YoTG6KbomDT3hNOG0d/QvIm0CKIkJW4
+         eFq3dz3TpW9hntUUoK1sOZuKTqGSUaFTy0pVMadlnH1O39ONxM+QQOMsJGN00S2VeZQp
+         wTXJWoXtRBAPNdAQGNNob0OA2CYo45Uv5fdB0E427Oe4WtZLtOZ4FH5TDYJuPhkxVgE6
+         HiHAO/ZehhCKqM3nL+vxYha1eRGYJtSjfaN5RR/hpgftRBwUgzKRQBmhDIo5OLaisOxF
+         EaIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791625311; x=1792230111;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NDFNhU8esL7rlE9mU0Mv+uA5ZLgqKd4fX2GtWZW3Ak0=;
+        b=lEFKuL6tUQLDFqEKkMBE2xJEK2oQouzYYVhsdgRvX+unUASeBuVSrqOEgENZ5tKg8z
+         WLyTE+L40w1dMsnHj7WN9OWIduVlHWL4HCeLhfNujsHeqDZw79Eqvrge7qoVy8sIPWPl
+         Irdrlkpu9sLl4Y2jIOronyr6WaOh/RkS6UvDuR2FmhSB/nTzWOzVkCOCjVoGU1Ydq5da
+         ERfJRtMPaFFtKiuZSD9YSWqAP2vFDLBHe+cqocSGstdIiFWjIEj1fkzm4r7ouMu7TvlN
+         Wm/55AcCn8cL7zhiWLPkqHiGHXiuHYpS798DmPHq9pD/wCoiF2BSK9/UGqlqLmuTMles
+         U8XA==
+X-Forwarded-Encrypted: i=1; AKwUvBzDUMdIeMLwfTBevBdjFr57dcfvWohL4abWYbyuK6TyTurvAcGgbSn+gUiJ51OakBj/+CUnWzAp9w==@kvack.org
+X-Gm-Message-State: AFq9FYI7Q8ALnlzPhduZN5dElzRGW16O5at1cOUOL75ILA1aZH/LCAJW
+	ZmeTHcb3IIMMw3D0ybDFkdVdCaVcs9F6ytZCaL92Cvq+59QKx5Axk8Cq
+X-Gm-Gg: AYBFou3yePi+X4gma0KRuu6CfW4aTZJYD4myT7JXEbsiZi1azwmnrspEt/MLynpot95
+	ZgGJeRP9WTeoQTNY6NjHDSCCKU28hSOr+tgEcvFjd7nWwtOwyMfVszGXDT/9aosVpMrE5k2m05A
+	/4GiPRdBeGp66CVnkA+a57j9X1Ko8ZvoWAywOx85C5qCuDXTrXpFD86VV7UmePb3qLCnLOwzuQk
+	ottsGKYVZBp3OaInodFiWqKIHIU2TUhSGSWjPlPVIPVoN4bY4MrMilRLU6gmfBp1kTdphZbz0I2
+	oRuquRnXRxv1cdYbe4CRt9GbaLyl/J7aaVb0zXyPMVNSnffZgDqKM3EK69eKlA0TIZqL/4JFnKQ
+	C4C2lDbjdpBc+qMXvZvvZrTE12sNVbL1HoKjQEi6f0cEoEQsvSadxOs9ZdhUaFoMVyIDLo4An6Z
+	mXB4cWWyBxJKG+wm7ZMGH92gOOuylhGFWZzOGM87mQMgBeaG+rL7gCe/bd+NsD9U+jmktGM16IM
+	+zn1DOQdKkaKz8PTERHwnS6QQCJjksYCFXAb/e82brcfZSxM1xtvm+LFK/8LR5Fm0raI4B+Ig==
+X-Received: by 2002:a05:693c:6394:10b0:34a:48ce:b687 with SMTP id 5a478bee46e88-3537e010c56mr5390949eec.32.1791625310936;
+        Sat, 10 Oct 2026 02:41:50 -0700 (PDT)
+Received: from kanishka-Inspiron-15-3530.kiet.edu ([59.145.191.142])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537ca67b21sm13438922eec.11.2026.10.10.02.41.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Oct 2026 02:41:50 -0700 (PDT)
+From: Kanishka Solanki <kanishkasolanki456s@gmail.com>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Kanishka Solanki <kanishkasolanki456s@gmail.com>
+Subject: [PATCH] mm/page_owner: make page_owner stack depth runtime configurable
+Date: Sat, 10 Oct 2026 15:08:43 +0530
+Message-ID: <20261010093843.103169-1-kanishkasolanki456s@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 919A4120003
-X-Stat-Signature: rhxbrd5677u6zsnyijr3uizbtzxbaqe6
-X-HE-Tag: 1791624798-592339
-X-HE-Meta: U2FsdGVkX1+iSWnciH4Z3aHpL/cl/4b/cUpqY0AFMLkqlkzPakI8/hyfWN62GmTx0DbkBYdo4l6i8i3E+EzPj6iYIYSObkKtkXEEN0cNjZbg+3EvpjV4i69+mTFpoFVx4GSp2HtIDFQVfurYbUhgl15KjXPX/4FwVDUNFWXNsdntkCrgn0sbJnXZALdIzszJNsTlID9SLiCbRYbzI38S1l/CCortLbuoD0v8kkgRPAylhCuzrABYc1/CrB7AvhqlvvWzmjnGxGcbR0DRWoGUjoB7mKoaJw+zDN7JD7sNgiPuWJoGLm8bxrDMPutRfkNV2O8P8ickiGkEnkzAsjnwz+KRDJMgE/+eGXSsO0BeRm0ko2duE4FpO+kZ8MqVi8jTalUtPOOg8k8mWlm9AdS3lvy9W+1YFIXgloxNOOXCj/AlhzaVOhqqcwyZ9M+MYNik9+FJS4Csh38+RvfU390+JSVnRmT4zWb7jBqotV9GMuTGQaqO7Ti0aqhljdvOrtOYbIj4RrUCDNL7U7dbRjW07frW3ue7PoPl4ozB32fbF0bexcDpE4Wc5ReMyFqZTOPiC44eKg8CnxY7Td9iXzQfDUFNBMwF9So3Owo5mn0xeECu6lO2AXPKWEwixinQZn1fbYWQTnVezStKsYTJ62Eb+z3W7wxypLTowcRpqMankNnXDoufw7nRf/vWNct7hb65snB1bp/N2lbF8YD0LyGLnFgFPdspQR84Ko1m0hsAdqpqKQrxc9d66Po3TMw5XOGbXtIZcEM8tyRUTFGDku77ZXWVooaLjxkm9g8trPdnjW0Nn/WK2xdxx59fYSzi+oR2le9j5LR0TaIaLsxUhYSm3uGL2XIw1wOHLH/O9gpQZ15YQrXa/br1Z8p0xedVmAFRQCSjTOObi8Ht72sSq7K1N0JR77b4dAEMFnwy/XxJFJ06wQfIv+lUDOA043kf6wm4z2K5ghkGFF1ARF5UlJW
- MmNYfd60
- Va647D80k7XijU6sBqmS/YKTxgX5KmazabEY5ujbM0NxnYa0RxCgd+3/hrg3YNudUnbkD744O9qi8V29UK+ikGuPT4inaxNmZALdm5CsF4PiKXLqBPJNB/YH+AmyFX1eViqeUu8SsyAm1g/u2PwFcAArcX4HweSZGFCr76nHY1/4F8M2Z+5v5qy+0QAKQgXDB6VD/8s1nGO5lv3jPeD8najYwDUdoW7pQ546JJ5D/DbKuBhX4p1kliZ0yW2WWOeyRQng7jw6Fb/ARqFL1NyGfz8Ns7qWmlos3ceC158/3WbUlArxD5ugUm2SUrjWJYZPABAl7BwFAjQtIGAUI8EU96KBboZvoDtqWWv/YLcY3dE9tOWvLKmYrQIdlQXNpHmbV/b8I5jenjOvzzI5RjZTz3ilOxQcTO+HBGf3tjpiIy7sCcktssqHi4hEChxGIuL2s4bBLZGOM+2X4ofwn2w+Yp/nTUA==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 68E6F20009
+X-Stat-Signature: 9o938tiygko45detf7yyct4eb7da8bnt
+X-HE-Tag: 1791625312-816647
+X-HE-Meta: U2FsdGVkX1/jqccbwt3WdI0QV495YmQp0Co4JQhZVRuEjOOSpKf+0A7+Yaa1fpDAYSdloCibS+Yy7RLrEMFUgRJbsGH92W7L1Jy6bdAclGhL3scIcw3kmVPYTm4sSAzlbbGbdzStVj8pYbeC14pAMlnx7nDthurwVcOdd1iyfSxrYBh673LQmayoM8pkAhhhu8/oHKW60gMKCjDywBblA/2chyG0ccJz21jovwrU9mNfFMAB4QdG7dURbiYZz72+gu+KSx+A7CcEDeQrTPv++DWQiifc07nf6qydkSZfzhIH6JHHuuJVLfkt8WgJEx7qYFQ778c/Pj89uzU/KrK6Swrk12UHBKWWv585P+8sy7RLDzPFR00ApKL/ExfTKsYPcmAUeVS2JdYia52Fytu/p3YWJ8bLjUkS4V5rMfT8wxb5gTISvdz40q5U9q1hmrS85aBUriyHR86M7ss0LW7PeRBveEVZnD8f2FuDDG3qlUAkvdzHYL4s6FiJncoV8KkKjLWuB9dfZMeignw34QpxO4docNBk0EjX3Kjp5u8U3TtqE/41C+A3YkS4LZFqXMmybyO4m3cptGzo7GGmcQEVuMwCFMeiAMcFZm4WjjKXx4I3hHDE16Iu/fy5O45JeKpVJx208GTnre8vZ5iT9XFjlosQlj5fYtU9DhEp4slhGkS74re+bHMctMM3CH5y5YXRs4zIdBDF6sY8lkVU45uq565EMFeN2yPZuoBhU97VrYxKDwu+plcF2YxKjNkYaoDYBfmule3G8g3q88uOQ+DFZa8aCTbgE72k37BAoaPzCvRKD2AxeroZ62NxjFbZtkeOSvFCY0dE7qXXBQ7OfLG0ApXZcfW9nHf9ixN0eUhHDVd0vBm7PvdLK2zOgL7QZd9cO3FNSUREydnCnLlNsOH/vJ/vjhgjo6yaY/Xaz944WV2W96UUCAz1PaGS00lts0jyVjPd/ibc6IZqYUiYJ3+
+ pSxwNg8R
+ fgIX+ArCMq+osrCDQs83wmhmtk6q9apsMJZRliSs9rh0Xa4iibBV+BF1FOQ8wnHcSn1qSa2Zb6IFgydJo0SSf0sUwK5A0Q2yyTf65Lz6zze/M/G895GF+/+Yg3g8WXAk9EOb9OtfcZFTNEDnP6rbm4qKAtE+6lQfzkFitW4O1L2pe5/18x6SgYfvU69upg0rX7cMv0iLDPgTk/ziwJZrFSXYahjfWUsB2GaeNCgOArgJE6LPOYgKx7OUue3sjTKS7REMqjiJhu5uB8qm8gGzglxxELrNQZcM3MhyiNyCSHrh86fLLI6eftCJnon/vMeyOSRp0EEYqdZ4ymJbsaZspfgOx/zMS0B7LWCyL80hz2HKlbM6VWmSImPf3xnlnLrD+E32BEQ6hO2fAFFB4iEstIJMdJbnWCECDOU89NN6PveO4TEUooqakjj1mh5kgawjKo/Z+O99iM56AjG1Hqek0oA+FwQp+R15v5CXUi1kSJxeivdSbjlk0R8AcuAxl/LFzyJ0EEOKALwcqOPP49moxDc1oJNPoZXqbtUPoOvrLhkOJkSLS2b5IWme76Y8qxyl5Xg13N2qfeOdURUuNQewrOlax2Z4ISrNkt9mL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,25 +122,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The stack depth for page_owner allocations was previously fixed at
+PAGE_OWNER_STACK_DEPTH (16).
 
+Replace the fixed stack depth constant with a compile-time max ceiling
+(PAGE_OWNER_STACK_DEPTH_MAX = 64) and expose a module parameter
+'stack_depth' via module_param_named. This allows users to configure
+the stack recording depth between 1 and 64 at boot or runtime via sysfs,
+while preventing unbounded stack usage.
 
-> On Oct 10, 2026, at 15:57, Muchun Song <songmuchun@bytedance.com> =
-wrote:
->=20
-> For vmemmap-optimized sections, tail struct pages may be backed by
-> shared vmemmap pages. Those shared pages must carry the same page zone
-> ID as the struct pages initialized for the section.
->=20
-> Warn in __init_single_page() if the shared tail page has a different
-> page_zone_id(), which would indicate inconsistent initialization.
+Signed-off-by: Kanishka <kanishkasolanki456s@gmail.com>
+Signed-off-by: Kanishka Solanki <kanishkasolanki456s@gmail.com>
+---
+ mm/page_owner.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-Please ignore Sashiko's report [1], both are false positive. It didn't
-realize that shared vmemmap pages are initialized early before =
-__init_single_page().
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index fbbda7ba914b..fcb584070f1d 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -15,11 +15,10 @@
+ 
+ #include "page_alloc.h"
+ 
+-/*
+- * TODO: teach PAGE_OWNER_STACK_DEPTH (__dump_page_owner and save_stack)
+- * to use off stack temporal storage
+- */
+-#define PAGE_OWNER_STACK_DEPTH (16)
++#define PAGE_OWNER_STACK_DEPTH_MAX (64)
++
++static unsigned int page_owner_stack_depth = 16;
++module_param_named(stack_depth, page_owner_stack_depth, uint, 0644);
+ 
+ struct page_owner {
+ 	unsigned short order;
+@@ -172,15 +171,17 @@ static inline struct page_owner *get_page_owner(struct page_ext *page_ext)
+ 
+ static noinline depot_stack_handle_t save_stack(gfp_t flags)
+ {
+-	unsigned long entries[PAGE_OWNER_STACK_DEPTH];
++	unsigned long entries[PAGE_OWNER_STACK_DEPTH_MAX];
+ 	depot_stack_handle_t handle;
+ 	unsigned int nr_entries;
++	unsigned int max_entries;
+ 
+ 	if (current->in_page_owner)
+ 		return dummy_handle;
+ 
+ 	set_current_in_page_owner();
+-	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 2);
++	max_entries = min_t(unsigned int, page_owner_stack_depth, ARRAY_SIZE(entries));
++	nr_entries = stack_trace_save(entries, max_entries, 2);
+ 	handle = stack_depot_save(entries, nr_entries, flags);
+ 	if (!handle)
+ 		handle = failure_handle;
+-- 
+2.43.0
 
-[1] =
-https://sashiko.dev/#/patchset/20261010075755.83339-1-songmuchun%40bytedan=
-ce.com?part=3D6
-
-Thanks.=
 
