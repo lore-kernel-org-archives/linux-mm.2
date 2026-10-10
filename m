@@ -4,131 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D563CA9EBE
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 11:55:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 449E4CA9EC3
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 13:05:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DDE46B0088; Sat, 10 Oct 2026 07:55:40 -0400 (EDT)
+	id 9A6036B0088; Sat, 10 Oct 2026 09:05:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28EDD6B008A; Sat, 10 Oct 2026 07:55:40 -0400 (EDT)
+	id 957116B008A; Sat, 10 Oct 2026 09:05:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 186DB6B008C; Sat, 10 Oct 2026 07:55:40 -0400 (EDT)
+	id 8455E6B008C; Sat, 10 Oct 2026 09:05:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E8D2D6B0088
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 07:55:39 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6DC1EA83E0
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 11:55:39 +0000 (UTC)
-X-FDA: 85306561998.24.1645329
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 05290C0005
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 11:55:35 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=P3lm7VRZ;
-	spf=pass (imf10.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791633337;
-	b=kMgoHP8Gdvt4hOogubd4swWAFyiklxRDVuwT/kSMsWXmeywCXq6U9elY6+uEjGi2WSEAy4
-	p6mhAQvKP8y31PYhhywq8KypREb4KNEUmJrtdo/y4zbwkvV2aK8LVR7Z+sgWi2oaCt0x7W
-	nbm24pEVQ/YrViVvyA2JYqeTY4Yt2+E=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=P3lm7VRZ;
-	spf=pass (imf10.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791633337;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A65B6B0088
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:05:55 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E380A1C4247
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 13:05:54 +0000 (UTC)
+X-FDA: 85306739028.06.DC03B20
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 094C71A0004
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 13:05:52 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DoswexsZ;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf19.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791637553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X4UPkDBQVV7L4PDyWtNF9o8eWvpDhSzjJx3UHj11yEY=;
-	b=b+NWOcpJk2/wq4K117BESZUphMPzp0TZ/hpW9bONVSpghrjOe9B3P1yhX2temm3Cbegj05
-	vYC+zKzrsv7jnapKX0f8pFmCW0rihrHfV7OCDIfRh0Sx4g0D3UGvUzp5wqcW8haqlUORTX
-	RX5zlY9IGilJEfaAFmVUPVq7cU0anm4=
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc52c1b8286so239920a12.1
-        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 04:55:35 -0700 (PDT)
+	bh=dUgv8qU2MJmYgliXxK0C5ED2Eb+oFUrhcbBUDF3fTq8=;
+	b=IO3+Jeh2YS+t+s60AcuwHJ1FYADfKt19tkLIe44+hXB4cD/R2dZYG0Kxg7xjn7YTSATDw6
+	1dLMaRq2a/TmG7MY0egj7kweXpc8cHdCX0DgYCQCCxSyGqhUIzvNZJBrJnUJSD++53K2J2
+	hOdh4l5YpNeSzIUsWe5JNyyuTEKkFMs=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DoswexsZ;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf19.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791637553;
+	b=zk2TiYc6sOJqDaKbb8J6RAK9T5zU65Z0eg//nWPYBIBmHdQVw3Gyu1UImBRqE0OsxOFjNR
+	wvl0c0YLu5/yneVXYTk6V/b4kMm0fVOpfBxna7LQV6q3jV8tkxETs3E/n2u6TgzutBpJxv
+	QuHZZSsLuHxk0RlYdsumRBVUy0KpJEY=
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-8ab8d96d02aso3878607b3.1
+        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 06:05:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791637552; cv=none;
+        d=google.com; s=arc-20260327;
+        b=buftrzkTNifFlfS8e1Xq/xaUuGBF4AMTFjmcDRID3v+glCHYdHVzBFFCuuRoRtUAG9
+         k3rqfbc8DJ86xUE/JQMjrZLoSqJcoSUBevcIcp9pJoTado7J9/hN1yph2kXhEolN9Pp5
+         9xk1ON3wDrXC4dzAGgo1tQLj6NFUf8VE134NPs0g39lyXE6FFwyhCYxSz4ysSXZANhsN
+         6MKp1YyiwHm1PuLSJH3G6lZj32oRA60zmYskvA8wK1LixqX/7TQ+MlZRAaHqFfwNwoxM
+         ecpcTtPXsMAfSx6Mfs/k73XNG8YjAYEAF2yrQOpSqFFVFLuvMWHax7gqcjT9tMwjB9hK
+         2gpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dUgv8qU2MJmYgliXxK0C5ED2Eb+oFUrhcbBUDF3fTq8=;
+        fh=SqHzPS6i4EZzku6oG9nqnwst3rKQEK7PKCfqbe74qw8=;
+        b=CenV0CprGd2Rnj8B/eld5hbwpLTS6wRZw5dvIU+nbg2HkiSY2NZ0Gl2W0kKX6k9zSl
+         BKbqI+kRFHzPvWwEQq+mTwTqi2nrVw8IBVkBAuc0n8cl7n1ZcJRO77NgOexEM30qZYR5
+         b8DSLz0vd3lPF1s7x37fL7FkXNLhqxZGFebExw97FhSkzvYAoD/oW0J4N1ET7DHDzAXq
+         OsqpeXEiPByJ1CiDkBjdXOnHqWmDNKxunaZRVJz4JIVvNgRpVQPBRAEWBR7FFmxOzXmd
+         n1zey8nkzwHNJP3Pja/g/A081mEG1GuK1wNqyWddeFPABNLN8YXJ1sj0xTfRKNgZ8nfh
+         TyVA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1791633335; x=1792238135; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=X4UPkDBQVV7L4PDyWtNF9o8eWvpDhSzjJx3UHj11yEY=;
-        b=P3lm7VRZbiLBtKX65hcCi/GKMylSgzYxVyIVPjXa8ofzIjyTtFWvXwBdX8m/nqSjuI
-         n0OUEWBRgyIl9myZWXs8Vv7Y/tj+YH0hk7Gfs7XmrJxwOzH9AP3JPzjg+ra7x1Nc4xQu
-         4pRzyy2MU8y0+4ozWiBR/Cixjbw7EDqPM936gI4VY0x4efOT/Z9wJ3KoeCtVzyONQHGb
-         +av8SwjbHrJ0HcRQ6fysTL10R6vperhF30aq17FfOtokPSHRd0s4k0fHZQ/yjw2UJgsa
-         FGAfjeavWtI8F2mur7kpIAtBfSbSa8lFaFPSKWDwaxgKcPeSI5+hJQaYHgktrfam6LJt
-         RPDA==
+        d=gmail.com; s=20251104; t=1791637552; x=1792242352; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dUgv8qU2MJmYgliXxK0C5ED2Eb+oFUrhcbBUDF3fTq8=;
+        b=DoswexsZ97J2iWFtX/IljI6LrWgVFRqdPXMW9f6qfCWzOAbh2iuKD+BI0bqEshkIMo
+         o57ZGdzNQ8gF5foKNuO9z5IQt3lX9gFJYMUN0MebS3l4EWxpEPCvp+6ckoWZ+u5tk/XA
+         ekBKtFiVrUjq6i2JQ8Y9UACNbFroVY7GpRoaJHR/aOQzeQcLXyLVzqvxQGwS9d45xy1g
+         +csvwhwFiKGjyrzQXdCHSOIa8u9N+t2mp/2krTjyyEdn372Lo0NQ8RQ3gF0szuRjpPXc
+         HfF7XsAWWDS8OFBpOvxXyLBjr1S35hfgLB9c7YWoz7HwfbmaCW20bByObbablPUzgAvD
+         PQAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791633335; x=1792238135;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=X4UPkDBQVV7L4PDyWtNF9o8eWvpDhSzjJx3UHj11yEY=;
-        b=zHQTHgo8DFaAH3EqqnLqnd3uIvZKfrxXJOxr8c9gqcIluSPeluJqbrLdi/zX4j67pA
-         0xufk8rtEtChDzHjkeNPkQCowFQSfJnzpe+q7nXwEkDCFClsztGBdR2d+milGasaGOjb
-         3tHsegK0IeSdS9NsSdLT6FZkvQlSO52tsjf92YejO8mTFia7W7uuCwUnkps0GNVeXdBq
-         f2bSFYlmU5F0qTc9aCxvCQDccBZUyzDowvYA8MsQ3w8FJ1rOG+dnzRr9uUZ2RH2Icju3
-         Eg1BtTTPuGt3tn+vUdiR0mjFYEciwMp4a5LFfJglx0kl6rgV8FR4qshfV9syXfvVeV/s
-         Of+w==
-X-Forwarded-Encrypted: i=1; AKwUvBy6zMtEMKmm2Z1/xzuk6qtmmKlK6V06gG9aG7G8wProJNMu8aA0bNrzhX5PWzCAQcLqvAsUv+hPZg==@kvack.org
-X-Gm-Message-State: AFq9FYKLLaTmbD4WPpphOJHATet7ejqAxibtJ/6rEJpXt92jv0geSw/H
-	fH+I2ItH13oKNOLaHnC1gCb+4kqFjEtiPAOJe1EDRGJxLFFdkEsoofJvE69Q20eB/cY=
-X-Gm-Gg: AYBFou2ddr3e55UTtZo/la2+6zmeBMJoHafat3DEazFBkywz2gpAjtw01J0won0CMw3
-	yTXSQTeLsaqlRuXOSdBLC5VwjGdv5etq7XW4MUmiWqwM34MGRjnbcaPIYZVFq+TG/6xVApyo/LG
-	031CzdfX5H5vAa5Hu8BFrxNd8LUHEVqAxD1Bj+qhdwKwfVWgEPQEOYCMyhrEOURVh5EYwg77w8V
-	k7Lo5YBtgFYorBW90wppnVnx9g5j16uq3Xb5iWHqcYN42VGm9hDw43T9MzsE5UfsPArMH/v+/Rn
-	qZq7OQVu9BJjJsjaP7kdmAPrtNjKEqQ5mwk0OLKVK/ZdYZpaNCuVzOGvft1kANWps5aPq6b6XO+
-	rIXqnm1X/TW9Az60n4d3eN66ko/+CNCMLZnnM0jqJROlHHuX9t0UVBprfns25ME71PXuKIBCAYb
-	fl+szK9nGx+JYDMo/Y9ocuL+mSTmDfvG7dgq5xmhTGeECCjVYWFx9l19w8vGGj7FU+rC4W3lan4
-	tLg2+rxjEnPh358/CKa
-X-Received: by 2002:a17:90b:2d06:b0:3a7:cffb:8b8c with SMTP id 98e67ed59e1d1-3ab3ad0e976mr2419519a91.43.1791633334534;
-        Sat, 10 Oct 2026 04:55:34 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.103])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab36ed040dsm9813293a91.6.2026.10.10.04.55.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 04:55:33 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Lance Yang <lance.yang@linux.dev>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	muchun.song@linux.dev
-Subject: [PATCH] fixup! mm/mm_init: add zone mismatch warning during page init
-Date: Sat, 10 Oct 2026 19:55:23 +0800
-Message-ID: <20261010115523.4005071-1-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261010075755.83339-7-songmuchun@bytedance.com>
-References: <20261010075755.83339-7-songmuchun@bytedance.com>
+        d=1e100.net; s=20260707; t=1791637552; x=1792242352;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dUgv8qU2MJmYgliXxK0C5ED2Eb+oFUrhcbBUDF3fTq8=;
+        b=ll9qI1ti6JyaELkD6dnxK7QlBum8Z6WalHD3I1VHYgZEJsU9CdclWT2oWK/9BtDFEh
+         lRRMw8fR3+Esyn1Tw8x6G/7HmTK3EEu3RwQjCW1lpk0+vBDuwx1Zt7qmuHOzyuRd4FJ7
+         3xivfdsfnruzsl0IhdOgqINfpcAOADZoceF2V04mfa6ZCHtQK2YusLROrgewunDuvMTz
+         jwcNJU4LrDkp0fj6TSTX10Ij0ztXjIrUvQOgv0vaKpq/cRCXn/CBJU7HiuCiuxsTHZLt
+         9dyjlDe6LeyYG3Z43tWKjHpHN0VwkV0SwrtUBSvPieRVeVCKhYpm2DJhSLlKVzzP045H
+         G+gQ==
+X-Forwarded-Encrypted: i=1; AKwUvByKb7JlI4vd/sD8YcFwi/AydWBDxGjeB6+izQF/XORw0T9klx/Zsi3Wo9cZLfkEx0HyCM7XwJ26UQ==@kvack.org
+X-Gm-Message-State: AFq9FYKwp/SiWnq222yQVWHO3btXnpNbzdZQ+pmE12HiSBGUeBK9YYmd
+	8LHyhLfRLGlfG4r3os/tIlKTESh1QbuoF7CyR3T2xZi0kHYPH8nzNGlgDXVqfTDYX/SQTucEBgF
+	2zxoEi1Z8FjOYlUdZGkEhyXaUCx3L9oc=
+X-Gm-Gg: AYBFou1XhjxFGWLn/e/99IjfNniOtUZLHWbTTPIYnzfh+KmlE2iRAcst/7O/oduMjMk
+	0kwGlY2QlBaR9dB1evhXaiKTyp0ZAcoo5UxlbqHzNUWYdEgJU1rryqlaSP02TE5PPLfQ2gjw1Ie
+	GvBPErGHo/u2ymRlqtWggarx9luhCuwuUyuh8xCamU3PmOkAHkMYRSAz0xrZSys4XH8D3uMMPb+
+	v6eUdN4FZtRmb+dx2UGSpP2qqjQ1CpbX9h2EJzSUWWME3PUngq7yYK3M0iRU/3i0ZpW8C9VSdrl
+	R1+sRorxpQEC8s+kE1nv53IxhJTf769zI2PmXXQQIz5Xhhu9+SUpslw4
+X-Received: by 2002:a05:690c:85:b0:882:31:3af9 with SMTP id
+ 00721157ae682-8b07ebe12aamr14950917b3.9.1791637552107; Sat, 10 Oct 2026
+ 06:05:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 05290C0005
+References: <6ac99eb9.6b935c14.1905ce.7c50SMTPIN_ADDED_MISSING@mx.google.com>
+In-Reply-To: <6ac99eb9.6b935c14.1905ce.7c50SMTPIN_ADDED_MISSING@mx.google.com>
+From: Luca Boccassi <luca.boccassi@gmail.com>
+Date: Sat, 10 Oct 2026 15:05:40 +0200
+X-Gm-Features: AclHuK_ZZxWO5VOmv-dijVsfp5Dirw-cleU_Ss5a_ua-hVf2p2vv9lQol9MPm7Y
+Message-ID: <CAMw=ZnTTUxO2ZCobEDTQUY7OZxmyJUQxg4DkhC9gTWXaDaK1dQ@mail.gmail.com>
+Subject: Re: Question about obtaining LUO session FD for non-systemd-managed service
+To: Chenghao Duan <duanchenghao@kylinos.cn>
+Cc: jianghaoran@kylinos.cn, avagin@openvz.org, linux-mm@kvack.org, 
+	kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	systemd-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 094C71A0004
 X-Rspam-User: 
-X-Stat-Signature: atuf8aume35m1t7jqbrn886idmwp3ay6
-X-HE-Tag: 1791633335-575285
-X-HE-Meta: U2FsdGVkX194W5JCunR6lMRhYuaa+5qIVItSbjJS3wr36dvpVP5lJwYC+nVGAX6h+TlV8ZXTnFj6c1bZBoeiGuigU+Fns+ZgXpv/L+JzAyL5WdeIPw9048Os5fZH3PJ+NCy7Icz/3X2pLLVPQLvJTu2OQvv3JtysINdoAkZFQCXAyhXeLgxokN3OGCtJdMMyBf7jyZDza0YhT1a8iWJRQXXq3I03sPQMCQVTOc0SdeimtFTNPbFL83U8JBz2aBNlY+0rYvZvdVONgtrWNJLQ3KxWLx2UbSwcK7Rv+bkqXtm5EtWbky1jPt81ii/H9ADVCY060d7MVMsI78Pxmm1fuzObfxtQ7m7ZGJJK+3g+i4ot44RpgvJ4qx8Hgdkxih2a9RIq15o8omcOtwVBJ8fCPLpXykim3SVk7xzumd4HwSXgE8UC3eLGySLzlhgvFPdFxBJ1iRHA8+Vl2dvQhhLml3/hzt1LkRio7YUUPRhAE+LUeanhDn80JwJ8zWhLQZdzvyhj19ugMwkBrW41lgz9X/ZSDbOWU9IEc8Con5bOqdcPcwYlpvFZmK0now4ZdaoOZI3G9d3m2SzYDkPTnJkjQuScg0IQqzETahlU5N85gKhn07W/j3tiBbbXahmAC3TEuOY/23r5fn++KTV107xLWBNEe+97CqUeXEAO5djxvP36Ok7CrTFozNBAjEF/Z6c8nNjGYsa1/UtcyEo1mcULIksj073elXY3S6yksgbL6GdEiFQn9dFIHLOX+ozN+xitq3KzDCVDw5+zVBF0O9i8J+1h0FdXVXvmYTd2I9lfSBqQFZ8dGAlyo/jWteSyXlvqFFjqH6nalTdg+iLlanvUokuE4Muk+fKypMrJgM2SJvkXAAFxN4c+jsVCIOg0TZk3DxX5U+R5rOwX0x1bZvgVt4TlcUHY1/EGYrwo44g7FkNhyde/obaRESomfUuub94MfGmux3FOQ+Kyuq/rMWP
- nDclvKJ3
- j/JV17FVTqsFDN18T905T7lidjvOuhzKRbwwRgQPnyqcg5NULKjG5WYZNLewAYMzxtt5OpY3UN1qurHSriqWN4t+0ZLbXJcHsd/ZTkX0Z/0yLj39Z7K1Tvro7uvFhAlcO1jaQeScS9oq8DrzZIItsKAjXo8YXOYF+MdPGESRTqdlMqFkekZsAjRmZ+uQd1tQDFCMvX1pxdKqrUtbEdQog+GbYUsUGamD9aUwH+MxG/eVMoKLfWfpDH4qW9sze8hYwyuJ/X1VFS0vqCr0u5Qdojn9UIA9hyg9WhuCOMQU6Xg/Qb41Xl/LlYUfUwabTycr/esLQqK2DRN7SZakJ72h94mc1nXdt2rbF/tvTWaivquGijQ6mFQZapRGHhfsfCxdMI6cMoJIWQ9kMotH/q0izM2//AGAeUBkdtIsojLBmYDbCEQBeqZxTtQo/69aLbAA/Fnwwv+CGhAKTi9rSuayyoVodPfHQQrfcq8G4
+X-Stat-Signature: 9u6ynuhs95azxc4mt81ymiiw1qfmjmoo
+X-HE-Tag: 1791637552-372901
+X-HE-Meta: U2FsdGVkX1/F5yox7axLpihYNcNTftwt5JgnELsfeYdIWEn8Ua2MkjqprTN8kOp9EEOjEmnQbDhW2kDhU0tGx2qS00ZBv7xF7AMQF/XdguiKIaK8edek2J7cfkFkQSEPRxryQnEFGg9hT4tLuBA4JIfKlwJFG7OQ9MtOXlrVdm3mAr/jOa0gzRrchvtfU1P4xHPCTKgzwP+FMSbUoJnhqD+fUkG7uAuu3D5BDPy8QtySY3oKmtsFPJd+neOFgG831J6B6EEDIZpQYQv5SpneCC6ndhkuEV8hbq+q0m5EQ3Zzrtes4Bo9NlgUgujx7ddlQ0Scnaw3h3g83YBk4tFM0Ce0xMo7zxIylptLupqzrVbQKUO7LR/28AU48hwjV6LPRv8end2lxxdjQvkIi10hQyr+mlqpcBSTC6qwqzN1VFosTAtatgrtduxypmF1LmFPsp1IVsvoMeqy8Kc7SO2nXsM+d6/Eth/G2BgDB/KvtWE2yYyuICzyxscdv1W/L3WzMDPLDjtaHdXO+vy2YFb9aSLpUVn8rk4iI97Kh1vvDkUt9dZMW4nMOJH/8vSFgVNyFEm28p4wKM02Hqb012hjIn1g9R14kR2+EagtcnmydfYddTD5JB69GzYcIWpV3HjmKYIGk9/BroouTcU8RqVitchhg7tQnoJFCMXYH41BMYPnb29k5p4Cdb0RM/lxIJ5JLjaDh+Ese7NBPElpkYlyNSCTj2SLIo/C1vuJhtXsnsGJ/FzMx+EH8WcSO1HHuMF7u4GSG7CT9zWHgl6yXgtFyss7ltl1FHudSo+dEotba3v9vQGOPPfGKx3sZTxuUrGVrR69PJe17+JBap1+F+IaOKjtcvRg8HPu6wcVY7D1ZptHlhAKXzGYWDDB1Ps6h2vK97umaGtbfwPuqKsbL0raWyqsu5JtwVlznigGnKAfEXnt91aTDzqB4pdSbGFgs/iXbcm4kXRbTBrCMzGiQD9
+ 86Jz77IG
+ olSbrtz+Vf+AsrB4Q6WgIA65PUhcGCFcFWsRCVBFufoTklcFs5uYAaubajesysx2KMoIi3Qqr5QGkmG+XN+eFTwt1giLTiXL8zxkzOYdhnZLz2bJmPuEQjxN8DR1LF/I0Abw34hbryaRGd+d6uvJ8tKF/4WjRuk7o8dwP01Wt8isaCBiZ4fbcAOPktunql9jff3AWioaLystvyznKLpyChvI3c5DSky1Hn6GSwYXL/cxhTzArVkEztGfE8169SaQup0QT+jfQQzB+TqMt+e6Bn6PACZgR3kGaBtOJAycYfzDPrdGABLddHcU21x5/OHoX6mNQeVMCrd3/CUZiJCQvUErDDRYj3653R8V/fakrEY3iBuNpnIS8R4ZRYgmZDk16hYLxXf2eYlGNRW9WxHM0pCGIYcqUplVJokDlvgG61MqATKQEfa0KV7BqnuTVphn95Ck/92hAGIurSLE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,29 +140,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Document the ordering of shared and retained struct page initialization.
+On Sat, 10 Oct 2026 at 04:11, Chenghao Duan <duanchenghao@kylinos.cn> wrote=
+:
+>
+> Hi Luca,
+>
+> I watched your excellent presentation from the LPC conference in Prague.
+>
+> I have a question I=E2=80=99d like to consult with you.
+>
+> I am currently working on the `memfd_luo` feature in CRIU. My goal is to
+> leverage the LUO capability to store checkpoint images inside memfds.
+> After a kexec reboot, the image data will be retrieved directly from
+> memory instead of from disk.
+>
+> Here is my pull request on the CRIU GitHub repository:
+> https://github.com/checkpoint-restore/criu/pull/3152
+>
+> In the PR discussion, avagin suggested using systemd as the CRIU daemon
+> to centrally manage LUO sessions and access to `/dev/liveupdate`. I have
+> watched your talk and read parts of the systemd source code.
+>
+> From my understanding, systemd currently provides a unit=E2=80=91based so=
+lution
+> where child processes can inherit LUO session file descriptors. However,
+> this approach requires the target service to run as a child of a systemd
+> unit. As far as I know, CRIU does not run as a systemd=E2=80=91managed se=
+rvice.
+>
+> So my question is: for services such as CRIU that are **not systemd=E2=80=
+=91managed
+> child services**, how can they obtain LUO=E2=80=91session=E2=80=91related=
+ file descriptors
+> managed by systemd?
+>
+> Thank you very much for reading this email. My knowledge of systemd is st=
+ill
+> limited, so please feel free to correct me if I have misunderstood anythi=
+ng.
+>
+> Thanks & best regards,
+> Chenghao Duan <duanchenghao@kylinos.cn>
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- mm/mm_init.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Hi,
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 6deae33db882..4c17a892924d 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -618,6 +618,10 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
- 	if (!is_highmem_idx(zone))
- 		set_page_address(page, __va(pfn << PAGE_SHIFT));
- #endif
-+	/*
-+	 * Shared tail struct pages are initialized during vmemmap population,
-+	 * before retained struct pages reach here.
-+	 */
- 	vmemmap_optimization_verify_zone(page);
- }
- 
--- 
-2.54.0
-
+At some point up in the stack, everything runs as a systemd unit, so
+it's only a question of figuring out in your setup how to pass the
+FD(s) up and down the stack.
 
