@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BF96CA9EC1
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 20:51:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F26CA9EC5
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 21:10:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0AB06B0088; Sat, 10 Oct 2026 16:51:21 -0400 (EDT)
+	id DF1AF6B0088; Sat, 10 Oct 2026 17:10:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBAF96B008A; Sat, 10 Oct 2026 16:51:21 -0400 (EDT)
+	id DA1F66B008A; Sat, 10 Oct 2026 17:10:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD0D26B008C; Sat, 10 Oct 2026 16:51:21 -0400 (EDT)
+	id CB8766B008C; Sat, 10 Oct 2026 17:10:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 969346B0088
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 16:51:21 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1FDB41C3DBC
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 20:51:21 +0000 (UTC)
-X-FDA: 85307911962.26.FB7AF34
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4F7BC180002
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 20:51:19 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UCHDDdub;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id AA00F6B0088
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 17:10:11 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 38EFA16060D
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 21:10:11 +0000 (UTC)
+X-FDA: 85307959422.30.DB7D5B5
+Received: from mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 206A040003
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 21:10:08 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nZYB7QHr;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791665479;
-	b=meZAT/6TKvWMjNWEoFinDRc5kXgLvaunyLxiyBItXnmaoW9GRvSlxDBudbZOFyBwbQVlsL
-	lkqR/zZhiZqWZO73yV7CWPRpGJ+JlV2UkM2PRNI0yDXCgkAJev1ZnIA3JJsGubndb19R1g
-	C+PZFXEu1SR+0+lK6DZdPypqSV+L0MU=
+	t=1791666609;
+	b=CUowuTw16ant3lZMFTSW0wtnb9WnPghTAMIBgxKWUHvQEjLzeK6PngOrBP9GFkxgZbxKJu
+	TH6LA9KF8SfTKMngjI/9MhJebbz7p8ynMUy4Q3lZQbf0VyT+7FCwlpT7w+Q5Z4nF42A3P9
+	4SLilJryZYKf1kvPDxZNxNhyxzX1j2o=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UCHDDdub;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nZYB7QHr;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791665479;
+	s=arc-20220608; t=1791666609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NUFEw/UvQszY8V/MSvsl3qes7TlA12pcLfGdknNAePo=;
-	b=6usRgnARIPjDZJEyujTqOoWjWNmUndb6JVCuTBSf6zcKrUTqEc9q3dgf/jVauv0adSlpy0
-	IAzsVNFnWb8JvslvDKeOxVPHoCVQny7ocyfRw/Q7r5nCJwzoR7/TEX00VKHHqGYE05Yvou
-	SLXDUCQ6xVaw74V72mq9R2AV5Qqd058=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 786D04173B;
-	Sat, 10 Oct 2026 20:51:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093061F000FF;
-	Sat, 10 Oct 2026 20:51:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1791665477;
-	bh=NUFEw/UvQszY8V/MSvsl3qes7TlA12pcLfGdknNAePo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UCHDDduboxO+fyA8mS2uiVB9eEogTIMRs9IW5Aq2BjUCxHSf6BtyxLzks7JuwqszS
-	 GOgQwxtPFF+h+r/MTxGa0wiI2oR3R7t5v5nUgaEm7MLdpVfD5WoSqTwH/WNVcdNABp
-	 vk7eCigaFDA7GdnNLfwrzHUqfCR/XawWOgHZ/YnM=
-Date: Sat, 10 Oct 2026 13:51:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: albin_yang@163.com, liam@infradead.org, ljs@kernel.org,
- david@kernel.org, vbabka@kernel.org, jannh@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, albinwyang@tencent.com
-Subject: Re: [PATCH] mm/madvise: add cond_resched() in THP branch of
- madvise_cold_or_pageout_pte_range()
-Message-Id: <20261010135116.7d2a4f3b1a25e54fe4617fb6@linux-foundation.org>
-In-Reply-To: <aspKmWIrOzNjiP-t@gourry-fedora-PF4VCD3F>
-References: <20261010024042.4070048-1-albin_yang@163.com>
-	<aspKmWIrOzNjiP-t@gourry-fedora-PF4VCD3F>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4F7BC180002
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Q3QDuXbgPrLO+XvE43F6WGZoWbstiwD3AbZeIaG3CZ8=;
+	b=PzjdLMRvu5g5XFpt2i1rWYr/Wc0jFnriLEupOQiueRV7ODptWS1lr/BDj/eI66xyX/v8Bt
+	2SEG5cvnceTPJwKJ7rDy/hLCJBnxk93KTBx0+6PpR1KRlgl0KQd7deeFN3VBCY6cJyvR5w
+	DcJmOmbNjhOnChakG9qlb5utdzEOK3Q=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=R6hukEq+j5VBimksOBhczcPosF9ZrdYYxIc4MT00GpA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791666607; v=1; x=1792271407;
+ b=nZYB7QHrTFjY9naZCt4x788AaOV4ZYrKtZXUVJmqXtLQCExPfsVUFTveIVQNg5mg2cnGfZIQ
+ KouCV64llHWXdSt3oxBJU+sBEHKWwEWb7V0qZQFuNDWDkC4PL9gBRogZj+A67N9frD4km2iyvXH
+ R/sE2NdB2ruvkOdvRS9mhIh4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id d8c3c3c2c6b85a0b;
+	Sat, 10 Oct 2026 21:10:06 +0000
+X-Mizu-Trace-ID: d8c3c3c2c6b85a0b
+X-Migadu-Flow: FLOW_OUT
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
+	Meta kernel team <kernel-team@meta.com>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH for-7.5 0/5] memcg: clean up memory.high enforcement
+Date: Sat, 10 Oct 2026 14:09:52 -0700
+Message-ID: <20261010210957.1350874-1-shakeel.butt@linux.dev>
+X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7cwiiex7b3uiun1qxefarmwa37634b44
+X-Rspamd-Queue-Id: 206A040003
 X-Rspam-User: 
-X-Stat-Signature: p3ehutoyu9jdps9fp34txs6t3w5p57az
-X-HE-Tag: 1791665479-464820
-X-HE-Meta: U2FsdGVkX1+rcggGjEDrVW/R4E26FeACsDxdgjvqrYG5HoYOFcieryVxAX9NCKVfNS+ctQlHu/+x69dl8IvribAUN9G2wNs5eobUYDT5Rzn48IUuWLSQW0a9u9Y3aesBknsky9JaPLHp5b8GEkh0CJxRRjj3dyjpMFSH/Wi92i3uYCWPcZLhHcuNz/b6ALIR0SYYkzpCm26c3JCaq8+jo01nccqnTcqq8UzraTJN1zVoZPgxvFIohJRvsKs2KHtQfWQz72JW/n44H7rElPBxrKOd7ESTbaaDmX5zmEhSMzFdg7++F3yJiR6KXAI7KnthaDTl/K2sBEzDrygzTVMm1NP4p5jIpl0431dUtd10PIbjah2NURJ6qUXZFoNwycFFlACFwpM73Mex0/Gwfkp5rR++h116zFA0qIXcTMLXUEG6Lgmr6Hh6bMSb5PQLLk+EAYP8ErbTvUMd5uecKFiPX8q+BLNjjWui4GRFnIVaLF7/CJbfaUCRkqJPRDnxojPu7XFdSKL0fjaTahJIUl5M0FvjAYiLEQEYi2DnEhmlfStueTxg4VtM6hH1amKpXJwJftWpyZTdh9bpLDM90fz54ZRr/3rYehpwgcnAz4Ta3e9gvd30nYyMYwFRardlaxoAajtXfSOXnpg4jvH4OMMnqZEzidsqbqw97mWlfj0iOv2WivsV0uvPjhX0Bwdtq9kynUu0+CnYtBlpZ5q6fFDD5Xw6fNOH1FGWVgF5UqV63kekm7g4XHUcdm7VKS9cbb16/5jWK1RGSEwSmYA08tNV54oSZMWNz7K8XnbnzEpW+nLsvpfQrOoYtLsKL/usrICahsp6WZF33EVsqwqLW7eqpR/aDiIOj6e/iNDRoX/2I96ZqTBsdoKfYb2IVgXBP3uFmsgaQd6gBBqC4et1e9myciDjY4DCvaTipuVGRxjK3coY/1JP+BZOaSQOwl2NHJx4x7xbMqHwdPUszYaBUZh
- aexkm0S6
- 5tgdjGYDLoGgTBZLaguKVdELI6z5TTu7JLC92o9DO8rzaW3N3l3QUP4XT8SjTT//OWN9JfKDg90CjpwKqmL85B1lafRazT8lIiO005bHQ8it91dU2Gb8rdOai+UKRfaWKUglvX+I7m/+dCNTyRGxrRCHrjqB7bUfhRNWCr6jzmHvzLSOhFDsGKUueQYa3AY4DoBmAVQOnoacp/EfpvOe4U5iuv4nkHEO5mJ4IskPgVmJChwsfnkgDXWffrE8kWLj11jA34cgR6dYqMk22X5jm2yLklFSqUca0qFyqVWWjHdvdHkfLTedZ5JRxS3ipupDF0uvR6NtNLGs1lPEH/rwzOSW++v8JVXWLvGWKO+kHn6f4JE/pTlAQDYUyAu1jaNuLBMpnhN4XGclWV1Sytr+L8qs4gQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791666608-799264
+X-HE-Meta: U2FsdGVkX19ycJuXRs0FDy+2JfJ1w6Uom7TodvPapHZIPYh2s2AXrILMkw+V79VUTg9rTCk0nFPKtu2DVmBDRAUL7aBtnkGa7LWEGptqK67Ky6UPoXmRRsrfSU30470fyYzFSkxTvqRh+FeRo1Lnqy4AxuXoFndFI11wLtb4LNH1yOoJ/ohzfZj8HkN11Jcp6ZsqVrW7sdad0rglqmuISD0d2ace5syj5oP6AtJt6pXpl3rWWlO0DwHZP9FzXgpGwte0Ennmj1qN1m71nBMFyUEQmWd0z8doEC//dEsxFdgaHLkCPGDNeo9tbHEx/N5Azw822r1gJad9256vwCAVzbpC0aI/uYIw8e3tnCtYhtSxKb1aQS7WxQLiElMO0262s7lTZnWJeG0Hr2RgfG6ftirL6JzhiZf8KWhRqdRztcuu5rXRzsBlWpY4LUmhPDZQEZ+6zaAbz68gjwhFSXUHoeWwuSfMxAr6I3ZNiK4WURBo88h0EVqLDkAoj8QgpjOgg50FIcquntn6oyl3RjRNlO/o5YyKbVPNXJBX8KNVYZTmlwcOUDyx0+AbHWMaP1q1Hf+6O4hI4APHXaSAVPJMx4ftis5t7EJe45SDfcAQ5aDaZZaO+/CzXYrRft0DT33x0hzcPWmbsW0JJnc7lt/Q0Zdmg5onPb3wkvaVcd62Y9vG2h7lglmXEK1zO173le3x73bZ0jb1hntnXb5Vp8PHCBKGw5952eFUq58yL3x4OuW1Ih159A9/gW5uyobLX+8eBDI71W1lkRdBvFmxSXpfK3lbEgTaA1gI6G8ZCOujbaSYjenwvEGInN5pbv76P1P9/M3wCZmqjYTV1pbdCNYWV9HECLoC0hAtKpwd13ixvTrSdIygmOSAo2TSCSXZgYglYrHDYiiGMW/Zi/M3JbFFZACAbho0DQxNFmGSJLcKUU57qMIWBxGpeuRevi5DwC7rw3sFfae/s7AeR8RMl47
+ L9h9miBM
+ M8bYES9KzdyVFGH3miOFf571J4IeQ0gabh1qUSoXI++CqCpKMekwbS1aiWofgSRBeZbPhgrQklZRD4Krc4OeBU2s7+XFg6A32Rbp9TzOa156AeVrvZb7uWZ6OiUFmZDW6Cd8zDBYMjR9lS+u1yCMcUxnIDLQMqpqaTk01u7+6/AbzPFNz/6nMyPNj4CPh75stz6GlkUjKxQIdG5+OmGTod5GhXebvlqgW+nK1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,40 +93,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 10 Oct 2026 10:26:33 -0400 Gregory Price <gourry@gourry.net> wrote:
+This series cleans up memory.high enforcement and uses a worker for
+kernel threads and remote charges.
 
-> > Signed-off-by: Wei Yang <albinwyang@tencent.com>
-> > ---
-> >  mm/madvise.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/mm/madvise.c b/mm/madvise.c
-> > index eeee82cf2b3f..0755e6d99757 100644
-> > --- a/mm/madvise.c
-> > +++ b/mm/madvise.c
-> > @@ -450,6 +450,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
-> >  		spin_unlock(ptl);
-> >  		if (pageout)
-> >  			reclaim_pages(&folio_list);
-> > +		cond_resched();
-> >  		return 0;
-> >  	}
-> > 
-> 
-> This same improvement came naturally from refactoring the entire
-> function into a proper pagewalk structure:
-> 
-> https://lore.kernel.org/linux-mm/20260922235830.2350770-10-gourry@gourry.net/
+Kernel threads never return to userspace to run deferred reclaim.
+Reclaiming and sleeping during a charge can also delay work they do for
+other tasks.
 
-I'm thinking
+Remote charges can go to a different cgroup from the caller's mm, for
+example through filesystem notifications or faults in another process's
+memory. The high handler uses current->mm, so it can check the caller's
+limits instead of the limits of the charged cgroup.
 
-Fixes: 9c276cc65a58 ("mm: introduce MADV_COLD")
+Use high_work to reclaim from the charged hierarchy in these cases.
+mm_match_cgroup() identifies charges outside the current mm's cgroup
+and its ancestors. Local user charges keep their current handling.
 
-Sep 25 2019.  So 5.x and 6.x kernels want this.  Current kernels
-actually don't need this because PREEMPT_NONE has virtually
-disappeared.  But 99%(?) of machines run 5.x and 6.x.
+Skip queuing work from PF_MEMALLOC tasks. Reclaim can charge memory
+itself, for example when zswap stores a page, and high_work must not
+keep queuing itself from its own reclaim.
 
-I'll go with Wei's simple one-liner for backportability & safety. 
-Let's look at broader changes in future -rc cycles.
+This is best effort. A fast allocator can keep usage well above
+memory.high. The worker paths also skip memory.swap.high throttling
+and its high-event reporting. The memory.max and memory.swap.max checks
+stay the same.
 
+The first patch moves enforcement into memcg_enforce_high(). The next
+two add kernel thread and remote charge handling. The fourth adds the
+reclaim guard. The last simplifies the scan and comments. The first
+and last patches have no intended behavior change.
+
+Based on next-20261009. Tested in an x86-64 VM with loop writes, threaded
+NAPI, remote faults, notifications, and both vhost worker modes. The
+remote tests kept same-cgroup and ancestor charges on the local path.
+An incompressible zswap test queued high_work from its own reclaim 163
+times without the guard.
+
+Shakeel Butt (5):
+  memcg: move memory.high enforcement out of try_charge_memcg()
+  memcg: use high_work for kernel threads
+  memcg: use high_work for remote charges
+  memcg: avoid queuing high_work from reclaim
+  memcg: simplify high limit handling after a charge
+
+ mm/memcontrol.c | 136 +++++++++++++++++++++++++++---------------------
+ 1 file changed, 77 insertions(+), 59 deletions(-)
+
+
+base-commit: becb95e45ef0dda9ffb35156d909d3da7a2789c3
+-- 
+2.53.0-Meta
 
