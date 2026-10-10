@@ -4,114 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F6A3CA6017
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 08:14:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6DA2CA9EBE
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 08:19:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70C9A6B0098; Sat, 10 Oct 2026 04:14:41 -0400 (EDT)
+	id A22656B0088; Sat, 10 Oct 2026 04:19:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BCFB6B0099; Sat, 10 Oct 2026 04:14:41 -0400 (EDT)
+	id 9D30B6B008A; Sat, 10 Oct 2026 04:19:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AC136B009B; Sat, 10 Oct 2026 04:14:41 -0400 (EDT)
+	id 8E93F6B0092; Sat, 10 Oct 2026 04:19:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A1E66B0098
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 04:14:41 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DF08B40594
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:14:39 +0000 (UTC)
-X-FDA: 85306005078.07.7EBBAB8
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1CAD1C0006
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:14:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qoGIrpZc;
-	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 721DD6B0088
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 04:19:24 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6A8921C4202
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:19:23 +0000 (UTC)
+X-FDA: 85306017006.17.1AECCA7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8DC2E180002
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:19:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="WxEche/l";
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791620078;
+	s=arc-20220608; t=1791620361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HxKJtojMjQnrMJv4R+phcmF7V+2BSeG8Jcmd4MLnyE4=;
-	b=e72eXOSLPNtdu6zm1l0mWJb7z5cwYjOpZw7pDkzc2RV0Bs90Uxk17b2pWrkLP+hCyD8Iv8
-	F42dE1YJGmcYJGEGhsHLnNR0d66+A6mbGBvHDbYsCkImeRylKtoOt4AbXv5BpE4PaMhB8j
-	3dNEOUk1KKhLif/XQm79Xp/8koPyXhI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qoGIrpZc;
-	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=a9vcN5JkECAkVJNOQThJPXP1vaehPftc9ECVJHZpd08=;
+	b=dM16O8wM3xYHVTSNTwsMiNRtObxKgAQ9ZYjTfkgA9bouDdZijt9ZogGJtjPt8pEz37CSmj
+	vTEp1em2lbCZAK8xs1/aWu8lCRLaSA/62tXg1xtAWFZboOKhXgNqOCmMXla+91/+lQb6YY
+	wjQHOxb4PISIX1k3vmbSvbdxbEH+KyY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791620078;
-	b=cuGiPelXMOBu7L+a8jsip4c3bq2b686GQ+W6FrM9D4D0Qd2UAVlzPzMcGXERdThxI03+Zu
-	u2bKGZBSNCTgwEHj8MvEuiK0WTUtnkcdFjOk4WHWNw0kKw4h1Bl7nk1In/WSKfvVynh/Jh
-	dpgqz0ZONJQKsnvXKUgBmmaMK7+idPQ=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2e836252e1dso3450105ad.3
-        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 01:14:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791620077; x=1792224877; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HxKJtojMjQnrMJv4R+phcmF7V+2BSeG8Jcmd4MLnyE4=;
-        b=qoGIrpZcapzTW3oEnuzQxziXqfXIPibii5iRSSpCz1BJPpXvUnPdnKJTzFLo05MwsL
-         jjOBQ3OD4IgebMLl7CGUaPzjdZ4dSs/d8kP27DG3Ltt33zuBKnBa6jjHjOdl9elmaAhs
-         8YZmNLkyQJmyYPkfs1SKFC1InmxcNVRCOuwJB7/MfB6H9ZrRclqJLSoFktrlN/h5V06w
-         +kMSgEOlrmjyzM4CG3p8FDGGs8VK/8GTKLlRwlRYdynmqRta3tgiuydLSPv+VxB0cu/m
-         T35e2TCoXlZKtDzDiNLQy6VDNVZLzzgYrqaxxTROxHCImePP5CRGu3CCcsJ+sTOg7bBZ
-         c1Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791620077; x=1792224877;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HxKJtojMjQnrMJv4R+phcmF7V+2BSeG8Jcmd4MLnyE4=;
-        b=aAPHJCy+6vPLLeOXaloDEKcDmXdU+mpojjlsRYKYarfBJvR76SwMGdei5XK6Z6N2Ip
-         i2pWfTcTYu03h5EVDZKURzj+a5UfEWKqI0WQGHnTpjuU2pKBYtlXz7Q1FLOaV/fK7mnB
-         avJY0gpIFgD5ZdKq3HfZLe4sa4Cr7jb9IO4MFW/bT9NzfKLoUtoTHT71u/S6zCIKMV/c
-         m50F1x4lD8jVI38wQJzW1OdbpNDvxlOIdmv5N9IMtZEWJj2awAObDc3wsTqqUjCZ48MR
-         r25M3qoaXGHdzik5TmCRHqcYU9M4//jHkljZH4PYj6tlVKtDSQ5TxXMNgb1w+zV1BDcr
-         z57A==
-X-Forwarded-Encrypted: i=1; AKwUvBx+/34210aJzQlUZVXcf9ykvzoaakATl7SJZPeDAS+YTIeJ6JKZRIvY2ResKPRSdy3pXAIOeHSTbw==@kvack.org
-X-Gm-Message-State: AFq9FYIZaT+nSaP2cTe1Gf6B1N4wNbNW5kM6FscBeArtPX3Lz8mIziK1
-	A5loG5VvrmkK8tAZP8wBlPDqN6Nx2RMsq/taE4Hm5Ovyr+QrcMgSAcGZ
-X-Gm-Gg: AYBFou2UnffktqKftig9uRpD2CaGDBN05tO5Yd4icTlueK2aSKSR67CDJjI25b7gkps
-	GvmmLLSZoMKGCqw3tM/6824mkH+fko3u+bo82+MuurcLdTb3bb+FIhqrPA32tCgLEC2awMno8Vo
-	xlYRatvuWQLlppIZ7avaW6r+EDgcxxz0ROFWnAA1XOc1FNpUvM/YbjdsTsmBOJyghFF3rPR3GV7
-	tdVoJM9ueuEYJ8jTFw/N9vNhcxLOmWLSaFVmf8k5kDwsaCd66a9b4XQblksQ3kYe4fV0dZDwhTm
-	8PTrcffFPvlS0CULkrW80zZvoFVoGqVQDyApska1j0i41PdgCDW8FGuABHzAjPYCBt1mo3wEPrF
-	y4cRQPlitDsHArdhqAts3SHJhdB3iig0StRYpzh3gU9QBt5LoDBEz+YJo+Y5ZGOGif2gsDjFZmf
-	Ns+faIuKCepuF+Dm3d342MopONXrsV32Wej46t1rW25qyhfGhBJ9kxCDI0UNmz9Bz7z58Iv4Zoo
-	xg=
-X-Received: by 2002:a17:902:e54f:b0:2d9:216a:cdd3 with SMTP id d9443c01a7336-2e842aa7c60mr35565055ad.18.1791620076710;
-        Sat, 10 Oct 2026 01:14:36 -0700 (PDT)
-Received: from celestia ([2402:1980:896d:5b16:bd84:ae14:d4db:7870])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e841a0401esm21214395ad.4.2026.10.10.01.14.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 01:14:36 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Liew Rui Yan <aethernet65535@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC] mm/damon/damo: saving damon sysfs configuration
-Date: Sat, 10 Oct 2026 16:14:07 +0800
-Message-ID: <20261010081453.28212-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261009140041.11741-1-sj@kernel.org>
-References: <20261009140041.11741-1-sj@kernel.org>
+	t=1791620361;
+	b=xxHt7FgOp0OQQ3XIn/j1AbygZs+5zvnePAKSqfGe9oX0LjW5rXh479cf/7iJ897TKZfZsv
+	ChuzPCmIXvKsgoPvOTH2ZLHNypyhtGQ1eYB8nkXlWkoylZvVyDIoQS4kjCI6fjW0P+0Sb+
+	RWbhtzPpRpbixOSinKqPiFx+xtZ/1ww=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="WxEche/l";
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A939E602C3
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:19:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6376C1F0089A
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 08:19:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791620360;
+	bh=a9vcN5JkECAkVJNOQThJPXP1vaehPftc9ECVJHZpd08=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WxEche/lEUDz6jUn0sLV8ZxYgjaj2t6pVfrGwVvoHyyMDFmmtWPHu5jlWhHqFe77x
+	 nxdY8oYMKsELpCWQKI7IGdVd05gm49Ad/i0DGPeADyD7UHUk0gwyP157NL72WZNtAO
+	 foo6IEQrC4tbTf7NyC7bik3vRj1nF7uOnS5/KajONYgGqkrwacK7MYH4DN66NJ/Gdo
+	 cGhWyE81SA/S7Ic5k6DLukuPSHkGlO4wfAEfc9aqaUAlewkzDeyFOcEZvvQsz+JrON
+	 O558gQt7JUvjqM7iZQRpPLd2FdiX6zG5qx2uOxxWnPEsJtHa1p6b1xEAw71YQpZSYE
+	 a3zi5FTxTA6Kg==
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-917ad52d7b6so6928606d6.2
+        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 01:19:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxulMvv4/e2EZGRtLwhnZP74ERbc8NLFKHCwuuOvR8F/H3RLiIIqBbpfYnKvyB5ZdWLN39aqXSO1Q==@kvack.org
+X-Gm-Message-State: AFq9FYKrCr1jJ9jWWPeASxfj1BEKdpNouFVG1e4dMABdEjmbfRtSdBci
+	8t/DAVArABgji/1bbvZStB8ukfj/esazLlAFDxa5G70HQmPLylm9YlTjARkjgXZ28b1MorjcuRj
+	wxMGUqpvSWtczUoD1uLauFWozYHBvMws=
+X-Received: by 2002:a05:620a:3726:b0:93c:7948:6e84 with SMTP id
+ af79cd13be357-93ebd23a637mr713801685a.52.1791620359703; Sat, 10 Oct 2026
+ 01:19:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <SJ1PR11MB6105E073723CFEEE8C8EDBF48C832@SJ1PR11MB6105.namprd11.prod.outlook.com>
+ <cover.1791577417.git.ehab.ababneh@intel.com>
+In-Reply-To: <cover.1791577417.git.ehab.ababneh@intel.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 10 Oct 2026 16:19:08 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wmSL7i4EPLWLKhDD6J=1TywBi5EYYDxp=SvOuXdmLGjg@mail.gmail.com>
+X-Gm-Features: AclHuK_GyqhJzFU674x9sTXMJsFNi6PizF-xomQhw66ySxZ6AOmNeI0WZYrAWlc
+Message-ID: <CAGsJ_4wmSL7i4EPLWLKhDD6J=1TywBi5EYYDxp=SvOuXdmLGjg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/5] mm/vmscan: adaptive multi-threaded kswapd for
+ NUMA-aware reclaim
+To: Ehab Ababneh <ehab.ababneh@intel.com>
+Cc: ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	buddy.lumpkin@oracle.com, akpm@linux-foundation.org, kasong@tencent.com, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, 
+	baoquan.he@linux.dev, baolin.wang@linux.alibaba.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8DC2E180002
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1CAD1C0006
-X-Stat-Signature: 9gtz375g1pawo4pc997yjz5adusn4mrg
-X-HE-Tag: 1791620077-728633
-X-HE-Meta: U2FsdGVkX1/XUoWbbn9YIP89n4oAdJeFWAQRf3NWOZe/8HBW+xNofJdSZhjWJCHDFrBwRDaJd6dtODxwA7Hj9m0WI9WZP7eiB3wHo3AXPmDsTUWWEHrn2Mpt9SYfxqc6c3zaQD/ejb7PpvQSkVy1g/zWMFF6ZSOstoArzPQqiAOiNN4xxdcIp2PjusFf3IHrx0S3MkKCiKELTMCdiuilVXQCp7tUMwU+WtMfkRbHvq8h7WvjL3DQge2jFlBcaoOifKd5mR4JhUGGzkEiCJJ/al/yTzwqWmxAOMX5xbsCq6jSHU/eQTKSZ1SSGAOWx1Uinqp9P7UJGsFJ3eEWhN6UWoEXUmlmFidzw/R26wI+Ya/m3FSouHp6QNRwRJF4SX2Zw+yBhrjLB/IkJDsA+95gK/9HUjhKh2V2YpcUBXB4P80C5w7Pwnyk+FNdvJgtHNevrCNZsJX2WyAMIvMNQyRaRk3WOoQBGXYN/3Ja18Mdp9cMFvQKBjU6UJ8tMGWFnLu+mvKl8+5wzBsJSat31U6uQB980bbG/XBBn/0Hcx3ehyTc9LsbNBv3sMZKWGNHkWHBFUKM3fu5F5086CJH3PpVDdZznoqF5n5TGy1ixhVtX9i6xqGAQ5/bJHt8irVjVe3op3SgpDyVWsTD6VZbJJLsiauG/KbEDEihb3DRBgOeIGmmQuSKUtXxQfrEhq6tbcJgb9SdZGFfGG55YxkpGP4uDWncgkkFdTcx7iAvwsxlRlcNTA8TrM8tPWMUDJ6qK2BUUhMoWUHjZ6THrtjIuXqbc1DqblyeKOOjTcQ6BWaIE2G/3QMO8BnHKNa3fWjsBBt72JczFEaekfTLPYjKxC6JclAHhRhVmB6nPTMziPq8uv0TLeNrLcNjk1nNCXm3se8M5tSxwmIozRgKPmuOB+4CsYcH1nuKkDRzLus3AuEYv15z4hnehicovxcsbt/FobeFePhlAQrz4eaogyn6huW
- hKjltPMV
- hIYqeobUp46NwoPEqTzT0rTsiwOoAUFN6Ut0tk1WN98jEBCARmwAIwkZxq9YK3VH0T9hcKg/58k+D69zezncZ+3mZw/Ne/JWJE8altAErRSBtkIJ9GX9WqLkqNsZLn1ZZN+Bxl7j5M0pYfmGIZYhqmdj0KZBXc+AYE+gRoIVcpwJcqOhiMhZTwcEqzHI39VnI8scDQ4nlXvsZ9+vFBdz1I0t7gPN+hOWHco2rzbk+j5zhex5O3IlUk/sJkpDxRFIwJLrystnbAryZzZC3s3spoQ/7lQDyt5rkCH0a4z0r0dZXQruNcUM9UCVt+c3KjPlcJ0vVgQ33pOptFyj+L4i1tqe2u9xBhgs3irB6jgZVKOcOVTHcoHlofOX0inOgcXUINmV8ojgeY6EPjnzwXnDKtUXn+Tg7gbjPYLGiuZP6fZ/A2fIvhhTDEOZjZ1qAlnhDQTtR
+X-Stat-Signature: xuo97sbitpw55bdne5od65r5yc374eso
+X-HE-Tag: 1791620361-285754
+X-HE-Meta: U2FsdGVkX1+fQ7fXzIZ6AL4jLnbNSzrvSEzFcLUCGj/7jKhANfbXPDehD9mVaq8XV1UjxQAr81Gy7hZPVhpCY7/MprsRFGbMe5NV69cQzv9pZ3TNEHXOUgAeCGUl/y+24VomNLRHLaCxo13wzH84J72fqM9qY/dMxORItk+oMe06NSU6S/5gPi7JScBfYkKAdxWnYTq0N28iRm1FBGyDxdbnqzBafzBGMTMn3UY/aArn6yYgEYntXHshNrdz9ntTK3ICqCb7PnmkPlE1+rSoirhY1cSK4wDZeGqx7++cNL4weJ18gvl2RW6mm5du60gbrkzdRs4QOOAqxoumN2iH4PMr195KOeggX2zzpHFIBhWICwwQECyoRatQQG0tfMVDp/hfVrXMCHhzwSPC5O1InhdpBQivZHKQyPrrn9r6zyxLesQYXSh5DU+sD7gMVNINxTdPiFP+NIp9MA325ezKB6T2GwKytjUhJL8w7yKNIi0CPVJpK0zrAhjU+PySvwKwCniKHj8dUzdy7AI3x/QsQgMdG4It2HXGiKe+hAxGY7tW5wFuIWNMyl8qdPQ56TNVuB3qyMPzZCq083NKLUQz8Y0St+oVgNLQoxd0d2KNZp4mDorldzrX7uX/U2NZrl6lFO79REDLlMwSdaUGVt/qF/pv8Um5E5AOzWz5RRLBhuWAWNaswqLz9M1oS/lm+PVdtKjOp/j2fOOFf9NhBECR3WF7i+rp9389/rMAH3XUsZmQKfnYYQq4pXWwdbymY5Qdvu22MoTqWQN1mQMrLwa6kyDil1UGhTXFaw989HK9xdZSyp3Ex36nsV7U4+9JSk1AHu/F9MFgFuechh3S67TluN5xhs3Cau1KxpNrUlfKLwuiXzF5g258+hzf7R6VxbhvOvWPi8CbGTRAwD5K4SV/rf6T9frbSRCGZDuXNGYbISC+g5ZuZsPwVtdnBTmdevzub4rvvpwYlEYr0i3vqbT
+ Oa2CDNJT
+ ZTk/BkE3LhzJhRDsTjU4oEHQDeRsmeMq600yaLN/QdwtFS47KVMA13+P4FOlSQLlyxSWPx6t3pRRp3WSWtgiYKv+kvI6KmifUUHA3UlYX2pdgRBR6siezh8KJ45F5V7H9N1xMSmhTrvK/IO7V9vxltJZQR5KTvnh+mFJT3qFkKWeAGWz9VfVX1Q36fNKR372otJnuWauczI1J7nkov9fsJxZNRKxNVqu/VrMQ2TJf1FdyexsVpNZX4KYqlIsdd2rAABR/gvfCwwIT65cWZpc8O15HEItuzlpZ0jDvDYpqt1xlYAUA2brDogWwo3mqZviEufpiagk6DZFLXz0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,49 +109,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 09 Oct 2026 07:00:41 -0700 SJ Park <sj@kernel.org> wrote:
+On Sat, Oct 10, 2026 at 4:30=E2=80=AFAM Ehab Ababneh <ehab.ababneh@intel.co=
+m> wrote:
+>
+> This is a follow-up to the RFC for adaptive multi-threaded kswapd
+> on NUMA. It handles concurrent MGLRU aging, adjusts wakeups to node
+> CPU load, and scales the hopeless threshold for multiple workers.
+>
+> Under memory pressure, an lruvec can end up with only two MGLRU
+> generations. That leaves an older and a younger cohort, a bit like
+> inactive and active LRU lists, though MGLRU tracks age differently.
+>
+> Regarding the concerns raised in review:
+> - In the updated Cassandra comparison, four kswapd threads reduced p99
+>   latency from 6.5 ms to 3.35 ms (about 49%) and increased throughput by
+>   10.3%. We believe the latency gain comes from the reclaim design,
+>   not from changes to LRU locking.
+> - This newer result compares four kswapd threads with one. The earlier
+>   7.3% throughput result was measured with eight threads.
+>
+> We also saw periods with zero file scans. The MIN_NR_GENS guard may
+> contribute: when only two generations remain, it makes scan_folios()
+> return without scanning the oldest one. This patch tests whether letting
+> kswapd scan that generation helps reclaim progress. The current traces
+> do not tie the zero-scan events to the same lruvec, so this remains a
+> hypothesis; more per-lruvec tracing is needed to compare it with lock
+> contention.
 
-> Hi Liew,
-> 
-> On Fri,  9 Oct 2026 20:08:33 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> 
-> [...]
-> > Yes.  My expected behavior is to completely save and restore the DAMON
-> > SYSFS configuration, including DAMOS Schemes.  But it cannot done by
-> > 'damo args damon'.
-> > 
-> > In the script I provided, it first apply lru.json and then uses
-> > 'damo args damon' to export the current configuration file.
-> 
-> 'damo args damon' does not export the running DAMON parameters.  Why do you
-> expect so?  Has some document confused you?
+Hi Ehab,
 
-Thank you for your clarify.
+There is a patchset under development by Kairui, me and gaofei:
 
-Actually, there is no any document confused me.  'damo args' section in
-USAGE.md is good enough.  I think it is just because I made assumption
-about what 'damo args damon' would do.
+https://git.kernel.org/pub/scm/linux/kernel/git/baohua/linux.git/log/?h=3Dk=
+airui_scanbalance_0.3
 
-> 
-> > I expected
-> > that reapplying this exported configuration (via 'damo start --kdamonds')
-> > would fully restore the previous DAMON SYSFS setup.
-> 
-> So this expectation is wrong.
-> 
-> > 
-> > However, the current/unexpected behavior is that it drops the DAMOS
-> > Schemes configuration entirely.  In other words, I cannot fully save
-> > and restore the DAMON SYSFS configuration using 'damo args damon'.
-> 
-> So it looks like there is not problem.  Please let me know if I'm missing
-> something.
+which allows reclamation after we arrive MIN_NR_GENS.
 
-I will reduce these kinds of false positive from the next time.  At
-least, I will state what behavior I expect.
+This might fix your problem. Hopefully, we can find some time next
+week to send it out.
 
-[...]
-
-Best regards,
-Rui Yan
+Thanks
+Barry
 
