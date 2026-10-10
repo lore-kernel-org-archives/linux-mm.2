@@ -4,86 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B06DCA9EBD
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 02:57:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DAFDCA9EBB
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 02:58:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D657F6B0095; Fri,  9 Oct 2026 22:57:10 -0400 (EDT)
+	id 26D236B0096; Fri,  9 Oct 2026 22:58:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D16926B0096; Fri,  9 Oct 2026 22:57:10 -0400 (EDT)
+	id 2445E6B0098; Fri,  9 Oct 2026 22:58:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2BD26B0098; Fri,  9 Oct 2026 22:57:10 -0400 (EDT)
+	id 15E8B6B0099; Fri,  9 Oct 2026 22:58:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A30956B0095
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 22:57:10 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 37A081C404E
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:57:10 +0000 (UTC)
-X-FDA: 85305205020.16.DDABCAC
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf09.hostedemail.com (Postfix) with ESMTP id BF9EB140003
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:57:06 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=SaSXpE7b;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E8C146B0096
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 22:58:55 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6FD811206E2
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:58:55 +0000 (UTC)
+X-FDA: 85305209430.02.E82A083
+Received: from mta1.migadu.com (out-215.mta1.migadu.com [95.215.58.215])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 49507A0006
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 02:58:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PAj8h8hF;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.215 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791601133;
+	b=HOfsT07DYLqMy1nw55eeeggnzhyFz66rndbVYvFvKTa3nsUPc37Bjd0fFTQ5YMNio15k/Q
+	2p5HQ2YdGRPNZDKEtW7ukf9m4y+4LEysvRSuaBVBRgrywo4hN8ewe5Daps9SSesFgsGAhd
+	7BooNgFJf6dELDMZzHs3sSqHqZ1wTqE=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PAj8h8hF;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.215 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791601028;
+	s=arc-20220608; t=1791601133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j5jEa26nyH8IslPvDz7idIbI8zvRhCKMtempuPJaz6w=;
-	b=cXX6MvEsEbe9qopk6LgPyqFDlGQqmJ6yJ8eQPXhDYBzvU0aQ1J0SURxFRK1mB69cm2yeOq
-	ai6Yq7LB4IUAGxAhy2LH0Od1MPnp9OkzbAJ2L3svCIwuhF9iKYJVJolEf6cBBH18+tqX2T
-	gxrMgp+qkb/IIKsBpJBWcXFwSmXhn5k=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=SaSXpE7b;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791601028;
-	b=F9cqQZR6Cr00aEQL+/UCkvdtpeen6ii7m3/d0gwengjigqkMO7PjBY3lyknN9e+Rb13a0k
-	20SByvVGIkjLGtTJ1mQhk9fBCWmB7/XVwiAh7Zr6NbBW7cXOAXM/JVeSum7yuGjBfJwG8q
-	W3VjG6mvHGClP+/qbp2q+qcnRiR8h/A=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1791601023; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=j5jEa26nyH8IslPvDz7idIbI8zvRhCKMtempuPJaz6w=;
-	b=SaSXpE7b37xDpChoJ3sdv3DOUKfklixKOXDNzhG8nRL2KOxNRpsJEpOgF6KpL2z5l0bRScJp4UbegLHF8EeZjn6yNFBRKyPG0j1b1Oq+sK52k4++X0NDZAu10Zddo5tbNvm03XVhcYRvaSuUlEDBNd8Ltcp7vQvYtYd7S48D+6g=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XCUyC8C_1791601020;
-Received: from 30.74.144.133(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCUyC8C_1791601020 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 10 Oct 2026 10:57:01 +0800
-Message-ID: <1b77c2d7-acc6-476a-b5cd-547471a46409@linux.alibaba.com>
-Date: Sat, 10 Oct 2026 10:56:59 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: memory: fix truncation removing mapped folios
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, akpm@linux-foundation.org,
- david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
- ayushr@modal.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <0d2a1809fa1cfc22ad3df26ec28b2d30e5cdf3bd.1791540483.git.baolin.wang@linux.alibaba.com>
- <asjXJZap53yJWMYi@gremlin> <asjr2zCp1BVtfpTV@pedro-suse.tail5790ac.ts.net>
- <62e0ce97-1016-4f82-af38-7703c8cffefa@linux.alibaba.com>
- <askdZgd5P986OSMx@pedro-suse.tail5790ac.ts.net>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <askdZgd5P986OSMx@pedro-suse.tail5790ac.ts.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BF9EB140003
+	bh=xO/DrEb5NC2MoCMBPruLijcNX5+xKYf9pDjFHrKGsTY=;
+	b=EYCJzlfVxBuEo6HziPplcJFDi+ggsapRcad0nAS2mOBAtT65bAyqZAUPl8zXdfWNxoKZuK
+	WGTTfwqAJU89uqTfNLS1N1t4bgwAZlYeNhsx9fPKkzUSgCZiMde8kIS5QkTJ3DqK6INsgE
+	IQ2ciR0n8x0zN0uGlDmrp4f/bU64Hq4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=fuKQv+8RzNOVU5ZBFPLwPT4hB6cWDIUsCSCLi5x0JgQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791601131; v=1; x=1792205931;
+ b=PAj8h8hFf53pYA8bcbFfyagGuVs4DqfbJuXHEUnfv59QUS5S5psIkTHUuenHnzKs8/hsCMFW
+ Y9qXKdb7ZS40BBEWtKNeHuAFhCPDS3wRLvIjGCOj+uzX/blKplHI+EZupUQhTBSUV88U9ZaJ57e
+ hSGchvbD2wPg5sMocvPwtlqM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 04bc35dd178ace7f;
+	Sat, 10 Oct 2026 02:58:51 +0000
+X-Mizu-Trace-ID: 04bc35dd178ace7f
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH 2/4] riscv/mm: fix hotplug page-table destructor handling
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <664510b2-3510-499f-aab5-ceddfcc82581@kernel.org>
+Date: Sat, 10 Oct 2026 10:58:32 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ akpm@linux-foundation.org,
+ linux-mm@kvack.org,
+ stable@vger.kernel.org,
+ osalvador@suse.de,
+ dave.hansen@linux.intel.com,
+ luto@kernel.org,
+ peterz@infradead.org,
+ tglx@kernel.org,
+ mingo@redhat.com,
+ bp@alien8.de,
+ x86@kernel.org,
+ hpa@zytor.com,
+ catalin.marinas@arm.com,
+ will@kernel.org,
+ mark.rutland@arm.com,
+ linux-arm-kernel@lists.infradead.org,
+ pjw@kernel.org,
+ palmer@dabbelt.com,
+ aou@eecs.berkeley.edu,
+ alex@ghiti.fr,
+ linux-riscv@lists.infradead.org,
+ agordeev@linux.ibm.com,
+ kevin.brodsky@arm.com,
+ bjorn@rivosinc.com,
+ apopple@nvidia.com,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F7FC1A28-A34E-4FE3-A6E8-92D842FFA0A8@linux.dev>
+References: <20261008073021.2512665-1-songmuchun@bytedance.com>
+ <20261008073021.2512665-3-songmuchun@bytedance.com>
+ <664510b2-3510-499f-aab5-ceddfcc82581@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Stat-Signature: hs4kurhfuwuyt7znta11zado914yjzpg
+X-Rspamd-Queue-Id: 49507A0006
 X-Rspam-User: 
-X-Stat-Signature: 9okine1pb1szug4697kurgx1oh5jy9k1
-X-HE-Tag: 1791601026-143555
-X-HE-Meta: U2FsdGVkX1/KRYqJiJ2pr2kmzwxxOSj7spmo+/M1HjDlN9ZvXCSujCiDMv1OthykjYcDiVnSgqDSwGZdzBqs1GnyCFHEoXUJdGnqXM0v0XtK1q9haDFPJoTe6hIcIwZGK4Ha1q8lBahNxm0uMYrn00qjpIweWfMnXGQibIKNe4JC2Xx714e6WdjumecJ0IvYpXBpBjMZ5sv7U05+8EtaSmXzPW8x9C9AIhlxXoJzQ9ug2q/BK4J2fknaVxJjrqAlUgrTpfgrIpZ4GMj+DaaCpbXdY30X53ZehaECnbTeESynuN0R1LmYdVG1qYBQRxNeXZxmmCAsz87zVwPH2WbJpeISDSa97Eg+Z+y9uyh6JOnf/9ZMKpN/bky8RVoDzHAjKjyIi3+nxBqsbI2ziJ+Q0Zxy/LkdHUvhhjDME6xeBsdZ4fjwfeEhnQ61t7E/lAavNLLNMXO+Gvmdcbqh7gDsKs7xs9VwYv7ciIcLHCf4ufDxJtVia+O+PK5SbWwQT5p8t579MxbYX1o2voGqDdaXkq0dWB9xIeKPF2xZ6ZyRAfCtXqsvEIktRBYFPhGgk+nxIPDVoqYCTshH/XINntsXWHTCJ0J3ZjuRaevoI+0i7XL4CBwnz9jFvp17KFWOKz9BC2n2kpLhti/us3G+r6pVPRsIachgtxyP7KgiVa0mUa8KxY1pwtL20cMbKF1YfjPgSrVR23ixHfPTdfm5UUTZxhl+gExZY/f027faaUBldxqmN7zS05jUe//g9D8g8nEzdhloEgyi3NckQDAKfsYqTSo0c7NKbqM4+rAJxrRN8KI6WhdfRY2Tpn0hMaQCgzsRllJ2lByqHN41MLo5hmDsQG/UmO8k4Y4iVFF7B7AuopX6PU2p3nJJg9kF38/EwZZg6dNSrUy7b67QCvpLWw/0OvUfAGyCT2WrIIm75T8VkzBMSEjT1mIcg+y+XRujOLjavARYU49zFsa1rMw0pVB
- Ym05ocTe
- RKEA9wpRxnp+Q3FzC9TyJZNK0Y25VST0Lg3x27sO0ixMIMB/zx25Hidi3nQJCDT1ZLgkWm+WLw6GxStx0C4oMI7SV06YF5eBByO0QCHGE5ZX6HcaoVDbIM7sTAcR52WNWkE12m5hnpayGKojF+JUyaUqhCSFaL5M7V2L2nGhmj0wdx3RwzZtu4ikaNgAxOHoOXTwnQSZNXiHnLzNLra1y8Qnxvk8FcfNO0afQ7D6X4JSm6bqdP3oDrqdcswW7NQFdjimEfCfDLsPUdgDCoxvt/qj8UTQGQJFfrgjeOFIp9enrwuP3ILejyxASbksYwR0wP0l1DncxwQ2OmnS/dz1lXVMKYR8FMGM2IwPQtLoQvZuIgL8Ne67hzawkkzbPs63qMeTLdcAajavK9PRNQFDCZgotl1KH1zbjaO/RAkMamJLuPoE=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791601133-221785
+X-HE-Meta: U2FsdGVkX19wjYsK+8VsIOKntVEGxjIKnyQuj71H4KQkvCNK50iYtTVtGZwoI3DWDOAZjxsaK6L2ERX0QOLSgH6Qi/Uq8AnZYslebNsV1KDlWfy5bwGQTGjwM2nonhfqe1tmHHItXz5WHLVy2/mskF2Az1ameDKWfNLwC9FrOtTxPOHQPGuIiGdPujvSLT1NCvzpjcXDwJawpCZAq/A2eBBW+FWDmeTAxW9ptlAc34geX3MXHCvjuI+AmoUSTvdZXAU16sSr/Ftp6CIcYHWlSH+irChhcyIHuYBGsuQztOhQkSvxXaLuDXw3d84TEs7fR7rrxplJjqz4iPKRzSw8kTm8iBtoh2WKqkhc4cKaRUjGXY27ys77vmCysVId8EhyrSfsCVEKqg1ROuRcJru0pQvvVNESaz9DsJZW+PUfRh3x6Txbx8ZSodcV0ajbYhskNS0w6dr41nNwLg+l0zeNfxe2nazVJJDDAzCTdym6o/LyBc1gZOJ0ZiGxCIrYrxS9sFo8XUNLAFDjQrFdtQAoscbEHyASR9vZO5PJscydmVZAXcEx8RiOmLqvyx+N6ULQwrDPz8QrEVn+mxXtjSNxT9L/mBdSVswJIgMfXby+441DABfrFoKo+QXF6/fxnhA5P/hTOmm7TvIAHQg+QZfBFjgGdAsw8rFfwJlq8ZmOFw3SoN25Y8Am9Lw7uT4IhfVVq6S/rEYeEfQ+j/Xf4r7HzzFeaFpDNzjTKglMVXlkZic/OjxMH//gV0pgTo8eR3tbVs6UnPXtc+VasZbomi8DQrsrL1hjkMOKOUPKsWQmu/YKnawygWcuQsB95DrBg8mb6DncdWamQ5edRUgTaqW5TxjPB00/JRPqRG7tVtBsSMAY/1By6+152SpsnBxsjOHl+rtKvFMuAWkggCIKDGblMC6eiYrJcoDBMet08qJaMrDPvKXFf9bnYOcKyuHZSxBBMeamtM3Rmd220zWBMTb
+ VdX0Vymb
+ 7ujjQEnCslRJYnMWPHB7O+uDprRmHda148VtCZ97NT5Ol96lCzeS/xTGlswaJwJQJ7xFqKC1qdPgV4UTmJPUaj1LU/n4YPhIHjnBdf80C2faqHocKrhPGbC7CGeQQMmE8J7M7HXeN3WlF89C6OWDAvVgcF6JvZ0UzXZyluiDyGNNo7/+304ZT5dlMK87geywKkhn50npc/mc8Ez7xepbxsFYt17wyhscmfFFW8Oti2tfPy4DJGYGZ2ls4KxWmAylcmOeCEZ1qmEAM7ANx+MvO3QwGOT6FUsJZpd0CCCMP6plK6ErUEa0ICax7Gw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,69 +120,74 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 10/10/26 1:01 AM, Pedro Falcato wrote:
-> On Fri, Oct 09, 2026 at 09:53:55PM +0800, Baolin Wang wrote:
->>
->>
->> On 10/9/26 9:36 PM, Pedro Falcato wrote:
->>> On Fri, Oct 09, 2026 at 01:00:52PM +0100, Lorenzo Stoakes (ARM) wrote:
->>>> On Fri, Oct 09, 2026 at 06:12:03PM +0800, Baolin Wang wrote:
->>>>> diff --git a/mm/memory.c b/mm/memory.c
->>>>> index 1f5d5f7d39cd..0272217ad7b0 100644
->>>>> --- a/mm/memory.c
->>>>> +++ b/mm/memory.c
->>>>
->>>>> @@ -2044,16 +2053,10 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
->>>>>    	 * to ensure they are still none, thereby preventing the pte entries
->>>>>    	 * from being repopulated by another thread.
->>>>>    	 */
->>>>> -	if (can_reclaim_pt && direct_reclaim && addr == end)
->>>>> +	if (can_reclaim_pt && direct_reclaim && addr == end) {
->>>>> +		/* rmap changes need to be observed before e.g PTEs get zapped. */
->>>>> +		smp_wmb();
->>>>
->>>> What does this pair with? You should always say what in the comment.
->>>
->>> Yep, this is missing a rmb to pair with. The diff I posted at
->>> https://lore.kernel.org/linux-mm/asigKktcrSY80A_2@pedro-suse.tail5790ac.ts.net/
->>> had one in zap_pmd_range(), which admittedly isn't the greatest. I'm not sure if
->>> there's a better way to do this.
->>
->> I don't think we need an rmb to pair with. This is because the
->> folio_mapped() check in __filemap_remove_folio() cannot be reordered
->> (guarded by spinlock) with the pmd_none() check in zap_pmd_range().
-> 
-> Why? spin_lock has ACQUIRE semantics, which are one-way permeable. Earlier
-> loads and stores do not necessarily happen-before anything after the ACQUIRE.
-> Unless you mean something else. 
-A simplified view of the memory access logic on CPU 0 is as follows:
+> On Oct 10, 2026, at 04:37, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 10/8/26 09:30, Muchun Song wrote:
+>> RISC-V uses the same memory-hotplug teardown code for the linear map =
+and
+>> vmemmap, although their page-table pages are not always allocated in =
+the
+>> same way. Late linear-map allocations run page-table constructors, =
+while
+>> vmemmap and early allocations may provide constructor-free pages.
+>>=20
+>> The PTE path unconditionally runs the destructor, which is wrong for
+>> constructor-free vmemmap tables. The PMD path avoids that problem by
+>> using is_vmemmap as a proxy for constructor state, but that =
+assumption
+>> will no longer hold once runtime vmemmap allocations use the normal
+>> pgalloc helpers.
+>>=20
+>> Page-table constructors record their state in PG_table. Centralize
+>> page-table freeing and use PageTable() to decide whether the =
+destructor
+>> is required. Keep reserved and constructor-free pages on their =
+existing
+>> freeing paths.
+>>=20
+>> Fixes: c75a74f4ba19 ("riscv: mm: Add memory hotplugging support")
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: LLM
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> arch/riscv/mm/init.c | 29 ++++++++++++++---------------
+>> 1 file changed, 14 insertions(+), 15 deletions(-)
+>>=20
+>> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+>> index 857f9a55039c..429a0b015ec1 100644
+>> --- a/arch/riscv/mm/init.c
+>> +++ b/arch/riscv/mm/init.c
+>> @@ -1486,10 +1486,19 @@ struct execmem_info __init =
+*execmem_arch_setup(void)
+>> #endif /* CONFIG_EXECMEM */
+>>=20
+>> #ifdef CONFIG_MEMORY_HOTPLUG
+>> +static void __meminit free_pagetable(struct page *page)
+>> +{
+>> + 	if (PageReserved(page))
+>> + 		free_reserved_page(page);
+>> + 	else if (PageTable(page))
+>> + 		pagetable_dtor_free(page_ptdesc(page));
+>> + 	else
+>> + 		pagetable_free(page_ptdesc(page));
+>=20
+> Similar thought, can't we detect that in pagetable_free() somehow and =
+avoid
+> requiring callers to handle that?
 
-down_read() -> Acquire A1
-pmd_none(): read pmd
-up_read() -> Release R1
+I think we can, then pagetable_dtor_free() can be removed because =
+pagetable_free
+can handle the case of pagetable_dtor_free.
 
-spin_lock() -> Acquire A2
-folio_mapped(): read mapcount
-spin_unlock -> Release R2
+Thanks,
+Muchun
 
-Initially I thought the read to folio_mapped() could not be reordered 
-into the preceding acquire/release section, but after re-reading the 
-memory-barriers.txt documentation, I realized that it actually can.
+>=20
+> --=20
+> Cheers,
+>=20
+> David
 
-“
-  (3) ACQUIRE vs ACQUIRE implication:
-      All ACQUIRE operations issued before another ACQUIRE operation will be
-      completed before that ACQUIRE operation.
 
-  (4) ACQUIRE vs RELEASE implication:
-      All ACQUIRE operations issued before a RELEASE operation will be
-      completed before the RELEASE operation.
-”
-
-A possible out-of-order access sequence is:
-A1 → A2 → read mapcount → read pmd → R1 → R2
-
-So yes, you are right. I'll add an rmb barrier in v2.
-
-Thanks to both of you for the review.
 
