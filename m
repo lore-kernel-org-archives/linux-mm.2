@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACC58CA9EBE
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 16:21:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95636CA9EC1
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 16:21:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19E386B0088; Sat, 10 Oct 2026 12:21:08 -0400 (EDT)
+	id 60BF46B008C; Sat, 10 Oct 2026 12:21:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14F7E6B008A; Sat, 10 Oct 2026 12:21:08 -0400 (EDT)
+	id 5E3056B0092; Sat, 10 Oct 2026 12:21:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03D2F6B008C; Sat, 10 Oct 2026 12:21:07 -0400 (EDT)
+	id 4AA876B0095; Sat, 10 Oct 2026 12:21:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C6D9A6B0088
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 12:21:07 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC1B2C0160
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 16:21:05 +0000 (UTC)
-X-FDA: 85307230890.03.5F2FEC2
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 018FB180008
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 16:21:03 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=X6iqUx3k;
-	spf=pass (imf24.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 23C446B008C
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 12:21:16 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0402EA05B8
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 16:21:14 +0000 (UTC)
+X-FDA: 85307231310.30.60594B8
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 440911C0005
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 16:21:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=L7QCkBlb;
+	spf=pass (imf21.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791649264;
+	s=arc-20220608; t=1791649273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Yijvi9zg0Pj6BOdFjk5FdPLKcBndaQKT70J63Zutecw=;
-	b=f9XEt0+kP43uToFr3q456wlH57t8TEluL5NBZ2eM7/dN3uDsQF0T/rKctX2FVIgrGFNQVi
-	usxnG0qS+3Fd4gTba41YNj3O3jwueDejiZMrWzQ8jIoxcptdKwRvoP2jD2OtGkaMUFmSbS
-	jO3yhPWubKpGr4/3IJYHF1SzBUKtE0I=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=X6iqUx3k;
-	spf=pass (imf24.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HD3NcIDPdwUreYfDUge++wJHXhKnRmGfEpR/CtJof+E=;
+	b=lves4Uz1fcuMavDJKxq67YAmAg1zvTN86MaHwNSXfY3gPZdhFJsthYh+VHo5T0sUueKez4
+	hrppoOiKyV+JpnmrrCP/8BfhZat7g10jnMiLLqo9BvX2rE0J/Hju/Y6Riatw3A5ddab493
+	JX0oLu2wJTRB/HKCznBqZS6fh/GjOgk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791649264;
-	b=UpfDhvYnDh+Fa/+Cojy6so9pej6KOb0thCjMEquH6tmQMyyZJa3VcYCrh0PKdf88u1m83O
-	76NXnz5AMtpQ/zfZMXZiieUGHhgjkDqEq+5U1Btnwu1RO+8fns+ebAmHGe7NYSu8Pye7dA
-	m7Cs7po7Q7OCsz9dZx7rWj2nxXWPP3k=
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-15ea896ddc8so960234c88.0
-        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:21:03 -0700 (PDT)
+	t=1791649273;
+	b=XvP7WULZQILviDaIrQkW6JC6wnCepE5ycj801DNFWFB3jV/kjKfN7YqpDm+IClnlhR0giY
+	vTA93/PLBoJNPIuzJXNXPZvHvYbl6qeQqcR1780TRbTzOP69H8YIjUHF3Wb7Fx/K9mo8Qj
+	BapB3EHmGNKjdO5/NGFHnG5j5b6B7N4=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=L7QCkBlb;
+	spf=pass (imf21.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-16ad92569b5so611905c88.1
+        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 09:21:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791649263; x=1792254063; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Yijvi9zg0Pj6BOdFjk5FdPLKcBndaQKT70J63Zutecw=;
-        b=X6iqUx3kCA9sTO+okkMzbvAbhHvvKmrn+HrtgLCKZkxgpDqkLgRs7DNxcdh+if+BKk
-         OWQyqsW2pULiJwicARhz2a0DVXDmlTogGbADFDKs9/n2LwtDR2xtytKpKD7VyuzBscIJ
-         AlRLGeFd7cg0Pcn6JEVQSR4G59Of0FZ9UmH9FNz7sXaBs6aftmLnr+NlvGsP+Z2BRfQ0
-         fnfMEUeYGVax2BwS3nQ5riVLQxdwHFUnvdgOl+WOk31bJnyoKKPf1ITtb9sLZ9WmFbhq
-         Nf4xgDfZ0Cxrzli8q3hucC4dP4p/+n4yO8VT2KcPeRZenaKBiu1JmHcWBYS+bT+C7HZG
-         oQ6g==
+        d=gmail.com; s=20251104; t=1791649272; x=1792254072; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HD3NcIDPdwUreYfDUge++wJHXhKnRmGfEpR/CtJof+E=;
+        b=L7QCkBlb9cCsO+k1w+DLildJ7ituaG7Hz7xxA465/IQ/2rOArYI2R/3AI1YzKcI/mN
+         BVN40DHUkU0S2ac6E8gQ7FQlKprMtVattX5WUbeMx2VOMXPKDlD+xyLxQjKfZtKGHZiQ
+         FgUjL3N9hfDP/eNR6MKtIkMiCTmBXADuzA0+q/qHUA+KkelWBjZhiOY57soOXGmP9JKM
+         53+DwSJ1UttT+J1EG16J5PFQ1haM+wOCJQebx6YDinFZVtIzoiZPBaUCxFHKiTRNQLIp
+         x629xvJVwJ71LqSWQI/EaxLop1hRi5G/ZbmrWN8BGZgMezYB+K5qUJkgCVqa5TGYUJD/
+         +08A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791649263; x=1792254063;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Yijvi9zg0Pj6BOdFjk5FdPLKcBndaQKT70J63Zutecw=;
-        b=MP1u4vqdhOjZlCazh5T520yYXSJdZtMQqeGZzua6TqSRmcgmHwzzFc1mf3yiMCihRm
-         j/k7PhUVk2QFv4+clxzY/G4CxLGhZOLpsod/NEoc6hDblDuwILKBdsH9/1G09hr//oBI
-         f0KHNHoq9oG14Sh/EjxNiqlVavWwWNKljMlAlaUSWfcI6+jA9buLvaLVS5nnL8JbH9Ry
-         rKsWI0L5QFBhYHgu0C5veRBPBFUpRCojVDl7XZwGOufKWSVbgH6LohpVZke1jeJ/k+p7
-         BFlersMKk/D6mEi3OT+kw/Ev6SLrgxrPsBytKdRxZcWEWr+3o6y0ofhhaDZiQGBfWL4C
-         211w==
-X-Forwarded-Encrypted: i=1; AKwUvBxSSDtpqns3Wch5Y5zt0LfPjXmDxdQs1XG7BWFcHPPMuSZU44vdwUBLbXP15Nsl1yuxD9gEEUwvug==@kvack.org
-X-Gm-Message-State: AFq9FYKX8gtMxI3RrWF6S2tg/PgcrZ7SxhRYLYO/MCQwLTJx79na7NsV
-	UajA9hghmtQfpBlL7LcuQl7A+HVOP6gRIZLE+sTIwnh9LK1iz+VE2C5s
-X-Gm-Gg: AYBFou083sKqUru7kINWdQPh7FYlR87yP9C1zHuq7TMqCd7+kvwHOYDQ2hR9CfHacSn
-	M0HdR1cTfN6Aefe/BYx6eBQkr3B2fEFFR+hbSF36+EPMimdTGsqQLBWUunwVhq9OUOvF1ILEDM1
-	mLtlXcKIj8V8rBvQL+DSX3ftowr0foNbsQ2P+bx3NWwvxLtofk1W9dNx/PzHAMJoYesunpU8RyP
-	s9Jnqzj2cgjZXhrZpM9bCT2IoKm63z9raHzK8doiljsOKmXGrpavFKdOyBREEa4Xy6uvHMW7/kd
-	PvFag7sofca3F7/X+a0uaDO0f1ctKvJafIGJLv8x5JdjuNY2OzpYpjOAgRTYYFjGw+TrYCG8IIn
-	gifs754GcmVTzdnn5Qh/6Qet6hn2j0/l03Nd8xopCLH3GpG142pdbg30IbF6QBzTAdIPbyr4gzV
-	eJ7JmGLCfkMxGjPWRCgMmyybQITQTLlT3nBnTf5GwQ6VmaNBI6aPC8J6NkDb1HfeimvqPSTBQ2V
-	YPkU4m+cea4/X5t2w==
-X-Received: by 2002:a05:701b:260c:b0:144:f85a:a188 with SMTP id a92af1059eb24-16a56ab4575mr5965520c88.2.1791649262450;
-        Sat, 10 Oct 2026 09:21:02 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791649272; x=1792254072;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HD3NcIDPdwUreYfDUge++wJHXhKnRmGfEpR/CtJof+E=;
+        b=UcBXG8U2Id6hl1EnclGOGVmBtQDtRO8BnYsk0Ue/vAj6m4rQsv/9CqzyNL0A9cio7O
+         Lfm4dtofAF7wVfnQRTUYrXGOnHU0nVtr1C3L/axhDRzt3qgdGt4J+oMrLg2Vyo9ydbUm
+         dvmJ1D0Z3d+WmI2js6PN7k4Z8esKKBGsrAygBHWLZwFr+/iMA/YECn11nacIEKZdN+TQ
+         AAgt1fF9cuX+sLGgg94pNWtYQsdxyDmumkjBy5EuJy+43BTnxSmaoM38LOulnJlAQdPY
+         ZBGYL23G3ZbxyOpnEyLfrjdoQS1EQvY/eBnXswtEYHBlRHA6vBp7we37nvMJG6H+03qr
+         gPEg==
+X-Forwarded-Encrypted: i=1; AKwUvBwAjzMJU5hAAs42JeXAmSDAlh2E4VOb35nfZQ9t1f/qXVtz0lPsrwsFlXt+mnp+cEdkIrlXz4bq0g==@kvack.org
+X-Gm-Message-State: AFq9FYJXuvwYDyx1kw5A36wsjg5kKpBQV6xHtTRq+EoxRrZRKVMxszuS
+	R3qBSIslWDEwXd2trd2Y/61CanlOy7VXglHq/Sdd+nJmK5IG5Yjnnf4F
+X-Gm-Gg: AYBFou1JZ1yj2lrUtKfsB4YQ/DEVEUlLt7UVvm3PemJ0WbyDZBgsmosBSwCopr45z/J
+	eBdP8GmGkhHGHkVo7fDb2GJpgt8tqMVWGSfNqjTeHyf3xSfDQ5NyqAhumsERhTok9MjoIr6Zrq2
+	5PgzvOpn6wPkapR3Px7b/tw9li/s5I01+EaaYb5E5Z9mP8oH2wBcxFpKFPgnCDz4eh3kqw7Ly3W
+	/BNPBzrsJ5fs5YmnpGzzlN535Xl2nfvpYLGhPbkUgKU3g+BKkxJFvmIXkSvdVtrTkB84HvWpA8B
+	+g+YSAQmNPIuwDIU4SO+DxKOnfnWXNK9NCOTUCUPZUNjVewM960OWUZf+tY+orSGOOE7vj9vk3Y
+	MIhT8NorTCDSfPDXheWn1ZYN52Nz/vmDFcDWAac3516lmVqG7N2Dyhk4nbprPBQcfPuk2jqH3H7
+	GjpEd87yE5oeAD2Hi5zwKvbcFNpMZFiDBwwEzPoWWX5jyKq6KIRBqRU28c0ZcyeivPYYNZoWuaV
+	NER3sh5o1s4oaCDT/v9XpXjkyHq
+X-Received: by 2002:a05:7022:7f04:b0:13d:974:a2c6 with SMTP id a92af1059eb24-16a5ad07499mr5876271c88.7.1791649271910;
+        Sat, 10 Oct 2026 09:21:11 -0700 (PDT)
 Received: from acer-nitro-anv15-41.. ([115.96.176.39])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a3f6186fsm15778622c88.14.2026.10.10.09.20.53
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a3f6186fsm15778622c88.14.2026.10.10.09.21.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 09:21:01 -0700 (PDT)
+        Sat, 10 Oct 2026 09:21:11 -0700 (PDT)
 From: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
 To: Davidlohr Bueso <dave@stgolabs.net>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -119,21 +119,22 @@ Cc: Ira Weiny <iweiny@kernel.org>,
 	Kiryl Shutsemau <kas@kernel.org>,
 	Harry Yoo <harry@kernel.org>,
 	Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-Subject: [RFC PATCH 0/5] cxl, mm: Keep device-reported poison out of the page allocator
-Date: Sat, 10 Oct 2026 21:50:08 +0530
-Message-ID: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
+Subject: [RFC PATCH 1/5] cxl/mbox: Add Get Poison List snapshot support
+Date: Sat, 10 Oct 2026 21:50:09 +0530
+Message-ID: <20261010162017.62506-2-shaikhkamal2012@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
+References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 018FB180008
+X-Rspamd-Queue-Id: 440911C0005
 X-Rspam-User: 
-X-Stat-Signature: qzqdokt9ryrty6cbfte3t7t9kiwtrz6b
-X-HE-Tag: 1791649263-872455
-X-HE-Meta: U2FsdGVkX18PsT+fIVztmfxXDxhi4a4o6thKuvA0v15wgv4PoMAuBLuBUkeS9yU3hpibTujyeffTYyhOUuHGxZGZf5NE1I6W5jbvTUYtWEED0fNssIi7apmX1jFC28fPXGJyVdPZhXpOccwPe+mHolrRkpjLbWdGmJxmuS4mZbVUb2gc4QiV3CHNDbmq2Z2nDN6+hTeH4+gY3kNS4S3F8JvkA2HRe0DfYFAxc46i0H+l8y52KfiCXDCpnsiEeQP21APbI/pj3Whn2YvM7+DshwrwcBrgTIR4xZSsiGFEOmXw1/PY64LkcykTcKapFIaAXObo1MaiYstz154T2bhgDedH59F5y4ShQ9wHPjrFeEreqM53AxzY+P5vdNsZS/5znE3QGJmtND54R9ReKxRqvmCBBjNML95jFyg0Vt7UgQZCnSW8nBO8lAfrlGIuPq9fN5GHZizbQUbOS1UYRd0XPWLltii1JHV2YP9bEqAdsPngxewh4t4/FmroUF1dmH6lUSM1VjQUdxcMFX5LLrkxTzU+cmFs8hr1n2RycQFlrQtvTwV3YhmnLNPqT8URaFmXvd8Yf3R26Cyf9pE1NtHOl+fuJLi3ieOcvlEyKYzE1O7lU3z/lXQ8Ub5sW+jwV36VP0YsDeSrKTeMhNoY2T/WyfKlRRmC3sMBMbDInegIa1DVFlpJw13ToCUPrMcZgQeUkwDmCz3k4OHhbmE7v4syTadHOxHdxI6yyrma6n2CpXkNccpLsgSuzTYbMztQbAvJt0S8kxIhVBfL4Y6Bvk+OzgHWRmeK8ug9OOjeflM1YTi+hjzX2nHhI6ZSo0m/70AV4ZS6kMO8qTSEeYtmXs3nQlwnBxrqcSKkJo3YN11rETivrZnLVxHfzJoBKu3oiE2iT0V+el4Ozb5ShWCxkh5wK+bdNKhcGcCXqvU+0dDiJ3mJS1wQjBonQVJdddK6dRthfHQqpScLazTC8KHip1F
- cNBeAxaV
- twO57NO0QYnW2DTy+4JcKoLe8fAkipYNlYyTqYgkua4M7hPQ4EPZqCnnmlrzzSg+/YUtl6rLZYM5IbEAuL640wNNY0zXVDwobwjkqb0MwV2NmX3dHDL494dYV6ilJvp+TTOk4/oSZ1Y+r45RpmPet2EVbL8Hp3EE+QU3GXgFnNndkQSB/rFeJPIqMOlYosVzO4QEH0f1z3Y2d0WE3APE3TgdOCgCD2BS+GkW48Z5HPpc792po+mSl2ouyTgN0cf4BQVR9yUHEFb2/N+BSqR+C0VBbTlrsPOz9PVRrao1hH4jcRK6eSuURMmUfaM+3X8ACLfnoM4mjk2MkZpHhwOiEBTjah94sQyejschnNJVPntBLZZDkwBzRZUmX4lKdiLQ6fnwq52P7OlXTsWhoK9Xi/tnSJApRoGEl+qjvjq16No8P5o23zOweEINmN4hkMEJdB+NFRNUgEkPv0bttnmyLK4M8dhsSDg9b5RdjEUkCdn9FELRukBX1rAqEnHu4ickbJLdnI4D3UTx5uymj59ccHiy9cNVfCk7TEXJ8Ju1f4Roxo4njTxQL3wd259NCRU8t5FYG
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 3ubtgrfcb1e4m9jiz7oyeror9m3t6qif
+X-HE-Tag: 1791649273-62153
+X-HE-Meta: U2FsdGVkX19nPdTHoOUqDB0MPntujF4N+JNMpQ4LTXAHMGrulmNX8eriqZmZl8c0x0+xt1e3Bppu1/f1MDQb6QrsRyBWs0v7safsqDCBAr9dlu3N5FwnNEMwPOOtPYtyolJLG3+VHJ7jFw8aqgBRjFDwnoa9aOtdPoEIL3bn8IOvXJ2B5G/S5JGkvyYjKf0+UtWkxN8zbJsnrM44NvBm78uy0E6iXmblx1QoqAK+mor6zdHRrWfhTz37K2PjVkA1FYJPcrdtGPy/oAF3QX0iJVv4Jmf/4lxUxVf4+cfjvKAOMdT+0ev6doi9HJUCm0cQ+RsTWOGunQCzww/oeQfPWKMzjPB4UH+CdHqOhCM2NDUWu53d4zMoFVM2eONtLNGxINWiFERXpgPXZCkOxazobD3qDDh0JY82epUqtUbRiqvPeYf9GB3nW9lmsyA7D7NxNe6SwhSPxT3Oe19/MH2b6zZfSqXR+KG6h5ZXENnnGMFJYjFoYuxFHE1p2X70JMMmCSOjHCV2F0TbYqGJKBrx8HcJhU6nKn7EtC/mo/Qxw1p2Wu4JSuf1233yoZvhCfoM5WDEmDSHwSnOnMs4D+fJvZwiTpRbfZojgCDlzVjLFuxR8szgC42I//SLtYVXbbmXaRpZzBYc4hTCsrwBkqybop8swM8QxX9RwXPIR8OWKFuPOm17bZFB8+2FOW6PX8PKOOY7jUVhyZy9z/tPzZHBv33cXFcc6moccVzQQRlZqCgJEaTNZDwnZ3cEF0qfShUWIskfc1NTCCwHq6dzRvjIh/G1O5uQz6mHchYf/dCp4H0bq6z1Qo6jqNu+zfNkfNBzcGGRBrNga7Px7AXsslTtzcRTYxAogfDRXEsOccTgECmXkRUMbj7q1cU8sX/nP2TllzobP2J4OxkOOVLAy1PiQlJfcJbB4787UV+lxbZwjZXTGWvQlPnZ1iv9K0e5eA3oY2q6rc1uxqy0OHMDF/m
+ AVm0NYBt
+ StGxYfqAHMZ8Iw+k9t9cCnr6bxCmASKqu4CNpP7cGe5iBjDb9iSknipIQH8e3Y4mfRVj3ACczoA+4whHeYDtDYlC6IDsB16+SZAXEopige2oW523W3AVscvmZx7JgYLqCI8A6tJYnftnWpRD5rSXC2iwaxVVNNYKqe2pavplwCXqyn60yONiU1vLChv2wEHZ7UcW7HciF2r4VBBPs4PmSs22HsncHm4TtqtS1ZoTuHsxYaXNxmsQCHQpGEoavS+KIPeZeNoZZ2bqL1NuVT7dWU+A8bnH1/+UXPNKb1bjslpQbRfQvpAaD3m/wSZ/dDlJ3iRNQKGIYyveRJr0mv6Zk6gHQyfkf3POWYWzMZuJcSqQqlPANA7y6fR45sNh0N3uGMDdi6jsZObGY1OF8fkWP6lv305oiOwxI4bX4tmmoZoMaKT8Mou2YhMq5N/fnUzemg6j/cQWnONm7vhAW8tHW6jNP1ARUxLzpRSsolrpRppw2wAI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,311 +142,242 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A CXL memory device keeps its own poison list: the DPAs it knows to be
-bad. The list lives on the device, so it survives a host reboot, a power
-cycle, and moving the device to another host.
+cxl_mem_get_poison() uses a device-owned output buffer for each Get
+Poison List response. It traces the records before issuing the next
+command, which overwrites that buffer when the device sets the More
+Media Error Records flag. A caller therefore cannot inspect the complete
+set of collected records after the function returns.
 
-Linux reads that list only when user space writes trigger_poison_list.
-Nothing reads it when a region is assembled, so with a device that
-already has poison:
+Add a caller-owned snapshot and copy each validated mailbox response
+into it. Preserve device overflow and scan-in-progress status, and
+indicate when the host stops collection before retrieving all available
+records.
 
-  1. the RAM region is assembled and dax/kmem onlines it;
-  2. every frame enters the buddy allocator, including the ones the
-     device would have named had anyone asked;
-  3. a task is handed one and reads it: machine check, memory_failure(),
-     SIGBUS.
+Keep cxl_mem_get_poison() as the existing trace-only wrapper so its
+current callers, including trigger_poison_list, retain their behavior.
 
-This series reads the poison list at region probe, before the range is
-onlined, and keeps the frames it covers out of the allocator. Nothing is
-unmapped or signalled, and no runtime path changes: the frames never
-enter the allocator, so this is not forwarding latent poison to
-memory_failure().
+Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+---
+ drivers/cxl/core/mbox.c | 137 ++++++++++++++++++++++++++++++++++++++--
+ drivers/cxl/cxlmem.h    |  25 ++++++++
+ 2 files changed, 156 insertions(+), 6 deletions(-)
 
-Dependency
-==========
-
-This is built on Breno Leitao's hwpoison series [1], which keeps frames
-poisoned before a kexec out of the next kernel's allocator. The approach
-here, withholding frames as they are onlined rather than taking them
-back out later, follows [1]. [1] hooks __free_pages_core(), splits a
-block around its bad frames, and marks them with hwpoison_boot_page().
-Patch 4 adds a second source to that hook.
-
-The two cover different cases. [1] records frames in a bitmap spanning
-the RAM the EFI memory map describes. Memory hot-added after boot sits
-outside it, and CXL region memory is hot-added after boot. [1] also
-carries its record across kexec only, while the device's list survives
-reboot and migration.
-
-Applies on next-20260908 plus [1] v5. The num_poisoned_pages_inc()
-change agreed for v6 [2] does not touch these patches. Patches 1, 2 and
-5 touch only drivers/cxl; patches 3 and 4 touch mm.
-
-Design
-======
-
-Which records are withheld. A corrected error never reaches the poison
-list, so every record is uncorrectable. Only records with source
-Internal, a failure of the device's own media, are withheld. External
-poison was written by the host into healthy media and a rewrite recovers
-it; Injected poison comes from the Inject Poison test command. Withholding
-either would make a recoverable state permanent.
-
-No host-side storage. The device is the source of truth and is re-read
-on every probe. When a location is repaired (sPPR, sparing, hPPR) the
-device drops it from the list, and the next probe onlines the frame
-again. A record persisted by the host could not learn about the repair.
-
-Volatile ranges. CXL r3.2 8.2.9.8.4.1:
-
-  If the device does not support poison list for volatile ranges and any
-  location in the requested list maps to volatile, the device shall
-  return Invalid Physical Address.
-
-A device that returns it, or that has no Get Poison List at all, is
-onlined as today with nothing withheld. This is also the reason for the
-RAM -EFAULT tolerance poison_by_decoder() has carried, without a comment,
-since f0832a586396 ("cxl/region: Provide region info to the cxl_poison
-trace event").
-
-Incomplete lists. If the device reports overflow, the host stops at
-max_errors with more records pending, or a media scan is in progress,
-region probe fails rather than onlining on a partial list.
-
-Translation. Each record is mapped to the pages it covers through
-cxl_dpa_to_hpa(), including the extended linear cache alias. PFNs are
-collected in an xarray, which removes duplicates and keeps them sorted,
-then coalesced into ranges and registered once per region. The ranges
-are unregistered when the region is torn down.
-
-Out of scope: regions with normalized addressing, and PMEM regions
-converted to system RAM through device-dax.
-
-Patches
-=======
-
-1. Snapshot the full Get Poison List across continuations into a
-   caller-owned buffer, keeping overflow and scan-in-progress state.
-   Also bound the record count by the returned payload, and reject an
-   empty payload with More set.
-2. Factor the per-decoder query out of poison_by_decoder().
-3. Add a registry of PFN ranges known bad before online. Readers walk it
-   under RCU, since __free_pages_core() runs concurrently across nodes
-   during deferred init.
-4. Consult the registry from [1]'s free_poisoned_block() and
-   __free_pages_core().
-5. At RAM-region probe, read each decoder's list, translate, and
-   register before the DAX region is created.
-
-Testing
-=======
-
-QEMU 9.1.0, x86 q35, one 512 MiB volatile cxl-type3 device, 1-way
-region at 0x190000000.
-
-QMP cxl-inject-poison records poison as Internal. The kernel's debugfs
-inject_poison goes through the mailbox and records it as Injected, so
-both cases can be tested without a mock.
-
-Three 64-byte records were set up before the region was created:
+diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+index 55828a836c01..2752b46ffee2 100644
+--- a/drivers/cxl/core/mbox.c
++++ b/drivers/cxl/core/mbox.c
+@@ -1376,14 +1376,91 @@ int cxl_set_timestamp(struct cxl_memdev_state *mds)
+ }
+ EXPORT_SYMBOL_NS_GPL(cxl_set_timestamp, "CXL");
  
-  DPA       Injected by         Source     Result after create-region
-  ---       -----------         ------     ----------------------------
-  0x100000  QMP                 Internal   withheld (PFN 0x190100)
-  0x200000  debugfs (mailbox)   Injected   not withheld, source filtered
-  0x300000  QMP, then cleared   -          not withheld, no longer listed
+-int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
+-		       struct cxl_region *cxlr)
++int cxl_poison_snapshot_init(struct cxl_memdev *cxlmd,
++			     struct cxl_poison_snapshot *snapshot)
++{
++	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
++	u32 capacity = mds->poison.max_errors;
++
++	if (!snapshot)
++		return -EINVAL;
++	memset(snapshot, 0, sizeof(*snapshot));
++
++	if (!test_bit(CXL_POISON_ENABLED_LIST, mds->poison.enabled_cmds))
++		return -EOPNOTSUPP;
++
++	if (!capacity)
++		return -EPROTO;
++
++	snapshot->records = kvmalloc_array(mds->poison.max_errors,
++					   sizeof(*snapshot->records),
++					   GFP_KERNEL);
++	if (!snapshot->records)
++		return -ENOMEM;
++
++	snapshot->capacity = capacity;
++
++	return 0;
++}
++
++void cxl_poison_snapshot_destroy(struct cxl_poison_snapshot *snapshot)
++{
++	if (!snapshot)
++		return;
++
++	kvfree(snapshot->records);
++	memset(snapshot, 0, sizeof(*snapshot));
++}
++
++static int cxl_poison_snapshot_append(struct cxl_poison_snapshot *snapshot,
++				      struct cxl_poison_record *records,
++				      u32 count)
++{
++	u32 available;
++
++	/*
++	 * Existing cxl_mem_get_poison() callers request tracing only and
++	 * pass no snapshot.
++	 */
++
++	if (!snapshot)
++		return 0;
++
++	if (!snapshot->records)
++		return -EINVAL;
++
++	if (snapshot->nr_records > snapshot->capacity)
++		return -EOVERFLOW;
++
++	if (!count)
++		return 0;
++
++	if (!records)
++		return -EINVAL;
++
++	available = snapshot->capacity - snapshot->nr_records;
++	if (count > available) {
++		snapshot->truncated = true;
++		return -ENOSPC;
++	}
++
++	memcpy(&snapshot->records[snapshot->nr_records], records,
++	       count * sizeof(*records));
++	snapshot->nr_records += count;
++
++	return 0;
++}
++
++static int cxl_mem_get_poison_common(struct cxl_memdev *cxlmd, u64 offset,
++				     u64 len, struct cxl_region *cxlr,
++				     struct cxl_poison_snapshot *snapshot)
+ {
+ 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
+ 	struct cxl_mailbox *cxl_mbox = &cxlmd->cxlds->cxl_mbox;
+ 	struct cxl_mbox_poison_out *po;
+ 	struct cxl_mbox_poison_in pi;
+-	int nr_records = 0;
++	u32 nr_records = 0;
++	u32 count;
+ 	int rc;
  
-create-region logged "withholding 1 frame(s) reported poisoned by the
-device", and HardwareCorrupted rose to 4 kB: one page, for the one
-Internal record.
-
-
-To reproduce:
--------------------------
-1. T1 (Terminal 1): boot the guest
-vng --disable-kvm -v -r ./arch/x86/boot/bzImage \
-  --disable-microvm --memory 4G --cpus 4 \
-  --append "memhp_default_state=online_movable" \
-  --qemu-opts="-machine q35,cxl=on \
-    -object memory-backend-ram,id=vmem0,share=on,size=512M \
-    -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
-    -device cxl-rp,port=0,bus=cxl.1,id=rp0,chassis=0,slot=2 \
-    -device cxl-type3,bus=rp0,volatile-memdev=vmem0,id=cxl-vmem0 \
-    -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G \
-    -qmp unix:/tmp/qmp.sock,server=on,wait=off"
-	
-	
-2. T1(Terminal 1), in the guest as root: set up and check
-# mount -t debugfs none /sys/kernel/debug   2>/dev/null
-# mount -t tracefs none /sys/kernel/tracing 2>/dev/null
-# echo 1 > /sys/kernel/tracing/events/cxl/cxl_poison/enable
-# echo 'file drivers/cxl/core/region.c +p' > /sys/kernel/debug/dynamic_debug/control
-
-# cxl list -M -D -u                       
-
-[
-  {
-    "memdevs":[
-      {
-        "memdev":"mem0",
-        "ram_size":"512.00 MiB (536.87 MB)",
-        "serial":"0",
-        "host":"0000:0d:00.0",
-        "firmware_version":"BWFW VERSION 00",
-        "poison_injectable":true
-      }
-    ]
-  },
-  {
-    "root decoders":[
-      {
-        "decoder":"decoder0.0",
-        "resource":"0x190000000",
-        "size":"4.00 GiB (4.29 GB)",
-        "interleave_ways":1,
-        "max_available_extent":"4.00 GiB (4.29 GB)",
-        "pmem_capable":true,
-        "volatile_capable":true,
-        "accelmem_capable":true,
-        "qos_class":0,
-        "nr_targets":1
-      }
-    ]
-  }
-]
-
-
-
-3. T2, on the host: inject two Internal records over QMP(Qemu Machine Protocol) 
-
-
-$qmp() { printf '{"execute":"qmp_capabilities"}\n%s\n' "$1" | socat - UNIX-CONNECT:/tmp/qmp.sock; }
-
-$qmp '{"execute":"cxl-inject-poison","arguments":{"path":"/machine/peripheral/cxl-vmem0","start":1048576,"length":64}}'   # DPA 1 MB
-$qmp '{"execute":"cxl-inject-poison","arguments":{"path":"/machine/peripheral/cxl-vmem0","start":3145728,"length":64}}'   # DPA 3 MB
-
-4. T1: inject an Injected record, and clear one
-
-# ls /sys/kernel/debug/cxl/mem0/            
-clear_poison  dpamem  inject_poison
-
-# echo 0x200000 > /sys/kernel/debug/cxl/mem0/inject_poison
-# echo 0x300000 > /sys/kernel/debug/cxl/mem0/clear_poison
-
-
-5. T1: check the device’s list before creating a region
-
-# echo > /sys/kernel/tracing/trace
-# echo 1 > /sys/bus/cxl/devices/mem0/trigger_poison_list
-# cat /sys/kernel/tracing/trace
-# tracer: nop
-#
-# entries-in-buffer/entries-written: 2/2   #P:4
-#
-#                                _-----=> irqs-off/BH-disabled
-#                               / _----=> need-resched
-#                              | / _---=> hardirq/softirq
-#                              || / _--=> preempt-depth
-#                              ||| / _-=> migrate-disable
-#                              |||| /     delay
-#           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
-#              | |         |   |||||     |         |
-            bash-194     [001] .....   511.644231: cxl_poison: memdev=mem0 host=0000:0d:00.0 serial=0 trace_type=List region= region_uuid=00000000-0000-0000-0000-000000000000 hpa=0xffffffffffffffff hpa_alias0=0xffffffffffffffff dpa=0x200000 dpa_length=0x40 source=Injected flags= overflow_time=0
-            bash-194     [001] .....   511.644343: cxl_poison: memdev=mem0 host=0000:0d:00.0 serial=0 trace_type=List region= region_uuid=00000000-0000-0000-0000-000000000000 hpa=0xffffffffffffffff hpa_alias0=0xffffffffffffffff dpa=0x100000 dpa_length=0x40 source=Internal flags= overflow_time=0
-# cat /proc/iomem 
-190000000-28fffffff : CXL Window 0
-
-6. T1: create the region
-
-# cxl create-region -m -t ram -d decoder0.0 -w 1 mem0
-cxl region0: Bypassing cpu_cache_invalidate_memregion() for testing!
-cxl_region region0: withholding 1 frame(s) reported poisoned by the device --------------------> Withholding  1 frame 
-{
-  "region":"region0",
-  "resource":"0x190000000",
-  "size":"512.00 MiB (536.87 MB)",
-  "type":"ram",
-  "interleave_ways":1,
-  "interleave_granularity":256,
-  "decode_state":"commit",
-  "locked":false,
-  "mappings":[
-    {
-      "position":0,
-      "memdev":"mem0",
-      "decoder":"decoder2.0"
-    }
-  ],
-  "qos_class_mismatch":true
-}
-cxl region: cmd_create_region: created 1 region
-Fallback order for Node 0: 0 
-Built 1 zonelists, mobility grouping on.  Total pages: 1007394
-Policy zone: Normal
-
-# cat /proc/iomem
-
-190000000-28fffffff : CXL Window 0
-  190000000-1afffffff : region0
-    190000000-1afffffff : dax0.0
-      190000000-1afffffff : System RAM (kmem)
-
-512 MB is 0x20000000, so the region ends at 0x1afffffff
-
-./tools/mm/page-types -a 0x190000+0x20000 -b hwpoison -l
-offset	len	flags
-
-
-
-
-
-
-190100	1	___________________X_______________________
-
-
-             flags	page-count       MB  symbolic-flags			long-symbolic-flags
-0x0000000000080000	         1        0  ___________________X_______________________	hwpoison
-             total	         1        0
-
-
-7. T1: check exactly one frame is out of the allocator
-
-# grep HardwareCorrupted /proc/meminfo       
-HardwareCorrupted:     4 kB
-
-Not yet covered: interleaved regions, extended linear cache, poison
-list overflow, hot-remove of a block holding a withheld frame, and real
-hardware. I intend to cover these before a non-RFC posting.
-
-[1] https://lore.kernel.org/linux-cxl/20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org/
-[2] https://lore.kernel.org/linux-cxl/arEz7lp9_nRGwHPm@gmail.com/
-
-Shaikh Kamaluddin (5):
-  cxl/mbox: Add Get Poison List snapshot support
-  cxl/region: Factor decoder poison-list retrieval
-  mm/memory-failure: Add a pre-online poison registry
-  mm/page_alloc: Keep pre-online poison out of the buddy allocator
-  cxl/region: Register device poison before exposing RAM
-
- drivers/cxl/core/mbox.c        | 137 ++++++++++++-
- drivers/cxl/core/region.c      | 363 ++++++++++++++++++++++++++++++++-
- drivers/cxl/cxlmem.h           |  25 +++
- include/linux/memory-failure.h |  92 +++++++++
- mm/memory-failure.c            | 175 ++++++++++++++++
- mm/page_alloc.c                |   8 +-
- 6 files changed, 787 insertions(+), 13 deletions(-)
-
-
-base-commit: a9d7ced84989ec05be09b4b8428759ef60450a0f
-prerequisite-patch-id: fe9d44deb8ccc48c0311bc4131bdf733eb353b34
-prerequisite-patch-id: 4cabe6adb37cd8c218bd43c97970bc65f313b671
-prerequisite-patch-id: 52ad24bceedb9c03df167f10573166a1d97ba97d
-prerequisite-patch-id: 44bfbc8aa3c4b19593f7b0d466fbc0cb99b99f76
-prerequisite-patch-id: 2d344a5322ff07c7895a59d2425540a30e4e0630
-prerequisite-patch-id: e776f306dcbdda3f6972187ad1e43a62c2754890
-prerequisite-patch-id: 3ef887599e31ef973d6d9ca15d0462d55f5f0409
-prerequisite-patch-id: a23fe88ab4529b6a6669a991e15cf1631311391c
-prerequisite-patch-id: 111c69880ed0e148cdda285896c006e8d1fc98a8
+ 	ACQUIRE(mutex_intr, lock)(&mds->poison.mutex);
+@@ -1408,29 +1485,77 @@ int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
+ 		if (rc)
+ 			break;
+ 
+-		if (!le16_to_cpu(po->count)) {
++		count = le16_to_cpu(po->count);
++		if (!count) {
+ 			dev_dbg(&cxlmd->dev, "Poison empty payload!\n");
++
++			if (po->flags & CXL_POISON_FLAG_MORE) {
++				if (snapshot)
++					snapshot->truncated = true;
++				rc = -EPROTO;
++			}
++
++			break;
++		}
++
++		if (struct_size(po, record, count) > mbox_cmd.size_out) {
++			dev_err(&cxlmd->dev,
++				"invalid poison record count: %u\n", count);
++			rc = -EPROTO;
+ 			break;
+ 		}
+ 
+-		for (int i = 0; i < le16_to_cpu(po->count); i++)
++		for (u32 i = 0; i < count; i++)
+ 			trace_cxl_poison(cxlmd, cxlr, &po->record[i],
+ 					 po->flags, po->overflow_ts,
+ 					 CXL_POISON_TRACE_LIST);
+ 
++		if (snapshot && (po->flags & CXL_POISON_FLAG_OVERFLOW)) {
++			snapshot->device_flags |= CXL_POISON_FLAG_OVERFLOW;
++			snapshot->overflow_ts = le64_to_cpu(po->overflow_ts);
++		}
++
++		if (snapshot && (po->flags & CXL_POISON_FLAG_SCANNING))
++			snapshot->device_flags |= CXL_POISON_FLAG_SCANNING;
++
++		rc = cxl_poison_snapshot_append(snapshot, po->record, count);
++		if (rc)
++			break;
++
+ 		/* Protect against an uncleared _FLAG_MORE */
+-		nr_records = nr_records + le16_to_cpu(po->count);
++		nr_records += count;
+ 		if (nr_records >= mds->poison.max_errors) {
+ 			dev_dbg(&cxlmd->dev, "Max Error Records reached: %d\n",
+ 				nr_records);
++			if (snapshot && (po->flags & CXL_POISON_FLAG_MORE))
++				snapshot->truncated = true;
++
+ 			break;
+ 		}
+ 	} while (po->flags & CXL_POISON_FLAG_MORE);
+ 
+ 	return rc;
+ }
++
++int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
++		       struct cxl_region *cxlr)
++{
++	return cxl_mem_get_poison_common(cxlmd, offset, len, cxlr, NULL);
++}
+ EXPORT_SYMBOL_NS_GPL(cxl_mem_get_poison, "CXL");
+ 
++int cxl_mem_get_poison_snapshot(struct cxl_memdev *cxlmd, u64 offset, u64 len,
++				struct cxl_region *cxlr,
++				struct cxl_poison_snapshot *snapshot)
++{
++	if (!snapshot || !snapshot->records || !snapshot->capacity)
++		return -EINVAL;
++
++	if (snapshot->nr_records > snapshot->capacity)
++		return -EOVERFLOW;
++
++	return cxl_mem_get_poison_common(cxlmd, offset, len, cxlr, snapshot);
++}
+ static void free_poison_buf(void *buf)
+ {
+ 	kvfree(buf);
+diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+index c401e3a1af06..1d6f8d958bd2 100644
+--- a/drivers/cxl/cxlmem.h
++++ b/drivers/cxl/cxlmem.h
+@@ -812,6 +812,31 @@ int cxl_set_timestamp(struct cxl_memdev_state *mds);
+ int cxl_poison_state_init(struct cxl_memdev_state *mds);
+ int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
+ 		       struct cxl_region *cxlr);
++
++/**
++ * struct cxl_poison_snapshot - Aggregate Get Poison List result
++ * @records: Copied Media Error Records from all mailbox responses
++ * @nr_records: Number of valid records stored in @records
++ * @capacity: Maximum number of records that @records can hold
++ * @overflow_ts: Timestamp associated with a reported device overflow
++ * @device_flags: Persistent device status observed during collection
++ * @truncated: Host stopped before collecting all available records
++ */
++struct cxl_poison_snapshot {
++	struct cxl_poison_record *records;
++	u32 nr_records;
++	u32 capacity;
++	u64 overflow_ts;
++	u8 device_flags;
++	bool truncated;
++};
++
++int cxl_poison_snapshot_init(struct cxl_memdev *cxlmd,
++			     struct cxl_poison_snapshot *snapshot);
++void cxl_poison_snapshot_destroy(struct cxl_poison_snapshot *snapshot);
++int cxl_mem_get_poison_snapshot(struct cxl_memdev *cxlmd, u64 offset, u64 len,
++				struct cxl_region *cxlr,
++				struct cxl_poison_snapshot *snapshot);
+ int cxl_trigger_poison_list(struct cxl_memdev *cxlmd);
+ int cxl_inject_poison(struct cxl_memdev *cxlmd, u64 dpa);
+ int cxl_clear_poison(struct cxl_memdev *cxlmd, u64 dpa);
 -- 
 2.43.0
 
