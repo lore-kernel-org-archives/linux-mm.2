@@ -4,164 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 949CCCA9EBB
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Oct 2026 23:37:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C71F9CA9EC0
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 00:10:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05A2F6B008A; Fri,  9 Oct 2026 19:37:49 -0400 (EDT)
+	id 6D9676B008A; Fri,  9 Oct 2026 20:10:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 031646B008C; Fri,  9 Oct 2026 19:37:48 -0400 (EDT)
+	id 6B7256B008C; Fri,  9 Oct 2026 20:10:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E64076B0095; Fri,  9 Oct 2026 19:37:48 -0400 (EDT)
+	id 59F896B0095; Fri,  9 Oct 2026 20:10:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C023E6B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 19:37:48 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5BEA0A8127
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:37:48 +0000 (UTC)
-X-FDA: 85304702616.10.2D4F4B4
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9101AC0002
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 23:37:45 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=F0bd4tpR;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b="ruN6/6MK";
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf22.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791589066;
+	by kanga.kvack.org (Postfix) with ESMTP id 30B1D6B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 20:10:32 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A29771405C2
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 00:10:31 +0000 (UTC)
+X-FDA: 85304785062.11.4C01685
+Received: from mail-dy2-f9.google.com (mail-dy2-f9.google.com [74.125.229.9])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AD049180006
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 00:10:29 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lQk0dkmt;
+	spf=pass (imf16.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.9 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791591029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mw41Ih6nkA8nu506+XqGmwlrnZ/sLArqz6JBrx/ZQ/8=;
-	b=MutqPjcCbioWiKlnraOnE9ZCE1aTmk2QnHwIoJ1ONZrLFZujwQhHqmQA4Npx3weK6/4Wh5
-	YrF6xz9crhxTZ1RKHzyJKlvtZVdodo3LANFp5qnAXmNqsVygxIJdqMvOQYB7oEcirHlqgs
-	R/sqGvLdLgIcuTqv3xVl08F38ioFSmQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=F0bd4tpR;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b="ruN6/6MK";
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf22.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791589066;
-	b=s61lrA9b1JwAwXVqSnVj+yWsS4m7ZIDp7kae1xNznHw61CIHf8UDk8picuLBA6ikLbouNP
-	F2/8TGhKFPHaXwqWSxhnzoGGSeB4tOb28db+YU1GIr1k3bqH1G9LCcgP4lOvh9zFsExDh2
-	egdHOHRCxTVnMDmRZt9lUElBJIZQnDY=
-Received: from pps.filterd (m0167068.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 699MYuw61641887
-	for <linux-mm@kvack.org>; Fri, 9 Oct 2026 19:37:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=Mw41
-	Ih6nkA8nu506+XqGmwlrnZ/sLArqz6JBrx/ZQ/8=; b=F0bd4tpRaRd08v6gRl4k
-	jlev/an4adj4/T8QMaJMelhn0rrE9LbnL7ue/gbLQT+nJIczpAsUfcfJkGkCn/XA
-	xzQlc+cmmw2SJ9nw3lFmIXaGIiywjmNBvZ/U8mp5TKp7jkBouKTdEw6CWN8jvswV
-	COzz0IKzwRTTPVUZJaUFglTJX3e1kaqrtvK3L/Qpg5qs5eWTiznlGx5IP51LPjx8
-	DYbm2JjF7bvLg8BVqakzJxAOOQfC/yUSmsPTGn+tQNqZjFReeKMQeKZ41+nxx0Di
-	hNL5uO2SDcdLfzMr4YYzMJR4fl0tZbPBUn6BmbEdMpOvxmfz7y8ROf4AIl1ZvV6d
-	2w==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4h74ta2evk-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Fri, 09 Oct 2026 19:37:43 -0400 (EDT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-9197553d398so7931446d6.1
-        for <linux-mm@kvack.org>; Fri, 09 Oct 2026 16:37:43 -0700 (PDT)
+	bh=cR/CPJKG3NoiCnDGVGJZMEP7USNRf/dhi11bwg0wPvE=;
+	b=Mi9Hew6ZEhpPFe26Up+caJ9UVpQ/bE1pT/hDm9PAJt092KTguZdH8o7udNfS/BvYHY8huU
+	IfcTjBL5AMjuITSDRpBqZxyhZJq2VUET1AhtRmZs1MVMYMVav7BskHGLVDneG6wW+fUABl
+	2t8UqVqr9BznXpLx7rMataKPZ1gHvJs=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791591029;
+	b=0JqD1A3QEw5Fy7ZA6xc9NJgkS6JL42fJwXB04gKKx4frLnRIKfJO2oTPOmbaelgfMOUbBt
+	wpII8u+nNbzvJ5s3g0qulrbFRsX4SGQiIEzZABtOWSiMgCsAmZS/v/aeuFls4EHUgcvTEb
+	baRdUXM7IO3PdcsHuaDi5hrYt2YyvDU=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lQk0dkmt;
+	spf=pass (imf16.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.9 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-dy2-f9.google.com with SMTP id 5a478bee46e88-3514b7a0a23so204303eec.1
+        for <linux-mm@kvack.org>; Fri, 09 Oct 2026 17:10:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791591028; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kp4wbkxKTutHJcCbbNzXopuYR4PCcW2T0E38dvj5XY3OZ8ah0Ex54GIohR2rWcUs3B
+         3Q7qTs00RXpHPzAORYCt+Rh4U20YrtjKvrV0oeAqVVfnFtpS9y5wkKjCfD294hBcsavY
+         9F5Yzx4vlG3VfOKJcblDweGkCo+NmGSftZMQA7bGq1xeLaOFcyTep51mLLcKYt8T/7MC
+         UTqmot9PND574i/WYrLALdf2Lt1HsNfvYwxHqT8tpkD2QE6pyMTeRDy96jKY784Ebpjd
+         KD+urVjOzvXVqSL5aYJI5uOPhepUbB+00WhLOsfsxBJad8OkPvKf/DfvSLpDOmrKpika
+         We3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cR/CPJKG3NoiCnDGVGJZMEP7USNRf/dhi11bwg0wPvE=;
+        fh=/TcIzl5bz6PzMGc3hml1oZtGG6B9yy2ozDnti8InJVA=;
+        b=cYKvONNjhX14ruioUndCsUPLlVNJAsqBauF+Aw8kKu9qu/z4nGiRrXz3KZrTqLx0YE
+         HhCiuT6/AGwyHkRj04yzFyd3w8g6BD1TO0dxy18cVx6o4TEps4HUCWe/fs0ixHUhBII+
+         aiTmInV8IslxHEg8PMX2Z3PV0CXLiNi33PAdNcaNPkbE2V7Dt8Lqq8IJUvR1Hy+jYr0p
+         DafkdVC052o8LU1xWv6dvZJ6tXu093rkVblZNRiGo7Vm/hsku8dhxIq+LtWXp6VSCrRX
+         Vs880pqOZKQs0lAQjp6yYMJ5FSwmfq1NsNt4zgFm1rC4CsIVCOMM1Y3JTsxf1NXqjX5r
+         D6Rw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1791589063; x=1792193863; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Mw41Ih6nkA8nu506+XqGmwlrnZ/sLArqz6JBrx/ZQ/8=;
-        b=ruN6/6MK3XYjnQoHm1IaIFMw0y19Y2K30pt0Zk92t7EFfQmIU5x/f7hf6W4114/DIG
-         aNOvjYYQHUIWEWE6RvRCatkXLHETPzqmKJU7nOXEr3E+fKigWl4BCKSOkHi6AG+4JJ1d
-         SJZ+Qnj1ATHKVyonslIczwxtxK9Pyxqr9TFVF/7cbUoAUVXS0utKZ3RScEODzGVRdc/p
-         BfzeUNVZ+8MNJhHNZm2uSTQH3F6w2CIThFg2OaoFg7sV26qzCAgi2PRKuJ0WFUx0iem0
-         cTb+KQ/fZgCcNIeCtc71Beu1XKSOBioTURp0x3l/kRqHmGfMQdacmXMAezYp/ZlaHQ5t
-         DO+Q==
+        d=gmail.com; s=20251104; t=1791591028; x=1792195828; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cR/CPJKG3NoiCnDGVGJZMEP7USNRf/dhi11bwg0wPvE=;
+        b=lQk0dkmtKgxtcVL5KjthrVoBzToHUZ79DW96X1TYVcIOUKJJLLRuyXtSPGq+Lm7iW1
+         aF8WODGav0IOPtg82tIfLpchIZ/Q40EHlJYXSMJ+m2bpYouNIVUXg+AjrpwkhmRvHMOh
+         X38Fwo/a9+sdLuF4lQnyuljenE9rvhVk8l2Kw6vj8/xUgza043Vphv5+jXc8PDayH8jm
+         M8Qg1vyKEA8TtXQpALG9jF5sO5ZNAArwzgkT26ijsIbAo2CCLiZVKZYPlvywJMeQPwnX
+         nCBNGZ/q17vtOaRHOQXQwhkvHdI+LWp8h4hegY9kY4UDi792+6Fe7gInGyJMRfguiTOv
+         zDPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791589063; x=1792193863;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Mw41Ih6nkA8nu506+XqGmwlrnZ/sLArqz6JBrx/ZQ/8=;
-        b=u8YbkW5UhGjt+Mpg1WxjU5QcqeGaqUB9qWiCIr1azJqvbyOhlqKPd0wyDJDyX3ssNs
-         R33tV45clAVfApcXDh35iU/Q9VxqWtIerQhNHCHJaSwMhSUXS1P2GtkCcdC6aRvHJFi9
-         /egtubLSgUOdEALIjPZjlYoARil6ps1chyB+ad1frCKYN9kVm9cCCfidtpLL0tHQestH
-         YhuvXzEZLUfgUt2x6sUrcvTGXvd1xrxxfsTioaIGTKOL/usyodgmmpT9jdsRBIjSWjxX
-         ovzdXaYYCVeIUhEfoifonflJ6JRhKJYbK9E68OerwHSlF7cQlw+m6ClJl3NdW9MaCvjS
-         GoaA==
-X-Forwarded-Encrypted: i=1; AKwUvBxUtyjGC2IyCAhOOIiA1yVs0r1xpQluXjP7jTpfkjM4Oay1utmN+SlYkvZPFSGAPvbFrOqYmueptw==@kvack.org
-X-Gm-Message-State: AFq9FYLZ6B6oFT435YZZOWiO+Le0d+DN36unyG8tE5okTeoX+9s2bIPX
-	lQoEDwbal3KYjjc4h7K/2aoVpFQT0wFRd6i++L56VUCPsDeblHqsOcA6+cWkNxgWCqCFNskZtG8
-	rx1L2AeDcLdt4n5lK2y42gJVqA3sah1n34+UCiWpsLr3zKQ/U5S17n/9O
-X-Gm-Gg: AYBFou3yScIeD3l6Tk1MkRVJItp/1Q8x+8mQ0/f8eB9aymvS5AB9LzIKoMyLFs8alUp
-	VAs+Q6/yMMkwXPJYPgYvyo5tXAXsPImNPL4ulyPaGwicnvka45ShhM85m9C5lb0BT2+5G42xCdq
-	yDp0vVJbxcxne9ynj+Wqj4j0VrNAPXdk5+2y41xz/YeX4ZE2dAIw4Wa5RUYzn36MtplCLnugBwI
-	j2gj7H3Xi8qou8UkEIui211kZ/3BJq75x+Yf5td5NkxpdT2xuFHVnBKlQeOXbcp4cR2EKnzihoy
-	aYMby8jY5c5C3A5TaeobyaiQDkMV+sZppwGnhsJlez8zE0lwhmVhTDWdZZl4CAvyYWT8JuY19E4
-	IaBvI3qGqL6NpMZoGt6Wr45NstQBeIyiEK518UMF423R5gKAw
-X-Received: by 2002:a05:6214:5c43:b0:914:4464:41b8 with SMTP id 6a1803df08f44-91b554f0b6bmr59818366d6.12.1791589062859;
-        Fri, 09 Oct 2026 16:37:42 -0700 (PDT)
-X-Received: by 2002:a05:6214:5c43:b0:914:4464:41b8 with SMTP id 6a1803df08f44-91b554f0b6bmr59818066d6.12.1791589062379;
-        Fri, 09 Oct 2026 16:37:42 -0700 (PDT)
-Received: from [10.207.9.0] (nat-128-59-178-194.net.columbia.edu. [128.59.178.194])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b550e177csm30584396d6.47.2026.10.09.16.37.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Oct 2026 16:37:41 -0700 (PDT)
-Message-ID: <6fcad27b-b13f-42c3-a400-89115a23af70@columbia.edu>
-Date: Fri, 9 Oct 2026 19:37:40 -0400
+        d=1e100.net; s=20260707; t=1791591028; x=1792195828;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cR/CPJKG3NoiCnDGVGJZMEP7USNRf/dhi11bwg0wPvE=;
+        b=1kNw86amY3zLn2y4eK9CBRtGUTyE141oyRFhPp2x/GAvebtJBNsozAZkqKvSXtJ81V
+         rkE7damulxlw1orK3gJaswFfWrs1RyThECazEUQOiTz7ARibuiJ/iGhQ09PXNLR8ECpz
+         Qzb+qjVgKlgqcGVeb/SXYDeYbLxOZ94/tMl07PRuMtulBe+CRGM7NNNYmev9GKyjLEUM
+         00abg4lFixqntlvAgudhvTnGqJ+2xJluLJOqV1O8atBBmVj0ojI5kGJ5/FHDBnBJ2GHC
+         TXmaHCrfJi13UFfGN4IkpKr7g83+gadffzUnx9Relr74M0L63fkKXZFJgAMP04GN6br6
+         JlHg==
+X-Forwarded-Encrypted: i=1; AKwUvBytjTnUhE5dm10iBE/aPcFbAlVTroGu4I+AYfvVdcuVSk8530moQgFz6u8euRe5HlCJRFpAAFDlLA==@kvack.org
+X-Gm-Message-State: AFq9FYLVFmjVrF8hMPO8sjUat05wr9Ht5iYa7KBiKBPUp9FW1txZrJIV
+	CJMPsGv3xdg5Z0nkRbVazuXCckORQSquqKptlGJVhqe2dwQKH6SeFvA//8goBVe7o5PXWwKaLQ5
+	w4hDk5qLbXTYePIXzAuIS8Aa8W6w2HQ==
+X-Gm-Gg: AYBFou2bRhatfWV2NXiGqfUL3z2nVj2GGn6ci+cXM4sCVVEWj4X1y24xS0D/r4V/P1K
+	LiIb5PDWOCc3MJw9qCTfW1Rz7qEIpT8tJBOC74QTQhHQiD0uG50ouNPMzhFq5aeG2ChsxmpQ29u
+	Ah8+EKC1Zavgbs9cSU0kxRTEWWHSXCW5/zLWaX8x+rRzB2JiRDKljiC5WXBbgNYq7XBfAGiHl1/
+	RJ70ouTQ4GkExvI/KMFlV+aMswquZLzG/EyQtw1fJ+AYD46mB3iLDO9bM8SqGmcRGLxI9TboBr7
+	oYizwq0XzxEiawEhChon855YpdK8ScTwmt8ufsAGivKjXOD/oCvs/8Fs
+X-Received: by 2002:a05:701b:2607:b0:144:f096:4dd1 with SMTP id
+ a92af1059eb24-16a611c76a1mr3960393c88.41.1791591028199; Fri, 09 Oct 2026
+ 17:10:28 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] ramfs: Use filemap_add_folio() on nommu systems
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
-        linux-fsdevel@vger.kernel.org
-Cc: Daniel Palmer <daniel@thingy.jp>, Lorenzo Stoakes <ljs@kernel.org>
-References: <20261009165518.3863950-1-willy@infradead.org>
- <20261009165518.3863950-2-willy@infradead.org>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <20261009165518.3863950-2-willy@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA5MDA5NCBTYWx0ZWRfX6/NNvHhwW3lS
- iecsIIJtuC4XNuhC9SrDs2z6nt/2VUiQRO1xKqIeXhzr9x5dEU+jvNfLcyv/lYUb2zGMnu2J/ad
- dQ0fw/KB2FEe+jNFLFusj2vcxhxwXIzgzkSgFSVm49nRq/M6pL3Y3Kug9z+2ASae0F/Vi/ynNmd
- yf/nE4b3BLAzXf3Q2uampBGT9QKf5g5grytyV5/+BZwIByrIPTg/VoqyjEprqafwfKg1ikp5CYt
- Tywd1SUKexZbNn2MW+XSgoJvTvhb4yQzW2h/2HDgrUAdIxOZ+0/C6kpE80NjqJp+KyxZaiUt8Tn
- DNxUFoy8RA9Buk/KGO5Vb/w601g1isLaFTOry6folzlZKzDt5Ul8ZNXIYKZdygOnE2QeauCCgzS
- kdPEcQxaUxNbo+AEWeOF63sXHpPzWLQEw1pmNaWgDtFBuEgag5d2mBwQzYbELUl5M6wmgPD+nf0
- qEVROSiZbR6v1L+2nPw==
-X-Proofpoint-ORIG-GUID: ck3lE8arrnv0Czg4Hx8zerMId-JdmkaC
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA5MDA5NCBTYWx0ZWRfX9j6pUBIKZh2G
- 7TfmD4GwszH4sgIr0h6VyRbbbo+2ocMFsekm32zmp8LJ/mW+v045p61ZP+ro0IjSYZptAklq2sT
- R/gFfyCLCms4IX4QpUQC6k2UDWXHySGcsHMM3lFx6F4zHW78aWnR
-X-Authority-Analysis: v=2.4 cv=aOBlOr9m c=1 sm=1 tr=0 ts=6ac97ac7 cx=c_pps
- a=wEM5vcRIz55oU/E2lInRtA==:117 a=u0MKzLA9JmpizDwXU9Rxjg==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=usPcmh10W0ubT8QP8_c3:22
- a=EhlLoIHFiy2N6aASVCcA:9 a=QEXdDO2ut3YA:10 a=OIgjcC2v60KrkQgK7BGD:22
-X-Proofpoint-GUID: ck3lE8arrnv0Czg4Hx8zerMId-JdmkaC
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11930
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 adultscore=0 spamscore=0 impostorscore=10
- clxscore=1015 suspectscore=0 phishscore=0 lowpriorityscore=10 bulkscore=10
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610090094
-X-Stat-Signature: h6ze5f4a61aaam4zfum7hne8fz8knxcg
+References: <20261003202727.3673-1-ravis.opensrc@gmail.com> <20261004080110.37328-1-sj@kernel.org>
+In-Reply-To: <20261004080110.37328-1-sj@kernel.org>
+From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Date: Fri, 9 Oct 2026 17:10:16 -0700
+X-Gm-Features: AclHuK9iErDpI0ky8YsjjXHUJ1Bhqg2BvHDmttXO2gzSECAslgV1ytghZLxTEaM
+Message-ID: <CALa+Y17H55dp07Td7oqhDPq0TmuWHFB9DNcXNZ91Su_di2vhnA@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon: add damos_node_eligible_mem_bp tracepoint
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Bijan Tabatabai <bijan311@gmail.com>, Ajay Joshi <ajayjoshi@micron.com>, 
+	Honggyu Kim <honggyu.kim@sk.com>, Yunjeong Mun <yunjeong.mun@sk.com>, 
+	Akinobu Mita <akinobu.mita@gmail.com>, Lian Wang <lianux.mm@gmail.com>, 
+	Kunwu Chan <kunwu.chan@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: AD049180006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9101AC0002
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791589065-140903
-X-HE-Meta: U2FsdGVkX19Uz7tJ+ylvXmEMzMQ8gWkHvOi/BVIePp7zSW4ANriBIngNXqje19cbF3zaGWY3AYpV6+wjvNs8bHzl/NKy6QMmbapf8Vy7uMbAOSAiJND9HI1aLBl3gNtPVaODRv5NZfbAG1NHlydHmyyAo9t7rwK8hfP8izEH/QWXblR2yHypEoHN5E+VMxZOJPrCJeOPu8BDzWodqh9SFFHEjBy8P6cMKGaAAQEKT3szc99ypZI3m4P8FZQHCajciJp7/csc5WuAG5dYmXYsTmDcKNfy+c310wKGcJuBNdIR0k50en10cBeCwJnWmwOLJYLmjg+/IEAvdFomRPAqX1ZIco7+phbwdAso0YaZHh5tAKpXpl3ESn9By21DdKIx4W9RMY3ONiS9ZY+9KLNKyJmKo087fNBcaSgfsZWDCoeSsEQUPLhgRhJDTJdMuAeO0jqYNgFEAsl/7dLBNNcWKNA4fFhYrmIGN0FASgYNoC06r/nF59aCYWMVr3FAXU4nP+6A5tna+gD+/6xCTVvPzFlISYAuCUQXTvOEwUL+0Xg3uEDqNsh+zNCNODboOlkMpk4wschTK6G9OJfwuTbwQsdZEhO6FxpMXoFxAJcDlXP+lwb/Xa/Iejk+3CSucU5KJNt4SRFLPKdvKvZBPMgTNcMk805glzWyo+3fvyMWAhIsJaqMlW2PDmh6NeH+pdyeQal3QUFXRVse9QVTE5DUy4JORK6i1YFZvvNdFFWw7nvpByVfCgwr6VLa0E0XyWMNat+OJ0WVieJCorU8SFqPi7Tfc/6+D7KiixylU+yqugxcPuovekLkmK9GgzsjsVqd91Dq+Tbb0wv13C51y9jPoMhdxlwCP3zuJgRutSTHyB2hwqOMNuSkStp2fjMlLSZLJVgz2uxCc0y3VReQJt7KMYmyW1Xq39nw5K0QBk46Y4j81dIN6nfJftQhx2cMlV/oQofRt1FcLv0kmpGqrXL
- jl99Gh0e
- 48rFrwkpE6xvyyPU7g4dFN2/fgEdLOn+L8yTdGqySAFllmDgjbc9CKs8jMJQwpTflb1y4WLOmHzklwQ1ZsnNjRtJXTewCQlreCNwCKB9aE0GOGhGUQ5Nrvqbv8zyCCRUyN/chhTr9Gkvl69p+vFWMvlbNq/KgUFP55jYZ80el/7G4yQJrclWpUnNyiN9qX1FIVbUtruUdvZ21jBt99UqoYtA1C2Pm/AoGVXzm9+rzmtBu+mnZLTj6o1e2iBjApP0GXS0qsk+qSOXj+GtUYAm8xKO6se43K5NadNEmFC49XBkzimhGEdh1fQ7iV7b3IjwhT5k/4vrLsZAq+zjkPz/kzxE7/iz2X9Rvyqy3EB57OMibOPNpruq7u1/hDpvNR3QBNJRa7jBrNgTqHmuE815l0vFIbXTSFRHzw471H+s+NNqOEvRbRsQYRaLKX7uO0u9d7qSmsm454Yk8E0U=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: xm7aerhitpddnbz86ng4j97kf9moedta
+X-HE-Tag: 1791591029-482148
+X-HE-Meta: U2FsdGVkX19ZwdBvEQRoUTlNWiQDObgDHu9ShJT3datd5O/aS6Vngy8Ap3km9spmyXmvggCBip5U1P0j4a0xQXcZsbzGfUxho8KJMgEtLcM1y5oQlyBm8fn2zpAhuALlaRyhCIR6OU+Cx6xM+ouubdGfLaDzZivKs8ByXUl5Vy5Dc3LWMORzgWR9D44aGOf8wbpj8WRqWbW7F+OcRl0L5fG6J30CJ1rsDdluV8YtgI4xJ34zuPtc0ibjRsYCd29xCnF6NE0KlWbMkUgO2F/XtclB11zfhxjVSPSkT/s0OJXaBziESGqDfFivrVRSZ3BbN0SXKpDnRn6JERzClUf9Q8XcDev/ae3FfcLrMs5fqabKeRvfb8C6zt6XPclhv70K0wQs64CLV9nHDSZlSZhluE+qjhltRAd6wfpQn2qGobuEI4Pz+CWi/uGoE1PyI4XhY6BXeB3nhIF2C/HOphz+LUjTnHW0AHlJzuv0vIcn7TLvaMhcqUuA+rHHd2phkllBUxoZkajF9zWMPA+rpaY5/dXeJn8FJQj22WAG/TaoFPQdXhfQYG6kDSdJkPc+zOLRed1KayjUe0XK7spghp1w45tAwb/mb9HtHh2/OicUxRv2ySnnyorvF39ii67unx35mXGXHCBkN3PBB9LgcPG/xwvq97HVf3bYPyXnEPzwdbUHUBHgwU0OIZYNs5CbTJFqd4Wz9h8M19NUa3pNbFLGleJnwkw13rX5oGLR9evEsIT2Zxauiff1gAcoXxtr+iZHyXyD6JjIwlSz7xXhK95qZIfyzaWn9QkIYRfP4cthe1OsY3MWXl8+yRkI/i1nFefn3ZKoGd0X4uUvmQ3pmtJ1uLxJcpZbJBD5gIfD17EowQWJRMTPkzhTyquEyGG2Sr1pLNmbzU56HSnliGTp9fajWxoJW8QO5l4n3YkPetjhvhBPwBZssG0yS5yLXQDKVntvqqGrgMtIPQk1KTbzWQA
+ Zu0fJulR
+ qBvmMDx+WvuvJHBtbskF725XY6ZPfQhOPOh17/0NYAlVPhao9XjTffXHKkwqaXPOs8kBkb2KG+9CT82BmWwGbPbCRFtfrW6kSktd3UMF5lEu6GqXSf7y6/vZJL1D9SQISQ6OLHNub/KFLMihigDLX3JxPkW7I2mv0n9xeppPdCYBJNSZQY3McxhaQw5D+lZI6jghYUCelkF9ydHtDRsMTaBtx6wV8jOrorTZ/CjYIWX+m+qTyIPnREfHw/z9dzW1kPx64gAk+3HxembIpoQnIK0/N1rN2YyNyqS0bjBPsAtdJC4pbUxmIBsJv5wU/Gqf9KSdmTXGjY9xZH+8HTbtQ/OWjfPI5sNssRVPfHcmvQ5te70cAkzV/2sRhgqY+MGruCYIfkOY2agId6TXYHU8G9PQretf+pvT3TvSCaPbOXZsqGVEpyzSV9jrHM7DU7grNIIMKXzlJvys8NjiWCslRnlVUifZGb/m9Zh5N1tDwVDyTFNd79r+Ru1a2f8cQadOl59n8WvHoC8hwoH/Ipn/5swE6Q2yOwXnG6xpC2G2kGybueh3koowatL+k1EiaYN+PmtUP2bbNNwnkGgRb0PLK5D38eQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,128 +144,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/9/26 12:55 PM, Matthew Wilcox (Oracle) wrote:
-> 
-> Don't send this upstream yet.
-> 
-> Need CONFIG_LARGE_FOLIO first.
-> Need to enable CONFIG_LARGE_FOLIO on nommu
-> Need to handle errors from folio_split()
-> ---
->   fs/ramfs/file-nommu.c | 53 ++++++++++++++-----------------------------
->   1 file changed, 17 insertions(+), 36 deletions(-)
-> 
+On Sun, Oct 4, 2026 at 1:01=E2=80=AFAM SJ Park <sj@kernel.org> wrote:
+>
+> Hi Ravi,
+>
+> On Sat,  3 Oct 2026 13:27:27 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail=
+.com> wrote:
+>
+> > Add a tracepoint for DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP quota goal
+> > evaluation.  The tracepoint fires once per quota-score computation when
+> > the goal metric is DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP, exposing
+> > context_idx, scheme_idx, nid, target_value, and current_value.
+> > current_value is reported as the quota tuning sees it, after the goal's
+> > complement setting is applied.
+> >
+> > The DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP metric expresses node memory
+> > occupancy as basis points of eligible bytes.  This information is not
+> > exposed through any existing external interface (perf stat, /proc, or
+> > sysfs), so the tracepoint is the only way for userspace to observe the
+> > target and current eligible-memory basis point values at quota-scoring
+> > time.
+>
+> Thank you for this patch!
+>
+> We have damos_esz tracepoint.  Have you considered using it?  It doesn't =
+expose
+> the current value, though.  I thought it wouldn't be real problem in most
+> cases, but I can show it could be problematic for node_eligible_mem_bp ca=
+se, as
+> the metric value is not straightforward to see without using DAMON.
 
-You beat me to it ;)
+Hi SJ,
 
-I looked at this a couple months ago but clearly there were some issues...
-I'll detail what I tried below, but I think this is better (apart from a
-couple small things).
+Yes, with the temporal goal tuner, damos_esz only
+tells whether the goal is met, not how close current_value is to
+target_value, and damo needs that to know when a step has settled.
 
-Instead of folio_alloc() and folio_split(), I just did alloc_pages_exact()
-and virt_to_folio() on each page of the returned allocation. This avoided
-the THP dependency but also added pages to the page cache as order-0 pages,
-which kept the loop and was generally ugly. So I like this version more.
+>
+> If you really need to know the current_value, I'm open to add a new trace=
+point.
+> But I think it has no reason to make it only eligible_mem_bp specific.  H=
+ow
+> about adding more general purpose tracepoint, and/or update the current_v=
+alue
+> file [1] under the goal sysfs directory to show the current current_value=
+ for
+> all goal types?
+>
 
-However, since we can add a large folio to the page cache with this approach,
-I think we need to fix up ramfs_nommu_get_unmapped_area() for large folios,
-as it doesn't account for the requested offset when doing the pfn checks and
-incrementing nr_pages for the contiguous range check. It could probably be
-simplified by using filemap_get_folio() and folio_next_index() instead of
-filemap_get_folios_contig().
+Agreed, nothing in it needs to be specific to node_eligible_mem_bp.  I
+will rework it as a general quota goal tracepoint, emitted for each goal
+evaluation with the goal's metric, target_value and current_value, the
+node id for the node metrics, and the memcg id for the memcg metrics.
 
-With that, I think we could also pretty easily enable large folios for
-regular ramfs files. It's just a matter of adding fgf_set_order() to
-simple_write_begin() and mapping_set_large_folios() in 
-ramfs_get_inode(). Is that worth doing?
+I would leave the current_value file as it is for now.  It would need a
+stats update command or refresh_ms to stay current, and damo wants every
+evaluation as it happens, which the tracepoint gives it.
 
-> diff --git a/fs/ramfs/file-nommu.c b/fs/ramfs/file-nommu.c
-> index fb471bf88ab7..92f33bc7a49c 100644
-> --- a/fs/ramfs/file-nommu.c
-> +++ b/fs/ramfs/file-nommu.c
-> @@ -61,8 +61,8 @@ const struct inode_operations ramfs_file_inode_operations = {
->    */
->   int ramfs_nommu_expand_for_mapping(struct inode *inode, size_t newsize)
->   {
-> -	unsigned long npages, xpages, loop;
-> -	struct page *pages;
-> +	unsigned long npages;
-> +	struct folio *folio;
->   	unsigned order;
->   	void *data;
->   	int ret;
-> @@ -82,49 +82,30 @@ int ramfs_nommu_expand_for_mapping(struct inode *inode, size_t newsize)
->   
->   	i_size_write(inode, newsize);
->   
-> -	/* allocate enough contiguous pages to be able to satisfy the
-> -	 * request */
-> -	pages = alloc_pages(gfp, order);
-> -	if (!pages)
-> +	folio = folio_alloc(gfp, order);
-> +	if (!folio)
->   		return -ENOMEM;
->   
-> -	/* split the high-order page into an array of single pages */
-> -	xpages = 1UL << order;
-> -	npages = (newsize + PAGE_SIZE - 1) >> PAGE_SHIFT;
-> -
-> -	split_page(pages, order);
-> -
-> -	/* trim off any pages we don't actually require */
-> -	for (loop = npages; loop < xpages; loop++)
-> -		__free_page(pages + loop);
-> +	ret = filemap_add_folio(inode->i_mapping, folio, 0, gfp);
-> +	if (ret < 0)
-> +		goto out;
->   
->   	/* clear the memory we allocated */
-> +	npages = (newsize + PAGE_SIZE - 1) >> PAGE_SHIFT;
->   	newsize = PAGE_SIZE * npages;
-> -	data = page_address(pages);
-> +	data = folio_address(folio);
->   	memset(data, 0, newsize);
+Thanks,
+Ravi.
 
-Should this become folio_zero_range()? I don't think it functionally
-matters, but it looks like nommu arm does implement flush_dcache_page(),
-so... I don't know...
-
->   
-> -	/* attach all the pages to the inode's address space */
-> -	for (loop = 0; loop < npages; loop++) {
-> -		struct page *page = pages + loop;
-> -
-> -		ret = add_to_page_cache_lru(page, inode->i_mapping, loop,
-> -					gfp);
-> -		if (ret < 0)
-> -			goto add_error;
-> -
-> -		/* prevent the page from being discarded on memory pressure */
-> -		SetPageDirty(page);
-> -		SetPageUptodate(page);
-> -
-> -		unlock_page(page);
-> -		put_page(page);
-> -	}
-> +	folio_mark_dirty(folio);
-> +	folio_mark_uptodate(folio);
->   
-> -	return 0;
-> +	/* trim off any pages we don't actually require */
-> +	if (!is_power_of_2(npages))
-> +		folio_split(folio, 0, folio_page(folio, npages), NULL);
-> +	folio_unlock(folio);
->   
-> -add_error:
-> -	while (loop < npages)
-> -		__free_page(pages + loop++);
-> +out:
-> +	folio_put(folio);
->   	return ret;
->   }
->   
-> -- 
-> 2.47.3
-> 
-
+> [1] https://origin.kernel.org/doc/html/latest/admin-guide/mm/damon/usage.=
+html#sysfs-schemes-quota-goals
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
