@@ -4,96 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ECBECA9EBB
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 01:13:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3444CA9EBB
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Oct 2026 01:50:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF18C6B008A; Fri,  9 Oct 2026 21:13:08 -0400 (EDT)
+	id 2B1D26B008A; Fri,  9 Oct 2026 21:50:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA1F66B008C; Fri,  9 Oct 2026 21:13:08 -0400 (EDT)
+	id 262A56B008C; Fri,  9 Oct 2026 21:50:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB8386B0095; Fri,  9 Oct 2026 21:13:08 -0400 (EDT)
+	id 151826B0095; Fri,  9 Oct 2026 21:50:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 97DEA6B008A
-	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 21:13:08 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE1E2406A4
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 01:13:05 +0000 (UTC)
-X-FDA: 85304942730.01.21BF592
-Received: from mta1.migadu.com (out-207.mta1.migadu.com [95.215.58.207])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7CFAA140005
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 01:13:03 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hg2oA4vQ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.207 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DC7E16B008A
+	for <linux-mm@kvack.org>; Fri,  9 Oct 2026 21:50:24 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4AF0C1406A6
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 01:50:24 +0000 (UTC)
+X-FDA: 85305036768.07.31DD179
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 935FD180002
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 01:50:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TmLPXuVS;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791594783;
+	s=arc-20220608; t=1791597022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LG//Jli/TinVrF7/pw6I/zGy348UH4ol7I1gnarYG8U=;
-	b=bTsacqmHRIctJ9rm3O66aMUvkPlnj8NZ2Qk4TGslWwGfegzPqlBQ64KI0E5id/mATOUS3M
-	CXSY6wbwD/GvIRFCTEMdWb+Jnwfvu1KL2S8iQYnScwiARLMNYkJaaksiVzgP6Wf1Y4tYCl
-	DkTNqgORTrROrNteZjWs9f6+de3T2bo=
+	bh=Bw7aOniwS5sT92Ud68/2RfQP9mrvdk3qSlLf+3oG5Hw=;
+	b=V478+M81EVJwe0/rlV8twBXwQl6llCSM7pLsPhBPYhN4lxwjckEkEmEqF+WYY6eqQ9Hsbq
+	B1Scwyrazekhr4Nchgy6r+xuk/JyrhrLz/223sjJxG/nDjuAkk3pak0wj2MgGQg4cwTCfX
+	JuY1q/vWXactvSarhjL4yoMWL1+NCqA=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hg2oA4vQ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.207 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TmLPXuVS;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791594783;
-	b=f4c3fjly8bfGOKBA4GEzv4UGPEHmTGjNLQUnlQi9wcGhlgulYI5bL0cTYXvD9f8rEZLHlk
-	eWgtDf0VvnlGbbzxwSImcRNjO5s0H275MkQ5pvGPzGwZ2KGYC/NmB8psNLBzk0gzhwAnz7
-	MqZEV4uZWGawm9BPF5nhW6hD7xhy2do=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=vgSSjwqoJ3UL9SpCaxLIlO+CXMUgBIurc/MPR7NqdSQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791594779; v=1; x=1792199579;
- b=hg2oA4vQ4SiQPWoa8gt3sTBnuZs5ox+3Syuyla4g6zq7cwfE7gZ7i2ogDBFoZ6CPz1E3rvwb
- fi/y0+u+GpiJhDbLHzmTZXahtcfAEj0395D9giLkuVTrZdDXiyNl3IBzP6abI/zZ1ABYftNIBhX
- mQQ22QPZE/KkYgeLlBN55gJw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9e75b8b92041ffeb;
-	Sat, 10 Oct 2026 01:12:59 +0000
-X-Mizu-Trace-ID: 9e75b8b92041ffeb
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <0ec81c65-fbf5-405f-948b-0fb1b2e083e8@linux.dev>
-Date: Sat, 10 Oct 2026 09:12:48 +0800
+	t=1791597022;
+	b=p9AIZ2+po4szhisdFUnRTyk+W8PAgbvHW/IEha4kJXqczJubUe0MDeWFNg7pw+S14q4ZNO
+	EtjrvMTGIvrp1gMhonN0BaglmAXt9gO2PAuMBzz2tu+EUwT9t0XQJBg3qj7j+i9fDI5szU
+	QZ8Dlrjj2nkNiI0qDaf4dm9xiGwY1nc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791597022; x=1823133022;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Xr7BFcuPfN5hxzlUU0KILbgM3T/srUjFVBe8YW5OnqI=;
+  b=TmLPXuVS0ct7BhW2z+6dVd8ofmMlWovjm00u2hqmHRRFK0aa4UTQMNxH
+   yh6jGpbm8isBxcVDl6vwzIlvehgLgSJwHNMFkgzjGjLvSqPLx9UErgD0e
+   GiZcReWsAZsG59oMm/lGkGOnrJejzlZ60+/Hv7VpG1ta2AhZc0Z/22eFf
+   35sQppPbO/ThRB6ipVAwH8LPkSqEEv8ZpC+LUT+0zfzBsYl/774KJlP51
+   z2HP3iLGBYAuVabssinh4qPLcoRZ5raIOIrV8SXkl3+9FCspTntchZ2dM
+   oOl1+wG2+EuOOYlzsO7KOy1fqe7fKIWffc9OAt3VVdjlK9fsxU194qkDw
+   g==;
+X-CSE-ConnectionGUID: 6VlfGF1MSwGRzl44DNxQ0A==
+X-CSE-MsgGUID: pK5+cp/5Rh+h4UQINRXATw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="392482"
+X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
+   d="scan'208";a="392482"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 18:50:20 -0700
+X-CSE-ConnectionGUID: sDLi4PEASumchOCUfOXSpg==
+X-CSE-MsgGUID: m2EQ6+o0RkuxgBM+z9aDvQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
+   d="scan'208";a="802347"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 09 Oct 2026 18:50:18 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xFME2-000000006Og-2tcr;
+	Sat, 10 Oct 2026 01:50:14 +0000
+Date: Sat, 10 Oct 2026 09:49:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: Marek Szyprowski <m.szyprowski@samsung.com>, linux-mm@kvack.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Mike Rapoport <rppt@kernel.org>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>,
+	Wandun <chenwandun1@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH v2 2/2] of: reserved_mem: allocate and map the
+ reserved_mem array early
+Message-ID: <202610100950.LlAi30cT-lkp@intel.com>
+References: <20261008152403.766439-3-m.szyprowski@samsung.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: avoid transient none PMDs during lazyfree
- reclaim
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>
-Cc: Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- stable@vger.kernel.org
-References: <20261009165214.40212-2-kylebot@openai.com>
- <DM0II2QHWWS1.2RXEJXC8S0101@nvidia.com>
- <8db35dc0-eb06-42e4-90f9-534522e810e1@kernel.org>
- <55765FF3-18D7-424C-984D-81C316F323E1@nvidia.com>
- <d68cb3de-e471-4ce8-8c6d-c7260d79ec1e@kernel.org>
-Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <d68cb3de-e471-4ce8-8c6d-c7260d79ec1e@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7CFAA140005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261008152403.766439-3-m.szyprowski@samsung.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: xihgk4nnc8shqinkmbuj48fcznrgmrmh
-X-HE-Tag: 1791594783-775770
-X-HE-Meta: U2FsdGVkX1+0vJ4NUtVB88dY/jo3tdXQDYCVxawzWE/o3obq6z0shjFe0cHesiMFF/ydT90flmdvs9sFObgxv1Enm9CEvNmiQcteZFoue3XKxwaJV74lU6P0qQju+cWcCCqH9yyhxOiknjUgls5roZEbpBX/9hQtOlEyyPpM/d05NIabg+wPMwbEE/0u4uKk0qomCErKQ6laM6UjDMSzQMjGwqu4YGtKxmSDngwf/OnoLcbNyO6Gbvixqww5dvqLrFxuZUFnU7CPsNdc41WHpFAIKWCUNd3Y4u3APVofX9Y8riwbCfwH11YgMWNb6DlE1SbGISbGdwXE1wzSadw307R7D0B/wXHaffKF2zadoiUOsGHiFsol3eWDXXMCGjKqi8l0mSyl4w8oUdTyBGE83VOWpxb+Z/XTwYalw0WBLivtx14mN/oEw1HR1KvwbjpcN85lxfdahXab3b9taQmX+tCvLrbq8ChuMc8HR/VGBXmjU3bnjMh/JJk6qbzny2JaW/wuxk1OKOl1MCJziUIIwczOxidxuKPxq8XySTfoyDnHybyhsBE4KZmKX5VhqAJvQA1W+7VdSCjDdz/ptOHPjaRxtmzzS3JxbSpN8IhBI24sptUY1FnfMxH8CNQnai9V6YgmYy+yWg7WGugsp+n2pnqATE3N2nhTpPoQ/61BOvw5kRcrUpPNFDt9dMdX0fHn2P8f9/FA4oV5DhC6L/oH+iNlHjgHSDjMmsOOREDuAV+SGa3c0onZPk9zOMNx1WUoj9Q+QInKozWDjLX27jOaecbdabf0JIITJW7CylhHXtkP1cWmZQlQ5rx8Efu3GN4cwYSkVlL71FyZp0tvtmunIN9rWbC761U5uFa1sjwvo2jnI2NedJyno//s3pafoWJ5RssfperbU4eYNZcQ02IoKeirMgR0DXZvTHjLE6oAq2/TByGfox6cJrav4VuOh1p1z312gbXr7Am1siQ9JDC
- vV0STSOj
- 7Q6wXZ2taWKprD7Vzm4ZyTQ++tPiZhCplTdD3/75eqn60dUOZwE9KBTjI5wQNLr5xJe1NVCcBn4qgzAPKNB3zH6R1BTL72XwxpSF07qNEqjxgIMIBhKuxV6J7MGI80z1PQXMjQiO1f0oMKFc6eZPe3rAC1hSjMsHQwCggPw6plnZQNFOgZDdI/uLA9swvHuB1W3RX3CFyt7BGCY38z7vzBrnPrsxrVzKzCvsGFv6FU425TEnU9a2LkIoGpgW/Z/eG8DwNXK/F9c5TgD59ZLp171CMatVeos4H46N4cTAL+xCFHeXrJYAypnmrJrZ5WTOmst2r
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 935FD180002
+X-Stat-Signature: daf3zzistd39araau77wycchqcfzds46
+X-HE-Tag: 1791597021-105707
+X-HE-Meta: U2FsdGVkX1//cA3BGR5jeHrjYD1KvuiD6Wc9iokWlQzmmFjtAu1QKyaZfQJOtKBrIJXgSDh3cuFFiR8zOroGjuLBQ3Rhn51WlqGW5pYKUcRTqCISaKllA5J3Tde+jhbo1HVSDWWBVkD4UCNXdvqMebQ/wqqzdW38ovKGc8N1VyGIw3q6YezuafUtkWc4T5/E8Yur7kGhB1E2pMS1TjXvKhXJ0s/8Y2V3T/GwHs//w7Vis09O0lRmYC1uWOAucvfHqgFkVtK4FRYEyrejTr9q+pnBLO5e09LxjJ9lfJ8fpwBcLm8lbtEDojq8JkLPg6STV1DP5e5KtyorEHzQGtxcC4Rd7PjRsP71xWGLUAevCVNLhP8/q673PQ9ykwWm3+5vAouf8hKUU5KPja/i1Qxivf0qp1kC7mNGdLtcnjYJy2/uJVN680Uucael+zTfdb5mu20EIU0kIAy1/bGNfGB1u4UOr6nwsx1uZ2n5+upEjt825ozzeqN3jqdRYIcduPWyrZWDm+R67FbKBBgZnDCEo0yuvqeJqS655CFT02SJfdQf66fsndamHAZFe0nfyxV+Fd9DH0/V4iAfsto81DLtk93g/VJ7TUG9rOjg68OkYYuEwE0rvZdRHFLj5I4EkXia9+t+WnHWY2SYMEF/JklxVIpMoE5BCTY2Jo/8al64gWljFbLrTmDVOb0h6rgREj4v2d9bJURxozKGMn/dCONEwf/VjPm2CsDoF3L3aB/EGikVIZBU2ELHN4OFrz+ILDGtwVaglqT34bYO6p4ZKpKmCZZzEyUh/cfTMtIe8Q85pIbxK7UQ2PwCY5jwhAknweSQnWtI9YO14VBETrZnGgwk4jsr8j4c5u4TYgjW6iaQKckf5EpRiRkyJhU7CNwWIMPluzOA5F1JIilMMJEQ1EmjBBrNDRXSDQ+9bi18LeR1MA4x/QpApEseXHuWeKxn11F+3KUCnWKW10CJzKiuBg9
+ wRp9yXeX
+ OXIq/lVbuA8On+pX2X06FbaQfWGJ9Wa2CGWhVIjONkIwaL7Ns+fua8IBUqCOsV8VNY9+JZFgCF7zFvPuKCcdLn5hwj+hXX9SNIbcJ60gSZflw1SUAkklT9vP6Bs8uanXcb+qllt09aOdV5NZD3N+tl8TZZ/c4Wy6zRSLbNtvn7g5AvxsLHkDSXXGGdaiH2NqJZN/4qbmwyxCrgV6Wk6Hn1ZHC5GqV88RPj+7cv9pwBz/aED/iiKYQaIWNXdqyfzfWlMefzlQBGsh8IHovDhUkof1mv58BRBL8N2gvZnwVT4sEKBEBnZz6Jx69tEYziHRB80HnzZzdHQcmYFcwVLOF2ZvAUnLAVRQFS49JmlqBmZM58PZW4dcFmwZ3BJA7ONu6mm62mkk35bwOBcoKc2wZTrdDEkWU9ltC4JNoYHCh/IrIvsFAbLALfxqNjLVYPlZkV+GKl9Hobo6eZZfJ/gkoifzT9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,45 +114,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Marek,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on robh/for-next]
+[also build test ERROR on linus/master v7.3-rc6 next-20261008]
+[cannot apply to linux-review/Marek-Szyprowski/of-reserved_mem-group-allocation-helpers-together/20261008-114122]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Marek-Szyprowski/of-reserved_mem-group-allocation-helpers-together/20261008-172400
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+patch link:    https://lore.kernel.org/r/20261008152403.766439-3-m.szyprowski%40samsung.com
+patch subject: [PATCH v2 2/2] of: reserved_mem: allocate and map the reserved_mem array early
+config: sparc64-randconfig-1001-20261009 (https://download.01.org/0day-ci/archive/20261010/202610100950.LlAi30cT-lkp@intel.com/config)
+compiler: clang version 21.1.8 (https://github.com/llvm/llvm-project 2078da43e25a4623cab2d0d60decddf709aaea28)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261010/202610100950.LlAi30cT-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610100950.LlAi30cT-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/of/of_reserved_mem.c:27:10: fatal error: 'asm/early_ioremap.h' file not found
+      27 | #include <asm/early_ioremap.h>
+         |          ^~~~~~~~~~~~~~~~~~~~~
+   1 error generated.
 
 
-On 2026/10/10 04:44, David Hildenbrand (Arm) wrote:
-> On 10/9/26 22:27, Zi Yan wrote:
->> On 9 Oct 2026, at 16:23, David Hildenbrand (Arm) wrote:
->>
->>> On 10/9/26 20:17, Zi Yan wrote:
->>>>
->>>> There are some gaps we need to close before getting this fix in:
->>>>
->>>> 1. GUP-fast cannot follow the invalidated PMD: riscv and LoongArch need
->>>> pmd_access_permitted() that requires _PAGE_PRESENT; s390's
->>>> pmdp_invalidate() needs a change.
->>>
->>> Ugh. We really need pmdp_invalidate() to have reasonable semantics. This whole
->>> PMD locking is a mess :(
->>>
->>>>
->>>> 2. sparc64's thp_pte_count can be imbalanced with this change (based on
->>>> Lance's offlist feedback).
->>>
->>> Ack.
->>>
->>>>
->>>> In addition, powerpc has a page table check issue similr to riscv, where riscv
->>>> fixed it with commit 9f4a88b8d01a6. This is not related to this issue
->>>> but discovered along with the investigation.
->>>
->>> Zi, do you have the capacity to take over this patch?
->>
->> Yes, I can take over it. My plan is to send a series including
->> patches for 1 and this patch as is. powerpc fix can be a separate one.
->>
->> Best Regards,
->> Yan, Zi
-> 
-> If we need a quick stable fix we could temporarily disable the whole thing until
-> it is fixed, just a thought.
+vim +27 drivers/of/of_reserved_mem.c
 
-+1 we could do that for now. A quick fix with minimal churn (correctness 
-comes first).
+    13	
+    14	#include <linux/err.h>
+    15	#include <linux/ioport.h>
+    16	#include <linux/libfdt.h>
+    17	#include <linux/of.h>
+    18	#include <linux/of_fdt.h>
+    19	#include <linux/of_platform.h>
+    20	#include <linux/mm.h>
+    21	#include <linux/sizes.h>
+    22	#include <linux/of_reserved_mem.h>
+    23	#include <linux/sort.h>
+    24	#include <linux/slab.h>
+    25	#include <linux/memblock.h>
+    26	#include <linux/kmemleak.h>
+  > 27	#include <asm/early_ioremap.h>
+    28	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
