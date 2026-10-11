@@ -4,123 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4ECDCA9EBD
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 14:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF111CA9EBD
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 16:20:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 285EB6B0088; Sun, 11 Oct 2026 10:30:02 -0400 (EDT)
+	id 835466B0088; Sun, 11 Oct 2026 12:20:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 235B16B008A; Sun, 11 Oct 2026 10:30:02 -0400 (EDT)
+	id 7E5866B008A; Sun, 11 Oct 2026 12:20:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 124C46B008C; Sun, 11 Oct 2026 10:30:02 -0400 (EDT)
+	id 6FC076B008C; Sun, 11 Oct 2026 12:20:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D4B646B0088
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 10:30:01 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5B37BA068E
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 14:30:01 +0000 (UTC)
-X-FDA: 85310579802.21.DCE49E1
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 83B4C1C0004
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 14:29:59 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="KNu/H/V0";
-	spf=pass (imf21.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F33B6B0088
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 12:20:33 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 488C6C0729
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 16:20:31 +0000 (UTC)
+X-FDA: 85310858262.16.8BFE899
+Received: from mx.itxnorge.no (itx-kvm-14.itxnorge.no [91.189.121.228])
+	by imf08.hostedemail.com (Postfix) with ESMTP id AD27B16000A
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 16:20:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=XADCc8U9;
+	spf=pass (imf08.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
+	dmarc=pass (policy=reject) header.from=itx.no
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791728999;
+	s=arc-20220608; t=1791735629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tDlRoiYs+oXn7JVOx13TUze+GLTM7H/QsH7PUCzNbOI=;
-	b=4YtJdZHx6qZDxZJhvhSJ/dIVkZKO1HM7uxNSlbs74f/x++cpO046/n39idURKV3SDJcLEZ
-	sB1lcCYd67jUnf1OCkYddI+OpyVhY5Ybp3rdgo2CYw5lRmkheTRCplU75KUkILejMDxZAk
-	AEt8imt1Zu8KmiZTzToYHK+CxX3SDW0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=I2h0x6MRK97TXy17q/oGa0pHMkpomhGIicSPhvbv6/g=;
+	b=AeavYUtWpvgw0RSrsm7GC+4t+uXNKgVKPDnqgHMZxWRKPb0xIY3iiE2xbkRe2yW5BAwAPF
+	BVlH1BEeMb4pHuCLV2mvP1C69wKnuDszejII5pEwtmXAAdq/FM/XoQoY+INMz/GBpd/+Pz
+	jOL+aUXwUsycCel35Zq+49DxOgXQrU8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791728999;
-	b=aJ/YikWciMrekA8rUqtNtPLAgvQbPBLjd3VsTYEVRABKPIBgjrIYvf7Qye8QcOwTGZVQ/p
-	AVzw9SO4PRa6ordYev5pIV0JuVLmrMaNSIQeVtseTpnb0Eip7V4Z+K3gwVsTBFDUI5Ah1Y
-	2Pl3IVrTI78vyibfzEYkfPwSIuvQtYM=
+	t=1791735629;
+	b=YvtQuJaJIKsvkw01od4oxLsLBdj8Rt9D1lwbI1iw86+KRkESw6sLfrPFlzra0s2tOmJe1P
+	MvGwlOqRc4EgycGp1QN1WyPYYAw+GWZoA7TT+BxDD8/9Nmyg6THPRyORXwdV9jkK6jUq2L
+	rDX43+kXiy/J5IkUPfGSM9EzTev38/4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="KNu/H/V0";
-	spf=pass (imf21.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c29c6a3930bso141372266b.3
-        for <linux-mm@kvack.org>; Sun, 11 Oct 2026 07:29:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791728998; x=1792333798; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tDlRoiYs+oXn7JVOx13TUze+GLTM7H/QsH7PUCzNbOI=;
-        b=KNu/H/V0pxRoBvCF5lQYZYcZCsVyhRcVJ93Q9kF5BKLY+sa5G67y5SRqoOcqbOoe9I
-         zn50ucJrx/IA+0qHZQaDexIlYkdmwnGzSMC3Sz8JOl55+Y1SSfdYm1BO2vsgo24ITpNT
-         okcBlpZR4xmlI87G6nBdvmQam1iqoXEAuTrVFiO0Xc9U2pqEQ83iFgr9JyUPudZ7LtFY
-         SQ2xzdPOyhGyNdccsPpF0yt1szzc5d0GrApJUxW2c9KzN8BBBDwmwRk3VqQe++HKcqbo
-         afj2jGXDQW74N4E1aBRuGkH1YOGmdTo3QlOerX3CXgOL6tZUrtjLwu9qN/7dpNZhXHSH
-         rsvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791728998; x=1792333798;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tDlRoiYs+oXn7JVOx13TUze+GLTM7H/QsH7PUCzNbOI=;
-        b=0JZWUFhBMIkRFWMi1aqDeWz7krmwKTGH+lBqMKG27Azd1rX6Lkj0PMsC70vPYtNPdI
-         CZBuItUHGfL5b1mRb5aBxM7NF31/jRfBnoSntBpz182WfhNt85YVWa2SrnUcnw9cFw8x
-         lbHUUKm8gVMy3nqKYn7yzczXuJpe3F3FNh12Bt8vWDYIEvb4udb2JXgi0qfdhupNy56O
-         UkQFA07t2zvKfBd0A8SawZDwttfczB3k6fqSQG6CrZvOJ59Dit96rX+liEkN9XCvCJHs
-         wmnwzLgDZizoYz5QTN2P6kDnWnNlEEg1BtizXOKKJxv3ZoabJq4ZVm74EE61ynfVDlYg
-         aJDw==
-X-Forwarded-Encrypted: i=1; AKwUvBw5opuepONKS5Lpun2GpHPB9ZUTpmwyc+NC2fSJQ2xJ0m+M1Oymy1sg3H7/2wwCgTtIXTDjdglG6A==@kvack.org
-X-Gm-Message-State: AFq9FYICIFmRwjr5TJ11MzZE1V8MgrLEul5h9aaxE+Em8bCtuUXVrQSP
-	+tvCAGBg6dv/AZtdpuz+VXieV9w5TyEA40ldIGJPi9uCGPde1AAUChRP
-X-Gm-Gg: AYBFou1yWmwbThAze4m/nL/UtaiWNzTANGSDVIGAAVpQkOibtOMTnhX71g18GRprUjY
-	eSeYZzH+Z/B7VUdIc3kkoXZuTYLDnCbbIeIKXaCV3BJKMkr9dyb42lbl+IUTU7G3Hkhl35TGKA9
-	XCM1t5LPWnvXzw2NuvEGhHx0hFJqJfsV0movbO4IhJeDNJRxB9vL6pzgvA1vJrP/6+h6tmlOtIo
-	Ubn015KiCh2Dao+KRGTXLLeXeNuebrKvmqZJxQqEk/5iRBt3vC1Hf5zblsRRbOTOUqtPBdJESfc
-	3R/GLUw+HMRZiP6svQCj6fteDpiaIKM03WU713lvVlcA1U9UsS40llC39pbeLjpuJTTTBuijQVB
-	CF0jbKKVlPACj1tCHj3L1aI3tHu8k1bg/x3PEYfW/DwMqx1r3pmt7H6nTHzO0RWAD08/FoVdvyd
-	Mz3OT65xU5IUnRR6wLA/7QD/LWQTEJgsAegxHZ
-X-Received: by 2002:a17:907:3f25:b0:c31:82aa:dd4c with SMTP id a640c23a62f3a-c31a9d15f06mr712746366b.24.1791728997857;
-        Sun, 11 Oct 2026 07:29:57 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c34f8bd471dsm13420566b.9.2026.10.11.07.29.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2026 07:29:57 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Sun, 11 Oct 2026 16:29:55 +0200
-To: Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org,
-	urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com,
-	ajd@linux.ibm.com, anshuman.khandual@arm.com, baohua@kernel.org,
-	chleroy@kernel.org, david@kernel.org, dev.jain@arm.com,
-	jiangwen6@xiaomi.com, leo.yan@arm.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, npiggin@gmail.com, rppt@kernel.org,
-	ryan.roberts@arm.com
-Subject: Re: [PATCH v10 03/10] mm/vmalloc: use
- pte_set_huge()/pte_clear_huge() for PTE-level block mappings
-Message-ID: <asudY_EhrT5fZGmZ@milan>
-References: <20261002090947.869220-1-jiangwen6@xiaomi.com>
- <20261002090947.869220-4-jiangwen6@xiaomi.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=XADCc8U9;
+	spf=pass (imf08.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
+	dmarc=pass (policy=reject) header.from=itx.no
+From: Stian Halseth <stian@itx.no>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=itx.no; s=mx.itx.no;
+	t=1791735627;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=I2h0x6MRK97TXy17q/oGa0pHMkpomhGIicSPhvbv6/g=;
+	b=XADCc8U9B8QaYAchNDAG8w3uziok9xva1leOsMX6XlYarOzrlxHLQiQNEA2yRR9eYfHsJD
+	7tcUmPT3d8Cz1A7pCmSLBgwzP9OKi+w/aHtUT76trhQpWU5UnKoKsXeAkYiDPwZXaY43+/
+	EGaVAudImrmY0ja78Nii6cGyHZEjtJ4=
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Andreas Larsson <andreas@gaisler.com>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Stian Halseth <stian@itx.no>,
+	stable@vger.kernel.org
+Subject: [PATCH] fs/proc/task_mmu: fix lost maps entries above 2^63
+Date: Sun, 11 Oct 2026 18:20:19 +0200
+Message-ID: <20261011162019.922436-1-stian@itx.no>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261002090947.869220-4-jiangwen6@xiaomi.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AD27B16000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 83B4C1C0004
-X-Stat-Signature: 34cybf5f1weibz977r1f1js5grqjxedb
-X-HE-Tag: 1791728999-412634
-X-HE-Meta: U2FsdGVkX1/zsGufaHFGa7mz9It2x/07sp6wy71LnDQ4ROc4fo4Han9G3t2iSWBLGz4yPkOQ6/bv0eaeHT65/CMOWNpsxaiEKAZGKEcRjjoBL1cnXxZPmk1vK16KVfN7cheW4gnHBmhACx0uif6r7jrWnECp26CLHijQQnndKp+LPXuWaQGSHS2JDbImYf4WX8IO4Ak9YIrjmdndvfWbALHC9oO/9QPOux2HRBA0kExgo72799muraH0u7IjYE5kQUhGcbLz5H2kxDHEX8rM31Bj4NK11y+ALWSgazhCItXK+DAcFHwGjvViXk4zchYaqJxtodauC4keqb0nfZzZwot4qgRNpSFR5R7A4GpjwWoJOXYKtB6ME5oe+hcaHaJQA7eqUMzLiH7NnNNudsELmksShA7jOQXOd2NWk5eQV/cSPNVtTXInxzyy1lOpAzVzcTGIOO50kFw87aYK4f08J49gZcqvxEj37lUmhhd8oM/auwVtsgr/NbuwSQLHLq2//u0OawrRiil9+z0/kPqW6P4r6uOp5FfU72iEoAokMt4su4SzUWUmD7uxd/+oKJQgCW0QiC8w/k3K3SIJDB2Iw0fig92zlU8b/YMOmoBAAlSyxvAqfgAKtBorMtqLHDXFnnd+j/kqvoKxyzTyk1jBaRUcGzjqqdYJNw+juJ55drFWU6CXsFjBPA4xZyo/sxFa8mksTzi1EFGbbhYAMDLWi26/Sjr6luNRpjVMmBqyFNP/27aoW3aR+MOYbZcBlf799LtJzwU5ULVJ1dJANw13BtMTpq7J2I35j7NWWY/V1mB9Z1C3GRvelnenGSu4SE/6vIvdymp2BJaCKcL5uryD85z8crj/Sn6KcSpzPJGJ2UPqXcq3W0wLDFFBfvhET9MpCNxDOk6lbgW8eDBc/bMTTGnsAduvKzO8f6nK8Ajn4L9ZGfRCYvEPGyztYtUcjTrsyNJKd7mjMfYzIpJG6lB
- madq2cUx
- EL8UdzGl8JDXdT9XLVR37EJ42wj3GA6zwWLWMwLoV0J6KOwwhlp235VQNIqnPLsm62nZFjC+idtHY3QZT5M6DY1Ta0vfXTm1RBmjqXlzt/nuTFaelpkFlfmLVSPtejMMwMvPZHBIjPAj9nbGcM1cNL+UEcl/VNauKwDQPoI5z54U2yF8QmA6tiVR067IntphbNT/iIJ1JiV5jOluqBG64oqnj9Z6gKD5Ju88hnPdmbNDGKVMJ1uLPlSXn9IU7wwddDtN0TmP3reRKDksMAhAzz/gyS4ZHBVFAzv0JZE0CMLvk5x1W0khh7GoSH1fqsnJ26fh7qfplxZ+PscQXOPDw48ws2ruXtkn5BrqoJIdxb3BzfH56L+4sbc+cVPltV5GjLViEsUoUAZiqqomN9+35ZMtYpF/sl7y3OdMnS7OxrtTGyA5qckJ7F+oL5CWs8pO75Uq+0cRtpHKIg9bQBxm1081CvpERCisq1eBzZuPfCEIjaL+04HpGMR4pOd1uMfi/jmWGPtNhZ5yCGuzaW8ylxZbhBmU5HUUbyL2s+2ogYrjZXHjOLSulKNXLrtZDQQlBl+Nl67SB1+quC0Bo03XtIDWyisE0bkKWvNF23uqgifzIsc0IdkmxMvDUTAOy/wtqP8yY
+X-Rspamd-Server: rspam05
+X-Stat-Signature: fm8mxgk49h9f51uqimjq1fcyzhrs7sze
+X-HE-Tag: 1791735629-439311
+X-HE-Meta: U2FsdGVkX19qXT7R++BknJ5Ft7LFyjGeaL/QULX6uenoH9DrTi/qy4cw+ZCqaQclcyHvbHK6YmXjVOAO00ZJbJK4qIg3Wj1qji2nxWRuS+VanQuFhFHtWl3e8M64KqqzE+lL1xgRvuN+PN4NVdDAE64KONO5pW3TzfLJ3CW+GaGQ5ToQZ3RiHqw5PEbBfsZd2Q8C7ihQT8Ef7tABeRm5YOyRJn45MLjvSZ+hVFByfyeKK0Xraac1BjalBVwzKylNfbWHK1s5oBMVSFzqb2JNf7DbrUzK6oAKU1SRgIHVWQWsI2mJXrkyExFO3bbjT/H8dGdG/FPsrR2zHR6TNBfFCTiQ80LBaJGrGVo9DbEZxZBBxv+ZcwlJMJ/o8m/eA3hMUnQnTOVczArT7DRI+8l81DRDdvC+nzq3jtJw/siyjUxcztrmLip3O8xgo9CjQZgjBWMgxk0Bk8U/g3pb/05Uv4RLQIjvs/ymDhghuGGmnNoQA1wCIHUyzbcoSu5e/oOgNOlzJU2gQVZpPvZehfW5YynLktmYh7+INGUHEOqZFWMyw+I3cv9v7sxwllbCbeBqo+MgnKmRRb1uq49uXAB9WMWvWf6SxTlPsMqegctjO5UJhKlOYwV1dYuAzX0GjmmbRr+YF73bLGgJl+L7HSpsYHRqNwnZgWcGNQan3lxQTOIzRq+UuDz3cpZP/SS78dvdQPU4VokY3cPwqQRpV1Sp7J3gbmsEnr2KxABHxTWMWLmhVt9IV1UIx6Yl7j/pZTaMoby0ynDOTcA+Z+HO7c5g0kfb5Cv4SRqXKoRVNeU0BSfW2NmkN9sciwCa+m7QwZ2XKieD+kr3cgRuGeptsUY/WG/ukxt+K+SE28EdxWND4LRsFptXI+AXgIFeRCvWEoV+AX1kAEjvKb6OZVqxVcPvLLfp/iP+Fr7DA8cmBumN+s/kG4W5wFJLmvEOfBALQVf0ayx/Brk+G9DVfo0wOZY
+ htFYDiDs
+ 8yK5A3Md1e9kEu8dpa+OQJOd3reQVp9b6x3H/Dtnxb7lY+S+cEvzQBaawdxfDrsvMXG2Dh+yPGu/nDxb+Tqg7aHRIMAVZh7A31t6ysTkjt+uNXkhDDx700F+JUhWNMDLnn3BfUJuZcs8M9SKrlvIZGGKQhs6+mE9U5cPWirPJmt7frDjRNV4czUQ6+q3nc5wPvG//v3hfBLQbYGimeJ30RTka45Hey9YRFRZ5vtzpnllz9Q05oQrO/rmBJzp28bDaWe+V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,121 +92,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 02, 2026 at 05:09:40PM +0800, Wen Jiang wrote:
-> vmap installs PTE-level block mappings by reusing set_huge_pte_at() and
-> huge_ptep_get_and_clear() under #ifdef CONFIG_HUGETLB_PAGE. This makes
-> the feature silently unavailable on CONFIG_HUGETLB_PAGE=n kernels and
-> couples mm/vmalloc.c to HugeTLB internals it does not otherwise need.
-> 
-> Now that arm64 and powerpc/8xx provide pte_set_huge() and
-> pte_clear_huge(), add the generic fallbacks next to the existing
-> pmd/pud_set_huge() family and convert vmap_pte_range() and
-> vunmap_pte_range() to the new helpers. The CONFIG_HUGETLB_PAGE guards
-> around the block-mapping paths are dropped, so PTE-level block mappings
-> now also work on CONFIG_HUGETLB_PAGE=n kernels, and mm/vmalloc.c no
-> longer includes <linux/hugetlb.h>.
-> 
-> The fallbacks exist only to keep the build working on architectures
-> without PTE-level block mapping support. They are unreachable there:
-> the callers only run when arch_vmap_pte_range_map_size() or
-> arch_vmap_pte_range_unmap_size() return a size other than PAGE_SIZE,
-> which requires an arch implementation. BUILD_BUG() makes that
-> explicit rather than silently doing nothing.
-> 
-> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> ---
->  include/linux/pgtable.h | 29 +++++++++++++++++++++++++++++
->  mm/vmalloc.c            | 19 ++++++-------------
->  2 files changed, 35 insertions(+), 13 deletions(-)
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 8c093c119e5a8..a7fd51fec8a17 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -2204,6 +2204,35 @@ static inline int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
->  }
->  #endif	/* CONFIG_HAVE_ARCH_HUGE_VMAP */
->  
-> +/*
-> + * PTE-level block mappings for vmap.
-> + *
-> + * pte_set_huge() only has to be implemented by architectures whose
-> + * arch_vmap_pte_range_map_size() can return a size other than PAGE_SIZE.
-> + */
-> +#ifndef __HAVE_ARCH_PTE_SET_HUGE
-> +static inline void pte_set_huge(pte_t *ptep, unsigned long addr,
-> +				phys_addr_t phys, pgprot_t prot,
-> +				unsigned long size)
-> +{
-> +	BUILD_BUG();
-> +}
-> +#endif
-> +
-> +/*
-> + * Likewise, pte_clear_huge() only has to be implemented by architectures
-> + * whose arch_vmap_pte_range_unmap_size() can return a size other than
-> + * PAGE_SIZE.
-> + */
-> +#ifndef __HAVE_ARCH_PTE_CLEAR_HUGE
-> +static inline pte_t pte_clear_huge(pte_t *ptep, unsigned long addr,
-> +				   unsigned long size)
-> +{
-> +	BUILD_BUG();
-> +	return __pte(0);
-> +}
-> +#endif
-> +
->  #ifndef __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  /*
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index bea9f76ed7e74..fb757d95bde25 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -38,7 +38,6 @@
->  #include <linux/rbtree_augmented.h>
->  #include <linux/overflow.h>
->  #include <linux/pgtable.h>
-> -#include <linux/hugetlb.h>
->  #include <linux/sched/mm.h>
->  #include <asm/tlbflush.h>
->  #include <asm/shmparam.h>
-> @@ -100,7 +99,7 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->  	pte_t *pte;
->  	u64 pfn;
->  	struct page *page;
-> -	unsigned long size = PAGE_SIZE;
-> +	unsigned long size;
->  
->  	if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
->  		return -EINVAL;
-> @@ -121,17 +120,12 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->  			BUG();
->  		}
->  
-> -#ifdef CONFIG_HUGETLB_PAGE
->  		size = arch_vmap_pte_range_map_size(addr, end, pfn, max_page_shift);
->  		if (size != PAGE_SIZE) {
-> -			pte_t entry = pfn_pte(pfn, prot);
-> -
-> -			entry = arch_make_huge_pte(entry, ilog2(size), 0);
-> -			set_huge_pte_at(&init_mm, addr, pte, entry, size);
-> +			pte_set_huge(pte, addr, PFN_PHYS(pfn), prot, size);
->
-As far as i understand, X86_64 arches do not use this path. This
-specifically is only for ARM64 or powerpc. pte_set_huge() makes me
-thinking about huge-page mappings(PMD/PUD/hugetlb). This helper is
-about mutli page mapping on the PTE level.
+When a read of /proc/pid/{maps,smaps,numa_maps} resumes, m_start()
+rewinds *ppos to priv->last_pos so that the vma which did not fit into
+the previous buffer is shown again. It only does so for last_addr > 0,
+meaning to exclude the start of the file and SENTINEL_VMA_GATE, but
+last_addr is a signed loff_t holding a vm_end. sparc64 maps shared
+libraries, anonymous memory and the stack above 0x8000000000000000, so
+the rewind does not happen there and one entry is lost at every read()
+boundary.
 
-Better naming? pte_set_large()?
+Reading the maps file of a process with read sizes from 64 to 8192
+bytes in steps of 64 loses lines at 126 of the 128 sizes, smaps at 123
+and numa_maps at 97, and the proc-maps-race selftest fails 4 of its 6
+tests. Python's sys.remote_exec() reads maps with fgets() and fails
+intermittently when it misses the libpython data mapping.
 
-Any thoughts?
+Test for the two values that are not a vma end instead.
 
-Other then that:
+Fixes: 5631da56c9a87 ("fs/proc/task_mmu: read proc/pid/maps under per-vma lock")
+Closes: https://github.com/sparclinux/issues/issues/111
+Cc: stable@vger.kernel.org
+Signed-off-by: Stian Halseth <stian@itx.no>
+---
 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Notes:
+    Tested on a SPARC T7-1 (sun4v, 7.3-rc5), a T4-1 (7.2.9) and a Sun Fire
+    V240 (sun4u, 7.3-rc5): no lost lines at any read size afterwards, and
+    Python's sys.remote_exec() test passes 20/20. On an amd64 KVM guest maps,
+    smaps, numa_maps and the proc selftests are unchanged.
 
---
-Uladzislau Rezki
+ fs/proc/task_mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 5c54aebe21182..cdce513edcb1d 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -339,7 +339,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
+ 	 * Reset current position if last_addr was set before
+ 	 * and it's not a sentinel.
+ 	 */
+-	if (last_addr > 0)
++	if (last_addr && last_addr != SENTINEL_VMA_GATE)
+ 		*ppos = last_addr = priv->last_pos;
+ 	vma_iter_init(&priv->iter, mm, (unsigned long)last_addr);
+ 	hold_task_mempolicy(priv);
+-- 
+2.43.0
+
 
