@@ -4,93 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59BE0CA9EC7
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 04:51:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5A9ECA9EC7
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 05:00:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E70FC6B0088; Sun, 11 Oct 2026 00:51:21 -0400 (EDT)
+	id 9288F6B008C; Sun, 11 Oct 2026 01:00:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF9C56B008A; Sun, 11 Oct 2026 00:51:21 -0400 (EDT)
+	id 8D9846B0092; Sun, 11 Oct 2026 01:00:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9C956B008C; Sun, 11 Oct 2026 00:51:21 -0400 (EDT)
+	id 7C84C6B0095; Sun, 11 Oct 2026 01:00:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A04F66B0088
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 00:51:21 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1C0D01406BA
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 04:51:21 +0000 (UTC)
-X-FDA: 85309121562.03.8F5B95C
-Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3A20040003
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 04:51:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=WGwhXIQz;
-	spf=pass (imf12.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791694278;
-	b=Pb619K1y/cIzajNRr33BTxaxJD680kneElg9Vk8Bwv353U39LtMJtz+UNN3oByUug70hCZ
-	cTXlgRxHD52Hrq4QbOXz9YYUPMYeIfgTe1IzCtyPjpYKy4yuugUjorFOea/x+mWfdYAnaI
-	cSuNpnQPBPdT2Q4N7CP6cM4yW6q99Sk=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=WGwhXIQz;
-	spf=pass (imf12.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id 4E03F6B008C
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 01:00:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 929708062D
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 05:00:13 +0000 (UTC)
+X-FDA: 85309143906.01.2F2D7A5
+Received: from mta1.migadu.com (out-33.mta1.migadu.com [95.215.58.33])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 70280C000A
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 05:00:11 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eQ86C4gM;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.33 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791694278;
+	s=arc-20220608; t=1791694811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gA2+L86nsB8kyRStDUPQMM7xvGJxQ8tS6sPNcinMsus=;
-	b=yRI0u3NBkkybqkuuKyaAdIdekttP9LS5sZETuRu4w/HWeOsXa9AIZqt/wqw7n7NFVyrWqT
-	EKAvOi/E3ly4rPM57QiEQ8hdbKyPgINSD8YX17NCt3FZrO93Xqo3kWAwMWRx/8PhFhyiST
-	Ugg9j7AIDEz7w2+nIkpaUw9kASegO8U=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1791694273; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=gA2+L86nsB8kyRStDUPQMM7xvGJxQ8tS6sPNcinMsus=;
- b=WGwhXIQzCIDydTUa1GADaUNCyhqy5h5oEkSJy6sBjuHEbLrEIZ1CGBE/smaFjZzr/uJXZj
- xwUZMiqm38as1Pqfevz9GlNG00BXKLxDmoITov0iIXwsipO8p2klR0Z7ySo+Mf5MZIDEBw
- Ja+DlD/5XKwwgjtY8ftIscsgC5LwUEzXLp1lm2Qm+iU4/keKLVeaexlsJyTvG35OmdzgNh
- YabKJ3OIYJhyZiNw/5tfjvXpe1FvsCgpX4jyyx7JrEi2HjhHMxWmH/+UTvtqoIzvsbXYeh
- /oVrVyGU0vLo+J/Sy+kJwSLA/+Rt5+rH7F8YgF0T6pdd3q3+g6WK6o2SrJTssA==
-Cc: "kernel test robot" <yi1.lai@intel.com>, <oe-lkp@lists.linux.dev>, 
-	<lkp@intel.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, 
-	"Christian Brauner" <brauner@kernel.org>, 
-	"David Hildenbrand" <david@kernel.org>, 
-	"Hugh Dickins" <hughd@google.com>, 
-	"Johannes Weiner" <hannes@cmpxchg.org>, 
-	"Michal Hocko" <mhocko@kernel.org>, 
-	"Muchun Song" <muchun.song@linux.dev>, 
-	"Roman Gushchin" <roman.gushchin@linux.dev>, 
-	"Shakeel Butt" <shakeel.butt@linux.dev>, 
-	"Qinyun Tan" <qinyuntan@linux.alibaba.com>, <linux-mm@kvack.org>
-Message-Id: <1ada59d3-446e-441d-8ce3-6e2ee46785f1@bytedance.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Original-From: Qi Zheng <zhengqi.arch@bytedance.com>
-User-Agent: Mozilla Thunderbird
-Content-Transfer-Encoding: 7bit
-To: "Andrew Morton" <akpm@linux-foundation.org>
-From: "Qi Zheng" <zhengqi.arch@bytedance.com>
-X-Lms-Return-Path: <lba+26acb15bf+7861b4+kvack.org+zhengqi.arch@bytedance.com>
-Subject: Re: [linux-next:master] [mm] b9b1861d4f: WARNING:possible_circular_locking_dependency_detected
-Date: Sun, 11 Oct 2026 12:50:51 +0800
-References: <202610091403.d1d8080b-lkp@intel.com> <36a0604d-b0ff-4f14-9203-0ffb36e0917b@bytedance.com> <20261010161622.3a460fdbcd6765adb5c1eb7f@linux-foundation.org>
+	bh=kWf5+kAlVZ3NlUWq6MfX5/TjTbRn6hDbTeK1rL7ppB4=;
+	b=tbIzYoCUV8GHdAQR/Ha5wd15oCQJMHgdDCRQBDlesVaRAQ2AVNGi/nk4Wpfo3/8G8eoRZO
+	jc1rgRE4oQ3U8u92unNCuUmk2+ly7cu/7JRyLVuYa8h3fOYKztYlW+wnte3Eyk1V9yCqwv
+	fxu3VTUmqKlPpE/z8+t7XiX/n4zQZzM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791694811;
+	b=ePrNXs6D2BKih4TaDLzOR6mrsIubiu9nWhvxLpGihk2oTzEpUzZsAIGVEB67dcISqrz7P9
+	HYkae4GIM0MSR4qyt0/w7JLzZwzgEjPx5sPrXZOCTW4XCPbtgt4yJ+95AgVDk+jxJaUvmF
+	RcZQkQXJGHRsDrx2k/8ZzsssbxhvEWo=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eQ86C4gM;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.33 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=1HuUJaxdjLUcaFiwr5i8Gt9zxnjbL+m1NmdgUhx7MSk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791694809; v=1; x=1792299609;
+ b=eQ86C4gMs4ibqqMZu8e33y9Yqfuchn35YGYQgnZCI6j1mrgfYOUXLsJHHMNNVbh/P+CMWofR
+ a60NDVka10ARwLg8rTQNIn1XrML+CPzJrd+4A+jlLO9BSbJDgdDgPeaIdgy67b2GpNiDLMTi+ck
+ dVOb+q+2GDWinoCYOIj+JEsc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0d66700324061ff8;
+	Sun, 11 Oct 2026 05:00:08 +0000
+X-Mizu-Trace-ID: 0d66700324061ff8
+X-Migadu-Flow: FLOW_OUT
+From: Qi Zheng <qi.zheng@linux.dev>
+To: akpm@linux-foundation.org,
+	hughd@google.com,
+	baolin.wang@linux.alibaba.com,
+	usama.arif@linux.dev,
+	yi1.lai@intel.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH] mm: shmem: assign a lock class to the unused huge shrinklist
+Date: Sun, 11 Oct 2026 12:59:56 +0800
+Message-ID: <20261011045956.30277-1-qi.zheng@linux.dev>
+X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20261010161622.3a460fdbcd6765adb5c1eb7f@linux-foundation.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3A20040003
+References: <20261010161622.3a460fdbcd6765adb5c1eb7f@linux-foundation.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 70280C000A
 X-Rspam-User: 
-X-Stat-Signature: xqxxtcmps6q4u5gnpzrxp3p19ti8c8sg
-X-HE-Tag: 1791694278-510943
-X-HE-Meta: U2FsdGVkX1/v5Bl6vkPtdrDiD72Tb1Xd7mzb3XdJIfnaBPjt3xzew8o5CK6nGTubgfj7FDr421oxd25g8Yw/Y7boMKaT85T77E407A4IdBkw2T3lK1tst+5yCESmvyUyfZtXhZoh2S0aKkatND6RHWEVrK7nKBBQY61e9hYrvUgs2zsNyXziWxS8X5jo6+Wzyj43v4nUzhkC9c+jPG5cXP2GxMUCbg7RwBhAzbX/7+JYfAi5Gc5zop5eiHzriy9GmXen47u8aJ5cobTbPobAIteSNIBIzOcUHOq0E5ja3t0CI6e6BWzrEKoXdmkAePj7Gy7DkTKlamE2Sgj6Lks7CwqEcjWuk8GPh1cM5/MdFYiLRYOu2jofnLl7js6oD6zhTu5tpYwQcWrU7fQTiZXNvjkEJePxbeFWZCYu27ee+C3uRh4Tz+yMxFTiZJ6ht7fTVaCiDu6aJj2prdMaAXR1v6X4UzKrZbtHo0NR9vhhQBn7ssr3Twk9n0BrXRMy45gHoa+kSyY/smhvoq9ru61X0Lls+AS7PcnkQ8R96SsreYLKkK/UZgrKRzydKDwbzk7QS6mCG+IUi31sSy2jbF36TnyYH2IXM7BTpuxs1o6KxNsvf+uYPs6sHA1kGOjlyMbJX4Q2Wt2iQ7389yHhAO1BXOe5srR66zrkOF81GMjiXFbEWgA8tGMLUPR6aoWSKpX/aAeOVKFgi0kAk5GmXEztKy83VJd9na9gg5Ds2l0aKnxzsc24Cgcx/g8ZReAaVgPkRjw/fH2cIzXxDTZYH3GDpib3we1S/fqEtVD2cQ3sX3pQtEglsq0F4om7/F94rDqELR6/ke1WHOm8vgWTOE8e8Oofe3Pm41+nXWI1/RY23rbSEVF7O4wMVpzVHzqMbGa1nS6fW/zqXhdjMPiNRvnBvgFFqqjfXHtlTiMe1xOT1Wq4gQ/4AfR9hijTsEK9wYGcMO0FOpeKMKxFRRfL4F2
- YM/m9u2+
- nR+ON1dM2Ax5TdMG3rheqqVEgyIUdzMJzypZk0bMY1OmS9sOMyWxnGF8GlwuuvaMImtlOHRL08+idjfNDychowCBA5zeGLHtCq0DDEcPu2me2bRjy3tayF/pV7xyIe9FOoukwEbwC4yZklu9vLc+zKUuL76U0Lg3d9J0WpBNLHD+TYQndDMZMeshZP0qK3gzVklq11utWxLhvkU1XoGs4K4ssd9RN3JCDerqY3iOJd3tyZAma0j17QCU+wyVh13V06bxk/32qx72QMDnjXAa9DaFio7t0y9QgpOZurEra7WorJZDloHu8OiAJzIuLBty9pPEhOYNSNWbIeiVeV8Q8MofgGA==
+X-Stat-Signature: skb8eqwdjfqaydq5dw4juwonrfwbnewg
+X-HE-Tag: 1791694811-592109
+X-HE-Meta: U2FsdGVkX1/hKr1boJYdP3RWUDiTTEcuA62kE9vE/5XFUL97GgVvYfNBXXhuaQveHbMTMMJ4Q5KgTDGBVvjwR22xFNioS/Khs/qPdwizetsimoq8YF52XfC6uiuXVbCt7R7Ow3qL9D8HEKoXjf0FXc3JitYnBfInaeUsRr8gQE0RWJyNC/LFulYKaD38ULUXqHamb4tvELK4t9UtCD6vByntlyW9gcv1qRFHvuR0f5yNSl0Eo7X8dw2fAxd+EW2RM6jTlNNygtABxgedFwqsjMxcMEhP0FiltTeSNJQfO5FANkBrAAxMQQcDAYFWfsS+DYKZInX9Ss0qn3lg4gS5QwDjVx7jv52tNRhe++x5oOuE4Jv7bM8N9iVFKEmR85eh2uEMg/OuknhLvy6ZeSB+ahlaGhvEtapWlybm365chvV/xRg7PmBQi5PCnlm37qku7rWn3tT+weqZM4a9Te2Zlyguz+MVsIQ6mJPVmyfBqR2ysNlcH7c+trXEDY8qtC2VkwdFPMAnBfEExyI+YU9ND8dGmF2T3ZINUgBDCa7Rhs4saePc/25a0q4AUSlD2Qkv+4SHaTvaSNBwQ7zoTTfmDxKlLJv4iyWxTgD5dapmw1YIvuHWkm3P/JtFhocAYbsm1kpz85B9Ny6L9XiO9ijsIvVefYkt6AYD/2IJC8gbEqvR4iaW7MV6oRVYw8DOxJ2txreg0y1aPnzDdgvwFascFv4U95YomK0QbgYkj/iQzNJjnRqZAm/XEhOWWfKu5lhuBKf4m4gvBzmUonNhayNYcBt3+c4ncPOX1L6a0oW03GiXDVW7p5vbYeQ7XCG50jbePzZ3lXuhE/K5q6xvL/2/B3ZFKaW7pQdBWWd1RqP4Dvq3I59pbFwlVg6usLyTYtD1/rwrVBttja2JFp2a6ouTGEmB12ctKb0FqsdLbqF1qJ5wN4AMcfZKerncNHMHPap/sxaYwEjA0XugPGgn+m2
+ SBeezy3j
+ 2knyAh56dNj2mIRtCdqJuHY7ZBsoFaOzpJXTDAIOo2C+MF0ifCxE/cRLvYZWblSY5OxI9w1+rFE9stQN2g5Hhte77Q5uFbVYxITzQu4XoGIxYcQVP9kGH695cmdbQ7YwZ/h9qf0UlN6VYMmak0YkAkGmyIRq20KHCb+1tZ9cxI4hlr/nzWS8cK6hAUQNykpl1QFXdEv6BxGw3yYpMi1vTfzgA5jydQ1wd4spARsraCgofICOPcdmJ2tXwFAiVtt/933CWogKpWzJACh0Sfjm8EVhx7d+fPNyQ53A8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,52 +93,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-On 10/11/26 7:16 AM, Andrew Morton wrote:
-> On Fri, 9 Oct 2026 15:58:46 +0800 "Qi Zheng" <zhengqi.arch@bytedance.com> wrote:
-> 
->> Could you please help test whether the following change makes the
->> lockdep warning go away?
->>
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index 5a9bcc7c66926..8ee767dccc1f6 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -5162,6 +5162,8 @@ static const struct dentry_operations
->> shmem_ci_dentry_ops = {
->>    };
->>    #endif
->>
->> +static struct lock_class_key shmem_unused_huge_lock_key;
->> +
-> 
-> This could be local to shmem_fill_super().
-> 
-> And inside #ifdef CONFIG_TRANSPARENT_HUGEPAGE somehow.
+The unused huge shrinklist shares the default list_lru lock class with the
+dentry LRU.  Although they use distinct lock instances, lockdep conflates
+their dependencies and reports a circular locking dependency:
 
-Got it. Will do.
+	WARNING: possible circular locking dependency detected
 
-> 
->>    static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
->>    {
->>           struct shmem_options *ctx = fc->fs_private;
->> @@ -5243,7 +5245,8 @@ static int shmem_fill_super(struct super_block
->> *sb, struct fs_context *fc)
->>                   goto failed;
->>
->>    #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->> -       if (list_lru_init_memcg(&sbinfo->shrinklist, sb->s_shrink))
->> +       if (list_lru_init_memcg_key(&sbinfo->shrinklist, sb->s_shrink,
->> +                                   &shmem_unused_huge_lock_key))
->>                   goto failed;
->>    #endif
->>
-> 
-> Thanks, I'll await a formal (non-wordwrapped!) patch.
+Give the unused huge shrinklist a dedicated lock class to fix this
+false-positive lockdep warning.
 
-OK, I'll send a formal fix patch soon.
+Fixes: b9b1861d4f7a ("mm: shmem: make unused huge shrinker memcg aware")
+Reported-by: kernel test robot <yi1.lai@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202610091403.d1d8080b-lkp@intel.com
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+ mm/shmem.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Thanks,
-Qi
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 5a9bcc7c66926..a6e3c9c7f72da 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -5164,6 +5164,9 @@ static const struct dentry_operations shmem_ci_dentry_ops = {
+ 
+ static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
+ {
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	static struct lock_class_key shmem_unused_huge_lock_key;
++#endif
+ 	struct shmem_options *ctx = fc->fs_private;
+ 	struct inode *inode;
+ 	struct shmem_sb_info *sbinfo;
+@@ -5243,7 +5246,8 @@ static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		goto failed;
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	if (list_lru_init_memcg(&sbinfo->shrinklist, sb->s_shrink))
++	if (list_lru_init_memcg_key(&sbinfo->shrinklist, sb->s_shrink,
++				    &shmem_unused_huge_lock_key))
+ 		goto failed;
+ #endif
+ 
+-- 
+2.54.0
+
 
