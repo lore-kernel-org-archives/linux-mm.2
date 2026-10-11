@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB6ADCA9EC5
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 00:31:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09C96CA9EC7
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 00:31:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 758B06B0088; Sat, 10 Oct 2026 20:31:08 -0400 (EDT)
+	id A1E2C6B008A; Sat, 10 Oct 2026 20:31:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7098F6B008A; Sat, 10 Oct 2026 20:31:08 -0400 (EDT)
+	id 9C8F26B008C; Sat, 10 Oct 2026 20:31:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61FBD6B008C; Sat, 10 Oct 2026 20:31:08 -0400 (EDT)
+	id 905D66B0092; Sat, 10 Oct 2026 20:31:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DDEA6B0088
-	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 20:31:08 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56D2EC05BE
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 00:31:07 +0000 (UTC)
-X-FDA: 85308465774.11.A997A81
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 89F7F180002
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 00:31:05 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=REpdA0xW;
-	spf=pass (imf24.hostedemail.com: domain of skunkolee@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=skunkolee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 637E16B008A
+	for <linux-mm@kvack.org>; Sat, 10 Oct 2026 20:31:11 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E4177405AF
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 00:31:10 +0000 (UTC)
+X-FDA: 85308465900.17.8E602CD
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 26A1340007
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 00:31:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KmeHDlsI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of skunkolee@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=skunkolee@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791678665;
+	s=arc-20220608; t=1791678669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ip1A6CngHiq2WamXxahtB2LL7CsCqEsAKWuGP1PVcRQ=;
-	b=CWg/oAKuAkvAotrMea42gSrUuabmcFphpyXm0paLgCpwkHsrgE2e26VgINuvVMUshVXU6q
-	0PDu+yLdwyPjR7STKDmwp0sGpdQimsExVH/8nPP9shepZKm2nTz7T+TwfB9X+49WLr7ac4
-	wkd4JbAXMWyeqCbUnfpHqTUsdwChicM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791678665;
-	b=7QRWNMFR63ty65ja1NnW0rH9ZztYb8kxeo8BNNwtaR2QvxVU1ZOWKRR16sehIrtZz/FMcv
-	pEzXsP7DUYyHYbfMwkV4iPchkPojtx+gq4nZQRBh22PGO17FA3OwfMyuQGxZX6tj7zQU4i
-	SUeHXlszki/B83gBCpFV+w8SWPTNg4Q=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Texf7avohcxbJhjAidkKzynfx9gkSXyM44DuVmdFRSI=;
+	b=b3LyimlMTJe0/gaqztll2PVS66Vp9oBwQONuhT3tjc2MQZPbz4cav38OLtfTn3+t5E8vNX
+	0R82hOiVxDnpGHNGrMrA+j4TUYUYcGLzgT+PyFS/ivoCn/j2RvADKVIsaQR+qDJmGI7GNq
+	ZUH0MGGN0zGdHIUTpLMT/n4VS/i8taA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=REpdA0xW;
-	spf=pass (imf24.hostedemail.com: domain of skunkolee@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=skunkolee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3a7fecf8440so321888a91.1
-        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 17:31:05 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KmeHDlsI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of skunkolee@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=skunkolee@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791678669;
+	b=JummLl798ekp/PuJl94OpSTOkEkVXw2Y7kZwUHaiKLYRTo7yab2B6IBqxHE+O4VSXtF9bQ
+	rUsPaDIIdzBMP6vqqx4fw+bWzNav/i+Jqorj5SuE61IBBXUdwdZs46wE+khBsW1qKpYz3p
+	Iq8Ng1eZ0T0+zunagVvI7QM9brlyY0k=
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-381b831d535so928148a91.0
+        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 17:31:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791678664; x=1792283464; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ip1A6CngHiq2WamXxahtB2LL7CsCqEsAKWuGP1PVcRQ=;
-        b=REpdA0xWCaelY66Ng2Or2zZHHlxZU3N5kFkQoC1WEIksX/DeVzkEf244V9ZYcLFLoU
-         emm33rQsJpLXbB3HMWqhCx/lwV57l67bMeXx4N/wvLrHszcPntKt2mjxgRcDHZyVBVAc
-         KsstSnuBO/ZIWwYdkYsSTwFHk3RPJDjklSSvEJC9sPLVCy42oMiBk3opicB1bnmb9S82
-         wyTqn6gAHrZP6orMWLJucvfdHaLcI58krkpjkhsHvHHSD6EgkfuO9OSFJLzHcPeUIPHj
-         Cx6vGB7QP+EFPj5+SdzuRt8elkyDlkQjOVk3l0qLM7UWxC+qxjIZSEw7wyy9OpZWYq65
-         DI/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791678664; x=1792283464;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1791678668; x=1792283468; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ip1A6CngHiq2WamXxahtB2LL7CsCqEsAKWuGP1PVcRQ=;
-        b=RYBTEC47/2k8rz1m7gZia9cjavMpuC3xllFon8kICJ8kdXao1iXOpkNuQ1CJgingbU
-         vkxjkAh2oT2Y6P3nOWQfGi9V8PJ7VWUUWo/MksujVCh0JmsPgZyC1S8qWRVK7BSze4+u
-         f1PnD9lYF5B0Zc8j5N09bQuyFa2Q/SpIik555I5AV1Ys7Et65v+hc7vgSJSn2Iqbelme
-         YHxIqNhXiMFQyjt8z7CskCtu9TlKD2f84Dm9FxnUsMUsBhFhJJxvB/7yOV2v0uYo9Zno
-         kus7Qic6iWnvSKTvf33zOVXFo5QNG+aDIvuvD4CLMAkZs9nRm0Lui9rzoEYjpj/08dDL
-         S9ww==
-X-Forwarded-Encrypted: i=1; AKwUvBzA0lQseW8EBJQXsH4HsKPq3+fbuLkd9V+8lU7tRTIz3laMN4u9W5MoG9yiZhhxLkDteYV1E+OqQA==@kvack.org
-X-Gm-Message-State: AFq9FYK3PLnlkoNmzVaCTufgmx/v0k/MKD9M3pwTtKb69tAARmh41aQD
-	PbyjioHHlGZE0L7hyvPswoJOLhF6g5kgbetPQ4phG36unQR2KuVJ8yfR
-X-Gm-Gg: AYBFou0yIJVtjipgOE1U7tQRUT6OpV8X6XLPIhQd+u29g77wA2D3NPb5mV+Ejj0/T3J
-	IigfEeLHRelMNySPmEIrqDwlnIEZdpa5cLwSd38qc+DyEtHcE5Zygk8rm+hcQnwcERt6g/+NV78
-	lZojpWIbXCXW7EtnFc+EA210sbTqt0DeJINsCuThDgEmEfcxqHPLxoEm8JOSYktDYy/4H1FyQvb
-	HPrdAw8xZwXoxqxTuAfzka46MgrW3To5di+zHYvxPIw1N7xuNhTPf+RY5lUyWzb+fyaqynSiNy7
-	PJ6ls3PSM3mFIcZ5eXUeqKhnzWYZMlFbFKmG6mbSryvVpe6WC5+3wfO7YjZWk2po4DrjMvanGkJ
-	JROU022fHFXc7b7p++HF8Aa72xf6DPAS1h9amrUsDZj2vDximV9j0OgvuKSrErV8gTBe8r+IDgu
-	BlUQOVKmHroLKLPP/lcxjh0Qf4iBAcX/RCbhdg573LEGCpqEIWqyki0RUHfohMXmBwpDgeabrnr
-	VlMZONPz6WkHYIiswVzUY+DTz6/vK5XailJl1hMpm6U9O21XTeA4qgBGBADBKA=
-X-Received: by 2002:a17:90b:4fcd:b0:3a1:8b70:d46b with SMTP id 98e67ed59e1d1-3ab3ad2b1damr4674660a91.42.1791678664191;
-        Sat, 10 Oct 2026 17:31:04 -0700 (PDT)
+        bh=Texf7avohcxbJhjAidkKzynfx9gkSXyM44DuVmdFRSI=;
+        b=KmeHDlsIkW50P9YYb7XRxlwsIBvWPWC9zfUnipd1c0LJCtkYbXKhEcYgWS2jnfdnE4
+         tNfGft5GU/tb+bAcnlqno1KlBRAmsKkTU23CELd6jklMCPqY+Dpims5GcbFZLrtdC49b
+         olbg4PbOr6Om0MVmH17A53XVxZgo06cvMcFrbPSSOf1i9cz2hbBkPLOZuaW0vk1A0Ztr
+         6ux1mekyVdhhIYFFZZQgGPQVtqLb5/RpRQUP1OXIem+nBHVUtxsMANedQQeNNsEKGXBM
+         kxTDhG5hPHotzrNKmj5hjPYDmiWZ+n4OGo5QiSxJxAy3XIT8ptmXYuwxxRCyP+d1oyX5
+         fLMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791678668; x=1792283468;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Texf7avohcxbJhjAidkKzynfx9gkSXyM44DuVmdFRSI=;
+        b=BfnLvvzmbXKb3yYRniezpUaCPkD9zSr9ZH6q6UegQizbuO775vUyWv7g6W/vdmFvfw
+         pyg9yYJKpY5+4jpz6hLooMrjwphiem9zQb4H8G5irzuk/NdHGFCHxC42/EsDh6YjLgT4
+         icbXhNmTniW664Rgcmu45iaw9H4A6P61xmkpKmIFb3bdA9GDSRzWn90I5aeJJmd93uOK
+         joD1lE2jWF3M+T6VWXuzNg6buXBybMgfh2rtCUUsbuubYVak36Qc4x/7FwDXC3ZHhXQE
+         HyN+w+SgDMiql78vC/JglK47lZ2D3Khp519qJ3dekY/GfmdybQr/rs8hVZmH5rdMdJdD
+         yzsQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzRMx+cpZiL8FMhPfr/7NRknLnXwGQ2+0vEqycwsKRj3ey7Rosj6YmGEuPhnfwcOcHp+SBpHkVnhg==@kvack.org
+X-Gm-Message-State: AFq9FYKpHMXymaSHADEQbFWSICGGaQiFh+5tBLh6t5PTOWEhpXBycQBj
+	lse0nJz7FDje5EVKAoW6VMICS6FTAPZflCsqRhmiSPFfT8WHFzE/7bhv
+X-Gm-Gg: AYBFou3saoxr99TtbsJcGUXlH/yLeLvyOTU9laV6qVKkv7znCPlOLtToDcNZh09TR5r
+	KHrI1n1p4wD7WF0bzCMAhqTOXlnlLQ2coenSWh46eJtwsBlYx7In618G8zb+eGzYpHSgg3TtAPy
+	X5dWPhj9ovdP8x2me+kKoFBbsTlqJDamWT1yBlQFQWuzklwHivV46zBc86VIsVRbVHWAYl1Gq4P
+	rdoLi9qkhl+6M78uy+n5VllhFxlqxG6foTRRnTfTWdakz7OniY2mLUYSc9G/uRYHTCh6VC7qLnL
+	Ju2hbbhiRvYWWNyfq50pVB2NKLn5n3Z058f8QA3KnQTGJ0QbplBOFiL8fUXLzjFl3E3Y7YVlgPe
+	YcV8v4nWUQeKU2xyyhdEdrNiFHCaaiGPb+Xc5NzcBHc5yaEMINuzP/xxyjm0ExMyxTa9C/sIrS3
+	2MlgA9iV+ryj4tvO17FmXwOitSR2YixpnhBNeXx7F+CQ9FBQVdfE+M2DPohHNx8XVoTFWE5TaYw
+	24ZlZFMyp6a37TXr6pgai+FU05W+rEMk+DuR5ts57UO91HYx/tD5h6Ll1irvwxl
+X-Received: by 2002:a17:90a:ec87:b0:3a8:c0cd:57fb with SMTP id 98e67ed59e1d1-3ab3ac9a1b0mr4922031a91.42.1791678668019;
+        Sat, 10 Oct 2026 17:31:08 -0700 (PDT)
 Received: from bloom.localdomain ([2604:3d09:178e:e100::a891])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab371c32cesm9681761a91.16.2026.10.10.17.31.03
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab371c32cesm9681761a91.16.2026.10.10.17.31.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 17:31:03 -0700 (PDT)
+        Sat, 10 Oct 2026 17:31:07 -0700 (PDT)
 From: Ivy Lopez <skunkolee@gmail.com>
 To: akpm@linux-foundation.org
 Cc: david@kernel.org,
@@ -104,20 +105,22 @@ Cc: david@kernel.org,
 	linux-kernel@vger.kernel.org,
 	Ivy Lopez <skunkolee@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] mm/cma: fix list_insert_sorted() ordering
-Date: Sat, 10 Oct 2026 18:30:58 -0600
-Message-ID: <20261011003059.169430-1-skunkolee@gmail.com>
+Subject: [PATCH 2/2] mm/cma: do not count skipped ranges in cma_declare_contiguous_multi()
+Date: Sat, 10 Oct 2026 18:30:59 -0600
+Message-ID: <20261011003059.169430-2-skunkolee@gmail.com>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261011003059.169430-1-skunkolee@gmail.com>
+References: <20261011003059.169430-1-skunkolee@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: kpg59ng8sxx6ackrtrd3d97t5xph8yrp
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 89F7F180002
-X-Stat-Signature: cxyd9ci1prxaq1i5iwcputrtuyc6ki17
-X-HE-Tag: 1791678665-691184
-X-HE-Meta: U2FsdGVkX19dQCmNSRh/B8cylec/BsZNJPlzDujitHBh8F33d5dUUdLGshaDAI1IssrvHIFsyS+I0zGSAbDp+S+Fjl6o4EHgJ4/G4J7eNJ4lqqZj6lTI2gIAw2NaV1WNvzclyFPgMYdtku6OVNFLSk56rloVxiiYVYr1IgqAsbGjNsjjze9WlgxDxkvwG2FXu3ooWDVVh/VJpUmqSt5JFnIWyBo5tsLe6wsB0ElbyhvP30SSu0RMVcABZlFHtlw/j7OHdbnvuy15up7sQvgP/1RHejlW9esKamdKIzK0aPtdD1oBdOsYy96G5h6MjnSIevjjujf0L88mPU2Dr0eDby6L/mXsE46jznYrAk7WIAA1QM6a8foGEW16O/9k4sCsXxa1+qtuFcJtLHOsnU4DQYpHoXuSEJ9i3y7AJnFdRoDp04SQok/Fx+aGLrIUGPVMsY/CdfkqJdIwPrsd2Ku0RX3SVACvHclYqQkZV9yx0Vsk0xPP4XhF9Si49I9JF0Mrrbdiq8aBvFWgbqT4XwdVRuv3INp/J0ZHCEWbLXitNjGf7GWxf5Mdz3WwgSuZ2IvUY6L9t2riev6zOiz8WdJurjoHWZwobjQ10WNdK8MVZkvdTySK/HPnedW5utTT8mxHU2UCFuQvrt84l+00mK/86xzembWYLknnbBK3S9ZBwHh3Au9a0sZnmnWCM+VZ3c0cqOhdx0vCWusRpEkn9SMH++JGbMZS0RhsH+m/4oU8XdeGzFo90YiLCJQ1Kwesi8xiW4BlHd+qkz4sERGNljGAdMYNV6PoZ4H9/gRj+9zXZ+GSO3UXB51KknpHsLaQXTEj1ax/rGGbwkR8Coc1vKydGvr/uJB3na8PSmQvWCdwa6FM1A+CaTzZCOISOcxAgULdhHIi/39z9tiR+lO1GylnbdoBfIGkwwYMnJVN/kW2jpbuEN7FAr51SLGZIFAU5w4JKw2NL1sNwWdK5kAjj2j
- LYhLQAcT
- dojHofgIeo/g2oIvwrCYNQdMAB0jtqhTxZV5OIw7VpiOJaN0QjS2tXz5KeiUWZl3/0ia5lwydfGvH9OX88aFsu5EI+ow0fr24BTJQ3cY+2tK93JO1rZKzfndqqDpwpBgbLChMbJz4GDLgBp52doLiJ85imGvJ/oF0SJt5f1MqELjpmr0TKthtVR9i4TrcZOGInPgdZ/FZa2/QnuLNwRFRQnVDiUranh1d2RfaIdKYvqwjMqOmGICUwOoY+Qex3b9nNgNwLD1itJKF1TDsuahLN2+BvPtOR/SSbYhKwkf1VHMu9KXl3o2SG2Xyx3fRtV3BI1qxiWpHgiOuTCIBfPDxxAxjjdQ1BrfV3zAEpiCmrSkaUUeXGtRW7T1Xxb5ZSZySEGEXMTZUBWT/po3CTLphmZNCXf3BzwGplptXqmoIEAm5RzFLBc/1YHP06wQaJHK3f+ws8I4/CTzkthqeQmTTlp+03osjIrSfEzeuhWe9qSoitOXCTsTXqMZxgA==
+X-Rspamd-Queue-Id: 26A1340007
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791678669-52253
+X-HE-Meta: U2FsdGVkX1/ApR/EcqSHfPhOdXEXUm0B43+iz7dffyPxezkN5O/XCaYL03cwLr1dCyVRcU3fX0yu3xQhiqcyN8KlkImXOXwi8r5cUGkRm0dYzZByNlLHQtAa64sJ/RzP47WuqVsW18XIeUhk7wH2iNbNWhid0R8BPzjyRESLEZd90YQgKOesAovRUlLvdsHpNl2k1pzGNXvDhWyVVuLdgCJgK0Pg66mBDsSaw7vFSWNhdBxeTrH5zw/foh0Ln79wsf+PqyDeeIttsam1T8wPu7AdAVu//QKAlzGrTubgSHg2M0xriTTvAnTq2tJGuuf5P2zEkDxgLt66Yel5l5mJhU8CcbZkfgHEJ90+gCBh5O5yBCw05/UPGgZlHStHLEXJOkrJLoHZJUhFZxag+3Jhp47XDl85AvnYEIQoThJVRsALyCFijf0HGKUoAycqPqc1+JFKr2xgGQOAN7jq5EsvXpDxnsYC+ct+4v7k4oBEWYeEi82U5TtnR5CCEehPdYLrvGLmri5AvsEfuF0SyiHFZRA+ICOPOA+C1dpnRw8dFu4mhSYTV+sMobqT/IX4NvRmHxmCuXITyt2Ro9HSQ2GSSy/dv8sFMeJn+t2/FiV/CCYsQLEexLkbsveyS8XioeXAf+mYzJ1X+lrSpdB7WNxHF/YHKPhziF7SMZj+tfO05DksxcBEZ2qRNexCqjD9qgmxBFUdCDUtjwN/tUP/1kdzQtIYzJT46dHvqOV8z5IlfcE1qmXpAquSGFEqcf2Lou+SmTDj7huk8DpFpCjygmFgOomDIE1zJQv/L7EjyVsMaH83gWxxmYN8Sd0it9brDirmxXEMwUM+VkLndS5/JLDbcKXGiCJMykkg1SFBHsHTvq6kVSNEvwBGfURJrQUkugwHbauO/5LS4UBmSjZOrgTOrGf0ewgG1DyxPRMiqHjXS+oM+C84Ti29oPPjNWYoRwkOiswr2LWvf7Ynb8Gaeis
+ CkNmcUfL
+ SkkywzPMypMAAq7eqdRgECg9gOY2VMXIOwcFiMMC2+C2HUGDSH0tCAeOrWsTzTCsphd5lDKosVs9EelpUK12/v8dbvFKaKXbx0Dlr3GS8pSAjfJEFR9FqBeyUGU7QVuTjAdA2V/9rhnNm7Fx3obYZPJ5IYCl+1ub32mrtlkHxp2rDHVeha1uHbcb76OfmQjic4mO1vSljxS5WpcUGYNMVc+LDju2yhJvMPTZLu69KYurVi9CCbS6xjjY263PkSAou3Z79niE4nEJrCayS0onIPiTLTuAv7mQHcXNOFjQE8KBJ/VOhp2o0qmRE5rVqGE6DSkgUwYg6fN3u+1jz92oAOoE0Xp/HuFW9GoEJmJ3DetBttC4dx55t3+11Na2xdpZVuJsJJn8UITPb+OJ5hQro7yI5QDriVMudDn+rlRX3EpeYGsjyoZOXdp6rYsl87yq3jWDAbMuhhlJga1LHO56m/IsXLLuNppzCTYHmva68X4bb26uifAcYU7Y64A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,68 +128,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-cma_declare_contiguous_multi() uses list_insert_sorted() to keep its
-candidate ranges sorted by size, largest first (revsizecmp()), and by
-base address, lowest first (basecmp()). Both comparators return true
-when the first argument sorts before the second.
+cma_declare_contiguous_multi() adds the size of every candidate range
+to sizesum before deciding whether to record it. Once CMA_MAX_RANGES
+ranges are recorded, a candidate smaller than the last recorded one is
+skipped, but its size stays in sizesum. The replacement path already
+subtracts the evicted range, so sizesum is meant to track recorded
+ranges only.
 
-The helper stops at the first existing entry for which cmp(entry, new)
-is true and inserts the new range before it, which is the reverse of
-what is needed. If no entry matches, mlp is left pointing at the last
-entry and the new range is inserted before it instead of being
-appended. With revsizecmp(), inserting sizes 1 2 3 4 yields 2 3 4 1
-and inserting 4 3 2 1 yields 1 2 3 4. The first range inserted always
-stays at the tail.
+When more than CMA_MAX_RANGES ranges exist and one is skipped, sizesum
+can reach total_size while the recorded ranges cannot. The sizesum <
+total_size check then passes, the reserve loop ends with sizeleft
+nonzero, and the function returns 0 with fewer pages reserved than
+requested. cma->count, available_count and totalcma_pages still
+reflect the full size, and the final message reports it as reserved.
 
-The caller relies on list_last_entry() being the smallest recorded
-range when deciding whether to skip or replace a candidate, and on
-walking the list largest first when picking the final ranges. With the
-list misordered, a candidate larger than some recorded ranges can be
-skipped because it is smaller than the first range found, so the
-function can fail or reserve less than requested where a valid layout
-exists. For example, free ranges of 4G, 7 x 1G and 2G, in address
-order, with a request of 12G: the 2G range is dropped instead of
-replacing a 1G one.
+For example, 8 free ranges of 1G followed by one of 512M with a
+request of 8G + 256M reserves 8G and returns 0.
 
-Insert before the first entry the new range sorts before, and append
-when there is none.
+Only count a range once it is recorded.
 
 Found by code inspection and checked with a userspace copy of the
-helper and the selection loop.
+selection loop.
 
 Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
 Cc: <stable@vger.kernel.org> # 6.15+
 Signed-off-by: Ivy Lopez <skunkolee@gmail.com>
 ---
- mm/cma.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ mm/cma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/cma.c b/mm/cma.c
-index a10ea37a261d..527b2d894f3e 100644
+index 527b2d894f3e..c2cdef953ee9 100644
 --- a/mm/cma.c
 +++ b/mm/cma.c
-@@ -348,16 +348,12 @@ static void __init list_insert_sorted(
- 	struct list_head *mp;
- 	struct cma_init_memrange *mlp;
+@@ -594,7 +594,6 @@ int __init cma_declare_contiguous_multi(phys_addr_t total_size,
+ 		size = ALIGN_DOWN(size, (PAGE_SIZE << order_per_bit));
+ 		if (!size)
+ 			continue;
+-		sizesum += size;
  
--	if (list_empty(ranges))
--		list_add(&mrp->list, ranges);
--	else {
--		list_for_each(mp, ranges) {
--			mlp = list_entry(mp, struct cma_init_memrange, list);
--			if (cmp(mlp, mrp))
--				break;
--		}
--		__list_add(&mrp->list, mlp->list.prev, &mlp->list);
-+	list_for_each(mp, ranges) {
-+		mlp = list_entry(mp, struct cma_init_memrange, list);
-+		if (cmp(mrp, mlp))
-+			break;
- 	}
-+	list_add_tail(&mrp->list, mp);
- }
+ 		pr_debug("consider %016llx - %016llx\n", (u64)start, (u64)end);
  
- static int __init cma_fixed_reserve(phys_addr_t base, phys_addr_t size)
+@@ -620,6 +619,7 @@ int __init cma_declare_contiguous_multi(phys_addr_t total_size,
+ 		}
+ 		mrp->base = start;
+ 		mrp->size = size;
++		sizesum += size;
+ 
+ 		/*
+ 		 * Now do a sorted insert.
 -- 
 2.56.0
 
