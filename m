@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ABCECA9EC7
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 16:35:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45CCECA9EBD
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 16:48:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E2776B0088; Sun, 11 Oct 2026 12:35:43 -0400 (EDT)
+	id 02C8F6B0088; Sun, 11 Oct 2026 12:48:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 593656B008A; Sun, 11 Oct 2026 12:35:43 -0400 (EDT)
+	id EF8076B008A; Sun, 11 Oct 2026 12:48:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A94E6B008C; Sun, 11 Oct 2026 12:35:43 -0400 (EDT)
+	id D9B686B008C; Sun, 11 Oct 2026 12:48:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2764F6B0088
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 12:35:43 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 976D38090C
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 16:35:42 +0000 (UTC)
-X-FDA: 85310896524.23.267EB1F
-Received: from mta0.migadu.com (out-15.mta0.migadu.com [91.218.175.15])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0052E40006
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 16:35:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mwPPj2pF;
-	spf=pass (imf04.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.15 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791736541;
-	b=CgIb5Zbwt78W9Wek0J8xi7wd5wjkFYcnh5glymqmCk0r88Hu76zJGK/1D5L3HWmj+1t1u4
-	Obg8SfvVhqaFJR1Iu8DLJPAA0LTQCYGswTPe0O866pOibV5XarHG1BKg67dAPpWTs9it0b
-	CUHzuDkGOQKA767QISTJobE4Se6DFNU=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mwPPj2pF;
-	spf=pass (imf04.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.15 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B15F46B0088
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 12:48:42 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23C0EC0757
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 16:48:42 +0000 (UTC)
+X-FDA: 85310929284.04.379B527
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8E647180003
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 16:48:40 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S7oKMIxq;
+	spf=pass (imf24.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791736541;
+	s=arc-20220608; t=1791737320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=e3s6HqMMXfc/PLb1dBUHl8Rpr2sTUOQful4Cv5S3+hM=;
-	b=8ASK2pkAIEeVCCDs1MRnlvAj4batup9KUwFmmnTbGmX81mnzeXmK5AQbzWYW5SCuDXzU8e
-	h4c/OU70leUQ6uXMZI+Xi+9stmp2zidDSMLuZ/YE5ZWPp0vzhK/BUYhfKg22Fxc5zvs7WH
-	JogdK7FSYz/jP35dwWoBJ0gcm63E+q8=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=+gn9/2Bwxj4iX6rrRLRwzG9R3E2EKBjO0B+oBS9nPDw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791736535; v=1; x=1792341335;
- b=mwPPj2pFB5DKGLBu3jh+gT4BrpnqWwJODEZmBfuRg+zp6ivXF8isgzDfskZK8Cs79ZOBeVPS
- 1KPp8doKmBzelzO7kh+bWHA6W3o0xedcKMB/e/fP9Qw2KMZ+F8m0BqIu6CvI8/AKVjP+NfZnK1/
- 8n9itD8Xl1rBbCyMR98t7ZPY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ae541d04c9977309;
-	Sun, 11 Oct 2026 16:35:35 +0000
-X-Mizu-Trace-ID: ae541d04c9977309
-X-Migadu-Flow: FLOW_OUT
-From: Zenghui Yu <zenghui.yu@linux.dev>
-To: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	peterx@redhat.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
-Subject: [PATCH] selftests/mm: fix uffd move-pmd test crash on 64K base page systems
-Date: Mon, 12 Oct 2026 00:35:27 +0800
-Message-ID: <20261011163527.95988-1-zenghui.yu@linux.dev>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jW7ekHnfYentRy+iWHdDXOHQ3Lfex2DwvTOdYJea5T4=;
+	b=Pd+krGnutl4bWv0VUzYUfZGDq6nTDOwpdBR+KDDKPS6uRZHiJ6UTskzRTFt7FIvfMQx2a5
+	Ep+bWu7i2+LqLaKPsBdSJbcFFmGeJ9R8Hy9EH1D2zT9Jg38R5lkjlwnfpmuhwlQltZARrN
+	HRWlcWXyrV8r/ph67qTACXssjze+I2s=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S7oKMIxq;
+	spf=pass (imf24.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791737320;
+	b=WPfY4Dixp8Jpg5E0mRqqRB43xu9oX7j0iLUJkhN/bokpWmFy1aWn3u1YxExvvVKShR4jHv
+	oPRv7fRS9xDcblx+pl3Uh72DiESzLGy6JQlgHOn3NXKMdh4wI78OPO5IjdZEEzuWiIbURL
+	1wW8FMGulk081RNQTWcSwCJmgnbaPdg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F21F0600E2;
+	Sun, 11 Oct 2026 16:48:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4DA1F0089C;
+	Sun, 11 Oct 2026 16:48:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791737319;
+	bh=jW7ekHnfYentRy+iWHdDXOHQ3Lfex2DwvTOdYJea5T4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=S7oKMIxqxgO1NvQDJIrgT1zfe9UA8DbPt+rRSPKi/kjXaC0yQgkRYbINZyH8E5YGu
+	 xColnv/Sj2iYh/bMK/bhPy/ZBGyrIxLBXQJUyctXt7orq6MMrkc31fvvLGZ54URrt6
+	 G0x6s1fZMJLJ4gSxjtE+jyEanGuDGpCKyGmGtMj4q1nThdi8Xct2tAG207SRA7YdaB
+	 TPUqxolI8c6mVfOS/mS5edu61+emhri6udpTA1LqlW8oq1OAnmX1NzZjCv8C1NspTI
+	 1dhE8lK2XD/9k4jB412KLynOOO8lgR8I5Q36nyG8sQ/ILSgmwvyV9tYWUhfkZWQANT
+	 xN20NuSo9PoxQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	damon@lists.linux.dev,
+	SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 6.6.y v3 0/2] mm/damon/core: fix last region handling of damos_skip_charged_regions()
+Date: Sun, 11 Oct 2026 12:48:16 -0400
+Message-ID: <2026-10-11-1-daily-reply-0009-damon-skip-charged-6-6@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261009134949.11507-1-sj@kernel.org>
+References: <20261009134949.11507-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0052E40006
-X-Stat-Signature: 8atnrhebg89eymrs5oucsujhym5bs81n
-X-HE-Tag: 1791736538-762167
-X-HE-Meta: U2FsdGVkX19dtfcegeNit6jCYVIQrdwV8is5epnyFKnvJDuJzBBzUGX2dmwV/Ig1fPATVkFYqX1kG9IwbkHsQPDjAwTfSTMf6qsO6MWBSlfsadFso7w4MjsMs3gt2r8ye8OQs/wpNeM3cHodbvwNM4y6ubuIHdBbMauzCPzb9KueEGbL0KtyUKoc7c5+JjrKl3Mkhyz/csJMu8Oejwqmlpwxdkll9lf6NOPdHZe00JCFZ3nu447ZiUbXjzC+L03kGtCw5dCNIYHVjHCarWFYhOZdoGu3p74v8KeKvblru0JtO9WujAYYD70+vHh5iHk+VPRG8WLN8+8VPWfTl3IOOIkyX+hBTKp0MIIeiTSEUj7HPZ+P0eJgf62oUlweShld+dcewfvFATXr0bTdG7a1BG/0e7Q3tWwoo+Nq1d8vS5ctjIJWrFrkrwEtgTBJFe4tGg8Kg1os7ztmFT4tS8CWQ2mbThncBgUuIED9BlwJlCulDylm6F4gJQ58G8OGTC5gXeAmErdJe50r6ddinREcYtJ47UGBJjbi8ibm532kTw4KkRrJnxDBczKO5zfKYK7ZiKm2Q1SXoTs6BbHQSHd0kg/s+CzjqEQmGEOYgxu7MiOhL4Lpw0dXYpkOuyhu4fABWwyTejOy63L9ENXJO7EoSyb2sr2sooMO5i6BQ1b+OxDGK41kTxR7axgMUqqAEZxdArK6e03qDZEgcrTTDn3upmlQGHr0rgBO+c4foek8jFnMowDz9C9m508a85ao/96uFCfiq3qENHJKcTsWfpoABCPRIggxuq+i14Ek9EwXwy/MKTGocTlxMLJi9TeXKjt4w8KPGQM1nHKC0h+ZkGQZQeMd9YDRXEnXmAKXSagGdBi42ePYpQizshsaJgpBc1QP2to+EaLgKLx8oQ3wDpQQaLFtg4jZEN+CXzLtHmQ+Zuu3bcDR4f6+yrv8w0Zdn61gG/PcbL1TEzqRm8+dHYk
- ve3ZDt6O
- mtF+gX0W0M0gD44WvtRmpkyK21uacYN1ed50+dsDLEQ2HESTQXo/+qSVj/v1hfEHgucbAE/n2t4NfXSKYQA0ACALMU95/bqVQgY7wQLKqrefpn/ucBFcGfImtPCUUpg8DKri1qhTmCEiNunFr/neZM7KV/GqT7kVwuONULplMfUVjt8ADCgW3Rw9P0HOjYw3t9n91HK8C6DI5676dIJ/lGhuUMN20T1BeFnM6NJPYGYSRowg=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8E647180003
+X-Stat-Signature: pmeaw1nc9cwii3gmi8tufwt1ei35tbpx
+X-HE-Tag: 1791737320-889380
+X-HE-Meta: U2FsdGVkX18j2vs67HyIh2Yu7GkH2BWctQmc5Nx2iDWZppT2vrn/oqoHxbD40wb5dEb2ALh/n+WrNQMGREf8t5plco9I7ZiXuIe2as0u/vfGyCCkRe6iMYGjNHVdP/DLIJ6uX4b01h0R6kolbnQuQ4lQ8aSx0LT9MTYf39M4PjrKOKRMXnSotADdlETX8P6+38hYYOVHuLa8iRlwMgEv6fWpKLfwwdTpdrjLVHE2AIkpmX0/Sazc9sosKHEVZBqWH3AerzD4zLWZtnp15mrg1dAhZBaeLkOme2WVN6wi4UzC8fimxfbz5ioDiQJZlPcVVuUfFVDtouwEnUioIzRUpG7RfFORGk2LeqpJvEwsSdt85GGZ8AYwLZvcDqAj1/hLf9nWWphNZHbmB/+h0odPYJW42tI48ZiORd1QYXqt8Vv5kdS+E6ss7RnZRs5hHtaeKN2xHSrWMZqkTD9W6idrIb1FPOBvd7I41tuS4QZNh3uw7CEod/F9PQ2nZDUsXva4uqUvPV6CfTw2aFGYLuL40jspuy+W0/ToSZ9GwmPEpYHOaPhoXJuYabPWKC3Rvb6ye5SNJUcv+bn9/y1Bu5UJ7g2RMXAdylezO2lA6DeuBhX6nXrPD56XILN8+wfTtjBbXXTsSrcktqloET5MXH+eQHz3dwL07ORbuGhSnf2KU/Fsiw6FXv77fXuNBx/gtodsmpWzLihkd8Ur7Ksi0BHfxNU0g5bspMh2+TAp2FMg5Ge2Vsx88wNwNrTJLsSYR1k1yl+jNM6oPbgyd9dQ7Nns0Lma/EPoMtvdqEbNO5iDwBz3IpGT8VDK/VCO0j7+glGx/2h6r3naC0uWRwc+nzgcSFFb/SpdFQkI0nezlRK6GneOfrrvwAYJ0BV3U6xDN5Cx0GGGkZjXN9BVE72FnA25p+R7zdfEFlkmxDM/VsdqQWQfH1CcVPwJcCULvydGAp1PcCyhwD62hj9ugbpRSQI
+ YvsGp+KG
+ xk3xjqq1asLkiQeyctWcFuAH4JjYGTwwWSYCUVcUQ2b5MZJy9f38AmVIHjOdEjEdxB8Gxq+G+UF9Nq46SiczB4rywebL6wrA8UrFHgung2MbDfSJSkSaElgJHwVv+pwt6bHiTB2ts3pTe1MfdmOuM6GgzXMpeVYY/taASQJQuchFN5mCGVZsKdmYFxqFFmq6Vkj8W1vvKGzENUem0i/xiqFt2yfL8sVp0bQ1TrJ67IFZf6jkcspxMm8TNZwmKlk+nP1nC49GfRPDlkG2YsiNJ8UMvpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,45 +94,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+> Patch 1 is a dependency of patch 2.  Without it, patch 2 introduces
+> out-of-bounds memory access bug that was found by Sashiko.  Patch 2
+> fixes a bug that categorized to be backported to stable@.
 
-uffd_move_pmd_test()/uffd_move_test_common() splits the test area into
-chunks of chunk_size and moves them one by one.  On arm64 with 64K base
-pages the chunk_size (read_pmd_pagesize()) is 512MB, which is larger than
-the whole 32MB (UFFD_TEST_MEM_SIZE) test area:
+Queued the series for 6.6, thanks.
 
-  step_count = nr_pages / (chunk_size / page_size) == 0
-
-Because chunk_size > page_size, the test then aligns both areas up to
-512MB, which points far outside of the 32MB mappings, and decrements
-step_count, which underflows to ULONG_MAX.  The verification loop then
-runs away and the first dereference of area_src faults with a SIGSEGV.
-
-Skip the test when a single chunk cannot fit into the test area.
-
-Fixes: a2bf6a9ca805 ("selftests/mm: add UFFDIO_MOVE ioctl test")
-Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
----
- tools/testing/selftests/mm/uffd-unit-tests.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-index ef9b3956bdcf..2a97ba1d6feb 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -1937,6 +1937,11 @@ uffd_move_test_common(uffd_global_test_opts_t *gopts,
- 
- 	args.gopts = gopts;
- 
-+	if (chunk_size > gopts->nr_pages * gopts->page_size) {
-+		uffd_test_skip("chunk size does not fit in the test area");
-+		return;
-+	}
-+
- 	/* Prevent source pages from being mapped more than once */
- 	if (madvise(gopts->area_src, gopts->nr_pages * gopts->page_size, MADV_DONTFORK))
- 		err("madvise(MADV_DONTFORK) failure");
 -- 
-2.53.0
-
+Thanks,
+Sasha
 
