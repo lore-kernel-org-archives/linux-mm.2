@@ -4,115 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA4EDCA9EC7
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 04:28:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59BE0CA9EC7
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 04:51:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 828266B0088; Sun, 11 Oct 2026 00:28:14 -0400 (EDT)
+	id E70FC6B0088; Sun, 11 Oct 2026 00:51:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D9C86B008A; Sun, 11 Oct 2026 00:28:14 -0400 (EDT)
+	id DF9C56B008A; Sun, 11 Oct 2026 00:51:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CBED6B008C; Sun, 11 Oct 2026 00:28:14 -0400 (EDT)
+	id C9C956B008C; Sun, 11 Oct 2026 00:51:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BCF36B0088
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 00:28:14 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1AC931406CA
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 04:28:12 +0000 (UTC)
-X-FDA: 85309063224.09.3A4699C
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4259E1A0002
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 04:28:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=b7AVaxCV;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	by kanga.kvack.org (Postfix) with ESMTP id A04F66B0088
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 00:51:21 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1C0D01406BA
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 04:51:21 +0000 (UTC)
+X-FDA: 85309121562.03.8F5B95C
+Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3A20040003
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 04:51:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=WGwhXIQz;
+	spf=pass (imf12.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791694278;
+	b=Pb619K1y/cIzajNRr33BTxaxJD680kneElg9Vk8Bwv353U39LtMJtz+UNN3oByUug70hCZ
+	cTXlgRxHD52Hrq4QbOXz9YYUPMYeIfgTe1IzCtyPjpYKy4yuugUjorFOea/x+mWfdYAnaI
+	cSuNpnQPBPdT2Q4N7CP6cM4yW6q99Sk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=WGwhXIQz;
+	spf=pass (imf12.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791692890;
+	s=arc-20220608; t=1791694278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VgUBQDdodR1jUKBZJnt7Hs3MkCVZjH756ozkqdENr9k=;
-	b=RLPClwKbnHZMeL/7qupExY/pQwqorbBu4PqC437VVJIn0+HnUV2YsQzKZAEYHt4OotYKPN
-	Ra8fkaGTZ+2Ddc4xByI1Sre0UBjWZQyfZ0CnhzfEV67/dqb6kuc8tsUZaI+Wdg4e8l1czR
-	tr9xmSCw9E3SwdzQGBXYuyNL+xGB2lE=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=b7AVaxCV;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791692890;
-	b=QXqaXWyRXbSHdh5hRBdqXbg8cj/8jxp6lTmdsj/ZNtd/v9URnq7XdxRgDD9NJ2KY+//Wmj
-	uW8YZ3mGhKHsAd23fH5DPAFgbXJDMGsod17+jkjhH28n/w0v3gCnMyty+1siNmbdB9dxvd
-	zOq6ybxA+cN7u9PzgfgRQ3Xg/chTR/g=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2db710396ffso17369385ad.1
-        for <linux-mm@kvack.org>; Sat, 10 Oct 2026 21:28:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1791692889; x=1792297689; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VgUBQDdodR1jUKBZJnt7Hs3MkCVZjH756ozkqdENr9k=;
-        b=b7AVaxCV+V+6vTGvqpE8L37hE3LffPDoRxrw7tOqu6khTFbpLph6nfb3rRjtc+sBnQ
-         METk62DDWb9BvM0+GF4xSPpGzlwqosSF9Egt1NEehkNvnzvhCr0ZIcjaQpUgvGiEHF/S
-         pWjmA1YUqHccQdWUYuxcT1uvCgfWZQM8YUU2E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791692889; x=1792297689;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VgUBQDdodR1jUKBZJnt7Hs3MkCVZjH756ozkqdENr9k=;
-        b=TNe6bkmwTgQX2PKMG63vroUctzKcwZpKKkMUttGGz6/Lk54Y+i5NBWvA3XAPKf8+VN
-         ovWJcAUVTO5hD/qha36+NgGSOFzLCqnWz/zlO9YucnhRCIcye+F4/f0LfXC9h9XvOGt9
-         Ir5BRqckHbQf0Da+NnRqWFG4LD9WZPHPMCIJBlYHMe+tnbAfADOY2Zqzp292hU1n5cTP
-         W9ZadEcsLdP0B8YaYZS5oDfve7P06qJd841e6R0hYuBbe7Ypk2lYTcElHxP6IHRbEIro
-         kFpqy0qGPFV9KSbbeOrgbqBLqcFZCRvf0pp29OxKQkNtTb3SeRkNvB6EHdjUFWgIjUpo
-         ECeQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz8qW1xqp7CIMaXz0cEPjJfZjKw2r11MdDI6MjjkEahEmPlSPA2lLkRGtRz9OKm7J9elmvGqrpqvQ==@kvack.org
-X-Gm-Message-State: AFq9FYIjbkVzVBHxCt8VCRjzn6+Dfqjm3/PpNZai0QyTq0dHXBHuBC0C
-	wR20RFnRsoRGBeHpupqMD6rkfqJv55syHIbgCmKJOPLF+KgIJ9XlxqfKypDwymZE/uo/OFmmobu
-	KUd0=
-X-Gm-Gg: AYBFou0OKPalKyU7vCvR4E6ePZAACPLLAxBGxCrOOPKzl2NeSRVdjFPcEgu6314ajAF
-	BAeZ6VYspeqIfeVR883PQkEiH+2Wo9qBAj4CgIWjmrHwG5IAEDqWjW548bW/JJCbF/H84XsDgSH
-	8cASeEOTUleIrJpgtonYr2dqH6MEvS0gjHCEPq69D+Ysb4xGOwF+fbZcjPUElOhlMR7yRvQSXaP
-	vhIv2IdQMMz6v5+duBAPTz3SoZWn0zzT1WKMiGpfVT2ALLibYcG4Kf7mgy/R9DdzPTnMGcNHwrI
-	gk8/oXwrvx3rVhegF+y7Kza2VsYywlOSKG1wVKBCFe/j0+gZviK6q+lG5xw3xYKcoOEpr07QWRW
-	6i8xclZ1rX3Ee46QP47hoOe9ETEOdUsy0dTf8NKYhMEHmkDOAvY+22OGetEXRv2sTSZOk1zvnky
-	ZzgbmQfXb+Y+wFwTTfxv4ff91n2pxvDmLdzqFDw+JOEuX5vU4WnlcbLWs5wQ0Q3uo6yjZyplg20
-	DVzGbYpcYcaOyYEMwWXMe+9fVkHg0ZVOAR5bqA=
-X-Received: by 2002:a17:90b:3b84:b0:3a0:d7f2:5a58 with SMTP id 98e67ed59e1d1-3ab3a369ebamr3764665a91.3.1791692888901;
-        Sat, 10 Oct 2026 21:28:08 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:75d8:6a8c:e079:f021])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab37163e21sm11921110a91.14.2026.10.10.21.28.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 21:28:07 -0700 (PDT)
-Date: Sun, 11 Oct 2026 13:28:01 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
-	Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 11/11] zram: use rw_semaphore for decompression streams
-Message-ID: <assQJStvoDK0nepk@google.com>
-References: <20261009071157.3730698-1-senozhatsky@chromium.org>
- <20261009071157.3730698-12-senozhatsky@chromium.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261009071157.3730698-12-senozhatsky@chromium.org>
+	bh=gA2+L86nsB8kyRStDUPQMM7xvGJxQ8tS6sPNcinMsus=;
+	b=yRI0u3NBkkybqkuuKyaAdIdekttP9LS5sZETuRu4w/HWeOsXa9AIZqt/wqw7n7NFVyrWqT
+	EKAvOi/E3ly4rPM57QiEQ8hdbKyPgINSD8YX17NCt3FZrO93Xqo3kWAwMWRx/8PhFhyiST
+	Ugg9j7AIDEz7w2+nIkpaUw9kASegO8U=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1791694273; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=gA2+L86nsB8kyRStDUPQMM7xvGJxQ8tS6sPNcinMsus=;
+ b=WGwhXIQzCIDydTUa1GADaUNCyhqy5h5oEkSJy6sBjuHEbLrEIZ1CGBE/smaFjZzr/uJXZj
+ xwUZMiqm38as1Pqfevz9GlNG00BXKLxDmoITov0iIXwsipO8p2klR0Z7ySo+Mf5MZIDEBw
+ Ja+DlD/5XKwwgjtY8ftIscsgC5LwUEzXLp1lm2Qm+iU4/keKLVeaexlsJyTvG35OmdzgNh
+ YabKJ3OIYJhyZiNw/5tfjvXpe1FvsCgpX4jyyx7JrEi2HjhHMxWmH/+UTvtqoIzvsbXYeh
+ /oVrVyGU0vLo+J/Sy+kJwSLA/+Rt5+rH7F8YgF0T6pdd3q3+g6WK6o2SrJTssA==
+Cc: "kernel test robot" <yi1.lai@intel.com>, <oe-lkp@lists.linux.dev>, 
+	<lkp@intel.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, 
+	"Christian Brauner" <brauner@kernel.org>, 
+	"David Hildenbrand" <david@kernel.org>, 
+	"Hugh Dickins" <hughd@google.com>, 
+	"Johannes Weiner" <hannes@cmpxchg.org>, 
+	"Michal Hocko" <mhocko@kernel.org>, 
+	"Muchun Song" <muchun.song@linux.dev>, 
+	"Roman Gushchin" <roman.gushchin@linux.dev>, 
+	"Shakeel Butt" <shakeel.butt@linux.dev>, 
+	"Qinyun Tan" <qinyuntan@linux.alibaba.com>, <linux-mm@kvack.org>
+Message-Id: <1ada59d3-446e-441d-8ce3-6e2ee46785f1@bytedance.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Original-From: Qi Zheng <zhengqi.arch@bytedance.com>
+User-Agent: Mozilla Thunderbird
+Content-Transfer-Encoding: 7bit
+To: "Andrew Morton" <akpm@linux-foundation.org>
+From: "Qi Zheng" <zhengqi.arch@bytedance.com>
+X-Lms-Return-Path: <lba+26acb15bf+7861b4+kvack.org+zhengqi.arch@bytedance.com>
+Subject: Re: [linux-next:master] [mm] b9b1861d4f: WARNING:possible_circular_locking_dependency_detected
+Date: Sun, 11 Oct 2026 12:50:51 +0800
+References: <202610091403.d1d8080b-lkp@intel.com> <36a0604d-b0ff-4f14-9203-0ffb36e0917b@bytedance.com> <20261010161622.3a460fdbcd6765adb5c1eb7f@linux-foundation.org>
+In-Reply-To: <20261010161622.3a460fdbcd6765adb5c1eb7f@linux-foundation.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3A20040003
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4259E1A0002
-X-Stat-Signature: grcxar16g1nojo5u79963w3gs4xknsik
-X-HE-Tag: 1791692890-386512
-X-HE-Meta: U2FsdGVkX1+jAmhbfLHzNSQQNiVUk3sLLeVtwZnwdZOFAUXUrNlZ5OhMQKwIoIyPiO+6W13+TtbVrqUYvO+fUc4jzeCYxK6JUVs9XHF/OSnXe/pVsZh6dnNishNgbQWd2HkS2oFNg1xvXbnG3/2t0oAy0nTl4j0RRtQYg4CglEr/Un7xTJC0QPAi0yDVD5HXENsDkcwEIPRMEcNf9feY5XV52d5pkF98oBIPmtJnbm8MRjU+rK89tQjQvIEHiVmaKjoES4qnsPM190MsFDbMxoE+d1oj6BZ0L+PYwuXoVU4nwtVNtVD50tmDfpNVV40DNG5T6fAJm/I2tYzNokUIlP26tjNbjNGGTkOMhBHslvIZtL/Q8F9s7tXulVhk9lOUIZAGBfd0E7r0wX77h2791sAvMIOfLEtVKhN/+zoTATwwFqLK+NY7+AZUB6OtIaTl6crnJpiHMzOaKsAhRP4RvydBfSBQ1q3fi5FOJgbaxaN4rK9MYgzTcQOR0VsnWalWkya/fRJFTFHnju49jJflF3zZ7VA47nORbKEM/T8b5L0fN69ue+rkbCW0Tao6CWV/cN6EODy0amMjfQpLh+LFI6iIGOF34jY5iqiNDOqvpUicshecJ68YXCYrebQyjyzDZ9bNYSqoL9BEg9TwjIYx+ZyYG9z2ziRo5PxvcRt7DuQoCngEH5Tmngv5aT+M4L6tgi2iPYBM6UhaZ3ZQKepUiFHmRZ+3S4J3LrUWlxm+Ke/nfZC4/k106BCwD4DQjBJBEbwluN9c/sSatec+khndei9SbaND17oexjweNUf6J8wPfe49foD77MKdni5xf5v1WLM0wksIpuCka5kYqa3U0PmHqbZ2eUeL6bi5gML4iQYKLvyblrOtpJBAlqPV073xR3Gg0CoCmjUf0FHNxf8rkgQi0GYth5xeJfn5fMeLa8VMba+LN8q3NXnGBJdQ32TVM/P3yFVKNTCn92iPjoM
- qcc/dyFB
- lkMa7H0irZYkIV5pA2aAwaT16RapTA4ct82pS6Ed0Hvx1olIWojBdsemW2UCjLgWbm7N59bSIFGkXudLEHkuGhTO0c4RnPcy7+EZc9Q5B4mXSQiozoEsWw0W1s67wmddAL/8lKwxj1C12WBJ/YDVbNRlhY1/AETmt+qKjYlO6/GZfWMeCZRHxcGrUGfUJT4yORy4C2wpgGipyLuqcF7zKZsRUP7HKu4kbxjmDN5bZKiwBrjlAnW93W+bTWov7rQfKeNSbaLGwFkNVU6y0IjDxY4lMQHYoTkDmo234t7YiH/2y1QNZA8yRpLleSEYKDMiUQKTSL2y6t973Xd8rxqfkiGOSTDyo+Ht3l2Hw16qKfJCCpUiVW8EE9l/DjPzfH+lagvui
+X-Stat-Signature: xqxxtcmps6q4u5gnpzrxp3p19ti8c8sg
+X-HE-Tag: 1791694278-510943
+X-HE-Meta: U2FsdGVkX1/v5Bl6vkPtdrDiD72Tb1Xd7mzb3XdJIfnaBPjt3xzew8o5CK6nGTubgfj7FDr421oxd25g8Yw/Y7boMKaT85T77E407A4IdBkw2T3lK1tst+5yCESmvyUyfZtXhZoh2S0aKkatND6RHWEVrK7nKBBQY61e9hYrvUgs2zsNyXziWxS8X5jo6+Wzyj43v4nUzhkC9c+jPG5cXP2GxMUCbg7RwBhAzbX/7+JYfAi5Gc5zop5eiHzriy9GmXen47u8aJ5cobTbPobAIteSNIBIzOcUHOq0E5ja3t0CI6e6BWzrEKoXdmkAePj7Gy7DkTKlamE2Sgj6Lks7CwqEcjWuk8GPh1cM5/MdFYiLRYOu2jofnLl7js6oD6zhTu5tpYwQcWrU7fQTiZXNvjkEJePxbeFWZCYu27ee+C3uRh4Tz+yMxFTiZJ6ht7fTVaCiDu6aJj2prdMaAXR1v6X4UzKrZbtHo0NR9vhhQBn7ssr3Twk9n0BrXRMy45gHoa+kSyY/smhvoq9ru61X0Lls+AS7PcnkQ8R96SsreYLKkK/UZgrKRzydKDwbzk7QS6mCG+IUi31sSy2jbF36TnyYH2IXM7BTpuxs1o6KxNsvf+uYPs6sHA1kGOjlyMbJX4Q2Wt2iQ7389yHhAO1BXOe5srR66zrkOF81GMjiXFbEWgA8tGMLUPR6aoWSKpX/aAeOVKFgi0kAk5GmXEztKy83VJd9na9gg5Ds2l0aKnxzsc24Cgcx/g8ZReAaVgPkRjw/fH2cIzXxDTZYH3GDpib3we1S/fqEtVD2cQ3sX3pQtEglsq0F4om7/F94rDqELR6/ke1WHOm8vgWTOE8e8Oofe3Pm41+nXWI1/RY23rbSEVF7O4wMVpzVHzqMbGa1nS6fW/zqXhdjMPiNRvnBvgFFqqjfXHtlTiMe1xOT1Wq4gQ/4AfR9hijTsEK9wYGcMO0FOpeKMKxFRRfL4F2
+ YM/m9u2+
+ nR+ON1dM2Ax5TdMG3rheqqVEgyIUdzMJzypZk0bMY1OmS9sOMyWxnGF8GlwuuvaMImtlOHRL08+idjfNDychowCBA5zeGLHtCq0DDEcPu2me2bRjy3tayF/pV7xyIe9FOoukwEbwC4yZklu9vLc+zKUuL76U0Lg3d9J0WpBNLHD+TYQndDMZMeshZP0qK3gzVklq11utWxLhvkU1XoGs4K4ssd9RN3JCDerqY3iOJd3tyZAma0j17QCU+wyVh13V06bxk/32qx72QMDnjXAa9DaFio7t0y9QgpOZurEra7WorJZDloHu8OiAJzIuLBty9pPEhOYNSNWbIeiVeV8Q8MofgGA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,43 +98,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/10/09 16:11), Sergey Senozhatsky wrote:
-> Currently, per-CPU decompression streams use a mutex, so there is
-> a chance for priority inversion - a low priority Reader can get
-> preempted by a higher priority Reader, which simply will get
-> blocked on the stream mutex.
-> 
-> Switch zcomp_dstrm lock from mutex to rw_semaphore to permit parallel
-> usage.  However, things are not completely straightforward.  Many
-> backends have stateless decompression and don't modify decompression
-> context, so those can be used concurrently.  But then there are backends
-> that do modify decompression context.  We also can have compressed
-> object span across physical pages, which zcomp linearises using stream's
-> ->local_copy buffer before decompression.  That buffer, clearly, cannot
-> be used concurrently.
-> 
-> When the backend has no per-stream decompression context (stateless)
-> and zsmalloc object fits in a single page (ZCOMP_DECOMP_INPLACE), take
-> the stream lock in shared mode (read).  Otherwise, when ->local_copy
-> is needed (ZCOMP_DECOMP_BOUNCE) or the backend has a decompression
-> context (zstd, deflate), take the lock in exclusive mode (write).
-> 
-> A quick synthetic fio test on 24 CPUs (preempt=full, lz4, 48 low
-> priority (nice 19) readers, 24 normal priority (nice 0) CPU hogs
-> and 24 high priority (nice -19) readers):
-> 
->   Metric           Base               Patched
->   ----------------------------------------------------------
->   Read IOPS        473k               680k          (+43.8%)
->   Read clat avg    35.98 us           21.28 us      (-40.9%)
->   Read clat p99.95 55.55 us           20.86 us      (-2.7x)
->   Read clat p99.99 6,717 us           2,834 us      (-2.4x)
->   Read clat max    2,005,100 us       1,614,300 us  (-19.5%)
-> 
-> Suggested-by: Brian Geffon <bgeffon@google.com>
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Hi Andrew,
 
-JFI
-I have completely reworked this patch.  Will run tests and then
-send out v3.
+On 10/11/26 7:16 AM, Andrew Morton wrote:
+> On Fri, 9 Oct 2026 15:58:46 +0800 "Qi Zheng" <zhengqi.arch@bytedance.com> wrote:
+> 
+>> Could you please help test whether the following change makes the
+>> lockdep warning go away?
+>>
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index 5a9bcc7c66926..8ee767dccc1f6 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -5162,6 +5162,8 @@ static const struct dentry_operations
+>> shmem_ci_dentry_ops = {
+>>    };
+>>    #endif
+>>
+>> +static struct lock_class_key shmem_unused_huge_lock_key;
+>> +
+> 
+> This could be local to shmem_fill_super().
+> 
+> And inside #ifdef CONFIG_TRANSPARENT_HUGEPAGE somehow.
+
+Got it. Will do.
+
+> 
+>>    static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
+>>    {
+>>           struct shmem_options *ctx = fc->fs_private;
+>> @@ -5243,7 +5245,8 @@ static int shmem_fill_super(struct super_block
+>> *sb, struct fs_context *fc)
+>>                   goto failed;
+>>
+>>    #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>> -       if (list_lru_init_memcg(&sbinfo->shrinklist, sb->s_shrink))
+>> +       if (list_lru_init_memcg_key(&sbinfo->shrinklist, sb->s_shrink,
+>> +                                   &shmem_unused_huge_lock_key))
+>>                   goto failed;
+>>    #endif
+>>
+> 
+> Thanks, I'll await a formal (non-wordwrapped!) patch.
+
+OK, I'll send a formal fix patch soon.
+
+Thanks,
+Qi
 
