@@ -4,78 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96130CA9EC9
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 11:51:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC7B5CA9EBD
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 11:54:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E9736B0088; Sun, 11 Oct 2026 07:51:48 -0400 (EDT)
+	id C824E6B008C; Sun, 11 Oct 2026 07:54:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79A926B008A; Sun, 11 Oct 2026 07:51:48 -0400 (EDT)
+	id C0BA16B0092; Sun, 11 Oct 2026 07:54:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D6C16B008C; Sun, 11 Oct 2026 07:51:48 -0400 (EDT)
+	id AD7526B0095; Sun, 11 Oct 2026 07:54:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EE916B0088
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 07:51:48 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C638D1C40DD
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 11:51:47 +0000 (UTC)
-X-FDA: 85310181054.12.3896A90
+	by kanga.kvack.org (Postfix) with ESMTP id 8D48E6B008C
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 07:54:06 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F3C041C3FD9
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 11:54:05 +0000 (UTC)
+X-FDA: 85310186850.25.DB4E25E
 Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1A39E20006
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 11:51:45 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=mit.edu;
-	spf=pass (imf13.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+	by imf01.hostedemail.com (Postfix) with ESMTP id E286840002
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 11:54:03 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=outgoing.csail.mit.edu header.s=test20231205 header.b=AEH0DjWj;
+	spf=pass (imf01.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791719506;
+	s=arc-20220608; t=1791719644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WtKQiUmXAQCwelisq+SSeZKm6f3CkNSfUWX4ra6ZfX8=;
-	b=WfLOlTIRaQZuJpIB7uQ9puaKk77UYEdbxSVLiRCFPSyaTlg4uTbYVJFoUBRFdNv71UD7zF
-	AmY3Qw0OwXRlVPnDc2U+uBhEVzs2Oxy0ctDXHVFEe8t1hddIlpFw6zy2Rr6CBSwJDqnrbf
-	zM05XhBKAZ3J8NV9hmoiekK2DvMrUdE=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=mit.edu;
-	spf=pass (imf13.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tP9Ock7YEMVFTnRWgynRTIWH8Z1OWVvG889g72gXvsY=;
+	b=XSwudjP85A2wp8bb+e/E8w6PzYP5v5mVNvKlWhNRhKpJRfsEz/QRk+kLnkUdGucYZiRzk1
+	bvnoY15scZ2RQRic2a7hfb1+gKNSeNxAAvDhZZ9OKi3QrCNN340XcsW4Ho5bUq1ekG/ueb
+	8F04PD46MVyY+WflSJWxfwk6DAdCMM4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791719506;
-	b=VN7cVEnEI1e2viTszIp43a8vxoGY9kATc52AY4nq3gmiBhR1VkeMeAtyHfwuCUro+EwePX
-	exb/aKohwmaK6vcihJSi+MoJvvfJhY2GbAfknLt5zeC523lDlciJ6VRQ5ZZcrCbOYuguHU
-	gmJWKZdHveNAEXrFD8yt4QnK1mJ4M7s=
-Received: from escalante.csail.mit.edu ([128.52.128.198])
-	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
+	t=1791719644;
+	b=VcA1kJ1K29fOCJswAhPoPw8IDLwTwV0ByKl12nDTNSB3nZy2pw5RUsccFbHJ+r81aV7EN+
+	iRXgo+gf40df9M0FpiktyH/sOh5Gr6aK+J3stjR3KD/UTStTQ/gRyelPsWvo+QKILIuEhq
+	tw8Wm+ST+hPurQ0hPwIgnwJ8Au6o0/8=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=outgoing.csail.mit.edu header.s=test20231205 header.b=AEH0DjWj;
+	spf=pass (imf01.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=outgoing.csail.mit.edu; s=test20231205; h=Content-Transfer-Encoding:
+	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
+	MIME-Version:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=tP9Ock7YEMVFTnRWgynRTIWH8Z1OWVvG889g72gXvsY=; t=1791719643; x=1792583643; 
+	b=AEH0DjWjBF44wzCj2v26PNRzzH7SbtXDjJF5+3HzyG+qDdTPLnXZBUl25ZXv3G/yZFtRC7jXMmP
+	voK+HeL2ZIQbn4EozrKzhlWTNNLsgB0zrdBZ1y4FUQCVq40OyGKvtlVEMhKvDBh9SkVtqTU5UQg1L
+	hG/rWxxwy5WYhuKxNEzHnG2hxiIe1CznNflCmg6x065vhe0Z8ATNt6OqONgGtyBKSqGpnQhRknTfl
+	jODFXVVkhT/HDU3tLE/vuF8zwx39sgHVgpvy6hyhikAHQGCEmpzvacly3T1oVAUYL/Ifwn2X6xj1L
+	TKr94uLz0+QQ2n7xzs7oEmX93iQsnv/BokuQ==;
+Received: from mail-dl1-f54.google.com ([74.125.82.54])
+	by outgoing2021.csail.mit.edu with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.95)
 	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xFs5f-00A4OF-Qx;
-	Sun, 11 Oct 2026 07:51:43 -0400
-From: Nickolai Zeldovich <nickolai@csail.mit.edu>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Nickolai Zeldovich <nickolai@csail.mit.edu>,
-	Adam Harshbarger <handyhandyman.adam@gmail.com>,
-	I Hsin Cheng <richard120310@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2] lib/plist: add a plist_test case for plist_requeue() on the last priority bucket
-Date: Sun, 11 Oct 2026 07:51:34 -0400
-Message-ID: <20261011115136.767838-1-nickolai@csail.mit.edu>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261010211804.2d8a5f6180c74b08e18ad48a@linux-foundation.org>
-References: <20261010211804.2d8a5f6180c74b08e18ad48a@linux-foundation.org>
+	id 1xFs7v-00A4ar-B3
+	for linux-mm@kvack.org;
+	Sun, 11 Oct 2026 07:54:03 -0400
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-141395927feso1879524c88.0
+        for <linux-mm@kvack.org>; Sun, 11 Oct 2026 04:54:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByVhBHbtJvWVdhmwt2dma7YZyR0AFzdJ/zwvxG22rfO2eyTqjBS0bbjn/eO03lo5o9d9mfq7+tXkA==@kvack.org
+X-Gm-Message-State: AFq9FYLGRi0zmgpIrkc6ky/xSFwPCla2LFI4fbfzFtd6viPWrWN3JAjr
+	sbMRg/zS0M5PBnuzvMTPYmZiNE3JAeB6V+n1pj9XgP0olkeJeOgyBdqEH0ey94hrzvdwHIh0zmZ
+	ZtIYFyQw+BxdDeGiLh8FYpsyjTL73ni8=
+X-Received: by 2002:a05:701b:4211:10b0:14a:a6dc:9cd7 with SMTP id
+ a92af1059eb24-16a57a16ef2mr9484052c88.2.1791719642208; Sun, 11 Oct 2026
+ 04:54:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1A39E20006
+References: <20261010181016.44f5e2883b6820bb32c04204@linux-foundation.org>
+ <20261011012245.765558-1-nickolai@csail.mit.edu> <20261010211804.2d8a5f6180c74b08e18ad48a@linux-foundation.org>
+In-Reply-To: <20261010211804.2d8a5f6180c74b08e18ad48a@linux-foundation.org>
+From: Nickolai Zeldovich <nickolai@csail.mit.edu>
+Date: Sun, 11 Oct 2026 07:53:50 -0400
+X-Gmail-Original-Message-ID: <CADGQE7GzpGyTYKznykdN++Swo=Gwx7hGfoWxY-BOqHhx5reJ5g@mail.gmail.com>
+X-Gm-Features: AclHuK--8xB7R6c--WfyPx9s5OXlga2T92h3ZOhe-bcyVaefvPE4WrRAKnsZPzg
+Message-ID: <CADGQE7GzpGyTYKznykdN++Swo=Gwx7hGfoWxY-BOqHhx5reJ5g@mail.gmail.com>
+Subject: Re: [PATCH] lib/plist: add a plist_test case for plist_requeue() on
+ the last priority bucket
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Adam Harshbarger <handyhandyman.adam@gmail.com>, I Hsin Cheng <richard120310@gmail.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E286840002
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: prp8grb6extunu7iid4trd6acsg3ykc3
-X-HE-Tag: 1791719505-789113
-X-HE-Meta: U2FsdGVkX1+hHAzlqUyKUqhpCvUSLH7mtxOjh2Q0yTsH4Yc0fu7ZqUYdqJr0/62xTjbe4k8u+oOG4PEj3gWNl7WPfyyiaZnCpC40Vfu6fS1I3mkUew7PqU7k21KXuNDcfXZClNJzgG/rjXrXTQhD2fMK6fi3v10EDljQjyDwMEZuXBV7Jc26HiVuOtuMPErvy6T5x0K029ttF+3xOM3+2qYQkZvnEJFW4agDzF+7qPIB9NMgiNzzfLtGEgiS5VP1dexoPWd82Q5cVkLnhXSNHgQidty7uB/wUPcUVBMQL1YE2imvxdxTg1uCk9RtjbxiwhDM8+ztJhV9HacPwYhrvSEbrBpV25nmEH6RGKHQpwqqvY8wsGdFHLzZf4z/NmLN19yEI6C0rajottjq3QbX6GRkrkgP24OgHMx1O1Q0E0UHAkO4gqyAOr5sD+jsy0060wUCjUxl5U3UhN4MYqH+n160HVpwn7PQC3kGHhmzWlxDE4+ibhJMv6B+0VwuS92MvAtmW1jSVnVQ0xEbpaRaFb56M2lzEzmVMkOY7864qhkQdQ/MP3vCGsuD6GE72T+8Kjsq3DvlcsoppOoKFklOPycwCunjoNv2wnIAMG683Nh7oH1SHKbtdpVoIzUDCHV5XADh77Z+3HpvL7QVT1pozwaS5myM8LOoaneIVX83vWoDCP5bavvB0Q7t8/nW4Bz6FSmUr1Kx4aGY6M2KNmSdq1dYKma9qGHBm/wDknrIUWrTyxK52PmBYnp8KP50F7d21HaSEY5YNRf0Au+MTZ6HmoCEBNeNqA1dyifj+gah5RrYVtMn97KYQsZeTZn6aujzmxe9/wUtygi51Fiqg4VU2EFmAeaL2irxagylQlaGjioT3DVtMCfOKnxWDVfpCOrr55D7++stpWi9whxcp0y75bX+kSSooeE8iTCAK2huo30fLR2ctAMy7WKsm8o05CQItgrCsK7JWtyHezKNeJW
- rFygngiU
- igsxMzsr85K1eWa4E1F/KncN0mYyRvi2oTKokTEgVb47DduvPlujByRCStlc5BAAuarGTCWqqdHzCIu7pNJIvEiUNJWxAmgWDDN7qJDyxZ0O13T8xaPpI70yR/jeepPsqQuDexP14tTEQm2Y/cQCTf7zKMaR3kb2PPBw3cHUV3QR643sPXZcAy6pZspsprRv7+mCWKHjozqKx6O7qyQZAZT1bsl6EALFEk1qQZPZiopUY/PMSA/bZ/ZvM4GIGhZ03U0uasRJusY/djnoHkU4xdiLJDmROsvt9dJcChQ+VPdpAJMRqPia8PzibVNRFCwpjSSak
+X-Stat-Signature: hsbeytzgft1htigecqm3cb86ickegc3t
+X-HE-Tag: 1791719643-687006
+X-HE-Meta: U2FsdGVkX19KFePEWa5DSCO+LZZYCBwhUkIzXjVt+QEtllpcjwgsB3KOSjJ4ql3gOuGWgfzGW3xVZxSrI4GkrxRp8pgiSQVSWzfyfKT/ev/rq//DRP73PD6o8fdh/0JVN61A5SdhKvGEX+0VbqN8du4as83BVaoAkfiAN7N74yKETSBK9jFfvJDZmywi5l6z+hkpa3UOBhFuLYsjrXxBWPov8H4MdRtE+Ddjor8H2eFaHpO1lAyzYWuESq6TINOm7QujLcqE4UJdWrBX/QMQDm3bOgsb9GPtdn+0cb4QNVCsx/TTw/kbET+3/zwwPsGAP18WOE03RcRrKfPTYv7BT77Wijh1sqgOeDN/YcWShEkTsVSCazHXKVr7fdVmWPsylGaQcbyXrg0YLtCyM/W91GDpZ71vFa8QWanezQ9RAze0LN2VptBsBnRBp9LZl1QHRBFdJpv00TVWVPeqeArlKKO0FG/yHqUJbqjSkzHLDf7wGmKFU0AgC0O69KFVDC7nbIerLPQuj3C7qflPij7x6mOYvkKnL7uGe8Amg8xXfAJWeWBwIkK003RKuNuGmkXbjQgzYXbm6wx5pf/g3MpEmu0hbJZP60XO3wsZvOyIykdLTdjcttHq5vFz3k1KTYiPZjo+48tmcCs7PzOuEWdijGPQLrzcHzyKxICBXzmKMa6fdSw52HyJ4Ft3qAXjfnTWdTO6EDgZUSrW4cODMsy2/vJ3lpW8YmrAxlZqGsC4QxVPgRnIjGkSVouYMQ18j8xyJRPJN2d+8f7w8k8u3aUKoaK7Sq0qgs+jtf+v/HIDWUytozL3FJCgr8hoA7lLNtAUkXLJeiVPTwoiCqrVOOuVj7GaMZm2jwTuvigFK793I1Gp6EH02YyWiyy32061RAmV9SH1AQa6I4f92N/lRxPHu4wAPUVMGfmjL+2G3i8v4crdzawVFNciubHOhe5/wPpgzYolPupgyobKj2A21LW
+ VqWDZlKA
+ wW3u+LZe6hR6/KeLm2X+UQ9HI5XFZwmBfzzTj6qA19C3sD9+B7enRj8kUA7RP5hH73ci/ihiw2r9gTureMT7jRlElPpkDi5uxR56OIpNLJnV8G6OYVecjzwlNWJPeH/71RpgkvyQ12ZbxM+sgF6bGFRUtCRNQjhK/8S+XH6igUYxCNOOMNJsNp9oNVOGmagtComFnIicwKmD0nC5fpb+dXY4bySigfPou0IlOHvr4y30rM+UxbmAxYLj9MF8CAOkN8mt4H2wUkcL3fkkWK0spkEMLIwO+ohkYNKKxlRQH1BVKE5OU/os5nLOWvvPZKZWSRqkKp8WO1DskPOnbvGtVrd0fFowhoA2AVKEgQjM30rMA7b1XlRUy4M9l9T6iK8ipHpTzNzjccB/4NQnIQGtZFOQoq9fburYNpfa2UqOazULLc3q7+YSl+QPW1hS0tD9jEHohGFLCNz6Xn8mDlwktLMmah88unP7Pz8+hdRb2ja7UoKt9M9aUQKEPs7KPss/BUYzv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -83,85 +108,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The plist_requeue() shortcut inserted the node at the head of the list
-when the node was the first of the last priority bucket and had a
-successor of the same priority, with an earlier bucket present (fixed
-by "lib/plist: fix plist_requeue() corrupting order in the last
-bucket").  The CONFIG_DEBUG_PLIST self-test did not catch it: it only
-requeues nodes it has just added, which are always the last of their
-bucket, so plist_requeue() returned early every time.
+On Sun, Oct 11, 2026 at 12:18=E2=80=AFAM Andrew Morton
+<akpm@linux-foundation.org> wrote:
+> On Sat, 10 Oct 2026 21:22:33 -0400 Nickolai Zeldovich <nickolai@csail.mit=
+.edu> wrote:
+> >  Not booted.
+>
+> err, it should be,  If this is wrong, we crash every kernel at boot.
+>
+> > +     BUG_ON(plist_last(&test_head) !=3D test_node + 1);
+>
+> No, let's not add a BUG_ON for some selftest.  Emit a loud warning and
+> proceed.  If it triggers, someone will report it.
 
-Add a deterministic case for the failing shape: A(1) B(2) C(2), requeue
-B.  The expected result is A(1) C(2) B(2), with B at the end of the
-list; the broken shortcut produced B(2) A(1) C(2).  Check it with a
-WARN() rather than a BUG_ON(), and skip plist_test_check() when the
-warning fires, since its BUG_ON()s would stop the boot on the misordered
-list; the node_list and prio_list links of the result are still verified
-by plist_test_check() when the order is right.
+Fixed, boot-tested, and re-sent as a v2 patch; thanks for the feedback!
 
-Boot-tested on QEMU virt with a riscv64 defconfig kernel plus
-CONFIG_DEBUG_PLIST=y, built with LLVM=1.  With the fix applied the test
-passes and the boot proceeds.  With the fix reverted the warning fires at
-boot and the boot proceeds:
-
-  [    0.864761] start plist test
-  [    0.871849] ------------[ cut here ]------------
-  [    0.871905] plist_requeue() put the node in front of the list
-  [    0.872921] WARNING: lib/plist.c:295 at plist_test+0x33a/0x342, CPU#0: swapper/0/1
-  ...
-  [    0.885968] ---[ end trace 0000000000000000 ]---
-  [    0.887060] end plist test
-
-Assisted-by: LLM
-Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
----
-v2: per Andrew's review of v1,
-    https://lore.kernel.org/lkml/20261010211804.2d8a5f6180c74b08e18ad48a@linux-foundation.org/
-  - WARN() instead of BUG_ON(), and plist_test_check() is skipped when
-    the warning fires, so a broken plist_requeue() no longer stops the
-    boot at this test.
-  - Boot-tested on QEMU virt, both with the queued fix (test passes)
-    and without it (warning fires, boot continues).
-  - Applies on top of "lib/plist: fix plist_requeue() corrupting order
-    in the last bucket" (Adam Harshbarger).
-v1: https://lore.kernel.org/lkml/20261011012245.765558-1-nickolai@csail.mit.edu/
-
- lib/plist.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
-
-diff --git a/lib/plist.c b/lib/plist.c
-index b0273533c04d..9591c38e8ad6 100644
---- a/lib/plist.c
-+++ b/lib/plist.c
-@@ -283,6 +283,27 @@ static int  __init plist_test(void)
- 		plist_test_check(nr_expect);
- 	}
- 
-+	/*
-+	 * Requeue a node which is the first of the last priority run and has
-+	 * a successor of the same priority, with an earlier run present: the
-+	 * shortcut in plist_requeue() must append it at the end of the list,
-+	 * not in front of the first run.  The random test above never
-+	 * exercises this, since it only requeues nodes it has just added,
-+	 * which are always the last of their run.  On failure warn and skip
-+	 * plist_test_check(), which would BUG_ON() the misordered list.
-+	 */
-+	plist_head_init(&test_head);
-+	for (i = 0; i < 3; i++) {
-+		plist_node_init(test_node + i, i ? 2 : 1);
-+		plist_add(test_node + i, &test_head);
-+	}
-+	plist_test_requeue(test_node + 1);
-+	if (!WARN(plist_last(&test_head) != test_node + 1,
-+		  "plist_requeue() put the node in front of the list\n"))
-+		plist_test_check(3);
-+	for (i = 0; i < 3; i++)
-+		plist_del(test_node + i, &test_head);
-+
- 	printk(KERN_DEBUG "end plist test\n");
- 
- 	/* Worst case test for plist_add() */
--- 
-2.55.0
-
+Nickolai.
 
