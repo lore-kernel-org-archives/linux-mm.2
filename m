@@ -4,119 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30350CA9EBD
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 21:45:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D5AECA9EBD
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 21:54:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73C3B6B0088; Sun, 11 Oct 2026 17:44:59 -0400 (EDT)
+	id 0B8106B0088; Sun, 11 Oct 2026 17:54:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EB916B008A; Sun, 11 Oct 2026 17:44:59 -0400 (EDT)
+	id 069946B008A; Sun, 11 Oct 2026 17:54:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B2DA6B008C; Sun, 11 Oct 2026 17:44:59 -0400 (EDT)
+	id EC1C56B008C; Sun, 11 Oct 2026 17:54:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 355C46B0088
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 17:44:59 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0EEDFC0781
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 21:44:57 +0000 (UTC)
-X-FDA: 85311675834.15.D12E53D
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C2C3C20007
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 21:44:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="EV4Zdl w";
-	spf=pass (imf13.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791755095;
-	b=rGOaVkilr6PQdB6/OphRjGIFNvAm0WnGkYtr0jVt1fRn4TO9EOpUbi7nw7fUTlg0k1zvYO
-	w/RCWjQmYW3raz5gf+2GfTaA23Ptme0OiwWrJr1a4YN3JmKmF8Zlyn4URj66RrrE3Rx0EY
-	3n3tbfeuEsbWVku9zzgpux2t1qYWZLk=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="EV4Zdl w";
-	spf=pass (imf13.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B52286B0088
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 17:54:34 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1E0621607D6
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 21:54:34 +0000 (UTC)
+X-FDA: 85311700068.16.340528D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5B83820005
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 21:54:32 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Nrd5Q4bI;
+	spf=pass (imf31.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791755095;
+	s=arc-20220608; t=1791755672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dbf7Z2VFPiTT53lRwlSp/xE5y81p6hF8UBpX7LIzQ/c=;
-	b=FZp4lStJ7taZrTibFRGkW6uuO3fgqELzx/xcXfO3TpYByMAsKUZvNP/Tq/m53DzIxpl7Ed
-	Qgzn21Jlzc0vDoxe0Zl7InmIZ8+Bm1pFfADkMnM4ECVBL2Zg5795Tjd2YXbrwxWZjuUhtd
-	vchyg6/gRwVKZjiljZ8Wp1ELewd11ng=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=dbf7Z2VFPiTT53lRwlSp/xE5y81p6hF8UBpX7LIzQ/c=; b=EV4Zdl
-	w435M3Kk1dbk8mAM9muIWjItRwj+bSQYYoxZms2gdJuyJw/R6DXrBAxpCIoncZ6sBfcWhiN597FoW
-	aR+/EHtKRBt/n92s48UuYEbmV9wi+nxZNTDi0UOpQnt0P0kBuiBgE+WXsPPt5vLgs8E2i4HOxfUiQ
-	Be+zWT+oErTFHbxhp6y1Pg3RYkEb3g/yKFMOksl+0VykZpBBF/R8EITDAL1Gjx2ABRHxDSLs5IcWg
-	QAJbEWTk73YfB2pGDp8lwkkrUa0wNGcgCNKUdvok3v/b4P+tzmt3wfvmf7zDB5p1gHKn0zeEFn6WD
-	oI3fHOZWKk98t6AEa7T+1pRfneEQ==;
-Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1xG1L3-00000003Bmh-3JvA;
-	Sun, 11 Oct 2026 21:44:13 +0000
-Message-ID: <003fdeb213ca0460c8681d4ae7baa562b337ed1a.camel@surriel.com>
-Subject: Re: [RFC PROTOTYPE] mm: reliable 1GB page allocation
-From: Rik van Riel <riel@surriel.com>
-To: Dev Jain <dev.jain@arm.com>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, David
- Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>,  Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,  Michal
- Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, Qi Zheng
- <qi.zheng@linux.dev>, Shakeel Butt	 <shakeel.butt@linux.dev>, Johannes
- Weiner <hannes@cmpxchg.org>, Brendan Jackman	 <brendan.jackman@linux.dev>,
- Zi Yan <ziy@nvidia.com>
-Date: Sun, 11 Oct 2026 17:44:11 -0400
-In-Reply-To: <55adcc67-e545-4bf5-93ba-7e4180f1b523@arm.com>
-References: <20261004013657.03a63c4c@fangorn>
-	 <55adcc67-e545-4bf5-93ba-7e4180f1b523@arm.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=CjXAODnEAHZt/ze1fUVx1lc4eAYVC7QnfQvq3wkUGQQ=;
+	b=IUWsS1HyjM3w5tPQsZn0u7ELfOluBHEBy4TI5My+A22aUcsnHX4RkvrZjr2hLAY+8N6a2d
+	PNcjPyWd9xuaoV7xG94IoKQSy0n6dtfBjxhssdF8Q+gognNutnuoXKkFSi8ERJ6++AiAdM
+	F9v6ghOnIsmwZ4ZIlnMgUg8nysdIXNI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791755672;
+	b=YEQGn4Y1HW/JjoIPgTbcelIFFCOBLKcDrU0iw1AAMxQ+/Uqzp/Vsp5Gj561DhYIH7fYl6T
+	fXhkaZT6W5yGRm0GKHKaHaMTJx2srofVfdhN85JrsjiYPhp0Vg0MCTVXWEjdXV5Zg9MOIg
+	Y4rYQuAb3EERjgU/laTPRZdqGIe+pks=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Nrd5Q4bI;
+	spf=pass (imf31.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E6D371684;
+	Sun, 11 Oct 2026 14:54:27 -0700 (PDT)
+Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4CDA93F673;
+	Sun, 11 Oct 2026 14:54:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791755671; bh=CjXAODnEAHZt/ze1fUVx1lc4eAYVC7QnfQvq3wkUGQQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Nrd5Q4bIex4K5sPIo2WaDht5vD3RyakVYy9IJYIO9FKsHf5pHCQgeNYIqobBzV6qt
+	 eiK0xJa6NEGswHMWKnHVim461hZYvugiI0n8yMnzJV4YvFeWj0FkHUR0UGwXliHz2n
+	 dnLbuGmq6SencPcF4fPUfw63RNMz5p820DS9VWZM=
+From: Dev Jain <dev.jain@arm.com>
+To: linux-mm@kvack.org
+Cc: Dev Jain <dev.jain@arm.com>,
+	linux-kernel@vger.kernel.org,
+	ryan.roberts@arm.com,
+	riel@surriel.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	hannes@cmpxchg.org,
+	brendan.jackman@linux.dev,
+	ziy@nvidia.com
+Subject: [RFC NO CODE] [DISCUSSION] Anti-fragmenting ordered buddy allocator
+Date: Sun, 11 Oct 2026 21:54:11 +0000
+Message-ID: <20261011215412.1181172-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C2C3C20007
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: r675f4cpga9kx9mqr7fcap1tkh1ixjdo
-X-HE-Tag: 1791755093-513870
-X-HE-Meta: U2FsdGVkX19wA8vozLFLfXaCnpjE7sjeXQ3dNMT1iYHqr085kP2V46uuhDnl1cZtzCG3UnZ9us1Rkf2k5CmNtTaDWJnioOqnpszSgUOHsntLF/w7lG1KmH0by8HFnEQke+mxBpbHWD7SPXXKadTFJbS0T77UDDEhJvPZ3jNF+dJ953+s78DsrgLvkOBeiQxLG1PujJa4iD1DjWVH0LJy4ETOZllGCoS/Wmxni0O2YaF6Gu31GzKTSU2LNKySivTSb8XwexlrOAapf+h2xFkcYa0YBjBHh1b6/41PsY0SqMwBAbGnoTG4xLAOZudhwAEDR/P8OlMtls+5e1wSEzBoSY0cjajO3G2gKf637fPynry/K6qex6c1f4enEF0tmxD1YlxNGzvT/B7KhYbnU7y0rfqGDPUT6Mh/HDzddshRK4KjI695fooDjo6XE40luRZJoia/FJlIrmxdGHcVRe6tApczLjsDgxD4W4+JfWa9M54N/FmAuN1opsUNexHgggYEh927M+SaZ8/OEwWjy8hQ5mK8jpuoxXJWEVkwdnd+NOCrhkVnH40R/vlmM09YPURfReObiAYnaG2GzLMB2ZtlYVe2GY0a9baif7b9kcsNngZ7XM5nhaOfisbVxOBwwMavH2damXdU7NFt4TIgUIaGUiXTI7B8/bq0iPfdrqZ29caSXiIvRvOIdCsLQOHy0V+2KnUtbRNhxFIQphv1tsgBkOkD+Bp2phvHyuep1wkqFmXLnsiYn3lkJ7BS85uQScd90e2b3nWwVcSEBCJD7B2e+S5yNC/g8KOlgsqugNFef/PUBMCRa0xLJycqXy9BS1hAJI+nNUCV0JgThaN6cYHFrOI+mnFQ+318DGG6+gWXDkHapmCBS1SP5F0rwQ1NeqFZOBVmhlBRkhXRLRs7Dwrz9/RRjXVn5hSyHZj5+GCJB+Ew9k4wBbf/OsFet/fg669CGvixXfx9ED5gXhuEEJO
- Ed/L+0s7
- JcRbNnRdnpE3qgABbdN1R4N350QrH0vP+BdnjSmT8SsIVPo5R/T//LsIsVS5hEQDNZzTbfMVtlBrsUh/ArsLuPvZjtIoxRe2+Bpybk9wqUp7XhpOsezj3O0KdZaKwA/TSnneUBqLworSYYP3OmsVJ7eJVYsgHUNP2jGvkP/ylKs7iqRygkpTgR+M2m7oH20OPUA8OauvoOWIBVLv69zlwiwu7nl2/8KiiKL+yqWQbBsxBdrSVzJ6/cWk2eJ5fUNASTZS8lcU8hq35oVjAMV0B0PmYug==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5B83820005
+X-Stat-Signature: d8cxxh1xx83sugwztzcqngir5sjmsuxj
+X-HE-Tag: 1791755672-689480
+X-HE-Meta: U2FsdGVkX18Rr145FM9TA5+radAWay5rrz+4PljRpa7CpgtUXdd2kj0MrClFn0GYYLC+l9JW7QTg4fNVD/TgVZzO7xXuW6fw7f1nKpFh8QTyx2lANMELlLGlIQFz67XL3p7Ktrb6cKN4rRRuVqLDVHzCGIh3OUU6ATmnAZoFbJVT2C0qMiHhnebdmbPjtBczrKbMyBigP8zM0wAaB0ZCLcM2ARgt3PvkPZTMAwxcSt9Lb6LPqEUG8xSvUEI4RFeVGY2EzlMWmqvjvFQM4ItbFAA+DkXPG7/2YAERsVtQNE3pad2czK2LEL9EAiMlx4YYjmTvA1giCvjYH+Zba5jTHHigxdwHXowIEPH5p1ibzsHtExVlI6tCd+DsNfanXCgsL51sPMEBWJIh4WvAvQZpd6t9YuTi8HaS4o3g/Gizpl3y8Ft+3AOo5+Y79dQoU8ql/kTVaYG3/C8BgkhvNOZpbBR99Z+W1FkKr7jqNPugNTlsC2BUYzbsL+79a3bXffT3Vxb3zYqmGpPN0za1Xt63lkFOgS8OuKjs97UOirtT7ir2RO7BfyYGghoqwkpx3ohMl3u8aaqG3+6kXZ11Vcb5sP+Hb8x9bLULUbiJlChBY8Jp0/iqxdiMxI1JcUN7RSZhCjgfetN4dTxVF7VHH5CmVr6za7mefgWPbCuKvn6Jgyu/0rQAVowiaQMeO1Xa3+g7oRbeRmtpOrfgD+TeaBawaYLK7yRE6y2DdbmwxEcbmTl+PUhPslnY3MkFDs3zt0VK2kqaQjLy4iUiGL0FPGPrnRZBkRn4TVjVxd+46dyzfVU0f9d2wmWonv/oxIm56HSZQD9hAob3ktuV20D/hzl4w87thA6kCzd2cb3BzjAX6HLhr4KYK7bAN3cENnuDtqzTLzE9PbZmRFVz9eOYjHoJcfALNy4zhT7Lu6lufk1f27dnxq0xFpvaHa5s5iuAwPijNuFI6WP+Mlo9zULvWPV
+ OnVvgCDV
+ L+jqaqr8vu+uCrNMkhfl/2Ipq3uxCcluuzs0a75NshDGzycOz4WIoAuevo0AN6LoFHazwjSoIXvNDOI6z6GljCmgCgUify2SI/FVRtVqsBazZfGqlJOllA8PqyPcFnY3styrJ/BSFG4Hu9rGIk4clDGV/0dRxvCvEUkiS2HHPw5d1KT8gl25p8Uyz0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,26 +101,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 2026-10-11 at 22:58 +0530, Dev Jain wrote:
->=20
->=20
-> On 04/10/26 11:06 am, Rik van Riel wrote:
-> >=20
-> > When the kernel free lists run low, the slow path moves pages and
-> > page
-> > blocks from inside mixed gigablocks onto the kernel free lists.
->=20
-> Did you consider a design to introduce MIGRATE_POLLUTED: simply
-> have another migratetype which stores polluted pageblocks.
-> This idea can work in general, not sure how relevant it is
-> for gigablock concept.
->=20
-Don't the first half a dozen or so changes from this
-prototype do that already?
+(I am not posting code yet since it is in experimental stage.)
 
-What differences do you have in mind?
+TL;DR
+-------
 
+I am proposing "ordered/bucketed buddy allocator": we divide the buddy
+freelists into buckets, and prefer lower buckets for allocation.
+This reduces external fragmentation (and, further reduces it when we
+reverse the ordering for unmovable and reclaimable allocations) at the
+cost of regressing the alloc and free paths, which depends on how many
+buckets you partition into. I think we can partition into 4 buckets and
+do some tricks to remove any regression.
 
---=20
-All Rights Reversed.
+Design 1 is the simplest and the most upstream-friendly method in terms of
+allocator speed. Design 2 tries to scale better with the number of buckets.
+
+INTRODUCTION
+-------------
+
+Apart from dividing the freelists between migratetypes, little attempt
+has been made to change the algorithm of the buddy itself to reduce
+external fragmentation proactively (termed as "anti-fragmentation" in
+academia). Linux has defragmentation (compaction). The analysis below
+is *not* to claim that compaction does a bad job; I just took up the
+challenge of anti-fragmentation (because I like to torture myself) and
+kept digging the rabbit hole.
+
+There have been academic papers about replacing the buddy with bitmaps -
+I did not want a hard NAK from upstream at any attempt to do that, so
+I preserved the buddy freelists.
+
+IDEA
+----
+
+There is a correlation between allocating from one side of memory, and
+reducing external fragmentation. Biasing on one side implies the
+probability we fragment already fragmented sections is high. This may also
+enable smarter compaction by directing the free-page scanner toward
+higher-address regions. This also circumvents the discussion around
+a "fragmentation score" which is dependent on the size of the
+block we are considering.
+
+The idea itself quite obviously improves clustering of allocations: I
+observe reductions in 'compact_stall' and 'anon_fault_fallback', and some
+large improvements when the number of buckets is high (like, compact_stall
+going down from 4000 to 5 with almost no hit in execution time for a kernel
+compilation). The obvious downside being slowing down the allocator (which
+needs to be tested more widely). The content below is mainly on how
+to minimize that.
+
+PROBLEM
+-------
+
+The number of buckets is inversely proportional to allocator performance.
+The critical section under the zone->lock is extremely fast.
+
+The overheads are the following:
+
+1) Alloc: What is the first free bucket which has the required order? We
+don't want to naively scan across the buckets.
+
+Then, the more surprising one, which becomes more visible as the number
+of buckets increase:
+
+2) Free: When we do pfn->bucket lookup (which needs to happen in a
+cache-effective manner) and free into that bucket, if this is not the
+"active" bucket we were allocating from, then we are going to miss the
+cache. The inactive bucket list_head is cold, and the page at its head
+is also cold. We are going to perform some cold operations to insert it
+into its (bucket, order) freelist.
+
+At least on my system, increasing the size of struct zone did not
+contribute to overhead (for free areas <= 64). I may not have
+increased it enough.
+
+DESIGN COMMONALITY
+------------------
+
+All designs aim to prefer low addresses for movable allocations,
+and high addresses for reclaimable/unmovable allocations. The
+"SOLUTION COMMONALITY" is: keep things tight in cache. We pay cycles
+when the bucket we were allocing from starts becoming empty, and we need
+to find the next bucket. The crux is to amortize that cost somehow.
+
+DESIGN 1
+--------
+We divide the zone into 4 buckets of equal length. Then, allocation first
+chooses the migratetype, iterates the available buckets from left to
+right for movable allocations, and right to left for unmovable/reclaimable.
+When freeing, we do a pfn->bucket index lookup, and free into that
+(migratetype, bucket, order) freelist.
+Note that we change the indexing to the above: currently the index is
+(order, migratetype), making order list heads for the same migratetype
+distant. This is problematic if we want to scan order lists for the
+same buddy unit.
+
+We may be needlessly scanning the lists when the bucket is empty. So,
+we can make a bucket "active" and allocate from the active bucket, till
+we cannot. Then we iterate from the start and make a bucket active.
+
+This algorithm does not scale well with the number of buckets, but is
+the simplest.
+
+DESIGN 2
+--------
+
+The aim now is to increase the number of buckets. Suppose the active bucket
+is F, wherein active means, this is the bucket we will keep allocing from
+until we cannot.
+
+ALLOC TIME: We request an order-x block, search the order freelists on this
+bucket, and can't find anything. Now, we need to find the first bucket
+with an order-y freelist nonempty, y >= x.
+
+We can use a "bucket-local" bitmap: for the active bucket, maintain a
+local bitmap, kept on the cacheline of the order-0 list_head. On every
+pop and free from the active bucket, we will update this bitmap to
+indicate whether order-x list is nonempty.
+
+Once this bucket becomes nonactive, publish this local bitmap into the
+zone-scoped bitmap, and use that bitmap to quickly find the first
+bucket which has a block >= order-x.
+
+FREE TIME: if we are freeing a PFN belonging to a non-active bucket ...
+we DO NOT need to free to its bucket yet! Free this into a lockless linked
+list kept in the zone->lock cacheline (just like trylock_free_pages).
+The crux is that we do not need to make these blocks visible to the
+buddy yet either for allocation or buddy coalescing, since allocation
+from those buckets is not going to happen until the active bucket
+is in use.
+
+Once the active bucket can no longer satisfy the request, we drain this
+list (or, when a threshold is crossed, to prevent unbounded
+work under spinlock).
+
+So we have amortized cache misses across non-active frees.
+
+The problem starts when this bucket jumping becomes very frequent. It
+is a sign we are under memory pressure. We should then call into the
+slowpath and free enough pages. But, we really shouldn't be using
+huge number of buckets under memory pressure, since there is no point
+of "anti fragmentation" now. The bucketed allocator helps us to delay
+compaction and reclaim. So we need a way to switch.
 
