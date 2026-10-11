@@ -4,115 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CA13CA9EC7
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 19:49:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30350CA9EBD
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Oct 2026 21:45:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BA906B008C; Sun, 11 Oct 2026 15:49:10 -0400 (EDT)
+	id 73C3B6B0088; Sun, 11 Oct 2026 17:44:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 291DC6B0095; Sun, 11 Oct 2026 15:49:10 -0400 (EDT)
+	id 6EB916B008A; Sun, 11 Oct 2026 17:44:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A8126B0096; Sun, 11 Oct 2026 15:49:10 -0400 (EDT)
+	id 5B2DA6B008C; Sun, 11 Oct 2026 17:44:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DBE496B008C
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 15:49:09 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 62F118087E
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 19:49:09 +0000 (UTC)
-X-FDA: 85311384018.24.E8ED4D7
-Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A0FC2140002
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 19:49:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=kQvXt3iq;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf26.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 355C46B0088
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 17:44:59 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0EEDFC0781
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 21:44:57 +0000 (UTC)
+X-FDA: 85311675834.15.D12E53D
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C2C3C20007
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 21:44:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="EV4Zdl w";
+	spf=pass (imf13.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791755095;
+	b=rGOaVkilr6PQdB6/OphRjGIFNvAm0WnGkYtr0jVt1fRn4TO9EOpUbi7nw7fUTlg0k1zvYO
+	w/RCWjQmYW3raz5gf+2GfTaA23Ptme0OiwWrJr1a4YN3JmKmF8Zlyn4URj66RrrE3Rx0EY
+	3n3tbfeuEsbWVku9zzgpux2t1qYWZLk=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="EV4Zdl w";
+	spf=pass (imf13.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791748147;
+	s=arc-20220608; t=1791755095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=//gnix6Q7zPWZqRUnyYFxl36X37p3SjE7FNUFQA1ViE=;
-	b=BE4srXWDaI7KEvDzOmDQq6qfob8ptT0YUHgiEj0Vft+vtRDxINtrcvgtO2RSyewaBXgTRN
-	Y8+aXpDG0vvGTnfjEhwo/JUm9/+ezLNdCbc3sVi18h3jsQ/YN2xl3qEdK5DU1qF8T8c8S+
-	AANGbvS/1pZuHz3OMHLt8nsYmE9hJsQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=kQvXt3iq;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf26.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791748147;
-	b=2PS1fQXhHnMimQxHPzDf/6mChWvOTkxNpJ/gNSynoAsuh3KUOwDnDZJv4az8iN12BZIhMc
-	QPM/atEif19I8/o35RPUUsMSg8GLM2z8mjSgjA3TU6IR9ZgG+LZEQbEBMPxW6Il127OcP2
-	T8BYXZfJ+0v6axWSJ7zZX/Hnm3/R2sM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-	s=smtpout1; t=1791748146;
-	bh=//gnix6Q7zPWZqRUnyYFxl36X37p3SjE7FNUFQA1ViE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kQvXt3iqK4O8NKI1hWRm+XbTERguuVGnml0ng/AdDLT/etmcMcXHVngfATD/dLfCX
-	 YuTHcrMfJua/DgO9Iyir/h1R4Vp+UVehFtfeN139aT4EmHMtosRkGoLp1A4ks4bkF6
-	 ejTW0W9WMGTF7k2ReTKq0Cx90TrU87ZV2tMt9bBlnzfDqGbAa5Rzwx8wCfC8UKZjBV
-	 yv8dko47uG/RitxKlYAFkxwsHVboHvtMyc5o/0GEUgYQRjT4K6qAe8ybahjHEyMstq
-	 Az08C/nRiw5scwu9dRKbjI9xQHLO0z6Q33454WofdR0AgoIRq2TeDtHjpzklE6UojZ
-	 r9EdE2K9Gqe5A==
-Received: from compudjdev.. (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4j2rl64NX1zmC7;
-	Sun, 11 Oct 2026 15:49:06 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: "Paul E . McKenney" <paulmck@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	John Stultz <jstultz@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Waiman Long <longman@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	maged.michael@gmail.com,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	rcu@vger.kernel.org,
-	linux-mm@kvack.org,
-	lkmm@lists.linux.dev,
-	Nikita Popov <github@npopov.com>,
-	llvm@lists.linux.dev,
-	Lian Wang <lianux.mm@gmail.com>,
-	Kunwu Chan <kunwu.chan@gmail.com>
-Subject: [PATCH hazptr v3 2/4] ptr_eq.h: Introduce ptr_eq() to preserve address dependency
-Date: Sun, 11 Oct 2026 15:48:48 -0400
-Message-ID: <20261011194902.97364-3-mathieu.desnoyers@efficios.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261011194902.97364-1-mathieu.desnoyers@efficios.com>
-References: <20261011194902.97364-1-mathieu.desnoyers@efficios.com>
+	bh=dbf7Z2VFPiTT53lRwlSp/xE5y81p6hF8UBpX7LIzQ/c=;
+	b=FZp4lStJ7taZrTibFRGkW6uuO3fgqELzx/xcXfO3TpYByMAsKUZvNP/Tq/m53DzIxpl7Ed
+	Qgzn21Jlzc0vDoxe0Zl7InmIZ8+Bm1pFfADkMnM4ECVBL2Zg5795Tjd2YXbrwxWZjuUhtd
+	vchyg6/gRwVKZjiljZ8Wp1ELewd11ng=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=dbf7Z2VFPiTT53lRwlSp/xE5y81p6hF8UBpX7LIzQ/c=; b=EV4Zdl
+	w435M3Kk1dbk8mAM9muIWjItRwj+bSQYYoxZms2gdJuyJw/R6DXrBAxpCIoncZ6sBfcWhiN597FoW
+	aR+/EHtKRBt/n92s48UuYEbmV9wi+nxZNTDi0UOpQnt0P0kBuiBgE+WXsPPt5vLgs8E2i4HOxfUiQ
+	Be+zWT+oErTFHbxhp6y1Pg3RYkEb3g/yKFMOksl+0VykZpBBF/R8EITDAL1Gjx2ABRHxDSLs5IcWg
+	QAJbEWTk73YfB2pGDp8lwkkrUa0wNGcgCNKUdvok3v/b4P+tzmt3wfvmf7zDB5p1gHKn0zeEFn6WD
+	oI3fHOZWKk98t6AEa7T+1pRfneEQ==;
+Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1xG1L3-00000003Bmh-3JvA;
+	Sun, 11 Oct 2026 21:44:13 +0000
+Message-ID: <003fdeb213ca0460c8681d4ae7baa562b337ed1a.camel@surriel.com>
+Subject: Re: [RFC PROTOTYPE] mm: reliable 1GB page allocation
+From: Rik van Riel <riel@surriel.com>
+To: Dev Jain <dev.jain@arm.com>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, David
+ Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>,  Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,  Michal
+ Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, Qi Zheng
+ <qi.zheng@linux.dev>, Shakeel Butt	 <shakeel.butt@linux.dev>, Johannes
+ Weiner <hannes@cmpxchg.org>, Brendan Jackman	 <brendan.jackman@linux.dev>,
+ Zi Yan <ziy@nvidia.com>
+Date: Sun, 11 Oct 2026 17:44:11 -0400
+In-Reply-To: <55adcc67-e545-4bf5-93ba-7e4180f1b523@arm.com>
+References: <20261004013657.03a63c4c@fangorn>
+	 <55adcc67-e545-4bf5-93ba-7e4180f1b523@arm.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: az6dzkkfpruaohsxxomggcugd4sgnsd5
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C2C3C20007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A0FC2140002
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791748147-688990
-X-HE-Meta: U2FsdGVkX187C8uu/L5u92oepH+rgkuJmBrQOZLGAdKko2wt9eUNwpMkEMlUMlC+TLpL9SQwM4dWrVaBcb2zQ5o6mG5lGy4eL+mIspK56TImvEOIPJbvvMI3tD1C+wTxu2IslOlFyOnaBi2cSEknoKyMZAuflZEFnCezM3JBj7dfEJ0nByZ/4E0cJNFUU0zSg5ve8yomBxsgnCbTnccJCD344I5KbHTrihjc7n9kf+bp6zdDk03OH2nHufHFpfLL0INHpmibG017Ad3eTnzmQTXNjmVPM5qZQz76xRR8fx53HgW+muOCLBjjOD+tbAQdBGiXZDKV2miJYb8CJN/wVl8dt3LpYb4fMDHiVCaynawL8mcLGebdT1F8Ey9nsgFzXsTUxrSw20HBQoxEC3Bqn4MvgGG+wzS4j/TbZ0TA+JTd6dHtUPSgp+ErxgTpCvdwsXwRfTGjYWO8+ul7AFAMS5Tk1ErQ8+AVkwOwPkZFb233jYzGJEMvwpHw8d/8DWO/f+fPqKPHCgZRt4Na7J6mZs9IBzXJvJTRxNr0oTaTkb6LIcONvCdI3HrHxUge7lLUEwikT23r7hBLjl5WCD3pm0lYUKTdMBW+eQA1OzZ1mPpBvX7WqHhhR7h6H6pqfOX30LVuDSM4o2f4NsS+TGP5Cpq0KG2Um+4pfdfRFAEBgfttDn1Ka0Vpfp7+wNSFswvGhYOwHP8Eb4fN4z3EzDKvyez+7FS7DcavlDCTvg4uH4zJrNhrm4pDb1VBcdnwU17X9ePRpiPQn8QYd8zBISiFu26WG490/pM7p4FPYToGobm9qmk0vXZJlQTxZ+4H3oHpG8LMzGlUCov7X62K2SQlUu01qI158t7//z5e0Nm638XBSPQN02Y81Ilez52l+kDvOFpZgYTw9HsrPsjt3VYdIo41ox9tgI3P//oh0+CrqaT6qu8Qkum7oaE/qmnRLnUoNAXWXPC6FXm5T0tTKrG
- q6XAG18L
- xKVRIrQxHcO3Ez6BABCqqWMYNZ/UcUjt01sWiB25LGSKBCAscUi+fN5ecfboClQ0fxrkxH+Os5/TG27/BpvOM5tNw5Q2h5UVmSReA6jpuxq0StUaEIidd4ifpDLGvqFgGXKWRGbCm2Yuw37FfWPW2k42MSLHgFAWzNSMa+a176L/Gb0FnhJfEtfj+X1dsMe2yAlfWXOjJrfR/XdOudShJ9LKNqzx/cxMXw7JSJS87i6gChmuLcM+34UT2JKlsLAqJJeCCc0wKXmLbKy2gJwteL5vPIXvqEPCHfuQyMESDIUsAXcl66+7VWXzEAcs8LcdyeDKTwrvHjbIvGARz2QwiobT6l608ADvgbLywElSMU5D6cJUpw+UyKSDQmTWASDZuDSgwHehafkLNlbnhIbcDsorGPmdjk0rS+iNFFEDjGKEh0tbp/7zPBx9j4Qk2jlPGeWYBLh1IN+sPPefdlOIhLT9FqNHcfnhbxaM9198dukJk7jiQM8bCSimqRD3tY5/XtLYuDd/oLzk3Awdp3+zfW5F900PW7NA/JgE2GHJZaRIQb5K09z26ICV6OFFi95nfUSEIqxQW02YEKSer+l2NJHOqSu5/+tB4JzPtIShrvYn7W3fnWwC7HMdYHgtaPjbl2ghmCVTViiV2Gfg7OPFtDgxi/CMxJI0gGdCZj8VpMwQniG1lITgRaPIfzkfepH9rrOx88fco/ihXvgB19IPptymAufjOrikTTZS63aG5yrdZRhPGyhW9wQZXSCDXLfiUTuxSQLv+t4zpugAZYJs++pdIu2M9cE52eqwh1GxC7rzVtHg/bW5JHJm0qUXiW3L4O53GM/RkNVaZA7QYuvUqC2OyrFm5xTVEJbqN8npPsK/idpSS4Vq86yFRP8DdhoE31GAUG9VlQ9CnKb6bOVPyJUaIS/FYHmfYXDoONkzwXA77O76808cbKq4NZ+wmT+/cGrpk5OUGm3hib0O8/KL+grP6EypW
- Jh9JwrVP
- yxnUKyD+pRqJukwUuo0YSRZrLfbQ7ECx3IyLtYRjzmH9Hs9TbBXoNInZPS3ZWfeRzs8kQBmGoV6Wy94CtLH627nzpoX+udHnCF3wXShgBRwiiXrGqFIKNnS/StnuITDAdNKChM1jMWw=
+X-Stat-Signature: r675f4cpga9kx9mqr7fcap1tkh1ixjdo
+X-HE-Tag: 1791755093-513870
+X-HE-Meta: U2FsdGVkX19wA8vozLFLfXaCnpjE7sjeXQ3dNMT1iYHqr085kP2V46uuhDnl1cZtzCG3UnZ9us1Rkf2k5CmNtTaDWJnioOqnpszSgUOHsntLF/w7lG1KmH0by8HFnEQke+mxBpbHWD7SPXXKadTFJbS0T77UDDEhJvPZ3jNF+dJ953+s78DsrgLvkOBeiQxLG1PujJa4iD1DjWVH0LJy4ETOZllGCoS/Wmxni0O2YaF6Gu31GzKTSU2LNKySivTSb8XwexlrOAapf+h2xFkcYa0YBjBHh1b6/41PsY0SqMwBAbGnoTG4xLAOZudhwAEDR/P8OlMtls+5e1wSEzBoSY0cjajO3G2gKf637fPynry/K6qex6c1f4enEF0tmxD1YlxNGzvT/B7KhYbnU7y0rfqGDPUT6Mh/HDzddshRK4KjI695fooDjo6XE40luRZJoia/FJlIrmxdGHcVRe6tApczLjsDgxD4W4+JfWa9M54N/FmAuN1opsUNexHgggYEh927M+SaZ8/OEwWjy8hQ5mK8jpuoxXJWEVkwdnd+NOCrhkVnH40R/vlmM09YPURfReObiAYnaG2GzLMB2ZtlYVe2GY0a9baif7b9kcsNngZ7XM5nhaOfisbVxOBwwMavH2damXdU7NFt4TIgUIaGUiXTI7B8/bq0iPfdrqZ29caSXiIvRvOIdCsLQOHy0V+2KnUtbRNhxFIQphv1tsgBkOkD+Bp2phvHyuep1wkqFmXLnsiYn3lkJ7BS85uQScd90e2b3nWwVcSEBCJD7B2e+S5yNC/g8KOlgsqugNFef/PUBMCRa0xLJycqXy9BS1hAJI+nNUCV0JgThaN6cYHFrOI+mnFQ+318DGG6+gWXDkHapmCBS1SP5F0rwQ1NeqFZOBVmhlBRkhXRLRs7Dwrz9/RRjXVn5hSyHZj5+GCJB+Ew9k4wBbf/OsFet/fg669CGvixXfx9ED5gXhuEEJO
+ Ed/L+0s7
+ JcRbNnRdnpE3qgABbdN1R4N350QrH0vP+BdnjSmT8SsIVPo5R/T//LsIsVS5hEQDNZzTbfMVtlBrsUh/ArsLuPvZjtIoxRe2+Bpybk9wqUp7XhpOsezj3O0KdZaKwA/TSnneUBqLworSYYP3OmsVJ7eJVYsgHUNP2jGvkP/ylKs7iqRygkpTgR+M2m7oH20OPUA8OauvoOWIBVLv69zlwiwu7nl2/8KiiKL+yqWQbBsxBdrSVzJ6/cWk2eJ5fUNASTZS8lcU8hq35oVjAMV0B0PmYug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,223 +124,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Compiler CSE and SSA GVN optimizations can cause the address dependency
-of addresses returned by rcu_dereference to be lost when comparing those
-pointers with either constants or previously loaded pointers.
+On Sun, 2026-10-11 at 22:58 +0530, Dev Jain wrote:
+>=20
+>=20
+> On 04/10/26 11:06 am, Rik van Riel wrote:
+> >=20
+> > When the kernel free lists run low, the slow path moves pages and
+> > page
+> > blocks from inside mixed gigablocks onto the kernel free lists.
+>=20
+> Did you consider a design to introduce MIGRATE_POLLUTED: simply
+> have another migratetype which stores polluted pageblocks.
+> This idea can work in general, not sure how relevant it is
+> for gigablock concept.
+>=20
+Don't the first half a dozen or so changes from this
+prototype do that already?
 
-Introduce ptr_eq() to compare two addresses while preserving the address
-dependencies for later use of the address. It should be used when
-comparing an address returned by rcu_dereference().
+What differences do you have in mind?
 
-This is needed to prevent the compiler CSE and SSA GVN optimizations
-from using @a (or @b) in places where the source refers to @b (or @a)
-based on the fact that after the comparison, the two are known to be
-equal, which does not preserve address dependencies and allows the
-following misordering speculations:
 
-- If @b is a constant, the compiler can issue the loads which depend
-  on @a before loading @a.
-- If @b is a register populated by a prior load, weakly-ordered
-  CPUs can speculate loads which depend on @a before loading @a.
-
-The same logic applies with @a and @b swapped.
-
-The header "linux/ptr_eq.h" is the expected include target. It
-contains the documentation of the ptr_eq() API.
-
-An architecture specific implementation of the pointer comparison
-can be implemented by each architecture as asm/ptr_eq.h. The x86
-implementation is provided initially. If no implementation header is
-present for the architecture, an arch-agnostic fallback based on
-OPTIMIZER_HIDE_VAR is included from asm-generic.
-
-The arguments to ptr_eq() are const volatile to take advantage of
-implicit conversion that adds cv-qualifiers, which are thus added
-implicitly.
-
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Cc: John Stultz <jstultz@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Zqiang <qiang.zhang1211@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: maged.michael@gmail.com
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>
-Cc: rcu@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: lkmm@lists.linux.dev
-Cc: Nikita Popov <github@npopov.com>
-Cc: llvm@lists.linux.dev
-Cc: Lian Wang <lianux.mm@gmail.com>
-Cc: Kunwu Chan <kunwu.chan@gmail.com>
----
-Changes since v2:
-- Rename ptreq.h to ptr_eq.h (x86, asm-generic and linux headers).
-  Adapt the include guards accordingly.
-
-Changes since v1:
-- Move to linux/ptreq.h, implement x86-specific comparison
-  and asm-generic header (fallback).
-
-Changes since v0:
-- Include feedback from Alan Stern.
----
- arch/x86/include/asm/ptr_eq.h | 16 +++++++++
- include/asm-generic/Kbuild    |  1 +
- include/asm-generic/ptr_eq.h  | 16 +++++++++
- include/linux/ptr_eq.h        | 63 +++++++++++++++++++++++++++++++++++
- 4 files changed, 96 insertions(+)
- create mode 100644 arch/x86/include/asm/ptr_eq.h
- create mode 100644 include/asm-generic/ptr_eq.h
- create mode 100644 include/linux/ptr_eq.h
-
-diff --git a/arch/x86/include/asm/ptr_eq.h b/arch/x86/include/asm/ptr_eq.h
-new file mode 100644
-index 000000000000..8e521cabe24b
---- /dev/null
-+++ b/arch/x86/include/asm/ptr_eq.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_PTR_EQ_H
-+#define _ASM_X86_PTR_EQ_H
-+
-+#include <linux/types.h>
-+#include <asm/asm.h>
-+
-+static __always_inline
-+bool ptr_eq(const volatile void *a, const volatile void *b)
-+{
-+	bool ret;
-+	asm(__ASM_SIZE(cmp) " %1,%2" : "=@ccz" (ret) : "r" (a), "r" (b));
-+	return ret;
-+}
-+
-+#endif	/* _ASM_X86_PTR_EQ_H */
-diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
-index 2bc00c67dc54..86cee0dfd47f 100644
---- a/include/asm-generic/Kbuild
-+++ b/include/asm-generic/Kbuild
-@@ -47,6 +47,7 @@ mandatory-y += percpu.h
- mandatory-y += percpu_types.h
- mandatory-y += pgalloc.h
- mandatory-y += preempt.h
-+mandatory-y += ptr_eq.h
- mandatory-y += rqspinlock.h
- mandatory-y += runtime-const.h
- mandatory-y += rwonce.h
-diff --git a/include/asm-generic/ptr_eq.h b/include/asm-generic/ptr_eq.h
-new file mode 100644
-index 000000000000..2bd1c3b8a56f
---- /dev/null
-+++ b/include/asm-generic/ptr_eq.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_GENERIC_PTR_EQ_H
-+#define __ASM_GENERIC_PTR_EQ_H
-+
-+#include <linux/types.h>
-+#include <linux/compiler.h>
-+
-+static __always_inline
-+bool ptr_eq(const volatile void *a, const volatile void *b)
-+{
-+	OPTIMIZER_HIDE_VAR(a);
-+	OPTIMIZER_HIDE_VAR(b);
-+	return a == b;
-+}
-+
-+#endif	/* __ASM_GENERIC_PTR_EQ_H */
-diff --git a/include/linux/ptr_eq.h b/include/linux/ptr_eq.h
-new file mode 100644
-index 000000000000..7a2bbf6e64b3
---- /dev/null
-+++ b/include/linux/ptr_eq.h
-@@ -0,0 +1,63 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_PTR_EQ_H
-+#define _LINUX_PTR_EQ_H
-+
-+/*
-+ * Compare two addresses while preserving the address dependencies for
-+ * later use of the address. It should be used when comparing an address
-+ * returned by rcu_dereference().
-+ *
-+ * This is needed to prevent the compiler CSE and SSA GVN optimizations
-+ * from using @a (or @b) in places where the source refers to @b (or @a)
-+ * based on the fact that after the comparison, the two are known to be
-+ * equal, which does not preserve address dependencies and allows the
-+ * following misordering speculations:
-+ *
-+ * - If @b is a constant, the compiler can issue the loads which depend
-+ *   on @a before loading @a.
-+ * - If @b is a register populated by a prior load, weakly-ordered
-+ *   CPUs can speculate loads which depend on @a before loading @a.
-+ *
-+ * The same logic applies with @a and @b swapped.
-+ *
-+ * Return value: true if pointers are equal, false otherwise.
-+ *
-+ * The compiler barrier() is ineffective at fixing this issue. It does
-+ * not prevent the compiler CSE from losing the address dependency:
-+ *
-+ * int fct_2_volatile_barriers(void)
-+ * {
-+ *     int *a, *b;
-+ *
-+ *     do {
-+ *         a = READ_ONCE(p);
-+ *         asm volatile ("" : : : "memory");
-+ *         b = READ_ONCE(p);
-+ *     } while (a != b);
-+ *     asm volatile ("" : : : "memory");  <-- barrier()
-+ *     return *b;
-+ * }
-+ *
-+ * With gcc 14.2 (arm64):
-+ *
-+ * fct_2_volatile_barriers:
-+ *         adrp    x0, .LANCHOR0
-+ *         add     x0, x0, :lo12:.LANCHOR0
-+ * .L2:
-+ *         ldr     x1, [x0]  <-- x1 populated by first load.
-+ *         ldr     x2, [x0]
-+ *         cmp     x1, x2
-+ *         bne     .L2
-+ *         ldr     w0, [x1]  <-- x1 is used for access which should depend on b.
-+ *         ret
-+ *
-+ * On weakly-ordered architectures, this lets CPU speculation use the
-+ * result from the first load to speculate "ldr w0, [x1]" before
-+ * "ldr x2, [x0]".
-+ * Based on the RCU documentation, the control dependency does not
-+ * prevent the CPU from speculating loads.
-+ */
-+
-+#include <asm/ptr_eq.h>
-+
-+#endif	/* _LINUX_PTR_EQ_H */
--- 
-2.43.0
-
+--=20
+All Rights Reversed.
 
