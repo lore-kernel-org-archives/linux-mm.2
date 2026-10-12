@@ -4,88 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F6CDCA9EDE
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 19:39:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAC2ACA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 19:44:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EDB56B0088; Mon, 12 Oct 2026 15:39:29 -0400 (EDT)
+	id A6C916B008A; Mon, 12 Oct 2026 15:44:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09F436B0092; Mon, 12 Oct 2026 15:39:29 -0400 (EDT)
+	id A1D756B008C; Mon, 12 Oct 2026 15:44:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF9986B0095; Mon, 12 Oct 2026 15:39:28 -0400 (EDT)
+	id 90D796B0092; Mon, 12 Oct 2026 15:44:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CCEA36B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:39:28 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4A953A0A84
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 19:39:28 +0000 (UTC)
-X-FDA: 85314988416.26.91A3DF0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B2924100005
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 19:39:26 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fo6667aW;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6219D6B008A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:44:08 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4A576120A1E
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 19:44:06 +0000 (UTC)
+X-FDA: 85315000092.05.ED2C13C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 80D1940002
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 19:44:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HBvJzKuB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791833966;
+	s=arc-20220608; t=1791834244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dmphcHtLoa5lN5HKZf3N/rNWg+UFc8RVpn9tVq5WvJE=;
-	b=IBbRMuXcrLXJSMv75DMJwzYEoQDacT8YjEsrgBJulG0eTXDA0A8NNOVUttUw6PUt0r0lkg
-	Qgfjw1ovnlmsxOwpx3/0Gq5nto7G9HWUY6fnW3MhUF5Q8JDu1i62M5pqL3ehHqXmVDZkjd
-	0B3gu5r0YrcOubJipNDpWmqVBaCOTLA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791833966;
-	b=liB9WZmpgjcEV6ij3ycRnDpZzg4tiSxrtSYxpjqXywcbzMBzQHMdwZgglE2Qn9leURE66i
-	RZ/goUp993xhTHDk79aF/sKuT2qtNsaZ25Tg+Y5iRzp1FEcI50CobqlfMTms5fz6haa6dh
-	FaNhHNJONxH6ULuor0SLc9udeeaOei0=
+	bh=dGLjQMre0HMGUZXG9eppSTB0wCfCdRy2DDP9ymJkK9U=;
+	b=45qAHYjUp2/1iDUqXvdK9shWOADs9kmUMGOZ0tPYdT+iK3NViddAHnFQzlvJrwVgkaimWq
+	cVq/o0Zpt5HaCgUUnFCytR6NejZNU+vd1fxCo6tD9EJiS85Zu3uABZhMhRYR2J8y3RxDnf
+	kBdF3YKO5vgbCJo6Ma7AawCMLjG6OUw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fo6667aW;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HBvJzKuB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791834244;
+	b=WTGu60JbU6U15dWztk0UwuTGZ6Rc8HkF76W91BaOp5l3JgKLIr0AvVGUiByNuMQgWMS3Dg
+	5+6V7OxOK57oe0dDTN/MO81XXWO/zFJmazLYCTXCG8LUiuQxy+nrv1Z8qaCzSGcnB8JMkz
+	bNxe+fy+4vTt7q1/C0enNtFuBihqL/Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2F56E60142;
-	Mon, 12 Oct 2026 19:39:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB65B1F0089B;
-	Mon, 12 Oct 2026 19:39:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E4FE240179;
+	Mon, 12 Oct 2026 19:44:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77A11F0089B;
+	Mon, 12 Oct 2026 19:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791833965;
-	bh=dmphcHtLoa5lN5HKZf3N/rNWg+UFc8RVpn9tVq5WvJE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fo6667aWdwibX0X+nESPDpiEp8VM9vajSVdYVjODcvXynPJOd495Y8E7acv4Fh3AO
-	 kBwB1PV/gkcS35mMdIi3lJgPK3EUS9pHWugLCbrlPj31p8OrSwdF9sVEq5DjtHB0wE
-	 ElOow0LqSoID8aw3UG8jumaNQVSqplYoPKOj7hEwPhsbidU1FY0sHU6qpm3etSCyOj
-	 utwPMgMBHQ4UzngvTJ5N+NwmZSxQYNAHY2+B+V3GEfEYXsY5jF2sBbGrH80o5MYkAQ
-	 yW0VGOTjDCe00gX/WR9CXHJpW0OqdRDtwf6B505qVI3s67LNQOWKc6GLSQsZMXGI6/
-	 188RxfXr1t06w==
-From: SJ Park <sj@kernel.org>
-To: Suhaas Joshi <suhaas@s-joshi.in>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] mm/damon/core: Copy only installed probe in damon_split_region_at()
-Date: Mon, 12 Oct 2026 12:39:18 -0700
-Message-ID: <20261012193918.373055-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261012150045.169377-2-suhaas@s-joshi.in>
-References: 
+	s=k20260515; t=1791834242;
+	bh=dGLjQMre0HMGUZXG9eppSTB0wCfCdRy2DDP9ymJkK9U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HBvJzKuBOdeBqh/QLKaqbF4vvScglNF1iPQzZnras/u1vdP8rIsJVOAlS4mVUbJtV
+	 UmZW+8j78SfxSmWKbwA6OBme8ceC+KRnzfW0KF/H2rwJqaEMIzGLsMczRgu5h4k9YB
+	 i28BL29d1QfoM5ZN1D7Nc7ZYnFYMFufPkNIhwA/D2t39zLDFhnB/PNYxRk3AAOhG0N
+	 Uw4qb3awkuboFPoF++jrktejbNGLI4kmDMuVMGmwTQ2IduoR6c+FQ+T8YCd4gdldE9
+	 n/NjaVoFm+8Cn8APSaUjyNSGCZvSBWwi6e6v+s7K8pAPIjNWvWujPT6uAywcOtkePv
+	 Uu2rgqxwodJ9A==
+Message-ID: <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+Date: Mon, 12 Oct 2026 21:43:50 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+To: Luigi Rizzo <lrizzo@google.com>
+Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Joshua Washington <joshwash@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
+ netdev@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261003212241.3432303-1-lrizzo@google.com>
+ <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+ <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 80D1940002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B2924100005
-X-Stat-Signature: r5mk9s3dut16ptqso13kcj1c4obsyhz4
-X-HE-Tag: 1791833966-212102
-X-HE-Meta: U2FsdGVkX1+K9vif54GEt5Hmr4ARrZE9dbfRmk4PmsqU1nRF7Fa2pMbJzd93LKIff9oQBS3un9QMM0DiQRqyJH4O3XchurKPMZtXGgZEV7qvMOeeCk3Z5tAURff0lhFag+BwrmKSpqtGv+34MXGVibjfl+0mYCROuG1VCZAHl0xQ1aon8N0sSaM9bqahGBrrKOw0rk9Ns3zTT6q4vU30p+9KtSpooF98UbhzmHtuxfJVc9NTp0D3uHLQSzZehyN1s4a8gw6NRpYwaQfsQ56DjRnhzmDmRfdt1SWeemGvQ/k/cCWjVU2Z6/VNQU0OnmUsdMdOex7WrB0xPjwHSP9LpSOxy6liwRzM8aG6rs9WgXaWl30BfCvnhxBVvdgXB6bOOMCmMpgY6EKmadCHykZGYEMfYnf8MkgKlv8CT0k40K4HaT7kW1JkuxYhqe9OUyKbDdAMKE+QDkZOlK1wHxwujMM4854nZZTiJ0P9K0QS8BuX24ER3B5ajZwa8I/Pg8d6xA/oE1Eok6ykU3nlglqRX57kJgquJXe27he0VjAGiU7b0fLBQnLy8CrqlZmsEF9Rr3YMJMYhTL2pe5dweIfZsxHIye+Sk3Ak3P67dNdV4maFi6NRnmJ2UcbiIjfWUOzJc1hvuconkGwx1z08Oum2rYXWNjMabCvh5t+jwA5qj5bOPt/BapP6CudfK2f4ULWcJtuysBHCvMan2/WDkT54EoC/kgt7xNno7YfhHFRvYk+EFIt5xJJxrXo+/lrCp8ScaVmfDgXqNzm62ldLNC+kLlZmcgUVGV6HSKQ2qbnNjURIb/+8Zvi9/7i7+cFUwVirgZ4oDN/htX7Ak739zUSFtrGHSws/6Fgvz/SRxmnDR+owoqIkO0erdPeqVVvbOGo8JG/8PsWFzNPhWScQJdbBLpqXajkfJBxNLlqpO7jhhziwWiZq/4l/pPo1K0QURZ0lpy7pZ4OH2JRRmeG7DsT
- 0yC5XhtI
- 70MwlUQcp7rkt8rOJRtwdvP45LMCJIivZR4KXgvtkVtL97LAu1OC+hHYl3Xii1bJr1w1rq2+w0+cYV2IAQCLx2WA5aDI+fNPTR98GPfI09HFAerNJp0tAZlEPSz8eE/y62ipX5/fEwsmBxy1TE8vbkcPuRKTdGs4lwzbPrlCOPRFtbNbPGrJiM8exvvnOB8/fhVMyeuUKtkhm8vSkb/5c7Ju/TF1kOYvNKJFxW4zpnoB2fa2g1DMog/I6QXK+Nn9TY29S/SLdCS3X1IgrsLDRL0lWtQ==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: e5igccjkjbgo9hrxbfybug4qd9fdy5wb
+X-HE-Tag: 1791834244-789436
+X-HE-Meta: U2FsdGVkX1/r4nhuuED60ztF0HsTDV9DAWFHSkEVLXK+H7IgpHAZmlNp9o994cKSgCOZOA6YZ6lDL+uvfVGj2q2cwkJHEG7JwA2SYXEoCo/MrHgs6KC+1/dd9A19PFQS+1XSDDZUc8RQnx1HrLQiTTv4oXtvYKRWIy5rZY69XPlJi1NIgKxkcuw3lTh3bmqUSyHhF6Tn9bTW8Dk2syWfZooRMrVDXDrLI4yGgSMgVkVp0oD/BFyWeP3Scsa3GzsRXcpU+uQsLJfe7luZolvTfHmq8Lolji+0YeI0jHFihZZczyEVuNkhyqBdVmGlUu3u685Yr3paEQrCwWoqeXsZMyzsJO+LTxf5ORLMf9DWMo5vN1Bphv3j55TAZOpQv5riiWi2XM+SSn3PUAZjzLe+l6geYSI7vm1PI/hdqvhi7mVwhqfNgkbZSTlML29TuIKbwUSzDGpzDaBimunCwbJe2THkRIDWLJSR12aR8eS4JWzQHkNKc7RZ61NrvroZj2SabQair9ZyV6iQ45m1ltu43rV1Fmii3vZ7KNuGcMK3hhmYI81RKOQ1Yp3rhv4UGKAvsxift+Fq3/WYfJBkb2xFpVXGnuyoifGCY33YPOJBjl+kTviIDc432sGmgC/4uOhOuqRwrOgr+nU7g2UR1AAuTj5Sz/mxY0hEQl/L+7I2fcB+UCLRRdtV/qOW5apqP4cGzJCUQULbmH0Rc7B+dp+Z9w8xwBTByyLWVvgxHOiHVFAHhi64h6v7pYHaRyPk2Z83amVcEknSkEmKqsXlAo1WGmILQrKO3pojhUgcTdEio6AKS50CfM4dBHx3DaO+SeRCkhrwv+3hOpgHzBMlRSPmFV4ouiLAOGr77qtAgoQflePd5FxdSEBBU1GeyX7yUhwbQXfu3JQy90pSjTQl7a5cO6ZShAUyY4NmYSZlQWXYG/mMx5QiDBkjL+Kko2Q9lEaXNm8NZgBlHx4Z1xLtfkq
+ yW6hTFK9
+ JOyq0NK93dLhwDAv0wZ7VxPejDq04+WVBPSLIkEkRJ8OSQt7VmtfYnn2+OUyl0Vdx3gh9hi2Wn3kcZx/xOxBa7+bvzfYZxIeOIVrCA40f8HnRy0sP1pXY0PoZUN4pX3zgZYgvldWuB/ZkhlduSC/UFXEppmdkpcio8s8n1wTtHMRKryaJfItzo9mja0wB9ifznwxNxhSW+TXU5mNaDS/06+pMoRjmf34oEThA9ve9fV4W655ng3bXGl5laQt1Bsg11/jUl6ViY/ROioOZLdXWP4O98BWtnTm4Jk9+LjU+7pFx+s42Da27eanIgO/P5LjfOVqw1OvkF8VpMWDt80sdlMYRfsdrnPlX9/fNvQXQuDgvqSaiprGQ+6Eo9NhaHDuJ5ysmDxo/hhQ4z2uEzQV6untLqze8vN8BAz8twCvnb636PPc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,28 +160,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 12 Oct 2026 20:30:40 +0530 Suhaas Joshi <suhaas@s-joshi.in> wrote:
-
-> In damon_split_region_at(), we copy the entire probe_hits[] and
-> last_probe_hits[] arrays of DAMON_MAX_PROBES size. However it is possible
-> that the number of probes installed is less than DAMON_MAX_PROBES, in which
-> case one or more iterations is/are redundant. To remedy this, iterate over
-> only as many times as the number of installed probes. To do so, accept a
-> struct damon_ctx pointer in damon_split_region_at(), and update all
-> invocations of the function to pass the new argument.
+On 10/12/26 16:45, Luigi Rizzo wrote:
+> On Mon, Oct 12, 2026 at 3:51 PM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 10/3/26 23:22, Luigi Rizzo wrote:
+>>> Here is a subsystem called DMA_PMD on which I would like feedback on
+>>> architecture, possible enhancements, or kernel components that could be
+>>> reused to avoid duplication.
+>>
+>> Here is a feedback to a subsystem called DMA_PMD ;)
+>>
+>> Why is basing this on PMDs (and embedding it in the name) the right approach?
+>>
+>> On architctures with large PMDs (512 MiB on arm64 with 64k), would we really
+>> want to use 512 MiB pages, or rather something smaller (e.g., 2 MiB) that might
+>> possibly also have TLB benefits (cont-pte)?
 > 
-> Also update damon_test_split_at() and damos_test_filter_out() in
-> core-kunit.h to supply a context to function paths that call
-> damon_split_region_at().
+> I had to call it something... an earlier prototype used the name IOMMU_2M,
+> but I didn't want to suggest that the design was limited to 2M (it is not).
+> 
+> Aside from the name, the _current_ prototype restricts to 2M allocations,
+> exactly because too large units are expensive and wasteful.
+> 
+> In the code, decoupling the allocation size from the PMD size is trivial.
 
-Sashiko raises [1] a few questions, and those look valid to me.  Could you
-please address those by replying to the mail [1]?
+Yeah, we should do that.
 
-[1] https://lore.kernel.org/sashiko-outbox-168321@kernel.org
+We should probably just find a way to describe that this is a POOL that focuses
+on physical contiguity in some configured granularity.
 
+-- 
+Cheers,
 
-Thanks,
-SJ
-
-[...]
+David
 
