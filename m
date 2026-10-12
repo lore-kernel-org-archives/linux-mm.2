@@ -4,136 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25AA3CA9ED2
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 21:03:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA171CA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 21:05:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A17D46B008A; Mon, 12 Oct 2026 17:03:31 -0400 (EDT)
+	id ADF956B0088; Mon, 12 Oct 2026 17:05:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C9956B009F; Mon, 12 Oct 2026 17:03:31 -0400 (EDT)
+	id AB69F6B009F; Mon, 12 Oct 2026 17:05:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B7FA6B00A0; Mon, 12 Oct 2026 17:03:31 -0400 (EDT)
+	id 9F4236B00A0; Mon, 12 Oct 2026 17:05:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 27A7D6B008A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:03:31 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A57EF1A08FE
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 21:03:30 +0000 (UTC)
-X-FDA: 85315200180.04.EE142C3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D6672180008
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 21:03:28 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C8206B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:05:09 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CB85CC0CE6
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 21:05:08 +0000 (UTC)
+X-FDA: 85315204296.21.5C83408
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3B63618000A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 21:05:07 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iwa4zYia;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C6KuxaON;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791839008;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8a9guZQ9UXhmWtlczU1xVFFTkDdI91mnDaX9njUfUDA=;
-	b=IcRipFAAO2s/nKWdQiiKrfwozqoylXzsqIde2oLFiFsHQa5kHizSNmnpqx3Sc+2Jev2CN7
-	b4fvs1jwU5etezyLdLCBicoiKMJBL2e/4sTLJspd/I1NnCLfDtWoyrZgUiNou9eGIXpJHG
-	WnqR6rcw9NSnn22OVN9KU9rUun6lhog=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791839009;
-	b=glcHn9Y+HfNul4Vtrzt8IJuyh7o607SNBn9ASVtpgRekN57UGj0KD6/mdurZk2RPgrZ9eD
-	1nKfMy4fINsmPKmsJg1dLAilTixGeDt3HTMe0NM6YAl3aRsC5GfCN5Z2QDOnxu6i2zh5tb
-	nSeT4njhexl3YsYH9Dl9yo9QD+a8MME=
+	t=1791839107;
+	b=Uq3jVJCj5/EXx3NJ30tQXtG6b6a0TNHwfCqZgg0zZlWvw0p0QQZz3qJHxUD5eCLYxUBQil
+	tBrM1w5tiH0MjejuVtN+y37csa0AsaWQ92A9+bk+TsUQ/GcUoZ2z+z5Ia9go2s4+W1zXmD
+	FqwHIUj6dCHR48sZKvtV48CeYuMwnw0=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iwa4zYia;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C6KuxaON;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791839107;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OEthCKb0rkLjJTmItEReVKIpiCN+N7TNwVq0rSj7hO4=;
+	b=ozLJ+u8Zmq0uT/KVlbIQwmbdxhzUVx3LqBtn8xacSdW/G4cX16MOqEpChCwprA8NIqlnRo
+	JKCfsv26Q2vTqPrEUMSfdR9Vjt1IMs3icVbu+7tdWCXCdfSfgepZaVJtA0yaWHwhwzJxSO
+	T+IGrmysn3d9wSI5Yst+TlkaV5fLzfY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C921744011;
-	Mon, 12 Oct 2026 21:03:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4196C1F0089B;
-	Mon, 12 Oct 2026 21:03:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A3B6E601E4;
+	Mon, 12 Oct 2026 21:05:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC491F0089B;
+	Mon, 12 Oct 2026 21:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791839007;
-	bh=8a9guZQ9UXhmWtlczU1xVFFTkDdI91mnDaX9njUfUDA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=iwa4zYia+5w/t/XiWlULLwwMV7DmTgBMmyVF8U6tpQKGm4BI9sgOrr6xXopzh4eee
-	 2glTihabvgLw0LmaL9pHCbZ2f9EOiXAfjmBBSCwwZzkdLm93rCWYJQ6nU3gbQ7y7hM
-	 7EawWNKw8PrMWCyeRu6YhDFDZMR9b+kMdZyqsFJ6BjzNSfWzit5Uba+OOzirdFFqUc
-	 xKmQl36xMYAscXx7Yi5/4hfkGy83vdEtplRm/nQUx08umZV/QTw8BsTh7uVc7ABTCf
-	 tJ7M5pa2ETketAJBIDNuK9CtVXQAeyb10KYuTo5TPcafJZ7gTdAGTcIrPCiWcHA1Gi
-	 wJmpD9ghvu9rQ==
-Message-ID: <be34b92e-e82c-4f69-ac9d-b045081ea418@kernel.org>
-Date: Mon, 12 Oct 2026 23:03:18 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	s=k20260515; t=1791839106;
+	bh=OEthCKb0rkLjJTmItEReVKIpiCN+N7TNwVq0rSj7hO4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=C6KuxaONUZ6vdX4/61BIkmE1jjMCaFkuoNssbRGuxhkoCoRChHiehx/gflbLzFTeg
+	 ePOcsf0OZjJENTZ+rxQ045XvO2AzDuRNVvqnqgK2D8ZxHtPOQXKbAmkVAAaFMN1ZOH
+	 5e1S5n3vivd2CiL0xcGXjF5tiT+7ariYKigSpk9BjeIso8kyBUgT03n3Big7tljZdV
+	 0IKhGJUaoh3AejelgkYiqRzPYeypahhFE5zfrvqtWCZkbN7ALVTfUqUgkY4GMZbIj+
+	 A/nSG7mgEh1s3SbdbAkEJGvHiBwYKT/Q9TjSH0/p36KXG6AIsMCYaeZBYSO6Hn8kso
+	 SjFx/g21JgAUA==
+Date: Mon, 12 Oct 2026 22:05:04 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, Pedro Falcato <pfalcato@suse.de>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH net-next v6 2/8] ipc, msg: Account msg_msg allocations
  with GFP_KERNEL_ACCOUNT again
-Content-Language: en-US
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- cgroups@vger.kernel.org, linux-mm@kvack.org, Pedro Falcato
- <pfalcato@suse.de>, Kuniyuki Iwashima <kuniyu@google.com>,
- linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-ID: <as03h8sgRzpw7JXI@thinkstation>
 References: <20261006092030.got.500-kees@kernel.org>
  <20261006092035.166776-2-kees@kernel.org>
- <38befa8c-3885-44eb-813c-0ee34cd55248@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <38befa8c-3885-44eb-813c-0ee34cd55248@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D6672180008
+ <asjhg2e4-WSeKuXd@thinkpad>
+ <ask5kpMS4mpI8Api@thinkpad>
+ <202610092014.AAB20B81@keescook>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202610092014.AAB20B81@keescook>
+X-Stat-Signature: n7yaotngm6hgenucjy8bi18affpam6s7
+X-Rspamd-Queue-Id: 3B63618000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ymimunkhyapp8bcr1kg4hd7ifne1pn5j
-X-HE-Tag: 1791839008-952551
-X-HE-Meta: U2FsdGVkX1//nebzDFC1sdcMZ5xF+yTsw7SeZJTOw+Fu3RpaF3FYXC9SFWmPpRDb9u44X/7v5nolRSZf4VRQZQLDLfNu5pX/R3YR7X6BAvpjWe812jUTMcE6vr+Wbu0t6uMeNzfsFRCs3gLO/AFzhxVpH/qxXChRHcSRKAW97j78qnWKpd4cdM970zKe2YJ/TADKHwBolENYtEda3/p2aD8ZeRY1wWdQl8+R2WdKD+nj+avb20KeA8MNJcP1OFmFwLVBB7HyXLZb41ENk5x+vS7052X6pSjp9g33Kfv3O1Y8nVpnFoq5z9GikOI1RUNli2I8G3MlVsIuagZBJK1KP1+GIxtsKgjLERizkGSHubJnkqa7ukc2VWQB0pYOImQaKq/0ZwguoVkTP+Cdc9qWJVy3s6X/CvOHxyxWR9yHla3GLxl+DCI+rr4+wH0gHURwdORFXnYDvsB0fPdVoAgpQc3llE40PoYWEezxL+w+480hhws8NoONKxRr8hsAfwKl7SjLLRLb7YGdzS7Ic9B8EEDlqrK/vehagR/FdNQ6rDZ9M9yUIRtenM7WL+Fi+EtUFZvpVkTIbNpVsVhYwBSCyYESgXEyc3FFXaZX3CDqmldFksVuoHBApic3slj7K/77SxOBIrG7JD7DbYhtqIqNQ3tvxwUzLNEy4TGIMEA14WkSBOoKjAyTg3AWWJGxZANSL8b5wxQTsIlTYhM4vqFYjUhL/W+vM2zXQ4MP2lPzUQv9vvq+A9rfymb6Ux/WVsrkWAJX18pq742d9LaDRk3UK+Pm6B6cdBt2ZTkJhWwkMU2LaMUNtuBaRlgNkAps4ib/65/qeo7+OqpCjbfaNzv7gzy0Zj/sFtiBkCNZaEQUt5jnREfz0Vek8mrp7dXaJivzz/8/i8brlp3zKNIwV2lTkL1UUEKiUoJxRCMFlu1d1Nj1iwMLy1jVqOOxNUqVGEauDISbWUlUflnwRaeR9MU
- v9AQIwCe
- zLdbjspyRnHpT3cRJpK+AeJZaPs/o5C3NsYGey+CAO2fWrGFoLxWU0HW9gmCUFMY24epDm0uNI5Jv8E34YT9a0uXUALx9igpiZVc6aEGHmZi0wqKbBstKD7j6J3IxsDYjjK1SXxmNYBibwllVbjypU6Qse3C2ivFJ5BYRxy5hqPC9+c3vZ2nsVVDWoNtflIqOn3bEQNYHpp5BqBzH3TMEBLD4PVW6dMwuhySSjFsuAWxH2vZXstJkex8OelgqHrSmCg0p6qc20trpb/Wjs/r8uweRDmEfC/w5vmhZZwGwewcuhfXFC7Z1jEYWu4EYnuczXUQ6Jk3jE0dnDLI=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791839107-381037
+X-HE-Meta: U2FsdGVkX18MjaKAfkPLU6WC0MuEyNaqm2xfDByW8Q8Ks0M/elBq5Q6MWu/5gnOK4wJBpifypxIi/8yrjvYdK4Risny+dLod0NUde+udi2MFxNNuzqmVdzBZ0h5G19U7ySUR2M3e98uGGOWbN7ukVEakrX9iGjU9Jx579uUkAzV8efXrSq7Zcqlj8Hx+2Tmt5hb3R6D0cBI1krVYkBzNBxCvOZaHWmEv8uyobolcG+IWXkinfepdSKmuJ/uMO5oScYBiwK12FQ3QJzt7wCnxsr2AjE9bOUNsRxi/qbeFEfIGi/qu59gqR89i3D7mSIoHHBaM8EhpB0h2qAdbOlAKutt87zw9eaEFCRH5qDuWJQPW2Qt783fx+7QGkOEjshilBzl1Bxw55XZ9czI6ZYOtY/YrZwo+vUtDs3mjNotSWtUGhUBlc3kNICBPtVEyq7lCiL6QjloNiY6xUNhcE+QJF5IKlxHKn/E1cAy8yEdZrzkL9+oDk81T/YF+68bOY3HJPpTTzGKU+/x2llzgR7xj3t1ZMSxkwawu6B2D9PgczEse3neBYMn6CogjiTaEyREctdN7jinyeVp5fFWRL2c1FEvNcpi3SBEM94Z85VlpM62opNOH7JSi7cI4XmsnOQ2+lFUnV/0NoD4mElAbiFRI98hc8kzysg1Eg4WcZ2VIIrBJjIhM5fjhYzh6IVitCaKp9YjZWKfQyrzV68aoNixVwwkbeevRDhN4PDd8I94AG6mGD4xD+JmLmZTrsWw40Pb5m/SJNGy9eKoOqhA+RmJ4whaIuL3ink5GMbwXoYgyRqi8FDN88ln4mpCnr1DZQ77u8FBu+5inMLIvrs6y3pWeAD3hY7v1prtUMDtvMDnhZPQVPH4wf3HB/qoi+EV0sTisd2eVbnZaYlMoNaO9lL8SfwT4VJZQ+FDEkq4hLMn5W3JGTTGDNwqU6bJD+43ssPWlroaC7zjJOSgxi6iD4+d
+ gpj0tuvw
+ Cl9Nvwe4GoMb1Gp0j33swJOycrUDcKqcq/2vPOklasR01vp4WiE8jWccRtjTohLVwPX+8CjicNGLGKGVuwVLidQU8dT6mY48cHS2ycTCjHrxtToaIBOw1f92n4qiqote00CE4KAL2GHpD1wRnucSjpI4ocHE2LBwVBTN36sC/ucE99u+XWmkc4iItV17CFgbu98OmqGcvoczHkDqqbz5rhVR2pEWfkECsAL+Mwn5ppLYb4O/KdL+3Wch8pUZr97lilZRDtZ8Uga76oI0YHExlEjOT/RcsK+i1hPB6d16IBSp6xrdjOEafTMaSembl7oEgDVpE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,34 +100,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/12/26 19:55, Vlastimil Babka (SUSE) wrote:
-> On 10/6/26 11:20, Kees Cook wrote:
->> Since commit 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for
->> alloc_msg()"), alloc_msg() allocates with GFP_KERNEL, and a msg_msg is
->> accounted only through SLAB_ACCOUNT on its bucket caches. With
->> CONFIG_SLAB_BUCKETS=n, kmem_buckets_create() creates no caches and
->> kmem_buckets_alloc() is a GFP_KERNEL kmalloc() from the general caches,
->> which do not account it; the same happens when kmem_buckets_create()
->> fails. Either way, the allocation is not charged to the sender's memory
->> cgroup.
->> 
->> Allocate with GFP_KERNEL_ACCOUNT again, as before that commit. Memcg
->> charges such an allocation in whichever cache serves it, so drop the
->> SLAB_ACCOUNT, which no longer adds anything.
->> 
->> Build tested ARCH=x86_64 defconfig with GCC 16.2.0, with
->> CONFIG_SLAB_BUCKETS as y and n.
->> 
->> Fixes: 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for alloc_msg()")
->> Assisted-by: LLM
->> Signed-off-by: Kees Cook <kees@kernel.org>
+On Fri, Oct 09, 2026 at 08:18:59PM -0700, Kees Cook wrote:
+> On Fri, Oct 09, 2026 at 09:39:48PM +0200, Harry Yoo wrote:
+> > On Fri, Oct 09, 2026 at 04:22:03PM +0200, Harry Yoo wrote:
+> > > And now I see the initial kmem_buckets design did not sufficiently
+> > > tackle the question "How this should work when kmem_buckets falls back
+> > > to kmalloc?"
+> > > 
+> > > I suppose the kmem_buckets' abstraction should not be too tightly
+> > > coupled with kmalloc caches. Creating a kmem_buckets should be
+> > > conceptually equivalent to creating a set of caches with speicifc
+> > > slab flags, size, align, useroffset/size. (for variable size allocation).
+> > 
+> > Just to clarify... I have a few concerns on this area.
+> > 
+> > 1. Complexity.
+> > 
+> > It's very counter-intuitive to understand how it works when
+> > SLAB_BUCKETS is not compiled. My brain cannot easily process two
+> > different implementations w/ and w/o SLAB_BUCKETS.
+> > 
+> > A "compatibility layer" allows us to assume certain expectations
+> > and ignore all implementation details when SLAB_BUCKETS is not compiled.
 > 
-> Could we, for the purposes of a backportable fix, just have both
-> SLAB_ACCOUNT and GFP_KERNEL_ACCOUNT in place? That should do the right thing
-> regardless of CONFIG_SLAB_BUCKETS state, no?
+> I'd rather make kmem_buckets not have a SLAB_BUCKETS option. :)
 
-BTW we're thinking to add 1+2 (once this part is clarified) for 7.4 (with
-stable@ for patch 2). But for the rest we'll have to target 7.5 as it's only
-a week to the 7.4 merge window now.
+We'll need some data but looking at the discussion thread [1]:
+> I wasn't able to measure any performance impact at all. It does add a
+> small bit of memory overhead, but it's on the order of a dozen pages
+> used for the 2 extra sets of buckets. (E.g. it's well below the overhead
+> introduced by CONFIG_RANDOM_KMALLOC_CACHES, which adds 16 extra sets
+> of buckets.)
 
+[1] https://lore.kernel.org/all/202404280921.A7683D511@keescook 
+
+If the data still shows that the cost is still "dozens of pages"
+for a few buckets w/o measurable performance overhead, I think that's
+certainly doable.
+
+> > 2. Making kmem_buckets tightly coupled with kmalloc's implementation
+> >    details is not reasonable.
+> > 
+> > Let's say, at some point we make SLAB_BUCKETS always enabled and drop
+> > the config option. Then all kmem_buckets users will now have certain
+> > assumptions inherted from kmalloc (e.g. alignment), which is not
+> > reasonable.
+> 
+> Until it's always enabled, I don't see a reasonable way to separate
+> those assumptions.
+> 
+> > 3. __GFP_ACCOUNT and __GFP_DMA should be applied to all allocations
+> > in the slab cache. For kmalloc, these flags are only used to select
+> > the kmalloc cache (which has equivalent SLAB_* flags for __GFP_ACCOUNT
+> > or __GFP_DMA) to serve the allocation.
+> > 
+> > Specifying it on individual allocations (rather than as SLAB_ flags)
+> > makes it easy to break the assumption.
+> 
+> As in, you don't want a "pass-through" mode for __GFP_DMA?
+> 
+> It's a lot of overhead for __GFP_DMA to have multiple providers, so I'd
+> rather allow kmem_buckets to allow pass-through (perhaps explicitly
+> opt-in) where then the other options (e.g. alignment) must match the
+> general kmalloc caches so that pass-through is consistent.
+
+Having both "Specifying __GFP_DMA for slab caches without SLAB_DMA is
+illegal" and "However kmem_buckets is an exception because creating
+separate buckets for SLAB_DMA is costly" in mind is confusing and
+easy to get wrong...
+
+Perhaps the user should bypass kmem_buckets and fall back
+to kmalloc?
+
+> > > When it falls back to kmalloc, kmem_buckets itself should provide a
+> > > compatibility layer when falling back to kmalloc.
+> > 
+> > For example, calculate_sizes() converts certain SLAB_* flags into
+> > GFP flags (s->allocflags) for allocation. We can have a similar
+> > logic when falling back to kmalloc.
+> > 
+> > Though current implementation does not allow this and requires
+> > some rework.
+> 
+> I think the current series does everything correctly in the sense that
+> nothing is allowing for mismatched fallbacks/passthrus. We could iterate
+> from there once we have a need for this where a non-kmalloc-alignment is
+> wanted, etc?
+
+Making kmalloc tightly coupled with DMA alignment requirement was
+a mistake, and now it's too late to fix that. It's better to not
+repeat the same mistake again?
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
