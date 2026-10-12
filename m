@@ -4,89 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50403CA9ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 11:08:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8118DCA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 11:15:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 599D16B0088; Mon, 12 Oct 2026 07:08:57 -0400 (EDT)
+	id 7A1DB6B008C; Mon, 12 Oct 2026 07:15:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54A3A6B008A; Mon, 12 Oct 2026 07:08:57 -0400 (EDT)
+	id 7793B6B0092; Mon, 12 Oct 2026 07:15:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4874C6B0095; Mon, 12 Oct 2026 07:08:57 -0400 (EDT)
+	id 68EC26B0095; Mon, 12 Oct 2026 07:15:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D94F6B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:08:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 78C6880B6D
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:08:56 +0000 (UTC)
-X-FDA: 85313701872.17.E4EE224
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 90BC54000A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:08:54 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="qcB4a4H/";
-	spf=pass (imf01.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 444076B008C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:15:22 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3291120B48
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:15:21 +0000 (UTC)
+X-FDA: 85313718042.11.DEC175E
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0502B1C0004
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:15:19 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Iampd+S3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791803334;
+	s=arc-20220608; t=1791803720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b0fc1ZlrBilmls4Eb3KQH2Vlf4XqPBNZuwkuQ6G4/sU=;
-	b=DjVsPSQYiH9bHqhAKcsdAz+5q1helKLuD6Q8CSI87Mh0gyky6GUNMww+Ut/vKRbj6lWcRp
-	68+Fo1twAafTjsAFESiNGWoyFyH8xC2PMYgVrfES98UJcmQo2Z/i+dJuO6l+uSc+XnKCMd
-	+rprXIoHiObThH1qPdQTIbmLjk33WfM=
+	bh=dOcvEm9msY+cl7KKbAZfMaogQnVH3/RbIaSfojxkTRo=;
+	b=xL24nOxn7Dvu2aNcESDzWi32SqoHCaLGOVOGmQb/ucJ9hbYJ9z7d66S9E2ZbabukZCUQzi
+	ABT3nn/fBUTzuxmC6LWQAdDQ/liVaCxLDqsqXKWoJN2u/wXi66UmyiOb9VGH5cdhot2ndD
+	iaws7su7nGKOilmZMYUEGMLenFGUrz4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="qcB4a4H/";
-	spf=pass (imf01.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Iampd+S3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791803334;
-	b=ZIZh9JWlQDRAr1LDnaQ8t1jY3+ilNucBcIniNOx/JJGV8DfmpYKS0zKC7TG5cy/oXYCjxs
-	KHHLH3LHvIuQlGVTFZqDMMgR17fKDNfUN4BjN7nB2dnChOeEGrJdD1aaq3ENmI9alC2S8O
-	VCvqqzL0UwD+S0hZz9vT90iEjXzISB8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5510E1655;
-	Mon, 12 Oct 2026 04:08:50 -0700 (PDT)
-Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C4EB93F882;
-	Mon, 12 Oct 2026 04:08:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791803333; bh=1Hcxmhs7YzpUmvxySV5KGDi41fGrFGMMIIK6BavKtUw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qcB4a4H/e3/zyLeuwjBKRzIOz4KxK8O9Pd/mFnszBix80X4+DM9h5gXTQz46PIE2D
-	 651GcNke9l8jveaCHusuOFxFKeF58ksUFNEKrLgjZwKzSEFzYqvOyW4gNDMCICpMjF
-	 4EDe/ST+m/BnWzEW7xfx0XwwZ7y4TdR597OBef9M=
-Message-ID: <68905ee7-83b1-4d5f-a1e6-8ddd2ae291d1@arm.com>
-Date: Mon, 12 Oct 2026 16:38:47 +0530
+	t=1791803720;
+	b=oAYdIYjzZz2Zj/DZGmViajOSU2/aEtrKUPSyZabpmZHf/8cFdEhp0D38YwiulgnMIDY+oN
+	eYINO+jLMeLI1Ju7nrCeXHhNyTmqFR6o1tuxrvfKEY5ROdbM1dENIUXrRECrJ4nezCrYVC
+	2X4hWYwcMRVG8jGCNyWP0dXDgAcaLHM=
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48b0ef9c76eso1454062f8f.0
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 04:15:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791803718; x=1792408518; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dOcvEm9msY+cl7KKbAZfMaogQnVH3/RbIaSfojxkTRo=;
+        b=Iampd+S3xYrXhXbswiPYMVDtPTKohsWJ3+IfmSnE0cjJbhM4uFghprkHMQiWsCiBpk
+         Na0Qf+Fc3QjonbSoLGCDvC4ZWvvRRaWiF2kZdvRgMA0GUd0r5wH9fDJmUHt7j36u9VTi
+         rrkWjhXIuZG5nUiXNOG/bljpbLgK5WqBrshWO5KVNLZck/FpBx979UkvJDRXNRCnb7fn
+         lc8pBmbHbHS9Ee5Q7qWBrtTLyjMATAFmHMzhUellUvvu9yIqPE0RcsEEf/mPY/m7BgR/
+         ZiCpYX0m25lsP5z+AvHGGagZsyhPIkWsS9VrGpvjPqHRoRHcTZ4tKMhS/o4/zZTvT8tW
+         NPHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791803718; x=1792408518;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dOcvEm9msY+cl7KKbAZfMaogQnVH3/RbIaSfojxkTRo=;
+        b=xOc/6vk2M0R8Ka/FSKRgY+1t/hZd4JlMDGuRSjUDIDPJkf/RWtVYWkvLTrOX7OrepQ
+         moVC+0Xb/j2RvApAHwcwwkUCD/DbA7qfCBqRZBS1oXesPbDBYwf3Xw65bcl8hYKvdfqi
+         PnZqWz4kudIejr+CNHk7coOXl+mwgBOqb/luzl/Nut5cwjSi9/Dsjdyv9Gdq3Oql0qrw
+         jVPvIfXGBhL9xu6r75nDcZ/4FFdrk9SEKCgj7MDIETFO1/IDfyQCUMTuwtUEdZdn3e85
+         59izsoUq9mdJaDILeb3k+W3LFvBAJ3x0ko2W2TFzueVSS3k3N3IILkPBYxpYRqaJ5wK2
+         dVYw==
+X-Forwarded-Encrypted: i=1; AKwUvBwvbu2hxouDJSvf3jZAfJjoPl1LobU23C7vdlA2J6FmwRiAWQTuhm29Mbml6pvIYzglF5QWJQDmeQ==@kvack.org
+X-Gm-Message-State: AFq9FYIpM10uzJoA8dIQ6q959Z8fpgH1ysBrxdvHAKNivq4EPKHFVBKt
+	xIrI84jfB5UdVcwT9k6VONibrk7R2WDQKvD/dlp6OrDaKClnpSefcTBz
+X-Gm-Gg: AYBFou1ad4ZHinOkvAfXNS0RI0ktx6VO9QYhmJDiAoLw1IQ+DsHRMP2cI7AR+vYVUvq
+	luKhYIzRuUdb1EQoryc4qb6F0rA+6HAuCKstrQ/dtRCVIf4Oqn2aoKy01TAJYkip9u3aDxMnXHt
+	bwvTPm8XpjLtJC4w+ifw+o05DDvQ9sOA1DoOZjO2v2P8sgZju5ws9UYLriVwmIhfGwoZ6Cd81EB
+	di+XuwOgak8kA0LSW6kg5fXA4uhvAnxipuU9t7FcbtgnNd6+59GIMuPzok6iG91X+ZXi6thM3jL
+	KND6mLSLf1KTpRmLn224zbn1fyYCpRMDvZZnUikcLJXCUg736ajL27u69mhXp7EaqP/ICw44Rya
+	bRmGeADRfJTi5ahwHlhYJ+zBfxK9LeIJdlJgHxhLM7EyPaEMpLvVnai0R8wJDibEUpzD/NgSu/d
+	zzahsTQi1oYeeQqWNKc6tMp6ZKLW8Cu+F13KaR6HAzWSuZz2R6ILrnMOprk1mONtIMzk0eIw==
+X-Received: by 2002:adf:e005:0:10b0:48d:dec7:974c with SMTP id ffacd0b85a97d-48ddec797bfmr346783f8f.7.1791803718021;
+        Mon, 12 Oct 2026 04:15:18 -0700 (PDT)
+Received: from gmail.com ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db94e33d2sm20034954f8f.9.2026.10.12.04.15.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 04:15:17 -0700 (PDT)
+Date: Mon, 12 Oct 2026 13:15:14 +0200
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
+	Dave Hansen <dave.hansen@intel.com>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Kevin Brodsky <kevin.brodsky@arm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, 
+	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
+Subject: Re: [PATCH v2 1/4] mm: fix missing page-table destructor in
+ pagetable_free()
+Message-ID: <asy-b7_C3SjnmSaS@gmail.com>
+References: <20261010112457.49485-1-songmuchun@bytedance.com>
+ <20261010112457.49485-2-songmuchun@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/12] selftests/mm: improve mremap_test
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org,
- vbabka@suse.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- shuah@kernel.org, jhubbard@nvidia.com, kaleshsingh@google.com,
- anshuman.khandual@arm.com, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261006092511.145776-1-sarthak.sharma@arm.com>
- <3a0673a6-744b-45a1-80fd-737a366fafc4@arm.com> <asyxQbp8EfVE9yQs@gremlin>
-Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <asyxQbp8EfVE9yQs@gremlin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261010112457.49485-2-songmuchun@bytedance.com>
+X-Rspamd-Queue-Id: 0502B1C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 90BC54000A
-X-Stat-Signature: ksypn1hc3yk6jpr4m3ngpn7eiujch9pc
-X-HE-Tag: 1791803334-506544
-X-HE-Meta: U2FsdGVkX1+pYbJsif4nk6pAWNwUNaVnAVvL5hlghEYoyGNPu2FYrkvWuFMFOQtToc3A4b7cWJs8Xm2eTVpB6dVX/5N8N8RTYje3ZxAw/CDRazId6F3RtUgkdJl3biKKxnGVqsTRN/6LKWvPll4y3e3sW/m5X3vjjgVSDmjNXrjOGuhb+y/iv+isvWubFxhUaOBhzmhTOeWP9tlChceUpl3G6HROkERJxeadK3Rt4yUXPtcJ0XUYmkprC+ioiZqk5ovTV1scH/KgkXduFaUArRONrHsBjRTyUBVnCsGeJI1QSh2AtCFKWmqsyPNJg/l5u8Ir0rKEszADkAnAi+WnNbHrzJK6Al/PgiZU3hVzgFx/SyYZmXqDcLZpX3tH6xmRBYiO9ODRTPzKUD26mioYPhUDk31wOKyht62zCb3BxxtIQWj+Ld4YQVkpU5/AyPTuzzzbAjwuisXJpp/pnbg+2Fp7xg7BHwPPX6LHAon6l8GWsYEbTaQ520o28+pkqv9mW513tvtxLgEaUastPnzrgrsSZXZhuXc9LE3Eic13OzbcNFK+esq/RWmT5ff2Y7PHQJeTsqYlVesIwrDQep8W+LQd6Z7iLNME/IIyM2Z9tw/0kmnrQ90dOPsjpI4RyoX0xMZZYBaV0vmeai+Vzf7ZcRHjV6cm2t2pZJHmR5pYojVuM/ZL/+K3QtApr+XgGVe2kbNO4i3jqKKLZI/ZCksMzjP7nJzitbmt77Cw7J2G3E2iyRTvILd92i6425t6dfxEHnmxxahr5r6yD713/oYIHS8jmcN/DpWbJdH7R4bO6s62j7oLHIcSsM9s2MolJrKP7XAB0mHO77pqQHt9RNAeXGEW8gu9TL7b1PR6uk+sOdj7IzswoUf+LrWiYfoFrnirW9Fjy70cdXry/uCA/UE574lKY6MdaxrAHc860obixeqCurzvt3Hl/K7JBxKc7xHhGPPHGUbs+vd3qaVm19S
- 0QTQidbX
- oud/0coz7qx6TFEfPdjH752uQcpfdpgL686DQVu8vMAk4mIMbV60iaAxxpOX1hP0dv4Nxoai0WPJ2Z5I5mRRosVvGxmTN8NjILIvCmSSUe/18O+HM9pBKwGui9QNxKaWXu8xQECW2E5WJUesiYDpOLGYRwQ/8IGp3DZxA+AfFleZm+7hFn6n4pVZkLr6+G0Go35rvqHL2XnwrlKUPTP3i361Vdl3GSSzCZG/4PAaLoLR0c5Nt/x98aBBHybM7Tqzhq9YPvVZmJ5HnF8QrTGL7Hz4jyh4KSuI0O5Q96QbZOhSlvTcxW2hRuFGZZCFv2b1KuZVOxDlKLlVOZ8NKj7m3oXoyBU8oxznzEh6i6ynZGVOLisIJ/1e1gUTeUVBSFY+LMa+MFHdmPgF32f/eSaV0stsVogJI9wiWjuxmaFJ4IDKbNJI=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: w8h7mib6suyti5jb1wfa5rot3o73uc81
+X-HE-Tag: 1791803719-668079
+X-HE-Meta: U2FsdGVkX1+mp6hj/kuc2DHvykIuJVPodqvJWE5ulE75zxw2+ySlvlFw0QrNb0Hv92U5cV3fBpfBQOJaycpjZoWwaSqSHlWv2ZNMsjk4aABrvA/0W18gesZ+cVTjr1ecQiOpxxy0d0hFrx4UKyCO1fAuEZHN5muQnQEcFyLE3lFC22ZGzfArAEAA1H50rxISqpSJnRi0aK7UcpkFbcMuv3snhqHtQtsLCQ+KfHgcp5vhY7+ivYvxU55QFvv7ZQ08K4YqIYLSYMWXb2yfqD7l2Rc7nCum3mOq0qEdhLWjJP/gXDBXP2vC9xwA5ten8dZ8DfFlvbWScCRmDTTsH2bLykble8P4Z6HfRU9upMsxPew798MYXX6FNGo/htGmyaRBsTs/96YRF5IRvaLeGuOm0QytxU0JQ4uIoYXHGwrBRXU6wKlYBDtUvUngu+NRPvf4HJkWlqp923eDChKZ4uQZA+cOw0JCTY0l7ElOok+N6lam3wNmux85zIl52Ol/00GkYvuYy7wHj/h93qSVeFDs38f8HupUFXQgAhl86int1sQDlGjYfS2mELTXHPS73B8qwugfOHh4hMKRmm48oQym7zDC6+4BrkMIvNxmE9PuqcAtueUe0etkVGEgxcytbVOHxjaMzOgCV9H/PrSzZGtvbyaQ2SmpXY3jz7jXk3/1L3IO08nCz9VUcEYbU0FQqN0bDZGjwIOxZRZc9W6lirvAshmT9no4aoUPi6YVa/B0CB10VERygin7zOwjLl0LDEE3nJkTS7fb90aBif/qVCz5mrdoG8yAzIXQ+dJp00BV2UD6dfscZtXUD1bTuDRQKmdcRciyITJYKv7uBb1d78Fd7r/CYHqejo6jlhpbyhI2N3iVcyDymTb51Eah2iiNrqLlhoLUWFab9Zgd8No259G4c5okAz9/XCrJKnTyA8e8VEZP0ZHkoZ8DjwlVdXEHpZu/2VYGH+6FLSH+rzSO82c
+ AtCIl4Eu
+ vwBerIPCWhc6uwhjRsEVsikgBC2kHmTjtxsSoI5Gn+qQ9OelCR8IbODdTySzMQjB04VbMcmglmLSFwBAQ/3oPXTaIBV1JF2AoOr3pNAjRWLN+Zt5KzFL1sdNo2GMfV7CBMbCbaPBbd4qvYwJVZCC9iVIPL/sBRBddm5GkeabtiUQr68kFFNtNCMK9sEGGYfZQdESl23Kitp/jMCvz+UP7OPt1JGiK0d2YGugiJghOkT4te5esDfvIQjM++nRMu6ZwIaA9PylSYuXvaDzzYqFFTLfiNNQIaD8zOEvnyMrOerN+mRSeOpetKqFQV0RZmu8uIa5nwPSiWVYkZsYXzfyZM/6qfMzia0B760oIir+UTRyyD6kZ3Rcx3MYJ+GtqocrzroL47c/3FafKoi8TeV5ZcXyUd0ez8CfBJqIMvRR7I2RCqTq6eIS6NTfzr2jI01ASAX4pDVG6Ow5CwrtTkbTy3y+/3n0JscD/dRtXvqgpIuSrlaY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,98 +128,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo!
+On Sat, Oct 10, 2026 at 07:24:54PM +0800, Muchun Song wrote:
+> Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
+> pte_alloc_one_kernel() runs the page-table constructor for kernel PTE
+> tables.
+> 
+> HVO (HugeTLB Vmemmap Optimization) uses pte_alloc_one_kernel() when
+> splitting a PMD. Restoring the vmemmap backing pages does not collapse
+> the PTE table, so a later memory hot-remove eventually frees it through
+> pagetable_free() on x86-64. That releases the page without running the
+> matching destructor and leaves NR_PAGETABLE elevated.
+> 
+> Make pagetable_free() detect constructor-backed pages and run the
+> destructor before releasing their memory to fix the problem.
+> 
+> Fixes: 49f599666420 ("mm: call ctor/dtor for kernel PTEs")
+> Cc: stable@vger.kernel.org
 
-On 10/12/26 3:43 PM, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Oct 12, 2026 at 10:20:45AM +0530, Sarthak Sharma wrote:
->> On 10/6/26 2:54 PM, Sarthak Sharma wrote:
->>> This series fixes correctness issues in mremap_test, simplifies its
->>> test infrastructure and strengthens validation of remapped mappings.
->>>
->>> Patches 1-3 remove unused command line handling, unnecessary cleanup
->>> checks and redundant errno handling. Patch 4 converts the test to use
->>> kselftest helpers and removes manual failure tracking.
->>>
->>> Patches 5-8 fix handling of unavailable userfaultfd support, unexpected
->>> mremap() successes, data-corruption failures and cleanup after mmap()
->>> failures. Patch 9 removes perf tests and timing infrastructure.
->>>
->>> Patches 10 and 11 replace threshold-based random-data validation with
->>> sampled validation and a deterministic data pattern. Patch 12
->>> strengthens multi VMA validation by also checking the mapping state
->>> of holes after remapping.
->>
->> [...]
->>
->>> ---
->>> Sarthak Sharma (12):
->>>   selftests/mm: mremap_test: remove command line options
->>>   selftests/mm: mremap_test: drop munmap() checks from cleanup paths
->>>   selftests/mm: mremap_test: simplify errno handling
->>>   selftests/mm: mremap_test: use kselftest helpers
->>>   selftests/mm: mremap_test: skip test when userfaultfd is unavailable
->>>   selftests/mm: mremap_test: fail unexpected mremap successes
->>>   selftests/mm: mremap_test: fail on data corruption
->>>   selftests/mm: mremap_test: handle cleanup after mmap failures
->>>   selftests/mm: mremap_test: remove perf tests and timing
->>>   selftests/mm: mremap_test: replace validation threshold with sampled
->>>     checks
->>>   selftests/mm: mremap_test: replace random data with deterministic
->>>     pattern
->>>   selftests/mm: mremap_test: strengthen multi VMA validation
->>>
->>>  tools/testing/selftests/mm/mremap_test.c | 701 ++++++++++-------------
->>>  1 file changed, 291 insertions(+), 410 deletions(-)
->>>
->>
->> I wanted to address the concern Sashiko has over this patch series [1].
->> It says that mremap(..., MAP_FIXED) over a range containing multiple
->> VMAs should unmap the whole range first and then map the VMAs.
-> 
-> I don't think you need to spend time worrying about sashiko stuff about
-> mremap() behaviour in a test series :)
+is the x86 case covered for 6.16-6.18? as far as I can see, x86
+free_pagetable() only uses pagetable_free() since bf9e4e30f353
+("x86/mm: use pagetable_free()") in v6.19, so the backport wouldn't
+change anything there. or am I missing something?
 
-:)
+> Assisted-by: LLM
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+> v2:
+> - Move destructor handling from x86 into pagetable_free() (suggested by
+>   David Hildenbrand)
+> - Trim and update the commit message (requested by Dave Hansen)
+> ---
+>  include/linux/mm.h | 37 ++++++++++++++++++++-----------------
+>  1 file changed, 20 insertions(+), 17 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 5cca90fc1df6..771a7d60b0a5 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3969,23 +3969,6 @@ static inline void pagetable_free_kernel(struct ptdesc *pt)
+>  	__pagetable_free(pt);
+>  }
+>  #endif
+> -/**
+> - * pagetable_free - Free pagetables
+> - * @pt:	The page table descriptor
+> - *
+> - * pagetable_free frees the memory of all page tables described by a page
+> - * table descriptor and the memory for the descriptor itself.
+> - */
+> -static inline void pagetable_free(struct ptdesc *pt)
+> -{
+> -	if (ptdesc_test_kernel(pt)) {
+> -		ptdesc_clear_kernel(pt);
+> -		pagetable_free_kernel(pt);
+> -	} else {
+> -		__pagetable_free(pt);
+> -	}
+> -}
+> -
+>  #if defined(CONFIG_SPLIT_PTE_PTLOCKS)
+>  #if ALLOC_SPLIT_PTLOCKS
+>  void __init ptlock_cache_init(void);
+> @@ -4078,6 +4061,26 @@ static inline void pagetable_dtor(struct ptdesc *ptdesc)
+>  	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
+>  }
+>  
+> +/**
+> + * pagetable_free - Free pagetables
+> + * @pt:	The page table descriptor
+> + *
+> + * pagetable_free frees the memory of all page tables described by a page
+> + * table descriptor and the memory for the descriptor itself.
+> + */
+> +static inline void pagetable_free(struct ptdesc *pt)
+> +{
+> +	if (PageTable(ptdesc_page(pt)))
+> +		pagetable_dtor(pt);
+> +
+> +	if (ptdesc_test_kernel(pt)) {
+> +		ptdesc_clear_kernel(pt);
+> +		pagetable_free_kernel(pt);
+> +	} else {
+> +		__pagetable_free(pt);
+> +	}
+> +}
+> +
+>  static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
+>  {
+>  	pagetable_dtor(ptdesc);
+> -- 
+> 2.54.0
+> 
+> 
 
-> 
->>
->> But this is not the case, as was discussed on the list earlier as well.
->> We iterate over the VMAs in the range and only unmap and then map the
->> region that the VMAs occupy. IOW, as quoted by Lorenzo [2], "the
->> sematics are such that gaps are not propagated (i.e. it is as if you
->> mremap()'d each individually)". So if we remap over an existing mapping,
->> the mapping region on which a hole is remapped should not be affected at
->> all. So this is a false positive.
-> 
-> I will be removing the gaps stuff in any case (as discussed elsewhere
-> too).
-> 
-> It's problematic, more so for the fact stuff can get mapped in gaps before
-> the mremap() operation.
-
-Yup, makes sense.
-
-> 
->>
->> While here, requesting for some feedback on this series, if anyone has
->> had a chance to look at it :).
-> 
-> Thanks for the series, this cycle has been very busy so I think this is one
-> for the next cycle (i.e. targeting 7.5).
-> 
-> So I'd recommend resending at 7.4-rc1?
-
-Sure, I'll resend around that time.
-
-> 
->>
->> [1]
->> https://sashiko.dev/#/patchset/20261006092511.145776-1-sarthak.sharma%40arm.com
->>
->> [2] https://lore.kernel.org/linux-mm/agH1ZSdX_7QF8P_I@lucifer/
->>
-> 
-> --
-> Cheers, Lorenzo
-
+-- 
+cheers,
+jose a. p-a
 
