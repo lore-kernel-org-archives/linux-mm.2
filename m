@@ -4,87 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77F25CA9ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 11:08:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50403CA9ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 11:08:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 570CD6B008C; Mon, 12 Oct 2026 07:08:21 -0400 (EDT)
+	id 599D16B0088; Mon, 12 Oct 2026 07:08:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FADC6B0095; Mon, 12 Oct 2026 07:08:21 -0400 (EDT)
+	id 54A3A6B008A; Mon, 12 Oct 2026 07:08:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E9B56B0096; Mon, 12 Oct 2026 07:08:21 -0400 (EDT)
+	id 4874C6B0095; Mon, 12 Oct 2026 07:08:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A7006B008C
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:08:21 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B486A8A34
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:08:20 +0000 (UTC)
-X-FDA: 85313700360.15.F3438AA
-Received: from mta1.migadu.com (out-221.mta1.migadu.com [95.215.58.221])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7A6E1C0006
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:08:18 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=s6+84idP;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.221 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 1D94F6B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:08:57 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 78C6880B6D
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:08:56 +0000 (UTC)
+X-FDA: 85313701872.17.E4EE224
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 90BC54000A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:08:54 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="qcB4a4H/";
+	spf=pass (imf01.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791803298;
+	s=arc-20220608; t=1791803334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2djdwnhVoocSdIQ6qzyT8zW0jyj1z8c8AqxxkoJcaKo=;
-	b=zqTbDi8KACUH0xLPm0MUTqQPlViY0yv+xH+OyCPtUOWNheL36vNtrPkazA36WcCqQizA3v
-	LexctJ5tbZfuyuU+n7Z41wnfBsvxcbwMK/DgBgxeZDEewUHakgKbEklNangUm5m313QIuE
-	YNZcmxoD0jLKrMP3M0yecXufK6BVH8Q=
+	bh=b0fc1ZlrBilmls4Eb3KQH2Vlf4XqPBNZuwkuQ6G4/sU=;
+	b=DjVsPSQYiH9bHqhAKcsdAz+5q1helKLuD6Q8CSI87Mh0gyky6GUNMww+Ut/vKRbj6lWcRp
+	68+Fo1twAafTjsAFESiNGWoyFyH8xC2PMYgVrfES98UJcmQo2Z/i+dJuO6l+uSc+XnKCMd
+	+rprXIoHiObThH1qPdQTIbmLjk33WfM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=s6+84idP;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.221 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="qcB4a4H/";
+	spf=pass (imf01.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791803298;
-	b=tnoy1rUAPUQID8PnIBdURji4kAE8wQEIMlgPAopTt6304/MhHYeEgkQFBHcdaMb4ZpcUgM
-	JCl0rBEiA2Yjxaz+qTBxdPH4DNJWmc60EwzYfSbUEv3s29PKpQByaHTQZecCV3MURnSxl1
-	Gofx3peHejuxb0KDYPpAp3moiDl1CuM=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GSrdr7mS12mhAPcQhPWfCq5PW4kV/MXU8Gl0USYX69k=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791803296; v=1; x=1792408096;
- b=s6+84idPgY/Ya5g/Yba+NB5TW+mTwe7u66sYYprc0iHt6luMdY5ewIdGH3CZwILrKK2qzH/Q
- Qmr6SyOBaFMvQiEb7NFyITg99qXoPH1mkyQUbmjCCLgk+aSbCmsi+U7hXdzU9qFMGTJYRsKOiOo
- INBAi6YloKFqesZs1VMZD5xc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0d2ca05d90e48ec5;
-	Mon, 12 Oct 2026 11:08:16 +0000
-X-Mizu-Trace-ID: 0d2ca05d90e48ec5
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 12 Oct 2026 04:08:11 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Mingyu He <mingyu.he@shopee.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry@kernel.org>, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, littleswimmingwhale@gmail.com
-Subject: Re: [PATCH] memcg: keep propagating stats updates to ancestors
-Message-ID: <asy_L2s1TNcN7bOK@linux.dev>
-References: <20260911032905.63683-1-mingyu.he@shopee.com>
- <aqRXqcynCx88D2QK@linux.dev>
- <CAAoBcuS=sqOAPFr9Gda9aTwuCMHMPzBMEee8qvPNHtNxrRWKuw@mail.gmail.com>
+	t=1791803334;
+	b=ZIZh9JWlQDRAr1LDnaQ8t1jY3+ilNucBcIniNOx/JJGV8DfmpYKS0zKC7TG5cy/oXYCjxs
+	KHHLH3LHvIuQlGVTFZqDMMgR17fKDNfUN4BjN7nB2dnChOeEGrJdD1aaq3ENmI9alC2S8O
+	VCvqqzL0UwD+S0hZz9vT90iEjXzISB8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5510E1655;
+	Mon, 12 Oct 2026 04:08:50 -0700 (PDT)
+Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C4EB93F882;
+	Mon, 12 Oct 2026 04:08:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791803333; bh=1Hcxmhs7YzpUmvxySV5KGDi41fGrFGMMIIK6BavKtUw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qcB4a4H/e3/zyLeuwjBKRzIOz4KxK8O9Pd/mFnszBix80X4+DM9h5gXTQz46PIE2D
+	 651GcNke9l8jveaCHusuOFxFKeF58ksUFNEKrLgjZwKzSEFzYqvOyW4gNDMCICpMjF
+	 4EDe/ST+m/BnWzEW7xfx0XwwZ7y4TdR597OBef9M=
+Message-ID: <68905ee7-83b1-4d5f-a1e6-8ddd2ae291d1@arm.com>
+Date: Mon, 12 Oct 2026 16:38:47 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAoBcuS=sqOAPFr9Gda9aTwuCMHMPzBMEee8qvPNHtNxrRWKuw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/12] selftests/mm: improve mremap_test
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org,
+ vbabka@suse.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ shuah@kernel.org, jhubbard@nvidia.com, kaleshsingh@google.com,
+ anshuman.khandual@arm.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261006092511.145776-1-sarthak.sharma@arm.com>
+ <3a0673a6-744b-45a1-80fd-737a366fafc4@arm.com> <asyxQbp8EfVE9yQs@gremlin>
+Content-Language: en-US
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+In-Reply-To: <asyxQbp8EfVE9yQs@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7A6E1C0006
-X-Stat-Signature: komfgr7p7a1kex8c81ppjah5dhdfz55k
-X-HE-Tag: 1791803298-753226
-X-HE-Meta: U2FsdGVkX18HwUG1RTIWP+qklUrzJiVUM/WK8uFPSal5mTZfhiIc+zlSrpNDqxGh40CroLd1Iddrl+GutvYlbiP7CbtcFUZ1qZ33ViY3Re/oXZMVoDxcP5DGh4T3oGlJ/5BI0YDQkl9bJlJB5QfoKKdyuNr65rJIu8QDZYM3E2Jguw3zluCgtXnYki8+zUYIi6WJq9koSAOK3U/wWxVNJwSJBPv6w+gbwlqrSj3nRQ3Zgn7kkHD3eJDwgyAzGL6ZbCAGyaomXz5fnWyOzGGrsxgM8Xds8JvcOTOtFDS10qFjOmPJVWJMGNgkKh4XSVxkhTNU/kpx7osmLNM7O722Dl0Qr/fhPgyDePGUy8eSwmWDQyiMn66uU9O2TpYr4dYBl2X3m9mQrNBjGTJenoYtxG/ws6lU1Dr7s9JzzDVnMvrjqtd/6f7fgKeupWCmcwyygkVJHCDfKWXbOukpcuIGpOSRoB5Wbtg+zEvS4FgJzU+vRGDwiHSjJbhOSkTPFoHaBSE2KWsTcEvDmIPrXf18JG7Ee9zwf96LEWPDEIA8mil6u0lxmmkBLdVr2TM5Jhu/piAmNYq0575MkjOaLt5G3kLcBWWfcuC/K827QEx17kah38iafumwJ9f+eRDL1/Nf4Ygk3+lY1qR6iIcV+s6ckHiwLpeQoymBBl4yDtCrR20Pkg9y4kBvJknmh9i6WCNQmfm4yw1UWmZ9p5ihEb99h9Gt3aq7MyQW65sVGu5wqQTaSGzC9NT9mHods7C3RPcVJHQBRxTruJKxxCppHDJu+BvBshB51iP18jAieGHO+swouw/tIcm5TkkfU5ZFLHopwaI3nI1yIlNdUTooG6yjxlsBznNb1W1Qb4dO/P6y19ix+wWbug+bsLBB/elVeZNjOeaSZhHdXkVwwFDRkl5lwuGNao9Y6upjNOkRMMTfl4BDPSAmHtriqM6o0OpMvAiX6/td9epW1I4tfzf75qb
- 1l7VHP8s
- EBgD4rlrrCzFBAODu046GLx6ocNi+OAgClDfNer2ZDvAqtAhxOMO8mmHfjcfTtPwWRwR4hWp6qoxkTEHfvp/5U06wU09qJJy9NAuYboDKS5FGz+/3I2cTNEh4CaRnIrXQakpANB3Yi5JXHvui1BA+RRmBViNVPW2SWJW2J3O1h6BSN6d49xwx7sRoA9uVnaIDXgYUJzMb/8Dcpf0j7pWCQayD6slOFZkMa3YkGkLWTfJL+Z2BqgRYjrOgYu5lCAFTTtP4p0zFieSoXk0=
+X-Rspamd-Queue-Id: 90BC54000A
+X-Stat-Signature: ksypn1hc3yk6jpr4m3ngpn7eiujch9pc
+X-HE-Tag: 1791803334-506544
+X-HE-Meta: U2FsdGVkX1+pYbJsif4nk6pAWNwUNaVnAVvL5hlghEYoyGNPu2FYrkvWuFMFOQtToc3A4b7cWJs8Xm2eTVpB6dVX/5N8N8RTYje3ZxAw/CDRazId6F3RtUgkdJl3biKKxnGVqsTRN/6LKWvPll4y3e3sW/m5X3vjjgVSDmjNXrjOGuhb+y/iv+isvWubFxhUaOBhzmhTOeWP9tlChceUpl3G6HROkERJxeadK3Rt4yUXPtcJ0XUYmkprC+ioiZqk5ovTV1scH/KgkXduFaUArRONrHsBjRTyUBVnCsGeJI1QSh2AtCFKWmqsyPNJg/l5u8Ir0rKEszADkAnAi+WnNbHrzJK6Al/PgiZU3hVzgFx/SyYZmXqDcLZpX3tH6xmRBYiO9ODRTPzKUD26mioYPhUDk31wOKyht62zCb3BxxtIQWj+Ld4YQVkpU5/AyPTuzzzbAjwuisXJpp/pnbg+2Fp7xg7BHwPPX6LHAon6l8GWsYEbTaQ520o28+pkqv9mW513tvtxLgEaUastPnzrgrsSZXZhuXc9LE3Eic13OzbcNFK+esq/RWmT5ff2Y7PHQJeTsqYlVesIwrDQep8W+LQd6Z7iLNME/IIyM2Z9tw/0kmnrQ90dOPsjpI4RyoX0xMZZYBaV0vmeai+Vzf7ZcRHjV6cm2t2pZJHmR5pYojVuM/ZL/+K3QtApr+XgGVe2kbNO4i3jqKKLZI/ZCksMzjP7nJzitbmt77Cw7J2G3E2iyRTvILd92i6425t6dfxEHnmxxahr5r6yD713/oYIHS8jmcN/DpWbJdH7R4bO6s62j7oLHIcSsM9s2MolJrKP7XAB0mHO77pqQHt9RNAeXGEW8gu9TL7b1PR6uk+sOdj7IzswoUf+LrWiYfoFrnirW9Fjy70cdXry/uCA/UE574lKY6MdaxrAHc860obixeqCurzvt3Hl/K7JBxKc7xHhGPPHGUbs+vd3qaVm19S
+ 0QTQidbX
+ oud/0coz7qx6TFEfPdjH752uQcpfdpgL686DQVu8vMAk4mIMbV60iaAxxpOX1hP0dv4Nxoai0WPJ2Z5I5mRRosVvGxmTN8NjILIvCmSSUe/18O+HM9pBKwGui9QNxKaWXu8xQECW2E5WJUesiYDpOLGYRwQ/8IGp3DZxA+AfFleZm+7hFn6n4pVZkLr6+G0Go35rvqHL2XnwrlKUPTP3i361Vdl3GSSzCZG/4PAaLoLR0c5Nt/x98aBBHybM7Tqzhq9YPvVZmJ5HnF8QrTGL7Hz4jyh4KSuI0O5Q96QbZOhSlvTcxW2hRuFGZZCFv2b1KuZVOxDlKLlVOZ8NKj7m3oXoyBU8oxznzEh6i6ynZGVOLisIJ/1e1gUTeUVBSFY+LMa+MFHdmPgF32f/eSaV0stsVogJI9wiWjuxmaFJ4IDKbNJI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,22 +94,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 04:17:46PM +0800, Mingyu He wrote:
-> Hi Shakeel,
-> 
->   This came from a reproducible workload with a custom in-kernel consumer,
+Hi Lorenzo!
 
-Please share your custom in-kernel consumer. Let's not make changes in the
-kernel for things which are not in upstreame kernel.
-
-[...]
+On 10/12/26 3:43 PM, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Oct 12, 2026 at 10:20:45AM +0530, Sarthak Sharma wrote:
+>> On 10/6/26 2:54 PM, Sarthak Sharma wrote:
+>>> This series fixes correctness issues in mremap_test, simplifies its
+>>> test infrastructure and strengthens validation of remapped mappings.
+>>>
+>>> Patches 1-3 remove unused command line handling, unnecessary cleanup
+>>> checks and redundant errno handling. Patch 4 converts the test to use
+>>> kselftest helpers and removes manual failure tracking.
+>>>
+>>> Patches 5-8 fix handling of unavailable userfaultfd support, unexpected
+>>> mremap() successes, data-corruption failures and cleanup after mmap()
+>>> failures. Patch 9 removes perf tests and timing infrastructure.
+>>>
+>>> Patches 10 and 11 replace threshold-based random-data validation with
+>>> sampled validation and a deterministic data pattern. Patch 12
+>>> strengthens multi VMA validation by also checking the mapping state
+>>> of holes after remapping.
+>>
+>> [...]
+>>
+>>> ---
+>>> Sarthak Sharma (12):
+>>>   selftests/mm: mremap_test: remove command line options
+>>>   selftests/mm: mremap_test: drop munmap() checks from cleanup paths
+>>>   selftests/mm: mremap_test: simplify errno handling
+>>>   selftests/mm: mremap_test: use kselftest helpers
+>>>   selftests/mm: mremap_test: skip test when userfaultfd is unavailable
+>>>   selftests/mm: mremap_test: fail unexpected mremap successes
+>>>   selftests/mm: mremap_test: fail on data corruption
+>>>   selftests/mm: mremap_test: handle cleanup after mmap failures
+>>>   selftests/mm: mremap_test: remove perf tests and timing
+>>>   selftests/mm: mremap_test: replace validation threshold with sampled
+>>>     checks
+>>>   selftests/mm: mremap_test: replace random data with deterministic
+>>>     pattern
+>>>   selftests/mm: mremap_test: strengthen multi VMA validation
+>>>
+>>>  tools/testing/selftests/mm/mremap_test.c | 701 ++++++++++-------------
+>>>  1 file changed, 291 insertions(+), 410 deletions(-)
+>>>
+>>
+>> I wanted to address the concern Sashiko has over this patch series [1].
+>> It says that mremap(..., MAP_FIXED) over a range containing multiple
+>> VMAs should unmap the whole range first and then map the VMAs.
 > 
->   Regarding the BPF interface, the implementation in the tree I found is:
-> 
->   __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
->   {
->           mem_cgroup_flush_stats(memcg);
+> I don't think you need to spend time worrying about sashiko stuff about
+> mremap() behaviour in a test series :)
 
-Let's make this force flush.
+:)
+
+> 
+>>
+>> But this is not the case, as was discussed on the list earlier as well.
+>> We iterate over the VMAs in the range and only unmap and then map the
+>> region that the VMAs occupy. IOW, as quoted by Lorenzo [2], "the
+>> sematics are such that gaps are not propagated (i.e. it is as if you
+>> mremap()'d each individually)". So if we remap over an existing mapping,
+>> the mapping region on which a hole is remapped should not be affected at
+>> all. So this is a false positive.
+> 
+> I will be removing the gaps stuff in any case (as discussed elsewhere
+> too).
+> 
+> It's problematic, more so for the fact stuff can get mapped in gaps before
+> the mremap() operation.
+
+Yup, makes sense.
+
+> 
+>>
+>> While here, requesting for some feedback on this series, if anyone has
+>> had a chance to look at it :).
+> 
+> Thanks for the series, this cycle has been very busy so I think this is one
+> for the next cycle (i.e. targeting 7.5).
+> 
+> So I'd recommend resending at 7.4-rc1?
+
+Sure, I'll resend around that time.
+
+> 
+>>
+>> [1]
+>> https://sashiko.dev/#/patchset/20261006092511.145776-1-sarthak.sharma%40arm.com
+>>
+>> [2] https://lore.kernel.org/linux-mm/agH1ZSdX_7QF8P_I@lucifer/
+>>
+> 
+> --
+> Cheers, Lorenzo
 
 
