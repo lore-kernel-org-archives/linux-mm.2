@@ -4,150 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33E03CC6B02
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 18:24:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D01A0CA9EDE
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 18:25:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A4CB6B008A; Mon, 12 Oct 2026 14:24:16 -0400 (EDT)
+	id E938E6B0096; Mon, 12 Oct 2026 14:25:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47D566B008C; Mon, 12 Oct 2026 14:24:16 -0400 (EDT)
+	id E44066B0098; Mon, 12 Oct 2026 14:25:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3932D6B0095; Mon, 12 Oct 2026 14:24:16 -0400 (EDT)
+	id D338C6B0099; Mon, 12 Oct 2026 14:25:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D9156B008A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:24:16 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0D659141392
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:24:14 +0000 (UTC)
-X-FDA: 85314798828.23.9613E49
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6D27D100007
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:24:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jtE+F+Qv;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791829452;
+	by kanga.kvack.org (Postfix) with ESMTP id AD30F6B0096
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:25:53 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 447A5140E0C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:25:53 +0000 (UTC)
+X-FDA: 85314802986.25.9A55A9D
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 40C1D16000C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:25:51 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=N2rQeVHj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of samarth.colleges@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=samarth.colleges@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791829551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XFaoCRsSeFrqplzPhC7sYiQbwkNwnjThwg1EUt1kpJ8=;
-	b=YslNGmeHXh9h8JJ21WHc3sFQ37M9KkS2UOQfXphxkiaCWXMvOCPHc31bfme+88zRio7ryk
-	9vzEFwUu70Lvr/bXdHwEkB0cA3GosgwMa8dRnM0v8BnNw0XhBmTURAqKA/svpy+HlDFv2h
-	9S7g+fWRwEont2cSMbBLdG5xZ+env3A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791829452;
-	b=HawKAAEIFw5L/MN1LNudGhIRr2v5UbvBknG/oNgC0Gt+T9QZSRHKbZpsWhmnh+uNzO9Nai
-	t/cAhgaD/BF6g+W99V1vGof5SUdvtO010hkhTje2w48ElQnnA+fEX383eVleFuhr0crfJJ
-	pgVAN6SQ/BXDfZeKHlGZiyPUaOSJt1Q=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jtE+F+Qv;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9C9B960142;
-	Mon, 12 Oct 2026 18:24:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB211F008A1;
-	Mon, 12 Oct 2026 18:23:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791829451;
-	bh=XFaoCRsSeFrqplzPhC7sYiQbwkNwnjThwg1EUt1kpJ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jtE+F+Qv8Id6B6sok4tUXFo/WttdoAtNDsnYx3FOXrAL8cH9okupFlV8UIia7guEU
-	 +vucEDeV2orWOn4vncvKjOHxgLpA4z1i7ajNG9MWZWMFVvN4qyIVzuZeKcX/kEyCrH
-	 E/taH25MY4+xXS5peaLpSE7R7Iim8QiaiSCBIYGbdI33SdOJfzFvr3BmyPD17L1aAJ
-	 U/0dNzP3xhDe22x9gKDa9ilglbfD3cWxl+IMj1eK+ZgOY9uKMvF9rxkAMBdTJx+kaH
-	 UEWib9ZdZm5YRBOs8FNN9IM2uvce7gfClsp4wZPpS8lSb0rbCcbaWuL8XwghfAbqY4
-	 TscCzNvFkg/Kw==
-Date: Mon, 12 Oct 2026 19:23:24 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
-	Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev, 
-	Ihor Solodrai <ihor.solodrai@linux.dev>, Bert Karwatzki <spasswolf@web.de>
-Subject: Re: [PATCH v5 22/38] mm/mlock: clear VMA_LOCKED_MASK over mmap
- callback
-Message-ID: <as0lLP26IkTzbeaz@gremlin>
-References: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-0-923b70125b1e@kernel.org>
- <20261009-b4-mmap-prepare-vma-flag-sanify-v5-22-923b70125b1e@kernel.org>
- <5027aec2-84c1-461e-9f74-0736e2cc6171@kernel.org>
+	bh=4SUJUal26+RHlkQbLL0tjA85teB7QUkijOZ6j6kC4gY=;
+	b=nKxCkmV/tk1csMeyTke+n9NFp23USaKcFUTwJWmcSlFTltPvmC7gfL4X7eJiOLMa/2RNgD
+	akZTqKR6GiqwIxOg/S8s1vBybSoMCLZ1AuLzc2NhabuegGgqmcEttl7Deo9KE14UCKPvCh
+	53ffpjRhTPUQffquaEdzZQyzT8wReAk=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=N2rQeVHj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of samarth.colleges@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=samarth.colleges@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791829551;
+	b=0Okrvz2maIPPNsQHxugscJsyrmhm7w98+95klk26IUfRhAhjisuPLo7D5F/Ag++cbLfvbi
+	1aOpcK3mddTk9xQe2zTAChnJbFDQmyukE0ZUs2kC9kkYlWx3LmAGZyFWGckLMqDlwe86dx
+	b+v1/ZvbMDE1mF9nRHBc/j8fYTtRwyA=
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6b170129413so3264904a12.1
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:25:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791829550; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cxwWJo4PsfQfwbkMduTSIRHeT7Sc5aUapxrMV76dEJksZB21H3Q4x70GoM0RfyzYk6
+         CyaqxNQFVNeqPKCNXlaxf64VhEUykeMBTZiSBMefinQAgbNscbgStr/2u6MOAm1ZSgJo
+         RhJInx+Bl1DT5u1xMkgoo2RbcEeuWuU00sj17+kRg4CSz+h+rIFTwvi5SnxLuYNZyejC
+         nCV2CqpyqNDysSpQBJUHfaJswb+FvLaL4qpUb41DJ/HvbPhyHcyB5LxMnzdoDChEiQcs
+         W/DogG615FaU0fiXXVqaQMeC7rqT6Nd64yx8fwtshDcRwAiSWla8EKIRxlSy/AO4zE3D
+         9krw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=4SUJUal26+RHlkQbLL0tjA85teB7QUkijOZ6j6kC4gY=;
+        fh=fIcsTFmBQqgI91CPRhXYuLXur6IAUupIsOeQc1bkNPo=;
+        b=Ry6YHlRl/KcBMfSCOhG/obwGLKdDst9cg3rdfeSf3zaA4VrEWGE5Cn2QQkSvLAtdxe
+         CsvqTGu6MluH+EzoDmc3Occ7oFb0thDkLUpT4IEj7LNXPOvU6tCfGh7NjBn6IYtbJTcu
+         VAxoJ2MkGiqKLxPZhE9HNYTa84GGs6XK0GJKa10x9Pjxmrc7m0MBSaEsRkwCpjdBuV1l
+         gHA5XIEL2moGIckEuydP4lQ9wiDmnn51tlJ3K6o4i1bf9bhILxSPYowgv5/uP80+T+yK
+         IRXsIUTIClM1o4dEA4GfDN1FpZ/Sp7sZEcXaWLs7stBs3cFggVSNuthOFRxD5zIwSCul
+         uhYw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791829550; x=1792434350; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4SUJUal26+RHlkQbLL0tjA85teB7QUkijOZ6j6kC4gY=;
+        b=N2rQeVHjTJV0f9DjMLQy9DSSLb5/DjdFtHrsPgeTl28wSukH/7aFFpq8f9983T/cYv
+         CVoVAxeV64wA72TqNo6oneA1AQ+KZJjGBTXVi7rs+L+fzJwFXgbNEh2yrzP5thmAwRpT
+         TonNcWiT77VtSpVTQUQKQiH3PXC+2pBKDW/5daOyOlQR/ovXJc1ZDwT1TTfDcvQpP7a4
+         HbyEoXl6Wa89Ko0mgN5I8ZjkDIC83cgYwZga6JQiMjtPho73YTB21/RttgMObBpSNdTz
+         90q9Mbwu1rrTNPs+YeNQnfifOApKE2w4dt1SRw4FD6cyARgT7PR/vLlWiEw00fNPpq+k
+         Gvwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791829550; x=1792434350;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=4SUJUal26+RHlkQbLL0tjA85teB7QUkijOZ6j6kC4gY=;
+        b=Q3ucSQLIFQUtT4CQj30A1Xl0ceiI9teZvAhET1BhSfTDkzylPZqwzaHwtWpRfjgih7
+         P+q/OQ2DodczNyo9bmvbqacAhw+5o8mJDqARSio5qM9K2lE1Y4RvCjIOOC6WGI98mbvS
+         +f0XT96/54OcOGX6WzfEI1D6/2Em0DDTF8qnHo5/L875GiqbWTaeeNc+H+zWoVEbcTCi
+         xMacKQwTHza70YOoShcxDH5xwygzPmxw2P9kF/sXYJudfYdwVETo5hxRprbwxZjj7ksv
+         p4QHJjJJvNk4JXXZP9hE8/m3Kx4H5xcohEhmfsydPv5xKbl+eyRRyAIsWHwpuGvrG/ct
+         9UuA==
+X-Forwarded-Encrypted: i=1; AKwUvBykQJEdPHQQFuJ1pjjtK6lzwyhc4bnqENl4EdZwnA+Zzib3lV2zMBLujwfCzDQbFTvJfZ012amgUQ==@kvack.org
+X-Gm-Message-State: AFq9FYLo9OmkLQaTUJTVd0Kx3poA3Ye+kKngoLCTs5nwK8/CQB5AQwyu
+	iSe9Q4il8LIM1G2FGG+bF/+V0B4V+Hdgy5r03SF1DDVbW4PoxZEyMzB0qlQ5KreAVFdiHnCRlZu
+	uOxf26J2P10CuUM9vO64z3MkRNCNvdf0=
+X-Gm-Gg: AYBFou2CRAiftSNB7N1eGfEnhiEs/1c5jXX5cQOmzDsZOJS/8Uoe7mvKHfuh3j3gRIj
+	6aUpceQZfhsNDIKfKowTrkAJ8PtQb3q08pAgLm3Oyg9z8kb7MFGpBzACpyjSxbefV4+Rv1rQFBK
+	rX6iu4DNHL4e7gbmPwW9WwA/ew/MfEyDr6NC+X22im2IZPfD4cT19g653LMzKJ/aQeGkeCCI6Qw
+	cDECSrq4WFshTxOUvnqfRdithEtOBV+LA+gPDnwNkUmPEOrU7fjG9tCnqck0Z4di6cDB+1zlgl5
+	JH5n44hS6zk281G/37J6WQqm3bm8eSmgpAb7WFEqMjNXF08BQlH5GY6q4L4OL+1NGMGNn+bT0YJ
+	qch3IXf2isqoz
+X-Received: by 2002:a05:6402:450f:b0:6af:9de2:b1f5 with SMTP id
+ 4fb4d7f45d1cf-6b17c25d1e6mr9324085a12.12.1791829549501; Mon, 12 Oct 2026
+ 11:25:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5027aec2-84c1-461e-9f74-0736e2cc6171@kernel.org>
+References: <20261011132227.413217-1-samarth.colleges@gmail.com> <42087cd7-473e-40a7-ae63-3c841c615c8f@kernel.org>
+In-Reply-To: <42087cd7-473e-40a7-ae63-3c841c615c8f@kernel.org>
+From: Samarth Narang <samarth.colleges@gmail.com>
+Date: Mon, 12 Oct 2026 14:25:38 -0400
+X-Gm-Features: AclHuK8P2jmdsfz85yovNXHcE8c2fcg-1RuvcU67aDTAS-Aolx0V7mNFGq9ZXPo
+Message-ID: <CAAbz3fTZyeDL1Sy5FOxuJ8e0zgM5SJa1UKa7sk2apkaJFeeBaA@mail.gmail.com>
+Subject: Re: [PATCH] mm/madvise: keep the hardware dirty bit in MADV_COLD's
+ THP path
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, 
+	vbabka@kernel.org, jannh@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: multipart/alternative; boundary="000000000000cbd051065da8d36d"
+X-Stat-Signature: iw8r5b9cwriyiemf5wu1ffbrsm48dbtx
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6D27D100007
-X-Stat-Signature: r6zcdipj4suyko39dwckbd4ofwi5rfmp
-X-HE-Tag: 1791829452-172630
-X-HE-Meta: U2FsdGVkX19pfp8BuS/5EAoN/J7ocvLovUeXjfFOT2SIWyvD7RDV59mCCQMoIN9Cztv02yVLf0wqVavV+vuTLEo9Y2t1EoCHUE/5A15sBPhhpU5fBcfUG2RMVCuFZkGjL+LGiu3WlkeF/6DrHSLpwjDlvk8O/DH1xrAaTVXt2IKyqk3klxNPjTOj3DtQ6DGvYDh7yhZLSS3m0h3m5zXe2j5lBKeAukGgvu+G2gr+Ln7HhIP61sdCye34jofKSOh7roDM+MN6S4oPkl2ZkzYL5EvGUnCo0kBnVc+W265bwixFqvlP0WW7akfRqKyioJS/pFLvfmAyZGunrzIDoZf8+nKSuP6H6YEHStPEVKzlPfBv+zZX3W4A4/0Xoe+rwcUQlxnz+BUcznCs8E7VxF+Co7f7c1XEdiSSff+jwdJmAKEpNzjZvqrQyvDHpUhZz9B1KM2hbK1iRHd25d3z3x575/cFXr32cQ6sBn3daOQmGc95098qY53PGJr2N2u8iQaF4ilmFfBG90iFN/SClh1TJw/v97CeiTbctGdVxJfOwGFDtFhMDUn7qeZEUxPE2fjyINpbCy9oZoP8gxZaH+telBRuZ4iKLmkJINIe8K80m24CJYmG/SMGOH5dhSX0T6+KDpVhQZ6P/IIlEUnwv4rTSjxhsqH3YUOAkDEm6sHQqxjoAbJ6b1+WC/6/53mhElGoxav9vmn5dIjdvZmqKYAzFZ2ZvzTui6U1xXalcOGxlqYKFIT86NO1hTW4SG5DHluO4Hzvl8t4bnrBwZS2ogRG+8elufxP4YsTG8vCD6gknVHGWW20cPpa43hfDHDYGOPYxrBS1hvhDZVKcxJvcRaxpncILzC/blRuSeiAeDqF2QvQ1JECCd1Weac0ORm7GeA+yNYwa737Y8jx0ptRP0mMPyfmQPbcv9QxSni6kB+BXUpknsSyEb+qmGhy0fGYJSZiOl/GadOqyE4fBy2BWws
- RXibsiM/
- OharqJxfhNJagsK5qFvS49oCZWf5z0FN4jHzgyoc8tbzUU2M+OK1usS48lRaBz2zXliTJHS6TNx9WOZt/ZlB8rjRwpQetVcce0lUWuwyHvSrv+/D4KsPdnE261MpzLEgYhshCMgOjNg3Hke6zMJ2rasGYcpv4HTxwyxj64Vi3Y4tsb1c88gMKAwI8mxL9ayH2n3kMvmvoM1hawTrHMNbn/5Qua9J7q/d+aduParPKJAd+0aDtc1vUGO79bnqQSwG8A/g7jsAaa7yFy+jGbCrE9E/ovCaYb4s4iBUZ+QcqCpYd1GohwqMnGDNE1eycbjS57DO4MT4Gv58BudCMI4YYUx0HE/EDuEnBdqV1/BSLjDt8teZKs7vS/ZV34fNP0sQJJUVr1UAH3vapj3yUCWT52qwfCAppkYErm5LYKVN/4+cBS4fCI+VL0sIZcmaT+g2ir3OCRZY6wcDfpgJEpqYJQnrhMc+M+MgvVPI+dk06/DYzqRXNrmFE5mMnGWka4pu88cH9EotmbcyiWOGRXikioLrEJ/qNJN5eTtBFXFf+Qnvo5yBPVaXCj1rHuWEfJIkrBpx16bIz8108KobwqL1UpcuRLKbyW56qv7wOVx9KZHlHP8lOlSOwVqC0YBfP0HoZzV/4e/naAc2IuwUxRHoN0WXB3DbiVIJDL9faMMgkHHKWnNBHgnEzxkAE/pMAKQKYu+1BuVkUIYqyS9GCPj0eZt31uU2Mj6AnhsvJQxENQdZm+EczX08pTLqOaTXDlwaQ18lH4davJZhZNQH1PB1ZLRA21KrkZFfZz+EVRttWkoulIwe93+JroY5PTE4yjEhdrZzkzcaHOD8PaVnGNX6skJRicNMBnlGO8DqslQ+f7AfVLfFEtYWvExywDuXbOcw2gfBe53IOVt5TTDSxXl2yCJTrXRvusU8luatNV7hRPqbb3wkEKH7RiWGIpqXQiYKZkyrTJ2Ikki3Xbng58w4OiKxnC4/W
- dNG4jCGw
- nWruKlPSimthY/eUHfkTF04ytfGG9pwqvKa6t2ZbrLXD0ciEI5E/7N0i8lwZP5BMhdaX2xI6K2NfIPDPZ9W/eyKeP+VlgDa5J7F/eiQjvkjwLKW4i9uG7X77m8d4dEZH8b9+kkRcGIIy13q+Yce3MLvz7LhRdoJJOF+iOquWrmuelxb6Zz5U0fN7dR5t74SF/7rygRfuEErsGfzG8PlyCnnUKG4T+XFOYhd097zgA5Uoakia7oQ51hBRJ6gyUmbSy+4ZvPjth1D0HIAl9YIjO5st/R/NC3fwZHzFycq7ajXvdZn5o94lut/OBG3Yc/8PPViXAMrWgEesOxtxnu0cJtGxi5tnn5aKc47HfH9SCDyF3SE4TTYKtz1DBb+dFGxQrlj5tl4M+WfeingIcUoTX7R5c0jtVj9Z+3wJ1md/bB+Yp/fo72XovAtS0WzAazZFflNKhPKoxkP+zM3Pb4Q/sUen8kIfB3F6ePhsOXQCaowU+BGqLGDPdETVIIhnZTdrCpXnLZcrn7S7Y3EeIDhOT5ydz0U/m3wEKGgCXr9yUNb+hHLl9tY1qua05rvNxD7rN+WXV6rTCCg51f0nT26LVeyyOXqphz87ZGVRTJHhoj8jYBPK74gBrgVEpn/X34oPn/urw2fwQlROpeSl6UlQt4I1jQlCYiye7wi3kIjD06AJ6O/pJm0z0YFfjCdEEywznr/CzUtCe4dGS+SY6G4jUw5YRBq+nz9uObS+yJG5nZyTKRXu4joYZTqjwhg5DVhfi2Nxnf2VTsOrc++QaNdi+jTDr2SsnSw+Lq4bC0SwTTXvs83MgWkRV9RjCDG4GSIUM2ydFZZsdn148R8PUOydnYYkiRKoDsumYV5QqEWr8RnSbbKWRE877R5+8fGdN/tfJfELbRb+l+rzOvwRmZvtAZmE9t31fMrpYd5A0xYatGLdyz2ZKjW3/U9L2ZNFieiyHpgk7Jf6zVAy7F8tfxl4QQEK2PDsc
- z8X0x/rB
- gx+hTlxYbdv/Q6mdg4Wak0e4cuUpLqZgJR8g2s0strrYJIeVD7G9b8JxdC4J6mviRALRePfBn2DdMJzaAGmZV1RFwBu7tCu+J9LvqEej/bswkWdh2PUR4AuWeMkrlL3zF+wo102doQG7NvUjLa0RM53ViVJAbaHBskiVKCP2hxvoE98Wb5AqEudswJIN//HpX/RwZwbxM/eyzzPtem4GSv9t62e6kt3laZwoq05e1Yz9FgPOPWeDcNCE+n6vyZZ1heku5tTrduS24BK35FqnbKITX1ysjFwU8wBgcIIcMOs1MAueSIreOCoDs++bneW/KxN3WHJiTA7SOGP44Pj1bWk0GYQl6MFkifd6/kXAFMSTc69fpbXXv9IotW/8kZLBRf5TdvkLrJqnT8qVzKnk9ehq3mqck3/d//tue5wg9BH6VOPJpS4PjqDIQtuHtjPKJ0KHxfCmOyuMaqJ79VlQ9chteovYYqIKDiQOH4rGJzksNOvCV9afxWid/BcSwpzQZVCABs5vhtLzicLRKrXfWogT4LBwKs5DPdJBHS5XutHgdpaBpvkzKEr/4KdWhgs1NkdNCqNEOaXXLN9J5UG+qp4DJjC6XS3A1taghDWcAq+2x92+gYKOXjbTE0I40VQTojzebuSIhXjih80Hfj85DAjy6qJkAlrJCjmG9LoPm/9NxOMOXeLvgVEUVcLK0iz9swIOIermoWDq1Lik7k594K9AzlHjWnLh6X1v+UZq6ePm8QC1qduXcMrklJIPy6CqmohA1ulB2mS70xsGL0GJB/1TAxiEpH3PqEArDiz22rnVNuxw2HgDAj8KNSR4isYLs7Qn6g1QsN+t4MzXoBI+y49YSiNbMDw2EIRGrQ2kWNA5OQu+rxlKTUoZD+0yMDG4RqSaeWsy3g9KXl13ynLP6OTgo8G8n1T11aZt6+Q36qU3BmP4Q6cH9rUyUYMf02oPoxjPpoydVIVBFMZ+QcAjc5cQRiX6b
- HC0FVOsb
- IN7mbNkpc80PIBnD/526z1BChgXMILmWAslSufZAdKMkaQbYbLJP6KG5RXleZ7gDuVq5ojHZdCJJCTg12pDj99rq5BayatwK0+Sn3Ki9C4fA5hpCUFIYDL6IYpTPixjJcmHTLG+6qxooCSGMTKzhlfmZt0mO7bBMLylXjW58FvGSQYC8kQvxeNRoFuMEdpaG+uVmvP7bPkfA8fU24thTyVd9H/0S5NRLrQjJ1LOcNx3ouTCWii1stBDZvjn/BSAH4SPQ6+UkzuJQKQiUdyuUAObZVhMdS/TJIAOvq4XWiUe1NjBEEgPW3LYOj8TUqR7si90Ejk3POjdAJFlIPI2wzi2ZodnCj4ZD9L7y0A3ZcpgxtH9nscGcTlUatd02A34EZgQK93wC8qmA==
+X-Rspamd-Queue-Id: 40C1D16000C
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791829551-260061
+X-HE-Meta: U2FsdGVkX18cREAM8bSoc6AihQUIcWiV5/rG9ECuPfTyNTXY9KisSU309tPqQuUX+3WvW8OcfhoaTKhiMrN78s3qmG8fcG+a09Yv0iKup68Y6we+J/sBYj7b/oaxYxa0UT5tu64bQL2Orlw+HYcp3ts/FgH4vX0rQMJnb1LSZ6DiBZe4l07QQ6zOIbU3VjWd9MVdU3T/z3JcFEQXfFtnbtDYgnQDXKTO5uv51GpBDuqDqJvMP9llBnJeTyUSLo2cKwag/mwgRK/sbNtkm//7lXYclssAgS5I1BMVO5Rcsn6INKQB4xmbylupzMdt0BVV7NDerOFgAsAedZExwvHKC7OyHY9WwBpzTjpK0LzjfLHlLDOvkA+wOcVeQsKc+rNXK/yNSmhHNC+4IprQzIaVwqDizf4TFVcjc+UWtE7wCX7AR6SWVZUni+vCyqXNBKhHhzKjd9xpMhHx8ajpMRyhiM7OOqquYOVeoe/hwcoMV9HdT8zpLYu/45CbJNhixRnmZVxmHDFj+BS108sLZoKhqxy+w5IbcMSrhzkPRp100fhlOmuwvIbQn69m4Z7nRIsAxVop2yD2Dr975haUJHq2sDZQRSsUcjhWAc+Tejx+WlR5ooILaVrVWe8UUjB8iT2dgabZP14m9aiqqOy4joqeGMho9veibx1YwtvDaeayCiHWwsip6t/j/Ba/ufEgMxp5cldGOdkrqyjHpntXdr7ixzXxMW5kKbQ2Yw5nCjWVg4M2sO8i/G/V2acMZPBPCISa+8dT3+ax8S7wFh5VJNl8WkGk8QyorI/MTdHo1KN3GyRIEhQxXrV1ssSKfUPUkVrW9FxcKS7cGDGvxdodO4sXppqGaxyyFk/80MPWIuVHJe1cVBuJuiu716yzkjfluxJYvuvIDMkJ+uRE4ve19USccVfumKtPb+oTR3PukpBsIO5BqWI9+Ey7PrF94Duoi+SzT7XRzHs07uTqeeCpzkN
+ sVMXg2kS
+ n/iDjt7NklX/2n3nvKvm9YNuWZWaOpmou/XEv34cLaKa7Iw1UpusNuxw+764GEqV/y/OKE8jCcd3FWS0eN+QO6+lU7CZR68cxadn8MbtA36OhU/qJK0sHsUFag+JVwPZe+MBq/ASdqvorCc7+ZxV++XzVYD+d2gKBpWiK8WZ8k0yOEgfgL2sBZXzDTjxtEMJPxo/KZJIUfuLtCVWMPQgxzVGrD1weYhp0JiZTAiC83YfqIvkNvi00+3y7kvo1ZxZd6KuqG+IyHmYX9DZlDaVyW2K13W203f1VFMCS0YVNhgp9xS/Dk78ojHAqG8UvVnKZ+2k1kb/c/qS3hsx1wJAOujBd8hxuslEQ1t0me4f7g9RI9DpGNmNHBCVCygZO3WkIrauQwPo0oUlbGoZFdAzY8baWWtCoR5nBOpfNMa9rY30+62fKxgqdezr6fO+FfU8R0R9J4X89BWQWgvpYy6imk8MHlpspaXxCCotmj292m6D5sFie6j3XcgW9V54tZ9PSNNw9VRtaTQ0aBioTbT/PKPTJ0ZVxywc4+OHsrEZMR5fcUHwKgFzm4iVdmpqTjUpsbkZzptkgOmAMtXMDyoThhC0uSHLqLs0mSk/SRoaverEgUp2BzD6DDOHdeFdmVc6Fd0je
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,96 +139,347 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 08:19:03PM +0200, David Hildenbrand (Arm) wrote:
-> On 10/9/26 20:04, Lorenzo Stoakes (ARM) wrote:
-> > Currently there's a confusing mess around VMA_LOCKED_BIT and
-> > VMA_LOCKONFAULT_BIT.
+--000000000000cbd051065da8d36d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Thanks both for your review into this; I was building a structural detector
+tool over page-table bit paths, and came across this.
+I got agents to reproduce it on x86 where we mark a 2MiB anon THP
+MADV_FREE, race a store from a second CPU against MADV_COLD, then force
+reclaim with MADV_PAGEOUT. The race pass loses stores while the control
+pass does not.
+
+Based on your suggestion, can we clear the accessed bit in place with
+pmdp_test_and_clear_young(), as the PTE path does via
+ptep_test_and_clear_young(), instead of rebuilding the entry from
+pmdb_invalidate()'s return value. I tried this patch on the bug, and the
+fix holds. Let me know what you think.
+
+---
+ mm/madvise.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/mm/madvise.c b/mm/madvise.c
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -426,10 +426,10 @@ static int madvise_cold_or_pageout_pte_range(pmd_t
+*pmd,
+              }
+
+              if (!pageout && pmd_young(orig_pmd)) {
+-                     pmdp_invalidate(vma, addr, pmd);
+-                     orig_pmd =3D pmd_mkold(orig_pmd);
+-
+-                     set_pmd_at(mm, addr, pmd, orig_pmd);
++                     /* Clear the accessed bit atomically, as the PTE path
+does
++                      * via ptep_test_and_clear_young(); don't write back
+a stale
++                      * orig_pmd and drop a concurrently-set dirty bit. */
++                     pmdp_test_and_clear_young(vma, addr, pmd);
+                      tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
+              }
+
+
+
+Samarth
+
+On Mon, Oct 12, 2026 at 6:09=E2=80=AFAM David Hildenbrand (Arm) <david@kern=
+el.org>
+wrote:
+
+> On 10/11/26 15:22, samarth.colleges@gmail.com wrote:
+> > From: Samarth Narang <samarth.colleges@gmail.com>
 > >
-> > It is permitted for drivers to set any flags they like, with the VMA
-> > already possessing lock flags.
+> > For a young, PMD-mapped THP, madvise_cold_or_pageout_pte_range() handle=
+s
+> > MADV_COLD by reading orig_pmd =3D *pmd, calling pmdp_invalidate(),
+> > discarding its return value, and writing back pmd_mkold(orig_pmd):
 > >
-> > This results in the absurd situation of a VMA possessing both
-> > VMA_SPECIAL_FLAGS and VMA_LOCKED_MASK flags, which is not permitted.
+> >       if (!pageout && pmd_young(orig_pmd)) {
+> >               pmdp_invalidate(vma, addr, pmd);
+> >               orig_pmd =3D pmd_mkold(orig_pmd);
+> >               set_pmd_at(mm, addr, pmd, orig_pmd);
+> >               tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
+> >       }
 > >
-> > This has resulted in mlock_vma_folio() having a very silly check for this
-> > scenario to work around it.
+> > pmdp_invalidate() atomically clears the present bit and returns the PMD
+> > as it was in the page table at that instant.  A store from another CPU
+> > that lands after orig_pmd is read but before the invalidate sets the
+> > hardware dirty bit in the live entry.  Because the written-back value i=
+s
+> > derived from the stale orig_pmd, that dirty bit is erased.
 > >
-> > There is no need for this - just clear the flags before invoking the hook
-> > and reinstate them afterwards if they are required.
+> > If the THP had been marked lazyfree (MADV_FREE), reclaim later finds a
+> > clean PMD and a clean folio and discards it rather than swapping it out
+> > (__discard_anon_folio_pmd_locked()).  The store is then silently lost: =
+a
+> > subsequent read returns stale/zero data, although the MADV_FREE contrac=
+t
+> > is that a write after the advice call cancels the free.
 > >
-> > Nothing relies upon this being set during the mmap operation.
+> > pmdp_invalidate() returns the pre-invalidate entry precisely so callers
+> > can carry the accessed/dirty bits hardware may have set concurrently
+> > (d52605d7cb30).  change_huge_pmd() and set_pmd_migration_entry()
+> > (8a8683ad9ba4) already do this; the MADV_COLD path does not.  Rebuild
+> > orig_pmd from the returned entry.
 > >
-> > mmap_prepare is unaffected by this so requires no fix.
+> > Reproduced unprivileged on x86-64: a 2 MiB anon THP is marked MADV_FREE=
+,
+> > then MADV_COLD races a store from another CPU, then MADV_PAGEOUT; the
+> > stored byte reads back zero.  On current mainline built and booted unde=
+r
+> > KVM, the race lost 131 of 8000 stores before this patch and 0 of 8000
+> > after; a store-before-COLD control and a MADV_NORMAL control lose none.
 > >
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > Fixes: 9c276cc65a58 ("mm: introduce MADV_COLD")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
 > > ---
-> >  mm/internal.h |  9 +--------
-> >  mm/vma.c      | 17 +++++++++++++++++
-> >  2 files changed, 18 insertions(+), 8 deletions(-)
+> >  mm/madvise.c | 10 ++++++++--
+> >  1 file changed, 8 insertions(+), 2 deletions(-)
 > >
-> > diff --git a/mm/internal.h b/mm/internal.h
-> > index 557e629db8c5..4ae08fedffff 100644
-> > --- a/mm/internal.h
-> > +++ b/mm/internal.h
-> > @@ -970,14 +970,7 @@ void mlock_folio(struct folio *folio);
-> >  static inline void mlock_vma_folio(struct folio *folio,
-> >  				struct vm_area_struct *vma)
-> >  {
-> > -	/*
-> > -	 * The VM_SPECIAL check here serves two purposes.
-> > -	 * 1) VM_IO check prevents migration from double-counting during mlock.
-> > -	 * 2) Although mmap_region() and mlock_fixup() take care that VM_LOCKED
-> > -	 *    is never left set on a VM_SPECIAL vma, there is an interval while
-> > -	 *    file->f_op->mmap() is using vm_insert_page(s), when VM_LOCKED may
-> > -	 *    still be set while VM_SPECIAL bits are added: so ignore it then.
-> > -	 */
-> > +	/* The VM_IO check prevents migration from double-counting during mlock. */
-> >  	if (unlikely((vma->vm_flags & (VM_LOCKED|VM_SPECIAL)) == VM_LOCKED))
-> >  		mlock_folio(folio);
-> >  }
-> > diff --git a/mm/vma.c b/mm/vma.c
-> > index 39ceb03023e2..4f09fb98a2fd 100644
-> > --- a/mm/vma.c
-> > +++ b/mm/vma.c
-> > @@ -2607,6 +2607,11 @@ static int __mmap_new_file_vma(struct mmap_state *map,
-> >  	if (!map->vm_file->f_op->mmap)
-> >  		return 0;
+> > diff --git a/mm/madvise.c b/mm/madvise.c
+> > --- a/mm/madvise.c
+> > +++ b/mm/madvise.c
+> > @@ -426,8 +426,14 @@
+> >               }
 > >
-> > +	/*
-> > +	 * Driver-specified flags may make the lock flags invalid, so clear
-> > +	 * VMA_LOCKED_MASK and reinstate it afterwards if appropriate.
-> > +	 */
-> > +	vma_clear_flags_mask(vma, VMA_LOCKED_MASK);
-> >  	error = mmap_file(vma->vm_file, vma);
-> >  	map->vm_file = vma->vm_file;
-> >
-> > @@ -2629,6 +2634,18 @@ static int __mmap_new_file_vma(struct mmap_state *map,
-> >  		return error;
-> >  	}
-> >
-> > +	/*
-> > +	 * If the VMA is still eligible for mlock(), reinstate any original
-> > +	 * VMA_LOCKED_BIT and/or VMA_LOCKONFAULT_BIT flags.
-> > +	 */
-> > +	if (vma_supports_mlock(vma)) {
-> > +		const vma_flags_t mask =
-> > +			vma_flags_and_mask(&map->vma_flags,
-> > +					   VMA_LOCKED_MASK);
+> >               if (!pageout && pmd_young(orig_pmd)) {
+> > -                     pmdp_invalidate(vma, addr, pmd);
+> > -                     orig_pmd =3D pmd_mkold(orig_pmd);
+> > +                     /*
+> > +                      * Rebuild from the entry pmdp_invalidate()
+> exchanged
+> > +                      * out, not from orig_pmd: hardware may have set
+> the
+> > +                      * dirty bit since orig_pmd was read, and a
+> MADV_FREE'd
+> > +                      * (lazyfree) THP whose dirty bit is lost is
+> discarded
+> > +                      * by reclaim, silently dropping the store.
+> > +                      */
+> > +                     orig_pmd =3D pmd_mkold(pmdp_invalidate(vma, addr,
+> pmd));
 >
-> I'd just have at least the = vma_flags_and_mask on the same line. It's ok to
-> exceed 80 chars.
-
-I've had people yell at me about this before on review :) you can't really win.
-
-Since I'm doing a respin anyway I can put it on one line.
-
+> Okay, you are saying we can lose the dirty bit that could get set
+> concurrently.
+> And if we did an MADV_FREE before, we might not detect that the content
+> was changed.
 >
 >
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> I suspect this found through the help of an LLM and not an actual use cas=
+e
+> in
+> practice?
+>
+> Using MADV_COLD following MADV_FREE sounds odd at thirst. In particular,
+> when
+> having MADV_COLD race with actual access.
+>
+> On the PTE path we use clear_young_dirty_ptes(CYDP_CLEAR_YOUNG) which
+> achieves
+> the same through ptep_test_and_clear_young().
+>
+>
+> ... where we also just do a
+>
+> pte =3D ptep_get(ptep);
+> set_pte_at(vma->vm_mm, address, ptep, pte_mkold(pte));
+>
+> in the generic variant and rely on the per-arch variant to do the right
+> thing.
+>
+> Which makes me wonder whether we should actually have per-architecture PM=
+D
+> helpers for that purpose?
+>
+>
+> --
+> Cheers,
+>
+> David
+>
 
-Thanks!
+--000000000000cbd051065da8d36d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---
-Cheers, Lorenzo
+<div dir=3D"ltr">Thanks both for your review into this; I was building a st=
+ructural detector tool over page-table bit paths, and came across this.=C2=
+=A0<div>I got agents to reproduce it on x86 where we mark a 2MiB anon THP M=
+ADV_FREE, race a store from a second CPU against MADV_COLD, then force recl=
+aim with MADV_PAGEOUT. The race pass loses stores while the control pass do=
+es not.=C2=A0</div><div><br>Based on your suggestion, can we clear the acce=
+ssed bit in place with pmdp_test_and_clear_young(), as the PTE path does vi=
+a ptep_test_and_clear_young(), instead of rebuilding the entry from pmdb_in=
+validate()&#39;s return value. I tried this patch on the bug, and the fix h=
+olds. Let me know what you think.=C2=A0</div><div><br></div><div>---<br>=C2=
+=A0mm/madvise.c | 8 ++++----<br>=C2=A01 file changed, 4 insertions(+), 4 de=
+letions(-)<br><br>diff --git a/mm/madvise.c b/mm/madvise.c<br>--- a/mm/madv=
+ise.c<br>+++ b/mm/madvise.c<br>@@ -426,10 +426,10 @@ static int madvise_col=
+d_or_pageout_pte_range(pmd_t *pmd,<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 }<br><br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if =
+(!pageout &amp;&amp; pmd_young(orig_pmd)) {<br>- =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pmdp_invalidate(vma, addr, pm=
+d);<br>- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 orig_pmd =3D pmd_mkold(orig_pmd);<br>-<br>- =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 set_pmd_at(mm, addr, pmd, orig_p=
+md);<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 /* Clear the accessed bit atomically, as the PTE path does<br>+ =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* =
+via ptep_test_and_clear_young(); don&#39;t write back a stale<br>+ =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* orig=
+_pmd and drop a concurrently-set dirty bit. */<br>+ =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pmdp_test_and_clear_young(=
+vma, addr, pmd);<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 tlb_remove_pmd_tlb_entry(tlb, pmd, addr);<br>=C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }</div><div><br></div><div><br></=
+div><div><br></div><div>Samarth=C2=A0</div></div><br><div class=3D"gmail_qu=
+ote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Oc=
+t 12, 2026 at 6:09=E2=80=AFAM David Hildenbrand (Arm) &lt;<a href=3D"mailto=
+:david@kernel.org">david@kernel.org</a>&gt; wrote:<br></div><blockquote cla=
+ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid =
+rgb(204,204,204);padding-left:1ex">On 10/11/26 15:22, <a href=3D"mailto:sam=
+arth.colleges@gmail.com" target=3D"_blank">samarth.colleges@gmail.com</a> w=
+rote:<br>
+&gt; From: Samarth Narang &lt;<a href=3D"mailto:samarth.colleges@gmail.com"=
+ target=3D"_blank">samarth.colleges@gmail.com</a>&gt;<br>
+&gt; <br>
+&gt; For a young, PMD-mapped THP, madvise_cold_or_pageout_pte_range() handl=
+es<br>
+&gt; MADV_COLD by reading orig_pmd =3D *pmd, calling pmdp_invalidate(),<br>
+&gt; discarding its return value, and writing back pmd_mkold(orig_pmd):<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!pageout &amp;&amp; pmd_young(orig_pmd))=
+ {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pmdp_invalidate(=
+vma, addr, pmd);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0orig_pmd =3D pmd=
+_mkold(orig_pmd);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0set_pmd_at(mm, a=
+ddr, pmd, orig_pmd);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tlb_remove_pmd_t=
+lb_entry(tlb, pmd, addr);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt; <br>
+&gt; pmdp_invalidate() atomically clears the present bit and returns the PM=
+D<br>
+&gt; as it was in the page table at that instant.=C2=A0 A store from anothe=
+r CPU<br>
+&gt; that lands after orig_pmd is read but before the invalidate sets the<b=
+r>
+&gt; hardware dirty bit in the live entry.=C2=A0 Because the written-back v=
+alue is<br>
+&gt; derived from the stale orig_pmd, that dirty bit is erased.<br>
+&gt; <br>
+&gt; If the THP had been marked lazyfree (MADV_FREE), reclaim later finds a=
+<br>
+&gt; clean PMD and a clean folio and discards it rather than swapping it ou=
+t<br>
+&gt; (__discard_anon_folio_pmd_locked()).=C2=A0 The store is then silently =
+lost: a<br>
+&gt; subsequent read returns stale/zero data, although the MADV_FREE contra=
+ct<br>
+&gt; is that a write after the advice call cancels the free.<br>
+&gt; <br>
+&gt; pmdp_invalidate() returns the pre-invalidate entry precisely so caller=
+s<br>
+&gt; can carry the accessed/dirty bits hardware may have set concurrently<b=
+r>
+&gt; (d52605d7cb30).=C2=A0 change_huge_pmd() and set_pmd_migration_entry()<=
+br>
+&gt; (8a8683ad9ba4) already do this; the MADV_COLD path does not.=C2=A0 Reb=
+uild<br>
+&gt; orig_pmd from the returned entry.<br>
+&gt; <br>
+&gt; Reproduced unprivileged on x86-64: a 2 MiB anon THP is marked MADV_FRE=
+E,<br>
+&gt; then MADV_COLD races a store from another CPU, then MADV_PAGEOUT; the<=
+br>
+&gt; stored byte reads back zero.=C2=A0 On current mainline built and boote=
+d under<br>
+&gt; KVM, the race lost 131 of 8000 stores before this patch and 0 of 8000<=
+br>
+&gt; after; a store-before-COLD control and a MADV_NORMAL control lose none=
+.<br>
+&gt; <br>
+&gt; Fixes: 9c276cc65a58 (&quot;mm: introduce MADV_COLD&quot;)<br>
+&gt; Cc: <a href=3D"mailto:stable@vger.kernel.org" target=3D"_blank">stable=
+@vger.kernel.org</a><br>
+&gt; Signed-off-by: Samarth Narang &lt;<a href=3D"mailto:samarth.colleges@g=
+mail.com" target=3D"_blank">samarth.colleges@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 mm/madvise.c | 10 ++++++++--<br>
+&gt;=C2=A0 1 file changed, 8 insertions(+), 2 deletions(-)<br>
+&gt; <br>
+&gt; diff --git a/mm/madvise.c b/mm/madvise.c<br>
+&gt; --- a/mm/madvise.c<br>
+&gt; +++ b/mm/madvise.c<br>
+&gt; @@ -426,8 +426,14 @@<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!pageout &am=
+p;&amp; pmd_young(orig_pmd)) {<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0pmdp_invalidate(vma, addr, pmd);<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0orig_pmd =3D pmd_mkold(orig_pmd);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0/*<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 * Rebuild from the entry pmdp_invalidate() exchanged<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 * out, not from orig_pmd: hardware may have set the<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 * dirty bit since orig_pmd was read, and a MADV_FREE&#39;d<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 * (lazyfree) THP whose dirty bit is lost is discarded<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 * by reclaim, silently dropping the store.<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 */<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0orig_pmd =3D pmd_mkold(pmdp_invalidate(vma, addr, pmd));<br>
+<br>
+Okay, you are saying we can lose the dirty bit that could get set concurren=
+tly.<br>
+And if we did an MADV_FREE before, we might not detect that the content was=
+ changed.<br>
+<br>
+<br>
+I suspect this found through the help of an LLM and not an actual use case =
+in<br>
+practice?<br>
+<br>
+Using MADV_COLD following MADV_FREE sounds odd at thirst. In particular, wh=
+en<br>
+having MADV_COLD race with actual access.<br>
+<br>
+On the PTE path we use clear_young_dirty_ptes(CYDP_CLEAR_YOUNG) which achie=
+ves<br>
+the same through ptep_test_and_clear_young().<br>
+<br>
+<br>
+... where we also just do a<br>
+<br>
+pte =3D ptep_get(ptep);<br>
+set_pte_at(vma-&gt;vm_mm, address, ptep, pte_mkold(pte));<br>
+<br>
+in the generic variant and rely on the per-arch variant to do the right thi=
+ng.<br>
+<br>
+Which makes me wonder whether we should actually have per-architecture PMD<=
+br>
+helpers for that purpose?<br>
+<br>
+<br>
+-- <br>
+Cheers,<br>
+<br>
+David<br>
+</blockquote></div>
+
+--000000000000cbd051065da8d36d--
 
