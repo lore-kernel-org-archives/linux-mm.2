@@ -4,134 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F347CA9ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 10:09:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDD03CA9ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 10:11:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA5CE6B0092; Mon, 12 Oct 2026 06:09:16 -0400 (EDT)
+	id CF2546B0098; Mon, 12 Oct 2026 06:11:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7DC86B0096; Mon, 12 Oct 2026 06:09:16 -0400 (EDT)
+	id CA34C6B0099; Mon, 12 Oct 2026 06:11:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 994056B0098; Mon, 12 Oct 2026 06:09:16 -0400 (EDT)
+	id BB9B06B009B; Mon, 12 Oct 2026 06:11:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 70F5A6B0092
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 06:09:16 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DEC96140A8A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:09:15 +0000 (UTC)
-X-FDA: 85313551470.17.2FFB378
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 270E6C0007
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:09:14 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nJrnAQ1y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 93B376B0098
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 06:11:00 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 08B4B160AA3
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:11:00 +0000 (UTC)
+X-FDA: 85313555880.15.9FA334C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E2049160007
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:10:57 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=DvXiZiA7;
+	spf=pass (imf08.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791799754;
+	s=arc-20220608; t=1791799858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SHxz+apKE2hMTml72NAExf/QEULl2SZWmz8dKLG+u1c=;
-	b=176VqY9xpfh9YpZLRxEVQ09gtDcLj8knbqooBdpIq1vCETAbOOOwLqjEksTL9OmMnhOjRf
-	i3WtXXvUu1SZzJ/Tzeg5njGqUL8ae0tF/89sPlT0URqiJwC9GIACL7bIs+bFOXYa2GPYwh
-	Qq/jPpeNe5FRlHMLq7hISprTHCI4hXQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nJrnAQ1y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=Ul9wcWmxhs7gK/jxe5ZorrUQLrKV/w+O1oYAR807APo=;
+	b=ozoV4m3slMip0zQvGKp8xwmqeDrAUkkvAvjbmK6d8aDsVTyCHYnZpt1VT1bjHsfLdKS6S3
+	k8K4wO+p5k/brGOqE02HcVYzDfczTjVmcEnjo8TMwqrNV5bmppP3SdGezZLwodwXJZgU13
+	9oJ/vDvxB4WFk65gw4bHfD5wXMlTkZw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791799754;
-	b=IhkAcuvp6k0jr5sQnNRWTQ9f6l5QfFCFAd8hq9zEtB4/MFhA6IitTgCnELY4quz3XgCkA4
-	/skvaqFMllHtJScJBAdFk7xhtSVHiFBVu+l5cTIRrx/OYY2p1VgzM0cSJYi60qf8WlCcQm
-	/iofeAsQNahYmV745Km265AlhiFe6io=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BAFA3600E2;
-	Mon, 12 Oct 2026 10:09:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264041F0089B;
-	Mon, 12 Oct 2026 10:09:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791799752;
-	bh=SHxz+apKE2hMTml72NAExf/QEULl2SZWmz8dKLG+u1c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=nJrnAQ1yhxtMBG44ZNjv1H1OdQEHQj6Tb3C+lAHtIhaV2h8jNYInA4ake/qXooMSz
-	 LU1J/Mo30EGj2iYo+8htzhcOQPH00kbXyEFAZlj8XXBxVn5DoOxhqsMtfWg0enSNYS
-	 PCnpzoPNoxuc4eQ7NipBRw7MaX4nrMCNrkBDTvA71D2/UmrV0ABJDUm7YXAKDUiu7l
-	 cQeE02ugsBcBGUW4hQeB/i1v+MMa8ps/OQPoNDOh/NI/FAOyUfqbnPHHTZFWLIaCpE
-	 y0Hypz5mbIHBhVRc2bbYCeOyuWNPNIuIj9edgDR7ojCIfSpMw0oe1s7M8ScIQmmMJf
-	 nFeoLXU8PmDcw==
-Message-ID: <42087cd7-473e-40a7-ae63-3c841c615c8f@kernel.org>
-Date: Mon, 12 Oct 2026 12:09:07 +0200
+	t=1791799858;
+	b=IlBoSq3YcRGDiT1hRUIHLWCe1ZsArUpu3Ickoqrz0vtlEwwUk7dOYihEAOprvzo3d1fZnZ
+	md5yGDCKZ9HvWVQ6WJHLEjryMhty36E7PoxbpCtP2oe5iYTNwOVG/9TpzFTOIz4vONfKD8
+	ivYC5mQryTerqtiPYu2at7plFW4MVg4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=DvXiZiA7;
+	spf=pass (imf08.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7BEAC1655;
+	Mon, 12 Oct 2026 03:10:53 -0700 (PDT)
+Received: from [10.164.19.62] (unknown [10.164.19.62])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 463C73F66F;
+	Mon, 12 Oct 2026 03:10:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791799856; bh=4s/xDJjI5Yi3Iie/JSApNyADbuBLred0RCuvDLjnYQ0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DvXiZiA7IANGTjiIi3p929DkASucYMvkwq4IfgM2nN09ccEJXPslThneXVPDOLdo+
+	 Fvky6tsgCxSGCOyHjUj+OX8BvZsv7PcLNfYpogG+I1XrsoWl7HgnS18Vet/UhguEU/
+	 2AGsP8zLuClFigtTBv3WG4aRyLDjfzKeXUKaLwTw=
+Message-ID: <89700b93-e646-4263-bca3-a2df7636f6bc@arm.com>
+Date: Mon, 12 Oct 2026 15:40:49 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/madvise: keep the hardware dirty bit in MADV_COLD's
- THP path
-To: samarth.colleges@gmail.com, akpm@linux-foundation.org,
- liam@infradead.org, ljs@kernel.org
-Cc: vbabka@kernel.org, jannh@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261011132227.413217-1-samarth.colleges@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [RFC NO CODE] [DISCUSSION] Anti-fragmenting ordered buddy
+ allocator
+To: Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, ryan.roberts@arm.com, riel@surriel.com,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, kasong@tencent.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, hannes@cmpxchg.org, brendan.jackman@linux.dev
+References: <20261011215412.1181172-1-dev.jain@arm.com>
+ <DM2DV199T6N4.19MU82DJBDOF9@nvidia.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261011132227.413217-1-samarth.colleges@gmail.com>
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <DM2DV199T6N4.19MU82DJBDOF9@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: y5fmttqfrsq4dm1c9uoo1qbjfudf47k8
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E2049160007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 270E6C0007
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791799754-856246
-X-HE-Meta: U2FsdGVkX1966TScUvihso+1ppt4UF+llUPrYoUGGs9kZoE3jgNCxBuSMucLLI50QZG3dEC/uZ5ZDQciztSdOMsGVUEvDmLa8OWYz5T+hZAgjYyJ5ibqCcHKZvDtw3OjZ4uiS8zpn438dpApkW3QarZ3TZq+nteEcWYP9wuPskDtSwJEQdyxYMi3qkH4u1Wc0rCRFa19mS8A4IQnNO7caBokibHj40uBhjmhGfeDDrmf4dviT2fTVlTaBOkzeVmKiVUzRTn5hfxCuA1+1WUSyHSnYKQWIGjYemQWw3q9rCMIv8sS1FXNRBx/7Txby7MfyEDt0QgmF5pAeoLYr+gdcTjll83GOM9dSjhUFieAMQUsTXKLxPlNy37PtYq8Nz6P1doBS354utFQv7oR2WQTzAfh3Xyq2znDiLI9k7mhS4pYOJpgnqAeEEMhwf0kL+ZjSCHrhL6YjcNwGm7A9z5sUA4O45ZnCRWfStqgSv20xPlMlTmas0GLO8UEU3Prwrld8EnojnLSWYEgpGU1Y5psLmGWtKm7QOzrZ+JwgZW90HFaIxFvhlNBGVN+c8AKCDvCAF15dtt/cbXrga7q+YPkXAhwipjkwZXiEmZHm5muECfYzRIxYVpGN3Ljb3leb5jsCQoygjvZ0i52YK3Ajjw+aDacC5pGxlyhMorZV7iKOONN8FLOlY+447ZsmychOGhnTUJV5DNQNZn7hgLCUH+DLLBNYwk8i+yp2CbQh+P+3m9MgKJo7Ez/p2BK4UDi5o6vmqgFRYCYa7jhrwQGd61wbqMcABtjW7RkAAQUev+rPjTdTwUVD+CpHtncandlDQ0wQSS3yR1iF+jOv8LjB/0NzwXpReMRJwbdhFnByr+lrVgM7dUCr9mhRoydVJ2R5/NlEVwKjIWpCPsZytcVBJ9VsOBfuGvqVUwwIeWskbsnUolOTJkPFqThLnzV4D/52l+t0Q/XNdPaKIAwVlffuik
- jb4qVrjs
- MsQsc4utrvuwLCrZZLSJFx1llTInpsRvNH6krpofsRwm8D1iaNI+Wj3+aOA7oBzVNDw5b8PuYXMx0TdqMDHHhzXmFbe1fbgmaD0obEyfajH9W60D+WqiFdIBaRth7ptO+lQHp0sCjxn4JV5q+SXJK+hy9bAtJv6N/1T8CW3oX7ORcXiwxYPtmIrSqEtJEWeE/CHA4Y8r7rd6mg9U+it5QSNr0DFRzGCfSl9KRplVpQGBZxgDTxMJTAKqRuklt3xUCt1iC9r2M/PHCQ/Pq0IEnl/aN+8nS2VBy1CtsMSLMbOc0HZRqhPQ0nOEaZROWoEPFx9UyZiRy7AHT/2Mh5wrRpXVRZB9T28sMmW+HI1QCB01LKeTE4Hq8wz183RHn4NzYnptFIBuCFFUw8ZzemEri2ZGhpAR2dkAqZnXFiSiZ/D5R+vA=
+X-Stat-Signature: g4ceryy3sswiae6nb9axkzdxbaukzuwz
+X-HE-Tag: 1791799857-993124
+X-HE-Meta: U2FsdGVkX1/lrJgmTAugT/g/LHXpss6JU10WXc4qA7d1h6E60yNm/J2SgQvWrpzhXQ8lZkLRZ/po/rtLa43O7u/me9QOl95cNGVcz2Ih7YovNjshCG9/aEbzU+lMSkPwGz187Bp6pfmqu2dP6qOedFxZiwpM94/FPheqmRsK1EQNc046F7K00Z2Ug9EiEdqiLkM5AxEdZBWjqRAU5QievVavSZC/9uNeXP4BSGlqfaPd+08wdjo8VfgybHobvAeUVvG8K+H7uPVw6x3QveWyDIUrY/vmoAfq1FUpyowOz5Kl5ltzqHBBK02uSiN8+KHuWD1vS0D/D3OzM0/4GyFRccowlLqihJrO+gMUXXJaZnvGtVw5MRUNerJfNocyB1cX8WXkMVqWfkY1gH5cTj69NdIxBzBXH+nsTI/8IY9hTGK5mii7gnt/l8eR6+pk1uBxDu6ZbLuTrdQ/dptnwGIbmxBu4YHTSY6MffmsMret9bGLvVK3YY18U79SxV42DysjO6vedatzT58GlkhxHyQk0j7oa5QfZ99N/MAxx4q6on6QBjSVUNtO4eNvpM87XJFWFYLTKIlOPvs7KOP/wkFjnVPVMCoRR1cjzAAoTEhzkcDh2OlZ/2uJdldIWCmF5u6u59jey+OvohQn4C5awsZ0qUVAqm7LY2gDN47fGpgC5FZhbh72dhMNc+Eu3N+5keWqAzJTJ1PHzr3LfXbxnVf1mlGsquVTTVkIpmA8mglRjlvT1Tdn04ZoQzmW6homEXyq4cuaLROFCpXQ48e0wToF9o5bo/Rag8n8hOdtvytwXMU1uo/jypN/r/6ivL6Ksdy4niZkgs2+Cl4Oeiur/vQPBLrGAAv9ifn+xogcRU+wUlX9cLH6LwB1J57p0ECvr82fsHe+qccUSu4xjoTFDtY3597kzvIG6MstbigUQFSfXRcDrLcKeOzYVhUtrDIgKeexUhiZfg9KM5XNqRM9DXQ
+ 3wba3+VY
+ BT+kWa5my/L2MY+pQXbVQl8dsWtGqzvpSX2YMozEzQGdMnem7Rg7Ro+KQpNHLsiHwDuKFtpDUlkas2BGNx3YGp0eIZtx8dCHa7tYYTW5Xvfe47NzsJyydanJR+Gnkx/I2BPChCvEAVbrrOiPzMQ16w5x/+3lAQVF1vRqQUTEWcIgDHd5skUfEKyCbx5668LqJYezZcSnzjA/dIaHYyo15cwcg9SZ9bJp0BA8DaHgKwThuMbR6AWBPdt3a+p2sNT1fwyoOuIwzlPuITJtHP/ziSbBIiRSr1nO8wRCJxYy6LBbBlhS002NXR6oJGW/CjIYXJ7SXhcoLlknnq+mYLpDzfqt5Siiu78sh/19iamfnXi9l1l93RnvioqKndBvTkadotJNS+So4UTAmUsXuOe38rEa9ayd3aytnzJUSjwQZlCMpyVI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,96 +95,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/11/26 15:22, samarth.colleges@gmail.com wrote:
-> From: Samarth Narang <samarth.colleges@gmail.com>
+
+
+On 12/10/26 4:34 am, Zi Yan wrote:
+> On Sun Oct 11, 2026 at 5:54 PM EDT, Dev Jain wrote:
+>> (I am not posting code yet since it is in experimental stage.)
 > 
-> For a young, PMD-mapped THP, madvise_cold_or_pageout_pte_range() handles
-> MADV_COLD by reading orig_pmd = *pmd, calling pmdp_invalidate(),
-> discarding its return value, and writing back pmd_mkold(orig_pmd):
+> Thank you for posting the idea.
+
+Thanks for replying Zi.
+
+
+>>
+>> TL;DR
+>> -------
+>>
+>> I am proposing "ordered/bucketed buddy allocator": we divide the buddy
+>> freelists into buckets, and prefer lower buckets for allocation.
+>> This reduces external fragmentation (and, further reduces it when we
+>> reverse the ordering for unmovable and reclaimable allocations) at the
+>> cost of regressing the alloc and free paths, which depends on how many
+>> buckets you partition into. I think we can partition into 4 buckets and
+>> do some tricks to remove any regression.
+>>
+>> Design 1 is the simplest and the most upstream-friendly method in terms of
+>> allocator speed. Design 2 tries to scale better with the number of buckets.
+>>
+>> INTRODUCTION
+>> -------------
+>>
+>> Apart from dividing the freelists between migratetypes, little attempt
+>> has been made to change the algorithm of the buddy itself to reduce
+>> external fragmentation proactively (termed as "anti-fragmentation" in
+>> academia). Linux has defragmentation (compaction). The analysis below
 > 
-> 	if (!pageout && pmd_young(orig_pmd)) {
-> 		pmdp_invalidate(vma, addr, pmd);
-> 		orig_pmd = pmd_mkold(orig_pmd);
-> 		set_pmd_at(mm, addr, pmd, orig_pmd);
-> 		tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
-> 	}
+> Like Rik suggested, it is better to focus on one thing at a time. I
+> think improving anti-fragmentation at pageblock level is high priority
+> at the moment.
+
+The premise I started with was to improve chance of mTHP allocations; I would
+like to point out the benefit of ordering.
+
+I was first looking at the problem from the perspective of finding already
+populated blocks to allocate, within the same migratetype (an implication
+of trying to do that was, reverse the order for non-movable, which is not
+the premise I started with).
+
+If we bias allocations towards the left, we give more chance for pages at
+the right to get freed and make contiguous free blocks. So maintaining an
+ordering is a good approximation for biasing w.r.t fragmentation score.
+This delays compaction triggers, and even if compaction is triggered it may
+exploit some sort of ordering - it knows that sparse blocks are to the right
+with good probability.
+
+Essentially we are trying to do a bucket-sort here.
+
+Think of the allocation stream as a *probability distribution* -
+I am trying to skew that to one direction.
+
+
 > 
-> pmdp_invalidate() atomically clears the present bit and returns the PMD
-> as it was in the page table at that instant.  A store from another CPU
-> that lands after orig_pmd is read but before the invalidate sets the
-> hardware dirty bit in the live entry.  Because the written-back value is
-> derived from the stale orig_pmd, that dirty bit is erased.
+>> is *not* to claim that compaction does a bad job; I just took up the
+>> challenge of anti-fragmentation (because I like to torture myself) and
+>> kept digging the rabbit hole.
+>>
+>> There have been academic papers about replacing the buddy with bitmaps -
+>> I did not want a hard NAK from upstream at any attempt to do that, so
+>> I preserved the buddy freelists.
+>>
+>> IDEA
+>> ----
+>>
+>> There is a correlation between allocating from one side of memory, and
+>> reducing external fragmentation. Biasing on one side implies the
+>> probability we fragment already fragmented sections is high. This may also
+>> enable smarter compaction by directing the free-page scanner toward
+>> higher-address regions. This also circumvents the discussion around
+>> a "fragmentation score" which is dependent on the size of the
+>> block we are considering.
+>>
+>> The idea itself quite obviously improves clustering of allocations: I
+>> observe reductions in 'compact_stall' and 'anon_fault_fallback', and some
+>> large improvements when the number of buckets is high (like, compact_stall
+>> going down from 4000 to 5 with almost no hit in execution time for a kernel
+>> compilation). The obvious downside being slowing down the allocator (which
+>> needs to be tested more widely). The content below is mainly on how
+>> to minimize that.
 > 
-> If the THP had been marked lazyfree (MADV_FREE), reclaim later finds a
-> clean PMD and a clean folio and discards it rather than swapping it out
-> (__discard_anon_folio_pmd_locked()).  The store is then silently lost: a
-> subsequent read returns stale/zero data, although the MADV_FREE contract
-> is that a write after the advice call cancels the free.
+> I am not sure how your bucket idea is better than the existing pageblock
+> design, because the biggest issue in anti-fragmentation is unmovable
+> pages spreading across the entire physical memory space to prevent high
+> order page allocation and I do not see how your idea could contaminate
+> unmovable pages.
+
+To make it clearer, I have observed improvement even without clustering
+movable and non-movable to opposite ends, and simply clustering *all* allocations
+to the left.
+
+Note that all of the pageblock claim/steal algorithm of the buddy
+remains the same - an unmovable allocation will still try to take the
+largest order block free in movable buddy lists and try to claim it
+instead of stealing, so the existing algorithm works. So we first
+cluster by migratetype, then cluster by pfn bucket.
+
+
+
+
 > 
-> pmdp_invalidate() returns the pre-invalidate entry precisely so callers
-> can carry the accessed/dirty bits hardware may have set concurrently
-> (d52605d7cb30).  change_huge_pmd() and set_pmd_migration_entry()
-> (8a8683ad9ba4) already do this; the MADV_COLD path does not.  Rebuild
-> orig_pmd from the returned entry.
+> Unmovable pages can sometimes take majority of the memory of a system,
+> leaving the entire memory space fragmented, for example a burst of
+> dentry allocation. Roman wrote a small userspace app to do this [1], and
+> you can give it a try. Afterwards, some of these unmovable pages might
+> be freed after their use, but there is no guarantee that the freed
+> unmovable pages can create contiguous free pages. Unless we do unmovable
+> page lifetime prediction and group unmovable pages with similar lifetime
+> like Yu Zhao proposed[2].
+
+Thanks for mentioning [1] and [2].
+
+You are right regarding [2]: I had also concluded that the most correct
+way of looking at external fragmentation is lifetime prediction. I had
+written a reply to Johannes' PCPbuddy patchset (my intuition says it
+will also improve on fragmentation):
+
+So basically we need to give contiguous pages to an "allocator context". The
+allocator context examples are a file filling its pagecache, a slab filling
+slab pages, a VMA faulting in memory, etc.
+
+Currently a file does readahead to ask for contiguous memory which is good,
+but it would have been great if we could reserve a pageblock worth of memory
+and keep fragmenting it for the same file, tying allocations together.
+
+Perhaps we can think for the file case specifically since pagecache has
+been observed as a huge bottleneck for fragmentation: after reclaim,
+the pages freed are scattered. And, they may immediately be taken again
+by pagecache allocations.
+
+(One way is, at least for filesystems not supporting large folios, we
+can still do high-order (non-compound) allocations, the order
+dictated by the write()/read() syscall, or the readahead ra->order.)
+
+Then, the next programmatic approximation (losing accuracy) of
+the "allocator context" is a task_struct. A task_struct reserves
+a pageblock and allocates from it.
+
+If you think about it, there is a correlation between allocator-context
+and task_struct, since at a time the task is doing similar things in
+a time frame, be it userspace allocation or even kernel allocations
+triggered from userspace.
+
+Then the next and more natural approximation (losing more accuracy)
+is of a cpu. The cpu reserves a pageblock, and we hope that the
+cpu is continuously used by the same allocator context for enough
+time before migration.
+
+
 > 
-> Reproduced unprivileged on x86-64: a 2 MiB anon THP is marked MADV_FREE,
-> then MADV_COLD races a store from another CPU, then MADV_PAGEOUT; the
-> stored byte reads back zero.  On current mainline built and booted under
-> KVM, the race lost 131 of 8000 stores before this patch and 0 of 8000
-> after; a store-before-COLD control and a MADV_NORMAL control lose none.
+> IMHO, pageblock is already acting like bucket, limiting allocation
+> range. I see each pageblock a small bucket for allocations and it is
+> better than growing allocation from one end to the other end, because
+> the latter means unmovable allocation can keep pushing the boundary and
+> the boundary might be able to move back if there is a long live
+> unmovable page sitting at the boundary.
+
+I think what you are trying to say is that a long-term unmovable allocation
+at the boundary will pin the boundary. But that is fine. That boundary is
+not a hard limit (I am not claiming a bucket for a certain type of allocation),
+the point of bucketing is to skew the probability distribution
+(allocation distribution) to one side.
+
+Codewise, the loop looks like
+
+migratetype = gfp_migratetype(gfp);
+choose zone->free_area[migratetype]
+
+In that, choose the least bucket:
+zone->free_area[migratetype][bucket]
+
+Which has list_head[NR_PAGE_ORDERS].
 > 
-> Fixes: 9c276cc65a58 ("mm: introduce MADV_COLD")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
-> ---
->  mm/madvise.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+> At the moment, anti-fragmentation is only preventing mixing
+> movable and unmovable pages in a pageblock. Rik's series[3] is doing
+> additional work to keep unmovable page allocation within a unmovable
+> pageblock, further reducing fragmentation. That is probably what we want
+> to get in first.
+
+Indeed, agreed that the bigger problem is pageblock mixing.
+
+
 > 
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -426,8 +426,14 @@
->  		}
->  
->  		if (!pageout && pmd_young(orig_pmd)) {
-> -			pmdp_invalidate(vma, addr, pmd);
-> -			orig_pmd = pmd_mkold(orig_pmd);
-> +			/*
-> +			 * Rebuild from the entry pmdp_invalidate() exchanged
-> +			 * out, not from orig_pmd: hardware may have set the
-> +			 * dirty bit since orig_pmd was read, and a MADV_FREE'd
-> +			 * (lazyfree) THP whose dirty bit is lost is discarded
-> +			 * by reclaim, silently dropping the store.
-> +			 */
-> +			orig_pmd = pmd_mkold(pmdp_invalidate(vma, addr, pmd));
+> Maybe you can compare your idea with Rik's series and tell us the pros
+> and cons of both. :)
+> 
+> 
+> [1] https://github.com/rgushchin/fragm
+> [2] https://lpc.events/event/18/contributions/1779/
+> [3] https://lore.kernel.org/all/20261007021250.1665929-1-riel@surriel.com/
+> 
+> 
 
-Okay, you are saying we can lose the dirty bit that could get set concurrently.
-And if we did an MADV_FREE before, we might not detect that the content was changed.
-
-
-I suspect this found through the help of an LLM and not an actual use case in
-practice?
-
-Using MADV_COLD following MADV_FREE sounds odd at thirst. In particular, when
-having MADV_COLD race with actual access.
-
-On the PTE path we use clear_young_dirty_ptes(CYDP_CLEAR_YOUNG) which achieves
-the same through ptep_test_and_clear_young().
-
-
-... where we also just do a
-
-pte = ptep_get(ptep);
-set_pte_at(vma->vm_mm, address, ptep, pte_mkold(pte));
-
-in the generic variant and rely on the per-arch variant to do the right thing.
-
-Which makes me wonder whether we should actually have per-architecture PMD
-helpers for that purpose?
-
-
--- 
-Cheers,
-
-David
 
