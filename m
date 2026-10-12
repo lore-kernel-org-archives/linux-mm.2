@@ -4,155 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAC2ACA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 19:44:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E108ACA9ED2
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 20:01:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6C916B008A; Mon, 12 Oct 2026 15:44:08 -0400 (EDT)
+	id AB54D6B0088; Mon, 12 Oct 2026 16:01:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1D756B008C; Mon, 12 Oct 2026 15:44:08 -0400 (EDT)
+	id A66B76B008A; Mon, 12 Oct 2026 16:01:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90D796B0092; Mon, 12 Oct 2026 15:44:08 -0400 (EDT)
+	id 97BE86B008C; Mon, 12 Oct 2026 16:01:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6219D6B008A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:44:08 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4A576120A1E
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 19:44:06 +0000 (UTC)
-X-FDA: 85315000092.05.ED2C13C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 76F576B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 16:01:00 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EC1C3140BFF
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 20:00:59 +0000 (UTC)
+X-FDA: 85315042638.14.09318F8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 80D1940002
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 19:44:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HBvJzKuB;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2B40EC0009
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 20:00:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a7uSih0+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791834244;
+	s=arc-20220608; t=1791835258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dGLjQMre0HMGUZXG9eppSTB0wCfCdRy2DDP9ymJkK9U=;
-	b=45qAHYjUp2/1iDUqXvdK9shWOADs9kmUMGOZ0tPYdT+iK3NViddAHnFQzlvJrwVgkaimWq
-	cVq/o0Zpt5HaCgUUnFCytR6NejZNU+vd1fxCo6tD9EJiS85Zu3uABZhMhRYR2J8y3RxDnf
-	kBdF3YKO5vgbCJo6Ma7AawCMLjG6OUw=
+	bh=K11kw6sxAxVo7MdG1IcddqCM6rMQ01SADHyb+upAIqQ=;
+	b=Tx62VdfseiZQa0UN8sWTfCSKnVhh8xVuT+54+RkdY3jTepN4ST2ZBEiH0sCoeFFeLYB/K9
+	GZgQB3438b4waNp7A19bCqYyGdONcOvPervi1jU/KurIEiq/owngInBD9xfrkdNwZcTf2j
+	ufkDh2PPXrOzOAKud56iuy5eIvegKwY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HBvJzKuB;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a7uSih0+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791834244;
-	b=WTGu60JbU6U15dWztk0UwuTGZ6Rc8HkF76W91BaOp5l3JgKLIr0AvVGUiByNuMQgWMS3Dg
-	5+6V7OxOK57oe0dDTN/MO81XXWO/zFJmazLYCTXCG8LUiuQxy+nrv1Z8qaCzSGcnB8JMkz
-	bNxe+fy+4vTt7q1/C0enNtFuBihqL/Y=
+	t=1791835258;
+	b=ysXHtoEUhgcx+WISpN12UHjr/xFKkrgjwN3oYzMxNzWHGXbaPExcNhQLE2enGkmKbTSQ4X
+	egqp2ez4ToZ0AW1zROq3lRPFIO5/fvk96QFEY1dzMMbogC4jdVftGGoPnO0qDqLUXiRCPS
+	9IEV6ZCl6g/hoyxv7u+Lbricfoy/zrU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E4FE240179;
-	Mon, 12 Oct 2026 19:44:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77A11F0089B;
-	Mon, 12 Oct 2026 19:43:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 13EA843B53;
+	Mon, 12 Oct 2026 20:00:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EA81F0089B;
+	Mon, 12 Oct 2026 20:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791834242;
-	bh=dGLjQMre0HMGUZXG9eppSTB0wCfCdRy2DDP9ymJkK9U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HBvJzKuBOdeBqh/QLKaqbF4vvScglNF1iPQzZnras/u1vdP8rIsJVOAlS4mVUbJtV
-	 UmZW+8j78SfxSmWKbwA6OBme8ceC+KRnzfW0KF/H2rwJqaEMIzGLsMczRgu5h4k9YB
-	 i28BL29d1QfoM5ZN1D7Nc7ZYnFYMFufPkNIhwA/D2t39zLDFhnB/PNYxRk3AAOhG0N
-	 Uw4qb3awkuboFPoF++jrktejbNGLI4kmDMuVMGmwTQ2IduoR6c+FQ+T8YCd4gdldE9
-	 n/NjaVoFm+8Cn8APSaUjyNSGCZvSBWwi6e6v+s7K8pAPIjNWvWujPT6uAywcOtkePv
-	 Uu2rgqxwodJ9A==
-Message-ID: <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
-Date: Mon, 12 Oct 2026 21:43:50 +0200
+	s=k20260515; t=1791835257;
+	bh=K11kw6sxAxVo7MdG1IcddqCM6rMQ01SADHyb+upAIqQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=a7uSih0+PNDDade+F/+WyATs5BK/TSjcW4FQOY9UK/vuZ4NWQUmtB5ehgD5Ij3KVK
+	 XC0zI/Nl5bpFeJCPGMGoqUirRerSskjkP/EfgY3ps+M10bN+PipSe76x0rq0Iam+r4
+	 rNQIvEJWrYGwNKzO8Sd0A7Tjdj7l8Doi6feY9mUosNQvPuBuowq2jI9TqhlBkPXHgS
+	 I4CLH6Z/2AnTa2JmVFh3Mnu2rOVgr1ekKFquDJDv1XSc3n5NmDXn0BhhBxtL1lSZjh
+	 xUlfam7H6AoHLtDouxCOOQgTuszzhohzz/Qb8JVJOP4uvp8qOCVTttOZ+Zt0eoegie
+	 xTA7ai32Y2rTw==
+Date: Mon, 12 Oct 2026 21:00:51 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Samarth Narang <samarth.colleges@gmail.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, jannh@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/madvise: keep the hardware dirty bit in MADV_COLD's
+ THP path
+Message-ID: <as08NnPG1AF2cG1Z@gremlin>
+References: <20261011132227.413217-1-samarth.colleges@gmail.com>
+ <42087cd7-473e-40a7-ae63-3c841c615c8f@kernel.org>
+ <CAAbz3fTZyeDL1Sy5FOxuJ8e0zgM5SJa1UKa7sk2apkaJFeeBaA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: Luigi Rizzo <lrizzo@google.com>
-Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
- <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, Joshua Washington <joshwash@google.com>,
- Harshitha Ramamurthy <hramamurthy@google.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
- netdev@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261003212241.3432303-1-lrizzo@google.com>
- <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 80D1940002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAAbz3fTZyeDL1Sy5FOxuJ8e0zgM5SJa1UKa7sk2apkaJFeeBaA@mail.gmail.com>
+X-Rspamd-Queue-Id: 2B40EC0009
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-Stat-Signature: e5igccjkjbgo9hrxbfybug4qd9fdy5wb
-X-HE-Tag: 1791834244-789436
-X-HE-Meta: U2FsdGVkX1/r4nhuuED60ztF0HsTDV9DAWFHSkEVLXK+H7IgpHAZmlNp9o994cKSgCOZOA6YZ6lDL+uvfVGj2q2cwkJHEG7JwA2SYXEoCo/MrHgs6KC+1/dd9A19PFQS+1XSDDZUc8RQnx1HrLQiTTv4oXtvYKRWIy5rZY69XPlJi1NIgKxkcuw3lTh3bmqUSyHhF6Tn9bTW8Dk2syWfZooRMrVDXDrLI4yGgSMgVkVp0oD/BFyWeP3Scsa3GzsRXcpU+uQsLJfe7luZolvTfHmq8Lolji+0YeI0jHFihZZczyEVuNkhyqBdVmGlUu3u685Yr3paEQrCwWoqeXsZMyzsJO+LTxf5ORLMf9DWMo5vN1Bphv3j55TAZOpQv5riiWi2XM+SSn3PUAZjzLe+l6geYSI7vm1PI/hdqvhi7mVwhqfNgkbZSTlML29TuIKbwUSzDGpzDaBimunCwbJe2THkRIDWLJSR12aR8eS4JWzQHkNKc7RZ61NrvroZj2SabQair9ZyV6iQ45m1ltu43rV1Fmii3vZ7KNuGcMK3hhmYI81RKOQ1Yp3rhv4UGKAvsxift+Fq3/WYfJBkb2xFpVXGnuyoifGCY33YPOJBjl+kTviIDc432sGmgC/4uOhOuqRwrOgr+nU7g2UR1AAuTj5Sz/mxY0hEQl/L+7I2fcB+UCLRRdtV/qOW5apqP4cGzJCUQULbmH0Rc7B+dp+Z9w8xwBTByyLWVvgxHOiHVFAHhi64h6v7pYHaRyPk2Z83amVcEknSkEmKqsXlAo1WGmILQrKO3pojhUgcTdEio6AKS50CfM4dBHx3DaO+SeRCkhrwv+3hOpgHzBMlRSPmFV4ouiLAOGr77qtAgoQflePd5FxdSEBBU1GeyX7yUhwbQXfu3JQy90pSjTQl7a5cO6ZShAUyY4NmYSZlQWXYG/mMx5QiDBkjL+Kko2Q9lEaXNm8NZgBlHx4Z1xLtfkq
- yW6hTFK9
- JOyq0NK93dLhwDAv0wZ7VxPejDq04+WVBPSLIkEkRJ8OSQt7VmtfYnn2+OUyl0Vdx3gh9hi2Wn3kcZx/xOxBa7+bvzfYZxIeOIVrCA40f8HnRy0sP1pXY0PoZUN4pX3zgZYgvldWuB/ZkhlduSC/UFXEppmdkpcio8s8n1wTtHMRKryaJfItzo9mja0wB9ifznwxNxhSW+TXU5mNaDS/06+pMoRjmf34oEThA9ve9fV4W655ng3bXGl5laQt1Bsg11/jUl6ViY/ROioOZLdXWP4O98BWtnTm4Jk9+LjU+7pFx+s42Da27eanIgO/P5LjfOVqw1OvkF8VpMWDt80sdlMYRfsdrnPlX9/fNvQXQuDgvqSaiprGQ+6Eo9NhaHDuJ5ysmDxo/hhQ4z2uEzQV6untLqze8vN8BAz8twCvnb636PPc=
+X-Stat-Signature: zkwt5x9c9ef13uxywakw9c1b45zj3bap
+X-HE-Tag: 1791835258-929821
+X-HE-Meta: U2FsdGVkX191w8yFoWz0PkUh/sp46KX1UX+S1AhbK86DDYK5eBcX9ziIAYlkwqcmTbdjEcXONNSNRpE83pp2TgH1Tj+Alb3dwoP6g48WufJLvLgL7NIlMkwUsWICvqSDnR/BmgdkkCLEWVvd+dcEYwQkHMBiE6jUrhWvWrIlYKHRYHbAZTNXNSHx66VD02tWVT6QsgsdMXdntUtt1Dv8b3ui1AOrer5/WQMcGiqrhqgsnJbw1G0eRuT+7+rnx8pclUoQyJcCdju3hKCWpDxPAD+nChDEPNVtcVsRU3d2W0X2WUPoF3N0tBdcz4fOaGkyow0VZv3nQIfV4hUU3dmtGdBJFVMERkb05Vpaw/GYvhR/a19N2xYg0qfAh9OwcbexGnR5jD5BzN4U9euLX9sF1OnL1uwEQjgcGZk8qJ8FDK83NLEGRAWaNCizrk9DdjcdVJcVGr6M77sxoEvhg6MJwA7KNYH8GdR250JZZZAOI9m2KO8EJ+9Fkri5fc/3Os1UbvRplrYncCbvv2Na32RYxqsbHsVnhOEnbgX7kmGsZUgUkoBEJ2wR8vqIHStuqJxzuu30s0TusPyOQYogWNHPW6V9f+0jHoGO+Fb5nnQ5QGbqLdU7/SNn6iSQ2a6Dn913kv1p+SWtrTloixEbDZTt4Z4MAhibzbi+Uh8cP73fRRF4XKVEoUMOwx+SXy6RukH7yQQ5w/vnwGU1X5nXL3U3w8QowmAyU8iWZZ/NA7jHJXdwYxVog+P5X0W1gJBts+FRkJ2uZPu7U2xCng1U9Gq0B2gJlKNk5hdnFHYPJeBRJaNdaBtXirluh4W7umxw7dot9+XJFSHOnLgsB9bKXijFXvOSaT4NQjEEw4qEG0X1QpDSk/6rTB/zNHL1mSkDyD5K+YGPm9AfrJBgQWhIuvoGJnrF6pUd0uRmuGq9MY47Qux7476sTKN7cKRAY76bUM+AwV78RqFPJ/d1zCi3bLO
+ PS+sSgp7
+ QOUPBt476JBqmEiT2O9M4qfiOfTv377jY0IqFPizd57dexDFFrxb+YlNk0jG9Af2+inIPxvUZyOOwXflrF+4p5u1qeiESnsFMmygweZ3vGWm4+61Ie9pkyzY6MXtIsuXzsOYbP1foZx5LNUyM8EZxXtwkflFU5BJ8WUvgqPgdnqJl0zjHH5AidOo8pZXcHuBefvY86eFfyUWKcHs0zoIWvWAOcNTlZGdfLGtfwDJIhzHpuN0oVq0tkD6ZE42+VNQUPepW9wdDZxonjFmUJkKDwkbLqiV67f9BZcexe++4YAMw7dn3IQIcUEc3Sr97QGhILlk7qJrbMuAXnUXp2VC8pfiuSfuklHpUemk6gfSmBFjsGKNu8Rp/t39mPw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,38 +94,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/12/26 16:45, Luigi Rizzo wrote:
-> On Mon, Oct 12, 2026 at 3:51 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 10/3/26 23:22, Luigi Rizzo wrote:
->>> Here is a subsystem called DMA_PMD on which I would like feedback on
->>> architecture, possible enhancements, or kernel components that could be
->>> reused to avoid duplication.
->>
->> Here is a feedback to a subsystem called DMA_PMD ;)
->>
->> Why is basing this on PMDs (and embedding it in the name) the right approach?
->>
->> On architctures with large PMDs (512 MiB on arm64 with 64k), would we really
->> want to use 512 MiB pages, or rather something smaller (e.g., 2 MiB) that might
->> possibly also have TLB benefits (cont-pte)?
-> 
-> I had to call it something... an earlier prototype used the name IOMMU_2M,
-> but I didn't want to suggest that the design was limited to 2M (it is not).
-> 
-> Aside from the name, the _current_ prototype restricts to 2M allocations,
-> exactly because too large units are expensive and wasteful.
-> 
-> In the code, decoupling the allocation size from the PMD size is trivial.
+On Mon, Oct 12, 2026 at 02:25:38PM -0400, Samarth Narang wrote:
+> Thanks both for your review into this; I was building a structural detector
+> tool over page-table bit paths, and came across this.
+> I got agents to reproduce it on x86 where we mark a 2MiB anon THP
+> MADV_FREE, race a store from a second CPU against MADV_COLD, then force
+> reclaim with MADV_PAGEOUT. The race pass loses stores while the control
+> pass does not.
+>
+> Based on your suggestion, can we clear the accessed bit in place with
+> pmdp_test_and_clear_young(), as the PTE path does via
+> ptep_test_and_clear_young(), instead of rebuilding the entry from
+> pmdb_invalidate()'s return value. I tried this patch on the bug, and the
+> fix holds. Let me know what you think.
 
-Yeah, we should do that.
+As I already told you, this is being handled by a member of the core team,
+thanks.
 
-We should probably just find a way to describe that this is a POOL that focuses
-on physical contiguity in some configured granularity.
-
--- 
-Cheers,
-
-David
+--
+Cheers, Lorenzo
 
