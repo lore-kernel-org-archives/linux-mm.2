@@ -4,92 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3124ACA9ED2
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 07:39:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D63A3CA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 07:57:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2AD2D6B008C; Mon, 12 Oct 2026 03:39:22 -0400 (EDT)
+	id 9ACC36B0088; Mon, 12 Oct 2026 03:57:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25EAA6B0092; Mon, 12 Oct 2026 03:39:22 -0400 (EDT)
+	id 95DD66B008A; Mon, 12 Oct 2026 03:57:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 174CB6B0095; Mon, 12 Oct 2026 03:39:22 -0400 (EDT)
+	id 824E26B008C; Mon, 12 Oct 2026 03:57:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E6CA16B008C
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 03:39:21 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 86F5E409D8
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:39:21 +0000 (UTC)
-X-FDA: 85313173722.07.5C0EB3C
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 86C601C0003
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:39:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=i0lGTdAo;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 59C496B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 03:57:06 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E0A1E1C435D
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:57:05 +0000 (UTC)
+X-FDA: 85313218410.11.C80943F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E45CEC0003
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:57:03 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCp5AN6k;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791790759;
+	s=arc-20220608; t=1791791824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ml3XzqnfvkPoJalIiDoqIEaqIWpXPrO+zTg3b+pyBTg=;
-	b=HfsU0EJnDEu9SEczEXZn8NWk2PWFwRdMRJTHpp8vHmq0TMRUdssxWs1K/6kH9sE34gg7A4
-	TQRNQShvQX6uas0HVawGtxfp0ZGEjewf8Q4U8ZOPW2SBYnACee3E4SZ15TWls5HzR6dKJ2
-	etvSebu+DTYraQ6Nu+cQv1gWwJRHahc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=i0lGTdAo;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=gowwe8axss2+O2HwBq41jmehPF78rOiKV0GKeG6qTnI=;
+	b=iW7VNvjBmzovdgYdYmn2+hNaG0ok3oQEpTOUe2YlM9j/7l6kZyRRZ/V/zC3iMo1wWAzgxd
+	l2r/eFq2AbSGTgYBqCdtTdxjID4Weo9rpsGKIGYFNrIER1dC3Z9kdaEBAJSvpz+UcvYy8Z
+	y/C1m3vonYbzktPqloQXbAotHsLJlIc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791790759;
-	b=p+Bdgg7mdN6JYvNXlrkgKSHAUK1e/Ibqm7PBgxG43QH2Dhp6Vfkx1tAqkIacDHZR+ARW7Z
-	NRT9jp8HWE7gLUiY/c3DIPLepGOr6UMW0Uhx9cUH+0HA8OI5ygrZQqWFRGJhKvE0JQGghO
-	TRbXeWKKM5CpbdFRiu6PKLR/3ZnJOR4=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 04CB61650;
-	Mon, 12 Oct 2026 00:39:15 -0700 (PDT)
-Received: from [10.164.19.62] (unknown [10.164.19.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 137743F882;
-	Mon, 12 Oct 2026 00:39:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791790758; bh=QFylubiAn6XF6+4lXPZWi1iu+KACNJaGKaA1OI3cGV0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=i0lGTdAoo7yNW9SwE9EHgLeyVZtho3vPYbLDUzDNLp0AxWuYAdwb5P/QXd71ZeYdL
-	 OFHKbtD9gIlK5bb/aEwzvDVLDFJC+bn0oTyJtfKJ13Vjfq7MvuaZfl0HhJzwaQRrAl
-	 ULUyyhH0aFG1ImOrjhUsnfRaO5vb7E26yyFrvCc0=
-Message-ID: <4f812ef0-ab14-48c5-908b-b7d82ce418b3@arm.com>
-Date: Mon, 12 Oct 2026 13:09:10 +0530
+	t=1791791824;
+	b=eNSjjiAxxHAhQ9A+pcuAIkCWPV8nhXcv/0C6BJrrUDlq3tOZyqWH2M5IRqWtMsiaED2QBw
+	gvx6XvdmZW5hInCGtZkLL780tW/MbmwrbcFrpU397PJAuQi0G+Uly5HVch6IjXjtHvvzTF
+	1nIH5Ddqe++2nqm7S/wNj3bT4rh3tGg=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCp5AN6k;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AEF1C444FB
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:57:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9707C1F008A7
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:57:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791791822;
+	bh=gowwe8axss2+O2HwBq41jmehPF78rOiKV0GKeG6qTnI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=YCp5AN6kOS191mseGl+KnE26nqDGIc9TCMHWBCPFSyVGzakxThxu4+h00m6+H2ojT
+	 MgK2QQ0lp+fmB1vcsEHNGXS+9GbTjxYbCFK/7GZMU6BFuX75T4a2LSbkG7TSI+ytPE
+	 QL+kb7P1BMJcWiR507Tnh/jg69j16hzJql3GOuBodlFPk7Mk+4JNyhTQHQhgiDje/A
+	 hsWAzV4aEWPFZ81cMF2g4H4WQZf/GoCUX2Za6al45NJr3lOictWLvr2KNIHKc5k5Mw
+	 vnejxbBp8aPdy040DJqX3YgaNH1VIleZJnEWONXv+hq7RPgHdeKUsH5PB1dMaXEKgf
+	 EttyiwdA9w0KA==
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-917b78dfe30so30679466d6.0
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 00:57:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz4jJlHEhuQupBFVuXGQ2p57NOeGOK2Y0Mmfn10zKYwQvXuZY2oNy5kh14sh3WcYhJHsul9hRHncg==@kvack.org
+X-Gm-Message-State: AFq9FYI39dvp1iwxROcfRxGvs+8ZxYQSeRCjL5AvYPlYeCp8zJRv3ZS0
+	PxmCqD6bU2Vusqdlxjb8TIrv66xWvmCjP9BNRf4ZNyvoiPmq+/re705yKvndKFnAB5C1COXb09d
+	j04qYYtICKJ+GqD8lgWU8QRWEgnsB1Lg=
+X-Received: by 2002:a05:620a:2b8b:b0:93e:c12c:fbb6 with SMTP id
+ af79cd13be357-93ec12d082emr1367857085a.67.1791791821896; Mon, 12 Oct 2026
+ 00:57:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 05/10] arm64/vmalloc: allow
- arch_vmap_pte_range_map_size() to batch multiple CONT_PTE
-To: Uladzislau Rezki <urezki@gmail.com>, ryan.roberts@arm.com
-Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org,
- will@kernel.org, Xueyuan.chen21@gmail.com, ajd@linux.ibm.com,
- anshuman.khandual@arm.com, baohua@kernel.org, chleroy@kernel.org,
- david@kernel.org, jiangwen6@xiaomi.com, leo.yan@arm.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
- npiggin@gmail.com, rppt@kernel.org
-References: <20261002090947.869220-1-jiangwen6@xiaomi.com>
- <20261002090947.869220-6-jiangwen6@xiaomi.com> <astarANeoldvqBxc@milan>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <astarANeoldvqBxc@milan>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 86C601C0003
+References: <20261007153915.53429-1-alex@ghiti.fr> <CAO9r8zMHKmAQT8WBAd+kkQEjETVvyHhfbESzKHpXXPQJUB9nVw@mail.gmail.com>
+In-Reply-To: <CAO9r8zMHKmAQT8WBAd+kkQEjETVvyHhfbESzKHpXXPQJUB9nVw@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 12 Oct 2026 15:56:49 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4x3JL9JW2cBXPo0j_8-2d6XQQGSpBAkSf-8Hw9N=0o=6Q@mail.gmail.com>
+X-Gm-Features: AclHuK8gJTkY2DRBIX9AcRDZ89iXtxeakHxULzQhlgHDZmLjl5T6JH2Ua3dDbhA
+Message-ID: <CAGsJ_4x3JL9JW2cBXPo0j_8-2d6XQQGSpBAkSf-8Hw9N=0o=6Q@mail.gmail.com>
+Subject: Re: [PATCH v3] mm: bypass swap readahead for zswap
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Kairui Song <kasong@tencent.com>, akpm@linux-foundation.org, 
+	hannes@cmpxchg.org, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
+	baoquan.he@linux.dev, youngjun.park@lge.com, chengming.zhou@linux.dev, 
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, ryncsn@gmail.com, 
+	chrisl@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E45CEC0003
 X-Rspam-User: 
-X-Stat-Signature: htio56i95nxuu6dz4s5f8x9mw9otbhgz
-X-HE-Tag: 1791790759-518309
-X-HE-Meta: U2FsdGVkX186KsPMbgvSUPFPk/QZYfdRvaTf15tgY4Fug5ozJT+NAIwZJ2F6tRh1YPwUQRuIHy+iunXKiYAvEy00Fbhrzg9byOYCMy1VftdL1n25A4UB3qJ5HowvJdR2rRMEnMdcDB3XNBogkaYdZ2oBojI1RqnIO874tehuhbDoHZRpNAr0YnPGebZXrGF309xiGSVhXi9kwMnXI+HMkIY6gbVjz+Rb1REhPrc0ztC+Qek2pddcyS282z9OQzODBuaECVoKAK5eKqRye/7BKGPWakhMpvgbDsXsWKhJAJVwq7yktxGZlv7il+eAr13FxII3UryMQf6KeObKf5Mesp7a1JF8XzhrOcfWWHhzAltnZxQgdbCeRS0/vIMTXW3SuNh9Ru3VXfiMgeD9DsExX2lTAw1baZkI80IkiVdMsPGMmj68GxJsLzyaGhUG2dGxy3Mc1hjq3MG/dJVro9usoOQNbl00NKE/tgaGwZhZ8qOJmZt05QVZCmNttd0XSY+WV3V3QAOjjdKfsN9Hz177Hjd6GvjaQi7ahZKm344rMAiYUscIvdywSaS8ZGKR5C4SP0oOuMK1fkz+gEmGtOej2u6Czs/EN+nRljD5FmGhHcH7/501yrFKVH96R9JuUujihSPMwVqXZ7m47qHS7Bl4xkXqacmDH6Ec5pWIo5kyA+HFu559GX2V85fXNDKQLARcCGr1lKhpNAZMe/d54USKvy5CS8qzs6Rb3+lR0CGubL2ax3dDrnF2r+RieOcDnOgTe6ayANZn8HT1jcoRwfPilYcmLptPLJsxZUlCRB8Y0vBp8CvHasqiUw0XhjvETLswyyQ2PGD0NtSHfb60k+dfMJD0+1+DncgD8CZUiWDH4pWj/YyY4xI8MyQJsEGiSi/VhTQa06RtbHGsLkaUAZbLHS6tupwODgYGQEAjGAV/Rx+7tbLqLnCaNwAqA2RAyizxB5tY72sacyPT7oDNFOy
- wjJO7MRd
- Le3emAaEp6Hzt9CtMkAZOOBKcl+nLpTgfYtnyulkMSOdo2xSReIZdjvDVJY/8J3+PRCuZcZuVk5D17iVGDXdTXcpHpawgRe7ykIJ+G4ek0++9JUY8qrcibBfHtybhbMa4Chqfp4rNILXnZ9Qv1hZR/JHtAuN+84ltTG3SMXgy1n/sdRsJ2WB8OXZD0J7QOphdFun5O1Py6Cy9dHcNRPOIDLOIfJ+Asu+1DeSVVSFxBZE8ABREYdwiM10ef63rpAoGs8QEn1LTUaGM7LbVecPsN2CDNJ+cMXd7CxtWGZxmfvKjEhwu3Kh7m4Ee+c+KW5+PVZZ5ChHuNUM8oaIva3kAKZXuoyEGNKNWjfaW49jo156bJrVLmRWifk9HNPoTEUb2TUzLF+XUNGO97zqf85Z0QX0h94EbRT2MMzuuoiLkprVvsQM8jMzFQwfMiUoz22uf3FOlB4vUfE290e3xnZBW2XD6o8UrHTFZNx19I/yRuj03BLA=
+X-Stat-Signature: t9xqj197a6nk9pfhpuwh5ph4r41fc5dn
+X-HE-Tag: 1791791823-356452
+X-HE-Meta: U2FsdGVkX1+4QedBh0CAfnybg5s66+i8oZRXh6QrLi80IEwg1ZzIx1UjSzInoH4m3u+mVwh6mLu+20uIMzMGcFeGtq42JZ5nbXocMyTw7f+GjVw8c/6Eq4y816GuFOODNtKds3yy934/pwJRz99ajTcg7WErxqnm08lx83+wMWgneB3QsEqfcQze0ae6lU9Vgew3p7j+WodsL0c1Q5NS9PzJ9istQ/zDrzLTiBXDccatoGcJuxSA2QlISTVEs+pBdkb7gw5H1//r7oFSk35crrtEIbOZiSP1+/fIVP3jG3DRXFf4k8aQVqScGf4vrulRTtalsBOQS1aII58kAndIjiQfRYnDd4vd+V6ycxsfnt0KoauXBYuax9pZmTzInZv0mcnDeoj8/5yEzWrW+x+bdEOl0YGxhxN7IbT0H04j/GB6YmLvirGqNfzCWdEpLYPorBeaCjOiTDydIoAvdnfVJ3PB2pvCicleboJ1o21J2AAu0T22S/uLZ37cjhaXMGpo4HvFLV4AZZoKdyuZgkf5R/fifrybUq9TT5sMvyVzBktuApMdXMjzBgCFCa7EXySOsoPB1OYm9s2IYLaw8iAOQff6QoolHGgrlyaTU+jsZuUfkfnfiz4C9uQqDM54r50JW/aZL1kt5T8wS0pxfGzk4ZZVVsAPKGgf9SR72zWrXedW0/o3G6ZmbEud78aFlqgUFIs0WVm1cjFPdsd8/Jf+vuajteP8++JwTDx55WNd+KvI0M0KNg8qHkdejH8sgIq8QAWbmv+Exq6FDps1PzPXb5qXF9TWGRz2+crLVZnT35tP9mvea2Idu6AWsjgFdqdAQKmXOk4Sh38bM8NzxLk6uIYfOWZCbuFHBOdH9XNm4NAUeUS3xwv/7Tqx8E2WC08oHkrX02AIqWJ8oj5YhuIMEdfGSgFwBZnFJ8d+G9KAKBTkYpVStFtyumJL3rFXstwx/VSN6rQm5N7i9o52TM1
+ edwKgsDW
+ hDqZSXKuLfQTsoGIEommxtEIDdkZerzKnx4M9vkBg8M/7/IEm/p/SYlMECMk18KNVFmIEbMDlvbXyxE/l56lOdJeuj2SeILlwWVstxXPq4TExizx+w5lqlvgSskrKY3iMVSoFqJH0pHv5lSY1VdZ1OqCzb29J0Thu3LO8D2bck9oXOOKCFRjqQf2zpJnJO50KTpZ1hovo6XIe/Lz/0WMeIR8QDEJcwz6S+duZcrFgaFl1LOsy3oQgASV5JDyT4EPJJHS6jS09y/2wyUxghL3dvDElSS3CY3WPFsluTXOijn6X+x58CMcKbewLxS6lvTmaEplDXPRluwHwcFmTPf2bi7C0E5RFiHrQHqqlzvE3vWVJcJRN4Vt4yzKVmF0YVIPBR+rqmK7p2WMmo5YHMaiuzVUVQorktaU9Xhdt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,72 +107,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Oct 8, 2026 at 5:37=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrote=
+:
+>
+> On Wed, Oct 7, 2026 at 8:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wr=
+ote:
+> >
+> > Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronou=
+s
+> > device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahea=
+d.
+> >
+> > zswap is the same kind of in-memory, synchronous backend as zram, not a
+> > swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
+> > swapin_readahead().
+> >
+> > Here are the results from bypassing readahead for zswap too: it was
+> > measured with a kernel build (make -j16) in a memcg, zswap=3Dzstd, shri=
+nker
+> > off, on Sapphire Rapids and 3 iterations.
+> >
+> >   768M memcg (sustained swap thrash):
+> >     metric                 mm-new    + bypass    delta
+> >     build time (s)          405.0       341.7    -15.6%
+> >     zswap-in (GB)            79.5        53.0     -33%
+> >     zswap-out (GB)          144.8       115.6     -20%
+> >     swap readahead (pages)  6.79M       0.45M     -93%
+> >     swap_ra hit (%)          72.1        89.9     +18pp
+> >
+> >   1G memcg (light pressure, build not memory-bound):
+> >     metric                 mm-new    + bypass    delta
+> >     build time (s)          177.7       176.0    ~same (no regression)
+> >     zswap-in (GB)            10.2         7.5     -26%
+> >     zswap-out (GB)           27.7        25.1      -9%
+> >     swap readahead (pages)  1.07M       0.08M     -93%
+> >     swap_ra hit (%)          68.6        87.2     +19pp
+> >
+> > Similar gains were observed on an AMD EPYC 7D13 host.
+> >
+> > The gain is from no longer prefetching pages that are pointless for an
+> > in-memory backend: readahead inflates anon residency and thrashes the
+> > page cache (file pages get evicted and re-read), lengthens each fault b=
+y
+> > synchronously (de)compressing a cluster of neighbours, and adds
+> > compression traffic when those extra pages are reclaimed.
+> >
+> > Bypassing swap readahead for zswap therefore makes sense.
+>
+> No objection here, I am just thinking about Kairui's LPC presentation
+> about how compressed swap can (in theory at least) still benefit from
+> readahead: https://lpc.events/event/20/contributions/2421/attachments/211=
+6/4689/Better%20Anon%20(Swap)%20Readahead%20(2).pdf.
+>
+> Seems like a big portion of the fault cost is still outside of
+> decompression and can benefit from readahead, but that isn't the case
+> today. I assume any future improvements to readahead and re-enabling
+> for zram would also cover zswap?
+>
 
+In that case, if we can develop an accurate readahead algorithm with a
+high hit rate for readahead folios, we will probably also need to map
+them at the same time, as proposed in [1]. For example, if we readahead
+4 folios, we should map them all together in `do_swap_page()`.
+Otherwise, the cost of future minor faults can still be comparable to
+the decompression cost. Readahead alone would therefore increase the
+total work, which can be quite significant for synchronous I/O.
 
-On 11/10/26 3:15 pm, Uladzislau Rezki wrote:
-> On Fri, Oct 02, 2026 at 05:09:42PM +0800, Wen Jiang wrote:
->> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
->>
->> Allow arch_vmap_pte_range_map_size to batch across multiple CONT_PTE
->> blocks, reducing both PTE setup and TLB flush iterations.
->>
->> Previously the function returned a single CONT_PTE_SIZE for an aligned
->> range, so the caller mapped one CONT_PTE block per iteration. Now, for a
->> CONT_PTE_SIZE-aligned range, it returns the largest CONT_PTE-aligned size
->> that fits within both the remaining range and the caller's max_page_shift,
->> so a single pte_set_huge() call installs several CONT_PTE blocks at once.
->>
->> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
->> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
->> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
->> Tested-by: Leo Yan <leo.yan@arm.com>
->> ---
->>  arch/arm64/include/asm/vmalloc.h | 12 ++++++++----
->>  1 file changed, 8 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmalloc.h
->> index 4ec1acd3c1b34..c29704a19e276 100644
->> --- a/arch/arm64/include/asm/vmalloc.h
->> +++ b/arch/arm64/include/asm/vmalloc.h
->> @@ -23,10 +23,12 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
->>  						unsigned long end, u64 pfn,
->>  						unsigned int max_page_shift)
->>  {
->> +	unsigned long size;
->> +
->>  	/*
->> -	 * If the block is at least CONT_PTE_SIZE in size, and is naturally
->> -	 * aligned in both virtual and physical space, then we can pte-map the
->> -	 * block using the PTE_CONT bit for more efficient use of the TLB.
->> +	 * If the range is at least CONT_PTE_SIZE and naturally aligned in both
->> +	 * virtual and physical space, return the largest CONT_PTE-aligned size
->> +	 * that fits, for more efficient use of the TLB.
->>  	 */
->>  	if (max_page_shift < CONT_PTE_SHIFT)
->>  		return PAGE_SIZE;
->> @@ -40,7 +42,9 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
->>  	if (!IS_ALIGNED(PFN_PHYS(pfn), CONT_PTE_SIZE))
->>  		return PAGE_SIZE;
->>  
->> -	return CONT_PTE_SIZE;
->> +	size = min(end - addr, 1UL << max_page_shift);
->> +	size = round_down(size, CONT_PTE_SIZE);
->> +	return size;
->>  }
->>  
->>  #define arch_vmap_pte_range_unmap_size arch_vmap_pte_range_unmap_size
->> -- 
->> 2.34.1
->>
-> This is arch/arm64 code. Can you, Jain or Ryan from ARM folk review this change?
-> 
-> Thank you!
-> 
+[1] https://lore.kernel.org/linux-mm/CAGsJ_4xM=3DWnFO-OuwVude-DQ_UkaCi_zF_b=
+XBP9Li5+ZPNy0VQ@mail.gmail.com/
 
-I will come to this soon.
-
-
-> --
-> Uladzislau Rezki
-
+Best Regards
+Barry
 
