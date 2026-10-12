@@ -4,121 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 473E6CA9EDE
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 17:59:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A10CECA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 18:02:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53B996B0098; Mon, 12 Oct 2026 13:59:34 -0400 (EDT)
+	id A70B96B008C; Mon, 12 Oct 2026 14:02:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 512F46B0099; Mon, 12 Oct 2026 13:59:34 -0400 (EDT)
+	id A21706B0095; Mon, 12 Oct 2026 14:02:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 404CD6B009B; Mon, 12 Oct 2026 13:59:34 -0400 (EDT)
+	id 90FDA6B009B; Mon, 12 Oct 2026 14:02:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 153F16B0098
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:59:34 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97F03411FC
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:59:33 +0000 (UTC)
-X-FDA: 85314736626.30.BD98026
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 496D9120007
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:59:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="jeSTUY D";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf29.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791827971;
-	b=SvBMwI8O6hSoSJi/CfUSPizOINu0kq7uVyWlFN936iyOQiE49e2hljtSHy63cYC7zjmnbq
-	2ibXwmL80rW2kJj7pNh1tY8t2V7j0x4vqtcrbX2ez0vzvXZoAMmRRMb00E3xdL+Oy52DCF
-	DUDVzk2Ops7xLE3wVk64LKq5Sn0XxWs=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="jeSTUY D";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf29.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791827971;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DE3A6B008C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:02:38 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E21E0A121F
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:02:37 +0000 (UTC)
+X-FDA: 85314744354.15.F6CA42D
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0DB6B4000C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:02:35 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Zm9Vc6zB;
+	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791828156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sSqVsa7i9/0F94O69MwWRbVlnv3K0SgetLyAuG6UTWE=;
-	b=ev8E3hg0LbG/JJsvCeK+R1wVU8zTSwMG9Q+1tATm5dt7cKkPuH0ZfQ3tKTXxkjH4Sa4OR8
-	AppIMbpiMI4ak32i69LJLpnr5ES4fFl63k5m52L5MfP3sCsc0OmxBha1NSocRoxxGQfAIz
-	cKuryBGWu2jpQvwtnRz8yazzbRGMKEk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=sSqVsa7i9/0F94O69MwWRbVlnv3K0SgetLyAuG6UTWE=; b=jeSTUY
-	DeUDo17lXLykd9R+RCjk8/w/Gp84CsB78GurqVbeBQC8q01gsTjH1Q/FHw8TpAvChnH93OQLvCcDw
-	Gew0ci9/BDMbTKqN46a0eaYh3pakexQT42lD20jPc9LlBle9F0nyghOaVN7SH3Odvpsnwq6Nz3et9
-	KHQDC0nKt+gNl+0hHtZc937gdIwTb0Ke94/lmcCXRVTFKBt7kCN9x8/tPytSkNTkhAdF5Zpp0ggvQ
-	wAErXvl2P5WpbBPXAFykQpnWTNqZ5Omj8moMZx2VcRAfMPS3PP/D5QA9eX5ywWDkggngkpdgyzJiZ
-	xu4wwoW6went70/oJttxl7NVZq/g==;
-Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1xGKIU-00000003Uxj-3Uz3;
-	Mon, 12 Oct 2026 17:58:50 +0000
-Message-ID: <ff62aeaeb5ced49640c959c047b2e9f320f5c10f.camel@surriel.com>
-Subject: Re: [PATCH] mm/gup: batch PTE-mapped large folios in
- gup_fast_pte_range()
-From: Rik van Riel <riel@surriel.com>
-To: Yuan-Hao Hsu <aa9736195201@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand	
- <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard	
- <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Lorenzo Stoakes	
- <ljs@kernel.org>, liam@infradead.org, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,  Aristeu Rozanski	 <aris@ruivo.org>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Date: Mon, 12 Oct 2026 13:58:50 -0400
-In-Reply-To: <20261010195202.689-1-aa9736195201@gmail.com>
-References: <20260917083747.786-1-aa9736195201@gmail.com>
-	 <7dd4ec994502233cdc09fe5c4369adc89168d738.camel@surriel.com>
-	 <20261010195202.689-1-aa9736195201@gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	bh=f9aoCkFfSDX2/6XxSiLf6H4ohGMtImVLYKMUBsJfeiU=;
+	b=S4UWZGPOwx2DmOW2KNVVz2NGce9g5IUL9u2ZbTu/eD6Yx4/a4qoj9VUHsIS6ggMx3WwPVc
+	3bmsl6MT/sqJT2aHjKctSmf9xqF8kYT/lm3mh5HxieaEptvQ33Y/IhjxsIuEpMroIn7GJ+
+	jNPBLN2gdpb6b97xSIggMTQHLH7tm7Y=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791828156;
+	b=H/O1KYKVBAfatZ+RV1V3DIaSe8Q5SnCy+c7EJhLWf/btZaepEFjqXB8SFOmRh4ypuuUtPk
+	5s+jLRXfMkjURUL99n5VYNn7qnJOc1UO6YpuACzVijib5d5AMO3IvqHXW2jT9lX7MKh/ix
+	jYE++oykPBZ+0mUECgyeQAbRNzp7C/o=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Zm9Vc6zB;
+	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3a1f628b1d1so15410721fa.0
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:02:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791828154; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ms+ncsMCUXsdLj9OdRYwVKLPLvZ3QOkyRFKPduKY/GFyK2qdOkzRGHk0QdE6RlFANC
+         xOU7SEZxHqBVKcH5fhYqnjEx2hs+tw4K/JF/4LFvdI+MkUEYzQkJtnZB4aYhRfYruUYe
+         sZrJSJ17ldAk9eKgKsMkwxFkvIq94U1a9kxBys70DCTymwQGdq7qQH+Jcm+4TKwAIBs6
+         AZqiKiBJoANEXTsMMWH4tdNjcD51UuIRO0fJODor4dtV7g56EeyNpOj8HUZ2FouSzX9u
+         /rvEllpHTy3DBIlzuDMQ5FrZWCM6vzFZLrltVc5I0TQsUFUHdGCwl+jnCSpkHaxacA7l
+         40uQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=f9aoCkFfSDX2/6XxSiLf6H4ohGMtImVLYKMUBsJfeiU=;
+        fh=7/qrlmZ9HXDez/fx5gvl0EuJ09Kl9im1NxdaCwm/wGQ=;
+        b=CsW2sWGIPW0HpC+YTRdrAktxDE+IOBEBdfjR1my0I4ywIlxUCF396YfJzX7a1l7Hqe
+         3MU+hMJqd2c9+KfoaFu5kmM6ovTuCElBfQUp0F/57PH7fcW2MmsWAWv4x481fhHmtx5t
+         jQPrRNnFkh61YrEv76T+18T6JDipdhPUokGeevpmZGz6dFPiNQDOe1tQcVDBc6BOLoTZ
+         uvTU1mmT46hCaQHE6COTvejb3bCW5MMs02Q+QuGFmq8OSm9AxYjPrwPBeNgEShsMX8SD
+         FgGbTLF6dJ8KK4YEY28kxwflj5K8CNXv09ZnHBn9IruyXd46m28xMtIj6pGdWS04KeKd
+         uucA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791828154; x=1792432954; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=f9aoCkFfSDX2/6XxSiLf6H4ohGMtImVLYKMUBsJfeiU=;
+        b=Zm9Vc6zBTm65n/9aM4jX97QtTajVzh31B7j4dWmizUU+mqebIIJ4bR8p02MW1sGYEv
+         Sky2omP7rFBGckEosYyPbf0gXfs+tm2UJPA/4YquK5F0BoTpN5OBGkdWf5MCS/KamtTi
+         f2R0XqIKOrJ0z8yN8z1JD/DY7lIMSlUHBe6MMQ0txbUWsuJ/UsjEiPLwq6iWpMv5jbsI
+         gz4OogShVf5u/yYR7kcitp4FpXwf8lzngTkfrHZOZ6JHmzHrNX+00Il3o1R2oqn2qO3M
+         joqjy9INVE5WyBG9A/bPgvm0kBTslS51Aq4b6g4ikpQQmF9yUIBAEcY1ty8Zc1Ax/4U4
+         VbKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791828154; x=1792432954;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=f9aoCkFfSDX2/6XxSiLf6H4ohGMtImVLYKMUBsJfeiU=;
+        b=WJQ/vYhBy7tjcWAvz5bQQO8U9IGGEaapNPxBP8oiD8ZjXYRcANEhaEg5NBNvjbl3J4
+         11cK6ySHDiDQc8hRrBn0jn2oLHVJzhJ26ugx1mcSQwwL3rn3rDeXbFgaWMxYMX+rLs+s
+         P4Y9qrO6kofD6qd0q+UyiCXHBGpSeLI8W6WnfuTVmW+SIuoiIGSv7EmvEh4vHU8nXdgt
+         2RO2ToLz8uih3KQhFJZ1shlO+e5syYfgcVUS1f1iCeIJa8XYz7gZ3mOqKh1wsczzDqi3
+         7TNhG3U4tjvZmd9/q/d+qUzL2S6fanqAhVA1RvXrEu5Z+aBDhJpqx8hb6tlc0V0ChB/j
+         2mPw==
+X-Forwarded-Encrypted: i=1; AKwUvBzLadzqw4Z5Khh6TU+R/EVysWDc97pSbynoX+1KrXAbKwRX1hsDdZE96sNIzfVTZy6OIx4fs5foKw==@kvack.org
+X-Gm-Message-State: AFq9FYJazlrK2FToP6X6OGWWK/8ZpbtZXbfLCx8LldG0wSkqZdJPpq4h
+	sPy0vSgm4/orTxtwIxOJ7o/SGUtOaYQa+hgszfiiYlB2PEYrCt1Aek4RS4+ifmyYgGkan4POyde
+	4kGmFFDHwp7uRoYBuJ+ZhMS5dVi9sKps=
+X-Gm-Gg: AYBFou3WXQoj1MKGZESGoJvzgyoFON3GZh23ZZaO02zrkkz22l2gCWeaJ8PvLk2e1cJ
+	5AnwyAWSFPhwCxPf2DAwDj7GJOpUHJzVQh+ztULijl4Ke+AY2zq0NbWBn/4ciCxmjoQWuL7s8v3
+	oE8C2cq/pPpLHcI6MGwM0DyNMO96T8ziU0LmxRoP2Ha5YqIgpJlAE5Xz0iK7aspe7ib+eoVLOdU
+	hwFS6lUyccbDapM+LhyoahqUkn1sAWUb/Y44fLrflo151NeltaUG6/C1n//8gi9P/yN/KSRLnJb
+	Z3RsnvSnpccoF1iE4w6Ex+EcqPZCaZCOyVInxNL39RmISxAFxW8QWHQ=
+X-Received: by 2002:a05:651c:144c:b0:3a9:d377:f5e4 with SMTP id
+ 38308e7fff4ca-3a9d377fd51mr18447101fa.20.1791828154266; Mon, 12 Oct 2026
+ 11:02:34 -0700 (PDT)
 MIME-Version: 1.0
-X-Stat-Signature: kqenwqrx4xmuq9b91pspgpcqyhkfa1k7
+References: <20261002090947.869220-1-jiangwen6@xiaomi.com> <20261002090947.869220-6-jiangwen6@xiaomi.com>
+ <astarANeoldvqBxc@milan> <4f812ef0-ab14-48c5-908b-b7d82ce418b3@arm.com>
+In-Reply-To: <4f812ef0-ab14-48c5-908b-b7d82ce418b3@arm.com>
+From: Uladzislau Rezki <urezki@gmail.com>
+Date: Mon, 12 Oct 2026 20:02:20 +0200
+X-Gm-Features: AclHuK_uSuO89Qhd1bXs6ll2oIbh2EHyO8-k6OSdE2Rwub_69M_koNK3b1_sl9g
+Message-ID: <CA+KHdyVjjk3B0gsfsx+NPeuNH+ZyN7HbiP=S0F9kspRO9ZAXAg@mail.gmail.com>
+Subject: Re: [PATCH v10 05/10] arm64/vmalloc: allow arch_vmap_pte_range_map_size()
+ to batch multiple CONT_PTE
+To: Dev Jain <dev.jain@arm.com>
+Cc: ryan.roberts@arm.com, akpm@linux-foundation.org, catalin.marinas@arm.com, 
+	linux-mm@kvack.org, will@kernel.org, Xueyuan.chen21@gmail.com, 
+	ajd@linux.ibm.com, anshuman.khandual@arm.com, baohua@kernel.org, 
+	chleroy@kernel.org, david@kernel.org, jiangwen6@xiaomi.com, leo.yan@arm.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au, 
+	npiggin@gmail.com, rppt@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 496D9120007
-X-HE-Tag: 1791827970-12760
-X-HE-Meta: U2FsdGVkX19W7xROV/tfZ56AIPjkastaxpPrsLK+iJM1VXtXzmt35fpr2oN+4IOM905VFyv41+sBkxyP9KLKkgbBSc1STnOq8bXG9c6EOn+dYEGA4CzWTBmOZgM14+UdUinXBYcl+fBZ018e6y1mUmRFApgZi3tTob/7uiuV49H6iPmn83sLHnDftVFw71cRav8ISi75DMB3m/qg4MDvWH1dMYvz2CdDon4HMFRM7cL6Sebp0llK58XYAW9OvpUDCCkcIUdej/ZbcXXIrxARH3e8N6es3+StsUsrRju2qz5Zb/gjxq/jtgUmvSlQkrBvdyv60Dw5i/hD9sFha44aZ5yjdREIFq6NQTYxlVLKkf11dg3VgVTkvZdbJ8s4XHEepfienTxxZjvFXZzeeCReD5eZFzNgm0sfGra3/go5TFO4vOYQU3G2/j5ZX0LewrGTgC7nvTRzBT0iFVRBXoLGiG+WSgz0nssL4rF3ms5dpl263RlmwyddNh4iOP+O26Z4g6DXGa5c1oDdHZn5EJ1+oRWbUvTNQha5OAgKnlUioHvQgfLwnvUOYEoskB6QsYGfqAvYhtdHHyPiEFp5O+cZ+Lqdg/wc1fRZnwvM/JNp6DBq9zgqKzyGYbcSRC9g5lijwQXNs2hJNqI+HxBPKVscx1YOn4HQJFlG54aOt+1iWFml0AfzI5ZHvKe3FM/qFJh3gQOxiT6J7Z71x77fine78e/ObFrW74jrX0HIZqU3Vr5P0EmkeNy3ZuCdXHdTu9NwgEvCi6uVd8mRnEpe8KIakglihRWd4nayadhuA53kQjTsYLdXlD8gwHhRVfLqq3vErfpKOrNBFaux6zAvAUqv2S2hc0r/1fI1qGq04x1LnMvzBT2TZPaRJBrQbKMyiObwxVY1twYH43Tl/2hAMUJhHpFPCAsTJiQl2CPUigkG9LexU9G2rmaaYkSyWdvGcs4p0fYdynIIq8PiIWXUiim
- Tr63oHWl
- vGxG8fBhueVnIbQJIh+pCOOeBJj8jkxAabI2tegWrhDb6W8VyyfJOBhfT6Z8vIFoUZXqo7g8yZas+ociSUdz6yuePzPyEngb5iY9qPHuUq8mc/moimPloLmu3BSwyuswrVRCUYbnTiywzo3imJCh9jaB/Lk6vNBbaCnYOrR6WdJSJivjrw15V5ccGThlOlY2eWb1KhfhbEDkJf1g+UmRRhJzng5813BO8I5AS0eixpThSH9eeT5RNBO5dftkXRUejnAZme7PEls/M8T52cWj+wQRf3LGkraZ7ptZ09JYdQv3F4zLePPW9YIuUWFfHqwVJ1EAF6ixmmAZbDa+n/9ccUoG6VN0lDPoGmuXGFon5Kg4oiyB8dd9Zacb35ZIx/ByeIurKzve6DP5/02u7pWHvq5KLodeMJHP6vxYm
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0DB6B4000C
+X-Stat-Signature: zo5ha6p4mbzdrrumgaeqzprzb8xqu9y7
+X-HE-Tag: 1791828155-974046
+X-HE-Meta: U2FsdGVkX1/Fi45OiySHNDY15NJiHlaZEtgbq/DuKc+3iWrytiSYFO/fN7NWNKuDtiuSh2DA1ByheuG59Z7e1mBsvfU3Oe2eTLiPU0Oc0bLfRcFTH72ZDQjs5aLa8GXdiL9T7TtM48btHb+5Jpg/ELlVr5Z6rJyQHoT2J73Dr171bEHd1cHXHcUlfVBcIzKpYqGJwVVjHXNp50pFmEhdTFgDWE9sdKng/aVXA3S9sVB8QftD/y/mnTKTRggGVFhQfImzLJOgY+T103QQRfTddKoVn3Ayh518WU7Ot8F1twDdumcV4rc31Yi5P8GW+dleIVjrZvPLDbeA4QnjEjCJuirmb06iRqJo5x4QaCLsAiIReWO1MUFUOM+zFQjrd45fKw7Zu/Q6f6urM41i9KFqrkjH0Jg9UXeN+tDRkvp7XL/VALBGmRFAx4Ikyy0AyHQn6TtmIVsxShU/CF47Y58Xs0Q8s5+UTRUsf4XPFrOTCa9RmnVuUhyxeCIKhbsyK0GF1HjmmXwRWiYkvinuJV3y7TdrUZ17dF3VrTLaBpBS2he8iWpt65i0Wz8jOkxDdjL3s1KGsyRCqfAiSTU0DUBn/0fnVeb42KLB5DBcCwVJYtky3Rgb6M5Rwr4R3UGhlVBf8KFKH4T4GI3BZ1z3O6Fl1G/3GTAMOdDZ2q5+LIuTblbmg2cjxbdeNoPeA3jPTqFoFBaR79z8Sh4tqCssmS7E9eT31kihOPfXhqGhxon6vVhOunZbyAYXOLcZBssIQhuE4S7ybLzI2hvdQAsJJtyP2QRYzdjuOvCNoj9M8llPxRouaDJXJ10OqKj89LzMmM6ZuvXud6S2UgPHv88qVIlu1OPjie/jeeDKa4hqXMNRiE53o9OqQ4fZjvljI8L6p8RxWlGM1fEIh0plVGMLMgyr6N7yz4cE41CYapCRYRDY2YeIEyBkFDfyK0CIsB/R6VluTU518sVC1xmtsHe4ih9
+ IiG2+ghX
+ LiWJjPbHIP0zEGtOv4r+Sp9inIkH6OlTnRjGqlvO8ImYXap7bgEX5E2aV+N7E9cdbdTWj3knJEnreYEH6TzdGz6+F7T6L9ZmR7UmEuwG+JohYlkmN8foZjxuYwymitgbYi5t5l8E4rWe4r1k55XIzyatWTLbXFkHmMdn5O4euJcQXHK1v8tTeC4bVTnk5mvtJ/nlvGrcBD1j1lUouQxOtxJZZExtpiBqhxdzcVBprPJc33CaN3Pz4EMc3J53ItQz9pVhGnqmjRl4bjzROPY7Xj0/4QjFT7igmW3/8B9kx9tq7o3HgN2AWLMDxajx8Zy6W+fgAD0cRlH8jZyKSktAD638X2VqUpN0Nv3OQMeG+TgZcqXr2WDbCUArVxQ/jR29bwU7iZvygX8+vaYYEVZzBzicnRTnlBFdWO8fMgzeexF7vaQwQWitbqlS2WWcpjlMjadIdpucSn8gN/iHY9hbk+hqgnSgoMLv+fcd0AiYKwVTQ2T/HiUq64zzO0zIsKzGksu4OKqAzZDbQhKA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,46 +143,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 2026-10-11 at 03:52 +0800, Yuan-Hao Hsu wrote:
-> On Wed, 07 Oct 2026 06:47:06 -0400, Rik van Riel wrote:
-> > Since this is lockless, the PTEs could change under
-> > us between when we walk them in folio_pte_batch_flags()
-> > and the batched try_grab_folio().
-> >=20
-> > Is that race condition safe, or do we need to re-check
-> > afterward that:
-> > 1) the ptes still point at the same folio, and/or
-> > 2) the folio still spans the entire range, and was
-> > =C2=A0=C2=A0 not split before we grabbed the refcount?
->=20
-> It is safe, because the batch only runs after the first page of the
-> run has gone through the unchanged per-page path: the folio reference
-> is already held (and for FOLL_PIN the _pincount already raised, with
-> the smp_mb__after_atomic() in try_grab_folio_fast()) before any of
-> the other ptes is read.
->=20
-> 2) With that reference held the folio cannot be split:
+> >>
+> > This is arch/arm64 code. Can you, Jain or Ryan from ARM folk review this change?
+> >
+> > Thank you!
+> >
+>
+> I will come to this soon.
+>
+Thank you!
 
-You are right. The page tables can still be remapped
-to point at something else after gup_fast_pte_range()
-grabs a reference to the folio, but that can happen
-no matter what precautions we take inside gup_fast,
-because it can happen after gup_fast has returned.
-
-I have no other concerns, so feel free to add my:
-
-Reviewed-by: Rik van Riel <riel@surriel.com>
-
-
-Could I convince you to take a look through my
-earlier series to make regular GUP go faster?
-
-If there are any issues left in that, I would
-like to fix them before the maintainers get
-around to reviewing that series:
-
-https://lore.kernel.org/r/20260811025157.1632867-1-riel@surriel.com/
-
---=20
-All Rights Reversed.
+-- 
+Uladzislau Rezki
 
