@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2503CA9EC5
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 13:34:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0BFCCA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 13:44:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4FC36B00A0; Mon, 12 Oct 2026 09:34:39 -0400 (EDT)
+	id C11D76B0095; Mon, 12 Oct 2026 09:44:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C00096B00A1; Mon, 12 Oct 2026 09:34:39 -0400 (EDT)
+	id BC35B6B0098; Mon, 12 Oct 2026 09:44:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACA336B00A2; Mon, 12 Oct 2026 09:34:39 -0400 (EDT)
+	id AD8E76B0099; Mon, 12 Oct 2026 09:44:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 806036B00A0
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 09:34:39 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0F89E140D6C
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:34:39 +0000 (UTC)
-X-FDA: 85314069078.10.6B9E9F3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 34E07180007
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:34:37 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pb2qwS6e;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DA046B0095
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 09:44:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1B896120D97
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:44:20 +0000 (UTC)
+X-FDA: 85314093480.01.D8B7D47
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5C74040007
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:44:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Olie2k2G;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791812077;
+	s=arc-20220608; t=1791812658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BJoKG/6UOVhJtQlfQRanKoyfmf6h8PW7vA7hrTi9Uzs=;
-	b=NWk7PWCl2ZPIHQtoByc2E0JgT+887HbvO4MM+pFgNaK7uzFuzxbxVDLcZH+q/F38fUnMbr
-	70CKRTb9dkiO+2aLb+Iw1JYcZPfY79NQjonmcfAOiUxIO1HDFslBxLhoMS4BY4elKx3Ef7
-	yDR3GFdZpObH5Rw1c7GBq+1+Y2PXB0Q=
+	bh=RWcIgR2jJSUozXLjW4tSxmUd7vzBoCwnjWliIRpBQ80=;
+	b=jt3APjd4EVuBy7fR84Yy9rtxoV5jjFl/gt8F0C4lWKkxWkrGRa5T/KzjUsQ5PniE7+qQVi
+	cLhJLj6MyAC6M2RPUWhG5pfzVvadefzZimEFnwHWk6tkblsd1ENTBKQqBPug0ONHB9AKOt
+	EChwgduZ3pyD6440HMGBlV9DionEPX4=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pb2qwS6e;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Olie2k2G;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791812077;
-	b=bB63T36Pdz4H/kNEw2JEOHOPHATWwiLdnAwGGbU7pK3kGY6MB/IHdTJetqj5JBscRTVbuO
-	F6hitdLHwh0KRLP6R9ybYW+h47ZoLdU7XN8BHlXSRWfhbkQuNWf8ESLLMay7LNycp7/B9o
-	1R1zeVC04iKb1RIrA6oHPlHjHfhUlZ0=
+	t=1791812658;
+	b=ioYjS7R1wNSQ4yUSpfDLnjV+RjK/cbuu16et8Q6Rih+KITObQEDVEp+CGv0J25zZnmalKS
+	Y0IRcq7PW2agqCQIh0kEvr7053I4QWGPkCQSy1kI58UTVNEVUgpYLMe1p1n/8c1fGuJQ7J
+	z9Pg5T0bHX0KDHsX5r7DLEW/gNvfN6g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71E0A41B5D;
-	Mon, 12 Oct 2026 13:34:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2831F0089C;
-	Mon, 12 Oct 2026 13:34:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BCF0360229;
+	Mon, 12 Oct 2026 13:44:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC36D1F0089C;
+	Mon, 12 Oct 2026 13:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791812076;
-	bh=BJoKG/6UOVhJtQlfQRanKoyfmf6h8PW7vA7hrTi9Uzs=;
+	s=k20260515; t=1791812657;
+	bh=RWcIgR2jJSUozXLjW4tSxmUd7vzBoCwnjWliIRpBQ80=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Pb2qwS6eWHO6MPz6e6Cjv4IRYSsPioj8ppCtOqUDgtF5oADW4amg4Rm2d7JZotQw+
-	 GFRMFOZog5JGPM/vi3cITAw2xXHYkWcOPUPNdygjRLcToiGgwezrK2esxqasNlm41c
-	 1la4YDWxCXqPasGkTAzsjlnXTL7QG0XFmaUTZCWQM5YHTijpXSoU7Muk8T1pOm9B7l
-	 ZZHzIWI0J0W7qyl17QBn7c43TRFfYVV3Wlb3cuiMiz0WsECUXjk40joq6b92W/zoFC
-	 2Ha28M5aDVhTHoRDPbawlXzi8d0o6txkkqde30XTk7KbDZoIMKa3RK1ttNOfJtAfJL
-	 esL/Yl33fruSQ==
-Message-ID: <01349eb9-8833-4cf4-bb42-b1d5a608c83d@kernel.org>
-Date: Mon, 12 Oct 2026 15:34:32 +0200
+	b=Olie2k2Gvdlw+J2xxwUv8X69NMN3Jvn9HJ1WqeT4mgG1UEET7ZjgT5otXTC+vpZ/W
+	 QssKGG4HsVQPlzGgHT3tYYdkJj42lgnWFN0AmsDmcz36z91O6Y5GQcWJBKMFD2evCe
+	 iaxe7IURrf3XJ1zkVmy8/7CFU9Oy82OhBERlVIfmNNXIbPDjcmmlE20trWjAjmsXDr
+	 WvoXzN2szL+q3S6ozbrBXkSS4J7pgVAtZSxcIsOFpme0U+bbwlccs82RkIwfeQBaYI
+	 vz0B1zhT+/FH9rTeFWjK2O/EssBkUvOpTp56Ene/6sci5U0jkmSvisUk1NNY1K0GOl
+	 9yjdxiwgyujkw==
+Message-ID: <565e1744-54ff-4daf-ac14-7b6c49fd3fa2@kernel.org>
+Date: Mon, 12 Oct 2026 15:44:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/1] mm: page_frag: account page_frag pages in vmstat
- and meminfo
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Yifan Li <liyifan21@xiaomi.com>, akpm@linux-foundation.org,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, mhocko@suse.com, netdev@vger.kernel.org
-References: <20261010025941.1253-1-liyifan21@xiaomi.com>
- <40fc5d04-2a20-42c4-9557-7277bc981172@kernel.org>
- <asy9PzW41-Wi0JXC@pedro-suse.tail5790ac.ts.net>
+Subject: Re: [PATCH v4 00/14] mm, swap: extendable swap devices (xswap phase
+ I)
+To: Baoquan He <baoquan.he@linux.dev>, Klara Modin <klarasmodin@gmail.com>
+Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+ hannes@cmpxchg.org, nphamcs@gmail.com, baohua@kernel.org,
+ youngjun.park@lge.com, yosry@kernel.org, shikemeng@huaweicloud.com,
+ chengming.zhou@linux.dev, linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
+References: <20261003003136.750633-1-hebaoquan@kylinos.cn>
+ <asZt7-8mcxqc1a02@soda.int.kasm.eu> <asylV5YyyaHs8rP3@fedora>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <asy9PzW41-Wi0JXC@pedro-suse.tail5790ac.ts.net>
+In-Reply-To: <asylV5YyyaHs8rP3@fedora>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fp7cmusj8b7urcmheh6ffk9yi556bftb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 34E07180007
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791812077-460440
-X-HE-Meta: U2FsdGVkX1/xuIJMqaPMRGtd60xU/F6befQzIxrt+zP/rZJcD6yHzafsXpvA6QNeStfARp5cmgWr//yPds57oVXTcP1KPU+6zBFvzrmRjewCZkFpqcdFGR5NZOea0U6H2n8wiWCxSmgngIH1Brh37ehzJyHz3Ub8KeBwJxbhq4+MPqOZayu+wOAjDZvc+jm9CjTofZtznUKoBygilptS7p/zAe3X5YPxZqChK8MlMYpF2Yy1RagI6ZJA5KHlQN9ryiVKvmSLOWpuL6VLfsmSQH6zSJpwJ1PB0KiPVTIwNy2ErHRNn33XAn6Yw9pjjhMlc9LAJnJM8YxBoLESfyqN4lzMPs58mb6d/9SZAmzFhzLQGfK8qnvZstcid3XfQ1SheMOdQpnQxrg+qium5/Onl2eVP6ZQucMJZuka++7k8gMJOjPozPtnzJWi0ONRlPFk2HMsTJh6QmJ+pM3fH3OI5R9a/Lg1LeEXJv8+pjr/AQLzDDrYUJ4lnLd6b4oJwIajrtNnSrfywRJvXN5yo3zsJ+olv7oqrX7ny84KQaDimNH+u/VWAGfCWuhAaH2xpzlDe0FSteyfBrbIpk95+ZZudcwONudMmmzbjmPV68f589lHuu/pcxkoC8/Exo6X7NDyBKHVj4zMh8nuvYG3XOD3K2jPP2G0vXS3FcIX3CT6tWpOVu25PrklF8dGTFBOU8rl9mXT+SauyxN8D0XZ0aAz9koQo8eDonlk8ysF78pdrzYipexdvB/Zw7pKUY8hDGkijehFUwrVdagQbce+IYsIQVcVH0X2BsIK+ZEgdcsQOTVKaV0EwIxtJFNDJAEGmhWCfq9oXWOzOpkQMG4u/H83UBMyIlDAwR/lijzpI6wXGS1l91+zbYSqrrs7JC3o15mrYwwvmU0uAR/00jfbjPGeNm5Bd38pAUu/iQt5EQtmAd2WrmzuwU1rzKY+ZcbrgHCnb/P5ozkYzeiKm8ciQGT
- X0zSQIJu
- ZP5kLXcHjSnDXvz/N2lFMKaOXN4gZFx8An9NArsFidNMtxsKB4Kh+FH8GTpU8LsJAUbBPOirqeyFvb3PJfxm0NyYVJabhqqpEZ0M6G63YXqUDke0FoZvDvdE0Kfu9Pc1AbVW8w1nAjgQKxIxT21hh9bvJ1BpnwmZlzyF6a+Cbmp/B7Ya+BmZgnVa522qRH0mizA6yQVoEhIpfwesmt0nvZfSKMBtNpSCOplaAqBJUqjgKhbxmzBU8MMt0wioowUriNDYp2jgkC5Fo+fhs7Q6tgwAK+t0zY6p7U1uR2RwctCu6C8r5fOAAuW+r5A==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5C74040007
+X-Stat-Signature: sk8dmpfnq1w79335iaygcuh4xra77ewm
+X-HE-Tag: 1791812658-283570
+X-HE-Meta: U2FsdGVkX1++NUODZm+fNEi7MCSG7gl3IVDX/tT1PCes1rEhbVpHNXyupUc48Lxlx5AFFm3y4/7I4ieup3C1Ttx40fqwOkCv/2KViswuNqd64L93wM3itjhdk5py8NdTB48MUxBBmWfkqxw86vvPSWBqRucmkRrrBslo3H9tQy93Qv2lfY4wrPxXHrzVEJ8aam+xxRjpqI/qxhK2ACXXkzb+iDNzzIlAL/hTRR7Cm4wpXi/whjqDOu9mXUZV1F6Cgw5IPFQ/KoADQZGtRd4+BNkxng7HTn6ZFsECqkOh3xxOYmxfo1BND2unkKSchDgQEQpBq6SkZY2X5IDSwu4deDYH951euRIPeWU+dyNzFoW31h6tP3S1ti9AquGJp03dX4TRAJjDjSBjt6J8x+012xIhdoLyN0lpvjFXYFr2QVGmcnftW6wLIYdy54IhPjLShfLQg9kThtK7VpihMO6fLyiSdYOqe4anJTuMuB2otR6b2DmtPKnQ26Ex80tgIXwaxWjc5P3OLJGsIlYI+TxLTKMVGYrOvxfKbFPJfvSZUBF8IRNMx5neJbZQ9bEBMJHs0cwcmiVSKZSmRADIbwhNB+7KWcZnVP15q06onZvXqnrkv7nfetshV1Ut78gGJk+ZOFS7OVs9wopPlBoBew9A0fyihsD5pb3cSOFbsjiE7hndEFRQQ/clY0scOJ3qXQbhggzd6gutx6vRJpurgJ9xgSA1XnEtI0g/FR74aZG1Z+gqGMiO3/+0BVbdVHht2KprWNH6Vw7CZWwizQkZv48Cs5/vg3RLHJ8T0KdgC8gOtyeWAO4PiHQ5bU6W55eyCQaDfXiIAE5IYMY+YLz1Qu6H8BcnQrV4dnJyesVAkJpjuL0ZG76snR23XcrjkJzSjj5g89faxIBr3NpHQ0WcVyfexUw7kIV6d9oLZV+f4RICqsik2z9gEtk4CXyhEmuAImeYJTY9bfSbzQ1OaaHM9Kj
+ mGGyBJl0
+ MUvD1eDzv4IMKcmzYN/7RM27SFyDAg4nPtY8Q4lu8sboT2m4Hfm0waShbWQWUbY0KubPWpEsIrWS7KrWAVlLoLujQIAqF8piGCSE5Sn7CXQAAEnQYDRR1o2xVGtTJwOBtw3PrueuqsSXqGdANjse8eycLkY7CK9Rl9s3yLll7WewUAgdwH76nLlTskKAnHcbh08IXH0Oio8HeFmpPfiETeG2/HLkMUzv2Nh0aiHbfEltMSWsdrrere79cztwZFvktFnHaJXvaQ7K/JwboWKEWKUhYewWXM+BGZNvoB3oyWlPYnWE+tJPIll8D2LJ60awSLpwaYggMXJYWdI1Kn4mxGp08Fw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,74 +142,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/12/26 13:27, Pedro Falcato wrote:
-> On Mon, Oct 12, 2026 at 12:36:35PM +0200, David Hildenbrand (Arm) wrote:
->> On 10/10/26 04:59, Yifan Li wrote:
->>> This is an RFC.
+On 10/12/26 11:16, Baoquan He wrote:
+> Hi Klara,
+> 
+> On 10/07/26 at 06:28pm, Klara Modin wrote:
+>> On 2026-10-03 08:31:22 +0800, Baoquan He wrote:
+> ...snip...
+>>> The only argument create takes is a priority. The size comes from
+>>> xswap.max= at boot, so there is one place to ask for a size and one to
+>>> ask for a priority, and a priority can be given per device while a size
+>>> cannot:
 >>>
->>> Pages held by the page_frag cache are not accounted by any memory
->>> statistics counter, so on systems that derive "LostRAM" as MemTotal
->>> minus the sum of accounted memory they inflate LostRAM and lead to
+>>>   # echo > /sys/kernel/mm/xswap/create          default priority
+>>>   # echo 100 > /sys/kernel/mm/xswap/create      priority 100
+>>>
 >>
->> Sorry, what exactly is subtracted from MemTotal?
+>>> The default is the highest priority, SWAP_FLAG_PRIO_MASK. An xswap
+>>> device is then the first one tried, ahead of any ordinary swap device.
+>>> Setting a lower priority is allowed.
 >>
->> How would any other kernel allocations be treated?
+>> Nice, this is now a good default which the user should not have to
+>> change.
 > 
-> I suppose those would mostly show up as Slab:. But yes, I agree the metric
-> is a little dubious.
+> Thanks a lot for careful reviewing, and sorry for late reply.
 > 
 >>
->>> misleading "leak" conclusions, even though the memory is legitimately
->>> used by the network path.
+>>>
+>>> The device does not move once it exists, so the address space cannot be
+>>> changed from this interface either. xswap.max= at boot and this together
+>>> are the whole configuration.
+> ...snip...
+>>> Open items
+>>> ----------
+>>>
+>>> - xswap_create() sets si->pages to the whole address space (twice RAM by
+>>>   default) and _enable_swap_info() adds it to nr_swap_pages and
+>>>   total_swap_pages, which is what __vm_enough_memory() uses for
+>>>   overcommit. That raises the commit limit by 2xRAM for a device whose
+>>>   real capacity is bounded by the zswap pool and by how well the workload
+>>>   compresses. The question is which semantics overcommit should follow:
+>>>   worst-case backing, or the address space.
+>>>
+>>> - destroy takes a bare swap type. The type is an internal index that
+>>>   alloc_swap_info() recycles as soon as SWP_USED clears, so a value read
+>>>   earlier can name a different device by the time it is written. The
+>>>   swapoff ABI uses a path for this reason. It wants a generation or
+>>>   another stable handle.
+>>>
+>>> - The new interfaces (/sys/kernel/mm/xswap/create and destroy, xswap.max=,
+>>>   the new type string in /proc/swaps) are not documented yet.
 >>
->> Assuming "leak" in such scenarios is questionable, sorry.
->>
->> Aren't most page_frag allocations short-lived? Or is this more about the
->> page_frag cache?
+>> To me it feels a bit weird to have the interface split between a kernel
+>> parameter and sysfs, meaning I have to configure this in two places now.
+>> As far as I gather, there's also nothing that needs the limit to be
+>> fixed at boot since it is applied at creation. If we want to expose this
+>> limit to users (as xswap does) it would be nice to have a 'max'
+>> shorthand for tha largest possible value, i.e. SWAPFILE_CLUSTER *
+>> UNIT_MAX (or whatever it might be in the future). That would I guess in
+>> practice give the same behaviour as vm.overcommit_memory=1 which might
+>> or might not be desirable.
 > 
-> page_frag allocations are kinda arbitrarily lived. If you queue (send) some
-> data to a socket to send over the wire, they are more likely than not
-> short-lived, unless the protocol/qdisc says no (for example, you're hitting
-> the TCP congestion window and as such can't send more data over the wire).
-> If you send it over loopback/veth you get arbitrarily livetimes as sockets
-> can keep the page frag alive if the application never reads them.
+> Thanks for the comment.
 > 
-> On the regular RX side you can also (AIUI) keep page frags randomly pinned
-> as long as you don't read them.
+> Here xswap.max= is a global boot parameter, while not a per-device or
+> runtie knob. It sets the space space (si->max) of the xswap device
+> at boot and can't change at runtime. So on the two places: the size is
+> a global setting, fixed at boot; the priority is per device, it is in
+> the create interface. They are different things.
 > 
-> (note that all of these allocations are bounded by each protocol's memory
-> limits)
-> 
-> 
-> In any case, I remember an off-list discussion with mhocko regarding a
-> downstream bug, where I suggested adding a counter for this, and he said
-> networking is somewhat sensitive to extra accounting on the fast paths.
-> Added netdev in case they have comments.
+> The default is 2xRAM. From our earlier discussion, this is the largest
+> size we think is sensible, and in practice I don't think it is not
+> reachable in reality. If a system has swapped out 70% of its memory, and
+> even more at 100%, it is already doubtful that it can still function
+> normally. So 2xRAM is an upper bound, not a target.
 
-That makes sense.
+I remember some overcommitted hypervisor setups where people swapped out
+significantly more -- without any issues.
 
->> Certainly no page flag.
->>
->> A page type might be the right choice. I don't think Willy planned for that [1],
->> IIUC, the bump allocator was something different, but another page type
->> shouldn't hurt at this point.
-> 
-> A page type might not work, these pages _may_ need to be mappable. I know
-> that was an issue for page_pool (Yet Another Networking Page Allocator) + TCP
-> zero-copy RX using mmap.
+For example, Windows VMs initialize all VM memory when booting up. Afterwards,
+you might just have plenty of memory that was touched once but will not really
+be used in any near future.
 
-I'll have to trust on networking experts, I was reading:
-
-	 (requires that page_frag pages are never
-     mapped into userspace; true for the current RX paths).
-
-> 
-> Of course, if you have a page frag under PAGE_SIZE or misaligned then you can't map that.
-
-It would be best if we could disallow that entirely :)
-
-(of if required, map them through a PFNMAP or similar that does not care about
-page metadata ... but the interactions with GUP are tricky)
+So I would consider some crazy hypervisor scenarios as well where people
+commonly have significant cold memory that is currently not hot (not in the
+working set) but might possibly used in some distant future.
 
 -- 
 Cheers,
