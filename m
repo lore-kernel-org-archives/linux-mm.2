@@ -4,129 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A55EFCA9ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 16:24:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 556B2CA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 16:46:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BE936B0088; Mon, 12 Oct 2026 12:24:52 -0400 (EDT)
+	id 180CA6B0088; Mon, 12 Oct 2026 12:46:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76F7C6B008A; Mon, 12 Oct 2026 12:24:52 -0400 (EDT)
+	id 1307E6B008A; Mon, 12 Oct 2026 12:46:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 665596B008C; Mon, 12 Oct 2026 12:24:52 -0400 (EDT)
+	id 01EDB6B008C; Mon, 12 Oct 2026 12:46:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 390C06B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:24:52 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C98CE6B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:46:57 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BAAA7161165
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 16:24:51 +0000 (UTC)
-X-FDA: 85314497982.17.61522BC
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 710E240005
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 16:24:49 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QJ4RfaWF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pgnCnEIV;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=l+WQ+Eks;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=lgbjzvSb;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EDA8BA938A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 16:46:56 +0000 (UTC)
+X-FDA: 85314553632.17.AD38F15
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1BDAA14000B
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 16:46:54 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DGySc7jB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791822289;
+	s=arc-20220608; t=1791823615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pcc0K1tU8VYaYGCB04LjAl4+hE6yspZu5PMHTGHHbVA=;
-	b=uNEjbMQUdOArEreeqAw88n7REl4jmK5O4HhFYvnuULwYnI/IpvAxuwx1tB0R7roj6iwnky
-	FqU0uzrw2tTAk0v0IHy7QxGgQF5qC1glxz/scuANlgHTUg11Tj5UIbLzCibjAlExqGqLy3
-	MXUC/+cuphMabb4mIhZYqxLhNDIUmCM=
+	bh=0UrN5VSM1Sm71gRbWyyCAhAHasLekx/YSqvnQwMreug=;
+	b=4fhJg5l3Qf1TnN3rXvciZeQwQEfHFqtn7GO1Q3pYlrimvu928Ry3bpisGiMy35zvb6df80
+	65w4cQzeKhwDjia11Mmy/Zddy7XsQ7NgmpDFDcKwH5pBFfrJXb2ilRKbvOwuSqYrpHxUN8
+	STfOGOmlwR/6Jaz82gurjZUItSSk9Xc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QJ4RfaWF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pgnCnEIV;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=l+WQ+Eks;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=lgbjzvSb;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DGySc7jB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791822289;
-	b=d+I16UpQnl9I22IGmH/ZUsUqHCERYBo/m2bDfkyjzfpHvg3HH5MKffNGxLEwBQYFkGm0U+
-	hWLM5LXxD+le4ZhOM1XV2cmQeLqsS/utx/QTREeOCEDOSNdseUBgw+aOyTjI/4094yYflI
-	VeW2ftpS/gYCLsDeXOBgJDIp1rK7Mz4=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 994ED1F391;
-	Mon, 12 Oct 2026 16:24:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1791822287; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pcc0K1tU8VYaYGCB04LjAl4+hE6yspZu5PMHTGHHbVA=;
-	b=QJ4RfaWFbTqSr18K2OQ4jQfAV5YHEJQyOQavvQJqWF8xTF9Iuv5UIjUUvRcXM/ZF8et/+q
-	JZGRRBwUqS/9elC1XFKQ1zUCcTZnyy5YdHCQVNqpqHz0f/MTxmubKHJ3urpOYY40MQkeKG
-	f8Zi5GqB+/7FIgNrlGefXA/o+vriefY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1791822287;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pcc0K1tU8VYaYGCB04LjAl4+hE6yspZu5PMHTGHHbVA=;
-	b=pgnCnEIVoIrGIyZEWolk7/SSq4ugBo1wuT53iEY96I5vlnn0hHDEVeNLa8CELElQw54hHu
-	BxO6cjmoxvn0HlCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1791822286; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pcc0K1tU8VYaYGCB04LjAl4+hE6yspZu5PMHTGHHbVA=;
-	b=l+WQ+EksmllPpEJlz3vP+B7DDfM98YIBgILa/yhS6DwJjhQhzwbGE6YZS/5NJC+JKBj3aJ
-	uMoU7mMksZuYcUrAYiyyUB8JxqsTtJo6R4XFlVn1AP9qajRNYHdSYPqaQQ+5tbdHQsngxw
-	L0VQYi6+ORuERDJB/EpYfxtobPYFU+c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1791822286;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pcc0K1tU8VYaYGCB04LjAl4+hE6yspZu5PMHTGHHbVA=;
-	b=lgbjzvSbuT2abpAcooVITaYyY4upHIm4g2YMifYz64YXqKhwu7S42phkFxS3UZWqlKuZ5V
-	k8rXKzdHjCuzjJDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6FA2F13314;
-	Mon, 12 Oct 2026 16:24:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gSNCE84JzWrJOAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 12 Oct 2026 16:24:46 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id F0405A1405; Mon, 12 Oct 2026 18:24:45 +0200 (CEST)
-Date: Mon, 12 Oct 2026 18:24:45 +0200
-From: Jan Kara <jack@suse.cz>
-To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+e0624b5bf72b99131402@syzkaller.appspotmail.com
-Subject: Re: [PATCH v3] mm/filemap: annotate lockless reads of
- mapping->nrpages
-Message-ID: <lp3734pwy5uxmjyblon4m4fij2pngztite3plyc5urhfje6t7v@pju2csdvtjmy>
-References: <20261012143921.283806-1-ngocthang2710.1999@gmail.com>
+	t=1791823615;
+	b=QL66A/VsGCuiHPu9z6VQcGzMi9VRGO+jhgtI96VqSX5TN8meKlknxE2AMojulWCPk99+pJ
+	aoBr+kEQI6GP21NPvna+zsEO5+8gpLuY9gev9LUnYQ0U1hDmX6CRqsnlaJatEkttviJB2Y
+	oUerNqHQetsivckrhZpCBfiV9hWiRFA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 65A1A435E7;
+	Mon, 12 Oct 2026 16:46:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7C11F0089B;
+	Mon, 12 Oct 2026 16:46:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791823613;
+	bh=0UrN5VSM1Sm71gRbWyyCAhAHasLekx/YSqvnQwMreug=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=DGySc7jB23/V1Z0AiUJki0Z8E+1NITPebzHJoljKGLolAv23dMkVULASEv6xcM3hP
+	 URvKzoUwGJbKWzmEXSPRHB9IBLvJSHW5FjeLNe3ZH5AXI7XnbJP67L/oF7D/DiaWnl
+	 aDMZEIjcEVpwUF7XuHEB9FvmbBwqDzgtukk98Rm+p5gsCZCSHsxXM0yYjSbt31HnDy
+	 eIk294Mjj0CNM7ykSZ0YscTCi0i6vupSrnS4gWjraC7oKXpky4BUIRati+wEhVDL56
+	 YV6QnEC2eKQmVROYtSGXUKnJLLGUX8CtEkIA729wb5QlNYCQ4J0hiU6P+qFKp1Sglk
+	 MzL4zw2ZPN3Sg==
+Message-ID: <4866a382-42d9-44da-b68b-377d36642528@kernel.org>
+Date: Mon, 12 Oct 2026 18:46:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261012143921.283806-1-ngocthang2710.1999@gmail.com>
-X-Rspamd-Queue-Id: 710E240005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 2/8] ipc, msg: Account msg_msg allocations
+ with GFP_KERNEL_ACCOUNT again
+Content-Language: en-US
+To: Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, Pedro Falcato
+ <pfalcato@suse.de>, Kuniyuki Iwashima <kuniyu@google.com>,
+ linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261006092030.got.500-kees@kernel.org>
+ <20261006092035.166776-2-kees@kernel.org> <asjhg2e4-WSeKuXd@thinkpad>
+ <202610092010.934197B@keescook>
+ <20261010153714.b9e91801ea93675da099e903@linux-foundation.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261010153714.b9e91801ea93675da099e903@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1BDAA14000B
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-Stat-Signature: fjtreu569ys68afhcxmaworti9curq68
-X-HE-Tag: 1791822289-781107
-X-HE-Meta: U2FsdGVkX1/gzKLKCu6TvOXJEDiXSCPgJl5HnHQHkUKar4xl7V1Z0cMiUIeb+08ycY3OQlasr8Z5A+of/LP0MRzi84Vund52Cq3eQMXErCqM5SFlyOx15k5w3V4OEKlZuXJGDNAF9B07fNJQVzTcPlXOt8JRwbOKCcjjI0RvllVtqvnIXHA87J/oanRMKKMKNvHPywT6S+kdSPkZsDOH8xuSk7C5qPr8EGmxX2pyrMxyEotHOEhS0S7Ghc2ot0wqvbHROYEoByDmY+yXSaYonUuAI7kkwJ1cOqWVVHnX63c7PyhgvtXwSXsdrT98gPf7nN0wKSetFxrZlWIGHpD0kVSR9AFhf646GbkZXqzXejIh4rec8HxpZd8GgB+sj8HGg9dNcESlkqF5IZDFJgnrrHvXSDcKGUMtmvEq/5QWmYlKcp+nCbz4IMeDF11n2ZrP1LmGWuikD/vy7OO1RzUBI54uF9m/WUxxNl4wCsAFefxbIfpkYZtLcdPutDV2xUODIWmWHCy3QKlr901HXxP29Yvt25Hov/+S8Zettflbqcp69dcwGmr5vNbMdhOHDtOLBQhG/UBhixWpduSa9FBRDLf9avTRZsmZjB0SkBWs8Dbi+/L5qXzaxUTM8EsIv5sIBocWC3TV7fca8LjLw9iLxBc7EX4KJDUC6xoYM1KO83/sKh+dPBuyY3EhDpkMz49Jc8xOk1SkkrsJEXXuINVksX264y4d59wAh7Q1kzVWSqqGdgKhW2rwAfLEthI7Rki1ZyJ6TVZcAltspL8O0ztiPLAD/SFh672cHmXd0nvev+pyNB4CZYbg7rYEhRnv7dr4qAmyLy5DldCVV4IDMWrfXqPRqDy103plRB9pGI4Dh3ovWDyGjUjgLtLW385GJxzBureRTzSPPLOpnxE/mOF0WZMB97moPfQ9fES9Mbsm1JmBcMlhh3764VQGkrVgaSMG2/R9HpIiy6GgBf9W8Vu
- DWGqSuEb
- rZL+9XRwkDZ26XNl23JO8NIfxHoNmq5h5dfCXkCkNkwD8hQcTLwoxef9jU+SgZQD5ISm+5DLDipN/qWpgg/v7lahWNW5Mqft3KCS6dPqjAhhsRFQ8cfYditR/SK+Z4Pd9q1PmmnZISmx9C6sqfQWLboxDIktZ30aNZnrBswhoxW+epF3rWijicsSa/QrkmhplhXllS4hvzEhqyemIFwIVQaxbvnkJH2LolPFS6TqhtIE4EkCwsFUVpgOeDIMeMvvsuu7gsjvzPvgXPcbPrxJeZspE9+cRt53/2R2CDlpUdTT3qEe6DF95HnqdGnhg0uRXGIRIYrzN9DImlvGNjIb7ls6gQ4PYmMCkqVcONrsduK/ZDlzHFr/yssiPKmY+yn4zMLxihx3A6mf2SNUwZlJBDvRiVSiYFqjx+ObeGGyTms6ACqfU8RO51v55xy5npIo1nrDqXc2xjPQikxZuh8MtYTxSbBn0PvibVtifwgA2uL3SZYBlgKkCVqR3pznQ96dfqSDWiB0C+qBxFL7J+vSY3L/opRyJKe+vXy5APyltlLlDwOIJ37NcJ/8OhNbIV5PK6o6GHlH1mFYs1qc2B030Nj4n2ASCtNArkwux1t573MMtl2E=
+X-Stat-Signature: 9xm86ci7dzkrzd9jryu1bfu9bucgsop7
+X-HE-Tag: 1791823614-838638
+X-HE-Meta: U2FsdGVkX194hoiaDhdzhxvl5b8Z14g9Mzyi/mCxpD27NzS+XJu7vxjALGjXRTpFMvOeKE45Ticacw57IOCQlKPQdaweRwToDycPCIMiNNEZxObaYEbhGKbRe9Ms7CmB3Os+HFJKiHNItP5UFh5i3mM0Nu1iSJZNiH8hR59vpVYNA6xx6/6LPM3AlxkBVh609enjGsmlCeBy2JGl8iNQWnTiURcxXZ8DrRdLK/+9gi13royQw9MNAp0335iOHvHQCNwiDFNMRFX7kaei740XxCrRDUiRJmn22FqDG6sl2GHswQCxnppyxkt+vbBAvv+8lLOm6J7pmzo1M7CzRmBOSataPmdOre34NmqADk39AK+jU7JiKmCqbT9SruhgD5QRM/0142e3o5+1VoJCrrfxmUHkXICTJuxQfdYkAUa43sNVdhI+fmqZD09Zm5rVlOzmOfIC3G6FqfZ3sbWxouIv4pOF0flghJtw/FRFdZhk2KN/oH5HqmFzeEZGmR42BNDGNRRuoB9pKIkehli9NqWZm1ZQXr/KshMkdeD09aGJGmwOAVskHOxOQBpmKT/6YGGqtL2jYF/esFrcUhj2fqSSOrCZ7mfHNiqKo+YXHxsrnCONi9Q/9ZZwZj9gtS8oR+MN0DGnV0S44GmXskWstOFrU2618q1w9xqv7UvbPhCw+K+SojPDyQr/6Dsui/wuZ9V7RPxb8BL2yrWVpllQqAhbBOgNQtM9e8CqpKaXxCxmeuwxnu/u1mmXMhJVcpGxcrvQqlLpGCzGMt7ZwutGM6lcJpLRlXK77n3QmGL4OoFMyEbyNBjwIln1+iisPEkF9XTPXvtQeXHPCop9TuFoJPihOCJj01EjZVGg3MCWtER6BLriMhE1HPgXV2mixUjEEYIIwHuIiQK9iBPd9YhAS/DPJc3KhzOBJfN3ibdgEnlmzHFFsAdgL/CgeZNqFc++TUuaowZLfGwTuIzK3eeLnPm
+ ycJidUMJ
+ 8hxGS5fCLotZrB9ATLVXGvmfz2Kk2ZIz2RV2w210UTjaXojGmVFpoG7Q2gYIkyE7V0WWD3sBWL/BXJXrTnieeZdXusyyw1R6pVhiSG0samakWvnZ0W5oVir2XrncMEI1pYJIc4gqVRr0mtgCo53MUOgAdqu9VuWyzNpVzJOiHHe97Pwq5hAd09hjETxddNNGnrxSTEmVcTAdBil5aDh2pS0E1HKQVff8M3R0i0AuGC2v//VQNeCK15kopSUlS5vjOK62ozvyANXs8PEWGonJhQ1q7+JvWh91DOnJhi7Y8QNxq1JKIdELB9cxTgH07BtlaK3LQEQ7MJ/jwph4yXp4hzeLhWRWx8PoNzgC2QL9mIBZqxxUUOqM+VuRGA8OtRWWlimJhibWlA2XbJSM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,92 +141,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 12-10-26 21:39:21, Nguyen Ngoc Thang wrote:
-> mapping->nrpages is updated under the i_pages lock but is read locklessly
-> as a cheap "anything cached?" hint, e.g. in invalidate_bdev() and
-> filemap_write_and_wait_range(). KCSAN reports the race:
+On 10/11/26 00:37, Andrew Morton wrote:
+> On Fri, 9 Oct 2026 20:14:20 -0700 Kees Cook <kees@kernel.org> wrote:
 > 
->   BUG: KCSAN: data-race in __filemap_add_folio / invalidate_bdev
+>> Anything with Fixes: will end up in stable, so I just leave off the
+>> stable CC these days.
 > 
->   read-write to 0xffff8881004c4178 of 8 bytes by task 3600 on cpu 0:
->    __filemap_add_folio+0x6b7/0x910 mm/filemap.c:919
->    filemap_add_folio+0x1cd/0x380
->    page_cache_ra_unbounded+0x1a4/0x3a0
->    ...
->    blkdev_read_iter+0x21e/0x2d0
->   read to 0xffff8881004c4178 of 8 bytes by task 3601 on cpu 1:
->    invalidate_bdev+0x25/0x70 block/bdev.c:98
->    ext4_fill_super+0x2ccb/0x37b0
+> -stable maintainers have been asked to Not Do That for mm patches. 
+> Other subsystems are doing the same.
 > 
-> The same counter also races with filemap_write_and_wait_range() through
-> mapping_needs_writeback().
+> I don't know how they determine whether something is an mm patch.  A
+> patch which covers do-do-that and dont-do-that parts of the tree is
+> likely to be mishandled.
 > 
-> The race is benign: a stale value only makes the caller do or skip a
-> harmless invalidate/flush pass. Mark the lockless reads with data_race()
-> in invalidate_bdev() and in the two callers of mapping_needs_writeback(),
-> rather than inside the helper, so a future user needing a reliable answer
-> is not silently covered.
-> 
-> Reported-by: syzbot+e0624b5bf72b99131402@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=e0624b5bf72b99131402
-> Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+> So yeah, add that cc:stable to reduce the possibility of mistakes.
 
-Looks good. Feel free to add:
+There's also this from the list of pain points at
+https://lwn.net/Articles/1099594/
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
-> v3: move data_race() from mapping_needs_writeback() to its two callers (Jan)
-> v2: use data_race() on the readers instead of READ_ONCE()/WRITE_ONCE() (Jan)
-> 
->  block/bdev.c | 3 ++-
->  mm/filemap.c | 6 ++++--
->  2 files changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/block/bdev.c b/block/bdev.c
-> index cd8323083740..233750f87e6d 100644
-> --- a/block/bdev.c
-> +++ b/block/bdev.c
-> @@ -95,7 +95,8 @@ void invalidate_bdev(struct block_device *bdev)
->  {
->  	struct address_space *mapping = bdev->bd_mapping;
->  
-> -	if (mapping->nrpages) {
-> +	/* Lockless hint; a stale value only costs or skips a harmless pass */
-> +	if (data_race(mapping->nrpages)) {
->  		invalidate_bh_lrus();
->  		lru_add_drain_all();	/* make sure all lru add caches are flushed */
->  		invalidate_mapping_pages(mapping, 0, -1);
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 00fd89cf6f55..ff10ac8f56b3 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -680,7 +680,8 @@ int filemap_write_and_wait_range(struct address_space *mapping,
->  	if (lend < lstart)
->  		return 0;
->  
-> -	if (mapping_needs_writeback(mapping)) {
-> +	/* Lockless hint; a stale value is harmless */
-> +	if (data_race(mapping_needs_writeback(mapping))) {
->  		err = filemap_fdatawrite_range(mapping, lstart, lend);
->  		/*
->  		 * Even if the above returned error, the pages may be
-> @@ -782,7 +783,8 @@ int file_write_and_wait_range(struct file *file, loff_t lstart, loff_t lend)
->  	if (lend < lstart)
->  		return 0;
->  
-> -	if (mapping_needs_writeback(mapping)) {
-> +	/* Lockless hint; a stale value is harmless */
-> +	if (data_race(mapping_needs_writeback(mapping))) {
->  		err = filemap_fdatawrite_range(mapping, lstart, lend);
->  		/* See comment of filemap_write_and_wait() */
->  		if (err != -EIO)
-> -- 
-> 2.43.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+    Kroah-Hartman: subsystems that do not add CC: stable@vger.kernel.org
+tags to patches, but which still expect the stable team to pick up the
+important fixes anyway. The stable maintainers are overwhelmed as it is and
+are not doing that.
 
