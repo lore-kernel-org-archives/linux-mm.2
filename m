@@ -4,108 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BED16CA9EC5
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 12:55:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CCB6CA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 12:57:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D3206B0088; Mon, 12 Oct 2026 08:55:57 -0400 (EDT)
+	id 700E76B008C; Mon, 12 Oct 2026 08:57:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AA8F6B008A; Mon, 12 Oct 2026 08:55:57 -0400 (EDT)
+	id 6D8116B0092; Mon, 12 Oct 2026 08:57:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C0266B008C; Mon, 12 Oct 2026 08:55:57 -0400 (EDT)
+	id 616AE6B0095; Mon, 12 Oct 2026 08:57:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 58A616B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:55:57 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C1491160CB6
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:55:56 +0000 (UTC)
-X-FDA: 85313971512.24.1B01020
-Received: from mta1.migadu.com (out-252.mta1.migadu.com [95.215.58.252])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AD1B040006
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:55:54 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F9086B008C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:57:11 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BFB4740D62
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:57:10 +0000 (UTC)
+X-FDA: 85313974620.27.C3EF530
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3195240003
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:57:09 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="XAu/7C3r";
-	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.252 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791809755;
-	b=haCJ2n4PE4JuT5cBUXplUa6P28c/eaIMu9sxO8KcIOgo4IEoBQExe2PdZV16aRwuniR7se
-	9EtppFURNkTJ5xQQ3kKdky1RLmftU/P1H4lwBF5t98f7HlGD3dNOL3+1D+xo9QYsIoZg3K
-	nDqk/YCIrDkjURG4NQ6NJ20KV6b5M54=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="XAu/7C3r";
-	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.252 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jJFALB2J;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791809755;
+	s=arc-20220608; t=1791809829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zVdDm9vWio9URlOBbk5H1FhupUhm6ZtZOBzYo8Bfqf8=;
-	b=2Oc5g3Fn7hBSVHL9Ctoox4Xjm2V2EVeJ9beKRKHj601pMxBgy4rlnXrzgnrzo8eM/DoH7U
-	a7ixOHyhAVCCOixWPfT+SD8tewj4b1AYrRdfe7WUIcfVU6u5X+BJm3ihdJEaRcSH1aYy40
-	9EsHE50x8uMtSeRCZ7TaYq5y7saUJFU=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=zVdDm9vWio9URlOBbk5H1FhupUhm6ZtZOBzYo8Bfqf8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791809752; v=1; x=1792414552;
- b=XAu/7C3rb/MZ5dpABy25laQ+yvYFKm3jheT5YLO5dLGM8GxZNKSkbbWwuhJ9SEenvzOqbKe+
- 0YxDDs/UTQYCjF5V5k4VSp8AhWwcF4nVcYAW6TY0rLP0PqMN9sj3YrGtoc3RhOdNrYZ7YO3XjJi
- GbkgpeK1G0tNxMZ7rEWHlVR4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 018eb001ca5c019a;
-	Mon, 12 Oct 2026 12:55:25 +0000
-X-Mizu-Trace-ID: 018eb001ca5c019a
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH v2 1/4] mm: fix missing page-table destructor in
- pagetable_free()
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <asy-b7_C3SjnmSaS@gmail.com>
-Date: Mon, 12 Oct 2026 20:55:06 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Dave Hansen <dave.hansen@intel.com>,
- Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>,
- =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Alistair Popple <apopple@nvidia.com>,
- linux-mm@kvack.org,
- linux-riscv@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <145CD5DC-6457-4E1E-8B9D-AE7D1EDB0AB8@linux.dev>
-References: <20261010112457.49485-1-songmuchun@bytedance.com>
- <20261010112457.49485-2-songmuchun@bytedance.com>
- <asy-b7_C3SjnmSaS@gmail.com>
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Stat-Signature: ti1chuh1dpa5qbeqsr76eya48iynewbe
-X-Rspamd-Queue-Id: AD1B040006
+	bh=cniybAFPuYmkywYYtlFXNwkUQYMBMbCpGkul4BT0ctk=;
+	b=WdtwAGBe286XSMYCgc+tiQZ0mrsd19pIZWXlbyil7dmsxqMnF8cHmsVv6CZQ1OpRd/Konz
+	ewhef7KT7nQcaapkJo6e4FMy0pOunbuIJLZLBJLoBJ5RCyuoltUQSd+E+LzdSRlrN84Q+y
+	i4FfJQnZn7MFDsJS8Lzhy12sczatX8M=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jJFALB2J;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791809829;
+	b=xIK5bcG05kO7AcBM6V29+LDE/jI64BkfTE75HMzu4MxL+XS8xjNUjzOLUsqXXSWM7F5fDV
+	Q+ytyzvzGR9FvXKEMLDOuvgcKiAub5zyxm+GmAPU4DsRBj4lq7zmj/iHmuiOkspbzVxw0k
+	bPFxK2QzDG/WrlkV3rU1BeAdGolxvZ0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F30FA60D7A;
+	Mon, 12 Oct 2026 12:57:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D7D1F0089B;
+	Mon, 12 Oct 2026 12:57:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791809827;
+	bh=cniybAFPuYmkywYYtlFXNwkUQYMBMbCpGkul4BT0ctk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jJFALB2JergrfKltKzSDa4LndCsJ4Ai2YPpCcn2cRk+4Jv/zcP0vM5K7s8F3bxlzs
+	 BG7j65wRaEqUbyBlnt9u6v1yfXxWy76eKajJttqPPNp5x0Jlfqxu+jUF4aoGm89i/4
+	 tlxsiSbXgjE3dQ+JcvHtHMbFqvf7mAIg9hTlaxk1kmk7EoIs/+cJQeEXakAakKYYQV
+	 3YDOiIcS5l8F7hRsmoADhnzUk6WjmbnUz4k2vorqyLpB/MT+6YQm/b4GYDJ7uSylAe
+	 KFJfcn70bOLzakvPy8Zup3p8RpB6qiD73dpgyz8U2Q5u6vV0MaxrgNr9dxgvxYTumg
+	 vuOiMiu8xjmkw==
+Date: Mon, 12 Oct 2026 13:57:02 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: albin_yang@163.com, akpm@linux-foundation.org, liam@infradead.org, 
+	vbabka@kernel.org, jannh@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, albinwyang@tencent.com
+Subject: Re: [PATCH] mm/madvise: add cond_resched() in THP branch of
+ madvise_cold_or_pageout_pte_range()
+Message-ID: <aszYQpnRikFRuSYN@gremlin>
+References: <20261010024042.4070048-1-albin_yang@163.com>
+ <bd78c58a-f266-40bd-9290-90f77b8e4225@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bd78c58a-f266-40bd-9290-90f77b8e4225@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3195240003
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791809754-37085
-X-HE-Meta: U2FsdGVkX1+0fKPtBxFpBOfudezkSsv+NvWb9NHDfGnpc/vLizN7v8VbMrqRBh3hk4bocZshsmRc2sktMKN9UZoU6uoPOwaNnD7WA7rnHq+0dueDCYZZfOqvXnIwES4W4BsxlqPuZkKWmBGF0SwSs2saTagjwR7fQqSyGLyFdNg25mXq0fVSKzwiBXbHjFRdrlnvTFldUe9lKmoHXTSBrUwrqcT/5Vg7JqJ+bpQ5aNXnQLpXs1vVL79vSAgtXDdC+auBINgFTYK8Gc+DZvn99c44phcVMY6+WWQUR6vqzsIFPC2q9YcUbxjLm2MbFhhByJuiPRsUZSocPsdPSxMAx3i8RKN4Z//heMg5Ku1LD0oniB1fkEw80Mh3J3pYpQPeDljVYoTqATXlHN9r6q2rreCv3kOX0H2wY2qLcluPzAS4/MTRWpFWpS21rsZRiSRrnnZBUSP0dFlA1DoSqNTl2+w2ADUHwOfNKAJNZXnC13BDiD05t9LZo1BUERS3H/zlID2eqw2CydY6VCfV6JA421+f83KTXdp6wE6fCumMbhqVrA8GoGRhcFNvPQvlcTqPPTS27+vLbYAeQDP+Yxnf0pJCJOaK1dERozmIPSLhDWJT4QJYEY+0LqmcuHCyU5a1KT8KYUl1YmUD4JL6rumqQUxpT3QQCeaDQbwOvNON7wsUg9OKTLDlQpjdSHWiatkrJ2AaiQi10xjqFgSOLI2MPK1uxsgSGXPN4e//5tsfHIMzctzsdSQCZbPBZABjlmuYIUur34QdaVB8g+pw6GIUT6+M5/gtx7C8UCv+mUVAGq5AUyUkyRfc2XGtwFlxmmq7xypkGKShIoKs52/3ANm+Vl4vfGoMmbI7wXCfT8FVg23uvDe3Ko1Xs8oPSrgIVcdttykeYyK1160gHoS7eE6Ru5EcMWddTH2F3Q4Q6QFwUuuYQ8XBCt0Dj82smHyiR2bPfZHYeGcTdoibFDcEF6t
- KCULoQoC
- 6dX2CXpgP5Xo05oGsUlQvA08HLQnXabFUA4gy2svsRbvWWM2NAxa7+E322arROVDvbZmd7UUlNKWUTFeHODxe6ZRdWHi6RliDXvtWuCHuOXcAPbanbX9TMiUfavfzGyYJjV6lkMQFLmIqh2nPBqSY9rqf0NO9nzxjKdxzSNwDDmYSUKxVevXuyRYubAAsyFfVam67jXvg4/dj9ec1r+vZfUsYXIP1ju1GmLnc9fmPUFrCCBfGxoyHzTzs0Bnhw2/w+HYFE603ALEmY1On3PAIyOvIr+BKGtEA/AhiOqmRZgNHKzjFDlrKRDwoR3K2vUNy4BHEC14pDegHQfk0255r0k8fNPcfd+WWErF/ViE/yY9yAsY=
+X-Stat-Signature: jtug94mn6qkoq3w51b57m1ay7zhtabot
+X-HE-Tag: 1791809829-480009
+X-HE-Meta: U2FsdGVkX187ou/Uvkpgsz8URYQlMT9YRYXPz0KyD9y9P7C9WchqlqR+O9sZLThMFG2Ak+Z5yaGG3JWkyS/Te7e507+bGRuA8Guqy3fIhrn+RbbTrT8r6qKNjEtze/LrWMT6ttgL891BUeLb3yadwYrh/JnaI6kqz+HvCAn0kUFzoKj036WuRcr4FX1fFiwM1BBNw8a2DzK4adgNKoaJVwdUqVM9HXUuNtS4KGsR4uKDtSuw4hGGRxbKFneVmp6eDC3OnfbwDv6aEBUDBv8htxuIbACiJHBgIAx4l9UeR4fGQ/sewHYHv8F5qeWY+3SfkmzvFtOFfEybVJ3TuM9zE2/EqCraW8gC4ttd2nRdjiUjpyyYgufX32HeYEeFGqrjKmlLkxsAHOLDQknN7YUT4HmkuRhhOC7TnlmYwJ95dSdMHoHUV6cDFsz535/rSo4W2lZOD4xqhMms+jjCucHeH0569Lg6AjZO15vIPxiBsd7x76e1Mi8WV4+/OAIVZkXRWBMtKWQdJlkunSm9/rIjTntUfvy/t7k6z5METg3xCzmGrSe700a9o6PwofUS1B2YNe7k1sc8nLUEO5xy1MjAVBnJv7v2aZV8uOMIfq/qXZksBghVn0EOZfFJ3NnGA5kL8ZWyNk47c6GigVgcnxWYBkxZvfAPTn58ZKmWVqtZDnoiD8ctJTTJL3/K8nEjlWmYuKPLNCu1ptZFXJsQidEXLhSw79d5PetFxjsdbrlzecpvIsnyWMS4ZM8WA1mkR05GfCxOfr7QcHkt9jrIhUJApuv3AHATxK3Fe0BXyPqeNZeP2DVvWemC8IIC1okNwUK9Zo5vFtbpTQopDQnhNF/kJxTwXTYtoTipXVkCd8GZ77i9Apejj8eEmyy+g8HObfJV7OEBQSBeESDEXyWZU6JfuM6pchTI1mg33jd4eB7H6c02LqbeuYbDHdHwuIigAAQWSqAnLfiQEpnRVq3ikC5
+ CrU069JU
+ ESSXwdvMpyuThqYzQtVsE5VvwrbLm9cPiBgzlzoSdPjPrz7m6OiGwpzJyqkbXqUWEhm443Uf2xm7xbEcnYOn1UYd1Q7R6uJBomtz7xva0Y8AiL7zrrCXzTntFcyOS1oND8Z85Igp620f4LzaDBQdJYCzXUkPZRttUuy6FHiVGg8PpgSoxeBkeRHZtjyeXQq3O1EYqYV+4uAPuCz4xbM1kx1Rm5FNnZmpcLW940V78qbhnYekBggimWsPqiOb4GBOB9fhUJZpBqdYebosFF9SzIsznfucBgEV+IABuf7AEHyQji3hkCYbkm8zYx6XLTmltTCMN7E1hF1Itw87P2xMWxf4i7pbhxAnpNEO/eFlCUY8bGueHxylkZ6xAUQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,53 +93,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Oct 12, 2026 at 01:02:59PM +0200, David Hildenbrand (Arm) wrote:
+> On 10/10/26 04:40, albin_yang@163.com wrote:
+> > From: Wei Yang <albinwyang@tencent.com>
+> >
+> > During stress testing with stress-ng on a 256-CPU system, a softlockup
+> > was observed when madvise(MADV_COLD) was called on a 31GB memory region
+> > backed by transparent hugepages. The region contains 15935 THP PMD
+> > entries, and the softlockup was triggered after 14485 of them had been
+> > processed.
+> >
+> > The THP branch of madvise_cold_or_pageout_pte_range() has no scheduling
+> > point. walk_pmd_range() invokes it once per 2MB PMD entry with no
+> > cond_resched() anywhere in the loop. Each iteration calls
+> > pmdp_invalidate() which issues a synchronous TLB shootdown (dsb ish)
+> > waiting for all CPUs to acknowledge. This operation can be
+> > time-consuming under heavy system load, causing the accumulated time
+> > across all PMD entries to exceed the softlockup threshold (20s) and
+> > panic when softlockup_panic=1. On a CONFIG_PREEMPT_NONE=y kernel, there
+> > is no other opportunity to reschedule during this entire traversal.
+> >
+> > The regular PTE path already has an unconditional cond_resched() at the
+> > function tail (introduced by commit 9c276cc65a58 ("mm: introduce
+> > MADV_COLD") and commit 1a4e58cce84e ("mm: introduce MADV_PAGEOUT") when
+> > MADV_COLD and MADV_PAGEOUT were first introduced) and a conditional one
+> > inside the loop (commit b2f557a21bc8 ("mm/madvise: add cond_resched()
+> > in madvise_cold_or_pageout_pte_range()")). The THP branch never
+> > received equivalent treatment.
+>
+> That's quite a text to say "Do it just like the PTE case" ;)
 
+Yeah would it be possible to cut down these giant paragraphs please?
 
-> On Oct 12, 2026, at 19:15, Jose A. Perez de Azpillaga =
-<azpijr@gmail.com> wrote:
->=20
-> On Sat, Oct 10, 2026 at 07:24:54PM +0800, Muchun Song wrote:
->> Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
->> pte_alloc_one_kernel() runs the page-table constructor for kernel PTE
->> tables.
->>=20
->> HVO (HugeTLB Vmemmap Optimization) uses pte_alloc_one_kernel() when
->> splitting a PMD. Restoring the vmemmap backing pages does not =
-collapse
->> the PTE table, so a later memory hot-remove eventually frees it =
-through
->> pagetable_free() on x86-64. That releases the page without running =
-the
->> matching destructor and leaves NR_PAGETABLE elevated.
->>=20
->> Make pagetable_free() detect constructor-backed pages and run the
->> destructor before releasing their memory to fix the problem.
->>=20
->> Fixes: 49f599666420 ("mm: call ctor/dtor for kernel PTEs")
->> Cc: stable@vger.kernel.org
->=20
-> is the x86 case covered for 6.16-6.18? as far as I can see, x86
-> free_pagetable() only uses pagetable_free() since bf9e4e30f353
-> ("x86/mm: use pagetable_free()") in v6.19, so the backport wouldn't
-> change anything there. or am I missing something?
+Maybe:
 
-Yes, you are absolutely right =E2=80=94 thanks for catching this.
+	Running stress-ng on a 256-CPU system resulted in softlockups when
+	madvise(MADV_COLD) was called over a 31 GiB THP-populated memory
+	region with CONFIG_PREEMPT_NONE set.
 
-I double-checked and indeed x86's free_pagetable() only starts using
-pagetable_free() since bf9e4e30f353 ("x86/mm: use pagetable_free()"),
-which landed in v6.19. So for 6.16-6.18 the prerequisite is not present
-and the backport would be a no-op there.
+	This is a result of a missing cond_resched() in the THP PMD path in
+	madvise_cold_or_pageout_pte_range(), so fix the issue by doing the
+	same thing the PTE path does by adding the missing cond_resched().
 
-The correct trailer is:
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Cc: <stable@vger.kernel.org> # 6.16-6.18: bf9e4e30f353: x86/mm: use =
-pagetable_free()
+The logic LGTM though, so:
 
-Andrew, would you be able to update the trailer in the patch when you
-pick it up? If there are further review comments that require code
-changes, I'll fix this trailer as part of the v3 respin. Thanks a lot!
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Thanks,
-Muchun
-
+--
+Cheers, Lorenzo
 
