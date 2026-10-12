@@ -4,125 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3306CA9ECF
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 02:29:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C8DACA9EBD
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 02:40:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 573A26B0088; Sun, 11 Oct 2026 22:29:46 -0400 (EDT)
+	id E89AD6B008C; Sun, 11 Oct 2026 22:40:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 524FC6B008A; Sun, 11 Oct 2026 22:29:46 -0400 (EDT)
+	id E13BE6B0092; Sun, 11 Oct 2026 22:40:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 413E26B008C; Sun, 11 Oct 2026 22:29:46 -0400 (EDT)
+	id CDBC26B0095; Sun, 11 Oct 2026 22:40:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1ABAF6B0088
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 22:29:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8CF9112079D
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 02:29:45 +0000 (UTC)
-X-FDA: 85312393530.19.619CE4E
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E0169180002
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 02:29:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=okXi17i7;
-	spf=pass (imf06.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 99D6E6B008C
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 22:40:35 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E57DC80905
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 02:40:34 +0000 (UTC)
+X-FDA: 85312420788.10.D9D67DE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5C11EC0002
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 02:40:32 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="UBPtu/9E";
+	spf=pass (imf22.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791772183;
-	b=V/za9F5pTCfKr5JQvdJr11+m8Rpgn2xod4ckeuYXTkRXEcQgwzRBv5/dqBk489GUmziLMo
-	F576QJTnnX+MAsFMVwBGS2L+uumMiyVPzVAUX5kbygI1erciVZ/klljFoLZfa+55VF199d
-	I0huCDaqyge0/9Egna68YMGRVr48eF0=
+	t=1791772832;
+	b=QcQr7cGF/CPqUm6Pgbb+ZeqzH82OhZtr/iXuZPJkteuUspKIMQ4L94Av1dy4gkC2Q7nVuW
+	d1U3hLM3xVo5SeJdJl6lfBml0mGq259GciYYrqmgekQsp8P/8CREPuJjfqM3s3a1w4VA6c
+	qpooa9u1rY7cmgUhY5PUUODavcD/tus=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=okXi17i7;
-	spf=pass (imf06.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="UBPtu/9E";
+	spf=pass (imf22.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791772183;
+	s=arc-20220608; t=1791772832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YUzX3KLBEtejWmrVDJ7UhZNCGyRwxK6E6dSqlqcUQmw=;
-	b=PFNK/KvlDRbkj7NmxtTzbk5CbFoXAnjYrKp7wxtYxiZ7fjbB6uJ3QxjYeJGmKH4PRKNgqs
-	iZCIrFxh7BlrTP4VkeuXhj2QCTaOD7KzTmTqgXVHhhkwxHBWlnpGotGhetxMwBP2fMGOwS
-	4v7twG0eSNK2rT05OADCsoVZ0vbY1Sg=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2dd1dcdcf95so6473255ad.1
-        for <linux-mm@kvack.org>; Sun, 11 Oct 2026 19:29:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791772183; x=1792376983; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YUzX3KLBEtejWmrVDJ7UhZNCGyRwxK6E6dSqlqcUQmw=;
-        b=okXi17i7m8BgJ/LgzqLmj66ERovFWyOKG38CCCmLaxZ7Z3vqNZqysEH3tSfXyz2QYJ
-         55weBz8EBMLMVHOIZ0x7yNVQe4iIIsOUYXkNWqw0x9xBCltiav4MeKTzQ01jKRomTuoJ
-         qVyNVZeCe5DEDhLukeLrpAKlNVhjrjJEw5PWJ6octMKUgZb1/Tso3twDo5xB12cvj2Wz
-         smf+oTbDKk2OM1lr+K0lRQZXUPrOkbm4kpcMBCG4aKbVwcGCJL2dErZ06TLte2CKzrGH
-         3dXl4mDbA+dqkXwb2yeZ85QRHXC/U+wPz6p+uUNYU0a+saPhBjov1b72jOuJId5WnuGl
-         eblg==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mptis6qqMpkv7ium90UiEIS1Bva/bRNNiMhKtY2RI7I=;
+	b=QRjsaMAmBcm07m0k22U3G5S4QWizLM+mYV/k3uxsWakk3VKLkBGeHAcYD46f9jFlaOw0Bh
+	gfJBK6xUnRJRhQfA9J4lmX+yib9zNvWJ0I3BmdqLC/IkXNxoaglkbZhihaRLJOYusaSFe5
+	WNucwx8f7/FUKE051tL8g9VGqTWBuVc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791772831;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mptis6qqMpkv7ium90UiEIS1Bva/bRNNiMhKtY2RI7I=;
+	b=UBPtu/9E/vWZkp//rdMpiDgwYU1OvG2iw0SKWc6HiZJNai7UTs4mwSADnet/59A5NFJq2f
+	pozY2LfXL39tv9BedtUUZgfrYb8A5G+yNqE19eNKiC4Cw+ba0OTzVaNJeCQIc28+EyvrPG
+	AYtiK4le72ABkO89GoC4ZKyRrKBg2RY=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-365-9DmYLxtBPcOYcIBDNsnDSg-1; Mon, 12 Oct 2026 02:40:28 +0000
+X-MC-Unique: 9DmYLxtBPcOYcIBDNsnDSg-1
+X-Mimecast-MFC-AGG-ID: 9DmYLxtBPcOYcIBDNsnDSg_1791772828
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-5338cfe567eso33051211cf.2
+        for <linux-mm@kvack.org>; Sun, 11 Oct 2026 19:40:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791772183; x=1792376983;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1791772828; x=1792377628;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=YUzX3KLBEtejWmrVDJ7UhZNCGyRwxK6E6dSqlqcUQmw=;
-        b=tSN5bf6zXEcSi5E7TAXiVDdba9xzWbah5bj5kfMf6cP76/rOQP9o9b8NtZlB84oJWZ
-         QfUri6LCctTYeeY/Bp57frKzLkoEW/dNEjnhJRl6/tqM//k8u5MlmnpsGb35h2Oi6dqQ
-         /L5AAP51GA7ooLIxdhPBxqKkEekI4LsL6t12U+H2mbciMtE6bNxq93jqSLH1cyeKWhgW
-         i7GP8I8lqpSdveB62IOmVpyeNoX6Imeh3Rh9Kax/vSSNdvJrhQjXlBtueHoyhiW98Nte
-         GjDx8fkHyGvlhQREk3Px3xuGmfJkQhvKNg8ud2tC0T3BgSZQKuozg+b4N0V6jhschGhR
-         ELUw==
-X-Gm-Message-State: AFq9FYJjhDmIXIezg2cU+E2LXm2BFAgX9lIWIQJmtmtZnhEuAAvjST20
-	hmsApozCM22yHxDOHG+K0IHXfv5n6+JSMZlRhqbBqTUrhVHzEttKCViS
-X-Gm-Gg: AYBFou2flLby7e0pLzb/h/Anlu6ULfB63+fZ8kk9yxGOVZ/73wMnagbXOVxJEmuR1LD
-	iQIHbsQyY9xxw+cPe92byNegRoo/CCzQ1yruwi53oW1Su1A2TUIKkweLtZPkmg9QCUxVfTLbDOn
-	xZkV8er1e3KCGmfQgXnZiw49/3hgZerYNZ4xu3S7aM2OyfUQROEsiIxH0HC7PHfUWsoqjYChwkx
-	clr/xWmhGP+qGXcFdZZCic6Z2YvXQjucwoS2Q4effcwHwOmnFnhOaL9B+rQCLNN772TWNto4djL
-	DRHhJfhuaA75gFXWsFHXYTAL29jsnU/TGuzqHT6EaDc0WWSxWDtqOIir0j9xWgu36W8KNXaxllf
-	x1a1jZPTnhEfEQXZJiqikGNB/axHFihfPDQmbNtCIcKT3nCLqK4caq7qIuy/zOYnWvLrTjRyv5I
-	ugXPr3UwiuYO/ww4vS7DkPt9PaBPBjfxi6tJs/2MtgdrhnwodcyJTIXQfMzRaRS14NS1JV6iDAA
-	44iB1XGQL2mUg==
-X-Received: by 2002:a17:902:ffcf:b0:2df:34c0:72fe with SMTP id d9443c01a7336-2e84054243bmr52558625ad.35.1791772182510;
-        Sun, 11 Oct 2026 19:29:42 -0700 (PDT)
-Received: from localhost.localdomain ([240e:b8f:1df9:a600:c693:b19f:ada0:748])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e84219e6cdsm37873555ad.28.2026.10.11.19.29.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2026 19:29:42 -0700 (PDT)
-From: Vernon Yang <vernon2gm@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	ljs@kernel.org,
-	roman.gushchin@linux.dev,
-	dave@stgolabs.net
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Vernon Yang <yanglincheng@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm: vmscan: don't count per-node proactive reclaim as memory pressure
-Date: Mon, 12 Oct 2026 10:29:17 +0800
-Message-ID: <20261012022917.1102467-1-vernon2gm@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=mptis6qqMpkv7ium90UiEIS1Bva/bRNNiMhKtY2RI7I=;
+        b=mytnSvCh3eyR8ofrEmzhQrRg4OWWuKIPZSCYaek7CRBp0R7y4EeTy/Pccz9dzGLs0q
+         HW1R+AFiTxR3VB2Ys5RfHxHnHFpBU0Jg65k0pi7SwB1zGFX8TRJ/lj1pSdpHEity9JYS
+         RJoElbbuMhn12meb9NUIfcA2p2ycEr0qHziEnvlfHn7t3pmXeW1GKw8gQS8fE+40k62H
+         MU5g2BzftM0geaHkBopGdf84YdnCJwd9P72an9gwXkhYTxRsmw7J2E1mi3pWeIh/UGwE
+         CYDyjRN7Wd2fsFCsUlZ9rn1A37q79z2JIdDFP5DgmhQYsRv9+gQZNqozmjPBxyGyiOfc
+         3L2Q==
+X-Forwarded-Encrypted: i=1; AKwUvBw09gsilnzdl+OtuLn+YnZt8U9umYGRjdgcCpY96HFnOqJfAevTsfgvqYKst7zndCQzbRDPP/iDKQ==@kvack.org
+X-Gm-Message-State: AFq9FYIkbi0LB2p4Cz6DzMSt0d2bEwRnQw3eNav7cERaSoW6su7AGIH4
+	vppG9aoT2/0Wq5XERF0rOrF3MEICB/ppuwQ+L7TBejMHGZZpU37o6O6WnMn2CLAR2OlQ3JEnOkB
+	dTU7kZ0hklV/Z0UdxdLJKzeL7hxsYoytQ+INDIQ/HCyBlrFpHZxg/
+X-Gm-Gg: AYBFou3QujL77OIeO+pbZWs3khwMBkpQMNrlxEGq5Lmh+iKOLQgrZpvg3jLbSZDVWQT
+	fMDAVuShnzJ9SooHdpgCMP4ESWJ5tqywzaiBeyE6xa8tlTXXEKR5JgXc2+4pH7QwZCIAc8wApJO
+	GzleODm4oy8Sp4E2XKMUM0uKJMuyE4vWBaUh2OcVkfmMoX+9Wq2NPmVArVEspG9lb1jfi/v9lUP
+	9rZ35A4WWR4pndHgLia5swN64Xy2CgUk5GZKRCKHjcPAECLWt2Xx6s2RNZcW/VLlJsiamW9Sf8E
+	VwSZ1kCZzQmAVRHTg47q8ltOq3vwrXMMHChY5l8xgU4rvG9eIOzIQQLeLkmSVZaIQzovTIAovH6
+	kWMM=
+X-Received: by 2002:ac8:5f4e:0:b0:533:97ab:dd45 with SMTP id d75a77b69052e-5359fb3dceemr148577441cf.36.1791772827782;
+        Sun, 11 Oct 2026 19:40:27 -0700 (PDT)
+X-Received: by 2002:ac8:5f4e:0:b0:533:97ab:dd45 with SMTP id d75a77b69052e-5359fb3dceemr148577221cf.36.1791772827331;
+        Sun, 11 Oct 2026 19:40:27 -0700 (PDT)
+Received: from [192.168.2.110] ([142.172.30.162])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b812ba8c7sm15440366d6.38.2026.10.11.19.40.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 11 Oct 2026 19:40:27 -0700 (PDT)
+Message-ID: <aae9d468-2dd4-48fb-8e2d-d6997ac8e723@redhat.com>
+Date: Sun, 11 Oct 2026 22:40:26 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E0169180002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] x86/corruption-check: Remove the BIOS memory
+ corruption check feature
+To: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org, tglx@kernel.org, mingo@redhat.com,
+ dave.hansen@linux.intel.com, hpa@zytor.com, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, corbet@lwn.net, rppt@kernel.org, blum@kernel.org,
+ david@kernel.org, linux-mm@kvack.org
+References: <20261010153604.1885381-1-luizcap@redhat.com>
+ <20261010194519.GAasqVz2brXiOLegQi@fat_crate.local>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <20261010194519.GAasqVz2brXiOLegQi@fat_crate.local>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: IRrAJKoJqOSBwY8zvN6WHIEnqhufrcMIwxbKezUFKKk_1791772828
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: tsdux8tp19w4nnata9o4iayqq3wgd8fk
-X-HE-Tag: 1791772183-71519
-X-HE-Meta: U2FsdGVkX19RB/xWo1T4oBBputlerANW8srsuHX44n3/RR5T5fbMoA6UgbBjPOT6nuErn9zBgiJfWJxxM92TXEOSUXPEteRbAvfDPXt3J9nUvh420e+7tiNdr6L04B0wFCKcqp3knq32LYqOFJo1vFGsYn4XtIvJ8tPUJ0lKY75EiqPC/eF0IXDAehHcnFhVfnN5uGeUtTxWppV8N/ZlCJWwWLY1jrGmuSZOiFSOhbH5bMpI7CKpARfQrweEMA9/rXTB9KwRZJBE7uDsQQz8ET/wexINM/SOayX1qyXyq+7GbWn3/Ywi9HYmqxtG4mdx1or+f+6N98w3J8fuC+MgQCnKi2H7S1gujKZKXFjGcLxxGNef4ZFshjcV36viKIRCH0Yt1HZkru2jwczsDeNiI/+o7KqdAHESbvkMQg8V4Fa+ppKDtUt3tUjrxcoqaPXNWnThw70OeiHKnxuK7o6OacxGrDcRuQEVS7zuirOLtGg2rCOmIXQEbL4TPjaKjBsg6oVboCfx1rKfgy6DfrvJ41qPPgpkDsEAymrCnc3eAk2g0gckQbfmAG54Vu/8WeQWFBg2qGg6TOd/2XjJF5nt5dfcZaV+QSfsNSO9Odto2Ey41nLcVvhR/CyIAthmuDa88FZxdAg4jN5lnd/KcuEVb5KIbpuXi3GL3isaEVkPWO5+OMV8sJSp83eoAT3UCS6aAMwJBZQygvzXwBeyAXiUVwD27jc4naT8jkqfLnp6JLeW4Q1ZYsSohl/6gOqqs/3sym4Ui8Eb7YZWUgcRNHKDyC+qiTN+tw3mOTyrchHr6CbAyMwI/h6/AekdylDJd/bFCbZE+WH4uGchCuSFitHmb7emKQEImRtSKAdFGR56/LNeNBsLDpWbVKnbuAKweo1NhsHR1ZqG0YgMU2CVEjC+/jkBIfuFlf2NCY4h/lDYLg/Fo/68rteSVzodi9a7uVCLFX7QYJ4pcHxCUfDm9xE
- 7mOwpvxi
- vlKGZkLsWX+8JGnMO35Hhz3L311Y1Q7KLTYPlUczMuHbJPk7ewbJgJwVN6phhjN51xc7zuKQ1kSsEs0SFDS0Wfry92O3Z0ejTIOVdk1heeoY9gLwsswBa1Y4eHl4Uv2Qw783VAVbs5wq1ESzInE59OqBluxnJxXQqtIjdlBki793b3OklGunHxTeyYjASEkx7kD+Zcvwm5N4mPhmG+6kt7fjDXRgliny5Sh7OD5l3sqxot5YYJhS8r9LylsVoRUWs5N8mKTPBAittTVuyJeAwhuXc/XkCGR8wisvbgK2QQc0dae8yIuuw6K+OXjGm0WoiuBGnbCHfMF+34qwkJF22V2GcD3RCEbm+IKJxNzTGtrndoVU2d1G2K5qCnjLWKTJR7S+Rxzv6RE0f1zKLJp2EUSyPdl9PchvjriNZfi5pSgZ7NVaZDYR81tSi9TkpVPeHmf0jwKTqJJ2tkL1ruL4BcO95zg==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5C11EC0002
+X-Stat-Signature: 5ds4q8ub19r3a7hqjp47spht1zpz6ufn
+X-HE-Tag: 1791772832-388168
+X-HE-Meta: U2FsdGVkX19XefawW63fNmqgGU/YDvAPsstbwiMr+ECKkd4B8rQ7h+z46HD6OqR+o5y7+cWOS9sWjSHlBFaOinO3SwYrroCOO7YjDBGxdjzQG9wjz/b5Rl4ARXzA9NX6k4tnOWOEymXJCxQ9ZcAEJTX7HWYC0YZfRT1FdjEHnSZS15KrtTh1/p6DinErSuAZNdWLRaxDuVIr3tChR/Y6LetoXHLTalyPJulknj91yH/SxUZD0n3ygCh1V0pWGBLKyFWBA9kndvzZUbf2/MdrNF5Su288qB5pS2U/p6048uD5D8Gbre33Sk7940cEc06a3zASdBT1vK1uCl+RqXVpHpyjN5vhxc+plWl8a6jV9dGQEcE43NJzsMxBEOFTS/3tHHR5ZvGrAEdKhfa/+nSJyRGCcArSueA5NQDie1pLxrhLQv4dWWUiplJiwquINTgfeV47bBigqrTuBcbupSFQYnwWV3uoDk5PVIBe0CgLxibV2oiZAkLMS5WMWX2JtXpCmTKjWCKLsr6BV5aGDmo37JTogeC2aVjs+17dOSKMudLfPzkqrS0Dt9sRxkQOaRQABHqsjptrKKcRdeXSHflLHdpT/PrePplA4WLmuLSuI7yQojbE7LOn/Q6ZxfEqXCOvdmEktPbKV5bSiWi2/9EtInuDNMAQlYAqrHTcfvkNGftgURmbU2AJ1yvkLsFx5elMKIk/khkzaeYUCXnSxjfjw1V5/xSAwRoSU0QuvMc85GPgqLRrRQIp5bjwxKU/y8/K/+b8rzVJ4e8Z/Ca/Jod4gYL0kKF4uGrLr6Uixrm95eiR+sJYJ17rp8RcfuYORt/p8xiWo0nft0ORQYsb8yksSi/h021KpZdai5p43muLXnckSpGmyuwZMWp5QhWRuVKDHPr3LsE42t3bldJiqxVSGUnJfc9IS5nhZWNmEhVeYwQlug2E1rKpETztNFnHXtKllMEy3sjRoEvEeKTYOrP
+ pHApXcJq
+ Z2vwn3masr8WvTlafGkcMUD8UC82mosHUbR4LsCsebABpWlqOyYidJlYXghRpor1mdwu5ITRxqscSNPs8bsAZQg047nuoJeeOs+m7s0w8Ls97bTl8HsiN5i+heLeAaZpWFGDv6OaFT2g9gAMYce8W2mOTynQxjkH6GJeFiz3GLdARF5hoTARAqNDrRm8UBTUAfgyzzjHIpgx/mfa1j3j5bL0MJKPP+itdXAJG12axqleK5a7kiigmChgJvgn80HsWfmLTTKPHd1/VVX9DBiOJeudug/vF57B6TBAn0oRkSLSKA9TeU9eiSLgc2IXfMd+JF0O9YtgbFcnIeh63wckbnPutqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,80 +134,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Vernon Yang <yanglincheng@kylinos.cn>
 
-When the cgroup has no memory pressure at all, writing to
-/sys/devices/system/nodeX/reclaim triggers proactive reclaim on
-NUMA node, causing increase in the writer cgroup's memory PSI.
 
-Due to this reclaim is performed in the context of the write(),
-accounted as memory pressure on the writer, like
-commit e22c6ed90aa9 ("mm: memcontrol: don't count limit-setting reclaim
-as memory pressure"). This is unexpected, the similar scenarios (e.g.
-senpai) will continue to occur, only this time it is for the
-/sys/devices/system/nodeX/reclaim knob.
+On 10/10/26 3:45 PM, Borislav Petkov wrote:
+> On Sat, Oct 10, 2026 at 11:36:04AM -0400, Luiz Capitulino wrote:
+>> By default, the BIOS memory corruption check works by reserving the
+>> first 64 KiB physical area from memblock, zeroing it and then scanning it
+>> periodically.
+>>
+>> However, this functionality has been broken in its default configuration
+>> since v5.13 by two commits:
+>>
+>> - Commit a799c2bd29d1 ("x86/setup: Consolidate early memory reservations").
+>>    Moved trim_low_memory_range() into early_reserve_memory(), which runs
+>>    earlier in setup_arch(), causing the first 64 KiB to be reserved (when
+>>    CONFIG_X86_RESERVE_LOW=64) before setup_bios_corruption_check() runs
+>>
+>> - Commit f1d4d47c5851 ("x86/setup: Always reserve the first 1M of RAM").
+>>    Hardcodes the reservation of the first 64 KiB early in
+>>    early_reserve_memory()
+>>
+>> It might be possible to get the default case to work by allowing
+>> setup_bios_corruption_check() to run first, but it's just not worth it
+>> given that the kernel will never access the first 64 KiB area anyway.
+>>
+>> Lastly, note that it's possible to get the corruption check to work with
+>> a different region by passing memory_corruption_check_size=. However,
+>> the main goal of the feature was to check the first 64 KiB. Besides,
+>> the region picked will be almost random as setup_bios_corruption_check()
+>> will pick a region by size.
+> 
+> And?
+> 
+> Do I want this or should it be fixed or the first 64K are not worth it to
+> check or...?
+> 
+> That whole "rationale" is not really clear to me. Yes, it is broken,
+> apparently. So let's remove it but we might get it work still... So which is
+> it and why?
 
-The Documentation/ABI/stable/sysfs-devices-node documentation also
-notes that "This interface is equivalent to the memcg variant."
+Right, the changelog got convoluted because I tried to document all the
+options. Just to make it clear: I don't think it's worth fixing this, so
+I'm proposing to remove it.
 
-This patch unifies the semantics of the memcg and node interfaces:
-per-node proactive reclaim is no longer counted as memory pressure,
-and the per-node proactive reclaim interface no longer produces
-phantom pressure.
+Here's a rewritten changelog, if you think this is good I'll send v4.
 
-I ran demo[1] that performs per-node proactive reclaim 10000 times
-in qemu, writer cgroup memory.pressure as follows:
+"""
+x86/corruption-check: Remove the BIOS memory corruption check feature
 
-without patch:
+By default, the BIOS memory corruption check works by reserving the
+first 64 KiB physical area from memblock, zeroing it and then scanning it
+periodically.
 
-some avg10=31.53 avg60=13.42 avg300=3.31 total=10602985
-full avg10=31.53 avg60=13.42 avg300=3.31 total=10602985
+However, in its default configuration it has been broken since v5.13 by
+two commits:
 
-with patch:
+- Commit a799c2bd29d1 ("x86/setup: Consolidate early memory reservations").
+   Moved trim_low_memory_range() into early_reserve_memory(), which runs
+   earlier in setup_arch(), causing the first 64 KiB to be reserved
+   before setup_bios_corruption_check() runs
 
-some avg10=9.59 avg60=3.41 avg300=0.81 total=2686221
-full avg10=9.59 avg60=3.41 avg300=0.81 total=2686221
+- Commit f1d4d47c5851 ("x86/setup: Always reserve the first 1M of RAM").
+   Hardcodes the reservation of the first 64 KiB early in
+   early_reserve_memory()
 
-[1] https://github.com/vernon2gh/app_and_module/tree/main/reclaim_node_psi
+This has been broken for years and nobody reported it, which suggests the
+feature might have no users.
 
-Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
----
-V1 -> V2:
-- Check `sc->proactive` to differentiate between proactive reclaim or
-  page allocation. (Thanks Barry)
+It may be possible to fix this by running setup_bios_corruption_check()
+earlier, but that's not worth doing: the feature was intended to detect
+corruption in the first 64 KiB but the kernel will never access that
+range anyway.
 
-V1 : https://lore.kernel.org/linux-mm/20261005062236.564210-1-vernon2gm@gmail.com/
----
- mm/vmscan.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Note that one case still "works", which is passing
+memory_corruption_check_size= to scan a larger region. But this is not
+useful either: the parameter takes a size, not an address range, so what
+gets scanned is whatever memblock happens to have free below that size.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 91295070ca33..2e9ca5e4c741 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -7994,7 +7994,8 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
- 					   sc->gfp_mask);
- 
- 	cond_resched();
--	psi_memstall_enter(&pflags);
-+	if (!sc->proactive)
-+		psi_memstall_enter(&pflags);
- 	delayacct_freepages_start();
- 	fs_reclaim_acquire(sc->gfp_mask);
- 	/*
-@@ -8011,7 +8012,8 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
- 	memalloc_noreclaim_restore(noreclaim_flag);
- 	fs_reclaim_release(sc->gfp_mask);
- 	delayacct_freepages_end();
--	psi_memstall_leave(&pflags);
-+	if (!sc->proactive)
-+		psi_memstall_leave(&pflags);
- 
- 	trace_mm_vmscan_node_reclaim_end(sc->nr_reclaimed, NULL);
- 
--- 
-2.53.0
+Remove the feature.
+"""
 
 
