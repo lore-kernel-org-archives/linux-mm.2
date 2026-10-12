@@ -4,134 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA5CDCA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 11:03:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15720CA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 11:04:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CB246B008C; Mon, 12 Oct 2026 07:03:09 -0400 (EDT)
+	id 0394D6B0092; Mon, 12 Oct 2026 07:04:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A2BF6B0092; Mon, 12 Oct 2026 07:03:09 -0400 (EDT)
+	id F2C246B0095; Mon, 12 Oct 2026 07:04:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B8C46B0095; Mon, 12 Oct 2026 07:03:09 -0400 (EDT)
+	id E43696B0096; Mon, 12 Oct 2026 07:04:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CBA76B008C
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:03:09 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EC3E0160BA3
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:03:06 +0000 (UTC)
-X-FDA: 85313687172.12.B1E1BF5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 279708000F
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:03:05 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L21goNgx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C24776B0092
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:04:19 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7975EA0B58
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:04:18 +0000 (UTC)
+X-FDA: 85313690196.01.361207E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B278440010
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:04:16 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=F++r00nm;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf17.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791802985;
-	b=bh6JKTbQk+vYbxdpKWDX8G7nOFqKq67mbw+5eGzDTJZY5bb/OaDmwUvxAmJicAWVBSiPSe
-	zccua79S7a8spDPI5zovZ1HPqBk27GHzS02bA4Cxi0jkmIuH/m5kegEBpeUTa9NScBGL/c
-	Y3HQIznM5OILSb+ZiAivaOpqBZ5FYFA=
+	t=1791803056;
+	b=epgubXVPdli8dALhSSkJ0QSe0SmY3hpNnwWvI3iP82EPa0LOKpD5wKLhd+THQi5Mxqgzrw
+	8FaaEoipH3i4z6oHVhjvGfKMd6h6qhrqVWhUgyqbRbkmEDcCG11t1mcFwK0c0M4yRhgy+6
+	YdwjU7KxU9mwknXIl/XY8z21cOIahMY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L21goNgx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=F++r00nm;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf17.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791802985;
+	s=arc-20220608; t=1791803056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zOT/mXYnt79hUkUdKkSBP3XTVF0egYdf5lOG5CmCa3s=;
-	b=rRjSjWBGYn5VfOXSKV/LSYZPXF5iwRzlmHLL47DLv2KmovNphpRv4eE1i1DYA/9elbXrLF
-	+T5pRl1va+hz06vx8qeXkY/Nz8q+VC8GIx82e4UPaC1yWhXfME1NJtevk0eBrjk57jgwu+
-	p1PLM2e7FpYX2gRlno1r5xj1w1G/CtE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3B94A405CB;
-	Mon, 12 Oct 2026 11:03:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962781F0089B;
-	Mon, 12 Oct 2026 11:03:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791802984;
-	bh=zOT/mXYnt79hUkUdKkSBP3XTVF0egYdf5lOG5CmCa3s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=L21goNgxr/CsmljAiIMApowzvwewI1oHLWrAq+U1ix5Ssl+Z6YbY/801flfTVaHxP
-	 R9Bhvat4zbeQHpcuMYCpIK5nmiB5+rv62vh1Q8TX6wMRUKCdvx1nzkP5AJjJx0rjT6
-	 8I6MohVL0GvdTEQhk5xaaBljfYMhRx/W5DDp/8NPODtXcfApC2CjCzvT7mxtZxGQGG
-	 7WHiTcpArTJitz4TAQu5kXTLfFTV1M0XYDtwtD7RziEWy9TOTe5iT17Hj9TJ4u3eq1
-	 cgphmsDTcs9QJLFWAFy22MY8+PT2rW5/GIoHCBBPhCMcG0nz85gtNnleCOaoGCIHJS
-	 LKh/T7eE0Ciiw==
-Message-ID: <bd78c58a-f266-40bd-9290-90f77b8e4225@kernel.org>
-Date: Mon, 12 Oct 2026 13:02:59 +0200
+	bh=R17cvAYx5n+2t7QO4oy03VUEubeAV3RNvz9xwe9MG9g=;
+	b=h8pk4brVxvPoXDx0lPoX4cERjyXTneq085wCLQpyHwL/4oUQXSZUiNoZO17uYtj4QQzJW/
+	IyVVNYQvyO1k/XLxRy8m3EX2WEW2fYey5VqnMgo2YGHt/takR4nBdTRDg6+PAnZ6MRRY+g
+	1hN6Ut4cJ3cbTb/NqswcHPNEnryvkS4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F2BB1A00;
+	Mon, 12 Oct 2026 04:04:12 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 196FF3F882;
+	Mon, 12 Oct 2026 04:04:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791803055; bh=GCUhwqR9gUHDDQkSnLEoqzzvzh0xq7rUr9tQxJpA+Tk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F++r00nmSoucDHHIsuKWsEv8xVrypp0HtBNdtRJkDKmLkBuJP64zRrb/xJIShO22H
+	 uzo9MhZARvb/XeMwbi4x6xH3NT4IvmY4wF11YylB9B5Dtu48YuFY4E4Wms0ChMknp5
+	 vAcbnxdzzKSKleLIyoOeqv3IWqJ/z9HrDI5yVhac=
+Date: Mon, 12 Oct 2026 12:04:11 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, kasan-dev@googlegroups.com
+Subject: Re: [PATCH V3 1/4] arm64/mm: Use pmdp_get() for PMD accesses
+Message-ID: <asy-q5SBnrBQSadP@arm.com>
+References: <20260924062214.1635078-1-anshuman.khandual@arm.com>
+ <20260924062214.1635078-2-anshuman.khandual@arm.com>
+ <asPCv5Icdm7Z9mWF@arm.com>
+ <lqjq64vw6mlm27kp6ffms6auerj67avecc4ongedouumsrspjh@2f2eblm7wi4u>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/madvise: add cond_resched() in THP branch of
- madvise_cold_or_pageout_pte_range()
-To: albin_yang@163.com, akpm@linux-foundation.org, liam@infradead.org,
- ljs@kernel.org
-Cc: vbabka@kernel.org, jannh@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, albinwyang@tencent.com
-References: <20261010024042.4070048-1-albin_yang@163.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261010024042.4070048-1-albin_yang@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: u5a9t7daqoci4n1a7bo7ztu3ks1fw4rt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <lqjq64vw6mlm27kp6ffms6auerj67avecc4ongedouumsrspjh@2f2eblm7wi4u>
+X-Stat-Signature: k8hbztjqhaadcfqafgmf7adxta8xxqqj
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 279708000F
-X-HE-Tag: 1791802985-570167
-X-HE-Meta: U2FsdGVkX18qDLN2S53rfrJuAYAT6ssHQzcYopg6+N3JQ45wjg2aouEx/SR7YdaofefjMpvfCSxajTBxhSUMKT+isR+ZEEakjMJn0ry/Y/52Zgn7p6yEjk41DkydK59vXnBS511yaJRb3huop/XKhKXosie2CYMzFRwkz7UbSrCZ7LbTTcKPDEUcTZOS9T64jI3Bnzi96DYj3WVjdBuoUOEt+C+hT8DW2BKlvOSNoJ6iDzbEubPJ8o+AmE4egCZBi/Vc35z+wuLeiVp13fBxPQkwYsE39X54jKBYpfaVPJE+GNplxbRY42XOpxyEybNddRRIef2bEMvB8elAlMLuAmpleyacSvWWxIml7iK9XdtQORN80+xnmZPRRRiSuvoiEk9XT5S7bfAPwwDDXSKJgSEQiTAYVKUgPOJyfTb8zYlxzOIvaHijm/ohoS4aFfr3Zb02U/4bCl74uA7u0aRZdurmY+Myq+QTqptMUUB+YatTcQk3NrSWYu5u6L7j7T90cLaA9qrZhn/wG3YIpfMxgoXPulj889P4NRZi7rwscYq9tpCv8cYMyL0VhV5jZrAv9UCnIc1aO/VUntfuOZ8SYE4NeV8cjreOmyHKBC1qm/8gq4OQFkoSO2oXCCIaV2D34ifqZ4rSYnWsfGbvdaxqILnQu2+04dXKj6mGiEpT9/msiIaq1O5XqoyF/VQwN1dtBt1RGFOImA5IU5SDclybjuIJb40jARfrCuDy4/uTtmyMrIGqr5lLmGZYkXlbOfzQ9P9AddxQGs5/dyhWX3JNJ+xMa74j+a7ok40H7T/wG3BE1NhiBfNT4ZiUJluC6k3gu1S0+nGXYfivbjRTHOHF3g0gax8RpqxK7AS4gU+VPRgfpZp6aZbADxMGyBevFBj3TTII9T1w3HmX1cw2MNvXQO4ftDp0i8XyUtnxYPqv+qNPDd5OlQkZdyiXQlaEOyWnZji5wybWJgin9ZBVBun
- MFNjMCs1
- 3wWzSLvLr7BPXtnhoLn126kVqSyC3d+3kzqtx+bNHuSzqbL440P4vSEbXTZkn/l0hjg+nMOFjqA2qQGEsLjZGRZMgdUFaMAgSoccHpYQjrqwh5eWRFrWHEp653QJLxtJ2YXAYFcRilQqoBMJW8SeBDYpQRlj/TuJsJJdGBuzLEtrv2iL3DtaxxBDUzufQ0btiZxbvm4WgRpcU3s3TAvUsUh8ZLzKN8IQg2KM/qaEL8m9c037nrLz7mEIv7Qj656d2YMJM2TnaeYD6DUloH3CHskRIbtmCGcsNlFcoB9s2vI6tqDEqMX3Z/u3xsNAGOL0fKZ9NjItmQozFmaMhHCEEWiItFkS1sc6pm53JAwHgOq10GGJE17anjkBsJA==
+X-Rspamd-Queue-Id: B278440010
+X-HE-Tag: 1791803056-308164
+X-HE-Meta: U2FsdGVkX1/b6tgSgzw63bUx/dcnA9NCA8Szy00VUs3zPVP79ewTkICb6kqleNvJUp2WbiPPXvHi7EgSqmoDCqZBAHMkrkIPcgA8M3UqL8Jv8acHaAh+0SU4xO4a3ibsgSQaKpJNLZVMs69X6bd3v2P71tjbqPgI9opO+PsuGPngelt8X1Ps7p3fxojAPl8tkPH6Fi5dWPjLBE+tyiJtBQpCA7csIyOqRIQDwkFytnG5h5C8DlSf0vWcnpC0v+gzmlVLNwMoGFFL61GWEwIn/x8oqUJd/f6YXK4EApt4il63gO9XKHJF81k2OlhyQ0Fsv2GNasxfEhVSJ4MtZ0x5MbM8t2yP0l/Zs9m6rlbJWr21EqTlxZRBrwLejpMW9C3mQ/VDK/xuaA74QbkJqM8wrn7gZM7gLvoGYT6Ujof89fylaixE5TSPeqBQ2cElbWcVUwpYhGH+46rpisB2VzOPwWQ/vgMZemdzs6+cL8HJVP3jbxAFLTroXK1TxM6iybF+1D4/6Pe5nb3g3cMW2bWbm6bpE4bOi5/60YvnstL/aK1BqIRQgOaht6GRfDeAMw66XaeFAGdmKipp4VYl2x+Rx56yqGuLh6LFY2rSx7b6v7UcPuVkaacjLwa+Ta5FMsNbdhjKnvYJMXV+S6Zd0niEmjIiicsSTJLU6l+G22IIm0Rpghku51/lBH5j34b0RpfRHlVRNEnFDF6ASbPDgMMAimZYuehVGx6NrDumyFWkJEUaTAXq6iOVSFxEgZFqRhvkQ4mmF//7q2AItuoFvSXBmcYObXJFeM/gqz+Cg1XfnQ1H29gz4+UMgbQefpwzJpiwvbF4ynj30HA+aHUpdA5YOlj80Tozx5gNbX07ITxtqI3FBPnJaid5THe4b717ptbHS3gmhcFMEYRnIxNpov276c66saQgWXlh25yRy9Fi/x5lSdM0Yz7NYEgqgDeGDZ5SFsR22WsE3S8lkXyWS9X
+ 3+NCEYIk
+ gxqH/cwh8UUkCiQx9BvI440wBO9kYyr8v4yMC14oh5jPy/UpIgQSsajVhCzx6qr5vFGVSLxXvu0oov6xGFxJZ+e5wWrdukAgGtqIZGdMJ3qpker1CpDQwdDR0XwdfiQ9PL9biS9nqVo5Wz6wD7cfO82AP5aRhVm20ZJZnb+lFRdkJGEgDigdFi6kCUYHX+bMRnAmp6FuVxBb2gxELyI+i6EYWqyXJlKeSHo20NUTCeGv3OFfGIdBI1PfQiloKSCPiqd6mdPhtDvjh7etGUbIBFuUkYN0imh+JXpF8Ks8U6RJwI09A+PYeCukXaVyhFMllBuGUuo6Xpbx4sGBQFidLIh4UJlDD0mAYbr2IKULDY9aNa4U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,39 +97,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/10/26 04:40, albin_yang@163.com wrote:
-> From: Wei Yang <albinwyang@tencent.com>
+On Wed, Oct 07, 2026 at 08:11:52AM +0530, Anshuman Khandual wrote:
+> On Mon, Oct 05, 2026 at 04:31:28PM +0100, Catalin Marinas wrote:
+> > On Thu, Sep 24, 2026 at 11:52:11AM +0530, Anshuman Khandual wrote:
+> > > diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> > > index 763c5a411d64..9ad2d03e86ad 100644
+> > > --- a/arch/arm64/include/asm/pgtable.h
+> > > +++ b/arch/arm64/include/asm/pgtable.h
+> > > @@ -84,6 +84,12 @@ static inline void arch_leave_lazy_mmu_mode(void)
+> > >  	arch_flush_lazy_mmu_mode();
+> > >  }
+> > >  
+> > > +#define pmdp_get pmdp_get
+> > > +static inline pmd_t pmdp_get(pmd_t *pmdp)
+> > > +{
+> > > +	return READ_ONCE(*pmdp);
+> > > +}
+> > 
+> > This is the same as the generic version. Does it need redefining?
 > 
-> During stress testing with stress-ng on a 256-CPU system, a softlockup
-> was observed when madvise(MADV_COLD) was called on a 31GB memory region
-> backed by transparent hugepages. The region contains 15935 THP PMD
-> entries, and the softlockup was triggered after 14485 of them had been
-> processed.
+> Without this pmdp_get() override, replacing READ_ONCE() in pmdp_test_and_clear_young()
+> with pmdp_get() causes a build failure as pmpd_get() which is defined in the generic
+> pgtable header is not visible from inside platform specific pgtable header, even with
+> a forward declaration.
 > 
-> The THP branch of madvise_cold_or_pageout_pte_range() has no scheduling
-> point. walk_pmd_range() invokes it once per 2MB PMD entry with no
-> cond_resched() anywhere in the loop. Each iteration calls
-> pmdp_invalidate() which issues a synchronous TLB shootdown (dsb ish)
-> waiting for all CPUs to acknowledge. This operation can be
-> time-consuming under heavy system load, causing the accumulated time
-> across all PMD entries to exceed the softlockup threshold (20s) and
-> panic when softlockup_panic=1. On a CONFIG_PREEMPT_NONE=y kernel, there
-> is no other opportunity to reschedule during this entire traversal.
+> Earlier had moved pmdp_test_and_clear_young() inside arch/arm64/mm/mmu.c to avoid the
+> above described dependency problem. But then realised that pmdp_get() gets eventually
+> overridden on arm64 platform for D128, why not just redefine here it now as standard
+> READ_ONCE() to avoid the current build problem and the code movement.
 > 
-> The regular PTE path already has an unconditional cond_resched() at the
-> function tail (introduced by commit 9c276cc65a58 ("mm: introduce
-> MADV_COLD") and commit 1a4e58cce84e ("mm: introduce MADV_PAGEOUT") when
-> MADV_COLD and MADV_PAGEOUT were first introduced) and a conditional one
-> inside the loop (commit b2f557a21bc8 ("mm/madvise: add cond_resched()
-> in madvise_cold_or_pageout_pte_range()")). The THP branch never
-> received equivalent treatment.
+> Please find some context here from earlier discussions during V2.
+> 
+> https://lore.kernel.org/all/212067fe-1b16-4b87-87a7-4ce50847eb24@arm.com/
 
-That's quite a text to say "Do it just like the PTE case" ;)
+Thanks for link summary of the past discussion. I agree, for D128 we'll
+have to define our p*d_get() but I haven't decided D128 is worth merging
+yet (it depends on future hardware availability, I need to get more
+visibility into this).
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+For the time being, I'd keep the p*d_get() accessors generic and move
+pmdp_test_and_clear_young() to mmu.c.
+
+> > >  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> > >  #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
+> > >  
+> > > @@ -811,7 +817,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
+> > >  }
+> > >  
+> > >  /* Find an entry in the third-level page table. */
+> > > -#define pte_offset_phys(dir,addr)	(pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(pte_t))
+> > > +#define pte_offset_phys(dir, addr)	(pmd_page_paddr(pmdp_get(dir)) + \
+> > > +					 pte_index(addr) * sizeof(pte_t))
+> > 
+> > Why not make this change in the generic version?
+> 
+> Could you please elaborate on this ? pte_offset_phys() is arm64 specific helper which
+> is also local to this header file. AFAICT there is no generic version for this helper.
+
+You are right, I got confused.
+
+Anyway, I'd push this series post -rc1. It depends on the mm tree and
+it's getting pretty close to the merging window.
 
 -- 
-Cheers,
-
-David
+Catalin
 
