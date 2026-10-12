@@ -4,98 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FEA2CA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 13:16:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B27A4CA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 13:22:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB3A36B0088; Mon, 12 Oct 2026 09:16:26 -0400 (EDT)
+	id 9EE0B6B008C; Mon, 12 Oct 2026 09:22:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D42F86B008A; Mon, 12 Oct 2026 09:16:26 -0400 (EDT)
+	id 99DFF6B0092; Mon, 12 Oct 2026 09:22:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2B2F6B008C; Mon, 12 Oct 2026 09:16:26 -0400 (EDT)
+	id 88CAF6B0095; Mon, 12 Oct 2026 09:22:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 97FF16B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 09:16:26 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8552080D8B
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:16:24 +0000 (UTC)
-X-FDA: 85314023088.22.80F8405
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E4F3A80007
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:16:22 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QmH38l1e;
-	spf=pass (imf30.hostedemail.com: domain of sumit.garg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sumit.garg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791810982;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F0486B008C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 09:22:14 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5E3FB160E16
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:22:12 +0000 (UTC)
+X-FDA: 85314037704.03.EBC7DF7
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 780E318000D
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:22:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nYM0wBZl;
+	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791811330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C6MtMH1ZS7/LqdONAPmFEgAIkbcber8e91yV+8NWqx4=;
-	b=n3gWPrhWuhce+u/Ko9/4Mx42+Nk5hYAJI86pYpMLuwMIhoJDDIG/Zlo83I6LqRk3AsD1pE
-	TV6aoYqtr5LirYONF+JV4hHK85W6h0SDPb4FCCOcZjKIF3cQp1sOM0DsouXeX1X47Vilm4
-	IZ7StnOuicpVer7hB7bbjPmZmgLHHP0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791810982;
-	b=XexFm0UFRjoj3JH1mONpbLZaoxsxqFcx/3ZeRtFZg3gSctKVjRvIKEzG8hTXG5CdwGJZK7
-	xRqsXpUK7UGXSCH7INpADx/mcx0/Kov4+bXET4bWDW15ByvfSkruolC1Io7PEu443YKOTp
-	D4yv+/6vQcx/5NKlBlnbJCyGdVJ/IJk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QmH38l1e;
-	spf=pass (imf30.hostedemail.com: domain of sumit.garg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sumit.garg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8770C60AB0;
-	Mon, 12 Oct 2026 13:16:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B841F0089B;
-	Mon, 12 Oct 2026 13:16:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791810981;
-	bh=C6MtMH1ZS7/LqdONAPmFEgAIkbcber8e91yV+8NWqx4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QmH38l1eV9DBt1+KQ53uym1LwwTyqmzwyRg5m0pDoIA+Xrz+rbRz0g8YFzsm4MF9N
-	 XbwOJQCf3U6kkC/HsagR/7Att8ry12jX99u5FxJnmKyyg2De3Tkck93okliih2fgwn
-	 dKfqhPMmplROMRTaYG1e0dC3PJcsdvVN9k9lNzvX9ISOhZhmTY+v8muLWGx+uiKw3v
-	 8Fu6FPeoeWRFW3U0dU1ioLThmk/JDD84XAngLZKerCOHjEkki9HAtJ8MKRz7tbIHYL
-	 dB33D1+wT1lCYN3KK/vZLGZ+PXSESGjx3A6aSNlzctXGWmYxWqvkA7E7FhHnJVDzel
-	 vdHcVqx3qBODQ==
-Date: Mon, 12 Oct 2026 18:46:12 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: Vincent Donnefort <vdonnefort@google.com>
-Cc: Will Deacon <will@kernel.org>, brendan.jackman@linux.dev,
-	catalin.marinas@arm.com, rppt@kernel.org, akpm@linux-foundation.org,
-	sudeep.holla@kernel.org, jenswi@kernel.org, robh@kernel.org,
-	mark.rutland@arm.com, ardb@kernel.org, thierry.reding@kernel.org,
-	david@kernel.org, danielmentz@google.com,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	op-tee@lists.trustedfirmware.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, sumit.garg@kernel.org
-Subject: Re: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
-Message-ID: <aszdnInyJxLhSQRp@sumit-xelite>
-References: <20260921110050.3977591-1-vdonnefort@google.com>
- <arIYtjmSKCs14SqO@sumit-xelite>
- <arKW_91EeKA-w96m@willie-the-truck>
- <are21BjeS1O3RYE3@sumit-xelite>
- <aruh86rd5FMv2i9G@willie-the-truck>
- <ar5TPvANFUoosxGW@sumit-xelite>
- <asOAYODGZa-7EIV1@google.com>
- <asOD31rTX6dNfD1o@google.com>
+	bh=/HlPO4+kzCqKp8f0EIk+HoKpe7ab+E0eciRhKqESWyI=;
+	b=4cXjEvngL10WcJIvhssZh8+rAHn8L3ChVj6YCtT81K3rsR4xFrBSeYnkGVWXDFi7+6KV5N
+	XdnrMAICyd/IJwI65B5uYl+jYuz4+4/18rBjsBVmpJJM+IySF3ygOMxVhJpYrrMc1AcEL0
+	6QwFitIKEVf4ggSpe+JEfSi7iKxzkzA=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791811330;
+	b=Q5oT7oyGdKca7LbmcLR30wjJ3F1xMb5ZTnmgVr3RA052DqVoDcWWX9jITkswAFGtx+gDXF
+	8ver/qSGmOQwUdZ48PHU1ujPjUM3KejU6O6bfLCo+GF4VCAY/nVDsXRet656mvEC9eE0zj
+	d3n8emb0sQvt6/uybuhtUod2G6srEb0=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nYM0wBZl;
+	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-6793ff3d53dso1260823d50.2
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 06:22:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791811329; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ij3ahAhDZvJk+YbhRhgNmNXqlPXi7qF/YVKoxjaVS601BadrRBjzqUovm9DGHhhD2s
+         fyzp5fDmcTsn6/Z02tYBx5qEFirdiWl0pNzyFHpRxoootuKN4JG5CsLOS+gXDqrG05SF
+         y6usCctBpq9mR5uAmCylws3GhfJjX0y/vIQ4jrq3c5SUwp5dS1DHYvHKUGfKWTq5b7Bf
+         /jCeAMrKf2FGUDoeXEuu2S+WbJpQW1nY6ujf3QUGCw2/gGWS6gwZvWyhxTRs2p/iU7np
+         Irm7DjFF3YMTXwe+18vY/W+IW21OXAnZXIYRLUVdOvlQPotBldGZWaZuoHXv21fsPG2k
+         XaNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/HlPO4+kzCqKp8f0EIk+HoKpe7ab+E0eciRhKqESWyI=;
+        fh=GIr2hC2i+tEXUEPN8z2z+12rMxUazRFpHlB+VeWQ+HI=;
+        b=RiBogb+vZPEAZJxC8kbgNCpLjbDnSQ9gMaHX9awEm3uWN/9FrycigwlplTkY6pFjpC
+         gdbpzfTG6zWbGYgqf55YF90D9kJ/KFE+Vm6l6lH+uw+no+IyC4QEQG0H1pjeuraVyxNe
+         ZZZJNdAnMIA7o666V2MR8O1DW6xVxvQhR6P7qOTbXh5K/+cVH0Bci2ccUT/DxqtshIJd
+         Ug9kwr+xmAdAiwVisC4xxnea4hf0ZKMy78CCVYIiBKqB05+JSUoFXwUGdprmTq37APAa
+         +8g3cyl+Tb8Y7gDNOQ46w+qxdVmmJqTkyC6l/OesFBeLCWv1tqdx2FHen7TUjBJ8YhAz
+         /LSA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791811329; x=1792416129; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/HlPO4+kzCqKp8f0EIk+HoKpe7ab+E0eciRhKqESWyI=;
+        b=nYM0wBZl1d+4qAQ2VJ+Rx0hc8x3gFfVKV2trWY4gLh5tNb8pGMb14m7SPKk/kVGHF9
+         qFJZX2TACR5Ur4X6yYDDlm0G7wHIc7BeVYeh1GkCADjs6toN9EHlGIXBu6GiDhwv5/+s
+         KyzhnxhnZ4EGGNCTVzdfPSXPjEgPVP6mghRJNaQTu+obw+lOUCJxIBf7vGJYEh27JcPi
+         0ajSrvli+4BsY6gVxrM/tjJ8ZA/ew8LD4I3qTIjJcmoYK/cqLX33AS819fzsKXSpF5DU
+         fKjxK/nZX/s2nTI4yJ3WxNz1D2nIlUoX9SAZxT2VDGLd5sYiLgvYuVkemY+hn5vQlXGu
+         0u2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791811329; x=1792416129;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/HlPO4+kzCqKp8f0EIk+HoKpe7ab+E0eciRhKqESWyI=;
+        b=TeH+T1qUoaiCnH6x41lZAYf+EXhPXNE8WGMuB3tp07hbgHzANMRq8DzlJBpkPvxM+C
+         Uh2jPfWMdNLHak9H6P2SK1nzYubx2layPsPi3T37JAzaOzn/eOcjeqCiGgVJfqSEtL5E
+         duAL40CI+ikyYmIr/r80J6dvQoJNa4Lq6wiJv1M8t3GjV+xO17LFrDubVYnujuoP+AeK
+         sOonkSZl3rc9F1IlgyPWOT4BXz5UPAWBr+aMhavwD4n8xC4IalltGFHy2gMV0/U9f9Co
+         FKK7HAV/cc8BqgdWLUlVJaFFOTOfSKYrz75cSBW47IvNzErhvU5o/PAmXJZCmMG1lZPG
+         SHgw==
+X-Forwarded-Encrypted: i=1; AKwUvBzCtJt4HviKGgYoOr65ksMj4zUTJi19Ml/LAmBhCtStKcoNNSPtwKDMHVX7jRjAO5rpk6lchyREfw==@kvack.org
+X-Gm-Message-State: AFq9FYKL4iThReqYeLoQHhR0mRlg0cpq/6CD8uqaI7J6CDQKR3qX5WaL
+	gbj1f+jmtVABkF5NXpxG0/VMPUfDrwEtR26R5vwH9pjpJsl5FzTIY7IFMGm2IaNDICQDO4L53Vo
+	+SvkDEm8cYlG7fBdsU/6UP1yWEmUE6tk=
+X-Gm-Gg: AYBFou3A+k6FDfAAU5ml0CCN0nMw1QMhMNAdvrzaJA1FyoaxIZbsnwmHEs8f0goh7rm
+	XU2HFJVRhOo/ZP/2+VXipes03s3lyKpTQuSEDZdews+WN+COq2OvuSrrcuBqM14/77bqcIP7uqQ
+	lEONnbEUu7i3znXha7W8NN2qfB8xSrFifS/HxhoSkZB2//2nim0Mc3JG4Yd/ecMgVqQmisXZWyQ
+	DrpgQbXL+OZa3ZDBvNqnfkLlqpQ7HpJ3je6/pXe/YQ0I9tGR2MILQEENwPoavYXduu/jjsZFwRV
+	g2em4RYdjBQl+gHZG3moR6+sVohHR18R7eS8fOhiZ4o61NFKxImMthCTZ3ZeZfFd4u4jq+P08kJ
+	9MZ2KSyyf
+X-Received: by 2002:a05:690e:144b:b0:679:4176:47e4 with SMTP id
+ 956f58d0204a3-67941764aa2mr2893977d50.99.1791811329461; Mon, 12 Oct 2026
+ 06:22:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <asOD31rTX6dNfD1o@google.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E4F3A80007
+References: <20261011014841.405327-1-ekffu200098@gmail.com> <5895ceec-df6a-4604-a7b9-8138212d786f@kernel.org>
+In-Reply-To: <5895ceec-df6a-4604-a7b9-8138212d786f@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Mon, 12 Oct 2026 22:21:58 +0900
+X-Gm-Features: AclHuK8yhaoSQLFeVsXDYwnpJIxtJKUApBovJsFIS6aaOqTwgiZl1CWCxDOUgiA
+Message-ID: <CABFDxMH_TdG=txq7ipdsfkz0CCoyhD68Mp2-vVNnuFJyBUDRyQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/slub: clamp slab_min_order to MAX_PAGE_ORDER
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Harry Yoo <harry@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Hao Li <hao.li@linux.dev>, 
+	linux-mm@kvack.org, Roman Gushchin <roman.gushchin@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 780E318000D
 X-Rspam-User: 
-X-Stat-Signature: aycjb3mdd1dffrtw6yeqzecpce3wrcqd
-X-HE-Tag: 1791810982-907238
-X-HE-Meta: U2FsdGVkX1/ULyZpy2NnNZxmr1GGaWieDdV4xToUOhshcYqrnk6EFwYjEsqulEsaq4qwOCgu0sVJcJ7PMPl9WffXpLG+BCkkD9wCEVVa5+dz5Gg94J76bsW3SvbzWxPvYIHKOAV4SaI42hlS5/R06RKXa9xC7RWNewZVVo9XzZ2zQEnL8W8Dq8WDM72Iilq8s3g6JREIMH1HdDok1SGrSF8pXvUw8lAKf55XJZfskQXu0puIcy7jvlGPw0dTDuTS9VLExWeWbAOGWPHTIoIzehsghBmHaj3lhQXP6xRL5ucJi2XQ9kJkVzh6EbTVMn6k59luf9kh+01ZGaHtiHmgFfzx79jXkuCAPWxm/iVXVL+stnUH+RRWUjhq5NDhWmB8lkcRHYY6QGtw6vMdd1eqyKi+JAlTFq1Db18gzx2E9iAkZ0zyo9ykKVoYVXkEDJIBy8jmbJMFVwWyM5mrTX+nS1Jwh9ErPOwkzdN6TI9DNLkgNaKe6tpMyi4MRf4asz6v1RQB8TQwP/Ph6BEH80h9dONAidQiTqRtpP1jFZYPlf6TLCUQ0KQo7wFSra6aLvddiBx4mFRDOMsGvFR0S9wmLlQ02RYZQrQgbvWU16yhS37dtp9DqDg4PWWvAGnGsoylGkdF6sqIUnzTK/TbHqAEgTZHjLt0ix8hAv27ep40NYZoXNS0/A1nY3Cr6TrwBmNgn3focfgdPeLMRI9RykW7q597ta7UB5238RKkBsFLMS1JLc/4mUA43AGQYLRty3T0EePqfmF2w8ep551ImHjLBZlOCbfasx985G3Ca1vzQmu+C4UMVmD7tJJpRex0ZxGZWIzWZTVOe36WGZg0GrYQFmRYAZV5mDaKPy4LPC58eLoNVVjKcVV8ApVQiSFJ91xexEUzmsax06eccVJprNfLc22m0d8NBAi1pcU/nSxxnmdfU90FbMOhHmL1lZV/RBNGsu6u1kXAA5QZ0DbiL1y
- InPvdkXi
- 17W42CvYkmVQgpYYjSvtALVxHAkLRXZ7ihVqhwWZNEENAeUT210biZUFUXsGd3NIEYKfWHsB7Df3ZuaN1P/ZUxPrgRGaMBJVyxrtx4/vwMrsy+ImzUisxXct2LdsEEAqPD4v6DB972COMl0Dz5mSuKmXvqvDYLA0mTqKmu/bRgNpsOaWWg5KQSmrCYrHY9AN6aXX+q+pxH1ntAWMdqUFvQajPEeypprbW0e+EYgszBj0j4WjIZMcULrB1ts6kGSzaLeKYgY6GzqHeHwnosZNw+/gOKg==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 6q4dyiti5z8xx5dqzx959p74dh3ero6d
+X-HE-Tag: 1791811330-256507
+X-HE-Meta: U2FsdGVkX19bk0k6LZgrodr1Ck7gBl8y+FcobKDQDIqeUpMbVuE0K7Ijm/LsXCWYA7KaDHBCmq/Lc5xPoz9pzFr7fQXmqVEnoOkNbBre0/u4dm5HBDLksS3bi0YXzikJ1wYY1OrLskcVLxS67xxfV+4zigT/C4ChDB4IBYAUK78iRp/9EltL+0pUoIrJfCcNwm32qkNKyro+h1X/KGWoUZqUTmrY8dRrb1xSqHcPAkuPz2VPGob0qTHZFf8p7fyhK7jqQ6GDG4WAwcmxn7kP7aBZyj+lw+wWqLPVGdqilfoZOutV14FVSjKddkZWXq6btxbhZLl24na/tducQc9EBCr8Y+It7ZKMYrhYyXHSjeLDRWl4BxCt2F83ilGcCpirG3JGZoxbY5x5Pi6Jd823FsZ4OH2wsYRmeL0CiHnM7xq6AAD6CofgkWtlJfInYLtoWWBwxGjUhyEMN7qRmcg/RdgDYcwtAT8AqAokwpb6r9keMAeCWYFDsl3Xs9yffXScwnyOEgoJah9HezBYWH/g7L/UF0ZOP292iK+5piXD+xcX78lVzPzSrKqA55ZsatxTGbkpa2OzOg8Lvl/BccknqcFDB2H7wpGNJHMljcl13OtArsoxrMCZSnDUxMDdI0Txzp2kVpsgmUMKZLGnZvUmw39KdZAueTqcoMY1w2omXldSpDL8qXDENVKC6pFDqURv1s9vWyE9ofbghRtqANIZsOEsJmG6c1Y4Pje7/FLgWFPDy3jQluSKvEHB2BQ22qcQZ4wMK2CJYFXRL9InN6hZXU7RINrxfP/yAlfr067yJeowW444e32J8bfVoSDB1WY1onjxuCcbl5mSJIXjoer6wZjUxbb8ZB+yRldHyGyMA3G4aTb1PKEQOo8/eGgyBXCMmNbW8W6A4Nm+aZqoMTc6DTE5oNb/NUs5CxTN1PcOvPRPYzPtxmCk06vDMLfH179UkbsfNE91iRXqX4dHniR
+ VP3vEO3G
+ B6vCI8Ug1qoNDjm27po1l8Qm0dg4z7KTzEO1ST+gS/k63QrMNANoPguH/Irl6I/wj6DUm14UKIj7K/HKxmB+vkdNllcxiHTrB1wIjJvv4b96ct8AHaGhUfSodesDMkrvNGB4/m4cN7m95sedgLTsPfJH4YGeITfEPiqUmYup79hZgXi5FXrYY8XEX+/N1JNGKA/VqEvKm1BWkcsoaLUwnhwpzy83tSzK3GjgK9z8y441YsuVi5j499apyyhMLrO4LMf2SWeXcsXhRx7u5Y3EHWBr6170+N7eNJ4dc+uz7DFqvb2Qh5c4MZaz/UTfBAN0HZCdTNrrsGUBtg/0RbLA30LJG7Iu4iqToMpWq9oB0vfXKPu2Z9YxdxpmQ0ljM18KkWcrAh6o/OCk6ft6noVT/WgDkSPF8wpI6EA0J5HMA4U5rCDJYYxD2KILbZdWztoKlR0uzDMc4XhRcKGaPeT8hgOe6vNAeSKhc1X/fa1mHMvUuDXs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,136 +141,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 05 Oct 2026 at 12:02:55 +0100, Vincent Donnefort wrote:
->Sorry, not sure why Sumit's email was dropped...
+Hi, Vlastimil
 
-The problem was with my mutt config, it should be fixed now.
-
+2026=EB=85=84 10=EC=9B=94 12=EC=9D=BC (=EC=9B=94) =EC=98=A4=ED=9B=84 5:23, =
+Vlastimil Babka (SUSE) <vbabka@kernel.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=
+=84=B1:
 >
->On Mon, Oct 05, 2026 at 11:48:00AM +0100, Vincent Donnefort wrote:
->> On Thu, Oct 01, 2026 at 06:04:06PM +0530, Sumit Garg wrote:
->> > On Tue, 29 Sep 2026 at 12:33:07 +0100, Will Deacon wrote:
->> > > On Sat, Sep 26, 2026 at 05:43:08PM +0530, Sumit Garg wrote:
->> > > > Looks like you dropped me from your reply.
->> > >
->> > > Huh, that's weird. If I hit reply-all ('g') in mutt, it moves the entire
->> > > CC list to To: and drops you. I suspect the same thing happened to Thierry
->> > > when he replied here:
->> > >
->> > > https://lore.kernel.org/all/arJcN60nagFKXj2Q@orome/
->> > >
->> > > I can't figure out why that's happening :/
->> > > I manually tried to fix the To: and Cc: lines in this message.
->> >
->> > Thanks.
->> >
->> > >
->> > > > On Tue, 22 Sep 2026 at 15:55:59 +0100, Will Deacon wrote:
->> > > > > I spoke to Brendan at LPC (?) last year but this doesn't really work
->> > > > > for arm64 because it relies on being able to unmap arbitrary parts of
->> > > > > the linear map, which isn't generally possible unless you force pte-level
->> > > > > mappings for everything, which is prohibitive for perf/power.
->> > > >
->> > > > As per the cover letter it's about allocating pages that are not present
->> > > > in the direct map. This essentially fits the protected DMABufs use-case
->> > > > where we don't want any kernel mapping to exist at any time. Bufers
->> > > > allocated from protected DMABufs are only meant to be accessed by the
->> > > > TEE implementation or HW accelerators like in the secure media pipeline.
->> > >
->> > > That sounds like it should probably build on top of this series, then.
->> >
->> > The main problem I see with this series is it tries to move from the generic
->> > CMA allocator to a reserved FF-A CMA pool which again comes from the
->> > DT. We already support reserved pool allocations via "no-map" which are
->> > discovered dynamically from OP-TEE.
->>
->> I can't think of a way around a DT declaration. We need to know what region is
->> PTE-level before the direct map is installed and of_reserved_mem is very handy
->> for that purpose. And as this PTE-level mapping is costly we certainly only want
->> to enable it for platforms that absolutely need it.
->>
-
-I am rather thinking of a way to turn the default CMA allocator to be
-PTE-level mapped. Since the overall idea for this dynamic protected
-buffers was to reuse memory efficiently, otherwise the reserved buffer
-approach is already there to use as "no-map" via DT.
-
-If we can have "cma_unmap" cmdline option alongside "cma" then it can
-turn the existing default CMA allocator to support unmapping buffers.
-Not requiring a DT change at all, although we can have the DT property
-for the default pool too if platforms want to opt for.
-
->> >
->> > If we can rather support a generic CMA like allocator for arm64 which
->> > can support unmapped allocations then I am all for it. These platform
->> > specific reserved pools isn't a scalable solution.
->>
->> What do you mean by generic CMA allocator here? An extension to
->> shared-dma-pool? Or having the CMA automatically doing the unmap/map on
->> cma_alloc() cma_release()?
->>
->> Right now I have created an API for the unmapping/remapping part. It adds a
->> burden on the caller, but the alternative solution is introducing post-alloc
->> pre-dealloc callbacks in the CMA, which looked a bit overkilled to me when
->> the users of that "ffa-pool" are only optee and the nvidia video dma-buf heap.
->>
-
-I am not too worried about where the actual implementation lives but
-looks like CMA driver to be the better place. I think use-cases like
-guest_memfd proposed as a user for __GFP_UNMAPPED on arm64 will also be
-looking for this feature.
-
--Sumit
-
->>
->> >
->> > > You could allocate the DMABufs from a CMA region that has no linear alias.
->> >
->> > Allocation from generic CMA pool is already the case here:
->> >
->> > tee_shm_alloc_dma_mem() ->
->> >   dma_alloc_pages()
->> >
->> > Do you mean it's just fine to unmap buffers allocated from generic CMA
->> > region since it doesn't have any linear alias?
->> >
->> > >
->> > > > > Vincent's series tackles that by using a pool so that only that part of
->> > > > > memory requires the pte-level mappings in the linear map. That's the
->> > > > > whole point of it, so I don't think it makes sense to drop it in favour
->> > > > > of Brendan's approach (which doesn't work).
->> > > > >
->> > > >
->> > > > For protected DMABufs, we even don't require any pte-level mappings in
->> > > > linear map. The whole idea of mapping and unmapping is just a bottleneck
->> > > > for performance sensitive secure media pipeline use-cases. That's why if
->> > > > we can support __GFP_UNMAPPED with the memory allocator on arm64 would
->> > > > be the best fit for this use-case.
->> > >
->> > > The point is that you will require pte-level mappings for the linear map
->> > > if you want to unmap from it at runtime on arm64. If you don't, then you
->> > > can end up needing to split a block mapping (e.g. pmd-level) when you
->> > > decide to unmap only part of it and there isn't a safe way to do that on
->> > > arm64 without transiently unmapping the entire block, which can lead to
->> > > fatal translation faults during that window.
->> >
->> > I agree with you here, what I am rather trying to find if on arm64 there
->> > is any possibilty to have a generic allocator for unmapped pages. That's
->> > the use-case here as well as what Brendan't patch-set was trying to address.
->> >
->> > >
->> > > > Now the question is why arm64 can't support __GFP_UNMAPPED similar to
->> > > > how Brendan is doing it for x86?
->> > >
->> > > Because arm64 != x86? Presumably x86 doesn't have the strict
->> > > break-before-make requirements we have on arm64.
->> > >
->> >
->> > Sure, sounds like you are eluding to that the generic MM flag
->> > __GFP_UNMAPPED being proposed can't be supported on arm64, right?
->> >
->> > -Sumit
+> On 10/11/26 03:48, Sang-Heon Jeon wrote:
+> > setup_slub_max_order() clamps slab_max_order to MAX_PAGE_ORDER, but
+> > setup_slub_min_order() has no such clamp.
+> >
+> > The buddy allocator cannot allocate more than 2^MAX_PAGE_ORDER pages
+> > at once, so slab_min_order above it makes no sense.
+> >
+> > If slab_min_order is set above MAX_PAGE_ORDER, it can even panic at
+> > boot or invoke undefined behavior in order_objects().
+> >
+> > So clamp slab_min_order to MAX_PAGE_ORDER as well.
+> >
+> > Fixes: 81819f0fc828 ("SLUB core")
+> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 >
->-- 
->Vincent
+> Hi,
+>
+> this is effectively part of my bigger refactor here:
+>
+> https://lore.kernel.org/linux-mm/20260923-slub_tiny_rework-v1-1-a0e66d536=
+eb5@kernel.org/
+
+Thanks for sharing the patchset. Then I'll happily drop this patch and
+look forward to it :)
+
+> Thanks,
+> Vlastimil
+>
+> > ---
+> > Changes from v1 [1]
+> > - Change fixes tag to 81819f0fc828 ("SLUB core")
+> > - Remove stable tag
+> >
+> > [1] https://lore.kernel.org/all/20261007163403.1643768-1-ekffu200098@gm=
+ail.com/#t
+> > ---
+> >  mm/slub.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 1559cbace469..8400df7c222e 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -8354,6 +8354,8 @@ static int __init setup_slub_min_order(const char=
+ *str, const struct kernel_para
+> >       if (ret)
+> >               return ret;
+> >
+> > +     slub_min_order =3D min_t(unsigned int, slub_min_order, MAX_PAGE_O=
+RDER);
+> > +
+> >       if (slub_min_order > slub_max_order)
+> >               slub_max_order =3D slub_min_order;
+> >
+> >
+> > base-commit: d755441b7672c74f29d1241ffdd2b067ecab1ca0
+>
+
+Best regards,
+Sang-Heon Jeon
 
