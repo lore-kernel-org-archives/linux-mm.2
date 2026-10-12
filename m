@@ -4,105 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 147EECA9EC5
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 11:55:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D69F0CA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 12:05:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F40436B0088; Mon, 12 Oct 2026 07:55:22 -0400 (EDT)
+	id 9122C6B0088; Mon, 12 Oct 2026 08:05:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF16F6B008A; Mon, 12 Oct 2026 07:55:22 -0400 (EDT)
+	id 8C2F76B008A; Mon, 12 Oct 2026 08:05:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E07246B008C; Mon, 12 Oct 2026 07:55:22 -0400 (EDT)
+	id 7B26D6B008C; Mon, 12 Oct 2026 08:05:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BDAEB6B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:55:22 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5D73C140C3C
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:55:22 +0000 (UTC)
-X-FDA: 85313818884.17.FDE9370
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B9032140002
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:55:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n43wZqvk;
-	spf=pass (imf26.hostedemail.com: domain of da.gomez@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 4C2D96B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:05:39 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AF4DC140B5C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:05:38 +0000 (UTC)
+X-FDA: 85313844756.20.8A45876
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EA977A000C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:05:36 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JEvlryvS;
+	spf=pass (imf25.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791806736;
+	b=2A9w/wOAdBEf8AGN2cWn7bkHs6LGo/2otmTJDYIAgKfR8Fq2nRHOh+RdVbfVuADZyyjcH8
+	DSUIAldtqZY/9Aqh/lhmSgdxQJ7SmDvS0sVtszMstyUc+Yr1Hp4l6qFm8UnpSXbfIXErDq
+	9eOORT7BMExqUc/1s+v/WtQ2xLveCbM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JEvlryvS;
+	spf=pass (imf25.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791806120;
+	s=arc-20220608; t=1791806736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=EFBfQFk5/U3oNT5PftLrBoxKpWYLq06VaTtaCGifA+Q=;
-	b=PGTT4N+aKDaW2BOvNzrW9Zff/1tlgAkMnfbXeCmzd8smPGvD0Ct30ZxaLj8KjNX8AO49up
-	91zNfheT5uuexZ3x0PiEOAdAuN2cIKt87m471SHbN6Z/BNb/fbpekqigiBjwEJmXr+GVnJ
-	F9jP7iWoeowoQgERSxNLG3J8dnnnOR8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791806120;
-	b=cuEIyTFBLwU2Q3iNZiVcws6TaeMWvp514YBBXnsxPVxQA95Teb88CQIDNG8eohFdyEGPtn
-	JdZOk0QWEI17O+EJox7qWmUHwfsKdqSmq6UyP5WJB5hNoWwU1Lkb3Y1VFHG/cY+KKieMVO
-	xzWyz2yccVv81DsdkijdX2lWaGcWA1o=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n43wZqvk;
-	spf=pass (imf26.hostedemail.com: domain of da.gomez@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F253042AB2;
-	Mon, 12 Oct 2026 11:55:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBB01F0089B;
-	Mon, 12 Oct 2026 11:55:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791806119;
-	bh=EFBfQFk5/U3oNT5PftLrBoxKpWYLq06VaTtaCGifA+Q=;
-	h=From:To:Cc:Subject:Date;
-	b=n43wZqvkpRiBHTT8srVSaSF0QkmteVpPPVz/AjMHgwTfz2Hhd0T8eeE5NQjiOdjcU
-	 p8tgxSiKBAyVs9/yTPLNCJLwyvV9diis+mZSfSgX0foXGNit0XJ5Mvw7k6f7nD/Akd
-	 62rLWO5ZY8lH0rIcmp+ZYjidpWABrGpE3ZSEFu0GE2ZnQmwmy1K7CbwiuoBwssBKok
-	 jGXcHbMh3mf2ZR9xabtXfJRDYToLQa0Atye5wmuRnNaXO+Shlb8VEV6ZysUnORPkkX
-	 ZFQp6ClSZrEsUcFjePPmIMOafuD419/ZMuBV5siF5ynAtyw3yq5R3SAjYc/gIl54DE
-	 lhPI+9KfMuuRg==
-From: Daniel Gomez <da.gomez@kernel.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Daniel Gomez <da.gomez@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Corinn Tiffany <corinn.tiffany@inria.fr>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Philipp Stanner <pstanner@redhat.com>,
-	linux-fsdevel@vger.kernel.org,
+	bh=kLbm/HnztJlhbsvLEPa7IOES1RKYfU4H2Ro9opKpO1w=;
+	b=7fIJk1DnPERCtbWexQonkVdeK491JNEHo4zzVTdph9UjcWonY3ewoIiyO25LzRWECIO2XS
+	GbDfKM1rkFD0+uvMBWtJ6Kb78KD6HS3ok6hx4xfNfoTZgh02seGFKLckX6cclYL9Q5VIUG
+	c1HkGA4lwI568uhV0GAdTvkXrW2FnqU=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3a7fecf8440so845966a91.1
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 05:05:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791806736; x=1792411536; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kLbm/HnztJlhbsvLEPa7IOES1RKYfU4H2Ro9opKpO1w=;
+        b=JEvlryvSfMvtrl4TpMOxjuGpaz0xPh5SmLQNXYLKNdq0joT3DLEEwdsUEuvNb/xCIv
+         6pYNHtsLA7wL1XD4sD2pm2lJ48iFnQFRtaHmR1Alb3We0FKUdbL6JYgDtappX7I7XTYQ
+         19SkWARkd04seJSNaeWGF3FQ0BGLcbGc6ysFf3Tk1H9TYYBUKCbWuHX0RXvHvPSzv7pc
+         T81jn1lnxvobflcS71RWeBFNoMAuCRE1oQyI/gPc9p3ucp137ztgn7P65nfkDxNoGx/Y
+         ezvKw5m2qdj19qtQrruSnIRQz8ip9hVgesjbE9rV3n7Iv13mZgGWHI9HGE4IL0uBd0pw
+         9BZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791806736; x=1792411536;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kLbm/HnztJlhbsvLEPa7IOES1RKYfU4H2Ro9opKpO1w=;
+        b=25Ku7RibPwqzGa2mUlUOihkiKVinecDfT2xEfiOqVLYntHh+os/qPMuWRmL5WcEg06
+         HSDlztJcpYOemct0yYqMZKAo8npCTGDKZUUH7kGRCwd50pP4jEmCDdwO5Cs3oroOKB2e
+         a025oS3fr3gUz8G8fM60JKIB4d9nbszqpuK+ntWCVNPgPd3gJwAC/iH57HsMkJw76oS3
+         VGNd0OnQDfeMELe/sDlUj9cqJatoiKWRDv/yKr+EbMAmUYFYPczF1SJCddR2/RXccjmQ
+         +z37IwiG2Xh3k0ElLRjwjZCy4m+0/45WT5yG/YFC4Ba0cNSN77eAHSELvJTk8h/qj0KW
+         gYEQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxF372KYb6EhmwHMSBKlgALJ1ANtFNzB9zec5TkQYIEwxrHwB35aTmtQtKgF6oIrEs5+CkxNWIQGg==@kvack.org
+X-Gm-Message-State: AFq9FYJupdGyYTXW/AehGVw/ATIOTmB/bEcruIAxfWwqcwvGu3X/HEfR
+	E933nazZEea51AT54tJkxlHizixu+yJc+y4U+gUbie/Kf25jkkCHaQ6G
+X-Gm-Gg: AYBFou08yT0xwG0fVqMSpUaUWUILIBNWeuhXhOOZ6/Y9u44xj/+id3hXjlWbjUipH3f
+	q2Ih8zsgpYljz41j7HtwJHauIE4ZuYcLYPEL1zFN+NRrxWNdujvg6p+2VKhikDa1deBf482dtvO
+	5CP2nkzwk0x6KuWeuykGnf2MpIa7qxdR4sq8/zROv5gOdgr5/WmgO0PZDve4ZCT+uAmQAwV/AgK
+	sNbhx0Ix+mJvJf511sfFQ9O8cOfLr7krvJbBXMvT9VqVuWqV/9I+vaby+BVpgF9DnsuYJ/uGQE6
+	flV/Qwc27q1qxgHgpT4pnnZbcjFMCF7JpsGFHbG8rVt+QoKFjgwnx0vcNPKOhGzpwqQkhABQjXl
+	8xk4xESvH5git8jGWDZdjqXRc8Dyc6yU8lKqzCJmOkjkykrScxfK9IuGoGvK0xGaBZKJj8wYGZm
+	MKaW/Xn9EW4tfKf52DNEb+bDGA8Gx9MZSox048x2gWFOuZ2N02bSRLKQiTn+8ElHPsJ/bjXrG6E
+	w+VlKTFUi9k7UNFfGjKr8k7L5ztkzF6i1cKptWA1wbm2A==
+X-Received: by 2002:a17:90b:3b84:b0:3aa:f4af:1e16 with SMTP id 98e67ed59e1d1-3ab3a4871e5mr7188609a91.7.1791806735133;
+        Mon, 12 Oct 2026 05:05:35 -0700 (PDT)
+Received: from yafangs-Air ([101.82.170.24])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab371c32cesm15722454a91.16.2026.10.12.05.05.22
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 12 Oct 2026 05:05:33 -0700 (PDT)
+From: Yafang Shao <laoar.shao@gmail.com>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	gourry@gourry.net,
+	tj@kernel.org,
+	hannes@cmpxchg.org,
+	mkoutny@suse.com,
+	shakeel.butt@linux.dev,
+	roman.gushchin@linux.dev,
+	yu.c.chen@intel.com,
+	zhao1.liu@intel.com
+Cc: bpf@vger.kernel.org,
 	linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org,
+	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Samsung GOST <gost.dev@samsung.com>
-Subject: [GIT PULL] Rust XArray for v7.4
-Date: Mon, 12 Oct 2026 13:50:26 +0200
-Message-ID: <20261012115028.73246-1-da.gomez@kernel.org>
-X-Mailer: git-send-email 2.56.0
+	Yafang Shao <laoar.shao@gmail.com>
+Subject: [RFC PATCH v2 0/3] BPF-based per-cgroup NUMA balancing mode selection
+Date: Mon, 12 Oct 2026 20:04:35 +0800
+Message-ID: <20261012120438.52849-1-laoar.shao@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B9032140002
+X-Stat-Signature: fynh97dan3rh1mjjiwuopcf6pgmktrag
+X-Rspamd-Queue-Id: EA977A000C
 X-Rspam-User: 
-X-Stat-Signature: s13anbabt1mkxqu8i3icppwhmyj5uttd
-X-HE-Tag: 1791806120-628172
-X-HE-Meta: U2FsdGVkX1+gJlOAYCVExMauUl9xUVmlZK6sYGldkR4fiyLfPCu+MvumNcC30f1V6qGlRiJjoCRURN3Xcq0s5ZNc/YtRzs5Fx4MR4EjSLNv312BcaqOPHzSqt7bH5ANXEdNSeQqUyq3VjSMIXu5o8gh/xbpm8nCO8jgZCGxs2V9fJQkwjKpeWRNaheAkPLHbCYPU9OH4AyWS/Y9GzVocjg6sLRAtFhS+Vh3+ExHUa3vToDVGUe1v7WyqmoNpL1wWlpSrE5GrjEiWZgshfntNDLyRwdG87uDsXOQUe8Yjes5hSN/Xa3TgNOBrCSQYEfWcicdAsOivJJGwvwlL4YOuNKcTumqDTUglbgdK4r0s5sZ7xTNwn1fcmgaIwZbXI79AMi2igPk9GA9g2KMc2/1koGPORRsho/4weRtSfe77QPjpzOXcr4vGQSoEMa/QNp/mmIOAIlalQBWz2gpLovNZB0QcCR0ZaVp2ayOPpBb4Sn9O5xJ9FlthgA5qnEujtVHP9407Qdy3TXfcDEKeprZUwnxwwTsq5dTz64VEaro801pYMkgqG4m/VniLgiPrHNuazBL+dY8jit0om0I1isDO6F2IMCe80jLKM1T9ltMO26HIZyO9zYzaPprnIriZ5hhcU+GZkcX0UMb+J52HRbv1p4NMFkl/V+nlbPGtMc2txlZmgwlGtGDADZ7knvwcRRrvAG1oHb2G9wR6DuIiw5AlRwamsYxDGDt7SwejmRaVbHxJ1fivbOuKwSeR8Li015ztdIOAOQREtSfIdxsqDb1J1/rI9lHvOXtX9itQa6kMKT+B4ycmu0KZPeVQA6YxTCyrnHqcaM4yi782tqbOhRa4B4xaJl/Jm2e+afseNbdtLpQlQFDqalrSYo3ZZfBjszZVKWQzwBCuQbQj+nWNnDw2/DGKVZ7v/fSiiM5yDudb9/P8KW38peDVcKR7RbYl8pcyGkcYPajfMo7ngsA8keL
- tL0Jbigj
- wdOM14d0pdJx+EEDqBQ3ZTjtyl1mRk+AhdF6gYaLz6tBZNJwXJQHRrrEt+Hg7TDjM66dN+Q9kmvsPN6ERm+SC3sY/hdjca1bj9iSOh4NBRwE+C6MtF5nsfdH8Kzz5mA7P6gz0gQ8G47wTyx0201aCUffhmbVJCgkNmgjAPo4jjZR4wvJUcIeVpd1gRMyLGxEZjiNflaXKZBHNyVyWcxSWHp2J5SZ045VXT/By0qoXil8oLJH3jgYMrEvNW5G8D+ktMxEejkb3mq4PPMMaNkEb8oNI5UmhntHxkY5BBkjtLNNOjQXA+JUVPIihQ6ZsJoXSL8BL+upm1oTifNp40eJ0DACNca880jRHQ4TWVX+RCo9R6k6nayIoCHD6jSBD1ANI6pfJSRTeeMP3J+Y=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791806736-321259
+X-HE-Meta: U2FsdGVkX1/j1V92ImyS+SJJqKjtkQDdFqjScgwHr2ATKynBnyP3IswW5SbwRL2eduU43gl2KLy8SuKuAzyL7VUDsPaO16uT3NWArmHrCl9OeD7v5fgdnnlrekEFoH4duQqkcGuSt2C3vfV748OIUD4QrPLZIR+TajxTEIexceG7dGycSr8tZPE4kcjB5r4Sp+jIQfcMLWXF7xLrbjIRmOkl1XM2eqycTCxjJd25NwOPkdsFdd6ct2zIzA9zAlfH0bEe0mg0Y2W3MOJZsRHHObUbDYO+hmMq+MO/4ha3NPNCC+FwNovviFJJgQgyD1xOz4H3ceED7ZMUws+lfUn/niz7yF2g0/FmQqvgn2ot8ml1sCj02+TPjN2FTqaDmfZr89+aROlmnUfbh1DHW+KEeEjz3YBbCUGOFghl+rnVRgjLQPAmso6zbl1pFhp+U1bV1IuZyR1rOkK54bLD1WrK+sRW49xiMKYDmry9gH52ZJe2P85OdAn76dVUxDLci1+3l/6HseVzlzZsvDe2sF1g4OZjcB9dc8JXqFTcGCrXPIYvqrligl0jra4kIvfp8+yo6XUP04N65fn5t9e0uf2hpmjoMYjF/VyDjphO6H5yR6D24LnVHS7YI1n+Vu3FP3gx58CE/Ycc9UNiCme1/u1ujU2KhChv4EME/FxjlAa1oxsl0ds2hALO+IbUlkJmjdekH4XVGe8+Wjdid1Rzpzf1JVzdEQoqKgT5jYIlviQMLVrQdogNRW/o+JCkh/MzL4snmeVEElaT+ewiiPWWkSqumBcqVaiLsmGTMWLA1nnZPNExzi+2m/gNCMoNktx0JH11Pu5xMVvivmKYqc+LXguC8P/ry/A70oWOGptVOY7RjTOCfCtKBTvAWF0HqJDKeNSfQdSRkztWYsdGnWsf8qP+TwoJCt9DbjGxWqRvaluMipMz+/Sp7tWZUvu9G83p1HCMt+6YRLwu6l+ZvNxYb0D
+ NGY1sk9c
+ MtYFBMbLtDY4a095TJwg/geD22CAWRvnM1l1B2xTDqjwksC7cFY8CxYFaZNfQWNQd0qjaH/mopLWNJQjKO4skx5BKmeskx+cLxWvXCl+3eLwYcy7gB1qYNJpTBnr8/75TyW0HfAIabKgH8DxXPuBzDn2fZ9kNA/Kc/II+aEVssKXhGbL61t9/kh3fsMjKBw8Yid0OCUc5Ju9Cw/nMfcij/uBv/d8ehNvQYWAjN5H61P9so61QOGyAp+xoBsXQDwE5ilesQ+ZTRXGxjcEViWAwGkBfKK1Ju8uiPcvfXZzpWKAju0stpOF5xtBG6Isb2hk8i2rm7TP5zBD9UeLE1vf2rOdWq1+VHJHKg0ka5SKhCtULn6ASA48SbYnot8I3kluSUs8d7m/cuQiukh4F/xnxLtPFyrIOGeiAYUBxIz2jpCJMWJSXefO54TD+eKCGp225hGaXA0F71aeIBKAAZFXl/7wMeJJ7fmGU3jUhlpCH2rby2xmk3M9rLasn9hvLCYasRxP3TSSuf2N8r9ekgtEMPNNGWuqUcUoIveHamVmeOV9HizwFdhZk7Rwp7mKiBW1To+KO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,64 +136,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Matthew,
+The Problem
+===========
 
-I'm sending the Rust XArray for the current v7.4 cycle, although it is
-probably too late for it. Just let me know if you need me to resend it
-later, rebased or under a different tag.
+In our large fleet of Kubernetes-managed servers, NUMA balancing has
+been historically disabled globally on each server. With the increasing
+deployment of multi-socket AMD EPYC servers, cross-NUMA access has
+become a critical performance issue, which made us reconsider.
 
-Thanks,
-Daniel
+Enabling NUMA balancing globally is still not acceptable: it increases
+the overall system overhead and can introduce latency spikes for
+latency-sensitive workloads. What we need is to choose per workload
+whether NUMA balancing runs at all, and which mode it runs in. A
+latency-sensitive service may want the scheduler's NUMA statistics
+without tiering's promotion machinery, while a batch service wants its
+PMEM-resident memory promoted when hot without paying for
+scheduler-driven migration. No single global switch serves both.
 
-The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935:
+The Design
+==========
 
-  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
+This series adds a bpf_numab_ops struct_ops which attaches to a
+cgroup. The kernel consults the policies of the matching cgroup and of
+every ancestor and combines what they return. One policy question, two
+surfaces: the kernel passes the task when it acts on a task and the
+folio when it acts on a folio; exactly one of the two is set, so a
+memory answer cannot be keyed on whoever happens to touch the folio.
+A policy can always opt a workload out, so no cgroup is ever forced
+into heavier machinery than its own policy asks for. The demotion and
+migration-fallback machinery stays global, as it is keyed on
+node-level reclaim state rather than on any cgroup's policy.
 
-are available in the Git repository at:
+The hook is designed to be free for everyone who does not use it.
+Every call site (scheduler tick, NUMA hinting faults, folio
+migration) first tests the cgroup_bpf_enabled() static key of the
+new attach type. The key stays off until the first policy is
+attached anywhere in the system, so with no policy attached the
+added cost is a single patched branch.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/da.gomez/linux.git tags/rxarray-v7.4
+The BPF consult comes before the global sched_numa_balancing static key
+rather than after it, because the primary use case is a fleet which runs
+with global NUMA balancing disabled and enables it per workload: a policy
+must be able to turn balancing on for its cgroup while the global switch
+stays off.
 
-for you to fetch changes up to 4ce73d98a0a6e5bba46ed1fc9a61511bdccea776:
+Once any policy is attached, the key is on for the whole system and
+every task pays the walk: a cgroup lookup, a percpu refcount tryget
+and an iteration of the pre-aggregated effective array, so the cost
+is proportional to the number of policies in the chain rather than
+to its depth, plus one trampoline call per policy. This is also why
+patch #2 rejects a policy which implements nothing: attaching one
+would flip the static key for the whole system and make every task
+pay the walk for no effect. The key turns back off when the last
+policy is detached.
 
-  rust: rxarray: add rust xarray support (2026-10-12 08:36:28 +0200)
+Measured with schbench (64 worker threads, 30 s per run) on the test
+box. Wakeup latency percentiles from the final cumulative window, in
+usec:
 
-----------------------------------------------------------------
-Rust XArray for v7.4
+                            p50  p99
+  balancing=0, no policy    15   207
+  balancing=0, policy       15   205
+  balancing=1, no policy    15   199
+  balancing=1, policy       14   201
 
-Add a Rust implementation of the XArray (rust/kernel/rxarray.rs),
-introduced as an experimental Rust reference implementation [1] of
-lib/xarray.c, as discussed at LPC26 [2]. This lets Rust users, such as
-the null block driver and possibly Tyr (under evaluation), experiment
-with and evaluate both implementations.
+With a policy attached, wakeup percentiles stay within a few percent
+of the no-policy baseline whether the global switch is on or off, and
+throughput stays within the benchmark's own run-to-run variance.
 
-The goal is to evaluate whether Rust helps with the most common class of
-XArray bugs, misuse of the API by its callers, such as the long-dormant
-page cache corruption that almost blocked the LBS work [3]. The RFC v1
-cover letter has the full motivation, benchmark baseline and
-roadmap [4].
+On this box the global on and off states are themselves
+indistinguishable for this workload, so these numbers isolate the
+cost of the hook, not the benefit of the selection; the benefit side
+needs multi-node, memory-heavy workloads.
 
-This initial version supports store, load, load_mut and erase. It has
-been tested with the included KUnit tests and doctests.
+Changes since v1
+================
 
-Outside of rust/kernel/rxarray.rs, this touches:
- - MAINTAINERS: new XARRAY [RUST] entry, maintained by Daniel Gomez and
-   Matthew Wilcox, with Andreas Hindborg as reviewer.
- - lib/Kconfig: new XARRAY_RUST option.
- - rust/kernel/lib.rs: register the rxarray module.
-The C XArray implementation is unchanged.
+v1 keyed the hook on the memory cgroup and temporarily embedded the cgroup
+id into the struct-ops value, because the cgroup struct_ops integration was
+still under development. v2 attaches through the cgroup struct_ops support
+that has since landed in bpf-next [0], keys the task surface on the task's
+cgroup and the memory surface on the folio's memcg, and adds the
+memory-tiering mode alongside enable and disable.
 
-Link: https://rust-for-linux.com/rust-reference-drivers/ [1]
-Link: https://lore.kernel.org/all/20261009212431.0-da.gomez@kernel.org/ [2]
-Link: https://lore.kernel.org/all/A5A976CB-DB57-4513-A700-656580488AB6@flyingcircus.io/ [3]
-Link: https://lore.kernel.org/all/20260923-rxarray-next-v1-0-92eedf185649@samsung.com/ [4]
-----------------------------------------------------------------
-Daniel Gomez (1):
-      rust: rxarray: add rust xarray support
+This is still an RFC with limited testing. Feedback is welcome.
 
- MAINTAINERS            |   12 +
- lib/Kconfig            |   11 +
- rust/kernel/lib.rs     |    2 +
- rust/kernel/rxarray.rs | 1407 ++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 1432 insertions(+)
- create mode 100644 rust/kernel/rxarray.rs
+[0] https://lore.kernel.org/bpf/20260706171918.317102-1-ameryhung@gmail.com/
+
+RFC v1: https://lwn.net/Articles/1054030/
+
+Yafang Shao (3):
+  sched: add helpers for numa balancing
+  sched: add per-cgroup NUMA balancing mode selection via BPF
+  selftests/bpf: add tests for the bpf_numab_ops struct_ops
+
+ include/linux/bpf-cgroup-defs.h               |   1 +
+ include/linux/bpf-cgroup.h                    |   2 +-
+ include/linux/bpf_numab.h                     |  77 ++++++
+ include/linux/sched/numa_balancing.h          |  82 ++++++
+ kernel/sched/Makefile                         |   5 +
+ kernel/sched/bpf_numab.c                      | 164 ++++++++++++
+ kernel/sched/fair.c                           |  16 +-
+ kernel/sched/sched.h                          |   1 -
+ mm/memory-tiers.c                             |   9 +-
+ mm/mempolicy.c                                |   7 +-
+ mm/migrate.c                                  |   7 +-
+ mm/vmscan.c                                   |   6 +-
+ .../selftests/bpf/prog_tests/bpf_numab_ops.c  | 250 ++++++++++++++++++
+ .../selftests/bpf/progs/bpf_numab_ops.c       |  57 ++++
+ 14 files changed, 660 insertions(+), 24 deletions(-)
+ create mode 100644 include/linux/bpf_numab.h
+ create mode 100644 kernel/sched/bpf_numab.c
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/bpf_numab_ops.c
+ create mode 100644 tools/testing/selftests/bpf/progs/bpf_numab_ops.c
+
+-- 
+2.52.0
+
 
