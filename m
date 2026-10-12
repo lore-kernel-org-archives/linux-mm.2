@@ -4,91 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE986CA9EC5
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 15:22:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F311CA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 15:26:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D91366B0088; Mon, 12 Oct 2026 11:22:53 -0400 (EDT)
+	id A8A236B008A; Mon, 12 Oct 2026 11:26:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D67FA6B0092; Mon, 12 Oct 2026 11:22:53 -0400 (EDT)
+	id A3B376B0095; Mon, 12 Oct 2026 11:26:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7D716B0095; Mon, 12 Oct 2026 11:22:53 -0400 (EDT)
+	id 9516E6B0098; Mon, 12 Oct 2026 11:26:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A506A6B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:22:53 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 095E71C49DC
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:22:52 +0000 (UTC)
-X-FDA: 85314341826.21.1825FC5
+	by kanga.kvack.org (Postfix) with ESMTP id 71C116B008A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:26:40 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F8941C49D0
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:26:39 +0000 (UTC)
+X-FDA: 85314351318.13.777E180
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5A450140007
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:22:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E+Q5xuvH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id C07864000A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:26:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hkEsJf8r;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791818797;
+	b=1csj+JNqCwOAuP/Q/e8rKbO2TaQDRuzqh6lAd7zVaMrvx6nIzia17I9ChStIYf8R6s5j2Q
+	7sLSbyhG/giPMFo/Wox/bXeC2WJKFoAuZ+mFUTlkk4AU5/XBNhbC8KSMYc/iWSH/I4R4vl
+	9ZnlJy3Hb7c3YXJQtmeAbaYAUMM6TLQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hkEsJf8r;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791818571;
+	s=arc-20220608; t=1791818797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1pPzW7bAAqdCipDrvBuW6zUDyI/nx3IHVJIuif6myvY=;
-	b=sku66hCfW0pqfYSOzmsbdtLw93VA8PMpIDt8Oza1bEI9rZCcymB9z9WZJZU7Grjt6/QA2O
-	rJnZmraT5r1rzD+rLEyFqw6cLQq+lnv7Or1u2mRdWr/KTZ+P+0BM1uRv49S+QfAGrA1Qds
-	ujlaaeQT3aTGAwuNIohFkNDAu2oD7DM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E+Q5xuvH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791818571;
-	b=CN5sK7EiQYVJ222oYwNB73udCfsIspOa+LRVZAlUXN9aZ1NCeKTjVp+EuxiSx/ftLAVSBZ
-	GWholsdrm1saERy9y+jeoS7vGhBS/iEK8bv4KP1Hob6upnxxdQJqGqCW9bjS+IaY/x1Kv0
-	Ks0/ePpl7iicHHQGem4hR/xzS8FdxRc=
+	bh=wLEJOmKB2D1sT8Kd+NykOzJne812G24b12XN/JMTXnU=;
+	b=OJHhYe3rjgqjz3cYyAb+JwN/Nvn8vCgfqNF/W3yiNrfbr2TtJuXIRRjzRD0/mWDOjMQw3N
+	Tpq4airhNGy+Ul6Nay0W6+QCbJQ6ppomkHs+V4E6lF4kt/UitsMGh2TxxZFMyCW82NQqpB
+	YiZ21YEBqksIu1uOPeF3rHKm3BTRV9Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 817A2414AE;
-	Mon, 12 Oct 2026 15:22:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017F01F0089B;
-	Mon, 12 Oct 2026 15:22:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D5F2543618;
+	Mon, 12 Oct 2026 15:26:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A081F0089B;
+	Mon, 12 Oct 2026 15:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791818570;
-	bh=1pPzW7bAAqdCipDrvBuW6zUDyI/nx3IHVJIuif6myvY=;
+	s=k20260515; t=1791818796;
+	bh=wLEJOmKB2D1sT8Kd+NykOzJne812G24b12XN/JMTXnU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E+Q5xuvHEC5Chf9m05/NcxBNZ5uFubAUsH9Ov3RGE8jxH1vlB8Sb5xcnRXulUhNWO
-	 KD1IBzoN8ESgl3dEbUj9mna+IfFHFuNc+3Bo2o+TKvL46QBhs8a4XibxU2ob09eufD
-	 zedBAkmHP7dGaI21tWtcUHi+eRptSZ+/ZoMdPjcCl6o9w1A15YfJX7MxUcYZFSbZRR
-	 v1+GHzRQlh5YKBqq+atDUO19pSDOF+r/26rYBPBIuAfZnVVrtisWMAB5XCZLZlOfgW
-	 j+D0ldOJWjMtzryj5mqF/WknhAASbrVR+m0KSy+iEs9bFKxL9bMSDuPTkjmwb4FQDn
-	 voGhJo1HL9T/g==
-Date: Mon, 12 Oct 2026 16:22:44 +0100
+	b=hkEsJf8rILO2y5vMNiI61WRnKDE00ir2qR7BiAjX7q9VyaDPuENri+7cN7obIIpBn
+	 1TCIiOSES415TOEfhPmB5jK6t08rFaNhD6SQfVRyvlVW+3SkMmCOdjTjLy6Doss57X
+	 pL2UwxQSAFMHFabgkkwXYo6orBPrOUBC0cZWA1tMVymAbSMRHoEjoQqVgDU7lAURdn
+	 ABCSX+5X3cskdpWqGD1q/xLQJBJtu7fGLSl4WwVvQ6pvGAHuTO09i9l3lvjVLI2boP
+	 /j3OHg4EfMU4hVKlxlKDZng+1vUEIxOiy/+BkyOna+h5PE/cO3SIhkycB+e7eUpudU
+	 BwW4kDnrIuVKA==
+Date: Mon, 12 Oct 2026 16:26:31 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
-	Lance Yang <lance.yang@linux.dev>, Kyle Zeng <kylebot@openai.com>, stable@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/rmap: don't discard lazyfree THPs at PMD level
-Message-ID: <asz7Nz7wGtGSG-Wa@gremlin>
-References: <20261009-lazyfree-stable-fix-v1-1-70997958ef8d@nvidia.com>
- <asy445BYRhcsGDE9@gremlin>
- <8B17F897-40BE-4834-8078-949DA951B46F@nvidia.com>
- <5a52d615-8eb0-4ed1-b63a-f9016041a23a@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, jannh@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Pedro Falcato <pfalcato@suse.de>
+Subject: Re: [PATCH] mm/madvise: keep the hardware dirty bit in MADV_COLD's
+ THP path
+Message-ID: <asz7YUXhdmlenXvh@gremlin>
+References: <20261011132227.413217-1-samarth.colleges@gmail.com>
+ <42087cd7-473e-40a7-ae63-3c841c615c8f@kernel.org>
+ <asyy7Nwik5yMTNbo@gremlin>
+ <asy4c7zkkmSRln1H@gremlin>
+ <D964ECBC-59B6-4A4B-83D5-935EA2D06D30@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <5a52d615-8eb0-4ed1-b63a-f9016041a23a@kernel.org>
-X-Stat-Signature: 6mfdzos1yjkmy38ed8dkurfafyapft4a
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <D964ECBC-59B6-4A4B-83D5-935EA2D06D30@nvidia.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5A450140007
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791818571-256487
-X-HE-Meta: U2FsdGVkX1/6M2PXVt2JjFTQ+mCuI5WQhwVMyqjLEE+fWPPXQtQ4/wOqYTRHQju3nV73SN7cQufWQ8Vv/AqKL0qOLwzgwbgxWcgTejS7+g93KjufRXbr8PQBpKPby4coZ/TSBa8AtaTAXT+UQpcsbaPor/oSTbWetkl4S9kU8TUpREbXVz04v6mgwekcONc7e/Q+pAFLFklSp1e/Yr7pPb4lVkmI+YmMkF3wuDq49FrbCAgEeuOR1WTQcsZJlc37uO6OgOPCLPk8dCOkCY8oYbXbY0klLI4/RcSWOz83rZNOQ0m4u6Xr116KkcJMQzz9pLHNZNzj82A1gEilMOKIch3pYE3RHQ7gxQoteuouGyiI/DWN7ATEulvoqMcGnw6WHAGaQIG6+3EC9FjiOkjeTM+LaXzmybtmScV6ap2GjsCrTwjCq1Y8AEoxreCnjlPGtxQCfNZQHTlpmStCZ0OBO8TSZlWf/ZZLyXPrQfnaqMgxJDDVgf1HqYucxsCli4a7KJJ2VZ1qqCH6yV4kbr6Yuh4usTJu6WLUyLcnq5td0865GtVhzG92bKKkKY4kzyt8vYuwVOQQS8ziYKEyDW5lhMjMP2w0tddsX1Ov1eOv78WRqYJdYQGCl/l39mgu2ZI3ylEZLdaQ0gwdKqUJNEAH7XmYq4W/xX9tBD/EKoFsKivZOaW4DNn5prdW5itQqiLZYnnzeWaffyTSmk1pryr5moIsrM71sROw23sskjb0ud/f7DwnxtVfl15WCA0Ew1uGP0NUQ/bWVoVQi2NUB4j3HJgtK3ThN3jBO5P5GkUJpzLr8bDcpJjGswQQov6Hcs1Coz4p0wr6qvfE7piNl495yCZus7qX2TBmKymJoEp5vMqfNSt1o9F9yCX9HB61SZONmnakTBZk+8J73LevYRTFx+/C9HX76jJqlKcTWA1cgoSuvuTaBq6LGZQND3RYSmLTzjcYxfWcI+KMwU197fB
- BjxWIEt2
- 9ohVzLT7z+N005J52C6Ff3Mw2uYHC0MYBebaLhy6r9SqfJTVpbt3c1myzreUm9GmhPnI6bDqaJVRhNcCkUbm/QGo5FndQ+9fOxjYueu9gE9fwbN9wsVqn5b5Pn0vPHsvdYphab1RLqvR6+r/kaH/q+8uUyPOBHBSbyUTqhvcEHJg4r5wfPtWL4lY1PjFCpXn/7hrlJGEwLqKZ4zrRMrViDySu/14TxKLN5i/U86G8wvfUc0u1UyH6RHI3Bqpdsxw6ysiS
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C07864000A
+X-Stat-Signature: grpowir69ep6npahgcgmgqzx78n3tcpk
+X-HE-Tag: 1791818797-101275
+X-HE-Meta: U2FsdGVkX1+QOKrZwdMK29B2DWphYtkKJ1Ekm6171ndbiatL5mGo+0k+Ju7JAyLBiYKdn0UYSNAPneYxxdAe8Qak8OwKw7Fs2Hm0LnppJtGn/8c6bOHiu9yW0KfaimXabc3nLveHjw8Hn0VvZMDQnfng6KjBS0DqEffTzbuxWPMk1tkaaKL+aAwUeaFwf5uktWRjO6v2gY1+DfdybLskTQylA0PzZN5CsmBU33WOFk63g/746KeXav4gGO2Fp42wuZCL4pqEy1SbIdQUpEDoBVHz9VocfCMog4tmLUOlqZpMGF3fh1YhyZ2+KN7uzMW4x0wiB14+LUSxRdfYJqe1YdBhEK5vY/6Vr9OQL4iPHNyTr2dSWoNWSjYLosx0wQqvnYtXM5yqf+4mSWqrp1Y9H0jowsix+j6Q9/+oR38D4C48VupJ8JQOmVUdJ4HTXrbB2Cuckp+PogvDJaPxSvh8Iuy/Nj/0J9n605bEIAtaYVCOeODO8TST1yuZaUqlO1pw5iCMBJZU74TIcs8EHUntkdRGeiDJbMxoFknaoRx73pj8qjEAaqhw/c+zETJQF+91CwKEw1TPgmkssNuMgineYLQ4VlHZoZ1HzJyLfO0ym2lFz3EUVM+YUsGKKKwvhIOvUXzd0wnmLiC+JhzVyNVNnT+SLO5bPH2cTQmRjgP8GVniMcZGDIq5UYNOe2u/Mq9T+/pVcnBaetKtWM/tGbBlLK18bZn5+hXgz1L14JjYOdmn9wiRCdMV0Jbvd/qu+13xQXn3eJ6FpsnbeBXTmIHeWY9nne70076Bg8R9PEpe59pDp38Z59Pxebu0tX9p+xD0hkZ8JWQn6bvnKE9XPCL7WAki4oUNvSsx2kQvIEIOESnP/P1xJgrkl4U9JcPDLMhGM4bOLiR1EiTuExiuo2v1ogkEo/OXBFghApIX+mHtpvRXcP/Hh7/NlAJoqPB2LVCRSjSl4sm3kqjKSGHAzmV
+ ffjhdrkv
+ mVFtzSmqxS9uu32tHScbTWxuMLcf4zuPgWZyznSy8cjDR+v2uUkbq8oxy+VNZ6DXN7V20rzDaEaMHhw5uGBjHwshZ09pa3sfLMQRHFl4Wz+M+HuQnoHdq8W87hs6HCN6cB5AI7TCF9oo7n4dTvJ/T+2unhF6kMZeDOo8FoFrfp/9hfmg0Uy3b9QcbX3IW15MJGTPAF6fcWL7jd8nIlv6WYDVxA0/q4gZytO3POzfwI005iyXZ3vyRlY+zqfRJJ96SehKHYHx2TlXqNjCZw6GAPPk+14CRlNvbEKtwyvxXXzzi8Ub465V9PdwxRaBSBwK+wUm6Nz4XuOWeWrllTYk32JoR5OQ6+ZRYvtOiOjt5WXI4w9dOtF0glgzJug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,13 +99,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 04:39:03PM +0200, David Hildenbrand (Arm) wrote:
++cc Pedro
 
-> > I can remove the dead code if you think that is better.
+On Mon, Oct 12, 2026 at 11:17:57AM -0400, Zi Yan wrote:
+> On 12 Oct 2026, at 6:38, Lorenzo Stoakes (ARM) wrote:
+
+> > [0]: https://lore.kernel.org/linux-mm/20261009-lazyfree-stable-fix-v1-1-70997958ef8d@nvidia.com
 >
-> Leave it in and let's clarify that we'll restore the functionality shortly.
+> No. Without lazyfree PMD level THP discard, the affect PMD will be split
+> into PTEs without dirty bit and the dirty folio is still discarded.
 
-Yup as long as there's something in the commit msg that's fine.
+OK thanks for clarifying!
+
+>
+> We will need Samarth’s fix for backport, then we can think carefully
+> about David’s per-arch solution for mainline.
+
+It's AI slop, and we don't accept that in mm (also -cc slopper).
+
+Somebody from the core team will take of this fix separately.
+
+Pedro - you mentioned you were interested in this, will you send a patch?
 
 --
 Cheers, Lorenzo
