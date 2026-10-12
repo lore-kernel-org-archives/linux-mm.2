@@ -4,135 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E8A6CA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 10:25:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD33ACA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 10:33:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AECC86B0092; Mon, 12 Oct 2026 06:25:54 -0400 (EDT)
+	id 57CFC6B008A; Mon, 12 Oct 2026 06:33:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9D0F6B0098; Mon, 12 Oct 2026 06:25:54 -0400 (EDT)
+	id 52DF76B008C; Mon, 12 Oct 2026 06:33:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98FCE6B0099; Mon, 12 Oct 2026 06:25:54 -0400 (EDT)
+	id 4447D6B0092; Mon, 12 Oct 2026 06:33:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 71A7A6B0092
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 06:25:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0BBDBA8937
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:25:54 +0000 (UTC)
-X-FDA: 85313593428.04.D8A85C1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 50EF3C0007
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:25:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j9I6TvOc;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791800752;
-	b=Ekh3wDcSDyj537If2b7gYk9akzJhY5ETIEyrcQvZojCg2mxtiJ8uwhrD/bzbirXZ3zRLW6
-	rI9YQLbQ57dpGR4+TcOy2hqWCaiFb/uPkmuQnWQedl7jfL8z1t8l826f3Q5lMXiLgen4T4
-	H/VU2tmT06pruD2yJMpe9CtWHnzxSZU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j9I6TvOc;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 22E4A6B008A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 06:33:58 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9553160B3B
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:33:57 +0000 (UTC)
+X-FDA: 85313613714.05.D2D595D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 10481C0009
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:33:55 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fEKg6uip;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791800752;
+	s=arc-20220608; t=1791801236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g5thwpExwUGKYHn9rMgaK5ega9ItTIpyU+Gtff5fYX0=;
-	b=RjLX/vHE+5qfFgGNGyCeyHG1TBh1cfmmfh3RmpaOSL0ezCbNPgMItWITPftMty/NiN/BBD
-	XLbVY9BKoUe52wvwhf6twS4fH98LnAbHcQAgCjoqosboAUWk3r899JWmXF3rUgTVrvFtWY
-	9ebWR1y/ZwESTWipCMy06sQZxI1Ad3c=
+	bh=YNnBEk1ZblEqrRrnuFXhKbUtj1Kjb67w+8SQlGULyHY=;
+	b=HGqCQfV+eGtfJbANyBR+/crvA4MmA/ZlDg8ltMwvNAKf8tagUVp5l6xNNO8WL8wFXVY+Dc
+	We/GTmeCz5ugVNSruEYi+KtC8dRrbOoY1FAGjOxQFWSSsgSPHdxRzl2FRzk4Qp0c5PSnKg
+	w4U8x4ncGPUp/pU2G5/nRiwWEP/GVIA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791801236;
+	b=OA4Whqxr9xpc5ihzamvOIj+CF+YQjWa8HPON4737HIQHveFBcZOH/XCBVtlFpz9aAeweVC
+	EevqPjGP43YBYByivbPIh264UFLKHn88O2HcAF+QX6U4a1JbANKpqWwHE+9aAi//EYJKKX
+	qtrtsQtNBYOfQNWaJ/50+WEgZovQK3g=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fEKg6uip;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DB157600C8;
-	Mon, 12 Oct 2026 10:25:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400A31F0089B;
-	Mon, 12 Oct 2026 10:25:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 63C1642DA3;
+	Mon, 12 Oct 2026 10:33:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6801F0089B;
+	Mon, 12 Oct 2026 10:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791800751;
-	bh=g5thwpExwUGKYHn9rMgaK5ega9ItTIpyU+Gtff5fYX0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=j9I6TvOc1UlhSbnVdygAok/F2Wjst0yn1KD0oM2QlyHRs8CjNYAnTklUzSV3ho/E/
-	 63Qz1DG7t0onX/sBWeARuP4eF/Qk9y135BIwm+UWdi5r13b5kZgSi/pEkdtVFwnXKP
-	 NXRU/baX4hutwUEYqPvxoATF/KtOZqCTJjtPbd2qbpm26+c5ySgfH/HzgDIdxDpsT0
-	 6PE/ojZPFAI8DH7xavGa3AVPJatgGgw2aSRzEWfOBFXfnXT6VCU90wwVOhUwB3TGC6
-	 D12jkV65kVIcXaL3uS5y0IrmILJ3xOl6XTj3mkt+e06FpOy9P3/A8sdgIbo2aUCOy9
-	 HPEpVrttUXEmQ==
-Message-ID: <342aa9c4-e100-4650-bb3a-89bd9d4b0eb0@kernel.org>
-Date: Mon, 12 Oct 2026 12:25:45 +0200
+	s=k20260515; t=1791801234;
+	bh=YNnBEk1ZblEqrRrnuFXhKbUtj1Kjb67w+8SQlGULyHY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fEKg6uipIJDU9BC6xLEMgoLYR9QG7W0hFPrT8AQqy8X2IQaQv99e7Fq09HEvCH/7m
+	 QeS0JYlgUSTRWU+B3s/P7udKfTuMZUdJC/3eZku2DYciVmbv5wXEzhgn1KnMpklBTJ
+	 vn2c9N0de6SuluS/nhj/Q4f+YIWeQ06tzo6l90oRfJf72m4iWPmr+sVAy89lUnVgm3
+	 kw3XKwdEGazJRTIyqblyFf3KzxNPxoYXt1dD+qWn5pClS0PO7kTIzPqLOg2Kbh0ZAg
+	 aqW0ULSvcobAVRgeguqucH/6oNpiq6OgjyZdiV0qYhlDj4J9xTfN+KgA8HZ8IFXmPB
+	 5DgvOhzM1Irmg==
+Date: Mon, 12 Oct 2026 11:33:48 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
+	jannh@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/madvise: keep the hardware dirty bit in MADV_COLD's
+ THP path
+Message-ID: <asyy7Nwik5yMTNbo@gremlin>
+References: <20261011132227.413217-1-samarth.colleges@gmail.com>
+ <42087cd7-473e-40a7-ae63-3c841c615c8f@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/rmap: don't discard lazyfree THPs at PMD level
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
- Lance Yang <lance.yang@linux.dev>, Kyle Zeng <kylebot@openai.com>
-Cc: stable@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261009-lazyfree-stable-fix-v1-1-70997958ef8d@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261009-lazyfree-stable-fix-v1-1-70997958ef8d@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42087cd7-473e-40a7-ae63-3c841c615c8f@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 50EF3C0007
-X-Stat-Signature: 4s1kbjiep3wdp3eihwx8wkczzqenpb8f
-X-HE-Tag: 1791800752-760755
-X-HE-Meta: U2FsdGVkX19VLEn8RY4yiuqqd8Mze1BFvJX1FAD2RhED2Tvi/52ibZb4+wPHBryVX3wqTjFHJNMNYzKMKpL7b15ZzqxBDh6aGm/D/nrw1HzbpSeHuXP7DVmEcVRiFPAyBs2u36N6t0T1pGWsA00lSGdUZiqnmTaR++WHWGa+A2nwXO2t6fPwpdo0gctRTpKdo9MInveuhSulf2aUtY4Fmh0K9c7SV4dsJoyPn0JIqev1CO9A7WYHbcxY3uGMjWCLDrxS4DhYFFPisW+DrvoKRlsGAR0IP6aUS/9ywrL3ew1mCyvFUohC9tn4u/ZfNhHqsYRjxnVYhuyNw4R55y9N73wOwGgLr2G0FUn6yfewOD6Gr6tqgGRTblZOh6yX93bSQ0LgTbBFGuNUpoj3s4v/yeuKTWhKcG6UOk+l/4A63AgjiLyiKm/vYIHxiG2KtHgNkAvPsDJh7eanqQWID+kBnkIWnjaX+E4Rb68jvUN/oTXZfkLDExqXxres/Dv4ERaekBOPkyaf7GzIMx4XPh2ERFpZkDjSqxj1cSni2r+J8YSSyIP1OKt5WzzpbnlLq3gBjzYNxOqEbisZR9HJPJKTUwQDLFnfVXKkucg9w1roU71wQ3PAQn3goWjkkt+ThfjoC/caRCfxZkImWrPfXQQbki3d0PS34oC3kvLKYEuX3dm+Cy28Wb1we43pwk0kFAcCXUXATsNlc9bKEgsQP/M3/H0PWLuCrLZ+tZE89EM637dA1n7wU5FynPGPtSelqaRuKkJXGaQk4Qpa0BuEwoW31HUc2vJEM1byJ2/2JAjlNr2hi3saV4hysS/Lq1wJjze8z//yT8DMFxdkxwP8zuuqedi/gCVeI/7+rQrCJb988irgI8xYJ8Mk2riQRt+ngeXCU5ACSw/h5xUVw/zdnVtFeemDi4AKH3Oax7GxrZhHzonVWrrze8+h3jcCQDVrzNByEW43P7YmGjtyjelztaa
- T5+bz+Un
- pGDaA5EI6bmOWH4CIRL7i3GDEqhEI0fJbyanmao1OQdi7kf9aLAPxtSk7uMR0AiwXB8TGZ3CjN+xt9ch68ynfc4PKFYnUK89P0rL4E1K/OQ+LX8TijdGp4aWDeGtVx+OqIWovA5jVM5Ua6R3TraebmeGu+V78L2n1025mysGOSdadWNy+JnNt6OF97cfuHVMT8kdxKoDpJRCuSdJChYdETfQj3n8qqZ4DOTIsRomcSjkm7QtIP1SAIw8uh5EYxha09YwNIGsDNv7iYEUzARu/4xGhFC34RagBtGHv5jvDhLVEq3IVAsE7pQhHlA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 10481C0009
+X-Stat-Signature: by6gtek86w861ahyqiex8wcgtt3gqiig
+X-HE-Tag: 1791801235-901168
+X-HE-Meta: U2FsdGVkX1+8A7nS4deEyrNlhYTKc2w0oZAYVy8P22NAe3X+4m4P8ZgNAmxwNkeajPY2tlVfVET908FSSqJpQdp9tzMEoT2m+XqdQMHbjqlq1TxBu9tKiWCpzxxQUitBupIlN0s90tKtIEl+6DwwO2nwgpUiy/RHgtHU7aRqXtxhti9++f1MX338wrFL2GtmC/8uVEMmggWBPczAVJqm0oM4sDo3IQTzHFOPHyaQF/tU8yPWssJKqHwaT1O9sHiBc3DruyjYYK6Jr1ENJGI4kimkUr4gnuaGp5TCCGiywUm7LV/bTlrWIDiTeY7WEmfB7kmjgOe5mbblQqO5XQUxzxtyIoxM5kpyYcrYRB1X2+QlojEhY4T3yxrGoc4WodPu7uMQnfHFS46PN3HVUXekkY6xGrhPYoMq1yw9HvDbEVRfQU29mMqH0iad9E9bi19DGu61qYxn0xEKlv5uiFb7STXbaUgK+RN7idvnImFQZPklR650jTZyHSjPMJLEHEdW3negh2XaYQlHNETDkSXzmObHhE+vf9S8Z2iHr5PfnYSmiu/3yafZrCaF5yi+QNic/yuJBZk12Cr/fJksOwJunuWc+ZXPg8vXYhcuWu5nHKXNXXHtXRgYpgQ2QFpag38+PC6ysDfOcZemt6bhbPwaVtWQzxSNWwx+oqxgJoiMraoaMVJkTsJNhAjThTICm+Vofjj3movVEtRph3og8XEmtjJ8REG1GxCmYkX7sPPVZGvFD+LS7Q0oXAKpSfmtDxrZYxopuzv0OIoD9MGYyCCI7Vb35ywIywFGNVSOiBsNF1zX04j595yvhaQbi0TmFdaNSMEzeN21zFWqTiUlqBcU6V4WUr66WEIapctpuS1YiOwT04AlG1J+CBCk1h96ImI6cC1TR3dKES6/BQA4aCSJSxwiQDFGhSWoaC9EbFqy8GgSgnAySaJeligULOwpF57RBxsEAhXeICr6R7tnwkl
+ TJGQ87Ao
+ g9AoI3J5wTEbWlMEzNUxlZUR5YbdgJeqxz3qGrVFBlvwDrNIJ1j0K3SGdMp4kCluiJxHSiArQWinouQWf+2VMEvzgGjC0hbpgGH31YOem46MrFdW7AYfUsviRfxJcTvFb/RHjzJ7u5ojFY++V2Y6nfjkisn4FJFGcNoLbezUt6IiNPYg2/BExjU9hEtBA4ywGjFda8JieDKsn5ck8eKWGWOm/tH5ZirrPngqL6PGDoOXxvoIHkffuvRQqOI6Ibuj24DNKtmgMVgtW1hLCNEhVbGvFN2iDnxKZZwKIWggxKSWtLzwKAHG/NvhPp7KUkk3UZbxb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,27 +93,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/10/26 04:08, Zi Yan wrote:
-> __discard_anon_folio_pmd_locked() clears a lazyfree THP PMD before it knows
-> whether the folio can be discarded, and restores it if the folio was
-> redirtied or has extra references. A concurrent munmap() or
-> MREMAP_DONTUNMAP skips the temporary none PMD and unlinks the VMA from its
-> anon_vma, so the folio stays mapped after the anon_vma is freed and a later
-> rmap walk uses the freed anon_vma.
-> 
-> Using an invalidated PMD instead of a cleared one requires additional arch
-> code fixes. Instead, disable the PMD level discard of lazyfree THPs, as
-> before commit 735ecdfaf4e8 ("mm/vmscan: avoid split lazyfree THP during
-> shrink_folio_list()").
-> 
+-cc slopper.
 
-Maybe mention here that we leave the infrastructure around to re-enable it once
-fixes?
+On Mon, Oct 12, 2026 at 12:09:07PM +0200, David Hildenbrand (Arm) wrote:
+> On 10/11/26 15:22, samarth.colleges@gmail.com wrote:
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> > diff --git a/mm/madvise.c b/mm/madvise.c
+> > --- a/mm/madvise.c
+> > +++ b/mm/madvise.c
+> > @@ -426,8 +426,14 @@
+> >  		}
+> >
+> >  		if (!pageout && pmd_young(orig_pmd)) {
+> > -			pmdp_invalidate(vma, addr, pmd);
+> > -			orig_pmd = pmd_mkold(orig_pmd);
+> > +			/*
+> > +			 * Rebuild from the entry pmdp_invalidate() exchanged
+> > +			 * out, not from orig_pmd: hardware may have set the
+> > +			 * dirty bit since orig_pmd was read, and a MADV_FREE'd
+> > +			 * (lazyfree) THP whose dirty bit is lost is discarded
+> > +			 * by reclaim, silently dropping the store.
+> > +			 */
+> > +			orig_pmd = pmd_mkold(pmdp_invalidate(vma, addr, pmd));
+>
+> Okay, you are saying we can lose the dirty bit that could get set concurrently.
+> And if we did an MADV_FREE before, we might not detect that the content was changed.
 
--- 
-Cheers,
+Yeah, lazyfree -> write means you don't actually free it.
 
-David
+As per the manpage:
+
+	For each of the pages that has been marked to be freed but has not yet
+	been freed, the free operation will be canceled if the caller writes
+	into the page.
+
+This is anon memory only:
+
+	The MADV_FREE operation can be applied only to private anonymous
+	pages (see mmap(2)).
+
+>
+>
+> I suspect this found through the help of an LLM and not an actual use case in
+> practice?
+
+Seems very likely.
+
+>
+> Using MADV_COLD following MADV_FREE sounds odd at thirst. In particular, when
+> having MADV_COLD race with actual access.
+
+It's odd to MADV_FREE (lazyfree) then MADV_COLD (deactivate) yes,
+especially with racing accesses.
+
+I wonder if there are other cases where you could get weird races like
+this...
+
+In any case it seems a really hard thing to hit in reality. But I think we
+probably need to fix this because of the stated contract of MADV_FREE.
+
+I think probably we shouldn't have added that contract...
+
+>
+> On the PTE path we use clear_young_dirty_ptes(CYDP_CLEAR_YOUNG) which achieves
+> the same through ptep_test_and_clear_young().
+>
+>
+> ... where we also just do a
+>
+> pte = ptep_get(ptep);
+> set_pte_at(vma->vm_mm, address, ptep, pte_mkold(pte));
+>
+> in the generic variant and rely on the per-arch variant to do the right thing.
+>
+> Which makes me wonder whether we should actually have per-architecture PMD
+> helpers for that purpose?
+
+Is it achieving the same thing? There's an invalidation here also.
+
+pmdp_establish() is used to install a pmd_mkinvalid() entry and there's a
+flush_pmd_tlb_range().
+
+--
+Cheers, Lorenzo
 
