@@ -4,137 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AFF9CA9ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 14:39:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25B45CA9ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 14:39:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDEFA6B0088; Mon, 12 Oct 2026 10:39:12 -0400 (EDT)
+	id 2905C6B008A; Mon, 12 Oct 2026 10:39:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8F2A6B008A; Mon, 12 Oct 2026 10:39:12 -0400 (EDT)
+	id 268196B008C; Mon, 12 Oct 2026 10:39:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A570A6B008C; Mon, 12 Oct 2026 10:39:12 -0400 (EDT)
+	id 131A66B0092; Mon, 12 Oct 2026 10:39:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FC256B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:39:12 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B0EF980EFB
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:39:11 +0000 (UTC)
-X-FDA: 85314231702.17.4AA0285
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 08E7280011
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:39:09 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iH40Umjh;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D6E4F6B008A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:39:30 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5DBED1C44B0
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:39:30 +0000 (UTC)
+X-FDA: 85314232500.04.CFA50A4
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A2354180009
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:39:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WcfSFCl0;
+	spf=pass (imf16.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791815968;
+	b=s9/ip72ZlntZhFBAXT02sJ5vMkgjG4M+f+3TgjfcEw3aomGvWtewU8TuKF/7VHkmDEXBg0
+	dWnX7fH4W8YKLJknUlUFeCUMatvCWWrHggzG3UCMFI6rwbUJmcQI0GmtS25tiBHgr/7Xba
+	fZS9I6yWRbKBD1Aqfu3MakEYznUJSUw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WcfSFCl0;
+	spf=pass (imf16.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791815950;
+	s=arc-20220608; t=1791815968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FLXQQqc/egNsongSaLeSgIyZvxykFuMbEUMiXx9Ha9c=;
-	b=V2hyJ3c6RlUvH50YoCYtF5uvzlrRwO57xRBYce6bUO4fl+JFoIi8KH3aH5K7ygV9hX2hmL
-	KWR8ZOkmeRbJA+6xwrcZOv40FlmrhkhRhAhLjJmVBPFdHdpdWl9AN5PSOISqw0+7T9fbtL
-	LPTbRimIKxOJRigfwqYb9od6qyj6foU=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iH40Umjh;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791815950;
-	b=D2MjaByVC3Geu1qhUlmVybMT6KJYucU7sGPDGcx8wyYhqAgpBwOBfbVb3tdHUqzqZ0JICA
-	pnvNg897RD4TXSJn17DvNiH1khHGZcQWjjlj5/O+6XK5B75qGkkhObtGIBzMudRJ4UadFp
-	qhvoOpxWN37Z2xAPCWE8PRIewmPYgAI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 03EA7601FB;
-	Mon, 12 Oct 2026 14:39:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420671F0089B;
-	Mon, 12 Oct 2026 14:39:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791815948;
-	bh=FLXQQqc/egNsongSaLeSgIyZvxykFuMbEUMiXx9Ha9c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iH40UmjhTF+s0urBLJSMAboPHQ94REBmJeluZYIH8PfuE9fWIKJNObP8vQvLd4vFL
-	 6RaKKQuare0++D11+YxNpKc4DYDFY/L57qzGR5L823C7CPhPDZ/3VeDH65XHWttrak
-	 ok9Ud1gSP5Xazy1DayOwS/85mCH7EId1/XMTruM8o3zD9gxAXh8Wsjq4NBxlK79aR+
-	 mvwCOhMN2i0+k2c+kiA7ZvIVoh/6Yo9PSJBYqfF19LPdfHRUNpWl87W3POUwR5Kj1e
-	 RGibe0RF0oQHiGbtULxK3bl2ykXJsnii3mLyRQSloEvzdTDXDZITpaJfjOcXN3nPBF
-	 74HObGFI2ZPdw==
-Message-ID: <5a52d615-8eb0-4ed1-b63a-f9016041a23a@kernel.org>
-Date: Mon, 12 Oct 2026 16:39:03 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=8AhwaiJTOIO9yzRLrCBE5zRrRd3YyiOnh3b3vVnas14=;
+	b=GJdMjflR36WyuxQgww+Lj5yY7L7e0xWYwtQSNY234NfiscuAvSU0ytQG4RaJ5qp+Vsp1K7
+	yACrLPY3w3m6PzS/yuCqsnUAa6JAV6i1YNKfRIXOK8WtsGWXyzD4Q6NFTV5E9Pz/mTV+lr
+	ZSmVALadPIPA7euPyuLzJXRXW1Sbb4A=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e49fbf92aaso10342025ad.0
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:39:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791815967; x=1792420767; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8AhwaiJTOIO9yzRLrCBE5zRrRd3YyiOnh3b3vVnas14=;
+        b=WcfSFCl06q9eI5bV2Dd8XjVG60UUEUVpPIDiDv+SHjppDiruEN74qJHrYAwyJtI9IL
+         e2B2hlwG4T+C1LElE8HjyXQMv1M6MfjR7/PpXRiPJXpx9d2R+RM5qFpbNzy7j20uFqAp
+         F3bY2fLzykMaCZSIFOYCM4ojZ2TEQXJ00yxP6MvDkBsMOpl3Qv1W4Chd2/cfYD6NURW3
+         1n/B6bjPDnRHpD7NI3HFYuabovFId2ZR+7FYJZuSlY968Eu/tvnBSpDeqxnLVX2b9a1i
+         cMF226UqZABbx1lg7pxaG15AfdgDIK6S7VHqOAmaVv+sAEuaMRT2iNrNt5MeAjqsCkBN
+         gRQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791815967; x=1792420767;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8AhwaiJTOIO9yzRLrCBE5zRrRd3YyiOnh3b3vVnas14=;
+        b=KjafZDBlMVAaxYoIBzhQkl7ISsuX+PKNYJ65zUXFQINZI5m9LUwKAbIoEOnYh6QXC+
+         NlHGtpYyEi2IvjvVQj6Yk5ULB9zSVZHIOU8dqqyGCPj1ua55LIfIHyfZxMntjI0/mC5M
+         bNKHP8LQzIUiLcmPioLyCz1AWw3ZL9EgLVvJtYkh930N/bZm99tabxvK2Cda0bOPEs/p
+         2k+m4D1fsrAldaoBXU2nshO2FoCaPvWF5PJYQvpHbfP56zXbPJlA6NUAvfonmZnUJkWa
+         URSs0EpYZx+H2wLLTvcpIJ2rZLKY74JQ/xdBgj0aYzo7ZbMxTcE6xNSyTqUDtfViqoh8
+         wXqQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzKjx8scrNgO/e5nvrq8u/ZH4mhHPIxnGdGIhFt8GNInwtKJR8jGGRP7P75dbNwCK4+/j1MQuEhmw==@kvack.org
+X-Gm-Message-State: AFq9FYKmvX0M9/TNRyv6OVVi7c76YPJc+SH6w7cx2N+s/ORVidWHR9w4
+	fDAGwV6law8U64P5S6rODwn9Ycd8f5ixD1Ev6SVEVkRSEtoe7C4fIJjxfGoMaR3+
+X-Gm-Gg: AYBFou30XGy4KbfoaiY73kOOeFyYB8x4If4yboIZggi0qvxMZcotI1jl/QRR9FggSNe
+	3v6EAT8AcnKS9SkclruMLyRTEmsCL60HrOPSJSFy9k9kND5wR03P87PMkyWWdmLCfKsv5umx16B
+	cbeVt3l+eSnL+X7mLzWl8Iq3OXJYVCtdrcc4KCZpzT3tuKH933dBSaye/eW1ilA19prMrpYT+nW
+	IJM5PpkZE90Wx0NhGSchULl+lxlHrbuXRkEGqOYXV88oUqpzfRrcTqiY+91DD1rlj+6JydDwhgc
+	eU5kbNVE+rmfdfvshT9GtKCiuQtrHaSvWcOAL4xDFJXaqKQGWiwSSJj0frU9jttlgXTL9Hl4qxT
+	ER4Kpm+/tO926/CJMBm0TLChfxGh/ZBT5LOi46wIfBYxzR2loE6agm6e6KQwMcmu9EN8qDAjAFp
+	mOykOUh8AfglJqwaO0xWqDvsSZW/AU4y2ADG62dQGjJwAyM6hvOb7ihVMTnXfsgkfopJs/AQ==
+X-Received: by 2002:a17:902:d4c8:b0:2e8:cb5e:c3a with SMTP id d9443c01a7336-2e8cb5e0cabmr24547315ad.59.1791815967347;
+        Mon, 12 Oct 2026 07:39:27 -0700 (PDT)
+Received: from thangnn-ASUS.. ([2a09:bac1:7aa0:50::3cf:23])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8422db284sm42652555ad.68.2026.10.12.07.39.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 07:39:26 -0700 (PDT)
+From: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Jens Axboe <axboe@kernel.dk>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>,
+	syzbot+e0624b5bf72b99131402@syzkaller.appspotmail.com
+Subject: [PATCH v3] mm/filemap: annotate lockless reads of mapping->nrpages
+Date: Mon, 12 Oct 2026 21:39:21 +0700
+Message-ID: <20261012143921.283806-1-ngocthang2710.1999@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/rmap: don't discard lazyfree THPs at PMD level
-To: Zi Yan <ziy@nvidia.com>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Rik van Riel
- <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
- Kyle Zeng <kylebot@openai.com>, stable@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261009-lazyfree-stable-fix-v1-1-70997958ef8d@nvidia.com>
- <asy445BYRhcsGDE9@gremlin> <8B17F897-40BE-4834-8078-949DA951B46F@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <8B17F897-40BE-4834-8078-949DA951B46F@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 8cy99azuyb53hw4g8a6tenca78psb9eh
+X-Rspamd-Queue-Id: A2354180009
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 08E7280011
-X-Stat-Signature: 17bu9nur6dzcr6q3yqnue55pjoxqnbfq
-X-HE-Tag: 1791815949-300397
-X-HE-Meta: U2FsdGVkX1+Zp2ND30fitNyM5nBr9eNfFReP8e5eJTvEpuzAOjPtp7VM6+ZrNAebuBNZfDMXe0vYLQx9Kw/YHMiL1eiYtTz6D5ATcsWpYQXpTUEqNfwnVemDUl4yxFpCL9ZDiCxZuOeuyLUj+uoCW6CWpLkic0BaVU4oPLkJHr/XCreUCh5z7dF2OX+Tigb4Fx1s7OYd9HGwrqTAelJeX6p50SubJsfC0D1/HyvL+Y235i2/Rvj+MLXy9UkCRd5u8bisp+V3aLQ/rrj/1S1RIqo16wfstHJHbaH+DvQ3MCpoupCyUZK+7pk0M/MYQ86r0IR5xDs0CibLKm9AqMdIUfTiNqlreTKB6IVxGsPpG0skF7JhaV5qopASK3yK5NjSW4Bdy9ExAyrqk9h8TNiJOvaM2B7evdlx63ND+Yx+SLCpdFDfyn1A5MwsVz+S8Uy9uonNEJW8+7aNT2InnMxKCqUz5Rn1vcCpuucUEHE65Lqd5LRxDDisc0hMg4mO2Kx+rx/Zmc1PpPny28ucs7qsIfIdd91LdKgErYz049hFeGVQ4/ywItbjeUyRY8SZCI4Ki0qv3sC6vIePZ1XkkCjNBR9X8GNYJr/JDmTsBPuDLzhVgMYfFfA6GpBDTdOiRNIAPDc8To6mNlj+BKffu+veIqCYN5jYsXCx8Aiojfg0BmK1aFTZt3s3n9mvPvtwxK1NazKluHslGDHxFPvRCgc1AfKHs68MNqxsD6NjYGTfxBlARYwc7WW7lHhgef6VKLgYSkvQFBVItK0QMvI7E3kglAauRjEDrKhPfdQSmEJamG89ZL92ayEYfWiDG5xdGO8ZasykZA9fMTgUph6mmKQ/uryp0DyxdsrFrWyRcLbGn8ES9L0ALKLn1kchk7z/YbJsgKrkWcflceX7ecPm2/pjhW4AarB2oh3kmRm+BfKTEBt0XsrHhcrnKL4QDdZr08PGE8Zbtddp9N9e5JrGDUG
- Cmi4HaNP
- zqQR1nYstG5SDv3XI4dYaXvE2VI79tnaN/OOhnoZKMPKCIOwwC+ztG0xph8Xrp9IztzdOQZATiOr9WDDnIgj1wW7wV/9c+yrTMZko1GQeAp/r+dHUZY27yuHZM4ROdZONETeo547JqH/M0yTqg270/Lk7LZ1NOBbkeTOPjtNIsEwmKhXAGFC9Q/WCtK+C0YtaK/UeQGSFp99Po9GOvPvbQt/3p7BjyuOrS7/A2aCmSHZ1uN4qldQ9qMX+cvvDgri8NUTG
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791815968-223513
+X-HE-Meta: U2FsdGVkX18xnqxsUaKeNzLHeJtbAbQhaOexCNS9Yot38SQg6J8szoBoWqAqZQ1JUtQdK2XDhSKHf2owhglyuHZeP8cs+W1yRT2e2xOl9Ls88Sz0M99qyaLS3xKW9PxhFQ+/UnWb6n3xvnst0fWfCb+D+EAJGOYhvZYoBmuJeDT3JSUVjl8sfZ5fmNA/pmfqNeZ5Z1ExG+YkPxSbQtUVp+3uHAegzStW9CnXPNluN9SdwwNRyZPPYlmvaOBjix08rRx0LmNP8tFnzm/xpT5pixZ68qYulwFjMXCBQW9OUY06+5tco7RDJg+/hefxHlI0KkBxUP1WlKD31p7b117fEHXzGqM+bBrQpOI2/mfMKE9EA9LBibY92lEGVDpUOFh7o6VBfuII2yPZry9IkeRaag3ZlkEnep0RdA/gue/3DlQoujMnZCUQSmHfUrdMaI5prq1nv8JyLE/hqDhtRMVMmOcDXurih7uYj4vBxztgkSrdTffSjAdMSmd6RwzQxn0UwhqvzgacrYkfA1ci93hbgAtczik4aOSTezhztFcog2dqqy2Hclgy05WkjeAXZ3xoo2cXgBCJKGmZNPjbccK0cx5sqzqlS7p5YNWG93Tde/ze/UHaMzWmACPmODKXGdpRenyrUo9iHoj0coYZjmeY7vhIzoyXZjWHMaeo81JPTyK/tYX8mAyngIKPCoDYriRiB+ylDEshzelXy3eINTKPfiqK1pyw+SbqtdTMTF42Jw13jYYQnet57g0aN3G2qFApiIvwRHuw9pMNTAusJpMvHPobriIjiz1UPbm3WDbjGSJoXBbkHGEf2CJdqMeGg17kfLOaaO2xacB1fsLnn+dv9CPuauhRJyFAyZdAM/4acWqfJJOQuboP5amEaaD+Kvm5DbRVz/EJ1BzekTNeIN0YxE4JSQrQ/mHfSnloMzaQhpmIi3Cz+jFmPS9Me8u1dn4DMslb0jqiCGEGcG382GQ
+ KMMKQJ50
+ J0EJaVPd5/JjPZTbAMb6vIdEi61fu8i7LI1JAEosPDJmiKTjkxMdnl7lhpv70I4NFQFFgxVIRJ/IPDsJG2CVmACWygo+bQJpuJELUh3UftX9a49w+MDbiIJVvZGrlUSjV2loNTqIj18EsmTWp2FJmDTVJuNuvpUhBc6hYdRBxAeELRKx2fFT7FXmHJ8oHI+vjzlQ2uiXu8w+ZL6gcOCvxSYbMoG2OWtNbMxaN8dTIHX3JM1wQ+5mCtm2nLHm54Avo8eGwbZhvvIaaZC/jfWC1rKtdt0m3SNjidnAJYEnSVv/Iiu98/KixZe5Ht+mocBkF7l7GRgQ2rWzcWEpBYw2kns2wwTk3Wpqb9QXPxz3oMW6zJUE0WJlAzMFtJrf7+kGsMTvjbLuj5vLnPIVVa6vBNX3G9YmH/gbSAkapzLNRXhW058U/54I2hjqs5Ad5TEIJtzFTXI+NNVExLlW2YjZhjSUurnrmyirOZUzaKnmozTqIIzuODhc4/a5A0GBBJn9Asg2zoQVe0WfrSGRtMzRE0Qk/TukVsbua5y7Gbd+a8aBDVBLNqJ/sWwnBjNv9ho5laG5jYSGLBzWHcKNH9T1Xs9mgNt2z6BWoOtRqNPOsqHwYUvvJRVPGwFn+cds0eDr1IZNR8WHpdlL3oOhnxaqWuYrKZeL2m0OlKBbRtVb9yOBE8LM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,30 +121,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+mapping->nrpages is updated under the i_pages lock but is read locklessly
+as a cheap "anything cached?" hint, e.g. in invalidate_bdev() and
+filemap_write_and_wait_range(). KCSAN reports the race:
 
->>> --- a/mm/rmap.c
->>> +++ b/mm/rmap.c
->>> @@ -2275,17 +2275,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>>  		}
->>>
->>>  		if (!pvmw.pte) {
->>> -			if (folio_test_lazyfree(folio)) {
->>> -				if (unmap_huge_pmd_locked(vma, pvmw.address, pvmw.pmd, folio))
->>
->> This is the only caller of unmap_huge_pmd_locked(), making that and
->> __discard_anon_folio_pmd_locked() dead code, shouldn't we remove all of it?
->>
->> Otherwise we're leaving dead code around.
-> 
-> 1) it keeps the backport small, 2) I am going to restore the function and
-> this reduce the code churn.
-> 
-> I can remove the dead code if you think that is better.
+  BUG: KCSAN: data-race in __filemap_add_folio / invalidate_bdev
 
-Leave it in and let's clarify that we'll restore the functionality shortly.
+  read-write to 0xffff8881004c4178 of 8 bytes by task 3600 on cpu 0:
+   __filemap_add_folio+0x6b7/0x910 mm/filemap.c:919
+   filemap_add_folio+0x1cd/0x380
+   page_cache_ra_unbounded+0x1a4/0x3a0
+   ...
+   blkdev_read_iter+0x21e/0x2d0
+  read to 0xffff8881004c4178 of 8 bytes by task 3601 on cpu 1:
+   invalidate_bdev+0x25/0x70 block/bdev.c:98
+   ext4_fill_super+0x2ccb/0x37b0
 
+The same counter also races with filemap_write_and_wait_range() through
+mapping_needs_writeback().
+
+The race is benign: a stale value only makes the caller do or skip a
+harmless invalidate/flush pass. Mark the lockless reads with data_race()
+in invalidate_bdev() and in the two callers of mapping_needs_writeback(),
+rather than inside the helper, so a future user needing a reliable answer
+is not silently covered.
+
+Reported-by: syzbot+e0624b5bf72b99131402@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e0624b5bf72b99131402
+Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+---
+v3: move data_race() from mapping_needs_writeback() to its two callers (Jan)
+v2: use data_race() on the readers instead of READ_ONCE()/WRITE_ONCE() (Jan)
+
+ block/bdev.c | 3 ++-
+ mm/filemap.c | 6 ++++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/block/bdev.c b/block/bdev.c
+index cd8323083740..233750f87e6d 100644
+--- a/block/bdev.c
++++ b/block/bdev.c
+@@ -95,7 +95,8 @@ void invalidate_bdev(struct block_device *bdev)
+ {
+ 	struct address_space *mapping = bdev->bd_mapping;
+ 
+-	if (mapping->nrpages) {
++	/* Lockless hint; a stale value only costs or skips a harmless pass */
++	if (data_race(mapping->nrpages)) {
+ 		invalidate_bh_lrus();
+ 		lru_add_drain_all();	/* make sure all lru add caches are flushed */
+ 		invalidate_mapping_pages(mapping, 0, -1);
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 00fd89cf6f55..ff10ac8f56b3 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -680,7 +680,8 @@ int filemap_write_and_wait_range(struct address_space *mapping,
+ 	if (lend < lstart)
+ 		return 0;
+ 
+-	if (mapping_needs_writeback(mapping)) {
++	/* Lockless hint; a stale value is harmless */
++	if (data_race(mapping_needs_writeback(mapping))) {
+ 		err = filemap_fdatawrite_range(mapping, lstart, lend);
+ 		/*
+ 		 * Even if the above returned error, the pages may be
+@@ -782,7 +783,8 @@ int file_write_and_wait_range(struct file *file, loff_t lstart, loff_t lend)
+ 	if (lend < lstart)
+ 		return 0;
+ 
+-	if (mapping_needs_writeback(mapping)) {
++	/* Lockless hint; a stale value is harmless */
++	if (data_race(mapping_needs_writeback(mapping))) {
+ 		err = filemap_fdatawrite_range(mapping, lstart, lend);
+ 		/* See comment of filemap_write_and_wait() */
+ 		if (err != -EIO)
 -- 
-Cheers,
+2.43.0
 
-David
 
