@@ -4,105 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99C6CCA9ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 15:09:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4EFBCA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 15:09:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADD2C6B009D; Mon, 12 Oct 2026 11:09:04 -0400 (EDT)
+	id C16DB6B009E; Mon, 12 Oct 2026 11:09:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8EB16B009E; Mon, 12 Oct 2026 11:09:04 -0400 (EDT)
+	id BEF7F6B009F; Mon, 12 Oct 2026 11:09:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A5986B009F; Mon, 12 Oct 2026 11:09:04 -0400 (EDT)
+	id B04B86B00A0; Mon, 12 Oct 2026 11:09:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AC356B009D
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:09:04 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1B80E40AD4
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:09:04 +0000 (UTC)
-X-FDA: 85314307008.23.F781DA2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3EADD100009
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:09:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eu84CkOm;
-	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791817742;
-	b=8EFfrfF1xU2+J/pu5YI/CeS4lcb6OcI+yYr3Yg7dsIaad3TVlVCBfOCjlbqhpOvnRyWOw5
-	SrFPF/QrDJ1O/HMNOH0oymEPimTFvvfT+Ixff94w/frY2d+IYd+777yT2pDHHXGqSrrMJq
-	vf9YIQeJMTde55doUBscQavzjrpJRBQ=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eu84CkOm;
-	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DEBB6B009E
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:09:06 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 09D76160FEB
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:09:06 +0000 (UTC)
+X-FDA: 85314307092.08.C7E56BC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 124DA1C0009
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:09:03 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cPpYf6O9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791817742;
+	s=arc-20220608; t=1791817744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aWUTCJCREI39E+aOOjzAotyeoOPH2eDIrrDPoZKoBu4=;
-	b=R6yxon+vHr9sXl8mR8Di73ZzyicAoP/c7rZq04kF/11XcuAYejoPju01dQmHdR+np/8SP6
-	T/s/Ekc64ILYnypr+VQOJYSMcnbt9Qh4pZONffk/vg2g81M7XZt8rmOVw2qoYxVDiYy6bt
-	9gRRsek0/xKKilP9Uci7A8ygp88gYyk=
+	bh=7BBLP7D5VQ4ig7xnqoWkBX2bQpNScQ1ThBFCaNMPFU4=;
+	b=YaoRi37az2lekqtw3tC4Vpwtc62OSH05y/+VOLhsNmfbjMl8C+Lkbz+rAsr2wE0Ebm40e2
+	fPcS/68Fssvtf9GYWqgt+KU3fX8ReCqp5mBO2lOAnzCNI7Fl/EEuPFE1TYZrH8W242N6jZ
+	3vh/Vtaq0Q6kFmJQuny0ZTj26liddqU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cPpYf6O9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791817744;
+	b=HtrRWfVBg3tGRTAgyz5FfRZc3CGEjBlRwdYTBZh2zMB3y1Y5rh19zQoT/++tNgWkTMzGS8
+	gUO4OwWxr1jYOlUa67qXeEdof+EEFqx8xiz/zUjn+WmJVB8QuOdeiCvW1JJc57wSSjKfp3
+	exqnhvkC9oBsLm7AZJ76BPeJiE9a+24=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B187B60229
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:09:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694CA1F008A3
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:09:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 60D62447BE
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:09:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403A61F008AB
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791817741;
-	bh=aWUTCJCREI39E+aOOjzAotyeoOPH2eDIrrDPoZKoBu4=;
+	s=k20260515; t=1791817743;
+	bh=7BBLP7D5VQ4ig7xnqoWkBX2bQpNScQ1ThBFCaNMPFU4=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=eu84CkOmwXFvMRBks6U2hSG/qU6Oa7OELN7uWkx9qsNlcq1FrAo3oASGeD5VO3WfI
-	 KdV+hD8axKez7OeVzfU9Gsg/lft/D2RMBGY/V1zsGzG8zkb5/Luk/0keI3C+ZVjtvj
-	 +t8qmN74NptmUQr9nlEHfPar12/eFDKiGywqftNP+vCHoh/QbKBx31a9SeVI72cAXX
-	 SPuL9eMmjnQH/kzTbX97R0GQxaGZZ4qClq6VS86GlXJ0L2vYPzrnu/7LVlRe72QAMy
-	 y0c9Lw4B11ktrTwZvaH0QnB95SGQNcWy9J0AOBjRNjHiQeYBajHVzq+gOon1TJlzRl
-	 b1MtXYTh+/SjA==
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-97bf91b2e6eso286453241.2
-        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:09:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByDc92Jj4VoeR8eTPurxDhnAGN9BJurY6PM+H3oNVamIV9Jo3Szi4t6HIA8yPFEW3IMIGTD/ekvDQ==@kvack.org
-X-Gm-Message-State: AFq9FYL5Pzb4ph5QzINgbTfO+1D5WHiqWw6Qtuf2Rz/Wgc5KjMox84nV
-	0DL/JvloezaxfJ2s0vNdjunZ3yBIpqcR2hctL1VUCbbYj+HrCLGPAc2o6TDRVqWzScT+H/XgDZH
-	A7w5tLv2BHwZli/0SaaG9avbEU8/6c98=
-X-Received: by 2002:a05:6102:5114:b0:7a7:195a:1b29 with SMTP id
- ada2fe7eead31-7cb375057ebmr2198065137.35.1791817740701; Mon, 12 Oct 2026
- 08:09:00 -0700 (PDT)
+	b=cPpYf6O9F3/To/aLYR0Fc8OhbJ2LSTgF2efcWyJV4t78sAbeQzuH+VCDPAS6YJG7L
+	 SJGEZt5CbTp1CNozBdI4RjgpEYJsswib5oIRlnv6XKwPxjlo6v8enE1VZaEjDQtM8t
+	 HKaZx2BpyOvtaQxFj0BoKo6+h2zsE+R68jyYmF9SnhfDnUESdOM3UpDNDaeURzCsgs
+	 zNer0C4hxuw1rkNL5syAyqaRVoHvA8xh3spkmXMnQ7wiEd8BzcbdKLId0mdErQC6IB
+	 z5ivxE+4Jl7d+Th3NjngnTntVma67blN1ieX71B4nxQHVBa8ft41kV/e+2gN/LdXnR
+	 wnvSlxp9vi4DA==
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6af9cc73235so1663570a12.0
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:09:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxAQdmkLSqjzhqyFl1yhVLUVnsX7BIeuEg6vxNsGZFIW5XyLtREYc+WevgGNfb1vNKGRnPKFLIqYw==@kvack.org
+X-Gm-Message-State: AFq9FYLeoR5Oj2KJSNVspchKCWQrQVglznMnC5HOkyaiWmPkcVfkamXx
+	Uo6NjbSkmls/zEzJaIqCouNpEFWeMOak3LSZzUEMd7TrMTLtifl8QhwuPqsSUFFXLKFql4T0U9m
+	E2G4dT3mdW4sLru6wDg3hAO61XJnpw5c=
+X-Received: by 2002:a17:906:f58d:b0:c2e:4397:7c82 with SMTP id
+ a640c23a62f3a-c31a9d1074emr1078878566b.6.1791817742188; Mon, 12 Oct 2026
+ 08:09:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20261007153915.53429-1-alex@ghiti.fr> <CAGsJ_4xyzgUH4uhKqpD7PTVuOzdsAkYgowsyn5iT1LHWiaYqqw@mail.gmail.com>
- <CAEmasaWQm6DPqAhmW_z=kuR+3LDWJ=h+yM0hAs+ryNoFQd6qmg@mail.gmail.com>
- <CAEmasaXa2pB_Jm_VgBZAWQwu1p75yUSY2=dr0Opt5okLgWk-YQ@mail.gmail.com>
- <CAGsJ_4xw+CLzrazOFxnvJCbvG0qoauEuFGR6OdtT3x78ef95pA@mail.gmail.com> <CAKEwX=NrMD1jpU=Kfh367mGArw_ju_8ku=Rh_v8TiLumx3+S3g@mail.gmail.com>
-In-Reply-To: <CAKEwX=NrMD1jpU=Kfh367mGArw_ju_8ku=Rh_v8TiLumx3+S3g@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 12 Oct 2026 23:08:47 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zg-PuThnKMgN53dV-VbC6Zxo-s6WKoN=x92Aa2=9pu8A@mail.gmail.com>
-X-Gm-Features: AclHuK-DxxppJUvPEq3sn3XyNg_m0af3-igDf9H7UZjpJzGKzM_B88Cpkp_3Ugw
-Message-ID: <CAGsJ_4zg-PuThnKMgN53dV-VbC6Zxo-s6WKoN=x92Aa2=9pu8A@mail.gmail.com>
+References: <20261007153915.53429-1-alex@ghiti.fr>
+In-Reply-To: <20261007153915.53429-1-alex@ghiti.fr>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 12 Oct 2026 08:08:49 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNF=OBGcTU7hGfBz-UOm-fv8BDn-yQzH23e=rC4MX1-Uw@mail.gmail.com>
+X-Gm-Features: AclHuK_EARe5wJ3XZ38HWc8GNMx8o66_Dm5CG7tcDTb_VWTs7YmeYdTiYMGwQzc
+Message-ID: <CAO9r8zNF=OBGcTU7hGfBz-UOm-fv8BDn-yQzH23e=rC4MX1-Uw@mail.gmail.com>
 Subject: Re: [PATCH v3] mm: bypass swap readahead for zswap
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Alexandre Ghiti <alexghiti@meta.com>, Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org, 
-	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com, 
-	baoquan.he@linux.dev, youngjun.park@lge.com, chengming.zhou@linux.dev, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, kasong@tencent.com, 
-	ryncsn@gmail.com, chrisl@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+To: Alexandre Ghiti <alex@ghiti.fr>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, nphamcs@gmail.com, 
+	shikemeng@huaweicloud.com, baoquan.he@linux.dev, youngjun.park@lge.com, 
+	chengming.zhou@linux.dev, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, kasong@tencent.com, ryncsn@gmail.com, chrisl@kernel.org, 
+	baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3EADD100009
+X-Stat-Signature: rrjibqdu7bpbg7sefk44yo94iuhc8s6z
 X-Rspam-User: 
-X-Stat-Signature: 7pa16ksjsy119uby93ozqrax7ywdaugm
-X-HE-Tag: 1791817742-866628
-X-HE-Meta: U2FsdGVkX1+F7Z7q9H7L/vZgz1crkij8adFICcHiRJIgElS7xfV44asz3T3OkuOtokhniXwlLsnS2HiHel7F636zxPbXbbEfoPLvvfqh6vYtSPBZqoWWzhGaU1FX6tvBPQnTqtyOGaqwVP8+f0oJI1j048DXbcG7xrrfFw2PSrJ6LEe9UYfMPuJKNNkFo11EwS+4QEM1lgrl4PMBKhUIgjJ8KTq6ResAIdgXWJMSUIFPFpLQ6y42TeUREoKh3eCkAr9ILp/Z5lW9JV6mj4XymExAXNjsE+04PrYBlSDEA4nyVsRjmIOyakFUQl2QRdHvgqCUWklMegJtp/p8dzAzED8A5is+fUm02qezQNSr6C3UsUWjRfSopMS0bPbY9wNfo2HzXILomrQug2xkxvLdNThombNwtpoS1V+Il8Btxf7l9AgnYvTZU5rj53PxX8i8VMP5HlIxWpT5xt48iRhjnzlPTaV2Zxax9PjnJTceqvILnCNqWFUhqsTQaCWTOl0n3A4xS/wOXDfWtX36rFwaG0PpbxaxfSeWBgOx3i8BVsHQvj7pM7Xkiqz4J54paLkfaS4zDgffad1Ug56z6frJr/tgV0i5znAapVNgWWGfu126u4n8uCvp2N3wk8UTv8NMJsNYUoM0LmGC3upueD3GpX5T6HIePcsQ93HsWNhMNgQI1PE8Sa1/2qHxRrazJKU0NRg5S6w0L7E4GDtvqLMuPG77Po9w1Ve3P2/4t9CjeAmonrNnceR8Q0Qlx/zliPoLaPD1j+A7rp4bBatHTdNaJN9Vzkc89+z9jcsl3w6cejtJ1lEtqCox9LmY1Iz+nW4G8IySiCNNMLif62jc0GomqhbjMHRNic/3AOu7pVvwF5u1EpJZE3kGiAfVfzX6P9KdMjTLE3ai28o67nzhHU35yBg2xvQcENtT6uG8Jkbc1p4rGB4FKvlqfnI4rGN7PWJqqa+winhs5DFYXQRTJbU
- SJ+C5dh1
- EydFmTfyDpK1zJHdU3OJjVkwNHi7t8vhylM0hvIBPwj8gq3SBr+VgrKzzE/5YcouC6xBCf+oDwc3JfzlxADJFV1L/2Kag/714p2gM444ubZSMwssIZS5KQ24cmH544PhhCuwE7U/zFF920BIrngxm1wV3xZQB1QorCryqW5zo6sDuzXCp2dEIKQRCU7P0NidRd8PMT/X+uBwCctfQeJH4Pk9Pg1kWbplDN42UizoRs8omRWlh7w8gIAFApVg+5OrbR9XfpHQ+nQn/SIE4P41sEsPbPcnIckonUMPmXBtcyj4sqdVJZ1QNB6NzMsQeNwHHkZMmtTJHulhmefM=
+X-Rspamd-Queue-Id: 124DA1C0009
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791817743-324354
+X-HE-Meta: U2FsdGVkX1/wpxSiCHNmikvXDqE3yPPbeGYXyV/0txzKy5JK5AfJng1Sgfe324yfHEjoRhlw++yML/T6FrN/GkKYRabyAha71+SfAqDNX6aMy+p8y6YgVDmf/VTcuXBZ0GTVsAfey+VOA8e5sfFJ6jW9dRsT9aQKNjMutTONh+kev0XLcoRYGRk5OotUkOTMSCD0qQoB49IFLfnDcW2V5vWvnEGWnUvu+M5ZLs4owh3oYWySaHC7zMF3BA9v4/0COnQA0TONM0EI14U9BXFUzDfNOII1sqD6+qnlNR3wgaXBrjbDR83CoAIMHC1xToa0hNBXOPGd8hWv9MPEzJcpq1cPVVeRKfbQiDsXKR53bipdco1xRj+NS1P9jcIpPFGNXj78klosSL5UVkp4sJbWFxmmudvcKaFI4tjLgbdqmTI/3USzb89f96JD3SrNNQD4qfHbIm3v/PWq8kJGsBwGVvVM32z8F0C7uzt9+EtBEbibT8adrZo9E8Nn7fyOacFOwrs33ltiYHXDOqxunYz0lfFMHvCBewNNuWyrWw+Q1FYlGI1Xp9IxplRrvsoH/Ic08ObSHFb1WvoWlIvuDNACNm3i5cMmz3PEF41VZMO2qfqkDUHVYN8oCpGqfbpMxjy44g5xTbsA1IoEiyTakMmAi9V1BStCV2TjktEJPOFu/30vvlpq1MazSNkxFvqfG8vnd9bFIJ/eFMwOOt6M28F7L3UH0JmEPw/NsFmjg5lOcasACEf85JhSSKpn56fQpuFOpyaXiZWIxG5aBII9eQR+ICPEBcHTMANEmhe84Igkq2jxaI4jFNInnztyjI7hhAzUd4Zlw0Ek8R1r2MJ/l2y16m3txseXyJzGI39PW8Sg1RbnEauHNjiFebfzLNyE88aID5+QLazLmYUU0jjynOYpmPnJq0D6unR8sRFfNioSYXLHciKSZmoQWkTOgLbQdno5McjksXBL30oHAooPWhJ
+ XC1ziRSK
+ NWCmNhTEbsBoN+zbuwbGWvphmeTCdfI2vnrgB2PuZAbUF8XMH+FspQd4WNyAvMZnPCwAFP6NNSVKXYo1rAP72w/xGGQzMhh6fNsXo5sDHP5mPoNxFiVVUlUY6hHi5FDA/wibC+DKjnd9rg2ZUFzd6q017YICB3xbxV/Kv+y05YNTCHA6u8n48rINqIgdW5cmpEufSKJf4veyR45IN6NXpU4JQ4C4QLOfjJF52A3yfTJmLoP0BPoBhESuh/G4Ug0/SyQ52wu1IAGulaqpjnlAt1cdcVgCtsD+n1AtHHtxCvz1zu7mfMj+aF/WdgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,35 +107,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 10:21=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrot=
+On Wed, Oct 7, 2026 at 8:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wrot=
 e:
 >
-> On Mon, Oct 12, 2026 at 1:01=E2=80=AFAM Barry Song <baohua@kernel.org> wr=
-ote:
-> >
-> >
-> > Thanks! This seems to be a strong indication that setting
-> > `page-cluster =3D 0` can also resolve your problem, even without your
-> > patch. :-)
+> Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
+> device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahead.
 >
-> If every tenants use zswap, yes. But we have tenants with different
-> kinds of swap backend in the same host (some using compressed
-> synchronous swap backend, some async IO swap backend).
+> zswap is the same kind of in-memory, synchronous backend as zram, not a
+> swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
+> swapin_readahead().
 >
+> Here are the results from bypassing readahead for zswap too: it was
+> measured with a kernel build (make -j16) in a memcg, zswap=3Dzstd, shrink=
+er
+> off, on Sapphire Rapids and 3 iterations.
+>
+>   768M memcg (sustained swap thrash):
+>     metric                 mm-new    + bypass    delta
+>     build time (s)          405.0       341.7    -15.6%
+>     zswap-in (GB)            79.5        53.0     -33%
+>     zswap-out (GB)          144.8       115.6     -20%
+>     swap readahead (pages)  6.79M       0.45M     -93%
+>     swap_ra hit (%)          72.1        89.9     +18pp
+>
+>   1G memcg (light pressure, build not memory-bound):
+>     metric                 mm-new    + bypass    delta
+>     build time (s)          177.7       176.0    ~same (no regression)
+>     zswap-in (GB)            10.2         7.5     -26%
+>     zswap-out (GB)           27.7        25.1      -9%
+>     swap readahead (pages)  1.07M       0.08M     -93%
+>     swap_ra hit (%)          68.6        87.2     +19pp
+>
+> Similar gains were observed on an AMD EPYC 7D13 host.
+>
+> The gain is from no longer prefetching pages that are pointless for an
+> in-memory backend: readahead inflates anon residency and thrashes the
+> page cache (file pages get evicted and re-read), lengthens each fault by
+> synchronously (de)compressing a cluster of neighbours, and adds
+> compression traffic when those extra pages are reclaimed.
+>
+> Bypassing swap readahead for zswap therefore makes sense.
+>
+> Suggested-by: Usama Arif <usama.arif@linux.dev>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 
-Yep, I have no objection to this patch. As I replied to
-Alexandre, I was just curious about what would happen if we
-set `page-cluster` to 0.
-
-I think Alexandre's autotuning patch looks good overall. We
-just have a lot of corner cases to consider. For example, we
-might miss zswap and trigger readahead, even though some
-folios in the readahead window are actually in zswap. The
-opposite could also happen.
-
-However, I don't think we need to handle all this complexity
-at this point.
-
-Best Regards
-Barry
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 
