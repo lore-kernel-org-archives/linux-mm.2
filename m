@@ -4,136 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 931E3CA9EDB
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 04:16:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EF17CA9ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 04:50:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 180DE6B0088; Mon, 12 Oct 2026 00:16:11 -0400 (EDT)
+	id E1F3A6B0088; Mon, 12 Oct 2026 00:50:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 131CE6B008A; Mon, 12 Oct 2026 00:16:11 -0400 (EDT)
+	id DCFF66B008A; Mon, 12 Oct 2026 00:50:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 020376B008C; Mon, 12 Oct 2026 00:16:10 -0400 (EDT)
+	id CE56B6B008C; Mon, 12 Oct 2026 00:50:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D0D3D6B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 00:16:10 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 54E72140977
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 04:16:10 +0000 (UTC)
-X-FDA: 85312661700.16.D9FD3D0
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6569C40008
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 04:16:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bLlORlKT;
-	spf=pass (imf12.hostedemail.com: domain of kanishkasolanki456s@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=kanishkasolanki456s@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791778568;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E0A36B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 00:50:57 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 78D451C4371
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 04:50:55 +0000 (UTC)
+X-FDA: 85312749270.02.5839334
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4ACFF1C0002
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 04:50:53 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=AYXMvyrK;
+	spf=pass (imf21.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791780653;
+	b=oqM8pAeXaKqJkQFp6+6Pq11R/a1LCNHicFs6tlYbL568DCO0VsxNmNdMPi37EnwOmSRAoI
+	BpzyrwYzXVtvX3LiomkcILkilQ1Q8yTsCzBWUrTS/qYqzceYhorAVbYtTOyMQzIVkVV576
+	QJ1UQbon5xVBfbqvgeuj7ktdy1pTJPY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=AYXMvyrK;
+	spf=pass (imf21.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791780653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FmrFlC4CymhdGvHPqaBIxxVKsVUaCyNEYowNbJO6Wtg=;
-	b=NBf4qRPILWKe0m5ROeR2T9yDohrg158B16T6HV5MLqqk8KyFZYJQOs+ommo6355A5CZ98r
-	6Gd8st54R9T1/Pginv3pLi9v4mYsafnSqxgQ0n9zGResPqUNFbs/RZk2RzWkh+ZZ7jSnqY
-	/C4Yl3wwtEr3RkwlYy2wDbCeKKsswgs=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791778568;
-	b=27T3n3jJguOe6Sv+1YlOjVBGLqN6epORlK0MlHuSOXZZsSD3b8YC+uTQ+/zNyltiuu8rm+
-	VpLaSZa+JY8ombf1oknzBUTNAJHY8xhUSBo1uS8oMPw3Gus9u5mEpvb3Ml4S2bfy75p8ej
-	+Uth8znId7zD11O0zlIR5MNRUa7Mxhs=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bLlORlKT;
-	spf=pass (imf12.hostedemail.com: domain of kanishkasolanki456s@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=kanishkasolanki456s@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-8ace0741488so9821627b3.3
-        for <linux-mm@kvack.org>; Sun, 11 Oct 2026 21:16:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791778567; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eCXLXDgGTlZuOf0RlMbiluHGhLfJyjCqd4mJ2XHfQAHigDGttmM/v9HVbaxVeecZ/H
-         LdVDHeJ+IfOtOgORfulZqTju9tlNSY+GkzTImtuty0hcDVCI/0PTMY7H5EeHUBPr6Ply
-         ChH68KrJ8Ka8mwC+WgF7djXzzEv99vPbUmos0U4PUrrbg5p5uPOOPbwgLCTzWER96U+W
-         NzQ47oPJRzb6X+/6BcSM/mvP7fW8HJtWcmSK0A8fuiMTnzRbfQmMkLKy6GSJZaYbRAyu
-         LqhnIsvw5WG0wgTli3vIlsqnzNDhoThFIpE3No46A/wXwO3K5qmYaMNPjwPLS/aFyKde
-         TNOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FmrFlC4CymhdGvHPqaBIxxVKsVUaCyNEYowNbJO6Wtg=;
-        fh=TjrHhMj03upX0OhKXHc+qQN8kaJBBOZrnjh9OsP+Vck=;
-        b=kil/qYzJjbJn5/1TgIGl5k/zUMCkJUwIu89gII2yGn2jsR+q/WI6OSTTBrv8wqvM85
-         xc3QUWpRAG/RF2HrHD+3t7zWq/MDW+B0GAFj/XGUu3zEdvs+7OPZyZm9Bxa8NUSSZPfc
-         BErIL7qiKS2SYXhK8LLHhWFuiow9ArXrb58O69B+qOYIeyrvUb3tXXxwwOJfURMyDdRu
-         qQe0rf73hYzExpM/HWdR0BeOdY/kTD8FQiX2jrrUcW+dOv2lB9Ncrw02wOK0TzYZSY5B
-         bmRPJwc+T5Zoyv7JmItluJw8paU84vJsJy7zXW6+w+UObCmH+8OdUZcsfTiAiTlEmhXu
-         7vQw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791778567; x=1792383367; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FmrFlC4CymhdGvHPqaBIxxVKsVUaCyNEYowNbJO6Wtg=;
-        b=bLlORlKTMzG+/7fUpba6nhddskhu+pK/wPK6kb31Ec7/evBAKVAKyYTAlUlukX1o1L
-         mj+k/dPcJ3jV8tvWx6HFpkV9E1AQqeND1TCnWdHHr4Y4hgDZ8Mwk0T7BCUtynRAhtmFd
-         p+rqV5hRBcQP8aYr4FVxvkELgN0B+tKanTNczIG8MlVRoqp52GbH5y74Dnt0ZPBLWOLm
-         GsYgEb+lYFbxq0dft+zFWujn3YZLJBvzgxqzce7ZBvcPdNT/VXcm12+603k9pa4q5eWR
-         lSXkV49EqU+e22F3woYIlXpvPBY/VHcSZv3JS0yjLHojmkDK+TUsRWJ9ou2D/eRV9uFl
-         j8kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791778567; x=1792383367;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FmrFlC4CymhdGvHPqaBIxxVKsVUaCyNEYowNbJO6Wtg=;
-        b=Yj5Dnt9UEyatFzHqytyVkxfCy12gEitcGQ1E1c1at/7nrRPX8epDXBvPmcNTqMU6QU
-         /EcWZa0Jp+EquZ2JYZhG710lSAazjNa1queNv9Tj8gAEKFikfYLuZjPe7LVSdeZlCIbn
-         R5Yt4Qq/GK0CGSfYBSS7E/MT2eNk4hu4WpukgDfDUDPnTuFsQD4vp7SsL2YNbZ9GOgcg
-         rc3/Tpy+6TP9tqhpfeKGSzaauOzOUDp6GO8ygf7WZ48nSCIQY1vCH/Nzd+KK9ZqkwwhC
-         k1yM8jzIvzJXaZMwaQf/6/RgyebZeXGgfSwygzz8EF1WobXS5MDT2upqqAn4j3F/dZ7S
-         6PEw==
-X-Forwarded-Encrypted: i=1; AKwUvByZTsCiV9p8THRiB2XvOPw9d8EQ6SV7JRZasTMF/UDso5bWmD7c+JZRmfWoFXfar1ZLBVrqBCzz6Q==@kvack.org
-X-Gm-Message-State: AFq9FYL3F1HrQ3kX1vh7L9M/OJqDJAkbxFrU+rVowolFM2dmIESGdI4k
-	eCjATHOqFNe4K3EGi44Ygh1u1ivYqenum7pAV9wRQJHXriAWk47iJPfeysvY3MmM5dDWzo6xWvH
-	Ub0BtZUzUWl3WqFzgPgfqnTxb180SwCY=
-X-Gm-Gg: AYBFou3hZ2WhVnYtit6wMRRRzhHkem+ZnUdtyU2kvApmQSdgg04vkJ7k88R+18eaw55
-	aq3VGi4dDf8lBZ4/ouvKSwL7MTHOSlXj3pfbtoiotkoRTqhz8J+kYFGTDS3vDOEFqYKjbBSrykQ
-	y+B5s438DxSCIkDXedXWTe7xppJYqq3TqW9/M1HsmNAqxg0BaRIG4w8cf52LvtUw1sdK5B05U85
-	3OtcL9vUW3P6QohkpmXMZOuMCkGvlhTSR2rn7KdWJGc8aNukGjewBpSVf5Nu7MuEaz4GkmbAtqa
-	FxuzbJG5jq+OoIiNgQm6HMPTpsgC4NccGd7RT20lu5gWclKWVGWMS0WmefUTjQnXXLtOgfPtT+m
-	/7maN3A2UFXBE
-X-Received: by 2002:a05:690c:61c6:b0:8ab:3918:33c9 with SMTP id
- 00721157ae682-8b07edfb3ebmr24808907b3.96.1791778567173; Sun, 11 Oct 2026
- 21:16:07 -0700 (PDT)
+	bh=1Q3fm5JYej9AjqUufcPPGBasZqd7x2tArUNDPhsC9F4=;
+	b=pfMzltjsgbvye4XMizklHPzMjk0EozGZ5NyS6qkurhAhF7z++QoBSa5wHh5IipS3P6y2SY
+	vEfNm2Vyd/hJw7HT73KuTOFBq3AsHNGlnspcaOWYo8VmL/ExFe1NmbnENv9qgSBfzcAcpY
+	dSPwKmLZMIEbkP9uqNoYGTnFq9jbjyM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DA7EB1655;
+	Sun, 11 Oct 2026 21:50:48 -0700 (PDT)
+Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5DA163F66F;
+	Sun, 11 Oct 2026 21:50:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791780652; bh=FEORMkWV+LnpnKU8/SJTAtz/HqigUBNwPx9HlqlR0bI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AYXMvyrKhr5Zj0P28YCOLqmo8ytyuBDkbpk3gtbZAtI6nU4R10S+rUjM508pvVH6N
+	 seUQ6f5BOKSHaKAoiv5viWr0ulK+vKgbebp09HDBYPg8Gagv6FBLoZ8oA1p8c+sqXy
+	 9Qp55iOsUA9A8u1ubIds4WOMmRIjmVNEmRzi0l1c=
+Message-ID: <3a0673a6-744b-45a1-80fd-737a366fafc4@arm.com>
+Date: Mon, 12 Oct 2026 10:20:45 +0530
 MIME-Version: 1.0
-References: <20261010093843.103169-1-kanishkasolanki456s@gmail.com> <DM14QKTSWM6K.YSJFASLMY53E@nvidia.com>
-In-Reply-To: <DM14QKTSWM6K.YSJFASLMY53E@nvidia.com>
-From: Kanishka Solanki <kanishkasolanki456s@gmail.com>
-Date: Mon, 12 Oct 2026 09:45:55 +0530
-X-Gm-Features: AclHuK-CkT6UlEdY9rvyIC5NaUw_85FFG0zYLy6H2r1vScvrdc1APxGJLTHTkV4
-Message-ID: <CA+khhQvUULygvTwxEzQ5mae_saCRnk1GYXNWw+U99QpkpZ=1pQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/page_owner: make page_owner stack depth runtime configurable
-To: Zi Yan <ziy@nvidia.com>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com, 
-	mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/12] selftests/mm: improve mremap_test
+To: akpm@linux-foundation.org, david@kernel.org
+Cc: ljs@kernel.org, liam@infradead.org, vbabka@suse.com, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, shuah@kernel.org, jhubbard@nvidia.com,
+ kaleshsingh@google.com, anshuman.khandual@arm.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261006092511.145776-1-sarthak.sharma@arm.com>
+Content-Language: en-US
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+In-Reply-To: <20261006092511.145776-1-sarthak.sharma@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4ACFF1C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6569C40008
-X-Stat-Signature: zmaxx86yw6wft3rzixedmcw1x3gkmt7y
-X-HE-Tag: 1791778568-223612
-X-HE-Meta: U2FsdGVkX1+u10dH5atRacEmGWQoVdC4/wSt5GpTQ8AUhC3GUU466LUYLwX1bWH2fUGOyEO2TwkHtQO+fL8MLKPQM36imznMYaWkLRzygKr+8W/gk8R4ASJkCeAWxk/0gAcw2p5KMxvw5wsalFW2meYAVgsb3nQlesE0a3C7V/akvW4TX1xEscDDBN12pqeNoIWIFwxF9etEu//X3RCY6FoqMzCGp3LTmCnb5dolQqDxfqr1pDjjotXnLGd9Ytmd8oxx5L6h42nS2Dx5kbKadsQSJvooS4mGvUR0qiamzIolp1Q4Me2UAMZiMnOsOkRnvFSE/+HUIvMtrNhjZLGWeSOMv1fO6P+iBpA6/ZmPpJzp2JyUlGaGWNF/5AEeW6YuFI4ewZSxj1H1DI9367jern79ipjOFXIwmFdH1LocJaIX8xXP68eJHWU35xITQo7EW/uZtggFwMKIx8HAkvhDyQiHLLBLTi7QPpbl1FeUwtWwS1rmonN8nIP/K7xhrbQSvAq+VBjbpqONqOoQimqXXbgvpqyv2tQi7HU+KdPiusMjsMnHDBQJ0Pan4ORQFrL9OHX9Lb8Mxc4cSRmzi7UgPZdJdCLhCrAdKcV+uHfxqzrGtGe1I3FJtHrBxZc8jl9UuDlWArR+7ZjsXAs65LYbSYHDcH4Ql/b4E3dUoXwNvnW0+jGivyqus0wIfFOpQB0wScN0XtrZhG3Mh4WUE3MS+tm9RWv4bpW21iI4+ZHy/mZNIHMf56HkQDCYjYCCeEM+mO6HGypJjPAz8XD+ybVV+YinE7n496wFdpKYj0xt2OE+2t3CHu6xVjB7mE0YMqDuAhpaYZPUncDxBAaswQKSZjlJV92ul5z36YnY1u8u/ihXhrM/MOa75ViOCxYGAsGa5Q8z3QEvOqeMZLjrXtbzqzy2Mromff2Q8z9E8gY26QwuQaFoxoA+oyupnoeKnG+MNcCBfpWA+Z0HdKFUHDz
- jIkgFusF
- gR2hfYtM+hnkyPOnV2iQVzIZoaSuvHagJlSnc8qrtb2zAE5Brd+qKirvaYY1k7tl87SMSoW1WdlD3eIj1Owm4BCUTXugJMS0PLvCoamaQTP7zoK3MXHAVyLIjuBPJ955s4v+dMxqzFOKRjeynClmkLMdVaz69K+oCJKc740jzeDRYpLJxsxUiCKpGDj4+V+UQAM5HgJyHE9qdV3Dnht0sDxOIlFVKTjLkgDZWpLV34b1MRBiPFB+RyL2GzFJDEsw2RFFtCEvlEjtnkXISC/BQFEGrxc//Ty/zjVq5b3v4pVO2e5oU7Zs2F/hESMdY5WlqDa/JDyaFafLm3ipI5MXHVUYPu8GPdLgwFcnMUfT/aVr6/t6JqwbYUBtKNXb98oXFiNLYfKce7H6FAEioD4P1lCG5i2IJfEe1RH/eMV/Wx8WQ7XCihquEyrYS1vrFWWC+8r8VSDKbutbJOnzfY/xhwdtgwXw2yADu+mi2BGKQIMg+W5o=
+X-Stat-Signature: bcmagoqfa459guxbrjiwzck57q8hhmnf
+X-HE-Tag: 1791780653-678032
+X-HE-Meta: U2FsdGVkX1+XAAINpg2KjjKs6lYAjaSiqWYK2qDZhHo8iltK2PwRrtl8heKqwnnrROwW2eTbbDTzwyhbqbiuI9rHRdjbrH/uRwlBkFhVV8JOrZguanjGArFXpS54LtcFUCP8PtZ8HGfD0X1A6Fwg+0VMnoqYukuLgv3KO5t9CQd+10RluP2+TmfeQj39bk9bXVCmx8Cgpy4j8pTCWhh8oPbQW8f55U9g3UMNZJxcKGRwMbSG6jMmelibcyRFZZn9MCDr8XK6IX9PLhApSL1HeolIOxiVxwyKZNmmeOaPtR13NE8/gY3mno0sHvj8+SnNkZ5kW+G4rJCG7KlWRkoBf+gLT24SF01KYQIGVITPqwNVuMF7TzB4TnItwARnv48UFWPtSUT6UZNUQnB/xBmCSnW4olFP+7UZJs6t9EhADqsAkTWmBfVxyr/zMclSip56HTUzdRfBJb1H4ovPCtltBXM/u0Sf1ay/O4MBihvqLYOXnuCbZ2JBrA8tuwSyAvjRiElXKUyBjryYYisQZn3rDM24ExvZKh17HVNmVci7rU4hfldj5YhlVCwy8wo0Yj29ZI18TlJ2QszBRlidP2TTo6NPrGWctOd0zgny8OAdkISSs9bh5uGRl90LNUVr/GZNQTEtFGnx3raMg/ODien1B7lWz1crmtNqhiJBDVkOLV2fyHqTQVyUqB9/+DuryvtzBerjBmvXKwsCKZHHw0IgbfQU7v5UWl+l87MfXP/z7d7/k2uTmA/5RH7ma/QOR35u2QcVYhG0IFhullX6lz8GiUT+QuxGIkPfBW/C/EFosyEYF8/Us8TI/DU46Ni0CaCg34JJWdgIYU+8CQxjaHS+TuQpCXlz6bjTtZeyRB62bPFQm0CbaS24dDgl2HcR54YXh6dK+Q+iXUI05Jloyjll6MoyxWuDa+LWyZLhXjSO6trnI7LTNBsOqzxLwLYkpwMI2rLyk9I2B6XHI+ohRQl
+ YHljbxi3
+ D8RyVcUccdRf5aaMUOSgOs9QwnedmigH3mFJGRa+NWrJhdZFu/M+2EJdsCUzSx/ic+oMzdbrBy8mn+tDTGo7e9c5J2fnA9Q7jNvgtdhnqFg3uPtsXhn64x9zLtVX8YBRQakGd2q32/rVJqlj46JKciy/6p7U1/yUV5x0HX32L2ZGvSy8trDLfwBRa34+2kN+wggmxBreXbNkx1BjPJ8Y6tG61wmrviIHTFln5g3Hr3s2W+oyIpALkGNfJAdVTpjSKtDJgJp1vfNUF7DF8k/FQZa3HR/F2brZQyQcDMBj8hcP3X5TYGn6UhPViNLaJXUZ9kjqJ5MAoM0LmgvNlLvxeJVJ8tsyT/lKys6AD2rAVh4o7DuxMRDnJnNL0WkTUfgaj7iqJg7E5bIGmMjqcLh0F1h2nb0P7/Nh3XsCWcqq5bNNPaDg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,97 +92,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 10, 2026 at 5:12=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
->
-> On Sat Oct 10, 2026 at 5:38 AM EDT, Kanishka Solanki wrote:
-> > The stack depth for page_owner allocations was previously fixed at
-> > PAGE_OWNER_STACK_DEPTH (16).
-> >
-> > Replace the fixed stack depth constant with a compile-time max ceiling
-> > (PAGE_OWNER_STACK_DEPTH_MAX =3D 64) and expose a module parameter
-> > 'stack_depth' via module_param_named. This allows users to configure
-> > the stack recording depth between 1 and 64 at boot or runtime via sysfs=
-,
-> > while preventing unbounded stack usage.
->
-> What is your motivation? If you see page owner stack gets cutoff due to
-> insufficient depth, explain your use cases first.
->
-> >
-> > Signed-off-by: Kanishka <kanishkasolanki456s@gmail.com>
-> > Signed-off-by: Kanishka Solanki <kanishkasolanki456s@gmail.com>
-> > ---
-> >  mm/page_owner.c | 15 ++++++++-------
-> >  1 file changed, 8 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/mm/page_owner.c b/mm/page_owner.c
-> > index fbbda7ba914b..fcb584070f1d 100644
-> > --- a/mm/page_owner.c
-> > +++ b/mm/page_owner.c
-> > @@ -15,11 +15,10 @@
-> >
-> >  #include "page_alloc.h"
-> >
-> > -/*
-> > - * TODO: teach PAGE_OWNER_STACK_DEPTH (__dump_page_owner and save_stac=
-k)
-> > - * to use off stack temporal storage
-> > - */
-> > -#define PAGE_OWNER_STACK_DEPTH (16)
-> > +#define PAGE_OWNER_STACK_DEPTH_MAX (64)
->
-> This uses more stack. Do not do this.
->
-> > +
-> > +static unsigned int page_owner_stack_depth =3D 16;
-> > +module_param_named(stack_depth, page_owner_stack_depth, uint, 0644);
-> >
-> >  struct page_owner {
-> >       unsigned short order;
-> > @@ -172,15 +171,17 @@ static inline struct page_owner *get_page_owner(s=
-truct page_ext *page_ext)
-> >
-> >  static noinline depot_stack_handle_t save_stack(gfp_t flags)
-> >  {
-> > -     unsigned long entries[PAGE_OWNER_STACK_DEPTH];
-> > +     unsigned long entries[PAGE_OWNER_STACK_DEPTH_MAX];
-> >       depot_stack_handle_t handle;
-> >       unsigned int nr_entries;
-> > +     unsigned int max_entries;
-> >
-> >       if (current->in_page_owner)
-> >               return dummy_handle;
-> >
-> >       set_current_in_page_owner();
-> > -     nr_entries =3D stack_trace_save(entries, ARRAY_SIZE(entries), 2);
-> > +     max_entries =3D min_t(unsigned int, page_owner_stack_depth, ARRAY=
-_SIZE(entries));
-> > +     nr_entries =3D stack_trace_save(entries, max_entries, 2);
-> >       handle =3D stack_depot_save(entries, nr_entries, flags);
-> >       if (!handle)
-> >               handle =3D failure_handle;
->
->
->
->
-> --
-> Best Regards,
-> Yan, Zi
->
+On 10/6/26 2:54 PM, Sarthak Sharma wrote:
+> This series fixes correctness issues in mremap_test, simplifies its
+> test infrastructure and strengthens validation of remapped mappings.
+> 
+> Patches 1-3 remove unused command line handling, unnecessary cleanup
+> checks and redundant errno handling. Patch 4 converts the test to use
+> kselftest helpers and removes manual failure tracking.
+> 
+> Patches 5-8 fix handling of unavailable userfaultfd support, unexpected
+> mremap() successes, data-corruption failures and cleanup after mmap()
+> failures. Patch 9 removes perf tests and timing infrastructure.
+> 
+> Patches 10 and 11 replace threshold-based random-data validation with
+> sampled validation and a deterministic data pattern. Patch 12
+> strengthens multi VMA validation by also checking the mapping state
+> of holes after remapping.
 
+[...]
 
-Hi Zi,
+> ---
+> Sarthak Sharma (12):
+>   selftests/mm: mremap_test: remove command line options
+>   selftests/mm: mremap_test: drop munmap() checks from cleanup paths
+>   selftests/mm: mremap_test: simplify errno handling
+>   selftests/mm: mremap_test: use kselftest helpers
+>   selftests/mm: mremap_test: skip test when userfaultfd is unavailable
+>   selftests/mm: mremap_test: fail unexpected mremap successes
+>   selftests/mm: mremap_test: fail on data corruption
+>   selftests/mm: mremap_test: handle cleanup after mmap failures
+>   selftests/mm: mremap_test: remove perf tests and timing
+>   selftests/mm: mremap_test: replace validation threshold with sampled
+>     checks
+>   selftests/mm: mremap_test: replace random data with deterministic
+>     pattern
+>   selftests/mm: mremap_test: strengthen multi VMA validation
+> 
+>  tools/testing/selftests/mm/mremap_test.c | 701 ++++++++++-------------
+>  1 file changed, 291 insertions(+), 410 deletions(-)
+> 
 
-Thank you for the feedback.
+I wanted to address the concern Sashiko has over this patch series [1].
+It says that mremap(..., MAP_FIXED) over a range containing multiple
+VMAs should unmap the whole range first and then map the VMAs.
 
-I misunderstood the original TODO comment in mm/page_owner.c:
-/*
-- TODO: teach PAGE_OWNER_STACK_DEPTH (__dump_page_owner and save_stack)
-- to use off stack temporal storage
- */
-You are right. I will drop this patch.
+But this is not the case, as was discussed on the list earlier as well.
+We iterate over the VMAs in the range and only unmap and then map the
+region that the VMAs occupy. IOW, as quoted by Lorenzo [2], "the
+sematics are such that gaps are not propagated (i.e. it is as if you
+mremap()'d each individually)". So if we remap over an existing mapping,
+the mapping region on which a hole is remapped should not be affected at
+all. So this is a false positive.
 
+While here, requesting for some feedback on this series, if anyone has
+had a chance to look at it :).
 
-Thank you
-Kanishka
+[1]
+https://sashiko.dev/#/patchset/20261006092511.145776-1-sarthak.sharma%40arm.com
+
+[2] https://lore.kernel.org/linux-mm/agH1ZSdX_7QF8P_I@lucifer/
+
 
