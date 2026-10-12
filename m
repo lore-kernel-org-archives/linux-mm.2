@@ -4,89 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88BBECA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 17:13:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 478B2CA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 17:21:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 756E36B0096; Mon, 12 Oct 2026 13:13:16 -0400 (EDT)
+	id 284036B0088; Mon, 12 Oct 2026 13:21:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 707976B0098; Mon, 12 Oct 2026 13:13:16 -0400 (EDT)
+	id 235386B008A; Mon, 12 Oct 2026 13:21:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61E4D6B0099; Mon, 12 Oct 2026 13:13:16 -0400 (EDT)
+	id 124A46B008C; Mon, 12 Oct 2026 13:21:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 40A5D6B0096
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:13:16 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B5BC31210FF
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:13:15 +0000 (UTC)
-X-FDA: 85314619950.22.B5A0660
-Received: from mta1.migadu.com (out-140.mta1.migadu.com [95.215.58.140])
-	by imf04.hostedemail.com (Postfix) with ESMTP id AA2DB4000A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:13:13 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qFNE5HMt;
-	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.140 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DAA906B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:21:23 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 654561C4C09
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:21:23 +0000 (UTC)
+X-FDA: 85314640446.21.A4DA64B
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 692DA12000E
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:21:21 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OGVcKFz7;
+	spf=pass (imf29.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791825194;
-	b=2bnKaOywCBJUUux4pfvX4wWmKnjqsNk5tpyV6Xz2CqqK4/v18116u/1vwyhvuJ1fcumG7e
-	AqdgkakGNFdd6rTz8Jb0P2BnJcRVuBM8QDyR2edRDeZF+PaiBQF9ChhY2Zcdvze2ihzAEL
-	ADSHTSgywJw77KBPBs+oHi57+L0NgN8=
+	t=1791825681;
+	b=4xTOoLMaheDV5F67cviwAFL4UQV7gLhbS1dWlPWiHk9WarHn3BbZo+klVN8/uc9Ypl2wWW
+	TQHMN6ZMu8dsmsUyBwmyd73J7ubTH/j7o0kLlNsXLSU9bPT00uog23kbz2K/moHzpF/qWK
+	Th8Bg0TpMfsxdkJpA4EQ3aXucVzcX3Q=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qFNE5HMt;
-	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.140 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OGVcKFz7;
+	spf=pass (imf29.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791825194;
+	s=arc-20220608; t=1791825681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ewAUwQh9V9wBYnmHFNwDRtCG2iHLmxe7PSTHA3L7mEA=;
-	b=YU77PTYK8srYfcanB8CuZzlNWP/dnGQNTPJA6kWf1DaeFYJM/aOqZq90uDBKvYHMvPWqoC
-	7z+WouIjUrzykEBdU/ZEwT7iSFaLL/8uWrTToM2GBvLTkf//bGlLvDvCA4xB3+LNDcsnN1
-	2GanX/DnO/V0zoqL/EqXD5TNYxXgnds=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ic4+7nPuzg/HmHoJ2BxucAspSzm/umEUsEWucPmNFHQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791825189; v=1; x=1792429989;
- b=qFNE5HMtbFxz883WiyZ3x0GRHUPE206w1D/n00pVadaEgk/rJaUJLcJFHroAV+dHoiDQepfQ
- lts+BQC58EQ4d0FmE48+1nqWB62J+oLr0ljqOnKI4sIyPiPm+IZRxiRr8e6OYSBj60DBZbHnDX4
- dMa7HdQCfAcy4o3Lau0dj3jQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5adfa5a0e15eca74;
-	Mon, 12 Oct 2026 17:13:08 +0000
-X-Mizu-Trace-ID: 5adfa5a0e15eca74
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 12 Oct 2026 10:13:06 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Harry Yoo <harry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
-	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH for-7.5 1/5] memcg: move memory.high enforcement out of
- try_charge_memcg()
-Message-ID: <as0U-erMrDTG9fkt@linux.dev>
-References: <20261010210957.1350874-1-shakeel.butt@linux.dev>
- <20261010210957.1350874-2-shakeel.butt@linux.dev>
- <aszdXDpqLUX1S4Qq@thinkstation>
+	bh=XVOLHzyfqUmv7StJG1aPauWki6PAmKd3K90h79SeG0Q=;
+	b=dLuvHSBSq888/45cU6JYw8xvenYUwjsbAwgrvoFMSZLV0Le1gaOwBV3oJxviCBY8hw5Rzu
+	FKdMeEKlfX5pl+QRHR/xVg3lo0UTyBXlMOUNmTMxbvxSDgaZ6psmWxDsAa04X8+9Ov28SD
+	Pb8+TLZJBC1mupYzVjTaCuK8G1S/a50=
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48b042c0759so1608023f8f.2
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:21:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791825680; x=1792430480; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XVOLHzyfqUmv7StJG1aPauWki6PAmKd3K90h79SeG0Q=;
+        b=OGVcKFz7oblPM5LRuE/7xTHEHF7OGJzuDdpwU4VbJZC5JkdhjZY3jKrSgvrWhvrpHB
+         xGM4NnjZGRE18m0i3Y2C8mrej8XMZxs4B0efcLYLe7kmbQrkllc3pLHazbY8S7FDmXPQ
+         arNRNXHaYRb3j8gsZfT0kL8u+ftRABrbepeWFSHzYM+MsHv8kKRyAAnV17+5eSaZA4kb
+         82sJ2ed6lBcijfJfHYLHkI4ZAeuOm5UPlxhSHZkgofv3nhi6Ks4z0oFmmogCLrYAO91b
+         dWISnGcXKuXvnKzLN8keRT8SJMge3LKb1DwOXVIxPLli7IDm5zAC6pkJinH2j0LEjjlq
+         9lkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791825680; x=1792430480;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XVOLHzyfqUmv7StJG1aPauWki6PAmKd3K90h79SeG0Q=;
+        b=evWry5zV2dGV8I2wyemWKuDaNdfo9Lmc8ouCXQwMI82AnGpHuibNyLgBstBA606zR7
+         bKaYNzD+9oXyJkeElBjpVsPzx94vUjm5PTXgj28jfXrx4He2r4vE1CNmbLC6MfatZwNQ
+         pE1Cve/YRey1I7UJ8t+YrFlQ0k8Nv6R4uGLUv99HAp1pk2AVMUS4mpx3CUrNthfCtt4H
+         ih83GElOK2YMpIDZ4wGyHKrbdXmu8uKliFJC+yzx8BQcrWZcKE57LKWX6VlgovJABUL4
+         hlXJijbzY+k9jmLbqWgQ/3/oiKup/nblDqBfIp4HW+IC0CvejegwH57KUHmDNQujn2xs
+         Td0Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwzZ0t3njIDFen9TD5vLtcSMfXVgqnPbmRdhRjO8dGZ9pOJl5j7b8Gm16RpeMVbvHp9pp+57qmcpw==@kvack.org
+X-Gm-Message-State: AFq9FYKF2977cxROhD2DOcnbIIsbOnO0h3gg5tnzxPXP5fZDQMVpTZ8c
+	GSn63XdnCLGmBn+sXOYTBf7d/ffIrFgQucvAyRkwYUJDD5tPBaIiTFzp
+X-Gm-Gg: AYBFou0EJRPfYeURmbR1j9g0RFVIzAS58a0DvHp1S8GZJpuBu87neZY/rgbgxJz2t7H
+	51W2SxmbYJ0AHY3lM4a4zzPOANonN7+fiOdMaM6dEQncGB2ekLj5Oi5z6Kv9QuhAobzKBrq8otF
+	QNWUQPVLojI+M/1y5TNf1sMr7fi+pl8nnieg37TYFW/X+7a/oR51txn2lfgQlr30MmWaxCt+VqX
+	hbgqd/E3F8q3eWeC+ziQ/Ks+7xm9ovrw/VG1H3ybuIh8IKpFrNPfnxcV3NHfflugXKtYJC4LsnO
+	BeyJ3+pr+l2nJTYBin9d8STYcyGU+UIBS6p/APQlJ6fMbZ4ehjWXrwVoR05HTjbHPQM2DbMkh8T
+	jakR5/DJzhOomLmqS5K0Xi//PO+JobRQbgamixWcjisQT/YhtH3hVgLRp+o0hwMcPILynAG31kC
+	XjxJUPRf8k2N24nFxbq+EprWUysqgKW4/d8EHBbWzYEVmOAi+FGyKT+ECycwsNBY2ioA==
+X-Received: by 2002:a05:6000:2990:10b0:48d:de7b:9caf with SMTP id ffacd0b85a97d-48dde7b9d70mr2473124f8f.8.1791825679711;
+        Mon, 12 Oct 2026 10:21:19 -0700 (PDT)
+Received: from [192.168.1.18] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0aaaa21sm583094f8f.9.2026.10.12.10.21.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Oct 2026 10:21:18 -0700 (PDT)
+Message-ID: <3ab63358-8bbe-4457-b21c-bb81bca804cc@gmail.com>
+Date: Mon, 12 Oct 2026 19:21:17 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aszdXDpqLUX1S4Qq@thinkstation>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AA2DB4000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] mm: fix missing page-table destructor in
+ pagetable_free()
+To: Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Dave Hansen <dave.hansen@intel.com>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@rivosinc.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261010112457.49485-1-songmuchun@bytedance.com>
+ <20261010112457.49485-2-songmuchun@bytedance.com>
+ <asy-b7_C3SjnmSaS@gmail.com> <145CD5DC-6457-4E1E-8B9D-AE7D1EDB0AB8@linux.dev>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <145CD5DC-6457-4E1E-8B9D-AE7D1EDB0AB8@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: pot7fnrqxwjdin15dhokdq94mmowo55s
-X-HE-Tag: 1791825193-107156
-X-HE-Meta: U2FsdGVkX18joq0u/5tFP1sWsJ649RXJVDLkYfWk6aYWt5iFoUb7xfVcJ+PS7GlC6sxezVXvuXEyq/dQn0oZe1pY1SRQNjiTVUk1WuUwl66NQsXiOCiQCLj3nVcf61TPaW/vd5Fq194IKg7/+jJOKW2hsTPBLNFJUjnv0k5/dh6Ad5jd3ljYT7c2jD5iN1WKOfjgfpvWATLhMUbJ5i9N2zMtPY5YmWKmSg/L9pw7nhkmLuJf/qmc6EVcW0TIhI3N/rddYqVP8i/aL/hx4OZ/7dgkm9gkReacg3jR2WyMts7e5xD9DtFEAL59o64+kA50d96MmuK3egM9p10KMWLDyEGM9Ize437WqLIqSA7OR7bEuOxd5jn2vi2jo35s9TUTCW1dfjEpAt5WSz7rD1tejlluJlx0I9PGFIg3JhE60SAPsmt9LoREdzY1OMBoHnDC/ZORX7BlNSSNP6BeRume+S/n0mFJTOigRGKyBu9NMd0ZBrYuosWIc/8XWc5t7gJGMwOH218Y+Szp6WrPNTx3QaLF+JgqSZjlczYRS2qGq79w7Eh3f90cDwUWA5DcuXfkM3f0E3TcQovFlg+Xq6VGt5pVp++K8mGlZ8AsYdJX3/uIf7VqKpvL5hhUCz7JEWkJ4qvutEqhXjQY3vsZwtaVB2O/Er4G/WPpHh0jJ5ML2jNAmB2Ns1Jl/zIMUn0I8XP1aTH1yUafy0Pj7J5WpJqYdZInr36AkWPl6zRFrRmmjcmmLTby7ayQJSrTFZ2h6RSclZHZvyWztW/KqJB+xGFNStN1ik9n5n5u9/mUaBpmUCRHm4BhPtkX94x5p6IbABsJdU6tEuZgezbTFSOvczAVAw5V4jyjaOkMcBlUxrBg/wNUZWGDqYLxMAVEUjMRRskiLqPSDzsGZCSTW1Lkfn6HD82rv+HMf5VyZBTs3HFWzIAP67iBB9QTz3+3zZuQ3v1waDJI5Xj4LeXXAi9p5y/
- ENwFf+EM
- R0h5yCRwxvTFGbtHlZxRrD5AnRPE1C9ywz2bKCYPd9ulMpUGUx0qsHNRRVaYjU5oIUBkDxMIe8WizQV4q9XGGZDgwsJiIMdnizZMR5nKVl/4FUp+1Ducf9Eh86MiG/MWh6OgFQ7l8Ei63UYfYf75h9J/Krog3USp9UhwN1plEKtbNa7eWpf7Lcsddi4VW9iLz4orcNdF1L3dzclcmAG6/oDNpKiX1lQcPoqXS3LiRcNFTr4p0BocZqkfifVemQv2tJuWSY78/6rs0gf1c8/24YPZJrmiFw2uQJPlbWH4ZVB194DjEh86LbeVS3Icrz0txGhYqyHexdjXGcECPOX6dsRQjCw==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 692DA12000E
+X-Stat-Signature: 4yogrrwf4fhzpduhdooz6ywtykhsymgh
+X-HE-Tag: 1791825681-793377
+X-HE-Meta: U2FsdGVkX1/0tIc8yLv6cAfO61IOxgWwmBGxrxOvlHOwKiHYJ8P3b4mL2LCi7PU3piYn/9Rf+WTzr/p6gOvMBjc3fmFtdgPilK8bl+ro23At2ozyomHHWnlFZJ4E/4KiLSCEWrhG7hKKFzKXrbIE9Kv42AcCzqlFjK1Wpcp9qzJXx1B/aHp7uZgeUyEohF3hbtCYTYLuvzvKmMOSqKG9zYdEm3XfoS8+f4R9928wVtTahga1c5Kjjcs3g0GtLmZCIPKAkKwG4EDyhvzpAa5LaKgjwhPT+1aq1BoKAc39xiWA0wNhMbMi40gGu8unuFGjX+sfCpZnUWHqb+aeqbD9XKa+InrtlhkB7/pXk3x0zVWwiiIVaEwjuNM6rRe+uFbDSx6uUgyKcJGUIy6ZWIp2vIpToypqew7482J6VbeZPjfFUXgDG0bZ75ia11fYY8Rf0Wh100BkeFGko7o9lFGFhLdSux52b343SSOpN45sEZsY3T7r45QK9oyenhM+7u4OdaGzMTya9eyU1m38xwmB0sIuNGU8U5zSQIzqSYKkYsEf5AQQeSRA/FL+3byZSh4jeqbQDla7IE+MjtXgvJJXrlKtGxlxb5cB6Ohwk2iFzkWwtclnUbZtHNb9kz8FtcBLs+NLtk3KSFII/yh3BsaXIh74idl7KQVpkPbhEICH3HE9wZxAHI0dez2xIWrybMALl5S1fkSOF/oW525shPfgx500kmXVttTIv08lvOux6x47LRn4bo+8WfDCgZ4w6GoodgFbNQdW9XAJw5ZzkCFuLYe4KMT7A4+A2ClmoN3b9M6q/ya+7H6LjLwMIFjNEohdwXg1Sjkd2Af912NnaGwLK3/34gW3SisprXjL8FEztaJfybTY1Mzf1SSsVxlcQPHzOqRvd+dfcdT+7arMGqo3BjV/14b/xg0fvIezcywLZPHiVCAwPQHYfFvL2TqZDcoPEQQ3xCyfvHRPFyvMn5x
+ EEkqp+JK
+ ow03qJT5ubHvRb8ez8559dN5HpOwB/gUXezMnVHmG1WaUY1+V/GJuRq7te0RvrsTPvUSFydjPXHACWq8j66/wlcRLJ6Ju4lKsYyn3kuiMUf3GHaDvW3A7rIPKsD3CEIKr+Z5UP3mi0XV8x8IQ796gSnzmB0oiUnO2ayxr2fqrz2gIBL+ETVyb+IxZYUdobnYi5/YBk+DmrbTHhnm+34sGf2SS33k3bd28OykrIre5ubQ0qORgWcmsArj9b4bZZx3DfPOQKIU6N2aF26Ra6poN7+LuSog9Tid4vluzK/1CIBLJQyV/RZtouiYhxPQc9He378AU58/9uoWFtjhe7KfLfqRkaJGstcH4HPcMt4YvJnesYgkYmsPTCYjthrCU91cJLcoqaWywaYlPuwxpZE792l4yyYHOAi5Bk9ZS+z0puv36wYTX0Sf/31BN4JWVm5UznQ4qp1Hzmz0sJfQylsvB+cjEF59//j+C6isFbtDQQubPybsV1p/BrZNcMoJtzc5EHdbE6XXWgbuvhwwOh5BsvtHP8YOtwX/cfwIAsBCenq9OV9vMqwRXOjr9yQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,27 +136,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 02:22:40PM +0100, Harry Yoo wrote:
-> On Sat, Oct 10, 2026 at 02:09:53PM -0700, Shakeel Butt wrote:
-> > try_charge_memcg() does a lot. It charges the page counters, reclaims
-> > when a limit is hit, may call the OOM killer, and at the end it checks
-> > and enforces memory.high. Move the memory.high part into a new function,
-> > memcg_enforce_high(), so that try_charge_memcg() is shorter and the
-> > memory.high code is easier to read and change.
-> > 
-> > The code and its comments move as they are. The only difference is that
-> > the new function gets allow_spinning from gfp_mask itself.
-> > 
-> > No functional change.
-> > ---
+On 10/12/26 2:55 PM, Muchun Song wrote:
 > 
-> Missing Signed-off-by: ?
-
-Oh I don't know how I missed this.
-
 > 
-> Otherwise LGTM.
-> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+>> On Oct 12, 2026, at 19:15, Jose A. Perez de Azpillaga <azpijr@gmail.com> wrote:
+>>
+>> On Sat, Oct 10, 2026 at 07:24:54PM +0800, Muchun Song wrote:
+>>> Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
+>>> pte_alloc_one_kernel() runs the page-table constructor for kernel PTE
+>>> tables.
+>>>
+>>> HVO (HugeTLB Vmemmap Optimization) uses pte_alloc_one_kernel() when
+>>> splitting a PMD. Restoring the vmemmap backing pages does not collapse
+>>> the PTE table, so a later memory hot-remove eventually frees it through
+>>> pagetable_free() on x86-64. That releases the page without running the
+>>> matching destructor and leaves NR_PAGETABLE elevated.
+>>>
+>>> Make pagetable_free() detect constructor-backed pages and run the
+>>> destructor before releasing their memory to fix the problem.
+>>>
+>>> Fixes: 49f599666420 ("mm: call ctor/dtor for kernel PTEs")
+>>> Cc: stable@vger.kernel.org
+>>
+>> is the x86 case covered for 6.16-6.18? as far as I can see, x86
+>> free_pagetable() only uses pagetable_free() since bf9e4e30f353
+>> ("x86/mm: use pagetable_free()") in v6.19, so the backport wouldn't
+>> change anything there. or am I missing something?
+> 
+> Yes, you are absolutely right — thanks for catching this.
+> 
+> I double-checked and indeed x86's free_pagetable() only starts using
+> pagetable_free() since bf9e4e30f353 ("x86/mm: use pagetable_free()"),
+> which landed in v6.19. So for 6.16-6.18 the prerequisite is not present
+> and the backport would be a no-op there.
+> 
+> The correct trailer is:
+> 
+> Cc: <stable@vger.kernel.org> # 6.16-6.18: bf9e4e30f353: x86/mm: use pagetable_free()
 
-Thanks for the review.
+also, bf9e4e30f353 alone leaks PMD-sized vmemmap pages on those trees,
+it needs 39406c05f8f1 ("x86/mm: Fix freeing of PMD-sized vmemmap pages")
+as well :)
+
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+
+-- 
+cheers,
+jose a. p-a
 
