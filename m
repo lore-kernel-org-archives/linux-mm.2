@@ -4,138 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A10CECA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 18:02:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 051E7CA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 18:06:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A70B96B008C; Mon, 12 Oct 2026 14:02:38 -0400 (EDT)
+	id E6F2D6B0096; Mon, 12 Oct 2026 14:06:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A21706B0095; Mon, 12 Oct 2026 14:02:38 -0400 (EDT)
+	id E20546B0098; Mon, 12 Oct 2026 14:06:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90FDA6B009B; Mon, 12 Oct 2026 14:02:38 -0400 (EDT)
+	id D5CC66B0099; Mon, 12 Oct 2026 14:06:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DE3A6B008C
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:02:38 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E21E0A121F
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:02:37 +0000 (UTC)
-X-FDA: 85314744354.15.F6CA42D
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0DB6B4000C
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:02:35 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Zm9Vc6zB;
-	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791828156;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B25656B0096
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:06:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F5A312116E
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:06:19 +0000 (UTC)
+X-FDA: 85314753678.25.421512B
+Received: from out203-205-221-155.mail.qq.com (out203-205-221-155.mail.qq.com [203.205.221.155])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3BF73180006
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:06:15 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=EvVq0Fsl;
+	spf=pass (imf16.hostedemail.com: domain of yangguikun19@qq.com designates 203.205.221.155 as permitted sender) smtp.mailfrom=yangguikun19@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791828377;
+	b=xM4vvG8KTSDrvjSdvIybnnofZEbugYza5YR2Ts4+hdBfXXyBYqU4p1CVKnZsR5K27rrTUW
+	4TtfvP5dP3iGyYzSmYIA9oe/GYrkslsZK7JoB8R2qXfMuswCKDMAY4FUxORp/CsOkC9CXH
+	LynPShW4bkfvo5afoPHPHL+PVCT7BOk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=EvVq0Fsl;
+	spf=pass (imf16.hostedemail.com: domain of yangguikun19@qq.com designates 203.205.221.155 as permitted sender) smtp.mailfrom=yangguikun19@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791828377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f9aoCkFfSDX2/6XxSiLf6H4ohGMtImVLYKMUBsJfeiU=;
-	b=S4UWZGPOwx2DmOW2KNVVz2NGce9g5IUL9u2ZbTu/eD6Yx4/a4qoj9VUHsIS6ggMx3WwPVc
-	3bmsl6MT/sqJT2aHjKctSmf9xqF8kYT/lm3mh5HxieaEptvQ33Y/IhjxsIuEpMroIn7GJ+
-	jNPBLN2gdpb6b97xSIggMTQHLH7tm7Y=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791828156;
-	b=H/O1KYKVBAfatZ+RV1V3DIaSe8Q5SnCy+c7EJhLWf/btZaepEFjqXB8SFOmRh4ypuuUtPk
-	5s+jLRXfMkjURUL99n5VYNn7qnJOc1UO6YpuACzVijib5d5AMO3IvqHXW2jT9lX7MKh/ix
-	jYE++oykPBZ+0mUECgyeQAbRNzp7C/o=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Zm9Vc6zB;
-	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3a1f628b1d1so15410721fa.0
-        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:02:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791828154; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ms+ncsMCUXsdLj9OdRYwVKLPLvZ3QOkyRFKPduKY/GFyK2qdOkzRGHk0QdE6RlFANC
-         xOU7SEZxHqBVKcH5fhYqnjEx2hs+tw4K/JF/4LFvdI+MkUEYzQkJtnZB4aYhRfYruUYe
-         sZrJSJ17ldAk9eKgKsMkwxFkvIq94U1a9kxBys70DCTymwQGdq7qQH+Jcm+4TKwAIBs6
-         AZqiKiBJoANEXTsMMWH4tdNjcD51UuIRO0fJODor4dtV7g56EeyNpOj8HUZ2FouSzX9u
-         /rvEllpHTy3DBIlzuDMQ5FrZWCM6vzFZLrltVc5I0TQsUFUHdGCwl+jnCSpkHaxacA7l
-         40uQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=f9aoCkFfSDX2/6XxSiLf6H4ohGMtImVLYKMUBsJfeiU=;
-        fh=7/qrlmZ9HXDez/fx5gvl0EuJ09Kl9im1NxdaCwm/wGQ=;
-        b=CsW2sWGIPW0HpC+YTRdrAktxDE+IOBEBdfjR1my0I4ywIlxUCF396YfJzX7a1l7Hqe
-         3MU+hMJqd2c9+KfoaFu5kmM6ovTuCElBfQUp0F/57PH7fcW2MmsWAWv4x481fhHmtx5t
-         jQPrRNnFkh61YrEv76T+18T6JDipdhPUokGeevpmZGz6dFPiNQDOe1tQcVDBc6BOLoTZ
-         uvTU1mmT46hCaQHE6COTvejb3bCW5MMs02Q+QuGFmq8OSm9AxYjPrwPBeNgEShsMX8SD
-         FgGbTLF6dJ8KK4YEY28kxwflj5K8CNXv09ZnHBn9IruyXd46m28xMtIj6pGdWS04KeKd
-         uucA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791828154; x=1792432954; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=f9aoCkFfSDX2/6XxSiLf6H4ohGMtImVLYKMUBsJfeiU=;
-        b=Zm9Vc6zBTm65n/9aM4jX97QtTajVzh31B7j4dWmizUU+mqebIIJ4bR8p02MW1sGYEv
-         Sky2omP7rFBGckEosYyPbf0gXfs+tm2UJPA/4YquK5F0BoTpN5OBGkdWf5MCS/KamtTi
-         f2R0XqIKOrJ0z8yN8z1JD/DY7lIMSlUHBe6MMQ0txbUWsuJ/UsjEiPLwq6iWpMv5jbsI
-         gz4OogShVf5u/yYR7kcitp4FpXwf8lzngTkfrHZOZ6JHmzHrNX+00Il3o1R2oqn2qO3M
-         joqjy9INVE5WyBG9A/bPgvm0kBTslS51Aq4b6g4ikpQQmF9yUIBAEcY1ty8Zc1Ax/4U4
-         VbKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791828154; x=1792432954;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=f9aoCkFfSDX2/6XxSiLf6H4ohGMtImVLYKMUBsJfeiU=;
-        b=WJQ/vYhBy7tjcWAvz5bQQO8U9IGGEaapNPxBP8oiD8ZjXYRcANEhaEg5NBNvjbl3J4
-         11cK6ySHDiDQc8hRrBn0jn2oLHVJzhJ26ugx1mcSQwwL3rn3rDeXbFgaWMxYMX+rLs+s
-         P4Y9qrO6kofD6qd0q+UyiCXHBGpSeLI8W6WnfuTVmW+SIuoiIGSv7EmvEh4vHU8nXdgt
-         2RO2ToLz8uih3KQhFJZ1shlO+e5syYfgcVUS1f1iCeIJa8XYz7gZ3mOqKh1wsczzDqi3
-         7TNhG3U4tjvZmd9/q/d+qUzL2S6fanqAhVA1RvXrEu5Z+aBDhJpqx8hb6tlc0V0ChB/j
-         2mPw==
-X-Forwarded-Encrypted: i=1; AKwUvBzLadzqw4Z5Khh6TU+R/EVysWDc97pSbynoX+1KrXAbKwRX1hsDdZE96sNIzfVTZy6OIx4fs5foKw==@kvack.org
-X-Gm-Message-State: AFq9FYJazlrK2FToP6X6OGWWK/8ZpbtZXbfLCx8LldG0wSkqZdJPpq4h
-	sPy0vSgm4/orTxtwIxOJ7o/SGUtOaYQa+hgszfiiYlB2PEYrCt1Aek4RS4+ifmyYgGkan4POyde
-	4kGmFFDHwp7uRoYBuJ+ZhMS5dVi9sKps=
-X-Gm-Gg: AYBFou3WXQoj1MKGZESGoJvzgyoFON3GZh23ZZaO02zrkkz22l2gCWeaJ8PvLk2e1cJ
-	5AnwyAWSFPhwCxPf2DAwDj7GJOpUHJzVQh+ztULijl4Ke+AY2zq0NbWBn/4ciCxmjoQWuL7s8v3
-	oE8C2cq/pPpLHcI6MGwM0DyNMO96T8ziU0LmxRoP2Ha5YqIgpJlAE5Xz0iK7aspe7ib+eoVLOdU
-	hwFS6lUyccbDapM+LhyoahqUkn1sAWUb/Y44fLrflo151NeltaUG6/C1n//8gi9P/yN/KSRLnJb
-	Z3RsnvSnpccoF1iE4w6Ex+EcqPZCaZCOyVInxNL39RmISxAFxW8QWHQ=
-X-Received: by 2002:a05:651c:144c:b0:3a9:d377:f5e4 with SMTP id
- 38308e7fff4ca-3a9d377fd51mr18447101fa.20.1791828154266; Mon, 12 Oct 2026
- 11:02:34 -0700 (PDT)
+	bh=3o+jyBzU8mUCpYQMWos+tP8nlAQxD+SpC0ny4cPJcho=;
+	b=bMMnvAxXJgF1wkDNZHscjUEzg7OuTFv6hmCiMmHEcg9fqV0XhA1MD076LLrnGQ/myTh0H9
+	Dxmaunq9joSbzZaY2267K0s1Dg6bgzE1mq5L2M59mdRGA1Ftqar6EMdee2NTzk+1706G7f
+	jiMl4sVLJ3n1aAxZFA3H0ygwcGFhVpg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1791828372; bh=3o+jyBzU8mUCpYQMWos+tP8nlAQxD+SpC0ny4cPJcho=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=EvVq0FsloWi7LjgQqrHfazfsaDf4yXdZtMXZn3XcjKBpqvJrU0lDEcC/pFGTZy8zO
+	 Bgx8/AbFckAmld1pHdBQqG/33bcjRmOeAMdvPuVCmfGN3DoAxA7gPjQgb1Zx1EXiD9
+	 LVnINAJRZEsORoCqWylWx5EDLynV9Vyiy+D9C+RA=
+Received: from [172.18.4.77] ([61.136.26.103])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id 189216DA; Tue, 13 Oct 2026 02:06:09 +0800
+X-QQ-mid: xmsmtpt1791828369t8rr3nzkm
+Message-ID: <tencent_8BA9ABDFF623474ECBA6E251A03E19512808@qq.com>
+X-QQ-XMAILINFO: MllZffuBkEb5qsDaqL1yrE9sioqSRvvmsmxEYgeqPtOtTuQIV77Ol2/tMKnTGb
+	 zMLhzMvOq5NQJgwurpi8mNOMXQnZin58JABsqGjrOO7J8vwySJMUErOH4rIkOJwrUy02Ro98cG0r
+	 hbrXZt8J7fPWB4PjfokCnjuzSMg0SAfbZs/pRwroJoTj1VR4BmuPcZXrk9dfth7AYpwvPCCal9Fu
+	 akkIEw898yZ6Q1cpYmBTL13gVCdRxpfaaaQ/xY7QmQiUshhWFv+Um5AfqRtBo39JSKQpCmB92Ru2
+	 S3XeDEbgvNv33cTzOrNso17pCXFNBKpZMJO0qtK/7hprK74sfcaHhfv8wJftJ7UB99wFz2aw5AeM
+	 kdEgSPe/4EpL9tZlG4Oz8XWyPCSP4K8lGOy3lxYtPEanrNND+fjwFU9IxHP/ZsMS4aKqVFyhaxXD
+	 oMcIVrSjs6RxqoHgSl/F4groL6qMITtT2z9eDhy18rukGmwsqV/50/+pLVCIhQJveWpAIX7DqdKj
+	 h9UoiEeH/S2UtdcqbjhNLbSnQBCZ34gYhuy8AnGXEVcAZyf/iXMaPLq/Ug0TtmAs62Imi8X5a3dv
+	 YdysLybs6VfOgF0VbPJqLaGrteNUM1FgOMF7tY72YFEzBSeAiTvtokPk/E3RCFj6tOjWxCgRXtOQ
+	 8LKIAWE7JcpMB9lnt4VvhhgvkBZZkMCHZgTz6lAFB3s6zG0O9DNQpyNlHikF23jhBcVYsDqGsNY/
+	 8pAlW5p/y67P9DBYAAJG7FhyQ6JgyoYm9/TRHQDPKOzGyJ7KP3rtrRejNVUCNXItjI+81nd8VaCG
+	 IsVQGvLaFZElMdSh/i5iOxHDpUGsVVoOlAI0HO7+Xd0gG0jiUGIYm3kMEWUXZskoKjg7ApvkohXX
+	 8J9shg5F3LRX8GnHi43JVEFoNO5U+mhmJEfxCTZrS2KNKpnTmCRVbx9YtNKcApHpuNqc/qssC/HT
+	 eiqxaMD3GTKtIi1VTzYC/TzDrZ43HidT5aNFMlrrWnb/gy+tTpCCtUYxOTVDuw2P6bhd/xLiiUa7
+	 bWPFjuUz/aNvG/JUi/4Ak0etlQ6gyK6+apTj9cOw==
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: 1sh1ro <yangguikun19@qq.com>
+To: Ihor Solodrai <ihor.solodrai@linux.dev>,
+ Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Alexander Potapenko <glider@google.com>, Thomas Gleixner <tglx@kernel.org>, kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] kasan: Fix false-positive wild-memory-access on x86 under 5-level paging
+Date: Tue, 13 Oct 2026 02:06:08 +0800
+X-OQ-MSGID: <20261013020608.44976-kasan-fp-5level@yangguikun19.qq.com>
+In-Reply-To: <20260624234510.GHajxsBgG62PHgEZa4@fat_crate.local>
+References: <20260624234510.GHajxsBgG62PHgEZa4@fat_crate.local> <20261013015904.44144-kasan-early-boot@yangguikun19.qq.com>
 MIME-Version: 1.0
-References: <20261002090947.869220-1-jiangwen6@xiaomi.com> <20261002090947.869220-6-jiangwen6@xiaomi.com>
- <astarANeoldvqBxc@milan> <4f812ef0-ab14-48c5-908b-b7d82ce418b3@arm.com>
-In-Reply-To: <4f812ef0-ab14-48c5-908b-b7d82ce418b3@arm.com>
-From: Uladzislau Rezki <urezki@gmail.com>
-Date: Mon, 12 Oct 2026 20:02:20 +0200
-X-Gm-Features: AclHuK_uSuO89Qhd1bXs6ll2oIbh2EHyO8-k6OSdE2Rwub_69M_koNK3b1_sl9g
-Message-ID: <CA+KHdyVjjk3B0gsfsx+NPeuNH+ZyN7HbiP=S0F9kspRO9ZAXAg@mail.gmail.com>
-Subject: Re: [PATCH v10 05/10] arm64/vmalloc: allow arch_vmap_pte_range_map_size()
- to batch multiple CONT_PTE
-To: Dev Jain <dev.jain@arm.com>
-Cc: ryan.roberts@arm.com, akpm@linux-foundation.org, catalin.marinas@arm.com, 
-	linux-mm@kvack.org, will@kernel.org, Xueyuan.chen21@gmail.com, 
-	ajd@linux.ibm.com, anshuman.khandual@arm.com, baohua@kernel.org, 
-	chleroy@kernel.org, david@kernel.org, jiangwen6@xiaomi.com, leo.yan@arm.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	npiggin@gmail.com, rppt@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3BF73180006
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0DB6B4000C
-X-Stat-Signature: zo5ha6p4mbzdrrumgaeqzprzb8xqu9y7
-X-HE-Tag: 1791828155-974046
-X-HE-Meta: U2FsdGVkX1/Fi45OiySHNDY15NJiHlaZEtgbq/DuKc+3iWrytiSYFO/fN7NWNKuDtiuSh2DA1ByheuG59Z7e1mBsvfU3Oe2eTLiPU0Oc0bLfRcFTH72ZDQjs5aLa8GXdiL9T7TtM48btHb+5Jpg/ELlVr5Z6rJyQHoT2J73Dr171bEHd1cHXHcUlfVBcIzKpYqGJwVVjHXNp50pFmEhdTFgDWE9sdKng/aVXA3S9sVB8QftD/y/mnTKTRggGVFhQfImzLJOgY+T103QQRfTddKoVn3Ayh518WU7Ot8F1twDdumcV4rc31Yi5P8GW+dleIVjrZvPLDbeA4QnjEjCJuirmb06iRqJo5x4QaCLsAiIReWO1MUFUOM+zFQjrd45fKw7Zu/Q6f6urM41i9KFqrkjH0Jg9UXeN+tDRkvp7XL/VALBGmRFAx4Ikyy0AyHQn6TtmIVsxShU/CF47Y58Xs0Q8s5+UTRUsf4XPFrOTCa9RmnVuUhyxeCIKhbsyK0GF1HjmmXwRWiYkvinuJV3y7TdrUZ17dF3VrTLaBpBS2he8iWpt65i0Wz8jOkxDdjL3s1KGsyRCqfAiSTU0DUBn/0fnVeb42KLB5DBcCwVJYtky3Rgb6M5Rwr4R3UGhlVBf8KFKH4T4GI3BZ1z3O6Fl1G/3GTAMOdDZ2q5+LIuTblbmg2cjxbdeNoPeA3jPTqFoFBaR79z8Sh4tqCssmS7E9eT31kihOPfXhqGhxon6vVhOunZbyAYXOLcZBssIQhuE4S7ybLzI2hvdQAsJJtyP2QRYzdjuOvCNoj9M8llPxRouaDJXJ10OqKj89LzMmM6ZuvXud6S2UgPHv88qVIlu1OPjie/jeeDKa4hqXMNRiE53o9OqQ4fZjvljI8L6p8RxWlGM1fEIh0plVGMLMgyr6N7yz4cE41CYapCRYRDY2YeIEyBkFDfyK0CIsB/R6VluTU518sVC1xmtsHe4ih9
- IiG2+ghX
- LiWJjPbHIP0zEGtOv4r+Sp9inIkH6OlTnRjGqlvO8ImYXap7bgEX5E2aV+N7E9cdbdTWj3knJEnreYEH6TzdGz6+F7T6L9ZmR7UmEuwG+JohYlkmN8foZjxuYwymitgbYi5t5l8E4rWe4r1k55XIzyatWTLbXFkHmMdn5O4euJcQXHK1v8tTeC4bVTnk5mvtJ/nlvGrcBD1j1lUouQxOtxJZZExtpiBqhxdzcVBprPJc33CaN3Pz4EMc3J53ItQz9pVhGnqmjRl4bjzROPY7Xj0/4QjFT7igmW3/8B9kx9tq7o3HgN2AWLMDxajx8Zy6W+fgAD0cRlH8jZyKSktAD638X2VqUpN0Nv3OQMeG+TgZcqXr2WDbCUArVxQ/jR29bwU7iZvygX8+vaYYEVZzBzicnRTnlBFdWO8fMgzeexF7vaQwQWitbqlS2WWcpjlMjadIdpucSn8gN/iHY9hbk+hqgnSgoMLv+fcd0AiYKwVTQ2T/HiUq64zzO0zIsKzGksu4OKqAzZDbQhKA=
+X-Stat-Signature: w1j8qep5mdnst4ycougt85mp5mq5zjzw
+X-HE-Tag: 1791828375-570113
+X-HE-Meta: U2FsdGVkX19gUcBaa1IgiO7LnSwSpZlcAtb265bQZvC8+lixSffuXtkwA2Gl0YkwNUPUgVaokv5UDD2WcEfYoc8EgHQmjnOoEoVB/V86cjm0HjFshATLX/SHiyKb748HiA7IO8wkBkdinGJ2qBaDl0tkbCkV3CAtxRlyHaZD5Fm7+hFkDdBhgAestyGXtNfPOx0WN1jYGgXGWdYDyqPVHxXhT3trpxnh7pLpjQA5bqZdkieEwm/ZgWFy/3duGqv7YeHC33wRuFpg5c+L1PPm7+XOmag6PbYrPr4VsAAok2eubO0Ed2bxcS4iiXOI+3+xtnHdKSN4lk1MXhNzEcy0He5g0rf6SrXlMo3YPSYvQ8POyc848vmgdfK4OwL/HfcRPOjfF91M/oi9Lv8lOUAvk3SHXxll3Gd1shPpf8dA8t+6V/bXUIR0P1WrhWQzr+6x/mj+3q5RLawOnURP/oxwYT9YS6J9WHw9Mh1BxIQXGGgp4E1D9zQYuuzvbuu37NUsmDiYqsIyAegYQNkl1E0accxS/qxD1RrzwLPAt8GmoWTU2tWIo2suP2YsA1ZAFjwnSxO+JHX8Iy7FPTTDW7cgVTEIY1ncNGyCFggacB4MEEF+3ClhYb/U+sgsw6qKnbVRRRrOtaIN52SYU8jyiQKx4OCL12JURXqBZ+IHABCLVDkusKrw41y0umsvVfHQODuaD4Gx78NQ4W+6MfXILhHI7F/HiGaVHA1ee9nacfi8Z/v4uwbacefLbRxO99a7AHXcu8zGAJVVOhfHoUmWkRPddgqSNR0/98DtLqCtrboHcfMpLVcJGeYaNYDxk+hBnBNAYFH2IqLJMA1+OMsAuMsCApFDCkLafgD0t9IWgqthg+/leAiREg5TrL0CQGnP2PfV3SLu5dVX7TEsbE4rsvaJdGmzpBLLMhsx/+L4yCWZZu/Czg9MR0BdD9fw7RPEp+mXuGQGafdKNV/3izPSW6S
+ epQLaeps
+ cNJVez15y7BzgmDyStuVE6mvTkK6MOcZ07mvzQdr61sQh88wlDCsvmzlAmpFNOQKbNIvx0Yv68Q1gtkAEa16pjPale/Uqjc0BrggukgywQjD0K2++xw6etlKjWiiiiosZ+n1GIT1cH66odb/o0RviPTLQydkkqOl9znd72wDpei1MA/4t2A+gvLZx4L0ADDDDWaCq7+uqhumkjoeszbaY5TPXMONxg2lA1rWEw++eGMXFbKKPCx+gBrEkse5BzJimQh5FO4MF3M0Q58lzFHIwLo4Qz23n4ftkwRXpypVJb8UveWOHKmKDoSitvbOXrfKky9I+KY5k8EJKZ+74sar/J+r15sAaKabv1hf9d20dJA31sLNJ/l+KmQu85Iaj6x8apCf4bOYzFl0X/eg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,16 +103,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >>
-> > This is arch/arm64 code. Can you, Jain or Ryan from ARM folk review this change?
-> >
-> > Thank you!
-> >
->
-> I will come to this soon.
->
-Thank you!
+Hi,
 
--- 
-Uladzislau Rezki
+I hit the same false positive and can add a data point that seems relevant for
+the fix: it still reproduces on 7.3-rc5, i.e. after the CPUID rewrite that was
+expected to take care of it.  The rewrite is in 7.3 -- get_cpu_cap() became
+cpu_detect() -- and that is exactly the function my crashes interrupt.
+
+Two occurrences, two kernels:
+
+7.2.0-rc5:
+  BUG: KASAN: wild-memory-access in do_raw_spin_lock+0x11c/0x270
+  Write of size 4 at addr ff110000158860a8 by task swapper/0/0
+   <IRQ> kasan_check_range; do_raw_spin_lock; handle_edge_irq+0x2e;
+         __common_interrupt; common_interrupt
+   RIP: get_cpu_cap+0x12f/0xc10
+        identify_cpu+0x2f9  <- arch_cpu_finalize_init+0x58 <- start_kernel+0x373
+
+7.3.0-rc5:
+  BUG: KASAN: wild-memory-access in _raw_spin_lock+0x71/0xe0
+  Write of size 4 at addr ff110000010ca8a8 by task swapper/0/0
+   <IRQ> kasan_check_range; _raw_spin_lock; handle_edge_irq+0x2e;
+         __common_interrupt; common_interrupt
+   RIP: cpu_detect+0x20a/0x470
+        identify_cpu+0x2df  <- arch_cpu_finalize_init+0x25 <- start_kernel+0x39c
+
+The 5-level hypothesis matches what I measured on the 7.2-rc5 kernel:
+page_offset_base is ff11000000000000, so the faulting address is physical
+0x158860a8; /proc/iomem puts that immediately past the kernel image (Kernel bss
+ends at 0x15577fff) and /proc/kpageflags reports SLAB for that PFN -- an
+ordinary early-boot slab page (most likely the irq_desc itself), and KASAN
+prints no "belongs to the object/cache" section for it.  So I agree this is a
+false positive rather than a genuinely wild access.
+
+Impact, in case it helps argue for the stable one-liner Borislav mentioned:
+with panic_on_warn=1 (the syzkaller/syzbot default) this panics the booting
+kernel, so fuzzing VMs fail to start; I currently work around it by booting
+with panic_on_warn=0, which also loses real warnings.
+
+Rate: rare and load-dependent -- 0 hits in 60 clean boots, but the fuzzer
+(under load) saw it about 3 times in two weeks, so it is reproducible with
+patience.
+
+I filed it as <20261013015904.44144-kasan-early-boot@yangguikun19.qq.com> (both splats included) before finding this
+thread.
+
+Thanks,
+1sh1ro
+
 
