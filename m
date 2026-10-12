@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD33ACA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 10:33:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C64C8CA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 10:35:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57CFC6B008A; Mon, 12 Oct 2026 06:33:58 -0400 (EDT)
+	id AD8E36B0092; Mon, 12 Oct 2026 06:35:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52DF76B008C; Mon, 12 Oct 2026 06:33:58 -0400 (EDT)
+	id AB15A6B0096; Mon, 12 Oct 2026 06:35:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4447D6B0092; Mon, 12 Oct 2026 06:33:58 -0400 (EDT)
+	id 9EE526B0098; Mon, 12 Oct 2026 06:35:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 22E4A6B008A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 06:33:58 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9553160B3B
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:33:57 +0000 (UTC)
-X-FDA: 85313613714.05.D2D595D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 10481C0009
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:33:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fEKg6uip;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 79BC96B0092
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 06:35:06 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E923160A96
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:35:05 +0000 (UTC)
+X-FDA: 85313616570.28.A288436
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1214B180008
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:35:02 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=icMAw4S7;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791801303;
+	b=CkOHEgjSOZxbloId8e1+tZYQBXD190kXxgj8DODAgTxV3KJ27K4iqjKB4JEs2tN0NELxEN
+	UI/C73xDL7gBN+kNydQ7TgEPp8s6BsUiNFh4znOLCjindkwoiPeJWbLukPp8f0KEBJub43
+	FbHGp6HwKdVJ4IHP9OLKaH4fI3v/zNY=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=icMAw4S7;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791801236;
+	s=arc-20220608; t=1791801303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YNnBEk1ZblEqrRrnuFXhKbUtj1Kjb67w+8SQlGULyHY=;
-	b=HGqCQfV+eGtfJbANyBR+/crvA4MmA/ZlDg8ltMwvNAKf8tagUVp5l6xNNO8WL8wFXVY+Dc
-	We/GTmeCz5ugVNSruEYi+KtC8dRrbOoY1FAGjOxQFWSSsgSPHdxRzl2FRzk4Qp0c5PSnKg
-	w4U8x4ncGPUp/pU2G5/nRiwWEP/GVIA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791801236;
-	b=OA4Whqxr9xpc5ihzamvOIj+CF+YQjWa8HPON4737HIQHveFBcZOH/XCBVtlFpz9aAeweVC
-	EevqPjGP43YBYByivbPIh264UFLKHn88O2HcAF+QX6U4a1JbANKpqWwHE+9aAi//EYJKKX
-	qtrtsQtNBYOfQNWaJ/50+WEgZovQK3g=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fEKg6uip;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 63C1642DA3;
-	Mon, 12 Oct 2026 10:33:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6801F0089B;
-	Mon, 12 Oct 2026 10:33:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791801234;
-	bh=YNnBEk1ZblEqrRrnuFXhKbUtj1Kjb67w+8SQlGULyHY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fEKg6uipIJDU9BC6xLEMgoLYR9QG7W0hFPrT8AQqy8X2IQaQv99e7Fq09HEvCH/7m
-	 QeS0JYlgUSTRWU+B3s/P7udKfTuMZUdJC/3eZku2DYciVmbv5wXEzhgn1KnMpklBTJ
-	 vn2c9N0de6SuluS/nhj/Q4f+YIWeQ06tzo6l90oRfJf72m4iWPmr+sVAy89lUnVgm3
-	 kw3XKwdEGazJRTIyqblyFf3KzxNPxoYXt1dD+qWn5pClS0PO7kTIzPqLOg2Kbh0ZAg
-	 aqW0ULSvcobAVRgeguqucH/6oNpiq6OgjyZdiV0qYhlDj4J9xTfN+KgA8HZ8IFXmPB
-	 5DgvOhzM1Irmg==
-Date: Mon, 12 Oct 2026 11:33:48 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
-	jannh@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/madvise: keep the hardware dirty bit in MADV_COLD's
- THP path
-Message-ID: <asyy7Nwik5yMTNbo@gremlin>
-References: <20261011132227.413217-1-samarth.colleges@gmail.com>
- <42087cd7-473e-40a7-ae63-3c841c615c8f@kernel.org>
+	bh=f6l70delbeHtJqbMpekvIGZfg1rRBNasfeeMNINA9mA=;
+	b=l8sk+wpbsHITRiVJvm/PCDkZwZWGdB4srRGpVDI345/J58R4SoSKEBW4PZ3UsnVXkDkEec
+	U974j+MMFRUAkujQF6hl6v511zgaSv04ZeAFJ32H28j/ikkQD9FGWpa38jIJNG37zcoV6g
+	llIWzzDzeieEvZy35r7vb0Qs0cwc+To=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 96C2E1655;
+	Mon, 12 Oct 2026 03:34:58 -0700 (PDT)
+Received: from [10.164.19.62] (unknown [10.164.19.62])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2A9703F66F;
+	Mon, 12 Oct 2026 03:34:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791801301; bh=7mPoOADKUkvYW5ZVuoA7QdKSncxImw2HU3nvjwRhcXM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=icMAw4S70hvgPizVJkQABJCxtd+gmFfyDPnnDMNKclV5o0WnmKAApqsQl/20ZNxXu
+	 imeF/mYQKnQcQfc9BKxpsxnSyeJSk22sgaIY1E9MaXMTOZMS2XBG9wyWpehI3sHHEx
+	 fg9p5DpQht1bU7Xw7QTSe0Ns0sjHKalma2s4QFtM=
+Message-ID: <facd12d4-c1cb-4b9c-ac70-303581e43eb6@arm.com>
+Date: Mon, 12 Oct 2026 16:04:54 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <42087cd7-473e-40a7-ae63-3c841c615c8f@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC NO CODE] [DISCUSSION] Anti-fragmenting ordered buddy
+ allocator
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
+ riel@surriel.com, akpm@linux-foundation.org, david@kernel.org,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, kasong@tencent.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, hannes@cmpxchg.org, brendan.jackman@linux.dev,
+ ziy@nvidia.com
+References: <20261011215412.1181172-1-dev.jain@arm.com>
+ <asyUgZVSauks3Vwd@pedro-suse.tail5790ac.ts.net>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <asyUgZVSauks3Vwd@pedro-suse.tail5790ac.ts.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: he6nwd7q4ygqrcanpwboyf3yt51z7tiq
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 10481C0009
-X-Stat-Signature: by6gtek86w861ahyqiex8wcgtt3gqiig
-X-HE-Tag: 1791801235-901168
-X-HE-Meta: U2FsdGVkX1+8A7nS4deEyrNlhYTKc2w0oZAYVy8P22NAe3X+4m4P8ZgNAmxwNkeajPY2tlVfVET908FSSqJpQdp9tzMEoT2m+XqdQMHbjqlq1TxBu9tKiWCpzxxQUitBupIlN0s90tKtIEl+6DwwO2nwgpUiy/RHgtHU7aRqXtxhti9++f1MX338wrFL2GtmC/8uVEMmggWBPczAVJqm0oM4sDo3IQTzHFOPHyaQF/tU8yPWssJKqHwaT1O9sHiBc3DruyjYYK6Jr1ENJGI4kimkUr4gnuaGp5TCCGiywUm7LV/bTlrWIDiTeY7WEmfB7kmjgOe5mbblQqO5XQUxzxtyIoxM5kpyYcrYRB1X2+QlojEhY4T3yxrGoc4WodPu7uMQnfHFS46PN3HVUXekkY6xGrhPYoMq1yw9HvDbEVRfQU29mMqH0iad9E9bi19DGu61qYxn0xEKlv5uiFb7STXbaUgK+RN7idvnImFQZPklR650jTZyHSjPMJLEHEdW3negh2XaYQlHNETDkSXzmObHhE+vf9S8Z2iHr5PfnYSmiu/3yafZrCaF5yi+QNic/yuJBZk12Cr/fJksOwJunuWc+ZXPg8vXYhcuWu5nHKXNXXHtXRgYpgQ2QFpag38+PC6ysDfOcZemt6bhbPwaVtWQzxSNWwx+oqxgJoiMraoaMVJkTsJNhAjThTICm+Vofjj3movVEtRph3og8XEmtjJ8REG1GxCmYkX7sPPVZGvFD+LS7Q0oXAKpSfmtDxrZYxopuzv0OIoD9MGYyCCI7Vb35ywIywFGNVSOiBsNF1zX04j595yvhaQbi0TmFdaNSMEzeN21zFWqTiUlqBcU6V4WUr66WEIapctpuS1YiOwT04AlG1J+CBCk1h96ImI6cC1TR3dKES6/BQA4aCSJSxwiQDFGhSWoaC9EbFqy8GgSgnAySaJeligULOwpF57RBxsEAhXeICr6R7tnwkl
- TJGQ87Ao
- g9AoI3J5wTEbWlMEzNUxlZUR5YbdgJeqxz3qGrVFBlvwDrNIJ1j0K3SGdMp4kCluiJxHSiArQWinouQWf+2VMEvzgGjC0hbpgGH31YOem46MrFdW7AYfUsviRfxJcTvFb/RHjzJ7u5ojFY++V2Y6nfjkisn4FJFGcNoLbezUt6IiNPYg2/BExjU9hEtBA4ywGjFda8JieDKsn5ck8eKWGWOm/tH5ZirrPngqL6PGDoOXxvoIHkffuvRQqOI6Ibuj24DNKtmgMVgtW1hLCNEhVbGvFN2iDnxKZZwKIWggxKSWtLzwKAHG/NvhPp7KUkk3UZbxb
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1214B180008
+X-HE-Tag: 1791801302-709722
+X-HE-Meta: U2FsdGVkX18FX8jzO2zc1CSjs7WbnPm6ZaxA7xLZpKoM2xaOq6rMfhZlBQIKo7hf7irkgljaRrmuOlxDahI4wWz17oLIBNh3ACyrUInVdirG2kNsWpgJSjoMqBvgqiFbUUpWwenzkdK8KQiU9tg9pIxe/sdbOCJozMgU7xvhZkhHjMghZeCaH8divyJiMtXfvTAYNZ2cG/mEXSy64l/JID34qyKSZK75ql1NB2/tXcMu5+SQGmP+yPmi0RrDu6xsMTxTiy8yL045wrvgpeNUfmR5YddLGrzW028uGnp2+7TQxdCFeWSpYjEc3Z00LgBEqdqiB4MJXDjNyZFsJXpbkIXnRG7cXFK5WT41MEF6ZQP6F2WFgQMxLKmO/tJBItRe20v7nlQCmxy4DV9KQI2wiQcWrsHLy/ubOWzBghipoDkBYs33jBu6e28s2WqnKzsBOALdQPlcAAS/HJyB4AwOEiLwKvLYDC+VUVKaXule+HOrfYHtsy4djY389LB8cx9NLUtwlTnv5a8Y8+61i7Zgvcst1RFP9RC9oMU4tM2g/QQrg0EqfoBh/53pqg98gvwEusOCDsA0hr8eYiigXX6KHnNw1U6oTKmagGzpSJFAC9r4M4MLMC+RhBlLB3PIi5A6G9KqH0LZDKCjZ4+ddTLZiFCAlFhdqYa4FDVjISpqGhnFE81g40Xt1hzhft7kF3IZ1uvs116LpFhC6IijOgTbHrMksbwoMDUy6bwTH4R3m4GQD/gH4ObY0arPh02+fJjGBgCnOx/pwMLoHq5lvdDMGZmgWo7boEjWdrB3p4yrxW4cI+hczc3eWzervWeyDecSXPWuWvsKgZPyB09hM3DyoiVtwDR3zvhJg2Ha7xqxViMHq0zlGVOi1MErKg6Cpv0pWj+F+tw12sw1r+0sGVrF/8Nb5GT4r7dUA6mQArwYfsYu80mAJvGsbCsA9+upcfZW51f61p4lpPEsYheCC1K
+ 5Uh7FzZO
+ 8WTxhe8xq69So9qT7XxisGKKBIENjIDTX3xWkLqQBOPQQLdhAUHnljH4pSzQ1qhZckw3pG3ZKCwbwIf92Un4sCGARt1SbDn/fnU+LBFbUEFKvLMJh8M3xzRHojwmJ9jcI7shuR51XDxyALePavORQ0QHrBwEOZk23H6ibYBUatQB9RRCWIBFsM/80YSjIJEU9s3dfgRTyAFZGdJRo2/xyTO0eta5w+7YAYVNGi8vN1iBNljk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,87 +96,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
--cc slopper.
 
-On Mon, Oct 12, 2026 at 12:09:07PM +0200, David Hildenbrand (Arm) wrote:
-> On 10/11/26 15:22, samarth.colleges@gmail.com wrote:
 
-> > diff --git a/mm/madvise.c b/mm/madvise.c
-> > --- a/mm/madvise.c
-> > +++ b/mm/madvise.c
-> > @@ -426,8 +426,14 @@
-> >  		}
-> >
-> >  		if (!pageout && pmd_young(orig_pmd)) {
-> > -			pmdp_invalidate(vma, addr, pmd);
-> > -			orig_pmd = pmd_mkold(orig_pmd);
-> > +			/*
-> > +			 * Rebuild from the entry pmdp_invalidate() exchanged
-> > +			 * out, not from orig_pmd: hardware may have set the
-> > +			 * dirty bit since orig_pmd was read, and a MADV_FREE'd
-> > +			 * (lazyfree) THP whose dirty bit is lost is discarded
-> > +			 * by reclaim, silently dropping the store.
-> > +			 */
-> > +			orig_pmd = pmd_mkold(pmdp_invalidate(vma, addr, pmd));
->
-> Okay, you are saying we can lose the dirty bit that could get set concurrently.
-> And if we did an MADV_FREE before, we might not detect that the content was changed.
+On 12/10/26 1:55 pm, Pedro Falcato wrote:
+> Hi,
+> 
+> On Sun, Oct 11, 2026 at 09:54:11PM +0000, Dev Jain wrote:
+>> (I am not posting code yet since it is in experimental stage.)
+>>
+>> TL;DR
+>> -------
+>>
+>> I am proposing "ordered/bucketed buddy allocator": we divide the buddy
+>> freelists into buckets, and prefer lower buckets for allocation.
+>> This reduces external fragmentation (and, further reduces it when we
+>> reverse the ordering for unmovable and reclaimable allocations) at the
+>> cost of regressing the alloc and free paths, which depends on how many
+>> buckets you partition into. I think we can partition into 4 buckets and
+>> do some tricks to remove any regression.
+>>
+>> Design 1 is the simplest and the most upstream-friendly method in terms of
+>> allocator speed. Design 2 tries to scale better with the number of buckets.
+>>
+>> INTRODUCTION
+>> -------------
+>>
+>> Apart from dividing the freelists between migratetypes, little attempt
+>> has been made to change the algorithm of the buddy itself to reduce
+>> external fragmentation proactively (termed as "anti-fragmentation" in
+>> academia). Linux has defragmentation (compaction). The analysis below
+>> is *not* to claim that compaction does a bad job; I just took up the
+>> challenge of anti-fragmentation (because I like to torture myself) and
+>> kept digging the rabbit hole.
+>>
+>> There have been academic papers about replacing the buddy with bitmaps -
+>> I did not want a hard NAK from upstream at any attempt to do that, so
+>> I preserved the buddy freelists.
+> 
+> So, I've been looking at LLFree (one of those novel page allocators with
+> no buddy and just a bitmap) lately. A few thoughts:
 
-Yeah, lazyfree -> write means you don't actually free it.
+Hi Pedro,
 
-As per the manpage:
+Right, David H. had sent me that paper : )
 
-	For each of the pages that has been marked to be freed but has not yet
-	been freed, the free operation will be canceled if the caller writes
-	into the page.
 
-This is anon memory only:
+> 
+> LLFree basically divides memory into 2MB pageblocks (with a free pages
+> counter), and then later organizes these pageblocks into 64MB "tree roots".
+> These tree roots are then borrowed by each CPU and made local (pretty much
+> like old SLUB used to do). This localizes most of your allocations and
+> pretty much avoids conflicts/cross-talk across CPUs.
+> 
+> Yes, there is a bitmap. I don't think it's required, and it might actually
+> be misguided. The paper itself has other side-goals. One of them is easy
+> persistence in persistent DRAM; we don't need that. Another one is minimizing
+> the cache footprint of the page allocator; this is misguided (IMO) because
+> allocating pages has the side effect of you actually needing to initialize
+> the struct pages after the fact; whether the allocator core hangs state off
+> the struct page or not is not important, and in fact using struct page there
+> might provide cache benefits.
 
-	The MADV_FREE operation can be applied only to private anonymous
-	pages (see mmap(2)).
+Yeah I had skimmed over it and did not understand the cache benefit claim; the
+main benefit seems to be the lockless design.
 
->
->
-> I suspect this found through the help of an LLM and not an actual use case in
-> practice?
+The critical section under zone->lock is extremely cache efficient right now
+as, when it pops a page from the head, it touches 1) the list_head sentinel
+of the list which is hot, 2) the page to be alloced whose fields are going
+to get touched anyway, 3) the next page's prev pointer, so warming up this
+page for the next allocation.
 
-Seems very likely.
 
->
-> Using MADV_COLD following MADV_FREE sounds odd at thirst. In particular, when
-> having MADV_COLD race with actual access.
+Right now we bounce on different cachelines once the lower order freelists get
+empty. The current design is to first index by order, and then by migratetype.
 
-It's odd to MADV_FREE (lazyfree) then MADV_COLD (deactivate) yes,
-especially with racing accesses.
+I vibe coded to do the reverse and it does improve cache hits in general. But,
+it has a collision with the free_area->nr_free which maintains total free blocks
+per order (hence, summed across migratetypes). I'll see if I can send this
+patch separately.
 
-I wonder if there are other cases where you could get weird races like
-this...
+> 
+> The bitmap does not work well for random order allocations.
+> The paper itself was written on Linux 6.0, which (probably) relied quite a
+> lot less on things like mTHP (and random-order file pages) than we do now.
 
-In any case it seems a really hard thing to hit in reality. But I think we
-probably need to fix this because of the stated contract of MADV_FREE.
+Indeed.
 
-I think probably we shouldn't have added that contract...
+> 
+> In any case, this paper doesn't necessarily address your fragmentation
+> problems, but it does attempt to address fragmentation (and SMP performance)
+> through borrowing these pageblocks. I would not be surprised if it had
+> a sizeable (positive) impact in fragmentation. I firmly believe that a
+> direction similar to the buddy allocator, but with more buddy work pushed
+> to the pcpu side (like Johannes's pcp buddy allocator series) is there right
+> approach and could have a meaningful effect.
 
->
-> On the PTE path we use clear_young_dirty_ptes(CYDP_CLEAR_YOUNG) which achieves
-> the same through ptep_test_and_clear_young().
->
->
-> ... where we also just do a
->
-> pte = ptep_get(ptep);
-> set_pte_at(vma->vm_mm, address, ptep, pte_mkold(pte));
->
-> in the generic variant and rely on the per-arch variant to do the right thing.
->
-> Which makes me wonder whether we should actually have per-architecture PMD
-> helpers for that purpose?
+Exactly which I wrote in the other email : ) A cpu is the natural approximation
+of tying lifetime together.
 
-Is it achieving the same thing? There's an invalidation here also.
 
-pmdp_establish() is used to install a pmd_mkinvalid() entry and there's a
-flush_pmd_tlb_range().
+> 
+> Of course, it doesn't solve other problems like lifetime mixing in allocations,
+> and things like slab migration are insanely complicated to pull off.
+>  
+> 
 
---
-Cheers, Lorenzo
 
