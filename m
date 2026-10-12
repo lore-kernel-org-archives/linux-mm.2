@@ -4,141 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB95DCA9EC5
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 14:08:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AA7DCA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 14:09:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D3D56B0088; Mon, 12 Oct 2026 10:08:23 -0400 (EDT)
+	id 27ECC6B0095; Mon, 12 Oct 2026 10:09:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AB736B008A; Mon, 12 Oct 2026 10:08:23 -0400 (EDT)
+	id 22FBF6B0098; Mon, 12 Oct 2026 10:09:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C1C86B0095; Mon, 12 Oct 2026 10:08:23 -0400 (EDT)
+	id 146456B0099; Mon, 12 Oct 2026 10:09:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CDF66B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:08:23 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C442E160EE6
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:08:22 +0000 (UTC)
-X-FDA: 85314154044.01.25323DB
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D32D24000D
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:08:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TNB8qsH+;
-	spf=pass (imf27.hostedemail.com: domain of tjmercier@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791814100;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E314F6B0095
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:09:36 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5B5DBA7B4A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:09:36 +0000 (UTC)
+X-FDA: 85314157152.04.29602A2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BED9440005
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:09:34 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GhSiL6f7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791814174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ds1RsGrXdYNa+VIUsNtvM0HHuJhu03SNmjfL4ZgCOaA=;
-	b=0EXR5Kw3qyMXagLNaWCzOvlG7hhGH2HU6BJuINPe3ZlsG83tFfuYlK/GFKeBsZGgkpPdXq
-	MW6PSD7nDSppid4XSh53JdgIlIfSOpUC4xqQTKgWdPATuiRrSpz+HBw5ZeWuerOVI1ylhx
-	mRLDCDB62N1XiUz2b1GJuL+dM+EiQbY=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791814100;
-	b=oKiIJoOvSWD07+dTTM3erq9CHHl6Ya/v+5nmBFLLmXIePkitWbK5ciPpc9BgvVr388z56C
-	RX1Z0RW5827gw7UoxQ29T/Ul+05pmxNfckjqKs0LTdRa8jzeGIoprhVFidstfxmu2RXa32
-	KWsCXfmM8mLbo5cIvOKyC5sfZzMYRsU=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TNB8qsH+;
-	spf=pass (imf27.hostedemail.com: domain of tjmercier@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-533202fe429so382261cf.0
-        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:08:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791814100; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gwys6v1mk3MtPBNYBp2GH6ruKjNMMYkAeT9F2T/a8iBSiFWx0zTHQdp6ZtgUT9U+EY
-         SMNhJY3AoPa99BskADuefKE5PNSTWidTWk1/zo3OSIYpUsWCIl/XDqqSPpY3ylQE35og
-         EpSOcJWAW1FCZtN1CBVFHO5AmDZU2BC6Z1J5SRlyjee4vmJZfJPvzaDChsaBNYFWH27E
-         OVbc7NkUvheU81Haul90ooAX1mhx3BDHqp7RnIyxXUw6O4pWscfyjdWQPyfUOMY1UtIf
-         xhITA/uQEyrcDwwfAe7xxdsX93z+ld/uBE47AEH4utzG3M/OLtwnZm0r6eW8HN+1gXRf
-         f6rQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ds1RsGrXdYNa+VIUsNtvM0HHuJhu03SNmjfL4ZgCOaA=;
-        fh=EmnAIRdyXRU2cmhP/zjYptxJVpOiOrEYCjlf3MMS7tY=;
-        b=Qv72By9Yxm9QgWIBS6F8YXxq5n4HKSwvGpr2sBgi0Ylgm8BXX2CpGi/PjSEA6obPja
-         bufdoOH9UvTlFSOX8NWtOizC4XcbC3kcEOYWTlbrCoYXAXuWGY+Ll7Rmv8JJiHwKzbRv
-         zJDv4iMK5o4sFUe1TsABDfZbeg3L0Q27AfdHKu8CLSABc0DAIDhs7qhDyI5biKvI3GCe
-         mUXLoYDL09vI6V0+rb3Q53Ur7YypwkF/E39fINiGF7+Q/XOaHlAMEHmYrGN78FU9W8nn
-         YPLXPFTfLbLX3XVkdXshELmKdQ4z97saqwccj5LDgdsnsmqoh8d60IPf7nQ8Cwp0Ukop
-         jB4Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791814100; x=1792418900; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ds1RsGrXdYNa+VIUsNtvM0HHuJhu03SNmjfL4ZgCOaA=;
-        b=TNB8qsH+243o8lR4nkuylPv1+BUAW9REzGYJ2O4Jq/rO3lSO4lWMNLQE/mFYTMtTHt
-         Zd9haqN7S+8SDppxBEsEJHKnJMtALoMcRSzpd6NogViaOUrtdQKPLF+3Rst4cNQv/R3f
-         zpZjwR14+bpeN54BUJZKl7zQptCVQcm3willhP8rJoXzsmeRwA6szEsjbwmDCLWNLcLH
-         qlkU7m+RceTipaA/N2YglYBq1fzJsBO4f/YDBcBYvorfZyJ9Kl8ZTbma3BjDAUfZgCfh
-         tihlP46uEekkLBGfVkqFsOtFZ+BwTTXDl2dbyf9CcsMEXgdVOHFguN3/7fWtiI8LA3qh
-         qjng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791814100; x=1792418900;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ds1RsGrXdYNa+VIUsNtvM0HHuJhu03SNmjfL4ZgCOaA=;
-        b=fMqbi7aMwtB8lMKVFQN7A44MgCnfXdAOYzmVib4cp9OIWRCZ3DcWZJ9+Uq7HMoMBIE
-         GlQ++hJ4j91KpOMYCzGLOwJxOlYXnU6SfpEcGYIrPe5eNZ2qv9FdilaNtCsvl18/mtAN
-         pZeJqaoM9Q3elZ3wQTQ/WAAHPTGmUKsm0foaYXQs/eNKzA7EIrOmkk4gteapqoo53hVM
-         q6+wUtHL+yOVe2/ydnbA9nG3Ck6lxOIrSg9nwvzqARwFyYha5I9OH4hM8Ep97DNS7Udx
-         nNJkW7xxb7Qe8yM3KayafmGd1oaPdr6Dp1xIEpyoztXG7i4Yx5oRf9Nb1OSFlQI6ndYs
-         K/Zg==
-X-Forwarded-Encrypted: i=1; AKwUvByfac1m6qvCQjoBwMIO8rXCeRUUHk7aDS1u2BWQQinF7cVLUviFIEWV/kPDD+8488Z/rtJZSs9FMg==@kvack.org
-X-Gm-Message-State: AFq9FYLkQN2eCNy3Ip1FGTrQoQ/iIr/3alQfDrZJcX7fdSInIERQaChh
-	tXGg0uSemVgfudbjhfAA4ekpCin0HwfGLOJWgxsKU/+dpdPBLxujikNAIz43tEC4CsWPLea9onV
-	QN2QbSvXvDHKJ+DSWDfcr9zGsvqox9tc0M15aqYP9
-X-Gm-Gg: AYBFou3HYCQO1Ay9YDBB6L2dohp42VS6ySq84guz5mb7cUNw2vk14Q0RkVVzW7Z4Wcv
-	WKq5usILpoEIBfceleNbOtOGAOAJPO9+ugbI5s0O/8GBULMFj+fKTvNqCZnGjKbFbl5Nhpv2Nkn
-	tBanfRzGIWDWHyuyp898vtOcMvLUSLujs4daLiGWMeVrgTGG01gQg3Q9KloCeLofxukUXbXBL6N
-	WozSKLX1392lcHUFkmCiEwRBG3gk8Mbdixku8b9mutPVUAlHcRU2C/05J9Q9/k4e1p27JbIso+E
-	PNPlQKEw4PdgPzGOatFV5el13QH4VQjgS6tIKq0YYuyCSzDBMJXq/QHF/xlaqAosPm7UXO2qR5k
-	3WLpId7vM40E=
-X-Received: by 2002:a05:622a:413:b0:533:9746:9a86 with SMTP id
- d75a77b69052e-535b325f8d9mr32241681cf.5.1791814096393; Mon, 12 Oct 2026
- 07:08:16 -0700 (PDT)
+	bh=WWaKYNS38cf3h2PFrUgpkP3ZJlOHalNpgeeuEBtJF3w=;
+	b=mURbsC/JuYfV3B+MGC/pSytgBZw0KWTLd/lQn0IsPuFQQaEVFmbhQGFaUQslTFmtoPtcuq
+	nu10rbOHZpVREy84hFFzhfd9jfZ/iE8Tfo8+C0lorjHadtoIvF7q967RNBYH5A0uDoZgAO
+	0X65KN8+Fi1DITGXDdVJRSHxFl8XbFE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GhSiL6f7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791814174;
+	b=mf/OP79MAKsFF9ffy54+Bc0amNhIr9Xwm5yMK5jLVfatPEeFPAz2mJcVlQKLBLaanRmWhS
+	rSr5cFN/6DxJs5SgTy6A/bEfeFGIR5qMsedIgKkmqVnzkgFqxwH3LpssOXTFycNpR8sRCg
+	MUIW8A739ok+WbpjYgzykZGq8D84TYw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C965943CF4;
+	Mon, 12 Oct 2026 14:09:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684B61F0089B;
+	Mon, 12 Oct 2026 14:09:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791814173;
+	bh=WWaKYNS38cf3h2PFrUgpkP3ZJlOHalNpgeeuEBtJF3w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GhSiL6f7O/lxsNHIi3zTK1pAe0yMcZJ5vSaTqQ4A6yHzNoSf42+s/LiKyUyFigv3L
+	 YADCClytFTIOxu2FTn/4sR3XQIPpzSWdLy+ixhBq7vLs5EB5I5W30qCU4o2fIzP3cd
+	 f8Hy2aXXnc4xXyH3XAkOX1YfRDzd9pFcnPU3bGQuBeqsqmYlRDPc/d1U/8is/5DqwV
+	 vEq+EhYwnvl3pUnQTeLNmkvF1W3c2PUgCuanjh70jzRS4/fiDFDT/LdW5D+3naCDxx
+	 yLr7Yddkb0tkcg7nMW3OXDnTMwaLpq5Xc1BuGJuwhiFBlAUG6mwmhzo6bVhDuQtN+f
+	 w0hWp94pc1ybg==
+Date: Mon, 12 Oct 2026 15:09:31 +0100
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Sang-Heon Jeon <ekffu200098@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Hao Li <hao.li@linux.dev>, linux-mm@kvack.org, 
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH v2] mm/slub: clamp slab_min_order to MAX_PAGE_ORDER
+Message-ID: <aszp31zqP607YL18@thinkstation>
+References: <20261011014841.405327-1-ekffu200098@gmail.com>
+ <5895ceec-df6a-4604-a7b9-8138212d786f@kernel.org>
 MIME-Version: 1.0
-References: <20261011223358.2327625-10-sashal@kernel.org>
-In-Reply-To: <20261011223358.2327625-10-sashal@kernel.org>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Mon, 12 Oct 2026 07:08:02 -0700
-X-Gm-Features: AclHuK84WqMsyxy-I57pRe8rAHj6B83pUNBHs476hJrJgTGppN2WMc_WLWeA8KM
-Message-ID: <CABdmKX2D1obDASTm+exAtrZSfkLikUxmzKxjsj8avyfUbEcsFg@mail.gmail.com>
-Subject: Re: [PATCH] selftests/cgroup: free the paths returned by cg_control()
-To: Sasha Levin <sashal@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <shuah@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Amir Goldstein <amir73il@gmail.com>, cgroups@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5895ceec-df6a-4604-a7b9-8138212d786f@kernel.org>
+X-Rspamd-Queue-Id: BED9440005
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D32D24000D
-X-Stat-Signature: kxf5qht1kpwokf1xj697nthdymemcewm
-X-HE-Tag: 1791814100-81461
-X-HE-Meta: U2FsdGVkX18defVIkmHXLFi711rrV4nsjP6e3hs4XYFqONocsutG7hgPhiwPqJ9MBaZGg52xApApgX0so/D7Hh8Gb6TMbWpTnBUXBYdXzdPxQviAGuMYpuHoJheUJJTwOeravnIZmRVRO4/eysah9Zjd9MaAO4++CeJeXgA7qcjAP9pb7CRT3QFpKEelQADqLwSPS9uyCWkWzfQanMjCaeaUGS4no0POqApKERSlbe+AOZIoUsNypbyjh/AEg0JH1CsA55KKu8T6pXlIt0HZ5tBS2Y3OWXotREdCptDh6KYlQOoLcjFXqCPRzNIvuy6wJpzTH4sA+DahxFMPX98pTXc9wpQJW4LBK/xbOpaCULeiQb8hVhBITjUwt18QoWo19gAnGQ7QKaRxzQIuX6urBewBqJhfgeNV2YdQMNeLYgkABcrEGDEhJZ4GxVZTohFr2VriHEm72Mo+9AhNNSt25TCoZ/cR5xTbc6YDu2hG6LXLV9UvKZfdSQxLsq8/7i1ar4Iiy9CCDuG+Bm2MHMDYQpEAfzJKd1X8GqJO1bRFdLKH2IW7lNKB0qOPNnGFGmHmJnwe7+YJPmNkobdrNizRgN9/t4C1NjTo21WKHnu8TbYmTtwnlmbOfM38MI5jHY3Vf/A4EW8gra/RUhCLyCcdBMiW5cGynPBdVQTubeDOsNUWOlMZmYSCaKNhcz+ZPKxyDbwQ6mvSH/9xGHWFxtBjRSVaN5EE42MSdXOJVvGVp6eTncS9FHASiGNvtbGhd+DB3scadXVsGJP2mXgCUExsAhiEviC4rqmgh2gPGa1aCFlake1X5kAYwzu1EGCySww2m+f+7od/znsxZMenxUYnakgd6flHQYz4Wpkagx2qbAMBFksOpfJ1PTY7HPj/wHoEldZs1SXbFre383+ns75O6DNtZkTd6Wzkg56ymDYY31NuYMh8PjsY/uiMGuQi/CI74KrypcACHN/Qy1KoO5q
- DmHn459j
- /WzNWN1D8P3ahlW48Vd47I9Am39G+0dH2AVjJYrBWaz53SaA9j4ussLyzVLhMswuvZNU7Nkj9Ilc34YUb8vnx/z0+4P4mwOMU9fY85d78dQ+r6Nx+K/WcKMWz2pz4HJlr+NrvsY2ygHhZMQyUgCuSc9Xo5BytpjVnbj5xBvqj9/daednW4JT6bBWUId8PF3FwdPYX4MkST5doUwL3L9H7Mf/Rf2n0vTuTEbvbpiUjzLD5A1YswIE/OpvAuOVg5ibEzYELHJRd5gS/538fRPMbIsxnMuxXmrbFyZ1pCfkV/JjZT2Y3iEYwcT+T5SOWXYMs7byQqe6IGd7iBeg=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 3n7ncp4faz3tk79875udfb9r8wzj66q3
+X-HE-Tag: 1791814174-19366
+X-HE-Meta: U2FsdGVkX1/90Jr7bL7BF83eGfzMngS89gHCi0iK5dfq59d8r593vlvj5G2IBvi2m8gN4HgFq4bQRXNnMbAd83pHaNEdqTZJ8vjlRKUkot+iEfHAH957rRnixXrt3xR1W23PsS0zD9R18ZzxedlpvdPnzoGjgff9h75yZt7iPvqBVxmYrErQtE2APvuNf2dXBL/jV1S5itBdS1Is6Iev4keD1WLBta2VRM4Yt52kyjTI4vvO1cQapkCF42Jk5xo1SLJPErKF7sHyHk4diHQSbV9cmY2aER4I0Zs3glqVqxII2JnPTs7Gk0Crpl8SrwP81ASZxETy++WoAjiM0Q/nOefN1YSNRPWVfQeYYYkXFYqvZ+AqyI/drc0kYvbY/u8FMmaITId3pqhVP0lDgMbxYKCBZrjz1dJL5e7o1eW0CtsH+KFb1cYPJ1QVVVnbwO/5W2e/V9Cdq9bc7FXyp8+ZbfHCUTGX0T5YltKpiHc3LtuL8NijI0rUkBpIjvr4SguuhsMZdkRhU1i3krSU/nH/hOe/Q2aah+KWQSdx2rujw61IEavciGGncxPR05LZ+1ErhMykTEjjssIS2pgl6qWd2T0zJQSw67LlemqRubeKjqDMNAig3cJxhoqznhBpOfjuUzsG04ys8VKRfs65Jz+sOXNksmnONNbYW7UzMM2ktkS/zrBCaX78ySTgZpnc+jdF5iBbImK3YCQaDQYW0vhj0jvMTwkYzoUOQzudH+OdfHlQoF/5BZSHwSUMQsQ5vh1yqVoZDEL55RLk//bW9cZGBPz4GR5/vgC1QVx3BanSIbDcCjVvkwO2JyRzm71gmIqU7AND83cnYh34/udTs0F/UafaeZZEFEE272BxTJ1pTvXO9fB55agoNBkCaS6yeJ6PNY6O8Q0v0virJkERkDqWXTPbJuNyBrkAKmHANe9Nwv2abH9bgrkzVCHZOoBQ985kC/h7xcDHw3gLnWJfSyh
+ AKOp2b/f
+ nyICgfoagkNDb0K95pkkdpXwI8Ant2JmhiJlGWA61ECHBLiH022ilo70RY/BqbE9LEMTdPrJjhYnNXgNB6eerNY+W0QXK/HHrtWbjFeg3uOX50T+qHhC9xHDnFo2oKuUOcN4mKIaupUSxvZ0rXO04wpsxMarjpI43IasVt/Za5RoGNXl3ljpdYx1osSNg5/jjuB0clk0tramDTLabwroarsBEWDKFNJADgr02wfW6LXKoIakJE4cYkv4aWyP82DWzuk4/RMoZ5qLBaGkZTjvs6l5//C5qx0t6IUVNFEvJpXMHUFTwBzUr1idl++HHJiozUHY1q4bXnfI/eyO8zUE+cVraqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,21 +93,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 11, 2026 at 3:34=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
-te:
->
-> cg_control() returns a path allocated with malloc(). The two callers
-> that pass it straight to inotify_add_watch() never free it, and pass
-> NULL to it if the allocation fails.
->
-> Keep the path in a local variable, check it, and free it when done.
->
-> Fixes: 5313bfe425c8a ("kselftests: cgroup: add freezer controller self-te=
-sts")
-> Fixes: 2de27980e1d46 ("selftests: memcg: Add tests for IN_DELETE_SELF and=
- IN_IGNORED")
-> Assisted-by: LLM
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Mon, Oct 12, 2026 at 10:23:16AM +0200, Vlastimil Babka (SUSE) wrote:
+> On 10/11/26 03:48, Sang-Heon Jeon wrote:
+> > setup_slub_max_order() clamps slab_max_order to MAX_PAGE_ORDER, but
+> > setup_slub_min_order() has no such clamp.
+> > 
+> > The buddy allocator cannot allocate more than 2^MAX_PAGE_ORDER pages
+> > at once, so slab_min_order above it makes no sense.
+> > 
+> > If slab_min_order is set above MAX_PAGE_ORDER, it can even panic at
+> > boot or invoke undefined behavior in order_objects().
+> > 
+> > So clamp slab_min_order to MAX_PAGE_ORDER as well.
+> > 
+> > Fixes: 81819f0fc828 ("SLUB core")
+> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> 
+> Hi,
+> 
+> this is effectively part of my bigger refactor here:
 
-Reviewed-by: T.J. Mercier <tjmercier@google.com>
+Ouch, I missed that point!
+
+> https://lore.kernel.org/linux-mm/20260923-slub_tiny_rework-v1-1-a0e66d536eb5@kernel.org/
+
+Looking forward to seeing further updates on this ...
+(and hopefully do more review)
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
