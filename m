@@ -4,75 +4,217 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBDCBCA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 18:11:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD17ACA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 18:11:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E034A6B0088; Mon, 12 Oct 2026 14:11:13 -0400 (EDT)
+	id AF71E6B0092; Mon, 12 Oct 2026 14:11:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB50A6B008A; Mon, 12 Oct 2026 14:11:13 -0400 (EDT)
+	id AA8086B0096; Mon, 12 Oct 2026 14:11:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCA5D6B0092; Mon, 12 Oct 2026 14:11:13 -0400 (EDT)
+	id 94A546B0098; Mon, 12 Oct 2026 14:11:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A2BCF6B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:11:13 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F81081253
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:11:13 +0000 (UTC)
-X-FDA: 85314766026.18.030240A
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8E03240005
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:11:11 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 61D726B0092
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:11:47 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D68D71C4CFF
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:11:46 +0000 (UTC)
+X-FDA: 85314767412.30.B59AF36
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1750880014
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:11:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TwUIwf9t;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791828671;
-	b=CsU5vMMvd/al5qCNpuWas1V2oqxwwE1lD5kowfZyHBtjlDvybVl3n2IEtadTQXIpIWhzbD
-	IGPLc1xZnmIsrtEEYlExwTqTbePVsq8csVwgRMjJjSYfZUFrhbraT6EzdoNSvUSJX/5kPj
-	A/UvPpZYoBMCDKqZleIbzpQD3JMdyrg=
+	t=1791828705;
+	b=jh1BBm7pRZ9OtWaINwsHhoydX9vEux7GXKEHVizG2HleSAhutKyWONdipWlfg/NBpMR0Sn
+	J8bpPxB0chQnWtfEcy2KdAswDXVvUkMZECZVl4vrB2krJmxZ3mh4CD9BRDx7Ef69GzdT7l
+	eEnlgxv4lUVwL5Va2bj3GclH74zEI9w=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TwUIwf9t;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791828671;
+	s=arc-20220608; t=1791828705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=aZvyOlYwTpL/Y85vdLNJuzdDbPFtCMj94Q/Va76tVbs=;
-	b=3u2ZDhmiQYlG14rEB6U0jMscQJDzhoe56m4AlTlr5imgwNf3blbxAExBelZhThGh6uyOFE
-	sMIPcPj9BGMG2m8c4fi3yur6t7xAc5tWACqSs+IwBpUsYI7OSBU2DpjaAPUYgCTjl44aQZ
-	9h8qYTsLm6S7KqRiNbhkntqu54lxS20=
-Received: from escalante.csail.mit.edu ([128.52.128.198])
-	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
-	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xGKUN-00FXn8-Ab;
-	Mon, 12 Oct 2026 14:11:07 -0400
-From: Nickolai Zeldovich <nickolai@csail.mit.edu>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Nickolai Zeldovich <nickolai@csail.mit.edu>
-Subject: [PATCH v1] xarray: initialise the offset of a new root node
-Date: Mon, 12 Oct 2026 14:11:07 -0400
-Message-ID: <20261012181107.772545-1-nickolai@csail.mit.edu>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Nru7h3Sv5JaI6aGGCMmFY9EP6czcY0tZ0pY72oIj5bk=;
+	b=RATFMcAYHGuQXbnfbd+3PFSkv8JbDgjVaZFL54qOKkawFxOBIItrbUdYHz/Px9I5jllngn
+	jAiKBrXU1zdsB5gF4wYPc4coh8h15HNxPk17C/mQg58E5B2j97T6KK3eAPIGpWD2CwYYjx
+	bvJx9Um+bWgZ6/jRgMiTmzsAlsGPK1I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DA6F0601E4;
+	Mon, 12 Oct 2026 18:11:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C6D1F0089B;
+	Mon, 12 Oct 2026 18:11:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791828703;
+	bh=Nru7h3Sv5JaI6aGGCMmFY9EP6czcY0tZ0pY72oIj5bk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=TwUIwf9tGNYwZIY3Fm1yPDU4MTzPQZvX2/h7JIxyzkfk5eXfDQbWbnfsSbPbHnFqb
+	 LjicSJy47COiVBFbpVCy6JFGXzEIJ0f/ZGnStnTNZvszexgrUMK9qHee5aJU9lSzek
+	 im/JebuesdGjd2pwP3NH3XGqwXAxyF2dk/mjybeu0HMAgajsmthZ0IAFYR/8XRbSax
+	 QYu4sPX7wYS1mmZJb0tI/WOLy9v5saXmqjpO8eIrfobNXWobyWDhWNgGpkmtg7xlXP
+	 +NmTupCHc6jCf3Ulym34CpsgHe//G15vZKq3Lq9hDEImDN8W4h/n/dFUGMg+zaM9J4
+	 XJEflFnpFAW0Q==
+Message-ID: <1fd21055-a301-4aad-ae7f-8aa633804048@kernel.org>
+Date: Mon, 12 Oct 2026 20:11:06 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8E03240005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 16/38] mm/vma: add and use vma_[flags]_is_fixed_mapping
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Michal Hocko <mhocko@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>,
+ Xu Xin <xu.xin@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-rdma@vger.kernel.org, selinux@vger.kernel.org,
+ linux-sound@vger.kernel.org, bpf@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>,
+ Bert Karwatzki <spasswolf@web.de>
+References: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-0-923b70125b1e@kernel.org>
+ <20261009-b4-mmap-prepare-vma-flag-sanify-v5-16-923b70125b1e@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-16-923b70125b1e@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: rt6nah5ek87ksxhntr1kmdt71fnnyqmc
 X-Rspam-User: 
-X-Stat-Signature: e3xwe76qezi9a74h8ubtmxrudb4ypf39
-X-HE-Tag: 1791828671-905337
-X-HE-Meta: U2FsdGVkX1/DG1G3aVqgma4q8q3d4ABxuK7j+e6ltYLMIcTZpmZrm0AWUJoZAKZGWQt2ogqgkU2DZvCD6Htz4p4LJzcNUCIO+fiV74tfs4yo1XLJT9ctDvzx7hCOfYIC7pWc5K5/Adlgye//mGw0uV4BUjmN2PjTJtLbBSROJHGoyzaBkcGDp0RBrWLWyLpxtIz+/K+lkC8HR3S5vgWbfDXSiNzZsk192zQUh4QmiMgUwP2o2eT941V2RimELlpe/6qQKRJ5buKWvtGz4LLBwbL6ULFC+SKsCCk8RiCc6GidCeCGbbHObcU6vIA3ehB2OWT3/NFfC/FiaIU+RAobmMCSJNtizH6vSxAx3j1jvsdv8mGoPpWwH/JJB5jKANcSijYat3GINNH8fAchqfeYT+OTz643YSX7YbEOEfOTLKLOWYW6QMoDEHD+sM96IjpPqwrhxHKzAsNeZMH+Ts46FUp/xh0kRSCnexJblVgExStgfLwM6XejcKKAy9NMBFBV7m8duQfJz51dcRViXqTijcnBtZkXmPEVl/z/vCJByZeAT/km11WmgLnOb/5WgCY0SJhctgdpToCoOBNz35Nh2/+ylvMczWGypPLgKE/vmjfVl/hwWTt1K9vL7msZQie2+vHSBxqR2rCGQIuLkw79ia05H7RMFW2pxXcU8dWlnjOcF3dfepAPwjN3KABxz4lbRnlTGCrmkJCGDyLvdYJD642eqhwGgQj4z2o6zcnxzbm+PSpANjbd3rU41qc4EoDbc19PvefPUUjRtUkqck3zdr/jaBrHMSaN+hTYDqeuehCGwOioyAh6xvkVHsn7pxKROI+FKyG74yhyEukfz28jKDvi9leJGLZC6VhMVrAMeFvEkd0E5sMmKvp2EfLIJ5OY2iaVyruAbxAdds9mFzn7Nr7VLbKKfA2y4RgA681tnRYGHWtI0Pqp7ooOhc1FeY4oFX3FvQvEIlTGRjxMANZ
- iqysm4j6
- zHDM/ZxGqxncZ7TWTvOWlaPlDXPEeJyJKGN++9IHJjuHX0Nd16rn2zJfxXfVxN4eOvC16jAIAxjJGADqnrFxFaEX8a6EYmM8qrYQXQJ0GpJhm5Z8=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1750880014
+X-HE-Tag: 1791828704-749732
+X-HE-Meta: U2FsdGVkX18Viw095G59UvRzwmTYKyFuB23+jl9JnYyfMWtgPjPAPxKvidgmtdMcbzB0xON9wYn7PmY01V+SUiWsgml2D4CitF2KB30VOY4Vt9WL6WFtqHT3aEvhpJOdp/rs+sPs2QpON2/GFmzSeBCbf9FZeOQ71obb7rvQ/ITg+ySnepRPf8MXW0dpuVJppcIwIg/lbaFTMWVs9dfKG6VW6Lg08CJnJKbYNmVCzK/LT3Us6DDuixbHwSP1SW0I0SMyd5uOf7kPj5WlDG3sIvtUA/VCw1m7Lk3P8g0bqn0lKjccAc5IBWWs1hGDXnEIMVA3gqhPknVsJlUyI19WWSRd+4UvLOuuHMslnwqUHP0WZ3Ux/0kiWsuSNFrU2/58AhHiPHsGRCR2X3HsGbnoSaYzmm1lC34z6jSF0oMOiaNxOa1l/8Z/jLqjCAr9zfNrLFu5jD5pX7Hcczi4cl88u8iACSJoIORpK1KwXwUWl97UPIqHd9DtP980LcUVRvdqQs6QQ662Secea2PJGpQE4hB5fDxfWcnTXx8JcTi9SnZxLe0R4+10mHlEFNd08ETvic5PWLkmXYbdpRe8VioDBvp0C5JjrB0JBgeXyVBIS1j3tvFS156MmfHCiwqIN4D3zx76H3vKY4dRBUelT7EJZyxPJaGMJZmfrZ+q7DjVDOoc7KQqSH7UxuREk15cZxSghda1bWdDOtVNDMFsIaemi7IRKXO3YWd+lKvT3rqk/lygmO7w4FqOt8k9wZkoAXFL5QpaSDXxCUJH1Yd+QK38Y+pkzElpqFi6Hs+o/K+iWfNImOf241hs9GqV/ZtKt+wtFXcBUhgkDC+Q5yH4GgNZdItWNeeLrx7KytqunIS1Cjs55982mSWQubHeU1B8iBb/OUhcOaFee8DEScJBQT9UyZvv1s6L/ZiUdFYvKGSIh/Fs/Xcn7j1lyPkdH5XzVV0dLNvoLupioPhYnPahmg7
+ 31xZhSqe
+ TA2jmkphHitGHZGNYdW9iy+yfRzSinNUhLxcszhS7Goeia6V6nJFVzAz3X+3VfJBt/2tmSYiTQNetjLv6aTPreaVmFR9xAl5YSiPXfrI5mFMHty6ZrMykqz9jj6Er9R/ZdlHBaJDpxgrrRzsPVPLU5318mC4xpDqOqdQ9F5bv3fhuCkWOW3SVquSYZWWDvGigRf9SmZULrYIfX3s8CC/ruNDziHSHawV6PpDzkKSLIHZp8x1Eh6SeEpl/Q3XT5onnx9pOYxveeBzpFPAeT5zWPErc7DnBRIrMRZ3l0IH0nYEVdDpIBh8BHtuIczAXV1jpbUPPGJ8tZHXmDJKL7tBY1BinA2mpfcfn7Z+LiGOSwK5p6++9HrMct4ALbLe+8jyvnhAxBVGNzNKPW0Ktlt6YUEwb/GBJ+/DqBfL06mFRvUdbFqeisomPGy+ZnN78L0MQfXxvZZitQCXqOY165hwxhGFALpjh0cF05lkrEBNBOVMc8WtHJNJ8TJthiatqtXZnb83+9FD12J7uOBBUylUqPSJ0JxJQLuNyeN8/yeIwvZwGOyMcuopIW9goP+RAodfX9C5G8nSgZ7j54OGffSej+pAJ3VTeBu1WP5uJ8U4Qtzae789uSd9zYOGQzcJ2MXEbpklnVA/8w+1EbU5SAeuKFGjo0ZeF0k3/wbzT2ITZpHfXSSfOkTks9XoynUBWkIXPTiyP1GS7GpVJrjtAwha70Ba8VX2mNCuzrqXfUaDqnDh1o9NDuD6k+XxMOhLuNs7SX3NT3VRvoR7UtdtxM7itf4vJH38GgDwVpfCemzVtoamex0SRa9MZI8tCcWhAlzw80tLiODvUtBRxNXLNkTJNmTJcFMXGLCRb7nLx29IsWH2+riFSBHe88nZQhHcQTV7fEH3cg/rDs3Bbes2zmodq7CfZXiKcaJhHsGOGEM82O1EG66iB7WFUC04fW8wz/LRJabg9RarhifrPAwJYOK7kv/3YzxI/
+ pEsVJSbq
+ CHqjFYjhMkFRZxJnkXG9iS9Z7tim1Kv/2UJmLHw3UioKcQnL/eB8onFKmk8K6VPHdd1ziVCuVvI77gHrS/aW6izpmi++bQ81vuxP1xYuL8AJQ3KE+G9w/4iZ9CvYkiZjvRlOgVfQ105icW+ko0NZo4d6iPbPrmc2ZsqebvmNt2TJeWRRLwa4gkYiTjucB+SMNQCtMnYiUwvRSN/URRHywD8wjQHNGZmcuyg16PkchryJAPNxm6b6sgHSml48ynPTQlT/31AkuW/rzOnS5Qgm8IcrCJl/ijHAKvztfRto103xrjkRHZ8hzoRVaWi/+BkEI0EuiTh+fG5ySkXXH16XXW23KfpyOAAbOxTjSPDObw/pdlDfagf+EHC1SEJzyubvN/bRj5KE7lzUlZnCn1wcKTrCkTwGf0Byj4D4ElQKv/o+CR18gkOe5VvCImpmdu1n5VqN5uac9jy48CEFDzhQJsQ62blmZGm9fweFrIrSO13RXnK+JRXbGNx1MUSkDIxam2v+kIlRxhJEtsdlnTrxwSx1HLygBUjDqfcbPfBsiV/BakCuKTudadIetIBCN6qvm1rI3Ja5mos/j2KmVn5q9DkHu98Zuqea0WYY2J5b26XFcRHI1C7r03AgfIx/nBgc/klrYawGADAw0GPwcpdCNOtsRMxVmvJPTcdaheY1dSxCfG3FDf6acIwELSmgEqR+Bq5I/3mIyYXrE1ZsVMxBYgphKjrySioWCMLnmc3S3GgwFEKC8kFu1lL204dhUYrUT1ae3yfXmzkTxjyG3qg78pKrQuVuH5Ys0LCIASAU3SljwEx9C+oW43W/edc+3hxEsPxz6p5OHAYBrFVAva04vtIINTf7vx9v1heYmLDg4jAJ5fTCU8xhYilkrLlStSvedfZSp0ol5YEBDbYMDXOJOHeEpLBQLoYqXVnQkS8IUBmYlhrUZNROQrMC6O43KW2gycCmoFz+PudZUpP1QgzeuUzgo/soB
+ yWbyXL0p
+ RrfQkgW3ypORMwlEsSRsCPYEgTrGMO4HAu7gmhgqhC+IIUziBN1kgXVOB5koxM7WWW/tVggk/k1+rdKTQc/z8cqD0+V17otsGNS7dlKhBOyMBmSn2/myHZ6QlgLqmFtsMJbXfXWlWllyBsOKl00zb4cEvWt8YFvQ1ClIAMnAKMaSQ2wupsIX6mOAyW2aVYYV22LneGPjT98Nc1cyznbkjgHfY6c/yn+jO6MjGI/fiUXpnw6CGhhYmoeUuC0DvMO17l8CZ6z+5dMtWmM7WOC7rDGWpsm4etbcne8XxJDOqZ+znyDSUvhI7klBGmrhvwq4oRr6wSuAcvfWcaVKJfZmM1gRHcq4iCqneb0DtQdn0pKib/5LjBZ7Qq1tHtzenfuZxGO+beqRT1G+ef+2pflqLgoqc64Re0Qi3EyXab7qvaaYPzaNXfO0Gejb/NpkftKRvSrHRyRpGt1ybw5xT3AZUBdZ/jEjHQd3kWHKjMFCi1TO7TPHLskRWa0gEh8GUojoDgi8oqaZX5XLxFXB1oZ89DZ+hB8p8h728PeSpHqNq/cCsD5J/q//Qc50Oe3LAJolxWNxf91TZgmVIWfPFPx4ROk5Ug5dUGf9EUgJj/BA+CH08OD606xA9rym6NS49fzXsukwYH+tJLooDKeGfi7l1qe2HAnVLFVb0JoOiLuOqumQPK8fqIrVVRWlZg1NHnJvKE1bVbkMMKx/hzJAmJ22ClqwYiji51BcUxwqvKtZ5dXndqHEE/J41sxkgg8vs5rHxZWSlaDA62zljrhDCr8YneCos49DX6MU4g30YaW7/naemt2+tdZu+tqlYBt2dafoWGDrxaUTP/xIirBBUSumjR2HCoCx5SkSsW4mjH6Y1qyllqUPDTcaoyHuF2lO8ShLwmFP3ydlwJvVFSha39O+TGzTZ5Fe4I8lOBCCTIndOThKVldUeKyjAXhj2m/hpiLsfLSf8uSYVpoC+g1/9qa7Cu9MywYUD
+ VYFlzQ8c
+ XVPyK0iw3DdWlfvCnrZ93b3Hqpr8jNULkeBK6tYCgxDBviU2m7FLd12h27aWFzB5O2rxUNt7R+THFElNtEV6pDXh2sMLtewbe9cFe2DFv087wUsChcItVDdEVTLITqlzF4st8kODRohf6s4uysUutOUQ3MK9lCYNkDfvE0quZgYodkIFhhM5prX5BsIJ+yTd0XsQ72803UmPJqitmphQg2fntnRIKie/aIT/HRuqoQVGJxyQSXLO3abNitVrk5HZ2PveBj0sPrD3XlYAJxKQOUy1xhNX8IkVvxuzc/7DUT6Hr8CQZm7XlI00V/w/iIWhf1SRTj2V8I7f8xQU8/2tTbwumokN13dcuCdBx8DUi9mnhy5sGchS/g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -80,173 +222,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-xas_alloc() sets node->offset only when the new node has a parent.  A
-root node, allocated by xas_create() for an empty array or by
-xas_expand() when the tree grows, keeps the offset its slab object had
-before: radix_tree_node_cachep has a constructor, so the slab does not
-clear the object, and radix_tree_node_rcu_free() only clears the slots
-and marks.  A node freed from slot N of its parent comes back as a root
-with offset N.
+On 10/9/26 20:04, Lorenzo Stoakes (ARM) wrote:
+> This determines whether a VMA cannot be expanded or merged because what
+> they mapped was determined to be a set size at mmap time.
+> 
+> This typically refers to mappings not managed by core mm, however
+> VMA_DONTEXPAND_BIT
+> is not reliably set alongside VMA_PFNMAP_BIT or VMA_MIXEDMAP_BIT, so we
+> must explicitly test for this for now.
+> 
+> We also explicitly test for VMA_PFNMAP_BIT as VMA_DONTEXPAND_BIT may not be
+> set for VMA_PFNMAP_BIT's despite the one implying the other.
+> 
+> Use this predicate in vma_flags_can_merge() and in check_prep_vma() in the
+> mremap logic testing to see if mremap() can expand the VMA. The criteria
+> for khugepaged and MADV_COLLAPSE eligibility in
+> __thp_vma_allowable_orders() are precisely those for mergeability, so use
+> vma_can_merge() there (with an expanded comment).
+> 
+> This obviates the need for the VM_NO_KHUGEPAGED mask, so remove it.
+> 
+> Hugetlb VMAs remain excluded from khugepaged as hugetlbfs always sets
+> VMA_DONTEXPAND_BIT.
 
-xas_expand() stores 0 to the old root's offset just before publishing it
-as slot 0 of the new root, so the value is right once the expansion is
-visible, but an RCU walker can see the old value.  The iterators climb
-out of a node with
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-	xas->xa_offset = xas->xa_node->offset + 1;
-	xas->xa_node = xa_parent(xas->xa, xas->xa_node);
-
-(xas_find(), xas_find_marked() and __xas_next(); __xas_prev() uses
-"- 1").  A walker under rcu_read_lock() that reaches the end of the root
-while another thread expands the tree can load the stale offset before
-xas_expand() clears it and the parent pointer after xas_expand() sets
-it.  No reordering is needed: the two loads only have to straddle the
-two stores.  The walker then continues in the new root at slot
-(stale offset + 1) while xa_index is the first index of slot 1.  If that
-slot is populated by then (for example by the store that caused the
-expansion), the walker returns its entry with the wrong index.  With a
-root covering 0-63 and a stale offset of 5, xa_for_each() that runs
-concurrently with xa_store(xa, 384, p) can report p at index 64, and
-then again at 384; xa_find() stores the wrong index in *indexp.  Any
-entries in slots 1..5 of the new root are skipped.
-
-The radix tree's radix_tree_node_alloc() always sets the offset, and
-radix_tree_extend() passes 0 for a new root.  xas_alloc() dropped this
-for root nodes when the XArray was introduced.
-
-Set the offset of a node allocated without a parent to 0.  A node's
-offset then never changes while readers can see it: a child's offset is
-set before the node is published, xas_expand()'s store to the old root
-writes the value it already has, and the root that xas_shrink() leaves
-behind was the child in slot 0.  A walker climbing out of a root
-continues at slot 1 whichever parent pointer it loads.
-
-The new test frees two nodes with non-zero offsets and checks that the
-roots created by xas_create() and xas_expand() have offset 0.  Its
-checks use a new XA_WARN_ON(), which warns and carries on, counted like
-XA_BUG_ON().  The test relies on the slab handing the freed nodes back;
-without this patch both checks fail in the userspace harness and in the
-self-test booted on x86_64 and riscv64 under QEMU.  The race itself has
-no deterministic test.
-
-Found while formally verifying the lockless XArray iterators against the
-kernel binary.
-
-Fixes: 58d6ea3085f2 ("xarray: Add XArray unconditional store operations")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
----
-
-Notes:
-    - The patch and its analysis were drafted with an LLM coding assistant
-      and then reviewed and tested as described here and in the commit
-      message.
-    
-    - Reproduction of the race (test build only, not part of this patch): in
-      tools/testing/radix-tree (XA_CHUNK_SHIFT 3), a hook between the two
-      loads of the climb in xas_find() runs the expanding store, i.e. the
-      writer runs after the walker loaded the root's offset and before it
-      loaded the parent.  The root was reallocated from a leaf freed at
-      offset 5.  Without this patch xa_for_each() prints "index 8 entry 48",
-      then "index 48 entry 48"; with it, only "index 48 entry 48".  Nothing
-      was reproduced without the injected hook: the window is two loads wide.
-    
- lib/test_xarray.c | 50 +++++++++++++++++++++++++++++++++++++++++++++++
- lib/xarray.c      |  2 ++
- 2 files changed, 52 insertions(+)
-
-diff --git a/lib/test_xarray.c b/lib/test_xarray.c
-index 5ca0aefee9aa..27988441e71c 100644
---- a/lib/test_xarray.c
-+++ b/lib/test_xarray.c
-@@ -32,6 +32,22 @@ void xa_dump(const struct xarray *xa) { }
- } while (0)
- #endif
- 
-+/*
-+ * Warn if @x holds and return whether it did, so that the caller can skip
-+ * checks which would not terminate or would not mean anything on the
-+ * broken state.  Counted with tests_run and tests_passed like the rest.
-+ */
-+#define XA_WARN_ON(xa, x) ({					\
-+	bool __failed = WARN_ON(x);				\
-+								\
-+	tests_run++;						\
-+	if (__failed)						\
-+		xa_dump(xa);					\
-+	else							\
-+		tests_passed++;					\
-+	__failed;						\
-+})
-+
- static void *xa_mk_index(unsigned long index)
- {
- 	return xa_mk_value(index & LONG_MAX);
-@@ -370,6 +386,39 @@ static noinline void check_xa_shrink(struct xarray *xa)
- 	}
- }
- 
-+static noinline void check_xa_root_offset(struct xarray *xa)
-+{
-+	DEFINE_XARRAY(tmp);
-+	struct xa_node *node;
-+
-+	/* Free two nodes with non-zero offsets so the slab can reuse them */
-+	xa_store_index(&tmp, 0, GFP_KERNEL);
-+	xa_store_index(&tmp, 5UL << XA_CHUNK_SHIFT, GFP_KERNEL);
-+	xa_store_index(&tmp, 6UL << XA_CHUNK_SHIFT, GFP_KERNEL);
-+	xa_store_index(&tmp, 7UL << XA_CHUNK_SHIFT, GFP_KERNEL);
-+	xa_erase_index(&tmp, 5UL << XA_CHUNK_SHIFT);
-+	xa_erase_index(&tmp, 6UL << XA_CHUNK_SHIFT);
-+	rcu_barrier();
-+
-+	/* A root created by xas_create() must have offset 0 */
-+	XA_WARN_ON(xa, xa_store_index(xa, 0, GFP_KERNEL));
-+	XA_WARN_ON(xa, xa_store_index(xa, 1, GFP_KERNEL));
-+	rcu_read_lock();
-+	node = xa_to_node(xa_head(xa));
-+	XA_WARN_ON(xa, node->offset != 0);
-+	rcu_read_unlock();
-+
-+	/* And so must a root created by xas_expand() */
-+	XA_WARN_ON(xa, xa_store_index(xa, XA_CHUNK_SIZE, GFP_KERNEL));
-+	rcu_read_lock();
-+	node = xa_to_node(xa_head(xa));
-+	XA_WARN_ON(xa, node->offset != 0);
-+	rcu_read_unlock();
-+
-+	xa_destroy(xa);
-+	xa_destroy(&tmp);
-+}
-+
- static noinline void check_insert(struct xarray *xa)
- {
- 	unsigned long i;
-@@ -2235,6 +2284,7 @@ static int xarray_checks(void)
- 	check_xa_load(&array);
- 	check_xa_mark(&array);
- 	check_xa_shrink(&array);
-+	check_xa_root_offset(&array);
- 	check_xas_erase(&array);
- 	check_insert(&array);
- 	check_cmpxchg(&array);
-diff --git a/lib/xarray.c b/lib/xarray.c
-index bfe7bef80f34..720d46e8b14a 100644
---- a/lib/xarray.c
-+++ b/lib/xarray.c
-@@ -387,6 +387,8 @@ static void *xas_alloc(struct xa_state *xas, unsigned int shift)
- 		parent->count++;
- 		XA_NODE_BUG_ON(node, parent->count > XA_CHUNK_SIZE);
- 		xas_update(xas, parent);
-+	} else {
-+		node->offset = 0;
- 	}
- 	XA_NODE_BUG_ON(node, shift > BITS_PER_LONG);
- 	XA_NODE_BUG_ON(node, !list_empty(&node->private_list));
-
-base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
 -- 
-2.53.0
+Cheers,
 
+David
 
