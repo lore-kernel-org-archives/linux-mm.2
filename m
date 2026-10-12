@@ -4,149 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DC32CA9ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 14:11:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 261F3CA9ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 14:11:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25BA56B009E; Mon, 12 Oct 2026 10:11:26 -0400 (EDT)
+	id 36C686B009F; Mon, 12 Oct 2026 10:11:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 233DB6B009F; Mon, 12 Oct 2026 10:11:26 -0400 (EDT)
+	id 349AD6B00A0; Mon, 12 Oct 2026 10:11:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 148EB6B00A0; Mon, 12 Oct 2026 10:11:26 -0400 (EDT)
+	id 232BB6B00A1; Mon, 12 Oct 2026 10:11:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E02636B009E
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:11:25 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77CB2A0DEB
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:11:25 +0000 (UTC)
-X-FDA: 85314161730.06.D2B100C
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 792CE180003
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:11:23 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BqW8+6FO;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of ackerleytng@google.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791814283;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F01B86B009F
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:11:29 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8286D1C487C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:11:29 +0000 (UTC)
+X-FDA: 85314161898.07.2B3EC33
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B573A4000E
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:11:26 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Q/ItDqlP";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LRIAU1qp;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Q/ItDqlP";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LRIAU1qp;
+	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791814287;
+	b=x0dpzCH/Z1VCMCTeJMW+acEQVBaq7S5IxX9Kg5PDGYrxKk1XhjTtgSKa89i0iC//mEJr6N
+	X67l99PKQe1CEYs/g73VOP0cEk9iTthT4SwInm/swK/fWVK7wNlC0s3ZOjZ976c48MjpJs
+	LItIKIlRjWqAhScczwE9hzveb19It9Q=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Q/ItDqlP";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LRIAU1qp;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Q/ItDqlP";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LRIAU1qp;
+	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791814287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K2I843zxPr9lME1nSEmz+NsS/OxECT+sAh7A1cwprg8=;
-	b=B4OKBcY8gd/CvQWqp9WGVY0PAa3ONcN+YpSaWMtlBaukQdiVYOeU9N7X3vS/DvOgRxvLgh
-	bR63jGZZqh4In0ze2WgPfYG4u/63z1xDFdtFoGcJ2egox+N+pn2je4E9cyJx0Kd2g/GTKx
-	8aHNBbh1cXC1hL9/+JLo40L2h3bl2Lc=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BqW8+6FO;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of ackerleytng@google.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791814283;
-	b=FA8sNSQTEK2WT99AGYNRaAIkWIAU6x4sBfw9e1Vcn99GU/c62XzJ6gFCo9howByzDajL9x
-	kcn0shZJ9y7NJXqvxSjjkql7Ed02erEtQxST88dHgFzrgdUap4HCywMFeElCwcvV/s1tHi
-	YViN7T50aHZJg7PzmUmPQzEfXAjoWTE=
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-91986c5cb75so26065906d6.0
-        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:11:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791814282; cv=none;
-        d=google.com; s=arc-20260327;
-        b=o67LeMbT5kfgmMyCHUH849dyXUY2VLdJFGvquUECALWX0T57Vjxta6eoLh2VR8diQg
-         lQFE6Ij2mooDbG0sHVG0m6jktYVwQabfQHDJGrOmNS0dJfC/hgQp+Q34kvqhpHrPJ33g
-         EYcNXQZpC3J+WUc0hz406HcLRTFyMp84nHPd+oPOtHWXFkG7MzIaQJtIs2OWrtpCSNfm
-         U7YpjIzUPt8gy0PAcJO9Jrvoqw1mdWYBxbpU7kwyaowdNcofkzUTIoeUH3CEOo+myPBB
-         VXs7NL0G6Y0VkWw1kOvMcnR1pCZzKef4tAJ/MHOBKjSOKDFmJDFS8Ey6SOBpaqJod87w
-         JTNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=K2I843zxPr9lME1nSEmz+NsS/OxECT+sAh7A1cwprg8=;
-        fh=Gep+1jWKg70MEFhv/7Vh4qswi8BH92lV2QGIVgy8nLg=;
-        b=jbLDh8b/A3XKi8UvLJneUNOiSVT6DeGApOXbEgDRaICWcmDDxuWjuS9I6DsUMtNA2+
-         m6zxUBvBYxcdF5XMQmwoBMEW81P8tnXn/pp7f9Y48AsWjBMDOy+BHQvZOp3uVNVei9po
-         o5+ifQk6nvJCeVru2eqYW6PHkL3b66zNYQvrc/17uHuDknXs5ZNmi5PK0yyfreL+96fC
-         Ht5kHZD2L6rw01sCsWlOB20negtgUVUAF47OoKMmNPKhvygbYKN5QPnL7vgAvPfU1C6q
-         RfMikDm9WCVrhIDVDjN33J9tWpJBX5gdyAKgkt7usQFIBxBkKj6tl4s2umofkK/le7R0
-         1JqQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791814282; x=1792419082; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K2I843zxPr9lME1nSEmz+NsS/OxECT+sAh7A1cwprg8=;
-        b=BqW8+6FObkK2KbVCEREVEoGtXGaqbO6CdkxnAySK3CxRNX6nm771ujEediX3Wf6Csb
-         JKfmyxb5nqpNSbxJReZocdjACWLnM4c66gvGnrIGPZS9ZJaSafEQKtSz7xO5UXsyv0v2
-         zs2J3r4C04lJWHozScyHT/QudfiWL8iUwRGEhvdnaF5FM89aplZwPRpQbRzXQap7bgFu
-         ytqyP71RypIc9jhTMQm2k47FOWnvRGNZBfXLNP8U4T3Yh+VgS1BzomHKYGvRO7jsJbRp
-         qs5p+y8UW6DHvPUN/gRBOQtR9rM9e2WMr11G12ZHw/n3rtfMwMAf4vtwzm6kBYpaK9G1
-         u4hQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791814282; x=1792419082;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=K2I843zxPr9lME1nSEmz+NsS/OxECT+sAh7A1cwprg8=;
-        b=C4lvXqVRys1KIIvcQHJxGpu7fe7Rfkt396Y/LePN9J42rsYj0sbAYQer/Jv1zlsrvf
-         tsDR8cmFq0uVriOvuyJRqfFgA7YlLyUj9g/NCwJg+Tp/JUiLD1cvhqSbrWTIZwKlApHt
-         VDpO9RHq12jNwyTTpf+WjRWhYoRd3sOy9CTw75TPPLAKCKapp8X5HelXylNvd6PEcFoP
-         lVe/JBhHpS/aju6zjP/E/3qocaQhqeudbqwYxEkevkyDs4W7cN86TeVHqlg08vE9NGAr
-         riguIrwRsrvKmvbMHVABzVtLG6Mm5dEzZRyB8NwZUeP79IU0mu17RpnnLUzy3oJyRgVM
-         2xng==
-X-Forwarded-Encrypted: i=1; AKwUvBw3tODNKgUBB018YvrWJwwULjIFQA8++b3R5NpuAAoP5Slu0ZhFDpywCfebR8Uo9fEQ09XG/MBwNw==@kvack.org
-X-Gm-Message-State: AFq9FYJ3s93S+knrBuA6RNl2kfTVG6dpJhO5tYUod0RmytuGyIno4NXp
-	2VmkHTYZh2GP32zwPstOQyey0ZEbwi7XGjZupyhd0c+QS65o9nNpkkGc8WgXzWnu3mrm3tZr7E/
-	BKwZRRGbQdw+4bqzHWhXIC1Jnh039QhuRbrwenm76
-X-Gm-Gg: AYBFou2cYwPOSDh2fyRzzVgYbOSEHSrZZ9pmPPIr3/WdJ1qCpsyYFj6IsYxvQSidgFE
-	BQIo4/YK3dfUcG9KpJNFOKkIc+fTFdUoFMDz0f1YM2jys6KwWWAkGQIV77RTohhFd3Uv2q5xDMw
-	mFPsz9NTO9Y8ladrN0CcFBiQFoGff7nxiQTPX9e2zIjTHriBKAPidlrmdG69bt9f/XR2p1/uvqR
-	4Tdq0nBC+PdEvb3On3GEO+8mNCSoech0vo5EBHaLCOGdPZHeDSH55C60ctPEwMG/4zcUWOezEq0
-	sIKh4DjzUSitWiL9PbJitdqmcJeGq23XN0/Omx3+4TODWTrDYpD2rUuZFbPk1mT+BNQd53ksPPI
-	UMYAHPoAIAeY9tnS3iOWe
-X-Received: by 2002:a05:6214:23ca:b0:91b:8e83:e4b0 with SMTP id
- 6a1803df08f44-91b8e83f3b3mr19792736d6.20.1791814281518; Mon, 12 Oct 2026
- 07:11:21 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 12 Oct 2026 07:11:20 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 12 Oct 2026 07:11:20 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ar5iaaLcyz9dCXQI@gourry-fedora-PF4VCD3F>
-References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com> <ar5iaaLcyz9dCXQI@gourry-fedora-PF4VCD3F>
+	bh=DPswPjxS+qpu6i6zUA1Kx2e7xk6K1phiFUxlGK+8LzY=;
+	b=qYi94IQZZc1kBGTw/MMwNWRBad3Frw6YAoX+q6UH3GogdI5Fr9nePh+8ogSgQihtXoC7+z
+	3NQ9PYmXY0GySsEVc8FhhnvdorLOCLgIQNZHjCGKOWJIxPOOpmifmNN5MouW9kNN3ZCgtm
+	rDUzIlxOXk9f2ZjxuLIWaiKES/P+ENU=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id F38631F38C;
+	Mon, 12 Oct 2026 14:11:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1791814284; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DPswPjxS+qpu6i6zUA1Kx2e7xk6K1phiFUxlGK+8LzY=;
+	b=Q/ItDqlP4+w6WAkwfX1k0X6ujm7G5QavPCe48S224sz6BsucbPMJNtLmPOqv7Iw1sey5dp
+	HztsPyQnoX2GdkoGZJjnTzxEzFj1wb6Q9Ul4k04zOj38m0UWtk/PDuaFk9ML5xEJUxkqxc
+	qXo4ZqYGAGyU1KkQ1CnYcNqJ7pdJz+s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1791814284;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DPswPjxS+qpu6i6zUA1Kx2e7xk6K1phiFUxlGK+8LzY=;
+	b=LRIAU1qpo+jKKhvV0DnAfTof5Tws0j22vsCLRZkQC8mjOBkp6Z2hipd8JsI89ugai94uMv
+	zISIs3YOUTzdbABQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1791814284; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DPswPjxS+qpu6i6zUA1Kx2e7xk6K1phiFUxlGK+8LzY=;
+	b=Q/ItDqlP4+w6WAkwfX1k0X6ujm7G5QavPCe48S224sz6BsucbPMJNtLmPOqv7Iw1sey5dp
+	HztsPyQnoX2GdkoGZJjnTzxEzFj1wb6Q9Ul4k04zOj38m0UWtk/PDuaFk9ML5xEJUxkqxc
+	qXo4ZqYGAGyU1KkQ1CnYcNqJ7pdJz+s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1791814284;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DPswPjxS+qpu6i6zUA1Kx2e7xk6K1phiFUxlGK+8LzY=;
+	b=LRIAU1qpo+jKKhvV0DnAfTof5Tws0j22vsCLRZkQC8mjOBkp6Z2hipd8JsI89ugai94uMv
+	zISIs3YOUTzdbABQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CA4DB13314;
+	Mon, 12 Oct 2026 14:11:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id mJoYKYvqzGrFHwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 12 Oct 2026 14:11:23 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 55267A1407; Mon, 12 Oct 2026 16:11:23 +0200 (CEST)
+Date: Mon, 12 Oct 2026 16:11:23 +0200
+From: Jan Kara <jack@suse.cz>
+To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+Cc: axboe@kernel.dk, willy@infradead.org, jack@suse.cz, 
+	akpm@linux-foundation.org, linux-block@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzbot+e0624b5bf72b99131402@syzkaller.appspotmail.com
+Subject: Re: [PATCH v2] mm/filemap: annotate lockless reads of
+ mapping->nrpages
+Message-ID: <zzneb5ezerl2353crj7xzivjbpdv5vgvqqvxkbvg77nwhdmldn@fenjftsskl34>
+References: <20261012120636.16106-1-ngocthang2710.1999@gmail.com>
 MIME-Version: 1.0
-Date: Mon, 12 Oct 2026 07:11:20 -0700
-X-Gm-Features: AclHuK-GAlH1JSAYNCIS06aJZxJfvunIjbH1E5FXsRqa5lYNWWJsyEqAXZVZwzo
-Message-ID: <CAEvNRgFO5FUFwU2GEEbHogLmT+SXVu1asLe5uzvRte2jqXthUg@mail.gmail.com>
-Subject: Re: [PATCH RFC 00/17] Allow guest_memfd to be created using a
- resource (pool) fd
-To: Gregory Price <gourry@gourry.net>
-Cc: Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Shuah Khan <shuah@kernel.org>, vannapurve@google.com, erdemaktas@google.com, 
-	jxgao@google.com, rientjes@google.com, fvdl@google.com, jthoughton@google.com, 
-	tarunsahu@google.com, pratyush@kernel.org, fuad.tabba@linux.dev, 
-	David Woodhouse <dwmw2@infradead.org>, yan.y.zhao@intel.com, michael.roth@amd.com, 
-	suzuki.poulose@arm.com, Christian Brauner <brauner@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Nicolin Chen <nicolinc@nvidia.com>, Xu Yilun <yilun.xu@linux.intel.com>, aik@amd.com, 
-	aneesh.kumar@kernel.org, Vlastimil Babka <vbabka@kernel.org>, kernel-team@android.com, 
-	kernel-team@meta.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 792CE180003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261012120636.16106-1-ngocthang2710.1999@gmail.com>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Stat-Signature: ib58sa7ug1hu3atcbfm5hghm3gost16m
-X-HE-Tag: 1791814283-21392
-X-HE-Meta: U2FsdGVkX198t7Bo+i982892/+dXE1V5blu9t0XSZUDf/cibaBYW0N6N02zT1+qBDI3ygtQzej4QHibM9uggss6EPDmEZDQdyh5n4bsKZEgDOCNPSKcYeMiruhfc3makuo9SARMR51HgYSh/GPYJ2+yFpWoSk4ebDjYZ/XL/qw2Opap4K5JcfPjPm768Ibl53wUj3opeDLxqjq0045rY8f3WYBw4AGnwVh7HucoAGbCZeEtKNwo65PsH0/NyD1zQFpg3rtE1DtEW5lo6srZM0ZjVCEiWTQcBhUlTIWEtIMozm/bdxgqNtYO9mudwwkaQk8q593DRWG1o2ynrCqCnQf+qp9wgmypIuWPW8CEOcTlvs9k0aAlHlIyuUcolc9O0G032zBg3E9f+0P1ks43QDJkyFumuU3ek6xR6GYtxequROsGO8FzkjnM6NoQC+R/Q6yBoisuxJLB8Un/mCRtNpULyPPASxfllVkGGqMmM2hK/rpKqSmk8zqDe8rRgobAu5ALvSN+ElA89jkW/X2mb1LWafccN4N4pJhPhp0jVIOWOGrUpu6qPbxFl9jxo0iBT/lNoE8O5MY95xBijn6DbxZgOomCXPY/lLqPlNWVVN1vDF9NAD6OWEa92XAIBgYd3P3OcB6QddU+fKZuh6A8M2eQbaH5HUkYMTSbW58ZvaOrD+/hTWDKAcIKRL7CFYP3OVZWlmIqsglVS7EbHhodxtJy+b+mKAonrlPpwA9VXZqizsJRsJMTPQjS6Z8DZvNzObdWPnPZz+ZySj+lLKX9ub8cerzirE63Tf8ypvAp0lxPklm369NNFXUtjymX6+EmNgBptiIbxCvIPzZaR36u4hptkIVS2TLleKS2osH7jYDeEF9ZqxHCw+uABbVcSKMewTzZb2b74BEHYrZU2yL5AfqyWquz0I01oSDXsDATvJG/89qpkukZ9gmcmy1WMLPvvmfKEiB0SZB1gp1LrU2D
- 6BCHpoen
- rqS82oEoZ+ImmBzEXPmxWB1Q1RHaGDXXYBvClHJKtF+Xm++jXKwapa+ZkILuqMCFeLAikRFnV/nmWNXuIKT1Hhhm6VKE7KxgKuBWmF7+OVpmU1IrAPwppKrZ18vmWhW4V4MBySi6HjH3y3KsHV8Cd+RtZLu8qNapTATLI9emeamhfHSWPiv+mbpH9+Bc9XQxI4YIHArxvP+dgJ6fhO38WTI8kiV/XyHZ3OoBmQR3e3AbB/M3sq2KyHn2uIRnem1LJad9rffWKKPYy1nILBc9nrieE+E6nXsYcTPt+hOfsLYH7BluMWGi4BOP/mLSI00qV8y21yULIL5maMJ4XRqCGeXtcdC+Wvj7YqsTVb8OFVLM8m/9TSDZY43M1LzXbUoaWm9wVoiHlBsiwQB4OvKDYNLCEfipe9XrGWvVkWx6w+ASsgQFddl6Gs1AfTyFRXzn38qJn1G9ldPzyy0txGnyeC0BTlg==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B573A4000E
+X-Stat-Signature: ax9o685w1h4tbdjhc8w6a79typt9e3s3
+X-HE-Tag: 1791814286-746524
+X-HE-Meta: U2FsdGVkX1+UCel/KHr12KBHPjCdLprbuYSxSZ6Rb3ouCfolHJCUxc4LkqozcaF9BwTWVyowaowsodn2yOXnwGAZi7R8CrfsJHkdfbA11WQmRMsDnzurMkYMLpLC2Xf3ZLW52EG9TGF51iL2I1QkFV5lMlPb6LknA2enuNgMga4flcoWWd6SNSFSCTHzQ7YxufVeoJvhfAzC6v1PNL2tjP7mQCiFATYYvF09kCIfjJl+ZIxhvGtPy+DR3OssCJUwScBJ/jD4WFRn1ztPDevMm3oMqDNKzPGCkMBwOBqbxRoNj74+t2Df372PUuyBxn4uvNUltwIovDsa0sKsmx95a9inqd42I+7nqDqROr/pMhXCetZzpci+eNF/HmJVoqFAGYCVCOXH1fK1IDb75tM0HK5/Dx5m8YGZGtl7tX8DOXSKnqrw5cGinofxGLbl+baxKRxlb3eHvoBq2KnpsNmNknrf4Isf9G7zxNhyZ7qN3E17dHrKAxGi/Z8wjo1EMzYq0FeGQ4Kl9gYuk+s8d6Zhj0BC+pHqA3j8SIoMGf3kw5MED4iEZpCCKAqfrXRV2sOWW966K4a8dkkBSqDYUZRnByGahFnnWAzJJvZrxNJ51Gsr9VZ2s2ZLmlaYDWB26O+72dFiRubk7HISoc8r46/0Y8YYcnHLj9Oeng05zrEHhYYBB1uCUOED8ksHYkOjiiEtxXrI6QGc9eHuBRHjrAjA4unyZYA+voojRdeEctmIC/D0DqZeqq+wpGNNahONy4wckzwxCV7xPmKLLFxzeuDME+4Q0QJ3o90vPq3jZfzn4Mwwj6DHCzfN/SSpwL02CAI/nBA6N9ZLaKI+T7hgHR/oyOOUnMpyq0S2h9kXWqwGmrKV1A/+osw3nRgd8XyF2SVW1Qg7nJ71IY2NoPN25Pk7E7LhoZXLj1qxav6eZN/4gqfrZro1B8T6KAQjEkl6hMPrEQk8rHrNNvFIBad0eSy
+ DYk8mE0Y
+ 3X0Fy/oR/nTJExSoKup+G/jXVbIGmUhP4z6iRUvrSQHYyY8Yy8FrKK6DM+Nqd8sFwqiU2DyrZtkDPltFX1no7FX3aKCAbjxDkKof9W5XHfZJlqko97gz/QWP/9tagDMXp71ytJTjYY0PyiRyiZaLYQlQZIyetv5nsA8HMIo3r9U9adxWGcBpMwW9pKeacUeh3rIx8A7RoVOtGqYEUrXJ/HOA7ql7M0smAkwMHeGrHPcRtc+JJyz4lcbkJqFjo+gPhdw9l8bE+b++NrIcLsLacoypG5QTE71rqALB0OAxPrP9qaf1oxPu8LPeE++qATUj4H1Fmuz55gl/335+RBi4spaXXCv5oLH8WkaD1VK5Q8Wzt3lppDDbbWEKTGmc43SCM7uFLXWZLmr5ETHXd81kCuFBw/YloN/FvzpaVeo4XLf+jFfScnztCWI//npLfA/eo7nT6QwuapAEKRiKsUx88K5Ad276aZqPKKRJtVbEs/nCDzd2VANPvsUSMGIQtCbl0iHuF4/3CzdNIoUXk+TdPqcFlZm+3rnC+IvXFRcUqwhLAbNz1cG5CW/eytr0BVV/h5RKnGizTU6maNSatTJx37qbPBWG7/w6kDtTXO51d88wiB2g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,51 +135,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Gregory Price <gourry@gourry.net> writes:
+On Mon 12-10-26 19:06:36, Nguyen Ngoc Thang wrote:
+> mapping->nrpages is updated under the i_pages lock but is read locklessly
+> as a cheap "anything cached?" hint, e.g. in invalidate_bdev() and
+> mapping_needs_writeback(). KCSAN reports the race:
+> 
+>   BUG: KCSAN: data-race in __filemap_add_folio / invalidate_bdev
+> 
+>   read-write to 0xffff8881004c4178 of 8 bytes by task 3600 on cpu 0:
+>    __filemap_add_folio+0x6b7/0x910 mm/filemap.c:919
+>    filemap_add_folio+0x1cd/0x380
+>    page_cache_ra_unbounded+0x1a4/0x3a0
+>    ...
+>    blkdev_read_iter+0x21e/0x2d0
+>   read to 0xffff8881004c4178 of 8 bytes by task 3601 on cpu 1:
+>    invalidate_bdev+0x25/0x70 block/bdev.c:98
+>    ext4_fill_super+0x2ccb/0x37b0
+> 
+> The same counter also races with filemap_write_and_wait_range() through
+> mapping_needs_writeback().
+> 
+> The race is benign: a stale value only makes the caller do or skip a
+> harmless invalidate/flush pass. Mark the two lockless readers with
+> data_race().
+> 
+> Reported-by: syzbot+e0624b5bf72b99131402@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=e0624b5bf72b99131402
+> Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
 
-> On Fri, Sep 25, 2026 at 05:50:47PM -0700, Ackerley Tng wrote:
->> + e.g. for tmpfs,
->>     + Use mount page size.
->>     + Respect mount size limits.
->>     + Use guest_memfd mpol and fall back to mount mpol.
->>         + Gregory, now you can set mpol upfront on a mount! [3])
->
-> I haven't had time to quite give this the read it deserves yet (have
-> been traveling this past week), but I think this mpol/mount issue can
-> be solved with a new dax driver (which maybe provides this provider
-> interface) without needing to involve numa policy at all.
->
-> Essentially
->
-> fd = open("/dev/cxl_dev", ...); /* backed by anondax driver */
->
-> then later when a fault on that fd happens, the driver provides an
-> anon-memory allocation that explicitly requests the node associated
-> with that device - as opposed to trying to jam this into mempolicy.
->
-> If you're planning to be at LPC, happy to discuss this in person, but I
-> think this provider pattern is likely much cleaner without mempolicy at
-> all if you can just make the provider do that allocation path for you.
->
+...
 
-Nice meeting you at LPC :)
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 00fd89cf6f55..4c9d98efb7fb 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -631,7 +631,8 @@ EXPORT_SYMBOL(filemap_fdatawait_keep_errors);
+>  /* Returns true if writeback might be needed or already in progress. */
+>  static bool mapping_needs_writeback(struct address_space *mapping)
+>  {
+> -	return mapping->nrpages;
+> +	/* Lockless hint; a stale value is harmless */
+> +	return data_race(mapping->nrpages);
+>  }
 
-I agree with you, I don't mean to require some kind of mempolicy setup
-for every provider.
+Rather than annotating inside mapping_needs_writeback() it would be more
+future-proof to annotate the two callers of mapping_needs_writeback(). Just
+in case some user which require reliable answer appears in the future...
 
-IIUC you're saying the entire /dev/cxl_dev is some fixed NUMA node, any
-allocations from /dev/cxl_dev is from that NUMA node?
-
-In that case, if /dev/cxl_dev is used with guest_memfd, guest_memfd's
-configured mpol, as in kvm_gmem_set_policy [1], just can't apply
-then. /dev/cxl_dev fully controls where the memory is allocated.
-
-On traditional mounts like HugeTLBfs or tmpfs mounts where the mount
-config supports mpol definitions, we first apply guest_memfd's
-configured mpol, and fallback to the mount's policy if there was no
-configured mpol for guest_memfd.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/virt/kvm/guest_memfd.c#n400
-
-> ~Gregory
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
