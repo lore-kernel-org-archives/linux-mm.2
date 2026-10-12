@@ -4,88 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AA7DCA9EC5
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 14:09:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89766CA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 14:09:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27ECC6B0095; Mon, 12 Oct 2026 10:09:37 -0400 (EDT)
+	id 760F56B0098; Mon, 12 Oct 2026 10:09:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22FBF6B0098; Mon, 12 Oct 2026 10:09:37 -0400 (EDT)
+	id 739626B0099; Mon, 12 Oct 2026 10:09:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 146456B0099; Mon, 12 Oct 2026 10:09:37 -0400 (EDT)
+	id 64EB26B009B; Mon, 12 Oct 2026 10:09:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E314F6B0095
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:09:36 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5B5DBA7B4A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:09:36 +0000 (UTC)
-X-FDA: 85314157152.04.29602A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BED9440005
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:09:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GhSiL6f7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791814174;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 486886B0098
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:09:40 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D4F68160EE5
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:09:39 +0000 (UTC)
+X-FDA: 85314157278.17.93238B5
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf31.hostedemail.com (Postfix) with ESMTP id EE15A2000A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:09:37 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=D9fb4B3w;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of tjmercier@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791814178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WWaKYNS38cf3h2PFrUgpkP3ZJlOHalNpgeeuEBtJF3w=;
-	b=mURbsC/JuYfV3B+MGC/pSytgBZw0KWTLd/lQn0IsPuFQQaEVFmbhQGFaUQslTFmtoPtcuq
-	nu10rbOHZpVREy84hFFzhfd9jfZ/iE8Tfo8+C0lorjHadtoIvF7q967RNBYH5A0uDoZgAO
-	0X65KN8+Fi1DITGXDdVJRSHxFl8XbFE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GhSiL6f7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791814174;
-	b=mf/OP79MAKsFF9ffy54+Bc0amNhIr9Xwm5yMK5jLVfatPEeFPAz2mJcVlQKLBLaanRmWhS
-	rSr5cFN/6DxJs5SgTy6A/bEfeFGIR5qMsedIgKkmqVnzkgFqxwH3LpssOXTFycNpR8sRCg
-	MUIW8A739ok+WbpjYgzykZGq8D84TYw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C965943CF4;
-	Mon, 12 Oct 2026 14:09:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684B61F0089B;
-	Mon, 12 Oct 2026 14:09:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791814173;
-	bh=WWaKYNS38cf3h2PFrUgpkP3ZJlOHalNpgeeuEBtJF3w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GhSiL6f7O/lxsNHIi3zTK1pAe0yMcZJ5vSaTqQ4A6yHzNoSf42+s/LiKyUyFigv3L
-	 YADCClytFTIOxu2FTn/4sR3XQIPpzSWdLy+ixhBq7vLs5EB5I5W30qCU4o2fIzP3cd
-	 f8Hy2aXXnc4xXyH3XAkOX1YfRDzd9pFcnPU3bGQuBeqsqmYlRDPc/d1U/8is/5DqwV
-	 vEq+EhYwnvl3pUnQTeLNmkvF1W3c2PUgCuanjh70jzRS4/fiDFDT/LdW5D+3naCDxx
-	 yLr7Yddkb0tkcg7nMW3OXDnTMwaLpq5Xc1BuGJuwhiFBlAUG6mwmhzo6bVhDuQtN+f
-	 w0hWp94pc1ybg==
-Date: Mon, 12 Oct 2026 15:09:31 +0100
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Sang-Heon Jeon <ekffu200098@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Hao Li <hao.li@linux.dev>, linux-mm@kvack.org, 
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [PATCH v2] mm/slub: clamp slab_min_order to MAX_PAGE_ORDER
-Message-ID: <aszp31zqP607YL18@thinkstation>
-References: <20261011014841.405327-1-ekffu200098@gmail.com>
- <5895ceec-df6a-4604-a7b9-8138212d786f@kernel.org>
+	bh=234EAT9IzNiTaPSt/Xe9A57JM4OoTLyfezE2eXJPMhQ=;
+	b=gM02jmBS3k2COlNCKPpmpL8fa9AWraOwlcLg9NJCBe3CrwxQUnmPY63xUjfDILgefbd/Sr
+	4OhTX1prWWTHXO2ksbiKa9xcodzKz67qu2YwYnInZWKz3z4/Doy0nvnF9tCC1rmzjf9Deh
+	ZfSaH/TaZLglbSwKxTpexnPiy6Wp+kM=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=D9fb4B3w;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of tjmercier@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791814178;
+	b=gdJN5A7rDXz0P5EM9/81/mCV3lSW2o20VNxEyruqw5OhOnZScVOKRseOBZcFHEBRBVUO6y
+	rEpBA6TNWY2h2b3whZud9rlfKumYIX7rcWVjmEsBbZCxH5Nl9+gylxH+wTu5rVjyAhhE5b
+	dNIDUnB7LfEbTWOVpOMNq5zO1uxlKvY=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5337c7b9937so385581cf.0
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:09:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791814177; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jsHC3Rb82nijsAzTNYw72cxt66+zXdO5UVFo70NjLFoyCdGvwNGZayLkxc0OH/O+93
+         IK916HnorhwuXF89Ld0/uBc/TIMIEM+pdXu9i7Kv0x9ClufS0J2hQuVOLLxC5Vfw4t02
+         a8f1OaGNUggbZFnHhXu2NGSgg8cVjKLrOChHh3HGjdC79DDYg24XQuhkiCsyquGTZIYC
+         qQY46DCS0/JxcZp51mfzkks2mpZMlFU3QE/ZffIu53Uhud8AnsB3gIeINAlc7CZD7kjq
+         STHEYt+MTyC4d+0LieYPWu44i84EsKp6ioRv84wjwS+v4d/9wsg6L9ZB/QkRZgRPSrNH
+         DrDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=234EAT9IzNiTaPSt/Xe9A57JM4OoTLyfezE2eXJPMhQ=;
+        fh=5Q6veCILYbxEoTvQotjHDZZk6Wq86SWNA3z7gBfKMYQ=;
+        b=dC6Kge63W+qcIawSt06BBKC929Uii9O/UNtSej68y35TtSA7Evod0KieBBJPlJBorF
+         bss7G+pE9dg5ojhLuJcDL990sASVV8NKK+5McLAwUbek3C+b9pbeo7PzWlzGo+GpTv9k
+         0IeGcW7WXwPm1bKyk9A8c4xqgTlDfHwa5wah3B11nGdGZq6N4aqbkApVTNRJv8T5teMo
+         b2liEq+MbgzP0UPgOUPluEZC+0CDtQ2FcGVWRd1uyviVF92E0nVkQWbab/nDkk6o5vid
+         GwpODEpAX/1g7q4SGfnVhuM0fjuXgKFYYDcmhg8xc0TLl8wPOue50M71UsQs5JFXWFTY
+         Ew7g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791814177; x=1792418977; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=234EAT9IzNiTaPSt/Xe9A57JM4OoTLyfezE2eXJPMhQ=;
+        b=D9fb4B3wZlIG5QSfJilvrEiRmIhqSZi/ux/5sfNaKfH1RhdBE0k8QH2PP5f43RPwWU
+         F5CQ7Iefk5kBjHuDsoMky/34YyJ/uQ+Dy5XYSRB75S/4Bl58dqtIxTuNQatcW2cheuX8
+         eX7AOyyVIHEUgMGO8nZVSoPNTEdfs26htIeD5iLd9N2r1CHl4srhWbTqdo0L/xb4oceL
+         TLMkaKji0F5b3fHo2/0GY19fj1LZzfkVWyLc6jszkMs+FqkReZo1xgiWoMQGhhEH/YG9
+         ZSC9cxn5ToutSKIGAZkqNW2XQLsPbalPzGKjfMJHyOypPmmlpNC2J1S/fBW470qcGixI
+         FZog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791814177; x=1792418977;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=234EAT9IzNiTaPSt/Xe9A57JM4OoTLyfezE2eXJPMhQ=;
+        b=F9vvIOujM6C8hwGvZ42LD5zrJ8xix194akdzGe7IFrxV0UXBC0WiAAf7y1Psce1E+h
+         833H4zLKDRFGbhcP2HqodcQk3x/UB2ETcJPFPZHkd7BAY2D5Ay5kZDChWkCL0ek+mwY/
+         4Iu3fH4b2OCkGMpcTBYNivkYFCNhJIl6jNOM37cjhpIoNpSyGx6UgS/f0cYArNUyA+6R
+         dTcAl/RWjzRoYsn+fzQ3o6w4aoy1oWg/Q8Dw9pQ8mvJb+h3FOHgGls+ktg+dU5TeWXRA
+         fjEE2p6bueKeskU6NyYqpJgYIg/ROiRtzkk7ZMBoqyBQdxw5gB6xx1S9FGog31LnQlf+
+         u8qA==
+X-Forwarded-Encrypted: i=1; AKwUvBwCYSFuh6adQFedoi6Nv7LhCtwcpd/LZoS2IyK0tuJSKJf3FyZFD2ghycL3zKpm45mQkhXYzPl0OA==@kvack.org
+X-Gm-Message-State: AFq9FYKkBGyNblFxdLQ04tI6UauIZAA0A0Afup3+8uqGJrEL82eRWREK
+	RxX56ZZGGEGpdp/HbUkXjdu9BbnbKJ0AZ64YGCRTAkLiUdsvtMGKpuQtddVJiFkxIfVGfmq6d+z
+	O2Zce2etXCB7Q/T8qMxgCxBz9ZaLC3Y9NLQCzK956
+X-Gm-Gg: AYBFou1YNnkQwbwg1ubHQmoORRjqgbaRYuhP34ZZuwRY0rWhGF3zFsEdVis1Q8wK8T5
+	eWdA78Q4ALOdTHcNGs8HkDIx6sxGcHCnJKaOfqIbtCoA4dkEZCnpaGjW4VGZcfptXQLlqnwW4jO
+	Zu7VrdjR/WX9BwZcTlMW1RWDvdixRWxH+tCE6inUWeMfPuGcpCGpbfXExOGpf/TjkyXvbHV1h4C
+	QciMG1F46s37jxjJRHPS3V5G5OyzexqGxGJ+9d5+glq+0B7tzH8HovOpM+k8G99X2UH38u7RbO+
+	LVv/1cAe3hoSkPSkwj3Tk18KGd4VQkhheZDClSGSIoQCU08wq9DNEjfH/rzAQ3gb/MCTQ0IZGW6
+	9KXKNNNONito=
+X-Received: by 2002:a05:622a:580c:b0:531:282:6560 with SMTP id
+ d75a77b69052e-535b4fbbfa8mr31251691cf.15.1791814176455; Mon, 12 Oct 2026
+ 07:09:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5895ceec-df6a-4604-a7b9-8138212d786f@kernel.org>
-X-Rspamd-Queue-Id: BED9440005
+References: <20261011223358.2327625-9-sashal@kernel.org>
+In-Reply-To: <20261011223358.2327625-9-sashal@kernel.org>
+From: "T.J. Mercier" <tjmercier@google.com>
+Date: Mon, 12 Oct 2026 07:09:21 -0700
+X-Gm-Features: AclHuK_P4xsv10L2lCkSOtMkvWLnLa5t9EHv_n5RaY8Tn_1YY4noJVhURld5zAc
+Message-ID: <CABdmKX3+V+kqgC8H3MHHsawkTYFb7ebJe8pO7uRS6-i4rijwNA@mail.gmail.com>
+Subject: Re: [PATCH] selftests: memcg: don't close an uninitialized fd
+To: Sasha Levin <sashal@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <shuah@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Amir Goldstein <amir73il@gmail.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EE15A2000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 3n7ncp4faz3tk79875udfb9r8wzj66q3
-X-HE-Tag: 1791814174-19366
-X-HE-Meta: U2FsdGVkX1/90Jr7bL7BF83eGfzMngS89gHCi0iK5dfq59d8r593vlvj5G2IBvi2m8gN4HgFq4bQRXNnMbAd83pHaNEdqTZJ8vjlRKUkot+iEfHAH957rRnixXrt3xR1W23PsS0zD9R18ZzxedlpvdPnzoGjgff9h75yZt7iPvqBVxmYrErQtE2APvuNf2dXBL/jV1S5itBdS1Is6Iev4keD1WLBta2VRM4Yt52kyjTI4vvO1cQapkCF42Jk5xo1SLJPErKF7sHyHk4diHQSbV9cmY2aER4I0Zs3glqVqxII2JnPTs7Gk0Crpl8SrwP81ASZxETy++WoAjiM0Q/nOefN1YSNRPWVfQeYYYkXFYqvZ+AqyI/drc0kYvbY/u8FMmaITId3pqhVP0lDgMbxYKCBZrjz1dJL5e7o1eW0CtsH+KFb1cYPJ1QVVVnbwO/5W2e/V9Cdq9bc7FXyp8+ZbfHCUTGX0T5YltKpiHc3LtuL8NijI0rUkBpIjvr4SguuhsMZdkRhU1i3krSU/nH/hOe/Q2aah+KWQSdx2rujw61IEavciGGncxPR05LZ+1ErhMykTEjjssIS2pgl6qWd2T0zJQSw67LlemqRubeKjqDMNAig3cJxhoqznhBpOfjuUzsG04ys8VKRfs65Jz+sOXNksmnONNbYW7UzMM2ktkS/zrBCaX78ySTgZpnc+jdF5iBbImK3YCQaDQYW0vhj0jvMTwkYzoUOQzudH+OdfHlQoF/5BZSHwSUMQsQ5vh1yqVoZDEL55RLk//bW9cZGBPz4GR5/vgC1QVx3BanSIbDcCjVvkwO2JyRzm71gmIqU7AND83cnYh34/udTs0F/UafaeZZEFEE272BxTJ1pTvXO9fB55agoNBkCaS6yeJ6PNY6O8Q0v0virJkERkDqWXTPbJuNyBrkAKmHANe9Nwv2abH9bgrkzVCHZOoBQ985kC/h7xcDHw3gLnWJfSyh
- AKOp2b/f
- nyICgfoagkNDb0K95pkkdpXwI8Ant2JmhiJlGWA61ECHBLiH022ilo70RY/BqbE9LEMTdPrJjhYnNXgNB6eerNY+W0QXK/HHrtWbjFeg3uOX50T+qHhC9xHDnFo2oKuUOcN4mKIaupUSxvZ0rXO04wpsxMarjpI43IasVt/Za5RoGNXl3ljpdYx1osSNg5/jjuB0clk0tramDTLabwroarsBEWDKFNJADgr02wfW6LXKoIakJE4cYkv4aWyP82DWzuk4/RMoZ5qLBaGkZTjvs6l5//C5qx0t6IUVNFEvJpXMHUFTwBzUr1idl++HHJiozUHY1q4bXnfI/eyO8zUE+cVraqg==
+X-Stat-Signature: f855x4q71ooemppswzgwytszmjxhdgse
+X-HE-Tag: 1791814177-637993
+X-HE-Meta: U2FsdGVkX18J4QmeL1rWvj/7GzeadePWmId/R1qr0aX6Cijy74BVwQ7vve1CXalSqPr5qzKBTjpO8IIbQXvJwmUnbQrpKIBs/fd51dAGcLEwG43l460T8HVUkcKIXUMyVF/p67tuQyqtlXLXSjGMii9U1TFX8geVfINhn8CEOPTpkxH1K7gTcxHcEwSIyBzuhdvIlhgBmQtN6gHn2ORcb+RvU7Mr5WLu6dVLXFrrj6zt6lDhgO7McbqBBUZpQr4Ky1XAo+oV9bzsWARNgP7BN2L6A+e8iJ98Q2CUXi+By+uvMjv1u8afN4IqoHTRyID5viVVgZ+zXMxH/EocsmzMvy5hFniiSq6VH0eIlq1Pgb2MmSY+jJobpkdmLxvDCENRO896KfEevlQBQAZTJe0hJB/0Z6IJjGotx4nCGKf/x5hzuUTYQbGRo7yde7HZFIpNMe+SQK9b0qu8GJwOabX3XYNsNYoOqj0whg7EtlOcr/gQAh9XE6YvhxBeqZYhNxxBqscE7PK0h01++SpiGejauxTtcCO9WcK5JC0AtCXQ+TK3GiaebwuxOGWVUWdHMr/9mCbAKp8QkgQs35oryPftHgV9jGCGAXx9uY92YRRTeq5f2Opx11/TeHuhiiGx9UVRolSXdkj+7Mw1Zkzd2ZoX8Xx35UZ8ptX3TeZiO/Oz+l2BaXGbuNAb6PWv5597N/pYA8lDXunVZlMqJ6KaM9S74XaMUbg+tWuGR1299hrwXI9HPUzDtD1ipmUvOREn6/Eeb/dTD/kbS2vNiBjqW11afkH/FJKnlXr/TtEikw8q8Pya6sQROiRw5YRepX2s57HXaIw3oK1t9yhPxcBK6E1/VA6S9lNkzNjZlBvHYl/9aUAVYtuYR4uTy9WfM6tgzzgjZhBg8XklLXcWkzj5d+4kVsWIWoqPerxB1jbUastJ0i2bzV+5nVW0QMU1nBWPFF5KMRl+7k7Y6OokUYEAq4E
+ h+Xi6ryo
+ zPsp9JtTN+0mL1ymBG0WQ5YZ4b+0FuKw/Ix6om1Tcowfwp4YzpuRN+QtuSvIQA94GEBPShepbP7tEqJrRw8v6A+G5P0uf/ImLClBPVqGunmLiuKbW/nWQY8QNousyXKiZ0WU4GChV6LdsLWN+52KMWagP7vRyRIz/wZCvGDuCLHy6J472h25ARluR2vQvi4pwtqh3pWoOOt2fi8PvBp09O0jUcWwftMIGaKYmhPpMdF541FytC1hpnV8WjcO/82xwXozfcC0T8022gMk0ferseEwEXv0H9+Ushj0M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,34 +145,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 10:23:16AM +0200, Vlastimil Babka (SUSE) wrote:
-> On 10/11/26 03:48, Sang-Heon Jeon wrote:
-> > setup_slub_max_order() clamps slab_max_order to MAX_PAGE_ORDER, but
-> > setup_slub_min_order() has no such clamp.
-> > 
-> > The buddy allocator cannot allocate more than 2^MAX_PAGE_ORDER pages
-> > at once, so slab_min_order above it makes no sense.
-> > 
-> > If slab_min_order is set above MAX_PAGE_ORDER, it can even panic at
-> > boot or invoke undefined behavior in order_objects().
-> > 
-> > So clamp slab_min_order to MAX_PAGE_ORDER as well.
-> > 
-> > Fixes: 81819f0fc828 ("SLUB core")
-> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> 
-> Hi,
-> 
-> this is effectively part of my bigger refactor here:
+On Sun, Oct 11, 2026 at 3:34=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> test_memcg_inotify_delete_file() and test_memcg_inotify_delete_dir()
+> jump to cleanup before the inotify fd is created when cg_name() or
+> cg_create() fails, and cleanup then closes whatever fd holds:
+>
+>   test_memcontrol.c:1685:6: warning: variable 'fd' is used uninitialized =
+whenever 'if' condition is true [-Wsometimes-uninitialized]
+>
+> Initialize fd to -1.
+>
+> Fixes: 2de27980e1d46 ("selftests: memcg: Add tests for IN_DELETE_SELF and=
+ IN_IGNORED")
+> Assisted-by: LLM
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Ouch, I missed that point!
-
-> https://lore.kernel.org/linux-mm/20260923-slub_tiny_rework-v1-1-a0e66d536eb5@kernel.org/
-
-Looking forward to seeing further updates on this ...
-(and hopefully do more review)
-
--- 
-Cheers,
-Harry / Hyeonggon
+Reviewed-by: T.J. Mercier <tjmercier@google.com>
 
