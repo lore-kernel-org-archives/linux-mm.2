@@ -4,92 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15720CA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 11:04:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77F25CA9ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 11:08:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0394D6B0092; Mon, 12 Oct 2026 07:04:20 -0400 (EDT)
+	id 570CD6B008C; Mon, 12 Oct 2026 07:08:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2C246B0095; Mon, 12 Oct 2026 07:04:19 -0400 (EDT)
+	id 4FADC6B0095; Mon, 12 Oct 2026 07:08:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E43696B0096; Mon, 12 Oct 2026 07:04:19 -0400 (EDT)
+	id 3E9B56B0096; Mon, 12 Oct 2026 07:08:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C24776B0092
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:04:19 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7975EA0B58
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:04:18 +0000 (UTC)
-X-FDA: 85313690196.01.361207E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B278440010
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:04:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=F++r00nm;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf17.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791803056;
-	b=epgubXVPdli8dALhSSkJ0QSe0SmY3hpNnwWvI3iP82EPa0LOKpD5wKLhd+THQi5Mxqgzrw
-	8FaaEoipH3i4z6oHVhjvGfKMd6h6qhrqVWhUgyqbRbkmEDcCG11t1mcFwK0c0M4yRhgy+6
-	YdwjU7KxU9mwknXIl/XY8z21cOIahMY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=F++r00nm;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf17.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A7006B008C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:08:21 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B486A8A34
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:08:20 +0000 (UTC)
+X-FDA: 85313700360.15.F3438AA
+Received: from mta1.migadu.com (out-221.mta1.migadu.com [95.215.58.221])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7A6E1C0006
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:08:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=s6+84idP;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.221 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791803056;
+	s=arc-20220608; t=1791803298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R17cvAYx5n+2t7QO4oy03VUEubeAV3RNvz9xwe9MG9g=;
-	b=h8pk4brVxvPoXDx0lPoX4cERjyXTneq085wCLQpyHwL/4oUQXSZUiNoZO17uYtj4QQzJW/
-	IyVVNYQvyO1k/XLxRy8m3EX2WEW2fYey5VqnMgo2YGHt/takR4nBdTRDg6+PAnZ6MRRY+g
-	1hN6Ut4cJ3cbTb/NqswcHPNEnryvkS4=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F2BB1A00;
-	Mon, 12 Oct 2026 04:04:12 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 196FF3F882;
-	Mon, 12 Oct 2026 04:04:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791803055; bh=GCUhwqR9gUHDDQkSnLEoqzzvzh0xq7rUr9tQxJpA+Tk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F++r00nmSoucDHHIsuKWsEv8xVrypp0HtBNdtRJkDKmLkBuJP64zRrb/xJIShO22H
-	 uzo9MhZARvb/XeMwbi4x6xH3NT4IvmY4wF11YylB9B5Dtu48YuFY4E4Wms0ChMknp5
-	 vAcbnxdzzKSKleLIyoOeqv3IWqJ/z9HrDI5yVhac=
-Date: Mon, 12 Oct 2026 12:04:11 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH V3 1/4] arm64/mm: Use pmdp_get() for PMD accesses
-Message-ID: <asy-q5SBnrBQSadP@arm.com>
-References: <20260924062214.1635078-1-anshuman.khandual@arm.com>
- <20260924062214.1635078-2-anshuman.khandual@arm.com>
- <asPCv5Icdm7Z9mWF@arm.com>
- <lqjq64vw6mlm27kp6ffms6auerj67avecc4ongedouumsrspjh@2f2eblm7wi4u>
+	bh=2djdwnhVoocSdIQ6qzyT8zW0jyj1z8c8AqxxkoJcaKo=;
+	b=zqTbDi8KACUH0xLPm0MUTqQPlViY0yv+xH+OyCPtUOWNheL36vNtrPkazA36WcCqQizA3v
+	LexctJ5tbZfuyuU+n7Z41wnfBsvxcbwMK/DgBgxeZDEewUHakgKbEklNangUm5m313QIuE
+	YNZcmxoD0jLKrMP3M0yecXufK6BVH8Q=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=s6+84idP;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.221 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791803298;
+	b=tnoy1rUAPUQID8PnIBdURji4kAE8wQEIMlgPAopTt6304/MhHYeEgkQFBHcdaMb4ZpcUgM
+	JCl0rBEiA2Yjxaz+qTBxdPH4DNJWmc60EwzYfSbUEv3s29PKpQByaHTQZecCV3MURnSxl1
+	Gofx3peHejuxb0KDYPpAp3moiDl1CuM=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=GSrdr7mS12mhAPcQhPWfCq5PW4kV/MXU8Gl0USYX69k=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791803296; v=1; x=1792408096;
+ b=s6+84idPgY/Ya5g/Yba+NB5TW+mTwe7u66sYYprc0iHt6luMdY5ewIdGH3CZwILrKK2qzH/Q
+ Qmr6SyOBaFMvQiEb7NFyITg99qXoPH1mkyQUbmjCCLgk+aSbCmsi+U7hXdzU9qFMGTJYRsKOiOo
+ INBAi6YloKFqesZs1VMZD5xc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0d2ca05d90e48ec5;
+	Mon, 12 Oct 2026 11:08:16 +0000
+X-Mizu-Trace-ID: 0d2ca05d90e48ec5
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 12 Oct 2026 04:08:11 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Mingyu He <mingyu.he@shopee.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry@kernel.org>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, littleswimmingwhale@gmail.com
+Subject: Re: [PATCH] memcg: keep propagating stats updates to ancestors
+Message-ID: <asy_L2s1TNcN7bOK@linux.dev>
+References: <20260911032905.63683-1-mingyu.he@shopee.com>
+ <aqRXqcynCx88D2QK@linux.dev>
+ <CAAoBcuS=sqOAPFr9Gda9aTwuCMHMPzBMEee8qvPNHtNxrRWKuw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <lqjq64vw6mlm27kp6ffms6auerj67avecc4ongedouumsrspjh@2f2eblm7wi4u>
-X-Stat-Signature: k8hbztjqhaadcfqafgmf7adxta8xxqqj
+In-Reply-To: <CAAoBcuS=sqOAPFr9Gda9aTwuCMHMPzBMEee8qvPNHtNxrRWKuw@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B278440010
-X-HE-Tag: 1791803056-308164
-X-HE-Meta: U2FsdGVkX1/b6tgSgzw63bUx/dcnA9NCA8Szy00VUs3zPVP79ewTkICb6kqleNvJUp2WbiPPXvHi7EgSqmoDCqZBAHMkrkIPcgA8M3UqL8Jv8acHaAh+0SU4xO4a3ibsgSQaKpJNLZVMs69X6bd3v2P71tjbqPgI9opO+PsuGPngelt8X1Ps7p3fxojAPl8tkPH6Fi5dWPjLBE+tyiJtBQpCA7csIyOqRIQDwkFytnG5h5C8DlSf0vWcnpC0v+gzmlVLNwMoGFFL61GWEwIn/x8oqUJd/f6YXK4EApt4il63gO9XKHJF81k2OlhyQ0Fsv2GNasxfEhVSJ4MtZ0x5MbM8t2yP0l/Zs9m6rlbJWr21EqTlxZRBrwLejpMW9C3mQ/VDK/xuaA74QbkJqM8wrn7gZM7gLvoGYT6Ujof89fylaixE5TSPeqBQ2cElbWcVUwpYhGH+46rpisB2VzOPwWQ/vgMZemdzs6+cL8HJVP3jbxAFLTroXK1TxM6iybF+1D4/6Pe5nb3g3cMW2bWbm6bpE4bOi5/60YvnstL/aK1BqIRQgOaht6GRfDeAMw66XaeFAGdmKipp4VYl2x+Rx56yqGuLh6LFY2rSx7b6v7UcPuVkaacjLwa+Ta5FMsNbdhjKnvYJMXV+S6Zd0niEmjIiicsSTJLU6l+G22IIm0Rpghku51/lBH5j34b0RpfRHlVRNEnFDF6ASbPDgMMAimZYuehVGx6NrDumyFWkJEUaTAXq6iOVSFxEgZFqRhvkQ4mmF//7q2AItuoFvSXBmcYObXJFeM/gqz+Cg1XfnQ1H29gz4+UMgbQefpwzJpiwvbF4ynj30HA+aHUpdA5YOlj80Tozx5gNbX07ITxtqI3FBPnJaid5THe4b717ptbHS3gmhcFMEYRnIxNpov276c66saQgWXlh25yRy9Fi/x5lSdM0Yz7NYEgqgDeGDZ5SFsR22WsE3S8lkXyWS9X
- 3+NCEYIk
- gxqH/cwh8UUkCiQx9BvI440wBO9kYyr8v4yMC14oh5jPy/UpIgQSsajVhCzx6qr5vFGVSLxXvu0oov6xGFxJZ+e5wWrdukAgGtqIZGdMJ3qpker1CpDQwdDR0XwdfiQ9PL9biS9nqVo5Wz6wD7cfO82AP5aRhVm20ZJZnb+lFRdkJGEgDigdFi6kCUYHX+bMRnAmp6FuVxBb2gxELyI+i6EYWqyXJlKeSHo20NUTCeGv3OFfGIdBI1PfQiloKSCPiqd6mdPhtDvjh7etGUbIBFuUkYN0imh+JXpF8Ks8U6RJwI09A+PYeCukXaVyhFMllBuGUuo6Xpbx4sGBQFidLIh4UJlDD0mAYbr2IKULDY9aNa4U=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7A6E1C0006
+X-Stat-Signature: komfgr7p7a1kex8c81ppjah5dhdfz55k
+X-HE-Tag: 1791803298-753226
+X-HE-Meta: U2FsdGVkX18HwUG1RTIWP+qklUrzJiVUM/WK8uFPSal5mTZfhiIc+zlSrpNDqxGh40CroLd1Iddrl+GutvYlbiP7CbtcFUZ1qZ33ViY3Re/oXZMVoDxcP5DGh4T3oGlJ/5BI0YDQkl9bJlJB5QfoKKdyuNr65rJIu8QDZYM3E2Jguw3zluCgtXnYki8+zUYIi6WJq9koSAOK3U/wWxVNJwSJBPv6w+gbwlqrSj3nRQ3Zgn7kkHD3eJDwgyAzGL6ZbCAGyaomXz5fnWyOzGGrsxgM8Xds8JvcOTOtFDS10qFjOmPJVWJMGNgkKh4XSVxkhTNU/kpx7osmLNM7O722Dl0Qr/fhPgyDePGUy8eSwmWDQyiMn66uU9O2TpYr4dYBl2X3m9mQrNBjGTJenoYtxG/ws6lU1Dr7s9JzzDVnMvrjqtd/6f7fgKeupWCmcwyygkVJHCDfKWXbOukpcuIGpOSRoB5Wbtg+zEvS4FgJzU+vRGDwiHSjJbhOSkTPFoHaBSE2KWsTcEvDmIPrXf18JG7Ee9zwf96LEWPDEIA8mil6u0lxmmkBLdVr2TM5Jhu/piAmNYq0575MkjOaLt5G3kLcBWWfcuC/K827QEx17kah38iafumwJ9f+eRDL1/Nf4Ygk3+lY1qR6iIcV+s6ckHiwLpeQoymBBl4yDtCrR20Pkg9y4kBvJknmh9i6WCNQmfm4yw1UWmZ9p5ihEb99h9Gt3aq7MyQW65sVGu5wqQTaSGzC9NT9mHods7C3RPcVJHQBRxTruJKxxCppHDJu+BvBshB51iP18jAieGHO+swouw/tIcm5TkkfU5ZFLHopwaI3nI1yIlNdUTooG6yjxlsBznNb1W1Qb4dO/P6y19ix+wWbug+bsLBB/elVeZNjOeaSZhHdXkVwwFDRkl5lwuGNao9Y6upjNOkRMMTfl4BDPSAmHtriqM6o0OpMvAiX6/td9epW1I4tfzf75qb
+ 1l7VHP8s
+ EBgD4rlrrCzFBAODu046GLx6ocNi+OAgClDfNer2ZDvAqtAhxOMO8mmHfjcfTtPwWRwR4hWp6qoxkTEHfvp/5U06wU09qJJy9NAuYboDKS5FGz+/3I2cTNEh4CaRnIrXQakpANB3Yi5JXHvui1BA+RRmBViNVPW2SWJW2J3O1h6BSN6d49xwx7sRoA9uVnaIDXgYUJzMb/8Dcpf0j7pWCQayD6slOFZkMa3YkGkLWTfJL+Z2BqgRYjrOgYu5lCAFTTtP4p0zFieSoXk0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,68 +92,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 07, 2026 at 08:11:52AM +0530, Anshuman Khandual wrote:
-> On Mon, Oct 05, 2026 at 04:31:28PM +0100, Catalin Marinas wrote:
-> > On Thu, Sep 24, 2026 at 11:52:11AM +0530, Anshuman Khandual wrote:
-> > > diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> > > index 763c5a411d64..9ad2d03e86ad 100644
-> > > --- a/arch/arm64/include/asm/pgtable.h
-> > > +++ b/arch/arm64/include/asm/pgtable.h
-> > > @@ -84,6 +84,12 @@ static inline void arch_leave_lazy_mmu_mode(void)
-> > >  	arch_flush_lazy_mmu_mode();
-> > >  }
-> > >  
-> > > +#define pmdp_get pmdp_get
-> > > +static inline pmd_t pmdp_get(pmd_t *pmdp)
-> > > +{
-> > > +	return READ_ONCE(*pmdp);
-> > > +}
-> > 
-> > This is the same as the generic version. Does it need redefining?
+On Mon, Oct 12, 2026 at 04:17:46PM +0800, Mingyu He wrote:
+> Hi Shakeel,
 > 
-> Without this pmdp_get() override, replacing READ_ONCE() in pmdp_test_and_clear_young()
-> with pmdp_get() causes a build failure as pmpd_get() which is defined in the generic
-> pgtable header is not visible from inside platform specific pgtable header, even with
-> a forward declaration.
+>   This came from a reproducible workload with a custom in-kernel consumer,
+
+Please share your custom in-kernel consumer. Let's not make changes in the
+kernel for things which are not in upstreame kernel.
+
+[...]
 > 
-> Earlier had moved pmdp_test_and_clear_young() inside arch/arm64/mm/mmu.c to avoid the
-> above described dependency problem. But then realised that pmdp_get() gets eventually
-> overridden on arm64 platform for D128, why not just redefine here it now as standard
-> READ_ONCE() to avoid the current build problem and the code movement.
+>   Regarding the BPF interface, the implementation in the tree I found is:
 > 
-> Please find some context here from earlier discussions during V2.
-> 
-> https://lore.kernel.org/all/212067fe-1b16-4b87-87a7-4ce50847eb24@arm.com/
+>   __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
+>   {
+>           mem_cgroup_flush_stats(memcg);
 
-Thanks for link summary of the past discussion. I agree, for D128 we'll
-have to define our p*d_get() but I haven't decided D128 is worth merging
-yet (it depends on future hardware availability, I need to get more
-visibility into this).
+Let's make this force flush.
 
-For the time being, I'd keep the p*d_get() accessors generic and move
-pmdp_test_and_clear_young() to mmu.c.
-
-> > >  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> > >  #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
-> > >  
-> > > @@ -811,7 +817,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
-> > >  }
-> > >  
-> > >  /* Find an entry in the third-level page table. */
-> > > -#define pte_offset_phys(dir,addr)	(pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(pte_t))
-> > > +#define pte_offset_phys(dir, addr)	(pmd_page_paddr(pmdp_get(dir)) + \
-> > > +					 pte_index(addr) * sizeof(pte_t))
-> > 
-> > Why not make this change in the generic version?
-> 
-> Could you please elaborate on this ? pte_offset_phys() is arm64 specific helper which
-> is also local to this header file. AFAICT there is no generic version for this helper.
-
-You are right, I got confused.
-
-Anyway, I'd push this series post -rc1. It depends on the mm tree and
-it's getting pretty close to the merging window.
-
--- 
-Catalin
 
