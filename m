@@ -4,129 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C8DACA9EBD
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 02:40:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39BA3CA9ECF
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 03:05:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E89AD6B008C; Sun, 11 Oct 2026 22:40:35 -0400 (EDT)
+	id DA7366B0088; Sun, 11 Oct 2026 23:05:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E13BE6B0092; Sun, 11 Oct 2026 22:40:35 -0400 (EDT)
+	id D585D6B008A; Sun, 11 Oct 2026 23:05:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDBC26B0095; Sun, 11 Oct 2026 22:40:35 -0400 (EDT)
+	id C46616B008C; Sun, 11 Oct 2026 23:05:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 99D6E6B008C
-	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 22:40:35 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E57DC80905
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 02:40:34 +0000 (UTC)
-X-FDA: 85312420788.10.D9D67DE
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5C11EC0002
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 02:40:32 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="UBPtu/9E";
-	spf=pass (imf22.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791772832;
-	b=QcQr7cGF/CPqUm6Pgbb+ZeqzH82OhZtr/iXuZPJkteuUspKIMQ4L94Av1dy4gkC2Q7nVuW
-	d1U3hLM3xVo5SeJdJl6lfBml0mGq259GciYYrqmgekQsp8P/8CREPuJjfqM3s3a1w4VA6c
-	qpooa9u1rY7cmgUhY5PUUODavcD/tus=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="UBPtu/9E";
-	spf=pass (imf22.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id A2CD86B0088
+	for <linux-mm@kvack.org>; Sun, 11 Oct 2026 23:05:54 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A1E8A871F
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 03:05:54 +0000 (UTC)
+X-FDA: 85312484628.19.AC4D339
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 521FF18000A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 03:05:52 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ldwNn/VM";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791772832;
+	s=arc-20220608; t=1791774352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mptis6qqMpkv7ium90UiEIS1Bva/bRNNiMhKtY2RI7I=;
-	b=QRjsaMAmBcm07m0k22U3G5S4QWizLM+mYV/k3uxsWakk3VKLkBGeHAcYD46f9jFlaOw0Bh
-	gfJBK6xUnRJRhQfA9J4lmX+yib9zNvWJ0I3BmdqLC/IkXNxoaglkbZhihaRLJOYusaSFe5
-	WNucwx8f7/FUKE051tL8g9VGqTWBuVc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791772831;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mptis6qqMpkv7ium90UiEIS1Bva/bRNNiMhKtY2RI7I=;
-	b=UBPtu/9E/vWZkp//rdMpiDgwYU1OvG2iw0SKWc6HiZJNai7UTs4mwSADnet/59A5NFJq2f
-	pozY2LfXL39tv9BedtUUZgfrYb8A5G+yNqE19eNKiC4Cw+ba0OTzVaNJeCQIc28+EyvrPG
-	AYtiK4le72ABkO89GoC4ZKyRrKBg2RY=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-365-9DmYLxtBPcOYcIBDNsnDSg-1; Mon, 12 Oct 2026 02:40:28 +0000
-X-MC-Unique: 9DmYLxtBPcOYcIBDNsnDSg-1
-X-Mimecast-MFC-AGG-ID: 9DmYLxtBPcOYcIBDNsnDSg_1791772828
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-5338cfe567eso33051211cf.2
-        for <linux-mm@kvack.org>; Sun, 11 Oct 2026 19:40:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791772828; x=1792377628;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mptis6qqMpkv7ium90UiEIS1Bva/bRNNiMhKtY2RI7I=;
-        b=mytnSvCh3eyR8ofrEmzhQrRg4OWWuKIPZSCYaek7CRBp0R7y4EeTy/Pccz9dzGLs0q
-         HW1R+AFiTxR3VB2Ys5RfHxHnHFpBU0Jg65k0pi7SwB1zGFX8TRJ/lj1pSdpHEity9JYS
-         RJoElbbuMhn12meb9NUIfcA2p2ycEr0qHziEnvlfHn7t3pmXeW1GKw8gQS8fE+40k62H
-         MU5g2BzftM0geaHkBopGdf84YdnCJwd9P72an9gwXkhYTxRsmw7J2E1mi3pWeIh/UGwE
-         CYDyjRN7Wd2fsFCsUlZ9rn1A37q79z2JIdDFP5DgmhQYsRv9+gQZNqozmjPBxyGyiOfc
-         3L2Q==
-X-Forwarded-Encrypted: i=1; AKwUvBw09gsilnzdl+OtuLn+YnZt8U9umYGRjdgcCpY96HFnOqJfAevTsfgvqYKst7zndCQzbRDPP/iDKQ==@kvack.org
-X-Gm-Message-State: AFq9FYIkbi0LB2p4Cz6DzMSt0d2bEwRnQw3eNav7cERaSoW6su7AGIH4
-	vppG9aoT2/0Wq5XERF0rOrF3MEICB/ppuwQ+L7TBejMHGZZpU37o6O6WnMn2CLAR2OlQ3JEnOkB
-	dTU7kZ0hklV/Z0UdxdLJKzeL7hxsYoytQ+INDIQ/HCyBlrFpHZxg/
-X-Gm-Gg: AYBFou3QujL77OIeO+pbZWs3khwMBkpQMNrlxEGq5Lmh+iKOLQgrZpvg3jLbSZDVWQT
-	fMDAVuShnzJ9SooHdpgCMP4ESWJ5tqywzaiBeyE6xa8tlTXXEKR5JgXc2+4pH7QwZCIAc8wApJO
-	GzleODm4oy8Sp4E2XKMUM0uKJMuyE4vWBaUh2OcVkfmMoX+9Wq2NPmVArVEspG9lb1jfi/v9lUP
-	9rZ35A4WWR4pndHgLia5swN64Xy2CgUk5GZKRCKHjcPAECLWt2Xx6s2RNZcW/VLlJsiamW9Sf8E
-	VwSZ1kCZzQmAVRHTg47q8ltOq3vwrXMMHChY5l8xgU4rvG9eIOzIQQLeLkmSVZaIQzovTIAovH6
-	kWMM=
-X-Received: by 2002:ac8:5f4e:0:b0:533:97ab:dd45 with SMTP id d75a77b69052e-5359fb3dceemr148577441cf.36.1791772827782;
-        Sun, 11 Oct 2026 19:40:27 -0700 (PDT)
-X-Received: by 2002:ac8:5f4e:0:b0:533:97ab:dd45 with SMTP id d75a77b69052e-5359fb3dceemr148577221cf.36.1791772827331;
-        Sun, 11 Oct 2026 19:40:27 -0700 (PDT)
-Received: from [192.168.2.110] ([142.172.30.162])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b812ba8c7sm15440366d6.38.2026.10.11.19.40.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Oct 2026 19:40:27 -0700 (PDT)
-Message-ID: <aae9d468-2dd4-48fb-8e2d-d6997ac8e723@redhat.com>
-Date: Sun, 11 Oct 2026 22:40:26 -0400
+	bh=HFJ3bTcdbmrMb1MjB0qjlxO4NeEn7LJaB/BqUK+sTCc=;
+	b=KAh6uAZtyZSQN1aELAXNkl6/Jx1AqSNvcB5iUC3PN23K4zQ0coL0dYAuHJP1gILurm4l8K
+	mHbHWcWpCgYAEvh/oLPmg0jJHwaJNpIfjovzDq5t996H7wGbdbnkd4xfRIR/FFltvBEDuW
+	7aY/Weq74oTridX811IA8uCzMkN2pK0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ldwNn/VM";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791774352;
+	b=MZKo0Lr4yDu2+4AwLqxkkAHxwV4fHfm/sn/qjKTakrhutstur4ZRH37c8RL5TiYHKSPDLJ
+	Xgye7JZDYFqyyzYadqCdtfPCPKAwmYCjWD0j31DDDs7hQECLB+/PQTYR7mNLJ2b2i0kO3b
+	o4tZOtIuffrqqmGrrg6WWisERJ333tk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7DDE6601FA
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 03:05:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF6A1F0089D
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 03:05:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791774351;
+	bh=HFJ3bTcdbmrMb1MjB0qjlxO4NeEn7LJaB/BqUK+sTCc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ldwNn/VMPx8v7Kcn29kRtGMTtOySNQaJkhZOoeM8FkNQ0HB0NQIDV/2XGpccMxNOB
+	 Slnqj5nsDcXbwLqHPZlc2iBrAlbPLB5cfDCZcly1suPUvW/+B4W/vXfpGvPJ5JCFcy
+	 uYnJ94giE02k/viObsYlNcXL2Zfqpb/kHem9m96UH7lwZo+fyZns09rEr/8nzrlGH4
+	 MZWIyPtYEQrrITmMDNzZhjqEc4enlcEAtupiX/6gi3v3MBphwn8+Sglp5tfWuE+mZ0
+	 UF0aK0snXDzMoAX4qVR2/8hjz0399ufadXAjcFj3/ehw5ZytknzfwSdQIQ+L8TbymA
+	 NkXEE8Tk8/B1A==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93e706a6ba9so209773385a.2
+        for <linux-mm@kvack.org>; Sun, 11 Oct 2026 20:05:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzempl47+zGTi7jqAJjJOAH2dkZPnB0EADyTODeV4t4YE9YJXXiaMjA5X53+ZwNO05/dmCf8oo5gw==@kvack.org
+X-Gm-Message-State: AFq9FYJVIGoHDjizekuDQh+f1F/CZf8osL8op9Ub6y5hA97GpBXoscWT
+	ULg3G/jJTbvw0eQJ/2rw1RQWu++mN4BA/oEX8q08i0VsuMita5vvCFNv5IydPXh0vcXLwLQMV9p
+	gPnwB9kFtdB2IW8Ww23tjByvlpaWfOuQ=
+X-Received: by 2002:a05:620a:4487:b0:93c:2c15:e51d with SMTP id
+ af79cd13be357-93ebd273655mr1425306985a.46.1791774350592; Sun, 11 Oct 2026
+ 20:05:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] x86/corruption-check: Remove the BIOS memory
- corruption check feature
-To: Borislav Petkov <bp@alien8.de>
-Cc: x86@kernel.org, tglx@kernel.org, mingo@redhat.com,
- dave.hansen@linux.intel.com, hpa@zytor.com, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, corbet@lwn.net, rppt@kernel.org, blum@kernel.org,
- david@kernel.org, linux-mm@kvack.org
-References: <20261010153604.1885381-1-luizcap@redhat.com>
- <20261010194519.GAasqVz2brXiOLegQi@fat_crate.local>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20261010194519.GAasqVz2brXiOLegQi@fat_crate.local>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: IRrAJKoJqOSBwY8zvN6WHIEnqhufrcMIwxbKezUFKKk_1791772828
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20261012022917.1102467-1-vernon2gm@gmail.com>
+In-Reply-To: <20261012022917.1102467-1-vernon2gm@gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 12 Oct 2026 11:05:38 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yW-58kLX7PCep=HVfc-CxE6rF7QKZhYjdeLGve7HX6pg@mail.gmail.com>
+X-Gm-Features: AclHuK8IPcilkK8uwSMSyfgjCCtsjbWzPblwAMuBWNreMXAjVfMoXdJFAnSD8mc
+Message-ID: <CAGsJ_4yW-58kLX7PCep=HVfc-CxE6rF7QKZhYjdeLGve7HX6pg@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: vmscan: don't count per-node proactive reclaim as
+ memory pressure
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
+	hannes@cmpxchg.org, mhocko@kernel.org, ljs@kernel.org, 
+	roman.gushchin@linux.dev, dave@stgolabs.net, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: o17j6ka3df47g46dztmgdrmzpdiwqdsw
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5C11EC0002
-X-Stat-Signature: 5ds4q8ub19r3a7hqjp47spht1zpz6ufn
-X-HE-Tag: 1791772832-388168
-X-HE-Meta: U2FsdGVkX19XefawW63fNmqgGU/YDvAPsstbwiMr+ECKkd4B8rQ7h+z46HD6OqR+o5y7+cWOS9sWjSHlBFaOinO3SwYrroCOO7YjDBGxdjzQG9wjz/b5Rl4ARXzA9NX6k4tnOWOEymXJCxQ9ZcAEJTX7HWYC0YZfRT1FdjEHnSZS15KrtTh1/p6DinErSuAZNdWLRaxDuVIr3tChR/Y6LetoXHLTalyPJulknj91yH/SxUZD0n3ygCh1V0pWGBLKyFWBA9kndvzZUbf2/MdrNF5Su288qB5pS2U/p6048uD5D8Gbre33Sk7940cEc06a3zASdBT1vK1uCl+RqXVpHpyjN5vhxc+plWl8a6jV9dGQEcE43NJzsMxBEOFTS/3tHHR5ZvGrAEdKhfa/+nSJyRGCcArSueA5NQDie1pLxrhLQv4dWWUiplJiwquINTgfeV47bBigqrTuBcbupSFQYnwWV3uoDk5PVIBe0CgLxibV2oiZAkLMS5WMWX2JtXpCmTKjWCKLsr6BV5aGDmo37JTogeC2aVjs+17dOSKMudLfPzkqrS0Dt9sRxkQOaRQABHqsjptrKKcRdeXSHflLHdpT/PrePplA4WLmuLSuI7yQojbE7LOn/Q6ZxfEqXCOvdmEktPbKV5bSiWi2/9EtInuDNMAQlYAqrHTcfvkNGftgURmbU2AJ1yvkLsFx5elMKIk/khkzaeYUCXnSxjfjw1V5/xSAwRoSU0QuvMc85GPgqLRrRQIp5bjwxKU/y8/K/+b8rzVJ4e8Z/Ca/Jod4gYL0kKF4uGrLr6Uixrm95eiR+sJYJ17rp8RcfuYORt/p8xiWo0nft0ORQYsb8yksSi/h021KpZdai5p43muLXnckSpGmyuwZMWp5QhWRuVKDHPr3LsE42t3bldJiqxVSGUnJfc9IS5nhZWNmEhVeYwQlug2E1rKpETztNFnHXtKllMEy3sjRoEvEeKTYOrP
- pHApXcJq
- Z2vwn3masr8WvTlafGkcMUD8UC82mosHUbR4LsCsebABpWlqOyYidJlYXghRpor1mdwu5ITRxqscSNPs8bsAZQg047nuoJeeOs+m7s0w8Ls97bTl8HsiN5i+heLeAaZpWFGDv6OaFT2g9gAMYce8W2mOTynQxjkH6GJeFiz3GLdARF5hoTARAqNDrRm8UBTUAfgyzzjHIpgx/mfa1j3j5bL0MJKPP+itdXAJG12axqleK5a7kiigmChgJvgn80HsWfmLTTKPHd1/VVX9DBiOJeudug/vF57B6TBAn0oRkSLSKA9TeU9eiSLgc2IXfMd+JF0O9YtgbFcnIeh63wckbnPutqA==
+X-Rspamd-Queue-Id: 521FF18000A
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791774352-144468
+X-HE-Meta: U2FsdGVkX18hojJslIiMQ4e+OM3E7N37EyrKVHhy6Jzw2d9m1JEMBHZciow6ItCiUrux/P8h4dSCd7+ufBHfEKopsFxGB24KZZFSSvSXYg0whlyHNGUJ0HHnpexrJUy0V+zGohaibMnehnsSBCDgHmFNhaRqKQvLYLYzV3h/e5g8fGnL4wVD6ZNT7KbOYVm7qIZ5Eb1TvnUruULsAiY/JLUl72oxRqc3nh00x/rvHqQ36fX7AGLUUroPWZ2/ZPaTgNFbs9i4JjkPwnTdgQZ4wPH7c6WpDbFs/fVIIrzJ+Vfj6WG6xoMtAwJpR6/g7f/r1GAslSmSVIfzueNqR42kG9/BZ3/5puxID79WKbqM26F8jZd8Gudam6GOEwzhwNfk9gdXfVTMDr82PISl1KFE69ix6XrJEv8XkXJkXxoowgHRvRj62GW2eNrUBKqwr+sodGCds/wlWa/IUarSL3C/o7F/8JQ8JGW19KjFXzn45shHJiXj4pFh6QPoL2x2TO39UclF0gZ50oCrZWrJBKx0sKdkC9eOOwXXZccjERVInq59o0HPnhoFbuTcW+8uTYhE+O12a6pAfDBJlFvMaHUiDHsdqnFMmupT5CJ12VieXFNYaRbb7MbxUDFowAFH3RGE887rI9MGNmiRkDZwbAPfF1Qu4v8uHc+eaB+lSzSxUz6Laj7zR85KBxvEInZ9JdjK3aeoC3qHWby8DxBOysDTvQkial/Wq0TnWShlRtkd+pbOBvFO4m+jOTJBXnxLGI4CYBIEN2n+LtqIQm9Co/4lp+h7sjbaPrQbZGq8X5N6tCFi+Nb9N9jMdCn7m7iqQXReq1G1OogP/P1pc4R3QPfgiTooxEcpyFpdM3LlDTaELjwHHMGVBrMSlDgKz7i/g8i49UEHSiZZZ+jP1qbYQKoI5dkQFApYJieYEfHTXW3gAHgdy31COClbA6iH/wTHYpl6yfkJTGFQ9uOtp4m3Kqz
+ fBqiaalx
+ D8vc0+l+nYS9kaLRdhqpiFEg+T2LUs7bkStxRM5umukDdZVT3s2STEfCLAN32Sl1o/8pqjj8RTc1Vj08yhGx0NkKU+lHblcZxTXY+dDTbNA9klS3jX2y8Syi+IdlwGv89vEWYo8Cwv5wonYLLDI1EAbvsDCda3mtCJjzN+JMQuA79KrqRdQE5cmLWAF01O8tgzmjIN7EfkvVkDxXeoVq8QYOsCTPU1H1XYPDCxT97UZrJtisReTRJqXfjC5QNyo21kQLFiZbv3QLykLlmDc941BNJ5yWcPmFQ69bLqJ08kKFLkg5Y0hlMBcwof5srlpx/KNQGmLbaGnt4ZHANdH0lKKIx0XsW/JQdejSi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,84 +108,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Oct 12, 2026 at 10:29=E2=80=AFAM Vernon Yang <vernon2gm@gmail.com> =
+wrote:
+>
+> From: Vernon Yang <yanglincheng@kylinos.cn>
+>
+> When the cgroup has no memory pressure at all, writing to
+> /sys/devices/system/nodeX/reclaim triggers proactive reclaim on
+> NUMA node, causing increase in the writer cgroup's memory PSI.
+>
+> Due to this reclaim is performed in the context of the write(),
+> accounted as memory pressure on the writer, like
+> commit e22c6ed90aa9 ("mm: memcontrol: don't count limit-setting reclaim
+> as memory pressure"). This is unexpected, the similar scenarios (e.g.
+> senpai) will continue to occur, only this time it is for the
+> /sys/devices/system/nodeX/reclaim knob.
+>
+> The Documentation/ABI/stable/sysfs-devices-node documentation also
+> notes that "This interface is equivalent to the memcg variant."
+>
+> This patch unifies the semantics of the memcg and node interfaces:
+> per-node proactive reclaim is no longer counted as memory pressure,
+> and the per-node proactive reclaim interface no longer produces
+> phantom pressure.
+>
+> I ran demo[1] that performs per-node proactive reclaim 10000 times
+> in qemu, writer cgroup memory.pressure as follows:
+>
+> without patch:
+>
+> some avg10=3D31.53 avg60=3D13.42 avg300=3D3.31 total=3D10602985
+> full avg10=3D31.53 avg60=3D13.42 avg300=3D3.31 total=3D10602985
+>
+> with patch:
+>
+> some avg10=3D9.59 avg60=3D3.41 avg300=3D0.81 total=3D2686221
+> full avg10=3D9.59 avg60=3D3.41 avg300=3D0.81 total=3D2686221
+>
+> [1] https://github.com/vernon2gh/app_and_module/tree/main/reclaim_node_ps=
+i
+>
+> Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interface"=
+)
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> ---
 
-
-On 10/10/26 3:45 PM, Borislav Petkov wrote:
-> On Sat, Oct 10, 2026 at 11:36:04AM -0400, Luiz Capitulino wrote:
->> By default, the BIOS memory corruption check works by reserving the
->> first 64 KiB physical area from memblock, zeroing it and then scanning it
->> periodically.
->>
->> However, this functionality has been broken in its default configuration
->> since v5.13 by two commits:
->>
->> - Commit a799c2bd29d1 ("x86/setup: Consolidate early memory reservations").
->>    Moved trim_low_memory_range() into early_reserve_memory(), which runs
->>    earlier in setup_arch(), causing the first 64 KiB to be reserved (when
->>    CONFIG_X86_RESERVE_LOW=64) before setup_bios_corruption_check() runs
->>
->> - Commit f1d4d47c5851 ("x86/setup: Always reserve the first 1M of RAM").
->>    Hardcodes the reservation of the first 64 KiB early in
->>    early_reserve_memory()
->>
->> It might be possible to get the default case to work by allowing
->> setup_bios_corruption_check() to run first, but it's just not worth it
->> given that the kernel will never access the first 64 KiB area anyway.
->>
->> Lastly, note that it's possible to get the corruption check to work with
->> a different region by passing memory_corruption_check_size=. However,
->> the main goal of the feature was to check the first 64 KiB. Besides,
->> the region picked will be almost random as setup_bios_corruption_check()
->> will pick a region by size.
-> 
-> And?
-> 
-> Do I want this or should it be fixed or the first 64K are not worth it to
-> check or...?
-> 
-> That whole "rationale" is not really clear to me. Yes, it is broken,
-> apparently. So let's remove it but we might get it work still... So which is
-> it and why?
-
-Right, the changelog got convoluted because I tried to document all the
-options. Just to make it clear: I don't think it's worth fixing this, so
-I'm proposing to remove it.
-
-Here's a rewritten changelog, if you think this is good I'll send v4.
-
-"""
-x86/corruption-check: Remove the BIOS memory corruption check feature
-
-By default, the BIOS memory corruption check works by reserving the
-first 64 KiB physical area from memblock, zeroing it and then scanning it
-periodically.
-
-However, in its default configuration it has been broken since v5.13 by
-two commits:
-
-- Commit a799c2bd29d1 ("x86/setup: Consolidate early memory reservations").
-   Moved trim_low_memory_range() into early_reserve_memory(), which runs
-   earlier in setup_arch(), causing the first 64 KiB to be reserved
-   before setup_bios_corruption_check() runs
-
-- Commit f1d4d47c5851 ("x86/setup: Always reserve the first 1M of RAM").
-   Hardcodes the reservation of the first 64 KiB early in
-   early_reserve_memory()
-
-This has been broken for years and nobody reported it, which suggests the
-feature might have no users.
-
-It may be possible to fix this by running setup_bios_corruption_check()
-earlier, but that's not worth doing: the feature was intended to detect
-corruption in the first 64 KiB but the kernel will never access that
-range anyway.
-
-Note that one case still "works", which is passing
-memory_corruption_check_size= to scan a larger region. But this is not
-useful either: the parameter takes a size, not an address range, so what
-gets scanned is whatever memblock happens to have free below that size.
-
-Remove the feature.
-"""
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
