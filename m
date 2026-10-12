@@ -4,155 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04277CA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 19:03:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34915CA9EDE
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 19:06:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B9C06B00A4; Mon, 12 Oct 2026 15:03:10 -0400 (EDT)
+	id 085E16B0098; Mon, 12 Oct 2026 15:06:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 190F66B00A5; Mon, 12 Oct 2026 15:03:10 -0400 (EDT)
+	id 036CC6B009E; Mon, 12 Oct 2026 15:06:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0806F6B00A6; Mon, 12 Oct 2026 15:03:10 -0400 (EDT)
+	id E67BD6B00A6; Mon, 12 Oct 2026 15:06:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CBD8D6B00A4
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:03:09 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 572641C4323
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 19:03:09 +0000 (UTC)
-X-FDA: 85314896898.07.26E05F7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BE35E6B0098
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:06:05 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 50BDBA94D0
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 19:06:05 +0000 (UTC)
+X-FDA: 85314904290.28.C3576A4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8DA4718000B
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 19:03:07 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DUm9Ty/V";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 90FC42000A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 19:06:03 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PJOwxP9F;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791831787;
+	s=arc-20220608; t=1791831963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YbrMyFcruWOTM+TqqDWVtyxT/BNfE3irP0AGLXWSXYg=;
-	b=HiQWjcDKOEZ4Ng1QXAka9yH5tdy0ittvyn5kb2ACHaXh/ueH4xkSxEPpf/vCB728sfxb8q
-	0b9RFWUXvdNlDUCFA2q2YZTEf/jR34H2Rf0Qskxm6hJICLGvngHcLF9EQj4Cl0m9Eofw9i
-	KTdS4mfsmix3ovFUiekjzEk82SoP15M=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DUm9Ty/V";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=3UVup6GJ/cJrIO5b7tQA3kWhFihBuF5irLWCeT7h/2o=;
+	b=X1s5JR/TUBcGYDPjFD8Ql/a/W19cNnlPJYLkxlr2lAZFbkqqrXRH66OkzWwhoe8jDXQdMQ
+	jtQNJXxm8KcRBahdDimy1FtzgpxnSvg8NquY0njOicY3jVFL702eHaF3Pyk/7UB878jgtV
+	nM5yRUJ4eiNld8g+D+HcWrOAmdMujwk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791831787;
-	b=FphmGXnBOw+XoIm60/pd/fTWWDXA+eULgFsTOn2Nl0j/qq09sp7mGYjFdJSlicq7vi3hf6
-	evC2sEEXCULWIOExwahweurY+GbSaNJ9wSomU48ON+NX7Y4YrFKydXkUK50kEuY02E8bOU
-	ZOnAmZhKVCq/lRn0nd9IFQefE75Juso=
+	t=1791831963;
+	b=nfXlYcHTxDLmNYjKXbTFxDSKufO3LI39+16heeslujkH/03G14RICHlhQSrPO29uw9MCpe
+	6y6yE7XvJ2JwDgTFOiasSxAKcguozvLHqwRTZvbX4CuscG5ApYeTIccaBTBYBZP+V18VW2
+	T7LQVM8hcnppNQPYKOxjpwX8RKcBuv0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PJOwxP9F;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9424B6025A;
-	Mon, 12 Oct 2026 19:03:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199741F008A1;
-	Mon, 12 Oct 2026 19:02:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1247160258;
+	Mon, 12 Oct 2026 19:06:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318391F0089B;
+	Mon, 12 Oct 2026 19:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791831786;
-	bh=YbrMyFcruWOTM+TqqDWVtyxT/BNfE3irP0AGLXWSXYg=;
+	s=k20260515; t=1791831962;
+	bh=3UVup6GJ/cJrIO5b7tQA3kWhFihBuF5irLWCeT7h/2o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DUm9Ty/VUzwXUZU2iWOBG0PWpzBsOed1tnLF+/LOuCHN3/s6gMtIOhLJtOqm/91sp
-	 dY0OwRAm2s77MVjKQ7l2hzjHQupErFyw+kdb96/e8gs9lZxaHfaPeKPn3KaNQKeT7a
-	 E0YuIvlJE7wfEHSq50BIwKUvzlVN5TWWwYcOlMqhFcDXw2sdyBLtn4UQ8ZJaKfpytN
-	 39H48+0qpm/uqCYyI6eWJLVYKVTU/c/g6GJbb4GlhubyJK/XD5eHxcyeIU8WgFVu7N
-	 yyMeEXcS1IZA6/PewcvaXh0ZbcCVaaJhrnn00jkCqyx6nX8JwiysCFZ7gSGQ02X75I
-	 INnXtZR7TiYLw==
-Message-ID: <bad662fb-718e-4c48-aac3-37b01de165dd@kernel.org>
-Date: Mon, 12 Oct 2026 21:02:30 +0200
+	b=PJOwxP9FzjOl86X9NFuqd2aiJNaF8iCTgTaKo7xgxX/QyzJpD81FRZrQ00pX0Yzis
+	 8ByDxuzFiszwHnWMP3tz+0nubZWpFI1oeVaqpqxnHmC47CJ6+1S0AImp1LLYYmyzjT
+	 CLPWJnT/RezJM5RB7Fva+S8bFuY7p81o/NzmH8HgY6QrX2VLrCiy//wlwWfb0hIZYU
+	 AGzjrCzNpXdd/lPFMVH7F1rIwxN4tF/gr/5bJKPG8gLEU3cOSlqaxr25EQ24ost70T
+	 pWWkBNhxTGMGZiPZr/fvts45XsnbITMiRGugctO9i4k0V+PQLfoebUapAYLGO20aRh
+	 IIh5SRg4L7ubw==
+Message-ID: <c3c6f83d-380f-4a9b-a204-fd157ee77648@kernel.org>
+Date: Mon, 12 Oct 2026 21:05:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 07/38] mm: add mmap action for discontiguous kernel
- page mapping
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+Subject: Re: [PATCH] mm/gup: batch PTE-mapped large folios in
+ gup_fast_pte_range()
+To: Rik van Riel <riel@surriel.com>, Yuan-Hao Hsu <aa9736195201@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ liam@infradead.org, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Paul Moore <paul@paul-moore.com>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>,
- Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Chengming Zhou <chengming.zhou@linux.dev>,
- Michal Hocko <mhocko@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>,
- Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-rdma@vger.kernel.org, selinux@vger.kernel.org,
- linux-sound@vger.kernel.org, bpf@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
- fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>,
- Bert Karwatzki <spasswolf@web.de>
-References: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-0-923b70125b1e@kernel.org>
- <20261009-b4-mmap-prepare-vma-flag-sanify-v5-7-923b70125b1e@kernel.org>
- <56cc2787-134b-48f0-a9e2-840f57b28607@kernel.org> <as0S-4wDLCJGEItq@gremlin>
+ Michal Hocko <mhocko@suse.com>, Aristeu Rozanski <aris@ruivo.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260917083747.786-1-aa9736195201@gmail.com>
+ <7dd4ec994502233cdc09fe5c4369adc89168d738.camel@surriel.com>
+ <20261010195202.689-1-aa9736195201@gmail.com>
+ <ff62aeaeb5ced49640c959c047b2e9f320f5c10f.camel@surriel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -199,23 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <as0S-4wDLCJGEItq@gremlin>
+In-Reply-To: <ff62aeaeb5ced49640c959c047b2e9f320f5c10f.camel@surriel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8DA4718000B
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 90FC42000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 4t77dw1cizbeeixuek93mu5dgqp53q5y
-X-HE-Tag: 1791831787-979949
-X-HE-Meta: U2FsdGVkX19K9KV+tRZGzXaSgTFfFij+jGsz/Eq73LTGPY590+W5SirdSIfQJzLHe5Aq3yfSTdZo1FbCspXXgXOYRGNzU9RBT2VFdaHbV4s9vUZ4IMOiGCNvp0f6djAXx0SSi66BNVIH599MHBU4Q7kFT9hYkwZ40oijqaaPu3/YizIYDZRXhPoVhmEuIJCndhA6sDHNBXbZw1db/Qb2KCBa+1YAbuKzpDFARgEF687Y5nhvIWjirotT/oaruZofPOr0LL0Mhhc9+0eIRNG1KCZ6BgXqCuk45c4wxVxTSt7pHxwzhMIuU706o6W/q99srS1fLaQEtJ6ITSXtnnFjnIfzXOte8EYx4NjwjkJeB6rSuT4NUjuBnUwYz/vIZMLnj45TZj65Y7+tGSEVVXwJruu+7BgCktqnQsIiZJX/YOF1l06gshroWHH9EK+2wC6h507Os5z61i5bxlAXzrnYxOYcBHgoj75T3vW/xBcZ3pzl7YcRMSgFDmiq9WEksNx5Ob3OgqZT3HD/DEGMz3EOi7p++WVEDfu7cyvl9vzETbTFfLCT7+aiW3Hb7ym23LrejJ/2pXcstJOcPXvBIKJCDe5+lIcHvBpgDjPZ0KwHiZQ9PxrmKzUP8AqZ2T+uV5BQdnR01x6uNU//NsFdtK7CjgCeRJDRHZDWumyw25DVT37D6vmpyRokeqOcwrDzvFCTYcwhxcNz/kGv1yMo37qXnXTp3nJRR1/m2Z7flfsk7MZlIJik2SY7jw/T4Ds9PWJsKF5RaO2YevuAimCl9NsOCPDj8JsdekS2qku7a5S7buPz15ur4NpQMSbUhyaCD8ol9t+Iv+tobNgNzKrsNyivgZwdhh0PItgttN1OT3Wrj8jhEZD7x9xRJxF1ffLgO5u6io2+54e0ojmhveqR1EQZkUs5ddZIsZCSO0CvSVDrL/NUnURWSvuTsQbQ+kj2K1uFOHlfRCCVikNlb7t7Tsf
- bGGjgipi
- okmpFF/rAE9fj7yKMGIuAjE24AoXZ9kYwDHXbce22bt5W8NES+YPZfIDD/R4pQ8xwhZm/YHAwsTv9BMD+Dpdpyd+Z11eAT1Uz1QPPUFP9BZFPX0fUd2mCnDlVB/qIoYaJHXQqWQm96qnhgZ3oxH/5VT2gCmqLRTM6VvUVMwiH+pvODKjvIK5h3Ed0eUirVDnboQUswlfhMuxkbB3Uaek9H3r6Ed9Fci+lbYV2hjUIAVi8Gqqogh0JSxd24u4y15sN3L+O/QEbAOdDkXfxT4jOkL13LWOditj4aei2XvPRV9Cyu3S203jFgmrdY+C5fYDEga+R17XWO5heyS6WpDkQ481rPUUB+sAia8eZoXgaQdHmAyc6B5du6MXnJiCYa4wxjDS1DQRlgLzGqi8Ktp21/4bnbENnGFeyxBtiDu+/eor4mrIT6itzPtE5spe4XwzGzrPSSCQ1vyeWk8T/20ihpv1QENbr2w6oxPf9Bni4uJXEwkXcsKebNVeS/nTUNjO0nt6YLs/NXl85eT5JVEqJJyBycnOY2/XwfcvpA5wdL7aWsjPqt3j44IhvWGu6ZCLgE01tQ3BC3MW/OyTbEbXmkWG9t6+6kMFws7IjYxWkAcc4V/TxoNVLeOr1wZyoQeaqEQUnc1fSdlTPQPx/Q5wD40UcMZF2Swl6WDShCWCmMOcjJMaab3xuVv86olqIGGWtjPOo7NXl/o08hvqyfobbvJEJQgppS0s2QJBPoGBj2FNtY8frevygcGY1QOSrMBSjfBS8xkC+OnusHmGp5yQOLYKC/NSVXf3YL9x5S6xMRbFTDzLpsgKzcEHp0LTmkXwgUzbXuF9fY8inaBFlCqd5gqVnpHMZhswAxuejZW2VxhLxznW0xFvjAmcbNkdQmPEM/aSNXf6FXbua5SSI8FuJPOhpchoH2e4+Bv1018n9C0tHmVcBB8OTQDD7e3LSX9p76OH1ncFf4GQ2G9on9ttCR0SKPO5Z
- Z4LFqtpF
- Hw6rO9tputamNze02ehO+xdeoptU+LUiHVdkvOMGfsa2l56NaWJ+lJkICcJVgxXqEj07aSPp2SdlxYxscobqCOD2PfxhKgWtvfj5CZIAj7XzWRSiLcYa1wGBs2tv3PWc8v/WjFPVIGdLY7ucw0AsSDsM999OcFvP1IVhmWhrA9kjJm7uhUMLKKtE3t+56ihNhgJL3OW++/aszpx6a6WI60US3dnQHmHKBMPLVQYHDLqJ0AGBl0OgOdLsmBp7QOYG3VpWcMXX+QMt1RUQfzz9bDCwNCqdyd0o8w5jdnir2mxgJkKnC/+7Y/qvhItPIhZMoThp7Lc9/KPZ455Tc+w1wLt0mufZgRHTDfur1/jutj/XdmmyEUiuwKAviAI0Z1fXck32bBsllzKl/mBL7B4E2tx28gVChzjmzlWT556KzDiE1LwgJASQ1MbrdidbueCdbO8cPo7OnOGRY7bqTCZ1NDXSSny1e9rhd/zbwTC173mt8TAAZeWvtee7IiyVSip7/gG3O/CumEnQozCDRBA1QCLlWxqsLp5uukAwJ+bs1MflEwCHgQgOgqJvAOXd2bMMEzBhAH67cozNX27RE+IryZDR3P4+Qnvd9cmruyB9NhozRyHX0cdwEN1vpzHyURwJLEGncTvktXorYnIsjSnp4bOlMHeqqi6a/shVo6ATle+8tZR26BbV0iBm8o3YmDifk9h8NSv270PPRZp0c/SwQLbd7efAasJBcFl1c5ImY6xsMnQrZyA3mEQaizimEnaPF89DMQRyEmGVmyu5+T1rAJFWOalv0bTW8geD3ipdL6DGU5yXKRXY5BHDtO3/eYOmRQFyd9HupQhChQe0qVAinWcWR2+AwwG6NEXFAXhHWgR8hs07OnbBWN+29hlN4oW1BbWJGIfXIr2raKfVjABTpLH2qNBsGtxYFwjbsW0/bRWTKaI78MAak6pFr39k2Tnut3zN5sGwkDIbCu05uDz7MYtQUKfeS
- tKxiLtxs
- 4I5lFDGLKFVdeH+InEKzxnKJtlehyxTr0LG2kFyNYSkjCDUegdQNEd1+brJJEj/i99fptcz+3jrvjvIoJU48RtK8QS/v9tMrpCtveiMbP8bt/bdzZ3pYlu6NJ3KLiHWrbaDXxXHmS9lIFG+vB+uoCr1B7uf+D+L90oqgSVuwQ8Mi02nWPs3h4wocYyCMS/VDEFXKlTQloWMwEYJP6OrhzPlzO/57CvdivX7eKWVUrotFlzQT+7FZwb6e9iAj3JkrqyhmzFRYo0LMZHp6ix0jBh+y2Z+tOwCQIEtDjYGdyIOAVUmZVoYwbz2A+Uq71e7f8x6iOr5DOmNc4Bm+aZMvXO880i7R9p9TthBxnSSRdQ5NQHe5WhC2wrGOSFSjjL8/P3/Ep8mvDxmMp5QiQpirG9AgfcNhd49vpr4+tLbCpkWLTBDB4WdBKdond8I5SoDDoGVc/7hwY17bMGq+qo606cwCQaw3XYBy2BDXPDG5RxNXhEkQfEetY1avf4Dj/5psbnMHTnxZdrtp1soh01Xl8B3MWA3Qe613i+ohLgs0dF63cgGPV36mPmhNEhxtQLA/ZO0G0/ZeVBd0h5Ms2iD+s6xLLok/tCjeHBP3gwPzVRPJzEkBZxgrW+G6Tl3x3EPoDvjm4NA/ynYUeiAYInO4/CrwgkUFft3DkrIoWtU8LuEm4eiiUhYhWlDECg9wbTjH1xuGpKzOSV9aHu8IXX5oWMY7r4BtLzHOztDwU7+v2zSJYSolA9envph1uz5Dau8dpJpLn0nm0hxnNdygoKHDDPw8WgXeBf+Ty65UX7AZZNovu7+O5ozxtGZbDCKusYwFdrk3QDFPq5BFU1cpfHHgJohntUPK9PJ7lnCtP6U/iMNZkcGeL/XUWQfHbjqe83vS4iWLEzhUEbFO0LvwriLPu2VEPcI8jG61tjDPKI40LBZcDg0KOagX5sJdCyzN8UBQOaHn93uitcE6idEea83L6qeusBFgx
- 6OWwBVUx
- Tnq0fJQohr3rmh1SnxyutDcHKA5xtGDAPTGxaYPU3WNBNnDv8ty/Ik2myCplandQIW8/SfTBh951VoULMqOEMkjXHz72BkRr7vxfM9reBnl87AMRQBSHQvIrnD23uf8hUWxOgi9GDOVbY15oVdotmNiM7BQNRWMlru+2igw6uRFL8AZ4v4WjUeP6xkW7zYNi7ck7D9lYZ7lMt9n6A+bNQxIxmmZ+urxh3FEpfSiBf2ccKCQwHySXe62qXDvAmRzLojeIUZUpmdBGMk2OGufKQapg4vOQL/Ss3nT1y+a5kQYnJ79DsEqnhx
+X-Stat-Signature: wda5wr7ntzybmx97boc9unzjszjs7sgg
+X-HE-Tag: 1791831963-991636
+X-HE-Meta: U2FsdGVkX1+LZAqEBLNVbkaoUMVzJOKWTumq3G5dx9fkGBxjIL1OIQSh5qtL3AOm3hzYRFupIwejbG8i5O984b83xcAi1E+rua1WIqJ1tcPfP3jen5awU7hwe2a9LbMNjtlpwcjEkZZhy/NnIbsw23Xzy6vL/cIULzPOSdSexHSqGj6/E+2Dmf+PY9FsZDOkAhcdw3oTkN6WlV+mTum84mBdCVb4rPWPl6otAO3LxnLyGTaNks/cX3hkVBOwv62y8QSwXJUHTpXIC5a/QL5gqKwdjfIoESC9IQj8mjarn194pIYf5D7FJ352sPyzGvb9su2IUG3sZ5Aw0n/TG3tamTssZpSFHLvjJR0dfoH4SVqZOZZOkF389iAwvwZhJOtsZoEFG3CZpwB0XYvRzb/wJnCiwuLsOpQnOMAsNnSX4nTY5wDqDhFT1v4nERhdsJjYxroz+IVs69bl4l/IKpNGg6/h2LAioECY+l7FZTPlfYsI9+KS3ht6H3tguqpvjDHzCGIyOEqmji98rqY8nXsgpBluQvnQoXVkpbSmhfYrjPKcWbJgc1q+DV/PaOBdDhbPMoJlLvPHAoc6r25+uTAMo+gjIbxMDmm90FctHkDI4UOHqOIuh7y1JIxnt2jP5kQ889zMDz87yVGtuh8QI+tlukbfnW1V76yj5Hm4Ara3VkNhAAlGkdG9PDbvRhSai0SWy8tfPvNndcgc9bTlL5/n/a+pd6/Xft51dVCT11mqezGQLQhiU6klkt3KEp+Bx4+30y+tkmwaW9l6EKPVj4BqsWBFYBH3xXeA1w9tn0HUhm/e6ptj6g/Gs97wat3YNiZefEoi0wAr5WRUVY2DyZ8D+xGHwBPEtbt6ITuKxFitoqLz/qbvppjuK6geWuf7OVGp8Cr3gWRpaWFVS3srK0AIw+xE0IIFHw2IIUaz3FAOIuyaaKGjkZe3ar4dkqxbmx3x3aem4ZNYwqy9bKQ8j80
+ jGhgwhrU
+ atwr4KzDlz+boR28OAQOTYNBoA7MulzmX0ojMq3O83TkLGJpXkJ0xifeVoXKDTgSi9ESOgUvTN04njvnGJjN2fORgoQYSDr4lzlHdKBNcMMcYNDHuP480FkjzpYMd92CoNEDknDNNtLR1cmTwC7itUbExICBOH34zUrXh8d3D0z2lSe42LQ4gcxjFol83McE5Vb4bq6ctm1VzDKfeK+wG0JlqdePhDVP1M2ZXBTBqkWfmGjfIdphDUE40x4NS+ZWvTJmuhjGvHP+0ci+uPAxfP4m7lufWt8rsxDKPSCHJNy+yZCAsrU/kUA/SocaEa/MSPNl42Cd0q+1cZh6jYB/i8ppZ+0SQAG3xL4IUMJPYNy0Pd87xPFhgQ7jZMCsirY+S+QiRyJlErqLOUV8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -223,60 +147,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> Finally finding time to go over this. In the future I want to have more time to
->> review such massive series, as it causes severe stress to be forced to review
->> this last minute before it goes upstream.
+On 10/12/26 19:58, Rik van Riel wrote:
+> On Sun, 2026-10-11 at 03:52 +0800, Yuan-Hao Hsu wrote:
+>> On Wed, 07 Oct 2026 06:47:06 -0400, Rik van Riel wrote:
+>>> Since this is lockless, the PTEs could change under
+>>> us between when we walk them in folio_pte_batch_flags()
+>>> and the batched try_grab_folio().
+>>>
+>>> Is that race condition safe, or do we need to re-check
+>>> afterward that:
+>>> 1) the ptes still point at the same folio, and/or
+>>> 2) the folio still spans the entire range, and was
+>>>    not split before we grabbed the refcount?
 >>
->> So if I push back in order to give me some more room to breathe in the future
->> it's nothing personal, I just have to keep my sanity somehow.
+>> It is safe, because the batch only runs after the first page of the
+>> run has gone through the unchanged per-page path: the folio reference
+>> is already held (and for FOLL_PIN the _pincount already raised, with
+>> the smp_mb__after_atomic() in try_grab_folio_fast()) before any of
+>> the other ptes is read.
 >>
->> I hate being forced to review because we pick up stuff way to early. There is
->> just way too much other stuff going on.
->>
->> I'm planning on picking up most stuff I maintain in the next cycle. For
->> cross-component stuff (esp. VMA) I expect Andrew to pick stuff up until we
->> tackle this once cycle later.
+>> 2) With that reference held the folio cannot be split:
 > 
-> OK I understand, sorry for sending such a large series.
-
-Just to be clear, this is not your fault.
-
+> You are right. The page tables can still be remapped
+> to point at something else after gup_fast_pte_range()
+> grabs a reference to the folio, but that can happen
+> no matter what precautions we take inside gup_fast,
+> because it can happen after gup_fast has returned.
 > 
-> I already delayed it from last cycle and sent early in rc2, but I understand
-> there's been a lot of volume in this one.
+> I have no other concerns, so feel free to add my:
 > 
-> I've been working evenings and weekends myself to keep up with review (and
-> failing), so I get how thankless it can be (LPC was also unhelpfully timed!)
-> 
-> I will try to split things out more in future, this had a lot of dependencies so
-> it wasn't clear that made sense + wouldn't just cause more stress over a longer
-> period otherwise.
+> Reviewed-by: Rik van Riel <riel@surriel.com>
 
-I think it's really the people that do all of the review+maintanance work that
-should decide *when* something is ready.
+There are a bunch of things I don't like about this, including suspiciously LLM
+-sloppy looking stuff like
 
-Some stuff simply takes longer than a cycle. If it's due to conferences,
-bugreport/fixes, high volume of others things, (transition work) or anything
-else (personal etc.).
++	if (!pte_write(pte)) {
++		for (i = 1; i < nr; i++) {
++			if (gup_must_unshare(NULL, flags, page + i))
++				break;
++		}
++		nr = i;
++	}
 
-And that's ok.
-
-There is barely a difference between squeezing something into this release vs.
-queuing it early in the next release.
-
-Well, there is a difference: making David's head shoot steam out of both ears.
-
-I'm hoping the merge window will actually give us time to do exactly that: focus
-on the things that didn't make it in time and just finish them.
-
-That's what I'll be doing with Usamas patches and some of Riks stuff next.
-
-[...]
-
-> 
-> I will split it out into another patch.
-
-Thanks!
+I'll find someone to polish this up.
 
 -- 
 Cheers,
