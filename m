@@ -4,110 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FAE0CA9EDE
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 08:24:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1CE4CA9ED2
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 08:24:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA04A6B0098; Mon, 12 Oct 2026 04:24:17 -0400 (EDT)
+	id E4EE26B009E; Mon, 12 Oct 2026 04:24:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C007F6B009F; Mon, 12 Oct 2026 04:24:17 -0400 (EDT)
+	id DD6BC6B009D; Mon, 12 Oct 2026 04:24:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC89E6B00A0; Mon, 12 Oct 2026 04:24:17 -0400 (EDT)
+	id C4F066B0099; Mon, 12 Oct 2026 04:24:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CB0E6B0099
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 83B816B0098
 	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 04:24:17 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E005B1609E8
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EC6301409AC
 	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:24:16 +0000 (UTC)
-X-FDA: 85313286912.11.DB46BBB
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A1C3640006
+X-FDA: 85313286912.15.B250195
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B07CE140005
 	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:24:14 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nyouNAxc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Y+vVDIBH;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="r/pu49cZ";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Xqc0PAPK;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791793454;
-	b=kVc2dACStACC+wvwiQ96+MTjElQbpQU6YX4g+v40pR1AkaBsPTDYiGC5PS+/EFDpmaVl3Y
-	SJ9v/FRHqBTh7yuE37nAfYdjIJyjQ5Vtb4K3USi0hh+OIzD+karVH4qTxKN7S+ZHGW3tlx
-	0Au+KyWLlnAD6eJQ2g1nHQs9uh6bChM=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nyouNAxc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Y+vVDIBH;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="r/pu49cZ";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Xqc0PAPK;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=I7db5idA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="trhqWu/H";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="iTeS/ozs";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="H/rO+ziP";
+	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1791793454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k3jXehY5XmEN8WMphPUYMu009gEUXyBxUGy3zqUxv8A=;
-	b=HgG6h1D9VGcykWcFEPwoiLrpXoed9hD+utp2w+Q84+VWkyj8osEqOoN1tW8ouNuAk1XkHX
-	hYHRs9raWV7UrCoOIL5/7wwzujPukvW9mI8tVEUHPA82scku76XCmiDnLA1eYu4ywKXZ+7
-	NYFlroS/4N4E99xJ8o+kM3fWPYUUjmk=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	bh=p4TK6AUvLenbTf0x+nwoWS4sSHUrEZN3CU4cYNSyZf0=;
+	b=VQ++O3fr/oeJ7i9bB5mlIrxQxGpPnE7xX6z8mo1LA9nZOQh1vjFKK880aNDk+QSNT78f9u
+	YiKGvyHRlzd+v6iZmmayno20mA9YFo04o2cCQ3N9Ngf/u5IMJ8fk5z6Sx0XGPsS9gz54gv
+	IKZzI2iQVp3n/aRwfZiE2BCRkPNf7lU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791793454;
+	b=leCZv46/nCNPH+RH1ZheVhhD2tQAE+jOvedUAgoX5OXWws8H02jUkl9hj+/dLTdTaVPjzB
+	p4nIcudxcSvwZ2FZxIf2aynJuW3sR0L4WLZ70ubGeIHqR1Fj0oI6XzwLMe3QQ81b3ppx1i
+	XJbAMu0StZzY51271fhUXrVSWotPVKQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=I7db5idA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="trhqWu/H";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="iTeS/ozs";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="H/rO+ziP";
+	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B9C111F76C;
-	Mon, 12 Oct 2026 08:24:11 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2AAAB21E44;
+	Mon, 12 Oct 2026 08:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1791793453; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k3jXehY5XmEN8WMphPUYMu009gEUXyBxUGy3zqUxv8A=;
-	b=nyouNAxcusCdSVWMvXSECzDoTSLyZqcfBH5W/lTtJGcovqpZ7L4cEiyiyjaoE0G9kM+KY0
-	PlDXnCXpl5+5rbne5+sAGOX8w6MIoBtM26x6SzxNC1+rRUlVYZd6wXfsh6Ef8TJAGK8htT
-	9bRGF6XGjQaBJkRykoOJdEvJ/b/E6yk=
+	bh=p4TK6AUvLenbTf0x+nwoWS4sSHUrEZN3CU4cYNSyZf0=;
+	b=I7db5idASIQRSW8ETcp889nTVNrCfSoWejXWm4Jw7/5VxBcP3Bbj0bRqHeVuOTKLJ+dE6A
+	J8XvWgX5JtBFnIYbCXe8xmrzFo4F4icEjuWsACn9/dVawYMmj2DXCS8VBexTB81VK0V0zH
+	SXdDPC8726ukvql0cj2lkg5Up6ugoZ4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1791793453;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k3jXehY5XmEN8WMphPUYMu009gEUXyBxUGy3zqUxv8A=;
-	b=Y+vVDIBHZYbXYs6Yk9TRcD8YWq83xBGpha4KUkzxSwab2eteSXpiRrj91WzozM2777iJc9
-	e1yMuDXFdlR9nVDQ==
+	bh=p4TK6AUvLenbTf0x+nwoWS4sSHUrEZN3CU4cYNSyZf0=;
+	b=trhqWu/H9JRf/54LpFKaXT//PJrhAyHaBbrjGG/2XkkEqfZFWKEA7LvKgyupH8mislUk8I
+	v27o3/6xQ2VpKpBA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1791793451; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1791793452; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k3jXehY5XmEN8WMphPUYMu009gEUXyBxUGy3zqUxv8A=;
-	b=r/pu49cZ+ARlyZuP9mSK8irqNX9TSIR1nTa/LstMkQF+e7ywTBHPbw3XjkFVH5/4yZTjdp
-	yQx+8TPy5/9J+wYitKcz9XJwAH/DfTO2s0fL3NdyEBTwMHXtuH7Nr7y8DTZ/uHLCOAx+0t
-	F9IOHpCMprA1/SsWn7fuSAq2q5Grr9g=
+	bh=p4TK6AUvLenbTf0x+nwoWS4sSHUrEZN3CU4cYNSyZf0=;
+	b=iTeS/ozsC8uuZXYevZLD0+RZYcx6TXTL+8k3nMQxWchaXZ9b45jqfZIdjaZsapJKha+7yI
+	8o9lDKC0yl7zAjJ91nAac24TFK98qI47d8EJ9m3X/QfNSJkrnirs/nBIHmE8raOvOD+wfA
+	VMou0WakBADfNcYKwQp+1r9KhfQySkk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1791793451;
+	s=susede2_ed25519; t=1791793452;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k3jXehY5XmEN8WMphPUYMu009gEUXyBxUGy3zqUxv8A=;
-	b=Xqc0PAPKRV3zBEk+SVyFJCIMdHs1BN6sR/8qH0+DFwOu6NRpMKyd5v6+h1i0ccUuMd7pYc
-	IIHrfoyecadsNACQ==
+	bh=p4TK6AUvLenbTf0x+nwoWS4sSHUrEZN3CU4cYNSyZf0=;
+	b=H/rO+ziP98QWoQ+sV6exjQAHNmNsfU34Re7I6LXu47zZibtvlWQ61ikJSzNqYnAZ70m7D/
+	Y8lsYBO+p7jXKJAw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5C72513408;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B7433139AF;
 	Mon, 12 Oct 2026 08:24:11 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aIbHDSuZzGoLHwAAD6G6ig
+	id Qrl4JSuZzGoYHwAAD6G6ig
 	(envelope-from <jack@suse.cz>); Mon, 12 Oct 2026 08:24:11 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 9C230A140A; Mon, 12 Oct 2026 10:24:10 +0200 (CEST)
+	id A58F3A140D; Mon, 12 Oct 2026 10:24:10 +0200 (CEST)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-mm@kvack.org>,
@@ -116,24 +116,25 @@ Cc: <linux-mm@kvack.org>,
 	Mikhail Rudenko <xyzzy@yandex-team.ru>,
 	Andreas Gruenbacher <agruenba@redhat.com>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH 3/7] fs: Basic infrastructure for offloading inode reclaim
-Date: Mon, 12 Oct 2026 10:23:41 +0200
-Message-ID: <20261012082356.3121725-10-jack@suse.cz>
+Subject: [PATCH 5/7] fs: Add throttling to deferred inode reclaim
+Date: Mon, 12 Oct 2026 10:23:43 +0200
+Message-ID: <20261012082356.3121725-12-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20261009133253.20102-1-jack@suse.cz>
 References: <20261009133253.20102-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11285; i=jack@suse.cz; h=from:subject; bh=+A4HEm+b0MtHph46IzBRR49b0KKgVIC7sLdZ0BdCVMs=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBqzJkeK2cPhL38nq1/Y7ieVGuAjzzrxor9TSEJX RHeVHNmQI2JATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCasyZHgAKCRCcnaoHP2RA 2StRCACoZsJK65yB/EVLXVN+zRSUuAuFX/ZUtHOZ/oc7NO4pEVVosxDlFuL8BdP8NZK0Zq6+aHe OTLtsq2c68jtzxgWeC6D3JAdSngn3qPoJsBeCLbknxDOV6JOXT4TG639GXgrdrp7He33sFbJZen /kLGTluGbKUbHpavNAASJFpyHpMvjWsp+IH8clxUCrOR3w236Af2SX74LJ/HYQUS1om3nbQ5Uzz ISA/+kxxLeVSeLG0gUapf7fPxxqmci2AbCi2r03bZzaf1fuM5U8obgFPuwLr2OJGK+AwismFFHu qMMVLrJBarMBMygbSSMIsU2PYZlUFhwyJF4vFAaPSATj80x/
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9182; i=jack@suse.cz; h=from:subject; bh=LwmwmLNOGGuzwypggTSPss0dAlJ7wY1Wv7InMsohE44=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBqzJkg1Ix/uG7TAsTkbc5v+g7p2FFDliTXaRwHB nFrKBxUzK+JATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCasyZIAAKCRCcnaoHP2RA 2eBpCACp6OJW7fZoWklCGz86teMtJMiFFDwkhlaIJjAEI/4tALXE8wUXVXFvUrrf46MQsgygiXw aCk7Ytz8D7TIGFA4T5sKyWWBhrFZcZKS1cBrMhlfzGF3yZX9s792Hr5synnWhHMlcaTGjIMvW/t az+OoOECbNSvqXbETrRmwQyjw/ixIBf7Bt4H0+6NkEK/tLJ3CEsXoZS97WGkr/CuyCXrFs3rd1I X7ngOvu9wAfuBio23AHi3YV4C6OIOdRIf5O/UZb/8EKnyg3czFGeOJkMxhSYjgm9xOp0Re1kGYQ +LAHb3mrzjrSBOZIK61j3vaJ0mywEOha/0asIyPdxjub7nVQ
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: tcu8jfx7asu6dazatoa8xfxcjfcohemq
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: B07CE140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A1C3640006
-X-HE-Tag: 1791793454-293839
-X-HE-Meta: U2FsdGVkX196Ow8zswGhBVvGk6OosFSqk4T9XuOBBCxwWZO6U63uqmIRslt7yHg0+suCNHUWLjASfLalMgrSYwTt/OrF08UFOiBBPJe4xn3eBE4CeI9myNCnhAd1d7pBf8YfhGrCMxC7euEHZBL3GnDPl5aVP9DerxrYls44Mw/AQ1EJ3L6BxFCmpSBWadXrCwK/PBr/WFMK8G2HshE9Er4wrhNSc8yL1fmBhq3yGvteBWloJO9l7yv20y20NicLwy8UIoIvuhF6lJrNQnR0HgpS0WT6MzspV5nbxLeTBTV4GnkZscBTdPoZ6sSp/uH8DGhZjlbOZt9099lb/kqOk2MJr2U8ONO4CyhY+2mc0F205zJpI+uVmogExPXM4xEi8SRmjTz4DkJBctCm6UBwSrQUvahVtFBaQozuwUZK2XSTv+yuuthlKssOMCl/tyKlYHI4Pd6bovGpMQoecVJa8BSBUYsTKSAckrzK5v/UJJ/FIaJkvZtteu4apRFUIFoC2s7lVWglsXpZuXkjxhodmcitB1lekUgFY7IjQX7KWnjK7WMVaWKRv2NQatsZfgzqub1PDde7DE9cQ7YXG8JLavCpvCJC5YyFL6c5ikWeHxIZ75DtB/7Z35akOJGwd/0dfhRIvkgDYCplzonJqVMKnoVXdLHkJcumfXBGRaY/9ssTHMB96L0PeWLXNqn8IoGA+fbvqqh8nMSepLVZa4FJwobkpj1u05ysb2XbsOXo7vW/xTSaFDz+6pv4zcF8qV9jWbuidTfklCSgyTD5pBVj0aoHQZmhMs5oUcwSvjb+6kUDrZaFtjkPQfVLHSyZQCOsm+anWYC2mN1351j9B3WK/JXm3PDShijwoa27j8vvCTEaI30hhK4QXsJHnJp/CWFDp5uki6rz3eNcRxC5hRDWk0+GRb33qZQWW2+xZvTxjXdFREE8buoSj6W58nft/tGtqck0ooxyEF+vfA4rBgi
- eSDVwfYW
- 2X5XkH2v6RvKtJ5Z1wDYPYqugajC/Uf9qzk6koLArZtRSbfy2l8SEgGoUkpBEQmG4H7aMtx8OGiYehPVyQdeFVtLvsLdOmeGtyStc92hx8PMHn7y+dGQMZ+58CuwjGgyLsC9Sj3E1EvkVED/o60gfxxZeJBisQmP60lG3kAVvu7prfmXH4lyJ2r17RvhEEPfy07KIgX0carbjc+no0r2QuihLGKW+O+zDDgI0IZ8fYitwdvc=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: wrj5661664dgfok37c5zfef4u6w773xc
+X-HE-Tag: 1791793454-358620
+X-HE-Meta: U2FsdGVkX19KyF2GF7UrsfDQip+oCaaW43zgIWQLLQ/WW84p86Lj/Xtau9FjoTR0ESo+zmE2n2/d2QcQJbZ5Aul+Bc1KQDl9QdHpyXVbDvLoSapYaDXOWctCZWiKix1N6tBnYuH2/5d/LBZ3gQP/RfnPFNGkHr2/hLzsOqcVb2QAzn1I8lmxQoqJ82Vphizv33f1ySpNopLpl17ZpbT2O1fEtV/ZUYiSdRc++iYXeZd3G/ab6liiOgCrIg72UujE/x4R8I5+KHsk2gZxbyAGy+0d57atZ69MDKfrIwYpoVpVQSC39HOv/aoypzDz9+Q0agpE3WSfwSKVItvn63gxCRtnJFrxlS0+br18cKCPW53gvwpNrw7EUqcXRqsQ1pTIrIOWPpQGZlpfB3gGSybz5AsQU/L9UM7QwcCsBANzoj5Bdcj1w4s0sq93gRxCGhtrI3vvZ7DamCXUCwhnkh4x+Khk8TZgIGcdhMKY+jCd/EU0gf9MiBCpO/0/yLznEtgQ+pIJvE3HZTlc5tRFhPrkV+rIv8yQhzg6DkOSw1EcXiK9mPzhYQEBALzUvo4yWwO6qrxlvmpE1qa1p6HGXAiFz1kXigAX7XJpEyhXp4LfYg2vkm1nB2JjEykJRQfSVLLfQ4G93lDCEi0ERKwtJbrxsNkmvb42CtLMUc6z/mPTU6NcCs/7TaKbjG/ggPBz7FlfwUHtgBc0J5BfY8AOd3XxJZLheS9GqcW/KVDiJXkeLyhdSufhQDkPOLcZ3nZXaFME6Tt/TnUztww69v5QjtViiU8qH2/Mo9GpKE1aTI/dwn5DOBSwMxf7ecuEnL5w7aG0WCTv3CKIlzHi9Ss0R9jFHzBKU0d+9Hhi6ENTH3p4q88zRe8vldhkGd8snQRbSvRnJ8Rfr/40cx3URugZYq9eyb7AeNZD0yNjVBRKd8oHzFcnX5RNa4uHYYnSJfRgc04tim4BsK+9i4qv8pGPn5k
+ NSDIVqXz
+ vjKuWkEkSY6BP8DBrXkt2LR5LgRP0DuDV3sBaAMOxiDIaGJdD4l7hyQCSy72KnY/QrTZh89t7v23PINMu0AZQmkmCYDYxmJGN3MPsgsb6EYaF9HOGDtnEMV5IGgX6wjdFX8Dq6eE29jbKXK+5TgchzeOSeTEoCmZGbFYlGt0BRUKDaAwpEsmeTF9CGmBnnClSIUXdaehWx3+pti65beW51RndSCVT+izOufTxPZ9Rbernm7Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,345 +142,298 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Reclaim of some inodes is rather complex requiring running transactions
-or doing other IO. Consequently filesystems end up doing GFP_NOFAIL
-allocations from kswapd or even direct reclaim which is problematic
-because forward progress of these allocations isn't guaranteed. Add
-infrastructure for marking inodes whose reclaim is difficult and offload
-reclaim of such inodes into a workqueue to not block kswapd with
-difficult inode reclaim. The processing of the queued inodes happens in
-parallel from several work items so that the reclaim has higher chances
-of keeping up with the inflow of inodes if reclaim of some inodes
-progresses slowly.
+Deferring difficult inode reclaim from prune_icache_sb() to a workqueue
+removes the natural feedback loop of blocking tasks in direct reclaim
+until they make space for new allocations. This can result in the list
+of deferred inodes to grow beyond any bounds and possibly push the
+machine to a reclaim storm or OOM.
+
+Add a throttling mechanism that makes tasks calling
+mark_inode_reclaim_deferred() wait on exit to userspace if the number of
+deferred inodes to reclaim for a superblock grows over limit. We measure
+average time it takes to reclaim inode on deferred list for a superblock
+and block tasks proportionally to that.
+
+The mechanism to block tasks on exit to userspace is a bit simplistic
+but I don't expect more than one inode to be deferred per syscall and I
+expect throttling to be rare so it should be fine. If we wanted
+something more advanced, we could store the delay in task_struct and
+just wait for it when returning to userspace similarly as blkcg
+throttling does it but so far I consider the space in task_struct a
+waste for this purpose.
 
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/inode.c                       | 212 ++++++++++++++++++++++++++++++-
- fs/super.c                       |   2 +
- include/linux/fs.h               |   3 +
- include/linux/fs/super_types.h   |   3 +
- include/trace/events/writeback.h |   3 +-
- 5 files changed, 219 insertions(+), 4 deletions(-)
+ fs/inode.c                       | 128 ++++++++++++++++++++++++++++---
+ include/linux/fs/super_types.h   |   2 +
+ include/trace/events/writeback.h |  51 ++++++++++++
+ 3 files changed, 170 insertions(+), 11 deletions(-)
 
 diff --git a/fs/inode.c b/fs/inode.c
-index 43f3b2cb1ebb..0128db61217e 100644
+index 0b6335df9b48..2d2fc3ce518c 100644
 --- a/fs/inode.c
 +++ b/fs/inode.c
-@@ -74,6 +74,25 @@ static DEFINE_PER_CPU(unsigned long, nr_unused);
+@@ -23,6 +23,7 @@
+ #include <linux/rw_hint.h>
+ #include <linux/seq_file.h>
+ #include <linux/debugfs.h>
++#include <linux/task_work.h>
+ #include <trace/events/writeback.h>
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/timestamp.h>
+@@ -1119,23 +1120,53 @@ static int get_inode_reclaim_batch(int *id, struct list_head *list)
+ 	return count;
+ }
  
- static struct kmem_cache *inode_cachep __ro_after_init;
- 
-+struct deferred_reclaim_queue {
-+	struct list_head list;
-+	spinlock_t lock;
-+};
++static void inode_reclaim_update_stat(struct super_block *sb, unsigned int n,
++				      u64 start)
++{
++	u64 delay;
 +
-+/* Inodes for deferred reclaim */
-+struct inode_deferred_reclaim {
-+	int workers;			/* Number of parallel workers */
-+	struct workqueue_struct *wq;	/* Workqueue for workers */
-+	struct work_struct *work;	/* Workers */
++	if (!sb)
++		return;
++
++	delay = div_u64(ktime_get_ns() - start, n);
 +	/*
-+	 * Queue of deferred inodes. The number of queues is the same number
-+	 * as the number of workers
++	 * Smooth delay updates with exponential moving average. Updates can
++	 * get lost if workers race but we don't really care.
 +	 */
-+	struct deferred_reclaim_queue *queues;
-+};
++	WRITE_ONCE(sb->s_deferred_reclaim_delay,
++		   (63 * READ_ONCE(sb->s_deferred_reclaim_delay) + delay) / 64);
 +
-+static struct inode_deferred_reclaim deferred_reclaim;
++	trace_inode_reclaim_update_stat(sb, n, delay,
++				READ_ONCE(sb->s_deferred_reclaim_delay));
 +
- static long get_nr_inodes(void)
++	/*
++	 * The elevated s_deferred_reclaim_count keeps sb alive until we drop
++	 * it
++	 */
++	if (!atomic_sub_return(n, &sb->s_deferred_reclaim_count))
++		wake_up_var(&sb->s_deferred_reclaim_count);
++}
+ 
+ static void inode_reclaim_deferred(struct work_struct *work)
  {
- 	int i;
-@@ -949,7 +968,7 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
- 	 * sync, or the last page cache deletion will requeue them.
+ 	struct inode *inode;
+ 	LIST_HEAD(inode_batch);
++	u64 start;
++	int id, count;
++	struct super_block *sb;
++
+ 	/*
+ 	 * We start with the list corresponding to the work but rolling a dice
+ 	 * would work as well
  	 */
- 	if (icount_read(inode) ||
--	    (inode_state_read(inode) & ~I_REFERENCED) ||
-+	    inode_state_read(inode) & ~(I_REFERENCED | I_DEFER_RECLAIM) ||
- 	    !mapping_shrinkable(&inode->i_data)) {
- 		list_lru_isolate(lru, &inode->i_lru);
- 		spin_unlock(&inode->i_lock);
-@@ -994,6 +1013,38 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
- 	return LRU_REMOVED;
- }
+-	int id = work - deferred_reclaim.work;
++	id = work - deferred_reclaim.work;
  
-+/* Number of inodes to process in one reclaim batch */
-+#define INODE_RECLAIM_BATCH_SIZE 16
-+
-+static int get_deferred_sb_id(struct super_block *sb)
-+{
-+	return hash_ptr(sb, 32) % deferred_reclaim.workers;
-+}
-+
-+static void queue_deferred_reclaim(struct super_block *sb, int count,
-+				   struct list_head *list)
-+{
-+	int id = get_deferred_sb_id(sb);
-+	struct deferred_reclaim_queue *queue =
-+					&deferred_reclaim.queues[id];
-+	int i, wake_count;
-+
-+	spin_lock(&queue->lock);
-+	list_splice_tail(list, &queue->list);
-+	atomic_add(count, &sb->s_deferred_reclaim_count);
-+	spin_unlock(&queue->lock);
-+
-+	/* Queue works to process inodes we've added to the list */
-+	wake_count = DIV_ROUND_UP(count, INODE_RECLAIM_BATCH_SIZE);
-+	if (wake_count > deferred_reclaim.workers)
-+		wake_count = deferred_reclaim.workers;
-+	for (i = 0; i < wake_count; i++) {
-+		queue_work(deferred_reclaim.wq,
-+			   &deferred_reclaim.work[id]);
-+		id = (id + 1) % deferred_reclaim.workers;
-+	}
-+}
-+
- /*
-  * Walk the superblock inode LRU for freeable inodes and attempt to free them.
-  * This is called from the superblock shrinker function with a number of inodes
-@@ -1003,14 +1054,166 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
- long prune_icache_sb(struct super_block *sb, struct shrink_control *sc)
- {
- 	LIST_HEAD(freeable);
--	long freed;
-+	long freed, deferred = 0;
-+	struct inode *inode, *tmp;
+ 	while (1) {
+ 		if (!get_inode_reclaim_batch(&id, &inode_batch))
+ 			break;
+-		while (!list_empty(&inode_batch)) {
+-			struct super_block *sb;
++		sb = NULL;
  
- 	freed = list_lru_shrink_walk(&sb->s_inode_lru, sc,
- 				     inode_lru_isolate, &freeable);
--	dispose_list(&freeable);
-+
-+	list_for_each_entry_safe(inode, tmp, &freeable, i_lru) {
-+		if (inode_state_read_once(inode) & I_DEFER_RECLAIM) {
-+			deferred++;
-+			continue;
-+		}
-+		list_del_init(&inode->i_lru);
-+		evict(inode);
-+		cond_resched();
-+	}
-+
-+	if (!list_empty(&freeable))
-+		queue_deferred_reclaim(sb, deferred, &freeable);
- 	return freed;
- }
- 
-+static void __get_inode_reclaim_batch(int *start, int end,
-+				      struct list_head *list, int *count)
-+{
-+	int i;
-+
-+	for (i = *start; i < end; i++) {
-+		struct deferred_reclaim_queue *queue =
-+						&deferred_reclaim.queues[i];
-+		struct list_head *entry, tmp;
-+
-+		if (list_empty_careful(&queue->list))
-+			continue;
-+		spin_lock(&queue->lock);
-+		list_for_each(entry, &queue->list) {
-+			if (*count >= INODE_RECLAIM_BATCH_SIZE)
-+				break;
-+			(*count)++;
-+		}
-+		list_cut_before(&tmp, &queue->list, entry);
-+		list_splice_tail(&tmp, list);
-+		spin_unlock(&queue->lock);
-+		if (*count >= INODE_RECLAIM_BATCH_SIZE)
-+			break;
-+	}
-+	*start = i;
-+}
-+
-+/* Move a batch of inodes from queued lists to our private list */
-+static int get_inode_reclaim_batch(int *id, struct list_head *list)
-+{
-+	int count = 0;
-+	int orig_id = *id;
-+
-+	__get_inode_reclaim_batch(id, deferred_reclaim.workers, list, &count);
-+	if (count >= INODE_RECLAIM_BATCH_SIZE)
-+		return count;
-+	/* Wrap around */
-+	if (orig_id > 0) {
-+		*id = 0;
-+		__get_inode_reclaim_batch(id, orig_id, list, &count);
-+	}
-+	return count;
-+}
-+
-+
-+static void inode_reclaim_deferred(struct work_struct *work)
-+{
-+	struct inode *inode;
-+	LIST_HEAD(inode_batch);
-+	/*
-+	 * We start with the list corresponding to the work but rolling a dice
-+	 * would work as well
-+	 */
-+	int id = work - deferred_reclaim.work;
-+
-+	while (1) {
-+		if (!get_inode_reclaim_batch(&id, &inode_batch))
-+			break;
 +		while (!list_empty(&inode_batch)) {
-+			struct super_block *sb;
+ 			/*
+ 			 * inode_batch list is private and I_FREEING flags
+ 			 * protect us from anybody else trying to remove the
+@@ -1143,17 +1174,20 @@ static void inode_reclaim_deferred(struct work_struct *work)
+ 			 */
+ 			inode = list_first_entry(&inode_batch, struct inode,
+ 						 i_lru);
++			if (inode->i_sb != sb) {
++				inode_reclaim_update_stat(sb, count, start);
 +
-+			/*
-+			 * inode_batch list is private and I_FREEING flags
-+			 * protect us from anybody else trying to remove the
-+			 * inode from the LRU list. No locking needed.
-+			 */
-+			inode = list_first_entry(&inode_batch, struct inode,
-+						 i_lru);
-+			list_del_init(&inode->i_lru);
-+			sb = inode->i_sb;
-+			evict(inode);
-+			/*
-+			 * The elevated s_deferred_reclaim_count keeps sb alive
-+			 * until we drop it
-+			 */
-+			if (atomic_dec_and_test(&sb->s_deferred_reclaim_count))
-+				wake_up_var(&sb->s_deferred_reclaim_count);
-+			cond_resched();
-+		}
-+	}
-+}
++				sb = inode->i_sb;
++				count = 0;
++				start = ktime_get_ns();
++			}
++			count++;
+ 			list_del_init(&inode->i_lru);
+-			sb = inode->i_sb;
+ 			evict(inode);
+-			/*
+-			 * The elevated s_deferred_reclaim_count keeps sb alive
+-			 * until we drop it
+-			 */
+-			if (atomic_dec_and_test(&sb->s_deferred_reclaim_count))
+-				wake_up_var(&sb->s_deferred_reclaim_count);
+ 			cond_resched();
+ 		}
 +
-+/* Maximum number of inode reclaim workers */
-+#define MAX_RECLAIM_WORKERS 16
++		inode_reclaim_update_stat(sb, count, start);
+ 	}
+ }
+ 
+@@ -1189,6 +1223,70 @@ static void __init deferred_reclaim_init(void)
+ 	}
+ }
+ 
++struct deferred_reclaim_delay {
++	struct callback_head task_work;
++	u64 delay;
++};
 +
-+static void __init deferred_reclaim_init(void)
++static void deferred_delay_work(struct callback_head *work)
 +{
-+	int workers = MAX_RECLAIM_WORKERS;
-+	int i;
++	struct deferred_reclaim_delay *dd =
++		container_of(work, struct deferred_reclaim_delay, task_work);
 +
-+	/* Scale down the number of workers for small systems */
-+	if (workers > num_possible_cpus())
-+		workers = num_possible_cpus();
-+
-+	deferred_reclaim.workers = workers;
-+	deferred_reclaim.work = kmalloc_objs(struct work_struct, workers);
-+	deferred_reclaim.queues =
-+			kmalloc_objs(struct deferred_reclaim_queue, workers);
-+	if (!deferred_reclaim.work || !deferred_reclaim.queues)
-+		panic("Failed to allocate deferred inode reclaim queues");
-+
-+	deferred_reclaim.wq = alloc_workqueue("deferred-inode-reclaim",
-+			WQ_FREEZABLE | WQ_MEM_RECLAIM | WQ_UNBOUND,
-+			workers);
-+	if (!deferred_reclaim.wq)
-+		panic("Failed to allocate deferred inode reclaim workqueue");
-+
-+	for (i = 0; i < workers; i++) {
-+		INIT_WORK(&deferred_reclaim.work[i], inode_reclaim_deferred);
-+		spin_lock_init(&deferred_reclaim.queues[i].lock);
-+		INIT_LIST_HEAD(&deferred_reclaim.queues[i].list);
-+	}
++	schedule_timeout_killable(nsecs_to_jiffies(dd->delay));
 +}
 +
 +/*
-+ * Mark inode for deferred reclaim. When slab reclaim path will be freeing the
-+ * inode, it will not call evict() directly but rather offload it to a worker
-+ * in a workqueue. This is useful when inode reclaim is expected to take a
-+ * long time (e.g. because it needs to do IO) so that it doesn't block kswapd
-+ * or because it needs allocating memory (which cannot be guaranteed from
-+ * reclaim path).
-+ *
-+ * Note that we currently don't provide a way to unmark inode for deferred
-+ * reclaim. It could be done but the benefit is unclear. The rationale is that
-+ * to make inode hard to reclaim, relatively expensive things like writing data
-+ * to the file have to be done and in such case the additional CPU overhead and
-+ * latency of offloading the inode reclaim is negligible in the overall load.
++ * Size of deferred reclaim list from which we start throttling tasks creating
++ * inodes marked for deferred reclaim.
 + */
-+void mark_inode_reclaim_deferred(struct inode *inode)
++#define INODE_DEFERRED_RECLAIM_LIMIT 8192
++
++static void throttle_inode_deferred_reclaim(struct inode *inode)
 +{
-+	if (inode_state_read_once(inode) & I_DEFER_RECLAIM)
-+		return;
++	struct super_block *sb = inode->i_sb;
++	unsigned int len;
 +
-+	spin_lock(&inode->i_lock);
-+	inode_state_set(inode, I_DEFER_RECLAIM);
-+	spin_unlock(&inode->i_lock);
++	/*
++	 * If inodes with deferred reclaim are accumulating too much, slow down
++	 * tasks creating them. This doesn't provide any kind of guarantee on
++	 * the length of the deferred list since lots of inodes with
++	 * I_DEFER_RECLAIM can be already present in the inode cache and we
++	 * have no control when they reach the deferred list. But if the
++	 * pressure on the deferred list is sustained, the balance should
++	 * eventually be established.
++	 */
++	len = atomic_read(&sb->s_deferred_reclaim_count);
++	if (len > INODE_DEFERRED_RECLAIM_LIMIT) {
++		u64 delay = READ_ONCE(sb->s_deferred_reclaim_delay);
++		struct deferred_reclaim_delay *dd;
++
++		if (!delay)
++			return;
++
++		dd = kmalloc_obj(*dd, GFP_NOFS | __GFP_NORETRY);
++		/*
++		 * If the allocation failed, don't bother. Throttling is
++		 * approximate anyway and next time we'll throttle more.
++		 */
++		if (!dd)
++			return;
++
++		/*
++		 * Scale the delay based on how much we exceed the limit. Wait
++		 * at most 4x as long as estimated time to reclaim the inode.
++		 */
++		len = min(len, 5 * INODE_DEFERRED_RECLAIM_LIMIT);
++		delay = div_u64(delay * (len - INODE_DEFERRED_RECLAIM_LIMIT),
++				INODE_DEFERRED_RECLAIM_LIMIT);
++		trace_mark_inode_reclaim_deferred_throttle(inode, len, delay);
++
++		dd->delay = delay;
++		init_task_work(&dd->task_work, deferred_delay_work);
++		task_work_add(current, &dd->task_work, TWA_RESUME);
++	}
 +}
-+EXPORT_SYMBOL_GPL(mark_inode_reclaim_deferred);
-+
- static void __wait_on_freeing_inode(struct inode *inode, bool hash_locked, bool rcu_locked);
- static bool igrab_from_hash(struct inode *inode);
- 
-@@ -2658,6 +2861,9 @@ void __init inode_init(void)
- 					 SLAB_ACCOUNT),
- 					 init_once);
- 
-+	/* Deferred inode reclaim infrastructure */
-+	deferred_reclaim_init();
-+
- 	/* Hash may have been set up in inode_init_early */
- 	if (!hashdist)
- 		return;
-diff --git a/fs/super.c b/fs/super.c
-index 1d5ccf540a9b..fc845079b3df 100644
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -583,6 +583,8 @@ void deactivate_locked_super(struct super_block *s)
- 	struct file_system_type *fs = s->s_type;
- 	if (atomic_dec_and_test(&s->s_active)) {
- 		shrinker_free(s->s_shrink);
-+		wait_var_event(&s->s_deferred_reclaim_count,
-+			       !atomic_read(&s->s_deferred_reclaim_count));
- 		fs->kill_sb(s);
- 
- 		kill_super_notify(s);
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index f9d1e05e8ae6..a289402563f8 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -741,6 +741,7 @@ enum inode_state_flags_enum {
- 	I_SYNC_QUEUED		= (1U << 17),
- 	I_PINNING_NETFS_WB	= (1U << 18),
- 	I_METADATA_WRITEBACK	= (1U << 19),
-+	I_DEFER_RECLAIM		= (1U << 20),
- };
- 
- #define I_DIRTY_INODE (I_DIRTY_SYNC | I_DIRTY_DATASYNC)
-@@ -2218,6 +2219,8 @@ static inline void set_inode_metadata_writeback(struct inode *inode)
- 	spin_unlock(&inode->i_lock);
- }
- 
-+void mark_inode_reclaim_deferred(struct inode *inode);
 +
  /*
-  * returns the refcount on the inode. it can change arbitrarily.
+  * Mark inode for deferred reclaim. When slab reclaim path will be freeing the
+  * inode, it will not call evict() directly but rather offload it to a worker
+@@ -1205,12 +1303,20 @@ static void __init deferred_reclaim_init(void)
   */
+ void mark_inode_reclaim_deferred(struct inode *inode)
+ {
++	bool throttle = false;
++
+ 	if (inode_state_read_once(inode) & I_DEFER_RECLAIM)
+ 		return;
+ 
+ 	spin_lock(&inode->i_lock);
+-	inode_state_set(inode, I_DEFER_RECLAIM);
++	if (!(inode_state_read(inode) & I_DEFER_RECLAIM)) {
++		inode_state_set(inode, I_DEFER_RECLAIM);
++		throttle = true;
++	}
+ 	spin_unlock(&inode->i_lock);
++
++	if (throttle)
++		throttle_inode_deferred_reclaim(inode);
+ }
+ EXPORT_SYMBOL_GPL(mark_inode_reclaim_deferred);
+ 
 diff --git a/include/linux/fs/super_types.h b/include/linux/fs/super_types.h
-index ecd96aeb1cee..a41bd57fc2e6 100644
+index a41bd57fc2e6..6db5df6fd35f 100644
 --- a/include/linux/fs/super_types.h
 +++ b/include/linux/fs/super_types.h
-@@ -232,6 +232,9 @@ struct super_block {
+@@ -234,6 +234,8 @@ struct super_block {
  
- 	struct shrinker				*s_shrink;	/* per-sb shrinker handle */
+ 	/* Number of inodes queued for deferred reclaim */
+ 	atomic_t				s_deferred_reclaim_count;
++	/* Average time to reclaim one deferred inode */
++	u64					s_deferred_reclaim_delay;
  
-+	/* Number of inodes queued for deferred reclaim */
-+	atomic_t				s_deferred_reclaim_count;
-+
  	/* Number of inodes with nlink == 0 but still referenced */
  	atomic_long_t				s_remove_count;
- 
 diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
-index 13ee076ccd16..4a9cfe458820 100644
+index 4a9cfe458820..aec38eaeb10e 100644
 --- a/include/trace/events/writeback.h
 +++ b/include/trace/events/writeback.h
-@@ -28,7 +28,8 @@
- 		{I_DONTCACHE,		"I_DONTCACHE"},		\
- 		{I_SYNC_QUEUED,		"I_SYNC_QUEUED"},	\
- 		{I_PINNING_NETFS_WB,	"I_PINNING_NETFS_WB"},	\
--		{I_LRU_ISOLATING,	"I_LRU_ISOLATING"}	\
-+		{I_LRU_ISOLATING,	"I_LRU_ISOLATING"},	\
-+		{I_DEFER_RECLAIM,	"I_DEFER_RECLAIM"}	\
- 	)
+@@ -881,6 +881,57 @@ DEFINE_EVENT(writeback_inode_template, sb_clear_inode_writeback,
+ 	TP_ARGS(inode)
+ );
  
- /* enums need to be exported to user space */
++TRACE_EVENT(inode_reclaim_update_stat,
++	TP_PROTO(
++		struct super_block *sb,
++		unsigned int n,
++		u64 batch_delay,
++		u64 avg_delay
++	),
++	TP_ARGS(sb, n, batch_delay, avg_delay),
++
++	TP_STRUCT__entry(
++		__field(dev_t,		dev)
++		__field(unsigned int,	n)
++		__field(u64,		batch_delay)
++		__field(u64,		avg_delay)
++	),
++
++	TP_fast_assign(
++		__entry->dev = sb->s_dev;
++		__entry->n = n;
++		__entry->batch_delay = batch_delay;
++		__entry->avg_delay = avg_delay;
++	),
++
++	TP_printk("dev %d,%d batch size %u batch delay %llu ns avg delay %llu ns",
++		  MAJOR(__entry->dev), MINOR(__entry->dev), __entry->n,
++		  __entry->batch_delay, __entry->avg_delay)
++);
++
++TRACE_EVENT(mark_inode_reclaim_deferred_throttle,
++	TP_PROTO(struct inode *inode, unsigned int len, u64 delay),
++	TP_ARGS(inode, len, delay),
++
++	TP_STRUCT__entry(
++		__field(u64,		ino)
++		__field(dev_t,		dev)
++		__field(unsigned int,	len)
++		__field(u64,		delay)
++	),
++
++	TP_fast_assign(
++		__entry->ino = inode->i_ino;
++		__entry->dev = inode->i_sb->s_dev;
++		__entry->len = len;
++		__entry->delay = delay;
++	),
++
++	TP_printk("dev %d,%d ino %llu deferred list len %u delay %llu ns",
++		  MAJOR(__entry->dev), MINOR(__entry->dev),
++		  __entry->ino, __entry->len, __entry->delay)
++);
++
+ #endif /* _TRACE_WRITEBACK_H */
+ 
+ /* This part must be outside protection */
 -- 
 2.51.0
 
