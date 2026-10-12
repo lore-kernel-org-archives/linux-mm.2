@@ -4,124 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86891CA9EC5
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 12:33:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCAD0CA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 12:45:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F9B86B0088; Mon, 12 Oct 2026 08:33:42 -0400 (EDT)
+	id B09FF6B0088; Mon, 12 Oct 2026 08:45:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AA2C6B008A; Mon, 12 Oct 2026 08:33:42 -0400 (EDT)
+	id ABB8B6B008A; Mon, 12 Oct 2026 08:45:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 798CE6B008C; Mon, 12 Oct 2026 08:33:42 -0400 (EDT)
+	id 9D0856B008C; Mon, 12 Oct 2026 08:45:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F7446B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:33:42 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC3EFA8C56
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:33:41 +0000 (UTC)
-X-FDA: 85313915442.04.F20E258
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E83E980007
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:33:39 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TGbZnyjI;
-	spf=pass (imf02.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 71FE46B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:45:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E6B06160D57
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:45:13 +0000 (UTC)
+X-FDA: 85313944506.01.DE40D63
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf05.hostedemail.com (Postfix) with ESMTP id DF87A10000C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:45:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=EqhTn7xP;
+	spf=pass (imf05.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791808419;
+	s=arc-20220608; t=1791809112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q+RxCsVLexD5GLxTANS9HeBsTLtflT43ejBiqaED07Y=;
-	b=N+NPGoX8qne60Cu9UUlmkaYsJku9uuAfAvhkkWgQs1dM78fiV5tTkxVFrimhPGe/CjOt/W
-	uF/EzzuMEej8l/+SXvYx1V+8hWy/6S9NYGO/3RP7q7cflETZK6U+7BKjIacv6gUISKxU3Q
-	fu1J2Oi/P7UIWEAeVQZM9ESJ1wCoZZY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791808419;
-	b=nyxaC+G8gCFi28870xqqsjqTCLT278WN70GV4s2SdGTWaGdstK6+P0o2Pav+Bb3UWQETuL
-	puSS0IX9Z/mmFCGYuGha6zmANsZnZQ2a8L+6CPFXUGtob1EqkDraYqcrAnH3M85CS5haPb
-	VbuQaA3wqEHXswisu8QFb4EzU65AJLY=
+	bh=pxDcCA7hpgDYYxgdhqPc+1ZwblatM2CFgvbhhZn3Nj4=;
+	b=qGzFS1oeTn4zXg23C32eW3xEYqaiGe6BE9kCaSHitE+cPtdZAg+n3wviYwjkeRaVmTnHTu
+	iC4zT0T/kXvGPvTzyXgas/1AkTp1ejxOJI1D4U2CEBHhB+jWZKtwwsTkOM/6HMem/l2dsJ
+	uUTpskyRaWCg9qAMi/N+9D8bCubHYw8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TGbZnyjI;
-	spf=pass (imf02.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-ccc7a6070b4so813188a12.0
-        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 05:33:39 -0700 (PDT)
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=EqhTn7xP;
+	spf=pass (imf05.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791809112;
+	b=PmBcfGsEEWGpA8pRPnUQSbaV4MO2bqedkHGN/SSrQzbhQyPs8R+F+zmHuh7+Otyzq3jhUc
+	G3y7G+Th89dMepr7anCI+sCIL2xOW6r3FPL3asYSNA/bK3ugCOtxJqYObMNBJsiQYphLEo
+	dnq7TDu/JjWRup8vN/soEfCDFUkXd2I=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48af27fe287so1584972f8f.0
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 05:45:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791808419; x=1792413219; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=q+RxCsVLexD5GLxTANS9HeBsTLtflT43ejBiqaED07Y=;
-        b=TGbZnyjIeS+LbjWShXNW7cf1SPWYzHJAoChDBNWicJ7lzkOqjua9DRuY23t+m1VH0g
-         al4rn4sr78HV15VClHjbLdP1w9eVS5JLVRMdtgaMEng8cypSeOgz8ufXZZHVX4QCtmil
-         D8ZQ6PQZcKXMLo620CjWXf2y2uF8GdKpXs9FUrBRNkdOdBErKcONFbpWYLO1uauzY2U1
-         8lzjE/RzGukbjOCP69U4lYA8cQzB9m/Styr1kiD1tESF8lxVXX1UA9471Y5uy70AeITq
-         ioKBCLK5BLhEX69GsYCbGNsThxALCu+iaGBWKZblp0YFaZP6PtPDhvLZAcHKAfnVVxo+
-         DX5Q==
+        d=suse.com; s=google; t=1791809110; x=1792413910; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pxDcCA7hpgDYYxgdhqPc+1ZwblatM2CFgvbhhZn3Nj4=;
+        b=EqhTn7xPB+wD+h8Bypi89r8jsR3bDTRyKoUwGqyHA/6z5nEPRc9Czoq6Uqk3vjBHl5
+         w4BsgKrp5Vm9r0HmSjPmtag9xCUStR390CCH1wC9WuUUxErTPzzp15iE0rV19fyiD+Rj
+         aSWmYLJ2XIpcsLLFb3Uw0I5dP2eUq5gWdBguV3BQnsOM0px/xFvn+U76FtT/Gu+0PqnW
+         DivIj4C6xXRvP7cWtxf85E7duzUESX8JPLLDGpbD6PHghgiWGqSK5Y5WbJaC5MbudBcw
+         Y23gtJu14YZCFyMFItsXs4fKa6LjLYP5IMy1YWMeZM9if8wAzhPGa8eTW6F6dDZBzoTr
+         2aOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791808419; x=1792413219;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=q+RxCsVLexD5GLxTANS9HeBsTLtflT43ejBiqaED07Y=;
-        b=JYBP/WSe/Amm3zjaCkH3Wdx92lV0H08ixn0dfIhHHUGYCxq/Vl1aCRgdQCmuRF+brO
-         bUFmxkPvs1HH178oO1xtnINis0CkSu1tlvfSxHcO8WJDUk5dfFkxqneqS1T8Xv89ZIH7
-         oGXLOzgdOFpFWcRT7TWJ0DJMufTH78ZkooPD7PZkjWiTX678i02CWEpC3NsI8SGveE+a
-         EjgbQNarLgWhMnxjUmMnHLqWRsD2WqOnsrQ9QWrw5vaM4N6E2K4BnUsP4OyNxwwjWo04
-         gwN1oRdEia/ddUWtI+3JWx7Ob8xCQdOOWCS2fZ6DNoXrupLFUblKZvpDWg5zVjiFOdlr
-         3oFA==
-X-Forwarded-Encrypted: i=1; AKwUvBz0D7UuVdcMkeTQ2mzw2922ZXvFg2Z8ySK07F/60zqxFuD0sdIhgo3jm4S6QRuFGAUuEYGu3Ru6/Q==@kvack.org
-X-Gm-Message-State: AFq9FYKt+qp75se7I4i/YevTmHBkfB9CpFhnUWZ8veLl2wTVK6EDJfUC
-	5fVoEnmgrNEmAXbjEsAdPY7c3kjb62TBmhkDLXAPdJ4XpSJZA7pn9mFr
-X-Gm-Gg: AYBFou02loOMMJhiqXVfw4p7+PeXNWGFNU+Ld1Loy8CbvaULQlzNvv2NAjiDRMsGsxl
-	zpoAsN2EGTJ2h9CHCScuv9ErY2jL2Cg5ngT2Aitl6kVTNQ3gcPyoGhhiHdav+tNMptgQs1L3yiA
-	if+A/G+VrTqH+c99OepTSUyTeLpTPGgUXXc7EoVX2inTvOewOYftPGNu2702GxUbgmtBpQhoxIp
-	Rfi4sxUsTdRK4OP9u1V22YK08cf62Nztrry7eJUGVRdardyvUFwCMVZAdyFdy7fbTgp4i47Nop+
-	tG4Sdr++X20FudUcR/M4Q4pSSDi1hUv6SXl2jW8pLuG14KYjQIML4cm4LiP+cwbtcigmdtl/29G
-	PH7yinwWXJfyNvF2Pw7GWVlvPWkf+q5n+N9341AIqkuw5HMf2kHme72+T+CIvfcGlWaexBEEzbG
-	a3m8ExHSZUy8qDBWWItGiszvRbjT54fCgXtHM3SVlo791cZXSBqgm2BAN5iAwAWrlaIsoiIulWS
-	0Pp0UcamXge01dC
-X-Received: by 2002:a17:90b:540e:b0:3a8:1ffc:391b with SMTP id 98e67ed59e1d1-3ab3a9fc979mr6592452a91.43.1791808418593;
-        Mon, 12 Oct 2026 05:33:38 -0700 (PDT)
-Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab371e2833sm17072745a91.17.2026.10.12.05.33.33
+        d=1e100.net; s=20260707; t=1791809110; x=1792413910;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pxDcCA7hpgDYYxgdhqPc+1ZwblatM2CFgvbhhZn3Nj4=;
+        b=yYleOf+d3QNlrjqk0Y6pqCS9Mvz9Xjy6R78ryifZ0diu9QJdFW7MAIQySRSwrOYO+T
+         7hIYKN3T3WH5TqAHXXtlOvWFigVHOR+sUYhV+pjXcAvvfobKy004JxUp2ss32dytgovo
+         1eggJ8oJQuLdi9Cdpc/1CtSoerDbV0XoTl1cv5Vw3vK8ghuubmAtUyxpadIyx0RDinHU
+         uIJNGNEwMpFnrGcli9/IdulgansZHtJzhIff5NjWDF/CL62qnRkMAylFeQkinddJBbWg
+         PtHC8+tqkhy/dzIOyAYlrRuqNWlST7jjQL5Oxxgrl3JR7DzvGRB7p+ZNBZFKUunESy1W
+         H/4g==
+X-Forwarded-Encrypted: i=1; AKwUvBwZcVzkVfpG7rtq65RFVxFbcgf2PbxTJzvpUWrAIz5/LGYF58+1EW+j64eQsOQe15Sb8J1O3JYFvQ==@kvack.org
+X-Gm-Message-State: AFq9FYJNLN93NHF+eX4ITlrUXoaaujunveLr8Qbnbcm+yAnv6NptbRdh
+	9shQyUepnYsmPZ67i+udqTvCTc1MR8ylYa5iIzJfTv/NNOMw9DPJsoDPPDUdTT959J8=
+X-Gm-Gg: AYBFou19db+DwLVbvwJ5MZdqPYfeDow/azkxK2UoolQ877jtd3puwWPF/VMuPnrvNNv
+	bqdV35jK3y2kvf/Y17b4YPcLatW1YJlYpCyccj7ijTllBc+VrZ7jenLjayOCFee6wl2g7yjJtXN
+	Vpji5BTly/vmuB+cc+ddBUcM9ool7o4AI+b1eL15AfttiSVm9K6VdqeqxERxsuITzUYTPa/3wRq
+	kY1f5BlMhzj+0PhweNC7JxQuALh1wHlSng7c5eeshrX6qF0r5IP5WkBMyEAdrTAlaLj2C3+HWQf
+	aUm2O9qN6o5lK4jrxq+MpnJ/uSZp4mjvgfhj8OHi+mz8rV+P2b1cBnqoFfwLubw1LE2VOBOmX4X
+	GinWm9WaseFw9kROzaTn82un6z1tbLBgYLxJTATkPiK3UnD71B6ew8h3L2WYHA2gYz3BwWyMjv5
+	MjO0yTiksu6MeazkJ620lEsagjRIM4SgUzMKW+Ch83RWFfzmMl6sN+ptc4LtGYsQtzNBi5GhPMp
+	A==
+X-Received: by 2002:a05:6000:160e:b0:487:27f9:842 with SMTP id ffacd0b85a97d-48dbace9d4fmr11992821f8f.55.1791809110413;
+        Mon, 12 Oct 2026 05:45:10 -0700 (PDT)
+Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db9ac02cfsm18344889f8f.39.2026.10.12.05.45.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 05:33:36 -0700 (PDT)
-From: Bo Zhang <zhangbo0325@gmail.com>
-X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
-To: senozhatsky@chromium.org
-Cc: baohua@kernel.org,
-	akpm@linux-foundation.org,
-	bigeasy@linutronix.de,
-	hdanton@sina.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	minchan@kernel.org,
-	ryncsn@gmail.com,
-	yosry.ahmed@linux.dev,
-	surenb@google.com,
-	suleiman@google.com,
-	zhangdongdong5@xiaomi.com
-Subject: Re: [RFC PATCH] zram: avoid preemption with CPU-based compression backends
-Date: Mon, 12 Oct 2026 20:33:28 +0800
-Message-Id: <20261012123328.1138059-1-zhangbo56@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <anMPLgbrf7XMC7Qw@google.com>
-References: <anMPLgbrf7XMC7Qw@google.com>
+        Mon, 12 Oct 2026 05:45:09 -0700 (PDT)
+Date: Mon, 12 Oct 2026 14:45:07 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Shuah Khan <shuah@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Amir Goldstein <amir73il@gmail.com>, "T.J. Mercier" <tjmercier@google.com>, cgroups@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] selftests/cgroup: free the paths returned by cg_control()
+Message-ID: <20261012-grumbling-spearman-3a313ae31198@there>
+References: <20261011223358.2327625-10-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="lgnee3ewncxbl2us"
+Content-Disposition: inline
+In-Reply-To: <20261011223358.2327625-10-sashal@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DF87A10000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E83E980007
-X-Stat-Signature: 6w6jezejey5enj1qbsghptdux4wj6fyc
-X-HE-Tag: 1791808419-557388
-X-HE-Meta: U2FsdGVkX19o3Sxuy4xMmK3JALcXVSp82X2piSpQ6qVK5oga2QQRzUgDrUscX7xFo45Zd2ihDEKC31w2OjRTC0UpvWyOAngKJx8Fw+FJcm6AFQ9kHDBluelKZuOFJrf0OcInskN5pMOKgzBFSx/wRm42Sat/bujv6GjYlUC3Z3Ops4uXllwkuPPC/XWWAkhIlLJnDCMBwmdy+sWlVjH3O7aXy42PbxgUb2ikvwtB2JQQXiBMNEsW+m1UWmwkgTbwtFsZGuOEuDCTPHyWxQj6kpsoSxIitwAQd5LmQjlO3qLOdcQTGAImeWil3rERIlu753ylGdVyvH3llXp9YhMs1KpkkGdisO91aR015atFxnDwAZmVKhJDsi+HTX/P464LzJ9zV2B+/zh8iGacRV3NcXILtAkkAm+Z0CoByEgjoIWXrSElUCQbXlAW/P6Sij1DMXulYZVMl5WkJSgYQCEaudwI8k/YSofR5hYNwrbF4uecghb9mGGWCqp1YIhI55odLFncyrNeph6oKv4fElQ2VI4Z/1Qvohe1ZNb0QH3GP05MOH+R3JYMRE5EYhJA6PFJQAQbLazHiWz3qMDwjfv0QP8KK2Tjyv4BnUJpXXjh9R84HyJvap/h9cddQNsFgV/ZpIOUluEZRG2hoPgVtXSAe+tQyl1Yc7aGKF5so6MGy016Lki7a33z9FJaTTmy2R1GFN5Vybt1DAIoQukqocfWSwM417HmUVrr6Q9+mhaE+r/QiL7e13IwOLLwrpWjpaBRwdIWRUmsw0nTGGFdM9t5ggikJde7boW6t9A/kABxjzCxgaiC2lLsat6q5AFK+3QQ3vlyOhMt+FjKs8ZS7jlG0Oms0ABwq03Zy/ehCLNizwYGYaPS14ZA4z+DHfC9+IY6FPapJkWMuO1x4SbJBXQjBRNBDP5sdeQpHCF1b1wnbyesqa6le158i7t8z2/C0K50F4V3ZJflZyK2Og2hyWe
- lU2kltKC
- Vb7S4R9c44NWeJin9RCsl9FiHhnGHygx1pEaLoUO5bZpO0ooiYfp/RYAisOIcB/b08QAo2JtNqtSQ1oLWj9UIY3jGmOeA2b0Ht1cVvR8hKCTGI9Ph3SBAR82RC4jNaKSRhibP/7uNKEEoXhd1YWq4e4hocjEWONPK90US8NzGqbnFJI4fw0iQIu1lppawfRLJzSgyw7pQN44ZkKr+lT+SwaWerQYtI3yZzJzJ0s/GE3evGtP/Rv/EUe7BUEW/NhsgfSU1CrKwtyGYKk420haWuU/ra8zh7Bu85bhIP/yaG7OMNItAuxfmMtUw9y5hJ48Xis2mjXD9BdjN7iaZ20xtksHPH07WC0+SP7KP
+X-Stat-Signature: ob9d6xh9ow1x8jxgi3jb65srphjotr1c
+X-HE-Tag: 1791809111-721188
+X-HE-Meta: U2FsdGVkX19+8O7HcRaBIE5sUCma365gQ9xiCVY0f3pTBJZmzZc+UAc9lQg+l8//5zPRnEpH/gFeMjmsox9R6oVmHmpGG/J6xWnknWN12T22ZgafkdaBdJKlz/Tr9cf/O8JZqmgROHrCC4qV4dqla7hszkIao8VAtYOtgAB4NQ407/gHNIO7syLyDQOLicdAB4/Er1XKRPV9t0rcaMnv6tTabdMbTczg9y+dpV2DQh4+IW6aNekRQsEdf/+3vSQet56FLxoNXL32G3qLd4p5U5WMoYjUcbb5aCUXSDYpxKhQq1sXEHHqhbJrYwXXf33JbxS5CAQzvx2Y8DUTmJPIjBmkcOu2G+HnK4ZoARNgaj4HFDKchNUXf4zfkIAA28O5DFSVpSri/Kg4/zZnwSb9VOSKmuBeY9I6SAq4Kl28a3QCbJsgMsMzyKRckOYdjkKfwzk9K/dnWtm71uLv+qzgQ57TCgFuvFc60O7HkE77zAf48UfO/Sv1+yPswq8syFsQcLR0du4ZPZMpYclID90k7mmNfD4fZumayrPJcHQjZ39ShQw3OuBA+Q2mK1kbUQYSU56GR2buSN1CNWkPQ0am0Nm62L3GYMP/kn3CaNXf9VcIH9gvxbBmI04mhmE0BNQsaTjJ3MSQaIWDb1wPFql62rNFW3vER4SyiV70MiRtFBNQNjI8AIi+7XUvHzAWJ22yP4CTj993/jodI95FHbu4VgOQGAPE0Do9WKqOiJrcwyD9IfNMFvgNXnd9eUTq6eEgRnJb/ZFX7q06V9M8h+6bW2jCpfZe9oztk6csKkW+cgRY9fv+cfjlut/WCVfdlWeSmaTyLK15pV1cyz+o8YEnvDVnYDxNqsZeyJGj9w6K4y2bYnj72WUy67fAypEA9+VCcLUQMHr0a3dg1nFfG0ppVKBjkGDPsc8xFdjKQA6kfKwfvc7NIbC3oJPdPD7tRsqYzmwfRFOGhmzwNXt4+Yw
+ gaou81k3
+ 7oUMZvyWUqYe96zyAz7jHcLSEWHZKZrie7OlmkhcDJTi0f4EV2VPU9nMjrVXQ9VjJ9nY85nhs1Wt6A6IF4AdtxfDW2IGXtLomhcWOv7qasRIdYk+QrMb8elASuccg6FvxSFM1EqzvcX+Lj4Zl/gCQXbLY7U+O3EPs8LAQ62j+yFnUCtVPyC6sp2xui1JQB2JHNdTBbhoh1fF7s8CrvFZGZRA+DWs2WJwtsQwwVr2h8WDRYCwO5pGc8V8z8xBdLKpKVd+EMfwEJPAC7g9Uy233d1kj+5Hy+H4yYYDgULd0H05vq1GMb9KuGSEMlqcyXt+lOOPy9pJOOfqf6vo+LKGyv3iNG0cqm8+kF9ejLKIYfcszkEGPxk3Y99+J2KH/uxtb3Nfudj6K0v5EaF0gT4v1JOvOPtSOoHob2WvFwqL0tkHA8wPGz0sDA39wCjiOGHXa/fHa5oy86/J0J1+WwbNorq7PK8/lAmaBHFvpECppMqqvPEINxC4rDGEJ0765P5MYmIwF1QWl42UhRg3IKv3pTtodk0Z7TtmzdReNZvVRkQOQTxCKFiFZJpMKL42cGi9kARwi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,47 +124,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/08/05 19:25), Sergey Senozhatsky wrote:
-> quick and dirty patch.  Just curious if this improves anything on your
-> side.
 
-Hi Sergey, Barry,
+--lgnee3ewncxbl2us
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] selftests/cgroup: free the paths returned by cg_control()
+MIME-Version: 1.0
 
-I ran an A/B of the three approaches on a real Android device
-(MemTotal ~7.7GB, zram ~8GB). Same workload for all three: cycle 20
-memory-heavy apps through fg/bg to force swap-out/in, 8 rounds (~550s).
-The stream mutex is instrumented with a trylock-based counter; the
-measurement code is identical across all three builds, so the only
-difference is the patch.
-
-                      baseline    preempt-disable   read/write split
-  contended count     8,765       150               6,557
-  wait_ns total       52.28 s     1.29 s            65.86 s
-  wait_ns max         95.6 ms     46.2 ms           130.7 ms
-  swap-out volume     ~2.86 GB    ~3.04 GB          ~2.87 GB
-
-For the split build, contention by stream:
-  read (decompress): 6,349 (96.8%)
-  write (compress):    208 ( 3.2%)
-
-Summary:
-- preempt-disable: contention -98% (8765 -> 150), total wait -97.5%
-  (52.3s -> 1.29s), worst case halved.
-- read/write split: barely helps (-25%), total wait and worst case
-  actually got worse.
-
-The split doesn't help because 96.8% of the contention is on the read
-stream alone, which is concurrent swap-in decompressions queuing on the
-same per-CPU read stream while the holder gets preempted/migrated (big
--> little core), not readers vs writers. Splitting by direction doesn't
-address that, and it doubles per-CPU stream memory.
-
-So in our workload the root cause is the holder being preemptible
-or migratable, which preempt-disable addresses directly.
-
-Happy to share scripts or re-run any variation.
+On Sun, Oct 11, 2026 at 06:33:38PM -0400, Sasha Levin <sashal@kernel.org> w=
+rote:
+> cg_control() returns a path allocated with malloc(). The two callers
+> that pass it straight to inotify_add_watch() never free it, and pass
+> NULL to it if the allocation fails.
+>=20
+> Keep the path in a local variable, check it, and free it when done.
+>=20
+> Fixes: 5313bfe425c8a ("kselftests: cgroup: add freezer controller self-te=
+sts")
+> Fixes: 2de27980e1d46 ("selftests: memcg: Add tests for IN_DELETE_SELF and=
+ IN_IGNORED")
+> Assisted-by: LLM
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  tools/testing/selftests/cgroup/lib/cgroup_util.c | 13 ++++++++++---
+>  tools/testing/selftests/cgroup/test_memcontrol.c |  9 +++++++--
+>  2 files changed, 17 insertions(+), 5 deletions(-)
 
 Thanks,
-Bo
+Acked-by: Michal Koutn=FD <mkoutny@suse.com>
 
+--lgnee3ewncxbl2us
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaszWTxsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AjYAgD8C3rg4DsOngu0tGcoEsvc
+5NuTbUsIxMtIYR1QnuiqLKoA/2ZVZusoTfiU4S96kRaXYt4cG9+dSPS3Il16Cshr
+GREF
+=nNP1
+-----END PGP SIGNATURE-----
+
+--lgnee3ewncxbl2us--
 
