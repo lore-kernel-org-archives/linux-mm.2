@@ -4,102 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4EFBCA9EC5
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 15:09:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56F75CA9ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 15:13:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C16DB6B009E; Mon, 12 Oct 2026 11:09:06 -0400 (EDT)
+	id 5DD656B008C; Mon, 12 Oct 2026 11:13:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEF7F6B009F; Mon, 12 Oct 2026 11:09:06 -0400 (EDT)
+	id 58EE16B0092; Mon, 12 Oct 2026 11:13:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B04B86B00A0; Mon, 12 Oct 2026 11:09:06 -0400 (EDT)
+	id 4A4196B0095; Mon, 12 Oct 2026 11:13:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DEBB6B009E
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:09:06 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 09D76160FEB
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:09:06 +0000 (UTC)
-X-FDA: 85314307092.08.C7E56BC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 124DA1C0009
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:09:03 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cPpYf6O9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B3B66B008C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 11:13:39 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 917E1A90C4
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:13:37 +0000 (UTC)
+X-FDA: 85314318474.13.ADBDE65
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 875EE180005
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:13:35 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Yo8yX14K;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf06.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mkoutny@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791817744;
+	s=arc-20220608; t=1791818015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7BBLP7D5VQ4ig7xnqoWkBX2bQpNScQ1ThBFCaNMPFU4=;
-	b=YaoRi37az2lekqtw3tC4Vpwtc62OSH05y/+VOLhsNmfbjMl8C+Lkbz+rAsr2wE0Ebm40e2
-	fPcS/68Fssvtf9GYWqgt+KU3fX8ReCqp5mBO2lOAnzCNI7Fl/EEuPFE1TYZrH8W242N6jZ
-	3vh/Vtaq0Q6kFmJQuny0ZTj26liddqU=
+	bh=0r5ZIRxJicrpwO18Ig2AHoe77ANyyN2+mXpKTZzO6Rs=;
+	b=3agYfoKwNnd2lTW/nW6/zLAsxPjBide/ZPG8hs9ayVSDn4vbW74MyZ9BLNkd2bCG+iEgOC
+	K/mx3LfXeQOxe0+y14ZbxoDtno8QGNxvjKYbn4bOAbHWUZ+6caUJYGCliNzlXVCR6ttL9E
+	5Qoje32NwbvFuxSvmlhrz/8gGk36DwQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cPpYf6O9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Yo8yX14K;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf06.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mkoutny@suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791817744;
-	b=HtrRWfVBg3tGRTAgyz5FfRZc3CGEjBlRwdYTBZh2zMB3y1Y5rh19zQoT/++tNgWkTMzGS8
-	gUO4OwWxr1jYOlUa67qXeEdof+EEFqx8xiz/zUjn+WmJVB8QuOdeiCvW1JJc57wSSjKfp3
-	exqnhvkC9oBsLm7AZJ76BPeJiE9a+24=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 60D62447BE
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:09:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403A61F008AB
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:09:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791817743;
-	bh=7BBLP7D5VQ4ig7xnqoWkBX2bQpNScQ1ThBFCaNMPFU4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=cPpYf6O9F3/To/aLYR0Fc8OhbJ2LSTgF2efcWyJV4t78sAbeQzuH+VCDPAS6YJG7L
-	 SJGEZt5CbTp1CNozBdI4RjgpEYJsswib5oIRlnv6XKwPxjlo6v8enE1VZaEjDQtM8t
-	 HKaZx2BpyOvtaQxFj0BoKo6+h2zsE+R68jyYmF9SnhfDnUESdOM3UpDNDaeURzCsgs
-	 zNer0C4hxuw1rkNL5syAyqaRVoHvA8xh3spkmXMnQ7wiEd8BzcbdKLId0mdErQC6IB
-	 z5ivxE+4Jl7d+Th3NjngnTntVma67blN1ieX71B4nxQHVBa8ft41kV/e+2gN/LdXnR
-	 wnvSlxp9vi4DA==
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6af9cc73235so1663570a12.0
-        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:09:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxAQdmkLSqjzhqyFl1yhVLUVnsX7BIeuEg6vxNsGZFIW5XyLtREYc+WevgGNfb1vNKGRnPKFLIqYw==@kvack.org
-X-Gm-Message-State: AFq9FYLeoR5Oj2KJSNVspchKCWQrQVglznMnC5HOkyaiWmPkcVfkamXx
-	Uo6NjbSkmls/zEzJaIqCouNpEFWeMOak3LSZzUEMd7TrMTLtifl8QhwuPqsSUFFXLKFql4T0U9m
-	E2G4dT3mdW4sLru6wDg3hAO61XJnpw5c=
-X-Received: by 2002:a17:906:f58d:b0:c2e:4397:7c82 with SMTP id
- a640c23a62f3a-c31a9d1074emr1078878566b.6.1791817742188; Mon, 12 Oct 2026
- 08:09:02 -0700 (PDT)
+	t=1791818015;
+	b=qgZTAhI5xkro1VOdPkom9D2rkqalmMpPi8kYgHUMYHmtW+NgnEwkGub291huTZgpfAHKMc
+	3L64O7SvIJ4PgfXFNEJShUhK+m2pnOln2DLPkjQg7pdLKRmMgo4qBhCuMGRMYMLBE1iXGx
+	7aUfmmYihMRxuOMtVpRjgOWuihRJIIo=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49ff680331aso15936425e9.3
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:13:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1791818014; x=1792422814; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0r5ZIRxJicrpwO18Ig2AHoe77ANyyN2+mXpKTZzO6Rs=;
+        b=Yo8yX14KJwXNo3Af+tHh/EGRO/TjQeRiT+hqvvxBp8Uh9oEx2k4vlVi8FHnBLKygfN
+         9Jil9JlyDFSaauHIoHMxaD/LHJal7lZNl5VFAbk/rLRZ1KRBcjcpaUlW2teObOkvXBta
+         BtN+k5sqVRQhvl5L5P2gPmY5okjR4kw8bNs5EwiKVXbZ7X54Y+KCxA8CKesKjTF1Tbmf
+         U3LZLK9zsgwvrUYjseioU7YKHJPS/jRjuW+LQyoCsgg3Ti43rvC7jEW4RjMmgwDsnp24
+         g2OCwGfEXWlk0OglSU9SIGIGPRq3rePMf4aIwaUYO9+oTO8j+6kSudOCTE33e7RVnGRM
+         hXqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791818014; x=1792422814;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0r5ZIRxJicrpwO18Ig2AHoe77ANyyN2+mXpKTZzO6Rs=;
+        b=aQmD+Uu+mKK7Yi1APjQGYi89ekEZ6DsZC0GZWB2MgqgmMybOIj+uFC+z4s/JtTwrpk
+         RrK6gYHX0cCiXSYw7+IS2ottrhIx1I/tvD0NGQl6OS2atzEomizx+lVG948hJCiwAzq5
+         ihVtQtQ9YuRlidC23O2bF+8Lr1YRLo+xY6JxsszhxDyYKAQb06V6rmjz0+qX8wkg5OMY
+         98mhW488oiUsSDJQzL3XYT3N4ScoZCqMGpY4v97zmvWwz+vGrWtCyIlqvV1QAYoB+IkU
+         DMqu0jLql5oBYvc5OmcSY2Yj6A7Cna9s6AUauiKWok2g3yJa2Y3m2INGujElOrBHKD/S
+         xNCw==
+X-Forwarded-Encrypted: i=1; AKwUvBz8OPRbLtLWjFJH+wkqvKRkDrg4iTj8Qk3qsv6l5fpK7c7BS47KLt4iFndChyFFQHhfVPw8gmamIw==@kvack.org
+X-Gm-Message-State: AFq9FYLH+GvZ8c2x26UXsh3ojTraFzHz/dyfgPr8hR30JCMw5eah0FoY
+	i7eQBSnlkMX+BfKywag6+bepCld/gtlNhcx8VhJIoJYpbGu6yDGb9ck+9ISZiDCyfFBev8QF+cK
+	PUfy+ZZo=
+X-Gm-Gg: AYBFou1NyeGATO573OzPid0exzpC7AgeapEUJf1Gxnu4g16f7hOVFEIEggnqLJcE3Su
+	VhlLasc7CxMJmG8pHFpnCLEBXgKqZrcEmRDEuYfDbKuoGtWeKKntam/axSOG7wB2iTbRgkQ6+8n
+	G/cTiaNoBfx5Dv3Pf+BFZDN0TAmhVodzTyYt1stzk6aXjsWslTg1ZhH8S3il7GQWGEU3cQ0jGqo
+	HPeAErcmzE5LnSrk8tze9RTXaAyG4zKIW9dFfEUVe+YavcBzstrpMzLLip0ncafvn2uwqnaOGnF
+	hStugOps/OKFMJZo8phZ4hpBp6pMRD9BNjISBCZ+YL9lInJQcSVIsg8CW2Vcz9HWb1+qhQLg0Jg
+	EamugCUMTKcZgqAawV4XoP+ZeIZ9lnfJ0yKgWynsMyYF7r0IrhptGJV89bRh3xZ3U9WIx/Se1xv
+	xN9mvedWClNdxIfED7UA0JSWdfGh2X8ou3Oa16wvp17sKufjuN1VyGw6qotxPYpfSqe2iPVJ2nY
+	g==
+X-Received: by 2002:a05:600c:3d96:b0:4a1:746e:5898 with SMTP id 5b1f17b1804b1-4a18e4835e7mr165297275e9.13.1791818013897;
+        Mon, 12 Oct 2026 08:13:33 -0700 (PDT)
+Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a19f318c31sm78961655e9.3.2026.10.12.08.13.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 08:13:31 -0700 (PDT)
+Date: Mon, 12 Oct 2026 17:13:29 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Sebastian Chlad <sebastianchlad@gmail.com>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Shuah Khan <shuah@kernel.org>, Sebastian Chlad <sebastian.chlad@suse.com>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] selftests: cgroup: Report failed checks in
+ test_memcontrol
+Message-ID: <20261012-blend-diner-c6361d00b9f1@there>
+References: <20260926055152.1684-1-sebastian.chlad@suse.com>
 MIME-Version: 1.0
-References: <20261007153915.53429-1-alex@ghiti.fr>
-In-Reply-To: <20261007153915.53429-1-alex@ghiti.fr>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 12 Oct 2026 08:08:49 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNF=OBGcTU7hGfBz-UOm-fv8BDn-yQzH23e=rC4MX1-Uw@mail.gmail.com>
-X-Gm-Features: AclHuK_EARe5wJ3XZ38HWc8GNMx8o66_Dm5CG7tcDTb_VWTs7YmeYdTiYMGwQzc
-Message-ID: <CAO9r8zNF=OBGcTU7hGfBz-UOm-fv8BDn-yQzH23e=rC4MX1-Uw@mail.gmail.com>
-Subject: Re: [PATCH v3] mm: bypass swap readahead for zswap
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, baoquan.he@linux.dev, youngjun.park@lge.com, 
-	chengming.zhou@linux.dev, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, kasong@tencent.com, ryncsn@gmail.com, chrisl@kernel.org, 
-	baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: rrjibqdu7bpbg7sefk44yo94iuhc8s6z
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="u5gbdmp2bzg3luyu"
+Content-Disposition: inline
+In-Reply-To: <20260926055152.1684-1-sebastian.chlad@suse.com>
+X-Stat-Signature: t1p11dg711gefqzt4ugtk9sps9wb3pzz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 124DA1C0009
+X-Rspamd-Queue-Id: 875EE180005
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1791817743-324354
-X-HE-Meta: U2FsdGVkX1/wpxSiCHNmikvXDqE3yPPbeGYXyV/0txzKy5JK5AfJng1Sgfe324yfHEjoRhlw++yML/T6FrN/GkKYRabyAha71+SfAqDNX6aMy+p8y6YgVDmf/VTcuXBZ0GTVsAfey+VOA8e5sfFJ6jW9dRsT9aQKNjMutTONh+kev0XLcoRYGRk5OotUkOTMSCD0qQoB49IFLfnDcW2V5vWvnEGWnUvu+M5ZLs4owh3oYWySaHC7zMF3BA9v4/0COnQA0TONM0EI14U9BXFUzDfNOII1sqD6+qnlNR3wgaXBrjbDR83CoAIMHC1xToa0hNBXOPGd8hWv9MPEzJcpq1cPVVeRKfbQiDsXKR53bipdco1xRj+NS1P9jcIpPFGNXj78klosSL5UVkp4sJbWFxmmudvcKaFI4tjLgbdqmTI/3USzb89f96JD3SrNNQD4qfHbIm3v/PWq8kJGsBwGVvVM32z8F0C7uzt9+EtBEbibT8adrZo9E8Nn7fyOacFOwrs33ltiYHXDOqxunYz0lfFMHvCBewNNuWyrWw+Q1FYlGI1Xp9IxplRrvsoH/Ic08ObSHFb1WvoWlIvuDNACNm3i5cMmz3PEF41VZMO2qfqkDUHVYN8oCpGqfbpMxjy44g5xTbsA1IoEiyTakMmAi9V1BStCV2TjktEJPOFu/30vvlpq1MazSNkxFvqfG8vnd9bFIJ/eFMwOOt6M28F7L3UH0JmEPw/NsFmjg5lOcasACEf85JhSSKpn56fQpuFOpyaXiZWIxG5aBII9eQR+ICPEBcHTMANEmhe84Igkq2jxaI4jFNInnztyjI7hhAzUd4Zlw0Ek8R1r2MJ/l2y16m3txseXyJzGI39PW8Sg1RbnEauHNjiFebfzLNyE88aID5+QLazLmYUU0jjynOYpmPnJq0D6unR8sRFfNioSYXLHciKSZmoQWkTOgLbQdno5McjksXBL30oHAooPWhJ
- XC1ziRSK
- NWCmNhTEbsBoN+zbuwbGWvphmeTCdfI2vnrgB2PuZAbUF8XMH+FspQd4WNyAvMZnPCwAFP6NNSVKXYo1rAP72w/xGGQzMhh6fNsXo5sDHP5mPoNxFiVVUlUY6hHi5FDA/wibC+DKjnd9rg2ZUFzd6q017YICB3xbxV/Kv+y05YNTCHA6u8n48rINqIgdW5cmpEufSKJf4veyR45IN6NXpU4JQ4C4QLOfjJF52A3yfTJmLoP0BPoBhESuh/G4Ug0/SyQ52wu1IAGulaqpjnlAt1cdcVgCtsD+n1AtHHtxCvz1zu7mfMj+aF/WdgA==
+X-HE-Tag: 1791818015-893152
+X-HE-Meta: U2FsdGVkX19pwQhUlq8hI3AkY1rVx+grycI9tiyWXqGNLFb6kRwjMDTPScSvnjnvf5KS3LzIsUvERaERHIXSb2xyOAJVNgDQAb+mQVEm91NNWhIWkJuYtlzQkRzjTOeMOhHszig+H/dBhlsIiUT+E9V7sJKwylk9KLUETAJVEwGH8F4Fo3PhVyDVut+HdPriFPCFjYLLPfeYbAf3mHUYPvnuKUEi9Mz/Zbjv/3f0mmafhG2Jqkp8UulWfHbGp1Vfv2BK0hAxwcbf2ZsAsueMrMT/zWRybw4N2KaO8n6R/F6x9C4ppqQQvXAzFG4D+zdySpliSOR7A2DShd8RDFGSvRt5w4E7IUjkcLpO1u7mDjeIr+C3A1ZdMemw77X7h+rfQVHoqS1cIpYOCuEO2LKV7kJ/KXqgOjhcxejvoFbg9UiheQnlvPAlEbyGqCoAtgIqowP4GbkTi1lVbOkwk40yvRIgkucJuzz7wjC7l5ssn3Xqr6R+xzweZNddj494Quk23pSVSLtt0xWc9X2iTdNRD3r6PL9UQfUxUQiuOuHHmHkXj11reoKYFpb8Pi+BpWtDP0Uma/JIQsB5M1JFQsSEgifeNY+4K5Mu0eeET1Jsz9/uPkqZW+W4+FtWGiyhG8tAceA83d64rzZ0eSWFEIvcHVPKUlTFOQS0ZkD4ZCXKlclXx0+Td5/vb/Ml33R5K3eOWKXzBGlxQnAb/IiwFuWCa6crJEkCal1knOTwnOnGEG3X0ZusIkv+F3cw5xlzPDAvUgdDklPgpyASjIHE+D/fK1zDSUJK+d5ezVRy6+NO5k+yAJ0nBl1Z6e+MGiL+DjFBgJQWz1UXE3MCgEYmlpgB60VEN9F21n1uUY3SFLEDQMpz03FM6mf461SwBR5Ojsh5BkfaImnWHhNHr+HsZpL8+DHe6IZ9rdV5J+/9VAQZSivjnKsXW3bTIYdnzLdrp3T3JmT9NicJvCI2H+IfE0p
+ 1cqIvHWb
+ Kr4fF8TB67MwTgPlgQROOsm76K8ohdJIo5+2/gbnKwSAmi+upGDHxLwSPP1Cqy65e5gZmE1XIuyx91G7gRH+dqtKgJbGhw9t0R+/Y+Oe4OPWRDXTZJpsfRFO1sVIAGYhLJDN5dTNuftj+CWBiIspqLjtySC13KHoz1rVKzb1UbyWKT7dMO3wZnY9UzE1GAf8p0oFpHjZBok8rFhuRNVKMw5RERghZuM+ITUaYej1SXRQKMT3D20AAV5NWT2D79ZVlrok6F/mTCYsBzUIZF96gtO1KjYDMd2yB06047qpLOYh6p+9TEfqY7Seyks4SraBprr5CYprVhSf8SWR5Rynxd6AaNxd7RmT1GYi6RvSaRQ9qvB/h/GAt0veaUzakohnmtux8HOjeRhTE8iRG/Tx8KK2P1FnC9kH9dW0QWcp4lo+jA+nqtmIHXn/vZo4dD49lnz0J7TvTqUFSP2MSzVKqC1lZx7rDw6TZ/4URHt+YJwZ9F+0ruaHuNmnzebXdCzuY+1y0XsoJq3yqbhEOxXAkhSjqyp8HQCDLdTWxGh86iQXK79lvAJsioWRo5Ovapr4BSCizveQxvp0N4Oi4v5c7mruYQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,49 +125,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 7, 2026 at 8:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wrot=
-e:
->
-> Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
-> device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahead.
->
-> zswap is the same kind of in-memory, synchronous backend as zram, not a
-> swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
-> swapin_readahead().
->
-> Here are the results from bypassing readahead for zswap too: it was
-> measured with a kernel build (make -j16) in a memcg, zswap=3Dzstd, shrink=
-er
-> off, on Sapphire Rapids and 3 iterations.
->
->   768M memcg (sustained swap thrash):
->     metric                 mm-new    + bypass    delta
->     build time (s)          405.0       341.7    -15.6%
->     zswap-in (GB)            79.5        53.0     -33%
->     zswap-out (GB)          144.8       115.6     -20%
->     swap readahead (pages)  6.79M       0.45M     -93%
->     swap_ra hit (%)          72.1        89.9     +18pp
->
->   1G memcg (light pressure, build not memory-bound):
->     metric                 mm-new    + bypass    delta
->     build time (s)          177.7       176.0    ~same (no regression)
->     zswap-in (GB)            10.2         7.5     -26%
->     zswap-out (GB)           27.7        25.1      -9%
->     swap readahead (pages)  1.07M       0.08M     -93%
->     swap_ra hit (%)          68.6        87.2     +19pp
->
-> Similar gains were observed on an AMD EPYC 7D13 host.
->
-> The gain is from no longer prefetching pages that are pointless for an
-> in-memory backend: readahead inflates anon residency and thrashes the
-> page cache (file pages get evicted and re-read), lengthens each fault by
-> synchronously (de)compressing a cluster of neighbours, and adds
-> compression traffic when those extra pages are reclaimed.
->
-> Bypassing swap readahead for zswap therefore makes sense.
->
-> Suggested-by: Usama Arif <usama.arif@linux.dev>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 
-Acked-by: Yosry Ahmed <yosry@kernel.org>
+--u5gbdmp2bzg3luyu
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 0/2] selftests: cgroup: Report failed checks in
+ test_memcontrol
+MIME-Version: 1.0
+
+Hi Sebastian.
+
+On Sat, Sep 26, 2026 at 07:51:46AM +0200, Sebastian Chlad <sebastianchlad@g=
+mail.com> wrote:
+> test_memcontrol fails intermittently, but most of its checks fail
+> silently, so a "not ok" line gives no indication of how far off the
+> measured value was. This series makes those failures print the observed
+> and expected values. It does not change any threshold or pass/fail
+> behaviour.
+>=20
+> Patch 1 converts the terminal tolerance checks to values_close_report(),
+> as was done for test_cpu in commit 4cdde87d723a ("selftests: cgroup: Use
+> values_close_report in test_cpu"). values_close() is kept where it is a
+> loop or retry condition, where a mismatch is expected.
+>=20
+> Patch 2 reports the "memory.current < 50M" check in
+> alloc_pagecache_50M_check(). Because test_memcg_high() calls the same
+> helper expecting it to fail, it gets a quiet variant. An alternative
+> would be to pass the flag through the currently unused void *arg of
+> the cg_run() callback; I am happy to switch to that if preferred.
+>=20
+> With patch 1 applied, we observe at times failures like these:
+>=20
+>   not ok 3 test_memcg_min
+>   [FAIL] actual=3D18722816 expected=3D30408704 | diff=3D11685888 | limit=
+=3D7369725 | tolerance=3D15% | actual_error=3D23.78%
+>=20
+>   not ok 4 test_memcg_low
+>   [FAIL] actual=3D20852736 expected=3D30408704 | diff=3D9555968 | limit=
+=3D7689210 | tolerance=3D15% | actual_error=3D18.64%
+>=20
+>   not ok 4 test_memcg_low
+>   [FAIL] actual=3D14364672 expected=3D22020096 | diff=3D7655424 | limit=
+=3D7276940 | tolerance=3D20% | actual_error=3D21.04%
+>=20
+> These are the child memory.current checks in test_memcg_protection()
+> (expected ~29M and ~21M). Their tolerances were already raised in commit
+> d2def68ae06a ("selftests: memcg: increase error tolerance of child
+> memory.current check in test_memcg_protection()"), and the values above
+> still fall outside them. In the first case the child is about 38% below
+> the expected 29M. This series only makes such failures visible; whether
+> the expectations or the tolerances should change is left for a separate
+> discussion.
+>=20
+> Changes in v2:
+> - Patch 1: pass the measured value first in the alloc_anon_50M_check()
+>   values_close_report() call, so that a failure prints actual and
+>   expected the right way round (reported by Sashiko AI review).
+>=20
+> v1: https://lore.kernel.org/all/20260926034923.31718-1-sebastian.chlad@su=
+se.com/
+>=20
+> Sebastian Chlad (2):
+>   selftests: cgroup: Use values_close_report in test_memcontrol
+>   selftests: cgroup: Report memory.current shortfall in
+>     alloc_pagecache_50M_check
+>=20
+>  .../selftests/cgroup/test_memcontrol.c        | 50 +++++++++++++------
+>  1 file changed, 36 insertions(+), 14 deletions(-)
+
+AFAIU, the test is catching two types of errors:
+a) running under global pressure (preparations already fail),
+b) mismatches in expected values of protection tests (after
+   preparation).
+
+I like the reporting of the latter -- with (only) that all consequent
+silent failures would imply^H strongly hint the error of type a), no?
+:-)
+
+Thanks,
+Michal
+
+--u5gbdmp2bzg3luyu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCasz5FRsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AhGygEA+E0rmCsu6Ho27N1p5NB3
+Lk11r2ujJozxMdTi3dbS1r0BAK1DXnSYhASHxLY7xCWsydP9u68Z2lTjRkyysntj
+W8gI
+=dP/j
+-----END PGP SIGNATURE-----
+
+--u5gbdmp2bzg3luyu--
 
