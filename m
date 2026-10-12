@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07F21CA9ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 13:27:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C28B0CA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 13:29:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00C8C6B009B; Mon, 12 Oct 2026 09:27:37 -0400 (EDT)
+	id DCB486B0088; Mon, 12 Oct 2026 09:28:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFFF76B009D; Mon, 12 Oct 2026 09:27:36 -0400 (EDT)
+	id DA2876B008A; Mon, 12 Oct 2026 09:28:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEE266B009E; Mon, 12 Oct 2026 09:27:36 -0400 (EDT)
+	id C918B6B009D; Mon, 12 Oct 2026 09:28:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AC6B16B009B
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 09:27:36 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A3D666B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 09:28:59 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4CAC41C480C
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:27:36 +0000 (UTC)
-X-FDA: 85314051312.07.A855010
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3D052140DF9
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:28:59 +0000 (UTC)
+X-FDA: 85314054798.07.563D5F6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7D0EC18000A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:27:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h+BEp3hE;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7CB2C40003
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:28:57 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EC+clTKQ;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791811654;
+	s=arc-20220608; t=1791811737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mqbvsZSYJL1Y0+A59bOb/XHgebVZKcusk4yArMBC290=;
-	b=R9avNJ8yBfxKT8MlmDn5iOwPB/w52s1ay5QfDnyqLrDg9RcnjaSg5LvPyMtGFyVzruzLA9
-	E8TQesGL7DqTsA7zt1h5ol7gHtBVT55CIKRuJ663buwD39Q+9d7DuBDt+mMbhn1OKDR+Xe
-	MfzgeoN7cFKA+g6N6NU1JuzVZc0mHmQ=
+	bh=BJWJfJvFdRXU7A7CP8bKUhf5LvjKVS564TTBwWUrmqw=;
+	b=wGmiv3qTeJr2DZwZgG3v+hJmojY9n+4O8kcSfzK1CrJVqrHdbMnq3y7lZ/pIxCDNUBZ9Hv
+	Oxp0rM1jqcjK4Kdb6eki7LdvUUBmyTyaGMEzefKk9yXdkX6rzLNbNjEHrwmAzarV/fMIiB
+	BpsaJB76qoE58PmWUq28KzCqG8Ab04Q=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h+BEp3hE;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EC+clTKQ;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791811654;
-	b=Qp7HYBSrcK3NeuS2w46ckJRBbZ/8uz9KrPBMfqTmkP8bk26esNH8J1htE6fM9pr4N9N2gl
-	C60ejFfKDF//cC3GQ2Exv+uX6PCeDQFB0RMLBvKKOdpy9vwTe2VtK0l4PvSXtqegq/BLpt
-	GRLnKvT+UDMuehw+FLz5ZaaMzxNhw8E=
+	t=1791811737;
+	b=sGNN9N77oPWDSzx2Bc9E7kMnjTPqfsXYPGn01h4Ely5wTkkG8MTsPij7QkL1kMwVmMbH9V
+	LTnwxX1+rYGPzoImzibzhBQUtsDpEQfyvB+I+pot26Mi86c4w3P5AwEGC7+LuqXNCC08bO
+	dhStAtbYgo/hCMPR6xgsEYorrJ/VQdc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E003060AA2;
-	Mon, 12 Oct 2026 13:27:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5781F0089B;
-	Mon, 12 Oct 2026 13:27:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0EB1A60AA2;
+	Mon, 12 Oct 2026 13:28:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693491F0089C;
+	Mon, 12 Oct 2026 13:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791811653;
-	bh=mqbvsZSYJL1Y0+A59bOb/XHgebVZKcusk4yArMBC290=;
+	s=k20260515; t=1791811736;
+	bh=BJWJfJvFdRXU7A7CP8bKUhf5LvjKVS564TTBwWUrmqw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=h+BEp3hED2E0t7oun5QTzPFxYlzk8K02LAR1RNB0ToQTnQqjgYdWzs+nzz9W9b2bd
-	 bT+OPcuZJRbU/r5Mrnxzo8YX4VZBGdQciwtrAxOhNdv65GQ8YC4HA/OCpBnoQ/akS6
-	 +Hoh7vNe8fF/PjR749ofV44TdW7pkptiUn/9DK/Rfd1s2lBf01ZVCkySBvkRbW+Lnc
-	 zD10e1pIDa41mD2jHiNZ4rpC58X5vL6L22whLxjDivnC0RUGm3Zf5umuF5BNUORxSk
-	 0hbvromI8XB3qlj1JlndvU0++4iSr7HwXXiuyxSBr3HYudxNDWcTaVHXM6e5Td8gQO
-	 NM9DIcNwTjbsQ==
-Message-ID: <919fcaa9-5ebe-4940-b4fc-59ea0c655ec3@kernel.org>
-Date: Mon, 12 Oct 2026 15:27:26 +0200
+	b=EC+clTKQWYqPlYBodlVrok9It43/JtduTxKf6oq0WBqsXaEE/fWQ/aLbyuEOxBEBC
+	 aj8VV62n48eANgEswgmLe+sz7d3kelzv7I1i9px8FE7JF6AnYtWr2e6QYjbXYTykrD
+	 jmHx2nQTevuvQ2BHkjXO4V1TkXJmRZ3fM2oDk5HgpA0u95NXQ5jRnIg30lLZuxf63L
+	 LNvVQWM1SN0RxxdCmS2ZYeiECdObn8P2scSsoxqgsYXgnwtoHyEN8DSL5tmogGXL29
+	 PzDDBbn5fGwNRKsY8z0fNjE+OcHXLHepynF1hcpPn8nDR33NkOBgSv72w+94GIr6ZC
+	 26j7dSBXEYR1w==
+Message-ID: <01371835-cbc6-43f1-9d42-d22bec4ba0c2@kernel.org>
+Date: Mon, 12 Oct 2026 15:28:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] mm: fix missing page-table destructor in
- pagetable_free()
+Subject: Re: [PATCH v2 2/4] riscv/mm: fix hotplug page-table destructor
+ handling
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Oscar Salvador <osalvador@suse.de>, Dave Hansen <dave.hansen@intel.com>,
@@ -84,7 +84,7 @@ Cc: Oscar Salvador <osalvador@suse.de>, Dave Hansen <dave.hansen@intel.com>,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org,
  Muchun Song <muchun.song@linux.dev>
 References: <20261010112457.49485-1-songmuchun@bytedance.com>
- <20261010112457.49485-2-songmuchun@bytedance.com>
+ <20261010112457.49485-3-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261010112457.49485-2-songmuchun@bytedance.com>
+In-Reply-To: <20261010112457.49485-3-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7CB2C40003
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7D0EC18000A
-X-Stat-Signature: 5w5zp9czqph4t3rrd6egtdpw6yyi7ssz
-X-HE-Tag: 1791811654-52120
-X-HE-Meta: U2FsdGVkX18IjjnA+5AxJ3sRXIjLRqOGxluFYcdnc7hiwjZQo/q9uEPIPimNPrTL3aKYqy7rKcBIBBS5cCqlFIEhJi/YvnMfKV5YuNaNGrzAPlnIygHDvz3SqczprWuRmi2CSdmfsT2xJCq/JCqdimmbUuRkDavuG/4+t5s7Et3hvrZLCq41S4G1Gv0PuSxkOFkRgVkcjcIUhTZAUAQT8s6C3emW+woua+T9uWqyyya8irzpw2Q0pTEkERmo9ojfnGtuD8oul2mq/3eOYqE2E/EXlabsWo7gXz92WUqpGWVPJB5rPTmOTkPl0yjOKLh7j9jQ2FWBPcldjfoUYDzZdIjA8MG0PoPSVbApKDNQCZr45u6C082PCHUmq+DpxKW64lh5fCcd5uFvQJBFrlpOo7dV9Lr2wsl48VPrcDJ5NKLdc8RB26WSfHnHaK15IfSbXfq5S4znNophsKhVp8CgBYnAO1+F3R5LANq2Hl/RTlraBLq4R5KHpjDiWfrZND6B/Ae3XWLqu2tw3ywjILCUjz+/obY6ZgU4dwoTTzFBDAokFOnmDhLSbDHMi8fqyYbph8hBsUnMj5rriruV3eRqakezs7roYlFt1U6wcm5vxYcoBlcGqcNoCOQBhQaMAlCvdLMrPYeiqVsmAilnKJg/EaPmVNoDLYe6P04VMqZaZmjuglfYY24x+M4plPdlyP3a7xUcUNNkG98poK+z+Lxt8OXw9YVNO+L5L0jvM94gbOjjDRrgWX02FlR5tY+oIBr7IukEr+sv/qTDLmiD3PKtZp/X8CfQbu4na1OTzIYNZSz1jJJW5RubxzJcJDYQEnvHRxANgI4a+I6tY0s24jy3tkoTnaQDlNmBpI2/7y5I9rPrqJ3wfWpirjV97Fedd8JTKHk6GFedbcJR4vtXhIN7iDV6uWNZgC7rE2ssuZXIhZO73n3oR+1NzhME13BkbG4fEQKMEde1cNyg6lGAylE
- kNQ4Z1n/
- b6/KrBDtRItMonwxJNPatEiQUA87+Cdg2AAdE7uiHjfRGRaquO4qbV4Mer2muHhTMsurLMM1enbiAd6o/9YzGGHtqCsa4/PRcg/oLahrm4KxV7LTRoVPwG5dFTKnDU/b+5cNALi25FDt/YpqvX5rNrUPsfuiCxNjpj0B3kqVNxd0TeY/bmgHL/JTEyKxbFkVHEe2dsvxLbAkWOnkdCtv6xZAIRY0XFoT6SzM5YwjjY/L7hGJ7YD4aOWkvcaSBjKwcitCNbGMbmhA9fArxTADtgri6B2JM6Cu+ncGiFoirKJcPRILoZVtj5p/yzG5kVqAzLC/6MaXp1vxrsnpcDnXhtNMl19jMM9kY0FLr
+X-Stat-Signature: fjj4dxy1u8jqdrsn79apxkinbwhtp7yn
+X-HE-Tag: 1791811737-592799
+X-HE-Meta: U2FsdGVkX19FNWtaeMu6eT7JEDOTvXga2nRhgH5t/RyVPDmI8MVqxWAWKymJn4PDMMkRXjJYTobzwI4r1APxoJ4WsGXxIzROqdScfwWiEsJFIygGtjVOKDSZtnuTHCNSWIIwRcWeP9XqzA7oYnNS7+NEU7ZTGbGnhlfWsrz+5ttRmRGBb7Zy2WThQnvGoxtzc9D9t7WoRzJxKPyEulMdz+hReAncKV2w7hq1H5ZDmpSvwqqWcu5xtBRf2fZaGJdoOhXGv1lRHBp3febncYD63x9GIzSGhtrh+zQiRciZK+v9gnd5iZJtIZL9OM11AAKWXhL0BfuGaYjld1Q6bYw2n5RLjd+RCseWbgeYeMu7L606DdQS29NvGMv21BiicgTQ1IObRa8V06b79lRJws5+bSgtSf7uRhDevenzQEtcoy9jLFiCBhE0Hgavpl7jKJ9ntLplhxOvMhg29NSLyqg6xMeER91DpBGn5Wlq4AnB5aTWmhbAXLk/Q/YNW2rzMgrDdx+RLInlpknhPWjQC+NQMy1V8xLYv0lolUjspF76W6xe+gbe4Gtb4Xz0Bjx1Vw14SYgc4g08Hjvy3YCcetiO2xwlaPWZQ7kLU8Dh//eBVhWSFNrPT23tJAGjt0MLaGD+8cTYuqyikzA0eIimyeDRyMSC3lWXjhTuN8j65NSAm7+zjOpKGEFkkJqcd91EICpA0NCzLlavRCFDnbbliFHt/B4pv2UIkfBmfdx2tah1L+s0WjwiWgAURHaF2VeXXOW1mfln1pFYz6EnWe5pm7avK0g+PtldDCvdn+4OzvxfC220TOQhrUffznPOd/hRKGOz8jWjx1FsqHwWWnrmr5HjwehykU6ijZJM0XOD7Jm9SOjtKgQAi/mMkZgI2H2VsvSWS4vPXjQUH1r7SwevKDgiGzhBNwveQJ4ubviFNoIBzPa7aeNmfKnqG9KnsLrGxVwycruO7J0+KWrY3WCY4X8
+ 3CfmtVBY
+ cvQ4raILOl6HJbyNRZ5ejmzIvi8GfDYOmCAFhJkcDlqUYceD3DNJwgXhTmTUKhmnyh8UFVGBHK9cbWRcQkjtJGx7sSJohkKaliNfabaAnp4Ia89e7lrauVxFPbvkL1ETHbV1S3C7vw9kMzsbDvwFaWPUoTOSaYH7QrBDZgtKmZneQ3FV6ItpasgQpKd+xnSPJnAq979N9+IkTCn30hUwIep2ds7fYLgPe1TKaK1AipQamuaT4iEt7F1swIsoz6claeCnlAQGjS0WWVCsrEa46lfUaGbSrmksYD5DP+6H62Dg/u11yVkxu1jLlQQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,100 +150,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 10/10/26 13:24, Muchun Song wrote:
-> Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
-> pte_alloc_one_kernel() runs the page-table constructor for kernel PTE
-> tables.
+> RISC-V uses the same memory-hotplug teardown code for linear-map and
+> vmemmap page tables. Late linear-map allocations run page-table
+> constructors, while vmemmap and early allocations may not.
 > 
-> HVO (HugeTLB Vmemmap Optimization) uses pte_alloc_one_kernel() when
-> splitting a PMD. Restoring the vmemmap backing pages does not collapse
-> the PTE table, so a later memory hot-remove eventually frees it through
-> pagetable_free() on x86-64. That releases the page without running the
-> matching destructor and leaves NR_PAGETABLE elevated.
+> free_pte_table() unconditionally calls pagetable_dtor(), corrupting
+> NR_PAGETABLE accounting for constructor-free tables. free_pmd_table()
+> avoids that for vmemmap using is_vmemmap, but mapping type is not a
+> reliable proxy for constructor state. In particular, it becomes invalid
+> once runtime vmemmap tables use the normal pgalloc helpers.
 > 
-> Make pagetable_free() detect constructor-backed pages and run the
-> destructor before releasing their memory to fix the problem.
+> Introduce free_pgtable_page() to select free_reserved_page() for reserved
+> pages and pagetable_free() otherwise. The latter runs the destructor only
+> when PageTable() is set, handling both constructor-backed and
+> constructor-free tables.
 > 
-> Fixes: 49f599666420 ("mm: call ctor/dtor for kernel PTEs")
+> Fixes: c75a74f4ba19 ("riscv: mm: Add memory hotplugging support")
 > Cc: stable@vger.kernel.org
 > Assisted-by: LLM
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
-> v2:
-> - Move destructor handling from x86 into pagetable_free() (suggested by
->   David Hildenbrand)
-> - Trim and update the commit message (requested by Dave Hansen)
-> ---
->  include/linux/mm.h | 37 ++++++++++++++++++++-----------------
->  1 file changed, 20 insertions(+), 17 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 5cca90fc1df6..771a7d60b0a5 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3969,23 +3969,6 @@ static inline void pagetable_free_kernel(struct ptdesc *pt)
->  	__pagetable_free(pt);
->  }
->  #endif
-> -/**
-> - * pagetable_free - Free pagetables
-> - * @pt:	The page table descriptor
-> - *
-> - * pagetable_free frees the memory of all page tables described by a page
-> - * table descriptor and the memory for the descriptor itself.
-> - */
-> -static inline void pagetable_free(struct ptdesc *pt)
-> -{
-> -	if (ptdesc_test_kernel(pt)) {
-> -		ptdesc_clear_kernel(pt);
-> -		pagetable_free_kernel(pt);
-> -	} else {
-> -		__pagetable_free(pt);
-> -	}
-> -}
-> -
->  #if defined(CONFIG_SPLIT_PTE_PTLOCKS)
->  #if ALLOC_SPLIT_PTLOCKS
->  void __init ptlock_cache_init(void);
-> @@ -4078,6 +4061,26 @@ static inline void pagetable_dtor(struct ptdesc *ptdesc)
->  	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
->  }
->  
-> +/**
-> + * pagetable_free - Free pagetables
-> + * @pt:	The page table descriptor
-> + *
-> + * pagetable_free frees the memory of all page tables described by a page
-> + * table descriptor and the memory for the descriptor itself.
-> + */
-> +static inline void pagetable_free(struct ptdesc *pt)
-> +{
-> +	if (PageTable(ptdesc_page(pt)))
-> +		pagetable_dtor(pt);
-
-
-We do have
-
-static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
-{
-	pagetable_dtor(ptdesc);
-	pagetable_free(ptdesc);
-}
-
-... can we now get rid of pagetable_dtor_free() and simply use pagetable_free() ?
-
-(separate cleanup)
-
-> +
-> +	if (ptdesc_test_kernel(pt)) {
-> +		ptdesc_clear_kernel(pt);
-> +		pagetable_free_kernel(pt);
-> +	} else {
-> +		__pagetable_free(pt);
-> +	}
-
-
-This goes into the right direction. I'm still confused, but the less freeing
-functions we have the better.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
