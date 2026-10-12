@@ -4,95 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CCDCCA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 17:59:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 473E6CA9EDE
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 17:59:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC60F6B0088; Mon, 12 Oct 2026 13:59:15 -0400 (EDT)
+	id 53B996B0098; Mon, 12 Oct 2026 13:59:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D77B86B0092; Mon, 12 Oct 2026 13:59:15 -0400 (EDT)
+	id 512F46B0099; Mon, 12 Oct 2026 13:59:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8D216B0098; Mon, 12 Oct 2026 13:59:15 -0400 (EDT)
+	id 404CD6B009B; Mon, 12 Oct 2026 13:59:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F2C66B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:59:15 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 23DE01412EC
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:59:15 +0000 (UTC)
-X-FDA: 85314735870.21.BFC62CC
-Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B134A140004
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:59:11 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=S3hvgmwS;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf23.hostedemail.com: domain of yangguikun19@qq.com designates 203.205.221.202 as permitted sender) smtp.mailfrom=yangguikun19@qq.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 153F16B0098
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:59:34 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97F03411FC
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:59:33 +0000 (UTC)
+X-FDA: 85314736626.30.BD98026
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 496D9120007
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:59:30 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="jeSTUY D";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf29.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791827971;
+	b=SvBMwI8O6hSoSJi/CfUSPizOINu0kq7uVyWlFN936iyOQiE49e2hljtSHy63cYC7zjmnbq
+	2ibXwmL80rW2kJj7pNh1tY8t2V7j0x4vqtcrbX2ez0vzvXZoAMmRRMb00E3xdL+Oy52DCF
+	DUDVzk2Ops7xLE3wVk64LKq5Sn0XxWs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="jeSTUY D";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf29.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791827953;
+	s=arc-20220608; t=1791827971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Vb9xf+bFbWYuM9Qbr8kFLGqDXPLZaUyz9lafyBs3s/8=;
-	b=Uvpi0mNIEK6E6AB+ECThjqRDjYXWfNYviYbSJRYcSpabi7Iz4hP13GrzeaGv5hN+BQbxgO
-	bDteEWYCG//ICypauUPMn5mmJrQRzAHdUl9OIwnt8hwiennXzeEsLq6i8oQiU9iTf7aOMY
-	qE/JKVL5VkhkJQG0Eu3CiZoU1CUPSb4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=S3hvgmwS;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf23.hostedemail.com: domain of yangguikun19@qq.com designates 203.205.221.202 as permitted sender) smtp.mailfrom=yangguikun19@qq.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791827953;
-	b=hoSGTa6aA2Wa5LOgd/QDjprImWIyrlvt2B6KR85uOH5PWbyqIMLd5oLdV2ZkSzpy4ZR1yR
-	Qw7Bksu2lFM9XhUf9FAVRBgSDF6SmlNK1UQQhEIBgSxnLtJndajwaypsUTO9AUZHkXNy3e
-	KP2IWNIOPuWjRvKSX4s3+3sD334lIRU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1791827948; bh=Vb9xf+bFbWYuM9Qbr8kFLGqDXPLZaUyz9lafyBs3s/8=;
-	h=From:To:Cc:Subject:Date;
-	b=S3hvgmwSlzyBYODdhorNGnkEISdKcJ+J+mqujPVnxOSI1Ky5RGlqbdSROvIn5QbQp
-	 VMvwhqmtjWhwpe3pTw5g2/IgLypN2aRTFv+IYtVATVScGGrD9NZQ2+s6uGwg5WevoG
-	 gWTsvY9sKfR7h43XjzD9/GAYRio/RLj1mOcynbj0=
-Received: from [172.18.4.77] ([111.31.227.58])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id EC585A57; Tue, 13 Oct 2026 01:59:05 +0800
-X-QQ-mid: xmsmtpt1791827945t9hdi589f
-Message-ID: <tencent_295112A919DFDA23354E71A63251A93E6C08@qq.com>
-X-QQ-XMAILINFO: NCmjBvJFq6XNqj4DblHVVDXoac4Uxc/x9u8Dz0+CXN/DvRQeClrRfP3ye5+GmM
-	 gCs22Tji6+MhaBqhhp80Iwk0yS+b0yqPpwYda+q+X9IykS8Ev6Rsy0mdlB8bS1d/froD+TKNGu9+
-	 P3emcxK1EKkI3SAV/3lKG75aLqItOfLNY1SBOMb2fYCA1bhJ19GC0Wj0FAaFmlw7ldJGz+z0Yglv
-	 1K8XshRInS6D4gXn4n5+xzziyNlAMPbCViM+A6KMQWMhV0Z1HzeD8tRw46SJYf9TYW+ZHBk2QpFP
-	 5+Vg0QvTjZlFFwKkZ5p0ekagxWfPWFr1JuRAdN5dJChata4J2kxAQaeayBQBqGDE5ySSgMzRstjB
-	 HhDRvduu2ln9KEh5awIjY9tvyEGyz7pTRsbjQs1NvA75qSXG0kHjy4FouzT5UEaaOnnkxno9qaRC
-	 GxqCkjVEC8zK35xLMFCqQ6SVTrcpA9lySuJkwnBHxmx1C1DzUE90/5r2yR9SpYDmki1Fh3FY60Zg
-	 D9Y8c3xQh/O9ud4xwpF7ipjufV4PKWczF1tcxZQOXfNNlCtsQiZNoIOSi9oeTCk0uPq8jZ+P+mZs
-	 qzAMA6qqCwjY6XzfIttdtkVpm0UJBl4DyIUS8veDSR5iFqo/hsLJQ3awJfxhLev7BjnV9ijM4Emg
-	 PytF7uFFg2wcdDxI4bdbz5yEeXAtypDlbiwswdn6edu276v4WRQ1lcpRLInxstVvYH+U+p5RbkkR
-	 fOcM0m4JaZBT1K5flddtPIoyMEADRNiytZCcJbm1Ut7/vzqWkxni9/OJROqOxD6VFQkRaG0S0BIo
-	 DAvZsOdgEz57LpVLlySg6OYprzR98uNeT2TggjviVYdrGxxIlUE/2O0h/egwz3QnrTfHzpZgzQVg
-	 PFkdIrcgo6NXO46x35mExzrkmh4GQd1IapE121WibsLZpTdjYCmzTLTQKeUhrnGl0GMXWU5KpAa0
-	 8sJ7Npichug0LGAlOnR3N7bun+/EZfKVM1kIE+FRbiS6L6IcYhkV75kI+JP2IVbdBZeP5vyoNqpX
-	 eEOtRSmWv41+FlZi09IMrkDaOVx+OLxqah9+Yk/rkLgVQ81DllW6RVTOw62jo=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-From: 1sh1ro <yangguikun19@qq.com>
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Thomas Gleixner <tglx@kernel.org>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Alexander Potapenko <glider@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [BUG] KASAN: wild-memory-access in handle_edge_irq while a CPU is in identify_cpu() during early boot
-Date: Tue, 13 Oct 2026 01:59:04 +0800
-X-OQ-MSGID: <20261013015904.44144-kasan-early-boot@yangguikun19.qq.com>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sSqVsa7i9/0F94O69MwWRbVlnv3K0SgetLyAuG6UTWE=;
+	b=ev8E3hg0LbG/JJsvCeK+R1wVU8zTSwMG9Q+1tATm5dt7cKkPuH0ZfQ3tKTXxkjH4Sa4OR8
+	AppIMbpiMI4ak32i69LJLpnr5ES4fFl63k5m52L5MfP3sCsc0OmxBha1NSocRoxxGQfAIz
+	cKuryBGWu2jpQvwtnRz8yazzbRGMKEk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=sSqVsa7i9/0F94O69MwWRbVlnv3K0SgetLyAuG6UTWE=; b=jeSTUY
+	DeUDo17lXLykd9R+RCjk8/w/Gp84CsB78GurqVbeBQC8q01gsTjH1Q/FHw8TpAvChnH93OQLvCcDw
+	Gew0ci9/BDMbTKqN46a0eaYh3pakexQT42lD20jPc9LlBle9F0nyghOaVN7SH3Odvpsnwq6Nz3et9
+	KHQDC0nKt+gNl+0hHtZc937gdIwTb0Ke94/lmcCXRVTFKBt7kCN9x8/tPytSkNTkhAdF5Zpp0ggvQ
+	wAErXvl2P5WpbBPXAFykQpnWTNqZ5Omj8moMZx2VcRAfMPS3PP/D5QA9eX5ywWDkggngkpdgyzJiZ
+	xu4wwoW6went70/oJttxl7NVZq/g==;
+Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1xGKIU-00000003Uxj-3Uz3;
+	Mon, 12 Oct 2026 17:58:50 +0000
+Message-ID: <ff62aeaeb5ced49640c959c047b2e9f320f5c10f.camel@surriel.com>
+Subject: Re: [PATCH] mm/gup: batch PTE-mapped large folios in
+ gup_fast_pte_range()
+From: Rik van Riel <riel@surriel.com>
+To: Yuan-Hao Hsu <aa9736195201@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand	
+ <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard	
+ <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Lorenzo Stoakes	
+ <ljs@kernel.org>, liam@infradead.org, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,  Aristeu Rozanski	 <aris@ruivo.org>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Date: Mon, 12 Oct 2026 13:58:50 -0400
+In-Reply-To: <20261010195202.689-1-aa9736195201@gmail.com>
+References: <20260917083747.786-1-aa9736195201@gmail.com>
+	 <7dd4ec994502233cdc09fe5c4369adc89168d738.camel@surriel.com>
+	 <20261010195202.689-1-aa9736195201@gmail.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: max9pxefbutttjx9w7srx3styhub787x
+X-Stat-Signature: kqenwqrx4xmuq9b91pspgpcqyhkfa1k7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B134A140004
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791827951-972500
-X-HE-Meta: U2FsdGVkX1+FcGaRS1DEiMFvMeoi1XpuyvmqMbPeLZGUYUVs/TLes2sKhqfx4hLuqjBYnz+/nBerugLAnS5tbOGLBtwij9brq7hP+NLwNzsLWptO46LIpq1OLbSOy1UG+l7UWS3fQ7bZwVgMymSkUMIKhFNT6BBgymArIEwBbHhw5Ayi6/o09uXj9Fz2uUtb7Bqp6d/aibvnB1LhzHZAhz6kTt8sVV0JtjNltU1tIEuNceS8Gu6dKMTryfEKgIlUJeBjJ00h3/MRLjxBtBL4KXnNw94pWdJcYUgVQ+mR6z0iYL8NpclDRSzQQF/XNfrlu9nN2pz3IeZO3j/9TF5/XRsEuwjo3Bpha0FlEYTQ62lp0o9EnVXVgo/yGuZT8HMt5rLMtcAaJNrKik9kIOijP+mc0S0KhvS0FH+pcZZydMNKXstoZfQD+7mX7IcneW0C6v7huio2U+YCMNVU2kZgnsSD0ZjxBcVxx6Fblvj1PdA8u7cpxKB2Wdc+ffTt2w4pwyaTiuOSqykOR4/Hmgz5j6SagLsni/EGOIwl1VDSvwqpKUIOEkv5H9c/UIPG0ZSMIUt8TiPDTvwas7/uWXNWoA7K90PXhmV4UOFSecBbfUrF9Gyg8dVyg2cuefJOSPAlabBqhej6nfvjXKBp7QR57wkpHT9Yc8MTCIbFlfsnTdS6nGF0IYnDuWRuBAK3Z6HwMZBQU7nNO3txidkDRgt4OLsBy//wjeRyviFJjTlnpf7VbcjjMQzZJGmwRAaBm1uuF4ru+Eyyr6TZv5vwVsQ/oSWQZfyNFCZYTLscsEK9rZbtzKS4F4XTzItlWv4Hww5LeGUy5ZHvUgX0aLGZD/d/TGyfQkI8BUa893H1ch8XQJzn7i3itmR1L7To9dwCTU5DfbW9n/nPA26mMxiVS/pOf/eC3cVH9WedTOqJlBW11b4uVjxOjibxorkG4qij+j2T0yT0j5lym1Wpgqzsrje
- kui6BQEu
- 45A7S309mRJSm7cw1cv3HnXF2GJjhiwSNrHAxB5OpvahusZtdzHqzahgGtg7ugXBDSGOS35JOC9yMl/4q1GEaaJIxJvbah9qMzTyqdOUlxsSpBmxWCDGOiOe7B7vEmNwEGr23cJ5o86kprwyufiwcYrNtgMzagNV8iZMQpaGQind+sNYzXHv21+ngKlsL5A9K27Zq3lZO86te2+L+gomWh7shSU/fgWcKt56Bbd1saEDRlCTrgp9MPPy+QR9TN3kmMY4744IT2h918wDXW8utgWEcCqEpt6Gpplgbj6p35X6fgNnNB7Zkw0zhg/KkJCJRpiOn04lwcVgMJz5aJNT5qT2fNE9kNm13zuCWwUC2wUr1mm6XCYY2hsbTxylXyGxjliZTTP999iU3R7UNnN5zRzyM3FLNJXpQ2fRb
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 496D9120007
+X-HE-Tag: 1791827970-12760
+X-HE-Meta: U2FsdGVkX19W7xROV/tfZ56AIPjkastaxpPrsLK+iJM1VXtXzmt35fpr2oN+4IOM905VFyv41+sBkxyP9KLKkgbBSc1STnOq8bXG9c6EOn+dYEGA4CzWTBmOZgM14+UdUinXBYcl+fBZ018e6y1mUmRFApgZi3tTob/7uiuV49H6iPmn83sLHnDftVFw71cRav8ISi75DMB3m/qg4MDvWH1dMYvz2CdDon4HMFRM7cL6Sebp0llK58XYAW9OvpUDCCkcIUdej/ZbcXXIrxARH3e8N6es3+StsUsrRju2qz5Zb/gjxq/jtgUmvSlQkrBvdyv60Dw5i/hD9sFha44aZ5yjdREIFq6NQTYxlVLKkf11dg3VgVTkvZdbJ8s4XHEepfienTxxZjvFXZzeeCReD5eZFzNgm0sfGra3/go5TFO4vOYQU3G2/j5ZX0LewrGTgC7nvTRzBT0iFVRBXoLGiG+WSgz0nssL4rF3ms5dpl263RlmwyddNh4iOP+O26Z4g6DXGa5c1oDdHZn5EJ1+oRWbUvTNQha5OAgKnlUioHvQgfLwnvUOYEoskB6QsYGfqAvYhtdHHyPiEFp5O+cZ+Lqdg/wc1fRZnwvM/JNp6DBq9zgqKzyGYbcSRC9g5lijwQXNs2hJNqI+HxBPKVscx1YOn4HQJFlG54aOt+1iWFml0AfzI5ZHvKe3FM/qFJh3gQOxiT6J7Z71x77fine78e/ObFrW74jrX0HIZqU3Vr5P0EmkeNy3ZuCdXHdTu9NwgEvCi6uVd8mRnEpe8KIakglihRWd4nayadhuA53kQjTsYLdXlD8gwHhRVfLqq3vErfpKOrNBFaux6zAvAUqv2S2hc0r/1fI1qGq04x1LnMvzBT2TZPaRJBrQbKMyiObwxVY1twYH43Tl/2hAMUJhHpFPCAsTJiQl2CPUigkG9LexU9G2rmaaYkSyWdvGcs4p0fYdynIIq8PiIWXUiim
+ Tr63oHWl
+ vGxG8fBhueVnIbQJIh+pCOOeBJj8jkxAabI2tegWrhDb6W8VyyfJOBhfT6Z8vIFoUZXqo7g8yZas+ociSUdz6yuePzPyEngb5iY9qPHuUq8mc/moimPloLmu3BSwyuswrVRCUYbnTiywzo3imJCh9jaB/Lk6vNBbaCnYOrR6WdJSJivjrw15V5ccGThlOlY2eWb1KhfhbEDkJf1g+UmRRhJzng5813BO8I5AS0eixpThSH9eeT5RNBO5dftkXRUejnAZme7PEls/M8T52cWj+wQRf3LGkraZ7ptZ09JYdQv3F4zLePPW9YIuUWFfHqwVJ1EAF6ixmmAZbDa+n/9ccUoG6VN0lDPoGmuXGFon5Kg4oiyB8dd9Zacb35ZIx/ByeIurKzve6DP5/02u7pWHvq5KLodeMJHP6vxYm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,106 +126,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrey, Thomas,
+On Sun, 2026-10-11 at 03:52 +0800, Yuan-Hao Hsu wrote:
+> On Wed, 07 Oct 2026 06:47:06 -0400, Rik van Riel wrote:
+> > Since this is lockless, the PTEs could change under
+> > us between when we walk them in folio_pte_batch_flags()
+> > and the batched try_grab_folio().
+> >=20
+> > Is that race condition safe, or do we need to re-check
+> > afterward that:
+> > 1) the ptes still point at the same folio, and/or
+> > 2) the folio still spans the entire range, and was
+> > =C2=A0=C2=A0 not split before we grabbed the refcount?
+>=20
+> It is safe, because the batch only runs after the first page of the
+> run has gone through the unchanged per-page path: the folio reference
+> is already held (and for FOLL_PIN the _pincount already raised, with
+> the smp_mb__after_atomic() in try_grab_folio_fast()) before any of
+> the other ptes is read.
+>=20
+> 2) With that reference held the folio cannot be split:
 
-fuzzing with syzkaller on KASAN kernels I hit a wild-memory-access report that
-fires at early boot, while a CPU is running identify_cpu() and an edge IRQ
-arrives.  With panic_on_warn=1 (the syzkaller/syzbot default) this panics the
-booting kernel, i.e. it makes fuzzing VMs fail to start.  I have two
-occurrences on two different kernels, and the address forensics suggest this
-may be a KASAN-side issue rather than memory corruption -- I would appreciate
-your opinion on which it is.
+You are right. The page tables can still be remapped
+to point at something else after gup_fast_pte_range()
+grabs a reference to the folio, but that can happen
+no matter what precautions we take inside gup_fast,
+because it can happen after gup_fast has returned.
 
-Occurrence 1 -- 7.2.0-rc5
+I have no other concerns, so feel free to add my:
 
-BUG: KASAN: wild-memory-access in do_raw_spin_lock+0x11c/0x270
-Write of size 4 at addr ff110000158860a8 by task swapper/0/0
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.2.0-rc5 #1 PREEMPT(full)
-Call Trace:
- <IRQ>
- kasan_check_range+0x39/0x1c0
- do_raw_spin_lock+0x11c/0x270
- handle_edge_irq+0x2e/0x990
- __common_interrupt+0xd1/0x2f0
- common_interrupt+0xf0/0x110
- </IRQ>
- <TASK>
- asm_common_interrupt+0x26/0x40
-RIP: 0010:get_cpu_cap+0x12f/0xc10
- identify_cpu+0x2f9/0x1e30 common.c:-1
- arch_cpu_finalize_init+0x58/0x3b0
- start_kernel+0x373/0x4d0
- x86_64_start_reservations+0x18/0x30
- </TASK>
+Reviewed-by: Rik van Riel <riel@surriel.com>
 
-Occurrence 2 -- 7.3.0-rc5 (same bug, cpu_detect() is the renamed get_cpu_cap())
 
-BUG: KASAN: wild-memory-access in _raw_spin_lock+0x71/0xe0
-Write of size 4 at addr ff110000010ca8a8 by task swapper/0/0
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.3.0-rc5 #2 PREEMPT(lazy)
-Call Trace:
- <IRQ>
- kasan_check_range+0x39/0x1c0
- _raw_spin_lock+0x71/0xe0
- handle_edge_irq+0x2e/0x980
- __common_interrupt+0x7c/0x190
- common_interrupt+0xb8/0xd0
- </IRQ>
- <TASK>
- asm_common_interrupt+0x26/0x40
-RIP: 0010:cpu_detect+0x20a/0x470
- identify_cpu+0x2df/0x1750 common.c:-1
- arch_cpu_finalize_init+0x25/0x3c0
- start_kernel+0x39c/0x490
- </TASK>
+Could I convince you to take a look through my
+earlier series to make regular GUP go faster?
 
-Why I suspect the shadow rather than memory corruption (7.2-rc5 case)
+If there are any issues left in that, I would
+like to fix them before the maintainers get
+around to reviewing that series:
 
-* page_offset_base is ff11000000000000 (5-level paging), so the address is
-  physical 0x158860a8 = 360 MB.  /proc/iomem shows System RAM there, and it is
-  immediately past the kernel image:
+https://lore.kernel.org/r/20260811025157.1632867-1-riel@surriel.com/
 
-      01000000-0b33fec7 : Kernel code
-      0b400000-0dafbfff : Kernel rodata
-      0dc00000-1036a4ff : Kernel data
-      1352a000-15577fff : Kernel bss
-      0x158860a8        <- just past the image, early-boot allocation area
-
-  /proc/kpageflags for that PFN (0x15886) reports SLAB, so it is a legitimate
-  early slab page (most likely the irq_desc itself).
-* The report contains no "The buggy address belongs to the object at ..." /
-  "belongs to the cache ..." section -- KASAN could not resolve the address to
-  any object, which is what the shadow looks like when it is not in a valid
-  state for that region (early boot / embedded percpu / init shadow).
-* It fires exactly while a CPU is in identify_cpu(), i.e. the earliest boot
-  phase, and it is timing dependent: it is rare (0 hits in 30+30 clean boots
-  under light load; the fuzzer saw it about 3 times in two weeks, i.e. under
-  load), which points at a race rather than a deterministic bad pointer.
-
-Environment
-
-* syzkaller-style x86-64 kernels, KASAN_GENERIC + KASAN_INLINE (the 7.2 build
-  also has KASAN_VMALLOC + DEBUG_VM; the 7.3 build has neither but does have
-  RANDOMIZE_MEMORY), QEMU/KVM, 1-2 vCPUs, syzkaller's cmdline
-  (numa=fake=2, page_owner=on, rcupdate.rcu_expedited=1, ...).
-
-Reproducing
-
-Boot the KASAN kernel with panic_on_warn=1 (or 0, and watch dmesg) with 1
-vCPU, syzkaller-style cmdline, and repeat: it shows up every few tens of
-boots, more often when the host is loaded.
-
-Question
-
-Is this a known limitation of KASAN for that early-boot region (shadow not yet
-valid / embedded percpu / init memory), i.e. a false positive, or is the lock
-access genuinely wild?  If it is a false positive, is there a supported way to
-have early-boot code not trip it (we currently work around it by booting the
-fuzzing VMs with panic_on_warn=0, which loses real warnings)?  Any pointer to
-how to dump the shadow state for that address would also help me narrow it
-down.
-
-Thanks,
-1sh1ro
-
+--=20
+All Rights Reversed.
 
