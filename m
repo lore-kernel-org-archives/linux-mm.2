@@ -4,128 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E504ACA9ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 10:05:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1A4BCA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 10:07:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0F7B6B0088; Mon, 12 Oct 2026 06:05:38 -0400 (EDT)
+	id AF2006B008A; Mon, 12 Oct 2026 06:07:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC0306B0095; Mon, 12 Oct 2026 06:05:38 -0400 (EDT)
+	id AC8E46B008C; Mon, 12 Oct 2026 06:07:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8A206B0096; Mon, 12 Oct 2026 06:05:38 -0400 (EDT)
+	id 9B81F6B0096; Mon, 12 Oct 2026 06:07:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 88AEF6B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 06:05:38 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 13985160A62
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:05:38 +0000 (UTC)
-X-FDA: 85313542356.27.341E6EA
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BEC4440002
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:05:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r1q0whWV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oDfm5WoF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r1q0whWV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oDfm5WoF;
-	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 71D1B6B008A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 06:07:49 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04BC1A0AA9
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:07:48 +0000 (UTC)
+X-FDA: 85313547858.21.C29ACF4
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf24.hostedemail.com (Postfix) with ESMTP id EE22B180007
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:07:45 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=eMKIzSit;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf24.hostedemail.com: domain of BATV+b1d458fa1bbfebdbe676+8450+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+b1d458fa1bbfebdbe676+8450+infradead.org+dwmw2@casper.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791799536;
+	s=arc-20220608; t=1791799667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I87OenGAaFJnkdPMc0Xbllbvz4ou1kPWUAGZPj9a3zA=;
-	b=k2cvE00uvik6aC42tGbtFwStWwK9x56XQI6XjBT9JteMo+u4Eh+bhGVQQxPOCYmy1cc4Yk
-	Xv65ZgoDvuvxQCxBxo5ZNaBxid8YSTLmDbG1Vh/BO8ICivKrfa+pbxhW+0Hv5yGpikY1yK
-	ZV7cJfA829NwTxe4hOS0G/izni93r3E=
+	bh=kyROt3Bx6V11cEXdf0N91aKogdU6p680Mn/KyRlYkFU=;
+	b=UMDstO9Td7WBoUPBTZfXnR1BFkr/hQwAMKG4X+IY8vLmG9RB0y4jYkiVNt1JMWWkktsL2s
+	5n2KNGbisXZBxmqBVULN/504TSBH5ycnwc9MGV9uyuarn3qggITDsoleYIvmPOEVISPHgI
+	tyl6eliBsknt0vkgvxRQcNqR79bAjbM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r1q0whWV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oDfm5WoF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r1q0whWV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oDfm5WoF;
-	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=eMKIzSit;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf24.hostedemail.com: domain of BATV+b1d458fa1bbfebdbe676+8450+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+b1d458fa1bbfebdbe676+8450+infradead.org+dwmw2@casper.srs.infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791799536;
-	b=wNa0axwk+/tiaHVluXoGv+mdbQsFnTqngORWKcHpaUJskBGR601uFz1XBZeTuUC/CeNBSR
-	JWAeC8Kz3klbJu9Evq7My72Ak2smNQ8CLaKMXUjXMPSXFckq5d5I98pX76NK78Chbw38XH
-	OgWGc4D3ZHNOhrSMmMLwFdHR2tVRGng=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3A5E41F76C;
-	Mon, 12 Oct 2026 10:05:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1791799534; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I87OenGAaFJnkdPMc0Xbllbvz4ou1kPWUAGZPj9a3zA=;
-	b=r1q0whWVMl8ij6FoM8TFSzQ29tEvBKGilCKDf2s7GKOQBH9ojsmgGW8fEnGafxn0G7oegd
-	30Hkz3oe6lchrA7DnSGyz/goTqes+dhSABldmeAEutxExa+BY1j2GCw74hh7hYzPfFLfGK
-	XZXq+ndDB6c0DMYA5ujyrRQIBkdyBo8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1791799534;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I87OenGAaFJnkdPMc0Xbllbvz4ou1kPWUAGZPj9a3zA=;
-	b=oDfm5WoFEyBhtLQb32f150ZS2FgTd3I4sGkIipKcBQeMshmC0V8JitB6yhcWDoUvztrrCh
-	HCC2ymsTaMsB8rBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1791799534; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I87OenGAaFJnkdPMc0Xbllbvz4ou1kPWUAGZPj9a3zA=;
-	b=r1q0whWVMl8ij6FoM8TFSzQ29tEvBKGilCKDf2s7GKOQBH9ojsmgGW8fEnGafxn0G7oegd
-	30Hkz3oe6lchrA7DnSGyz/goTqes+dhSABldmeAEutxExa+BY1j2GCw74hh7hYzPfFLfGK
-	XZXq+ndDB6c0DMYA5ujyrRQIBkdyBo8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1791799534;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I87OenGAaFJnkdPMc0Xbllbvz4ou1kPWUAGZPj9a3zA=;
-	b=oDfm5WoFEyBhtLQb32f150ZS2FgTd3I4sGkIipKcBQeMshmC0V8JitB6yhcWDoUvztrrCh
-	HCC2ymsTaMsB8rBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11D4C13314;
-	Mon, 12 Oct 2026 10:05:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Bq/KOe2wzGphEgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 12 Oct 2026 10:05:34 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 9F8BFA1403; Mon, 12 Oct 2026 12:05:33 +0200 (CEST)
-Date: Mon, 12 Oct 2026 12:05:33 +0200
-From: Jan Kara <jack@suse.cz>
-To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+e0624b5bf72b99131402@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/filemap: mark lockless accesses to mapping->nrpages
-Message-ID: <u6yseen7xlqfudkps37rizde44u4yhfiqsoe4vvse734fsgrg4@mdfdypi2xgd6>
-References: <20261011112940.455497-1-ngocthang2710.1999@gmail.com>
+	t=1791799667;
+	b=aCHCdpsdQMgwynWl8a0tvICgASsgDWjUtMwEgrDeffSXbUbxCfvm8M6MTIOiuZhc1ty+Fv
+	FoYYQlHUZHt/Qj2BrtgFQpjmP14q7tbwfgm3cU4pRdRoJqsm1/unzU5MKO00Bj+3ASGrU2
+	WLKUfIr0cBjJQdS05igaBZcWm33YwdQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=kyROt3Bx6V11cEXdf0N91aKogdU6p680Mn/KyRlYkFU=; b=eMKIzSit28C4iLChu2Q10ZsP6L
+	Ay9iF2R2aI/sUnH8Ag1lVs1Q8u13JXurgjPhYySZ3aiwD0siGcav0x2GigO8aHyknUsj/4HURkpu7
+	3zQccaV2F124+TlQ9os9PlP7Dk0oUQ8IEIWnLujBolBdWw/aEg5lzGGow5tR36WmOJwU5FAiH4fWS
+	3dLC/CWDLsEZTO/Fu4s17tsepSVZKVa7il+zGBRl7f2leFyz1v/WY3hJTWsKKPRsQmAB8OpADbp8t
+	U6nQIukO/PLhmZOtXcYceQTdMeGCETRmqImh+vN6EvMjVo9D1jTCr4ydaYeh0ef+nr94O0fYcr72V
+	xQXPhJYg==;
+Received: from 54-240-197-235.amazon.com ([54.240.197.235] helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xGCwD-00000004EQV-0ouL;
+	Mon, 12 Oct 2026 10:07:21 +0000
+Message-ID: <9160333dd2439b503d0d675fa085154bd373a9e2.camel@infradead.org>
+Subject: Re: [RFC PATCH 0/9] mm: Memory providers for guest_memfd and iommufd
+From: David Woodhouse <dwmw2@infradead.org>
+To: Fred Griffoul <griffoul@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+  Sean Christopherson	 <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton	 <oupton@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner	
+ <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe
+ <jgg@ziepe.ca>,  Kevin Tian <kevin.tian@intel.com>, Joerg Roedel
+ <joro@8bytes.org>, Will Deacon <will@kernel.org>,  Robin Murphy
+ <robin.murphy@arm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin"	
+ <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <shuah@kernel.org>,  "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Ackerley Tng <ackerleytng@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
+  "Liam R . Howlett"	 <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>, Joey Gouly
+ <joey.gouly@arm.com>, Suzuki K Poulose	 <suzuki.poulose@arm.com>, Zenghui
+ Yu <yuzenghui@huawei.com>, Steffen Eiden	 <seiden@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 	kvmarm@lists.linux.dev,
+ iommu@lists.linux.dev, linux-fsdevel@vger.kernel.org, 	linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+Date: Mon, 12 Oct 2026 11:07:19 +0100
+In-Reply-To: <20261012095800.50250-1-griffoul@gmail.com>
+References: <20260720111259.122911-1-dwmw2@infradead.org>
+	 <20261006183235.16576-1-griffoul@gmail.com> <yq5ald8680t2.fsf@kernel.org>
+	 <20261012095800.50250-1-griffoul@gmail.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-NGhcf2IBb+AIA0wX4/rS"
+User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261011112940.455497-1-ngocthang2710.1999@gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: EE22B180007
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BEC4440002
-X-Stat-Signature: anaqi6zm97wuwtt99efk3pr1kxfi555h
-X-HE-Tag: 1791799535-7638
-X-HE-Meta: U2FsdGVkX1/e86amHm91OKPMn/1LLxKqnNQp2kzPNMxbwBGhFa3UeWgDJ7vwjMjiF00rFP79/XHdRCJd/z1a6h3Sa5p8KDvwoF5IeQDablJ803Gr7uJ4rsDJRGhPzNWM9wEF2an8SNqzDcYFPDtFhERg15DGeMYLjrkDBJb0wILUo4z7Z/PauFyDDEa6Cx+gqYy+uWa++wX7o3hH0tP2TBO/PtNGRxoa75YdC6t9h0lIOVWburM4kKmGNLLz/X9XLI4HYcrpg7/jKQjzdkfsQks+cbbZ9K0Ld1U8/Zin5ZP4xNqDUOEoHMylj9lVkUoej6ED5THZICda9Rc/bcS3SZP/M1rtL0EEmFz9d2AyJ7WnEgF+1Y15oDWArwe46F7lsWJcTf+JvMZccrUdGL3/fwvBUrK3N6GXDLXF8oBkTrMzEFgUCJXipYg1pPgnk9/C/Yx3yM9Q+vmX37NWSkVmLNvgAEI8XXwl1f1kiPgjbxORKXM/0prLgsBHJiIjWJhPd0EfFUYyMzg/3aTClhaR4SVPkt8u2k5FQZy/hluI0ncPqWel2BSMaAA9y5FjFuQchx6csyKsWqCoHP9xIAxAro2NLlgeO8mP9k7blH/tkT/dWgP5+SD5RJ/nKvpXfE2+zz14Z4wSlpTq6pNeqfzD82U64T/lcYRiQAH5EgVFNZ0pB0jVSG/uQLe7gQsG/P83qZb6UfeL6LolD3oPCy1sZeQtQ+rYbYzHekTwxAVehgj2BNXrDRDJS+DiwpUGyhY7k8hOu9QvU+M/o9h62tau0Pz9nCleDYgWdvw24MN5gPVlj2qJ9hELM5Jy29qTQrizllzBfTqMU/UAsvietRe7N7LPqMQJdz6P4bbzYFgVdt/Dnb2kt9LtdmD1n9cJGfMwLOBkRqaJYGXR4VBpLMNHpNaMtqDTkyhW5z++BO6H1X/UbeF2L+DwdZDrMt+1Yg+5Q9cWFkI7XmCzzcxk40V
- 1GDFC6N2
- xx8lqvkvk8ZwKJTOsi5wOjNF1Gvfg+/+7KP29irEVHJeh5QhidaXBfdH0ExhPVox2gtTB7ImX6XLdkZ/O8+VBzHfRRAgehqaIlRnYLLCVW+GjnK5bSIcuGCxr4TB37/nWVDpMFS0Tx4BxPFCzaKjD0sc/6/nCFtMYEzptavRJ2v1q2q9X7gEZBeBj7K7SGMnYcETUCtKioMOR8dz00j7+D96PcfYsfhfj29igFK0mocx9AdaYNSyROXTUVULTzZhOHliYosXbaSnWEkQfjed/kwdJaAwMPMIZuPtCn0FxzCPuK2q1UGW66csGCo3E25msnmulZxNp3HBaKqDcHX5HK0HTeEvBD1yPgul+UutxA2KqLoczwUtWfuDH/BUKIzLvs+K2H36FMi9l3cCyaWLaD0k/Gm+BQ/dlyjOKTSc47bex1gZ7fQdH/IpB2LsIZUMsy3BmlTto0Mn5SHVMJaOyvqNyJHIO6lY2Hru3yG20r6hdvUd1nDqbutf0JKm0D5m7NdBtFziMMzXOY4VnrfMzP5BmbNf9sEPd4eeziUy/UDhYJUPSgZc0byw8GX6WY3OGbjLlJTTdFFuFah0nFvO6MlaC48XONLUTiJXt4qvr16ViuSg=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 97hqdp8rdxwoqisftafs553c8kz6i57d
+X-HE-Tag: 1791799665-337056
+X-HE-Meta: U2FsdGVkX18VYZr9MAdO5f+C2o/OpRHtKkkC/Mu9OEijWETEs+ZhKWJznq5zfylHnlAqGQqjEWL4vlG6dhy5sqgBv2Z/wKmkkmSJbayqwuMEwmZ88P0KHeCs/0j3y7KQ/PAL/QECoEketszfYAzb/BkU+wGHGmkUI5DhIvAt3qenp+VHeKpOqoyxu1b0fhNpkAKsmJuF+J3IIMduJ2nUKOobhRKryzGD+COOLjtx3rUCwlhS+NzjWGSwQFG/rnaIhBz67WJFcMJT0pfkh8c4VtzeMqp+c49xJNxq+nr1+4X2lPvgCF/jFP/Tsa9jhYyLsvx+U3GVRND+9OMf/wP3ukxQl0nPp6slr0DWBaFTUHXcG3pTcg+DgBzIyc/M9uYtSZ6E+h94YSZE+jZLwTLYg5kUg8c5DUFc6Mjtr6tGVgQQyuPujvy3BYcXLSokyNQ7fjmI9IPAzkxBdWevAbBo72TtIbyes1qQPzm4e5kUvGe+LF5xZRtL9xv6f5OnbDtaX1XOAWyOhwydNbHzCrpQz/PJNRo02t+znyv7lR4eolqPprzIPzts4mtJ9AmbzVtLJBWXFdzozcmRDl30MOdPkrGnGCRqfsBKVB41yKAr7HWZFMy5H0ukt7eAm6rG5z1UU9qFeX3WQhBgGt9wYdbk49x8pl/aPFj6GEpjUN079nb8ejkM/a1ckliHrZ+L5e5xqdNO6OK7YxDEwhv9qF5ubNSLk+sp7tLidzwO0xNKDrREisectdoscrQFdl2YaV0CKvA/SjXQZzPbUPTzdi0sjXXApg47e/hsbKGibJ6mf8rF2T+UYBn+lXmYxUi0gx3x0HLrejd7cwIQh8OYWwYpomBtOxxR3av7ct8X030IIGfo4nY1NHQ0pV5Ie29Q7wTK7Huu8pbKVURGdPGp0IcYtHtBDBCqhmRV5o+kUXdEDpKEgoyqhVumEC/nwPaLC6K270rK73N/lhI+Eofkamx
+ 7ljD4taR
+ v5gAaWLvCsLksYN/xpxG92GcP+M5E+X6eNRFAnXxq+XwooAsV1mjnBFRE3geZV3+m3P704biSKP90r8w5EQC4T+0F0/UPBYaYbgs9mIEBv8c7Txzq6rpQnW27pWARN+K6isDsnBHx8wR8RRrk6paPSlRGZ2jFvmjmxMaZWlgBX29laG1w2CP1xQsPXiYXa301h9VOnmNT4Bb8TPDmRUFvqVS06fsmlkLpfmZR5nnpXff2EpxpHQ5LwalaNNOWljfDMLRj1Cv3boajGXFeTQM9AME6N5iRV4qg5JdAMy37tvkOsnM2n6FOAx/0D0xiOAbYjI6wqq+XRbeLHw98jeI98CwpMgloj6Y82dJ60UCcMUaHE9yeKBLn4xjIkCO1c/+po+3Sn1OaG1Knn0a6FOWsMrGlFdk8WEy+agj2kbWUu+mrQZ9Qo7m6VXckONzZnHLljIMUebQ4p5AB0h7q5E+I5Y+rnT49p0PJid4ZT3xQGknbE0zAJJasFm5nSVKhAAn0wNzwk7miZlyWTTY7ML6f3cg21vgsTxYdmP+efGaggL3BYzymhOKx9sxSSsM3ECzOrbWkyvNl6gQrkdsEBnH94Q6zpLAMO7QhdnUk5j49jhe7MZqwhkFtXrQEaKYzOf1SaKFyeHyVyD4Pwje+CYl82bN2crJicfbeBFKOgi8bpR97Hb2rb2GAicNw09kLtS5xwcuo8OzutTUjdEnoFFyq9Pu6l/WHz59bTh+uRn/P7lneRbTis3kJ3gnZ1f93tqE44nERWArD8ODMo6ez3VGtZaFXansxLcDR5on//ilwbG917uKDNigN3gN7OqcPU5MrRYegLvNY27su0mWpfM9tYCZx3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,103 +112,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun 11-10-26 18:29:40, Nguyen Ngoc Thang wrote:
-> mapping->nrpages is updated under the i_pages lock but is read locklessly
-> as a cheap "anything cached?" hint, e.g. in invalidate_bdev() and
-> mapping_needs_writeback(). KCSAN reports the race:
-> 
->   BUG: KCSAN: data-race in __filemap_add_folio / invalidate_bdev
-> 
->   read-write to 0xffff8881004c4178 of 8 bytes by task 3600 on cpu 0:
->    __filemap_add_folio+0x6b7/0x910 mm/filemap.c:919
->    filemap_add_folio+0x1cd/0x380
->    page_cache_ra_unbounded+0x1a4/0x3a0
->    ...
->    blkdev_read_iter+0x21e/0x2d0
->   read to 0xffff8881004c4178 of 8 bytes by task 3601 on cpu 1:
->    invalidate_bdev+0x25/0x70 block/bdev.c:98
->    ext4_fill_super+0x2ccb/0x37b0
-> 
-> The same counter also races with filemap_write_and_wait_range() through
-> mapping_needs_writeback().
-> 
-> The race is benign: a stale value only makes the caller do or skip a
-> harmless invalidate/flush pass. Annotate the readers with READ_ONCE() and
-> the writers in filemap with WRITE_ONCE().
-> 
-> Reported-by: syzbot+e0624b5bf72b99131402@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=e0624b5bf72b99131402
-> Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
 
-I think in this case the proper fix is to annotate the problematic read
-with data_race() to silence the checker. As you mentioned there's no real
-bug to fix so no reason to convolute the code with READ_ONCE() and
-WRITE_ONCE().
+--=-NGhcf2IBb+AIA0wX4/rS
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-								Honza
+On Mon, 2026-10-12 at 09:58 +0000, Fred Griffoul wrote:
+>=20
+> I plan to change the revoke anyway, because iommufd must not leave the
+> device with a hole: it should replace mappings in place instead of
+> unmapping and remapping. Would that fit your case? I suspect it depends
+> on locking, for example whether you have to revoke while holding
+> memory_lock.
 
-> ---
->  block/bdev.c | 2 +-
->  mm/filemap.c | 8 ++++----
->  2 files changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/block/bdev.c b/block/bdev.c
-> index cd8323083740..d97071160e86 100644
-> --- a/block/bdev.c
-> +++ b/block/bdev.c
-> @@ -95,7 +95,7 @@ void invalidate_bdev(struct block_device *bdev)
->  {
->  	struct address_space *mapping = bdev->bd_mapping;
->  
-> -	if (mapping->nrpages) {
-> +	if (READ_ONCE(mapping->nrpages)) {
->  		invalidate_bh_lrus();
->  		lru_add_drain_all();	/* make sure all lru add caches are flushed */
->  		invalidate_mapping_pages(mapping, 0, -1);
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 00fd89cf6f55..007fe10b2e1d 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -144,7 +144,7 @@ static void page_cache_delete(struct address_space *mapping,
->  
->  	folio->mapping = NULL;
->  	/* Leave folio->index set: truncation lookup relies upon it */
-> -	mapping->nrpages -= nr;
-> +	WRITE_ONCE(mapping->nrpages, mapping->nrpages - nr);
->  }
->  
->  static void filemap_unaccount_folio(struct address_space *mapping,
-> @@ -314,7 +314,7 @@ static void page_cache_delete_batch(struct address_space *mapping,
->  		xas_store(&xas, NULL);
->  		total_pages += folio_nr_pages(folio);
->  	}
-> -	mapping->nrpages -= total_pages;
-> +	WRITE_ONCE(mapping->nrpages, mapping->nrpages - total_pages);
->  }
->  
->  void delete_from_page_cache_batch(struct address_space *mapping,
-> @@ -631,7 +631,7 @@ EXPORT_SYMBOL(filemap_fdatawait_keep_errors);
->  /* Returns true if writeback might be needed or already in progress. */
->  static bool mapping_needs_writeback(struct address_space *mapping)
->  {
-> -	return mapping->nrpages;
-> +	return READ_ONCE(mapping->nrpages);
->  }
->  
->  bool filemap_range_has_writeback(struct address_space *mapping,
-> @@ -916,7 +916,7 @@ noinline int __filemap_add_folio(struct address_space *mapping,
->  		if (xas_error(&xas))
->  			goto unlock;
->  
-> -		mapping->nrpages += nr;
-> +		WRITE_ONCE(mapping->nrpages, mapping->nrpages + nr);
->  
->  		/* hugetlb pages do not participate in page cache accounting */
->  		if (!huge) {
-> -- 
-> 2.43.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+I was keeping that hack *entirely* separate from the guest_memfd work.
+
+That's a quirk on the IOAS in iommufd: "whenever you unmap, put *this*
+page in its place instead". It doesn't belong anywhere near what we're
+doing here, ideally.
+
+I even talked to Jason about it about it at LPC, and he didn't hurt me.
+If we implement a hitless=C2=B9 REPLACE operation then the scratch-page end=
+s
+up being a fairly trivial thing to redirect UNMAP to REPLACE (the
+tricksy detail being that it uses the *same* scratch page for every
+IOVA in the range).
+
+=C2=B9 why do we call it that? Shouldn't it be 'missless'?
+
+--=-NGhcf2IBb+AIA0wX4/rS
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+N7U+jy2+38XGWwLhyGFNbowAAAAAAAA=
+
+
+--=-NGhcf2IBb+AIA0wX4/rS--
 
