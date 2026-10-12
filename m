@@ -4,92 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 529A0CA9EC5
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 07:23:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B639CA9ED2
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 07:34:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 046D36B0088; Mon, 12 Oct 2026 03:23:39 -0400 (EDT)
+	id 90D966B0088; Mon, 12 Oct 2026 03:34:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3AA46B008A; Mon, 12 Oct 2026 03:23:38 -0400 (EDT)
+	id 896E46B008A; Mon, 12 Oct 2026 03:34:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E51D86B008C; Mon, 12 Oct 2026 03:23:38 -0400 (EDT)
+	id 738956B008C; Mon, 12 Oct 2026 03:34:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C4A466B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 03:23:38 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 37DE6809A1
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:23:38 +0000 (UTC)
-X-FDA: 85313134116.22.FB31753
-Received: from mta0.migadu.com (out-107.mta0.migadu.com [91.218.175.107])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DFDF3140007
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:23:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fVbeXI5V;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.107 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791789816;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B5046B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 03:34:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BDE201A09B4
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:34:18 +0000 (UTC)
+X-FDA: 85313160996.24.D0ACA3E
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf31.hostedemail.com (Postfix) with ESMTP id E5D8720008
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:34:16 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GFmetaA6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791790456;
+	b=TsFNvM1uulZkThi/QiMySoWZnmmOfh/24Cijm5oZ5Jjub83SuSL8BV1s0WUJe/pKApAwhX
+	Gp0mSXXXDda+1w35O6GCr81zIeuenHLr8U4+LUMZTjQHACJhIQg1bIrWXpbBDnelGdNz7I
+	ZlWTVxWOT9RamPSLMlnBNEzIiZ+HUTc=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GFmetaA6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791790456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D8NKwMrhApUwn/G5lRAI/pD4bmXBQTUsnyD5w9wKH4w=;
-	b=ZDHecgWizmS/2bF17q+CCXIstIXO5LbYGmL3ai5nvIu8DuDmXEwQ0WOcgyh7cTB5jzxRIu
-	czcDDLjA1WLxk/Qu1sn/vibrtMWhvcTxfGTQcm58eCOKY3MlbL0NnHXox0wFD7ePZnFzSl
-	vRSelJzaRt8aHWBlI8pspdURY4ftQ/A=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fVbeXI5V;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.107 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791789816;
-	b=djWAeRPW3xeVigZS5TQB4f3+hN4iTqS+hY/zQoOjb618WtYjQIRt7pnZpGlAuYEe+bl3DT
-	A3NU7aG/erLSls1awcfDaVMsvDukcYLqJYH6KVwz/9VJEKaRtIfH+R7+tMiJl0TSnr+NOQ
-	tI+5w2JoJeZCyoHVO2AfE/1t62D48Yc=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=UM8adxA/R87Nyq3hvBLH5yR3nIt2GNtot7r6xMKw9+Y=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791789814; v=1; x=1792394614;
- b=fVbeXI5VtBN7ZbNmd3WiRvFhkaCYz6yIRB1CjT4P+aoXCFmVVNTa4QZmgUj5InjIFQGt8khc
- nWhQocbTTmZuckJajQMFibrhVDtjf5wHPoCCPgC+39fVx6x+709EPkdwDbELHYdfv+pR1xFL4o9
- u7ohHB4b4wdKmXOzAzv3LNP8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 3fb08dc45f88c86f;
-	Mon, 12 Oct 2026 07:23:34 +0000
-X-Mizu-Trace-ID: 3fb08dc45f88c86f
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 12 Oct 2026 15:23:22 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: KunWu Chan <kunwu.chan@gmail.com>
-Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	hannes@cmpxchg.org, nphamcs@gmail.com, baohua@kernel.org,
-	youngjun.park@lge.com, yosry@kernel.org, shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev, david@kernel.org,
-	linux-kernel@vger.kernel.org, klarasmodin@gmail.com
-Subject: Re: [PATCH v4 08/14] mm, swap: defer xswap shrink to workqueue to
- avoid lock recursion
-Message-ID: <asyK6t1POEW5c533@fedora>
-References: <20261003003136.750633-1-hebaoquan@kylinos.cn>
- <20261003003136.750633-9-hebaoquan@kylinos.cn>
- <CAN_Opa_JCCd-+o5y9JXbzypPtYjTGvyvnOy7KmSUKHYtVab85w@mail.gmail.com>
+	bh=TB1tvVpc7k0BKK/tU4j4YuTf01twWs+L2M2upFeIsNA=;
+	b=Y3ZKhrOLItnSQkdkjorXIFIXAwKJ/2NVQsLN+co4jELCCYd6cxuDak4PYsxkQcjKy2j7zm
+	JL8JAywTsT1Ox6JtK5O16EL+/d5FleLESWxzhvKSIZ8+0JDDTb8wA8ZOXHJtfWlNvRoLiA
+	ELCFmXLYrS3jfGYLf9rLsDfbXoEtX1k=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48b9d8055dfso1171483f8f.3
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 00:34:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791790455; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lc7WT0ogUa21CaFbPutZeQsSPGUS+gj+A+P7gJNOT+h2lKroUdiH1SsTYV0Trcfdee
+         gW9ZIKqi+beVoqePn8cvDm735dCtjhx56qkrjeOovK42qz2juR5zFnzVeQiaRMDMfjE6
+         y3KqMg0qcQ7hFFV0JBtUOcK07W21iz/7EUXmTVrFzE0m0Xjbcn9EwdF9l8ubP1u5OEAz
+         MufHBN5nl5ez4jMcuEZOAq5O5SDSP35uKIec+WEXu8Wo5blUFDye8IzQqLwzV8YyXIo0
+         G5qpqgEE2JSDWrcyw+82+H1yql5QEASEP+qf9mIGA1UHuXRsHsVKwH+YTGjxMYTszd9H
+         hu/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=TB1tvVpc7k0BKK/tU4j4YuTf01twWs+L2M2upFeIsNA=;
+        fh=u4ThrIzeduKcG+YHlScBq60DIUG2gqBAmSRIRONrE1s=;
+        b=CKbkPEluGYAn/JmsmCxordHZ/UgAanZlOviweMlAAy/fEb1LKb/u/ixpPUOi2Eb28W
+         fRoLJAZya1XNHqiO4caS2ncoFgzET8bwj7SedbK/wryj1TCHb8Z2YiQY8yyyVgk125lK
+         ODOINkKptkOZm3vy4bd0ZY6iSIQT0+OT12oDs8QD+Bvi1QiaQj0Gyx1QEW5rHDc3+dnI
+         d1xEcOjHtp+GmMSMVTAFqdDYQVRy4uZicqczBeltU75ny5YlpfopD1YAZ/xN7QPHBxAn
+         bkdhWZEhXyWowFcXY/BGaJoO45cIlNTzJYuweUtxwiYn5xcaEotl+3dMwcLSEkrk4Z60
+         9SRA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791790455; x=1792395255; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TB1tvVpc7k0BKK/tU4j4YuTf01twWs+L2M2upFeIsNA=;
+        b=GFmetaA6mAwt7GbGwnCm6NrML9t1R41W+soCFgwizTBjlkc3C9igrAYsSNPXgRbsFL
+         gGxnuRCgB7lqIAzPuYk2q0JlvyM3pgouX+tefjgTfSaExhdPWYEZFF2GkIt8IXnSb8Sc
+         UyMUXjmJsVV7m0PQ+mjRElZpVejGMAfZntayk2g1MUSAEcrsaiwQWEVz202kbgv6X37e
+         MXeNVV3+aFxzYuDD0X6mvNYHfUuxOqv+GIJT1QYPLRLmfuNe/3jeyXhOkhYV3TDZiT3p
+         CF9UNe429PICxexaW3ZWnR6XR7UhV/N/WsNhMRoJrTjdMpsZzfbBQbHXkw9o6AjkYmnT
+         cotg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791790455; x=1792395255;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=TB1tvVpc7k0BKK/tU4j4YuTf01twWs+L2M2upFeIsNA=;
+        b=lYyAFPWhXe+RMz52H1xaAA0FSnvyDr0nV70gy5tmaf4mzB8vp0AExHCJDCEFYMTbKt
+         eHPLnx4IHqkWmCUOx1SQpWvdCHNw3pnAPZiP9UIf5tTj6hyeuidKeCMj+/dA1BaXbXBQ
+         xLkIuy4Mm/geWM0NmxN6IKcL5KXATes0DcXsGMJj9WNO7bxAGak9zDmpW/z/Nt+YCAqW
+         vBMk4//UgJz5rl0rSaPVsFL0bg18VFwxY4cLI7ZNVMsdm5U9JCPIy6XymDz7lKe4AFIL
+         //xp8ICRb/HoKAOMPcVBhqkXNWyvetj1PMjGqE1EKPXjbQvUmrbfvY94R7rfkkE7VSkW
+         x7JQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy44w7QgOUxedlhpKu0ly3YfTZFosmcEtZQH/TXsTTLQyCHucYXHmy31JSry8qf9Fi4plrB1O4iNA==@kvack.org
+X-Gm-Message-State: AFq9FYJCc4Vgis6Q2yblN07j0065Ng0CJjpyJcXzoOUERbuOU1faxo13
+	6rEUhhJ6FaS7JB0ZhkvwulFt18tIL8a1XdDm4lvSkA+k7GhUVYTPGz37GG+r561oXCnhbb4GbFb
+	I1SHf4WTTenMYXo/N26QXH8Sraku1dlM=
+X-Gm-Gg: AYBFou2PXHg8yanJa/5hMvvE99ENCfgLaR1ve1T0gN5rvBIrxB9N8z6B2vVVUG75ksz
+	KlhHTHKUwlig5nLcHQE8AH9S/QXoDpjbdwwQr54MRajQdBJXmHXImqRoc2EfHb6sulKAeklW8ha
+	APvUF1fP50oK1Ny2enD3VLeelpidyuhKFt56VUKq6HcJ1+Me61hoa1gE3hChmaotTCHXrb6M7+U
+	c7I+IHwmuOkZuvv2H6NJVpUGxibAY8M5aWp7C+d4dudkSG7lL8GNjEZ83TtdGCUUm/NBqJ9SQ6+
+	CELX/GCtRvOLiBVubOHCIUb0If+IlVYMTRq+ScKGYLlprDB1sg8WlbCs
+X-Received: by 2002:a05:600c:154b:b0:49c:fed6:cd3f with SMTP id
+ 5b1f17b1804b1-4a18e4d0be2mr158510455e9.23.1791790455069; Mon, 12 Oct 2026
+ 00:34:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAN_Opa_JCCd-+o5y9JXbzypPtYjTGvyvnOy7KmSUKHYtVab85w@mail.gmail.com>
-X-Stat-Signature: 8edomy3pgfxpfawaxat8ktqszpamnhxa
+References: <20261002090947.869220-1-jiangwen6@xiaomi.com> <20261002090947.869220-4-jiangwen6@xiaomi.com>
+ <asudY_EhrT5fZGmZ@milan>
+In-Reply-To: <asudY_EhrT5fZGmZ@milan>
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+Date: Mon, 12 Oct 2026 15:34:02 +0800
+X-Gm-Features: AclHuK_LlxXaCmKE3CgA4amsUlg18qyTu4ifi545sZ2ZwusM-AnLpZx1y3tgmDI
+Message-ID: <CAHKocdH9Cmjb4oEVvZnxDhYRKfK+b00k3mm_YwWmSnO4fZ+qyg@mail.gmail.com>
+Subject: Re: [PATCH v10 03/10] mm/vmalloc: use pte_set_huge()/pte_clear_huge()
+ for PTE-level block mappings
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org, 
+	will@kernel.org, Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, 
+	anshuman.khandual@arm.com, baohua@kernel.org, chleroy@kernel.org, 
+	david@kernel.org, dev.jain@arm.com, jiangwen6@xiaomi.com, leo.yan@arm.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au, 
+	npiggin@gmail.com, rppt@kernel.org, ryan.roberts@arm.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 4amronqk6dbzub1wpp61os85zzr6her5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DFDF3140007
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791789815-920761
-X-HE-Meta: U2FsdGVkX1/oweH7CRljbdoNO2Fatbd+8nuI2c5N1d4GCxFNqTD2TdcjgDnzu6fUGIScIulfZPiz6iM/p4bKFwpgkchOuXw6iVpOQkBBxMoHl03FYD6mfBBjsT7e35KQh9E0H8oAGZGPZyQ3ziNcBNl3QHsXV0oVG+TS/rvrsJTjRQfD/vAs118jnzF/OVovt70Bh/BtOW2Kq5pstn6LMqBLCHKdu9R/GgGO97Ivnf7wKkiBLuscNDP3wfmVigznJ+J9y00zIqdpHDebowCBU9L4cjlsIONTDu5RD5iFLnV4bxUvYzxVwSDVboIgGv3bH3Tl78+hHSaL0i+e79OlxcqkLP22XvcskY8AkJ193aGR9uIpNKby0vnTPNHkhoi5BfOCoqgmdcVgJ92HxEoz/QaSyzXoJlLA2g959pms8pfEEtZO9B8NVD8CGREtvdbOrR4mWHR3wCqU9d+Az2d2qNFtQL8BOGyNzrLA4++jd9VuverVzvcz25mFmTcZ5mznWrGQBIKccfBuiWiE4TlH4QCYPue3SvvKvZq2q8DKiGAcdOqM+6/SNTRCwioSUc/pXf6aiwQsVt6bT1a2cS9STG+drE0CvX4mgOVaQ2dQ6RiI0bbU+9p/S3+Pk0d2n21l2PUP3SDR6tUjM6E014fWREz2x4/B0obY6y/zNd/PKCOqpwbzN3tc2X+8CUK4zSIneuQ9rjtkk6bA/ZwTLPW2X7gTWXm/sDgjBwQAPZhUiIc2zycHhTKt+RpQIG+PuJSClWn8oGlHBbu+e5Ngyn2cjzEjpKzMFYY0aDen+jM3V3gLdR0XExUaTMK2FKPVT64ZatN0z02kycIwAvjBBNbI8bwk/bv3p/kFBuFI599oOSDH+Km2kipj4QuudyIzfxqnuxmb6hZ4E9+RFGAz/T5v5sUdDBhRtt6/5H7QkdwitRXmm+DC5+fCTmmETatx0BD96BKmdeIkPkwYXq0p15I
- NRGsWdxZ
- yNJUnGmCqKMnULyA/CiMXC1FWsTvWTpBgC8SXr8JTdK7s0qV0mtH+NOLfsrzjAUA9VEaGkMQJ4tekOtnkPclSod76MmchU4XhCcXVlEsBokT73HqAiiQnb4pskoxqZ9THChwQ3MH3JfplS3c4+fRUmElpNsFu0hmhezrhvATy1ddYej2ZUkcTKmR4/wwSe2ZVKYjkcA0FkxjUVXqNsC37KWErRc1zpC88V6Xt4Jed1l/fS9azSZ2WQMCuNei+k4pgyjxMhs7q4DILjxHv0JR7kbSlWBMBcHAxB88P3v27NA7PzMCv/q+I02ZXCfZf2BplskF/PZ/PkC169gyWNIB2pSDd1gvYfdl+YaN3ZoQqfjfc8enGb+/el9Of0A==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E5D8720008
+X-HE-Tag: 1791790456-572717
+X-HE-Meta: U2FsdGVkX1/eSEO6IAE3qTvAkh4mLtwK7F3Ted7h6NTK3OYtxPLkYIqXvtrOC2zDIp7jsoNVDcfodMEWCLLlo+lXbGee4jz7+m2Yc8kkcDq4TDElcIQARivw1loZrFloYN+cHdL8G8TRCul5G0PkRENbWwwd0MrBwzDGeva8V8tMicmAMPLoYpX8YNNOgrujD1+LYNC4AdC4XMXfCuJd9vRcYLNs22tti7HO1924rc0Hs0L528hXp7qIkIxDMj6FrUoZoevgbFoGdGBpaKsQpZXQtwgxi6h6A57/0FuMLOizby9RilEoKm/tP287PyL/+UGfHgKgH3d3ygb72bd5dyBrynyuLL+Vm6ZdRstfZpwvi8j+4I/a8zam+4/OtvFvpWVbUH/6V6Q4A6A/nSLICJv+ItwRQ56a1zfZ3sqM6HuPtGG/mHwqrSHbK7iF5pzc07C7iSk+MxP2NNmXhZ1idLuFLXXEnU/en5MO0ChZKkCavx87x+AyHWUKw25fIOwk08LA1c/KIf4N2JcvykxqrDj64VQTTEzO+/ASdVPr2SNfYrLmBK9zkw3b084ISkHnGCJr3or31LjyZTvjgFFQLT5nrlAusljBmSfW2r0bXLm1ADeAnddk/MmN7sFmpvgWnDsM3ly1IZ0xsakdqZ8ygAitPP2w09tIrLTmBDaKBAIYRI1djfwjSc3MXHUu2+1tiDPyF4ZoPNeAXbMW0MicfTtl7CbqZ6qIYSkOXzulN6hyhznN5VVac/f3fBh3qQG2KkwwHr6kF+UOenOHJN5y+u1IXQenHgGAz/0QGC4guZIeANt5LoNePQRuMMPKgOfusU/5t8Ju1ZQ1NkAOTVF0Cw6SQQaPdup/R/Bh3q3uRbaLkIGXx3NSU+QAVgRBgnP9Jd/RpoJ8SVueNVIIhlLjENL5pExx+806UnYhm97o0GeozEBg6uwAs5f6hbqDseku4J6mDs73LfruNcXLBmW
+ yMB1lRhV
+ ixkcvAqxv+MpEfOv12uL3WhtQCIZnx4zj7NIarxlGhyk7zVQWMj4IfPw4yw1d3UonZwnIRQCaWaazZxwqunA9En5l3BZwnBLYHg0Z5VDIJ2dTcxtee7MmKAbIhJIp8VrTJMwC3fwXV/a3aF8TkGutpVOeB/ScDUBRBjKg8uH5+p/tbPYvyf+k3G0QpD6t3ZEDSdKNGF5ovcOiwa6gLNaG8cFuFADN3930RAQysI59tqAumvslzRxSTokL8rZAKOUGrjTNkSqRYvZJorWnec86pl7ETb3kOb19KO0v6NMvyZ0nSMELaXxN6J1567TrYS1CGR8nSbZ6T3AdE4YheCd0kZIFUVa8NKG6S1EmFUELpDhSQnFrCQWV+Aen2quM2DUhnQYNedyDupaYcmmpWR0eZi572rUavNWG7brlNbEbrTnC4ESpWrKJ8mdo/OvqCgaGyClkPqYeYCIhinVKIs31iVe9WT8X1Vnbs86FA8RwKvjneGd2vroLEvvh+s8qkaE5J3qFl33sjH7RdUDbhs9nSBXh20849uHuK/XWa+aDxkkVcvZP05g9GXCMOjRubUmxKkGHvw6YxyAXgQWHuXW5VjbUAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,204 +143,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/08/26 at 05:10pm, KunWu Chan wrote:
-> On Sat, Oct 3, 2026 at 8:32 AM Baoquan He <hebaoquan@kylinos.cn> wrote:
-...snip...
-> >  /*
-> >   * Try to shrink the cluster_info tail: unmap contiguous free clusters
-> >   * at the end of the mapped range.
-> > @@ -4164,14 +4187,20 @@ static int xswap_mapped_end(pte_t *pte, unsigned long addr, void *data)
-> >  static void xswap_try_shrink(struct swap_info_struct *si)
-> >  {
-> >         struct swap_cluster_info *ci;
-> > -       unsigned long nr_mapped, last, keep, idx;
-> > +       unsigned long nr_mapped, nr_tail, keep, nr_unmap, start_idx, i;
+On Sun, 11 Oct 2026 at 22:29, Uladzislau Rezki <urezki@gmail.com> wrote:
+>
+> On Fri, Oct 02, 2026 at 05:09:40PM +0800, Wen Jiang wrote:
+> > vmap installs PTE-level block mappings by reusing set_huge_pte_at() and
+> > huge_ptep_get_and_clear() under #ifdef CONFIG_HUGETLB_PAGE. This makes
+> > the feature silently unavailable on CONFIG_HUGETLB_PAGE=n kernels and
+> > couples mm/vmalloc.c to HugeTLB internals it does not otherwise need.
 > >
-> >         if (!(si->flags & SWP_XSWAP))
-> >                 return;
+> > Now that arm64 and powerpc/8xx provide pte_set_huge() and
+> > pte_clear_huge(), add the generic fallbacks next to the existing
+> > pmd/pud_set_huge() family and convert vmap_pte_range() and
+> > vunmap_pte_range() to the new helpers. The CONFIG_HUGETLB_PAGE guards
+> > around the block-mapping paths are dropped, so PTE-level block mappings
+> > now also work on CONFIG_HUGETLB_PAGE=n kernels, and mm/vmalloc.c no
+> > longer includes <linux/hugetlb.h>.
 > >
-> > +       mutex_lock(&si->xswap_lock);
-> > +
-> > +       /* A swapoff raced us and is about to walk this mapping. */
-> > +       if (!(READ_ONCE(si->flags) & SWP_WRITEOK))
-> > +               goto out_unlock;
-> > +
-> >         nr_mapped = READ_ONCE(si->nr_clusters_mapped);
-> > -       if (nr_mapped <= 1) /* keep cluster 0 */
-> > -               return;
-> > +       if (nr_mapped <= 1)     /* keep cluster 0 */
-> > +               goto out_unlock;
+> > The fallbacks exist only to keep the build working on architectures
+> > without PTE-level block mapping support. They are unreachable there:
+> > the callers only run when arch_vmap_pte_range_map_size() or
+> > arch_vmap_pte_range_unmap_size() return a size other than PAGE_SIZE,
+> > which requires an arch implementation. BUILD_BUG() makes that
+> > explicit rather than silently doing nothing.
 > >
-> >         /*
-> >          * Reclaim on our own, but only once the mapped range is at most
-> > @@ -4181,40 +4210,73 @@ static void xswap_try_shrink(struct swap_info_struct *si)
-> >          */
-> >         if (swap_usage_in_pages(si) * 100 >
-> >             nr_mapped * SWAPFILE_CLUSTER * XSWAP_SHRINK_WHEN)
-> > -               return;
-> > +               goto out_unlock;
+> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> > Reviewed-by: Barry Song <baohua@kernel.org>
+> > ---
+> >  include/linux/pgtable.h | 29 +++++++++++++++++++++++++++++
+> >  mm/vmalloc.c            | 19 ++++++-------------
+> >  2 files changed, 35 insertions(+), 13 deletions(-)
 > >
-> > -       /* Find the last non-free cluster from the tail */
-> > -       last = nr_mapped;
-> > -       while (last > 1) {
-> > -               idx = last - 1;
-> > -               ci = &si->cluster_info[idx];
-> > -               if (ci->count || ci->flags != CLUSTER_FLAG_FREE)
-> > +       /*
-> > +        * Count the free clusters at the tail of the mapped range.  Scanned,
-> > +        * not tracked: the count must be exact to size the unmap, and an
-> > +        * incremental count falls behind on out-of-order frees.
-> > +        */
-> > +       nr_tail = 0;
-> > +       while (nr_mapped - nr_tail > 1) {
-> > +               ci = &si->cluster_info[nr_mapped - nr_tail - 1];
-> > +               if (READ_ONCE(ci->count) ||
-> > +                   READ_ONCE(ci->flags) != CLUSTER_FLAG_FREE)
-> >                         break;
-> > -               last = idx;
-> > +               nr_tail++;
-> >         }
-> > -
-> > -       if (last == nr_mapped)
-> > -               return; /* nothing to shrink */
-> > -
-> > -       /* Below `last` has to stay mapped: the free ones in between are
-> > -        * not part of the tail, and unmapping them orphans what is above.
-> > -        */
-> > -       if (nr_mapped - last < XSWAP_SHRINK_SLACK + XSWAP_SHRINK_MIN)
-> > -               return;
-> > +       if (nr_tail < XSWAP_SHRINK_SLACK + XSWAP_SHRINK_MIN)
-> > +               goto out_unlock;
-> >
-> >         /*
-> >          * Stop at SHRINK_UNTIL rather than at the end of the tail, or the
-> > -        * range comes out full enough for the grow to be woken.
-> > +        * range comes out full enough for the grow to be woken.  Below the
-> > +        * tail everything stays mapped, and one chunk of tail with it.
-> >          */
-> >         keep = DIV_ROUND_UP(swap_usage_in_pages(si) * 100,
-> >                             XSWAP_SHRINK_UNTIL * SWAPFILE_CLUSTER);
-> > -       if (keep < last + XSWAP_SHRINK_SLACK)
-> > -               keep = last + XSWAP_SHRINK_SLACK;
-> > +       if (keep < nr_mapped - nr_tail + XSWAP_SHRINK_SLACK)
-> > +               keep = nr_mapped - nr_tail + XSWAP_SHRINK_SLACK;
-> >
-> >         if (nr_mapped < keep + XSWAP_SHRINK_MIN)
-> > -               return;
-> > +               goto out_unlock;
-> > +
-> > +       nr_unmap = rounddown(nr_mapped - keep, XSWAP_GROW_CLUSTERS);
-> > +       if (!nr_unmap)
-> > +               goto out_unlock;
-> > +       start_idx = nr_mapped - nr_unmap;
-> > +
-> > +       /*
-> > +        * Only shrink a run that reaches the mapped end; otherwise
-> > +        * truncating nr_clusters_mapped would orphan the active tail.
-> > +        */
-> > +       spin_lock(&si->lock);
-> > +       for (i = start_idx; i < nr_mapped; i++) {
-> > +               ci = &si->cluster_info[i];
-> > +               if (READ_ONCE(ci->flags) != CLUSTER_FLAG_FREE)
-> > +                       break;
-> > +               if (!spin_trylock(&ci->lock)) {
-> > +                       spin_unlock(&si->lock);
-> > +                       goto out_unlock;
-> > +               }
-> > +               spin_unlock(&ci->lock);
-> > +       }
-> > +       if (i != nr_mapped) {
-> > +               spin_unlock(&si->lock);
-> > +               goto out_unlock;
-> > +       }
-> > +
-> > +       for (i = start_idx; i < nr_mapped; i++) {
-> > +               ci = &si->cluster_info[i];
-> > +               list_del_init(&ci->list);
-> > +               WRITE_ONCE(ci->flags, CLUSTER_FLAG_NONE);
-> > +       }
-> > +       spin_unlock(&si->lock);
-> >
-> > -       xswap_unmap_clusters(si, keep, nr_mapped - keep);
-> > +       xswap_unmap_clusters_locked(si, start_idx, nr_unmap);
-> > +
-> > +out_unlock:
-> > +       mutex_unlock(&si->xswap_lock);
+> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> > index 8c093c119e5a8..a7fd51fec8a17 100644
+> > --- a/include/linux/pgtable.h
+> > +++ b/include/linux/pgtable.h
+> > @@ -2204,6 +2204,35 @@ static inline int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
 > >  }
-> >  #endif /* CONFIG_XSWAP */
+> >  #endif       /* CONFIG_HAVE_ARCH_HUGE_VMAP */
 > >
-> > @@ -4278,6 +4340,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
-> >                         }
-> >                 }
+> > +/*
+> > + * PTE-level block mappings for vmap.
+> > + *
+> > + * pte_set_huge() only has to be implemented by architectures whose
+> > + * arch_vmap_pte_range_map_size() can return a size other than PAGE_SIZE.
+> > + */
+> > +#ifndef __HAVE_ARCH_PTE_SET_HUGE
+> > +static inline void pte_set_huge(pte_t *ptep, unsigned long addr,
+> > +                             phys_addr_t phys, pgprot_t prot,
+> > +                             unsigned long size)
+> > +{
+> > +     BUILD_BUG();
+> > +}
+> > +#endif
+> > +
+> > +/*
+> > + * Likewise, pte_clear_huge() only has to be implemented by architectures
+> > + * whose arch_vmap_pte_range_unmap_size() can return a size other than
+> > + * PAGE_SIZE.
+> > + */
+> > +#ifndef __HAVE_ARCH_PTE_CLEAR_HUGE
+> > +static inline pte_t pte_clear_huge(pte_t *ptep, unsigned long addr,
+> > +                                unsigned long size)
+> > +{
+> > +     BUILD_BUG();
+> > +     return __pte(0);
+> > +}
+> > +#endif
+> > +
+> >  #ifndef __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
+> >  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> >  /*
+> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > index bea9f76ed7e74..fb757d95bde25 100644
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -38,7 +38,6 @@
+> >  #include <linux/rbtree_augmented.h>
+> >  #include <linux/overflow.h>
+> >  #include <linux/pgtable.h>
+> > -#include <linux/hugetlb.h>
+> >  #include <linux/sched/mm.h>
+> >  #include <asm/tlbflush.h>
+> >  #include <asm/shmparam.h>
+> > @@ -100,7 +99,7 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+> >       pte_t *pte;
+> >       u64 pfn;
+> >       struct page *page;
+> > -     unsigned long size = PAGE_SIZE;
+> > +     unsigned long size;
 > >
-> > +               INIT_WORK(&si->xswap_shrink_work, xswap_shrink_work_fn);
-> >                 return 0;
+> >       if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
+> >               return -EINVAL;
+> > @@ -121,17 +120,12 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+> >                       BUG();
+> >               }
 > >
-> >  err_unmap:
-> > --
-> > 2.54.0
+> > -#ifdef CONFIG_HUGETLB_PAGE
+> >               size = arch_vmap_pte_range_map_size(addr, end, pfn, max_page_shift);
+> >               if (size != PAGE_SIZE) {
+> > -                     pte_t entry = pfn_pte(pfn, prot);
+> > -
+> > -                     entry = arch_make_huge_pte(entry, ilog2(size), 0);
+> > -                     set_huge_pte_at(&init_mm, addr, pte, entry, size);
+> > +                     pte_set_huge(pte, addr, PFN_PHYS(pfn), prot, size);
 > >
-> 
-> Hi Baoquan,
-> 
-> While following the shrink path across these patches, I wanted to
-> clarify the lifetime guarantee for the `cluster_info` backing pages.
-> 
-> P07 flushes the per-CPU swap cluster cache and calls
-> `synchronize_rcu()` before unmapping the tail. P09 clears
-> `SWP_WRITEOK` and cancels the shrink work before proceeding with
-> `wait_for_allocation()` and `try_to_unuse()`.
-> 
-> Could you clarify how the shrink path ensures that, before the tail
-> is unmapped, no allocation-side reader can still access the tail or
-> republish a stale per-CPU cache entry that points into it, and no
-> swapoff-side walker can still access the unmapped range?
+> As far as i understand, X86_64 arches do not use this path. This
+> specifically is only for ARM64 or powerpc. pte_set_huge() makes me
+> thinking about huge-page mappings(PMD/PUD/hugetlb). This helper is
+> about mutli page mapping on the PTE level.
+>
+> Better naming? pte_set_large()?
+>
+> Any thoughts?
+>
 
-Hi Kunwu,
-
-Thanks a lot for your careful review, and for following the shrink path
-across patches. Assume P07 in your saying means patch 07, and P09 means
-patch 09. For the questions,
-
-
-1. Allocation-side readers of the tail
-
-xswap_try_shrink() removes the clusters to unmap from their lists while
-holding si->lock, and only proceeds if spin_trylock(&ci->lock) succeeds for
-each of them. After that no allocator can get these clusters from a list.
-
-The flag check alone is not enough. move_cluster() writes ci->flags after it
-drops si->lock, so spin_trylock() is what actually blocks an allocator that
-just took the cluster.
-
-Then, before the pages are unmapped, xswap_unmap_clusters_locked() does
-flush_percpu_swap_cluster() and synchronize_rcu(). That drains the four
-readers that use cluster_info[] under rcu_read_lock():
-alloc_swap_scan_cluster(), swap_reclaim_full_clusters(), swap_alloc_fast(),
-and swap_alloc_hibernation_slot().
-
-2. Republishing a stale per-CPU cache entry
-
-The per-CPU cache is written in only one place: the end of
-alloc_swap_scan_cluster(), and the value is an offset inside the cluster that
-just got the allocation. That cluster cannot be one the shrink unmaps,
-because the shrink only unmaps CLUSTER_FLAG_FREE clusters and a cluster that
-just took an allocation is not free. So a racing cache write can only point
-to a cluster that stays mapped. The flush plus synchronize_rcu() handles the
-entries written before it.
-
-3. Swapoff-side walkers
-
-The swapoff walkers are not RCU readers. swapoff first stops the shrink:
-cancel_work_sync(&p->xswap_shrink_work), then waits on p->xswap_lock (which
-grow and shrink also hold). SWP_WRITEOK is cleared, so xswap_try_shrink() bails
-out too. Then wait_for_allocation() drains any in-flight allocation, and
-try_to_unuse() runs. Only after percpu_ref_kill(), synchronize_rcu(), and
-flush_work() of the discard and reclaim works, flush_percpu_swap_cluster()
-run and the mapping get freed.
-
-Not sure if I answer your questions clearly.
+Agreed, "huge" is misleading here: on arm64 these are CONT_PTE entries
+and the helper writes a range of PTEs rather than a single leaf, so it
+is not a PMD/PUD/hugetlb huge mapping. I'll rename them to
+pte_set_large()/pte_clear_large() in v11.
 
 Thanks,
-Baoquan
+Wen
 
