@@ -4,142 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58C3FCA9ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 14:21:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72E85CA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 14:33:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CA2A6B0088; Mon, 12 Oct 2026 10:21:52 -0400 (EDT)
+	id 36F8E6B0088; Mon, 12 Oct 2026 10:33:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57B526B008A; Mon, 12 Oct 2026 10:21:52 -0400 (EDT)
+	id 321366B008A; Mon, 12 Oct 2026 10:33:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46AF96B008C; Mon, 12 Oct 2026 10:21:52 -0400 (EDT)
+	id 1E94F6B008C; Mon, 12 Oct 2026 10:33:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DE9D6B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:21:52 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 15D281C48C4
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:21:50 +0000 (UTC)
-X-FDA: 85314187980.24.981F348
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0EC7214000B
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:21:47 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=K2V+awZx;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EA2E06B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:33:49 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 86B4EA0C28
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:33:49 +0000 (UTC)
+X-FDA: 85314218178.21.5168A07
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012012.outbound.protection.outlook.com [52.101.53.12])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8558F40014
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:33:46 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GEN1TWym;
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.12 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791814908;
+	s=arc-20220608; t=1791815626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0WX2/gaEkBEYMG8ABuo+LESxvmJs+8+1r4PbbT/7xLQ=;
-	b=TT3PDQ3tsJiwQTHlugIUF3fOg4j/VUYJTU1z0onHen/K8cDV166kkbqJq4uMhHoDjscrKk
-	dAOIesIp2P1mTfAz2lfJBVir+EMnkun0okYgLw/MXpEUMndUa6gce9UTnHruOVUQNJMnbb
-	WRkPO3FsBP+jGMXzR4Gc0nllW5HA2Xw=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=K2V+awZx;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=6ITiMwsdR+THhAawOwB0YPNCgJZvaxIiioMf+gpAwgE=;
+	b=QOqPqeJUL9MP85Lp3XBG27tG5u3M4cYWagsDyzitm3K8o5WgtAKJHR8c69LnS75yXw00kZ
+	jje5TO8yjskEbn3zV6vishEvanSBahE9j+7NrUqWjVnUXD5OSfTMDq/tEnKNyVtgYSQprF
+	gjGkVMw4oLc6hIUcspMUlTyLUOnOCs0=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791814908;
-	b=Fum0lrbI9S9rN8dz1VuFXu3rmwzQlQOLZnWiDvX+RAeYivMInEJAz0DtqYtAdYG/kRp3xg
-	l7vfXxGqXc+ibmKkLHAS6+XjKIlIms4cQ0ZdfLJ+DTrOhnfLDVCI6r8CdjZjs6EyaEXyj3
-	KRwQY02uYbjbHb+W2tLQDl5ZJzGLwRM=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a140e7405dso22926055e9.3
-        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:21:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791814906; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KDodM5gh/DDAkqX+MULdWZyMkjj9/iTgJ0DXol1zQOBQ9o8bNo0yREwvScYvWyKU+n
-         8LbEAt5r3uM+b4NEDarIWnx08kbMwlvi10nMOHtPLRwGZ+JD0/ZZ6wK2JFXayzGDfPPv
-         95BSFJWdjZ4ZgWxefubHUKmyFfWi4RgvLO52ea1X1Mpl5vqVYcPRnlWhtMvAfcjl8kE9
-         p3IaoMHEyo3aNUFlyKX44EtwklVZb8Ogxtl+8gQsu2J57yTOSLNpLVWB+p2r+FivUUXl
-         RF2l2m+t2s8NxsT+DLMcGPkEdSL06J86nwXvUsflY9NfcmbT0xgHaDVf2WGHzrb2iPCA
-         EjGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0WX2/gaEkBEYMG8ABuo+LESxvmJs+8+1r4PbbT/7xLQ=;
-        fh=Z7CkVZzAlOPXzk++k4IG6CVSfTf83iyGZ4a3eEZr9ng=;
-        b=rD27RT/HBx2wCabmE9f0qTuE8p+r2XGVrz+XS92aT2Hhnl9Ueq7w4gL5su1iZqvuX9
-         cn7u5/XZYocdsuLBRpF/Ac84WL0yymaHKaTv3+LBNEirXyCYLybr4SXBtlEVbE4NSL/u
-         E9/cBL4oHbOnI+vGRfpAYJMP2Bda7rGTX9qKieVYRSlViogjYG1j/yVBeop3CS0JYkDm
-         2LTWLJ7KoNbSfe/qp4ICfm8wY/yKh4e5PYV2zgQ7THedoU/Kov9IRXUpcQk+/FsRyHZz
-         qwVE3Hj5ytjiR6CnmXcV/PUqnDYNufx0F4LGXrtP+2VD7eAi+2uZYEhTakXFPWUhCXYL
-         uHmw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791814906; x=1792419706; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0WX2/gaEkBEYMG8ABuo+LESxvmJs+8+1r4PbbT/7xLQ=;
-        b=K2V+awZx4f3VJql3rMr8ZcyXFtB4/ut3eEyjNAdBgeoHvKTVDBvyZpIer3sWRdgT4p
-         Y7gLFyXUDS1IwP19HSfzRDbeOQx0hYn5KD1jR7+REag98ojg2IUK1iwv3Gs0zLqjobxX
-         HBEm0rAgTvIjHkgW5U8KEfsqk6gn+rFXT9Z/Rl/sONNwiersv7lTC3S9Xq9VjNKUhZbO
-         xl/Dmd9kKPNlyv7qma08LFx3dGLIzEa28Xayufm83T3h2odtOoKGodYceFvy3Ytr+WFa
-         hhpU4bKUjtV0Qc9KNBljrlKwhlovQJdHvc2f207/idMeSD+cSZeYjnV3hj1duuSgJMEJ
-         TIkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791814906; x=1792419706;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0WX2/gaEkBEYMG8ABuo+LESxvmJs+8+1r4PbbT/7xLQ=;
-        b=CPcERarHYBbIGHSfzpgK/7C2fl+iVuH7+zCvoXuNu09fPMbwtnPHUahWNv7i1TRVKA
-         FlmrU+Y/vbpGBli7HRI3zBlZX5AxoO8BOxL8gDHrl1JRBxgffNDcfe74F/ESMZjlUdju
-         NCwiEWejtrBuF4HeZld61mSYJiUvcd1SG7gCB0yL1k7Vv1Iw8XntHVexKYPuxzh0QvEq
-         lj1fFGWfDfw2AfVLOB+ARoUgEjmhg3NdURdsAE2acKVqcZD1Q7A2vJYDtrcHfgKc8p3c
-         TpYQuNLwMR2exUmxkgZNCnRBhod5Ov/BagJwlEv4MF4GfbdUFodXfrkWHlRvftdSz8P1
-         ugpg==
-X-Forwarded-Encrypted: i=1; AKwUvBy15yx+D9z/zxv0YPsYButM8+zZU+dgQvDEmLRTZzoEaHfYgNDJPv3j8hv0PV6BdcDkRoxRAMbRSA==@kvack.org
-X-Gm-Message-State: AFq9FYJuuGjv7sAXR8WzsInQNQOsldCTuJs3/5FUrp1DYYvLbfkyeIBx
-	eWSs0Ce/lddq/i5JCM1298kUtnbL0ELxMEIAnIcN8u2hunni725OPGXGCkEtG4lOA5Udp38zrra
-	op5s9G7b4TyJQE2b1yXi7kCuKLuu1K2U=
-X-Gm-Gg: AYBFou2EtAjVj+GXxkh9HObawWZtvTTiIPLhF/oXUaBzxfrX7OG3Ax6jRXTse35HsJR
-	sKD5WpWNcumF7qc1zlJrEEC5cYyfGTtj7bw7z6rqpv9cUD3AbmTNRgOKr2PlDWMqeqfH4JnDhIe
-	i+r8AeCSq8KeliKA4ByC8f3fnuNqlcR4Dj3dXSH7b+k4Y756r0jiaTLeuJVvoojkTnMh1guHkUA
-	YaX661qiX5qp+EP9jl2aDzel3XbWwoXTFItTwuxZYqkj/wfsdOcmhJGBOC5hAu/XVC7Qls6tx4g
-	LJ24TNf9MO647YSO7VDH7n4GY/A9Hd4BbqWrozARcD6lKoYiQzHE/R4lvB83kYadPTVuB/qgZZp
-	Xy5mLWz5HsmrdhWJI2ywlATqFlptSQvqCMVRFxRbIeC5+WDFlu7KW1XA2eKY3Esy2xufVEhs=
-X-Received: by 2002:a05:600c:a404:b0:4a1:9945:98a7 with SMTP id
- 5b1f17b1804b1-4a1994598ddmr77983055e9.0.1791814906228; Mon, 12 Oct 2026
- 07:21:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <20261007153915.53429-1-alex@ghiti.fr> <CAGsJ_4xyzgUH4uhKqpD7PTVuOzdsAkYgowsyn5iT1LHWiaYqqw@mail.gmail.com>
- <CAEmasaWQm6DPqAhmW_z=kuR+3LDWJ=h+yM0hAs+ryNoFQd6qmg@mail.gmail.com>
- <CAEmasaXa2pB_Jm_VgBZAWQwu1p75yUSY2=dr0Opt5okLgWk-YQ@mail.gmail.com> <CAGsJ_4xw+CLzrazOFxnvJCbvG0qoauEuFGR6OdtT3x78ef95pA@mail.gmail.com>
-In-Reply-To: <CAGsJ_4xw+CLzrazOFxnvJCbvG0qoauEuFGR6OdtT3x78ef95pA@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 12 Oct 2026 07:21:34 -0700
-X-Gm-Features: AclHuK_nMiNg-coFWoNQF0rahc9ryTutIxgwCK51zZOJ8W2ehwbLARYTQuobrow
-Message-ID: <CAKEwX=NrMD1jpU=Kfh367mGArw_ju_8ku=Rh_v8TiLumx3+S3g@mail.gmail.com>
-Subject: Re: [PATCH v3] mm: bypass swap readahead for zswap
-To: Barry Song <baohua@kernel.org>
-Cc: Alexandre Ghiti <alexghiti@meta.com>, Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org, 
-	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com, 
-	baoquan.he@linux.dev, youngjun.park@lge.com, chengming.zhou@linux.dev, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, kasong@tencent.com, 
-	ryncsn@gmail.com, chrisl@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
+	t=1791815626;
+	b=pakOXSB5vbDENa3gAXGRgsN4Y/Q36wxZGGUeE62E3akR1gR4Wh87oJEqQoqvQ7cmKzVG6k
+	CX3sF2Ya+0jOz//8AiO7nbAtsiOc2GimmdlP05mhNy+WjjdmMNP4aqj3dDceSCBP4jxvg2
+	DYNzaRVl38/BLMHRZHvXDt+3OORuqAI=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GEN1TWym;
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.12 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dNCzvEpaIszQW3ah9Zr3OoVS3JOu2Dp+z066riiKHC35zagUjabMu28Wxsmug4mXqkIZtEwBlLLVMOYnsSTybqbVcQZmg6ptx2dUmY8E2O0hMHW+OKKlEzmeIpDms+LP81uc9wI0UrKS7jbP8BZs5gTrjVOSvrJKUhEP4fwZge07RO5dYa3dSK8CsI607JPgG1ufpmqesWVOG0uuwnrTwy2dmFZBAGxYD8yWr90q3nSgqWM0LphbWOuzmWSMu4A4JECKveiuziZSYbtSsUWv8tGQJc0odYXpPLjYN6luIEP3f1Im5oXiNdHuSfBsqW6CqL+ZOvO6sg3qLSjlexipgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6ITiMwsdR+THhAawOwB0YPNCgJZvaxIiioMf+gpAwgE=;
+ b=K6Eyn9zhhhiER5BrUVm3IKT6g9ZWRv2R/vX+VDUqhE1veVHcmGWWjjk+WZM8u1/DB5oUfs7wLp1tGupkxvrAAOYFkuIkhySGQRI0QAHwVjb/x9VkfQ1Ju6dpG96GOawpJVeoW6Cs4+iEocTlOkxmsVRyUTCleIoTeCrxaPfYuTCzadLrXTQVrjT1o3f5JWvl91aQo2q2+53ClysVtHYJG9N1BntPpHbrV9WmOAIVINGssoBFKXnXtVJYjJCrQLeJHPpu5RvQnRaj2XIePg/U8dJscQUtorGE9wgtMvG2iAyJcXhay/2kNaIslYhTF9+r5lS53JLxXK0BW3GHEu8HdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6ITiMwsdR+THhAawOwB0YPNCgJZvaxIiioMf+gpAwgE=;
+ b=GEN1TWymX3pKArqlml7u246QP1EHuvhuTnjQWl5c6B0UX15Zqfty4zYcKUW53ATEIB91P94V7mDwSyT/Zv1Nqk8trwiJSGCuL38c2hj1EiRp8/4VKxFo2NcAmQTpLoO9lAcXlR7yy1WW2/UwFs3OhooIqUxzeUr3efbivXDzCN11/RW7BvQJWAeJWeZ5qdbSPMPGyTH6mT5iV9hGexZ/1jqz2BAMtnLAG1F9VEmkMszpma8oTVs14JIpuHUrdxA6U75Q1FtYIGOtEdxOqtF+Jhex809i6eG1gHUyy94pDxRlC2U/+7mZQexo3NAX1wVf4pWe5nYCYhuNZ7rIboEEYA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by DS6PR12MB613404.namprd12.prod.outlook.com (2603:10b6:8:4f6::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Mon, 12 Oct
+ 2026 14:33:40 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0472.016; Mon, 12 Oct 2026
+ 14:33:39 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
+ Lance Yang <lance.yang@linux.dev>, Kyle Zeng <kylebot@openai.com>,
+ stable@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/rmap: don't discard lazyfree THPs at PMD level
+Date: Mon, 12 Oct 2026 10:33:34 -0400
+X-Mailer: MailMate (3.0r7032)
+Message-ID: <8B17F897-40BE-4834-8078-949DA951B46F@nvidia.com>
+In-Reply-To: <asy445BYRhcsGDE9@gremlin>
+References: <20261009-lazyfree-stable-fix-v1-1-70997958ef8d@nvidia.com>
+ <asy445BYRhcsGDE9@gremlin>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0EC7214000B
+X-MS-Reactions: disallow
+X-ClientProxiedBy: PH8PR15CA0005.namprd15.prod.outlook.com
+ (2603:10b6:510:2d2::12) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS6PR12MB613404:EE_
+X-MS-Office365-Filtering-Correlation-Id: aafd9f4c-db27-4f1a-0235-08df286dcebd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|18002099003|22082099003|10067099003|11063799006|4143699003|261009223027099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	WMHu7cWvoBB9bz72L94bAzjBKULHfChD+o1jqDusLFbCtmNsLjwYD7qjMACFz1cA4tXpTxU8+a/85CVajo52Uwnb6P+4asRToVOYk0pMOy1qndEpbZR3ZGg3XdqLROIxylpdyMK835jbrCfqvMZcRhHCUsuH/fyICwVfhifKZvtGhaJVx4JOpyaxQnEqT0rUDyq38+SCcGtSQRb2E90Ec8PO/GuLYJA6GfgXqOJU3q/gRN/U/bc6FZWOeF5MFXMxFU2seOl3BK9vTli8mF71rRtSA8R76IWS5ilvoDwGy3eNMPf6EWgmdDDjKS5FPHAJ/62B6MJrrdG1C2atM8KBn9oauPZ2gsVrQ+rR56aboWBwfbXu+OUoy3ndDV1nPKbJD2j7hm9pkiiLyee52X2D4ek4hvaLw6eB2d+bzGJcxCcVdhsxf1COXJrla8p/lo2w5SSgE7PC8lOCDbNZvwDVcGt+KQOy32+hqIwP/SGUSfEViiErUVfDiy4E/5yV5sE+K5nmZ0LE9ifNWVlZo2b6TGhsTRVJydB5a0ooKPDMpBzy7Mw8DSc43px1l5jiSFb0AcQ6WMr72aKQdKviWiHLG0ga1MxOg5otFZc0oy+5Ujm5jbgAAdSnaz/rxHhi2+CFavIWSL4oSw8ZE9Gk/abh0xPrQkVoUGc8K2j3oDxrhqI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(18002099003)(22082099003)(10067099003)(11063799006)(4143699003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TnBvQlhMZkg2UFhrVVA3bUYzUnd5RG02SW8xeXJYQlRCZTVxZERwQnBKbytL?=
+ =?utf-8?B?MGpEV051QzJ1YnN2REswR3FXYjIzRG90V0xrVGFhelVTd25LYURwazZHMVFG?=
+ =?utf-8?B?di9tVnJOeVVUZHNpeUdoYnFCS3VaYnVQM2VFNUViWkFDTncreTlaYkNtNHFv?=
+ =?utf-8?B?cGIwaXMzL3lCSlAreTErcTcxWXhEWWJDWHB4dzF4M3RnU2M3WTlIbGNmWXZX?=
+ =?utf-8?B?U0JVbWs0ci9pMmh1NEY2ak1nZEp6dW1ic0EzdHVvMGpjSmRBWHA4TnJiK280?=
+ =?utf-8?B?V3N5TnYvZHpSU3B6cElrWk9uYTQ0dm1JdVAyQ3pVQTB6dklzeUh4SGl3NjEr?=
+ =?utf-8?B?eHVwUitmZ1psaDFZNTYrNm82bDlIMWNoMnNQZmVobFhUR0o2Y1czZmg0UDk3?=
+ =?utf-8?B?Yi9McngybWYrcHdjR2F5YTR2T2Y3cG1Sd2l1aUt1eHJ6VXloaFl5TFZFZHha?=
+ =?utf-8?B?Szl0b1pSOEdzRjJKUEZEeVYrQ0h3VDMzKzU5SWhSSGRjZllidHpqVWFNZDht?=
+ =?utf-8?B?Ulk3ekI5MnVIVmdDQnBKRll3MHJ3UTErd1BheWpHVElUM2tkS3dsbGN4QUox?=
+ =?utf-8?B?ZEpLZXFOMVRJbzlIVksxNkhaeXI3REhxMmczMjdTQ3I1UkpkdU1sRmE1aHNB?=
+ =?utf-8?B?bkdKQlJnL1R0RzkwVFlnZi9waGN1TWNHRmY2R0dJTStsOTJ0RnRtNjkxOUJS?=
+ =?utf-8?B?V3ludGM4YUFYNTE0VDZNMkNpYUlRaDYrdFlZeVRJcDkwV1kxU1lFZ2JqbkFr?=
+ =?utf-8?B?SEIza1FEK2tiY3dyZWZ4OTFodTFhZUZSSlp5Y3YrRzYxbHFCU2I5aDNSeGpw?=
+ =?utf-8?B?cGpwMnduMlpjRUJFS01JOFpmYnl4VXNUcGVEREE5MitubjBXblVWcmQxUmFL?=
+ =?utf-8?B?RThqem9INVJTdC9nbGJia1BoWXp4N3NJQU04MEd3dlpleDlvV0hETnhNellI?=
+ =?utf-8?B?RER5eUpKQXpGd21VbU1ZVjJaMDFPLzVVbVY3dmdFa1Yzd21TdXdWVnRZQ2FJ?=
+ =?utf-8?B?cTN3dTlHcUo2Q1UzZVAzNnVQRUhtUmZiVEVlYnFzWDlyUHp1a2poNTIwYktV?=
+ =?utf-8?B?MzE4RFM5VjNLMnEway9FRGY2ZStLRElveUVpKzk4TFYvZEM4QlJaTDdwOTZ0?=
+ =?utf-8?B?cWFGNzFNZ3VHYlIxK2pFZGN4dnVqbmsrcVlocGpKbjNHWHNPRlNRQi9iNzNV?=
+ =?utf-8?B?WUp2eERlQUdxRWhyWDFlb2pOTWNsNkhKbG5iWG1Mcm5aQkxXVXdFTFVJWTRF?=
+ =?utf-8?B?OEovbVh2RVVOVDJEM0N4U09aZ1g0YUdWTjZERGFKZFFNenA5VDFsV2Zzak1X?=
+ =?utf-8?B?YWNiVC9zYUVVVzFndzNSdmJkT3diTHZSSERoWmEyWU11V1BhVTlibkVYZkZC?=
+ =?utf-8?B?YUlrdzlCNTUwWCtvSG4ySVlsVVMyQmN1ZmNOUlYwdHpFTDJsVjE3dk8wYmtG?=
+ =?utf-8?B?ODVZYnBmZklxQStadXQzM2xvTmEwZG1MTWhlVVlkdFdQbEdqdHo1TlJRNTc1?=
+ =?utf-8?B?SXhSUGUxck5sNldUSWFmMmVNZlNHVUFKUlNQVWVnb1ZUSDFRK3JoQlIxRXdX?=
+ =?utf-8?B?OTdqSmMvc0FnMWFRZjhINVpEZ0VDeVZmdlZyckxucVNJdlJqZGdWa3owQ1hZ?=
+ =?utf-8?B?YmF1ODZLWkR1YTA5ZWNoN1lzMXRVaE5haVg0d0MrR2NVZXBqaCs3Tnd1U2tG?=
+ =?utf-8?B?RHpBb3puTFdHTjh0b0drVXJ1MHQ1YUYrdEhvZjdqZXhFZFZYY0dDSUhlY29p?=
+ =?utf-8?B?eWdQcy9jd0dmMkY5MEUrbFBPYlZWQzRBZGVUQlZyc29PbjlCWnhDRzRtSUxO?=
+ =?utf-8?B?anVyZ3paM2ppcTJlclVNSjBQUWorbFhDdDIvQVlzcGJJekwyT0p2NTAyVzJR?=
+ =?utf-8?B?N0d0MU5sUU1UeGsyZXJySlYvNmZOMi94Sml4ZDJLOVhSSTdKQ0Njb05aTDVR?=
+ =?utf-8?B?VXZOUnYyTGFNTWdnd2JJUkU5NE9UaUJXb2FBeTB1T25xUmFMdCtMY0E4dGhs?=
+ =?utf-8?B?Um4vSkdONUFNb2l4OUJtUFo4dGJVK2JFVk5wKzdiOStlcm9LeGFlRVFzK0dF?=
+ =?utf-8?B?aTNYbHU1TmUwQlVSd0FOeXBHSE5mQlowenV3OW10eG1vMjFEYmdDQTZZcUZT?=
+ =?utf-8?B?ajhNWWl5VGl5V2N6YTBEOGJIQmJvaHZwQ0FBaUVPOWpoN3JwV3cvRC9jMERp?=
+ =?utf-8?B?OVdlU2ZGZUtrUzBackNnU0VzaDJxM2gvUXpCb3dqL2dYb203aVJvVzhvdHh2?=
+ =?utf-8?B?VGJJVXFIbEFFS1JIa2dKdXhrM0ZWa0tyMHNLZ3hFQ05aWkhneWRxM0FKNlFZ?=
+ =?utf-8?Q?n3I5MnnBGUkATbxnu9?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aafd9f4c-db27-4f1a-0235-08df286dcebd
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2026 14:33:39.7090
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oT/XNCJTJTE1rpO5dN3tvgI5HeMOybm51jc9gi2a5ZSBTzUBtTF9GoKYg815xOEt
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR12MB613404
 X-Rspam-User: 
-X-Stat-Signature: 7nayhkja3ybdx49a3bdf9p6rsty3nwrw
-X-HE-Tag: 1791814907-741918
-X-HE-Meta: U2FsdGVkX192tgcFcjW+l3UnmriPEHWwcsjVVEFSVqsqn7n/BncGmnuQqLClpOjLXebCPIqO9jquSFvbRQ4sb6lUuPdqSbQLgFVAZEPW1js5+/B7e6nX+eJvJuwvOw9EZR/icg2/6p+Gt3pzmt1RpC953bECc6oMO28rOOAHfkKXxKLjHX6ZeiZEYHMwB1BiQFJPzuyYAGRX50jxsilzzIlVTD3WFEhd1Dq8/rPpwJdZtRsUXEVah51Wu/1iDs/ot5qr1iqBuea191lHOx8cbUz6UEMi1BBOFEbfllh183EojDFJzza77hwluo1uPEoC69B5G4tuxP80G8ueTIqXYUm2UGFn1o+5UaeacpAw4x24yvXrlHaL0fE03d96AfFtzvdYkfSQfyFQ2N+CaCVqEj6Gq3sgMFAAycu+cLXrAT6grO9jTR6lOlAjs12AClGJ2GmjreplKyYSWcTjet0wdZ+d/jk9hJuICwm079Tty2qPQ0mnh5RX8P5uPh9SUy6a9bG7024FEr0sj5tEzaLu/GOAKQEo7wA1Y37+NePEGBHdIjE4O8ArhyjoShzlVtBmGUhkZoMjrmh/ib7kmIIk0m2cwC0B1tiRmwK+2xCKm/su0lpO3WAdnWsoo/Vdn8OeaEBy5DqWWp05yf8jGvtUydv8WCa/neo7J8wuIRtwW1YfRk34urGnLdKJ57uk9SXenzBwZ+awZHfFtoKLvKhNYuz1MmnEsI6Gb6Z3TGPu299irU9aKHHnjeLhy2UGI6Tzb2H8Ml67G343jcV0TbqlIFrn1Tr8COiqMy032+2bgydKyhJLFnXplhom66hz0YisQL7DgtA6Y2KDxNQrqu2qOlIbWLOrXrhRL/h8DTALD788Y7XWGYCH53qFLKgRR5grIgo7dQkelqrnn2Y9nuO6WJZqRs6t0aWSDjjkvlfaFT9oE8fYA5x/W1Qj9hxzeIqpDGRj6rYUrqlZ2Up8Un/
- tfSVbOJM
- gR4eMAO4Nv8trp/+4RD73QAVsZFOJLJ3vUQtAv2ClMz21Bu7Giv8A47WP7t02+NFW5exQlakOxN1bj39VfvEbAc2Ue+KNoQMI+Dxw4FDu5NUFgPebSjFw5+hUe1r2axRiZDqEWDOnjQyrtFcRIuVs6BVFH3cHMj2GA6KlGHHJ6isl+Xrci6AlAUYRjxQdgqnSrpF3gvB0vae2awoiZH57pVlPHXvr12zgfj1E8OiWY/t1R94gP/xsK+Pb5LCGT7rbLl9E1YuySEmk0J8Q6C8sSCrB3w8PPVHLPX/UsXIEAwv0yCNVsGRVCd+m/5rBjECIqR35Y4AOdNvv6ebaTMAi0C5537GukaudKqfdnIjiuIjnyEJ/UZ9m8rfOLDv4ffYmOjU+ifIYPpI+TjStyao5lVKBByTSkEDDD4OkycGmT4IwIRQ=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8558F40014
+X-Stat-Signature: wkbj1tyihkpioafbbazbpmtsnn9hr9zb
+X-HE-Tag: 1791815626-723112
+X-HE-Meta: U2FsdGVkX18qGAB1FNcuaAxGJo4IWpnmcDxh940NNDNvCtjlKBgjXLsT+JJMvP4yvnLRd2oAFzOyyz619N+J5fPSQB9SgOPCDvoVD7vkj+iGjf9AbYmrQEDrPBx0ws8slFeidEou6zn6gNkWd68UVkIkDKksQvf0HjS1IHn7oftYQJQWSpgJtAFwPvEo6iwssN8QBK8MG95JRAND17HGXHBfakdjFMDi9x8wVpXKGGdEACkDHXDSpO9TakEOqbvTBNk61qrIjZcOfwPzWrEq2wFmyF3lZj3hQE7FF/hpB1U6cXqDMvJbpkBu4r7JVrXnem5jOAZLuubDQbZDLZqeW2pDp2sD6uM1QvEc1yDw3Qq+0+FuGqsdS5boUzT4QXO2KjfCTFu+YeTtTQsbIN2loU8JD5OpLvsmDsNCrYoa3esmeGw2cXgUWgPK8n2B+jXr3Vw9ST+TsKTFB0lJsgXAXH5YxaJSvyLC0kkpaeZ4Xqk3h+yWXBiP1gwGHjuJm4KNXH4o+Q8PnYxiD1mtNlEB6BUvYMBfdmYVbEZYYfFyFPvK7MhHYo4g112qKZZKwk0OUeb6/sdwfC8eJnzMUBcU42x1CMTzqtnyjSeZ4eMeC45Kru3s04B1WLZZVmMK5npx9PNVVCUuHFr/x7nkxRGEz3Zb/vR8YI5aMWbuyyv3mddkAdBTn6gbsmEDEjC2K3DB34hozdUac5Q4mB2KFHYNtboZsa50jw3sEDIcZuY79mWmBg3wdw7Wk3VY5LEl2dBNhO+wozwI1TifsNdCA5lH548tTkdtqYVEXdAy70sWyNcuZM5mdxnvkl8Pvj+Xo1uomy+UmDImfI59pkIwqVX4fMwb1fRav6tTyIVIVT2xvsAzTXqA7d6FL2yzoIJBinnVXFjGttZuqVKsTbcYLtU5xHBCKP/BJNpm1+BcUgZtUdS3GoWv88D3c3m9qMJHej4VfIpwA/NvaFDBdt/0pc2
+ CWzosIWn
+ x5oL8+/HW4QIlMZRww420RipbFuzDUMbeUjQwJjJluE2Xys4xbARYonWzFY5qM/cP1DmVnq7YYcwEc/xSZg2yxpLI/FiCvrWcmCXnVtdMQWcxyhxh6XEBXlvf9gZHMQrAV4Zh94IWEXh3RVsa9TnH6he3Uiti98IcLJOVN5ioYP697Uhe3Yt32Li2vpD+/XVlzE14cVpgCBSdoL53Zg6nyO4atLDSluWzbUMSUrn6IIGTzHIac+TSK4t+zf9ckAsXpxYTGtKN3wDFGPzw0t6TL1Rissq5FiUoP8A4BMtwWjdDAwMGz2rYghKIfgpzHiEc5ZQYmawRojjN5TnU4+bS6nd9e5gamOHhzPeFDTXkmziwjLPyM3WSSlvUooFqJpuiTY/A9nEaaee6p+CUArYDT80pXo9ZAjH9NOjuL0foqBchBZpP+2FTNreIFuJfm8rCgXG9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,36 +175,271 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 1:01=E2=80=AFAM Barry Song <baohua@kernel.org> wrot=
-e:
+On 12 Oct 2026, at 8:07, Lorenzo Stoakes (ARM) wrote:
+
+> On Fri, Oct 09, 2026 at 10:08:18PM -0400, Zi Yan wrote:
+>> __discard_anon_folio_pmd_locked() clears a lazyfree THP PMD before it kn=
+ows
+>> whether the folio can be discarded, and restores it if the folio was
+>> redirtied or has extra references. A concurrent munmap() or
+>> MREMAP_DONTUNMAP skips the temporary none PMD and unlinks the VMA from i=
+ts
+>> anon_vma, so the folio stays mapped after the anon_vma is freed and a la=
+ter
 >
+> Yeah this seems pretty horrible, instating a page table entry under the r=
+map
+> lock is pretty gross in general, is there anywhere else where we actually
+> _install_ (even if 'reinstate') page table entries under the rmap lock?
 >
-> Thanks! This seems to be a strong indication that setting
-> `page-cluster =3D 0` can also resolve your problem, even without your
-> patch. :-)
+> I think this commit message needs to be clearer/more detailed though, I'v=
+e been
+> sat here working this through in my head for a while.
 
-If every tenants use zswap, yes. But we have tenants with different
-kinds of swap backend in the same host (some using compressed
-synchronous swap backend, some async IO swap backend).
-
->
-> But I'm still glad to see your auto-tuning patch!
-
-I think we need some smarter readahead work, for sure. I'm just not
-quite sure what it'd look like in the end, though.
-
-Doing synchronous readahead work in page fault feels wrong. I chatted
-very briefly with Kairui about this. Kairui is trying to come up with
-smarter readahead heuristics, but I don't know - even if it's 100%
-hitrate, we're concentrating work of multiple pagefaults into a single
-pagefault. That sounds off to me?
-
-Crazy idea time - what if instead of skipping readahead for
-zswap/zram, we offload it to asynchronous worker (only synchronously
-loading the target page)? That'll cancel out the latency issue at
-least...?
+Sorry for being vague here, let me clarify it below.
 
 >
-> Best Regards
-> Barry
+> I'm confused about the locking, which is really the key point about this =
+change
+> isn't it?
+>
+> unlink_anon_vmas() takes the anon rmap lock so that can't happen concurre=
+ntly,
+> so is it _just_ the case that:
+>
+> - The folio is not properly freed/unmapped and ends up with a dangling an=
+on_vma
+>   pointer
+>
+> In which case, nobody can actually access that folio since it's not mappe=
+d
+> anywhere, or is it the far more terrible case of the above and:
+>
+> - set_pmd_at() in __discard_anon_folio_pmd_locked() reinstates the pmd en=
+try
+>   regardless of the fact that the VMA and surrounding page tables could g=
+o away
+>   concurrently
+>
+> ?
+>
+> But I'm confused here because unlink_anon_vmas() takes the anon_vma lock?
+>
+> EDIT: See below, I figured out what it was.
+>
+> Looking at the code:
+>
+> <anon_vma lock>
+> [reclaim]
+> < PMD lock >
+> -> try_to_unmap_one()
+>     -> unmap_huge_pmd_locked()
+>       -> __discard_anon_folio_pmd_locked()
+>         [ clears PMD entry ]
+
+The PMD becomes pmd_none().
+
+> 	...
+
+There are two readers making decisions based on =E2=80=9Cpmd_none()=E2=80=
+=9D locklessly:
+
+1. munmap case is via zap_pmd_range() in mm/memory.c: it skips pmd_none(),
+so the above folio is not zapped;
+
+2. MREMAP_DONTUNMAP case is via move_page_tables() in mm/mremap.c calls
+get_old_pmd(): get_old_pmd() returns NULL for pmd_none(),
+so move_page_tables() skips the above folio.
+
+> 	[ reinstates PMD entry later ]
+
+
+1. for munmap, unmap_region() calls free_pgtables(). In free_pmd_range(),
+the restored PMD is treated as pmd_bad() and cleared. And the folio=E2=80=
+=99s
+rmap is not removed.
+
+2. for meremap, dontunmap_complete() unlinks anon_vma but the source VMA
+still maps the folio.
+
+>
+> Concurrent munmap():
+>
+> <mmap write lock, downgraded to mmap read lock later>
+> do_vmi_align_munmap()
+>   -> vms_complete_munmap_vmas()
+>     -> vms_clear_ptes()
+>       -> unmap_region()
+>         -> unmap_vmas() < zaps > <----- EDIT: the real issue, see below
+> 	-> free_pgtables()
+> 	   -> unlink_anon_vmas()
+> 	     -> < anon_vma lock taken! >
+> 	   ... clears down page tables (no rmap lock) ...
+>
+> Is the issue actually the zapping in unmap_vmas(), which doesn't seem to =
+be
+> protected by rmap lock at all, meaning that _that_ can happen with
+> concurrent munmap()?
+
+No. zap and rmap walkers are serialized by PTL. The reason is described abo=
+ve.
+
+>
+> So unmap_vmas() doesn't correctly populate the mmu_gather struct for the
+> range, meaning that the underlying page isn't freed and the refcount,
+> mapcount etc. are all left as they were?
+
+Yes to the underlying page isn=E2=80=99t freed.
+
+>
+> MREMAP_DONTUNMAP seems a bit of a bizarre callout, but I suppose it is th=
+e
+> other case in which (under certain, likely, circumstances
+> e.g. non-partial/self-merging remap) an unlink_anon_vmas()'s call is done=
+.
+>
+> With normal mremap() that'd happen via an unmap of the original VMA.
+>
+>> rmap walk uses the freed anon_vma.
+>>
+>> Using an invalidated PMD instead of a cleared one requires additional ar=
+ch
+>> code fixes. Instead, disable the PMD level discard of lazyfree THPs, as
+>> before commit 735ecdfaf4e8 ("mm/vmscan: avoid split lazyfree THP during
+>> shrink_folio_list()").
+>
+> Again it feels like this commit message assumes a bunch of information th=
+at
+> isn't presented here.
+
+1. SPARC has thp_pte_count-- in its pmdp_invalidate(), but set_pmd_at()
+does not add it back, since the code assumes pmdp_invalidate() is only
+used in THP splitting code.
+
+2. GUP-fast accepts an invalidate PMD on s390, risk, loongarch. They
+need to fix it to prevent GUP-fast from succeeding for this new
+pmdp_invalidate().
+
+>
+> Why would you need to invalidate the PMD? Is the issue actually TLB flush=
+?
+> How does that get around the fact that a PMD entry can be 'reinstated'
+> concurrent with a zap?
+>
+> Or is it that you put something not-pmd_none() there? Hmm yeah I think so=
+.
+>
+> Doesn't all this cause pmd_none_or_clear_bad() to fire too?
+>
+> All-round terrible.
+>
+> I've not dug into the reports in detail, but I think the commit message
+> should also talk about what exactly is missing from pmdp_invalidate() tha=
+t
+> is broken here? Are some arches not doing things quite right?
+>
+> OK reading the code more and it seems the _real_ issue is actually
+> pmd_is_huge() in zap_pmd_range() right?
+>
+> It's the -> pmd_none() in general. By doing that, you are breaking a
+> contract with PMD leaf entries.
+>
+> So you get:
+>
+> zap_pmd_range()
+>   -> pmd_is_huge() ? [ no ]
+>      -> zap_huge_pmd() [ WOULD HAVE taken PMD lock that blocks against re=
+claim ]
+>
+> So using something like pmdp_invalidate() avoids this, because it keeps t=
+he
+> entry huge but invalid.
+>
+> But I guess not every arch does this properly somehow?
+>
+>>
+>> Fixes: 735ecdfaf4e8 ("mm/vmscan: avoid split lazyfree THP during shrink_=
+folio_list()")
+>> Reported-by: Kyle Zeng <kylebot@openai.com>
+>> Closes: https://lore.kernel.org/r/20261009165214.40212-2-kylebot@openai.=
+com
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: LLM
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>
+> With the commit message made a lot clearer and calling out the specific
+> locking scenarios that allow this + getting rid of the dead code:
+>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+Thanks.
+
+>
+>> ---
+>> The proposed fix[1] requires additional arch code fixes[2]. Disable it
+>> first for stable fix. The function will be re-enabled along with arch co=
+de
+>> fixes.
+>>
+>> Link: https://lore.kernel.org/all/20261009165214.40212-2-kylebot@openai.=
+com/ [1]
+>> Link: https://lore.kernel.org/all/DM0II2QHWWS1.2RXEJXC8S0101@nvidia.com/=
+ [2]
+>> ---
+>>  mm/rmap.c | 11 -----------
+>>  1 file changed, 11 deletions(-)
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index 805db93fe0428..1131b76bbbc28 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -2275,17 +2275,6 @@ static bool try_to_unmap_one(struct folio *folio,=
+ struct vm_area_struct *vma,
+>>  		}
+>>
+>>  		if (!pvmw.pte) {
+>> -			if (folio_test_lazyfree(folio)) {
+>> -				if (unmap_huge_pmd_locked(vma, pvmw.address, pvmw.pmd, folio))
+>
+> This is the only caller of unmap_huge_pmd_locked(), making that and
+> __discard_anon_folio_pmd_locked() dead code, shouldn't we remove all of i=
+t?
+>
+> Otherwise we're leaving dead code around.
+
+1) it keeps the backport small, 2) I am going to restore the function and
+this reduce the code churn.
+
+I can remove the dead code if you think that is better.
+
+>
+>
+>> -					goto walk_done;
+>> -				/*
+>> -				 * unmap_huge_pmd_locked has either already marked
+>> -				 * the folio as swap-backed or decided to retain it
+>> -				 * due to GUP or speculative references.
+>> -				 */
+>> -				goto walk_abort;
+>> -			}
+>> -
+>>  			if (flags & TTU_SPLIT_HUGE_PMD) {
+>>  				/*
+>>  				 * We temporarily have to drop the PTL and
+>>
+>> ---
+>> base-commit: 8b38ed9ab5b09c8ba168cbcc49524e9b380ee5c4
+>> change-id: 20261009-lazyfree-stable-fix-67712b2049dd
+>>
+>> Best regards,
+>> --
+>> Yan, Zi
+>>
+>
+> --
+> Cheers, Lorenzo
+
+
+Best Regards,
+Yan, Zi
 
