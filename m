@@ -4,76 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E0EBCA9EDE
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 17:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6306BCC6B01
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 17:47:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40B456B0088; Mon, 12 Oct 2026 13:42:43 -0400 (EDT)
+	id 65CFA6B008C; Mon, 12 Oct 2026 13:47:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E30F6B008A; Mon, 12 Oct 2026 13:42:43 -0400 (EDT)
+	id 5E7456B0092; Mon, 12 Oct 2026 13:47:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F99F6B008C; Mon, 12 Oct 2026 13:42:43 -0400 (EDT)
+	id 48E4F6B0095; Mon, 12 Oct 2026 13:47:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 016F26B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:42:42 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6FD0D1612A2
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:42:42 +0000 (UTC)
-X-FDA: 85314694164.21.7CB3388
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf31.hostedemail.com (Postfix) with ESMTP id CF7D120003
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:42:40 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A4D56B008C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:47:04 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A2E85120C9F
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:47:03 +0000 (UTC)
+X-FDA: 85314705126.05.F0896EC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D92E840006
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:47:01 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ihX6vADg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791826961;
-	b=Wcs9Uk2kDtiXLIxVMzRyPAisKFbNBifAyTShp1EPa15ffk4Bf2vWYoTn79aZu6ZfN/zJ6D
-	J9KGT85LveSWBQt7mn3bOPbFhDZkzY9CGI2Osr/pstSPiRjy25hY+e74zP/CPOb2M2HXJC
-	c98+B+zuGZCo8KOatOTmDDiTx2/F92k=
+	t=1791827222;
+	b=NNjADGyl62ldIPaAiaPXm7U92jrml1SgZHKRLY2+VEJmUD0bgdRzv3yEPOxTmYGHwAWpnB
+	dt/7fDOhvUDuJvLPPD4NuGkxfRm2SFdfmgDgaq0QF/vu//BBT1EWrNNPqdyheEiM9YQ/I3
+	lxA2x8tTFYB9MDgm60oZIa+GhgXoD5g=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ihX6vADg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791826961;
+	s=arc-20220608; t=1791827222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=jLZA+GVZa155jtHg+UBpzwzh598Q6JuJINGlB3QRwEI=;
-	b=GuwPPNPiK/Bc5KMg5WcgMVZu+Id0LKxYW5fIRFqKp9pKVP1l/uj8JrHNMXDxpX8k3WcPsv
-	h7DGa9LY3qTYRjVwG/Q3BGDlrH8SFmGieQNlpG8Ufgqd1ozS8Uk0V1G4AiGoDEXBaT/7sd
-	CN8w5/Du1o6SjPkNEfk69eTzhbccjDI=
-Received: from escalante.csail.mit.edu ([128.52.128.198])
-	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
-	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xGK2g-00FScM-Dl;
-	Mon, 12 Oct 2026 13:42:30 -0400
-From: Nickolai Zeldovich <nickolai@csail.mit.edu>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Nickolai Zeldovich <nickolai@csail.mit.edu>
-Subject: [PATCH v1] xarray: unlink a node before freeing it
-Date: Mon, 12 Oct 2026 13:42:29 -0400
-Message-ID: <20261012174230.772325-1-nickolai@csail.mit.edu>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+g5TXryhSnKPgSPaqVMSsv6/T+/UMkqlwUebHC3VUds=;
+	b=O/W0ZzBTy+u6wwrFOEbp5xTqLI6xm5Dq1GA/HxB5xYE/D8sAR5Rh4YZoFTXymRlzo+iwqe
+	BbZ2sliwAeZmWlGGdBbMhR2Dx3SIWC5zxjkQ7IdYrD8MVf6q3s8Z4jENPU+CfHUPtGf1BX
+	5qcGTsI1EO+gXNxeBtz2aCQgdKL50Zo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0FB1042E90;
+	Mon, 12 Oct 2026 17:47:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E231F0089B;
+	Mon, 12 Oct 2026 17:46:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791827219;
+	bh=+g5TXryhSnKPgSPaqVMSsv6/T+/UMkqlwUebHC3VUds=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ihX6vADgFuOE35cu0zGAhteEVahYq066vTf05uMn2wQqi0hmjfZuiiGTMFMR9hWXh
+	 xnW7REmcc8e1p3/WcFwjupa8SppqNwX/y9mIjcYy3VHazi7OTmaWgP2V5vUwjHi9I5
+	 kNk8dToyKFzBYNV18fU2ztlaDEJQ6Y1VLVwZP7qX7OVegsucIsOL5qeLI+kOAMdpKI
+	 5hOyy90zfW/wGKFCnCd4rlbFF+e0fhiASRsSS4s5sjVjyqospM0EHf5F1QM381KtzM
+	 1dGRP+bV4orEz850LW6SfHDrkY7tFGGxMVHygnSeQy06A/xo4vxVoddJq6QQzB1LU7
+	 8DAZLz8edumdA==
+Date: Mon, 12 Oct 2026 18:46:20 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, Bert Karwatzki <spasswolf@web.de>
+Subject: Re: [PATCH v5 07/38] mm: add mmap action for discontiguous kernel
+ page mapping
+Message-ID: <as0S-4wDLCJGEItq@gremlin>
+References: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-0-923b70125b1e@kernel.org>
+ <20261009-b4-mmap-prepare-vma-flag-sanify-v5-7-923b70125b1e@kernel.org>
+ <56cc2787-134b-48f0-a9e2-840f57b28607@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CF7D120003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <56cc2787-134b-48f0-a9e2-840f57b28607@kernel.org>
+X-Stat-Signature: sgfpsktjjc1jtrs8iyzbeg3jswfdcpym
 X-Rspam-User: 
-X-Stat-Signature: gxcmctmk5y3kakog1473t559h3mnxbi1
-X-HE-Tag: 1791826960-241785
-X-HE-Meta: U2FsdGVkX18WLrPZKApC6Eh4nA3Kwn8RNXzEU6fc5eaNKAAAdG6YODMkWTjEjNfzOj/4wegPHdgM4FJy0OJuRNvmTBxvSDvPz4t/5IM4hJsywrGhfbhXu7YXy7BTFrIge/YLgbCscXBLbzPkSCZbuNxRmsPdpxh33DLQ5fXL8tvBP7+CNaKUzBqEm0ueb45rdPbvyMF0gww9cu8EW0MClMPkQe5qoMcQVvRNwGjJAPjR+PLlmWYr6fxO+jHbYHS+slJYeQ3yuUVny6jJlmPoSX2Mb+1TiyYPJDdivbEa8kKeC6wzsjoGds/4s3TYDA6bvEZf8D7Avzcr/XOGW3oMxKdyLW8UG0vIKBXEqp2qk1FhIwckBVbCXXCraiHt/X96WRgc3jbDr2gNMJpfaWM3cghmZcrewN84upLtBt+22KHBe+RhKvsRO0GSkgoKWiipDu9PWoyLr2+NqXnNngJOCUta7M0A/b+2e0z+YZvZVDEwv2zgwGOEoIgWBdUJwqq2kmsWleNd6gGciXygPBvBWqyuY9u8LP14ut9yqR82jv36pn980Pnex99IwECvc5XMWAd6z5iy2Gzw2NYTR+/M7zVpFePSwFde3aJlQxscn/AJ6WTxoObOoLVp/9ftjJvaRwLG/IOh9RZOJCIUpoHqwh5PfR6dFMvjRxms581AMMWUu6otGxNJgWAGp2PxLWcIezO68C9uA9ROip81k1pjzMmVKwVNopFSTHmBkm1mL6yow0XQOHlKRTCvo+5U5qy3kxgip0ognygn2B2/BMArcn5b8RCUDcRI3SbCpvAewRyxQ25L9rFTms/omBh39B3IfrGfaJE1WP3+tRzwvX2BEuJeA6fuc2Hd89EDkMMFHWM/mNzWzc5hWmIbL1O8RGzyUc89fPxTVdLzGcO23pCkZzJvP/GXreSMpL//lBRN+gqPFW/Ho40jNwVwLOHNQhFAOpHiheL8qILGyz5yENe
- 370S7M1U
- AVaoz5gydFy0AkvkmmM11Pnz3WnRbx+qhL+zsBDPFLnUYze7yNX9pX9WamVWvHEgEoH03Yj6nIhEBBShxI/oMpcU4TvIbld8YlkdBxjiavr8U5Wc=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D92E840006
+X-HE-Tag: 1791827221-149346
+X-HE-Meta: U2FsdGVkX1+twVhwjojGH0DWLp0GBMGUy42stALHQHV8ELvOZblX9yzDsCeI5VP6vdS0nd4nxCR6PXElEeTAomv/xpnUQLKbJG+kD6liivtTVKyMPh4VD4ivq1czuDX5yz3cHriVn+KntljOe11PLdD2c7OrH2FYmwQEkZeNRP4lGeguBPHXffsvdCLLuslFH9Rl4wzrK5eV7Tft8yvx7swBixs9+WbqJqiWREI0itrPYvJNWc/+EuChGQy47niBUx8qFihrRPC4eQ4bUF0I2AgOwpTN96oEeLYtxoGX7V2bTpqxYEgVcBzEAtxqH0rE7fhyeGK/d/RwezMsHMYMPIQo+DXIbEQShPrMWXmfpuUt0vNv6Wk+ybP5eudNOFEmkDIfkVy4jHDr2Z6GnMBNqEP+OYhJ3iq7ZbAGZevz1rTE9dKP8YXZ5n9SkQmK7+BdJ+WTRq4JOwwlotmCQ1P+okf4QJtuC6QNNPtzCtPvQuhKF7yyi0QQvtkh6J/uhC+usHf6IrO+CBLfojJ5Bo8FxHejb5hhINoMaKn04Xp/5bk1pIIzEIY8rNyim2l8by2NavYRlG3WchGH3ZryHG8/u6ecuKpVT+b64O58XzJ/d2QvRO98x88X5Wt0RhyQijIwo7Km6sFfTkO9rGQV0vVk9VwOQ9oqs0/ugM4N06DlzJ1O6yzdckOMXhXsPCWQxkZzXG39izBU1kDMQ966jKcwZxhW2+reqlYo3IRyVaiDJ5HT03ajzDocyJXTpvKk3zKyt5llFDvhXFzBMTZfHa+dEqcUTHFLYMWX3k1KoubnMt3VEgxL94wbyiCyCt0GIzDJ+lmGA5PfXLw9GJTD8LNFx4g04hsQyPYFX6pXNClKEZP1IHTISUnhph4XfQVgDbd3Rh5hYgGtNObh336PbspKX/iroiC/MTh7YeNch+c8BUAW/D/TW4aT7YYJyhW5WjdhnFupk5rsAWr12Cgcw/l
+ MU78qAy7
+ tc2Oo6fM+EUY45Nf4yFcVZ4IbrxrYr7rCJ2kYlvM6sBS7759i6azbKDB/Arx85TxYG2gfgMYHGI0jACDlbRtaiW2zeAiku4pVS5/wL8s9AJSiKEk+jxxe8Wv79gfEx6OJmFxmUeOxJVtYSCH81zVPTmlq17K/OfVXDh8OjK38FNute8H4aPSDH4FP8FnxO6Pf+JnFARCkt1xsIlEt0kt5bzLkvsQ3AnDDSrHsillpY1acpcrEHzrJ/3tnhg/YbB46Yza9DanQliP6e9FNvAR7VR8j8K/LtEafrDDJSFKSOpLMMlMZwGh2DKIrT/AvobA6YBmpR96WS9LrAzKs+DN+rSSRqjmxDDduPHsD6e+wzuCZqF3mNtlK2UP9hceQYeRTe29GZQ3XxOjWC+5/zNIs7wOyPmbaIlvL1S6oKRJxO3EPJl8X4t1Ziq5mjG3YUQhFGsRLuzfkkAEVnQsIvenW9+dWTB0mdlshtmKW9NGeGtjbzyNEVmPaoB1lnoTk8gI7RYQ/K91v6BppOnxOMg+8VrUYtFGk4CIZLOqhie9x7ve8ipXs+nFe1XA6acMeRW34a9hB9wcjhW6bHjjBWzUBWDU8F+hz2pqQ+anccGd4XX+Sr9re3bNjTP/znFlFkMPhfwpTZRFGuOb4W1CNb/6CzlCCkC9tfZa8mplhduIdb34BoUOCX7TobDUDNXZZOnqTf+qNea8w2qiihyOFfEJjvVNyTNuLBPwO25nGj55WzRpLCK69pwMPMgqYkOgltKny9Bwb4NytJMPApqBO8X/rVDsGsVTWCQF740dNSzxZHL4t98gN3US3fwT3x+gNsy1A2VowYBFduuhuslAl6JKg/aMDKomk/ZRWtyy7Tw95nYGs2bIoMSQXZWV47GMewdUTdr1UOgiTD109fVRit+uBFcpmkcUKWzWekA3LlNHkYujlL3/PomOFdN3MuN2LaB83SZhRLAvLb3RQftQPlbKzVpXlRcIG
+ NpcIvDlN
+ g0AwI2DcH4cFwq+ofIdzpsKm+xDwwTB+f44V2yHpLBLJnHn9tNsZ8SXASYoFmCJBpY2VbNGfPgrrYst/WoOqM6KMtfjpDMfn+KpQFgSQxDXwI88W29gR2gNRPF2lvQ99A5aF1e8C/tVr8lRdc3kjuTNluAZssgCZ8+NBaYv4YQGpRJKDPNke+xKJMvA2Hyd3EnIdDFjx6nIIDYXgEgoZ3ib4Qe/Zc/n0nUm+rgaGjSYlMsnULXmGCURiH+oHcfCVojpRX3vT68thucLK40VXyaqXvxCr+d4O3/VMxFJEmNkZwWUaUgFVJT7E3GRTUEeoXx6gr1BlybzmHFYs0NpX0LP1wDHK9b2CQizu87XG/cst7R9Sarct6VEtOC02mVS+x52rZtGZwU6GGkboCfHJXlrJn+malIls48fzr1Uu2mF46zOvB27jdovKN0CFGPeOfdx5EymkkV0EwcqOR9zgxD7ZESRPbWmlFtsZgSp/WwlwB936lNBcI2HBVXdhvK5exT301i8N4BKHqK7+JPatHcveedHDrrEFdohSxTQZ05nKnAHNZH5Ia5IeZp5DNMxG5hltZiaDkFKfPySNq9/Xf0nv4JK4UKoRjhZmew5kgETLXn0Q9AYAUFx1PbfR1iEtaPGpxsaTWy+uH8RbwkQlED0nL+w+p+gml4TdlM8asNfHwZch1w7ZtSxsi6k4BntWAG7eTmt3i0p8E3pwWCUkyPlrQnGQeOVc/0ARDZY5sGTPqg3vyYLpPphF5/1YVTOE/uVKxbtrPAmtpwCzMRMufjYX3MCaDbczE+FDt9yhrRV/OXPnxmZIlY7spxEhtQt1fB31XyuGIzpIpG2/pu8IeFuCRM18u3a7lKHUIR7mhyaF85vZ+B/4gGl63MxSjX9JmrnU+v9QmdgvoffgPjfXoTmUGsSoNZFwMGrbUDf2J1VNoM/WCU6oPICqO76QGSf1gcs44WcG1vxguXTk9RGe3BooZKSEu
+ OVmi/GUL
+ qOFgbjMgIMgT27yccKE0kUcorCuW3TZ7JJtOmdw3oMFd3ntIxU+AOiRzh/YjQlb/58XCoTVQ7vt1KuZhMuCemIRGkOXPTQ5ugJCKyGh4ZvQ18Sr6AzDw/8Rc6Pq1KDPfPlBY8RT95+FcKBk4r6jtHgPUnTDPjzCRdII2K15FKJy6sq39OZ4TTM/kDLMUQLPnGMHtvRmljhpJG8kX3C2FlYVvmULwSKuk7MSpK4FjfOW5vU4DBrbb041LG13KHcpBQvn3ZnXCxc6u+Z1S9OajohkOnX/4fv+zlPhIkJETREnyOzTATjriOIsZ9xPBEmLSowJoG0E7Q9o/94UivdCe+ZmbBgNYHsaNOCCo50K9zvEpXKT2hlUFl9luC0JA9pDFgWi0VwrTpIRA65zdOMjvaZzNvDb/PM/362YYuDZWSjIZlUVZS+8Df7mQ+54x8KYhI1QakdRbgSJ6hqWRl0kVAMDJ+/MkLxldmM/CDwGW0Cq9o+xQOR2j+EOVbCYeuLo11Q0oNWti04IopEvreqcXk1Dn5Kw9NKyBVxY8iO/iXatOxv8mg7NBAsIH88AwzJTyRQ+byDq+WxICF91damBOy29klkEvS4fcZK1qDQCImY4MFDoEDz4f2rHcVPDL4QRWoYsl3IBKBEwzyK6MR/tKXRfkPpzcweLxPJWbLOYRusVHCsF7ohcmDV9h7LoDl5LCvaruIgLQ6VBN1vHfWwuyCsSGrKr2tk8OXaHrhfRWl+KAohN+FmiX4DtdDqyyQhw5+EexulLbRF9ogss1+k3yz36iAcqhEx9nfbcLvoIV6M0gvaFZYI8dKlbu1HYX5tDRP2+kMcAgXN4zwgAeD2TswvjAqjK0cDAsxz4wJxHoK+Kd9b7sGRD7MKzvEQ81yUUgHP4zyob0Ewxm7hMMkCgtw0tDxtUPsGHnZuaajcE13HMfaBSCbB+V9d5qW85JcGTxh7B0OtPJwP5Kr0MPf7Q0F9TlU48ZY
+ rGf/3T6F
+ lg6bDBcnQq/kNoiO0k4j6bJq4o02Yrl9ViV7YjBM3wGKXI8C5fgaVHDbk03T8SHjvCMhY0VNTdsw+apMyvkq/2mItLT/nKrujFVITqP14C8FrQEOR55Y4y+NXQq0GovJ66r4MGmpYiZHibW88G5vrrE19Km7uyFdBhoF8/Y9/8e76svcdfeIYsVC98e/66N9KYCpUQ0ooWmK6wbCDCwXvr0YMgRJjBCM31ReNb4tIqKUia3LVHvwHWGaGWce3ADpsl/YHHAIhga5dU92M6ihdd1gS13cfn7ktacqmor29tnDC196+L9xWlohZzdvvCCTXhKhaYaFbxnB8jJQA42YV7M4B7tjNBr0E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -81,149 +155,311 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-xas_delete_node() passes an empty node to xa_node_free(), which queues it
-with call_rcu(), and only then stores NULL over the pointer to the node,
-in the parent's slot or in xa_head.  Between the two, a lockless walker
-can still reach the node, and RCU does not protect it: call_rcu() waits
-only for the read-side critical sections that were running when the
-callback's grace period started, and that grace period can start before
-the store that unlinks the node.  A walker that begins its RCU read-side
-critical section after that point can load the old pointer and keep
-using the node after it has been freed:
+On Mon, Oct 12, 2026 at 05:03:02PM +0200, David Hildenbrand (Arm) wrote:
+> On 10/9/26 20:04, Lorenzo Stoakes (ARM) wrote:
+> > The existing kernel page mapping mmap actions allow for partial and full
+> > mapping of an array of struct page pointers.
+> >
+> > However some drivers require the mapping of discontiguous ranges. Permit
+> > this by providing discontig_kernel_page_ops which allows a driver to
+> > specify how the operation should begin and how batches of pages should be
+> > retrieved.
+> >
+> > It uses the minimum exposed interface to do so, providing address, page
+> > offset and both vm_private_data state and a local private state object.
+> >
+> > ops->init can establish state for the operation, and ops->get outputs the
+> > pages to map and their count. Should an error arise the core unmaps the
+> > VMA, invoking vm_ops->close, which is therefore where any state established
+> > by ops->init is released.
+> >
+> > Also update the compatibility layer to do this too via
+> > compat_mmap_action_abort().
+> >
+> > Batches may not exceed the VMA, but may map less than its full range in
+> > case the driver wishes to allow the user to map an area larger than the
+> > available data.
+> >
+> > To use it, users invoke mmap_action_map_discontig_kernel_pages() with
+> > initial local private state and a set of operations.
+> >
+> > Users can then use one of the provided helper functions to perform an
+> > action:
+> >
+> > * discontig_kernel_map_abort() - Abort and leave the mapping as it has
+> >   been accumulated so far.
+> > * discontig_kernel_map_page() - Map a single page, or a compound page given
+> >   its head page.
+> > * discontig_kernel_map_page_range() - Maps a struct page ** array of a
+> >   specified count, mapping only those pages which fit in the VMA.
+> >
+> > While here, update vm_insert_page() and vm_insert_pages() to assert the
+> > mmap write lock is held rather than the bizarre assert !mmap_read_trylock()
+> > and use the new VMA API so all code paths are consistent.
+> >
+> > Also convert a BUG_ON() to a VM_WARN_ON_ONCE() in vm_insert_page().
+> >
+> > The userland VMA tests are updated accordingly.
+> >
+> > Acked-by: Zi Yan <ziy@nvidia.com>
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>
+>
+> Finally finding time to go over this. In the future I want to have more time to
+> review such massive series, as it causes severe stress to be forced to review
+> this last minute before it goes upstream.
+>
+> So if I push back in order to give me some more room to breathe in the future
+> it's nothing personal, I just have to keep my sanity somehow.
+>
+> I hate being forced to review because we pick up stuff way to early. There is
+> just way too much other stuff going on.
+>
+> I'm planning on picking up most stuff I maintain in the next cycle. For
+> cross-component stuff (esp. VMA) I expect Andrew to pick stuff up until we
+> tackle this once cycle later.
 
-  CPU 0: xa_erase(), xa_lock held   CPU 1: RCU walker, e.g. xa_load()
+OK I understand, sorry for sending such a large series.
 
-  xas_delete_node()
-    xa_node_free(node)
-      call_rcu()
-                    <grace period starts>
-                                     passes a quiescent state
-                                     rcu_read_lock()
-                                     xas_load(): parent->slots[offset]
-                                     is still node
-    parent->slots[offset] = NULL
-  xa_unlock()
-  quiescent state
-                    <grace period ends>
-  radix_tree_node_rcu_free(node)
-                                     reads node->shift, node->slots[]
+I already delayed it from last cycle and sent early in rc2, but I understand
+there's been a lot of volume in this one.
 
-The grace period does not wait for CPU 1: CPU 1 reported its quiescent
-state before its critical section began.  Holding xa_lock does not help
-either.  It makes CPU 0 an RCU reader, which delays the end of the grace
-period until after the unlinking store, but not its start.  The start can
-fall inside the window whenever the callback is assigned to a grace
-period before the unlink: from call_rcu() itself when many callbacks are
-queued, from an interrupt that arrives in the window (interrupts are
-enabled under xa_lock(), and RCU core processing and the other softirqs
-may run on interrupt exit for milliseconds), from the rcuog kthread on
-another CPU when callbacks are offloaded (rcu_nocbs=), or while the
-writer is preempted under PREEMPT_RT.  Interrupts, and in a guest a
-preempted vCPU, also stretch the window.
+I've been working evenings and weekends myself to keep up with review (and
+failing), so I get how thankless it can be (LPC was also unhelpfully timed!)
 
-Setting node->array to XA_RCU_FREE does not make walkers retry: no
-lockless path looks at node->array.  xas_load() and xas_descend() look
-only at the entries and at node->shift, and the marker is overwritten
-when the slab reuses the object.  The XA_RETRY_ENTRY markers that
-xas_shrink() and xas_free_nodes() store only help walkers that reached
-a node before it was unlinked; the grace period waits for those because
-both functions unlink before they free.
+I will try to split things out more in future, this had a lot of dependencies so
+it wasn't clear that made sense + wouldn't just cause more stress over a longer
+period otherwise.
 
-radix_tree_node_cachep is not SLAB_TYPESAFE_BY_RCU, so the walker reads
-freed memory.  Once the object is reused for a node of another array,
-the walker can descend through the wrong node and return an entry of
-the other array.  In a page cache lookup, the xas_reload() recheck in
-filemap_get_entry() reads the same reused slot and accepts the result,
-so in the worst case the lookup returns a folio of another file.
+>
+>
+> > +static inline
+> > +void mmap_action_map_discontig_kernel_pages(struct vm_area_desc *desc,
+> > +		void *init_private, const struct discontig_kernel_page_ops *ops)
+> > +{
+> > +	struct mmap_action *action = &desc->action;
+> > +
+> > +	action->type = MMAP_DISCONTIG_KERNEL_PAGES;
+> > +	action->map_kernel_discontig.init_private = init_private;
+> > +	action->map_kernel_discontig.ops = ops;
+> > +}
+> > +
+> >  int mmap_action_prepare(struct vm_area_desc *desc);
+> >  int mmap_action_complete(struct vm_area_struct *vma,
+> >  			 struct mmap_action *action, bool is_compat);
+>
+> There is a mixture of two tab vs. different in your changes.
 
-The order dates from the introduction of xas_delete_node() in the
-commit below, which reimplemented the radix tree's delete_node().
-delete_node() unlinks first and frees after, and still does in
-lib/radix-tree.c, as do xas_shrink() and xas_free_nodes(), the other two
-paths that free nodes in lib/xarray.c.  The commit gives no reason for
-the different order and nothing depends on it: xa_node_free() only marks
-the node and queues the callback, node->offset is read before the free,
-and the stores and xas_update() on the parent do not involve the node.
+OK. mm is fairly inconsistent about this, I will convert all to 2 tabs.
 
-Move xa_node_free() after the store that unlinks the node, in both
-branches.  The stores and their order are unchanged, nothing reads the
-node after it is freed, and every caller sees the same tree and the
-same xa_state.
+>
+> >
+> > +static inline void
+> > +discontig_kernel_map_abort(struct discontig_kernel_page_state *state)
+> > +{
+> > +	state->action = DISCONTIG_KERNEL_PAGE_ABORT;
+> > +}
+> > +
+> > +static inline void
+> > +discontig_kernel_map_page(struct discontig_kernel_page_state *state,
+> > +			  struct page *page)
+> > +{
+> > +	struct folio *folio = page_folio(page);
+> > +
+> > +	if (folio_test_large(folio)) {
+> > +		VM_WARN_ON_ONCE(page != folio_page(folio, 0));
+> > +		state->action = DISCONTIG_KERNEL_PAGE_MAP_COMPOUND_PAGE;
+> > +		state->__folio = folio;
+> > +		state->__nr_pages = min(state->nr_pages_remain,
+> > +					folio_nr_pages(folio));
+> > +	} else {
+> > +		state->action = DISCONTIG_KERNEL_PAGE_MAP_PAGE;
+> > +		state->__page = page;
+> > +		state->__nr_pages = 1;
+> > +	}
+>
+> Why are both separate? Isn't it sufficient to represent that through _page +
+> _nr_pages > 1 ? See below.
 
-The radix-tree test suite already runs into this.  Its multiorder test
-(multiorder_iteration_race(): one thread inserts and deletes an entry at
-index 0 while the others walk the array under rcu_read_lock(), with
-liburcu's call_rcu()) reported a heap-use-after-free in xas_start(),
-reading the shift of a head node freed through call_rcu(), in 10 of 200
-unpatched runs under AddressSanitizer on a 160-CPU machine, and in none
-of 200 runs with this patch.  A harness check that no node passed to
-xa_node_free() is still reachable from xa_head fails 556941 times in the
-XArray tests without this patch (all in xas_delete_node(), both
-branches) and never with it.  No test is added: the race is not
-deterministic and the check needs a hook on xa_node_free().  On a
-kernel, the window is too short to hit on demand.  With a 100 ms delay
-injected between call_rcu() and the unlink in a test build, a lookup
-that starts on another CPU 20 ms into the window reaches the node, and
-KASAN reports a slab-use-after-free of the radix_tree_node freed from
-rcu_core() when the lookup reads it again.  With this patch and the
-same delay between the unlink and the free, no lookup reaches the node.
-The XArray and IDA self-tests pass on x86_64 and riscv64.
+Ack yup that works.
 
-Found while formally verifying xas_store() against the kernel binary.
+>
+> > +}
+> > +
+> > +static inline void
+> > +discontig_kernel_map_page_range(struct discontig_kernel_page_state *state,
+> > +				struct page **page_arr, unsigned long nr_pages)
+>
+> Is this actually "map_pages"? A range is rather a number of consectuive pages
+> part of the same folio/compound page, no?
+>
+> (we call insert_pages() later ... )
 
-Fixes: 58d6ea3085f2 ("xarray: Add XArray unconditional store operations")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
----
+Sure, can change.
 
-Notes:
-    Reproduction details: the harness numbers come from
-    tools/testing/radix-tree built as is (AddressSanitizer is on by
-    default), running ./multiorder 200 times on master and on master plus
-    this patch.  The ordering check wraps each xa_node_free(node) call in a
-    copy of lib/xarray.c with a function that walks the tree from xa_head
-    and reports the node if it is still reachable; it is not part of this
-    patch.  The kernel demonstration is a test build (x86_64 defconfig +
-    KASAN, QEMU -smp 4) with mdelay(100) after xa_node_free() in
-    xas_delete_node() for one test array, a writer kthread on CPU 0 doing
-    xa_store()/xa_erase() and a reader kthread on CPU 1 doing
-    xas_load()/xas_next() under rcu_read_lock().  I can send any of these
-    if useful.
-    
-    The patch and its analysis were drafted with an LLM coding assistant
-    and then reviewed and tested as described in the commit message.
+>
+> > +{
+> > +	state->action = DISCONTIG_KERNEL_PAGE_MAP_PAGE_RANGE;
+> > +	state->__page_arr = page_arr;
+> > +	state->__nr_pages = min(nr_pages, state->nr_pages_remain);
+>
+> So we expect all of them to be non-compound?
 
- lib/xarray.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Yup this matches existing insert_pages() behaviour.
 
-diff --git a/lib/xarray.c b/lib/xarray.c
-index bfe7bef80f34..d48754c5f8b8 100644
---- a/lib/xarray.c
-+++ b/lib/xarray.c
-@@ -500,17 +500,18 @@ static void xas_delete_node(struct xa_state *xas)
- 		parent = xa_parent_locked(xas->xa, node);
- 		xas->xa_node = parent;
- 		xas->xa_offset = node->offset;
--		xa_node_free(node);
- 
- 		if (!parent) {
- 			xas->xa->xa_head = NULL;
- 			xas->xa_node = XAS_BOUNDS;
-+			xa_node_free(node);
- 			return;
- 		}
- 
- 		parent->slots[xas->xa_offset] = NULL;
- 		parent->count--;
- 		XA_NODE_BUG_ON(parent, parent->count > XA_CHUNK_SIZE);
-+		xa_node_free(node);
- 		node = parent;
- 		xas_update(xas, node);
- 	}
+>
+>
+> [...]
+>
+> > diff --git a/mm/internal.h b/mm/internal.h
+> > index fc4e249e2343..557e629db8c5 100644
+> > --- a/mm/internal.h
+> > +++ b/mm/internal.h
+> > @@ -1515,6 +1515,9 @@ int simple_ioremap_prepare(struct vm_area_desc *desc);
+> >  int map_kernel_pages_prepare(struct vm_area_desc *desc);
+> >  int map_kernel_pages_complete(struct vm_area_struct *vma,
+> >  			      struct mmap_action *action);
+> > +int map_discontig_kernel_pages_prepare(struct vm_area_desc *desc);
+> > +int map_discontig_kernel_pages_complete(struct vm_area_struct *vma,
+> > +					struct mmap_action *action);
+> >
+> >  static inline int io_remap_pfn_range_prepare(struct vm_area_desc *desc)
+> >  {
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 448342883e9d..e5c1d1c35bc7 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -2599,27 +2599,34 @@ int vm_insert_pages(struct vm_area_struct *vma, unsigned long addr,
+> >
+> >  	if (!range_in_vma(vma, addr, end))
+> >  		return -EFAULT;
+> > -	if (!(vma->vm_flags & VM_MIXEDMAP)) {
+> > -		VM_WARN_ON_ONCE(mmap_read_trylock(vma->vm_mm));
+> > -		VM_WARN_ON_ONCE(vma->vm_flags & VM_PFNMAP);
+> > -		vm_flags_set(vma, VM_MIXEDMAP);
+> > +	if (!vma_test(vma, VMA_MIXEDMAP_BIT)) {
+> > +		mmap_assert_write_locked(vma->vm_mm);
+> > +		VM_WARN_ON_ONCE(vma_test(vma, VMA_PFNMAP_BIT));
+>
+> I would prefer to have these changes in a separate patch. Or is it strictly
+> required to have this in this very patch?
 
-base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
--- 
-2.53.0
+That was because Suren raised the 'assert on mmap_read_trylock()' thing and I
+wanted to get the other cases here to be consistent.
 
+I will split it out into another patch.
+
+>
+>
+> > +		vma_start_write(vma);
+> > +		vma_set_flags(vma, VMA_MIXEDMAP_BIT);
+> >  	}
+> >  	/* Defer page refcount checking till we're about to map that page. */
+> >  	return insert_pages(vma, addr, pages, num, vma->vm_page_prot);
+> >  }
+> >  EXPORT_SYMBOL(vm_insert_pages);
+> >
+> > +static void __map_kernel_pages_prepare(struct vm_area_desc *desc)
+> > +{
+> > +	if (vma_desc_test(desc, VMA_MIXEDMAP_BIT))
+> > +		return;
+> > +
+> > +	mmap_assert_write_locked(desc->mm);
+> > +	VM_WARN_ON_ONCE(vma_desc_test(desc, VMA_PFNMAP_BIT));
+> > +	vma_desc_set_flags(desc, VMA_MIXEDMAP_BIT);
+> > +}
+> > +
+> >  int map_kernel_pages_prepare(struct vm_area_desc *desc)
+> >  {
+> >  	const struct mmap_action *action = &desc->action;
+> >  	const unsigned long addr = action->map_kernel.start;
+> >  	unsigned long nr_pages, end;
+> >
+> > -	if (!vma_desc_test(desc, VMA_MIXEDMAP_BIT)) {
+> > -		VM_WARN_ON_ONCE(mmap_read_trylock(desc->mm));
+> > -		VM_WARN_ON_ONCE(vma_desc_test(desc, VMA_PFNMAP_BIT));
+> > -		vma_desc_set_flags(desc, VMA_MIXEDMAP_BIT);
+> > -	}
+> > +	__map_kernel_pages_prepare(desc);
+> >
+> >  	nr_pages = action->map_kernel.nr_pages;
+> >  	end = addr + PAGE_SIZE * nr_pages;
+> > @@ -2640,6 +2647,98 @@ int map_kernel_pages_complete(struct vm_area_struct *vma,
+> >  			    &nr_pages, vma->vm_page_prot);
+> >  }
+> >
+> > +int map_discontig_kernel_pages_prepare(struct vm_area_desc *desc)
+> > +{
+> > +	const struct mmap_action *action = &desc->action;
+> > +	const struct discontig_kernel_page_ops *ops =
+> > +		action->map_kernel_discontig.ops;
+> > +
+> > +	/* At minimum need to be able to get pages. */
+> > +	if (WARN_ON_ONCE(!ops || !ops->get))
+> > +		return -EINVAL;
+> > +
+> > +	__map_kernel_pages_prepare(desc);
+> > +	return 0;
+> > +}
+> > +
+> > +static int apply_discontig_action(struct vm_area_struct *vma,
+> > +				  struct discontig_kernel_page_state *state)
+> > +{
+> > +	unsigned long nr_pages = state->__nr_pages;
+> > +	unsigned long addr = state->addr;
+> > +	unsigned long i;
+> > +
+> > +	if (state->action == DISCONTIG_KERNEL_PAGE_MAP_PAGE)
+> > +		return insert_page(vma, addr, state->__page,
+> > +				   vma->vm_page_prot, /*mkwrite=*/false);
+> > +	if (state->action == DISCONTIG_KERNEL_PAGE_MAP_PAGE_RANGE)
+> > +		return insert_pages(vma, addr, state->__page_arr,
+> > +				    &nr_pages, vma->vm_page_prot);
+> > +
+> > +	/* Compound folio - have to iterate through each page. */
+> > +	for (i = 0; i < nr_pages; i++, addr += PAGE_SIZE) {
+> > +		struct page *page = folio_page(state->__folio, i);
+> > +		int err;
+> > +
+> > +		err = insert_page(vma, addr, page, vma->vm_page_prot,
+> > +				  /*mkwrite=*/false);
+> > +		if (err)
+> > +			return err;
+> > +	}
+>
+> Summarizing some of my comments below, I wonder if this could be:
+>
+> DISCONTIG_KERNEL_PAGE_MAP_PAGES - array of individual apges
+> DISCONTIG_KERNEL_PAGE_MAP_CONTIG_PAGES - 1..N contiguous pages
+
+OK.
+
+>
+>
+> if (state->action == DISCONTIG_KERNEL_PAGE_MAP_PAGES)
+> 	return insert_pages(vma, addr, state->__page_arr,
+> 			    &nr_pages, vma->vm_page_prot);
+>
+> VM_WARN_ON_ONCE(state->action != DISCONTIG_KERNEL_PAGE_MAP_CONTIG_PAGES)
+> for (i = 0; i < nr_pages; i++, addr += PAGE_SIZE) {
+> 	struct page *page = state->__page + i;
+> 	int err;
+>
+> 	err = insert_page(vma, addr, page, vma->vm_page_prot,
+> 			  /*mkwrite=*/false);
+> 	if (err)
+> 		return err;
+> }
+> ...
+
+OK. Will respin for v6.
+
+>
+> --
+> Cheers,
+>
+> David
+
+--
+Cheers, Lorenzo
 
