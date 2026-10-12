@@ -4,119 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D05E2CA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 12:45:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BED16CA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 12:55:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE4CE6B008C; Mon, 12 Oct 2026 08:45:41 -0400 (EDT)
+	id 8D3206B0088; Mon, 12 Oct 2026 08:55:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A93D96B0092; Mon, 12 Oct 2026 08:45:41 -0400 (EDT)
+	id 8AA8F6B008A; Mon, 12 Oct 2026 08:55:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D0EC6B0095; Mon, 12 Oct 2026 08:45:41 -0400 (EDT)
+	id 7C0266B008C; Mon, 12 Oct 2026 08:55:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D63B6B008C
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:45:41 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EFD2C140CBE
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:45:40 +0000 (UTC)
-X-FDA: 85313945640.20.06696A0
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1166B140003
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:45:38 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=evUUYGY6;
-	spf=pass (imf23.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 58A616B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:55:57 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C1491160CB6
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:55:56 +0000 (UTC)
+X-FDA: 85313971512.24.1B01020
+Received: from mta1.migadu.com (out-252.mta1.migadu.com [95.215.58.252])
+	by imf12.hostedemail.com (Postfix) with ESMTP id AD1B040006
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:55:54 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="XAu/7C3r";
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.252 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791809139;
-	b=OLDQjCcsrBrm7NIq29DCZBLHyBgQIUyEgw3cYGygzu74sRpvLjj+uKIrq92zgHUboC7vlk
-	kRs+OOC1rvQ38k3IK9zZM6NwG5yyMDtwdbx7bHQLoMJXc0CG1L7Li6eVHNQsyJva5xpPGs
-	3u5EQ6oyZsq9z+HNfOBsdEOIDpLDw8o=
+	t=1791809755;
+	b=haCJ2n4PE4JuT5cBUXplUa6P28c/eaIMu9sxO8KcIOgo4IEoBQExe2PdZV16aRwuniR7se
+	9EtppFURNkTJ5xQQ3kKdky1RLmftU/P1H4lwBF5t98f7HlGD3dNOL3+1D+xo9QYsIoZg3K
+	nDqk/YCIrDkjURG4NQ6NJ20KV6b5M54=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=evUUYGY6;
-	spf=pass (imf23.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="XAu/7C3r";
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.252 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791809139;
+	s=arc-20220608; t=1791809755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=an/ERodSzuEqefgQ6URo9mMgAyarZVhVNb5a4ABoOvI=;
-	b=op/1ve1nAYZ6Ar3VwH7lD2ARL0L/fZ6dji7L0lLDAUWiq3cZrtTVtogJmBHjO4SztSh8Qj
-	LCLejC6RXuI0K1R6F69nRneCFke6dZyEjez+XH8Gj8ScLE5Ypdbzs2h5Gz4mErKVNNM++j
-	1krXQ7ELkRTpLRKuGpIy5DV341Tf4X4=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48c5358fc28so1275488f8f.0
-        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 05:45:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791809138; x=1792413938; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=an/ERodSzuEqefgQ6URo9mMgAyarZVhVNb5a4ABoOvI=;
-        b=evUUYGY6c+oDEH+C9AxRAZ92n24hkXqL98ocmPTHWPPPa3l+WS4Etk55/XuWhVGa5/
-         O0u3jkrtHBa9gL9pv3ZpW5af0DVeIrfI+m4nX9IcuehiBnnydAcrxF5bcpEHEr1wDh6C
-         ttkIOMPnEEOkScTFNzOYwrxZn5dyT4iIb1R8CcjAGORPO0Lhj8oV5CTkwGBqVtuIqgox
-         IjOPGwUER9Gm7K/XAI1FgbpZJg6zJMdIKFI2A950yxAc7/jmkVMWNNMGeoPzJddh7QtF
-         C8SWJnVG/Rv7Po5hfkqiivYYy5Y3lhpVvOsYjPFrTCyJZ4UzYX6u61n/H52jVHxKvigU
-         qh4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791809138; x=1792413938;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=an/ERodSzuEqefgQ6URo9mMgAyarZVhVNb5a4ABoOvI=;
-        b=iD+/pPsoqQ8qcStskKLX5XdBmcKnR6iKai7xBCm/fU8CDc6LccZqxyShwlqkPVjymR
-         dG3N6GNs6tRmwlJM0J6JKvYw16TG8+GM4DWNwLvA77alLEl5uiskVcZjQaHzwUJfuXV+
-         pnC0EAAZoTBAZ/ymXTGc4se2VrxY8ar9qwNN4dh3+hI60UpXqUm6Rm0hd/O2rAyHRhXE
-         KnCza3JwE957neYdrHpBzb7A40D8JHTKSJz9c5NfesH4gcF+CahrHJk0VsEqsRmcLfb0
-         EEGKU7W9glKvJugOejNeMVXVjp30qk+4GNdgJY3MtRBMX491ONJX+PN7VJyPYLtOrQQA
-         Y+3w==
-X-Forwarded-Encrypted: i=1; AKwUvBw4QCB1FUOP9Ftr7fMyxisYhVQeDbrHlPUJjwwHfyrMwbenXSZEwVRRBsbMzgst5WuqN7t6Tr6ugw==@kvack.org
-X-Gm-Message-State: AFq9FYJYCKqPI1cDFNpYrov/QvRiFYC+X7TStWOaOsuozwdPaOZDAflU
-	6UEKnefUeEkv57EvSr3j9GhwDmcqYG5x5/88FS50LvA8qsIGA+tBdrvPVQoQdEtgzd4=
-X-Gm-Gg: AYBFou2NfBl4p0HjSHC5VtNa3f/uOyQ73gUPzP8bOoRSnR5nAx0TsXukvwVJ+KTqhTD
-	qTFzdSJ7Maeqd3jym9JudQggw+SsN9cKUrFsme0V92nprwWzqnmrEESpi6kobD/Pr9IYhb5N4j0
-	R27TydSJrtzLggxkAMpStjish641CFgKJwUnfgVl9rykyF3s4aQlv2M/Mg9kJliv7VrvONiFGvo
-	Uwf8lAwemLxU+XLxRK7xtLGvGLBtv3gYDBD+7BRGG2gnTXbVCYcBS0wRcw1tlGI79vaIjgU0wfY
-	iDbVyE9j4nvHyGrX7OkwOuwxkSefEF1B+qb38uoH3tDki4M9dq+OEAspFgbrF0TLnvXdVytUPJ9
-	citBZCGi0HjnfhigQnT7wQlX8w9QHeKg24fu1Zsx92x6lzi261p4zXfaD6LAbf1IpHiBc8n0aFj
-	SmoPRXo4SEb3f2kCczEZZhovRfdUwj8eIQD9jIUcOUjDhApBLYQshN7+2uUfr0x0NZKpA49PkZB
-	g==
-X-Received: by 2002:a05:6000:298d:20b0:48c:43a4:37f2 with SMTP id ffacd0b85a97d-48dbaadb3f7mr12969989f8f.17.1791809137549;
-        Mon, 12 Oct 2026 05:45:37 -0700 (PDT)
-Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db9aadf9bsm18884941f8f.29.2026.10.12.05.45.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 05:45:37 -0700 (PDT)
-Date: Mon, 12 Oct 2026 14:45:35 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "T.J. Mercier" <tjmercier@google.com>, 
-	Amir Goldstein <amir73il@gmail.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests: memcg: don't close an uninitialized fd
-Message-ID: <20261012-clumsily-chivalry-c652481fc90a@there>
-References: <20261011223358.2327625-9-sashal@kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gylt5nk4uhld73ur"
-Content-Disposition: inline
-In-Reply-To: <20261011223358.2327625-9-sashal@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1166B140003
+	bh=zVdDm9vWio9URlOBbk5H1FhupUhm6ZtZOBzYo8Bfqf8=;
+	b=2Oc5g3Fn7hBSVHL9Ctoox4Xjm2V2EVeJ9beKRKHj601pMxBgy4rlnXrzgnrzo8eM/DoH7U
+	a7ixOHyhAVCCOixWPfT+SD8tewj4b1AYrRdfe7WUIcfVU6u5X+BJm3ihdJEaRcSH1aYy40
+	9EsHE50x8uMtSeRCZ7TaYq5y7saUJFU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=zVdDm9vWio9URlOBbk5H1FhupUhm6ZtZOBzYo8Bfqf8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791809752; v=1; x=1792414552;
+ b=XAu/7C3rb/MZ5dpABy25laQ+yvYFKm3jheT5YLO5dLGM8GxZNKSkbbWwuhJ9SEenvzOqbKe+
+ 0YxDDs/UTQYCjF5V5k4VSp8AhWwcF4nVcYAW6TY0rLP0PqMN9sj3YrGtoc3RhOdNrYZ7YO3XjJi
+ GbkgpeK1G0tNxMZ7rEWHlVR4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 018eb001ca5c019a;
+	Mon, 12 Oct 2026 12:55:25 +0000
+X-Mizu-Trace-ID: 018eb001ca5c019a
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH v2 1/4] mm: fix missing page-table destructor in
+ pagetable_free()
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <asy-b7_C3SjnmSaS@gmail.com>
+Date: Mon, 12 Oct 2026 20:55:06 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Dave Hansen <dave.hansen@intel.com>,
+ Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>,
+ =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <145CD5DC-6457-4E1E-8B9D-AE7D1EDB0AB8@linux.dev>
+References: <20261010112457.49485-1-songmuchun@bytedance.com>
+ <20261010112457.49485-2-songmuchun@bytedance.com>
+ <asy-b7_C3SjnmSaS@gmail.com>
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Stat-Signature: ti1chuh1dpa5qbeqsr76eya48iynewbe
+X-Rspamd-Queue-Id: AD1B040006
 X-Rspam-User: 
-X-Stat-Signature: a8p8yiofgt9iasfyo44xc53gxjkh4xr9
-X-HE-Tag: 1791809138-226823
-X-HE-Meta: U2FsdGVkX18TX5L7KmgeLPbea/4T0yOGk9C2DqXZsnXilZR5qZQOgst+9Lyhli+/yw5izaBvD5aT3phEq2SqgATroAaO2EZ48OqPTWuTDUL2yC3qAsewZlnS+/26n+o8+RHKFMsak9MFBPRr1LQ+kD4cesXF5VaLfGl/AYd0QfqbT9TdPvzckHCssMerNQlfXuvwUjW0OP4WzPDXPsGMSVb5EpArzc+18ZJ3QTHNxfw2qehG2HUz3xX6U94byRRytxNCReLM+EarR/yG2mwMHhzVQlO67iYgRLBfmXgWT+Foa2QU5YEnr4jbqh4x1F2Z5snQ9KvuxcaxoqTyQO7toSs0iy2/j7DLikrclvfi52c5XSstXRJ3P1DnGiGMtxBYepzbjVfQCL9KjhXJiVQerDv51Jw5Ikn/H1OzarJ9T9mAKkRzkppWwZWKfSr3EmPyEVKiZ1YcXRWNhpv6+ia/WOk0o6iJJ1inrAHVC1HGKi4rWWawF+LLw2f4zmM2JyycQ9bJgaa6NRYt6+GMWT70AQqOc/+1a2gqL+Sh3r09d4ik3a0Ow/DbjpC9HpgcUSiIzVBpr+FlQLNmUxzajGpaId6R2HYGfzt8+Lywk1sMpMhfT3pe99jS6X9wxIOCFU/T4mapjSeYbQiB3GUgYzfYRSaYwpCWKD/7TgTxM8CNoBoOtLCCGLKETMaxEThJJ9nL2bQL4v9OEcE+g1VFuY/3T92j7gYZrgiLJPVhwwVg/GmoFsXJfb5vqMPZ1SbFKRG6i2D8uJZ/5hgLyCXyM/U4gkZ/FhGag0Zm7IerZTe5ZSPN8lTVkQ7KsEcwMJhlnd3EwIErA4UuKsIo8QyFhK9vZCnvfXWBvFlf+0MkoP63k3UOSB9m0QKPzMhyLjKvGd1NYvarfNol7gfaTRvOAlRrGkMGkZUjw29bp3AHfxFYvfA92TEcAOk1TPUGy7UtX3KjFoQZhUZVDNROL6CH+wR
- 1zCVy1ap
- csE62gH4ZK5NvNQAPtFizi/ZUye32L5TNj1Iri92tPXsL8ODwcE408b7MIc/+6f6Wycblt5WzYwcn4ejFgyhibJkQCDY2DIcIVTiPb4HInUdT7t3UZdEf6ibFVErLzaPKAab7h72rwINkb9AePdGIEsaXPICvUXk/4QY7aktXvU9qA+48hY8I1dEcIrsmfxNdKurbR1gZteJ62QBzFrPOItC93FGFRga4W3reZ7uHZ71e0bTvCTaDSWzs5nNaKLS6UOFxL9SOQYtVMWbc17id66eXJDmpazXwLvu0MAm4ChW7Zjck0/o8gapkHvbq74pg/eNReutlgMFWm60+PLHHsLA8a/szdzzpGRulXMPj3L1/ModnAD68F7ndUtfnTUeZdkA5LNchVshQnr7I+Azr4BMWkJOFiKb9csp1PQlFlzQZec5IYJmj9bqz7tDbHgO9RHAWFix9Cixb8wFXqrLJs2p6SnYbUV0xfYFs83xNEIfx85ChZMGWAOAaXm7GDuMza2JO/4mTOWg9mFM=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791809754-37085
+X-HE-Meta: U2FsdGVkX1+0fKPtBxFpBOfudezkSsv+NvWb9NHDfGnpc/vLizN7v8VbMrqRBh3hk4bocZshsmRc2sktMKN9UZoU6uoPOwaNnD7WA7rnHq+0dueDCYZZfOqvXnIwES4W4BsxlqPuZkKWmBGF0SwSs2saTagjwR7fQqSyGLyFdNg25mXq0fVSKzwiBXbHjFRdrlnvTFldUe9lKmoHXTSBrUwrqcT/5Vg7JqJ+bpQ5aNXnQLpXs1vVL79vSAgtXDdC+auBINgFTYK8Gc+DZvn99c44phcVMY6+WWQUR6vqzsIFPC2q9YcUbxjLm2MbFhhByJuiPRsUZSocPsdPSxMAx3i8RKN4Z//heMg5Ku1LD0oniB1fkEw80Mh3J3pYpQPeDljVYoTqATXlHN9r6q2rreCv3kOX0H2wY2qLcluPzAS4/MTRWpFWpS21rsZRiSRrnnZBUSP0dFlA1DoSqNTl2+w2ADUHwOfNKAJNZXnC13BDiD05t9LZo1BUERS3H/zlID2eqw2CydY6VCfV6JA421+f83KTXdp6wE6fCumMbhqVrA8GoGRhcFNvPQvlcTqPPTS27+vLbYAeQDP+Yxnf0pJCJOaK1dERozmIPSLhDWJT4QJYEY+0LqmcuHCyU5a1KT8KYUl1YmUD4JL6rumqQUxpT3QQCeaDQbwOvNON7wsUg9OKTLDlQpjdSHWiatkrJ2AaiQi10xjqFgSOLI2MPK1uxsgSGXPN4e//5tsfHIMzctzsdSQCZbPBZABjlmuYIUur34QdaVB8g+pw6GIUT6+M5/gtx7C8UCv+mUVAGq5AUyUkyRfc2XGtwFlxmmq7xypkGKShIoKs52/3ANm+Vl4vfGoMmbI7wXCfT8FVg23uvDe3Ko1Xs8oPSrgIVcdttykeYyK1160gHoS7eE6Ru5EcMWddTH2F3Q4Q6QFwUuuYQ8XBCt0Dj82smHyiR2bPfZHYeGcTdoibFDcEF6t
+ KCULoQoC
+ 6dX2CXpgP5Xo05oGsUlQvA08HLQnXabFUA4gy2svsRbvWWM2NAxa7+E322arROVDvbZmd7UUlNKWUTFeHODxe6ZRdWHi6RliDXvtWuCHuOXcAPbanbX9TMiUfavfzGyYJjV6lkMQFLmIqh2nPBqSY9rqf0NO9nzxjKdxzSNwDDmYSUKxVevXuyRYubAAsyFfVam67jXvg4/dj9ec1r+vZfUsYXIP1ju1GmLnc9fmPUFrCCBfGxoyHzTzs0Bnhw2/w+HYFE603ALEmY1On3PAIyOvIr+BKGtEA/AhiOqmRZgNHKzjFDlrKRDwoR3K2vUNy4BHEC14pDegHQfk0255r0k8fNPcfd+WWErF/ViE/yY9yAsY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,46 +114,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---gylt5nk4uhld73ur
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] selftests: memcg: don't close an uninitialized fd
-MIME-Version: 1.0
 
-On Sun, Oct 11, 2026 at 06:33:37PM -0400, Sasha Levin <sashal@kernel.org> w=
-rote:
-> test_memcg_inotify_delete_file() and test_memcg_inotify_delete_dir()
-> jump to cleanup before the inotify fd is created when cg_name() or
-> cg_create() fails, and cleanup then closes whatever fd holds:
+> On Oct 12, 2026, at 19:15, Jose A. Perez de Azpillaga =
+<azpijr@gmail.com> wrote:
 >=20
->   test_memcontrol.c:1685:6: warning: variable 'fd' is used uninitialized =
-whenever 'if' condition is true [-Wsometimes-uninitialized]
+> On Sat, Oct 10, 2026 at 07:24:54PM +0800, Muchun Song wrote:
+>> Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
+>> pte_alloc_one_kernel() runs the page-table constructor for kernel PTE
+>> tables.
+>>=20
+>> HVO (HugeTLB Vmemmap Optimization) uses pte_alloc_one_kernel() when
+>> splitting a PMD. Restoring the vmemmap backing pages does not =
+collapse
+>> the PTE table, so a later memory hot-remove eventually frees it =
+through
+>> pagetable_free() on x86-64. That releases the page without running =
+the
+>> matching destructor and leaves NR_PAGETABLE elevated.
+>>=20
+>> Make pagetable_free() detect constructor-backed pages and run the
+>> destructor before releasing their memory to fix the problem.
+>>=20
+>> Fixes: 49f599666420 ("mm: call ctor/dtor for kernel PTEs")
+>> Cc: stable@vger.kernel.org
 >=20
-> Initialize fd to -1.
->=20
-> Fixes: 2de27980e1d46 ("selftests: memcg: Add tests for IN_DELETE_SELF and=
- IN_IGNORED")
-> Assisted-by: LLM
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  tools/testing/selftests/cgroup/test_memcontrol.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> is the x86 case covered for 6.16-6.18? as far as I can see, x86
+> free_pagetable() only uses pagetable_free() since bf9e4e30f353
+> ("x86/mm: use pagetable_free()") in v6.19, so the backport wouldn't
+> change anything there. or am I missing something?
 
-Thanks too,
-Acked-by: Michal Koutn=FD <mkoutny@suse.com>
+Yes, you are absolutely right =E2=80=94 thanks for catching this.
 
---gylt5nk4uhld73ur
-Content-Type: application/pgp-signature; name="signature.asc"
+I double-checked and indeed x86's free_pagetable() only starts using
+pagetable_free() since bf9e4e30f353 ("x86/mm: use pagetable_free()"),
+which landed in v6.19. So for 6.16-6.18 the prerequisite is not present
+and the backport would be a no-op there.
 
------BEGIN PGP SIGNATURE-----
+The correct trailer is:
 
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaszWahsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AgD0wEAmh10oDQEWn7n0aEJYbBb
-uaxG6lg1fY/9sjcEXSxbRKgA/Rt/e9OL/XTpEvxAx8DVCCsJgZnLdHG4SM+IuwrA
-BLAB
-=3bZl
------END PGP SIGNATURE-----
+Cc: <stable@vger.kernel.org> # 6.16-6.18: bf9e4e30f353: x86/mm: use =
+pagetable_free()
 
---gylt5nk4uhld73ur--
+Andrew, would you be able to update the trailer in the patch when you
+pick it up? If there are further review comments that require code
+changes, I'll fix this trailer as part of the v3 respin. Thanks a lot!
+
+Thanks,
+Muchun
+
 
