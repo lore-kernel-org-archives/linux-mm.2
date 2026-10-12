@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 828D1CA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 17:09:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77598CA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 17:09:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 775E46B0088; Mon, 12 Oct 2026 13:09:01 -0400 (EDT)
+	id 7C5766B008C; Mon, 12 Oct 2026 13:09:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D82B6B008A; Mon, 12 Oct 2026 13:09:01 -0400 (EDT)
+	id 79C786B0092; Mon, 12 Oct 2026 13:09:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EE366B008C; Mon, 12 Oct 2026 13:09:01 -0400 (EDT)
+	id 6B3396B0095; Mon, 12 Oct 2026 13:09:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A9476B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:09:01 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A9CB61210E6
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:09:00 +0000 (UTC)
-X-FDA: 85314609240.07.C203BD8
-Received: from mta0.migadu.com (out-125.mta0.migadu.com [91.218.175.125])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 6A11920007
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:08:58 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="JPOqGB/x";
-	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.125 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E69AE6B008C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:09:26 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7A053811E4
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:09:26 +0000 (UTC)
+X-FDA: 85314610332.11.7D47AB9
+Received: from mta0.migadu.com (out-139.mta0.migadu.com [91.218.175.139])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 83EFF180008
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:09:24 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VaL6JJ3g;
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.139 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791824938;
+	s=arc-20220608; t=1791824964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sHX0IQfMOf+Kp7wtTmLf5dvkyc6K5tZk7p3bCuK3qbI=;
-	b=3lOBV5bu6Hxs1Ma/ok7e3pNkcEkKDDB8d0cLtVrf3Fw9q/yfJvpibgeY80aCmNA6A+p1GR
-	SlueT9HPjGN5BhDRQ4ikIOMj4kk7vSocVAedA+2Hg7wEiBx9g5ylxkQLfxJ0X+UQWKoxDP
-	bCg5WyHOi/Q8HVMOX0JPQjwYMbNPZtA=
+	bh=JpTqusvCvIzLOMVSAAP/rXcfDbs1KzP2FdhevxXTOug=;
+	b=Go2PdoCVfWr4hxPHhb9cxYx4tYTDgNOJ+pM+0JLO75b3WybLcy7qPImu9wvY5+C4LtqYSK
+	0MxAFPrYONSJoSgHqD0ryHTPwZN+FSsbGY0Hlbng4nHxpcFVMWRMmb+rH3/xJRlIE3NE4r
+	LPmmH5f2/LnWL5yGfPVecyYUZai1bRM=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="JPOqGB/x";
-	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.125 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VaL6JJ3g;
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.139 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791824938;
-	b=oKXU/1TFj9wQgTHp8lQGJYTaFWbZCmLIf4S6Gb6QEq44JjUPD2kHaUzDRb15FWHtnFh/hN
-	yf01o3f6DQLyV6zh5cIUSayPfEGXhP/FR7RPzmq1tJ1mtVXDzTxdcPzxFL9Fj972I3eoWk
-	GZ0gp44CPe/zIu9ZXtfszkx5ktyf96g=
+	t=1791824964;
+	b=RCt6k0BYtej8sSFkHeftWY50HG4AfObnUJgXtUxkj463w9KskgAZ79hViCdl5v5pLtIkDq
+	ikvVEhkDfr1JapJRoDToRrQz5DzcNEmoVFY9wL23kDBft6fpnvD+64mkXUOsk7R4QHLQ0b
+	PAYoiKwiGkb0+il/m65ViNKxYIJBQu8=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=jL6a5+5jBxh6aj08ydsTft9UH05ysF5Kx7zP21piuQU=;
+DKIM-Signature: a=rsa-sha256; bh=qDv/NSdW3MzL+jLfvuFsv4SG2honLhUx5uSId8sNcR4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791824937; v=1; x=1792429737;
- b=JPOqGB/xGnPyrn4fZ787j5XNLqdBG/igcKfCNEdBQZ7dozIJp9CCFVe8MSxUfgAEAhBJt2i+
- iKjpSFVwqV05rcx5CcumMKexOF9nXCJNbzXH5w+vYtmFYJoVCvGAUa3MvZJde5fGEINiwbvpkr7
- CPrfbjn6OAS7FkdjTxtL83Qs=
+ t=1791824961; v=1; x=1792429761;
+ b=VaL6JJ3g8i4Pdt7XxbObuaXCKyDmWhc86BRkg0sHdBRYyHQnDrK1V6FA04GApWfmEJSyEqoJ
+ IPAjuMO/ZN39dM17KKjtzN0nzHg70xc6CmsVbI1Auzi6sOefPw9bGAfyaSapsRsBMtvzW79BuM1
+ 1TVlpck7WcIGktWcVrtQ7V9s=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0f25970896a4cd0f;
-	Mon, 12 Oct 2026 17:08:56 +0000
-X-Mizu-Trace-ID: 0f25970896a4cd0f
+Received: by smtp.migadu.com with ESMTPS id 91230e58bb63eacf;
+	Mon, 12 Oct 2026 17:09:21 +0000
+X-Mizu-Trace-ID: 91230e58bb63eacf
 X-Migadu-Flow: FLOW_OUT
-Date: Mon, 12 Oct 2026 10:08:55 -0700
+Date: Mon, 12 Oct 2026 10:09:19 -0700
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Sasha Levin <sashal@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "T.J. Mercier" <tjmercier@google.com>, 
-	Amir Goldstein <amir73il@gmail.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests: memcg: don't close an uninitialized fd
-Message-ID: <as0UDixO6rPt8UHX@linux.dev>
-References: <20261011223358.2327625-9-sashal@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Shuah Khan <shuah@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Amir Goldstein <amir73il@gmail.com>, 
+	"T.J. Mercier" <tjmercier@google.com>, cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] selftests/cgroup: free the paths returned by cg_control()
+Message-ID: <as0UNidNPx1Nblll@linux.dev>
+References: <20261011223358.2327625-10-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261011223358.2327625-9-sashal@kernel.org>
+In-Reply-To: <20261011223358.2327625-10-sashal@kernel.org>
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6A11920007
+X-Rspamd-Queue-Id: 83EFF180008
 X-Rspam-User: 
-X-Stat-Signature: 8sn6kj1bgmbfmgh7599aetgdwjut8rse
-X-HE-Tag: 1791824938-493194
-X-HE-Meta: U2FsdGVkX18iXgAzkL+UavEFm/ArxrkFaBdSWPpAv3tTHNK0HInDuZ7Z9SqwZzzdYR4YGp3JfOQIpExHKKZVcbwmQ/ajqDx0EWRwK8IzNANcpM5/D5y6Y2bbMo98qH3DhZVUvICf9iijDwucf0A5mW2DERvOvhWGzUEfbic80x4GngX3bg2KJ+V3OdtakduVAMsKAI2XUJF9uTXZd27QbI4jKCkjudVQQO78XuzpQNZTpBwsVMxITvyb1QOhV+aQeFGTv9HoWvQd1zZhNWruOAfqLRIZcZNfKkv8UNgM79p3xRytznb6EYdhE2uIg/yAMpjRdjeFYGdUwnx2HRHTI7mNlfRTU3ScBBI70aIGCvcUXYoGaH8FtQzoF+wF6N1f7ikXMyCjhO9qKrUPn6BXRjUI1fWS9gsVcc0ySN+CqrocB+Txu9uYf16KnczmrlbTiLTqaOZCqqp/KaJC3Bg8c7lwj2ABy9fbP5Mh9hD+9hwHVTXce+GMvc/885vRWda+o6RpdXsPTDcHOgc8OROvuNYE6A9e3kvIxu+27ShSHblgoayX+MoPmxQPvYRU2lB6/A2gCkWg3AsP68lfEdUk4jf1fy97rzEqQUUsJDdYkTCuY9MI4K+UcWSrUfc4VuFS/Z5Wuc5D5laA6syThqaTIXUHr0Ue5jGltMGjT3s6xFTZD9/jfHIOCvJM/TrKgDhJzLremPRbwn3wpOkz0pNcuXU5HQRByr4V/pQ4Cjt3I+etMhr04p0d7RxCEJv3leG61qsB/EQ2cIAGIow2SAc+LESj9+TKy/G9WvcwRneykT/TDcyaysSuBzcSzytVxaYi8nq0gscuwe4Btr1tygsggpummSA69hJzSGfWbHAMMP0KcQVTBKUF0hHvyVTppWPbNa9PsuslDWFUqybbIrOujQ53tbrM3Vkhwfy2cUKQaH5Ziblu+TBBeIgrWuKqDx0Mmxprt6HokGuTXaUgUIw
- 0H/mUXIB
- GSHGcExorDw4OUYIEJENKN0M2WSsJEPCChRWoL5htla9rluRjL0SMyP/KRlW1TsePydqvUh7oqPUwKp29UGhlXupEvGFXCtcR/3aoLTTdOSqRa5MOk6R3llYU3YBCdJaLy99hn9+b33Yxwx/ZFsCpIXG74jwWBicn5fsxDekX8y/C4xuJ4RDVETx3eK8hp4IhlFQsdsP+bN9o//X1Z6e4zeG3tQ0txWzs3IuwsXH2y5x6Rui0RV24vGJRzUyufHTcHnKbzwWFK6z9gjeKnHYtSwP7s/KfBIKL1bYEG3RTjjDlJ2M=
+X-Stat-Signature: zw3gcrkt9znewzjtp7sse84fjez7uph9
+X-HE-Tag: 1791824964-289987
+X-HE-Meta: U2FsdGVkX1+2Z+1Jmktmz7QHu8bzfpY8bF3zNQhC759pNsW4QA0dO12GSoh0Sik94Z42DLi+1MKH6Wv7fjptQ9rDzRWUnlYY3oX1wdDH20+q0ljxQ3Q7+/P/Y1tpTMM0SKoodeik8Jh6ncdF+9Hx3um6zwzqrkVA4NHShPKXdGrAWzAiM58UWQl4rkDshcAIKNbfaiuV9z+Mbir1dNvlW77GzJ40j0umVTPAG+9rvLbUgwAwOpylgTmtqVmBT9/zmnY20kWYpISNFaWRWPFVbBbAhulK8nxCUcnZKZ4O0L2Bb8r43Box7XMMR2u4SLZSH0n4v5R4cnhV/A5jVG1vJ5Halt5ofrK4IXQ0LJ7t0rn7ihaIIICVeXBtxDbIBXYA3NTJfr5Bse794UX+fmny8KbGqjV2pCAYpXc4ORc3Oi1cMw6jlEg40d57W+LUSSa+E8nZsOtzRX0PCV73invbpHXL8Jkfl37j+IQWY/yLq8NeH+i1UVsr4XBFSlMGPDr9K8Tmcl2KiaDhhRB7Sjkn9OftV+RKkW07zzbEuiYBoClrynEhiMgkbA0qE5Y+nOKwZkLqNP9/OzEWdLTvTubN6Op+O8IecGjygAaR749zUjlNao2ZAaDiLYt8Vrz7g98u2BmiBJP8pPVsJHDzuM1sf8JGtsl/AWZcx9FRmiTdiqRbWGVHdJHXf/SsfghiI3K8vTqb9FbFmaR9tV5ZZSIq5s9yMi3Skpi+8T18+W+ZZTFgtd78NIiELQED1NfjRJk2HlKAqjkdCcrzB9B+CPnkEPH/hNqkgqkdSz1cBoLzeCbbTROQPz0e9YXxbmZnJxP88qXLKNno7rw3+4+QKNAAKGxSotyEp9N3WKeUlEzRwk3auEnhmX8lMjJTM+xObSEOpl3/YKQh5xKf/ILX57p0E/Yydhhy6+53AuQiuAl0jYLSwMH9Ikz2iVLcoKo+rkANGs8Bx5mzqrwFY3wrKbr
+ DwYq3/fg
+ XP3eGKPSE91rZiZD2RBDzZzS+ktc2EkSjFUpZrScOScmOShgfQS27gWzf8HKYmVe+n52CDvk5Y+eaqAmX2mbbKHAP7Ajr56XemOpC5Ia82V9SFSg1e6wJZnZWhFSs/0bih34ouZd+7BUg9bfK5T2DnEj+XocMXW6eijZUmqeEpRHgYuSTw3Y08hD/aFim9jgPlBew+57fq5oGgJ9pTV7BVsgdSYo/fhJPDAukc6OEX/7SiZ6EPK3aYsWWTuOVcltkUJxXvsEKEE2Oj341afJ5FvP7a6t3UBeEvxvXARDNRHTTobyhhB0Ih83Cz4dBK42UfFRKI5NgdkT2aljJKnFuSpshHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,15 +92,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 11, 2026 at 06:33:37PM -0400, Sasha Levin wrote:
-> test_memcg_inotify_delete_file() and test_memcg_inotify_delete_dir()
-> jump to cleanup before the inotify fd is created when cg_name() or
-> cg_create() fails, and cleanup then closes whatever fd holds:
+On Sun, Oct 11, 2026 at 06:33:38PM -0400, Sasha Levin wrote:
+> cg_control() returns a path allocated with malloc(). The two callers
+> that pass it straight to inotify_add_watch() never free it, and pass
+> NULL to it if the allocation fails.
 > 
->   test_memcontrol.c:1685:6: warning: variable 'fd' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+> Keep the path in a local variable, check it, and free it when done.
 > 
-> Initialize fd to -1.
-> 
+> Fixes: 5313bfe425c8a ("kselftests: cgroup: add freezer controller self-tests")
 > Fixes: 2de27980e1d46 ("selftests: memcg: Add tests for IN_DELETE_SELF and IN_IGNORED")
 > Assisted-by: LLM
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
