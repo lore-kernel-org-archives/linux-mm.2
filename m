@@ -4,102 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D63A3CA9EC5
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 07:57:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B682CA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 08:01:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ACC36B0088; Mon, 12 Oct 2026 03:57:06 -0400 (EDT)
+	id 373A76B008A; Mon, 12 Oct 2026 04:01:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95DD66B008A; Mon, 12 Oct 2026 03:57:06 -0400 (EDT)
+	id 324F26B008C; Mon, 12 Oct 2026 04:01:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 824E26B008C; Mon, 12 Oct 2026 03:57:06 -0400 (EDT)
+	id 2130D6B0092; Mon, 12 Oct 2026 04:01:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 59C496B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 03:57:06 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E0A1E1C435D
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:57:05 +0000 (UTC)
-X-FDA: 85313218410.11.C80943F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D3E2D6B008A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 04:01:26 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 72E1C120982
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:01:26 +0000 (UTC)
+X-FDA: 85313229372.02.995B363
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E45CEC0003
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:57:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCp5AN6k;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8630C40006
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:01:24 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LiCoR9Kw;
+	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791791824;
+	s=arc-20220608; t=1791792084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gowwe8axss2+O2HwBq41jmehPF78rOiKV0GKeG6qTnI=;
-	b=iW7VNvjBmzovdgYdYmn2+hNaG0ok3oQEpTOUe2YlM9j/7l6kZyRRZ/V/zC3iMo1wWAzgxd
-	l2r/eFq2AbSGTgYBqCdtTdxjID4Weo9rpsGKIGYFNrIER1dC3Z9kdaEBAJSvpz+UcvYy8Z
-	y/C1m3vonYbzktPqloQXbAotHsLJlIc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791791824;
-	b=eNSjjiAxxHAhQ9A+pcuAIkCWPV8nhXcv/0C6BJrrUDlq3tOZyqWH2M5IRqWtMsiaED2QBw
-	gvx6XvdmZW5hInCGtZkLL780tW/MbmwrbcFrpU397PJAuQi0G+Uly5HVch6IjXjtHvvzTF
-	1nIH5Ddqe++2nqm7S/wNj3bT4rh3tGg=
+	bh=VFJCTOee66kxc8V6r3kv+pIOgrnSLrYGq1H3NUTohKg=;
+	b=diSMSBWoUrm6VUI0/BIMOd9ecP1eIHcYSwZjUwYzvzt9fycNEj7RWOU/fYK1pTCuhwLpBm
+	vZePTl0yY6xt0IjPP/E7NaB4BWh4oGr40aHXyC+OknuaizYl7+9RfUmYj+RpNMj3b9SNeQ
+	xpaY3TRxIaBd0BFO7wJezE8MCrQqKv4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCp5AN6k;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LiCoR9Kw;
+	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791792084;
+	b=bohqirQSPc22uzcJvjUYRT3gAlRgtUjvYisied6lWq1wejov+hF/tudIJ8gRN93wqfFxyW
+	X7CStY/7n++q6zvuzH9bEfmv/eIsSGbv7LaAqGIP2F91+2KNMURQOzO6EaFbnF89d1mCDr
+	HBFozL3mFQ0i6B18R23VxwdFCuSaSOw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AEF1C444FB
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:57:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9707C1F008A7
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:57:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5802F44855
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:01:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339111F0089C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791791822;
-	bh=gowwe8axss2+O2HwBq41jmehPF78rOiKV0GKeG6qTnI=;
+	s=k20260515; t=1791792083;
+	bh=VFJCTOee66kxc8V6r3kv+pIOgrnSLrYGq1H3NUTohKg=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=YCp5AN6kOS191mseGl+KnE26nqDGIc9TCMHWBCPFSyVGzakxThxu4+h00m6+H2ojT
-	 MgK2QQ0lp+fmB1vcsEHNGXS+9GbTjxYbCFK/7GZMU6BFuX75T4a2LSbkG7TSI+ytPE
-	 QL+kb7P1BMJcWiR507Tnh/jg69j16hzJql3GOuBodlFPk7Mk+4JNyhTQHQhgiDje/A
-	 hsWAzV4aEWPFZ81cMF2g4H4WQZf/GoCUX2Za6al45NJr3lOictWLvr2KNIHKc5k5Mw
-	 vnejxbBp8aPdy040DJqX3YgaNH1VIleZJnEWONXv+hq7RPgHdeKUsH5PB1dMaXEKgf
-	 EttyiwdA9w0KA==
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-917b78dfe30so30679466d6.0
-        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 00:57:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz4jJlHEhuQupBFVuXGQ2p57NOeGOK2Y0Mmfn10zKYwQvXuZY2oNy5kh14sh3WcYhJHsul9hRHncg==@kvack.org
-X-Gm-Message-State: AFq9FYI39dvp1iwxROcfRxGvs+8ZxYQSeRCjL5AvYPlYeCp8zJRv3ZS0
-	PxmCqD6bU2Vusqdlxjb8TIrv66xWvmCjP9BNRf4ZNyvoiPmq+/re705yKvndKFnAB5C1COXb09d
-	j04qYYtICKJ+GqD8lgWU8QRWEgnsB1Lg=
-X-Received: by 2002:a05:620a:2b8b:b0:93e:c12c:fbb6 with SMTP id
- af79cd13be357-93ec12d082emr1367857085a.67.1791791821896; Mon, 12 Oct 2026
- 00:57:01 -0700 (PDT)
+	b=LiCoR9KwQklxGnaAd7874H4CHvE1PZVseMsln2OtO9mI46DAXRvjOBJfebS9dUz+r
+	 jzNk8f7IFnVlQzGA5WvcpoR7FBjn/KUIleYP0UuD/c/Pbu5uCdVDvdYKiHbBmXEukO
+	 i6j4cyRWy3EnThhhH/idFsTC7eXlXhP7DSqqENIubppmTxhPOanKOAgASMVN8/htR5
+	 o9z8jpoyoPZJjo0S21ZUlPW65ddTVsm1d/l/NJHx0vJN1TCsytw2G6pM7/ekjnCpWK
+	 l2KR6lg2vFszJRyE3ZRO4rCaORtn2UPSomDS0JzIkMVlXdI4F0Dn0EXqIfhl4Qz0uk
+	 cJNZWLrroI0TQ==
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93e762768f3so215228385a.0
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 01:01:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxB4C2uOExYyAHLFL4ZJmmErzDjiE2wbgyWgjCI26mIvpIeB/4j4R7kesrAvTYT59ULcbmMoDMpYg==@kvack.org
+X-Gm-Message-State: AFq9FYJRdcKabKnuqQIquD/zwUOkFv4Gky2H1XHX7bdd6Xe6dcG5Zm+p
+	ztJbGSANxfpZmtBiQ0wLSCHVtLnjlQNMOkt8AbKzlvp1/dSJRlx9b9n5T5K7+OirSF3cYJelX5T
+	M5l7m0e8UhM6BgyURg13AoHWA94wjF6Y=
+X-Received: by 2002:a05:620a:271c:b0:93e:942f:b8a5 with SMTP id
+ af79cd13be357-93ebd20ede1mr1614851285a.14.1791792082466; Mon, 12 Oct 2026
+ 01:01:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20261007153915.53429-1-alex@ghiti.fr> <CAO9r8zMHKmAQT8WBAd+kkQEjETVvyHhfbESzKHpXXPQJUB9nVw@mail.gmail.com>
-In-Reply-To: <CAO9r8zMHKmAQT8WBAd+kkQEjETVvyHhfbESzKHpXXPQJUB9nVw@mail.gmail.com>
+References: <20261007153915.53429-1-alex@ghiti.fr> <CAGsJ_4xyzgUH4uhKqpD7PTVuOzdsAkYgowsyn5iT1LHWiaYqqw@mail.gmail.com>
+ <CAEmasaWQm6DPqAhmW_z=kuR+3LDWJ=h+yM0hAs+ryNoFQd6qmg@mail.gmail.com> <CAEmasaXa2pB_Jm_VgBZAWQwu1p75yUSY2=dr0Opt5okLgWk-YQ@mail.gmail.com>
+In-Reply-To: <CAEmasaXa2pB_Jm_VgBZAWQwu1p75yUSY2=dr0Opt5okLgWk-YQ@mail.gmail.com>
 From: Barry Song <baohua@kernel.org>
-Date: Mon, 12 Oct 2026 15:56:49 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4x3JL9JW2cBXPo0j_8-2d6XQQGSpBAkSf-8Hw9N=0o=6Q@mail.gmail.com>
-X-Gm-Features: AclHuK8gJTkY2DRBIX9AcRDZ89iXtxeakHxULzQhlgHDZmLjl5T6JH2Ua3dDbhA
-Message-ID: <CAGsJ_4x3JL9JW2cBXPo0j_8-2d6XQQGSpBAkSf-8Hw9N=0o=6Q@mail.gmail.com>
+Date: Mon, 12 Oct 2026 16:01:10 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xw+CLzrazOFxnvJCbvG0qoauEuFGR6OdtT3x78ef95pA@mail.gmail.com>
+X-Gm-Features: AclHuK8IOexl_8V3bBRbq6TRfOHJmNLkbnQq5h2MM7v35kR54WFVJ9QbpGusTiw
+Message-ID: <CAGsJ_4xw+CLzrazOFxnvJCbvG0qoauEuFGR6OdtT3x78ef95pA@mail.gmail.com>
 Subject: Re: [PATCH v3] mm: bypass swap readahead for zswap
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, Kairui Song <kasong@tencent.com>, akpm@linux-foundation.org, 
-	hannes@cmpxchg.org, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
+To: Alexandre Ghiti <alexghiti@meta.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org, hannes@cmpxchg.org, 
+	yosry@kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
 	baoquan.he@linux.dev, youngjun.park@lge.com, chengming.zhou@linux.dev, 
 	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, ryncsn@gmail.com, 
-	chrisl@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, kasong@tencent.com, 
+	ryncsn@gmail.com, chrisl@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E45CEC0003
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8630C40006
 X-Rspam-User: 
-X-Stat-Signature: t9xqj197a6nk9pfhpuwh5ph4r41fc5dn
-X-HE-Tag: 1791791823-356452
-X-HE-Meta: U2FsdGVkX1+4QedBh0CAfnybg5s66+i8oZRXh6QrLi80IEwg1ZzIx1UjSzInoH4m3u+mVwh6mLu+20uIMzMGcFeGtq42JZ5nbXocMyTw7f+GjVw8c/6Eq4y816GuFOODNtKds3yy934/pwJRz99ajTcg7WErxqnm08lx83+wMWgneB3QsEqfcQze0ae6lU9Vgew3p7j+WodsL0c1Q5NS9PzJ9istQ/zDrzLTiBXDccatoGcJuxSA2QlISTVEs+pBdkb7gw5H1//r7oFSk35crrtEIbOZiSP1+/fIVP3jG3DRXFf4k8aQVqScGf4vrulRTtalsBOQS1aII58kAndIjiQfRYnDd4vd+V6ycxsfnt0KoauXBYuax9pZmTzInZv0mcnDeoj8/5yEzWrW+x+bdEOl0YGxhxN7IbT0H04j/GB6YmLvirGqNfzCWdEpLYPorBeaCjOiTDydIoAvdnfVJ3PB2pvCicleboJ1o21J2AAu0T22S/uLZ37cjhaXMGpo4HvFLV4AZZoKdyuZgkf5R/fifrybUq9TT5sMvyVzBktuApMdXMjzBgCFCa7EXySOsoPB1OYm9s2IYLaw8iAOQff6QoolHGgrlyaTU+jsZuUfkfnfiz4C9uQqDM54r50JW/aZL1kt5T8wS0pxfGzk4ZZVVsAPKGgf9SR72zWrXedW0/o3G6ZmbEud78aFlqgUFIs0WVm1cjFPdsd8/Jf+vuajteP8++JwTDx55WNd+KvI0M0KNg8qHkdejH8sgIq8QAWbmv+Exq6FDps1PzPXb5qXF9TWGRz2+crLVZnT35tP9mvea2Idu6AWsjgFdqdAQKmXOk4Sh38bM8NzxLk6uIYfOWZCbuFHBOdH9XNm4NAUeUS3xwv/7Tqx8E2WC08oHkrX02AIqWJ8oj5YhuIMEdfGSgFwBZnFJ8d+G9KAKBTkYpVStFtyumJL3rFXstwx/VSN6rQm5N7i9o52TM1
- edwKgsDW
- hDqZSXKuLfQTsoGIEommxtEIDdkZerzKnx4M9vkBg8M/7/IEm/p/SYlMECMk18KNVFmIEbMDlvbXyxE/l56lOdJeuj2SeILlwWVstxXPq4TExizx+w5lqlvgSskrKY3iMVSoFqJH0pHv5lSY1VdZ1OqCzb29J0Thu3LO8D2bck9oXOOKCFRjqQf2zpJnJO50KTpZ1hovo6XIe/Lz/0WMeIR8QDEJcwz6S+duZcrFgaFl1LOsy3oQgASV5JDyT4EPJJHS6jS09y/2wyUxghL3dvDElSS3CY3WPFsluTXOijn6X+x58CMcKbewLxS6lvTmaEplDXPRluwHwcFmTPf2bi7C0E5RFiHrQHqqlzvE3vWVJcJRN4Vt4yzKVmF0YVIPBR+rqmK7p2WMmo5YHMaiuzVUVQorktaU9Xhdt
+X-Stat-Signature: r9qk1mx1kckbagtokypriysgwo39aw3q
+X-HE-Tag: 1791792084-744922
+X-HE-Meta: U2FsdGVkX18yQIBbyBq5uLGXW/OSKqKZ5SSN8o/oClBl/+9QoTNx8FAyvIrALNEWs/AY2v8AwtMevsAezG1ORF7MBPABGh02y4TlYK9M0hwmfEOUXtKyHWr0PDtiPcj1O7ZxTP5jfHhSTu51jNDAEpzEXA0N2mLQx4JfxjQ8zGUQsWL7e4xv1sb592uLVJ9jvsjWHYniyLf5pk3AYwpeOv9TwvQyQJi0zkQRbjLcE/McFpsnQG4L17aXJ3daEbJMimb3AEifBMaVOJl1FrlzPWhMHuYr5FoeCFy/QpJE34/iU1hl7WhwFVqJhAJbA4ySwcHdgQmERLt4P1ZQtWuQPX/7DWMwH9arsfAIcvsvFySvea0G6YIc1GPt3L2Bn36BPmOIGsc+fPX1/peEofqJhzsauvTrLnT0lhbX/HutyTBd3+X0QVtCrS2o1FJOTTfGM2t8BoGdyBVe1PHfC622tF9FfkBR7f0ylKde8A6Hl0/F6pnwDz/q6gsE0GkzVYeM1v/aPVSE4Aqy+XHr6dJuX1SqHasQmT0Xu1vU3yVtsPB99s5XjoeZV98td8zDgvL0dp850B9s2T5AqDVc3jxwcnFiHAvsh9aXPC4BLVfQZgSd1JZuGwjA6L4Axr/bH84JCIAJk7AdRAYwXBSXuW9JfVaPAa9sIO3KyIoQoVISa67VVAgBaJgwSGg0lD3ILYfrcVzuqezyANmdVvYtcXeDQnoCl+TcXhUutjxWHuBs8VDZTNv5ZowhTxfdiC8LIOfa9ipCD9vzhBW3x58YF3tKgP9K0LnnfG9PW9r2Kb211rtlLm68ojMJ0RBnoIUlX8zAu6L5ivadaJogjjLt884ci/IKqyNgyQXYsi0WRCJA866AtTCC8UR4qyN5n0qLgwN2EDEKThtCPVW0JnJly3MGHPrEkJzSuMy5kiM0XpS0NeUtZSsthTGzWld8ezJGeHx9vqom9juLnowgzHK+yMz
+ 8CiULB6q
+ xf0pzuhp9bShdgEaHyc8NKb99XUapBVBZGyPGW6DRSryPUEwklRhf15ll+vvjRTTE8LyHZmtGsbsSqQu4ofx6fPlPa++81yVT/9DL8P71I9hsZNpVhBN9H+MR4XwDwu0PQ27tcGSZGiEW3nUa7zbVMEHEzGzEPK2RKC26kfaHnz0BD6budeXP5qDHpUAEB+hCYq+ZiaENbr8Xn7YynY7AZkDxTVSS6Cb7Ryk6i2PnUrT9Vyde6zjrOiiHN0P9P4VMmaF6CbxyK85Aeu6bYXwuRpkL/k2oaxQWxCkmkXKCZTCHbq+RUo8S9laszUpf2m0rS8JmU7iWO5q2uLtE7oOYfrni/T3kLqPvSNC1m5o+ql9exTIK1rBLs6SvSA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,74 +108,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 8, 2026 at 5:37=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrote=
-:
+On Mon, Oct 12, 2026 at 2:59=E2=80=AFPM Alexandre Ghiti <alexghiti@meta.com=
+> wrote:
 >
-> On Wed, Oct 7, 2026 at 8:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wr=
-ote:
-> >
-> > Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronou=
-s
-> > device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahea=
-d.
-> >
-> > zswap is the same kind of in-memory, synchronous backend as zram, not a
-> > swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
-> > swapin_readahead().
-> >
-> > Here are the results from bypassing readahead for zswap too: it was
-> > measured with a kernel build (make -j16) in a memcg, zswap=3Dzstd, shri=
-nker
-> > off, on Sapphire Rapids and 3 iterations.
-> >
-> >   768M memcg (sustained swap thrash):
-> >     metric                 mm-new    + bypass    delta
-> >     build time (s)          405.0       341.7    -15.6%
-> >     zswap-in (GB)            79.5        53.0     -33%
-> >     zswap-out (GB)          144.8       115.6     -20%
-> >     swap readahead (pages)  6.79M       0.45M     -93%
-> >     swap_ra hit (%)          72.1        89.9     +18pp
-> >
-> >   1G memcg (light pressure, build not memory-bound):
-> >     metric                 mm-new    + bypass    delta
-> >     build time (s)          177.7       176.0    ~same (no regression)
-> >     zswap-in (GB)            10.2         7.5     -26%
-> >     zswap-out (GB)           27.7        25.1      -9%
-> >     swap readahead (pages)  1.07M       0.08M     -93%
-> >     swap_ra hit (%)          68.6        87.2     +19pp
-> >
-> > Similar gains were observed on an AMD EPYC 7D13 host.
-> >
-> > The gain is from no longer prefetching pages that are pointless for an
-> > in-memory backend: readahead inflates anon residency and thrashes the
-> > page cache (file pages get evicted and re-read), lengthens each fault b=
-y
-> > synchronously (de)compressing a cluster of neighbours, and adds
-> > compression traffic when those extra pages are reclaimed.
-> >
-> > Bypassing swap readahead for zswap therefore makes sense.
+> Hi Barry,
 >
-> No objection here, I am just thinking about Kairui's LPC presentation
-> about how compressed swap can (in theory at least) still benefit from
-> readahead: https://lpc.events/event/20/contributions/2421/attachments/211=
-6/4689/Better%20Anon%20(Swap)%20Readahead%20(2).pdf.
+> On Fri, Oct 9, 2026 at 8:22=E2=80=AFAM Alexandre Ghiti <alexghiti@meta.co=
+m> wrote:
+> >
+> > Hi Barry,
+> >
+> >
+> > On Wed, Oct 7, 2026 at 11:05=E2=80=AFPM Barry Song <baohua@kernel.org> =
+wrote:
+> > >
+> > > > >
+> > > On Wed, Oct 7, 2026 at 11:39=E2=80=AFPM Alexandre Ghiti <alex@ghiti.f=
+r> wrote:
+> > > >
+> > > > Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchr=
+onous
+> > > > device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap read=
+ahead.
+> > > >
+> > > > zswap is the same kind of in-memory, synchronous backend as zram, n=
+ot a
+> > > > swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
+> > > > swapin_readahead().
+> > > >
+> > > > Here are the results from bypassing readahead for zswap too: it was
+> > > > measured with a kernel build (make -j16) in a memcg, zswap=3Dzstd, =
+shrinker
+> > > > off, on Sapphire Rapids and 3 iterations.
+> > > >
+> > > >   768M memcg (sustained swap thrash):
+> > > >     metric                 mm-new    + bypass    delta
+> > > >     build time (s)          405.0       341.7    -15.6%
+> > > >     zswap-in (GB)            79.5        53.0     -33%
+> > > >     zswap-out (GB)          144.8       115.6     -20%
+> > > >     swap readahead (pages)  6.79M       0.45M     -93%
+> > > >     swap_ra hit (%)          72.1        89.9     +18pp
+> > > >
+> > > >   1G memcg (light pressure, build not memory-bound):
+> > > >     metric                 mm-new    + bypass    delta
+> > > >     build time (s)          177.7       176.0    ~same (no regressi=
+on)
+> > > >     zswap-in (GB)            10.2         7.5     -26%
+> > > >     zswap-out (GB)           27.7        25.1      -9%
+> > > >     swap readahead (pages)  1.07M       0.08M     -93%
+> > > >     swap_ra hit (%)          68.6        87.2     +19pp
+> > >
+> > > Hi Alexandre,
+> > >
+> > > I assume your configuration is as below?
+> > >
+> > > / # cat /proc/sys/vm/page-cluster
+> > > 3
+> > > / # cat /sys/kernel/mm/swap/vma_ra_enabled
+> > > true
+> >
+> > Yes
+> >
+> > >
+> > > I am curious whether setting `/proc/sys/vm/page-cluster` to either 0
+> > > or 1 would result in the same performance gain on a zswap-enabled
+> > > system?
+> >
+> > I'll test and report back here.
 >
-> Seems like a big portion of the fault cost is still outside of
-> decompression and can benefit from readahead, but that isn't the case
-> today. I assume any future improvements to readahead and re-enabling
-> for zram would also cover zswap?
+> So I ran the same workload (kbuild -j16, 768M memcg, zswap only, n=3D3 pe=
+r arm):
 >
+>     768M memcg (sustained swap thrash):
+>       metric                                        mm-new
+> page-cluster=3D1    page-cluster=3D0    + bypass
+>       build time (s)                               530.0      462.0
+> -12.8%      452.3  -14.7%    452.7  -14.6%
+>       zswap-in (GB)                               95.7        66.7
+> -30%         64.2    -33%     64.4    -33%
+>       zswap-out (GB)                           169.3      138.3
+> -18%       135.2    -20%    135.6    -20%
+>       swap readahead (pages)            8.37M     1.93M    -77%
+>   0      -100%    0.53M    -94%
+>       swap_ra hit (%)                            73.6        86.5
+> +13pp          -          -          90.7   +17pp
+>
+> Exact same results with page-cluster to 0, so I'll add that to the
+> changelog as you suggested.
 
-In that case, if we can develop an accurate readahead algorithm with a
-high hit rate for readahead folios, we will probably also need to map
-them at the same time, as proposed in [1]. For example, if we readahead
-4 folios, we should map them all together in `do_swap_page()`.
-Otherwise, the cost of future minor faults can still be comparable to
-the decompression cost. Readahead alone would therefore increase the
-total work, which can be quite significant for synchronous I/O.
+Thanks! This seems to be a strong indication that setting
+`page-cluster =3D 0` can also resolve your problem, even without your
+patch. :-)
 
-[1] https://lore.kernel.org/linux-mm/CAGsJ_4xM=3DWnFO-OuwVude-DQ_UkaCi_zF_b=
-XBP9Li5+ZPNy0VQ@mail.gmail.com/
+But I'm still glad to see your auto-tuning patch!
 
 Best Regards
 Barry
