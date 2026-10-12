@@ -4,109 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 615AECA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 18:59:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AB6ECA9EDE
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 19:02:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29D666B009B; Mon, 12 Oct 2026 14:59:32 -0400 (EDT)
+	id 64BE16B008A; Mon, 12 Oct 2026 15:02:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 225E36B009D; Mon, 12 Oct 2026 14:59:32 -0400 (EDT)
+	id 6233E6B009F; Mon, 12 Oct 2026 15:02:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EEDF6B009E; Mon, 12 Oct 2026 14:59:32 -0400 (EDT)
+	id 55FDC6B008C; Mon, 12 Oct 2026 15:02:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DF5016B009B
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:59:31 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 68FB340C9B
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:59:31 +0000 (UTC)
-X-FDA: 85314887742.22.E59F034
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EAA86B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 15:02:28 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B1E421412BC
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 19:02:27 +0000 (UTC)
+X-FDA: 85314895134.25.53ED408
 Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AD0B840007
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 18:59:29 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=wuqJNlLp;
-	spf=pass (imf07.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+	by imf09.hostedemail.com (Postfix) with ESMTP id F2FF0140010
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 19:02:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=KPIVWejy;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
+	spf=pass (imf09.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791831746;
+	b=Nwmed/TqlOH95HgC4vHo9UhThCrsaEm8OFnnQ8DAdLnGDnLGOmMWHJLEu01LjuOusgx8je
+	CxHMOjlORBM/matSSKmmsly9kFT64W78lIFItRov7OK12gWtbQpcyodVmSesTULgc1IvMV
+	iDJMQ5xQjJRAAN1zUdoFHpxjl9XM4a0=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=KPIVWejy;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
+	spf=pass (imf09.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791831569;
+	s=arc-20220608; t=1791831746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xABwQzsz7Q7HeYTm3a7cqXm8Re+2/3UYBe4Ql6Rc5uk=;
-	b=YKDpFaQZdcM7dkBCL3M1YnAfuAcWx5zRc20Wrt2zC7phgUV3j6U+OQmsh3GXS+6VoQWUEG
-	qF89gp8iJo67XAiypOnvcXca22x79GWHwIFZWWb7ovEBEj5Y6Xo8jMGnRixDWc8q4kHUc7
-	sP92re1/+XAn4jX6yg4NAl9dkQeZiXs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=wuqJNlLp;
-	spf=pass (imf07.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791831569;
-	b=mSryphQGbXOxlfep5hUx+8YrABuVx8z2cSMyPsAqA3BJIMzSpePjvzxOVBoy4qoNqJYZyM
-	AmJlMpnB//CCpvqRuh+u2hTZQ4ANuTf/bghFeoh8lBRJKjcH0QpVzpHu11NObBp2zicLvD
-	+NfmxjWwumLpPCskJsd6Wp18fRxjSIQ=
+	bh=0I8GOwsNfVBf1ocQIOmC6adonpYL2n9Kt8qHuFjsm9o=;
+	b=d0XAs38Flewr41Thh6ifx9DswhMo4osl1EBmI5RlfuaNmY53QG+1cOltBLz+3ObQuq0fqw
+	2ZgWsBpZfuj9mc9r3bw0Lf7FLkPPtVpJKnkfEjuJG8NnZUa3LOOOfVC0o7nmbxdkCXzfo2
+	qaxOyH2o1uVxVDZmscYYi6E+7RSizX0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
-	:From; bh=xABwQzsz7Q7HeYTm3a7cqXm8Re+2/3UYBe4Ql6Rc5uk=; b=wuqJNlLpTPZXGeWPY6z
-	RbmO3Xtnk2lTELwJlu8MCShhrdKvYkJq9irIolxAXzPM0naiCrGW3pH8qr54ncd++swVD7hXNWoBz
-	hEHnkbdPAi07FA+8ZpDtydwtxFnao/WsBWoiLs4IHVuOuHdo3j7Xm7F4djjbG1tfSYF1pZRSsaYrT
-	dln7qcJPBYYpbug69GSuHVpv77hDNNZ9mQLBoPf760E6Ylp9MwUMAoigjb6FWXzJ1vD2Y2qbKAEX/
-	iS1grzdQGFbdPn8o+YaOQQOkUoTW4fQ+Hww32qQYInENDATweU+fW25vXJ/qhhhfRXBtvUkKykUC6
-	RhrN1IfJ3FordbA==;
+	:From; bh=0I8GOwsNfVBf1ocQIOmC6adonpYL2n9Kt8qHuFjsm9o=; b=KPIVWejyViqjaa/MrnX
+	I2L86UP++7eo1ClCfbW7c4BLwK9juPQXZEZKcXpDgXGuJ1Qj2lD0+Y91JYsUuGEWuLMxXboiqiCY8
+	7lFxWKNkU1aa9xy33O12hZRtKMeqXR319CZ7yfVi9lgo6kDP8ghl1Y0Hcmd0wEQPhogbe819eBEfE
+	Ej5vZM8i0rKUU4bxyTOymzyj09u7gYqIE3+kqLSQviTmWccHdunXlXfy+iReqUMCnAGER+SIgmCUD
+	8eDNZ1GEIbSFP5JsBfRFefL7aHZvwlt5qoMm/n5MtRhuGiIkRpVTs3xYTIb7O92Li0wJ9EKkSxbNr
+	pkfkWDp5L6simrQ==;
 Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
 	by relay.virtuozzo.com with esmtp (Exim 4.96)
 	(envelope-from <khorenko@virtuozzo.com>)
-	id 1xGLBb-007pPW-0K;
-	Mon, 12 Oct 2026 20:59:08 +0200
+	id 1xGLEY-007syj-2S;
+	Mon, 12 Oct 2026 21:02:12 +0200
 From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Date: Mon, 12 Oct 2026 20:59:05 +0200
-Subject: [PATCH 1/2] selftests: cgroup: skip test_memcg_sock under
- cgroup.memory=nosocket
+Date: Mon, 12 Oct 2026 21:02:13 +0200
+Subject: [PATCH 1/2] mm/shrinker: size shrinker_info_unit to a power of two
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261012-b4-prep-vstor-149854-let-test_memcg_sock-compare-flushed-sock-stats-v1-1-bc864b1950ad@virtuozzo.com>
-References: <20261012-b4-prep-vstor-149854-let-test_memcg_sock-compare-flushed-sock-stats-v1-0-bc864b1950ad@virtuozzo.com>
-In-Reply-To: <20261012-b4-prep-vstor-149854-let-test_memcg_sock-compare-flushed-sock-stats-v1-0-bc864b1950ad@virtuozzo.com>
-To: Tejun Heo <tj@kernel.org>, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>, 
+Message-Id: <20261012-b4-prep-vstor-144715-size-shrinker_info_unit-to-a-power-of-two-v1-1-5a7608393b7a@virtuozzo.com>
+References: <20261012-b4-prep-vstor-144715-size-shrinker_info_unit-to-a-power-of-two-v1-0-5a7608393b7a@virtuozzo.com>
+In-Reply-To: <20261012-b4-prep-vstor-144715-size-shrinker_info_unit-to-a-power-of-two-v1-0-5a7608393b7a@virtuozzo.com>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
  Roman Gushchin <roman.gushchin@linux.dev>, 
- Muchun Song <muchun.song@linux.dev>, Shuah Khan <shuah@kernel.org>, 
- Guopeng Zhang <zhangguopeng@kylinos.cn>, cgroups@vger.kernel.org, 
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>
+ Muchun Song <muchun.song@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ cgroups@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1810;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3121;
  i=khorenko@virtuozzo.com; h=from:subject:message-id;
- bh=NDcnXEQvkxTSDc7OEmOpPUIL28bEAcCqKO16/nQ9nHY=;
- b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBqzS4Dq31RlSyeRnJrQb5BqdajPr4aqA1nSsHEP
- tO3tnluCEyJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCas0uAwAKCRBRlgpH+WFc
- Kq9zD/9hCfrn+3/QeRccmHR5iUlw8bwPXqJF0/A/r0TWCtxaq6wsiclWoWkfYmVqaCiIBssMXn/
- wQYqt8NQcCMiGopXo+1sT6yiEjE1QY+WVSkAFi2SooA0ums9KcN/RqvH4Y3ei6FnGy51pL1tPXR
- QhUqk5B9HEOpLdj05cjU2unGkTS0+a9eZKwBG9J3BMENdXmtxzB6PVe77COpbQFbFrEQ1XOZKC2
- KL0Cr2fE7lsDn5oeDCNQcklnquShVlaUbQ65GauytxgDrVfdbaz3noDy2vntGrDOBlkr+pI2E6o
- FVgoOObbPMejOgXEXmUzM4rh7E7AxACvZYse8kAG46RLp0+fdk5PHiXMdOhannqA1w1wIQGFn6N
- XBiUciNPno2Kyhz6EZaUxbXCsLTHIJsZKbBc3p05k2eQrC4W9zWNgh0F4Ip8M5gFvU+TfGNZZ0P
- GQUMVIAXFg9wYJuoXEYqtc6Wgf21WO4Aq3wC9A1C8kgVkM/ompDWh4IYVIPY8uftRi1rS+7zkWl
- FBcI/fbSNktog4X2gc7jWOGPyyHANwD7cDXIJSaEtlrSpsuWHTJHnPMFcpQZ7d4t4ElMEpIQ4h7
- ewNE2mTnItIMoukD/Lg89R7/x9Fp05p5AWHvh8lekHFg6xx5FK0WBp+fwesnCxWBFdRAQKwCug9
- Wl4TFPQ6oDmWBTg==
+ bh=sgqSFWt9QMaYDbRATjwngu1xgWH6JMIrDwHY0LfYDgI=;
+ b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBqzS67Pc6tMLHtOZDm0nqsnTDjnJAAAjUD5NZnN
+ GVUqCYMcZaJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCas0uuwAKCRBRlgpH+WFc
+ KqGbD/49yWgPWlLPSl3HXbdfNNzYwu0VYpGP0ZgzeFk1e9Rhcrgf5Yyt9gIQVQyKvrQY8icvmJg
+ qbenPSuqznrQoyPu8h/ZxP/hyO/puP9PFQs8PlR0sYiLsZ8ArLOrMMDHCcgLdKdq6MWugLGICQZ
+ viYJ0mvSbL0OkXKgq8FK9iczkJArFQNeNrpKPMX5EddIhE/X/eknopupw7EoTpKtCThRgt8tXOo
+ oeKPvgZ2+U9E3osu0Q6E+tLRY5hqi+Bm5NISk2XrbNgO8p414M+Zq17bzYAZfQr1CtcOGBQB3Ih
+ RoDbQ3WNyHgu0k4OKruYPCoDHcAGgnerDWry7oZQOCvMnKq8ICtmABTQCBqGgGS+FuweTcTRyaE
+ YOYsQqhdwtQRn6FMMT/zd9SnvH/NIlUwv5zTxVom9/LgC4RwlPaHabbcH6YeP5WsrLCQk89cHOa
+ umQXigP7ijQtXlKfFPUS1/t7DiO/1abQSyByF0uY9cANTNcMjuQ9Ig+dc/oLayRpkpqrrv2e+Qt
+ EMO4XwDp+CA3zTkjMOf8FFC97bsfC9l+JfblFnmzbj7Q48z7PKY3vt/WGUaExWhXSm1ZNOJPWbY
+ voEFYRYCtSohnaICiDj78D9AVgeWKLvWw2rEyYtNfp1ZIej/bOB1X7LJPjB7XBT75FTSgUQSttK
+ xX6gB0I2p6RbXAA==
 X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
  fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AD0B840007
+X-Stat-Signature: 77dwyq8db6auey8yx4tjw7fkbebrow5p
 X-Rspam-User: 
-X-Stat-Signature: nnbzi53ojhqhiu45a3z4tnzddkgj3ath
-X-HE-Tag: 1791831569-409832
-X-HE-Meta: U2FsdGVkX19UIU5WlnMOkqInjRX5SDqEbdFoNVJZctuTXqHcZ45UXzpQVZ5Vd7fjJbt6TNGNaCaQSAyP9KiPZyuWg/UUF58zgTdWovZdJHrIjn0yuVEPZlUCwlmnD+vbe8HugJloclHJQtmiF9XXXQjRWaqeYzYnfoM/djuLbw+FiKqt5VpGntSVwI/BTMs9JIEB5ltjyOJLzUX2Btthoxd9J1Piiw5e5/vBxOgahb4AAq+83UcIciYXUCGUZwFhrv/S+gg0dAShunjxxt9c6+Qm5l0nK5hsZt66bM6Ue4RirqyveK+urTFPyjXrXCv46QwknXjW/Ztd4jdJdv02RnS8ogBB6X1NUTOpv4bLCX+xPKu0s+cfmAsn01xWhpdGKseHlDzLEJ7GHlDfbM1c29e9puEvu3kR9NNoKARSU97/lcoxSfcZj8laaBZpvEunzr2Ixel+vASmYB1B39ybKu/b77iSkzr8TEz5BTbzSkZzm1IYcRUiXNB4vV9wcUwL735gleRWUzccHcM5Fi4XJuSc+EBSNuBhOxOqPk1mQfMs/hj+pFKRR6LnfW03cbcyzn1BiCsHniUntq98X7GrAZMjLRhaaaX57a0v9mmE/5q0sk0ecluBwDjJ+k0LqLkbYJL48LvJoQXuTK3JNm4HrAxB5wYTi9aLWeubGRk9p6Zl+hz7o99KlKWEHmtjmeA6fah+QTDz8FHW2qEn0+RxdaeZZmd69/dESDBo4NvbV2+nCiFkf3OCFuhWGdoUaOUusyov2cbdtJFjhP15zYc1A0lJc+6j/faptAApFuhEU2lNu9iSomdSLTiy6NKZduD07FHcd56ZCytVcuvyLRRwJ4KpAMLvmQXizbAT4HgtkzpjUi97iEaEiO6Tl0DVwRdBbNkMI0plPkUuhz/2oQQXdHiZtnwO6Ynz3PnpPeLIvLMBlHs5zvSiYStWvWoCDyt304izF2NKevb5rFJ+qU2
- 2f1LLADl
- j/KSB1tQrArcBgsgs1qWf3iJOjV/00f+Cwx5ybt0fMWpcq0s8o73nmJb9+L6Zu9XCWh2ftk5Y0DxVcj2RhZo3B/wW1+pQVJkqhOf0Wdw2/oT2QXyxAf0o46PTa9vw/kDCoR2f7/QQYvntnJzC8w3obnpsNU+OWc2i2LEE06bKpUot5jDqDmApHM/G7PZGr8Y4utG7rcJxHzzR/zrQE1sgaYq+4rE0lc3miHwlxZ9SKNw5s67KheH7WTTsvaO7kukbhxut5GIOSW6FmCqzP4lBJdmrbCFXyY0wLzhT6/NWGEOAZuMEdHt2lmRfpkZ5I7clHDjA9hQfQ6VMeUo=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F2FF0140010
+X-HE-Tag: 1791831745-504710
+X-HE-Meta: U2FsdGVkX1/WDMTnsrM1oTpK6c8oazYL8BkadKh7dU7QtsCoeSgBz7UJIVEcP0h1+SuxCmdsvCKXIhnilLnMmPpvrvcnC4nFnFhBVj6bQlJN3tzjuegWBWASptv2TkeaeoeTNYA5LDpBbb2o6kkZhiiI+k44/pPiKddDr8dG5Z3pYV5R4CS8wETxVaArNYo7yoxT7Ot4iU52Jd2dLicOHC019XJgdD7GKYkiGFB3AVtbRwSnFTtAAM96VqCoyc69zh/eG4d7OJ8IaNvONHtFZy0M+JIDqqMDt9XsLdTPBzYwqiOifkHapubIzK3WDNLRBdTpLLZkKUdSsfjOJNCLBK2Jz3TIh810DqItF36w6PIlh+D91eOXsNSXI9ciOVfg3U5Dq2rA08RUAoUZV3WHhsgm4QyHkoHGYK2fL0OAUMT0eELeYQV10y+9t9tR2AZbQmBzY306x4TFlYbuKfspz7oDqiqcI/RwH03lZXhkS9zDUm0FvBEvKGndoSvwe/+rdI0j55Q93U3TfOMmqE9IOVnYg8DNEJRpfDsDf0yNVZXCqvMnmi6IwkptRse5dWCtTQZGJDjT5UI2BcW8CmGfgBS3lIy2HI2WSc+2zd3MomLr1Afiwqm89x8flRzWYOjiZYsc0TTdQ7XjNyN3zZdDfsCacfOVBu/oKr8XYRVjcSQy7CMhON1yaB7gX6wsIZF0g8zLuBmOdKG2x8AMLYEp4sP+ffyfn4RIp3UEPVL2BXNMdwDw2NRsC5EBje0iTSrUHVViSzJhEWXBXVG1rHyopAc+6sT6skPfVvPZ7ZdjmrmqWMOIOjtLRDhiTWY6w2WiRVhfvLJ1W2rp+/friyLJeeGd33hAesw/D/Z05irYfNS2VMpsNYva86jFq4gtx/xz+lZJhcah1TpfK9QDO6N7NQFF8bicIJLs+3/ZyqvmEejaJWAAiTZNhhvZyH/bvbi6MdFNcirNZVIJJO1sa/d
+ xNycuJma
+ bGQRTw3ooO8ZdKngWEQ1zpBLogqkbC7ZMzENuThwLQre7yByzVJJTZExof19XXKlphEGfl3ZV1JLk7UjbBa8cdx89jAguuomsbLFBHKIhpjQmPpk2dfkxQ/3LY9EEvJ9MWC4o6YWqudtoFBipsbxfsTutPsh89yljwd+LE/LKW5MVucN16cwWDSYWaFVD2L1L7U5iqbiFWvSPooGLAjnDIpn/PBP/Z38ZYy1pzxvkCPfzS2goRr/tNDtAKmLKL659grRyUWrziKOwaJOAOTf2gqxd9LwGhQo0T7HD8lPgPGKcXr5mv7VnJwmm1maJidNnfRWK5k/Hnv6zf9o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,60 +111,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With cgroup.memory=nosocket the memory controller does not charge
-socket memory, so the "sock " entry of memory.stat stays 0 and
-memory.current moves only by the kernel objects accept() allocates.
-tcp_client() then passes on 0 == 0 without having checked any
-accounting, or fails if those objects took a fresh charge batch.
+Every memory cgroup allocates, per NUMA node, one shrinker_info_unit
+for every SHRINKER_UNIT_BITS shrinker ids up to shrinker_nr_max. The
+unit holds BITS_PER_LONG atomic_long_t of deferred work, a power of
+two, plus the one-word bitmap of shrinkers with objects charged to the
+cgroup. That word takes the unit just past the power of two, to 520
+bytes on 64-bit, so every unit comes from kmalloc-1k and almost half of
+it is padding.
 
-Look for nosocket among the cgroup.memory= options on the kernel command
-line and skip the test there.
+The units are allocated when the cgroup goes online and freed when it is
+freed, so a dying cgroup keeps them until the last reference to it is
+gone. Their number is the number of memory cgroups, times the NUMA
+nodes, times shrinker_nr_max / SHRINKER_UNIT_BITS. shrinker_nr_max is
+the peak number of memcg-aware shrinkers registered at once, and every
+superblock registers one, so a host that mounts many filesystems and
+runs many cgroups carries the padding as unreclaimable slab, and keeps
+paying it for new cgroups after the mounts are gone.
+
+Let a unit cover one id less than a word holds. The bitmap still fits
+one word, and nr_deferred[] plus that word add up to BITS_PER_LONG
+longs, so the unit fills a power-of-two kmalloc slot exactly and, on
+64-bit, the memory taken by units halves, for about one unit more in
+BITS_PER_LONG.
+round_up() in expand_shrinker_info() needs a power-of-two step and
+becomes roundup(); the other uses of SHRINKER_UNIT_BITS are divisions,
+modulos and multiplications that do not care. Assert the unit size at
+build time, since the layout depends on it.
 
 Assisted-by: LLM
 Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
 ---
- tools/testing/selftests/cgroup/test_memcontrol.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ include/linux/shrinker.h | 9 ++++++++-
+ mm/shrinker.c            | 2 +-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index 0ed82347044ed..a24c1e07b2035 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -1379,6 +1379,24 @@ static int tcp_client(const char *cgroup, unsigned short port)
- 	return ret;
- }
+diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
+index 1a00be90d93a9..c250ab68d346c 100644
+--- a/include/linux/shrinker.h
++++ b/include/linux/shrinker.h
+@@ -7,7 +7,11 @@
+ #include <linux/refcount.h>
+ #include <linux/completion.h>
  
-+static bool memcg_sockets_disabled(void)
-+{
-+	char buf[4 * BUF_SIZE], *opt;
-+
-+	if (read_text("/proc/cmdline", buf, sizeof(buf)) <= 0)
-+		return false;
-+
-+	for (opt = strstr(buf, "cgroup.memory="); opt;
-+	     opt = strstr(opt + 1, "cgroup.memory=")) {
-+		char *end = strchrnul(opt, ' ');
-+		char *ns = strstr(opt, "nosocket");
-+
-+		if (ns && ns < end)
-+			return true;
-+	}
-+	return false;
-+}
-+
+-#define SHRINKER_UNIT_BITS	BITS_PER_LONG
++/*
++ * One id less than a word holds, so that nr_deferred[] and the map word add
++ * up to BITS_PER_LONG longs: a power of two, which fills a kmalloc slot.
++ */
++#define SHRINKER_UNIT_BITS	(BITS_PER_LONG - 1)
+ 
  /*
-  * This test checks socket memory accounting.
-  * The test forks a TCP server listens on a random port between 1000
-@@ -1394,6 +1412,9 @@ static int test_memcg_sock(const char *root)
- 	char *memcg;
- 	long sock_post = -1;
+  * Bitmap and deferred work of shrinker::id corresponding to memcg-aware
+@@ -18,6 +22,9 @@ struct shrinker_info_unit {
+ 	DECLARE_BITMAP(map, SHRINKER_UNIT_BITS);
+ };
  
-+	if (memcg_sockets_disabled())
-+		return KSFT_SKIP;
++static_assert(!(sizeof(struct shrinker_info_unit) &
++		(sizeof(struct shrinker_info_unit) - 1)));
 +
- 	memcg = cg_name(root, "memcg_test");
- 	if (!memcg)
- 		goto cleanup;
+ struct shrinker_info {
+ 	struct rcu_head rcu;
+ 	int map_nr_max;
+diff --git a/mm/shrinker.c b/mm/shrinker.c
+index 7ec2a9704f6f2..a9418072a509e 100644
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -159,7 +159,7 @@ static int expand_one_shrinker_info(struct mem_cgroup *memcg, int new_size,
+ static int expand_shrinker_info(int new_id)
+ {
+ 	int ret = 0;
+-	int new_nr_max = round_up(new_id + 1, SHRINKER_UNIT_BITS);
++	int new_nr_max = roundup(new_id + 1, SHRINKER_UNIT_BITS);
+ 	int new_size, old_size = 0;
+ 	struct mem_cgroup *memcg;
+ 
 
 -- 
 2.43.0
