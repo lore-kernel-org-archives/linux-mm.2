@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CCB6CA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 12:57:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8491FCA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 12:58:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 700E76B008C; Mon, 12 Oct 2026 08:57:11 -0400 (EDT)
+	id 666926B0095; Mon, 12 Oct 2026 08:58:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D8116B0092; Mon, 12 Oct 2026 08:57:11 -0400 (EDT)
+	id 6176C6B0096; Mon, 12 Oct 2026 08:58:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 616AE6B0095; Mon, 12 Oct 2026 08:57:11 -0400 (EDT)
+	id 554E56B0098; Mon, 12 Oct 2026 08:58:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F9086B008C
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:57:11 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BFB4740D62
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:57:10 +0000 (UTC)
-X-FDA: 85313974620.27.C3EF530
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3195240003
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:57:09 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jJFALB2J;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3023E6B0095
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:58:27 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AA005120D06
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:58:26 +0000 (UTC)
+X-FDA: 85313977812.20.238D057
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 100B7120006
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:58:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AtbQWd/R";
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791809829;
+	s=arc-20220608; t=1791809905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cniybAFPuYmkywYYtlFXNwkUQYMBMbCpGkul4BT0ctk=;
-	b=WdtwAGBe286XSMYCgc+tiQZ0mrsd19pIZWXlbyil7dmsxqMnF8cHmsVv6CZQ1OpRd/Konz
-	ewhef7KT7nQcaapkJo6e4FMy0pOunbuIJLZLBJLoBJ5RCyuoltUQSd+E+LzdSRlrN84Q+y
-	i4FfJQnZn7MFDsJS8Lzhy12sczatX8M=
+	bh=eCffV+LjU44fVuxwyaH6GZe0H0I+W3HmXDUIbPeaT3I=;
+	b=8UzWMRU8wc3D9t9oE9FRZ/zeCKT7lLlJESqJS5xbnIylSs/Es1+nN0RrJbetDFXyQxrrQ+
+	2GLYY4fPGkTBZ3Fva9N+mawW/UvTmLHP7xAPVn8iU3NCuYL2uPibqu5hyki+jNReGIKGet
+	Ahs3XR379mwwJ7Lp6Z3A27rv19QBQNY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jJFALB2J;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AtbQWd/R";
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791809829;
-	b=xIK5bcG05kO7AcBM6V29+LDE/jI64BkfTE75HMzu4MxL+XS8xjNUjzOLUsqXXSWM7F5fDV
-	Q+ytyzvzGR9FvXKEMLDOuvgcKiAub5zyxm+GmAPU4DsRBj4lq7zmj/iHmuiOkspbzVxw0k
-	bPFxK2QzDG/WrlkV3rU1BeAdGolxvZ0=
+	t=1791809905;
+	b=S9+UF0HxOu0QcXo9GaCycILtmiSExpGpbXXKxSoHuat6bEsY4x2XI5+QwGrRddbQdeu4ln
+	57z+pCveE8qkCV71pk0qI+3ieWAXnPhRsTFpcRR9Y6qFkZlkDwq1IK5DMBIbMSSoYtKqbK
+	/7OUaE7lvvTv8PDFmGf6woRgD5EIGJ0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F30FA60D7A;
-	Mon, 12 Oct 2026 12:57:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D7D1F0089B;
-	Mon, 12 Oct 2026 12:57:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BAC4B43264;
+	Mon, 12 Oct 2026 12:58:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65521F0089B;
+	Mon, 12 Oct 2026 12:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791809827;
-	bh=cniybAFPuYmkywYYtlFXNwkUQYMBMbCpGkul4BT0ctk=;
+	s=k20260515; t=1791809903;
+	bh=eCffV+LjU44fVuxwyaH6GZe0H0I+W3HmXDUIbPeaT3I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jJFALB2JergrfKltKzSDa4LndCsJ4Ai2YPpCcn2cRk+4Jv/zcP0vM5K7s8F3bxlzs
-	 BG7j65wRaEqUbyBlnt9u6v1yfXxWy76eKajJttqPPNp5x0Jlfqxu+jUF4aoGm89i/4
-	 tlxsiSbXgjE3dQ+JcvHtHMbFqvf7mAIg9hTlaxk1kmk7EoIs/+cJQeEXakAakKYYQV
-	 3YDOiIcS5l8F7hRsmoADhnzUk6WjmbnUz4k2vorqyLpB/MT+6YQm/b4GYDJ7uSylAe
-	 KFJfcn70bOLzakvPy8Zup3p8RpB6qiD73dpgyz8U2Q5u6vV0MaxrgNr9dxgvxYTumg
-	 vuOiMiu8xjmkw==
-Date: Mon, 12 Oct 2026 13:57:02 +0100
+	b=AtbQWd/RyZIQcaJSOx4arO+G10/M9zPE282t83jiUPnxcFMILI/MR5c98mRbJf8L1
+	 1pXTATvUmoZmucTydvz2d3g18BgZz/thVtXTRpqMuILL7E5tjZTveHb+IawsOIhY9Z
+	 ZCZR+vhM8poY6rmI3ZhSS2LZllcI9jEFLl6Fl0Z8A8qQIDUFgsVSBp4YDvdXANnlLH
+	 rfqbOeJXUC4hK6qHvY8yh/6vH65kg9ad1AB+kMwWNzkRn89CoShs5r7ux6lkVKuIQg
+	 FQ1s1nUBFaZOg2uxuF8v/vZOxIaQY7qPMHVtXbZ0r/JHUMBlP7WDog9T338kfKKYtx
+	 uxpjrUIn73aLA==
+Date: Mon, 12 Oct 2026 13:58:18 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Gregory Price <gourry@gourry.net>
 Cc: albin_yang@163.com, akpm@linux-foundation.org, liam@infradead.org, 
-	vbabka@kernel.org, jannh@google.com, linux-mm@kvack.org, 
+	david@kernel.org, vbabka@kernel.org, jannh@google.com, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, albinwyang@tencent.com
 Subject: Re: [PATCH] mm/madvise: add cond_resched() in THP branch of
  madvise_cold_or_pageout_pte_range()
-Message-ID: <aszYQpnRikFRuSYN@gremlin>
+Message-ID: <aszZPq92qX3jpsNE@gremlin>
 References: <20261010024042.4070048-1-albin_yang@163.com>
- <bd78c58a-f266-40bd-9290-90f77b8e4225@kernel.org>
+ <aspKmWIrOzNjiP-t@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bd78c58a-f266-40bd-9290-90f77b8e4225@kernel.org>
+In-Reply-To: <aspKmWIrOzNjiP-t@gourry-fedora-PF4VCD3F>
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3195240003
+X-Rspamd-Queue-Id: 100B7120006
 X-Rspam-User: 
-X-Stat-Signature: jtug94mn6qkoq3w51b57m1ay7zhtabot
-X-HE-Tag: 1791809829-480009
-X-HE-Meta: U2FsdGVkX187ou/Uvkpgsz8URYQlMT9YRYXPz0KyD9y9P7C9WchqlqR+O9sZLThMFG2Ak+Z5yaGG3JWkyS/Te7e507+bGRuA8Guqy3fIhrn+RbbTrT8r6qKNjEtze/LrWMT6ttgL891BUeLb3yadwYrh/JnaI6kqz+HvCAn0kUFzoKj036WuRcr4FX1fFiwM1BBNw8a2DzK4adgNKoaJVwdUqVM9HXUuNtS4KGsR4uKDtSuw4hGGRxbKFneVmp6eDC3OnfbwDv6aEBUDBv8htxuIbACiJHBgIAx4l9UeR4fGQ/sewHYHv8F5qeWY+3SfkmzvFtOFfEybVJ3TuM9zE2/EqCraW8gC4ttd2nRdjiUjpyyYgufX32HeYEeFGqrjKmlLkxsAHOLDQknN7YUT4HmkuRhhOC7TnlmYwJ95dSdMHoHUV6cDFsz535/rSo4W2lZOD4xqhMms+jjCucHeH0569Lg6AjZO15vIPxiBsd7x76e1Mi8WV4+/OAIVZkXRWBMtKWQdJlkunSm9/rIjTntUfvy/t7k6z5METg3xCzmGrSe700a9o6PwofUS1B2YNe7k1sc8nLUEO5xy1MjAVBnJv7v2aZV8uOMIfq/qXZksBghVn0EOZfFJ3NnGA5kL8ZWyNk47c6GigVgcnxWYBkxZvfAPTn58ZKmWVqtZDnoiD8ctJTTJL3/K8nEjlWmYuKPLNCu1ptZFXJsQidEXLhSw79d5PetFxjsdbrlzecpvIsnyWMS4ZM8WA1mkR05GfCxOfr7QcHkt9jrIhUJApuv3AHATxK3Fe0BXyPqeNZeP2DVvWemC8IIC1okNwUK9Zo5vFtbpTQopDQnhNF/kJxTwXTYtoTipXVkCd8GZ77i9Apejj8eEmyy+g8HObfJV7OEBQSBeESDEXyWZU6JfuM6pchTI1mg33jd4eB7H6c02LqbeuYbDHdHwuIigAAQWSqAnLfiQEpnRVq3ikC5
- CrU069JU
- ESSXwdvMpyuThqYzQtVsE5VvwrbLm9cPiBgzlzoSdPjPrz7m6OiGwpzJyqkbXqUWEhm443Uf2xm7xbEcnYOn1UYd1Q7R6uJBomtz7xva0Y8AiL7zrrCXzTntFcyOS1oND8Z85Igp620f4LzaDBQdJYCzXUkPZRttUuy6FHiVGg8PpgSoxeBkeRHZtjyeXQq3O1EYqYV+4uAPuCz4xbM1kx1Rm5FNnZmpcLW940V78qbhnYekBggimWsPqiOb4GBOB9fhUJZpBqdYebosFF9SzIsznfucBgEV+IABuf7AEHyQji3hkCYbkm8zYx6XLTmltTCMN7E1hF1Itw87P2xMWxf4i7pbhxAnpNEO/eFlCUY8bGueHxylkZ6xAUQ==
+X-Stat-Signature: qyx1mjqbjia761bw6ekjgff9kii845ub
+X-HE-Tag: 1791809904-474111
+X-HE-Meta: U2FsdGVkX193dotSZk75PaXD5uLvU6yLZIgTjLYIRtGTBjglXKZdEAvkRid7TfX7JkAQYUNRbVyEoylLFPAVwIpypEab5v3ZmIa9ELuLtU8ZyglEEyZ0SyrdyUvcaQeSRHBIXXnKIg1giPoudMnT8ujSCZPvqHf76s43jvbtAgEIiz5jIWTBmw8vnUC0lhBKRYJDIiGId3uqLyllPhbh8R6FOZzW3ET8Cqrt5FWgzhm5htlVdVzEcPp5IYCGUClP+4fEkbvuBCMY1nNSxbgwKRPevjqQARYT8XlS6RDyWQJEcb/O8epDaHV3hMinL2KxIaSn/Au94eC5XUXX6T0pcnWZF7pNVd9JMoKdWkrWMhqG9OATujANt6A4F21A/JgOycKSR57f89c+M3v7d5cc2zY4+bhrGH/2+yx7XjbGVHKFamEfXwDZ7AbT+x0fCdhoZ5egEaS1xj5YVwNlnPZgxvr01Nc06xtb9FJwkxxRtU4JhJZeJhzFV9afO42K1tkEjHT0PD2o67sewhnBw2LN9VfWrj592VWNqOdIlLY3eHt65sayVMlXRaO7yQJ91UUzIqIiZdWw5Bfuq/wug+LJQ0P+Qzu/xtCAzW8qHJddMw5/poRZgQxgDOdxUJnkl0+iqykgQLrlm6K6IlQMactXxuTS0+SK/PXEpGOZvmgKG1h4IGy8sWC26I3HQlmUxphcLHdLcm4rKN0a3pYjhOKhcZwyPs0r9Bu15ItPy7sTNbSoBSkA6wdk8qvxufHufWJrXcsk5KJmN1dXXrh3chHKhYtZO0K8mMJRygwkxnfRZfle1LMpCNExYmULZsHAJ7CmLfhGNOH7UwAwJO3O6On1PSEX+6BETsafYy62kKfYRfvZnfCfqBDvRoifePfOnIrcNLmRd1sTn2WG7LjcgE6FofCvAqOXfXiv/8WhKi1ETUU2kWlXFNybZorv7rSwTeUm9/dV44scCJ+RNl9FacN
+ XtnRftEL
+ maQdRq2BDYhQlgnXEdQ/zTrgoVw1Tv+SApCev4SzXf4SnezWpWuilQ6lTGB905JGwawWHziCCufqM9NQgT/h3bar+TqFAOjFjSy6j96h1C0MnAasXwEYj+MxbS4YPJ4j/jszM/zUZhtQ1MsmbbtW2qfVDbHPEV0ny7JUM8nlXYoN6iJJfWr7KvUw2RjIyTLw0Fn0hZAKYBW9Vn1JKjS/Na0arnCsULgf3ScB6hckYeO5Q4FTCs8h22JMhk+CgKlt9d+zBOo9Zl8K56YVv/7OAn6JWkhurUcllO5ymfvqeSW3QTd1ROKOs9qBson/pBJC0xmUs4w4csasti/vKyIqXHoRplF5eiQ7DK6z8Dy30FvViGoEyqEpgvpiMrC8jchOvXaJRAr0T/wboBdSw1rNxQSW7RN7GH/tdcKr3JcJrTj68sCglCSgHUlt4Vg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,54 +93,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 01:02:59PM +0200, David Hildenbrand (Arm) wrote:
-> On 10/10/26 04:40, albin_yang@163.com wrote:
+On Sat, Oct 10, 2026 at 10:26:33AM -0400, Gregory Price wrote:
+> On Sat, Oct 10, 2026 at 10:40:42AM +0800, albin_yang@163.com wrote:
 > > From: Wei Yang <albinwyang@tencent.com>
 > >
-> > During stress testing with stress-ng on a 256-CPU system, a softlockup
-> > was observed when madvise(MADV_COLD) was called on a 31GB memory region
-> > backed by transparent hugepages. The region contains 15935 THP PMD
-> > entries, and the softlockup was triggered after 14485 of them had been
-> > processed.
+> > Crash log:
+> >   watchdog: BUG: soft lockup - CPU#63 stuck for 23s! [stress-ng-vm:1665914]
+> >   ...
+> >   Call trace:
+> >   pmdp_invalidate+0x48/0x68
+> >   madvise_cold_or_pageout_pte_range+0x84c/0xb00
+> >   walk_pmd_range.isra.0+0x1ac/0x3b0
+> >   walk_pud_range+0x120/0x190
+> >   walk_pgd_range+0x170/0x1b8
+> >   __walk_page_range+0x184/0x198
+> >   walk_page_range_vma+0x94/0x128
+> >   madvise_cold+0xd8/0x198
+> >   madvise_vma_behavior+0x234/0x638
+> >   madvise_walk_vmas.constprop.0+0xdc/0x210
+> >   madvise_do_behavior+0xa8/0x328
+> >   do_madvise+0xd8/0x140
+> >   __arm64_sys_madvise+0x2c/0xe0
 > >
-> > The THP branch of madvise_cold_or_pageout_pte_range() has no scheduling
-> > point. walk_pmd_range() invokes it once per 2MB PMD entry with no
-> > cond_resched() anywhere in the loop. Each iteration calls
-> > pmdp_invalidate() which issues a synchronous TLB shootdown (dsb ish)
-> > waiting for all CPUs to acknowledge. This operation can be
-> > time-consuming under heavy system load, causing the accumulated time
-> > across all PMD entries to exceed the softlockup threshold (20s) and
-> > panic when softlockup_panic=1. On a CONFIG_PREEMPT_NONE=y kernel, there
-> > is no other opportunity to reschedule during this entire traversal.
+> > Signed-off-by: Wei Yang <albinwyang@tencent.com>
+> > ---
+> >  mm/madvise.c | 1 +
+> >  1 file changed, 1 insertion(+)
 > >
-> > The regular PTE path already has an unconditional cond_resched() at the
-> > function tail (introduced by commit 9c276cc65a58 ("mm: introduce
-> > MADV_COLD") and commit 1a4e58cce84e ("mm: introduce MADV_PAGEOUT") when
-> > MADV_COLD and MADV_PAGEOUT were first introduced) and a conditional one
-> > inside the loop (commit b2f557a21bc8 ("mm/madvise: add cond_resched()
-> > in madvise_cold_or_pageout_pte_range()")). The THP branch never
-> > received equivalent treatment.
+> > diff --git a/mm/madvise.c b/mm/madvise.c
+> > index eeee82cf2b3f..0755e6d99757 100644
+> > --- a/mm/madvise.c
+> > +++ b/mm/madvise.c
+> > @@ -450,6 +450,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+> >  		spin_unlock(ptl);
+> >  		if (pageout)
+> >  			reclaim_pages(&folio_list);
+> > +		cond_resched();
+> >  		return 0;
+> >  	}
+> >
 >
-> That's quite a text to say "Do it just like the PTE case" ;)
+> This same improvement came naturally from refactoring the entire
+> function into a proper pagewalk structure:
+>
+> https://lore.kernel.org/linux-mm/20260922235830.2350770-10-gourry@gourry.net/
+>
+> this function is really nasty.
 
-Yeah would it be possible to cut down these giant paragraphs please?
+Nice!
 
-Maybe:
+And thank you for looking at this horror show of a function.
 
-	Running stress-ng on a 256-CPU system resulted in softlockups when
-	madvise(MADV_COLD) was called over a 31 GiB THP-populated memory
-	region with CONFIG_PREEMPT_NONE set.
-
-	This is a result of a missing cond_resched() in the THP PMD path in
-	madvise_cold_or_pageout_pte_range(), so fix the issue by doing the
-	same thing the PTE path does by adding the missing cond_resched().
+But yeah as Andrew said, need something for the backport, then your work can
+help eliminate the source of such things! :)
 
 >
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-The logic LGTM though, so:
-
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ~Gregory
 
 --
 Cheers, Lorenzo
