@@ -4,142 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5A6FCA9ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 14:49:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CC38CA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 14:56:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FB606B008A; Mon, 12 Oct 2026 10:49:31 -0400 (EDT)
+	id EE6006B0088; Mon, 12 Oct 2026 10:56:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AC156B008C; Mon, 12 Oct 2026 10:49:31 -0400 (EDT)
+	id EBD496B008A; Mon, 12 Oct 2026 10:56:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C4C56B0098; Mon, 12 Oct 2026 10:49:31 -0400 (EDT)
+	id DACBC6B008C; Mon, 12 Oct 2026 10:56:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F6A76B008A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:49:31 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5FFBA0DFB
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:49:30 +0000 (UTC)
-X-FDA: 85314257700.27.0FAE364
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1AE75100005
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:49:28 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=s9nUu5R3;
-	spf=pass (imf05.hostedemail.com: domain of smostafa@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B3CF76B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 10:56:34 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D949120A9D
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:56:34 +0000 (UTC)
+X-FDA: 85314275508.08.7D935E5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3FCB3120005
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:56:32 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YEyrT119;
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791816569;
+	s=arc-20220608; t=1791816992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8W07NsiEHCJwsJueJBy/t/T/wHddWfvjW0+P0EskkyI=;
-	b=SX1EDOIysV1XPg2eSJ5JrWRsgtUPBIIEBK4vw+InZBbp7OZ3sWFEr4XMAuPV1DkF70PtKZ
-	n+HLIBkUfdatID2yA79UThcqrOghkSev9Y/xPtt6fH7P/Vh2dDk/94kG9Fycrnce9OMslv
-	moczjJOekmEc7wpJ9QGeA/+J3D84BAQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791816569;
-	b=uvEqF3eADb3/6cCNkSHYiQLcXdIRLHNSghovi14bo6YyY5uUQIlLNH/PurViStapWoB9zD
-	FcRbS/cVOJpjkhmOtGskAh4d/WKjHhlpr/yzeYglf5TUzchOPLsj4rIpNoVDe2aLKjmK0W
-	4TA9lLydqEvHhUtvTZBp/f+59DZfLeI=
+	bh=zzV1H8VuC6aKyIL6Nu1e4YLM0TUxzj/r7iNtBdypT/Q=;
+	b=I/nbm9GUxYMM0upQs+HAUwQbu8th0et6cR55oN8fyOVDsRFwHj4ioG0m8sYxEcTuTguKJp
+	sngthxM3wtdMduSJ/TF53t3wgOSagcS5tBdXTAPJyxE3TDSQfVbMtgw6bf9Ylto408XKR4
+	lWpNyoI4KPLtujFB3/LHID/PTry6dKU=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=s9nUu5R3;
-	spf=pass (imf05.hostedemail.com: domain of smostafa@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a018493d57so80815e9.0
-        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:49:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791816568; x=1792421368; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8W07NsiEHCJwsJueJBy/t/T/wHddWfvjW0+P0EskkyI=;
-        b=s9nUu5R3wriRDfXi6FdY+1z4AvLinAX9diGy149CuzUBbitIx3woHV0jHqw+jnTqYp
-         hoKacdK4smgOMAO7IbuLR9l7MjZNNgYaQdV3fVn5F3N1+XBPnMiLshvGlZmeHFOvWV8G
-         MpkOwfbiH4gJdUI8zs2c2m5OiFFiJ3yrFOC+fFWd6oC+lmvVvHL0Z55vKpjRGVSGdtps
-         b/LotrYKwuMe53IvlylU5HD7eIXwbGa9paaP+RR2m6hPhEliZu0EFaUbe0WXcWC9j3BZ
-         iywJk4Z/Qw2guZI3dsPxqLSBv+TE0/iBIPenf+T+bvTmJ1aL5N5Kbn31j2iimHTRyhke
-         zLvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791816568; x=1792421368;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8W07NsiEHCJwsJueJBy/t/T/wHddWfvjW0+P0EskkyI=;
-        b=ppwgx7u96My7URCiVjpEJwF7QchwB4yMDEZ4avc8VXpj/8wvtFZaJlPxhelC+xkaeu
-         QD9ACtToRlZAwjJlBucAk8IQkpOO8TyuU3pR2IlQKH/GyFvPR7vSYLsxEhVXBqttJCL3
-         hvpwzyYfxHF5ktbiY+D0BYaPFI9U2IiYPi4sI6BTupJ3mZd+v4B/FjcC+u34LoxsDUF/
-         BgWKffdeyzSJAY4kkOAg3Ox+dfD8yuy2YNghtMcLEzhFxiSXWdz6dB+CZIL5T8JeUkeX
-         LC66hIVfxdT/muyMLWLqLFOWEfBkgmrKj1Eh4Z8I0q/LWdyv+mBrCXYNVdpkcVJP6DH4
-         Xdtw==
-X-Forwarded-Encrypted: i=1; AKwUvBw5LkkQLIgvBovVARXx0W5hIWbIuykmYK+MnqU3Z5Zxo/8bOhu7wHi7oJqpiBPYSi/FIgyJ2Pd9Aw==@kvack.org
-X-Gm-Message-State: AFq9FYJc+BOlVmgp4SN5yzV48yce9o58eSiRGiByLRJCTkocipqInXfS
-	NJzPHz9EgGEFevNfUq/fOjqUHKeHBBgvxEHkVf/eb9WTXQZFLSkb6kG59pzKo4RrJQ==
-X-Gm-Gg: AYBFou31Wql9zpROVmRU1mqCK3jyv6RAP6pBpIvu+mxWa1oJBaOmO1ls5voF+HN8So2
-	DihViSZvcQkM+xDGm4yUNzf0lOECweGdzcf+K3PygrYXhmrZvafkza3Fd9/59WkPzWZAIQQn7iL
-	hV8Nkdt/D1AQwrxu5tqUv7bxmCrUBTeiVqtZiOREVI9bkbtuxkjxqOVlviuuuD/Gkp38L95A8T0
-	MoXJkss2/Oc6WYCqzDVoi7ZntImHa6uICDsAXkyr8cLInwpIWArqTkm0eji/VeVkEpG2l6uDb9j
-	BgwGSA58sCo+y/5/v9q1KXGdJOSXbslfh80H2OsM+ypH9ObsAC0mqpg5uy9Jg6RAVw4g85Gl2lA
-	y3H3X3NILrSUfY+UG2Tc2Ssk1c0oek1ZViXOwycV+ymeImsTjKEv0rIKVspUtmLgZmWSAMrsZAb
-	bmvoQl2cKAsUdUMwoQdAsNUZcIFfY6Rppu7krLRqvEUQe3TMgNleEitgQ9rarfo7Juvk4VZGmxE
-	Ak5Hslqj7SNupmOTcZ/Y7ZCp6QnidKibS70LtXfDY1kpbpag4Q=
-X-Received: by 2002:a05:600c:8b54:b0:49e:b733:7277 with SMTP id 5b1f17b1804b1-4a19d710a67mr1241395e9.2.1791816567153;
-        Mon, 12 Oct 2026 07:49:27 -0700 (PDT)
-Received: from google.com (250.192.189.35.bc.googleusercontent.com. [35.189.192.250])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a19f249692sm172738315e9.3.2026.10.12.07.49.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 07:49:26 -0700 (PDT)
-Date: Mon, 12 Oct 2026 14:49:22 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Luigi Rizzo <lrizzo@google.com>, Luigi Rizzo <rizzo.unipi@gmail.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
-	netdev@vger.kernel.org, linux-mm@kvack.org,
-	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-Message-ID: <aszzcpW6fJWGcQCZ@google.com>
-References: <20261003212241.3432303-1-lrizzo@google.com>
- <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YEyrT119;
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791816992;
+	b=3obSYwIhpBP4YyI7z7oJS415ZXYsrMLFQSUj9zmo6n0svM2jiFkoQbww5R12Joi6v+4e1v
+	jcAs3zQH7xZ7dt6xfywlVYTeBNAOlAnWxEFSFoix30VCAgJ9ToNHOxtC+nCJzuGRc0pTMv
+	ouhaNOiaYTcnrU70zKGEbTQ7jNN8HVo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4880043F78
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:56:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2661F008AB
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 14:56:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791816991;
+	bh=zzV1H8VuC6aKyIL6Nu1e4YLM0TUxzj/r7iNtBdypT/Q=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=YEyrT119wH78rbXg8r9XKN58cwZQSmO2C3utNzdkqvlSzzwWhdBzLdv6w4y/qS+gU
+	 fR1+uiWgJNUZEdKwKG/7TiRTpodHqZlQvT8/bzBH5hUVmiW14731eHJuncEk+Vmd3E
+	 LZlKJsogxJjCfoJcIjCvhIOjpqafPFuuSCijt5uPMNFmHVyOn4lw8uIK/KQaz3TsWV
+	 kUeEGfpnX6S2YrV/ONtgrgk30ZE6d4i7oJdqcpsR7yGLbrS/HEMK4OuHyNUFsVjsB7
+	 8EbiS3fag2pgn1M9HrKa0CoUFlXwbXdHQZRJuf4Yerhgk+5jzKKQCzL4fXNtBen3fV
+	 h8CuGI9brsQtA==
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93a40a9a01aso892297985a.0
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 07:56:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwfrIIxxaDPBSvF/jpt8k7ngt/ABwfxMoyeR5Z01PjraGzkUJuIc2SH7ZT1qXOcIVuLxQ7na0Ccww==@kvack.org
+X-Gm-Message-State: AFq9FYJY+0sdKyrirKK/f/h5Fe7jrAygdQWWVIkCg8DiKbl9p1knLQ9Y
+	g5KeJ/ASfJkpPkUgkKM1l/Mh3p2pDiHNjJVAA6NQYaBpXMSdoD/qT1d0vFP3juEYQ+X37vT0sEd
+	XEbBvuGi9e9u+MkgIlT+RgKNJaydhP3k=
+X-Received: by 2002:a05:620a:408d:b0:93e:5508:24f8 with SMTP id
+ af79cd13be357-93eb9677234mr1673656885a.32.1791816990380; Mon, 12 Oct 2026
+ 07:56:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+References: <20261007153915.53429-1-alex@ghiti.fr> <CAGsJ_4xyzgUH4uhKqpD7PTVuOzdsAkYgowsyn5iT1LHWiaYqqw@mail.gmail.com>
+ <CAEmasaWQm6DPqAhmW_z=kuR+3LDWJ=h+yM0hAs+ryNoFQd6qmg@mail.gmail.com>
+ <CAEmasaXa2pB_Jm_VgBZAWQwu1p75yUSY2=dr0Opt5okLgWk-YQ@mail.gmail.com>
+ <CAGsJ_4xw+CLzrazOFxnvJCbvG0qoauEuFGR6OdtT3x78ef95pA@mail.gmail.com> <CAKEwX=NrMD1jpU=Kfh367mGArw_ju_8ku=Rh_v8TiLumx3+S3g@mail.gmail.com>
+In-Reply-To: <CAKEwX=NrMD1jpU=Kfh367mGArw_ju_8ku=Rh_v8TiLumx3+S3g@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 12 Oct 2026 22:56:08 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wck1jiahYPHRT+n4YsjK+MH79Fwcq9NeJQB__AnUESiQ@mail.gmail.com>
+X-Gm-Features: AclHuK9l5YlJmbsyV-N-AoDzMMoah_wy-giXfPgwPy_mojUYu5-uhB03Mnu4R_Y
+Message-ID: <CAGsJ_4wck1jiahYPHRT+n4YsjK+MH79Fwcq9NeJQB__AnUESiQ@mail.gmail.com>
+Subject: Re: [PATCH v3] mm: bypass swap readahead for zswap
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Alexandre Ghiti <alexghiti@meta.com>, Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org, 
+	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com, 
+	baoquan.he@linux.dev, youngjun.park@lge.com, chengming.zhou@linux.dev, 
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, kasong@tencent.com, 
+	ryncsn@gmail.com, chrisl@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3FCB3120005
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1AE75100005
-X-Stat-Signature: 1hzt88mn5st4ez5hj9s5wug39i3ch3ua
-X-HE-Tag: 1791816568-56118
-X-HE-Meta: U2FsdGVkX18HxF5qSttG6MV9UVluT7qhxgeIxjQlcsK+H9KRBjtrww5nyS6x3u7C0pAU0TdQzv/WB4YnukIBfwB/wqQ0O5VUbpobSeZXAT7JpOlpnaZNJ5SR1RLfLA2QYVIUFKOH7Hdn0euM3dVzGTzYemRua/iiiyPSd9ntK36FAB6G+6t305qEfJyBaKjxM0ppSPJV6aBNSeVHktgIyrT9KopT/mCw8mejz08jIjcw4YvOEaD+VcgNqX6Vae0npz58QQ3JTV28MxIlWtWEICixn/vlhtLf3we/yeuCifBBtQD/xMaocntMDqm9I/S9NxNTQbccBAG5/Y/ZQ4BViMtKNGoke5Vj+QycTSYig/1r1OTEO9Y+n/JklbYjsoypBLKSdnLyIZCckFZ1pPKe71FAjXQgNGi6Huy75Nl6TQv1pEx4YNyrKmbL807K4HgrsnsRimpv/kSTgX/Q26M4ravebFEDFVMkExjcTUzYy1dc8gC3SHvsSH5oVx/i0Ru2Xc4XuZ8kDt+OXWomHOZSp07wnhL3u7kF56eCk5yvnpt6ufYpwJOf6fjwPYn/+3k+yY9ylfgrex3LF8w6c0WBRvaCPUpm56yW/UWShT+X2Zi0vdCQRh02xHO0i5jgzZ9Prnl7NJZHqtPwEKyjhnv4KOUPgMyWxYQcuONUhU/PJy0nDxqkpg3eFkc/2oB3qC6joSRvloOW0ynzCqot6FnUzHSKWkC9x8w4D0Voi5PpqdVve2DLLqum3t+i+mW2NmVmud5lZhgThzdl522FwwJJ9z7M8E5W7TSfsVDdrV5ThMAmJHQGpGToNysZrHvO0vPmDaWS5j7QCMPJmNn5Flt5Qps7Mlh9h1Qg8f7/D3GMB7bV2k+8Cu8XJEH+0p6W684JUEhipg15amLX5XTa3mEbVCZN52IIgMiYXf4kjceBc43TwUz6eB9U+ODEgfRilp+zgvLtzP/XyRZQKN6xqxT
- HyAr25Nh
- beYIX1JmOrOk3yV7GxmlgqTZcrHR4pe29+AssSKp7A+S2CmJujXfiZ4fYQmVmQnuM36tNIdAoOIQGOCJSfWDvXfUMcUqb4nHABNDreKeVh1q4fpr+jf4vPDt4q1H1xSdnrpl7S6+irTzZZRCYENbdSsElcfr4blG2QPpJKe0vk7q/Uf/HYR4eXm7b1Q3agebTGMX1vLhNAZwETNweSNBjW93c6Iu/ZMaWzJon2zSLtBDNvFPAILhZ972RQXmL3eN+ojea1f8jJfPv5Y7p0NT1uq7TqUKgOfMNASTbtEytbnpbW9GUNzYfWQpNVzawlopGwWeUsP/mPU4PyD73xJXMJTjb9q9HtVp4UqTI4tfqPSWnMxWtJ8PlccBlcUbnMz5QQzTxE7ImVoKmculugVZcp2xA+QiQGzZF1IiyN3M7QbQ8eZo2ftMirmeZ9FsnE0f+euNcSDgqaWVE3ro+tMXRcIOnVSpTWxQ4Xx21vCFPLXTNwx0=
+X-Stat-Signature: 8u951i1fiwcr3s6h96cski3iotozngzn
+X-HE-Tag: 1791816992-910620
+X-HE-Meta: U2FsdGVkX1/qf5i/YxhTm53hgKz50KvOGl3jxvQkr1vxShFk3Ivum/R0A0VoEDhX0OLILcI1hS6W4ZWbAa6OXQvy+rldHTrD4Fw4qzxUWnkAwHwn/5Wc7twOKOC2x17lLYoLAb3GqkYNmbfZU7v9AfylXMxk6JpHRDz+5GwZWj7hZr/S3qNwZoV9dCiJyS5V+jtEe+0xqrOG2tpZGadrVoDASEppn0NFcD4b4+l+TMbdysoEIVjZU6A4PTbGZ0PG7qLO746SC/KZ1X9UJG67lDVjpnQYBByb8TkvcdwBdAkwG8bviESgr7fpynS17TyeOrDumJePmlzyPWFMDQn0ddV1HBJuLzYBLXhAdLlUlmwQQnOuJio6AbaGOfk+2WFP+G1GJLMn+mgNp1YkoA6hLy2TTeNBjFibibD/49RKsK1FQ6h0LNHbH7Ld2EZ8CLd3O8sQcppSI2YOzz50HoQ9Jjmf40c1fb/hpzuAw7UGp4Sr/0mZpDutQNW/g+zR3rxKX1OgfdZa0xpQEyOgbKVr71ubf5QpqmUIfB7m+dRa3T/+RLwttrrqEa3W25YE1pli3lmOswiMOk41ygBc7pAgRUo6Di21kvpPPO+ROxKBsaunCifRVJ3UyTuFl/2oaDlUvV61a7bCOcvYNQRp/b9woGpDNcX4I2WnAsymOjUHRGPya69/8LCUwHGQ16oSreCPOowqBNzYex4cPwGgSb0XcR8uT7XcP4JSEP3GJZfKOIi5drMtEqonmN3d5x6fxy5hVgRs6s5QTYKvAA9nHpY6HczERlHNYEgv5ZYDQ674ZTuFjxsRUT6PBOFn2HJ1D5w5VHzD+oYu9zQPtKoZ7A1nRjKiLKNHRsdJD14s5KQ3T/sEsNCXkMiCiJD49k++HS5TjJyQleI0ya5VD0OZvX/HmwsBQ2LIErp7BfnjH4LrRp7aUOuPv9AWlK5gGsVXcDHJ3e9G0eP1U7vlJoIfVTB
+ UF62iRW0
+ jSjwT0Up2Il/jKP5mlzbZJ1QnG6Kw6AGpwj91CTIblybfmxA7bScePWYepuEoRW3TMCsTfxAO1HhQn8mivAyK9P+PSykm35fNB+Wk22nOHfH7ep7cnM7tvBpgsrD7QkaH2Ngltasnt8wvKoaZjtrJCVorVP32pDIvNDZ0hxBypWzncwzXAtYoBgPwCZA50fMCo4D1oSiSu4Mar77D9J81/xrRBRwspSDSilPkzhEVTkJ3HtvG7bWawIHiLDrvAFQJmG+ebw+BCGpCNbosholIRWPybYe67KUZdc21wcDtlevoZYNIgHjc3ZHzM9w2cpigQROhW4UNplTV230=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,36 +110,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 03:51:39PM +0200, David Hildenbrand (Arm) wrote:
-> On 10/3/26 23:22, Luigi Rizzo wrote:
-> > Here is a subsystem called DMA_PMD on which I would like feedback on
-> > architecture, possible enhancements, or kernel components that could be
-> > reused to avoid duplication.
-> 
-> Here is a feedback to a subsystem called DMA_PMD ;)
-> 
-> Why is basing this on PMDs (and embedding it in the name) the right approach?
-> 
-> On architctures with large PMDs (512 MiB on arm64 with 64k), would we really
-> want to use 512 MiB pages, or rather something smaller (e.g., 2 MiB) that might
-> possibly also have TLB benefits (cont-pte)?
+On Mon, Oct 12, 2026 at 10:21=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrot=
+e:
+>
+> On Mon, Oct 12, 2026 at 1:01=E2=80=AFAM Barry Song <baohua@kernel.org> wr=
+ote:
+> >
+> >
+> > Thanks! This seems to be a strong indication that setting
+> > `page-cluster =3D 0` can also resolve your problem, even without your
+> > patch. :-)
+>
+> If every tenants use zswap, yes. But we have tenants with different
+> kinds of swap backend in the same host (some using compressed
+> synchronous swap backend, some async IO swap backend).
+>
+> >
+> > But I'm still glad to see your auto-tuning patch!
+>
+> I think we need some smarter readahead work, for sure. I'm just not
+> quite sure what it'd look like in the end, though.
+>
+> Doing synchronous readahead work in page fault feels wrong. I chatted
+> very briefly with Kairui about this. Kairui is trying to come up with
+> smarter readahead heuristics, but I don't know - even if it's 100%
+> hitrate, we're concentrating work of multiple pagefaults into a single
+> pagefault. That sounds off to me?
+>
+> Crazy idea time - what if instead of skipping readahead for
+> zswap/zram, we offload it to asynchronous worker (only synchronously
+> loading the target page)? That'll cancel out the latency issue at
+> least...?
 
-+1 I raised the same point in the LPC talk.
-AFAIK, this series tries to solve both IOTLB pressure and CoCo bouncing
-at the same time which might be too strict; as for CoCo there is no
-actual IOMMU, so there is no sizing constraint.
+I am quite sure I tried this 3 or 4 months ago, and the
+performance was very poor. The problem is that async wake-up
+latency is highly unpredictable. For example, do_swap_page()
+can complete all the mapping and decompression work in less
+than 10 us. However, if we queue the work to an async thread,
+its wake-up latency alone could be much longer than 10 us.
 
-Also to reduce bouncing, I think it is sufficient to use the SWIOTLB
-instead of having a new pool + recycling, the tricky part is how to
-abstract that to client drivers as this would be needed beyond SKB.
+Based on my results, async zram readahead only works if we have
+hardware queues rather than relying on async threads.
 
-Thanks,
-Mostafa
-
-> 
-> -- 
-> Cheers,
-> 
-> David
-> 
+Best Regards
+Barry
 
