@@ -4,129 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07E02CA9ED2
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 08:23:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B85C0CA9EC5
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 08:24:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B5E86B0095; Mon, 12 Oct 2026 04:23:25 -0400 (EDT)
+	id 8A6D66B009B; Mon, 12 Oct 2026 04:24:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0675E6B0096; Mon, 12 Oct 2026 04:23:25 -0400 (EDT)
+	id 885B16B009E; Mon, 12 Oct 2026 04:24:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBFA56B0098; Mon, 12 Oct 2026 04:23:24 -0400 (EDT)
+	id 795376B009D; Mon, 12 Oct 2026 04:24:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C3FEC6B0095
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 04:23:24 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 35AEA40A2A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:23:23 +0000 (UTC)
-X-FDA: 85313284686.04.7DE2A66
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5BF4C1C0004
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:23:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oUUX9kCk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791793401;
-	b=OJt3MxgU9BXaPNJQI4dtktino8JhQm31reHWQLpoJCJrIMwrI6EZKKtFbyCdejz7bf602H
-	00YfgTW9SzbZYp4C7dMzxZ6QOLHPJUDu31rTaOuTvp2OA1NmUait7ImBrZSvnc4RrJ/vav
-	kYHmFCaATJmdWUiPQXgKSo7WAfhgMgg=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oUUX9kCk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 552746B0098
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 04:24:17 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D06AE409E7
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:24:16 +0000 (UTC)
+X-FDA: 85313286912.09.2837A15
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9C8D71C0006
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 08:24:14 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ggo6qnBg;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=H3uCJtkF;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KoOpSGjb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=lAXyifDo;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791793401;
+	s=arc-20220608; t=1791793454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d9z8HFwQLWdwCptSKIysBAuEW6nHmYa6sNljw2nHjPs=;
-	b=RVo2kVZVPSn/Aomg/4yHZAOMUAAgwIlMTCKMW3A1wx/+S9Y0GG5Am6VZPkCA7yjxW+MO5n
-	lmCfceblYucfsyvKgB4/UEOzgiS98pY6O8Sis39c6zGlbaFR16aF/e+kj/3p/liHjujsHl
-	NJyyP888j0gm8OlZXlP3oao/VHhV+Ug=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6A24841144;
-	Mon, 12 Oct 2026 08:23:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB70E1F0089B;
-	Mon, 12 Oct 2026 08:23:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791793400;
-	bh=d9z8HFwQLWdwCptSKIysBAuEW6nHmYa6sNljw2nHjPs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oUUX9kCkrclnsjWl9hC+hEtT6yLc7og6n6BlGwkV8DjgO22JJg6rnVyWaom+nj7j3
-	 YYnCdBpGcMtXyFgpJpNOcyJN89akeZ4BCXNocgqGs+byyflugG61jpPVcXpAnjPrYE
-	 JDb/3KPVyPvkfkMdV2KDzE9BaYIRX8iftpwn4D5GHiqx+bt6h1kpsv5AA7Si8IkzYf
-	 3eipqtxnUubCslBTZ+tAJluv/s02yRliiCYFeOOFQTmksuLz8y+T/jc+x2r5VzsZy4
-	 Zom33FU2DnkA1dRR0qIS05j8drd8GtuabAtwsVIM76IwQ/uMgQZBFFAwxpUWOVLlEg
-	 T4q3fX3ALfjow==
-Message-ID: <5895ceec-df6a-4604-a7b9-8138212d786f@kernel.org>
-Date: Mon, 12 Oct 2026 10:23:16 +0200
+	bh=Olt3ZgSa2UaXkQo/gyyeUGbIfs1fUSSm5urEkriKz5I=;
+	b=abceUi8lqEQxlGSgm2NNILrA1+rpCbyfykABqMWzV02P9Ut5wlCLKTNocpQnnXWv87LC7Y
+	jTBFCLoxouaGjk0HUFTmXou+yhjYqK0/beNEaNSwQSA5dIhqaTZCcV3iC/JJxYd2SIx86G
+	FsFpeEwrVMxpyk2L2bL1xds+nLnM56U=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ggo6qnBg;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=H3uCJtkF;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KoOpSGjb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=lAXyifDo;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791793454;
+	b=jU+vM+4eu5Alanhlz3EPeKdtfL0P9SwJPOikzmzaZo5ObN/Ixw5GU7zngBxGQj0exVNU/B
+	AtuiDgaX7fIJ6Y1xOpETFwlIUZUn1jiBCTM832jWZ6H4RooslAOtnv0W39iT/e1OU48sMy
+	M0207f1tO8N4wmnu+aY/8lv/Nlnd6XA=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id F1FF621E43;
+	Mon, 12 Oct 2026 08:24:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1791793453; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Olt3ZgSa2UaXkQo/gyyeUGbIfs1fUSSm5urEkriKz5I=;
+	b=Ggo6qnBgXypjIRWXtAP1AFs4OwNXHhs+3J/NJo+0vutZgDP7stupCtPg17nDWPfu9q15Pe
+	ZE3Sclcll0AYcRN+uXUV5Qd3I08HYKXk3wHQfAro+pPgaRGr0x0GABk/Ce6cX5UsLL0xpy
+	sJ2n9vgrpDeCfniKekHHlfJAkpXjHu8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1791793453;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Olt3ZgSa2UaXkQo/gyyeUGbIfs1fUSSm5urEkriKz5I=;
+	b=H3uCJtkFuHv6IGPtL0cQBAf32XW4GCaW/JIqCsYfJ2rXT+y23fgoEL6qIkWMZlMkiXGhZw
+	gwX7mK0+M22pJeDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1791793452; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Olt3ZgSa2UaXkQo/gyyeUGbIfs1fUSSm5urEkriKz5I=;
+	b=KoOpSGjbevtf7bER5nbMnOHLNZW4NzbvrfrJBDZYJ9s/6FPkPdEi0TPDbSivKvB8NaNOyP
+	Qo9X3U7Sm6sCsSwgVlcAzVYDNO6HhgWmabcSNJH9mVgdJQDe7SIoLuDUbJKheMzYanw2Xj
+	mLh5o1JwHW1b6gcXkbpg+f2WbixNH+U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1791793452;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Olt3ZgSa2UaXkQo/gyyeUGbIfs1fUSSm5urEkriKz5I=;
+	b=lAXyifDouFVdI0vO5LUuj0Sq1EdVrY8coXuPB5YJR1leKjvV573UxfB78qJQnLbb3SghuF
+	6xPe2cmkCdmdI7CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8821213794;
+	Mon, 12 Oct 2026 08:24:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id g1geEyuZzGoOHwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 12 Oct 2026 08:24:11 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id A0FAEA140C; Mon, 12 Oct 2026 10:24:10 +0200 (CEST)
+From: Jan Kara <jack@suse.cz>
+To: <linux-fsdevel@vger.kernel.org>
+Cc: <linux-mm@kvack.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Mikhail Rudenko <xyzzy@yandex-team.ru>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 4/7] fs: Defer reclaim of unlinked inodes
+Date: Mon, 12 Oct 2026 10:23:42 +0200
+Message-ID: <20261012082356.3121725-11-jack@suse.cz>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20261009133253.20102-1-jack@suse.cz>
+References: <20261009133253.20102-1-jack@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/slub: clamp slab_min_order to MAX_PAGE_ORDER
-Content-Language: en-US
-To: Sang-Heon Jeon <ekffu200098@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Harry Yoo <harry@kernel.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Hao Li <hao.li@linux.dev>, linux-mm@kvack.org,
- Roman Gushchin <roman.gushchin@linux.dev>
-References: <20261011014841.405327-1-ekffu200098@gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261011014841.405327-1-ekffu200098@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8pwqxq8oipmw4csbdpbi4n88or4ch754
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1687; i=jack@suse.cz; h=from:subject; bh=q/GSyAYlC73bY1ffIrf+AcoWWY6+CO3n77kKwbH1Z0w=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBqzJkf1UVyyk+1usmrk7vODGw4uFw0itng5/yQX 7ttZEIlSmyJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCasyZHwAKCRCcnaoHP2RA 2dNyB/9w/MG5IP2tDdJDgZrSKv9EB34cgdYqW0eT6Nq1XJJSFCkrT8X7GSwPz1DLoAajflSosiZ NcSe/PjC0LZbdE/js+hk+u9Jfu4R4KTQQ5PgjfTAH+R0oxtBziirKJCymjzdr/0X6bVqvuka+ts zfoYdJUQQLWMoyumxQKnsKhiX/LJPk5QShDoWj7/fkjU3eh305zlBsQlhTkpxkEGoLLfqF3HCmx BIvstG0txarWVbfy98k/+ktMbKo1QTz3NTqeVNKL256JI7AwRJDde843HoJHPprPKrftHwzkZY6 krBby55ausged1wD4Mchg4/I5S/GZOPe3182lrKsdvyBexm+
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: gqmfj899bjax3sqjzsgawdhx13drbxem
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5BF4C1C0004
-X-HE-Tag: 1791793401-943005
-X-HE-Meta: U2FsdGVkX19ME6i1aIfuBrlViGWjvxQnr8iqncksFfyydA/gSquu2zZhL/HtBlgSWjz5O8n0JsC+nhgLHIZ7a30YHigxBbycZe0KZ4qHSO5+UMU/qVvKpQWzq9cYHPM2q3Mlh4JSl3eJM0vBnHInNqW/Vo02l0+NHZjxXtbFAayc1qxu9uI1mnuAEzZGR2+YfTC47UcwxfflkM9EwRSGy6HjtiIvqgeuAnbWC2gMpQpfDaJbokD/Tj2gTXzuV2pRnq9KB1c4cxbN7HYvat4TmmvPxBcFuAcIa6CA57SBI3jZnXjX/H8XXHi3FxxBO0p5mPLx8th2FhwKu+Jqp2nnner8RlQJ/rf45qefR16LioajtTFSgEgnw+yPsGzx8rQiQhF5VKrYF5Um5Vv0cGVwyklfVVjyFLbe5VuSpRb5IGbp/bGCzAGPt+N9h5kdtvGgfaIjeDo3iax0KKqKR6DbMQqSewWzR7XJYueouIY6kPvg0999l0SxVbqGDmDV//PAd+S9rfAb4WZj5Lu2LQhiRig5kXBxeReCBf180nS/ihe6NEQoHd26an13qkAlFhEOzEaa2QTA6y5VPLRugYJCYxAiPT0IeBT77QxVtWJKo7IWS6LBNMEl1yOsgEU40bqBejWctp1ykkYE0l+1stdzlATwUSihTzYzjp/L9QsVWASm+zqMBUppkNyQMpFLtiwRq6FjdbiuOa+o5ZUjeGqTH0eHbF7+N2ePCAae/iDTh2zBppEfgfaxxJ48AF9/Indr0XWaB8HUSdUD0HchVuROuKUYVw6KBqUjDjbY1Qg74dSFBOvtDMmQsL4nSADG+dPGaFwy+pxyzV4/qBMNxtLEcvVJ5fk8kAMwderABDrrYZBUjlYKAq3ZOjTQJ47/Q0kegg3/rrMYhCZ0kHS6lKYD958U1B4J8NoyamrZ2yQq3bp8sm9QhfZJBqkkP88AkRv3Ilj6L2DlemKplLESBXG
- Gxk8D8Vv
- cZBUJ+qNxy77DGTA1c8sUrCuu0mzcnIoBAqA96ZfzocK7zZVvtyZKfQtpqEVt3+FFTLT13STn9tQ3NQQcnh0iT4ml3rXCTgO8VheOEPqRtfEdq2zHYd+8tmtM9sY1aoK4y7wmdYaIeDp6CTxqcw/uyCca/4vRoaYg4jN8LfLURPPdN3xT+Y44X35QL4Y0lA5GnPLTzaV8kT5cK+fiayhFkIT6qeD+3JkO3kUlB6XbOzTyGQQg9qtH05jxtnT9HqhbhiQ3xaKwA1Uj7j58daO/k6CHCDk/Gcoo6TpIuuWaUWMn+G8IbzsI/xT4psKyLT9s8/RchFTxPyhEZEAfP8PJ7bbDdOfdZSV1mC+R
+X-Rspamd-Queue-Id: 9C8D71C0006
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791793454-599661
+X-HE-Meta: U2FsdGVkX1/fIQJOowuR+Xkjp78hOfq7EEkUbe1EfD0G965l2I5EyNUQsOsnt59wDxCLNgWILFGzFjMIVAAdjaXUPAF1aYJTCy3yu+P0dyXwmgGp2pIysxpgsXENBewNqT4PmWtIhAFkiMbAMMbD6M32dHSP5EYSDJe1rWNPOktSPAjG1PwVbUiJN31FB+tSEtXMsL/WUNIo6MoMZq3wtFESqe94itTcs8ZEQXF2Bmjx5DhBVWN1pHSEbPjyCbKcxVHt/F2C4el7wBcYqEuBVNvGkkxX8hCdKwSJlyjQq3nlyfCoRh3OgA7ayo6yOmUq/ku+Tb+ZsnsELKJasuKAxKvrt8zcJlC849IjP2Ia/Ayo+MdKLNR32MnXD7Nq7y4KxBAxcA9zJ2FgB+fn06ZPfzgIV2cRbN0ml5gNn5+uCgsnPO3WNXyX8QVBWucdIh/wjpEEOVG+In9KIP2TowJ3oF6c5ms3ULIx+7mTHJtJirSAyUe22FS+neOXlOfyTUfuhC0HvhxPH8XuOdLFida5idq4/kQx5O7Wx5jACVIMHIO/hm/deow34OIFoB493JDLZs1JTC0lXCefv8zvEZ8pJLlyf/iIep2PHIppBIFFTyrBpqF65Enb+qf7ugXikEDjMdBbCNg+v6/ieBe6A/R/qkbv1SUFnmJ0cV6rZzjQGonAH5tLPjpmj5jpt+EatYuKDaSm65JuEuXl+hKvyC3GoaRFQyUxXPZaw34YdsknSWYPHCW6aEKBFLHCbnL5abNJ34HPz/G1/abQWUPEfkB/BH3En7YZjp+dgCGAFrMWmHRhAzycGvi8yPKE0JQivpTynfkhDSGE/I2NpR4ROKrK86IdJYLshchbZS9RLFGGPSnAYezBiFg/R6JQYgl/Xeq94vTvLYKPriVjG1rY+zmOXNMO4YXzAN1qjwwNixwmefs3Y/yHUlHAyWtb8zSWVbLfTJk4g8mHioJMif7I7LF
+ YQt2QXdj
+ UCBmy7I77/NV9VSG4T2Cu67ZPOhQQD8XiYdztpW7C1HaWs7UU5xna84r0evBeLQFejnLqoI6L0xX4SWsbUOSDHvCFtYjWd2uJ3FMDcg3tZ/I0Ri6xdWvTaWMffRG8JHSreWaps9lJM0QnhXqjxzoyJ6fNpGC3DyO7heV67mNmdio4TL5Odhcc10AIA0Tt9hffkUYWAgHoiFnXgpyyAEbz4TguW3pJjHmnbiKpV5ZaOJRK0cI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,54 +141,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/11/26 03:48, Sang-Heon Jeon wrote:
-> setup_slub_max_order() clamps slab_max_order to MAX_PAGE_ORDER, but
-> setup_slub_min_order() has no such clamp.
-> 
-> The buddy allocator cannot allocate more than 2^MAX_PAGE_ORDER pages
-> at once, so slab_min_order above it makes no sense.
-> 
-> If slab_min_order is set above MAX_PAGE_ORDER, it can even panic at
-> boot or invoke undefined behavior in order_objects().
-> 
-> So clamp slab_min_order to MAX_PAGE_ORDER as well.
-> 
-> Fixes: 81819f0fc828 ("SLUB core")
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Sometimes it can happen that reclaim of some slab object drops the last
+reference of an inode that is already unlinked. The frequently reported
+case of this is a reclaim of overlayfs inode dropping the last reference
+of an inode on upper filesystem. Because the inode is unlinked, evict()
+will delete it which generally requires writing to the filesystem and
+memory allocations - not good from kswapd or even direct reclaim. Defer
+inode reclaim of unlinked inodes to a workqueue when the last inode
+reference is dropped from a reclaim path.
 
-Hi,
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ fs/inode.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-this is effectively part of my bigger refactor here:
-
-https://lore.kernel.org/linux-mm/20260923-slub_tiny_rework-v1-1-a0e66d536eb5@kernel.org/
-
-Thanks,
-Vlastimil
-
-> ---
-> Changes from v1 [1]
-> - Change fixes tag to 81819f0fc828 ("SLUB core")
-> - Remove stable tag
-> 
-> [1] https://lore.kernel.org/all/20261007163403.1643768-1-ekffu200098@gmail.com/#t
-> ---
->  mm/slub.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 1559cbace469..8400df7c222e 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -8354,6 +8354,8 @@ static int __init setup_slub_min_order(const char *str, const struct kernel_para
->  	if (ret)
->  		return ret;
->  
-> +	slub_min_order = min_t(unsigned int, slub_min_order, MAX_PAGE_ORDER);
-> +
->  	if (slub_min_order > slub_max_order)
->  		slub_max_order = slub_min_order;
->  
-> 
-> base-commit: d755441b7672c74f29d1241ffdd2b067ecab1ca0
+diff --git a/fs/inode.c b/fs/inode.c
+index 0128db61217e..0b6335df9b48 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -2214,6 +2214,23 @@ static void iput_final(struct inode *inode)
+ 	inode_lru_list_del(inode);
+ 	spin_unlock(&inode->i_lock);
+ 
++	/*
++	 * Are we going to delete this inode while in reclaim path? Likely
++	 * reclaim of some object (e.g. overlayfs inode) ended up dropping the
++	 * last reference to an already deleted inode. Offload the eviction as
++	 * it's likely to require memory allocations and block on IO. Since
++	 * this eviction was triggered by a reclaim of unrelated object, the
++	 * inode is already outliving the operation that originally deleted it
++	 * (unlink, file close...). A slightly longer delay thus should not be
++	 * observable by userspace.
++	 */
++	if (current->flags & PF_MEMALLOC && !inode->i_nlink) {
++		LIST_HEAD(defer);
++
++		list_add(&inode->i_lru, &defer);
++		queue_deferred_reclaim(sb, 1, &defer);
++		return;
++	}
+ 	evict(inode);
+ }
+ 
+-- 
+2.51.0
 
 
