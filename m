@@ -4,85 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 556B2CA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 16:46:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4F2CCA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 16:55:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 180CA6B0088; Mon, 12 Oct 2026 12:46:58 -0400 (EDT)
+	id 847C76B0088; Mon, 12 Oct 2026 12:55:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1307E6B008A; Mon, 12 Oct 2026 12:46:58 -0400 (EDT)
+	id 7F8F46B008A; Mon, 12 Oct 2026 12:55:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01EDB6B008C; Mon, 12 Oct 2026 12:46:57 -0400 (EDT)
+	id 6E70D6B008C; Mon, 12 Oct 2026 12:55:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C98CE6B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:46:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EDA8BA938A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 16:46:56 +0000 (UTC)
-X-FDA: 85314553632.17.AD38F15
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F2DD6B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 12:55:55 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 327E91C4B71
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 16:55:53 +0000 (UTC)
+X-FDA: 85314576186.26.60DE790
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1BDAA14000B
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 16:46:54 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DGySc7jB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5FF8E140004
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 16:55:51 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Iw6b+w/Y";
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791823615;
+	s=arc-20220608; t=1791824151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0UrN5VSM1Sm71gRbWyyCAhAHasLekx/YSqvnQwMreug=;
-	b=4fhJg5l3Qf1TnN3rXvciZeQwQEfHFqtn7GO1Q3pYlrimvu928Ry3bpisGiMy35zvb6df80
-	65w4cQzeKhwDjia11Mmy/Zddy7XsQ7NgmpDFDcKwH5pBFfrJXb2ilRKbvOwuSqYrpHxUN8
-	STfOGOmlwR/6Jaz82gurjZUItSSk9Xc=
+	bh=J7HfjIRGk/NqR0+5Ufhz1l0P5qFNkr4N0pj7z0Zjx8s=;
+	b=aT8dcU63Z7R/myfAFQLyRlJLDBKaJC0OX5gkb9ThjRXLSIRnGrFNoisXOwceocosPDA3Gj
+	lpkqdTp8cd56UlYhODwXYWeFMMP0VXudSRnhJFtCahwiexn+KrMXWSAJOOFE2WqM3UzL38
+	nBFc7VAjZJbpWxzooSITUquH4tmYIDY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DGySc7jB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Iw6b+w/Y";
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791823615;
-	b=QL66A/VsGCuiHPu9z6VQcGzMi9VRGO+jhgtI96VqSX5TN8meKlknxE2AMojulWCPk99+pJ
-	aoBr+kEQI6GP21NPvna+zsEO5+8gpLuY9gev9LUnYQ0U1hDmX6CRqsnlaJatEkttviJB2Y
-	oUerNqHQetsivckrhZpCBfiV9hWiRFA=
+	t=1791824151;
+	b=yAJebeid68qFzQeLh3t+giVu8IF8WCNwyii1EIQRD8/ANdwMAjhZapcOfd0k3wDroA/9El
+	Kjvawmz/MvQGQnofLZlKwlVAA+tQhpF8ABtMWdmH4XJGPuoMhIa3/XfEMRQob4iIsZJLrh
+	yNADJJ2T+E3aXyK9pcd/fgAYW3wZgyk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 65A1A435E7;
-	Mon, 12 Oct 2026 16:46:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7C11F0089B;
-	Mon, 12 Oct 2026 16:46:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 92FEC4360C;
+	Mon, 12 Oct 2026 16:55:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328371F0089C;
+	Mon, 12 Oct 2026 16:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791823613;
-	bh=0UrN5VSM1Sm71gRbWyyCAhAHasLekx/YSqvnQwMreug=;
+	s=k20260515; t=1791824150;
+	bh=J7HfjIRGk/NqR0+5Ufhz1l0P5qFNkr4N0pj7z0Zjx8s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DGySc7jB23/V1Z0AiUJki0Z8E+1NITPebzHJoljKGLolAv23dMkVULASEv6xcM3hP
-	 URvKzoUwGJbKWzmEXSPRHB9IBLvJSHW5FjeLNe3ZH5AXI7XnbJP67L/oF7D/DiaWnl
-	 aDMZEIjcEVpwUF7XuHEB9FvmbBwqDzgtukk98Rm+p5gsCZCSHsxXM0yYjSbt31HnDy
-	 eIk294Mjj0CNM7ykSZ0YscTCi0i6vupSrnS4gWjraC7oKXpky4BUIRati+wEhVDL56
-	 YV6QnEC2eKQmVROYtSGXUKnJLLGUX8CtEkIA729wb5QlNYCQ4J0hiU6P+qFKp1Sglk
-	 MzL4zw2ZPN3Sg==
-Message-ID: <4866a382-42d9-44da-b68b-377d36642528@kernel.org>
-Date: Mon, 12 Oct 2026 18:46:48 +0200
+	b=Iw6b+w/YwdvpaDOggPl6kVhXz4RZy2KQysvehJV8ygCRljQpiDzBTmTtoepl+ccaK
+	 QKIqQDHBdABXijxQAW97dkA0vACEgcptpmvLIJ0rMKHU93zIfXl0DOpTPt5veC62Cz
+	 H9EsLcUyPoxXx7noMrF7YFCLDT2Y6DP130qqBHkFqNNXgQsXpdMQA3wxf8vpP1kW40
+	 fgRpgOa2iqcfkyEfHSH8Owy/T9d9X+RMTDS5YCH90C4/8VauKtXe3DyzVl6Zb2K/DF
+	 h3Vlu6w9TXCmMdoKG1xwEp4ig5xw9hDIy4+QLIpSVvA48fV0J94sYwAfO5kgAHC7oR
+	 eMbItKXoH8aqQ==
+Message-ID: <32d71681-157c-4d86-a019-e08357ce6352@kernel.org>
+Date: Mon, 12 Oct 2026 18:55:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 2/8] ipc, msg: Account msg_msg allocations
- with GFP_KERNEL_ACCOUNT again
+Subject: Re: [PATCH net-next v6 1/8] mm/slab: Mark the kmem_buckets_create()
+ context as a Context: section
 Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>, Roman Gushchin <roman.gushchin@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- cgroups@vger.kernel.org, linux-mm@kvack.org, Pedro Falcato
- <pfalcato@suse.de>, Kuniyuki Iwashima <kuniyu@google.com>,
+To: Kees Cook <kees@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ Pedro Falcato <pfalcato@suse.de>, Kuniyuki Iwashima <kuniyu@google.com>,
  linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20261006092030.got.500-kees@kernel.org>
- <20261006092035.166776-2-kees@kernel.org> <asjhg2e4-WSeKuXd@thinkpad>
- <202610092010.934197B@keescook>
- <20261010153714.b9e91801ea93675da099e903@linux-foundation.org>
+ <20261006092035.166776-1-kees@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -123,17 +120,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261010153714.b9e91801ea93675da099e903@linux-foundation.org>
+In-Reply-To: <20261006092035.166776-1-kees@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1BDAA14000B
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5FF8E140004
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 9xm86ci7dzkrzd9jryu1bfu9bucgsop7
-X-HE-Tag: 1791823614-838638
-X-HE-Meta: U2FsdGVkX194hoiaDhdzhxvl5b8Z14g9Mzyi/mCxpD27NzS+XJu7vxjALGjXRTpFMvOeKE45Ticacw57IOCQlKPQdaweRwToDycPCIMiNNEZxObaYEbhGKbRe9Ms7CmB3Os+HFJKiHNItP5UFh5i3mM0Nu1iSJZNiH8hR59vpVYNA6xx6/6LPM3AlxkBVh609enjGsmlCeBy2JGl8iNQWnTiURcxXZ8DrRdLK/+9gi13royQw9MNAp0335iOHvHQCNwiDFNMRFX7kaei740XxCrRDUiRJmn22FqDG6sl2GHswQCxnppyxkt+vbBAvv+8lLOm6J7pmzo1M7CzRmBOSataPmdOre34NmqADk39AK+jU7JiKmCqbT9SruhgD5QRM/0142e3o5+1VoJCrrfxmUHkXICTJuxQfdYkAUa43sNVdhI+fmqZD09Zm5rVlOzmOfIC3G6FqfZ3sbWxouIv4pOF0flghJtw/FRFdZhk2KN/oH5HqmFzeEZGmR42BNDGNRRuoB9pKIkehli9NqWZm1ZQXr/KshMkdeD09aGJGmwOAVskHOxOQBpmKT/6YGGqtL2jYF/esFrcUhj2fqSSOrCZ7mfHNiqKo+YXHxsrnCONi9Q/9ZZwZj9gtS8oR+MN0DGnV0S44GmXskWstOFrU2618q1w9xqv7UvbPhCw+K+SojPDyQr/6Dsui/wuZ9V7RPxb8BL2yrWVpllQqAhbBOgNQtM9e8CqpKaXxCxmeuwxnu/u1mmXMhJVcpGxcrvQqlLpGCzGMt7ZwutGM6lcJpLRlXK77n3QmGL4OoFMyEbyNBjwIln1+iisPEkF9XTPXvtQeXHPCop9TuFoJPihOCJj01EjZVGg3MCWtER6BLriMhE1HPgXV2mixUjEEYIIwHuIiQK9iBPd9YhAS/DPJc3KhzOBJfN3ibdgEnlmzHFFsAdgL/CgeZNqFc++TUuaowZLfGwTuIzK3eeLnPm
- ycJidUMJ
- 8hxGS5fCLotZrB9ATLVXGvmfz2Kk2ZIz2RV2w210UTjaXojGmVFpoG7Q2gYIkyE7V0WWD3sBWL/BXJXrTnieeZdXusyyw1R6pVhiSG0samakWvnZ0W5oVir2XrncMEI1pYJIc4gqVRr0mtgCo53MUOgAdqu9VuWyzNpVzJOiHHe97Pwq5hAd09hjETxddNNGnrxSTEmVcTAdBil5aDh2pS0E1HKQVff8M3R0i0AuGC2v//VQNeCK15kopSUlS5vjOK62ozvyANXs8PEWGonJhQ1q7+JvWh91DOnJhi7Y8QNxq1JKIdELB9cxTgH07BtlaK3LQEQ7MJ/jwph4yXp4hzeLhWRWx8PoNzgC2QL9mIBZqxxUUOqM+VuRGA8OtRWWlimJhibWlA2XbJSM=
+X-Stat-Signature: w8rxncefsdqyex6x71k76qhga76gg6xg
+X-HE-Tag: 1791824151-752574
+X-HE-Meta: U2FsdGVkX194u41x/1WdUvxiHU1+Y1iemV5sWWityz67AUvsMEdcZa1kfVzutY27v6Hx4pBUe9W8Q0odK4QKo2TkRZrIE/jXvGx/1jTEaD5I80By6GICxnU2wqoH7KiZXadfM58FYnSYewKl3tK33L11MlFCXl/+1O6vvTEyBdhhOk6gTRv63XcUCVOBoR0Dv9ajVTRsMkcljGJeX+NneJv8k3+K06Pr52jPxiRJP5cdLkUvn+84slhAHSRbds4Hn4Q1hhTkvFjNHcBoFWbps6YUAKPi8gxAqfHS9LKdJ9b0U1tzqKp7hdlMbXxhqnAfAbxjisapzdkh+3UwWG6AyKSAPxH7p21ZSClFoaoi4JTyFf+7nSsrZMO55/t9c7xuaBQ8BKJR3siDIdmUlYPUuySZs+YIvT9tSQLMsQQdPwLRj5aBrbWNUZORLJzTOuLpED3pq5ufF2eYhL7I/RzZm43f0lRuk+f+91YhgkrySc1lvcwjfrNd6P7NpkCACQzxeNJ1n+QyN8UmxursF1oG6Sa7t5ePF0TAMu3pzvEcgrCuNyQ+aYSpWY18YD8OuloOLpAqLSW3vLB2UEO3AVnnwS1OQCVcHgkXonsgb7iTLjtD4041tFAqbxbDqxUwyuuZ+ZtEjrB1haHnmz2FwCLexJJrVQ48D1BKbXkJ4mY4Mhf+Azow7qf626Xg9VqJop8NkpOuVoJvb9FeWiEJsvmNdsv5dffzuF/Te7qVXcAPbnduDZPMGa/0NoVT94e2xIY8iYXu3AvlqXecX4n1mpkA4nKVp8hfDGASRH688yNZeRTcOS9DoompJhkWXndU5JU18pDJRmrblFyaaSPNHbMdz2RJPd4u1wEGKiWzJBfZ69LR0DkN/O2F5VQF+MKmgHTKiEWu4cWReWeN4w2Va6gT5SzF3H+xl9ffEW62OC3KZ+UfIDXp1B3zTwLtJVBjMjT8ZaWofgq0J/kw4sSJNdu
+ Xz2jaiYy
+ P//i0BhkzDaNFZKc+I9YF1HZUwm/oFi+OTqIsko0eCdqrqs3flLWWOMrb6OrQR9DFOY6Hti5ZHi0hstDon9HH6cUfZ9fwYWqsstXFy034n4MRMgI5nXRulhKEapS+nV3dy3mhQYEPjHmBAqSzjBgFUCSuwg+t2PVlEySG0VGr58dgB3iacHS5j6k/NMlM5StAHWMFleDSI5fiEPuJCgGPKJrDyJN2cMsh0fQ4xxx02hZsKCRGVTp4isNLq0hBc86N+psNLsSAK42H6MNQ3eYeudT/v4QK7nPy0Kt9AsfnnTlLKwg+X9eNt6kDYeReLtI7DQT9J9+NkLxk/rND7eFROaSo4d9c20K9qcOvOHJprVlAaa4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,26 +138,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/11/26 00:37, Andrew Morton wrote:
-> On Fri, 9 Oct 2026 20:14:20 -0700 Kees Cook <kees@kernel.org> wrote:
+On 10/6/26 11:20, Kees Cook wrote:
+> kmem_buckets_create() had the same sentence about calling context as
+> kmem_cache_create(), but lacked the "Context:" prefix, so kernel-doc
+> rendered in the body instead of as a "context" section.
 > 
->> Anything with Fixes: will end up in stable, so I just leave off the
->> stable CC these days.
+> Give it the missing prefix. Additionally fix the "a interrupt" typo
+> __kmem_cache_create_args() had.
 > 
-> -stable maintainers have been asked to Not Do That for mm patches. 
-> Other subsystems are doing the same.
-> 
-> I don't know how they determine whether something is an mm patch.  A
-> patch which covers do-do-that and dont-do-that parts of the tree is
-> likely to be mishandled.
-> 
-> So yeah, add that cc:stable to reduce the possibility of mistakes.
+> Fixes: b32801d1255be ("mm/slab: Introduce kmem_buckets_create() and family")
+> Assisted-by: LLM
+> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+> Acked-by: Pedro Falcato <pfalcato@suse.de>
+> Reviewed-by: Hao Li <hao.li@linux.dev>
+> Signed-off-by: Kees Cook <kees@kernel.org>
 
-There's also this from the list of pain points at
-https://lwn.net/Articles/1099594/
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-    Kroah-Hartman: subsystems that do not add CC: stable@vger.kernel.org
-tags to patches, but which still expect the stable team to pick up the
-important fixes anyway. The stable maintainers are overwhelmed as it is and
-are not doing that.
+> ---
+>  mm/slab_common.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index b19ba1b31484..270408ce5a9d 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -311,7 +311,7 @@ __kmem_cache_alias(const char *name, unsigned int size, slab_flags_t flags,
+>   * &SLAB_TYPESAFE_BY_RCU - Slab page (not individual objects) freeing delayed
+>   * by a grace period - see the full description before using.
+>   *
+> - * Context: Cannot be called within a interrupt, but can be interrupted.
+> + * Context: Cannot be called within an interrupt, but can be interrupted.
+>   *
+>   * Return: a pointer to the cache on success, NULL on failure.
+>   */
+> @@ -422,7 +422,7 @@ static struct kmem_cache *kmem_buckets_cache __ro_after_init;
+>   *		to/from userspace.
+>   * @ctor: A constructor for the objects, run when new allocations are made.
+>   *
+> - * Cannot be called within an interrupt, but can be interrupted.
+> + * Context: Cannot be called within an interrupt, but can be interrupted.
+>   *
+>   * Return: a pointer to the cache on success, NULL on failure. When
+>   * CONFIG_SLAB_BUCKETS is not enabled, ZERO_SIZE_PTR is returned, and
+
 
