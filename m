@@ -4,92 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46288CC6B03
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 11:02:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A110CC6B08
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 11:08:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F2FC6B008A; Tue, 13 Oct 2026 07:02:50 -0400 (EDT)
+	id 398586B0088; Tue, 13 Oct 2026 07:08:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A3266B008C; Tue, 13 Oct 2026 07:02:50 -0400 (EDT)
+	id 349456B0092; Tue, 13 Oct 2026 07:08:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16C4C6B0092; Tue, 13 Oct 2026 07:02:50 -0400 (EDT)
+	id 25EC86B0095; Tue, 13 Oct 2026 07:08:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E7C5F6B008A
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 07:02:49 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 665881609E8
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:02:49 +0000 (UTC)
-X-FDA: 85317315258.19.FEAF8DF
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3DC9FC000A
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:02:45 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	spf=pass (imf22.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 067F96B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 07:08:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7341FA893C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:08:00 +0000 (UTC)
+X-FDA: 85317328320.03.0486F67
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A543C180006
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:07:58 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GKImCcVX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791889367;
+	s=arc-20220608; t=1791889678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lwnXpQs8h0RkpXoBgKrIw7VtMxZRGTucGgOpbdPBGLo=;
-	b=7bBtlOTwpzOnZdXjoI4vpO7P4JwZ+9QqrCOUH3Mk6FCQM3BE/EP2/uNYQ4cnrFqEtMVcJH
-	Xfzjidhud9CqsEkGmz60Rv1NhsP58iZNHPbdsu2wVeZcp2jRjPEnh1y/73782S4kvLp6Ag
-	BdprKyJloIW5S98DycdWLBK3ddRU8yY=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZSWhydPwnGjVmQTHrIt+aT1FeNndN2ccR7i8qMmsYQ0=;
+	b=u+iC5k4HCUrF1SGeWGoslJuq5ZtSdIbuEMZQDKMY6Sde105YUU9qAJ5Dpmb4/6Hv7VEe+O
+	H1Fyu2/8/vTshv8dW5so/I7d25alAeV/Qyv+nj9YhfFv66WA15Xavforg+wckPeYdCKr68
+	aW0tcjEvOJ2IXn4eCtkuKggkQwvAI+E=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GKImCcVX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791889367;
-	b=gIPg77+FiR4QNdKpGClO7E4N7DUJWNxKXiiLsb5EwIl2TWzvoIPvTo+rj11wf80Byzy9VM
-	zFTlGfsLv5RKtt8Q2CGOn60Lys2vIL+0wrzINbeGjqjH03T1m3s+BZkiKuYUqAP+jXJ4M3
-	lHxpHFmnj9LjRuMY54lDItV3+vrnZhg=
-X-UUID: 9b23fc3ac6f511f19a56ed5b684f684d-20261013
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:6db9e078-1538-4d08-8ef9-9329f447ff6b,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:597e9dc93505a2ad45b7ff19eaf9495b,BulkI
-	D:nil,BulkQuantity:0,SF:80|81|82|83|102|136|850|865|898,TC:nil,Content:0|1
-	5|50|99,EDM:-3|-100,IP:nil,URL:1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,C
-	OL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_ULS,TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 9b23fc3ac6f511f19a56ed5b684f684d-20261013
-X-User: duanchenghao@kylinos.cn
-Received: from localhost [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <duanchenghao@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 675544311; Tue, 13 Oct 2026 19:02:39 +0800
-Date: Tue, 13 Oct 2026 19:02:37 +0800
-From: Chenghao Duan <duanchenghao@kylinos.cn>
-To: Luca Boccassi <luca.boccassi@gmail.com>
-Cc: jianghaoran@kylinos.cn, avagin@gmail.com, linux-mm@kvack.org,
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-	systemd-devel@lists.freedesktop.org
-Subject: Re: Question about obtaining LUO session FD for non-systemd-managed
- service
-Message-ID: <20261013110237.GA836401@chenghao-pc>
-References: <6ac99eb9.6b935c14.1905ce.7c50SMTPIN_ADDED_MISSING@mx.google.com>
- <CAMw=ZnTTUxO2ZCobEDTQUY7OZxmyJUQxg4DkhC9gTWXaDaK1dQ@mail.gmail.com>
+	t=1791889678;
+	b=tp6huhuKySR1kffYGsVLY1zbdLcHvhzmD2r8wCsGtyMSdinSR2ZsMvcyeNdolekj1jbCPL
+	STfxx1xY79Uly/CPOrI/2qlMEvMRUxDv1UW2qnKLTFsVmMdEI0lIxnvv72rKyj+88qtMf7
+	IBPMspsYdwsylnZYLto8/6YIE8wng8w=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AE64B42DD1;
+	Tue, 13 Oct 2026 11:07:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4321F000FF;
+	Tue, 13 Oct 2026 11:07:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791889677;
+	bh=ZSWhydPwnGjVmQTHrIt+aT1FeNndN2ccR7i8qMmsYQ0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=GKImCcVX7BlExGaWDJuo0uDFcW2AhnNz/vahq2ceWio6OBpTtQnbsxSnnpNrD3aiy
+	 pBQeaNbnFw6UO7Q9stppMU4fTpC7LpTQkAgNaf9j99prl7jtsqnRCPF6vevl1FmbEn
+	 nNl9JPcXc/0Nv1UOxOEBfRfcvM+mtDiZCeXIiy7oh48TgH9/lKc3wbCYGeKbOVAnRn
+	 tYS5LIYgVGn+ddrhW590Pybu2z9MG/LrxidGyu1QeVnHe/76cj7VoMYY3L6/Q8gcr1
+	 SjFRL8c8pg6Oa5SMyhnMzUgsESw5anipxPwBjlAfWFtOijqJ3DW/PsfvqFToE0/7K8
+	 80DPK2ITuNpcw==
+From: Mark Brown <broonie@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>, 
+ Andrew Ballance <andrewjballance@gmail.com>, 
+ Michael Reeves <michael.reeves077@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, linux-kernel@vger.kernel.org, 
+ driver-core@lists.linux.dev, maple-tree@lists.infradead.org, 
+ asahi@lists.linux.dev, linux-mm@kvack.org
+In-Reply-To: <20261006-regcache-lifecycle-submit-v3-0-37bdd82fd47c@gmail.com>
+References: <20261006-regcache-lifecycle-submit-v3-0-37bdd82fd47c@gmail.com>
+Subject: Re: [PATCH v3 0/2] regmap: Fix cache lifecycle locking and
+ teardown
+Message-Id: <179184676097.1099724.2382944643703457917.b4-ty@b4>
+Date: Tue, 13 Oct 2026 00:12:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMw=ZnTTUxO2ZCobEDTQUY7OZxmyJUQxg4DkhC9gTWXaDaK1dQ@mail.gmail.com>
-X-Stat-Signature: 9d9b19rzo57i1dff9us5g5ae34hbobzt
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1418; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=clBHz8jqLb/gHxHcd/z6kA2QuhPCp5EX6c3TGIzEMtM=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLOCXLWNUw8lDtDSv3snc7g7oB7P84vYvCcLaGjX6Nw7
+ CnnrjzTjlIWBjEuBlkxRZa4LO6X9SWv1/AdXNgGM4eVCWQIAxenAExkMjfD/5jbGxfd2GTAof3g
+ y8HKvB0Tnz9vSLA/v8XvcEqUrpvlawGGf9olNQ8tRZqFbjse1eV7wb0x7jm/cteHRj6Pu4FL5p+
+ VZAMA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-Rspamd-Queue-Id: A543C180006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3DC9FC000A
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791889365-904796
-X-HE-Meta: U2FsdGVkX19ZKLdQAr9/Rlthi3SbLNrtwNfApPVxm/Fuo56iumfmTZtcgRBoHKq6rNeHlIj24zNiTHodYc/TRn9A+pKYbig3wK0xSbCiRtOXTEouG09zQu1QarDs8Z29ZA68RWFRknlTjJuAbZAniJsPtjn1EWpiJl6X/kMvuhclQXdBbYVhfLWPS+sd6ygoWMpxgACHtnzrGSWY6a3orlrlSOjEr4yUwZ7L/8rDtt/dT/DRyCA9k5meW3mDUa1JfdsygX5cKRKzlLdjYP7SNtabX8HIs6ZlSrTlRW0IN3naVRr18by88VkrVyeT6LGA/fJaArYA4NnmiiBQtl02wfu5njHrh4hIsdhj6ih5IFs/eIoysaCV3HB6UukgDxXRfmSd2j234EESQQ/lItrmCw/D0a8BGsUYfNPiWTm8LpMEQEMhVqjsJ1qtk2lqDYUPfSONXpZpvJKH2LuW6yTflW4jMqAqMD6GPOxaMX3CJtTwQz0ZRyu7mnnroyqG7+ltJjQtrzpDUV6LhdGxASezVn6cxlt5hwQrdy/qi8nL7Oqgkffc/ZOBTLrZ/PyupnoPX+PNYnHwbGQBDzrY8HYiCKPi83r6Z+s2MWS9rrj1N4M2fhteYF7FE3Smm5+/aThjN22NKvgNtcnrgYR66L2Z4OU5xYbktR2agwZAtCYptcm6ItMs4UYB36/oW8NljAecTj6hbn40cBDk6jcyDq9yIDyEDztR6MWVwjlcRCSu0QnLfgsr7sQoWdu0ER92PkA2DQuJT1rAUU/MIGNts/ke8F4suVcdiKYSbZIaRw0OEhtMK+pi+cF8Y/oprT47Czfwgag3aDP0Jboq3u7inoTcI9A3YoZeg4BeY7gowEU69qP4qpxARD8ggrYW7+j337XKqp7HQRdmLgYPO4Lzw7QO0/FQ4VqNLxOey+62QYSGqfAwzlric5+TsmuZJTQvuCThwhwKB5toNvYAHYhXVlm
- 5Gxy2zCz
- Vjwif6tcYXlBjQVE9UpVFBAbh1cHOUv3vM47iAA3Q/1WLtllVJKtlNfKyALae6qxn/8+E49nFATYd1pouZChIFUzCNlC1aNaPEgP1Z+KTudJ6Snysl5oSNem0L82q1Xcigqeowct3+q4tNryRgl2mXh4ZC4rqO8gUqUkKAS3gMtVWkpQYHTG8BMUMqZDITzQoeJDnZFhZy77BoCrP48rRJqPbyw==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 1o3stm85hbox4axp8ge3zoya9dfgo98e
+X-HE-Tag: 1791889678-9799
+X-HE-Meta: U2FsdGVkX191L7XT4YMzCCI6nWX0NCk4acbTcxag3SJUO4G2McrD9AHg1R+NinkMZOGuHznedl3ZoAobvlQqr1Mrf2SN6IL02pCtEaptHdrMgXytpa3Z10L/YSHOMlH0fTrD80bagyu88RNksRTTO3xSOvPHh2Q6ESSDOk7/eQKv9VIsTPV3OHU/gDY8R13M+MRWfgwep2hDNxRsm/D4rQ4phEhhQJcPntotRuBf2Mw/xgTOUetOcG0zk79Hfkv7ulQni38BNrdDtGRHpUoH131sLvCYKVyXxNVkvw7BARq2PknwLRLUW1KMFTmae42LX6nTS50GqM3RrBD3mkoBAghcfWBNBJ6VVN8xe4e0DjBaP886n2Rwm+IzIEJippBiuzgdkYUiTzW8L19jheK2UF2+6C9RJFEk9fi2FnmDFj7c50JFrC3JTCV9XeOKTPQ3oRrFMXTWxUw+AZ0W4piyFgnlt5faw/Lxc0kQxTFUyS8V9TEbKBLoPBWBA+Th/uZV0H8SPs9yYCh8hAnXJdw0QhAwuT3bnJCvdAPvXErmWqGB496SbBAyaeTWQJQLr35IcOfeFD8sbUoh/mmqVa3tPiouf7ih41ZaM88XsbBiMk2UEizJTltpjRAuipbaeSME49ySp5Bi90tV2aeeWHY6PBukNotfGG7S1ykbN5GFjUH8R63tjzjDZnTMNno8V/bA7ultJdt/nhEDEz8Hx5tJZ1uCKQcVFjaoMDIFmSLXyAIcVo+4hCc7Iuv92TASCq4NhtEEcR2LYLFW3I+0scEuPrXsSpss4O36vrVu2jvxz28VREJ/i4uuE73eEaM+QneMiIm36vENoXrBGHHc7z5JiDDRkYhP1Iso0BIPfPh77CZ9+9bs7eFBWazDudnKCp45BrOA4WNbdQKNqx0DC3KWySZ7/61WiklrppQF+pcXG3ToCK70Qwp1IMrHTRggc8FHzCdq/IJ6/Xemq7Lqcxf
+ qekZtobo
+ lfQb6TPDdj/rilnHGJ3p4OD02yVFP/IGBXcox0OcQu7NO+a0CVAS4aqZfIFYqV7DkmATMIJM0K+P0niunnTsDrSsJ2cNGW6w4CLmv5wHIogAyxr5yeuW/ojn7boHFeZLI3YaZFn2VO83QI7RUaJKMMkqDzt8W2s+ZiK1+MQ+p6g/2E6Ygr5r3Vwa7DvuDsTvT8bdX2Nu0zBoFtctqARR8jNAgDT3gEN3t4O2Ao327F2OO4cA7SPmTJIPzffFaLN1NXg5WKg8k/72tRij+z3b3Ij12rnLpOMqRJsbBClbVQR176pnesJoGAuHh8cs+Sh3/VWLw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,82 +106,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 10, 2026 at 03:05:40PM +0200, Luca Boccassi wrote:
-> On Sat, 10 Oct 2026 at 04:11, Chenghao Duan <duanchenghao@kylinos.cn> wrote:
-> >
-> > Hi Luca,
-> >
-> > I watched your excellent presentation from the LPC conference in Prague.
-> >
-> > I have a question I’d like to consult with you.
-> >
-> > I am currently working on the `memfd_luo` feature in CRIU. My goal is to
-> > leverage the LUO capability to store checkpoint images inside memfds.
-> > After a kexec reboot, the image data will be retrieved directly from
-> > memory instead of from disk.
-> >
-> > Here is my pull request on the CRIU GitHub repository:
-> > https://github.com/checkpoint-restore/criu/pull/3152
-> >
-> > In the PR discussion, avagin suggested using systemd as the CRIU daemon
-> > to centrally manage LUO sessions and access to `/dev/liveupdate`. I have
-> > watched your talk and read parts of the systemd source code.
-> >
-> > From my understanding, systemd currently provides a unit‑based solution
-> > where child processes can inherit LUO session file descriptors. However,
-> > this approach requires the target service to run as a child of a systemd
-> > unit. As far as I know, CRIU does not run as a systemd‑managed service.
-> >
-> > So my question is: for services such as CRIU that are **not systemd‑managed
-> > child services**, how can they obtain LUO‑session‑related file descriptors
-> > managed by systemd?
-> >
-> > Thank you very much for reading this email. My knowledge of systemd is still
-> > limited, so please feel free to correct me if I have misunderstood anything.
-> >
-> > Thanks & best regards,
-> > Chenghao Duan <duanchenghao@kylinos.cn>
+On Tue, 06 Oct 2026 18:03:14 +1100, Michael Reeves wrote:
+> regmap: Fix cache lifecycle locking and teardown
 > 
-> Hi,
+> Fix an "Invalid wait context" lockdep warning during Apple GPIO probe and
+> correct debugfs ordering during cache teardown.
 > 
-> At some point up in the stack, everything runs as a systemd unit, so
-> it's only a question of figuring out in your setup how to pass the
-> FD(s) up and down the stack.
+> Tested on Apple M3 MacBook Air (T8122):
+> 
+> [...]
 
-Hi Luca,
+Applied to
 
-Thanks for your reply.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git for-7.3
 
-The `LUOSession=` configuration only takes effect for services managed
-by the system manager. If I run the CRIU command from an SSH login shell
-as I am doing now, the environment belongs to a transient unit under the
-user manager. In this case, we cannot use `LUOSession=` to obtain the
-LUO session fd via systemd. Does this mean the process needs to open
-`/dev/liveupdate` by itself to create the session fd?
+Thanks!
 
-Below is the attached service of the process found via `systemctl status`.
+[1/2] regmap: Remove debugfs before cache teardown
+      https://git.kernel.org/broonie/misc/c/834035934cef
+[2/2] regmap: Drop map lock during cache init and exit
+      https://git.kernel.org/broonie/misc/c/abff0a48b110
 
-[root@localhost criu]# ps -ef |grep criu
-root       57589    7729  0 18:25 pts/2    00:00:00 ./criu/criu dump -D ../test -t 52922 -j --memfd-images -v4
-root       57784    7571  0 18:27 pts/0    00:00:00 grep --color=auto criu
-[root@localhost criu]# systemctl status 57589
-● session-5.scope - Session 5 of User root
-     Loaded: loaded (/run/systemd/transient/session-5.scope; transient)
-  Transient: yes
-     Active: active (running) since Tue 2026-10-13 10:03:55 CST; 8h ago
-      Tasks: 4
-     Memory: 148.9M (peak: 1.3G)
-        CPU: 47.000s
-     CGroup: /user.slice/user-0.slice/session-5.scope
-             ├─ 7712 "sshd: root [priv]"
-             ├─ 7724 "sshd: root@pts/2"
-             ├─ 7729 -bash
-             └─57589 ./criu/criu dump -D ../test -t 52922 -j --memfd-images -v4
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-I'm not sure whether my understanding is correct. Could you please
-provide your feedback?
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-BRs
-Chenghao
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
