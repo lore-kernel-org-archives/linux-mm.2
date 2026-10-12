@@ -4,89 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CC3ECA9ED0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 09:16:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79998CA9ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 09:38:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D76FC6B0088; Mon, 12 Oct 2026 05:16:37 -0400 (EDT)
+	id 479096B0088; Mon, 12 Oct 2026 05:38:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D28166B008A; Mon, 12 Oct 2026 05:16:37 -0400 (EDT)
+	id 42A086B008A; Mon, 12 Oct 2026 05:38:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3EB26B008C; Mon, 12 Oct 2026 05:16:37 -0400 (EDT)
+	id 317F76B008C; Mon, 12 Oct 2026 05:38:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 911496B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 05:16:37 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 03C84C09C5
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 09:16:36 +0000 (UTC)
-X-FDA: 85313418834.14.84CE220
-Received: from mta1.migadu.com (out-147.mta1.migadu.com [95.215.58.147])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D4198140003
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 09:16:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BM93IkYJ;
-	spf=pass (imf09.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.147 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 052486B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 05:38:31 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 065BA40A74
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 09:38:30 +0000 (UTC)
+X-FDA: 85313474022.25.FCAACAC
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6F35D180002
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 09:38:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YoJuOtRL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qc3PUMzI;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jBvpIfag;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RzBeEw0C;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791797908;
+	b=IdWf0iAa/U+Kw+gC9BGGuCYHLEqb+wNN1PqEbs0B2PfoDdsIK4POy5fM4iH8Ft7ORmJ+A7
+	C3qih6GOd63MaWmAEw3g5qGcD6CaaK6VF9vW1bKMKuBA7UMl4d7bDfovAXyaK/GzJ0JqoM
+	XOQ2S8iC2sDI+YvN6nlewbm9AJMgRZI=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YoJuOtRL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qc3PUMzI;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jBvpIfag;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RzBeEw0C;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791796595;
+	s=arc-20220608; t=1791797908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aBURXRQxHSXJAmnyi6ikJ0BGjpngzxqLsINdXGewM5E=;
-	b=wN8QjYwd6ubTgt47vrYAdl7UCh38mIsSV994n5gh+Xq3orsq52lra4H77GEhCNELlm9DLi
-	4gsC58V5o275iNBy5ruZtdTtIBPkFSdZdk6I/WsIYNqvkrY9pejyocA+NEI5PD5qGN9n+2
-	BGuXGELn1s/fqnHihA5dkxbg/XtywG8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BM93IkYJ;
-	spf=pass (imf09.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.147 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791796595;
-	b=FAq5FuaYvhUQMfi26jYRsclDHB81CH6zZEw99fjvoeUaQY7Ke1AGzmeCIZ/RBjRxNRAAdT
-	m7YP8DmfiWQokbTImJI8Ap7tKfLmcroCaii/MTfvYgqdjO3SKKsSuy8/LMcZX+mC5iYKOP
-	s8ArlEaXOQ1P7+/AUc74TstXScQmRiw=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=69YtGiardfA9MwaWyqxmYX4WlfVGtuCzQQDaVfCNu2k=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791796593; v=1; x=1792401393;
- b=BM93IkYJ8R8KSxfDfnJ6DOKPCN4QyojQrtcWpyGI8fmxEDx6SeCZzwGd2GT1njpVenaRO38D
- qvYwfZ1wuKctTzbdllSUx8s87+cwaIsH7WB+cfWo5aVfh5d5kSFlIghWlxtnblMx5gMm665A18G
- +nl+iqRLU6pdIhdUakS9Elao=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 4ebed4ed4dfe5b5b;
-	Mon, 12 Oct 2026 09:16:33 +0000
-X-Mizu-Trace-ID: 4ebed4ed4dfe5b5b
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 12 Oct 2026 17:16:22 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Klara Modin <klarasmodin@gmail.com>
-Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	hannes@cmpxchg.org, nphamcs@gmail.com, baohua@kernel.org,
-	youngjun.park@lge.com, yosry@kernel.org, shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev, david@kernel.org,
-	linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
-Subject: Re: [PATCH v4 00/14] mm, swap: extendable swap devices (xswap phase
- I)
-Message-ID: <asylV5YyyaHs8rP3@fedora>
-References: <20261003003136.750633-1-hebaoquan@kylinos.cn>
- <asZt7-8mcxqc1a02@soda.int.kasm.eu>
+	bh=kg1XO9faP6m/0SQ0V7ZFc78dVzs5U9T2ADjMTseWY8Q=;
+	b=nptejkwxYm25EsqJ3OUpJGUZsSBwGSJsRc0l1gldpsrKEEc+EXpfs4Kh5LS2o6OJhJXJ0P
+	DA7mPH48I18xUtoOPwcBolP0+twjgjOdUVS2WJRW9N7ah42tIVSe4qD/rpZOF8eOzSiNeo
+	QItLeyXPJ2RVT76n875rU47fLInQEP0=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9C4B021DFB;
+	Mon, 12 Oct 2026 09:38:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1791797906; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kg1XO9faP6m/0SQ0V7ZFc78dVzs5U9T2ADjMTseWY8Q=;
+	b=YoJuOtRLPgh7f9CbXokLXvzdhWKhzjqBlnoKGbBdQ2JFfo5v6bHzZqfF3ssrwLSFxpmeMf
+	S4DW2FMmIXpecJOfF0nR97pcWGAd6H16WoccOxqdLe8VAPvA2lKlgndgjVwufvrceMYQNh
+	mTA6YGXv/eYFMMMGiZjIGJxfP15l6wY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1791797906;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kg1XO9faP6m/0SQ0V7ZFc78dVzs5U9T2ADjMTseWY8Q=;
+	b=qc3PUMzIZdRUvmkFX5yMIvkOt1BCm4OSqtnP7bOa5Nr0IXlAsxHow1k47xh8ElUhwuTbTt
+	Xscz2vfer4lh8iBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1791797904; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kg1XO9faP6m/0SQ0V7ZFc78dVzs5U9T2ADjMTseWY8Q=;
+	b=jBvpIfagC8+JRjzlAttwUE8YIgln3zHFXhf9IsjhBcll+k3u9GNlXPolhkO4u1PP85Z5hY
+	TUl/8mBKyLyqYYV0FRrNb3cTukjTSpV1VR26p5pas6xj4mMfAWVjODWkQze95jrCxNsmIJ
+	zdIUBH79iDepCo6E/PKuyMnXDZ++Ed4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1791797904;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kg1XO9faP6m/0SQ0V7ZFc78dVzs5U9T2ADjMTseWY8Q=;
+	b=RzBeEw0C8Lhoivs5CAGhjdOHh77P0kP84OlOsbNGbTTmYBf7bIgGzxSqDGms1qUgRsSFov
+	rUsfpc/ZMyD+pqCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 73A5313314;
+	Mon, 12 Oct 2026 09:38:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GTppFJCqzGqZcwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 12 Oct 2026 09:38:24 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 05E1EA1403; Mon, 12 Oct 2026 11:38:20 +0200 (CEST)
+Date: Mon, 12 Oct 2026 11:38:19 +0200
+From: Jan Kara <jack@suse.cz>
+To: Nikolaos Karaolidis <nick@karaolidis.com>
+Cc: Christian Brauner <brauner@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Zhihao Cheng <chengzhihao1@huawei.com>, 
+	Mateusz Guzik <mjguzik@gmail.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] fs: don't lose inodes that another LRU walker is
+ isolating
+Message-ID: <zec4khbtx7uap5swffdwxfesiz7as3ey5ulzyruwbztqfpymzs@n5t4xbsoz6c6>
+References: <20261009142431.713875-1-nick@karaolidis.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <asZt7-8mcxqc1a02@soda.int.kasm.eu>
+In-Reply-To: <20261009142431.713875-1-nick@karaolidis.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: curzyie4g9btcmzee4hmqw5ndtgj8d3y
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D4198140003
-X-Stat-Signature: 9bdzc5sshqonrk15d6rhprr6bsgmhnhy
-X-HE-Tag: 1791796594-227073
-X-HE-Meta: U2FsdGVkX1+M/hUI1JsOSmB2rZtCFRpPHe9mrGEUXDo07deG8M9Ti8heEqvCpx7gZFUELzA1qHMX0Yc47th5vSdlvHKFIxES67/PjQoAXn3etbXZ07L1lJIjcjd8Oj1Nc651Oelja33qDzTjASn0gp3CtIpSOGP3d0erUjj87ylCqrESwFVIoOhv9mEhfCQ2l/tbf3Q0uHfXmn29v7uK3hwdjjiwlRWN9uKmje+kZTsX1cHpnkGCAkF5BAh6eMMXqRiRScyINcvR9udlyjZDTPBbxdYXTnBlVkwCGLc9Z1urEWZetH3m9rVMucF18ZIk6644+QdqZQ+ty/P+Br4eP61WOUSxuabX1m0wqVh1l1V0y/lYHJia48F/fXKrc1DVh41v4tc0gV8vTvi6Vxq8fbR2zV9ckSXdjvq95hJzpO5kjMnJm22jd2jOsBLQCwI+aHStptryBo7wW+28nlAEzQMZpJW3rWHVGf9maq5U7DeU86YDLAK68espx+5qvOgfMk+1DfmA9cig/RH1pK4gm9QDsg/DWrXP78D/xZCw6mIlB8WEYDde47FUQ/O9zETAdDWGMwgy8YVO9LGJ8Perf9E+iAge6QIvJo7NtTPBCMU+PU42gU3L3c7wQxh+eaMZ2J3RosK7FeGjwGViYGgjuJFIYyRIRdgiuziz5om6cypUbNniI0wkR/6SObfBvhXhc5oa0rTm8dO7YAJyk9sSNw6d3dfB1BoZMOz/I3+3PEpBwatRIUpH4EzebN3+UoZ5cTS+jQoge7rL5b9ivvg8haXY20jfdFY0u6jQV2pwromtNujnDSDzmP8X7QpEf9avbaYl2zcJ9jM7IgeZhVcndNWj1TCTU/n0bnShU81doqKvpn8ov0VjeOhidUOpIa6cnB1Yz9Q4UTIvqbaxVY4xo78c1QivTEO8oiiEbKdL2lqpKE14TTZdXH+ar68kUGDbxFvtbEkApkaZjuNkBpT
- AYQ1rsOQ
- 6AY2twdvfgV++7k6SH6PiUaBQ66/O7Ad934F9treanv24n8FgXS1rcmw+kpP4ScEqwb6LkPrsVopmp80tDVnY2IhUjHgM+pylof+5UKafG1Ye+eoZ/Vwdj46y7Wy/RexxIvAL++CfPk5M+dbjHcAJ6gT82WEj2zCT307h4NIcZFrVq8FVVLa2INemWZt1Qokz6my/FgzL4qEIileYZvBQIjN29angSDVdcQC+S4NmvINdH3nYVNCmoS409LIaaklp1vfKqv/nWjVcsrub9loZZNuM1sNtSGTE4aWe5erFGsxJz8oNWYX2RonVtzY2Bf9czOGc03prPaQxgo5IkB9hPcGMSQ==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6F35D180002
+X-HE-Tag: 1791797908-356570
+X-HE-Meta: U2FsdGVkX1+lPBMSiAbJR44xR9CFsl/A6DyrAcXhoBP4b0fbTdXAB2sWQsT6A3RJtoS2ODMLBsBv71G29gxXja5hs8PFih1ilNx1XOBdhkojbDJCiIn/BSaPGJwf1Bz2ddEBrZFoA4AJ9FwBE5WYUN+GQ+4G+o3Oh1plFSxXkYZzZN2mkMpaG+EWnriL/UHSUtgQULEB9ripVxbxH9u9edButa9PRF/DddIKaGKyC/uhKkuc52BLmXkqxHjGXH4XSpJ2LOpmn66pe949RrvOfsFnSDC4/CULscKknWkIO6uAv7l3TM4SBoLHoTJ6Sibiugu4/3VbA6PMtjuwtMUO08ccMPrydBjyv5wH+R1F2gmmVicFVNUelJGpzJboMjhNtyqPlO0RwysbP0p0TzrNLOQJpARFfOBww2G5OO1NAfk6J8RTbUhN1JJj+8EvToUvxhpY3tyodk/kR56fyztJCPPCBAKBrlPoLYQAntavBN8AF35lA4uCEOVx66UHI/gN48q3cN2354hH14oJJ9uBSIrUHaxOjORvor/fd8lpDUEFjFzJWWtlFPXpwBOl7foHIU3DsLI4ysPGuWWvW0FYPAiU9swY+09a6nB8ofLJxNJPHvmlvYut6kAFG/kVE42dMmWJnIWj8VzOM5jFzIGfkX07rYgkdALjPGYPyGlb2i1KjdqK5JFs2jIhoRmvytHjOjJ/V+kXrpJJZYoBwhxiunaRYpvh8c9sdO0Uz6gAudNHX87W+DdM2knNRwlg+/MB9AHYmR3QJqNQDrMv37ENj5lFZxLgu2EVxr/61l0G16HYQj9NzgjRsubnD5GM3G1Uma7A3euX+VV0mhCcIkqdbQ0goit8IR0vR+Z5GH3tueoxWuzEb2cUle5j1i/wVTbHzrk3SLEO+Evod1fU4kqWrSLkuWCxi2zSNMu+3293nq/wuvU8SJQ+JMG0MHAGfMUd+vau8k+RXGabvmqjO8r
+ DJA1xCPY
+ 9B/DkGWma1wvI+vAT14efLD9rFUH909YsT4FK3QJxXf+3DTrKOG7R+kUG2fLKXe8teUbt5ZMf7yXNvzwXC3A7fKVBIQmwnfoAU/9qOPzhwFBkdhrbhhErTlf4daRCtUhbmVuV9L7G2u99Gmymvd2Iyld4YQccLmm9scB2VKeyO9NC6GZwRAwP5QwSONeLbzZ1k5/NrMQuS+BJSdmeURftHPx9X33g8t8SLlay2zVISr9xEao41n3gko3iEFs5hZvm643ceKkhqFLV5IIehWW/v46XGDCuRb/VLUiLOtZzFGoWP/QumQX7OWfmz6ohVa48RbUDWAFt9Y24/V7t3SDkMCmOGHcfFC2fhcLf1/l5xXlF2asZ8HlQaMU1N/duYj0Mj/ybUODEHuXYKlWSkPxD3G+tumm3saqQWrgJ5S+dS6fOv/Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,236 +135,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Klara,
-
-On 10/07/26 at 06:28pm, Klara Modin wrote:
-> On 2026-10-03 08:31:22 +0800, Baoquan He wrote:
-...snip...
-> > The only argument create takes is a priority. The size comes from
-> > xswap.max= at boot, so there is one place to ask for a size and one to
-> > ask for a priority, and a priority can be given per device while a size
-> > cannot:
-> > 
-> >   # echo > /sys/kernel/mm/xswap/create          default priority
-> >   # echo 100 > /sys/kernel/mm/xswap/create      priority 100
-> > 
+On Fri 09-10-26 14:24:31, Nikolaos Karaolidis wrote:
+> When inode_lru_isolate() finds an unused inode that still has page
+> cache, it sets I_LRU_ISOLATING, drops i_lock and the list_lru lock,
+> invalidates the page cache, clears the flag again and returns
+> LRU_RETRY so that the restarted walk can free the inode.
 > 
-> > The default is the highest priority, SWAP_FLAG_PRIO_MASK. An xswap
-> > device is then the first one tried, ahead of any ordinary swap device.
-> > Setting a lower priority is allowed.
+> Another walker of the same list can reach the inode in that window.
+> It sees a non-zero i_state and takes the inode off the LRU, as it
+> would an inode that is in use. Page cache deletion requeues the inode
+> once the mapping is shrinkable, so this is harmless if it happens
+> before the last deletion. If it happens after, nothing puts the inode
+> back: it stays in memory, unused, clean and without page cache, out
+> of reach of the shrinker and of drop_caches, until it is looked up
+> again or the filesystem is unmounted.
 > 
-> Nice, this is now a good default which the user should not have to
-> change.
-
-Thanks a lot for careful reviewing, and sorry for late reply.
-
+> Before commit 2a0629834cd8 ("vfs: Don't evict inode under the inode
+> lru traversing context") the pin was an i_count reference, and the
+> final iput() put the inode back on the LRU.
 > 
-> > 
-> > The device does not move once it exists, so the address space cannot be
-> > changed from this interface either. xswap.max= at boot and this together
-> > are the whole configuration.
-...snip...
-> > Open items
-> > ----------
-> > 
-> > - xswap_create() sets si->pages to the whole address space (twice RAM by
-> >   default) and _enable_swap_info() adds it to nr_swap_pages and
-> >   total_swap_pages, which is what __vm_enough_memory() uses for
-> >   overcommit. That raises the commit limit by 2xRAM for a device whose
-> >   real capacity is bounded by the zswap pool and by how well the workload
-> >   compresses. The question is which semantics overcommit should follow:
-> >   worst-case backing, or the address space.
-> > 
-> > - destroy takes a bare swap type. The type is an internal index that
-> >   alloc_swap_info() recycles as soon as SWP_USED clears, so a value read
-> >   earlier can name a different device by the time it is written. The
-> >   swapoff ABI uses a path for this reason. It wants a generation or
-> >   another stable handle.
-> > 
-> > - The new interfaces (/sys/kernel/mm/xswap/create and destroy, xswap.max=,
-> >   the new type string in /proc/swaps) are not documented yet.
+> Skip inodes that are being isolated and leave them to the walker that
+> pinned them, which restarts its walk once it has unpinned them.
 > 
-> To me it feels a bit weird to have the interface split between a kernel
-> parameter and sysfs, meaning I have to configure this in two places now.
-> As far as I gather, there's also nothing that needs the limit to be
-> fixed at boot since it is applied at creation. If we want to expose this
-> limit to users (as xswap does) it would be nice to have a 'max'
-> shorthand for tha largest possible value, i.e. SWAPFILE_CLUSTER *
-> UNIT_MAX (or whatever it might be in the future). That would I guess in
-> practice give the same behaviour as vm.overcommit_memory=1 which might
-> or might not be desirable.
-
-Thanks for the comment.
-
-Here xswap.max= is a global boot parameter, while not a per-device or
-runtie knob. It sets the space space (si->max) of the xswap device
-at boot and can't change at runtime. So on the two places: the size is
-a global setting, fixed at boot; the priority is per device, it is in
-the create interface. They are different things.
-
-The default is 2xRAM. From our earlier discussion, this is the largest
-size we think is sensible, and in practice I don't think it is not
-reachable in reality. If a system has swapped out 70% of its memory, and
-even more at 100%, it is already doubtful that it can still function
-normally. So 2xRAM is an upper bound, not a target.
-
-On the max short name: it would set the address space to the largest value
-the format allows. As you said, that is close to vm.overcommit_memory=1,
-and it is not a real capacity, so we may not want it as the default.
-
-We keep xswap.max= only for special needs. Otherwise we may not need to
-change it.
-
-Chris suggested a CONFIG option for the size. While CONFIG is not friendly
-to distros, you must rebuild the kernel to change it.
-
-By the way, I remember you mentioned you ever did a test making swapped
-out pages about 110% of system RAM, could you share your testing steps
-or scripts so that I can give it a shot on my testing system? If it's
-not convenient, then never mind.
-
-Thanks
-Baoquan
-
+> The window is reached by any unused inode with page cache on
+> CONFIG_HIGHMEM kernels, and otherwise by inodes whose page cache is a
+> single shadow entry at index 0. On an i386 HIGHMEM guest, eight
+> concurrent "echo 2 > /proc/sys/vm/drop_caches" over 2000 freshly read
+> one-page ext4 files leave roughly 400 of the inodes off the LRU per
+> round; on x86_64, with the files' pages first evicted through
+> memory.reclaim, 3 to 4 per round. With this patch, none in either case.
 > 
-> > 
-> > Changelog
-> > =========
-> > v3 -> v4:
-> > - Rebased onto the latest mm-new.
-> > 
-> > - Add boot parameter xswap.max= .
-> > 
-> > - The device has one size now: set at creation, fixed, with xswap.max= to
-> >   ask for another one at boot. v3's runtime ceiling, the per-device limit,
-> >   the clamp it wrote and the shrink to that ceiling are all gone as
-> >   Johannes suggested (v3's patches 12, 13 and 14).
-> > 
-> > - v3's patches 2 and 4 are the new patch 3: neither builds a device
-> >   alone. It also bounds find_next_to_unuse() and wait_for_allocation(),
-> >   which walked up to si->max past the mapped range. Chris suggested
-> >   this.
-> > 
-> > - New patches 11 to 13: a cgroup that cannot zswap is not given an xswap
-> >   slot, swap_info_struct max and pages are unsigned long, and debugfs
-> >   counters for the mapped range and the grow and shrink counts.
-> > 
-> > - v3's patches 1 and 3, and 5 to 11, are unchanged; the merge shifts them
-> >   to 1 and 2, and 4 to 10.
-> > 
-> > - Minor comment and cleanup changes.
-> > 
-> > v2 -> v3:
-> > - Rebased onto the latest mm-new.
-> > 
-> > - The grow path now honors the user-set ceiling (si->nr_clusters) instead
-> >   of growing up to nr_clusters_max, and a ceiling below the mapped range
-> >   is unmapped exactly instead of rounded to a chunk (patches 12 and 14).
-> > 
-> > - The limit write clamps the ceiling up to the clusters covering the pages
-> >   in use, replacing the earlier WARN_ONCE; si->pages becomes mutable at
-> >   runtime (patch 13).
-> > 
-> > - Minor comment and cleanup changes.
-> > 
-> > v1->v2:
-> > - Patch 1 (mm: zswap: return -ENOENT when the swap device is gone) is not
-> >   part of this series; it was posted separately.
-> > 
-> > - There is only one size knob now. The runtime ceiling and the debugfs
-> >   per-device limit are gone. All that is left is the optional per-device
-> >   cap, /sys/kernel/mm/xswap/type<N>/limit. Grow and shrink work without
-> >   it.
-> > 
-> > - The shrink no longer keeps its own count of the free tail. It scans the
-> >   tail instead, and dropping the counter also removes a call from the
-> >   cluster allocation path.
-> > 
-> > - The priority is no longer a patch of its own. The create attribute
-> >   takes it:
-> >     echo 100 > /sys/kernel/mm/xswap/create
-> > 
-> > RFC v3 -> RFC v2
-> > - Add patch 16 to support setting xswap device priority at creation.
-> >   The create sysfs interface (/sys/kernel/mm/xswap/create) previously
-> >   hardcoded every new device's priority to DEF_SWAP_PRIO, it now
-> >   accepts an optional priority:
-> > 
-> >     echo "<percent> [<prio>]" > /sys/kernel/mm/xswap/create
-> > 
-> > - Bug fix: xswap_lock init ordering. mutex_init(&si->xswap_lock) was called
-> >   after xswap_map_clusters() (which locks it), i.e. locking an uninitialized
-> >   mutex. Init now before the first xswap_map_clusters() call. Thanks to Klara.
-> > 
-> > - Bug fix: Fixes a compile error in !CONFIG_XSWAP builds. xswap_debugfs_root
-> >   is declared inside CONFIG_XSWAP ifdeffery scope, so the ungarded use
-> >   caused error when CONFIG_XSWAP is off.
-> > 
-> > RFC v2-> RFC v3:
-> > - Replace the "header-only swap file + swapon" creation hack with a
-> >   proper file-less device created and destroyed via sysfs
-> >   (/sys/kernel/mm/xswap/{create,destroy}).  This required the
-> >   __swapoff() refactor and the free_swap_cluster_info() signature
-> >   change (patches 4, 6, 14).
-> > 
-> > - Require zswap: refuse to create an xswap device when zswap is
-> >   unavailable (patch 15).
-> > 
-> > - Split the unrelated zswap -ENOENT fix out of the series into a
-> >   standalone patch (patch 1).
-> > 
-> > - Fix nr_free_tail over-counting on concurrent grow, shrink leaking
-> >   detached clusters on early bail-out, a re-init race on cluster
-> >   spinlocks in xswap_map_clusters(), the nr_clusters_mapped update
-> >   ordering, and swapoff accessing the shrinker-unmapped cluster tail.
-> > 
-> > - Minor cleanups (checkpatch, /proc/swaps alignment, commit messages).
-> > 
-> > RFC v1-> RFC v2:
-> > - Added __GFP_HIGH | __GFP_NOMEMALLOC to alloc_page() and kmalloc_array()
-> >   in the grow path, plus memalloc_noreclaim_save/restore() wrapping,
-> >   to prevent the grow path from consuming emergency memory reserves
-> >   or recursing into swap under PF_MEMALLOC. This is folded into patch 3.
-> >   This was pointed out by Nhat.
-> > 
-> > - Folded the mutex serialization fix into the cluster grow patch (patch
-> >   3). This is suggested by Nhat.
-> > 
-> > - Fixed coding style issues: corrected indentation of declarations in
-> >   xswap_unmap_clusters(), removed unnecessary block scope around the
-> >   err variable in xswap_map_clusters().
-> > 
-> > - Rebased onto mm-unstable
-> > 
-> > Baoquan He (13):
-> >   mm, swap: refactor free_swap_cluster_info to take swap_info_struct
-> >   mm, swap: back the cluster_info array with a sparse VM_SPARSE area
-> >   mm, swap: add sysfs create interface for xswap
-> >   mm, swap: add xswap grow trigger on cluster allocation
-> >   mm, swap: add xswap_try_shrink and shrink trigger on cluster free
-> >   mm, swap: free backing pages in xswap_unmap_clusters
-> >   mm, swap: defer xswap shrink to workqueue to avoid lock recursion
-> >   mm, swap: refactor swapoff and add xswap_destroy
-> >   mm, swap: require zswap for xswap devices
-> >   mm, swap: do not give an xswap slot to a cgroup that cannot zswap
-> >   mm, swap: widen swap_info_struct max/pages to unsigned long
-> >   mm, swap: add debugfs counters for xswap
-> >   mm, swap: let the command line set the xswap device size
-> > 
-> > Chris Li (1):
-> >   mm: xswap support for zswap
-> > 
-> >  include/linux/swap.h |   16 +-
-> >  mm/Kconfig           |    9 +
-> >  mm/page_io.c         |   19 +
-> >  mm/swap_state.c      |    9 +
-> >  mm/swapfile.c        | 1221 +++++++++++++++++++++++++++++++++++++++---
-> >  mm/zswap.c           |   11 +-
-> >  6 files changed, 1205 insertions(+), 80 deletions(-)
-> > 
-> > 
-> > base-commit: 9a0542b19a541eda3f82934ee747c61ec3f18847
-> > -- 
-> > 2.54.0
-> > 
+> Fixes: 2a0629834cd8 ("vfs: Don't evict inode under the inode lru traversing context")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Nikolaos Karaolidis <nick@karaolidis.com>
+
+Looks good. Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+> 
+> Found while working on reclaim of inodes pinned by page cache in
+> ZONE_MOVABLE.
+> 
+> Tested on master af32da41b032 (v7.3-rc6-232) in QEMU/KVM with a small
+> stress program: mount an ext4 image, read 2000 one-page files, run 8
+> concurrent "echo 2 > /proc/sys/vm/drop_caches", drop caches again
+> single-threaded (2, then 1, then 2), and count the filesystem's inodes
+> still in memory via how many the umount frees:
+> 
+>   i386 HIGHMEM:      ~390 of 2000 lost per round without the patch
+>                      (3 runs x 20 rounds), 0 with it
+>   x86_64, pages evicted through memory.reclaim first (single shadow
+>   entry left):       ~4 per round without, 0 with
+>   x86_64 with KASAN, PROVE_LOCKING, DEBUG_VM, DEBUG_LIST:
+>                      6109 lost in 50 rounds without, 0 with, no splats
+> 
+> The reproducer is a single C file run as init; I can post it if useful.
+> 
+> I went with skipping the inode rather than requeueing it on unpin
+> (which would be closer to what the final iput() did before
+> 2a0629834cd8) because it avoids the remove/re-add and leaves the inode
+> where the pinning walker finds it again. Happy to switch if preferred.
+> 
+> Jan, this applies cleanly before or after "fs: Basic infrastructure for
+> offloading inode reclaim" (v2 3/5); happy to rebase onto that series if
+> you'd rather take it there.
+> 
+> For stable: 6.18 and older need inode->i_state instead of
+> inode_state_read(). I have only tested master.
+> 
+> An LLM was used to check the analysis against the code, write the
+> reproducer and draft the changelog; I have reviewed all of it.
+> 
+>  fs/inode.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/fs/inode.c b/fs/inode.c
+> index a9d37be390a1..74dfc379b377 100644
+> --- a/fs/inode.c
+> +++ b/fs/inode.c
+> @@ -942,6 +942,12 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
+>  	if (!spin_trylock(&inode->i_lock))
+>  		return LRU_SKIP;
+> 
+> +	/* Another walker is dropping its page cache, leave it to that one */
+> +	if (inode_state_read(inode) & I_LRU_ISOLATING) {
+> +		spin_unlock(&inode->i_lock);
+> +		return LRU_SKIP;
+> +	}
+> +
+>  	/*
+>  	 * Inodes can get referenced, redirtied, or repopulated while
+>  	 * they're already on the LRU, and this can make them
+> 
+> base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
+> --
+> 2.55.0
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
