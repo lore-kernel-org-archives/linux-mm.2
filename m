@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18B37CA9ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 17:11:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88BBECA9ED0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Oct 2026 17:13:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D95BD6B0092; Mon, 12 Oct 2026 13:11:26 -0400 (EDT)
+	id 756E36B0096; Mon, 12 Oct 2026 13:13:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D47066B0095; Mon, 12 Oct 2026 13:11:26 -0400 (EDT)
+	id 707976B0098; Mon, 12 Oct 2026 13:13:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5CA36B0096; Mon, 12 Oct 2026 13:11:26 -0400 (EDT)
+	id 61E4D6B0099; Mon, 12 Oct 2026 13:13:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9962F6B0092
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:11:26 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 284AEC11E9
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:11:26 +0000 (UTC)
-X-FDA: 85314615372.11.EFB9FEA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8D053140008
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:11:24 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i9yb8Aru;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 40A5D6B0096
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 13:13:16 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B5BC31210FF
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:13:15 +0000 (UTC)
+X-FDA: 85314619950.22.B5A0660
+Received: from mta1.migadu.com (out-140.mta1.migadu.com [95.215.58.140])
+	by imf04.hostedemail.com (Postfix) with ESMTP id AA2DB4000A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 17:13:13 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qFNE5HMt;
+	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.140 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791825084;
-	b=sEnIzPUHgdojtMbLsYOiNRQ6hs2RO7NRfbgZULmKoom64puBF+Ja1WiLyACSb79L/FLxO/
-	Vd3wCJgIV+yIZvJR19R80vtnv4MwX330hsUAtnCpwLNcoailxOcSZyObz9sYRlqxXHo8UN
-	aO5XydYONJ6oNQ43+dh9wT3TKhF5Rwc=
+	t=1791825194;
+	b=2bnKaOywCBJUUux4pfvX4wWmKnjqsNk5tpyV6Xz2CqqK4/v18116u/1vwyhvuJ1fcumG7e
+	AqdgkakGNFdd6rTz8Jb0P2BnJcRVuBM8QDyR2edRDeZF+PaiBQF9ChhY2Zcdvze2ihzAEL
+	ADSHTSgywJw77KBPBs+oHi57+L0NgN8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i9yb8Aru;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qFNE5HMt;
+	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.140 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791825084;
+	s=arc-20220608; t=1791825194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eIpXBxc1Zh+5tYOYTOcIg/Ba6/+mSunX8M4pzhxilnw=;
-	b=om0UpDgCkdkqxOeguP80Jtkm53Sgcz4LR0i5rgVRd/BqBorXAaapjvzDPL411Ncl9h2sj2
-	0HJcYOAXthSkWtVH/r8P53/NWDTIthdmVXybL838FBckBLBmMZNyWz5+cWhER2co3PTLGl
-	zkfwXExBpjFPQbNyF8j815SI6AzCsZw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 17BFE601F1;
-	Mon, 12 Oct 2026 17:11:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452741F0089C;
-	Mon, 12 Oct 2026 17:11:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791825082;
-	bh=eIpXBxc1Zh+5tYOYTOcIg/Ba6/+mSunX8M4pzhxilnw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i9yb8AruVWhFnaBylkZ3cCIq17GgdHNPTtRN/iIoerfLgW5ZLo57/VPpwKXuTXpX9
-	 Rxqv6XA8bqubOEVIZ66EY4jsNKQP6dsMn5011o4a9WCImjqbGvlBj4xK5AaVrf9Dw5
-	 L4ZbFwjbTLxhk9coLPjuPVFKyMMLSNCGbA+zXpkbdeW5YeRe7GVGiArf1Sad+EA5dw
-	 N1gI/wrGWHCZFNKNzRFGKqQkuyrK80Fu14ktFl9La2Bv5kRdsKUQQOoSps/8oaxzWn
-	 COJjN6dXrswLvINJaSw35/yg/vS+E9oOkIE58zsgJLAGfsPBYTdfctD/24yKKPFym2
-	 WN/sATU+rv9bw==
-Date: Mon, 12 Oct 2026 20:11:10 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, kexec@lists.infradead.org,
-	Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	George Guo <guodongtai@kylinos.cn>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] kho: fix global scratch size calculation
-Message-ID: <as0UrrAvqjvUPyQx@kernel.org>
-References: <20260922131217.698809-1-sourabhjain@linux.ibm.com>
- <asC3-4WNiTF3n7l1@kernel.org>
- <2vxzo6czjaa9.fsf@kernel.org>
+	bh=ewAUwQh9V9wBYnmHFNwDRtCG2iHLmxe7PSTHA3L7mEA=;
+	b=YU77PTYK8srYfcanB8CuZzlNWP/dnGQNTPJA6kWf1DaeFYJM/aOqZq90uDBKvYHMvPWqoC
+	7z+WouIjUrzykEBdU/ZEwT7iSFaLL/8uWrTToM2GBvLTkf//bGlLvDvCA4xB3+LNDcsnN1
+	2GanX/DnO/V0zoqL/EqXD5TNYxXgnds=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=ic4+7nPuzg/HmHoJ2BxucAspSzm/umEUsEWucPmNFHQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791825189; v=1; x=1792429989;
+ b=qFNE5HMtbFxz883WiyZ3x0GRHUPE206w1D/n00pVadaEgk/rJaUJLcJFHroAV+dHoiDQepfQ
+ lts+BQC58EQ4d0FmE48+1nqWB62J+oLr0ljqOnKI4sIyPiPm+IZRxiRr8e6OYSBj60DBZbHnDX4
+ dMa7HdQCfAcy4o3Lau0dj3jQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 5adfa5a0e15eca74;
+	Mon, 12 Oct 2026 17:13:08 +0000
+X-Mizu-Trace-ID: 5adfa5a0e15eca74
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 12 Oct 2026 10:13:06 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Harry Yoo <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH for-7.5 1/5] memcg: move memory.high enforcement out of
+ try_charge_memcg()
+Message-ID: <as0U-erMrDTG9fkt@linux.dev>
+References: <20261010210957.1350874-1-shakeel.butt@linux.dev>
+ <20261010210957.1350874-2-shakeel.butt@linux.dev>
+ <aszdXDpqLUX1S4Qq@thinkstation>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2vxzo6czjaa9.fsf@kernel.org>
+In-Reply-To: <aszdXDpqLUX1S4Qq@thinkstation>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AA2DB4000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8D053140008
-X-Stat-Signature: du33tbas9qau6ijbnmk4h69m55fj3bmy
-X-HE-Tag: 1791825084-474584
-X-HE-Meta: U2FsdGVkX1/0bp9535ZqhfuGE8P2FQ5DlXE9vhY8vcLI6yoaqxJlTg5HQwtNELkUk9ftOrLdmCByRdy563vrojNKhtpP0xeXQdq/xZx1nmNj2iCz6cv7i9xwQu+GZEP8XzP7UcNDPgCuV9V1XRoBbWASgPmchSs/Jt5cK8lF0GnxLDIISaI8WNUmK3h9reXp/IHt3ulVwhQcx50YcM0zdlbmB0SmTMrFEZ4kUQ71JU4OfhGCxs4I11ZiEEzL19gGjiRFo4sGU6K4sivWImcJK83zr/jEuoX47lXdz6QU/mNJ5KHvurfpa5W8T+oDp4h9SoGomjllbglTBjxq5CFIMbslSSiAold371NsjT1mSnXrwjSlrSOfnGs/f/OFPmeQmwHQ000jvmNh0sDQeRSsIh+Y7t5ppohBkGoXsYcSFyRBXlf4Ro9QtwRH9GOR/1jwAM97jdkndrM8fMrjRij1DtEDVqlgK7RoI6UiwVQO+aPUar4s4AZY3zF4qbYi4oB/P87dlj9VxuJlUUbH0FqV5fYONY8ydWXv4LFxx2ti2ae2UI7IOii4VJW2SEU5Lr6INhUu792Ltyu9cGse6VPfzyfFYfmtC6IktMC9tgG/YqLxwg4nlvX+4NH42eCcoz3Vl8xz6akVDW8tzeYYPhJWbRcrwl0orR6/M4np0d0rev+noEIdwXmJ3IjHLsWb/g0nUxWFwOiNODCB2S8oXYpXlduUytKTAUCq+/nTiPYaokokBFthVcKU/G4xP0dRjXwFxBWkRgtBMV0UW+RvpvqroGzheBOKsw+v5bog3tFBmTSmI/V4sEGTCaArHE7tTGKhKxssZw1v8Ep4ZELDQ3Nhk7+nd223Z5aptaiZrh1b6KcuLdU1fIEJYRerBgn4O51UtqyWR3aOaiSbbCSVIMaykQdejdYhEgj8i/TOozAlE/jEhleeEFVgzJTT9bPTbMaT1h6K0igcCwHtLY4Zr0G
- G/LUi7so
- aGZWbB3hYQ76fymRIPfkIqHIHs86uYKUkQPnMYjazke+t05DMWMIL8esjzwo3iWSPNQmZSr15EX0zC0Jc6Z6Hlij7IeirkEetjbhcLN8NN/DYKqpqsQs/B9Z82lIoa9cTY25THwBiit48A6tOYMWwcJmPbZn2ihL/feK8xVbD2dQK0TnOq5byhbMIMkc7+iOjn2whXKNZUSb5qYbfPrCk9eSBloyYonYnD6okCOoh88/ria1J9KtZ8lnY6ThT2WxBHVP80vQ3fBjcOPZR3d1QGckdsLUaKgJ99HUoti90rlHGFij8hBCCqCysmPnT89nzIiQAC+4vRGRp8BdgppD0VikwrlwUqALbtA/aigfhP1KGFeg1hTE8khWr+lglCNv5derGgiuuYxfwQEAoObCk2awME4keXCzWQSs9uCPqmv5hBuoDhxoXags6vp54wxfLmkwFEXeS0YhPL3ixYzYOqVIsOf8c8owQ/mXtIVU/ZnGGtiW61oRPC0viD/bDoPf0FiQ4hOIjpV1qlSanZWJKCpxzqaorSZ+QSOW+7gQtL6b8qEeFwUjF9sR78zOCLXxLHoDRhgp5ngUsjIFmuJ7+m3GY3SVbBvXxKumy
+X-Stat-Signature: pot7fnrqxwjdin15dhokdq94mmowo55s
+X-HE-Tag: 1791825193-107156
+X-HE-Meta: U2FsdGVkX18joq0u/5tFP1sWsJ649RXJVDLkYfWk6aYWt5iFoUb7xfVcJ+PS7GlC6sxezVXvuXEyq/dQn0oZe1pY1SRQNjiTVUk1WuUwl66NQsXiOCiQCLj3nVcf61TPaW/vd5Fq194IKg7/+jJOKW2hsTPBLNFJUjnv0k5/dh6Ad5jd3ljYT7c2jD5iN1WKOfjgfpvWATLhMUbJ5i9N2zMtPY5YmWKmSg/L9pw7nhkmLuJf/qmc6EVcW0TIhI3N/rddYqVP8i/aL/hx4OZ/7dgkm9gkReacg3jR2WyMts7e5xD9DtFEAL59o64+kA50d96MmuK3egM9p10KMWLDyEGM9Ize437WqLIqSA7OR7bEuOxd5jn2vi2jo35s9TUTCW1dfjEpAt5WSz7rD1tejlluJlx0I9PGFIg3JhE60SAPsmt9LoREdzY1OMBoHnDC/ZORX7BlNSSNP6BeRume+S/n0mFJTOigRGKyBu9NMd0ZBrYuosWIc/8XWc5t7gJGMwOH218Y+Szp6WrPNTx3QaLF+JgqSZjlczYRS2qGq79w7Eh3f90cDwUWA5DcuXfkM3f0E3TcQovFlg+Xq6VGt5pVp++K8mGlZ8AsYdJX3/uIf7VqKpvL5hhUCz7JEWkJ4qvutEqhXjQY3vsZwtaVB2O/Er4G/WPpHh0jJ5ML2jNAmB2Ns1Jl/zIMUn0I8XP1aTH1yUafy0Pj7J5WpJqYdZInr36AkWPl6zRFrRmmjcmmLTby7ayQJSrTFZ2h6RSclZHZvyWztW/KqJB+xGFNStN1ik9n5n5u9/mUaBpmUCRHm4BhPtkX94x5p6IbABsJdU6tEuZgezbTFSOvczAVAw5V4jyjaOkMcBlUxrBg/wNUZWGDqYLxMAVEUjMRRskiLqPSDzsGZCSTW1Lkfn6HD82rv+HMf5VyZBTs3HFWzIAP67iBB9QTz3+3zZuQ3v1waDJI5Xj4LeXXAi9p5y/
+ ENwFf+EM
+ R0h5yCRwxvTFGbtHlZxRrD5AnRPE1C9ywz2bKCYPd9ulMpUGUx0qsHNRRVaYjU5oIUBkDxMIe8WizQV4q9XGGZDgwsJiIMdnizZMR5nKVl/4FUp+1Ducf9Eh86MiG/MWh6OgFQ7l8Ei63UYfYf75h9J/Krog3USp9UhwN1plEKtbNa7eWpf7Lcsddi4VW9iLz4orcNdF1L3dzclcmAG6/oDNpKiX1lQcPoqXS3LiRcNFTr4p0BocZqkfifVemQv2tJuWSY78/6rs0gf1c8/24YPZJrmiFw2uQJPlbWH4ZVB194DjEh86LbeVS3Icrz0txGhYqyHexdjXGcECPOX6dsRQjCw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,113 +94,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 03:52:46PM +0200, Pratyush Yadav wrote:
-> On Sat, Oct 03 2026, Mike Rapoport wrote:
+On Mon, Oct 12, 2026 at 02:22:40PM +0100, Harry Yoo wrote:
+> On Sat, Oct 10, 2026 at 02:09:53PM -0700, Shakeel Butt wrote:
+> > try_charge_memcg() does a lot. It charges the page counters, reclaims
+> > when a limit is hit, may call the OOM killer, and at the end it checks
+> > and enforces memory.high. Move the memory.high part into a new function,
+> > memcg_enforce_high(), so that try_charge_memcg() is shorter and the
+> > memory.high code is easier to read and change.
+> > 
+> > The code and its comments move as they are. The only difference is that
+> > the new function gets allow_spinning from gfp_mask itself.
+> > 
+> > No functional change.
+> > ---
 > 
-> > On Tue, Sep 22, 2026 at 06:42:16PM +0530, Sourabh Jain wrote:
-> >> KHO calculates the global scratch size based on memblock-reserved kernel
-> >> memory. It passes NUMA_NO_NODE to memblock_reserved_kern_size() for
-> >> this calculation.
-> >> 
-> >> When memblock_reserved_kern_size() is called with NUMA_NO_NODE, it
-> >> counts both:
-> >> 
-> >> - memory reserved for a specific NUMA node
-> >> - memory reserved with NUMA_NO_NODE
-> >> 
-> >> KHO needs to distinguish between these two types of reservations.
-> >> When calculating the size of global scratch memory, KHO only needs to
-> >> account for reservations made with NUMA_NO_NODE. Reservations made for
-> >> a specific NUMA node must not be included in the global scratch size.
-> >> 
-> >> Add memblock_reserved_size_nid() to calculate reserved memory for a
-> >> given reservation type and NUMA node. When NUMA_NO_NODE is passed, it
-> >> counts only memory reserved with NUMA_NO_NODE.
-> >> 
-> >> Use the new API for lowmem, global, and per-node KHO scratch size
-> >> calculations. For lowmem and global scratch, count only memory
-> >> reservations that were made with NUMA_NO_NODE. For per-node scratch,
-> >> count only memory reservations that were made with the corresponding
-> >> NUMA node ID.
-> >> 
-> >> Remove memblock_reserved_hugetlb_size() since it has the same
-> >> implementation as the new API and differs only in the memblock
-> >> reservation flag being checked. The new API handles both kernel and
-> >> HugeTLB reservations through its reservation type argument.
-> >> 
-> >> Define the new helper as a static function in the KHO implementation,
-> >> since it is only used by KHO and has no users outside
-> >> kernel/liveupdate/kexec_handover.c.
-> >
-> > I looked again and this feels like a band-aid to me.
-> >
-> > I think we need to step back and rethink the order of the
-> > scratch/kho-bootmem sizing and consider how NUMA and lowmem are involved
-> > there.
-> 
-> Could you elaborate? How else would you calculate the sizes?
-> 
-> To me, the idea sounds fine (although I also share your comments on the
-> code style). This is what the global scratch size should have been doing
-> from the get-go. Today it over-allocates by counting both global
-> allocations and _all_ per-node allocations.
- 
-> There is a separate problem with CONFIG_NUMA=n, but for that I think we
-> should just have a different allocation path where we only do lowmem and
-> global scratch.
+> Missing Signed-off-by: ?
 
-I mean more fundamental code refactoring that takes into the account all
-cases (and I could miss some)
+Oh I don't know how I missed this.
 
-- NUMA vs no-NUMA
-- systems that have global scratch containing lowmem scratch vs those that
-  don't
-- and of course fix global scratch over-allocation
- 
-> >> On powerpc, the difference can be seen in the scratch_len values
-> >> reported by:
-> >> 
-> >> cat /sys/kernel/debug/kho/out/scratch_len
-> >> 
-> >> Before this change, the global scratch allocation was 0x12000000
-> >> (288 MB):
-> >> 
-> >> 0x1000000   (16 MB)
-> >> 0x12000000  (288 MB)  <- global allocation
-> >> 0x5000000   (80 MB)
-> >> 
-> >> After this change, the global scratch allocation is 0xd000000
-> >> (208 MB):
-> >> 
-> >> 0x1000000   (16 MB)
-> >> 0xd000000   (208 MB)  <- global allocation
-> >> 0x5000000   (80 MB)
-> >> 
-> >> The 80 MB difference is the per-node reservation that was previously
-> >> being included in the global allocation.
-> >> 
-> >> The same issue also affects lowmem scratch memory, but its impact is
-> >> limited because the lowmem scratch memory calculation is restricted to
-> >> the first 4G of memory. The changes also cover the lowmem scratch
-> >> memory case.
-> >> 
-> >> Cc: Alexander Graf <graf@amazon.com>
-> >> Cc: Andrew Morton <akpm@linux-foundation.org>
-> >> Cc: George Guo <guodongtai@kylinos.cn>
-> >> Cc: Mike Rapoport <rppt@kernel.org>
-> >> Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-> >> Cc: Pratyush Yadav <pratyush@kernel.org>
-> >> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> >> Cc: linux-kernel@vger.kernel.org
-> >> Cc: linux-mm@kvack.org
-> >> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> [...]
 > 
-> -- 
-> Regards,
-> Pratyush Yadav
+> Otherwise LGTM.
+> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
 
--- 
-Sincerely yours,
-Mike.
+Thanks for the review.
 
