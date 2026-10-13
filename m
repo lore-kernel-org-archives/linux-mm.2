@@ -4,101 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2DF2CA9ED2
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 13:34:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1113CC6B08
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 13:47:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9427E6B008C; Tue, 13 Oct 2026 09:34:33 -0400 (EDT)
+	id 7FAA76B008A; Tue, 13 Oct 2026 09:47:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F5796B0092; Tue, 13 Oct 2026 09:34:33 -0400 (EDT)
+	id 7AC016B008C; Tue, 13 Oct 2026 09:47:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80B106B0095; Tue, 13 Oct 2026 09:34:33 -0400 (EDT)
+	id 69D9E6B0092; Tue, 13 Oct 2026 09:47:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 598E56B008C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:34:33 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C5A1E1C18C7
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:34:32 +0000 (UTC)
-X-FDA: 85317697584.18.3DAF99E
-Received: from o1.ptr9745.em.honeycomb.io (o1.ptr9745.em.honeycomb.io [149.72.141.136])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AE5551C0004
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:34:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b=cjPfxSlL;
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io;
-	spf=pass (imf20.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io"
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 41FF66B008A
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:47:30 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CDB6F40CFF
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:47:29 +0000 (UTC)
+X-FDA: 85317730218.22.4A85EF0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C5E22C000F
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:47:27 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S32sFMdJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791898471;
+	s=arc-20220608; t=1791899247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yjc3wFNOxrypJJyu5rTq8Vr1Hd3Zz2aUY0wPnZO4Ji4=;
-	b=jyPqHWxMPBNy2TPXBaFnRfV83Yh5V1zcGgJJP1+OfsVnVqHlGUpSUS4mxg08UREIkZRUzM
-	kj2ufGXVQBs95mEYHfFE+3FuM+ctwaPa1C9byYKovEiqD52roXTU4SPqewpYZZSBhZUBgO
-	mP/34j4cyKwgtRi7f0K5RqncxSnlcaE=
+	bh=ufMZp4Qc9d80hvvRB3vNUruXIvuXEMAYVkTpkYEJ0aU=;
+	b=fW/4rFTFonvfBxwxQOu4Y69nN5FPDMbEfWNgz4F80/PrNsRkhmypnbUcqpuQnaNr3mERsM
+	M4/rpGwaw6BnEa3dao8TcUcvooAPvL54zzwh13l6zf3LmG4t68V/wkCxUK55UEcLJZHLZM
+	da+e8VM0p1kfSGjRBsc4fl5pvasY/GI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b=cjPfxSlL;
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io;
-	spf=pass (imf20.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io"
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S32sFMdJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791898471;
-	b=zijJTNui/AUBgBvyCrIn0XZl8T6PTSm7yqB+/2YtGKZFSGLRFw3mwc27dZDmJ1T2KB2OPF
-	0zRK+xHrLJ36VJig+iZ1FCC8J4po4AFXVsUDlOhigV2Cbe8v1Q/QIb8GLCPi2IRHJPqcQd
-	fbOpzYflQ/pxaGr7tOA7dVB45hBdR+0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=honeycomb.io;
-	h=from:subject:date:in-reply-to:references:mime-version:to:cc:
-	content-type:content-transfer-encoding:cc:content-type:date:from:subject:to;
-	s=s1; t=1791898469;
-	bh=Yjc3wFNOxrypJJyu5rTq8Vr1Hd3Zz2aUY0wPnZO4Ji4=;
-	b=cjPfxSlLQkSUdnf0bT733QfnqIyHwuJRNG6OpW0Z7CvBWxnySk5RMr67Oc8aartloIne
-	pK56lqo0wA7bw51ni+1Fcut5Q7x9y5Uavv6FVrVtcE40SFKySwMzXlVILGojlgwyFfNLit
-	qbCv0j92NNahom4tTuy0p3LA+dH3TRYvluTbZWUUAdx9ss+S44ajRzJIPWJ4tjWXb0kRLP
-	Jef/3beZF2rrIcoj0XVGTFmtxqIksgGYEiSMqcrlhfMjLfbhiI+HLfHgCRTBLcWDW2QwjJ
-	gtkvyi8l/XWlXAkflQ0eA+zJtTzDlbJameOVs3/1VpBZormpIJ+VqyABDXqJfqQA==
-Received: by recvd-b6785b758-pms9j with SMTP id recvd-b6785b758-pms9j-1-6ACE3364-52
-	2026-10-13 13:34:28.727189614 +0000 UTC m=+1197221.645450126
-Received: from daisy.dens.ffj.family (unknown)
-	by geopod-ismtpd-canary-0 (SG) with ESMTP
-	id j7TrPBHQTSyTSY7St2F5YQ
-	Tue, 13 Oct 2026 13:34:28.641 +0000 (UTC)
-From: Liz Fong-Jones <lizf@honeycomb.io>
-Subject: Re: [PATCH v6 0/3] writeback: let foreign flushes reach dying cgwbs
-Date: Tue, 13 Oct 2026 13:34:29 +0000 (UTC)
-Message-ID: <20261013133428.725790-1-lizf@honeycomb.io>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261002-wb-dying-cgwb-flush-v6-0-1991b4e2dcff@honeycomb.io>
-References: <20261002-wb-dying-cgwb-flush-v6-0-1991b4e2dcff@honeycomb.io>
+	t=1791899247;
+	b=URmLeYWbHhYPf73v8wC4RKjISfjFGjlua6SvP9l6fhFI05pk6R/PTq56VQCBt5WEdNY6PJ
+	zvKu4NXCOrV8nBCM5mvwGsKNIRjPaTsU7C4SGyJa+Sxp2p7gcYXDDu0nRMZug7cn2F0nhk
+	8/39zKJfxwpIEpDbXVPH2QsX3TaH+H0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7624143F05;
+	Tue, 13 Oct 2026 13:47:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E541F000FF;
+	Tue, 13 Oct 2026 13:47:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791899246;
+	bh=ufMZp4Qc9d80hvvRB3vNUruXIvuXEMAYVkTpkYEJ0aU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=S32sFMdJ2NY/boJZiq7qHgwrDvnfacP5JNU8mgaJyQiC/aJSf/o6u1yYss44okWo+
+	 Sjga82Sb2QOdchZ1LbH0ux4IvEmSVJYxDuqsW2hn+bGfVieTjBjqpSHEZOrRJigUno
+	 Px/tm8jUDyk1sC2fW1OcOVHLHHQvxIxtYjd1Q9Yv72c3MLoEPN+IRXDvhqPnrpGeFv
+	 wDS7604PLG+GDAQq4ZB6hDi1UaV9y9t8Kh+H+s/ulOnRB0aWSsvTUCvQRS756SbO3C
+	 aRc+OXw5d+p7xFNvkD8MgBaeVjQN7uppe/zdzAtPLcpNJmMMBmFatZswffJxTVZJ3G
+	 jQSn9tSa+g88w==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 01726198003A;
+	Tue, 13 Oct 2026 09:47:11 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Tue, 13 Oct 2026 09:47:21 -0400
+X-ME-Sender: <xms:XzbOan8Y8kGba8pRx5mgpWDM4YXW1EMocY6hBF154p4NE_F875UjkA>
+    <xme:XzbOasWum8CcjS-iK132ufVMOimRtEOpWN8JV7dRfEX1h1Dp_3dY_DtQtcao6Ny_a
+    yYaAPEJ0M59QTbNoSdl3ZanKVC4FYisPINrKzr_mvgREULtKWqsDGvx>
+X-ME-Received: <xmr:XzbOap0ub0Qc1GVOIpPOLwa49EH1LI7JGZhO_dy3oWX53Pt7ElSMpyHzD84>
+X-ME-Proxy-Cause: dmFkZTE4j+cS9gh3PxGqMjY7PyaLxMVg3dj8MlDzlM7GN7gdgiVxP0yJ//GkJN0wCahlMx
+    5JdZXyer7uBv1S7r9zKudGJTVsIfvIDNMUthTv4zHTDadaydFl5J3WM5oOjG7bueTu1P/y
+    ErJcoDmdDlf2mbevwhHQ61prG/aGc64Y1+ArTq02T6BN55y6XBoncRB7eE5H2SYOX4r3El
+    YrSBfcjthcbdK9TH5Jj2U1yRZNxzXvJ0LVkfeDISJaGmLMzoC8igk5XBTY+38fhiHSyGiL
+    +cnpmehXA2/flj223aR6gM8IWtENoV0RxoyPyt9udox5uLVBfm0KgCcO5tiVN9eCvh/5JM
+    aTKNqGwu/2rDhCkM1c+ix5JpPW+GGwuxufWlSR9jnyihSU+e9+lhP2kVKcTNhuePk4D7h4
+    2Q/OqvXjwTCM/tEN3XsDlSmc1l8yzmlZPtSQ3+C0mMNsQsEFPswQDCtfmGg67K80Az+PVL
+    LRd83YGI28XR3lRflIQMmdCsHVNKROP4bmpOl8lfPNG/peUSuiL9LZu5QLVVUe3NoZwPGs
+    g7i+lcpjCaoYEqyEbFS/GsC8fY2i0+IyggX935VBX1nvot5c71LozqkHm+PSwQtEOzOylc
+    ws01IE6e2mhHKHvxbwqIw1oJJoQYx5BwXuQtZfTdhwj1Ef1bu0vOINgdPZAw
+X-ME-Proxy: <xmx:XzbOavjAdgGfkkFd30Sl97e4fKs0AXQI0rmS1xtCq9gumhdIOAyBRQ>
+    <xmx:XzbOamTbl7FUwBPXlrXZ5UPMDMEsm-qJQemClGWaBNm7JvXRJNgTWQ>
+    <xmx:XzbOahFtiScMJxuiSy8_Pg59KzrCRLfao8Sx9nm0MSTSvPdPM-8nyw>
+    <xmx:XzbOau_9QagkSr9Gcvi2fyeWTN6rOk-E4VNxPyjkfdaOI5zuhHPpVw>
+    <xmx:XzbOanGVoJjyM8cI1RPfiSHx1bWBKrDdsr6nob_WZdZmjMxe9r7CI-pk>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 13 Oct 2026 09:47:09 -0400 (EDT)
+Date: Tue, 13 Oct 2026 14:47:08 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+ 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, 	Andrew Morton <akpm@linux-foundation.org>,
+ Baoquan He <baoquan.he@linux.dev>, 	Mike Rapoport <rppt@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ 	Pratyush Yadav <pratyush@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ 	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
+ 	Marc Zyngier <maz@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ 	Robin Murphy <robin.murphy@arm.com>,
+ Steven Price <steven.price@arm.com>,
+ 	Sumit Semwal <sumit.semwal@linaro.org>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ 	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
+ 	Russell King <linux@armlinux.org.uk>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ 	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
+ 	Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
+ 	"T.J. Mercier" <tjmercier@google.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ 	Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ 	Christophe Leroy <chleroy@kernel.org>,
+ Ritesh Harjani <ritesh.list@gmail.com>,
+ 	Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ 	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, 	Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ 	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+ 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H . Peter Anvin" <hpa@zytor.com>,
+ 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ "K . Y . Srinivasan" <kys@microsoft.com>,
+ 	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, 	Long Li <longli@microsoft.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ 	Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ 	Peter Zijlstra <peterz@infradead.org>, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, 	linux-media@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [RFC PATCH v8 02/14] mm: Zero memory during shared memory
+ transitions
+Message-ID: <as4q9FlxUy9EFJZK@thinkstation>
+References: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
+ <20260924100529.1398790-3-aneesh.kumar@kernel.org>
+ <arZkEugXwCtKHH64@thinkstation>
+ <yq5azewiqj39.fsf@kernel.org>
 MIME-Version: 1.0
-X-SG-EID: 
- =?us-ascii?Q?u001=2ECuH7N2XAoeMR1zrzr=2F6NZrhli2vbKPOHff5fJuZuba6ZIE8QPyIf9mn4Y?=
- =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmeYytsq=2Fs6xFQ?=
- =?us-ascii?Q?u5VO+EtT9LXkYGlxJUqGOEwoCTZ8+dJNWoztJgA?=
- =?us-ascii?Q?83GYMzdfkdF5Gw1J8iDpMcYzuTiSEt9CPgxODV6?=
- =?us-ascii?Q?J+YQBdUp3BsvPKz+3HRV7M8mWcCB4XuuCdW4GjQ?=
- =?us-ascii?Q?21qj0Gb=2FNT+XPXbEC7tPjQ=3D?=
-To: Tejun Heo <tj@kernel.org>, Jan Kara <jack@suse.cz>, Christian Brauner
-	<brauner@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jens Axboe <axboe@kernel.dk>,
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner
-	<hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
-	<shakeel.butt@linux.dev>, Xin Yin <yinxin.x@bytedance.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ian@honeycomb.io
-X-Entity-ID: u001.GRlkmHQ+Ka/CKxmoC/CxTw==
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AE5551C0004
+Content-Disposition: inline
+In-Reply-To: <yq5azewiqj39.fsf@kernel.org>
+X-Rspamd-Queue-Id: C5E22C000F
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-Stat-Signature: w9ebqkhk435kb8ya67yqjahbaa7wobcr
-X-HE-Tag: 1791898470-854858
-X-HE-Meta: U2FsdGVkX1+VPR7rySGY99mAviQT/pTFEukLPRaCeGo18779Pl4Bu6l2ZLpHeuR1XVRSykKTssQJ4dbajPgzc6pjgLCXISG35KHeGnXWecc8O9TFePVMoV8IraPA5ux8YBLUwb1l0JaqyE0uUMnPL3bIVwy/+rqmw66M3MzLVzKX8TcFMH8/u2JCebtjMG0+xki8IWNe8mrAfccw+hHeFuwPwzFn3zpgn3+8YkZ8cxXRwu6AIqrgwLHnzdw9ipCneNx3xoBITRVpuC+22vVqOld+fN06Ne0k134RyDfu7NgEoY1DDeGUEfr/G0RBORxPLj2Qg41LRd/7VS792nrrm1uIIUIt9L7CZqvrMDsJMu8Xh+FJBQJMIKrPmVJErdhC/pb2PMbo8z4p/c6iZwptolmVrUFHgoJGlRtRiRBadPtBQEMAce/S9qNL5m3xPF+gYKY3HM+kgtuNofYTGllbsENHDobQpQJeWVgBdDr2C8pKOc2/PRXcNER8LAfdhnkWqJqOFoEdgPgOCih9cgAMJ83us+7J+WSaWEQJT5UJkC6O3OmVUxjI4T7+FHYmi9s7Qa/8+ZlghnEgF8KBd65r+o7Iy8SQTVJvv98mA65fo8MW7u0sHg531PbWw/xQGexLhvAqeO7a4aybBZpOoBsNoa7dwPipmaKP2hOtst7ojS5ulw4vAL77DwR4feg00Vdsge+w+O/IcrmOKGvoDE+FQ/eOF2SxDKJ3PvsxuTQeMUjTarWPtLJPzAY8we1z0FAe3nQyZv+1hlTdJqJx91K+Drl079wMYH236tpmNDc9qgQvm7rRfqIl6ir0gCTo75V19NuGNmo9qOsfh5leqOF6BEytArqM8a0lrol5e8MGjPkwyKMuN6MFNYjdKtP9K8O+dUtgbBlaM44NNZLcZ+F75J/cGKuTOL6gOEYAf6FnYQjngNjDBWWiN7oXrAH8eRVX+iGWMSWx70ReIdeSM6t
- 1JBi7b1m
- crqY0/sItjQvGH5HAbW4n+7wrVJ0S+3wkYrZLfw6rPArr2FRW/dn64xgrLIpEMgtattRUKTZZhRsgx66isCHXvEWModW9PzM+McsK47wBFTPKnGBHYyxd4jvPG8fn5jPGylXoA6Bzw4HGejdXuKbPicTY+pSEPSwp/QmBp9l4bqdvKK1XHuRnm4jbWobukdkPQWKJUbDYP9BM+W8+Q8WuH8Hnj8DA+kOla8RJYCMMrFDum/Vn8SF1EJYj+nA+XrcYzyif11oBb+3yqor4/xfJZHJl6IqITYcmTQqo1VRfbghPqoPu5WNGYnnPrlhsmqow/XvF4HhPVzSno18PI/kWoESgSFSC3KWJ9/+iSUEQvYIpUBg12Sgeh2fycpHHaobCHEQq1bGp5a3XvnnhrGJZhG8HrBVotLI7+K7VeJMujP4T/ozD9gXYDpfFRzX0EFbls/5snZd5/VxIcGwTuAnkrrKQh6h/7xK3JNY6V/9t8T+5p+DQ/r5VEL8eSl/iEHHAX2Qg6mkA6RGbhBUDV3f9rFOk/AE9qpydZbs8vh/vnnYPJNg=
+X-Stat-Signature: 5s39eomj1mycb7pwcmmf35chbsxr1g8n
+X-HE-Tag: 1791899247-86386
+X-HE-Meta: U2FsdGVkX186AgK+5OoYonJ/ZC8UI/lhr9F208O0QQ5Sk7i01qx8hqeUCpFnSjD0USaIanjHQjV5gB1EF9GHbDuFn7g75NapMq/WetQamme6oHzgG00+SxNJvF68Va2M68pJox3PH1G97Xrp+lz03jV3c2+8ORU1DjvXEjJkFUncqQVLsmCDpQEW24jnvlvfVWcFyFalS5lj7m5SGjPJ8Wvc0umJkuqvhechxWc6iReGjppn7MUSkUpuT9Pb6rT9Ylk/VgD6iGUraEjSTBq0hBmCTEQUiCZPg2thLbb9t9i7tasAGILTqvYbj8Nn+/O32I6+cTdUpCGLCyBL2BTAHAw3w1v/8FJ+Q/zG+qdstVG973h3zr9oIPB7aop7fhQ5TQFYtHbcs7MqoqxMeBBAHwfwsCRAr9AyLW3yFXdhbwRMaQlk7gqYjbAYz/T+4ckcIDy7XtyI2vP1zK+82xPqss0MTjFPl5OxJJ1SJDwvdxn+pM8XFgnfnRIUMJakiV1l2mbt3ZPbz113jADzW7091VVWqOu6XSIRSe0OMYShlTOj+f/wHiSeqn16XTEn/ArR8stnFxFDNo2m8fOohPgXIKRWxYknzWS1z10/BHvaWHAXno2YhCJM26jIUiwEE0jIpl0Tv+cKY3eKVZLMajRt30YFo9gKwZWXxCQEeBMkFGV02n0rDu0ZdDYwpJXJtP6iLW5cd+QI+Fx1vtwxsF0Y37BVCzauP5EkkETyi+lgTaGkmqLoOBk27OOMgQKQoi2b0K7HbdfJ1xXCembYUCxjNYu6VnxG9rgfTAsrfCdsdoD9XInJ3bdegIydhC7GY7AlKbhMvq/YDSJqtlkaAhZOm5kP4g+GfAIPQ2g7EnLRY0/yXi0IAfkbE7fIOhOxGEqLSyKY8HJlGwbRIa1pl2S4QwyDzwWqDUIDLQ2ehZbQB0xd3I872TbQxOSH6vD665jH+8t9hAura+/brUgCOEi
+ R2hNVRwa
+ 4miJMX2jeZWsChPvBNWbrtFhC0oWsRfDTlk/VKHWnaHpe+wIr/1AgrAG2aTH1xFDeh3N4BAPNtJVdsek1OkzZPcsSEthsR8CN5fkDG5vj+/nVH98sKiU3k2OGa82NzuTJ0VJ8Nknf5rBGg8en7I+rHKepI0O0lAarFnGCF/FO7oOr3VHrLKyiAwq19NvfgskcUuEAwm8KukbFaY8AYPi7YFC4qQx2VVD668s5/TiHsjD3qcIhRSxQwmF9Oc2uLHg1a0yV4GibU5Ripk/87KNz1+u5gdGO1GnCfASAvZ37fidNw8tFMeuoEUQezy/tXE2cA6AbeqI1Q0O8dEiHBo3mHeq4UXH9nmnrlDNOG6e+yBQyXpFYeOnc6ymELg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,20 +164,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Tejun and Jan,
+On Tue, Oct 13, 2026 at 10:42:58AM +0530, Aneesh Kumar K.V wrote:
+> Kiryl Shutsemau <kas@kernel.org> writes:
+> 
+> > On Thu, Sep 24, 2026 at 03:35:17PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> >> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> >> index f904a636d449..1f1f39082391 100644
+> >> --- a/arch/x86/coco/tdx/tdx.c
+> >> +++ b/arch/x86/coco/tdx/tdx.c
+> >> @@ -978,6 +978,9 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+> >>  static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
+> >>  					 bool enc)
+> >>  {
+> >> +	if (!enc)
+> >> +		memset((void *)vaddr, 0, (size_t)numpages << PAGE_SHIFT);
+> >> +
+> >>  	/*
+> >>  	 * Only handle shared->private conversion here.
+> >>  	 * See the comment in tdx_early_init().
+> >
+> > This doesn't make sense to me.
+> >
+> > On TDX the memset zeroes a page that is about to be dropped.
+> > MapGPA(shared) makes the VMM back the GPA with different memory, and
+> > what the guest reads afterwards through the shared mapping is whatever
+> > the host has there.
+> >
+> 
+> Does TDX require the guest contents to be preserved when pages are
+> converted to shared?
 
-Gentle ping on v6. Patches 1 and 2 carry Tejun's acks. Patch 3 changed
-in v6 to queue replaced_work again when a switch lands on a wb that was
-replaced after the switch was queued, as Tejun suggested on v5, and it
-hasn't had review yet. Jan, you confirmed on v3 that switching all of a
-replaced wb's inodes, dirty ones included, is safe; would you have time
-to look at patch 3?
+No.
 
-Christian, if they're happy with it, could the series go into
-vfs-7.4.misc next to Xin's 168a8c13159c? It still applies cleanly there
-and to 7.3-rc7. If that's too late for this cycle, I'm happy to repost
-on whatever base you'd like to queue it on.
+From the host perspective, the private page is withdrawn from the TD.
+Its contents are encrypted with the TD's key and do not carry over. Then
+the host inserts some page (maybe the same one) as shared.
 
-Thanks,
-Liz
+So the memset() in the prepare callback zeroes a page the guest is about
+to lose, and it does nothing to what the caller sees. With the
+post-conversion memset() gone from dma_direct_alloc(),
+dma_alloc_coherent() in a TDX guest returns whatever the host has at
+that GPA.
+
+TDX needs the same ordering as CCA: zero in
+tdx_enc_status_change_finish() after tdx_enc_status_changed(). No flag
+is needed for that.
+
+But, again, shared memory is under host control and you cannot assume it
+will stay zeroed.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
