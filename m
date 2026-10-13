@@ -4,89 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0449CCC6B0F
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 21:03:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D18FCC6B12
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 21:27:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7E1E6B0088; Tue, 13 Oct 2026 17:03:22 -0400 (EDT)
+	id 484D16B0088; Tue, 13 Oct 2026 17:27:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2F506B008A; Tue, 13 Oct 2026 17:03:22 -0400 (EDT)
+	id 435C16B008A; Tue, 13 Oct 2026 17:27:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C45B36B0096; Tue, 13 Oct 2026 17:03:22 -0400 (EDT)
+	id 2FDA86B008C; Tue, 13 Oct 2026 17:27:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A4CA86B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 17:03:22 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3CF101A0223
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:03:22 +0000 (UTC)
-X-FDA: 85318828644.04.A637225
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 694B640011
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:03:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Le/OWGnU";
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0204A6B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 17:27:00 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 60924120259
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:26:58 +0000 (UTC)
+X-FDA: 85318888116.29.A88CC40
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3294114000A
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:26:56 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=FnlBCrSy;
+	spf=pass (imf09.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.53 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791925400;
+	s=arc-20220608; t=1791926816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SUa7NgEfoTcw3P3DlukQ4SYNZTtD4CNNK8X1IUo2784=;
-	b=BELE9//4Z1enTzHNIHZ/Nw1wtk2EeW9AUB8oLDGIHW86Od1ESjoYc5sCwJc6sGhRrxn2R4
-	dEd4gXxskuiMDSXtaMgWAcNht83h6B41ljLgzXjgiIoDvMfLD1qAudpWKAUpzPXUHdpupL
-	Xl5DsdMZ9+LsNbNRksoV6PSw16v/M3o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791925400;
-	b=ND5YbliQWe9iqa3UiLBw5Cj2Ya+GYaHAZG9+VHV+Uo8KkVlLkRcfRUS6gGosMoyWIO9Eq1
-	RUPhIZ1ALl9EtKzx2+xp70ntIYXWuT+ZCv1CBMQAQeDcQ1QjQ3pCNL8eWey+pitM2C8OKa
-	u5IWt5dp0G00HxFHLmiNf1COh+rgfRQ=
+	bh=8GzEeHLHpLUAjss0Bc0f6712VJU1Ix+vhwimhrdH+AU=;
+	b=fTRddY31YgOzsGacWfsunjRyKy2qFF3ulSW/9hvbmA1zjf8otc/4xiuOpUNRIOgxU9ZY+n
+	FGcvcBjsQPyRG1Ius5JB/fr1Xxg0bC8uMe+afdiZjNvbodhOXgnzXBAwiSfBdGbvPOuFiK
+	t7UGlaRctWOxbFUvzQL7X5TVm5agX+s=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Le/OWGnU";
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=SUa7NgEfoTcw3P3DlukQ4SYNZTtD4CNNK8X1IUo2784=; b=Le/OWGnUMrk7JyDUzirJbH6tzr
-	3ISoX686d78tGc1tpKfDC/rsN1Pplj6pMi2Xl5fqzLG6m1GVFciIMwTeKyDA6KwpdhVAifhFz31Vw
-	/INHKQeVNzfLRSsOjsCKTSm+7i1ck6snENGK/GrSqZBguDId/U0TieIHbPoX5mSfhPUHWAaKv4SfY
-	DoZd9vVWzqcwCMGkjUj7z1RAObBmPfQk/3jSHkgWmgBjZx5R+/6Iqiegrd6cfJkbA2VgR0SS2Wn1+
-	g+lximLmK0nV+AtDHDhFQLhu49JId70kgBDlu2h3aqerqiWkDYlvT/Xux79uappfLf5tfmfEnF2ag
-	dqyck3OA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xGjeS-0000000FrDz-48vC;
-	Tue, 13 Oct 2026 21:03:13 +0000
-Date: Tue, 13 Oct 2026 22:03:12 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Kiryl Shutsemau <kirill@shutemov.name>,
-	Ilya Gladyshev <ilya.gladyshev@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux-MM <linux-mm@kvack.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: Improve page refcount scalability
-Message-ID: <as6ckC9NJVB8JBuV@casper.infradead.org>
-References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=FnlBCrSy;
+	spf=pass (imf09.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.53 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791926816;
+	b=ByFO7QRpyleZsZxVC6fC8T3kk9Xbpr6KId3jWd8m/xAQISqWGf/T4pd2ldt23VbgjPdRNM
+	2tbPXDYYXPg6njJUjlKfR6smHFVYXYSoJFzv+28tqeJSZLOK5ZvNYArXG8o+SvDAyfVf1w
+	ahJKkgRkZeQA+ekqvHZSmzkx0fIQk98=
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c2e5d08214dso52690566b.1
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:26:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1791926815; x=1792531615; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8GzEeHLHpLUAjss0Bc0f6712VJU1Ix+vhwimhrdH+AU=;
+        b=FnlBCrSy40OwzFB2W+iutnvFZN8SpmOBpOdwIo0MHlpJkT/Fgo+ti+NEDFn2HdOb0t
+         4/Ca8Kc5LezlQavMXNJcEE+12MSxdJjehgFVLy7400Qyd9vxuqTtBI5Nl6j1/8ol2gHt
+         Eb1nF1MsTLlH/KGivRkTxYpThJCrFbUgNPxAA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791926815; x=1792531615;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=8GzEeHLHpLUAjss0Bc0f6712VJU1Ix+vhwimhrdH+AU=;
+        b=XV1N9rEl7VIADIUfkMk1TxJrGmLHU38FufOqXt7stC7qG5rf1Q78vZ4PsOUQR8hHPr
+         1Y1BAtZHQ9tlfkOO1Rw8WT9Y8LISoEJe+G1njR02/XKxAAAerFIqrxVSuHQyucv1TQgM
+         eVG66S1V8aCAWSISxSAoCSLHtje9NnP2s/jW41QQa9jCD5CsZrsQ/Tz3lnMunGclD8r8
+         MhedNsXWbkIYwQlMn/rkjqYZpBzjH391tmR7BZ6CYll6Pj0Qm76RtVltOjO4BiJBYGVI
+         dDnLk57k2RLnRLdHW53xnPtKjP0SLg7lBVJxnGzD8FyjYQtgeqHIrIThbO5bim0I88xW
+         i/8g==
+X-Forwarded-Encrypted: i=1; AKwUvBy4eDd1tE04tew7wOO3+tjhEcPFFTrdLNq7lsMJifBAqdBjTcy04JtqTrKVd+VUvhck57qxB8krpQ==@kvack.org
+X-Gm-Message-State: AFq9FYJDhE50ugEos0JXfBGrKSgKc8USgHxTxJE2COyQNUC3C1+YTUJH
+	+A1XeExTyfbbnVAwn17A90njD6ywNjvnzVzs/+TusFGlT7H3BIRtOoN/eBhwl/riqwXh3M5zu0L
+	P2XuIprE=
+X-Gm-Gg: AYBFou30iczT01iBQSjn8ms1CBTxygaiGpryOCu50eWcR+qDvK0LpT2skz3Sua2kucq
+	pAIfsZTTLhDawQNYfKEZfu0+VPjGVc2GXJWizxI/D6+Fuv0svqXDsWX9TyLt+kYuxD50vdlIcNu
+	OREVud4srx+xP/kKz5Bq77AdUiMYezt5J4Bvvpia6WlhV+sMpweYu2GHjuOVnoQymEK/CkfODP9
+	znkhOCmCEOUu8YHhdL4hidavSmyq9lmh9KhTy+2uZmYvDET4EQy8UXHQeWdwmGovfRkmKUTECFU
+	OGnXP304UVdAKsaUxNxP132bv3cc4j/E5lmoOkgH4X/MmQHQ3nbbU+crqXCWzAU+Ry8KUVd0p88
+	YId1ic/dr8NyIS9Yf7tmmulP6NEIALrvOQJzIqVzLWb4zKVAWFVdAqVzSz0aiFY8ICAhs7MW0jz
+	rcQI/U9zFdA4tpeAXo9Ud2rLKG3vfUIdaaBv7R5dLn5Dhj7woP2IOxyj4vdjOQ7d1OnU+jevN6c
+	4Pkoo/QcqmEUlCJZmLmIzLaZLfsqntl4oInpFegJGZTDjS4
+X-Received: by 2002:a17:907:3f25:b0:c31:82aa:dd4c with SMTP id a640c23a62f3a-c31a9d15f06mr1301717366b.24.1791926814478;
+        Tue, 13 Oct 2026 14:26:54 -0700 (PDT)
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com. [209.85.218.44])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c38ac26d05bsm52087566b.12.2026.10.13.14.26.53
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Oct 2026 14:26:53 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c2e5d08214dso52686466b.1
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:26:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxunR2cil0wEX0jUXkM1SucKwdn6H1eMflwLUsS7UT2EbiSC6TDSsbqqj5eg7y0ZkhlL1PAQ05pcQ==@kvack.org
+X-Received: by 2002:a17:907:6d17:b0:c2e:4627:285c with SMTP id
+ a640c23a62f3a-c31a9d14aadmr1321776166b.21.1791926813105; Tue, 13 Oct 2026
+ 14:26:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
-X-Rspamd-Queue-Id: 694B640011
+References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
+ <as6ckC9NJVB8JBuV@casper.infradead.org>
+In-Reply-To: <as6ckC9NJVB8JBuV@casper.infradead.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 13 Oct 2026 14:26:36 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiHMFdA9CE4qu7W9vUh=CBrH5w9RMjf2kx=U5BJobrrZA@mail.gmail.com>
+X-Gm-Features: AclHuK8M1AfgFef6tEhvDZuFcuNwYe9MGQmI8EMTOiu9NNmYmP3zZYe2xiwpZO4
+Message-ID: <CAHk-=wiHMFdA9CE4qu7W9vUh=CBrH5w9RMjf2kx=U5BJobrrZA@mail.gmail.com>
+Subject: Re: Improve page refcount scalability
+To: Matthew Wilcox <willy@infradead.org>
+Cc: David Hildenbrand <david@kernel.org>, Kiryl Shutsemau <kirill@shutemov.name>, 
+	Ilya Gladyshev <ilya.gladyshev@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3294114000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: fxfg6pwc5c6eghdiqnfsswnunrehiqgy
-X-HE-Tag: 1791925399-34857
-X-HE-Meta: U2FsdGVkX1+i+8214tnmC3JScNSIjdauZf8bdvJFSwz6E2/u+jMnKSVmTV7Bdle09pVQ61DljpMuVaVX//Gc9Nd0tiYunz4gewqrtNPjSz3zyt5YWMe9ytdYOF110YDyw0U2PBHJWToDOPui6qW38u5FI+9QPvuP/GbGgN+izZdC8AW8u7FAd4VGzuaPujOL819j+OevGrgGIDcyjzau/J/Z+9qlO5+pKSZmJas+EkARwY0mCeCkkeJvT+ZSL9Xj5a9C6VvjAk1Bvo4r17nqcuG2Uw5NzVt6BR3Zae5ZpcwnpEfp0xQQjOb/9qhpb5eW9hGg2qjzr95bG8/EW3SDxixZ3drUN3AMwB3UHTbhdXVzzHM3pJMg6kKcHirSWjVw36xABmAtqJbgC4ZRl4ZJuHGcCNfRZrzySOQlu7LGTTmmOhnGi7QtxkGTYWv0cknUPkLIUTh6mhjj7pfpFVBX+is1CYVxd3F+7U7ndO15yULBtCNpLtkYrqtA/llkvXB+NWUd+vyPTB5fb9Wy7AAS0jRczLe1X9u+NYybGziuDUz6MjoQl9W7TjMSGaiLN/KeFKZo90EbnH99WPbbQGKL3rU3xYEsKwwDiu307psUffL0e4PvWakqAqh0QNe5owwTFiyK2UL8OMu+c9lRrulKNCfrZtqfBlWYe/b/TgIozWTSwFrug0moNCUjd+vcqzSi8IJ/eptDkCWOodI87/tn8qCKesdhpYnV+XOMouw/72hlcZTG6jk/hMbKtOJe7WPIA1IkPEd9UWQnJ6t4w8hcb8ASKy0IFI9ET08bbk2Q0JUv/ltK7BpfuDnupXNcljp+ZYz0qbTe3Q2d7RDOPCh6xjFT7zf81vktsb0ogs5ik78SsCeiE4R/JeiDRHgb3/e796iaSxO8uxzYAtULxm/xXvndnhd0T9zKnZVbYX9wbZjPBb+za6Sf5i1pTs9qt5dzxyVcIKvCHi2ENuSxnwP
- 8bnwycxA
- MZxSHl1yakc5HugHaACHjJm/0bFi0Q1fwkFcSloZJmQigtOvMz4t58DkQlFJXpURN6p3THCfttrzmu5Fq/10W1oRQkFn1P2ciRzVuXYV0RM60rdcChuUAK5iNC3sV44Ibjz4cYcFeJuwUpkKj9tDnYYP1jgsVQGG58wiI6rLHtEzNdmYUwKr3G+8+Md5c9bUpCVs4tSeVsX9Pv7SfDYagz/g34jk7N+VWlsccpbm4Pkk1UY+Q3Dx5C1cK0/Yz/mzb1nF7VkJKf6pnIoY=
+X-Stat-Signature: g7h9ztj8iebimn3sdqeeos6w9pcpke1e
+X-HE-Tag: 1791926816-22609
+X-HE-Meta: U2FsdGVkX1/kkkXwYwQOQpJnjekXWnA+Tzqiwg3R7gR0gUsKIsI+JdluJc4AN01oAVthBZeCQYCxTJUddNmiXGD3dg7iTOPJi8AaoQhK/udst115IE+W6rwD3xvZeOfBbIgJMw683rgA9utkom7pT6fVJ8pfz+4YqPdB/VdbSgIYjRZ3wuz1Q9RKOJU1zIL3nXT5Nt5oOqbZw3jKTY/THccSyurII+32tiTldDaEqMcMLymhMN7shtPjom7aPd/xJpUibYtToZuRTOCOE4gxwg8myj7hcz3lwDerGlLouYvyZcAWqNeyK/pJwCzRMwfEPX9yJ0eFpchvW65w2ZXX06K4I1V4c4L6zTY+G29pdUiSsX8zXgBFY0ZUtz0GLGNoM2X0CiuVPO5/BzqtBeyHYQNG4nZQahdn+5/5aZQMsl0KZteO/fkxXFBistj8YRA+jTdgRaFivagIwQKTvK+YlpDZDK0AWXlH1Eiju5OaXHRBfgqWCOTeLdfVYLTeSic8Br0lBEjjo5JyVw2Sv4EY0JngSprAhWDm5RTpVPu0TxtNgc6NT/GOleaONxZxXJKsGnVwmtl32r/njW7aepXa32ZiKMuNuF4SslmYDR5oAhfFY2gvHnznISJMyKvoH0esqQP7nifuf+mn7n+zVYRRczaM+hnhTAYA86OfYC+PIrgQ5hf8U1jVfH3lEG8SUxqVf7ZqXaDLjSyCSjFHpsI+gMLAelBcS8A27dBtDa/eIo0HXMcwVlGYyHGMX6B7GGcYny48akTP2yggxqCkidTW6MoVx7CHV4ujMtRPJcPC9VF1wyGR4d0dMV2UR9H0rRf6nlbMN6Pyv+5JGlnOJ8SLE3anpwJ7eUvsij++57ujM4dUXRiggYlttscRqmQag2Ti9s5DMM/QdIIq8SIgSbebIoFJbNGMl+gRwH+JDaz0CphcR6cztA4J9h0pCTWmitDUFzmMfqd6lo8HvABYyh6
+ EFc0dBVs
+ pK+NlKBAdf7Cr0qcpKNs0L3lUaG61gfMtyHUpow/HYy/GsDeMi2hIYLYGRR59z63IboKnpt+IVjghlLh/SdSmGO2Nj98BV9Uc0njd2jaVD/vwAbiJojk2REWQJIvMwbAXJGd6N1PZ8hKZ8ZzkA/EuZYhgLkcrUneI1f+xx+bp5ZVVMjvFzgIUcQXqQT4ygboYAByarfEVp0mLZWOwtfuTMngq1xRVqsamCRY8ktQ6SYxVqynW7T6BuaYVvmxdud0GmfVRZaHbiphafknhJErpoQDTyeNosYncYGFb4bilzu2RhxuhHh2ZqrNwNi68FNu97FKZ9S+cp4p/8Q10cUqcvwSEERkmuU0YRpbwuaF4O01eP5Ey7CF8HIJstDcQnSobMsppofDZiGxj9J8X5kAtfmxk95vHbfY1T1w1sIZuuCE0VZwntiLFU2LaVmKgUhBkmqZcAFpBkzarpRRydyrIFhzB1eWW5p8lYJeMSGpEC8sxAp2m4iOm3ejfhp0Bup3wOWhaHgah7VtvqtB/Fd2g/3wpldslmcu6dVdV9xavhq7WGItRK1kFUH4YHwXeJB2GkklZRGuJVEZgB3TKILsMVdTVA7324n6Zgvj/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,62 +128,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 13, 2026 at 11:43:14AM -0700, Linus Torvalds wrote:
-> The fairly short series of ten patches basically enhances folio lookup
-> by noticing when folios are hot, and setting a "delay relasing this
-> folio until after a RCU period", and then using that RCU delay it does
-> not just the folio lookup itself under RCU (which we've done forever),
-> but also the actual folio data accesses themselves under RCU. No
-> refcount taking needed for the fastpath where we can just read the
-> data from the folio entirely in an RCU-protected region when the user
-> copy doesn't cause page faults.
-> 
-> Unlike my original approach - because it now actually delays the
-> freeing of the underlying folio data - there's no need for any double
-> buffering, and a lot of the original limitations of my original patch
-> go away too. That improves performance quite a lot. And by "quite a
-> lot"  I mean "I see a 23x performance increase on my Ryzen
-> threadripper". Admittedly that is a very artificial case of reading
-> the same small part of a page over and over in a threaded loop on all
-> CPUs, so any real life impact will be much much less.
-> 
-> Anyway, I wasn't planning on posting the individual patches, I think
-> we all use git by now and probably find it easier than fetching
-> patches from the list. So it's all at
-> 
->     git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux rcu-free-v3
-> 
-> and the commit messages are a bit more verbose than I would have done
-> it myself without tool use, but maybe it's better that way.
+On Tue, 13 Oct 2026 at 14:03, Matthew Wilcox <willy@infradead.org> wrote:
+>
+> I don't like the PG_rcu_free flag.  I hope we're guaranteed that folios
+> in the process of being freed by RCU will not be mapped into userspace.
+> That means we can use PGTY_rcu instead, where there is no shortage of
+> available types.
 
-Obviously the numbers are compelling.  And thanks to Kiryl for figuring
-out a workload that confirmed my fears, then remedying the problem.
+I don't see how we could ever map a page into user space *while* it's
+in the process of being free'd by RCU.
 
-I don't like the PG_rcu_free flag.  I hope we're guaranteed that folios
-in the process of being freed by RCU will not be mapped into userspace.
-That means we can use PGTY_rcu instead, where there is no shortage of
-available types.
+But no, I don't think we can use the PGTY_xyz flags, because while
+they won't be mapped into user space during the actual RCU freeing
+period, they *would* be marked for being free'd long before that.
+Including, very much, while being mmap'ed into user space.
 
-The workload that Kiryl identified (truncating/holepunching folios
-from files) is not the normal way we free folios from the page cache,
-so while we need to accommodate it, it's not what we shuld optimise for.
-Most page cache folios get freed through reclaim.  I started sketching
-out a new state (I was going to call them "ghost folios") when I realised
-I was basically reinventing the inactive list.  So maybe we should make
-folios on the inactive list immediately freeable as long as one RCU
-generation has passed?
+IOW, the trivial way to do it is to mmap a file, and then doin regular
+enough regular 'read()' calls on the pages that they get marked as
+hot. End result: folio marked as PG_rcu_free while still being mapped.
+The RCU freeing itself obviously won't *happen* until after the page
+has been unmapped, but the flag needs to be there before.
 
-This may be where I run into trouble.  I don't know how RCU works
-internally.  Is it possible to record some kind of generation number in
-the folio such that we can see if it's only recently been added to the
-inactive list?  Or do we need three lists --active, purgatory, inactive
-where the folio is moved from active to purgatory as it ages, then
-from purgatory to inactive after an RCU perid?
+> The workload that Kiryl identified (truncating/holepunching folios
+> from files) is not the normal way we free folios from the page cache
+> so while we need to accommodate it, it's not what we shuld optimise for.
 
-This will somewhat complicate filemap_get_entry().  It'll have to be
-able to cope with finding folios in all three states, and moving
-them from the inactive or purgatory lists back to the active list.
-I think it's doable with the right cmpxchg() magic.
+I wouldn't cal;l the current case optimized for that. It was the
+simplest test-case for quickly removing a lot of pages from the page
+cache, and as such it's the *worst* case in many ways.
 
-What do you think?
+> Most page cache folios get freed through reclaim.  I started sketching
+> out a new state (I was going to call them "ghost folios") when I realised
+> I was basically reinventing the inactive list.  So maybe we should make
+> folios on the inactive list immediately freeable as long as one RCU
+> generation has passed?
+
+Honestly, I don't think it works. Or rather, you can *force* it to
+work, but it won't ever be a good solution. For the simple reason that
+you still need to handle this whole "immediate free" case by hole
+punching etc.
+
+Hole punching itself may not be the common case - but 'truncate()'
+actually *will* be the common case in some situations. It's very easy
+to trigger.
+
+So you try to make the different cases (truncate vs reclaim) have
+different rules, but I think you will only be making up special cases
+and hurting yourself in the process.
+
+End result: I'd put that solidly in the "Doctor, doctor, it hurts when
+I punch myself in the face" problem space. The solution is "Don't do
+that then", not to try to look for other solutions.
+
+Also, honestly, by now it's been two and a half years of this.
+
+So by now I'd also go: I have a patch series. It's clean. It's ten
+patches, each of them cleanly separated, half of them *tiny*, and none
+of them more than 150 lines of code. It works.
+
+If you have alternative approaches, I think it's "Show me the
+money^Hcode" time, not handwavy "maybe we could do xyz" time.
+
+                Linus
 
