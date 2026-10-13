@@ -4,99 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83BF6CC6B12
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 18:42:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4043CC6B1A
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 18:43:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E85286B0088; Tue, 13 Oct 2026 14:42:28 -0400 (EDT)
+	id 7D0306B008C; Tue, 13 Oct 2026 14:43:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E35F76B008A; Tue, 13 Oct 2026 14:42:28 -0400 (EDT)
+	id 781316B0092; Tue, 13 Oct 2026 14:43:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D24796B008C; Tue, 13 Oct 2026 14:42:28 -0400 (EDT)
+	id 6724F6B0095; Tue, 13 Oct 2026 14:43:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AD5766B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:42:28 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C061401CE
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:42:27 +0000 (UTC)
-X-FDA: 85318473534.12.69E218D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 76B8018000F
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:42:25 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=M1r64E7W;
-	spf=pass (imf16.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791916945;
-	b=sQzxVWl/woERtse2g7kBmLC5MzO6L8Np2+ptU8Fe0SavsKb4rQi7vqZIPCT0JHNPLmyK+t
-	5sXZaOCH50l0hC1NhkumZmUtIGzanavLm18mUfxCwbzd8+9TPYBO/8Hr52LQJgJfVCOcU9
-	QHFQKhNJCzP6fdbKroWGWJPo22yEDuw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=M1r64E7W;
-	spf=pass (imf16.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3509C6B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:43:38 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 245D31601CF
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:43:36 +0000 (UTC)
+X-FDA: 85318476432.27.BBF3142
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 14F21C0002
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:43:33 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=NcRB3S4q;
+	spf=pass (imf10.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.45 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791916945;
+	s=arc-20220608; t=1791917014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=80AR4TAf+vs7NocPMRnVExSsUnf20bCqt7kiTt1ZlnE=;
-	b=gCTRjlU3FlYEVoLOjgeHu0VtVcptKfD3lSadE92CcBxh3FKyjM5T4GvUo66zWRb1kPucSx
-	O0DIv6L99AI6UFFNoLKHXeLNwXheiVGO1qgDLMSw6QX7nzWfBfgX2DhThmx9FkIULlDp86
-	E/4idco/b9UBHIPUZHu+46NsU2F+Mhs=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F3F4F1655;
-	Tue, 13 Oct 2026 11:42:20 -0700 (PDT)
-Received: from [IPV6:2409:40f2:30f:5cfa:fb93:6d70:e88:a98a] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8ADB43F871;
-	Tue, 13 Oct 2026 11:42:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791916944; bh=DoEd1I4VdjTi+cM8P8AT1zLGlcJcvJGNM3epjZG8BgY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M1r64E7W8Yo9f8lxK5X2h+mMTqT4jrETX2jPo0Yt6R+E+LBUIE4Zc4FnkFWQdTm/G
-	 6UYhZiXhHwzpYPKTObb2a/RO1H19NmwRV0yPDFONUheHhkcWIyQ3ea/xEQMIRiknU0
-	 +0zz1/bokqGGSeColpkd3gzN4ivrif6CK6rBiQyY=
-Message-ID: <aca0492c-f0d3-4ba7-8671-32952ceff913@arm.com>
-Date: Wed, 14 Oct 2026 00:12:08 +0530
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=FyhhS++ZDZ4710D8q9ospxwrx6gZ9CGyXuRa92NSCGw=;
+	b=BGlU/IVS5B8f/0Q+fJIuAr/ZoPIDM9VW8VvCcwgpbHXQf4lfDzp1Qt+hPI680x2Pxu3cf9
+	4QqWl3fwCpHqkbMaCS7xJHwa63eXgLdpTdzUTWUKvq3nbA+qD1r4csdUZBYh2XRjty9J4o
+	Fc2F6ddly2YhQnlElHGkwTAvhNRlJb4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=NcRB3S4q;
+	spf=pass (imf10.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.45 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791917014;
+	b=RHpJHDv9WcP6Y+pAdW0HweWSXYay5A7z5+3e4z/hgQMso1gxyYcK650XmW/QqCCc0/Y1Hb
+	05BHmWcRTWGT6wbP6dsu8jljWqhhZQZk0MHbr88t28MvkBTa1pNYmC0xLHhCj0jDsOFUoe
+	OVk/HIgpT0cd0BnZwz7WjhyG9cb01ZQ=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c2055573c8cso397577166b.3
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:43:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1791917012; x=1792521812; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FyhhS++ZDZ4710D8q9ospxwrx6gZ9CGyXuRa92NSCGw=;
+        b=NcRB3S4qnWCyfsCPrjXDC8sm1drHZc9VKjHavUI7d/ykoiIwT74fue8/+FPJ9qv4F7
+         gEjCUkinC6CseHBvdDzmePOKN7IQxjhmXe13vEOoUtn0fEx6pM3WBv27i5E8x/sOR5Sn
+         kM4sfHd7O/pE1KAu/hIIIK83YwsbKCtRhXcVA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791917012; x=1792521812;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=FyhhS++ZDZ4710D8q9ospxwrx6gZ9CGyXuRa92NSCGw=;
+        b=yr8hMUsTsa3o9od270bXKr2zCmU/bjlJF02QeDuAszD4hrzCn7Xykk44+fKcqF6gzu
+         ivToXvpQcqRGxptshZ/szMbH+za6T2fsoxsXP176TBBQezP6fzT2d274mVGes8UIEZ/g
+         MnNUNfUD5EaFOrEIw66wPNb+BItcI4lwZgjxmGQ5ARjpw/fzfJR+RnCbC6CbI8Sa/1At
+         mOkcR0naDJkfCnLhr/V6lde9wNqveGe0tfryFF/9UAWTj0T+2Q0Ij9cbL6lsJonBqHGw
+         TCS/s1gE5nGfLYF+aoFMTS4gxPQB+uVh0N9XF9YgTxeKjYGDtRVUg4zrJwOeg2wnGaq9
+         oXrA==
+X-Forwarded-Encrypted: i=1; AKwUvBzyXJ+3rkL1Uvqp0kEobIOrH4QGokxmG6X5nF1lUTZKav2Zo8f4joDs/giPwbDAsZcwS9rPbtlJwQ==@kvack.org
+X-Gm-Message-State: AFq9FYJFxfw8OCc0L8CStgnDt/wskVepkSH6ZCXvAK7rEOnSOkuqw68o
+	YfJJx1aQsLVsCYfeu32kfoHBq/npwN79jZRAoMb7jvT8cpQqnRWMArQ49nfvw/lKhV9k2k86D+S
+	n8uhxlmY=
+X-Gm-Gg: AYBFou1SphEWcNB6e7xW+0XNWIk04YH7IQ33KQJmaVrxzRCsKTzX0tYJfcWABsV8lV1
+	67vnW59ryJchzYamzOSyu31uPPSVhjzumkS07fDbuChLHvRQIAvTfGl61MqCh5vbS3SRIhkIdW8
+	5bcntKvzpbudpRzl8hbqKiHO6Ach3eIitRZEh1mvM3SxdLRQZzAajXHzvWAwut+OFaRDxcglc8H
+	IzsvXYNUqyDw99OFaIEUp9cVC0C55jCTqB7e8aJegrQtxSmEqm+xFlt6aLS7LQ5eev1m/FQjOE0
+	drDc1lnJzZjahHyiQn+mK4tNox+c0J7zPX0hPY4UcVwyppCbGlfb6X8yaiz3tSyv0UuCOwfquuH
+	Jbj52gfRPKL6CLpvFroTfy40lJUyqpwGaO7VYIGMkZxaDo22ez46JFrmHKGHMV/kLugLmOTqG6o
+	gDHgO0p6+7B/0rLjEjXnVMTUMDMSL6gblgP1BMGKbgTHPszzNQuSrpXnUs1HywFynvCwwcsqp84
+	2oi0C30dDFKFISdJkcxMzBo7GRRS0DyFYegmPt/L8ju9Yf8
+X-Received: by 2002:a17:907:3fa9:b0:c26:1649:47af with SMTP id a640c23a62f3a-c31a9fb6451mr1302210266b.37.1791917012265;
+        Tue, 13 Oct 2026 11:43:32 -0700 (PDT)
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c31a9a7b976sm620307666b.36.2026.10.13.11.43.31
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Oct 2026 11:43:31 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c2055573c8cso397573266b.3
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:43:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwy69EJBwYGPhTXWxLFsldTc34ifMQQsChPiBIPIJR7/oI1BRW93p2MBVz+tlBa/CSCchaHlpZyXw==@kvack.org
+X-Received: by 2002:a17:907:9447:b0:c2e:3307:b922 with SMTP id
+ a640c23a62f3a-c31a9d569c2mr1372708566b.28.1791917010978; Tue, 13 Oct 2026
+ 11:43:30 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/3] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT
- macro
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
-References: <20261013-fix_hpage_macro-v7-0-3d77129e0557@arm.com>
- <20261013-fix_hpage_macro-v7-2-3d77129e0557@arm.com>
- <b3f2a0bf-7b41-4cc9-958e-34f1a88ff5bf@arm.com>
- <as48D1SnImCro_Cb@e129823.arm.com>
-Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <as48D1SnImCro_Cb@e129823.arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: eqtikyuii3dbt76ienixyfhmjt5jfque
-X-Rspamd-Queue-Id: 76B8018000F
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 13 Oct 2026 11:43:14 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
+X-Gm-Features: AclHuK984DPKXU2i8Zcxsi7Djqyw0wlLXBmXlyYPPwMugYSu0i2ce2acTA9g9MI
+Message-ID: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
+Subject: Improve page refcount scalability
+To: David Hildenbrand <david@kernel.org>, Kiryl Shutsemau <kirill@shutemov.name>, 
+	Ilya Gladyshev <ilya.gladyshev@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 14F21C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791916945-106104
-X-HE-Meta: U2FsdGVkX1/JA0691kyOj7/8A6H9hwcTgDQwUTXd9FInFlgtQsXmoYvpA+dJfRkrodlVhO1mbLCP7Pa5X9v2okrbjY+PJ1Tkf/V0myM8YPVO2FSLm+VNYqcUo7qBrL2jZQgbAVrKTp+v0xCGv0tosnOg1raZ0dyr9JE7SC20/xZXoJ+a233g5euv4zFuqoeftSuSqVwtp08TsoQcceW7g2Q7c4qMhGObtAyzLmuaNDp3cZ2/maNbqGXInq7Vzao/8b3HYe8OQom+OCSaLspVB0iArkdJXUyWerhVkIqifpNqBj3ax5JvVmIjxx43KQxE1K8+ggnCV+Qbz2paaSbFy+CmDqvKByGO6u1q8wsRc/F2Y9zSqlcU/uCxeELQfFM/1xm2b1ld9+JLw9lFgX1bEjqxxAGDW6XGk6yjsDTZw+HyzCKEFby+Lem35Q26rFeXADC85RiFWdeoAgICMb6xBzqcRl7Su/JQSoWPNo5gtitkY/NqQfCaMXJLBYRDTvqzn8iiLg1IvVzmcbzlUZd///Yuflv5cl3iwrNlX4xTfj2t21n7l4qyQ5X8WIwuQCdBm9Cq4HLNRy0ifSIdvs3T/m1LOp3CBe6t+mi8WW7S+G55YUE6aDo8a17VSJzJCtmcguVECrwbw6s5tPdA5tTogRn9tFjwhRYW8LKmyRlViCVB5WeVsTTbNDudkTzBAkPayX/fMJCSBRWRxDoU3ljhVh4IN+fw9UT9q9PfAYodLxicWxtIo3Y5UOca8TxV11DxlZAXpuIYiGwcStmg1asqJoB8H/DVlHRBDsowXbUoIzScR1KMk47Fb1ITwmqrZ3iHgGvCRsbQH8psvy3TURM06d92SYuaCYF4l4G/rZ51qRoGNxN3k0kHlzAmYq0XFhJkmu8VNoFRNzsJjcXl/RofD7uKA6+ECbDy7AQEQ7khItsFPgKhSX+aYcD/qfUjWLXytKQwj9SYlfDLS9kSi/W
- 5UTLrynE
- t7DziA7mB55UAD4Gc8XtIKwHSmfV50HZdHsC/9EehVCjoD0X0NOwh4dOuYQ1ZJddbEjq1YIqEuOqtP1+bsdFV03sUPxmzuYHJFyE1dqQtpK4GIZMCNF/U+PfkKlcDpQ6KlbvySZwZufgPaM2A8n38PXqDlgcV45Y8GY0V6ODSaDqMP3B/eqe9oDO+eijSCA6yuq1gTeqy79KJkGRJYor8wwmQlsSQzWTcY3Ofyf7R70+cEqVOesitlrufprJyDkmAWu/Mlu+f9MZIC13EoVbvk/HBdO21csQjrr/aAqG/nkOtwhrC21WjweqsQl5DDZiRkT2hZxfKoM7zk0U9KLJgwbUE3m64Ltzy9+qDKqMRWHdTPJXN8Yf135r9G28khwq1MnGgSXvPmeg43xU=
+X-Stat-Signature: 5eorppnjxor9rsxfaskok4fg6tj9fqtf
+X-HE-Tag: 1791917013-527731
+X-HE-Meta: U2FsdGVkX19EuzuXVoYmP12BQ9bweN/4W51waUb6FH473QvWXFDXBwxUASltm7C0R2X0bk4AUC3Nk3L0RyzAFtN6dFKDH0nhrpNDAo+tvPoUFn5UuKtaDwazwvfRoHEoQYrXcqrzYIlZqaykZXUWKzs934e4fXabepRQ5il9WTXLMK05CU+QY1ikuYFl9xSK1x6q4s5NEZCzD4ejU9sbm1l+6xjqIQ8MGny+QoAcRh/m1jRbAdv/NaRcbb2jOip+E2HtTHZGj4+aPNRDffjAUj9XqioITu/jHwUKR/Kp8RtZoDcSkrfENMegSnLcGMxXoS77Inp6xjgXzUWpesasxHfGLIvuEh9itB0vgw/yODR0/YraBhmEsKQeJe12JB9pLAl6Hpfy1yRF7eOafpM+U2LTvFlnUU4vuQIyDI74JQvtEtme9jYJ18nWSVnrUVEWvcWiv3XdDGdzGReM2bf3CUDHYESB1pRl7NvO4Xmqt+bIbhtbXOKqU3WIRh8vDz2cSmMFbsjdK0mvyZ+kE5Tw2t3ZT6b9mbytUigShh/hKYt4tUcdhlLXT43XTmwZLjGnEGSktdQrWjn90aLbWNuzC5k0h1hcMr+JXw2z6P3SRU4tiv6WZWRyVtfrVrA71V0qhQcMTus3nDVvJwYJgCecCF59QSHUUbi25OvTpUgAmny6aiG4T23CdlGHI2UD/2K2b6t07Gao+orQw56T62rdqRb7aXSMrl3rf0Jcwuu27jZd2tRg9IJ7FIdzseARwXJPW+4hSlyRfGyTaixgaJWpMm+dQD/6PXFFohiQwKppOpTCNGbUf7e54BOGgOxtJTzWSr7j1RnTEk1MaOsMlIpD5s62uFwbUquB422fhxMT7JoQDIspRCudAJMR8ZswCF0j5ToHXIE4PB3nSD8kEfDSfwGOb6aBsl1k6NDXlbkWx4PoQ0Hda+GoYMsfQCusJ71InOG9moMX5J35vKMXjiV
+ bBZ9rnAp
+ B53F4J4mdFQrWxV66eHVEzHGexI7whBh5zNFmrY8IJRFOoi8Q9sroj8KRzZielhZEuxtKzUDGLVe8Fjvj8AIdzpE6eFJLfYPWAqo0Envdzrj0QHGO261+aFlH/g4FUrw+cObRjZvk+ybjfZvCnbYPdZH564liFmt03FuycxZvY8LftjxS25qITOXu9Tl72CK67c/chse1idLviytgfPOpxqJi7VzHvW1foI5ndP4rngcZq75Ah5UnjQWZ9T4QkF+qznhjrsm0dC7Lxhy9+MYRbAvBpI9SlLt8Asx4nEHd4fj4XmvH9UnBA/zoN+e7TaWvtbfM8cYu6p3Z8XDC6kH5GTOYxaLIwXGeeqnB3YM0x4EKVwB4qhazUv+j6e2hsJckJr1r/lXskJqFoRVRWNZQDI6ZQrFupf0pRzW+xBTGf9frweXNedFSNJQeT4KVzlHS2QmaXvyBYsHluvvevKKPaHNTnpDYtvxNkSpI2OQi+uANCUjt5W13eH7TIk+AKK8rPAjTuYuR89Giy4YAEpO0LAXKAtmGVNprHNsoSAGUSQiYVVz6hrC9/fHsGdMR1bo4jVHoCG+PruU2fsc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,180 +122,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+So I've shown this series to people in private and talked about it at
+the kernel maintainer summit, so some of you have seen earlier
+versions of this already.
 
+This was triggered by several attempts at improving on the scalability
+of page ref handling over the last couple of years, particularly for
+the common case of normal [p]read() system calls. Willy reported real
+users having scalability issues in that area a couple of years ago in
+a discussion about buffereed IO scalability limits:
 
-On 10/13/26 7:41 PM, Yeoreum Yun wrote:
->> Hi Yeoreum!
->>
->> On 10/13/26 4:07 PM, Yeoreum Yun wrote:
->>> HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
->>> When this macro is used in some test, test result would be strange in
->>> the system where PAGE_SIZE is more then 4KB.
->>>
->>> Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
->>>
->>>   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
->>>     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
->>>     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
->>>     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
->>>     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
->>>     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
->>>     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
->>>     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
->>>     ...
->>>   ok 1 Completed
->>>
->>> Remove the HPAGE_SIZE and HPAGE_SHIFT macro and introduce pmd_pshift()
->>> helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
->>> helper, pmd_psize().
->>>
->>> Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
->>> which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
->>> and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
->>> PMD-sized units, the test may fail with the previous size of 100 MiB,
->>> which is not a multiple of the PMD size when the base page size is
->>> 16 KiB or 64 KiB.
->>>
->>> After this patch, output of transhuge-stress:
->>>
->>>   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
->>>     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
->>>     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
->>>     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
->>>     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
->>>     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
->>>     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
->>>     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
->>>     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
->>>     ...
->>>   ok 1 Completed
->>>
->>> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
->>> ---
->>>  tools/testing/selftests/mm/guard-regions.c    | 10 +++++--
->>>  tools/testing/selftests/mm/ksm_tests.c        | 16 ++++++-----
->>>  tools/testing/selftests/mm/run_vmtests.sh     |  4 +--
->>>  tools/testing/selftests/mm/transhuge-stress.c | 25 +++++++++++-------
->>>  tools/testing/selftests/mm/vm_util.c          | 38 +++++++++++++++++++++++----
->>>  tools/testing/selftests/mm/vm_util.h          |  9 +++----
->>>  6 files changed, 71 insertions(+), 31 deletions(-)
->>>
->>> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
->>> index f7d53ea3c2527..02f69244f9a42 100644
->>> --- a/tools/testing/selftests/mm/guard-regions.c
->>> +++ b/tools/testing/selftests/mm/guard-regions.c
->>> @@ -2194,14 +2194,20 @@ TEST_F(guard_regions, pagemap_scan)
->>>  TEST_F(guard_regions, collapse)
->>>  {
->>>  	const unsigned long page_size = self->page_size;
->>> -	const unsigned long size = 2 * HPAGE_SIZE;
->>> -	const unsigned long num_pages = size / page_size;
->>> +	const uint64_t hpage_size = pmd_psize();
->>> +	unsigned long size, num_pages;
->>>  	char *ptr;
->>>  	int i;
->>>  
->>>  	if (!thp_available())
->>>  		SKIP(return, "Transparent Hugepages not available\n");
->>>  
->>> +	if (!hpage_size)
->>> +		ksft_exit_fail_msg("reading hpage_size failed\n");
->>
->> I'm sorry for not catching this earlier, but I don't think calling a
->> ksft_exit_fail_msg() for not being able to calculate PMD size is a good
->> idea. Maybe call an ASSERT*() here, something like
->>
->> ASSERT_NE(hpage_size, 0);
->>
->> so that just this test fails, instead of the whole run exiting with a
->> bail out?
-> 
-> No. The failure would occur if open() or read() fails, and subsequent
-> attempts would likely fail for the same reason.
+  https://lore.kernel.org/all/Zds8T9O4AYAmdS9d@casper.infradead.org/
 
-I think I couldn't clearly explain my concern. Let me put it again,
-please let me know if I am missing something.
+and I had a very rough first draft in that discussion:
 
-I was mistaken, on checking I found that guard_regions runs each test in
-a separate child process. So calling ksft_exit_fail_msg() won't exit the
-whole test run.
+  https://lore.kernel.org/all/CAHk-=wjOogaW0yLoUqQ0WfQ=etPA4cOFLy56VYCnHVU_DOMLrg@mail.gmail.com/
 
-To reproduce the case, I bind mounted /dev/null over
-/sys/kernel/mm/transparent_hugepage/hpage_pmd_size in a QEMU so that
-pmd_psize() returns 0. Then on running ./guard_regions (your patches
-applied), I got this output (putting relevant section of that since the
-log is quite long):
+and it was broken but close enough to working that I kept using it
+locally in my own use for a year and a half:
 
+  https://lore.kernel.org/all/CAHk-=wj00-nGmXEkxY=-=Z_qP6kiGUziSFvxHJ9N-cLWry5zpA@mail.gmail.com/
 
-#  RUN           guard_regions.anon.collapse ...
-Bail out! reading hpage_size failed
-# Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-# collapse: Test failed
-#          FAIL  guard_regions.anon.collapse
-not ok 29 guard_regions.anon.collapse
-.
-.
-ok 58 guard_regions.shmem.pagemap_scan
-#  RUN           guard_regions.shmem.collapse ...
-Bail out! reading hpage_size failed
-# Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-# collapse: Test failed
-#          FAIL  guard_regions.shmem.collapse
-not ok 59 guard_regions.shmem.collapse
-.
-.
-#  RUN           guard_regions.file.collapse ...
-Bail out! reading hpage_size failed
-# Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-# collapse: Test failed
-#          FAIL  guard_regions.file.collapse
-not ok 89 guard_regions.file.collapse
-#  RUN           guard_regions.file.smaps ...
-#            OK  guard_regions.file.smaps
-ok 90 guard_regions.file.smaps
-# FAILED: 87 / 90 tests passed.
-# 19 skipped test(s) detected. Consider enabling relevant config options
-to improve coverage.
-# Totals: pass:68 fail:3 xfail:0 xpass:0 skip:19 error:0
+until people pointed out just how broken it was.
 
+Then Kiryl had a slightly fixed-up version of that approach almost
+exactly a year ago:
 
-which looks weird with all the bailouts. On the other hand, if we
-replace the ksft_exit_fail_msg() with ASSERT_NE(), here's the output we get:
+  https://lore.kernel.org/all/20251017141536.577466-1-kirill@shutemov.name/
 
+but that too had problems.
 
-#  RUN           guard_regions.anon.collapse ...
-# guard-regions.c:2205:collapse:Expected hpage_size (0) != 0 (0)
-# collapse: Test terminated by assertion
-#          FAIL  guard_regions.anon.collapse
-not ok 29 guard_regions.anon.collapse
-.
-.
-ok 58 guard_regions.shmem.pagemap_scan
-#  RUN           guard_regions.shmem.collapse ...
-# guard-regions.c:2205:collapse:Expected hpage_size (0) != 0 (0)
-# collapse: Test terminated by assertion
-#          FAIL  guard_regions.shmem.collapse
-not ok 59 guard_regions.shmem.collapse
-.
-.
-#  RUN           guard_regions.file.collapse ...
-# guard-regions.c:2205:collapse:Expected hpage_size (0) != 0 (0)
-# collapse: Test terminated by assertion
-#          FAIL  guard_regions.file.collapse
-not ok 89 guard_regions.file.collapse
-#  RUN           guard_regions.file.smaps ...
-#            OK  guard_regions.file.smaps
-ok 90 guard_regions.file.smaps
-# FAILED: 87 / 90 tests passed.
-# 19 skipped test(s) detected. Consider enabling relevant config options
-to improve coverage.
-# Totals: pass:68 fail:3 xfail:0 xpass:0 skip:19 error:0
+After that, Ilya Gladyshev stepped into the ring with a very different
+approach to it, which is now up to version 6:
 
-So the issue is not as severe as I'd thought. It can be argued that this
-is very less likely to happen. But yeah, I feel changing it would be
-better as it is more suitable with the ksefltest_harness and would give
-a cleaner TAP output incase this happens. Rest I leave it to you and
-other folks to decide whether this needs to be changed :).
+  https://lore.kernel.org/all/cover.1789239015.git.ilya.gladyshev@linux.dev/
 
+and still has some outstanding known fundamental issues.
+
+So for the kernel maintainer summit this year, where one of the big
+topics was going to be LLM use in kernel development, I decided that
+hey, I will try to actually *solve* this thing using an LLM to help
+with the issues these things have had.
+
+[ I also did another series for a problem with the assoc-array
+library. I'll post that separately - that was a lot more pedestrian
+"just clean up the code in order to fix a bug" kind of case - not at
+all as interesting, but a fallback in case this more interesting
+problem were to not pan out. ]
+
+Anyway, the end result is in my kernel tree in the 'rcu-free-v3'
+branch in my public git tree. My 'v2' never saw the light of day
+because I kept cleaning it up, but an earlier version with some more
+background is available under the name 'noref-filemap-read-with-llm'
+and has an empty commit with more commentary and background at the
+top. I didn't do that cover-letter for this v3 version, and it talks
+about some issues that already got resolved (and others that I don't
+think are actual real problems, but should be discussed).
+
+The fairly short series of ten patches basically enhances folio lookup
+by noticing when folios are hot, and setting a "delay relasing this
+folio until after a RCU period", and then using that RCU delay it does
+not just the folio lookup itself under RCU (which we've done forever),
+but also the actual folio data accesses themselves under RCU. No
+refcount taking needed for the fastpath where we can just read the
+data from the folio entirely in an RCU-protected region when the user
+copy doesn't cause page faults.
+
+Unlike my original approach - because it now actually delays the
+freeing of the underlying folio data - there's no need for any double
+buffering, and a lot of the original limitations of my original patch
+go away too. That improves performance quite a lot. And by "quite a
+lot"  I mean "I see a 23x performance increase on my Ryzen
+threadripper". Admittedly that is a very artificial case of reading
+the same small part of a page over and over in a threaded loop on all
+CPUs, so any real life impact will be much much less.
+
+Anyway, I wasn't planning on posting the individual patches, I think
+we all use git by now and probably find it easier than fetching
+patches from the list. So it's all at
+
+    git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux rcu-free-v3
+
+and the commit messages are a bit more verbose than I would have done
+it myself without tool use, but maybe it's better that way.
+
+The showcase number is in the "mm/filemap: read from the page cache
+without folio references" commit:
+
+                               reads/s     cycles    instructions
+                                          per read     per read
+   ...
+  64 threads,           before   13.3 M  19857-19939   1094-1101
+  64 threads,           after    304 M     735-736        959
+
+ie the number of reads per second had plateaued at 13.3M due to the
+cacheline contention on the folio reference count (and the cycles per
+read had ballooned up to 20k).
+
+And with that scalability limiter gone, it zooms up to 304M.
+
+And again - that's not a real number in the sense that no real load
+will ever see it, but the takeaway is that it basically scales
+perfectly with no writes to shared cachelines. And honestly, the
+patches don't look bad, and it's possible that other cases might find
+use for this RCU-delayed page freeing.
+
+Comments?
+
+                Linus
 
