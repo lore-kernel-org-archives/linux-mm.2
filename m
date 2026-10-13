@@ -4,85 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FD8BCC6B08
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:03:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA745CC6B08
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:03:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D0116B0088; Tue, 13 Oct 2026 11:03:18 -0400 (EDT)
+	id D1C586B008C; Tue, 13 Oct 2026 11:03:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A80F6B008A; Tue, 13 Oct 2026 11:03:18 -0400 (EDT)
+	id CF4706B0092; Tue, 13 Oct 2026 11:03:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E5B56B008C; Tue, 13 Oct 2026 11:03:18 -0400 (EDT)
+	id C31496B0095; Tue, 13 Oct 2026 11:03:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E63FF6B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:03:17 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 665B21A0D22
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:03:17 +0000 (UTC)
-X-FDA: 85317921234.09.9D31892
-Received: from mx.itxnorge.no (itx-kvm-14.itxnorge.no [91.189.121.228])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 95D8740005
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:03:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=PP6KBkiG;
-	spf=pass (imf11.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
-	dmarc=pass (policy=reject) header.from=itx.no
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F0606B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:03:56 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2CB82160CEB
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:03:56 +0000 (UTC)
+X-FDA: 85317922872.06.C053F42
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 671D7180017
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:03:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c3tbE05i;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791903795;
+	s=arc-20220608; t=1791903834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pi9LSYarjLX+3vvzjZhtTrpY5MChzmnUBJGMA66TyCA=;
-	b=HvBAZn3L0jafx6k2ag3HnwCKmpS6rbA1vibJMO92/Wo7aTK2Rb1DSJlNi6o9ZkLPQsBjLp
-	rutI3DVLXlGvtUPf/Kgf7FDmHUMfRB7Rhgc/+lv9s9m16TV8ANz7UVCN/o9TG3MOhD7lRs
-	q22poiFzMcdiCKFYtfuzhyQBvte4L1g=
+	bh=O462JKoBsK5kLKH34dERrDJEsMO/yC3R2yXeyHeFOP8=;
+	b=7TuLQ0GLSenUd92zpBFJTIXCiPQzvJf+L/tSXZd51VsHccU0H74GowdSTELBsvLQ3uQ9mP
+	0dQHsB8sjYUXO1YzcW8QAimX7aMZgLqZFlkiPzIBBvUsDGQDBy0gkPnG1OhtUSA7SsXLsU
+	Zc/wvB4yyg4iDflX7CztRSl0a1e2c3o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791903795;
-	b=mI4u7cL1e3auVLXt/YMYOiircZ5J2RrY5T6a4gqdtiwaDmyqmI7u896+oauiGZXcDpHAwK
-	QpnpvFOSmBCzU5N1VyBL5slN1btW0viSvGS+N6OlAki0JuFFfMVJjWeinydigbnMM+9ctQ
-	JIEBMB2MKWPs3wDZG/9oMo7CoXrOKrU=
+	t=1791903834;
+	b=KGP2/0FTDMTg5ZYg90ci+UM8IKFcpFqBFsiHk/XpGLRXijm0D0EHy5bkOBLoTLatcTdvUL
+	jziT8XZVrIRIiw4TE533MCUpk/YWG1p5WF2QUiZEiRymQ54x5uCCCxBTDr6jihQF1saIk/
+	LgxOdEeM1BPbYfDDK8khgUiKA17M8uI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=PP6KBkiG;
-	spf=pass (imf11.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
-	dmarc=pass (policy=reject) header.from=itx.no
-Message-ID: <662b749c05634b6990d072cb87a442687b41be33.camel@itx.no>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=itx.no; s=mx.itx.no;
-	t=1791903793;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pi9LSYarjLX+3vvzjZhtTrpY5MChzmnUBJGMA66TyCA=;
-	b=PP6KBkiGllBsDBfJ+qINnKOAPEz9uCFYbkchSzqWQ1pm7bapeEDpUXBktj2ihx3XYoXRo/
-	H6+F/uKmotuqTl8IebEPWJ8JpZNpQPSUILLcfX3Q7Qa39rg67bjFFkSosaPB1VqJQvSHp7
-	t5cVmwJV01QNkHIqswer6KpwLlfqLAU=
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c3tbE05i;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 99AD0602C3;
+	Tue, 13 Oct 2026 15:03:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5E11F000FF;
+	Tue, 13 Oct 2026 15:03:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791903833;
+	bh=O462JKoBsK5kLKH34dERrDJEsMO/yC3R2yXeyHeFOP8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=c3tbE05iKYpFIjUv3vFpzuL9h4/yEgBGEM5i1reN/FbqxAeXsuVwpeIOq4txsfuuK
+	 L/2Y/bu3EIyLMAxykkKLBWoKNiT8Bartce+GFzHMpAXu7G3/4KUrt9zQYPLH8oI1WD
+	 8D5gOuyyvRqhYouGpUemUyCzI7j1Owy1BHYPKwu+Lqygcime9usdgp5cWkdpLKQKSf
+	 kfEgUL6/Mp4KhvPeaY4KjgHuOEMmFT/KVTdqESyqF/hHQXkrCQIeeNiRNq/vnaD5tL
+	 5knxNXJcoIPv7KVhNVog/fqjxrmHuIyJ+6oYRwkOGz4ooeWxRUUr5fl2cJf2vEUfaK
+	 9pTunqG3q7whg==
+Date: Tue, 13 Oct 2026 16:03:47 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Stian Halseth <stian@itx.no>, 
+	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Andreas Larsson <andreas@gaisler.com>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH] fs/proc/task_mmu: fix lost maps entries above 2^63
-From: Stian Halseth <stian@itx.no>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
-	 <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>
-Cc: "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes
- <ljs@kernel.org>,  Vlastimil Babka <vbabka@kernel.org>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Andreas Larsson
- <andreas@gaisler.com>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
- sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Tue, 13 Oct 2026 17:03:12 +0200
-In-Reply-To: <e300f046-dcae-4539-bf89-92eb8c575e25@kernel.org>
+Message-ID: <as5E25F4xjHwYSGQ@gremlin>
 References: <20261011162019.922436-1-stian@itx.no>
-	 <e300f046-dcae-4539-bf89-92eb8c575e25@kernel.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-uXyPDiAoKUAB3fHHAbUw"
+ <e300f046-dcae-4539-bf89-92eb8c575e25@kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 95D8740005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e300f046-dcae-4539-bf89-92eb8c575e25@kernel.org>
+X-Rspamd-Queue-Id: 671D7180017
 X-Rspam-User: 
-X-Stat-Signature: xac6us1pso4y1mjpug3jgi5tsrxg3psm
-X-HE-Tag: 1791903795-254847
-X-HE-Meta: U2FsdGVkX1+wY9gDEWO7fX0YO7BHAFzkdwM9z95U0Mwy45/M9OnYJvyrArzjNn7oh7Ge8T8zZAZw6xU3wxHy7kKVL0X6/0kP3svnCaKp931OrzA99Qbitgp1h9ZqYiK9GMz0fZDFhaHDq6SQMm4gOdCAApKAW04Tvd0UIOobOjuCa8nvNwx/KhFMyRIUmcW5LwcDx8KHNPVUjCSONdfUWYO6mC1yoVdxFppBMRgv2TS6/EFGilnUaXHOTJa9WsCVJeob4FxNYFYYmI+BGdL6mfUzmHX30HYRrr7BtjXimlVtZqbcG3a1ny1imbUEVAM+glP4A4/DNBHyrN8AOAYQtBSxA6ZJefQF/rM8nlileeVCalrlCf9wb6DRGCVAv3xf2Gp463DJJ1CthkDI6RabkMR+V1o/z112khEl31VYMeOAl6oRouUPuBGKcSXUW4kXGJDlDoyvvcHPc+zen1leY2Z3JQZqtnfDYK7BV18Zm7ehehR1AQHPjZHd4ZmZ0KOFahI4ZeqKgluj62tjd8jsl9YNCBxo5D6WL7CJJtwMgMyXWcSBHCq9OTW4jU7uul/r4we/OCjqlD9Drp9xQx0mBjEUGt1f2vt0DgsYVYlG6CvnP100STEQqjLyT7od/5NDszqWd/vFeCsJ+Po4D/46voSi9NzPwG+W71pUZj9avCuYq8tCjuzJl+aQZyB7JGePMcQQfLXYCOnTk8D4xn4taZyvKm5av/vEmW8Ubro89AAtXUw/3fv0oOt/eEWwWe6wuRmt5yMXG8LjqogIbKshY8HzrXS6ySfwF1xwaCWk33D64jmH0D0gObWP6sq1Vc4TmkYSvcug0ihq49US82e2bklu7/IXjHsJKPzx2Ub1RVLRmhzS1/HGSXH54sJ9Hg/0FaaWxwVSbXOr2Ir92mFRz7Mpcevx11qfUTUQe+EjlcDXPlRISCqS8bIFlH1p7kOtxzVVRtIkMMvAuCouxp6
- T0YHyM3B
- BOZS45DXlg1g0zENjONZJizSE/6fe46H7oJ0bJy1xilJ8Xc68UZpXumbhFT/AI2WNZlY2agH91Xs8oXH6eRGBvntgxwJDDrUTPFb9qZU85LjLrxppuY5feYGQaABgxLaVlsl623HhuWkAGpbeH7aV7E3J+9gEJo5oG6ggRTGNNv4k1vniKfFXKSAjeFpVOXwFDUveUzyuOQteokEi1WQ2vluITlSmsSrmT5+AOMzeBY3Kj1DBPrzYOgCddOjkx+N9iRwHZQjg4JZdNEeU+UGEg/afO3G4+kKlkbv6
+X-Rspamd-Server: rspam05
+X-Stat-Signature: k9zes9515ypmjkmi717h4e5bc156u345
+X-HE-Tag: 1791903834-844401
+X-HE-Meta: U2FsdGVkX1/8pnq1UmWwtoYQfVAUT1K1wW8S/rwxJCvZpIC8v8aP2VVt6TPdCLyohzr9qRfNq6BGvG4LrvqwrjxcEGgxSKNHsW8YvAhO7nMBHo5TC7F5kdJLcVlZ1ieDpPImxi5BlGil0dafeoY/bv6OtTFL2a62Tk86bpdlwZvecn7SGsgd8B0vKCWx+tI8ZO4VfmOPvdupoOh2sD7W8Hs+DymrfqLlQRCMZ+bucqXPFflYicHhx6xzo6iyt1O77K/qcVB3jj1FwZg1ZgHUbxEVDj6J4Sw7Tp+fIZ+RmAy83PlP8Nxs10kWF4Vnzh5xcTyXpz52YaHf+tqV2zfGPIHd9/RQIzzK26z9xqFdrlPU6wDPmoYmDkble4h1ggxuicyODg3lu2XRY5/OovKT5LgDTU8yu71NHGGmxSLYwFXQlJlBVkCGKinWOTUphr9idTdfOIW2Tcp4AmZS4mWAth/2Vbizu6S44tMxi28VbV7SnZmS1XXRdgmwZZDwminprE+2nE/EwuSp+wpM07BSJdIeylhwEdJiYz2EXxlxwL1CZlxx9wYO/hwjXitNHeougHz8B0nJnkj/+14Lr45tYteyigB/c41YnTNTDBY893CtnGbNcJxS8Cqo8cTy7BAYEi2eG+td0AleOcZgoLD/tedSborey75X8uqnGKXYWrUTJlT6O8dgrwaafSLzXGqjL2QHO2AOaFzbljx3c92oFAWpEp8807OZSTd4/mUupb36jZ/Yv/bRWQdGJ9jMwYdvHtaTNFNT+eTRYFk6u9bSLpgJphOhgWEUHlwfv0RbI8aaauEvzP5eMzhZmMUlWXahr9NxAx6uHoRPpjncX0X3mQBYz6zeiVB7nu/Hq0ZdFpAHO/LhdLBv+T1oWV50qKmKSWPThDnowIBWX0PGUiKNpxTp40O3fIT6o9WjXqc+Fiuq4Nt5oGuvfZZZ/nzwDL6xwL7H5id0Ts+mPyxSPSL
+ 3ScUb7So
+ ycjPMtm3X8P7QpPOZAE6W88oJUXZxYvgviaR6usGPRR19f57weidUhKwAxSo9tMPYFgYbpgNV4x/ZTWVA/c85/D5PS6bgDA2KeVIBOafPKbXE6y1m4/y7piTx6jkLLTRIn44it/++558sjNEi7zRDGrW5wErA6+ekertknY9CBSpO2JvR+0wv/NXVJdy9xybkwLq5ISSssBd6vf5MIRMoGbOIA4IRGf3pw0UHF0PJIAu8bit4TQbkLQmW/jYb9jew5nn/Am5r4rKZfOG5CR6wr9LqYNL+r98zsL/ugiGBqbakB+c/VIbpj0/VG6UX+DAuOvDwHN25v2MhE3qkBWwlXyczYt3FyNbsH9Xg60kPV0tw1w5T3IuZHCR9bA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,44 +95,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Oct 13, 2026 at 04:40:43PM +0200, David Hildenbrand (Arm) wrote:
+> On 10/11/26 18:20, Stian Halseth wrote:
+> > When a read of /proc/pid/{maps,smaps,numa_maps} resumes, m_start()
+> > rewinds *ppos to priv->last_pos so that the vma which did not fit into
+> > the previous buffer is shown again. It only does so for last_addr > 0,
+> > meaning to exclude the start of the file and SENTINEL_VMA_GATE, but
+> > last_addr is a signed loff_t holding a vm_end. sparc64 maps shared
+> > libraries, anonymous memory and the stack above 0x8000000000000000, so
+> > the rewind does not happen there and one entry is lost at every read()
+> > boundary.
+> >
+> > Reading the maps file of a process with read sizes from 64 to 8192
+> > bytes in steps of 64 loses lines at 126 of the 128 sizes, smaps at 123
+> > and numa_maps at 97, and the proc-maps-race selftest fails 4 of its 6
+> > tests. Python's sys.remote_exec() reads maps with fgets() and fails
+> > intermittently when it misses the libpython data mapping.
+> >
+> > Test for the two values that are not a vma end instead.
+> >
+> > Fixes: 5631da56c9a87 ("fs/proc/task_mmu: read proc/pid/maps under per-vma lock")
+> > Closes: https://github.com/sparclinux/issues/issues/111
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Stian Halseth <stian@itx.no>
+> > ---
+> >
+> > Notes:
+> >     Tested on a SPARC T7-1 (sun4v, 7.3-rc5), a T4-1 (7.2.9) and a Sun Fire
+> >     V240 (sun4u, 7.3-rc5): no lost lines at any read size afterwards, and
+> >     Python's sys.remote_exec() test passes 20/20. On an amd64 KVM guest maps,
+> >     smaps, numa_maps and the proc selftests are unchanged.
+> >
+> >  fs/proc/task_mmu.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> > index 5c54aebe21182..cdce513edcb1d 100644
+> > --- a/fs/proc/task_mmu.c
+> > +++ b/fs/proc/task_mmu.c
+> > @@ -339,7 +339,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
+> >  	 * Reset current position if last_addr was set before
+> >  	 * and it's not a sentinel.
 
---=-uXyPDiAoKUAB3fHHAbUw
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+It's interesting that this comment differs from the actual code :)
 
-On Tue, 2026-10-13 at 16:40 +0200, David Hildenbrand (Arm) wrote:
->=20
-> Would it be cleaner to reject any special values, that is,
-> SENTINEL_VMA_END and
+> >  	 */
+> > -	if (last_addr > 0)
+> > +	if (last_addr && last_addr != SENTINEL_VMA_GATE)
+> >  		*ppos = last_addr = priv->last_pos;
+> >  	vma_iter_init(&priv->iter, mm, (unsigned long)last_addr);
+> >  	hold_task_mempolicy(priv);
+>
+> I hope Suren can review as well.
+
+Yes Suren should take a look.
+
+>
+> Would it be cleaner to reject any special values, that is, SENTINEL_VMA_END and
 > SENTINEL_VMA_GATE?
->=20
-> That would match the comment and the previous code idea: exclude only
-> 0 and
+>
+> That would match the comment and the previous code idea: exclude only 0 and
 > sentinels.
->=20
+>
 > Could consider a simple addr_is_sentinel() helper.
->=20
-Agreed, that reads better. SENTINEL_VMA_END never gets this far, since
-m_start() returns early for it, so it is no functional change.=A0
 
-I'll send a v2 now, and maybe Suren can have a look directly at that
-version.
+Yeah that seems sensible.
 
-Thanks,
-Stian
+I guess Stian should respin with something like that?
 
-
---=-uXyPDiAoKUAB3fHHAbUw
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTK1ph9OaYoND1R57zoeAEuJe36VgUCas5IMAAKCRDoeAEuJe36
-VsL8AP9E+0k4mprykfqrvUdh7fvR+jw8P0kF49qCLBaCfiRY3AEA33afxSogFsKp
-woQkB2y6j4zmffrBo1NCiMSYSU3b3QQ=
-=sVmV
------END PGP SIGNATURE-----
-
---=-uXyPDiAoKUAB3fHHAbUw--
+--
+Cheers, Lorenzo
 
