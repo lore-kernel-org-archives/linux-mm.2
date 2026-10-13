@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD844CA9ED0
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 00:27:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB066CA9ED0
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 00:27:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C6DF6B008A; Mon, 12 Oct 2026 20:27:10 -0400 (EDT)
+	id 685D86B008C; Mon, 12 Oct 2026 20:27:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37BA36B008C; Mon, 12 Oct 2026 20:27:10 -0400 (EDT)
+	id 5E9306B0092; Mon, 12 Oct 2026 20:27:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 268266B0095; Mon, 12 Oct 2026 20:27:10 -0400 (EDT)
+	id 4B2416B0095; Mon, 12 Oct 2026 20:27:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E4BB56B008A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 20:27:09 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6E2A9A8FDD
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 00:27:09 +0000 (UTC)
-X-FDA: 85315713378.05.019FBCE
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D39E6B008C
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 20:27:11 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C464A0C40
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 00:27:10 +0000 (UTC)
+X-FDA: 85315713420.16.3292A3C
 Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BBD2720006
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 00:27:07 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0E8DDC0006
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 00:27:08 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
 	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
+	spf=pass (imf28.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
 	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791851228;
-	b=YKLLqKUTs71rYsaOP1Wb3d3QWnY2mhE0AN1ro+WggbGbjcRhRpxLFPwR3rWO6K9r8Jdb+H
-	1NrECk6Fhppy7GQ/msukqvR0U/3to130DP1yXvXkjmGPS3jF4TYv+/JNV6HapRzwl3OdGP
-	DPmcyEQkkqN3sDwc82z7Z8ZzYb4L0Jg=
+	t=1791851229;
+	b=tYhQPXIkB532ZfUbEhIWRoUKU92U7YytmUW8tlSLYnOV/ABJGFbnP23FhrjDtxd+VrUXx2
+	rxEt3P9ojqbiwBbpAggszwrNYg9WDdQ3gG9VN15Obiryl4ncpSHREqwbCaW3Aq6Se7gu8Y
+	Y1285rDJYK8eaUmOjmdzvOS+H+MbDyk=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
+	imf28.hostedemail.com;
 	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
+	spf=pass (imf28.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
 	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791851228;
+	s=arc-20220608; t=1791851229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vKsQrWYFwE5Mbf2zpGkAELyRgNFYJ9IlLnZ2RBrVkiM=;
-	b=WSKERPScnbLIQpDO5qON3rUEh+egick6aX/OctbmU5obzmru5DmJT2WKwCsttXXm685dL0
-	HMT+dqdGSQsmfKOf4Yr77FLnHVeUv9Q+6tz1EW9Jq5IDNDQ2jvRksy+xMRT+MwHYEmaOy2
-	e2vhDyM/6wyp6pLZbDpgNq0xhRl1SIY=
+	bh=dDOzcDGaalTM5WE9tF4beTCCpOehQc62hsVGjItGl5M=;
+	b=XXwFz6K6XRGfygo8le0b4kzk/urCyxjZ1xxVT5PGOEBXzL6DwcC4cpf2XB6lPHyC/e1waV
+	4rs2EyXCPyqjQQ/JVC9d7pb0Mt0Iln3DVvrpS2g5WeInpOulEjxw45JNEdr2IoFgTyjqV2
+	/xFwKV395/vbK9KPzHk0cvyz9eXvc4M=
 Received: from escalante.csail.mit.edu ([128.52.128.198])
 	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
 	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xGQMC-00GgqH-5y;
+	id 1xGQMC-00GgqH-Be;
 	Mon, 12 Oct 2026 20:27:04 -0400
 From: Nickolai Zeldovich <nickolai@csail.mit.edu>
 To: Matthew Wilcox <willy@infradead.org>
@@ -61,9 +61,9 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Nickolai Zeldovich <nickolai@csail.mit.edu>
-Subject: [PATCH v1 1/3] ida: clear the bit of a bitmap that ida_alloc_range() failed to store
-Date: Mon, 12 Oct 2026 20:27:01 -0400
-Message-ID: <20261013002703.773923-2-nickolai@csail.mit.edu>
+Subject: [PATCH v1 3/3] ida: free the preallocated node on the ida_alloc_range() failure paths
+Date: Mon, 12 Oct 2026 20:27:03 -0400
+Message-ID: <20261013002703.773923-4-nickolai@csail.mit.edu>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261013002703.773923-1-nickolai@csail.mit.edu>
 References: <20261013002703.773923-1-nickolai@csail.mit.edu>
@@ -71,12 +71,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BBD2720006
-X-Stat-Signature: rmxek9qqbuumu6amru7gfnnf8feqm15e
-X-HE-Tag: 1791851227-391957
-X-HE-Meta: U2FsdGVkX18/OEtBdJgUIQN9SDIgIAZUkmvVY07tfCR4LV+tM/rHjhxf43SZxt4aLLM0QffM6kWXilukr0gxMWWxlv0j4A9tmtOjujwNmvCa949LH2mtMjwvHjnCuX+Oyqo8MsJF+RdClRBAr+opWOS3gqf7vNI4wMmQXUOuC/3n0RxMjVS24a0NOKQu6rVCkoxYOO26DPU0naIJgOlGuvlhAWvLEqamuYEDlfrOfaNCulPPMAlLN5DAe4/KVkJKWq2SxiwuHWfTnsVq3TJSpZwiAF9P939o6p7ppCL7owdSeXDj7z+Oq2PPkdjUPcsIRs5VsL1Lb+eoPHetna/wYXao70gfm42rwsoxJSU6p8NYI0G/8t91otEYucKLcnYaeHVgRqL8dwMJ/F+PWYkgRQ20RNJGcGYOTpb0KC6uAHyULMyg015WKwmpy5ya+HILfW9Yj3ZlyOyUYn9IY3zcrCYPvb5onXoVFA6dawzJjV7RVNGBNfiVPMdEBeuibti4rhetxbikWJslnlNi/Kq6s/3aRUf470IKgAONBisa096VdgS8P3rlmlPRLpqLeHjpbsd1T1/c6OoYrlhTshF8Lo4DEcPLvzgik329ihcWnKK0hgdqF+qxk7zNK+ybr/VS1g8Enbm6ErqjD2wnpCC7W9kgrcn5dunL18+59h+gpBXvqCpP7SyYasMz8pVUWhptOoIDgG6GvW8XS6m+xqQ7NLEY1vArb3iGWYfYLkgAmqw3gsE5+vL5WpECd8wNq0ICWk7efpnY8ubV9kEgzdQEAiDdyNoTF7Fxj/RFrSoGNcMhdrhfL0LXhp8DmpYYq0oWJsU072Bm3PQQFi9qEFzZPBIzgn48dEeFoID5VrZt5SJjE2tVDZ3VuAi1bDXJ30otJPjroyXJO2z8T/cmY8MHKF52G9sHofbah/VkZuDib6ri9yXroxHHx4KFk/bI0enAPh8bDO+xfCFPwSjmbCV
- jTnfO8Op
- SYVQNaX4NlO7oGPlB/nOWC7w6ClZBgeCZrXRg81U41zY4/JdT0qXUrfSsMy72xJw0hXFwgebx/j2xNPOCDsrpKSHdwnOPOWgdAhCnHlIoBGVkjDjnZ5mKFTAvI6qnsBUUXfTnE9LX/iApU9ZFoXEJ5Hte2/WgwpCkRGW0iFOlUUIKGEEPFek6qocvMQ==
+X-Rspamd-Queue-Id: 0E8DDC0006
+X-Stat-Signature: qdaq9zehkrcp33soknbx4jdh4q7ngpc8
+X-HE-Tag: 1791851228-980999
+X-HE-Meta: U2FsdGVkX18GfxTRSRRibiunMj6Jdikb8GDJy5f19sRxalZI5qUKMmBq3UskH3zV9DVTaG1ALWPexC5a66+rKKAsZnJwkZhKvUq8BPizjGg7KxYYdsh9JNEmjOb/vIXKIZRTyaTZCGffeJvguM9iOBJtlqmscBWJQV5NS7+ljGY2k7qcjMZ8x2ieHJ7kZ/arVnyxpy9J4Sq7kgAY5N5nTcZt/zRgM0cyk3cbltoCvW686+2aLOZoJAaIu4job3Taf6ZeMjEN0N3aIUu4bSum3MevNbD5qoXvtimCiLqmTde9OmAmu63aqAcu2JB4WyQoCj5/vORK7HW5UAblQbR6W78VvCQ9tb8jluV0qEkJDdgUnUjUxLm7lO5dC8YSYKBOD0RX1r1GS4q4Xl/uAZs/UMZVBxGwf5v9O6tNOMVQFuNSTaHtEPEz+GmUvBuaWEzsodJXqbGQJ8YcMQscqXzcEK6bbUjRyXxNbEOKq22PvfQ3oiB1jn5OGMv+rH5asSPWLZo3av0RMHMmWn/08blBwaVgxEvXbSaH276yVaqsqwFUhtkBkG8tmAjliv969eDxk/ssT1ukTMOhXf2O+Swqjd6iBcAF8FspqwrhaQL4rzabG4whQsgv+pOAo/ETs/Xgib1p3yKlvHuYeWO+TzQd+nFjPvkgp5mOsvSXq5ihBFfnM65qK6xNuAAluYFTMPpk8QfOKW1+7N3qVbjzKyE47gMD1IbfOHg+wn5elw2T+MdvQ+VpMom9WO6KkxZU2CmQXe4iB3ijI/fdxzT3Sju5b0WrOQijZxZ/qQ+ODwbYnN1tN5ppeQUrVZ1GjtStMdDYXR6RebDe+uZQnr18lQB3Kw2FI/0ySj1wEkd6+QfU5cTON7eqOl8ppLHndgKJEfgSiXqGymqgLCmfTf2eyEN1f6hI+zmoYKa6W9U3BcXFmuYheDT3O1j3GlXknGsKZ6dRua3pURqXgElxDghpTu8
+ rB+C0sVi
+ v9q3e4qCnHft0WKUDqaYsN7gOtJyibvMGrFe4pNJLF9Nn7hfqgNjRjcJxJqc4upH0MwOZ2/y5BvOM88Hsc26HX0+wm8ZGaHGk/P7PZFBDVVtCRS1YvuyWRZYmccxLVnudKBYlQX/kjOpRnPM5ctnr/j0vOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -84,139 +84,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ida_alloc_range() sets the requested bit in a new bitmap before it calls
-xas_store().  When the store fails because xas_alloc() could not get a
-node with GFP_NOWAIT, nothing is stored, but the bit stays set.  If the
-bitmap is the one preallocated at the "alloc:" label, the retry after
-xas_nomem() reuses it.  The lock was dropped in between, and if another
-allocation stored a value entry for that chunk meanwhile, the retry
-converts the value entry into the bitmap by writing word 0 only, so a
-stale bit at position 64 or above survives into the stored bitmap.
+When xas_store() in ida_alloc_range() fails for want of a node,
+xas_nomem() allocates one into xas.xa_alloc and the function retries.
+The retry either consumes that node in xas_store() or, if it reaches
+"out:" without needing it, returns it through xas_nomem(), which calls
+xas_destroy() when the state is not -ENOMEM.  Two exits do neither:
 
-The result is an ID which is marked as allocated but which nobody owns.
-The retrying caller gets the next free ID instead of the one it asked
-for, an exact-ID caller (ida_alloc_range(ida, id, id, gfp)) gets -ENOSPC
-for an ID that nobody holds, and the bitmap of that chunk never becomes
-empty, so ida_free() can never free it.
+ - "nospc:", when the retry finds no free ID in [min, max] any more.
+   The failed round stored nothing, so this means that another
+   allocation took the IDs while the lock was dropped in xas_nomem();
+   exact-ID callers, ida_alloc_range(ida, id, id, gfp), are the usual
+   way to get there.
 
-Clear the bit again when the store fails; it was never visible.
+ - The -ENOMEM return at "alloc:", when the retry needs a bitmap and
+   both the GFP_NOWAIT and the gfp allocation of it fail.
+
+Each occurrence leaks a struct xa_node (576 bytes) from the
+radix_tree_node cache.
+
+Call xas_destroy() on both exits.  It is called with the lock dropped,
+as xas_nomem() itself does, and it is a no-op when nothing was
+preallocated.
 
 This was found while formally verifying ida_alloc_range() against the
-kernel binary.  Add ida_check_retry_stale() to the
-tools/testing/radix-tree harness: it runs a second allocation from the
-node cache callback, which fires in the window where xas_nomem() has
-dropped the lock.  Without the fix the caller gets ID 1101 instead of
-1100 and the IDA is not empty after both IDs have been freed.
+kernel binary.  Add ida_check_retry_nospc() to the
+tools/testing/radix-tree harness: an exact-ID allocation whose first
+store fails loses its ID to an allocation made in the window where
+xas_nomem() has dropped the lock, for an ID in a value entry and for one
+in a bitmap.  Without the fix the harness counts one node still
+allocated after the IDA has been emptied.
 
 Fixes: f32f004cddf8 ("ida: Convert to XArray")
 Cc: stable@vger.kernel.org
 Assisted-by: LLM
 Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
 ---
- lib/idr.c                           |  2 ++
- tools/testing/radix-tree/idr-test.c | 53 +++++++++++++++++++++++++++++
- tools/testing/radix-tree/test.h     |  4 +++
- 3 files changed, 59 insertions(+)
+ lib/idr.c                           |  5 ++++-
+ tools/testing/radix-tree/idr-test.c | 24 ++++++++++++++++++++++++
+ 2 files changed, 28 insertions(+), 1 deletion(-)
 
 diff --git a/lib/idr.c b/lib/idr.c
-index 69bee5369670..f298660f5c80 100644
+index 86c572e60f75..468a9b7adb14 100644
 --- a/lib/idr.c
 +++ b/lib/idr.c
-@@ -450,6 +450,8 @@ int ida_alloc_range(struct ida *ida, unsigned int min, unsigned int max,
- 			__set_bit(bit, bitmap->bitmap);
- 		}
- 		xas_store(&xas, bitmap);
-+		if (xas_error(&xas) && !xa_is_value(bitmap))
-+			__clear_bit(bit, bitmap->bitmap);
- 	}
- out:
+@@ -473,13 +473,16 @@ int ida_alloc_range(struct ida *ida, unsigned int min, unsigned int max,
+ alloc:
  	xas_unlock_irqrestore(&xas, flags);
+ 	alloc = kzalloc_obj(*bitmap, gfp);
+-	if (!alloc)
++	if (!alloc) {
++		xas_destroy(&xas);
+ 		return -ENOMEM;
++	}
+ 	xas_set(&xas, min / IDA_BITMAP_BITS);
+ 	bit = min % IDA_BITMAP_BITS;
+ 	goto retry;
+ nospc:
+ 	xas_unlock_irqrestore(&xas, flags);
++	xas_destroy(&xas);
+ 	kfree(alloc);
+ 	return -ENOSPC;
+ }
 diff --git a/tools/testing/radix-tree/idr-test.c b/tools/testing/radix-tree/idr-test.c
-index 945144e98507..f1e0be0e09ec 100644
+index f1e0be0e09ec..4b862f2080cf 100644
 --- a/tools/testing/radix-tree/idr-test.c
 +++ b/tools/testing/radix-tree/idr-test.c
-@@ -470,6 +470,58 @@ void ida_check_nomem(void)
+@@ -522,6 +522,29 @@ void ida_check_retry_stale(void)
  	IDA_BUG_ON(&ida, !ida_is_empty(&ida));
  }
  
 +/*
-+ * Run a second allocation on the same IDA while ida_alloc_range() has
-+ * dropped the lock in xas_nomem() to allocate a node.  In userspace every
-+ * GFP_NOWAIT allocation fails, so an allocation in a chunk which has no
-+ * node yet fails its first store and retries; the node cache callback runs
-+ * before xas_nomem() allocates, with the lock dropped.
++ * The node preallocated by xas_nomem() must be freed when the retry finds
++ * that another allocation took the only ID in range, whether that ID lives
++ * in a value entry or in a bitmap.
 + */
-+static struct ida *window_ida;
-+static unsigned int window_min;
-+static int window_id;
-+
-+static void ida_window_alloc(void *unused)
-+{
-+	kmem_cache_set_callback(radix_tree_node_cachep, NULL);
-+	kmem_cache_set_non_kernel(radix_tree_node_cachep, 1);
-+	window_id = ida_alloc_min(window_ida, window_min, GFP_KERNEL);
-+	kmem_cache_set_non_kernel(radix_tree_node_cachep, 0);
-+}
-+
-+static int ida_alloc_window(struct ida *ida, unsigned int min,
-+			    unsigned int max, unsigned int other)
-+{
-+	int id;
-+
-+	window_ida = ida;
-+	window_min = other;
-+	window_id = -1;
-+	kmem_cache_set_callback(radix_tree_node_cachep, ida_window_alloc);
-+	id = ida_alloc_range(ida, min, max, GFP_KERNEL);
-+	kmem_cache_set_callback(radix_tree_node_cachep, NULL);
-+	IDA_BUG_ON(ida, window_id != other);
-+
-+	return id;
-+}
-+
-+/*
-+ * A bit set in a bitmap whose store failed must not be stored by the retry
-+ * once another allocation has put a value entry in that chunk.
-+ */
-+void ida_check_retry_stale(void)
++void ida_check_retry_nospc(void)
 +{
 +	DEFINE_IDA(ida);
-+	unsigned int min = IDA_BITMAP_BITS + BITS_PER_LONG + 12;
-+	int id;
++	unsigned int ids[] = { IDA_BITMAP_BITS + 5, IDA_BITMAP_BITS + 63 };
++	int allocated, i, id;
 +
-+	id = ida_alloc_window(&ida, min, ~0, IDA_BITMAP_BITS + 5);
-+	IDA_BUG_ON(&ida, id != min);
-+	ida_free(&ida, IDA_BITMAP_BITS + 5);
-+	ida_free(&ida, id);
-+	IDA_BUG_ON(&ida, !ida_is_empty(&ida));
++	rcu_barrier();
++	allocated = nr_allocated;
++	for (i = 0; i < ARRAY_SIZE(ids); i++) {
++		id = ida_alloc_window(&ida, ids[i], ids[i], ids[i]);
++		IDA_BUG_ON(&ida, id != -ENOSPC);
++		ida_free(&ida, ids[i]);
++		IDA_BUG_ON(&ida, !ida_is_empty(&ida));
++		rcu_barrier();
++		IDA_BUG_ON(&ida, nr_allocated != allocated);
++	}
 +}
 +
  /*
   * Check handling of conversions between exceptional entries and full bitmaps.
   */
-@@ -541,6 +593,7 @@ void user_ida_checks(void)
- 	radix_tree_cpu_dead(1);
+@@ -594,6 +617,7 @@ void user_ida_checks(void)
  
  	ida_check_nomem();
-+	ida_check_retry_stale();
+ 	ida_check_retry_stale();
++	ida_check_retry_nospc();
  	ida_check_conv_user();
  	ida_check_random();
  	ida_alloc_free_test();
-diff --git a/tools/testing/radix-tree/test.h b/tools/testing/radix-tree/test.h
-index 7ef7067e942c..8ca50a58e138 100644
---- a/tools/testing/radix-tree/test.h
-+++ b/tools/testing/radix-tree/test.h
-@@ -48,6 +48,10 @@ void tree_verify_min_height(struct radix_tree_root *root, int maxindex);
- void verify_tag_consistency(struct radix_tree_root *root, unsigned int tag);
- 
- extern int nr_allocated;
-+extern struct kmem_cache *radix_tree_node_cachep;
-+void kmem_cache_set_callback(struct kmem_cache *cachep,
-+			     void (*callback)(void *));
-+void kmem_cache_set_non_kernel(struct kmem_cache *cachep, unsigned int val);
- 
- /* Normally private parts of lib/radix-tree.c */
- struct radix_tree_node *entry_to_node(void *ptr);
 -- 
 2.53.0
 
