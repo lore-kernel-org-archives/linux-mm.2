@@ -4,90 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CE09CA9ED0
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 05:12:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80106CC6B03
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 05:13:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A58E6B0088; Tue, 13 Oct 2026 01:12:16 -0400 (EDT)
+	id 6328D6B008C; Tue, 13 Oct 2026 01:13:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 656AF6B008A; Tue, 13 Oct 2026 01:12:16 -0400 (EDT)
+	id 60A706B0092; Tue, 13 Oct 2026 01:13:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56BA36B008C; Tue, 13 Oct 2026 01:12:16 -0400 (EDT)
+	id 521216B0095; Tue, 13 Oct 2026 01:13:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E93C6B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 01:12:16 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2AA1040B01
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:12:14 +0000 (UTC)
-X-FDA: 85316431788.17.A9F22E7
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2FA3420006
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:12:12 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Gv3ipstp;
-	spf=pass (imf13.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 32AB46B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 01:13:20 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3DFCCC0AB7
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:13:18 +0000 (UTC)
+X-FDA: 85316434476.20.CA6C3EC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 935D320005
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:13:16 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VzCrDEQb;
+	spf=pass (imf03.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791868332;
+	s=arc-20220608; t=1791868396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ixBrQ3Tz39hYV/OhNveeVgJyx6NRkGncCm+qWmedF4=;
-	b=MklOBlnlM4mpGUJWur47MtWE7N2gFgZtTRq3xSY48ut4FuBUbzRWtx2bYqkTknd4VekRMm
-	faIVnyeFt4vAC4rDHUgr3vpN56i7uWKkxEyfoAflu9as5B6sZHg4gG8FOvPs1FiV5L04RI
-	IWV4Gl0sHYT0Z77Q2vSx1hBWrFDW924=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Gv3ipstp;
-	spf=pass (imf13.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=GJNXTxAKDlJNxNUfVhfSQZRthKiPsKwpUGRTdAWw5nk=;
+	b=3PjQ4TY7ABBoWcWrEKPo1wQpb2cEjwTM7Ra0+5WGV+g8WME8xSmvAr57VbiK3sSJxhEkS6
+	sTNdG+lriVo89bKO0ofVNwQ4wOx8g2ot+XY72QPd2i8onCduPOOlzpOhtDhX6Zw0ePzCn1
+	xgqnxJeacVIIs0Q4wimsEh/rS0xUvFo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791868332;
-	b=LtT42Cl6YOg9YF5W7aD37w0nesruSXz+pkjL9lwtjNFHILCUcfTm701PedVGFuipoG3oPS
-	BJzFIsNP1NFlIva+Nr7zH8uHfWm3N/RPgDFwfUcwcgQev7lcG04lIO9WI+ChPG1dIEpY2g
-	NX1Q1kcLYcT1kMTEqRfWkMIGYIAsXVM=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8DB22169C;
-	Mon, 12 Oct 2026 22:12:07 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 245323F7B4;
-	Mon, 12 Oct 2026 22:12:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791868330; bh=RLVpCA583elG6hUYQMlkousRsoX0X+NZ6XOSNvE/O4E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Gv3ipstpbwQr3svLAPmYMebRUno9EQOqqkgpXH+OTYWKMfKbmMVwmlr9kzx2zu7V3
-	 p6KWnKsUFUHbwwHopOAEoC3XlIVIjdcV0tEzOb7a/J/0+pNHjDK0dKk9jCnYyeNXQd
-	 7wlK0u7oe0/2IaKwC7MHscVSAw9cnzCNPB8tMPJc=
-Date: Tue, 13 Oct 2026 10:42:07 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	kasan-dev@googlegroups.com
-Subject: Re: [PATCH V3 1/4] arm64/mm: Use pmdp_get() for PMD accesses
-Message-ID: <w6n3twi7dt35qzq7bwx5j7jx7plccrhbgyl5olcc4en7f4zd77@wzue6ripzv3c>
-References: <20260924062214.1635078-1-anshuman.khandual@arm.com>
- <20260924062214.1635078-2-anshuman.khandual@arm.com>
- <asPCv5Icdm7Z9mWF@arm.com>
- <lqjq64vw6mlm27kp6ffms6auerj67avecc4ongedouumsrspjh@2f2eblm7wi4u>
- <asy-q5SBnrBQSadP@arm.com>
+	t=1791868396;
+	b=nIHDkUzueS/Ryrg6TxKHRpRHQFZjTxTdZaxBEB9b9IvYy0NOIVhvu5Y4a0ovAJfxsHQ5B1
+	7UtRkzwILsY6WH3IiIgiV067yi+PBBT7O3oqJqlrKHE7mfhQPvXGvm5AYE5AA6gyioZg5f
+	XGm5Ud7acSfUysAUeorQtYQ/EVVRHAk=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VzCrDEQb;
+	spf=pass (imf03.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CAE90600D1;
+	Tue, 13 Oct 2026 05:13:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E989C1F000FF;
+	Tue, 13 Oct 2026 05:13:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791868395;
+	bh=GJNXTxAKDlJNxNUfVhfSQZRthKiPsKwpUGRTdAWw5nk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=VzCrDEQbQkLh3MKfOcrVWwIP8JEXomYf5WXOVtkxPNomqYwc62kenfaWt4EtjgLr1
+	 56jB5oIiN8pzQZeIE3LFciZow2fKaUlTkUhbRzOM+dcbTemWxjNlaDACdigHCayE87
+	 aOYeG7A0j8blwTWF/PhrjdF/yqcwVCBZgEXlTLggA50DrIt7DidbhXOeZDYqd2wlwf
+	 5VM61psLu8x0NOTS6zsnpsRtNRWIIa6D/I6cZXFg4QLjCBQLZUYg8H0fnCR6pdxExb
+	 Rlsmno4/IPgxywaV4sYkjL4r0KtaTtxGQIturB/lLm5ZpL/LuERHtKpU8HslKH1Kgj
+	 Tp4Z6gqmgQAbg==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Radu Rendec <radu@rendec.net>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-media@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v8 02/14] mm: Zero memory during shared memory
+ transitions
+In-Reply-To: <arZkEugXwCtKHH64@thinkstation>
+References: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
+ <20260924100529.1398790-3-aneesh.kumar@kernel.org>
+ <arZkEugXwCtKHH64@thinkstation>
+Date: Tue, 13 Oct 2026 10:42:58 +0530
+Message-ID: <yq5azewiqj39.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <asy-q5SBnrBQSadP@arm.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2FA3420006
+Content-Type: text/plain
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 935D320005
 X-Rspam-User: 
-X-Stat-Signature: 6k8uz3p8gp347p8ixzcygif97auu3y88
-X-HE-Tag: 1791868332-588289
-X-HE-Meta: U2FsdGVkX1+KFhSVG7kYBPOiFwsZUTJcZLtSsFv/F7Mt5cUFrKFO4dOquidA8f5oCmezVl4T0vozDdEtIY26rb6R01zfZKU5Uf9MUOX9OKPX9Xyih4HP18XS1aWaeqCkCxz5ZIH0EjItz6kuVI3Sel37x/YOd4w0gibTU5pEdBaDZJHGMnYkTokCGSLfNKAzQUYzf30NzqG+n63dvCmtkLI+ok+ZL8bWjKAO8oXgZ0f0husodyTW0hqeGlFgKnAwiOdklOb/mF6bN/C51TMFSt3yguEAl0UbV/OmTChAU2ccdzg9n5pu5gnCMXrzj+DEuupujvWwwhGl/Uib6hmjbbvXJ7E/yil++1nI4ILLgzdKadT7/JMiQ9QNql9l7C6hwEM4pUZXzVAu50KXEGdH7mP5RE3BXb9JceS+WB5LUptUt2fcRrcDLDDBcM4BjBmdfyRbUevhLBsk1BumHaq1CtC0XoVwZLLFXD41PJT6eudFCEIf4unU6JZ42LbtgeIqWhCq+A2mTLlTz8bqiQaEbwWJUDyWO6HgkjaMxXahKP+zhcZO9ADA+gJkedLYzlPektGvDkXEQImQHSySdfm8TjJ35D+5ER5HWUDmolXmV5GFtLCYv7bgymKPPNzGOwBV2/wop1YM0s0BfLWMTtcWxnKTtFaYxaU+nCj/1iachqFF3y7WA6mLn/Qj6TNnYBDmTukHkcgtdWEGN03X13Q5r1NyBcntg9eW3I0J2BZEel2SCTQyY/uf0d/XZxp2u8ej3YS1Uw4IYcWlepiXcHQtTqd/XFZ8bc4OGxzd/C2JoYNaUn0DEhbbj+TPtCa77S+UaN8iBMebXBVQKfxsQcbmcrm3gByPGFknrCu0PJUn4lm4ogFzTrq3kqO3ZSpoFE4nvPZwwHtqzq5hsqDfoQjLOiD3Hhd/w7tiIhIsHlngUbHu41eE8s9WkhRCDRc+AARzclGs7A+OMSJBTbiNfgs
- gnbwhC1s
- i1t8yb8TlBDN6votpaAWAF2ZhYy3ESxuwJI0Pg4jtB6uQiv1SQVCgoBFc0bJ+znn+OON0qdFgIQY0egIq05Q/gYZl1KnJd7a7hN7wRLKnojaWqR+bM9N7vYMd2cYcAtQw79rECdk440CjDwzLGRBsPMvvc40Zq05sFG7AjbqAK1Ye5hD3XW8D/sCC/3JXh5efvXFJLj5Cg0zzCW9QxL4aj0CwyjieITaMo6MnmVBAYIq/zXv1ptnY2aE6NAqcA70QEUkr8oj2xV7tWYCj40ZfwPYHlCQE3H/iyCpbhAqecBRKtECNrJzDUjXE7oPJztR6HpJ0ZBSeoMJDAms1Id2M9g9flcT3zlbsNo8p48pelsMFzXA9qT8rbFLtSCOg/mGlwKMF3DJC8ecRdM/NMm41WL5uBQ==
+X-Stat-Signature: jgzyhiod5gzzdd9ax8iy719mu6tgduu4
+X-HE-Tag: 1791868396-945288
+X-HE-Meta: U2FsdGVkX1+2BMfcGT2qrL3nBfZmWRQgS4ll6Vl9S78vkC36f0QUqr+IcZmsjeuo6NXtH6pFWBCTdEunlFKkkuYcU32ZzZ4qzanAfZln8VEyljcQj3ZSwjuIfCklEdYgB3Sa7GX+AhujUkHRwMstJFBXGjHvHEc/tM44tbxNQg63wu9HABh4LyTC4U2Tb0QV+TPDtpxUkeCCgCkRrcGvGk38JXzqJr+/XdwrO1blXC3wQi6Urvo+qciO0wu4lMeDtG8EU6NjqNT/cEZC8GoqwWj3W7xBzVPohp+OO34UUvQZvtB09C5eyWBeifWOgbMa6JUMAQcjFqrz+oAOC00oeXPthjHAQsvLdxUaro1QeB74NuWVVyPfZoKsErLUs6cP1ZmFml2rEY4CIZJfOHi833dRYTcV1BG8abG9cmtQ4jGClmC9KcdHMG+4v7qTDc59jaOqx4n70JpkVfvWlr9EzTBOYamhCUlgYAqJ+t8AruzrjTTZMFO02Nx1QnqxfUXltg1uNHhwPcs2fPqAUv+G9N+2V7AH413zaOUmUhraMUyOEfTQBJ9ZBJ5Ckva/ej8kk9xVbLoPQa+EZt9kQIz3Kyg3yVkVJFVL02fu7pUHqdJX+/4pJcIBYC9gDXAT/6Osel6IkGi3qlkIuAx/5egFrRv4imIMJycHUAGeHAI5WBtbN2kNtQv6Dq8UTPwyQoh7Pui6hsTBHQgcwHfGmx5P2ssr8joyHhM3SBerS4E8KPszG8JKzg1lmrSHnoiHgNWEL4VpWJhnzdEzxPBesNJYhw3azOhXALop9ksvR+tsD46x9HUOz3GRu5eEJHLfCKMSLvPqyvP0o6VUYi5cIjrz/lYbI4uzPtXe+aI8iOqXbTTt7HFvLLN2QsU5uud5MPIObejq8pIzrdr9Fzezy6MEwazZ2Uua2eLmD0eQoTOLnSPIemAV2+mSCNeP5jiNukBeYivbLOvaUV4CuXUaqvv
+ yFVS2m9q
+ Afk7XODkFZyB6ehXn0QwjlQEwKOJS8lF9C53OG07ELDbUrBJ2wdPDTRgoDbZsBuluS8CeUjpeM5uaxkRhqLaSTEF87c7Rc0jGBTgumOIGcbix5ebzcEEm49Ac8Oh3qsf0pvFrZxBnbflHhmA3WenaNjclF1MknvA+MtA1dEwOhyyrwifUkb9VXP3H+Ww3eZgFpas2n8FCZUkomD0KYxnGFcrRiDeStUa9I69Tek+eO6GgafgEVLR1XkDoIgDv/Wk5spcQmq96MuRLbrXfbktWPbmcYUbuKKblgEgs/FZYc84l6Jf0avD4XxIt4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,105 +146,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 12:04:11PM +0100, Catalin Marinas wrote:
-> On Wed, Oct 07, 2026 at 08:11:52AM +0530, Anshuman Khandual wrote:
-> > On Mon, Oct 05, 2026 at 04:31:28PM +0100, Catalin Marinas wrote:
-> > > On Thu, Sep 24, 2026 at 11:52:11AM +0530, Anshuman Khandual wrote:
-> > > > diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> > > > index 763c5a411d64..9ad2d03e86ad 100644
-> > > > --- a/arch/arm64/include/asm/pgtable.h
-> > > > +++ b/arch/arm64/include/asm/pgtable.h
-> > > > @@ -84,6 +84,12 @@ static inline void arch_leave_lazy_mmu_mode(void)
-> > > >  	arch_flush_lazy_mmu_mode();
-> > > >  }
-> > > >  
-> > > > +#define pmdp_get pmdp_get
-> > > > +static inline pmd_t pmdp_get(pmd_t *pmdp)
-> > > > +{
-> > > > +	return READ_ONCE(*pmdp);
-> > > > +}
-> > > 
-> > > This is the same as the generic version. Does it need redefining?
-> > 
-> > Without this pmdp_get() override, replacing READ_ONCE() in pmdp_test_and_clear_young()
-> > with pmdp_get() causes a build failure as pmpd_get() which is defined in the generic
-> > pgtable header is not visible from inside platform specific pgtable header, even with
-> > a forward declaration.
-> > 
-> > Earlier had moved pmdp_test_and_clear_young() inside arch/arm64/mm/mmu.c to avoid the
-> > above described dependency problem. But then realised that pmdp_get() gets eventually
-> > overridden on arm64 platform for D128, why not just redefine here it now as standard
-> > READ_ONCE() to avoid the current build problem and the code movement.
-> > 
-> > Please find some context here from earlier discussions during V2.
-> > 
-> > https://lore.kernel.org/all/212067fe-1b16-4b87-87a7-4ce50847eb24@arm.com/
-> 
-> Thanks for link summary of the past discussion. I agree, for D128 we'll
-> have to define our p*d_get() but I haven't decided D128 is worth merging
-> yet (it depends on future hardware availability, I need to get more
-> visibility into this).
-> 
-> For the time being, I'd keep the p*d_get() accessors generic and move
-> pmdp_test_and_clear_young() to mmu.c.
+Kiryl Shutsemau <kas@kernel.org> writes:
 
-OK.
+> On Thu, Sep 24, 2026 at 03:35:17PM +0530, Aneesh Kumar K.V (Arm) wrote:
+>> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+>> index f904a636d449..1f1f39082391 100644
+>> --- a/arch/x86/coco/tdx/tdx.c
+>> +++ b/arch/x86/coco/tdx/tdx.c
+>> @@ -978,6 +978,9 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+>>  static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
+>>  					 bool enc)
+>>  {
+>> +	if (!enc)
+>> +		memset((void *)vaddr, 0, (size_t)numpages << PAGE_SHIFT);
+>> +
+>>  	/*
+>>  	 * Only handle shared->private conversion here.
+>>  	 * See the comment in tdx_early_init().
+>
+> This doesn't make sense to me.
+>
+> On TDX the memset zeroes a page that is about to be dropped.
+> MapGPA(shared) makes the VMM back the GPA with different memory, and
+> what the guest reads afterwards through the shared mapping is whatever
+> the host has there.
+>
 
-Although there are similar cases involving [p4d|pud]_offset[_phys]() helpers
-which would require code movement inside arch/arm64/mm/mmu.c file. Something
-like the following. Will do all the necessary changes.
+Does TDX require the guest contents to be preserved when pages are
+converted to shared?
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index b9427e9d54dab..e03bb7017a57e 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -2465,4 +2465,17 @@ pud_t *pud_offset(p4d_t *p4dp, unsigned long addr)
- }
- #endif /* CONFIG_PGTABLE_LEVELS > 3 */
+The memset() is done here because CoCo shared-memory allocations now
+ignore __GFP_ZERO and instead always zero the memory explicitly. For
+CoCo architectures such as CCA, this must be done after the memory is
+converted to shared because shared memory uses a different encryption
+context.
 
-+#if CONFIG_PGTABLE_LEVELS > 4
-+phys_addr_t p4d_offset_phys(pgd_t *pgdp, unsigned long addr)
-+{
-+       VM_WARN_ON_ONCE(!pgtable_l5_enabled());
-+
-+       return pgd_page_paddr(pgdp_get(pgdp)) + p4d_index(addr) * sizeof(p4d_t);
-+}
-+
-+p4d_t *p4d_offset(pgd_t *pgdp, unsigned long addr)
-+{
-+       return p4d_offset_lockless(pgdp, pgdp_get(pgdp), addr);
-+}
-+#endif /* CONFIG_PGTABLE_LEVELS > 4 */
- #endif
+The full patch avoids zeroing the memory twice. If __GFP_ZERO is used
+for a CoCo shared-page allocation, the page is first zeroed during
+allocation, then converted to shared, and must be zeroed again. I only
+changed Arm CCA  in this series because I was unsure whether the other
+architectures required similar changes. Therefore, every CoCo
+architecture other than CCA currently performs the memset() before
+conversion, while CCA performs it afterward.
 
-> 
-> > > >  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> > > >  #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
-> > > >  
-> > > > @@ -811,7 +817,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
-> > > >  }
-> > > >  
-> > > >  /* Find an entry in the third-level page table. */
-> > > > -#define pte_offset_phys(dir,addr)	(pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(pte_t))
-> > > > +#define pte_offset_phys(dir, addr)	(pmd_page_paddr(pmdp_get(dir)) + \
-> > > > +					 pte_index(addr) * sizeof(pte_t))
-> > > 
-> > > Why not make this change in the generic version?
-> > 
-> > Could you please elaborate on this ? pte_offset_phys() is arm64 specific helper which
-> > is also local to this header file. AFAICT there is no generic version for this helper.
-> 
-> You are right, I got confused.
-> 
-> Anyway, I'd push this series post -rc1. It depends on the mm tree and
-> it's getting pretty close to the merging window.
+If the host expects to see the guest contents from before the conversion
+to shared, we will have to pass the allocation flags down to these
+helpers and perform the memset() only when __GFP_ZERO was requested,
+along the lines of:
 
-Sure, no problem.
+https://lore.kernel.org/all/yq5aa4p82sqt.fsf@kernel.org
 
-Will rebase this series post v7.4-rc1 and repost as V4 with all necessary changes
-discussed earlier.
+To keep the changes minimal, the current approach always performs the
+memset() rather than passing down a flag.
 
-> 
-> -- 
-> Catalin
+-aneesh
 
