@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E19A6CC6B19
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:16:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA1BFCC6B16
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:16:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD2F56B00C3; Tue, 13 Oct 2026 11:16:07 -0400 (EDT)
+	id E93446B00AC; Tue, 13 Oct 2026 11:16:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B845E6B00C4; Tue, 13 Oct 2026 11:16:07 -0400 (EDT)
+	id E44026B00C4; Tue, 13 Oct 2026 11:16:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A25496B00C5; Tue, 13 Oct 2026 11:16:07 -0400 (EDT)
+	id D0C426B00C5; Tue, 13 Oct 2026 11:16:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F19A6B00C3
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:16:07 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F2951A09F0
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:16:06 +0000 (UTC)
-X-FDA: 85317953532.05.D72605A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 00EBB14000C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:16:04 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oXRyBlwb;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D0226B00AC
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:16:37 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 24A9F1A0D79
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:16:37 +0000 (UTC)
+X-FDA: 85317954834.30.88E36AE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 18DF6C000E
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:16:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PV5aBdva;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791904565;
+	s=arc-20220608; t=1791904595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GFhfE0EpCejkYMfipk7Q12g1VtbQ/nJQw01XCYAedo4=;
-	b=HFe+/dNQ55vIQRDZMv8iHm/2Rw0GO32/vmEzXClrTdV76Ts9gYTAwBvT1VtFJxkbmdeX7p
-	WwICUNn2zaRpW3TqOewQfqljuha+Cjzs3pf1fvNxUVfZ1UYeceUEb1PPvupBmYXT0HFFWp
-	MK7d2JP5ngaHCoNXjeahB7/aGrFjdYI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791904565;
-	b=T1AwBKgd3bEz5D6f5A182mp0FOOqug+I0VJ8PMKcXUch3+fRsigg1ViV+rSxQNftaoYd0j
-	ZR/22CFTW/GasTfqnCRe6H/dyRevtmqhyruynKyUWkamA3955h6j4HpwdzUD8Z2btg+UwA
-	c6WGJ+N86gB9xwmnnhyiIioFknlsW7s=
+	bh=i4y1sz7ZVghomqASsiy9XjZk1iqHWnAgN1nUm45xiCg=;
+	b=Axp9NguLYch7cXkA7FUrMLzmOXGn5/GGhZQLFqpJ3RgNOUZVhNbUJriBAmFrhxtez5Fr76
+	1B0zFpLMxgg9n5zDMwsZFcAiZN/xSq9Z1a0XgU309Zs433QNKLYYg+ImfdwTpq0u4Mh3Xa
+	HRY6J2hBLRoRPjsdpBWpBZ3BN+Ik7K4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oXRyBlwb;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PV5aBdva;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791904595;
+	b=YbhvKDYFVXzmMaUXtRIrQdENDG6GOWiOJBU4IdqW17Ky3eTTZCZXy0OzEtWEUBwxL1oa41
+	T+scaV9hXz5znlbISurg47R1SPqUTsugntslZ5knWFc7CVjoKU14ADxft9BwFbUUqTPuoU
+	ydQjNJGac6GlxM/wARv7TfDL4KBW5HQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 820DB60A5A;
+	by sea.source.kernel.org (Postfix) with ESMTP id 259B643A5A;
+	Tue, 13 Oct 2026 15:16:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CEB1F000FF;
 	Tue, 13 Oct 2026 15:16:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B441F00893;
-	Tue, 13 Oct 2026 15:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791904564;
-	bh=GFhfE0EpCejkYMfipk7Q12g1VtbQ/nJQw01XCYAedo4=;
+	s=k20260515; t=1791904594;
+	bh=i4y1sz7ZVghomqASsiy9XjZk1iqHWnAgN1nUm45xiCg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=oXRyBlwbANCVnegp8iY5cvbAabzXfj7uUWG6HhCOs/m2gAAg9SHQKtYTIXLYZmhGU
-	 PQ5SLGPgKkNbAUAFxAFzfOy9nOM5On+4vw8QFPdcKNuOiJTEmrNOOQIN7oVMJY9AJh
-	 Z0cLlUEWHBql8lSrt6YwoEYoeBlm3HP99n1KUUtvGcihgzPboSk/CcQQCG7FpQcV9t
-	 zV6piyKQPCpcBp68tfpewArXOCIJzZRK7mFR/LrtCvCcnbllR45tE1dSVaVdR8p1q5
-	 8lZLI5QktBckfspAyjjvz+J0dOMYGDYMsRjt8Swy4F3cjWDlt0zFJKE1VO1eMqL+Za
-	 zTq8OB5/LWNOw==
+	b=PV5aBdvadH0SfHvKhSrJFwpI31/6TLnUPl2tF4inkGRjH2ijS95fbUwXttmLzcpNF
+	 5YVTNWNyE258rCi9csqPX0Vj3cl9jaUDTYbMJFqgtmVLV19Z7aozriIyOun6cOX4CA
+	 Uqu8rE7sCZr4z3nz4Kzn2wrrCdQCFfiLVbmodNsFAGB1+jJbDNaURDMI061vbNIp7A
+	 9SZegYRQAPKdv3I+JM3iXh765idzGneUCjN998P+vvPrKb4ofuLC3QTcRU0UWm0cTM
+	 2Aj3jBmQzN+qkgGPCcVlhU/BclKU4af39C0cIrIexLOcaqP3dxowDtNAZxqEI9H8iS
+	 yN5UVLyQAcdhA==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 13 Oct 2026 16:04:59 +0100
-Subject: [PATCH v6 19/39] fbdev: defio: assert FBINFO_VIRTFB, drop VM_IO,
- add VM_MIXEDMAP
+Date: Tue, 13 Oct 2026 16:05:00 +0100
+Subject: [PATCH v6 20/39] HSI: cmt_speech: convert mmap hook to
+ mmap_prepare, refactor
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-19-1aa3c9b139f9@kernel.org>
+Message-Id: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-20-1aa3c9b139f9@kernel.org>
 References: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
 In-Reply-To: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -156,28 +156,28 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>, 
  Bert Karwatzki <spasswolf@web.de>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2469; i=ljs@kernel.org;
- h=from:subject:message-id; bh=E35+ZMn94RagHNIjsMN4/PIbgNGNlEUqBmCKgWbVnaI=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLOeZy6l/j3/7mDaSI3zSJqPf9uujU3O7z5TcLd1Aff7
- u6sT4u06ChlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBEpGYx/I/pkjx+UcHxg5LH
- agEVsX8vptTf5tD7ftf69+arRr/Ot39mZOhUOrvUR+Y8W+6cF+d4Dc9c75k2ja8uK+jOYdt/DtZ
- qX3kA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2685; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=MY9UuAl0nfMrM4GSY6SwItqCUTxM/pJjBHtqUqIj4oQ=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLOeZy6kXSgTuanGnvKJJENNyOu/UwUsd+bw7y5x6TbY
+ u5UgX2fO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCR+zUM/zQvH7vAej3kqe3+
+ bfVvFVQDI1RbnR7ofOBZnLM9W+V/pB8jw0Nhvv3x24xm9HZqz/rgs192a1lrRdjTt8lfVzDsibP
+ dwwAA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Queue-Id: 00EBB14000C
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 18DF6C000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 5jxucmijpeqp83mrfn6z41bcu7ghurq5
-X-HE-Tag: 1791904564-125349
-X-HE-Meta: U2FsdGVkX19Fxr0AYZyYXTEBH/MGQS5hIC0RTYbfK1OFkKPFBHHQjWDK7nc5362gKtqWWN+ioT8oTKZhf+vcTZXRw8nDdcMDwP903GjASJLxcqtE2sZUpkgi0CreI0QrNXXp4wuHZz3Jy7CTSKCjw6sVxpu+tawUq1gLDAVBBKppONJdDIpJ2ycCReht0Rs7nkUw9llu3NQeTen47E2ilsaKPc3Vg0ykBRXRVCqxO951Fm03W17fMx6CslGAxKji2c4gY53qFwdCkn9rv1+emJW0m3OiHnNy3ldniYfa2deR17TpFYW4g+wPUMlJZa42VARE9m/kRCbQhp1HAZRuBqJjdhvi0xNv+E0V3at7TsrDYLVEhwt/YG2Gw5VLs1GsgpcmCrzqJxJNgGKVu6asQJAYIFgwz2Li9IkE88IlubmRCFZfJRTN5R3V2h0i9rZxdAevblUE5VZCh8fgxv5OKANphRQg5nXKUesF4yQkUL4iSJGY/dSERJjyRDAi6QKnT+yCnkKovZ53cJKh2Co+x4Ym8GaYb6poYf1YaoTPgsCFR3WVzaI0MKEGwG502yuTpfJPIb+DEd7SSIn15kvdDN7wntRyrsP05ypjYvuvoXi5UJpTfp/JNW0EU/TOP1aFZJhxmJQEYh4CHGlXKVzZmpxC+F/AVj0+Ea79BKwmJTR1R6XcbqOTV3xQZNQsKSevH0I/CZ5RV+PfLwPDK45Uv9wgaGuNmApU6elVwvIC8E7YoeIFLEWzebmIhMLAWWXef8tNMQ+xEniyK0zCIoVDMFxZTus6mV8Tc1sYwSvLVUb+J9d8Yr3gdIhCEmx3oKh5yZHGp9fTiWT3VO0+T4hAE4H9K0ncmL1AXjeeh0cCWFE9b2UfHCg5lRs1rRsqB/OLN4RNvhD/sfaCDeyqMoRGzhZWXXW0LCbfQk48tH2fZE5I/6ULou+vf7Ky2BNqutQ7Fjsvxu7ATOScIquERbc
- 8UMiGy0S
- YXVVMSB8JvWqjn4qgsl8qyM3EsXJwzbwGRgvSg2xVpXjJCXgGicpS03dycVhT1GoBmWrZ8Al5Y7xQIY1GldDM7qof5AvRpEUBeWRTyxof2yt8Yf6v5T2zwvFd42ki+Fre7/BheCfXpyFtDHaMRNkMQk6GvBL9zgvoy0zogZhhjfnoSG+Z/2QzMJa1qKJYbeIcQ6UAD+Bdm1qlc1Yqo3YEHMEhsesk2LVE7LvPJz+NM9NT9UlVpCPCfZG6BBHtf7hQFVrOWP4MCMq4VOdI/n72wvskP37xnwPR2fYFSb6vOCBqxdP+IX+ARII4nlvdMhuU/UC0pGqfXPgOOtmJZIbHlwrB4cxURCg0EDPJkB5JHE66V2+OGJkBNT+qM9v9veRdrnqWK5bl3GLsYwu8y8psDZJaSgpkCaFcXnqCvDLx7TPvqgrAD5An7yCwdDcxPqj5Y8Mzm6qdRSt8e3qXxoRrXSIQQjEQnb1JAl7UGiTI3rTJopMr7xMaFtcDHaA3aKgOvTUZa8jspZGWYoO9iT17rKJMA70kF5aJd8URRHtbmGT3OlZX3jKgc0vCPaEEYtGaOU3RU/KtiZVc1UeU/digD1fhVsjzoOhmzaWhrAWvEmciLjNTUIUKvNB4WylS6GAA1ckCxvOKKElcxorYUgCXrLVlKmLT9hKBAIpas+RSKkU2aOe+99MD1FjQiM49AvigHBN0bh5/pe7CnVC3Kqzzc/Jp+K8X0/GIHlNhSWCZNemsoHHWViNOKb5EPkLaG1xKLIIQ+YuYDrxRfEotn9Tqmyng5UnTsYeJVaZqc4ZnrbKhGoEehVIO1CJWjpZauRBWsgMRIu7/+681M7PFwFG2fBPub4L1JySemfUs8noVld5e+iB++AkcpybHtzMydYE7N3MuCArQ5tu4RGG/XJPf8pzmPN1iSC/z6xnW8joI4qWb+AYpwEf9potA0IcL9FBbLEOgF6HSFBkHPK9ncIx+3S7KBbkS
- K5kTy0oj
- gardH+Vn6JSEup1U5AzeIzAGT4f+H4JhKhVwgzzdMorft/8GmnwxotK2VYPgRxTDqDTOMm9CCsBHGPJVO8b7Npi65enWHlVuk83LVwbssjKHDKljtwppZG+4dNbfnvzT8r6E7KkIAVw1hZuFXXH/OCjPwi9vmHl7GkWdn9EVQS7RI+M80s/rpNdr90GXcWnfo6I9YTNmYKFQJ0qyf1IgxsYsBYb+kmGfh6JoL3dRtf4Ja0/Jxg0CdP4EBbXnr2ShVyve1fGxjN49dVk0gYw0s1GVuQGOSUVLJOMJ7ansec+49uisAU8t9sBbFZ3zJ9Z1XX/7HPB6d1uPI1OcevM7KT0ebUq7tq8fsU8mYkhVnhk5ZOqfCLTn/PfhT3zA1ILr2C3Sw2dZq/0+B7i3vDwb1Kdx5Lrr3HXL+MGs0IWxpMaPvqbDoj8TzXFJUJIQOBsp8jb2ZPNa6GI7XM2b+eLKm6CFOLw1bDqlXrMZGhtjdr+GxSsYu5uMJ3eSNB80AdOgPNp6I/F9dAPjRuTHpC2spJJ7fK4YgMc7zrTgWPZbePYpMDw+PzWhkC0boeUhxfxtzmA6wVkQPBtgI+tZbkVzUbjucdF9hXE1GCLAXAfkIOTGC7jSYXf5fNO4L3nSTM37mpWUvk86F0I2+Hdk8SBmMdJxBEBxLD3wFIQ75okzJK7KplWSoeKn6T3qbGvT9mMHtCIrI4NX69c8PLENjQi2b7zXMoDOp9KlsNVHT2ltz3AsXR9zdvZfbdptIWesl+MFsqIpEWghMXClYZETY9niwtoY0Kxl5Bv81KNJwWdvySNyLz1hBmJy7a7ta3eJ1MykCkna0s8V60onDRdBdRrhwG3ZjwOizIBvNYyls7xcL8rEDLsYr4GJ3pfEmqDQszpDBQ1DI68wJL4MaeSTVR0WxwiK6nBg7IYnIeVGV87Jm1MRXcfJa+fPfarBI15CMrrU4WJm+Kev0hyU5If9RmSr7XhqcJBJZ
- cBV8mCeS
- N1SE7ezdHyH37bc8Kj1JE/YCw0/siq4f1B0DWW0/ZM1cVLmNI6RVxBMnydcYNFr8MPwcQ/PdpXJgtTQWbupz8ncakgDrv2oKEVFB55GwXacbxl89v8mEqzwbgEtvK6SRH1iH6ngrQ+GSpdLUOr0J8nn7nVUMIhtgllbPwhTCLFd1HlRf6L6XZOwnAVV2MAv55OmZ0TTz7T4vbjke1eI0TJeZYErwbgIwhrc9ZJofo65ioXPrvYZnEFwfME2wBj/X18YhTghUKwq6F2qObBUvbZn4utuuhsagco9njy4n9H75DriCf+kNreFl6spSgpjC/gOf6hJZ03EPGXEzDB5Jhpcdls+E04i4p6Ox6nwLERI8WJg9H+b2+nX/H0qtln8t7ZyKFvK5yTXmxC04Ei594LVWe9+n3ybGrIhFua9J2ul905Ljuatnu1yusFnnE2Tyo6UORXjes8pRPZj8iObjX18Qthu6oukb0+UNO3ZWYLw30FRCdtVyiXy27JtFDBUenQKMLPSt9BJew50KlCFVH+90pZIMV8eYxPlZ16eBL2TI05xngbatf/3LVg4Le1RhFh34GJCxgAxF+DbXMPaOy2yMNQHvwLUtSRnkDo+0Omhkxb3SyE8z2dDNAXF6PR5yNx1DSV2RFFRIcB6hfNhg9R11k0GgjXN6o1mIOO0hFsCSkFelJ7kzliqlQtrBsQSuER/3uPiubA68pM+jFBRrpiR4d2Iuv8/4l0MyFisHd5KRB+kYZ+T9ecM8R7Mtp9TfoXbTdS7nCEDhv3qJqXPX/nLWXIOFEQH4zxXeCitp3Gn7siqZOa2NjisuR3lI1hYCF132U2PK/lYp8dosfxeql92YmiKGJfS25nyZgUFqinzgwJonHcDi6455wkbf+w5PEgNKkrYMG4naizA7zQgG4y+OvElv0AdU7MzAdaE7P5ybW9UiapsBpROHlVcgWj7T5wTMITaIBXzjG7nLh0EX4U+sMkQhu
- D0wcD3Yz
- y7OXp0+NKt0aFSjhqTEDqqec3ylciJAREYHPbaKNNciOW98XBd+qo4G5mSComzvsPKalUYT0JBPCqKPbh49j4x/8PrCbKqlL/YvMUrx/s2yo4f4WBvFbiOxySiSbXJDoOppTKNIFYc+pQvjTbjiypFW7N9X0UwnlStrcUTEBzsmQZ7t+HgOQsih3n7vPYjvZbnNrSH0aH9XN6T9q3ZlMtXJ0p1rexvjOEFEuoUWNbsXf8JR/PcD9wwzWEjH++mjtnrhhYap4a3tyYIQf8/Vy2PNBlzsMOVAXdNFhPF3H/yQqJeqOFjuaKeGERvxleiNM48QuKmpTFLwBENHl61sCRKG2ek+Jkn6gErwY0gstB1jQ==
+X-Stat-Signature: mh17ye98agakeucfod3eyjyac3f36w9h
+X-HE-Tag: 1791904594-833637
+X-HE-Meta: U2FsdGVkX1/45eqrY4XhY+HoF+IRZ6y2cnmMTiJZnQKcdSSgmHfPewHjyo6WlB+mDe3vai8pr816CAwnCH/YG1yKh2JxgdMw8nCwn7O7mnkkZsCsZk118FNrceMDThsm5f0IxxZfs1p8U/2PCqWdZlUmEOg6ewcZP6Xh3nB/iuJTf59Xg2pWHpCCRJfIaX2+Uo9zGrXDt7zRuA2bOWexDbZvO6xvDzSvCVk1/c0xzozKTquutPVXBfjGI1JGQPYXL0NxWZOAhUGiqSpXmP9vivG5Yo63ktIhxS2/2E9X3NTMOr7d1F4X2jOfFu6yHpRAWpCO6ymVZ0WShj0INZAYusJNq8XFmj2AxsvsSwPVJqB3lOkAMOsv+r1H1fIXVIxnfj1NInfROeJqHvJbVwbYDaQ99nIV8+l0ykALT3CfdXUZmDcW7GdjDVibhpt+KMIbPM73bkeGKolr1hVeUshyXhLhoiLZabLLPthq0/PiWi3dBDj0en0lt4cdLk1yRpcFuJSmjY8OFv1uvqwaEPURneZpUb2buHGKSIizEbu3B15pp3Q3XuxqLnPV6i6+6niuHD0AxjhZTl9EMN0nS2x9MQ8Nd2t+/jF/KSzp4LP/qFzAiu2qr88C5fuSixswW5pLASwn1iEn00pwF/z2tIDiM2WEEUkf/nsGZFMqVp9ekhXXmpzjN4H6FADZCQ2UK6fRo3nzt+O+yK2tGURBOBRln1C1DvG7O4cCcFOQ2CR75CwYUP97VBz3/cSXeR+CcQVjDxLFM4oms1M0lWqimnIXjYBFcwMsMIH+jxi777p5DA0URZ85C8hHckyirF3DDNUt8bnHHIfwV02mR+dFl4URBsS82TqjR216RPw+qtVRsWh2VZ07geEyG3q1hWc/E41lcZeIxW7M3xefIoIOuIXAiFP3Oe/cf8VgquhdHGal7GBYijvrDFSbZJrc2AyIm4W5q8eSep3NWhUCU715T7o
+ 4ifCUgsj
+ UfYMZBJJpz95tkd7G/09jAEX7rIW0eGRgGtx/IoIg6Skj5GPOgnlcuWEcwm+rfZjeTmWbGW5RD2R1oDZxQb4FyJtfH5tLYExg9FKU6cKezQv0qvVB6zfWY7tdu1XMo1KEtn5OHwq7grVrYMjNsP5uVMGvAUeUt/ZxyxOJEwgo/gn+qJyoKwIeZ/jJrh8QqQdNS0PxaCxGilGli2lXzElLy2cyB7CtEagousgHHMHZ1bXXnEhrFHGo9efR3Bx/NkniquJh6ITwezj2pJtxwpmP44imiQ4J7EnsnO9/rGNRsbpa+lkKKpGtuejt6t4/6UTXYjIOeIzy+knAkmr4bvAxPwBaKqnsYrJHFFvo7gt/AsMdtceMOk2SYsLUoJh2aDdxSxThrfAyv0eSKL7lNa2Ic3tnzbCRiYLgSnloi32UJ1TakaafTvbPuDfPKfKj2neyrQLZr07Oribsj8trUHPDpNFb6U8PASOHpBUkEg/Ahe/BqhnN6oLgNrIV2qQHM87CKkBz8K3ot+B/w9zsD6dpR1QtDlMF5A4OUDcG8RtyZJDaGBvRIWczc+Icbc8qD6mcEYplTugcAh14MiO99cFojpzAliM01ym9ClLlLGqczT+e+S/FGiw39rIundVdDL+AKGqVdmri/Vr0VS/rNuRJWpfuO+UZyDIV7tt/Z8V/+lgEcw1qN4z/HreqBNMkCGzF3bsAJVABJi4evvvtSoDtezshxPkLtjRBmcaDPemkDZ5lG8XW5ltlXTJC9TGED4faqX95MqF48VohOHDrmtD2fcjukUD90v0DpiCQaO5wT/BJjB8HAj4sWbfGKQDJ7FA36BOkuB5isTI0eOe3ohffIlpxkFalgEAfHXKi0iwu81q1ZFOP6RKAPKH87ecFzZbCFdWXLnDwGISPU2QU6XA0BAsSlIszly5U2O7GUdbn4pHX68RDfa5vc6BtCvU+N6Lj4+a2iahWysJ/emq3HIa9M+Ov9szr
+ CWLTYTgt
+ TwMTjLoqziCL69PzSnv3HhqtlCHr52il9mB/FrthmqhK3XsDDp3ipyCR2AnoYdt/tsNBBFGnzGmU5QSEDwnaP3xsZOSxYEa59Uhfc04Bwx/E/bniEnZhunoTS44oD1fK18X2OEcMSs4F6AGoY8LBd/w7ULPxnLfZRZaTOBeVdVl/DCMMog2J8SxGE7ziBMYL1Q/h6ezHE9igPL4KrucLWfJPK9PFME1Pwm0Gg6edw2SCar3DlbjFW1ExnT1uwDeCyacykxvDFna69ejQsFrtx6gxWN/4wHQ0gYHXNU/LcOW4Gw8QH3p918fwVRFOEFmQRU0C5gdTvVjaJoGdB5crb0kpL1t+PhxO9jMvjvqE8M1rEQ3RKiCUoK0rLKJdFktqXIgkol6JHMF0AFs4h/70ceOg2pE0tkOEZofhBQYSt9A65AuosHXKlLhWP1t7ohJ6vBD7uh48JPVidjfa5bLJB/JrrwaTM+oYYvYqBqv/HJdoZwwXircY4Kbz82CY0LhK+mzKVEZRQPLxBbSS18GTIyCL3gZrVIuzSMaOJ4snH1hFq+wn3PQegbx3MvKj7iXCAWoTfNRENwCDwRpjWol6FY8IoPiRqRrneEadlauaLhmLVNeI7/8QPvxP7nkzFdTJAdD1Kw7MkHr5gmp780FNlVScyJqzD/gFNXkj6zRZC+erHtu03EMwI3Av/ihcjgAG8rAagQbCP8lHRIamPdCnfnWa7TBVHcQhdAHEa/0WG7vr78uSHxOMihwMsVmfKX7z3H+pvUB2SKBK1F/NfpnhAYMb36alPCk5uSQ2xTqx2HdbIMU1nDN7v2A/ArEAkRyxRbWjATPsoE6w6f5VtIbumiiIQ0V18QiwVuFMtV4A407oqMslMH5uICpdcogXEI3atbPrUnYLKF8A52vHiHBcNboD38y3cl8Uw/r/aTLZbDT6AAIBFXOF9tG11vKGE+Uqq/9dL/opVx9Q3jZhTQAFIKBF1JQ1q
+ YshF0OBT
+ Haj5gJj5s8qhuxtVWhaybqdO0xPkzclTX+TeGW/Y4cLtf7LDk2oyQNdFirpV38LDXInlLY66mODdn99mzp3yUiLn5WPV9h9ZEH6c5ZbVjl7hJmq1ltLwemKGjY4FuN3H/A/wBehf5WPebDCTmQ3p/NmXmSofRCiICERSBEIyH4Xh0SemyQzuOdyJkcle35PWP7aUJF15nP4CifygRXOR+TW2h2ZTG+TMpRisEtEcQtxz2wKY+usuIs5uFlbGWQdHZXZ7lrcTUn5M3e3GFs5SOFJCLsKhZzT4A1v8hjPHBy2v6e3rML43GDfegp2lulUAqbxuZrlaebn814hdhQTCN3ZHIPcWao822Y7uYh1X8NcHRwI9wZ/UHW/dmeAkzp0kh0iRq0OXx6oUfcvBMEcUbiocTeqJxjwgRoH+896UBJruK9Ifduc6iGJa+2k8Cqo9jATfzmUixlfTSliL2gA3Rs0lbDbnJ0V3RJ/emXcVvDh0ec7tUw/LcHy6uiCk/Tg/E/xBidg6YcC4dwDTnaoFemQ9MiQ0nriwumQ2YAygpJaHZMM9pOJVuuEXs5NySyWMFXjsw9sPYj89LkyjmZiEoQK44rWk76d8oE/lLNoj15EKsEJcn1Vqt1SqUDpFe7xD0mKzyjpQrLDAzyWaZsGnGNBqVkjmRi1a3qe8bl2Szn7inQF/5+H5jMz0XSsQW3wrKgtav0QuYC8n1r3TpZBFQlVPfl2INdJs8s9dum9xGn5ElwPa1SsX3I6P6EcwLa7e7N3cWBjvQH5Vw1xAS/PDlos2e/MZZzLBq0efFls4kCYIT1fhJUSRfSKVSgwpOBtcV3kGLlKG9l0E0sp/JFPKPVHhxV0t7W1Guyo5ipTYVCi5o98HJcSkL9EcCThnzZ17j01qYn8CBh5Hcs3oZ+Kb2MOI2XHkGa09DwVgqJ+I6z9h5qXGxHKFPyG+UNKdVUr6sA8OaGL7+eyQQT1faPNxt421WN1JY
+ bw/k2lne
+ sJsYtJ4wEukz9r3VsMpHcIs+lYtz9+25vrpxTHbNuPDiTOCv6tggLT6PYL9zl42cFNXAHb/FgYhm6ld2DWnH+mTPAh5BPZNEY7kOIom1NCRZh9hCDjEp+8aRWlR+dsxioj1kCk3bmhF9NUQFh7hdiMM3+OnJYKT3dh6ZvQbXYfzQxwFFtqKJg/RVu7rtAm72hEkqFeNVWyeMfyNcf5qAVXJHMFL7aeOr+N/MNOpP1AV4RWi2cpRw+0gYkrkAeWSa0iAmuEVYqW0NFagRjhMVqFcA4pfnj7ZWOMo/ynhMlW2ca3mf68MleFYRDE8ysP2vOnnsfIq9ooYGFjb2m0Ul2egQXwDBKVdHNXHULjuGn1qudKC/2jHY2vD8s677XnHINrhVr2BQ57HFHmiZjZtkzNcTITtXcS8bH5N1JdT2gEBMRWcEPBBM+sQrONI8yq2YfxutidwEEQzMfaqui6cl3GGaaqDqJWg3w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -185,65 +185,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently all drivers which use defio allocate system memory. All of them
-also set FBINFO_VIRTFB, other than ssd1307fb, however this driver allocates
-system RAM, so simply failed to set this flag when it ought to.
+Use the mmap_prepare in favour of the deprecated mmap hook as part of the
+work to convert one to another.
 
-This patch sets FBINFO_VIRTFB on ssd1307fb probe, then drops setting VM_IO
-in fb_deferred_io_mmap() and instead requires FBINFO_VIRTFB to be set,
-erroring out with a kernel warning if not.
+Since this is simply a refcounted kernel page that has been allocated, it
+should not be marked VM_IO and should be inserted using the kernel page
+insertion mechanism, so convert it to do this instead.
 
-The logic requires a page from the driver and since commit 1ecbc7dd2902
-("fbdev/deferred-io: Always call get_page() for framebuffer pages") has
-always required it to be refcounted, so this was implicitly already the
-case.
+Use the VMA descriptor's private data field as a scratch buffer to store
+the page in - this stays valid throughout the kernel page mapping
+operation.
 
-Finally this patch sets VM_MIXEDMAP, as the logic is mapping
-kernel-allocated memory so this is appropriate.
-
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- drivers/video/fbdev/core/fb_defio.c | 6 +++---
- drivers/video/fbdev/ssd1307fb.c     | 2 ++
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/hsi/clients/cmt_speech.c | 33 +++++++++------------------------
+ 1 file changed, 9 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
-index fd00b86e1ae6..fb359ecc3966 100644
---- a/drivers/video/fbdev/core/fb_defio.c
-+++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -366,13 +366,13 @@ int fb_deferred_io_mmap(struct fb_info *info, struct vm_area_struct *vma)
- {
- 	vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
+diff --git a/drivers/hsi/clients/cmt_speech.c b/drivers/hsi/clients/cmt_speech.c
+index 7226677ebde7..801697b74d4f 100644
+--- a/drivers/hsi/clients/cmt_speech.c
++++ b/drivers/hsi/clients/cmt_speech.c
+@@ -1084,22 +1084,6 @@ static void cs_hsi_stop(struct cs_hsi_iface *hi)
+ 	kfree(hi);
+ }
  
-+	if (WARN_ON_ONCE(!(info->flags & FBINFO_VIRTFB)))
-+		return -EINVAL;
- 	if (!try_module_get(THIS_MODULE))
+-static vm_fault_t cs_char_vma_fault(struct vm_fault *vmf)
+-{
+-	struct cs_char *csdata = vmf->vma->vm_private_data;
+-	struct page *page;
+-
+-	page = virt_to_page((void *)csdata->mmap_base);
+-	get_page(page);
+-	vmf->page = page;
+-
+-	return 0;
+-}
+-
+-static const struct vm_operations_struct cs_char_vm_ops = {
+-	.fault	= cs_char_vma_fault,
+-};
+-
+ static int cs_char_fasync(int fd, struct file *file, int on)
+ {
+ 	struct cs_char *csdata = file->private_data;
+@@ -1256,18 +1240,19 @@ static long cs_char_ioctl(struct file *file, unsigned int cmd,
+ 	return r;
+ }
+ 
+-static int cs_char_mmap(struct file *file, struct vm_area_struct *vma)
++static int cs_char_mmap_prepare(struct vm_area_desc *desc)
+ {
+-	if (vma->vm_end < vma->vm_start)
+-		return -EINVAL;
++	struct file *file = desc->file;
++	struct cs_char *csdata = file->private_data;
++	struct page **pages = (struct page **)&desc->private_data;
+ 
+-	if (vma_pages(vma) != 1)
++	if (vma_desc_pages(desc) != 1)
  		return -EINVAL;
  
- 	vma->vm_ops = &fb_deferred_io_vm_ops;
--	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
--	if (!(info->flags & FBINFO_VIRTFB))
--		vm_flags_set(vma, VM_IO);
-+	vm_flags_set(vma, VM_MIXEDMAP | VM_DONTEXPAND | VM_DONTDUMP);
- 	vma->vm_private_data = info->fbdefio_state;
+-	vm_flags_set(vma, VM_IO | VM_DONTDUMP | VM_DONTEXPAND);
+-	vma->vm_ops = &cs_char_vm_ops;
+-	vma->vm_private_data = file->private_data;
++	vma_desc_set_flags(desc, VMA_DONTDUMP_BIT, VMA_DONTEXPAND_BIT);
  
- 	fb_deferred_io_state_get(info->fbdefio_state); /* released in vma->vm_ops->close() */
-diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-index c4fdecafd856..958514a35433 100644
---- a/drivers/video/fbdev/ssd1307fb.c
-+++ b/drivers/video/fbdev/ssd1307fb.c
-@@ -763,6 +763,8 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 	info->fix.smem_start = __pa(vmem);
- 	info->fix.smem_len = vmem_size;
++	*pages = virt_to_page((void *)csdata->mmap_base);
++	mmap_action_map_kernel_pages_full(desc, pages);
+ 	return 0;
+ }
  
-+	info->flags = FBINFO_VIRTFB;
-+
- 	fb_deferred_io_init(info);
- 
- 	i2c_set_clientdata(client, info);
+@@ -1353,7 +1338,7 @@ static const struct file_operations cs_char_fops = {
+ 	.write		= cs_char_write,
+ 	.poll		= cs_char_poll,
+ 	.unlocked_ioctl	= cs_char_ioctl,
+-	.mmap		= cs_char_mmap,
++	.mmap_prepare	= cs_char_mmap_prepare,
+ 	.open		= cs_char_open,
+ 	.release	= cs_char_release,
+ 	.fasync		= cs_char_fasync,
 
 -- 
 2.55.0
