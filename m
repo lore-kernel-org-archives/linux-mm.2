@@ -4,90 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42C63CA9EC5
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 02:18:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAB9ACA9EC5
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 02:20:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1CEC6B008A; Mon, 12 Oct 2026 22:17:59 -0400 (EDT)
+	id B78426B0092; Mon, 12 Oct 2026 22:20:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF4DE6B008C; Mon, 12 Oct 2026 22:17:59 -0400 (EDT)
+	id B2D3D6B0095; Mon, 12 Oct 2026 22:20:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE4526B0092; Mon, 12 Oct 2026 22:17:59 -0400 (EDT)
+	id 9F1076B0096; Mon, 12 Oct 2026 22:20:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A6E8A6B008A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 22:17:59 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D0E71C3DFF
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 02:17:59 +0000 (UTC)
-X-FDA: 85315992678.20.9689EA8
-Received: from mta0.migadu.com (out-67.mta0.migadu.com [91.218.175.67])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DBBA2180002
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 02:17:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KlUKhBqT;
-	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791857877;
-	b=IqWn6Zom8ta74mEfP97NItiCktxV2xDDekwQE6G67DbaB/EBHTDqY3/sAhxJKTK4SPYg+4
-	loWYu1V/+TxUBl2o8Qyx//8bwP8cKfckF/na3ritx4BzgYDR+PxbesFhIKslNzDHNGdFT0
-	wayA7bWPTjcSt1cimNRc8H1ydRIOWe0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KlUKhBqT;
-	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791857877;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 770B76B0092
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 22:20:36 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C606C09F7
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 02:20:35 +0000 (UTC)
+X-FDA: 85315999230.05.EBE0C86
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012015.outbound.protection.outlook.com [40.107.200.15])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8ACC71C0009
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 02:20:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SwvHGSXR;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.15 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791858032;
+	b=qNTeSSWOcbHascpTKoLCl8UzMR4vgIQ7nnXex/XcFNJcgHNJ27/TQz1DdYz0po3ns5T1FD
+	mGCyKqQ98uoYOkSPQqOC7jGmQPcLXOumGU0XiZBW2KSb9VtG0OgNIPTmIweMX9pqAohXnj
+	M4qnQ936WEXRWHF/mzZHrA7jGkx6leE=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SwvHGSXR;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.15 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791858032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XcbY6GHXx+u6I4bK/WphO8g/dkWhMlhBY/sW3Qz0PsU=;
-	b=t5/kPTis8Is7hhJcyI3y2AmZ2+XPFnpd2BYUcw2+6uy85EZLolB5CQnAwNZcsm6ZdXUHnO
-	Taup6LpqKjJrJQdim1QPlFDpeiHV+XwVjmibeqSU9zmrR3SFPkHcu44Hk5hvdm4CMDl59n
-	/wtrJZCbv0VaRMkod9yq5CoMp/rssSk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=jqBD77UOTyYWp8LQl19v9uNbH02DwyMcdp1Km7VJIyU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791857875; v=1; x=1792462675;
- b=KlUKhBqTHE3cMyZVH8jSiitjq5XDDDcw5npLF/shy+ElifwoTmQ5o82dVY+c2NEVUybi8EJP
- z4b1r7PgpddjhiGuXjndBA5Sp5KMoz6Htm8/ful8el/7KKeQ9k3Sc/ElklqPEaaI9bpRLuFy8Vz
- tT0djsw8PRydg/b9wM+7vK4c=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 665a5cf49eac3c84;
-	Tue, 13 Oct 2026 02:17:55 +0000
-X-Mizu-Trace-ID: 665a5cf49eac3c84
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <103d5ab1-b9b5-4cf6-bf87-87771b91eea1@linux.dev>
-Date: Tue, 13 Oct 2026 10:17:47 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [mm?] possible deadlock in igrab
-To: Andrew Morton <akpm@linux-foundation.org>,
- syzbot <syzbot+9d97402eade2fc0c065c@syzkaller.appspotmail.com>
-Cc: david@fromorbit.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- muchun.song@linux.dev, roman.gushchin@linux.dev,
- syzkaller-bugs@googlegroups.com
-References: <6acd315b.8cdf6287.1eb53.0133.GAE@google.com>
- <20261012185640.5568805f927f4de127bf0f28@linux-foundation.org>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261012185640.5568805f927f4de127bf0f28@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=j/MYfcO8px+Kk+I9XlnpNAZEXFBhtgezUT2Jed5Mal0=;
+	b=6DaoIYN71lq7zT3f0HNT+T2WvskPKynnbfWG3Dmkasl1oaOFYA4+YS2qxrtI3k4SgvBO/t
+	VOuC4sR3vbk3C/sJHV5Is5poLwv9C+HYrVIc3s8kWHsIecZVKQ/XuPohjsUa5Q7+9WJbTl
+	rhfhUl3s1KZlyD7BTLLquPaqHmnJzz0=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=m0fHIcG6oygHUz0yhUMgaNb2GC59WdoX7LH8uz9A7PtkjtG+kg/KP0pE+u4cDhla0oI9QoRUPX5XtTENeqI8fGMgYh8X79785RFQW2b8oogVOor7cEiC5g96ogj7tOdrfVQqVQ/cK2zMT9qItFbUhkSI6mIfX9zCbOBcXoDXHSu/cAjeoixRKKMlcjIm4IzncMUP4MHeKuzVVLP8rrUJrq63g9/bh7+x9OKTaFUpK4zNSOR/SfB2bCPNXdfwRHhPJ2nIZJNiH/Yo/5znvT14pqElk/oMsZyVnsnWIsIVKOdw6wOm3wGWIGUTFXonUEGV5/KxnDp6PfkKSEoUqeiLrA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j/MYfcO8px+Kk+I9XlnpNAZEXFBhtgezUT2Jed5Mal0=;
+ b=PAPtxp4DalAh1laUUk5GggwZnACtWXWDvAqbENP6qe5gymbiCiLXGXPOue06H7IC9VyZb+r02U7wAG4QpP2NqSMX5nK3Hj/5G/w/9jxjhB9GYWby/0ESrwlOfMPDAyZl21HCjKdqLs8P9/80nmqPiWzyzRL3vqnrXJVpgMOVnLDGeT3cXy5DCTJKkc3/zHfEMcIj/QEpfXiCGEgMwfzU2n8l51OIBTbVEJ/JvK8rgUGbbgLRGnr7cNMI+Zt0/pkQCGei8RDe73rLN/5enUOs2nXY2DrpWTjp4shI+du6M3ZOdtyUuTn7CRszBu91uJ4GC0K6M8jWqHQZAsT7v4umSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=j/MYfcO8px+Kk+I9XlnpNAZEXFBhtgezUT2Jed5Mal0=;
+ b=SwvHGSXRbwqB9HyS0fftMREyZ+9hK/cEtwdES7L9CqnsARPipes1nBCFMni6w+LCG/uRlLFSt6U8Ld8SDUcIHPqaBhTqze+ByuifJ6pVHlm9z4V6W9o0txFUuA8zOUtQA1S2V38XQ3Io0vFQiv8WXEoJWxVENIGUiENsheUOw43DHF/aMJw2MIZacOkz8GusjyGcpuA2dCYmKS883Vf12tePd0jGcxsQA148KlY1SoHSqUtk/ef5ugX3I5yGPDKh7ttOld1kojWa2a7IgWWYJE3bSpSyByzST991oWfK6zPEbnETBnvy7wgCXMMli15XBtp3JPNXlOh0tOhzxzcQ6Q==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by SA0PR12MB4447.namprd12.prod.outlook.com (2603:10b6:806:9b::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
+ 2026 02:20:27 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0472.016; Tue, 13 Oct 2026
+ 02:20:27 +0000
+From: Zi Yan <ziy@nvidia.com>
+Date: Mon, 12 Oct 2026 22:20:16 -0400
+Subject: [PATCH v2] mm/rmap: don't discard lazyfree THPs at PMD level
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: png4mezuubyhc84wsjs4pwb8fdeuhnz3
-X-Rspamd-Queue-Id: DBBA2180002
+Message-Id: <20261012-lazyfree-stable-fix-v2-1-6387d6e30063@nvidia.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NwQ6CMBBEf4Xs2TVto5R68j8Mh0IXWYNAWmxEw
+ r9b8O7xTWbmLRDIMwW4ZAt4ihx46BOoQwZ1a/s7IbvEoITKpRAGO/uZG0+EYbJVR9jwG3Otpaq
+ UOBnnIC1HTyneX2/lj8OrelA9bVdbo+UwDX7etVFuvf+GKFGiFsZocy6oKdy1j+zYHuvhCeW6r
+ l96tfFQyQAAAA==
+X-Change-ID: 20261009-lazyfree-stable-fix-67712b2049dd
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+ Kyle Zeng <kylebot@openai.com>
+Cc: stable@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Zi Yan <ziy@nvidia.com>
+X-Mailer: b4 0.16.0
+X-ClientProxiedBy: MN0PR04CA0013.namprd04.prod.outlook.com
+ (2603:10b6:208:52d::18) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SA0PR12MB4447:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67812a53-d226-40ab-30b3-08df28d08bbc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|7416014|23010399003|921020|56012099006|11063799006|261009223027099003|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	UcW0LmQXNqlJIy591e14WXI6ZAflwahsD3A2fpMBmnWX9GwiuGAGJlSKCneeR1p69/YgrPpbG2eEmqFlTph9q8K33vHgyKTTU14UVLPagTRoI3VEhNvrnUQPe8XtdvA21gTZCJT+D1LZvi8FS00rtXHUJT5smVCUUWCqVFTcP2hL9qKybbs7LXCSYxMGPmvRREyfT9O1AW90MR2jtWJvFT7pvF9ca1LvsltO6aWoGC0BtRuL9posW7d2IfsL3XIGGaaETOo0DRpuaS1Ym42J8Lbeavzp3ZMLbsm8KpyOyaS9MhPV/sroOf+xcK/dsV6e1bSBSh94oJmKGSWDHCdZV0+DKaxLfuiBeh/10Yt9d5WwFUwNY/mmpSUqdkDz+GHzrWJU3en+RB5Wpf3aqoY7x+BsnGfwPgU5/9z5uIW/k8vvSDMuBdcQj4OcnTO2wvd8/2IetvR3dDzlcjPQud8PPoPSDGi5hsgxyAtwh4KtDqJN5oRyw/Z/mSLtoyPUslLOg0JKI+nrRO7OR1P7BNBMkdYxQ6pn7jUkiHIh9cQRUpXnbHJQXhIjO+HjNq1Ir4T4zIFOltZwDt+Lw8C1Sav/ZFviCQgysk8imRFSXF/OHmJRxrnh2qVF1PYpl2hH2g328VhTOLJM8CzJ0zUd05eSkuYHUno/q38p6I2sTfLuD8EeFkeAECzmr261B2RyO/Fm5yuf30ocumfz0317rSnEnw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(23010399003)(921020)(56012099006)(11063799006)(261009223027099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NkJ5RVVBS1lrVk9Pai9TOTh2Mm53Zm5MV2V0V0FtWEE4Sk53MS9uL2R3cm44?=
+ =?utf-8?B?TE9OVGRSa2FqNmhQcHZGdnlKRGxjUFBJeFVTblZuTXBDYmhVV3lkd2hVK24x?=
+ =?utf-8?B?WkdvNXp0N3lhblhSVnI0cVdsRkpmbjJHMkZDbjBRSFRvQ1kwQWFpdm9CS0Ja?=
+ =?utf-8?B?VklBaUpUQUlHaTNFdGlxbmRiWFovejJ2aHc4ekFML0loV044bG1aa1ZtRkls?=
+ =?utf-8?B?cW1mR0wwbG9yUTR3a096UWVpK3ArcHMrKzdGdEFYeHY5Y3lpRUpGTElXUk5Y?=
+ =?utf-8?B?djNxYzNVaUJDK3U5bmZlekZOVkJVNTZzRE1xeEVEMFVBNUZhWFhTVW03QWxL?=
+ =?utf-8?B?NzV0WUR2dzRlME5zRGthYWp2aXg5QWp0WVhoT1BhZW1sK3oxM2g2OFZvVHBs?=
+ =?utf-8?B?VkNQd0JjcjNCNGlVY09OSFpScDFlODE1Rk1tcHVJeTM4SG5BczJ2MW9BeTFT?=
+ =?utf-8?B?Mzhjbk5QYWpFeldDQmM5akpzd2U4OTcxZFRBRHlTNTFZRkgvUUJEWVE1Ymkz?=
+ =?utf-8?B?KzAyMlAyUWFNdmtwQjJBYmJpMUJGTWRLSlFDZHRncXNMQnNGM1gwbTRVTlcr?=
+ =?utf-8?B?N2c3WFk5MU9yZVlUQ1c3RjRqTXAzMEIwcmtnaTN2Vkl5S0JNR2xId1JkcnNF?=
+ =?utf-8?B?aWZHWmhzd1V2UXZVVVg5azVSZDBRdHAwaXQzTlhFK1doczVraU9FcVpFR1Vh?=
+ =?utf-8?B?eVhCMi9hSnNpYkMvOXE2ZGx4RnI4S1dZNzRVUlpIZmNkb3RYaGJwanhqMVV1?=
+ =?utf-8?B?aXdzdE9rSUo2Njg3VG00YW5xVDVKOHE1VDFOWjlndXFjWFNsa0JyblJmZEFo?=
+ =?utf-8?B?eGt1MmRVOWFxaWxOQjArZlZ3RjVpZ0hLTGpIbzFmNXFNWXdmMDRuamUvYlIx?=
+ =?utf-8?B?c0FRbWVMWCszbnpLc2ZpdERkYlB6Y1FJUWpKd2RDSFdjcEZxcUdNaTJpQStu?=
+ =?utf-8?B?UFhmaW1DZW5tNlF6S2luTWhUcjc1YVpsMVVXcXdUSXJlZlFEYXBuVWszNnph?=
+ =?utf-8?B?OXNXc0ZaUXF0QjhMMG1PdGM5UWptNmVoSmpyTmtGQ3hCdmVBUmxhcmtFSWdO?=
+ =?utf-8?B?NjBFTmxNdHVJdjBUenZPQlRDVnlzd0hkTWN4UmwvVXBQWm1EM1YwSTB0Ymxy?=
+ =?utf-8?B?d2VkMmorOW40T1FndVFIaWptdHNHOC9pWVVBVy9Na0tvSTgzemYyemRXU0pu?=
+ =?utf-8?B?VzZnYUx0MFZVWVppYjBrQUlXbWM4NWFhckVuSjN5SjI5N3dFM3plL0NaQU1r?=
+ =?utf-8?B?Ty9UVjJHUmxiSE9CYmJsbUxwUlhORmRlYnBaSktjeG9MbFg0NzZhNWJHcksx?=
+ =?utf-8?B?V3BvVlZWNkYzT08wN3IxWUV3N0tCZkJmbGxTd0xRWThIWU5SRjkwbGV3aGlh?=
+ =?utf-8?B?b2hxRkh3WE9kbUtTOE8ydm81L05PbjAxUzNZR2xUNHNoSlVZaUtWRlF0Q3Zk?=
+ =?utf-8?B?UHVUZE4vSFJibTdrMHBuMEx6VDB3ZFFPcHpZTVZ5bHlyN1VpdGlXcnhmdW1H?=
+ =?utf-8?B?UFBjd284dkZWeEVaS09Sb3dFN2FrWXMrakhrV3hEYS9mNFJBK1h0NnlCUDVs?=
+ =?utf-8?B?N1BacExaMnpRWUowUE8wM1BqZGVzUjZNVW5Hem1GbnJwS0ZXaml3d2N4VWJE?=
+ =?utf-8?B?MVY1VEQ3R0tnUlVzSDExZytwSkx0WjZrT3FPM2pqdk8vVHFnMUtINFVWZ0RV?=
+ =?utf-8?B?aW1ibTlzd2poZzJEZWhLamJWM1BFWFpyWHlrZzYyUWRXYXpxaGJmcHFPcC8x?=
+ =?utf-8?B?M2V6cnVTWXBkU1Jra1RWem5uTjJtdnB3M291elBBdHJ4R2NLalp0cmNLakpE?=
+ =?utf-8?B?djZuTG5DQUo5OWdtZnhObU5OT1JmL3lMQjh4c1NkK0NLL0N5djJKblhiN3Jk?=
+ =?utf-8?B?WkI0Nkw1Z0NEVjE4NzVMUXZUbXVRd3hKa2tQTkVzNE4vQ0NPaEEyTWkrMEJr?=
+ =?utf-8?B?SWhlVVlqM0Q3ZWlCMXRMTjhiUCtsVTNlU2VaRFg0RHdlZklYT3I5S2pmQVBM?=
+ =?utf-8?B?SUZjdFY5cnU0NDRPQTNuQ1lMUHVMYUtpZW1wVzIzSm90K2VXeklsWUtDb1ho?=
+ =?utf-8?B?dTNEUVhxNlFpUU1tYjgwMGFHL3NldWk2a1lRTUl1Y0JtU2lZSnpiemxPSkYz?=
+ =?utf-8?B?Y3dleEFOVitqRVF4S2h6RENVNGRSWS9sVFlBWi9KSWt6cEYvNnFFSWtib2xC?=
+ =?utf-8?B?WGFvc2kyR2JobUhsZks5ZEFzZ0pqY1o4VFBibVJodVc4TkRWRUUrZXdmU0kz?=
+ =?utf-8?B?NTF6MUVQZy9nRkYvMldPN08vMDJmSlB6MzZGRCtIWTZBbzZ4bWlvRm1RS2F1?=
+ =?utf-8?Q?DpbBtHHRDjCTToafTO?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67812a53-d226-40ab-30b3-08df28d08bbc
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 02:20:27.3705
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DeA1G4TYiUuo2cTLFX+4EI7lmQ6FQR7aG8ZiQ8hO3ZHzYxcczturFWsXQAtR/h7t
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4447
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791857876-333210
-X-HE-Meta: U2FsdGVkX1/B+Udv4uYz/Nng0Y4DoPJPL/0gnPesRBucXFNhGOCNqRPKGT/jTclIwpsbGl+K+KWmF9lsUU1yGwGKs8PuDrfeAzF9WJFJgXGCnWr7Mvw444pnvyPm2nvP+HXG7GXan6nWsRSq5ooOhG3IrQQk0CqtwTd6lieLfIKRMOsU4ak9O5OfBnmPtuDe7VYuPlxM4PMF+stFVfPh3SdGK/ggd5kuO8zje7Sw6yK+BtFeZMI9y4WrZARl+arQ5UNUcRjzLy4W/1C1gK4S8I+X8XAR6SUnj1BOs86Dg7n5kYXlJH+Tvdf+WuNultfOIUVGtM2dxkupHRTPzofGvXGraS2iLBo3aZfitD3Wy64XEhn1kpngXz4rrudazXdGb1WXXnhSk+/0NZelcnqwpsk9UNEzsdqr9bekxiSedmwWCBbt+A7w5sRlPBo8ghoWsJcVDl9Hezi9Y/JX6G9J3RsmOo+qZaq7qLzdCGimszUbxTowa0aPEDee3CqPVcYaq588rQbM07+3uUCby2BylLFkn1o2IcQJOx1UEx5ccTfztwb4wDHIAB8ELvQVzeN1b5cNW9E8iyfbU5eu4SFVxKueF5SvKDo0q7r1aAY6d7Zlha+kXPi6dhzac5ThZqbflk1zz4GI2/HfHHQQBc8QqO9gkcOvt+Bc40XPbQU5n+rxHIldD1MBbEiW7EMIALWK6/uYfq7ngqdfG+GuoZFB74311xZun7s4i69gX310UtDFJKGnKA6mtjFe6971OJDE8U4GUJ4lCT9PzJJpNuwQJQEu7DtIYdHwqji0+eKiuKnrHJtZDBTghuWysn8S+ReOy95uQepoLH1EvKYAiCQnql1o9Hn1OQpKfRVWiNZyPgCYjNgQ0Tv8EUxL0YMBDnCMJA6UE0hTq9UsGiZxaA0Mta1RdGiQxwUifOwiP4CLQnt/ODjV/XEjtmOzdMcsLPz1z9rdGK5Bxw8u8paEoJX
- XrC82u1D
- imrWh/f+z08NgQloOC7qB/0rISHJ8p585QiYTQ/v1bh/Md6CaMLrBe1TBGP7tnkTDLl3JeyP9wrU8+06vbMpS92zoR+umnwHm+H93s7RXBFncBMyWAzJp6b02GahJ4neDB7LmjSQ2zUUGSjraU+ovKPTIbcqg0oeN14/473jlQt5rcW63bD8m902UHDETzUzTsvuUHvz0tMdHtXFsbDkGsxf9jIkJMsKC2TamQGOaj2dodX6AWz0Es/otjTXPeKhDqtrfNusdZ/wKpX3NeNjbkT9O4BE1ry0PI+qhWn5SFXDeTZpYpE0hQM7hH9vCFjoIs3VQYay/Tn4oRMMzO35b49xdEXtZZiv2pDbHvdzBXsoxltRt0/TFBS7p+vKZGhv+AXr5G9g6/OqJ7O6bvsMlj8s6BtiYjW4BohXIOFlmd6tPm35hMgJpeWSfEglHhL2gv531+mIuasZ4M08ZMnxSovHY7ZSTWRQSC9l9CXq7GpReqp2X4gavfHAk2v16ARBqM9QODTAOq9rHliPlcv5awXsO/Pq9/gVeD+bibQlS3eriQGZee8sg/9m2sh6nubtNLoz65QzIFh499ubMauZDKFRcRql5TsVIw6+b2NVmVlz+lkAlByXl277G5QDBval9KDzCuhBair60G5crcJPdvsrwvpf7QH+4QSEGKdIoo4K3zc4On2Fz5UTbInWYWSS4gDMEXdRedOvomdkEoWUohLO94oIlEWJMUVuO1CEpvp1PgBSDTMzOxuWQBk1fWLb3tEQVta8VmC2DjyZ7rwjez9fV7VpFVr5h3V6A/ukacaAeBSU35f5q4g7s3GHf4cvQKAqrU/YxpSOs9u0SOU4Zt0avfb0aMwjWIYTXur5CCvqIV46BcE3an38yi5TU4UYbOAsKE5m7D7Rmd56zKc9IkyorZsqY1mOU9pBng8ZSZlSvUNqThB/02WB/uBywAtJSXiMCcEH0aFNI+zIradFOO1V/zgna
- IEzD66wa
- dn4wnIiG+Jl14fTD3Ry3tKWx7g1aNghDFAS+PyPqTTENk6bOCD+s+A==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8ACC71C0009
+X-Stat-Signature: iyqzzn7rk8fknu99pkwy9udu4nxefdhg
+X-HE-Tag: 1791858032-992865
+X-HE-Meta: U2FsdGVkX1+yKyEGUeFXBGQpZjAqDeDe0IVY27gEBumzmPOb42uX6dhPKugyXXGeOAM3JwKmKbkCqdDID6OmBXa0zGWrZGQFwubod1Kx0VrY6OrV7ORJ4U1TGgcqQEP/FwfNMcvDvGIaKRkcHYsgi31psUVJEqF6Aqp+Bni6/1n0Kw29teD+g1coq3J/2SCeSSlrQhYQFAJ8KDztL8yHpfmUPYTvmHkPTXcAELLzFhKmki+JkVTmoWP5ccoPAftkfCM7Ys0EUhfKoKKCCPwryxqS7Gy21aU8ELBVSjdgJrY6tlT3WS1jdJyasExfPDYeFVNC544Gi0h/EBGPu0ZgN4+sR7VPzjhetyss0i+rv+sWmT7NUlaTyb1aDdxxVM2I3thtKhg3l7lxLupEszqG8s8KP1sBMyHzo2My0b+qx14sSaNyYSbcy6qyEdZmuyOR1uGsLmDTtvYQoXUWeLBEYr07hO29BjE+6dHynI6pbP7b/yer1u4hnmXRLufQVm0ZSbZTqLIlG3baAtBmwa8uhNcQwm9mZlR0GZKY93zjybaNQ7oRgu7htEwvtOm4zNxWZdY33nTw0COIKyvq2Mh0nRJQtK4Ad46UZ821xf034Z+sWqyt6hTou+pNFTyq/EwUqDU1DtKqG1UEjcWNLlMXQHztdYDlVJcoQaH18BqDjziM+UgKECuK4FFDbdve9NioeRVBRpGPBKA7nHrQMcUTB20yGCgoCYLOSlrFpiSmehV4O5RWaove+nw94fYSkgTZfxQlyTujADZD8qhrb1m5blMsxHLM2t0//GU2cAuthpie0xw5iGqEcLbB45+Z/Vw16962DtPbya/+btfWglcuw0m9UvdIyStxGWnn+ZVfshz7wZEMbMTPp7Gl2FY83FXEGHb/2h17rZAtb9Bikq57cCDKqJJr4fSfReEuLmriaUjUDVxl6y0A1iyVFM8w2Hwh1KJtah8vOqnAurVQnID
+ vN3ydFSJ
+ phrub+MXjlAZj2Gy+1MLDmrVJk6sYFyIKydmunNJvFIYtbKKXInuIQLBtFaH8Zr7LrjTimH1sij4E0wzMKBXSq+6ou4Q20torI95sn5/QQf0GMjm6OStm5M5u+CpgDparKWELT+rj4S6YrcYfG9ZmxWXkmwSDTw7IylpAy77m+NwaPN6PqpiLn8ZnR3IbdlhpNZp5U3pVxHrdiYMxE0EI274UUfE6xPwlObhhPV+RHWw8on0LtbMaAQddD3MIVjymFTyNawPNKliEsfa/1WPeEfDc9/Vj1ZX+Baz4x2gVV1GR0zdoC9sfQXKkX2ixVX6i5PZqRyLU6uNAKGuwlysUzeBMefwg19LxUEpNHN+o6H0i551ga8Ai0d8JA6sJOyOyp+jXnRJl3twPYYJVT0NmrSkQdSDaYHyic7WkUlK+TPUZuJdmLA45HWT/Wmi9lCDghvGtMD90zBr/05huIbZwrPbThCaYmQP8AzyCMxahnsRqqbaXf/ZftA3rf7WF9E/d7fKmHNhF8piuLFdr1HEtzm1FLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,253 +176,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+__discard_anon_folio_pmd_locked() clears a lazyfree THP's PMD before it
+determines whether the folio can be discarded, and restores it if the folio
+is dirty or has extra references. It is done under only the PMD lock and
+the anon_vma read lock inside try_to_unmap_one() and no mmap lock is held.
+The temporarily none PMD causes UAF.
 
-On 10/13/26 9:56 AM, Andrew Morton wrote:
-> On Mon, 12 Oct 2026 12:13:31 -0700 syzbot <syzbot+9d97402eade2fc0c065c@syzkaller.appspotmail.com> wrote:
-> 
->> Hello,
->>
->> syzbot found the following issue on:
->>
->> HEAD commit:    b01868671970 Add linux-next specific files for 20261007
+A parallel munmap() or mremap() is supposed to serialize with it on the PMD
+lock, but zap_pmd_range() (called by munmap()) and move_page_tables()
+(called by mremap()) do not take the lock when they see the temporarily
+none PMD and skip the PMD. There is no more page table walk after the none
+PMD is restored:
 
-Looks like this doesn't include my latest fix patch in the testing.
+- munmap(): free_pgtables() waits in unlink_anon_vmas() for the anon_vma
+  lock, then free_pmd_range() drops the restored PMD as bad without
+  removing the rmap, so the folio keeps a stale mapcount.
 
-Fix patch: 
-https://lore.kernel.org/all/20261011045956.30277-1-qi.zheng@linux.dev/
+- whole-VMA MREMAP_DONTUNMAP: dontunmap_complete() unlinks the source VMA
+  from its anon_vma while the restored PMD still maps the folio.
 
->> git tree:       linux-next
->> console output: https://syzkaller.appspot.com/x/log.txt?x=17ab503c580000
->> kernel config:  https://syzkaller.appspot.com/x/.config?x=9ac1ab2cf2112eb1
->> dashboard link: https://syzkaller.appspot.com/bug?extid=9d97402eade2fc0c065c
->> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
->>
->> Unfortunately, I don't have any reproducer for this issue yet.
->>
->> Downloadable assets:
->> disk image: https://storage.googleapis.com/syzbot-assets/20420067bb60/disk-b0186867.raw.xz
->> vmlinux: https://storage.googleapis.com/syzbot-assets/14149d837264/vmlinux-b0186867.xz
->> kernel image: https://storage.googleapis.com/syzbot-assets/17346f8094aa/bzImage-b0186867.xz
->>
->> IMPORTANT: if you fix the issue, please add the following tag to the commit:
->> Reported-by: syzbot+9d97402eade2fc0c065c@syzkaller.appspotmail.com
->>
->> ======================================================
->> WARNING: possible circular locking dependency detected
->> syzkaller #0 Not tainted
->> ------------------------------------------------------
-> 
-> Thanks.
-> 
-> LLM firmly points at mm-stable's 743e7d025d2f ("mm: shmem: make unused
-> huge shrinker memcg aware").
-> 
-> This comes at an awkward time.  The three patch series "make unused
-> huge shrinker memcg aware", v4 reverts cleanly so I'm inclined to do
-> that.
-> 
-> If people can come up with a confident fix which we can upstream as a
-> hotfix during 7.4-rcX then maybe OK.
+- plain mremap(): the THP is not moved but unmapped, so the THP's data is
+  lost.
 
-Does the issue still reproduce after applying the fix patch above?
+In the first two cases, the folio stays mapped, but no VMA that maps it is
+linked to its anon_vma. When the anon_vma is freed, it is still reachable
+when one rmap walks the folio. Racing lazyfree reclaim against
+MREMAP_DONTUNMAP as an unprivileged user reproduces a KASAN use-after-free
+in folio_lock_anon_vma_read() as reported in the Closes link.
 
-Thanks,
-Qi
+One solution is to use an invalidated PMD instead of a cleared one until
+the discard is committed, but it needs arch fixes first.
+1. GUP-fast still follows an invalidated PMD on riscv, LoongArch and s390.
+2. sparc64 miscounts thp_pte_count when an invalidated PMD is set again or
+   cleared.
 
-> 
->> syz.5.203/6616 is trying to acquire lock:
->> ffff88807e4d81e0 (&sb->s_type->i_lock_key){+.+.}-{3:3}, at: spin_lock include/linux/spinlock.h:347 [inline]
->> ffff88807e4d81e0 (&sb->s_type->i_lock_key){+.+.}-{3:3}, at: igrab+0xfb/0x2f0 fs/inode.c:1595
->>
->> but task is already holding lock:
->> ffff888062a65640 (&l->lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock.h:347 [inline]
->> ffff888062a65640 (&l->lock){+.+.}-{3:3}, at: lock_list_lru mm/list_lru.c:26 [inline]
->> ffff888062a65640 (&l->lock){+.+.}-{3:3}, at: lock_list_lru_of_memcg+0x261/0x4c0 mm/list_lru.c:96
->>
->> which lock already depends on the new lock.
->>
->>
->> the existing dependency chain (in reverse order) is:
->>
->> -> #2 (&l->lock){+.+.}-{3:3}:
->>         __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
->>         _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
->>         spin_lock include/linux/spinlock.h:347 [inline]
->>         lock_list_lru mm/list_lru.c:26 [inline]
->>         lock_list_lru_of_memcg+0x261/0x4c0 mm/list_lru.c:96
->>         list_lru_lock mm/list_lru.c:156 [inline]
->>         list_lru_add+0x57/0x290 mm/list_lru.c:229
->>         list_lru_add_obj+0x191/0x270 mm/list_lru.c:254
->>         d_lru_add+0xd8/0x1a0 fs/dcache.c:522
->>         retain_dentry fs/dcache.c:912 [inline]
->>         fast_dput+0x55c/0x690 fs/dcache.c:1005
->>         dput+0x2b/0x60 fs/dcache.c:1054
->>         path_put fs/namei.c:722 [inline]
->>         put_link+0x112/0x190 fs/namei.c:1201
->>         walk_component fs/namei.c:2316 [inline]
->>         link_path_walk+0x12da/0x1910 fs/namei.c:2682
->>         path_openat+0x1c4/0x1da0 fs/namei.c:5036
->>         do_file_open+0x23e/0x4a0 fs/namei.c:5069
->>         do_open_execat+0x12b/0x590 fs/exec.c:786
->>         open_exec fs/exec.c:822 [inline]
->>         bprm_open_interpreter+0x85/0xb0 fs/exec.c:1455
->>         load_elf_binary+0x1a5d/0x28d0 fs/binfmt_elf.c:904
->>         search_binary_handler fs/exec.c:1777 [inline]
->>         exec_binprm fs/exec.c:1809 [inline]
->>         bprm_execve+0x930/0x1590 fs/exec.c:1865
->>         kernel_execve+0x8af/0x9a0 fs/exec.c:2009
->>         try_to_run_init_process+0x13/0x60 init/main.c:1489
->>         kernel_init+0xb2/0x1d0 init/main.c:1619
->>         ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
->>         ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->>
->> -> #1 (&lockref->lock){+.+.}-{3:3}:
->>         __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
->>         _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
->>         spin_lock include/linux/spinlock.h:347 [inline]
->>         d_instantiate+0x72/0xb0 fs/dcache.c:2252
->>         d_make_root+0x59/0x80 fs/dcache.c:2294
->>         shmem_fill_super+0xcbc/0x1150 mm/shmem.c:5290
->>         get_tree_super fs/super.c:1400 [inline]
->>         get_tree_nodev+0xbb/0x150 fs/super.c:1420
->>         vfs_get_tree+0x92/0x2a0 fs/super.c:1943
->>         fc_mount fs/namespace.c:1278 [inline]
->>         vfs_kern_mount+0x15b/0x220 fs/namespace.c:1316
->>         kern_mount+0x43/0x90 fs/namespace.c:6500
->>         shmem_init+0x37/0x170 mm/shmem.c:5610
->>         mnt_init+0x19b/0x1f0 fs/namespace.c:6481
->>         vfs_caches_init+0x22/0x30 fs/dcache.c:3686
->>         start_kernel+0x351/0x3e0 init/main.c:1170
->>         x86_64_start_reservations+0x24/0x30 arch/x86/kernel/head64.c:310
->>         x86_64_start_kernel+0x137/0x1b0 arch/x86/kernel/head64.c:291
->>         common_startup_64+0x13e/0x157
->>
->> -> #0 (&sb->s_type->i_lock_key){+.+.}-{3:3}:
->>         check_prev_add kernel/locking/lockdep.c:3209 [inline]
->>         check_prevs_add kernel/locking/lockdep.c:3328 [inline]
->>         validate_chain kernel/locking/lockdep.c:3952 [inline]
->>         __lock_acquire+0x164c/0x2de0 kernel/locking/lockdep.c:5288
->>         lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5942
->>         __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
->>         _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
->>         spin_lock include/linux/spinlock.h:347 [inline]
->>         igrab+0xfb/0x2f0 fs/inode.c:1595
->>         shmem_unused_huge_isolate+0x4f/0x290 mm/shmem.c:874
->>         __list_lru_walk_one+0x171/0x440 mm/list_lru.c:362
->>         list_lru_walk_one+0x3c/0x50 mm/list_lru.c:399
->>         list_lru_shrink_walk include/linux/list_lru.h:332 [inline]
->>         shmem_unused_huge_shrink+0x173/0x1270 mm/shmem.c:966
->>         super_cache_scan+0x411/0x4a0 fs/super.c:231
->>         do_shrink_slab+0x6d0/0x10d0 mm/shrinker.c:445
->>         shrink_slab_memcg mm/shrinker.c:562 [inline]
->>         shrink_slab+0x838/0x1210 mm/shrinker.c:640
->>         drop_slab_node mm/vmscan.c:488 [inline]
->>         drop_slab+0x140/0x280 mm/vmscan.c:506
->>         drop_caches_sysctl_handler+0xc7/0x170 fs/drop_caches.c:68
->>         proc_sys_call_handler+0x4c1/0x830 fs/proc/proc_sysctl.c:600
->>         do_iter_readv_writev+0x612/0x8c0 fs/read_write.c:-1
->>         vfs_writev+0x343/0x990 fs/read_write.c:1058
->>         do_writev+0x154/0x2e0 fs/read_write.c:1104
->>         do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
->>         do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
->>         entry_SYSCALL_64_after_hwframe+0x77/0x7f
->>
->> other info that might help us debug this:
->>
->> Chain exists of:
->>    &sb->s_type->i_lock_key --> &lockref->lock --> &l->lock
->>
->>   Possible unsafe locking scenario:
->>
->>         CPU0                    CPU1
->>         ----                    ----
->>    lock(&l->lock);
->>                                 lock(&lockref->lock);
->>                                 lock(&l->lock);
->>    lock(&sb->s_type->i_lock_key);
->>
->>   *** DEADLOCK ***
->>
->> locks held by syz.5.203/6616: 5, last CPU#0:
->>   #0: ffff88807a2ef270 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_pos+0x118/0x160 fs/file.c:1408
->>   #1: ffff8880582de460 (sb_writers#3){.+.+}-{0:0}, at: file_start_write include/linux/fs.h:2756 [inline]
->>   #1: ffff8880582de460 (sb_writers#3){.+.+}-{0:0}, at: vfs_writev+0x2af/0x990 fs/read_write.c:1056
->>   #2: ffff88807fe9e0e8 (&type->s_umount_key#56){++++}-{4:4}, at: super_trylock_shared fs/super.c:670 [inline]
->>   #2: ffff88807fe9e0e8 (&type->s_umount_key#56){++++}-{4:4}, at: super_cache_scan+0x94/0x4a0 fs/super.c:200
->>   #3: ffff888062a65640 (&l->lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock.h:347 [inline]
->>   #3: ffff888062a65640 (&l->lock){+.+.}-{3:3}, at: lock_list_lru mm/list_lru.c:26 [inline]
->>   #3: ffff888062a65640 (&l->lock){+.+.}-{3:3}, at: lock_list_lru_of_memcg+0x261/0x4c0 mm/list_lru.c:96
->>   #4: ffff88807e4d8018 (&info->lock){+.+.}-{3:3}, at: spin_trylock include/linux/spinlock.h:359 [inline]
->>   #4: ffff88807e4d8018 (&info->lock){+.+.}-{3:3}, at: shmem_unused_huge_isolate+0x26/0x290 mm/shmem.c:870
->>
->> stack backtrace:
->> CPU: 0 UID: 0 PID: 6616 Comm: syz.5.203 Not tainted syzkaller #0 PREEMPT(full)
->> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/16/2026
->> Call Trace:
->>   <TASK>
->>   dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
->>   print_circular_bug+0x2e2/0x300 kernel/locking/lockdep.c:2087
->>   check_noncircular+0x12f/0x150 kernel/locking/lockdep.c:2219
->>   check_prev_add kernel/locking/lockdep.c:3209 [inline]
->>   check_prevs_add kernel/locking/lockdep.c:3328 [inline]
->>   validate_chain kernel/locking/lockdep.c:3952 [inline]
->>   __lock_acquire+0x164c/0x2de0 kernel/locking/lockdep.c:5288
->>   lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5942
->>   __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
->>   _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
->>   spin_lock include/linux/spinlock.h:347 [inline]
->>   igrab+0xfb/0x2f0 fs/inode.c:1595
->>   shmem_unused_huge_isolate+0x4f/0x290 mm/shmem.c:874
->>   __list_lru_walk_one+0x171/0x440 mm/list_lru.c:362
->>   list_lru_walk_one+0x3c/0x50 mm/list_lru.c:399
->>   list_lru_shrink_walk include/linux/list_lru.h:332 [inline]
->>   shmem_unused_huge_shrink+0x173/0x1270 mm/shmem.c:966
->>   super_cache_scan+0x411/0x4a0 fs/super.c:231
->>   do_shrink_slab+0x6d0/0x10d0 mm/shrinker.c:445
->>   shrink_slab_memcg mm/shrinker.c:562 [inline]
->>   shrink_slab+0x838/0x1210 mm/shrinker.c:640
->>   drop_slab_node mm/vmscan.c:488 [inline]
->>   drop_slab+0x140/0x280 mm/vmscan.c:506
->>   drop_caches_sysctl_handler+0xc7/0x170 fs/drop_caches.c:68
->>   proc_sys_call_handler+0x4c1/0x830 fs/proc/proc_sysctl.c:600
->>   do_iter_readv_writev+0x612/0x8c0 fs/read_write.c:-1
->>   vfs_writev+0x343/0x990 fs/read_write.c:1058
->>   do_writev+0x154/0x2e0 fs/read_write.c:1104
->>   do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
->>   do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
->>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
->> RIP: 0033:0x7fe53d79e199
->> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
->> RSP: 002b:00007fe53e739028 EFLAGS: 00000246 ORIG_RAX: 0000000000000014
->> RAX: ffffffffffffffda RBX: 00007fe53da25fa0 RCX: 00007fe53d79e199
->> RDX: 0000000000000001 RSI: 00002000000000c0 RDI: 0000000000000004
->> RBP: 00007fe53d835888 R08: 0000000000000000 R09: 0000000000000000
->> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
->> R13: 00007fe53da26038 R14: 00007fe53da25fa0 R15: 00007ffc0e7c9828
->>   </TASK>
->> syz.5.203 (6616): drop_caches: 2
->>
->>
->> ---
->> This report is generated by a bot. It may contain errors.
->> See https://goo.gl/tpsmEJ for more information about syzbot.
->> syzbot engineers can be reached at syzkaller@googlegroups.com.
->>
->> syzbot will keep track of this issue. See:
->> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
->>
->> If the report is already addressed, let syzbot know by replying with:
->> #syz fix: exact-commit-title
->>
->> If you want to overwrite report's subsystems, reply with:
->> #syz set subsystems: new-subsystem
->> (See the list of subsystem names on the web dashboard)
->>
->> If the report is a duplicate of another one, reply with:
->> #syz dup: exact-subject-of-another-report
->>
->> If you want to undo deduplication, reply with:
->> #syz undup
+To keep the fix simple for backport, stop discarding lazyfree THPs at PMD
+level instead. try_to_unmap_one() splits the PMD and discards the folio at
+PTE level.
+
+unmap_huge_pmd_locked() and __discard_anon_folio_pmd_locked() are left in
+place, unused, to minimize this fix for backport and the invalidated PMD
+approach is planned as a follow-up series to use them again.
+
+Fixes: 735ecdfaf4e8 ("mm/vmscan: avoid split lazyfree THP during shrink_folio_list()")
+Reported-by: Kyle Zeng <kylebot@openai.com>
+Closes: https://lore.kernel.org/r/20261009165214.40212-2-kylebot@openai.com
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Reviewed-by: Kyle Zeng <kylebot@openai.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+---
+The proposed fix[1] requires additional arch code fixes[2]. Disable it
+first for stable fix. The function will be re-enabled along with arch code
+fixes.
+
+Link: https://lore.kernel.org/all/20261009165214.40212-2-kylebot@openai.com/ [1]
+Link: https://lore.kernel.org/all/DM0II2QHWWS1.2RXEJXC8S0101@nvidia.com/ [2]
+---
+Changes in v2:
+1. added more details on how UAF can happen.
+2. provides more details on why the invalidated PMD approach is not used.
+3. explained why unmap_huge_pmd_locked() and
+   __discard_anon_folio_pmd_locked() are left unused.
+- Link to v1: https://patch.msgid.link/20261009-lazyfree-stable-fix-v1-1-70997958ef8d@nvidia.com
+---
+ mm/rmap.c | 11 -----------
+ 1 file changed, 11 deletions(-)
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 805db93fe0428..1131b76bbbc28 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2275,17 +2275,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 		}
+ 
+ 		if (!pvmw.pte) {
+-			if (folio_test_lazyfree(folio)) {
+-				if (unmap_huge_pmd_locked(vma, pvmw.address, pvmw.pmd, folio))
+-					goto walk_done;
+-				/*
+-				 * unmap_huge_pmd_locked has either already marked
+-				 * the folio as swap-backed or decided to retain it
+-				 * due to GUP or speculative references.
+-				 */
+-				goto walk_abort;
+-			}
+-
+ 			if (flags & TTU_SPLIT_HUGE_PMD) {
+ 				/*
+ 				 * We temporarily have to drop the PTL and
+
+---
+base-commit: 8b38ed9ab5b09c8ba168cbcc49524e9b380ee5c4
+change-id: 20261009-lazyfree-stable-fix-67712b2049dd
+
+Best regards,
+--  
+Yan, Zi
 
 
