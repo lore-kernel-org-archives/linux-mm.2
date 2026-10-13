@@ -4,109 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CF37CC6B08
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 13:14:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34C8CCC6B03
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 13:17:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A303C6B009F; Tue, 13 Oct 2026 09:14:58 -0400 (EDT)
+	id 330DE6B00A1; Tue, 13 Oct 2026 09:17:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A088A6B00A0; Tue, 13 Oct 2026 09:14:58 -0400 (EDT)
+	id 2E2236B00A2; Tue, 13 Oct 2026 09:17:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 944F06B00A1; Tue, 13 Oct 2026 09:14:58 -0400 (EDT)
+	id 1F86D6B00A3; Tue, 13 Oct 2026 09:17:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 764916B009F
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:14:58 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0B4E5120A32
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:14:58 +0000 (UTC)
-X-FDA: 85317648276.07.B06517C
-Received: from mta1.migadu.com (out-219.mta1.migadu.com [95.215.58.219])
-	by imf30.hostedemail.com (Postfix) with ESMTP id ECA1F8000F
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:14:55 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="WsU6N/hc";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.219 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F07956B00A1
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:17:54 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 860931A0CD5
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:17:54 +0000 (UTC)
+X-FDA: 85317655668.27.7E2AB96
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9C8A540002
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:17:52 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i0JfCusr;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791897296;
+	s=arc-20220608; t=1791897472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WLXzjvxcD9/EilXhK4jHrL6cayflPGxzf+ZkJwMpjEg=;
-	b=xydJlhuvM/3/gLqKxZ2NnOWaCTKFLDmLTKDkcgDPSdZCv8Y8ZJ2GHh4zDAKjVPv9zN7Rqr
-	z0MVRkcdj6p2raBOcGnOSOBtGj4oL03KpVGXSN0kEMDoSzSXCqvWvRnPIi6ctFWJhZbYw4
-	YW8IW0qdFtF5mYjUB2Bp0hl8CMRgI4A=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="WsU6N/hc";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.219 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	bh=IPrWbjd6nlCGQgcl4vkfUhJWd2/tw6kriYkWa0oA5aA=;
+	b=rVFZQUpm2kOWLv0C2FF4m7ibmRhx6RsgzYcTf1c01EUQtUA4fP65uJxiv1x2WdpuQPQU4/
+	l/4hKnDCZ0mGa7Tva9ERR5oYbTaraSKrtwh57za4TaqaS8WK1LhR6MH0fgGR0+5bX4zdlj
+	8VvPsxBzSB0Y7tWC/Lctxdzue9OSbDs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791897296;
-	b=Hn/yq3tulx+mEFDsyb1NIbqnV52jt/qO+UCado7YrNzeF7tR9aj5BVwzKato8sHQrd+u+y
-	ejPQW/l47c9rPY/jolSt/Bxsi9dAlV0FkY2Vv+RoW75O/59196OK7n8uAHK1QsEddlwkt6
-	6bdKXiulqY4BNeojJFxhgWkRCDNOxXo=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=vBSg1QkKVy4BttTL6yPnGCNW6hVkILXIMHPxGW5nELA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791897294; v=1; x=1792502094;
- b=WsU6N/hc2sC7uwnFSTAPvEc2meOej7IlBokFEtkZr0E2eZ9tAXGEGKLM7D+PiTfg5qRWzAHV
- FFyeQmYXM/uH7Dau5BMnp4q1jrcfcho5U+eg5Iwk1HS0rsdIsup8sa9lTkDGySG7l9AdnAiNb/O
- oTUKe8GoFXySefMAgnJ/q9Vc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 208741b0836346c2;
-	Tue, 13 Oct 2026 13:14:54 +0000
-X-Mizu-Trace-ID: 208741b0836346c2
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dave Chinner <david@fromorbit.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	linux-mm@kvack.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	bpf@vger.kernel.org (open list:BPF [MISC]:Keyword:(?:\b|_)bpf(?:\b|_)),
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH RFC v3 7/7] mm/vmscan: pass scan_control to mm_vmscan_balance_pgdat_end
-Date: Tue, 13 Oct 2026 21:13:09 +0800
-Message-Id: <20261013131309.2790253-8-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261013131309.2790253-1-ridong.chen@linux.dev>
-References: <20261013131309.2790253-1-ridong.chen@linux.dev>
+	t=1791897472;
+	b=n/hwvZs1JVH8LFiYr2NKA+DZvsyfVFL1NNcjWOgiQlAID522HiBlWWvrQXEm9VG4Pi/jLL
+	sqLKybRh/Mcp3XERynjjEcGyYlgOJRZyEwZcuKAlfL8/TZOmMYPbYkFzQk2npX21UD+ThD
+	9bBtWe2LkwHJv670G/mXBxZ6BeB2Grs=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i0JfCusr;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BF9B643CE6
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:17:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5E01F008A0
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:17:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791897471;
+	bh=IPrWbjd6nlCGQgcl4vkfUhJWd2/tw6kriYkWa0oA5aA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=i0JfCusrums781dzuimaRkDiw69YSLDenNcPkMtStbdprggrX8A0gZmpFPim6Kx3r
+	 nyWF5cYYX3aiwI2UJ5hpkmXW2KRzNQ+StdA7uf1L2Zh8GgxpMWjzZQHkWxcYajVV7g
+	 9vuvFCLqItpCWOSFPxBXdw/fqbRRC5N/OGYBIeRJpAM//sSzhSc4CCiQywUwI36qNI
+	 YRdTVuWG+BQHpWsu5r+yQqP54nZlVAzUR4wzfS4A7shpCmGLkiBfU78RNy8iNa1sci
+	 giCVODBBZe371VXgAk+qdMIByl2x0sKuxXfwi7OJxsA8zl+cky6p4G+ajlioLl1846
+	 ysGRiJEjz7cSw==
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-93e5f819884so189370985a.2
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:17:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByO5zNc8zXQUqyNs50H93TwmQbDcLX0t9eWDzc+55ssEF+5vc4NtBDH9ctnh+nwL8mhhjHfJmNUTw==@kvack.org
+X-Gm-Message-State: AFq9FYIZ6k1N04LheeASeQoIo6RZPUAVriczrr669IWveJ1fVW+EJt48
+	iBdLGCDc7xA2/sE+K3y3eJZkCaxWJ6sJZkqgpyraUrUsZhmVp0g8xAybauOvMMI9DmB8XLv1A7Z
+	uqztMRg3/24GoRK6IyydoUW1zT+tviXg=
+X-Received: by 2002:a05:620a:6487:b0:93e:4c1b:a06d with SMTP id
+ af79cd13be357-93ebd1bac2bmr2200083985a.20.1791897470973; Tue, 13 Oct 2026
+ 06:17:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: z3egkqrq6ianwonfzr35sj7y5kmgm5y6
+References: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org> <as4qKLx_XwQ6qY3p@thinkstation>
+In-Reply-To: <as4qKLx_XwQ6qY3p@thinkstation>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 13 Oct 2026 21:17:19 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y5j+p0-VdEzpnS-Q31vhvBZRa96VJtA6+HyNj=+r+Ufg@mail.gmail.com>
+X-Gm-Features: AclHuK9MQ_S043rSI_HtPCWrZsAEX4W_aIKduLBdZpTWuX0GQiW4Y22oKWiSD_0
+Message-ID: <CAGsJ_4y5j+p0-VdEzpnS-Q31vhvBZRa96VJtA6+HyNj=+r+Ufg@mail.gmail.com>
+Subject: Re: [PATCH] mm: fix address wraparound when scanning large folio PTEs
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Ying Huang <huang.ying.caritas@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Chuanhua Han <hanchuanhua@oppo.com>, 
+	Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ECA1F8000F
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791897295-437830
-X-HE-Meta: U2FsdGVkX18t3GOIvjFNrtQCQcRsfja6ZHLWN3nYLcJAr93ME2HfgFat/hLeOPg+0pF8VslCGdtXe9jYirMxAUlQucO7EBl4FGcbEOq+sopP/pdnry51539yFUb25sjk3teEFeXeesqNXrUGlpg08X+5CLUrtoSAMH5S6IFB3IGpmcmW6rs14YHiTzOQe5qJZvFjmT2cGAvU2TF8ZjKQnShjGFBog63k2z6ykR09cdFwLIDbJMwnBM+W+G+MDkl/m93VD5LgzlUxadvanHHOxk7yudh21+Nj/nlI/y6yIkCYEI3bf3RCZiKZgbraU1IBjU/hdfA6H9rPz8XnPG+AKTcFcNZjf/+o9LOIdMfloqyQqTgGkmV+tWONzjqEYapcNdAj4iRLeb3YDOC0o7JDPDWH797uxOPVLd9JR7JHh5XsojGmw4o7Z/cy2bDGWTu+Xv8DSq8yNq0zQxuCC71/wu6AdJN/XXcfetxBmdpkfx/czMugZg7Zg0V20hQnXjBoWF3AKnz0olKudTvkMKYcGEH4oH6nHy5809FfnhgbYAoLvaj//tPPVNTCj9u/U/cbl1rr3UboqnNoUKBC/L6KFWILB7AmGHT2KPLEa8kd4rN+6ZG6R5+0Sm4QeTuwt8mMBURtQlexNHlJhCUn5uGP1wJOKWyEEuOWOGtV8A2AKKsDDGkK2GzFQGgcNaOTYxHH4+nD9Y+0A+RDbYWsGG8DCx4cw5q6kxhMZOhIUTySEKmVH9t7cSIepnYSp8ZDWgy2M8YIZqr5g31yvRx8bpJiik3hXzeSRICbYcv7wbWOyeDwh75JdoaS2Iruyd+Q7rsVIg9toNPNSZrmcVp0/WZ8LjYWFhXLcVOHX89ZdpJn51JBTQ/WV6l9SogwrTk28xJaA8bOI+0jZe4eTJSKdXEfpdcN/LSby2u/0X6VAIt57Zcqk2sMdrFWQb8aS6qW/Grg5SxkULq9LfCEwhQoNyE
- cAxitNS1
- t2jnm5hWy8psAowZGNdJ7cSXNxCLfsyTQonQS6d56yBw+q9omjtWwnSrV+vRYkXUA5I3e8/CqlV07zBsfzcVe60nvhpsPDvbsuSMS+zG9Y5iX9QwAZHeftxgHbmGpr38VHXpOXgNOVd7mWx9CQwx1M87ZVR/u4v4F9RHdjOLl0TS8nKgwEx0RoOarC9lAZYfmmCIDXvK+jJ0HCwzwFwlVrstdA/XaYvzE1V7UHSRSrQbTBIH730/wnYQslQJqmvFxVDg8YODaOtzeFZrGH8FxaDXVGOVQeNTbpV0OAaUnyzjFr4lnfAZxfOMrqHxYV0Rt8zFQgjz3vbzIHUFYsXePKFEV67nmH//kJMC5n03ISBboIU+74leXqr2t5SwVrEOU/Wcvd0QDPcIqkEScsgS89LY0x9joAGxJQdtXA7UKnxjS8Qn/vphspNPQXHoWCmT9FoFCoiKD2Vv9g7ChO8q7nW9cF7U7wjXPHKhxg2b+WptDcVwdeHRf+Fl0sVyRDAz2wJce0rlC1/njSmjkei2mR6qTar2yrwypTQrOsahQNqt7Uoj2X2pUmEpb7yTg5zntKH9M8a35ie8dvZ/hlS7hjO17E2KwkshjYSoCOpbjVa0OizT3kNzyOhC08Uc+akUrRM5Uifl+QP0Ea3Fw1ZFpp/+RvV7hXYRO/DiLf5GEOEE6ckAp61oeTWgWsVMuGJBTW8DESpa1W1RC0elHbdn5REJjhZh5LF+Ng7GgPZzsl+lFnyQKxitQuiYbk1i4iSnuj/9tMZkt4STChz7tDjrdWwFMAm8RQLheM7hweHAkkIs4SV4JRrRhkL8ug0oc/ZAmr/tcCbgy3dG7MeBNj/49yeA50qtm9xZfF8abQG9GuyAwoTswoDFZHEFZTBNX4O6xnymuwuw275gqMhADlcKKUpJueeJzG1DtFqVroHUs/MGAXn8p/AD5zTpl3IMY4D7AoKoNqDLOHNtMtcxEiLUq7jWbfAXo
- 6m/SIJWb
- mFhZAGx8daHYEAEkTwtS6ZvogjCkCN5chVMG2Y5Y/eUHJbsrV1zdecY35EC7ug4yH17y/AWiBao=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9C8A540002
+X-Stat-Signature: 6ia9cfc16cnb9uoxy5fyst76urdykbm8
+X-HE-Tag: 1791897472-660736
+X-HE-Meta: U2FsdGVkX1+Y/Wmyf7kAVRcSh0RlQUYacrJ3pjSHcWq1L3xi1UG53sIthnJqqw2GKJ9/Osw/p+IYajGPoDxNHmdeuaRo2MKnmN51lvOfcfIKqhLeYOQRi6lxuesT0tJ0ayNUraoXnXJpe9txDQJsoVVbQZo5FQQezjdd3NA4gVFgKD2yzQfHsP2IM0joI59/MkcwOulYENBI+I+u8+bJcS6hHylYCNbfUsjm+VDLBLsq30zzbFRY8g/ITYyWZ9vFYaSje470F6P6Ha4jXK11A4tkZl1DZLyWrrTCe1d5LfMPW3JbQRFozYcxdc369wWfTVHIMVcfZ4Vg0K+ED563KNaOJGeg4FrMmyepQCVCS6uyQgKwEzyp9eVYAoEAC1se+tX9Cj7bdLLTkkHdCrP7l8V1NOco/qcsRanIsXd/VQa3ynj/lp1hGAtvUTj8mJrZaJLXTPqqsbp4WBY+wePFlu+RGhb5HKRS1GXkUnouJHvD/wda6aDmSzb97ZKvGQMJyeDV8dpG67+8UWCkDZ0ASMUekg/VX6obMzhcniriMX8SDaVuQEu/F8DCmeiwAEsZcjIFOLs05wjgFiUs6lI9C3M35dBsWzh/L6BfQ2GstLxO7qNEqWN7/fGV+F6aUNTypKtgOOc80i/wWQTqi0AoJpVIW/f7y89X28FL+xueyzFoZZRCk47+zY8hFgBqjjyLcGTX74U1Pdb2eXzVZIqIJ/1fdUWPTuvzASFtZEmfvqs82ntUaNQ7D4MB4tKgJVGJXGnP6A32BEAn9yhBxsPrljPG7ohn9dnO2rpo0z4ScsjTwf+bsdoPIwE95Xz8+BUeJn0vnDaj/WrLZHiv2EKqr329wtT0flnufZ2nsEsDG57zky0qXGwLEAPu7AogS6Mcpr0jtvl6QxWD1rc0NxI0ZwbmKdGbHdzBLmWjsOyxiRhPXlmnvKXFnIUuLttqV9dmHALgZVpC8YGD13OK4ZL
+ RI23eHY2
+ Kcmk7WhvveQRD6XT0BQ0Z6H92O2GvRLy6O0VxS4EBP4p39pg5M65eUKTwqo99o/+W6CsLzltGnStjyBdqtTeiSZtd56LQQJpstFbf9OfA5DhzL5b0Rs+hCqe1rFf+xWataZu5tFcRqAvE2yGm4aiEEEaOuH6l4pE9Hdx09ENPfqeO+lOJlKSCA5s6cJJ7pcZaOGShP5YeJen5VuL1hoMo2klHBh5N9FRCQO0Rp6k6grO5AJ9iQzEB5wAfnRXtAFaxKYs20giTDdVq1iFRMF2gvJzoj+oVAbr277/opWZDThNQrEP9Xav6oN1Xxn7YlIM0HVoRpaztnWcouJLrUiFhROsVU4pFzwKB9Cs3C4ZvUZozqeIh8jbe18H0hfNX49FoPBOmO8cmft56FB5AJe9vFbU8+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,72 +107,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+On Tue, Oct 13, 2026 at 8:57=E2=80=AFPM Kiryl Shutsemau <kas@kernel.org> wr=
+ote:
+>
+> On Tue, Oct 13, 2026 at 02:30:37PM +0200, David Hildenbrand (Arm) wrote:
+> > numa_rebuild_large_mapping() and do_swap_page() can be tricked into
+> > generating an address wraparound, crashing the kernel. All that's requi=
+red
+> > is to map a tail page of a large folio close enough to the start/end of
+> > the address space to e.g., make
+> >
+> >       unsigned long addr_start =3D addr - (nr << PAGE_SHIFT);
+> >
+> > to wrap around.
+> >
+> > Let's fix it by providing a better helper, folio_pte_scan_range(), that
+> > takes care of staying within VMA and page table boundaries while
+> > handling possible wraparounds.
+> >
+> > Reported-by: Kyle Zeng <kylebot@openai.com>
+> > Fixes: d2136d749d76 ("mm: support multi-size THP numa balancing")
+> > Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swap=
+cache")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> > ---
+> >  mm/memory.c | 43 +++++++++++++++++++++++++++++--------------
+> >  1 file changed, 29 insertions(+), 14 deletions(-)
+> >
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 1f5d5f7d39cd2..a3823010aa981 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -4933,6 +4933,27 @@ static void check_swap_exclusive(struct folio *f=
+olio, swp_entry_t entry,
+> >       } while (--nr_pages);
+> >  }
+> >
+> > +/*
+> > + * Get the address range in which a folio might be mapped, assuming it=
+s pages
+> > + * are mapped consecutively and the folio page at the given idx is map=
+ped at
+> > + * the given address.
+> > + */
+> > +static void folio_pte_scan_range(const struct folio *folio,
+> > +             const struct vm_area_struct *vma, unsigned long addr,
+> > +             unsigned long idx, unsigned long *start, unsigned long *e=
+nd)
+> > +{
+> > +     /* Stay within the page table and VMA boundaries. */
+> > +     const unsigned long pmd_start =3D addr & PMD_MASK;
+> > +     const unsigned long pmd_end =3D pmd_start + PMD_SIZE;
+> > +     const unsigned long lower =3D max(pmd_start, vma->vm_start);
+> > +     const unsigned long upper =3D min(pmd_end - 1, vma->vm_end - 1) +=
+ 1;
+>
+> These -1/+1 gave me a pause. I guess it is for pmd_end wrapping to 0 in
+> the top PMD? A comment would be nice.
 
-balance_pgdat() passes sc.order and sc.nr_reclaimed to
-mm_vmscan_balance_pgdat_end as bare arguments. Pass the enclosing
-struct scan_control instead and read the fields out in TP_fast_assign,
-consistent with the other reclaim tracepoints. highest_zoneidx stays a
-separate argument: it is a balance_pgdat() parameter, and
-sc.reclaim_idx may differ from it by the time the end event fires.
+Will pmd_addr_end() make it better? I mean
 
-No functional change. The tracefs event format (TP_STRUCT__entry and
-TP_printk) is unchanged, so tracefs-based consumers are unaffected.
-BPF programs attached via raw_tp/tp_btf see the new TP_PROTO and need
-to be adjusted; tracepoints are not a stable ABI (see
-Documentation/bpf/bpf_design_QA.rst).
+upper =3D pmd_addr_end(address, vma->vm_end);
 
-Assisted-by: LLM
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- mm/trace_vmscan.h | 9 ++++-----
- mm/vmscan.c       | 3 +--
- 2 files changed, 5 insertions(+), 7 deletions(-)
+nop?
 
-diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
-index 96e41f444924..10b3cda1c435 100644
---- a/mm/trace_vmscan.h
-+++ b/mm/trace_vmscan.h
-@@ -124,10 +124,9 @@ TRACE_EVENT(mm_vmscan_balance_pgdat_begin,
- 
- TRACE_EVENT(mm_vmscan_balance_pgdat_end,
- 
--	TP_PROTO(int nid, int order, int highest_zoneidx,
--		 unsigned long nr_reclaimed),
-+	TP_PROTO(int nid, struct scan_control *sc, int highest_zoneidx),
- 
--	TP_ARGS(nid, order, highest_zoneidx, nr_reclaimed),
-+	TP_ARGS(nid, sc, highest_zoneidx),
- 
- 	TP_STRUCT__entry(
- 		__field(int, nid)
-@@ -138,9 +137,9 @@ TRACE_EVENT(mm_vmscan_balance_pgdat_end,
- 
- 	TP_fast_assign(
- 		__entry->nid = nid;
--		__entry->order = order;
-+		__entry->order = sc->order;
- 		__entry->highest_zoneidx = highest_zoneidx;
--		__entry->nr_reclaimed = nr_reclaimed;
-+		__entry->nr_reclaimed = sc->nr_reclaimed;
- 	),
- 
- 	TP_printk("nid=%d order=%d highest_zoneidx=%-8s nr_reclaimed=%lu",
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index b3278dbe47bf..561e14dd490c 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -7403,8 +7403,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
- 	psi_memstall_leave(&pflags);
- 	set_task_reclaim_state(current, NULL);
- 
--	trace_mm_vmscan_balance_pgdat_end(pgdat->node_id, sc.order,
--					  highest_zoneidx, sc.nr_reclaimed);
-+	trace_mm_vmscan_balance_pgdat_end(pgdat->node_id, &sc, highest_zoneidx);
- 
- 	/*
- 	 * Return the order kswapd stopped reclaiming at as
--- 
-2.34.1
-
+Thanks
+Barry
 
