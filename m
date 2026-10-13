@@ -4,84 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBDCACC6B0F
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 21:00:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA3C5CC6B12
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 21:01:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8DB46B008C; Tue, 13 Oct 2026 17:00:34 -0400 (EDT)
+	id D2B856B0092; Tue, 13 Oct 2026 17:01:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C66896B0092; Tue, 13 Oct 2026 17:00:34 -0400 (EDT)
+	id D02C16B0095; Tue, 13 Oct 2026 17:01:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA3786B0095; Tue, 13 Oct 2026 17:00:34 -0400 (EDT)
+	id C41256B0096; Tue, 13 Oct 2026 17:01:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 976EA6B008C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 17:00:34 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9EA4680208
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:00:33 +0000 (UTC)
-X-FDA: 85318821546.07.538BFD6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B2AC7C0006
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:00:31 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQ1WC7nM;
-	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id A67456B0092
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 17:01:10 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 284218020B
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:01:10 +0000 (UTC)
+X-FDA: 85318823100.10.B724C5F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2AB5C40006
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:01:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ze+YyELs;
+	spf=pass (imf12.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791925268;
+	b=urDobsIJG1j3qTCTjrmeBZwfRPjTwvIkg/Zanta7Oat/N87GsAxyHtFwq2r/Q+QPFw2Hk7
+	DZ4ZQE8YU3+z86OCGVbgiDacaPWFZl8RpMljZwmDWZCg6Aa5RgF6JIBhzNjqRqPaxfa0rW
+	e3p/LTAuGUmmdQ2XyXmXHx/ztiMGUHg=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ze+YyELs;
+	spf=pass (imf12.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791925231;
+	s=arc-20220608; t=1791925268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1eJZLXSPO2QvZyB5xQJce+abk3qpL0hKOdB+BIHoOX0=;
-	b=YwowtEIBke+oLS8MLsuOtFpyKLpFrjs3l3MngY5qe5vCJcYv0Bhyu3h2UgUWpAXrfWK3SW
-	vqdnogBRMliv3Y/TGVMqeKutC3EQdIDefvh+//pnAWqgyB976FNZBX5rjhQRNc82JkSype
-	RR3m7j35yeU4TLm8DglTxJud3vfKRkE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQ1WC7nM;
-	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791925231;
-	b=WzeoEa20m2jeNuaL7pmLPdrvqAcykVdDIpvxSrj6QnroV/nSUSUIv3RyB6Iy2OQbqGLt3o
-	WBBrXN41nAHNmTNM3euGcaPoNM70dEAmM/fOzOxM0x2EmRTsxCuh+UdKyIZ6lNWnVYveH3
-	gHJKr5fhBkG4A5tYM2v5U/ubrDU8Rgg=
+	bh=otzqAwHTarH+nPjYAj7PC0qYusRb59jP1GBa3Q2bM/8=;
+	b=lJaBo1X5Sp3S1dWvGLfoAeF5k3ahoOBgx3McsAwdPd2hmAs+Rpr2J0vLYpBdbXJAImSfH3
+	Kkf6kS0aPNXaPM6U0DnZngAhWg2zxATm/GDYG7wfzB3u65RUW0sGn2LR26fpGIcZ66wn/Q
+	JoC3BXQPMyjzhG973tKFDXf0QgNQ7Lc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ABAB043E9E
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:00:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907271F008A0
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:00:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9BE4A6022F
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:01:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B58B1F0089E
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791925230;
-	bh=1eJZLXSPO2QvZyB5xQJce+abk3qpL0hKOdB+BIHoOX0=;
+	s=k20260515; t=1791925267;
+	bh=otzqAwHTarH+nPjYAj7PC0qYusRb59jP1GBa3Q2bM/8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=IQ1WC7nM0pZVI6Tj7H6gP/mQFDhPwEKc03cSJODDkpo68c0MSXQHb/kS+cU95I6Ig
-	 4EVGxC3D0+B3W44j/9XjpnMM8CsUo8DcfLz3HPhPwKFeWOTHaQ2rEgTa0sZM7SNsBC
-	 ZFT/YIF7MYqeHX5aNlYJetDfHNIq/1uVvxQ4UMs2WRtSUzARolyRXlrv5WIK69BS4Z
-	 mUeQvIKXspWdHGGNOflGNIseRHzbeNSJgMeXROkkkXtOQWXqOSozot6/oXaD9gSqyV
-	 J+YVrKT2E2hNivnWYkz31jsH3Dh6QiLq3P2m2KxHpCbDG0Af0sw5diomqaehr1rwqw
-	 DBga817lt3uRw==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c2e7496f947so557193966b.1
-        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:00:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzJ+nEqbWT8oT/IT8/mWdfNS/05MamZOH1sNVaQqrQv21jdLRi1mXCW+j5tYJUZ42jBA9DMxEFEqw==@kvack.org
-X-Gm-Message-State: AFq9FYIcEwONFg1Ein5URdP82QmxsRZf8WrTiv0d7xYg3PIO57x408B+
-	sd948eIvHI4B9QXkGE3a3Sz72rfpGgz6+f3r503kXMK8hQD4t3ll8+ObVtXv5DWf8dOY2cNBdh/
-	QYujfr7VUHA96e4jrwnWZUXZwgZ0hJVw=
-X-Received: by 2002:a17:907:7fab:b0:c26:1691:b368 with SMTP id
- a640c23a62f3a-c31a9f6b728mr1375436066b.33.1791925229423; Tue, 13 Oct 2026
- 14:00:29 -0700 (PDT)
+	b=Ze+YyELsWXzooRsH8Nwdw8sHpfqQhqX57KvCfNiePy+9l8l0oZs5QDWKMeOOMtJCZ
+	 cp9PdgMMnYugE36LIjYfY+bK5/6Bat85gwbdTJRibl+Uf2I9JiUQl/xtsQ3EkHAtAv
+	 w0chzgxOlJL+dtI5vxqJgRiychRWf+GrCt6N7MQs4rOflSwAJEYDAZrrbZpyt4mtvS
+	 9JYZsHtCMHYZ1njOEW7iGJS6evqzPdlPDMv8j6pcIRQCipPYeF3ZDIyUGHukAYefim
+	 HS5s3JwhamteA4n2ZcMBEwFVohicWzhIZ/A1AV4nHmaof/WvK5FcN/jbAs1f5tGVgL
+	 MpkjoRUKLClrw==
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c247f6687dcso525801466b.2
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:01:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBx2g9Z+/2A/1wwv8Lizx6y2gjzJ/Rzt5onyt/pM6c1kIx3tZI+m3JBNMAgUtueiAYYv6DH1RGtiNg==@kvack.org
+X-Gm-Message-State: AFq9FYLFbxLjmkbF8InvPcDMBE/P0ZPb8V+9wfikyHiKQL1eEA5lZ+Fc
+	wxVsAIN3qLMRck80WvU5eHHwYhuXTE+McDOHgRLDTP49VKPtoZhda/8pLuinObeEDSZnc8sWSU+
+	xcEAlyGiNS0s54cHl4fct3gl/PuMKn0k=
+X-Received: by 2002:a17:907:7b8d:b0:c2d:d9f4:2c85 with SMTP id
+ a640c23a62f3a-c31aa0c129fmr1295928366b.41.1791925266214; Tue, 13 Oct 2026
+ 14:01:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20261013151007.2093943-1-usama.arif@linux.dev> <20261013151007.2093943-4-usama.arif@linux.dev>
-In-Reply-To: <20261013151007.2093943-4-usama.arif@linux.dev>
+References: <20261013151007.2093943-1-usama.arif@linux.dev>
+ <20261013151007.2093943-2-usama.arif@linux.dev> <CAO9r8zM-utRFYGBfaEb=89LWM0DOKc8dywcDLSb6L7f4c80yuQ@mail.gmail.com>
+In-Reply-To: <CAO9r8zM-utRFYGBfaEb=89LWM0DOKc8dywcDLSb6L7f4c80yuQ@mail.gmail.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 13 Oct 2026 14:00:17 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMVULy2B1YNK7qNzrH6idiZe0RpkW97OV2ux0tQTQWPuA@mail.gmail.com>
-X-Gm-Features: AclHuK_LdHV_et7vmuF6kLVqnUbLnv-N7hBpQnpqxarZFOSSyQ0eEVdNmZzRHFE
-Message-ID: <CAO9r8zMVULy2B1YNK7qNzrH6idiZe0RpkW97OV2ux0tQTQWPuA@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] mm: zswap: use stack requests for synchronous decompression
+Date: Tue, 13 Oct 2026 14:00:53 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zO5HgtH0-jgCrj1uyv9fjUrHCxSZA21mWpDVU2B7qS7Ww@mail.gmail.com>
+X-Gm-Features: AclHuK81jQ6rnaJmrP6r3K2lHMSwKc6BJEWDK7sFlCmG2sgXzWUx5CcLolataic
+Message-ID: <CAO9r8zO5HgtH0-jgCrj1uyv9fjUrHCxSZA21mWpDVU2B7qS7Ww@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] mm: zswap: use separate compression and
+ decompression requests
 To: Usama Arif <usama.arif@linux.dev>
 Cc: Andrew Morton <akpm@linux-foundation.org>, chengming.zhou@linux.dev, dsterba@suse.com, 
 	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
@@ -91,14 +93,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, chengming.zhou@linux.dev, dsterba
 	linux-crypto@vger.kernel.org, kernel-team@meta.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B2AC7C0006
+X-Stat-Signature: yypwe393ep8h4jn1cohqtdr1zh1if4bo
+X-Rspamd-Queue-Id: 2AB5C40006
 X-Rspam-User: 
-X-Stat-Signature: ztoes76m7zjrp8hygpj9m5uqjm3oe4ak
-X-HE-Tag: 1791925231-235946
-X-HE-Meta: U2FsdGVkX18KUWZ2VZzqbbLYOrbb6QQxVq0stEEmYBeNZ3bWSKW7qqXAm6WBjdOPTJ0yJWYSzD3tYOKkOB1Nnn9q/kYbSMF16c5rwGN8QJMoCS71BCcLUNic3j1CdJcLAe8nmte0CyG+wAUH+TfdkXr164aADyzFSiBLb1+2irVz2ibCrxb01rAVQJKTTESE4vN+96T8hLpkKDGAw8ET7R9hADAVnB4nZp7l/3X1p6p9UycCfzH2lz6+/4JojZhTs2HJAAV0hsw31WHGxUtzy3+C1uO/RNak9cqeYqhVkPR4CddVE62LEs1TEE6Sth/v3KtdyZ6bgdxPlLZ/qdXv5jeK9elw9NqbWFRSvP123t+cxSqmiAnfEN6woe/8CvYxoJS2Eheb++wlhAk3wwwVcAXL/fp6nVghgS69q+3EDf76Xl8TEBfG5uqLjFQxbMEmCNssUj9ofViFSdT2Tlt5PChk5X6mg7fVJ9EhvBm8wRyyyPDPfDlsKUDGOk/z4duslwFVa7aaJi2eJ/Gd8MEn0+90PkJY/p0/c6HASTPI8zDXgZ+vCQhF7yyaEgus9FltnyEr2NXV6MG15cQPqi5preP0xidtjc1PzLs+TSf4Q70BXRvhCYFwpyZhYxQew3zCUHBZZmavq4Ams48HFcXv+IvL4kxz9YG0PPpLwteLwTBMKGEEgFKIV9gxkoENtSPrKMOquwBTJwkYzVJbv4lIyMZdqz+vYda3mJfu6cZDf2J14ZWevCRC7NjmsUObvePsZpoO5g7UoaCjoppqxlhmqnmmSJukkXBNA91diyZRIkOi872EiriQ8Ns1G8sbT/vqRVHjAr37X0bAVlH/YupP+bIdWaYUPNRK2fT5YzPveUsT0tV5KkbI35S0fd5ptwcHWaApLhRAN/3F04dd+ahUt+PL129WKd5vfNXnG31c8IlpzRlfLnhOLwJ6lx9BfIFh+bk9i8YXx2YFW+Chv72
- xOHgrUB2
- xTqUMZMerR+3EeJilHlBY0NAbETXb/DoSe8K/PHVfyoQ7GwjD3FD4UbNH6oc2GR8/97lxHMW0MI3vtC/VMO1/90sAZ+iXkoTkUEQjW4L93oMxbszT9kGEu01RbRNn5F15ammDjxXz1vWzcjPQVB9bQ2ZUivUA68YGi9DY7FFvjElWPooWO53W7l61lRwWiPBrnnnMmuhtb7SaCZS7o4/oRxfAvtGPvqwjwuj3U5SiK6dpfCUQq8gSrN1lG8NyYszXota7o4mK+CWschblyuD4S7rmcTfB8d+fFm8y+jNxtNxByIWno2enDIdP8iVb1SmHsPnNCXYYncgJ6nQ=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791925268-607757
+X-HE-Meta: U2FsdGVkX19+0iKp2J8cOavcfyE0aJtQ3TkbggF98U4JV3vBneWEfW2jMmh35K8jqZzNTHJTZmH3pAZIYHk9razqnmUALKrymFLDIh8OUPLbjxHbU6J1C1sihN82tSPbQhjnIBBExVzInb2aoAWJmWqWwhecOGqoC91y90xZ2IPHHsLTO6pAyg4OEV3QluGrOws4OYUvyi8/ytecRboZZ6c9d5Wog/3I2thi0jraerRHkHN6zlwvj141NBMDBwITZi1S+TtONdDiMK1ktrtIHMwCpz4RBcAe8wc+n08rOvgPBa2TJjD1ELTK5rvagHyh8+5XgnIAo0n4YkffAYYrRlJ9l0TW7zBSt3hIZyCNZjhLaipexkkqvu0fP4kRHCg44IY+FZSqCM1dTL4qSQGMIqQS/Nm1FQ8bD4vmF8T7u275+dNcMWtAP/T1SguC6+wH3EI5xBvqFnJh3TKV7V7xIhqIoNzhmbjtaU+jyyhWtKjWJAMr/yQiMs1QyFfYA3MOi1/4xY4nSyTcaaQVlQ4Eq9TyxygyqeTTaTgTceHS6uLTzSQiTxgnuV08q1vSbuWHSc100nIlM2mag6lGWgx/XbES1jIiCrKur42GD0IeDANthmfkfjHJSwG1mrnaol0aUu7dWWvdPy03lMzv3cTxNjUBqIkKtnDje4SCHupoaqh8nbNG6waVZD9jrv9YzveM1O60Dy9wm62FiYKdav526Y2VabxuLKSDCq5a9XxlPEM1bQJsjhjlz9FUCPsixHwoiaqNQXKtrGPwl1zh5pfsoEa4oLle0DIE8qBqzPW3F8jd2akFW0gjIOn8Oy4YQHa873En9CXZesjkv9XVVkA7bavgWOJNW7Qmlze8D3yBxSWLbVKjCWxwbdte9b+ToqOgCFCJOErw0+C6Iyl4o83f6sifrQcPV90Xnw6KgOlZ0FFzgl0Mw/w4r55biHR81ErAXhNLSp1FnBgFcaB2+aS
+ PU+0euLy
+ RKgAl0bC9oYhWI87Q2u3dIuasHgYiO1oQ4t9J358yW/315evBPNbySPjqy/42uApREFpfZ/i9YzvhDuF6ExIf2CqAiE1Wi7JoNIPJbE7tVDuqzFBML0boKXK6LDhmeqXbgjI9pMEB5dPH0oLT0y4B3suUQLcPNQqdeAgvnij1/n+oe5Q9IEFjZT9VnKFgQd4CcYBteosXTF2iMAIQ7rBfspeBMTRGcXVnJzI4Dnrk32JIl8gfWz/wHPNJe6xv+OU+cNLxyKooKVrCSM8qglrQkuMRPv6x3wU3A49LKXx0qKckCSyJGpfePGJEpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,36 +108,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 13, 2026 at 8:11=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
-rote:
+On Tue, Oct 13, 2026 at 1:57=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
 >
-> With separate requests for compression and decompression, loads still
-> serialize on the per-CPU decompression mutex. A low-priority load that
-> is preempted after the codec drops its stream lock keeps holding the mute=
-x
-> and stalls every other load on that CPU, including higher-priority ones.
->
-> Synchronous algorithms can use an on-stack request, so decompress with
-> one and take no zswap lock. All in-tree software compressors qualify.
-> The Crypto API enforces MAX_SYNC_COMP_REQSIZE during initialization,
-> so checking acomp_is_async() is sufficient. Asynchronous algorithms
-> keep the per-CPU request and mutex, which is still taken before the
-> zsmalloc read lock.
->
-> Reading the per-CPU context without the mutex is safe. Since
-> commit ef3c0f6cb798e ("mm: zswap: tie per-CPU acomp_ctx lifetime to the
-> pool"), it is set up before its CPU comes online and is not torn down
-> until the pool is destroyed. The codecs keep their own stream locks, and
-> crypto_acomp_decompress() rejects on-stack requests only for
-> asynchronous transforms, which never take this path.
->
-> For software compressors this drops the heap request added for
-> decompression. The on-stack request and wait take 216 bytes, which
-> makes the load path about 270 bytes deeper on x86-64. Asynchronous
-> algorithms pay this too.
->
-> Acked-by: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> On Tue, Oct 13, 2026 at 8:10=E2=80=AFAM Usama Arif <usama.arif@linux.dev>=
+ wrote:
+> >
+> > Stores and loads serialize on the same per-CPU acomp request and mutex.
+> > A low-priority store can be preempted as soon as the compressor drops
+> > its stream lock, while it still holds the mutex. A higher-priority load
+> > on that CPU then waits until the store runs again, which can take a
+> > long time when other tasks are runnable.
+> >
+> > Give compression and decompression their own request, completion wait
+> > and mutex. Since commit e2c3b6b21c77f ("mm: zswap: use SG list
+> > decompression APIs from zsmalloc"), the per-CPU buffer is only used for
+> > compression, so group it with the compression request. Independent
+> > requests can share the per-CPU transform; the codecs and drivers
+> > synchronize their shared state internally. Loads can still wait for
+> > each other on the decompression mutex, and stores still serialize on
+> > the compression mutex.
 
-Acked-by: Yosry Ahmed <yosry@kernel.org>
+Probably worth calling out the extra memory usage pCPU (at least on x86_64)=
+.
 
