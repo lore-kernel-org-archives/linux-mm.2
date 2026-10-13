@@ -4,99 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C6F0CA9ED2
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 08:52:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6051DCC6B03
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:02:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1E1F6B008C; Tue, 13 Oct 2026 04:52:45 -0400 (EDT)
+	id 6B2616B0088; Tue, 13 Oct 2026 05:02:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF5326B0092; Tue, 13 Oct 2026 04:52:45 -0400 (EDT)
+	id 6625D6B008A; Tue, 13 Oct 2026 05:02:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B32236B0095; Tue, 13 Oct 2026 04:52:45 -0400 (EDT)
+	id 5780F6B008C; Tue, 13 Oct 2026 05:02:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8884C6B008C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 04:52:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 03FA11609B3
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:52:44 +0000 (UTC)
-X-FDA: 85316987490.12.F998B74
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 34F9F6B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:02:27 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B272DA8884
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:02:26 +0000 (UTC)
+X-FDA: 85317011892.19.4243AB2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 67D7220009
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:52:43 +0000 (UTC)
+	by imf03.hostedemail.com (Postfix) with ESMTP id 23F5020008
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:02:24 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bU+MNADL;
-	spf=pass (imf03.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WSkbhZjm;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791882145;
+	b=r+/cbAHHArIU6kjChT6CV6Ym46xRSMs/i3k6bbodWF4JLFaODCGLK+E5dvsUCN2agYCr1G
+	MpL6jtaA3Ck+4AScXlrxDDWFzEEB/wJ5InLsQpQY+mcf8T88Rfc0N+erTAhnjq9btyVXSN
+	sd7NwANgMSumiyDiRYKWoWc60Dm1JYI=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WSkbhZjm;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791881563;
+	s=arc-20220608; t=1791882145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fkY85AEaM1dcKivKhNaNHUeuabYCcoXX8xBxsWbUhJM=;
-	b=YALcPVVYTzABNktVWvvdvJvHLnzj3aeLUcnlTcrlUfydN9QPvkVbK3ZliKU2+i1f6lzBFN
-	ZpfEZEbPYEqHL8AUzAJqegkovBLRltcAxXYIUr8Zyb3SzFGz+jzmZbjj6E45maTo/ZSdcj
-	P8qGI/Qdffb0MmXDQzQ+M38oijzbXbI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791881563;
-	b=P48iDCqmVVVj4Lm937VvhcXgF55v3KDy+cDHJvp9o0gzn2Sh3YdzTd8PF8Emm42oirCYAc
-	t90lj7zwV1dwWLJ0IIzT1pVkIu5tc2X6V8uKv/3/hP67xdqwLpE+h2WhdzlMayaRFDINWb
-	ruVq9sz4dyOTtwcqlYfbT8e6yuedNZs=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bU+MNADL;
-	spf=pass (imf03.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=isgOp/oWK7UgvcDokY0BIJcX1YHTkMKo0hu92B4JBqE=;
+	b=Qxz3jRsDDuJ+SltyilRvdDfOYLwm5/oghxqRfw34Asg8FKEGStNRo4RXLW4WfyCJ3NCSr7
+	HJPBAEt9jniqB1F86sl3WSPT/je227VCfFIsRwTor13rtXDwLFoWNY3Hp/CXMLcBQlqxp4
+	VwxYUGc52+xyezHGerkr5zVdW9S8Fjc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A93AF60A66;
-	Tue, 13 Oct 2026 08:52:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF791F000FF;
-	Tue, 13 Oct 2026 08:52:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A0C2B600D1;
+	Tue, 13 Oct 2026 09:02:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755671F000FF;
+	Tue, 13 Oct 2026 09:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791881562;
-	bh=fkY85AEaM1dcKivKhNaNHUeuabYCcoXX8xBxsWbUhJM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bU+MNADLypUQVfbqs4yErGMSqSx8UTEensTSDlB3hILthlX7jXiysW5XCK8w3Wgne
-	 +qsKvAVV67misGTcQFezprIijSe//cDAi61D+HiH+PrXDz66M+RQgAsyepQqatnOkw
-	 C83dhwA6jl7P3WJ+2YNow3ButEoWQcQrQ381Wo2YqHbIp2FI1DvqBlI7RrrfpxPP3D
-	 3WDNSNVnKR/z/zbtd8j1RgF5SPVBsqTN0aiF/CDe/xhAdL4+Nw2L8Xax6doYzIf9OB
-	 svfE9gigE0RcgQBxJbDc8PiWLnzTi5f1OeCjkCKQRjfUTk1SJmatj/E3sZV6pc5eMF
-	 mAVD56KO7uG+Q==
-Date: Tue, 13 Oct 2026 01:52:42 -0700
-From: Kees Cook <kees@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, Pedro Falcato <pfalcato@suse.de>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 2/8] ipc, msg: Account msg_msg allocations
- with GFP_KERNEL_ACCOUNT again
-Message-ID: <202610130141.E186B6E@keescook>
-References: <20261006092030.got.500-kees@kernel.org>
- <20261006092035.166776-2-kees@kernel.org>
- <asjhg2e4-WSeKuXd@thinkpad>
- <ask5kpMS4mpI8Api@thinkpad>
- <202610092014.AAB20B81@keescook>
- <01c89e02-28e0-4424-b32b-50363e4d2b95@kernel.org>
+	s=k20260515; t=1791882144;
+	bh=isgOp/oWK7UgvcDokY0BIJcX1YHTkMKo0hu92B4JBqE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=WSkbhZjmBqxa/sE2Mnj8bDjz5+8dGlp3i9aHxaj6Eh1hfQ0DAxLPoWWdiZURnF/ca
+	 Tvbld43AOhDlNw9YBllVvmszi7dHcPek92UyqKZQ5o2H52xrnkHnPUyUzTDXKYyNgH
+	 i0a4LNwP7m8WVeUKgeA0cOzJpeOhrIKm2Gkd3T0vDx+8dSeoAuMDXszD3w7bYhbjTE
+	 /ROYm1XgqH1+HjIvKUJTs5jBAfVkmhOy6TB5DUFKovrpNtbOX220LROmoSRL7p03mY
+	 oE+0lCVh7XqFtCADccnxOtMpR8kiH3fyURn5RbjKYISlVtrcEjCoo9x8X28TZqbfM1
+	 ZlVGRj6iDynXQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Sourabh Jain
+ <sourabhjain@linux.ibm.com>,  kexec@lists.infradead.org,  Alexander Graf
+ <graf@amazon.com>,  Andrew Morton <akpm@linux-foundation.org>,  George Guo
+ <guodongtai@kylinos.cn>,  Pasha Tatashin <pasha.tatashin@soleen.com>,
+  "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH] kho: fix global scratch size calculation
+In-Reply-To: <as0UrrAvqjvUPyQx@kernel.org> (Mike Rapoport's message of "Mon,
+	12 Oct 2026 20:11:10 +0300")
+References: <20260922131217.698809-1-sourabhjain@linux.ibm.com>
+	<asC3-4WNiTF3n7l1@kernel.org> <2vxzo6czjaa9.fsf@kernel.org>
+	<as0UrrAvqjvUPyQx@kernel.org>
+Date: Tue, 13 Oct 2026 11:02:20 +0200
+Message-ID: <2vxz33uaj7mr.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <01c89e02-28e0-4424-b32b-50363e4d2b95@kernel.org>
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 67D7220009
-X-Stat-Signature: 9135g9pf9qsh4bj8y8xbxrpxtt5w7byu
-X-HE-Tag: 1791881563-277926
-X-HE-Meta: U2FsdGVkX19nk+WmNwDAaPgjzfYMQGGr33wSWPsKHThKbAc7DuIRSIHA/KWGqUSd8hsDcL01pyK25UYLMuPypiXwAp2XonERUdKKx5YHUQUmw6D4tDh+nRZkGDNTJNH1W1sjVgcZo6meGpsGtGYzeeXgZm71Uma9x2r4nMvZHyNiMQth8f3EkjzYrie7kjn0tGhnc3xLtPFGAsG1e39kWOMk/N6trD/l9aMZ2ZcR7e2DG1sjZQMQyk0npfju38CnwEiJBlSAWW/oxnJ4/aVoYOjQxHpGW5enK6Mst1jM+cyzj1BFwnCnrZJcekqAV7g76+0x/ZA4tBQIElK/f0Ej9SjnRgQilzHiyVCv+qfzmFTt8WQEy7boTOGXN7T9oQ550tfdmTQ0delUQ7Ps26cxodSE2PA0+DZvnsYDB0oRbxvIvREkREjvxhhiqnb1k9UH2ZDVOF87AvxRnkhrZKDGlg2g/YW1/FfwYYj3JCur/BxITq05q46xcY1eYZotpmFZ5uMM1KpDVeHwujCMO0xF2cFP3Wz06NgTOuaEq300QCh39obYk3vQi1AIexjYmgd0Fs+Vy0xJFrxXmm1hkdH4TM7uVoJ5ujRBhDPQKPbMVtUWiOxSDaBMruoaiRuVWr6Iqw9vJ1lRVpaVCO+xzc2tvz/yF2pzX+UkvnSPoNUFv6YAeRpn3lYuAWEbnq8UTFKbMVFB6DnIgqWTrd7G8Y/iuPYtObq1jR881pnlzRcHkYYCVftgkvug3IkD0qTt3okexD2Vt4atjAKbfILozb7AjdNREUsvSOZSds22LjDn9PHlcS7rz2sGgTunZbIRFhvcYr+hSnYKngRVLHhCKFU7aaLdjSvqeb+8LNrCLizgOxzBHOHFV52MfSfClvmWWc8Ah/bhHTEwd2PybIM+dra0m5ELDWhTNzhR4SauMIyS7vOUC6Ms1ZX71825QjgpG5+X3G0dJiAHZmQcuoFa6vd
- AaIYpL5X
- lttVkjvEP8XjsIuYZfovtw1LNx9x3PW961zEkI3mr4KIQ17tK3j8Ew6oL3A/rW61vaSa/jys2ThzpKp/986Lg9D2Cc3FQEb3oqg5+429Q/sOFAz8jA6BbwbiI6zk1MfIdaSv43UH6jlfsBfNN1NQDKC6XSK/qsInDx2aKq2widFi5sxf397MSUMC4hLsYGjkmBQQknBfKqOV5DKga41nrsWMMGzcJjxVTmgeXI15hi7a9v3o7LjoDIF08mhs41hlhpJ1rKN88CE1WgrSx/S/RWchoZsA+kZIm/1rh0U7OGlzTYuo=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 23F5020008
+X-Stat-Signature: yzmdc781t7knpm74qqezueof1z7n7pcy
+X-HE-Tag: 1791882144-597403
+X-HE-Meta: U2FsdGVkX1/9P1gQACDqNoW8kjYEQ+IMMXLzBAzojqOgcl61Ed+m/VmdTxMzKEgHQnu7/709Qh4FPLNFng45WnQ8wc3SMOfcfZR5Oon+/5Kg+zu3d+yNagEdUkLIg+tMrv4EhJFFzI5GzLk7HvpwZ9ugMyYKAq3KY0cfCWyMJvwLGfZBbpe6R3kqrPnKX9n7kwLnGnZSqWmiwyy7uyw+FwMU4LJxxjyxLOH3DIZteFiTAXrl/9OpRaVSJq7hQ4FhYRuBJET5dNvZmt19uchYLT+0qKzO54XekpxnFwmvYKdo0cCWWqOVt6OIBr7K7qSLHb7hU7GJ3cGg0hR+81q598BVmWype9wj9cx5TMIYIl55GZJXNCG65b3bix3GUEv4P5GeKvyPKF5sW5cUeT26I9KyaDurb07EVt80eB1kMR1Q3owxjSWRMabPqwL9VmhbVdJjhD9RwPYT3SLT9Ljmswhkqn6sAjhN9Ku9SR03fe2e7bUeit388odWQB9jcg/81NRAgNzBArFVVhXMiJUHZ41vfkXEM9jcJx/eTszNmoTzAKNFXUHvp4kFqUAkEWq/UNflGKoSmbda954MwSs5Y80/7HGhqMx/x382I6j4yUA4Lip9+F7N7MdlwHogoZkQVu2DhqUF7KX6z2cwwQCiv7MRfMhVajKtS+N/B+64crBwB9F3JQGaI3WeeYRTmSs6ZvCfzEs9UiIZScH5iH6h7mudQ+QLKpOYO1kt9qadVCdr2IkasNHt6cKhz2koiMwxjgAlOymopqPB9dsuN7RkPYJe97TOYtwxayL0gGPiVElZLPGTBZ5nqozvPd0TwxJTOjdKT+5gvPgdpgGM16Kf+WaqnasZ8HnjmOM39aUjk0e9cDmxOxnsW/w4ZAeilUcQo9mY36DpqaCugh6SkIIkT4w0t9f5r4KR+VvnxKB48LTwOxPJRp9oAfVOvaGLf+CU3YS3JlesTOct6ObUrgf
+ J1l04Elf
+ X1LwqXsZSv6XW1NiO2x0a6VdbNFeMBZnPE362MwbVyNotqU4koH8iTIeDGQ+04nXuxI0S1KbXJxuUG7FUJ77cU6o2FAAy3cu0HOdD9CmkRJN/Az7b8SjKV+n3SbXOnzD0YVvxgxDemY/vkBKNJDPmZTwW27RYbpKyhRDbZq3Pf9chqD133Swz8aFosh+6dHE1wVpTooLtxL/EgsQiqfR6b012q3YNXt+tSzOSFZPN7zc/Q3Qc0qdHuRduw3IUHTprLhB1rdrvt5SsFDfMcnFH2TkE2bPppA4m4BTf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,79 +97,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 11:19:01PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 10/10/26 05:18, Kees Cook wrote:
-> > On Fri, Oct 09, 2026 at 09:39:48PM +0200, Harry Yoo wrote:
-> >> On Fri, Oct 09, 2026 at 04:22:03PM +0200, Harry Yoo wrote:
-> >> > When it falls back to kmalloc, kmem_buckets itself should provide a
-> >> > compatibility layer when falling back to kmalloc.
-> >> 
-> >> For example, calculate_sizes() converts certain SLAB_* flags into
-> >> GFP flags (s->allocflags) for allocation. We can have a similar
-> >> logic when falling back to kmalloc.
-> >> 
-> >> Though current implementation does not allow this and requires
-> >> some rework.
-> > 
-> > I think the current series does everything correctly in the sense that
-> > nothing is allowing for mismatched fallbacks/passthrus. We could iterate
-> > from there once we have a need for this where a non-kmalloc-alignment is
-> > wanted, etc?
-> 
-> I think we can indeed simply make sure buckets have the same alignment as
-> kmalloc. It comes naturally and should (more than) satisfy everyone. I doubt
-> anyone would be needing a more specific alignment than that for a class of
-> allocations with a variable size?
+On Mon, Oct 12 2026, Mike Rapoport wrote:
 
-Right, the whole point of kmem_buckets was to replace general kmalloc
-uses, where no callers cared about alignment.
+> On Mon, Oct 12, 2026 at 03:52:46PM +0200, Pratyush Yadav wrote:
+>> On Sat, Oct 03 2026, Mike Rapoport wrote:
+>> 
+>> > On Tue, Sep 22, 2026 at 06:42:16PM +0530, Sourabh Jain wrote:
+>> >> KHO calculates the global scratch size based on memblock-reserved kernel
+>> >> memory. It passes NUMA_NO_NODE to memblock_reserved_kern_size() for
+>> >> this calculation.
+>> >> 
+>> >> When memblock_reserved_kern_size() is called with NUMA_NO_NODE, it
+>> >> counts both:
+>> >> 
+>> >> - memory reserved for a specific NUMA node
+>> >> - memory reserved with NUMA_NO_NODE
+>> >> 
+>> >> KHO needs to distinguish between these two types of reservations.
+>> >> When calculating the size of global scratch memory, KHO only needs to
+>> >> account for reservations made with NUMA_NO_NODE. Reservations made for
+>> >> a specific NUMA node must not be included in the global scratch size.
+>> >> 
+>> >> Add memblock_reserved_size_nid() to calculate reserved memory for a
+>> >> given reservation type and NUMA node. When NUMA_NO_NODE is passed, it
+>> >> counts only memory reserved with NUMA_NO_NODE.
+>> >> 
+>> >> Use the new API for lowmem, global, and per-node KHO scratch size
+>> >> calculations. For lowmem and global scratch, count only memory
+>> >> reservations that were made with NUMA_NO_NODE. For per-node scratch,
+>> >> count only memory reservations that were made with the corresponding
+>> >> NUMA node ID.
+>> >> 
+>> >> Remove memblock_reserved_hugetlb_size() since it has the same
+>> >> implementation as the new API and differs only in the memblock
+>> >> reservation flag being checked. The new API handles both kernel and
+>> >> HugeTLB reservations through its reservation type argument.
+>> >> 
+>> >> Define the new helper as a static function in the KHO implementation,
+>> >> since it is only used by KHO and has no users outside
+>> >> kernel/liveupdate/kexec_handover.c.
+>> >
+>> > I looked again and this feels like a band-aid to me.
+>> >
+>> > I think we need to step back and rethink the order of the
+>> > scratch/kho-bootmem sizing and consider how NUMA and lowmem are involved
+>> > there.
+>> 
+>> Could you elaborate? How else would you calculate the sizes?
+>> 
+>> To me, the idea sounds fine (although I also share your comments on the
+>> code style). This is what the global scratch size should have been doing
+>> from the get-go. Today it over-allocates by counting both global
+>> allocations and _all_ per-node allocations.
+>  
+>> There is a separate problem with CONFIG_NUMA=n, but for that I think we
+>> should just have a different allocation path where we only do lowmem and
+>> global scratch.
+>
+> I mean more fundamental code refactoring that takes into the account all
+> cases (and I could miss some)
+>
+> - NUMA vs no-NUMA
+> - systems that have global scratch containing lowmem scratch vs those that
+>   don't
+> - and of course fix global scratch over-allocation
 
-> ctor removal is clear I think
+Fair enough, that makes sense.
 
-Completely. I was blinded by the API of kmem_cache_create(). :)
-
-> for __GFP_ACCOUNT and __GFP_RECLAIMABLE I think what we could do is not to
-> drop the flags argument kmem_buckets_create and instead require that it
-> matches the usage:
-> 
-> __GFP_RECLAIMABLE requires SLAB_RECLAIM_ACCOUNT and vice versa and I can't
-> imagine there would be a buckets instance that would allocate both kinds
-> (either with or without __GFP_RECLAIMABLE)
-
-Okay. (We have no users of this yet, FWIW.)
-
-> SLAB_ACCOUNT requires __GFP_ACCOUNT, memcg objexts are always created and used
-
-Right.
-
-> SLAB_MAY_ACCOUNT allows __GFP_ACCOUNT, memcg objexts are always created, and
-> used when __GFP_ACCOUNT given
-> - perhaps not as optimal as the separate kmalloc types, but good enough?
-
-I think it's fine from studying what happens with the skb data. Though
-right now, SLAB_ACCOUNT and SLAB_MAY_ACCOUNT are functionally identical,
-yes?
-
-> __GFP_ACCOUNT without either SLAB_ACCOUNT or SLAB_MAY_ACCOUNT is wrong,
-> __GFP_ACCOUNT would be ignored
-
-*ignored* is, I think, wrong here. It would create differing behavior
-between SLAB_BUCKETS=y/n. If we passed __GFP_ACCOUNT through to general
-kmalloc when the buckets lacked SLAB_ACCOUNT and SLAB_MAY_ACCOUNT, you'd
-lose the isolation, but not the accounting. (And could WARN_ONCE about
-it.) But if it was ignored, you'd lose accounting under
-SLAB_BUCKETS=y.
-
-> with SLAB_BUCKETS=y these rules could be checked e.g. with a VM_WARN_ON_ONCE()
-> 
-> with SLAB_BUCKETS=n these rules won't be checked but also not matter in practice
-
-Agreed. That's what I was going for on this version. But like above,
-"SLAB_ACCOUNT requires __GFP_ACCOUNT" means what? Under SLAB_BUCKETS=y
-the allocation returns NULL? Or it passes through with WARN_ONCE? I'd
-rather not break something completely; better to fallback on a mismatch
-so the requested type happens (be it DMA, ACCOUNTing, etc).
+[...]
 
 -- 
-Kees Cook
+Regards,
+Pratyush Yadav
 
