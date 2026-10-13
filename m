@@ -4,92 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46A56CC6B08
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 14:29:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21C17CC6B08
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 14:29:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4297A6B008C; Tue, 13 Oct 2026 10:29:17 -0400 (EDT)
+	id 0A75C6B0095; Tue, 13 Oct 2026 10:29:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D9516B0092; Tue, 13 Oct 2026 10:29:17 -0400 (EDT)
+	id 07FB46B0096; Tue, 13 Oct 2026 10:29:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F0BF6B0095; Tue, 13 Oct 2026 10:29:17 -0400 (EDT)
+	id ED82D6B0098; Tue, 13 Oct 2026 10:29:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 16D526B008C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:29:17 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A2C2DC0C29
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:29:16 +0000 (UTC)
-X-FDA: 85317835512.27.BDFA61A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D1F9A6B0095
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:29:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D6F9A1C443E
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:29:52 +0000 (UTC)
+X-FDA: 85317837024.11.138A5C3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id DAD724000A
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:29:14 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LUxB4Wpy;
-	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 203D71C0009
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:29:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WTGTGta3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791901755;
+	s=arc-20220608; t=1791901791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7qKNMiH2w4gu5NE5Ep8GYbNYJWZz1S3YluBpBbHkntE=;
-	b=f8Gu2Fgz7IOM/TuuiAqwK61UtxUUCJEnjftSc0knpqsfoCsVk5AylQawnh3x/mNVyxHPtG
-	UczKx/uWtCENbTnz2GGn7iEPkZWV5p08Ykf4FY7BD5PmVnxRr7yLgFhFtVSPUapPEpS6XP
-	/wE9koFEhi5vPZC4MVvEZdkhsTHr0Dw=
+	bh=MSi3PANfY4MjoDSvofvJf61AjnfTTXNg976PsOkYsso=;
+	b=kLbQltqwBb9oGM35JKenGSRNvdOMXHlftziM6KUe0eOsQ19TZnQuTjACQVNFNJRTsRG9Z2
+	M2RUFYS/ynCP8Fu2XVizZlQ7UKqUBLlA4cZr4l792zC9hOFaFbx07fwwAP13Iqj3pFwgdf
+	wnuxaZg0kG0kXz3ssdErUgJihN3bcE0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LUxB4Wpy;
-	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WTGTGta3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791901755;
-	b=mb8yXCBpIuFPRQZJE91j2B3/Sx5UFg4UsZon4vmWXetkPthRIH1XPlHCay0HWRnHRDZmFb
-	2wAPdVN6a29IDAPRyk0/vPUtMjGoe5NkIHRhSjbGBurxXISXXAQsfUc9R+IlBQCkk1Vvf7
-	Bi/YBwabck53C2Z1BNZlpgCZhbTylEA=
+	t=1791901791;
+	b=R+TTLVIbdLN+6JORmfmqrSA3LyrfbgMIMrA9M1YPWqyTcxmlkx+xPc4mTaAGiI3sRIIsMA
+	cZymvh2IktbxcTzuvxSIQHB9CYYyiRyRgxSJafLNXGNMcK/tsEjWTBAYL/4tJqupqycD8d
+	7vhCAY371TfAi34obXBms4v5UkKn5i4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C5DDD42E34;
-	Tue, 13 Oct 2026 14:29:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AE91F000FF;
-	Tue, 13 Oct 2026 14:29:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6650743795;
+	Tue, 13 Oct 2026 14:29:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E121B1F000FF;
+	Tue, 13 Oct 2026 14:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791901753;
-	bh=7qKNMiH2w4gu5NE5Ep8GYbNYJWZz1S3YluBpBbHkntE=;
+	s=k20260515; t=1791901790;
+	bh=MSi3PANfY4MjoDSvofvJf61AjnfTTXNg976PsOkYsso=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LUxB4Wpy4M0NA/auUkF3ugzHwzl9yI2Akd18tG6e7Wd+FVpo90FHoQkUmsjoQ/CZ2
-	 47peU4JJ7n84TwVTZASc2hIZ/h6OQcE2VP1/G6MGlMPX7WOM5E4NhtGonekT2SkXTa
-	 Qku9hWMU1SUQBG3UKn33NnZ6lMWsvhSV/SkGi++l/LCHLkmqGAev1nHip9ImhXkScT
-	 ZnyBGlx5fLgOuTbOwAVTpLlpHSqlKtNv2DtqwnTw7PidO8LFLEJi4xvLhGK7AxH68x
-	 9BI98yhjX34QdpVDlC012GsUwaPtRA2Y+Kp3PdC0Tm3amFXF+Q55wdEwtRGUVBNjSE
-	 IPmaM1qdncb3Q==
-Date: Tue, 13 Oct 2026 15:29:11 +0100
-From: Harry Yoo <harry@kernel.org>
-To: Imre Kaloz <kaloz@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/slab: sample slab_state once in kmem_cache_destroy()
-Message-ID: <as4q2WlR7mLhMBpG@thinkstation>
-References: <20260930195110.13296-1-kaloz@kernel.org>
- <ar5pESlkEMqNsgxv@thinkstation>
- <aef97b97-0bd7-d720-7f59-8c0078747370@kernel.org>
- <as4QhUscRVtBzYpm@thinkstation>
- <481e9a16-cd30-d463-14ee-b5602bcd5a21@kernel.org>
+	b=WTGTGta3BaGB0P5FZtBi8DBd/bdJ0/0OvzJgJhTIcEoTdneroJIuBFUEE2Vmpzre5
+	 FJWH0TdGlGepmeWzARjpUcjDnfOTp6NZQ4YG+ariJ6pQ0HTL43BsozIhF44XOxLr3h
+	 T049eRNF3g48x6Kww3M6v6owS/9za3X96XfcWnZ1ES1EO1tHzITfCGaiEEm22y8Fq9
+	 LNm+/6ragNInKh6AK8AY1P9hYJIrweDdGR9ikKPnV3VjNRjXM5SNFmkzCmOJOWIEHp
+	 8BevgnbGVefcYMLyB5XK2V7xMhsVhmkp51syk15Ph0nBwaEbd/kbngaPZltNdtBFJE
+	 gS9/KL3jEkSiQ==
+Date: Tue, 13 Oct 2026 15:29:44 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Kyle Zeng <kylebot@openai.com>, stable@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/rmap: don't discard lazyfree THPs at PMD level
+Message-ID: <as49h2Zgs2wtkfmJ@gremlin>
+References: <20261009-lazyfree-stable-fix-v1-1-70997958ef8d@nvidia.com>
+ <asy445BYRhcsGDE9@gremlin>
+ <8B17F897-40BE-4834-8078-949DA951B46F@nvidia.com>
+ <asz2domYFnTe2owf@gremlin>
+ <9CC1C4F0-1C73-4AA4-8D1C-28DB024E2221@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <481e9a16-cd30-d463-14ee-b5602bcd5a21@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9CC1C4F0-1C73-4AA4-8D1C-28DB024E2221@nvidia.com>
+X-Stat-Signature: mxdz4pchjdfunzeyn7trmg5sihpf53si
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DAD724000A
-X-Stat-Signature: tajje5e8zwmj9d18t443zeyecafz6d15
-X-HE-Tag: 1791901754-918905
-X-HE-Meta: U2FsdGVkX1+9N/6EuiYRFaCqXI7tXzUbVTejq0zQn1ENCLVkWcT9kGZp2cFwsY1m000NHz5QYWvF4JYD8KVLch5jzFS6rzqwU1PVMAnXRGnb/pWSKPCcifwcGrgqZYE292/qAztIRSJyA3yjI0KotOPIfS8Q50+1rZLVr6ntkVpAr4rxsO2TmyicfGMSX2oL0/fNDtyP94HNZytdNAH+lom1IyxfykoZoAK/n3l0au6RfsDHiVSix5iOAc1reSxOEN26IZRK6kNAM0hrEuoCRZYk7P7OLFI9g8+fr9z4BWHPMuK8B8uCPDG77MHXa9DeS5J3LpQPLEZ6pwM7UTNyXfjsyEeXp8FV1owzivCa41Egp6Nvq0gmdnIqEvIQjbhzJ8Tr9V4v6Z8VASaeEVwZORidczoY69d48DDXPeKg8jTeZVQBNyuboDkOAoIf8txK5fr7LMWTAvfao0q6l2dCMSONU5PWfLFZOcOQKH3pw7ClZtWmQjHMEfU4BbTakfsUQ04iD4pUIu5m6dXowR1/y8eralAWR0oTmHop6A4AOv5K//jjFZFie7KoocsuSlgdFNHzAeh8mLbZJ3GruZanCUw2dTy1ihhQ1JQHxBPvQl3gqWMOzpFxdeGooi10pBsf3pvy0WQeWGXDT6hd3LaSHLU7lXbopK66awffKz31lIbK6toCdNkUlL+ZWJCGPlu6L9AUNFFGc8oqNNUNqKSOKVE4xrvpcYWl4B12sqlgJIM39JWTCMCFsnNDaNu5IbGMBTtsrylznF/z8jQ+FphYoDgjwTQetDLMe3Vmt688gzkP9B/yifGusxKfFMiiypGsf564Ku7muxiuSAC7c0g5sR+QP3xT5AS1oi3w4wOTt8hHyjWErG9KFB4EUZM4UPRCCY9/HOL5GLUJQkqsR/98ptOajRN95b7PC4uChwnnnzfIGnFaQ5D5NhBdlP/5U8gpo4Ai3D/xE0Bkw4sUKSG
- nPqbDq53
- gMjTMODz+DgccH4B2UtwAXZ45kJV5qIiYwkv8gWTgA7g1LpGC6inEUNtt9SYso9DX6mvm7Q8MpVRAB0gSzLz/xfUIUOY9H8v15dLgkky/YLNNhxOhmgBDS81kvpwu3LXDeUxylEWfy79I+i8+JIEVTzTnO2LAMCFLgVQVGp1/IdpYGFO/scfVn7357u8TXFbxy2Hm8qg07XsaBHGIlp0oeae9t0+eYOCrSyzQLKwUn4KwPheHbj4YG0JinZrf6Mj0m4dTQOMTdusI9jlSiuC+9Gh5zHY82sKQJMut4ba4hFUOGMk=
+X-Rspamd-Queue-Id: 203D71C0009
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791901790-904917
+X-HE-Meta: U2FsdGVkX186wWeNtjzXsySIAuBn+bBYOO1u4ESyHtCqH8WUHero6n+RXueXaibBR6n8/sDYCskZuBLlcQBZIMWpMlHWQ6EGT9bWWbQ9cKA5Eq3m6DNExKtP+WFc0yBUDnxvbLP3CHbo+72jGKUCbToOxa86nagsiIVGC/Zv9HZp0Wlstdr4mXviH0RO7mXItYqDRJeuNAoTShCtpJVl7ciAdEWnUy9vs6c3WuOgT2TRKW6TJi2LH3bsAWW9BQjicqd2EounSO7wR32xHdOI0mx09XL8raW18kdkSxRIhcuYq8+99zjYmsM+OMGCbmj4lpKWBvv2bBABCTPJzstf8ZWoxjqNfcRbfYy9uA9I/pJDd8/JAWe2vPLaYOpCJrlaPxQ1KRQUkFbg0hbHN2F2OJjOuHfSL7nGVswcOIKFpQfVTaUV/PGuZnVKO+JDg+pb4BpUpkCgEdz+jfk6OAfY1Yv73MJr6FTcOoYmTjahxIFY8tywUIREcfD6Xh+yim2cro9YKxF2dqxaQPgQ/fkRf5DxFbqvHksFwTg/7qcjIEtfPNaBxDRHXIAPniIAhd2f1hMtR/XPogv33x1zl39t8DKJymknjA3NOMIf72Nj93ZAD4tzeHjuufGjvEWowEPCEFjnOgnkAVzZQlvfyunhV7mPm6QPfLpbLebWzuoQxyGqNqUi1eadccjcqAPTatXgNKZmkOPTbueqXMn7Pf1tzN4cte5qKTbi4nK1sqIPrwOXDB0ye34sbM8Q0Kx0YH7KrmWUaNnOkblrT9RLRzzllZoNLI7WylA95mA9k+aRicmaUEVCbZiMS5ovfs7RHugv8WrcN+lWAtlwIfGaisyjZVk6TML12wwPjPwNlwy4uyzifjGq/3SQJmeVBcXvQbaf0zOhDA8zSNMVPP6xf7Auu+xbxVZNt6ErljOlO3TnhM5HvgGqFOQ3z5Fma2PzC6QyKYb9V0+QGtiMzebC0j3
+ XfYKdLhk
+ rLx7B/vGEArJ520bhDWJC2W7kqj78IQUFW9v0TYWtdBJ5Lk34xZH9b/C/+ShFow5bC8nmGrKsGGZeQpYtmcJVeqpStNupY++ArZ/iPL5+sVy3+fGiviAUvrfbzaAmXn93wUSJCYBPAO+QVOs94gknAWobQG4NXNspVsaEnUSIQPvBnsx0qxcq7ZOxtLF5pqn1JD/wh0/Zu5yklspfV2Shtc/oI7SOTOHWZPfz5vVGrpgZaVsNxiqd01Wo4IzW8wd9bG4eWqx1We4k60PHTTrnOA+9AQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,70 +100,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 13, 2026 at 02:51:30PM +0200, Imre Kaloz wrote:
-> Hi Harry,
+On Mon, Oct 12, 2026 at 04:37:34PM -0400, Zi Yan wrote:
+> On 12 Oct 2026, at 11:22, Lorenzo Stoakes (ARM) wrote:
+>
+> > On Mon, Oct 12, 2026 at 10:33:34AM -0400, Zi Yan wrote:
 
-Hi Imre,
+> > }
+>
+> Yes.
+>
+> My wording was not precise.
+>
+> zap_pmd_range() doesn’t take the PTL since it sees pmd_none(), while
+> try_to_unmap_one() takes the PTL.
 
-> On Tue, 13 Oct 2026, Harry Yoo wrote:
-> 
-> > Uh, apologies for the late reply.
-> > Catching up after trip at LPC...
-> 
-> No worries, hope LPC was good!
+Yeah, this is nasty.
 
-Thanks. It was good.
+No wonder it took some AI analysis to find this :)
 
-> > On Thu, Oct 01, 2026 at 05:42:36PM +0200, Imre Kaloz wrote:
-> 
-> <snip>
-> 
-> > > There is a related older window: after list_del() and before that
-> > > single read, slab_sysfs_init() could set FULL, skip this cache, and
-> > > the single read would then call both unlink and release on an
-> > > uninitialized kobject.
-> > 
-> > No, with this patch slab_sysfs_init() cannot set the state to FULL
-> > because the slab_caches list and slab_state are protected by slab_mutex.
-> > 
-> > > I have not hit that, and this patch does not close it.
-> > 
-> > I think the patch does close two bugs.
-> > 
-> > One introduced by 4ec10268ed98 (reading slab_state twice),
-> > another (reading slab_state outside slab_mutex) introduced by, hmm,
-> > not sure which commit introduced it :) should be very old.
-> 
-> You're right, I got that one wrong. Sampling under slab_mutex in the
-> same section as the list_del() means slab_late_init() either sees the
-> cache on the list or we see slab_state < FULL, so the older window is
-> closed too.
-> 
-> As for where the outside-mutex read came from, as far as I can tell it's
-> 0495e337b703 ("mm/slab_common: Deleting kobject in kmem_cache_destroy()
-> without holding slab_mutex/cpu_hotplug_lock"). Before that, the unlink
-> and release and their slab_state checks ran in shutdown_cache() under
-> slab_mutex.
+> > That bit isn't special to MREMAP_DONTUNMAP.
+>
+> Right.
 
-0495e337b703 Probably yes. Not 100% sure.
+But it is a 'very special' flag for mremap... :)
 
-It's quite messy, reading slab_state has been done inside, switched
-to outside, and back to inside, and so on.
+The # of bugs that thing has produced...
 
-But should be fine as long as we can find the first commit that
-affects -stable kernels (>= 5.10.y)
+> > That set pmd could also UAF on the PMD page table in theory couldn't it?
+>
+> No, in __discard_anon_folio_pmd_locked(), the caller holds anon_vma read lock;
+> when mremap() or munmap() calls free_pgtables() to get rid of page tables,
+> they first call unlink_anon_vmas() and get blocked by the aforementioned read
+> lock. set_pmd_at() is called while free_pgtables() is blocked, so no UAF here.
 
-> SLAB_TYPESAFE_BY_RCU caches were already released from the
-> workfn outside the mutex since 657dc2f97220.
-> 
-> Want me to send a v2 with a second Fixes: for 0495e337b703, or is it
-> fine to add it when applying?
+Ah ok thanks. Yeah the rmap lock is held throughout that.
 
-Could you please verify fixing which bugs resolves the issue on sparc64
-described in the changelog? Reading it twice, or outside slab_mutex, or
-both?
+Hey - when I eliminate the rmap lock things are going to be even more fun ;)
 
--- 
-Cheers,
-Harry / Hyeonggon
+>
+> >
+> > It's all really horrible.
+>
+> And kills my brain.
+
+Yeah this hurt my head too.
+
+I actually (rare in 2026) only got AI to chime in late in my analysis, and while
+it helped confirm/deny some stuff it wasn't even that helpful in avoiding the
+head... f..un.
+
+> >>> So unmap_vmas() doesn't correctly populate the mmu_gather struct for the
+> >>> range, meaning that the underlying page isn't freed and the refcount,
+> >>> mapcount etc. are all left as they were?
+> >>
+> >> Yes to the underlying page isn’t freed.
+> >
+> > The refcount and mapcount etc. would be correct? I think the refcount would be
+> > such that it permanently leaks and the mapcount would be incorrect or only
+> > accidentally correct?
+>
+> refcount and mapcount would be wrong in the munmap case. Both are correct
+> in MREMAP_DONTUNMAP case, since the folio is still mapped in the source VMA
+> but its anon_vma says it belongs to dst VMA. When dst VMA is unmapped,
+> the anon_vma is freed, but the folio is still mapped and its ->mapping
+> points to a freed anon_vma. A rmap code checking folio->mapping is a UAF.
+
+OK I _think_ you can only have a destination that either has the same anon_vma
+or is unfaulted (so gets given the source anon_vma) so yeah, the anon_vma is
+still right but is pointing at the destination VMA, while still being mapped in
+the source one :)))
+
+MREMAP_DONTUNMAP really is the gift that keeps on giving.
+
+> > They seem like they are existing bugs effectively in pmdp_invalidate()? Or stuff
+> > that we would want to fix anyway I guess?
+>
+> SPARC’s thp_pte_count might cause other issues, since its code only considers
+> huge pmd splitting. powerpc’s page table check might have an issue.
+
+Such fun... lord.
+
+> >> I can remove the dead code if you think that is better.
+> >
+> > No, if you plan to reinstate it (soon!) then that's fine, but please
+> > explain that you're intentionally doing that in the commit message please!
+>
+> Sure. I will try to come up with a concise but comprehensive message to cover
+> both the issue and why pmdp_invalidate() does not work itself.
+
+Great thanks, I saw the v2 and it all LGTM!
+
+--
+Cheers, Lorenzo
 
