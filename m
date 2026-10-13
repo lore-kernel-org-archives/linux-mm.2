@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D16B9CC6B08
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:28:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 171B2CC6B03
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:30:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92DAA6B0088; Tue, 13 Oct 2026 05:28:43 -0400 (EDT)
+	id 18ED46B0092; Tue, 13 Oct 2026 05:30:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9044A6B008A; Tue, 13 Oct 2026 05:28:43 -0400 (EDT)
+	id 140DC6B0096; Tue, 13 Oct 2026 05:30:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 841D26B0092; Tue, 13 Oct 2026 05:28:43 -0400 (EDT)
+	id 0562A6B0098; Tue, 13 Oct 2026 05:30:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CF5A6B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:28:43 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C71EFA89DC
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:28:42 +0000 (UTC)
-X-FDA: 85317078084.16.A4936EC
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1D2E120006
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:28:39 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=WfMo1nIj;
-	spf=pass (imf31.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D4E506B0092
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:30:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6FCAFA03FA
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:30:46 +0000 (UTC)
+X-FDA: 85317083292.04.40B77C2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D05C014000A
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:30:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mihHl0rN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791883721;
+	s=arc-20220608; t=1791883844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6hJ13YiNASF4v9jSRm8CUr3MziD7bZPk/IbsIdHVuFU=;
-	b=teDp6gjMWVDTU4ugzfzfeokD+1JE/jR7mf2ghx4B0RPhOFxzhXarq9OtrfEbiIA6LGHfmz
-	f59Feq3DC0lWiZtD5HzsSV64HDpE+iuh+QEw9qJNaMDG5UVb90wA59Tj1/JzYOCCWVCfKM
-	BRT+V2ceoXBA0iuyQGnQGUWAaj+Yh9Y=
+	bh=GDCBsEYoZUsLsXk6wyffkPfdwkrEP+ByhgCH/FzXMM0=;
+	b=TANHlWNsSR6OebMxjkbxXj6BufozfGDr6zMQrdWdX0c1sQJJKwrer3VrzR8mAJ4ZF5SpqU
+	3FT3jnQHzLsM1cFnA/y9nt3NfubiitMRDf2JpOzUaRK9SFs2KFiKW1yB1ucUA/WJtEErEq
+	sSB8PczChHK9lNGur8mlerJyL4PPyg0=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=WfMo1nIj;
-	spf=pass (imf31.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mihHl0rN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791883721;
-	b=bJK9zSupJxwtxFH48JfCE18+fSxJwOt8j66VWW+zMtcfuDFRKXBBizLY6bkgFPVi91CpV9
-	1N75Hp80MRSyEdXrmW0wXVwSdAXtDZGC8/pPvL09JLBIb9cgXQbMGFAEq9OMi+K14cUYJ4
-	lRVUiTsCc7grnl9HlHMU7PuSawdfOFQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=6hJ13YiNASF4v9jSRm8CUr3MziD7bZPk/IbsIdHVuFU=; 
-	b=WfMo1nIjEzj7fpCgP4aFArUaV808tG2tyogpXRRg9RJOYydOToeyO7xCsqHucNu/SdxI55N6WyZ
-	4dnHOK4CeQfsl3Bal/2OZQawNC7fqfSl/fjRbfb2fQzs3Btoul+qpoFoRXcAcoTgnjyphUNHoyNKa
-	scRapRGfZ+rPDTTiZ046p91yb75HXHMPC6S/L/VrmpLMty3xoiXnli3ADscj6CobnvpSQyIFOLL+d
-	WvUoAI27XPCA5e/81QBGI9E5Hzz2GZpPH2TJ8FRHCVljToqGwQLh9wImHGfjdxs1XieG7kyAKh+R2
-	cqd8zfKJlyb98aeCnaNM/8fr51DA0ilOZwsA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1xGYo8-00000003JrW-2cU7;
-	Tue, 13 Oct 2026 17:28:29 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 13 Oct 2026 20:28:28 +1100
-Date: Tue, 13 Oct 2026 20:28:28 +1100
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, chengming.zhou@linux.dev,
-	dsterba@suse.com, hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, nphamcs@gmail.com, terrelln@fb.com,
-	yosry@kernel.org, riel@surriel.com, shakeel.butt@linux.dev,
-	alex@ghiti.fr, senozhatsky@chromium.org, davem@davemloft.net,
-	linux-crypto@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 1/2] mm: zswap: use separate compression and
- decompression requests
-Message-ID: <as35vERorcRxFwGb@gondor.apana.org.au>
-References: <20261009163146.83112-1-usama.arif@linux.dev>
- <20261009163146.83112-2-usama.arif@linux.dev>
+	t=1791883844;
+	b=zC9S7sSFPx49+LokyE0NSiykfWR1bodSnxSbmS/slCmMjqgU8hVTQrgVrMMnp0TQ7TQP3X
+	TdbVdEYBLYzryLd+0Nl2ehElWckHHEAV44zKP3gae5tUx5hARvmgLutfIgbssxPpeo3mg3
+	YjtiRIQa4mgCPLygFkd8wVRbAn4P+HM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 51DCF600D1;
+	Tue, 13 Oct 2026 09:30:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AA61F000FF;
+	Tue, 13 Oct 2026 09:30:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791883844;
+	bh=GDCBsEYoZUsLsXk6wyffkPfdwkrEP+ByhgCH/FzXMM0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mihHl0rNLCQg4W0s0+z1en8+7AJqOHOYrKKJKz5IhLlWBh/WFVyTbeSQjkYoIVSzt
+	 DGPTrHwtRRyDPBfIaEcFHjYmdI9jiru9Fxn6+uf2Fg3fjT5HSDPt1gvNul1q3TwYl4
+	 I7Oeat+WqwQguzZL/k3f5B0O2N10bHH4poIAs2B5oxBRQTxPbNdopI0BoH6kenivHs
+	 6n0br9igd382Ry5UeEOmzq6VovM50w6O4ULlzX2G2Ubxn/ahH/pFLWqkEBX+PnDLhY
+	 nZ11PYfc9VBqj2iBPNUVlwOq1CvyCOPPJ5AomYRjP4Nk7omM6k+IILv674Q4Xl2REy
+	 LS/CIKh05DgiA==
+Date: Tue, 13 Oct 2026 10:30:37 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Kyle Zeng <kylebot@openai.com>, stable@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/rmap: don't discard lazyfree THPs at PMD level
+Message-ID: <as36Kesa_k70jOva@gremlin>
+References: <20261012-lazyfree-stable-fix-v2-1-6387d6e30063@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261009163146.83112-2-usama.arif@linux.dev>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1D2E120006
+In-Reply-To: <20261012-lazyfree-stable-fix-v2-1-6387d6e30063@nvidia.com>
+X-Stat-Signature: c3zfgy9y34qksfogf818kyfkkfe8gk1x
 X-Rspam-User: 
-X-Stat-Signature: kg4kkh1cspfik7jipjhyx9p9pg4wessa
-X-HE-Tag: 1791883719-554278
-X-HE-Meta: U2FsdGVkX18I7TDCiERQP8bUraAnbXwhhpI80o+H0AE7dq5VNvhtKFJIDkgwwnBvN/0cabeUizhh8Wb1396jkJEgxmZf7TYOMxUEvamMJopzMOngt5stFEs60B0uxmcKDsFolIcwOTU+AdUGgRL06DTR4P2TUFXbOWEuTdn5qbiW+6f2bRamgkcHMFR39A37ebc4D4l6roucpWM6fjsWxUKDVim5CxcfzpKfMj0Aiu6PZkkaH9rg9wcfK064kxSqODTVWyhuj3uEI2vZWrQrUMY5tr7vPbxtYjM/VUlQ3opwE/aJEbDkXpctMI//Q9mUIrtydQcImCTqGuPt01NWyr4CB3VRceifAJaDL1Tp0opLWSxPe8hlsztmNvgyI1K4G5VZee607279+XEu4/+F4pFvMwkz5ZNq+IIlQtDhQQYytMRaHEBbPZudYN4lPCs1hgaqeqNedngL6KLmomEkPz9+HWfUR7JY+eYzBcW87zx61rTAGSbf7aHDsD3UEgAIQzjTtKTYPHCexwl0AABKEIMMsAmqA7eK4Ojg7rFTWT1/eU9i6KiKurnM9qw6Ci76NX6wB6L5UmYEkidjiXwYePKKqbuw8/UlDUbUn47HbIqvURVTM1iRb2Spc4FgcGEylXxlUZ0RlVEgyCANjpXWFuuPljeOEG6jA4VeCpEAB8fy+TIO4yIm4YjLO9/4ffjr3JVwDbaYAr17A78EPaG+OMzTsM7q4vAjsSSCN9O69QuCwenngVLhtiBYzBlb+BLb/vuP8BX/uUrzuvCR79jwDCbtAuCmnbYsGweJa8ox7CgHULn+v+4e6a+h4fCUzyrkihBUMONS1QDr+Ddm/rfdnL+pMi6895sYVxsP8WUVvDAPgHMHKQo/c69fxZT/QZjWVHNMaq199HWfbEvEYBCzJXYyH64D6QuE1RcyUKCRhitnjDTpoMmMgSgMRoOJ0OnRoq0tIBoEjandGOAY816
- YOLn6CBQ
- GKMJB3nhR9Yv3eVKAVRlNPput1iaJlyEzR1ntGFT2vh4MwdCfQhC19GCOrbrk9dxB2aQm+6A6VknL2/KIba10fGtpDg4X3nuNtNPZpoA0G9aK7LGiFiE7FVuGoxRvNLdDY8NxOb/DH8DupdteX7nkCZbDPquLcO32avOf7QPrMgzJewrnXhYiewFYJDLxJIWXrEQ+tv1zb/MGk6/tgmad3aIrz0zkLJ+pYQdMRpGIg3V4aktQGoRP2rdW2KXTcWAuOgynzBAAFapf1gefPc5GG2CiQDWfIKJflngPUGdhXVaM7zVA1vHpba3GVYonEUIx1ALFU47b2JI7AwxT7YvJtsHd7g==
+X-Rspamd-Queue-Id: D05C014000A
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791883844-45504
+X-HE-Meta: U2FsdGVkX1/FXHg8ipMGU8zubJIA6NH+YZQferysk8tR0hyqcGM3w7RO1K1IqHoPGRBPqcUGyouN+wP2S6GVE01zR0sR9WVv5q0J9HS3x0XUst4eMaxnQsDDFq0usKahdPBCgLTgbMcv2MMeZgDPjbPqUSNzjoxwzXDnN5IUiccGawTtUYv+WRH2V8g/aQsGYpbkv2y6xX8n52cdY00+4dMXQ3bLTKF1ot9+tcRW3b4dP3FTpge+2Wp9vthI9GBohDTJvN77fnzqt6gKr+gi0IvkIuYr62so0f3qRIl2z/oiNt4MqKCq5XRb/UHBsbvkPClzVc5qxT2UGTeaCaSKgpN3eZvX9L91Q1n79dFS4OJ5ucnP056Rrfr1teDISSwpzDpAp1ztzmgSvUgBnVprbfuKLTW0Hb0lRDnNJbk+fAl7JJ2aIcIscfDlL7ddAhyj5oPzDauIUfumQuFOVV11GRDNsJpvA33NBghCXoxB5QDKD45wbYYBLwXO4c9cOr3dNwok1s0dNzkw6PDU8/IYAPNgSm889jCsY421VxzwemQKCZymeWf9pq3FgGlMbOQzDY4CnY1zy4DIVPz3RvoNBLq3nCiyd9MeAei3NsbTL0vnAgddCaupJBRYSRIa0fG/H6hB+naQ0ZgJ8PqLiiM2oFSodM1xUAcIG6L/kXfCuYknF05Aib6SZdbxpEHsfaq0e/LrXOU5jgy2WteO/0r+O4mTy2hOrxK7gaCqxmizUX/1yaHCV8GA25fSGpBAcS0BjcbdN+yKmKSfMfuudonm/JkwkOUQfyH2C7/I+Ld9LxIhCUcXdbYeewIxUeh6H9jqIDLIZdnGFP0p93gavpwOzfOq8LToCcUGBUh+QzXRaMvz2xzE/u7qRn4CXBdvLKCTv8rI3TK7RtubJ+u6nuQOKuxf1homtNLFzuMfzUOd74u3vatQxCJTlGwFCdwNcmOBPhTUn10kdr2mKWIGt7t
+ +4mbfZSY
+ wX++WlIvB93xqWttAo01CCAlpq1+0iUsHqyHis/SxfpcoxHbe6NlfmsD9rIvO7Kbn3GHjvA1EtbIHds6MlpcwDo4s4XXM8tBHaIujWfTVFcOPg/LDVlQPnwPNHB822oUOcv6Kr3Hpu/oT8sQrpSqdLdNjqZqdCMY4gmfomRONEnvD8AKeTgmSv2tAXILSVquID/Q0bGq+WZPMlqUJw++cKz8qSTyYku5HXYGz9iaUqwx6AcU2xQFF8q438S2e7TC/ZpdqlZyAYKJo1HDlX+2z1NXIQYypXFEcZp8WB1I12UWAkhc/QHZgB2evu+Gg2MI4TrHoHUiKIIL2TdGcFBb3ng6Q6wINUXM2PkXjNhZn688bT02aT8ARkQz8r4PqcLfUMo7wSk+YdGjx5S2S05QVZc/yMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,40 +94,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 09, 2026 at 09:30:30AM -0700, Usama Arif wrote:
-> Stores and loads serialize on the same per-CPU acomp request and mutex.
-> A low-priority store can be preempted as soon as the compressor drops
-> its stream lock, while it still holds the mutex. A higher-priority load
-> on that CPU then waits until the store runs again, which can take a
-> long time when other tasks are runnable.
-> 
-> Give compression and decompression their own request, completion wait
-> and mutex. Since commit e2c3b6b21c77f ("mm: zswap: use SG list
-> decompression APIs from zsmalloc"), the per-CPU buffer is only used for
-> compression, so group it with the compression request. Independent
-> requests can share the per-CPU transform; the codecs and drivers
-> synchronize their shared state internally. Loads can still wait for
-> each other on the decompression mutex, and stores still serialize on
-> the compression mutex.
-> 
-> acomp_request_free() ignores NULL requests, so drop the check in
-> acomp_ctx_free().
-> 
-> This follows the proposal from Sergey Senozhatsky for the same split
-> for zram [1].
-> 
-> [1] https://lore.kernel.org/all/20261005122036.718976-10-senozhatsky@chromium.org/
-> 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+On Mon, Oct 12, 2026 at 10:20:16PM -0400, Zi Yan wrote:
+> __discard_anon_folio_pmd_locked() clears a lazyfree THP's PMD before it
+> determines whether the folio can be discarded, and restores it if the folio
+> is dirty or has extra references. It is done under only the PMD lock and
+> the anon_vma read lock inside try_to_unmap_one() and no mmap lock is held.
+> The temporarily none PMD causes UAF.
+>
+> A parallel munmap() or mremap() is supposed to serialize with it on the PMD
+> lock, but zap_pmd_range() (called by munmap()) and move_page_tables()
+> (called by mremap()) do not take the lock when they see the temporarily
+> none PMD and skip the PMD. There is no more page table walk after the none
+> PMD is restored:
+>
+> - munmap(): free_pgtables() waits in unlink_anon_vmas() for the anon_vma
+>   lock, then free_pmd_range() drops the restored PMD as bad without
+>   removing the rmap, so the folio keeps a stale mapcount.
+>
+> - whole-VMA MREMAP_DONTUNMAP: dontunmap_complete() unlinks the source VMA
+>   from its anon_vma while the restored PMD still maps the folio.
+>
+> - plain mremap(): the THP is not moved but unmapped, so the THP's data is
+>   lost.
+>
+> In the first two cases, the folio stays mapped, but no VMA that maps it is
+> linked to its anon_vma. When the anon_vma is freed, it is still reachable
+> when one rmap walks the folio. Racing lazyfree reclaim against
+> MREMAP_DONTUNMAP as an unprivileged user reproduces a KASAN use-after-free
+> in folio_lock_anon_vma_read() as reported in the Closes link.
+>
+> One solution is to use an invalidated PMD instead of a cleared one until
+> the discard is committed, but it needs arch fixes first.
+> 1. GUP-fast still follows an invalidated PMD on riscv, LoongArch and s390.
+> 2. sparc64 miscounts thp_pte_count when an invalidated PMD is set again or
+>    cleared.
+>
+> To keep the fix simple for backport, stop discarding lazyfree THPs at PMD
+> level instead. try_to_unmap_one() splits the PMD and discards the folio at
+> PTE level.
+>
+> unmap_huge_pmd_locked() and __discard_anon_folio_pmd_locked() are left in
+> place, unused, to minimize this fix for backport and the invalidated PMD
+> approach is planned as a follow-up series to use them again.
+>
+
+Amazing, thanks for that! All LGTM.
+
+> Fixes: 735ecdfaf4e8 ("mm/vmscan: avoid split lazyfree THP during shrink_folio_list()")
+> Reported-by: Kyle Zeng <kylebot@openai.com>
+> Closes: https://lore.kernel.org/r/20261009165214.40212-2-kylebot@openai.com
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Reviewed-by: Kyle Zeng <kylebot@openai.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
->  mm/zswap.c | 108 +++++++++++++++++++++++++++++++----------------------
->  1 file changed, 64 insertions(+), 44 deletions(-)
+> The proposed fix[1] requires additional arch code fixes[2]. Disable it
+> first for stable fix. The function will be re-enabled along with arch code
+> fixes.
+>
+> Link: https://lore.kernel.org/all/20261009165214.40212-2-kylebot@openai.com/ [1]
+> Link: https://lore.kernel.org/all/DM0II2QHWWS1.2RXEJXC8S0101@nvidia.com/ [2]
+> ---
+> Changes in v2:
+> 1. added more details on how UAF can happen.
+> 2. provides more details on why the invalidated PMD approach is not used.
+> 3. explained why unmap_huge_pmd_locked() and
+>    __discard_anon_folio_pmd_locked() are left unused.
+> - Link to v1: https://patch.msgid.link/20261009-lazyfree-stable-fix-v1-1-70997958ef8d@nvidia.com
+> ---
+>  mm/rmap.c | 11 -----------
+>  1 file changed, 11 deletions(-)
+>
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 805db93fe0428..1131b76bbbc28 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2275,17 +2275,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>  		}
+>
+>  		if (!pvmw.pte) {
+> -			if (folio_test_lazyfree(folio)) {
+> -				if (unmap_huge_pmd_locked(vma, pvmw.address, pvmw.pmd, folio))
+> -					goto walk_done;
+> -				/*
+> -				 * unmap_huge_pmd_locked has either already marked
+> -				 * the folio as swap-backed or decided to retain it
+> -				 * due to GUP or speculative references.
+> -				 */
+> -				goto walk_abort;
+> -			}
+> -
+>  			if (flags & TTU_SPLIT_HUGE_PMD) {
+>  				/*
+>  				 * We temporarily have to drop the PTL and
+>
+> ---
+> base-commit: 8b38ed9ab5b09c8ba168cbcc49524e9b380ee5c4
+> change-id: 20261009-lazyfree-stable-fix-67712b2049dd
+>
+> Best regards,
+> --
+> Yan, Zi
+>
 
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+--
+Cheers, Lorenzo
 
