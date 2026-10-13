@@ -4,91 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AF7ACC6B08
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:18:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6CABCC6B03
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:18:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60C696B008A; Tue, 13 Oct 2026 05:18:27 -0400 (EDT)
+	id 941476B008C; Tue, 13 Oct 2026 05:18:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BDBE6B008C; Tue, 13 Oct 2026 05:18:27 -0400 (EDT)
+	id 9189E6B0092; Tue, 13 Oct 2026 05:18:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AC846B0092; Tue, 13 Oct 2026 05:18:27 -0400 (EDT)
+	id 82ED66B0095; Tue, 13 Oct 2026 05:18:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 15D356B008A
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:18:26 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 63246C07BB
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:18:26 +0000 (UTC)
-X-FDA: 85317052212.21.F2E60F9
-Received: from mta1.migadu.com (out-106.mta1.migadu.com [95.215.58.106])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 547C820006
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:18:24 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Hu2MrlBH;
-	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.106 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 5F45E6B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:18:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CE164C0A49
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:18:27 +0000 (UTC)
+X-FDA: 85317052254.01.1855C22
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E036E180007
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:18:25 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=j1hjgoF9;
+	spf=pass (imf24.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791883104;
-	b=iX7HdeR/O0V13xRLWCjmKXyAM7Pi4w6cw74EN5hmerdj7gilud4WnhakWCYxvWEhtadnis
-	LBvJaZgAtqt6BUO5N/D8+N4GGP3w6zYrKfRyalSeXEDJHY/+vmJpdbhyhDeYO6/ig4rbG8
-	Zkx9HZVhXD2EPkbCCzO/g6fvYK+mmcs=
+	t=1791883106;
+	b=3jtN48SCiHJQUFGgPMGH5WB7pPSuP5/cQxQ3fWgHdms6Dwv5GMkqYtGFYd7sdP8LB4gBmH
+	HCMnTA2Bs5gxf0C+pJ/mr8Joxv8G4apqRZjVfYoKaKN70HMOFFablj+DCTjZ7OHl+veeBL
+	G1QNB6zIWMOwX16/h6GXOcrsHcWPMOs=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Hu2MrlBH;
-	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.106 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=j1hjgoF9;
+	spf=pass (imf24.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791883104;
+	s=arc-20220608; t=1791883106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kaGHpE8HX1rLOLM4Tb7g7HGjJ+iwOYAOzccR/0qiauU=;
-	b=yroZ+cAqzeGx+Rfm2f6NneEUyEqpBT7VaUsBJmSCzzEfe1j/rICCoaRf0tRVFBTiQZPZBg
-	kPSZZhbpE8iUJSdLP58MkjTyjQjse0Y+IzHOXkfqjv/OORMhWRLFUpmWEqs5utgC4wGvWB
-	OOByAuMoSaelGxKes6yg27QMkuJw/sY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=7dij7DFyP1tg1HaqF4OFWcRn8VL75Z8/Hg9V+AE8H5o=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791883102; v=1; x=1792487902;
- b=Hu2MrlBHcPA+xV5ig1OcmlSpwI0qgTa72AZsGYMYo2KfmdVTIqlQsnnfr2xc4BJNkEb5ZO9e
- kgAHU7kMpp9huD/sxNeArcz1djZUHyzhOA4V3gMsRQZsfCz3m3m03CfESJzBSWh14De10RxKJL5
- np02sbsDkF2np5dgq3sKOvtU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 6e95fa5eb5e92f1b;
-	Tue, 13 Oct 2026 09:18:21 +0000
-X-Mizu-Trace-ID: 6e95fa5eb5e92f1b
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 13 Oct 2026 17:18:12 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Klara Modin <klarasmodin@gmail.com>, Baoquan He <hebaoquan@kylinos.cn>,
-	linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
-	kasong@tencent.com, hannes@cmpxchg.org, nphamcs@gmail.com,
-	baohua@kernel.org, youngjun.park@lge.com, yosry@kernel.org,
-	shikemeng@huaweicloud.com, chengming.zhou@linux.dev,
-	linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
-Subject: Re: [PATCH v4 00/14] mm, swap: extendable swap devices (xswap phase
- I)
-Message-ID: <as33VMjNRIZOG5Ua@MiWiFi-R3L-srv>
-References: <20261003003136.750633-1-hebaoquan@kylinos.cn>
- <asZt7-8mcxqc1a02@soda.int.kasm.eu>
- <asylV5YyyaHs8rP3@fedora>
- <565e1744-54ff-4daf-ac14-7b6c49fd3fa2@kernel.org>
+	bh=LghFxOzFX5561UyRw3PoliNdFHX5xv4WfaZ0X8D/DpY=;
+	b=zky3rLiRjSIhguG81/0OQurNEHQ0kkZrJbIoTsecMqD2+AMyZC0N0c1pdAwmu3qpF/hBzP
+	Pb74XqQeYBnuaHrRo2yTKsZyKz5v36rL27EjG9s3L57kjNWNIWgiwYjG5h6He/DROe/h12
+	9AFAqC7mg5HELxUYT4JWQMqIo8Pzx3U=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F9E3169C;
+	Tue, 13 Oct 2026 02:18:21 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 724B73F7B4;
+	Tue, 13 Oct 2026 02:18:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791883104; bh=EOkC7IxwRjX5sV7VTQMqZrlCovHAjCLACVvh+hdQqTQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j1hjgoF9HlQ/oP+4K7eHi4L+8h/Oz32n9SCYza9/O6FSh+/whx+zkwfXx/GApokxV
+	 1yG0fCmEIYQCchZDyiqyqHeBzkJqZkj8TyuKKhsHKv8GILo4p7TAzJfji2JuIz2vFw
+	 DG2fxW3PkXrceMTJEiu02y79uPY3e4o/Au5Nb58g=
+Date: Tue, 13 Oct 2026 10:18:19 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: Re: [PATCH v5 2/3] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT
+ macro
+Message-ID: <as33Wxv7t_8UO505@e129823.arm.com>
+References: <20261009-fix_hpage_macro-v5-0-54378ae45add@arm.com>
+ <20261009-fix_hpage_macro-v5-2-54378ae45add@arm.com>
+ <askfkwPaItOw30-r@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <565e1744-54ff-4daf-ac14-7b6c49fd3fa2@kernel.org>
+In-Reply-To: <askfkwPaItOw30-r@kernel.org>
+X-Stat-Signature: kyxnbz79p478rkc8pf6tnz4mu5rwsx8p
+X-Rspamd-Queue-Id: E036E180007
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 547C820006
-X-Stat-Signature: soj95wdjyzzw1p47bwzizqi7nxxornui
-X-HE-Tag: 1791883104-962523
-X-HE-Meta: U2FsdGVkX1/TTQyjpmw7HHBbFUofvimfckivoQl2iYDWTF5kpvfJjOb2uZEMAw8FpchjuRoecTa4MAkp5LRLFa9FhyGnFj3/zdeCtuw0jfjmJQDgXrMvPcllV033aIfRws72lOd+aZDh0RM1bblGxTsmD6fQ32SSb4KAkLiioTu+bEDJXnHYia6a+6QBDOzVNccUQaZ3xXSnLYsFNTuNVvFAKdGaJw8Ox3miNzpIDRFvbpXX+rwQQU4wm608zL7diIoYgVvzWRanWn9lyeQ9mNu+/ZqnMDxy67saMHHwZiFkAoHkqqsrdnXxczRmPvGXGTFy7XXvwzM1XejWnx2GPY6gH9+hy4HW6e4acwIkv3J47AVaPzHKJRW9AS1zSr4T3AyFgIvy7QvCmKjAbYOasnXbwDVL8SR+vh7LvCo1D112rrg5wrFPRvseYi1N5q3FICTHYVvoZudPRhufAWMsEKRgEnA8To1WFYk17AgTVj0hhnx8t1I7Lot0JmBEGFOUY12xzH/uQz23j0oyVGcdmGSTSBjDXa4jXHujmgVHXGdL45Y4l5BWE5c0XMMXxT5IBDnPMZIVf7bB4SqjGF69Ar4ncgVQf1uNXdq40PpTKYt8NHjgE3SjTH29lqHTb525IOscu9+TfhiNcTZhGT2X7bcMMXQ3l3mKiNh56SFrME7VXbIZovK2CeilxP6q117X4iRP0EG6Agd1Ybx6AHN8KbWZrks0te2k+YG7SFyxmV8uEd5y9o0esFUcDb4Pl6jOcmFYjDvLPKOI+1aYZLFGEUyZmgp71n9OCyPp18JgZ5HEHZnGMKShuo8paFTtjO9+7MLCyviQLc+pmaZvcJcNGJXYinm6Egpf7R9VIc9SK1uaYOay+im/HcB3RPQF9hM/zXXSF4pptZ2p1EN/N5k2UrFqJ+RhDUK4m5Z2pyLzhXM+Gby0AyaKB8J7DGVCGfviDvWc9W6h6GsHtVOdsKL
- wYVfQSwB
- nO/mnOrNaoMunN6fb/fKLAKqkfM3KK9+XWCL3CU5CBrOPPFOQDKSTR8dwe2W5fPaAXYFSxAD5H773J8q7s5CcAXC8H13WGDo8GChPZ0hzEguA4RZ7tmmXKvVvvv3Q6A+I0mDJZ2mnWFNGJl94cEWNDWQlSl17xtFLTIpw1E/hD8zajgozUGL29TdgVY4DfC4LBykntbMiX5k6Ez5TVdqPP1Z5YzLnsLPoxol/qXhsyYxXbUijwTABqDT8KKWW7+jLP75tMOpkoKQDnOvb6WbGGgrXr/L4AkkLq/3OMi2mDA7GPtpV3d2juWiI4FoY/3CBcMdD+Uw2Dtc6kzdtfUVgX990oPi111lHx4ApYbaWC50IfV+BuqUmakW30MGZcHK9Jwxk
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791883105-204161
+X-HE-Meta: U2FsdGVkX18NGb/Xg2LGJSyk9WajuxpMSZaUdDwszyh/drsRMA6Pd0Bq5O0RrSBN8IBRg/1WkFGwViTQy8vn3f15Jj1+pQf9QwrOhozh1/NjesIyI+qVaWO7b4XK1QUOJwB5ogycNnGIHgC2Kfn0swO4XJh562XO/fncojP+VIzPNQl31nBFJG+10SdYYeM37bF9LNx8em9TBBRALnXSrsZrm3VHddu2G3Emo6ItSDfC8DkNtpwrS0tHUWscfoLPm0JeoUfItumaox7huLjpgiXLJsiJn045XYSYS9D71984HO/Wq3aYuE9ys3UGWMZ0qdwLI/MJtKja2OSWtoOAWEEiUnA3bQTKSozr23UOG+4ktErdLhKNiM+iXKR9kfJmYwPnD7SOJeMWcay5Fpo0VE66qCH9P2YcUOB7x+bR7ZTBW7S5wuXBliTGgjVsIpNUb87fnoteZ0MTUOuldBLcHZUYiuaohNcGye20olwPeHmYx0UiX4IL8Rsh5AaDhYsCxWInwMNUxkgCzUGHZfwwzP+e0TQsArSdGHh7I1aAJ66EqzIw9D6sQQrb6nrhOiiZOZkLq2jz8jDKhv1zS7YWD4cQ+zyDEMStQ3ru9U/M5MR0aH2eENU/8W/YE4XpiQxpa3h9GEgOvqImbAaN/XGkb0M3yuRO9rNNFtNNFe1H6CqIX+gShp5evezyv+VMmrFmNITUX6la6OmkyPixigJSKdN9lgFWNORTA88VwikeH4AVVoDNa2yQKIVHJrswEwhLwwuAYceefhD9aaFdY+VrxqIpS2eOHL3XvVtbhMUefCmLN0f7gMLd8vu9o0v0e8U0p1frusdxYgRUSZfqx4jdcQAgz/6sZldmbhMNoPxZerAC9hasfVErY3Kpyc0UfR8N2Dv+fr4JNERgreNs9siL9XGYs3i3Y4YvgG4WsZ620DgS+ZJ0cI7dHjQwtFelqTRYQAl5EPLRFWGKU/wAFsD
+ B/eaKZ6/
+ cQpRWd9ol4o3ZneGYFGPshV91GN64twCqZl+LlL4ZrgrCRYOVMtRyAtx9/cSavlMCF3ynfpq8VXjXcmEnQaqIMqc55FvZatH/JFpxZp4pr+2SGjeK11xYMzSI0pGQGEJ6EPHT6fh0pWVzWzjBhb8311Tn3OjdVOAzme+bDkw9OHXK0Vd2tN0+cKwd/NdZI3NC+bQGeppQdtGK8ecpUqCiMZfOJfH1nlEJnNFLAGxvgeR5+p7nmG+0vJfn5wVBj5PZGieKG7zzdAcNwnNuldLt9D3hKgyyQ4iyQ46WrpWfHeZIJSBfmetmjiZ760xxbyM7hwlGSBjyv4WMz3neoJCD+DuPNqRt0bUS73A9KkBgBc4ydFlH0E6BRkxyqjeCPTo3Y4NQkvQTN+OIRAk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,110 +104,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/12/26 at 03:44pm, David Hildenbrand (Arm) wrote:
-> On 10/12/26 11:16, Baoquan He wrote:
-> > Hi Klara,
-> > 
-> > On 10/07/26 at 06:28pm, Klara Modin wrote:
-> >> On 2026-10-03 08:31:22 +0800, Baoquan He wrote:
-> > ...snip...
-> >>> The only argument create takes is a priority. The size comes from
-> >>> xswap.max= at boot, so there is one place to ask for a size and one to
-> >>> ask for a priority, and a priority can be given per device while a size
-> >>> cannot:
-> >>>
-> >>>   # echo > /sys/kernel/mm/xswap/create          default priority
-> >>>   # echo 100 > /sys/kernel/mm/xswap/create      priority 100
-> >>>
-> >>
-> >>> The default is the highest priority, SWAP_FLAG_PRIO_MASK. An xswap
-> >>> device is then the first one tried, ahead of any ordinary swap device.
-> >>> Setting a lower priority is allowed.
-> >>
-> >> Nice, this is now a good default which the user should not have to
-> >> change.
-> > 
-> > Thanks a lot for careful reviewing, and sorry for late reply.
-> > 
-> >>
-> >>>
-> >>> The device does not move once it exists, so the address space cannot be
-> >>> changed from this interface either. xswap.max= at boot and this together
-> >>> are the whole configuration.
-> > ...snip...
-> >>> Open items
-> >>> ----------
-> >>>
-> >>> - xswap_create() sets si->pages to the whole address space (twice RAM by
-> >>>   default) and _enable_swap_info() adds it to nr_swap_pages and
-> >>>   total_swap_pages, which is what __vm_enough_memory() uses for
-> >>>   overcommit. That raises the commit limit by 2xRAM for a device whose
-> >>>   real capacity is bounded by the zswap pool and by how well the workload
-> >>>   compresses. The question is which semantics overcommit should follow:
-> >>>   worst-case backing, or the address space.
-> >>>
-> >>> - destroy takes a bare swap type. The type is an internal index that
-> >>>   alloc_swap_info() recycles as soon as SWP_USED clears, so a value read
-> >>>   earlier can name a different device by the time it is written. The
-> >>>   swapoff ABI uses a path for this reason. It wants a generation or
-> >>>   another stable handle.
-> >>>
-> >>> - The new interfaces (/sys/kernel/mm/xswap/create and destroy, xswap.max=,
-> >>>   the new type string in /proc/swaps) are not documented yet.
-> >>
-> >> To me it feels a bit weird to have the interface split between a kernel
-> >> parameter and sysfs, meaning I have to configure this in two places now.
-> >> As far as I gather, there's also nothing that needs the limit to be
-> >> fixed at boot since it is applied at creation. If we want to expose this
-> >> limit to users (as xswap does) it would be nice to have a 'max'
-> >> shorthand for tha largest possible value, i.e. SWAPFILE_CLUSTER *
-> >> UNIT_MAX (or whatever it might be in the future). That would I guess in
-> >> practice give the same behaviour as vm.overcommit_memory=1 which might
-> >> or might not be desirable.
-> > 
-> > Thanks for the comment.
-> > 
-> > Here xswap.max= is a global boot parameter, while not a per-device or
-> > runtie knob. It sets the space space (si->max) of the xswap device
-> > at boot and can't change at runtime. So on the two places: the size is
-> > a global setting, fixed at boot; the priority is per device, it is in
-> > the create interface. They are different things.
-> > 
-> > The default is 2xRAM. From our earlier discussion, this is the largest
-> > size we think is sensible, and in practice I don't think it is not
-> > reachable in reality. If a system has swapped out 70% of its memory, and
-> > even more at 100%, it is already doubtful that it can still function
-> > normally. So 2xRAM is an upper bound, not a target.
+Hi Mike,
+
+> Hi Yeoreum,
 > 
-> I remember some overcommitted hypervisor setups where people swapped out
-> significantly more -- without any issues.
+> On Fri, Oct 09, 2026 at 02:27:33AM +0100, Yeoreum Yun wrote:
+> > HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
+> > When this macro is used in some test, test result would be strange in
+> > the system where PAGE_SIZE is more then 4KB.
+> > 
+> > Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
+> > 
+> >   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
+> >     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
+> >     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     ...
+> >   ok 1 Completed
+> > 
+> > Remove the HPAGE_SIZE and HPAGE_SHIFT macro and introduce pmd_pshift()
+> > helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
+> > helper, pmd_psize().
+> > 
+> > Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
+> > which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
+> > and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
+> > PMD-sized units, the test may fail with the previous size of 100 MiB,
+> > which is not a multiple of the PMD size when the base page size is
+> > 16 KiB or 64 KiB.
+> > 
+> > After this patch, output of transhuge-stress:
+> > 
+> >   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
+> >     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+> >     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+> >     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+> >     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
+> >     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
+> >     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
+> >     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
+> >     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
+> >     ...
+> >   ok 1 Completed
+> > 
+> > Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > Reviewed-by: Zi Yan <ziy@nvidia.com>
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > ---
+> >  tools/testing/selftests/mm/guard-regions.c    | 11 ++++++--
+> >  tools/testing/selftests/mm/ksm_tests.c        | 16 ++++++-----
+> >  tools/testing/selftests/mm/run_vmtests.sh     |  4 +--
+> >  tools/testing/selftests/mm/transhuge-stress.c | 25 +++++++++++-------
+> >  tools/testing/selftests/mm/vm_util.c          | 38 +++++++++++++++++++++++----
+> >  tools/testing/selftests/mm/vm_util.h          |  9 +++----
+> >  6 files changed, 72 insertions(+), 31 deletions(-)
+> > 
+> > diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
+> > index f7d53ea3c2527..3052823b0eff6 100644
+> > --- a/tools/testing/selftests/mm/guard-regions.c
+> > +++ b/tools/testing/selftests/mm/guard-regions.c
+> > @@ -2194,14 +2194,21 @@ TEST_F(guard_regions, pagemap_scan)
+> >  TEST_F(guard_regions, collapse)
+> >  {
+> >  	const unsigned long page_size = self->page_size;
+> > -	const unsigned long size = 2 * HPAGE_SIZE;
+> > -	const unsigned long num_pages = size / page_size;
+> > +	const uint64_t hpage_size = pmd_psize();
+> > +	unsigned long size;
+> > +	unsigned long num_pages;
 > 
-> For example, Windows VMs initialize all VM memory when booting up. Afterwards,
-> you might just have plenty of memory that was touched once but will not really
-> be used in any near future.
-> 
-> So I would consider some crazy hypervisor scenarios as well where people
-> commonly have significant cold memory that is currently not hot (not in the
-> working set) but might possibly used in some distant future.
+> These can be declared in the same line, or at least follow reverse xmas
+> tree convention.
+> The xmas tree comment applies to other declarations you are changing where
+> it makes sense without additional changes.
 
-Hi David,
+Okay. I'll change it.
 
-Thanks a lot for the valuable input. This is probably the first first-hand
-information I have heard about a production environment. And Klara
-measured about 160% of RAM in zswap on her RISC-V box, so the 2xRAM default
-is reachable in practice, not just in theory.
+Thanks!
 
-So I see 2xRAM as a default, not as a cap. xswap.max= already overrides it.
-After your comment and Klara's numbers, I am open to a larger default, or to
-a "max" value for the address space. The real limit is still the backing:
-the zswap pool plus the block devices. The address space should no longer
-be the limiting factor.
-
-By the way, in Windows-VM case you mentioned, is there a block swap backend,
-or is it zswap alone? If it is zswap alone, the knob that matters is
-zswap.max_pool_percent, because it sets how much cold memory the pool can
-hold.
-
-Thanks
-Baoquan
+-- 
+Sincerely,
+Yeoreum Yun
 
