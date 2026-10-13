@@ -4,81 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ADE0CC6B03
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 07:38:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BC3BCC6B0E
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 07:40:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 995D86B008C; Tue, 13 Oct 2026 03:38:28 -0400 (EDT)
+	id 813726B0088; Tue, 13 Oct 2026 03:40:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 946CE6B0092; Tue, 13 Oct 2026 03:38:28 -0400 (EDT)
+	id 7C2A86B008A; Tue, 13 Oct 2026 03:40:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 835856B0095; Tue, 13 Oct 2026 03:38:28 -0400 (EDT)
+	id 6D8A86B0095; Tue, 13 Oct 2026 03:40:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A1DD6B008C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:38:28 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BF53480A39
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 07:38:27 +0000 (UTC)
-X-FDA: 85316800254.25.650E97E
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4707A6B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:40:06 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4BDFC120A04
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 07:40:04 +0000 (UTC)
+X-FDA: 85316804328.20.ABD5A6E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EC41D18000B
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 07:38:25 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DlB0kj8g;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791877106;
-	b=VVkfilzPAKU9IVMUFc5u+wI058GXa5oANll/CNHZIrZaVmBa2QDvc36G5809fdNfZcQdgZ
-	JesRV3r06KFX8DAs3JI9x7WX/5R6zqdTXq/DulKdaIR/h1+3NlPkeSO2TDp+Lq2fk/hyrg
-	edko6yGt6Ve019VMMzUS2evS1KqrIYA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DlB0kj8g;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8186FC0002
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 07:40:02 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ryr1uyc5;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791877106;
+	s=arc-20220608; t=1791877202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DcuYY3+mv/Ns6uvfacyrd4dBgpfSbyMtyecX3H4y2hE=;
-	b=6swGmQK8Ezw4zRv4Td0vvV9JXTy1HyZz3TzDgWS7RBBwZOuuijh0j8GgvMeDkOSCxlzJjh
-	CUEklnsEadFb4WMYyBrVqGyyn8fRkGoPJ6ySX5gISknuQVlT03nhUc3X1yG8vTF4MJpi4t
-	K1M1pQf3E0Aj0UN5G3uMhAs8W8QKzN0=
+	bh=Ka4WnGpN0d9oCcVY/MuEpnfOHeYeKtz3o+TrxhSWjCo=;
+	b=W6xqEiggxU5WpJDF06cU9spPx2U1y11kJ59Yj/fnisdx94eO2hHUe1fAre0yfFTREGVHPo
+	ug9/sNLMHlSCZsAjtOVisKdNdGOx7yBDa7pULimJMKM5kcMk7x6o7tNXxgzsAOlDox2d1d
+	3i0whOq/WHRmROaiH6vaPeytV4hgXa0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791877202;
+	b=ohgpMiPc1XjfJDwv0pmCbJY5gcD4+qPmR1rDT72GrR6MAElVzC5X2ITxS76veM4RA1D/Y5
+	dv6DWWiu+xuhXYL/tTBiPxZdSMdyiEJuXON8uOhUou7DVB+eiy3TpLBaBhIgBt8kqmisnz
+	gO5gKmYECB1GXpJjkuZWFhMCHCo3R90=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ryr1uyc5;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DC0A74135C;
-	Tue, 13 Oct 2026 07:38:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F001F00893;
-	Tue, 13 Oct 2026 07:38:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A66E4436FA;
+	Tue, 13 Oct 2026 07:40:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5B61F000FF;
+	Tue, 13 Oct 2026 07:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791877104;
-	bh=DcuYY3+mv/Ns6uvfacyrd4dBgpfSbyMtyecX3H4y2hE=;
+	s=k20260515; t=1791877201;
+	bh=Ka4WnGpN0d9oCcVY/MuEpnfOHeYeKtz3o+TrxhSWjCo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DlB0kj8gOlFNSD84BZwMWb5ZbV2oXW4IaLaFGcapmHBAUuLC7zPJAEShEflW7d90Z
-	 2ITF8SGCDnhIDxAHfjDEwEtAvXceuwSpN5Fasml6JY9Wn9huixCPCLyT3uZ+1AsP/f
-	 QOGdh8bpPL2f7KQEgdkMQFTpJg+d/VB0ZERes3AU7EeweYpj1IPdrZRVasXloHdV2K
-	 FjdS4eNfe0CbiVGPsgPqkqk1Hc6oPE4Il1DhEwPDaQ3vfenYbgtC509EdQiZhRvTGK
-	 ukmwwkNFOwzqRryAIPa6FUnK5PNz4426a8gtHsmxyZGUcdlQo01a/ZMlDCQP2iOTA7
-	 O7NL/VpOcZOZA==
-Message-ID: <96324eec-d307-4bbf-975e-3c9b3dd5e190@kernel.org>
-Date: Tue, 13 Oct 2026 09:38:14 +0200
+	b=Ryr1uyc5yP/JYFWgvjsKT+2rhhWZifPokb2ZTKhhSwbk3itoTBEivaDIZj6NndAoR
+	 sTy6b2LkupMAxc5rFehpkbjqkfGOIK1+0VJTeO3B0xu7K7Kaktg8vpRlhKRjkMHU+I
+	 I4Ph5lYJzyqydt1ULvEPikXSD6eupUTUiKmz3i1klD3tn6GXk8iZe/ojaxL3LxA/UF
+	 RsXSRdN+MrTyWzF3a3ZMv1+ZQ+1zrZ1QNxGD/EZ6i9EgKaQ1QsuxnYbq0a+Wxld9jj
+	 25A0ZRbn9O95WUGGaXfMfVrnugdSC0OhVzh5JfrkiN3hXzwT8sAuq6H28N7ASZ2XKi
+	 FWO//HPmJavLw==
+Message-ID: <67c30e4c-3576-4ded-a71f-b49075ed42e3@kernel.org>
+Date: Tue, 13 Oct 2026 09:39:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 1/3] sched: add helpers for numa balancing
-To: Yafang Shao <laoar.shao@gmail.com>, ast@kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- akpm@linux-foundation.org, gourry@gourry.net, tj@kernel.org,
- hannes@cmpxchg.org, mkoutny@suse.com, shakeel.butt@linux.dev,
- roman.gushchin@linux.dev, yu.c.chen@intel.com, zhao1.liu@intel.com
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+Subject: Re: [PATCH] selftests/mm: fix uffd move-pmd test crash on 64K base
+ page systems
+To: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-References: <20261012120438.52849-1-laoar.shao@gmail.com>
- <20261012120438.52849-2-laoar.shao@gmail.com>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, surenb@google.com,
+ mhocko@suse.com
+References: <20261011163527.95988-1-zenghui.yu@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261012120438.52849-2-laoar.shao@gmail.com>
+In-Reply-To: <20261011163527.95988-1-zenghui.yu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EC41D18000B
-X-Stat-Signature: piikkizbsotbbhz3j3ups9t31rwji37w
-X-HE-Tag: 1791877105-431630
-X-HE-Meta: U2FsdGVkX1+bvcCBXMtvijpVou696JvpJkCuTuZysz5AhZOiAvgshEUfJmlaXa6xqDGGoa9VDjW+HMXqK8+HY+EGghvzGvCW86CVYpB1jjY0fIrO8KJlGKDzVlrRL1pFheW0ZX/x3+ydcqVag/KHzOTIajrBy3nsw7ElKbBqk28z1j80rbMJDhQDRHb1OrD2oZz/MtJ4m25XD0IvUhbO9/dZQNebEBE1lqdzMal7UYbBNzLviBggAbCrpDLlJkGbkpw/G6MLF1LYP/8dtgjfy0gYPMfJUEnlcItBBYQKdQR3p5s4tTK6mNuSJJZfYc8cRDW02bUV87aV6MG5HjyGiTLU6VkHX+vgC6EuUzhnd1V0o+wAcVzfFjuwD0j0KKPCDbGPyoVRZmltOSUXzM95m5XHEZANvLokyMXaRNRlxzbFNlUJTxttlDMjG3O1taIAqcMmKCNsJUzlomjHbkIfAeN3cOyqRY5NStfLwC1DrGjw7r5DiBG9+DYwhSiyLogWoNrB/G1x1aqOnKneqUfUMebUm5pLGvURVW9s6s3+gSohEgdYOTbRzMoNGOx5KzYDVynWlpFt7/b16gszeDidGI3i5hsx7NixZFKqWszxwRHUaX9OKi4N1XV08OpK72Oshf/3k9xZKohQ/f0Wp0ixr5I5yPEI21B2xXyvHomVwdsTkTkUHb73IC6CLKWIAlznLh3VLx4MN+2OsoaCCrluLQKPKrEsmLud0vXUBoLH/Lp9l+igxHy3BkwXTavdkWGMzPqnPvTh9oDfBnjTbpO1od+tkE0eBMBbnuQERf+di5LmzVjGcHKFX7ClM4yXYyXFNRfXYphomwu2L3uq0GmZD3s8nsKYhLwbokxvLWtC8UDoSSXxyg6/zBOTrXsrVoNtUBE5z3ljWhQw6IbEZLEOzIxzoqv/i1IJv8R4J4rGddnhJi37lYVKa7o0h0Nbvd5dyJpS/9XTcc9pwpNY5AA
- pTSxDemt
- M8y1B/0yjAvuFDaYjH+Jz1EW2wD+H0/gk8wcpfSyWFh+Cmy2OQ/ebfp+W/m7tZJFzawY2hM6VKIV214mK7X3L6sIcnB1V/tLgwu54OT0Hd1rTSTvWVeCWNNw6TqWvPpnPVWGbPySzJIw2fsri2yrt0M1UWE1f2z85xlT1e9e6h3z1MHcUlkXI7c/Fsl3Gft3Y/lVqZ4wYmEr4lg9VBUndIj5TzeQcAJ3oZT9d+x+6G0hcroCgTvlW48NlPH8BnK8X3zsvRnlRgltXbi8cfvcByUUo8IHSgFdPm7PTbIuBw7TjmfybbAij6LqSGpQjD5bFrEDAL28bMCvo40L0f05aUAXzVjrVgmfaTVY36+2eBLZ+6ts=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8186FC0002
+X-Stat-Signature: 5wfqnd673aiozuzjfw83cih8nhbmy7o4
+X-HE-Tag: 1791877202-835653
+X-HE-Meta: U2FsdGVkX194q9/j5kLbktLhMbR77bsK34aeasm/SG3ukJVPnyZJ1KHXUBZJdkBkqxbxpbtCUTvdGB/4ZYGV7Q0wdnvzmLHiXcBxiVC3WqfIklazSb9pr7uLJx3NK7WTAieZOQFVf9f5DqXoSwjTeaixDAhA83wM81b+A7Wxnw9fiVh9hgusypfcBHm8gsqTI12LHx/Ffx8b35kGbpyAJBKS8aOLfiUuvjq8RXQqiyLhs519rEAt+k9+zcyK8O0Qy1HWhjw4mMfC2LT433PBRe8BYOfEg9zonRmSgyaVZMNY2PiD1WE4DTLJR3eaXCBYwkR4FI9TYx2Y6zYwHEQDVLbYQGwLRakXcloTPO2KA90ak5hhJFWEsEb0yj0xqjV6YpfdH449wPHepIijrfcbmnOCksQyQ948Qnkk8be9uiLBYkL7+WEQcI4ApVbSjBLX5wJqJuWOUYlBuJMnqyOr6yE/souCv8fdb4j+GIL5WRZdkfX2XBcaClEbKjlcP1050L3kdxEZFmWv62qEosjWasLxhY+PsvQQm79jZzP0HZFBlW8ppkDSjfqDD0m6xc6IflX71RyabGSyW9yzpUJb84/Rzsp0d5lWvh/SUUCLR3sfiNUdfv2ZVtQ3qphNQzd+Wo5K9M/I4aWxERkLdyMLfD4dLyF4IYjnUR4PxQUjB87ETtlBJO1bHiZvUpzkxrDqpGEczn4lDuTYDGw/h2VwbpYaMsbgUkAHW703/fhKdozeVaXHkxTmuNJnxn8Yj44+xaqStyqTh0aDwOtJcrIrvAlPRDtFZEqwMu0XSnRfwC0BZIBkCtTycP0U4Pk7GAHbiThIkAzZyInJgW+2VrslVeUldCADSgBiwDLZtzs4s91KCEyZhRTge8WGZ3ny8vutuXiR7v7DzjBHNh+T2foueVGfFHtSWe5dKikObvt8Yk6mD/7hnKKtd3J7VXcvEdJL23lanM6u/++0Qc8st6/
+ x/1nuW6F
+ aSQkeCU3sXffCA0YDg8lyrt+nEeNDtDcGUqGHr1LEU6yrOZklxopnsf82Be09VUHhuyKVQIARsn05/6uoSIau91uPRJlrtUsrJXiCuyuYPRP+227V2yLIpUosPq1+9HjnXAZMuJ+XomLn77rT6sFKlr0OJuyELn5dtF8JX0A1qzLYwx+nfIgtuSKZ7t9wUIOOQ4kscpLKxbgsgSfbveWdF0w/disZqrOrgFDenPPSEwpwavmnqMSwjZobZ7DyXYuBgU9eb4wYfxSvupZ+ljtSzEjsIql3qDynicXs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,109 +140,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/12/26 14:04, Yafang Shao wrote:
-> Two new helpers task_numab_enabled() and numab_mode_tiering() are
-> introduced to replace the scattered direct accesses to the
-> sched_numa_balancing static key and the sysctl_numa_balancing_mode
-> bitmask.
+On 10/11/26 18:35, Zenghui Yu wrote:
+> From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
 > 
-
-I'll only comment on the new exposed helpers. Some of these might make sense
-even without the bigger series.
-
-(obviously, minus the task change)
-
-> No functional change.
+> uffd_move_pmd_test()/uffd_move_test_common() splits the test area into
+> chunks of chunk_size and moves them one by one.  On arm64 with 64K base
+> pages the chunk_size (read_pmd_pagesize()) is 512MB, which is larger than
+> the whole 32MB (UFFD_TEST_MEM_SIZE) test area:
 > 
-> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> ---
->  include/linux/sched/numa_balancing.h | 31 ++++++++++++++++++++++++++++
->  kernel/sched/fair.c                  | 16 +++++++-------
->  kernel/sched/sched.h                 |  1 -
->  mm/memory-tiers.c                    |  3 ++-
->  mm/migrate.c                         |  7 ++++---
->  mm/vmscan.c                          |  6 +++---
->  6 files changed, 48 insertions(+), 16 deletions(-)
+>   step_count = nr_pages / (chunk_size / page_size) == 0
 > 
-> diff --git a/include/linux/sched/numa_balancing.h b/include/linux/sched/numa_balancing.h
-> index 52b22c5c396d..353772b49c5f 100644
-> --- a/include/linux/sched/numa_balancing.h
-> +++ b/include/linux/sched/numa_balancing.h
-> @@ -8,6 +8,7 @@
->   */
->  
->  #include <linux/sched.h>
-> +#include <linux/sched/sysctl.h>
->  
->  #define TNF_MIGRATED	0x01
->  #define TNF_NO_GROUP	0x02
-> @@ -32,6 +33,28 @@ extern void set_numabalancing_state(bool enabled);
->  extern void task_numa_free(struct task_struct *p, bool final);
->  bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
->  				int src_nid, int dst_cpu);
-> +
-> +extern struct static_key_false sched_numa_balancing;
-> +
-> +/*
-> + * Whether NUMA balancing applies to @p.  The @p argument is unused for
-> + * now: a later patch will consult a per-cgroup BPF policy with it.
+> Because chunk_size > page_size, the test then aligns both areas up to
+> 512MB, which points far outside of the 32MB mappings, and decrements
+> step_count, which underflows to ULONG_MAX.  The verification loop then
+> runs away and the first dereference of area_src faults with a SIGSEGV.
+> 
+> Skip the test when a single chunk cannot fit into the test area.
 
-Talking about later patches in a function doc is ... wrong.
-
-> + */
-> +static inline bool task_numab_enabled(struct task_struct *p)
-> +{
-> +	return static_branch_unlikely(&sched_numa_balancing);
-> +}
-> +
-> +/*
-> + * The global sysctl state, for the system-wide tiering machinery: this
-> + * reflects kernel.numa_balancing_mode only and takes no task.
-
-The latter part doesn't make a lot of sense in this documentation.
-
-> + */
-> +static inline bool numab_mode_tiering(void)
-
-The function name isn't really intuitive. Should this be
-
-	numab_in_tiering_mode
-
-	
-	numab_tiering_enabled
-
-or something like this.
-
-> +{
-> +	if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
-> +		return true;
-> +	return false;
-
-
-return sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING;
-
-?
-
-Both functions could directly have proper kerneldoc if we are already
-documenting these.
-
-> +}
->  #else
->  static inline void task_numa_fault(int last_node, int node, int pages,
->  				   int flags)
-> @@ -52,6 +75,14 @@ static inline bool should_numa_migrate_memory(struct task_struct *p,
->  {
->  	return true;
->  }
-> +static inline bool task_numab_enabled(struct task_struct *p)
-> +{
-> +	return false;
-> +}
-> +static inline bool numab_mode_tiering(void)
-> +{
-> +	return false;
-> +}
-
+That leaves 64k untested, though? Why not adjust the chunk size accordingly?
 
 -- 
 Cheers,
