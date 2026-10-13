@@ -4,115 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6611FCA9ED0
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 04:03:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CE09CA9ED0
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 05:12:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D2016B0088; Tue, 13 Oct 2026 00:03:02 -0400 (EDT)
+	id 6A58E6B0088; Tue, 13 Oct 2026 01:12:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 782F36B008A; Tue, 13 Oct 2026 00:03:02 -0400 (EDT)
+	id 656AF6B008A; Tue, 13 Oct 2026 01:12:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 670B26B008C; Tue, 13 Oct 2026 00:03:02 -0400 (EDT)
+	id 56BA36B008C; Tue, 13 Oct 2026 01:12:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4551A6B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 00:03:02 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CA44E160AA2
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 04:03:01 +0000 (UTC)
-X-FDA: 85316257362.16.D6CEAE5
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 08A8540007
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 04:02:59 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=dViaKtlj;
-	spf=pass (imf17.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791864180;
-	b=jbwlUffeAlIwxs/wc7f4WjhfwhUEoiTxSanJoDVl0XbabJ+PIfRDe8qQSf/vCirtexDP7L
-	7ze74WKFdx+DKF4vXaS+LhibotIq2ePX8M4vMKP4DYzuq7MS9OFevQvWnz7yc7JHNDPs53
-	8PY6w15CWdCN46r5l6wmN68RLcd9IgQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=dViaKtlj;
-	spf=pass (imf17.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E93C6B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 01:12:16 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2AA1040B01
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:12:14 +0000 (UTC)
+X-FDA: 85316431788.17.A9F22E7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2FA3420006
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:12:12 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Gv3ipstp;
+	spf=pass (imf13.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791864180;
+	s=arc-20220608; t=1791868332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9wJ4fczHpBB7QAqi3kAlwydilUU5q2AAkVxgHET/ArQ=;
-	b=QPL6ULg0Qf605QPpe8ApFLCbDyf+iUy2A43N6kKsfSzueZ5wQyzJBaxHiWbcUC0I6E6wUJ
-	rwGh2xj0z6xC4mNld6fT0JVBNjZckSdCeW83Ukmjqvwia5IEYudfxGkydFQoOzZd2DM8qB
-	wH8iSXzOmzw/dzpV3B2WkI4jBlcmszs=
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cc4e9e56e9aso743650a12.2
-        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 21:02:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1791864179; x=1792468979; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9wJ4fczHpBB7QAqi3kAlwydilUU5q2AAkVxgHET/ArQ=;
-        b=dViaKtljEQhgytzx1ZSnj/OSqjV0NY6siQB1WIF+HGFcAF8I+zWhrnWAI9Lb4bYkck
-         0Z8xUNkcHdxB/v+akxBkg4bdjxQ3pIJfixuzKzK7NCEIf+GqiAD5S8+ZPdcMD0bzRiRr
-         JtuEFCBWzk7Z7NUsrSeOuiiQnpwmKYkaQSJto=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791864179; x=1792468979;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9wJ4fczHpBB7QAqi3kAlwydilUU5q2AAkVxgHET/ArQ=;
-        b=Z6C6aEH8QCJkkf/L7qBkr5bI/wHmzYs7jIuSHlSb+tU7BrN1MarSjn6MI5AEIKLlvl
-         d/ywsYv4spLKcujQWm3P3MEQ3/siOschugcswHdhU4JGj4ovk0zcy3eVvzA6G9Wg4yzw
-         10ShT3TMIKd72IOjcFMK81w4Z17ND4VyyeszSs8n1qmKcI5fknFSLoRk2TAh+uDplHL3
-         CBpYayPGGN9j1lTc3oDwhwI3F2yarhhNZi8UCXJdygdwWCdWS/ouknYFOaByDNql1EmA
-         wD/b1mRMAKiy5a3p8cE++GlPSG+czPPXbmpbHYiMFMaEYGLsq1NvJBI5bCNQheRC+Ie2
-         ie1g==
-X-Forwarded-Encrypted: i=1; AKwUvBxMSc2kHFMpZHfg2WQPJ1cco0Fk08NIsC4lNyXp4kUxYXAHBS2Qh57XgTnHVXhXgzLb3z7qf5ZNBA==@kvack.org
-X-Gm-Message-State: AFq9FYLFRtE13niXPaQvS9Z0OJeJh8RFvsFASP1YRr1DRHzuTjLsZKsV
-	vctvVFX6Nm56JlvvK1c0z0kYuQWYSHFTC3Hck+DLeRJwMso/1Dbh8xu4OKMfACj49A==
-X-Gm-Gg: AYBFou31ELJdSaouaJViEvN8jnEwyfHDd8Gp2WIkIL54TRrp9SiMM9ZMs74+bG/5lyn
-	38eMeMdrlbu10JPz44HNoVL8ZMVFKMeHMCxY36CFRQbhRgNqjObFe68EdbS2sH5tlLW/v8uKQgS
-	hXbxPYO01da649hqH0XErf4oRD+Bkyfy/VQ9wAIVXnqvAC2YbnXsmM7ticAjb1fF6KCcyJaktVl
-	BRqpyUlRDuQdVDA2sPpLe4GlSSHGEODsO875ydNMGNjSt77OvP+u5Cvs5/n/NfhCo6VdZAOA5H0
-	oQp6nVl8oY0dzicD5Y09nv/2YPhQJIQ5EM/q94YDSPZJhoQXdDValhy0qZPUkNaMzneyFOY6EfG
-	u34w1UR7urwJNUgDEWX8teNJFbTKaQap46F4VnLVkw4uPob/pAnbWS4HTl9KpyicjlR2v7jBceO
-	ucyMVH+2AIiltQdvW2T3wOXxTTs08nKxZeKTDj3lqE8OaN4FQ0+FPMMrYrj8tjelMEN3sXG/aqa
-	PJFCYrp7dA/IYwXVwPVdbQoGnWnWJZ0WrWBrA==
-X-Received: by 2002:a17:90b:384c:b0:3a4:e234:111c with SMTP id 98e67ed59e1d1-3ab3a9183bemr9589953a91.66.1791864178821;
-        Mon, 12 Oct 2026 21:02:58 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:476:d384:7c2e:1579])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab3371f748sm11618699a91.1.2026.10.12.21.02.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 21:02:56 -0700 (PDT)
-Date: Tue, 13 Oct 2026 13:02:52 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Bo Zhang <zhangbo0325@gmail.com>
-Cc: senozhatsky@chromium.org, baohua@kernel.org, akpm@linux-foundation.org, 
-	bigeasy@linutronix.de, hdanton@sina.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, minchan@kernel.org, ryncsn@gmail.com, yosry.ahmed@linux.dev, 
-	surenb@google.com, suleiman@google.com, zhangdongdong5@xiaomi.com
-Subject: Re: [RFC PATCH] zram: avoid preemption with CPU-based compression
- backends
-Message-ID: <as2s0JflTS1wUUOl@google.com>
-References: <anMPLgbrf7XMC7Qw@google.com>
- <20261012123328.1138059-1-zhangbo56@xiaomi.com>
+	bh=6ixBrQ3Tz39hYV/OhNveeVgJyx6NRkGncCm+qWmedF4=;
+	b=MklOBlnlM4mpGUJWur47MtWE7N2gFgZtTRq3xSY48ut4FuBUbzRWtx2bYqkTknd4VekRMm
+	faIVnyeFt4vAC4rDHUgr3vpN56i7uWKkxEyfoAflu9as5B6sZHg4gG8FOvPs1FiV5L04RI
+	IWV4Gl0sHYT0Z77Q2vSx1hBWrFDW924=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Gv3ipstp;
+	spf=pass (imf13.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791868332;
+	b=LtT42Cl6YOg9YF5W7aD37w0nesruSXz+pkjL9lwtjNFHILCUcfTm701PedVGFuipoG3oPS
+	BJzFIsNP1NFlIva+Nr7zH8uHfWm3N/RPgDFwfUcwcgQev7lcG04lIO9WI+ChPG1dIEpY2g
+	NX1Q1kcLYcT1kMTEqRfWkMIGYIAsXVM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8DB22169C;
+	Mon, 12 Oct 2026 22:12:07 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 245323F7B4;
+	Mon, 12 Oct 2026 22:12:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791868330; bh=RLVpCA583elG6hUYQMlkousRsoX0X+NZ6XOSNvE/O4E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gv3ipstpbwQr3svLAPmYMebRUno9EQOqqkgpXH+OTYWKMfKbmMVwmlr9kzx2zu7V3
+	 p6KWnKsUFUHbwwHopOAEoC3XlIVIjdcV0tEzOb7a/J/0+pNHjDK0dKk9jCnYyeNXQd
+	 7wlK0u7oe0/2IaKwC7MHscVSAw9cnzCNPB8tMPJc=
+Date: Tue, 13 Oct 2026 10:42:07 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	kasan-dev@googlegroups.com
+Subject: Re: [PATCH V3 1/4] arm64/mm: Use pmdp_get() for PMD accesses
+Message-ID: <w6n3twi7dt35qzq7bwx5j7jx7plccrhbgyl5olcc4en7f4zd77@wzue6ripzv3c>
+References: <20260924062214.1635078-1-anshuman.khandual@arm.com>
+ <20260924062214.1635078-2-anshuman.khandual@arm.com>
+ <asPCv5Icdm7Z9mWF@arm.com>
+ <lqjq64vw6mlm27kp6ffms6auerj67avecc4ongedouumsrspjh@2f2eblm7wi4u>
+ <asy-q5SBnrBQSadP@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261012123328.1138059-1-zhangbo56@xiaomi.com>
-X-Stat-Signature: eyzupgf13de8zuus7xjzj6b6ihhbuz3j
-X-Rspamd-Queue-Id: 08A8540007
+In-Reply-To: <asy-q5SBnrBQSadP@arm.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2FA3420006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791864179-925177
-X-HE-Meta: U2FsdGVkX1+Wyel0uAaKz9kBxyaar63ZIJTlPP83bCmkVuIH/zW6k+zCrG7ClIHEZT4yOO2vfw0eOJOcS2P63oBKiaryzt74kkG+/KxjIEpUMfkKyy8DNhzeY8XCkKEg1Jud36VdY5VERONOum8GXJgpNkSfnuI83nqDGCjwNIKe05g5ATu4/1Kpjn60GUfYdT9POo4bwdZDEcloFwr/p/rF2AWnCVepOSu4ld2c7BcHdmNehe3sBcafoY0g6H1nBpYAPFqaz4kcYRoT216Mn1QFch1s/pzH2UTPKIVU4KxalNQ7F+nOjSyZoKYVJhdAstNhmZysOWSR1VN+vQ3BVTUSvHt+Qi2+9WnbrdG7Hyzz/Fzk0GkGcNU+80rlfM1dA3nQxG2vjl1PZOdQFnCx9x1s31YSAwCO+TaEgun9LaFidD1Xg6YlPXk2qWIug6yQkJ76tNYEtRAZVkUDgHrQv11GgRiGNfO9ISvGhTKl1p/D5U/PH8pzklnrDckUUgj0aOzxcT8rgsU2Apx3ShPS5qQQ+CwdxDQYaFDg5buafsBZ59Cm9LUq9pRmEw3tosAYX7BIfwrzsfar92mfN/9oOZ+3aqGxPx+Aq0bNK/H79NNv6hMF8vNPW/VNn2lF4/RZTKgr+0QBmCSwUqZ5qjkFhADQuItgRLC+MnKkz1e4EsH8P56KrKge8sde0ym9wVvsXeqRygKCBlwYrxZvcF8Txoq27lYUHT7oBvRcXU+DQ1UwUkDdkGJ0z/EtRQ7Zz4AUZi1IXQMkbaHBpxhZlV667gL4xXtnIKbCbWRhvEdkWNPCeVnVtOY8dv5CgLSorQFFmHragx5y+V+N2KCXVqIuqeNR+pkrTCqYtlnioQfulw3/MXvas7gbN5b2tihVvwR8K9jkH85g1LLNoKq/8vKvUrw+8nId1aPHwFU8J+GrzgSi9K3OuiaITtq3PvDS8WAVYc+/3h4WCQnhjGQ+k3Q
- ODBG3wUq
- 4xuYYkvmbGJP2ldFYy+uUO3CUXZhps9QHWk5Q6mM61q+GczHJALBAFmTqhID4pO2S93WoonJbxZ+p7IsJr0+sUN2AYxUVz2M/JE68YIz2aT0Y3FUCMOI+izmamRH/eB81y959dcCDFQvCWilVWt/crzXTszZxs7ueWBfBdHcaBeTW1yDN++TfWAOnpl0K9eKMmMo/Jk9XE4pvmKm9+uNnvOYlFpUt1sxLan06Oby9M/AjsoIRwdFzEt8ZztGwrR+9GUJswawLVVd1cg5Ppymg0GGfmav81GsGm0ryJwoemlzpI1Ph4iumgFKMSpcmzsBG+COGmU9Es79obUnGHb0YDjXWYVubd181/iveIFQ53GLw/aPI4QExJilD0g==
+X-Stat-Signature: 6k8uz3p8gp347p8ixzcygif97auu3y88
+X-HE-Tag: 1791868332-588289
+X-HE-Meta: U2FsdGVkX1+KFhSVG7kYBPOiFwsZUTJcZLtSsFv/F7Mt5cUFrKFO4dOquidA8f5oCmezVl4T0vozDdEtIY26rb6R01zfZKU5Uf9MUOX9OKPX9Xyih4HP18XS1aWaeqCkCxz5ZIH0EjItz6kuVI3Sel37x/YOd4w0gibTU5pEdBaDZJHGMnYkTokCGSLfNKAzQUYzf30NzqG+n63dvCmtkLI+ok+ZL8bWjKAO8oXgZ0f0husodyTW0hqeGlFgKnAwiOdklOb/mF6bN/C51TMFSt3yguEAl0UbV/OmTChAU2ccdzg9n5pu5gnCMXrzj+DEuupujvWwwhGl/Uib6hmjbbvXJ7E/yil++1nI4ILLgzdKadT7/JMiQ9QNql9l7C6hwEM4pUZXzVAu50KXEGdH7mP5RE3BXb9JceS+WB5LUptUt2fcRrcDLDDBcM4BjBmdfyRbUevhLBsk1BumHaq1CtC0XoVwZLLFXD41PJT6eudFCEIf4unU6JZ42LbtgeIqWhCq+A2mTLlTz8bqiQaEbwWJUDyWO6HgkjaMxXahKP+zhcZO9ADA+gJkedLYzlPektGvDkXEQImQHSySdfm8TjJ35D+5ER5HWUDmolXmV5GFtLCYv7bgymKPPNzGOwBV2/wop1YM0s0BfLWMTtcWxnKTtFaYxaU+nCj/1iachqFF3y7WA6mLn/Qj6TNnYBDmTukHkcgtdWEGN03X13Q5r1NyBcntg9eW3I0J2BZEel2SCTQyY/uf0d/XZxp2u8ej3YS1Uw4IYcWlepiXcHQtTqd/XFZ8bc4OGxzd/C2JoYNaUn0DEhbbj+TPtCa77S+UaN8iBMebXBVQKfxsQcbmcrm3gByPGFknrCu0PJUn4lm4ogFzTrq3kqO3ZSpoFE4nvPZwwHtqzq5hsqDfoQjLOiD3Hhd/w7tiIhIsHlngUbHu41eE8s9WkhRCDRc+AARzclGs7A+OMSJBTbiNfgs
+ gnbwhC1s
+ i1t8yb8TlBDN6votpaAWAF2ZhYy3ESxuwJI0Pg4jtB6uQiv1SQVCgoBFc0bJ+znn+OON0qdFgIQY0egIq05Q/gYZl1KnJd7a7hN7wRLKnojaWqR+bM9N7vYMd2cYcAtQw79rECdk440CjDwzLGRBsPMvvc40Zq05sFG7AjbqAK1Ye5hD3XW8D/sCC/3JXh5efvXFJLj5Cg0zzCW9QxL4aj0CwyjieITaMo6MnmVBAYIq/zXv1ptnY2aE6NAqcA70QEUkr8oj2xV7tWYCj40ZfwPYHlCQE3H/iyCpbhAqecBRKtECNrJzDUjXE7oPJztR6HpJ0ZBSeoMJDAms1Id2M9g9flcT3zlbsNo8p48pelsMFzXA9qT8rbFLtSCOg/mGlwKMF3DJC8ecRdM/NMm41WL5uBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,24 +95,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On (26/10/12 20:33), Bo Zhang wrote:
-> On (26/08/05 19:25), Sergey Senozhatsky wrote:
-> > quick and dirty patch.  Just curious if this improves anything on your
-> > side.
+On Mon, Oct 12, 2026 at 12:04:11PM +0100, Catalin Marinas wrote:
+> On Wed, Oct 07, 2026 at 08:11:52AM +0530, Anshuman Khandual wrote:
+> > On Mon, Oct 05, 2026 at 04:31:28PM +0100, Catalin Marinas wrote:
+> > > On Thu, Sep 24, 2026 at 11:52:11AM +0530, Anshuman Khandual wrote:
+> > > > diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> > > > index 763c5a411d64..9ad2d03e86ad 100644
+> > > > --- a/arch/arm64/include/asm/pgtable.h
+> > > > +++ b/arch/arm64/include/asm/pgtable.h
+> > > > @@ -84,6 +84,12 @@ static inline void arch_leave_lazy_mmu_mode(void)
+> > > >  	arch_flush_lazy_mmu_mode();
+> > > >  }
+> > > >  
+> > > > +#define pmdp_get pmdp_get
+> > > > +static inline pmd_t pmdp_get(pmd_t *pmdp)
+> > > > +{
+> > > > +	return READ_ONCE(*pmdp);
+> > > > +}
+> > > 
+> > > This is the same as the generic version. Does it need redefining?
+> > 
+> > Without this pmdp_get() override, replacing READ_ONCE() in pmdp_test_and_clear_young()
+> > with pmdp_get() causes a build failure as pmpd_get() which is defined in the generic
+> > pgtable header is not visible from inside platform specific pgtable header, even with
+> > a forward declaration.
+> > 
+> > Earlier had moved pmdp_test_and_clear_young() inside arch/arm64/mm/mmu.c to avoid the
+> > above described dependency problem. But then realised that pmdp_get() gets eventually
+> > overridden on arm64 platform for D128, why not just redefine here it now as standard
+> > READ_ONCE() to avoid the current build problem and the code movement.
+> > 
+> > Please find some context here from earlier discussions during V2.
+> > 
+> > https://lore.kernel.org/all/212067fe-1b16-4b87-87a7-4ce50847eb24@arm.com/
 > 
-> Hi Sergey, Barry,
+> Thanks for link summary of the past discussion. I agree, for D128 we'll
+> have to define our p*d_get() but I haven't decided D128 is worth merging
+> yet (it depends on future hardware availability, I need to get more
+> visibility into this).
 > 
-> I ran an A/B of the three approaches on a real Android device
-> (MemTotal ~7.7GB, zram ~8GB). Same workload for all three: cycle 20
-> memory-heavy apps through fg/bg to force swap-out/in, 8 rounds (~550s).
-> The stream mutex is instrumented with a trylock-based counter; the
-> measurement code is identical across all three builds, so the only
-> difference is the patch.
+> For the time being, I'd keep the p*d_get() accessors generic and move
+> pmdp_test_and_clear_young() to mmu.c.
 
-Yeah, that patch was too quick and too dirty.  We have significantly
-reworked it in [1], specifically patches 9 and 10.
+OK.
 
-[1] https://lore.kernel.org/linux-kernel/20261013035201.2809924-1-senozhatsky@chromium.org
+Although there are similar cases involving [p4d|pud]_offset[_phys]() helpers
+which would require code movement inside arch/arm64/mm/mmu.c file. Something
+like the following. Will do all the necessary changes.
+
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index b9427e9d54dab..e03bb7017a57e 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -2465,4 +2465,17 @@ pud_t *pud_offset(p4d_t *p4dp, unsigned long addr)
+ }
+ #endif /* CONFIG_PGTABLE_LEVELS > 3 */
+
++#if CONFIG_PGTABLE_LEVELS > 4
++phys_addr_t p4d_offset_phys(pgd_t *pgdp, unsigned long addr)
++{
++       VM_WARN_ON_ONCE(!pgtable_l5_enabled());
++
++       return pgd_page_paddr(pgdp_get(pgdp)) + p4d_index(addr) * sizeof(p4d_t);
++}
++
++p4d_t *p4d_offset(pgd_t *pgdp, unsigned long addr)
++{
++       return p4d_offset_lockless(pgdp, pgdp_get(pgdp), addr);
++}
++#endif /* CONFIG_PGTABLE_LEVELS > 4 */
+ #endif
+
+> 
+> > > >  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> > > >  #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
+> > > >  
+> > > > @@ -811,7 +817,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
+> > > >  }
+> > > >  
+> > > >  /* Find an entry in the third-level page table. */
+> > > > -#define pte_offset_phys(dir,addr)	(pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(pte_t))
+> > > > +#define pte_offset_phys(dir, addr)	(pmd_page_paddr(pmdp_get(dir)) + \
+> > > > +					 pte_index(addr) * sizeof(pte_t))
+> > > 
+> > > Why not make this change in the generic version?
+> > 
+> > Could you please elaborate on this ? pte_offset_phys() is arm64 specific helper which
+> > is also local to this header file. AFAICT there is no generic version for this helper.
+> 
+> You are right, I got confused.
+> 
+> Anyway, I'd push this series post -rc1. It depends on the mm tree and
+> it's getting pretty close to the merging window.
+
+Sure, no problem.
+
+Will rebase this series post v7.4-rc1 and repost as V4 with all necessary changes
+discussed earlier.
+
+> 
+> -- 
+> Catalin
 
