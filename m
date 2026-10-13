@@ -4,91 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8B22CC6B08
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 10:13:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38244CC6B03
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 10:14:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C16446B0088; Tue, 13 Oct 2026 06:13:51 -0400 (EDT)
+	id 55FAA6B0095; Tue, 13 Oct 2026 06:14:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC6A66B008A; Tue, 13 Oct 2026 06:13:51 -0400 (EDT)
+	id 536FF6B0096; Tue, 13 Oct 2026 06:14:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADC2C6B0095; Tue, 13 Oct 2026 06:13:51 -0400 (EDT)
+	id 427016B0098; Tue, 13 Oct 2026 06:14:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 863E46B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:13:51 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1D096A8945
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:13:51 +0000 (UTC)
-X-FDA: 85317191862.23.35680D6
+	by kanga.kvack.org (Postfix) with ESMTP id 18BAA6B0095
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:14:15 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A84C8A86A4
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:14:14 +0000 (UTC)
+X-FDA: 85317192828.29.33912BA
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4CF971C0004
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:13:49 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="vPt/TJBM";
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf17.hostedemail.com (Postfix) with ESMTP id DCD3840007
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:14:12 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=EwlAFwkD;
+	spf=pass (imf17.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791886429;
+	s=arc-20220608; t=1791886453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sg9zQ3+1NXirYIMG+ufMcNkrCdzyTyKdW+px0R/cpwI=;
-	b=ApKvI5pMDyZw0wGFLFNKUZeF10NQqvV1In5tpVZr1HepnArXjOR9+WqZruWKWJ6XAvYDs8
-	tTjnWF/if9AvJ//WU/KAxBCdYN7HzNJDa9vk0prkZl0ogeX7cIy9/JiuGSD8en6qeTuKXa
-	SZjHvwXyDVfgzYTDcNAuJRx+oEG9IIM=
+	bh=M49H+NAkT6bwxKVcjniJdPthk++HJ26cnK1rcwI5YOE=;
+	b=B2OhFkB4LM4m5YOBRFfDEYX0GbZufcFy+q4ohIs5axxnXnk0id3ggRWW18Oef4T0gP2lor
+	sPrTxpc4W0IPMxT9M60170ScQmGU34FmEAAlivxtnd8LXCUvhy85STcoQJYGPpjz42lfeS
+	02ZNpDduOGXqB5eNzwt08MMMqOALShw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791886429;
-	b=2aCctEEUCC6kdAglx5gz0c1HAshHdtodPLDP4LX3aWkDmOLb4A7FQEZvIFfi6uNrrqzi8e
-	VFmFhMFPAx+f8JG4hbrFNuQQzSAf9uLmaKJacQnp6N+JgAbEOxAfGZGwojo7yiKQSWapHg
-	OMxcf91DwLB8nBuTG7TPTu/4qE36pAA=
+	t=1791886453;
+	b=WspfxwEMhTi1/C69WTgeT6nEmdmprDdraoWnQOG0ibnJ6PQx1/dD3vXj5UrCQOGnZ197nV
+	T6etmhE4TWIT4cgAdUA4Xy+u34FgW5a0Tov40Hwz18EJ/2UIvvEkFFFMy0cmGBRlpP+v7a
+	0umpM8+O32RUUHE04ItSQ/b/bXctxI8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="vPt/TJBM";
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=EwlAFwkD;
+	spf=pass (imf17.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4A0C4169C;
-	Tue, 13 Oct 2026 03:13:45 -0700 (PDT)
-Received: from [10.164.19.62] (unknown [10.164.19.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE6393F7B4;
-	Tue, 13 Oct 2026 03:13:43 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D2D21169C;
+	Tue, 13 Oct 2026 03:14:08 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 75FB13F7B4;
+	Tue, 13 Oct 2026 03:14:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791886428; bh=frG0so7TQeI6J8IN5+TVXwZehcv6LBDQHtosnjB44ng=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vPt/TJBM5bSkHglczz78hY7BXD6SECatQcMU54W0ej74QhW76cpEiJFbPOEw8K7JU
-	 WqyxnjPkS4K6NPE26B912TQjoDzXTTsDExrMgBstckn+8MUOIndkJq14UA0k5lNrJl
-	 ao3zLpmO6rM7bJBP3j5Np6l8ehJV6OeOT6g0fdYo=
-Message-ID: <6a10b61f-5c4f-4d04-9742-97a358147c39@arm.com>
-Date: Tue, 13 Oct 2026 15:43:41 +0530
+	t=1791886452; bh=CwIINxwYMx735E6F8s9ep3Xem7KHZ4ZBlh/HyIgAbgg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EwlAFwkDH3DXPIhTH/r3Gq7gzfPEvks0fkmwjKTIIEU8lU7V9m+CEaFGUJ2qIKkcH
+	 LBg1oIHubi4Bc3NZ0+tI90c3UVa78sskD/3IZOdXFNrnVPDx4Ice2OAwYQT3Uerlxg
+	 RYruN74ALtEB3aq/oz+lABH3jelhu/OBkGnIJslI=
+Date: Tue, 13 Oct 2026 11:14:05 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
+Subject: Re: [PATCH v6 2/3] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT
+ macro
+Message-ID: <as4Ebb8GQmAfRb5r@e129823.arm.com>
+References: <20261013-fix_hpage_macro-v6-0-2c52d0484de3@arm.com>
+ <20261013-fix_hpage_macro-v6-2-2c52d0484de3@arm.com>
+ <40f95078-4d3c-48da-9262-afadf231014f@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64/mm: restrict transparent contpte mappings to valid
- PTEs
-To: Zhao Gongyi <zhaogongyi@bytedance.com>, catalin.marinas@arm.com,
- will@kernel.org
-Cc: ryan.roberts@arm.com, baolin.wang@linux.alibaba.com,
- lance.yang@linux.dev, mark.rutland@arm.com, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261013093600.54995-1-zhaogongyi@bytedance.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20261013093600.54995-1-zhaogongyi@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <40f95078-4d3c-48da-9262-afadf231014f@arm.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DCD3840007
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4CF971C0004
-X-Stat-Signature: r58cafwift7ytb3citr6kf7uuacq8fts
-X-HE-Tag: 1791886429-401883
-X-HE-Meta: U2FsdGVkX19r4zq8UEkp4h35RoOjXmxJ9SJ1vqzbowr71IB/SQChGMqM0U9Fnb7Bufmmjv50B81v1E61YkcnJTNdzUlYJnY74kXrzbWc8K1tPKEJ78UWP2MQPtMSlEeARUu/Pe7VJgdH8SjfZLXuDcGGvy0Dm4WGgD8G8OWCJWsimzG3wscjO85t9/ihugNztKubOGFxueRZV+jKFCy9WG5kzeKAsB+J4aizZzuOQJu7N3H6piysGSKWGiyDUyq97OeYwR+h+o02GnCNrwDaR2Mt17DGfXKQntX/jtRZt9u3FS3SsHgxts+MjJeWy46ejtZGemTV4GDOkpXk2/rvlkQyRFRqLkOv1VglkdVv48KNc3q+Pb65V+tsqhDUhY7+ylvd6ihMZe/Nc8/83SWyR9ueIsJ6hZoyM+AnIkYr+G2YXn/KrwQk4iFiizM7W73lnbI6Jlx7kJOKbyZREJ5NSbhJuX7AAIOMxh0Bhk8V8O8Xe3wgtfMvoqNtr56r5N+Ah0RDGAEFOa16JpsMnOflyTFv2gaXBsy7i7nHgUrbtrtmkQz/uoCJtqW52N3W26Fo/Amq9Ey3gUUrRtgzPGs4xNqSxv/78DJN3LbJYGCVxMXkesaSKjzFGcbCX41isz0iegVumrSv9BFwcr1S3TRsmwV1GQOyLHo6TedtOjIPoTx9fcQY5qUq+qEYfB3otuTYwAjD0FxIwN98sgZXHvfiMaROcUFnjjmMNvm6fBdUlhUYP/n4l84cMVR8ib5//mAUweV5ASlqh9R/HC3i9gGIGpntE0CSxtyCVAGXziCZub60hCUh0x8QsmW74h0EhNqDqgE6pswaW+Jk95jh3/ENOKPNoicctsVpf8nC6dzeHf/+Y41RXCm6muBQ0olS0ykUlmuDt2UT13VntCwVZLJ5l9dbu74KSYRimovVC0uklxT7b7Q2HD2phUEQUy4+Ca4wGpUfF5cAzWW7ZNJjrLs
- zcWOC7Fn
- EtCvXTOGmH5dqNIN4QtbhKlGihQvfWm/6ybnnHS5cFtKpsOTxjMu7TAxhMKOK/+DdAmggr8lHj+gZX0Dc7hPIwhOiv7vJIcYnawKXXsQPUBBbPk/hQtieQzZhBM9sX/7ZiqA7mAbWQ0Zq1j2WpyOTTiv7if2J9dV90hyjHWC4VFQe1amDfMPd8GdlS+F/gleRqbRaGL+2MDmF27dP82Ee4eUzS1bbggmCwBKi17vLeyez6CVA/7S112wOTFYOWM63+ORGZ8ozrHfJHBQec+oMGtbGLQ==
+X-Stat-Signature: 8owrueas854dkmurxpkyawtb3hyae1mt
+X-HE-Tag: 1791886452-274745
+X-HE-Meta: U2FsdGVkX18xMQLEqHvhJHc7pKn3FQ3yPu85MwonMvngjNQnsyxabHU9tMuM/cD7TM+TdoRJZbBTQczc+oTMrC/jIjyOR1QAt4G3kn04jlTSzC6wxNG7KxOtSrpbAIR8iWNJp+sgyDlPlUqSGwDqszOA66hV7gmMleU2mtoJjIfWTCklIDM2Z2mQrMTxGmtvoKXyP5i/JXz4yp+m4ItBkOexuhTzoOWslGp1QCSqRwTYw1d5BwpLkQmRh7eQMpTT6g5BP8wEulcKaiDosXF2ZrenEL4lXIUwqFIroGXCjcqrz2KY/UbNK5JXJ6Q4jXvtFNWJqvcHg78sDDQqU/KUao7TutPi044pIRPcDhEH78WRnpdEooS5Q/uzCu449POOUp/WIgXe9UvmOb7W4CmatcG4Y7eFh0FM+RxYNBwmjARNAz3W6Z/w0jI5L2r8iLmOoWVbHY2/dQNZyNXhPKehtrfXhjInYUsj3wwhad5Xt3tcY53uU1iSYvXaISCUu+WZ9WIUp4Klfeh7oIqJIyboknm/MgtBy9B2+PCiCnBOUcqnkmy7hzboTQQ4r8f5bvTjzb0QaBLVp/apP9rfkTJTKaDxgukQqex1Vz5W+IJy535J1dsSTdqD61wg+qiV3yJl9IlsSFQw5PdF9BlxlrLBXunavGfffqXbJ6dL89/lzx4zfNKhojwoAuMV8Aa0ocgKbS9ompR9nn1UhXnKB3l8/q4FDOcmig7szULPea3mhcr2iRMKMy6mz7XL+H94tOGKU+ODg2G6yQn0QRw3Gpon3QVVCD0qtdochC62cJ/nHSKO5rP/2lsEF4rK2AzJXTmsknzLqxwCjGjqCRvufveRAqs8U5kbEX23qJBtb9WclXYPZWWFRMqmsLKe9D3qO/2PjT1MNg+w+AK/kS4929uc2JltyArCSvcw8JNsx92JymnUjWr4MDsrc4KgauRVrIj6Wo8NHIfQqk5pY5mUlxR
+ uDg94nxT
+ +h41lM04R0Uh7u4Q3gZGSBiC19yLLMX2kKEJmuS3BlR61pWDkkEydpoz3ttZPvyRIx34T0IMBGRwap31V1WF2ECxyi3U/mTM3gXrcJ9HeQXAs2LzW4V/4I2dqvrftqqnlcyZFj8RESETRWFRRoKIfaO3JY/pSEtaeEJHBeA1OytWHKO55c2V3kZSmzXb0cTyUEUiKbCkhv2AXlx6Lnt+iO2QqIbbEs596J6XLGdFFsleI7jXytu6DmcZHzi29oYKr/CuiVaJ/8fEvDHg4KSgIjwYTAIBSmVTRZ6aLCmMwXzfmbbPDkTZACiqREP3gWIRYmHaK27kv/5omZOQMrE1E04iXzBe9Q/N+UXvNkWAo18RE9GSnkH2BigbT5lyyqp6hgO74hpsF6XisLu4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,127 +104,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Oct 13, 2026 at 03:26:40PM +0530, Sarthak Sharma wrote:
+> Hi Yeoreum!
+> 
+> On 10/13/26 3:16 PM, Yeoreum Yun wrote:
+> > HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
+> > When this macro is used in some test, test result would be strange in
+> > the system where PAGE_SIZE is more then 4KB.
+> > 
+> > Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
+> > 
+> >   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
+> >     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
+> >     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     ...
+> >   ok 1 Completed
+> > 
+> > Remove the HPAGE_SIZE and HPAGE_SHIFT macro and introduce pmd_pshift()
+> > helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
+> > helper, pmd_psize().
+> > 
+> > Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
+> > which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
+> > and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
+> > PMD-sized units, the test may fail with the previous size of 100 MiB,
+> > which is not a multiple of the PMD size when the base page size is
+> > 16 KiB or 64 KiB.
+> > 
+> > After this patch, output of transhuge-stress:
+> > 
+> >   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
+> >     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+> >     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+> >     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+> >     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
+> >     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
+> >     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
+> >     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
+> >     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
+> >     ...
+> >   ok 1 Completed
+> > 
+> > Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> > Reviewed-by: Zi Yan <ziy@nvidia.com>
+> > Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > ---
+> 
+> [...]
+> 
+> > diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> > index 5f2fb5b819c4a..efd99298be135 100644
+> > --- a/tools/testing/selftests/mm/vm_util.c
+> > +++ b/tools/testing/selftests/mm/vm_util.c
+> > @@ -21,6 +21,8 @@
+> >  
+> >  unsigned int __page_size;
+> >  unsigned int __page_shift;
+> > +uint64_t __pmd_psize = -1ull;
+> > +uint64_t __pmd_pshift = -1ull;
+> >  
+> >  uint64_t pagemap_get_entry(int fd, char *start)
+> >  {
+> > @@ -161,19 +163,40 @@ uint64_t pmd_psize(void)
+> >  	char buf[20];
+> >  	ssize_t num_read;
+> >  
+> > +	if (__pmd_psize != -1ull)
+> > +		return __pmd_psize;
+> > +
+> >  	fd = open(PMD_SIZE_FILE_PATH, O_RDONLY);
+> > -	if (fd == -1)
+> > +	if (fd == -1) {
+> > +		__pmd_psize = 0;
+> >  		return 0;
+> > +	}
+> >  
+> >  	num_read = read(fd, buf, 19);
+> >  	if (num_read < 1) {
+> > +		__pmd_psize = 0;
+> >  		close(fd);
+> >  		return 0;
+> >  	}
+> >  	buf[num_read] = '\0';
+> >  	close(fd);
+> >  
+> > -	return strtoul(buf, NULL, 10);
+> > +	__pmd_psize = strtoul(buf, NULL, 10);
+> > +
+> > +	return __pmd_psize;
+> > +}
+> > +
+> > +uint64_t pmd_pshift(void)
+> > +{
+> > +	if (__pmd_pshift != -1ull)
+> > +		return __pmd_pshift;
+> > +
+> > +	if (__pmd_psize != -1ull)
+> > +		__pmd_psize = pmd_psize();
+> 
+> Kiryl pointed this out in v5 [1], you might have missed it. This check
+> seems to be inverted.
+> 
+> [1] https://lore.kernel.org/all/asj4dT2Q__SlKhgr@thinkstation/
 
+Oh. Thanks. I've missed. 
 
-On 13/10/26 3:06 pm, Zhao Gongyi wrote:
-> The transparent contpte layer treats PTE_CONT as software state: when a
-> PTE has PTE_CONT set, the contpte helpers may align the operation to a
-> CONT_PTE_SIZE block and operate on the whole block. That invariant only
-> makes sense for valid mappings. Explicit users such as hugetlb manage
-> their contiguous encodings separately.
-> 
-> contpte_set_ptes() currently sets PTE_CONT from alignment alone. Batched
-> set_ptes() users can therefore install present-invalid PTEs with
-> PTE_CONT set, for example mprotect(PROT_NONE), NUMA hinting through
-> modify_prot_commit_ptes(), fork() copying a PROT_NONE large folio, or a
-> PMD split installing PAGE_NONE PTEs.
-> 
-> This is not a hardware programming problem: invalid descriptors are not
-> translated, so the hardware ignores descriptor bits such as PTE_CONT. It
-> is a software-state problem. Some arm64 fast paths intentionally test
-> pte_cont() directly instead of pte_valid_cont(), for example commit
-> 9970a9a27ffc ("arm64: mm: implement the architecture-specific
-> test_and_clear_young_ptes()"). Fixing the producer side preserves these
-> fast paths and covers all consumers.
-> 
-> In the observed failure, mprotect(PROT_NONE) installed a full
-> CONT_PTE_SIZE range of present-invalid PTEs with PTE_CONT set.
-> MADV_GUARD_INSTALL then zapped one PTE. The nr == 1 clear_full_ptes()
-> path only unfolds pte_valid_cont() entries, so the neighbouring
-> present-invalid entries kept PTE_CONT while the target entry became a
-> guard marker.
-> 
-> clear_refs_pte_range() then reached the marker through:
-> 
->   ptep_test_and_clear_young()
->   test_and_clear_young_ptes()
->   contpte_test_and_clear_young_ptes()
->   contpte_align_addr_ptep()
->   __ptep_test_and_clear_young()
-> 
-> The marker changed from old_pte=0x00000000000047c0 to
-> new_pte=0x00000000000043c0 by clearing PTE_AF. For swap PTEs, bit 10 is
-> part of the swap type field, bits 6-10: 0x47c0 is SWP_PTE_MARKER with
-> offset 4, while 0x43c0 has type 15 and is decoded as an ordinary swap
-> entry. Zap later warned in swap_put_entries_direct() with a bad swap
-> entry.
-> 
-> This is triggerable by a user process against its own address space. On
-> systems running with panic_on_warn, the warning becomes a denial of
-> service.
-> 
-> Fix the root cause by making contpte_set_ptes() use the transparent
-> contpte encoding only for valid descriptors. After this change, the
-> transparent contpte layer preserves the invariant that pte_cont(pte)
-> implies pte_valid(pte), so fast consumers can keep using PTE_CONT as
-> sufficient evidence of a transparent contpte block.
-> 
-> Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zhao Gongyi <zhaogongyi@bytedance.com>
-> ---
-> Validation on an arm64 QEMU/KVM KASAN setup with CONFIG_ARM64_4K_PAGES=y
-> and CONFIG_ARM64_CONTPTE=y, using an out-of-tree guard-region reproducer:
-> 
->   populate a CONT_PTE_SIZE anonymous THP range
->   mprotect(PROT_NONE) on the range
->   MADV_GUARD_INSTALL on one PTE in that range
->   write "1" to /proc/self/clear_refs
->   restore access and remove the guard marker
-
-Thanks, could you please give the code of the reproducer. That will
-save us some time.
-
-
-> 
->   Unfixed kernel: failed in the first iteration, with 65 bad swap
->                   messages and a WARNING in swap_put_entries_direct()
->   This patch:     completed 100 iterations without warnings
-> 
-> Additional producer-side instrumentation confirmed the same invalid
-> batch state outside the mprotect reproducer:
-> 
->   Unfixed fork():     copy_page_range() wrote out_cont=1
->   Unfixed PMD split: split_huge_pmd_locked() wrote out_cont=1
->   This patch:        both paths wrote out_cont=0
-> 
->  arch/arm64/include/asm/pgtable.h | 5 ++++-
->  arch/arm64/mm/contpte.c          | 7 +++++++
->  2 files changed, 11 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index 6000905a2..d6246042b 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -1650,7 +1650,10 @@ extern void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned long ad
->  /*
->   * The contpte APIs are used to transparently manage the contiguous bit in ptes
->   * where it is possible and makes sense to do so. The PTE_CONT bit is considered
-> - * a private implementation detail of the public ptep API (see below).
-> + * a private implementation detail of the public ptep API (see below). The
-> + * transparent contpte layer maintains the invariant that pte_cont(pte) implies
-> + * pte_valid(pte); explicit contiguous-encoding users such as hugetlb manage
-> + * their entries separately.
->   */
->  extern void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
->  				pte_t *ptep, pte_t pte);
-> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
-> index 0acab179f..851fa2e44 100644
-> --- a/arch/arm64/mm/contpte.c
-> +++ b/arch/arm64/mm/contpte.c
-> @@ -463,6 +463,13 @@ void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
->  	if (!mm_is_user(mm))
->  		return __set_ptes(mm, addr, ptep, pte, nr);
->  
-> +	/*
-> +	 * Keep the producer-side invariant documented in pgtable.h true even
-> +	 * if a direct caller passes an invalid descriptor with PTE_CONT set.
-> +	 */
-> +	if (!pte_valid(pte))
-> +		return __set_ptes(mm, addr, ptep, pte_mknoncont(pte), nr);
-> +
->  	end = addr + (nr << PAGE_SHIFT);
->  	pfn = pte_pfn(pte);
->  	prot = pte_pgprot(pte);
-
+-- 
+Sincerely,
+Yeoreum Yun
 
