@@ -4,140 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73B90CC6B12
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 18:56:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 163ECCC6B12
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 19:14:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 465FB6B0095; Tue, 13 Oct 2026 14:56:27 -0400 (EDT)
+	id BDE856B0088; Tue, 13 Oct 2026 15:14:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 416986B0096; Tue, 13 Oct 2026 14:56:27 -0400 (EDT)
+	id B8E826B008A; Tue, 13 Oct 2026 15:14:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E0186B0098; Tue, 13 Oct 2026 14:56:27 -0400 (EDT)
+	id A7C1D6B008C; Tue, 13 Oct 2026 15:14:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DBE136B0095
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:56:26 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A7EB1401F2
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:56:26 +0000 (UTC)
-X-FDA: 85318508772.28.B5D47F0
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 635B414000E
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:56:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cYQlHLTP;
-	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791917784;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 80F5F6B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:14:17 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 98C02A01D3
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 19:14:16 +0000 (UTC)
+X-FDA: 85318553712.10.30FE1AF
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 90F76A000F
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 19:14:14 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=muWw0dm7;
+	spf=pass (imf15.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791918855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+LzBHj4tBeipNi+QlNyJEU/f9POJz901L8zWPKLrZks=;
-	b=LUDfCbYcqx8J/CsUnQXDoj2HqmgsMlz7bqbW7XsmiT/lbXs8MiV4G2NiC7asfsg6i7bo3B
-	RvOHt30R/uP7e0tospCqd0Keh1q3+SPVgw9e3maBsOHNrFMdtmGhC6/DP0Uw5lTXSAMRv/
-	y/2Go8MgrGJYqscmUGYDW26ktfaBKwM=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791917784;
-	b=L3QYyHk4WAScryuIdpoeBFv4m74+BexKRr+7y+tONwy7xl/qC/hgekMJFpbhYTXGfx3KA1
-	5plkWwDgMdvH4UzSy/b4GlG/lJpPVP+olDOvmbYv4JvgJIVDxubGUjnAmGjDr0DRHqIjnj
-	IVyuyihs8kfIO1ENeYRt0N5X7ZyrsfI=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cYQlHLTP;
-	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c2e69aa07c3so34539466b.1
-        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:56:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791917783; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qmE977KLfThjECAQyD0LAUeEZk52ENTOiHhPSoS1Jo95tIUeE1EewSvinpmvg8V83h
-         +iPuI/943q5uftNc+XE/fHVVZ0J03dYkDYX1ffvDa3j/qOHFufYKL4eKok0qZ03oqjV9
-         6WoqSfPBKLjpESRQbdOwYbQWW7wTtllxwOqyFaQDmsf4YcneotfCVKkbSL7jo9lF79bb
-         0UQHsLSSbhbRkYJI+3gltqO372AJoTjsa00T8HeK8U5qJI+cItO5hIyTR/7g86ltg7DB
-         VyomOjX7eLonkLVTua1bgDkAFGtPCQJ1OWZ/MP9Lx1sxS+46okP7q1csbd0I/5ncv1oV
-         iyAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+LzBHj4tBeipNi+QlNyJEU/f9POJz901L8zWPKLrZks=;
-        fh=FiwXBTFSBSax4bMSIab4GL9hG8uju3CDcS0kV2p6Gm4=;
-        b=GUzgyKXlF4lM4C4FYinSAbShsXkSeBB68VCk/GngrHaK3CNsf9ZWzHSWKvVNHwQxzp
-         GFi4ArmN6DWRwv07XpGqJqpk9v0KhyBTLD7w2ZDsMtaGJZNo6zS3pQPZtiuFkk4qi65M
-         FGm/LjAoGs73esnT0jgxIdJu0dCdiR1vSDTytrfO0//jMuoePVih1a5bkbua/+Hzh6f3
-         PYek5akgRdY6EdqVd87Vrgqe25QAU8GNzH9cg+lZdGRNjtT2fVU6Lg1hUh6HCi9NLlSW
-         i1o+JX/1Dyun4U6YISS6q1wNVXwIZR4Fp4NSJkseulpoLh/2jOxJujOINUCm6VQ6jFDc
-         ifYQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791917783; x=1792522583; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+LzBHj4tBeipNi+QlNyJEU/f9POJz901L8zWPKLrZks=;
-        b=cYQlHLTPExtKpu2MOAYWqycSxGte7e06dANKSlaMu3KWvWjsldrN1Fo41LyBIb4x6k
-         Y6Fy0Fs5pFhkc+p8D/aIgprxWT1Cv+Y4x8tGNYqukqvsxWAfbhRjYjItkT5TPcICXiNB
-         38p3K2q6IusOqDJ/xt/XUHKqndNLO+DZjH1Gli7ULiWnBhbNaEm/7X1NwLKk2KJEyL1h
-         kRpHvwulD+5snF/5gRvZlUSpILLmw5Ar4Mv6sOUjjosmp/FebwLjlL5mJPUeQbhqdcWn
-         1q616qfezBuiPfOvG/47GDBPW0M/lhkgNGs24CfM4gaoBLiDkzBnPO3naS6U/aHCdpoO
-         JnGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791917783; x=1792522583;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+LzBHj4tBeipNi+QlNyJEU/f9POJz901L8zWPKLrZks=;
-        b=ykII0EmVhSlngj9+/jWJYo5++dSiIISaCiAEjP8YP9grsHT8Fhhr4mlWN989T5aUzR
-         IhVHlT43EvNEn85zTWL4tR8dhDqofk59+1HdgfVfVb9E2QbkArXY9/szhFqqFi9HpmOR
-         4yHRZUWIzDJq1rygvxSI5MF5wNoStU5+7O7Cv4kdKm+S0bU79glLm5XlHQX6jguJcVBm
-         eQrXv1YrDQxdpZ3/Q7ItftIIiP7YF4f97s31p+NfeQbPeDGlRWqkKG7D8XOGnZQgHp5W
-         ckUovypmmp3FMF8YPGbRLnaUrVk6JsnqNwXwTTzLWY+0Yx77xL2r3Po3YxB7KHsMsCuc
-         HT9A==
-X-Forwarded-Encrypted: i=1; AKwUvBwTqcuGmLBg/LvJSBQPcO1MWe/0ZVI0tbRxWKC6Glsh18fqMpPefB2iVyTIuimPpp6gAsW18WaqaQ==@kvack.org
-X-Gm-Message-State: AFq9FYIL9TpC8d6LiD5ci9Jwg5QFDo99x8HuJZ4mCCYIL4kvPlm9K9re
-	up/FE/qwwuOC/wRFC+QEIOzImp2Z27o+K8OZSwrLYheJgu7jS8dweeyf6/U56mEGlCEgS4h6WQg
-	kX8F9nj+sw+rGWRHUu7H2tcfmF5Od+XA=
-X-Gm-Gg: AYBFou0I832HJyCcKxUTQY0Si75BET3DCj1wrLgZXmyomNyCWgfnm9DHDCi5Su7TTWB
-	/0UY6a112+lV+I9D1+cDgirpRsbeX85QzCeLMoGdyu95EUSGAaAwC6bPpLJOH6HtBu7p36ZW9O4
-	V4QUbdWphEt688A5li0AnKPBS6MaD+6vh4a1YdQDemxd5C6Eq1jfhx07ASpbMYiUQxkpoWhkW2+
-	8rSmZkpGtvMeC2UtXz5RAvBwzOVAa/mHgL5m4iIbPA/V/bqr1gVfu8B0Quy6cyvuv2A0cdzRItR
-	ihG/R5JqgjIPniHPwi5KxW6lqTXX5miBlqDQqJwfXRX29pRM1XRf2/F4wupn4TolC1qP8cslTfU
-	sfOVPXFZ6OlAJ
-X-Received: by 2002:a17:906:2081:b0:c33:ca5e:8ddb with SMTP id
- a640c23a62f3a-c33ca6dd72emr527062066b.28.1791917782642; Tue, 13 Oct 2026
- 11:56:22 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=q7NeGVGhynspdDjN8FsWdiUJ/CHXi08JbRrTumaJC90=;
+	b=6wLTIyI6XL/Y5Hxl4jPLRYBU1+iLYH7lfeZQQltQKaNGBRdnuN0oc1HdKIqsaWwYo6av+b
+	LjZt7FT4wKzCzzA9U4qwDLHwYnT+UZtAtA4FiSW5fMViaLULGitQw0DACz0mrUPKdeqAE9
+	nCLEYAlZHAs93Vzt97psFA9Op+IjBWs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791918855;
+	b=rIADluXXFEkNrFfcOTAd8aw0UD466JS0++q4x7tmkZDNVvpQffQlMwhwjKWOt8dPs2lLE/
+	USgB2WIN+A0vIBEWfUHCt2u2UsnP+XU8BVe+SxlvnrvWyifO7COQAeF34sbdZNgVSXyYmr
+	8IoEoziq5IYb9z7uXtn+w09UgbeWGJ4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=muWw0dm7;
+	spf=pass (imf15.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4j43ss5DwmzKntr;
+	Tue, 13 Oct 2026 21:14:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1791918849;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=q7NeGVGhynspdDjN8FsWdiUJ/CHXi08JbRrTumaJC90=;
+	b=muWw0dm7aDxJ2inMBGAsKwaVUA8f0aCLXZW9dPTK+deZuMTp1v6hyfH/CtQ96NBKXjEMnU
+	xdD3YuMMEgMRuJDExLJruslZETFpNFX2yFA/upFYWy0n3uXWNQvAxWiBkJDCHCDhBcMaB6
+	DBLmzqzoXrjEkSe7fMpPHtcfwm8imTid3ftA2n+dPucnvnnU2smfysRBEy1a08n2GpF6g1
+	PyY785UDE1ifuXsVZvt98ELgCFWgGtxscNUVaRgCrKdKy4D6CBMcqjdw7UqQbHDLQu7zva
+	eMY44cA7wmgxM9/AOLQ6wpb9Je2+NTSZoOPt9DwXRWrj2tfRzlM7n/+4+vTUPg==
+From: Manuel Ebner <manuelebnerli@mailbox.org>
+To: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] Docs/admin-guide/mm/damon/lru_sort: fix grammar and stlye
+Date: Tue, 13 Oct 2026 21:13:27 +0200
+Message-ID: <20261013191327.663331-2-manuelebnerli@mailbox.org>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-References: <20261007153915.53429-1-alex@ghiti.fr> <CAO9r8zMHKmAQT8WBAd+kkQEjETVvyHhfbESzKHpXXPQJUB9nVw@mail.gmail.com>
- <CAGsJ_4x3JL9JW2cBXPo0j_8-2d6XQQGSpBAkSf-8Hw9N=0o=6Q@mail.gmail.com>
-In-Reply-To: <CAGsJ_4x3JL9JW2cBXPo0j_8-2d6XQQGSpBAkSf-8Hw9N=0o=6Q@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 14 Oct 2026 02:55:45 +0800
-X-Gm-Features: AclHuK_93vX_-JC5eTa0q4jdwYD54NRJQ--m2zl_el2v0JWsmNB2dSzrEZ0gUQ8
-Message-ID: <CAMgjq7Dfeh9xV+qbooO_8y00WbCuuEvRRa-62d_YGvprVY+WPA@mail.gmail.com>
-Subject: Re: [PATCH v3] mm: bypass swap readahead for zswap
-To: Barry Song <baohua@kernel.org>
-Cc: Yosry Ahmed <yosry@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org, 
-	hannes@cmpxchg.org, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
-	baoquan.he@linux.dev, youngjun.park@lge.com, chengming.zhou@linux.dev, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, chrisl@kernel.org, 
-	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 635B414000E
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: ec553cjhwsjo5srji38ypaakogkmy1mm
+X-MBO-RS-ID: 5444562cf99fdf74ba2
+X-Rspamd-Queue-Id: 90F76A000F
 X-Rspam-User: 
-X-Stat-Signature: bqu8cam67xakn9t6eb5p6n9pcgon1yp4
-X-HE-Tag: 1791917784-39100
-X-HE-Meta: U2FsdGVkX18rvco85gA4bG9J/FZtPrrWZzgJNCJZc7k+Z1F3ZgiszImv7vna2wnvkE+u3g1ijRYgS2DXe+rH2vU+mgM3rIkE4WLFhOO+aFrto61fdj86CDGWK0PrsgoMwmW2fZoBOF5wTJbrf9XoYJIrBWqM/xDEdshYznzUfkmQWx+GqXaV7kqHx+Vrylc9t2yWwoq3Egs70Nn9apji4VC3u/m+/XP0te/B2YJQi7YjKj4tIDxOmhlgpZlEBqAcg/q56izG4ATb8TygRGyeHT6pGvbvo/bRY+mTrVBcZ9Qm8YyGkzEc1E0Tz8tqYbHnlu0fB5upQFAj2Vug/f42PlTAcam/9vCxVst7VZ8PXPjrLsSTlhxmABAmTora3iMXAE2SyR1sQrU9sp0BKi5NTnLSZohqzi9pf15chNr1bD6Q5Qu+3Ufusie6+3hkAGZd6se00PjQpoCKB/PlLQOBGIndQRuqYDHEFZeCFIE9ZCg9KT+YxPPceKzEVX8m0DrqSafoKPSWvyE1PrBSLJX3O9rpCDG3246eBDsPM0HOPZ9zkd6z8jbhYQ91nIeYt3zfpOILjtI1psWX3iQks0Syb6XnKRXYABncA4eaDhTkivxdg1eXwNL7kiWnauiIaNthNj0cgbhVvq/0hQBCqcf3+bfgBUGpljrGGEb36qq5j4GKbKq19NIZCxB40e5DNB/XgvH6F8Kjdq2O61zrT/UL1l2zY7w14WcZAchtns95X0SSppFwOlkNhgzkQRKXGfJC7W/fhAxZl+q47Mhf9m716kvL2tydR7YtqXNq6aY2UZciQVABa8Lxj5DL5l5HQWRGVD5V+SNhtuiZu29ZJ6529bwHrDJrqoHfknuCI48q2gPLepLMl3pire1y87nSiiY6qDxmI2qoNmXUMfWlZjmHPpQzhWjBsvZ/1zOLDEZ3uYAA6Kyl3oVSDmqhT/vZBJTNNvXntghtNIN6NZ5aaof
- HtElOqlR
- JRFoBE/uFX+nnvzLQPKgXSYfhbUpXZqhcGVhWao7lVcYtoZG41GvVublCkPxBNZzJSXhKLeMbpsY2/NalCFvtvVXAMl37Y2U14xBtSJCKTZb88VTvJjmWr20UO24+MxSV3rYhcNwWl2GkIgR1fkh/3v3Luvd+i6PhTJsuGwQ9sz5HTzOpG8xb2eeMqX74Gt4VffZyiPnstFSyzRnRes60Kt5KHxoPxCykFusciICPR9sNK2A1wts0p6yuj/FAQxQVVtv0WMS/lJdzJOCexgZNYM5IQqMQdLu+AIVehhG/z/aIDuUcIbe96gOTT/6b3XD0RPTWtSBnV/Sdp0g0U4xUG359QH9jqGotXXcPZz2F8AZ18RyyAoUeA3wStl/iv+aXdJCrdt5btd4lirqn1aV21PQD/XrMN9U0kzppyxaHS1xkQ33f5l/pYAzgfifhHv0Uz+uCK0FmgiHXwPRNAJ5IGQs1jTSa6wHYukXaZag1u+5UOkSLLU7XxEahwYLUyn2y1qBMJG0ETi7q64h0mogI+N3mnukjRcLEqQWi
+X-Rspamd-Server: rspam05
+X-Stat-Signature: qqgeuif4uk6ajhaidmwitwboijuadj96
+X-HE-Tag: 1791918854-22899
+X-HE-Meta: U2FsdGVkX18KT1yuIUTimEJezMcdCde2FaAgaDgEXRPociAHPqYoOM6TSbufFO2i1O6PxLcAOIGugZWWEWwmEY4ZAxbiMLJMQyLyaMwgNDuMyKXPEsXZQsTJQABJwVrxQSdZRaLcEcO2xvtpEbtcTMMZtOi2087hSglpbw9UBl0FfFtYwU+SESwUpxmyJZrg95W5+f1iZ/l7M6qqt47YzsjDVVT3TvdUQY3cMtSQK8Nt0kZT3hkzLzzlVBCXOzoLpN44+qDwP6q97CHdHU9OO4OG48ZcFPzY9RW0LGxB8OjnpLGbtB5pgh69fHju1ZNmmhhhnvNYKjboYkK/6TwVottwuMsnLjfwDkCKhYJz4Snhp4MR8X+BPBPXpecbjC5HAzofyJ+caRDxt9AO+qUCCcjtggP4iOpgNscyz1fjHX4wkTpys52HsIt7dravHmJ0mHZQjxffwN7QB7X2PVRmvv6PRaDIY3roVcx1yjdWW5pNgyYbC2Nqt0B/nXtdVSQPxqSRlc0x9srFhu6oGTo2MkVrduAvz2sPgzeayXD3v6eqkMau+94zYQ/WIqTNAc4saInXqaTkGwpKpJsvLar8+zxgga+mzpBdVlW6dwC1/00ocW5yUIl8xq+LZ9KFmcd3Rnq5igobF5O3V98zbfzfQXpDMDwhVQsiGrFWqNPB3LLvK6yB8GwYxbC8CELtCXkXsyTDbG3IVVoJ8zQ8fcuxZJ6QB00tzWQcBecxS5DPmZpsqf8Z+968KceUuHhZj5/F1QaZuygikZCz/stEPhSbvubuJJebBlrwwbQVTxuDISxFL5fPcaolCXEc8G8Bf+QPCIQqcgOZVLCuGh4oozcw7CtTXLk8P+UI6wBpmldUyeAZV2v33K5yyb+7FNRk436GvUAhqyP9r39PFMQZB8NACfKcDWKYN9LTTax9ziZ6haUVx7erWHNwOmO3QJBvhwFEHvstIPeagabi06rKE/h
+ UWQkJlSa
+ 1z+RA7DqzV48jOyLnv6gD8GY6cOoEdNWbzvgCxGKvw2j2/JhiummrsALHTsAVOdTss0a8QRqnVFF65fA/R+ik+Xo9hyqLUb6hV0hqGeSzqSNTj5sdybCP0sNbAh5zC4zWq1Q39j2bi7THEXKWOle3VpubXOD1dJ+W8tu052jyKnG8yWa+9k2ly44TmpO62peJ1OazTaWPGhFAgJrZdott0T/C5429xsFtO1QILXuf18sWR4AQ7+Aq+fwdUZ5q+HWR2XWk3JrGX3lr1RXtufkHQ+51PApXxRb8fau1D+yOsUkIcTCp6Ptyj4/0B1Uc8N+GsMPWX2KmlDeumemA2qGOndnFrvgN/M9AOWOG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,93 +106,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 3:57=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
-e:
->
-> On Thu, Oct 8, 2026 at 5:37=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wro=
-te:
-> >
-> > On Wed, Oct 7, 2026 at 8:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> =
-wrote:
-> > >
-> > > Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchron=
-ous
-> > > device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readah=
-ead.
-> > >
-> > > zswap is the same kind of in-memory, synchronous backend as zram, not=
- a
-> > > swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
-> > > swapin_readahead().
-> > >
-> > > Here are the results from bypassing readahead for zswap too: it was
-> > > measured with a kernel build (make -j16) in a memcg, zswap=3Dzstd, sh=
-rinker
-> > > off, on Sapphire Rapids and 3 iterations.
-> > >
-> > >   768M memcg (sustained swap thrash):
-> > >     metric                 mm-new    + bypass    delta
-> > >     build time (s)          405.0       341.7    -15.6%
-> > >     zswap-in (GB)            79.5        53.0     -33%
-> > >     zswap-out (GB)          144.8       115.6     -20%
-> > >     swap readahead (pages)  6.79M       0.45M     -93%
-> > >     swap_ra hit (%)          72.1        89.9     +18pp
-> > >
-> > >   1G memcg (light pressure, build not memory-bound):
-> > >     metric                 mm-new    + bypass    delta
-> > >     build time (s)          177.7       176.0    ~same (no regression=
-)
-> > >     zswap-in (GB)            10.2         7.5     -26%
-> > >     zswap-out (GB)           27.7        25.1      -9%
-> > >     swap readahead (pages)  1.07M       0.08M     -93%
-> > >     swap_ra hit (%)          68.6        87.2     +19pp
-> > >
-> > > Similar gains were observed on an AMD EPYC 7D13 host.
-> > >
-> > > The gain is from no longer prefetching pages that are pointless for a=
-n
-> > > in-memory backend: readahead inflates anon residency and thrashes the
-> > > page cache (file pages get evicted and re-read), lengthens each fault=
- by
-> > > synchronously (de)compressing a cluster of neighbours, and adds
-> > > compression traffic when those extra pages are reclaimed.
-> > >
-> > > Bypassing swap readahead for zswap therefore makes sense.
-> >
-> > No objection here, I am just thinking about Kairui's LPC presentation
-> > about how compressed swap can (in theory at least) still benefit from
-> > readahead: https://lpc.events/event/20/contributions/2421/attachments/2=
-116/4689/Better%20Anon%20(Swap)%20Readahead%20(2).pdf.
-> >
-> > Seems like a big portion of the fault cost is still outside of
-> > decompression and can benefit from readahead, but that isn't the case
-> > today. I assume any future improvements to readahead and re-enabling
-> > for zram would also cover zswap?
-> >
->
-> In that case, if we can develop an accurate readahead algorithm with a
-> high hit rate for readahead folios, we will probably also need to map
-> them at the same time, as proposed in [1]. For example, if we readahead
-> 4 folios, we should map them all together in `do_swap_page()`.
-> Otherwise, the cost of future minor faults can still be comparable to
-> the decompression cost. Readahead alone would therefore increase the
-> total work, which can be quite significant for synchronous I/O.
->
-> [1] https://lore.kernel.org/linux-mm/CAGsJ_4xM=3DWnFO-OuwVude-DQ_UkaCi_zF=
-_bXBP9Li5+ZPNy0VQ@mail.gmail.com/
+mention 'least-recently-used' AKA lru at the beginning
+set as -> set to
 
-That's a really nice POC! We should do that IMO, maybe with better
-support for (m)THP readahead too.
+Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+---
+ .../admin-guide/mm/damon/lru_sort.rst         | 51 ++++++++++---------
+ 1 file changed, 26 insertions(+), 25 deletions(-)
 
-We first need a better readahead policy though, or else unmapping
-these folios might cost even more.
+diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
+index 0c04d238ed..3b6d122887 100644
+--- a/Documentation/admin-guide/mm/damon/lru_sort.rst
++++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+@@ -4,8 +4,9 @@
+ DAMON-based LRU-lists Sorting
+ =============================
+ 
+-DAMON-based LRU-lists Sorting (DAMON_LRU_SORT) is a static kernel module that
+-aimed to be used for proactive and lightweight data access pattern based
++DAMON-based least-recently-used-lists (short LRU-lists) Sorting
++(DAMON_LRU_SORT) is a static kernel module that aims to be used
++for proactive and lightweight data access pattern based
+ (de)prioritization of pages on their LRU-lists for making LRU-lists a more
+ trustworthy data access pattern source.
+ 
+@@ -17,7 +18,7 @@ systems, LRU lists are normally not proactively sorted but partially and
+ reactively sorted for special events including specific user requests, system
+ calls and memory pressure.  As a result, LRU lists are sometimes not so
+ perfectly prepared to be used as a trustworthy access pattern source for some
+-situations including reclamation target pages selection under sudden memory
++situations including reclamation of target pages selection under sudden memory
+ pressure.
+ 
+ Because DAMON can identify access patterns of best-effort accuracy while
+@@ -28,9 +29,9 @@ pattern source with low and controlled overhead.
+ How It Works?
+ =============
+ 
+-DAMON_LRU_SORT finds hot pages (pages of memory regions that showing access
++DAMON_LRU_SORT finds hot pages (pages of memory regions that show access
+ rates that higher than a user-specified threshold) and cold pages (pages of
+-memory regions that showing no access for a time that longer than a
++memory regions that show no access for a time that longer than a
+ user-specified threshold) using DAMON, and prioritizes hot pages while
+ deprioritizing cold pages on their LRU-lists.  To avoid it consuming too much
+ CPU for the prioritizations, a CPU time usage limit can be configured.  Under
+@@ -63,10 +64,10 @@ enabled
+ 
+ Enable or disable DAMON_LRU_SORT.
+ 
+-You can enable DAMON_LRU_SORT by setting the value of this parameter as ``Y``.
+-Setting it as ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
++You can enable DAMON_LRU_SORT by setting the value of this parameter to ``Y``.
++Setting it to ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
+ no real monitoring and LRU-lists sorting due to the watermarks-based activation
+-condition.  Refer to below descriptions for the watermarks parameter for this.
++condition.  Refer to below descriptions of the watermarks parameter for this.
+ 
+ commit_inputs
+ -------------
+@@ -74,9 +75,9 @@ commit_inputs
+ Make DAMON_LRU_SORT reads the input parameters again, except ``enabled``.
+ 
+ Input parameters that updated while DAMON_LRU_SORT is running are not applied
+-by default.  Once this parameter is set as ``Y``, DAMON_LRU_SORT reads values
++by default.  Once this parameter is set to ``Y``, DAMON_LRU_SORT reads values
+ of parameters except ``enabled`` again.  Once the re-reading is done, this
+-parameter is set as ``N``.  If invalid parameters are found while the
++parameter is set to ``N``.  If invalid parameters are found while the
+ re-reading, DAMON_LRU_SORT will be disabled.
+ 
+ Once ``Y`` is written to this parameter, the user must not write to any
+@@ -86,37 +87,37 @@ violate this rule, the kernel may exhibit undefined behavior.
+ active_mem_bp
+ -------------
+ 
+-Desired active to [in]active memory ratio in bp (1/10,000).
++Desired active to (in)active memory ratio in bp (1/10,000).
+ 
+ While keeping the caps that set by other quotas, DAMON_LRU_SORT automatically
+ increases and decreases the effective level of the quota aiming the LRU
+-[de]prioritizations of the hot and cold memory resulting in this active to
+-[in]active memory ratio.  Value zero means disabling this auto-tuning feature.
++(de)prioritizations of the hot and cold memory resulting in this active to
++(in)active memory ratio.  Value zero means disabling this auto-tuning feature.
+ 
+ Disabled by default.
+ 
+ autotune_monitoring_intervals
+ -----------------------------
+ 
+-If this parameter is set as ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
++If this parameter is set to ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
+ sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
+ amount of access events in each DAMON-snapshot, while keeping the sampling
+-interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
+-``N`` disables the auto-tuning.
++interval to 5 milliseconds in minimum, and to 10 seconds in maximum.  Setting this
++to ``N`` disables the auto-tuning.
+ 
+ Disabled by default.
+ 
+ filter_young_pages
+ ------------------
+ 
+-Filter [non-]young pages accordingly for LRU [de]prioritizations.
++Filter (non-)young pages accordingly for LRU (de)prioritizations.
+ 
+ If this is set, check page level access (youngness) once again before each
+-LRU [de]prioritization operation.  LRU prioritization operation is skipped
++LRU (de)prioritization operation.  LRU prioritization operation is skipped
+ if the page has not accessed since the last check (not young).  LRU
+ deprioritization operation is skipped if the page has accessed since the
+ last check (young).  The feature is enabled or disabled if this parameter is
+-set as ``Y`` or ``N``, respectively.
++set to ``Y`` or ``N``, respectively.
+ 
+ Disabled by default.
+ 
+@@ -235,7 +236,7 @@ max_nr_regions
+ Maximum number of monitoring regions.
+ 
+ The maximum number of monitoring regions of DAMON for the cold memory
+-monitoring.  This can be used to set upper-bound of the monitoring overhead.
++monitoring.  This can be used to set the upper-bound of the monitoring overhead.
+ However, setting this too low could result in bad monitoring quality.  Please
+ refer to the DAMON documentation (:doc:`usage`) for more detail.  1000 by
+ defaults.
+@@ -268,7 +269,7 @@ This parameter is for setting and getting the :ref:`address unit
+ 
+ ``monitor_region_start`` and ``monitor_region_end`` should be provided in this
+ unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
+-``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
++``monitor_region_end`` are set to ``1024``, ``0`` and ``10``, respectively.
+ Then DAMON_LRU_SORT will work for 10 KiB length of physical address range that
+ starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
+ 
+@@ -291,22 +292,22 @@ If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.  Else,
+ nr_lru_sort_tried_hot_regions
+ -----------------------------
+ 
+-Number of hot memory regions that tried to be LRU-sorted.
++Number of hot memory regions that try to be LRU-sorted.
+ 
+ bytes_lru_sort_tried_hot_regions
+ --------------------------------
+ 
+-Total bytes of hot memory regions that tried to be LRU-sorted.
++Total bytes of hot memory regions that try to be LRU-sorted.
+ 
+ nr_lru_sorted_hot_regions
+ -------------------------
+ 
+-Number of hot memory regions that successfully be LRU-sorted.
++Number of hot memory regions that are successfully LRU-sorted.
+ 
+ bytes_lru_sorted_hot_regions
+ ----------------------------
+ 
+-Total bytes of hot memory regions that successfully be LRU-sorted.
++Total bytes of hot memory regions that are successfully LRU-sorted.
+ 
+ nr_hot_quota_exceeds
+ --------------------
+-- 
+2.55.0
 
-For the readahead part I'm thinking about evaluating using shadow as a
-stronger hint for readahead after MGLRU-FG which helps distribute the
-folios based on frequencey more evenly among gens, also with a more
-proactive aging (async aging, or maybe lru_gen_imbalanced as Barry
-once suggested somewhere) so folios in the same gen with same freq
-will be much more likely to be reused. Or something similiar to file
-readahead's PG_readahead based readahead. Well more
-experiments are needed first though.
 
