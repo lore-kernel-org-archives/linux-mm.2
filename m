@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEE48CC6B12
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 21:54:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4051CC6B0F
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 22:12:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 729D46B0088; Tue, 13 Oct 2026 17:54:28 -0400 (EDT)
+	id 6AF646B0088; Tue, 13 Oct 2026 18:12:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DAB66B008A; Tue, 13 Oct 2026 17:54:28 -0400 (EDT)
+	id 6602F6B008A; Tue, 13 Oct 2026 18:12:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C9986B008C; Tue, 13 Oct 2026 17:54:28 -0400 (EDT)
+	id 576196B008C; Tue, 13 Oct 2026 18:12:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3322D6B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 17:54:28 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B2CB5A0256
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:54:27 +0000 (UTC)
-X-FDA: 85318957374.21.43F6141
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F27E640007
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:54:25 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1URnK6SZ;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 239A26B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:12:46 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7CA63A02B6
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 22:12:45 +0000 (UTC)
+X-FDA: 85319003490.06.1A004EA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BA35620005
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 22:12:43 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aME28oZG;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791929563;
+	b=0yoprO2m7r2Sy5foDJSCvjTviyMDp3WLKqgVnOqw4ZD/T1/rfEVdvW/ue3+zye6izVhbSx
+	dWLjEYbtAhE+k7R51+vixvSNE6Oot28A54j0mgwDj2R0UnymfJBQf4bn067TWqXeGXEOg1
+	LPukjMCHKXcWvzCvKxgZAVZtqGGkLtY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aME28oZG;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791928466;
+	s=arc-20220608; t=1791929563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iLbY2L194GuSxlWbJvMphR/amPsNZN4yp/IavVHxfYU=;
-	b=jFG2GDkV3N5kg3ZtKMqQ+hsJ3KGTeZd2kUXwFDmBZaK3CR86d2Q2T0G5xTChB8Um/+EcqH
-	59BjKuzoI2eERupvYvwBpVraTl2bWpJrWBcQC+eXKLarSmGQeX3kXzBhh2sIySYZ3aWk86
-	90wlmix8XW6dFKrzWXG7E3yhpGdLzoQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1URnK6SZ;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791928466;
-	b=cPz1tGSajvp5tgbYeGKExVmoGcHSrOpjaw4cuVQTC0Y/p3+YvIbYKoH8aydZ03yTK09A24
-	S6dqUND6lQJB3RmEBQEHClxIQsa1h0xlscJjG/VHrNOF+xTIux7WWU4HBU6Tbelc3DLNld
-	Oj86OdfofDL4hBNi5XqWYA7PsCtpjhM=
+	bh=4IWTZDsa935wj21bGB8vBONkihK5G/3DpXxeoZPCgiQ=;
+	b=sgCaVPI/ik/xK50h36G6gLDx4TzfTAhlJ95cQm7AhqojXEbA5CHxcPkyl9vZHbHR5wBoXA
+	suGB5kPLzgt7l5DcH/GxKuBvCegAHXQKylNS9OY3CqKJV9gfZe2ME1UWAsrq+TLRX5BPwv
+	P1S0+o2i/3+KXAcTpNsR955AOHfsVAI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 82A90601DB;
-	Tue, 13 Oct 2026 21:54:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28791F000FF;
-	Tue, 13 Oct 2026 21:54:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 24A79416E8;
+	Tue, 13 Oct 2026 22:12:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12551F000FF;
+	Tue, 13 Oct 2026 22:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1791928465;
-	bh=iLbY2L194GuSxlWbJvMphR/amPsNZN4yp/IavVHxfYU=;
+	d=linux-foundation.org; s=korg; t=1791929562;
+	bh=4IWTZDsa935wj21bGB8vBONkihK5G/3DpXxeoZPCgiQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=1URnK6SZvCssZJpm7tqIDh/YRPM26motAbIWUINR/TKD9dTwdd+Q45eZi0OvBEUQG
-	 0iZ2xyhwx+xPORnq5/GaoVnb87XlVDJR/RW0MS+TdH9yPpZMvseTNMhcKmqm9ieGIF
-	 LSDvWbh1XKsM11BcXjPnbFpJgBmIyYqLD4XbHY7A=
-Date: Tue, 13 Oct 2026 14:54:24 -0700
+	b=aME28oZGAgzYgLlb5N4BWBzXkODcJumjTJWJClMakkjxh4PuNcEGo+/y1pM9SeUrr
+	 LSYYATmt3K9iTX+RJ9RY0jB2LTx6fp1HXFl/AX/HYdyNC4U1mWl1uxwOmHXSfifmgM
+	 yih1bCuSr11rL5OGCdWDkD15YFbyAoJG68EfL84w=
+Date: Tue, 13 Oct 2026 15:12:41 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "Harry Yoo (Meta)" <harry@kernel.org>
-Cc: Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph
- Lameter <cl@gentwo.org>, Suren Baghdasaryan <surenb@google.com>, Hao Ge
- <hao.ge@linux.dev>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/percpu: account full object size for percpu memory
- allocations
-Message-Id: <20261013145424.341cb25ffdd488297bffd1a1@linux-foundation.org>
-In-Reply-To: <20261013-fix-alloc-percpu-accounting-v1-1-03e788a1e41f@kernel.org>
-References: <20261013-fix-alloc-percpu-accounting-v1-1-03e788a1e41f@kernel.org>
+To: kernel test robot <lkp@intel.com>
+Cc: Muchun Song <muchun.song@linux.dev>, oe-kbuild-all@lists.linux.dev,
+ David Hildenbrand <david@kernel.org>, Linux Memory Management List
+ <linux-mm@kvack.org>, mm-commits@vger.kernel.org
+Subject: Re: [akpm-mm:mm-unstable 183/193] arch/riscv/mm/init.c:1544:2:
+ error: implicit declaration of function 'free_pgtable_page'; did you mean
+ 'pmd_pgtable_page'?
+Message-Id: <20261013151241.c8982a44c32d93a8ec010fee@linux-foundation.org>
+In-Reply-To: <202610131439.F2KDdzRA-lkp@intel.com>
+References: <202610131439.F2KDdzRA-lkp@intel.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: j1w1zi9masid4xqpru4hnc33j1tobyqy
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BA35620005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F27E640007
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791928465-400565
-X-HE-Meta: U2FsdGVkX1+FMpIWsBwJxVzHlOvTiM982gvBuSx9HKfMcZGtmeq+DwOzcjqr+pALCj1dgwfTaDHzybCHPMod8iCGU3lo522ygKYRQjA7F78krJEJNahiMJig13wO7eojHXcZbaPPjY2+4nryeNzExzTf6TDodlG626dgemcmSF/9jsqZLoKQ1W1KKj4Gw24vlGlhp9jvTn5YtFpk8KUWx9ZKg/Eejo0bOLdOJl6ZvtaFcYaXCVkMb3nXWx3Ia29rLGWJPRrXvnWaxBZ+oZF+L2pQ1b40jrEfvAncPhELxv703zr1Vzax4rkjhqd9YpHTOCPh/K3xdQ05hwUj2nrTGsvrWGS22M6Kiy8LnI3bYY8Xa6cVqODET3xV4+ujkNih5dMUYhjhHvObYrg1eEeX8lMUsWJLbO51gKQsA7xVewHpyN90h6/bVPJO5s+GVwt6dLaASDPDe2dE5U1Ky7sh2PgJZsTkwA4VcR3rG6gqJzvM++gkirf5wq5lRhgijaKWyTcgOcRSfl8if/x26RiWDNSof1ubTPnKLzSXzT7oCYcwCiX8KBe2Kps/JwG8iBDDQkO01BsfT6lKW1LvxNv4/QxNOsQHAZrCBjfVrQWnf/+Q6Epp3p+Wfb5vvjO7BADIHu1HrlU8X9Dgd7sa+5kijS1pR3Bi9eZRXfQQ6wbl8PcCFLbmjhSYpYXS16EnRFjittw2lHoenDHGRhJELipFEmz9jlRZ+uNKW9rCWIYQQBEldogb6q5OUFoWEbKd7vjBQaPxAuzh05w6UY2ZhDLJOijzJaEBnDh8dA7d5lRo1+t7lrhR1gfrLLc4BD+vaJ5qZLTgQmm8Hq3PkVTgJ2Y1/NF+MvsvCjJD5a2myQTUywIYpmrmsvpt7q1ZX7BPlKdDlElptswPL60nLDL5qRE4vL2H9wmIXjACRmJ3pAOzRETAmF7KEYHs347wy1BZuAwvidN0czAe6/2AX3rLaLo
- V7T0obsl
- JMEW62pyg+4MRdLBjvoD2gGFosxPBT3dP+v9TnMQsqnGeqrhw7hcZ8SQmedNxs5w7uNqtq+W5YR/edXjfhgltDUGLZ0DQ9392L1oiBnKubLWq5Dy4KAlulN1yaTH8V2+HLpMSqDIoei05gokNDZkztCk2gYpJFjkb0rUdTIgNFjS11iZPS8xy+zzFlFg20/XN9QVRZPv/CUSVChVaghOvtPNSDP+ALUSDzZMAl+tf4Tt09AG/VwnNMMeo8HRvWB14YQcG1tFLLfFf9UIwKMky1m+W5A==
+X-Stat-Signature: uttboohsb5exgnkheo8xuh747uzcc9ck
+X-HE-Tag: 1791929563-297587
+X-HE-Meta: U2FsdGVkX19+sV6eOhD3owEsbi/tYrJ4HZqLJI4DK0Qfms8im8DOycvKtip3Nm7jQMnvmZJGBvkG7aROe/RyKDbMlV8NeN9r8giCQokm88y9Kr0F1TIqnKbUtBK06MPFsH/iyibg7rAPwu0oTZcVEX75/iun1LsW6tMEJ5QqLngjp7rtfpHGBAMhOfU6PUexR4OX//uaoZYkOM41dT7jQcp7sSurn3DeXBe/ujTFj/39Uo+RTjNTir7yNrrTnvsYhhI3sRrINQA9H7twZArTJr+glJYmBnQ8bXW4hiy+N6FXeWHcivR8yPNDffqBAYfm1JyTvwzjREpArwOqtDVsc6XnDTMpqVGR/fOKI3+ATZ0S7dA9g9UCiTHkrgQ8BE/qIjoOtFuUndkWY8qBuAeytuOkuUT4xpTMmUlmBhq+jFSHVobBRwkf/qsPxdpa+sdti+9UIfqzoxSM+qioLOD9pcpEkv4Ob+7m96sqZq2tGS4nip1Axfp1Y0HAyW7MwkWdEcodb6XMju8UTR/8amq27R0Z5cHPEz4vGqMBjg3lXSdnFqfJWKsYihAqkUNPS8xuXR1UCOIBhjJqZJQ3Bc1eiiBZNx86xrZjD2oFTRzYVtX5sdfk0t6tunbr/EmO4pca8s2C3C/V4n+q/iJW8+Nzs2Amcg6qzxvY5JGcvAEcg7rwMEpOoaDtW9+XBXU0xXvoWGhGQHl2NOIID2u3bmgQBNu1jVGYD/h4urqMuu/Lj7qy1OplDlLTGgNtjwkk6CNSyt8VE+I1L/qFTkqTnswLoO7X9A+MdqBcLAk8kw+c0OrPnMR1tic79qvfZby5oqhLoLDR964KCARnc0Pfdevt1ONBDZGPVki26aYIiXAJcHZh6VSa6yFvFVjslK4AotI6NIZpt++uXHp8YmY53I6AFMJ/HaQSggX0dkY+9nhw6/dVM9wL7HDxrwnzk/ABPG5kehFt1ZRBKfcU5QhBqc7
+ zKX7dLvk
+ xHh6Jr9gwN98IwkN+ZVo9F7YHem7/BRZeusAvadqhgMCb3wy2JFHgeniVJTpVOeL9PYcXobpg4AQ6DWuaUPXnnWbWh++NekZH5u1fzoHos1zS8+jB/2Cln43GR45GuvJEpYveUhWxy3m5pkyt28sEOrbn6eNlQmYcm741D0PtbLFHNKbE2S0XqNiJuh830eaqni2mV0TYkNcb+HZzHEO5iA8co146pLRoB0A/N9SRY48oac5cZGDQt8PJZsX5zpzXerXnsbFMGSnSfkcT1dOyLR44qCp5jabdKjuiTCtT61Qf2j5weiByLwOH/v9CeZD7BDNJpd2VF2db6nVOybkuZzrazEFj74BYpJmjY4lud0Ckr/P7eTYfm3th4oSyew3n702ndEg18QHdjpKC/I6ogIjlbULeiWuJONtPMmypmn/xPMZWTQGgwUCIBNELALyqey9j
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,45 +92,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 13 Oct 2026 20:34:39 +0100 "Harry Yoo (Meta)" <harry@kernel.org> wrote:
+On Tue, 13 Oct 2026 14:18:21 +0200 kernel test robot <lkp@intel.com> wrote:
 
-> When memory allocation profiling is enabled, the pages backing percpu
-> memory chunks are attributed to func:pcpu_alloc_pages. However, the
-> accounting of individual percpu memory allocations via alloc_percpu()
-> and friends record only the size of a single object rather than its
-> full size across all CPUs.
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+> head:   7186f1bd21b9094cc063c10f8492fd135522d3cb
+> commit: cf6402c085736133c835e1f815f79e7e1faf97a0 [183/193] riscv/mm: fix missing destructor for hotplug PUD tables
+> config: riscv-randconfig-r2109-20261013 (https://download.01.org/0day-ci/archive/20261013/202610131439.F2KDdzRA-lkp@intel.com/config)
+> compiler: riscv64-linux-gcc (GCC) 10.5.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261013/202610131439.F2KDdzRA-lkp@intel.com/reproduce)
 > 
-> As a result, it is often not straightforward to identify which kernel
-> code is actually responsible for percpu memory, because the size is
-> under-accounted by a factor of num_possible_cpus().
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202610131439.F2KDdzRA-lkp@intel.com/
 > 
-> Account full object size with pcpu_obj_full_size(size) instead, which
-> multiplies the object size by num_possible_cpus() and adds the objcg
-> pointer overhead. This is consistent with what memcg already does for
-> charging percpu allocations.
+> All errors (new ones prefixed by >>):
 > 
-> Verified with 64-CPU VM by spawning 400 processes in a memory cgroup and
-> measuring mm_init()'s rss_stat counters.
-> 
-> Delta of kernel/fork.c:1142 func:mm_init in /proc/allocinfo:
+>    arch/riscv/mm/init.c: In function 'free_pud_table':
+> >> arch/riscv/mm/init.c:1544:2: error: implicit declaration of function 'free_pgtable_page'; did you mean 'pmd_pgtable_page'? [-Werror=implicit-function-declaration]
+>     1544 |  free_pgtable_page(page);
+>          |  ^~~~~~~~~~~~~~~~~
+>          |  pmd_pgtable_page
+>    cc1: some warnings being treated as errors
 
-Please make it use mm_init() rather than func:mm_init.
+OK, thanks, that patch is dependent on "riscv/mm: fix hotplug
+page-table destructor handling", which I've disabled to simplify
+merging with riscv.
 
-> 
->                   bytes   calls   per allocation
->     unpatched      6320     395         16
->     patched      418176     396       1056
-> 
-> 'percpu' field in memory.stat: 422400 (1056 bytes per process)
-> 
-> Memory allocation profiling now accounts the same amount of memory as
-> what memcg charges.
-
-Fair enough.
-
-> Cc: stable@vger.kernel.org
-
-Why cc:stable?
-
-
+I'll temporarily disable "riscv/mm: fix missing destructor for hotplug
+PUD tables" as well.
 
