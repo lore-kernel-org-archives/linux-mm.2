@@ -4,152 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1376ACC6B1A
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 19:54:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09114CC6B1A
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 20:25:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E7DE6B0088; Tue, 13 Oct 2026 15:54:07 -0400 (EDT)
+	id 961B76B0088; Tue, 13 Oct 2026 16:25:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 797E66B008A; Tue, 13 Oct 2026 15:54:07 -0400 (EDT)
+	id 913236B008A; Tue, 13 Oct 2026 16:25:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65FA56B008C; Tue, 13 Oct 2026 15:54:07 -0400 (EDT)
+	id 801CD6B008C; Tue, 13 Oct 2026 16:25:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D01A6B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:54:07 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 16959C019D
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 19:54:05 +0000 (UTC)
-X-FDA: 85318654050.04.54DFABC
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0BC7D100007
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 19:54:02 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=irdtqI01;
-	spf=pass (imf14.hostedemail.com: domain of ackerleytng@google.com designates 209.85.219.53 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791921243;
-	b=1uFnjomY3Ll68HNatqdqoW01jIdIFj5NvNYUdOXtlz+JRw+fJ0F+nopvBOtooUtxKhR8I0
-	ARd2ZgnGvNqCKLDmhf+Iu5WwfNn7ZYHLF0ppXuKVVty7lmet5gt7zt60rnYAbH2lY6q5yZ
-	gm52GOwaZUvBeNDGudcOdhGhwe+whgk=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=irdtqI01;
-	spf=pass (imf14.hostedemail.com: domain of ackerleytng@google.com designates 209.85.219.53 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791921243;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 58E9C6B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 16:25:32 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E6A501C2302
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 20:25:31 +0000 (UTC)
+X-FDA: 85318733262.05.4504CA2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2ECD21A000C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 20:25:30 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jm9mMZ6K;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791923130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fjiIk8S/1b/fq42ObdZjHlUOMsEJstLh+gvZY/xKhZA=;
-	b=h/HTjzkLn+hgFhKblFhfgRTSrt74mbPY8VSj0/mSPZ37iZQZMOLs8I8/kBjYhkNB6JCrBu
-	VVFCxu7zWWx3sEs4tjacIuNbKs00UDZsDki/Ti7CNs+107B5QGl8BkBYvRGeiZoo8Lsaw0
-	trDak3fQVJ3o/WhlkXrH3c6tGzL/wtI=
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-91b83459526so25725026d6.2
-        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:54:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791921242; cv=none;
-        d=google.com; s=arc-20260327;
-        b=D2ik/9VJmiY31fnHP+wejI9DfdPw+WNM0lqISlK88VnA8dP0p6SM312rtW2PA61oCk
-         SXGuE6Y0NSbiijmf2vOMV0CNkzK0LA3LRPyF1RQCGA71c+lMgG/w6/RxT/U7sibod1lm
-         tbaB+r7CqTagMWRZ1NnrWHOQavNeETXb67YgDUAA0BEwO9o+gvv9YHhOQqJCXDQdN+KO
-         NPXcFyNeFVjMPtIlOxpE/e2PFXh+GkLZuxcXFIeSbFcEQO3YBNhTJ2enUBqvu+jWHfun
-         U7fUYWOIPaHy/VaxTns4VFglNtW8WM119BvXCIlwh32ViNU281pHLUkxRBzNcKVRDkFx
-         dm/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=fjiIk8S/1b/fq42ObdZjHlUOMsEJstLh+gvZY/xKhZA=;
-        fh=0Cr42VLDmGQ2R9wwfbIh6lMxD0tdimIf919NummJGhY=;
-        b=RGFeERPIUw73w+NWWbo/daghSN2I35BEVq6CGWWpyWcfmQEHQ5k/MmS7bKWdluSPVi
-         qhcuJEnAzkU4LP6uvJZsM4cFWzw9nLvsul8AJ/ePlynfGTDbTqlt5Dzhx0Hl3ZcvZLqA
-         /PMBPX4qckzXYZneS/vJ4S8miNl8SzBmNyUFcOJA2VAey5BmASOkOFfJlaOOZaEtTCQx
-         rZOXkNiKgEo6SS3sX86IpRbmw1hDsM7ChCx+q6CumYE2sDXdjgJurCiIILWe1mSqA7hh
-         0w5TPQ3GvsehmkqzsKvVtnHueGIUKBDQoz5h5pMVXWVFNZ9E6ejty5RteRkSOo0jVewP
-         bZqQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791921242; x=1792526042; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fjiIk8S/1b/fq42ObdZjHlUOMsEJstLh+gvZY/xKhZA=;
-        b=irdtqI015stJ0SDvDFJUs+D9PyixlNDrt3I+mA++Q7wvIhuNGXzl7XeiyGo3u6iYc7
-         N63EVsYww6v9pSXm9DDGSp10N21Iv1lmiSsJpKN8YXa2umvtAwyKS9wi9Etj3AG3i91/
-         B7MZ8Zke1vyAgr40neiQlxAdXnKCHocojlQKqN0jPxN3+H9BzlWjkFTxfcv0FlR9oBFO
-         GaZZjAoYSJTIrQh80i7seEb8OWAcF+yE7XIsvbSTo+x9CtVQNWeSWq41PN13ADYu2fSX
-         21NSuLNv8SxsJWKgGpoKzDlvPmbvcs1SEthsTbAeEPyvRarX/fyrZpWsy5+RIMTM6NvN
-         NSzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791921242; x=1792526042;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fjiIk8S/1b/fq42ObdZjHlUOMsEJstLh+gvZY/xKhZA=;
-        b=tIJkxruKqjSSto+827xxb0/rLHNWQ2BSkQnH7Dzb11KsYRJDgumjBpLB68Kck6PtL7
-         M2rURx6ey+vz483PeeiFa/uNAjlIso59TM91dGkzeEgVxF3s5LDfozctqPU00/BodscQ
-         +SvSIk8TUePlY+5Q5gMDWYd1Z+YpwUQnieMS9sWA1tr8PJqP3CY2rHl1MAOO+Oz1z40L
-         SjVe1BeMkH+9qRgcxQOqEWSQCO7Xphmihd9ylnVm1tlJVy3A8DHsoyIRfKiXRwdzgCCf
-         kowy0sXVTQ296MmwOat7HeSpdTWF6zlaBcp+u11+ekaiX4ZfbtUxFInmXqdiPzozMZd+
-         b0Ow==
-X-Forwarded-Encrypted: i=1; AKwUvBzeKB7i3PTDe76sxU9YfACuvHVlMoKstKVAdU2unlUkK9WEHDWmL8YyYhuFVHeTi1J3CI/nt0Ln0A==@kvack.org
-X-Gm-Message-State: AFq9FYIYVRS8yx1juEGUTyzAKqTfAn2HG5CCEI4z2Ijd1KEhILR0M3Ok
-	3Jac4YczmeOHjE1MCMvUptvWVyjA3Ha7O6cShKCG31jt+qU2Fq5HIgGd7wcxFdW2gz6bvtg1FTV
-	L0iWmld81a30ObOuidIQ400ES5nKPW0ShTgkiIHo2
-X-Gm-Gg: AYBFou0tgct0e+STdW9eoIdOMA0Ga35Mnm/WW/RjjT6sEJXqeRsFfW/hbn0tvU6BB9U
-	hewiVBWOJwWfE29bZitNcGfzh8w/7plWCy56PV3zMuOh3vxIEezdGpbsTV5R+HMhMfLwHMBIMXo
-	O71PL6khpphOzIivW9p05tg0mjlzvW0dbNbMX1l3Mr5rYg2dLNPhXk3mKsyQHpM0qlmz/i/2XVb
-	pgGAhsqH43jguugSICKIVe5ZP8MgBoz95VLfxc3cMRX1u6hgyrcTKWQfW8pr0BJmnJx0URfJSww
-	rd2BxE/4c0lybs0qJsPIqPxDKpXf7aKEhUap4JSJpPSmrGca8Lb1rlbSVSaub3Tov1iwAVKEZvQ
-	5ohInqL0EnUyFn2EBRthecpVGBQVZxYgzwKmgxpEm6w==
-X-Received: by 2002:a05:6214:5085:b0:90c:b843:d679 with SMTP id
- 6a1803df08f44-91b555668b1mr241693526d6.29.1791921240685; Tue, 13 Oct 2026
- 12:54:00 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 13 Oct 2026 12:53:59 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 13 Oct 2026 12:53:59 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20261006183235.16576-1-griffoul@gmail.com>
-References: <20260720111259.122911-1-dwmw2@infradead.org> <20261006183235.16576-1-griffoul@gmail.com>
+	bh=UaZQVI4OBM3dYTDYP0h3QPZiaN1K+djX9uwXeV4f+FY=;
+	b=Wredxv0M5gc4sljgD/VC3xMGWvzAyejwWRsAw3DToYpJrMeoBxftTmTkTQfsDx9ERJeoFW
+	VSVox/HLXcJLXRm+8C0xkvalMtGrXFc8wTvmRpu20g8c+cnZ5858ol+zwQHRKI2MyD64dQ
+	Z11a60UduO6DmN+0vtBILO/CwmB+ws8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791923130;
+	b=W2DyFhoXyA+cKRGpnRBQV0SZDWzjtYKJWEunkkVpyR8enOub29ALDchXsHNDR//9AfsYXN
+	owtT4v35qWhgEZSGAyPsOnohfxwlo17+Wo9ay+zpGBKMiv1KLCC8xNm9qgSWfwNsH83szh
+	BGcFYmGrtrEAowSEMZ56i7zt0StlaPQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jm9mMZ6K;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A1185601FD;
+	Tue, 13 Oct 2026 20:25:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0DC1F000FF;
+	Tue, 13 Oct 2026 20:25:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791923129;
+	bh=UaZQVI4OBM3dYTDYP0h3QPZiaN1K+djX9uwXeV4f+FY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Jm9mMZ6K42gtgoI2FD4ePesOjmwOOAPUms8KWxDz84hZ8REV4FOlBnMJfYYQftxxk
+	 lci6/JGRZDKLaEtM/qoyLcZmoWainxeJXbFNzOvoML33EcMgKwCnUQeCZURZ24W/O4
+	 YAFKpMV5Rs4H1SJ05sNsGabyYu8aeJOYgvoq+JrcW03sWBth261ekC2Vutn2S8ounP
+	 oCO0t90kY3SS8NDQ3Z4xZK21Y9ap6m/l8+VxH/QH7qBxFqCZBWjqsFEZnpFq3jHrOC
+	 zLHrOWqQK0KvO+WsMTTPE1e7tZjbGABcmtN87LhpEfjlixV3GKBIVQ+sMOGfNg+nyL
+	 TrF7PbIj7GrKg==
+Message-ID: <dfbb4bac-0def-4e1b-87a7-91c9cd91349e@kernel.org>
+Date: Tue, 13 Oct 2026 22:25:21 +0200
 MIME-Version: 1.0
-Date: Tue, 13 Oct 2026 12:53:59 -0700
-X-Gm-Features: AclHuK8TQPboa9RVDrBS_-w6dTXGHf21nXTRvYl_CuU35T-tn195uLjZFRceV3k
-Message-ID: <CAEvNRgEseLO+LbkwXrEit0H2LH5Wx-srSvHEMpt0=upPL3tF=g@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/9] mm: Memory providers for guest_memfd and iommufd
-To: Fred Griffoul <griffoul@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>
-Cc: David Woodhouse <dwmw2@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, iommu@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, aik@amd.com, 
-	jacob.pan@linux.microsoft.com, gourry@gourry.net, vannapurve@google.com, 
-	fvdl@google.com, tabba@google.com, dave.jiang@intel.com, 
-	aneesh.kumar@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 10/13] mm/collapse: open-code collapse_single_pmd() in
+ its two callers
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <20260928100630.21870-1-kirill@shutemov.name>
+ <20260928100630.21870-11-kirill@shutemov.name>
+ <b2133cff-ce69-4a45-bf33-c44b774dee7b@kernel.org>
+ <ar-nKHZ5hlbsXeFP@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ar-nKHZ5hlbsXeFP@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2ECD21A000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0BC7D100007
-X-Stat-Signature: jydger6msb9b3efrk61uxadctz733m7q
-X-HE-Tag: 1791921242-249819
-X-HE-Meta: U2FsdGVkX192zQxLB6S1QaKRFYv8c+lfNr1c7XQiZNqxOFVrW1NYXICArguO0aLb63aNf9KVKf8n1WMNjifjIe4J4OPiXceE8mZmzxVL6ystO5HqxMbzqC/koybk/MlltDwAhf7HPaeWE/KTNFb6jYkAkNzywu3yMYlw+nUVDb/iVriF4GFn7N31cLYbUbkHItu0kk7RpsjFN2fCFo4UtFwiCXJsX86wunygFiftO5VeHzdQyvUd+PgpOBNoTKsetcTOmvqF469+fyaDtgfRURUr3DPvxnH1WgJ+EW4FcvPa+JIuNlnh/CYBe7TMHL6yjIYtpEEsojwRC8nBQ5o7OQ4UU+9WlBpre+W1TgviNW4iKpONrYa7yFFhNole44yPNa4yzcNS/tYSDthaG0WyE8aGPmPgyGoI7kuZWD0cxQYziLQTcfVYkQ5BQ1NqDmCGv3sBCMvci7yEafUujowT7GFc1bS74ct9kf5FV8+b7//LxUSXtTYsvvZwwhGe3zStqHBBfa/LiZ6bH54xSJQLJNQyEnRq1gvH/zpsZui+dJkhtyvM7LRg5mmZSkOckmonW7Z1AZU7KkY6rjZgKfi9BpJlY1tTAfihGncIoI0PP3JX7OxaX4zqVP3K1Ubn0GlYnnoMwEq9G3DoenF+Dt9hLVEvLbMAe5ZBCKshhy3GX/FRU6xvpVJIPb11guzZLUUx+iYc74ofhe5JLc1Fh9JULd0ZdySCCnrnffbZSPR1GfmRpedBrB8JaAF++Fql3VozUhirOOk7P8wjtsKHyObDEo9k0+d/fX1Z9vPIHOTJCTro6nNT1C0vepfyFCEDX6GQMmEcS3zBpE+7tS0PtUz22Hj2eyJeMyI01uCyHEQQp0vdInVWcnNP34GIE3GlDGK4d7XvXg9nVCFfxhZy0cAB6uCUgIuqbkHtFjWZa4zd6bcNZtSOjeBgRODttNv/PFd15/vgMc8PxLwW5CLw9Zm
- WoPwJAz4
- FsJRDfEgeyKfibZFH3kuTrGkVxW5zk3GL2ZpSQLcG2sk9r09PeN+Ll1dSOwc9rlv8yzTl9/wUFR/3sTkrmzd2OrDPYsaXxk4hQrwfESBkZ+WrM2NVD6ifM940h4Ntr20ucz/AWgglsom4001YXD58fxRFpi7sF3GykeY8rtodgH9mLLdp/PbsUgi6ndk2y3ywOaqTOAYjYy2hp78VkJiTrYwax9v3TMlrClx+iRmnOLhsMXcqYmj/tFL9CQcIYFFCpaKH/QMVUOjVf5WeR/HhGRAhtDYlLmN2rPZrgwFF1xwBMX40yT2M9R2sN9pjpJ40V7x/TtOLw9Wbb0Q4djGRwuKNEoQQJ/MuwNeOAkxeQBEXyJH3blegzPLMBl3TTinVdniPVx96xzQlTm+yUjdG5Lt7sCFKUmPrshW7oL7qzppe40IllmXu62OIS7hr+YRTmKjL15Gf60aEfC5/Qlw/MPoyHFO7MeJU5Nnmsa5WdOHejWNDUDrs8SZijMDsNNJi+iqb
+X-Stat-Signature: xxgrt86qokd94oe5ann3fn8qmndajas5
+X-HE-Tag: 1791923130-452784
+X-HE-Meta: U2FsdGVkX18MkgOXs9eMczWNVTgKOEIl/5Xni5/NoUyPd5hcFhAvGqe3YdpwKRS/Scs+/zgB+5fC8xsDqQ/SbBhKu1XHlUWc73rvKqpncnYKmwSEL0JtVUdU3XBBkZENTZeufl58KiHAzyY7Dcspojvxlm1i90vdPOkjhdy4yxkqe9Y/ePCKd5r2I2T9jHt0MtQKagwYoXRZ1Q9EZAK1AX5kBmN10gT8UY1tcaqH7tJ0iNqKL471c1iTYND6YfvMhA0XZ1GImSQ72TdHnU4xjSTP4mdw5a8Dfl3JxrhEzYeksTSiKovOZXjekJHxqAEEBvPfUtWB2nT8/EN26CDRALcoQCK7l+PPzU3dho1T79H3L6e0Ow2v9FikwT3aTFUiytXcCrL8rKmj8D6BCTchuX/xWE5f/rlDXLHszDkGI3VTpf5PSJKHlI0Ww6Qlg5LrL1LMjAJqvNy0mfjtg23SzASh5dqSgb8gQb4f5beCcXpx7YwQx5CvzVwNimkE8G4oOwre6ho0vqNk7bDxIK09va8MK40BCwmOCZC5oNSD4UKeNrq84/wVRY1GWrOoRY11LFfzxhHA/hpSiFYHAVZGJm3YNHz2PjjI/wQHUYX9ST7f7eAzP5gJUt3lGuPNK9LbiLj6MlNkn6vg2MqITkYPV1EUv5MPcBBzcoa3Lvh08Tn1160etdJlZ0B/jFi5nTyKUbpzXXCATPc4OYd7+LzuStC4GKXbo6oI0B4NwZRzXEHQRyFPCo5L412UK0MDj0xLw5RAFceOwXKv6r9AVM9E8m+GK2ivu9IVgk8w/iqYYRXzrlqkSS6XquS1by4Oopv/vcXS0RtDIHJIefLgjdRYMv6JhryEkd6t64q6Bzmh+t81atEVvKlau+TYcwQ9fAFSiT+k2jwNNGPoOYfpxEFlrp5JkUjo/6q7hm2ebvv8v+vcZK01ExNidezY2uK7VC9bLMRZ6nwqj6GtXdKdDB7
+ VuyjnBQ9
+ GLxoaaeBMD+Ij342NdoZAYqDY1PufIhhFJAeDvgFlBeqk3rdgFmdkXPh6AC9bmUS/niXiS4UTVGkQRYWDk9ETCs2m2/s40enC+XCurQ/5CnNp/LXqfUikA8SnrVvyn27aH5p0iMfsitgWdoYIEIMxzmwsfeo0Gdmzp9zy8hJpNx8ZUa/K5wBBjmoZLLnXSwAocZBdPJhh0+rcIlhZvCYDgBfmkLIQijSvlbgNGRihSJysa/D3XuZQa8afjswOAP/BrCqHyzMMHqdAd1U7LmGM+bTcbhHC1sKGglxWwL59g36aU1nGooABKSCNXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,116 +148,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hey David/Fred,
 
-I took some time to read the patches, hope I got everything :) The
-biggest difference between your approach and mine is who (provider or
-guest_memfd) manages the zapping across all the users.
+Finally following up after recovering from last week :)
 
-The memory users here are
+> 
+> Right on both.
+> 
+> As I mentioned before, virtual address scanning might not be the best
+> way to collapse page cache.
+> 
+> We might want to start from inodes on superblocks that have large folios
+> enabled.
+> 
+> But it is out of scope for the patchset.
 
-1. [KVM] The guest (KVM manages the stage 2 page tables)
-2. [IOMMU] The IOMMU (iommufd manages the stage 2 page tables)
-3. [USERSPACE] Host userspace (guest_memfd handles faults, I guess you
-   could say core mm manages host userspace page tables)
-4. [DIRECTMAP] Kernel direct map. Your provider already provides PFNs
-   that are presumably not in the direct map. For other providers, the
-   direct map is another mapping that may need to be zapped on
-   private/shared conversions. (Listing this here for completeness, I
-   think this should be tackled separately.)
+Ack.
 
-I'll use [LABEL] to illustrate the way notifications flow in your
-approach vs mine.
+> 
+>> Also, I guess we can convert some of the scanning to use per-vma locks in the
+>> future, whereby we would actually want to scan with the per-vma lock held.
+> 
+> That is the reason the caller owns the lock here.
+> 
+> On top of this series I have khugepaged scanning under the per-VMA lock:
+> the scan asserts whatever lock the caller holds, the caller does
+> vma_end_read() before the run, and the run takes the locks it needs
+> itself.
+> 
+> Neither the scan nor the run changed for it.
+> 
+> With collapse_single_pmd() dropping the lock, it has to know which lock
+> the caller took. process_madvise() on another process's mm cannot move
+> to the VMA lock: untagged_addr_remote() asserts mmap_lock, so a remote
+> MADV_COLLAPSE keeps it while a local one and khugepaged move on.
+> 
+> The single call would need a flag saying which lock to drop. That is
+> the lock_dropped bool again, pointing the other way.
+> 
+>> I do wonder about one thing: should we really care so much about keeping the
+>> mmap lock locked? Meaning, why not provide a single collapse_single_pmd() that
+>>
+>> * Is always called without the mmap lock (as is)
+>> * Always returns with the mmap lock unlocked (change)
+> 
+> Yes, we should.
+> 
+> Walking the tables under one hold and giving the lock up only to
+> collapse is how khugepaged has worked since ba76149f47d8 ("thp:
+> khugepaged").
+> 
+> The bool is just how that signal got plumbed when MADV_COLLAPSE arrived
+> in 50ad2f24b3b4, and it has already cost one bug, 5a62019807da
+> ("mm/khugepaged: fix issue with tracking lock").
+> 
+> This series removes the bool and keeps the behaviour.
+> 
+>> Sure, we drop+re-acquire the mmap lock a couple of times and lookup the vma, but
+>> isn't that actually being nice to the other parts of the system? In the future
+>>  it would simply get called with the per-vma lock and would return with it unlocked.
+>>
+>> In the good old days, looking up VMAs was expensive, but nowadays ... not sure
+>> if it still matters?
+> 
+> The rwsem and the VMA lookup are not the only cost.
+> 
+> In your version every table is a visit to the mm: unlock,
+> khugepaged_mm_lock, back through khugepaged_do_scan(),
+> khugepaged_mm_lock again, a trylock and a VMA walk, for a scan that on
+> memory already huge is one pmd read.
 
-When the provider wants to revoke the page, the notifications/function
-calls flow this way, the last [ENTITY] in the chain actually does the
-zapping.
+I removed the inner loop. We could have kept it, but the numbers below suggest
+something different I guess.
 
-+ [PROVIDER] -> [KVM]
-+ [PROVIDER] -> [DMABUF] -> [IOMMU]
-+ [PROVIDER] -> [GUEST_MEMFD] -> [USERSPACE] (AFAICT this was not
-  implemented in the RFC.)
+> 
+> I measured your prototype against patch 9 as posted, both on a production
+> config, 8G of anonymous memory already collapsed, scan_sleep_millisecs 0,
+> pages_to_scan 65536, PMD order only, five runs each, medians:
+> 
+>                                      as posted    yours
+>   khugepaged, nothing to collapse:
+>     full passes over 8G in 20s         251,180    55,477
+>     khugepaged CPU                        100%      100%
+>     cost per refused table               19 ns     88 ns
+>   MADV_COLLAPSE, already huge:
+>     512M per call, p50                  3.8 us   17.4 us
+>     2M per call, p50                    703 ns    703 ns
+>   tables walked in full then refused
+>     (max_ptes_none 0), passes in 20s       803       836
+> 
+> On being nice to the rest of the system: the scan is already bounded.
+> The read hold ends after pages_to_scan worth of progress. We already
+> have properly sized scan batching in place.
+> 
+>> khugepaged? Not sure if this matters. madvise? I suspect many real users operate
+>> on a single PMD only (e.g., tcmalloc, jemalloc). For the other ones, not sure if
+>> dropping the lock every PMD is really a problem?
+> 
+> khugepaged matters. We run it across the fleet, and its scan cost is
+> what decides how aggressive we can afford to be with it. I am not
+> giving up scan rate to keep one entry point into the engine.
 
-That's when the provider wants to revoke the page. IIUC guest_memfd
-conversions was not illustrated in the RFC: what happens on a shared
--> private conversion?
+I'm not sure whether the numbers above area really *that* relevant. But I get
+your point: scanning must be as cheap as possible.
 
-+ [KVM]: Zap only shared pages, keep private pages mapped.
-+ [IOMMU]:
-    + Before Confidential IO: so far, IOMMU mappings are mapped
-      indirectly via [USERSPACE] mappings. guest_memfd zaps
-      [USERSPACE] mappings, then checks refcounts to ensure no other
-      mappings (which includes IOMMU). See __kvm_gmem_set_attributes()
-      on kvm-x86/coco [2].
-    + With Confidential IO: shared IOMMU mapping need to be zapped,
-      keep mappings of private pages.
-+ [USERSPACE]: Zap all mappings on shared->private conversions.
-+ [DIRECTMAP]: Can zap these mappings (not implemented yet, but
-  discussed in the context of Direct Map Removal support for
-  guest_memfd [3])
+> 
+> For a single PMD there is no difference either way. For a range, today a
+> MADV_COLLAPSE over memory that is already huge walks it without letting
+> go of the lock at all; in your version it relocks and revalidates for
+> every table, and tells madvise_walk_vmas() to look the VMA up again.
+> 
+>> IOW, how bad would the following simplification be (prototype that needs more
+>> work and thought):
+>>
+> 
+> ...
+> 
+>>
+>> Based on that, I'd rather want to see collapse_single_pmd() to just inline the file
+>> and anon paths, and see how we can further optimize the locking internally (e.g., perform
+>> the pagecache scanning without the mmap lock).
+> 
+> I see the appeal of the single entry point for the collapse engine. I do.
+> 
+> But it costs us on both the locking picture and the scan rate. That
+> does not work for me.
 
-To have the conversions work, in your model, we'd need to do
+So this is in mm-unstable and I want at least the first 9 patches to go to
+mm-stable rather sooner than later.
 
-+ [GUEST_MEMFD] -> [PROVIDER] -> [KVM] (zap only shared pages)
-+ [GUEST_MEMFD] -> [PROVIDER] -> [DMABUF] -> [IOMMU] (zap only shared pages)
-+ [GUEST_MEMFD] -> [USERSPACE] (IIUC the provider doesn't directly
-  allow mapping to userspace, also in your approach the provider
-  pretty much replaces all the innards of guest_memfd anyway, hence
-  I'm showing this as gmem going direct to zap userspace)
+As raised in person, I don't like the open-coding here; it just results in weird
+API. I wonder whether we can come up with a better interface, while keeping the
+locking as per your requirement cheap (scan performance).
 
-With my proposal [1], we could do
+While we figure that out, does it make sense to send out revised patch 1..9 to
+move them to mm-stable while we figure out the remainder of the new API?
 
-+ [GUEST_MEMFD] -> [KVM] (zap only shared pages, implemented in [2])
-+ [GUEST_MEMFD] -> [IOMMU] (zap only shared pages)
-+ [GUEST_MEMFD] -> [USERSPACE] (implemented in [2])
-+ [GUEST_MEMFD] -> [DIRECTMAP] (future)
 
-In my proposal, I agree with you completely that the provider must be
-allowed to revoke memory. Using the sample in this RFC, gmem_fd_ioctl()
-called with !GMEM_PROVIDER_SET_PRESENT is where the provider wants to
-revoke memory, and the revocation in my model would look like
+Regarding API, I think we have two possible paths forward:
 
-  [PROVIDER] -> [GUEST_MEMFD]
+a) An API based on ranges without a VMA. The internal handling would take care
+of VMA lookup, re-validation, and managing the mmap lock.
 
-and [GUEST_MEMFD] would then fan it out to [KVM], [IOMMU], [USERSPACE]
-and [DIRECTMAP].
+b) Some better state tracking that abstracts the locking details.
 
-The [GUEST_MEMFD] -> [IOMMU] is missing from my proposal because I was
-seeing that as a separate patch series. I think what we want is to have
-IOMMU_IOAS_MAP_FILE be able to accept a guest_memfd file. Currently,
-during the mapping process(), memfd_pin_folios() is used, which has this
-check
 
-	if (!shmem_file(memfd) && !is_file_hugepages(memfd))
-		return -EINVAL;
+For example, something along the lines of an init/next/finish sequence with
+some additional state:
 
-that disqualifies guest_memfd. Refcounting won't work for guest_memfd()
-folios because of conversions (see kvm_gmem_has_outstanding_references
-at [4]). The implementation I have in mind is to have the the iommufd
-instance be tracked in guest_memfd during the pinning process, and
-that's the pointer guest_memfd will use to get iommufd to zap during
-[GUEST_MEMFD] -> [IOMMU]. This [GUEST_MEMFD] -> [IOMMU] zapping was
-previously also proposed in the context of Confidential IO [5].
+void collapse_init(struct collapse_state *state,
+	struct mm_struct *mm, unsigned long start,
+	unsigned long end, struct collapse_control *cc);
 
-[1] https://lore.kernel.org/all/20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com/
-[2] https://github.com/kvm-x86/linux/blob/a6270ed4bec0caa25913082e71ce22254e9cd3ed/virt/kvm/guest_memfd.c#L685
-[3] https://lore.kernel.org/all/20260410151746.61150-1-kalyazin@amazon.com/
-[4] https://github.com/kvm-x86/linux/blob/a6270ed4bec0caa25913082e71ce22254e9cd3ed/virt/kvm/guest_memfd.c#L722
-[5] https://lore.kernel.org/all/20260225075211.3353194-1-aik@amd.com/
+enum scan_result collapse_next(struct collapse_state *state);
 
-I'm intentionally avoiding the "primary manager" terminology since
-that's overly broad and doesn't really explain what processes exactly
-are being managed. It's really just which entity tells which other
-entity to zap pages, and since shared/private-ness of memory is core to
-guest_memfd, I think guest_memfd is in the best position to tell all the
-other entities to zap, and what (shared/private to zap).
+void collapse_finish(struct collapse_walk *state);
 
-Does your provider need to know if some memory was transitioned between
-shared/private states? The provider can be notified too, if
-necessary. If not, then isn't guest_memfd doing all the coordination
-better than going via the provider?
 
-Does the revocation model work for you? If it helps, I can rebuild the
-sample provider to illustrate how the revocation can be done. Let me
-know what else is missing from my model [1]. :)
+Maybe that could give you some idea how we could provide a cleaner API? We have
+various options I think that don't require this split in the caller.
+
+Ideally, I'd wish we could get rid of the vma revalidation in the callers entirely.
+
+If it helps, I can play with it to prototype what have in mind.
+
+-- 
+Cheers,
+
+David
 
