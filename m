@@ -4,91 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAEDFCC6B03
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 08:40:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C6F0CA9ED2
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 08:52:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D19066B0088; Tue, 13 Oct 2026 04:40:51 -0400 (EDT)
+	id C1E1F6B008C; Tue, 13 Oct 2026 04:52:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC9C06B008A; Tue, 13 Oct 2026 04:40:51 -0400 (EDT)
+	id BF5326B0092; Tue, 13 Oct 2026 04:52:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE0176B008C; Tue, 13 Oct 2026 04:40:51 -0400 (EDT)
+	id B32236B0095; Tue, 13 Oct 2026 04:52:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FCB66B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 04:40:51 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2C01F1A0BF6
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:40:51 +0000 (UTC)
-X-FDA: 85316957502.08.F92C58D
-Received: from mta0.migadu.com (out-163.mta0.migadu.com [91.218.175.163])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BABC0180004
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:40:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pbyf7Z2H;
-	spf=pass (imf06.hostedemail.com: domain of pankaj.raghav@linux.dev designates 91.218.175.163 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791880849;
-	b=I3zKGO6a8SIjxUyxUdqyqepGYq86fZAtI2wQuVPYZKGApX0k6Zauxd8qyL4sOoRm1EztdJ
-	TU7Pm3JTboGKg0egUJEsENEEYfrDJe3YWgDjkuoaKZpqZC/nrWp020SwiVRxZAYTXS3e2w
-	Ir+6KChl7YzPsIdv/OSB5m26zHCOgZ8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pbyf7Z2H;
-	spf=pass (imf06.hostedemail.com: domain of pankaj.raghav@linux.dev designates 91.218.175.163 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8884C6B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 04:52:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 03FA11609B3
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:52:44 +0000 (UTC)
+X-FDA: 85316987490.12.F998B74
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 67D7220009
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:52:43 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bU+MNADL;
+	spf=pass (imf03.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791880849;
+	s=arc-20220608; t=1791881563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eSvokzNFcQ4Noy52y9PgdlSImKqYcqTJLUQSyEWHkOU=;
-	b=ZvdjKM+jOqpll4B9+NpTLwTfrVD16lOTra5vnERwRMbCUAFWqV+U4a5MjMVt/PErOfYT13
-	wEzBXHSGesPUGrGaYGPe9TN5UPkigNn8oc5KP8kFaxQJWuUavH5HRz4GghjDcRM5DEj/bK
-	Ob6ZS/i1wN+wi+2rDkqmatVA+Mk9LNI=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=YOL/7WJfxHmwLvZpmThwvlfPLOa9o0yfUqTDeDDxNdU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791880844; v=1; x=1792485644;
- b=pbyf7Z2HdCVXaoI9fyHQ8ArFBeZoeexs3jGDc3IlAS52lc08Q4dSHhGERHsOnO7IFThEkvRB
- dV4fETr2UBsyEB+9YVSfrxBYwjITjTvcocQJ0NIAqYCGeJC2MiUpnq+MDpz0vUBrBrSjeIjPjE0
- +z+1N6AHKoIoj8v0mZkXU+ns=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8cf670064a0202ad;
-	Tue, 13 Oct 2026 08:40:42 +0000
-X-Mizu-Trace-ID: 8cf670064a0202ad
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 13 Oct 2026 10:40:32 +0200
-From: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	"Darrick J . Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ritesh Harjani <ritesh.list@gmail.com>, 
-	Zhang Yi <yi.zhang@huawei.com>, Christoph Hellwig <hch@lst.de>, 
-	Dave Chinner <dchinner@redhat.com>, Daniel Gomez <da.gomez@kernel.org>, Theodore Tso <tytso@mit.edu>, 
-	linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Andres Freund <andres@anarazel.de>
-Subject: Re: [RFC PATCH v4 12/12] iomap: Handle deadlock due to repeating
- folios in RWF_WRITETHROUGH
-Message-ID: <as3t7j3P3mQhsr7p@quentin>
-References: <cover.1790596383.git.ojaswin@linux.ibm.com>
- <5159efdec832e8179e9f689a9292f9bf47d9a0fa.1790596383.git.ojaswin@linux.ibm.com>
+	bh=fkY85AEaM1dcKivKhNaNHUeuabYCcoXX8xBxsWbUhJM=;
+	b=YALcPVVYTzABNktVWvvdvJvHLnzj3aeLUcnlTcrlUfydN9QPvkVbK3ZliKU2+i1f6lzBFN
+	ZpfEZEbPYEqHL8AUzAJqegkovBLRltcAxXYIUr8Zyb3SzFGz+jzmZbjj6E45maTo/ZSdcj
+	P8qGI/Qdffb0MmXDQzQ+M38oijzbXbI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791881563;
+	b=P48iDCqmVVVj4Lm937VvhcXgF55v3KDy+cDHJvp9o0gzn2Sh3YdzTd8PF8Emm42oirCYAc
+	t90lj7zwV1dwWLJ0IIzT1pVkIu5tc2X6V8uKv/3/hP67xdqwLpE+h2WhdzlMayaRFDINWb
+	ruVq9sz4dyOTtwcqlYfbT8e6yuedNZs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bU+MNADL;
+	spf=pass (imf03.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A93AF60A66;
+	Tue, 13 Oct 2026 08:52:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF791F000FF;
+	Tue, 13 Oct 2026 08:52:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791881562;
+	bh=fkY85AEaM1dcKivKhNaNHUeuabYCcoXX8xBxsWbUhJM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bU+MNADLypUQVfbqs4yErGMSqSx8UTEensTSDlB3hILthlX7jXiysW5XCK8w3Wgne
+	 +qsKvAVV67misGTcQFezprIijSe//cDAi61D+HiH+PrXDz66M+RQgAsyepQqatnOkw
+	 C83dhwA6jl7P3WJ+2YNow3ButEoWQcQrQ381Wo2YqHbIp2FI1DvqBlI7RrrfpxPP3D
+	 3WDNSNVnKR/z/zbtd8j1RgF5SPVBsqTN0aiF/CDe/xhAdL4+Nw2L8Xax6doYzIf9OB
+	 svfE9gigE0RcgQBxJbDc8PiWLnzTi5f1OeCjkCKQRjfUTk1SJmatj/E3sZV6pc5eMF
+	 mAVD56KO7uG+Q==
+Date: Tue, 13 Oct 2026 01:52:42 -0700
+From: Kees Cook <kees@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, Pedro Falcato <pfalcato@suse.de>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v6 2/8] ipc, msg: Account msg_msg allocations
+ with GFP_KERNEL_ACCOUNT again
+Message-ID: <202610130141.E186B6E@keescook>
+References: <20261006092030.got.500-kees@kernel.org>
+ <20261006092035.166776-2-kees@kernel.org>
+ <asjhg2e4-WSeKuXd@thinkpad>
+ <ask5kpMS4mpI8Api@thinkpad>
+ <202610092014.AAB20B81@keescook>
+ <01c89e02-28e0-4424-b32b-50363e4d2b95@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5159efdec832e8179e9f689a9292f9bf47d9a0fa.1790596383.git.ojaswin@linux.ibm.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BABC0180004
+In-Reply-To: <01c89e02-28e0-4424-b32b-50363e4d2b95@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: idg7iwqt1ehfue3mmt5er5wcfcgf4yx6
-X-HE-Tag: 1791880847-415969
-X-HE-Meta: U2FsdGVkX18PkONSMrEqBbO0vFxNg5YlEFoxvehHffgoXwwO540wNv5rsPYa5rDaJmnWVVBWd1LJgrWCcEfKxick3Cj3WdoStGDBDnCXWZmoArCrYc8yIODn4McjoIqewRtUU3n12XvRXm/azToTJhIzK00/E/g3KiklCcGB3JT7ivqpjOwh1cV2Oaq8mdFlsGuCV2ks9tNhJSr0ev+dJ8QTfJnJrtN3Dq/I5jWgR1UG/Am7LPpyfsDwlSQbkR4qUtUa6FHB0MbUX4nztwuU+APjlghpDzeLq9Uw4cqDzoKnVnK+hH5S/z4+JzRosrl4XzHCiA0v3IQrEmGwHVTwec6wBFgxfPyPKVs/5Z/vi5IhyVr+Pko3Gqbe7e/Rbd7lBQZT8EDDyn2c75De9PmM7Z6XpQmwcX0zSrFWRvhWl5nPeJ7EgkKD+bJTPq0o+265G6iwkfRcf+7QVzeqhYzwOTSfR9LnCsZ06m068FwMILcQezvmsDBAftC1Ue6vHchU1HH4+dg/cCHrvDtUom7u5XZ24h6DocBqVYr36K7nPNmiHLk5DFefNOsQOUluKz5jQbPeH2g/L7ITyDP5JaJgoXxpiKYNIvCDtNcIn/7aZ/GcWVDRWxNGv6n8qs0U7tmLV550AF5SiQsfazTQiikul77mVajifJelacsTs0oD4IJNmhimsXmGFmPMx/X9HJQGKX8jMVNelUf54znjFqhOwmXCpopGssX/yPt4sywTabZ8bs4YeIzkMW2k3yteC51QxeurQBeRljRDROEpSyOZlFIqLI4+AjtlQVVC6oeWw6NMSSm/z9IcL43gaJ8Bk/kEIjPv7qiQRIMHA9BsooQQSaD5jMvH2ZpTbdjSrDbgXLFaQFPMrmX2Mr3ziZyjuuqA3S9d5VzQ+m90wVpydwzLTxw3FlzzuwO6yrRFwIfYcpOgn/gSuzqOclQxXvbHsbjvFHD7bRQ+nZwUMYccM0u
- 2ElgDqEE
- 6+rPT5ZToG3QfDLyDyw0UtAuZ3rDzUhc1KscUuwiMCgVczxZaJYUzUVsNMoA1UjSzIXri23skkNQV9FA2nZFId26LhA8bq5j2dx0Sy/5tcCB7T8VBm5Ov0I41epI/Rb8wlQ4VbUpEx8N2Prwb0X2749ez/kZ6o/ozBQNu/uNPZtVl/evxiu9fHQd2OFungpb4d0Fyn0T2PHcg4mQGCtCxVYZ3As10QtdwhjZBPhulPUfe87uFH52+fmA1kTMVGivneLiAeF9Atz+M50YWqHVMaBQbRXmcwKMq5uEVp0givfCY5qxTrsJHR7in9mDz2yRHX7nph/PzZuw+/MeaC4u/XNe9fw6mtCBGE+xGnE2z/7YXQVCrjzsyDo2ymlN7LWaX8aOt8KTvg5qAalA=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 67D7220009
+X-Stat-Signature: 9135g9pf9qsh4bj8y8xbxrpxtt5w7byu
+X-HE-Tag: 1791881563-277926
+X-HE-Meta: U2FsdGVkX19nk+WmNwDAaPgjzfYMQGGr33wSWPsKHThKbAc7DuIRSIHA/KWGqUSd8hsDcL01pyK25UYLMuPypiXwAp2XonERUdKKx5YHUQUmw6D4tDh+nRZkGDNTJNH1W1sjVgcZo6meGpsGtGYzeeXgZm71Uma9x2r4nMvZHyNiMQth8f3EkjzYrie7kjn0tGhnc3xLtPFGAsG1e39kWOMk/N6trD/l9aMZ2ZcR7e2DG1sjZQMQyk0npfju38CnwEiJBlSAWW/oxnJ4/aVoYOjQxHpGW5enK6Mst1jM+cyzj1BFwnCnrZJcekqAV7g76+0x/ZA4tBQIElK/f0Ej9SjnRgQilzHiyVCv+qfzmFTt8WQEy7boTOGXN7T9oQ550tfdmTQ0delUQ7Ps26cxodSE2PA0+DZvnsYDB0oRbxvIvREkREjvxhhiqnb1k9UH2ZDVOF87AvxRnkhrZKDGlg2g/YW1/FfwYYj3JCur/BxITq05q46xcY1eYZotpmFZ5uMM1KpDVeHwujCMO0xF2cFP3Wz06NgTOuaEq300QCh39obYk3vQi1AIexjYmgd0Fs+Vy0xJFrxXmm1hkdH4TM7uVoJ5ujRBhDPQKPbMVtUWiOxSDaBMruoaiRuVWr6Iqw9vJ1lRVpaVCO+xzc2tvz/yF2pzX+UkvnSPoNUFv6YAeRpn3lYuAWEbnq8UTFKbMVFB6DnIgqWTrd7G8Y/iuPYtObq1jR881pnlzRcHkYYCVftgkvug3IkD0qTt3okexD2Vt4atjAKbfILozb7AjdNREUsvSOZSds22LjDn9PHlcS7rz2sGgTunZbIRFhvcYr+hSnYKngRVLHhCKFU7aaLdjSvqeb+8LNrCLizgOxzBHOHFV52MfSfClvmWWc8Ah/bhHTEwd2PybIM+dra0m5ELDWhTNzhR4SauMIyS7vOUC6Ms1ZX71825QjgpG5+X3G0dJiAHZmQcuoFa6vd
+ AaIYpL5X
+ lttVkjvEP8XjsIuYZfovtw1LNx9x3PW961zEkI3mr4KIQ17tK3j8Ew6oL3A/rW61vaSa/jys2ThzpKp/986Lg9D2Cc3FQEb3oqg5+429Q/sOFAz8jA6BbwbiI6zk1MfIdaSv43UH6jlfsBfNN1NQDKC6XSK/qsInDx2aKq2widFi5sxf397MSUMC4hLsYGjkmBQQknBfKqOV5DKga41nrsWMMGzcJjxVTmgeXI15hi7a9v3o7LjoDIF08mhs41hlhpJ1rKN88CE1WgrSx/S/RWchoZsA+kZIm/1rh0U7OGlzTYuo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,33 +104,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 28, 2026 at 05:33:13PM +0530, Ojaswin Mujoo wrote:
-> In iomap_writethrough_iter() we might encounter repeating folios across
-> multiple iterations. Repeating folios can occur if, example,
-> copy_folio_from_iter_atomic() does a short copy due to userspace pages
-> not faulted in. This is an issue because a previous loop might have
-> started writeback on them but not yet issued the IO. In the next
-> iteration trying to get the same folio with FGP_STABLE will result in a
-> deadlock. Since repeating folios will always be encountered back to
-> back, we can just use a simple cur != prev check to detect them.
+On Mon, Oct 12, 2026 at 11:19:01PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 10/10/26 05:18, Kees Cook wrote:
+> > On Fri, Oct 09, 2026 at 09:39:48PM +0200, Harry Yoo wrote:
+> >> On Fri, Oct 09, 2026 at 04:22:03PM +0200, Harry Yoo wrote:
+> >> > When it falls back to kmalloc, kmem_buckets itself should provide a
+> >> > compatibility layer when falling back to kmalloc.
+> >> 
+> >> For example, calculate_sizes() converts certain SLAB_* flags into
+> >> GFP flags (s->allocflags) for allocation. We can have a similar
+> >> logic when falling back to kmalloc.
+> >> 
+> >> Though current implementation does not allow this and requires
+> >> some rework.
+> > 
+> > I think the current series does everything correctly in the sense that
+> > nothing is allowing for mismatched fallbacks/passthrus. We could iterate
+> > from there once we have a need for this where a non-kmalloc-alignment is
+> > wanted, etc?
 > 
-> Use this to avoid waiting for writeback or starting writeback on folios
-> we have already processed. Note that in ->endio() we might end up
-> calling folio_end_writethrough() twice on the same folio which can cause
-> issues with folio_xor_flags_has_waiters(). For simplicity, just change
-> the folio_xor_flags_has_waiters() call to an idempotent variant.
+> I think we can indeed simply make sure buckets have the same alignment as
+> kmalloc. It comes naturally and should (more than) satisfy everyone. I doubt
+> anyone would be needing a more specific alignment than that for a class of
+> allocations with a variable size?
 
-Is this an outdated comment?
+Right, the whole point of kmem_buckets was to replace general kmalloc
+uses, where no callers cared about alignment.
 
+> ctor removal is clear I think
+
+Completely. I was blinded by the API of kmem_cache_create(). :)
+
+> for __GFP_ACCOUNT and __GFP_RECLAIMABLE I think what we could do is not to
+> drop the flags argument kmem_buckets_create and instead require that it
+> matches the usage:
 > 
-> Reported-by: Pankaj Raghav <pankaj.raghav@linux.dev>
+> __GFP_RECLAIMABLE requires SLAB_RECLAIM_ACCOUNT and vice versa and I can't
+> imagine there would be a buckets instance that would allocate both kinds
+> (either with or without __GFP_RECLAIMABLE)
 
-Thanks for fixing it. I think I was able to trigger this in a VM with
-limited memory where the chances of short copy is probably higher. The
-fixes makes sense to me.
+Okay. (We have no users of this yet, FWIW.)
 
-I will run some tests this week and report back if there is an issue.
+> SLAB_ACCOUNT requires __GFP_ACCOUNT, memcg objexts are always created and used
 
---
-Pankaj
+Right.
+
+> SLAB_MAY_ACCOUNT allows __GFP_ACCOUNT, memcg objexts are always created, and
+> used when __GFP_ACCOUNT given
+> - perhaps not as optimal as the separate kmalloc types, but good enough?
+
+I think it's fine from studying what happens with the skb data. Though
+right now, SLAB_ACCOUNT and SLAB_MAY_ACCOUNT are functionally identical,
+yes?
+
+> __GFP_ACCOUNT without either SLAB_ACCOUNT or SLAB_MAY_ACCOUNT is wrong,
+> __GFP_ACCOUNT would be ignored
+
+*ignored* is, I think, wrong here. It would create differing behavior
+between SLAB_BUCKETS=y/n. If we passed __GFP_ACCOUNT through to general
+kmalloc when the buckets lacked SLAB_ACCOUNT and SLAB_MAY_ACCOUNT, you'd
+lose the isolation, but not the accounting. (And could WARN_ONCE about
+it.) But if it was ignored, you'd lose accounting under
+SLAB_BUCKETS=y.
+
+> with SLAB_BUCKETS=y these rules could be checked e.g. with a VM_WARN_ON_ONCE()
+> 
+> with SLAB_BUCKETS=n these rules won't be checked but also not matter in practice
+
+Agreed. That's what I was going for on this version. But like above,
+"SLAB_ACCOUNT requires __GFP_ACCOUNT" means what? Under SLAB_BUCKETS=y
+the allocation returns NULL? Or it passes through with WARN_ONCE? I'd
+rather not break something completely; better to fallback on a mismatch
+so the requested type happens (be it DMA, ACCOUNTing, etc).
+
+-- 
+Kees Cook
 
