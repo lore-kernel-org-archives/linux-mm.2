@@ -4,101 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F35B3CA9ED0
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 03:12:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FBCBCA9ED0
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 03:14:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 497C86B0096; Mon, 12 Oct 2026 23:12:38 -0400 (EDT)
+	id 26DB76B009D; Mon, 12 Oct 2026 23:14:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43D536B0098; Mon, 12 Oct 2026 23:12:38 -0400 (EDT)
+	id 245586B009E; Mon, 12 Oct 2026 23:14:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DF1E6B0099; Mon, 12 Oct 2026 23:12:38 -0400 (EDT)
+	id 15B8F6B009F; Mon, 12 Oct 2026 23:14:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 050AF6B0096
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 23:12:37 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 83C7FA0B70
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:12:37 +0000 (UTC)
-X-FDA: 85316130354.19.872DBD6
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0B953140003
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:12:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dhfOGM8e;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf26.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id EACB86B009D
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 23:14:12 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5BADEA0B4E
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:14:12 +0000 (UTC)
+X-FDA: 85316134344.14.179F7D7
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7E8EC40007
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:14:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=fjitPJwM;
+	spf=pass (imf12.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791861155;
-	b=H7U6V+kHNxMXfP2tLYHBNMT1gZecibDmA6+EjtASsw7rw3IZRFIF0O9goBJSTXHGZdkci4
-	sh0xdbLuOtTrWbYucAXvyqYeLGDi56QRkcOK8BbYtBvUUagLlR8ZswVoiD5Cwf8brm6zRi
-	6DWadzmvIxNoDJxOvnuO4xi3Sb7/Y7M=
+	t=1791861250;
+	b=2/krY0rBiXE7viSivDl70IVGo1ti1td3QEz4BKToJKoGeozOWR0QQlJvQLWatQgVmRcMD2
+	C3ZTkTJuSyP3SxEwlfpsuXOE/oRGpBzHZehjGDgHE0hitRQbeIURJcvyOrxyaoKKNLHfPT
+	8LAQAfrQLOkYSuvbcyd2IL29/ODfQQk=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dhfOGM8e;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf26.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=fjitPJwM;
+	spf=pass (imf12.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791861155;
+	s=arc-20220608; t=1791861250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zpf5QsizXx9EkATcGnWqX+gyIM8QWqLtiyYMZfErVsY=;
-	b=763iurjeDL+gCVhC3kNKia0LjXumxGEXbQrM3vQxC9uHP97k1XmgIPSeqJZDQ7T3SctqVZ
-	eo04ZBln/lIqEszIsA0sPzmHsR8yt7SbEwIIusKJ/vVBlikRYhrmcgot6jjRDcDJNkmWkm
-	YK8Llu6cQAEAPGLxqRptkyxLTU0RnYM=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1791861152; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=zpf5QsizXx9EkATcGnWqX+gyIM8QWqLtiyYMZfErVsY=;
-	b=dhfOGM8eH5Bsylg+/TqBAxQ+pYGLqrMeAqhpH4TOJHc+/mcvGfqP/vLWUkFi8XNIf2T1al2KPA6QeU9N10K6eGRZw0S5odjJoEwblqNN/933+vcc69m9NF87wiceFTZPT9Fk4hSAohisuHd7BqD/0w64nKMmPETGM6XERj8uh/8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R661e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XCkEjeP_1791861150;
-Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XCkEjeP_1791861150 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 13 Oct 2026 11:12:31 +0800
-From: Qinyun Tan <qinyuntan@linux.alibaba.com>
-To: akpm@linux-foundation.org
-Cc: hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	mkoutny@suse.com,
-	david@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	usama.arif@linux.dev,
-	david@fromorbit.com,
-	qi.zheng@linux.dev,
-	yosry@kernel.org,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	xlpang@linux.alibaba.com,
-	ryncsn@gmail.com,
-	gourry@gourry.net,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Qinyun Tan <qinyuntan@linux.alibaba.com>
-Subject: [PATCH v4 5/5] mm: zswap: mark the zswap shrinker SHRINKER_NONSLAB
-Date: Tue, 13 Oct 2026 11:12:21 +0800
-Message-ID: <20261013031221.1997194-6-qinyuntan@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20261013031221.1997194-1-qinyuntan@linux.alibaba.com>
-References: <20261013031221.1997194-1-qinyuntan@linux.alibaba.com>
-MIME-Version: 1.0
+	bh=22LjuzCketjlkzgPm8qMqIEkXwfSP3UnBaL4SB50h+A=;
+	b=EdXS8gIl0WEqLFr4JahCQ7EObc0T/1ynszJ9x6EEtmkfKbP78RXgXCmRu4KP4da/RQKxWb
+	XSG0QjcL/qf7eItffgTAPuilHIOaFTRyKc9IGl5xUJ+rnttshhCy7DFhmvd8Y6NsVZlsqW
+	lOrBZ3a5HHHnstM7QAQDnzjiWmwcM9M=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1791861243; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=22LjuzCketjlkzgPm8qMqIEkXwfSP3UnBaL4SB50h+A=;
+ b=fjitPJwMGer1CFveE8wAMhQdtPxqz/bPkZL/xLGwoOLVN37NdPJcwR9D7X+e1Reyy32Q64
+ 2tbrAcFTULrWKrcl41V9uFua51pLxXgxoYAxpovVWYBUt/OQ0EobOnsV+5FIkP8a1YbbPC
+ tcMnqWJn61XtUjcf0Qd6pXW+eHQxT8Abl6JSIq8vt2CVxF5156Pk7E9+ONSxn/+0Z475GY
+ PLjWEW3wS5+jUP+cZ1BWY4UjYxKf7zIepHKWVsbSxScgqS6kWKNXOaCw1e30AJlOh5erg/
+ THknBh9GFjelc5K0KK+DdApXuLhgUtEd5e5YPlRBt/qBoX5IF6EA3D0vqwcYxQ==
+X-Mailer: git-send-email 2.45.2
+To: <mkoutny@suse.com>
+Cc: <Liam.Howlett@oracle.com>, <akpm@linux-foundation.org>, 
+	<aubrey.li@intel.com>, <bsegall@google.com>, <corbet@lwn.net>, 
+	<daniel.m.jordan@oracle.com>, <jannh@google.com>, 
+	<juri.lelli@redhat.com>, <libo.chen@oracle.com>, 
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, <lorenzo.stoakes@oracle.com>, <mgorman@suse.de>, 
+	<mingo@redhat.com>, <pauld@redhat.com>, <peterz@infradead.org>, 
+	<pfalcato@suse.de>, <shakeel.butt@linux.dev>, <tim.c.chen@intel.com>, 
+	<tj@kernel.org>, <vbabka@suse.cz>, <vschneid@redhat.com>, 
+	<ying.huang@linux.alibaba.com>, <yu.c.chen@intel.com>
+X-Lms-Return-Path: <lba+26acda1f9+250790+kvack.org+lizhe.67@bytedance.com>
+Message-Id: <20261013031333.10208-1-lizhe.67@bytedance.com>
+References: <ldyynnd3ngxnu3bie7ezuavewshgfepro5kjids6cuxy4imzy5@nt5id7nj5kt7>
+In-Reply-To: <ldyynnd3ngxnu3bie7ezuavewshgfepro5kjids6cuxy4imzy5@nt5id7nj5kt7>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Subject: Re: [PATCH v2] sched/numa: Introduce per cgroup numa balance control
+Date: Tue, 13 Oct 2026 11:13:33 +0800
+Mime-Version: 1.0
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gnqa5y3ifqzc9a85pw1uho1tk1azmqh1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7E8EC40007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0B953140003
-X-HE-Tag: 1791861154-967263
-X-HE-Meta: U2FsdGVkX1/+zoZeKhpUzmJWU3hLgEV3nz84czWhMeORA+UFGigGtaL6Kn6bOVGzh4vj6rB5EgbC6u1Ty42FxoDaU9ECfXKq3Rl5PDP38IyWIjWMWaJJgtCCaDfUcyfvWm31K/ZaYbv+ugkZgqDpG/StCuJxCgmsBFhqcxNmOW8g9ealcDH+x0MEIjDpzmMxObzVyViV6hSSibfdCns3MVX0tBdC20dmwwUQsz0TJocSQVSrriH75hAk3XjRB7ciT5fif1xEQr/tK56cis6yFwO7qqgxkM4/W9x8zIL9fGW5SjiBD4OdtrVn688JDbnLC8oLQURJr8u5/YID5+LGVjq8gWqMbfgrRnDK94WVEIp5Ih8twdNevtMhpSuiCoEqNjMSjhCM97jdyFey7Tj/vZqCvqZYfuqxSv8qxq0gP9zuBdpGQeD5ZnFTFdliyNArhTRgAaWxb5lMxqK2goy3ai5EUDRBd6NzuVWEjmg8Ds27ZM/gyZEXPgDv2jetTdhAe9tqs2wd1lqvFHxZSzrUrwrUm92ZA3vmwUvrkK0L1k7T0y3j1CKlaljaJvR4+nHMLAyzK+cViwqtnlbzRgSVHkSweBAMktDicWO2PiCnZGgxwYow3lW7FtdRbQqKOlo7TgC76TmpCnuAJx6haEUHqFF/STwwDIolNKAwINSXyen8dIemPYT6p4j8XdL5/mNMC0im9hNnwI0l2mWOIQfJ0CRCtWTUTEI9Mn/sos27Kvnau20hfOdYAKhw4iDn1IiiGqt+gKcKim2s2tPnvv/lBe+82GRZj8QE2WI29tNv126T4TaoJX2Z5x+C7vRdAQv0VHTbVcTxEdlWcaATG0Gc+psCHL9nEnzLyYkGiwDTC6Je6dz4TzIK2tzfV77JymZyM1wiOcq7fSI8ro1Bofc2lDSj/jdx1QxDO09rQ6W+jxHFKQE0E/uS4TNG9GY2tVAqVhHijKEwYd4y/BUw9ht
- qirn88m6
- PMmXVJBfb63jqdUDdZ76cTdNQKEG+SAIRgfID7gvgEHuQmaVW56LEETaT7GLuHKcfauOK4g0CeZgCWXgYK5W0ic3jFgvZR1yo5JiwAinY+wtrG15z5sHnzMU/NMjZoiPD1G3Wfr+kWgUUTJnq7eMWiUud5fdxUnnk+obU8cut0eE53U+Vt6qa6BfYKJHEY5iz6KYAVnNz1maE+lqujj66itlj3jU2MDGJx6q8/VcU6J/FyCWD7eQcVuvwtGv6qoZ6APnkss+S+UoOtIJdiTNinE4d5WmATlZL1bxBjEv0RakLoD9WAs3egjigwFvKY7SylW9kFEn/3nDNdEYyEn2/AJu6Qm4CQFF8dpQk59CW1QBCscwWbhnnZym1C3i+OwOEAmMQ9K4b6KNgfZnP7JfTOo459w2j3gAgVqjR1C9HBwuLXnLLgDV99ONRXpcQRHsuetQgR8Hr/WecT4A81J6nYR/2/X/3ufapKWmOZBsNLUMg7AJg6h+9gGRlLg==
+X-Stat-Signature: 91r8ryapbyys7mifep3ax4nscga1r314
+X-HE-Tag: 1791861248-794520
+X-HE-Meta: U2FsdGVkX1/9P97Y/1Q6R0My7qFH7W0k534DfScwzDxNbDwFM8u7vLDYfDPMa0F+Hvv7j4+IEL7FUPYfqzGSQIPzPfFIFRQgEZtV1kaHyJgXWrrRjxprkNtlD4BE7PNXbzmGp7oTFJMexRV2s2+4QgljKCwdaHc46VnH4z+qAkdwEO8c7z0YCWrrd+ZrVjXaFw8V5P6GftfBEwLdrYjnX2uv3wkE68vZbo0U4htv3ONfzHp2eeHeBaPiecks2VxZodsj1FkACbBPrej+SuFV88T7nmSulDZvuEn1TIM6BqJBG8xqXUs+u+Corc4OgFnFzj/oAsmjkZHIoCH2HkpBaKV6V+Cq50w4+o7ajP3DFDqgGIzfKEo3r0nXNZS07bIxDB8cv5AMc5wm4oBSkZ7PU10vIsjD/6h8YpKWaBgVsKeM2LyEBKHDv7oUqGtR+WKMPLWnMyj1KNIyG/q4iyQ+/eJjtsjgzUj+csraSUx61fZug7RHmlVtOtIIOy5r3MNt0d9km2G9daVcgorFUxWoMP+tPeYDNWPepPJ5l1oICdS4NeNONTX8avqRPNpv/7mha1QRX1YdK8Dh4mgRZrK0Iu+WhleggDgkGPbfJYGD/PVTMwxN6reY78P17oLOMHcDybMWVlG8rEzrJD8+sXcTGHbGxdbbMGTv5PtXoloZTyQBFqFregvU5Fkx96GJxo0oUQbV3myG6rMpz6oRmSpylXcX9hVwNsALzd7DHkPaBFdiUd9d/X831fPyySXrV96LFIAqS0vBGvQsnSHbbSOjRYP3kFJNnXvbxpACp5rvpMslsBp1Bp5krF1AMaWt+JHQ3IMfs/tBtqlzG8aqxJG1pc4UwjUJxEtRQl7NhdlvV62AYTOKDATj1dBbvYZiN7RiaGkbM1w4Y0db+rY4JndEv/gOdTX3OduFGt3cz4upvSM1gnWh4b6ZAEj4rN8t0DDUAz5YC8bwQdK13z+2YSY
+ XjTXn42F
+ 2FqZENZpr6vMofq1O6QbKcDuu3Noze5XtQHTEtTF9CSXMKUv5YSoBVOlp6t1NyAPYQKGGIOlGEKSSU2LeUvMxFeV+td0nnaUiQxKQ6ijXb66oJ5+f4X/q6uaACgJ0k1o9RiG+dict2X7eW/kI2XuDH+DW5ZLlk475bZ4Ogh8qhN1A1sRmyTRFdEurNs+AnFK6qQz/hultVaH3bggVVHrBe7g4T1s0/Iws6mh8JQGmhZpDyBexXujreG163HG57/CGEUAUMj5zDU9t446ZCV8eigtlM28ZChOYNwyShrKtPRDuWnj0zhle2ItcnDTRydHxzJZsem2s80qQ3icJjNoevaTYMDrLAvK/hN3HgstKJAD3BllWfswbAmuxFFCV34XF6DlAuU/kAcqY9o5kk5wKtgqn+WeRLk2uuhbQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,54 +97,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With kmem accounting disabled (cgroup.memory=nokmem), memcg reclaim
-never invokes the zswap shrinker: a cgroup under memory pressure does
-not write back its own zswapped pages to make room; they are only
-written back by global reclaim or once the global pool limit kicks in.
+On Wed, 25 Jun 2025 12:19:35 +0000, mkoutny@suse.com wrote:
+> The balancing works with task granularity already and this new attribute
+> is not much of a resource to control.
+> Have you considered a per-task attribute? (sched_setattr(), prctl() or
+> similar) That one could be inherited and respective cgroups would be
+> seeded with a process with intended values. And cpuset could be
+> traditionally used to restrict the scope of balancing of such tasks.
+>
+> WDYT?
 
-The zswap shrinker is registered memcg-aware but without
-SHRINKER_NONSLAB, so under nokmem it is treated as a slab shrinker:
-before commit 03375203e1da ("mm: do not allocate shrinker info with
-cgroup.memory=nokmem") it was skipped by the !memcg_kmem_online()
-check in shrink_slab_memcg(); since that commit it is demoted to
-non-memcg-aware at registration.  But the zswap shrinker is not a slab
-shrinker: it tracks zswap entries and resolves the owning memcg from
-the folio's objcg, independent of kmem accounting.
+Following this direction, I posted a per-process/thread-group prctl()
+series for automatic NUMA balancing control:
 
-This was noticed by Michal during review of the patch "mm/list_lru:
-don't copy stale shrinker id from non-memcg-aware shrinkers".
+https://lore.kernel.org/all/20260908122446.56708-1-lizhe.67@bytedance.com/
 
-Mark it SHRINKER_NONSLAB so it keeps its memcg awareness and runs
-under memcg reclaim with nokmem.
+The series keeps kernel.numa_balancing as the global hard-off switch and
+uses a weak two-state process setting: disable to opt out, enable to
+allow participation when the global sysctl and memory policy allow it.
+The configured mode is stored in signal_struct, so CLONE_THREAD threads
+share it, fork inherits it, and exec preserves it. cpuset and memory
+policy still define the placement domain and VMA eligibility.
 
-Link: https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@linux.alibaba.com/
-Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
-Suggested-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
-Acked-by: Usama Arif <usama.arif@linux.dev>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Acked-by: Yosry Ahmed <yosry@kernel.org>
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
----
- mm/zswap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This is intended to cover the use case raised in this thread without
+adding a cgroup-local NUMA balancing resource knob. Could you please have
+a look and let me know whether this matches the direction you had in
+mind, or whether you would prefer a different ABI such as sched_setattr()?
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 572075bb1c1c..382ed1fb2847 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1348,8 +1348,8 @@ static struct shrinker *zswap_alloc_shrinker(void)
- {
- 	struct shrinker *shrinker;
- 
--	shrinker =
--		shrinker_alloc(SHRINKER_NUMA_AWARE | SHRINKER_MEMCG_AWARE, "mm-zswap");
-+	shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE | SHRINKER_MEMCG_AWARE |
-+				  SHRINKER_NONSLAB, "mm-zswap");
- 	if (!shrinker)
- 		return NULL;
- 
--- 
-2.43.7
+If the direction looks acceptable, I would also appreciate guidance on
+whether the current series has any remaining blockers for being picked
+up.
 
+Thanks,
+Zhe
 
