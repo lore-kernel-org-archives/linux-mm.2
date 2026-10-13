@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB744CC6B03
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 13:14:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CF37CC6B08
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 13:14:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB7406B009D; Tue, 13 Oct 2026 09:14:48 -0400 (EDT)
+	id A303C6B009F; Tue, 13 Oct 2026 09:14:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8EE46B009E; Tue, 13 Oct 2026 09:14:48 -0400 (EDT)
+	id A088A6B00A0; Tue, 13 Oct 2026 09:14:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA5BB6B009F; Tue, 13 Oct 2026 09:14:48 -0400 (EDT)
+	id 944F06B00A1; Tue, 13 Oct 2026 09:14:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 837A06B009D
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:14:48 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 14F5780BA7
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:14:48 +0000 (UTC)
-X-FDA: 85317647856.11.022CEBE
-Received: from mta1.migadu.com (out-206.mta1.migadu.com [95.215.58.206])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0979218000D
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:14:45 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UStBtHps;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 764916B009F
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:14:58 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0B4E5120A32
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:14:58 +0000 (UTC)
+X-FDA: 85317648276.07.B06517C
+Received: from mta1.migadu.com (out-219.mta1.migadu.com [95.215.58.219])
+	by imf30.hostedemail.com (Postfix) with ESMTP id ECA1F8000F
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:14:55 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="WsU6N/hc";
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.206 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	spf=pass (imf30.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.219 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791897286;
+	s=arc-20220608; t=1791897296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RjixcbED3ts0uuKv90viwUqQi3IeZsIPKkcIyXiKrxk=;
-	b=Ej4ZwngekMCCpD3+GtjYyOU1bIfuilDLZb8Z319/kmin6yMPpNZkPIngnw/aO+Zm0vGXds
-	OtUfxmG06TrGtnIRyCsILxyJ8KOyA+fC6xTwnDceN1z72ssSZji5sO4E8O10nOAPFM+wjf
-	sx92CYbOkOfJ7KXCiakGzu3ibsoqVuE=
+	bh=WLXzjvxcD9/EilXhK4jHrL6cayflPGxzf+ZkJwMpjEg=;
+	b=xydJlhuvM/3/gLqKxZ2NnOWaCTKFLDmLTKDkcgDPSdZCv8Y8ZJ2GHh4zDAKjVPv9zN7Rqr
+	z0MVRkcdj6p2raBOcGnOSOBtGj4oL03KpVGXSN0kEMDoSzSXCqvWvRnPIi6ctFWJhZbYw4
+	YW8IW0qdFtF5mYjUB2Bp0hl8CMRgI4A=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UStBtHps;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="WsU6N/hc";
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.206 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	spf=pass (imf30.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.219 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791897286;
-	b=6hvVtwmJ5BJojgEVgIJeZ88NSZmpOA7yqj7WN5IzN3pMi7SjFge6/NVSRsS5uMsFw2R3Qp
-	lXUFV4VMhdRE83Gpq8sdtk66c8eTB2yk2wUTcZGwfnQSWWU9JC/KyxMQFT/zPcwsLUsBeJ
-	CGwRVGcKx8NeLsxfx1Z4oXt/0eVnVR4=
+	t=1791897296;
+	b=Hn/yq3tulx+mEFDsyb1NIbqnV52jt/qO+UCado7YrNzeF7tR9aj5BVwzKato8sHQrd+u+y
+	ejPQW/l47c9rPY/jolSt/Bxsi9dAlV0FkY2Vv+RoW75O/59196OK7n8uAHK1QsEddlwkt6
+	6bdKXiulqY4BNeojJFxhgWkRCDNOxXo=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=FCVJ8SXRn0tZTV1HcFTggppi9Q6Q0r80nrilbAeBeVA=;
+DKIM-Signature: a=rsa-sha256; bh=vBSg1QkKVy4BttTL6yPnGCNW6hVkILXIMHPxGW5nELA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791897284; v=1; x=1792502084;
- b=UStBtHpsdd2Kv0cnXCGfhWCETymyo4u4Aq8qZt6K4HIkh1dnOns7Kc6IlDY17p7F3ClQ7RPd
- xvfqnzzeb2/IhHn70mx8C9mhyi1Ui/OuNsDnelNfyGnk2rT/3YBVH7LW5pavuMqOsQZzvOgU9kB
- L2iF2U4jk4XuCtnviwZDvk1s=
+ t=1791897294; v=1; x=1792502094;
+ b=WsU6N/hc2sC7uwnFSTAPvEc2meOej7IlBokFEtkZr0E2eZ9tAXGEGKLM7D+PiTfg5qRWzAHV
+ FFyeQmYXM/uH7Dau5BMnp4q1jrcfcho5U+eg5Iwk1HS0rsdIsup8sa9lTkDGySG7l9AdnAiNb/O
+ oTUKe8GoFXySefMAgnJ/q9Vc=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 320e4235ca64a28a;
-	Tue, 13 Oct 2026 13:14:44 +0000
-X-Mizu-Trace-ID: 320e4235ca64a28a
+Received: by smtp.migadu.com with ESMTPS id 208741b0836346c2;
+	Tue, 13 Oct 2026 13:14:54 +0000
+X-Mizu-Trace-ID: 208741b0836346c2
 X-Migadu-Flow: FLOW_OUT
 From: Ridong Chen <ridong.chen@linux.dev>
 To: Steven Rostedt <rostedt@goodmis.org>,
@@ -89,24 +89,24 @@ Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	bpf@vger.kernel.org (open list:BPF [MISC]:Keyword:(?:\b|_)bpf(?:\b|_)),
 	Ridong Chen <ridong.chen@linux.dev>,
 	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH RFC v3 6/7] mm/vmscan: pass scan_control to mm_vmscan_reclaim_pages
-Date: Tue, 13 Oct 2026 21:13:08 +0800
-Message-Id: <20261013131309.2790253-7-ridong.chen@linux.dev>
+Subject: [PATCH RFC v3 7/7] mm/vmscan: pass scan_control to mm_vmscan_balance_pgdat_end
+Date: Tue, 13 Oct 2026 21:13:09 +0800
+Message-Id: <20261013131309.2790253-8-ridong.chen@linux.dev>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261013131309.2790253-1-ridong.chen@linux.dev>
 References: <20261013131309.2790253-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gngteucrm7hgtmejm1je3b5pc8qu8dia
+X-Stat-Signature: z3egkqrq6ianwonfzr35sj7y5kmgm5y6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0979218000D
+X-Rspamd-Queue-Id: ECA1F8000F
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1791897285-885377
-X-HE-Meta: U2FsdGVkX1+wSC81cCYl96hb8/9J9wU8W6dlBOeKbYnepL60LKl+Bg5OheovrWk4kOYT/xvXaIN8U4zNwluvZD/e/3XF62LFv8CSgoSdKFAbnOH3mdSQcrEfcCFFsfaSD5aFon3Ccr+90HhUnXf0iwwj8cJ8X0E8ZvM9WNc5J/XucrQOw/cqcg3wVddGlYfXsTdkz8TxI2+FFRBPOa8YgMSsgNsEY0ZDB8ASvHF61Mnxk5OO94wDw+yWEG5ZfttHTjsHqpAtw4YuVMuykvK+FYBGNEmmSCsjjj0f+j6FI11Be6WKXqOhQQBZZMFwAP/Jii0/77s+mMu5dcNStaL3wv9cZ7uBxr8V8YNqjD+bbPEclhVaBS37ZXfrjBro45yr4UqweP8wqX5GQhoqUg8RuLXxhigZh8SogeHOquBAOMEmTP0CEQ/KdxuAbOodLZD48ISpLu877cSvVP67uV7x31dYMh3/xBmKfzKh5EQLkENDd8rYDPSbNhoTb/FCWxyDluOKMH5/2LaZ7qlb5R1x7Mt7dzeGjkD9q1ywfMz+K6NGWPSALA3hMJinKG9NHC29FYqryClgPMbMCkaezq5RAm+z0yvHgZX7d8n7RNZL4dtaFHFVxY9Hw1tU5YPd4t7jWmYnWXwItJM3QJAt22L2ReHjfbER9jWJLwXE2I5JUv2HyWPG3kSthph0urxwPhU9GX19y/sFcR8lkTCGLsXmnbnKlzvm10N+K9jjcYiWzCi/nhShV9cTbK93nDyCZHJN0COhxWBCLEpHo0mQETsNIIdRkDzDEdrIpIK96BFRBC3qviU3KMAmMtzKDOhYa5vRlTFPLPPKxaT9uYXPa+46LeeFfGxuzlsUUicb+OgDkuXGHbBAubN8GdFhvgh18QczYCr48v8DAa//w9Ratands78/RE2E5/mOMwr6D9Ct9fzRP1MNrdPHeuJEQRny1vWUtVYuYuaAvbe0Xkz1Dqw
- 0wO/yLVl
- PBPcTqydB6cRsEfNTc3Bq8R6P5geUIZYZPxdT0IouCQ0v6QHInKgZzZNhEUOYD81uw1PqUGyPEwTVOvAnhzgDNKldLDtrDwHXj/IZl6nfrUzC4ExV6G0hJiR6xNtKT3ySYsejV3OKpvzWXRSL3ZVJZ3bmmJAqpsk4LpknFjE2IhqiiWKl5ECGswjANKfAeAZQ+/pvOP3uIrQLJ84wgtjeiyBnUMN6vz1Kliv/JTZekTWhbAhc/c8hjJ+VF629j4l+YVKUQJgvYpR13DFPt1/4VAykCwf/E1y+ARgq34hJjULo3G4+C7ZmT3I/Hj3Z8MZFf76b6yL2Fu22h16xv37f2HVv6m2vzzlYIhDNKUaxAdZGjkuFLYF+q866Pj1ZIPxaIFCP4gr4FrR34WvuXgc1SOSmYWsIe5NrRVIxYivRRcTPuE3mZxuH3+akvIIuwX6RoWp7MfcGGVuJr1yQdew3pjhNCGfvcGPav76Ch+Tt+0iPlaq2EDnhaOVoeDExLjy10yj6ayalohJ45UjZSgBJg8mFT7Qb82YBk/8rzAlrFz19arNKexvizvEZTT4190mMh6cXUsUKL60eLEZq9+mRuGVgRI0F9xANofnYHbHMhBFPB0NQWVpt0zmnk25y2CDaybXJrvHZLdIgvndRKU43us6MhSWEnhblJWjVZ6yOdATDdyADScuYngDtpcZ4b8Py6fER1G7uCcIratPoU4CILS7KGdPTzP0Y/zUNjv/Hthnw1v/WF0+LoptSPWI7o+awkr8jmevIdEfqZ0Q+NT2Dp42b/pVZTnhvC4rhAQrDJyVuU1IhkiLEBzdzsZ1i5kPpiVKkGzOe5TrWfKueIWzan9IP/3uS9YwOke4Mru0DUPt1K0SW4v1+Qr7aZZxRRpcNgqs+ZZcxU7dHX5rzKyaeHUOCjZKN69v8+iwaFaoXOgvEHMr8YW6QordcOpFaChwMYShXbe3MGRzwR7SWcShVd23M+JZX
- rKvuFn/X
- YFEjf+i2x1BAMNn/vNFT9DneMzL+ncMuHM50q0DSBR3XcauayYsNBaywtUMJ0s6P1YbVfcoKRmM=
+X-HE-Tag: 1791897295-437830
+X-HE-Meta: U2FsdGVkX18t3GOIvjFNrtQCQcRsfja6ZHLWN3nYLcJAr93ME2HfgFat/hLeOPg+0pF8VslCGdtXe9jYirMxAUlQucO7EBl4FGcbEOq+sopP/pdnry51539yFUb25sjk3teEFeXeesqNXrUGlpg08X+5CLUrtoSAMH5S6IFB3IGpmcmW6rs14YHiTzOQe5qJZvFjmT2cGAvU2TF8ZjKQnShjGFBog63k2z6ykR09cdFwLIDbJMwnBM+W+G+MDkl/m93VD5LgzlUxadvanHHOxk7yudh21+Nj/nlI/y6yIkCYEI3bf3RCZiKZgbraU1IBjU/hdfA6H9rPz8XnPG+AKTcFcNZjf/+o9LOIdMfloqyQqTgGkmV+tWONzjqEYapcNdAj4iRLeb3YDOC0o7JDPDWH797uxOPVLd9JR7JHh5XsojGmw4o7Z/cy2bDGWTu+Xv8DSq8yNq0zQxuCC71/wu6AdJN/XXcfetxBmdpkfx/czMugZg7Zg0V20hQnXjBoWF3AKnz0olKudTvkMKYcGEH4oH6nHy5809FfnhgbYAoLvaj//tPPVNTCj9u/U/cbl1rr3UboqnNoUKBC/L6KFWILB7AmGHT2KPLEa8kd4rN+6ZG6R5+0Sm4QeTuwt8mMBURtQlexNHlJhCUn5uGP1wJOKWyEEuOWOGtV8A2AKKsDDGkK2GzFQGgcNaOTYxHH4+nD9Y+0A+RDbYWsGG8DCx4cw5q6kxhMZOhIUTySEKmVH9t7cSIepnYSp8ZDWgy2M8YIZqr5g31yvRx8bpJiik3hXzeSRICbYcv7wbWOyeDwh75JdoaS2Iruyd+Q7rsVIg9toNPNSZrmcVp0/WZ8LjYWFhXLcVOHX89ZdpJn51JBTQ/WV6l9SogwrTk28xJaA8bOI+0jZe4eTJSKdXEfpdcN/LSby2u/0X6VAIt57Zcqk2sMdrFWQb8aS6qW/Grg5SxkULq9LfCEwhQoNyE
+ cAxitNS1
+ t2jnm5hWy8psAowZGNdJ7cSXNxCLfsyTQonQS6d56yBw+q9omjtWwnSrV+vRYkXUA5I3e8/CqlV07zBsfzcVe60nvhpsPDvbsuSMS+zG9Y5iX9QwAZHeftxgHbmGpr38VHXpOXgNOVd7mWx9CQwx1M87ZVR/u4v4F9RHdjOLl0TS8nKgwEx0RoOarC9lAZYfmmCIDXvK+jJ0HCwzwFwlVrstdA/XaYvzE1V7UHSRSrQbTBIH730/wnYQslQJqmvFxVDg8YODaOtzeFZrGH8FxaDXVGOVQeNTbpV0OAaUnyzjFr4lnfAZxfOMrqHxYV0Rt8zFQgjz3vbzIHUFYsXePKFEV67nmH//kJMC5n03ISBboIU+74leXqr2t5SwVrEOU/Wcvd0QDPcIqkEScsgS89LY0x9joAGxJQdtXA7UKnxjS8Qn/vphspNPQXHoWCmT9FoFCoiKD2Vv9g7ChO8q7nW9cF7U7wjXPHKhxg2b+WptDcVwdeHRf+Fl0sVyRDAz2wJce0rlC1/njSmjkei2mR6qTar2yrwypTQrOsahQNqt7Uoj2X2pUmEpb7yTg5zntKH9M8a35ie8dvZ/hlS7hjO17E2KwkshjYSoCOpbjVa0OizT3kNzyOhC08Uc+akUrRM5Uifl+QP0Ea3Fw1ZFpp/+RvV7hXYRO/DiLf5GEOEE6ckAp61oeTWgWsVMuGJBTW8DESpa1W1RC0elHbdn5REJjhZh5LF+Ng7GgPZzsl+lFnyQKxitQuiYbk1i4iSnuj/9tMZkt4STChz7tDjrdWwFMAm8RQLheM7hweHAkkIs4SV4JRrRhkL8ug0oc/ZAmr/tcCbgy3dG7MeBNj/49yeA50qtm9xZfF8abQG9GuyAwoTswoDFZHEFZTBNX4O6xnymuwuw275gqMhADlcKKUpJueeJzG1DtFqVroHUs/MGAXn8p/AD5zTpl3IMY4D7AoKoNqDLOHNtMtcxEiLUq7jWbfAXo
+ 6m/SIJWb
+ mFhZAGx8daHYEAEkTwtS6ZvogjCkCN5chVMG2Y5Y/eUHJbsrV1zdecY35EC7ug4yH17y/AWiBao=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,11 +116,12 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ridong Chen <chenridong@xiaomi.com>
 
-reclaim_folio_list() passes sc.nr_scanned to mm_vmscan_reclaim_pages as
-a bare argument. Pass the enclosing struct scan_control instead and read
-nr_scanned out in TP_fast_assign, consistent with the other reclaim
-tracepoints. nr_reclaimed stays a separate argument: it is the return
-value of shrink_folio_list(), which does not update sc->nr_reclaimed.
+balance_pgdat() passes sc.order and sc.nr_reclaimed to
+mm_vmscan_balance_pgdat_end as bare arguments. Pass the enclosing
+struct scan_control instead and read the fields out in TP_fast_assign,
+consistent with the other reclaim tracepoints. highest_zoneidx stays a
+separate argument: it is a balance_pgdat() parameter, and
+sc.reclaim_idx may differ from it by the time the end event fires.
 
 No functional change. The tracefs event format (TP_STRUCT__entry and
 TP_printk) is unchanged, so tracefs-based consumers are unaffected.
@@ -131,52 +132,53 @@ Documentation/bpf/bpf_design_QA.rst).
 Assisted-by: LLM
 Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
- mm/trace_vmscan.h | 10 +++++-----
- mm/vmscan.c       |  2 +-
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ mm/trace_vmscan.h | 9 ++++-----
+ mm/vmscan.c       | 3 +--
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
-index aa27cb9524bb..96e41f444924 100644
+index 96e41f444924..10b3cda1c435 100644
 --- a/mm/trace_vmscan.h
 +++ b/mm/trace_vmscan.h
-@@ -418,11 +418,11 @@ TRACE_EVENT(mm_vmscan_write_folio,
+@@ -124,10 +124,9 @@ TRACE_EVENT(mm_vmscan_balance_pgdat_begin,
  
- TRACE_EVENT(mm_vmscan_reclaim_pages,
+ TRACE_EVENT(mm_vmscan_balance_pgdat_end,
  
--	TP_PROTO(int nid,
--		unsigned long nr_scanned, unsigned long nr_reclaimed,
--		struct reclaim_stat *stat),
-+	TP_PROTO(int nid, struct scan_control *sc,
-+		 unsigned long nr_reclaimed,
-+		 struct reclaim_stat *stat),
+-	TP_PROTO(int nid, int order, int highest_zoneidx,
+-		 unsigned long nr_reclaimed),
++	TP_PROTO(int nid, struct scan_control *sc, int highest_zoneidx),
  
--	TP_ARGS(nid, nr_scanned, nr_reclaimed, stat),
-+	TP_ARGS(nid, sc, nr_reclaimed, stat),
+-	TP_ARGS(nid, order, highest_zoneidx, nr_reclaimed),
++	TP_ARGS(nid, sc, highest_zoneidx),
  
  	TP_STRUCT__entry(
  		__field(int, nid)
-@@ -440,7 +440,7 @@ TRACE_EVENT(mm_vmscan_reclaim_pages,
+@@ -138,9 +137,9 @@ TRACE_EVENT(mm_vmscan_balance_pgdat_end,
  
  	TP_fast_assign(
  		__entry->nid = nid;
--		__entry->nr_scanned = nr_scanned;
-+		__entry->nr_scanned = sc->nr_scanned;
- 		__entry->nr_reclaimed = nr_reclaimed;
- 		__entry->nr_dirty = stat->nr_dirty;
- 		__entry->nr_writeback = stat->nr_writeback;
+-		__entry->order = order;
++		__entry->order = sc->order;
+ 		__entry->highest_zoneidx = highest_zoneidx;
+-		__entry->nr_reclaimed = nr_reclaimed;
++		__entry->nr_reclaimed = sc->nr_reclaimed;
+ 	),
+ 
+ 	TP_printk("nid=%d order=%d highest_zoneidx=%-8s nr_reclaimed=%lu",
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index c25ba910149d..b3278dbe47bf 100644
+index b3278dbe47bf..561e14dd490c 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -2183,7 +2183,7 @@ static unsigned int reclaim_folio_list(struct list_head *folio_list,
- 		list_del(&folio->lru);
- 		folio_putback_lru(folio);
- 	}
--	trace_mm_vmscan_reclaim_pages(pgdat->node_id, sc.nr_scanned, nr_reclaimed, &stat);
-+	trace_mm_vmscan_reclaim_pages(pgdat->node_id, &sc, nr_reclaimed, &stat);
+@@ -7403,8 +7403,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 	psi_memstall_leave(&pflags);
+ 	set_task_reclaim_state(current, NULL);
  
- 	return nr_reclaimed;
- }
+-	trace_mm_vmscan_balance_pgdat_end(pgdat->node_id, sc.order,
+-					  highest_zoneidx, sc.nr_reclaimed);
++	trace_mm_vmscan_balance_pgdat_end(pgdat->node_id, &sc, highest_zoneidx);
+ 
+ 	/*
+ 	 * Return the order kswapd stopped reclaiming at as
 -- 
 2.34.1
 
