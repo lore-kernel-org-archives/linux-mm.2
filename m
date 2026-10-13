@@ -4,148 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EB8DCA9ED2
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 13:31:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2DF2CA9ED2
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 13:34:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14E0B6B0088; Tue, 13 Oct 2026 09:31:29 -0400 (EDT)
+	id 9427E6B008C; Tue, 13 Oct 2026 09:34:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FE2E6B008A; Tue, 13 Oct 2026 09:31:29 -0400 (EDT)
+	id 8F5796B0092; Tue, 13 Oct 2026 09:34:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2FD76B008C; Tue, 13 Oct 2026 09:31:28 -0400 (EDT)
+	id 80B106B0095; Tue, 13 Oct 2026 09:34:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BF4466B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:31:28 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A49F940CED
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:31:27 +0000 (UTC)
-X-FDA: 85317689814.27.A772E5B
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 314D81C0004
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:31:24 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Ueg2H0Ka;
-	spf=pass (imf18.hostedemail.com: domain of gerald.schaefer@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=gerald.schaefer@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791898285;
-	b=nmpzgcDmkwqJ/+JW+giKu9f4BiUjuQv9TmwNdDvlQzGL66ZZbIHkAryQmcjQQwohQFD1z1
-	FJFLHCyYISqn1GsApha0YxML9xN6DK1oxnDHm7xjHbGyXzuv979A29wyjvnJMmmf+epQQ/
-	WTo0cIsaP64IG6FtVBhdFb+snxVvDV4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Ueg2H0Ka;
-	spf=pass (imf18.hostedemail.com: domain of gerald.schaefer@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=gerald.schaefer@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 598E56B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:34:33 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C5A1E1C18C7
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:34:32 +0000 (UTC)
+X-FDA: 85317697584.18.3DAF99E
+Received: from o1.ptr9745.em.honeycomb.io (o1.ptr9745.em.honeycomb.io [149.72.141.136])
+	by imf20.hostedemail.com (Postfix) with ESMTP id AE5551C0004
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:34:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=honeycomb.io header.s=s1 header.b=cjPfxSlL;
+	dmarc=pass (policy=quarantine) header.from=honeycomb.io;
+	spf=pass (imf20.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791898285;
+	s=arc-20220608; t=1791898471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B7kvEJQaPDNDdTkfPB2lp3f8P59cG671gJ5eqMlzdMc=;
-	b=uJbgGo9XOEt7c0MO+f6aSlHpJ35VRhQHaCeT5HJ57P+JHkQ9t1iRBaQz37dCibb7qj2Ic/
-	dIJuBgWj4Qxw7eqlPKGO0M9Xbktrgwy9HNgI3rlowCH7Q0k4pVFuKBYjH65oLRpfiTfZEu
-	w3SThUgTrHc5Z8dypwicOlaZlLMlEek=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69D2EtIQ1891889;
-	Tue, 13 Oct 2026 13:31:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=B7kvEJ
-	QaPDNDdTkfPB2lp3f8P59cG671gJ5eqMlzdMc=; b=Ueg2H0KatpC8Kok2B2+tSv
-	INeSKM+dh5Jq7hC9ib4zNRJMqsZ9M2arzKTSaJzoHSQH8O5yzxl4TIjMZ7Suyscv
-	+uARUbxgHUI6l0zND5n9H6d+ODg20FH4VncOC+hyeCaTBYmPoSxyJbwfiVQiPSe9
-	y4CzbXACLRfW9eUdgmCdeStUVbLl8miOZRt4hksCBEp26ujHT/qOZMIY1Sgw/C/6
-	xJG5WY5FTbfsxQr2LnH2XllVaXj7JVC/ukSbmb8rq64kcow8UE4vGSk47IahFs3n
-	RVdOdnJJ1+zMx8+HepaoYvBL7efhry7MVicOUynD03oW1sMIHDWfrKwOX0CVB7QQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dv3e9rt-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 13 Oct 2026 13:31:16 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69DCQ7Cx2660046;
-	Tue, 13 Oct 2026 13:31:15 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h7yppt6wa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Oct 2026 13:31:15 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69DDVCgg13173040
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 Oct 2026 13:31:12 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E6CE52004F;
-	Tue, 13 Oct 2026 13:31:11 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 520FE2004B;
-	Tue, 13 Oct 2026 13:31:11 +0000 (GMT)
-Received: from thinkpad-T15 (unknown [9.87.131.228])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue, 13 Oct 2026 13:31:11 +0000 (GMT)
-Date: Tue, 13 Oct 2026 15:31:09 +0200
-From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger
- <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio
- Imbrenda <imbrenda@linux.ibm.com>,
-        Andrey Ryabinin
- <ryabinin.a.a@gmail.com>,
-        Muhammad Usama Anjum <usama.anjum@arm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com
-Subject: Re: [PATCH v8 10/15] s390/mm: Cleanup pXXp_flush_lazy() routines
-Message-ID: <20261013153109.5d5143f6@thinkpad-T15>
-In-Reply-To: <964adeedfd20d4dbcc9a6341f57ec7aaac6c6adc.1791365932.git.agordeev@linux.ibm.com>
-References: <cover.1791365932.git.agordeev@linux.ibm.com>
-	<964adeedfd20d4dbcc9a6341f57ec7aaac6c6adc.1791365932.git.agordeev@linux.ibm.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	bh=Yjc3wFNOxrypJJyu5rTq8Vr1Hd3Zz2aUY0wPnZO4Ji4=;
+	b=jyPqHWxMPBNy2TPXBaFnRfV83Yh5V1zcGgJJP1+OfsVnVqHlGUpSUS4mxg08UREIkZRUzM
+	kj2ufGXVQBs95mEYHfFE+3FuM+ctwaPa1C9byYKovEiqD52roXTU4SPqewpYZZSBhZUBgO
+	mP/34j4cyKwgtRi7f0K5RqncxSnlcaE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=honeycomb.io header.s=s1 header.b=cjPfxSlL;
+	dmarc=pass (policy=quarantine) header.from=honeycomb.io;
+	spf=pass (imf20.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io"
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791898471;
+	b=zijJTNui/AUBgBvyCrIn0XZl8T6PTSm7yqB+/2YtGKZFSGLRFw3mwc27dZDmJ1T2KB2OPF
+	0zRK+xHrLJ36VJig+iZ1FCC8J4po4AFXVsUDlOhigV2Cbe8v1Q/QIb8GLCPi2IRHJPqcQd
+	fbOpzYflQ/pxaGr7tOA7dVB45hBdR+0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=honeycomb.io;
+	h=from:subject:date:in-reply-to:references:mime-version:to:cc:
+	content-type:content-transfer-encoding:cc:content-type:date:from:subject:to;
+	s=s1; t=1791898469;
+	bh=Yjc3wFNOxrypJJyu5rTq8Vr1Hd3Zz2aUY0wPnZO4Ji4=;
+	b=cjPfxSlLQkSUdnf0bT733QfnqIyHwuJRNG6OpW0Z7CvBWxnySk5RMr67Oc8aartloIne
+	pK56lqo0wA7bw51ni+1Fcut5Q7x9y5Uavv6FVrVtcE40SFKySwMzXlVILGojlgwyFfNLit
+	qbCv0j92NNahom4tTuy0p3LA+dH3TRYvluTbZWUUAdx9ss+S44ajRzJIPWJ4tjWXb0kRLP
+	Jef/3beZF2rrIcoj0XVGTFmtxqIksgGYEiSMqcrlhfMjLfbhiI+HLfHgCRTBLcWDW2QwjJ
+	gtkvyi8l/XWlXAkflQ0eA+zJtTzDlbJameOVs3/1VpBZormpIJ+VqyABDXqJfqQA==
+Received: by recvd-b6785b758-pms9j with SMTP id recvd-b6785b758-pms9j-1-6ACE3364-52
+	2026-10-13 13:34:28.727189614 +0000 UTC m=+1197221.645450126
+Received: from daisy.dens.ffj.family (unknown)
+	by geopod-ismtpd-canary-0 (SG) with ESMTP
+	id j7TrPBHQTSyTSY7St2F5YQ
+	Tue, 13 Oct 2026 13:34:28.641 +0000 (UTC)
+From: Liz Fong-Jones <lizf@honeycomb.io>
+Subject: Re: [PATCH v6 0/3] writeback: let foreign flushes reach dying cgwbs
+Date: Tue, 13 Oct 2026 13:34:29 +0000 (UTC)
+Message-ID: <20261013133428.725790-1-lizf@honeycomb.io>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261002-wb-dying-cgwb-flush-v6-0-1991b4e2dcff@honeycomb.io>
+References: <20261002-wb-dying-cgwb-flush-v6-0-1991b4e2dcff@honeycomb.io>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-SG-EID: 
+ =?us-ascii?Q?u001=2ECuH7N2XAoeMR1zrzr=2F6NZrhli2vbKPOHff5fJuZuba6ZIE8QPyIf9mn4Y?=
+ =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmeYytsq=2Fs6xFQ?=
+ =?us-ascii?Q?u5VO+EtT9LXkYGlxJUqGOEwoCTZ8+dJNWoztJgA?=
+ =?us-ascii?Q?83GYMzdfkdF5Gw1J8iDpMcYzuTiSEt9CPgxODV6?=
+ =?us-ascii?Q?J+YQBdUp3BsvPKz+3HRV7M8mWcCB4XuuCdW4GjQ?=
+ =?us-ascii?Q?21qj0Gb=2FNT+XPXbEC7tPjQ=3D?=
+To: Tejun Heo <tj@kernel.org>, Jan Kara <jack@suse.cz>, Christian Brauner
+	<brauner@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner
+	<hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+	<shakeel.butt@linux.dev>, Xin Yin <yinxin.x@bytedance.com>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ian@honeycomb.io
+X-Entity-ID: u001.GRlkmHQ+Ka/CKxmoC/CxTw==
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: nbn6L9Ekh3ehchxzuRjBBJZzbONil6I2
-X-Proofpoint-ORIG-GUID: _EMY1DVppaZqn56vCK9_9jqVJYlZCfvl
-X-Authority-Analysis: v=2.4 cv=aqInmiZV c=1 sm=1 tr=0 ts=6ace32a4 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=mmsD3Eh6YA-KHFnkoBgA:9 a=CjuIK1q_8ugA:10 a=zZCYzV9kfG8A:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA1MiBTYWx0ZWRfX4602m6zcTb7e
- qnLVW5A8CULLZLaZsTQHpjdHHPNRkjITA3O4QcvhC9OxNWgcutb90Pbn+OcczOHivkFFCc4XTzP
- vf/qTWv/k/dcKvOJOsnC+DQt5KjrYzw=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA1MiBTYWx0ZWRfX3Fny+U00kJZM
- hkCrydYS+YKWHg2EFbUCegrwD9C1TeQpoG9e2n2Px6hZ+4aPxLXZo2RxTgpuP17VgSe9rQwK8jq
- ztJtWhCdvwsXm7dsZLBluy+Kxljg5wWVMVVswfoXi8HTzHesLME09BVlOwFdXZLt0gp/SvDV6Qf
- L6o2mVak+nqIUgEOQD1Rs8EhFapELqUj0YWWjypFo5Sxplxkzm322MQQOxCeuPiAXxQNlUFNE+u
- Q+wCMRNPFnQbSNZijrZs4ZLpz3f60T5GJq3Rg+Iux5LZjScPmV5cbRFLY89o+K7qtU4YQHBa+HO
- vOMNjCqhJtqhrY8UIFZwEm3etl8+9TqkBgZwn/kvDZnARzdNlMJOhZlD/KdPM3X9SGKTtOOq9lg
- Q1TwgMYq/AhqmyUKIEQfmj9ywVXSdBsqQYZt5dA4BK4A+L9viv+EnOsuoX1dPYhHaLRD5qlxDWF
- 3YvIYUV4Kx51wq7UiLw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1011 spamscore=0 malwarescore=0 suspectscore=0
- bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
- definitions=main-2610130052
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 314D81C0004
+X-Rspamd-Queue-Id: AE5551C0004
 X-Rspam-User: 
-X-Stat-Signature: gdwsnr1u3apm6tijjmphdyh5sczxwqxs
-X-HE-Tag: 1791898284-499274
-X-HE-Meta: U2FsdGVkX19xJzkFvARhqVN7B9Hj7QQ5JuPwr+xTwX2dXsffbvl9Ata1/AsUZGovutzBo+hE1gaF2CV3yvHQZpU89se7oT9Fu6omkSZKTrk2i1TISXUA7nz0lI2rviiJnXce6SxOIiNI47KZYIQktT7iWdzZuSW18ETg+Kha3ldKnEWzjykE9VPh0IlquVN8/ZA5SouByAJ/3nlGkGstf3es7iWCLXSXbwwupKnsh0cQxQn/yoCwhz3DlLCqMd0KejpFavIhiqq2pYIcdAVw2D0YXSmWocpwXE5AIWJ4pnXbpv3ziIgN+tciqRzzPWlrJrUKStJ4PO5fDvNtRouI54sWYSupBqcIv1igqCEePohY5b1dqDQSPcbu8QpUt2aaEoZ7leBvXpgzqX467LoBsslQ5ekiEb9UltNEchkh1F4nh8u5PBuRRK8jcwPdJORhWHEKQlonhdIZgoTpVydzFo/u4bcIMpbh5P1YkUYPylbM9qXM8j+VB667wGtFKFgQfYB2jye1asvAIaOxxKxBV05WpbeQmVly9haAsb6GI2iG1yHA/9mXyXRANocBSYEWrMzmGzbxms8fJ8ut4nz46BLrLyIGydXZqHYULV1hu06GvvfqtV2KuWfvuZxuDrRyJuPCAHWQYJNXtrTCKJqPoXBleSpazLLaETClWw/HaHtJdq1fR5NMwDhYp84u5DZXam9gnKgVI33cM1OV8oP8Z8nyYPJ4sypyXt6q05A2lANuHGZvB8GNijuHxjdz0kpY0zWZ9jU+7fFQbnprdePH3xTDto6ZdixvGuByurIuUv4vy/43NtJphm4h4Q1j5ZkYh9WPL0IKsbVdwonTRw03HHn65ZZQI6GTtmQt3dP3py99Dxr6cHzWRnq3HieCQICvw3+9GsCN7SajZaxWnJXr5cWzn3rty7c1ENubHw/FVcCL7ZTAbiGGSTWUNKJrC4ax6HeJkRkjxfLXW8NiEmO
- uof5ETp0
- EMCNtcX1bwfTBoXzUGsqlwArbGH86wL3ya/RT4lrUfZBfznNweeVLJ8gNx1/baCrfpZBmzvpexS3DT6vTs56Brr//gfoOM9A870lhqsqUh2ayLC2jRdIftUAbpQSDrURX+j4QI9wfMc+l+jDjsuymMAmBsnVGaBnBOPqZYzm6+H4pOap5BSDkCzLOR5TTMt6RaiFlQk2Sg44gMxZlrTBKNsX3hOwBeWdi8dp1f9mxBIyi3AS2QD8xffGrzzJvwcTK9+crtiCIne19uwGCBZEpCjx/6rscvTAuBQ6mxy0Br/a/B9rRKSrg58XplrItocTfpliP3PN56DZXlRo/H+xP3WjDl36FHfVJ8S/jF2zj3eX7yulDTo7k8xqKh63TAkGlmDYpIW6FZLm8PQopb6HSZmgQytEMwNrBj0E9/yd/ujHAh1KNjY5O9TIkN/+0D7GVFqXua+yz6NvBYq2XfrNwcrtKnAzNlIpRdfNzF3EkFkbsKQosIwPuqLb9hbNMHpjbOr3gLxfrNBofMio=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: w9ebqkhk435kb8ya67yqjahbaa7wobcr
+X-HE-Tag: 1791898470-854858
+X-HE-Meta: U2FsdGVkX1+VPR7rySGY99mAviQT/pTFEukLPRaCeGo18779Pl4Bu6l2ZLpHeuR1XVRSykKTssQJ4dbajPgzc6pjgLCXISG35KHeGnXWecc8O9TFePVMoV8IraPA5ux8YBLUwb1l0JaqyE0uUMnPL3bIVwy/+rqmw66M3MzLVzKX8TcFMH8/u2JCebtjMG0+xki8IWNe8mrAfccw+hHeFuwPwzFn3zpgn3+8YkZ8cxXRwu6AIqrgwLHnzdw9ipCneNx3xoBITRVpuC+22vVqOld+fN06Ne0k134RyDfu7NgEoY1DDeGUEfr/G0RBORxPLj2Qg41LRd/7VS792nrrm1uIIUIt9L7CZqvrMDsJMu8Xh+FJBQJMIKrPmVJErdhC/pb2PMbo8z4p/c6iZwptolmVrUFHgoJGlRtRiRBadPtBQEMAce/S9qNL5m3xPF+gYKY3HM+kgtuNofYTGllbsENHDobQpQJeWVgBdDr2C8pKOc2/PRXcNER8LAfdhnkWqJqOFoEdgPgOCih9cgAMJ83us+7J+WSaWEQJT5UJkC6O3OmVUxjI4T7+FHYmi9s7Qa/8+ZlghnEgF8KBd65r+o7Iy8SQTVJvv98mA65fo8MW7u0sHg531PbWw/xQGexLhvAqeO7a4aybBZpOoBsNoa7dwPipmaKP2hOtst7ojS5ulw4vAL77DwR4feg00Vdsge+w+O/IcrmOKGvoDE+FQ/eOF2SxDKJ3PvsxuTQeMUjTarWPtLJPzAY8we1z0FAe3nQyZv+1hlTdJqJx91K+Drl079wMYH236tpmNDc9qgQvm7rRfqIl6ir0gCTo75V19NuGNmo9qOsfh5leqOF6BEytArqM8a0lrol5e8MGjPkwyKMuN6MFNYjdKtP9K8O+dUtgbBlaM44NNZLcZ+F75J/cGKuTOL6gOEYAf6FnYQjngNjDBWWiN7oXrAH8eRVX+iGWMSWx70ReIdeSM6t
+ 1JBi7b1m
+ crqY0/sItjQvGH5HAbW4n+7wrVJ0S+3wkYrZLfw6rPArr2FRW/dn64xgrLIpEMgtattRUKTZZhRsgx66isCHXvEWModW9PzM+McsK47wBFTPKnGBHYyxd4jvPG8fn5jPGylXoA6Bzw4HGejdXuKbPicTY+pSEPSwp/QmBp9l4bqdvKK1XHuRnm4jbWobukdkPQWKJUbDYP9BM+W8+Q8WuH8Hnj8DA+kOla8RJYCMMrFDum/Vn8SF1EJYj+nA+XrcYzyif11oBb+3yqor4/xfJZHJl6IqITYcmTQqo1VRfbghPqoPu5WNGYnnPrlhsmqow/XvF4HhPVzSno18PI/kWoESgSFSC3KWJ9/+iSUEQvYIpUBg12Sgeh2fycpHHaobCHEQq1bGp5a3XvnnhrGJZhG8HrBVotLI7+K7VeJMujP4T/ozD9gXYDpfFRzX0EFbls/5snZd5/VxIcGwTuAnkrrKQh6h/7xK3JNY6V/9t8T+5p+DQ/r5VEL8eSl/iEHHAX2Qg6mkA6RGbhBUDV3f9rFOk/AE9qpydZbs8vh/vnnYPJNg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,25 +106,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  7 Oct 2026 13:41:53 +0200
-Alexander Gordeev <agordeev@linux.ibm.com> wrote:
+Tejun and Jan,
 
-> Avoid unnecessary pgtable entry read in ptep_flush_lazy() and
-> pmdp_flush_lazy() routines. Use the already obtained value of
-> a pgtable entry instead of dereferencing it again.
-> 
-> It might appear that the optimized out second dereferencing happens
-> under mm_context_t::flush_count lock and therefore a race condition
-> is possible. However, both routines write invalid entry bits to the
-> pgtable entries and therefore no reader is allowed to interpret the
-> rest of the value afterwards.
-> 
-> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-> ---
->  arch/s390/mm/pgtable.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Gentle ping on v6. Patches 1 and 2 carry Tejun's acks. Patch 3 changed
+in v6 to queue replaced_work again when a switch lands on a wb that was
+replaced after the switch was queued, as Tejun suggested on v5, and it
+hasn't had review yet. Jan, you confirmed on v3 that switching all of a
+replaced wb's inodes, dirty ones included, is safe; would you have time
+to look at patch 3?
 
-Looks good to me.
+Christian, if they're happy with it, could the series go into
+vfs-7.4.misc next to Xin's 168a8c13159c? It still applies cleanly there
+and to 7.3-rc7. If that's too late for this cycle, I'm happy to repost
+on whatever base you'd like to queue it on.
 
-Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Thanks,
+Liz
 
