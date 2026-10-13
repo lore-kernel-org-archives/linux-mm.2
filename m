@@ -4,98 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A8ABCC6B16
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:11:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4950CC6B0E
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:11:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FA166B00B6; Tue, 13 Oct 2026 11:11:03 -0400 (EDT)
+	id DED826B00B7; Tue, 13 Oct 2026 11:11:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D0A06B00B7; Tue, 13 Oct 2026 11:11:03 -0400 (EDT)
+	id DC4C06B00B9; Tue, 13 Oct 2026 11:11:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 671BF6B00B9; Tue, 13 Oct 2026 11:11:03 -0400 (EDT)
+	id CB42C6B00BA; Tue, 13 Oct 2026 11:11:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 48D226B00B6
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:11:03 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C370280C4B
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:11:02 +0000 (UTC)
-X-FDA: 85317940764.18.CBA377F
-Received: from mta0.migadu.com (out-20.mta0.migadu.com [91.218.175.20])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B2E63140006
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:11:00 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HtGXlp7H;
-	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.20 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id A42BB6B00B7
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:11:31 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 453EB80C3B
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:11:31 +0000 (UTC)
+X-FDA: 85317941982.23.3E0DBD2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5EA89C000D
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:11:29 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IKIipxQd;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791904261;
+	s=arc-20220608; t=1791904289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yQSrN9slFl/gK4aY1b7+WXi/675sMIn9MnuF0iOef18=;
-	b=Pp4dqZvsT4cXn/TzD7dqfihh+Kd+Vi/OisnoD3iL5cEnG2pReSn/7DniBj1LQ4mD9lJlSt
-	VLYrJfScSCcrvrrawuNZxOV/uKwsh7+8Ew/CcgWMheqX6UnCbwBvGqcUgAx3sAuNslWrAx
-	Nz0gVsezTaOCD+DWroi5mEo0OV5kD7w=
+	bh=XhhlSsemSmxgXNdMsOuIhrMWTeKjuFdWFETXzMuu8iA=;
+	b=KO6j6VMH/u2ftF99YwGV1l+ncE7/uU8U642sjjl6iuLRiRd/n9VtRJUSoJzn8VyWNAcD7f
+	FSwhvNtUxsd/bUZ4hcOE0kRkvGd4hoe/KjaYrw0zVslrMU8uJE4AZGuggqZJ0fKOK4NFuT
+	K1gPwAK5B6B86Cb+DAmVcOvSYuAupZM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791904261;
-	b=v6OfIQ+7uzxiVsYF/4M/ENEhjUOXI1NxWmAUbHDZBntYXUaDN1TM4ZX+VT8eWwQtG1QIj6
-	u01To7VH7PWUdrcro6FMHIxKRFCSvb1TdP5YAj7M3bHfc+7vuZXUej52dm0RcdoQrhcK4v
-	24zXFx9+y0wxCrIJ/degfvxpqT5R5fM=
+	t=1791904289;
+	b=NqoSLvLkkw8Q3cV+lUdBAxGa1PjBM8sifFBNo6vE4/R66lk34g3BASyZMtvC861sDAK2ZT
+	C36Cj7KeyzKut9Ttx/DJLIRcft7KR1WC19Aq033MGn7saKVlJ1dxM8sALZ5Wkqbq+XcmQO
+	HBrbbcezvdIOI3E7SYWudjQpj/j7JDg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HtGXlp7H;
-	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.20 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=bceBj1lCDVf8rlvw9Pnq+5QiEUpw58usmClWP5+lnkY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791904259; v=1; x=1792509059;
- b=HtGXlp7HdsU1MrQuqwiw9TlpTVxg8+B367C+6XmUokvnjnAmqzJ1bEOJkqSvPrpCLl2Bf5tg
- Cu5ndTkyLR+sOmEKfLBCQabrmiY+9e/NsRG3Re7Y8rKhGYGpbNUrqTFp4wsn8MEIJpY4d10N5OU
- TtLbv+nctJHKnxQWVxsYfwZ4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 3d5937a095650203;
-	Tue, 13 Oct 2026 15:10:59 +0000
-X-Mizu-Trace-ID: 3d5937a095650203
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	chengming.zhou@linux.dev,
-	dsterba@suse.com,
-	hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	nphamcs@gmail.com,
-	terrelln@fb.com,
-	yosry@kernel.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	alex@ghiti.fr,
-	senozhatsky@chromium.org,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	davem@davemloft.net,
-	linux-crypto@vger.kernel.org,
-	kernel-team@meta.com
-Cc: Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v3 3/3] mm: zswap: use stack requests for synchronous decompression
-Date: Tue, 13 Oct 2026 08:09:37 -0700
-Message-ID: <20261013151007.2093943-4-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261013151007.2093943-1-usama.arif@linux.dev>
-References: <20261013151007.2093943-1-usama.arif@linux.dev>
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IKIipxQd;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 26FB641823;
+	Tue, 13 Oct 2026 15:11:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF321F000FF;
+	Tue, 13 Oct 2026 15:10:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791904288;
+	bh=XhhlSsemSmxgXNdMsOuIhrMWTeKjuFdWFETXzMuu8iA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=IKIipxQdSPSYUc5DegrUfXhw+UY8TxEShwIHCPvOyP3Fo7nYLrh2IQNkAXJ8Fk3qG
+	 5NKm3C/qQcM20S5Ki+XOsdy7/PYqEIrWtp8UI6+CeCk8YsmtC1N9fd5BTVf5cFvVNk
+	 NMGpPlHt+op+fQCHjVX5+1fq9U5XJW7JYyarTQkoorG94NXtyMxzn733G9axCeMbJa
+	 lkXYeo/u+cEaIxW4lgGcl+86OYqFfpNunFZ9kYAreq2eu3+0vOqMgkp+CMRpbnQdXp
+	 s5LL1MpV7OhrpBtNQMA+1eZGZAfEWJqNlwJzyWsvPcmiyRSFwkJzjxFLZP17ooUtjE
+	 9tF9+0ODWeiYQ==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Tue, 13 Oct 2026 16:04:50 +0100
+Subject: [PATCH v6 10/39] drivers/usb/mon: update to use mmap_prepare + map
+ kernel pages
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-10-1aa3c9b139f9@kernel.org>
+References: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
+In-Reply-To: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+ Paul Moore <paul@paul-moore.com>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
+ Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+ Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Janosch Frank <frankja@linux.ibm.com>, 
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Michal Hocko <mhocko@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, 
+ Xu Xin <xu.xin@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+ linux-rdma@vger.kernel.org, selinux@vger.kernel.org, 
+ linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+ linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
+ fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>, 
+ Bert Karwatzki <spasswolf@web.de>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6274; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=MVQ57kbHbmPy06L79MgXIJ1zXhvIw2KdqOI+DoqsBik=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLOeZww8O4S7JCc5rj36DPzyVP0/8QtrKndkVv56HDhg
+ XUSFSuiOkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjARXWuGf7YXuo3euG15J7w9
+ JGPHn3RlmbKq+WHX9sRN6v6lJRQ3z5uRoc1risU17a+rt+i4RG6aF2+pvbrs2/UKDpHg+av2vJO
+ axA4A
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Queue-Id: 5EA89C000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B2E63140006
-X-Stat-Signature: uw6mmuyarkr11c3dr9dw38gb134kgjwc
-X-HE-Tag: 1791904260-884082
-X-HE-Meta: U2FsdGVkX1+CvlijhEC7eJMeI2IDh4X0iAXhewxnCfmEGbzJL5xjNcMNn4EuVtKf4DiEYxTMPK0u/7uj2sVq0jWGizYbmdNm1YkW46KVgkZ/RPj6RLnHIKneYaSW1sYhjp/PVkeI7ZTNcTINsBz/gfTW+CWnh+XW+8QlBSi19RsdiHo0dKZCjyGv6hFvdSaSxAe3LLSqZtZrfmTI+sQ5A0Z7gXHzGQpjMv/qDqSXi/YJo2FkEZgNlRDMryV/Sdzv4J4p20Vmvv+4a3vPjvf6butPwtrf2D97Zu5mHzUJw3mg+znWVJqni0YfEcZ26SGet/b5mC4mlG3QxyqCNVCnd7sRDiTiX8Uus9ZoO8FgNK71GkpcRTpTmoaHhRhMx+Ecv4btC29kLa/AP32VutwHT/0pRqLA6d9E7Sae8IaJQShFnWt21lgrTN4MGLP5LTcnDTVZrxrG9rY4tLUoIhbAWirHGwadQGiYzFrdRXCDB7OXLMtSS3q/mJtI5lQSCEUcyO6MbVYO1LSQnaSaazqQ0C08I8IsFipHySyVY2hCcykWJmYpN3G/WANEh+VLRMb/J+qV95bKOCU9JijyH9yC3+7D6Dhsp1yWcxtxlXdNdg9N9FYqzET1TumAWGwVyd12hPZ8tsKeqbI5Qh32Ms1hFgE/Dv9ak4vzId3YAQhSvnw+SFS/Zk9LLGUBn2fQ9YhMQTd9f3KJmyAakij6eeWqUildf+VnStKb9ho6q6IFllQ1EZf88PpB+dRE81m7v2VJu6rhSm4nPrl/rBQ5pA5dt9x6tkKH5Jf5fHOLixdtgfLtD0h00aFBCqFyAJYNmvWoCKFoa8zj4hjtptIa8kA4j8B5DknnmBS4mgfgLVIMvZMr6v+Z/As8AFEgtf//jlCGsr0id5sih9e0tWB1MLY0l2Id87oVSvcQVz3p6bOAGGLZQ2bkphznHTzIRF8HcdyV84c3toHebI/5P5Ubp2P
- /Zi/ONcN
- F5ZTvLmnvX8+HaFg6s8Q7ZWv+LDDZHpKBSbzrSkFI2EsY7bzYK0thcplwuWDkau+PwGrWqKOydDJSD96cnWw7PkR9CHsD/gP4U8M0xHrn0iqMuqmpSVGtYRvNG08XFXNR84RUZmHXMME5NRSCGTSxf642oT3wmt1ZcVpTPxbNdmbGFfZZgFk5lEqkMihqFXzJv9e+08tw68ctKXi1MkQFUfkplBIIhZnWhUoB+n507saNy/TaNMkijHpEZ7Uk0GBRs2g3
+X-Rspamd-Server: rspam05
+X-Stat-Signature: j4xxaoykm1ex4g167urg3jwksa7r1id8
+X-HE-Tag: 1791904289-314902
+X-HE-Meta: U2FsdGVkX1/P2rmawScGsAgcmGA+hKmC9F/VOqiNsMsnO6BPgwDsN8bWWf31b1A1ywChQ57B9eAS0WRjcYPfNiKOE5GdMJ+V5WIVHDamGxF3PkTXNqpkX6VWkJyHce2SgLfomeXqlcHDdPdZjGqQx4hNxCnGngUZLXM19a7uPMbemlVUYEzY7e5ev4aG29PVTDuQp93q4od0lM5rlCtmKINkaKCByl7yV1uwXRFB9AlyqlBVTqWJapJmYJSDBcjt4uM+udE9uGMdV8BBhXpvQrj1tF52ZzJvIyh9NwVGbvNRLVP3JCRgB2lInE/KFuBJ3arDpQuZFuaIuglD5VxdolgDx6yVlB6gpjOqS+UxxaAHmJr+fLyz5o6hF3B1ofHQurfXGy6AmtSA4QtYGEmY74HpdhPmZhx+TXVaULrXy3T+8egLeWwWr2MqoWmnxIgYqjqj+OyOmocYfW3kBWqIGPT+VD1+jQ2lp7HbQsSX09kParYF5uznZRFnMTFCcUcGLZyZA7zV46bZqQDVKncfOniVRMDjMweGEwHVtfGAAHKOKQqGY0HW+LZQqpsgVVv0NXkuPUfqY5evpIifBB8L7QGivsqXFsFD8gfNr/I/KtUQbPp0bEkpQp27kcBq0j46uLR6og52K8G30LvI2miY8G6hDHdIiPlXK+Puyftoux1bMgbfeneG+wmtUwxgQTxqic6yHeJI8vMNLqsWFYbncgesDwEq6FRplBdzjzQXwSv/ngJKEy0BeOEuPrj4yhj5J2UAVUT8gyf35yXaB3CcCBWAZOradbjkReIxe7aNRxRvnjdmINV1raVmigt6QeOFYWupCSUHS2IurCRgiL00xwZ2nN+rIDFPVrpEWmFpqUb1GcgLsVNUgT3RDbt95TJJjynxDafQU6GLg0zK2aU1fziVKFn52Na/It+yzHwp9sMpATINeTHUOmMqf2BS08t9CvUxgmq8j0SC/5NQLBR
+ pBWz5exC
+ o3DVMe9+FKwZHU5Uc5bybLAyVNhiQo4ZNUmBJTZtecGIk3sQyHQuAjQZdUlkKH/yJAUJv60FqC7dCn0Mf0xwwgoB4MGKzpuecdsFmDRvHUee4GMBJczyWaJH1XrU1r6W4pbrPc9eiGPL77boeuc2MxFU0LdqcmfX93kjLveDjsK47xAFp/8d8xSdcVdz6HYc2xxJ/PlIP9HSsT4bAwWvLz9xXhiIwDMCPYFnL0jfUzZUcCp5H9m/4WtQST09tRH54jCKgHqOo+B6vF67/6qu9kGC63gDFhsNE+PJMyatkmN407HAlzswTbaOsIMM8k4WnTLOqd/GDbfOYCw0RP8d3pq2qpdUr6Fd/5ZSNRXAzkYqVW41tCMv7IRP5kUwK//70iX+m4PU4uknXhgJ1/c7qhQ1eNsCHdM3XPXob5U7AjR/X8ZJxBdW1QYSEEVoCRTkb57VQvo8poltsSPbU4M3BaFBUFF/925x/tGc9dg/lx0v0Hi7k1bs4AfTiw8rePLJ833HCd/KedG/4fAMKjWTygS0irD7ca+hPAjighYq9MBgspQ/v0g+kMYdC08K/tS57MmDlyed9ieSFk1LPZnq7Xi+vkicwNyJ/Pes593jyRV78NDh41ictOj74Y9+rIEsgZAJGuWaNE5wqJMIzDqDmAs6aePCq2GDyu5XnLvIm01iC8SySVaK3qdJ6vstC0EnE0hbEScmogoKjvWflcg4fljnK4RhSVf2tngwHSRhXcnd76UQC+dH2kQ0+LL1ZzB32XYu+FUww8X5uQ9yjcObqpa364De3a2UjtG+UDWMOUmZoPsdp7X2t6GRL3jFltNfXhiEB7lwrdk/l3urRlznQZ8HysE65hTd/3WHfp7QlnLs4ITxXxDpSW3M+NbMGLv7a/5dbMrp3Dy6aVuOd3EoFyYKEy7QdKmvJS5duHpc5HKLsY+/vI47SqfgLrT/9IHm24HJkjX2p2/XAX/lYa4sqrSvZAevE
+ h+Zr4734
+ 2Mbq0t1A4DweQv7fujgwCs2I1f4O//Cc2YY2tYneUP+I7t18TpgjnihIovR4w4s0ZznaTlpgkEMjmTB3WgsF3dZ6jc4w7Wx0OB/3ohgD7pBmjTxYcpQJ3vRKhMc+h0tWgcMeRpSY4hbXAPV8gp4kvH5w1ue076IK2Dbz1IBPgnHpwULLA3wlkxQaa1luvyq2O1CSunkmI57+y+8xTQxRY+f+Wl5DKsqM3t9WpQFlXDEMFCakTwtN7aSxkNjyIVE1tIS0ok6kxWDBIkpGVVVM9FRJENLrDNLkaHn7Sq9pDOWAiD+5XKS/Z/HdB6tIfrgzTXNo77UwRTJZXJswhytYescg7iSMyFzaZbVjcLy5B8owf2kwNjxHolDAiudUgThrgVa7+hyQx3y2FNzVHKInqLQDxeR2sN3KI4X2hdbipe4WTUhZrYxauReXMoRRw/0dMzJGYmgPXJ+wP81o8ffR69iHJXwOqA67AciMr5ZngSJahcZiwIv6YSkAVqCfCNXelW4IYsczJaZZy8Kiig74M8GzshhYwnrQzezopf4RDW4k8xh+THnB2ulWONLWBBypeAQpUoR4om6Yd1tYOcXkQYwb8pDXKGsP2F8FVyGdkW8dIS7dElXDZ2ADvTDiNnJRI5r81lJgd+8H/J+NB+3YLh/q0hI4m3PX2jkztd6LHU8CUrSROff6hZoi7NwGS8IbzjZIZ9K2E1VmNrehovSpNlqdvBKvHpU2VSWudHZspoJhLscT/eKd42hvAUaPVVCuHU9oGNMLZqGSrrnKfo9Apsz2P5VMDZKZhBPQJkUR2B9f1xRVX91Dkh6cT3idfVriCDvOlrlWkOkiAIEdP3Q3kHX95A6spUnCVm/zWc+lc2hTj6cE0OzQescUSM/nZEXTF9EWnpTe5uZeDRjR/ty3f/qpsmFkPoBkd4jnr5R8KsPGXl2kVy67C5jmStTGG1p4LHhhjdEvcUN8AdvZwb9gRpAFv6c9P
+ Z4mX5XTy
+ +vQdgCoM3F5oL8WDVv1Tq342P+ugL2U1b9RX/XurZVIsZUxh4/nwR/kyQ3ZgRgz06IysLD8xFCqIW4aHLk3mux3MVGkIqprYzsNPZIkU16MtWK+jcjoQKyo/exvkrJJjaZ5ZhFXqYpsSE4JfETzUqbw6bNwj39NNah08OFDVfOJ+0PUkds+Rimpva59fFaHtz/bKASONWsRUf1iqZqessFJaZtzdQZIRaYBQisbz7E14zYaOPQhqeLS/xyBiDpLUyECs8uv/zYF5G0ZaxdedSzvNlW8oZphfss1GDQ0aqh2qk/xFp4gxnVinChVLpkMS/iR5lB7fFCcuQBnFz1BQ/u9DndodL6NTt9LqzUNsuycY9qqwrbDHjjAdhNDG2+uVjaZhyZahn+HhMQ6F/vO8Y+PhnN1S7fzCKAh6YJlgT7U/5SuC4ye23/RBEOoM+Rp3L6gUR/P/4QeJEt4KmcyypAwBJVlm3nRXmd196apn0jiMvVFYkzLSbzS5/iFQ7Wm89ymSIAyVHdAM/v84scDDft2kd5pcHRC+0gLgRnusrYH+m86Zxk3Ih2wqhxdbxqKVECKcBf1VBIeBRFApv1BgWMJ1I8wSDXtE/Lcr+HNXEWyOz4wZL/e6HTSTlklFCjsI13LLfKaHxK5uCyjTcEaBy7A1dWQiPUOZ4OfAg6PGxDXE84ZOTmewZCvyQGQ8P7qiaHS4GjYc9YJwcj7BBSInZw2sICKS0TCryDK7Z3Tw7XE3SXg2pvoPqGKULmm/yTMKFP5YOijQq6UabRry2dvab+cjIDiZCNjTT3lRuCqpPgDenTm0s9H94Iq6F5Ancna9X2cc/8+WT34EqLkWeO8JNo0jprkluqIjXI98KNd0dl8yP95iIHpbtRrc5dnYLGodNiydSRW1JGxTw9jTCds9Z5Oje/EeWgIPN74IrotFz5VlFgcddFTIrVS2v3ZaXS7Yo5BvRPpXFYEOk3GTItsV3cck6bGR3
+ cb7xCcgS
+ nlATOt5u10vxYWkr5nlDRTiBkMFBPTOCZWvK7ks88zYnxylBbkLUjsN+8IkERIKuwGAJiQgkGd69eXo2P66VUcrAoRdxeuMwJcj3xiYdEdMEvHzhCbvYLiSezrc5XqdKA86x8uwPAnL2gSLF3tNVL3IFlZ5x26O7Fdn9VPe2OHrhyvy+Dp6qpi/xttdDuZ6U4apu4LUqoT2IprDk6eJwm4OKi/qQdViZGCI5nGZVQmEPL3v3K9sIxfz462fteUKVDws6NjT1VLv06oDoum1Gl1lZ2Rg61Jh9sMTZg90dqz2CBExglKaZhH+gsg624LDn2umiGLqsouA0/tdPwXtggY9YZX+xb0GRkvRUZbtFSuiOFe+u4XMr/NgxmSRcPT6Uy86sBinpWnMZui00RDfOVA9OT0TGxzg/4w9h30HwYMrZTP0/NDPVQUrLFyuURoMrK1+DLrTOD2MOyUBeBpVgzB7I8CFH+wTV0fFhyUC6BKFz2B21QD5ZpuDa4Fn1F/8JTMSHONMniEgGj4IC+vtW0asmSob6G9rrc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,189 +185,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With separate requests for compression and decompression, loads still
-serialize on the per-CPU decompression mutex. A low-priority load that
-is preempted after the codec drops its stream lock keeps holding the mutex
-and stalls every other load on that CPU, including higher-priority ones.
+Replace the deprecated .mmap hook with its replacement .mmap_prepare. As
+part of this change, additionally take the approach of mapping pages upon
+mmap rather than providing a fault handler.
 
-Synchronous algorithms can use an on-stack request, so decompress with
-one and take no zswap lock. All in-tree software compressors qualify.
-The Crypto API enforces MAX_SYNC_COMP_REQSIZE during initialization,
-so checking acomp_is_async() is sufficient. Asynchronous algorithms
-keep the per-CPU request and mutex, which is still taken before the
-zsmalloc read lock.
+The page span cannot be mutated when an mmap mapping is in place, so this
+is safe to do in advance (the MON_IOCT_RING_SIZE ioctl operation exits
+-EBUSY if it's attempted, gated by the rp->mmap_active reference count).
 
-Reading the per-CPU context without the mutex is safe. Since
-commit ef3c0f6cb798e ("mm: zswap: tie per-CPU acomp_ctx lifetime to the
-pool"), it is set up before its CPU comes online and is not torn down
-until the pool is destroyed. The codecs keep their own stream locks, and
-crypto_acomp_decompress() rejects on-stack requests only for
-asynchronous transforms, which never take this path.
+Utilise the newly introduced mmap_action_map_discontig_kernel_pages() to do
+this, which allows for iteration over pages in mon_bin_discontig_get().
 
-For software compressors this drops the heap request added for
-decompression. The on-stack request and wait take 216 bytes, which
-makes the load path about 270 bytes deeper on x86-64. Asynchronous
-algorithms pay this too.
+mon_bin_discontig_init() increments the rp->mmap_active reference count to
+stabilise page spans. Should an error arise the core unmaps the VMA and
+mon_bin_vma_close() drops the reference again.
 
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
+The vm_ops->close hook implemented in mon_bin_vma_close() will ensure
+correct reference count arithmetic upon unmap (with mon_bin_vma_open()
+accounting for splitting).
+
+The existing semantics are all retained, including not mapping past the
+range of available pages, with a SIGBUS being raised in a userland process
+that attempts to access past this point.
+
+Ultimately insert_page() is invoked to insert each page, which increments
+the reference count on each mapped page. This mimics what was being done
+previously, only we pre-map the entire range rather than doing so on
+demand.
+
+The existing fault handler did nothing that required demand paging, and was
+presumably implemented this way for historical reasons.
+
+One behavioural difference: pages are no longer faulted in on demand, so a
+page discarded with MADV_DONTNEED is not repopulated and a subsequent
+access raises SIGBUS, as with other pre-populated kernel mappings.
+
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/zswap.c | 87 ++++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 59 insertions(+), 28 deletions(-)
+ drivers/usb/mon/mon_bin.c | 82 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 53 insertions(+), 29 deletions(-)
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 23c4298765795..beacdf83c8b31 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -153,7 +153,7 @@ struct zswap_comp_ctx {
- struct crypto_acomp_ctx {
- 	struct crypto_acomp *acomp;
- 	struct zswap_comp_ctx comp;
--	struct zswap_acomp_req decomp;
-+	struct zswap_acomp_req decomp;	/* unused with on-stack requests */
+diff --git a/drivers/usb/mon/mon_bin.c b/drivers/usb/mon/mon_bin.c
+index 687f6a8981f3..9d00b21a8153 100644
+--- a/drivers/usb/mon/mon_bin.c
++++ b/drivers/usb/mon/mon_bin.c
+@@ -1219,6 +1219,15 @@ mon_bin_poll(struct file *file, struct poll_table_struct *wait)
+ 	return mask;
+ }
+ 
++static void __mon_bin_vma_open(struct mon_reader_bin *rp)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&rp->b_lock, flags);
++	rp->mmap_active++;
++	spin_unlock_irqrestore(&rp->b_lock, flags);
++}
++
+ /*
+  * open and close: just keep track of how many times the device is
+  * mapped, to use the proper memory allocation function.
+@@ -1226,64 +1235,79 @@ mon_bin_poll(struct file *file, struct poll_table_struct *wait)
+ static void mon_bin_vma_open(struct vm_area_struct *vma)
+ {
+ 	struct mon_reader_bin *rp = vma->vm_private_data;
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&rp->b_lock, flags);
+-	rp->mmap_active++;
+-	spin_unlock_irqrestore(&rp->b_lock, flags);
++	__mon_bin_vma_open(rp);
+ }
+ 
+-static void mon_bin_vma_close(struct vm_area_struct *vma)
++static void __mon_bin_vma_close(struct mon_reader_bin *rp)
+ {
+ 	unsigned long flags;
+ 
+-	struct mon_reader_bin *rp = vma->vm_private_data;
+ 	spin_lock_irqsave(&rp->b_lock, flags);
+ 	rp->mmap_active--;
+ 	spin_unlock_irqrestore(&rp->b_lock, flags);
+ }
+ 
+-/*
+- * Map ring pages to user space.
+- */
+-static vm_fault_t mon_bin_vma_fault(struct vm_fault *vmf)
++static void mon_bin_vma_close(struct vm_area_struct *vma)
+ {
+-	struct mon_reader_bin *rp = vmf->vma->vm_private_data;
++	struct mon_reader_bin *rp = vma->vm_private_data;
++
++	__mon_bin_vma_close(rp);
++}
++
++static const struct vm_operations_struct mon_bin_vm_ops = {
++	.open =     mon_bin_vma_open,
++	.close =    mon_bin_vma_close,
++};
++
++static int mon_bin_discontig_init(void *vm_private_data, void **private)
++{
++	struct mon_reader_bin *rp = vm_private_data;
++
++	/* Dropped by mon_bin_vma_close() on unmap, including on error. */
++	__mon_bin_vma_open(rp);
++	return 0;
++}
++
++static int mon_bin_discontig_get(struct discontig_kernel_page_state *state)
++{
++	struct mon_reader_bin *rp = state->vm_private_data;
+ 	unsigned long offset, chunk_idx;
+-	struct page *pageptr;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&rp->b_lock, flags);
+-	offset = vmf->pgoff << PAGE_SHIFT;
++
++	offset = state->pgoff << PAGE_SHIFT;
+ 	if (offset >= rp->b_size) {
+ 		spin_unlock_irqrestore(&rp->b_lock, flags);
+-		return VM_FAULT_SIGBUS;
++		discontig_kernel_map_abort(state);
++		return 0;
+ 	}
+ 	chunk_idx = offset / CHUNK_SIZE;
+-	pageptr = rp->b_vec[chunk_idx].pg;
+-	get_page(pageptr);
+-	vmf->page = pageptr;
++	discontig_kernel_map_page(state, rp->b_vec[chunk_idx].pg);
++
+ 	spin_unlock_irqrestore(&rp->b_lock, flags);
+ 	return 0;
+ }
+ 
+-static const struct vm_operations_struct mon_bin_vm_ops = {
+-	.open =     mon_bin_vma_open,
+-	.close =    mon_bin_vma_close,
+-	.fault =    mon_bin_vma_fault,
++static const struct discontig_kernel_page_ops mon_discontig_ops = {
++	.init = mon_bin_discontig_init,
++	.get = mon_bin_discontig_get,
  };
  
- /*
-@@ -803,6 +803,18 @@ static void zswap_entry_free(struct zswap_entry *entry)
- /*********************************
- * compressed storage functions
- **********************************/
-+static void zswap_set_acomp_req_callback(struct acomp_req *req,
-+					 struct crypto_wait *wait)
-+{
-+	/*
-+	 * if the backend of acomp is async zip, crypto_req_done() will wakeup
-+	 * crypto_wait_req(); if the backend of acomp is scomp, the callback
-+	 * won't be called, crypto_wait_req() will return without blocking.
-+	 */
-+	acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
-+				   crypto_req_done, wait);
-+}
-+
- static int zswap_acomp_req_init(struct zswap_acomp_req *areq,
- 				struct crypto_acomp *acomp)
+-static int mon_bin_mmap(struct file *filp, struct vm_area_struct *vma)
++static int mon_bin_mmap_prepare(struct vm_area_desc *desc)
  {
-@@ -812,14 +824,7 @@ static int zswap_acomp_req_init(struct zswap_acomp_req *areq,
- 		return -ENOMEM;
+-	/* don't do anything here: "fault" will set up page table entries */
+-	vma->vm_ops = &mon_bin_vm_ops;
++	const struct file *filp = desc->file;
  
- 	crypto_init_wait(&areq->wait);
--
--	/*
--	 * if the backend of acomp is async zip, crypto_req_done() will wakeup
--	 * crypto_wait_req(); if the backend of acomp is scomp, the callback
--	 * won't be called, crypto_wait_req() will return without blocking.
--	 */
--	acomp_request_set_callback(areq->req, CRYPTO_TFM_REQ_MAY_BACKLOG,
--				   crypto_req_done, &areq->wait);
-+	zswap_set_acomp_req_callback(areq->req, &areq->wait);
+-	if (vma->vm_flags & VM_WRITE)
++	if (vma_desc_test(desc, VMA_WRITE_BIT))
+ 		return -EPERM;
  
- 	mutex_init(&areq->mutex);
- 	return 0;
-@@ -856,15 +861,19 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- 		goto fail;
- 	}
- 
--	if (zswap_acomp_req_init(&acomp_ctx->comp.areq, acomp_ctx->acomp) ||
--	    zswap_acomp_req_init(&acomp_ctx->decomp, acomp_ctx->acomp)) {
--		pr_err("could not alloc crypto acomp_request %s\n",
--		       pool->tfm_name);
--		goto fail;
-+	if (zswap_acomp_req_init(&acomp_ctx->comp.areq, acomp_ctx->acomp))
-+		goto req_fail;
+-	vm_flags_mod(vma, VM_DONTEXPAND | VM_DONTDUMP, VM_MAYWRITE);
+-	vma->vm_private_data = filp->private_data;
+-	mon_bin_vma_open(vma);
++	desc->vm_ops = &mon_bin_vm_ops;
++	vma_desc_clear_flags(desc, VMA_MAYWRITE_BIT);
++	vma_desc_set_flags(desc, VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT);
++	desc->private_data = filp->private_data;
 +
-+	/* Skip the per-CPU request when decompression can use the stack. */
-+	if (acomp_is_async(acomp_ctx->acomp)) {
-+		if (zswap_acomp_req_init(&acomp_ctx->decomp, acomp_ctx->acomp))
-+			goto req_fail;
- 	}
- 
++	mmap_action_map_discontig_kernel_pages(desc, NULL, &mon_discontig_ops);
  	return 0;
- 
-+req_fail:
-+	pr_err("could not alloc crypto acomp_request %s\n", pool->tfm_name);
- fail:
- 	acomp_ctx_free(acomp_ctx);
- 	return ret;
-@@ -956,19 +965,14 @@ static bool zswap_compress(struct folio *folio, long index,
- 	return comp_ret == 0 && alloc_ret == 0;
  }
  
--static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
-+static bool __zswap_decompress(struct zswap_entry *entry,
-+			       struct zswap_pool *pool, struct acomp_req *req,
-+			       struct crypto_wait *wait, struct folio *folio)
- {
--	struct zswap_pool *pool = zswap_entry_pool(entry);
- 	struct scatterlist input[2]; /* zsmalloc returns an SG list 1-2 entries */
- 	struct scatterlist output;
--	struct crypto_acomp_ctx *acomp_ctx;
- 	int ret = 0, dlen;
+@@ -1298,7 +1322,7 @@ static const struct file_operations mon_fops_binary = {
+ 	.compat_ioctl =	mon_bin_compat_ioctl,
+ #endif
+ 	.release =	mon_bin_release,
+-	.mmap =		mon_bin_mmap,
++	.mmap_prepare = mon_bin_mmap_prepare,
+ };
  
--	if (WARN_ON_ONCE(!pool))
--		return false;
--
--	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
--	mutex_lock(&acomp_ctx->decomp.mutex);
- 	zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
- 
- 	/* zswap entries of length PAGE_SIZE are not compressed. */
-@@ -985,15 +989,13 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	} else {
- 		sg_init_table(&output, 1);
- 		sg_set_folio(&output, folio, PAGE_SIZE, 0);
--		acomp_request_set_params(acomp_ctx->decomp.req, input, &output,
--					 entry->length, PAGE_SIZE);
--		ret = crypto_acomp_decompress(acomp_ctx->decomp.req);
--		ret = crypto_wait_req(ret, &acomp_ctx->decomp.wait);
--		dlen = acomp_ctx->decomp.req->dlen;
-+		acomp_request_set_params(req, input, &output, entry->length, PAGE_SIZE);
-+		ret = crypto_acomp_decompress(req);
-+		ret = crypto_wait_req(ret, wait);
-+		dlen = req->dlen;
- 	}
- 
- 	zs_obj_read_sg_end(pool->zs_pool, entry->handle);
--	mutex_unlock(&acomp_ctx->decomp.mutex);
- 
- 	if (!ret && dlen == PAGE_SIZE)
- 		return true;
-@@ -1007,6 +1009,35 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	return false;
- }
- 
-+static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
-+{
-+	struct zswap_pool *pool = zswap_entry_pool(entry);
-+	struct crypto_acomp_ctx *acomp_ctx;
-+	bool ret;
-+
-+	if (WARN_ON_ONCE(!pool))
-+		return false;
-+
-+	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
-+	/*
-+	 * Use a private on-stack request when the transform supports it.
-+	 * Otherwise serialize decompression on the shared per-CPU request.
-+	 */
-+	if (!acomp_ctx->decomp.req) {
-+		ACOMP_REQUEST_ON_STACK(req, acomp_ctx->acomp);
-+		DECLARE_CRYPTO_WAIT(wait);
-+
-+		zswap_set_acomp_req_callback(req, &wait);
-+		return __zswap_decompress(entry, pool, req, &wait, folio);
-+	}
-+
-+	mutex_lock(&acomp_ctx->decomp.mutex);
-+	ret = __zswap_decompress(entry, pool, acomp_ctx->decomp.req,
-+				 &acomp_ctx->decomp.wait, folio);
-+	mutex_unlock(&acomp_ctx->decomp.mutex);
-+	return ret;
-+}
-+
- /*********************************
- * writeback code
- **********************************/
+ static int mon_bin_wait_event(struct file *file, struct mon_reader_bin *rp)
+
 -- 
-2.53.0-Meta
+2.55.0
 
 
