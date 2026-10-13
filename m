@@ -4,87 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBD9DCC6B08
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:36:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDB42CC6B03
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:38:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE4F46B009B; Tue, 13 Oct 2026 05:36:44 -0400 (EDT)
+	id A28666B0088; Tue, 13 Oct 2026 05:38:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6E806B009D; Tue, 13 Oct 2026 05:36:44 -0400 (EDT)
+	id 9B1A06B008A; Tue, 13 Oct 2026 05:38:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5D706B009E; Tue, 13 Oct 2026 05:36:44 -0400 (EDT)
+	id 87B6F6B009D; Tue, 13 Oct 2026 05:38:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8631A6B009B
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:36:44 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 177B41403E3
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:36:44 +0000 (UTC)
-X-FDA: 85317098328.28.D769CD2
-Received: from va-2-111.ptr.blmpb.com (va-2-111.ptr.blmpb.com [209.127.231.111])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8E9F2140003
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:36:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=W4qDJHtc;
-	spf=pass (imf09.hostedemail.com: domain of zhaogongyi@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=zhaogongyi@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791884202;
-	b=JloEeP7YaOUDnvM8hP2zZ9XVFo9tTYe4Qa43qBP7XrRxYlDI6PpGwwYdVEH2XaAB+RU3CE
-	eFUsfdLcHJt5layK42y2/vGBKnPxe4Epuet9H4c4GMcI8vLygIF9drwTz7nnbgojIy/JiP
-	5jNnvoWovMLzLtj4+4kGb9KK+Uodaks=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=W4qDJHtc;
-	spf=pass (imf09.hostedemail.com: domain of zhaogongyi@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=zhaogongyi@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 675FF6B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:38:09 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CCAAE120402
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:38:08 +0000 (UTC)
+X-FDA: 85317101856.06.8B7B61A
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1013D40002
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:38:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kjUFfoFG;
+	spf=pass (imf04.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791884202;
+	s=arc-20220608; t=1791884287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=q5NdZNxCSRtyhz8oP1rgzjW01hgyzNkTJZX8N4nqPNQ=;
-	b=x5QCGf+2rIGblZptRHGIyaKEYEIu3AkdMcuZZFcn/PpmwEFVDLFdT1XdTtfHECdwo8Rndg
-	OJE0dheGiU6h39MWiEF/4bam9Cthv8azVqr5jawSSYJ6U1bK0s8CNrC0iCSr1LOfnI/rv8
-	N/cc0Xy2URmqeli1GMv4hU4wn/mmR2o=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1791884194; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=q5NdZNxCSRtyhz8oP1rgzjW01hgyzNkTJZX8N4nqPNQ=;
- b=W4qDJHtc9LVzt31VkunYswjtBLDSTpcyuUzILm1XB6uG7mZ04TQ+3KFRTHtf8WZEgriCWd
- 8Ch8CWxaCDJWnDrog9CEUc4LPq0xprTx4biqWMEpJ3HMXKwyRyclKVS1sgde8+nGt/00zk
- dBW18D4wkGBuNDFvVRTGXFsh5rXGU5RYJl5NM6zMZtUQEMHtoGGDFDPnqyaqyFumk/d82Z
- 2x4xRpHEvNhAk14q9h/ZfYtD572Pfy76PmfhfHFyN6ROeFjRl0ZIPqW4TwbHiQOB4sSzZr
- NSoA2DgLzNdecj/biFzjoR/64Mkb9JtMPGM/WROwBSMAtNViSSabMRubKYxmTw==
-Cc: <ryan.roberts@arm.com>, <dev.jain@arm.com>, 
-	<baolin.wang@linux.alibaba.com>, <lance.yang@linux.dev>, 
-	<mark.rutland@arm.com>, <akpm@linux-foundation.org>, <david@kernel.org>, 
-	<ljs@kernel.org>, <liam@infradead.org>, <vbabka@kernel.org>, 
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, 
-	<linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>, 
-	<linux-kernel@vger.kernel.org>, "Zhao Gongyi" <zhaogongyi@bytedance.com>, 
-	<stable@vger.kernel.org>
-X-Lms-Return-Path: <lba+26acdfba0+4bbe47+kvack.org+zhaogongyi@bytedance.com>
-Date: Tue, 13 Oct 2026 17:36:00 +0800
-To: <catalin.marinas@arm.com>, <will@kernel.org>
-Subject: [PATCH] arm64/mm: restrict transparent contpte mappings to valid PTEs
-From: "Zhao Gongyi" <zhaogongyi@bytedance.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=UTF-8
-Message-Id: <20261013093600.54995-1-zhaogongyi@bytedance.com>
-X-Original-From: Zhao Gongyi <zhaogongyi@bytedance.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8E9F2140003
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oTxQfKp3tqhTG4A8e3eA1UWYq0qoe3PSOMQA99g87ls=;
+	b=I7VYygeKy4GRm2FSZx0vo04YizfkQadB7ln9Ow6CizpiE3kP5Nq3rV5RJli1a/21by0CMA
+	HuKwrIJK4mG2YKZm1pw6nHR5ozfh/WQhVqpsrKMGD5gfHOwatKWmJiBUybiDrb6M3+ytb5
+	ipHYWu7d1WyI7fuBoYHTzPkWUUrd2i0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791884287;
+	b=BsnshoAjmaWndKkweLL3QKRK/HKPyOl1pA1VUVAmERkUSQZO2akebUmsXKqP7N7J7aYf8N
+	mow/fonqpKREii4gxyGguksNFPIt2yI7TCAr4TA2ckkg34cNcrS4le3ugfh2xJnVE5cRSB
+	u3lh54pSkJkR/xJ4JhhLCohzCyMF4Mw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kjUFfoFG;
+	spf=pass (imf04.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a16aaf2067so32878965e9.0
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 02:38:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791884285; x=1792489085; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oTxQfKp3tqhTG4A8e3eA1UWYq0qoe3PSOMQA99g87ls=;
+        b=kjUFfoFGS/aGXuYxSCK4xQI3e+Q7tge+OwAXqd2kR79J7O/KVM6g1ADMZTjNXVk3dF
+         c/vk/p7kNajqJh3XlIxmpDdbGxppGbEhkJHZ5daqW6FjnuWXa9fi4xUP0HdL7HtMN4/n
+         lf/SHpPQ+ebknID+UuumneXsIYf/g5rOxlo8RoWlQsrmjitJWw+fp1FSdV5CeGI4+jgo
+         QiMfWCRUEgGP+XSzWfGpS7JpFBezjbfLsQSxUmhEBi327WXCnlopzG8bOVYs2ciFh/ud
+         7q/tcY8pQ1ibC7sDezvZc4gcxpx7ie05xJwoOTCwioz+ZMqQ1h7Z/JtTnGaW4kieloVO
+         YEcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791884285; x=1792489085;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oTxQfKp3tqhTG4A8e3eA1UWYq0qoe3PSOMQA99g87ls=;
+        b=bd65FsZe06uxCUM43TtJMhMXZHiIfj634Vle82uqQTXW0dLym9WCoQtcU/bvk126WR
+         PMI4PXiZMYrroFt8qGEIRMRF/oQh4l1dhrJBtmyrViakwsCWtRFSJrbtPU9uWB3xJ6wW
+         DlGNbHVNwoRXNcvVjlaeR0meK4DpUmeDoDmODmvXU5eTHTmOwlm2YFPVoMyAWz4JOOXP
+         xndSUiuJHG6VqspxjcXYQvn+lQTESe+wL9LxbI7tnF+LXx/Il5yhI1jg8wDrfSe9bYDe
+         4W4ub+ko0CFgiIvFsgx0EQhLvqXpImRZCnX21S3+HoxdbD/a1tquNiKbNE9aKAHFi0Ng
+         kKhg==
+X-Forwarded-Encrypted: i=1; AKwUvBzYWiJyEI/jI+1dlU47P1YY96pJdl3LthtQnSYy4+jSlpJgNCbA80M1MOzS+GOMpJe5ASSV1XLs8g==@kvack.org
+X-Gm-Message-State: AFq9FYIPEDx0QZcI6+DNvlG093g/k42K1k0R4xsu8Ga/XYX+Vm34zJMC
+	Ej9pxbTtpy3Xoatc+1bF+j+d5MuuisUUYwr1iWEjPqQpy4pw8IiU9HFyW+yK4vo8KQ==
+X-Gm-Gg: AYBFou3E+grQC3XC5i/3Dw+4Tmu3eclznl/1XTmo1KZhUwlTLlf/NVW9Qrh2aIvhQNO
+	cV5Zq+vqrI4dgFAMc1emgp/K0GYxK9MsaITyFuwmKQ7W1yAkfxOxC7UhapUIZsl6e1CWSZXpgkr
+	JaQjpowMqAHmAAAC/Uc/I2CO/kMbf30X1+StHVM8FcR8UTmh6HjU0/9eQvM3Q18+BWqKT7pFPXl
+	K33Z4G5iiZhjUgirOnCxufgjZPhYGpST5Yt8LP0AsUBv9dzeCZObFeqdJQHE8z+8oc5SAvwjCFF
+	xtyvoHBZAY+sBf013XV9He5XNCKHEjcs+yD9jTk50nzbcaREctqw/VFb4Rg+P94CoceFYz4Qu0H
+	cCqbvdqJWbZNng9pCNnes5WBbl4KkHqgPyutLJNp9vJZj06ctCVDLWDBFyn5b9jyU0p0soMUf1K
+	HQ2aniBzZUNDHydfDWtFxzMDLG5x2oJaDX5rzGM/CuZ5i0u8DZKQR+KsKhYMOAV2NOx/LAB6eYc
+	WDO7pfSYfGl6GfRwKT3N1mkwiVMS2HgrFjzfTRVi78=
+X-Received: by 2002:a05:600c:c049:b0:4a1:9a97:c88 with SMTP id 5b1f17b1804b1-4a19a971118mr97040485e9.5.1791884284684;
+        Tue, 13 Oct 2026 02:38:04 -0700 (PDT)
+Received: from google.com (197.183.140.34.bc.googleusercontent.com. [34.140.183.197])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0aaabb8sm4646155f8f.15.2026.10.13.02.38.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 02:38:04 -0700 (PDT)
+Date: Tue, 13 Oct 2026 10:37:59 +0100
+From: Vincent Donnefort <vdonnefort@google.com>
+To: Sumit Garg <sumit.garg@kernel.org>
+Cc: Will Deacon <will@kernel.org>, brendan.jackman@linux.dev,
+	catalin.marinas@arm.com, rppt@kernel.org, akpm@linux-foundation.org,
+	sudeep.holla@kernel.org, jenswi@kernel.org, robh@kernel.org,
+	mark.rutland@arm.com, ardb@kernel.org, thierry.reding@kernel.org,
+	david@kernel.org, danielmentz@google.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	op-tee@lists.trustedfirmware.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
+Message-ID: <as3798SFCfKFirag@google.com>
+References: <20260921110050.3977591-1-vdonnefort@google.com>
+ <arIYtjmSKCs14SqO@sumit-xelite>
+ <arKW_91EeKA-w96m@willie-the-truck>
+ <are21BjeS1O3RYE3@sumit-xelite>
+ <aruh86rd5FMv2i9G@willie-the-truck>
+ <ar5TPvANFUoosxGW@sumit-xelite>
+ <asOAYODGZa-7EIV1@google.com>
+ <asOD31rTX6dNfD1o@google.com>
+ <aszdnInyJxLhSQRp@sumit-xelite>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aszdnInyJxLhSQRp@sumit-xelite>
 X-Rspam-User: 
-X-Stat-Signature: 19hwsmw3phi4eyzqru4euptc7i5ds6s6
-X-HE-Tag: 1791884201-271082
-X-HE-Meta: U2FsdGVkX18ExzZIqspOyHxrm2MnGygnKIRh+sVOF9EpGIN1VUR2NdaAbn6a3mgw95iiIdEDZHLXzUETOSdjdoG5DP6s+FMcpwbAgNZJqqk+/R29SgWxZ6Tb68YWj+vgK6kGKx+FSa5FwNFpqhw3h9Of0j9SuO224ATZ59qChAo58JkjaQB/kdsYd/Tp4UDxqomZJEKYERxurGwmtLNJJMKKwjorsiKRgSyiKCcN0t+nK+ZErzftbDVvRWbFAsKc6F2u1kp48Us2I7EZoqe6bHHaqL5w4nun3RpwvYoFJo9jucs4E0PmTQ50BA6e7KXUXtqWbJQ5FBIavCLf9pNKtN+SY7b3bVv/knHV8JH0lrhCfbJPUVwG4g4BA4QsyNAR5tbByUa8CFlkNRNUSF95cHOwM8EE+7W07QbqWSq68ioeiTeCNYtwMGextBa5sBUhaej5OWrR/247zCEeyWJoqEfeYo4FeZpf4EAt091X+jtBGBW9co5OigosudSVMeDtDxKoq9m7IuQZJMk9qterWlwOBQE8LfRaD63uIYytGpOqNss+Gh2hgX19RhwcoW6IhAn5DCK9TtbsjPICxcrJ7hX88nEqbIGe4DX+PmhLucSE/yoc/CWA53EpG1sEHVftdbjfJSNFTd5PEqNp1qjHdiHJ4KAOnYuksHdRNDgnFpSD+xFky0oucekB0hCnrN6DaNZSuoTVLp6PvKh2292pHELRPLTHfqHCguRjHXZDdbA7Gggyz+QMxZhsvAE9WqCHHj+TSz7D3kExaBQgQ2D+Tb2KybohACtQjmaUIhcUXuDNZbLndzGXdSDY/EdYRpoUA+tvRD6YSfwZR5KQ1PsE+1DQ+o6tAS7sJDhQxBGOVMy4i5GrF9PcKpGfSsUNnWZYa38O0/GFFpdIdUNYACiBera8UUOgRiayByET2yG1ve6M46aEeHp55+QOE6ifpeLbsyb/Y+93KO5ulxuwP5m
- SSFvSXIG
- +VJx7N8ubFMtM5+ef0Man8+oHwZvc/2N7KBM+gkp6jNJclIPeDNIflhO/hZGDpAxXzuZSuP5Z+Hn2ZLEdjTzrWJgAppwxfhnjcKIOTPaZttCoPCWrefS45HRXbNAiF+4obGVU/25P+7ejfX1MeDJTvIT8XnyeP1aKsQ6FZqLXM6byC00woq6oDMt884j7+DUKsrASVJ2C3/qaKeVWyOyHF591nIEsJUz7ZQ+4Yq62cbv89Mj1KTxrwaZL9M8ngy5Pwow5wEiuBNufYI7Y8pJk4wOpLQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1013D40002
+X-Stat-Signature: 7srusuoww7ssjg847egrnwaxxqt6kzkc
+X-HE-Tag: 1791884286-883254
+X-HE-Meta: U2FsdGVkX1/c6VjkmYVUhb0i0Yq21phtHlhqYHVfPGVUQ7I4Nq9n/w4W9lKEiPgNuml5Uemb7TeqqPkZ5oZ66j4ocG1nF/wpu6AsnpqrX0YRDv8W1N/loTdpHKq/quYNEs9DpiHwO1lOf9/fVR+MBlvdQsLHGDGfvm1nQJasDHIg5BscC3b76Ivzu8pluIdCNUi1PLIOyVY3IHlO97FZwGJWZ4w1I34N3tk6K1DbJPgDG1IE9PVjpAqudzpKcL7KIrKHCbnSAczOZZSAbqU+/KJWIOZ3DAGhVxe9KmxEeffeEIocP7Ekjk+zXc3e2NNldOE719CuqJHbrp56ioabHLXMqE7ewvzMM9ctLj1WWfn2SkPq/1W8HK5wKQky6EIw1UwP7Rfdl22Dt3qJlYV4iRtPXO5ae+69n32K1MURw8zEiO15mZRuv5zDGs+MXIM5V8j6ViLiHDUqjVDsuaYJhPYuWiXyIqqQ7vWkrf6ZJmHIIsximGhVRuzzQhptGLwhu6OShuMBzC6+zqA0tZ09+qu4dNJ7gNIqjdqTWAZXvKqJElez46KEX4OwzO1R3rKsAWF33CgtSJgn8dQZ9yf2zqrtpsKBU+K5ZNwiRIDPo6G5wRbBVmMFfvaaocMlkBA1ao2bI8xRyE8HyAKq0aDFFmudHwlY8nDDkM8qeq2rFSjwX+QcjiTWARfCHNYWA/cg5YD6xJMWfswMyQUHfC5fa6Wc7nOUzuxfAyH92YwH/CLk9FW11SI/6ydUAGWJNlNsa+6l44DByyhbHPludp50tjldJetOf7A6vfmpoWBwS8w39oeMmsmOit58ECbUyXkXxqFvbas0vKa5tzD1VjUPQuBhI+3EYGbrmbvI8yTDcknF4fzCnRa/7/G5iko7oAldMOX3hjw0766gvGRpTVjBOOcOw86tblVMJxpMYHcMKyz3WhSCacFKNtA20BsZ9e4UUA/aZwItJfO35sy48v2
+ glUUB6zJ
+ Om0VHGPtfDxvKRBjjiIF+HDQqWY6Q+Ix2DynMthyyP8YEY2NAsthOORew4S9owxThZY5KHMhpxrULvJ+J9X/I+tb9MM2YWR/96wNd/dYC1hBlSh7NRd/OeerOTw8bZ2TJcYZxvjDcQhy740yFSNkd70q400VUJyVtwYITdtUSTFjeRnl+fSZmSIFWFX2rVUMS/8+0pmILYQCOXYT0RKa5SUm8lDQARMLvrgPh9PWssxRjBF2yuq71heIUEABbqpMZnOcdMHaPCW5uwF3QhjJ82X4Ftg+vp3o0Z0YFvHTaf/fmV1FuEl0kgFT2QZCre9vO2UIEglOf/s0AIGOEPPvuFTlCd+8F7zjfV48keIuwSDAYZAlsgiK4WBtKjrS9L3w77RW/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,120 +133,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The transparent contpte layer treats PTE_CONT as software state: when a
-PTE has PTE_CONT set, the contpte helpers may align the operation to a
-CONT_PTE_SIZE block and operate on the whole block. That invariant only
-makes sense for valid mappings. Explicit users such as hugetlb manage
-their contiguous encodings separately.
+On Mon, Oct 12, 2026 at 06:46:12PM +0530, Sumit Garg wrote:
+> On Mon, 05 Oct 2026 at 12:02:55 +0100, Vincent Donnefort wrote:
+> > Sorry, not sure why Sumit's email was dropped...
+> 
+> The problem was with my mutt config, it should be fixed now.
+> 
+> > 
+> > On Mon, Oct 05, 2026 at 11:48:00AM +0100, Vincent Donnefort wrote:
+> > > On Thu, Oct 01, 2026 at 06:04:06PM +0530, Sumit Garg wrote:
+> > > > On Tue, 29 Sep 2026 at 12:33:07 +0100, Will Deacon wrote:
+> > > > > On Sat, Sep 26, 2026 at 05:43:08PM +0530, Sumit Garg wrote:
+> > > > > > Looks like you dropped me from your reply.
+> > > > >
+> > > > > Huh, that's weird. If I hit reply-all ('g') in mutt, it moves the entire
+> > > > > CC list to To: and drops you. I suspect the same thing happened to Thierry
+> > > > > when he replied here:
+> > > > >
+> > > > > https://lore.kernel.org/all/arJcN60nagFKXj2Q@orome/
+> > > > >
+> > > > > I can't figure out why that's happening :/
+> > > > > I manually tried to fix the To: and Cc: lines in this message.
+> > > >
+> > > > Thanks.
+> > > >
+> > > > >
+> > > > > > On Tue, 22 Sep 2026 at 15:55:59 +0100, Will Deacon wrote:
+> > > > > > > I spoke to Brendan at LPC (?) last year but this doesn't really work
+> > > > > > > for arm64 because it relies on being able to unmap arbitrary parts of
+> > > > > > > the linear map, which isn't generally possible unless you force pte-level
+> > > > > > > mappings for everything, which is prohibitive for perf/power.
+> > > > > >
+> > > > > > As per the cover letter it's about allocating pages that are not present
+> > > > > > in the direct map. This essentially fits the protected DMABufs use-case
+> > > > > > where we don't want any kernel mapping to exist at any time. Bufers
+> > > > > > allocated from protected DMABufs are only meant to be accessed by the
+> > > > > > TEE implementation or HW accelerators like in the secure media pipeline.
+> > > > >
+> > > > > That sounds like it should probably build on top of this series, then.
+> > > >
+> > > > The main problem I see with this series is it tries to move from the generic
+> > > > CMA allocator to a reserved FF-A CMA pool which again comes from the
+> > > > DT. We already support reserved pool allocations via "no-map" which are
+> > > > discovered dynamically from OP-TEE.
+> > > 
+> > > I can't think of a way around a DT declaration. We need to know what region is
+> > > PTE-level before the direct map is installed and of_reserved_mem is very handy
+> > > for that purpose. And as this PTE-level mapping is costly we certainly only want
+> > > to enable it for platforms that absolutely need it.
+> > > 
+> 
+> I am rather thinking of a way to turn the default CMA allocator to be
+> PTE-level mapped. Since the overall idea for this dynamic protected
+> buffers was to reuse memory efficiently, otherwise the reserved buffer
+> approach is already there to use as "no-map" via DT.
 
-contpte_set_ptes() currently sets PTE_CONT from alignment alone. Batched
-set_ptes() users can therefore install present-invalid PTEs with
-PTE_CONT set, for example mprotect(PROT_NONE), NUMA hinting through
-modify_prot_commit_ptes(), fork() copying a PROT_NONE large folio, or a
-PMD split installing PAGE_NONE PTEs.
+When the default CMA allocator is setup, it is already too late
+(dma_contiguous_reserve() is called after map_mem()). I am not sure this can be
+reordered easily due to the dependency on dma_limits_init().
 
-This is not a hardware programming problem: invalid descriptors are not
-translated, so the hardware ignores descriptor bits such as PTE_CONT. It
-is a software-state problem. Some arm64 fast paths intentionally test
-pte_cont() directly instead of pte_valid_cont(), for example commit
-9970a9a27ffc ("arm64: mm: implement the architecture-specific
-test_and_clear_young_ptes()"). Fixing the producer side preserves these
-fast paths and covers all consumers.
+So the only case it would work would be when a reserved memory has set
+"linux,cma-default". 
 
-In the observed failure, mprotect(PROT_NONE) installed a full
-CONT_PTE_SIZE range of present-invalid PTEs with PTE_CONT set.
-MADV_GUARD_INSTALL then zapped one PTE. The nr == 1 clear_full_ptes()
-path only unfolds pte_valid_cont() entries, so the neighbouring
-present-invalid entries kept PTE_CONT while the target entry became a
-guard marker.
-
-clear_refs_pte_range() then reached the marker through:
-
-  ptep_test_and_clear_young()
-  test_and_clear_young_ptes()
-  contpte_test_and_clear_young_ptes()
-  contpte_align_addr_ptep()
-  __ptep_test_and_clear_young()
-
-The marker changed from old_pte=0x00000000000047c0 to
-new_pte=0x00000000000043c0 by clearing PTE_AF. For swap PTEs, bit 10 is
-part of the swap type field, bits 6-10: 0x47c0 is SWP_PTE_MARKER with
-offset 4, while 0x43c0 has type 15 and is decoded as an ordinary swap
-entry. Zap later warned in swap_put_entries_direct() with a bad swap
-entry.
-
-This is triggerable by a user process against its own address space. On
-systems running with panic_on_warn, the warning becomes a denial of
-service.
-
-Fix the root cause by making contpte_set_ptes() use the transparent
-contpte encoding only for valid descriptors. After this change, the
-transparent contpte layer preserves the invariant that pte_cont(pte)
-implies pte_valid(pte), so fast consumers can keep using PTE_CONT as
-sufficient evidence of a transparent contpte block.
-
-Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhao Gongyi <zhaogongyi@bytedance.com>
----
-Validation on an arm64 QEMU/KVM KASAN setup with CONFIG_ARM64_4K_PAGES=y
-and CONFIG_ARM64_CONTPTE=y, using an out-of-tree guard-region reproducer:
-
-  populate a CONT_PTE_SIZE anonymous THP range
-  mprotect(PROT_NONE) on the range
-  MADV_GUARD_INSTALL on one PTE in that range
-  write "1" to /proc/self/clear_refs
-  restore access and remove the guard marker
-
-  Unfixed kernel: failed in the first iteration, with 65 bad swap
-                  messages and a WARNING in swap_put_entries_direct()
-  This patch:     completed 100 iterations without warnings
-
-Additional producer-side instrumentation confirmed the same invalid
-batch state outside the mprotect reproducer:
-
-  Unfixed fork():     copy_page_range() wrote out_cont=1
-  Unfixed PMD split: split_huge_pmd_locked() wrote out_cont=1
-  This patch:        both paths wrote out_cont=0
-
- arch/arm64/include/asm/pgtable.h | 5 ++++-
- arch/arm64/mm/contpte.c          | 7 +++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 6000905a2..d6246042b 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1650,7 +1650,10 @@ extern void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned long ad
- /*
-  * The contpte APIs are used to transparently manage the contiguous bit in ptes
-  * where it is possible and makes sense to do so. The PTE_CONT bit is considered
-- * a private implementation detail of the public ptep API (see below).
-+ * a private implementation detail of the public ptep API (see below). The
-+ * transparent contpte layer maintains the invariant that pte_cont(pte) implies
-+ * pte_valid(pte); explicit contiguous-encoding users such as hugetlb manage
-+ * their entries separately.
-  */
- extern void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
- 				pte_t *ptep, pte_t pte);
-diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
-index 0acab179f..851fa2e44 100644
---- a/arch/arm64/mm/contpte.c
-+++ b/arch/arm64/mm/contpte.c
-@@ -463,6 +463,13 @@ void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
- 	if (!mm_is_user(mm))
- 		return __set_ptes(mm, addr, ptep, pte, nr);
- 
-+	/*
-+	 * Keep the producer-side invariant documented in pgtable.h true even
-+	 * if a direct caller passes an invalid descriptor with PTE_CONT set.
-+	 */
-+	if (!pte_valid(pte))
-+		return __set_ptes(mm, addr, ptep, pte_mknoncont(pte), nr);
-+
- 	end = addr + (nr << PAGE_SHIFT);
- 	pfn = pte_pfn(pte);
- 	prot = pte_pgprot(pte);
 -- 
-2.39.5 (Apple Git-154)
+Vincent
+
+> 
+> If we can have "cma_unmap" cmdline option alongside "cma" then it can
+> turn the existing default CMA allocator to support unmapping buffers.
+> Not requiring a DT change at all, although we can have the DT property
+> for the default pool too if platforms want to opt for.
+> 
+> > > >
+> > > > If we can rather support a generic CMA like allocator for arm64 which
+> > > > can support unmapped allocations then I am all for it. These platform
+> > > > specific reserved pools isn't a scalable solution.
+> > > 
+> > > What do you mean by generic CMA allocator here? An extension to
+> > > shared-dma-pool? Or having the CMA automatically doing the unmap/map on
+> > > cma_alloc() cma_release()?
+> > > 
+> > > Right now I have created an API for the unmapping/remapping part. It adds a
+> > > burden on the caller, but the alternative solution is introducing post-alloc
+> > > pre-dealloc callbacks in the CMA, which looked a bit overkilled to me when
+> > > the users of that "ffa-pool" are only optee and the nvidia video dma-buf heap.
+> > > 
+> 
+> I am not too worried about where the actual implementation lives but
+> looks like CMA driver to be the better place. I think use-cases like
+> guest_memfd proposed as a user for __GFP_UNMAPPED on arm64 will also be
+> looking for this feature.
+> 
+> -Sumit
+> 
+> > > 
+> > > >
+> > > > > You could allocate the DMABufs from a CMA region that has no linear alias.
+> > > >
+> > > > Allocation from generic CMA pool is already the case here:
+> > > >
+> > > > tee_shm_alloc_dma_mem() ->
+> > > >   dma_alloc_pages()
+> > > >
+> > > > Do you mean it's just fine to unmap buffers allocated from generic CMA
+> > > > region since it doesn't have any linear alias?
+> > > >
+> > > > >
+> > > > > > > Vincent's series tackles that by using a pool so that only that part of
+> > > > > > > memory requires the pte-level mappings in the linear map. That's the
+> > > > > > > whole point of it, so I don't think it makes sense to drop it in favour
+> > > > > > > of Brendan's approach (which doesn't work).
+> > > > > > >
+> > > > > >
+> > > > > > For protected DMABufs, we even don't require any pte-level mappings in
+> > > > > > linear map. The whole idea of mapping and unmapping is just a bottleneck
+> > > > > > for performance sensitive secure media pipeline use-cases. That's why if
+> > > > > > we can support __GFP_UNMAPPED with the memory allocator on arm64 would
+> > > > > > be the best fit for this use-case.
+> > > > >
+> > > > > The point is that you will require pte-level mappings for the linear map
+> > > > > if you want to unmap from it at runtime on arm64. If you don't, then you
+> > > > > can end up needing to split a block mapping (e.g. pmd-level) when you
+> > > > > decide to unmap only part of it and there isn't a safe way to do that on
+> > > > > arm64 without transiently unmapping the entire block, which can lead to
+> > > > > fatal translation faults during that window.
+> > > >
+> > > > I agree with you here, what I am rather trying to find if on arm64 there
+> > > > is any possibilty to have a generic allocator for unmapped pages. That's
+> > > > the use-case here as well as what Brendan't patch-set was trying to address.
+> > > >
+> > > > >
+> > > > > > Now the question is why arm64 can't support __GFP_UNMAPPED similar to
+> > > > > > how Brendan is doing it for x86?
+> > > > >
+> > > > > Because arm64 != x86? Presumably x86 doesn't have the strict
+> > > > > break-before-make requirements we have on arm64.
+> > > > >
+> > > >
+> > > > Sure, sounds like you are eluding to that the generic MM flag
+> > > > __GFP_UNMAPPED being proposed can't be supported on arm64, right?
+> > > >
+> > > > -Sumit
+> > 
+> > -- 
+> > Vincent
 
