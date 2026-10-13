@@ -4,93 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 621D3CC6B0F
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 10:06:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 141A4CC6B08
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 10:07:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E05EE6B008A; Tue, 13 Oct 2026 06:06:37 -0400 (EDT)
+	id 10DE06B008C; Tue, 13 Oct 2026 06:07:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB6156B008C; Tue, 13 Oct 2026 06:06:37 -0400 (EDT)
+	id 0BE506B0095; Tue, 13 Oct 2026 06:07:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA48F6B0092; Tue, 13 Oct 2026 06:06:37 -0400 (EDT)
+	id F1DA16B008C; Tue, 13 Oct 2026 06:07:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FA9E6B008A
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:06:37 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 04447160408
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:06:36 +0000 (UTC)
-X-FDA: 85317173634.24.36A9180
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 59FA14000A
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:06:35 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bm5Rr0+o;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D46EA6B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:07:13 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 56CF612041A
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:07:13 +0000 (UTC)
+X-FDA: 85317175146.23.187F978
+Received: from mta1.migadu.com (out-71.mta1.migadu.com [95.215.58.71])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1E9414000C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:07:10 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JbHWWL4b;
+	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.71 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791886031;
+	b=7kCQPSzIph9odybB4IOVh1MVfXn7Ueb9fIi3ErsWOYuGp0e3O9MVXZ4QLbXF8OvnN4mG9l
+	WW0kq5IxEEbyFVlTlRGC+iQDggyIFz+mxX4o33xvNUdGzCCceoJ3UD6QOgrLysWTZtZ/9B
+	maViYkldQVZqJZOwAf7MvyhoFjS6h2M=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JbHWWL4b;
+	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.71 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791885995;
+	s=arc-20220608; t=1791886031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gU5utLVnwFgQmWLZFQ4HFSchng7Sy7XfB2Vr8rq8k3s=;
-	b=RPtBqT5c5VnjDbOG5UAmV8uv8s2x5VpTuZw0aFAOS8zTr2fetE0g8BnJh72j38rpBfafDZ
-	Soc1DxN5dHYVvdhxgQti+jUWxZm1NDfGHgiEo8U6i1Jned4tL0Fcopbig6lWjfT0MrwIsn
-	Sbt3lF9a3hXh8i12GBPA6UGXJFLgJ40=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bm5Rr0+o;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791885995;
-	b=532ys+JzadxhsjygR8A2WW5tlz/Vm8EyaUm9FJLEeOK1o3cIRaoJa9Ct18mDbq0Xh2fRZ9
-	QuN3AdnZpryl1/hiIRnd7sLJdK1OBrGMfTEQDF21UHhQVKw29m37vKQItOJIxu41qENTLK
-	IQdaII1JMhPMpMDNSy2G2bhoXihxUa4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8462D415CA;
-	Tue, 13 Oct 2026 10:06:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 287461F000FF;
-	Tue, 13 Oct 2026 10:06:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791885994;
-	bh=gU5utLVnwFgQmWLZFQ4HFSchng7Sy7XfB2Vr8rq8k3s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bm5Rr0+ol4pjiJzwi/GQKJ0ntegEVZPrz4cJnarSTTrO2k5Etyt/wleY5J38Ll9d3
-	 4XNROqEiPrx7zUF3rOmVGAi08whzPjLZoLyItDQukcM4GczFOp0rERJ9Vd4737LeQu
-	 FuHeXWHT+swUu4L7Eb1fb+bi54KfTLOAXebsIXVAS460rKVp82oAHQRbL0606tkr2J
-	 wEZEN7tLiPwGNYTjRo6Rrlqe0aCg5RLB8qMfWcwHq4G6A8Es1LI1uy41aUF7+oerkv
-	 BvFUMMHP0u7GRBvfEujf/sMCaRuDCErqPAtbDKwvEsz+JGvGNAnKFcvf2GYIvymRrn
-	 UsuItD5TgJMIA==
-From: Mike Rapoport <rppt@kernel.org>
-To: dmatlack@google.com,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Tarun Sahu <tarunsahu@google.com>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] memblock: drop for_each_memblock_type() and open code its users
-Date: Tue, 13 Oct 2026 13:06:27 +0300
-Message-ID: <179188590478.4188181.17324869307973975022.b4-ty@b4>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261008190828.3221718-1-tarunsahu@google.com>
-References: <20261008190828.3221718-1-tarunsahu@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 59FA14000A
+	bh=Kbbcsq4gjfhjCcmUx6vDab+WkFJEw2PfLoeMu2drfZo=;
+	b=ZSokX6lGsCIpkiwnemi5YuMcnlWu/P/kInPtEkBDAMLEaESwICTKMEC2VEC+c86213wuSY
+	+4E0RnScdilycXh8sL7GDwg8KlucKoWFjNDUZw1/SmgToOqRARHOSjMsszMRyHENe8Ky1j
+	wl5kvN88BlOpLfJ/X98bKXUyc4CpREU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=19GLy3aq4B6Z6bUMOpryhrMAzIgxJ66Kmju5Caaif9s=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791886028; v=1; x=1792490828;
+ b=JbHWWL4bkVmD+IVquRhgSsCk5oHEZk3IOOiQitNJq6CEoEaI+nvbou+NxfP861+c3fismtS0
+ /xOeg2yF3UMtLc8cpjaeneuguC/a9+zLpiL0A9sqWPHSaLQVbjWjU9V0R8htRbCR6w1MTMSiD57
+ ptBQGIy4yeRW56QPplt+GpzU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 9e66ce19328045b4;
+	Tue, 13 Oct 2026 10:07:08 +0000
+X-Mizu-Trace-ID: 9e66ce19328045b4
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH v2 0/3] memblock: Remove unused exact nid allocation API
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <179188501773.4183299.8247277870365097333.b4-ty@b4>
+Date: Tue, 13 Oct 2026 18:06:49 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Kaitao Cheng <kaitao.cheng@linux.dev>,
+ Priyanshu Kumar <priyanshukumarpu@gmail.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <35057B7F-9E89-447B-AF4F-92A78B45F8E2@linux.dev>
+References: <20260919135327.74089-1-kaitao.cheng@linux.dev>
+ <179188501773.4183299.8247277870365097333.b4-ty@b4>
+To: Mike Rapoport <rppt@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1E9414000C
 X-Rspam-User: 
-X-Stat-Signature: 896sgshcqfpi9pcs9tczmdrt6m58fi5k
-X-HE-Tag: 1791885995-413628
-X-HE-Meta: U2FsdGVkX18VNuVXKZ8kh7K5SJ1oMKTGca8x6pjj/EiETtCJLGMjhR2pUEFLLJv8gHtRi151Cf7B3Gz+6DWwRjgQyE/PGexrpZ9KSVmNLRCJODjCNEb0juB+1lpzXz42pLR3oCCH6iRJRGfwNBZGkDRD6HIJG6VvZp1emO3RxTNJ6Shiv6wlgLti4fgV7cF19676G42mA/0EHoiWWzCBh+VuZ5PNv4sk10lmRk139h7YOXV6WxZTb7rq+BzRsSmSLYheJmbsl7N/Iuzgi/zLCHbXKTnCR1rCP2pNRNSLdbquKyj4cYYoFXdQtVDv8NwyxBuEg8/3bLK1BJZMsMvreqoXT4L4WHTU1XczgkAKj92s5FsHo3mOuQ5d2Ic88a76lIWccRRVh3cUJkMNT1doEmmMMkUn23bNzyM9WAwuwPCmoXKHsID+CFhnQj2FZtGBG9xhtHdYghOnjG6O2e5RyQzC+9vUAEygC/aM5Vh0YOcu3/k5+IN4kSmO0JHc6RO00it7Bz/0r/cldgDi+JtEPpAw4vfRkfdBRXdXx97QjdHUFEX24CPp3SwnhPamtUKVzpo8nUKmUrWi+UDJCxaNK5abPF/IkA0WBpM9QiKVNPESkfTIP8LDBvzYM/4wyTu+acrkl68dFZg3l6m7EpdqjYO2MkUfbmUKgmDgx6l37L9c+QaxhGy/UeZlkwVOkUm4/MP636yB+QdCuGhKi5+H1/zy1slxUhSwGoxQARKciB6fIelQ/q4i4loYaqLW7bM0Uli+FatOC26zCyZSCrjIsRrc5uF07SzsOwx6mKuhDhjJCthCs0YqeLXwcAU5xo92NXUPnt4hEudvsMYTXWzTUmvdeooWi8sgaHeXSHhwFWrLEbw8vsdar7sdVrdarA2HNE2VTTX7Xhr0AW5hfJy/xZU+ualzInmzzq1tVxzDf0VlSLgP4gfWLFVxy1em3ZfJg8/ZdoIlPNVaKmOhVns
- K7PLcjMF
- /X1poII9W3RzaQOqtSzIaI8wYY52cknvC/+oczrroMFqw5WZ2nj9Aw6HfoNDd8lI8XErUF6nz8wtj3KnJczT1NCYsDCXR4rqiKKNbscJYQGoPqwef2UqdHo65+rmacOxnSAARrr9Ni1RcSpzWB1m64EAKAmmQiKkPT8+mkZd82Z6rCJN+9+bIqyBuhYNHMxXNHXrAyPdwTkyCYfr49ZFIfA49Iw8zrCQLCK084rTCS77Y5OJ8Mf8EMyj94rqemPPC5X+f8JQiI0/J/Hz6qWOOyAKJdEk3SmvxnWv9
+X-Stat-Signature: sngwyxep933fxnabd5wzufoz55uxyciy
+X-HE-Tag: 1791886030-715170
+X-HE-Meta: U2FsdGVkX19YUv93Uh0kQQNZks5ID0pDlrUc3SJJJwcCnA8/iJecp4Bzs+HNi4+OOlZg7ZC9k9QTHS1ePbWvaAfRkmDwyL0CJnj22eRwsvOzQwgcYg42fQTdjaT4sekvoe8DsnQNk4O6VOJmhGHG5MgHB14fPsiEojFx9Tt/5cZ4Nhhk/UJg7KTvstXsZWcFkAURNsUzLw2ulsdotsxiKiWkwvBB1kTdCD/0V0XyRZeStyWrn2+cY89UOI+PUiizYwnQdfEe9LGN34oZtvjFOlWQ+1BejBaPIivHySbeWpRrLrz9ePyNaZmU2OYCFbOBHtnTdAEfAOAhWrlv5M0RzLAH5QfDssEp8R4IP/OUNkwdR6mVd/5qBV0uXYU29maTDWAY06SEJoN5W7tsZYTf39Uj9Hgrk+wutFPPH/KSbhcLtVTyPOxYzli2MWnV6803fHcDX7qozy81JsFR5O+Dp6UVQvMgY+bbg4uSjAzFO01RKfAUqaewRyLzKZ3VvheKu5nWgDFGWJEZvh8Pdg8Ju6EBBIrnfVSFgElcPF8ChwNgumwApB0XUJlnoFwwYkbyi0Gx7Ef6sDf8Tt+SCLLkfn7gHLiw8sQOTHYMsSQYbE5pNVYuPncXHDs9m27w52g9cswyrjRcmp7406WPZagH9VI7MDfXuhbsQSVM6BkkJcyXP5YsMcPnAZpKgjhuoepMr3MyuzK32+QkFQ2DRceHyUVz8w5XaOQ39umttIeTh6TOymtKkrsAM1YmOO0ZnKVcxGTYqVzZdgGppSa5yrL724kkhd0wvN7dA1PjWOd4kvnbMb19OR/HCLiOP2bMQeKvx/aumy4Ht5PLfo1S4t388bgroIZhNU3qG09NwdPuBvrITDSo3LUz8anTZxwfoA2BvwBZbAAa5bGVRfQ96xCNj1u1mnhDQ2CXK9jOw4apRBuLJ16mNCR6N+khkHsrj8S9b2YZXLevsbbcX2UJRiF
+ SJSLFwxk
+ IP6aWjEwW/znJMDZ6zF/+pL4YRTUYhlmuSgPxxMdV9HNY2zBVp1nZ/akK9j3IHwQoWkH1YxQci0q+LyEfEcLNGzp6a58vuaqdBj9UZJnhSQZobti1HjQb15xr+smYRw4eV1OCFikavVE+J8tL8WOu/DWGc82XulH7WcJOYK+5G8rkKAsFTuhWx2lfu+cO3fJuaHV2bBulTTrnUK7hp3hny19bL4Sw20GowSYAIWs/OrRPAYHs58dACh0MfeOsmHxptLO0bFzYNXfo2bBm1AWOuOE31CEw8BTglJd8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,32 +101,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-On Thu, 08 Oct 2026 19:08:27 +0000, Tarun Sahu wrote:
-> for_each_memblock_type() always starts the iteration at index 0 and its
-> body is a trivial 'for' loop, so it hides very little. It also gets in
-> the way of iterating from an arbitrary index, which the next patch
-> needs.
+
+> On Oct 13, 2026, at 17:50, Mike Rapoport <rppt@kernel.org> wrote:
 > 
-> Remove the macro and open code its three users: memblock_add_range(),
-> memblock_isolate_range() and memblock_dump(). While at it, move the
-> region pointer into the loop body scope.
+> On Sat, 19 Sep 2026 21:53:24 +0800, Kaitao Cheng wrote:
+>> memblock: Remove unused exact nid allocation API
+>> 
+>> Commit ffe55393137c ("mm/sparse: remove sparse buffer pre-allocation
+>> mechanism") removed the only memmap_alloc() caller that requested an
+>> allocation from an exact NUMA node. All remaining callers allow fallback
+>> to other nodes, leaving the exact_nid argument unused.
+>> 
+>> [...]
 > 
-> [...]
+> Applied to for-next branch of memblock.git tree, thanks!
+> 
+> [1/3] mm: Remove unused exact_nid parameter from memmap_alloc()
+>      commit: 063b5e8bbd216c27e885f45e29e23d053aa565fc
+> [2/3] memblock tests: Move exact nid tests to memblock_alloc_range_nid()
+>      commit: fba3e86fb848f79c4573243affcd7d79d378958d
+> [3/3] memblock: Remove unused memblock_alloc_exact_nid_raw()
+>      commit: ea27be9f7ce90a05e779d20b60969ce2a9834f77
+> 
+> tree: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
+> branch: for-next
 
-Applied to for-next branch of memblock.git tree, thanks!
+Hi Mike,
 
-[1/2] memblock: drop for_each_memblock_type() and open code its users
-      commit: aedb8dde08f8cd93ce1cc3a23273f2ff7238f832
-[2/2] memblock: use binary search to locate candidate regions
-      commit: 7a3477ec5793ab8c25be4db3e7dfe8a461bc775c
+Just a heads-up, the tree has moved to:
 
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
-branch: for-next
+	https://git.kernel.org/pub/scm/linux/kernel/git/mm/memblock
 
---
-Sincerely yours,
-Mike.
+Might want to update it next time.
+
+Cheers,
+Muchun
+
+> 
+> --
+> Sincerely yours,
+> Mike.
+> 
+> 
 
 
