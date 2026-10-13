@@ -4,89 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBEE6CA9ED2
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 11:49:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DBCDCC6B03
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 12:18:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6E4D6B0092; Tue, 13 Oct 2026 07:49:52 -0400 (EDT)
+	id 1D7A46B0088; Tue, 13 Oct 2026 08:18:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E47106B009D; Tue, 13 Oct 2026 07:49:52 -0400 (EDT)
+	id 188496B008A; Tue, 13 Oct 2026 08:18:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D603C6B009E; Tue, 13 Oct 2026 07:49:52 -0400 (EDT)
+	id 09E206B008C; Tue, 13 Oct 2026 08:18:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC4C56B0092
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 07:49:52 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37E02140B0E
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:49:52 +0000 (UTC)
-X-FDA: 85317433824.21.108F5D7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9D8904000A
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:49:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FXoMtWX+;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E1A676B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:18:53 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D142B40C10
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:18:52 +0000 (UTC)
+X-FDA: 85317506904.08.1ADE093
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1FED880005
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:18:49 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="kG/tHQvm";
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791892190;
+	s=arc-20220608; t=1791893931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G78GCGexl4AmpaQPtR/ZnZzU2sTMtYA9Jm+zImCCMg0=;
-	b=f4ZgKIgaU1kcYyqk9N6/aKUKIqCX7zL8py/ABBveEoyPNbheevxwSIOIILUu9R6p/jFc0D
-	UICGLm03bCWUDlTVtMyoBXKSOkUR/1ds6/h6/ym/toRj4KlZXADvWUZm4vG/D3A4FFn27f
-	l7jM8dcnphym091/hLTrEsCDR/ukMKw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791892190;
-	b=PtAvxF/w1K5f4tKBH1pSHQukk2N7uaZZ/hP0Epfx+2c7BEKfFj8CBmbczKTt63zRaEUs6C
-	NwVcYzPkpFa35AKcbapZ4W/eWh1x/EyRhJ8ZLBdAKimanQzPPVwG95TR4qelfCpctSbM5j
-	47ncMjygTkLyhNyAcebdMzqD1Z8dHsk=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=ALm7soh/JTUkJUHpmt2o8VqD7+cGOY4OrpGT93h70/s=;
+	b=IXyKHI0FdQBT9k9p95Dk/duW8p5jqQjHL2kOacMNNModNg5PcHMx1PkWlNFgVQuCra+5D+
+	7EJwq27qOxcIxxayvDf1RmZFTfmaSeN1vLAEjMCTnz+uKx3aCf8C5wEJyIlkBjpE16Jhld
+	TPc9zDs4KyvaeZ28HpbXVVNFUPRYTLY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FXoMtWX+;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0787F60A59;
-	Tue, 13 Oct 2026 11:49:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473A51F00898;
-	Tue, 13 Oct 2026 11:49:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791892189;
-	bh=G78GCGexl4AmpaQPtR/ZnZzU2sTMtYA9Jm+zImCCMg0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FXoMtWX+E0Ns8PGdn2KmS+jJAun6cLyIIFVnKAdLaacvI92ehKO56NFEEM8hx/43G
-	 Mdvh6lvy7PAhXlgcQ74kUERl8nUJOocW/dfXpn455qV1cVbPaOmKUCGsCpEKGAanSh
-	 C7Awb/wt6k7m+NPUXnAl7YY//5zrOY6E6Ik93oi+7JNTKweJzDyZlzZFlPqyudlSVq
-	 pjmacYMfzBYErSUgDV2vSoXIC7snuIMYJUVKUKsMctMcDd1+AjtrMc7GhtSBOITdWS
-	 Kfd6YjvwtF32KATyRwEEDWMmMDBW7x8aKzVRleLm0o4zBw/NCi+nnPZFoUd/V/LfbD
-	 cFpa8Zqqfg4cw==
-Date: Tue, 13 Oct 2026 12:49:47 +0100
-From: Harry Yoo <harry@kernel.org>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Roman Gushchin <roman.gushchin@linux.dev>, David Rientjes <rientjes@google.com>, 
-	Christoph Lameter <cl@gentwo.org>, Hao Li <hao.li@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Vitaly Vul <vitaly.vul@partner.samsung.com>, Damien Le Moal <dlemoal@kernel.org>, 
-	Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v2] mempool: optimize mempool resizing
-Message-ID: <as4Xi9hPZldwGdzK@thinkstation>
-References: <20261013091408.1231786-1-vitaly.wool@konsulko.se>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261013091408.1231786-1-vitaly.wool@konsulko.se>
+	imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="kG/tHQvm";
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791893931;
+	b=rlUSDtUJ/KDB/B3ZPrzseW+y/1XXspv/mDnm8K64Y3bM3iCs0Lu+DFP454B2Xj9iXkYAKK
+	HdgfzNeem2YBzqbDXYsRZ+INLDgHRYv+1eWvPgEQJwpGZ8Mo0UyCyJ/bYqT9SKrhH7f1Cd
+	pJXpj/jEPo06V9N8JQ/TeZMuu7ARt+M=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791893930; x=1823429930;
+  h=date:from:to:cc:subject:message-id;
+  bh=R5qQrym39cHyGlBkeTRcjgJWXjS1CQRn4cl0zb0rtCQ=;
+  b=kG/tHQvmuv3UZQAEotTJIYlKnQxzdrxBtD3jiohW0Yiio/FA3pSexv1L
+   a2barP7xFzrrJH5QWgLeApAD8woUMHZPgJDJEmVim633Ze1/43J9VlOr5
+   pZNLbX4ckj0MKkcXWymTeDCE+gnoxEiDyB1JmcwfeM5200CiVEJq7jgSR
+   XLSJEeGr7ts0DrTVG5u37xsuTrXrLL56ManFDX4LyM2qvQeMJ2isOriZU
+   DR5SFDOh5nN3w19jEtVaiabkwaYWuRuoMwRa+69DO1kj1E/BjFTKiO2ZC
+   9oP1B1a8z00WyGm44VCZY9KKuKlSDLw2GSrG7TEQVf0PEQs7pBy/I/CUb
+   g==;
+X-CSE-ConnectionGUID: yyu3WmXBSDOr0pH7iVv0vQ==
+X-CSE-MsgGUID: u1r/jI3kR9ulKP62bvkNEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="620203"
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="620203"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 05:18:49 -0700
+X-CSE-ConnectionGUID: 8ahP6q1lQJ+ch0B98VnhsA==
+X-CSE-MsgGUID: n7a/zTXrTZCeK5M1hrexaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="1262157"
+Received: from igk-lkp-server01.igk.intel.com (HELO d0de6c2a75a7) ([10.211.93.152])
+  by fmviesa002.fm.intel.com with ESMTP; 13 Oct 2026 05:18:47 -0700
+Received: from kbuild by d0de6c2a75a7 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xGbSu-00000000AUx-20is;
+	Tue, 13 Oct 2026 12:18:44 +0000
+Date: Tue, 13 Oct 2026 14:18:21 +0200
+From: kernel test robot <lkp@intel.com>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-unstable 183/193] arch/riscv/mm/init.c:1544:2:
+ error: implicit declaration of function 'free_pgtable_page'; did you mean
+ 'pmd_pgtable_page'?
+Message-ID: <202610131439.F2KDdzRA-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Queue-Id: 1FED880005
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9D8904000A
-X-Stat-Signature: zkr4w4rrnfmn5wseimiw4ob3ghhpzu7a
-X-HE-Tag: 1791892190-664955
-X-HE-Meta: U2FsdGVkX1+MITmIXpIYjUBbQoSqPP9HENDdv1CZGNhQc+lsfGK+kZ01u15ip/gmnsA8g4K6yysqPt2NcWJnF9YOd8P3dmDAQTGk/jfnG3v+WndHGIatKfoJARKCTDMgi8H7MoCHnJbPoC4PpAc+SdfyPwdMrIgxT0idHjH6N11ZnUxpBk2VqxgwdvA8TZXCJnn4po66hOOv4o95brkzkMaHLSahT6u1Ok/6LjbffDac0JeEN+WqT9wuQquFiMo9omEFCAZVHZM9lEefPIJ3niDdoQUfOCrWgCx5K7d2I7/r9CZtuKiUsPxr7JPbLAxE9+gAcZXEGY0HqxHEuj1B0I7TJ6RM4fdVW+gsi6s97hBPm4bw3C49hXC7H1FQaKOY5YrHzYtDj/Pnq30QtLf16OOOpN+CkJ274MGBnDwMh8/N8cynkXFwL/bExYT16HKxG0tlodnc3SzW59VXdyyI7+pKvtpmtEQ8QCwItluby1pTtYY/vz5m9gl3tvtCEWLqZiobE28yL92o0VMvYz6DtC/RpXncVSUvWVXiV6vzpsJab49KqpsnZCJ7ae4XPPUBMcz4NOVZEC2hkDcjM8jDVe07RHIbN4lvoyQ4bKmWMQOypXkhTiVK1Uu45fkCIhPr7HxDlp8juWiylez96TmOiHPw/A/Q/fv1X2idbKgoIIxDN80fERgNc8/5ARY9GgG3rTcOqX8u0Xj8T0bFWYWBLcdHPqzU4vX3NARE7xrZ6N7Q7bHeNQG0Xj2AdimiWAaBEhENMnf926l1ier55nGbqniVfLSbFvYtZcElQh2MTPs+M5o+8Gx8xQ9F1BuUQsNd7bIhxNmHa5bKeCFrwWLyNxLAhFoHIazboSPuP+Qty9lgmOyH2PDgP0V7CTaPHg587h/+niyvgebtroUpX9MgPYhhiNTi0j1iTzDVvB4B8UnyyiZ4ygYgbawoGcgDrf677y99r1Ybc9nMLyirtEX
- fxg+L1j1
- WJK/wyeWVZCWdhOSdx7awBMWVh6HzKCvrCxccylUd30UK9n1mqMbkQU4WdC8ubnlEiBpfkGMkamI5ewVe0gfJxJG3MTcuSoTcduSlSBalexaXTBhHO0DMjXMm81ZiEPOVDpO+r5Xa3V5mOrUpu8uJok798xhVDQ7CfszJdpQi9dEVCNR18Xnf1JoVrGFOGOYn37sMfYjXnfJqvOrpnNWHmYUS2Y0ramryRamxf4KSfNXAAQSuFqO2cuzdErAb+/PjGMhYDKgCEKA6rcZ3RWSoYZlbRbxemFkdL9cKMZ1n06UsnRU=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 4uan19t5fexqbf9s8c6xtrdw3k3nytp8
+X-HE-Tag: 1791893929-794528
+X-HE-Meta: U2FsdGVkX1+XvkERZmQOqIp7W5QKELQWVLyWnUBfYwtuR/Mmcvk+5axoMMycESjyM0CX/oNwd/ZDFNC3/auvfS6O0TC4fUkAzqyDT02v7NBYgLtSM2X/E6L9TUZM+JYYeL8jGevXUnPqsbuERc7CFBKLwqZlJuGG9n3i7nwe8MMsOlH60nauLA+BGoQx2D9YGcaVB33sjZeo99ERVt9naldDtsHt5I9+IwUGuLF++FQcPMIBCTKFT/KpGxO5n5vre06fuCubiu2AO3CwsH3VYtquD0UKhUasFs7jhTjFqa8bcv7deOV8tfaT7kwTTZd5Rnfm6dNRA/Piu73ntVM7tnWJ8OmzSiJdvyL/ZsdUVgOG2UTLTjvcLMtKr+OaB9j0bxIoYc1BCvhgv610L1gTaT66VFe/PodUfk5SW95GnAQpdsq7P8NJSFhtM2lbO6X7wojM/O5eW8ZWbz6CUTu2CJugR/WJPZINZq3fvubX9kmD/S35N5HiE8vlRzmHWETLvjMKZMW9Bs3oeOTVElEUHxjGgiSunAf5YrOqnki+mXtoArFsixK7OPeGN/EXF3qYWdxFdVDNyVOl/euN+exhDgBMkqdFpaca+6P1alGQuZ/4mRCojjLOo/YQ+6YRvBGa2GsVqhwtA5LLpc7Aj0C253mvxEaSFsrzroGImc3qEh5xsjvrsL2xwZFYsfzLqiV7xD8kYdLPd0hWF6qlqhvZ0W+hqOoisd68XT2vljnY7A+/cNXugGJnuUXDTRKUbQVJ8HGMc1QL9gijM3/cl7Un2yp+V8FpPWdTbr8/yTuaHXXi5CEMtKdM65BNnApG17vHPETayHbgyul6WnUFXIIw/Xqu/o3DXZbM7zWsnC+Sqf+oZQNO4WrMoH+sgSM/+PNnQWQlzwi/bE08mXHgHA3uZ1fFCeNXSQSJ/nXSvLTFwUrr0xqjC15ujMdZVsJB0WXJFRnCzYxi5+5piNIjy0U
+ yFHczWbJ
+ 21NBd+ZaoDRHpP827M0F0Ug3J8X/oin6hcAH7+m7E/BntVhj7VwZE3n8sv02YHlaThC5GNd7iIadgTkd5/6OOr0wsVHVFPbTZs6/BcQvRzMXJqrYcfAfPqZ3obItPFl1LYGQJiJ9sG1IJuMC/j1s6DIZJkjJydt7ZE/JXC4mZ3bgA/N49APnPPYhmq4GmRIZbqVusEsnJNd6bH/7iIDoeEfyyJ4HZ+AQSbgQjhOfqjQXDv5jW7kJtSc3okJjcPYCsRxDjwJcD/4wnntKDssHk2UeSJaq0JxiTnh2s9RaxfGDmcPe8i+2ITL+Mgd2lG2yBomt8HUsEBmZsdOh9WBc9lD+2aVPhkg4TkGThsvgkt4xL72oYEOCdVYyPkw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,146 +104,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I think this has unresolved feedback from Christoph [1] and Damien [2],
-so adding them to Cc list.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+head:   7186f1bd21b9094cc063c10f8492fd135522d3cb
+commit: cf6402c085736133c835e1f815f79e7e1faf97a0 [183/193] riscv/mm: fix missing destructor for hotplug PUD tables
+config: riscv-randconfig-r2109-20261013 (https://download.01.org/0day-ci/archive/20261013/202610131439.F2KDdzRA-lkp@intel.com/config)
+compiler: riscv64-linux-gcc (GCC) 10.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261013/202610131439.F2KDdzRA-lkp@intel.com/reproduce)
 
-[1] https://lore.kernel.org/linux-mm/20260626042252.GA7997@lst.de
-[2] https://lore.kernel.org/linux-mm/9104ac5d-ed2b-409d-8220-512dd4581966@kernel.org
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610131439.F2KDdzRA-lkp@intel.com/
 
-On Tue, Oct 13, 2026 at 11:14:08AM +0200, Vitaly Wool wrote:
-> Resizing mempool to a bigger size currently requires a new allocation and
-> a data copy to a new larger elements array which doesn't go well with the
-> idea of having a fast and deadlock free memory allocations during exreme
-> load.
+All errors (new ones prefixed by >>):
 
-Please elaborate the problematic scenario more in detail.
-Have you obsesrved the problem in practice?
+   arch/riscv/mm/init.c: In function 'free_pud_table':
+>> arch/riscv/mm/init.c:1544:2: error: implicit declaration of function 'free_pgtable_page'; did you mean 'pmd_pgtable_page'? [-Werror=implicit-function-declaration]
+    1544 |  free_pgtable_page(page);
+         |  ^~~~~~~~~~~~~~~~~
+         |  pmd_pgtable_page
+   cc1: some warnings being treated as errors
 
-> This situation can't be completely avoided but its occurrence can be
-> vastly minimized if we track the actual number of slots in the elements
-> array. This patch introduces a new member of struct mempool which is set
-> when the array is allocated in mempool_init_node() and only changes when
-> mempool_resize() replaces the array with a bigger one.  Growing a pool to a
-> size that still fits the existing array now just raises min_nr and refills
-> the pool.
-> 
-> A racing resize may enlarge the array while the lock is dropped for the
-> allocation, so __elements_size is checked again once the lock is
-> retaken, and the unneeded array is freed.  The array being replaced is
-> now freed after dropping the lock.
-> 
-> Signed-off-by: Vitaly Vul <vitaly.vul@partner.samsung.com>
-> ---
->  include/linux/mempool.h |  1 +
->  mm/mempool.c            | 43 ++++++++++++++++++++++++++---------------
->  2 files changed, 28 insertions(+), 16 deletions(-)
-> 
-> Changelog:
-> * v2: all the API / behavioral changes are dropped, only the
->   optimization remains
-> 
-> diff --git a/include/linux/mempool.h b/include/linux/mempool.h
-> index 6da502aef2f7..a8a411290bf0 100644
-> --- a/include/linux/mempool.h
-> +++ b/include/linux/mempool.h
-> @@ -20,6 +20,7 @@ typedef struct mempool {
->  	int min_nr;		/* nr of elements at *elements */
->  	int curr_nr;		/* Current nr of elements at *elements */
->  	void **elements;
-> +	int __elements_size;	/* nr of slots in *elements, never shrinks */
->  
->  	void *pool_data;
->  	mempool_alloc_t *alloc;
-> diff --git a/mm/mempool.c b/mm/mempool.c
-> index cb74e718b2c6..1911a696737b 100644
-> --- a/mm/mempool.c
-> +++ b/mm/mempool.c
-> @@ -261,6 +261,7 @@ int mempool_init_node(struct mempool *pool, int min_nr,
->  					    gfp_mask, node_id);
->  	if (!pool->elements)
->  		return -ENOMEM;
-> +	pool->__elements_size = max(1, min_nr);
->  
->  	/*
->  	 * First pre-allocate the guaranteed number of buffers,
-> @@ -353,6 +354,8 @@ EXPORT_SYMBOL(mempool_create_node_noprof);
->   * This function shrinks/grows the pool. In the case of growing,
->   * it cannot be guaranteed that the pool will be grown to the new
->   * size immediately, but new mempool_free() calls will refill it.
-> + * Shrinking keeps the elements array, so growing the pool again up to
-> + * the largest size it ever had does not reallocate it.
->   * This function may sleep.
->   *
->   * Note, the caller must guarantee that no mempool_destroy is called
-> @@ -364,7 +367,7 @@ EXPORT_SYMBOL(mempool_create_node_noprof);
->  int mempool_resize(struct mempool *pool, int new_min_nr)
->  {
->  	void *element;
-> -	void **new_elements;
-> +	void **new_elements = NULL;
->  	unsigned long flags;
->  
->  	BUG_ON(new_min_nr <= 0);
-> @@ -381,24 +384,31 @@ int mempool_resize(struct mempool *pool, int new_min_nr)
->  		pool->min_nr = new_min_nr;
->  		goto out_unlock;
->  	}
-> -	spin_unlock_irqrestore(&pool->lock, flags);
-> -
-> -	/* Grow the pool */
-> -	new_elements = kmalloc_objs(*new_elements, new_min_nr);
-> -	if (!new_elements)
-> -		return -ENOMEM;
->  
-> -	spin_lock_irqsave(&pool->lock, flags);
-> -	if (unlikely(new_min_nr <= pool->min_nr)) {
-> -		/* Raced, other resize will do our work */
-> +	/*
-> +	 * Grow the pool.  The elements array is only reallocated if it is too
-> +	 * small, it may still be large from before an earlier shrink.
-> +	 */
-> +	if (new_min_nr > pool->__elements_size) {
->  		spin_unlock_irqrestore(&pool->lock, flags);
-> -		kfree(new_elements);
-> -		goto out;
-> +		new_elements = kmalloc_objs(*new_elements, new_min_nr);
-> +		if (!new_elements)
-> +			return -ENOMEM;
-> +
-> +		spin_lock_irqsave(&pool->lock, flags);
-> +		if (unlikely(new_min_nr <= pool->min_nr)) {
-> +			/* Raced, other resize will do our work */
-> +			goto out_unlock;
-> +		}
-> +		/* A racing resize may have enlarged the array meanwhile */
-> +		if (new_min_nr > pool->__elements_size) {
-> +			memcpy(new_elements, pool->elements,
-> +			       pool->curr_nr * sizeof(*new_elements));
-> +			/* The old array is freed below, outside the lock */
-> +			swap(pool->elements, new_elements);
-> +			pool->__elements_size = new_min_nr;
-> +		}
->  	}
-> -	memcpy(new_elements, pool->elements,
-> -			pool->curr_nr * sizeof(*new_elements));
-> -	kfree(pool->elements);
-> -	pool->elements = new_elements;
->  	pool->min_nr = new_min_nr;
->  
->  	while (pool->curr_nr < pool->min_nr) {
-> @@ -418,6 +428,7 @@ int mempool_resize(struct mempool *pool, int new_min_nr)
->  out_unlock:
->  	spin_unlock_irqrestore(&pool->lock, flags);
->  out:
-> +	kfree(new_elements);
->  	return 0;
->  }
->  EXPORT_SYMBOL(mempool_resize);
-> -- 
-> 2.39.5
-> 
 
--- 
-Cheers,
-Harry / Hyeonggon
+vim +1544 arch/riscv/mm/init.c
+
+  1531	
+  1532	static void __meminit free_pud_table(pud_t *pud_start, p4d_t *p4d)
+  1533	{
+  1534		struct page *page = p4d_page(*p4d);
+  1535		pud_t *pud;
+  1536		int i;
+  1537	
+  1538		for (i = 0; i < PTRS_PER_PUD; i++) {
+  1539			pud = pud_start + i;
+  1540			if (!pud_none(*pud))
+  1541				return;
+  1542		}
+  1543	
+> 1544		free_pgtable_page(page);
+  1545		p4d_clear(p4d);
+  1546	}
+  1547	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
