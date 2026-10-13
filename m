@@ -4,89 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21501CC6B0F
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 23:12:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81AE6CC6B19
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 23:20:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ACAE6B0088; Tue, 13 Oct 2026 19:12:30 -0400 (EDT)
+	id 6947E6B008C; Tue, 13 Oct 2026 19:20:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65D086B008A; Tue, 13 Oct 2026 19:12:30 -0400 (EDT)
+	id 61F6E6B0092; Tue, 13 Oct 2026 19:20:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 573BC6B008C; Tue, 13 Oct 2026 19:12:30 -0400 (EDT)
+	id 4E6A66B0095; Tue, 13 Oct 2026 19:20:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A5BE6B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 19:12:30 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8A02BA03B2
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:12:29 +0000 (UTC)
-X-FDA: 85319154018.21.32D30BB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 212316B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 19:20:49 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9366014037F
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:20:48 +0000 (UTC)
+X-FDA: 85319174976.29.AF3F653
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B80A2180008
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:12:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nh0uxDtZ;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791933147;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=chWKPe6Jv6DSrpAzSu8B8yBVA/m1DZxXRX4ZIJ40tPs=;
-	b=d5mgJ8EFlKruCuVc85Eb3Az4G0RyRpOfjsgeRmOeL3ciywvqGrD+A+1FqwSxibdUux+7NA
-	VaAb3jYuejOCeTvzMtX5/zoT3smMcjpbEOkJZZRhKGdh3shye3vbalbv/ph2bKCdxtNRKG
-	nIjFV7KPTcRGudqTHN340a34sJASnJM=
+	by imf11.hostedemail.com (Postfix) with ESMTP id E178E4000C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:20:46 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mHpEDoQy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of "SRS0=2+Ad=ID=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=2+Ad=ID=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791933147;
-	b=0zxudYeskTohkckPmqmb72jWXDZtK59wAsoyJIcnjPYDmWKd4qUYqZTOV5VhfS9GlHXvh4
-	ebjI5KnxIPqfBynJRJt+3H+ubEBTW7yqCZztxXOPD9VFH9BifPDFI7JCQpJYhESLyZNvic
-	wYSi1suVPRgFlLyIgPd3nLvbWwZldgY=
+	t=1791933646;
+	b=3EOnx3ZFwto6VSk/ZEkHC50swrNdc1au62Rr+x5mPdD/ocZ9JqqoKS/VWZPtcFF9o2wHB/
+	duXpZT8ozM3frMm6lHJz8HFHA58jeV9QFAp6iJeYhPT2VxjP6vwbFLu9rICTHwrP8JtPGs
+	5czxZzVCGikn6AgVbony6XyhF/V9JMw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nh0uxDtZ;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mHpEDoQy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of "SRS0=2+Ad=ID=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=2+Ad=ID=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791933646;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jiC8CjfdKGg/9xRJ2M1zfp1fJXqanJWTtOmmSFQ5vK0=;
+	b=Ug1JxRabKwft2BStz3PrBQGn0VPADu63S8YtnNa6pMWQ/jcvrRjjdvGt+IYAUsuImdzQx0
+	DC5MmY9UvnqKmFHyaiEht0Q1qvPXlOJu0EBcFhbpmuxMED645o1IApzoQu1iBdb4NBaKyh
+	GK3Ym3yJDo35zWVW5+oPnlnx+DrzpOw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 668FD600CB;
-	Tue, 13 Oct 2026 23:12:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB341F000FF;
-	Tue, 13 Oct 2026 23:12:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1791933146;
-	bh=chWKPe6Jv6DSrpAzSu8B8yBVA/m1DZxXRX4ZIJ40tPs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=nh0uxDtZ9iwQ1ZIEtlXgAVgxR0jRhYBNM8kDLNiv95iV5WEL1a3Sp9b6a6OaHqemf
-	 3aqCellWqqAGtRlWzYIuN+WL2rdrschvIrwVoQ6yopfczTVqRn3qCDIZeX6ZJ76LPi
-	 8TnyEBudwHh0wO4116e4p5lnM1SOpT47j/JdypWI=
-Date: Tue, 13 Oct 2026 16:12:25 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Harry Yoo <harry@kernel.org>
-Cc: Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph
- Lameter <cl@gentwo.org>, Suren Baghdasaryan <surenb@google.com>, Hao Ge
- <hao.ge@linux.dev>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/percpu: account full object size for percpu memory
- allocations
-Message-Id: <20261013161225.9286887bec0ee7fe6627aadd@linux-foundation.org>
-In-Reply-To: <as6q8H5qxb5Gd471@thinkpad>
-References: <20261013-fix-alloc-percpu-accounting-v1-1-03e788a1e41f@kernel.org>
-	<20261013145424.341cb25ffdd488297bffd1a1@linux-foundation.org>
-	<as6q8H5qxb5Gd471@thinkpad>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B80A2180008
+	by tor.source.kernel.org (Postfix) with ESMTP id 5C5086022A;
+	Tue, 13 Oct 2026 23:20:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6D11F000FF;
+	Tue, 13 Oct 2026 23:20:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791933646;
+	bh=jiC8CjfdKGg/9xRJ2M1zfp1fJXqanJWTtOmmSFQ5vK0=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=mHpEDoQymjOAnmVmeI69vDMEXcrS8IhmWgL9lz+Jv+BBfkLiVYKN0vI1w2iz2EgRx
+	 FOLejqiP1QGy42Yu+4ORZNclzJsH4nIwifkpqMQiF/EHtuy2YRUoNmJ7K7gtsqYR+O
+	 r+Oy8DQX35Mm3hcOsEXRtUJgaArjSOKVpCuyorLJL0HsEC66uHloYeCa3KQr9/y9Ov
+	 FWy0hVUDBgOo1WVA4FEazwGa3pWRzMjSX6RvQ6WP9uwS2EWWVegdZOrJVCEyl/YCXD
+	 mFsQA6Ag6WN6MbcVkxnyJaI5OiWg/nMgC2S/ONRoJs4wnMejGaz7vhEIyOeLDnhuiO
+	 1pkNysghFajpQ==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id CA006CE0459; Tue, 13 Oct 2026 16:20:45 -0700 (PDT)
+Date: Tue, 13 Oct 2026 16:20:45 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Kiryl Shutsemau <kirill@shutemov.name>,
+	Ilya Gladyshev <ilya.gladyshev@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux-MM <linux-mm@kvack.org>
+Subject: Re: Improve page refcount scalability
+Message-ID: <3bb52262-b183-437a-a7ba-9e5f3c32f355@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
+ <as6ckC9NJVB8JBuV@casper.infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <as6ckC9NJVB8JBuV@casper.infradead.org>
+X-Stat-Signature: 8j81f6q7mebxg6j6hw8191ktcyscgstr
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: cdbfqchkr9ape75rzpdz4w7suwmra4zt
-X-HE-Tag: 1791933147-417868
-X-HE-Meta: U2FsdGVkX18bmy92gT1mLIxyZbBUOD8V9ES0h65UYud8Z9TicjB0BQ1jUAnXO6afCmUYaog9DFFQUOZy5d8SIW0bNmF84IupQT+z358/oZNupKh/dzceu4P/sipekSeZSsQk5Z4RIro4oSc3TsORow3z+8069D6smwpqYnx90thkiKEcNoTeBZnWfV19QL0MozBcs+izMJxviM1dAXiHayKDJhTK/u1Xxuk5Yu/ng/eFvkJUnoDTLqkF46B32I05/fTVNGTFjj2cSCeaLqkyU5rwd+ZRHclRIChwB7K48JGeNjv4EoqVAr+ZDHN0upRT9dqadBnXWH9qTknsCCVYt4aUXMx3i6MWt4XvmjuvNLbQ2E+G5Tj7p70eGsTA+N8+nGG5GwSgEbdUWgGvAqiTIpm4ub/ssr/9pleQsQ6rwU/q3lcHqGkbIw7K/ItCe4yqbN9+5Eze17zh/hkfbXfMSsVlY2kU+lqrEvFSIE6XtIib6KuQx2sn17U1MLG/afEikYjBBQ/hUAWT/2Tvqqewq4pPCFpRLaqwfDLIDFDxx9vp8Mgkh98ThAtDUg8ExkAmEFBCDYgMXg9vYpM2iVbuuq9+GNS2x5R0f2PJ/tz/+IjkxqgqMS/1N/0N8VW2tpIb2nzi9MS7YOra/OahWipzHGb77gsNvm4z43BzUdxJaDTahQ9SaPs28cgT93Vbv6rd/qOHlyr31wj5FGiUUpw10dx8iRh2dtHV5PNv7Bt4gDX0MSsEMoUx72llSVeui+CI+IwkK+9ryep6gOI46xUHM1ezWJN02t3tawQYVvsGg24o2DzpEWvGAurNSdYi9OX/tjgAnvh3FZbpVnTUPTKQJFpukhlzgc46P7TJCMsLtTuqE04P+PkgnJMxY0SEbJz1MzJdXNskVUQyZitFlqJfnEVpeCZhNKUxil12trmnbujt4Lbu2qF/Tceu5uG6AAaqoro8GnBQW9v6xskrM/T
- tuynsSo5
- LgfoPRKBNUTuiNl4XwDTuklg2RU4ChCMIDqVyDCfPnSVZQnBPUS0E/tztq1zBMfCyA6OLW4HOKKHNRAwpfXFaL5Pbj8hYxj2gntcZNVtwIjmxT6oki8aGCBqeMTvGWSggDoeM+Ot2IXjVFqcQXnv6tem8wP4dOg831/p6uR08u2UARUKaZELEAje41hht3lQVfkfBY3aRyuapzWOUeGragdI7HIe4xSC1gLcaT7jLMhD52bNdVENwTIuHKUYcn8Ye+oTs0yKZXh09W+09bcunhGQFvNNpGvoq5btYO1NbzKKiiWc=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E178E4000C
+X-HE-Tag: 1791933646-129854
+X-HE-Meta: U2FsdGVkX18xr5CahwKaui5sOd2a3gP/NMM7/WtWgOsAG1bwPwRlsk2nb1oBawaS+0N6kzgOwd9jETsTSdetCOc2Z7jODAAPdYDegWttPlCJG06tTtonGG/2DfMldXZ0L2cbQyssV39U+Z6HUiyeOraFBrM7zFDF187Aw3C2CvODfemozitms7+KHpS7eCVIWfQtciSTY57ZVoSThHfmN+s9297vuor/YJHeHzLQGD7hKHMFk5uf8iK0+hnJgIReDLRjQCEIZf0pF5ogCFAIXvf40mtBIJ1hrcPfSmblJslXX9+QxdIdsHCijnFtmhCwXqF6HW6/T/1kCW5/9d/4sK6SiC4x7MPqEAKtp2r6PeHGmu3fgLD6hs7fXeBx8kESjvDPW86uZFqXL9JRRdtt2vS+J7iqbX+0NmdNp90mwndvoymtgGRme5tYB6V0xLZaPnxL5DPKPELIhliFH6ZuClh9QjfXkpvfDnOKfNcc16F6p83YIr+UGFsRymifLgz3ea9Oljw0gtZu4rREPSTFK20KxLqlNBibALvBLz2X/oQWATElY+0k58ztX5uaZT5BB35F3pbev2Yh0lHT+EgZh4tmozwAUDa7OuCOnyvCn9Yk7wLw7XNn2x9DDz4f6Y9RqmR9f2vipDl3FXkKN2Q2QAWN+4lfkBRwegxq8AFEXvCXFBy2d3kDyPYNf/VBvWblazK8Y4rQtBgWHg36FT4O5hbqAU5+JFYfBLLoh3oY9d9ooVaJ6UlHbInBwLLtLR1zX7/rmf0KUmFVcXEKkqNyW0E7YBrW1h2XKDu8K3aLlFaRoNjtu0MU6fb0ECwfaOUdJr22EHmVEOD5tAwqNAY7JynhWPBl51P3a9RNnS7OdK2KVwHjwrFned8z2hLloztsnE5mD+rnfnBIIgMBJ36+NWyBnr/w+BKWf6/7Of/H1mI1hxkw6sounFSXPbmsc8RgzObeoD87pyjdyGeQi8t
+ wg2h9l22
+ uhV87kHNZ5eBXYa2Epz639i+JG6ujbpAaoPfQBhPgdDzLCRqQXzcRfBOEslviMCq2+rzU/oS67t0KpdK6sGJUCnRJKe1Q/sUthy/0m5TkWZv2c6ist/mWQQFTvfpnCgbEiTM+3dPtAnBN8KetAujjwy9W9l3x7AKQtY6CE7ba/e5inTmMB43V1I/S58/CyVVhDSUV8XlWLuGFoFtZrHhHAfJdMj2H4UqJk4s3WtyPSN+JSseMfZyJO7lRh63GlFhtQUDWXQohEmKj0Aupja7UrFrK4rwcH2Bb3NVLseVGmbRbkSfKuAq4smzj2jmiIKt+EhGO0YaRNoTK355H+HjFFftqph6DeSdtt67JS5mHWjVrJmUZ1rOfR7Hdcw6Z6OF6Z98EAUnXP1EaivFn2cG3lattMbTrJyjXop1aagyaBPmkKVGiuUP7FdCHgcgWzhQFw7mwhyZ/AZc2weTmvcirYEyGzaGVAUza9yurINTQDTDjqjbUyAeVfdlygCNolim1vBWsZHd/0g4WXx6YJIthxBAydeqtFzeHfyK2fJh1Tt9t2RlviLfTdrEwk4oF/hxGvc8aw3tDUawgA9TARlVkVfzDXwCZkAwSdfEOkX39WIRsgyhcFXpMtwq8XKvFh4TEBPKK68aSR/LtqJGB3b1yoW2aHlOgMQivjXuyCdhiV6P+JYc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,58 +100,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 13 Oct 2026 23:23:17 +0100 Harry Yoo <harry@kernel.org> wrote:
-
-> On Tue, Oct 13, 2026 at 02:54:24PM -0700, Andrew Morton wrote:
-> > On Tue, 13 Oct 2026 20:34:39 +0100 "Harry Yoo (Meta)" <harry@kernel.org> wrote:
+On Tue, Oct 13, 2026 at 10:03:12PM +0100, Matthew Wilcox wrote:
+> On Tue, Oct 13, 2026 at 11:43:14AM -0700, Linus Torvalds wrote:
+> > The fairly short series of ten patches basically enhances folio lookup
+> > by noticing when folios are hot, and setting a "delay relasing this
+> > folio until after a RCU period", and then using that RCU delay it does
+> > not just the folio lookup itself under RCU (which we've done forever),
+> > but also the actual folio data accesses themselves under RCU. No
+> > refcount taking needed for the fastpath where we can just read the
+> > data from the folio entirely in an RCU-protected region when the user
+> > copy doesn't cause page faults.
 > > 
-> > > When memory allocation profiling is enabled, the pages backing percpu
-> > > memory chunks are attributed to func:pcpu_alloc_pages. However, the
-> > > accounting of individual percpu memory allocations via alloc_percpu()
-> > > and friends record only the size of a single object rather than its
-> > > full size across all CPUs.
-> > > 
-> > > As a result, it is often not straightforward to identify which kernel
-> > > code is actually responsible for percpu memory, because the size is
-> > > under-accounted by a factor of num_possible_cpus().
-> > > 
-> > > Account full object size with pcpu_obj_full_size(size) instead, which
-> > > multiplies the object size by num_possible_cpus() and adds the objcg
-> > > pointer overhead. This is consistent with what memcg already does for
-> > > charging percpu allocations.
-> > > 
-> > > Verified with 64-CPU VM by spawning 400 processes in a memory cgroup and
-> > > measuring mm_init()'s rss_stat counters.
-> > > 
-> > > Delta of kernel/fork.c:1142 func:mm_init in /proc/allocinfo:
+> > Unlike my original approach - because it now actually delays the
+> > freeing of the underlying folio data - there's no need for any double
+> > buffering, and a lot of the original limitations of my original patch
+> > go away too. That improves performance quite a lot. And by "quite a
+> > lot"  I mean "I see a 23x performance increase on my Ryzen
+> > threadripper". Admittedly that is a very artificial case of reading
+> > the same small part of a page over and over in a threaded loop on all
+> > CPUs, so any real life impact will be much much less.
 > > 
-> > Please make it use mm_init() rather than func:mm_init.
+> > Anyway, I wasn't planning on posting the individual patches, I think
+> > we all use git by now and probably find it easier than fetching
+> > patches from the list. So it's all at
+> > 
+> >     git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux rcu-free-v3
+> > 
+> > and the commit messages are a bit more verbose than I would have done
+> > it myself without tool use, but maybe it's better that way.
 > 
-> This is the output format of /proc/allocinfo:
-
-oh, OK.
-
-> https://docs.kernel.org/filesystems/proc.html#allocinfo
-> > Example output.
-> > 
-> >  > tail -n +3 /proc/allocinfo | sort -rn
-> > 127664128    31168 mm/page_ext.c:270 func:alloc_page_ext
-> >  56373248     4737 mm/slub.c:2259 func:alloc_slab_page
-> >  14880768     3633 mm/readahead.c:247 func:page_cache_ra_unbounded
-
-Well that's odd.  What can a caller be other than a function?
-
-> > 
-> > Why cc:stable?
+> Obviously the numbers are compelling.  And thanks to Kiryl for figuring
+> out a workload that confirmed my fears, then remedying the problem.
 > 
-> For anyone who uses memory allocation profiling to understand which
-> code locations allocated how much memory, it gives a false impression
-> that certain perpcu memory allocations are not as big as they actually
-> are.
+> I don't like the PG_rcu_free flag.  I hope we're guaranteed that folios
+> in the process of being freed by RCU will not be mapped into userspace.
+> That means we can use PGTY_rcu instead, where there is no shortage of
+> available types.
 > 
-> On some workloads percpu memory (func:pcpu_alloc_pages) shows up as one
-> of the biggest memory allocations, but the actual users of percpu
-> memory allocator don't show up as they are under-reported.
+> The workload that Kiryl identified (truncating/holepunching folios
+> from files) is not the normal way we free folios from the page cache,
+> so while we need to accommodate it, it's not what we shuld optimise for.
+> Most page cache folios get freed through reclaim.  I started sketching
+> out a new state (I was going to call them "ghost folios") when I realised
+> I was basically reinventing the inactive list.  So maybe we should make
+> folios on the inactive list immediately freeable as long as one RCU
+> generation has passed?
+> 
+> This may be where I run into trouble.  I don't know how RCU works
+> internally.  Is it possible to record some kind of generation number in
+> the folio such that we can see if it's only recently been added to the
+> inactive list?  Or do we need three lists --active, purgatory, inactive
+> where the folio is moved from active to purgatory as it ages, then
+> from purgatory to inactive after an RCU perid?
 
-OK.  I guess it's a small deal, but a larger deal for allocinfo users!
+The polled grace-period APIs handle the last sentence for you, but you
+knew that already.  I am not sure what "recently added" means in this
+context, but I cannot resist suggesting using the jiffies counter.
+
+But tell me more about the meaning of "recently added" and I will try
+to be more helpful.  ;-)
+
+							Thanx, Paul
+
+> This will somewhat complicate filemap_get_entry().  It'll have to be
+> able to cope with finding folios in all three states, and moving
+> them from the inactive or purgatory lists back to the active list.
+> I think it's doable with the right cmpxchg() magic.
+> 
+> What do you think?
 
