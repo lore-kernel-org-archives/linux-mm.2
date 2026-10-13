@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F69FCC6B10
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 06:26:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55C09CC6B03
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 06:34:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 364EC6B0088; Tue, 13 Oct 2026 02:26:44 -0400 (EDT)
+	id 213816B0088; Tue, 13 Oct 2026 02:34:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EE8B6B008A; Tue, 13 Oct 2026 02:26:44 -0400 (EDT)
+	id 1C5206B008A; Tue, 13 Oct 2026 02:34:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B7816B0095; Tue, 13 Oct 2026 02:26:44 -0400 (EDT)
+	id 08E696B008C; Tue, 13 Oct 2026 02:34:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E8CB66B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 02:26:43 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B51DC0AA6
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:26:43 +0000 (UTC)
-X-FDA: 85316619486.24.C1928EC
-Received: from mta0.migadu.com (out-114.mta0.migadu.com [91.218.175.114])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EE51640002
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:26:39 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=u9i9HxGs;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.114 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791872800;
-	b=2T9ZdfbQHAVwlogonytwfm0J+XrCxOSjb2Uh9c9ftLVsSK6SD7C97/xj1jAjIGyAKJs2M5
-	d+5D8QuVbuvrr8NDezDxaBLo3DQVmat1ep+g5awQJoNjltc0vOhzawCyk5DjxRkZQ+AzMo
-	jqzW/X4jhb0EFcdwYDrHltu1Fe8GlwU=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=u9i9HxGs;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.114 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CD5366B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 02:34:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4B6841A0AD7
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:34:13 +0000 (UTC)
+X-FDA: 85316638386.21.08CDDED
+Received: from mta0.migadu.com (out-239.mta0.migadu.com [91.218.175.239])
+	by imf06.hostedemail.com (Postfix) with ESMTP id AD7E5180004
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:34:10 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jPEz53G9;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.239 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791872800;
+	s=arc-20220608; t=1791873251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q7rcTAWmSs4EiZ5IagojymObpWqOsu5m5rrwg8mIm9g=;
-	b=MXJZHosKEURbpjniFaAhNkY1/wj97aUC6NDH4c+RGzIov1CN6tl9fbEBcerw3O7lgtoCiZ
-	NHW+vzkUfDGaiwFEkBlfMcPyX03j8IZ232TC/3L4kiAE5XdjsGZ0YHOEgfrRsnwnt9DX9u
-	dn5w7XTVDlT2lzI5K70LwWC2zwdHgbE=
+	bh=x3TJ+nLYXw+aqTgNhbnY0u+0hp8FGUc5AIcm44+MuiU=;
+	b=0ymAuRqRx9zf6r+EetsQDYLYvOmal54mPC8hhOm+jjIqoUGp59H5Fj+1Lcahz+MPTvlt+S
+	1NOGmafTCVQK+gxSYuTWtt9fuyDj6zBIuMbKGqbpOW6/rk3zKWan903wHG/gFA0OXYtlSo
+	F0GciU163B1qmH7tQcH9UcjaF09OJsc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jPEz53G9;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.239 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791873251;
+	b=Uc2usV5SWWOsLTrhzNXzbrbCePFy0opWxknwDA+cXKZz1J2zRo5HaVgXSmg7NqP784bqma
+	b8CNpukhDUdNQ4EZyntRM0VHhyVoqhr+JRQX0vQ9N3JlsG16gcIUC51jOgaCCBrQo84vCB
+	AyEved/cnsOCsmvZRE6TwMqJIH8vBz4=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ijzhhCvBzPeAT3SqmYXHx89D90VBI7qukSZjs8T278I=;
+DKIM-Signature: a=rsa-sha256; bh=x3TJ+nLYXw+aqTgNhbnY0u+0hp8FGUc5AIcm44+MuiU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791872798; v=1; x=1792477598;
- b=u9i9HxGsO3x2RvdZiMo1y0Po1scVIFQibDJHRCRougUnPXM9w7PcUAd1D5oZEM5Q58NsF8KY
- CTMpA5sg+FfSAq+7QglTMJahRbZKRUojynG++lked1XiHGWAQoySDRDBtF72CCpb/hM08/hxCum
- JrAENks08xw5/XfDhdt0Xc38=
+ t=1791873249; v=1; x=1792478049;
+ b=jPEz53G9zFtMf7S7MMA3ep20v99EcICky/EP9W6meqhELt5OpbuudGf6WopZUAQNGX9cbUKp
+ oL5ue2WlC4wtiqVIRa6KGdXuVmtzRp5adDL+7FzQKnKieXPXu4d223bjJvrQA680vlem2AgFhI7
+ Sdrm3rr1ohq7fHe9xPgdcgq0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id afbacc7007ea9f8d;
-	Tue, 13 Oct 2026 06:26:38 +0000
-X-Mizu-Trace-ID: afbacc7007ea9f8d
+Received: by smtp.migadu.com with ESMTPS id 4af039548b386c01;
+	Tue, 13 Oct 2026 06:34:09 +0000
+X-Mizu-Trace-ID: 4af039548b386c01
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
-	charset=us-ascii
+	charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
 Subject: Re: [PATCH v2 1/4] mm: fix missing page-table destructor in
  pagetable_free()
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261012202532.f059fd5ab947510a21d34cd1@linux-foundation.org>
-Date: Tue, 13 Oct 2026 14:26:15 +0800
-Cc: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+In-Reply-To: <3ab63358-8bbe-4457-b21c-bb81bca804cc@gmail.com>
+Date: Tue, 13 Oct 2026 14:33:49 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <songmuchun@bytedance.com>,
  David Hildenbrand <david@kernel.org>,
  Oscar Salvador <osalvador@suse.de>,
@@ -92,23 +92,21 @@ Cc: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
  linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <1F709D85-8F18-4237-BA0B-BE8442DD221C@linux.dev>
+Message-Id: <2B2F2818-9309-450B-A2A4-9F53D802F1C6@linux.dev>
 References: <20261010112457.49485-1-songmuchun@bytedance.com>
  <20261010112457.49485-2-songmuchun@bytedance.com>
  <asy-b7_C3SjnmSaS@gmail.com> <145CD5DC-6457-4E1E-8B9D-AE7D1EDB0AB8@linux.dev>
- <20261012193114.77147e0a43affa8ee1ae896c@linux-foundation.org>
- <200A83B9-233C-44C7-B4AF-0900BA1E09DF@linux.dev>
- <20261012202532.f059fd5ab947510a21d34cd1@linux-foundation.org>
-To: Andrew Morton <akpm@linux-foundation.org>
+ <3ab63358-8bbe-4457-b21c-bb81bca804cc@gmail.com>
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
 X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Rspamd-Queue-Id: AD7E5180004
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EE51640002
-X-Stat-Signature: ss9job67m633gsfiamigf7iim89k9p6u
-X-HE-Tag: 1791872799-551947
-X-HE-Meta: U2FsdGVkX1/cm8c0c+DYtd6j/ZfLaZ+5oXT7LXqDqAPx1pqRSi3dIkm6OBbzRJny/woCUpSyozsh+b+DF7cftZmenHnNJtjZnfinR+R+WzPDzSHNWPf/a9r11ejMsrpjHve3+K4/ASf2jbfIgZhHtl42Cev3WfbYXApu2Y7gYOXZLpvmN3X13Z/zviOAsGdYkOnBhSgpYZZybaI0ZfDa3155jCM1rUvhvXIkdgEsZlnZ6YNHM7MBD9w41bWnOdrkNqTsHg551Jcsi27guiXLveHEoTtYa0PQoxsDQBNkvE8NFhbPJFBJjHynNKdLORrw/zoE8+F0iNWpuoJJKK8ZCCrX3mws+1tJvlXQVhsnv/xK9PzvzUjSDzxEvvZ+u4UTcyUZTWY2CfNaOZTHzPbGSDP3OAgNYN+s97XhL9rUuzdjzh8x0E2WBuqWCzKHY9XKumdCH2iuwXBEdFKu601Hd0ndyrd8npQIUp1CLf/PrgoSgzBanQrzMmPDun/ey4RLG/ApZMUat+G0DT8J0qabFSCzNros8HSOTFVJeZwVdayOLT/1dnRXDSHklrbsAx0XfwgSqjMMCSyFdhY7h//Dt78StGvtdSZ79hWYSkV3N531yieR0bjR2/7nVwYDLirinUJKZq8GLZZMLO35ZwUb/nS/JdULXjneQ/fa91EEjqZfQLwroxjwZYefWJlg8Bg1a4JH7dqFkvNXEbIySwO6DyNXLYa80Znm0+tPn3RXcBBfiJgJka80lROSYU377vGD6c0yerm8MYdYMjA7KAefx+kyQo1iJqin4fvQ5okaPfQeJDof12kTzr3cySQ9hjRXiKalj2Z4/0e/DbT+tWiEiSbCuIEe9Nm/xDRfuL7tRhOZRHBCIPYhs+/bJ4HIxTypmcgKE8nYysDOUvGNf5FQCHqxlw65qF9h5yhfPQgVubYM+tCYhKmRmgvWccLF7klUe2gDG/GCw75lLUzuCAc
- qSfnkJj7
- dqBqO2kKNnv64CI2NOIt5/MjW/+wGO+cC8ldJ9vI58qMInAWjSSbgOyIyuSSoE1diUHuNAecyWIE7iN07Xy+j6TavFP+64lK4nU/D4h616KhfMrCzRIw3X+ENapsU8I+VCGiJbXHaeAA1oHq2fWsidcWT5eLcvH+MgyJXAsGd/uNqSzhaMxp2u+WTRYQulQwYOpaSKHdUbvelmw+elpuR/XOQ0C9N+uU6c/IuG2B4tuOVnropVNPKLJx6kVd98X/FiEd4+yOyQrtFN9ms1hvGdHypYFRXtFWmSVxdBCwezc/975lJBdOeei20nx9NPfgg0eqKSb5oU/hUcnazXdYr7mlZnwje3algn00Rr0eaK/W58thqCikxjIKXOEqpWaKKfE7PP9cgPVXOjEYofU0aPdcGXv6SXy9z3M2k
+X-Rspamd-Server: rspam12
+X-Stat-Signature: poajnbajx1jxxtk88m5arhnpumw7ifrr
+X-HE-Tag: 1791873250-992120
+X-HE-Meta: U2FsdGVkX1+oP4F1xLgINObVAgX0hisXs2Yr4wsyN+tHlZZezZtZvDbCqyBd7t8qNHUHQzdKGoLIcgi9lQMXcMTiCvAA1ig5o01VR8efDUAI8bus9lF/RPLcSSUyAgLIl5F9aiXy704iSFiKveV6zfHFdEMqA+dFIKiDzJZ/hiIi7Fwc5YjNTX0dV7W3o+7Ue0pCGVInUsppNS1goPVXK5uBawe3jGGMWrL9sXO+4DWpmSXSDWVpfnXcW9aXxrGDqBbTyD6YS3hA5XZDX2tLNCEoe7vQCo/S+CmXY56N/iI1rbh4tG6Wb3UuB5j8CFo0/8eBkqYXUI5RPGPXdGJ8a3HKcUUxM5MatOYgIDnF0+N/eGh60OdTAl9MpkrhwKfAvRT30bvQGVMPk3UcMS417l/13cGq1FqSEl2HW3Du+fPH9XtptomJZ42ZDfsfR62VeRO0691Em4uhjtwyAqoTGHHQSi2kkDjzFebthq96VD9YKbZHZL5aWTtAJs85gBGgNKdD687U8sxCt+4F9D/44ABBTy57RjbHN62wMU1lJX1J9XMFvBOOCGuH/NJfDG4C07FeTLwpluR93b34r4s8ESuQzoAHOJYHJzL9R26s+YH2ZIVgqxwy1wu4ndSX/QAO5KFrrGwrDCXkHxBYz9GRPdYGn4EiVlUqRbjhHSrbh66izkpopaIwc3tp2zgmLV7cRmYOkzEFj56Kwnal2K6fsVQjuqdN9qPnh4Owe33C8OqqFdZEzTzOkAO6yRTIgGvzrk85TshC0Ffv5ZqFSi1/AzM4pDK/vPlukVQdY5Bd49+55E4n8uliZE4oBTKAyBjQgi5juIGfoyGR21rQUEHlLwEPeIIbApHYm0ZsupxElY1FRWeWZd7XSObGVh1QQxLP1vK5fgz3p3fV/InacUpXc2nF2Dcncl+/uYnmJ52N6HPnj2/VjDCdNR81zwakosF2b2t+WwXaF/E4fp34GI4
+ 6xdomy0h
+ vBrk9+ZK7Sw2tDeb6Vd1bMyMNrm12XmQ7m/kZT+wrKBmVnHgBvGQrO+3kxHsSH1vcVicpx7qJGr0fwdO54CjOAR2BuQkFRUngfAeBzokgWGOsNcEeDQ3BBQg7RqmqPiRyLTySneSihh5fG4cPWwQXPSuSbNNxveCUm5ORUKOrWiEXt0Lvyj9f2iUOf3saGwJf7oSBE+q4BkEn7w55VBlpTBh/uXfi19SyemcFhC2/xHNseyeDNegk+itR5Xhh1lJAcmZag9T9j5XOVuKYkrkeWmTertVubvdHRUVvIYWvQX1PnNhqD3KyYpj8qpOs3scoYKf9dBRYTW0QDrHbPHadmYIZwrbkP+LGktvuOCK8E1jrfxo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,60 +116,69 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Oct 13, 2026, at 11:25, Andrew Morton <akpm@linux-foundation.org> =
-wrote:
+> On Oct 13, 2026, at 01:21, Jose A. Perez de Azpillaga =
+<azpijr@gmail.com> wrote:
 >=20
-> On Tue, 13 Oct 2026 10:50:21 +0800 Muchun Song <muchun.song@linux.dev> =
-wrote:
->=20
->>>> The correct trailer is:
+> On 10/12/26 2:55 PM, Muchun Song wrote:
+>>=20
+>>=20
+>>> On Oct 12, 2026, at 19:15, Jose A. Perez de Azpillaga =
+<azpijr@gmail.com> wrote:
+>>>=20
+>>> On Sat, Oct 10, 2026 at 07:24:54PM +0800, Muchun Song wrote:
+>>>> Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
+>>>> pte_alloc_one_kernel() runs the page-table constructor for kernel =
+PTE
+>>>> tables.
 >>>>=20
->>>> Cc: <stable@vger.kernel.org> # 6.16-6.18: bf9e4e30f353: x86/mm: use =
+>>>> HVO (HugeTLB Vmemmap Optimization) uses pte_alloc_one_kernel() when
+>>>> splitting a PMD. Restoring the vmemmap backing pages does not =
+collapse
+>>>> the PTE table, so a later memory hot-remove eventually frees it =
+through
+>>>> pagetable_free() on x86-64. That releases the page without running =
+the
+>>>> matching destructor and leaves NR_PAGETABLE elevated.
+>>>>=20
+>>>> Make pagetable_free() detect constructor-backed pages and run the
+>>>> destructor before releasing their memory to fix the problem.
+>>>>=20
+>>>> Fixes: 49f599666420 ("mm: call ctor/dtor for kernel PTEs")
+>>>> Cc: stable@vger.kernel.org
+>>>=20
+>>> is the x86 case covered for 6.16-6.18? as far as I can see, x86
+>>> free_pagetable() only uses pagetable_free() since bf9e4e30f353
+>>> ("x86/mm: use pagetable_free()") in v6.19, so the backport wouldn't
+>>> change anything there. or am I missing something?
+>>=20
+>> Yes, you are absolutely right =E2=80=94 thanks for catching this.
+>>=20
+>> I double-checked and indeed x86's free_pagetable() only starts using
+>> pagetable_free() since bf9e4e30f353 ("x86/mm: use pagetable_free()"),
+>> which landed in v6.19. So for 6.16-6.18 the prerequisite is not =
+present
+>> and the backport would be a no-op there.
+>>=20
+>> The correct trailer is:
+>>=20
+>> Cc: <stable@vger.kernel.org> # 6.16-6.18: bf9e4e30f353: x86/mm: use =
 pagetable_free()
->>>>=20
->>>> Andrew, would you be able to update the trailer in the patch when =
-you
->>>> pick it up? If there are further review comments that require code
->>>> changes, I'll fix this trailer as part of the v3 respin. Thanks a =
-lot!
->>>=20
->>> I don't know if/how the -stable maintainers handle a comment like =
-that.
->>> I expect it's more reliable to do this via Fixes:.  Possible?
->>>=20
->>=20
->> Thanks. I used this format because it is explicitly documented by the
->> stable kernel rules.
->>=20
->> The shell-style comment is the format documented in
->> Documentation/process/stable-kernel-rules.rst for specifying =
-additional
->> patch prerequisites:
->>=20
->>  Cc: <stable@vger.kernel.org> # 3.3.x: <commit>: <subject>
->>  Cc: <stable@vger.kernel.org> # 3.3.x
->>=20
->> See:
->>=20
->>  https://docs.kernel.org/process/stable-kernel-rules.html#option-1
 >=20
-> Oh.  Consider me educated.  Edited.
->=20
->> A Fixes tag alone cannot express this dependency. It does not specify
->> an additional commit that must be cherry-picked first. The documented
->> Cc comment provides both the prerequisite and the required =
-cherry-pick
->> order.
->>=20
->> Would this be sufficient for the stable team to pick up the =
-prerequisite?
->=20
-> Hopefully.  I suggest you double-check when you get the emails as =
-these
-> are applied to the various stable trees.
+> also, bf9e4e30f353 alone leaks PMD-sized vmemmap pages on those trees,
+> it needs 39406c05f8f1 ("x86/mm: Fix freeing of PMD-sized vmemmap =
+pages")
+> as well :)
 
-OK. I'll keep an eye on it.
+Yeah, you are so meticulous.
+
+>=20
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+>=20
 
 Thanks.
+
+> --=20
+> cheers,
+> jose a. p-a
 
 
