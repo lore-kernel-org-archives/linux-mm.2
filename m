@@ -4,97 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6417CC6B16
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BA5ACC6B0E
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 16:07:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA79B6B0088; Tue, 13 Oct 2026 11:56:56 -0400 (EDT)
+	id 0E8C36B0088; Tue, 13 Oct 2026 12:07:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D317A6B008A; Tue, 13 Oct 2026 11:56:56 -0400 (EDT)
+	id 09A506B008A; Tue, 13 Oct 2026 12:07:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFA3B6B008C; Tue, 13 Oct 2026 11:56:56 -0400 (EDT)
+	id ECAA86B008C; Tue, 13 Oct 2026 12:07:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BC036B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:56:56 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E4DDA8C44
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:56:56 +0000 (UTC)
-X-FDA: 85318056432.10.0A168A4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9D89D4000A
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:56:54 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jKjG9aqR;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791907014;
-	b=uy/TfBP6AZMRjaTN+9STy4QIzNpv+DZabsmq+9UOqmwMcsC/SQXlpBdm71iN2Ym99JQNbk
-	4EqCWqVycgTpJQBgu56HKuLlSEMFwkeNaxPVWmtHn547m6V+MVL15pQfG/TQ8qpjyZgtSS
-	nSLbJZ6UY4JtKeFluqsEvW90k9plF+Y=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jKjG9aqR;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id BCE896B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:07:00 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4F9B280D17
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 16:07:00 +0000 (UTC)
+X-FDA: 85318081800.11.A000E69
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E351EA0006
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 16:06:57 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=ruIeTRbO;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=739a28f01=itazur@amazon.co.uk" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=739a28f01=itazur@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791907014;
+	s=arc-20220608; t=1791907618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NPx6DSV+4j0EiNoTg6BI5ljLh5I5fhSgaI3qnLWLPmg=;
-	b=ZB8vqZuVi1THQ8TfhyC1JHLZ1xRbHpKTJJXBps2EBaBKBrxtfh3yjKK74q9CFDAT+4wOAv
-	ZBRUBIPxg5fDSvKWheyVJ7jfLVqvVJMLT24K9J6w3CyVb63YoRj9GpYoF8xRUEBlv+SLvQ
-	4dCMyT3u3EmeXYjBV15UKdOm69O/zL8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 35FE460A5A;
-	Tue, 13 Oct 2026 15:56:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168301F00893;
-	Tue, 13 Oct 2026 15:56:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791907013;
-	bh=NPx6DSV+4j0EiNoTg6BI5ljLh5I5fhSgaI3qnLWLPmg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jKjG9aqR/NFKyzM9hSQJgqgrhKzeAMUeH4nmyVQZBF18/6bLwiIA0wwCIoJto4wQr
-	 mYTcRSCdiNFskdTNuU5jjmNNQwz3rw21bVgIAi//rvVjDW1qOy7tqBqTowFYsOWBZ0
-	 DG66fN7fah7/IN0x+OGv1P7gTaoAlaZASZ0zzbwb0JG1u1h3bUxS74wtuRw7Jfii/t
-	 Bu0fiGWwGEqZwxAgib1ftjVNEjUS/5buDMB8sVPXJMrvAuNZCsvHLVIrC/fSnMVkqO
-	 saPja/KSPrYF8BkCAW/MqK/0j3gGfBnE9aURwNtn4h6SF4bEJVONc3uKuIVZVRJuFD
-	 awiQ8eIZRguIw==
-Date: Tue, 13 Oct 2026 18:56:45 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Benjamin Herrensmidt <benh@kernel.crashing.org>,
-	Peter Zijlstra <a.p.zijlstra@chello.nl>,
-	Rik van Riel <riel@redhat.com>,
-	Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	syzbot+49b1021becba70c1f3f6@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm: disallow ioremap'ing ordinary RAM in
- generic_access_phys()
-Message-ID: <as5UvcuKuVjCOvuN@kernel.org>
-References: <20261013-generic_access_phys-v1-1-b3963ef76e37@kernel.org>
+	bh=5RGsatsPAyQIBEtdraUseJGGZDIDfWt4LgToyJkkY0g=;
+	b=CxLBCox2AwS9KSWirb6W0IRmClcptTmiBWErztS3rXEJdSAyeYxKlEEhScTRZaRLeoUhcX
+	ATQZHArV54eO5bnK388scMRohUI9pQs3u4QTLjTiskdQp7axHWKpvp687q2p1PrtBExW+m
+	dWkisoAXZMBc1vuwHJUKgs9rGk/0Cmg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791907618;
+	b=5SFBKHEsA3SlH7bePft/jaAGtgU05Ul6i216sXlA84Fb2aQpgM7NQCnwOVrmIAFIffpINI
+	r+WJE/3c3PF1Q3Cr2ypbieL2qH+GH3ZAk56783QcprWdYFI5PnWm3omlM4QZO5NiGlDjdD
+	GIbT/ny7K21DqmqjAkhMVi10Cw8bW20=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=ruIeTRbO;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=739a28f01=itazur@amazon.co.uk" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=739a28f01=itazur@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1791907618; x=1823443618;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=5RGsatsPAyQIBEtdraUseJGGZDIDfWt4LgToyJkkY0g=;
+  b=ruIeTRbOkK656ethvMJQ7Mm7CtxnPk/VLs0ywFMWnYd9OkVaQ6PceKOb
+   onBXHkvztNg+BrBYgribp6+8hKLk/Y3VyZUA0G9G2HSM3X9hs3iMjV6ec
+   Ftk42+7swHdFNS4xoM5S5zBsUhTxPWMiBaGqE2vw1ZgemEsQi/lyG2PeZ
+   7euWcOqXF4Xg0cxyRfzAam8xueS0XvyY0cNwA57q+yUoPcX3quxpoi17w
+   EtLduMESBgmOv15Wdyra4tN3xFqJ5+6wh9nWy+HZvcLk7XjEn9SrzXEqm
+   c145pubLhgYhfh7owEUxzPRTh3XDySw+ccN/XQB94UWg3WqRytgFR6QYZ
+   A==;
+X-CSE-ConnectionGUID: EzT8FQ1qRkitCh9eAqylmQ==
+X-CSE-MsgGUID: 0N5fJEVHQK2EpK1JLFPKKQ==
+X-IronPort-AV: E=Sophos;i="6.27,156,1787011200"; 
+   d="scan'208";a="31138648"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 16:06:53 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:15933]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.46:2525] with esmtp (Farcaster)
+ id 95bf7a0b-1374-49ed-916d-f238717f74ff; Tue, 13 Oct 2026 16:06:53 +0000 (UTC)
+X-Farcaster-Flow-ID: 95bf7a0b-1374-49ed-916d-f238717f74ff
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Tue, 13 Oct 2026 16:06:53 +0000
+Received: from b0f1d8753182.ant.amazon.com (10.106.82.29) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.53;
+ Tue, 13 Oct 2026 16:06:47 +0000
+From: Takahiro Itazuri <itazur@amazon.com>
+To: Yosry Ahmed <yosry@kernel.org>
+CC: Sean Christopherson <seanjc@google.com>, Brendan Jackman
+	<brendan.jackman@linux.dev>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu
+	<weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+	<ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <x86@kernel.org>, Sumit Garg
+	<sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>,
+	<rientjes@google.com>, Roy Patrick <patrick.roy@linux.dev>, Andy Lutomirski
+	<luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, Thomas Gleixner
+	<tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, Reiji Watanabe
+	<reijiw@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, "Ackerley
+ Tng" <ackerleytng@google.com>, Takahiro Itazuri <zulinx86@gmail.com>,
+	<cc-open-source@amazon.com>, Kevin Brodsky <kevin.brodsky@arm.com>, "Gregory
+ Price" <gourry@gourry.net>, <kvm@vger.kernel.org>, Derek Manwaring
+	<derekmn@amazon.com>
+Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+Date: Tue, 13 Oct 2026 17:05:58 +0100
+Message-ID: <20261013160557.54828-2-itazur@amazon.com>
+X-Mailer: git-send-email 2.43.1
+In-Reply-To: <CAO9r8zPOkuRGv0X=nBbAzTUjUyaB7zAJLUigetSXEVPxWpyGxw@mail.gmail.com>
+References: <CAO9r8zPOkuRGv0X=nBbAzTUjUyaB7zAJLUigetSXEVPxWpyGxw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261013-generic_access_phys-v1-1-b3963ef76e37@kernel.org>
-X-Stat-Signature: ajcfxqjrpwdbrmftcf8x6e5wis6o3s9s
-X-Rspamd-Queue-Id: 9D89D4000A
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [10.106.82.29]
+X-ClientProxiedBy: EX19D031UWA002.ant.amazon.com (10.13.139.96) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Rspamd-Queue-Id: E351EA0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791907014-102571
-X-HE-Meta: U2FsdGVkX18euzAvvBiRMce5kZ3F+K8P6n57MrwnozgzIf2jscJfdVOLcSbAqxbCKT11wc4p+uYvPeRjAALhzFnJFxpqZdQch1NOoeBHzrEIQh2MnnB11VbatzFY2nfWCnvbkmj36WRT/twai9fcX4edyrXhRSPSV/s4DNfBHyYz76WuUPy2Nfit4pjtrU43EhCmJzs6NZ8jEAjq3nq3UU8DjRGZ+zOSPKy6YilbBRmO/2mUQ8FXQnM2p0Ma1M+aqphoCfjH63xP7muE2ZS16XQ1oft1AKKSUnMfrt/jQRBFyFt+DWzhPdBWNlyCHlph8t71VOmF6skh4bhYgo/67lueCnZzfqANoanFyCHLTU3F66Q85i2lz8gBg6nRFqoCoGkhhiK3x6r3rAiIUpJEIY0m3Fgn7IGlEuM2ZyZrgIifWIOL6kn0JvP3Xu38XUf1epeUY7CEx5YNIHL0YGfTHZEZjTlpkPXIyPnSO5f0qIplHYBcMLEY/gRfEKVAIXrxlFWRcTK08Ze6OXKNu875O1w9qnOlQuDjkEMJmKdf8RKy4ycn5YJbIdpsu6joISjl6sE/I16dnrvWSwItx2PnnURl82hhKpewoOX0l6VoFlEMHkO6xvslyElCmotYb8qtcUXaDQhbbC7NjAVVyKZxBgWnZb55KMhjQU7GMtkLVHQuYX3iqz0LwITLwPka5Qg5ORVnQK3LqNdmRDHI0Z0PVgkeEXVQFEyamY7T4doIqXGIHM1J2uhpvk/W8HG4pg77O8WLj5KukaCNfYQP+hhDxWEuDkl/yFX+cx2P4y38GyFZrkFwQTrvk3evT8g2TaspXEG37DPjWYmQ5nAE8bbC3zSJnDUnTaK0fPWLHNrAUAXtZwrLSJz8qt+JrICYEf9Etbkj4DsJRiZmoYJYPjSl+HLEVsT6678MPe2Jm377xIlbHBumTPynuMXsvAwrkfl23xUV1oHbI+xpxX9sd0z
- f86x3sgn
- ihL2dMh/KviFUjnQaZV72o4/DcFeixxbkB+1f3fnSwILT2lsjd8Upq8r5FLFAjWzpcBO5fC1fpbpPcx2GLNG+O8ppztIOQQ5OS62kqyarPMLed0ycTiEVSIyYy/KV3O11dQpTyRE5H7PTUmK1Y6l+No24xX7XZabq6mBPnSC0BeVvSu4MWng0JlbKCeLedKv1WI5NKF0wQmgw0tQM/SSUtiT44039ZEGrCuX0Fo+GaZkf7MIckSAfR1Aw+zghL3MnOh1CQR5xA/Nva8PLhx2aUM16Wet1/boQ2aoPRw4vJbwSpUxfQP2Keq9lZiX9W8w+RF2P/GZdrjzuDnEn8KD/a8pS0Fhou8NYY5vCb87fZuaZPZAY+G4WXuj6aoVPohIO1EuPXhQny/1lXrojs7hiYVykWFGLkYjBCcCEuPIWaPakSEQJlAsAhtQXn2oZvHO7YP+5d+n2FWmboa8yDEjbDZI/ShWC+kYMrzGTCxRoH9ZKUi9YDGCl+8xw/MM4RgDw+/D9AQJTcfhQmaisK0I/ZnmKK8i49FmmvnP8DsHBEvcw0qPiTgt1FqSNw9D9dhY9om4bOuiTNDmpU6e9xWKTB9H0vA==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: rj9qu3s3oog1ic9s1g3modu4d75h71it
+X-HE-Tag: 1791907617-869100
+X-HE-Meta: U2FsdGVkX18FXlkYFROj9pfXlbfdagTfnI/Ce/KpP5/hdMBqauFNKj/zXzQ6j7X7Fj74Z3VUZ3F7gytmovqUIX2hmXfXE377i4JjK1RYMhnY+DaRrO9tmQjl99bmgE3EtJkgpxWfO05LznxoONycXCGZJq0Wfa3CNB0DKCTh19NH/sVdoETsLNX1ht515UVu0RUA31cbDGmAZCTBCwiedJNWfQE1WLU3rJfAt7MkBP+uzPaj2+TmhEeZK+FyBtug/OxXwooiRcijV9P89e8tz4klXKtu2GCxGEtJqqO2OvOirpBlpQVZGcbeY+5TJ3pGs+upRHotBcHtZOUKXmDKwjFFV/gjemqjCm1xYh2N0LcVOaT13I9Dg+IvfDXpXCNbqoVZiRkk3ftawZOihAMJV0SJSKS2/Di1d/4XDuPnUOHgcS55Bl8ElUExfYOQDrIFRFhX4s7yL77o74s1++9gMk5I5vrwCZHTWIAT3TE7viW7j6Umz0KKsmBFN/zmXA8TSN1LE0DRHHbMLQ7KVIEKgq+w59KOubqutcyoBt1CJEoiOrcouC+Qat7b0fWhW1OI49EkpwzPvl3g0+A6yyOkR6K0Vl0Y7MZLJn74/yFqb/LeuoMF2FFaB8gIVczXiTvku6p6TaBeK3yhvgtZsiQ1TvPhNrapDUaFzTZSuTnrooxTWfJoBJKcn8gotuhqHEtO5pF4Cv5f8lNaP4HHgA1VE9dfBUbNo+oMlQbYI+SjdWqe1sB20m1swfgyz/ZjyldUZ4GqD6UCFGCXrxODZmbazNHXZPvBpIQ3q8oDU+RwO7U4J6y0dGm1IBPTlHrv1nir5VqC1t6NAgAnhgsM9g6j3r4VrgMPMnlc3a1OOQ62gyHdAWZBXbELkcVFjGu5vxonRc2hOQXFi/ttPqAtvIhNN1d5gxQzPUI0qyyr2ouVnwT239Gw8+eKHSIiIjWSXjWX20m21J5FZXbkpzjlQLK
+ Mt2T07ji
+ rGIQSkQw5X9+JpM0ylTcT9/x3ZtejPXXwstzPRGY7VlNOaGfSV5Vh7U9sgdrEj5ksmuSCU/tvHSRpcEmGQOHc4MGX02zE0wQiyHkcuprA+wPPMEToXODshGy6cfAKkUU225Neh53gTGyvzHLiNny2/5VuRSh/2CgjFujkRyVmKnBs5IazZMg+SmpQrehb/WDvyJ3eNko8PcOzmV/KigQwOFjqhwdFOjtIJrB1PUmUDwzK0zM62gW1UaefcgKngxhOtqfCoNJ2fF8ni9wSR+BE2dAC3Oui0jJlECNuhSwDiNpgIsd62wUhxrQOl6rp0M7ikgKhjoFxLp1OxFwOjWrHCAx64X65PD8bGhFqXijfdMIxyLHtdPECM3Hw4hzimYfXvdKqEYzLy8vDrWcVT+8YBMpxAdSo5tIE16na8Xl/IYb8oRJUmHsd2H+tR3nJskWiD68FLAW68L0foaUYk48guASvLgWzpRD4ua2CL9cbJRJKbIJedztnXI+UV7bReokseHEEg1ebnHs1ewUDmpyQ/YzD+TvFqLnHh9lNUGoGGqDT7id74HN7mPlv4ca0AgPS6jcnB8Koqs+F6zvgZewsLSMU69/tzNAwJSWTILGq5/SENJWHz6vTst8BPLJdiUV3vIa6wXRQjtJa2o8o2O9W5lM8HWELk4i4/WZlvOsnMc759CtuLLQB7rB5Cp9DcOAVyG6fXofMnByFonmU1Ec3sG4THGEY/teY0LXM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,58 +126,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 13, 2026 at 01:41:24PM +0200, David Hildenbrand (Arm) wrote:
-> generic_access_phys() can end up getting called on CoW PFNMAP mappings,
-> resulting in it trying to ioremap anonymous folios, which especially
-> the x86 code doesn't enjoy, and which is in general just odd/wrong.
-> 
-> E.g., with a CoW mapping of a PCI BAR:
-> 
-> ioremap on RAM at 0x0000000045623000 - 0x0000000045623fff
->   WARNING: arch/x86/mm/ioremap.c:216 at __ioremap_caller.isra.0+0x4c2/0x5f0
->   Call Trace:
->    generic_access_phys+0x130/0x4d0 mm/memory.c:7178
->    kernfs_vma_access+0x1ce/0x280 fs/kernfs/file.c:437
->    __access_remote_vm+0x58f/0x890 mm/memory.c:7256
->    mem_rw+0x2a1/0x670 fs/proc/base.c:912
-> 
-> But more generically, we should disallow access to anything that looks
-> like ordinary RAM in the system: including allocating memory (e.g.,
-> alloc_pages) and mapping them in a VM_PFNMAP.
-> 
-> For pages with an online memmap, allow only pages marked as reserved
-> (PageReserved). This also includes memblock allocations, however,
-> distinguishing them from other MMIO is tricky, and nobody should really
+On Tue, 13 Oct 2026 08:36:54 -0700, Yosry Ahmed <yosry@kernel.org> wrote:
+> > 3. ALLOC_UNMAPPED and the mermap
+> >
+> > AS_NO_DIRECT_MAP itself works without them, by zapping the direct map
+> > of each folio. However, guest_memfd will eventually need a temporary
+> > kernel mapping to populate guest memory via write() [2], because
+> > folios are already unmapped once they are added to the page cache.
+[...]
+>
+> FWIW, I think the mermap can still be used without ALLOC_UNMAPPED, and
+> I did have a newer version of the x86 patches repurposing the LDT area
+> for the mermap, and simplifying the mermap implementation a bit. I can
+> share them privately if you want to take a look.
 
-With ARCH_KEEP_MEMBLOCK it's actually easy ...
+Yes please, that would be very helpful. Thanks!
 
-> be mapping them in a PFNMAP (except someone abusing /dev/mem, which we
-> do not care about).
+Agreed that the mermap can be used without ALLOC_UNMAPPED. To give a
+bit more context from the guest_memfd side: I can't say anything
+definite until I've gone through the use cases, but as far as I can
+see now, guest_memfd needs the mermap only for write() support.
+write() is an optimization for populating guest memory (e.g. when
+restoring a snapshot) and isn't functionally required, because
+userspace can also populate guest memory through its own mapping of
+guest_memfd. So I currently plan to keep write() support, and with it
+the mermap, out of the guest_memfd direct map removal series itself.
+Since ALLOC_UNMAPPED is the main user of the mermap, it may make more
+sense for the two to land together later.
 
-... but yeah, it's not worth it.  
+One thing I'd like to look into is arm64. Firecracker also runs on
+arm64, so write() needs to work there too, but the mermap currently
+relies on the x86 mm-local region, and it sounds like your newer
+version relies on the LDT area. Kevin, do you happen to have any
+ideas on how something similar could be done on arm64?
 
-> So only allow access if there is no online memmap, or if the pages are
-> marked reserved. Reject other pages with -EINVAL.
-> 
-> Note that, just like other pfn_to_online_page() users, we won't care about
-> concurrent memory offlining; mapping memory that can concurrently get
-> offlined is highly dubious.
-> 
-> Reported-by: syzbot+49b1021becba70c1f3f6@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=49b1021becba70c1f3f6
-> Reported-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-> Closes: https://lore.kernel.org/r/20261001152524.171115-1-ngocthang2710.1999@gmail.com/
-> Fixes: 28b2ee20c7cb ("access_process_vm device memory infrastructure")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
->  mm/memory.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-
--- 
-Sincerely yours,
-Mike.
+Thanks,
+Takahiro
 
