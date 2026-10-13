@@ -4,100 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16AD1CC6B03
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:56:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D3FACC6B08
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:56:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 121866B008A; Tue, 13 Oct 2026 05:56:43 -0400 (EDT)
+	id 7B1BE6B0096; Tue, 13 Oct 2026 05:56:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 084F46B0092; Tue, 13 Oct 2026 05:56:43 -0400 (EDT)
+	id 715096B0099; Tue, 13 Oct 2026 05:56:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8F2B6B0096; Tue, 13 Oct 2026 05:56:42 -0400 (EDT)
+	id 62B466B009E; Tue, 13 Oct 2026 05:56:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C17776B008A
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:56:42 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F3221A0402
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:56:41 +0000 (UTC)
-X-FDA: 85317148602.09.F43A8F7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BC903180002
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:56:39 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FL6bAAK1;
-	spf=pass (imf06.hostedemail.com: domain of sumit.garg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sumit.garg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C0936B0096
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:56:53 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D2F2FA899E
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:56:51 +0000 (UTC)
+X-FDA: 85317149022.12.5D78F12
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E296A80005
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:56:49 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=EFfKnIxB;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf30.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791885410;
+	b=hxS3KmZR42/V6nHIm9jFRu2osdXVyvWRfG8LMIgE1uRydb5Z1ZVC6O5zTc4dwxnX6JYUuK
+	LqeGoibv1XLw+680CPKce5ldl626LlJPle+x7dlO2KzCl+kt+wPh8Sue6iqTSOSWNzYVxb
+	siu8sG30CNpxC78FFMXTCDBvmvjr8kQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=EFfKnIxB;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf30.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791885399;
+	s=arc-20220608; t=1791885410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q7fj9Vp+tJj7vJqMJATzo0vyG2yGkhzhjEgsT39DDVI=;
-	b=xhu7Tv3TUXrtoeFGkXrTuliT4Q7NnfjSk8U3UZ8K6XvIEuDM6HQr8WAVvlHjOYsl9o0/ne
-	zFqHM5BRufL7CRGxroVpn/6/08VH2gl3/ErK/8l950/AEmSqArc/ArGsUv2eMrTJU7WH5J
-	soPgDPIkf97IH+WqemRvs8qP2wSf0F0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FL6bAAK1;
-	spf=pass (imf06.hostedemail.com: domain of sumit.garg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sumit.garg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791885399;
-	b=s2kzL8b/B91lHVfKmJAEpegVbaf+9x0qyyfabE8+BC2nwmja0KBY2fIl9jv3a6tEQnI/99
-	QZJRhfu7NEf32N9aK1ib3u/jMk6WUMOJH5Q3ltGSbBnc+dDNttL2OPXb5fltba1P41YoGn
-	rTWdsM6binwwubP2k9l1jEQp6Smo4ms=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 433E1600D1;
-	Tue, 13 Oct 2026 09:56:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55F31F000FF;
-	Tue, 13 Oct 2026 09:56:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791885399;
-	bh=Q7fj9Vp+tJj7vJqMJATzo0vyG2yGkhzhjEgsT39DDVI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FL6bAAK1wmdEJY0kUnZUcDtzMSWohJp9SOCaOF43QWDUhT0/iL+EQrzkosR+1+gbK
-	 n3CYnRul7jUIP5IfLrkv+P8pOPh2mpHNS0Uk7wGHOYoV0XS1R0aERG9phPvMAFz/m5
-	 QcZdYbCJMmhUbrAflNX57QafmAdlmP34KxetYLnLS9rdkS7h4MXNYvwBtSTDHXg93c
-	 LXsP/R+zgGNL6f6XUxUQk4JWLfXvGkhLVMFwJUUaIpFMyzcLic/mA0L8NUYvPS8sHb
-	 2QPEtRlQjY4pusEYwNfnlZ8LI5GQyhY4CKycn3vvy+P2KTQn0xXPvmjqDkcMg8QP74
-	 qEjGgM633sPKg==
-Date: Tue, 13 Oct 2026 15:26:30 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: Vincent Donnefort <vdonnefort@google.com>
-Cc: Sumit Garg <sumit.garg@kernel.org>, Will Deacon <will@kernel.org>,
-	brendan.jackman@linux.dev, catalin.marinas@arm.com, rppt@kernel.org,
-	akpm@linux-foundation.org, sudeep.holla@kernel.org,
-	jenswi@kernel.org, robh@kernel.org, mark.rutland@arm.com,
-	ardb@kernel.org, thierry.reding@kernel.org, david@kernel.org,
-	danielmentz@google.com, linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org, op-tee@lists.trustedfirmware.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
-Message-ID: <as4ATqhp0bPI03PA@sumit-xelite>
-References: <20260921110050.3977591-1-vdonnefort@google.com>
- <arIYtjmSKCs14SqO@sumit-xelite>
- <arKW_91EeKA-w96m@willie-the-truck>
- <are21BjeS1O3RYE3@sumit-xelite>
- <aruh86rd5FMv2i9G@willie-the-truck>
- <ar5TPvANFUoosxGW@sumit-xelite>
- <asOAYODGZa-7EIV1@google.com>
- <asOD31rTX6dNfD1o@google.com>
- <aszdnInyJxLhSQRp@sumit-xelite>
- <as3798SFCfKFirag@google.com>
+	bh=Mj3i05OrxJ6YWx+f3AUX5Vb6XQi1UeOMbjkLstyxMQ8=;
+	b=UquuJ3Uf0odRCiAZRU241dK64yDLAAvA79wPQJylztHm6puMDZvJ3vjy1J1gdjt83FrfOa
+	qWstd4FNgxbz8JVchMj+hMKWVEnYfC2H8BvLNjEZEx9UNL8OqcTaLVZg06u7fh0U/sUX3S
+	GJ7Xh3XTTmZFw1HvTDgosdfwoDjc4R0=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A88B7169C;
+	Tue, 13 Oct 2026 02:56:45 -0700 (PDT)
+Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B7BFA3F7B4;
+	Tue, 13 Oct 2026 02:56:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791885409; bh=2YBI+HNExmRWYOZipFDby651m/YqSXmPK4RnpA+3yK8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EFfKnIxBAePjQOmGwBCkTqFItC93LDqs/Ft5OLc1jDoCy03l/oyZ3xq3p/rErMXXf
+	 0VdGLyhM7eOk7ZyJTtVs8aIFAsg/9wEyCHieUebxsFY1M8DIyJVDY6i6nuZECOaCSS
+	 X1pb39YTxXfeN8zlu5iZYlhP9/6/v3k+kFfc4om4=
+Message-ID: <40f95078-4d3c-48da-9262-afadf231014f@arm.com>
+Date: Tue, 13 Oct 2026 15:26:40 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <as3798SFCfKFirag@google.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BC903180002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/3] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT
+ macro
+To: Yeoreum Yun <yeoreum.yun@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
+References: <20261013-fix_hpage_macro-v6-0-2c52d0484de3@arm.com>
+ <20261013-fix_hpage_macro-v6-2-2c52d0484de3@arm.com>
+Content-Language: en-US
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+In-Reply-To: <20261013-fix_hpage_macro-v6-2-2c52d0484de3@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: n38cadzu138z3infuf3ny6khgccdk6yr
 X-Rspam-User: 
-X-Stat-Signature: 4busnxcd3juc7ydjr1gtpifrycnoaeob
-X-HE-Tag: 1791885399-806002
-X-HE-Meta: U2FsdGVkX19RVkNdJfIJVyZeAdStcLS4EtTRsy9ux3YhI/n7mOO2indlbYFc3s6kVEu4z09UKP3HSzM2slVpgQ6cDpeecksGbAf/RNU77e8wMH+oH5xgJdIaIQcTkJtfbpXPLIBa0QF9WpyB0G9q9Srj4PzYBc4B+BKEuJURLDNN3Q08BOx8e/i1JyQvI/I1SgjiW3why0mWMzroXWbWPRLo5qWGJzfhtyO6E3ExzCpYwnUdwcHfmHmMuuvFCf4Dz7jjYgYxKbl4FKG8Frs2KKafmhUMwcNa5cAmMnKDADkqMfwzSsAdnnxj82qWvoH3SbeATSKnzoEgiT3DeD7r/A3xSkU+hVhUFmKEhRKSMF2ieY/mTJ3uLyyyG4yCXuFkK6sa038b/XInaNnxDBgoZtL1XAIzXYVW8CNn95nr6uve6lju5U7zzhZJT94zZzoXTB0RExX7e6VHhVigyVr4RKrumpYDKiEAXwNXz2hpn/vfM+p7uUZCAywkam79vp3mG1ByijQ2jyIcrtTwi7E5r5NDPbmBSfDmYUN//09Jkmb4INDDz57MDFaVuS8Qht+jL39xaa1uNCfFSu5NFHCNu21PpP7QKJgE0YPMhTqmHvYpxjYd+QEkyxLDFRl4kc46Q7Y2YCE9DCHyR9wRx11Ijc3WJZbGRIb75iANm1fPNmARhlvBeCD0CFQgEjnDf9WFCSt30oQRH6Qxka2AwwCrFLrY1QdMtT6wbdKKohfSa0J1wZfIvRLUAskvAWkII3fIda3smz3x5EexoROcE6xy/P9bsVKnYeIrPxaVFFwrwte6PdEIm0uY0uYuviX/5mYop1hB/g4I4OUvIC/XFD7jCD7MdL4fv1ZgjqdrJ5VMGbI81TzCGelhCimljFDsr9EoONMNtOAsvCBGqLzSDNwODck8pUWN/E0UBvGyjebbK2YKYwtFAY+R6+1ys+428jbmJMmo49PJR6pewI2Lkd8
- FeaMRGcy
- pOLl/qK9Fv3fpbvXhtkLzHW8n1lGhXO/qWyxtWerX2D3OUnjWJkAqOerhN2HwFbBWptBpH2Mn3Tt0zYTv9ZKE7gZTsnu1NaTC7MJSsTYgmkbYJ30f8k5QKAZKR4Kf0AWzM1y00UnO14W0vqHqhhV8QzqdNjq/6hM3Sr4EPTeENT/KrSAzIZZa47jKGArNc4J7lQnD+cmucno+wtNcA4DV6JQF+wIfgMdanOzgzQ0sNp1MBzfMag608yfHkM08Blc90qZ1a1SSKvpOJXDdVOt1mKq6pg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E296A80005
+X-HE-Tag: 1791885409-745103
+X-HE-Meta: U2FsdGVkX1+CWnAbe5HX0LF8BMOUeqQ/1x/5f39aCqwCT8ToYHfG64UpompdcromASofwp/2XbdI/kKHWRWB7hHqzKoBRilagH07O8yBu3wyhJkLNmINJCeohuhBDI+uTKshzySVMapMIY7OYyS6twXHKQufeqavBLLYQhQqqpCKo95hDNeblubssLw9TbQJlo0LjC+U/WnaYHj7zPwrrcOVxsEuJV2gTMLuT92nMcrf/FgwI9p1nwaPwXtfPkXHMLP5nIxU7CcZbwUVBCdIZ5Ashn4RYuhI8nuw+t2MOrHwoKY0dDOEnqE1BL8NBJQyhFIkeJZ9s6XbqBN2BU6HOv/uGHr3ZK9SteppEvIgCzyd3v57KGdiL6TUbUMO+IJp+M/S9t4QhqddO8V+tjM9j3vdCFh1Ivop5nr/UVzIwJqykwIAfRQ6zWTB+32dJUfZ9KK9uFqD4HAPCrOtAwew40yUhFQAlsWEmor6fkkLjwJsXUVJbtMQ30ZzT5DIbdkDjCbIh23aoeiMwQruMToay0aPY1rGo2fCbwohJRYYxzo1r1a9zZj7b/icMGQuQ91iLeeh5OOoUOItG4BFnmUFkB0y9fvd/hraHqgV1FMmI/gx/43BE+Y4EioBoI1jG0Qgv2dsuKGgls3XEeLBt1EPIr9jKntSxnPhV+4y2+VQZ6AlagOeegyLT5i8+dEg7C6TqpxU7a0KauGN95s74DzTLcO7H78AQ9qjV9bMZWXCGYeHFTTJK/iNRAzQpBVTPBIchdeM2JXaL4bRQ/Ouu8nCM7KKXK26Z5tH7C8UM1/UxegbH1dKF57E5rv2QUb02YGObD0g2jKsASo+jjFtMWdC5Wbhbcdsok+jUF30BIDd3tL70ox2M4HLzzqTdOa6/zZfNLVWFjkGciYHrkwM/t3dd+7nlFYzLumibAg9YB3EVNkH0vyKUVicTeuXsSgWi4x9tlFhxmKSilxbOHz5hB5
+ rqxrC27V
+ 3zGcNSTnJ+d9KcOk3watN2StCWvda0s2sSSSIo2y/gE/L3qVg/amXEOphRxuQZtENt7mBV87AKAaSzW5dqNAv+7kV9vm5a7fSj2X/aZbS+7GhWRrIXnjTrimyyxfKqnYimbjxGuLS5Z75VwR0IDoC3rt4G5O+O06szmbfq1VsdhUJn8458a1GEBZJVkyoNnoPrXdvO2s0aXyJckg3CFffAE3bU/H+VYj+6Kht0L3QVVSC2tgcU+blqAYl+SvYjLtUhKcFRW/0YOjXX1EwHWgm7K1yyWXINkwSd+gI/cZTPNHJs6H6ylmaO7Bz1YKxmYEmmFw6Ky5un5c5yrt5GxF/ZxfG2sLqCZZ0WFTiqBQZYpUskf/gVTN3QO4iyVgzSab6EqXUeCyBjwf3s5A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,157 +103,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 13 Oct 2026 at 10:37:59 +0100, Vincent Donnefort wrote:
->On Mon, Oct 12, 2026 at 06:46:12PM +0530, Sumit Garg wrote:
->> On Mon, 05 Oct 2026 at 12:02:55 +0100, Vincent Donnefort wrote:
->> > Sorry, not sure why Sumit's email was dropped...
->>
->> The problem was with my mutt config, it should be fixed now.
->>
->> >
->> > On Mon, Oct 05, 2026 at 11:48:00AM +0100, Vincent Donnefort wrote:
->> > > On Thu, Oct 01, 2026 at 06:04:06PM +0530, Sumit Garg wrote:
->> > > > On Tue, 29 Sep 2026 at 12:33:07 +0100, Will Deacon wrote:
->> > > > > On Sat, Sep 26, 2026 at 05:43:08PM +0530, Sumit Garg wrote:
->> > > > > > Looks like you dropped me from your reply.
->> > > > >
->> > > > > Huh, that's weird. If I hit reply-all ('g') in mutt, it moves the entire
->> > > > > CC list to To: and drops you. I suspect the same thing happened to Thierry
->> > > > > when he replied here:
->> > > > >
->> > > > > https://lore.kernel.org/all/arJcN60nagFKXj2Q@orome/
->> > > > >
->> > > > > I can't figure out why that's happening :/
->> > > > > I manually tried to fix the To: and Cc: lines in this message.
->> > > >
->> > > > Thanks.
->> > > >
->> > > > >
->> > > > > > On Tue, 22 Sep 2026 at 15:55:59 +0100, Will Deacon wrote:
->> > > > > > > I spoke to Brendan at LPC (?) last year but this doesn't really work
->> > > > > > > for arm64 because it relies on being able to unmap arbitrary parts of
->> > > > > > > the linear map, which isn't generally possible unless you force pte-level
->> > > > > > > mappings for everything, which is prohibitive for perf/power.
->> > > > > >
->> > > > > > As per the cover letter it's about allocating pages that are not present
->> > > > > > in the direct map. This essentially fits the protected DMABufs use-case
->> > > > > > where we don't want any kernel mapping to exist at any time. Bufers
->> > > > > > allocated from protected DMABufs are only meant to be accessed by the
->> > > > > > TEE implementation or HW accelerators like in the secure media pipeline.
->> > > > >
->> > > > > That sounds like it should probably build on top of this series, then.
->> > > >
->> > > > The main problem I see with this series is it tries to move from the generic
->> > > > CMA allocator to a reserved FF-A CMA pool which again comes from the
->> > > > DT. We already support reserved pool allocations via "no-map" which are
->> > > > discovered dynamically from OP-TEE.
->> > >
->> > > I can't think of a way around a DT declaration. We need to know what region is
->> > > PTE-level before the direct map is installed and of_reserved_mem is very handy
->> > > for that purpose. And as this PTE-level mapping is costly we certainly only want
->> > > to enable it for platforms that absolutely need it.
->> > >
->>
->> I am rather thinking of a way to turn the default CMA allocator to be
->> PTE-level mapped. Since the overall idea for this dynamic protected
->> buffers was to reuse memory efficiently, otherwise the reserved buffer
->> approach is already there to use as "no-map" via DT.
->
->When the default CMA allocator is setup, it is already too late
->(dma_contiguous_reserve() is called after map_mem()). I am not sure this can be
->reordered easily due to the dependency on dma_limits_init().
+Hi Yeoreum!
 
-Yeah I saw that constraint too, let's leave it for future extension
-then although having this reordering dependency fixed will be ideal.
+On 10/13/26 3:16 PM, Yeoreum Yun wrote:
+> HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
+> When this macro is used in some test, test result would be strange in
+> the system where PAGE_SIZE is more then 4KB.
+> 
+> Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
+> 
+>   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
+>     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
+>     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>     ...
+>   ok 1 Completed
+> 
+> Remove the HPAGE_SIZE and HPAGE_SHIFT macro and introduce pmd_pshift()
+> helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
+> helper, pmd_psize().
+> 
+> Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
+> which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
+> and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
+> PMD-sized units, the test may fail with the previous size of 100 MiB,
+> which is not a multiple of the PMD size when the base page size is
+> 16 KiB or 64 KiB.
+> 
+> After this patch, output of transhuge-stress:
+> 
+>   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
+>     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+>     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+>     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+>     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
+>     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
+>     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
+>     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
+>     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
+>     ...
+>   ok 1 Completed
+> 
+> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
 
->
->So the only case it would work would be when a reserved memory has set
->"linux,cma-default".
->
+[...]
 
-Let's rather just turn DT based default CMA pool to support PTE-level
-mapping and keep it configurable via Kconfig or cmdline or DT.
+> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> index 5f2fb5b819c4a..efd99298be135 100644
+> --- a/tools/testing/selftests/mm/vm_util.c
+> +++ b/tools/testing/selftests/mm/vm_util.c
+> @@ -21,6 +21,8 @@
+>  
+>  unsigned int __page_size;
+>  unsigned int __page_shift;
+> +uint64_t __pmd_psize = -1ull;
+> +uint64_t __pmd_pshift = -1ull;
+>  
+>  uint64_t pagemap_get_entry(int fd, char *start)
+>  {
+> @@ -161,19 +163,40 @@ uint64_t pmd_psize(void)
+>  	char buf[20];
+>  	ssize_t num_read;
+>  
+> +	if (__pmd_psize != -1ull)
+> +		return __pmd_psize;
+> +
+>  	fd = open(PMD_SIZE_FILE_PATH, O_RDONLY);
+> -	if (fd == -1)
+> +	if (fd == -1) {
+> +		__pmd_psize = 0;
+>  		return 0;
+> +	}
+>  
+>  	num_read = read(fd, buf, 19);
+>  	if (num_read < 1) {
+> +		__pmd_psize = 0;
+>  		close(fd);
+>  		return 0;
+>  	}
+>  	buf[num_read] = '\0';
+>  	close(fd);
+>  
+> -	return strtoul(buf, NULL, 10);
+> +	__pmd_psize = strtoul(buf, NULL, 10);
+> +
+> +	return __pmd_psize;
+> +}
+> +
+> +uint64_t pmd_pshift(void)
+> +{
+> +	if (__pmd_pshift != -1ull)
+> +		return __pmd_pshift;
+> +
+> +	if (__pmd_psize != -1ull)
+> +		__pmd_psize = pmd_psize();
 
--Sumit
+Kiryl pointed this out in v5 [1], you might have missed it. This check
+seems to be inverted.
 
->>
->> If we can have "cma_unmap" cmdline option alongside "cma" then it can
->> turn the existing default CMA allocator to support unmapping buffers.
->> Not requiring a DT change at all, although we can have the DT property
->> for the default pool too if platforms want to opt for.
->>
->> > > >
->> > > > If we can rather support a generic CMA like allocator for arm64 which
->> > > > can support unmapped allocations then I am all for it. These platform
->> > > > specific reserved pools isn't a scalable solution.
->> > >
->> > > What do you mean by generic CMA allocator here? An extension to
->> > > shared-dma-pool? Or having the CMA automatically doing the unmap/map on
->> > > cma_alloc() cma_release()?
->> > >
->> > > Right now I have created an API for the unmapping/remapping part. It adds a
->> > > burden on the caller, but the alternative solution is introducing post-alloc
->> > > pre-dealloc callbacks in the CMA, which looked a bit overkilled to me when
->> > > the users of that "ffa-pool" are only optee and the nvidia video dma-buf heap.
->> > >
->>
->> I am not too worried about where the actual implementation lives but
->> looks like CMA driver to be the better place. I think use-cases like
->> guest_memfd proposed as a user for __GFP_UNMAPPED on arm64 will also be
->> looking for this feature.
->>
->> -Sumit
->>
->> > >
->> > > >
->> > > > > You could allocate the DMABufs from a CMA region that has no linear alias.
->> > > >
->> > > > Allocation from generic CMA pool is already the case here:
->> > > >
->> > > > tee_shm_alloc_dma_mem() ->
->> > > >   dma_alloc_pages()
->> > > >
->> > > > Do you mean it's just fine to unmap buffers allocated from generic CMA
->> > > > region since it doesn't have any linear alias?
->> > > >
->> > > > >
->> > > > > > > Vincent's series tackles that by using a pool so that only that part of
->> > > > > > > memory requires the pte-level mappings in the linear map. That's the
->> > > > > > > whole point of it, so I don't think it makes sense to drop it in favour
->> > > > > > > of Brendan's approach (which doesn't work).
->> > > > > > >
->> > > > > >
->> > > > > > For protected DMABufs, we even don't require any pte-level mappings in
->> > > > > > linear map. The whole idea of mapping and unmapping is just a bottleneck
->> > > > > > for performance sensitive secure media pipeline use-cases. That's why if
->> > > > > > we can support __GFP_UNMAPPED with the memory allocator on arm64 would
->> > > > > > be the best fit for this use-case.
->> > > > >
->> > > > > The point is that you will require pte-level mappings for the linear map
->> > > > > if you want to unmap from it at runtime on arm64. If you don't, then you
->> > > > > can end up needing to split a block mapping (e.g. pmd-level) when you
->> > > > > decide to unmap only part of it and there isn't a safe way to do that on
->> > > > > arm64 without transiently unmapping the entire block, which can lead to
->> > > > > fatal translation faults during that window.
->> > > >
->> > > > I agree with you here, what I am rather trying to find if on arm64 there
->> > > > is any possibilty to have a generic allocator for unmapped pages. That's
->> > > > the use-case here as well as what Brendan't patch-set was trying to address.
->> > > >
->> > > > >
->> > > > > > Now the question is why arm64 can't support __GFP_UNMAPPED similar to
->> > > > > > how Brendan is doing it for x86?
->> > > > >
->> > > > > Because arm64 != x86? Presumably x86 doesn't have the strict
->> > > > > break-before-make requirements we have on arm64.
->> > > > >
->> > > >
->> > > > Sure, sounds like you are eluding to that the generic MM flag
->> > > > __GFP_UNMAPPED being proposed can't be supported on arm64, right?
->> > > >
->> > > > -Sumit
->> >
->> > --
->> > Vincent
->
+[1] https://lore.kernel.org/all/asj4dT2Q__SlKhgr@thinkstation/
+
 
