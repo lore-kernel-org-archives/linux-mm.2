@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AD8BCC6B19
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:46:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32944CC6B1A
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:46:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 025A36B00A9; Tue, 13 Oct 2026 11:46:21 -0400 (EDT)
+	id 2E5646B00AB; Tue, 13 Oct 2026 11:46:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3FAB6B00AA; Tue, 13 Oct 2026 11:46:20 -0400 (EDT)
+	id 2BD426B00AD; Tue, 13 Oct 2026 11:46:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7CD16B00AB; Tue, 13 Oct 2026 11:46:20 -0400 (EDT)
+	id 1FA046B00AE; Tue, 13 Oct 2026 11:46:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B4E7C6B00A9
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:46:20 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3875A1A0D8D
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:46:20 +0000 (UTC)
-X-FDA: 85318029720.27.59C8D41
+	by kanga.kvack.org (Postfix) with ESMTP id EA6FE6B00AB
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:46:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6141B40DA4
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:46:32 +0000 (UTC)
+X-FDA: 85318030224.23.8F1549C
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5B3AB8000B
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:46:16 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZjFOOBmK;
-	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id B7D731C000E
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:46:28 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="kgXLF/sO";
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791906378;
+	s=arc-20220608; t=1791906390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=65ylofHkpi24oDjTTGvcO1a3YWa0mq9OXaQLGT48cl0=;
-	b=QFfOEFt5ZYjg9SyJEfRmZMiMZoZLjTIOHUr5aadaEpmWAkm1Rw5sxWiVOK6ftTguUh7uCH
-	Ca4qAVD8Uaz6XMQbrBrJd1fc2IoLtC1phCxw/E2p4rHrG8TYTyhKsjql2R+J0bXZgI0Dcj
-	AW3vae+EqpFoMUPmdrNHO30tvDkHm5I=
+	bh=eMq2mDhfJOst6GyLz1Fcuo6efNgXRerZYOqtWjNZhOM=;
+	b=0v+ySC38+2djoZgzRPSR/Xb4bSX8Ywbk/TJDB7NiL03RctSGG0+f+51PTPiHJ6aesjQXur
+	k+y/EX1DmNLAUy+sgYmwt8yHMmpz+pS11auxtf12aZRXHeICI7n5H/+MYwMKegNSKvRrx7
+	64nbRyyreZVzVOsZDLIzk7xGdWqq+qQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZjFOOBmK;
-	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="kgXLF/sO";
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791906378;
-	b=xV8+YFgPNjjlziMtTEEFM5CbeoBWtTQjsCRTh8QWZUqN/S8QkNQo7M+Y6rE3xIKxQv+CCR
-	xlqgJm1LwI/J74Nag5Tl6DJMfKJizn3h6vrTMTq334psBNkHXNpxMej3HB3B/e7BfWlMAn
-	1gkR2KVTsgsiIJ17SaDp4icPvD3rZI8=
+	t=1791906390;
+	b=UDbNjVIE0drMu/M70pHd0aiK4CCzcKeZHQ9xXv2DEoGIKx4CpmkjYr3Me5FLSu0D1fwSq8
+	TMxI5mFm2kz4FKPVx3KrO/fWp8xNef49XiUSlT1zq4GzGEALVq56jlJnnin9H+k5YuT4RX
+	qOJyAp9c6iSUgpP+2wvpwFNT5iUIawA=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B3BEF1650;
-	Tue, 13 Oct 2026 08:46:11 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 278D7169E;
+	Tue, 13 Oct 2026 08:46:24 -0700 (PDT)
 Received: from [10.57.13.106] (unknown [10.57.13.106])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B34B3F673;
-	Tue, 13 Oct 2026 08:46:10 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE6DF3F673;
+	Tue, 13 Oct 2026 08:46:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791906375; bh=XuWA6CDAD0oKpnT54prmMz8xHDjG+uiR1e6XzEDjg3k=;
+	t=1791906387; bh=eMq2mDhfJOst6GyLz1Fcuo6efNgXRerZYOqtWjNZhOM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZjFOOBmKsahlAoLaaCP80butvn34rJwBxI/KlXTDwEbOHXbvc9w6p2iFn5xnwkUbY
-	 8pX/C4RRzfAkFQXwAN03mQEp1RDWDe34NtNMndsb900iRhte6mST01qKnGH7YZpnF8
-	 66UGXrxvp+Iivp9v6L5hUgLq6glrE6G5Ev0gmlEU=
-Message-ID: <2552e0bd-0e50-4dd5-a3d9-00e9204eb2c2@arm.com>
-Date: Tue, 13 Oct 2026 17:46:08 +0200
+	b=kgXLF/sOnmA/PaXP6KqDXjeIIPMuJW8hGp/vG4LTJIbgJAMKEq+rFi9KOnkBxr2Mp
+	 bkt1V8H8Xs7ERmZYQ5D/uHy1DT8Mz3tJmtmFa8Gd2DjouQowQllwPE6ZsV7jtWw/y4
+	 j1YlZw8422v0Rx693Qyax36zmWLe8F6JxZOz0ID4=
+Message-ID: <d63f1f76-5bfe-4206-b6ce-189d6948a909@arm.com>
+Date: Tue, 13 Oct 2026 17:46:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] mm: fix missing page-table destructor in
- pagetable_free()
+Subject: Re: [PATCH v2 2/4] riscv/mm: fix hotplug page-table destructor
+ handling
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
@@ -81,20 +81,20 @@ Cc: David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org,
  Muchun Song <muchun.song@linux.dev>
 References: <20261010112457.49485-1-songmuchun@bytedance.com>
- <20261010112457.49485-2-songmuchun@bytedance.com>
+ <20261010112457.49485-3-songmuchun@bytedance.com>
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-In-Reply-To: <20261010112457.49485-2-songmuchun@bytedance.com>
+In-Reply-To: <20261010112457.49485-3-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5B3AB8000B
-X-Stat-Signature: u6z7feoh1nfdmgci4kthtyetqg4fe184
-X-HE-Tag: 1791906376-333411
-X-HE-Meta: U2FsdGVkX18iUaFdV39FFN9BfSa3l7bECKG063Z4pjFI4mPdduyJECycZGt9jwhOFvB2zyrPLe/zcx2mcBUFb9ybmeKT7IKLieah8Dq9KOSIgr4doCZgcUf/v6CV9Zb7EbqR1lsPRh8ztkwwkIz4+4s7VXEcgiR3Nmq2qJelisTmbTFJMHDtD8Rdg9+kkc+vKptJmfaUtWgknkFVqR7sy89C/c3QtFyx9o2bLkuzqkcJm9xVgOJD996F7m4aoad5icruatpdzCCurI/alZE3+o7DQdT58wuH1ZUbxM3l8V2YPzOpVtG+/V5sv+xJPl3BanhWSoLRLjEjSMfke1BaYtqB2z6nAKjZxifUH87i1zcQ1a3tq6tP79HIf1sPF20+0RCSX0khe0lNaFZSXSBqLPHdOeC7EMEkR/D3kMZYaOVmH7SvqQ1/5WAXCjqknN+ju6hEdStpqWGGw4npcChs5dMLMW7qj33N2wbmNjOEfT/tiO5VKBWFC2TEjbz6/eK8ZZI8uQeuA+K88vvnWAzpLRYJlKOZnnbxvqDJLFc25+k3fueaktrkMk2tYhX7RKLOU0ev0RfAEaXlsCvtddwlv5yhBL7Stz/J4sMtjtIcYsKVsPUbvb7gbs4kwMrLbno3EJ6RkpogC5wRltHX5XRz66DoLZDLssj3DaPJKcmlXInEef5YDbu7yKw8mOpMgyxE784+ygn+FXioBtPj8eAzrmOCJW3Rt2O2H+8EnVpM/cAjpivu6gxQ6hVxV0fksmuXl+/oFzaRDC1U8nrbuh9tXQ3950wbcUil+/TDREcSZ5zlhhwSkd0XivRcuEfFoqjdhx0iAAtcxcVChKT3dMTDiZGlrr/xcUs3aN6htJii2vadLfLe/QMNqmbsmBTCITGDrtUuivCFw7NXydngoerwIoQ+MS6/AiME+V+lUOXEZaBy9lQhZmjxNj8ICyL9iUNUz48iDUYn9yZr189gjfq
- piW0WJ3b
- dOteSN0akHcsnVxbyUmMglJ6xZTlCL7qvtSTuUJTjqZPsmv7SdIQ3cfhFku+eqHzTAT7Jiqr6EaTIZkkLDxxxXptjcKeqQZsrxIQqH8DNpsQvldEDdLZ6ebVQo/sxDbOTCCrEl4yql80XhRHagkY9My0CVWt72onaaseN5C6kl3OZp8KHYYroWYt0Ph6sHb/66wCPghpKkuLkoaYfC5Wg3mAYFNli0clmkbFMuld3rIdkBoQba/9khada3SegV6ZvTgaIwjAVStwKCAMBmLj9aPErxIStMPPUw8yu7UXdSH+0Qb+3a1ZJiH7NGcWh0bpj+YpCkLOXw/QReqVae1iQDeYJ0dZ2OeI/14iYRuBgoMlcVeBblYdyEZSOm1scUJ7MoTsvMh0IldKoMlKeyfPZD4AsZYKmxGytW1EF
+X-Rspamd-Queue-Id: B7D731C000E
+X-Stat-Signature: b89nyrh96146ixqifnisgqkfyqn191u9
+X-HE-Tag: 1791906388-985932
+X-HE-Meta: U2FsdGVkX1+hyy+FG32i4dJx/ORbrQFZTzZJCkbcbRTcijDDtWe/z+BHMJIJGGzUCFjgTkgEFkWhB6vMW7dolKf/TyM3oIrElcrA1uxpYzdM2LTBhlwTTiA+WFeGLgDR1X+KEE62RmXX0krd4LbM3vlkw3RvQh+Hw81QGgokvUgKCmTB8i7kwi8PC4QM/D9zDssZEjwyfltUeleX8IORApfFHqQDjU6X+P2QtunZM2TunoLxch/hFLklofwPyR/0CPrcra6E6VhvNhfraZZ0w2LMCB82tgZuh7GWrMB0Q6F8B8E5Y/EZZiOVnKSxQZiyRmpnAwwvQHXXUJqeiFbxYAuIAUHZY9ofRW7l4ejSpYNZZINu9WGZKWgmA4E/+XmUwE0lhK3/Vitx1YRjWNMAwHhIFiWpVmKPJlgBSUhD6pSIJPrBnJNQBwNiMtMaUWXwBDVX0rOUIOGFTJCa/nVHtxApvNwzehpx1in6OSAXsKauOgjD8diTbyM0tnQI4Dke8mgFmxensva3Nbu375cBJi8gtrSB9hbhRsOzwhZh88IgkprS37hsyVyNjwm256RNT76wEvGIKCmasng0kvvJyAGTEAnjXeajADE4YaPjr2KnBSwSH0EsfXUSbxGsyuj66A2yoR/4vvGcQgFugEGCrr+5UvvMvDnGsqb94T8hv+PVR77mCaDyVpxYM1jbN+NleyGt/n5smFONp8+XCxQBoxYbeegOTxGd0YiIgXBF6dsHHonHiL5AXvoz4P4pROweIxkPKyUvZQaOmWE8/Dhs4CU6Zr1RJ/VVKvnFxzjtPI3vq05I9usA29gKueEJguvvAknyLS8zi07qqzky+v7Onwam9OD+kipx5hHKZFNGxt84YB5JGVyRHo80uBoUpCG/0npTUh+h7k96xdMJOiW0ZsuE2eEXsiHunPAxNlnKytvoXJM7nrE3HoB5R/eP/WlzGHyKZ+vkw2YTKefg4IU
+ hgdwZJSL
+ blIh5vxBcBEvh6EslZvK24XH3073EglEcoF3qRmMqVZmyGlKbIUG8PPBBbs39q2SRLKwqP4rsW8zslFLyR/3YRIH4hMa6QC/OlaTLG1W1n5XPwARQLTCGbsDGvHn2LWEb6DS+xckc0dsZSipRxBNCPeke/os9SeCxYcsr2GmD61lk3IJYjrGhFonPDmwyBPPJdDcpOw3hqR8hwkzfRMIbTm+ZM7N8yPw+T7wb30GPDd1fTvMucYycYBIamb+JiLYJotB4EF55y5Y6sKqtqZ20Ue09tTkqGiOOf9XgawZyelD4ROPc28BYXy58lbcpXGslutcVuxZ19h1RuwmNmS1to2r4kQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,129 +103,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 10/10/2026 13:24, Muchun Song wrote:
-> Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
-> pte_alloc_one_kernel() runs the page-table constructor for kernel PTE
-> tables.
+> RISC-V uses the same memory-hotplug teardown code for linear-map and
+> vmemmap page tables. Late linear-map allocations run page-table
+> constructors, while vmemmap and early allocations may not.
 >
-> HVO (HugeTLB Vmemmap Optimization) uses pte_alloc_one_kernel() when
-> splitting a PMD. Restoring the vmemmap backing pages does not collapse
-> the PTE table, so a later memory hot-remove eventually frees it through
-> pagetable_free() on x86-64. That releases the page without running the
-> matching destructor and leaves NR_PAGETABLE elevated.
+> free_pte_table() unconditionally calls pagetable_dtor(), corrupting
+> NR_PAGETABLE accounting for constructor-free tables. free_pmd_table()
+> avoids that for vmemmap using is_vmemmap, but mapping type is not a
+> reliable proxy for constructor state. In particular, it becomes invalid
+> once runtime vmemmap tables use the normal pgalloc helpers.
 >
-> Make pagetable_free() detect constructor-backed pages and run the
-> destructor before releasing their memory to fix the problem.
+> Introduce free_pgtable_page() to select free_reserved_page() for reserved
+> pages and pagetable_free() otherwise. The latter runs the destructor only
+> when PageTable() is set, handling both constructor-backed and
+> constructor-free tables.
 >
-> Fixes: 49f599666420 ("mm: call ctor/dtor for kernel PTEs")
+> Fixes: c75a74f4ba19 ("riscv: mm: Add memory hotplugging support")
 > Cc: stable@vger.kernel.org
 > Assisted-by: LLM
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
-> v2:
-> - Move destructor handling from x86 into pagetable_free() (suggested by
->   David Hildenbrand)
-> - Trim and update the commit message (requested by Dave Hansen)
-> ---
->  include/linux/mm.h | 37 ++++++++++++++++++++-----------------
->  1 file changed, 20 insertions(+), 17 deletions(-)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 5cca90fc1df6..771a7d60b0a5 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3969,23 +3969,6 @@ static inline void pagetable_free_kernel(struct ptdesc *pt)
->  	__pagetable_free(pt);
->  }
->  #endif
-> -/**
-> - * pagetable_free - Free pagetables
-> - * @pt:	The page table descriptor
-> - *
-> - * pagetable_free frees the memory of all page tables described by a page
-> - * table descriptor and the memory for the descriptor itself.
-> - */
-> -static inline void pagetable_free(struct ptdesc *pt)
-> -{
-> -	if (ptdesc_test_kernel(pt)) {
-> -		ptdesc_clear_kernel(pt);
-> -		pagetable_free_kernel(pt);
-> -	} else {
-> -		__pagetable_free(pt);
-> -	}
-> -}
-> -
->  #if defined(CONFIG_SPLIT_PTE_PTLOCKS)
->  #if ALLOC_SPLIT_PTLOCKS
->  void __init ptlock_cache_init(void);
-> @@ -4078,6 +4061,26 @@ static inline void pagetable_dtor(struct ptdesc *ptdesc)
->  	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
->  }
->  
-> +/**
-> + * pagetable_free - Free pagetables
-> + * @pt:	The page table descriptor
-> + *
-> + * pagetable_free frees the memory of all page tables described by a page
-> + * table descriptor and the memory for the descriptor itself.
-> + */
-> +static inline void pagetable_free(struct ptdesc *pt)
-> +{
-> +	if (PageTable(ptdesc_page(pt)))
-> +		pagetable_dtor(pt);
-
-Took me a while to understand why this is fine. Currently we have:
-
-    ptdesc = pagetable_alloc();
-    pagetable_*_ctor(mm, ptdesc);
-    [...]
-    pagetable_dtor(ptdesc);
-    pagetable_free(ptdesc);
-
-All good, nice and balanced.
-
-Now we're saying that pagetable_free() should call the dtor. But of
-course, in most cases, the dtor has already been called. Yes, this is
-fine because in that case PageTable(page) returns false. Still, the
-casual reader is likely to be confused (like I was).
-
-The commit message should really explain this. I'm not a big fan of the
-asymmetry we're creating between explicit alloc+ctor and free implicitly
-calling dtor, but I suppose it's safer this way. (And looking at the
-rest of the series, it does bring some nice cleanups.)
-
-I understand this is a bugfix series so its scope is limited, but if
-time allows please post a follow-up series removing all those explicit
-dtor calls that are no longer required.
-
-Now don't get me wrong, I am absolutely in favour of moving as much
-handling as possible out of the ctor/dtor and into
-pagetable_{alloc,free}; a series I posted earlier [1] was a step in that
-direction. It unfortunately had many issues, including the unmatched
-alloc/free calls [2]. The work you're doing in this series, and your
-plan to use pagetable_alloc() for vmemmap, are exactly what I was
-planning to do next, so thank you for taking care of that :)
-
-With the commit message improved:
 
 Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-
-- Kevin
-
-[1]
-https://lore.kernel.org/linux-mm/20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com/
-[2]
-https://lore.kernel.org/linux-mm/6d167aaa-e9b0-4687-970c-1c67d0df6344@arm.com/
-
-> +
-> +	if (ptdesc_test_kernel(pt)) {
-> +		ptdesc_clear_kernel(pt);
-> +		pagetable_free_kernel(pt);
-> +	} else {
-> +		__pagetable_free(pt);
-> +	}
-> +}
-> +
->  static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
->  {
->  	pagetable_dtor(ptdesc);
 
