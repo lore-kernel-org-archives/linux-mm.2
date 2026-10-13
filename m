@@ -4,101 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 163ECCC6B12
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 19:14:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63809CC6B1A
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 19:17:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDE856B0088; Tue, 13 Oct 2026 15:14:17 -0400 (EDT)
+	id 5061D6B008C; Tue, 13 Oct 2026 15:17:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8E826B008A; Tue, 13 Oct 2026 15:14:17 -0400 (EDT)
+	id 4B6A26B0092; Tue, 13 Oct 2026 15:17:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7C1D6B008C; Tue, 13 Oct 2026 15:14:17 -0400 (EDT)
+	id 3A60F6B0095; Tue, 13 Oct 2026 15:17:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 80F5F6B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:14:17 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 98C02A01D3
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 19:14:16 +0000 (UTC)
-X-FDA: 85318553712.10.30FE1AF
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 90F76A000F
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 19:14:14 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=muWw0dm7;
-	spf=pass (imf15.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BD796B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:17:31 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E59321401DB
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 19:17:29 +0000 (UTC)
+X-FDA: 85318561818.06.B1BE839
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E9AD41C000B
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 19:17:27 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=V07DQowR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=TqiwOtq9;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=V07DQowR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=TqiwOtq9;
+	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791918855;
+	s=arc-20220608; t=1791919048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=q7NeGVGhynspdDjN8FsWdiUJ/CHXi08JbRrTumaJC90=;
-	b=6wLTIyI6XL/Y5Hxl4jPLRYBU1+iLYH7lfeZQQltQKaNGBRdnuN0oc1HdKIqsaWwYo6av+b
-	LjZt7FT4wKzCzzA9U4qwDLHwYnT+UZtAtA4FiSW5fMViaLULGitQw0DACz0mrUPKdeqAE9
-	nCLEYAlZHAs93Vzt97psFA9Op+IjBWs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791918855;
-	b=rIADluXXFEkNrFfcOTAd8aw0UD466JS0++q4x7tmkZDNVvpQffQlMwhwjKWOt8dPs2lLE/
-	USgB2WIN+A0vIBEWfUHCt2u2UsnP+XU8BVe+SxlvnrvWyifO7COQAeF34sbdZNgVSXyYmr
-	8IoEoziq5IYb9z7uXtn+w09UgbeWGJ4=
+	bh=cF++8BVZVrGiDDS9hC3HiwLK+MpGEhXXJUyNn8U/+AU=;
+	b=t/LnOTZtm6dukjipD7RmTWOi+O2XYNuD3ww/vMD91HhoVdn+s+KdBGCdT2Sg8qgdd+UWmE
+	PZAA0wh3mV7vySZ1W9W2NaMxbuWaJs+9O5oPiDFC9dN26zvwvLFHSpREb+d+Kt7+3ptmR1
+	Qy9lNQuPKk9NFnei28EwUw2iTsFjxhc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=muWw0dm7;
-	spf=pass (imf15.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=V07DQowR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=TqiwOtq9;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=V07DQowR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=TqiwOtq9;
+	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791919048;
+	b=CqhXhKXA43L/VBBX4GESgdg1JzjoY7SxjJKxbHgt05O41Paw2cZ7FgeqqLVRWecgSkTt+6
+	/nOTV4uujpgwchqrfo7E/YNouDlIOa2axDuW/6ZIhRO0nJLWWjkMLG/5/bYFFMYGWltpEK
+	K7iWU0WgfYa9L1+j+iE4r5aDlZw0pWs=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4j43ss5DwmzKntr;
-	Tue, 13 Oct 2026 21:14:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1791918849;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=q7NeGVGhynspdDjN8FsWdiUJ/CHXi08JbRrTumaJC90=;
-	b=muWw0dm7aDxJ2inMBGAsKwaVUA8f0aCLXZW9dPTK+deZuMTp1v6hyfH/CtQ96NBKXjEMnU
-	xdD3YuMMEgMRuJDExLJruslZETFpNFX2yFA/upFYWy0n3uXWNQvAxWiBkJDCHCDhBcMaB6
-	DBLmzqzoXrjEkSe7fMpPHtcfwm8imTid3ftA2n+dPucnvnnU2smfysRBEy1a08n2GpF6g1
-	PyY785UDE1ifuXsVZvt98ELgCFWgGtxscNUVaRgCrKdKy4D6CBMcqjdw7UqQbHDLQu7zva
-	eMY44cA7wmgxM9/AOLQ6wpb9Je2+NTSZoOPt9DwXRWrj2tfRzlM7n/+4+vTUPg==
-From: Manuel Ebner <manuelebnerli@mailbox.org>
-To: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 698D62207D;
+	Tue, 13 Oct 2026 19:17:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791919046; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=cF++8BVZVrGiDDS9hC3HiwLK+MpGEhXXJUyNn8U/+AU=;
+	b=V07DQowRw5cSNIekSiThhmE+WgeWE/eDexQ8P78wEPnT0yyxHOJ2aIHZm5a10LDz6Cu57R
+	+itXNcIuX0y86a7vKSMlb63GwEXhEQ+hQ4KNO3SU3tLfi0juMYgUIShzxmGemBORYMQaNN
+	lEQkcnUNAle8wo5majv7PBn9YRN2VPk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791919046;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=cF++8BVZVrGiDDS9hC3HiwLK+MpGEhXXJUyNn8U/+AU=;
+	b=TqiwOtq9g9nFfVP4LdR4J1zkbQfORf8raA6WWoihrViO+0tLn2WGj85pwtVMvUiTHk86EU
+	ExBbbtKO35IejyDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791919046; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=cF++8BVZVrGiDDS9hC3HiwLK+MpGEhXXJUyNn8U/+AU=;
+	b=V07DQowRw5cSNIekSiThhmE+WgeWE/eDexQ8P78wEPnT0yyxHOJ2aIHZm5a10LDz6Cu57R
+	+itXNcIuX0y86a7vKSMlb63GwEXhEQ+hQ4KNO3SU3tLfi0juMYgUIShzxmGemBORYMQaNN
+	lEQkcnUNAle8wo5majv7PBn9YRN2VPk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791919046;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=cF++8BVZVrGiDDS9hC3HiwLK+MpGEhXXJUyNn8U/+AU=;
+	b=TqiwOtq9g9nFfVP4LdR4J1zkbQfORf8raA6WWoihrViO+0tLn2WGj85pwtVMvUiTHk86EU
+	ExBbbtKO35IejyDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 41DDA134B8;
+	Tue, 13 Oct 2026 19:17:25 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id XkRpA8WDzmpaeAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 13 Oct 2026 19:17:25 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Andrew Morton <akpm@linux-foundation.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Minchan Kim <minchan@kernel.org>,
 	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>
-Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
-	damon@lists.linux.dev,
+	Johannes Weiner <hannes@cmpxchg.org>,
 	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] Docs/admin-guide/mm/damon/lru_sort: fix grammar and stlye
-Date: Tue, 13 Oct 2026 21:13:27 +0200
-Message-ID: <20261013191327.663331-2-manuelebnerli@mailbox.org>
+	Pedro Falcato <pfalcato@suse.de>,
+	stable@vger.kernel.org,
+	Samarth Narang <samarth.colleges@gmail.com>
+Subject: [PATCH] mm/madvise: atomically clear the young bit on THP MADV_COLD
+Date: Tue, 13 Oct 2026 20:17:19 +0100
+Message-ID: <20261013191719.95502-1-pfalcato@suse.de>
 X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: ec553cjhwsjo5srji38ypaakogkmy1mm
-X-MBO-RS-ID: 5444562cf99fdf74ba2
-X-Rspamd-Queue-Id: 90F76A000F
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E9AD41C000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qqgeuif4uk6ajhaidmwitwboijuadj96
-X-HE-Tag: 1791918854-22899
-X-HE-Meta: U2FsdGVkX18KT1yuIUTimEJezMcdCde2FaAgaDgEXRPociAHPqYoOM6TSbufFO2i1O6PxLcAOIGugZWWEWwmEY4ZAxbiMLJMQyLyaMwgNDuMyKXPEsXZQsTJQABJwVrxQSdZRaLcEcO2xvtpEbtcTMMZtOi2087hSglpbw9UBl0FfFtYwU+SESwUpxmyJZrg95W5+f1iZ/l7M6qqt47YzsjDVVT3TvdUQY3cMtSQK8Nt0kZT3hkzLzzlVBCXOzoLpN44+qDwP6q97CHdHU9OO4OG48ZcFPzY9RW0LGxB8OjnpLGbtB5pgh69fHju1ZNmmhhhnvNYKjboYkK/6TwVottwuMsnLjfwDkCKhYJz4Snhp4MR8X+BPBPXpecbjC5HAzofyJ+caRDxt9AO+qUCCcjtggP4iOpgNscyz1fjHX4wkTpys52HsIt7dravHmJ0mHZQjxffwN7QB7X2PVRmvv6PRaDIY3roVcx1yjdWW5pNgyYbC2Nqt0B/nXtdVSQPxqSRlc0x9srFhu6oGTo2MkVrduAvz2sPgzeayXD3v6eqkMau+94zYQ/WIqTNAc4saInXqaTkGwpKpJsvLar8+zxgga+mzpBdVlW6dwC1/00ocW5yUIl8xq+LZ9KFmcd3Rnq5igobF5O3V98zbfzfQXpDMDwhVQsiGrFWqNPB3LLvK6yB8GwYxbC8CELtCXkXsyTDbG3IVVoJ8zQ8fcuxZJ6QB00tzWQcBecxS5DPmZpsqf8Z+968KceUuHhZj5/F1QaZuygikZCz/stEPhSbvubuJJebBlrwwbQVTxuDISxFL5fPcaolCXEc8G8Bf+QPCIQqcgOZVLCuGh4oozcw7CtTXLk8P+UI6wBpmldUyeAZV2v33K5yyb+7FNRk436GvUAhqyP9r39PFMQZB8NACfKcDWKYN9LTTax9ziZ6haUVx7erWHNwOmO3QJBvhwFEHvstIPeagabi06rKE/h
- UWQkJlSa
- 1z+RA7DqzV48jOyLnv6gD8GY6cOoEdNWbzvgCxGKvw2j2/JhiummrsALHTsAVOdTss0a8QRqnVFF65fA/R+ik+Xo9hyqLUb6hV0hqGeSzqSNTj5sdybCP0sNbAh5zC4zWq1Q39j2bi7THEXKWOle3VpubXOD1dJ+W8tu052jyKnG8yWa+9k2ly44TmpO62peJ1OazTaWPGhFAgJrZdott0T/C5429xsFtO1QILXuf18sWR4AQ7+Aq+fwdUZ5q+HWR2XWk3JrGX3lr1RXtufkHQ+51PApXxRb8fau1D+yOsUkIcTCp6Ptyj4/0B1Uc8N+GsMPWX2KmlDeumemA2qGOndnFrvgN/M9AOWOG
+X-Stat-Signature: prboodqcwrq1fju8fpzter9w4xibokfd
+X-HE-Tag: 1791919047-407101
+X-HE-Meta: U2FsdGVkX1+W3KlIeDrYt9PyObcBoGMNegBuRK3DgU6t3XdGP87BUSRm68tqmmN4zLYG6wnAEOEe3NCQz03+Bdt7rjn3XrNoFVaX7piP3bA6RadNC0F1WYSKuyJIeLqXu6EYWK8GFwLl0Gfx/skwlIkIYVarHxnF22PpceUFKFqitX0mh9KmX4GsUJtmiF/2trOP/g2o4j41Z8jBmyUmSqwiDlAmRvCetIpajMqt2WjzX4wVWBDA76Xq7k3IWPK5VH36+MYay07E4PjDToDRukD2IjChPKn6qYgsEZUJd9CgTOeTz21qNUqTYXr/fXYhyvG/F5pRA4iYWkUxJ2PHvIfsS887NeqFQZRZmUKIACVeW+LCBNBv5NjupTpqENtTDBOSS1EK16fJeB+qfdh8pSPWOps+GIdKiewePIPrECyHNGdLt/D/Or/qx5f1kz68jkxjUJ7JqruhQctsnloBvjxG+Rz+8S8ZE7tqfaIZ1+I4UzbqYiA17hHoBshn4RFOg/ZMrOqlAWiGJLIIjE1E16lcMHtjJgO/Wz55dFKabfv0bWCwD+7zWnjwPGuQWwAt4KGmjMWFqe1qME6JpSvNxK6YQsao05snrVGxq7JdtW/wM4LJ2h2Z7rzI350mHlZS9impc/roTp1+3Hhs+RAdfT1m2Fy07B/kFIzR98v0c1L7Futd85MGTkMa9vFfe5oOl0E/lLGnlPQb70Fpn45MLiXwduq1FSz8zet6R6UwIS+GudyQJBOcmv/QsLpagvPNYhf1QRwNHeSmwxcMX85J7soH6AJIRPYLf+4Mzu1neLRLNShMCOBgthoZLOw28nAYrWhT3ngpPsjmLGDGn8Auw5p4nKWIWYh0S0jaMs8GDtmWgfyvG0oC/p1ujfS3KJbB0mTETWcmoe6xGCnnfDEydskDi/0nCs8BHiLFtWw6RxL8zpMBeut5ZMyUSS6jg8N42xY4KiwM9EX3XwlDVA5
+ phzZaCNJ
+ /Wrbjst/rM4JTbutOF2SijA/lG+kAz2rZzczuuzP4QdkWK2wHzgr7O7x6bB8fBzQZqw43hqt+TwdGlzLsNEIAbF43CMYpWOgtisNy208qVhmKzN1ti7JMCTq+auVx3wDKhtE0USP52Mgr4Ty6iiphLbjdG5ZA0ZcWnXgYeh2g80DLKha3/HZHOVsuVYSP30F/XYrBFOAfZ+yG7WMC6YD1HRT4VOUPibaYJ/WOfygmmQ7r+cwkQKlCdyFqUi1atMty/3cS7yHgxqa6Gor4VqKn06ioIq4lC33alKvMixybxtIAtjg699ce/X3jKa08cdMR6fi31R3fUZU+Fs0ZFis7cjPQUNxwtWFlIkKPa438JDlIweW3gt/2OJOgrZ3XKJ4FVc8KKF4+SqsmVDIgY1SfyeJv+Q81YAXXruxCdMrtAcx0Kis=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,169 +133,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mention 'least-recently-used' AKA lru at the beginning
-set as -> set to
+As-is, madvise_cold_or_pageout_pte_range() discards the hardware young
+bit by invalidating the PMD, doing pmd_mkold() and subsequently writing
+to the pmd again. However, it does so in a racy manner, looking at a
+possibly-stale snapshot. It's entirely possible that a write elsewhere
+set the hardware D bit, which this logic now loses.
 
-Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+Fix it by using pmdp_test_and_clear_young(). This is an atomic
+modification of the PMD entry, and thus safe against any possible racing
+writes. As a (nice) side-effect, this elides one non-required TLB flush
+in pmdp_invalidate().
+
+This bug can interact with the swapping system in complicated ways, leading
+to data loss. For instance, if a folio is marked lazyfree, but was later
+read from, and then MADV_COLD'd while racing a write to that same THP,
+dropping the dirty bit may lead to data loss as reclaim/MADV_PAGEOUT drops
+the "clean" anon folio:
+
+T0                                T1
+================================================================
+MADV_FREE(thp)			|
+  folio marked lazyfree		|
+read(thp)			|
+  PMD marked young by hardware	|
+				| MADV_COLD(thp)
+write(thp)			|   if (pmd_young(pmd)) {
+  PMD marked dirty by hardware	|     set(pmdp, pmd_mkold(pmd));
+MADV_PAGEOUT/reclaim		|
+  dirty bit may or may not be   |
+  set				|
+    reclaim/pageout may drop    |
+    the folio			|
+
+Fixes: 9c276cc65a58 ("mm: introduce MADV_COLD")
+Cc: stable@vger.kernel.org
+Reported-by: Samarth Narang <samarth.colleges@gmail.com>
+Closes: https://lore.kernel.org/linux-mm/20261011132227.413217-1-samarth.colleges@gmail.com/
+Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 ---
- .../admin-guide/mm/damon/lru_sort.rst         | 51 ++++++++++---------
- 1 file changed, 26 insertions(+), 25 deletions(-)
+ mm/madvise.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
-index 0c04d238ed..3b6d122887 100644
---- a/Documentation/admin-guide/mm/damon/lru_sort.rst
-+++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
-@@ -4,8 +4,9 @@
- DAMON-based LRU-lists Sorting
- =============================
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 85ab9bc76e06..19cd3bb4d1b9 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -431,10 +431,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 		}
  
--DAMON-based LRU-lists Sorting (DAMON_LRU_SORT) is a static kernel module that
--aimed to be used for proactive and lightweight data access pattern based
-+DAMON-based least-recently-used-lists (short LRU-lists) Sorting
-+(DAMON_LRU_SORT) is a static kernel module that aims to be used
-+for proactive and lightweight data access pattern based
- (de)prioritization of pages on their LRU-lists for making LRU-lists a more
- trustworthy data access pattern source.
+ 		if (!pageout && pmd_young(orig_pmd)) {
+-			pmdp_invalidate(vma, addr, pmd);
+-			orig_pmd = pmd_mkold(orig_pmd);
+-
+-			set_pmd_at(mm, addr, pmd, orig_pmd);
++			pmdp_test_and_clear_young(vma, addr, pmd);
+ 			tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
+ 		}
  
-@@ -17,7 +18,7 @@ systems, LRU lists are normally not proactively sorted but partially and
- reactively sorted for special events including specific user requests, system
- calls and memory pressure.  As a result, LRU lists are sometimes not so
- perfectly prepared to be used as a trustworthy access pattern source for some
--situations including reclamation target pages selection under sudden memory
-+situations including reclamation of target pages selection under sudden memory
- pressure.
- 
- Because DAMON can identify access patterns of best-effort accuracy while
-@@ -28,9 +29,9 @@ pattern source with low and controlled overhead.
- How It Works?
- =============
- 
--DAMON_LRU_SORT finds hot pages (pages of memory regions that showing access
-+DAMON_LRU_SORT finds hot pages (pages of memory regions that show access
- rates that higher than a user-specified threshold) and cold pages (pages of
--memory regions that showing no access for a time that longer than a
-+memory regions that show no access for a time that longer than a
- user-specified threshold) using DAMON, and prioritizes hot pages while
- deprioritizing cold pages on their LRU-lists.  To avoid it consuming too much
- CPU for the prioritizations, a CPU time usage limit can be configured.  Under
-@@ -63,10 +64,10 @@ enabled
- 
- Enable or disable DAMON_LRU_SORT.
- 
--You can enable DAMON_LRU_SORT by setting the value of this parameter as ``Y``.
--Setting it as ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
-+You can enable DAMON_LRU_SORT by setting the value of this parameter to ``Y``.
-+Setting it to ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
- no real monitoring and LRU-lists sorting due to the watermarks-based activation
--condition.  Refer to below descriptions for the watermarks parameter for this.
-+condition.  Refer to below descriptions of the watermarks parameter for this.
- 
- commit_inputs
- -------------
-@@ -74,9 +75,9 @@ commit_inputs
- Make DAMON_LRU_SORT reads the input parameters again, except ``enabled``.
- 
- Input parameters that updated while DAMON_LRU_SORT is running are not applied
--by default.  Once this parameter is set as ``Y``, DAMON_LRU_SORT reads values
-+by default.  Once this parameter is set to ``Y``, DAMON_LRU_SORT reads values
- of parameters except ``enabled`` again.  Once the re-reading is done, this
--parameter is set as ``N``.  If invalid parameters are found while the
-+parameter is set to ``N``.  If invalid parameters are found while the
- re-reading, DAMON_LRU_SORT will be disabled.
- 
- Once ``Y`` is written to this parameter, the user must not write to any
-@@ -86,37 +87,37 @@ violate this rule, the kernel may exhibit undefined behavior.
- active_mem_bp
- -------------
- 
--Desired active to [in]active memory ratio in bp (1/10,000).
-+Desired active to (in)active memory ratio in bp (1/10,000).
- 
- While keeping the caps that set by other quotas, DAMON_LRU_SORT automatically
- increases and decreases the effective level of the quota aiming the LRU
--[de]prioritizations of the hot and cold memory resulting in this active to
--[in]active memory ratio.  Value zero means disabling this auto-tuning feature.
-+(de)prioritizations of the hot and cold memory resulting in this active to
-+(in)active memory ratio.  Value zero means disabling this auto-tuning feature.
- 
- Disabled by default.
- 
- autotune_monitoring_intervals
- -----------------------------
- 
--If this parameter is set as ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
-+If this parameter is set to ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
- sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
- amount of access events in each DAMON-snapshot, while keeping the sampling
--interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
--``N`` disables the auto-tuning.
-+interval to 5 milliseconds in minimum, and to 10 seconds in maximum.  Setting this
-+to ``N`` disables the auto-tuning.
- 
- Disabled by default.
- 
- filter_young_pages
- ------------------
- 
--Filter [non-]young pages accordingly for LRU [de]prioritizations.
-+Filter (non-)young pages accordingly for LRU (de)prioritizations.
- 
- If this is set, check page level access (youngness) once again before each
--LRU [de]prioritization operation.  LRU prioritization operation is skipped
-+LRU (de)prioritization operation.  LRU prioritization operation is skipped
- if the page has not accessed since the last check (not young).  LRU
- deprioritization operation is skipped if the page has accessed since the
- last check (young).  The feature is enabled or disabled if this parameter is
--set as ``Y`` or ``N``, respectively.
-+set to ``Y`` or ``N``, respectively.
- 
- Disabled by default.
- 
-@@ -235,7 +236,7 @@ max_nr_regions
- Maximum number of monitoring regions.
- 
- The maximum number of monitoring regions of DAMON for the cold memory
--monitoring.  This can be used to set upper-bound of the monitoring overhead.
-+monitoring.  This can be used to set the upper-bound of the monitoring overhead.
- However, setting this too low could result in bad monitoring quality.  Please
- refer to the DAMON documentation (:doc:`usage`) for more detail.  1000 by
- defaults.
-@@ -268,7 +269,7 @@ This parameter is for setting and getting the :ref:`address unit
- 
- ``monitor_region_start`` and ``monitor_region_end`` should be provided in this
- unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
--``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
-+``monitor_region_end`` are set to ``1024``, ``0`` and ``10``, respectively.
- Then DAMON_LRU_SORT will work for 10 KiB length of physical address range that
- starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
- 
-@@ -291,22 +292,22 @@ If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.  Else,
- nr_lru_sort_tried_hot_regions
- -----------------------------
- 
--Number of hot memory regions that tried to be LRU-sorted.
-+Number of hot memory regions that try to be LRU-sorted.
- 
- bytes_lru_sort_tried_hot_regions
- --------------------------------
- 
--Total bytes of hot memory regions that tried to be LRU-sorted.
-+Total bytes of hot memory regions that try to be LRU-sorted.
- 
- nr_lru_sorted_hot_regions
- -------------------------
- 
--Number of hot memory regions that successfully be LRU-sorted.
-+Number of hot memory regions that are successfully LRU-sorted.
- 
- bytes_lru_sorted_hot_regions
- ----------------------------
- 
--Total bytes of hot memory regions that successfully be LRU-sorted.
-+Total bytes of hot memory regions that are successfully LRU-sorted.
- 
- nr_hot_quota_exceeds
- --------------------
 -- 
 2.55.0
 
