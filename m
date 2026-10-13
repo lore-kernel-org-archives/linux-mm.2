@@ -4,85 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD7C2CC6B12
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:34:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D4F5CC6B12
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:37:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF1786B009B; Tue, 13 Oct 2026 11:34:37 -0400 (EDT)
+	id 4801B6B0096; Tue, 13 Oct 2026 11:37:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA2256B00A9; Tue, 13 Oct 2026 11:34:37 -0400 (EDT)
+	id 40A1B6B0098; Tue, 13 Oct 2026 11:37:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC0256B00AA; Tue, 13 Oct 2026 11:34:37 -0400 (EDT)
+	id 2F9076B00A7; Tue, 13 Oct 2026 11:37:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AB0116B009B
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:34:37 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 429C8A0D0F
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:34:37 +0000 (UTC)
-X-FDA: 85318000194.13.2E93488
-Received: from mx.itxnorge.no (itx-kvm-14.itxnorge.no [91.189.121.228])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 98231A000C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:34:35 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=i4lCGBCA;
-	spf=pass (imf15.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
-	dmarc=pass (policy=reject) header.from=itx.no
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E3BFD6B0096
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:37:11 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 80A161C47D0
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:37:11 +0000 (UTC)
+X-FDA: 85318006662.12.F88597A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 85581120008
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:37:09 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e2vfh155;
+	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791905829;
+	b=EtBG2eVFprBaa2uYMF47L0bklcZxnpG/is5epvq6wmWzR8Oks3S5eNVMfb78H0Fzt2cfkT
+	wZo7Sqgbv4tWrBo/5L36zoXO5YvROBSbuCQWTcVSy2mlO6GocyI6SqBsvvFSQcs255NRWk
+	lwkfeJZJppPASZGFVTQ1JkI++pl6IYI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e2vfh155;
+	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791905675;
+	s=arc-20220608; t=1791905829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sj0AoQXsnwESrz0SIkRB1YQ+B5vPXZ5e7HQiPxgYXXc=;
-	b=Dl90FUrlhasAnkonokVC3MGcFAUlI/5IWVUrRTbnavChmTJDsBWwyZOZsaLYUu6x9ONpqy
-	PxIRaSmpmSxye46FthnPEVFMms3sOTcwcWCUXZHrfRkAZm6y0VCpwJivgip7i7zZNb2PLy
-	mZ2w9g1V4pvVgppqfnBVBDGV6pTpa9U=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791905675;
-	b=DKLoDCQW6ufOj4ZtUwBo4sQcoRC1IhvN+yxMabKdD8WG7U5AHOM+QukFSYanz/4705X+Ab
-	NYvp+mDsU+U5xZg5tNbg/F+efHk7LKkxH73mirVZWmrELjpyHzmjAbio8eR1ZmeS/eQnQg
-	7UU9Nb/V/9Dti2gfDJxmrJEltSq5g6M=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=i4lCGBCA;
-	spf=pass (imf15.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
-	dmarc=pass (policy=reject) header.from=itx.no
-Message-ID: <8443cc78cb8307716989bb462c1c948ae481d151.camel@itx.no>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=itx.no; s=mx.itx.no;
-	t=1791905673;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Sj0AoQXsnwESrz0SIkRB1YQ+B5vPXZ5e7HQiPxgYXXc=;
-	b=i4lCGBCAqvr/zQc3OWo+5P8VT5gKoGiG5xUyTH2CqkDmb4KoDt4l1yfh+QDYfFbdlvr1pX
-	wpUeqpF8Hl7axbHUf9VHzmvBVDeI3n7/aBGRC6jD+1LhR23b4eIwHIuy6trlNu3xZRPSrt
-	k6ZZO7nn/Si+MF6E22xyQ+mqIP44kq4=
-Subject: Re: [PATCH v3] fs/proc/task_mmu: fix lost maps entries above 2^63
-From: Stian Halseth <stian@itx.no>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, "Liam R.
- Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann
- Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Andreas Larsson
- <andreas@gaisler.com>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
- sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Tue, 13 Oct 2026 17:34:32 +0200
-In-Reply-To: <as5M1BSWcPDHjEWt@gremlin>
-References: <20261013152106.1834364-1-stian@itx.no>
-	 <as5M1BSWcPDHjEWt@gremlin>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-9BCL4Kf7PADg3yYOBgFJ"
+	bh=QYvG7iTN6X/wcWZUdqZr19eVWyZZhBJ5WBory4f4au8=;
+	b=Q+M7UsI4foz/2BOu9cVjvCPo8dQlS2suJAzC9JYepJWBDTZ2prs71tA/oBROivm4oq5NoO
+	1iNIHlvGpkccuHotdkrHjI8hpXCnXsLs5nLStq+lRo8euQQRYWHk6Y+JQ/nU2qPme1Skr3
+	4HVgvqu7lwZpfLV4bYS2XSO0t0VEruk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BE498412BE
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:37:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A3D1F00893
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:37:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791905828;
+	bh=QYvG7iTN6X/wcWZUdqZr19eVWyZZhBJ5WBory4f4au8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=e2vfh155/VPsHaWZgcZhQogA6+0Ijpf92000/ox/Lbw56lN7A4SVNn/789Geb12Ur
+	 H0facF2OKtc5Q0ncRS0hdjV15KANCuPbQCLcBI5Wq/pH2lhvbflXcVZIhZMxjXJK37
+	 MDEI3V67nDeThfG2sFh6v1S7JZidQuEREhoCFMBozusmOCEpUMtcR6TJpDIr0Rt7ac
+	 Cr/Tqe0gdCAt6L0zWiFVA/DkfRb6caekRbfSHEAfAPa/fzBw9fXm0a6q56s+CHuQWN
+	 34JBaBP3KAuObrD02sgyzg7XpBXkshrvd2FZ5gLxGOsqsctzDPDbheUlJFQz9sqeIs
+	 ZzY8EBvv21nlg==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c2a4e013a44so5611366b.2
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:37:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz/ySTW+/rPWsn7L8JfHf6kpttQvzNtbKunKc5wILb/T3GUFF8hPjXP3BW7ZjxeAGcCkZB1QF36fw==@kvack.org
+X-Gm-Message-State: AFq9FYIPPY+mNM3pt51NlioB/BPDe3i9xFmCAPKh7oXqJCWXOuNzGJKM
+	cXcMtqMrbrpVxpaqBFjIVrNanEroTnkX8xBeKeJBhYYvfX60eTgD3JEV3pY18RLMzi8I4QJvHO4
+	idk3Eob6WDnSyZHDk/2VYONgdRg0MDoc=
+X-Received: by 2002:a17:907:7246:b0:c26:19de:9adb with SMTP id
+ a640c23a62f3a-c31a9d56575mr1180906166b.26.1791905827546; Tue, 13 Oct 2026
+ 08:37:07 -0700 (PDT)
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 98231A000C
+References: <CAO9r8zMxdg2BTFguwcRQn8n-2CPaEJJfg+T8dWcgO2eV4uNaHQ@mail.gmail.com>
+ <20261013152553.39287-2-itazur@amazon.com>
+In-Reply-To: <20261013152553.39287-2-itazur@amazon.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 13 Oct 2026 08:36:54 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPOkuRGv0X=nBbAzTUjUyaB7zAJLUigetSXEVPxWpyGxw@mail.gmail.com>
+X-Gm-Features: AclHuK-W6f4ZhQh9ueCOMp1_eyaIikFGHa4dIFgdih2WgfTC8_TU_5ph5Rmf9m0
+Message-ID: <CAO9r8zPOkuRGv0X=nBbAzTUjUyaB7zAJLUigetSXEVPxWpyGxw@mail.gmail.com>
+Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+To: Takahiro Itazuri <itazur@amazon.com>
+Cc: Sean Christopherson <seanjc@google.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	x86@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, 
+	rientjes@google.com, Roy Patrick <patrick.roy@linux.dev>, 
+	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
+	Reiji Watanabe <reijiw@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, 
+	Ackerley Tng <ackerleytng@google.com>, Takahiro Itazuri <zulinx86@gmail.com>, cc-open-source@amazon.com, 
+	Kevin Brodsky <kevin.brodsky@arm.com>, Gregory Price <gourry@gourry.net>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 85581120008
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: wksuxusfmdsjdoqxm97exuxktn7k4q5z
-X-HE-Tag: 1791905675-867544
-X-HE-Meta: U2FsdGVkX1/47GHJrjNxKKrzNbc8fzy0QrK6g1fNqyZSs5GkE3wRclxcsoTjnJVNissnGSmuWPNFShefFhmJuI2V31PJJMVKy8dwi6IxcgAvho+byfFH8EeOfViY0FMnB9+nzDCVtvfJRr9EhWz1LKkBUtQ3CABijaU5scSRWsyeJYnYXQOo5exCmpMCcLxcGv/Wiqb4WyH9LQokcgk4g+HyosDBl1Wh4edMFz/gY0CXilFc3spxJLQb1B87r2aCFHeLZV5AEb8Ctmgiw2pBP/Mwdmu+GQhaR5Nium7HdssLdUzrkwkvfcmprHW0tQ0Zah1W+nLfrU4v4dT+PkJ53yPTJ1+2eWrpatAGx5YAAsV39H+HQ7txTVDq12LNMCwFg9uBsd4IKLJK1DnleNOhEKWgpTv0POM8J8uqL6F57F9xG7QgYt9oB/2iz6okUvmj3fvO3oDIy7T4aquqq/xXwJI6ns96tIvSmA9fDlNefFfDl3J4lBuY2KbNwJGyIMborI5n6s/lbiltZjAlR/sUzPobkuk6FEhc7PSvOdczS7LV7cPRL5oc71AcPDFE6htOH7VgmkobUQRoBFkCAvKM05p5v8B1PLipChPspanPVzKUizpXUXI1Xl+z940xiZ8spL/LzQRPxNd7swT7fwO+eFiSHsupEOb3dJKth8OBy+FeXQ3C3vgAvETXI/dKwswz0deXFNrb0AlCkTCjxh2tMDe3icPU5hk6/x/s5kepoz5d47Nx07cbzcWKDPQ1vYW2wFqHf2AJ9aoi0BI2R5uNtHzdksglpcIDvd+Zil/gC/aeBLvR8v7TrjFpWDdynJe93co0W+kEVo5U+Z8oMmqPwKx+9YvR1n38amHgcLETOi+EwkgK+SaZyIg3M6vcUIKY4QmhXhdTBWImZ9mm1cC+7cmDszVou/sWraBNtorB2PdFs2vZiUXtvJMACxDh1AmuJwG5kDEn96a68LKtSGb
- 6/xixXeh
- zTVdVimPK8HlFqNenojua/OjrlBwC1GcCzCmJkXXsZIQD2yYJfoHdRDQDoN+PwQrfGIrsqgZUSAHflnp7QLRZ7tuH0tNdybC0LLxtS8XbTvU0JMUSKVxZfFjr2D8RKXW1diKUGfQ5WjiHi9eI3Da6xC23ly32a3rTMrNM5srXalIQ6QaB5E2J6YDL0lvNYYPwiW1pxQlaAsI6LsOfpLbM8pJbRNVQVZkqgkF0yknTbEL0lH91FnDmgrbPT+21yypOHWVNcsCqhb7lZZL9dNLAdYYy20VQOwMoRSIR
+X-Stat-Signature: xix38idxksqgci33rtr68trfu8p8w65t
+X-HE-Tag: 1791905829-742433
+X-HE-Meta: U2FsdGVkX1+vKBQZMLuoF5hieHoY4xQhziaiouYY1eFZW/Jt+AHiADRFK2+qUN528+SNgjV/eLTWj+ag1KSSOsscN8ujeh/fu8cH9pnRNL1Uuvf+ohnznWbHjHLY3TfWwBiIJ0dkpt1hk0gByjGnCVwcpiCnjiujkJajsvp3BrM6s4hfzqL6U4uFgW8HhLpr23nLs0U7PX5ERDWMrWwsL8wyU9Fs9cSL0z6NG32kAe8jCji0CUSkYaD0M8DJOplzFf791DcajwGDCQIjLX8BnbnGbM8jUibL6aRtzuzqY6CvLuhotdwv79k8+6TmWsAUPe5Tw48Klr5Ue1Qa9cxMtiGSx8jBXhaqAd+y4yrg8z6g9XipAp0yF4S8Wm8UcS5IBID+B89HGWB8uZ6dnXKp8TFglmSPjWLTHUJq/gwJjSmr3igE/nOjZOhgXi79Rt5pgd96Sc2B+OAroXE6MXbWQeTsqmxR0PiJNQroHH7a6W/t9gsqxZVfsQ6RwQxumaGJRM7I0i2PSjO+qY6FDKSvW17OmaGXFTk0pRcPxIUAwGurpFW6cFqP+H/YpTGhQM47WAub0RpJN/Rj6Gbh7uQlj434rAndXp3GX5Ov46MLsQex4lDUYbaHRRIflIqF6Bbgjyl8IEYRrHett1fZPofQ6+1et79mQ9NwSOTj3kZ7oyi0ihLPzvf2gUGNxkaMBFCOSDopAXd6RDTlAiTve415zO9wqEtLI/XYXUxLIDK2jLEn/wXuYZ3wNCMu6DXXKmq0n0MRyiKrdFkO3WYskDS7AJnAYoUmvpo3FJ51RmD/+BqKmBnkvjwXbSl2HGNTJtHOqas0C6lh/wflSqq052NW9cDGDWffOuBPol9PiQrUz7SN4Wd09ateDLnKJVaRBGAISXlkaRCNI4XDD+8A2cN3qulPgNiOaCPV7o98VLyHktJImioWe4WBkVyFmm947IoauVzsv7KuQM+HfLdRtYZ
+ MgQ25ysq
+ wYgbm5/sz3i0dTtZjqIlPHf/stD8szAuC+RODWHvWDG1jTqAD+UwgOOx+eWy4VsaRyoEUciNoVUaAcYKZFRIfIiGaDpxpNUMOrN2XKdrf7IPoDL4paAkEgW0/l88U6zuRYrTl0NNR0qffZDFL3EIUgM+c1ZHAlT6R/6KdnSbFWLa358+Z2t4FhbrSFvESEfxk+q2TUV8j2WjTKu16UqYsZdz2SwSDiA/hsZmWy+a+h2c0+p7W2ZZAxSfTM7Qgv4atfNNqdZQb/NokmsQDR7xipcy6tsUgVVvDcG1zJu8fjxCPOlOh2DDjqmQIuN14qd+BFHmdxBUns+M7zyo8i4z6yDyvs7NOtUcOR7lllSVCI1mHWrwTr/ViER0FQXTCJ280R6/h
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,36 +114,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Oct 13, 2026 at 8:26=E2=80=AFAM Takahiro Itazuri <itazur@amazon.com=
+> wrote:
+>
+> On Thu, 3 Sep 2026 07:06:02 -0700, Yosry Ahmed <yosry@kernel.org> wrote:
+> > > If that work is not already underway,
+> > > I would like to respin the AS_NO_DIRECT_MAP introduction and secretme=
+m
+> > > adoption as a standalone MM series, separate from ALLOC_UNMAPPED and
+> > > mermap.
+> [...]
+> > Perhaps wait until I send the new version, then we can discuss if we
+> > want to split it based on how the feedback looks like. Does this work
+> > for you?
+>
+> Following up on this with an update. Yosry let me know off-list that
+> ALLOC_UNMAPPED is on hold for now (quoted with permission):
+>
+> > I wanted to give you an update. I was working on v4 of the
+> > ALLOC_UNMAPPED series while our team was simultaneously working on
+> > integrating that design without internal ASI implementation.
+> > Unfortunately, there were multiple complications with that
+> > integration, and we will be holding off on sending new versions of the
+> > ALLOC_UNMAPPED series until we have higher confidence that this
+> > approach will meet ASI's requirements (ideally in a production
+> > experiment).
+>
+> Since the integration with Google's internal ASI implementation needs
+> more time, Yosry also agreed that I pick up the AS_NO_DIRECT_MAP work
+> for guest_memfd, separate from ALLOC_UNMAPPED. Here is how I plan to
+> proceed. Feedback is very welcome, especially from Sean on section 2
+> below.
 
---=-9BCL4Kf7PADg3yYOBgFJ
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Thanks for the update, Takahrio!
 
-On Tue, 2026-10-13 at 16:28 +0100, Lorenzo Stoakes (ARM) wrote:
->=20
-> Please stop respinning so fast thanks :)
->=20
-> We generally want a ~week between respins for newer contributors. At
-> least a day.
+> 3. ALLOC_UNMAPPED and the mermap
+>
+> AS_NO_DIRECT_MAP itself works without them, by zapping the direct map
+> of each folio. However, guest_memfd will eventually need a temporary
+> kernel mapping to populate guest memory via write() [2], because
+> folios are already unmapped once they are added to the page cache.
+> The cost of TLB flushes and direct map fragmentation also matters for
+> performance, so I'd like to keep discussing these with folks
+> upstream, building on the direct map fragmentation discussion that
+> Kevin led at LPC [3].
 
-Noted, sorry for the noise. I'll fix the commit message as you suggest
-and wait for Suren before sending anything else.
-
-
-Thanks for the ack,
-Stian
-
---=-9BCL4Kf7PADg3yYOBgFJ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTK1ph9OaYoND1R57zoeAEuJe36VgUCas5PiAAKCRDoeAEuJe36
-VkQVAPoCUzG8mmDrCFMN5Ein59AyWLtRlQ007GcgYwRGOrF9IQEAukcMXEHtB4NJ
-oRJaaT7GOIwA2fTpfvtsLVydHjjb9g4=
-=5ilD
------END PGP SIGNATURE-----
-
---=-9BCL4Kf7PADg3yYOBgFJ--
+FWIW, I think the mermap can still be used without ALLOC_UNMAPPED, and
+I did have a newer version of the x86 patches repurposing the LDT area
+for the mermap, and simplifying the mermap implementation a bit. I can
+share them privately if you want to take a look.
 
