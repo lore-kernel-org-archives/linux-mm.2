@@ -4,103 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA3C5CC6B12
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 21:01:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0449CCC6B0F
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 21:03:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2B856B0092; Tue, 13 Oct 2026 17:01:10 -0400 (EDT)
+	id D7E1E6B0088; Tue, 13 Oct 2026 17:03:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D02C16B0095; Tue, 13 Oct 2026 17:01:10 -0400 (EDT)
+	id D2F506B008A; Tue, 13 Oct 2026 17:03:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C41256B0096; Tue, 13 Oct 2026 17:01:10 -0400 (EDT)
+	id C45B36B0096; Tue, 13 Oct 2026 17:03:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A67456B0092
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 17:01:10 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 284218020B
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:01:10 +0000 (UTC)
-X-FDA: 85318823100.10.B724C5F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2AB5C40006
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:01:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ze+YyELs;
-	spf=pass (imf12.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791925268;
-	b=urDobsIJG1j3qTCTjrmeBZwfRPjTwvIkg/Zanta7Oat/N87GsAxyHtFwq2r/Q+QPFw2Hk7
-	DZ4ZQE8YU3+z86OCGVbgiDacaPWFZl8RpMljZwmDWZCg6Aa5RgF6JIBhzNjqRqPaxfa0rW
-	e3p/LTAuGUmmdQ2XyXmXHx/ztiMGUHg=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ze+YyELs;
-	spf=pass (imf12.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A4CA86B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 17:03:22 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3CF101A0223
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:03:22 +0000 (UTC)
+X-FDA: 85318828644.04.A637225
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 694B640011
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:03:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Le/OWGnU";
+	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791925268;
+	s=arc-20220608; t=1791925400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=otzqAwHTarH+nPjYAj7PC0qYusRb59jP1GBa3Q2bM/8=;
-	b=lJaBo1X5Sp3S1dWvGLfoAeF5k3ahoOBgx3McsAwdPd2hmAs+Rpr2J0vLYpBdbXJAImSfH3
-	Kkf6kS0aPNXaPM6U0DnZngAhWg2zxATm/GDYG7wfzB3u65RUW0sGn2LR26fpGIcZ66wn/Q
-	JoC3BXQPMyjzhG973tKFDXf0QgNQ7Lc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9BE4A6022F
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:01:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B58B1F0089E
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:01:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791925267;
-	bh=otzqAwHTarH+nPjYAj7PC0qYusRb59jP1GBa3Q2bM/8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Ze+YyELsWXzooRsH8Nwdw8sHpfqQhqX57KvCfNiePy+9l8l0oZs5QDWKMeOOMtJCZ
-	 cp9PdgMMnYugE36LIjYfY+bK5/6Bat85gwbdTJRibl+Uf2I9JiUQl/xtsQ3EkHAtAv
-	 w0chzgxOlJL+dtI5vxqJgRiychRWf+GrCt6N7MQs4rOflSwAJEYDAZrrbZpyt4mtvS
-	 9JYZsHtCMHYZ1njOEW7iGJS6evqzPdlPDMv8j6pcIRQCipPYeF3ZDIyUGHukAYefim
-	 HS5s3JwhamteA4n2ZcMBEwFVohicWzhIZ/A1AV4nHmaof/WvK5FcN/jbAs1f5tGVgL
-	 MpkjoRUKLClrw==
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c247f6687dcso525801466b.2
-        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:01:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx2g9Z+/2A/1wwv8Lizx6y2gjzJ/Rzt5onyt/pM6c1kIx3tZI+m3JBNMAgUtueiAYYv6DH1RGtiNg==@kvack.org
-X-Gm-Message-State: AFq9FYLFbxLjmkbF8InvPcDMBE/P0ZPb8V+9wfikyHiKQL1eEA5lZ+Fc
-	wxVsAIN3qLMRck80WvU5eHHwYhuXTE+McDOHgRLDTP49VKPtoZhda/8pLuinObeEDSZnc8sWSU+
-	xcEAlyGiNS0s54cHl4fct3gl/PuMKn0k=
-X-Received: by 2002:a17:907:7b8d:b0:c2d:d9f4:2c85 with SMTP id
- a640c23a62f3a-c31aa0c129fmr1295928366b.41.1791925266214; Tue, 13 Oct 2026
- 14:01:06 -0700 (PDT)
+	bh=SUa7NgEfoTcw3P3DlukQ4SYNZTtD4CNNK8X1IUo2784=;
+	b=BELE9//4Z1enTzHNIHZ/Nw1wtk2EeW9AUB8oLDGIHW86Od1ESjoYc5sCwJc6sGhRrxn2R4
+	dEd4gXxskuiMDSXtaMgWAcNht83h6B41ljLgzXjgiIoDvMfLD1qAudpWKAUpzPXUHdpupL
+	Xl5DsdMZ9+LsNbNRksoV6PSw16v/M3o=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791925400;
+	b=ND5YbliQWe9iqa3UiLBw5Cj2Ya+GYaHAZG9+VHV+Uo8KkVlLkRcfRUS6gGosMoyWIO9Eq1
+	RUPhIZ1ALl9EtKzx2+xp70ntIYXWuT+ZCv1CBMQAQeDcQ1QjQ3pCNL8eWey+pitM2C8OKa
+	u5IWt5dp0G00HxFHLmiNf1COh+rgfRQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Le/OWGnU";
+	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=SUa7NgEfoTcw3P3DlukQ4SYNZTtD4CNNK8X1IUo2784=; b=Le/OWGnUMrk7JyDUzirJbH6tzr
+	3ISoX686d78tGc1tpKfDC/rsN1Pplj6pMi2Xl5fqzLG6m1GVFciIMwTeKyDA6KwpdhVAifhFz31Vw
+	/INHKQeVNzfLRSsOjsCKTSm+7i1ck6snENGK/GrSqZBguDId/U0TieIHbPoX5mSfhPUHWAaKv4SfY
+	DoZd9vVWzqcwCMGkjUj7z1RAObBmPfQk/3jSHkgWmgBjZx5R+/6Iqiegrd6cfJkbA2VgR0SS2Wn1+
+	g+lximLmK0nV+AtDHDhFQLhu49JId70kgBDlu2h3aqerqiWkDYlvT/Xux79uappfLf5tfmfEnF2ag
+	dqyck3OA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xGjeS-0000000FrDz-48vC;
+	Tue, 13 Oct 2026 21:03:13 +0000
+Date: Tue, 13 Oct 2026 22:03:12 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Kiryl Shutsemau <kirill@shutemov.name>,
+	Ilya Gladyshev <ilya.gladyshev@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux-MM <linux-mm@kvack.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: Improve page refcount scalability
+Message-ID: <as6ckC9NJVB8JBuV@casper.infradead.org>
+References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
 MIME-Version: 1.0
-References: <20261013151007.2093943-1-usama.arif@linux.dev>
- <20261013151007.2093943-2-usama.arif@linux.dev> <CAO9r8zM-utRFYGBfaEb=89LWM0DOKc8dywcDLSb6L7f4c80yuQ@mail.gmail.com>
-In-Reply-To: <CAO9r8zM-utRFYGBfaEb=89LWM0DOKc8dywcDLSb6L7f4c80yuQ@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 13 Oct 2026 14:00:53 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zO5HgtH0-jgCrj1uyv9fjUrHCxSZA21mWpDVU2B7qS7Ww@mail.gmail.com>
-X-Gm-Features: AclHuK81jQ6rnaJmrP6r3K2lHMSwKc6BJEWDK7sFlCmG2sgXzWUx5CcLolataic
-Message-ID: <CAO9r8zO5HgtH0-jgCrj1uyv9fjUrHCxSZA21mWpDVU2B7qS7Ww@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] mm: zswap: use separate compression and
- decompression requests
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, chengming.zhou@linux.dev, dsterba@suse.com, 
-	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	nphamcs@gmail.com, terrelln@fb.com, riel@surriel.com, shakeel.butt@linux.dev, 
-	alex@ghiti.fr, senozhatsky@chromium.org, 
-	Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net, 
-	linux-crypto@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: yypwe393ep8h4jn1cohqtdr1zh1if4bo
-X-Rspamd-Queue-Id: 2AB5C40006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
+X-Rspamd-Queue-Id: 694B640011
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791925268-607757
-X-HE-Meta: U2FsdGVkX19+0iKp2J8cOavcfyE0aJtQ3TkbggF98U4JV3vBneWEfW2jMmh35K8jqZzNTHJTZmH3pAZIYHk9razqnmUALKrymFLDIh8OUPLbjxHbU6J1C1sihN82tSPbQhjnIBBExVzInb2aoAWJmWqWwhecOGqoC91y90xZ2IPHHsLTO6pAyg4OEV3QluGrOws4OYUvyi8/ytecRboZZ6c9d5Wog/3I2thi0jraerRHkHN6zlwvj141NBMDBwITZi1S+TtONdDiMK1ktrtIHMwCpz4RBcAe8wc+n08rOvgPBa2TJjD1ELTK5rvagHyh8+5XgnIAo0n4YkffAYYrRlJ9l0TW7zBSt3hIZyCNZjhLaipexkkqvu0fP4kRHCg44IY+FZSqCM1dTL4qSQGMIqQS/Nm1FQ8bD4vmF8T7u275+dNcMWtAP/T1SguC6+wH3EI5xBvqFnJh3TKV7V7xIhqIoNzhmbjtaU+jyyhWtKjWJAMr/yQiMs1QyFfYA3MOi1/4xY4nSyTcaaQVlQ4Eq9TyxygyqeTTaTgTceHS6uLTzSQiTxgnuV08q1vSbuWHSc100nIlM2mag6lGWgx/XbES1jIiCrKur42GD0IeDANthmfkfjHJSwG1mrnaol0aUu7dWWvdPy03lMzv3cTxNjUBqIkKtnDje4SCHupoaqh8nbNG6waVZD9jrv9YzveM1O60Dy9wm62FiYKdav526Y2VabxuLKSDCq5a9XxlPEM1bQJsjhjlz9FUCPsixHwoiaqNQXKtrGPwl1zh5pfsoEa4oLle0DIE8qBqzPW3F8jd2akFW0gjIOn8Oy4YQHa873En9CXZesjkv9XVVkA7bavgWOJNW7Qmlze8D3yBxSWLbVKjCWxwbdte9b+ToqOgCFCJOErw0+C6Iyl4o83f6sifrQcPV90Xnw6KgOlZ0FFzgl0Mw/w4r55biHR81ErAXhNLSp1FnBgFcaB2+aS
- PU+0euLy
- RKgAl0bC9oYhWI87Q2u3dIuasHgYiO1oQ4t9J358yW/315evBPNbySPjqy/42uApREFpfZ/i9YzvhDuF6ExIf2CqAiE1Wi7JoNIPJbE7tVDuqzFBML0boKXK6LDhmeqXbgjI9pMEB5dPH0oLT0y4B3suUQLcPNQqdeAgvnij1/n+oe5Q9IEFjZT9VnKFgQd4CcYBteosXTF2iMAIQ7rBfspeBMTRGcXVnJzI4Dnrk32JIl8gfWz/wHPNJe6xv+OU+cNLxyKooKVrCSM8qglrQkuMRPv6x3wU3A49LKXx0qKckCSyJGpfePGJEpA==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: fxfg6pwc5c6eghdiqnfsswnunrehiqgy
+X-HE-Tag: 1791925399-34857
+X-HE-Meta: U2FsdGVkX1+i+8214tnmC3JScNSIjdauZf8bdvJFSwz6E2/u+jMnKSVmTV7Bdle09pVQ61DljpMuVaVX//Gc9Nd0tiYunz4gewqrtNPjSz3zyt5YWMe9ytdYOF110YDyw0U2PBHJWToDOPui6qW38u5FI+9QPvuP/GbGgN+izZdC8AW8u7FAd4VGzuaPujOL819j+OevGrgGIDcyjzau/J/Z+9qlO5+pKSZmJas+EkARwY0mCeCkkeJvT+ZSL9Xj5a9C6VvjAk1Bvo4r17nqcuG2Uw5NzVt6BR3Zae5ZpcwnpEfp0xQQjOb/9qhpb5eW9hGg2qjzr95bG8/EW3SDxixZ3drUN3AMwB3UHTbhdXVzzHM3pJMg6kKcHirSWjVw36xABmAtqJbgC4ZRl4ZJuHGcCNfRZrzySOQlu7LGTTmmOhnGi7QtxkGTYWv0cknUPkLIUTh6mhjj7pfpFVBX+is1CYVxd3F+7U7ndO15yULBtCNpLtkYrqtA/llkvXB+NWUd+vyPTB5fb9Wy7AAS0jRczLe1X9u+NYybGziuDUz6MjoQl9W7TjMSGaiLN/KeFKZo90EbnH99WPbbQGKL3rU3xYEsKwwDiu307psUffL0e4PvWakqAqh0QNe5owwTFiyK2UL8OMu+c9lRrulKNCfrZtqfBlWYe/b/TgIozWTSwFrug0moNCUjd+vcqzSi8IJ/eptDkCWOodI87/tn8qCKesdhpYnV+XOMouw/72hlcZTG6jk/hMbKtOJe7WPIA1IkPEd9UWQnJ6t4w8hcb8ASKy0IFI9ET08bbk2Q0JUv/ltK7BpfuDnupXNcljp+ZYz0qbTe3Q2d7RDOPCh6xjFT7zf81vktsb0ogs5ik78SsCeiE4R/JeiDRHgb3/e796iaSxO8uxzYAtULxm/xXvndnhd0T9zKnZVbYX9wbZjPBb+za6Sf5i1pTs9qt5dzxyVcIKvCHi2ENuSxnwP
+ 8bnwycxA
+ MZxSHl1yakc5HugHaACHjJm/0bFi0Q1fwkFcSloZJmQigtOvMz4t58DkQlFJXpURN6p3THCfttrzmu5Fq/10W1oRQkFn1P2ciRzVuXYV0RM60rdcChuUAK5iNC3sV44Ibjz4cYcFeJuwUpkKj9tDnYYP1jgsVQGG58wiI6rLHtEzNdmYUwKr3G+8+Md5c9bUpCVs4tSeVsX9Pv7SfDYagz/g34jk7N+VWlsccpbm4Pkk1UY+Q3Dx5C1cK0/Yz/mzb1nF7VkJKf6pnIoY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,27 +94,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 13, 2026 at 1:57=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Tue, Oct 13, 2026 at 8:10=E2=80=AFAM Usama Arif <usama.arif@linux.dev>=
- wrote:
-> >
-> > Stores and loads serialize on the same per-CPU acomp request and mutex.
-> > A low-priority store can be preempted as soon as the compressor drops
-> > its stream lock, while it still holds the mutex. A higher-priority load
-> > on that CPU then waits until the store runs again, which can take a
-> > long time when other tasks are runnable.
-> >
-> > Give compression and decompression their own request, completion wait
-> > and mutex. Since commit e2c3b6b21c77f ("mm: zswap: use SG list
-> > decompression APIs from zsmalloc"), the per-CPU buffer is only used for
-> > compression, so group it with the compression request. Independent
-> > requests can share the per-CPU transform; the codecs and drivers
-> > synchronize their shared state internally. Loads can still wait for
-> > each other on the decompression mutex, and stores still serialize on
-> > the compression mutex.
+On Tue, Oct 13, 2026 at 11:43:14AM -0700, Linus Torvalds wrote:
+> The fairly short series of ten patches basically enhances folio lookup
+> by noticing when folios are hot, and setting a "delay relasing this
+> folio until after a RCU period", and then using that RCU delay it does
+> not just the folio lookup itself under RCU (which we've done forever),
+> but also the actual folio data accesses themselves under RCU. No
+> refcount taking needed for the fastpath where we can just read the
+> data from the folio entirely in an RCU-protected region when the user
+> copy doesn't cause page faults.
+> 
+> Unlike my original approach - because it now actually delays the
+> freeing of the underlying folio data - there's no need for any double
+> buffering, and a lot of the original limitations of my original patch
+> go away too. That improves performance quite a lot. And by "quite a
+> lot"  I mean "I see a 23x performance increase on my Ryzen
+> threadripper". Admittedly that is a very artificial case of reading
+> the same small part of a page over and over in a threaded loop on all
+> CPUs, so any real life impact will be much much less.
+> 
+> Anyway, I wasn't planning on posting the individual patches, I think
+> we all use git by now and probably find it easier than fetching
+> patches from the list. So it's all at
+> 
+>     git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux rcu-free-v3
+> 
+> and the commit messages are a bit more verbose than I would have done
+> it myself without tool use, but maybe it's better that way.
 
-Probably worth calling out the extra memory usage pCPU (at least on x86_64)=
-.
+Obviously the numbers are compelling.  And thanks to Kiryl for figuring
+out a workload that confirmed my fears, then remedying the problem.
+
+I don't like the PG_rcu_free flag.  I hope we're guaranteed that folios
+in the process of being freed by RCU will not be mapped into userspace.
+That means we can use PGTY_rcu instead, where there is no shortage of
+available types.
+
+The workload that Kiryl identified (truncating/holepunching folios
+from files) is not the normal way we free folios from the page cache,
+so while we need to accommodate it, it's not what we shuld optimise for.
+Most page cache folios get freed through reclaim.  I started sketching
+out a new state (I was going to call them "ghost folios") when I realised
+I was basically reinventing the inactive list.  So maybe we should make
+folios on the inactive list immediately freeable as long as one RCU
+generation has passed?
+
+This may be where I run into trouble.  I don't know how RCU works
+internally.  Is it possible to record some kind of generation number in
+the folio such that we can see if it's only recently been added to the
+inactive list?  Or do we need three lists --active, purgatory, inactive
+where the folio is moved from active to purgatory as it ages, then
+from purgatory to inactive after an RCU perid?
+
+This will somewhat complicate filemap_get_entry().  It'll have to be
+able to cope with finding folios in all three states, and moving
+them from the inactive or purgatory lists back to the active list.
+I think it's doable with the right cmpxchg() magic.
+
+What do you think?
 
