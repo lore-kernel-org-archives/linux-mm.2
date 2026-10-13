@@ -4,140 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB328CA9ED0
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 03:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 628C2CA9EDE
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 03:25:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2B856B008A; Mon, 12 Oct 2026 23:20:28 -0400 (EDT)
+	id 394B86B0088; Mon, 12 Oct 2026 23:25:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADC266B009F; Mon, 12 Oct 2026 23:20:28 -0400 (EDT)
+	id 344B86B0098; Mon, 12 Oct 2026 23:25:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CBC36B00A0; Mon, 12 Oct 2026 23:20:28 -0400 (EDT)
+	id 25B5A6B009F; Mon, 12 Oct 2026 23:25:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 72E0F6B008A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 23:20:28 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 03CBC80536
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:20:27 +0000 (UTC)
-X-FDA: 85316150136.23.79F18E2
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013032.outbound.protection.outlook.com [40.93.201.32])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E973A40005
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:20:24 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F2C756B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 23:25:36 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8037F1A0B17
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:25:36 +0000 (UTC)
+X-FDA: 85316163072.29.7D9CE15
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id AEC9540002
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:25:34 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="r2SbfN/3";
-	spf=pass (imf07.hostedemail.com: domain of Biplab.Raut@amd.com designates 40.93.201.32 as permitted sender) smtp.mailfrom=Biplab.Raut@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791861625;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=NyRm1VrF;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791861934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=GRkZK/iuuE3UsBvYNdMfTVUxrvDGE4KD74DhvJNy7nw=;
-	b=jknAzL98GrzP4sN7xi+hglB8J4qCONB9tlKWgpLzw3R1r0QDpW6Ldvj3ORyJ3xzUpjee1y
-	j1Vm5hs0sNuxYA1cq+v60hGhODoyEayWnlKPNFsAdP12RYyVa/bGC6HR5hjAeQrFYcM/4G
-	HiTYBEOC7th6x9JYMuqqv7g/uhvQIbY=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791861625;
-	b=tdycHqhm6xOTWCYC0zcr90xdosvJ/BcvWot1RH+9n78cVIB+mJ0PutHZSajMKfdCIKiK5m
-	9W7MijNYqJQ8GbKhADa5ZiZKlmM7G06K+OQjgwRn+ce3KwUjwEIdZlUiHdvj8ap57e1ubq
-	CyMMdUpGL46DazCDGwIpyD5+wmfFujY=
-ARC-Authentication-Results: i=2;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pJssChfaw/WlnaVysEqwe4Z1tfuZOFEKdXZG/EwVI3I=;
+	b=wp+pUlliCYvMTrGRe9DwFgTDVfhVDPchVNuFhw6MyAYatpPKQTDntAEjrKweJHV95WmyWY
+	B1YJNJyZtkYmNec6kVUD4vTivaYpXFU3735MTB0GK1Arp6GBeonJLSL9XWM8UzKOsLhI7i
+	nYuR3aM8u/Ee8s2ccULSmcyT3kn87w8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791861934;
+	b=W+0Fq7igGW2IzKrhpjR7kmvXBHCL84Q81yIjihFHxtBq1XTo50R5fDdukolPyjQrMIlw0j
+	yGttA1wyYItQ2/SUj36/wmqL+FVtDsRkojRulfxfcWykIneERfd2xFLAAWE3Y979D3z/LN
+	ScvBYeuOjY1XaNH6l1hNcd8Y3Ax3Do4=
+ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="r2SbfN/3";
-	spf=pass (imf07.hostedemail.com: domain of Biplab.Raut@amd.com designates 40.93.201.32 as permitted sender) smtp.mailfrom=Biplab.Raut@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=boxKiCoNoOJ/LBxMLLP+Ih07FqReN/Fo1OxYjJ5OLuutIdiVsICB/LqmSMKQEAPmOHITadYnnyJauwx+IPbu1R2lcNHe5iLncym0FU882/9MV0cs9ZdoD9q9v+Q7GKROnHMOssiMz2TkhBRNzHFWt6mSo+vIJLwfAQzo1PLBdlOqfCk7TgXD9CKwlzt50DABNKsP2LqAGxJl+ieYZtsZE/yxrwQL5aQ67Cjv4zHyI3jRnn7Xk85JmWrDnKZZdaoQN+UdNhpzQkEz/dOOH1/VHf3XBb3Lg8GpHe1FPq2WupU8FFPXwHGSnrA7vFGl/j4oKl3djTWItIUdTkudEbA7lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GRkZK/iuuE3UsBvYNdMfTVUxrvDGE4KD74DhvJNy7nw=;
- b=aJIMU7EbXuQqrwXzFIBkc5VpWYCFmAdDeZdFnWb1Eo15USogjBXAQNfyf08LvX0pkKaUkNiUwY7ig9oPEs+SIM3tKZeEgeHToc28ywDoeUQvZ3ueXk318BuXtgTDOAA5wLWW1o5TiO+Z3V/miaMe8D9MBdDG/AQQlmy2HhTil6Rf0z2UVPiVKi5MUiMEB+qDtCU5cXhIqy/15OhdxpujSCet/z/7rjGhhS5d2jt6/pTYkuCkagF1xAwtjl2fvs16BD9n2YOqBd1g2/pykmWof6V/W4auggpfRr+2x0cIIiVnyfRbFDVT5oNrTbtsPK7L1TXXoLX0D6MJahkCv7L1kA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GRkZK/iuuE3UsBvYNdMfTVUxrvDGE4KD74DhvJNy7nw=;
- b=r2SbfN/3ezRrkJ2pyV6GM7cEYQlMQJPYynMB08FjJr03KGOKqHkGxiFztuh33hV8qx687327XkJkpMUv6/f6SzCbByvEVsZUSEcUr5XJx+4sIVn5b7letbWplf3QPXdFHjLg8mCjaqxq7H3Muun5q6Cs/es6vLxc//DBEHpjJbg=
-Received: from SA9P221CA0010.NAMP221.PROD.OUTLOOK.COM (2603:10b6:806:25::15)
- by SJ5PPF2CD49510F.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::98f) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
- 2026 03:20:20 +0000
-Received: from SN1PEPF000397B1.namprd05.prod.outlook.com
- (2603:10b6:806:25:cafe::79) by SA9P221CA0010.outlook.office365.com
- (2603:10b6:806:25::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.17 via Frontend Transport; Tue,
- 13 Oct 2026 03:20:19 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF000397B1.mail.protection.outlook.com (10.167.248.55) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Tue, 13 Oct 2026 03:20:19 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 12 Oct
- 2026 22:20:13 -0500
-Received: from aocl-turin-03-9e62.amd.com (10.180.168.240) by
- satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.53
- via Frontend Transport; Mon, 12 Oct 2026 22:20:10 -0500
-From: Biplab Raut <Biplab.Raut@amd.com>
-To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-CC: <akpm@linux-foundation.org>, <hsiangkao@linux.alibaba.com>,
-	<terrelln@fb.com>, <yann.collet.73@gmail.com>, <guoxuenan@huawei.com>,
-	<Biplab.Raut@amd.com>
-Subject: [PATCH] lib/lz4: add software-pipelined prefetch to decode fast loop
-Date: Tue, 13 Oct 2026 03:20:10 +0000
-Message-ID: <20261013032010.2453893-1-Biplab.Raut@amd.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397B1:EE_|SJ5PPF2CD49510F:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d1aeae8-73be-49f1-71b1-08df28d8e8b8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|376014|82310400026|23010399003|11063799006|5023799004|56012099006|261009223027099003|10067099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	hgRXCfJUx8nB2w+M2oNQgF/bp+IIiFtNfrrH0UxLsrQSKJbra3sYlmojz/zAJQIwQH7ehd3QCZGRq/kNo4m6yZrSQ53xa+P43wTuJw66QrdMCg0guHfpcqVLuN2Ld9LxA5Ir9Cfu+4dOrAymODUW6LNIzNKVYAWH2UOBz3oV+6sL15c+BBXZyJGD2dm9ZlEi3oH4TbwswVl340WSwWW7xgQ/Blk+69OoNuNnF4NEYqYoXmyq+5z745MMrmc1RfhFy9cgRtE+s9Aq1CXG9TkU88hxMU2+CtYlkkZV0hxIxiGlU2UJ4cJK5G1QtxJqQfrboN+wA4cPv9ban8ZXNmaEI04espSjhM93+9wJl6eJ1Em4K2bwEUKfV0pEulMLDTm967N9tE2zFtn7DeGxL6qHev8uQpn1MPex+JCDugFTaO17HSNvHLnbBJC1bj4QhKqQXLcxJRdFXxd/yRKYHkseSLOURgryQQjCaABgBrlHQGkG7/YLcIYjxzSPc2IygwbUIdFmMNd7gCQvEQRun73/kbj17qPOTaJJ/+yrcMGgPcsAe8MdmglYjCuliXGKfSUcezxCskEqJoagTe5O5PsWTk27P3XhNYFmW4dtr7FVO1n8dRrf+GRJcQyA8xasYQK+gpi3J4awfh040xEVtRiZw9r6vGurg97jmrzzlukU4CS3lrJ9vmTCZ2IOjNlO11nHEQ9H0WKket71A0QIdyveLw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(82310400026)(23010399003)(11063799006)(5023799004)(56012099006)(261009223027099003)(10067099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	1PFOC/eqLdZ5EOAAeG25sHZfoYABd6kz31Eua9xdjARu3r/Q7piKiU5uy/6avhjHcatwZvqPjNl57fGqZNIoZ9BvdRzBEEAmIBdTIZtVqhZkTNTUPKrcPI311EWbvQeUCkyyjaxRltES92TnFETm6ijnZvc570wR6pWbwJYocsntKDuNAC6lgcL+sBAvHWFoYfCJp8/3e9tTyArqnVHXKt4KtIpQeT6oZMwOWrc7O46hQWpF/WwNiJzYE6vLlu+4/zboXcGlJ/Q0Qa/4wzvrrecuIJYm9WuBHZZL3mSR4mbNujNRoc1JYImFjFsDzEBGZ1Yvog7p0eF+Zs11N56veT+rdPO/Q7tfUdt/9fX1onXIrgKVSnj54/ayx0PL09NMe/ZKw5Lm0iFoRAIlVQrBb4QlrTcB9fhGBVf1hhuh3H74d06Tz8CCXgkz0r5WuIWW
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 03:20:19.1681
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d1aeae8-73be-49f1-71b1-08df28d8e8b8
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397B1.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF2CD49510F
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=NyRm1VrF;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DB138435B6;
+	Tue, 13 Oct 2026 03:25:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167851F00893;
+	Tue, 13 Oct 2026 03:25:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1791861933;
+	bh=pJssChfaw/WlnaVysEqwe4Z1tfuZOFEKdXZG/EwVI3I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=NyRm1VrFt9ZFJC62cb/GZbpmwcM4V21aTV9sKGdVMrIs2z9WqCR99Zm3HyOqUlF7S
+	 ENwjeRfGAaG1XErBHECIiyNgzJtP5yvlDy8GfISuPQkn8Wu67qs4UUCq0v+VtVgB5o
+	 H0cAA5rwHjdJTzV8Yor6vR8GbpG7w74vqDpKdWrs=
+Date: Mon, 12 Oct 2026 20:25:32 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, Muchun Song
+ <songmuchun@bytedance.com>, David Hildenbrand <david@kernel.org>, Oscar
+ Salvador <osalvador@suse.de>, Dave Hansen <dave.hansen@intel.com>, Paul
+ Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+ <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ =?ISO-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Kevin Brodsky <kevin.brodsky@arm.com>, Alexander
+ Gordeev <agordeev@linux.ibm.com>, Alistair Popple <apopple@nvidia.com>,
+ linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] mm: fix missing page-table destructor in
+ pagetable_free()
+Message-Id: <20261012202532.f059fd5ab947510a21d34cd1@linux-foundation.org>
+In-Reply-To: <200A83B9-233C-44C7-B4AF-0900BA1E09DF@linux.dev>
+References: <20261010112457.49485-1-songmuchun@bytedance.com>
+	<20261010112457.49485-2-songmuchun@bytedance.com>
+	<asy-b7_C3SjnmSaS@gmail.com>
+	<145CD5DC-6457-4E1E-8B9D-AE7D1EDB0AB8@linux.dev>
+	<20261012193114.77147e0a43affa8ee1ae896c@linux-foundation.org>
+	<200A83B9-233C-44C7-B4AF-0900BA1E09DF@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E973A40005
-X-Stat-Signature: u1e399ukgk4yabd5qgy9tjdhna5qxje3
-X-HE-Tag: 1791861624-554708
-X-HE-Meta: U2FsdGVkX1+UUNGRAkU33B80yrhDV5K6JwZrLrskz8tWt8EbcJcIpSl+bGNlpn+QiGK1nGmcCkglSdKHWWA/gm83NAE8yrTOlCnfgqAnjiLqJr90ENCixL/wuT4g0nzq1oNojUNQNYA6k5NLDxWzqAEgJb19P9YjubG7d2XdVEJbfEaFSixMMUg3T11Y8ZW8/SBrwOfidfZDVBWMszTNbUaPP2wTSnbBsmxypiUwTgvyPOyG+Dpin8HADR8o3EIArfyijSOUdWnTnz+GcuVHSwMLoaOSkcxmKiYP0+mPQ6sp1fvfT58/U8bUnPqRj2XKzGWQNw9bdi2JPkX7kd6IokSJhWsdFS0+QlhPrhb7QZCMIawxUfpkNlIBm+CtnJL7AcxHcaJBRgZTsKDwcrC0754oxvy2t5KLKvdfs6iD6BGzwqrub4mb5mvWZeFPOxAR13WXoyngoSPo5OEMyaLztb5tlbrAmnPX+1Z4NfKivPdoB6r+VKJccE/ee/Z6wRZ1yaQ+YbvkxvJO96muxuKd8IryDhqPRxkjO2tAeptHXBCtJJm60guR0hVcKc78axK0y61uUy0zK9u9JspKFPVVV77crZrp6SygsiiP2s8rlJ1Ov8xp9B7EDtdabFwpD9ZxLpfpyK/bhEB5ZNpi2cp4PMqs2SyZuym8HEcdlHnors4a8LUqRC18U1kTxCbfc1XzKZeRRQ25PpvpwePiPk6lFQeP6uTWf3K72qXuqp+OGBMMixjeIBoRhpZzGU0wazGGBRNpT5cMhpgnIwk8RHFtpKcMJ29MXDJbKKHNlGxUV9JnJwpFlFuSElBBSR1+LA5e2IeBfiEu5SMO63kw+TKjKNJ1jMotxhl8vJsTJ+PNi34akFjG+budVuJjb4wgEU0MxjIXmqZfDykEUjyV/wVq0UKiJWqpvhQvLfEHhAAI1BKJvHpvSxxbeYBicwrRifpg1LXD1oaK3Qso1mHzHlJ
- MtQO+SKp
- HMc1GCdJ+hu4sRQYSz4ZDEXEMU5Raf4jigVmEhyF0NKWydrLrKHuZEXN3d+QNOEgvQMRWkIQi7V2YezUYVt+dmwjIfmTMdxOsFglZTiU5uXMTYY614XY9BGKmljkcIO0SFIXLic9fpfX1TQ5vKocRk/kPODFqLUA/wuhoS4rVdx63PsKhqnbocgaOtgqw0OAIRMxkFncDVEy7tm0nOdam2GNwX5L5GtDFRGxT27xTIcrq7DkyfrQoA1l4LVuetwjCwR2Z7/WAh95SGI2OBHu/pRUJ47TVEaxaKfbvFIQ7RQ4ekYhv2jGNoQ1H4ORNGrp13xU08fCgOKz9zblp12D9QB+88IkkODQEa1WPpzLooRsrb4R92n0uOWuSv7FhWZUO/tzzYBx/bJ4J1Zoe8DnaNMzrvL5w72MZxo4kdMxn7IuSz1y/JDDyVLG+vqYNH9Wqx9ZWSFCGDCWHxhxDlQbTkb7FhSpnr9HMSUgrgOgkE91qlf9iet4o6EedRw==
+X-Rspamd-Queue-Id: AEC9540002
+X-Stat-Signature: 9mmhzqa595mposgmdzwxhn4s4ufcx5xj
+X-HE-Tag: 1791861934-689882
+X-HE-Meta: U2FsdGVkX1+gmzpldsbZEoY+3764RNZMZS22TafkbSABrM6m47OmPwe2MYefn0xNEp9AX5b26aD0AtzSlpxQk+Au4ZRSsvnux41riiGIAE/hgZu5SFH3gCJezAsSqi8wPC7w04iRCNOy/8D3mrjs5UOeDgA7f7RNtQLg1Qhd3nLEYtR4KWZNsOpdHGCkjF5/MS2UA5JoR3BByQ5tkXwn2WpVpEioVAmRkCDUgq0k1mPSQNG+kVJ0FM/XWFXhSLlKtpYlzlbeLviREvQD9nVO4wwda/p0vmoFSjR12uldSFOQM38KODDzDvNbR2GvkaydN+2YZY7yIyO0cOcSoXvv5KWAUFh2ea2fa/LDjqy2uQsw36wl1hUHhOox1V7pk8W4yA3fSLrvfVrz0x+KX3TPehyIwKaQQqIXd7kDa/U86zN73rgTNTFwBwj6ODIcTp44QVGisJRdT3BG/sHq4cVkEhYP+fxYkKScyBzyrV6Ot9XvzKRhG5RbE2KnwDKeDEt8CnCQGrj94pwHrFpU1rcSriLWMH22s60Per3MQnQNhXx0XLH2rvHL8PSGK6P6Fmbs6um5OFCfbnFqUJzJLwx5dfsQEdFxJ6+TRqZ/DIdfZl/KclXRkuLbOF7loIzfy87yZrXToHDUkQlX7wYmn8EAoz0ma0nqH7jFYzswXJwYWQj3jB1VPY76CuQhO3nE+rEur4w22K0QlFrPfNjy4BT97IkmELG8wJJfGhQ5E/Lkho1ENSumvAynrJ1s8F+E4lK7oSeNhBHkZQ3zLBPD411Q6ccC7H1VFvvHtknXjzDPAhT8T6yV7esVTSwpHCGGkMKEsmPhBrOH+PUPIaPraWOYSqt4y4om8kBw3J4gXAj9OP0/GQMkLMFberYN3tlKW/gjzLNcvJp/12fDHWN/bIyRm5nhu8mzrIchl99uLNwhu9T5drRfE0aI/lwg/0QvKs85llqlnmNHLUL+a0mF7VX
+ 7Y2849ca
+ /FN7wjh6G9P0MR8IJ+qqbtUlXkkcapPWdsTskiA0EIN1up7bDDGu4nLm/16eToMIZnKKhJ+QErj8wDEvqhL3BYLMmKiKNKbA/LevMB5w0sZf7OlE1Xj74Fx4WINjGBgP+hjf7teyKYCI3eV05WhFEBNbtokVP4PeUXsdK8gFYVhfHQ21UFZMaAHNSjVeI2kJNbE/LeRJMRa4LU+x62exJ50CilNU2JbEuzYjvjtAUF5jdZA4VvscYKpFtvVX9tfEmQYuRfwHdMs6R/fs0MHVCTIvTMpv7aKEwG752N6vgukSU5/g9rwtwGtHrQKt0qRrAyS5WlxExkipkbMAfPnpj4sBABOhVIcjzbzATs3TjtLI7WvTXol9T6dbSe3H+eim05iRK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,74 +105,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "S. Biplab Raut" <Biplab.Raut@amd.com>
+On Tue, 13 Oct 2026 10:50:21 +0800 Muchun Song <muchun.song@linux.dev> wrote:
 
-LZ4 decompression of cold 4 KiB pages (the zswap/zram hot path) stalls
-on cache misses because the input stream (compressed) and output buffer
-(uncompressed page) are not resident in L1/L2. Insert read-ahead and
-write-intent prefetch hints at the top of the decode loop in
-LZ4_decompress_generic() to overlap memory latency with decode work.
+> >> The correct trailer is:
+> >> 
+> >> Cc: <stable@vger.kernel.org> # 6.16-6.18: bf9e4e30f353: x86/mm: use pagetable_free()
+> >> 
+> >> Andrew, would you be able to update the trailer in the patch when you
+> >> pick it up? If there are further review comments that require code
+> >> changes, I'll fix this trailer as part of the v3 respin. Thanks a lot!
+> > 
+> > I don't know if/how the -stable maintainers handle a comment like that.
+> > I expect it's more reliable to do this via Fixes:.  Possible?
+> > 
+> 
+> Thanks. I used this format because it is explicitly documented by the
+> stable kernel rules.
+> 
+> The shell-style comment is the format documented in
+> Documentation/process/stable-kernel-rules.rst for specifying additional
+> patch prerequisites:
+> 
+>   Cc: <stable@vger.kernel.org> # 3.3.x: <commit>: <subject>
+>   Cc: <stable@vger.kernel.org> # 3.3.x
+> 
+> See:
+> 
+>   https://docs.kernel.org/process/stable-kernel-rules.html#option-1
 
-The prefetch distances (96 B read, 128 B write) are tuned for the
-page-at-a-time workload where both buffers fit in L1d. Prefetch is
-architecturally a no-op hint on all Linux-supported architectures;
-it never faults, never changes correctness, and compiles to nothing
-on targets without hardware prefetch.
+Oh.  Consider me educated.  Edited.
 
-Measured on AMD EPYC 9755 (Turin, 2S×128C), Ubuntu 24.04, kernel
-6.8.0-90-generic, real zswap path (cgroup-constrained MADV_PAGEOUT +
-full scan-back), Silesia corpus, 15 paired rounds:
+> A Fixes tag alone cannot express this dependency. It does not specify
+> an additional commit that must be cherry-picked first. The documented
+> Cc comment provides both the prerequisite and the required cherry-pick
+> order.
+> 
+> Would this be sufficient for the stable team to pick up the prerequisite?
 
-  Kernel LZ4 median scan:  1.0994 s
-  Patched  median scan:    1.0472 s
-  Median paired speedup:   5.09%  (range 4.19%–6.99%)
-  Patched was faster in all 15 rounds.
-
-Signed-off-by: S. Biplab Raut <Biplab.Raut@amd.com>
----
- lib/lz4/lz4_decompress.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
-
-diff --git a/lib/lz4/lz4_decompress.c b/lib/lz4/lz4_decompress.c
-index 3a2cd9acada4..efbbde7ae58d 100644
---- a/lib/lz4/lz4_decompress.c
-+++ b/lib/lz4/lz4_decompress.c
-@@ -37,6 +37,7 @@
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/kernel.h>
-+#include <linux/prefetch.h>
- #include <linux/unaligned.h>
- 
- /*-*****************************
-@@ -122,6 +123,26 @@ static FORCE_INLINE int LZ4_decompress_generic(
- 		const BYTE *match;
- 		size_t offset;
- 
-+		/*
-+		 * Software-pipelined prefetch hints.  On the zswap/zram
-+		 * hot path, both the compressed input and the output page
-+		 * are cold (just faulted in or freshly allocated).  Prime
-+		 * the L1d for the next loop iteration so that the actual
-+		 * loads/stores hit warm cache lines.
-+		 *
-+		 * Distances are tuned for 4 KiB page-at-a-time workloads:
-+		 *   96 B read-ahead on ip  ~  6 tokens ahead
-+		 *  128 B write-intent on op ~ 2 long-literal copies ahead
-+		 *  192 B deeper read-ahead  ~  covers the match-copy tail
-+		 *
-+		 * prefetch() / prefetchw() are architecture-portable hints
-+		 * that compile to NOP on targets without HW prefetch.  They
-+		 * never fault, even past buffer boundaries.
-+		 */
-+		prefetch(ip + 96);
-+		prefetchw(op + 128);
-+		prefetch(ip + 192);
-+
- 		/* get literal length */
- 		unsigned int const token = *ip++;
- 		length = token>>ML_BITS;
--- 
-2.43.0
-
+Hopefully.  I suggest you double-check when you get the emails as these
+are applied to the various stable trees.
 
