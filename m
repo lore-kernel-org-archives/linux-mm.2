@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE1AFCC6B0E
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 16:47:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29AAFCC6B0E
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 16:48:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBC5D6B0096; Tue, 13 Oct 2026 12:47:07 -0400 (EDT)
+	id 41DF36B0095; Tue, 13 Oct 2026 12:48:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6D706B0098; Tue, 13 Oct 2026 12:47:07 -0400 (EDT)
+	id 3F5096B0099; Tue, 13 Oct 2026 12:48:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A38066B009B; Tue, 13 Oct 2026 12:47:07 -0400 (EDT)
+	id 2E5A96B009B; Tue, 13 Oct 2026 12:48:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 701406B0096
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:47:07 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F16DAA0D85
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 16:47:06 +0000 (UTC)
-X-FDA: 85318182852.24.B422BF7
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1D4D540014
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 16:47:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=h7Zsl+yf;
-	spf=pass (imf27.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CFC76B0095
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:48:13 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E95C120D65
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 16:48:12 +0000 (UTC)
+X-FDA: 85318185624.02.15B0F45
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BEC0980007
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 16:48:10 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ryDunluF;
+	spf=pass (imf30.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791910090;
+	b=XR/edapZUSgyQ+WwImJ8NtXDceAsGwV6vWpFSXe7UggpkST4z7Xo+EQK60YCXAycWJUKYf
+	3fztKXyK3/YTEDrOhoSTD9h0KBJrA5A4cdJO5gg+vDx9AAbGLIPdbYl3sAGbqQRn7SLzOp
+	mMHEUAMxkmPznKBB0hSh8oICBv6RJFQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ryDunluF;
+	spf=pass (imf30.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=urezki@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791910025;
+	s=arc-20220608; t=1791910090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W7ehum626aRdlGmi7yPsx5ujCWqhQvPjIn6TPtUOXnM=;
-	b=5SvevWb3T9w6ljp+SpOI8Zn9CLHDq0qkho71pTm+jVbe6nZYyvLaY/xa3bp4XQvgAdUzxN
-	kDzIcqUliRGJVMsUjWmITlv6p7TgKO+3BojeJAnOj6sSa6RY5/HufzvO5YQW4JMqmlhRIc
-	T683mgNnm3eGr9hu7YlonZogpAhyrm8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791910025;
-	b=E9rT3sPid7+NeNknnBV55mBonLRpS4iQbm8gKSCBLT8Wwne9X/cBlptziS1grbgF9TiPSR
-	TKMw2HLZu8bCsaKmTjESouJr0SAzyur0dsU5efAg6UPuC9NLA/AdXELyfb1N79fMFgfNaO
-	bdrmL6cR58SbeAOwHUVQv/FvmLfF/FY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=h7Zsl+yf;
-	spf=pass (imf27.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5ba4180a65aso2781385e87.2
-        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:47:04 -0700 (PDT)
+	bh=JrdkhjVWS0paU+Qy/xA3FUiCVMdE6viTRALFdsJ0zOM=;
+	b=Y8ynQAtt3Xc7VaKJ+X6vj/Xo5dA0xm/Q4TDdUEGSh+Lf0Do/OxyRnT23J8AYdfBoVCdySF
+	hTPx6UZhZVsji+hfpT5WUhWZ1CChWQI8t1E3AEYjIVgHrMvdxdqt87EylnDLod/Rj9wxqc
+	53URXk2VRZJDPijCpiizusWlV68iRPA=
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5bced78b3dfso1955973e87.1
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791910023; x=1792514823; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1791910089; x=1792514889; darn=kvack.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:date
          :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=W7ehum626aRdlGmi7yPsx5ujCWqhQvPjIn6TPtUOXnM=;
-        b=h7Zsl+yfL1ZOJQ5qQWZ6NEnU2IWs709H/udfDzenXjicxzsAtSnnRUQW39So3hprZc
-         VsBW0To8uRIIHerPW6sK6GX9ie7eEsKIgzwruWkEOB05j3W0wc8kpP7PYdpLro8uFTA0
-         AgkF5btpHzlehkv+yJzy6pLWCfGUDkE4OwcXNhSjcMJwiR3SuGazyHiO0lM/yOH1wF+h
-         OK06Fn79Far0iVZcHAwuW1PG69JJCJh8MtMwh6blb6iCSi05+Zgb04GJ28hrmpL1KVZ4
-         3pAZeyZSmitkmGFEnHjRDMxpEKI8k0M7krm8HN02f0dRiGO5533kYOTdLXYhLKYdka3P
-         9vYQ==
+        bh=JrdkhjVWS0paU+Qy/xA3FUiCVMdE6viTRALFdsJ0zOM=;
+        b=ryDunluFoMuAwL6tMj7BpR3NY4N6RrNKjWAQSQ7mEd+jwUnuI+2M4xyph5m6HcbF49
+         X1ToUP0mYFFxiRFTA1mUu9JUyQlosNbCT0YfogWocFYwOEs6o6gJho4K0GY0szHHb8NU
+         0KInwqLYQnnVcqXqBoJ6w+qXC4JE2oZ4Kz7kmUHii5maHgqILn9i02r04ZAQwSeNU/YS
+         j6xkwnGi+XPAeZAvwjYJbSIpTFA6Dk21jph5ICK1els5Rig4dFiqOlKrLsKOsl9prqp0
+         1nIFuqc5pzxIDWeH02giZNqLYxWZmJZb351+CIxcRV7WbGXGO874mCiG32uA4ZzTFMPG
+         UsOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791910023; x=1792514823;
+        d=1e100.net; s=20260707; t=1791910089; x=1792514889;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:date
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=W7ehum626aRdlGmi7yPsx5ujCWqhQvPjIn6TPtUOXnM=;
-        b=G9pt8AIecq3E1AoPgDZ0L/iyqwwyLm7M5/zqZwvacYbcIHqjnZd4A/lW1qaqSqoEj6
-         FbP4pyybWdWrVyqdvYtIURynerRwhQAIdIZ+dzNmioAvZWdr1J+LJnNyBU/QYHx8/eJm
-         O4HcSlPQm7Bi16//C6/6hxRNKO/76xj4J6zvgOCjy992Elvtdl+0wk1lt3w0SlqPgOb+
-         CltzNyr6Y4Kz+2aim+v7k883Uqh9rDz8ISj1SJYb0IkGGLM4HgkUULlczu/vcA0K6N27
-         /vXOo9CruMBU65m6EnzHZ7NjKqI166tI/tVp2ma6v52YrMMwxYLzYEIQxSRcaXKkvCZJ
-         yrsQ==
-X-Forwarded-Encrypted: i=1; AKwUvByKuUfJFZjNkuC+EWFlacXWzfwJUdyIkrUofXwJbOfdih/YOkOyC+4lPhBmJuJPDG4uWz/R8x3v6g==@kvack.org
-X-Gm-Message-State: AFq9FYLSg5LVw3V5QRqOss1BuDnTtD8sMl9E30wuSlW/d5gWVgFmaink
-	epMQHG92yG/TnuXTNFoCcwg4LgEKl2XyZfeRLeJMYv+ed1ZxCzH9kCZF
-X-Gm-Gg: AYBFou1lNUEKMePblnZsav7+g3v9lch41X4vOjOG4+LXGqPWln7DsfZdEQ1XLZfTX/I
-	pOr8NzFaqX71R/K4LoiTWPVAvuQUdJhuP4E1GILjwvBRde6IJ+P24k/2qF4eMio7I49Q6zsCXAr
-	8bIcI+1Xb3ku6jTpmDl62kiHZLvC/spAIWE79xtB/pz1uhn0RUXV2nSPbqX2wgHtQeMmDwPNIEa
-	8nOwvSPZRwC7AFfG40yGCZmiSeCjjFte0E+Z4kTcK9VaXXuXEhCVkJ6d2Y1D2XLakIsC3gJs3v6
-	xmJJZNG3ktbpfpVrDI7mnTnUZLOTKo+xiNwejixPlTIvXyYWh+2QpLuXPsDNL1mDA3ZtnEgm4xP
-	QtGtqHtyQ0lVGf27pNjxN10h7A/9ZYuE1xQSoipFo/aXzEuWY0Kkl/Y6Uh+/zqiA0JvF/uKywiR
-	ZOedgAb6BbHimh40lAIZpc7DtwPl2FCjXIR1lTRZA6ppOiMKLBrjQDH5tAhkYAc17lCdw45gopO
-	ZEVXRB5rFivrHa1Fj1Y0pu89+uNS6PwLFY=
-X-Received: by 2002:a05:6512:2243:b0:5b8:f202:7749 with SMTP id 2adb3069b0e04-5bcde8dec4fmr4962852e87.59.1791910023287;
-        Tue, 13 Oct 2026 09:47:03 -0700 (PDT)
+        bh=JrdkhjVWS0paU+Qy/xA3FUiCVMdE6viTRALFdsJ0zOM=;
+        b=f4tcZBnmRMrss3yZNgjTQmOCjs37Hid9nBy7hE3SWIJY+6eUlY2HpUCgD5mKa5zPZK
+         Zi0sXRniO0AzZuDLhqMX81yHuM62TqCf81OWfbgemN69T8RJFQYMuI8gVm0Q8rCgfq+C
+         gWibWMU72hd1gFLVvTj3jSVIKoD/W1kGdzM1+5Zpu40iF8aNIcVBMXcoBeNUbgMkw0io
+         H3FsL99Bfgz9R/jS0lgUdFwzrlPpNshf9yBDukq4UGsOqfQwOKQLpkOK0910kYJALhwJ
+         AVL/ReNS+x3YSY3lI15V9dIgDuNnmctNq5Osom4Yelf4ltYJ9SrxcNuayMcPbyExAJbf
+         Kj1g==
+X-Forwarded-Encrypted: i=1; AKwUvBzTNE52Sj0R3vaAJqKgw1JOYQLkCk9cYIlquTr2DO9hjmjksfBtcm4WaEZHVYBEHBwxYZb/b2znXw==@kvack.org
+X-Gm-Message-State: AFq9FYJ5u9fhAyIPeaN3FJruNoGPyy2go7xRvTGoX6A9DLxwS+xTUZoy
+	uzrqjtTZX/3M2SGfp6XvFcs85zWI9i8z5Xvaw9TENZdi+rgIWKZMCu3T
+X-Gm-Gg: AYBFou1YhAnOdoO+45X8uFOV4gHF38ul35LKj8AlixY6Ncye1rxQn6NsQj+JqkEWSm5
+	U6ZcaSWwRsX42gf5ezU0pARoxYmA/FTMa6c4IVbTfIfGH+r84mFUtuZZDnIl25HtjwW5fpqyNTC
+	pbZTvvw980corK1J8kjN7aBlHEtTz+S6xPlyicawg1RwUj2Pj+U9+xHfYpZ/ouYeFTKGHMzlqmb
+	z9aMXYiVUWpvhWqsy8vb1hXBH45pV6R8+7+DQ4PR21Xt9at1TFLTtBrnKgnGB6m2lRcfGG98uif
+	6MgVFCFUZqTnSNGSm5QvFtO+ZkLRTJziLH737+19ivA6kGp3PIvpnSeF803CzI6Y/BvbOx9kJOf
+	v2kxpZP0Aa/E7tysiDBck1sqG+Dhp625npw0Yl4TxaTOG8O9r/E27g48JasCdDa7yDmReFl10LA
+	Jaaaw57bREHWcKA0wAY9PRYVSA7aqGEwRhwfqdF7/Y5hqJ7D6+eUzeo3pWIwt62WHj4ooJzHpha
+	3ZaZ5wowfKfP0m7m5F8fOva
+X-Received: by 2002:a05:6512:3d0c:b0:5b8:f309:f275 with SMTP id 2adb3069b0e04-5bcde8cea91mr4857257e87.58.1791910089239;
+        Tue, 13 Oct 2026 09:48:09 -0700 (PDT)
 Received: from pc636 (host-95-203-22-87.mobileonline.telia.com. [95.203.22.87])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5be33d85b40sm52801e87.50.2026.10.13.09.47.01
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a9c3cd2f24sm37276021fa.28.2026.10.13.09.48.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 09:47:02 -0700 (PDT)
+        Tue, 13 Oct 2026 09:48:08 -0700 (PDT)
 From: Uladzislau Rezki <urezki@gmail.com>
 X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Tue, 13 Oct 2026 18:47:00 +0200
+Date: Tue, 13 Oct 2026 18:48:06 +0200
 To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>
 Cc: Hao Ge <hao.ge@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
@@ -111,25 +111,25 @@ Cc: Hao Ge <hao.ge@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Uladzislau Rezki <urezki@gmail.com>, linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
 	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 3/4] powerpc: drop redundant unmaps of failed vmap
- mappings
-Message-ID: <as5ghOejcvM5zDOa@pc636>
+Subject: Re: [RFC PATCH 4/4] mm/percpu: stop unmapping the CPU that failed to
+ map
+Message-ID: <as5gxn6i2DD0iprj@pc636>
 References: <20261009063619.112313-1-hao.ge@linux.dev>
- <20261009063619.112313-4-hao.ge@linux.dev>
- <CAJuCfpHjX+_AvwgqV3XB_QQuorvnegvd_YjQ85JZWfSk-ckUHA@mail.gmail.com>
+ <20261009063619.112313-5-hao.ge@linux.dev>
+ <CAJuCfpGEgTocqrdpOtkOfks-geU0vVMZudNEG5+XWi3sxQdymQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpHjX+_AvwgqV3XB_QQuorvnegvd_YjQ85JZWfSk-ckUHA@mail.gmail.com>
+In-Reply-To: <CAJuCfpGEgTocqrdpOtkOfks-geU0vVMZudNEG5+XWi3sxQdymQ@mail.gmail.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BEC0980007
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1D4D540014
-X-Stat-Signature: uss8hqja1soz9orjbt5yrzn56erxje5w
-X-HE-Tag: 1791910024-53447
-X-HE-Meta: U2FsdGVkX189IaGP8zswd4ZWR2qBO4nST94nwdh+w407zfHI9arpMM35/DQsPr27gYKBHnF2WNgYISNcNtdiOvxEgGrASI3mkQii4MZJkbolzsSzYhYZWMiIhF0q2V0HuBErUtNpSDFwwo+B2A+dO0b+5tN6A9OH6gpM4Er6dpdUEv/AnVRarRo3ci4+Jt6BZSUiFFPiaEDYktR88HJojI156THa0pjr0pdhrPS3tkqihkxYOvZ3VGHzQXGsHP1DrZeQTd1cQsKEPpURiNr9Zh3AeoJo5CwGIIB70yTJsC/VX2fdhpmJOxyHEeIUNNRt/fAVQHWrzLBvM5uA7zypF3whVwcItinWd8xy8+/T6qEQeiNsv0fdB8aUDme96mSqRHhIGm7h0IzJ9XknqdznoRUR3Qw+wR0NjdtQf+hbWPO8ifiUL2AwsRRKb1E3t5OClEID+Jbyn168bT9Nzz21gj/6hUFvvOkihBlRhJqz5KDn9xOVYqXwu3XsSlzUEZHAljosCxKO+rxyArDI+Q2/SEtUUnh9KwXmkwYNk9Te15pSOApj2Aap4gtIHLgXHZTQyYtmMEcz0WbLEUNSFlpZz7bX1mWLnD53kBXH0yYkr3O1G80/02/BrOx3CYnU7QckJXs0ErEb+il6xV4uozM5VRVmYv5HmxQC9Ilrk8LEv5iMGGLt748K474QvuouwgZK5CTmgRbiCUUkuSGT5kjkKxt8QIYVjPHS2BXzeWWgmelzSPnLs+1fdXG1cL5G2JLbWxF0gWTI8Q7kO0Kk/rrgDAifoV+OSefjGUmmewiAzcJySO6HL+XLq2APtFNhdSdMVlKW40qom+Os9VjY+hWLeQUNWFf8F/UxhXhpAFVV6oXSJKXrzJ3JTzxELtV1IIU9t0UK4Nn4x4CJ97cCBEPfMq5fTELWvw6RTkofI1rgymeFLGHkNKO2X2yQgTnsBJxPBSa/cnIcdLW3PukgPLe
- y+LoFVwl
- RVpZ54zSA8Q8y3sfV4inkoYplbovptqwwuUrVLBlTYOBY4t5tRyYiXhQvYSRcvL57A4SbOz1mdBz9j/UzdDVKC5hxzPseZesVBi2CSVvNK0prne5NHpMIPVsfuAVewNvXM9S+gYVQbBFbvWQ7M/T1LphGjyWRT/fh9oq/V9sz7OZwwzZLj7jIyR/p+x0y2pilX5zhvzY6217oDHLAk8uMCIuP8FyIHZ9+CRnYpyq3cguIuJVir9OOqf8xQ6HQAO+uyh0BaPAUroy6nDEjIo8/qQy1FXM+3Mr54znJ/o43HCqdO/yrZz/ozuzFbG6WS6faz4nyDytwtaLIkCJcPEDYpQ/Mg5VbMD7/KW+7mBQmPH1GMkoe8IDbxv62ReY84XwtkfR1z7Rb7NImHHbW8Xa/NFeK7uREnVV1TqwoCwMNaU5/glb0h3h6E6CCwm36OCpuQXhy5hZhzsIkNuJOkpR8fPSZOJ9bV/e+vN7q65UKytK+vNe2f8+qfveooPRy6JsdZFiz4kq0WYYujZ+FWUrrCWKUUPQgzs4rxzxW1ttG1n2rjcvstbQwGWVvDdZWj1vBFjEbHV4W9Emaep8=
+X-Stat-Signature: ahhj83mkiehbk3xye1w4i7iziooi4mdd
+X-HE-Tag: 1791910090-311257
+X-HE-Meta: U2FsdGVkX1+jVLV1fa5qqZN9BOkvdLtF55mFrBKsRiJvvK9mU4XOBn2ffbpAi1+cXpVA7Ypt3K+GfWamgfMxdH9BSkvKaz4163Mxo2aNSvjHPneEwvnSLOVTLPJ/Noctv9ZvsUCrOP53lhqAi3rnLm+Um0qiglxU7I/pI1mi7W3rWxiRyQKxLem4fVr2Nru+H3I/LWtQwexNPrUukOO7uxvJekXUR6P04c1p7hrPpgIBQKMv7aP2B/PRdbddKfNzasns6Mnox4BMz2VHpMzZBfkQSS18QOIDBJDzRDjYjNFhuQnAtGjgOzUYTAi5hFVOV/N5l7Y690pYnrbyMMs1RqYAK643oGjbE+KiW2reDme6Q9p7jFJ+M08yfiI5TSYL64xHby/7Ds0ihR7g6trGq1GaZCQzk7kOXQhARR+udvauUmPrF+3HzofIslGLpXHs0pTOjmC7PC+BqnQp5hjyNIfZfFSHE4U4qG+TaZC3/+8Luru4jRhmJXmUmQtpBqjCwIRuwsFpABbNsLOvHX1XW8lBy6zOcVicF8S+XwCjBdp4asWR/yuTZa+6MWkhxUV7D1mYFAFcRgcIoiFayfHbZXXY9BLxr59TlnaPAR+yZLK3B64LQ92CvmIAetlmkVzBTX/rE3nslCZWX9ykGYHcgIYfGHflMb14Ck10DI7H9ivCaWgMrUOIOXvGOP2rCrGYWFeWsOEBQf0liMhzSvQ02VtHT+KWEbRnUONBFJXjW670w7+3cz43vYt6L4/XHD+d3dl81OgCx5R+0fB7MG8O98rcz6SSGxmAIbS+kIFqYk6eH/pDsDhz5C6M7knlG4TWrlU8IQ792QRpX1mh94QHsqNTMCieItrKiBEKYPcfQ55YeHea4959vStOWxuq8yZRIJkH7lyzxiidKbBlgjqMFCe3cPjHDHm2jo8zqYdU7pZ88j3rR+MOvglrlqUGNGXr35Y+CE5u/roKw5FmjJ9
+ 9brBnnaT
+ fxgTQ8bf0bvikhCIiOEkFkP4S0lbG6mXxxK/s2d7sHLRbPdLv/lDXwdDkdlYcVc4p9SXYugwkj68SQBZooiEZLefHBAIHSnC2bCTu8Ss9luaoyszjlft714YcMYRepf7kwHqCsCdQfwTWV23M2nAYO3EzqFBisipne6yxjnB727PtJSY22ZjIYm+jUAtKWxt2sjhy2YiySok5haZ1rJQFenoG7TFFbIrozfqdJFYeP7Vf0kiyCnketYg2EzR+9nF8w8cCXuARnaIU5Hu6Mhq3fub51AahpxwaTM78nVt07oUoo+tXVBPf2dNFGRuoN0rs8K8M/FOWrywfXP1SQESrHwUr+Ag4+jYb5BuDWZvAfianYkCwhAQI/HeLLW2/ZzSjLEXdgmDg+4END32gdk8xMGHJ+QSfBtgOknkpeKbWPc+Y/EuQ3ZCFlDva5s1+XkwtXAolZ3fVgubR2Q2za2jfcnASBglJK5S9pEKouqqnt554d4NvAZ/RFcS8/9pQ9mXCyu5EBn70mKnzzOpuJb2KZSu/ti1XPtiArkmfFqJx+o2Wy/GahkLmchZSTun3ZZpt7K4+YTt4svDwhe8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,12 +137,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 13, 2026 at 03:23:41PM +0400, Suren Baghdasaryan wrote:
+On Tue, Oct 13, 2026 at 03:46:43PM +0400, Suren Baghdasaryan wrote:
 > On Fri, Oct 9, 2026 at 10:36 AM Hao Ge <hao.ge@linux.dev> wrote:
 > >
-> > vmap_page_range() and ioremap_page_range() clear the PTEs they
-> > installed when they fail, so the vunmap_range() in remap_isa_base()
-> > and ioremap_phb() has nothing left to remove.
+> > __pcpu_map_pages() clears the PTEs it installed when it fails, so
+> > pcpu_map_pages() only has to tear down the CPUs it mapped before
+> > the failing one.
 > >
 > > Signed-off-by: Hao Ge <hao.ge@linux.dev>
 > 
@@ -150,42 +150,27 @@ On Tue, Oct 13, 2026 at 03:23:41PM +0400, Suren Baghdasaryan wrote:
 > 
 > 
 > > ---
-> >  arch/powerpc/kernel/isa-bridge.c | 5 ++---
-> >  arch/powerpc/kernel/pci_64.c     | 4 +---
-> >  2 files changed, 3 insertions(+), 6 deletions(-)
+> >  mm/percpu-vm.c | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
 > >
-> > diff --git a/arch/powerpc/kernel/isa-bridge.c b/arch/powerpc/kernel/isa-bridge.c
-> > index 5c064485197a..93029d85e6ea 100644
-> > --- a/arch/powerpc/kernel/isa-bridge.c
-> > +++ b/arch/powerpc/kernel/isa-bridge.c
-> > @@ -46,9 +46,8 @@ static void remap_isa_base(phys_addr_t pa, unsigned long size)
-> >         WARN_ON_ONCE(size & ~PAGE_MASK);
-> >
-> >         if (slab_is_available()) {
-> > -               if (vmap_page_range(ISA_IO_BASE, ISA_IO_BASE + size, pa,
-> > -                                   pgprot_noncached(PAGE_KERNEL)))
-> > -                       vunmap_range(ISA_IO_BASE, ISA_IO_BASE + size);
-> > +               vmap_page_range(ISA_IO_BASE, ISA_IO_BASE + size, pa,
-> > +                               pgprot_noncached(PAGE_KERNEL));
-> >         } else {
-> >                 early_ioremap_range(ISA_IO_BASE, pa, size,
-> >                                 pgprot_noncached(PAGE_KERNEL));
-> > diff --git a/arch/powerpc/kernel/pci_64.c b/arch/powerpc/kernel/pci_64.c
-> > index e27342ef128b..f74269636d5e 100644
-> > --- a/arch/powerpc/kernel/pci_64.c
-> > +++ b/arch/powerpc/kernel/pci_64.c
-> > @@ -139,10 +139,8 @@ void __iomem *ioremap_phb(phys_addr_t paddr, unsigned long size)
-> >
-> >         addr = (unsigned long)area->addr;
-> >         if (ioremap_page_range(addr, addr + size, paddr,
-> > -                       pgprot_noncached(PAGE_KERNEL))) {
-> > -               vunmap_range(addr, addr + size);
-> > +                       pgprot_noncached(PAGE_KERNEL)))
-> >                 return NULL;
-> > -       }
-> >
-> >         return (void __iomem *)addr;
-> >  }
+> > diff --git a/mm/percpu-vm.c b/mm/percpu-vm.c
+> > index 509d8901835c..59d3a336a6bd 100644
+> > --- a/mm/percpu-vm.c
+> > +++ b/mm/percpu-vm.c
+> > @@ -252,10 +252,11 @@ static int pcpu_map_pages(struct pcpu_chunk *chunk, struct page **pages,
+> >         return 0;
+> >  err:
+> >         for_each_possible_cpu(tcpu) {
+> > -               __pcpu_unmap_pages(pcpu_chunk_addr(chunk, tcpu, page_start),
+> > -                                  page_end - page_start);
+> > +               /* The failing CPU's partial mapping undoes itself */
+> >                 if (tcpu == cpu)
+> >                         break;
+> > +               __pcpu_unmap_pages(pcpu_chunk_addr(chunk, tcpu, page_start),
+> > +                                  page_end - page_start);
+> >         }
+> >         pcpu_post_unmap_tlb_flush(chunk, page_start, page_end);
+> >         return err;
 > > --
 > > 2.25.1
 > >
