@@ -4,115 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B57BACC6B03
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 03:52:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEDB1CA9ED0
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 04:00:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A3816B00A2; Mon, 12 Oct 2026 23:52:42 -0400 (EDT)
+	id 24F166B00A5; Tue, 13 Oct 2026 00:00:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 154C86B00A3; Mon, 12 Oct 2026 23:52:42 -0400 (EDT)
+	id 1D8946B00A6; Tue, 13 Oct 2026 00:00:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F37326B00A4; Mon, 12 Oct 2026 23:52:41 -0400 (EDT)
+	id 0A1456B00A7; Tue, 13 Oct 2026 00:00:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CB3A66B00A2
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 23:52:41 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5EE3BC080D
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:52:41 +0000 (UTC)
-X-FDA: 85316231322.08.68BBA99
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 91297A0008
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:52:39 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=hWIEWdIA;
-	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C41426B00A5
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 00:00:40 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 53C7B407D0
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 04:00:40 +0000 (UTC)
+X-FDA: 85316251440.19.079B588
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by imf09.hostedemail.com (Postfix) with ESMTP id ADFFB140003
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 04:00:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Zf0riAaR;
+	spf=pass (imf09.hostedemail.com: domain of 35azNaggKCNIFC56HB2F4CC492.0CA96BIL-AA8Jy08.CF4@flex--rohitner.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=35azNaggKCNIFC56HB2F4CC492.0CA96BIL-AA8Jy08.CF4@flex--rohitner.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791863559;
+	s=arc-20220608; t=1791864038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pCFwH738tBTVDAaZQU9JfFW8ZV79GtE0C0hDEYSYlFc=;
-	b=3lEIBDZ9++E+lTicgaFBHzN9Oyd2/AnLTj2R7m2uN3NAERqlZnLhI6CgYwZig1qmWM0fav
-	hu9ZDA77hFymRy+0qbfPklAwhnCzoPmq29+lZUBBboxf/XAkk9pYZjU/+yxC0zt8Ukwv/H
-	yGfWLsDlFrwTRygtvo9VQHxSZJY5iN8=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jVY4B9rehNRPw7ZQqZE00yhPApXSrH1ROghvzVoFxEc=;
+	b=SszAnbQUZ6rGzIqzuedfTW29u55zwci5vx0DmJ9gcindqlF2a5RxbMZXnAz/rQgW6XdZsS
+	1JRBD8VkvUuWctNyLJ9N5QCmRC95wlEKt0ySIWpa3nIzNiFpeAIkrH4emh6yRTZFXoQgWP
+	ZE2iQz/ZDuWgGE/vNNulMrwrWBqWtXw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791863559;
-	b=NBZ7HBKtvogeQHzbXaYEtD11d+ifFjxENZl4RIdB1qoP9vMuQzQr4SjWDB1X5m0h8+//1e
-	Sj6MLUwJHRQKijGoWNTGHtb+heU7aWfWxrxeYtlY6vPLVTlda8SS4HWIJaQ1o7wU59ANOq
-	DifdMOuU9tr+DK9rq7Y1W+ZiBBNJcRw=
+	t=1791864038;
+	b=c5cKwcjVF1MZbF96MDzntFjVQdf8pPXlJyqYyQhhOduyxO3HuDCPycmrzK6nzbnySJtRxd
+	SuGCYv0Kv8M5Q8Axdlc/ALHE1lghUoTDKckAxCIQI03CfSR61xYbxItgqcBFV6tPrwwYni
+	/YAC4GjZ64Tw+NTgi3JrU2rV8b52dKg=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=hWIEWdIA;
-	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-868b3248b2cso1862663b3a.1
-        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 20:52:39 -0700 (PDT)
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Zf0riAaR;
+	spf=pass (imf09.hostedemail.com: domain of 35azNaggKCNIFC56HB2F4CC492.0CA96BIL-AA8Jy08.CF4@flex--rohitner.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=35azNaggKCNIFC56HB2F4CC492.0CA96BIL-AA8Jy08.CF4@flex--rohitner.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e54b6556aso1931831a91.2
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 21:00:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1791863558; x=1792468358; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pCFwH738tBTVDAaZQU9JfFW8ZV79GtE0C0hDEYSYlFc=;
-        b=hWIEWdIAVbXH8kNUwxB3XFU1EC1kTJpW7L8sZoKr6I1UctUajRCooa6qPLKwD0gGaD
-         ZVdOMNP+zZEj8IiVcbYdH7rlEKbN03F6OZ15vxX4ZFtW+3xnYAIwoH0x/il/IYqzisaT
-         SZf2/QyzZ7F3QyPggrh+e58Wjr80fVBbFsepw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791863558; x=1792468358;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=google.com; s=20251104; t=1791864037; x=1792468837; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pCFwH738tBTVDAaZQU9JfFW8ZV79GtE0C0hDEYSYlFc=;
-        b=p/hHECzEljKqsvSqOCMgaeAnKqS9Kpq7ouKvppe9Lhm02CBzfVPzm0NO8HD0CkCsqL
-         SbXS5iQTNe8H2HBtrFZS5KWkF6zvOirM5NTVXz15KdSA42GPiDgM4AE2zqPDp+fUFTPk
-         pzrQReeRlsrrXoFKPg8XqAiPKttR926sto5EU5nYhMgkBHcn386nTrhgbjxGU76qo2tb
-         eDw6K2AYjx5uiK4EpdYZS7ZAWMkDUSNrXfrsv/5em0n7oohbOBLil4ESJ2rYpkaMc3C9
-         hQMKK02td5EdTq53wCic8iNFnGyH+1QMZNlDHxpjAl1IBoTE6XPJ/JEvf77+9TVqGRwI
-         Aanw==
-X-Forwarded-Encrypted: i=1; AKwUvByJVvJpfbvjGwFaqsZU++vgoszggWexQFz15vkp1hPaMH4FQZRw9PnsFurui4NLBvYH8uA5FQ3rxw==@kvack.org
-X-Gm-Message-State: AFq9FYIa0DxarVI0Z5ytOpkwza+tXBt3AFhSCqw1SGr8e2BxErqXKPu2
-	tEIhV4fxQMP2Uq6b46tB4HK174VLYj1ZCo3K+YeoMJpK/STbKaYRuD3EtZi7uqrd9Q==
-X-Gm-Gg: AYBFou0uH4k6Jd/0jo0GMbetTfW3QWN3hS8XfVAKcVHkbj7Av8MCCbZCrUOlbh4jwZS
-	ybQlp3sww2aP6Zzgb2Xp1ujBl3b2yM+YX8sOKAaj4ZWDs68DKbKZDcsxxH7j13vkM8DeN0aTwMG
-	kVMe4NPZW6owVuh7UOMmaMruEecZvzLHnvKhFQYiNHTW/XExu6XdGE3d3vUBCvELHu/ppIg+PB8
-	T2M5/2hmq0CN5JjdteveMm6N/N7DqBoLM9qL1+XejzcqW3z5RnnSxuYClZGlbcYs/HcBk7rrkln
-	/OaAV3YgJYCGqft+ddDhFK1tjEP7ex4OyRjg00UrIfjWn9DrDCtlmvhZNvbqsmy6BlYATSFam6p
-	Y9hTZ9csQ4qnG1gWxaw0QJgUyRBn9QpjF5xoF33B21v0x4X6jEgfW8hELkaEIw+z4wEQTT3Rf4s
-	LlnFkzCbO501+agnGuVMGf6sx1vF0sOf9mq0Shp26CzayqBxkTeGZXjYZyWE5NsWUsCnDsLLDvF
-	lzp3qVwktH5q5cTKOtnmRbFaQFRkQwuhakfVshIRUomiLcSnBjpRBX1EUhMRg==
-X-Received: by 2002:a05:6a00:1a8d:b0:86f:394c:5c68 with SMTP id d2e1a72fcca58-897c7010529mr9961975b3a.13.1791863558349;
-        Mon, 12 Oct 2026 20:52:38 -0700 (PDT)
-Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:476:d384:7c2e:1579])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c41bbb27sm4326818b3a.40.2026.10.12.20.52.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 20:52:37 -0700 (PDT)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Brian Geffon <bgeffon@google.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Richard Chang <richardycc@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-mm@kvack.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH v3 11/11] zram: use a singleton compression context for recompression
-Date: Tue, 13 Oct 2026 12:50:58 +0900
-Message-ID: <20261013035201.2809924-12-senozhatsky@chromium.org>
+        bh=jVY4B9rehNRPw7ZQqZE00yhPApXSrH1ROghvzVoFxEc=;
+        b=Zf0riAaRsnASOQicrm8AvapD/jwk8WMbQvCeijo6v08Fj2Q9vK/csMnCQ7bbepBEag
+         6lTUndgqoxiWQ2LsXFHZtVC+MFdoM33dMGQHtKH9gPM3UyDs6POQDwBsIcAUlbykVwW1
+         uaetjs8NzMFk9ER9z1+7PdYL4I/44ygLYvMn5gd8qqMA4eL7aQ7366rSl6zSKDjGpMGT
+         BtovGfME6rY0sbWO6UjQJDoEwF7RwDkbsDVo5RX7j6/kT6O4K5XJnN6X8x4Bc1CxfpBO
+         ycNjY4q3GhGQSXswNHvJkYKEDeVXfp7eIdvf8ZxRwrZMTpEZXwymbDIdUX6N2OqMpD6q
+         i2Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791864037; x=1792468837;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jVY4B9rehNRPw7ZQqZE00yhPApXSrH1ROghvzVoFxEc=;
+        b=ZW+ESLWJ/NwirAH/Ug/uTP8lUOOLjY9KXRM5O3JJGrVvqE1mkMRD2cfYPmhqd+O/ie
+         K8jNGN2c6Ibk6PF++izoLpjmlqk1cyXYQAqFKf0X1BYpshnY5hBC7ViYyo1BT3aA2Wc0
+         41UuC0peSaU5kRx71GRByER03oaB7/HAQSiSew80NpTLqqEij5jD0det/5fPGe8yArMj
+         Q4bfm4OfN77qfQH1NRUWQhhJBsdg5EUsPSlrSJNHO03O/yX0g5J5Z+USWMO1hhVdOqSH
+         Wu1O0E26DIlX2tI1zvL/R1ICrgD8OkkRq7a4Wv2NlmCHBc1MFhy7wPLKU3Q1N8jJUlzd
+         B/aQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwtolgw9syp/YwK05RwDQC56mqgBH4yMLjRpkHHG5HiIkHLF+PvO8YGS0wtHh06XYM0nHteFhhCPg==@kvack.org
+X-Gm-Message-State: AFq9FYLoYT/8TRCqLj86RYC45y7wrUderHzwOFqT5OUtwo3T19mHshHE
+	PA/HyH+vV3kO4DmX4miTZcLgpBp+QFb83KhBmQekuZpLpRoKc+reOO9Fk1F+ySXJYzwob9DInsA
+	MnqlQiHQoOBvevA==
+X-Received: from plbjy7.prod.google.com ([2002:a17:903:42c7:b0:2e8:1305:c8e1])
+ (user=rohitner job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90a:d44b:b0:3a8:e1e:3390 with SMTP id 98e67ed59e1d1-3ab3afd49c9mr9663138a91.56.1791864037283;
+ Mon, 12 Oct 2026 21:00:37 -0700 (PDT)
+Date: Tue, 13 Oct 2026 04:00:34 +0000
+Mime-Version: 1.0
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-In-Reply-To: <20261013035201.2809924-1-senozhatsky@chromium.org>
-References: <20261013035201.2809924-1-senozhatsky@chromium.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 91297A0008
+Message-ID: <20261013040034.3919469-1-rohitner@google.com>
+Subject: [PATCH] mm/memcontrol: log userspace OOM wait entry and completion
+From: Rohit Ner <rohitner@google.com>
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Rohit Ner <rohitner@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: ADFFB140003
 X-Rspam-User: 
-X-Stat-Signature: q3mi9zi6xbjqnaxuzcmpopdc1o9usht5
-X-HE-Tag: 1791863559-578479
-X-HE-Meta: U2FsdGVkX1+nb/ckcOJngaghKipnEfN+sFlpoeYJwaurcrPI16deoIFBYn/CXjyX89gqaCuik+1WDhX3LGPf1kbWVraorc0AMUGVUlmlKKYb9U4I/NMkzWhvlfG4ZXwR26nSH35ErZaTWPDOqW0UcqUP5DB/a85t5KHUpnNj5XRMo03BYHgsFZD9FMVq7nxb7F7wheLS/Z8tUFBfbaFw1GZwsg5OIPglLgw0oW3xPr9lK2q2Y0G9rvwBFwv0A5xH+RAJX8WYoepZsNLaAPZqw6La0qpxGaxzDp/tQj4M1A0BBB/VIRMPVmNNx3jIMFaUMO4NDQdq5gm4EbjMFeC6wFo4UUqCt74Mp84vLSwNpXDrwT59RipzKcvtxu5Eoo6/FdiSjTYaZcZOBsWFa6EcPThqN6a5/n+Ra1EPrKumWSiWOzok66g7vk7FVHAw77mbgJKTxhalU6i56YhZhJgYmreIfm5gJgsELgcNq6lHQCf0g12DXHB8419vT3vJkx/nwkC/uttP7Povae2/fen2M3QGJwLM1vixUyYKFso6u2VQ5IlAzAk9jdwUFEeF9wgEK5uQBtHN670mlpiVWzP510e0Jw9eB0gPkhbye5+mDHvM42PN7I22e7kLlC6tgnEfJ3oYVL9yGcqdq2FFLk5h+796pupR6xHX1QWDxPXysTpBvKCGJmW9F1A4qLgmJb8Z5e9McoVfUVle07LzaP+sT53C/z+hhjWWV2VfvLWPzU3Eqb9iJdC2/wnBIGKJmJtg1UdiP94NmY8BMai1fTo7013LKnbhWgkPR5ejDw3NFwgb+wQYq9SyNLiIuPO3+QB5IVY56XcfP3MSAFtsB6HYeGYyeOxnZr+8v619Kc9mJGYBwJz3QT33ESmyOXkJXPv+KojDy9QoDqxL/vNBz5uV5D/5WCJ8wp9rXetvJ8QhmLDiFrzFeBRW4Bp8NhMjg/NjsgfElj17Cegu+voBUVd
- yFFsDRxJ
- v/8kcDf/mmEA604Vnt0o+KAKLuzY6wHiUHz/s9ssN8tww/VORuvDse7l5BaypqCuGdElC2bYgAZAI2Kckb2xJLid58UHB5pFh+E2T4ikW9lU90djpjT7Kkol443CsGvf4OcvYaTomLuB9ILebp2DN+ROfqr8JYoHzQmy6zQmxeL3aspG9qcgd19Gfwny2z7+qWXa6+QHw4FD2JKEly/cyASghKYznPeAmqOOK/wiFe4OmOLMdGu5868R+5u5I4m4Mopbg+XNvB0rLCcw1cjAUskSkLXXPKkaLjE5AjJ/UEgHxVJ8G97sGDytkgA==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 4k6y4jz7oaux88cse6xby9oydrzgg846
+X-HE-Tag: 1791864038-77172
+X-HE-Meta: U2FsdGVkX1/4WM6OQSxwJkyvKOMkXbCqln8ganzK3dlWbbthZSk+WE4QliJS0S8CHZWY8lcTpDXqDJYOBBlckAnpbt4MGldEsLstR6r4Lt8IpG+r3n6K1CfcIKCW+HjrYi593QNWgVUzcfxkEkJKNA7EVDewzyFgjVwC5SytsIKjnRQDHKztdpVXKUsAUEiOkafHqbqrjgqP7WtY7Z8CHF2NgRtH+mJC6SjZekVdefJUTQb6Ll9CO3uLdkz1qtXnmXyK9705OcJPBs4zdcZZo407S+5i14YlKqjBxCvBHRd1pvCTC7LmdgDRBKowCEH4l86A47teRwF2I+23icFro4+rcyNti1vjdWMlkOu1bNN2VmloX+fx18oDVjL+nMKF//YnEpS55Tq5HEr/5n/ss3Fy/tMEhXN+LWf5D4jtOsRdA+jDRUTJCRTfOR/M1Hmtkx3ItV016A0xxe3ELsFSRZKS4dy7teTeYBV1NbZLQx8rGmCJ80xRWsU0K2S5+VKBG28OCSnM7VZuugXr8P0QcGwQkPYamluD4Ze87Fc0/+jvC9Tnjk4QtfY4GGacHzY4J2OKcMQVDrIasE+vk6UkkAysFbPq8foWONOV7YxZCql2GtaIgViXXN1UnxZ4AP0INctTiU7bs8QcAGi7/rnyp+82oEYa6uegfjPKEQAdW1MHn/UQa9Kq38JEuE5+3/cEj2WbVlSttmPJ2TY1GfNOJOCpOlavScQH1CROVZIblD7Ku73xbYdHemit3DwERSKnPztWxnpsBE7W43cIjWSJrJjVx/m0/sN9jXSXqGIR+7sB2KZt08W1Ed3ID3sManQi2wi5b1Wzc85DI9xJ7w0uQWWW8KtEW9le7QB5B+R6wdgtpmaF8eDQfOFQTkqPIonrz7q6qLaiZ1GAj0c2GuCKqDu+uyHdr8AujlCCSIW8z37gtzkwXQIZskqPPIXxBfGYf1l8AALVknUlp6U8us9
+ iKbpKTP5
+ eGeyI0B4nqjNLSDRC0b6racH2Jqr4+Tz4307KDdAYpOKJBuFxhzeYzCqG6bG8TTQp/lad9ZhDnzZUeeG566nXHmT4o54+qGHJl88oCxZKJMAPbgI6p2eTQnWSodpWcUVP6jmUIYrMhemjQnefgZo+BvPT8DZruP8lnVvMhhsgalc2wDQxyo61BOWaDzuav2o0mOfaFejyLzzcgM7m2hWqFn+HnN7ywGtHu0eaKpajjW4zcFdd4I5HHNdHKqPptQcoLvvVj/E+vkIJ8zL+WtYwonUvumRR4qPD1xwuXuq3XeTBvI3ViafU//XrGULnffETzrREPSClaiq+k5bct0sSpLZs7tCBdCjkZ6mFXiwiNUOofBv4E7Bds4R9196aAU/gqKuVxEO5u5ZrlRHXB/U/tP3S68obM3y6lGX7xT92z2pKx1tqAcBnsX0GM8JViFAXD0TvIUuJFTjjEks3focug5nZoKfczo1qn+RULa5L/fB2NKL3JNw3zWxk6onu3wA3S2vXR5Lm3/scLAnL0rquuhgke6an2h5RMoi/IGqWkY7WZXxfcw29PKwmzwu4wlEDcRd5SJ2/0tWlBKI0rb/eM83SFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,247 +107,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Secondary compressors are only used by recompress_store(), which is
-serialized under zram->dev_lock, so we only ever use one secondary
-compressor at a time, yet we still allocate them on each CPU, which is
-just a plain memory wastage.  However, we do need per-CPU decompressors
-in order to support concurrent reads.
+When a memory cgroup hits its limit with memory.oom_control
+oom_kill_disable configured, mem_cgroup_oom_synchronize() puts the
+faulting task to sleep on memcg_oom_waitq and notifies userspace OOM
+handlers to reclaim memory, enlarge limits, or terminate tasks. On
+platforms where userspace is severely stalled under memory pressure
+before a hardware or software watchdog reset, no kernel breadcrumb is
+currently emitted when a memcg enters or exits this userspace OOM wait.
 
-Now that Read and Write contexts are split, we can allocate just a
-single compression stream (recomp_cstream) for secondary algorithms
-instead of per-CPU streams, which saves N - 1 compression contexts
-and 2 * PAGE_SIZE buffers.
+Log rate-limited KERN_ERR messages (pr_err_ratelimited) upon entering
+and completing the userspace OOM wait in mem_cgroup_oom_synchronize(),
+including the memcg path, memory usage/limit/unevictable stats, elapsed
+waited_ms, and whether the task exited due to a fatal signal.
 
-For example, on an 8-CPU x86_64 system (4K PAGE_SIZE), this saves:
-- zstd (level 3, default):        ~700 KB (~100 KB/CPU)
-- zstd (levels 12-22, no dict):   ~1.91 MB (~280 KB/CPU)
-- zstd (levels 14-22, 110K dict): ~5.33 MB (~780 KB/CPU, lazy)
-- deflate (winbits=-11, default): ~1.04 MB (~152 KB/CPU)
-- deflate (winbits=15):           ~1.86 MB (~272 KB/CPU)
-- lz4hc:                          ~1.84 MB (~269 KB/CPU)
-
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Rohit Ner <rohitner@google.com>
 ---
- drivers/block/zram/zcomp.c    | 75 ++++++++++++++++++++++++++---------
- drivers/block/zram/zcomp.h    |  9 +++--
- drivers/block/zram/zram_drv.c |  5 ++-
- 3 files changed, 65 insertions(+), 24 deletions(-)
+ mm/memcontrol-v1.c | 49 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 48 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/zram/zcomp.c b/drivers/block/zram/zcomp.c
-index da122bf4dd15..39d1f9384939 100644
---- a/drivers/block/zram/zcomp.c
-+++ b/drivers/block/zram/zcomp.c
-@@ -151,6 +151,11 @@ ssize_t zcomp_available_show(const char *comp, char *buf, ssize_t at)
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index 05ef55cae..7832ce11f 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -91,6 +91,12 @@ struct mem_cgroup_event {
+ #define MEMFILE_TYPE(val)	((val) >> 16 & 0xffff)
+ #define MEMFILE_ATTR(val)	((val) & 0xffff)
  
- struct zcomp_cstrm *zcomp_cstrm_get(struct zcomp *comp)
- {
-+	if (comp->recomp_cstream) {
-+		mutex_lock(&comp->recomp_cstream->lock);
-+		return comp->recomp_cstream;
-+	}
++#define MEMCG_OOM_WAIT_PATH_LEN		128
++#define MEMCG_OOM_STAGE_ENTER		"enter"
++#define MEMCG_OOM_STAGE_RECOVERED	"recovered"
++#define MEMCG_OOM_STAGE_KILLED		"killed"
++#define MEMCG_OOM_UNKNOWN_PATH		"<unknown>"
 +
- 	for (;;) {
- 		struct zcomp_cstrm *zstrm = raw_cpu_ptr(comp->cstream);
- 
-@@ -274,22 +279,25 @@ int zcomp_decompress(struct zcomp *comp, struct zcomp_dstrm *zstrm,
- int zcomp_cpu_up_prepare(unsigned int cpu, struct hlist_node *node)
- {
- 	struct zcomp *comp = hlist_entry(node, struct zcomp, node);
--	struct zcomp_cstrm *cstrm;
-+	struct zcomp_cstrm *cstrm = NULL;
- 	struct zcomp_dstrm *dstrm;
- 	int ret;
- 
--	cstrm = per_cpu_ptr(comp->cstream, cpu);
--	ret = zcomp_cstrm_init(comp, cstrm);
--	if (ret) {
--		pr_err("Can't allocate a compression stream\n");
--		return ret;
-+	if (comp->cstream) {
-+		cstrm = per_cpu_ptr(comp->cstream, cpu);
-+		ret = zcomp_cstrm_init(comp, cstrm);
-+		if (ret) {
-+			pr_err("Can't allocate a compression stream\n");
-+			return ret;
-+		}
- 	}
- 
- 	dstrm = per_cpu_ptr(comp->dstream, cpu);
- 	ret = zcomp_dstrm_init(comp, dstrm);
- 	if (ret) {
- 		pr_err("Can't allocate a decompression stream\n");
--		zcomp_cstrm_free(comp, cstrm);
-+		if (cstrm)
-+			zcomp_cstrm_free(comp, cstrm);
- 		return ret;
- 	}
- 
-@@ -302,10 +310,12 @@ int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node)
- 	struct zcomp_cstrm *cstrm;
- 	struct zcomp_dstrm *dstrm;
- 
--	cstrm = per_cpu_ptr(comp->cstream, cpu);
--	mutex_lock(&cstrm->lock);
--	zcomp_cstrm_free(comp, cstrm);
--	mutex_unlock(&cstrm->lock);
-+	if (comp->cstream) {
-+		cstrm = per_cpu_ptr(comp->cstream, cpu);
-+		mutex_lock(&cstrm->lock);
-+		zcomp_cstrm_free(comp, cstrm);
-+		mutex_unlock(&cstrm->lock);
-+	}
- 
- 	dstrm = per_cpu_ptr(comp->dstream, cpu);
- 	down_write(&dstrm->lock);
-@@ -315,7 +325,8 @@ int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node)
- 	return 0;
+ enum {
+ 	RES_USAGE,
+ 	RES_LIMIT,
+@@ -1372,6 +1378,34 @@ void memcg1_oom_recover(struct mem_cgroup *memcg)
+ 		__wake_up(&memcg_oom_waitq, TASK_NORMAL, 0, memcg);
  }
  
--static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
-+static int zcomp_init(struct zcomp *comp, struct zcomp_params *params,
-+		      bool recomp)
++/**
++ * memcg1_log_oom_wait - Log memcg userspace OOM wait entry and completion
++ * @memcg: The memory cgroup experiencing the userspace OOM wait
++ * @stage: Lifecycle stage string ("enter", "recovered", or "killed")
++ * @waited_ms: Elapsed time spent waiting on memcg_oom_waitq in milliseconds
++ * @killed: Whether the waiting task woke with a fatal signal pending
++ *
++ * Emits a rate-limited KERN_ERR message so that memcg userspace OOM handler
++ * stalls are captured on serial consoles even when booted with quiet
++ * (console_loglevel=4) and preserved in dmesg.
++ */
++static void memcg1_log_oom_wait(struct mem_cgroup *memcg, const char *stage,
++				unsigned int waited_ms, bool killed)
++{
++	char cgrp_path[MEMCG_OOM_WAIT_PATH_LEN];
++	u64 usage_kb = K((u64)page_counter_read(&memcg->memory));
++	u64 limit_kb = K((u64)READ_ONCE(memcg->memory.max));
++	u64 unevictable_kb = K((u64)memcg_page_state(memcg, NR_UNEVICTABLE));
++
++	if (cgroup_path(memcg->css.cgroup, cgrp_path, sizeof(cgrp_path)) < 0)
++		strscpy(cgrp_path, MEMCG_OOM_UNKNOWN_PATH, sizeof(cgrp_path));
++
++	pr_err_ratelimited("memcg_oom_wait: stage=%s cgroup=%s comm=%s pid=%d usage_kb=%llu limit_kb=%llu unevictable_kb=%llu waited_ms=%u killed=%d\n",
++			   stage, cgrp_path, current->comm, current->pid,
++			   usage_kb, limit_kb, unevictable_kb,
++			   waited_ms, killed);
++}
++
+ /**
+  * mem_cgroup_oom_synchronize - complete memcg OOM handling
+  * @handle: actually kill/wait or just clean up the OOM state
+@@ -1393,6 +1427,7 @@ bool mem_cgroup_oom_synchronize(bool handle)
  {
- 	int ret, cpu;
+ 	struct mem_cgroup *memcg = current->memcg_in_oom;
+ 	struct oom_wait_info owait;
++	unsigned long start_jiffies = 0;
+ 	bool locked;
  
-@@ -324,10 +335,28 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
- 	if (ret)
- 		goto cleanup;
+ 	/* OOM is global, do not handle */
+@@ -1413,10 +1448,22 @@ bool mem_cgroup_oom_synchronize(bool handle)
  
--	comp->cstream = alloc_percpu(struct zcomp_cstrm);
--	if (!comp->cstream) {
--		ret = -ENOMEM;
--		goto cleanup;
-+	if (recomp) {
-+		comp->recomp_cstream = kzalloc_obj(*comp->recomp_cstream);
-+		if (!comp->recomp_cstream) {
-+			ret = -ENOMEM;
-+			goto cleanup;
-+		}
-+		mutex_init(&comp->recomp_cstream->lock);
-+		ret = zcomp_cstrm_init(comp, comp->recomp_cstream);
-+		if (ret) {
-+			/* zcomp_cstrm_init() cleans up after itself */
-+			kfree(comp->recomp_cstream);
-+			comp->recomp_cstream = NULL;
-+			goto cleanup;
-+		}
-+	} else {
-+		comp->cstream = alloc_percpu(struct zcomp_cstrm);
-+		if (!comp->cstream) {
-+			ret = -ENOMEM;
-+			goto cleanup;
-+		}
-+		for_each_possible_cpu(cpu)
-+			mutex_init(&per_cpu_ptr(comp->cstream, cpu)->lock);
- 	}
+ 	locked = mem_cgroup_oom_trylock(memcg);
  
- 	comp->dstream = alloc_percpu(struct zcomp_dstrm);
-@@ -339,7 +368,6 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
- 	for_each_possible_cpu(cpu) {
- 		struct zcomp_dstrm *zstrm = per_cpu_ptr(comp->dstream, cpu);
- 
--		mutex_init(&per_cpu_ptr(comp->cstream, cpu)->lock);
- 		init_rwsem(&zstrm->lock);
- 		mutex_init(&zstrm->excl_lock);
- 	}
-@@ -351,6 +379,10 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
- 	return 0;
- 
- cleanup:
-+	if (comp->recomp_cstream) {
-+		zcomp_cstrm_free(comp, comp->recomp_cstream);
-+		kfree(comp->recomp_cstream);
+-	if (locked)
++	if (locked) {
++		start_jiffies = jiffies;
++		memcg1_log_oom_wait(memcg, MEMCG_OOM_STAGE_ENTER, 0, false);
+ 		mem_cgroup_oom_notify(memcg);
 +	}
- 	comp->ops->release_params(comp->params);
- 	free_percpu(comp->dstream);
- 	free_percpu(comp->cstream);
-@@ -360,13 +392,18 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
- void zcomp_destroy(struct zcomp *comp)
- {
- 	cpuhp_state_remove_instance(CPUHP_ZCOMP_PREPARE, &comp->node);
-+	if (comp->recomp_cstream) {
-+		zcomp_cstrm_free(comp, comp->recomp_cstream);
-+		kfree(comp->recomp_cstream);
+ 
+ 	schedule();
++	if (locked) {
++		bool killed = fatal_signal_pending(current);
++
++		memcg1_log_oom_wait(memcg,
++				    killed ? MEMCG_OOM_STAGE_KILLED :
++					     MEMCG_OOM_STAGE_RECOVERED,
++				    jiffies_to_msecs(jiffies - start_jiffies),
++				    killed);
 +	}
- 	comp->ops->release_params(comp->params);
- 	free_percpu(comp->dstream);
- 	free_percpu(comp->cstream);
- 	kfree(comp);
- }
+ 	mem_cgroup_unmark_under_oom(memcg);
+ 	finish_wait(&memcg_oom_waitq, &owait.wait);
  
--struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params)
-+struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params,
-+			   bool recomp)
- {
- 	struct zcomp *comp;
- 	int error;
-@@ -389,7 +426,7 @@ struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params)
- 		return ERR_PTR(-EINVAL);
- 	}
- 
--	error = zcomp_init(comp, params);
-+	error = zcomp_init(comp, params, recomp);
- 	if (error) {
- 		kfree(comp);
- 		return ERR_PTR(error);
-diff --git a/drivers/block/zram/zcomp.h b/drivers/block/zram/zcomp.h
-index bf41b27958c4..924c4185abe9 100644
---- a/drivers/block/zram/zcomp.h
-+++ b/drivers/block/zram/zcomp.h
-@@ -39,7 +39,8 @@ struct zcomp_params {
- /*
-  * Run-time driver context - scratch buffers, etc. It is modified during
-  * request execution (compression/decompression), cannot be shared, so
-- * it's in per-CPU area.
-+ * it's in per-CPU area (except for recompression, which uses a single
-+ * per-device compression stream).
-  */
- struct zcomp_ctx {
- 	void *context;
-@@ -94,8 +95,9 @@ struct zcomp_ops {
- 
- /* dynamic per-device compression frontend */
- struct zcomp {
--	struct zcomp_cstrm __percpu *cstream;
- 	struct zcomp_dstrm __percpu *dstream;
-+	struct zcomp_cstrm __percpu *cstream;
-+	struct zcomp_cstrm *recomp_cstream;
- 	const struct zcomp_ops *ops;
- 	struct zcomp_params *params;
- 	struct hlist_node node;
-@@ -106,7 +108,8 @@ int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node);
- ssize_t zcomp_available_show(const char *comp, char *buf, ssize_t at);
- const char *zcomp_lookup_backend_name(const char *comp);
- 
--struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params);
-+struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params,
-+			   bool recomp);
- void zcomp_destroy(struct zcomp *comp);
- 
- struct zcomp_cstrm *zcomp_cstrm_get(struct zcomp *comp);
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index a34859ff0461..ad244624d4a5 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2526,7 +2526,7 @@ static int recompress_slot(struct zram *zram, unsigned long index,
- 	}
- 
- 	/*
--	 * We are holding per-CPU stream mutex and entry lock so better
-+	 * We are holding compression stream mutex and entry lock so better
- 	 * avoid direct reclaim.  Allocation error is not fatal since
- 	 * we still have the old object in the mem_pool.
- 	 *
-@@ -2928,7 +2928,8 @@ static ssize_t disksize_store(struct device *dev, struct device_attribute *attr,
- 			continue;
- 
- 		comp = zcomp_create(zram->comp_algs[prio],
--				    &zram->params[prio]);
-+				    &zram->params[prio],
-+				    prio != ZRAM_PRIMARY_COMP);
- 		if (IS_ERR(comp)) {
- 			pr_err("Cannot initialise %s compressing backend\n",
- 			       zram->comp_algs[prio]);
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
