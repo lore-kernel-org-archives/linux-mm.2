@@ -4,83 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4322ACC6B10
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 13:52:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44188CC6B0F
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 14:09:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1255A6B0092; Tue, 13 Oct 2026 09:52:05 -0400 (EDT)
+	id 897DD6B0088; Tue, 13 Oct 2026 10:09:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D6216B0096; Tue, 13 Oct 2026 09:52:05 -0400 (EDT)
+	id 848D86B008A; Tue, 13 Oct 2026 10:09:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F06E96B0098; Tue, 13 Oct 2026 09:52:04 -0400 (EDT)
+	id 75E476B008C; Tue, 13 Oct 2026 10:09:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C70ED6B0092
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:52:04 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46D9BC0BFC
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:52:04 +0000 (UTC)
-X-FDA: 85317741768.16.DF05987
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BC44A180005
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:52:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kEjbIHBZ;
-	spf=pass (imf06.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 431776B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:09:14 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E40D80BF2
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:09:13 +0000 (UTC)
+X-FDA: 85317784986.18.01CF584
+Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 13E1D20009
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:09:10 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=hallyn.com header.s=mail header.b=kL9ibrJg;
+	dmarc=pass (policy=reject) header.from=hallyn.com;
+	spf=pass (imf31.hostedemail.com: domain of serge@hallyn.com designates 178.63.66.53 as permitted sender) smtp.mailfrom=serge@hallyn.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791899522;
+	s=arc-20220608; t=1791900551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G32wiI4qOUiolozAkV820CbG6zt5mOOYhyIhH56goN0=;
-	b=KJihNU7e5GsnrpRVmekOujK6/1gldvjNxL8q+rg3iDzUoAC6+ccFmOpN0f5D7okQhgBDmZ
-	ftWsFX8lqu/V8c2wuUc94RaysossOb4Jg+2BeZXqJza2dwHX0kchHHhmFJjI2KXXyALR4J
-	xi2wBWmejSlgTL1Oa0cvMmdz6wabyZM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791899522;
-	b=d2RCAEuBp17yhTpI6o+np/nUXSIg/TVxMmTfcSEj3l3ahvzRGtZXpRO/JStDVZFMfC0mLp
-	r7DcZp5gV8/S5VIuoCx1B12OfcQYLYj9Srkza4qzehvbgUnCTL+lAsneKhxwE00TGY8ekj
-	7J2d/qmd4CFnOz9Fz7sf66FVwbN/W5Y=
+	bh=w6ZuGJpO3JerCueQneSa/3vKnDAJukJFeI8mWhm4kYU=;
+	b=RsC2QtfpzKHnMlo0fYLGYwT/QAkHHQlvF51fAj5OzSdGBLX8lYXAUEnJpF+eqPkb6yC2wh
+	X7neK1j0oVhnZBQ6WuJd7hG3VEb66bHNbaS2EqDZeGETJfHhn/ZpaVqQg3gQiP8tnisSD4
+	dNfFi5ch22WccgqLwYWNAkKumvQhM4A=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kEjbIHBZ;
-	spf=pass (imf06.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0EFA360A5A;
-	Tue, 13 Oct 2026 13:52:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFBE1F000FF;
-	Tue, 13 Oct 2026 13:51:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791899521;
-	bh=G32wiI4qOUiolozAkV820CbG6zt5mOOYhyIhH56goN0=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=kEjbIHBZOuM8JQPe1pPTkyuH+dRImma5IcVxAX79E59k7wAKGa3bykbVdNydDq66w
-	 v3lemYPF73xS7VqP37lMSSFIY8GNCQ7867Soh17dRV6JMblpaxVhmh11JHa4cruWoS
-	 edkJN4mwHhcH9UWvkk8dJLHYpx105Wowu9FE5uh3CB0PhpFvmNrh4+fW5osqsvi9b8
-	 jeReT4rujS13xD/umn6BLdS7LtEC0s7E9IhnPF6rzg1JLMXoM4WbuEUSQxEuL08EIo
-	 f7GHH+S2aYNcIjCqrvCJ5HPGjNhpTyfjssEgyehENCNfocpar+Y69xxU0aE2bLPgjQ
-	 bKXw5/CzogTdg==
-Content-Type: multipart/mixed; boundary="===============8104651796735048521=="
+	imf31.hostedemail.com;
+	dkim=pass header.d=hallyn.com header.s=mail header.b=kL9ibrJg;
+	dmarc=pass (policy=reject) header.from=hallyn.com;
+	spf=pass (imf31.hostedemail.com: domain of serge@hallyn.com designates 178.63.66.53 as permitted sender) smtp.mailfrom=serge@hallyn.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791900551;
+	b=DnfsIn5bJ7a5vzNPTJX/bDS1/oQKRHhUH9HFuu3g2fiwliuNaFIAnvVs3J/0Iu+OaI0hZ6
+	wJ648p45TN24F7ABAQR5qlJhK7b1C+HVGzWkw2JGr0j4ghpSFlly8Ulmn+MBwWs/SoIYxy
+	ejN2dGA1GAnBg+wKt5Bgl7mSXDK+5xk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hallyn.com; s=mail;
+	t=1791900547; bh=Suo0YfCYPtCoLBJ8iZXRfc+dw40jvIHLkG13JRnjZUY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kL9ibrJga4YY3RAquWvtOegRsAK6JNwI4zXpQH4mv6j2Vsk9CY8qfIhLg/GbWf10M
+	 DeXquRyTooElnL5wcZ6eBAgd3kldWf1/1DVrk/QnE7SSW6X/eN/0nBES3D+BgjTlUU
+	 C/Rx2MZe3C0Slal4i45wXX+ZGEjf9NEkolx65kLPAJurAwcIqT7Fgf9sZxk/YpgtAy
+	 XDKHXmjY/8nxliaKEOZl8gn/L8ISgxycaCqcVMdYGSSfKRj3VaBKUpf5cLXmVPw2xG
+	 o/e7XKeKzb8AwNvzLFiFE90IPPcFzQuMfwogAUoL6N27g/9+hdqYmLbjfnu+6mI3om
+	 KyZ826JuJNe2w==
+Received: by mail.hallyn.com (Postfix, from userid 1001)
+	id 2638A6FA; Tue, 13 Oct 2026 09:09:07 -0500 (CDT)
+Date: Tue, 13 Oct 2026 09:09:07 -0500
+From: "Serge E. Hallyn" <serge@hallyn.com>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: kees@kernel.org, akpm@linux-foundation.org, david@kernel.org,
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+	vschneid@redhat.com, kprateek.nayak@amd.com, paul@paul-moore.com,
+	jmorris@namei.org, shuah@kernel.org, oleg@redhat.com,
+	brauner@kernel.org, alexjlzheng@tencent.com, jannh@google.com,
+	jaime.saguillo@gmail.com, elver@google.com, blbllhy@gmail.com,
+	bvanassche@acm.org, pjw@kernel.org, broonie@kernel.org,
+	debug@rivosinc.com, tglx@kernel.org, aleksey.oladko@virtuozzo.com,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, morgan@kernel.org
+Subject: Re: [RFC PATCH v2 0/3] security: Add PR_CAPBSET_DROP_MASK
+Message-ID: <as47g9Ofa7hgDDLp@hallyn.com>
+References: <20260929130200.1638343-1-ruanjinjie@huawei.com>
 MIME-Version: 1.0
-Message-Id: <69c3c1d057b9a47a37b8ddd6eda79c5ca0dade966fa2962f256c50255853e1d4@mail.kernel.org>
-In-Reply-To: <20261013122125.843451-4-zhen.ni@easystack.cn>
-References: <20261013122125.843451-4-zhen.ni@easystack.cn>
-Subject: Re: [PATCH v2 3/6] mm/page_owner: add open-coded page_owner iterator
-From: bot+bpf-ci@kernel.org
-To: zhen.ni@easystack.cn,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,akpm@linux-foundation.org,vbabka@kernel.org,surenb@google.com,mhocko@suse.com,brendan.jackman@linux.dev,hannes@cmpxchg.org,ziy@nvidia.com,shuah@kernel.org
-Cc: bpf@vger.kernel.org,linux-mm@kvack.org,linux-kselftest@vger.kernel.org,linux-kernel@vger.kernel.org,zhen.ni@easystack.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Tue, 13 Oct 2026 13:51:58 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260929130200.1638343-1-ruanjinjie@huawei.com>
+X-Rspamd-Queue-Id: 13E1D20009
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BC44A180005
-X-Stat-Signature: 354sdzqczw8em5gxp95hb7uuetn8mi58
-X-HE-Tag: 1791899522-435694
-X-HE-Meta: U2FsdGVkX1/pGAYF3APH8x+G/v3sS1Og1YjyDWb2UBdtmNgtDyqZCgFsneqy7MA/v5A+SyNNhKCQf3c9VRA0ERl1SzOO+PFXlmbPdOAYC995ujozEgAPnup58sPfcBIvrMAkX+90PHpie8UsCDkIz1bQHCJEfH0Tp0rLPt6iDT+1w9o0lqosPIGegC2TFsaD41tk87+GT143nn/FEKhKL2RNWwk4gpLgjl6X0j9a5iIzDlUkG7SJlU/im5ETtNVF9FSNRKgJwO9TSx23kINZ8sNNJ/Nr6UCzPy6NypWIO60lUDZ2qZIc9HUX7SbVlCBcp0T/47v78fHTCknM979ehnBzHzU48xt+4Pol3AkS+xMmpV99BittnZliZZOmMhpNgvS+PBxUm01nvyNVGwv8V9Gn9pw06xIkXJXwbEm/XcyhHqLp1T0KSYhN1zEImTAxeyVyGa+/9ExH1GrebDFlVzacVQVYDkpkB3rovJgp8MFOpw1TPhaGpeMdYfbb4QH2365SJYyv7Cd2+CKe5BFutMbmv0tk4cNJBED5Wb9z8UlTtB7fc1jzwYPnm26k2uw5g0DTx7XskQrAmX9oOCfFMPH1ZRiMz39xzys7ZDv09Wfn8/3RLb3wdRkL6DryGUMhNUU+mTUZY4tvgudPMPhid8i3MmNfVnH5/1vRLLmvAsngBmR3Z2vQRI5cMa3sSV3anKumgwzMKs2d7PE0250oXLkzmWtEI8ej6Nt7HULDhAOfeTmnwv7VL5vrAwSvxH7h4Pq1dNG6mrh4j70TDExGz/XnG/PZnRleQ8mCN3f2odbsP3uzL6EdtMvIdX+FvtuKeIXmq1SBkhmD+bHzmbtFyEcdxTV9lG1qDEEjSQXET+JpwD/CwGLpQFthrWlkoIFH6ZtblTdmWLEUk0JR9lXThreUd+HNe5ebkfrKH7uGrzIXMOTqpsQ4qy5kNuwJ+BkbtAsyYP9zXDGsRU630uI
- nelY1h+G
- AkxAtC42btxpLqNCp3GCWKLdxO2S0Mpfm5VeSvF1FpHK8JIxZ7nBG5UKAZyC5u6bUZjayRzWQNIaML04u8W3bOs06vIK0wpYjmJkJGsq5LVUQlkOK8MKoLLLNJFKGSsQProtFqdgN//CsFdcYBst9m1DDYsKF1hNUbTnuNQ0dx5bQtGCaotkEgQyLufM3o14kaGv5ZgyHjPIdqwYMP4Cq5pX6rOiQxS2RxvikzQRerst8BTNV6TF3YXJDp2VV55h2Y2veDCNU9oFUA49zRlUp925uPikPLxKKvUsU5dlLlSnFq3YNyMepyLp5yelC60JrFP72JzZYi8FKE0G1bj6GhXutzSZnPDX1rdTnASCaLCAtxgt0HRjYtJtzsR7PCrU05vSn0tR6hfCDsKq9N6M8o2kcZ5+vWwYuwQVdh1+ccCXYleU1Ub60PDbZMVCcnNYIRdggqSuG7GQtMnJA5DWSt8JrbDzyzJCAVpJC4sMOjSU+PKHVFraKs38gsj7s4HnqEkpiL3xiompU1s9UJWYlJBaiC3zNoBvqaPBe
+X-Rspamd-Server: rspam12
+X-Stat-Signature: s643hkxq7s4e1fpthco5nb9jw68ydewg
+X-HE-Tag: 1791900550-43831
+X-HE-Meta: U2FsdGVkX1/0IjOC93bYyjgsZgAWKHTliwp0tTSFF+V4RpaOkDS0qEplVOCmZLKHRBnKcB2bjIovikfiOkBhDMxHuPwi3CM9A/LS4GC/0gPmwE3EKAqqnAI55nYUt3MDXNqDRqhcCM3unyQPeBVSBnyTb/g0xYBmdUUKF3ZIDBuC15Bj/5iwOjVWxAJDc8tCYknDutE6laGUfaeO0hfA4V2k/QYHjc4Qkeuh9R9PpgxdyR/FbPGP/ZOAGJejogfXf+93UsJZgbyJaf3BwbBikIajtA88ent1HN7X4DSJ/QA/08ZdN+DadH5T4FQHJo+Uv4iIbi9zH/eHOPfDPA3E1z6hYe6gL8DHB/pVGcBDYQswpI9ESwxnCLaFf910aGosTTqEMO1noFi5K0/f23K+vHmSBz5K3dKHftuUW7TaiALtfCHYKN8in5AZ1wD+vjnvUibnAddZ9e40lsEWWhCbZ7lKOmvJMDUTu6hD5HznCnZ6MGM6tFbOjl7b9MwQww44qiukKzh9PXIvZceuQIeHEq019yvYmTVVxTIdQSki6XMexsEvKRdpi/F6Ys1ddVNMRX/6AkPK6Vk2URo4I2hlt8Zn0U8Ffxa74mtp4ftRVe4Tr/ddr4+3J8tAeTcj8JGjdQ6Hp2xhJ5CgaaOluJ5lbZI6XkuzY1WjV9DtSJJqFTXQtDNwLT5kmGCSlcB4HOo1JQgU2awyz8N80CFag78Rfeo/m1tHN3x84x+3Pe8WbLNmPd8P0nOMkPrpRa3PlZR/qvS/re0Pw139nV1S3TXqZ34nwRBKknflyhpx7nqz8CW8rZL3Uqu3WpwdgADtEBvZxAqsnLy8EhLnUNcCDhvGcxKuiVfiSGohT0S2wKlqUnWHh6B5BjngtityAnKr7M3q8LojejOnHShjpHs+AT7Bs4D5R4s6AjbiGTBrayn8Cpknykl9OIIaa2HpGVR+W+48xI+fVDTGnHuMvVd11/p
+ p8o/5f+/
+ YG/8QmMrTYO8p/JXUW/sC1elUq3z6UpOhf8K9Wqk7+TUJjKusm3J43YY1onI/nSwV83tIlWrOEuMJRjDRhGHf0INk0ezDZ//chTy45PH/Ke1DXk9CDhzqLeuQXvSKPjO0RPzvzlcxxMvwIeg+ymNUKU3sd4Z8MeB203dokf+ZRdm/wcAkpr+FCUvNLTKCo1hla7CP99m7mUn7oO5S11KShA12siMlQcdFcjhRVKDdg0tXsuiLRCNLfYKiWolCKk3x+u/O+GQ2yogGsKNQXBZ0fIW8cZ+qlERpWrjjDguFDqbwYWy8paSc+0HW3fcYvfhfZ3RbP6YsnfJJDh9WZVs5gJT9zxrIf6upwSntk4hFytTd7iCr0zEXJwhwKwc3LuypiZJEVmhZvJ9+p6DC3DiuTbwc8FNfdqfevp+Q678IzgKv0YmyLq0n4YX73w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,65 +99,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============8104651796735048521==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, Sep 29, 2026 at 09:01:57PM +0800, Jinjie Ruan wrote:
+> PR_CAPBSET_DROP only affects the calling thread, so dropping capabilities
+> for a whole process means one call per capability per thread.  For a
+> long-lived, multi-threaded process such as gVisor's sentry this is
+> stop-the-world signal delivery and costs milliseconds per sandbox on a
+> many-core host.
+> 
+> This series adds PR_CAPBSET_DROP_MASK, which removes a 64-bit mask of
+> capabilities from the whole thread group in a single call.  The drop is
+> recorded per thread group and folded into the bounding set wherever it
+> gates gaining a capability, so already-running, concurrently-created and
+> later-created threads -- as well as children forked by a sibling -- all
+> observe it.
+> 
+> Trimming 41 capabilities in an arm64 KVM guest goes from ~8.5-23.6ms with
+> the per-thread loop to ~11-14us, independent of the thread count.
+> 
+> Changes in RFC v2:
+> - Solve concurrently clone and concurrently drop mask problem.
+> - Solove sashiko problems in [1].
+> - Link to RFC v1: https://lore.kernel.org/all/20260922095816.1191799-1-ruanjinjie@huawei.com/
+> [1] https://sashiko.dev/#/patchset/20260922095816.1191799-1-ruanjinjie%40huawei.com
 
-> mm/page_owner: add open-coded page_owner iterator
+Sorry, somehow I didn't notice this version until today.  I will take
+a close look later this week.  Thanks.
 
-TL;DR: The new page_owner kfuncs may lack KF_PERFMON, so a CAP_BPF-only
-syscall program could read page_owner records and symbolized allocation stacks
-that are root-only in debugfs.
-
-> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-> index a284f20c97d5..85ce368315f9 100644
-> --- a/kernel/bpf/helpers.c
-> +++ b/kernel/bpf/helpers.c
-
-[ ... ]
-
-> @@ -5177,6 +5177,12 @@ BTF_ID_FLAGS(func, bpf_iter_dmabuf_new, KF_ITER_NEW | KF_SLEEPABLE)
->  BTF_ID_FLAGS(func, bpf_iter_dmabuf_next, KF_ITER_NEXT | KF_RET_NULL | KF_SLEEPABLE)
->  BTF_ID_FLAGS(func, bpf_iter_dmabuf_destroy, KF_ITER_DESTROY | KF_SLEEPABLE)
->  #endif
-> +#ifdef CONFIG_PAGE_OWNER
-> +BTF_ID_FLAGS(func, bpf_iter_page_owner_new, KF_ITER_NEW | KF_SLEEPABLE)
-> +BTF_ID_FLAGS(func, bpf_iter_page_owner_next, KF_ITER_NEXT | KF_RET_NULL | KF_SLEEPABLE)
-> +BTF_ID_FLAGS(func, bpf_iter_page_owner_destroy, KF_ITER_DESTROY | KF_SLEEPABLE)
-> +BTF_ID_FLAGS(func, bpf_page_owner_stack_snprint, KF_SLEEPABLE)
-> +#endif
->  BTF_ID_FLAGS(func, __bpf_trap)
->  BTF_ID_FLAGS(func, bpf_strcmp, KF_PERFMON);
->  BTF_ID_FLAGS(func, bpf_strcasecmp, KF_PERFMON);
-
-Should bpf_page_owner_stack_snprint(), and probably bpf_iter_page_owner_new(),
-carry KF_PERFMON here?
-
-These kfuncs are added to common_btf_ids, which is registered for
-BPF_PROG_TYPE_UNSPEC, and none of them has KF_PERFMON.
-
-BPF_PROG_TYPE_SYSCALL programs are always sleepable (check_attach_btf_id()
-requires it), and they only need CAP_BPF (or a delegated BPF token) since
-SYSCALL is not covered by is_perfmon_prog_type().
-
-That means a CAP_BPF-only loader can walk all page_owner records and use
-bpf_page_owner_stack_snprint() to copy symbolized allocation stack traces
-into program memory.  This skips the allow_ptr_leaks gate that
-check_ptr_to_btf_access() applies when the same data is read field by field.
-
-The debugfs interface that exposes this information is root-only: page_owner
-is 0600 and the page_owner_stacks/* files are 0400.
-
-This tree already has KF_PERFMON (commit 88ce88e933e4 "bpf: Add KF_PERFMON
-kfunc flag"), and comparable kfuncs use it, for example bpf_get_kmem_cache()
-and bpf_probe_read_kernel_dynptr() in this same table.
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/38403671988
---===============8104651796735048521==--
+> Jinjie Ruan (3):
+>   capability: Move mk_kernel_cap() to header
+>   security: Add PR_CAPBSET_DROP_MASK for process-wide bounding-set drops
+>   selftests: prctl: add process-wide bounding-set drop tests
+> 
+>  fs/proc/array.c                               |   3 +-
+>  include/linux/capability.h                    |  10 +
+>  include/linux/sched/signal.h                  |   8 +
+>  include/uapi/linux/prctl.h                    |   1 +
+>  kernel/capability.c                           |   5 -
+>  kernel/fork.c                                 |   1 +
+>  security/commoncap.c                          |  91 ++-
+>  tools/testing/selftests/prctl/Makefile        |  12 +-
+>  .../selftests/prctl/cap-bset-drop-test.c      | 641 ++++++++++++++++++
+>  9 files changed, 759 insertions(+), 13 deletions(-)
+>  create mode 100644 tools/testing/selftests/prctl/cap-bset-drop-test.c
+> 
+> -- 
+> 2.34.1
 
