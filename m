@@ -4,87 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4051CC6B0F
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 22:12:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEB40CC6B0F
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 22:16:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AF646B0088; Tue, 13 Oct 2026 18:12:46 -0400 (EDT)
+	id 8B2D26B008C; Tue, 13 Oct 2026 18:16:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6602F6B008A; Tue, 13 Oct 2026 18:12:46 -0400 (EDT)
+	id 83C746B0092; Tue, 13 Oct 2026 18:16:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 576196B008C; Tue, 13 Oct 2026 18:12:46 -0400 (EDT)
+	id 706D56B0095; Tue, 13 Oct 2026 18:16:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 239A26B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:12:46 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7CA63A02B6
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 22:12:45 +0000 (UTC)
-X-FDA: 85319003490.06.1A004EA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BA35620005
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 22:12:43 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aME28oZG;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D9856B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:16:26 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8CFFC1A0295
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 22:16:25 +0000 (UTC)
+X-FDA: 85319012730.15.C778777
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CDC101C0004
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 22:16:23 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FvQutYNs;
+	spf=pass (imf20.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.52 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791929563;
-	b=0yoprO2m7r2Sy5foDJSCvjTviyMDp3WLKqgVnOqw4ZD/T1/rfEVdvW/ue3+zye6izVhbSx
-	dWLjEYbtAhE+k7R51+vixvSNE6Oot28A54j0mgwDj2R0UnymfJBQf4bn067TWqXeGXEOg1
-	LPukjMCHKXcWvzCvKxgZAVZtqGGkLtY=
+	t=1791929783;
+	b=M13o2DxJxnySt7Jh5YEzp2w6k+Dun82bi0fKhMzjbx1fZ/SiAzxbij7xROI33Zm+xaJruR
+	xMN3QfIqghOCfMRC9bXtlX9PhYVbcXEVt6b58RQ2G9KRi2QVqD0Lym4cfWx80RsfvZlpiH
+	HsksddOeNsR5zk4OB4n4sIDXcflQmI0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aME28oZG;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FvQutYNs;
+	spf=pass (imf20.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.52 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791929563;
+	s=arc-20220608; t=1791929783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4IWTZDsa935wj21bGB8vBONkihK5G/3DpXxeoZPCgiQ=;
-	b=sgCaVPI/ik/xK50h36G6gLDx4TzfTAhlJ95cQm7AhqojXEbA5CHxcPkyl9vZHbHR5wBoXA
-	suGB5kPLzgt7l5DcH/GxKuBvCegAHXQKylNS9OY3CqKJV9gfZe2ME1UWAsrq+TLRX5BPwv
-	P1S0+o2i/3+KXAcTpNsR955AOHfsVAI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 24A79416E8;
-	Tue, 13 Oct 2026 22:12:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12551F000FF;
-	Tue, 13 Oct 2026 22:12:41 +0000 (UTC)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=o97kVTy3EqqqEFC/OlUKtIoJa3oUrpqSp2F7+qoZqxc=;
+	b=rSmqjUiBJeU18wdAHYNHKHuLxwvtLuauhQzynrW4LGKgZcI0fP/JZmxgvG6FhmzZWD+Zfu
+	IPk39+DqDH0HTDW/1WCW80CJoyAUG67gaBItAVZLultsyFcb2houkWP7q719G2OZTZ7iSu
+	zpyroQnYhMeA5T9YhkZnLDm+QtU86no=
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-8198a3a54d7so5630022a34.1
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:16:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1791929562;
-	bh=4IWTZDsa935wj21bGB8vBONkihK5G/3DpXxeoZPCgiQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=aME28oZGAgzYgLlb5N4BWBzXkODcJumjTJWJClMakkjxh4PuNcEGo+/y1pM9SeUrr
-	 LSYYATmt3K9iTX+RJ9RY0jB2LTx6fp1HXFl/AX/HYdyNC4U1mWl1uxwOmHXSfifmgM
-	 yih1bCuSr11rL5OGCdWDkD15YFbyAoJG68EfL84w=
-Date: Tue, 13 Oct 2026 15:12:41 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Muchun Song <muchun.song@linux.dev>, oe-kbuild-all@lists.linux.dev,
- David Hildenbrand <david@kernel.org>, Linux Memory Management List
- <linux-mm@kvack.org>, mm-commits@vger.kernel.org
-Subject: Re: [akpm-mm:mm-unstable 183/193] arch/riscv/mm/init.c:1544:2:
- error: implicit declaration of function 'free_pgtable_page'; did you mean
- 'pmd_pgtable_page'?
-Message-Id: <20261013151241.c8982a44c32d93a8ec010fee@linux-foundation.org>
-In-Reply-To: <202610131439.F2KDdzRA-lkp@intel.com>
-References: <202610131439.F2KDdzRA-lkp@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BA35620005
+        d=gmail.com; s=20251104; t=1791929783; x=1792534583; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=o97kVTy3EqqqEFC/OlUKtIoJa3oUrpqSp2F7+qoZqxc=;
+        b=FvQutYNs0+sQsA9Xo7GvOeCV18lsQUIAOLrR+sN9Zg95EZzVX+LmaYxsBVRlRqjeuS
+         8o8ngpPuFmCWeQ5Bss45nFDtw7lvQD5JtgRrr7Gf3q9t90aQ5AZJ0TsjlMNnlXCrC80K
+         P58YLnv388QVNWHEz8FxLZ+BqDJxIRGxRxWV8Tr4kUM9AxDeYg2bqzZaRF698ZEMPwXT
+         0OaJFLR1Y7MgXOfaqmxaZlcwwJb74bWyOhpG3zqcQcU97jJzy2bvyrRQIwfZlq9gYM1E
+         QU3lsOwklQL7QWofijlUeYoDnz2S4uAuNL5f4klu6yUXw/MBqtN2elNh/nYAgXJJ8ZG5
+         ZmPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791929783; x=1792534583;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=o97kVTy3EqqqEFC/OlUKtIoJa3oUrpqSp2F7+qoZqxc=;
+        b=eojqFkp4nuBsrbg0Xd8Uj2Asc2jPd0x0T4hIhhYL3Qhq1QlhLw6iG3zi2R1RemXa6l
+         KTZHYeMB2gPRRvlpWf8p1cnGCf/ah89fjv/CdCJNXV9SzANl4fWUdu9agkMbsEdheC8a
+         22RBC0u8NpKcIb9y4RqXgAGCdH2IvxOO1L6tlr/2LNHXWCHQGsO0JFV8xKb6+FIGGzuY
+         3W4Ojt+iltzneVMUfaSM7eAreSyNKzWUUYZ9rYOP9u7LxMPy3c3XOU6mbEbGCEdHkQTn
+         WScQt60sYkry+/ly1SIoJ+8rCrmERVERGsaOJlbi1kYf1Vuhfns/mwCneblxOPi7aBlL
+         rpXA==
+X-Gm-Message-State: AFq9FYK9h7nuGSILUGUx54fV+0cFSnUm9HiDeIv+FU9UCXCr0P2Tk7rS
+	xMWQT8xTQ+0RQbbpttib2ormx1qa/rYenejYpFEpq1JHK6pKz+4D9Hpp
+X-Gm-Gg: AYBFou2x/VMuM29leyO82fhc/q93edQxezjWAmB0bB0Fa7p7AubaPhhkMFHtZrRiAHW
+	5R50K2hB4wJemtLD9M4j81fJ8uwgSuL/1Q5cVtknRLNxUtCUtQC2oxSgO/jl9bhypfd/UPueVDg
+	YzLMubgsyjeOMR+QP7eDms9iHZtGgIKWqGgc0SrKQcjL5wZFfIzUp/K6QH6n1v9VNHuWZnMi/k8
+	URcQmnUoaAJ/Hx8Fq7eMXM5Wjp/SRFHCujlXBxuRZWfcwk9HM07QFkHEZwTWw9R1wKifnCOHGFB
+	uAuRXAM5vD/mDIy4BAmrzAN9isK4u8pWnFzvLY4kC5nAmn86vS2YKUnvh1PKEmRDpIERmWCme8O
+	Lbzhvonxic0iFBrC9NgNu2oLadh8BD8mk65S7iQE2v8b3NYx/v1727dhc0fTsIKg2kGdaPBvhHK
+	piioYsf5rX6cQQV6SKaSkbjKYzY8tYVHVWGtnxRgn4VFSlEGKDxdamXYW1rJi5ArC1qRoEUkq2a
+	Cn6R8PUv9Nq5dwpTniotqYYhCcV5v+WYpRWmFHuZquQGuCz+ws=
+X-Received: by 2002:a05:6830:3366:b0:81e:375d:3963 with SMTP id 46e09a7af769-83028c5912cmr8564561a34.18.1791929782683;
+        Tue, 13 Oct 2026 15:16:22 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:71::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-83038f82468sm13759270a34.11.2026.10.13.15.16.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 15:16:21 -0700 (PDT)
+From: Joanne Koong <joannelkoong@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Usama Arif <usama.arif@linux.dev>,
+	Lance Yang <lance.yang@linux.dev>,
+	Hugh Dickins <hughd@google.com>
+Subject: [PATCH v1] mm: unqueue deferred split folios outside the lruvec lock
+Date: Tue, 13 Oct 2026 15:13:07 -0700
+Message-ID: <20261013221307.850803-1-joannelkoong@gmail.com>
+X-Mailer: git-send-email 2.52.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: tinjr56g37br9wcmq3bzs7be8fipk1m4
+X-Rspamd-Queue-Id: CDC101C0004
 X-Rspam-User: 
-X-Stat-Signature: uttboohsb5exgnkheo8xuh747uzcc9ck
-X-HE-Tag: 1791929563-297587
-X-HE-Meta: U2FsdGVkX19+sV6eOhD3owEsbi/tYrJ4HZqLJI4DK0Qfms8im8DOycvKtip3Nm7jQMnvmZJGBvkG7aROe/RyKDbMlV8NeN9r8giCQokm88y9Kr0F1TIqnKbUtBK06MPFsH/iyibg7rAPwu0oTZcVEX75/iun1LsW6tMEJ5QqLngjp7rtfpHGBAMhOfU6PUexR4OX//uaoZYkOM41dT7jQcp7sSurn3DeXBe/ujTFj/39Uo+RTjNTir7yNrrTnvsYhhI3sRrINQA9H7twZArTJr+glJYmBnQ8bXW4hiy+N6FXeWHcivR8yPNDffqBAYfm1JyTvwzjREpArwOqtDVsc6XnDTMpqVGR/fOKI3+ATZ0S7dA9g9UCiTHkrgQ8BE/qIjoOtFuUndkWY8qBuAeytuOkuUT4xpTMmUlmBhq+jFSHVobBRwkf/qsPxdpa+sdti+9UIfqzoxSM+qioLOD9pcpEkv4Ob+7m96sqZq2tGS4nip1Axfp1Y0HAyW7MwkWdEcodb6XMju8UTR/8amq27R0Z5cHPEz4vGqMBjg3lXSdnFqfJWKsYihAqkUNPS8xuXR1UCOIBhjJqZJQ3Bc1eiiBZNx86xrZjD2oFTRzYVtX5sdfk0t6tunbr/EmO4pca8s2C3C/V4n+q/iJW8+Nzs2Amcg6qzxvY5JGcvAEcg7rwMEpOoaDtW9+XBXU0xXvoWGhGQHl2NOIID2u3bmgQBNu1jVGYD/h4urqMuu/Lj7qy1OplDlLTGgNtjwkk6CNSyt8VE+I1L/qFTkqTnswLoO7X9A+MdqBcLAk8kw+c0OrPnMR1tic79qvfZby5oqhLoLDR964KCARnc0Pfdevt1ONBDZGPVki26aYIiXAJcHZh6VSa6yFvFVjslK4AotI6NIZpt++uXHp8YmY53I6AFMJ/HaQSggX0dkY+9nhw6/dVM9wL7HDxrwnzk/ABPG5kehFt1ZRBKfcU5QhBqc7
- zKX7dLvk
- xHh6Jr9gwN98IwkN+ZVo9F7YHem7/BRZeusAvadqhgMCb3wy2JFHgeniVJTpVOeL9PYcXobpg4AQ6DWuaUPXnnWbWh++NekZH5u1fzoHos1zS8+jB/2Cln43GR45GuvJEpYveUhWxy3m5pkyt28sEOrbn6eNlQmYcm741D0PtbLFHNKbE2S0XqNiJuh830eaqni2mV0TYkNcb+HZzHEO5iA8co146pLRoB0A/N9SRY48oac5cZGDQt8PJZsX5zpzXerXnsbFMGSnSfkcT1dOyLR44qCp5jabdKjuiTCtT61Qf2j5weiByLwOH/v9CeZD7BDNJpd2VF2db6nVOybkuZzrazEFj74BYpJmjY4lud0Ckr/P7eTYfm3th4oSyew3n702ndEg18QHdjpKC/I6ogIjlbULeiWuJONtPMmypmn/xPMZWTQGgwUCIBNELALyqey9j
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791929783-902197
+X-HE-Meta: U2FsdGVkX19OxgM0LMtfECZzXRK+eXMSeuWi/mEaiBZegEEmr5TRfud5G6Laxjcwb99av1nuSgovgiemkchKdFWgVYh0fK0SOdyQyTzUuGfxju29b5zL9pywutAy+J9mN7pNUw4QpEz3ZY70Hp8WdQU2qFsyjzeIi/A2rpIaaN9QWnnpQgaBxxoHkG202HDkWaqTPJy9l6LkeLhPr0HxY6TPXUm6fx7U0NLvYjpHFH62zuFIDvFLnfdhSfe8Eza0sYORBAvLTRl32EE8HTIHqNenxWlSmr/CXsQGj9m3pRNn4Vcnl1IewL6sGJn0vim/kLCM5nhGxjiTGBwqDwhmCmAyB5llRKQn/YtKKcb0y56kQD6Q3C2lsbWTo/NjkJT7OP5Bo8D2huym2dIAzG1I3meaZxB7ZxQBloJHwuu2+gUq4Fbt84IJmXIBDwgOmyLMomBHVoqWuknKz7vbfexnC7s0aW+EGQRWcOPBMYCj7WcNUuCz0D7yBlob9eynFsvxz5N0qSpDVm6BFkdLrLrZyRjxE/+nBICAAco37Cn3KWG9xKsA5Boc7qJDedcSAxrr16JHs3b9MPkTJ1T53Z64SyvP4PWQJDDIhkuXAjHDfJkV5PlwGB+dv+uL7uWcWLK2Rv5vJaJCqDc+TYpyCDwCWVRnoawHWuVewV3HgrVNwG1CkZyBGmKFdw7m1oKvCVdMy3uNS9ZO+ytSZ8zxKTGIBb7Cvpk3W8U232it+gpnX0yjLG1gafeL9DVmBsLu9ClBgymQvOGQAoBoq4wxnjqZE1hJr6xCBTxQ0Ap+RvGWKtFe/385QmXxE6Q/IEhLnek1zIToe3sLCQWHVixtwbxYEUHWbUxd4Ilwh8oRWVkR6XhMZdDUthQsTUkuj0ftZJnOaNlHt41q40bZtwcz3r0Vm8mu1l0Fx1ycrQczU5cioRuoQQC35A47gd3zUVNGO/2vCU1iUIecLeHXXyrW9L4
+ EDw7n/tA
+ 1LfFS02z7QFtYaIRrWfJLHpw1T1gQaSlajUD42vxVK7v9+GC+YIvhrElU67Mi8U9q7aJuDZ//h4AuHUEBn/DQSQ5XvxpMHO+HkilBcUDcI+sscRNhWSxZF8m1pX4PCaCwc4b5F/LkNPf5RPLIcW1y50EpXROlIhv4l2wqMp6nin3Fpi9BbAB/gwhuUP9IZIHYTkDZvs7CYNEFwLvNrvs5qS9AY+eUbqc3Wb322i/CE/MlgGtGWlNkq8x6WE1JrSTBcrG/Qp/FbbOx9nA6j92H5CUc9nWlbSxQyCAXeN1ho+y7HC1u1+nm5TezPa3mnIjm0/UuhaBX4r+1WMtFje348svJh33mMN/B9HZUKS4V/Mkt1lZ5kKUL2IZDRYsABJiJXsTHarChyxdpBTlvznZgWE14Gz6Ty5Vyb+PJ+mjNTTe8rHafPvIlO3jSJ3tbE2fpw6/CsblPH0B4bOvKi8ON3zgnYk8+yBPsha23VAFJLNQ20Ba87WITT6hOMLJXusnrHnGK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,33 +133,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 13 Oct 2026 14:18:21 +0200 kernel test robot <lkp@intel.com> wrote:
+move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
+folio_unqueue_deferred_split() on folios where the refcount has dropped
+to zero. In these paths, folio_unqueue_deferred_split() is called with
+the lruvec lock often held (move_folios_to_lru() always holds it and
+folio_batch_move_lru()/folios_put_refs() usually hold it for every folio
+in the batch except the first). However, it's not needed to hold the
+lruvec lock.
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-> head:   7186f1bd21b9094cc063c10f8492fd135522d3cb
-> commit: cf6402c085736133c835e1f815f79e7e1faf97a0 [183/193] riscv/mm: fix missing destructor for hotplug PUD tables
-> config: riscv-randconfig-r2109-20261013 (https://download.01.org/0day-ci/archive/20261013/202610131439.F2KDdzRA-lkp@intel.com/config)
-> compiler: riscv64-linux-gcc (GCC) 10.5.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261013/202610131439.F2KDdzRA-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202610131439.F2KDdzRA-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>):
-> 
->    arch/riscv/mm/init.c: In function 'free_pud_table':
-> >> arch/riscv/mm/init.c:1544:2: error: implicit declaration of function 'free_pgtable_page'; did you mean 'pmd_pgtable_page'? [-Werror=implicit-function-declaration]
->     1544 |  free_pgtable_page(page);
->          |  ^~~~~~~~~~~~~~~~~
->          |  pmd_pgtable_page
->    cc1: some warnings being treated as errors
+The lruvec lock protects folio->lru and the reclaim LRU lists whereas
+the deferred split queue lives on folio->_deferred_list in
+deferred_split_lru. The deferred_split_lru is a list_lru with its own
+per-memcg per-node lock.
 
-OK, thanks, that patch is dependent on "riscv/mm: fix hotplug
-page-table destructor handling", which I've disabled to simplify
-merging with riscv.
+There are already other existing callers that call
+folio_unqueue_deferred_split() without holding the lruvec lock (eg
+__folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
 
-I'll temporarily disable "riscv/mm: fix missing destructor for hotplug
-PUD tables" as well.
+Add folio_batch_unqueue_deferred_split() and use it in
+move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
+unqueue each batch of zero-refcount folios from the deferred split list
+after the lruvec lock is released and before
+mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
+critical sections, which run with IRQs disabled and are highly
+contended.
+
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+---
+ mm/folio.c    | 24 +++++++++++++++++++-----
+ mm/internal.h |  1 +
+ mm/vmscan.c   |  3 ++-
+ 3 files changed, 22 insertions(+), 6 deletions(-)
+
+diff --git a/mm/folio.c b/mm/folio.c
+index 35e242b48870..85144078e635 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -109,6 +109,19 @@ EXPORT_SYMBOL(__folio_put);
+ 
+ typedef void (*move_fn_t)(struct lruvec *lruvec, struct folio *folio);
+ 
++/*
++ * Unqueue a batch of folios from the deferred split queue. This must be
++ * called after the folios' refcounts have dropped to zero and before they
++ * are uncharged (see comment above __folio_unqueue_deferred_split() for why).
++ */
++void folio_batch_unqueue_deferred_split(struct folio_batch *fbatch)
++{
++	unsigned int i;
++
++	for (i = 0; i < folio_batch_count(fbatch); i++)
++		folio_unqueue_deferred_split(fbatch->folios[i]);
++}
++
+ static void lru_add(struct lruvec *lruvec, struct folio *folio)
+ {
+ 	int was_unevictable = folio_test_clear_unevictable(folio);
+@@ -177,14 +190,10 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+ 		 *
+ 		 * We're bypassing normal cleanup. Clear flags that are not
+ 		 * applicable to dead folios.
+-		 *
+-		 * Since the folio may be part of a huge page, unqueue from
+-		 * deferred split list to avoid a dangling list entry.
+ 		 */
+ 		if (is_lru_add && folio_ref_freeze(folio, 1)) {
+ 			__folio_clear_active(folio);
+ 			__folio_clear_unevictable(folio);
+-			folio_unqueue_deferred_split(folio);
+ 			fbatch->folios[i] = NULL;
+ 			folio_batch_add(&free_fbatch, folio);
+ 			continue;
+@@ -201,6 +210,11 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+ 
+ 	/* Cleanup filtered dead folios. */
+ 	if (is_lru_add) {
++		/*
++		 * Since the folios may be part of a huge page, unqueue them
++		 * from the deferred split list to avoid a dangling list entry.
++		 */
++		folio_batch_unqueue_deferred_split(&free_fbatch);
+ 		mem_cgroup_uncharge_folios(&free_fbatch);
+ 		free_unref_folios(&free_fbatch);
+ 	}
+@@ -1020,7 +1034,6 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
+ 			free_huge_folio(folio);
+ 			continue;
+ 		}
+-		folio_unqueue_deferred_split(folio);
+ 		__page_cache_release(folio, &lruvec, &flags);
+ 
+ 		if (j != i)
+@@ -1035,6 +1048,7 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
+ 	}
+ 
+ 	folios->nr = j;
++	folio_batch_unqueue_deferred_split(folios);
+ 	mem_cgroup_uncharge_folios(folios);
+ 	free_unref_folios(folios);
+ }
+diff --git a/mm/internal.h b/mm/internal.h
+index 0ca863f2639a..ac72577a6e3e 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -760,6 +760,7 @@ static inline bool folio_unqueue_deferred_split(struct folio *folio)
+ 
+ 	return __folio_unqueue_deferred_split(folio);
+ }
++void folio_batch_unqueue_deferred_split(struct folio_batch *fbatch);
+ 
+ static inline struct folio *page_rmappable_folio(struct page *page)
+ {
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 29b31446fc11..94859a830fb0 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -2007,9 +2007,9 @@ static unsigned int move_folios_to_lru(struct list_head *list, bool do_rotate)
+ 		if (unlikely(folio_put_testzero(folio))) {
+ 			__folio_clear_lru_flags(folio);
+ 
+-			folio_unqueue_deferred_split(folio);
+ 			if (folio_batch_add(&free_folios, folio) == 0) {
+ 				lruvec_unlock_irq(lruvec);
++				folio_batch_unqueue_deferred_split(&free_folios);
+ 				mem_cgroup_uncharge_folios(&free_folios);
+ 				free_unref_folios(&free_folios);
+ 				lruvec = NULL;
+@@ -2041,6 +2041,7 @@ static unsigned int move_folios_to_lru(struct list_head *list, bool do_rotate)
+ 		lruvec_unlock_irq(lruvec);
+ 
+ 	if (free_folios.nr) {
++		folio_batch_unqueue_deferred_split(&free_folios);
+ 		mem_cgroup_uncharge_folios(&free_folios);
+ 		free_unref_folios(&free_folios);
+ 	}
+-- 
+2.52.0
+
 
