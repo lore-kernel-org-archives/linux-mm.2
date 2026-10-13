@@ -4,84 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 336C5CC6B08
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:36:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBD9DCC6B08
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:36:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E3136B008C; Tue, 13 Oct 2026 05:36:21 -0400 (EDT)
+	id CE4F46B009B; Tue, 13 Oct 2026 05:36:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 393E96B0095; Tue, 13 Oct 2026 05:36:21 -0400 (EDT)
+	id C6E806B009D; Tue, 13 Oct 2026 05:36:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 282FA6B009B; Tue, 13 Oct 2026 05:36:21 -0400 (EDT)
+	id B5D706B009E; Tue, 13 Oct 2026 05:36:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 012806B008C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:36:20 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8D3BE1C3CBA
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:36:20 +0000 (UTC)
-X-FDA: 85317097320.08.29DB372
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7989C160005
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:36:14 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=J9+2Ojr9;
-	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8631A6B009B
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:36:44 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 177B41403E3
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:36:44 +0000 (UTC)
+X-FDA: 85317098328.28.D769CD2
+Received: from va-2-111.ptr.blmpb.com (va-2-111.ptr.blmpb.com [209.127.231.111])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8E9F2140003
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:36:41 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=W4qDJHtc;
+	spf=pass (imf09.hostedemail.com: domain of zhaogongyi@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=zhaogongyi@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791884176;
-	b=FF+S37nBBDRxXzud29BCVTdf9gmQ43AoF3plA3aCiPKthilJca4MOoVNJxQRkiT9Knj1Fv
-	dVNsFe0d03kIddKZaSF6OX5cmZJO08jWKW4EyqYwoAt8H/HQ9vCjdxLQYM1NDM/AZpYjwU
-	yKuN/q7uxTWNzTSrnqiULt1XHXe/+84=
+	t=1791884202;
+	b=JloEeP7YaOUDnvM8hP2zZ9XVFo9tTYe4Qa43qBP7XrRxYlDI6PpGwwYdVEH2XaAB+RU3CE
+	eFUsfdLcHJt5layK42y2/vGBKnPxe4Epuet9H4c4GMcI8vLygIF9drwTz7nnbgojIy/JiP
+	5jNnvoWovMLzLtj4+4kGb9KK+Uodaks=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=J9+2Ojr9;
-	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=W4qDJHtc;
+	spf=pass (imf09.hostedemail.com: domain of zhaogongyi@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=zhaogongyi@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791884176;
+	s=arc-20220608; t=1791884202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tf91INvadMxOEv4mOizUmAwHCMyZFOULLoKUW7s5VsI=;
-	b=Apu0jBdOvqG7SyeU3arp5rTghCIIyt11hYwDhiuZETeb7o6CMcAp0DU9M6mLOh+H1kIjDb
-	uln8DQ9+EFMN8ZU8Rdq3VAWRz7D002OFAUBjGdxnSwVM9aKbdKPMRQJw2EL/BDm5fCba0T
-	FQowcQKBDNe/S8wsCQFsTpELkQ20DR8=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1791884170; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=tf91INvadMxOEv4mOizUmAwHCMyZFOULLoKUW7s5VsI=;
-	b=J9+2Ojr9iZS9CDblEqXJXr0A1iD10L+ACh2smo7aV2SCwbxylzbw59BBaEK8fOZmXuCgqtuNPfWp2VnEQRo3YPMaj6CQJWRDoLHLdxapqBZfjUDbkv2DgNbR/ZBXNJlaYdkS3Hk/kyPBxoYJX2g9exlTVjvjZhVHVbHUKcZwzWE=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XClKMcb_1791884168;
-Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XClKMcb_1791884168 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 13 Oct 2026 17:36:09 +0800
-Message-ID: <405811f5-ee36-4b3c-80d0-7dc6827ab5d4@linux.alibaba.com>
-Date: Tue, 13 Oct 2026 17:36:08 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: memory: fix truncation removing mapped folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
- pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <542c97482eae84f86704bcee56482633d1b32321.1791616645.git.baolin.wang@linux.alibaba.com>
- <8245424a-f068-4be5-9e58-713cbff1f8ae@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <8245424a-f068-4be5-9e58-713cbff1f8ae@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=q5NdZNxCSRtyhz8oP1rgzjW01hgyzNkTJZX8N4nqPNQ=;
+	b=x5QCGf+2rIGblZptRHGIyaKEYEIu3AkdMcuZZFcn/PpmwEFVDLFdT1XdTtfHECdwo8Rndg
+	OJE0dheGiU6h39MWiEF/4bam9Cthv8azVqr5jawSSYJ6U1bK0s8CNrC0iCSr1LOfnI/rv8
+	N/cc0Xy2URmqeli1GMv4hU4wn/mmR2o=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1791884194; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=q5NdZNxCSRtyhz8oP1rgzjW01hgyzNkTJZX8N4nqPNQ=;
+ b=W4qDJHtc9LVzt31VkunYswjtBLDSTpcyuUzILm1XB6uG7mZ04TQ+3KFRTHtf8WZEgriCWd
+ 8Ch8CWxaCDJWnDrog9CEUc4LPq0xprTx4biqWMEpJ3HMXKwyRyclKVS1sgde8+nGt/00zk
+ dBW18D4wkGBuNDFvVRTGXFsh5rXGU5RYJl5NM6zMZtUQEMHtoGGDFDPnqyaqyFumk/d82Z
+ 2x4xRpHEvNhAk14q9h/ZfYtD572Pfy76PmfhfHFyN6ROeFjRl0ZIPqW4TwbHiQOB4sSzZr
+ NSoA2DgLzNdecj/biFzjoR/64Mkb9JtMPGM/WROwBSMAtNViSSabMRubKYxmTw==
+Cc: <ryan.roberts@arm.com>, <dev.jain@arm.com>, 
+	<baolin.wang@linux.alibaba.com>, <lance.yang@linux.dev>, 
+	<mark.rutland@arm.com>, <akpm@linux-foundation.org>, <david@kernel.org>, 
+	<ljs@kernel.org>, <liam@infradead.org>, <vbabka@kernel.org>, 
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, 
+	<linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>, 
+	<linux-kernel@vger.kernel.org>, "Zhao Gongyi" <zhaogongyi@bytedance.com>, 
+	<stable@vger.kernel.org>
+X-Lms-Return-Path: <lba+26acdfba0+4bbe47+kvack.org+zhaogongyi@bytedance.com>
+Date: Tue, 13 Oct 2026 17:36:00 +0800
+To: <catalin.marinas@arm.com>, <will@kernel.org>
+Subject: [PATCH] arm64/mm: restrict transparent contpte mappings to valid PTEs
+From: "Zhao Gongyi" <zhaogongyi@bytedance.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Message-Id: <20261013093600.54995-1-zhaogongyi@bytedance.com>
+X-Original-From: Zhao Gongyi <zhaogongyi@bytedance.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8E9F2140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7989C160005
-X-Stat-Signature: 98fxpw5ugz75ohrf18kiji94siwk76ju
-X-HE-Tag: 1791884174-421905
-X-HE-Meta: U2FsdGVkX19U0WdvfiNMQA76udPuBhiMugT7Ge92sNzVsfVkKJaKl01L5AGJYBu89lXcV1cw2v9piu3ZrcDHQTCR5ndDv5ChAirS/qzLRzKNjvwV58U8W9k4B6fIMnpr2lwXYQOj1tGsjUAeYuvMLQNQPNzv3ME4L2nXj3QQpXTZjg3DJmEaDqoubjPNKcYDjlx2M7XvoNLZ3BUqJdJAHnbzfHyRvXcRQWeCpl72LE/wmK6tWQuUgbxmeBpdx4Qo1BfXMBaugxdaUaGuAQxuEuWF3sW0mtC5ma/zkwSSnTOOZEDP02A/tGALA7jLQNfowMkErubtpbQvAxQI99j8R9eIBOmfnYI7+19rJOwJ0YQNw60dAq3V4XXem3LF4BwK9g3sqBnFT1yCeTKBYISoWoCrQ0NgqOSur0y2+Mtkbtd9rnluWxgxwXKdmWens50rJ6S8//lB3TG7FWnEj06jp0TWLNj9jNZPMjlKnsbJjTsyIJPZ1fqN9rGxpdvdrPaZ+Zkzye/ztaZPdBbOU166DUoKCwwTWDqNwqIJAVB8POThL3eN0dEahGCG3cPfAntHZSs2etniJTgqjRiiq9qYOKAhB7ACp+t+rVV/vI/V4rewXgGmwdrsf3CHkQIynevYatpr2PKyTUbkCjZE42mn3OtBet/48m0HRF2CQDm70jjy1Lf3tHB7RiQrPA/zmIsSvimPEK0w7pH58C7tN3jfxI3jE9Ym2UD4npWAsGrGGyJ7HWr7GsPho90Uj3bsywmotCd2XVO3NqUQ5mQyy1vE2YlBahva3RCai1pqH/t/i2wFJA05ESkNH3YSUugdgaC3KqY1nkpiNRflOn6eQM+HJQzeL3DGuIyUVqfJoWduFJEXvJSKpw9I4YyknmN5yarMdvjAvRhYpxggwq1ERBdtmYE07DNqDNCt8rNUhKLKu7rdKTDpXjzi35HM9LuVgD2tbFksQNWaDpoOzPPYT1i
- +fb9kA46
- pr/C0D561/V8VmzcpC+wC3SJHF8Sog65cC0eCuktTYTaObo84ldpx1zsYkdC6Pj99rzFZ0hcRVIgb55UJnOHvQyrHquJHpkVx7b970Mdgg0e1gMVSOKFj0+m4Zw3TEzZDZoVPJrvHU7uLjmv5qSv2jb6mlc1xn8nEemkCvsabA3C/Z3QdwNflA+XbNDGIrge7uq5x0tMFUBLPQfhb3tlAG4yVlTJ7F+Nq9OTSTJKFX6lym3HTvQGVj/wtQzjG61tXDso6jU7ZFAkNWcYYRDJiHCBDje+RN2OhHWYZufYIaFjamHEksH84V5FCnz77MfoK8TU0WhvMWbGDszI=
+X-Stat-Signature: 19hwsmw3phi4eyzqru4euptc7i5ds6s6
+X-HE-Tag: 1791884201-271082
+X-HE-Meta: U2FsdGVkX18ExzZIqspOyHxrm2MnGygnKIRh+sVOF9EpGIN1VUR2NdaAbn6a3mgw95iiIdEDZHLXzUETOSdjdoG5DP6s+FMcpwbAgNZJqqk+/R29SgWxZ6Tb68YWj+vgK6kGKx+FSa5FwNFpqhw3h9Of0j9SuO224ATZ59qChAo58JkjaQB/kdsYd/Tp4UDxqomZJEKYERxurGwmtLNJJMKKwjorsiKRgSyiKCcN0t+nK+ZErzftbDVvRWbFAsKc6F2u1kp48Us2I7EZoqe6bHHaqL5w4nun3RpwvYoFJo9jucs4E0PmTQ50BA6e7KXUXtqWbJQ5FBIavCLf9pNKtN+SY7b3bVv/knHV8JH0lrhCfbJPUVwG4g4BA4QsyNAR5tbByUa8CFlkNRNUSF95cHOwM8EE+7W07QbqWSq68ioeiTeCNYtwMGextBa5sBUhaej5OWrR/247zCEeyWJoqEfeYo4FeZpf4EAt091X+jtBGBW9co5OigosudSVMeDtDxKoq9m7IuQZJMk9qterWlwOBQE8LfRaD63uIYytGpOqNss+Gh2hgX19RhwcoW6IhAn5DCK9TtbsjPICxcrJ7hX88nEqbIGe4DX+PmhLucSE/yoc/CWA53EpG1sEHVftdbjfJSNFTd5PEqNp1qjHdiHJ4KAOnYuksHdRNDgnFpSD+xFky0oucekB0hCnrN6DaNZSuoTVLp6PvKh2292pHELRPLTHfqHCguRjHXZDdbA7Gggyz+QMxZhsvAE9WqCHHj+TSz7D3kExaBQgQ2D+Tb2KybohACtQjmaUIhcUXuDNZbLndzGXdSDY/EdYRpoUA+tvRD6YSfwZR5KQ1PsE+1DQ+o6tAS7sJDhQxBGOVMy4i5GrF9PcKpGfSsUNnWZYa38O0/GFFpdIdUNYACiBera8UUOgRiayByET2yG1ve6M46aEeHp55+QOE6ifpeLbsyb/Y+93KO5ulxuwP5m
+ SSFvSXIG
+ +VJx7N8ubFMtM5+ef0Man8+oHwZvc/2N7KBM+gkp6jNJclIPeDNIflhO/hZGDpAxXzuZSuP5Z+Hn2ZLEdjTzrWJgAppwxfhnjcKIOTPaZttCoPCWrefS45HRXbNAiF+4obGVU/25P+7ejfX1MeDJTvIT8XnyeP1aKsQ6FZqLXM6byC00woq6oDMt884j7+DUKsrASVJ2C3/qaKeVWyOyHF591nIEsJUz7ZQ+4Yq62cbv89Mj1KTxrwaZL9M8ngy5Pwow5wEiuBNufYI7Y8pJk4wOpLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,90 +92,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The transparent contpte layer treats PTE_CONT as software state: when a
+PTE has PTE_CONT set, the contpte helpers may align the operation to a
+CONT_PTE_SIZE block and operate on the whole block. That invariant only
+makes sense for valid mappings. Explicit users such as hugetlb manage
+their contiguous encodings separately.
 
+contpte_set_ptes() currently sets PTE_CONT from alignment alone. Batched
+set_ptes() users can therefore install present-invalid PTEs with
+PTE_CONT set, for example mprotect(PROT_NONE), NUMA hinting through
+modify_prot_commit_ptes(), fork() copying a PROT_NONE large folio, or a
+PMD split installing PAGE_NONE PTEs.
 
-On 10/12/26 6:23 PM, David Hildenbrand (Arm) wrote:
-> On 10/10/26 09:22, Baolin Wang wrote:
->> Ayush reported an issue that shmem/tmpfs folios are still mapped when
->> truncating them on production:
->> "
->> BUG: Bad page cache in process ...  pfn:...
->> page dumped because: still mapped when deleted
->> "
->>
->> I reproduced the issue with Ayush's reproducer [1] with the latest mm-unstable
->> branch, and I got the following crash info. From the dump message, we can
->> see that truncate_inode_folio() is really trying to remove mapped folios,
->> which is incorrect.
->>
->> "
->> [  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1
->> index:0x3880 pfn:0x191647
->> [  189.171995] memcg:ffff0000cc073d40
->> [  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
->> [  189.172006] flags: 0x17fffef0002022d(locked|referenced|uptodate|lru|
->> workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
->> .......
->> [  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
->> [  189.172026] ------------[ cut here ]------------
->> [  189.172027] kernel BUG at mm/filemap.c:155!
->> [  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
->> .......
->> [  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded Tainted:
->> 7.3.0-rc4+ #277 PREEMPT(lazy)
->> .......
->> [  189.183986] Call trace:
->> [  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
->> [  189.184391]  __filemap_remove_folio+0x34/0x160
->> [  189.184633]  filemap_remove_folio+0x4c/0xb0
->> [  189.184859]  truncate_inode_folio+0x34/0x58
->> [  189.185087]  shmem_undo_range+0x220/0x658
->> [  189.185308]  shmem_fallocate+0x2f0/0x470
->> [  189.185527]  vfs_fallocate+0x128/0x328
->> ......
->> [  189.187078]  el0t_64_sync+0x184/0x188
->> "
->>
->> After analysis, I believe the race exists between truncation and MADV_DONTNEED,
->> and shmem's ->map_pages() merely makes the issue easier to reproduce. Since
->> MADV_DONTNEED synchronously releases the pagetable page before calling
->> tlb_flush_rmaps(), this could cause another thread's truncation to skip
->> zap_pte_range() (due to pmd is none) but still observe the folio's mapcount
->> as non-zero. A possible race scenario is as follows:
->>
->> CPU 0                           CPU 1
->> shmem_fallocate                 madvise_dontneed_single_vma
->>    unmap_mapping_range            .......
->>    ......
->>    (filemap_map_pages() remap folios)
->> 				  zap_pte_range
->>    truncate_inode_folio		    zap_empty_pte_table(pmd clear)
->>      unmap_mapping_folio
->>      ......
->>        zap_pmd_range (saw pmd none, skip)
->>
->>    filemap_remove_folio
->>      BUG_ON(folio_mapped)
-> 
-> That reminds me of sync_with_folio_pmd_zap() usage in page_vma_mapped_walk().
-> 
-> Isn't that the better approach?
+This is not a hardware programming problem: invalid descriptors are not
+translated, so the hardware ignores descriptor bits such as PTE_CONT. It
+is a software-state problem. Some arm64 fast paths intentionally test
+pte_cont() directly instead of pte_valid_cont(), for example commit
+9970a9a27ffc ("arm64: mm: implement the architecture-specific
+test_and_clear_young_ptes()"). Fixing the producer side preserves these
+fast paths and covers all consumers.
 
-I had considered this approach before, but it is not feasible. IIUC, the 
-sync_with_folio_pmd_zap() is used to address the race with 
-zap_huge_pmd(), and both the PMD clear and the folio mapcount decrement 
-are performed under the PMD lock in zap_huge_pmd().
+In the observed failure, mprotect(PROT_NONE) installed a full
+CONT_PTE_SIZE range of present-invalid PTEs with PTE_CONT set.
+MADV_GUARD_INSTALL then zapped one PTE. The nr == 1 clear_full_ptes()
+path only unfolds pte_valid_cont() entries, so the neighbouring
+present-invalid entries kept PTE_CONT while the target entry became a
+guard marker.
 
-However, the race here is different: tlb_flush_rmaps() is under the PTE 
-lock, while zap_empty_pte_table() is under the PMD lock, and reordering 
-between the two functions is also possible. That is, the folio mapcount 
-operation could execute after the acquire barrier (spin_lock()) of 
-zap_empty_pte_table(), allowing a reader on CPU 0 to incorrectly observe 
-that the PMD is none while mapcount > 0.
+clear_refs_pte_range() then reached the marker through:
 
-Also, we need to consider the possible reordering on the reader side on 
-CPU 0, as discussed earlier [1].
+  ptep_test_and_clear_young()
+  test_and_clear_young_ptes()
+  contpte_test_and_clear_young_ptes()
+  contpte_align_addr_ptep()
+  __ptep_test_and_clear_young()
 
-[1] 
-https://lore.kernel.org/all/1b77c2d7-acc6-476a-b5cd-547471a46409@linux.alibaba.com/
+The marker changed from old_pte=0x00000000000047c0 to
+new_pte=0x00000000000043c0 by clearing PTE_AF. For swap PTEs, bit 10 is
+part of the swap type field, bits 6-10: 0x47c0 is SWP_PTE_MARKER with
+offset 4, while 0x43c0 has type 15 and is decoded as an ordinary swap
+entry. Zap later warned in swap_put_entries_direct() with a bad swap
+entry.
+
+This is triggerable by a user process against its own address space. On
+systems running with panic_on_warn, the warning becomes a denial of
+service.
+
+Fix the root cause by making contpte_set_ptes() use the transparent
+contpte encoding only for valid descriptors. After this change, the
+transparent contpte layer preserves the invariant that pte_cont(pte)
+implies pte_valid(pte), so fast consumers can keep using PTE_CONT as
+sufficient evidence of a transparent contpte block.
+
+Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhao Gongyi <zhaogongyi@bytedance.com>
+---
+Validation on an arm64 QEMU/KVM KASAN setup with CONFIG_ARM64_4K_PAGES=y
+and CONFIG_ARM64_CONTPTE=y, using an out-of-tree guard-region reproducer:
+
+  populate a CONT_PTE_SIZE anonymous THP range
+  mprotect(PROT_NONE) on the range
+  MADV_GUARD_INSTALL on one PTE in that range
+  write "1" to /proc/self/clear_refs
+  restore access and remove the guard marker
+
+  Unfixed kernel: failed in the first iteration, with 65 bad swap
+                  messages and a WARNING in swap_put_entries_direct()
+  This patch:     completed 100 iterations without warnings
+
+Additional producer-side instrumentation confirmed the same invalid
+batch state outside the mprotect reproducer:
+
+  Unfixed fork():     copy_page_range() wrote out_cont=1
+  Unfixed PMD split: split_huge_pmd_locked() wrote out_cont=1
+  This patch:        both paths wrote out_cont=0
+
+ arch/arm64/include/asm/pgtable.h | 5 ++++-
+ arch/arm64/mm/contpte.c          | 7 +++++++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 6000905a2..d6246042b 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -1650,7 +1650,10 @@ extern void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned long ad
+ /*
+  * The contpte APIs are used to transparently manage the contiguous bit in ptes
+  * where it is possible and makes sense to do so. The PTE_CONT bit is considered
+- * a private implementation detail of the public ptep API (see below).
++ * a private implementation detail of the public ptep API (see below). The
++ * transparent contpte layer maintains the invariant that pte_cont(pte) implies
++ * pte_valid(pte); explicit contiguous-encoding users such as hugetlb manage
++ * their entries separately.
+  */
+ extern void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
+ 				pte_t *ptep, pte_t pte);
+diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+index 0acab179f..851fa2e44 100644
+--- a/arch/arm64/mm/contpte.c
++++ b/arch/arm64/mm/contpte.c
+@@ -463,6 +463,13 @@ void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+ 	if (!mm_is_user(mm))
+ 		return __set_ptes(mm, addr, ptep, pte, nr);
+ 
++	/*
++	 * Keep the producer-side invariant documented in pgtable.h true even
++	 * if a direct caller passes an invalid descriptor with PTE_CONT set.
++	 */
++	if (!pte_valid(pte))
++		return __set_ptes(mm, addr, ptep, pte_mknoncont(pte), nr);
++
+ 	end = addr + (nr << PAGE_SHIFT);
+ 	pfn = pte_pfn(pte);
+ 	prot = pte_pgprot(pte);
+-- 
+2.39.5 (Apple Git-154)
 
