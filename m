@@ -4,91 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3651CA9ED2
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 12:30:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F5F1CA9ED2
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 12:31:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03D5A6B0088; Tue, 13 Oct 2026 08:30:09 -0400 (EDT)
+	id AEDC26B008A; Tue, 13 Oct 2026 08:31:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F30776B008A; Tue, 13 Oct 2026 08:30:08 -0400 (EDT)
+	id A9ECC6B008C; Tue, 13 Oct 2026 08:31:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E467A6B008C; Tue, 13 Oct 2026 08:30:08 -0400 (EDT)
+	id 98DC36B0099; Tue, 13 Oct 2026 08:31:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BFD4A6B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:30:08 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53EDD1C4623
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:30:08 +0000 (UTC)
-X-FDA: 85317535296.02.983CAF8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id BDEEE8000F
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:30:06 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mlnL/hy1";
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 73C6A6B008A
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:31:01 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0DFCA0BE1
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:31:00 +0000 (UTC)
+X-FDA: 85317537480.13.3D8CCF5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id BA4A420007
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:30:58 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gZTRINwc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791894606;
+	s=arc-20220608; t=1791894658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W1KVneCgXArp9zppiaGo3yxvYAKNVn0jTmgz8OZUh50=;
-	b=Vx1IeoBVXnyQotwJA86L84dmHvM60KTQ5nC+133p+sB4boEJb+MC1LaJzgN5ugMGVnd3bB
-	9aA04nWPD60PNQxGG5apuFlt3uSOUNU0WuQ/bUSDLMGI/qW48o/KVQEnQFtb1Vorp3dxYG
-	CRpp+0D47FQCgCvr6kVz8CjrzCE2e5s=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Xb1hOH7i9YqMB45ChD69mFDwlRw95h31SKU2E12G4YQ=;
+	b=T2LJqPpIb645qJ49V/bd1IMmeRb89XiAWhYkD181KwD8LAdUV+mRG0gPu3D+1otZYpLW1d
+	1kkpBgB8SwHBzpsWK4zxMcvoYU8RcLXmQo81lqHJwbFZ917C/W6wREW1iNFfyZDNvZkTC6
+	Tpv1PV8MUu5XkfEtKUQYHXH+AcALUWk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mlnL/hy1";
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gZTRINwc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791894606;
-	b=d451lRo+FBOyRQ/zmup5lwAWcfo7Eseqgx6I5BK4XnBZ4UxF0zL2PTiNKX4Lc9MzyHz6Pp
-	zxejoZGsOnfPlMh8YnrEl4RZuN4HlbIFWdvtYOz2Dt2p5e+28kH/LADJyAetVL+PjiO7XR
-	htfCtQq8tfHfNgiy2N16I5zHwwWQNJg=
+	t=1791894658;
+	b=byOud0GIUsJ+4CYN6uRkCd6hhpfJXAnq4lMP7WqtBue7hiU35mMS2j1pifF+83TaS7XCoq
+	Kyc84a+/rVAmy/Z3Bz2bc6+9rmJ1qmY3M8jOmo4R2k93D9Q366DTjF+CA0oBcOIR4jUP8x
+	5SGPiEBfx01EfiJ5sa5mu6cMyYsmGvA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 32B1A60A5E;
-	Tue, 13 Oct 2026 12:30:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B6A1F000FF;
-	Tue, 13 Oct 2026 12:30:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4E10E40668;
+	Tue, 13 Oct 2026 12:30:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3101F00893;
+	Tue, 13 Oct 2026 12:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791894605;
-	bh=W1KVneCgXArp9zppiaGo3yxvYAKNVn0jTmgz8OZUh50=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mlnL/hy1yfvWUPlwGgRpNziga7S536l9AtbIIdBcPDHXBeex7a011lJvl3QJXrpMu
-	 nq6wqtcldjoLyPz/FTp5XqzlgoJgG5dWHc6bsSDy+MEx+ANP417gSJh5G6lAcq1qRE
-	 6f1EwkqpiyhFHQPbIWhLSgacm20PByzywuye3tWz8c5fpvSku3CQ3mPKQEE1A7jZqQ
-	 6S3cQIqOGKQtxiRTQfcwm/VBqUHillXFZ/xXLZikhv5ezLwt5GHzxb7PkJXR5WFmYG
-	 dfM42lXX+JVdBLra9GjTF9b+Q/gRT0T8qG8h4w/Wqq6+Uv3PSm4KDYkOqBR/aF1IQY
-	 MLoI8E6342m+Q==
-Date: Tue, 13 Oct 2026 13:29:58 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Benjamin Herrensmidt <benh@kernel.crashing.org>, 
-	Peter Zijlstra <a.p.zijlstra@chello.nl>, Rik van Riel <riel@redhat.com>, 
-	Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzbot+49b1021becba70c1f3f6@syzkaller.appspotmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH] mm: disallow ioremap'ing ordinary RAM in
- generic_access_phys()
-Message-ID: <as4aeYkqZywLo4Gx@gremlin>
-References: <20261013-generic_access_phys-v1-1-b3963ef76e37@kernel.org>
+	s=k20260515; t=1791894657;
+	bh=Xb1hOH7i9YqMB45ChD69mFDwlRw95h31SKU2E12G4YQ=;
+	h=From:Date:Subject:To:Cc;
+	b=gZTRINwczHe7ZL8f1PcBeMY2tu1LxVXEWFrHCNBd59lQhR9MedBrhgfDx9Et3dRi8
+	 f6FoDnd2y7gIFlEctA7LwOEwX5rQdx3x3J5HQp5Yrklf4+XEdg0QPex25WzYeMC1OO
+	 M1k18osGBO5pgsWsaWy4NevXyn6+d2hEBOteBitDaa/nZLl2phfi/bBmWuTJ9xy6gn
+	 8oZhn69X+lszyFM30TxsixPD0ZbUkxKWJa6KfgCOO3OuLdLF4En+VtGFC1LKL7CWui
+	 CcTg5oUhXYvFReIGCZCWo3RmgJmWLxphKvPMD81i0+t1zysS0NLtXYmLo7XJkmJu7s
+	 HTkBgsINt+kzw==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Tue, 13 Oct 2026 14:30:37 +0200
+Subject: [PATCH] mm: fix address wraparound when scanning large folio PTEs
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261013-generic_access_phys-v1-1-b3963ef76e37@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BDEEE8000F
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAGwkzmoC/yXM0QpAQBCF4VfRXFOWEl5F2tYYjLSrHaTk3S0uv
+ zrnv0DIMwnU0QWeDhZ2NkDFEeBk7EgJ98GQpVmhUpUng1vY6XUjLWis9t8GCzSqQiyp6iFcV08
+ Dn1+2aX/L3s2E29uC+34ANex0hHgAAAA=
+X-Change-ID: 20261013-folio_pte_scan_range-c6ca19cc8e9d
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Ying Huang <huang.ying.caritas@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Chuanhua Han <hanchuanhua@oppo.com>, 
+ Mike Rapoport <rppt@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, 
+ Kyle Zeng <kylebot@openai.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4181; i=david@kernel.org;
+ h=from:subject:message-id; bh=q6nRAbWGhJmgn8/3tLbirUhaQCaDCSXwvO/2ykqrnTY=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLOqRTY7REJCHv+Oc5wyrsQY85DXHtSTqgvU5xxJCtRs
+ 8/y8Yu5HaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEwkTJfhf2i1y5Xmsthvm1Jc
+ JupN/tP07EzGhtsH+iZfDrue6vPVcSfDH+7NvOdtDjh5Ou/ozjkY8mGRWJ4+X4RO/55zV6dvqIn
+ eyQAA
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspamd-Queue-Id: BA4A420007
 X-Rspam-User: 
-X-Stat-Signature: 3pr38ik1z44foym8cyr9bbkcgmh4g7m3
-X-HE-Tag: 1791894606-698875
-X-HE-Meta: U2FsdGVkX1+9Q5v5RM08DsImc1A1QEBvH4arzaGKXNcPKLJsGdG4EKI0zfaH2quH3qzRo9SD/Z1732Ie64qcDCHYx/xQQ7RFS9N/7pfmaiYQAtf8ssOVQVu2Zey8Nm/LAq14BoTc97z1U32+T4Xz4FjyUAq7vOznsUUgTQcBvHeya6//qCIkHOlo+k5ycc1qfZGyjaCBGvbQZrvb5BD69EgxcmbvdzXCP7vq/hUpVfLDPxThZwreDthTqsvbHRFjT356WMg7FwtfStZ3nwLYi4KTiAOk/0cfeD9+N50bdT+bapk3O0b3NgA6H43qlwcwpfqPsv91VKRIv3uzSuruWNjTFB3AgT00awnHvUwD0qiJf0OeCvW+7NhAvNXLzTeJWpRGyk4V3TM2phQuAumv6bivSVSJ3ex2ye2ZVelugTFyaDf+5CFUdhdtlbHJzoaMcGLPH8DO5E3GgbjVZ8LEW+b1AkD281dryCEzjlVarIOnmv2VlnmZA4R9hX6Xm+IAA4tZig4gDYF7MtfeyXFiRyYIABQ5KYo5p1z6Ye7kClRI9vYPWhfrxLuloKcthFBK8EOC+PY5sTklfhA4NnZFpXgaqsYW2sLZyHBV2JZds3R+zb4PtdBZYmmpr7S3iqYZK63uuFn63wiVIv7e0vcZWtvAMNzRH+ysROvn2ioLrIk3/nuJzCciqdzi2ODT4Menu7d9TOtIBLK3N9f7fzep/dPHqCacn9eQ2QXPVCX+Q21YEHgacmZoZ1VpLCkJ04VxVCro3CmzlbW2oolJt6yCF70PL9CH3bS1c72h7qG24fM2cBIqMEyAzqHz+drCB04d6vNRPeU5yZPvAXL/PaZG9w1jkp2m2Lj0UpMQmVEAKii5MgqBCgtoNIp8YhwH1VgDzwlyJUCHC/TDs/LGSYqWkYU4G+/o1Y7SCG8S9ZVgMAkb0IvFTE42LB/V/VP1S2ruN+K9B4nA9+sWHZN/ZP5
- ly5+yQBZ
- NlWt+115L3CB8LW/qhdSNLydVuDwOkk5/Sp6++P9+HItnMSl8h1VJ50faEfis8IcSX5MbnivMcYyiWzXRhWqx032Tq0F2d8XDXtYv+MtoZrh8AWB1BamInBZWeo/dWVLE9a3D2q7rXZKLv938waZngVCygRyqhcaBl/uaZbEYljt5w2DodOZVA6mEMExSzj7tSh25nIgUwCqdfZZ9Y0vdtRRFhdbT9GmuVWTGhMXrsm1hD6gYOYwgXIgPK0FPjpGDDoq/FCseI/JkzSqBwCCXP5eDcRdHPrQcQIcgBtkokv5oh1qhwK9Q6cXD7btmIFXhDpp6iZB7Tlvs08jBwcqbt4ONcrb46OlqXm2NYxQjpdqWYCYed6k2f2Gbk8GAQSCwj4xBQlMgDGf82RsSZbC+YeNjYXf8gnKe5qCRyOYyCZ5DgUF1PsyOK8toLlkG8kUuMDCv3KraSGoGI4LDQzx0lvPv2GRyLDRDYW5dcgjrRWyUyTIbudHva4s2YWpGN1OzfEarfxi7btoDqKcWfpyiNBp8nxcRq9sKSHCt3see/GdzUmJZDXVKD0afAPpjMaakvz8jvBHxwTb7cllhHVF7MIJFHw==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: y7j3zafueyidaacp99sii85fdb5mdbms
+X-HE-Tag: 1791894658-876242
+X-HE-Meta: U2FsdGVkX1/v8kSmnVzECrpxX34vryTU6NqWoPCwzA5sC15OfrEShjhbgKagktlLr6N4zzgZDgY1BSRwaCarnwJXyfI2PREbAgstN7sNLkQEIxZgBvQVy13DJaN9+pnZrETCRaN8eVP4Z23SecmIasT+MSDOuUmP9l81T8QSuiqrM0ePL19Keg1v4+nsjwLdwKuvC/yi7acid+WJeuFQVTpsIbhtZzv2DcbZUcLwpBaKVi2YhIDSmi6NAsaJ28B3yrwwLHh/Tg/DYvM0EzDzydK09Gxr9ZjG5/d76/5jeMrdzvRdHcTmZAKQJ9O3krsq4lKjoU+7kfMgS966BsYzGVD/n9Ef8Umnz9RwCO75eWUDesw+yMnPzLYTqR9BsVrSfq5BGKqezHUyYuLLKCLB56K3laR/0D/5uI+UsOFhoh46swzNCK7LZJUNuVNmr1wKZPSJaQNx3O9kimG8JaG99gIHmvl5diaya4lqwRI3GQO2jKKQnlUetx7Xyu5Yb95JaaAoTR408v+MS0sxWqchnYrDEv4FItzi2IsJAIXwfIvgb024MyFLBvM8PWDXD73szCGLx+pjrvuo9zuA0VgsmpqvWvSrgEaeeCyZo2oHHQq/7WdBj+91I5p6fyATlLYSVqY1y0RQMi2C7nhqQiWCgKzZRo9o8D/F/nmXDekkfd9mCKL5rFsgqcpfk2138dgPRiwM+aOqJ2e+gVotAR2ChvdAka7hDLRUh+oTJXDvNSKe5/GDCWGXRPVN0WKgHU1xkpZ7hqK7jYO+Jq5iODatEu6FYpBfr2HURFauBMKxcrY/bNVLT5+tIvJVfq0EImUVSA+A7JmYCW/nXPyIr5Yi9rZxSF4UwAuwkUBYWDgK89I5mltrCrLR8aT9cZsHl5dQTv/VNvWFZJhNCuzOLHvZT/mLSZMTGF/RuaFkyfiWu5nwnqzW9D4lx8eOd/xOSeXEUu/uWA6AhlnulUt7XA9
+ AIlDATir
+ MIty45zLsSNiX1Jh+vQhZTXhaPs8PtwSk/wS3eFSKvbPhbvzz1hof5f+u9U5tPEboZWXvujlsOi77bP0h/Tbp9aY+qZxwkaTwdaBpxTDIsMlo89YPkOE+MNZbzPZmayPhLGKNHQd1uOMAJHhjYq1awaqbfc5NBYg6DS1PS/3uhbaIzfNilC8IJzlAJz6KrBu41UfakB0ntYXkgfYRf/u6QPVrYK+MP78qGRgPlGUu7Cr7rLesi1DfJRQir2C0pS5L0Hlds38gQNgaLskW+nBTRDrIzcy4vrPnfgO1thyqHywNMQJ4EVjf4cJWfqZxxAfsgwzzBRGfeno6UVxpT8/GFE9eag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,73 +109,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 13, 2026 at 01:41:24PM +0200, David Hildenbrand (Arm) wrote:
-> generic_access_phys() can end up getting called on CoW PFNMAP mappings,
-> resulting in it trying to ioremap anonymous folios, which especially
-> the x86 code doesn't enjoy, and which is in general just odd/wrong.
+numa_rebuild_large_mapping() and do_swap_page() can be tricked into
+generating an address wraparound, crashing the kernel. All that's required
+is to map a tail page of a large folio close enough to the start/end of
+the address space to e.g., make
 
-Ugh god.
+	unsigned long addr_start = addr - (nr << PAGE_SHIFT);
 
->
-> E.g., with a CoW mapping of a PCI BAR:
->
-> ioremap on RAM at 0x0000000045623000 - 0x0000000045623fff
->   WARNING: arch/x86/mm/ioremap.c:216 at __ioremap_caller.isra.0+0x4c2/0x5f0
->   Call Trace:
->    generic_access_phys+0x130/0x4d0 mm/memory.c:7178
->    kernfs_vma_access+0x1ce/0x280 fs/kernfs/file.c:437
->    __access_remote_vm+0x58f/0x890 mm/memory.c:7256
->    mem_rw+0x2a1/0x670 fs/proc/base.c:912
->
-> But more generically, we should disallow access to anything that looks
-> like ordinary RAM in the system: including allocating memory (e.g.,
-> alloc_pages) and mapping them in a VM_PFNMAP.
+to wrap around.
 
-Yes.
+Let's fix it by providing a better helper, folio_pte_scan_range(), that
+takes care of staying within VMA and page table boundaries while
+handling possible wraparounds.
 
->
-> For pages with an online memmap, allow only pages marked as reserved
-> (PageReserved). This also includes memblock allocations, however,
-> distinguishing them from other MMIO is tricky, and nobody should really
-> be mapping them in a PFNMAP (except someone abusing /dev/mem, which we
-> do not care about).
+Reported-by: Kyle Zeng <kylebot@openai.com>
+Fixes: d2136d749d76 ("mm: support multi-size THP numa balancing")
+Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/memory.c | 43 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 29 insertions(+), 14 deletions(-)
 
-Yeah I guess we shouldn't try too hard for weird edge cases, or at least
-can revisit it later potentially.
+diff --git a/mm/memory.c b/mm/memory.c
+index 1f5d5f7d39cd2..a3823010aa981 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4933,6 +4933,27 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
+ 	} while (--nr_pages);
+ }
+ 
++/*
++ * Get the address range in which a folio might be mapped, assuming its pages
++ * are mapped consecutively and the folio page at the given idx is mapped at
++ * the given address.
++ */
++static void folio_pte_scan_range(const struct folio *folio,
++		const struct vm_area_struct *vma, unsigned long addr,
++		unsigned long idx, unsigned long *start, unsigned long *end)
++{
++	/* Stay within the page table and VMA boundaries. */
++	const unsigned long pmd_start = addr & PMD_MASK;
++	const unsigned long pmd_end = pmd_start + PMD_SIZE;
++	const unsigned long lower = max(pmd_start, vma->vm_start);
++	const unsigned long upper = min(pmd_end - 1, vma->vm_end - 1) + 1;
++	const unsigned long offset = idx << PAGE_SHIFT;
++
++	/* Avoid any address wraparounds. */
++	*start = addr - min(addr - lower, offset);
++	*end = addr + min(upper - addr, folio_size(folio) - offset);
++}
++
+ /*
+  * We enter with either the VMA lock or the mmap_lock held (see
+  * FAULT_FLAG_VMA_LOCK), and pte mapped but not yet locked.
+@@ -5121,16 +5142,15 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	address = vmf->address;
+ 	ptep = vmf->pte;
+ 	if (folio_test_large(folio) && folio_test_swapcache(folio)) {
+-		int nr = folio_nr_pages(folio);
+-		unsigned long idx = folio_page_idx(folio, page);
+-		unsigned long folio_start = address - idx * PAGE_SIZE;
+-		unsigned long folio_end = folio_start + nr * PAGE_SIZE;
++		const int nr = folio_nr_pages(folio);
++		const unsigned long idx = folio_page_idx(folio, page);
++		unsigned long folio_start, folio_end;
+ 		pte_t *folio_ptep;
+ 		pte_t folio_pte;
+ 
+-		if (unlikely(folio_start < max(address & PMD_MASK, vma->vm_start)))
+-			goto check_folio;
+-		if (unlikely(folio_end > pmd_addr_end(address, vma->vm_end)))
++		folio_pte_scan_range(folio, vma, address, idx, &folio_start,
++				     &folio_end);
++		if (unlikely((folio_end - folio_start) >> PAGE_SHIFT != nr))
+ 			goto check_folio;
+ 
+ 		folio_ptep = vmf->pte - idx;
+@@ -6280,16 +6300,11 @@ static void numa_rebuild_large_mapping(struct vm_fault *vmf, struct vm_area_stru
+ 				       struct folio *folio, pte_t fault_pte,
+ 				       bool ignore_writable, bool pte_write_upgrade)
+ {
+-	int nr = pte_pfn(fault_pte) - folio_pfn(folio);
++	const unsigned long idx = pte_pfn(fault_pte) - folio_pfn(folio);
+ 	unsigned long start, end, addr = vmf->address;
+-	unsigned long addr_start = addr - (nr << PAGE_SHIFT);
+-	unsigned long pt_start = ALIGN_DOWN(addr, PMD_SIZE);
+ 	pte_t *start_ptep;
+ 
+-	/* Stay within the VMA and within the page table. */
+-	start = max3(addr_start, pt_start, vma->vm_start);
+-	end = min3(addr_start + folio_size(folio), pt_start + PMD_SIZE,
+-		   vma->vm_end);
++	folio_pte_scan_range(folio, vma, addr, idx, &start, &end);
+ 	start_ptep = vmf->pte - ((addr - start) >> PAGE_SHIFT);
+ 
+ 	/* Restore all PTEs' mapping of the large folio */
 
->
-> So only allow access if there is no online memmap, or if the pages are
-> marked reserved. Reject other pages with -EINVAL.
+---
 
-Seems reasonable overall.
+base-commit: 634cbf5b794b734c78631b92e381cfc85f357bbe
 
->
-> Note that, just like other pfn_to_online_page() users, we won't care about
-> concurrent memory offlining; mapping memory that can concurrently get
-> offlined is highly dubious.
-
-Yeah sounds like the user would be doing something crazy in this case,
-therefore their problem!
-
->
-> Reported-by: syzbot+49b1021becba70c1f3f6@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=49b1021becba70c1f3f6
-> Reported-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-> Closes: https://lore.kernel.org/r/20261001152524.171115-1-ngocthang2710.1999@gmail.com/
-> Fixes: 28b2ee20c7cb ("access_process_vm device memory infrastructure")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-LGTM so:
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
-> I went back and forth 10 times and concluded that using PageReserved
-> should be the right thing to check for now.
-
-It seems the sensible choice, yes. And locally, AI review agrees with you, FWIW!
+change-id: 20261013-folio_pte_scan_range-c6ca19cc8e9d
 
 --
-Cheers, Lorenzo
+
+Cheers,
+
+David
+
 
