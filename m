@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8321CC6B03
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 13:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BB4BCA9ED2
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 13:14:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF0936B008C; Tue, 13 Oct 2026 09:13:44 -0400 (EDT)
+	id 377D16B0095; Tue, 13 Oct 2026 09:13:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC8B36B0092; Tue, 13 Oct 2026 09:13:44 -0400 (EDT)
+	id 34F946B0096; Tue, 13 Oct 2026 09:13:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91B456B0095; Tue, 13 Oct 2026 09:13:44 -0400 (EDT)
+	id 266286B0098; Tue, 13 Oct 2026 09:13:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F29A6B008C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:13:44 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 04E371C459B
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:13:43 +0000 (UTC)
-X-FDA: 85317645168.04.D934D0D
-Received: from mta1.migadu.com (out-139.mta1.migadu.com [95.215.58.139])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E4E32C0002
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:13:41 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=m+BY8Gcq;
-	spf=pass (imf10.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.139 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791897222;
-	b=xoyKs1qTkcYJ6NK3vXOPiRdNlXJJzDPUaLPHYmI7Mp+vJCRt3jmIW7bmnn9KwDqPY7Iy3J
-	LYUg7BmmqykjiV/4liFkkfq/KIGZt0guJDzAzwX+jG09NbMCmoW0U4dwzPYhSwP1fj+Xp8
-	UOTYWAa0V+8/ihsYY/uyfnWiEFz65Pg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=m+BY8Gcq;
-	spf=pass (imf10.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.139 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 001546B0095
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:13:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75289A0C19
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:13:58 +0000 (UTC)
+X-FDA: 85317645756.15.FB0C74D
+Received: from mta0.migadu.com (out-147.mta0.migadu.com [91.218.175.147])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6D8E120005
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:13:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UHHWKwwg;
+	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.147 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791897222;
+	s=arc-20220608; t=1791897236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5ypNEatq3xAc+7aH37IDz4t9w7jxS25XVp62+iu5fps=;
-	b=S8w6RiEhGAUeeldogmsfIgx1cdHPnEeGrM9zZWsuTmSK6AkSqmUvqz3lbaYIT5gBlPsa+0
-	VKI+y1hR5CVTj8AAm4/EepmXw+jZ3ErwyNG5yTFj93+tzduBZ/y4xgtHq2R8rZPHIYhfeJ
-	NsR1DHq6n2lE1nVx0lfZhPaYJvuzG6k=
+	bh=Ek3mx6TgDbBeR7p5M7Cos/FCxBGxrw+lLXaTAB3CRUU=;
+	b=2mvqMocPHAQ8trNOWhFJY4AHOScknbXhhDw2Od8pbnRc95WY88TwmAPA9Y+8uWr6XNTokd
+	YXG5dxTf62VnaDbo6XHKMkU9h1/kJgZDLt6i+BuKYvfSrGfOa5iBtLy//pp/MGqyGEIt6p
+	qelEFgTf5k7TxUMCTWBOleQG1Wvjy+E=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UHHWKwwg;
+	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.147 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791897236;
+	b=KO2ORIek6XMdWMQD0+hkYpXeB1HUEmYTDk52Umxred6mmznTMS/iAAN2LZezkhUpEfNutH
+	cBnGGkH9wYqtThx3jttFBxzLXFESb8AIST/08m0BAjNK98Soqdq4nZH1Er4UJx9IbSv4Nf
+	l/Eri6y+pW/cvDpxEZGq8H88+pksWec=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=wf3HFTJhVfeY9yUmZhJB3MQ0b0ETjxoSHCzWGVLQFnk=;
+DKIM-Signature: a=rsa-sha256; bh=nW1CspOmoIVHPTo1Fy5r0YAubWWAsv4TLIksg+iz1Qc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791897220; v=1; x=1792502020;
- b=m+BY8Gcqu1+2Cfum7IyPU/EBxZG9nplXzofr/44k1dGB5r7ECyV8ecs1PDdWLY6APjgjAdvB
- Xu6BgJkfBMe82Q7tdjcY24NkdFpmZylnYl+HCzZlwo5HRX1f1IWg5YIniajWp+pn9QOfOVJRbYP
- nEmXm6fPdNW4SHVR5Au8nys4=
+ t=1791897234; v=1; x=1792502034;
+ b=UHHWKwwgwua6TrldSTRjOqx9TAxFVpZno5eXQurqE12PqzCgIcY0JX+At9F6TcTWRGuszx7s
+ 7s0bi252YZGu7Q5z/hG4LH7mRMp2w2QJ7N3oDtDp/qLwZnX0/QPZYtiuYCafIJ2XwJEl0OcDGxi
+ TunVgroq2BmLSk/3OVd/G3LY=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 55508975d0a73f72;
-	Tue, 13 Oct 2026 13:13:40 +0000
-X-Mizu-Trace-ID: 55508975d0a73f72
+Received: by smtp.migadu.com with ESMTPS id a30b4953a17dcf97;
+	Tue, 13 Oct 2026 13:13:54 +0000
+X-Mizu-Trace-ID: a30b4953a17dcf97
 X-Migadu-Flow: FLOW_OUT
 From: Ridong Chen <ridong.chen@linux.dev>
 To: Steven Rostedt <rostedt@goodmis.org>,
@@ -89,24 +89,24 @@ Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	bpf@vger.kernel.org (open list:BPF [MISC]:Keyword:(?:\b|_)bpf(?:\b|_)),
 	Ridong Chen <ridong.chen@linux.dev>,
 	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH RFC v3 1/7] mm/memcontrol: drop unused vmscan tracepoint include
-Date: Tue, 13 Oct 2026 21:13:03 +0800
-Message-Id: <20261013131309.2790253-2-ridong.chen@linux.dev>
+Subject: [PATCH RFC v3 2/7] mm/vmscan: move vmscan tracepoints to a local header
+Date: Tue, 13 Oct 2026 21:13:04 +0800
+Message-Id: <20261013131309.2790253-3-ridong.chen@linux.dev>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261013131309.2790253-1-ridong.chen@linux.dev>
 References: <20261013131309.2790253-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mkswsec3jh378hee5qkmo8atw8apaufd
-X-Rspamd-Queue-Id: E4E32C0002
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6D8E120005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791897221-605302
-X-HE-Meta: U2FsdGVkX1+SgF7hkzpRZfmTsq/5W//8+DovFop5jNYI14f6Y6/eGFqfvv3y7wbOr0WRdGGuiHYxGSZmbQHjoy+YpgWa9moSFnqERM4zevQOdYfR/K5H0TnhwRFDVp052a1rLZwynHGO+lCkfYqOkBsyIu3UogzSqtR1Sqnn5BEFBnF/lkofwknHYK0xG8U/M+O9+ckD6WTg1Aqq+WnOx28sg73FGUWLg4aBJ0eygav9rwcEK9s41p5csPMfGHOYnwzzssoFBvSWLty+I0+9Kt/Jd1XZvnhAy1ZLUShDfsVVqFbmB/iJGFGC7y3QQBxIu/vYoq3tZ8rk8kVLLv6I03Yn40Tnke813kche/Zh85HEMWeQ91ghfWel78WGdgvME2PSFE7Rkp1isPljBA7dWGT44mnU+Dep+gZi95Qfwfwgq6S0h/7qHNCrtsSI+rMuqx8WX8R2+b6+pHD71Q8EtL4bN0659wS7yATITorHECexT5swBUGFxEHsVIgfHqsqFtc0Y8mNmEVWid/i5Nwb6bsXR+Jo+y+b0xZ33mjJ/eBTXyIfBV/SXJa4W5D+OifTWZcXLC4SXEKUDY8L9j7x9WkQcsHJTrMpB9fYxz1K3M7aeEEh9ZnkjSmXcIaHJTZG7YWroAi1G/eis8vGQReDDBYXDMG8ZAL8G2eIGAxjxDNtmwUOW2i6pYMxLiFRIc8F8RquKkEiGV66bYhEYMaP9fOqC26X/Ql0A67lz443Xbo6IUSOlo5SIMiMznjEVieuGgqE8Yg2FmMLbKTlyRT8VkfyTB8ySJjBV9tgM9/obIYyMcWjXtLmz51GcAJIohLPxs4eDthZnL7JPVYfBPN44D2ouTPZTXdY863he78hyCSyJOBfO6bj03oR5GGLlOP4EGF99q+vpBc0JvhxoPVOULNvp7JuRsCT+p8vl9jOlo0CtZxm9JaKgMYzqi0a60v5z+1dSKDINVZc/AZMa/I
- CgRtkF37
- ziEXSdomvd6dLGLbWl4MgJdYVwFmfaB9QVfEtuzcjW/8Yj9c0nVRm5povE5U+JUyHyLLnGgjhsVeWZ0Uy4YOG5eUuQ57JHUwl+N/MIHlDCl0Pyb2saijE7eTumL3BhCxnJb9tTu5qEPVtwQ1gkyrOjNNpHbfF7suWj0CKbxYnxppM3j1H51GbWESrk7jh9ZfawkOyY38jPTVSMst6CNFfVHEas4Okz3SF4rTC+OWbWIl69QBHS77tOhmLJfW0ClyyUkwWH6d9AdwQsVY/jWLZslC5mIKWxb4WulUlH7+mLHPk1q1WPnbHkdAb9fgKg5tF38ovcrLRd6zqwl+/aSEIj+Uul92paqhU/MaAI6XaD9XkzY6a5/Q0xpwbx4vKL07v7G8WfABoAWKsAnr5b6bwFMjuDlWt8h50B2FmW7kgJJmmNH89FS1BSU8cr05OG+fEYu6JGOsqiRHCqtl4q6qnPuxC3ZeLLfMvrEvaLakKhGKqJARBh15YjbBtLSOfB0IQJQus9qGICBSxjGlMBSLqe4enujlmYYn1GBc9W6iiX/JjfGwztLsJpNIr7c9/dwiW62gVot7vUydVGjhoB0zY4Cah4FzgPzB85Gc68/kvGGJlpiJ+qE10xwCSPc/PdYQRVNkAe0Gw6TkmZJnzjFqZAcCd6Trx3NZAi7SgeleV+6SKZWULOIzGIlQmfnuLbbygf5mydozUqsc2QFHlzYGFylM2rCrfhv29Qm4D/C/PkGj21KOrJAYkhdaqiHe3Zs3sEDxlxpHBgphNN/TVFF1rUxLZZK0s2732NkBsB0YW13SvSg4yFk6ZpxWinZAGLxejXu9yGpd6rit6s+mTLPKAtahq4MF89H02vOd6An312ZpvihN3K+dGKHxsERCFD9+Tdgri4ns50jeLi0SGsC1VqqJAmoU+hDoM6Qe1e2SD/KjG8Zg49fqHb/z/XmRdCR6KQySW3eYduA63ka0zV+kfvjdPPQQD
- yOTrW6Qb
- 3aYoJiCr1Hq5FXVaubbsvZ9BpU05/21breJKyGt1ufAOok7GX+4szR57fpHeMDe3
+X-Stat-Signature: 3817o4qsc6k93dqzpb6paf3aigyqzbhj
+X-HE-Tag: 1791897236-917160
+X-HE-Meta: U2FsdGVkX19D9BbhRjTsVtslP2TSBAkp4MOQ8EsoLnyh94AKw3tD5AaVjrNH6Bf0zbE/+QGezo7XOXQnsC/yNDbsI5Z2kda47g6GYKdvJS5XRo2hrLOwcfIxq6uqC+6leWmygFodmaO8e1vZKMoDzR8ElWuyIQviMPvp5KlW6SvEzU10yIKU7ACUPDE9qzgH6dPP70q2umHv+vSwUzDPt+TWuzhss/FCa0FCjUrepMwHmB8j4WB1B6qNYCtHuYAVZnPakFf3e6MvMWxdJdMTUL/e/4OhqkS01ZLLdWlARf8TGkbK/Q5n3RuIeGTo5J1lH/Z9V6c/HjjDpgNdUsdZeQqnvD8swTU4SLmZBh4zlsQgIbM9JJVzT1/rorQExiFiwnWIKiv4k2cgk1pzW5es1ixrPdVBUe9JAasYEsaVBtq5uEXIVSby8WDimiiKMNiuG5H/1kX1870K3gwoPnGl0T4VSykarSO9iwWdoTEmq9Bg332WLj5RzvttkJf+X5ZGqE9Kjf0voyZVSd9RWnnEO8Gm16eNQsYIcXlW8eSxRueUiJBhV9K1UGnyu7XCRqG8cbvlaZwd1ef3kBvMwmqdptXXJirrs3zGpstm7VaCGTBhTZeeFdDaS2u43P19gLhRmCOOV86ymvzJxcfp9k7Eq4qMpXOZ/vkxon/Q2HlMS+uy62wc4e1DN93v2Ircgtj+JAebcGI3wv/cGVx6GmjXNCZ0vZzy1W3lFWAYMX5AjzgeY7oQSkL5RRqAAnYpJNrXy9B41/1xWY6eQpY9WM+l7KeBB4s4g821kLqqTKSBD3NX5LSRTDo9m3spTu40Uk1i09YWNYik7ICK/bjDMW6LYnAAC1xcXuHVMK18ZAZaxIlRimrwvV1dw6LtGfUiJ9AbzGZMWYxx0jjDNYfkqncxW0IvTzIP7WttPLLNhx8bptUHV4xEH5+W++m2lxhk2yp+DXjmGV9ZedOy0e7ZtBk
+ l+DQWiaa
+ 9YTpeM7PvrkDyyZSYMZxsocDrjQOcl7aZ/bPN/0MRSyLwyNpi+Gxg0qwa736WBv/zW8sOpywr9QoY19AzRDNOmP26/t09mbOyrhJMSJxUJOEHAIeWy/Rm39pFE6nOiKjPft9xS1tO7WM0sqd5lCLdyqGby+GUqG4955ZJQ/nX3NQbkQhTXZj5CH59Wca1z3SvW9KsM9rT+EwMR+ynS9DDizXwgPj3iukJDmOhxsic8DwLyV0ToshqtKX0mbgON2AHfmamnRrV/fsWU6+IQK0kSS6PzABrj4HuiDbOhh/uAyq83nrOMT/ar/nZ3bu3cdCcnyYl6Vgp7nn5D9HnffZQFlpVDIcbLg3nf9swgcDUzpuGkcZaUnfSFkNQ6avuAYiZJAhPFnhltoj/91RE90r9V4OuCdfi4ijEXMvwLH4QtgyY0jNDMslqgoORTorqed67KFjH5T1r3q040VmTQRhzF5e3upvB+Q5Jp9O4808y9+zdLmTY9tFbEMNfpQf62klEnknrZFsjdq6E8RAZEh+YlkDsP5RioTDCt6ACpIPcNxZ4awaMTtMHXaQXkOWnm71iLR99hk31MSjrPjgDF+qvhQFzLRMS+BI9g5tH2iZtLqZE9NiYsO+kQByKVz2D6prEdU/AdW/zpZFVyteAtLbcSCFsZat+irMXFiEUtekjROqw2TVgc0TyRQ1yceobalvxvubbdGMK6kkNFVurKmI8zFa9NOM03TYWICuoJaKVZEZl0GxQ9oy7XfmntUNNysyVGSm7vlx0sRTUycfvsdwk49DtPv+53+Dn/vEdE1LTifyb+ieBCNad248wj+lm9wwTyfYLgG7UlbsS3M+vmujco/uSf4VqGZY5FCH6M91W1DNq7lOsr9DcM9Ow+6nn22t+OPLWURZY39eMuLdi+4NkL7Hzb1YIJLGO2wmrAryXOhB3dnDsdj2VSVzdcHVvQrAw7LQzX+6wGnnp1Jd/2QroJIa1YRxi
+ h4DNCNvE
+ VnD61XiHqbCxsvH6Hsn6h/3QrqvuO7xd6Eua3CDC9ek6itHrRWx1n9orCULmEyApj+qNgd7chnzYxDRQOw6b8cq92mcTS3HxrZVHA7F3l2o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,35 +116,88 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ridong Chen <chenridong@xiaomi.com>
 
-memcontrol.c includes <trace/events/vmscan.h> but does not use any of
-the tracepoints or macros it defines: all tracepoints invoked here come
-from memcg.h and writeback.h.
-
-Drop it ahead of moving the vmscan trace header under mm/, after which
-<trace/events/vmscan.h> will no longer exist.
+Move include/trace/events/vmscan.h to mm/trace_vmscan.h so that the
+tracepoints can be extended to reference vmscan-internal structures such
+as struct scan_control, which is not visible outside mm/.  This mirrors
+what several other subsystems already do with their trace headers (e.g.
+arch/x86/kvm/trace.h, drivers/gpu/drm/drm_trace.h, net/xfrm/trace_iptfs.h).
+As they do, use a relative TRACE_INCLUDE_PATH so that no Makefile change
+is needed.
 
 No functional change.
 
 Assisted-by: LLM
-Acked-by: Muchun Song <muchun.song@linux.dev>
 Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
- mm/memcontrol.c | 2 --
- 1 file changed, 2 deletions(-)
+ MAINTAINERS                                        | 2 ++
+ mm/shrinker.c                                      | 2 +-
+ include/trace/events/vmscan.h => mm/trace_vmscan.h | 4 ++++
+ mm/vmscan.c                                        | 2 +-
+ 4 files changed, 8 insertions(+), 2 deletions(-)
+ rename include/trace/events/vmscan.h => mm/trace_vmscan.h (99%)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index aad0498a7bd6..95c2322d4a6f 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -77,8 +77,6 @@
- #include <trace/events/memcg.h>
- #undef CREATE_TRACE_POINTS
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c5519d67b6f4..80d2a9dd0525 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17575,6 +17575,7 @@ F:	Documentation/admin-guide/mm/multigen_lru.rst
+ F:	Documentation/mm/multigen_lru.rst
+ F:	include/linux/mm_inline.h
+ F:	include/linux/mmzone.h
++F:	mm/trace_vmscan.h
+ F:	mm/vmscan.c
+ F:	mm/workingset.c
  
+@@ -17722,6 +17723,7 @@ R:	Shakeel Butt <shakeel.butt@linux.dev>
+ R:	Lorenzo Stoakes <ljs@kernel.org>
+ L:	linux-mm@kvack.org
+ S:	Maintained
++F:	mm/trace_vmscan.h
+ F:	mm/vmscan.c
+ F:	mm/workingset.c
+ 
+diff --git a/mm/shrinker.c b/mm/shrinker.c
+index 7ec2a9704f6f..3c3e87c4b61c 100644
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -3,7 +3,7 @@
+ #include <linux/rwsem.h>
+ #include <linux/shrinker.h>
+ #include <linux/rculist.h>
 -#include <trace/events/vmscan.h>
--
- struct cgroup_subsys memory_cgrp_subsys __read_mostly;
- EXPORT_SYMBOL(memory_cgrp_subsys);
++#include "trace_vmscan.h"
  
+ #include "internal.h"
+ 
+diff --git a/include/trace/events/vmscan.h b/mm/trace_vmscan.h
+similarity index 99%
+rename from include/trace/events/vmscan.h
+rename to mm/trace_vmscan.h
+index 8a872990b4be..c5d824fef554 100644
+--- a/include/trace/events/vmscan.h
++++ b/mm/trace_vmscan.h
+@@ -648,4 +648,8 @@ TRACE_EVENT(mm_vmscan_kswapd_clear_hopeless,
+ #endif /* _TRACE_VMSCAN_H */
+ 
+ /* This part must be outside protection */
++#undef TRACE_INCLUDE_FILE
++#undef TRACE_INCLUDE_PATH
++#define TRACE_INCLUDE_PATH ../../mm
++#define TRACE_INCLUDE_FILE trace_vmscan
+ #include <trace/define_trace.h>
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 29b31446fc11..6207dad9e644 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -71,7 +71,7 @@
+ #include "swap.h"
+ 
+ #define CREATE_TRACE_POINTS
+-#include <trace/events/vmscan.h>
++#include "trace_vmscan.h"
+ 
+ struct scan_control {
+ 	/* How many pages shrink_list() should reclaim */
 -- 
 2.34.1
 
