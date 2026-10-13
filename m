@@ -4,120 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DFFDCC6B12
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:49:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6417CC6B16
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:56:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 756776B0095; Tue, 13 Oct 2026 11:49:09 -0400 (EDT)
+	id DA79B6B0088; Tue, 13 Oct 2026 11:56:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72E9F6B0099; Tue, 13 Oct 2026 11:49:09 -0400 (EDT)
+	id D317A6B008A; Tue, 13 Oct 2026 11:56:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66B686B00A3; Tue, 13 Oct 2026 11:49:09 -0400 (EDT)
+	id BFA3B6B008C; Tue, 13 Oct 2026 11:56:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EBB66B0095
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:49:09 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D54A4160D1D
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:49:08 +0000 (UTC)
-X-FDA: 85318036776.25.2388E0D
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 04CABC0007
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:49:06 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=KUe+JVIM;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BC036B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:56:56 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E4DDA8C44
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:56:56 +0000 (UTC)
+X-FDA: 85318056432.10.0A168A4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9D89D4000A
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:56:54 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jKjG9aqR;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791907014;
+	b=uy/TfBP6AZMRjaTN+9STy4QIzNpv+DZabsmq+9UOqmwMcsC/SQXlpBdm71iN2Ym99JQNbk
+	4EqCWqVycgTpJQBgu56HKuLlSEMFwkeNaxPVWmtHn547m6V+MVL15pQfG/TQ8qpjyZgtSS
+	nSLbJZ6UY4JtKeFluqsEvW90k9plF+Y=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jKjG9aqR;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791906547;
+	s=arc-20220608; t=1791907014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mrNB/7UTIGYGYTZ/Zj3hAKbDyQ2eLb57xFz/cmZ4YH0=;
-	b=LA6VQF9V61bl7kg7Gdqftc045p7TjfMFhC00nI/5g97F45p76PS8oUusVTOhjrIGldhCCi
-	SJAx0p9uvYApHwwkEBtEr8hyjE5EEnaqHmaLrkjY1wtxcTxcIzlPV3aXM8DHhDFsBMi4An
-	WcrvG0Uz4tq7clLyc3C/LNoGDubuOy4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791906547;
-	b=LXQOeHr/zwyXFp/xoxiT0E1tWiyc05dpXrX7hu+t0j6X75No+MuxYnHkow5aJxOGEE3tWx
-	lyv9jxtqubUNE1DPToGNCb+mZw7VjvOoPiIbi+CSIAGAXUjEPOV7RjYtWSINZ7dgiejmuu
-	vJ99uyAY20zKEWflIUoqSVugaYBBf80=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=KUe+JVIM;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93cc31c18ebso215867085a.0
-        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:49:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1791906546; x=1792511346; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mrNB/7UTIGYGYTZ/Zj3hAKbDyQ2eLb57xFz/cmZ4YH0=;
-        b=KUe+JVIMloQSXAvv41qY01CzLjWskOrDuZTaP2pdFHc/ZpRBHAdBTQAwAFQ/8X0/nG
-         mI95JgGIl0Y7uKWQ4yPlLHiU6uOs811QnUMyGcsLiamBRN65W2ZIpe4ZS/WWLMTerKvZ
-         dRxO5QEfAW8sr7xlQU/k3uBt/p+e4pWAnypD6txitqbkDnDPZBsowisNj8yLelHSc4FW
-         ubVK44gGR+Wy46worrOgSThCZgVaIeDKU7UbaAykrSmUAPoI7XJTVPE9DozlzY+X8oDB
-         3ABy7Bev+b0g7vcPTsqde3Ls9IdFIc5r+PMrdT6l+4fycP1qMZ7j1pR4433d1bjpJ2BU
-         H/4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791906546; x=1792511346;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mrNB/7UTIGYGYTZ/Zj3hAKbDyQ2eLb57xFz/cmZ4YH0=;
-        b=IXnFFlM5xVU8pNv9OOjLypMp1aHvVFZIF5VwRHcT9wZGQ4IrDbhwueQJSZdgfyjxYU
-         TtGCAIr/dQSBppM+FFLgKbMU/sulSQ5qU4TiiRUvvG+kTNbcOOsDm8vhHvYugvyrav5x
-         uz5HPWnU/f8PW2E5L7MuDZnj1NmSvLQpLKFzhn39uDm+snl97yl1OU8jStRlSy+me+dP
-         pzXdVtFtNYwwJy3zup81RuH1AgEfpwf9uMMA0JtIIAuEKvgiaWYi2dwqIftgfcb6HwZ5
-         +xY4I+eIq7nJ8xVi23cW+Fe9nrllsjyAw7orZRNvSW9tGGUFo4hbOEC7GjgIgmHsKZoS
-         wyyg==
-X-Forwarded-Encrypted: i=1; AKwUvBzeVmdaOUFlZcspEHjfNmFZobMH3jkOUE/yVlBdIkwf+WBU1og4Kg4pjoqlELvTbf66/gnHtnMjAg==@kvack.org
-X-Gm-Message-State: AFq9FYImVBcsOR+smNQKzyNVdET0SP2zUcTvZdnw6an7FoeZlcL93H9S
-	JSFIxHmeIo2XTID8IRcntxWTSJ1oD3vuj608fiZ7AeWWJV7YICuR7r/eHWfMP4rPgHw=
-X-Gm-Gg: AYBFou2MsUrEGBBIcRLpeAq9NhZkC/xKwFPBnSp0irYLXmczaMkTTg7xd81I4ZMNV4B
-	Bgw7PJyF559ElWVG7fPs+Rw3Fh3kyO1yiubYCzaEGYgu4Rt/gzIkadAWJwCjjwLuwAtQ3T5ySWZ
-	STLmivvo97nb4SuavGVNpGSOn1z2X98hWEJ2VhwyEgZDCfw4L+MCIG8VAhqhl30o5z1FSz03ZYL
-	noCiK2z7KC1c8EPc4Q2u8KD4lgKGls34SI6kBiHBnTEAdHZVoeLWorp2MSIjPWso5QuKQkXmRDW
-	IkqfyX/VryU19g2eRpxHuaq1m07olsG75nyZim1OezENoOYSGPGCM0H+QikHmxJf8D9c5EML7pN
-	WrxSorvEs4KHLsoo763soGNbRZ+SeIg4NKCF6zh9tOCEVwsVxJTUUg18I5KrSwLWLSueetMG0Vl
-	trN0mtl2ZRqog4Vyk7zmHOZz1+jO9/tx8rM61+iLWr3jJwS+n5o0aeqkukPkKVE6qobJrIw8Tag
-	pGvEHT+nXIcsVBcrno97u8HSSB8WpRUaclHgGUiP+thzkqvdE8DX6U=
-X-Received: by 2002:a05:620a:6081:b0:93e:5b69:fa8 with SMTP id af79cd13be357-93ebd2811a4mr1919769485a.66.1791906546018;
-        Tue, 13 Oct 2026 08:49:06 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93ef50287a2sm265747485a.20.2026.10.13.08.49.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 08:49:05 -0700 (PDT)
-Date: Tue, 13 Oct 2026 11:49:03 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	eddyz87@gmail.com, memxor@gmail.com, mingo@redhat.com, peterz@infradead.org, 
-	juri.lelli@redhat.com, vincent.guittot@linaro.org, akpm@linux-foundation.org, 
-	david@kernel.org, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, 
-	shakeel.butt@linux.dev, roman.gushchin@linux.dev, yu.c.chen@intel.com, 
-	zhao1.liu@intel.com, bpf@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/3] BPF-based per-cgroup NUMA balancing mode
- selection
-Message-ID: <as5RFhW1Ch8ta5nZ@gourry-fedora-PF4VCD3F>
-References: <20261012120438.52849-1-laoar.shao@gmail.com>
+	bh=NPx6DSV+4j0EiNoTg6BI5ljLh5I5fhSgaI3qnLWLPmg=;
+	b=ZB8vqZuVi1THQ8TfhyC1JHLZ1xRbHpKTJJXBps2EBaBKBrxtfh3yjKK74q9CFDAT+4wOAv
+	ZBRUBIPxg5fDSvKWheyVJ7jfLVqvVJMLT24K9J6w3CyVb63YoRj9GpYoF8xRUEBlv+SLvQ
+	4dCMyT3u3EmeXYjBV15UKdOm69O/zL8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 35FE460A5A;
+	Tue, 13 Oct 2026 15:56:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168301F00893;
+	Tue, 13 Oct 2026 15:56:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791907013;
+	bh=NPx6DSV+4j0EiNoTg6BI5ljLh5I5fhSgaI3qnLWLPmg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jKjG9aqR/NFKyzM9hSQJgqgrhKzeAMUeH4nmyVQZBF18/6bLwiIA0wwCIoJto4wQr
+	 mYTcRSCdiNFskdTNuU5jjmNNQwz3rw21bVgIAi//rvVjDW1qOy7tqBqTowFYsOWBZ0
+	 DG66fN7fah7/IN0x+OGv1P7gTaoAlaZASZ0zzbwb0JG1u1h3bUxS74wtuRw7Jfii/t
+	 Bu0fiGWwGEqZwxAgib1ftjVNEjUS/5buDMB8sVPXJMrvAuNZCsvHLVIrC/fSnMVkqO
+	 saPja/KSPrYF8BkCAW/MqK/0j3gGfBnE9aURwNtn4h6SF4bEJVONc3uKuIVZVRJuFD
+	 awiQ8eIZRguIw==
+Date: Tue, 13 Oct 2026 18:56:45 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Benjamin Herrensmidt <benh@kernel.crashing.org>,
+	Peter Zijlstra <a.p.zijlstra@chello.nl>,
+	Rik van Riel <riel@redhat.com>,
+	Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	syzbot+49b1021becba70c1f3f6@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm: disallow ioremap'ing ordinary RAM in
+ generic_access_phys()
+Message-ID: <as5UvcuKuVjCOvuN@kernel.org>
+References: <20261013-generic_access_phys-v1-1-b3963ef76e37@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261012120438.52849-1-laoar.shao@gmail.com>
+In-Reply-To: <20261013-generic_access_phys-v1-1-b3963ef76e37@kernel.org>
+X-Stat-Signature: ajcfxqjrpwdbrmftcf8x6e5wis6o3s9s
+X-Rspamd-Queue-Id: 9D89D4000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 04CABC0007
-X-Stat-Signature: 6kcxph9m8i1sqmzwzywtr96jbmp3s51x
-X-HE-Tag: 1791906546-613517
-X-HE-Meta: U2FsdGVkX1/6jRu+WdN7xUyoYJnUpnxS8htK0fQjpVhrkG3K+aj0mTwzdWLdXJMYkfWJHS92BQt0bTUo88I3XCd4B/Xcex5F+/fOuxwtAGfd17iBA6/yJCmX4g0IuH0umg28Idx62GFEV3tzJZzOl5h7V+XR4EzRzYW8kYXYP2ev0pVVHUgQUGcOiDX1Hm1YWjB8kLWHDpNay1k5oA3tOf7D/YDLG5gPFLW0c8uHaGk6P6nAyYd69G7Z6H4Ca8y9XpaY/52NFeAYpNH9zPnvKXV6ELXsFyxxOb+iRVUnXR0nqOxi5HcHw6vZ0fcI/msrFtZXldS3OIlQbM0G88YD6IcI4iUnhIyAII4InNMauuS6+SGAL8CK1WuIaoKf0FOTbEpKV1FgPc4WjuPcZImQABMREuEgDMU2LxHjVWO8L5wdV1OtsU/jWAhAJErIS0MZVlUTJDriaxGo0FKBTvzUeEQABvhuyHNcLnRFK2giFD/wjzwfUcvTi4yPzvhzWc9dAhTvLoKcrrVxRxTG+k5leDDfIP7x2tKRZzk3VKU7v10q7NnYi4LYvFwTJxD4Cwm4kRyT3ith9J4eOGudRV6THmjamEEs+9veFsa88ZVEQJb9JSJzU77jLN/tXGiT6/Nq4cVasZU+3vzkHYLqI0n7dxxZKAT2p4V3wJsNGSLp1bt9OkZ+4tROOGDKYnyoV0DBKNs18dF3IDHHJYjp6RgKbIldyQ2iGMGFJuhZX2atBNfU/R42fy3aU2dCH8FR7T0cO3JxcXFPwQKx9t07EmTTh6xg0Hg/ErZR3VoIaB9xtaQe+PXyQ1HrK0bsNx24MbrA4dpNmuKPrT485Vzm+dSH/78ttdtIH4z3Ww0qABcei1Dci9D1p5NfwtZN7BBCVy1MwzCzmDtR1U25m8daawvEfkVVcoBIwREMtoI7S+d1gfoMagyZvVJx8d5bBYa/z2vSV9/vWYHNxhtKZ4o8rhy
- pq6fyjj6
- XUcPEfOUuS/H2DBy8G+bkKd3ukSGrjnW8VzP7IecjSE5qfF/9tA9dMaUelXN0UdqXjVIXKCw8bAEreufDjwy+kyowoxSaF0X7VsR4n7pbPZXvaELZEmSjALS54fDJ68HDyL9Vq3fgUtXlEuyAXmhFWqO/u2B/9HDQRkMbmNMn/MFocHA/1o/EjuAlhNlDLLem6AHdlkuRnkFzUaLlWugbzRJgr3QAZFjWKhq+aqoYcingLTvLkdUkfDZ/wtNFedWu9d+K/YuPU6UhvlR+p0sskpDDZSCPrrsL6la09hwohfS6j85b4lFCKsUKJhWQ7xJezDmd6C1QBKgNMjJ27kpE2Rz79Cn9gMRQTMW1KcZJq6Vv4auOYK1QYJKYnSGXBgRfGfu/vSxX2ATDrAwBhCTArnQrmeBHEXDMm+J7+jVMYsnm6hmH7N4GSPCpF3RQMQ7alIZq+2KZU7nJeIZSZVfKfDjVvZvUspParxbxB4IzpKIN6qOE9DxeincIdZ2xK8bMGT5/9MSxmfUfZi5gAJ5Sc3x/KRn/xxr0BwLF
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791907014-102571
+X-HE-Meta: U2FsdGVkX18euzAvvBiRMce5kZ3F+K8P6n57MrwnozgzIf2jscJfdVOLcSbAqxbCKT11wc4p+uYvPeRjAALhzFnJFxpqZdQch1NOoeBHzrEIQh2MnnB11VbatzFY2nfWCnvbkmj36WRT/twai9fcX4edyrXhRSPSV/s4DNfBHyYz76WuUPy2Nfit4pjtrU43EhCmJzs6NZ8jEAjq3nq3UU8DjRGZ+zOSPKy6YilbBRmO/2mUQ8FXQnM2p0Ma1M+aqphoCfjH63xP7muE2ZS16XQ1oft1AKKSUnMfrt/jQRBFyFt+DWzhPdBWNlyCHlph8t71VOmF6skh4bhYgo/67lueCnZzfqANoanFyCHLTU3F66Q85i2lz8gBg6nRFqoCoGkhhiK3x6r3rAiIUpJEIY0m3Fgn7IGlEuM2ZyZrgIifWIOL6kn0JvP3Xu38XUf1epeUY7CEx5YNIHL0YGfTHZEZjTlpkPXIyPnSO5f0qIplHYBcMLEY/gRfEKVAIXrxlFWRcTK08Ze6OXKNu875O1w9qnOlQuDjkEMJmKdf8RKy4ycn5YJbIdpsu6joISjl6sE/I16dnrvWSwItx2PnnURl82hhKpewoOX0l6VoFlEMHkO6xvslyElCmotYb8qtcUXaDQhbbC7NjAVVyKZxBgWnZb55KMhjQU7GMtkLVHQuYX3iqz0LwITLwPka5Qg5ORVnQK3LqNdmRDHI0Z0PVgkeEXVQFEyamY7T4doIqXGIHM1J2uhpvk/W8HG4pg77O8WLj5KukaCNfYQP+hhDxWEuDkl/yFX+cx2P4y38GyFZrkFwQTrvk3evT8g2TaspXEG37DPjWYmQ5nAE8bbC3zSJnDUnTaK0fPWLHNrAUAXtZwrLSJz8qt+JrICYEf9Etbkj4DsJRiZmoYJYPjSl+HLEVsT6678MPe2Jm377xIlbHBumTPynuMXsvAwrkfl23xUV1oHbI+xpxX9sd0z
+ f86x3sgn
+ ihL2dMh/KviFUjnQaZV72o4/DcFeixxbkB+1f3fnSwILT2lsjd8Upq8r5FLFAjWzpcBO5fC1fpbpPcx2GLNG+O8ppztIOQQ5OS62kqyarPMLed0ycTiEVSIyYy/KV3O11dQpTyRE5H7PTUmK1Y6l+No24xX7XZabq6mBPnSC0BeVvSu4MWng0JlbKCeLedKv1WI5NKF0wQmgw0tQM/SSUtiT44039ZEGrCuX0Fo+GaZkf7MIckSAfR1Aw+zghL3MnOh1CQR5xA/Nva8PLhx2aUM16Wet1/boQ2aoPRw4vJbwSpUxfQP2Keq9lZiX9W8w+RF2P/GZdrjzuDnEn8KD/a8pS0Fhou8NYY5vCb87fZuaZPZAY+G4WXuj6aoVPohIO1EuPXhQny/1lXrojs7hiYVykWFGLkYjBCcCEuPIWaPakSEQJlAsAhtQXn2oZvHO7YP+5d+n2FWmboa8yDEjbDZI/ShWC+kYMrzGTCxRoH9ZKUi9YDGCl+8xw/MM4RgDw+/D9AQJTcfhQmaisK0I/ZnmKK8i49FmmvnP8DsHBEvcw0qPiTgt1FqSNw9D9dhY9om4bOuiTNDmpU6e9xWKTB9H0vA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,43 +102,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 08:04:35PM +0800, Yafang Shao wrote:
-> The Problem
-> ===========
+On Tue, Oct 13, 2026 at 01:41:24PM +0200, David Hildenbrand (Arm) wrote:
+> generic_access_phys() can end up getting called on CoW PFNMAP mappings,
+> resulting in it trying to ioremap anonymous folios, which especially
+> the x86 code doesn't enjoy, and which is in general just odd/wrong.
 > 
-> In our large fleet of Kubernetes-managed servers, NUMA balancing has
-> been historically disabled globally on each server. With the increasing
-> deployment of multi-socket AMD EPYC servers, cross-NUMA access has
-> become a critical performance issue, which made us reconsider.
->
-> Enabling NUMA balancing globally is still not acceptable: it increases
-> the overall system overhead and can introduce latency spikes for
-> latency-sensitive workloads. What we need is to choose per workload
-> whether NUMA balancing runs at all, and which mode it runs in. A
-> latency-sensitive service may want the scheduler's NUMA statistics
-> without tiering's promotion machinery, while a batch service wants its
-> PMEM-resident memory promoted when hot without paying for
-> scheduler-driven migration. No single global switch serves both.
+> E.g., with a CoW mapping of a PCI BAR:
+> 
+> ioremap on RAM at 0x0000000045623000 - 0x0000000045623fff
+>   WARNING: arch/x86/mm/ioremap.c:216 at __ioremap_caller.isra.0+0x4c2/0x5f0
+>   Call Trace:
+>    generic_access_phys+0x130/0x4d0 mm/memory.c:7178
+>    kernfs_vma_access+0x1ce/0x280 fs/kernfs/file.c:437
+>    __access_remote_vm+0x58f/0x890 mm/memory.c:7256
+>    mem_rw+0x2a1/0x670 fs/proc/base.c:912
+> 
+> But more generically, we should disallow access to anything that looks
+> like ordinary RAM in the system: including allocating memory (e.g.,
+> alloc_pages) and mapping them in a VM_PFNMAP.
+> 
+> For pages with an online memmap, allow only pages marked as reserved
+> (PageReserved). This also includes memblock allocations, however,
+> distinguishing them from other MMIO is tricky, and nobody should really
 
-Have you tested with recent fixes?  NUMA balancing has been broken for a
-few years now (starvation issues causing VMAs to never be scanned,
-east-west filters causing south->north promotions to be skipped, shmem
-being entirely exempt, others).
+With ARCH_KEEP_MEMBLOCK it's actually easy ...
 
-https://lore.kernel.org/linux-mm/20260629163337.1264881-1-hannes@cmpxchg.org/
-https://lore.kernel.org/linux-mm/20260930112206.205083-1-gourry@gourry.net/
+> be mapping them in a PFNMAP (except someone abusing /dev/mem, which we
+> do not care about).
 
-I also concur with Tejun that ops seems like overkill for this feature,
-this seems like something that can already be managed.
+... but yeah, it's not worth it.  
 
-For example, why not add a new numa balancing mode bit that says
-"enabled but only for explicitly opted in tasks" and then ignore the
-global default mempolicy, e.g.:
+> So only allow access if there is no online memmap, or if the pages are
+> marked reserved. Reject other pages with -EINVAL.
+> 
+> Note that, just like other pfn_to_online_page() users, we won't care about
+> concurrent memory offlining; mapping memory that can concurrently get
+> offlined is highly dubious.
+> 
+> Reported-by: syzbot+49b1021becba70c1f3f6@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=49b1021becba70c1f3f6
+> Reported-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+> Closes: https://lore.kernel.org/r/20261001152524.171115-1-ngocthang2710.1999@gmail.com/
+> Fixes: 28b2ee20c7cb ("access_process_vm device memory infrastructure")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-  if (numab_mode & NUMA_BALANCING_OPT_IN &&
-      mpol != default &&
-      mpol.flags & MPOL_F_NUMA_BALANCING)
-      /* do balancing */
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-~Gregory
+> ---
+>  mm/memory.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+
+-- 
+Sincerely yours,
+Mike.
 
