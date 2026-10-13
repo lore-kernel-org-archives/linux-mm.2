@@ -4,97 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 525E2CA9ED0
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 03:46:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F33E6CA9ED0
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 03:52:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 541796B0088; Mon, 12 Oct 2026 23:46:26 -0400 (EDT)
+	id E73E26B0088; Mon, 12 Oct 2026 23:52:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F30D6B008A; Mon, 12 Oct 2026 23:46:26 -0400 (EDT)
+	id E25016B008A; Mon, 12 Oct 2026 23:52:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 408366B0092; Mon, 12 Oct 2026 23:46:26 -0400 (EDT)
+	id D3AE86B008C; Mon, 12 Oct 2026 23:52:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F3036B008A
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 23:46:26 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0B8DA1209DF
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:46:24 +0000 (UTC)
-X-FDA: 85316215488.28.43D570B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 64DE6140009
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:46:22 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGjuDRH7;
-	spf=pass (imf23.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AE6926B0088
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 23:52:12 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2FBD31A0AF6
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:52:12 +0000 (UTC)
+X-FDA: 85316230104.17.34FD4AF
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5633B40003
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:52:10 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ko0xpyni;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf12.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791863182;
+	s=arc-20220608; t=1791863530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gC6zFEfTKNW+9VnhF2BDN32Uuy+DW12hIGMiIIHt3k4=;
-	b=48Opg74pPLWSghsOuaCNVqroXQnO9AuuPZbMpBQULaPQOWbdBm3o/H764DTg3bn/722XM+
-	b+z7QzUVUwrs8zFZL2uk9d3RAD+lvDLbInXIWBFJMKxosoiCMn848uyfpowQGF2ycmxmSt
-	OQRtORstQ17K60ObgnAcJgZbZtbqo/0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=+RirkidvU39UtoRFdOSmmCxiKM73vm7nm9nipwtgQMA=;
+	b=hzyk8LrV1aeeYt7nxmHjryw7CpLb/mSlrzwSr404eOLcLcU49ig9NZrizIu5OCEfDsP1hb
+	IlNgNotCHslFkz8FDy/xP+KlJgjzhOk0QQJh79GHjTjGGQoaACxsiGcwxiAnxBpsoN8FeD
+	RxA6vMx2SnI7kHTNHMAxQ+DDjwTK0sI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGjuDRH7;
-	spf=pass (imf23.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ko0xpyni;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf12.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791863182;
-	b=sOL6RB5Bji+QYLpKygRnvGZm2Ijlf2h6wD3Qyc2OM9Ww7RFm7rYi1W+DsQFMKtz3NwU3BE
-	p/wOQ8ygZfbyVFpnRWdm9uqstkcpWnoIRVZ+YDllxXz0+nYZaTAscsjyKKLRWCClA+HWcE
-	/1DLnKrS27WDCvgQMa92m6e8okb1/aU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 76D7D43D7E;
-	Tue, 13 Oct 2026 03:46:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534BB1F000FF;
-	Tue, 13 Oct 2026 03:46:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791863181;
-	bh=gC6zFEfTKNW+9VnhF2BDN32Uuy+DW12hIGMiIIHt3k4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cGjuDRH7fd9Q/vGOFT7srXE4MzTaO0zvziw1vupAjmuNfJNV1aw1OWZUFLjuLqLq/
-	 I87VuwtS1dHs5FQ/DKdlQisdn43nyzXs9Kd4T6xzP4a1TQWy45Re6iwudrZ+5QtEFV
-	 fzz0HzS82PYt3Xg92bu5uvNyIhnz725muXUX2lfYjTmpv6xKxmB0EYSWqqZOrA1zQB
-	 1lEKQvnQnz5DIPbu9YI7ZSuAG1Pl0hqbabAb9PpdL1iwfvHMFjz5A/s173yYvtg3Yh
-	 4I6L0EMZ5eWiwYWI/6OsZ2o19PmZpjPcEAGi5dNXnpqJVXBO2/H1jcejotXKyWlDgu
-	 PjEnZQQ010M0w==
-Date: Mon, 12 Oct 2026 20:46:21 -0700
-From: Kees Cook <kees@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, Pedro Falcato <pfalcato@suse.de>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 2/8] ipc, msg: Account msg_msg allocations
- with GFP_KERNEL_ACCOUNT again
-Message-ID: <202610122044.1E1CDBF72@keescook>
-References: <20261006092030.got.500-kees@kernel.org>
- <20261006092035.166776-2-kees@kernel.org>
- <38befa8c-3885-44eb-813c-0ee34cd55248@kernel.org>
- <be34b92e-e82c-4f69-ac9d-b045081ea418@kernel.org>
+	t=1791863530;
+	b=dZI/F7HjHvg/dbYqErUxGtDcPN1+ydMJink3415KWnwiN/VlPmidwZmW1tVgY9FxPKWXBM
+	4qBhbhBLLDi0KYcwee9CyqySMijhYB7b0r4J9BgoafAK+y8u+9Fx/I5t9+rdoTlax8A5iJ
+	qKCfMglhBaRdBEzF9pm0zqAYMelZ9Q4=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-89c45f14afdso278053b3a.1
+        for <linux-mm@kvack.org>; Mon, 12 Oct 2026 20:52:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1791863529; x=1792468329; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+RirkidvU39UtoRFdOSmmCxiKM73vm7nm9nipwtgQMA=;
+        b=ko0xpyni9a6RYz/1TGjyjTAHDlOnH0B3qJVl+5555737IXPS6w7uEmkl5g+VfaMzMr
+         tPVmhqTGAbv98yfD/iGZ5WZJw/gzCevyDYvFc0Nx4ilvMiSx91M1MqYE2+ZZbBWJbgT3
+         W9PeCcalohHtEmk4A6RYFtOJfrnqXFs0lXphQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791863529; x=1792468329;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+RirkidvU39UtoRFdOSmmCxiKM73vm7nm9nipwtgQMA=;
+        b=sV/pgnAUmScwTuw+NCdE0GoQWGn66eol8FItst3b9jQzt6by51G2PrxDsOoiKHABhN
+         BsHaVwnZumvV2+p/NaOaohmGfDujZgSPys+KNxyPUqHtko5oRPQPTS4listFw3K6dG7A
+         F1OifPzoP2ItYFs04Az+3yHd1U1Df7v2OO6w/PZ70IicEbt/2iHhu64YvWut4gMA04jr
+         FISo48BJVN3FUphdzs+y5CF2HTYtUFHi3kGSji3SWcjl262PBRJI5EhceumpZcD5eiAC
+         JL6Xdr2zfE3THVEFwp4RuQLJT+bEJojgqSx4Aof/C8lEHfiY+XQbbWlVZrOoEIAQtHQx
+         wsbw==
+X-Forwarded-Encrypted: i=1; AKwUvByw1TjEOgmJuDGZ1isLVPHoesaCR2ZF5TyPcu8fjm6yTUcGN68R9DDcvOMEDABp8rKxleQLmCfb8Q==@kvack.org
+X-Gm-Message-State: AFq9FYLPM9tQpvrJzj5S0LMoz1k/hPRUSRH9OLDXN0gnhbpaZ41LjYkg
+	Y85uqTVnJq1zaehAcnAlCi813VUNINYlXZv/6kTfkAo/6qT9B3zrhsaU9ZAv91TDW9Ev6jbCxqj
+	5mtA=
+X-Gm-Gg: AYBFou3bhlObvs2/k2kdxxHyzSzCKE3y5QBOARzSP4rJ8KaYBJfsMlIc7O9v87eK5DP
+	mcaG5Yto8A+1mqUbyico92foYomlFsRmM/sj3VoyhJyR6wFJs9SDZFzZtAWyWKZhlBxcE8FK80Z
+	uFZOjZr+bl3VchwD07alq10JAAaONx0yCIEoN0Y4TXq0UcloDf988V4ekMWcAEmSJqwexzO1kP0
+	YoxC1sZFqKW5vKSKrvOKq69N/LoWa2s50o6HSqdnPZYmIj9SubN7keyCYr6zZrlcRdw6s+6DyFd
+	sOAH0I9Mrr2j3l062ORtraQDuRqjkbzjEQk32p0zMF+4tYMFtq7AEJHXmyuxGBrCsAOjoVjEpLu
+	QdfyNHU787zwOme1s4q+B4ks+t/3cBzr57zs7EkzFKeo1MkFIAx3m4XuBTjX5ZM0AUyn9sp+Xbj
+	78+JlfPkE51ZoMNOrZqaufQqsH0kpPa5DWwRDNObH60usSrbFC+9J9mTZXvAi7g0pGdb/onYabF
+	XVwkrdcmMSYJBs3jFr4s0dyW00QiGKEOfnY/EwVAZ379jOQvEmZDgO4kwI5Ow==
+X-Received: by 2002:a05:6a20:9d97:b0:3e0:d508:59a6 with SMTP id adf61e73a8af0-3e16bdaa122mr9096795637.13.1791863528987;
+        Mon, 12 Oct 2026 20:52:08 -0700 (PDT)
+Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:476:d384:7c2e:1579])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c41bbb27sm4326818b3a.40.2026.10.12.20.52.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 20:52:08 -0700 (PDT)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Brian Geffon <bgeffon@google.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Richard Chang <richardycc@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH v3 00/11] zram: redesign zcomp and rework backends
+Date: Tue, 13 Oct 2026 12:50:47 +0900
+Message-ID: <20261013035201.2809924-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <be34b92e-e82c-4f69-ac9d-b045081ea418@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: m3fzcsn4oositintcr69rzpu5fg7e9bm
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 64DE6140009
-X-Stat-Signature: 5cmgjphjjcauab15aorn8drwxg7rtjr4
-X-HE-Tag: 1791863182-414104
-X-HE-Meta: U2FsdGVkX18pK8OIcsFUEqGlFn6/O1Lbt+7aKrZxYdVAyciSVeacNwkOhIx9BMoH2Jzp7vp45mTBTdMD0xk3OvQi5F9N2i/Shdxw82aoy9a37d8C+fycTz5XaXtTD9IbXEyqIOleyFBn6/gVkyzfyWoftpI6UiBpxwseJJZFoV0OYk2mQjbZzvA68ddOlY9Rnpt80xifbJrKxKLsEsCVQegeNV/T3ggH9tZN+l3NpSzt9oFENA4OCQbZITLig5Lr9tOcGklTWL50CIARWD/tc2D+Irk90RgsNouLVgTwH0ZaCB06vBx/w3eI1/V/IDoATHtmOBNnGnrsPoCCrQJPRJMUOQi9agwOeAKNbFAVPnvVHli3S2ku7gHztpDAIHiIdHGIxxn4yYMdZ2heDr+RPCQM2d3oNFPQJ2r8ShUmeTUm6XouaARkyYDs9SXAsCR3qkqspFuPt8Mf64cDclvDdbXKBOxhQeE0C0kjZ0cAs03pT5p4X5sw9tzr/fEeoeiMoOi90gPPsOFeP7O0oLTDZ7FHx9VfUHDo9/NSBfwFJRrGPSAMygzUxtXXeqjIDkb7+G/3ydsmSoqftbIM57tSuMDC1QlK0h3m/hijs/p9cSi/J1fF7FBap3KwegrdL7s0wKnY+NGDFKeEU0thNW+wmWt6IyFz1B1SwuX/BhUFZuvVBTIruzXgBz3ih+qUuI3oCIj63IFyLsoNXQzU275U+jxxvBYwV+/1xy4bppY1ad1lcIMEfOEcKijbdSasRMkHebn1zrvf/6SoWfqO286+WMHOnSf3z4coRJb+imIE7vcMtwhEGqqqvsnp56mmpsUj5JtWU4Qq2y01A0Vc2Q2KKXdmSBsgCSu913CGcmROK2879dRHvDYZJcL/ItRqWipSFczPKzhCKUjiKSvMP/3ENiT8YvektZ8NGGuT74w62AFZXcyBsPlnYIzdgbVKGMIsYDDkcSbYweT6mgW9RfP
- TvlxmxRE
- Qmx8DjBlxsx0AEz7jJd7G50SwAIYdsYbMO+krE5FtMgAZmZL+o1DWe2yCHpBJsPRQ7rGVIUaIuAYVnCtpAx+cMb+ozetkbLDCkKgG5u8qXtVnCSD+WyRSsdIDgMkLtB0VJWgqTnT2aospMKOXAWiWCqf4VDn6U3i79ISW/hxNN8pO5i0eVBZcGIx7jm/wriYGfm6HduiTUMExr1J2DxLTTPHh9m6vJwyPojjeKg5lUQL+HSj4CTL51HR4R0CkcbRBfWKUBeTaOhJh4acZVOAO9+VNPRrNejXN/HDCUuF5yzwT4L7JqUCkf1/wPwL4I8XA7fg2
+X-Rspamd-Queue-Id: 5633B40003
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791863530-576169
+X-HE-Meta: U2FsdGVkX19ivlBj2twI42y42hyK4JRXi8H8Iwb1wsiAKLeaErsff3XQFsJZGppmJKMpStYtT6kFxVLJ1xFbHq7yAL6pSJKYo1kyFsCJVl4vYEP/cBvJ2jMpQAdK9p/TK7Qz30/fbbMoCKXoZNe9Z8owIBgMCOCI+VRNFwMiw9r1QA0recuq/typqXxrh8n1pzZPGKWrjpRYzzcDKnfu4PSnuoSS/cTOOJA9k9Xyq7XE9DOrshw6hLn4zb74zSV/h1Zvu1klkVJizJDT878qoGsxrFQ1uPvk+e7K31op1qafGfq1gqIancMc/+0D0ZGXm32aHn4QlCtp11YLuZnffalSY05y3mkQyT7h/DhbAV2lx63iPjCbV+9IS3HPEWDbrJhmCIP1TGFiLiVcSnWgopDb3M0nLyIVU8tn9ODT51KeA4DxScmqwflV2JieHZpzeg4LvBl3oTF5pzjbtQwBd5/ow/PburMyiJqhONTg0tV/RES/O+djACKRnVn+jNWOfOhEwFV3Ph9ykfNU1gKLfZvkcjg45sDWcxvOsg3/cV00Fr8XVtz3b6cgKDXYJDksgu97DhcLe2ZWGx2Q334o7rEnvF1DmitECuLUtw+mmgmkxh4Qhk7uFkt+Yjv3r5OJ//sChRngCZo723+dASgxCE+EOajB2usIzf82eXoWOP7RPGgQYfpwPbQ/0PZws74CD9qd9XeSkERTOvCLfctOkPSo469Rp5F+j7xpFD8EtfEdnkwkV0dn+ahEkZI58uwP/PaemxyEBfw4MGGmC4+f1yBLqAzpgzJfp9cBPWfOd3azC5twHyaZkpjhkZ5dT25mrnHnT/pw3W9UNwBIypa7peB+Fm46B79nqX2Zrt+dYF3aQx7eFTJdZ5j/mM6B8sv0W2+EgCJs2CqLt1YDLFthDMVH3f6L8hTdJEQE0KSj1SZ+s9Mym74s209dVjvQgaJ4VC6iqo7tyijJffiLNz3
+ Yyeb37dS
+ 77SkaT3MaqYZ0XJUi/GYKZ8Lx5XFGVvHdOHRzdo/FB3j+RQ9bF2J+rwTWPyVLAEPD0f8xTiNuSJyeqJn9/sJsxM4HUvU8Crpsn6wDWRNcxokQasGbMB4bvp8JBGG7luf/BxKJtYf+ts2CJofgQq3ztNUW86/0K2fSZgpMLgsh6EvdxkO73FRQmB11q/mZ1Pc+79eCMGKyVEskLwwnyIVIDWnMr8uyYXpiyytED521+YZk9fZfDbsuw8rWSFMVhwraDGZYjDxIbm0o0IPU3Lh/eDhp/CWthYwciuIgaLLhmSaPV4grOE2r+9fYCxvj0kbu6/9F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,45 +118,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 11:03:18PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 10/12/26 19:55, Vlastimil Babka (SUSE) wrote:
-> > On 10/6/26 11:20, Kees Cook wrote:
-> >> Since commit 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for
-> >> alloc_msg()"), alloc_msg() allocates with GFP_KERNEL, and a msg_msg is
-> >> accounted only through SLAB_ACCOUNT on its bucket caches. With
-> >> CONFIG_SLAB_BUCKETS=n, kmem_buckets_create() creates no caches and
-> >> kmem_buckets_alloc() is a GFP_KERNEL kmalloc() from the general caches,
-> >> which do not account it; the same happens when kmem_buckets_create()
-> >> fails. Either way, the allocation is not charged to the sender's memory
-> >> cgroup.
-> >> 
-> >> Allocate with GFP_KERNEL_ACCOUNT again, as before that commit. Memcg
-> >> charges such an allocation in whichever cache serves it, so drop the
-> >> SLAB_ACCOUNT, which no longer adds anything.
-> >> 
-> >> Build tested ARCH=x86_64 defconfig with GCC 16.2.0, with
-> >> CONFIG_SLAB_BUCKETS as y and n.
-> >> 
-> >> Fixes: 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for alloc_msg()")
-> >> Assisted-by: LLM
-> >> Signed-off-by: Kees Cook <kees@kernel.org>
-> > 
-> > Could we, for the purposes of a backportable fix, just have both
-> > SLAB_ACCOUNT and GFP_KERNEL_ACCOUNT in place? That should do the right thing
-> > regardless of CONFIG_SLAB_BUCKETS state, no?
-> 
-> BTW we're thinking to add 1+2 (once this part is clarified) for 7.4 (with
-> stable@ for patch 2). 
+The series has a number of memory usage optimisations and fixes
+that result in savings from double digits KB to triple digits
+KB per-context/per-CPU, depending on backend and its configuration.
+More details are in the corresponding commit messages.
 
-Yeah, I'll respin with it present on the create and the alloc sides.
+The zcomp redesign and backend rework happen in the final three
+patches.  zcomp part, basically, attempts to address the priority
+inversion problem, that is seen on some setups.  In zcomp, we have
+always kept Read and Write contexts together in per-CPU streams.
+With preemptible zram this becomes a bit of a problem, as a higher
+priority Reader can preempt a Writer, which may hold a stream
+lock, but since the compression stream is locked by the preempted
+Writer, the Reader gets blocked on the very same stream lock.
+However, we don't have any reasons to have Read and Write contexts
+share and compete for the stream, because Read (decompression) and
+Write (compression) paths are completely independent, they never
+touch each other's buffers.  Thus, we can split compression streams
+into per-CPU Read streams and per-CPU Write streams (Barry Song),
+so that Readers and Writers don't block each other anymore.
+Decoupling Reads and Writes results in noticeable performance
+improvements on synthetic tests.  The Reader vs Reader priority
+inversion is still possible.  To attack this problem we introduce
+shared decompression stream (Brian Geffon) which can be used when
+decompression is stateless.
 
-> But for the rest we'll have to target 7.5 as it's only
-> a week to the 7.4 merge window now.
+The final patch builds atop of decoupled Read and Write streams and
+reworks the way secondary streams are handled.  Secondary compression
+streams are only used from recompression, which is serialized by
+device lock, IOW it's single-threaded.  However, we still allocated
+secondary streams per-CPU (we needed to permit concurrent Reads
+of recompressed objects).  Because we now have dedicated R/W
+streams, we can allocate a singleton compression context (for
+recompression) yet still have per-CPU decompression contexts.
+This saves a notable amount of memory with some backends and
+configurations (e.g. zstd, deflate, lz4hc).
 
-Yeah, that's totally fine; I'm in no rush. I want to get it right, and
-I'm still recovering from my surprise about how GFP_KERNEL_ACCOUNT
-actually works. ;)
+v2 -> v3:
+-- reworked shared dstrm patch: new internal zcomp API for shared/excl
+   dstrm and a mutex to protect ->local_copy bounce buffer and ->ctx
+-- updated commit messages
+-- reshuffled patches
+
+Sergey Senozhatsky (11):
+  zram: prefix backends printk-s
+  zram: remove debugfs entry on init failure
+  zram: zstd: do not allocate empty C/D-dictionaries
+  zram: lz4hc: pre-initialize dictionary stream in setup_params
+  zram: lz4: use LZ4_decompress_safe_usingDict()
+  zram: lz4hc: use LZ4_decompress_safe_usingDict()
+  zram: zstd: do not use kvzalloc() for zstd allocations
+  zram: reset writeback state in zram_reset_device()
+  zram: split zcomp into separate R/W streams
+  zram: use rw_semaphore for decompression streams
+  zram: use a singleton compression context for recompression
+
+ drivers/block/zram/backend_842.c     |   6 +-
+ drivers/block/zram/backend_deflate.c |  98 +++++++-----
+ drivers/block/zram/backend_lz4.c     |  85 +++-------
+ drivers/block/zram/backend_lz4hc.c   | 105 +++++-------
+ drivers/block/zram/backend_lzo.c     |   6 +-
+ drivers/block/zram/backend_lzorle.c  |   6 +-
+ drivers/block/zram/backend_zstd.c    | 133 ++++++++++------
+ drivers/block/zram/zcomp.c           | 228 ++++++++++++++++++++++-----
+ drivers/block/zram/zcomp.h           |  50 ++++--
+ drivers/block/zram/zram_drv.c        |  55 ++++---
+ 10 files changed, 477 insertions(+), 295 deletions(-)
 
 -- 
-Kees Cook
+2.56.0.385.gd3acb90ef8-goog
+
 
