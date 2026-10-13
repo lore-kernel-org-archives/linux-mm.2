@@ -4,109 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D4F5CC6B12
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:37:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 581C5CC6B16
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:40:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4801B6B0096; Tue, 13 Oct 2026 11:37:12 -0400 (EDT)
+	id 681436B00AA; Tue, 13 Oct 2026 11:40:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40A1B6B0098; Tue, 13 Oct 2026 11:37:12 -0400 (EDT)
+	id 631DA6B00B6; Tue, 13 Oct 2026 11:40:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F9076B00A7; Tue, 13 Oct 2026 11:37:12 -0400 (EDT)
+	id 5202E6B00B7; Tue, 13 Oct 2026 11:40:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E3BFD6B0096
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:37:11 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 80A161C47D0
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:37:11 +0000 (UTC)
-X-FDA: 85318006662.12.F88597A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 85581120008
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:37:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e2vfh155;
-	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791905829;
-	b=EtBG2eVFprBaa2uYMF47L0bklcZxnpG/is5epvq6wmWzR8Oks3S5eNVMfb78H0Fzt2cfkT
-	wZo7Sqgbv4tWrBo/5L36zoXO5YvROBSbuCQWTcVSy2mlO6GocyI6SqBsvvFSQcs255NRWk
-	lwkfeJZJppPASZGFVTQ1JkI++pl6IYI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e2vfh155;
-	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D19F6B00AA
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:40:08 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B10F780CE7
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:40:07 +0000 (UTC)
+X-FDA: 85318014054.13.3030C33
+Received: from mta0.migadu.com (out-196.mta0.migadu.com [91.218.175.196])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 731B24000A
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:40:05 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CbIVFpFz;
+	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.196 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791905829;
+	s=arc-20220608; t=1791906005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QYvG7iTN6X/wcWZUdqZr19eVWyZZhBJ5WBory4f4au8=;
-	b=Q+M7UsI4foz/2BOu9cVjvCPo8dQlS2suJAzC9JYepJWBDTZ2prs71tA/oBROivm4oq5NoO
-	1iNIHlvGpkccuHotdkrHjI8hpXCnXsLs5nLStq+lRo8euQQRYWHk6Y+JQ/nU2qPme1Skr3
-	4HVgvqu7lwZpfLV4bYS2XSO0t0VEruk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE498412BE
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:37:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A3D1F00893
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:37:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791905828;
-	bh=QYvG7iTN6X/wcWZUdqZr19eVWyZZhBJ5WBory4f4au8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=e2vfh155/VPsHaWZgcZhQogA6+0Ijpf92000/ox/Lbw56lN7A4SVNn/789Geb12Ur
-	 H0facF2OKtc5Q0ncRS0hdjV15KANCuPbQCLcBI5Wq/pH2lhvbflXcVZIhZMxjXJK37
-	 MDEI3V67nDeThfG2sFh6v1S7JZidQuEREhoCFMBozusmOCEpUMtcR6TJpDIr0Rt7ac
-	 Cr/Tqe0gdCAt6L0zWiFVA/DkfRb6caekRbfSHEAfAPa/fzBw9fXm0a6q56s+CHuQWN
-	 34JBaBP3KAuObrD02sgyzg7XpBXkshrvd2FZ5gLxGOsqsctzDPDbheUlJFQz9sqeIs
-	 ZzY8EBvv21nlg==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c2a4e013a44so5611366b.2
-        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:37:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz/ySTW+/rPWsn7L8JfHf6kpttQvzNtbKunKc5wILb/T3GUFF8hPjXP3BW7ZjxeAGcCkZB1QF36fw==@kvack.org
-X-Gm-Message-State: AFq9FYIPPY+mNM3pt51NlioB/BPDe3i9xFmCAPKh7oXqJCWXOuNzGJKM
-	cXcMtqMrbrpVxpaqBFjIVrNanEroTnkX8xBeKeJBhYYvfX60eTgD3JEV3pY18RLMzi8I4QJvHO4
-	idk3Eob6WDnSyZHDk/2VYONgdRg0MDoc=
-X-Received: by 2002:a17:907:7246:b0:c26:19de:9adb with SMTP id
- a640c23a62f3a-c31a9d56575mr1180906166b.26.1791905827546; Tue, 13 Oct 2026
- 08:37:07 -0700 (PDT)
+	bh=Nj1TMhPOMkYB6MWx6yQQPG1mHpG2YJ3gWeRMyW8XpyQ=;
+	b=42pgFCbOFtjRygz+BsRslCemT5cXaftzK/qHIhKT906Ye6KXgA6hpKOlnsGHbeSj/vi3EQ
+	YaDQWwEo62CuATjFhJg/4U8b1yPgdul6qRXliKWeVIcXyiXkWxvhHTN5nXDw1xIu7/u33f
+	grcM71lY9Gm0SMQRj7eLerzLkjPw2cw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CbIVFpFz;
+	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.196 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791906005;
+	b=0TGVULnqoqdHpIcJOqg8BlUE/mjmvdBKocGwwQsmg62skgvva73blg0v8WdiCppht8/iSi
+	Vy6tk7QgmrcfiXGBjfP/7RBqYEp9FSun8jrOK/adQ+UsbIWaK+9RmkHY0WR3ekDEucLw/y
+	vOX5jV4LrgArO1S+kim9wI+fbCE5Bmg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=wvI3yQEb1pra9snQf3HMPf0AqFlWoLGzhzZcKtUO3i8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791906002; v=1; x=1792510802;
+ b=CbIVFpFzbvBZ6HFblwi9Sb2Ng2vo/5CtHr8jdpUpJfyFP0rmHhgvjF6nrCEl3FMJIiJRgIr9
+ ZbTVdh9AQTmDCe9FB8/Vz8xt/XXiOxJkF47VA0MZ6d/yz2HAiJ2wybh9QD08SWvhHFaU5MWfNII
+ rFg/yXiVkz6lsZ4pqqBAewts=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0335801ba07d6e44;
+	Tue, 13 Oct 2026 15:40:02 +0000
+X-Mizu-Trace-ID: 0335801ba07d6e44
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: zhaogongyi@bytedance.com
+Cc: catalin.marinas@arm.com,
+	will@kernel.org,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
+	lance.yang@linux.dev,
+	mark.rutland@arm.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64/mm: restrict transparent contpte mappings to valid PTEs
+Date: Tue, 13 Oct 2026 23:39:53 +0800
+Message-ID: <20261013153953.77575-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261013093600.54995-1-zhaogongyi@bytedance.com>
+References: <20261013093600.54995-1-zhaogongyi@bytedance.com>
 MIME-Version: 1.0
-References: <CAO9r8zMxdg2BTFguwcRQn8n-2CPaEJJfg+T8dWcgO2eV4uNaHQ@mail.gmail.com>
- <20261013152553.39287-2-itazur@amazon.com>
-In-Reply-To: <20261013152553.39287-2-itazur@amazon.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 13 Oct 2026 08:36:54 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPOkuRGv0X=nBbAzTUjUyaB7zAJLUigetSXEVPxWpyGxw@mail.gmail.com>
-X-Gm-Features: AclHuK-W6f4ZhQh9ueCOMp1_eyaIikFGHa4dIFgdih2WgfTC8_TU_5ph5Rmf9m0
-Message-ID: <CAO9r8zPOkuRGv0X=nBbAzTUjUyaB7zAJLUigetSXEVPxWpyGxw@mail.gmail.com>
-Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
-To: Takahiro Itazuri <itazur@amazon.com>
-Cc: Sean Christopherson <seanjc@google.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, 
-	rientjes@google.com, Roy Patrick <patrick.roy@linux.dev>, 
-	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
-	Reiji Watanabe <reijiw@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, 
-	Ackerley Tng <ackerleytng@google.com>, Takahiro Itazuri <zulinx86@gmail.com>, cc-open-source@amazon.com, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, Gregory Price <gourry@gourry.net>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 85581120008
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: xix38idxksqgci33rtr68trfu8p8w65t
-X-HE-Tag: 1791905829-742433
-X-HE-Meta: U2FsdGVkX1+vKBQZMLuoF5hieHoY4xQhziaiouYY1eFZW/Jt+AHiADRFK2+qUN528+SNgjV/eLTWj+ag1KSSOsscN8ujeh/fu8cH9pnRNL1Uuvf+ohnznWbHjHLY3TfWwBiIJ0dkpt1hk0gByjGnCVwcpiCnjiujkJajsvp3BrM6s4hfzqL6U4uFgW8HhLpr23nLs0U7PX5ERDWMrWwsL8wyU9Fs9cSL0z6NG32kAe8jCji0CUSkYaD0M8DJOplzFf791DcajwGDCQIjLX8BnbnGbM8jUibL6aRtzuzqY6CvLuhotdwv79k8+6TmWsAUPe5Tw48Klr5Ue1Qa9cxMtiGSx8jBXhaqAd+y4yrg8z6g9XipAp0yF4S8Wm8UcS5IBID+B89HGWB8uZ6dnXKp8TFglmSPjWLTHUJq/gwJjSmr3igE/nOjZOhgXi79Rt5pgd96Sc2B+OAroXE6MXbWQeTsqmxR0PiJNQroHH7a6W/t9gsqxZVfsQ6RwQxumaGJRM7I0i2PSjO+qY6FDKSvW17OmaGXFTk0pRcPxIUAwGurpFW6cFqP+H/YpTGhQM47WAub0RpJN/Rj6Gbh7uQlj434rAndXp3GX5Ov46MLsQex4lDUYbaHRRIflIqF6Bbgjyl8IEYRrHett1fZPofQ6+1et79mQ9NwSOTj3kZ7oyi0ihLPzvf2gUGNxkaMBFCOSDopAXd6RDTlAiTve415zO9wqEtLI/XYXUxLIDK2jLEn/wXuYZ3wNCMu6DXXKmq0n0MRyiKrdFkO3WYskDS7AJnAYoUmvpo3FJ51RmD/+BqKmBnkvjwXbSl2HGNTJtHOqas0C6lh/wflSqq052NW9cDGDWffOuBPol9PiQrUz7SN4Wd09ateDLnKJVaRBGAISXlkaRCNI4XDD+8A2cN3qulPgNiOaCPV7o98VLyHktJImioWe4WBkVyFmm947IoauVzsv7KuQM+HfLdRtYZ
- MgQ25ysq
- wYgbm5/sz3i0dTtZjqIlPHf/stD8szAuC+RODWHvWDG1jTqAD+UwgOOx+eWy4VsaRyoEUciNoVUaAcYKZFRIfIiGaDpxpNUMOrN2XKdrf7IPoDL4paAkEgW0/l88U6zuRYrTl0NNR0qffZDFL3EIUgM+c1ZHAlT6R/6KdnSbFWLa358+Z2t4FhbrSFvESEfxk+q2TUV8j2WjTKu16UqYsZdz2SwSDiA/hsZmWy+a+h2c0+p7W2ZZAxSfTM7Qgv4atfNNqdZQb/NokmsQDR7xipcy6tsUgVVvDcG1zJu8fjxCPOlOh2DDjqmQIuN14qd+BFHmdxBUns+M7zyo8i4z6yDyvs7NOtUcOR7lllSVCI1mHWrwTr/ViER0FQXTCJ280R6/h
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 731B24000A
+X-Stat-Signature: agrfa7g4ndxer1xagfxntfandpzibus3
+X-HE-Tag: 1791906005-64668
+X-HE-Meta: U2FsdGVkX19l25e09PniXrTUzQTHxv7JISYdMWc23ysnZ1dg8wItbRpb7UhDkTgevhcF06AMaIS0UNyYYlnhH5ro02jFxJcI7r8fTFyg3vVH/Vmomrzare9uwqwsCaTjjqqZ1JJym+OO+11mTQZuRLdqbdrit3IWZH/UA34xbmOT7n0MjNSuD8RLxTyV6sZ5RJeEmkKWQnDn7H5DITTvcP7+RziotvuMGb98c9OleE82v2fo+5RlbF3ALGlTfCs1Viz1SuEk4PKO+jYsdU9Rw8S66nwGBxWd+W9b3WJIaNn09+Gt91sWGiOXvb+SaXNjUM9hogml1NcY7npvl3BTRSKFQwTsNkGSCR13a/NY6ESZ92eZ6q98RK1Tn/QXp5IZfJFTE+eqq0f51iOosphLGWzfl447k5qNIK6/j+fVaCmJiyrRugkCdMUmcNSioGDkoqqaQH6UIHoB4KauMb7ELkgZsFju8KWIp968Nbo1rOmwnllCPEUAemRTx8d8any846Tnqnp6U/1X8zbQWZGCLoRWTZR71undodBb/pypZ132HropKuaQadUzdhY65qJc6mUs2/sxuGPB0iGYeY0xMUSOsmlvn2W8Szoh9BEJJGB3JO/mAqZAPsqLrISb27lTlDgm2qdFxpaXe1x4KjUwmPpvx0eFKdusMNW2zzvUWKIysQlWN4JFdAbPHu7Nq+lG5/FPRTpk9mePCOBgHVIgNo/sP37qhVQtkxas4zU5Dc7dVGk50Lnp9ZJWLjqNxsXnXi9nPkwjryoHUT1Ci6plMGkVu2rzDff9lSgdrlbZVH4MwOBTaVpcz6QKUIMIVERC7/su7q9P2qf16VSIlogt5QIL+HVZF5dbDZBxSxzobhl1Cq2A3iHXnCtBttRy+9zmqngLHGFWMI8d8wwHPYYJbHChAGRVyxTjEBfAneke/DGTfOqRdp1y4bxwOfYBfjlny0K2D+GKcYwWsWep4v4
+ 8LN5tEDW
+ 6P7X02gXvkWcCQAZfOaudnMg7OY0Ctv7joix3iwIYk3swcmhp1FiS6y+wL5GKX0FjaPSYgE+Zy5DJzN/r+SqNhjTU4wkJ4aZikbSoWMO253HsO0KnCdUkCFUiw8yYtOttLU7pq/aJC1eeSxKrerVuNxXtDPdMSoXybsVfFnE2/wA6/7Xo6VZJeJRiz5MYbm3l6SkELOkV5mT21XpdQjNsSAM3Vum2KQ4IvSQLRql9e7TVN/tmgZPJFD3/Dqk8MvRtVtGJNvuk94Mwt/Mp3F4YdoXdpxKMMBRBtxPK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,53 +107,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 13, 2026 at 8:26=E2=80=AFAM Takahiro Itazuri <itazur@amazon.com=
-> wrote:
->
-> On Thu, 3 Sep 2026 07:06:02 -0700, Yosry Ahmed <yosry@kernel.org> wrote:
-> > > If that work is not already underway,
-> > > I would like to respin the AS_NO_DIRECT_MAP introduction and secretme=
-m
-> > > adoption as a standalone MM series, separate from ALLOC_UNMAPPED and
-> > > mermap.
-> [...]
-> > Perhaps wait until I send the new version, then we can discuss if we
-> > want to split it based on how the feedback looks like. Does this work
-> > for you?
->
-> Following up on this with an update. Yosry let me know off-list that
-> ALLOC_UNMAPPED is on hold for now (quoted with permission):
->
-> > I wanted to give you an update. I was working on v4 of the
-> > ALLOC_UNMAPPED series while our team was simultaneously working on
-> > integrating that design without internal ASI implementation.
-> > Unfortunately, there were multiple complications with that
-> > integration, and we will be holding off on sending new versions of the
-> > ALLOC_UNMAPPED series until we have higher confidence that this
-> > approach will meet ASI's requirements (ideally in a production
-> > experiment).
->
-> Since the integration with Google's internal ASI implementation needs
-> more time, Yosry also agreed that I pick up the AS_NO_DIRECT_MAP work
-> for guest_memfd, separate from ALLOC_UNMAPPED. Here is how I plan to
-> proceed. Feedback is very welcome, especially from Sean on section 2
-> below.
 
-Thanks for the update, Takahrio!
-
-> 3. ALLOC_UNMAPPED and the mermap
+On Tue, Oct 13, 2026 at 05:36:00PM +0800, Zhao Gongyi wrote:
+[...]
 >
-> AS_NO_DIRECT_MAP itself works without them, by zapping the direct map
-> of each folio. However, guest_memfd will eventually need a temporary
-> kernel mapping to populate guest memory via write() [2], because
-> folios are already unmapped once they are added to the page cache.
-> The cost of TLB flushes and direct map fragmentation also matters for
-> performance, so I'd like to keep discussing these with folks
-> upstream, building on the direct map fragmentation discussion that
-> Kevin led at LPC [3].
+>Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Zhao Gongyi <zhaogongyi@bytedance.com>
+>---
 
-FWIW, I think the mermap can still be used without ALLOC_UNMAPPED, and
-I did have a newer version of the x86 patches repurposing the LDT area
-for the mermap, and simplifying the mermap implementation a bit. I can
-share them privately if you want to take a look.
+Good catch! Thanks!
+
+[...]
+>diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+>index 0acab179f..851fa2e44 100644
+>--- a/arch/arm64/mm/contpte.c
+>+++ b/arch/arm64/mm/contpte.c
+>@@ -463,6 +463,13 @@ void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+> 	if (!mm_is_user(mm))
+> 		return __set_ptes(mm, addr, ptep, pte, nr);
+> 
+>+	/*
+>+	 * Keep the producer-side invariant documented in pgtable.h true even
+>+	 * if a direct caller passes an invalid descriptor with PTE_CONT set.
+>+	 */
+>+	if (!pte_valid(pte))
+>+		return __set_ptes(mm, addr, ptep, pte_mknoncont(pte), nr);
+
+set_ptes() is the only in-tree caller, and it already clears PTE_CONT
+before we get here ... no? Why not fold !pte_valid(pte) into the
+!mm_is_user(mm) check below and return __set_ptes() directly?
+
+	if (!mm_is_user(mm) || !pte_valid(pte))
+		return __set_ptes(mm, addr, ptep, pte, nr);
+
+If a direct caller does pass a !pte_valid PTE with PTE_CONT set, I'd
+rather add a VM_WARN_ON() to catch that. Silently clearing the bit would
+hide a caller bug :)
+
+Cheers, Lance
+
+>+
+> 	end = addr + (nr << PAGE_SHIFT);
+> 	pfn = pte_pfn(pte);
+> 	prot = pte_pgprot(pte);
+>-- 
+>2.39.5 (Apple Git-154)
+>
 
