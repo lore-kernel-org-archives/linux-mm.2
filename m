@@ -4,109 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C18FCC6B03
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 10:37:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19AA9CA9ED2
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 10:42:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F2806B0098; Tue, 13 Oct 2026 06:37:25 -0400 (EDT)
+	id 343AA6B008A; Tue, 13 Oct 2026 06:42:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C9F16B0099; Tue, 13 Oct 2026 06:37:25 -0400 (EDT)
+	id 2F3D36B008C; Tue, 13 Oct 2026 06:42:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 908156B009B; Tue, 13 Oct 2026 06:37:25 -0400 (EDT)
+	id 1E3DF6B009B; Tue, 13 Oct 2026 06:42:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 69DE06B0098
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:37:25 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 69E9440407
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:37:24 +0000 (UTC)
-X-FDA: 85317251208.15.3965213
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ED51E6B008A
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:42:19 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 897CFA0906
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:42:19 +0000 (UTC)
+X-FDA: 85317263598.04.5CBF2AE
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 93E1F120003
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:37:22 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=O7lRj9VX;
-	spf=pass (imf29.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id AF7421C0004
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:42:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=p4vMjRtm;
+	spf=pass (imf21.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791888137;
+	b=uHU/2Uy0/RB+GLNprTrACiUI5ExTnv0y5PtnHZNMt4v3PaQ0OL3LP6aiIgpVG/XVQTXypB
+	tk4JVjRKs9DHZTooaMh7P4xWrvIlSQBVfIslLvyxYY+Q45VbZaHtFxJaI7CZxJ5Cv6/Wvl
+	Z60fmvhm0cW3NMj6KPv26hsBbnMcLZg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=p4vMjRtm;
+	spf=pass (imf21.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791887842;
+	s=arc-20220608; t=1791888137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NRNgZp7SWpJGWJ66cpIUHUrLgqPlOlzic2FPa4ozTu4=;
-	b=YyMlAFcIUCUxa9D7m9wM/rHVXxiy38SuYEzAseGdHbKYAuxDNbTYBf/KFdib27X61jzEQD
-	CeU/UC9oatFAJ6j+F9KTdEwa1O1YXussMSsk565KRVkAwLIh7kRyfC88TsRVcLkAhG56OC
-	vyJLmDvcgKMTDp5I8mD1YmpMWlXGMH8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791887842;
-	b=zWWDWNwerxe/ejbfiHa3SRxky0C65xbn1HsXs1cGdWiMNOv/KikMu/IXGnAehpZnDP1Bni
-	eatlRqRVHaNVXO9vla0hra3V7lygMKTCPSZ5HntLQ4LbYdE/5auTtzekJe+7YAXyCXOaD7
-	28UgvQb7nuWuY2gTbVx/V5sdbHHs2IQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=O7lRj9VX;
-	spf=pass (imf29.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=oD+XjwWNpVZKnPMgWXiYNmFqb79UfbIuRAu6qcSERgs=;
+	b=jJq6rQuo2ZEFStl7Wtm8rA2PCYJIXFES7jbb+SDzmZmZXKUNKnl/sa2uUMAMFgVGnTiyRQ
+	aaHvKjagCJ57We0+YMa8CdxYuyasb/lo0WKusbFqTYjmR4p+IRr0F1YTt5UFFzw2n3fBoH
+	mFyxIlLNjH+LrGZxJVj9McLPie2+0JM=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8F40C169C;
-	Tue, 13 Oct 2026 03:37:18 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DA5DB3F7B4;
-	Tue, 13 Oct 2026 03:37:18 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 53FBA169C;
+	Tue, 13 Oct 2026 03:42:13 -0700 (PDT)
+Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C226D3F7B4;
+	Tue, 13 Oct 2026 03:42:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791887841; bh=zlm0jggjoGcBtjF+7NJSkqsks8KqRwYRxYBdaXI2m88=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=O7lRj9VXE8HhrWghHpCesoTCpOa3V7aRgApIrDvh+G4vpyN9kUBHcyI1lhxEtlw94
-	 YUPHx70ypb3+oZ3nDuN/z5PzeGIa7O99Yd+lDTkwjvJYuAoecmMhhrDMAqriWnlMcO
-	 cb1EBGw0sasp4JyHpGH461ycQ4qUAKK37LhSSLrA=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Tue, 13 Oct 2026 11:37:05 +0100
-Subject: [PATCH v7 3/3] kselftest: mm: introduce size_to_shift() helper
+	t=1791888136; bh=W9IOmZd6NCBQxQe8yp/0nFe31/tEy/JGEmdFhfz3Zx0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=p4vMjRtm+hGJY8UPjqMDOtxJKflXmrP2vqY/17xouBvpxZsfR430vOeHQp+g4HZHp
+	 i7cTDvCFclitDTgkIqF0/Rs5AUZgo0y+FddOHuWp92YB0Xjt5EVyzFCvtHFSv8ObTr
+	 iK08tMyzkAMpaUd65pUDChJk7GDyTxVjCmLAWF0c=
+Message-ID: <4fda41ed-741b-4c5f-ae83-e3ea5a447441@arm.com>
+Date: Tue, 13 Oct 2026 11:42:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-fix_hpage_macro-v7-3-3d77129e0557@arm.com>
-References: <20261013-fix_hpage_macro-v7-0-3d77129e0557@arm.com>
-In-Reply-To: <20261013-fix_hpage_macro-v7-0-3d77129e0557@arm.com>
-To: Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>, 
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
- Sarthak Sharma <sarthak.sharma@arm.com>, Yeoreum Yun <yeoreum.yun@arm.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1845; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=zlm0jggjoGcBtjF+7NJSkqsks8KqRwYRxYBdaXI2m88=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqzgnUGsz8VkHf3mY2KQbmGhgbZWDJCNsolUO8H
- 01cPlR84VSJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCas4J1AAKCRBt1cPRWsUx
- M1/MDACQ/yPt492mMgEomDBdxPrbfqQ8emxOnCQeHS79ptrnJWB8D6IXBWsMkDP0lKCYRTT/L07
- S5bPI/4B1oGOnQceTWPNgKijv32hLXOHE41QxS6HAx3oYYygOg76qW+uO/1pbAkPtqUAxj+7o+T
- yLY75ASTUOQP6MEl3McNffBU8TC9SSxfYYgQ0IO/u0fEqLx2StFMzW98W1nYqf0FlnOTtBV0Up1
- oE2dG2DXcM7RZe1jKWhV3Vp7l0Ar3GasLmWro80gjUQisxsUt3vlIhITqZSB47GNd5ZrnTR4M05
- +GqBhtoa6l/kd2OT1CwBWxyyJ27coDJXxXsT6apbS6ftJQcFjmrA8eLY/0XFCMT6FLTWbmeRVU2
- wnoo25/qOJWZK7U/lkkkarU5JKgkkNOTzR3EB97SZq9I9my7tWxx7Gz7XFEn2IhwTPAAz2cBS8l
- SLO0CfhTgIgiRnxYEoblMZ4q9Cm9J40+T2+/Ik6jYuA2g5TMnMeNhzk+vr2n4RjZ2Wlnk=
-X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
- fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Luigi Rizzo <lrizzo@google.com>
+Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Joshua Washington <joshwash@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
+ netdev@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261003212241.3432303-1-lrizzo@google.com>
+ <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+ <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
+ <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AF7421C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 93E1F120003
-X-Stat-Signature: 4n7g9b443qonkd5ejczippmemzghanyr
-X-HE-Tag: 1791887842-416627
-X-HE-Meta: U2FsdGVkX19/9Tj/cecRcMnrky0q67WqrvF4rrWr9SNpKr05slJxkoyRCo5WK0qLYSyYBIaoVnsU9i178ZwHebi+QLm+EpGC22yS0Tkf/HFE1Z6yDPIHKgHPler8blBt66ZLYXxqeMjCllDhUOn+sEZaafQCMcneQsy7sW7i2weq64ZgiikCEPksXlIeCwLNiX7WGd4AqQYc8Af24H60Pd3YD+0xbnZEERp7JIpgKEytm/+vgTMJenqetTDvGpNlhKnjgBedh3sSaepAqtA5X7yjRd21W0XWFFVNXRCC4UDq72W2fjc9TAA26iLTHiqRYwjvaoIHId7e39YAWHtkzgtBomU22xJjWc/veX+Zi9tTGBRbgQTXVvjVdh8ZjXvQSGM2urkaGCMkPTO5oB5mrcSmWAQ8nK3AQR7Nlpcuu0hPcU7upnDqufHi4yzd5sYzil58mthGySfPosZ2HoufZSIO/y0Wwe79w2wD0jFWEMp2JAblM7f8Ovfr0mMGi8K77VSf9OfVZHR6Z18W75tvQtIEK7+IBaeMsX86OQGNT9GtipUJcpJZHjLq3uBSMkmLLkfLM7O0W70MwPInYKRTelNdhFe8Ji5X2muyqLu7G1lfvmEZRccSzWdGh6IuKIgLEywAq3eDJvn3u+VLk1fG5iWvWlzn4I+tCYbfpqpSDPFptCh0CQuG+4N3RMCadFAXou8NVSkCZCzHxB7Gzb78MA2dRfHkee1Hm/h2e0W67x+ZaBvojJ9uxVmBNrtC6Qqx66KVVxd/PEFH+qrEG0hEdHrrrxqBm9k1FwQ9PvhrYK4nbQ3VzoZv7pGyKARx1DF1AYCW330gnqiZXpc+5WWCihS4wwBWGzH3c7zXcohMo0IrjkIU2eocXMR+Bu3puhqesOPmknpHwutBtqfVp5RhO/DfDs67IxX4azDbn9JQPPw2t9iSG9+rsY7a2qVOx9qbCkiPMQ2hvTllhFO3ZXz
- G4P7AsG+
- CzWFCAP69CDolj1r98BZxUGBlhiNLTO1ee+m5XIE/v/qiz0nVAYZim10zHvLYitYG2aMQhfAKMraozQ5KYtzpbVhBANzdIk4jndCrjWGDOO3dfdS2WVQevC5H12/K1hhBUvdpBl3i5rOXpv9BBrVKtgXu5niHsNWP+rhuZmZgO4z7Uafkmskh0DbPmn9CB7to2dLNZxT++mRvPLZ9YSR09v1Q47owAJPwl4mNg4+dmom6cCPzGRpyrZF408/3RMmTRHNLzwvjaplLldx5st+SmBZhFeb25bGGvjXkZ6tO7NQhcVUVQgTLt8FAdUjP8dGUYWU5iAxku+mJ8Po=
+X-Stat-Signature: roah7baw33i3ra9n167943bo96b1m7if
+X-HE-Tag: 1791888137-411572
+X-HE-Meta: U2FsdGVkX18A8Own4/RsSWWJ9MeOdsOnAmaR3AurDaSbzfitak8PhyMOmmIU3/lCLXBllAj5clAIIIU1lYl9sF/kDy6m03JEaz5Avm8Ei1iFEDNRJ/sdkMMDx06gG1hVOrs7T3V79x3lU3kor7PiyYB1BjYkY+Br5ZtGsIwBTfCvRgbk71t/vqrX0h007oZGZ/fk0Bv1C52tMpWxX74WgB6uiG8mDq6ob9+yt/IiS/igGQaDw83tRvd9xugaYAJpM8bp14u26RBDIf2RqLH5wW7iNhhdrPo1N2T13zpZZ2P8tiasf/JUKU3snHZbj+C/MNGLAqLWUh6dYJGDTip436NQJ7hW3F44TKtWLC2v7Sy3GZ74MU7bl+bcAtsvW8OFqv31zalh3gX3F8VZJpnSlAdIKMCIWs4HYQmRe4Nqgc0xLcatGPbAfAAigXNIbIEXdbHAi6vvQrjTmFLnszqQN7F6dSINf/gcDFFGvfypq0UYNL04ipIzvMYYBkkkBHbqRmFse1vtXL5VUs/UFW4+lCxR+pYmAorDzQFNXI2w8ehzw0uXnrL73o2oM4Wb/nxslW4GBGTXgMkT6Un9Xdhp6XhTIu7qPrjOfgaaLeuL/HpxIE6ZoV7qHKD8MGErf9yJXuRg6MrRMKxm83RLVSQcDi85nHgw5/dE7Xu+Z+gyQzWsXBN/jsvkvO++DDjRVYBgWvx3gquulwVsdelVp9d6M8WAdK4aG9eggfp3LvfENDLeMYpf8WETHKvqec23lMZ71qPumBM9pIQpPiwboBENptEbCFzFZ3H1i1nvQhcp/e6n3TroMOLaVkMjwIBIQuyllt0tNaf/d/vubhz4aYDdHI/eOR/eMZ9vhlMBvfDVOlbaw8uoWygh+xfxhIMWekdM7mBAv8GKEKzKCaHVDkNgdKhpS+ct6r/ym//j0CiQG1Zts9Xecbl+nU1xG0UL4eWIDNhxJev8+4Tltd4gYAL
+ WK8tLdeE
+ ROT93awjpNtnGad/k9KsamNY2uIdm9FWRrDdcGgXzeo/Lx8x4FajobNHuJLkdYrHSBYA8Qeuot0Q/k1oM/HywFCSa+NxUJ3KyibW7hXc7Ghbi5dxrcFGigVKTccbTqhljaqN9Y9BCI1XsRRWuy8isEXnv0YOLBIoA/zrlMNnMgklffW0Pftq5l4z5zLQvwXUfvrc1avSsuVAcn9omL16t96N+O9PJyFecY/auzo+8n6EprxqOkLrCm7WDR6HQKU9Fhgf3PH994kif0d75IaIokuN+ANbBnPWroqX0yNrHIt6x74ho/620y7vWmqBlbEYC4zTH0TL8q92kRu7zluvAQGq8fPMWmjYdfEYOsf516mIt+6RdS3YKBlihTvB6F6PMNoHp0c6M/878dHWgHotwFuMmAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,58 +115,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce size_to_shift() for future users that need to
-obtain shift of a huge-page which is other than pmd_psize().
+On 12/10/2026 8:43 pm, David Hildenbrand (Arm) wrote:
+> On 10/12/26 16:45, Luigi Rizzo wrote:
+>> On Mon, Oct 12, 2026 at 3:51 PM David Hildenbrand (Arm)
+>> <david@kernel.org> wrote:
+>>>
+>>> On 10/3/26 23:22, Luigi Rizzo wrote:
+>>>> Here is a subsystem called DMA_PMD on which I would like feedback on
+>>>> architecture, possible enhancements, or kernel components that could be
+>>>> reused to avoid duplication.
+>>>
+>>> Here is a feedback to a subsystem called DMA_PMD ;)
+>>>
+>>> Why is basing this on PMDs (and embedding it in the name) the right approach?
+>>>
+>>> On architctures with large PMDs (512 MiB on arm64 with 64k), would we really
+>>> want to use 512 MiB pages, or rather something smaller (e.g., 2 MiB) that might
+>>> possibly also have TLB benefits (cont-pte)?
+>>
+>> I had to call it something... an earlier prototype used the name IOMMU_2M,
+>> but I didn't want to suggest that the design was limited to 2M (it is not).
+>>
+>> Aside from the name, the _current_ prototype restricts to 2M allocations,
+>> exactly because too large units are expensive and wasteful.
+>>
+>> In the code, decoupling the allocation size from the PMD size is trivial.
+> 
+> Yeah, we should do that.
+> 
+> We should probably just find a way to describe that this is a POOL that focuses
+> on physical contiguity in some configured granularity.
+And since it's intended for DMA we could call it dma_pool and oh look it 
+already exists...
 
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- tools/testing/selftests/mm/vm_util.c |  2 +-
- tools/testing/selftests/mm/vm_util.h | 12 ++++++++++++
- 2 files changed, 13 insertions(+), 1 deletion(-)
+Sure the current implementation is capped at PAGE_SIZE for allocation 
+(and thus mapping too), but I don't see why that couldn't just be made 
+more flexible.
 
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 3b42cbdec7a2f..8ef226107d788 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -194,7 +194,7 @@ uint64_t pmd_pshift(void)
- 	if (__pmd_psize == -1ull)
- 		__pmd_psize = pmd_psize();
- 
--	__pmd_pshift = (__pmd_psize > 0) ? ffsl(__pmd_psize) - 1 : 0;
-+	__pmd_pshift = size_to_shift(__pmd_psize);
- 
- 	return __pmd_pshift;
- }
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index ff51c61636505..67ff4bba5707a 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -159,6 +159,18 @@ static inline int sz2ord(size_t size, size_t pagesize)
- 	return __builtin_ctzll(size / pagesize);
- }
- 
-+static inline uint64_t size_to_shift(uint64_t size)
-+{
-+	/*
-+	 * The function returns the corresponding shift only when the size
-+	 * is a power of two; otherwise, it returns 0.
-+	 */
-+	if (!size || (size & (size - 1)))
-+		return 0;
-+
-+	return ffsl(size) - 1;
-+}
-+
- void *sys_mremap(void *old_address, unsigned long old_size,
- 		 unsigned long new_size, int flags, void *new_address);
- 
-
--- 
-2.43.0
-
+Thanks,
+Robin.
 
