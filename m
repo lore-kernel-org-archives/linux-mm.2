@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03114CC6B19
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:18:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D729CC6B19
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:18:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6F956B00C9; Tue, 13 Oct 2026 11:18:08 -0400 (EDT)
+	id A51746B00CB; Tue, 13 Oct 2026 11:18:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1F746B00CA; Tue, 13 Oct 2026 11:18:08 -0400 (EDT)
+	id A02986B00CC; Tue, 13 Oct 2026 11:18:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE7B66B00CB; Tue, 13 Oct 2026 11:18:08 -0400 (EDT)
+	id 8CA426B00CD; Tue, 13 Oct 2026 11:18:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AA19A6B00C9
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:18:08 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 249EB40D5F
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:18:08 +0000 (UTC)
-X-FDA: 85317958656.23.5928A35
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 629B26B00CB
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:18:38 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01D3D140CA9
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:18:37 +0000 (UTC)
+X-FDA: 85317959916.04.14CFF6A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 455761A0003
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:18:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h4OnB56H;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1904C100003
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:18:35 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FdT2gUkY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791904686;
+	s=arc-20220608; t=1791904716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pHENCFhMeiM35hbKa/gacUK4mkCc1cQaFugTZwzBT9A=;
-	b=tTG+IQBM0sO/H7p42SNr3D7EZy1CQgs+Fo5jlq1b2+z5PYHxIXgshz502DID11kvyJBWBE
-	1lvpNSswXxZrPuyNDQuG0i75asalAA34PFC6bKzZajq0k98deGQVC9OrryX08bsyA6zg6f
-	Yy0HKFSXtv3TuUNVYuW7TcCUtTt+vZQ=
+	bh=mV+bZBkayRN5eP4bfWthEjcGHHBfXPBDQgkgo001cBw=;
+	b=BaIV8Iuqt9+ejCVRjscR8qvQesnh+Te/RClDgZZePPXQp2Wq/kfkOmPQDL3xr9z71zL/J0
+	kStV+9fU66LPLh92Dm3op2MaMz5OcGYmnNtFQaHIwYIJwzTJHazcP6hoU/pKrECqa1+x++
+	R2avgwPdBOQ7cNt6x1aR5Xo9wmzZq9M=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h4OnB56H;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FdT2gUkY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791904686;
-	b=ZvievMXnoTsZ7WwjU62PNKtGJwv8r6FFAwS99Q6tdBm3NlFw5V9UnPhuk+9zIh/cny3UL5
-	QWgaS3LsmbKv1J4lmS4z7PsK+4lCtSntHxoUo38F/gUJmJdncx9UMVpaQG02Q04BJY3n9c
-	WjAm1xxYu9YNenBfo9ohsPZEMzoGoR8=
+	t=1791904716;
+	b=014sOMA/yL9K3RniELYkuT5sksFVvCBcYC7raNOYsH3hc3v04HB+p3AJyKtPLDNWtmT79i
+	ui38BKicx74GqCoFNuScOhzcBOhSElIGvb5TCnpJjnN54tT8nQVcRWfMgXg0xe7GZ3jX9Z
+	X+au05rGXG1M8iuveefJKDHuan9fza4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4069443459;
+	by sea.source.kernel.org (Postfix) with ESMTP id 607D943CFC;
+	Tue, 13 Oct 2026 15:18:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0931F000FF;
 	Tue, 13 Oct 2026 15:18:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2681F00893;
-	Tue, 13 Oct 2026 15:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791904685;
-	bh=pHENCFhMeiM35hbKa/gacUK4mkCc1cQaFugTZwzBT9A=;
+	s=k20260515; t=1791904715;
+	bh=mV+bZBkayRN5eP4bfWthEjcGHHBfXPBDQgkgo001cBw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=h4OnB56HNjeqPiEOGE3rNlLUdEuZOAD+CtcGMRQAPmTJyATYJsOL1G7ptKcuCYpiq
-	 CpgHKGtq6CEcFGtPgneSlzABDdCg4Bg3Umhh2RyNv5IhvulgPcdL4E0gc7w/lwsd4J
-	 3ok73kC5oY5WBtHUwRiLfOVYbYL9SHUBU0FiaPnYYxZ3Ft4+OD+ZX8V0vRxZiMbA0e
-	 7mrjljzIeRWpoZEwnIfWWsSpm55O0FMF2MjO6qTGymfS0jQMAjbI9OveshwJqYlz4+
-	 6Oi8M73/28zKVP2Op5lc4WYCbc3NRmNQEDE9xnaQxhB1kNBr+EB4pIgYviUKddTNjT
-	 g/T0DZh39xgUQ==
+	b=FdT2gUkYitiwqYESIsMzJ1KqSprPcg/NK7iNvZ0fuRv6VojDC08HNQymSyiW0CNS7
+	 002TZSezcWbmeuSnrKeS6I9tiW6xAsH8S6oLqzBs6Ai8tiDe9ncigf6rlbplQgokXp
+	 /s43loq0hUwgH0f9sB68E/C0HRm/NGuyK0qpKuCtgXwcV1VW5C3Gbd9McIPX4Dn/30
+	 cvixNFSdANC34yY1hTFwE/9jh/5ObG2/yxfk1VI4i4r5AI6ChNyJNAa3CsqYvWGpJy
+	 H9cEZOn3vFvFa3+yDSqdxDW0vTx1hvczxhPBQ/i9n4nBSuf0uZPVfAJg2X4iqxgLtI
+	 1ePfwtt0f6o1Q==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 13 Oct 2026 16:05:03 +0100
-Subject: [PATCH v6 23/39] mm/mlock: clear VMA_LOCKED_MASK over mmap
- callback
+Date: Tue, 13 Oct 2026 16:05:04 +0100
+Subject: [PATCH v6 24/39] mm/mlock: eliminate weird VMA_IO_BIT abuse and
+ simplify
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-23-1aa3c9b139f9@kernel.org>
+Message-Id: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-24-1aa3c9b139f9@kernel.org>
 References: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
 In-Reply-To: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -156,28 +156,28 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>, 
  Bert Karwatzki <spasswolf@web.de>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2841; i=ljs@kernel.org;
- h=from:subject:message-id; bh=nPlKMcYR+T3IMNZ+qaC+TydVGS50UMS+5z8Z7jsltAA=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLOeZx61nSk/PyGGTdNPBz2/bnzrll59w6V1g1HrhYs4
- t62VJDPq6OUhUGMi0FWTJHl+Rfx/UEiYfM6L/i7wcxhZQIZwsDFKQAT6fJnZPiXFCuryeMhaBy9
- c4KWXPbVGV8zMrbf+bInh/MmZ96u3GBGhn/spsc46t4UG23hPj5j5S6e59G3sjIuz7reef9SAJP
- vDB4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8395; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=Qa7/d9iVmEdKPUMRKDQqPwxH1YhZ/W/SAQvnlJMlU2c=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLOeZzOtfuZKuq5MPhjU+EugfjMum1cJRcPzFXjOvhwg
+ fC+e5/CO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRR1UM/xR+rLyeVJr5+vmx
+ f42KD0P2/P/Bq9mZzdJdHKYSx/vAfjPD/1znDvlq1cSEP5Ncn9+f2vH00NZ+rxanKKXej8G3vm3
+ k4wAA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 455761A0003
+X-Rspamd-Queue-Id: 1904C100003
 X-Rspam-User: 
-X-Stat-Signature: ec7fcbhuycjfdtb85nhdihnnhwup6tha
-X-HE-Tag: 1791904686-548714
-X-HE-Meta: U2FsdGVkX1+lYm9aS6drsmJEzkyv7G4kV0v/4Cbds85Zszy/NqrP3UflHjm83H6cxwk32C+4oxS0dJzFh1ubdcKwhwM/lo5teIctYYPUxLDResW4EJJAbCmhwVNX0re0e9hgS9P6eykxwP7qWMGAix4ozJkbSeKIF6t4aS2UmnohV1/maXttLyD1RJsUl9TIq63WDkEp+Bh747qza0HTWlAIrigG4JIT0oIih1+wUXduHGXekXe4fVBgVgfprmOEZhroEIswXRSw651qXCdJZnKnpWx8kQG5PZqu4FrAIKiqnB2gJJTEo2gO59F59mgo1KDcJjkU62eBntc7VJbhpdfgCL6g08K4EmNrbVtlT/9pxUbvyJXM/igNoNSobddKNg/GtK4xuMSJzqkXstuZod5rW3qCWNtuBRT0KX90MJ8em9H0kHb3YHN1TtUmR1VdiXJgiC7HEeyAkHIh7tnjKRSMmAkibnRmGapCsKw+TNtlXeMGhEt1/XZs0RK8yTCF3WHfD3wU8R9xsL/uhyK6aVxee40qgIhM4argMpLe2sXUmieTDdxF6bQEZDe3h7HTphRWmwMrpv9qdgMuWU6Ah9Mt117Gv4fiz0OBsOb0ZlzK+evC2GhNC8jFTXWIVPsY/nwoRrdV4clzUb3nDCD5BNtRkSgrpSPYbaO2EisQ+plDrTdy9RTSoamS99LwZ/7yUxyVZxtE2/JnoLiG918oZiaaaxXsxXOnirBwCQPEmcOiRR6umYYgg10z27XZiW774n5U+2z7ZK+7wq5QBpSPT/46fxnArHVuB3p6zmXYX7cJveFU116ATQIOf+9ppIQjiE8FcTmRZMoM/DmgGSfiTR3RAnGFDkCzVAJuQQDKbfdIeY/5JE1pXn2rghiP7FCLwO6v++Nzmt44xLbU3/D8fsh63QOCOI4r3RTrOzZ+SpMemM+5YZj9zSVndkN42f8fZZ4Z8c3TcEBIO+Uf7WG
- ko9EcOig
- VuB8ZlCKK2eD510ugWm5N/AFLoeUgYgsFO8bbf8jzoBA3GdKvOIQqDqPZKSsl/G86ex+/TWphDWSMg8YyYW3rOHCchYFgFM3Oe6i0BZhB5vv1P//U+vPncccc9u8sVJllsXlOK9UPfSVZelpZ40e3QlMqMdn5um8MB2eCU9xWc/M2qBfekvuP8IUY9v0zZEzDQKr651T/qeYd30Cpk7LTkx7+GBbzI2S9At2FGjqqRwmYXR4qaSs/HmDxL39T4cXzHrEHgU/CPGfOFi6Flnt/6we8EHCPJXa9oD3BE3U8YHCIIsonHP943smf8d4bH3RV/GW1uMKotA0S3cbbIzAKwto1Hxx1qHJEKU3Z+98K90rjw6I7ycXMq2xSRt9NmoQKqHc+cRPXFnxxSvW8PrsybEU2oJpV2NcfJq/CKQovfQ9wC9dznUB6rEQxhac+A5wMO6LIc/jXiL6Zb8gDblmmTGk6zV3Wqu1ryyjzKi1BxumY2FWEtgl38O9YFyakRGjtTSYA6iDENJ5ZWWZRwfau2kv+/M+0CxEA2SgfmZELpTJGaStzUyRpBKlnCqxUK+zWkeTlMSRI8lDxcZ5v4ceLldh8zCqIAx52LR43EihNOK+hx6HZRxshO/Vo1Ww6ziGRw+PqEge26d8rswVdXEEt+B1sEtKcTSXFomWB1c8ByIc76PWrZhB0knRY/qVZC+rBfXYr7LgZoKZDfSdmW5D/N8Z18UxjrHg0HfGOo3JIH6hifSsTp3KDQ2fFC6g0/lzZBIGO2VeY3xxbXRuuTVQCPE2OTy1o5zKpFv3yz0oCtFYwubf4NnqDdgVBlWRGGbbKQbuqSIu35s2kd83nAdXPccdfftjUVyAMBZCc/fmhxcs+SRGh0o7xTZ43xTb3pZpbR8H5G7giulIvd/G7zpwAGV/Zf+5p/7BT4BfOEq97E4a5ZBGAecUKgwicnnfeNp6GN2oOX238PGqMaQs3/Xp2Fi3QM+Zc
- t8MdZ+cv
- fQ/f+4y2VsbEpPnV/UZ22FNvSCfaZJKzn9gwC8m1ZdpaBj9k47wOlLKwwnjV5mOjum1ATvwHOJYP+skd/8CCk4qtFlYMyXN77RydWbxftWW0KvMI6q4uHUhDFMd8nWOweZ2hcBLsMc8Gfnpe9qHWBSK1k/5Fl+WNZufJLgUjdYk43+YNPHJH0YWkiBrmv7jMJpr810/Ya7TmSNGQsg3DPzdNlpVDUaELwVNxTah42JlMRr7D9SWVAYjMUoOT6Ec0sZItIWH/+lrCErjJk/nC0yo+hHhTSd/zccnZiB1OYVEMoU0K1K4XZO4RV+8nINr2OuiJbJm8fQfSorfL7VMbezgGFDIlIFH2ECKFCLAQkT68EIjUALa7QITkuMtCXy9oOrpbmi+/kK0pllKAZVruixvkariR6Bepu6xNBsR9zQS6L1kxt68SWyTkwK/DP2UZspPvxHK3lXbzGb7f7cg60bx1hiooVjhKBd+cixOS0gh7TvkbR44OfCUvEqlhhB0Xd+Y6MLtRpymLazY+hOy84Teqj51Mg8wckxDGSgrL3rapVzHHHxlt04G1wY1nLL1+Cv5KNWDBM9dOp8ExrDufTgSOw0T/tnP2Je3TdVb9SRtmuOJr2Sm8DVPXXSU7Dfmb+/NhGVYDu+bpJoobi2Gsr+QYGZ/ZmLEvGgoZZL8hEuTOjlojvzxZU5rejOdr0xQQ7bVetssAyR/LEbMGnz/kEtc7lPiQ7/O0goDbjDztZ1x2GJOF+tf5D6/6XIy9KBd4Za4OGzCBmUvzDwdKhvboNMQaM3VXidNSfQZzKXZkCaSqXMWzdKEHd0BOAHXL4jf/QuJtBTWEYQFm/iFtmYYy/SyFU9xJ9Ignwdg3B0T2khXiXb3X58A73ZZAjf1sOCppAZ4r6nLXaD1QwiO8b9S1f95OPXYst32fVdvL/FWReUk2AxwPWZjtni/+P6E1G+qFfYCcrXygbcG9fyER7KrHaG98TQTk5
- 3iEDHT81
- 1MVsJFRPgLKOrvA/9czFTpkSHjQQVJpDv9bQPMSgYgt6xrsruxHPJ01ti0FgzvJIEXou4zWOZeySHPE0mXbX9itM8R/GjmNgDB6DABSWdua/uflZZ7+7ZuHbgB/sEhSISaZlJCQylcmTcu3iIzVtYnkYmuvHMFJ0qaoCmaFdNCAtLJdfKrTTTFwLxepLy6QbH01CbKZ0IMgaHp4sKpOMzyFgTHIuEpiEFwOFiDuk5lHNSvCY1Tsd0SI6tDh1PlGKp4R/vSOFRuIUWIS8tnudZNYGrZLZzYq56hFHVeu8UBnViWkrxcm6AsI1WhE9g/gULgHRJxIe4mEOhinFeUOJYsO4ZMp71s31Uot4kKFL3WAgjiCO/xpg/Ry6pFFgA5j/NLNqvKqY/Hg5DSZrdiMLgGYWC7Uu5WoaAjyHG2u1gx39DcbM9TyHBN/AnbMWc45Dw/P7l3jvVf/Tox4dnm6epZ5B3xT3BHUhrjLMbQd6sAwfexDbis/WqzyfDDK7Noci4KV1gPUWS4q9T4eDyMSVf4G8uzB9Z339flf65sJx3O80ynbmnCTqAOfIogPnIwNEYtYsq01nVr4v2VkZiWCnC3EqpquaCeS/fcz7ji3kMtxzl56k8cySdT3FdBgAkd5xs/o/4jRJZa9lihv3Oy2d4ru23XV2n26z81oLiphLO8qEwLq6vKxHrXygUI2T3zLUWsGqX9Z5WBvvlmUHYsZUh8EUIQjfVIf6Aji663hrCF3srUxZc/8w1v7eBOHgg4LOETpC6xuQ/i/7b1YSH3rtYw5SImUIEH3f68/Ih3e4eSDUdVTU41fBzrolEsoPZgS6Kk229byir1tKgliP/kmkwhs/8po5BWrp9Tm9Egi4m6L/Hyff6cPR7pGsRaJQgMKMQBD9ld+tD9apPidUXd7FeIHeXw6oqum8VBGMDxNcbmee4J42fHEX99VqJG/CLNnEw3cqkELd0loEyCqS4bj8oyxD0yy6U
- ebz0c/0k
- jnhWswl+bp5xWBA/gbhPzZflXLVF7kLlU0RzbdBteCZEYOeCp1PPS0/pjjc3Q1IOsyP3w/ec/p79ipBCfwbYhs5Mxxdil0Oy1dq771E0M+eL6nLECe2mY/wHveTOoCMmADPYgIOwm552UqkC1R0WfjDgABNenFEraI279XpsZLrtKIuMBep2a4byKz8pnl362EigE4F+Vj626xO3PY2VFsmqxIh0wVuvX4iG7pWwqWbevjrFqoIxnP3Rvo0+7zQLDk2Kx+81xwODfY4thvKwcpqj/Kl/U4SCZIR4XztEx3HLDQ2R3LeYLxr7pkOCwTdINx3gVqhprhuJtoewMdbI5NhrxNITusFR7cUVDkVRcdgQ==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: d6qn1jgumjfqii1zc5r4ukydxkzsqzkx
+X-HE-Tag: 1791904715-753862
+X-HE-Meta: U2FsdGVkX1+7f8Z426Xb5ZtqEl+J0j9lFXcrveCkXxGZ/TP3cG1w77vBrg4DFyB7a7nMEwyIJGvMJO/t+mLkoJ77Hzav+dsCLqKxH+Cg3sz7u24HBN8OxPPxDlr/L8DjC5aaYqteXJcGmlWjiDSfIr9x4FxpDqxctA42yhDkjc1ba8WIOYPaJ+yq7gcX1Dey7x2TPfd8QzdTeKfEMoutKlKA2tCVJS1+rN8umMRfJahiNwMcdzhsYGgnNHnAx+h6XBvdkRJhUln9/em9B8r56sUVyquQe4afD7wVf5tcr28IssxTM4TBY0ozovwQXHP+vCOD75jLT+6lfnDLJTJnYh83OUoLtgu5jYQQB8DaS7mlkPRCNf7SyvTQSFAod6cu4Eo42er/taZ13p0+MYAkeO8d8jkYicSe0JbJ9es/NZurXaHfwiAg8PIa6y6RYvSosKiV1tY+PW2hy+mvwAkg8yVvcWTRgxzETcsPffsalNmmsIz46hmKiaXu6VjL00Q/vWdIcGUWpHiDbWdTaqBuqebeymzMR8tHjjagsxN5J1XvSGRWoZdmG6Q/tVNfhA4HR24erNYNFvHwoRuUm5NOrpw09ZMKOdYna0diw4IFqcbsK8NRxtp7OBYaliMg2wk6wGY64uAikhqArGakG5sdqYGpDT0CnYLtZmhoQt06vpe+gC1wDqwdK3bJeUeDac9NYo+ebwIxLhxjdt1/stjOb15u6o03d7+Xb0iCAyv60CWZQ29fCqUQWwqqjEXmUkDuODqb0ZKISe5oIbeV7iMDbsU/nGeAnHZJHBed5h4dOQeTPSz0CxRxVPttlYQtnZn1X6VNlcL4/BenxXJLybMGf1mEUGOpv9uk0Ue17Bryoso04imJzJmJpXmRZ/pl6GCd0MkVIiA7yspfcSe8GRZYbjd6OciFl1+iMHTMnFIdYrVi4P+Kc2Yahsp+3WgeNEIKFQ/U019Nczdbzf6KFYA
+ sV2UKCyZ
+ w50Hcrvq31HPgiCp29qQzjlCoL5yeyBrQR5bEXgLJkSMNsk1JACDB7D+cK7F4pzK+m6J1AkDHUs+WoJhcazxc6kE0cBnhm9a+CnwVGeukehhawoN6rd8q0+tkV58DFXZtFj2ISjoaUV2k8mI5301cLotKNyyThpxatkTT9/7uyXg7ckGHQsJumjh1a5nbbC6jBCM3Nyl30+9DUzZ7tzfpA27b9/8ZUAta83+K2unrPJJfhE4HH4vRXgBSC+AKnL2jL2m0AusUimRJw8s3oEQrGhhQhcMMOmnnWwolyph+JjxYREAbujrtNqe25m+Owey6NYhHQqZLS6WmdBBFOK02h/e1mP524R9UplyNNi84dK5x5hO+h4a4xs5kGxxRAmIzvCTUbVOg2eLHHnTi5xNbZjUmJZDbcTwF14AmXaqPactYYJgVTxrvmlDqKl3bKqZ9vLlwP1svFmgssMn3YuAcpAkNMSXD8P7gmAttjSkIVYhz/ZVU5EwitV2WWbznDtuDbRGpygBOdtXU9fMIdXFlC7iShASlQV3Anx7igKmmTJsdYNcYOjgrDXoiB8AhtVjs4iVuXJMzYTnGbk5YVn+7UJdsI2nI5bbUifM+R3x2iF9jGDcgt/P0ab3BxRzdH4faP5lRoD6YW1DJX7nwgIl697ma9JgM4nPOWbta/9QzRfoSntzMxdGniJtAjUExrtfgHfZk3jdgyHYjfF6AIGNcFQuSIXp4nYlzyrruw8TKhW5z49ZOAxuOhsA49GvEsXIyvWimHNxaZMpfrdprguftAJPfmvRI1iV+mG3UBijTQPYqMAQvDpXBqnDFv/eAfB6VbPo0aTARbrN7AM61jdKgNdjpAWmsnoQEW4Fdyb25O6H8gqjuzSjRlijevLDAE67KJ58lsBq4IRawC1ntCKpZ6w7tQzunsbOomLJj1S8hroWa/sLYQR8Gv0/nJU2yNG+i/5cg3mY8XPPtNjqLdBQWZGwoalCP
+ w2WTg2wa
+ QJJLZ5a8AMTlAiCXwFASpWrcnOatVw0Prrjtm6v4+vc7r5pVoEHd2oXxM9//qkfC1j/y0j0BJoMPissxqOEhcn61hX0hy/epuhKtCxT7EIfrcVKQC18Jc+c5GmychkEEPy6MMbWOal7YGaPmsi86ootrD+uBxwMpS7NZMdu/vTx3DwSC8RIa6S3i2YigjGhSJwBaFkiZHljhxgc/WOe3saPmBDKgrHt84TwuUixgRLZniB7j1vHt/e8MPmSQse6/gNOGZcIGPhuyD4h2hkbJfVEnBOhCgGA/GDNCNsqwIHO8V2GhiCaBzxXoviPHRqUL6zWAbjLle+zreC338C6geYhYiEB1cEXPKm3+B6XOu72n8pg6ZBgKlVVQvPiXxQy2Ni8SXEdVQNKHAorLNay8kZmK+CzT1v8N9FYtPa2sEW3Ox/DDL/t9bDXWmcEyEquqgmQU2ivFdoZikhlD078OUj7kFQZURwHI4ch8kQnRDF94ZDISW4DqQvo3deCexSDrIzxJ4WLS49sM1X+wxfOnaMwMRx0B92wLpUDblG0wAay7/ufE4tOEKTMVTP6JZOL89mTQpol9+1Nv+r2v5iFBHjwTVUpejvZwGfhi/CSS4bFXt8tDtTfJ5KScPul9fo9cD916xbLTy8SU0n9RpXr1Mt48P3WUqL6DcpbBGvIs3U8+ewUF9vWXXdnb+eDGcYlbdzhI4uwpv7FS4svo7PaWA1+sPwAR6SX6+27rK4A7oq+KAETl3Pu1eTVF1D8OFTDBU4k9JBNkf4inScS78F3N2bb1GUA29SHcm8m0loQxzExdMKkFg9toyiQOZ5FwTMN3+bHedjt4Kbaf2xZ/+OnERyIESEeDgZQKsbzytFxf9+IKSY636rXEdBLX1ymrPaRJSFfqQAKMH+41PsR6V5pHrEtkEw0LU7VSrjUS60KFtEQDlsvBTCwcJ9AugzSltEtEaHHOxPWTic6oc0spmI6YQzLB5px4k
+ 3jYbDENX
+ 9J0xmgN5VlZSBbssf0R+nCH/eEbZfhJB3JEzHNT+J/5AJ43JaQH+Rhf7rCAmf3+1kRBNTJ2Jv3+p/gVw4SkonNgJdtY/u69/v1pdzpC/+FjXz7XKd6sCuigSzx7HjhGQqR+AvBaP7mcjXYAJJr0OTG6VQa1S7h4zV+xFsGpSkfshppjPRUjKjsvdK1lHNiaWkMP0Iq+6L8qlVH6lWQHAKQtMSlhqr5v1IWJXLLu0obDh7dOb2h94IAN+Kpdy59wmsX36ySv9G/eeSuVlJiA6AMIBr46YEPhtylg1Sgc7agns3nKG2ls570F6u6weSxY7d90+LRoWr5K1VsTppqMJcK2hFQk2OtRhwxLYACuKyzoYtH9C+bCB2MAgw07RL0KnigjFaTbQB24fpT1GgKaDUTdw+luSDqMADKryO39pb/bQzpKT2Mi6T+nY6ieT87f5m/wblKRPRYto2l16s4GwlCeQBn0u4sh7DcGDz85G0bCL+rVXqc73ZAHOhbrlHJ0OoXycTVJHJ028WYy4o37nHahYXUaP76K6iubZeHs/W1eXw7XRrAjawTFy1QTz/dwcJ5Izu7JpgcG0Q09xpSCZj5HYFTX0Veuu76hCj6HqIbk6MxJux2wiunGiGb3RLqQU+EIJBYU3ppegCaLo4Sfe7NsXNPb429igIqVNJp8txuFaz4Bha/xU1cXVIaIvaTtB655Vap3MNFF9IP/1LHEq/dAtRiU1Q8LTZLjC9z/n3OGJX7A5DcAazHjThMAUB+IC0BwiYywkGwkCIWCby+HEaLRyXMcXG7Y3hpZ28dEpJgXwAHMge/ogBdoUk1SqoHnhRu12hpShKIimUo4JYm6vChaGLxk2fQarZ5wp3Ut7cDik5YZSlVqPoy4ZLup4/LvlfRUWJ/SCghPt8wYQ2jm0j7fibJe1wpN8vo5rH372hKmLf+UxEwrlByeLkQwFevtW1FSb4xevNwRw2ulBKbwBD0nOzo1hn
+ zrUh+jIS
+ 4zVM4kdiqFa/x1wER4UW7dlALkGCZqW5PWtIUDW27+2JYEMmiP9n3iA7ZuzY20D2oIhc4rE4yJ9jhvum73qrpFuNcAPEkNUnUH1nJHI5cMMEJY+rkA268h/FTOOFPd6PCNQigMygaRUhdvXEe7KAm2/YAiRB8CJIpQSWkASSz8RsAj/lBZMsKI5XUVwcKG0msZNZJKLgdWz4oo+NDQVD9K1X/+KYgBDClyG15JTzaG32JcUWGwKaZ/NUAOy8wbilHx1a+K1i0LfR2+kkN3tJMgYzPeTCMq0232hDFU8+9T6ZjpKtCFMI12EwL/y3WdLlLI/KYb7GCP5Hed0dyYWdHZ9QJaE9V6LpoCjerIKTCDoQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -185,86 +185,233 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently there's a confusing mess around VMA_LOCKED_BIT and
-VMA_LOCKONFAULT_BIT.
+When performing mlock() or munlock() otherwise normal VMAs have VMA_IO_BIT
+solely to fix a race with migration which might otherwise double-count
+mlock VMAs.
 
-It is permitted for drivers to set any flags they like, with the VMA
-already possessing lock flags.
+This is unnecessary - at the point of applying folio mlock state, whether
+setting or clearing PG_mlocked, we know whether or not we are locking.
 
-This results in the absurd situation of a VMA possessing both
-VMA_SPECIAL_FLAGS and VMA_LOCKED_MASK flags, which is not permitted.
+Solve this in two ways - thread a boolean through the page table walk
+indicating whether a lock or unlock is being performed, and run a locking
+walk with VMA_LOCKONFAULT_BIT set and VMA_LOCKED_BIT cleared.
 
-This has resulted in mlock_vma_folio() having a very silly check for this
-scenario to work around it.
+This state never occurs otherwise, as VMA_LOCKONFAULT_BIT always implies
+VMA_LOCKED_BIT. These are also always cleared together.
 
-There is no need for this - just clear the flags before invoking the hook
-and reinstate them afterwards if they are required.
+Then, update folio_add_lru_vma() and mlock_folio() to check only for
+VMA_LOCKED_BIT, and update try_to_unmap_one() to check for VMA_LOCKED_MASK
+instead.
 
-Nothing relies upon this being set during the mmap operation.
+Also remove the useless invocation of allow_mlock_munlock() which simply
+returns true if unlocking and instead rename it to allow_mlock() and only
+call it when locking.
 
-mmap_prepare is unaffected by this so requires no fix.
+With the other mlock abuse of VMA_IO_BIT addressed, update
+mlock_vma_folio() and folio_add_lru_vma() to simply test for
+VMA_LOCKED_BIT.
+
+The munlock_vma_folio() function tests VMA_LOCKED_MASK instead, as an
+unmap racing with the locking walk must still munlock folios the walk has
+already counted.
+
+Additionally, in order to ensure a racing unmap/migration releases the
+reference munlock_folio() took (whose put was batched), check
+VMA_LOCKED_MASK before calling mlock_drain_local() in try_to_unmap_one()
+and try_to_migrate_one().
+
+While here, also replace some deprecated VMA flag predicates.
 
 Reviewed-by: Zi Yan <ziy@nvidia.com>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/internal.h |  9 +--------
- mm/vma.c      | 15 +++++++++++++++
- 2 files changed, 16 insertions(+), 8 deletions(-)
+ mm/folio.c    |  2 +-
+ mm/internal.h | 10 +++++++---
+ mm/mlock.c    | 51 +++++++++++++++++++--------------------------------
+ mm/rmap.c     |  8 +++++---
+ 4 files changed, 32 insertions(+), 39 deletions(-)
 
+diff --git a/mm/folio.c b/mm/folio.c
+index 47a437e0f7fd..35e242b48870 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -505,7 +505,7 @@ void folio_add_lru_vma(struct folio *folio, struct vm_area_struct *vma)
+ {
+ 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+ 
+-	if (unlikely((vma->vm_flags & (VM_LOCKED | VM_SPECIAL)) == VM_LOCKED))
++	if (vma_test(vma, VMA_LOCKED_BIT))
+ 		mlock_new_folio(folio);
+ 	else
+ 		folio_add_lru(folio);
 diff --git a/mm/internal.h b/mm/internal.h
-index 557e629db8c5..4ae08fedffff 100644
+index 4ae08fedffff..ea8fa94ebe1b 100644
 --- a/mm/internal.h
 +++ b/mm/internal.h
-@@ -970,14 +970,7 @@ void mlock_folio(struct folio *folio);
+@@ -970,8 +970,7 @@ void mlock_folio(struct folio *folio);
  static inline void mlock_vma_folio(struct folio *folio,
  				struct vm_area_struct *vma)
  {
--	/*
--	 * The VM_SPECIAL check here serves two purposes.
--	 * 1) VM_IO check prevents migration from double-counting during mlock.
--	 * 2) Although mmap_region() and mlock_fixup() take care that VM_LOCKED
--	 *    is never left set on a VM_SPECIAL vma, there is an interval while
--	 *    file->f_op->mmap() is using vm_insert_page(s), when VM_LOCKED may
--	 *    still be set while VM_SPECIAL bits are added: so ignore it then.
--	 */
-+	/* The VM_IO check prevents migration from double-counting during mlock. */
- 	if (unlikely((vma->vm_flags & (VM_LOCKED|VM_SPECIAL)) == VM_LOCKED))
+-	/* The VM_IO check prevents migration from double-counting during mlock. */
+-	if (unlikely((vma->vm_flags & (VM_LOCKED|VM_SPECIAL)) == VM_LOCKED))
++	if (vma_test(vma, VMA_LOCKED_BIT))
  		mlock_folio(folio);
  }
-diff --git a/mm/vma.c b/mm/vma.c
-index 39ceb03023e2..6cfda4575997 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -2607,6 +2607,11 @@ static int __mmap_new_file_vma(struct mmap_state *map,
- 	if (!map->vm_file->f_op->mmap)
- 		return 0;
  
+@@ -988,7 +987,12 @@ static inline void munlock_vma_folio(struct folio *folio,
+ 	 * always munlock the folio and page reclaim will correct it
+ 	 * if it's wrong.
+ 	 */
+-	if (unlikely(vma->vm_flags & VM_LOCKED))
 +	/*
-+	 * Driver-specified flags may make the lock flags invalid, so clear
-+	 * VMA_LOCKED_MASK and reinstate it afterwards if appropriate.
++	 * VMA_LOCKONFAULT_BIT alone marks an mlock walk in progress, see
++	 * mlock_vma_pages_range(). An unmap racing with the walk must still
++	 * munlock folios the walk has already counted.
 +	 */
-+	vma_clear_flags_mask(vma, VMA_LOCKED_MASK);
- 	error = mmap_file(vma->vm_file, vma);
- 	map->vm_file = vma->vm_file;
++	if (unlikely(vma_test_any_mask(vma, VMA_LOCKED_MASK)))
+ 		munlock_folio(folio);
+ }
  
-@@ -2629,6 +2634,16 @@ static int __mmap_new_file_vma(struct mmap_state *map,
- 		return error;
- 	}
+diff --git a/mm/mlock.c b/mm/mlock.c
+index 39215a3eab1f..4235a1518fc9 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -316,22 +316,10 @@ static inline unsigned int folio_mlock_step(struct folio *folio,
+ 	return folio_pte_batch(folio, pte, ptent, count);
+ }
  
-+	/*
-+	 * If the VMA is still eligible for mlock(), reinstate any original
-+	 * VMA_LOCKED_BIT and/or VMA_LOCKONFAULT_BIT flags.
-+	 */
-+	if (vma_supports_mlock(vma)) {
-+		const vma_flags_t mask = vma_flags_and_mask(&map->vma_flags, VMA_LOCKED_MASK);
-+
-+		vma_set_flags_mask(vma, mask);
+-static inline bool allow_mlock_munlock(struct folio *folio,
++static inline bool allow_mlock(struct folio *folio,
+ 		struct vm_area_struct *vma, unsigned long start,
+ 		unsigned long end, unsigned int step)
+ {
+-	/*
+-	 * For unlock, allow munlock large folio which is partially
+-	 * mapped to VMA. As it's possible that large folio is
+-	 * mlocked and VMA is split later.
+-	 *
+-	 * During memory pressure, such kind of large folio can
+-	 * be split. And the pages are not in VM_LOCKed VMA
+-	 * can be reclaimed.
+-	 */
+-	if (!vma_test(vma, VMA_LOCKED_BIT))
+-		return true;
+-
+ 	/* folio_within_range() cannot take KSM, but any small folio is OK */
+ 	if (!folio_test_large(folio))
+ 		return true;
+@@ -352,6 +340,7 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
+ 
+ {
+ 	struct vm_area_struct *vma = walk->vma;
++	const bool lock = walk->private;
+ 	spinlock_t *ptl;
+ 	pte_t *start_pte, *pte;
+ 	pte_t ptent;
+@@ -368,7 +357,7 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
+ 		folio = pmd_folio(*pmd);
+ 		if (folio_is_zone_device(folio))
+ 			goto out;
+-		if (vma_test(vma, VMA_LOCKED_BIT))
++		if (lock)
+ 			mlock_folio(folio);
+ 		else
+ 			munlock_folio(folio);
+@@ -390,10 +379,10 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
+ 			continue;
+ 
+ 		step = folio_mlock_step(folio, pte, addr, end);
+-		if (!allow_mlock_munlock(folio, vma, start, end, step))
++		if (lock && !allow_mlock(folio, vma, start, end, step))
+ 			goto next_entry;
+ 
+-		if (vma_test(vma, VMA_LOCKED_BIT))
++		if (lock)
+ 			mlock_folio(folio);
+ 		else
+ 			munlock_folio(folio);
+@@ -428,31 +417,29 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
+ 		.pmd_entry = mlock_pte_range,
+ 		.walk_lock = PGWALK_WRLOCK_VERIFY,
+ 	};
++	const bool lock = vma_flags_test(new_vma_flags, VMA_LOCKED_BIT);
++	vma_flags_t walk_flags = *new_vma_flags;
+ 
+ 	/*
+-	 * There is a slight chance that concurrent page migration,
+-	 * or page reclaim finding a page of this now-VMA_LOCKED_BIT vma,
+-	 * will call mlock_vma_folio() and raise page's mlock_count:
+-	 * double counting, leaving the page unevictable indefinitely.
+-	 * Communicate this danger to mlock_vma_folio() with VMA_IO_BIT,
+-	 * which is a VMA_SPECIAL_FLAGS flag not allowed on VMA_LOCKED_BIT vmas.
+-	 * mmap_lock is held in write mode here, so this weird
+-	 * combination should not be visible to other mmap_lock users;
+-	 * but WRITE_ONCE so rmap walkers must see VMA_IO_BIT if VMA_LOCKED_BIT.
++	 * LOCKONFAULT without LOCKED never otherwise occurs: it marks a walk in
++	 * progress so that rmap-side callers, which test VMA_LOCKED_BIT, do not
++	 * count folios, while try_to_unmap_one(), which tests VMA_LOCKED_MASK,
++	 * still refuses to unmap them.
+ 	 */
+-	if (vma_flags_test(new_vma_flags, VMA_LOCKED_BIT))
+-		vma_flags_set(new_vma_flags, VMA_IO_BIT);
++	if (lock) {
++		vma_flags_clear(&walk_flags, VMA_LOCKED_BIT);
++		vma_flags_set(&walk_flags, VMA_LOCKONFAULT_BIT);
 +	}
 +
- 	map->vma_flags = vma->flags;
+ 	vma_start_write(vma);
+-	vma_flags_reset_once(vma, new_vma_flags);
++	vma_flags_reset_once(vma, &walk_flags);
  
- 	return 0;
+ 	lru_add_drain();
+-	walk_page_range_vma(vma, start, end, &mlock_walk_ops, NULL);
++	walk_page_range_vma(vma, start, end, &mlock_walk_ops, (void *)lock);
+ 	lru_add_drain();
+ 
+-	if (vma_flags_test(new_vma_flags, VMA_IO_BIT)) {
+-		vma_flags_clear(new_vma_flags, VMA_IO_BIT);
++	if (lock)
+ 		vma_flags_reset_once(vma, new_vma_flags);
+-	}
+ }
+ 
+ /*
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 5332c52909be..b4a4b3929044 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2239,9 +2239,11 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 
+ 		/*
+ 		 * If the folio is in an mlock()d vma, we must not swap it out.
++		 * VMA_LOCKONFAULT_BIT alone marks an mlock walk in progress, see
++		 * mlock_vma_pages_range().
+ 		 */
+ 		if (!(flags & TTU_IGNORE_MLOCK) &&
+-		    (vma->vm_flags & VM_LOCKED)) {
++		    vma_test_any_mask(vma, VMA_LOCKED_MASK)) {
+ 			ptes++;
+ 
+ 			/*
+@@ -2395,7 +2397,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 		}
+ finish_unmap:
+ 		folio_remove_rmap_ptes(folio, page, nr_pages, vma);
+-		if (vma->vm_flags & VM_LOCKED)
++		if (vma_test_any_mask(vma, VMA_LOCKED_MASK))
+ 			mlock_drain_local();
+ 		folio_put_refs(folio, nr_pages);
+ 
+@@ -2770,7 +2772,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 			hugetlb_remove_rmap(folio);
+ 		else
+ 			folio_remove_rmap_pte(folio, subpage, vma);
+-		if (vma->vm_flags & VM_LOCKED)
++		if (vma_test_any_mask(vma, VMA_LOCKED_MASK))
+ 			mlock_drain_local();
+ 		folio_put(folio);
+ 	}
 
 -- 
 2.55.0
