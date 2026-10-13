@@ -4,59 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 313ABCA9EDE
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 03:12:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 304BBCA9EDE
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 03:12:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C1976B008C; Mon, 12 Oct 2026 23:12:35 -0400 (EDT)
+	id B1CAD6B0095; Mon, 12 Oct 2026 23:12:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 799216B0096; Mon, 12 Oct 2026 23:12:35 -0400 (EDT)
+	id AF4F96B0096; Mon, 12 Oct 2026 23:12:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C4056B008C; Mon, 12 Oct 2026 23:12:35 -0400 (EDT)
+	id 9E4286B0098; Mon, 12 Oct 2026 23:12:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2274C6B0092
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 23:12:35 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A50A11A0B17
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:12:33 +0000 (UTC)
-X-FDA: 85316130186.18.CD8A318
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C473F180002
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:12:30 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 7965A6B0095
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 23:12:37 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EB8941A0B2F
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:12:36 +0000 (UTC)
+X-FDA: 85316130312.06.6DAB05D
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8C8AD180003
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:12:34 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=iG3LMKi+;
-	spf=pass (imf16.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=S5F0k88r;
+	spf=pass (imf16.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791861152;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vi8x8kQIttn/cG7icAjrqsgg9Nfk4NMWqLP7ng53iWA=;
-	b=UsvZTC0l5EaRM9h7FNw7cxHH1xb+OwPUUWzNsdR4M1o4+nCdENt6OhsgwuIJv08dFJlCbm
-	WoYY9HUpbXZshOeyhSSjz77jB6UnVFtSyhk6fYej9X3dYtxUazmnZkRrGxzpOpPh30PL2l
-	9DH6fZtiqmyjuHrW2wa3wUGm3aRQeDM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791861152;
-	b=Gdm2VJdkiAH/uww6SrEbD/s9ZbBZ2nuIBaxGs03Rpw73BzK2ovyYIjUcsFBpzC+iXNcM98
-	J1mmb0Xy8V0ni077fFdbKZ6FaifFXCCDB2g0mp07goVGumswm+S/CF6bbowmtfMWkxYddJ
-	4LeMEq5xDU6MkgeKRoxGW7OYAjNNYeQ=
+	t=1791861155;
+	b=ps0XhlWQkqsFUQSG6XHRVOT50j4RQfYS+49efRnFih81qKm2y2lcr8Wek6DwViZ1qXw1vV
+	UDFYTVBaSGfzN0YdFj5XvjmPiBqfXtZS2SmFYmtVvQORmLrXPoVcZLFHnFyc38SL3DMaBi
+	men4Py3O4EOqnEENJNZEgVaqV4pWWLA=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=iG3LMKi+;
-	spf=pass (imf16.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=S5F0k88r;
+	spf=pass (imf16.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791861155;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mhdlXR8A75L7YeWWJ2AV4SzYhiaJarkmp87eHXPOcrA=;
+	b=ZGf05IUh3GqlNIQE/Y6mAcjNvooZCDNJazqy3/ZGC4h9pKhj2NqJLqxecWDf/wzGHVJsPA
+	lkc78cKekrtbyK7ufPLVVJ9fl3Q/qXA2buP/c7ICyRn5ae2JVWAzGdVJIcNvyo6yRs8L+J
+	KgdLrYYrVaUBiWjgSZg2n5MUa5XGFl4=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1791861148; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=Vi8x8kQIttn/cG7icAjrqsgg9Nfk4NMWqLP7ng53iWA=;
-	b=iG3LMKi+9GR6NsKZhSTY9hHQAzwqVhuZIzP26jX3uOfaoQKpoRpWjpk0V2XCEx3Uc/Y8Lyy81GTgm568eMMaOG5aRSxoFcgCXVn5Jh0ej/K0xLTUyZNHX70c3fALjquyeYTGIRKgqSlVijLmMAfIvFZaWeJigG0BRgaGMqHNafA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XCkEjd9_1791861145;
-Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XCkEjd9_1791861145 cluster:ay36)
+	t=1791861151; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=mhdlXR8A75L7YeWWJ2AV4SzYhiaJarkmp87eHXPOcrA=;
+	b=S5F0k88rgBf+hdnM0/oGyAWVuzwn25NNh8uMVR2BlLkOyRPPcEIY8G+mj+BWq/2PZaM/wmjP++Ejmpe/edEYrjFAvrjbXl02O14qp8Ju2TTGgT0jwgEl0afL+94tqySRD0JYPCl5RbvMcm4GnPqyuE6pLNIrco0SSnYKytsKSro=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R631e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XCkEjdu_1791861148;
+Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XCkEjdu_1791861148 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 13 Oct 2026 11:12:26 +0800
+          Tue, 13 Oct 2026 11:12:29 +0800
 From: Qinyun Tan <qinyuntan@linux.alibaba.com>
 To: akpm@linux-foundation.org
 Cc: hannes@cmpxchg.org,
@@ -81,22 +82,23 @@ Cc: hannes@cmpxchg.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Qinyun Tan <qinyuntan@linux.alibaba.com>
-Subject: [PATCH v4 2/5] mm: memcontrol: drop kmemcg_id and use mem_cgroup_id() for list_lru indexing
-Date: Tue, 13 Oct 2026 11:12:18 +0800
-Message-ID: <20261013031221.1997194-3-qinyuntan@linux.alibaba.com>
+Subject: [PATCH v4 4/5] mm: thp: restore SHRINKER_NONSLAB on the deferred split shrinker
+Date: Tue, 13 Oct 2026 11:12:20 +0800
+Message-ID: <20261013031221.1997194-5-qinyuntan@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20261013031221.1997194-1-qinyuntan@linux.alibaba.com>
 References: <20261013031221.1997194-1-qinyuntan@linux.alibaba.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C473F180002
+X-Stat-Signature: dqebxzjesazffdx5tem4wkt6johsqm5y
+X-Rspamd-Queue-Id: 8C8AD180003
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: msjj4gjikza4ocigc1jmd9uupgmk7tfp
-X-HE-Tag: 1791861150-698249
-X-HE-Meta: U2FsdGVkX18aPr6C+PzTJ/OlEZopl/nn4JqowvmU0tdpMExa8x8RvLB2wkloj9jKv6U2zhUxdmiRNEp3Ftajofi7RF4KBsDIOHcaxvdQZbazBDFDTeP2cC90IYnVY8S2vrpN9DmZQteEzxp8SrAGlDAvXZjSooDTtfWVYfRuI9+UFZDsHURafEa/WDj7vPLP4/CfMAxU54ouPXEk7tYp16NwyL6pnlPuJ3CcQpv76svlbZO2k3BYv4pk8OGn5dqBNVcPDQTqVjClcrlxlPF+0Q9Yds3l3lVsRzBhGA7LdorqX0XDacSgOk4m0CfXAtm1LI7sTW3IucdULcd4oY8h0P7nllHCjF+KPUbOZeSy94/HS3mxhDCpYY577zpZNrWZpPGRuxO3RZZoftVjy7bRebGRIh9x6S9XUxif0xkMNRHjVxZwabgSNvrSvGODOA6cDWJBzWre5vz8U6CeukY8e3nRU/Uhyb+NPgzAdFEZknVPFKVaDTmzRWL8kMo7PwsjC9P1YUWavUGp3KK9qKK4knjm4C/Khw2PdJ5UzyOGWOo+MRaQAC/ttFWtZxQTxGlAz9fZIvsQu8ii4qsn24DOLWHpDf8P94ecEpn7U/RztYHQJ/tMHXEBrQGSpQmrJI3AgslFrO1dCZMkCgpicP/W8e91F8r97iHF2biaIDKfsw2AMLkmCvDKd36IHjNJfZiNP+qKVdI2gGt6jgFFzYeA8JrQrlp3+MsGKG6nWh6Te4DGHN5FU+RR0bPvB/5KuHyagGVOvdZO2ydrRUzD5qVpew2NmGdGIcWocZcq09fhtEqLGZH2Ww3NWHn804FyIzZR7nkl+MrrPiUprrM1U1+e47iP0t6F2O+V72RDHsCSYxPR08MCf3CYTEQZv5NZnMnySGt7VeFtJkCHjMqOa1dp1+rDl0qtCto4nEqPV//CmBrLaxbG+uxuseuw2kaTh56yIqvuIP4vNdT8TmJwiSq
- O65R7AP5
- gvzcSNu0yXPYOz63QHpV24i5y0qg9N7ym1jji1Vv0rIUjkPglq92bAnCjsnSHZecFsNVAlDwX0eU1i+VpWx9CixCXty1jMeBGK0/5wq9NODbIQMBYXBaXOPwKSbo/Ss/KpBd2bbZMQCkoz9yixvMyNeNXBmb7m2r0Tn4CfXycflHlJH2iwS1FE+UpGs4lBSPQO4V9Eg+ekhuDqeaozSTYNQ1qbE76+cwLifmyKaINTmSd0w9RudQ48iXxUyeKBrUY8jHEFyDIyCjLHN/KR/AMNYUkqbKH1PRfIufc8XRgF2xOsZ4=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791861154-972417
+X-HE-Meta: U2FsdGVkX18QJjKH4NLdUtJRtVqXp5f1txPI4wPbJUamfOKYxr0Dpvj+K4+2BzOMzO/z4rYmtpySK4EBCJnWIMGDydHRPs8pB2ftCBd/7xjW8yrPmacNhzaqQcc4Bv2lZc6al6ZiOkNDqTwK5BKPB9bfxPOcFRio/sIceOSYNyLMMAYHBjWBQjZfq6JRHa2A/dlQqJztilCuVJ0sfBR3MXQxtPcNcQsJOqgr2ZNW7IdiRJOb94hsaA0/opqpksp5ByEg77zVDZ0HPAdq0gVX1s81xknbZQo7KWgaWy2F3ESNdpQhFgEPXbhpA15lfXyZFPqBBDvm/drdwbSQq4rNxFQoEHJZmGj18b/ieKcMTaQxa+VMtEEUftgK6zF2Lz+7flsIFInVW4cu6FEL9ltMokehWNrlF2vcHyn1osA+yGwc9oj3XN16J+tUksaAhZloa+pzDzNK5pHxAbX1/gLM/ZC37aLWLi/ihRJM35Y0ySmXnyWSxyMsSFS6olvbOBoKs8OK173TFmarduaVBpw4SigkUaH3Jpa0Vs6D1GxQRywAvoCn9V9XnBJZbl5tkmTO4ZcYXvH9rcXEDZqL9TnFk7ZJf0WVT8m1Jj9LhbT3t9/dcAn1EaboUSEuLIA8hNQOYSXIuJPby+azP60V0VWOUvLMhebRqUcJykedi4j2krdLH9p/l7+zM/DE8nETuqlRTJBaiZNUee8q3cr3h8ZLvtqBnRrIvvHd13VWRnZT3efpGA30Bf4gNyVt18zn3e62OKlOIa6CbIkIJqqYLdvms8keXnyzI6J2wUzQdCPwWXjMvi/wANPN/AFuZpZ2+9bADQFzScdmu4v0RylMG5dprG8N1xVZWMjVH88S5nYGVmgVO73IvWtwhIfcCP/gIhktu12HLIgmxlL8BZKAQGwdFdHYIUG/RY7i6e2rc3mmKiBlTUwVgVe8dF8vpxwxQA8CCQseh566rxrbfdnEnaU
+ M7K4Fz+M
+ Xxe7AkW3wA5urKy6P+2zHb5/NGSELF9w1yeINyF9+C61pMk0wiPCOJL+fsBUf+d/VF+7rTILp7SEWS8/N9nm2ZrQhneUeWRs5PmWgd+4unyRes+nhDjba55pmIU0X2TySn7BP1e1v+rD1fSa7hT6giq6euaPL/NZvRD58RqDX/Y5laNiSROvODxOTjkElRAWZhqepHiK49NPT5EwJ3ZkavoWMdyDtIBg5Tuu3wNnyIvX7WOnu252eI0GMprZXuY7oFpMJqlsrref5SOmh9O7JaxM94KrazTRwGyO8EklYwukKNjul2tFGwry+Tztt+h2iMju+VQNcryOyMJIZK4rH4m8kSzkpeZl1DXgmgYSVcVMtL9U/bpHjpjTOVhc2W5/nl6I4P8SjRgZGkFa9TRqp+XTqFppmx4uqOigSrcbrOUsdRoIcUk+/UThRtnba1GyeTiUXrJEXDiEwN46vCZckvq6V0i+fs71Qbl0sX0Tmn8rr6WneCReLEC/KMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,231 +106,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kmemcg_id is a copy of the private memcg ID and serves no purpose
-other than indexing the per-memcg list_lru xarray.  It is assigned
-when kmem accounting goes online, which never happens with
-cgroup.memory=nokmem, and the memcgs then all resolve to the
-per-node lists.  The next patch needs the index to work under nokmem
-as well.
+On a system booted with cgroup.memory=nokmem, the deferred split
+shrinker is demoted to a non-memcg-aware one.  As a result, partially
+unmapped THPs are only split under global reclaim; memcg
+(limit-induced) reclaim never splits them, so a cgroup under memory
+pressure keeps its underused THPs intact.
 
-Index the lists with mem_cgroup_id().  The cgroup ID is unique per
-memcg and is only recycled once the cgroup is destroyed, long after
-offlining has erased the xarray entries, so a recycled ID cannot
-resurrect a stale entry.
+The shrinker has carried SHRINKER_NONSLAB since commit 0a432dcbeb32
+("mm: shrinker: make shrinker not depend on memcg kmem") precisely
+so it would keep working with kmem accounting disabled.  Commit
+fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+dropped it knowingly: under nokmem the list_lru collapses into a
+shared per-node list while __list_lru_add() still sets the shrinker
+bit on whichever memcg happens to add the first item, and with the
+flag set the shrinker would run twice per reclaim cycle.
 
-Also drop the nokmem early return from the offline path, so that the
-reparenting covers lrus that stay memcg aware without kmem
-accounting.  memcg_online_kmem() and memcg_offline_kmem() are each
-down to a single statement now; inline them into the css online and
-offline hooks, dropping the root check, as css_offline() is never
-called for the root and a memcg that failed css_online() cannot have
-list_lru entries.
+NONSLAB-backed lrus keep their per-memcg lists under nokmem now, so
+the shrinker bit identifies the owning memcg again.  Restore the
+flag.
 
+This was noticed by Michal during review of the patch "mm/list_lru:
+don't copy stale shrinker id from non-memcg-aware shrinkers".
+
+Link: https://lore.kernel.org/all/ah9PGv12mqai84ES@cmpxchg.org/
+Link: https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@linux.alibaba.com/
+Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+Suggested-by: Michal Koutný <mkoutny@suse.com>
 Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Usama Arif <usama.arif@linux.dev>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 ---
- include/linux/memcontrol.h | 16 --------------
- mm/list_lru.c              | 16 ++++++++------
- mm/memcontrol.c            | 45 +++++++-------------------------------
- 3 files changed, 17 insertions(+), 60 deletions(-)
+ mm/huge_memory.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 74110a324f9e..dc89d46e3d77 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -328,8 +328,6 @@ struct mem_cgroup {
- 	/* Private memcg ID. Used to ID objects that outlive the cgroup */
- 	int private_id;
- 
--	int kmemcg_id;
--
- 	/*
- 	 * Should the OOM killer kill all belonging tasks, had it kill one?
- 	 */
-@@ -1820,15 +1818,6 @@ static inline void memcg_kmem_uncharge_page(struct page *page, int order)
- 		__memcg_kmem_uncharge_page(page, order);
- }
- 
--/*
-- * A helper for accessing memcg's kmem_id, used for getting
-- * corresponding LRU lists.
-- */
--static inline int memcg_kmem_id(const struct mem_cgroup *memcg)
--{
--	return memcg ? memcg->kmemcg_id : -1;
--}
--
- struct mem_cgroup *mem_cgroup_from_virt(void *p);
- 
- static inline void count_objcg_events(struct obj_cgroup *objcg,
-@@ -1896,11 +1885,6 @@ static inline bool memcg_kmem_online(void)
- 	return false;
- }
- 
--static inline int memcg_kmem_id(const struct mem_cgroup *memcg)
--{
--	return -1;
--}
--
- static inline struct mem_cgroup *mem_cgroup_from_virt(void *p)
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index a62d6592af7e..4ddbbdbfcc2d 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1059,7 +1059,8 @@ int folio_memcg_alloc_deferred(struct folio *folio)
+ static int __init thp_shrinker_init(void)
  {
- 	return NULL;
-diff --git a/mm/list_lru.c b/mm/list_lru.c
-index 61248b88441c..8e9577c5cb19 100644
---- a/mm/list_lru.c
-+++ b/mm/list_lru.c
-@@ -39,9 +39,10 @@ static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off,
- 
- static inline unsigned long list_lru_memcg_idx(const struct mem_cgroup *memcg)
- {
--	int idx = memcg_kmem_id(memcg);
-+	if (!memcg || mem_cgroup_is_root(memcg))
-+		return 0;
- 
--	return idx < 0 ? 0 : idx;
-+	return mem_cgroup_id(memcg);
- }
- 
- #ifdef CONFIG_MEMCG
-@@ -548,7 +549,7 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
- 		 * allocating a new mlru since CSS_DYING is already set for this
- 		 * memcg a rcu grace period ago.
- 		 */
--		mlru = xa_load(&lru->xa, memcg->kmemcg_id);
-+		mlru = xa_load(&lru->xa, list_lru_memcg_idx(memcg));
- 		if (!mlru)
- 			continue;
- 
-@@ -563,7 +564,7 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
- 		for_each_node(i)
- 			memcg_reparent_list_lru_one(lru, i, &mlru->node[i], parent);
- 
--		xa_erase_irq(&lru->xa, memcg->kmemcg_id);
-+		xa_erase_irq(&lru->xa, list_lru_memcg_idx(memcg));
- 
- 		/*
- 		 * Here all list_lrus corresponding to the cgroup are guaranteed
-@@ -578,9 +579,10 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
- static inline bool memcg_list_lru_allocated(struct mem_cgroup *memcg,
- 					    struct list_lru *lru)
- {
--	int idx = memcg->kmemcg_id;
-+	if (!memcg || mem_cgroup_is_root(memcg))
-+		return true;
- 
--	return idx < 0 || xa_load(&lru->xa, idx);
-+	return xa_load(&lru->xa, list_lru_memcg_idx(memcg));
- }
- 
- static int __memcg_list_lru_alloc(struct mem_cgroup *memcg,
-@@ -614,7 +616,7 @@ static int __memcg_list_lru_alloc(struct mem_cgroup *memcg,
- 			if (!mlru)
- 				return -ENOMEM;
- 		}
--		xas_set(&xas, pos->kmemcg_id);
-+		xas_set(&xas, list_lru_memcg_idx(pos));
- 		do {
- 			xas_lock_irqsave(&xas, flags);
- 			if (!xas_load(&xas) && !css_is_dying(&pos->css)) {
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index aad0498a7bd6..fcba9eb55659 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3807,33 +3807,6 @@ void folio_split_memcg_refs(struct folio *folio, unsigned old_order,
- 	obj_cgroup_get_many(folio_objcg(folio), new_refs);
- }
- 
--static void memcg_online_kmem(struct mem_cgroup *memcg)
--{
--	if (mem_cgroup_kmem_disabled())
--		return;
--
--	if (unlikely(mem_cgroup_is_root(memcg)))
--		return;
--
--	static_branch_enable(&memcg_kmem_online_key);
--
--	memcg->kmemcg_id = memcg->private_id;
--}
--
--static void memcg_offline_kmem(struct mem_cgroup *memcg)
--{
--	struct mem_cgroup *parent;
--
--	if (mem_cgroup_kmem_disabled())
--		return;
--
--	if (unlikely(mem_cgroup_is_root(memcg)))
--		return;
--
--	parent = parent_mem_cgroup(memcg);
--	memcg_reparent_list_lrus(memcg, parent);
--}
--
- #ifdef CONFIG_CGROUP_WRITEBACK
- 
- #include <trace/events/writeback.h>
-@@ -4309,7 +4282,6 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
- 	seqlock_init(&memcg->socket_pressure_seqlock);
- #endif
- 	memcg1_memcg_init(memcg);
--	memcg->kmemcg_id = -1;
- #ifdef CONFIG_CGROUP_WRITEBACK
- 	INIT_LIST_HEAD(&memcg->cgwb_list);
- 	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
-@@ -4383,7 +4355,8 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
- 	struct obj_cgroup *objcg;
- 	int nid;
- 
--	memcg_online_kmem(memcg);
-+	if (!mem_cgroup_kmem_disabled() && likely(!mem_cgroup_is_root(memcg)))
-+		static_branch_enable(&memcg_kmem_online_key);
- 
- 	/*
- 	 * A memcg must be visible for expand_shrinker_info()
-@@ -4391,7 +4364,7 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
- 	 * here, when mem_cgroup_iter() can't skip it.
- 	 */
- 	if (alloc_shrinker_info(memcg))
--		goto offline_kmem;
-+		goto reparent_lrus;
- 
- 	for_each_node(nid) {
- 		objcg = obj_cgroup_alloc();
-@@ -4449,8 +4422,8 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
- 		}
- 	}
- 	free_shrinker_info(memcg);
--offline_kmem:
--	memcg_offline_kmem(memcg);
-+reparent_lrus:
-+	memcg_reparent_list_lrus(memcg, parent_mem_cgroup(memcg));
- 	mem_cgroup_private_id_remove(memcg);
- 	return -ENOMEM;
- }
-@@ -4466,11 +4439,11 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
- 
- 	zswap_memcg_offline_cleanup(memcg);
- 
--	memcg_offline_kmem(memcg);
-+	memcg_reparent_list_lrus(memcg, parent_mem_cgroup(memcg));
- 	/*
- 	 * The reparenting of objcg must be after the reparenting of
--	 * the list_lru in memcg_offline_kmem(), which ensures that
--	 * they will not mistakenly get the parent list_lru.
-+	 * the list_lru above, which ensures that they will not
-+	 * mistakenly get the parent list_lru.
- 	 */
- 	memcg_reparent_objcgs(memcg);
- 	reparent_shrinker_deferred(memcg);
-@@ -5913,8 +5886,6 @@ static void __init memcg_struct_check(void)
- 				      private_id_objcg);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
- 				      private_id);
--	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
--				      kmemcg_id);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
- 				      oom_group);
- 
+ 	deferred_split_shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE |
+-						 SHRINKER_MEMCG_AWARE,
++						 SHRINKER_MEMCG_AWARE |
++						 SHRINKER_NONSLAB,
+ 						 "thp-deferred_split");
+ 	if (!deferred_split_shrinker)
+ 		return -ENOMEM;
 -- 
 2.43.7
 
