@@ -4,137 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC98CC6B12
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 18:15:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83BF6CC6B12
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 18:42:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C82666B0088; Tue, 13 Oct 2026 14:15:53 -0400 (EDT)
+	id E85286B0088; Tue, 13 Oct 2026 14:42:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C31E36B008A; Tue, 13 Oct 2026 14:15:53 -0400 (EDT)
+	id E35F76B008A; Tue, 13 Oct 2026 14:42:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B217E6B008C; Tue, 13 Oct 2026 14:15:53 -0400 (EDT)
+	id D24796B008C; Tue, 13 Oct 2026 14:42:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 84C576B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:15:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E2AAB1A0154
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:15:50 +0000 (UTC)
-X-FDA: 85318406460.14.0F9EB36
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 10245160005
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:15:48 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c8L5vrQe;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id AD5766B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:42:28 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C061401CE
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:42:27 +0000 (UTC)
+X-FDA: 85318473534.12.69E218D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 76B8018000F
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 18:42:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=M1r64E7W;
+	spf=pass (imf16.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791915349;
-	b=bdD3quZA8PwUQyiGrjFBiwUtz5ExdPViYwlp+rZMEOXfuSM0aoiDpuhVYf1kpjzlSeZfd7
-	sxhOH3envw7ZXPDBetyV2rCUYNbbho0uvlf9V0bl23P3wRMEslwrHkTwMBzLuJJ1Fj2GPs
-	85n3a4DikdG99+8OmN6Lhh9YV5Uo1GQ=
+	t=1791916945;
+	b=sQzxVWl/woERtse2g7kBmLC5MzO6L8Np2+ptU8Fe0SavsKb4rQi7vqZIPCT0JHNPLmyK+t
+	5sXZaOCH50l0hC1NhkumZmUtIGzanavLm18mUfxCwbzd8+9TPYBO/8Hr52LQJgJfVCOcU9
+	QHFQKhNJCzP6fdbKroWGWJPo22yEDuw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c8L5vrQe;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=M1r64E7W;
+	spf=pass (imf16.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791915349;
+	s=arc-20220608; t=1791916945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7eFeDKak6G7QTjlikd0utMlJUAH18N9G3C9/xQ9npw4=;
-	b=4D9zPWavUbvqTQahudcxiwlchWApQymqu6HBCTSEDkP/mbXgJrG+8xDNPaRINNcn1KsyHL
-	LZHff/IFflLGDULUTlgAj2zx4WGfZBVAGFCOlYBVrl4vyCme8FYcB3FJD9+ZNl4SsfbSLh
-	spGF6TBTxvq+pSxW2UV5RZmDFDhILxA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 32248602C3;
-	Tue, 13 Oct 2026 18:15:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDE11F000FF;
-	Tue, 13 Oct 2026 18:15:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791915347;
-	bh=7eFeDKak6G7QTjlikd0utMlJUAH18N9G3C9/xQ9npw4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=c8L5vrQeu1NmmlEVpcK56QAFDFhRdM74zac3J76d3JD5avcFrlJ00RHf0Vl9jjQ38
-	 I4cvg6Q0xuE+R2BxeJ6pZFpQAzgGejak0ZZK9B6dcUP+gbTpuCNUTR1+GPGo3U0f2X
-	 jhh+qlHgIZJ5UYZrTdBefc/TL2GWdGQvhnpsO49LmpgtWV7O7lyg9SyNbQ52Z1XRIG
-	 amPmILGpJerZa7hqiPyW/5cEtBVUG3xbnZR7+NECMTJv2bswIOdNP7MOn8QkHfEFr2
-	 9wCKs4S0BgKwfXuf50OptGV7Ke3J7zcIovRwUvpmlaEr16tTTXD2I+SKL5I4ycdTyK
-	 KqEwGxlDlUjLw==
-Message-ID: <1f765ae3-434c-4e65-b749-c1e71cce7f33@kernel.org>
-Date: Tue, 13 Oct 2026 20:15:42 +0200
+	bh=80AR4TAf+vs7NocPMRnVExSsUnf20bCqt7kiTt1ZlnE=;
+	b=gCTRjlU3FlYEVoLOjgeHu0VtVcptKfD3lSadE92CcBxh3FKyjM5T4GvUo66zWRb1kPucSx
+	O0DIv6L99AI6UFFNoLKHXeLNwXheiVGO1qgDLMSw6QX7nzWfBfgX2DhThmx9FkIULlDp86
+	E/4idco/b9UBHIPUZHu+46NsU2F+Mhs=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F3F4F1655;
+	Tue, 13 Oct 2026 11:42:20 -0700 (PDT)
+Received: from [IPV6:2409:40f2:30f:5cfa:fb93:6d70:e88:a98a] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8ADB43F871;
+	Tue, 13 Oct 2026 11:42:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791916944; bh=DoEd1I4VdjTi+cM8P8AT1zLGlcJcvJGNM3epjZG8BgY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=M1r64E7W8Yo9f8lxK5X2h+mMTqT4jrETX2jPo0Yt6R+E+LBUIE4Zc4FnkFWQdTm/G
+	 6UYhZiXhHwzpYPKTObb2a/RO1H19NmwRV0yPDFONUheHhkcWIyQ3ea/xEQMIRiknU0
+	 +0zz1/bokqGGSeColpkd3gzN4ivrif6CK6rBiQyY=
+Message-ID: <aca0492c-f0d3-4ba7-8671-32952ceff913@arm.com>
+Date: Wed, 14 Oct 2026 00:12:08 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
- promoted order
+Subject: Re: [PATCH v7 2/3] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT
+ macro
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
+References: <20261013-fix_hpage_macro-v7-0-3d77129e0557@arm.com>
+ <20261013-fix_hpage_macro-v7-2-3d77129e0557@arm.com>
+ <b3f2a0bf-7b41-4cc9-958e-34f1a88ff5bf@arm.com>
+ <as48D1SnImCro_Cb@e129823.arm.com>
 Content-Language: en-US
-To: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand
- <david@kernel.org>, Harry Yoo <harry@kernel.org>,
- Usama Arif <usama.arif@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- kernel-team@meta.com
-References: <20261009125503.126202-1-kas@kernel.org>
- <15a9e03e-c748-4e51-b8cc-583a3610c897@kernel.org>
- <20261012192834.6934ef85444dee4a60d6d876@linux-foundation.org>
- <as5q14OsbK2CmOrh@thinkstation>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <as5q14OsbK2CmOrh@thinkstation>
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+In-Reply-To: <as48D1SnImCro_Cb@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: eqtikyuii3dbt76ienixyfhmjt5jfque
+X-Rspamd-Queue-Id: 76B8018000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 10245160005
-X-Stat-Signature: yo5c76z3cbynajx6jx9jz1p754f3rahe
-X-HE-Tag: 1791915348-886300
-X-HE-Meta: U2FsdGVkX1+jyFcdP7x7cVMJcFAeXiHnlLmrJwOLjefYIh5EugTrP2ru3igvztwjfjCYWcQscTXvv2BR7vPOlqoFwYCr+0AbHao+fV13Suj/wVLy2WteSuXzj5V4b+qmoX9eOOW1x4liTdHOvh+yp15rotbefNrPDD1a+UwWxwgyCVfIp4VlqGA5wuh23JbLeFsYGa5LxWv8rQO+w9i6FjtWXGzqGwwqVXW99u1Q/67nIEXeKUVkUOe/6lOVSILsq4stSI+l0B6M7JrUo9OGrb995mj8aHoGpMMzWp7GLRwbv2JFKRYlUmM1ODf49rNwFZFjrnYoFs2FLDfkRz1qkJKwfMi3yCkpC1A4jc5vquGGsj32W/vS9pB8/97KrzGBXIUXNdKWSyHwCrFS93R9FV2a/7GECaSmqvLIb6G1wHwVVYxL4lBiqCvY5uz6VbMckm0/fqMtsVMS11TxMCoiIw2ym/6Tn2hL3idJMF5EU4lwpiZSGh3k5O6u/y66tPbNHIxKcm2rVLV/qVUVaobdcsu8jCkNV6MIxKy+XxMyF1agNzHSQ9JyX5P/69H3Z8o4VaUJbaZpKWQm+bAv4pmXP/fbs+chZqo1ra5Zy06z8Z3c4CyKSzTcZquI5heaibKPDz2HQJyEDppUmFYIy6TBhR2yK2aUdtzY/MTEF7SVoDdGPkjcFhvVrthrlwAVE63BApE3SSjc30GPJ1fQoHI5MHU6bKo63HMdcgrfr2mr3QW03Dv4SiHsYJeMP8YRs4rSOGiZkR3OT14dcZGv8XWY4E11Ezgao9oXVHk2S5pAvayGa/xi+8Ufv1BO2gsvsMhDUKdvOZ3eh5rjenbvlqei9yeCT2e7j0MLHa5TNdhfZ94dyTlTndvbGPCKkGrWoq9qhe0MHu/72zh8bUJNkouEfB3Zh+zWfSZvgRJi+3bdBzFKs0GB4FbvPqbarEykfHWzXcyGERjQrvNSVmW/Di/
- b2NICmfo
- J42lCFf1wy0LRTFukMofsp8o+BnxVKSxXFAbCF6o9yPs6UQb+zIq2P4e9BssszpTvuylaR/uxt5+qjqVI9FhymKo4SwgT6BYF/UNiNNqP695RwpbLR3kNBileEllIG9518isYM2K/BW1sZ0XBu/aa7bU/WpN/cfazq3t/wJIrVg4+zZ2xY/tMnhPuuxLytB2uxkNV2nVlN2XQnLDgVOm7A7sanCDcImmjxNNpjb0jy3N6tG6OJXwwrxBKG+NrTG3W/bb/xB9k/TcnpdG4uq5xt2lQ8GftL8lklIQu8EzgHtpU31SjosMiEcRSmlpjRl3wfftSeA3JYMlSJaZdIrc9rgJHODMf5tqsNXDABLMEdtLgSTU5lK0NfUwoYfX3IE0EsYtXfD1bI49yCBY=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791916945-106104
+X-HE-Meta: U2FsdGVkX1/JA0691kyOj7/8A6H9hwcTgDQwUTXd9FInFlgtQsXmoYvpA+dJfRkrodlVhO1mbLCP7Pa5X9v2okrbjY+PJ1Tkf/V0myM8YPVO2FSLm+VNYqcUo7qBrL2jZQgbAVrKTp+v0xCGv0tosnOg1raZ0dyr9JE7SC20/xZXoJ+a233g5euv4zFuqoeftSuSqVwtp08TsoQcceW7g2Q7c4qMhGObtAyzLmuaNDp3cZ2/maNbqGXInq7Vzao/8b3HYe8OQom+OCSaLspVB0iArkdJXUyWerhVkIqifpNqBj3ax5JvVmIjxx43KQxE1K8+ggnCV+Qbz2paaSbFy+CmDqvKByGO6u1q8wsRc/F2Y9zSqlcU/uCxeELQfFM/1xm2b1ld9+JLw9lFgX1bEjqxxAGDW6XGk6yjsDTZw+HyzCKEFby+Lem35Q26rFeXADC85RiFWdeoAgICMb6xBzqcRl7Su/JQSoWPNo5gtitkY/NqQfCaMXJLBYRDTvqzn8iiLg1IvVzmcbzlUZd///Yuflv5cl3iwrNlX4xTfj2t21n7l4qyQ5X8WIwuQCdBm9Cq4HLNRy0ifSIdvs3T/m1LOp3CBe6t+mi8WW7S+G55YUE6aDo8a17VSJzJCtmcguVECrwbw6s5tPdA5tTogRn9tFjwhRYW8LKmyRlViCVB5WeVsTTbNDudkTzBAkPayX/fMJCSBRWRxDoU3ljhVh4IN+fw9UT9q9PfAYodLxicWxtIo3Y5UOca8TxV11DxlZAXpuIYiGwcStmg1asqJoB8H/DVlHRBDsowXbUoIzScR1KMk47Fb1ITwmqrZ3iHgGvCRsbQH8psvy3TURM06d92SYuaCYF4l4G/rZ51qRoGNxN3k0kHlzAmYq0XFhJkmu8VNoFRNzsJjcXl/RofD7uKA6+ECbDy7AQEQ7khItsFPgKhSX+aYcD/qfUjWLXytKQwj9SYlfDLS9kSi/W
+ 5UTLrynE
+ t7DziA7mB55UAD4Gc8XtIKwHSmfV50HZdHsC/9EehVCjoD0X0NOwh4dOuYQ1ZJddbEjq1YIqEuOqtP1+bsdFV03sUPxmzuYHJFyE1dqQtpK4GIZMCNF/U+PfkKlcDpQ6KlbvySZwZufgPaM2A8n38PXqDlgcV45Y8GY0V6ODSaDqMP3B/eqe9oDO+eijSCA6yuq1gTeqy79KJkGRJYor8wwmQlsSQzWTcY3Ofyf7R70+cEqVOesitlrufprJyDkmAWu/Mlu+f9MZIC13EoVbvk/HBdO21csQjrr/aAqG/nkOtwhrC21WjweqsQl5DDZiRkT2hZxfKoM7zk0U9KLJgwbUE3m64Ltzy9+qDKqMRWHdTPJXN8Yf135r9G28khwq1MnGgSXvPmeg43xU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,289 +104,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/13/26 19:37, Kiryl Shutsemau wrote:
-> On Mon, Oct 12, 2026 at 07:28:34PM -0700, Andrew Morton wrote:
->> On Mon, 12 Oct 2026 13:40:36 +0200 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
->> 
->> > > In a VM reproducer (32G, defrag_mode, inode churn under memory.low):
->> > > 
->> > >                                         before    after
->> > >     should_reclaim_retry() calls           63M     293k
->> > >     peak memory pressure (PSI some avg10)  99%      12%
->> > > 
->> > > File creation runs 5.7x faster.
->> > > 
->> > > Fixes: 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim storm in defrag_mode")
->> > > Cc: stable@vger.kernel.org
->> > > Assisted-by: LLM
->> > > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
->> > 
->> > LGTM, but I think we could simplify and get rid of all the function
->> > parameter additions by adding a field to alloc_context instead? We could
->> > call it e.g. reclaim_compact_order.
->> > 
->> > The function nofrag_promote_order() probably doesn't need to exist, given it
->> > has just one caller, could be just open coded.
->> > 
->> > What could be useful instead is wrapper for comparing order vs
->> > ac->reclaim_compact_order. E.g. something like bool
->> > order_nofrag_promoted(order, ac) ?
->> 
->> I'm concerned about the sheer size of this patch.  It fixes significant
->> issues, but it's not going to be a simple or safe backport.
->> 
->> So for now please let's optimize for simplicity and backportability and
->> defer cleanups for the -rc cycle.
->> 
->> Of course, if the changes you suggest achieve that then go for it.
-> 
-> They do. The patch with Vlastimil's suggestion is below. It is shorter.
-> Behaviour is unchanged; the reproducer gives the same results on both
-> versions.
-> 
-> Vlastimil, does it look like what you had in mind?
 
-Yeah LGTM.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+On 10/13/26 7:41 PM, Yeoreum Yun wrote:
+>> Hi Yeoreum!
+>>
+>> On 10/13/26 4:07 PM, Yeoreum Yun wrote:
+>>> HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
+>>> When this macro is used in some test, test result would be strange in
+>>> the system where PAGE_SIZE is more then 4KB.
+>>>
+>>> Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
+>>>
+>>>   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
+>>>     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
+>>>     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>>>     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>>>     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>>>     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>>>     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>>>     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>>>     ...
+>>>   ok 1 Completed
+>>>
+>>> Remove the HPAGE_SIZE and HPAGE_SHIFT macro and introduce pmd_pshift()
+>>> helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
+>>> helper, pmd_psize().
+>>>
+>>> Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
+>>> which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
+>>> and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
+>>> PMD-sized units, the test may fail with the previous size of 100 MiB,
+>>> which is not a multiple of the PMD size when the base page size is
+>>> 16 KiB or 64 KiB.
+>>>
+>>> After this patch, output of transhuge-stress:
+>>>
+>>>   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
+>>>     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+>>>     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+>>>     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+>>>     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
+>>>     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
+>>>     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
+>>>     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
+>>>     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
+>>>     ...
+>>>   ok 1 Completed
+>>>
+>>> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+>>> ---
+>>>  tools/testing/selftests/mm/guard-regions.c    | 10 +++++--
+>>>  tools/testing/selftests/mm/ksm_tests.c        | 16 ++++++-----
+>>>  tools/testing/selftests/mm/run_vmtests.sh     |  4 +--
+>>>  tools/testing/selftests/mm/transhuge-stress.c | 25 +++++++++++-------
+>>>  tools/testing/selftests/mm/vm_util.c          | 38 +++++++++++++++++++++++----
+>>>  tools/testing/selftests/mm/vm_util.h          |  9 +++----
+>>>  6 files changed, 71 insertions(+), 31 deletions(-)
+>>>
+>>> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
+>>> index f7d53ea3c2527..02f69244f9a42 100644
+>>> --- a/tools/testing/selftests/mm/guard-regions.c
+>>> +++ b/tools/testing/selftests/mm/guard-regions.c
+>>> @@ -2194,14 +2194,20 @@ TEST_F(guard_regions, pagemap_scan)
+>>>  TEST_F(guard_regions, collapse)
+>>>  {
+>>>  	const unsigned long page_size = self->page_size;
+>>> -	const unsigned long size = 2 * HPAGE_SIZE;
+>>> -	const unsigned long num_pages = size / page_size;
+>>> +	const uint64_t hpage_size = pmd_psize();
+>>> +	unsigned long size, num_pages;
+>>>  	char *ptr;
+>>>  	int i;
+>>>  
+>>>  	if (!thp_available())
+>>>  		SKIP(return, "Transparent Hugepages not available\n");
+>>>  
+>>> +	if (!hpage_size)
+>>> +		ksft_exit_fail_msg("reading hpage_size failed\n");
+>>
+>> I'm sorry for not catching this earlier, but I don't think calling a
+>> ksft_exit_fail_msg() for not being able to calculate PMD size is a good
+>> idea. Maybe call an ASSERT*() here, something like
+>>
+>> ASSERT_NE(hpage_size, 0);
+>>
+>> so that just this test fails, instead of the whole run exiting with a
+>> bail out?
+> 
+> No. The failure would occur if open() or read() fails, and subsequent
+> attempts would likely fail for the same reason.
 
-> 
->> Perhaps we should defer this change into next -rc?  It has cc:stable so
->> it'll eventually end up where we want it.
-> 
-> Do you mean the next -rc cycle? I hoped to get it into 7.4-rc1, as we
-> agreed earlier.
+I think I couldn't clearly explain my concern. Let me put it again,
+please let me know if I am missing something.
 
-We're fixing a 7.3 commit that went into the stable trees. Too late to rush
-for the 7.3 final though. The impact is mitigated by defrag_mode not being
-default, so it's fine to fix it in 7.3.x. Thus 7.4-rc1 would be great, rc2
-could also work, but wouldn't delay more. I read the merge window might be 3
-weeks this time [1] so perhaps rc1 is comfortable in any case.
+I was mistaken, on checking I found that guard_regions runs each test in
+a separate child process. So calling ksft_exit_fail_msg() won't exit the
+whole test run.
 
-[1] https://lwn.net/Articles/1099594
+To reproduce the case, I bind mounted /dev/null over
+/sys/kernel/mm/transparent_hugepage/hpage_pmd_size in a QEMU so that
+pmd_psize() returns 0. Then on running ./guard_regions (your patches
+applied), I got this output (putting relevant section of that since the
+log is quite long):
 
-> 
-> ----------------------------------->8----------------------------------
-> 
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> Subject: [PATCH v4] mm: page_alloc: make defrag_mode retries follow the promoted order
-> 
-> Since commit 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim
-> storm in defrag_mode"), direct reclaim and compaction for non-movable
-> requests under defrag_mode run at pageblock_order, to produce the whole
-> blocks that ALLOC_NOFRAGMENT needs. The retry decisions that follow
-> still use the request order. An order-0 request can therefore retry
-> indefinitely without ever reaching the ALLOC_NOFRAGMENT fallback:
-> 
-> - Reclaim at pageblock_order gives up after one pass as soon as a zone
->   looks compaction_ready(), and do_try_to_free_pages() then returns 1
->   even though nothing was reclaimed. It returns before the retry that
->   would reclaim memory.low-protected cgroups, so when most memory is
->   protected, the pass that did run finds next to nothing.
-> 
-> - Compaction at pageblock_order fails or is deferred.
-> 
-> - should_reclaim_retry() takes the reported progress as progress for
->   the order-0 request and resets no_progress_loops. The request
->   retries.
-> 
-> Order 1-3 requests loop the same way, and should_compact_retry() also
-> checks their pageblock_order compaction result against the request
-> order.
-> 
-> On a production host (64G, defrag_mode, memory.low covering most of the
-> workload), 95% of direct reclaim runs were order-9 runs that returned 1
-> with nothing reclaimed, at up to 60k runs per second. Across ~200M
-> should_reclaim_retry() calls in a day, no_progress_loops never left 0.
-> The spinning allocations were SLUB slab refills for inode and dentry
-> caches. The time spent registers as memory pressure, and pressure-based
-> OOM killing takes down both workloads and system services.
-> 
-> For promoted requests:
-> 
-> - Reclaim progress does not reset no_progress_loops, as for costly
->   orders.
-> 
-> - should_compact_retry() checks the compaction result at the promoted
->   order and does not retry COMPACT_SKIPPED, since the request can fall
->   back. The compaction priority floor and the COMPACT_SUCCESS retry
->   limit stay those of the request order, so a non-costly request still
->   gets its COMPACT_PRIO_SYNC_FULL pass before it falls back.
-> 
-> When a promoted request takes the fallback, reset the retry counters,
-> so that the fallback attempt gets a full retry budget before the OOM
-> killer is considered. A request whose reclaim was not promoted spent
-> its budget on the request itself and keeps its counters, as Usama Arif
-> pointed out.
-> 
-> __alloc_pages_slowpath() computes the promoted order once per iteration
-> and keeps it in alloc_context for direct reclaim, direct compaction and
-> the two retry helpers, so no callee has to recompute it. Harry Yoo asked
-> for the promoted order to be explicit rather than derived in each
-> callee, and Vlastimil Babka suggested alloc_context over new function
-> parameters.
-> 
-> In a VM reproducer (32G, defrag_mode, inode churn under memory.low):
-> 
->                                         before    after
->     should_reclaim_retry() calls           63M     293k
->     peak memory pressure (PSI some avg10)  99%      12%
-> 
-> File creation runs 5.7x faster.
-> 
-> Fixes: 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim storm in defrag_mode")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
-> v4:
->  - keep the promoted order in alloc_context instead of passing it as a
->    new parameter (Vlastimil Babka)
-> 
->  mm/page_alloc.c | 65 +++++++++++++++++++++++++++++--------------------
->  mm/page_alloc.h |  2 ++
->  2 files changed, 41 insertions(+), 26 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 12fac9084c48..c593913a14f8 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4127,6 +4127,12 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
->  	return page;
->  }
->  
-> +static inline bool order_nofrag_promoted(unsigned int order,
-> +					 const struct alloc_context *ac)
-> +{
-> +	return ac->reclaim_compact_order != order;
-> +}
-> +
->  /*
->   * Maximum number of compaction retries with a progress before OOM
->   * killer is consider as the only way to move forward.
-> @@ -4149,22 +4155,7 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
->  		.order = order,
->  		.page = NULL,
->  	};
-> -	int compact_order = order;
-> -
-> -	/*
-> -	 * If fallbacks are not permitted (defrag_mode), we either
-> -	 * need to reclaim space in a block of matching type, or clear
-> -	 * out an entire block to allow __rmqueue_claim() to convert.
-> -	 *
-> -	 * Reclaim by itself is primarily freeing space in movable
-> -	 * blocks, since that's where the LRU pages live. So this
-> -	 * works for movable requests, but not for others.
-> -	 *
-> -	 * For those, promote the order to help make blocks, instead
-> -	 * of spinning in reclaim alone unproductively.
-> -	 */
-> -	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
-> -		compact_order = max(order, pageblock_order);
-> +	int compact_order = ac->reclaim_compact_order;
->  
->  	if (!compact_order)
->  		return NULL;
-> @@ -4257,7 +4248,7 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
->  	int retries = *compaction_retries;
->  	enum compact_priority priority = *compact_priority;
->  
-> -	if (!order)
-> +	if (!ac->reclaim_compact_order)
->  		return false;
->  
->  	if (fatal_signal_pending(current))
-> @@ -4266,10 +4257,12 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
->  	/*
->  	 * Compaction was skipped due to a lack of free order-0
->  	 * migration targets. Continue if reclaim can help.
-> +	 * Promoted requests fall back instead.
->  	 */
->  	if (compact_result == COMPACT_SKIPPED) {
-> -		ret = compaction_zonelist_suitable(ac, order, alloc_flags,
-> -						   gfp_mask);
-> +		if (!order_nofrag_promoted(order, ac))
-> +			ret = compaction_zonelist_suitable(ac, order,
-> +							   alloc_flags, gfp_mask);
->  		goto out;
->  	}
->  
-> @@ -4468,11 +4461,7 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask, unsigned int order,
->  	struct page *page = NULL;
->  	unsigned long pflags;
->  	bool drained = false;
-> -	int reclaim_order = order;
-> -
-> -	/* Match the slowpath compaction promotion in __alloc_pages_direct_compact */
-> -	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
-> -		reclaim_order = max(order, pageblock_order);
-> +	int reclaim_order = ac->reclaim_compact_order;
->  
->  	psi_memstall_enter(&pflags);
->  	*did_some_progress = __perform_reclaim(gfp_mask, reclaim_order, ac);
-> @@ -4648,9 +4637,12 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
->  	/*
->  	 * Costly allocations might have made a progress but this doesn't mean
->  	 * their order will become available due to high fragmentation so
-> -	 * always increment the no progress counter for them
-> +	 * always increment the no progress counter for them. The same goes for
-> +	 * promoted requests: their reclaim reports progress when it backs off
-> +	 * for compaction without freeing anything.
->  	 */
-> -	if (did_some_progress && order <= PAGE_ALLOC_COSTLY_ORDER)
-> +	if (did_some_progress && order <= PAGE_ALLOC_COSTLY_ORDER &&
-> +	    !order_nofrag_promoted(order, ac))
->  		*no_progress_loops = 0;
->  	else
->  		(*no_progress_loops)++;
-> @@ -4934,6 +4926,22 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  	/* If allocation has taken excessively long, warn about it */
->  	check_alloc_stall_warn(gfp_mask, ac->nodemask, order, alloc_start_time);
->  
-> +	/*
-> +	 * If fallbacks are not permitted (defrag_mode), we either
-> +	 * need to reclaim space in a block of matching type, or clear
-> +	 * out an entire block to allow __rmqueue_claim() to convert.
-> +	 *
-> +	 * Reclaim by itself is primarily freeing space in movable
-> +	 * blocks, since that's where the LRU pages live. So this
-> +	 * works for movable requests, but not for others.
-> +	 *
-> +	 * For those, promote the order to help make blocks, instead
-> +	 * of spinning in reclaim alone unproductively.
-> +	 */
-> +	ac->reclaim_compact_order = order;
-> +	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
-> +		ac->reclaim_compact_order = max(order, pageblock_order);
-> +
->  	/* Try direct reclaim and then allocating */
->  	if (!compact_first) {
->  		page = __alloc_pages_direct_reclaim(gfp_mask, order, alloc_flags,
-> @@ -5015,6 +5023,11 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  	/* Reclaim/compaction failed to prevent the fallback */
->  	if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT)) {
->  		alloc_flags &= ~ALLOC_NOFRAGMENT;
-> +		/* Retries went into making blocks, start the fallback afresh */
-> +		if (order_nofrag_promoted(order, ac)) {
-> +			no_progress_loops = 0;
-> +			compaction_retries = 0;
-> +		}
->  		goto retry;
->  	}
->  
-> diff --git a/mm/page_alloc.h b/mm/page_alloc.h
-> index b9259deddb59..2b1017a91928 100644
-> --- a/mm/page_alloc.h
-> +++ b/mm/page_alloc.h
-> @@ -93,6 +93,8 @@ struct alloc_context {
->  	bool spread_dirty_pages;
->  	/* Only flags that are global to the whole allocation go here. */
->  	unsigned int alloc_flags;
-> +	/* Set by __alloc_pages_slowpath() before reclaim and compaction */
-> +	unsigned int reclaim_compact_order;
->  };
->  
->  /*
+
+#  RUN           guard_regions.anon.collapse ...
+Bail out! reading hpage_size failed
+# Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+# collapse: Test failed
+#          FAIL  guard_regions.anon.collapse
+not ok 29 guard_regions.anon.collapse
+.
+.
+ok 58 guard_regions.shmem.pagemap_scan
+#  RUN           guard_regions.shmem.collapse ...
+Bail out! reading hpage_size failed
+# Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+# collapse: Test failed
+#          FAIL  guard_regions.shmem.collapse
+not ok 59 guard_regions.shmem.collapse
+.
+.
+#  RUN           guard_regions.file.collapse ...
+Bail out! reading hpage_size failed
+# Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+# collapse: Test failed
+#          FAIL  guard_regions.file.collapse
+not ok 89 guard_regions.file.collapse
+#  RUN           guard_regions.file.smaps ...
+#            OK  guard_regions.file.smaps
+ok 90 guard_regions.file.smaps
+# FAILED: 87 / 90 tests passed.
+# 19 skipped test(s) detected. Consider enabling relevant config options
+to improve coverage.
+# Totals: pass:68 fail:3 xfail:0 xpass:0 skip:19 error:0
+
+
+which looks weird with all the bailouts. On the other hand, if we
+replace the ksft_exit_fail_msg() with ASSERT_NE(), here's the output we get:
+
+
+#  RUN           guard_regions.anon.collapse ...
+# guard-regions.c:2205:collapse:Expected hpage_size (0) != 0 (0)
+# collapse: Test terminated by assertion
+#          FAIL  guard_regions.anon.collapse
+not ok 29 guard_regions.anon.collapse
+.
+.
+ok 58 guard_regions.shmem.pagemap_scan
+#  RUN           guard_regions.shmem.collapse ...
+# guard-regions.c:2205:collapse:Expected hpage_size (0) != 0 (0)
+# collapse: Test terminated by assertion
+#          FAIL  guard_regions.shmem.collapse
+not ok 59 guard_regions.shmem.collapse
+.
+.
+#  RUN           guard_regions.file.collapse ...
+# guard-regions.c:2205:collapse:Expected hpage_size (0) != 0 (0)
+# collapse: Test terminated by assertion
+#          FAIL  guard_regions.file.collapse
+not ok 89 guard_regions.file.collapse
+#  RUN           guard_regions.file.smaps ...
+#            OK  guard_regions.file.smaps
+ok 90 guard_regions.file.smaps
+# FAILED: 87 / 90 tests passed.
+# 19 skipped test(s) detected. Consider enabling relevant config options
+to improve coverage.
+# Totals: pass:68 fail:3 xfail:0 xpass:0 skip:19 error:0
+
+So the issue is not as severe as I'd thought. It can be argued that this
+is very less likely to happen. But yeah, I feel changing it would be
+better as it is more suitable with the ksefltest_harness and would give
+a cleaner TAP output incase this happens. Rest I leave it to you and
+other folks to decide whether this needs to be changed :).
 
 
