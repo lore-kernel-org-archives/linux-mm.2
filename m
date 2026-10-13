@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AAD7CC6B16
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:07:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74DB6CC6B1A
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:08:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BADA6B009E; Tue, 13 Oct 2026 11:07:27 -0400 (EDT)
+	id 7CC516B00A1; Tue, 13 Oct 2026 11:08:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 691B96B009F; Tue, 13 Oct 2026 11:07:27 -0400 (EDT)
+	id 7A4CA6B00A2; Tue, 13 Oct 2026 11:08:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 559826B00A0; Tue, 13 Oct 2026 11:07:27 -0400 (EDT)
+	id 6936A6B00A3; Tue, 13 Oct 2026 11:08:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 272186B009E
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:07:27 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 81E7AC0C4C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:07:26 +0000 (UTC)
-X-FDA: 85317931692.10.1A2B923
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BEC76B00A1
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:08:00 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79056A0CA8
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:07:58 +0000 (UTC)
+X-FDA: 85317933036.12.9B99E2D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9589B1C0011
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:07:24 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W0CJyDQe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9ACC24000D
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:07:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NYL9xeY4;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791904044;
+	s=arc-20220608; t=1791904076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XQQXLmuz/mYy2m0DRCE2BDh2jZAsmGDyji4q3SA7eeo=;
-	b=Zr4MDsfkTX7VLV13O6HBwGlEqfO1DUDnJlQNjavUe2zE9wnTbhEYlLv2xyMCCZ86VKgZDf
-	RcyNKqXlQHzQgo6q+KBEZ6COavz20hlcbjGlIhxP1lnkogc6uH+o91Xht7jkWHJbLtEwKo
-	Eb74Ed92BQsv5mwcWgpxkmjujfUx4Kc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W0CJyDQe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=oOHuuwnsMbHTA9q3JEw9/BiBEzfrt0DoQ4gWVubuCD0=;
+	b=DKeTy2aDwYG3VqUN2kIxXptFBw3WTZZ+m/2PcXa8KXZeySrfdm6SOqUVHKC6Lv6QWjKaTm
+	uj4YGzAZ4vh3THgZI+ZRG37tT6WxEdCbVEiWqGuP/bGLMplhYMfUjzVV7U7+z3VBpFJGmM
+	STyJlZnT+6IKF/acMboMZtC58svNlIE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791904044;
-	b=ou2UUiv7A64+f+JR4jNNdjh1UkrggTVNj2lTfgnvMtEIyy9yFrUnSPaUGaNiTAX09YCqtX
-	Ob6R/8zsAV0jq53Yl159IR+KIIHFeZpfA+FAXTq6Gm7GdYgNN7odzHisLmN+HZQd6xRJ76
-	OCorLx/RS1TgInDs65Lhe/s+IgKORpk=
+	t=1791904076;
+	b=XxHwFEb3Vapvtg91Rwv+zyHfG6ICOv2kkw7mWt9N+AkXTArKrrnl3z8yw76pyM6u/npRyu
+	XJlHgA9rpT8ahsv1A5IVB0UA8WeD7QhvPHSsRUBQrZMx1KLwPncyvTxkBCxBf7pjG3PLYq
+	Pfa/sof8vO/9CIK0ftDk8Nhjn+ziqyg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NYL9xeY4;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DA97843789;
-	Tue, 13 Oct 2026 15:07:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17E71F000FF;
-	Tue, 13 Oct 2026 15:06:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7CB66404B3;
+	Tue, 13 Oct 2026 15:07:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456C41F00893;
+	Tue, 13 Oct 2026 15:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791904043;
-	bh=XQQXLmuz/mYy2m0DRCE2BDh2jZAsmGDyji4q3SA7eeo=;
+	s=k20260515; t=1791904075;
+	bh=oOHuuwnsMbHTA9q3JEw9/BiBEzfrt0DoQ4gWVubuCD0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=W0CJyDQetBRxIuAkvUzo9XSWPFP2uj49nmF5Ola6oDkax5fLOw4htdgKdsytOaX5D
-	 fKB/AqLxOYHFOHmAjt8ojXPCgCA78WqENnldOw0as4l4mcCFFYyBHAyH7TsB63TSr8
-	 5h6dyJ6dR5KmSY3dMcYRX2XLk+RphbYhT3pyBjr6eNFn4SarroRPDThxbNL29Q3xJ9
-	 lVXkpNZnmVdJfWIqYlVnErwk2NwZNrj/UnmG0wshn07J1ICxsMnOLpUqb4+uJZr9sn
-	 MbIqT+7Tz99hZmqryEVpBVBnwG1IqyInMH98GC0PV7qV1CHNet8nfbYk/cY1ufQyBm
-	 XE6okl5ntOaow==
+	b=NYL9xeY4HpjoMGhl8FrfT51Vt0gCprDyg1Lk+GP2L+dqfVMDacNY5uN1PB2p0NsPA
+	 ruDr6IcuWom2gPmUzliD1GqShz07KxyuKHuHRkNZICMM3AlFYSOj8COYrFfoYG/gQN
+	 XlF57YNJonwxrhoG/S61Po9sYmCH84Sb3IF/S+B668GE26jPmWYZt8/9qyUbjJxJ7h
+	 nahhHCpQyMcjh4yzYr4/XepLvRKyc4bk09MVEgp4tbsTOv3SytkqYUYhkEsoZjc9wP
+	 CdfrnbCPEl9PfMExdrLAKeF2Opmf/aNrz6v0j0lsrRMQ+CxOMgYos63TPLXKu/6EIH
+	 bTOWC3+ZjSAxQ==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 13 Oct 2026 16:04:42 +0100
-Subject: [PATCH v6 02/39] mm/vma: introduce and use vma_[flags_]can_merge()
+Date: Tue, 13 Oct 2026 16:04:43 +0100
+Subject: [PATCH v6 03/39] mm: consistently validate VMA state after
+ mmap[_prepare] hooks
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-2-1aa3c9b139f9@kernel.org>
+Message-Id: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-3-1aa3c9b139f9@kernel.org>
 References: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
 In-Reply-To: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -155,28 +156,28 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>, 
  Bert Karwatzki <spasswolf@web.de>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3865; i=ljs@kernel.org;
- h=from:subject:message-id; bh=EYqw+AtDKpEde3pCckMQkm9HGGlkplYL0cvv0S5EwV8=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLOeRxvNhVoP3Z94qSsOTNyr06esJ1D4lZRjFPX1NurP
- rp0qphs7ShlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBELr9k+Cu0JUL1uEbhkaO7
- YgPmbmHhObXOcNvNOTEZ3NJSb6u+PbvIyLDkrPhkFo5anxrGB92nAo5K7TKVOrbk3qT7yqYyfLZ
- qHzgA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=14131; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=O4LeOMp0JmloXP6dYxpxjgMqSJkeWfRNP+c31xJtCHY=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLOeRwXS2069K0i+4v1wzX3n3dF/t6foxvjc7xptvEsO
+ ZfHtmsfdZSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAi0+wZ/md1MzOov1nnN33m
+ gTvXq2eoL29WKzFxD/eP+bNwavVr9nMM/2wPNK2b/yrX0bjsnnHXgg7lX9PmXpr+javmxvKfq+a
+ u3MUBAA==
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: f6au8wb3ni35wfzg5ga6a1m9yzcztdnp
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9ACC24000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9589B1C0011
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791904044-504408
-X-HE-Meta: U2FsdGVkX1/fgOarcWLe3X9LyPrTq9J9PTuN9XHuHO6ul6fK2G+dcHixR5oLGUAagcscJHmQr1V0UKoLKuOtapRfrk6hymgoJj2ozobaPKqgMNOTZFjsHPmc9b5x3sm+4dKwKme3K4FzlOxKEo0wpAjBMYQtCHdBuD338B3GgNcGgn3BJe6zX1rYBf6Vwwk0no/v9gvTZNrtVHb9qFdy6CEYfRViC0RcU/NTxWX7CfDEKqFNRtYTedOTVGhkRPlyWPq9uE7EaljtNrNXe9YhrIwSUMfNrSlj8/SZxaYu6kAup14GgJLdpkSgcnVH2jGk49MMziLPHzxUjcrJMXvjjGN4lJ0FBclq35KvcAeGqtOg1v6OFMK1J5Hn4v0G7fyl2l8V0yYs08wwFXkm+/54Sq0PySfdgNJAt8CP+xvlrMeLM0755ADMfcyjWN8wBj7Sto1QFaJuXTUSmbNpzOMhOcXFJykKDcLacCNZ9OyfDH/BmRYz5Aafmhs4ckuzPeCzrt3D3lSVdZgyKsFr0c45/DLZDLmzxeZ2zGMwZc2pviL0ZOSHu7zDYhlsfdiBtTWsmuxJ864vbZWYAiE9Is3rZQWtp2jcd6GWIVgvFK7Vm8lAIqlTT/uMxtyYeHXmsZ0/LhoM7XmXjU6qI6TRaUQzrEdsr9q9cxlE0b0KcmwgrLK/OsBxQCKR70X/HdRSn8fO1FRcUcETD186WCrjoSb1EMdkBt066AO/RWDXDbVXJ2//n4xJGaZABeki7T7Tpd8NSRQO0RnGEEu/OznUiP1vseWepRMpyqeA1xRsm2wptXfOO4nFWS/O9L+Ycsdfx5nRd8aLwG/uhyl27CZXicLnX92/o4yf9W8w2ts5MuJ7hPyv3KW7QW7ZWCaoz6pzlNcDJDEWw4SyZqSAgR0Fn/eUUVCNh7FGYM7geeE3i/I8H1PEhKkC06+5CliaacbMctnviqZxe7FBg058fOksU83
- Cw74joHi
- pIV/0hUSgKA79F50huabvCUf8Jv66h1cTRKQdMHSkvvmgU8mgNhoXJH2X1WQPG2RMY633jpWpwtmzmQzUNAPPEP30r43loaMk7NK36deP5RectKdh+HCKf6jRGpFMHvbyz6hlBEtVbxSVahU7I+lNJq7j95IulcODP/UT4InYAVOn3+MnOhJ/uHSmSJ+TfTqPiVwT6OUI3uKmUKKhIULFADKFFIFR8pysbParfeQuFcNzwjP4C75TsxmM8fMZ4e8Hmrxl2o4KtOU7NGaD0cjiYGz9rGayMJdx3LJMI/cktHyOHPRufSwfRIgWmngFpNVAvVjF04Lw9IX0Gw5UEVdxpUvTPyfZIm/mYzu5YqZJPPwCZbwKQXNYsmvCRUrddjd1/rm5ezZRgWJFNhJ+PnDk/mAF9EKcBRJE+MBZ72FCEgMKAey7OjUmlHP/t/bfwUoY4u1L5lUmqgY9nxpRajZlatn/4BJdXvyk+DPeR2eHT/iMdqQbjP1k79XtG3Zd2oh0wn/poo5mJ5qoWv6+AwxhH0QVnSYLN4TkODe2AIMO/47AGq8CgVFb06Fl03T3ItUgWpCIdEFo5kB7MKsljHIxvQi349y4GuPK+F5FiBcZajFCb26Z+34EzZRIdfjPruflUFGZbTX02N6LfrWW86DlIsohK1KcH4o1qAeqmgnwNrFn3+r0FbZ1eo1gw3NR3+4hhVCtDW/RTiHnvYhaeV3BXTtzzzjSDyjDaH+5jirn2bDtqZNrV4j1qh+KUef1WPFhI8NKaFltGv+WmJ4+VvFHYLSFcntx+kcLFOtWFRc6qSUIWxFQruNVNI0uXY/vAVTD1opYN91KGG0Wy81HAbkuDx1M4v5q6CNwhirvSNkklYQMfHYGvrAzhqaGVICTE7jBBeyOdWpq6zNTf3U6Zf7bvgSLoZa5y9uZ43KAcJ8e1W5YJcjecXwjgk11oJqUfaYhsm0ZNZcv8E3RccXTj8XAuA1t9/JC
- rDyYsILJ
- RJRgYwtea4hABRuo1u2ZoxqQNafzGsfeYXsi9YXQ70sAhyuNbEGSyaMja78p9ChkgulEkP9Hr27ZWhLiPodfxNL+9vmlVKoFHzYFUpF6P/r/h15yzIH1h3lH3MR0kIlKl6g2zs8ATRvNABTEuQ3c+y7sUCR6/6WSl2ismo1VJBMrjlYIBEYBrZnbajMrBS2NgstCcunD0yRL5R1PPSaqD+JunNU83xluDeSKmR0yPNBu1WgdngMKrj5QEqLORmmVy7h0gIskOL90TQCWVkUEiyLsnimfTemvrC2SbDS1nGjnf2iH9eMSkzLsj7xLuTyU/5ULIX9fnsBJbFDyzG6liA/ta2bmjfttu0hzyGlDLUzgtHuukbjXoZQNbRKy5lqzOOf1ZOXxryZQL0xm4wmvU+P4xgLv4GcjBlHp6RBmdE5/H3c+oxXuSbIP3zFwJum9CYL4ydDAUt6ewjJlV2YyFe4HVzi54HuMgve0i1QrUQtNLGUPAqV8WMTuwHRZgX0w9T5yUFH9fOlK5ci2MGbjghQgXZTrmunBQcxKMCxTm5ujdWd+vjEiud6qviGXc6VUFRIn2oJOBrR6lvO8a7X7TSY2OLDbmeuKRw/Lu4tN1KasaxNRFOMvUtt6Kr++tcK3TwfD131+1FJ1vvEb83sCUvWmXigO/xzJpu/CEqJ+FBRUk90DjzQl3Wja4Ez6cm3xtlora1xIzanuH2f0UfcRaUUoSw4BJPotBO1qtGaQTtpnQiTFqbr3aVZ6ZQfm7HbA4pMZ+/mFWyIwuhXWVcdBDuuKy2sMCLSnnU8jvkXegGImFqt2g3NpbeeQtAeChaqc8tomrYOwrcUW/S+r5oXkFflrkRJ3rRUTiAzjxDjYHH8BqL4d6ZdsFhmIn9RBf/onmBP1HkSLG/VkWcukzPF+JIMRkItl4yFJxitJ/h/ltEfcjBJfmGhdosleo1VmP9n5VF11JnDcZObvChQL3rksW1/jo4na0
- 3136PjEM
- BWrhJfWB4XM85E3vfRK5/9OD7j1/qoM0ft8IB7lFvNvUvghqwsHqcbiDgq+MGz7Fw3a5lEe5QjkoOtMEN52a9N5hm/CmOqTF6VcCIBdb2QULfZRBhdPgYxz4DrHNVT3LOFraOJt4eQRb9rNrylxH5hta69KEQHVbfEi2c768SEQ7qrV81DicN7BqpkR7Pw3IMwjBqKpkh2RugWi/SJBLI1gX54Q/mHp1ej66oF6lgpBfT67crC+V+rUbLHmTAtew6o+wv4fJNCgWnnZd4jwJYJveL2KmqEFCCRSviTZwl1NX3QA48z1zvG48X+nARcFlFodoTF8Uf8tIXhzu4i/39AAXsPg3nIfN9BG45nIzTToEknd0cH4xrCx62Sj+6sEgb08lLMOGozolveBp5T7JVP40Mi2Ota+IUxXj3cWxXJRJuX1BAzgDGdAkw9tOV/7P97duPvoqXPtua12vez5JXDAtEO8CDRyQilSxn2wlryw5U8CqLIweAO5HLBA9X2shZpbWj99g5Fz7L3dB7TXVponATlj9+d2ugoy24Y8SYuI4UMzQhOdC9AEVTqrSBJ/m0rIRmmpsZsF0RBLJuXM1FCtQc0a0kTb4BtPIAagXzCePc0kqWQPDpo11mZfwkzVyoBLWBUykcLYZ1yXuGkATDtX8pQoHRdTgfBFONpd09pa+hkOqCBPXJfZ8Um+YH4B8DTWSE22L7sT6XioYDtggHKgmHmV0UNsxaE41tMcUkeA5Lo1piHbLW3tobEuLAnIKckWxPgqcW5WuafKMdR4Va1WChqlTZbrBgGoh3VuKpSHvZVC2YBRKAwNHU+otSJ9IZjNico6RR5zwNqfmWtloVatYI9TLERqSa8OCfS51WiFGL479bZabgeJaqO05/43WzDnxehlLfgTLP/0DCAiMvO905KF/5qJiTiNcEnwiou1U3XuLGu212iWimrPbewE/IMwdZiPuCh6bgR9SL4SGGxD9kIOaN
- I3HTCfoC
- p+NvXvfJN7DuqhDCmkk6FiPM/JReSeas/9UioLdVITXOaNxF6QqPX7TLhUchbJg2eB2V6L8hi/OihVg+rOfXwgVDteeR7cnX+mbb2jnwtXcZ9GPHlBMg/T6FzXoxufpipyh7ugqXPWSOL6cfuwUbrhOPi3naLHrMe4D8V+mBiJ/qeqrtRx8r6iTtJcfTH+fOEVsin0bWuvaQOXXJmKRdGYjmomOne3efUTV6j7PvbE66WJNJvN6SHIdsQs1VvViqXkrxItB44jdWiMcQD0uQJ25dRqQZToM2HU6P95zc8ChzGS0DL2LKKmb3VHIh0bknH4u2ZWTSM7KMmUTa4nKyQseQf1D/0OMm9cIfEg+Clx2mYPi9gTX30JT3uPdtBIG6OuGFIpVbSkjovxM6VRWzJXVwnBNZYDopGANLEwaYVTetvw3BrjTgnB2b6Qz42GbljjWFMoz7eocrIDaDo/fPmRIvV/tlQgtWjqpH2ufLJ2oMHMWIWr0UcOdUABPBxft1ky66uE139eA091DBnRi6G2cr/jwmAmSs+s3mFG2/Zmg+yRdUYvlH8W
+X-Stat-Signature: 9frhyxahhbokkzchkdbgc9xnaq5tx4ws
+X-HE-Tag: 1791904076-622468
+X-HE-Meta: U2FsdGVkX19ET66kN/ZJndSIVRE0hrwpDpXUUUDH00GeRO3Tu5bdzmZCvqY6HCkCzgFjvo2cdRQLSeriUoWLBFed7Zo0IG0C5ZFufW2MHLeO+hByyjvNx4Jd7WwDAb+WEAwLpU5qPOc208NO1nLNFMW/rxp5csSxOdXNQ4uemC+/fGPW2OoJ4ezISliB4EiCvfIKYfAjxmGIwSiBRTM48HbIPZVxU4p6/MAYfPo/yzU5RYBPhZUd+InLxOL+jrI/QJIMCkBbvqONgIGhS4l1zpB8S4nFDu/ojbj2vBc7d+B6zmgU3FXg4IRWQThlzj1ns/Jvc3sOlQm0u9GSqhu5VNyBqK08gHXqxcCzTrusyW11vJ0mYg2mnalib0cOvyhajtyfnzofp56cI8lBLJA8FSZz7SDH9Dw/QJFHKQT24sJlxNHDwlZwUh20EDeEcBHnOZf4gJX2xNCbxjYa/KFRAdZPWWv+Tee4OR4Po/ir/AxXpVw7uh8GIh2pihBdmelyRbRUDRdclmvS2Lup1CLdQaS8TrbPpaLH234etMvgefKv2iJtecAfNzFC6zHFAvmLbcdC92dOnwSFeig4j/WLhJtyPN+R4d+qO7PDTtNUyWzEPE4EDVRAG4Y6k3AI2Il68Qod9LoZMqxiDaioYoZAw9Co04YB4rxKciH6ldF5gl1eg+0168u3hWsUqjnFLYaTueRAa4Ttv2epktRTNHggAyZHsqfjLz0OrzoOk3wtPnQ7VvO5gut/rD54BpLtN3fWbdQFHWk8ruLE/DOYX+2p3aKS5edODwX1AOqaxRlenkVfVqnUFOyzT2AVDYRiYHPqSNMKYlfqk6cEQh9+E1CD+GLaC8fnC/rSbBnqwC1Udy7UJA+4REQAxRi2K1LIM656zUmC8Oew4yfOwyIZL/ypCRDdezjw1n1C/YDXWTKM/lf8nWdCsJ59T1O5GZZzj7q+B8TN2314WpqKFcbE2WV
+ e6T0atwP
+ wYdwQAyBPsYa0IkhpnFduAtVQOK2XWhb7yT8SQJzo4Ei+ZoYnY52smcIQGSYySUjG0f/Xx1lYBnECR89BIrUSo0LcgnKjYYagsVh7nc2cRDjgLxWahCVzofld4Vk6bdLHYbfzU4hTW3+nP8ZVySL3FeZcQ/5I/8FNBt5GZsp7P+DSASnx400uwyfzQT7TnqHSeB+aBk6MlG6Idpz4q2I21agxwFjXlbP0PigpXUeyQyLy3n7Y768E1znlkR0MjBhlzz7y4zCzZSfkh/Y0/oVvgoMfZMLTQYUXfmct41eemqBieSs2fyzAYTuoEW0CW5ebncWHjOwU5G+B2u10+dSJTvIbpAQj7WQ+X4gGaEDprqsouoH9U7fycWj2qK/wTvSJLbBqPKxax+A+2unNuyX5hCPTiq3pm9GeDYhxQtaHKoS7KxjRqy9DoSaICV2rInQZ4q2s886cfHkyaRhMJeCvX04fk6BjssH7z+BvltPsTI1ArqG+ee8ep0Ro6c16XZci0O1xBRE+gNZx1NAmC1I9EKKzJYCkGFCAY754Uzxw9APLzqG6ko1SpvEBZNQ8BJeMeTYL/nWm8OECALDgY8KcDQMNB6YUDK+c992oedNj769U+AZJ5VmdyNyjWw7/SWRLRNipY7br3lH25eLDyYIO2IpK5Q9P8VHaKpzFNj5DG3jHbDUcpIPY2g9i3WMpt+mau4I9TQj5VeFnkCIPQOOHlPEUf8bnIqAYWhIsGpvuB9VXNiJyDv59sYIJ9cMq0C6TSCyzcySnIUbUS3oyc7q38NelWExRbff6OBVUAoTXYeSJsDoBf108bS+qyV2PRUNOh3dVyg21iRffZ9+1MruErv2830lYyhgXMIOnqCi3m+DgMZCvArLL0d3wJcHSX/3lZ5yEOE/n3kBby+opBWU5OCOQCLiM9WrICQwea+YVjJmoBNjWbbtFe5AjK6GxZorFQDdfXZNdZt8j1R+eJgpI+G3zxCRR
+ dO9msreM
+ rshhoozhJaNIm6Ku2sNMROP1rxCY1HzpTiQf7UtokM2BECIjsApoJCEMBjAt7aC04np+A3mupiSmugJ9eGDI8aQNp/ywM4SQdqpYea+Xjdp0FPQcD4599lYSSnW+RX2pgIX6pQZ7h3y/NJ/FqKT8XkwkDi0Ss5XEHwsTyUxlKrI0MhILGARZ7LGNY3UXoQamhMlSdKkFQSX94sI9SoW5pwYHZC4QQbszKKsTe0+yeq5s7Z+yx4+xNTwpBhxvaJfwoyUpxnwMy6YZLGAO7T/ryLRb1pDq7emFqollD4USr4ZR9V9cmDFTxkH9Y9vs4u+at9xOETIgEKzAWKCEIpRT35cV1dNR2KIgyogZHs+FjS4sIO2gv2FU/xRSqt1ZsVCrhDVMl7HIwQ4HZhhKbkqjhyo1GkwYCHZTQsSWnrITUYqUjtEpmwhUq3F69KNgsI3Camc7X8V0bi6VXyDKdsUsd9CrGWXZeJX6QU3XEmwSUp5JmME98KgOsRjcJic6o1/33oWtkU6dV63j5tWHUbvyoWHyH5kfbTvKXCfBBmkj1HMSOA3is5cC0i8x3DRoPIX/4ZqXI9UKVCC6cCOLzpf/w7AMqbHnN5R5aliVeCxvKyiTsP4R7qJBuZNO/D6Vm5n7frKrjyD490YtSPUBLlzswB0FhvmNnCpyEXm3pu7r5pvcbrLXaipjpRqDT1afw4CNWzRemKlZR+xUmm1AFbV9FGz6ZhJHtmm3XMrKmPk4lDYuWs9BI+fFGK0Ue3afQNx4VR+uatkE68+X3n5hACRvy08rUZwGo2Ai12ZzgPTAoQtYrxjWJ2uyD4TjySIw/nX7TrgrK30nePFNB1z5FNJaz3wF7vEe58v8aOfw6Gn0yAjFpfggpaWZHnqaFvtkWplHi185n0j6lRudCOHn5AZ/AaKaZSEMFwdOVLj8fq6AwhBMZQ5WXh1SGDfYdlWe0lyh085Aeul325V+8/qAwfRyY7Ld5qmEO
+ 8TRblyYs
+ a12ZzKyHRTPDPJqzUfcot4TtRXMiZv9o/wWUWXPXso0nnrkbMMuhcMk81VE56RB8uIpNCs78SoQ0Y4+XN/tGBkBOxiiYB9A+cMG+6/7jutr/7AvYtGzwFFrMDdCaSnu98KYXRCj1H+7o0ii//rQ6EERrrXHFdrTq0TSuCyS05iypeyJmUAG9Jc7jVoJGaIGw1yWptsGVI4CmrkYbSYA2Mq6LyXr8WqKLdUGynvx//8DbZ8FTfMkskDNRitK7FqXfLLlG3PBw/ypboDt8jIrbiEXGufYoqYa0/gOCOmlaGEfkI0j8oZm9wUmG6v6NF8ZpryAsGBlZue01FDXhr7hZyQVgmOQGwVlPV9l4SEvSDlP7eG9d1/v+xUBKe//ZQxEmouzq6VkLys7T10CldPMNwXqm7+6HvQkj8rr16rrH9VCQGEpEiA9o4ZmzfhRgkCkph3YnUXW6RR7deearSTvUJrAZogkJR47zAiXoX0Bg2jJ2e9AZoPvivxi0vyAqsrkF8RkBjue92SJByK3FhZHvMigsn9EOhQQgB3Zvq72ZTx4i8qPLcwaHQ+asL6wdZdtXNm5exin3kGDQMNFahM/LI6PGOyLWLu5ReXvZbze/kL9nP2GlQ0YBiSwdzH9oKgnWKATlzX+OC2XJ+A5XRVVD3Y0hEQvk5CkDItp+1Q1rc4U5GLgS15t5V31RapRatd7iOs11ysyTVv+TBX88+E03n8ucKrn03+4Lq/JWinyZ/XI6FIM2g9Dvk0DrLCZ2LkZMbeJfKUyDRT+5OP26cMuDpALcDV64bgdujzyv+rjbLWX/6cgMpJh4RC5OpdX1LMdzQgh+fIplqSAyakYJddBM7CgZuGkMFYTYYUDrui5jZ8PxDEXjtHLlbfoEdvv1vc1EsWbPRmyOY/abZZJh+WFGadSES3i/1jVzsopTGz2k0yLc4nLZx8Z9VyPooKvP5eEeSUxWa+GbiEgxnh16i+xa+NJYWWBgT
+ Ok7n6N1C
+ RzK+FuANiM5XhTbzTwkBtvdU4iu0p/S91aqx1QvpqNBr+dXolYZqY7EeYtJFtPj+YzkV/6fZ9G66GLVnighF4hCPXuoXyEfdtUn46nUZOsTayCRopLngeLI37cZ9Gn6pz6/lOGkN3ZM37tluGhVCxaSOh36IBZhE0GOJFMusXcFHTfqTENuPS8jwNy0B1kh4+s2XD0JVKiiScgVsMSffw+q5/WHhKy7yvhEfjaVQ14ySbUpGQTAwXeO75Sa9fOyINC7OtFSZZQTKquZxQkpRGtlR7ZRe6cdRcaEOnrApyIb1Wxy5ijQ2eAGsWAVYDHb76nC+bEWLyUzhOG18XjFOBKYshwKZXCnAHfG6uxQU03IeLSC2GkUFWxRXQekuMCOCUxYzB4O0vWXZjr0PmGEMyOOY+0iCeqIJ5WVg5G0nyq6qsUTRXGMOhwRPZw5endSrE/2LfPtY0KxgItTaVGLWHy3RXiPMAA1cWMovfy7fwDX5VaO4OClDhgYbDF++3OSJUpfF9N4h/2BmMazfndv/aXJ4DKKgt2drv2y0sBwsIxmDnJosILkDqUIhQTUjfaOEo2ihvMKRVc47HWOPiqqf/Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -184,115 +185,429 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace the open-coded VMA_SPECIAL_FLAGS check in the VMA merge logic with
-two new functions vma_flags_can_merge() and vma_can_merge() and update the
-merge logic to use the former.
+When the f_op->mmap_prepare or deprecated f_op->mmap hooks are invoked, the
+driver might have done something crazy that is not permitted by the kernel.
 
-This abstracts the check and expresses it in terms of the desired behaviour
-rather than an arbitrary and confusing VMA flag.
+Currently we check for three such cases in __mmap_new_file_vma(), but only
+if the legacy f_op->mmap hook is used:
 
-This also lays the groundwork for making further improvements in VMA flag
-usage.
+* Did sparc ADI result in invalid flags?
 
-Also update the userland VMA tests to reflect the change.
+* Did the driver alter vma->vm_start?
 
-No functional change intended.
+* Did the driver make a file-backed mapping on a read-only file writable?
+
+Generalise these checks for both mmap_prepare and mmap and apply to all
+invocations of mmap_file(), the f_op->mmap and f_op->mmap_prepare handling
+in the core VMA code and the mmap_prepare compatibility layer.
+
+Also extend the vm_start check to vm_end also - drivers must not change the
+VMA range at all.
+
+We also WARN_ON_ONCE() on these conditions as they are things that should
+simply not occur in the kernel and it's important to call it out when it
+does.
+
+We invoke mmap_prepare_validate() after mmap_action_prepare(), as mmap
+actions often manipulate state in the descriptor thus providing the final
+state the VMA will be derived from.
+
+Also call mmap_validate_vma_flags() in insert_vm_struct() to ensure that
+special regions which are inserted (such as a VDSO or VVAR) also satisfy
+the sanity checks.
+
+This way every VMA established through an mmap hook, whether via mmap() or
+the compatibility layer, or inserted via insert_vm_struct(), has been
+validated. brk() VMAs never pass through a driver hook and so need no such
+check.
+
+While we're here, also fixup a couple disjoint blocks of #ifdef CONFIG_MMU.
+
+Finally, update the VMA userland tests to reflect the change.
 
 Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 Reviewed-by: Zi Yan <ziy@nvidia.com>
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- include/linux/mm.h              | 21 +++++++++++++++++++++
- mm/vma.c                        | 19 +++++++++++--------
- tools/testing/vma/include/dup.h |  5 +++++
- 3 files changed, 37 insertions(+), 8 deletions(-)
+ mm/internal.h                     |  50 +++++++++++-------
+ mm/util.c                         |  19 +++++--
+ mm/vma.c                          | 106 ++++++++++++++++++++++++++++++++------
+ mm/vma.h                          |  25 +++++++--
+ tools/testing/vma/include/dup.h   |  10 ++++
+ tools/testing/vma/include/stubs.h |   4 ++
+ 6 files changed, 172 insertions(+), 42 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 969594074fd2..68250ece4219 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1612,6 +1612,27 @@ static inline bool vma_is_shared_maywrite(const struct vm_area_struct *vma)
- 	return is_shared_maywrite(&vma->flags);
+diff --git a/mm/internal.h b/mm/internal.h
+index fe576d468af4..061a87f9c3fb 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -213,6 +213,24 @@ static inline void *folio_raw_mapping(const struct folio *folio)
+ 	return (void *)(mapping & ~FOLIO_MAPPING_FLAGS);
  }
  
-+/**
-+ * vma_flags_can_merge() - Do the specified VMA flags permit the VMA to be
-+ * merged with another?
-+ * @flags: The VMA flags to test.
-+ * Returns: true if the flags permit merging, false otherwise.
++/*
++ * If the VMA has a close hook then close it, and since closing it might leave
++ * it in an inconsistent state which makes the use of any hooks suspect, clear
++ * them down by installing dummy empty hooks.
 + */
-+static inline bool vma_flags_can_merge(const vma_flags_t *flags)
++static inline void vma_close(struct vm_area_struct *vma)
 +{
-+	return !vma_flags_test_any_mask(flags, VMA_SPECIAL_FLAGS);
++	if (vma->vm_ops && vma->vm_ops->close) {
++		vma->vm_ops->close(vma);
++
++		/*
++		 * The mapping is in an inconsistent state, and no further hooks
++		 * may be invoked upon it.
++		 */
++		vma->vm_ops = &vma_dummy_vm_ops;
++	}
 +}
 +
-+/**
-+ * vma_can_merge() - Do @vma's flags permit it to be merged with another VMA?
-+ * @vma: The VMA to test.
-+ * Returns: true if the flags permit merging, otherwise false.
-+ */
-+static inline bool vma_can_merge(const struct vm_area_struct *vma)
-+{
-+	return vma_flags_can_merge(&vma->flags);
-+}
+ /*
+  * This is a file-backed mapping, and is about to be memory mapped - invoke its
+  * mmap hook and safely handle error conditions. On error, VMA hooks will be
+@@ -225,8 +243,12 @@ static inline void *folio_raw_mapping(const struct folio *folio)
+  */
+ static inline int mmap_file(struct file *file, struct vm_area_struct *vma)
+ {
+-	int err = vfs_mmap(file, vma);
++	const unsigned long orig_start = vma->vm_start;
++	const unsigned long orig_end = vma->vm_end;
++	const vma_flags_t orig_flags = vma->flags;
++	int err;
+ 
++	err = vfs_mmap(file, vma);
+ 	/*
+ 	 * Either we tried to call the file hook for mmap() and an error arose
+ 	 * or a driver set vma->vm_ops = NULL intending there to be no VMA
+@@ -239,26 +261,16 @@ static inline int mmap_file(struct file *file, struct vm_area_struct *vma)
+ 	 */
+ 	if (unlikely(err || !vma->vm_ops))
+ 		vma->vm_ops = &vma_dummy_vm_ops;
++	if (unlikely(err))
++		return err;
+ 
+-	return err;
+-}
+-
+-/*
+- * If the VMA has a close hook then close it, and since closing it might leave
+- * it in an inconsistent state which makes the use of any hooks suspect, clear
+- * them down by installing dummy empty hooks.
+- */
+-static inline void vma_close(struct vm_area_struct *vma)
+-{
+-	if (vma->vm_ops && vma->vm_ops->close) {
+-		vma->vm_ops->close(vma);
+-
+-		/*
+-		 * The mapping is in an inconsistent state, and no further hooks
+-		 * may be invoked upon it.
+-		 */
+-		vma->vm_ops = &vma_dummy_vm_ops;
++	err = mmap_hook_validate(orig_start, orig_end, &orig_flags, vma);
++	if (unlikely(err)) {
++		vma->vm_start = orig_start;
++		vma->vm_end = orig_end;
+ 	}
 +
- /**
-  * vma_kernel_pagesize - Default page size granularity for this VMA.
-  * @vma: The user mapping.
++	return err;
+ }
+ 
+ /* unmap_vmas is in mm/memory.c */
+diff --git a/mm/util.c b/mm/util.c
+index 016932780925..d809e08c7b4d 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1224,19 +1224,28 @@ EXPORT_SYMBOL(compat_set_desc_from_vma);
+ int __compat_vma_mmap(struct vm_area_desc *desc,
+ 		      struct vm_area_struct *vma)
+ {
++	struct vm_area_desc orig_desc;
+ 	int err;
+ 
++	/* Derive state prior to mmap_prepare hook. */
++	compat_set_desc_from_vma(&orig_desc, desc->file, vma);
+ 	/* Perform any preparatory tasks for mmap action. */
+ 	err = mmap_action_prepare(desc);
+-	if (err) {
+-		if (desc->vm_file != vma->vm_file)
+-			fput(desc->vm_file);
+-		return err;
+-	}
++	if (err)
++		goto err_put;
++	/* Check the caller did nothing crazy. */
++	err = mmap_prepare_validate(&orig_desc, desc);
++	if (err)
++		goto err_put;
+ 	/* Update the VMA from the descriptor. */
+ 	compat_set_vma_from_desc(vma, desc);
+ 	/* Complete any specified mmap actions. */
+ 	return mmap_action_complete(vma, &desc->action, /*is_compat=*/true);
++
++err_put:
++	if (desc->vm_file != vma->vm_file)
++		fput(desc->vm_file);
++	return err;
+ }
+ EXPORT_SYMBOL(__compat_vma_mmap);
+ 
 diff --git a/mm/vma.c b/mm/vma.c
-index c27aea6d58d9..8f8c554d5c07 100644
+index 8f8c554d5c07..cedc24dcdf3c 100644
 --- a/mm/vma.c
 +++ b/mm/vma.c
-@@ -924,13 +924,14 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 
- 	vmg->state = VMA_MERGE_NOMERGE;
- 
-+	if (!vma_flags_can_merge(&vmg->vma_flags))
-+		return NULL;
- 	/*
--	 * If a special mapping or if the range being modified is neither at the
--	 * furthermost left or right side of the VMA, then we have no chance of
--	 * merging and should abort.
-+	 * If the range being modified is neither at the furthermost left or
-+	 * right side of the VMA, then we have no chance of merging and should
-+	 * abort.
- 	 */
--	if (vma_flags_test_any_mask(&vmg->vma_flags, VMA_SPECIAL_FLAGS) ||
--	    (!left_side && !right_side))
-+	if (!left_side && !right_side)
- 		return NULL;
- 
- 	if (left_side)
-@@ -1152,9 +1153,11 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
- 
- 	vmg->state = VMA_MERGE_NOMERGE;
- 
--	/* Special VMAs are unmergeable, also if no prev/next. */
--	if (vma_flags_test_any_mask(&vmg->vma_flags, VMA_SPECIAL_FLAGS) ||
--	    (!prev && !next))
-+	if (!vma_flags_can_merge(&vmg->vma_flags))
-+		return NULL;
+@@ -2613,6 +2613,12 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+ 	if (error) {
+ 		UNMAP_STATE(unmap, vmi, vma, vma->vm_start, vma->vm_end,
+ 			    map->prev, map->next);
 +
-+	/* VMAs with no prev/next are unmergeable. */
-+	if (!prev && !next)
- 		return NULL;
++		if (vma->vm_ops->close) {
++			zap_vma(vma);
++			/* Safe, because VMA zapped. */
++			vma_close(vma);
++		}
+ 		if (map_same_file(map))
+ 			fput(map->vm_file);
  
- 	can_merge_left = can_vma_merge_left(vmg);
+@@ -2623,16 +2629,6 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+ 		return error;
+ 	}
+ 
+-	/* Drivers cannot alter the address of the VMA. */
+-	WARN_ON_ONCE(map->addr != vma->vm_start);
+-	/*
+-	 * Drivers should not permit writability when previously it was
+-	 * disallowed.
+-	 */
+-	VM_WARN_ON_ONCE(!vma_flags_same_pair(&map->vma_flags, &vma->flags) &&
+-			!vma_flags_test(&map->vma_flags, VMA_MAYWRITE_BIT) &&
+-			vma_test(vma, VMA_MAYWRITE_BIT));
+-
+ 	map->vma_flags = vma->flags;
+ 
+ 	return 0;
+@@ -2710,11 +2706,6 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
+ 		vma->flags = map->vma_flags;
+ 	}
+ 
+-#ifdef CONFIG_SPARC64
+-	/* TODO: Fix SPARC ADI! */
+-	WARN_ON_ONCE(!arch_validate_flags(map->vm_flags));
+-#endif
+-
+ 	/* Lock the VMA since it is modified after insertion into VMA tree */
+ 	vma_start_write(vma);
+ 	vma_iter_store_new(vmi, vma);
+@@ -2777,6 +2768,80 @@ static void __mmap_complete(struct mmap_state *map, struct vm_area_struct *vma)
+ 	vma_set_page_prot(vma);
+ }
+ 
++/* Check to ensure that the VMA flags of a newly mapped VMA are sane. */
++static int mmap_validate_vma_flags(const vma_flags_t *flags)
++{
++#ifdef CONFIG_SPARC64
++	const vm_flags_t legacy_flags = vma_flags_to_legacy(*flags);
++
++	/* TODO: Fix SPARC ADI! */
++	if (WARN_ON_ONCE(!arch_validate_flags(legacy_flags)))
++		return -EINVAL;
++#endif
++
++	return 0;
++}
++
++/* Check to ensure a driver hasn't done something crazy. */
++static int mmap_validate(unsigned long orig_start, unsigned long orig_end,
++			 unsigned long curr_start, unsigned long curr_end,
++			 const vma_flags_t *orig_flags,
++			 const vma_flags_t *curr_flags)
++{
++	bool was_maywrite, is_maywrite;
++
++	/* Drivers cannot alter the range of the VMA. */
++	if (WARN_ON_ONCE(orig_start != curr_start || orig_end != curr_end))
++		return -EINVAL;
++
++	was_maywrite = vma_flags_test(orig_flags, VMA_MAYWRITE_BIT);
++	is_maywrite = vma_flags_test(curr_flags, VMA_MAYWRITE_BIT);
++
++	/* A driver may not make a previously unwritable mapping writable. */
++	if (WARN_ON_ONCE(!was_maywrite && is_maywrite))
++		return -EINVAL;
++
++	return mmap_validate_vma_flags(curr_flags);
++}
++
++/**
++ * mmap_prepare_validate() - Ensure the driver hasn't violated invariants in its
++ * f_op->mmap_prepare hook.
++ * @orig_desc: The VMA descriptor prior to the mmap_prepare hook being called.
++ * @desc: The VMA descriptor after the mmap_prepare hook has been called.
++ *
++ * Returns: 0 on success, otherwise an error.
++ */
++int mmap_prepare_validate(const struct vm_area_desc *orig_desc,
++			  const struct vm_area_desc *desc)
++{
++	return mmap_validate(orig_desc->start, orig_desc->end,
++			     desc->start, desc->end,
++			     &orig_desc->vma_flags, &desc->vma_flags);
++}
++
++/**
++ * mmap_hook_validate() - Ensure the driver hasn't violated invariants in
++ * its f_op->mmap hook.
++ * @orig_start: The start of the mapping prior to the mmap hook.
++ * @orig_end: The end of the mapping prior to the mmap hook.
++ * @orig_flags: The VMA flags set for the VMA prior to the mmap hook.
++ * @vma: The VMA after the hook has been applied.
++ *
++ * Returns: 0 on success, otherwise an error.
++ */
++int mmap_hook_validate(unsigned long orig_start, unsigned long orig_end,
++		       const vma_flags_t *orig_flags,
++		       const struct vm_area_struct *vma)
++{
++	const unsigned long start = vma->vm_start;
++	const unsigned long end = vma->vm_end;
++	const vma_flags_t *flags = &vma->flags;
++
++	return mmap_validate(orig_start, orig_end, start, end, orig_flags,
++			     flags);
++}
++
+ static int call_action_prepare(struct mmap_state *map,
+ 			       struct vm_area_desc *desc)
+ {
+@@ -2803,6 +2868,7 @@ static int call_action_prepare(struct mmap_state *map,
+ static int call_mmap_prepare(struct mmap_state *map,
+ 		struct vm_area_desc *desc)
+ {
++	const struct vm_area_desc orig_desc = *desc;
+ 	int err;
+ 
+ 	/* Invoke the hook. */
+@@ -2822,6 +2888,11 @@ static int call_mmap_prepare(struct mmap_state *map,
+ 	if (err)
+ 		return err;
+ 
++	/* Check the caller did nothing crazy. */
++	err = mmap_prepare_validate(&orig_desc, desc);
++	if (err)
++		return err;
++
+ 	/* Update fields permitted to be changed. */
+ 	map->pgoff = desc->pgoff;
+ 	map->vma_flags = desc->vma_flags;
+@@ -3457,10 +3528,15 @@ int __vm_munmap(unsigned long start, size_t len, bool unlock)
+ int insert_vm_struct(struct mm_struct *mm, struct vm_area_struct *vma)
+ {
+ 	unsigned long charged = vma_pages(vma);
++	int err;
+ 
+ 	if (find_vma_intersection(mm, vma->vm_start, vma->vm_end))
+ 		return -ENOMEM;
+ 
++	err = mmap_validate_vma_flags(&vma->flags);
++	if (err)
++		return err;
++
+ 	if (vma_test(vma, VMA_ACCOUNT_BIT) &&
+ 	     security_vm_enough_memory_mm(mm, charged))
+ 		return -ENOMEM;
+diff --git a/mm/vma.h b/mm/vma.h
+index f15faa83f3d6..89f831080bd7 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -782,14 +782,19 @@ struct vm_area_struct *vm_area_alloc(struct mm_struct *mm);
+ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig);
+ void vm_area_free(struct vm_area_struct *vma);
+ 
+-/* vma_exec.c */
+ #ifdef CONFIG_MMU
++int mmap_prepare_validate(const struct vm_area_desc *orig_desc,
++			  const struct vm_area_desc *desc);
++
++int mmap_hook_validate(unsigned long orig_start, unsigned long orig_end,
++		       const vma_flags_t *orig_flags,
++		       const struct vm_area_struct *vma);
++
++/* vma_exec.c */
+ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
+ 			  unsigned long *top_mem_p);
+ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift);
+-#endif
+ 
+-#ifdef CONFIG_MMU
+ /*
+  * Denies creating a writable executable mapping or gaining executable permissions.
+  *
+@@ -838,6 +843,20 @@ static inline bool map_deny_write_exec(const vma_flags_t *old,
+ 
+ 	return false;
+ }
++#else
++static inline int mmap_prepare_validate(const struct vm_area_desc *orig_desc,
++					const struct vm_area_desc *desc)
++{
++	return 0;
++}
++
++static inline int mmap_hook_validate(unsigned long orig_start,
++				     unsigned long orig_end,
++				     const vma_flags_t *orig_flags,
++				     const struct vm_area_struct *vma)
++{
++	return 0;
++}
+ #endif
+ 
+ struct vm_area_struct *__install_special_mapping(struct mm_struct *mm,
 diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 16c09dac59d9..2fd422789717 100644
+index 2fd422789717..077df510a311 100644
 --- a/tools/testing/vma/include/dup.h
 +++ b/tools/testing/vma/include/dup.h
-@@ -1647,3 +1647,8 @@ static inline bool file_is_dev_zero(const struct file *file)
- {
- 	return file && file->f_op == &zero_fops;
+@@ -1359,13 +1359,23 @@ static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
+ 	return file->f_op->mmap_prepare(desc);
  }
+ 
++int mmap_prepare_validate(const struct vm_area_desc *orig_desc,
++			  const struct vm_area_desc *desc);
 +
-+static inline bool vma_flags_can_merge(const vma_flags_t *flags)
+ static inline int __compat_vma_mmap(struct vm_area_desc *desc,
+ 		struct vm_area_struct *vma)
+ {
++	struct vm_area_desc orig_desc;
+ 	int err;
+ 
++	/* Derive state prior to mmap_prepare hook. */
++	compat_set_desc_from_vma(&orig_desc, desc->file, vma);
+ 	/* Perform any preparatory tasks for mmap action. */
+ 	err = mmap_action_prepare(desc);
++	if (err)
++		return err;
++	/* Check the caller did nothing crazy. */
++	err = mmap_prepare_validate(&orig_desc, desc);
+ 	if (err)
+ 		return err;
+ 	/* Update the VMA from the descriptor. */
+diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+index d6136e19a8af..b35279a0ec78 100644
+--- a/tools/testing/vma/include/stubs.h
++++ b/tools/testing/vma/include/stubs.h
+@@ -329,6 +329,10 @@ static inline void vma_close(struct vm_area_struct *vma)
+ {
+ }
+ 
++static inline void zap_vma(struct vm_area_struct *vma)
 +{
-+	return !vma_flags_test_any_mask(flags, VMA_SPECIAL_FLAGS);
 +}
++
+ static inline int mmap_file(struct file *file, struct vm_area_struct *vma)
+ {
+ 	return 0;
 
 -- 
 2.55.0
