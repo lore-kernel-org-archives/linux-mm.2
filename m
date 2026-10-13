@@ -4,104 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F5F1CA9ED2
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 12:31:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E3EBCC6B03
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 12:38:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEDC26B008A; Tue, 13 Oct 2026 08:31:01 -0400 (EDT)
+	id 99D5D6B0088; Tue, 13 Oct 2026 08:38:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9ECC6B008C; Tue, 13 Oct 2026 08:31:01 -0400 (EDT)
+	id 94DD06B0096; Tue, 13 Oct 2026 08:38:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98DC36B0099; Tue, 13 Oct 2026 08:31:01 -0400 (EDT)
+	id 8634A6B0098; Tue, 13 Oct 2026 08:38:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 73C6A6B008A
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:31:01 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0DFCA0BE1
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:31:00 +0000 (UTC)
-X-FDA: 85317537480.13.3D8CCF5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BA4A420007
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:30:58 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gZTRINwc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 603606B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 08:38:06 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E362EC03E3
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:38:05 +0000 (UTC)
+X-FDA: 85317555330.17.E657CE1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 580E94000C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:38:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yl0qMY6j;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791895084;
+	b=eF1VFZCQvtnSAtt4QguUQ8FzvIs2tDxPDO09n6oJpHTwvsBNRQf3qLyeZcgpxz+Ew+0FzQ
+	ATLUQ5kfQXBPRf0trd6/H/9iGZPe2MHGBd4qt4MwaKSEIsima4n4jujeMxF2EpdSr/rtZc
+	CoF1k0sj5Up2q/0kbROc9yCT+vzyw/g=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yl0qMY6j;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791894658;
+	s=arc-20220608; t=1791895084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Xb1hOH7i9YqMB45ChD69mFDwlRw95h31SKU2E12G4YQ=;
-	b=T2LJqPpIb645qJ49V/bd1IMmeRb89XiAWhYkD181KwD8LAdUV+mRG0gPu3D+1otZYpLW1d
-	1kkpBgB8SwHBzpsWK4zxMcvoYU8RcLXmQo81lqHJwbFZ917C/W6wREW1iNFfyZDNvZkTC6
-	Tpv1PV8MUu5XkfEtKUQYHXH+AcALUWk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gZTRINwc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791894658;
-	b=byOud0GIUsJ+4CYN6uRkCd6hhpfJXAnq4lMP7WqtBue7hiU35mMS2j1pifF+83TaS7XCoq
-	Kyc84a+/rVAmy/Z3Bz2bc6+9rmJ1qmY3M8jOmo4R2k93D9Q366DTjF+CA0oBcOIR4jUP8x
-	5SGPiEBfx01EfiJ5sa5mu6cMyYsmGvA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GIMflr91/F4+/ElLk2iXFBQgQtgrPATZUPG9GvQDims=;
+	b=WGKCJIStBZBYDpdZ0n9AxwLfgldVv1U4+z8CtJgUIjjx/yXZlpfioCql3cSJxNQ4BdTjZg
+	T6lGLWbVT7KnLyYd0zSnDWlsoTn73nQNIF4ieR9ZTsGO2eM9LqT8Eyn5VV4Nscw3rBVTjU
+	09L6BEldLnVVV73xL3nBxaCchM1zWyo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4E10E40668;
-	Tue, 13 Oct 2026 12:30:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3101F00893;
-	Tue, 13 Oct 2026 12:30:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D97E160A5F;
+	Tue, 13 Oct 2026 12:38:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212401F000FF;
+	Tue, 13 Oct 2026 12:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791894657;
-	bh=Xb1hOH7i9YqMB45ChD69mFDwlRw95h31SKU2E12G4YQ=;
-	h=From:Date:Subject:To:Cc;
-	b=gZTRINwczHe7ZL8f1PcBeMY2tu1LxVXEWFrHCNBd59lQhR9MedBrhgfDx9Et3dRi8
-	 f6FoDnd2y7gIFlEctA7LwOEwX5rQdx3x3J5HQp5Yrklf4+XEdg0QPex25WzYeMC1OO
-	 M1k18osGBO5pgsWsaWy4NevXyn6+d2hEBOteBitDaa/nZLl2phfi/bBmWuTJ9xy6gn
-	 8oZhn69X+lszyFM30TxsixPD0ZbUkxKWJa6KfgCOO3OuLdLF4En+VtGFC1LKL7CWui
-	 CcTg5oUhXYvFReIGCZCWo3RmgJmWLxphKvPMD81i0+t1zysS0NLtXYmLo7XJkmJu7s
-	 HTkBgsINt+kzw==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 13 Oct 2026 14:30:37 +0200
-Subject: [PATCH] mm: fix address wraparound when scanning large folio PTEs
+	s=k20260515; t=1791895083;
+	bh=GIMflr91/F4+/ElLk2iXFBQgQtgrPATZUPG9GvQDims=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Yl0qMY6jwCOkNLtLFv6sTgRB1mFOK6e1GRyA5DvrmtTpv9MgjAnLuOroXeYhBaoXd
+	 w1Mb/XI3ZfZ66+gSYg74JLpiau3G3m2WvcCkDhka8jj7mBJnLDBN9KmWL8+rMtXKCI
+	 OrNCmQW42sUy4awxQNvvPnJ/C+2kpIVVY1hnwh1ux5FKn9DufDQNj05+2le4KGpsQa
+	 evJCGrPVkclf16YP7RKRmxutWMVj5WjBI2g5IMuHPNgdG1p3LSTlX+98lskSdlvkhE
+	 eKDMh9WcKcCU90jvTRa2PiE8o2Tjp7t38iY85i6B4hMrfG0csK4ZZMkwI9Kc1+/pe0
+	 wwaJYkfkou8fA==
+Date: Tue, 13 Oct 2026 13:38:01 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Imre Kaloz <kaloz@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/slab: sample slab_state once in kmem_cache_destroy()
+Message-ID: <as4QhUscRVtBzYpm@thinkstation>
+References: <20260930195110.13296-1-kaloz@kernel.org>
+ <ar5pESlkEMqNsgxv@thinkstation>
+ <aef97b97-0bd7-d720-7f59-8c0078747370@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAGwkzmoC/yXM0QpAQBCF4VfRXFOWEl5F2tYYjLSrHaTk3S0uv
- zrnv0DIMwnU0QWeDhZ2NkDFEeBk7EgJ98GQpVmhUpUng1vY6XUjLWis9t8GCzSqQiyp6iFcV08
- Dn1+2aX/L3s2E29uC+34ANex0hHgAAAA=
-X-Change-ID: 20261013-folio_pte_scan_range-c6ca19cc8e9d
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Ying Huang <huang.ying.caritas@gmail.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
- Ryan Roberts <ryan.roberts@arm.com>, Chuanhua Han <hanchuanhua@oppo.com>, 
- Mike Rapoport <rppt@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, 
- Kyle Zeng <kylebot@openai.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4181; i=david@kernel.org;
- h=from:subject:message-id; bh=q6nRAbWGhJmgn8/3tLbirUhaQCaDCSXwvO/2ykqrnTY=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLOqRTY7REJCHv+Oc5wyrsQY85DXHtSTqgvU5xxJCtRs
- 8/y8Yu5HaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEwkTJfhf2i1y5Xmsthvm1Jc
- JupN/tP07EzGhtsH+iZfDrue6vPVcSfDH+7NvOdtDjh5Ou/ozjkY8mGRWJ4+X4RO/55zV6dvqIn
- eyQAA
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: BA4A420007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aef97b97-0bd7-d720-7f59-8c0078747370@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 580E94000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: y7j3zafueyidaacp99sii85fdb5mdbms
-X-HE-Tag: 1791894658-876242
-X-HE-Meta: U2FsdGVkX1/v8kSmnVzECrpxX34vryTU6NqWoPCwzA5sC15OfrEShjhbgKagktlLr6N4zzgZDgY1BSRwaCarnwJXyfI2PREbAgstN7sNLkQEIxZgBvQVy13DJaN9+pnZrETCRaN8eVP4Z23SecmIasT+MSDOuUmP9l81T8QSuiqrM0ePL19Keg1v4+nsjwLdwKuvC/yi7acid+WJeuFQVTpsIbhtZzv2DcbZUcLwpBaKVi2YhIDSmi6NAsaJ28B3yrwwLHh/Tg/DYvM0EzDzydK09Gxr9ZjG5/d76/5jeMrdzvRdHcTmZAKQJ9O3krsq4lKjoU+7kfMgS966BsYzGVD/n9Ef8Umnz9RwCO75eWUDesw+yMnPzLYTqR9BsVrSfq5BGKqezHUyYuLLKCLB56K3laR/0D/5uI+UsOFhoh46swzNCK7LZJUNuVNmr1wKZPSJaQNx3O9kimG8JaG99gIHmvl5diaya4lqwRI3GQO2jKKQnlUetx7Xyu5Yb95JaaAoTR408v+MS0sxWqchnYrDEv4FItzi2IsJAIXwfIvgb024MyFLBvM8PWDXD73szCGLx+pjrvuo9zuA0VgsmpqvWvSrgEaeeCyZo2oHHQq/7WdBj+91I5p6fyATlLYSVqY1y0RQMi2C7nhqQiWCgKzZRo9o8D/F/nmXDekkfd9mCKL5rFsgqcpfk2138dgPRiwM+aOqJ2e+gVotAR2ChvdAka7hDLRUh+oTJXDvNSKe5/GDCWGXRPVN0WKgHU1xkpZ7hqK7jYO+Jq5iODatEu6FYpBfr2HURFauBMKxcrY/bNVLT5+tIvJVfq0EImUVSA+A7JmYCW/nXPyIr5Yi9rZxSF4UwAuwkUBYWDgK89I5mltrCrLR8aT9cZsHl5dQTv/VNvWFZJhNCuzOLHvZT/mLSZMTGF/RuaFkyfiWu5nwnqzW9D4lx8eOd/xOSeXEUu/uWA6AhlnulUt7XA9
- AIlDATir
- MIty45zLsSNiX1Jh+vQhZTXhaPs8PtwSk/wS3eFSKvbPhbvzz1hof5f+u9U5tPEboZWXvujlsOi77bP0h/Tbp9aY+qZxwkaTwdaBpxTDIsMlo89YPkOE+MNZbzPZmayPhLGKNHQd1uOMAJHhjYq1awaqbfc5NBYg6DS1PS/3uhbaIzfNilC8IJzlAJz6KrBu41UfakB0ntYXkgfYRf/u6QPVrYK+MP78qGRgPlGUu7Cr7rLesi1DfJRQir2C0pS5L0Hlds38gQNgaLskW+nBTRDrIzcy4vrPnfgO1thyqHywNMQJ4EVjf4cJWfqZxxAfsgwzzBRGfeno6UVxpT8/GFE9eag==
+X-Stat-Signature: qheyegtgtihp35ggu3yrpwtgbx31k4rp
+X-HE-Tag: 1791895084-963847
+X-HE-Meta: U2FsdGVkX1/Mn+C5CwXOkJrQLNhMaxL+3TX3uYvn0adrxhWWoAkunYmv2yYZP4Ilgr34bQhl0RAb46muAFH23VgfqXdwWawT4RytfzRcA7/BwreVHU3Do1j6HO8ZApu+0jQ9aQo5QGdvEY9aAXSb2arLgTEzHwLi2ZWKb9NwUSwZ9g/VWL+/vXXD2tVN+Gf24nwSrifnZpaFKWUgEoI9Gg7KNa9SG1VH6giMY1fuSIMUIKEYpKk3b07PFmB9Wn+KazDoqHnRJ1KBBd6bBvg5iPVW7Jh/gqbjHz9QM901hSiIyMUN0ge+mPp9ci8SA90lO1yqP3jBAKrba62QCcwruI0ohvORXcSmuUJqs9pfELRA5VYCkLltHpO6J/8gs4lPWwNcJjJwO6917gKs2EvWkoetvukSddYIUh2Yr97GBH/7h7Rv4UDqJy5oS31QexVAcG3iBQyurcIIPwSlTAzCFMbcr1QNQujbiLRCCoG7kaDhIzx/MDQ2jQ8EcBpGg+f39dJYmI3zU4pL4qVK91PmZdzixzZwydT1tOxCGgVzRQ0aKUpcwswbl6A6eskaMty02iyykidjRExL5+/w+WWizG8vH555lkrNbHTbx+RabrgHruYUlLPcD/V75NS9Wvs5AJJvfTWn0sMEXuIKNtRHr540/s4KOmK2PSAStoFkGdBTKDzOvS9BAadfLJr7yEK1zEYQIpRx6yEjFGYQ5J5PKmoE0e83Ls9bCSBL8ldYd+jTGtJw1ioDQFviqqdVhDTI+7zSHZuwfMk9+dGXCnUBZKVjWEJUbWWFlFmneR47g3sXjgiPUsksiprqUUBNeSyN3gFUdWNZzKR1q/nLkw+dqjK9b7FF4RQt3N6SkSieErZHFjCObV1VlbDgX0dx35sbLCNkNosjrr1FcLWSdIAfJx+eJjpYEDAWnrpKdxTlgEuPLWWm1zoKf2VyJSNGQTL3D49ssE1yCSmpRh8wEs+
+ Mw1LI8NC
+ xvgOFf3Mco8ZbYysR0JRG1dZHn5XBcUdqioyb/rVts6o/TY2Jqw2rQES0rd6z3danY6UM+df3SF0R86gvbC6VwyQpZgzIWRbgGfkLROO3TY1s0zZKEtgcSXHrAANmWifdXguttwLrCJ7RctCJpK7YPsWcMyVcBGNyScZaAV65zS9p0dwgW0fFW0kWCa3yY4Vgp3581mWjSbSSNzcKTAdDAlv/VSzFNIoHl2lUTAFLxm1WjsVMV/HFTF6M3gMF/q8jSKP3jE0XLlmhCiEqiuNUMkyLIksHhc54yH18BG/WstOzEVU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,113 +95,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-numa_rebuild_large_mapping() and do_swap_page() can be tricked into
-generating an address wraparound, crashing the kernel. All that's required
-is to map a tail page of a large folio close enough to the start/end of
-the address space to e.g., make
+Uh, apologies for the late reply.
+Catching up after trip at LPC...
 
-	unsigned long addr_start = addr - (nr << PAGE_SHIFT);
+On Thu, Oct 01, 2026 at 05:42:36PM +0200, Imre Kaloz wrote:
+> Hi Harry,
+> 
+> On Thu, 1 Oct 2026, Harry Yoo wrote:
+> 
+> > Hi Imre,
+> > Thanks for catching and fixing this!
+> > 
+> > On Wed, Sep 30, 2026 at 09:51:09PM +0200, Imre Kaloz wrote:
+> > > kmem_cache_destroy() tests slab_state >= FULL for sysfs_slab_unlink()
+> > > and again in kmem_cache_release() for sysfs_slab_release(), with the
+> > > cache already off slab_caches in between. If slab_late_init() runs in
+> > > that gap it sets slab_state to FULL but never calls sysfs_slab_add() for
+> > > the unlinked cache, so kmem_cache_release() ends up in kobject_put() on
+> > > a kobject that was never initialized:
+> > > 
+> > >   WARNING: lib/kobject.c:734 at kobject_put+0x64/0x2c0, CPU#1: kworker/u8:3/55
+> > >   kobject: '(null)' ((____ptrval____)): is not initialized, yet kobject_put() is being called.
+> > >   refcount_t: underflow; use-after-free.
+> > >   kobject_put+0x64/0x2c0
+> > >   sysfs_slab_release+0xc/0x20
+> > >   kmem_cache_destroy+0x104/0x1e0
+> > >   bioset_exit+0x13c/0x1e0
+> > >   disk_release+0x54/0x140
+> > >   put_disk+0x18/0x40
+> > >   floppy_async_init+0xbec/0xd10
+> > > 
+> > > Seen on sparc64 at boot, where the asynchronous floppy init tears down
+> > > its bio slab while the late initcalls are running.
+> > > 
+> > > Read slab_state once, under slab_mutex which slab_late_init() holds when
+> > > it sets FULL, and use the result for both the unlink and the release.
+> > > The kobject flags (state_initialized, state_in_sysfs) were considered as
+> > > the key instead, but slab_state is what cache creation and
+> > > slab_late_init() decide on.
+> > > 
+> > > debugfs_slab_release() is not part of the race: it only looks the cache
+> > > up by name in the debugfs root and does nothing before that root exists.
+> > > 
+> > > Fixes: 4ec10268ed98 ("mm, slab: unlink slabinfo, sysfs and debugfs immediately")
+> > 
+> > Overall looks good to me, but could you please explain why it's
+> > not relevant before this commit? pre-4ec10268 still reads slab_state
+> > outside slab_mutex.
+> > 
+> 
+> The outside-mutex read is older, yes. What 4ec10268ed98 changed is that
+> unlink and release no longer share it.
 
-to wrap around.
+Right.
 
-Let's fix it by providing a better helper, folio_pte_scan_range(), that
-takes care of staying within VMA and page table boundaries while
-handling possible wraparounds.
+> Before that commit, kmem_cache_release() did one test and used it for
+> both:
+> 
+>     if (slab_state >= FULL) {
+>         sysfs_slab_unlink(s);
+>         sysfs_slab_release(s);
+>     } else {
+>         slab_kmem_cache_release(s);
+>     }
+> 
+> So the two could not disagree.
 
-Reported-by: Kyle Zeng <kylebot@openai.com>
-Fixes: d2136d749d76 ("mm: support multi-size THP numa balancing")
-Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- mm/memory.c | 43 +++++++++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 14 deletions(-)
+Right.
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 1f5d5f7d39cd2..a3823010aa981 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4933,6 +4933,27 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
- 	} while (--nr_pages);
- }
- 
-+/*
-+ * Get the address range in which a folio might be mapped, assuming its pages
-+ * are mapped consecutively and the folio page at the given idx is mapped at
-+ * the given address.
-+ */
-+static void folio_pte_scan_range(const struct folio *folio,
-+		const struct vm_area_struct *vma, unsigned long addr,
-+		unsigned long idx, unsigned long *start, unsigned long *end)
-+{
-+	/* Stay within the page table and VMA boundaries. */
-+	const unsigned long pmd_start = addr & PMD_MASK;
-+	const unsigned long pmd_end = pmd_start + PMD_SIZE;
-+	const unsigned long lower = max(pmd_start, vma->vm_start);
-+	const unsigned long upper = min(pmd_end - 1, vma->vm_end - 1) + 1;
-+	const unsigned long offset = idx << PAGE_SHIFT;
-+
-+	/* Avoid any address wraparounds. */
-+	*start = addr - min(addr - lower, offset);
-+	*end = addr + min(upper - addr, folio_size(folio) - offset);
-+}
-+
- /*
-  * We enter with either the VMA lock or the mmap_lock held (see
-  * FAULT_FLAG_VMA_LOCK), and pte mapped but not yet locked.
-@@ -5121,16 +5142,15 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 	address = vmf->address;
- 	ptep = vmf->pte;
- 	if (folio_test_large(folio) && folio_test_swapcache(folio)) {
--		int nr = folio_nr_pages(folio);
--		unsigned long idx = folio_page_idx(folio, page);
--		unsigned long folio_start = address - idx * PAGE_SIZE;
--		unsigned long folio_end = folio_start + nr * PAGE_SIZE;
-+		const int nr = folio_nr_pages(folio);
-+		const unsigned long idx = folio_page_idx(folio, page);
-+		unsigned long folio_start, folio_end;
- 		pte_t *folio_ptep;
- 		pte_t folio_pte;
- 
--		if (unlikely(folio_start < max(address & PMD_MASK, vma->vm_start)))
--			goto check_folio;
--		if (unlikely(folio_end > pmd_addr_end(address, vma->vm_end)))
-+		folio_pte_scan_range(folio, vma, address, idx, &folio_start,
-+				     &folio_end);
-+		if (unlikely((folio_end - folio_start) >> PAGE_SHIFT != nr))
- 			goto check_folio;
- 
- 		folio_ptep = vmf->pte - idx;
-@@ -6280,16 +6300,11 @@ static void numa_rebuild_large_mapping(struct vm_fault *vmf, struct vm_area_stru
- 				       struct folio *folio, pte_t fault_pte,
- 				       bool ignore_writable, bool pte_write_upgrade)
- {
--	int nr = pte_pfn(fault_pte) - folio_pfn(folio);
-+	const unsigned long idx = pte_pfn(fault_pte) - folio_pfn(folio);
- 	unsigned long start, end, addr = vmf->address;
--	unsigned long addr_start = addr - (nr << PAGE_SHIFT);
--	unsigned long pt_start = ALIGN_DOWN(addr, PMD_SIZE);
- 	pte_t *start_ptep;
- 
--	/* Stay within the VMA and within the page table. */
--	start = max3(addr_start, pt_start, vma->vm_start);
--	end = min3(addr_start + folio_size(folio), pt_start + PMD_SIZE,
--		   vma->vm_end);
-+	folio_pte_scan_range(folio, vma, addr, idx, &start, &end);
- 	start_ptep = vmf->pte - ((addr - start) >> PAGE_SHIFT);
- 
- 	/* Restore all PTEs' mapping of the large folio */
+> 4ec10268 moved sysfs_slab_unlink() into
+> kmem_cache_destroy(), after list_del() and after dropping slab_mutex,
+> and left a second slab_state test in kmem_cache_release() for
+> sysfs_slab_release(). The cache is already off slab_caches in between.
 
----
+Right.
 
-base-commit: 634cbf5b794b734c78631b92e381cfc85f357bbe
+> That is the window in the warning: the first test sees < FULL, so the
+> kobject is never linked; slab_late_init() then sets FULL under
+> slab_mutex and calls sysfs_slab_add() only for caches still on the
+> list; the second test sees FULL and kobject_put()s a kobject that
+> kobject_init() never ran on.
+> 
+> A single read cannot produce that split decision, which is why Fixes:
+> points at 4ec10268ed98.
 
-change-id: 20261013-folio_pte_scan_range-c6ca19cc8e9d
+Right.
 
---
+> There is a related older window: after list_del() and before that
+> single read, slab_sysfs_init() could set FULL, skip this cache, and
+> the single read would then call both unlink and release on an
+> uninitialized kobject.
 
+No, with this patch slab_sysfs_init() cannot set the state to FULL
+because the slab_caches list and slab_state are protected by slab_mutex.
+
+> I have not hit that, and this patch does not close it.
+
+I think the patch does close two bugs.
+
+One introduced by 4ec10268ed98 (reading slab_state twice),
+another (reading slab_state outside slab_mutex) introduced by, hmm,
+not sure which commit introduced it :) should be very old.
+
+-- 
 Cheers,
-
-David
-
+Harry / Hyeonggon
 
