@@ -4,94 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44188CC6B0F
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 14:09:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB321CC6B0F
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 14:11:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 897DD6B0088; Tue, 13 Oct 2026 10:09:14 -0400 (EDT)
+	id B34A16B008C; Tue, 13 Oct 2026 10:11:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 848D86B008A; Tue, 13 Oct 2026 10:09:14 -0400 (EDT)
+	id AE5326B0092; Tue, 13 Oct 2026 10:11:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75E476B008C; Tue, 13 Oct 2026 10:09:14 -0400 (EDT)
+	id 9D3436B0095; Tue, 13 Oct 2026 10:11:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 431776B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:09:14 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E40D80BF2
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:09:13 +0000 (UTC)
-X-FDA: 85317784986.18.01CF584
-Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 13E1D20009
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:09:10 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=hallyn.com header.s=mail header.b=kL9ibrJg;
-	dmarc=pass (policy=reject) header.from=hallyn.com;
-	spf=pass (imf31.hostedemail.com: domain of serge@hallyn.com designates 178.63.66.53 as permitted sender) smtp.mailfrom=serge@hallyn.com
+	by kanga.kvack.org (Postfix) with ESMTP id 710D06B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:11:24 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F41DE140BC8
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:11:23 +0000 (UTC)
+X-FDA: 85317790446.16.9BE7396
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 48F0C2000C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 14:11:22 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WTTmcHwc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791900551;
+	s=arc-20220608; t=1791900682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w6ZuGJpO3JerCueQneSa/3vKnDAJukJFeI8mWhm4kYU=;
-	b=RsC2QtfpzKHnMlo0fYLGYwT/QAkHHQlvF51fAj5OzSdGBLX8lYXAUEnJpF+eqPkb6yC2wh
-	X7neK1j0oVhnZBQ6WuJd7hG3VEb66bHNbaS2EqDZeGETJfHhn/ZpaVqQg3gQiP8tnisSD4
-	dNfFi5ch22WccgqLwYWNAkKumvQhM4A=
+	bh=PafVWtiiBVG/CnUNItxta5c64k8qSC/5mZ/lxcbSfuw=;
+	b=xTiguDdS/O++60yWBc8NCiRiYahfY3gu7b7nna/sv/8mPZ6WdDymj2yQIeeJpuJpbWhKP7
+	6H/w9FD/dXAg4KYxSb+OtzZc+LQDcAMsRLoKGggNAYnalD2llK5NFfr3MeFAkbRnESITf8
+	8RJmLzA8irWBvkZsmoxonV4L0t9yyvM=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=hallyn.com header.s=mail header.b=kL9ibrJg;
-	dmarc=pass (policy=reject) header.from=hallyn.com;
-	spf=pass (imf31.hostedemail.com: domain of serge@hallyn.com designates 178.63.66.53 as permitted sender) smtp.mailfrom=serge@hallyn.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WTTmcHwc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791900551;
-	b=DnfsIn5bJ7a5vzNPTJX/bDS1/oQKRHhUH9HFuu3g2fiwliuNaFIAnvVs3J/0Iu+OaI0hZ6
-	wJ648p45TN24F7ABAQR5qlJhK7b1C+HVGzWkw2JGr0j4ghpSFlly8Ulmn+MBwWs/SoIYxy
-	ejN2dGA1GAnBg+wKt5Bgl7mSXDK+5xk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hallyn.com; s=mail;
-	t=1791900547; bh=Suo0YfCYPtCoLBJ8iZXRfc+dw40jvIHLkG13JRnjZUY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kL9ibrJga4YY3RAquWvtOegRsAK6JNwI4zXpQH4mv6j2Vsk9CY8qfIhLg/GbWf10M
-	 DeXquRyTooElnL5wcZ6eBAgd3kldWf1/1DVrk/QnE7SSW6X/eN/0nBES3D+BgjTlUU
-	 C/Rx2MZe3C0Slal4i45wXX+ZGEjf9NEkolx65kLPAJurAwcIqT7Fgf9sZxk/YpgtAy
-	 XDKHXmjY/8nxliaKEOZl8gn/L8ISgxycaCqcVMdYGSSfKRj3VaBKUpf5cLXmVPw2xG
-	 o/e7XKeKzb8AwNvzLFiFE90IPPcFzQuMfwogAUoL6N27g/9+hdqYmLbjfnu+6mI3om
-	 KyZ826JuJNe2w==
-Received: by mail.hallyn.com (Postfix, from userid 1001)
-	id 2638A6FA; Tue, 13 Oct 2026 09:09:07 -0500 (CDT)
-Date: Tue, 13 Oct 2026 09:09:07 -0500
-From: "Serge E. Hallyn" <serge@hallyn.com>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: kees@kernel.org, akpm@linux-foundation.org, david@kernel.org,
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, kprateek.nayak@amd.com, paul@paul-moore.com,
-	jmorris@namei.org, shuah@kernel.org, oleg@redhat.com,
-	brauner@kernel.org, alexjlzheng@tencent.com, jannh@google.com,
-	jaime.saguillo@gmail.com, elver@google.com, blbllhy@gmail.com,
-	bvanassche@acm.org, pjw@kernel.org, broonie@kernel.org,
-	debug@rivosinc.com, tglx@kernel.org, aleksey.oladko@virtuozzo.com,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, morgan@kernel.org
-Subject: Re: [RFC PATCH v2 0/3] security: Add PR_CAPBSET_DROP_MASK
-Message-ID: <as47g9Ofa7hgDDLp@hallyn.com>
-References: <20260929130200.1638343-1-ruanjinjie@huawei.com>
+	t=1791900682;
+	b=PWf44cBKtcHXQoVe+ZVAKDIFAinx8zKDqYWtrNppTTPucMuZFdmNMxOmHLU0sYWBimX2Zz
+	lEKChWj5d+QIGwTVxdA00qqbXTc+Qi44x0uovaobJ7QZZXx5rLxSfcI12Tx4utJxoVpCXk
+	e/ZFBhyVZIbSJaBgU3ivgbuvjliTraM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6D20943268;
+	Tue, 13 Oct 2026 14:11:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667CB1F000FF;
+	Tue, 13 Oct 2026 14:11:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791900681;
+	bh=PafVWtiiBVG/CnUNItxta5c64k8qSC/5mZ/lxcbSfuw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WTTmcHwcZrWC6wIHZ4MKlhp2UbxVVfnyQhygIA7pwCuO27EWQQwjjy5Pr/G5PjLRS
+	 kgu/qr2UpU9jczKBTuspnklruSAY//9u1nNJhv6wDTzTLlaQiSxAxN4l/7OUtXVSsS
+	 utiaQToztMh3L+geyoayp0jZRBM8D+SMSgRuNA6V/DiZj52mLpNYo+qqKM+1qOhCJr
+	 ZsJYlUB39tnfy1QnhHMpH8iylJjTqh254YQk5QEC7K3wgtChYqUtFbdGRoChr4Qb4I
+	 Fq1tIiyCQ2UCxNRQSqHQ8V423ClS3wK9y4vLE2uPuMGFVKEsPPtakP49z36XcjbkOy
+	 ngOWAENHP5YmQ==
+Date: Tue, 13 Oct 2026 15:11:13 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Ying Huang <huang.ying.caritas@gmail.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Chuanhua Han <hanchuanhua@oppo.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: fix address wraparound when scanning large folio PTEs
+Message-ID: <as4kvHe9IFZH5qrC@gremlin>
+References: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260929130200.1638343-1-ruanjinjie@huawei.com>
-X-Rspamd-Queue-Id: 13E1D20009
+In-Reply-To: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
+X-Stat-Signature: t97maa54ffm5qkfok1bce6rr561z5gik
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: s643hkxq7s4e1fpthco5nb9jw68ydewg
-X-HE-Tag: 1791900550-43831
-X-HE-Meta: U2FsdGVkX1/0IjOC93bYyjgsZgAWKHTliwp0tTSFF+V4RpaOkDS0qEplVOCmZLKHRBnKcB2bjIovikfiOkBhDMxHuPwi3CM9A/LS4GC/0gPmwE3EKAqqnAI55nYUt3MDXNqDRqhcCM3unyQPeBVSBnyTb/g0xYBmdUUKF3ZIDBuC15Bj/5iwOjVWxAJDc8tCYknDutE6laGUfaeO0hfA4V2k/QYHjc4Qkeuh9R9PpgxdyR/FbPGP/ZOAGJejogfXf+93UsJZgbyJaf3BwbBikIajtA88ent1HN7X4DSJ/QA/08ZdN+DadH5T4FQHJo+Uv4iIbi9zH/eHOPfDPA3E1z6hYe6gL8DHB/pVGcBDYQswpI9ESwxnCLaFf910aGosTTqEMO1noFi5K0/f23K+vHmSBz5K3dKHftuUW7TaiALtfCHYKN8in5AZ1wD+vjnvUibnAddZ9e40lsEWWhCbZ7lKOmvJMDUTu6hD5HznCnZ6MGM6tFbOjl7b9MwQww44qiukKzh9PXIvZceuQIeHEq019yvYmTVVxTIdQSki6XMexsEvKRdpi/F6Ys1ddVNMRX/6AkPK6Vk2URo4I2hlt8Zn0U8Ffxa74mtp4ftRVe4Tr/ddr4+3J8tAeTcj8JGjdQ6Hp2xhJ5CgaaOluJ5lbZI6XkuzY1WjV9DtSJJqFTXQtDNwLT5kmGCSlcB4HOo1JQgU2awyz8N80CFag78Rfeo/m1tHN3x84x+3Pe8WbLNmPd8P0nOMkPrpRa3PlZR/qvS/re0Pw139nV1S3TXqZ34nwRBKknflyhpx7nqz8CW8rZL3Uqu3WpwdgADtEBvZxAqsnLy8EhLnUNcCDhvGcxKuiVfiSGohT0S2wKlqUnWHh6B5BjngtityAnKr7M3q8LojejOnHShjpHs+AT7Bs4D5R4s6AjbiGTBrayn8Cpknykl9OIIaa2HpGVR+W+48xI+fVDTGnHuMvVd11/p
- p8o/5f+/
- YG/8QmMrTYO8p/JXUW/sC1elUq3z6UpOhf8K9Wqk7+TUJjKusm3J43YY1onI/nSwV83tIlWrOEuMJRjDRhGHf0INk0ezDZ//chTy45PH/Ke1DXk9CDhzqLeuQXvSKPjO0RPzvzlcxxMvwIeg+ymNUKU3sd4Z8MeB203dokf+ZRdm/wcAkpr+FCUvNLTKCo1hla7CP99m7mUn7oO5S11KShA12siMlQcdFcjhRVKDdg0tXsuiLRCNLfYKiWolCKk3x+u/O+GQ2yogGsKNQXBZ0fIW8cZ+qlERpWrjjDguFDqbwYWy8paSc+0HW3fcYvfhfZ3RbP6YsnfJJDh9WZVs5gJT9zxrIf6upwSntk4hFytTd7iCr0zEXJwhwKwc3LuypiZJEVmhZvJ9+p6DC3DiuTbwc8FNfdqfevp+Q678IzgKv0YmyLq0n4YX73w==
+X-Rspamd-Queue-Id: 48F0C2000C
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791900682-741565
+X-HE-Meta: U2FsdGVkX1/RnNNzFP0BgOfXC9n0Quy5JgrlgaIwToDQ77J7+Cw3CSKV/C0pYQqLn+UkkrnS2E9NPae0bsC8xA/CJ5sax5Otj5OtKJl/hAryVxxOZZRR4Ry5retcsdjvonj74iAtzveHNF7sAJrwFyBvpVU7l2hATXIZTl/fRQhvuuWdtalCTukgqy22SOy0M5ETL7wx8R1f8qGvRnO5JbK3RlQ6AN6Al5JveAQexFEbI6+IA2ctNAfmZukzcIzm6HIVLGTdsjbt8TUydwXRRlqQsP8RZwGn6Gn97Y+j+SSgnUMYiG00UKw5ywdiOkzmY0DxT12lFoxpJlJMCitQklLgIN5wuQwHKXu2SZ1CPdLtW8/vs3xz91SEYNXd+hjER9iMvHWbJCttM4G0ixAQWOxEQGZgyemUmNlqtmHJfK+55V30laTvnaXD74AEfii9JrBaQsYJFse5N0zFkXXs8G6EWAUDjIPIhaKhXmiCG1H+g+XjaU8PkJh6zTycyIQiedLCflc6JkR+cw1KMerLsRvvG7EE/O3ULgQNEuQZSvW3M208HjzbSPVUdJfr1WHSEs5wXjzBQFKymHHGu5eNhw+waomH8rJ3PImhWKfRewthb1olF86GkWpQlaiBnaBY0yX6T2l1ihVR9L0WjQAalaTW8laZFCNXHT8qyz3KaVXaHZu9asjeH0Gj/DvJ6AshG/KLlGjjUYr4deKSnR992N2jz3/7A+T/6qqPbMEXs+lUjdxSdBOvNnrLc9pirn5DW2M3xyl+4z+D6Q7mdD0Rlz/K8VA77VSzynAALWK5/C49pd71pJsO7kZiMmbA26hbU8Rt+UM4lvaRfojrRKeRlmUQVr7lzobW8ajxjS73XG5C9BfTeU560dY/oqE00P5Jaqmo4Y5eLnCCM6uO4Ym1LsRWT6D14JOW9DnqMti2HITdsdsBpts99FdIwpPKjryMMTDkrtq5EYbVc4vzD7R
+ rCbtLCpH
+ yGkGzYF7Nq4Ff6zrsEq6tH+bPrtzLGYrx4xgIB1jG91W1pnGj/Vls15Ns9Vgt71BHlpBFI7mXRRw4ugJV79ExPsmSeoukzDktrXjjx4Km4ZnsFYkJSrob4us5zCSDQKQVbSLT7ET5SGhsNc+v+mfU1nT2OKmmg7RzGz9pWpO08rT9kbW+C9GSuc0Z/sgV3QRzW/GX2cCIW6uIeLREDIbgPO4We7hM/y07QQIwsXzQ7rUI7n81LPGAJC5g5eQcNSaP7uerwGSAzgb3FeoCUdZL32hpDnLW4YVNrUywmn80bb3DV0Zh0/g+KYgnup6R02telUI+6lTuphaFPA9UGOipo2E5i7Llwv8VUHKEeZQVL4BsnBS4RGjV0zL5dw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,49 +96,226 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 09:01:57PM +0800, Jinjie Ruan wrote:
-> PR_CAPBSET_DROP only affects the calling thread, so dropping capabilities
-> for a whole process means one call per capability per thread.  For a
-> long-lived, multi-threaded process such as gVisor's sentry this is
-> stop-the-world signal delivery and costs milliseconds per sandbox on a
-> many-core host.
-> 
-> This series adds PR_CAPBSET_DROP_MASK, which removes a 64-bit mask of
-> capabilities from the whole thread group in a single call.  The drop is
-> recorded per thread group and folded into the bounding set wherever it
-> gates gaining a capability, so already-running, concurrently-created and
-> later-created threads -- as well as children forked by a sibling -- all
-> observe it.
-> 
-> Trimming 41 capabilities in an arm64 KVM guest goes from ~8.5-23.6ms with
-> the per-thread loop to ~11-14us, independent of the thread count.
-> 
-> Changes in RFC v2:
-> - Solve concurrently clone and concurrently drop mask problem.
-> - Solove sashiko problems in [1].
-> - Link to RFC v1: https://lore.kernel.org/all/20260922095816.1191799-1-ruanjinjie@huawei.com/
-> [1] https://sashiko.dev/#/patchset/20260922095816.1191799-1-ruanjinjie%40huawei.com
+On Tue, Oct 13, 2026 at 02:30:37PM +0200, David Hildenbrand (Arm) wrote:
+> numa_rebuild_large_mapping() and do_swap_page() can be tricked into
+> generating an address wraparound, crashing the kernel. All that's required
+> is to map a tail page of a large folio close enough to the start/end of
+> the address space to e.g., make
+>
+> 	unsigned long addr_start = addr - (nr << PAGE_SHIFT);
+>
+> to wrap around.
 
-Sorry, somehow I didn't notice this version until today.  I will take
-a close look later this week.  Thanks.
+Yeah damn.
 
-> Jinjie Ruan (3):
->   capability: Move mk_kernel_cap() to header
->   security: Add PR_CAPBSET_DROP_MASK for process-wide bounding-set drops
->   selftests: prctl: add process-wide bounding-set drop tests
-> 
->  fs/proc/array.c                               |   3 +-
->  include/linux/capability.h                    |  10 +
->  include/linux/sched/signal.h                  |   8 +
->  include/uapi/linux/prctl.h                    |   1 +
->  kernel/capability.c                           |   5 -
->  kernel/fork.c                                 |   1 +
->  security/commoncap.c                          |  91 ++-
->  tools/testing/selftests/prctl/Makefile        |  12 +-
->  .../selftests/prctl/cap-bset-drop-test.c      | 641 ++++++++++++++++++
->  9 files changed, 759 insertions(+), 13 deletions(-)
->  create mode 100644 tools/testing/selftests/prctl/cap-bset-drop-test.c
-> 
-> -- 
-> 2.34.1
+I feel like we need to generalise the underflow/overflow checks we have
+arbitrarily around the place into helper functions.
+
+I know somebody schlopped something like that for one function in particular
+recently, but a non-schlopped, generalised version of that would be nice.
+
+>
+> Let's fix it by providing a better helper, folio_pte_scan_range(), that
+> takes care of staying within VMA and page table boundaries while
+> handling possible wraparounds.
+
+OK so this is effectively abstracting this very thing :) though I guess
+perhaps not quite a match for the general 'did we over/underflow stuff with
+the addr, size pair we just got'.
+
+Anyway that's something to think about separately I guess.
+
+>
+> Reported-by: Kyle Zeng <kylebot@openai.com>
+> Fixes: d2136d749d76 ("mm: support multi-size THP numa balancing")
+> Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  mm/memory.c | 43 +++++++++++++++++++++++++++++--------------
+>  1 file changed, 29 insertions(+), 14 deletions(-)
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 1f5d5f7d39cd2..a3823010aa981 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4933,6 +4933,27 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
+>  	} while (--nr_pages);
+>  }
+>
+> +/*
+> + * Get the address range in which a folio might be mapped, assuming its pages
+> + * are mapped consecutively and the folio page at the given idx is mapped at
+> + * the given address.
+> + */
+
+I know it's a static function but kdoc here might be nice given the number of
+params, including 2 output parameters.
+
+Also then can specify exclusive end, etc.
+
+> +static void folio_pte_scan_range(const struct folio *folio,
+> +		const struct vm_area_struct *vma, unsigned long addr,
+> +		unsigned long idx, unsigned long *start, unsigned long *end)
+
+I don't love the name - to me it implies to me that you're scanning the range.
+
+Maybe clamp_folio_pte_range()? I guess though clamp implies it limits an input
+range.
+
+Maybe get_folio_pte_range()?
+
+Also I think it might be useful to have it return the number of pages contained
+within the range?
+
+Then this below:
+
++		folio_pte_scan_range(folio, vma, address, idx, &folio_start,
++				     &folio_end);
++		if (unlikely((folio_end - folio_start) >> PAGE_SHIFT != nr))
+
+Could be:
+
++		if (unlikely(get_folio_pte_range(folio, vma, address, idx,
++						 &folio_start, &folio_end)) != nr)
+
+OTOH, that's pretty ugly... :))
+
+> +{
+> +	/* Stay within the page table and VMA boundaries. */
+> +	const unsigned long pmd_start = addr & PMD_MASK;
+> +	const unsigned long pmd_end = pmd_start + PMD_SIZE;
+
+OK so get the range of the PTE page table.
+
+> +	const unsigned long lower = max(pmd_start, vma->vm_start);
+
+Then clamp to VMA start...
+
+> +	const unsigned long upper = min(pmd_end - 1, vma->vm_end - 1) + 1;
+
+This is trickier :)
+
+I guess you're doing this in case either bound is right at wraparound
+somehow?
+
+But then couldn't the +1 push you over the edge?
+
+Oh wait no, because then vma->vm_end would have to equal 0, which would
+fail the other-place enforced invariant that vma->vm_start < vma->vm_end.
+
+So it's pmd_end that could overflow, hence the -1, +1 dance.
+
+Yeah I kind of hate that, that's a lot of 'just have to know' right there.
+
+Actually we have pmd_addr_end() already, could we use that?
+
+#define pmd_addr_end(addr, end)                                         \
+({      unsigned long __boundary = ((addr) + PMD_SIZE) & PMD_MASK;      \
+        (__boundary - 1 < (end) - 1)? __boundary: (end);                \
+})
+
+That embeds the trick in the helper and it expresses what you're getting.
+
+Then it could be:
+
+	const unsigned long pmd_start = addr & PMD_MASK;
+	const unsigned long lower = max(pmd_start, vma->vm_start);
+	const unsigned long upper = pmd_addr_end(addr, vma->vm_end);
+
+> +	const unsigned long offset = idx << PAGE_SHIFT;
+> +
+> +	/* Avoid any address wraparounds. */
+> +	*start = addr - min(addr - lower, offset);
+
+This is also tricky. This is clamping to max(lower, addr - offset) right,
+but being very careful about underflow?
+
+I don't love the addr - (addr - lower) = lower here, and it feels like it
+embeds a comparison there too. It's all very implicit.
+
+Actually maybe just naming addr - lower gets us there:
+
+	const unsigned long max_offset = addr - lower;
+	...
+	*start = addr - min(max_offset, offset);
+
+There's check_sub_overflow() or you could use a ternary also but both feel
+like they add more complexity than is useful.
+
+> +	*end = addr + min(upper - addr, folio_size(folio) - offset);
+
+Same deal here.
+
+Maybe something like:
+
+	const unsigned long max_remaining_bytes = upper - addr;
+	...
+	*end = addr + min(max_remaining_bytes, folio_size(folio) - offset);
+
+> +}
+> +
+>  /*
+>   * We enter with either the VMA lock or the mmap_lock held (see
+>   * FAULT_FLAG_VMA_LOCK), and pte mapped but not yet locked.
+> @@ -5121,16 +5142,15 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  	address = vmf->address;
+>  	ptep = vmf->pte;
+>  	if (folio_test_large(folio) && folio_test_swapcache(folio)) {
+> -		int nr = folio_nr_pages(folio);
+> -		unsigned long idx = folio_page_idx(folio, page);
+> -		unsigned long folio_start = address - idx * PAGE_SIZE;
+> -		unsigned long folio_end = folio_start + nr * PAGE_SIZE;
+> +		const int nr = folio_nr_pages(folio);
+> +		const unsigned long idx = folio_page_idx(folio, page);
+> +		unsigned long folio_start, folio_end;
+>  		pte_t *folio_ptep;
+>  		pte_t folio_pte;
+>
+> -		if (unlikely(folio_start < max(address & PMD_MASK, vma->vm_start)))
+> -			goto check_folio;
+> -		if (unlikely(folio_end > pmd_addr_end(address, vma->vm_end)))
+> +		folio_pte_scan_range(folio, vma, address, idx, &folio_start,
+> +				     &folio_end);
+> +		if (unlikely((folio_end - folio_start) >> PAGE_SHIFT != nr))
+>  			goto check_folio;
+>
+>  		folio_ptep = vmf->pte - idx;
+> @@ -6280,16 +6300,11 @@ static void numa_rebuild_large_mapping(struct vm_fault *vmf, struct vm_area_stru
+>  				       struct folio *folio, pte_t fault_pte,
+>  				       bool ignore_writable, bool pte_write_upgrade)
+>  {
+> -	int nr = pte_pfn(fault_pte) - folio_pfn(folio);
+> +	const unsigned long idx = pte_pfn(fault_pte) - folio_pfn(folio);
+>  	unsigned long start, end, addr = vmf->address;
+> -	unsigned long addr_start = addr - (nr << PAGE_SHIFT);
+> -	unsigned long pt_start = ALIGN_DOWN(addr, PMD_SIZE);
+>  	pte_t *start_ptep;
+>
+> -	/* Stay within the VMA and within the page table. */
+> -	start = max3(addr_start, pt_start, vma->vm_start);
+> -	end = min3(addr_start + folio_size(folio), pt_start + PMD_SIZE,
+> -		   vma->vm_end);
+> +	folio_pte_scan_range(folio, vma, addr, idx, &start, &end);
+>  	start_ptep = vmf->pte - ((addr - start) >> PAGE_SHIFT);
+>
+>  	/* Restore all PTEs' mapping of the large folio */
+>
+> ---
+>
+> base-commit: 634cbf5b794b734c78631b92e381cfc85f357bbe
+>
+> change-id: 20261013-folio_pte_scan_range-c6ca19cc8e9d
+>
+> --
+>
+> Cheers,
+>
+> David
+>
+
+In general though the logic as a whole looks correct to me, AFAICT.
+
+--
+Cheers, Lorenzo
 
