@@ -4,114 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4600ACC6B0E
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 16:59:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFE8FCC6B0E
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 17:01:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FE6D6B0088; Tue, 13 Oct 2026 12:59:40 -0400 (EDT)
+	id D85236B008C; Tue, 13 Oct 2026 13:01:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0880F6B008A; Tue, 13 Oct 2026 12:59:40 -0400 (EDT)
+	id D0ED06B0092; Tue, 13 Oct 2026 13:01:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6B506B008C; Tue, 13 Oct 2026 12:59:39 -0400 (EDT)
+	id BAFD76B0095; Tue, 13 Oct 2026 13:01:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A34376B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 12:59:39 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 837B76B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 13:01:40 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2E64B140D03
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 16:59:39 +0000 (UTC)
-X-FDA: 85318214478.08.D13DEF9
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 406B0140009
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 16:59:37 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DjkkkwIR;
-	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2158C1A0E22
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 17:01:40 +0000 (UTC)
+X-FDA: 85318219560.08.EC01F13
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 19AAF40005
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 17:01:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IHVTm+oq;
+	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791910777;
+	s=arc-20220608; t=1791910898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Irc52p7IpU94MjhUuTv/4weSSBLioQxa3X0dPTYCCpw=;
-	b=d8nGuvwU2NRLJmq98gBFip6dpCI6IOkgfYGNNTXXm+Bv8AsjyXWOwHolyoAFGOecsaqeFS
-	b84diiSNl3FI9U+a1AWJv3LC3kxJHoq4ffu6bG2vmEu/pSklP8SnJ0Qo1Ghm3n7ZkZJvZ9
-	yw9XrXMxRWR1qUtTDbM9vdeyetE/ZoI=
+	bh=UQ6am3LgmR/Ys7leJ+gNMiXEAQz+mkoYeAP0NcDYoRg=;
+	b=0mHNiVcaJFgfCZ53YdysjyBMDYd35hbhTB6Aq+g8VrkW7AvLfqO8FD7LfzSkAZYqocfY5q
+	ZonCVqvaq55wkdcI7CKLAjP9CZwENi7O4yhBUO35V8eDUEcpibTgEQhCHof1IJDlgPjwcD
+	HD+ou8yDQXgyCBDYazhHPLp+5HWSe3E=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791910777;
-	b=c1++O7S5YcCaTzhLFUjoQuCQL7IA9XVB2diQ0e+oYwlsYKtMdfQeC6GBPqTwdnm4roq6+y
-	KpWx3XWukqQhxW6jvAFWuiuHY9d1Q/2OyY9kDMF9Xv6ioGIAI77WjfymRYlkyZJEHZnHEV
-	W2EZQYtWV/F5siAWHEzTo+Q36MP0Ukk=
+	t=1791910898;
+	b=OSS5r8gl5j3UIQ2CTSwbsBKxvIiIU81d9BCi5Do7U1liwxdmrZCjk1NqIK48/wum03rKgh
+	JQnwPQNiH/WKyT0t3aCkDd6vT/JB3IDQ4JERjk0Gp2E0tdpH8EZgpeFqklsYrkaDJn29K5
+	lI185M4xnvqeerMsmo81lub0C1zIYdY=
 ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DjkkkwIR;
-	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IHVTm+oq;
+	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c2afa22e1dcso455041466b.1
-        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:59:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791910776; cv=none;
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48c4be28b82so3164502f8f.2
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:01:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791910896; cv=none;
         d=google.com; s=arc-20260327;
-        b=k8gU5Au7d4mTTFVOfk0sdu9Ehooi0+ZglzK6YlpEqZABBdrN82iVap0gnqhK+LpwIl
-         i833b8JZm+COojBEDwlsNvWkxzqr9pQjZ3S09L2SUUUntLYqg23Poc5QNWeRhu4YtPrc
-         rsRb1fpvB/RNghgdPMOuMMb3khahgW7pRgZY4AYEufiSlqurAVsd5822lC4NOeofr10i
-         chtQWw6uSNmE2Gu1R+M6EKmB6bhxWhdRiSOz4toZkWhKW7rnKh9UppUSBK9MUpTSZQsF
-         7Mp08j5lJIgm8ROy2H46KQLbHlkJkF/1HQwhy5xYTduCnWvC1LnHcV58ZdZO3kwbvopS
-         qfNQ==
+        b=INJ5fIqVRH562O9qhnaVPVm9kQhzYW84CdEbD2sdW89/esDWG+H4L/VwGO7yGZ8QNc
+         QdmNbeuaGtovPo9oDmfg585yO3ea//T95t+oDYj/INs5kt40IMbJMTABBggKj73Y6GYN
+         94LB79NTAPC0oLtEkXFUVWNB0P1eEKfMbaHNVG59d2QtXXNj5PSlaHXj107xYKctN5AI
+         up/JLAXikw36gRI+ybaXa0drmi2RRhYzrg0Or4Gk4yWbwxYeEeK7GKMQK1fXZzQxz1w5
+         tpf8FIJUeyunx6Z2CinSYQ8eJJYBaj5vWQvx97dNldT/ZN08oOPGydT9W0bwFmOaVoRu
+         rbZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=Irc52p7IpU94MjhUuTv/4weSSBLioQxa3X0dPTYCCpw=;
-        fh=pvjxbr9jyGES7e6rJXjVWk4iYC7w9QnOpmzaWbBn66c=;
-        b=Kk7gR4rQyNhprqG4LuHJ8HCqHi1PpSk9qzKd/v7k3bJDftQESJHDdwhe61Vwpoqf1L
-         Teea6ldwLjeKmT0JjEdr82pMlbNE8XbbfOXLTtdgPKW8B4Sk5l9S6gT9P9GxsgMmFaYI
-         XSF1fKbzCLgfISpIOtCdffRdhieQD/KSZCtJLuTCft19oZRDYZ5vgGKw5wxlCj4aNht1
-         MrUOkZDphGureAxABQrKWMnpakwc3v4/17GQndkZ/3hqsE3/ULV43EeQabowTYZ3jiZS
-         QUnknsMNdqQdXtFedOIXNziXxZ1RL+2xUPP0Y9jSnKtkX/3MJhnE+a1d9siwcy8GEEce
-         acnw==;
+        bh=UQ6am3LgmR/Ys7leJ+gNMiXEAQz+mkoYeAP0NcDYoRg=;
+        fh=QDGLo0Ws5ZxBrg57vCMkQRRuDwF0EwANf8Aekkl5g5E=;
+        b=iSuRJe5eWD7bOMPs9OrZYcnDGOPklYSkF3tkmEeF7zZ9UOUkKeyJBjq8H5CllJcQbR
+         kODAuevP3A27LZO0DgCdQpwtUA4f+xDBprmXYMDJKsNWE8uL35fnywPGcZeN6CDVBIk6
+         Q1ppCorZE42bLb2u3dBFdC4/J8trUJzE3lX80IGzw/7+hQYNhUDkCw5GcCc7/ufdj49X
+         9I/ScqwTuh8Wha01P3VbvB0adyl+p4/0rGE0jmDU7ur9H3LGumW8kT+TiozRdK/yk2ol
+         7IILbvCkvkPlmfhY7MGrsZQ4qLVU9mSEJeUr5+6K0Q23tyTXR8DE/t1SF4JAglD1hrZ0
+         lMkg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791910776; x=1792515576; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1791910896; x=1792515696; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Irc52p7IpU94MjhUuTv/4weSSBLioQxa3X0dPTYCCpw=;
-        b=DjkkkwIRReEKCClJF8EnpVYYFBfCaT8txGLsWK72zt9uYO+7V4RBSwNlyerI9AxmyO
-         w0OtXQd41Hbd2qTmUFW00q132Bz1Dl85vzntym6WiJs3XqLp88uMKoTnXZIiQzIQWo/D
-         4taGLdCsW3hM/m9IZ9lJ/5/e6BX0zjQO9fvIvgPGEpCNeBj7tmY4eVgz2zPKjpdKL4NN
-         xnKAAPyJmDZoBAXby3sAKwUbWZARk/xM3i3js8iAkTd29ah/nGJu3kh+UG+PEI21+i25
-         d4vQLYgGc2P16QPwDCJgylX+BP+ZfAnJlGSdRaJABhE+6Gxl1Oa/ARca43YdS0C2CHDe
-         jIhQ==
+        bh=UQ6am3LgmR/Ys7leJ+gNMiXEAQz+mkoYeAP0NcDYoRg=;
+        b=IHVTm+oqba/7vIsaVOLe6VRyUlPkzhL4sIbYNNtAjGtgxk41yMFSBCFMF8zUAnwZ1B
+         H1aUsh/h5TTt6F0eXz1+RCaNL5SNBitx7OW8s8A4GOdt56uZaxlk+d5HYc3vo5TvTuiT
+         FApgHgi/XzJE3eoaVlk0i4o6tT3V0x/unN2LIEa6mf+7xtPqskzi7MU9zL5AZ24w2rF3
+         M0A6EdD3QFHV/uKHJLPDnj3jzmrmu1NmC6KbdP/jaq1QS3pNXKNKqpZqNocm56uUMu7Q
+         H/DchQOjCMIlGhNxbKVtZ1qlGIjkNnf52Si6i9EWGX8ZRQCJFdZA8zU0eJCncJhjHF7u
+         88nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791910776; x=1792515576;
+        d=1e100.net; s=20260707; t=1791910896; x=1792515696;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Irc52p7IpU94MjhUuTv/4weSSBLioQxa3X0dPTYCCpw=;
-        b=MkiGEqQ4JqowcAU55p1GFPoKHCTguQCxCQV+l3rp8IrF60zkSXiPO3Ww/x5tKZWrEY
-         CCEllkncTcZec3CnXf8rD1HxLp5JgZ6fA5UFTbVY15/k8Qm3rJiRWfIrS+IgKGnnY6Tq
-         GJ5PG2Doq1BnWqTOW7i6AoUd9VtopTBjZXl47iet+rVsmnxUMrTymL9q3RSJXPT2d8iw
-         +m1UvxVlun3xDIRSmTrrd6uPbQexdMz2drc2cCIxDy4yoxLZ/xkfoqmqvuyefUg0V4kS
-         hQgWMq2CZIkJM/vuJ2Xau2RZIUbWtqodKwNlhuUaT2I/YAbagu1RoNZNlywmUeUhWBSV
-         wI1Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwyuRn3Bjfew3S6qSB20FzgbF9+DiYLg7B4bHZcwV9Pn8y8R7zdOQC4f2fLUrf1SVvY/vMcHjpEMA==@kvack.org
-X-Gm-Message-State: AFq9FYKvr0lyj8Oba/eGOVWGBl8OSJpuvmEd1f1yX8MtuINNMf/FToy0
-	Q3+RRgFLvm3dMPaMgBwze+3oF8ajPaFxN6oLWUhVY67UU4hNO5U6dczHe9jmg9Ux6L9juUOxyHm
-	opfvoFBxOlpfDVcVcNwygLC3D0khk4ms=
-X-Gm-Gg: AYBFou3E7R+A2xAthLZcSoUOW6bPqRuZkBT05k54KanKpNXJfNzIRjVT/M5DbM0c75H
-	8g9EBQuQ9c6rHpxb3Qr8F2uFs9mdqTwzTHZBavpcq1tdqZ8GH0SrwLjnr+yOhF4f/ORll8T1g/J
-	zZg7hJ36hUmU+Pvw0Vz0OS4K4SRDfIr9HLslSgs+uAUw7q4ATHEIdb2irAS9iO/bnJWezSwXk8/
-	9N7WXY99KTwBOliaaT5ZIt23/3xPdyVlTjiHOirDp5u8kF0CUDMW6rOweTGad+uLg7gc7iNuqNn
-	gFh9Dq7WzWXnzg/25uDLLqq725RZJggRMR0EvFdVjH16ipxayEzYhg+//+VllrdafIM8HFzrN+e
-	l6rZk584tphgs
-X-Received: by 2002:a17:907:3d0b:b0:c31:7495:e5b with SMTP id
- a640c23a62f3a-c31a9feb26amr1246342766b.10.1791910775410; Tue, 13 Oct 2026
- 09:59:35 -0700 (PDT)
+        bh=UQ6am3LgmR/Ys7leJ+gNMiXEAQz+mkoYeAP0NcDYoRg=;
+        b=cYZy17Re7U9sTNLn9nAruvTsgtOd2YxOIQro7eCfsCIDd79p520n5u9TKr/iLSQPmx
+         f26QWLpmv8IGbgHYEjFFOENhEr9She6Horf4Yz0wYN2JPyrSh9QXq4yFsp1QqCbMK57x
+         EKtBYUP0J/oDoBpgV21dsQKbRKOSZlqECjHx/13vRbRN0hf9dj4TszFkFfhNfQIKYulk
+         ztcUdlO09k4k+8u7B5M5CfUu4yrgUfEf9Z11FCtaruVzn+3yDHgGA1YBUNkg7c5pksX/
+         Hzm2JDKLx99rm7FH2gzf/bVq6fuWM4DFmA/AFncg2dqpu/G1bSiV59PcrUmlWHc+6VkE
+         X5UA==
+X-Forwarded-Encrypted: i=1; AKwUvBya561qQwpW0ymcplv4fxxVe+jMNgjr4uftVBOmSCoU632Pe/5n3F1h51KM41zFzGaaoSeiSlCbjw==@kvack.org
+X-Gm-Message-State: AFq9FYKk3kG5LTGSdpcAD6WYNo342H2DTxwP0Jcy0yak1c9BYPV7pFOy
+	ahIBSEJiuoOFQqW9n3GpYPoOKx9GJKunAhY5+MQ94GAl3mNwpffSdQjTXJX6H+Hg9XjwBd36cyt
+	5hUG/XSr1FHv3i+ATPBY4nCYlvB1fdW4=
+X-Gm-Gg: AYBFou1xy073K9LZw+4itu/qnwiKc/pQGwifHtypMnENV0JGeMDtEVlvzb/8G7Cq/BW
+	xoin4od02G0MVDpZVJWY0E4go4jLCjF5CA4fMt2iKsnepRmCKSuoEMWY9++Sqx7t0pcxvEyidiW
+	FIp2lIaCzn7JItA05JCZVN1Lg54XEM9ezvwg4k18pX0vOutvzmnT6GrujKOUKr4ACTjjLAcmRq7
+	2GSn0HUourrjXXU2SF1y+nDf/iB6DbDIhtifnNbW4PZTAPAl4FnG/GFmhoDgShUBMcChEnaC1mV
+	8vB4u/5sxlPUMhWxz2ExC52ZOuTlqvIZcs2HxrSUrjkp/GovbX7A67jUyALHI3kg1mMtghqWaMr
+	+mnJ2gE7riSxSclNVNUjnbrk1juovAuboIVN91vTe+HuVjCL9PbUQNm5QtJpsKK+ZGhSdbyU=
+X-Received: by 2002:a05:6000:1ace:b0:48c:571a:a1aa with SMTP id
+ ffacd0b85a97d-48dba9dacf6mr28217721f8f.19.1791910895957; Tue, 13 Oct 2026
+ 10:01:35 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
  <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org> <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
@@ -119,15 +119,16 @@ References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
  <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
  <aqgMCIOFi0dKx_6L@fedora> <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
  <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
- <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com> <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
-In-Reply-To: <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 14 Oct 2026 00:58:59 +0800
-X-Gm-Features: AclHuK-dRyf9eKLDd-E-CAUCwm0MgTdU0FQN2EyVlbP88Wn126rzBlk5l-Sic0w
-Message-ID: <CAMgjq7CT2O2VHpwZazugQRopi4grF+T4oOxZznoAGvy93Yjh-A@mail.gmail.com>
+ <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
+ <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org> <CAMgjq7CT2O2VHpwZazugQRopi4grF+T4oOxZznoAGvy93Yjh-A@mail.gmail.com>
+In-Reply-To: <CAMgjq7CT2O2VHpwZazugQRopi4grF+T4oOxZznoAGvy93Yjh-A@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 13 Oct 2026 10:01:24 -0700
+X-Gm-Features: AclHuK9oUwgVv3XRRzK2ZGaoq7d_UoCd4WV6CrUoKrvhZqpz39_1MbDWEVKEMOM
+Message-ID: <CAKEwX=N8qKhhVUR2Xd-UdtE45g80Ges_+BU_sCc2MzoVS4d4ww@mail.gmail.com>
 Subject: Re: Path forward for Virtualized Swap?
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+To: Kairui Song <ryncsn@gmail.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Chris Li <chrisl@kernel.org>, 
 	Baoquan He <baoquan.he@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
 	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
 	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
@@ -149,14 +150,14 @@ Cc: Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
 	Joshua Hahn <joshua.hahnjy@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 19AAF40005
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 406B0140009
-X-Stat-Signature: 6xobwohzu6ebzm3kf63kwhb8zrouo3gd
-X-HE-Tag: 1791910777-604313
-X-HE-Meta: U2FsdGVkX18S6ojh7tC4Yw/OIO1mg7pHZ/tXIFRphSyaiT/oSfyQq4M3ffDbtosPyGzOqV6Umh+UhmAKBVTs+6Rp2t/kNMWG6M0jjd5W6RfLKPkBwfi/MZ0eeVJ+dyrUKEo1GAGabJKWP/q9oLwPeGb+N4qehREU5sYIyr4KoA5K0jqj+v58vsBZgWWhdH8Lgzx3zHOcXhcem9h7/Z7zmHMar5dblFT/tkxnlh2nl0d0FhF1uxSE6/Yp/pd1ewvhG/wzhupfvIUuquzpst6MF0mOZckvSfVMtKYo4wrmJb+cVSAP0R//+5QiO4ZOsboZRbRJFry68YOO2eJihXOzDhkbbvA9PO+vsEnilLe72LZVIYgfwewCmVjSUQpgtUAU0Cbb2JUY9r1K2gM4kyhkOxtFhQvcp636/8jxePyPzzorpbEYn++bmWOFtFue1UTvMS/RT2xqZuo4o7uCAfkwni1RYfeEhvY/18WszXNe8woVvtyDY9DfxXcj4/WJSMDWmnb+tIhxI95Gs1JQUNuExpMnvmeOagf6uw6UDDCn7HwuZgueIxgrwgpOoOPY9Xey4eM4aXc35fKd2vQE1tnYx0Ax5y2msaRvtrHz4dFLNNOkK/wvggCEvzralD1hOrokDYmEKGRf7qr6TEfnMpDQDnKm7O5h67GqEoC15NJNpseldFzjGHFn1s9wUfdecPLp1afF4Hnq2XyvVrm7DaVst1HqIHFB8JIyz15HVVnU8ZKTm2v2pW/V6qTBoCAB2cOOfbzkHveMHGnn3i1kinIyutx+XPhxSxgGM642UoT7xTeR0AD05JWNzqo3UBMKJNWYo/9flaMTPJr/0xHSH/X2cYMBrEvtleMykCsTOzi7DFL4Ng5MWuXPo/wGrHQCEVpxha/YhI20pF5OvpCJmJpEBVex3wymxzli83EkEkhn/RfPIbEikn/Ne75ousC5qZzKXYRalvOS+/64pH0Rpnd
- bmmSJZ67
- 19JbXVwN/EmbvTsYjP8qBQT8Ge8D38Q8rG9JQYNn7A0T8C+5ipg+n0XKI3qMF0EPgFUcfmpRpGFbrCzb3olQU1GFTA7d+4j9oZF60hsvn8IrhUQEykGzRByIbfMJapbxQmQP7Vw9RB3+E+O0mDiTn+zTpdTwYUwm87A8nsUBob5G6E/gyUZB0nXqcOdIFqMzqTeHuMjYrQXXsVsyoO3yO4yj5ln6Z7UiA0zcmzIw5SC8Ka/a5QPOBQLGWKQgO4qJxvT/kfV6OrZG/mkK1MytZ3R3OWsfTbq5OHRapbqJl+lRj8nvV5A07cRe+aVsvFiJtDOeZAxiwxC/QUoOiyijWOonEr84cPF9VLp3OOfJ6zwTTC0wcQtVOFvw8+tiIJ812Zsne4jansoIsOinaf+H5jk0+n3nQvjVuL0W6CCDZmJ15RRCPxuzxvl7AX5zM+EzwnaVlZ82B9IxKV2bOI3VMcbCBDKjLn6YwbMg/ONX6kJGu6tLXXneZeBcyBb3g3BMnBlz79ekRYwnGOwqaAxJczYtvt6TgxdQfDiMsAFvOtqaD5xwsAPmiJsf7Oyq3n7u3UUi+
+X-Rspamd-Server: rspam05
+X-Stat-Signature: hximjhh446xtd4xru5539arghuf811i3
+X-HE-Tag: 1791910897-24683
+X-HE-Meta: U2FsdGVkX19/zP+xYRWZLNnD0cOtEFVH5eCltXPUw0oPONd8TaO3LotddjIezSgUhfqlQ1v4QdHzzFePoqMH6IO6+PW7ucBfn9Vt8yJU/rToupzyQvop4kd0oXYoCMr1mQl1OzUv2pT4efdMNHQuE3iuCwVy4Sc/VVGkvQqwJY8S79Z7mzvPvEhKY6wqQttLzR6p89UhOgf+r+g8nnLC0gwyyC5/VcXzqJMylB2+iIbOf+updD+9ZGVB6SXbwlxo8/1aUNeKVOxLcSAo0O5Z62Igz4PBw+UzkIQ+C6/e2jnxHyjUL93I7EBhaUi1bHctLBGGD7K0hUJEQnkIg9dJtj9cse1DRKC5UdAFRUTD+3NekJOnZYIOUQKaqhtqOsyXq/3AxHMe0bAqVcwBdyd0vQwPeEmQgFPzw08LiHLABr20Mz71POTrs3m8WqEWRP2awXYa1r+UB6cpScofCtUOwoaGnGDb7d9EmxYBPtDHyPF0AmncsMC9bcGKQTy+nN72GKvJnjJ4LX37/i/35EtJGM3nXS1Ksqfzjlt6iMXYCNWcC4KGw5Q+iRVmPU7um3wicPC7aGNYFvbTEYHT8BlgzcGXVgbeeI9i+O6/JpQBDSSSxd/vGIbR6cov+YffX1RazPHUS5YNnRa5vlwp0y/RVPE7yQXcJeiGtuXCcGtkoNBTIoMNejoH19AQjnWqH+yPljOJn5ZMOExHRuRQ9NewDQ0G66j5dekWq19YhEh4a8JJfx6SG1N6EqIfOgvN7mHCXl/KrglHoeA5p1RBkoRXoUG7CE1r80nHNlM6BLWurTRj+14Jc9qMZLJ4HR0SQAuwwyLcjlIydPSmBBq6MrXyOsJYmxfgJ5WUUm7YO099AwPoQMv4lfu60PwdUSblSTIuzYUywqV8PvM80whfzLaJz1v2e453J5NQRv/EHlhn1P8ar+Ddv8qeXaxgbkmvCr8C/2l51TTWG6JABiG7q67
+ A40DUoRR
+ 5W9qZqVoJTXyfPS22XnhY/+0P/y7Lym06FWv8ekK7pwPumErPy+ThWTlWwFROdbulyDPdK74OHrO+ir/0qXSTMRGDGwlxBwY7m774RBHbGVYLiWEFR6TDlB6/LOsz2UfbfwqmaqMXldPMbzMnPQCl3UvKfBCddiobQrh8QWr+hjwpNhao2sKtIrv5gptfamtMQqTHNSu/11rBPAk3+jYfTn31GHxZkS+JB5OQ5l1wvZ1zfuWS19IvrWRG+Fi2Nw6cSvI6Lw9QYfbvVlYphDOOfuXYwT1PWLk0kph4eEQCp/5/QQlVLlKr8rWZEs/gkrI3M7P3KcHk8/n3HOEiSy9N9f4MtOuxcT+XXBikmwqM7rocpUfGe5OeCs1ikMplx9S1Zrf9ELq85YQCMG82cYvba95YUGmjz21FZWgj0X35nT6zptc2OkxR9oSZ9qwSxrpICtRjHj5RsgsyVLhrGKUt8cFiojdpBxNMLsZKuJ6ixZeQGNpc9TdzxD0XrlWKJuA8Q0nblhnPcr+u1vXf1NcB7uLcXwzvE6qcxkDY3nwY/3Q3AEB2mGnhkJp3f6aCk8Uj1wsG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,51 +165,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 5, 2026 at 8:19=E2=80=AFPM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
+On Tue, Oct 13, 2026 at 9:59=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
 >
-> On 9/22/26 15:38, Chris Li wrote:
-> > On Mon, Sep 21, 2026 at 8:56=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> w=
-rote:
-> >>
-> >> On Fri, Sep 18, 2026 at 11:50=E2=80=AFPM Chris Li <chrisl@kernel.org> =
-wrote:
-> >>> No that time slot is too late for Asia developers. I don't think we
-> >>> should use that time slot for swap alignment.
-> >>>
-> >>> We should find a time slot more friendly to Asia.
-> >>
-> >> Any time slot would have that kind of problem. We're spread out across
-> >> the globe.
-> >>
-> >> Let's just use a standardized time slot we have for MM alignment sessi=
-ons.
+> On Mon, Oct 5, 2026 at 8:19=E2=80=AFPM David Hildenbrand (Arm) <david@ker=
+nel.org> wrote:
 > >
-> > There are more swap maintainers in Asia than in the US + Europe, at
-> > least based on the maintainer file. Please be more inclusive. If the
-> > alignment is done without key stakeholders, it miss the point.
+> > On 9/22/26 15:38, Chris Li wrote:
+> > > On Mon, Sep 21, 2026 at 8:56=E2=80=AFAM Nhat Pham <nphamcs@gmail.com>=
+ wrote:
+> > >>
+> > >> On Fri, Sep 18, 2026 at 11:50=E2=80=AFPM Chris Li <chrisl@kernel.org=
+> wrote:
+> > >>> No that time slot is too late for Asia developers. I don't think we
+> > >>> should use that time slot for swap alignment.
+> > >>>
+> > >>> We should find a time slot more friendly to Asia.
+> > >>
+> > >> Any time slot would have that kind of problem. We're spread out acro=
+ss
+> > >> the globe.
+> > >>
+> > >> Let's just use a standardized time slot we have for MM alignment ses=
+sions.
+> > >
+> > > There are more swap maintainers in Asia than in the US + Europe, at
+> > > least based on the maintainer file. Please be more inclusive. If the
+> > > alignment is done without key stakeholders, it miss the point.
+> > >
+> > > Sigh, we can't even align on a time slot.
+> > >
+> > > In that case, let's keep discussing on the mailing list. At least it
+> > > is accessible to every one.
 > >
-> > Sigh, we can't even align on a time slot.
+> > Looking at the mailing list, that approach doesn't seem to work.
 > >
-> > In that case, let's keep discussing on the mailing list. At least it
-> > is accessible to every one.
+> > Finding a time slot that makes US, Europe and Asia happy is ... tricky.
+> >
+> > 1 AM is certainly unpleasant.
+> >
+> > US vs. Asia is also tricky, but doable.
+> >
+> > China 8AM vs. US West Coast 5PM?
+> >
+> > China 9AM vs. US West Coast 6PM?
 >
-> Looking at the mailing list, that approach doesn't seem to work.
+> Hi David,
 >
-> Finding a time slot that makes US, Europe and Asia happy is ... tricky.
+> Thanks so much for suggesting this. Sorry for the late response; last
+> week's travel resulted in a lot of piled-up work for me.
 >
-> 1 AM is certainly unpleasant.
->
-> US vs. Asia is also tricky, but doable.
->
-> China 8AM vs. US West Coast 5PM?
->
-> China 9AM vs. US West Coast 6PM?
+> Both slots look fine to me.
 
-Hi David,
-
-Thanks so much for suggesting this. Sorry for the late response; last
-week's travel resulted in a lot of piled-up work for me.
-
-Both slots look fine to me.
+Hmm let's push it a week. Johannes might be out for some personal
+stuff - I'll let him respond with a preferred time.
 
