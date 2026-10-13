@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CF92CA9EDE
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 03:40:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 525E2CA9ED0
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 03:46:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3891F6B0088; Mon, 12 Oct 2026 23:40:26 -0400 (EDT)
+	id 541796B0088; Mon, 12 Oct 2026 23:46:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 339686B008A; Mon, 12 Oct 2026 23:40:26 -0400 (EDT)
+	id 4F30D6B008A; Mon, 12 Oct 2026 23:46:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 229846B008C; Mon, 12 Oct 2026 23:40:26 -0400 (EDT)
+	id 408366B0092; Mon, 12 Oct 2026 23:46:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F40576B0088
-	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 23:40:25 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81AAD120AEC
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:40:25 +0000 (UTC)
-X-FDA: 85316200410.20.731A488
+	by kanga.kvack.org (Postfix) with ESMTP id 1F3036B008A
+	for <linux-mm@kvack.org>; Mon, 12 Oct 2026 23:46:26 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0B8DA1209DF
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:46:24 +0000 (UTC)
+X-FDA: 85316215488.28.43D570B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DFCCB1C0004
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:40:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Oj5zpxoG;
-	spf=pass (imf20.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 64DE6140009
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 03:46:22 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGjuDRH7;
+	spf=pass (imf23.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791862824;
+	s=arc-20220608; t=1791863182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MHKRBDHmsXsK48oKqrexgIqndzfvmbI+AVfd803mUSA=;
-	b=ZiktMbRCBXa2JVDSoBHdO25ajk8CgbP8Luku+jJ7doMUTWobwv/t/e56kBRjrT9LftN2bF
-	VDx1FPiI+NR/7mUlIhkWaho8Fr7bgQJQlUCiKgQV1jHwqVM+uI9dGuVnCPNFpuX3/zmyAx
-	3bi4hAF78h0jmO2bhkIwgqRawQc6+x8=
+	bh=gC6zFEfTKNW+9VnhF2BDN32Uuy+DW12hIGMiIIHt3k4=;
+	b=48Opg74pPLWSghsOuaCNVqroXQnO9AuuPZbMpBQULaPQOWbdBm3o/H764DTg3bn/722XM+
+	b+z7QzUVUwrs8zFZL2uk9d3RAD+lvDLbInXIWBFJMKxosoiCMn848uyfpowQGF2ycmxmSt
+	OQRtORstQ17K60ObgnAcJgZbZtbqo/0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Oj5zpxoG;
-	spf=pass (imf20.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGjuDRH7;
+	spf=pass (imf23.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791862824;
-	b=jrRHfqE3FtUNOVHMjgI0EDA1AffFogcOM8Xh8KT14iPjGeIhhx7r3LykXxsniYQ0REfu4X
-	AU/Kbw1ni2Uwo+SrH4lD7MCWNo7O2zkr7yY+Z+TKR8c623IHUFpz54xIWXPR6UVYWO9kvk
-	24YoS+19zVm8qryTJ8dCSwzwiY0m5bU=
+	t=1791863182;
+	b=sOL6RB5Bji+QYLpKygRnvGZm2Ijlf2h6wD3Qyc2OM9Ww7RFm7rYi1W+DsQFMKtz3NwU3BE
+	p/wOQ8ygZfbyVFpnRWdm9uqstkcpWnoIRVZ+YDllxXz0+nYZaTAscsjyKKLRWCClA+HWcE
+	/1DLnKrS27WDCvgQMa92m6e8okb1/aU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AE1D540387;
-	Tue, 13 Oct 2026 03:40:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4831F000FF;
-	Tue, 13 Oct 2026 03:40:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 76D7D43D7E;
+	Tue, 13 Oct 2026 03:46:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534BB1F000FF;
+	Tue, 13 Oct 2026 03:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791862822;
-	bh=MHKRBDHmsXsK48oKqrexgIqndzfvmbI+AVfd803mUSA=;
+	s=k20260515; t=1791863181;
+	bh=gC6zFEfTKNW+9VnhF2BDN32Uuy+DW12hIGMiIIHt3k4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Oj5zpxoGgdzmeIog+7KO1QLrI4HUFkQNtnMsz/Sf/iwRjmXaISNO5VFNexwDOfA7I
-	 QLiRzOMZyLuAs0cGPMstdgayiiW91bVrnPRgVfDxA9f45B1BQKQ9Sgcl3vWBYynlem
-	 9eFhgaA4Z7w3AHx2qx192F+EVD8bM8OD2lg7BcxAX3RJCu4AEjGD+/ajUMxe/+F0lU
-	 vAUsbFr/Gr22WvlIBVGbtqHob5Fevhl6bJtrxBAtC9YFcaDUeubtmBEl3k1SWaU16P
-	 wOPAnsesfWb+rpki9Z4AUpY3luNT5svEsOgbs3aNHBuDM0iTMVRSnTo5Z6/YR5f3Xg
-	 YheZMVbSKLEoQ==
-Date: Mon, 12 Oct 2026 20:40:22 -0700
+	b=cGjuDRH7fd9Q/vGOFT7srXE4MzTaO0zvziw1vupAjmuNfJNV1aw1OWZUFLjuLqLq/
+	 I87VuwtS1dHs5FQ/DKdlQisdn43nyzXs9Kd4T6xzP4a1TQWy45Re6iwudrZ+5QtEFV
+	 fzz0HzS82PYt3Xg92bu5uvNyIhnz725muXUX2lfYjTmpv6xKxmB0EYSWqqZOrA1zQB
+	 1lEKQvnQnz5DIPbu9YI7ZSuAG1Pl0hqbabAb9PpdL1iwfvHMFjz5A/s173yYvtg3Yh
+	 4I6L0EMZ5eWiwYWI/6OsZ2o19PmZpjPcEAGi5dNXnpqJVXBO2/H1jcejotXKyWlDgu
+	 PjEnZQQ010M0w==
+Date: Mon, 12 Oct 2026 20:46:21 -0700
 From: Kees Cook <kees@kernel.org>
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Harry Yoo <harry@kernel.org>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>,
@@ -78,25 +78,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Harry Yoo <harry@kernel.org>,
 	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH net-next v6 2/8] ipc, msg: Account msg_msg allocations
  with GFP_KERNEL_ACCOUNT again
-Message-ID: <202610122032.A63BB70@keescook>
+Message-ID: <202610122044.1E1CDBF72@keescook>
 References: <20261006092030.got.500-kees@kernel.org>
  <20261006092035.166776-2-kees@kernel.org>
- <asjhg2e4-WSeKuXd@thinkpad>
- <202610092010.934197B@keescook>
- <20261010153714.b9e91801ea93675da099e903@linux-foundation.org>
- <4866a382-42d9-44da-b68b-377d36642528@kernel.org>
+ <38befa8c-3885-44eb-813c-0ee34cd55248@kernel.org>
+ <be34b92e-e82c-4f69-ac9d-b045081ea418@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4866a382-42d9-44da-b68b-377d36642528@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DFCCB1C0004
+In-Reply-To: <be34b92e-e82c-4f69-ac9d-b045081ea418@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: gks8h6xfkkaurggdrkfmgabuuuk67t7q
-X-HE-Tag: 1791862823-408812
-X-HE-Meta: U2FsdGVkX1+NSZxA9FRFNeAQRx4HhJSIXR6PFIzJUgwranNNRYUWDtNHtuVqCGvbfk5R4lTzUHwbiwE9gX/3lbVQtiNIOsAnUSFqyvzqs0eWPSsY0AjY2IryGDs/DCADhXOC1Z6lkOVf3K63bDUErtchNMC9HenxoJ95qvEraBmL91EDW6SO4WTYC93BLM/cDbRZB0XEQl7f92aonEd3T95y/0y0AIblCZPA9xLqKt97iUhVEaf3Yle2O3LyxKdrWdvmQxm9bFuHFovqndIjenkqUWPlKTMsfpvcBTuNxRJQ8wIjW92/MdvBCjn2CuKyiNsijNlgfuX29YXm56Z1t51IL+NDPIZFWo8BR5mEz/0thfd00DrnFWUSUt9tSWdmRV/xSHLjaBAzO0XCRPe8TCYp2/C6AGfVZPNPZztFvxLEK/L8IKc3PEu7VjT/rdPMpBkrm6rDyuHjgnpAK8lGWcaUP8x8vYFuD7fqj7hf25neuUTL0of37cWcPTBA5aaQV7cGFLXSsn7H6iLgoYJ7WqY7PTfm27bmrDH5gMgBKPHJ6t2Edp1tZUMnco2IQFujnpKrguGDVvMhWFSOaA/xrKtU/WLaMcb6ieTtvNdtJ9EZwoU43wkMBk5h0cQRw7lNzNm/df+A+V+ftRJNCC0Svuvj5pWY2sPonSV6hRY2HNS882zQet1DzLANTRb6laKmBW53IoVJjjzW8KSLQbVXzq+tDFdXbl0YZesIcpvmMo0yNC4wAhdLLigQLkwTYGmdvZQ74S405fryiO6atY9sN+6uki113oCAjMORGd1ZFg5KtTeQq1IJCiPxlnPUHJ8Rf96pLdy2nflYTgo30Vy7qi20H99I7wCMK87l6gmFSluYu0TprDbKQj2K1iktQAaCaTEYhtJlEUfec0kiD5fkSUAN7OXjgqBsB5cT8irBHLjC9c4PYIdFCRLEqJgtcFAvvOgw995Bf0mSAQQAdVj
- rHrxvT8b
- XD1wCOHIc2BQTTuZ9MbEhOuBEEvMhS1ez5rFXckX0LkAQyGJLBDM5OatoHB6JPMgEooNcjJ3BMscKdgl40Q+yOX53hmfL1j2+J1b53u0bAn/XsCEyf1aLPf14Mdw15dbhkVIF9n6KwBahPQlLT7FovA3Vpn6ngfvvYgVmG2aAHbe1EmND+q1sKD7C61KSJl38L1lgKFsKbIixcL0igdpkkv/niwWifEFdBbzmIzIjF/0e+I5kZdFCf1lVw5bKrvYoxt+TbIfsweLS9NfC/AWmHOAPLUbAQ3ZcOOHVyVTR+LcfPAJccuaOlVg1LUkdQrIeJ8CmoNYhg9M17fUGTN28suCkPkxnBCFx48+naiJok1k9PkLbKx/Kizan3zDv9SCnJeoWrq8w6FzOMFI8979c6Z72dQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 64DE6140009
+X-Stat-Signature: 5cmgjphjjcauab15aorn8drwxg7rtjr4
+X-HE-Tag: 1791863182-414104
+X-HE-Meta: U2FsdGVkX18pK8OIcsFUEqGlFn6/O1Lbt+7aKrZxYdVAyciSVeacNwkOhIx9BMoH2Jzp7vp45mTBTdMD0xk3OvQi5F9N2i/Shdxw82aoy9a37d8C+fycTz5XaXtTD9IbXEyqIOleyFBn6/gVkyzfyWoftpI6UiBpxwseJJZFoV0OYk2mQjbZzvA68ddOlY9Rnpt80xifbJrKxKLsEsCVQegeNV/T3ggH9tZN+l3NpSzt9oFENA4OCQbZITLig5Lr9tOcGklTWL50CIARWD/tc2D+Irk90RgsNouLVgTwH0ZaCB06vBx/w3eI1/V/IDoATHtmOBNnGnrsPoCCrQJPRJMUOQi9agwOeAKNbFAVPnvVHli3S2ku7gHztpDAIHiIdHGIxxn4yYMdZ2heDr+RPCQM2d3oNFPQJ2r8ShUmeTUm6XouaARkyYDs9SXAsCR3qkqspFuPt8Mf64cDclvDdbXKBOxhQeE0C0kjZ0cAs03pT5p4X5sw9tzr/fEeoeiMoOi90gPPsOFeP7O0oLTDZ7FHx9VfUHDo9/NSBfwFJRrGPSAMygzUxtXXeqjIDkb7+G/3ydsmSoqftbIM57tSuMDC1QlK0h3m/hijs/p9cSi/J1fF7FBap3KwegrdL7s0wKnY+NGDFKeEU0thNW+wmWt6IyFz1B1SwuX/BhUFZuvVBTIruzXgBz3ih+qUuI3oCIj63IFyLsoNXQzU275U+jxxvBYwV+/1xy4bppY1ad1lcIMEfOEcKijbdSasRMkHebn1zrvf/6SoWfqO286+WMHOnSf3z4coRJb+imIE7vcMtwhEGqqqvsnp56mmpsUj5JtWU4Qq2y01A0Vc2Q2KKXdmSBsgCSu913CGcmROK2879dRHvDYZJcL/ItRqWipSFczPKzhCKUjiKSvMP/3ENiT8YvektZ8NGGuT74w62AFZXcyBsPlnYIzdgbVKGMIsYDDkcSbYweT6mgW9RfP
+ TvlxmxRE
+ Qmx8DjBlxsx0AEz7jJd7G50SwAIYdsYbMO+krE5FtMgAZmZL+o1DWe2yCHpBJsPRQ7rGVIUaIuAYVnCtpAx+cMb+ozetkbLDCkKgG5u8qXtVnCSD+WyRSsdIDgMkLtB0VJWgqTnT2aospMKOXAWiWCqf4VDn6U3i79ISW/hxNN8pO5i0eVBZcGIx7jm/wriYGfm6HduiTUMExr1J2DxLTTPHh9m6vJwyPojjeKg5lUQL+HSj4CTL51HR4R0CkcbRBfWKUBeTaOhJh4acZVOAO9+VNPRrNejXN/HDCUuF5yzwT4L7JqUCkf1/wPwL4I8XA7fg2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,42 +102,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 06:46:48PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 10/11/26 00:37, Andrew Morton wrote:
-> > On Fri, 9 Oct 2026 20:14:20 -0700 Kees Cook <kees@kernel.org> wrote:
+On Mon, Oct 12, 2026 at 11:03:18PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 10/12/26 19:55, Vlastimil Babka (SUSE) wrote:
+> > On 10/6/26 11:20, Kees Cook wrote:
+> >> Since commit 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for
+> >> alloc_msg()"), alloc_msg() allocates with GFP_KERNEL, and a msg_msg is
+> >> accounted only through SLAB_ACCOUNT on its bucket caches. With
+> >> CONFIG_SLAB_BUCKETS=n, kmem_buckets_create() creates no caches and
+> >> kmem_buckets_alloc() is a GFP_KERNEL kmalloc() from the general caches,
+> >> which do not account it; the same happens when kmem_buckets_create()
+> >> fails. Either way, the allocation is not charged to the sender's memory
+> >> cgroup.
+> >> 
+> >> Allocate with GFP_KERNEL_ACCOUNT again, as before that commit. Memcg
+> >> charges such an allocation in whichever cache serves it, so drop the
+> >> SLAB_ACCOUNT, which no longer adds anything.
+> >> 
+> >> Build tested ARCH=x86_64 defconfig with GCC 16.2.0, with
+> >> CONFIG_SLAB_BUCKETS as y and n.
+> >> 
+> >> Fixes: 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for alloc_msg()")
+> >> Assisted-by: LLM
+> >> Signed-off-by: Kees Cook <kees@kernel.org>
 > > 
-> >> Anything with Fixes: will end up in stable, so I just leave off the
-> >> stable CC these days.
-> > 
-> > -stable maintainers have been asked to Not Do That for mm patches. 
-> > Other subsystems are doing the same.
-> > 
-> > I don't know how they determine whether something is an mm patch.  A
-> > patch which covers do-do-that and dont-do-that parts of the tree is
-> > likely to be mishandled.
-> > 
-> > So yeah, add that cc:stable to reduce the possibility of mistakes.
+> > Could we, for the purposes of a backportable fix, just have both
+> > SLAB_ACCOUNT and GFP_KERNEL_ACCOUNT in place? That should do the right thing
+> > regardless of CONFIG_SLAB_BUCKETS state, no?
 > 
-> There's also this from the list of pain points at
-> https://lwn.net/Articles/1099594/
-> 
->     Kroah-Hartman: subsystems that do not add CC: stable@vger.kernel.org
-> tags to patches, but which still expect the stable team to pick up the
-> important fixes anyway. The stable maintainers are overwhelmed as it is and
-> are not doing that.
+> BTW we're thinking to add 1+2 (once this part is clarified) for 7.4 (with
+> stable@ for patch 2). 
 
-tl;dr: yup, sorry. I will add CC:stable in the future.
+Yeah, I'll respin with it present on the create and the alloc sides.
 
-I went to go figure out where I had gotten this misunderstanding.
-netdev dropped their special handling in 2021 in commit dbbe7c962c3a
-("docs: networking: drop special stable handling"). But I
-really thought I had Greg tell me (in person somewhere?) that
-"Cc: stable" was redundant, and I think what I misread in current
-docs was, "... such tagging is unnecessary if the stable
-team can derive the appropriate versions from Fixes: tags." in
-https://docs.kernel.org/process/stable-kernel-rules.html#stable-kernel-rules
-but that, on closer reading, is about the _versioning_ syntax of the
-"Cc: stable" trailer.
+> But for the rest we'll have to target 7.5 as it's only
+> a week to the 7.4 merge window now.
+
+Yeah, that's totally fine; I'm in no rush. I want to get it right, and
+I'm still recovering from my surprise about how GFP_KERNEL_ACCOUNT
+actually works. ;)
 
 -- 
 Kees Cook
