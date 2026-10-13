@@ -4,180 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C8A9CC6B19
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:11:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A8ABCC6B16
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 15:11:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4034F6B00B5; Tue, 13 Oct 2026 11:11:01 -0400 (EDT)
+	id 7FA166B00B6; Tue, 13 Oct 2026 11:11:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B2256B00B9; Tue, 13 Oct 2026 11:11:01 -0400 (EDT)
+	id 7D0A06B00B7; Tue, 13 Oct 2026 11:11:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DDA96B00B6; Tue, 13 Oct 2026 11:11:01 -0400 (EDT)
+	id 671BF6B00B9; Tue, 13 Oct 2026 11:11:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E6EA06B00B4
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:11:00 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7D1B9C0B7C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 48D226B00B6
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 11:11:03 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C370280C4B
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:11:02 +0000 (UTC)
+X-FDA: 85317940764.18.CBA377F
+Received: from mta0.migadu.com (out-20.mta0.migadu.com [91.218.175.20])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B2E63140006
 	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:11:00 +0000 (UTC)
-X-FDA: 85317940680.22.938841A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C580840005
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 15:10:58 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="K2+L9Q/z";
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HtGXlp7H;
+	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.20 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791904258;
+	s=arc-20220608; t=1791904261;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mU7Y5nNDVHDzKFrw1lrh3bp+5Qbf32xd91WOb6VG+Eg=;
-	b=r+RQc+5Lq3OCiUIImahX5aQOJPf9qMfI0KUJqCiPfHOhqrPMZVSgGVgH/EKbvxdIHpTxGr
-	WSNtVLh0uwfcUG8ebpJDzoEiAk22MDLXeIYKd+C98VSdnyRNsLsHpzC8tCdM2YWBizd/3b
-	xNY/nvuIRnFwXIdl8gaZj65LFKXpdks=
+	bh=yQSrN9slFl/gK4aY1b7+WXi/675sMIn9MnuF0iOef18=;
+	b=Pp4dqZvsT4cXn/TzD7dqfihh+Kd+Vi/OisnoD3iL5cEnG2pReSn/7DniBj1LQ4mD9lJlSt
+	VLYrJfScSCcrvrrawuNZxOV/uKwsh7+8Ew/CcgWMheqX6UnCbwBvGqcUgAx3sAuNslWrAx
+	Nz0gVsezTaOCD+DWroi5mEo0OV5kD7w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791904258;
-	b=CymqGnCrIMIR6l8ZPtcgUDChpJ4tQ1ivS+gmSa9xCYWIQ5Z8QnclbpKH4uTsNJyFYUydD5
-	tr6gYN587Cqb2o1EMSzhthEnixrUyR0Ef7dZNC8gd84zEZNd4nSS3ZZTDNmZA+tjAh0g4Z
-	iGOjWXF8UdtOnki0GlIHA2Q0HXC2fLM=
+	t=1791904261;
+	b=v6OfIQ+7uzxiVsYF/4M/ENEhjUOXI1NxWmAUbHDZBntYXUaDN1TM4ZX+VT8eWwQtG1QIj6
+	u01To7VH7PWUdrcro6FMHIxKRFCSvb1TdP5YAj7M3bHfc+7vuZXUej52dm0RcdoQrhcK4v
+	24zXFx9+y0wxCrIJ/degfvxpqT5R5fM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="K2+L9Q/z";
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6942960A5E;
-	Tue, 13 Oct 2026 15:10:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DAD1F00893;
-	Tue, 13 Oct 2026 15:10:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791904258;
-	bh=mU7Y5nNDVHDzKFrw1lrh3bp+5Qbf32xd91WOb6VG+Eg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=K2+L9Q/zk5F1JMZQoVNEvJJrDJntVi7BRnwxv6VxSVhHPIGwIZuO6hsP6antZRApX
-	 uJutW5uu2S2oKbCLLYqTfVbV5yLuZ4VIAOMRulD5xbCnMFHVOfEekoZbDQSPzErySo
-	 xoJKnXc+Ul7hckWVUy1rnU5nhunwRAgAVjP/O3fXcZ+T0NAKr5vdjHfla7vtxP6vkk
-	 l5HYOND8EECqPb3irEk3KXmmEnaoQ7ffjrhf/H1ZpsvesyaIvLGEKDlNSSQqnNO4aT
-	 x5cP7oPFadXNoagrLSzTBY2couFGw3Z0Z7vIUed7GNHJhZMqjWaMOTWvRjwJGyMDoW
-	 4OE2dXSjJ5jjw==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 13 Oct 2026 16:04:49 +0100
-Subject: [PATCH v6 09/39] docs: filesystems: update mmap_prepare docs for
- discontig kernel pgs
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HtGXlp7H;
+	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.20 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=bceBj1lCDVf8rlvw9Pnq+5QiEUpw58usmClWP5+lnkY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791904259; v=1; x=1792509059;
+ b=HtGXlp7HdsU1MrQuqwiw9TlpTVxg8+B367C+6XmUokvnjnAmqzJ1bEOJkqSvPrpCLl2Bf5tg
+ Cu5ndTkyLR+sOmEKfLBCQabrmiY+9e/NsRG3Re7Y8rKhGYGpbNUrqTFp4wsn8MEIJpY4d10N5OU
+ TtLbv+nctJHKnxQWVxsYfwZ4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 3d5937a095650203;
+	Tue, 13 Oct 2026 15:10:59 +0000
+X-Mizu-Trace-ID: 3d5937a095650203
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	chengming.zhou@linux.dev,
+	dsterba@suse.com,
+	hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	nphamcs@gmail.com,
+	terrelln@fb.com,
+	yosry@kernel.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	alex@ghiti.fr,
+	senozhatsky@chromium.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	davem@davemloft.net,
+	linux-crypto@vger.kernel.org,
+	kernel-team@meta.com
+Cc: Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v3 3/3] mm: zswap: use stack requests for synchronous decompression
+Date: Tue, 13 Oct 2026 08:09:37 -0700
+Message-ID: <20261013151007.2093943-4-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261013151007.2093943-1-usama.arif@linux.dev>
+References: <20261013151007.2093943-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-9-1aa3c9b139f9@kernel.org>
-References: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
-In-Reply-To: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jonathan Corbet <corbet@lwn.net>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
- Paul Moore <paul@paul-moore.com>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
- Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
- Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- Arnaldo Carvalho de Melo <acme@kernel.org>, 
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Janosch Frank <frankja@linux.ibm.com>, 
- Claudio Imbrenda <imbrenda@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Andreas Larsson <andreas@gaisler.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
- Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Michal Hocko <mhocko@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, 
- Xu Xin <xu.xin@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-rdma@vger.kernel.org, selinux@vger.kernel.org, 
- linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
- linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
- linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
- fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>, 
- Bert Karwatzki <spasswolf@web.de>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4636; i=ljs@kernel.org;
- h=from:subject:message-id; bh=of2UYRzW7yp+Q771g+lXdFKJWDHV724vw+P2aUhj3j8=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLOeZzQKHWd53gm5uqihtiapbWCx05c2W61+NmV67/2e
- D24mDw1oKOUhUGMi0FWTJHl+Rfx/UEiYfM6L/i7wcxhZQIZwsDFKQATkbdj+M3CWBf53tyX0yFp
- N+O0OiZlv2df96y+p26+eE3mhkpP43uMDF/s1oh3aD4OzFXh12H4fbVLvWRnbZLL1fh3HM+vdDw
- 7wg4A
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C580840005
-X-Stat-Signature: h81j873wdk4ahj6pm5gi81piqpnyzgb5
-X-HE-Tag: 1791904258-351991
-X-HE-Meta: U2FsdGVkX1/dCoHSRPPCQVpAgu4f1WNPAWnQnzwUWQpb8OFBusqAb0a35xuBXTgd2yLs7Ykgaz7PEaWb7etgXG2881SU6+UbYiydYvpA9d3NK+gaQ17kmXM0vxOtMoPINZAerZtTmK1k3IEcPwlkqf54d/mx/nBeokMvq/YF9xmrxtfN2TFWlpaZILDtDwDlUjsIEsxnq+0tZa1nCR5TEdjZMM1E8svCrIn2PnUIsdGUe/3ar15yrGuDeLy8/yyZLT6kKfLrWLMT/9KMBTkHvhAIegU5UGnQekHiQPOzJ/+gnRFwXXkwZm2209IAPOAL6TqTNVvzBlFxSpWX9m2r+O82LwSqDJU31tSe4T3l9e7DrehaeBzOk0h4q5cPCVOBalHQroyEi5dUr+gmzyKyaAUa99OkwQgt3NGty/Lnfm48SxV96sSZWgGNrCELfyiPP/BOdALXIrAGy2IngNIUVGbU+ySScL3XC8zhWP26x2bfgmuYnGHLwd09F6CjIUHF+gfPVkwla/V8sr3Ew5WbtzTYTymfv9PBY3DyZsNsSfGosC3YULZVpVsZwsEzZmsbjFyBCctG1H+iGZgv5QsxscOFja89erL+taiZqtiZuWi3EG207J4EU/lbsQIMefIuSwzn9ARixN/EqjGT5fzb1WZrZ6tEjOgF17b/rO9SgB5Ah2Ui/QOvD2JCtZUkWbQy1F/I3Iba0KvSIjvQOPrXpAYBCes9l54DUllUCYXXzxD1K28qRto0nG0OA8xTRkDs2GvbfD9aIZWs1KQyfNG1O0dqPB/i0vETbj+yK2q8Wg0i86hJFCWslrn//hccvsvxm6vGN5G1vfPiNqMe1wxN46jaCTMJWqorKEZEAVomOuRD5zbplzxkUyetKrv7Ppn6Ixx+5Tmj1qvCiuQTN6XN5oCFs8rYfb3INh0hhEP7kZqg5l2xNRRozWjKufF+PkpemwY1n/mbc0llpK85EJk
- XO3mVbza
- H+rF/W2QPea+UC+jRJrX09puZUTzU8XXz/ePUiKwbZ2G1i8N0Pqqgpm8xFXFEZ2KOYvQvudN0vMzg7X2AsLJTw/M9pOv4WH5tjS3r81EI+VI9IDFjD0otKb22B8cvatymuXNORFqfZCZmY3Qhaj/nxAwBIpVhYKB0At76FGL48QotTzi75ZKSROc8Zd5kcbgADA99goIH2d2KDr5NYvHDvR/Ck0/lzGSvrA2S1K13iB62pG0AH9Z87Q90acmOLxLwfpbrSw4DLGGT75ANrdl6uzxTEVTg4Pxekp4IO/hYhp3dmvnqwDggmQzB+SYBh+K6FXLWmnfsQYh1fqxiP/IUEVBz1zSfShpqZdAEODOxQvqQ+S7wmd3Gxi+0kdpJj/IVxXkDh+iv93GgsurlOCT7N0KUHG4lUSgEiDBz9Z9XE0+hwSEDdziieh7lC2lhbXN6KQ5LwKVdZaqeJD65LrQA1ibwAj0Rt/hF8Q/Wq4yJGxw3Ae7RgxheXzihE8LcLdPt6cSN7X3GADF3lesa6xxTKODJC4XPJIRT4LRTE49uXj/tYlenjolKFDnXDSoFprHc0+Fi3qDeGJoxYpYHPn5xEtSGspnlbVjqg7xt8NKyz9p4OUV8vcKJVrzuQMmmwPmWHx+jAJc+KPwNP0YXT21HbsvTsYvJBZvMzxVSonbfm7lbQDg4NYh8F1HEE7IwEjAZ6Z2RRNjQlyNsQ2EFf36gfUxWmpoRBQwKqWtR3452Nj0rVufR0Bf++d3x2VOxWkzNIS1hObeM4jBxcFKqHJzzay2k7Ox0TVLnek2ozIApsY9tCbjchE/m/+qUOyeZUO48eVD5ZKdPR1ltXi9CqAu8rYhbzu84O8viZLLejcfAVder78qw5vpVRtQd47VDREI75KkrKab/H3c1v/dTixECIU+E6NWz+P7AJcnWHrGlI5OHzifhBKWwqtUzRuSZvpmI6bOJ6yUqc1C0uwPNItxOCgCbuPFr
- /nhPq60n
- mqi5Zq7ItNZVXywCDuRLt/vd6IJgeo7KHUBgROxMVB+38ZnxQdVt2Ia8XW4MQRvyX46XuDcHRW7BlBBZnlmnsLc2AYAmhsOzTwpJM44x2D+1aQEEk0unZMiH5Lk5hbikqebkKTHv37O6lwes+6Qe7FtzPpIjKVQdVbfLsYqe29g49jGt92C1E9ihxB5fz6es0kkBrYzFlgep3JD0LPdvmXb0ODwrotlhbnkguiY9zhfaEvv+uINZIYiqfwK9gHf0mOUqbl7ox+46y3NW1mgMT2jFVBI30Br0TaAtIepwm6BO4IBevWkg6sEemIQ5WDcUw5yiBIvUGlUFp0yQRgLSYNMzab9UELAqdLtTSRDd1PT0r3JLQ7x6EUnbmtm/PDX/5pN4RrTrmF/lNaQo4jHdXKinS4XCOoGbZ0iBxnpXXU30dxstYBdQSb/GR53+Z4ZcTE4pbg6q2v0rG+2jPyyixBUVszmo6fLQLsbE/wBbPIv647rtY8H7/eDk+pv8p75kS5qcgnq+7jPPUcjFSGZFUefAELjfzKjBtOFDDOMMWBKd85IzQN4Fmj/2OTxdihlZ+ETZMF51+eQ8l1wbunMiS+Y0G2F8pOYIezwbxBYtWdZ42Iwln7uD8wwn3YaNwD1gLjvzT2ZzhYXkMGqBZ/fzFeaDRz3bIiWNMXwDDBNqiW+5G+eJb4a+LzRBoBpclYVAQaADm+6/qii4hdIaMihFgoil5jybSZ+Eb29796pD34S+5Jg+iVRCnyu/PhDO4cb/eJXpEH7I68G8QVaxlxmJ2zAJ2BdAEuBFWTEyJxvkK0h2akY37miIXhmfmWADD6Ll6VxJ2mBykweEoMG9/5Nb8g+ELORObU+ixdqm7nq9ki9uQB6j3ENsZD8MreT5BydoOwBunTSg1DbU/IrI7+oEyE76bTWz24w9MuYQHk+luWWnj6kskuDlQT38PIFffYVN2K/WaOOtM+gchWQt7M4ccvI/qLLN+
- tPEYTLZ8
- uRI+6t3OctmDS8rTh58oQCxVal0ZwHvv6ofsZ92WhhvQ9SfWdeK4O1BVqUqqVqN+IdJmdVoaBYKMSBGAo6K1bQwzbv+GRKefgL0OUz91LPhcuzsSt1wMp8HqiRmFAmI1pAw2MWkYREph2QjsU8hKgDDxEhbYCqtQ3+HpwQTMhS3Jo55wz2b559nc1TOYd0B12GI1A3FTFEX9GLaPL/LlKqFb+sys5x9JE5u2oUVAs9Id/UMLhcUplGpVLbN7twPcB1Nn30TdnIbePQJr3l+gde12gPiF5Bn1sIVsxrJ58dWSUmBgt3NeVbzh5G7esSk+g6Zh3xF3Z82FEb5ZYozVtkQ0oEJ0l95pnhaVS97QfvefD3PwerM2QLNad2G3Av7dLPhqwSFVju8yLFos7/x5ntj4AxHHnf/0jIG8rdTuejX5A0IXH2npIFowezM0zehh/eTtGWRvoqVR7GZBX9e1wsInJBrtj4lV9Jnc4SE4T8uAUhUOtvZiceQEKXVkan/dFZHpwhXQKwuz6+9VATkXSYqZPAOgNMbTXhRdkBn7qSrPEz8iOol0Fwsl/PdNEPb3fhSTg7c1iMr4hhLZJbn18DrEEZZZvY5mx9f69oU8fhnHvmMd7+7XbIPA7ZsUgOAQtLlzGbQe5oZN/c73Ul6qFANFun8PX074JS5KGXsukjD+TMSeTsdB7ElHRGZzyjER3hciXb2Db9RMbbM3nXzKe1tIfpYs6ZDK8Ov9vyP6SI74NRZGolXRPvZ6vB1EOZsw3T82WXYV3DlnRF4PSo4zvCsO+3gnFaw7MP5JbcPdOJYin5Qw7/pp0Ns2PzO8a7kZ6pAgAUcStQsU6nSyuD7ym/P4911mcIKgQW2lG/cRsMqreUYM9TLGvGTyOXBVBYH4J69EFVefO9X18TJZIUNTRkE6OIcEWbS/pTqSiDrdkmZu4128Qc6sSXqkawlKbdSHvxvBYp9bmYAfonIr5uv+xE/LW/P20
- Hx93HFsu
- +a84x9ktET/PNqroyt2wRrvW//g8KqBU5Fd1AIEYKPg/bVjm4zD3Rl0Y3tm+8OBcQ5TVWMhOTinDiNgnqUMcTGnKCozOj23soeOJNxf2lf8jvjtXi8KJRCJOu2ptPdtEDu9aLo8zUZS5XsIFnbyKD5Cpj0gYyg1GgL/hvn1NN7bhRsJLxDiqf4pFQwniVys5SnjGVMTlwZp/xtuBfqCxZdpyZfgivdnFv2uTyCCyhbtWZdvlJ8ejRW4LF8zhuG4olEt0z7iPf8mMm8axwIeX9jw/ETaMJMnPm07zStjK5oBLEDjqsX0n8rW7a6PHhOsKkWyKhgOSaFNDEPThtKxYygG8+oeyxPO0iqbms2sYQLflvvnI7f61+vpaQdeBexVel3MNFRg/rSKr3sgtpjascAhCprdHjxwRA2RE/p/HK0CwLGCzPoQddclmmiq61TgUYRynMLhZqfqNJqzlTfOrlg+apLB1xu/sM=
+X-Rspamd-Queue-Id: B2E63140006
+X-Stat-Signature: uw6mmuyarkr11c3dr9dw38gb134kgjwc
+X-HE-Tag: 1791904260-884082
+X-HE-Meta: U2FsdGVkX1+CvlijhEC7eJMeI2IDh4X0iAXhewxnCfmEGbzJL5xjNcMNn4EuVtKf4DiEYxTMPK0u/7uj2sVq0jWGizYbmdNm1YkW46KVgkZ/RPj6RLnHIKneYaSW1sYhjp/PVkeI7ZTNcTINsBz/gfTW+CWnh+XW+8QlBSi19RsdiHo0dKZCjyGv6hFvdSaSxAe3LLSqZtZrfmTI+sQ5A0Z7gXHzGQpjMv/qDqSXi/YJo2FkEZgNlRDMryV/Sdzv4J4p20Vmvv+4a3vPjvf6butPwtrf2D97Zu5mHzUJw3mg+znWVJqni0YfEcZ26SGet/b5mC4mlG3QxyqCNVCnd7sRDiTiX8Uus9ZoO8FgNK71GkpcRTpTmoaHhRhMx+Ecv4btC29kLa/AP32VutwHT/0pRqLA6d9E7Sae8IaJQShFnWt21lgrTN4MGLP5LTcnDTVZrxrG9rY4tLUoIhbAWirHGwadQGiYzFrdRXCDB7OXLMtSS3q/mJtI5lQSCEUcyO6MbVYO1LSQnaSaazqQ0C08I8IsFipHySyVY2hCcykWJmYpN3G/WANEh+VLRMb/J+qV95bKOCU9JijyH9yC3+7D6Dhsp1yWcxtxlXdNdg9N9FYqzET1TumAWGwVyd12hPZ8tsKeqbI5Qh32Ms1hFgE/Dv9ak4vzId3YAQhSvnw+SFS/Zk9LLGUBn2fQ9YhMQTd9f3KJmyAakij6eeWqUildf+VnStKb9ho6q6IFllQ1EZf88PpB+dRE81m7v2VJu6rhSm4nPrl/rBQ5pA5dt9x6tkKH5Jf5fHOLixdtgfLtD0h00aFBCqFyAJYNmvWoCKFoa8zj4hjtptIa8kA4j8B5DknnmBS4mgfgLVIMvZMr6v+Z/As8AFEgtf//jlCGsr0id5sih9e0tWB1MLY0l2Id87oVSvcQVz3p6bOAGGLZQ2bkphznHTzIRF8HcdyV84c3toHebI/5P5Ubp2P
+ /Zi/ONcN
+ F5ZTvLmnvX8+HaFg6s8Q7ZWv+LDDZHpKBSbzrSkFI2EsY7bzYK0thcplwuWDkau+PwGrWqKOydDJSD96cnWw7PkR9CHsD/gP4U8M0xHrn0iqMuqmpSVGtYRvNG08XFXNR84RUZmHXMME5NRSCGTSxf642oT3wmt1ZcVpTPxbNdmbGFfZZgFk5lEqkMihqFXzJv9e+08tw68ctKXi1MkQFUfkplBIIhZnWhUoB+n507saNy/TaNMkijHpEZ7Uk0GBRs2g3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -185,111 +103,189 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Describe the newly introduced discontiguous kernel page mapping mechanism,
-detailing how to use it sensibly and how the API looks.
+With separate requests for compression and decompression, loads still
+serialize on the per-CPU decompression mutex. A low-priority load that
+is preempted after the codec drops its stream lock keeps holding the mutex
+and stalls every other load on that CPU, including higher-priority ones.
 
-Explicitly detail the various discontiguous actions available and how to
-use them.
+Synchronous algorithms can use an on-stack request, so decompress with
+one and take no zswap lock. All in-tree software compressors qualify.
+The Crypto API enforces MAX_SYNC_COMP_REQSIZE during initialization,
+so checking acomp_is_async() is sufficient. Asynchronous algorithms
+keep the per-CPU request and mutex, which is still taken before the
+zsmalloc read lock.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reading the per-CPU context without the mutex is safe. Since
+commit ef3c0f6cb798e ("mm: zswap: tie per-CPU acomp_ctx lifetime to the
+pool"), it is set up before its CPU comes online and is not torn down
+until the pool is destroyed. The codecs keep their own stream locks, and
+crypto_acomp_decompress() rejects on-stack requests only for
+asynchronous transforms, which never take this path.
+
+For software compressors this drops the heap request added for
+decompression. The on-stack request and wait take 216 bytes, which
+makes the load path about 270 bytes deeper on x86-64. Asynchronous
+algorithms pay this too.
+
+Acked-by: Nhat Pham <nphamcs@gmail.com>
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- Documentation/filesystems/mmap_prepare.rst | 81 ++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ mm/zswap.c | 87 ++++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 59 insertions(+), 28 deletions(-)
 
-diff --git a/Documentation/filesystems/mmap_prepare.rst b/Documentation/filesystems/mmap_prepare.rst
-index 82c99c95ad85..b5afbb33e5c8 100644
---- a/Documentation/filesystems/mmap_prepare.rst
-+++ b/Documentation/filesystems/mmap_prepare.rst
-@@ -164,5 +164,86 @@ pointer. These are:
-   sufficient entries in the page array to cover the entire range of the
-   described VMA.
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 23c4298765795..beacdf83c8b31 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -153,7 +153,7 @@ struct zswap_comp_ctx {
+ struct crypto_acomp_ctx {
+ 	struct crypto_acomp *acomp;
+ 	struct zswap_comp_ctx comp;
+-	struct zswap_acomp_req decomp;
++	struct zswap_acomp_req decomp;	/* unused with on-stack requests */
+ };
  
-+* mmap_action_map_discontig_kernel_pages() - Maps a discontiguous range of
-+  `struct page` pointers over the VMA. They must span from the start of the VMA,
-+  but may terminate prior to the end (leaving the remainder unmapped).
+ /*
+@@ -803,6 +803,18 @@ static void zswap_entry_free(struct zswap_entry *entry)
+ /*********************************
+ * compressed storage functions
+ **********************************/
++static void zswap_set_acomp_req_callback(struct acomp_req *req,
++					 struct crypto_wait *wait)
++{
++	/*
++	 * if the backend of acomp is async zip, crypto_req_done() will wakeup
++	 * crypto_wait_req(); if the backend of acomp is scomp, the callback
++	 * won't be called, crypto_wait_req() will return without blocking.
++	 */
++	acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
++				   crypto_req_done, wait);
++}
 +
- **NOTE:** The ``action`` field should never normally be manipulated directly,
- rather you ought to use one of these helpers.
+ static int zswap_acomp_req_init(struct zswap_acomp_req *areq,
+ 				struct crypto_acomp *acomp)
+ {
+@@ -812,14 +824,7 @@ static int zswap_acomp_req_init(struct zswap_acomp_req *areq,
+ 		return -ENOMEM;
+ 
+ 	crypto_init_wait(&areq->wait);
+-
+-	/*
+-	 * if the backend of acomp is async zip, crypto_req_done() will wakeup
+-	 * crypto_wait_req(); if the backend of acomp is scomp, the callback
+-	 * won't be called, crypto_wait_req() will return without blocking.
+-	 */
+-	acomp_request_set_callback(areq->req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+-				   crypto_req_done, &areq->wait);
++	zswap_set_acomp_req_callback(areq->req, &areq->wait);
+ 
+ 	mutex_init(&areq->mutex);
+ 	return 0;
+@@ -856,15 +861,19 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+ 		goto fail;
+ 	}
+ 
+-	if (zswap_acomp_req_init(&acomp_ctx->comp.areq, acomp_ctx->acomp) ||
+-	    zswap_acomp_req_init(&acomp_ctx->decomp, acomp_ctx->acomp)) {
+-		pr_err("could not alloc crypto acomp_request %s\n",
+-		       pool->tfm_name);
+-		goto fail;
++	if (zswap_acomp_req_init(&acomp_ctx->comp.areq, acomp_ctx->acomp))
++		goto req_fail;
 +
-+Discontiguous Actions
-+=====================
++	/* Skip the per-CPU request when decompression can use the stack. */
++	if (acomp_is_async(acomp_ctx->acomp)) {
++		if (zswap_acomp_req_init(&acomp_ctx->decomp, acomp_ctx->acomp))
++			goto req_fail;
+ 	}
+ 
+ 	return 0;
+ 
++req_fail:
++	pr_err("could not alloc crypto acomp_request %s\n", pool->tfm_name);
+ fail:
+ 	acomp_ctx_free(acomp_ctx);
+ 	return ret;
+@@ -956,19 +965,14 @@ static bool zswap_compress(struct folio *folio, long index,
+ 	return comp_ret == 0 && alloc_ret == 0;
+ }
+ 
+-static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
++static bool __zswap_decompress(struct zswap_entry *entry,
++			       struct zswap_pool *pool, struct acomp_req *req,
++			       struct crypto_wait *wait, struct folio *folio)
+ {
+-	struct zswap_pool *pool = zswap_entry_pool(entry);
+ 	struct scatterlist input[2]; /* zsmalloc returns an SG list 1-2 entries */
+ 	struct scatterlist output;
+-	struct crypto_acomp_ctx *acomp_ctx;
+ 	int ret = 0, dlen;
+ 
+-	if (WARN_ON_ONCE(!pool))
+-		return false;
+-
+-	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
+-	mutex_lock(&acomp_ctx->decomp.mutex);
+ 	zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
+ 
+ 	/* zswap entries of length PAGE_SIZE are not compressed. */
+@@ -985,15 +989,13 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ 	} else {
+ 		sg_init_table(&output, 1);
+ 		sg_set_folio(&output, folio, PAGE_SIZE, 0);
+-		acomp_request_set_params(acomp_ctx->decomp.req, input, &output,
+-					 entry->length, PAGE_SIZE);
+-		ret = crypto_acomp_decompress(acomp_ctx->decomp.req);
+-		ret = crypto_wait_req(ret, &acomp_ctx->decomp.wait);
+-		dlen = acomp_ctx->decomp.req->dlen;
++		acomp_request_set_params(req, input, &output, entry->length, PAGE_SIZE);
++		ret = crypto_acomp_decompress(req);
++		ret = crypto_wait_req(ret, wait);
++		dlen = req->dlen;
+ 	}
+ 
+ 	zs_obj_read_sg_end(pool->zs_pool, entry->handle);
+-	mutex_unlock(&acomp_ctx->decomp.mutex);
+ 
+ 	if (!ret && dlen == PAGE_SIZE)
+ 		return true;
+@@ -1007,6 +1009,35 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ 	return false;
+ }
+ 
++static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
++{
++	struct zswap_pool *pool = zswap_entry_pool(entry);
++	struct crypto_acomp_ctx *acomp_ctx;
++	bool ret;
 +
-+Some actions can be performed across discontiguous ranges.
++	if (WARN_ON_ONCE(!pool))
++		return false;
 +
-+Map kernel pages
-+----------------
++	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
++	/*
++	 * Use a private on-stack request when the transform supports it.
++	 * Otherwise serialize decompression on the shared per-CPU request.
++	 */
++	if (!acomp_ctx->decomp.req) {
++		ACOMP_REQUEST_ON_STACK(req, acomp_ctx->acomp);
++		DECLARE_CRYPTO_WAIT(wait);
 +
-+To map kernel pages discontiguously, you must provide hooks using ``struct
-+discontig_kernel_page_ops``:
++		zswap_set_acomp_req_callback(req, &wait);
++		return __zswap_decompress(entry, pool, req, &wait, folio);
++	}
 +
-+.. code-block:: C
++	mutex_lock(&acomp_ctx->decomp.mutex);
++	ret = __zswap_decompress(entry, pool, acomp_ctx->decomp.req,
++				 &acomp_ctx->decomp.wait, folio);
++	mutex_unlock(&acomp_ctx->decomp.mutex);
++	return ret;
++}
 +
-+    struct discontig_kernel_page_ops {
-+        int (*init)(void *vm_private_data, void **private);
-+        int (*get)(struct discontig_kernel_page_state *state);
-+    };
-+
-+The ``init`` hook is optional and allows state to be established before the
-+operation starts, for instance taking a reference count. Nothing is invoked
-+after the operation, so ``init`` must not leave locks held, and state that must
-+be released once the mapping goes away should be released in
-+``vm_ops->close``.
-+
-+The ``init`` hook, if provided, is invoked prior to the operation starting. It
-+may update what is pointed to by ``vm_private_data`` and/or ``private``. If an
-+error is returned, then the operation is aborted. The ``private`` field can be
-+reassigned.
-+
-+**NOTE:** The operation may sleep between invocations of ``get``, so locks
-+needed to stabilise state must be taken and released within each hook.
-+
-+The ``get`` handler is the key means through which the operation is
-+executed. The current state of the operation is provided through ``struct
-+discontig_kernel_page_state``:
-+
-+.. code-block:: C
-+
-+    struct discontig_kernel_page_state {
-+        /* Map state. */
-+        unsigned long start;            /* Start address of VMA. */
-+        unsigned long end;              /* End address of VMA. */
-+        unsigned long addr;             /* The current address to be mapped. */
-+        pgoff_t pgoff;                  /* The current pgoff to be mapped. */
-+        unsigned long nr_pages_mapped;  /* The number of pages mapped. */
-+        unsigned long nr_pages_remain;  /* The number of pages remaining. */
-+
-+        /* User-defined state. */
-+        void *vm_private_data;          /* VMA private data. */
-+        void *private;                  /* Mapping private data. */
-+
-+        /* Users should not touch these, use discontig_kernel_map_*() helpers. */
-+        ... internal fields ...
-+    };
-+
-+With ``private`` being an additional user-controllable state variable,
-+initialised via ``mmap_action_map_discontig_kernel_pages()``, and
-+``vm_private_data`` being equal to the ``desc->private_data`` field set in
-+the ``mmap_prepare()`` hook.
-+
-+In the ``get`` hook, the user must choose how to map kernel pages:
-+
-+* ``discontig_kernel_map_abort()`` - Call this to abort the operation, whatever
-+  has been mapped so far will be retained, the rest of the mapping will SIGBUS
-+  if accessed.
-+* ``discontig_kernel_map_page()`` - Maps a single page, correctly handling
-+  compound pages (if the compound page is bigger than the remaining pages in the
-+  VMA, then only those pages that fit will be mapped). For a compound page, the
-+  head page must be passed.
-+* ``discontig_kernel_map_pages()`` - Map an array of pages of a specified
-+  size. As with a compound page, if more pages are specified than remain in
-+  the VMA then only those that fit will be mapped.
-+
-+If an error arises after ``init`` succeeded, the core unmaps the VMA, invoking
-+``vm_ops->close`` if set, which is therefore the place to release any state
-+that ``init`` established.
-
+ /*********************************
+ * writeback code
+ **********************************/
 -- 
-2.55.0
+2.53.0-Meta
 
 
