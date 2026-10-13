@@ -4,99 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6CABCC6B03
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:18:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EA63CC6B03
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 09:18:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 941476B008C; Tue, 13 Oct 2026 05:18:28 -0400 (EDT)
+	id 990226B0092; Tue, 13 Oct 2026 05:18:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9189E6B0092; Tue, 13 Oct 2026 05:18:28 -0400 (EDT)
+	id 966BC6B0095; Tue, 13 Oct 2026 05:18:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82ED66B0095; Tue, 13 Oct 2026 05:18:28 -0400 (EDT)
+	id 7E15A6B0096; Tue, 13 Oct 2026 05:18:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F45E6B008C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:18:28 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CE164C0A49
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A9226B0092
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 05:18:30 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C82D780AFE
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:18:29 +0000 (UTC)
+X-FDA: 85317052338.16.433CB90
+Received: from mailrelay-egress5.pub.mailoutpod3-cph3.one.com (mailrelay-egress5.pub.mailoutpod3-cph3.one.com [46.30.211.244])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 848A2140009
 	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:18:27 +0000 (UTC)
-X-FDA: 85317052254.01.1855C22
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E036E180007
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 09:18:25 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=j1hjgoF9;
-	spf=pass (imf24.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791883106;
-	b=3jtN48SCiHJQUFGgPMGH5WB7pPSuP5/cQxQ3fWgHdms6Dwv5GMkqYtGFYd7sdP8LB4gBmH
-	HCMnTA2Bs5gxf0C+pJ/mr8Joxv8G4apqRZjVfYoKaKN70HMOFFablj+DCTjZ7OHl+veeBL
-	G1QNB6zIWMOwX16/h6GXOcrsHcWPMOs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=j1hjgoF9;
-	spf=pass (imf24.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa2 header.b="tSH/Wi9q";
+	dkim=pass header.d=konsulko.se header.s=ed2 header.b=0gcI8aCZ
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791883106;
+	s=arc-20220608; t=1791883108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LghFxOzFX5561UyRw3PoliNdFHX5xv4WfaZ0X8D/DpY=;
-	b=zky3rLiRjSIhguG81/0OQurNEHQ0kkZrJbIoTsecMqD2+AMyZC0N0c1pdAwmu3qpF/hBzP
-	Pb74XqQeYBnuaHrRo2yTKsZyKz5v36rL27EjG9s3L57kjNWNIWgiwYjG5h6He/DROe/h12
-	9AFAqC7mg5HELxUYT4JWQMqIo8Pzx3U=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F9E3169C;
-	Tue, 13 Oct 2026 02:18:21 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 724B73F7B4;
-	Tue, 13 Oct 2026 02:18:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791883104; bh=EOkC7IxwRjX5sV7VTQMqZrlCovHAjCLACVvh+hdQqTQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j1hjgoF9HlQ/oP+4K7eHi4L+8h/Oz32n9SCYza9/O6FSh+/whx+zkwfXx/GApokxV
-	 1yG0fCmEIYQCchZDyiqyqHeBzkJqZkj8TyuKKhsHKv8GILo4p7TAzJfji2JuIz2vFw
-	 DG2fxW3PkXrceMTJEiu02y79uPY3e4o/Au5Nb58g=
-Date: Tue, 13 Oct 2026 10:18:19 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QvNh11oJXl4baoOT3DDsfp6RFRaR2ZJoWtlgXXO75tI=;
+	b=UGP21zxHE5Pit/K+MHNXCHZy6ou564gIbMj/m4wZSPM+428Nr+eAIo4BUKTKQyP8UEsZ1Q
+	+UQbBJB7RPMnp6ufOSDGtySg+lTncB4Oqlau6bvLysrkfT1xWxAYWXbqQ7EDxNtky4CFy3
+	oEzJi3Yj6i+E99zY6MYbIeGYPo1Eb+s=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791883108;
+	b=Ek+3DJfX7EWLnngqH3g78z3FtNxW0oimUV9K7u+KXK1bQvl1QyfRB811kTCbFAW5+BQiSW
+	LlLlr9sFB0Hp1M6aRoTMAM4PN/P5tQHgMxovrvyyN6vmY1wEqVToIdVOA4qXgnDfLWNPFJ
+	t1x5+C6ImTBC94E+rg2dMi4EVwKoCX8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa2 header.b="tSH/Wi9q";
+	dkim=pass header.d=konsulko.se header.s=ed2 header.b=0gcI8aCZ;
+	spf=none (imf26.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.211.244) smtp.mailfrom=vitaly.wool@konsulko.se;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1791883104; x=1792487904;
+	d=konsulko.se; s=rsa2;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=QvNh11oJXl4baoOT3DDsfp6RFRaR2ZJoWtlgXXO75tI=;
+	b=tSH/Wi9qixI4r+KP6FzS9zXUGshyfkpCGVGoLSlmZ+i8KrjEzp9ry4AR/gIyVCXj+lSpJRTU1I/8E
+	 JK85Xqj/aHTQ7eq63qsYNxhakfGwUUZ7i/wwl9MlGwglPzKzglhA3kJyd5tZjx73jYgUffayQ6XW2E
+	 VAE6D3oS74Qq4GKJb7sygrNyXw+fwEM+mhvOe9hVVmJZbn+CFl8rbJSlskMTNBtkKK928jhNkqczBH
+	 PGX8f9oH+TsXvc/i8tv/EP26fGoTcVnT7kZOejqjXClOhmHBMjtZttczNeyJS73qqt1zurrF4ct0sS
+	 LXfN9rK1JyK6UJER6WUOZAzcaE1mFMw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1791883104; x=1792487904;
+	d=konsulko.se; s=ed2;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=QvNh11oJXl4baoOT3DDsfp6RFRaR2ZJoWtlgXXO75tI=;
+	b=0gcI8aCZpvuOyPEeMuf/5JJupCYCw4UOfVru3UBNBjuLktxnMxpF1HNrTVzUT318RcHLmVFyjPEUp
+	 PqppCM1Dg==
+X-HalOne-ID: 09f3f4df-c6e7-11f1-b88b-7d3e33f7de26
+Received: from localhost.localdomain (c213-102-77-204.bredband.tele2.se [213.102.77.204])
+	by mailrelay1.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id 09f3f4df-c6e7-11f1-b88b-7d3e33f7de26;
+	Tue, 13 Oct 2026 09:18:24 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	David Rientjes <rientjes@google.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	Hao Li <hao.li@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: Re: [PATCH v5 2/3] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT
- macro
-Message-ID: <as33Wxv7t_8UO505@e129823.arm.com>
-References: <20261009-fix_hpage_macro-v5-0-54378ae45add@arm.com>
- <20261009-fix_hpage_macro-v5-2-54378ae45add@arm.com>
- <askfkwPaItOw30-r@kernel.org>
+	Harry Yoo <harry@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Vitaly Wool <vitaly.wool@konsulko.se>,
+	Vitaly Vul <vitaly.vul@partner.samsung.com>
+Subject: [PATCH v2] mempool: optimize mempool resizing
+Date: Tue, 13 Oct 2026 11:14:08 +0200
+Message-Id: <20261013091408.1231786-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <askfkwPaItOw30-r@kernel.org>
-X-Stat-Signature: kyxnbz79p478rkc8pf6tnz4mu5rwsx8p
-X-Rspamd-Queue-Id: E036E180007
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791883105-204161
-X-HE-Meta: U2FsdGVkX18NGb/Xg2LGJSyk9WajuxpMSZaUdDwszyh/drsRMA6Pd0Bq5O0RrSBN8IBRg/1WkFGwViTQy8vn3f15Jj1+pQf9QwrOhozh1/NjesIyI+qVaWO7b4XK1QUOJwB5ogycNnGIHgC2Kfn0swO4XJh562XO/fncojP+VIzPNQl31nBFJG+10SdYYeM37bF9LNx8em9TBBRALnXSrsZrm3VHddu2G3Emo6ItSDfC8DkNtpwrS0tHUWscfoLPm0JeoUfItumaox7huLjpgiXLJsiJn045XYSYS9D71984HO/Wq3aYuE9ys3UGWMZ0qdwLI/MJtKja2OSWtoOAWEEiUnA3bQTKSozr23UOG+4ktErdLhKNiM+iXKR9kfJmYwPnD7SOJeMWcay5Fpo0VE66qCH9P2YcUOB7x+bR7ZTBW7S5wuXBliTGgjVsIpNUb87fnoteZ0MTUOuldBLcHZUYiuaohNcGye20olwPeHmYx0UiX4IL8Rsh5AaDhYsCxWInwMNUxkgCzUGHZfwwzP+e0TQsArSdGHh7I1aAJ66EqzIw9D6sQQrb6nrhOiiZOZkLq2jz8jDKhv1zS7YWD4cQ+zyDEMStQ3ru9U/M5MR0aH2eENU/8W/YE4XpiQxpa3h9GEgOvqImbAaN/XGkb0M3yuRO9rNNFtNNFe1H6CqIX+gShp5evezyv+VMmrFmNITUX6la6OmkyPixigJSKdN9lgFWNORTA88VwikeH4AVVoDNa2yQKIVHJrswEwhLwwuAYceefhD9aaFdY+VrxqIpS2eOHL3XvVtbhMUefCmLN0f7gMLd8vu9o0v0e8U0p1frusdxYgRUSZfqx4jdcQAgz/6sZldmbhMNoPxZerAC9hasfVErY3Kpyc0UfR8N2Dv+fr4JNERgreNs9siL9XGYs3i3Y4YvgG4WsZ620DgS+ZJ0cI7dHjQwtFelqTRYQAl5EPLRFWGKU/wAFsD
- B/eaKZ6/
- cQpRWd9ol4o3ZneGYFGPshV91GN64twCqZl+LlL4ZrgrCRYOVMtRyAtx9/cSavlMCF3ynfpq8VXjXcmEnQaqIMqc55FvZatH/JFpxZp4pr+2SGjeK11xYMzSI0pGQGEJ6EPHT6fh0pWVzWzjBhb8311Tn3OjdVOAzme+bDkw9OHXK0Vd2tN0+cKwd/NdZI3NC+bQGeppQdtGK8ecpUqCiMZfOJfH1nlEJnNFLAGxvgeR5+p7nmG+0vJfn5wVBj5PZGieKG7zzdAcNwnNuldLt9D3hKgyyQ4iyQ46WrpWfHeZIJSBfmetmjiZ760xxbyM7hwlGSBjyv4WMz3neoJCD+DuPNqRt0bUS73A9KkBgBc4ydFlH0E6BRkxyqjeCPTo3Y4NQkvQTN+OIRAk=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 848A2140009
+X-Stat-Signature: jbfurq9w6bdxrgagrifadz8mbkftbwqi
+X-HE-Tag: 1791883107-339319
+X-HE-Meta: U2FsdGVkX1+i2M1yV5rtJaSSGfuZ3behF3nFhdd9QuyYOF+TLdFdQ0uEzRsY29lNG3P8NRCAkK8kKJ1GFmQZh9jJ3hLcN5GQ5kGf/d7v30x36hOgGH37oF9IkSRx09PZ1MJM0GdUWHvYfCrkKGNbg9K/MvFfLTvPK/3wtUPU193MyK5Oy55/jYGQeXh08L6w2egvsZsb2skhEMcCjbuErPjp9jiRt0oJFbXbyGWf7z+M3XSlKFusnn2ezqRb4ZYJgRZyqhCWqU5Q1l31bfy2FTZguKEIacvu2HTlJ/BCli0waSFXzGa3/5ZySRQyvNxm+6l2KMfxoFNYIdlu7zuMISTEsP1cmTMukk++VwyrplWVFI5xNs7GJjY1ngUYz0UOx6V7dk7O8aapPkedYRI4dTN63ZScQDDI89wTr5Wj7Ql2nOUnfPOZ1ffs5lbcjXC0j863Jf8h5r0ebQ4l6bu9F8TjvFKVKm93xwzlkY8zc2pfMyb3TundzOUs2l6LzSfevluY08vUzQd4J+9ayy0IkCzspRl4QTIoAcGfVp14bqJkd7YlqbAqOayH0EkU2OFRat7KFXMLCqNrTWZH7JtPndZ5U6nIpNLv9ecbX+6OaC4M11/YavphqqGU1kf0JbD1oqKEaQpTNSgZJ6msy6Z5GmY3nt0unwoCMlMRPIoskGQJ46TrbtPBEoJcKmEk8oGTefvmvhf+y14Bv7MBMWXrmRrAV0HrHIMB6DEX2XqEzQJhPcdz6FrBfZLNPUdzvhA02Qgm9MQr8EqNsqeurMymlq6PmhAli4UGnaMiKrR+T0HWXQCIwYmPkBsbnUtgNFzyoOwaIYsuox+lFjB4u5f3/bTeyfRXLd7THtbUyBEMIdx7lGNehJucReuV6HiAh30k9usor9LYJlFXsLj4s8v6SyGYkl7Yvr2zUYrYNwnus2Du7Hn4Xs3Bko1YUpBPRTeKzc/ZQS31oGSOX5DTW84
+ nR9RFfpA
+ qE4V1rQbNKBzdj3BNQZ37fQ8mgmFn+Hktn+IIvOdw0bOJlpg5syO77n6EcpSl85yH/wOLUPT7ZjfJDT8aaRexNRsuu1VVf8fazod9COsPP0gImfC48aSvbWQ6jkhW4HplnzHYDh0+s9Ot/TIOXgqv7k1edCvhsevaOGAh5ziw+TSytftNQqrDXCUADbQ/Z93g9JdO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,89 +103,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
+Resizing mempool to a bigger size currently requires a new allocation and
+a data copy to a new larger elements array which doesn't go well with the
+idea of having a fast and deadlock free memory allocations during exreme
+load.
 
-> Hi Yeoreum,
-> 
-> On Fri, Oct 09, 2026 at 02:27:33AM +0100, Yeoreum Yun wrote:
-> > HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
-> > When this macro is used in some test, test result would be strange in
-> > the system where PAGE_SIZE is more then 4KB.
-> > 
-> > Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
-> > 
-> >   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
-> >     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
-> >     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
-> >     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
-> >     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
-> >     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
-> >     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
-> >     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
-> >     ...
-> >   ok 1 Completed
-> > 
-> > Remove the HPAGE_SIZE and HPAGE_SHIFT macro and introduce pmd_pshift()
-> > helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
-> > helper, pmd_psize().
-> > 
-> > Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
-> > which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
-> > and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
-> > PMD-sized units, the test may fail with the previous size of 100 MiB,
-> > which is not a multiple of the PMD size when the base page size is
-> > 16 KiB or 64 KiB.
-> > 
-> > After this patch, output of transhuge-stress:
-> > 
-> >   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
-> >     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
-> >     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
-> >     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
-> >     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
-> >     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
-> >     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
-> >     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
-> >     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
-> >     ...
-> >   ok 1 Completed
-> > 
-> > Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> > ---
-> >  tools/testing/selftests/mm/guard-regions.c    | 11 ++++++--
-> >  tools/testing/selftests/mm/ksm_tests.c        | 16 ++++++-----
-> >  tools/testing/selftests/mm/run_vmtests.sh     |  4 +--
-> >  tools/testing/selftests/mm/transhuge-stress.c | 25 +++++++++++-------
-> >  tools/testing/selftests/mm/vm_util.c          | 38 +++++++++++++++++++++++----
-> >  tools/testing/selftests/mm/vm_util.h          |  9 +++----
-> >  6 files changed, 72 insertions(+), 31 deletions(-)
-> > 
-> > diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
-> > index f7d53ea3c2527..3052823b0eff6 100644
-> > --- a/tools/testing/selftests/mm/guard-regions.c
-> > +++ b/tools/testing/selftests/mm/guard-regions.c
-> > @@ -2194,14 +2194,21 @@ TEST_F(guard_regions, pagemap_scan)
-> >  TEST_F(guard_regions, collapse)
-> >  {
-> >  	const unsigned long page_size = self->page_size;
-> > -	const unsigned long size = 2 * HPAGE_SIZE;
-> > -	const unsigned long num_pages = size / page_size;
-> > +	const uint64_t hpage_size = pmd_psize();
-> > +	unsigned long size;
-> > +	unsigned long num_pages;
-> 
-> These can be declared in the same line, or at least follow reverse xmas
-> tree convention.
-> The xmas tree comment applies to other declarations you are changing where
-> it makes sense without additional changes.
+This situation can't be completely avoided but its occurrence can be
+vastly minimized if we track the actual number of slots in the elements
+array. This patch introduces a new member of struct mempool which is set
+when the array is allocated in mempool_init_node() and only changes when
+mempool_resize() replaces the array with a bigger one.  Growing a pool to a
+size that still fits the existing array now just raises min_nr and refills
+the pool.
 
-Okay. I'll change it.
+A racing resize may enlarge the array while the lock is dropped for the
+allocation, so __elements_size is checked again once the lock is
+retaken, and the unneeded array is freed.  The array being replaced is
+now freed after dropping the lock.
 
-Thanks!
+Signed-off-by: Vitaly Vul <vitaly.vul@partner.samsung.com>
+---
+ include/linux/mempool.h |  1 +
+ mm/mempool.c            | 43 ++++++++++++++++++++++++++---------------
+ 2 files changed, 28 insertions(+), 16 deletions(-)
 
+Changelog:
+* v2: all the API / behavioral changes are dropped, only the
+  optimization remains
+
+diff --git a/include/linux/mempool.h b/include/linux/mempool.h
+index 6da502aef2f7..a8a411290bf0 100644
+--- a/include/linux/mempool.h
++++ b/include/linux/mempool.h
+@@ -20,6 +20,7 @@ typedef struct mempool {
+ 	int min_nr;		/* nr of elements at *elements */
+ 	int curr_nr;		/* Current nr of elements at *elements */
+ 	void **elements;
++	int __elements_size;	/* nr of slots in *elements, never shrinks */
+ 
+ 	void *pool_data;
+ 	mempool_alloc_t *alloc;
+diff --git a/mm/mempool.c b/mm/mempool.c
+index cb74e718b2c6..1911a696737b 100644
+--- a/mm/mempool.c
++++ b/mm/mempool.c
+@@ -261,6 +261,7 @@ int mempool_init_node(struct mempool *pool, int min_nr,
+ 					    gfp_mask, node_id);
+ 	if (!pool->elements)
+ 		return -ENOMEM;
++	pool->__elements_size = max(1, min_nr);
+ 
+ 	/*
+ 	 * First pre-allocate the guaranteed number of buffers,
+@@ -353,6 +354,8 @@ EXPORT_SYMBOL(mempool_create_node_noprof);
+  * This function shrinks/grows the pool. In the case of growing,
+  * it cannot be guaranteed that the pool will be grown to the new
+  * size immediately, but new mempool_free() calls will refill it.
++ * Shrinking keeps the elements array, so growing the pool again up to
++ * the largest size it ever had does not reallocate it.
+  * This function may sleep.
+  *
+  * Note, the caller must guarantee that no mempool_destroy is called
+@@ -364,7 +367,7 @@ EXPORT_SYMBOL(mempool_create_node_noprof);
+ int mempool_resize(struct mempool *pool, int new_min_nr)
+ {
+ 	void *element;
+-	void **new_elements;
++	void **new_elements = NULL;
+ 	unsigned long flags;
+ 
+ 	BUG_ON(new_min_nr <= 0);
+@@ -381,24 +384,31 @@ int mempool_resize(struct mempool *pool, int new_min_nr)
+ 		pool->min_nr = new_min_nr;
+ 		goto out_unlock;
+ 	}
+-	spin_unlock_irqrestore(&pool->lock, flags);
+-
+-	/* Grow the pool */
+-	new_elements = kmalloc_objs(*new_elements, new_min_nr);
+-	if (!new_elements)
+-		return -ENOMEM;
+ 
+-	spin_lock_irqsave(&pool->lock, flags);
+-	if (unlikely(new_min_nr <= pool->min_nr)) {
+-		/* Raced, other resize will do our work */
++	/*
++	 * Grow the pool.  The elements array is only reallocated if it is too
++	 * small, it may still be large from before an earlier shrink.
++	 */
++	if (new_min_nr > pool->__elements_size) {
+ 		spin_unlock_irqrestore(&pool->lock, flags);
+-		kfree(new_elements);
+-		goto out;
++		new_elements = kmalloc_objs(*new_elements, new_min_nr);
++		if (!new_elements)
++			return -ENOMEM;
++
++		spin_lock_irqsave(&pool->lock, flags);
++		if (unlikely(new_min_nr <= pool->min_nr)) {
++			/* Raced, other resize will do our work */
++			goto out_unlock;
++		}
++		/* A racing resize may have enlarged the array meanwhile */
++		if (new_min_nr > pool->__elements_size) {
++			memcpy(new_elements, pool->elements,
++			       pool->curr_nr * sizeof(*new_elements));
++			/* The old array is freed below, outside the lock */
++			swap(pool->elements, new_elements);
++			pool->__elements_size = new_min_nr;
++		}
+ 	}
+-	memcpy(new_elements, pool->elements,
+-			pool->curr_nr * sizeof(*new_elements));
+-	kfree(pool->elements);
+-	pool->elements = new_elements;
+ 	pool->min_nr = new_min_nr;
+ 
+ 	while (pool->curr_nr < pool->min_nr) {
+@@ -418,6 +428,7 @@ int mempool_resize(struct mempool *pool, int new_min_nr)
+ out_unlock:
+ 	spin_unlock_irqrestore(&pool->lock, flags);
+ out:
++	kfree(new_elements);
+ 	return 0;
+ }
+ EXPORT_SYMBOL(mempool_resize);
 -- 
-Sincerely,
-Yeoreum Yun
+2.39.5
+
 
