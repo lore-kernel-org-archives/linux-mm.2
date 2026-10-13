@@ -4,96 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 141A4CC6B08
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 10:07:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8B22CC6B08
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Oct 2026 10:13:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10DE06B008C; Tue, 13 Oct 2026 06:07:14 -0400 (EDT)
+	id C16446B0088; Tue, 13 Oct 2026 06:13:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BE506B0095; Tue, 13 Oct 2026 06:07:14 -0400 (EDT)
+	id BC6A66B008A; Tue, 13 Oct 2026 06:13:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1DA16B008C; Tue, 13 Oct 2026 06:07:13 -0400 (EDT)
+	id ADC2C6B0095; Tue, 13 Oct 2026 06:13:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D46EA6B008C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:07:13 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 863E46B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 06:13:51 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 56CF612041A
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:07:13 +0000 (UTC)
-X-FDA: 85317175146.23.187F978
-Received: from mta1.migadu.com (out-71.mta1.migadu.com [95.215.58.71])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1E9414000C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:07:10 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JbHWWL4b;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.71 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791886031;
-	b=7kCQPSzIph9odybB4IOVh1MVfXn7Ueb9fIi3ErsWOYuGp0e3O9MVXZ4QLbXF8OvnN4mG9l
-	WW0kq5IxEEbyFVlTlRGC+iQDggyIFz+mxX4o33xvNUdGzCCceoJ3UD6QOgrLysWTZtZ/9B
-	maViYkldQVZqJZOwAf7MvyhoFjS6h2M=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JbHWWL4b;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.71 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1D096A8945
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:13:51 +0000 (UTC)
+X-FDA: 85317191862.23.35680D6
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4CF971C0004
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 10:13:49 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="vPt/TJBM";
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791886031;
+	s=arc-20220608; t=1791886429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kbbcsq4gjfhjCcmUx6vDab+WkFJEw2PfLoeMu2drfZo=;
-	b=ZSokX6lGsCIpkiwnemi5YuMcnlWu/P/kInPtEkBDAMLEaESwICTKMEC2VEC+c86213wuSY
-	+4E0RnScdilycXh8sL7GDwg8KlucKoWFjNDUZw1/SmgToOqRARHOSjMsszMRyHENe8Ky1j
-	wl5kvN88BlOpLfJ/X98bKXUyc4CpREU=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=19GLy3aq4B6Z6bUMOpryhrMAzIgxJ66Kmju5Caaif9s=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791886028; v=1; x=1792490828;
- b=JbHWWL4bkVmD+IVquRhgSsCk5oHEZk3IOOiQitNJq6CEoEaI+nvbou+NxfP861+c3fismtS0
- /xOeg2yF3UMtLc8cpjaeneuguC/a9+zLpiL0A9sqWPHSaLQVbjWjU9V0R8htRbCR6w1MTMSiD57
- ptBQGIy4yeRW56QPplt+GpzU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9e66ce19328045b4;
-	Tue, 13 Oct 2026 10:07:08 +0000
-X-Mizu-Trace-ID: 9e66ce19328045b4
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH v2 0/3] memblock: Remove unused exact nid allocation API
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <179188501773.4183299.8247277870365097333.b4-ty@b4>
-Date: Tue, 13 Oct 2026 18:06:49 +0800
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Kaitao Cheng <kaitao.cheng@linux.dev>,
- Priyanshu Kumar <priyanshukumarpu@gmail.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
+	bh=Sg9zQ3+1NXirYIMG+ufMcNkrCdzyTyKdW+px0R/cpwI=;
+	b=ApKvI5pMDyZw0wGFLFNKUZeF10NQqvV1In5tpVZr1HepnArXjOR9+WqZruWKWJ6XAvYDs8
+	tTjnWF/if9AvJ//WU/KAxBCdYN7HzNJDa9vk0prkZl0ogeX7cIy9/JiuGSD8en6qeTuKXa
+	SZjHvwXyDVfgzYTDcNAuJRx+oEG9IIM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791886429;
+	b=2aCctEEUCC6kdAglx5gz0c1HAshHdtodPLDP4LX3aWkDmOLb4A7FQEZvIFfi6uNrrqzi8e
+	VFmFhMFPAx+f8JG4hbrFNuQQzSAf9uLmaKJacQnp6N+JgAbEOxAfGZGwojo7yiKQSWapHg
+	OMxcf91DwLB8nBuTG7TPTu/4qE36pAA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="vPt/TJBM";
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4A0C4169C;
+	Tue, 13 Oct 2026 03:13:45 -0700 (PDT)
+Received: from [10.164.19.62] (unknown [10.164.19.62])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE6393F7B4;
+	Tue, 13 Oct 2026 03:13:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791886428; bh=frG0so7TQeI6J8IN5+TVXwZehcv6LBDQHtosnjB44ng=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vPt/TJBM5bSkHglczz78hY7BXD6SECatQcMU54W0ej74QhW76cpEiJFbPOEw8K7JU
+	 WqyxnjPkS4K6NPE26B912TQjoDzXTTsDExrMgBstckn+8MUOIndkJq14UA0k5lNrJl
+	 ao3zLpmO6rM7bJBP3j5Np6l8ehJV6OeOT6g0fdYo=
+Message-ID: <6a10b61f-5c4f-4d04-9742-97a358147c39@arm.com>
+Date: Tue, 13 Oct 2026 15:43:41 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64/mm: restrict transparent contpte mappings to valid
+ PTEs
+To: Zhao Gongyi <zhaogongyi@bytedance.com>, catalin.marinas@arm.com,
+ will@kernel.org
+Cc: ryan.roberts@arm.com, baolin.wang@linux.alibaba.com,
+ lance.yang@linux.dev, mark.rutland@arm.com, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261013093600.54995-1-zhaogongyi@bytedance.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261013093600.54995-1-zhaogongyi@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <35057B7F-9E89-447B-AF4F-92A78B45F8E2@linux.dev>
-References: <20260919135327.74089-1-kaitao.cheng@linux.dev>
- <179188501773.4183299.8247277870365097333.b4-ty@b4>
-To: Mike Rapoport <rppt@kernel.org>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1E9414000C
 X-Rspam-User: 
-X-Stat-Signature: sngwyxep933fxnabd5wzufoz55uxyciy
-X-HE-Tag: 1791886030-715170
-X-HE-Meta: U2FsdGVkX19YUv93Uh0kQQNZks5ID0pDlrUc3SJJJwcCnA8/iJecp4Bzs+HNi4+OOlZg7ZC9k9QTHS1ePbWvaAfRkmDwyL0CJnj22eRwsvOzQwgcYg42fQTdjaT4sekvoe8DsnQNk4O6VOJmhGHG5MgHB14fPsiEojFx9Tt/5cZ4Nhhk/UJg7KTvstXsZWcFkAURNsUzLw2ulsdotsxiKiWkwvBB1kTdCD/0V0XyRZeStyWrn2+cY89UOI+PUiizYwnQdfEe9LGN34oZtvjFOlWQ+1BejBaPIivHySbeWpRrLrz9ePyNaZmU2OYCFbOBHtnTdAEfAOAhWrlv5M0RzLAH5QfDssEp8R4IP/OUNkwdR6mVd/5qBV0uXYU29maTDWAY06SEJoN5W7tsZYTf39Uj9Hgrk+wutFPPH/KSbhcLtVTyPOxYzli2MWnV6803fHcDX7qozy81JsFR5O+Dp6UVQvMgY+bbg4uSjAzFO01RKfAUqaewRyLzKZ3VvheKu5nWgDFGWJEZvh8Pdg8Ju6EBBIrnfVSFgElcPF8ChwNgumwApB0XUJlnoFwwYkbyi0Gx7Ef6sDf8Tt+SCLLkfn7gHLiw8sQOTHYMsSQYbE5pNVYuPncXHDs9m27w52g9cswyrjRcmp7406WPZagH9VI7MDfXuhbsQSVM6BkkJcyXP5YsMcPnAZpKgjhuoepMr3MyuzK32+QkFQ2DRceHyUVz8w5XaOQ39umttIeTh6TOymtKkrsAM1YmOO0ZnKVcxGTYqVzZdgGppSa5yrL724kkhd0wvN7dA1PjWOd4kvnbMb19OR/HCLiOP2bMQeKvx/aumy4Ht5PLfo1S4t388bgroIZhNU3qG09NwdPuBvrITDSo3LUz8anTZxwfoA2BvwBZbAAa5bGVRfQ96xCNj1u1mnhDQ2CXK9jOw4apRBuLJ16mNCR6N+khkHsrj8S9b2YZXLevsbbcX2UJRiF
- SJSLFwxk
- IP6aWjEwW/znJMDZ6zF/+pL4YRTUYhlmuSgPxxMdV9HNY2zBVp1nZ/akK9j3IHwQoWkH1YxQci0q+LyEfEcLNGzp6a58vuaqdBj9UZJnhSQZobti1HjQb15xr+smYRw4eV1OCFikavVE+J8tL8WOu/DWGc82XulH7WcJOYK+5G8rkKAsFTuhWx2lfu+cO3fJuaHV2bBulTTrnUK7hp3hny19bL4Sw20GowSYAIWs/OrRPAYHs58dACh0MfeOsmHxptLO0bFzYNXfo2bBm1AWOuOE31CEw8BTglJd8
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4CF971C0004
+X-Stat-Signature: r58cafwift7ytb3citr6kf7uuacq8fts
+X-HE-Tag: 1791886429-401883
+X-HE-Meta: U2FsdGVkX19r4zq8UEkp4h35RoOjXmxJ9SJ1vqzbowr71IB/SQChGMqM0U9Fnb7Bufmmjv50B81v1E61YkcnJTNdzUlYJnY74kXrzbWc8K1tPKEJ78UWP2MQPtMSlEeARUu/Pe7VJgdH8SjfZLXuDcGGvy0Dm4WGgD8G8OWCJWsimzG3wscjO85t9/ihugNztKubOGFxueRZV+jKFCy9WG5kzeKAsB+J4aizZzuOQJu7N3H6piysGSKWGiyDUyq97OeYwR+h+o02GnCNrwDaR2Mt17DGfXKQntX/jtRZt9u3FS3SsHgxts+MjJeWy46ejtZGemTV4GDOkpXk2/rvlkQyRFRqLkOv1VglkdVv48KNc3q+Pb65V+tsqhDUhY7+ylvd6ihMZe/Nc8/83SWyR9ueIsJ6hZoyM+AnIkYr+G2YXn/KrwQk4iFiizM7W73lnbI6Jlx7kJOKbyZREJ5NSbhJuX7AAIOMxh0Bhk8V8O8Xe3wgtfMvoqNtr56r5N+Ah0RDGAEFOa16JpsMnOflyTFv2gaXBsy7i7nHgUrbtrtmkQz/uoCJtqW52N3W26Fo/Amq9Ey3gUUrRtgzPGs4xNqSxv/78DJN3LbJYGCVxMXkesaSKjzFGcbCX41isz0iegVumrSv9BFwcr1S3TRsmwV1GQOyLHo6TedtOjIPoTx9fcQY5qUq+qEYfB3otuTYwAjD0FxIwN98sgZXHvfiMaROcUFnjjmMNvm6fBdUlhUYP/n4l84cMVR8ib5//mAUweV5ASlqh9R/HC3i9gGIGpntE0CSxtyCVAGXziCZub60hCUh0x8QsmW74h0EhNqDqgE6pswaW+Jk95jh3/ENOKPNoicctsVpf8nC6dzeHf/+Y41RXCm6muBQ0olS0ykUlmuDt2UT13VntCwVZLJ5l9dbu74KSYRimovVC0uklxT7b7Q2HD2phUEQUy4+Ca4wGpUfF5cAzWW7ZNJjrLs
+ zcWOC7Fn
+ EtCvXTOGmH5dqNIN4QtbhKlGihQvfWm/6ybnnHS5cFtKpsOTxjMu7TAxhMKOK/+DdAmggr8lHj+gZX0Dc7hPIwhOiv7vJIcYnawKXXsQPUBBbPk/hQtieQzZhBM9sX/7ZiqA7mAbWQ0Zq1j2WpyOTTiv7if2J9dV90hyjHWC4VFQe1amDfMPd8GdlS+F/gleRqbRaGL+2MDmF27dP82Ee4eUzS1bbggmCwBKi17vLeyez6CVA/7S112wOTFYOWM63+ORGZ8ozrHfJHBQec+oMGtbGLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,46 +98,125 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Oct 13, 2026, at 17:50, Mike Rapoport <rppt@kernel.org> wrote:
+On 13/10/26 3:06 pm, Zhao Gongyi wrote:
+> The transparent contpte layer treats PTE_CONT as software state: when a
+> PTE has PTE_CONT set, the contpte helpers may align the operation to a
+> CONT_PTE_SIZE block and operate on the whole block. That invariant only
+> makes sense for valid mappings. Explicit users such as hugetlb manage
+> their contiguous encodings separately.
 > 
-> On Sat, 19 Sep 2026 21:53:24 +0800, Kaitao Cheng wrote:
->> memblock: Remove unused exact nid allocation API
->> 
->> Commit ffe55393137c ("mm/sparse: remove sparse buffer pre-allocation
->> mechanism") removed the only memmap_alloc() caller that requested an
->> allocation from an exact NUMA node. All remaining callers allow fallback
->> to other nodes, leaving the exact_nid argument unused.
->> 
->> [...]
+> contpte_set_ptes() currently sets PTE_CONT from alignment alone. Batched
+> set_ptes() users can therefore install present-invalid PTEs with
+> PTE_CONT set, for example mprotect(PROT_NONE), NUMA hinting through
+> modify_prot_commit_ptes(), fork() copying a PROT_NONE large folio, or a
+> PMD split installing PAGE_NONE PTEs.
 > 
-> Applied to for-next branch of memblock.git tree, thanks!
+> This is not a hardware programming problem: invalid descriptors are not
+> translated, so the hardware ignores descriptor bits such as PTE_CONT. It
+> is a software-state problem. Some arm64 fast paths intentionally test
+> pte_cont() directly instead of pte_valid_cont(), for example commit
+> 9970a9a27ffc ("arm64: mm: implement the architecture-specific
+> test_and_clear_young_ptes()"). Fixing the producer side preserves these
+> fast paths and covers all consumers.
 > 
-> [1/3] mm: Remove unused exact_nid parameter from memmap_alloc()
->      commit: 063b5e8bbd216c27e885f45e29e23d053aa565fc
-> [2/3] memblock tests: Move exact nid tests to memblock_alloc_range_nid()
->      commit: fba3e86fb848f79c4573243affcd7d79d378958d
-> [3/3] memblock: Remove unused memblock_alloc_exact_nid_raw()
->      commit: ea27be9f7ce90a05e779d20b60969ce2a9834f77
+> In the observed failure, mprotect(PROT_NONE) installed a full
+> CONT_PTE_SIZE range of present-invalid PTEs with PTE_CONT set.
+> MADV_GUARD_INSTALL then zapped one PTE. The nr == 1 clear_full_ptes()
+> path only unfolds pte_valid_cont() entries, so the neighbouring
+> present-invalid entries kept PTE_CONT while the target entry became a
+> guard marker.
 > 
-> tree: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
-> branch: for-next
+> clear_refs_pte_range() then reached the marker through:
+> 
+>   ptep_test_and_clear_young()
+>   test_and_clear_young_ptes()
+>   contpte_test_and_clear_young_ptes()
+>   contpte_align_addr_ptep()
+>   __ptep_test_and_clear_young()
+> 
+> The marker changed from old_pte=0x00000000000047c0 to
+> new_pte=0x00000000000043c0 by clearing PTE_AF. For swap PTEs, bit 10 is
+> part of the swap type field, bits 6-10: 0x47c0 is SWP_PTE_MARKER with
+> offset 4, while 0x43c0 has type 15 and is decoded as an ordinary swap
+> entry. Zap later warned in swap_put_entries_direct() with a bad swap
+> entry.
+> 
+> This is triggerable by a user process against its own address space. On
+> systems running with panic_on_warn, the warning becomes a denial of
+> service.
+> 
+> Fix the root cause by making contpte_set_ptes() use the transparent
+> contpte encoding only for valid descriptors. After this change, the
+> transparent contpte layer preserves the invariant that pte_cont(pte)
+> implies pte_valid(pte), so fast consumers can keep using PTE_CONT as
+> sufficient evidence of a transparent contpte block.
+> 
+> Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zhao Gongyi <zhaogongyi@bytedance.com>
+> ---
+> Validation on an arm64 QEMU/KVM KASAN setup with CONFIG_ARM64_4K_PAGES=y
+> and CONFIG_ARM64_CONTPTE=y, using an out-of-tree guard-region reproducer:
+> 
+>   populate a CONT_PTE_SIZE anonymous THP range
+>   mprotect(PROT_NONE) on the range
+>   MADV_GUARD_INSTALL on one PTE in that range
+>   write "1" to /proc/self/clear_refs
+>   restore access and remove the guard marker
 
-Hi Mike,
+Thanks, could you please give the code of the reproducer. That will
+save us some time.
 
-Just a heads-up, the tree has moved to:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/mm/memblock
-
-Might want to update it next time.
-
-Cheers,
-Muchun
 
 > 
-> --
-> Sincerely yours,
-> Mike.
+>   Unfixed kernel: failed in the first iteration, with 65 bad swap
+>                   messages and a WARNING in swap_put_entries_direct()
+>   This patch:     completed 100 iterations without warnings
 > 
+> Additional producer-side instrumentation confirmed the same invalid
+> batch state outside the mprotect reproducer:
 > 
+>   Unfixed fork():     copy_page_range() wrote out_cont=1
+>   Unfixed PMD split: split_huge_pmd_locked() wrote out_cont=1
+>   This patch:        both paths wrote out_cont=0
+> 
+>  arch/arm64/include/asm/pgtable.h | 5 ++++-
+>  arch/arm64/mm/contpte.c          | 7 +++++++
+>  2 files changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 6000905a2..d6246042b 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -1650,7 +1650,10 @@ extern void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned long ad
+>  /*
+>   * The contpte APIs are used to transparently manage the contiguous bit in ptes
+>   * where it is possible and makes sense to do so. The PTE_CONT bit is considered
+> - * a private implementation detail of the public ptep API (see below).
+> + * a private implementation detail of the public ptep API (see below). The
+> + * transparent contpte layer maintains the invariant that pte_cont(pte) implies
+> + * pte_valid(pte); explicit contiguous-encoding users such as hugetlb manage
+> + * their entries separately.
+>   */
+>  extern void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
+>  				pte_t *ptep, pte_t pte);
+> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+> index 0acab179f..851fa2e44 100644
+> --- a/arch/arm64/mm/contpte.c
+> +++ b/arch/arm64/mm/contpte.c
+> @@ -463,6 +463,13 @@ void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+>  	if (!mm_is_user(mm))
+>  		return __set_ptes(mm, addr, ptep, pte, nr);
+>  
+> +	/*
+> +	 * Keep the producer-side invariant documented in pgtable.h true even
+> +	 * if a direct caller passes an invalid descriptor with PTE_CONT set.
+> +	 */
+> +	if (!pte_valid(pte))
+> +		return __set_ptes(mm, addr, ptep, pte_mknoncont(pte), nr);
+> +
+>  	end = addr + (nr << PAGE_SHIFT);
+>  	pfn = pte_pfn(pte);
+>  	prot = pte_pgprot(pte);
 
 
