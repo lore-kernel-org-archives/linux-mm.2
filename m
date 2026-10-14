@@ -4,98 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EC42CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 06:42:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C4A2CC6B19
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 06:46:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E417E6B008C; Wed, 14 Oct 2026 02:42:37 -0400 (EDT)
+	id 98F226B0095; Wed, 14 Oct 2026 02:46:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF29A6B0092; Wed, 14 Oct 2026 02:42:37 -0400 (EDT)
+	id 966686B0096; Wed, 14 Oct 2026 02:46:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB97F6B0095; Wed, 14 Oct 2026 02:42:37 -0400 (EDT)
+	id 8A2336B0098; Wed, 14 Oct 2026 02:46:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E8FE6B008C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 02:42:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 045D7A6A09
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:42:36 +0000 (UTC)
-X-FDA: 85320288354.23.CD131BB
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6BB2740005
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:42:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OikpuoYg;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791960155;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=Iqkl7+mdETcDekNy8MPDpoS4avTzxShOADMW8q/jzUE=;
-	b=50cNX7UB6Zdth4mxUt/V3edNtDAIvaQ7XV/pMndxX/AdfhppVsbv0hPaq2BCEg/LC/KTek
-	0XuijFKyNE6/uJSgm4JUm5nGsaY8kP700mqe2q0ovFLw4mgGBMm23lG1X/NLFZzsKUoRPC
-	xwNk5l95khSipu3pEEtt8Sf8zYZGbTk=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OikpuoYg;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6368B6B0095
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 02:46:38 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D573C12040D
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:46:37 +0000 (UTC)
+X-FDA: 85320298434.04.785E842
+Received: from mta1.migadu.com (out-83.mta1.migadu.com [95.215.58.83])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9AF45180004
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:46:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XduXr+NW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.83 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791960155;
-	b=ja8lzpWau9nJjnM83vQad3/V8LCKCRpzqKSrM1yayZDeB+D8Wgb+2xoQzG7scAoBRzu75q
-	G/Ba+ezXauJvXLswDtgqfnaEdpDReSvFpqn3C/rAaZPVO3h1T4Ohc5kqU1k5KzTY4IlskS
-	ndO45JhNMqfd4XUnNYCNwLK0fJJM894=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791960154; x=1823496154;
-  h=date:from:to:cc:subject:message-id;
-  bh=ZRZd86mHacRp20fFhPVwjb/0qtXpGh+rKVDO89RpS78=;
-  b=OikpuoYgzwYiH00qDP3vY1C77Faphp39FuI4fbu8a5AF3oOG9GtDBcJ+
-   PCnks2g+xzQR2vV2en7gnN5mVbtrfWUK/r6tKg3GD08N1jcDhkLM93iPg
-   lGDxSlpjLCjEaaRTVpOv1RHIq8ExmSmvjPKi5MvNZYat5DW+/52GnyjA1
-   fp3cZKJLR+iacyn/yTBy96TwdRmwjgrfAorPoY26N04N+EKB96Sd3hW2p
-   U5dHzLXEPGh9os+IHB61Y7v9ftI77SDUTxLt8ehVsTFLDBbTs1cSvceSf
-   sbOyoKMaZJYOT9eDRrxCklTFiWF0+3aOaJoEZkuW2ZxJloy6RZ0Va0yfU
-   A==;
-X-CSE-ConnectionGUID: 5NtJVytXSG6rlHi/lg5n9w==
-X-CSE-MsgGUID: sQFaC18zQ6m8JkBGGOXaoA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="794273"
-X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
-   d="scan'208";a="794273"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 23:42:33 -0700
-X-CSE-ConnectionGUID: BDcNKyVoR9yUfdACxEfAkw==
-X-CSE-MsgGUID: TrFrtYm+T7OOK14m0fzi4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
-   d="scan'208";a="1290938"
-Received: from igk-lkp-server01.igk.intel.com (HELO d0de6c2a75a7) ([10.211.93.152])
-  by orviesa003.jf.intel.com with ESMTP; 13 Oct 2026 23:42:31 -0700
-Received: from kbuild by d0de6c2a75a7 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xGsh3-00000000Asx-28DO;
-	Wed, 14 Oct 2026 06:42:29 +0000
-Date: Wed, 14 Oct 2026 08:41:46 +0200
-From: kernel test robot <lkp@intel.com>
-To: "S. Biplab Raut" <Biplab.Raut@amd.com>
-Cc: oe-kbuild-all@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master 16148/16498] ld: warning: orphan section
- `.altinstructions' from `arch/x86/boot/compressed/misc.o' being placed in
- section `.altinstructions'
-Message-ID: <202610140857.6jRIqXf1-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: 6BB2740005
+	t=1791960396;
+	b=xCF52Ui5NTcPVL1SHKJqyHHUKVb2s20C+B4687jkJ1gNkouEcQ5Ky9NuxDAzYtqbXDtQUk
+	FNJrOsGfMKsp/UU3PZ11Ihf0xRRYMHPWAx4y7fNnkjGcoouZmyRqQOm9tPx03fPiWSyMAn
+	DEFYajvG748XFvyXxQbzHFnYBZmwbIQ=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XduXr+NW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.83 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791960396;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fyOVQO2Ag1zGISI6pO5VoA/zNNqmIYt5vkvpyI+5aQ4=;
+	b=ygkqJFsdSBiFFqc59wwUru0bNfIqpY1KoxdIkVrBhtSXVMvc7nmJyWf7HOmt8xgTu858ab
+	nCXi0/q9XjMnXgv+r5OHiGWDEjNP5A38eW3faC7MH3ThaofoP8UugerT5vc9kNs5uNmd86
+	Mw6u/dLmD/deVMwmvqBZj9XKPRWDyoU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=JLmTAoue8gGf1ERWgAb5UXzBAVBda1/ywkl4q8ms6rw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791960394; v=1; x=1792565194;
+ b=XduXr+NWEQc2k1ced2e4wi+9s8WN76WAicldStKItAcufoJI3wVXZKFuaTRVUBF7ND96HqvN
+ R0eN5dIVH8BZYV8hJprCPN82Jcgo77XC6FmBjysbkspL0JlH5jDAJN1pNq1vsLzkIQt/NFOchYo
+ W3JiTblzWUaZR9iCpLyqRV+0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id b9d4fb5be1186799;
+	Wed, 14 Oct 2026 06:46:34 +0000
+X-Mizu-Trace-ID: b9d4fb5be1186799
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <f111bec5-6148-4649-8805-79a250f6e736@linux.dev>
+Date: Wed, 14 Oct 2026 14:46:21 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64/mm: restrict transparent contpte mappings to valid
+ PTEs
+Content-Language: en-US
+To: Zhao Gongyi <zhaogongyi@bytedance.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, ryan.roberts@arm.com,
+ dev.jain@arm.com, baolin.wang@linux.alibaba.com, mark.rutland@arm.com,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261013093600.54995-1-zhaogongyi@bytedance.com>
+ <20261013153953.77575-1-lance.yang@linux.dev>
+ <516828fb-558d-4a20-9532-51f50d6ba042@bytedance.com>
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <516828fb-558d-4a20-9532-51f50d6ba042@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: wkwjs1apz9j7d3qwsjwcy96qsfzntefg
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: qtp7nixd3tsjjdxmfa53rwwzfec7aqgb
-X-HE-Tag: 1791960154-954194
-X-HE-Meta: U2FsdGVkX18Pm0owI6IzIbhWuXzZPXr44ikiS/G+Qshij0262cRUojlUp3/HSdCNA6mlTCfwGJscMHpIJ0MCfCfsrLIUKwBePMEIcPGtNiexzS7V17qFsfT2nz2iHB132IOYuzxvQF/uAhe3xFGtpRHM6sfiKx53ddsRCJ8aMDDOnAWMRAUA2BiLw0xGgbA/sx/hqplzWWDGbQFp5Otlu9oCJhJI1q/CIn7MLRbhJnOeCgSJcFshO3etvh0s0EPry45rYmoDDIy4rTRsxTFC+R9yxXjP+Xxkrea1h1TEA6kBAyJ2927hcoNb/fGtQQm8J62bpkXBxPMMl86V1rB0VITn62M7vcT8IwyyKFUynE+zs3lUpNSZ7Or9zMggQlzSeMbxU7THl00FBLePy3Sr0t61H4Rtw1wHE+j05c5ZXcwXxcIADICivT2/o4EuhSX40ZERnwAI8j7CyXBZqL0x9YQ+CtVFmvRegwAxJyay/G6YwNvCc+ZpfUx0+iIZzEIGQWQUW2wFJ1dYqQ2sqpQlSd/wKG9dfmYz5eEZ59v/LiL/AiAfXdOI5MGO1fpa4sD1Lit4DVaZqhdD974fJdgI8mvVWRGqOmHZ2eIIxWWRqdAprZE6O2M6v9WSVHarpOKdn9yq3jVYS0paht+xQ5hnPXiobV3G8RFPSkgcP+joj2JCECYt+rcAlzk/HZE+QFTyg9MIJOHy2TKg0spgDmKcqLj5/vz4fZePl2GmHHv1FaKU5A4CiXaJsv4/qmFUmd5bhpWR0KEkI12FxhCVTIpNunk4yiwtGIDSQBTBwEXUE5CZMzWfrq48DqTgvN515+Dx/3/VqsGVaYAn0pI4azWuV++uzFDgANUu3fGq91T1rW3Rkh4nMx3lshULIcxdCzJlJ7aioXBedeKmq8zqibHuxSjwJ2LhOsmUPgnC3PUQmgYyZ2VYF+hfuIf9TkkWfxz8/a75W7oI6q9bXoyFUzK
- 34Q42ZyE
- lA5h+94sowbRAHg81Sa1x0VCYq/gn+1abDoLfq6dF0hO67A13e6PhQHRx3BZ5+odjzi5uAFMbSYmufjr2GECwO1gd9SDsNK/SuS75DFbCR1AXkKL4Coz+tKBivQagFsuGLvQElEz5sqNTkKaWx++6O8z1s8Iqk6NLarmFBarU25YwYrpiciD0ZtPMAmzzxL3EChAU4g3+P/DbNSyQ8Hy3faSC150XME20BnOI3+ANAU4jRD9Ii+CudxNMegAO0MfnKfVNWu/2/82wTO2oMvvUWB9mbldYwUxW2J38+gBWmCi/MRmgw1OuyF83uO3yA6eqETd9pKa1QxUcCxc+DP6bsGHZWiPCYjqsddB77nmQIhEPoIw=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9AF45180004
+X-HE-Tag: 1791960395-101050
+X-HE-Meta: U2FsdGVkX1/QjtsL1hsQ/oZf4Noq4DZXJsbI9IjKkQQ9FpbPnBo748V9lI0H96xR+GcVIAGJmwdlVDvcAam/AbTGnwuG+Nw6XkNYIoZCshdXDG0yle3rylfnOLGN/fssQn9DR2gM/kyhGdDHX4EmgY2TPW9GBdPcjCYaotX9rVl5U8KZVAlyIj6RnZmUB2JRY/WT4fQ5Y25ombDmAYronOVXj6exwxzGMSk8W/edLwhEFc7R1OwPYTuUjfmxMS7e7cE6SC6T3vCOlxLWc9PhAlp4TU3HEVan1zR58HKDDIZlCweroN3C2tw9HOQlO25kEKmQoeORBlBnFUno4Hd/am/ZP7iyN/Ri/wF6frNqACCZePUrht6HK9jvmnhrloNOnN1E7ouvN0vRnuZYPx0ii9xZcJyP6q6UVeBpERRn3NvN3CkmE5wpbhilEcE+43+V1JWnZMxSc1qHSdFmzhsIpFLNjjJ0nejLI86hwa2BJWQb/2gIKIut3flzTOCsXp5P6Ze6KplQu7YV1TT9wkNhh3yCyXNQj0jpuidJCx53511R3k3Ac7CpJy5pb1WqJTalIisHNVmQ4Q+HTz9DjQ18niSh0/TZnflgQSXy2OptVBxeLxYMQo3xZx2diGeQx48DB/BCznuqyg2ug+DcrxNTeR5WKK9DQMW5xbZ5KhzrBKHJ9kDd97BGTdxSuYcfMqcP8D+0xsR7IsZlBRlhVSftY3uiDwzjbAV/lDPLaNEMlplIJh9+SOzgcVjTb7OqxQswVQ7m7uE7cr2ZfC3uXwzMRVcjbeyCxEIFSK21ODq+7h3vx/Wzdgqc1JtO1l5TXGWHv2lQQzLkv67qSkP8Y2/qZu1Zw85pCnk/gkVNmQF1trxQ3XPMotRSa30e6t+tXe+DJFCjvowLrTAb7dtaLKf7sx19mzqH42LlbjsjzWPARPHideLG3BhhDoYkuLOhfr5IPbnP4AXxocAJdE3Z7jl
+ V82uOizr
+ hXdNARF+jTFXbJX49V7oZcin0gCGahsrQZfuGzROfmDx7fXBhvDfS10aUFLD6NR90MMfaWgIfOyEMBbJgSLu85e4BojgA1LBt4JuTAKvPMMuc33G319n67DW7lGC2lb1OzmkKKb5b1SbgkSAh6sJCAuuUQs1a6kLbHnM7njhW2yqBosZ5vs2RN0YZmiuP+NoIJGd0PCDUZPBksZPEgCAmbXkIsHNMoi6rWNptMMdmsdxZdaZ6kpXz70mys8wA9OW3KF5gSMpR0zbP7397G1NWGb/hvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,24 +98,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   1fffefb00cc0b0da1f2ae24e3d33364530ea6515
-commit: b575885f96602d24a127dd325dda1739ef6edd46 [16148/16498] lib/lz4: add software-pipelined prefetch to decode fast loop
-config: i386-randconfig-2001-20261014 (https://download.01.org/0day-ci/archive/20261014/202610140857.6jRIqXf1-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.4.0-5) 12.4.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261014/202610140857.6jRIqXf1-lkp@intel.com/reproduce)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610140857.6jRIqXf1-lkp@intel.com/
 
-All warnings (new ones prefixed by >>):
+On 2026/10/14 14:31, Zhao Gongyi wrote:
+> On 10/13/26 11:39 PM, Lance Yang wrote:
+>>>
+>>> +	/*
+>>> +	 * Keep the producer-side invariant documented in pgtable.h true even
+>>> +	 * if a direct caller passes an invalid descriptor with PTE_CONT set.
+>>> +	 */
+>>> +	if (!pte_valid(pte))
+>>> +		return __set_ptes(mm, addr, ptep, pte_mknoncont(pte), nr);
+>>
+>> set_ptes() is the only in-tree caller, and it already clears PTE_CONT
+>> before we get here ... no? Why not fold !pte_valid(pte) into the
+>> !mm_is_user(mm) check below and return __set_ptes() directly?
+>>
+>> 	if (!mm_is_user(mm) || !pte_valid(pte))
+>> 		return __set_ptes(mm, addr, ptep, pte, nr);
+>>
+>> If a direct caller does pass a !pte_valid PTE with PTE_CONT set, I'd
+>> rather add a VM_WARN_ON() to catch that. Silently clearing the bit would
+>> hide a caller bug :)
+>>
+> 
+> Hi Lance,
+> 
+> Thanks for taking a look.
 
->> ld: warning: orphan section `.altinstructions' from `arch/x86/boot/compressed/misc.o' being placed in section `.altinstructions'
->> ld: warning: orphan section `.altinstr_replacement' from `arch/x86/boot/compressed/misc.o' being placed in section `.altinstr_replacement'
+Cheers!
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> Yes, you are right. The public set_ptes() wrapper already strips PTE_CONT
+> before calling contpte_set_ptes(), so the pte_mknoncont() in the invalid
+> path is unnecessary for the current in-tree path.
+> 
+> The issue I was trying to avoid is not that the incoming pte already has
+> PTE_CONT set, but that contpte_set_ptes() rebuilds the pte from pfn/prot
+> and then adds PTE_CONT again based on alignment. For an invalid descriptor,
+> that transparent contiguous encoding should be skipped entirely.
+> 
+> So your suggested shape makes sense to me. I will change this to return
+> through __set_ptes() directly for invalid descriptors, and add a warning
+> for any unexpected direct caller that passes an invalid PTE with PTE_CONT
+> set, e.g.:
+> 
+> 	if (!mm_is_user(mm) || !pte_valid(pte)) {
+> 		VM_WARN_ON_ONCE(!pte_valid(pte) && pte_cont(pte));
+> 		return __set_ptes(mm, addr, ptep, pte, nr);
+> 	}
+> 
+> That keeps the fix focused on not creating new invalid contpte entries,
+> while still catching a bad direct caller instead of silently sanitizing it.
+
+Thanks for the quick fix! Nothing jumped out at me :)
+
+With that:
+
+Tested-by: Lance Yang <lance.yang@linux.dev>
 
