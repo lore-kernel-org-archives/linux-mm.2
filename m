@@ -4,147 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAA45CC6B27
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 08:51:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D77AECC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 08:54:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9415A6B0095; Wed, 14 Oct 2026 04:51:41 -0400 (EDT)
+	id 9BC6C6B0098; Wed, 14 Oct 2026 04:54:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F2B86B0096; Wed, 14 Oct 2026 04:51:41 -0400 (EDT)
+	id 96E5A6B0099; Wed, 14 Oct 2026 04:54:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E1496B0098; Wed, 14 Oct 2026 04:51:41 -0400 (EDT)
+	id 85C1C6B009B; Wed, 14 Oct 2026 04:54:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4725D6B0095
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:51:41 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B40E9120470
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:51:40 +0000 (UTC)
-X-FDA: 85320613560.20.55DCC79
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8939540006
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:51:38 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=H7Q8uwOd;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="u XnuJTd";
-	spf=pass (imf07.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.159 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C93A6B0098
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:54:41 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6F83FC047B
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:54:41 +0000 (UTC)
+X-FDA: 85320621162.06.C0BC890
+Received: from mta1.migadu.com (out-235.mta1.migadu.com [95.215.58.235])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D3081180003
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:54:37 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Zbapy0FX;
+	spf=pass (imf24.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.235 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791967898;
-	b=HSQwVMyapYaaitT3uZGFFtdunxi9sar98eYyWpYhf1SV9Z3E9axRhckMUuw8bCFwGK/IdF
-	0o19fqdCwbyZgXHLLbsirpT9Ivth3ARlhw0FgqOvsLlvOAeSJ7rWXuEsOXytZuyM8IxYxl
-	vWqem2WGfytL5OraSQ8pZ9GLiW2kVi4=
+	t=1791968078;
+	b=d3XNCUEzmUL7/Vf6AKzAZ7miH8jGAmwh5zpY2WVA4MhCcUYxoeFFBVjcVqpfhTT0nLeLpA
+	bIlC8clHDZFwf7tPCRLEns68GrbCUXD67x9Xjdo8dQAap4tDGMDjlRm9qR7+EkttpHP6xe
+	RSc0JKWCRVcp4kSCdf7ig/OuGtJKkAU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=H7Q8uwOd;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="u XnuJTd";
-	spf=pass (imf07.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.159 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Zbapy0FX;
+	spf=pass (imf24.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.235 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791967898;
+	s=arc-20220608; t=1791968078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s+LFPCsnRJvUDK1wOaRGQjPBjNNnRquMTT9sppD5pbc=;
-	b=F4qbozqf65HQZZ+bJRL2EOqScCQoaSIKspdgarWMO1J0od4EgYmfEWkdhlwzYktei39Adv
-	Wg5TpEx1V4WmY84PJNfR9WWb1G3P5lwEdZx9kzo5KBtPUB072Ec6HXqbw+MnJOKTwIW/Qq
-	Hq79BDl7jcgizkPEqnJsfN3zSLuiG+k=
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id A2913140008D
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:51:37 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Wed, 14 Oct 2026 04:51:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1791967893;
-	 x=1792054293; bh=s+LFPCsnRJvUDK1wOaRGQjPBjNNnRquMTT9sppD5pbc=; b=
-	H7Q8uwOdfZ5NC7b7Lsvv01U48s0aTFncOG9VIwFbOOe5N47jIwLMWUYikw7JG0Ri
-	jrcbi941SLOrQHyadwOo9J7mwHjXWjCgP6vsitQLvr5fs26jfIhlsdCTH711ASBx
-	23JYMgTbTlqSTRZI3pWC50O4XBIv45l9M+qBXXbb4jJh/nzSY8kc5XjMLkNSQN9j
-	xbc8OdK308x1/ZYi4EUma+kejvWOPE+7OSj2utwDhspTTto8/6nw7uftpLndrqlD
-	6y30BvDBAHBT1ihJ4+1ljsIYqTxWgKUK3woEc4r3ZSnmqGhK6zHvn8MxmUT0JuQk
-	1qPkDHu8wa2A5OtULYto0Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1791967893; x=
-	1792054293; bh=s+LFPCsnRJvUDK1wOaRGQjPBjNNnRquMTT9sppD5pbc=; b=u
-	XnuJTd4UKSjZwjkMpcFrsaHYu29Z0NIP/lmiSEym7AjjBr2of1MybzODN5jJQySl
-	Cj3ndxvY/MpQSneJPdqbgYGLIsNTxTVU6Lt+TrpnFCAa1QglxhctOhnuEwGHRE2n
-	MRivEGXn1M1exXKX/IG2qdNhDxm2MDUERFxgXCHVwjB/O+fttZgVOuO7smVImGg+
-	QYQja4c48Bh683vML4JGtxsNy5NoVW204pM8Dn5K9JzdHvIkigl6R4qeRPWO4M4t
-	6JRj7dWOHyIFaN0luQ9vE9Uh84q5Z63QnsDlEQvAZSxYziGpBr8Yscsf7Zs+XFbP
-	ywdTrJjW48Fs/X5+jVQJw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1791967893; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:A/BIh5YYPswXZjGaYAp15mReR+Nt12cLxgW4rQACarfyZA6
-	a7U05lp8RBMgdnUI1UTP1J1TVf3y1+hUYEoJX70RlZoPO0IIOwpHrMVUQjIg+deG
-	dalTuNsU5FHwKRZQQOVZOyWox3EiuooKdrwsH8V6VPtWWQ7r8N8+Lx1SkR2s7Fwv
-	PfmSyCZsSWgLhksCyoFmZ1YiTkeV+vNBT+/ZsI1DTWUOFYmSEV0vSJwnbnjmNCj5
-	vZxIaZ5epakcXqSElU/8/D/SR5MZPVVtVUdyYEdscKfRWmeH0Rdf6c+v6Smaa1VD
-	dYSTGaEjS2MNMTLuYTX5HaIHM37Mkg42VlZtrpA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:v6jLbFLw97rgSTMbKiy0NdGsK2y8cjSwS8WxYzPzZMk=:M0aObq6bJgje0UT2uUYtzH9eDNb/TIATR/h5EGpBzx4=;
-X-ME-Sender: <xms:j0LParrUFvTBU9K5I63Y-2el0ciOVViHHyk-Kq_Ou2Yh2hcmMvoRbA>
-    <xme:j0LPageD3rN_ND-tLI8Og7jolQ8CvuytjspA1jFXB1IzvLr0ZLjWp7ZChrJ4OGzri
-    l_C-NceuDSiwG9FaRPinYr0IFnRKdutPSE9NowvdAkbJUcqI5SZj_u5uA>
-X-ME-Proxy-Cause: dmFkZTGfLAdL0vxkYY9Ttp8RamOvH+ay9++SlVeOLJK84cLH+pRPHm/ENjo/I7LTE8S1CS
-    Pt3dYazVhuhFGQGkwCmAnYYyN2w7mdq8y3lgN54SKGHyb3aF+4577m/Tl0GQ5FAxX0GVGz
-    4Z7n1u2AxTAhSmN/KjfRXoFBFt5cDn8bvvDfOyC93p7I5Znsg2Oxh7HIF437xkWy/OP9h8
-    KXiWYFfh9U1fjnFV56J+aeDhe4Qvn/DtUgAeGCpOfq1JTPSP2Mn6y/OdTpM6Q0BzDsSzpq
-    qmhdDTB0vEA3lzY+dRnoDMgr1oZ16v9QXLvTx8RAPx8+WdFl38hiqqKh1QxfSt3nM7VzUT
-    wW4qwdfnUOGClYvS5UpYaaqIQuMcjfjNP8qxSn90BOqzbmjxxGa3nBrtBpLJKok/SPnuMs
-    WGS6raSYS7nXd3S3c5sBTKaB79nmVExOo0fxhAbLNJPhgWs+OUi+SHZ49g975Vksf2RFt1
-    B4Eey1G0WHJEYzpX9tDIK6CMe2oX7qxqVlU9Gf0ncOv/9Rz9Z5QdxNMTboTLIv6W1cMt/B
-    GjYIxcTXmyxAmiarQXOZKDIvr3ar5oAmnV5r0BxhIbKg/UjeF/NxfFaIHAqne8Jobu7rqd
-    vjo4SHyOQni/1IUBfAq6ZWzUue0th1TqM20pp0ltIbnkGn0UTeRCI4YfQ7lg
-X-ME-Proxy: <xmx:kULPatM4VJ1Zwhq655jW2EEW3xBlfzHEbFjBAkoxfR_iU95aYvE_9A>
-    <xmx:kULPar2WUvss1AKYri0cURhIrYpDA_3JivpX165pibkxZYFreSNE2A>
-    <xmx:kULPapQXn-HDuXcQZzYvyCI9G7Z6yfo3mcHSgeKc45ZdgeqgBxpWyQ>
-    <xmx:kULPaulsjdHffN5dkWaQGazC0dX4uVEwOwhf_UwhFQfMHFP5CrYCaA>
-    <xmx:lULPat6tNBS87e05J6rt2D6fCks1s1cE8x5Ay9Y52WC2KUjFub3YZUjp>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 2DBBE32A008E; Wed, 14 Oct 2026 04:51:27 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=e6tlT+CdkybsEahHSkyHFizOmV7XFLVnNHALBZftthc=;
+	b=qZeeDNvB4tNYtvqNihi4Zb9xWw+28uqS4dYSoNyJDDj9Qql5/e9zBn9yjI3j9sJOozAk2G
+	Vzs1+KhgGImRHDpXgG8zJTbQfpKDAM4p/1smizfKPMPWDpMKeE0dAcNpwo9gxNI0EkxNnP
+	bRHdh05LtcawYdbeVxK1vSKevsqn1dI=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=loRjuuwluUPBJRl/tOlkBshetBDq31ySMcEEeTZP1FA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791968073; v=1; x=1792572873;
+ b=Zbapy0FXo63YHbXZxPXfgu7DtrC4zljrj2a+j7cGiY0Q9FVDLJSaYfl3u8yNCTTl7GOMNAXv
+ ud1BWk5ThN8GagiEjr1mv13BtobKPeHirxi5T2ZE/diuHcJ+v47r62hdh8mojno5iBJNZwFVghf
+ SR1MDmB/GzGtntz52BYR9juc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7b09edecf1889c5b;
+	Wed, 14 Oct 2026 08:54:33 +0000
+X-Mizu-Trace-ID: 7b09edecf1889c5b
+X-Migadu-Flow: FLOW_OUT
+From: Ye Liu <ye.liu@linux.dev>
+Date: Wed, 14 Oct 2026 16:54:12 +0800
+Subject: [PATCH] proc: Move OOM-related procfs code to fs/proc/oom.c
 MIME-Version: 1.0
-X-ThreadId: AAmuA3xfg9N3
-Date: Wed, 14 Oct 2026 10:50:41 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Andrew Morton" <akpm@linux-foundation.org>,
- "Biplab Raut" <Biplab.Raut@amd.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- "Gao Xiang" <hsiangkao@linux.alibaba.com>, "Nick Terrell" <terrelln@fb.com>,
- yann.collet.73@gmail.com, guoxuenan@huawei.com,
- "Nathan Chancellor" <nathan@kernel.org>,
- "Nicolas Schier" <n.schier@fritz.com>, "Kees Cook" <kees@kernel.org>
-Message-Id: <e2afcf01-c77a-4da6-8f56-237d97abdaf6@app.fastmail.com>
-In-Reply-To: <20261012203257.614d88c12146544aa6487b4d@linux-foundation.org>
-References: <20261013032010.2453893-1-Biplab.Raut@amd.com>
- <20261012203257.614d88c12146544aa6487b4d@linux-foundation.org>
-Subject: Re: [PATCH] lib/lz4: add software-pipelined prefetch to decode fast loop
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8939540006
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261014-oom_procfs-v1-1-f2d75e73571e@linux.dev>
+X-B4-Tracking: v=1; b=H4sIADNDz2oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDA0MT3fz83PiCovzktGLdNHOTREsjozRz4zRDJaCGgqLUtMwKsGHRsRB
+ +cWlSVmpyCcgEpdpaAJ+s1EtuAAAA
+X-Change-ID: 20261014-oom_procfs-f74a922f73f1
+To: Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, Ye Liu <liuye@kylinos.cn>
+X-Mailer: b4 0.17-dev-39d60
+X-Stat-Signature: jatzji79wsxwatb49ujfyz74weexjzhb
+X-Rspamd-Queue-Id: D3081180003
 X-Rspam-User: 
-X-Stat-Signature: tmur6rwjdmreitzqastd49x88csbm1mw
-X-HE-Tag: 1791967898-648279
-X-HE-Meta: U2FsdGVkX1+iCoZOImQZg8aR0YQJepLZEKZLl1OAD4AHruiTJdhBWOE5DPR53LJrOHewPo3I7PPeNr6iVsDdE39wn2FDvzIB3kG6ln7DDcqcRDTIbtBCluvT9YHMH+husWJVMOqA+cYXLvQ2yog3THWzrnzRC6yw7+JhdQqJpOsWm/kmBr8KZeAMVUZXD1zYxOphxNuHEh0qFWnOzFJJVsse050DhJMkiCNja5EtFWB5NGa4LNjvsdc5Emy93dcH+YCsxqTtco5GnM/TzT1r5IRKUL+thnkfuV/EpPvBfVy8hyK8sElphjTF+l6bNiZb/OzyrRFi/nkkSgoREgilEtDjOzW1v+ayZAyDsyJtPJZsO13NBlKCgG1ivopOzi5XqW1+5IoWQjAUHVPTR62IxYrUu7k4Eee5G/nDbcnwF9I2OKnhsE4P61DwWLNOtFCQamYLPawCpZCjXaFCUaMX92NgnTVF4UhtLU/oTjcC3qEPbjA1jqBIsMhinBLPRA3MsC/rGb7dVlhfvfifx/UXvxDUPVapcgLyDpTGBniJF+sV0Ck5wzm0wUn1pgJc3am5U+aK4kmkIroFX9QESukf3ENbB147u0CEND7rCbAWtUReIhNdbUTtjby5h79gepR7de9YikDtyDpJiPBOXJJ5HgfWEwuOyoe7tgLeYD1IFyUECQnjR7KbwQKw0kBHyQjTSN99cwea9S/rOrmbW84CCLwoqWWOhQbwL17WKIuM/kqKHTtdKGbUe5ZyHn0K9CHV2+XC2OXSEiga09LDcQAc7lr9CTEG+cJAdgTzxbpJdZ2zyJZOzWC1OcJMn2x8yDtcw47gumV93I/w/T0jvAYAvswBqqJzD3l7ZdFCBQpbjcrIjpBQAHmcDVaNJ0LWn55Qi1sBqZ0PI0SWAS+l80CqDBG2KYGuI7HCTEBmBT4ZaPu+P7rO4QEuC0excn6D9GvdLnqaGnsArNrhPZZZSpJ
- RWXShC04
- DEhEo5JBExMzSYwFTY8N+UlFNYfJbO75+ZRl21RDk6yFZj6UghPLXNi7pJEdHgzh+c5IhcDQ13+Cqph70ZXXnFGkp9mov1s8bbRqeE7fiZ78XZu9+TODHil7HM9J0A55vjeYVQlFbCD2yXboPExDQFHEix0aYMSadN6RmnF4yF2LKrwqKQWMbD2BV59Ldl8B0KGUASKYl/xDC8llbqgmkjgAy+45wxCEwnXWpNsE3rhj8SgPQBT2l8mvgBXVXXvmuQWWLPZ8Y8D1Pr78j6YgPiqJZCI/TTi/IGVGIBAzNRSlA17v/EWEruuvKC8kbuDAUCwyH0N5PisKStUDaVeTimXMJc8mebKI2IDmr5acC3F59X4B+lga77ezLy4MCtJuZozNBRDq91Yu1ebosIvSjv5zfPDdRS+ToAQh0m+0inz0Eagh8w+PxI3yoQxl0WhS1dMZLMWxXixrTywL13C8NDVQ3ziJhMKNQyNE/XMdT+gv0E2gPCOXlPs+5W+n3ElbtaA3A
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791968077-271992
+X-HE-Meta: U2FsdGVkX1+NHC/WQ6bdhbj0iS6+4IbHfB8JA/5ZP//1Lx6bvJZS3rTQBcrdnYrwEpxH+eVbIKYrPnHJiBdLlquyD1pJPamPDFLgFoDRX8mqym8Txc78S+TRRitjGUj86kLsMToTXvMNXJT4AAvqj3LvMH+qkcII8ADtlhNZJLRNSrpZiGGowZ0d9HO+kJG+dfB4Bax34K72XzfNxJDS3ioHPINEelXM8fV11WLNAx0WVaKd3eWS/SFSSnBinMUHCbXJXiSsth9oOEO8tlsMwarnShoD7Dueq4tEwWCtBgqkLmPUmZcQSYDZJdJV6JL0RPEO21LydTOjHOLhEd6Z9BtK1pbC9tdx+AkWX/WC8BOtb1HHt8mwkC1P5iDRQRuNvDJHJP0kXXPjgFMmDT5mLu75bDvdvGZYRBfuACongYwf13B+VfXhf/rKc+SM+8jSpBGkVW4KX21IxeYN9h5qDEg97C6ay1XzmhZGN/InY3PHGeqyAMi5c2K+hzbAfyTdUtRNtdo24Fl9yuYrOi10/HLcaEq50vydZrBPN5rLrwENJjFpqyefxm/RKb6Lz2GQ0dyyoXg5BgROgcTXO3Mp2dGl00ILavFecPM9/o5/I5U3alcfQPsuyxleqYuL8h9b0hLe/c3TrnFV4v+I3t9+okcdt8gPd8sVfnRZbGy6kyd6DYjsXaDybxRNvrE4hblOV6HbTEj2xnHzjbyEgCLjuXs5cCU7FnZ3ew1UskYP9lKYtMkZ+cG4JEfyltYTg8g2Y2eiElCtk6O6ebSrKwi/ZSxnv4kY1IzkWAW6Loo9w07ycsEzSpBvr7W3EUTDahvoJkJ5D7KcNnJalqVVj7C6U+BPzhIFXrJOmLz3d4YNrD2jXvG9U7wM2urb8ogxOi+G88edhoAeoU5ddvpZwP53hucgffk6ov8/0e/2CNLM0ddBNiUBFLlNskjVYxM2fdko7+Q1A0PcpWU5f46SYuA
+ 1bxKmIPR
+ pO8xgNUOOhXFkpxqNfrpLQRfYdZeuDBuLMA7bhUD35yQZgQcDb0AAFT2pz7q1mVeA7wjjYwixYCkrhDNxL/3UttqDfpvP4GT1yajy+UKvPxPZfXLxiTvpJh0E+Ztf3Psr4cubduqA5pdWDvekhBO3Y3bjLgZnuB2LU6Vh8KZPle1GuL9ZmAOivQJ92tFsfCfyM4ppWqtgg+NdgHJYu0nNGt8A7qgkXuvUHpo8PH8tL6238US6FVYT2Jmo3x+75irHj2MdPegyRPotka67s7LDegNqXCyli2zIo74Fg98udn0u88jHQlfgmwHDeXQHP+6KDjzF/4YRwCM4alUkr1DiRKR0hA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,42 +93,596 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 13, 2026, at 05:32, Andrew Morton wrote:
-> On Tue, 13 Oct 2026 03:20:10 +0000 Biplab Raut <Biplab.Raut@amd.com> w=
-rote:
->>=20
->>   Kernel LZ4 median scan:  1.0994 s
->>   Patched  median scan:    1.0472 s
->>   Median paired speedup:   5.09%  (range 4.19%=E2=80=936.99%)
->>   Patched was faster in all 15 rounds.
->
-> Well that's nice.  I can't actually recall a case where prefetch made a
-> measurable difference, although I'm sure there are such cases.
->
-> We used to use prefetches often (10+ years ago) but it seems to fallen
-> out of favor.  This code is a prime candidate.  mm/ barely uses
-> prefetch.  Maybe it should,
+From: Ye Liu <liuye@kylinos.cn>
 
-Unfortunately the patch causes a build regression on x86 when using lz4
-compressed bzImage files:
-x86_64-linux-ld: error: unplaced orphan section `.altinstructions' from =
-`arch/x86/boot/compressed/misc.o'
-x86_64-linux-ld: error: unplaced orphan section `.altinstr_replacement' =
-from `arch/x86/boot/compressed/misc.o'
+fs/proc/base.c is a large file (~3700 lines) handling all per-process
+procfs entries. The OOM score, oom_adj, and oom_score_adj interface
+code is self-contained and has no dependencies on other parts of
+base.c, so move it into a dedicated fs/proc/oom.c following the same
+pattern as fs/proc/fd.c and fs/proc/task_mmu.c.
 
-I see that the zero-day bot has also reported this[1].
+This makes both files easier to read and keeps OOM-related procfs
+entries together in one place.
 
-The problem is that the prefetch() helpers use SMP alternatives
-that are not available in the decompressor. This has been a problem
-in other patches before [2].
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+---
+ MAINTAINERS        |   1 +
+ fs/proc/Makefile   |   1 +
+ fs/proc/base.c     | 232 -------------------------------------------------
+ fs/proc/internal.h |   8 ++
+ fs/proc/oom.c      | 249 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 259 insertions(+), 232 deletions(-)
 
-Not sure if there is an easy way to stop the decompressor from using
-the alternatives here, for 7.4 I assume the only option is to drop
-the patch and try again once that is resolved.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1da3623e77ce..4b1c13a65136 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17676,6 +17676,7 @@ R:	David Rientjes <rientjes@google.com>
+ R:	Shakeel Butt <shakeel.butt@linux.dev>
+ L:	linux-mm@kvack.org
+ S:	Maintained
++F:	fs/proc/oom.c
+ F:	include/linux/oom.h
+ F:	include/trace/events/oom.h
+ F:	include/uapi/linux/oom.h
+diff --git a/fs/proc/Makefile b/fs/proc/Makefile
+index 27e2b26b2d42..68e65866b5df 100644
+--- a/fs/proc/Makefile
++++ b/fs/proc/Makefile
+@@ -21,6 +21,7 @@ proc-y += interrupts.o
+ endif
+ proc-y	+= loadavg.o
+ proc-y	+= meminfo.o
++proc-y	+= oom.o
+ proc-y	+= stat.o
+ proc-y	+= uptime.o
+ proc-y	+= util.o
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 8c04fcd436d2..26ccc05a50ff 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -80,7 +80,6 @@
+ #include <linux/audit.h>
+ #include <linux/poll.h>
+ #include <linux/nsproxy.h>
+-#include <linux/oom.h>
+ #include <linux/elf.h>
+ #include <linux/pid_namespace.h>
+ #include <linux/user_namespace.h>
+@@ -99,7 +98,6 @@
+ #include <linux/cn_proc.h>
+ #include <linux/ksm.h>
+ #include <uapi/linux/lsm.h>
+-#include <trace/events/oom.h>
+ #include "internal.h"
+ #include "fd.h"
+ 
+@@ -580,28 +578,6 @@ static const struct file_operations proc_lstats_operations = {
+ 
+ #endif
+ 
+-static int proc_oom_score(struct seq_file *m, struct pid_namespace *ns,
+-			  struct pid *pid, struct task_struct *task)
+-{
+-	unsigned long totalpages = totalram_pages() + total_swap_pages;
+-	unsigned long points = 0;
+-	long badness;
+-
+-	badness = oom_badness(task, totalpages);
+-	/*
+-	 * Special case OOM_SCORE_ADJ_MIN for all others scale the
+-	 * badness value into [0, 2000] range which we have been
+-	 * exporting for a long time so userspace might depend on it.
+-	 */
+-	if (badness != LONG_MIN)
+-		points = (OOM_SCORE_ADJ_MAX +
+-			  badness * OOM_SCORE_ADJ_MAX / (long)totalpages) * 2 / 3;
+-
+-	seq_printf(m, "%lu\n", points);
+-
+-	return 0;
+-}
+-
+ struct limit_names {
+ 	const char *name;
+ 	const char *unit;
+@@ -1115,214 +1091,6 @@ static const struct file_operations proc_auxv_operations = {
+ 	.release	= mem_release,
+ };
+ 
+-static ssize_t oom_adj_read(struct file *file, char __user *buf, size_t count,
+-			    loff_t *ppos)
+-{
+-	struct task_struct *task = get_proc_task(file_inode(file));
+-	char buffer[PROC_NUMBUF];
+-	int oom_adj = OOM_ADJUST_MIN;
+-	size_t len;
+-
+-	if (!task)
+-		return -ESRCH;
+-	if (task->signal->oom_score_adj == OOM_SCORE_ADJ_MAX)
+-		oom_adj = OOM_ADJUST_MAX;
+-	else
+-		oom_adj = (task->signal->oom_score_adj * -OOM_DISABLE) /
+-			  OOM_SCORE_ADJ_MAX;
+-	put_task_struct(task);
+-	if (oom_adj > OOM_ADJUST_MAX)
+-		oom_adj = OOM_ADJUST_MAX;
+-	len = snprintf(buffer, sizeof(buffer), "%d\n", oom_adj);
+-	return simple_read_from_buffer(buf, count, ppos, buffer, len);
+-}
+-
+-static int __set_oom_adj(struct file *file, int oom_adj, bool legacy)
+-{
+-	struct mm_struct *mm = NULL;
+-	struct task_struct *task;
+-	int err = 0;
+-
+-	task = get_proc_task(file_inode(file));
+-	if (!task)
+-		return -ESRCH;
+-
+-	mutex_lock(&oom_adj_mutex);
+-	if (legacy) {
+-		if (oom_adj < task->signal->oom_score_adj &&
+-				!capable(CAP_SYS_RESOURCE)) {
+-			err = -EACCES;
+-			goto err_unlock;
+-		}
+-		/*
+-		 * /proc/pid/oom_adj is provided for legacy purposes, ask users to use
+-		 * /proc/pid/oom_score_adj instead.
+-		 */
+-		pr_warn_once("%s (%d): /proc/%d/oom_adj is deprecated, please use /proc/%d/oom_score_adj instead.\n",
+-			  current->comm, task_pid_nr(current), task_pid_nr(task),
+-			  task_pid_nr(task));
+-	} else {
+-		if ((short)oom_adj < task->signal->oom_score_adj_min &&
+-				!capable(CAP_SYS_RESOURCE)) {
+-			err = -EACCES;
+-			goto err_unlock;
+-		}
+-	}
+-
+-	/*
+-	 * Make sure we will check other processes sharing the mm if this is
+-	 * not vfrok which wants its own oom_score_adj.
+-	 * pin the mm so it doesn't go away and get reused after task_unlock
+-	 */
+-	if (!task->vfork_done) {
+-		struct task_struct *p = find_lock_task_mm(task);
+-
+-		if (p) {
+-			if (mm_flags_test(MMF_MULTIPROCESS, p->mm)) {
+-				mm = p->mm;
+-				mmgrab(mm);
+-			}
+-			task_unlock(p);
+-		}
+-	}
+-
+-	task->signal->oom_score_adj = oom_adj;
+-	if (!legacy && has_capability_noaudit(current, CAP_SYS_RESOURCE))
+-		task->signal->oom_score_adj_min = (short)oom_adj;
+-	trace_oom_score_adj_update(task);
+-
+-	if (mm) {
+-		struct task_struct *p;
+-
+-		rcu_read_lock();
+-		for_each_process(p) {
+-			if (same_thread_group(task, p))
+-				continue;
+-
+-			/* do not touch kernel threads or the global init */
+-			if (p->flags & PF_KTHREAD || is_global_init(p))
+-				continue;
+-
+-			task_lock(p);
+-			if (!p->vfork_done && process_shares_mm(p, mm)) {
+-				p->signal->oom_score_adj = oom_adj;
+-				if (!legacy && has_capability_noaudit(current, CAP_SYS_RESOURCE))
+-					p->signal->oom_score_adj_min = (short)oom_adj;
+-			}
+-			task_unlock(p);
+-		}
+-		rcu_read_unlock();
+-		mmdrop(mm);
+-	}
+-err_unlock:
+-	mutex_unlock(&oom_adj_mutex);
+-	put_task_struct(task);
+-	return err;
+-}
+-
+-/*
+- * /proc/pid/oom_adj exists solely for backwards compatibility with previous
+- * kernels.  The effective policy is defined by oom_score_adj, which has a
+- * different scale: oom_adj grew exponentially and oom_score_adj grows linearly.
+- * Values written to oom_adj are simply mapped linearly to oom_score_adj.
+- * Processes that become oom disabled via oom_adj will still be oom disabled
+- * with this implementation.
+- *
+- * oom_adj cannot be removed since existing userspace binaries use it.
+- */
+-static ssize_t oom_adj_write(struct file *file, const char __user *buf,
+-			     size_t count, loff_t *ppos)
+-{
+-	char buffer[PROC_NUMBUF] = {};
+-	int oom_adj;
+-	int err;
+-
+-	if (count > sizeof(buffer) - 1)
+-		count = sizeof(buffer) - 1;
+-	if (copy_from_user(buffer, buf, count)) {
+-		err = -EFAULT;
+-		goto out;
+-	}
+-
+-	err = kstrtoint(strstrip(buffer), 0, &oom_adj);
+-	if (err)
+-		goto out;
+-	if ((oom_adj < OOM_ADJUST_MIN || oom_adj > OOM_ADJUST_MAX) &&
+-	     oom_adj != OOM_DISABLE) {
+-		err = -EINVAL;
+-		goto out;
+-	}
+-
+-	/*
+-	 * Scale /proc/pid/oom_score_adj appropriately ensuring that a maximum
+-	 * value is always attainable.
+-	 */
+-	if (oom_adj == OOM_ADJUST_MAX)
+-		oom_adj = OOM_SCORE_ADJ_MAX;
+-	else
+-		oom_adj = (oom_adj * OOM_SCORE_ADJ_MAX) / -OOM_DISABLE;
+-
+-	err = __set_oom_adj(file, oom_adj, true);
+-out:
+-	return err < 0 ? err : count;
+-}
+-
+-static const struct file_operations proc_oom_adj_operations = {
+-	.read		= oom_adj_read,
+-	.write		= oom_adj_write,
+-	.llseek		= generic_file_llseek,
+-};
+-
+-static ssize_t oom_score_adj_read(struct file *file, char __user *buf,
+-					size_t count, loff_t *ppos)
+-{
+-	struct task_struct *task = get_proc_task(file_inode(file));
+-	char buffer[PROC_NUMBUF];
+-	short oom_score_adj = OOM_SCORE_ADJ_MIN;
+-	size_t len;
+-
+-	if (!task)
+-		return -ESRCH;
+-	oom_score_adj = task->signal->oom_score_adj;
+-	put_task_struct(task);
+-	len = snprintf(buffer, sizeof(buffer), "%hd\n", oom_score_adj);
+-	return simple_read_from_buffer(buf, count, ppos, buffer, len);
+-}
+-
+-static ssize_t oom_score_adj_write(struct file *file, const char __user *buf,
+-					size_t count, loff_t *ppos)
+-{
+-	char buffer[PROC_NUMBUF] = {};
+-	int oom_score_adj;
+-	int err;
+-
+-	if (count > sizeof(buffer) - 1)
+-		count = sizeof(buffer) - 1;
+-	if (copy_from_user(buffer, buf, count)) {
+-		err = -EFAULT;
+-		goto out;
+-	}
+-
+-	err = kstrtoint(strstrip(buffer), 0, &oom_score_adj);
+-	if (err)
+-		goto out;
+-	if (oom_score_adj < OOM_SCORE_ADJ_MIN ||
+-			oom_score_adj > OOM_SCORE_ADJ_MAX) {
+-		err = -EINVAL;
+-		goto out;
+-	}
+-
+-	err = __set_oom_adj(file, oom_score_adj, false);
+-out:
+-	return err < 0 ? err : count;
+-}
+-
+-static const struct file_operations proc_oom_score_adj_operations = {
+-	.read		= oom_score_adj_read,
+-	.write		= oom_score_adj_write,
+-	.llseek		= default_llseek,
+-};
+-
+ #ifdef CONFIG_AUDIT
+ #define TMPBUFLEN 11
+ static ssize_t proc_loginuid_read(struct file * file, char __user * buf,
+diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+index df873df9afc5..b72a2bd604ed 100644
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -238,6 +238,14 @@ static inline int folio_average_page_mapcount(struct folio *folio)
+ 	/* ... but return at least 1. */
+ 	return max_t(int, avg + entire_mapcount, 1);
+ }
++/*
++ * oom.c
++ */
++int proc_oom_score(struct seq_file *m, struct pid_namespace *ns,
++		   struct pid *pid, struct task_struct *task);
++extern const struct file_operations proc_oom_adj_operations;
++extern const struct file_operations proc_oom_score_adj_operations;
++
+ /*
+  * array.c
+  */
+diff --git a/fs/proc/oom.c b/fs/proc/oom.c
+new file mode 100644
+index 000000000000..5f22ec4a4a6e
+--- /dev/null
++++ b/fs/proc/oom.c
+@@ -0,0 +1,249 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * OOM-related procfs entries
++ *
++ * This file handles the OOM score, oom_adj, and oom_score_adj interfaces
++ * in /proc/<pid>/.
++ */
++
++#include <linux/proc_fs.h>
++#include <linux/oom.h>
++#include <linux/seq_file.h>
++#include <linux/capability.h>
++#include <linux/mm.h>
++#include <linux/swap.h>
++#include <linux/sched/signal.h>
++#include <linux/pid_namespace.h>
++#include <trace/events/oom.h>
++
++#include "internal.h"
++
++int proc_oom_score(struct seq_file *m, struct pid_namespace *ns,
++		   struct pid *pid, struct task_struct *task)
++{
++	unsigned long totalpages = totalram_pages() + total_swap_pages;
++	unsigned long points = 0;
++	long badness;
++
++	badness = oom_badness(task, totalpages);
++	/*
++	 * Special case OOM_SCORE_ADJ_MIN for all others scale the
++	 * badness value into [0, 2000] range which we have been
++	 * exporting for a long time so userspace might depend on it.
++	 */
++	if (badness != LONG_MIN)
++		points = (OOM_SCORE_ADJ_MAX +
++			  badness * OOM_SCORE_ADJ_MAX / (long)totalpages) * 2 / 3;
++
++	seq_printf(m, "%lu\n", points);
++
++	return 0;
++}
++
++static ssize_t oom_adj_read(struct file *file, char __user *buf, size_t count,
++			    loff_t *ppos)
++{
++	struct task_struct *task = get_proc_task(file_inode(file));
++	char buffer[PROC_NUMBUF];
++	int oom_adj = OOM_ADJUST_MIN;
++	size_t len;
++
++	if (!task)
++		return -ESRCH;
++	if (task->signal->oom_score_adj == OOM_SCORE_ADJ_MAX)
++		oom_adj = OOM_ADJUST_MAX;
++	else
++		oom_adj = (task->signal->oom_score_adj * -OOM_DISABLE) /
++			  OOM_SCORE_ADJ_MAX;
++	put_task_struct(task);
++	if (oom_adj > OOM_ADJUST_MAX)
++		oom_adj = OOM_ADJUST_MAX;
++	len = snprintf(buffer, sizeof(buffer), "%d\n", oom_adj);
++	return simple_read_from_buffer(buf, count, ppos, buffer, len);
++}
++
++static int __set_oom_adj(struct file *file, int oom_adj, bool legacy)
++{
++	struct mm_struct *mm = NULL;
++	struct task_struct *task;
++	int err = 0;
++
++	task = get_proc_task(file_inode(file));
++	if (!task)
++		return -ESRCH;
++
++	mutex_lock(&oom_adj_mutex);
++	if (legacy) {
++		if (oom_adj < task->signal->oom_score_adj &&
++				!capable(CAP_SYS_RESOURCE)) {
++			err = -EACCES;
++			goto err_unlock;
++		}
++		/*
++		 * /proc/pid/oom_adj is provided for legacy purposes, ask users to use
++		 * /proc/pid/oom_score_adj instead.
++		 */
++		pr_warn_once("%s (%d): /proc/%d/oom_adj is deprecated, please use /proc/%d/oom_score_adj instead.\n",
++			  current->comm, task_pid_nr(current), task_pid_nr(task),
++			  task_pid_nr(task));
++	} else {
++		if ((short)oom_adj < task->signal->oom_score_adj_min &&
++				!capable(CAP_SYS_RESOURCE)) {
++			err = -EACCES;
++			goto err_unlock;
++		}
++	}
++
++	/*
++	 * Make sure we will check other processes sharing the mm if this is
++	 * not vfrok which wants its own oom_score_adj.
++	 * pin the mm so it doesn't go away and get reused after task_unlock
++	 */
++	if (!task->vfork_done) {
++		struct task_struct *p = find_lock_task_mm(task);
++
++		if (p) {
++			if (mm_flags_test(MMF_MULTIPROCESS, p->mm)) {
++				mm = p->mm;
++				mmgrab(mm);
++			}
++			task_unlock(p);
++		}
++	}
++
++	task->signal->oom_score_adj = oom_adj;
++	if (!legacy && has_capability_noaudit(current, CAP_SYS_RESOURCE))
++		task->signal->oom_score_adj_min = (short)oom_adj;
++	trace_oom_score_adj_update(task);
++
++	if (mm) {
++		struct task_struct *p;
++
++		rcu_read_lock();
++		for_each_process(p) {
++			if (same_thread_group(task, p))
++				continue;
++
++			/* do not touch kernel threads or the global init */
++			if (p->flags & PF_KTHREAD || is_global_init(p))
++				continue;
++
++			task_lock(p);
++			if (!p->vfork_done && process_shares_mm(p, mm)) {
++				p->signal->oom_score_adj = oom_adj;
++				if (!legacy && has_capability_noaudit(current, CAP_SYS_RESOURCE))
++					p->signal->oom_score_adj_min = (short)oom_adj;
++			}
++			task_unlock(p);
++		}
++		rcu_read_unlock();
++		mmdrop(mm);
++	}
++err_unlock:
++	mutex_unlock(&oom_adj_mutex);
++	put_task_struct(task);
++	return err;
++}
++
++/*
++ * /proc/pid/oom_adj exists solely for backwards compatibility with previous
++ * kernels.  The effective policy is defined by oom_score_adj, which has a
++ * different scale: oom_adj grew exponentially and oom_score_adj grows linearly.
++ * Values written to oom_adj are simply mapped linearly to oom_score_adj.
++ * Processes that become oom disabled via oom_adj will still be oom disabled
++ * with this implementation.
++ *
++ * oom_adj cannot be removed since existing userspace binaries use it.
++ */
++static ssize_t oom_adj_write(struct file *file, const char __user *buf,
++			     size_t count, loff_t *ppos)
++{
++	char buffer[PROC_NUMBUF] = {};
++	int oom_adj;
++	int err;
++
++	if (count > sizeof(buffer) - 1)
++		count = sizeof(buffer) - 1;
++	if (copy_from_user(buffer, buf, count)) {
++		err = -EFAULT;
++		goto out;
++	}
++
++	err = kstrtoint(strstrip(buffer), 0, &oom_adj);
++	if (err)
++		goto out;
++	if ((oom_adj < OOM_ADJUST_MIN || oom_adj > OOM_ADJUST_MAX) &&
++	     oom_adj != OOM_DISABLE) {
++		err = -EINVAL;
++		goto out;
++	}
++
++	/*
++	 * Scale /proc/pid/oom_score_adj appropriately ensuring that a maximum
++	 * value is always attainable.
++	 */
++	if (oom_adj == OOM_ADJUST_MAX)
++		oom_adj = OOM_SCORE_ADJ_MAX;
++	else
++		oom_adj = (oom_adj * OOM_SCORE_ADJ_MAX) / -OOM_DISABLE;
++
++	err = __set_oom_adj(file, oom_adj, true);
++out:
++	return err < 0 ? err : count;
++}
++
++const struct file_operations proc_oom_adj_operations = {
++	.read		= oom_adj_read,
++	.write		= oom_adj_write,
++	.llseek		= generic_file_llseek,
++};
++
++static ssize_t oom_score_adj_read(struct file *file, char __user *buf,
++					size_t count, loff_t *ppos)
++{
++	struct task_struct *task = get_proc_task(file_inode(file));
++	char buffer[PROC_NUMBUF];
++	short oom_score_adj = OOM_SCORE_ADJ_MIN;
++	size_t len;
++
++	if (!task)
++		return -ESRCH;
++	oom_score_adj = task->signal->oom_score_adj;
++	put_task_struct(task);
++	len = snprintf(buffer, sizeof(buffer), "%hd\n", oom_score_adj);
++	return simple_read_from_buffer(buf, count, ppos, buffer, len);
++}
++
++static ssize_t oom_score_adj_write(struct file *file, const char __user *buf,
++					size_t count, loff_t *ppos)
++{
++	char buffer[PROC_NUMBUF] = {};
++	int oom_score_adj;
++	int err;
++
++	if (count > sizeof(buffer) - 1)
++		count = sizeof(buffer) - 1;
++	if (copy_from_user(buffer, buf, count)) {
++		err = -EFAULT;
++		goto out;
++	}
++
++	err = kstrtoint(strstrip(buffer), 0, &oom_score_adj);
++	if (err)
++		goto out;
++	if (oom_score_adj < OOM_SCORE_ADJ_MIN ||
++			oom_score_adj > OOM_SCORE_ADJ_MAX) {
++		err = -EINVAL;
++		goto out;
++	}
++
++	err = __set_oom_adj(file, oom_score_adj, false);
++out:
++	return err < 0 ? err : count;
++}
++
++const struct file_operations proc_oom_score_adj_operations = {
++	.read		= oom_score_adj_read,
++	.write		= oom_score_adj_write,
++	.llseek		= default_llseek,
++};
 
-       Arnd=20
+---
+base-commit: 1fffefb00cc0b0da1f2ae24e3d33364530ea6515
+base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+change-id: 20261014-oom_procfs-f74a922f73f1
 
-[1] https://lore.kernel.org/all/202610140857.6jRIqXf1-lkp@intel.com/
-[2] https://lore.kernel.org/all/CAHk-=3Dwhrc-ruKs4Kt90EGzKd+pYhZFKs6bgBV=
-CV=3D55BK+p1nzg@mail.gmail.com/
+Best regards,
+--  
+Ye Liu <ye.liu@linux.dev>
+
 
