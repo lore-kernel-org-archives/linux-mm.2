@@ -4,168 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74F6EC3DA7A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 18:46:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C609ACC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 18:47:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6380F6B0096; Wed, 14 Oct 2026 14:46:36 -0400 (EDT)
+	id 8A9DE6B0098; Wed, 14 Oct 2026 14:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E9806B0098; Wed, 14 Oct 2026 14:46:36 -0400 (EDT)
+	id 85B176B0099; Wed, 14 Oct 2026 14:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B0706B0099; Wed, 14 Oct 2026 14:46:36 -0400 (EDT)
+	id 772396B009B; Wed, 14 Oct 2026 14:47:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2124B6B0096
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:46:36 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B88C61C410A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:46:35 +0000 (UTC)
-X-FDA: 85322112750.27.AB43577
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0C16B14000E
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:46:33 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Fc1TvbQ/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E77776B0098
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:47:11 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 68FAB1607AD
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:47:11 +0000 (UTC)
+X-FDA: 85322114262.29.D671AD5
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 45FBF1A0007
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:47:09 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=marliere.net header.s=dkim header.b=FPIOsqjv;
+	spf=pass (imf19.hostedemail.com: domain of rbmarliere@gmail.com designates 209.85.161.50 as permitted sender) smtp.mailfrom=rbmarliere@gmail.com;
+	dmarc=pass (policy=none) header.from=marliere.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792003594;
+	s=arc-20220608; t=1792003629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ESvCGRLFTew8m7s5oFwM1Eu4zFgjax4mVQujOpbznXo=;
-	b=kxeyxPCJtu1bJVEJTebij3b8450cM6+j5aAxbNuiFJWN2pi8+xbNDGaPUEqHZlVnBE7zp+
-	ig6W/9obzpPkJ7Kq0i6T+d41V/TPuuCn036Zz+8xdtFPKEERk+uxPV3ptEaXvEh7w6ypgn
-	o+OOMi/eCMQvV/aviT3UhlTnr8eXMH8=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Fc1TvbQ/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ud4UQpU7GXwKVtHEzNn/aXQljAT04341tSRIlnW7qwM=;
+	b=BtVtYYzv1cnO1MubtyzzuanMOKoIsWpQG1ydzvMVOeaVzHlG7ey33X4kdwagVEq9Ohr+cV
+	fIssNwMLg8KjhFM0fS+JXzje/ZJt6f3qOdH1Wx/jkDhwmBSS8AQw9haD+fcxy3LAfTvCbA
+	HuQHe8hwCYxcGOzKRkODlN83onGy/TA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792003594;
-	b=EO1HBwHCem70wOu/oEcqiJ15MPgCHkIMb63MxiEKsAcx8kGjc9VFMJ5auKVjnUCZDomgC3
-	lBoCrRWlU9pJquyBcAOcsM7R4j2clIic/+9qILTu49TSYU3saQQl9YNo1Q+vF1ohffzdw2
-	L3dUFrfSjIyLNCAnKy09p11sf/WKJ9M=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 82EE16022E;
-	Wed, 14 Oct 2026 18:46:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343281F000C4;
-	Wed, 14 Oct 2026 18:46:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792003593;
-	bh=ESvCGRLFTew8m7s5oFwM1Eu4zFgjax4mVQujOpbznXo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Fc1TvbQ/IoFOWkS4r9GpWZ2uI/Fmq5vGoocDI2qZsvsZOVwo8dmzPHQ9AwpQI65xc
-	 0hyNO9BHNGvfFFpSBYm6orjA9dwMSWtC7ZyO/ycpjw7otwP49fLanDBobCsJVEWMCr
-	 V+BY4QuqvYvzydWxhGX/5ZlKzq0/6KndsbuCTpxkdJvRzjdoh7Ew7OQv7F9ut0mcUC
-	 BcxLEXSN2DMEcYDt/rzRwnx5zVlXYIKJpbj97Vsl7f/CqzKtaKk7pBlz2sPbF5x/wk
-	 GGohatcwUAzO3eKrwCn1+89fS13vuVrYOYYmgOM6V864X5fudq0RjKnemq2o8lEQHh
-	 WPSB8j57GDIzQ==
-Message-ID: <f4a5223e-7cf9-458f-9cef-23618da9fb09@kernel.org>
-Date: Wed, 14 Oct 2026 20:46:19 +0200
+	t=1792003629;
+	b=Mk0DRMwJWnKQugVk4/uDbEvr73uS4xMyl2KS1YyT4xTUFgyBUIvIZ6fzrE3kSiBsNBniW5
+	wubEdFOSAPbs5rUO3XR2NE5JQBtzOGx7gQX9QucwDCGfy7QD9KSc6B3Lajcc9ooc9oac+t
+	+s/puSOgHyjuYaVPpHUMUYyOnJdPfYI=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=marliere.net header.s=dkim header.b=FPIOsqjv;
+	spf=pass (imf19.hostedemail.com: domain of rbmarliere@gmail.com designates 209.85.161.50 as permitted sender) smtp.mailfrom=rbmarliere@gmail.com;
+	dmarc=pass (policy=none) header.from=marliere.net
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-6cf995766a3so3599530eaf.2
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:47:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792003628; x=1792608428;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ud4UQpU7GXwKVtHEzNn/aXQljAT04341tSRIlnW7qwM=;
+        b=D8zquTdr+/SAJlNzPOvNszBiqWSTqkY8wBbe3lzvqKzWijf5n9eGzUH6LHRpEYj/nb
+         KMLVnQNIAi7z1L5QrOvsIzQ+zp2I9cMiCyoHvWBCTQvjKPAXvR63lnCKlRaJwuceHlNv
+         GvVlsZubmPYVonLJuS1SbZqfZMjKOTu+zDIntNbSH+vzarOnvPaFlr5nAYpIMrReCt8k
+         kbvX0lOskcCKVuW7UJMRBz3eydtXzc3kTHDNoIYrZfM//mnS8KOF14XEO2AsJjILxUzE
+         9RIX5NtNeORYnftjPKwmIyf32stt8tSLgOTslVhTx5cIKO/UgIScRHlQWnPenAzvUUaL
+         NQpg==
+X-Gm-Message-State: AFq9FYKspTx2ez+KKv1bWajntKNVKB8p2U1jtl4mdRCy3+aHJAGm2CcE
+	zERLASLoVqlX8Q54viRiMdCB0w/TzBs158PlIXcrB4bgJeGJzVA9CTQQ
+X-Gm-Gg: AYBFou1xUEe5fEZetUM+ZAUT4cIiKZDDULwswuVbvqExX1+ybgv3NLMj2lY5PSRhX+t
+	8ksY2os3MYURfzPfgKnGOkclV6qOwGlMT2VrOL1jpjBOw5iUO6miSUna8+QTgxP7BUxK0aGVZzb
+	tLG4jJK0y29WNPxtulNIb4Xm/wB3m+T9/03xp7e9y0eKEar6u4nLasby0VEsamDj5TNRcWWzszS
+	dAY3QZR0UepVFpxdNRqtckFHFam07d7WwSu8jBlRD6JqbWxA2AIztTUcTB/u5x8nAN09k7O48sO
+	mfoHIcBLifYIyevcMiHU3WleO0qVNUAH4+QYtYbGXTtxIVxUnL53DB16PjPZZhrRJpY3iXEkDQz
+	FpJtXQ17wHNssthBHlkPnDndSzHPcOpgucExmqMdq5Dy7PazBUuOX9nJg44DJRwTgbKjh3Svwnl
+	fV9WwQdoI6V8eE1U8LEBZ2FW0AicqbHdDxc0euWDVnNALZw9EslPuiZB+ar20bsZNR4ZGWqwiSQ
+	gvjvyaSPppzYJeavIxeOJU3x6PhKEvDQOykdZX4euQA+YexO33SsiTigpkz+79bEQV2mhbmrF+L
+X-Received: by 2002:a05:6820:c2c8:20b0:6f4:ae96:c59b with SMTP id 006d021491bc7-6f4ae96ccdcmr6553693eaf.5.1792003628127;
+        Wed, 14 Oct 2026 11:47:08 -0700 (PDT)
+Received: from mail.marliere.net (137.65.66.34.bc.googleusercontent.com. [34.66.65.137])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6f47500ae30sm9548549eaf.1.2026.10.14.11.47.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 11:47:06 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 283216061E;
+	Wed, 14 Oct 2026 18:47:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
+	s=dkim; t=1792003624;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=ud4UQpU7GXwKVtHEzNn/aXQljAT04341tSRIlnW7qwM=;
+	b=FPIOsqjvI9KwWd8TDkBUXyQASuIwYvkymEHQbt7eA3vYTcc+QbYh7fpFXA2/SeJxafJZBR
+	GH0srJnkwqT3w9MGG/AnWN8R7TzJNy63q76UWYHjemYZ2I3zvJrLqJQiktQGgOeppwuQNE
+	fC9R2T24tUdjYBOSe7RPPbih2dytIgLjsq50IzNB7mVtUrISDQBn0JD2U3S1/aml8H5jzH
+	f3iz9SHZ7TICCUk8Y8Zq8ZF7BKNuCy7ro6pJdUQp7fdNchflAtapa0RePn3gwoKKx25O5V
+	Aqeyrw5iu3ur3zcR5BFZnoEcRSn3/VGrNTuREDwAIw4pxK/n6TyJoVeOrdX34w==
+From: =?utf-8?q?Ricardo_B=2E_Marli=C3=A8re_=28SUSE=29?= <ricardo@marliere.net>
+Date: Wed, 14 Oct 2026 15:46:46 -0300
+Subject: [PATCH] selftests/mm: mremap_test: Validate the preamble region
+ before mapping it
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Path forward for Virtualized Swap?
-To: Kairui Song <ryncsn@gmail.com>, Chris Li <chrisl@kernel.org>,
- Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, =?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?=
- <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>,
- Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>,
- Meta kernel team <kernel-team@meta.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-doc@vger.kernel.org,
- "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Joshua Hahn <joshua.hahnjy@gmail.com>
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
- <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
- <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
- <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
- <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
- <aqgMCIOFi0dKx_6L@fedora>
- <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
- <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
- <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
- <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
- <CACePvbVTnCOh51jvEpkDJ32idvCubgN1eHBps6vESjhVC8E_aQ@mail.gmail.com>
- <CAMgjq7D_=_4ZsCWJYywpZhPtg+YeH8o=ymRrV3sQ_58G6rs0sg@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAMgjq7D_=_4ZsCWJYywpZhPtg+YeH8o=ymRrV3sQ_58G6rs0sg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0C16B14000E
+Message-Id: <20261014-selftests-mm-mremap_preamble-v1-1-2e97f501cb56@marliere.net>
+X-B4-Tracking: v=1; b=H4sIABXOz2oC/yWMUQrCMBBEr1L222ATtahXEZFNu2lXmrTsRhFK7
+ 26qX8ObGd4CSsKkcK0WEHqz8pQK2F0F7YCpJ8NdYXC1a2xtj0ZpDJk0q4nRRKGI82MWwuhHMqd
+ wOWPXuJIHKIoyBP789Lf7n/Xln9Tmzbk9PCoZL5jaYasm4Z7TPqJmEljXL+N+uOGgAAAA
+X-Change-ID: 20261014-selftests-mm-mremap_preamble-5f98ad625f93
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Ricardo_B=2E_Marli=C3=A8re_=28SUSE=29?= <ricardo@marliere.net>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openssh-sha256; t=1792003619; l=2090;
+ i=ricardo@marliere.net; h=from:subject:message-id;
+ bh=suiRUnyroocuk12grD5LSkD20Wp++sZxWYm4G3hH8zM=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgguRCc5X8/UX9M40lkMnr//aFGOhce
+ x5ezt8MFNUFlqYAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QMvzTA1Be/AaPv+icYSQObP6ZSepseS099c1IS7GWL5yRAlaiDjRXKqF7qK+kLROsQ0b2JWSCxZ
+ Qwfn01UPNwg8=
+X-Developer-Key: i=ricardo@marliere.net; a=openssh;
+ fpr=SHA256:pzhe0fJpYLz+3cZ33FFPhIfaUElk9CXPFFXmalIH+1g
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 45FBF1A0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: wit7u8wke9qakry8ry93jqajh1gqzjxf
-X-HE-Tag: 1792003593-413912
-X-HE-Meta: U2FsdGVkX19ZKM2Vr6jOKnCWYRvXLx6K8ypZR8nKGm5p4clHj4Ut4KGvg6IpbZGY4XM/PQ0hsBwGckcmOuzmx7q4I7qWQDKzYLmUQKu/S9monljBZA2ZPuJb1irlt9JpQ9fTM1J5ALElJcPf43wYjZEGV+5NRDCjntGilRsL8p0LnlraINBDmso7GDi18KZ1KWUbngDeltj0kCAqWDvFgsy3awQLsMc4kn/+Ma+nSxRxgcPBJCVzR29/ThxmwmlfJ6m86bx5EdeqndPj3Ywxy1keE+WvkT/kd0L0mada8fEqrz8DPiVt21Kb+J0DOQnZMvB7x6JUUauO8lx3tnPH6Mpz2pw/lOQKyiqBJTzctX7eYOJ8fcRKJXuPO4XBqPFn4k7bbEpSK4JOtFhnHQoC+KlWmp2qg7tdkiElvXsFqF9rRNTcw7BLxGjQlLXMJ/DjlA6W5OgO3Nh+Dn0sJbpHSlOO7r1gurJBGakW/oJBEQD3VmEvxsReifF35iYUqKSgtzHkO/hFcSa6t83ZpqqiNvzo5fTBsrQey9Dd93WZM7Exux4TeYyY+s6fW9KEBvR3iWRmN2mPIycUf7h52lK/M5bu2Fmc0tmcUOlocm3nDcKIlJmd1jSYgiEwY8D9xbb7sCWxy+eZSwkP5k3axJjr/eT54yi61Oo2jIjD4MrfMZHwKDnbR/aQTzWtM+mqg+z89BsCYela7RYWXdKtjdOdcbPLET1RTE3UH+EczdEn4f0ymw9NDPLJVyhUoKBP8/8mpcQwVZXoG/dklE200Fc+BPOvPW7pmXOsstsb51kyNVaU1q7fRrROJOv6BKKQzTfYRk5VEQH0bETz5S8mjS6LnoU8tTCM1qnpwlpjtMAYzalEbpbJZn3CEbtxNaDABPNg8F4X4sRPyRD/S2dZJs4rrybflT3HuskOFk9NcRg34AwJUOrYzyHBTi2g/pK5Kf5QOpFJlmh0rSGoLc+xjJQ
- PkbRKyLB
- 1Z1VEFjx5HqAf7r0V2FrdWtaFolk37TsPnQ+Bojoup/OxQZOFegrQRpDllcVJ8UoBZvb3Sryr2QdfPryDnZ1i/oqGOo22jhJya5KTX/ZAUGC7YQooKdRKk9ZfRNKuvro7+Y770fGDcwbM9E3MqldCV3w4HlV8mOIM3y49uA7MJPJrJLKVvhWM4RivF/ks98bTEZ818QcSel7oi8hwAnFyJ6MMRO0UfZUHGX1Vnb2ucWM0fUhXfp+uC1HFOSDyXwYTb7ulzYIJH649qqiqwOq/6aMoFY2fikdwkaUv0iH9JeJy/rtA5A1C3zyFUALS4oP7vx7CcyXtwmKOCq3jm+GsEocTZqbSvzVW2nDZeXKeSz/YzyGbz3gA1EsHBAlju8u8bTv/k+DBxMnO4itOkt5ErfVotilbsIOGRuqJiKDcse9yhUL3i7HKGeylV2x8B0VlPE5JJtILsEdgwL8=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: bbauepnfckz1h69d3m15iwgg6o1njcfh
+X-HE-Tag: 1792003629-959101
+X-HE-Meta: U2FsdGVkX18M+8Div+y4/s7ytSqzk31oCb8xpC67AUnE0TLr81PTPtwwEIPL0YAu+t8PX8LraF4eYx6/Rw69ONJISgbelhpuRVAvVWvOtzSB2dfwDz81Nf2DzCu9FfV2eImrUontf7FGCOzAVwPKbDqQu2ZOswch/jM6XqS41zvs9pnD3W3Yr6LqYvZrKGyDxoGnyNofIMk4PSPVbU/H2RwyfMqA8vBGvwiEiww8OKYP2nwP7vqrYWfInsO4MVvlbgI7mwoCoSbb0hBV4YfZQm93ZRKwS/jYW+QT1TOyiNoUav8NeB2qvCxVu4g0pQXAobuAq3VWUsMoxIar/0POKM2v64k8/sf3Xi2NZXSQAV2t3UfqhY6Wj4BB1EAeXIeVs3bcNWpEBamTF4wXJnNiw948yMCzNy3dDXE9x/9RVtfPBWC2wf+ZR6BDpO59F0ja4WMuf6BSbNpgk0J45oBRCyKHLHabMd65Geq32EmIc99MvGz5X8Mz+eZDNlq6imXhvFg/S+3SaZmEkV+YzP8Py3fzpO/jutQXYQwaEnHQBY5N7riBM6/NNDZZmY/UoaxebJiDdLuiiHCBt9ZAYATE8lYa7WIwKwOKjKSoQsTnhP0ijBg12mUxU1iryFByMk4777LM4ULdjZLUNoK1WoNW0Zxm80EAlXonn1mq2JDO8vOscz8XAryb61Q8VSyXR2kCKUNZ5IQ/w8KHhoglaVjfepO8bnaQLpR7AJv9uTt/lMscnopvVb98ODnxLXeqLqvsA26V+i8RTCTMt2lT++f4h/e99dyG3oJ5njCmJAqljPiTtm/IQjA5IgX1M4U2Odlj3lOSrJ400S6BE2XeJ4TwFwVrCqHBkevX9IY81HjiufxetQoSfnvDSvCcKFzUAUk/Pt0m03mzT6BQ4Ho++z4VzTFqqIJudgm4evqLs4BVsCFxABhooQgqoGeabEAtb0C29wvj7j8UJf3QUXui9pO
+ qftYhSYq
+ 8fbxSUgxFTRSqM5l9PaDSpi+o2bE8pToJp9V71awZ/n9FZnNVjZPDHvZBl7QXWari5QllyrCljNiUXkGt5ezo5qHFuvwzPyHWw+ZaNkm7LLr/RATPza/ieIAvIf79Mhlu/C57gLnf+ZG+FaaBk2QpwBFTMjwY125yocAehCCPWfzoxFA+9rgxIZJkbza8cPRgrPYLcORDqipMaM7eldVpjpiHir47J/yO1A9zfq+ACfLdXoTlL4s6iP1Z10urxAmnz4MuFFcP6Np4kOiXfmnxE8WI6Y1oi3LqGhtcqVZhqXSo0qd1Ybt9QWp3QzIjSnmW1HFTf6AUGGTVBUlLgqwW3bGnCYHwK6iE0TV+gfDTClCVO3snpcZ2QMFyq9A+KbhugVCSgQTrYCAkKTxneuLDYEmz0njKIeUD4QbdCEhGQVCQVvpUvAYf0PcLm10JsMw6D73AVIwX9TxaBNoepQuoG8tthwvGvl3nOy0h35TNpsze6vdIF/jX83QpIeDS+R4LK9F4XrS7TYdvNfpM51tVJ8iVty8v0LYHNGIqHKsSQfhWDuYmwoTDBl1h1j9c0l3DeMZ4I7gqR+nTHaOmRjKrZqVchq2wi/xd2Iss+UQGhxdME8aTdHIiKKJ1XpUATMIA4dyAdVEkBcb1RJG+O3ZlxwY3LhMrdv7+IEZNHQHyZnh2eTnuCtvuXMmQfcWYuSTm8Z2Obb/d32byh8PVg6BNRMgX2Jg3gtL1hYzJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,120 +136,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 19:17, Kairui Song wrote:
-> On Tue, Oct 13, 2026 at 1:27 PM Chris Li <chrisl@kernel.org> wrote:
->>
->> On Mon, Oct 5, 2026 at 5:19 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
->>>
->>>
->>> Looking at the mailing list, that approach doesn't seem to work.
->>>
->>> Finding a time slot that makes US, Europe and Asia happy is ... tricky.
->>>
->>> 1 AM is certainly unpleasant.
->>>
->>> US vs. Asia is also tricky, but doable.
->>>
->>> China 8AM vs. US West Coast 5PM?
->>>
->>> China 9AM vs. US West Coast 6PM?
->>
->> Hi David,
->>
->> Thanks for organizing this. Time slot that works for Baoquan and
->> Kairui should also work for me.
-> 
-> Let's see Baoquan and other's suggestion, both slot are fine to me as well.
-> 
->>
->> Hi Kairui,
->>
->> I understand that you have some face-to-face discussions at the
->> conference. Do we have a list of what has been aligned and what is
->> pending to discuss? We should have an agenda to avoid repeating
->> already aligned items.
-> 
-> Right, from my perspective, here are the following key points we can
-> discuss further in the incoming meeting (most of them are not fully
-> concluded yet):
-> 
-> 1. A limitation for the logical size: from my side, there are real
-> usages for a global non-memcg limitation of the non-physical swap
-> space: e.g. thin VMs as containers/pods with no cgroup limitations
-> inside but which need in-VM memory compression and a proper limitation
-> to avoid thrashing; or low-end devices/desktops that want global
-> (root) limitations. And also, Android have a limitation on the ZRAM
-> size (well for this one I'm not from Android team though so that's
-> just my personal development experience with Android, enlarging the
-> ZRAM size on several Phone swill cause serious junky of Apps due to
-> over compression).
-> 
-> Nhat is concerned that exposing the sizing allows users to tune it and
-> potentially misconfigure the system. However, I think a user with root
-> permission should be fully aware of what they are doing or they can
-> easily mess up the system in many ways and swap limitation is a very
-> minor concern to me.
-> 
-> I think the requirement for a logical non-cgroup limitation is strong,
-> but the discussion hasn't concluded on the implementation method.
-> Perhaps something like a Kconfig combined with an interface or command
-> line? More ideas are welcome.
-> 
-> 2. Charging: If you consider memory.swap is physical only then indeed
-> we should not charge it, however, user are already doing that for
-> years so this is a behavior change and we are also pushing memsw into
-> memcgv2 as a interface to limit the logical memory usage of a
-> container. So charging of the logical space is useful, how to handle
-> that is tricky though.
-> 
-> From our usage, this should at least not block adding memsw or
-> anything similar for memcgv2, even if you want more customized cgroup
-> accounting, we need to charge it into some counter (a page counter,
-> not just a statistic) in some way.
-> 
-> 3. Swapoff: This was discussed again too, as vswap was trying to
-> remove it. I think the concern is mostly about maintenance,
-> performance, and practicality. From my perspective it's a critical
-> component both for preventing minor or major faults before predictable
-> high traffic arrives, or for operations/debugging, and for releasing
-> the swap metadata to rule out any potential swap / page fault effect.
-> There are concerns about maintenance or suggestions to use MADV, while
-> I'll be happy to explore and improve the current in-kernel
-> implementation of swapoff later if needed but removing it is a really
-> bad idea in my view.
-> 
-> 4. Writeback: No doubt we all agree that we definitely should have
-> writeback support, Nhat's concern is that we should handle the case
-> where some cgroup doesn't need zswap/compression and ensure that works
-> well.
-> 
-> 5. Interface: Given the issues above, what should the interface look
-> like (swapfile, sysfs, /proc, etc.) and how should multiple
-> (non-physical) swapfiles be used? Nothing much is discussed about this
-> part though. I've heard users mention the use case of multiple
-> compression swap spaces, but I don't have a use case for that myself,
-> so I don't have many comments.
-> 
-> 6. The one part that I think we can and should agree on it shat the
-> implement approach: at this point I think VM_SPARSE is the right
-> direction, Nhat is concerned about the testing on it, and I think we
-> can have more data for that, and collabration is highly encouraged. I
-> previously conducted many tests on everything posted from both sides,
-> will try to post more on this too.
-> 
-> That's a lot of problems already. I think we can discuss these points
-> further in the meeting.
+remap_region() checks that the destination region is free before mapping
+it, but not the preamble region placed right before it, so mapping the
+preamble can intermittently fail with EEXIST:
 
-Just in general, if I'm attending and it's 2/3am in the night, I would
-appreciate a short summary of "these things were already sorted out". I might
-have some weird swap-related dreams afterwards, but it would certainly help
-keeping my brain awake.
+  # Failed to map dest preamble region: File exists
+  not ok 15 5MB mremap - Source 1MB-aligned, Dest 1MB-aligned with 40MB Preamble
 
-Surprisingly, sometimes summarizing common understandings still sparks
-discussions ;)
+This happens when the kernel's heap ASLR (arch_randomize_brk()) lands the
+process heap inside that unchecked range. Confirmed by correlating
+brk(NULL) at startup with pass/fail across 60 runs: every failure had brk
+land inside that range.
 
--- 
-Cheers,
+Fix it by including the preamble in the free-region check.
 
-David
+Signed-off-by: Ricardo B. Marlière (SUSE) <ricardo@marliere.net>
+---
+Hi, this sporadic issue has been found in openSUSE CI:
+
+https://openqa.opensuse.org/tests/6270334/logfile?filename=serial_terminal.txt#line-6760
+---
+ tools/testing/selftests/mm/mremap_test.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+index 131d9d6db867..8d4fa3025a9d 100644
+--- a/tools/testing/selftests/mm/mremap_test.c
++++ b/tools/testing/selftests/mm/mremap_test.c
+@@ -1006,8 +1006,10 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
+ 	if (!((unsigned long long) addr & c.dest_alignment))
+ 		addr = (void *) ((unsigned long long) addr | c.dest_alignment);
+ 
+-	/* Don't destroy existing mappings unless expected to overlap */
+-	while (!is_remap_region_valid(addr, c.region_size) && !c.overlapping) {
++	/* Don't destroy existing mappings unless expected to overlap. */
++	while (!is_remap_region_valid(addr - c.dest_preamble_size,
++				      c.dest_preamble_size + c.region_size) &&
++	       !c.overlapping) {
+ 		/* Check for unsigned overflow */
+ 		tmp_addr = addr + c.dest_alignment;
+ 		if (tmp_addr < addr) {
+
+---
+base-commit: 0fcb05b72344f40806cbe810de8872f1698bf053
+change-id: 20261014-selftests-mm-mremap_preamble-5f98ad625f93
+
+Best regards,
+--  
+Ricardo B. Marlière (SUSE) <ricardo@marliere.net>
+
 
