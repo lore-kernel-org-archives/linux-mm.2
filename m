@@ -4,100 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EDFECC6B1C
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 03:12:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77EF9CC6B19
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 03:13:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B7356B008C; Tue, 13 Oct 2026 23:12:32 -0400 (EDT)
+	id 16D756B0092; Tue, 13 Oct 2026 23:12:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33FF06B0092; Tue, 13 Oct 2026 23:12:32 -0400 (EDT)
+	id 0F7F16B0095; Tue, 13 Oct 2026 23:12:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 207F56B0095; Tue, 13 Oct 2026 23:12:32 -0400 (EDT)
+	id F04146B0096; Tue, 13 Oct 2026 23:12:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EAA4A6B008C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:12:31 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0EB8FC03FD
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:12:31 +0000 (UTC)
-X-FDA: 85319758902.13.396F4B6
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D7096A0005
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:12:27 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	spf=pass (imf25.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791947549;
-	b=vmP+XNYwNWJClCpdnxAlWVr84TWFpGZ0JlAAMqDaD3OwwLJIEfqBWwafkY28BVNbicoHr5
-	XlTDU2dcxEVJCcSnhdjJR+5rz9tbQqig7GlJUf9bLSlvZ24WItErs0VeY0/w6cAYi4bEB9
-	UT7Mp8xDGocwCVjRv6nAk4avDzwhrO8=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CA6E16B0092
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:12:58 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F97B803EE
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:12:58 +0000 (UTC)
+X-FDA: 85319760036.03.12BB47D
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A503940007
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:12:55 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="I/Ve6Ntv";
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf11.hostedemail.com: domain of 18766350203@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=18766350203@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791947549;
+	s=arc-20220608; t=1791947576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=UXfIfgcfrOF95OnC9feeSyzHKDnKy9tN27UxCf4ShJ8=;
-	b=vRRq6mjnZuN3dCdqBod1UE7z+nVI0BFJisfss/yTkL0OiHu86kUY7bwoENV8m9AslDkOxr
-	kVXLxO7mshz5Z9pf2u6tEhFw3sB/CtliSpcLa7vtpixngXK/cxsOPInRjT+4lH4jqvUU5C
-	Do2f2hYtsp7F2vp0hWhrrDdEoZ9dwaI=
-X-UUID: 0fba4eb4c77d11f19a56ed5b684f684d-20261014
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
-	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:97ab1839-384d-411b-9dc0-cbbdd7caf0d0,IP:20,
-	URL:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-INFO: VERSION:1.3.19,REQID:97ab1839-384d-411b-9dc0-cbbdd7caf0d0,IP:20,UR
-	L:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:EDM_GE969F26,ACTIO
-	N:release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:028dd0a8dfa5bfd4bf76735ad2391b0a,BulkI
-	D:261014111220RQQ3BE1K,BulkQuantity:0,SF:17|19|38|66|78|102|127|850|865|89
-	8,TC:nil,Content:0|15|50|99,EDM:1|-100,IP:-2,URL:0,File:nil,RT:nil,Bulk:ni
-	l,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE
-	:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_AEC,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 0fba4eb4c77d11f19a56ed5b684f684d-20261014
-X-User: lienze@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1476125836; Wed, 14 Oct 2026 11:12:17 +0800
-From: Enze Li <lienze@kylinos.cn>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	Enze Li <lienze@kylinos.cn>
-Subject: [PATCH] mm/hugetlb: use sizeof(buf) in string_get_size() calls
-Date: Wed, 14 Oct 2026 11:11:47 +0800
-Message-ID: <20261014031147.444733-1-lienze@kylinos.cn>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7GQ2NJ+XFehaoUKQh9K8T656Nb9kxKH0kwaVt8iqHl4=;
+	b=XfW2xXbAVRD2jhFOSh/0XdqNxwGb9GwC/DLbFeEiJEumlnPPg+7yLflwXula+VsM51Sdq2
+	7hRTvqAebJg7WWeBCsPBy0kuKsy3IuKzB6fJiWzkDmHxXdG3YySVvxxsT+q0xAx/ZeCjTl
+	XqGswnYsrbyWuq2BcR4phNDohBEYUYU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="I/Ve6Ntv";
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf11.hostedemail.com: domain of 18766350203@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=18766350203@163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791947576;
+	b=G1bWL0asyunO0zsy7GP7CuKuud3ZBMbnfmWC5neWthVmoMddVDm30UuvRk+GsgHiStnuuM
+	3HHcjXzR0KAhze5tuGdB7ePOZSxUR3++Qgl2QTkwGAmKNCQkWVvuW8YPM4LyYfwrU1uhHX
+	At/Gw2xkvXVbhM9AXzVi8dWA4mF0tb8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=7G
+	Q2NJ+XFehaoUKQh9K8T656Nb9kxKH0kwaVt8iqHl4=; b=I/Ve6NtvlPGIqUL+ZA
+	VubSUKBOj9Eh28JifaDZ2YLNsyeYTJB6el9RxdWWhxSUeyfcASGDdcSdR5iVAIDV
+	bv15TNmCIUgBABh7MvzDaB61Bkmbe6cgRNx+WuvX8LKY7XAvnExoO1RyyBcrN2vo
+	ti6xnEcYS9eTsWg/IGNcjw+Q8=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgB36cMq885qzbNoEA--.22532S2;
+	Wed, 14 Oct 2026 11:12:43 +0800 (CST)
+From: Haolong Wang <18766350203@163.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/memfd_luo: carry the exec-bit state in the preserved record
+Date: Wed, 14 Oct 2026 11:12:35 +0800
+Message-ID: <20261014031235.432509-1-18766350203@163.com>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <sashiko-outbox-170651@kernel.org>
+References: <sashiko-outbox-170651@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgB36cMq885qzbNoEA--.22532S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXF4fJF13Gw48XrWfAr47Arb_yoWrtFyrpr
+	Z8Kr1Yyw1kGa40vw4xZw1IqryrA3yIyF1rJFs8Kry7A3W5WF1SqFWFga4Y9FyUGrnaga42
+	qa1j9348Za98Zw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uyq2_UUUUU=
+X-Originating-IP: [2408:8418:c22:8000:1bbd:2550:438b:167e]
+X-CM-SenderInfo: jpryllawtvijiqt6il2tof0z/xtbC1AxWHmrO8yxxJQAA3-
+X-Stat-Signature: d75ycik1msud3shz1xspam49jmxsh3bg
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D7096A0005
-X-Stat-Signature: i4coaqahsspedquae39fgn8fzjgxebn4
-X-HE-Tag: 1791947547-696741
-X-HE-Meta: U2FsdGVkX1/8DvJR5mVFbyUd1RfHuQ/YQNN3RuwL8UzGeBbytTzR5RqGlEPMy3nyRmebONaGMHQHVDlpoMeR36n/2oVrcMv0Dzp16bqUa3slllEImfopQmIZ+hYGfF77UdKAFdnAA7BWx0RBIhwxXrVbBbVRfDw0AoEOEAJoJygO9l7QXNWd6JLdx9BQZapL++QmfHgVe7IFS2oZeJUgS7oGpkr7nzabKOcMFHh1Vs7KaSIh00fdY3bUrN3iYkFSEXuEYP702gU4uBAZEkaqmkurXLry0iHDyKBYa1+Tt9Xz05aOIP8v6fXc6f/XxSpW2ahEXRZYhakzDTLHGzdHTn7vAn1TcRpmlDVVfoooR4phhcZncGUlwmLP3QsWCH9wsUUQ6Wr7sikiK8Bbv5v0GPRM6LcJ00y0xDeMeOJ6Sf1LlgN3N9Aaas42ap+EEMUfev4Cy1BRplywAvQTEdfz2ESGwN+CsTz9Q4qSn/jHTggF2OnKhbTOB5+hKZjKyrPGtpY8F68cln6tAgACGcGlERKR3lWlgCpoCBsJ9uatbdkkgGQ3nIAEX+SqzyV1ef7tAiANGBv69i4ZsEm/8my0j6ErQ4QZNPhn7Bgfju2s2O1SritRil6jFcPFaNgFpgnDlWVXkU8GgNW3jLg4PIDxIRuuZOjoC1VFEXV6/tigQKncB/ChbROjXwkC24ArPrD5DIG9b8EedMsL+QZtruGF/65ddKN3GUsjRWNrUXOJg5Si/8O0x02mGcO2YqZqw1RtAc40l5hrFl0cvD4YEpUeXCheUhJ4nVIBrfbAioI4IHl5FGLwF7qvcSKFaHQouoDXSX6O9MydaY++dam5vRD1z/TlgU5szDIaAlFTm2IwvcIYYc5KZ4Kij9+vP7q8z8+8vUiaosDYN7/N1s383JWd5xKt7nRjv/o4m/+ctGFHTToU1hs5v9zRylzBjVDTWhqh0kcGTd5ePw+GvXT80zJ
- 9jNt3Oyv
- +uJMet5rZdET0PjhivgIs+4LmULS6dRmDq27cOXpNqH8iyiM=
+X-Rspamd-Queue-Id: A503940007
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791947575-576344
+X-HE-Meta: U2FsdGVkX1+RYzYm+QVupmRMbguPNqDa+Rm8KbytcWMhZQnovJx6rZDqv8nfBfkQfDzAi4/M2fpN1Mn1or6SP7KpYKg6wKjY1/oWBHTbMWf7ZEdsYKW2kbTQUwgT7aDstUh2FAaoIZCNmaR3BtKLS8dpYj+ej3pYDr8zXzqqUZKDu8VucUln/UcfSzUG5XpBJjYaZFk8wYx2R+Tz4/oiye5GZkD2u7Nm5d/opqi+/WjlmKiTyYog/Ftc8qrQu3WA/cRFNT/eNHJOKjRoG+cbaAS4UR0lpOetloSxAIWsgcP4CYlal24PloiAWlWFCuJ6siG2XfxchYRiYmCMZhG7bF3ZHr3Uyvr+0Mk/bCI64tzCTZFO3Vc3ohoIY9RxdsFA7ZwqQVZc9HwoOxa1SjpQNukRQB9f+5OTKr0Z588rnG51SoA1O9Ct//Shw47Puz1RVM/3ill3Ct/CxHrqlhN+gkdssqDL1bUApT3tEG+hxIb7AbF0Byx4R+agx5FOgIR0dA7NQcUWnMtMfO1EqaGhodOhzqMDkIG912xA/qBgtmcm+aOdqP1QYaGL1mwWQ0TTemHTSMxYlMsPbI8alxwvpI1fj/gjlE68hZIkrGitaUnnvL6oJhR2JHiuz2ZZwtIu2Jj30uWv127QArZyG3Pf1zzI9t5W0oMB+WTEpsyQTWWXfiXpAIYak2KfKsqXkQ8VP+6GG3goWK7PDD1BTKB5hvEupoZk6DxnJV2r1w+BpuGWvRuYWwXLX8IEQyYHh9ueqqaNBrLWpAJJCPKmbLHGzE3hGXQj2x9K3fki2UlpV/sOsHJ58UgDfOC1+7ZqHwXi3TUu+pXrsgJhc2vWTn+vnvyJfMD64o6kU685sshawrQBQkfBuPx9ZAH3i2IbOfE7oAxurARvi6F5fqMAuT3h64AoXnbaakzJK5VZGpI+ZnZqc5DK6h4DMOaTz+/6GVukiuI0mx2oCOJgeNmrgoi
+ nR2dPyw1
+ mZNQaKHuPYgC36GWSzk25xc4CZpvagTGNPNYQQFLeq8HN7Gvi6TBQsKYAu88EP/I4Jfd8pT1Em3t/9pP16sfGGfO/ytNEmkljbirMc/hvF8WDmG1x+BgNPRfN+iEp3oVsaVT/LrzE54tlm6ETYQIxKd/i536S6tJ57PO5x24TwGt+JCEaQlewl4qgle7UlS/wkxYdFRO07QfmMfGxm2Zrw3+wE8pzYtAOyN2UJCvj7IzSAzbBw5EGGXasdiyRIRksu2r7UkGQuFRzfuJYZXqsxWyVcAxDhM6iBeOBsV9x/QqS2iQZeldtHPtie0L/qhYLb9n5VyTzEsb8L/TnvHxUGys+OxHPGHXLGl2QAoIjPtVZxM4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,57 +95,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace the hardcoded 32 with sizeof(buf) at the remaining four call sites,
-for consistency with the rest of the file.
+Thanks for the review.  Both findings were real.
 
-Signed-off-by: Enze Li <lienze@kylinos.cn>
----
- mm/hugetlb.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+On the exec-mode snapshot: the sample itself was atomic -- the mode is
+read under inode_lock, in the same critical section that sets
+SHMEM_F_MAPPING_FROZEN -- but it was taken far too early.  The frozen
+mapping only rejects growing, shrinking and fallocate(); fchmod() of the
+exec bits (until F_SEAL_EXEC is set) and F_ADD_SEALS are not checked on
+that path at all, and freeze() refreshed only f_pos.  v2 closes this from
+both ends: freeze() takes the final sample of the exec mask and the seals
+under the inode lock and, in the same critical section, sets a new
+SHMEM_F_SEAL_STATE_FROZEN inode flag before dropping the lock.  From
+that point on shmem_setattr() rejects exec-bit changes, memfd_add_seals()
+rejects new seals, and shmem_set_acl() rejects access-ACL updates.  The
+flag is cleared by a new .unfreeze callback when the update is rolled
+back, and defensively by unpreserve().
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 63dc836061c9..1e79dc5b9587 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3466,7 +3466,7 @@ static void __init hugetlb_hstate_alloc_pages_onenode(struct hstate *h, int nid)
- 	if (i == h->max_huge_pages_node[nid])
- 		return;
- 
--	string_get_size(huge_page_size(h), 1, STRING_UNITS_2, buf, 32);
-+	string_get_size(huge_page_size(h), 1, STRING_UNITS_2, buf, sizeof(buf));
- 	pr_warn("allocating %u of page size %s failed node%d.  Only allocated %lu hugepages.\n",
- 		h->max_huge_pages_node[nid], buf, nid, i);
- 	h->max_huge_pages -= (h->max_huge_pages_node[nid] - i);
-@@ -3493,7 +3493,7 @@ static void __init hugetlb_hstate_alloc_pages_errcheck(unsigned long allocated,
- 	if (allocated < h->max_huge_pages) {
- 		char buf[32];
- 
--		string_get_size(huge_page_size(h), 1, STRING_UNITS_2, buf, 32);
-+		string_get_size(huge_page_size(h), 1, STRING_UNITS_2, buf, sizeof(buf));
- 		pr_warn("allocating %lu of page size %s failed.  Only allocated %lu hugepages.\n",
- 			h->max_huge_pages, buf, allocated);
- 		h->max_huge_pages = allocated;
-@@ -3704,7 +3704,7 @@ static void __init report_hugepages(void)
- 	for_each_hstate(h) {
- 		char buf[32];
- 
--		string_get_size(huge_page_size(h), 1, STRING_UNITS_2, buf, 32);
-+		string_get_size(huge_page_size(h), 1, STRING_UNITS_2, buf, sizeof(buf));
- 		pr_info("registered %s page size, pre-allocated %ld pages\n",
- 			buf, h->nr_huge_pages);
- 		pr_info("%d KiB vmemmap can be freed for a %s page\n",
-@@ -4216,7 +4216,7 @@ static int __init hugetlb_init(void)
- 				char buf[32];
- 
- 				string_get_size(huge_page_size(&default_hstate),
--					1, STRING_UNITS_2, buf, 32);
-+					1, STRING_UNITS_2, buf, sizeof(buf));
- 				pr_warn("Ignoring hugepages=%lu associated with %s page size\n",
- 					default_hstate.max_huge_pages, buf);
- 				pr_warn("Using hugepages=%lu for number of default huge pages\n",
+Two more things fell out of that work:
 
-base-commit: ad9f2d463666c64e94b04be5263c9bf8f9f96fb7
--- 
-2.56.0
+ - A single "some exec bit was set" flag was not enough: an execute mask
+   of 0100 (mode 0700) came back as 0111, which is the inversion this
+   series is about.  The record now carries the three execute bits
+   separately, retrieve() restores the exact mask and rejects unknown flag
+   bits, and luo_kexec_simple.c round-trips an execute mask of 0100 with
+   its full 0x3e seal set, plus a memfd without execute bits
+   (MFD_NOEXEC_SEAL: mask 0000, seal set 0x20, still writable), which is
+   the state the original report was about.
+ - An access ACL rewrites inode->i_mode without going through
+   shmem_setattr(), so the frozen state has to cover that path too.
+   Scope note: F_SEAL_EXEC itself is still bypassable by an access ACL
+   write (posix_acl_update_mode() updates the mode directly, with no seal
+   check anywhere on that path).  That is a pre-existing
+   F_SEAL_EXEC/vm.memfd_noexec issue, deliberately not part of this
+   series; I will report it separately with a minimal repro.
+
+On the folio leak: also real.  retrieve() now releases the preserved
+folios on every failure path by sharing the cleanup with
+memfd_luo_finish().  The folio array is restored before the file is
+allocated, so the later error paths (memfd_alloc_file(),
+memfd_add_seals()) can release the folios directly instead of allocating
+memory while already handling a failure, and memfd_luo_retrieve_folios()
+takes ownership as soon as it runs, so nothing is released twice.  It
+predates the exec-bit work, so it is a separate commit with a Fixes tag.
+
+Two limitations I could not close here, both written down in the patches:
+
+ - f_pos can still change after freeze().  The LUO file API has no global
+   userspace quiescence before .freeze() runs, so this needs a
+   framework-level answer rather than a memfd one.
+ - If kho_restore_vmalloc() fails before consuming anything (for example
+   its own kvmalloc() fails), the folio array cannot be walked at all and
+   those folios stay reserved.  That API is not failure-atomic and cannot
+   be retried after a partial failure, so it needs a KHO-side fix or an
+   allocation-free discard/iterator API.
+
+On record versions: the record is now written as "memfd-v3", and a
+read-only "memfd-v2" handler is registered next to it.  The compatible
+strings are matched exactly, so the matrix is:
+
+  record writer   reading kernel and handler     result
+  old v2          old kernel, v2 handler         default executable mode
+  old v2          new kernel, legacy v2 reader   no execute bits
+  new v3          new kernel, v3 handler         exact exec mask and seals
+  new v3          old kernel                     no handler, -ENOENT
+
+Rows two and four are both behaviour changes, and neither direction is
+interoperable: an executable memfd preserved by an older kernel comes back
+without execute bits (row two -- the safe reading; the old reader never
+looked at the flags, it restored the default executable mode), and a new
+record handed to an older kernel finds no matching handler at all, so the
+deserialization fails with -ENOENT instead of the memfd being restored as
+executable again (row four, which is why the version is bumped).  The
+legacy handler only reads records written by an older kernel: its
+.can_preserve() always returns false, so an outgoing preservation is
+always serialized as "memfd-v3".
+
+v2 will follow as a separate thread.
+
+Both changes are covered by a QEMU live-update run (preserve -> kexec ->
+retrieve) with the liveupdate selftest: the memfd with execute mask 0100
+and seal set 0x3e round-trips exactly, the memfd without execute bits
+comes back with mask 0000, seal set 0x20 and still writable, and the same
+test against a kernel without the change reports "execute mask changed
+across kexec: 0111 != 0100".  The numbers are in the v2 cover letter.
 
 
