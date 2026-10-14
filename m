@@ -4,67 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBE02CC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 09:45:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9435CC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 09:45:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C67566B00C4; Wed, 14 Oct 2026 05:45:31 -0400 (EDT)
+	id C40F16B00A1; Wed, 14 Oct 2026 05:45:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1A0F6B00C5; Wed, 14 Oct 2026 05:45:31 -0400 (EDT)
+	id C19676B00C5; Wed, 14 Oct 2026 05:45:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B57E26B00C6; Wed, 14 Oct 2026 05:45:31 -0400 (EDT)
+	id B2EF96B00C6; Wed, 14 Oct 2026 05:45:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 96F276B00C4
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:45:31 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 297C3120472
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:45:31 +0000 (UTC)
-X-FDA: 85320749262.16.7766A0C
-Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F2B78C0004
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:45:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=JmgUkH8O;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf22.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BF3C6B00A1
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:45:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 27EB716044A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:45:55 +0000 (UTC)
+X-FDA: 85320750270.14.CA529E0
+Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2075C1A0004
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:45:52 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=HIkL+ZdS;
+	spf=pass (imf19.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791971129;
+	s=arc-20220608; t=1791971153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U2XQA7j4tYm2Zsyj3FeGcSE0tdyDSiJaEUUcQjCd3Vc=;
-	b=1h1cPogYT4AK4+Ur4xPppzX6aniPI79+oFR+D6YxZDNWSj68h1q/2t1RDRxNCyUEZ4gFQj
-	shRm3N31EFiEDZe66k3kx7t7buQ1WqOA1FfxowrRJb52CJmccvErN63wcurrnoLgX5Ub6P
-	mYD5o+3OsWR1ybSCsU8QgJymwP7nwvY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=JmgUkH8O;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf22.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	bh=5cjoSrIIljOIInwRxHyN89H7Srl+gGPS+IjzpyYAnwk=;
+	b=YdMI+BM5l2jNEiJA0ms/ge7SGcO4v2UsAD2UGKiZ8DzXf1rs88MA/bw7iBotb/j16Rpj9Y
+	54g2AEWcc1S2rRMez30yqglkVjL/kOOIwWkRnqlwAmk/G37fMFsWOi641KfIyMQswD1rid
+	a14tVKhF9Dp7OUu30u+jezBAxLTIMuU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791971129;
-	b=bEwe28go/tV7GNzXgsowVhxP8r6W5zcraeZ8+ofyhvpzqRNVds6VAkOVM+pPf/INC38MSu
-	12I2jSnPljthyt9/5lEiBZPpAhyu8Bhv1vnNZipDW+RzogmZ0w+z7SHqVigNxkPNGTd4ON
-	lEl7FpKP6HoBrd3E+7sWPIH9GEktYR4=
+	t=1791971153;
+	b=cmZwWE8UDcfdNBbrBWMPwS8FiKlUu6ju/pMVQZiPhrIiiypeqH4+pnErn6wZTX3BleZ8/s
+	OWY7F2O8xd5aktCvTJ2cXNJ6bcMidA2fecOblIU58XtlYm/hHvBq/55mbwaakpzGTP/aK6
+	seWKa+op+2guMCBtNEvDwnEWDPuZe4w=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=HIkL+ZdS;
+	spf=pass (imf19.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1791971123; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1791971147; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=U2XQA7j4tYm2Zsyj3FeGcSE0tdyDSiJaEUUcQjCd3Vc=;
- b=JmgUkH8OhSzXZmANuSFVgonctsEvOsfPiMwQieXTykwtgwSPPiwHCBu7Kx3VuRKJnqfaCw
- pMqBFrbH5hI2OmUb1aiLJjath1XBpE9Aspahbr0dUrKTGQt+Yac0UZfjH0gm+ubZb0W1Yz
- 0IZ2X7QOypJygCql/mnCokKvk2kaHU818ptY5PMy1BkASfXFYFMaOHxGkmyol4Bv+BSlBQ
- am29FgWQ6mpOF6b8VZRbggF4dPIDue5bInI/c0P1qzJQmPBeOufX3xi0IX2PrzWO+vQJcZ
- wesFdtrIe/N8zD7EeNafMHMAnQZGyiSKgYkevDGY1XQL1Bb20OH3iGlCW6Emxw==
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-References: <20261014094347.99157-1-lizhe.67@bytedance.com>
-X-Lms-Return-Path: <lba+26acf4f31+72253f+kvack.org+lizhe.67@bytedance.com>
-Subject: [PATCH 2/6] sched/numa: fix scan-period ratio denominator checks
-Date: Wed, 14 Oct 2026 17:43:43 +0800
+ bh=5cjoSrIIljOIInwRxHyN89H7Srl+gGPS+IjzpyYAnwk=;
+ b=HIkL+ZdSxmwBtu7okcdRns5fwXsFRyI+u8xX0JAaGFTq9O7JN8E92ha3/Z48Swyudxva+Y
+ YL2UuFN/33wkUZeD7ofjMGSjV324sDnY9oqkCEb8WMLoKjye3EhkHQyVPLaSI2Mwvi6XQi
+ 4WdpRkh6l1/NERnHnXBz8kTl5bRsjDgcFKTSzMg3oPPn9WIvO0QvzHp5W/nPUNu2xWudh9
+ hKh5falYiUYuv1tjm9wKMzL/HwNdLfikpvlANBrb1ToP1E8HFeJ5vFStuOD40NarU1tnNJ
+ U2Jr+7rWSnl+dojThkCCfHJkmBr1QKEZTEtyu5FyaxqG10+fZbviMYN0nofEyw==
 Content-Transfer-Encoding: 7bit
+In-Reply-To: <20261014094347.99157-1-lizhe.67@bytedance.com>
+Mime-Version: 1.0
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Message-Id: <20261014094347.99157-4-lizhe.67@bytedance.com>
+Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, "Li Zhe" <lizhe.67@bytedance.com>
+Date: Wed, 14 Oct 2026 17:43:44 +0800
+References: <20261014094347.99157-1-lizhe.67@bytedance.com>
+X-Mailer: git-send-email 2.45.2
 Content-Type: text/plain; charset=UTF-8
 To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>, 
 	<gourry@gourry.net>, <joshua.hahnjy@gmail.com>, <ziy@nvidia.com>, 
@@ -72,21 +76,17 @@ To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
 	<riel@redhat.com>, <juri.lelli@redhat.com>, <vincent.guittot@linaro.org>, 
 	<dietmar.eggemann@arm.com>, <rostedt@goodmis.org>, <bsegall@google.com>, 
 	<vschneid@redhat.com>, <kprateek.nayak@amd.com>
+Subject: [PATCH 3/6] sched/numa: fix scan-period adjustment for shared faults
+X-Lms-Return-Path: <lba+26acf4f49+844a7b+kvack.org+lizhe.67@bytedance.com>
 From: "Li Zhe" <lizhe.67@bytedance.com>
-Message-Id: <20261014094347.99157-3-lizhe.67@bytedance.com>
-Mime-Version: 1.0
-In-Reply-To: <20261014094347.99157-1-lizhe.67@bytedance.com>
-Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, "Li Zhe" <lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-X-Stat-Signature: 6r48hh1qfr53bzftyjy4miue71wbx58q
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2075C1A0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F2B78C0004
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791971128-965823
-X-HE-Meta: U2FsdGVkX184fcJXnbufqvasflcfa8cTsnnhnO5237d7q4btxxawIq3JfEj0Y6rjEZkAJYbByppUzqzPfOl7/vHwGJSUiG6FNZL478FXbweOV1qSGFpXvRpzpxdRhY1dBj9tr9w53ZWZfYhb8qazxAqBnbHPEpuYLV7e8U3+MPDoJzZq5Luo5KCRpXmwtHgeNq0I4oM4Ef2EVq+8wVMjOBKyWjtdb2C52jsYwiV/Atl9Jw9AQuEJ1kp150XHLeE9oBFq2QSfA481lZghcCU++L3SBbsQDz+bKPiFZHFJb4LlMqFJftEOJDQVQ+k1z6iOtlWeoVa2USel+hfitIctlGuOTyVx0bU80iwupj/AxsZiOi6J1HnFC4KQckFbGdpj0/S9mi3USAzWCP3Yoz32oMsKoPSNJkqTEo0Dhi0ZTzV3Srnq0kkXtgOS+O0yWXBc/h9e6yf13H44RqghOC0abSwHlBWUhZ+pffBqo50qH+kv9FzpXNHVFWuo/y+YXr2qH4UVvaIn6yQsFCHwSeYdMJqev1nBhGs0g3S3V3eqfsHqpS86wycbdLYiv1YR3avdQiAGQgffEJiugXY/8YcHPSpn/KLahHVgzyt1PLf2lxt+xEehDkQ6YjmC3JuT4ep4RP0i83K1TGY4x7Iyo96c3vAcJFHg4VzPvJTON4uzVZ2c88M+vZqxEz06pnTyUtJHrzTaOxcX8syfLHjh9kDLmQETLGTghZ5mXPUsvi781bU16moAMAAcIHy7a5zyMBeymeQ3aF/Fbhp5+HbXkUrhojSmwt8TJCuF81oQOAWhlgZNOt9ZGx5WkWjpa54zKjkM/7v1ropztZugK+Cui1gANYkRnxlXpnreypSFfvwqPH3CiLAK0YU1IrxSmpi8aPRU9Zo2Tzi8DrqhXKIXHn6wDdFjS21i7hGRZ57BvG2Q0mPapulMvt2ymsU0u72O4vRSikBqoCj7HAQcBQrb7if
- Q6HmKgfv
- 3IOWm0S/Cv4yKKP1qk42hGyVvxkZqC9JhTZIxhlIBX3nDNlDyuBJfCYkXbCrogHpqnNmoSy/jgyyePSUbxxTEORH+EZf+Dus4Q2MuKOOXESMfG3gtCi+0vBapT8NbFJAdwHBbD2PIqAfw1Ei9cwaPpPBwo+1QWqWoG1Fb8BXxHkSNbFLvs/pDH8l9lJB7QaBoPZMSRH9npPOPcQnxt20+pfCyHRfEcvCObECzAis5T+LTcC23xw4pagWQJZBSIETQCnQ/GvDpdM4etIOMPdRx29Ev7UYzgvSq5DSOY7K2DcLl0Ah09S/4LzNVZEYzIxxAT05r177Z5eR8v00=
+X-Stat-Signature: t8hthoe4oaktuyqshuixhzh8kmoxjzz1
+X-HE-Tag: 1791971152-605264
+X-HE-Meta: U2FsdGVkX18Ti9najykvTjSaPMJcaX+/vcprmz5vP2HSUmqEYwHKq2fKA0XHCBdFxnfD/IzFdNVlkiQeNxJVAL6rvlx1wfjmZ1aw5yhG8UMfg4PqoSBvOuA7RkgKjgkm6LXWOdOOJgLgrTVuMThFMcQdVAWPFKVm1lvGWqa3xvG+AMeMhaPWQ/YMUrZmSQY+OvWSMBhGOw0a6CepTdcrZCEIvtjgcATXPNnrUWD9fU4c3GcvBz9wnHKW7GvKkl0ILyAVRhX49/xTxgxgYDZrWsIwI0lXwJnVE5+GMoZbL12JpxDESRm/PfPKPFGBNvzsNlpQMHphopUlRK+JmQ9yJlJT8Bw/ay6UaWKOBMymY530qUScup5C3s15mpUtN7E+5kVJqubJLh++BrpxcsnmkByPhHEHZTu2VzBnLcglfB9JK8EzQLK5HcUMati94Edt3kxGlaFosvO6syEcnIL10tdzIdu+QfzR/4V9ccQmXoNOaQDkROlqQf32lRKkdx4IFZqu2aTu3LfjdfLxX+zx1FGmo1bVHAuaIc2N5prEg5ZE3VsWpwkB1D97a5wkCNwwBHCxW1hI9TRvgHCIX7HA6/xq3zFd3LI44Cw533dTuR2eMykikmZN8w7Ro6N4zAimphi1WdJY111pusaBibjQ9Lbs/b4W7cJeND5653BVK7q8nShVrz4665Bqy0fVpMtz/IRxbTjZpS4tMoSdXvPlI8wgn4AdwBdNmRTF1p8odJXbHjvsnPJ2C5tnQecSifW7Fl4t2PfaHOg7+OkFQQbjfADV+zHoMCfpmaYS1dSlPQFDyDJMe0eIRqKe0/gtlaHHYOSUvjTADk4nH0Spf3z2G9u+odOVqDJm+qupKG72/C6JcuW4NVmywaPrfL2zACcP0pXg0S9VL2m1ZKyPxjVWKPGQcJYFGuoCzSjfK/7KNNIWHKwb3lDzsUr8zL8f3GPnYR61tUQ5upiO5FFwwYW
+ mj5kG2aE
+ leZfJLPYhnabC1KokaC8JIV98OAgEqeEpODn0ITC3RdA2CUGXOOTg0PZUn8dMjZL3ArToHB7FoU8mtVUi76LH0kw6pU+29jj9LPMU0i/lRD3EwrQf5qf/0M+6rdIzdD0od2U0C9jKC8lwzk754zlpvY3fd7M26kSv+aZTLfNC/dOsM5clVRBdAqW7SoAc57xBhMmrg770pX/faPe5dZTj83PC2yBpbHvPM43kKMBlXtorvz9HjUr/itUlDWaQEniE3MyJP8AEpRwaTQ0tXtYPG36cDAise+hF/Jl5iXpl14+oHflpwEEo0HqoL54/MfiiBjsS1cEtcQOZMsM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,67 +94,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-update_task_scan_period() scales the scan period with two ratios:
-local/(local + remote) and private/(private + shared).
+Commit 37ec97deb3a8 ("sched/numa: Slow down scan rate if shared faults
+dominate") intended to slow scanning when either shared or local faults
+dominate, and to speed scanning up only when many private faults are on
+remote memory pages.
 
-The existing guard only checks local + shared. That normally implies
-that both ratio denominators are non-zero because the locality and type
-counters are updated from the same hint faults. Memory hotplug can make
-that assumption fragile because task_numa_placement() folds the
-private/shared buffers by walking online nodes, while the locality counters
-were already charged when the fault was recorded.
+The implementation uses the private-fault ratio as the slow-scan signal.
+That makes private-dominated samples slow scanning, while
+shared-dominated samples can still fall through to the speed-up path.
+That does not match the stated intent.
 
-The divide-by-zero was reproduced on v7.3-rc1 in a QEMU guest by
-hot-removing a NUMA node after NUMA balancing had collected fault feedback.
-The next NUMA hint fault enters task_numa_placement() with locality
-feedback that was charged before node1 was removed. The per-node
-private/shared buffers for node1 are skipped by for_each_online_node(), so
-update_task_scan_period() can see local > 0 while private and shared are
-both 0. The old local + shared guard lets that state pass, and the
-subsequent private/(private + shared) calculation divides by zero.
+Replacing the private ratio with a shared ratio fixes the
+shared-dominated case, but the scan-period code still only has separate
+locality and sharing ratios. Those ratios cannot distinguish a window
+with many remote shared faults and only a few remote private faults from
+one with substantial remote private faults.
 
-Keep the slow-scan fallback for empty or unusable samples, but test the
-actual denominators before calculating the ratios.
+Track faults that are both remote and private, and only speed up scanning
+when that signal is large enough. This keeps local or shared samples
+slowing scanning and avoids extra hinting overhead when the remote
+activity is mostly shared.
 
 Fixes: 37ec97deb3a8 ("sched/numa: Slow down scan rate if shared faults dominate")
 Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 ---
- kernel/sched/fair.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/linux/sched.h | 17 ++++++++---
+ kernel/sched/fair.c   | 68 ++++++++++++++++++++++---------------------
+ 2 files changed, 48 insertions(+), 37 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 1053437933ee..76532b8202dc 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3698,6 +3698,8 @@ static void update_task_scan_period(struct task_struct *p,
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index d35ae49a991f..1be7a9ba7553 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -832,6 +832,16 @@ struct task_ipi_mask {
+ struct task_ipi_mask { };
+ #endif
  
- 	unsigned long remote = p->numa_faults_locality[0];
- 	unsigned long local = p->numa_faults_locality[1];
-+	unsigned long locality_faults = local + remote;
-+	unsigned long type_faults = private + shared;
++#ifdef CONFIG_NUMA_BALANCING
++enum numa_faults_locality {
++	NUMA_FAULT_REMOTE,
++	NUMA_FAULT_LOCAL,
++	NUMA_FAULT_MIGRATE_FAIL,
++	NUMA_FAULT_REMOTE_PRIVATE,
++	NR_NUMA_FAULT_LOCALITY,
++};
++#endif
++
+ struct task_struct {
+ #ifdef CONFIG_THREAD_INFO_IN_TASK
+ 	/*
+@@ -1422,11 +1432,10 @@ struct task_struct {
  
  	/*
- 	 * If there were no record hinting faults then either the task is
-@@ -3706,7 +3708,7 @@ static void update_task_scan_period(struct task_struct *p,
+ 	 * numa_faults_locality tracks if faults recorded during the last
+-	 * scan window were remote/local or failed to migrate. The task scan
+-	 * period is adapted based on the locality of the faults with different
+-	 * weights depending on whether they were shared or private faults
++	 * scan window were remote/local, remote private, or failed to migrate.
++	 * The task scan period is adapted based on those fault patterns.
+ 	 */
+-	unsigned long			numa_faults_locality[3];
++	unsigned long			numa_faults_locality[NR_NUMA_FAULT_LOCALITY];
+ 
+ 	unsigned long			numa_pages_migrated;
+ #endif /* CONFIG_NUMA_BALANCING */
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 76532b8202dc..ec8a6bfeb2c7 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3675,10 +3675,10 @@ static void numa_group_count_active_nodes(struct numa_group *numa_group)
+ 
+ /*
+  * When adapting the scan rate, the period is divided into NUMA_PERIOD_SLOTS
+- * increments. The more local the fault statistics are, the higher the scan
+- * period will be for the next scan window. If local/(local+remote) ratio is
+- * below NUMA_PERIOD_THRESHOLD (where range of ratio is 1..NUMA_PERIOD_SLOTS)
+- * the scan period will decrease. Aim for 70% local accesses.
++ * increments. The more local or shared the fault statistics are, the higher
++ * the scan period will be for the next scan window. If the private remote
++ * ratio reaches NUMA_PERIOD_SLOTS - NUMA_PERIOD_THRESHOLD, the scan period
++ * will decrease. Aim for 70% local or shared accesses.
+  */
+ #define NUMA_PERIOD_SLOTS 10
+ #define NUMA_PERIOD_THRESHOLD 7
+@@ -3693,11 +3693,13 @@ static void update_task_scan_period(struct task_struct *p,
+ 			unsigned long shared, unsigned long private)
+ {
+ 	unsigned int period_slot;
+-	int lr_ratio, ps_ratio;
++	int lr_ratio, sr_ratio, rp_ratio, ratio;
+ 	int diff;
+ 
+-	unsigned long remote = p->numa_faults_locality[0];
+-	unsigned long local = p->numa_faults_locality[1];
++	unsigned long remote = p->numa_faults_locality[NUMA_FAULT_REMOTE];
++	unsigned long local = p->numa_faults_locality[NUMA_FAULT_LOCAL];
++	unsigned long remote_private =
++		p->numa_faults_locality[NUMA_FAULT_REMOTE_PRIVATE];
+ 	unsigned long locality_faults = local + remote;
+ 	unsigned long type_faults = private + shared;
+ 
+@@ -3708,7 +3710,8 @@ static void update_task_scan_period(struct task_struct *p,
  	 * migration then it implies we are migrating too quickly or the local
  	 * node is overloaded. In either case, scan slower
  	 */
--	if (local + shared == 0 || p->numa_faults_locality[2]) {
-+	if (!locality_faults || !type_faults || p->numa_faults_locality[2]) {
+-	if (!locality_faults || !type_faults || p->numa_faults_locality[2]) {
++	if (!locality_faults || !type_faults ||
++	    p->numa_faults_locality[NUMA_FAULT_MIGRATE_FAIL]) {
  		p->numa_scan_period = min(p->numa_scan_period_max,
  			p->numa_scan_period << 1);
  
-@@ -3723,8 +3725,8 @@ static void update_task_scan_period(struct task_struct *p,
+@@ -3721,40 +3724,36 @@ static void update_task_scan_period(struct task_struct *p,
+ 	/*
+ 	 * Prepare to scale scan period relative to the current period.
+ 	 *	 == NUMA_PERIOD_THRESHOLD scan period stays the same
+-	 *       <  NUMA_PERIOD_THRESHOLD scan period decreases (scan faster)
++	 *       <  NUMA_PERIOD_THRESHOLD scan period may decrease if the
++	 *                            remote-private signal is strong enough
  	 *	 >= NUMA_PERIOD_THRESHOLD scan period increases (scan slower)
  	 */
  	period_slot = DIV_ROUND_UP(p->numa_scan_period, NUMA_PERIOD_SLOTS);
--	lr_ratio = (local * NUMA_PERIOD_SLOTS) / (local + remote);
--	ps_ratio = (private * NUMA_PERIOD_SLOTS) / (private + shared);
-+	lr_ratio = (local * NUMA_PERIOD_SLOTS) / locality_faults;
-+	ps_ratio = (private * NUMA_PERIOD_SLOTS) / type_faults;
+ 	lr_ratio = (local * NUMA_PERIOD_SLOTS) / locality_faults;
+-	ps_ratio = (private * NUMA_PERIOD_SLOTS) / type_faults;
++	sr_ratio = (shared * NUMA_PERIOD_SLOTS) / type_faults;
++	rp_ratio = (remote_private * NUMA_PERIOD_SLOTS) / locality_faults;
++	ratio = max(lr_ratio, sr_ratio);
  
- 	if (ps_ratio >= NUMA_PERIOD_THRESHOLD) {
+-	if (ps_ratio >= NUMA_PERIOD_THRESHOLD) {
++	if (ratio >= NUMA_PERIOD_THRESHOLD) {
  		/*
+-		 * Most memory accesses are local. There is no need to
+-		 * do fast NUMA scanning, since memory is already local.
++		 * Most memory accesses are local or shared. Local faults do not
++		 * need fast scanning; shared faults may just be moved elsewhere by
++		 * other tasks.
+ 		 */
+-		int slot = ps_ratio - NUMA_PERIOD_THRESHOLD;
+-		if (!slot)
+-			slot = 1;
+-		diff = slot * period_slot;
+-	} else if (lr_ratio >= NUMA_PERIOD_THRESHOLD) {
+-		/*
+-		 * Most memory accesses are shared with other tasks.
+-		 * There is no point in continuing fast NUMA scanning,
+-		 * since other tasks may just move the memory elsewhere.
+-		 */
+-		int slot = lr_ratio - NUMA_PERIOD_THRESHOLD;
++		int slot = ratio - NUMA_PERIOD_THRESHOLD;
+ 		if (!slot)
+ 			slot = 1;
+ 		diff = slot * period_slot;
+ 	} else {
+ 		/*
+-		 * Private memory faults exceed (SLOTS-THRESHOLD)/SLOTS,
+-		 * yet they are not on the local NUMA node. Speed up
+-		 * NUMA scanning to get the memory moved over.
++		 * Only speed up scanning when enough faults are both private
++		 * and remote. Mixed windows dominated by shared remote faults
++		 * should not create extra hinting overhead.
+ 		 */
+-		int ratio = max(lr_ratio, ps_ratio);
+-		diff = -(NUMA_PERIOD_THRESHOLD - ratio) * period_slot;
++		if (rp_ratio >= NUMA_PERIOD_SLOTS - NUMA_PERIOD_THRESHOLD)
++			diff = -(NUMA_PERIOD_THRESHOLD - ratio) * period_slot;
++		else
++			diff = 0;
+ 	}
+ 
+ 	p->numa_scan_period = clamp(p->numa_scan_period + diff,
+@@ -3906,8 +3905,8 @@ static void task_numa_placement(struct task_struct *p)
+ 	p->numa_scan_seq = seq;
+ 	p->numa_scan_period_max = task_scan_max(p);
+ 
+-	total_faults = p->numa_faults_locality[0] +
+-		       p->numa_faults_locality[1];
++	total_faults = p->numa_faults_locality[NUMA_FAULT_REMOTE] +
++		       p->numa_faults_locality[NUMA_FAULT_LOCAL];
+ 	runtime = numa_get_avg_runtime(p, &period);
+ 
+ 	/* If the task is part of a group prevent parallel updates to group stats */
+@@ -4262,11 +4261,14 @@ void task_numa_fault(int last_cpupid, int mem_node, int pages, int flags)
+ 	if (migrated)
+ 		p->numa_pages_migrated += pages;
+ 	if (flags & TNF_MIGRATE_FAIL)
+-		p->numa_faults_locality[2] += pages;
++		p->numa_faults_locality[NUMA_FAULT_MIGRATE_FAIL] += pages;
+ 
+ 	p->numa_faults[task_faults_idx(NUMA_MEMBUF, mem_node, priv)] += pages;
+ 	p->numa_faults[task_faults_idx(NUMA_CPUBUF, cpu_node, priv)] += pages;
+-	p->numa_faults_locality[local] += pages;
++	if (!local && priv)
++		p->numa_faults_locality[NUMA_FAULT_REMOTE_PRIVATE] += pages;
++	p->numa_faults_locality[local ? NUMA_FAULT_LOCAL :
++				 NUMA_FAULT_REMOTE] += pages;
+ }
+ 
+ static void reset_ptenuma_scan(struct task_struct *p)
 -- 
 2.20.1
 
