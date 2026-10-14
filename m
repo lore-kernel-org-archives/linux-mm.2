@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D14DC3DA7A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 17:12:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EE54CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 17:12:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86F836B009B; Wed, 14 Oct 2026 13:12:03 -0400 (EDT)
+	id 11CC46B009E; Wed, 14 Oct 2026 13:12:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8471D6B009D; Wed, 14 Oct 2026 13:12:03 -0400 (EDT)
+	id 0CDAC6B009F; Wed, 14 Oct 2026 13:12:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75DB56B009E; Wed, 14 Oct 2026 13:12:03 -0400 (EDT)
+	id EFEF86B00A0; Wed, 14 Oct 2026 13:12:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 578126B009B
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:12:03 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD72680672
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:12:02 +0000 (UTC)
-X-FDA: 85321874484.08.A835ED7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CE5251C0008
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:12:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V1vzxzvk;
-	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791997920;
-	b=qfHaqQOBKxKQBMgto5yCCWZTJHKu5ez9jLwQ5nD/H35KhT2PqtmJ2+C+PFDNj/msrVvPd7
-	JdV4k03UfXe9jafBswJP37GjDJLv7mZ0d1TsHE0GBAQwggAXWFPL/zEqb4osubBqfPZi7K
-	kzy6lPXxxwN7/nhq9wtqdJjHWLK2LOc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V1vzxzvk;
-	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BCFD66B009E
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:12:09 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53E011C4001
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:12:09 +0000 (UTC)
+X-FDA: 85321874778.30.B6EC534
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5EE9C40002
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:12:07 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q9DHl5j8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791997920;
+	s=arc-20220608; t=1791997927;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xnM5tXKHqKAzAPDgBm0il7teipuFZt5qvwJKQnZtJVE=;
-	b=7cwC8chAbkyNK1aM9tkuoZ4LjpHKPUYfHbE4xvoA6SISxuoBFvpNbJ9OrhtqBxgRPiry2F
-	mEzCyz3DJV8QRiekZvhI6EkhSa+D4tENoGlbhEgTcxgtnptAv6MCwwymloDY/UmxbF1DbN
-	saMP/PvkmtcemKPDaOjT/4P002V/lBg=
+	bh=2jWu2bDBNbsJoqDuBXroh8IkfqrOqZyO6rRTdaUBLdw=;
+	b=GFBkFU0+cMObUzhVhSlnOUpWJyianhMtZ3BRjxPA1rc693h8HXt5pDXO8w8xe1lDHtydgs
+	LlG874fuMSYVuZ6qZ6/RRD0q7NhvJ8VsHJVmfTg17Cl0HF/j9A8iMQSNJ5WFcdP6alpCdv
+	TtX+Bmhepu6YhuQdcE+zQGt4ibYGQ5M=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q9DHl5j8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791997927;
+	b=RBb0wcdWCSuyYUB6auTeNIJRH8wctpjg3l/ksxMfLEPT3/VyIlPSJo6k2b1099/w5/y/j+
+	00ZMW1XHYahIwvhLtk1fhzANJAOXgbBsp6DOXsjr5d61329LOtDIHWkHyZabWPWqmffyHM
+	DIgKW/EPfwXA6a0ZZX+MU+I4d9lKIqw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 27DB541FB0;
-	Wed, 14 Oct 2026 17:12:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310461F000C5;
-	Wed, 14 Oct 2026 17:11:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 76E1A60A64;
+	Wed, 14 Oct 2026 17:12:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E521F000C4;
+	Wed, 14 Oct 2026 17:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791997920;
-	bh=xnM5tXKHqKAzAPDgBm0il7teipuFZt5qvwJKQnZtJVE=;
+	s=k20260515; t=1791997925;
+	bh=2jWu2bDBNbsJoqDuBXroh8IkfqrOqZyO6rRTdaUBLdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V1vzxzvkb0t1vP2/vb2ehMLQsvyDHASDNzzIic3Xhv/GaTMfdyazdqU3i5IYepz1V
-	 R9gHNr6ZbQCWV3XWw5Kb/Gk3m12eELbGAYcvdkhZlHbfislRFcGNH6JUhatUXdYDii
-	 TmibMNXV3cR58zghDoiNNcwSUoHvTioJbHiYm25snx86saT0biSIAsMc//kCE//xas
-	 dibOz2eZ6I2mpuIo+7eEA5pIAXMM1OAieXGBTPRflk87WcYkK/ljMWL4YuOXvx01nl
-	 XWToQfURSAr8IMdeXXK/NV+3pr5QR7A58aBSkYmrqVFbsL1GNBz8x0bJgr4pBfE9xR
-	 LRU0P1/0HQIVA==
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 6E7E5198003A;
-	Wed, 14 Oct 2026 13:11:56 -0400 (EDT)
+	b=Q9DHl5j8BvSoV4c9RY2f9gLsNwHp2sh3YbF6coUM5uZ537VFJ9gZFk9dy8mLp/Ggg
+	 0/pQM97/mC3uQsJp9Uj+Fg31KY0mEKATqodypSQVqKMhfTpTOxuVPUKnoMydqpL9U2
+	 92iTTpU9qDqoyKVHGX/0iC7zT3qYmvV5rR6dYu5oK5/MXG5e+1ofK5gN0c7ZowBh5O
+	 z3RyYhNmU2rdy2SWm75GwtZR/KRaNy/xBGi8h2BJt8AvSfnaD1O1QIprloYYPo7jwN
+	 2Tl+xuQNiDCoi0quQsAoT57onJ6VEHNBf/DhNrMzJxT/XaXdsd02ELi1qz+j0x8Xks
+	 kvY2Z8EonHj+Q==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 3F6451980047;
+	Wed, 14 Oct 2026 13:12:01 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Wed, 14 Oct 2026 13:11:57 -0400
-X-ME-Sender: <xms:27fPajARk9a3Pyym9tbhOZqMyKfVJ358QZuATTmOrjvbsjehbsj4xw>
-    <xme:27fPalcwlD_oT1cFhlZ4XR5PcIm7MswjaCeqPVEXROI6CEltvXFylexFAq8dzbN8H
-    EZdX4DCwDb6FoVuXYXCoQBccIHdfiAaYcJU9QHfZK1YBPB3UVSygdSl>
-X-ME-Received: <xmr:27fPaktbnPqhkOUvvb0me5XWIuhKwZUdv1ALnUt_-qPLbLvMvrvEZ4pPoiY>
-X-ME-Proxy-Cause: dmFkZTFAhxxCN9RZF7RgZjl+zblwyI5MNEPViosmoopuImm91zea8n//qrkhNFSUiWcXrp
-    MH3eAot5Fj3DZ6VPT64I9vPg0QCUCtDiiTqiv8NQX359J2cSSSZjsC/tyd/Imi5LGIf6hL
-    s8CbCEIaBNMBcUHGn/aH82L6PPlafquguz3Z2sEDXsDmuHj2yqTheZQ+fxDOXfR22hlOrP
-    qRQ5NbmvpkXKG3iXKhgkLsRulP4SRlPxiR6IgNv5RFr6apIBiGIzyDvrozd15QkLVz/8fH
-    sBuTJDigvLKTgofLjjaL63tWUe5PXp+yZe8Mz9HWr0e1U2Y281/CsnjjHOQDfmMGadQRi5
-    trOfJroYnG+Q2vdNbLtQJUsjPv4CT3NLxUPxQCQ/DX3FxZsOSGet1UpNslLooeixNqWsmS
-    +CuoSbYtktoqBV2an0SVyzxO932XwM/TUdnl8MZkybitfE7bX3k5R6sDqMKeFDRu8BMo1L
-    oI9DcAdK8YivMXIbDj0LVpLeULm/R7mccs2NidtSgQy9/0wKhyAesYi60aZR3rYsd5gtFT
-    FfqEEJKyZlFYLzY78Cf65kWJ5pbASO5ZHTq2vTqvssFQkaf/P0K5xX8BemeRqsE0rKaBS4
-    xJQW67i/aaWzX5au2k5XJ12SoVB+qBuEEo+YoTJohjZwRFm9rJ7I0GvYjKNg
-X-ME-Proxy: <xmx:27fPasIZYoRFpDOg8ubPGvh3AW6bN6WtOuTvNeqjvmaBBtYOh030-w>
-    <xmx:27fPamb2gIjFcphxLoz-N3Za8Cq5bGMMD9X2vsEkhfzSgqp9r539Og>
-    <xmx:27fPaiIpeTOqHd4Zi5_MbwyihFmiSdRbg3uULOs18FbBiv_FXbq0EA>
-    <xmx:27fPavougncc5ainOHXYtXPnDWvXiqH_lqoI4UOrEfNc53kuJ03-8g>
-    <xmx:27fParAzNVVaeeZBIJXTQr70ClC2k4hAmat-_WPBLJ10Yc4Hbb4HKt7N>
+  by phl-compute-01.internal (MEProxy); Wed, 14 Oct 2026 13:12:02 -0400
+X-ME-Sender: <xms:37fPauHsrXyCfiLXXVDMNICY4nODXpFLy2U3KjfV5VwdDD8ADf91dg>
+    <xme:37fParTAkB9ilm3Vunj9HyXLeqO181bpuOak7WFfjpmo_HGxOUe3fS1fGKEPbVFlw
+    1fxEkoRI-XZuYsZLrnUAhNMHEL52pmEqQh_cFx4XqlCuRdXZnjO4Xg>
+X-ME-Received: <xmr:37fPauRglf4CNleC4zfwsdC9fIvI7AHOq5UoBext82Jrp3BxXC2NyNKbrkg>
+X-ME-Proxy-Cause: dmFkZTEOl4NfFwPDLSBmMqKx+7N39IeMIni7MK/u+VvxaGQ1bs8GfI9RPH3ayDujSspKBR
+    qyKM+cOOmgGIjV1p99esKFBZjBYm+2fZxsu+dp6kV/40GtAwNmLs0lveP2Nu4w+lTJFNGX
+    +PHSDDgHqCL4KFJyfY61faoRzA0h8vW6kqyfQ8QWLAhZGC4dGYbGOPKI1Rz1FZYlfQX1qS
+    ZyU+Kn8XAf7cjImjIHoCIXuQM1OjXWl7zezG3uHTMAWWFgZp5y0YQrE07Fctth46IOKxOe
+    Y9yLqjV8DtTpJEgGM7OnnqWtPPljjv3Jg1+LTtq+j0gFbbCdpQA4+mOsItlGLpSNkwSLhJ
+    v8F/Py/LpcbqpZCdQR7pJ0113yy+no2Q6VhctIySTMzofsXWhYbTIrbcsbIg0MD+1VR3CA
+    QiBRYjFWMQFOeLQmkjnjx/76Lak0U3LKh0PJcL8dKvHteSIITDl9gabom9HeXwbr2Jr7GZ
+    LWx2VvBPh17x1z7cJv8p6KH2+878kWtzLgYiNeACywHWjJDDLg5Ye/gCITBkM2E29BZ0p4
+    7Yii5uNfTp10+GBk76FVC+Sb0asOJJwfHH/rPaWbTVBT2+Aoc/4BXAdCJ66iNexBcDhvYF
+    TDFqnXrjT4DhRBGng+IzmyjBDGtRjKtRwRn8pbdFdM57E9rU++lJXrbnl/9A
+X-ME-Proxy: <xmx:37fPaufxfMeABLU3MONsanFzUU7GHARjRor1C8TsjoQH8P-G2Z2kgw>
+    <xmx:37fPaic8PJE84ZhdMGTK1x-QmIj5gGvZNouw1MATXIwHZMXN3km1_Q>
+    <xmx:37fPak9CzdfrL6F0661BijnRiJmSEl1VVHvmnUhPpsCZk-v2pOaejA>
+    <xmx:37fPaiNVaznRL47Cwjod288nFyt8UZNeXwmpkz8qdl-t3TD1LGcO4Q>
+    <xmx:37fPaiVJjxniS0tibohpu1NvsL53znIspCLgtu9xoELk2KWHMNfKj29a>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 14 Oct 2026 13:11:55 -0400 (EDT)
+ 14 Oct 2026 13:11:59 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -109,22 +109,22 @@ Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	Usama Arif <usama.arif@linux.dev>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: [PATCH v5 2/9] mm/khugepaged: count collapses where khugepaged makes them
-Date: Wed, 14 Oct 2026 18:11:35 +0100
-Message-ID: <20261014171145.3292736-3-kas@kernel.org>
+Subject: [PATCH v5 3/9] mm/khugepaged: rename mthp_present_ptes bitmap to eligible_ptes
+Date: Wed, 14 Oct 2026 18:11:36 +0100
+Message-ID: <20261014171145.3292736-4-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261014171145.3292736-1-kas@kernel.org>
 References: <20261014171145.3292736-1-kas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fcnosbwm861qwpfd6ugezi5xicq5carx
-X-Rspamd-Queue-Id: CE5251C0008
+X-Stat-Signature: h4hu3zjzw8u6rut3oibd777c81fjk8wj
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791997920-829864
-X-HE-Meta: U2FsdGVkX18kkPXZazYldS19t1FmeNsaRRAx1fvciJmP1nXBymAaCorDn9dHEok6SV9ZtTec7mq9l+ZIMczGcVDcGGKQ8K0Fi1/+/2UQPPlZrgE67EHs2jqGf5hemn5LR26racc2HjzpuXbhm4ZlU4IE3ioVykDH+DepTVjDoO0zYMW1rnCEHOc/Y0XBuEevCsT7wKulJkn4DIPTTnJudf0oXpsUlwgz3TfRtiMTJ7JpCgvOQF6s+AvzbeGvrIgjY5Ih2hHEWUAmlEkGEbskBYi/GZzQPnk3wUxwOKcNwGm+RbXsO0sjIxF0nzUdyNqHumNShb26IDNwH0qkNDqkN1J2WogsXr4Iun64UAHRQ4D2d/E1hBf5DmAnjoiLnqM3ifdFkjMJf6qZfQ10ubHtM2YSxjuxEI5WPQXic6aS5SHXSWYjEwAGOMRn8PX2MPjTrTJuMFVEGSC1VeCCVoeY0sMzW9dzDQtKn1pojiJ7tdydB7hYO/BX9Y9zJ5dmQO9DmX84mLfv3DpfBnRzBe0/tEEjeToCzmLxU1ilrhH4WyTO0MZFCjYde8a62qFkJk8yHfaKG6bXiBB73nTjbDoOVWBIowLB8wZInUG+ZMpBtiGmifWlF2qFoTW1RN1/eeR3gi5PvFK3Vnp3gEdYEtHAlYnp4R+9p3sRnhgdDcBix9RoR+oCIYa67lEpYBQD78lEUFd2abwsGTipLLQ3oG6v08RjjY1746on0kpQpwkiXqcFBAoCJcWhiAL2oks4d1k7LFPgDjCOk6R4k/t+4G3Hx0a22sFUCUpHAXewgNrJoZCRwxDkPb3Ht1llP+wUzY7QspGgS20zUa5Q1T1gwDVjpHcPmS6BDGfrTrlFhIS5RoRSev80paxXCjsJAUw0B9g+Mp47HnN1GqMc5cl+RnBCJggZ5y1lbS8Wea4+1YnfcU+vI7726yqWpeHFEVPPvWH0woYVBco8vXLT/5PSBZe
- cFIPUrc6
- PtlKmEOR4byd5x1uCC3ypFFS0g8oEKoIcTxrgIudTqSyCT6CiG5AcV/qB8UeBcqP8dDOzf2Z5DaUAMHrjw9RnwdGsqYoRB+jxAm725L4n6V+SOTXf6qTJDtddqyogw/jRvJSfU3760MzZr9iIbHw5nl4OcFA5HN8669bHsie/lFlQAub4f1t7n2c3rzeWG2n0r1VF2bx3xOelCHto+j2XePrapotmCWLSYMAwZSSfvldXbQUnxvRi6tKrVU9QAyCpmde62t8UbKDM9k3l/n+hWrNIdTyKURmH+ZSQkKcE7UMUwGCneX+llh9SUA==
+X-Rspamd-Queue-Id: 5EE9C40002
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791997927-444421
+X-HE-Meta: U2FsdGVkX19NFfOV1iacV6jNmAV6Tr4Q1rVKKG7d7Yhs0wQcanlod6OpofmirrMqbY51DqR2VAWcDr1HymukjDZpYp3cwbTn9OxEmgMbd9uvctGopnH+Nvf1ufhrLyJqBRlb1Mxfj0I2o1e+6GgiXe9VC5NG5sJw/jESKcVIAxQPVEquSH76+WDIcxi4ulySIAwYMb43ZgcoXfz91xlKzLsNBIwDPUsv2OvJCo+51Io45EOj0TPA7FLAg5kaly7S2N58Gj7V538LLnCl71bT+prTGKkZv5pj2/S39rdi/YE50uNq2CzCVL/vva/AWLudpzykwelgp6toRKri/gBKiWRlqk5HN3KsLpGDqtsEqbFaTH0YvnAx0Q1mywxvEIw6ZxqnH0Qj8PdGX7ExBQES/zMRg47SAJWK8JiaFAJpNoaJkZN0Djz8UjbPlevdCM85de6LphiG+joMZ8zfu2l1f5U+2S760O6AriNrKEljHsGc4yB6klmBfGjmjWKgpkdyPiO+KJUXPllbrmnqyzbSOHE481hO98IQjNP4ime0QH+QzANs23jMzbW1ADcYBX/uft6wVlSqw+LO4PMoLTi0EEyg3XbCyP4PtkiG/iXYs0kAQhTrJoJq2L5Da+jCbNUmsTT6Fs/zc7JhZKO76Wo+oPmrApmqrPzn3NL+GC7FI/sjHAXOHAdt2PXicv1mSLFyAm6URQLe8Haj+WXP31yNlo/rYNr9jKSDC5ZEx8nOZnrDc6md10L3nkCE06QfATIz+0ywSTA3Lre0So1QfnkuBV5F3UW+PCSJNrA2YtsMqoExORLu5LQFmEFxiDSCu9aJQ+sMf1bbCvGdUfrHwG8mQezBdOIkv+2alShV5tqf4CHTTbxh8O2BgJWFl2RScWToH/+rNouivqGowpLPNpb//+DotNwfJZLpQHzy6es6wUuXrMZ/2nRnv2mru9e2u5TsZwHDhE9z6G+91/CacOz
+ 3i4dJ3fL
+ nJJqcS2ZDUapf4TZ6iF6ZHYkh2R19UV0eteux7gQClCd2p3uYM6YmGlF1tpGMqsP34ri+kSPD1kxvOL6klG00bA+dcn2KF9yPlEZD2wWrMvcBoJUQAIw5hrc5sSazOFQb5ZVbZLb3fHpd+gcAq/66qZ+ZzDjfWCoVSMhPJrRK/4VrSyQwj/VOnjmzbLeD509HTiuGmbcWdSr1vzdMtXrascm84nnbNCwKTe4cuYL1JHI6OGbYVnwERA+2cIJm7/6C0FhjIuoFqDolVV3Y0UJmWoAFf0rnKo3LfLXwJIf/3CGJp4c7t+qo9v8BTbBRaUmi8UG0Kq+IyDZ3KLR+0O6j6xIwYB/gWEcC+NrI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,12 +132,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-collapse_single_pmd() bumps khugepaged_pages_collapsed for its caller, and
-tests cc->is_khugepaged to know whether it should: the counter belongs to
-the daemon, and MADV_COLLAPSE must not touch it.
+The name says less than the bit means.  A set bit means not only that the
+PTE is present, but also that it passed the other checks: uffd,
+lazyfree, anonymity, sharing.  The PTE can be considered a collapse
+source.
 
-The daemon sees every result of every collapse it asks for, so it can keep
-its own counter without the shared path testing who called.
+mthp_collapse() then reads the bitmap starting at the PMD order, so the
+bitmap is not specific to mTHP either.
+
+Name it for what a set bit means, and update the comments that named it.
+
+No functional change.
 
 Assisted-by: LLM
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
@@ -145,45 +150,98 @@ Reviewed-by: Zi Yan <ziy@nvidia.com>
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/khugepaged.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ mm/khugepaged.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 75c876acf527..4979a93e3648 100644
+index 4979a93e3648..081f705cfca2 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -2815,10 +2815,8 @@ static enum scan_result collapse_single_pmd(unsigned long addr,
+@@ -115,8 +115,8 @@ struct collapse_control {
+ 	/* nodemask for allocation fallback */
+ 	nodemask_t alloc_nmask;
  
- 	mmap_assert_locked(mm);
+-	/* Each bit represents a single occupied (!none/zero) page. */
+-	DECLARE_BITMAP(mthp_present_ptes, MAX_PTRS_PER_PTE);
++	/* Each bit marks a PTE the scan accepted as a collapse source */
++	DECLARE_BITMAP(eligible_ptes, MAX_PTRS_PER_PTE);
+ };
  
--	if (vma_is_anonymous(vma)) {
--		result = collapse_scan_pmd(mm, vma, addr, lock_dropped, cc);
--		goto end;
--	}
-+	if (vma_is_anonymous(vma))
-+		return collapse_scan_pmd(mm, vma, addr, lock_dropped, cc);
- 
- 	file = get_file(vma->vm_file);
- 	pgoff = linear_page_index(vma, addr);
-@@ -2854,9 +2852,6 @@ static enum scan_result collapse_single_pmd(unsigned long addr,
- 			result = SCAN_SUCCEED;
- 		mmap_read_unlock(mm);
- 	}
--end:
--	if (cc->is_khugepaged && result == SCAN_SUCCEED)
--		++khugepaged_pages_collapsed;
- 	return result;
+ /**
+@@ -627,7 +627,7 @@ static void collapse_control_init_scan(struct collapse_control *cc)
+ {
+ 	memset(cc->node_load, 0, sizeof(cc->node_load));
+ 	nodes_clear(cc->alloc_nmask);
+-	bitmap_zero(cc->mthp_present_ptes, MAX_PTRS_PER_PTE);
++	bitmap_zero(cc->eligible_ptes, MAX_PTRS_PER_PTE);
  }
  
-@@ -2933,6 +2928,8 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ static void release_pte_folio(struct folio *folio)
+@@ -1482,15 +1482,15 @@ static unsigned int max_order_from_offset(unsigned int offset)
+  * mthp_collapse() consumes the bitmap that is generated during
+  * collapse_scan_pmd() to determine what regions and mTHP orders fit best.
+  *
+- * Each bit in cc->mthp_present_ptes represents a single occupied (!none/zero)
+- * page. We start at the PMD order and check if it is eligible for collapse;
++ * Each bit in cc->eligible_ptes marks a PTE the scan accepted as a collapse
++ * source. We start at the PMD order and check if it is eligible for collapse;
+  * if not, we check the left and right halves of the PTE page table we are
+  * examining at a lower order.
+  *
+- * For each of these, we determine how many PTE entries are occupied in the
+- * range of PTE entries we propose to collapse, then we compare this to a
+- * threshold number of PTE entries which would need to be occupied for a
+- * collapse to be permitted at that order (accounting for max_ptes_none).
++ * For each of these, we count the eligible PTEs in the range we propose to
++ * collapse, then we compare this to the number of eligible PTEs the range
++ * would need for a collapse to be permitted at that order (accounting for
++ * max_ptes_none).
+  *
+  * If a collapse is permitted, we attempt to collapse the PTE range into a
+  * mTHP.
+@@ -1499,7 +1499,7 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+ 		unsigned long address, int referenced, int unmapped,
+ 		struct collapse_control *cc, unsigned long enabled_orders)
+ {
+-	unsigned int nr_occupied_ptes, nr_ptes, max_ptes_none;
++	unsigned int nr_eligible_ptes, nr_ptes, max_ptes_none;
+ 	enum scan_result last_result = SCAN_FAIL;
+ 	int collapsed = 0;
+ 	bool alloc_failed = false;
+@@ -1514,18 +1514,18 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+ 			goto next_order;
  
- 			*result = collapse_single_pmd(khugepaged_scan.address,
- 						      vma, &lock_dropped, cc);
-+			if (*result == SCAN_SUCCEED)
-+				khugepaged_pages_collapsed++;
- 			/* move to next address */
- 			khugepaged_scan.address += HPAGE_PMD_SIZE;
- 			if (lock_dropped)
+ 		max_ptes_none = collapse_max_ptes_none(cc, NULL, order);
+-		nr_occupied_ptes = bitmap_weight_from(cc->mthp_present_ptes, offset,
++		nr_eligible_ptes = bitmap_weight_from(cc->eligible_ptes, offset,
+ 						      offset + nr_ptes);
+ 
+ 		/*
+ 		 * Swap PTEs accepted during the scan are counted in @unmapped,
+-		 * not in the present-PTE bitmap. Account them for the PMD-order
++		 * not in cc->eligible_ptes. Account them for the PMD-order
+ 		 * candidate.
+ 		 */
+ 		if (is_pmd_order(order))
+-			nr_occupied_ptes += unmapped;
++			nr_eligible_ptes += unmapped;
+ 
+-		if (nr_occupied_ptes >= nr_ptes - max_ptes_none) {
++		if (nr_eligible_ptes >= nr_ptes - max_ptes_none) {
+ 			enum scan_result ret;
+ 
+ 			collapse_address = address + offset * PAGE_SIZE;
+@@ -1731,8 +1731,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+ 			}
+ 		}
+ 
+-		/* Set bit for occupied pages */
+-		__set_bit(i, cc->mthp_present_ptes);
++		/* The scan accepted this PTE as a collapse source */
++		__set_bit(i, cc->eligible_ptes);
+ 		/*
+ 		 * Record which node the original page is from and save this
+ 		 * information to cc->node_load[].
 -- 
 2.54.0
 
