@@ -4,80 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24D84CC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 10:46:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AF24CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 10:48:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 279CE6B008C; Wed, 14 Oct 2026 06:46:22 -0400 (EDT)
+	id C90726B0092; Wed, 14 Oct 2026 06:48:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22A506B0092; Wed, 14 Oct 2026 06:46:22 -0400 (EDT)
+	id C66E96B0095; Wed, 14 Oct 2026 06:48:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 140BF6B0095; Wed, 14 Oct 2026 06:46:22 -0400 (EDT)
+	id B55E16B0096; Wed, 14 Oct 2026 06:48:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E950C6B008C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:46:21 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9041F1C3C9D
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:46:21 +0000 (UTC)
-X-FDA: 85320902562.08.1EBF0FF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D8F421C000C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:46:19 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JOqgqTRF;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 911386B0092
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:48:00 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2CD571A0316
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:48:00 +0000 (UTC)
+X-FDA: 85320906720.14.61BC13A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4FE5D180003
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:47:58 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V3c1dj6j;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791974779;
-	b=BB+D/qHWILL5h/l+pekiDiw7FlfXBnN3/AKWo1YCJ4CKCIqClOdink61xHU11eQSKIL2q7
-	7hfXXS6h2Bx2On6lXkCF0AiYgKQw31NJVs+YV+e8c7XIDt999F1msxpgymyQrEElgZAxg2
-	hxhVu0B+PgvsvczR+oToRwz7qjGA1mg=
+	t=1791974878;
+	b=P/vJetwl/dMJYZ4uQYYaEQ0AG736eQjo1reKIdzuhhhFynOAy7EfmHACSJsrla4zJDH3Xa
+	QNMFJPQZi/IOi65EmICegZf0rr9dL3thtbuYEf+BqmMq5hhIHCkZdkcXfu/lTSJlxCcN7l
+	F35T1pvy4OKiNuwgSjz8Iu0zEkDlhjc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JOqgqTRF;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V3c1dj6j;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791974779;
+	s=arc-20220608; t=1791974878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TYK1qhYcVcdQcDNNIM9nzsgVfyv8Ia9LwUnyZa4iqeY=;
-	b=jk1pPUViPQcOtfrU6Nj3ZtPdmxMVRmjch1tQMsMwqJuQzmpufdkl6wz2zD+mCjEruXBiCp
-	yVb2RP22+hvfl/iyip0teA25RPWrY7tHR9mTRQ7Og3/WEvZovYJYRC6mgX3KMxKROsDn39
-	dqJqDp1EgjAW5Z1as+Oidehj5LNpgls=
+	bh=IApCsci3eSqyBIQ6NmzUaRZb+6TUkOs0tii8wwaDBSI=;
+	b=lXj7qeYd8uDOifKJOnV9jJdep5w7sUOtBH1B+mlfNSRlouKfsu2DcKZSrTdjgEuljYpV8W
+	Wnc40zhwg6vz2LJh3vwZoc4kEmGe0EgAyF8Rm22i2XHmtI51ggHQZvur/KE4nRxGhhsxC7
+	nOqMu9Q/ej8/HCbPQprsnwxmOrO0EBE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ABFEC60218;
-	Wed, 14 Oct 2026 10:46:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40691F000FF;
-	Wed, 14 Oct 2026 10:46:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3E317407D5;
+	Wed, 14 Oct 2026 10:47:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E891F000FF;
+	Wed, 14 Oct 2026 10:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791974778;
-	bh=TYK1qhYcVcdQcDNNIM9nzsgVfyv8Ia9LwUnyZa4iqeY=;
+	s=k20260515; t=1791974877;
+	bh=IApCsci3eSqyBIQ6NmzUaRZb+6TUkOs0tii8wwaDBSI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JOqgqTRF8PjFk8EfMu0Qmi7BzkEvqxHG3gNNdLN3WURkSXE8+gKlZqK2Ou/J280fQ
-	 H5yD+9OerHaEisTJR4B1e1m7ydqax/pxH6RQYNZmYbp0ptM+MzzLkbFwao21CXom1J
-	 VAJOoelpGWotlIuM8x81Di0/x5ZCGCF1Jas8CA8/Gj3FmSchsMlHA0gxw44Ryb2yQ0
-	 RAEH8pa5Nyi5TZOKfP2qWvbQz7WXMoqALEA3hCybP76pqKzet+ahGtdpHIWx+iBJXf
-	 /o5d4wY0AIbLCctdVl/iq8hgMEbjvppgFkACtJC5lo1QXOU7J7wN/ccjvVemkh/9gy
-	 piZ5nPhIKRmBQ==
-Message-ID: <4c8f620c-3b98-46b8-bcd8-d73210214deb@kernel.org>
-Date: Wed, 14 Oct 2026 12:46:13 +0200
+	b=V3c1dj6j+QKYfnIwQZERyfqrqe+FaHIfB5HHYjPoP0iAFKmlB58XPIiLTt7NQv26o
+	 yonRlVYITgy21176x66blhL5AkAMa4TvRkno2/XqbkwC4dW+W2w9Th1e2iAaTYz62R
+	 oPN0TwNKKF3PtMljvjL+I3HZ3z104drFV04P0LLPTptEmJ4UozFh2kNDweXk3D+IMz
+	 8ZsKrBAhfHbDg4V7X7Dw484s50jmdVeTVmRXrtoxpHIqHtHFglgHNeTAxDUYatjQBh
+	 74V+mBmqbH4/BnuZ5RuS/qTv1y1HKtQchEiMx8HGnSeSfsfyWbzJurQWFQcsRbCn5I
+	 3zsBoR4hgDM4w==
+Message-ID: <75c229ef-ae41-4072-9c90-98d4779c52bf@kernel.org>
+Date: Wed, 14 Oct 2026 12:47:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Improve page refcount scalability
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Matthew Wilcox <willy@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Ilya Gladyshev <ilya.gladyshev@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux-MM <linux-mm@kvack.org>, "Paul E. McKenney" <paulmck@kernel.org>
-References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
- <as6ckC9NJVB8JBuV@casper.infradead.org> <as9af-Jd_rVZvMlC@thinkstation>
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+To: Robin Murphy <robin.murphy@arm.com>, Luigi Rizzo <lrizzo@google.com>
+Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Joshua Washington <joshwash@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
+ netdev@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261003212241.3432303-1-lrizzo@google.com>
+ <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+ <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
+ <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+ <4fda41ed-741b-4c5f-ae83-e3ea5a447441@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +144,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <as9af-Jd_rVZvMlC@thinkstation>
+In-Reply-To: <4fda41ed-741b-4c5f-ae83-e3ea5a447441@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4njtc43xgcpoy16d6ibtghj4f8sywmsq
-X-Rspamd-Queue-Id: D8F421C000C
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791974779-396600
-X-HE-Meta: U2FsdGVkX1+PtdtaLAlPjMPRMdewLrER/FaFum7i+kJNGxjaB71QDCgzkAdLFIOUN5nuzw1mvoAsPJGMmn1p/jqvEcSll0jViR3GIuQtmlRZYGUloDQiunKloqQ5pFfncWMw0IILLjfpk2XmpkP9DTwCNOWaSeUSyCUH6eTh5GDr6hd4Xj6LtgUbj5Y6M0Mtcyiqw684zSBZvxoIpGNMDrN9o3Ug+kUIw2xIVLUcJh8oB1VyJzkgdlMSb9IN89qLzeTMTFlpdCHvSRTc5pocUd8l6/nM8O3mN5N9xIRBHV+0ivUEcXUzgKpygulVnO37mwLacOQReXUpcV3qLwU6MbyzJx4CSe02n+AlIANrkzXP0CqDxCeBjthS6jZNooV5GjFqYiEyxFttTD+P7CoC5D01CrpRcJY8PS8TRlUzJEwenBvIRBJ/8G+A8PoJXXSEYtMVaYFzUXbJ5yW/4+BNGUoridz8dnvl8FQG6LV3sqapiwPxzmL60zwUVlH/m+J/XJAGY/2kF3g+IHn0X93MFvr9zYDuajYLVDY/2vlDpDOIuvJxutEKEBXi8cUS6+hSxqZnd7q8No/BA/v9cjyMXJj9uSoZZN9n+71d/mVfYzpGvDc6S4i6wdr6TXN1q+VXe1tX3UiNJLJzgmXLP1PRAuve2tBnNYlJJXGc4Dp83WGlDTaeeKzm43p7Z1/VMazMECcU3KX0a4ZlLlO0gsm0XtP+IC8QBIw3+ijV4ThJfm76Ue3+FaSqqkzNiTF9djgBdtCQYDkHMba/bAAF6PG0hXpRoWLr8FPrr9SYfeCO0rT0Cv7lBYgq+3AiMZ29gJZ8RB7vkTC3STmHBIM5g+yWAzeeHEkBBRQ8irjgs5kwo9ohjmbVRdlZuv+TkH3nRWRHdNnVOSDl10bENc+rxkf12IszpISS80eETE/T+KPMyfS4Dotuw9JJoND/UodIT0QfzSbR/NSwF/lVmXsf3s8
- J1UB1lNn
- 5hNhA0NsKF3EUipb5cgU0Pnse3mz8Xpln0Drkpitv1tZ1uYb//rxvbX18b/MskdF8rQRHZxqCqatxmfA9IPTDYoR7wo97Xc/Wue3K3IB2OoRBBi3ANpaaTOXOVFto+HgQckameXOTxvvN2UR0KWPqOpIm5kJCfQ5Mw6/jI8moJ97N1sY+xj5oH5dlcpVmtSgMMs2mr2KNONSne0wRg2h11O0/DXdy0p6XA41ecMRr+pARmetfBAvPj6WUbx3P4KLE6eAEa+b4ZVnvdUj8LV+VhE3BJw==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4FE5D180003
+X-Stat-Signature: mwtuknppu8hpnqq5if4shu93sy8xtf97
+X-HE-Tag: 1791974878-23538
+X-HE-Meta: U2FsdGVkX1/26fb3H5/7tEvQPYRpWDHNxURWauhaX3Gf7pK8pFSBzExobiOwTprn1bXQTvhyv85Cfp/g+HrF7SZN6kMnRjdw6eEvXav175LWLPGCB4UqGLe/DifKjVArXVkYTCrgCV1czYcxxnQ/iexQMi4CptbTtuphvkKKhPP1l95Eby1r8EKjCmECAknhE3dt39bpOkQvpLuy/hzXv3EoYio2vzSxKgQi5PrxfcTmmnEcK0aYcclT4VrhX49g6Qy2uNkkyI0+SVM3BJ+fwke8hTmfht4O3oszCS6ERVQxqsfeLQ/pi/r7YFP3bY4aIu+wOEmtb+n2h9Dp6B3gFeI8/uHx55XMXIMhNlPXbJjqbEP4Tf8SONT9/wwt8ZbWfBUqO5i5h7cBX/DCb324I0TVOHz4AiONI+s9ZGMMh3XKIwNPO5X31erZ5YIMT6wkZqYX0RFvRZ2O2ZBuBgIqt3qV5vPQyD4VNnyZm0vV6f8Bjd70o8IAbSjGqpinF1roGQFfx12b4MJmgM2ftqtO0MDkotC9RQnodoBF7xuCbkQPT/7BWFmdGokwuvT9Pt9SOwvoMuB/XffYSwlRu4kBqm+1tBoNmT2LkN0VvdWDCrpoRrMfQB6iZGxfoBqL3Qv3gJdGwz3Ae4lzwUfYNokzCJcPAlk4w4MDV0vSCSH0MO1ac66Ch3K4/rSSOT5ttrEtkplCk/bWaCqK5qW4+XWs2rkzMcjpP5iXhW2OynzF8cgvNIUpAASh3lb6gXm1KLqYCshFEEWDoQ1Vb66v5rqdjifQfnEn2rCbjjH8bTQvQ6Vg1g5hKOT/5MKMVkKGcJaxKSJSG4fjklATTkmwplybjj4xtF8k/XRtGteM5otEWAO0lGgjKPECmRG+vbErgjkUTROkhUQsLf4XEUE6TnZaC4ECIyP1nOCj9bUSgE65ceLqQRYbOhSZQ+4Z2oFAi22Jr5ZLy8ntwJlW0peDy7w
+ IE9ijov1
+ ss/eYDp9OnTZJP9sthUUqXD902KUGX+nWbusSzuhi9IjocG+SAypf/fJSopp1yIMkk2H0jiELcfqKP9YYe+n2Qq0+XmcmiUg3tid8E58iukGHn0tcFK0xBtPjJQJetjFNfy296l7ZnQAdto+DxFDedkHaAUyoUIHRsboj6JmKXuSBU8IzGERRCx16mQ0tSZJuZ6q7HT23wbi9fSN5rb1Q3ygYsxdUkf5jNZnK3kWNbBr2Bp87zZmNCpPHb5Q2DtnqE3JBYhsM6nv96fEdf5PXXtYSk2XUaU7RuCsFpoM5+rl/RBLlf5NAVzc3Yv7KxYkCDmn90pZEJzTHHkhPOtLdXlA+DzHIMrRegGRLE8VLq6+sjTiTrpRU/ZZ6XNSu/6x4HAVIMRP5lqymrd+sQQLCo7kvJ0nxlXky/GBDQPB7dzNOa38=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,49 +162,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 12:36, Kiryl Shutsemau wrote:
-> On Tue, Oct 13, 2026 at 10:03:12PM +0100, Matthew Wilcox wrote:
->> On Tue, Oct 13, 2026 at 11:43:14AM -0700, Linus Torvalds wrote:
->>> The fairly short series of ten patches basically enhances folio lookup
->>> by noticing when folios are hot, and setting a "delay relasing this
->>> folio until after a RCU period", and then using that RCU delay it does
->>> not just the folio lookup itself under RCU (which we've done forever),
->>> but also the actual folio data accesses themselves under RCU. No
->>> refcount taking needed for the fastpath where we can just read the
->>> data from the folio entirely in an RCU-protected region when the user
->>> copy doesn't cause page faults.
+On 10/13/26 12:42, Robin Murphy wrote:
+> On 12/10/2026 8:43 pm, David Hildenbrand (Arm) wrote:
+>> On 10/12/26 16:45, Luigi Rizzo wrote:
+>>> On Mon, Oct 12, 2026 at 3:51 PM David Hildenbrand (Arm)
+>>> <david@kernel.org> wrote:
 >>>
->>> Unlike my original approach - because it now actually delays the
->>> freeing of the underlying folio data - there's no need for any double
->>> buffering, and a lot of the original limitations of my original patch
->>> go away too. That improves performance quite a lot. And by "quite a
->>> lot"  I mean "I see a 23x performance increase on my Ryzen
->>> threadripper". Admittedly that is a very artificial case of reading
->>> the same small part of a page over and over in a threaded loop on all
->>> CPUs, so any real life impact will be much much less.
+>>> I had to call it something... an earlier prototype used the name IOMMU_2M,
+>>> but I didn't want to suggest that the design was limited to 2M (it is not).
 >>>
->>> Anyway, I wasn't planning on posting the individual patches, I think
->>> we all use git by now and probably find it easier than fetching
->>> patches from the list. So it's all at
+>>> Aside from the name, the _current_ prototype restricts to 2M allocations,
+>>> exactly because too large units are expensive and wasteful.
 >>>
->>>     git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux rcu-free-v3
->>>
->>> and the commit messages are a bit more verbose than I would have done
->>> it myself without tool use, but maybe it's better that way.
+>>> In the code, decoupling the allocation size from the PMD size is trivial.
 >>
->> Obviously the numbers are compelling.  And thanks to Kiryl for figuring
->> out a workload that confirmed my fears, then remedying the problem.
+>> Yeah, we should do that.
 >>
->> I don't like the PG_rcu_free flag.
-> 
-> I wonder if you would be okay with a 64-bit-only flag? Those are less
-> scarce. That's the direction I was looking at:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git/commit/?id=59b23fdc4bb0d008e2a30d24156177eeede8a577
-> 
-> I don't think we care about the scalability of 32-bit machines here.
+>> We should probably just find a way to describe that this is a POOL that focuses
+>> on physical contiguity in some configured granularity.
+> And since it's intended for DMA we could call it dma_pool and oh look it already
+> exists...
 
-I think limiting this functionality to 64bit makes a lot of sense.
+Heh, I did have "DMA_POOL" in mind when writing my reply.
+
+> 
+> Sure the current implementation is capped at PAGE_SIZE for allocation (and thus
+> mapping too), but I don't see why that couldn't just be made more flexible.
+
+That intuitively sounds like the right direction.
 
 -- 
 Cheers,
